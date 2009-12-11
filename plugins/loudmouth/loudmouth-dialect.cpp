@@ -74,9 +74,47 @@ LM::Dialect::push_message (PresentityPtr presentity,
 void
 LM::Dialect::open_chat (PresentityPtr presentity)
 {
-  SimpleChatPtr chat(new SimpleChat (core, presentity));
-  add_simple_chat (chat);
+  SimpleChatPtr chat = find_chat (presentity);
+  if ( !chat) {
+
+    chat = SimpleChatPtr (new SimpleChat (core, presentity));
+    add_simple_chat (chat);
+  }
+
   chat->user_requested ();
+}
+
+struct find_chat_helper
+{
+
+  find_chat_helper (Ekiga::PresentityPtr presentity_):
+    presentity(presentity_)
+  {}
+
+  bool test (Ekiga::SimpleChatPtr chat_)
+  {
+    LM::SimpleChatPtr chat = boost::dynamic_pointer_cast<LM::SimpleChat> (chat_);
+
+    if (chat->get_presentity () == presentity) {
+
+      answer = chat;
+    }
+
+    return !answer;
+  }
+
+  Ekiga::PresentityPtr presentity;
+  LM::SimpleChatPtr answer;
+};
+
+LM::SimpleChatPtr
+LM::Dialect::find_chat (PresentityPtr presentity) const
+{
+  find_chat_helper helper (presentity);
+
+  visit_simple_chats (boost::bind (&find_chat_helper::test, helper, _1));
+
+  return helper.answer;
 }
 
 bool

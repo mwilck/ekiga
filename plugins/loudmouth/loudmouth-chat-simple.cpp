@@ -43,12 +43,10 @@ LM::SimpleChat::SimpleChat (Ekiga::ServiceCore& core_,
 			    PresentityPtr presentity_):
   core(core_), presentity(presentity_)
 {
-  presentity->has_chat = true;
 }
 
 LM::SimpleChat::~SimpleChat ()
 {
-  presentity->has_chat = false;
 }
 
 const std::string

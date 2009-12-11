@@ -173,10 +173,7 @@ LM::Presentity::populate_menu (Ekiga::MenuBuilder& builder)
     builder.add_action ("stop", _("Stop getting his/her status"), boost::bind (&LM::Presentity::stop_to, this));
   }
 
-  if ( !has_chat) {
-
-    builder.add_action ("chat", _("Start chat"), boost::ref (chat_requested));
-  }
+  builder.add_action ("chat", _("Start chat"), boost::ref (chat_requested));
 
   builder.add_action ("remove", _("_Remove"),
 		      boost::bind (&LM::Presentity::remove_presentity, this));

@@ -74,8 +74,6 @@ namespace LM
     void push_presence (const std::string resource,
 			LmMessageNode* presence);
 
-    bool has_chat;
-
     boost::signal0<void> chat_requested;
 
   private:
