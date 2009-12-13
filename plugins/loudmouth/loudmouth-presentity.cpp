@@ -43,7 +43,7 @@
 
 LM::Presentity::Presentity (LmConnection* connection_,
 			    LmMessageNode* item_):
-  connection(connection_), item(item_)
+  connection(connection_), item(item_), has_chat(false)
 {
   lm_connection_ref (connection);
   lm_message_node_ref (item);
@@ -173,7 +173,13 @@ LM::Presentity::populate_menu (Ekiga::MenuBuilder& builder)
     builder.add_action ("stop", _("Stop getting his/her status"), boost::bind (&LM::Presentity::stop_to, this));
   }
 
-  builder.add_action ("chat", _("Start chat"), boost::ref (chat_requested));
+  if ( !has_chat) {
+
+    builder.add_action ("chat", _("Start chat"), boost::ref (chat_requested));
+  } else {
+
+    builder.add_action ("chat", _("Continue chat"), boost::ref (chat_requested));
+  }
 
   builder.add_action ("remove", _("_Remove"),
 		      boost::bind (&LM::Presentity::remove_presentity, this));
