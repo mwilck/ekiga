@@ -61,8 +61,6 @@ namespace LM
 
   private:
 
-    SimpleChatPtr find_chat (PresentityPtr presentity) const;
-
     Ekiga::ServiceCore& core;
   };
 
