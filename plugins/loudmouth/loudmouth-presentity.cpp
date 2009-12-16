@@ -43,7 +43,7 @@
 
 LM::Presentity::Presentity (LmConnection* connection_,
 			    LmMessageNode* item_):
-  connection(connection_), item(item_), has_chat(false)
+  has_chat (false), connection(connection_), item(item_)
 {
   lm_connection_ref (connection);
   lm_message_node_ref (item);
