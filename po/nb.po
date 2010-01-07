@@ -7,8 +7,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Ekiga 3.x\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2009-12-04 21:39+0100\n"
-"PO-Revision-Date: 2009-12-04 21:40+0100\n"
+"POT-Creation-Date: 2010-01-07 13:45+0100\n"
+"PO-Revision-Date: 2010-01-07 13:50+0100\n"
 "Last-Translator: Kjartan Maraas <kmaraas@gnome.org\n"
 "Language-Team: Norwegian Bokmål <i18n-nb@lister.ping.uio.no\n"
 "MIME-Version: 1.0\n"
@@ -694,19 +694,13 @@ msgstr ""
 "Ved valg av andre verdier enn «String» deaktiveres tekstsamtale"
 
 #: ../ekiga.schemas.in.in.h:137 ../src/gui/preferences.cpp:698
-#, fuzzy
 msgid ""
 "This enables H.245 Tunneling mode. In H.245 Tunneling mode H.245 messages "
 "are encapsulated into the H.225 channel (port 1720). This saves one TCP "
 "connection during calls. H.245 Tunneling was introduced in H.323v2 and "
 "Netmeeting does not support it. Using both Fast Start and H.245 Tunneling "
 "can crash some versions of Netmeeting."
-msgstr ""
-"Dette aktiverer H.245-tunnelleringsmodus. For H.245-tunnellering blir H.245-"
-"meldinger pakket inn i H.225-kanalen (port 1720). Dette sparer en TCP-"
-"tilkopling under anrop. H.245-tunnellering ble introdusert i H.323v2 og "
-"Netmeeting støtter det ikke. Bruk av både hurtigstart og H.245-tunnellering "
-"kan krasje noen versjoner av Netmeeting."
+msgstr "Dette aktiverer H.245-tunnelleringsmodus. For H.245-tunnellering blir H.245-meldinger pakket inn i H.225-kanalen (port 1720). Dette sparer en TCP-tilkobling under anrop. H.245-tunnellering ble introdusert i H.323v2 og Netmeeting støtter det ikke. Bruk av både hurtigstart og H.245-tunnellering kan krasje noen versjoner av Netmeeting."
 
 #: ../ekiga.schemas.in.in.h:138 ../src/gui/preferences.cpp:700
 msgid "This enables H.245 early in the setup"
@@ -807,13 +801,13 @@ msgstr "R_ediger"
 #: ../lib/engine/components/opal/opal-account.cpp:352
 #: ../plugins/evolution/evolution-contact.cpp:220
 #: ../plugins/loudmouth/loudmouth-account.cpp:364
-#: ../plugins/loudmouth/loudmouth-presentity.cpp:181
+#: ../plugins/loudmouth/loudmouth-presentity.cpp:184
 #: ../plugins/resource-list/rl-presentity.cpp:208
 msgid "_Remove"
 msgstr "Fje_rn"
 
 #: ../lib/engine/components/local-roster/local-presentity.cpp:242
-#: ../plugins/loudmouth/loudmouth-presentity.cpp:266
+#: ../plugins/loudmouth/loudmouth-presentity.cpp:269
 msgid "Edit roster element"
 msgstr "Rediger element i roster"
 
@@ -831,7 +825,7 @@ msgstr ""
 #: ../lib/engine/components/opal/opal-account.cpp:395
 #: ../plugins/evolution/evolution-contact.cpp:314
 #: ../plugins/loudmouth/loudmouth-account.cpp:267
-#: ../plugins/loudmouth/loudmouth-presentity.cpp:269
+#: ../plugins/loudmouth/loudmouth-presentity.cpp:272
 #: ../plugins/resource-list/rl-cluster.cpp:169
 #: ../plugins/resource-list/rl-heap.cpp:526
 #: ../plugins/resource-list/rl-presentity.cpp:227
@@ -852,7 +846,7 @@ msgid "Is a prefered contact"
 msgstr "Er en foretrukket kontakt"
 
 #: ../lib/engine/components/local-roster/local-presentity.cpp:249
-#: ../plugins/loudmouth/loudmouth-presentity.cpp:271
+#: ../plugins/loudmouth/loudmouth-presentity.cpp:274
 #: ../plugins/resource-list/rl-heap.cpp:528
 #: ../plugins/resource-list/rl-presentity.cpp:230
 msgid "Choose groups:"
@@ -1294,7 +1288,7 @@ msgstr "Ikke-autorisert"
 
 #: ../lib/engine/components/opal/sip-endpoint.cpp:645
 msgid "Forbidden, please check that username and password are correct"
-msgstr ""
+msgstr "Forbudt. Vennligst sjekk at brukernavn og passord er korrekt"
 
 #: ../lib/engine/components/opal/sip-endpoint.cpp:649
 msgid "Timeout"
@@ -1792,11 +1786,11 @@ msgstr "Oppgi URI til tjener\n"
 
 #: ../plugins/ldap/ldap-book.cpp:1024
 msgid "Please provide a DisplayName Attribute\n"
-msgstr ""
+msgstr "Vennligst oppgi en DisplayName-attributt\n"
 
 #: ../plugins/ldap/ldap-book.cpp:1027
 msgid "Please provide a Call Attribute\n"
-msgstr ""
+msgstr "Vennligst oppgi en samtaleattributt\n"
 
 #: ../plugins/ldap/ldap-book.cpp:1030
 msgid "Invalid Server URI\n"
@@ -1851,7 +1845,7 @@ msgstr "tilkoblet"
 #. FIXME: can't we report something better?
 #: ../plugins/loudmouth/loudmouth-account.cpp:245
 msgid "error authenticating loudmouth account"
-msgstr ""
+msgstr "feil under autentisering for loudmouth-konto"
 
 #: ../plugins/loudmouth/loudmouth-account.cpp:275
 msgid "Server:"
@@ -1885,11 +1879,11 @@ msgstr ""
 #: ../plugins/loudmouth/loudmouth-heap.cpp:218
 #, c-format
 msgid "%s asks the permission to see your presence."
-msgstr ""
+msgstr "%s ber om tillatelse til å se din tilstedeinformasjon."
 
 #: ../plugins/loudmouth/loudmouth-heap.cpp:225
 msgid "grant him/her the permission to see your presence"
-msgstr ""
+msgstr "gi ham/henne tillatelse til å se din tilstedeinformasjon"
 
 #: ../plugins/loudmouth/loudmouth-heap.cpp:226
 msgid "refuse him/her the permission to see your presence"
@@ -1897,7 +1891,7 @@ msgstr ""
 
 #: ../plugins/loudmouth/loudmouth-heap.cpp:227
 msgid "decide later (also close or cancel this dialog)"
-msgstr ""
+msgstr "bestem senere (og lukk eller avbryt denne dialogen)"
 
 #: ../plugins/loudmouth/loudmouth-heap.cpp:228
 msgid "Your answer is: "
@@ -1908,7 +1902,6 @@ msgid "Add a roster element"
 msgstr "Legg til element i kontaktlisten"
 
 #: ../plugins/loudmouth/loudmouth-heap.cpp:316
-#, fuzzy
 msgid "Please fill in this form to add a newelement to the remote roster"
 msgstr ""
 "Vennligst fyll ut dette skjemaet for å legge til en ny kontakt i ekiga's "
@@ -1945,13 +1938,14 @@ msgstr ""
 msgid "Start chat"
 msgstr "Start prat"
 
-#: ../plugins/loudmouth/loudmouth-presentity.cpp:267
-#, fuzzy
+#: ../plugins/loudmouth/loudmouth-presentity.cpp:181
+msgid "Continue chat"
+msgstr "Fortsett prat"
+
+#: ../plugins/loudmouth/loudmouth-presentity.cpp:270
 msgid ""
 "Please fill in this form to change an existing element of the remote roster"
-msgstr ""
-"Vennligst fyll ut dette skjemaet for å endre et eksisterende element i "
-"ekiga's interne roster"
+msgstr "Vennligst fyll ut dette skjemaet for å endre et eksisterende element i ekiga's eksterne kontaktliste"
 
 #: ../plugins/resource-list/rl-cluster.cpp:102
 msgid "New resource list"
@@ -2504,9 +2498,8 @@ msgid "Error while initializing video output"
 msgstr "Feil under initiering av utenhet for video"
 
 #: ../src/gui/main_window.cpp:982
-#, fuzzy
 msgid "No video will be displayed on your machine during this call"
-msgstr "Bilde blir ikke vist i denne samtalen->"
+msgstr "Bilde blir ikke vist på din maskin i denne samtalen"
 
 #: ../src/gui/main_window.cpp:992
 msgid ""
@@ -2538,9 +2531,8 @@ msgid "Error while accessing video device %s"
 msgstr "Feil under åpning av videoenhet %s"
 
 #: ../src/gui/main_window.cpp:1139
-#, fuzzy
 msgid "A moving logo will be transmitted during calls."
-msgstr "Bilde blir ikke vist i denne samtalen->"
+msgstr "En bevegelig logo vil bli vist under samtaler."
 
 #: ../src/gui/main_window.cpp:1143
 msgid ""
@@ -3431,7 +3423,7 @@ msgstr[1] "Du har %d meldinger"
 
 #: ../src/gui/statusicon.cpp:418
 msgid "The following accounts are inactive:"
-msgstr ""
+msgstr "Følgende kontoer er inaktive:"
 
 #: ../src/gui/statusmenu.cpp:87
 msgid "Online"
