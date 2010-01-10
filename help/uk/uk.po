@@ -4,9 +4,9 @@
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: gnomemeeting manual\n"
+"Project-Id-Version: ekiga manual\n"
 "POT-Creation-Date: 2010-01-07 12:50+0000\n"
-"PO-Revision-Date: 2009-07-17 15:44+0300\n"
+"PO-Revision-Date: 2010-01-07 15:44+0300\n"
 "Last-Translator: Oleh Miniv <oleg-min@ukr.net>\n"
 "Language-Team: Ukrainian <uk@li.org>\n"
 "MIME-Version: 1.0\n"
@@ -631,7 +631,7 @@ msgstr "Керування контактами"
 
 #: C/ekiga.xml:315(title)
 msgid "Adding contacts to the roster"
-msgstr ""
+msgstr "Додавання контактів до локальної книги адрес"
 
 #: C/ekiga.xml:319(para)
 msgid ""
@@ -645,6 +645,14 @@ msgid ""
 "report if a user is on the phone or not, and <application>Ekiga</"
 "application> will display that information in its roster."
 msgstr ""
+"<application>Ekiga</application> дозволяє додавати контакти до локальної книги адрес. "
+"Тоді ваших друзів можна викликати або починати текстову розмову з ними без "
+"запам'ятовування їх URI. Якщо це підтримується службою, "
+"<application>Ekiga</application> буде показувати <emphasis>інформацію про присутність</emphasis>. Ekiga.net підтримує "
+"публікацію інформації про присутність. Програмні АТС, такі як "
+"<ulink url=\"http://www.asterisk.org\" type=\"http\">Asterisk</ulink> можуть "
+"сповідати про доступність користувача по телефону, та <application>Ekiga</"
+"application> може виводити цю інформацію у списку."
 
 #: C/ekiga.xml:325(para)
 msgid ""
@@ -708,6 +716,16 @@ msgid ""
 "products/evolution\" type=\"http\">Novell Evolution</ulink>. Support for "
 "more contact sources is possible."
 msgstr ""
+"<application>Ekiga</application> може переглядати контакти з різних джерел, "
+"таких як адресна книга <ulink url=\"http://www.novell.com/products/"
+"evolution\" type=\"http\">Novell Evolution</ulink>, та каталогів LDAP "
+"або каталогу контактів Ekiga.net. Із знайденими контактами можна "
+"почати текстову розмову, зробити дзвінок, або просто додати його до локального списку контактів, "
+"якщо ви будете часто з ним зв'язуватись. Для перегляду контактів виберіть "
+"у меню Розмова -&gt; Адресна книга. Ліворуч з'явиться список "
+"каталогів LDAP а також список локальних адресних книг. Типовими є довідник <application>Ekiga</application>, "
+"та особиста адресна книга з <ulink url=\"http://www.novell.com/"
+"products/evolution\" type=\"http\">Novell Evolution</ulink>. Припускається підтримка більшої кількості джерел контактів."
 
 #: C/ekiga.xml:352(para)
 msgid ""
@@ -740,6 +758,14 @@ msgid ""
 "security options for LDAP including ldaps:// (LDAP over SSL), StartTLS, and "
 "SASL authentication."
 msgstr ""
+"Адресна книга LDAP підтримує діапазон параметрів, що дозволяють працювати з "
+"будь-яким каталогам LDAPv3. Що дозволяє обирати атрибут для показу "
+"імені контакту у адресній книзі, а також список атрибутів для інформації про абонента. Наприклад, якщо каталог використовує схему LDAP "
+"inetOrgPerson, можна налаштувати адресну книгу для отримання атрибутів "
+"homePhone, mobile, та pager, за якими контакти доступні для виклику чи текстових повідомлень. Також можна налаштувати Шаблон фільтру на "
+"типовий фільтр пошуку у LDAP, та перевизначити типовий фільтр будь-коли, якщо "
+"знадобиться спеціалізований пошук. Оглядач також підтримує усі заходи безпеки для LDAP включаючи ldaps:// (LDAP через SSL), StartTLS, та "
+"аутентифікацію SASL."
 
 #: C/ekiga.xml:360(para)
 msgid ""
@@ -765,6 +791,13 @@ msgid ""
 "enter a complete LDAP Filter string, and it will be used instead of the "
 "configured Filter Template."
 msgstr ""
+"У деяких випадках потрібно зробити пошук за іменем особи, або "
+"її чи його URI у каталозі <application>Ekiga</application>. Вікно адресної книги "
+"дозволяє накладати фільтри при пошуку контактів. "
+"При виконанні пошуку у каталозі LDAP, введення імені у полі Фільтр пошуку "
+"призводить до виконання пошуку у LDAP рядка з налаштуваннями у "
+"Шаблон фільтру. Якщо потрібне більш складний пошук, можна ввести повний рядок "
+"у полі фільтру LDAP, і він буде використаний замість Шаблону фільтру."
 
 #: C/ekiga.xml:368(para)
 msgid ""
@@ -790,6 +823,9 @@ msgid ""
 "in question. To discover what features are possible, simply select the "
 "address book and consult the Action menu."
 msgstr ""
+"Локальні адресні книги, що забезпечуються Novell Evolution, дозволяють додавати новій контакти "
+"або редагувати наявні. Кожна адресна книга підтримує різний набір властивостей, залежно від того, що має сенс для конкретної адресної книги."
+"Список можливих функцій можна побавити вибравши  адресну книгу та переглянувши меню Дії."
 
 #: C/ekiga.xml:379(para)
 msgid ""
@@ -836,6 +872,7 @@ msgid ""
 "<application>Ekiga</application> allows you to send instant messages to "
 "remote users provided that you know their URI."
 msgstr ""
+"<application>Ekiga</application> дозволяє надсилати миттєві повідомлення віддаленим користувачам, якщо вам відомий їх URI."
 
 #: C/ekiga.xml:403(para)
 msgid ""
@@ -846,6 +883,11 @@ msgid ""
 "is highlighted. A window pops up, enter your text message, and hit the Enter "
 "key."
 msgstr ""
+"Можна надсилати повідомлення з списку, з історії виклику або з "
+"адресної книги. Для надсилання зі списку чи історії викликів для виділеного контакту, просто виберіть  "
+"Контакт -&gt; Повідомлення у головному вікні. Для надсилання з адресної книги для виділеного контакту "
+"виберіть Дія -&gt; Повідомлення. Відкриється контекстне вікно, введіть ваше повідомлення та натисніть Enter "
+"key."
 
 #: C/ekiga.xml:407(para)
 msgid ""
@@ -853,6 +895,8 @@ msgid ""
 "application> will only display the Message menu item when the protocol "
 "associated with the user permits it."
 msgstr ""
+"Не всі протоколи підтримують обмін текстовими повідомленням. Меню Повідомлення у <application>Ekiga</"
+"application> показується лише для протоколів, які це дозволяють."
 
 #: C/ekiga.xml:412(title)
 msgid "Updating his own status"
@@ -863,7 +907,7 @@ msgid ""
 "<application>Ekiga</application> allows you to publish your status to other "
 "users."
 msgstr ""
-"<application>Ekiga</application> дозволяє відображати ваш статус іншим "
+"<application>Ekiga</application> дозволяє публікувати ваш статус іншим "
 "користувачам."
 
 #: C/ekiga.xml:420(para)
@@ -874,6 +918,9 @@ msgid ""
 "of the main window. You can then define your extended status message that "
 "will be published using all available protocols supporting it."
 msgstr ""
+"Є три категорії повідомлень про статус : у мережі, відійшов та не турбувати. Кожна з них дозволяє вказувати додаткову інформацію про статус. "
+"Просто внизу головного вікна виберіть у меню статусу «Інше повідомлення». Тоді можна визначити ваше розширене повідомлення про стан, яке "
+"буде публікуватись з використанням усіх інших протоколів, що його підтримують."
 
 #: C/ekiga.xml:424(para)
 msgid ""
@@ -882,6 +929,9 @@ msgid ""
 "with the PBX you are connected to, please ask your administrator. Please "
 "note that Ekiga.net will publish your presence information."
 msgstr ""
+"Є багато серверів, які не підтримують передачу інформації про присутність. "
+"Щоб перевірити підтримку цієї функції вашим сервером чи АТС, зверніться до системного адміністратора. Зауважте, що "
+"Ekiga.net публікує інформацію про присутність."
 
 #: C/ekiga.xml:429(title)
 msgid "Managing Calls"
@@ -982,12 +1032,15 @@ msgid ""
 "the Action menu in the Address Book window and choosing the transfer action "
 "will also work."
 msgstr ""
+"Переадресація викликів: можна перенаправляти віддаленого користувача на іншого користувача "
+"обравши Розмова -&gt; Переадресувати виклик. Також можна переадресувати активний виклик клацанням правою кнопкою миші та обирати переадресацію, якщо контакт виділений у списку контактів, у адресній книзі чи історії викликів. Також працює подвійне клацання або виділення у меню головного вікна Контакт або меню Дія у вікні адресної книги та обрання дії переадресація."
 
 #: C/ekiga.xml:468(para)
 msgid ""
 "All URIs supported by <application>Ekiga</application> can be used for call "
 "transfer if the protocol supports it."
 msgstr ""
+"для переадресації викликів можна використовувати усі URI, що підтримуються <application>Ekiga</application>, якщо не підтримується протоколом."
 
 #: C/ekiga.xml:471(title)
 msgid "Adjusting the audio and video settings"
@@ -1014,6 +1067,8 @@ msgid ""
 "the preferences window by selecting Edit -&gt; Preferences in the menu, and "
 "adjust your devices in the appropriate section."
 msgstr ""
+"Також можна змінювати пристрій роботи з і звуком та відео протягом дзвінка. Просто перейдіть до меню параметрів "
+"обравши Правка -&gt; Параметри у меню, та скоригуйте пристрої у відповідному розділі."
 
 #: C/ekiga.xml:481(title)
 msgid "Checking the call history"
@@ -1037,7 +1092,7 @@ msgstr ""
 
 #: C/ekiga.xml:500(para)
 msgid "Missed calls shows incoming calls which timed out."
-msgstr ""
+msgstr "У списку пропущених викликів показуються вхідні пропущені дзвінки."
 
 #: C/ekiga.xml:485(para)
 msgid ""
@@ -1115,7 +1170,6 @@ msgstr ""
 "<placeholder-1/><placeholder-2/>"
 
 #: C/ekiga.xml:542(para)
-#, fuzzy
 msgid ""
 "Ekiga.net is a free SIP services platform provided to <application>Ekiga</"
 "application> users. If you want to call other users and to be callable, you "
@@ -1139,10 +1193,9 @@ msgid "Adding an Ekiga Call Out account"
 msgstr "Додавання рахунку Ekiga Call Out"
 
 #: C/ekiga.xml:556(para)
-#, fuzzy
 msgid "<emphasis>Account ID:</emphasis> You can enter your account ID."
 msgstr ""
-"<emphasis>Обліковий запис:</emphasis> Ми можете ввести назву облікового "
+"<emphasis>Ідентифікатор:</emphasis> Ми можете ввести назву облікового "
 "рахунку."
 
 #: C/ekiga.xml:557(para)
@@ -1150,13 +1203,12 @@ msgid "<emphasis>PIN Code:</emphasis> You can enter your PIN code."
 msgstr "<emphasis>PIN-код:</emphasis> ви можете ввсети ваш PIN-код."
 
 #: C/ekiga.xml:553(para)
-#, fuzzy
 msgid ""
 "To add an Ekiga Call Out account, simply select Account -&gt; Add an Ekiga "
 "Call Out Account in the menu. A dialog will appear and allow you to enter "
 "several parameters: <placeholder-1/>"
 msgstr ""
-"Щоб додати обліковий рахунок SIP, просто натисніть на кнопку Додати. "
+"Щоб додати обліковий рахунок Ekiga Call Out, просто виберіть у меню Рахунок -&gt; Додати обліковий запис Ekiga _Call Out. "
 "Відкриється діалогове вікно у якому можна ввести декілька параметрів: "
 "<placeholder-1/><placeholder-2/>"
 
@@ -1169,6 +1221,10 @@ msgid ""
 "consult the balance history or the call history by selecting the appropriate "
 "menu item in the Account menu of the window when the account is highlighted."
 msgstr ""
+"Якщо у вас ще немає облікового рахунку Ekiga Call Out, ви можете отримати його "
+"скориставшись посиланням 'Отримати обліковий запис «Ekiga.net Call Out». Як "
+"вказано вище, цей сервіс дозволить робити дзвінки на звичайні телефони в усьому світі за цікавими тарифами. Одразу після додавання рахунку, слід внести на нього кошти, "
+"звіртеся з історією балансу або історією викликів обравши відповідний пункт меню у меню Рахунок."
 
 #: C/ekiga.xml:568(title)
 msgid "Adding a SIP account"
@@ -1403,6 +1459,9 @@ msgid ""
 "publish your own presence information and display the presence of contacts "
 "in your roster."
 msgstr ""
+"Щоб увімкнути цю функцію <application>Ekiga</application>, просто додайте "
+"контакт з його URI до локального списку адрес. Якщо сервер підтримує функцію публікації інформації про присутність, "
+"<application>Ekiga</application> автоматично публікує власну інформацію про присутність та показує присутність контактів з вашого локального списку."
 
 #: C/ekiga.xml:657(title)
 msgid "Managing Codecs"
