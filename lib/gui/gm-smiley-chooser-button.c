@@ -777,6 +777,7 @@ gm_smiley_chooser_button_new (void)
 
   self =
     (GmSmileyChooserButton*) g_object_new (GM_SMILEY_CHOOSER_BUTTON_TYPE, NULL);
+  gtk_button_set_use_underline (self, TRUE);
 
   /* if already possible (unlikely), initially set the toplevel reference */
   widget = gtk_widget_get_toplevel (GTK_WIDGET (self));
