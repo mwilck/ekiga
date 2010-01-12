@@ -314,7 +314,7 @@ LM::Heap::add_item ()
 
   request->title (_("Add a roster element"));
   request->instructions (_("Please fill in this form to add a new"
-			   "element to the remote roster"));
+			   " element to the remote roster"));
   request->text ("jid", _("Identifier:"), _("identifier@server"));
 
   questions (request);
