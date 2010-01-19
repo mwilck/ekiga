@@ -1,14 +1,14 @@
 # Norwegian Bokmål translation of gnomemeeting.
 # Copyright (C) 2001-2004 Free Software Foundation Inc.
 # This file is distributed under the same license as the gnomemeeting package.
-# Kjartan Maraas <kmaraas@gnome.org 2001-2009.
+# Kjartan Maraas <kmaraas@gnome.org 2001-2010.
 # Sigurd Gartmann <sigurd-translate@brogar.org, 2004, 2005
 msgid ""
 msgstr ""
 "Project-Id-Version: Ekiga 3.x\n"
-"Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2010-01-07 13:45+0100\n"
-"PO-Revision-Date: 2010-01-07 13:50+0100\n"
+"Report-Msgid-Bugs-To:\n"
+"POT-Creation-Date: 2010-01-19 12:41+0100\n"
+"PO-Revision-Date: 2010-01-19 12:56+0100\n"
 "Last-Translator: Kjartan Maraas <kmaraas@gnome.org\n"
 "Language-Team: Norwegian Bokmål <i18n-nb@lister.ping.uio.no\n"
 "MIME-Version: 1.0\n"
@@ -206,11 +206,11 @@ msgstr ""
 
 #: ../ekiga.schemas.in.in.h:36 ../src/gui/preferences.cpp:527
 msgid "If enabled, automatically answer incoming calls"
-msgstr ""
+msgstr "Svar på innkommende samtaler automatisk hvis aktivert"
 
 #: ../ekiga.schemas.in.in.h:37 ../src/gui/preferences.cpp:489
 msgid "If enabled, offline contacts will be shown in the roster"
-msgstr ""
+msgstr "Frakoblede kontakter vil vises i kontaktlisten hvis aktivert"
 
 #: ../ekiga.schemas.in.in.h:38
 msgid "If enabled, use echo cancelation"
@@ -700,7 +700,12 @@ msgid ""
 "connection during calls. H.245 Tunneling was introduced in H.323v2 and "
 "Netmeeting does not support it. Using both Fast Start and H.245 Tunneling "
 "can crash some versions of Netmeeting."
-msgstr "Dette aktiverer H.245-tunnelleringsmodus. For H.245-tunnellering blir H.245-meldinger pakket inn i H.225-kanalen (port 1720). Dette sparer en TCP-tilkobling under anrop. H.245-tunnellering ble introdusert i H.323v2 og Netmeeting støtter det ikke. Bruk av både hurtigstart og H.245-tunnellering kan krasje noen versjoner av Netmeeting."
+msgstr ""
+"Dette aktiverer H.245-tunnelleringsmodus. For H.245-tunnellering blir H.245-"
+"meldinger pakket inn i H.225-kanalen (port 1720). Dette sparer en TCP-"
+"tilkobling under anrop. H.245-tunnellering ble introdusert i H.323v2 og "
+"Netmeeting støtter det ikke. Bruk av både hurtigstart og H.245-tunnellering "
+"kan krasje noen versjoner av Netmeeting."
 
 #: ../ekiga.schemas.in.in.h:138 ../src/gui/preferences.cpp:700
 msgid "This enables H.245 early in the setup"
@@ -1874,7 +1879,7 @@ msgstr "Autorisasjon for å se din tilstedeværelse"
 #: ../plugins/loudmouth/loudmouth-heap.cpp:214
 #, c-format
 msgid "%s asks the permission to see your presence, saying: \"%s\"."
-msgstr ""
+msgstr "%s spør om lov til å se din tilstedestatus, og sier: «%s»."
 
 #: ../plugins/loudmouth/loudmouth-heap.cpp:218
 #, c-format
@@ -1887,7 +1892,7 @@ msgstr "gi ham/henne tillatelse til å se din tilstedeinformasjon"
 
 #: ../plugins/loudmouth/loudmouth-heap.cpp:226
 msgid "refuse him/her the permission to see your presence"
-msgstr ""
+msgstr "nekt vedkommende tilgang til å se din tilstedestatus"
 
 #: ../plugins/loudmouth/loudmouth-heap.cpp:227
 msgid "decide later (also close or cancel this dialog)"
@@ -1902,10 +1907,8 @@ msgid "Add a roster element"
 msgstr "Legg til element i kontaktlisten"
 
 #: ../plugins/loudmouth/loudmouth-heap.cpp:316
-msgid "Please fill in this form to add a newelement to the remote roster"
-msgstr ""
-"Vennligst fyll ut dette skjemaet for å legge til en ny kontakt i ekiga's "
-"eksterne kontaktliste"
+msgid "Please fill in this form to add a new element to the remote roster"
+msgstr "Vennligst fyll ut dette skjemaet for å legge til en ny kontakt til ekstern kontaktliste"
 
 #: ../plugins/loudmouth/loudmouth-heap.cpp:318
 msgid "Identifier:"
@@ -1918,21 +1921,21 @@ msgstr "identifikator@tjener"
 #: ../plugins/loudmouth/loudmouth-presentity.cpp:156
 #: ../plugins/loudmouth/loudmouth-presentity.cpp:162
 msgid "Ask him/her to see his/her status"
-msgstr ""
+msgstr "Spør om å få se vedkommendes status"
 
 #: ../plugins/loudmouth/loudmouth-presentity.cpp:160
 #: ../plugins/loudmouth/loudmouth-presentity.cpp:172
 msgid "Forbid him/her to see my status"
-msgstr ""
+msgstr "Forby vedkommende å se min status"
 
 #: ../plugins/loudmouth/loudmouth-presentity.cpp:164
 msgid "Ask him/her to see his/her status (pending)"
-msgstr ""
+msgstr "Spør om å få se vedkommendes status (utestående)"
 
 #: ../plugins/loudmouth/loudmouth-presentity.cpp:168
 #: ../plugins/loudmouth/loudmouth-presentity.cpp:173
 msgid "Stop getting his/her status"
-msgstr ""
+msgstr "Stopp henting av vedkommendes status"
 
 #: ../plugins/loudmouth/loudmouth-presentity.cpp:178
 msgid "Start chat"
@@ -1945,7 +1948,9 @@ msgstr "Fortsett prat"
 #: ../plugins/loudmouth/loudmouth-presentity.cpp:270
 msgid ""
 "Please fill in this form to change an existing element of the remote roster"
-msgstr "Vennligst fyll ut dette skjemaet for å endre et eksisterende element i ekiga's eksterne kontaktliste"
+msgstr ""
+"Vennligst fyll ut dette skjemaet for å endre et eksisterende element i "
+"ekiga's eksterne kontaktliste"
 
 #: ../plugins/resource-list/rl-cluster.cpp:102
 msgid "New resource list"
@@ -2505,13 +2510,13 @@ msgstr "Bilde blir ikke vist på din maskin i denne samtalen"
 msgid ""
 "There was an error opening or initializing the video output. Please verify "
 "that no other application is using the accelerated video output."
-msgstr ""
+msgstr "Det oppsto en feil under åpning eller initiering av videoutgang. Vennligst sjekk at ingen andre programmer bruker aksellerert videoutgang."
 
 #: ../src/gui/main_window.cpp:994
 msgid ""
 "There was an error opening or initializing the video output. Please verify "
 "that you are using a color depth of 24 or 32 bits per pixel."
-msgstr ""
+msgstr "Det oppsto en feil under åpning eller initiering av videoutgang. Vennligst sjekk at du bruker fargedybde på 24 eller 32 biter per piksel."
 
 #. Translators: This is a hotplug status
 #: ../src/gui/main_window.cpp:1107
