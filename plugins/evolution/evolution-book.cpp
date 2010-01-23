@@ -92,35 +92,50 @@ class contacts_removed_helper
 {
 public:
 
-  contacts_removed_helper (const std::string id_): id(id_)
+  contacts_removed_helper (GList* ids_): ids(ids_)
   {}
+
+  ~contacts_removed_helper ()
+  {
+    for (std::list<Evolution::ContactPtr>::iterator iter = dead_contacts.begin ();
+	 iter != dead_contacts.end ();
+	 ++iter) {
+
+      (*iter)->removed ();
+    }
+  }
 
   bool test (Ekiga::ContactPtr contact_)
   {
     Evolution::ContactPtr contact = boost::dynamic_pointer_cast<Evolution::Contact> (contact_);
-    bool result;
+    bool result = true;
 
-    if (contact && contact->get_id () == id) {
+    if (contact) {
 
-      contact->removed ();
-      result = false;
+      for (GList* ptr = ids; ptr != NULL; ptr = g_list_next (ptr)) {
+
+	if (contact->get_id () == std::string ((gchar*)ptr->data)) {
+
+	  dead_contacts.push_front (contact);
+	  result = false;
+	}
+      }
     }
 
     return result;
   }
 
 private:
-  const std::string id;
+  GList* ids;
+  std::list<Evolution::ContactPtr> dead_contacts;
 };
 
 void
 Evolution::Book::on_view_contacts_removed (GList *ids)
 {
-  for (; ids != NULL; ids = g_list_next (ids)) {
+  contacts_removed_helper helper (ids);
 
-    contacts_removed_helper helper((gchar*)ids->data);
-    visit_contacts (boost::bind (&contacts_removed_helper::test, helper, _1));
-  }
+  visit_contacts (boost::bind (&contacts_removed_helper::test, helper, _1));
 }
 
 static void
