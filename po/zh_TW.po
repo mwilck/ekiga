@@ -9,8 +9,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: ekiga 3.3.1\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2010-01-01 14:51+0800\n"
-"PO-Revision-Date: 2009-12-30 20:01+0800\n"
+"POT-Creation-Date: 2010-02-04 20:43+0800\n"
+"PO-Revision-Date: 2010-02-04 13:33+0800\n"
 "Last-Translator: Chao-Hsiung Liao <j_h_liau@yahoo.com.tw>\n"
 "Language-Team: Chinese (Taiwan) <zh-l10n@lists.linux.org.tw>\n"
 "MIME-Version: 1.0\n"
@@ -29,10 +29,8 @@ msgid "IP Telephony, VoIP and Video Conferencing"
 msgstr "IP 電話及 VoIP 及視訊會議"
 
 #: ../ekiga.desktop.in.in.h:3
-#, fuzzy
-#| msgid "Talk to people over the Internet"
 msgid "Talk to and see people over the Internet"
-msgstr "透過網路跟別人談話"
+msgstr "透過網路跟別人談話或見面"
 
 #: ../ekiga.schemas.in.in.h:1
 msgid "0: 56Kbps, 1: ISDN, 2:DSL, 3: LAN, 4: Custom"
@@ -68,10 +66,8 @@ msgid "Audio output device"
 msgstr "音訊輸出裝置"
 
 #: ../ekiga.schemas.in.in.h:8
-#, fuzzy
-#| msgid "Authentication User:"
 msgid "Automatic answer"
-msgstr "自動下載"
+msgstr "自動接聽"
 
 #: ../ekiga.schemas.in.in.h:9 ../src/gui/preferences.cpp:526
 msgid ""
@@ -127,10 +123,8 @@ msgid "Enable H.245 tunneling"
 msgstr "啟用 H.245 穿隧技術"
 
 #: ../ekiga.schemas.in.in.h:20
-#, fuzzy
-#| msgid "Disable STUN network detection"
 msgid "Enable STUN network detection"
-msgstr "停用 STUN 網路偵測"
+msgstr "啟用 STUN 網路偵測"
 
 #: ../ekiga.schemas.in.in.h:21
 msgid "Enable early H.245"
@@ -145,10 +139,8 @@ msgid "Enable silence detection"
 msgstr "啟用靜音探測"
 
 #: ../ekiga.schemas.in.in.h:24 ../src/gui/preferences.cpp:502
-#, fuzzy
-#| msgid "Disable the automatic network setup resulting from the STUN test"
 msgid "Enable the automatic network setup resulting from the STUN test"
-msgstr "停用 STUN 測試的自動網路設定結果"
+msgstr "啟用 STUN 測試的自動網路設定結果"
 
 #: ../ekiga.schemas.in.in.h:25
 msgid ""
@@ -209,10 +201,8 @@ msgid ""
 msgstr "如啟用，所有您沒有接聽的電話都會轉駁到下面所指定的主機。"
 
 #: ../ekiga.schemas.in.in.h:36 ../src/gui/preferences.cpp:527
-#, fuzzy
-#| msgid "If enabled, allows video during calls"
 msgid "If enabled, automatically answer incoming calls"
-msgstr "如啟用此項，允許通話時接收視訊"
+msgstr "如啟用此項，將會自動接聽來電"
 
 #: ../ekiga.schemas.in.in.h:37 ../src/gui/preferences.cpp:489
 msgid "If enabled, offline contacts will be shown in the roster"
@@ -764,13 +754,12 @@ msgid "Missed"
 msgstr "未接"
 
 #: ../lib/engine/components/gnome-session/gnome-session-main.cpp:157
-#, fuzzy
 msgid "Call in progress"
-msgstr "操作程序進行中"
+msgstr "通話中"
 
 #: ../lib/engine/components/local-roster/local-cluster.cpp:82
 #: ../lib/engine/components/local-roster/local-heap.cpp:117
-#: ../plugins/evolution/evolution-book.cpp:324
+#: ../plugins/evolution/evolution-book.cpp:339
 msgid "New contact"
 msgstr "新增連絡人"
 
@@ -835,10 +824,8 @@ msgid "Address:"
 msgstr "地址:"
 
 #: ../lib/engine/components/local-roster/local-presentity.cpp:247
-#, fuzzy
-#| msgid "Add a remote contact"
 msgid "Is a prefered contact"
-msgstr "是新連絡人"
+msgstr "是偏好的連絡人"
 
 #: ../lib/engine/components/local-roster/local-presentity.cpp:249
 #: ../plugins/loudmouth/loudmouth-presentity.cpp:274
@@ -866,10 +853,8 @@ msgstr "會議室"
 
 # src/ldap_window.cpp:476
 #: ../lib/engine/components/local-roster/local-heap.cpp:96
-#, fuzzy
-#| msgid "Call _Attributes"
 msgid "Call back test"
-msgstr "初始化自我測試(_I)"
+msgstr "回電測試"
 
 #: ../lib/engine/components/local-roster/local-heap.cpp:110
 msgid "Local roster"
@@ -980,10 +965,10 @@ msgstr "失敗"
 #. * "registered (with 2 voicemail messages)"
 #.
 #: ../lib/engine/components/opal/opal-account.cpp:209
-#, fuzzy, c-format
+#, c-format
 msgid "%s (with %d voicemail message)"
 msgid_plural "%s (with %d voicemail messages)"
-msgstr[0] "簽署信息的金鑰(_S):"
+msgstr[0] "%s（有 %d 封語音郵件）"
 
 #: ../lib/engine/components/opal/opal-account.cpp:342
 #: ../plugins/loudmouth/loudmouth-account.cpp:352
@@ -1016,7 +1001,7 @@ msgid "Edit account"
 msgstr "編輯帳號"
 
 #: ../lib/engine/components/opal/opal-account.cpp:393
-#: ../plugins/evolution/evolution-book.cpp:326
+#: ../plugins/evolution/evolution-book.cpp:341
 #: ../plugins/evolution/evolution-contact.cpp:312
 #: ../plugins/loudmouth/loudmouth-account.cpp:264
 msgid "Please update the following fields:"
@@ -1127,18 +1112,14 @@ msgstr "取得 Ekiga.net SIP 帳號"
 #: ../lib/engine/components/opal/opal-bank.cpp:103
 #: ../lib/engine/components/opal/opal-bank.cpp:123
 #: ../lib/engine/components/opal/opal-bank.cpp:133
-#, fuzzy
-#| msgid "User:"
 msgid "_User:"
 msgstr "使用者(_U):"
 
 #: ../lib/engine/components/opal/opal-bank.cpp:105
 #: ../lib/engine/components/opal/opal-bank.cpp:125
 #: ../lib/engine/components/opal/opal-bank.cpp:135
-#, fuzzy
-#| msgid "_Password"
 msgid "_Password:"
-msgstr "密碼"
+msgstr "密碼(_P):"
 
 #: ../lib/engine/components/opal/opal-bank.cpp:110
 #: ../src/gui/assistant.cpp:703
@@ -1146,33 +1127,25 @@ msgid "Get an Ekiga Call Out account"
 msgstr "取得 Ekiga Call Out 帳號"
 
 #: ../lib/engine/components/opal/opal-bank.cpp:114
-#, fuzzy
-#| msgid "Account ID:"
 msgid "_Account ID:"
-msgstr "帳號 ID:"
+msgstr "帳號 ID (_A):"
 
 #: ../lib/engine/components/opal/opal-bank.cpp:116
-#, fuzzy
-#| msgid "PIN Code:"
 msgid "_PIN Code:"
-msgstr "PIN 碼:"
+msgstr "_PIN 碼："
 
 #: ../lib/engine/components/opal/opal-bank.cpp:121
 #: ../lib/engine/components/opal/opal-bank.cpp:131
-#: ../plugins/evolution/evolution-book.cpp:328
+#: ../plugins/evolution/evolution-book.cpp:343
 msgid "_Name:"
 msgstr "名稱(_N):"
 
 #: ../lib/engine/components/opal/opal-bank.cpp:122
-#, fuzzy
-#| msgid "Gatekeeper:"
 msgid "_Gatekeeper:"
-msgstr "閘道管理員："
+msgstr "閘道管理員(_G):"
 
 #: ../lib/engine/components/opal/opal-bank.cpp:126
 #: ../lib/engine/components/opal/opal-bank.cpp:136
-#, fuzzy
-#| msgid "Timeout:"
 msgid "_Timeout:"
 msgstr "時限(_T):"
 
@@ -1180,13 +1153,11 @@ msgstr "時限(_T):"
 #, fuzzy
 #| msgid "Registrar:"
 msgid "_Registrar:"
-msgstr "註冊服務商："
+msgstr "註冊服務商(_R):"
 
 #: ../lib/engine/components/opal/opal-bank.cpp:134
-#, fuzzy
-#| msgid "Authentication User:"
 msgid "_Authentication User:"
-msgstr "驗證使用者:"
+msgstr "驗證使用者(_A):"
 
 #: ../lib/engine/components/opal/opal-call.cpp:406
 msgid "Local user cleared the call"
@@ -1583,32 +1554,32 @@ msgid "%d user found"
 msgid_plural "%d users found"
 msgstr[0] "已找到 %d 個使用者"
 
-#: ../plugins/evolution/evolution-book.cpp:282
+#: ../plugins/evolution/evolution-book.cpp:297
 #: ../plugins/loudmouth/loudmouth-heap.cpp:138
 msgid "New _Contact"
 msgstr "新增連絡人(_C)"
 
-#: ../plugins/evolution/evolution-book.cpp:329
+#: ../plugins/evolution/evolution-book.cpp:344
 #: ../plugins/evolution/evolution-contact.cpp:323
 msgid "VoIP _URI:"
 msgstr "VoIP _URI:"
 
-#: ../plugins/evolution/evolution-book.cpp:330
+#: ../plugins/evolution/evolution-book.cpp:345
 #: ../plugins/evolution/evolution-contact.cpp:324
 msgid "_Home phone:"
 msgstr "住家電話(_H):"
 
-#: ../plugins/evolution/evolution-book.cpp:331
+#: ../plugins/evolution/evolution-book.cpp:346
 #: ../plugins/evolution/evolution-contact.cpp:325
 msgid "_Office phone:"
 msgstr "公司電話(_O):"
 
-#: ../plugins/evolution/evolution-book.cpp:332
+#: ../plugins/evolution/evolution-book.cpp:347
 #: ../plugins/evolution/evolution-contact.cpp:326
 msgid "_Cell phone:"
 msgstr "手機(_C):"
 
-#: ../plugins/evolution/evolution-book.cpp:333
+#: ../plugins/evolution/evolution-book.cpp:348
 #: ../plugins/evolution/evolution-contact.cpp:327
 msgid "_Pager:"
 msgstr "呼叫器(_P):"
@@ -1831,43 +1802,34 @@ msgid "Ekiga.net Directory"
 msgstr "Ekiga.net 目錄"
 
 #: ../plugins/loudmouth/loudmouth-account.cpp:78
-#, fuzzy
 msgid "inactive"
 msgstr "暫停運作"
 
 #: ../plugins/loudmouth/loudmouth-account.cpp:150
-#, fuzzy, c-format
+#, c-format
 msgid "error connecting (%s)"
-msgstr "連線錯誤 :("
+msgstr "連線錯誤 (%s)"
 
 #: ../plugins/loudmouth/loudmouth-account.cpp:156
-#, fuzzy
-#| msgid "Connection Type"
 msgid "connecting"
 msgstr "連線中"
 
 #: ../plugins/loudmouth/loudmouth-account.cpp:200
-#, fuzzy
-#| msgid "Authentication User:"
 msgid "authenticating"
-msgstr "驗證使用者:"
+msgstr "正在驗證"
 
 #. FIXME: can't we report better?
 #: ../plugins/loudmouth/loudmouth-account.cpp:210
-#, fuzzy
 msgid "error connecting"
-msgstr "連線錯誤 :("
+msgstr "連線錯誤"
 
 #: ../plugins/loudmouth/loudmouth-account.cpp:222
-#, fuzzy
 msgid "disconnected"
-msgstr "「%s」已斷線"
+msgstr "已斷線"
 
 #: ../plugins/loudmouth/loudmouth-account.cpp:239
-#, fuzzy
-#| msgid "Connected with %s"
 msgid "connected"
-msgstr "與 %s 連線"
+msgstr "已連線"
 
 #. FIXME: can't we report something better?
 #: ../plugins/loudmouth/loudmouth-account.cpp:245
@@ -1875,33 +1837,24 @@ msgid "error authenticating loudmouth account"
 msgstr "驗證 loudmouth 帳號時發生錯誤"
 
 #: ../plugins/loudmouth/loudmouth-account.cpp:275
-#, fuzzy
-#| msgid "Server _URI"
 msgid "Server:"
-msgstr "<b>伺服器</b>"
+msgstr "伺服器："
 
 #: ../plugins/loudmouth/loudmouth-account.cpp:279
-#, fuzzy
 msgid "Resource:"
-msgstr "資源"
+msgstr "資源："
 
 #: ../plugins/loudmouth/loudmouth-account.cpp:297
-#, fuzzy
-#| msgid "Enable Account"
 msgid "Enable account"
 msgstr "啟用帳號"
 
 #: ../plugins/loudmouth/loudmouth-account.cpp:362 ../src/gui/accounts.cpp:689
-#, fuzzy
-#| msgid "_Edit"
 msgid "Edit"
 msgstr "編輯"
 
 #: ../plugins/loudmouth/loudmouth-bank.cpp:118
-#, fuzzy
-#| msgid "_Add a SIP Account"
 msgid "_Add a jabber/XMPP account"
-msgstr "加入 Ekig_a.net 帳號"
+msgstr "加入 j_abber/XMPP 帳號"
 
 #: ../plugins/loudmouth/loudmouth-heap.cpp:210
 msgid "Authorization to see your presence"
@@ -1930,36 +1883,24 @@ msgid "decide later (also close or cancel this dialog)"
 msgstr "稍後決定（同時關閉或取消這個對話盒）"
 
 #: ../plugins/loudmouth/loudmouth-heap.cpp:228
-#, fuzzy
-#| msgid "No answer timeout"
 msgid "Your answer is: "
-msgstr "您的新密碼為 %s"
+msgstr "您的回答是："
 
 #: ../plugins/loudmouth/loudmouth-heap.cpp:315
-#, fuzzy
-#| msgid "Edit roster element"
 msgid "Add a roster element"
-msgstr "編輯名單元件"
+msgstr "加入名單元素"
 
 #: ../plugins/loudmouth/loudmouth-heap.cpp:316
-#, fuzzy
-#| msgid ""
-#| "Please fill in this form to add a new contact list to ekiga's remote "
-#| "roster"
-msgid "Please fill in this form to add a newelement to the remote roster"
-msgstr "請填好這個表單以便加入新的連絡人到 ekiga 內部名單"
+msgid "Please fill in this form to add a new element to the remote roster"
+msgstr "請填好這個表單以便加入新的元素到遠端名單"
 
 #: ../plugins/loudmouth/loudmouth-heap.cpp:318
-#, fuzzy
-#| msgid "Identifier"
 msgid "Identifier:"
-msgstr "識別器:"
+msgstr "識別碼："
 
 #: ../plugins/loudmouth/loudmouth-heap.cpp:318
-#, fuzzy
-#| msgid "Identifier"
 msgid "identifier@server"
-msgstr "伺服器錯誤：%s"
+msgstr "識別碼@伺服器"
 
 #: ../plugins/loudmouth/loudmouth-presentity.cpp:156
 #: ../plugins/loudmouth/loudmouth-presentity.cpp:162
@@ -1981,24 +1922,17 @@ msgid "Stop getting his/her status"
 msgstr "停止取得他/她的狀態"
 
 #: ../plugins/loudmouth/loudmouth-presentity.cpp:178
-#, fuzzy
-#| msgid "Start hidden"
 msgid "Start chat"
-msgstr "聊天失敗：%s"
+msgstr "開始聊天"
 
 #: ../plugins/loudmouth/loudmouth-presentity.cpp:181
-#, fuzzy
 msgid "Continue chat"
-msgstr "聊天失敗：%s"
+msgstr "繼續聊天"
 
 #: ../plugins/loudmouth/loudmouth-presentity.cpp:270
-#, fuzzy
-#| msgid ""
-#| "Please fill in this form to change an existing element of ekiga's "
-#| "internal roster"
 msgid ""
 "Please fill in this form to change an existing element of the remote roster"
-msgstr "請填好這個表單以改變現有的 ekiga 內部名單"
+msgstr "請填好這個表單以改變遠端名單現有的元素"
 
 #: ../plugins/resource-list/rl-cluster.cpp:102
 msgid "New resource list"
@@ -2128,26 +2062,18 @@ msgid "_Help"
 msgstr "求助(_H)"
 
 #: ../src/gui/accounts.cpp:622
-#, fuzzy
-#| msgid "_Action"
 msgid "Active"
-msgstr "啟用(_A)"
+msgstr "使用"
 
 #: ../src/gui/accounts.cpp:683
-#, fuzzy
-#| msgid "_Enable"
 msgid "Enable"
-msgstr "啟用(_E)"
+msgstr "啟用"
 
 #: ../src/gui/accounts.cpp:686
-#, fuzzy
-#| msgid "_Disable"
 msgid "Disable"
-msgstr "停用(_D)"
+msgstr "停用"
 
 #: ../src/gui/accounts.cpp:692
-#, fuzzy
-#| msgid "_Remove"
 msgid "Remove"
 msgstr "移除"
 
@@ -2540,10 +2466,8 @@ msgid "Error while initializing video output"
 msgstr "初始化視訊輸出裝置時發生錯誤"
 
 #: ../src/gui/main_window.cpp:982
-#, fuzzy
-#| msgid "No video will be displayed during this call->"
 msgid "No video will be displayed on your machine during this call"
-msgstr "在這次通話中將不顯示視訊->"
+msgstr "在這次通話中將不顯示您電腦的視訊"
 
 #: ../src/gui/main_window.cpp:992
 msgid ""
@@ -2855,10 +2779,8 @@ msgid "Find contacts"
 msgstr "尋找連絡人"
 
 #: ../src/gui/main_window.cpp:3162
-#, fuzzy
-#| msgid "_Contact"
 msgid "Co_ntact"
-msgstr "設置(_N)"
+msgstr "連絡人(_N)"
 
 #: ../src/gui/main_window.cpp:3163
 msgid "Act on selected contact"
@@ -3125,10 +3047,8 @@ msgid "Network Settings"
 msgstr "網路設定"
 
 #: ../src/gui/preferences.cpp:502
-#, fuzzy
-#| msgid "Disable network _detection"
 msgid "Enable network _detection"
-msgstr "停用網路偵測(_D)"
+msgstr "啟用網路偵測(_D)"
 
 #: ../src/gui/preferences.cpp:513
 msgid "Call Forwarding"
@@ -3177,9 +3097,8 @@ msgid "Timeout to reject or forward unanswered incoming calls (in seconds):"
 msgstr "拒絕接聽或轉駁來電的時限（秒）："
 
 #: ../src/gui/preferences.cpp:527
-#, fuzzy
 msgid "_Automatically answer incoming calls"
-msgstr "來電時播放音效"
+msgstr "自動接聽來電(_A)"
 
 #: ../src/gui/preferences.cpp:558
 msgid "Ekiga Sound Events"
@@ -3454,7 +3373,7 @@ msgstr[0] "您有 %d 封訊息"
 #: ../src/gui/statusicon.cpp:418
 #, fuzzy
 msgid "The following accounts are inactive:"
-msgstr "已安裝下列附加元件"
+msgstr "下列帳號未使用："
 
 #: ../src/gui/statusmenu.cpp:87
 msgid "Online"
