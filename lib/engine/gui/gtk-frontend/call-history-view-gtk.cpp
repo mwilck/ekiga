@@ -172,10 +172,8 @@ on_clicked (GtkWidget *tree,
 	gtk_widget_show_all (builder.menu);
 	gtk_menu_popup (GTK_MENU (builder.menu), NULL, NULL,
 			NULL, NULL, event->button, event->time);
-	g_signal_connect (G_OBJECT (builder.menu), "hide",
-			  G_CALLBACK (g_object_unref),
-			  (gpointer) builder.menu);
-	g_object_ref_sink (G_OBJECT (builder.menu));
+	g_object_ref_sink (builder.menu);
+	g_object_unref (builder.menu);
       }
       if (event->type == GDK_2BUTTON_PRESS) {
 
