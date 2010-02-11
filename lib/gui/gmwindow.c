@@ -560,49 +560,47 @@ gm_window_show (GtkWidget* w)
 
   window_name = (char *) g_object_get_data (G_OBJECT (w), "window_name");
 
-  g_return_if_fail (window_name != NULL);
+  if (window_name) {
 
-  conf_key_position =
-    g_strdup_printf ("%s%s/position", USER_INTERFACE_KEY, window_name);
-  conf_key_size =
-    g_strdup_printf ("%s%s/size", USER_INTERFACE_KEY, window_name);
+    conf_key_position = g_strdup_printf ("%s%s/position", USER_INTERFACE_KEY, window_name);
+    conf_key_size = g_strdup_printf ("%s%s/size", USER_INTERFACE_KEY, window_name);
 
-  if (!gm_window_is_visible (w)) {
+    if (!gm_window_is_visible (w)) {
 
-    position = gm_conf_get_string (conf_key_position);
-    if (position)
-      couple = g_strsplit (position, ",", 0);
-
-    if (couple && couple [0])
-      x = atoi (couple [0]);
-    if (couple && couple [1])
-      y = atoi (couple [1]);
-
-
-    if (x != 0 && y != 0)
-      gtk_window_move (GTK_WINDOW (w), x, y);
-
-    g_strfreev (couple);
-    couple = NULL;
-    g_free (position);
-
-
-    if (gtk_window_get_resizable (GTK_WINDOW (w))) {
-
-      size = gm_conf_get_string (conf_key_size);
-      if (size)
-	couple = g_strsplit (size, ",", 0);
+      position = gm_conf_get_string (conf_key_position);
+      if (position)
+	couple = g_strsplit (position, ",", 0);
 
       if (couple && couple [0])
 	x = atoi (couple [0]);
       if (couple && couple [1])
 	y = atoi (couple [1]);
 
-      if (x > 0 && y > 0)
-	gtk_window_resize (GTK_WINDOW (w), x, y);
+
+      if (x != 0 && y != 0)
+	gtk_window_move (GTK_WINDOW (w), x, y);
 
       g_strfreev (couple);
-      g_free (size);
+      couple = NULL;
+      g_free (position);
+
+      if (gtk_window_get_resizable (GTK_WINDOW (w))) {
+
+	size = gm_conf_get_string (conf_key_size);
+	if (size)
+	  couple = g_strsplit (size, ",", 0);
+
+	if (couple && couple [0])
+	  x = atoi (couple [0]);
+	if (couple && couple [1])
+	  y = atoi (couple [1]);
+
+	if (x > 0 && y > 0)
+	  gtk_window_resize (GTK_WINDOW (w), x, y);
+
+	g_strfreev (couple);
+	g_free (size);
+      }
     }
 
     gtk_window_present (GTK_WINDOW (w));
