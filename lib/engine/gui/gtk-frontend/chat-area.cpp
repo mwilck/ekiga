@@ -381,6 +381,8 @@ on_extlink_tag_event (GtkTextTag* tag,
 
       gtk_menu_popup (GTK_MENU (menu), NULL, NULL, NULL, NULL,
 		      event->button.button, event->button.time);
+      g_object_ref_sink (menu);
+      g_object_unref (menu);
       break;
     }
 
