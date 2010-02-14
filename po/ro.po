@@ -9,21 +9,20 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: Ekiga HEAD\n"
-"Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?"
-"product=ekiga&component=general\n"
+"Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?product=ekiga&component=general\n"
 "POT-Creation-Date: 2010-02-11 21:25+0000\n"
-"PO-Revision-Date: 2010-02-12 01:51+0300\n"
-"Last-Translator: Lucian Adrian Grijincu <lucian.grijincu@gmail.com>\n"
+"PO-Revision-Date: 2010-02-13 19:02+0200\n"
+"Last-Translator: Adi Roiban <adi@roiban.ro>\n"
 "Language-Team: Romanian GNOME Team <gnomero-list@lists.sourceforge.net>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Language: ro\n"
-"Plural-Forms: nplurals=3; plural=(n==1 ? 0 : (n==0 || (n%100 > 0 && n%100 < "
-"20)) ? 1 : 2);;\n"
+"Plural-Forms: nplurals=3; plural=(n==1 ? 0 : (n==0 || (n%100 > 0 && n%100 < 20)) ? 1 : 2);;\n"
 
 #. Application name
-#: ../ekiga.desktop.in.in.h:1 ../src/gui/main_window.cpp:4382
+#: ../ekiga.desktop.in.in.h:1
+#: ../src/gui/main_window.cpp:4382
 #: ../src/gui/main_window.cpp:4384
 msgid "Ekiga Softphone"
 msgstr "Telefon VoIP Ekiga"
@@ -41,15 +40,8 @@ msgid "0: 56Kbps, 1: ISDN, 2:DSL, 3: LAN, 4: Custom"
 msgstr "0: 56Kbps, 1: ISDN, 2:DSL, 3: LAN, 4: Personalizat"
 
 #: ../ekiga.schemas.in.in.h:2
-msgid ""
-"Allow Ekiga to fall back to software scaling the picture-in-picture if "
-"hardware support is not available. If this is set to false, Ekiga will not "
-"try to open the PIP if hardware support is not available."
-msgstr ""
-"Permite Ekiga să utilizeze scalare imagine-în-imagine în software dacă "
-"suportul hardware nu este disponibil. Dacă nu se permite, Ekiga nu va "
-"încerca să deschidă o imagine în altă imagine dacă suportul hardware nu este "
-"disponibil."
+msgid "Allow Ekiga to fall back to software scaling the picture-in-picture if hardware support is not available. If this is set to false, Ekiga will not try to open the PIP if hardware support is not available."
+msgstr "Permite Ekiga să utilizeze scalare imagine-în-imagine în software dacă suportul hardware nu este disponibil. Dacă nu se permite, Ekiga nu va încerca să deschidă o imagine în altă imagine dacă suportul hardware nu este disponibil."
 
 #: ../ekiga.schemas.in.in.h:3
 msgid "Allow picture-in-picture software scaling"
@@ -75,13 +67,10 @@ msgstr "Dispozitiv audio de ieșire"
 msgid "Automatic answer"
 msgstr "Răspuns automat"
 
-#: ../ekiga.schemas.in.in.h:9 ../src/gui/preferences.cpp:526
-msgid ""
-"Automatically reject or forward incoming calls if no answer is given after "
-"the specified amount of time (in seconds)"
-msgstr ""
-"Respinge sau redirecționează automat apelul, dacă nu se răspunde după un "
-"interval specificat de timp (în secunde)"
+#: ../ekiga.schemas.in.in.h:9
+#: ../src/gui/preferences.cpp:526
+msgid "Automatically reject or forward incoming calls if no answer is given after the specified amount of time (in seconds)"
+msgstr "Respinge sau redirecționează automat apelul, dacă nu se răspunde după un interval specificat de timp (în secunde)"
 
 #: ../ekiga.schemas.in.in.h:10
 msgid "Calls history"
@@ -92,16 +81,8 @@ msgid "Change the main window panel section"
 msgstr "Schimbă secțiunea panoului principal de control"
 
 #: ../ekiga.schemas.in.in.h:12
-msgid ""
-"Connection will be established in Fast Start mode. Fast Start is a new way "
-"to start calls faster that was introduced in H.323v2. It is not supported by "
-"Netmeeting and using both Fast Start and H.245 Tunneling can crash some "
-"versions of Netmeeting"
-msgstr ""
-"Conexiunea va fi stabilită în modul de pornire rapidă (Fast Start). Metoda "
-"de pornire rapidă este o metodă nouă de a începe convorbirile mai repede, "
-"definită în H.323v2. Nu e compatibilă cu Netmeeting și folosirea simultană a "
-"tunelării H.245 poate bloca anumite versiuni Netmeeting"
+msgid "Connection will be established in Fast Start mode. Fast Start is a new way to start calls faster that was introduced in H.323v2. It is not supported by Netmeeting and using both Fast Start and H.245 Tunneling can crash some versions of Netmeeting"
+msgstr "Conexiunea va fi stabilită în modul de pornire rapidă (Fast Start). Metoda de pornire rapidă este o metodă nouă de a începe convorbirile mai repede, definită în H.323v2. Nu e compatibilă cu Netmeeting și folosirea simultană a tunelării H.245 poate bloca anumite versiuni Netmeeting"
 
 #: ../ekiga.schemas.in.in.h:13
 msgid "Contact long status"
@@ -119,7 +100,8 @@ msgstr "Trimitere DTMF"
 msgid "Disable video hardware acceleration"
 msgstr "Dezactivare a accelerării video hardware"
 
-#: ../ekiga.schemas.in.in.h:17 ../src/gui/main_window.cpp:3618
+#: ../ekiga.schemas.in.in.h:17
+#: ../src/gui/main_window.cpp:3618
 msgid "Display images from your camera device"
 msgstr "Afișează imagini de la cameră"
 
@@ -147,19 +129,17 @@ msgstr "Activare a anulării ecoului"
 msgid "Enable silence detection"
 msgstr "Activare a detectării intervalelor de liniște"
 
-#: ../ekiga.schemas.in.in.h:24 ../src/gui/preferences.cpp:502
+#: ../ekiga.schemas.in.in.h:24
+#: ../src/gui/preferences.cpp:502
 msgid "Enable the automatic network setup resulting from the STUN test"
 msgstr "Activează configurarea automată a rețelei prin test STUN"
 
 #: ../ekiga.schemas.in.in.h:25
-msgid ""
-"Enter the number of seconds after which Ekiga should try refreshing the NAT "
-"binding when STUN is being used"
-msgstr ""
-"Introduceți numărul de secunde după care Ekiga va împrospăta conexiunea NAT "
-"când se utilizează STUN"
+msgid "Enter the number of seconds after which Ekiga should try refreshing the NAT binding when STUN is being used"
+msgstr "Introduceți numărul de secunde după care Ekiga va împrospăta conexiunea NAT când se utilizează STUN"
 
-#: ../ekiga.schemas.in.in.h:26 ../src/gui/preferences.cpp:469
+#: ../ekiga.schemas.in.in.h:26
+#: ../src/gui/preferences.cpp:469
 msgid "Enter your full name"
 msgstr "Introduceți-vă numele complet"
 
@@ -169,14 +149,14 @@ msgstr "Redirecționează apelurile către calculatorul"
 
 #: ../ekiga.schemas.in.in.h:28
 msgid "Forward calls to the given host if busy"
-msgstr ""
-"Redirecționează apelurile către acest calculator dacă linia este ocupată"
+msgstr "Redirecționează apelurile către acest calculator dacă linia este ocupată"
 
 #: ../ekiga.schemas.in.in.h:29
 msgid "Forward calls to the given host if no answer"
 msgstr "Redirecționează apelurile la acest calculator dacă nu se răspunde"
 
-#: ../ekiga.schemas.in.in.h:30 ../src/gui/preferences.cpp:1022
+#: ../ekiga.schemas.in.in.h:30
+#: ../src/gui/preferences.cpp:1022
 msgid "Frame Rate"
 msgstr "Frecvență de cadre"
 
@@ -184,45 +164,30 @@ msgstr "Frecvență de cadre"
 msgid "Full name"
 msgstr "Nume complet"
 
-#: ../ekiga.schemas.in.in.h:32 ../src/gui/preferences.cpp:487
-msgid ""
-"If enabled, Ekiga will start hidden provided that the notification area is "
-"present in the GNOME panel"
-msgstr ""
-"La activare, dacă zona de notificare e prezentă în panoul GNOME, Ekiga va "
-"porni ascuns."
+#: ../ekiga.schemas.in.in.h:32
+#: ../src/gui/preferences.cpp:487
+msgid "If enabled, Ekiga will start hidden provided that the notification area is present in the GNOME panel"
+msgstr "La activare, dacă zona de notificare e prezentă în panoul GNOME, Ekiga va porni ascuns."
 
 #: ../ekiga.schemas.in.in.h:33
-msgid ""
-"If enabled, all incoming calls will be forwarded to the host that is "
-"specified in the field below"
-msgstr ""
-"La activare, toate apelurile primite vor fi redirecționate la calculatorul "
-"specificat în câmpul de mai jos."
+msgid "If enabled, all incoming calls will be forwarded to the host that is specified in the field below"
+msgstr "La activare, toate apelurile primite vor fi redirecționate la calculatorul specificat în câmpul de mai jos."
 
 #: ../ekiga.schemas.in.in.h:34
-msgid ""
-"If enabled, all incoming calls will be forwarded to the host that is "
-"specified in the field below if you already are in a call or if you are in "
-"Do Not Disturb mode"
-msgstr ""
-"La activare, dacă o convorbire e în curs de desfășurare sau modul „nu "
-"deranjați” este activ, toate apelurile primite vor fi redirecționate la "
-"calculatorul specificat în câmpul de mai jos"
+msgid "If enabled, all incoming calls will be forwarded to the host that is specified in the field below if you already are in a call or if you are in Do Not Disturb mode"
+msgstr "La activare, dacă o convorbire e în curs de desfășurare sau modul „nu deranjați” este activ, toate apelurile primite vor fi redirecționate la calculatorul specificat în câmpul de mai jos"
 
 #: ../ekiga.schemas.in.in.h:35
-msgid ""
-"If enabled, all incoming calls will be forwarded to the host that is "
-"specified in the field below if you do not answer the call"
-msgstr ""
-"La activare, dacă nu răspundeți la apeluri, toate apelurile primite vor fi "
-"redirecționate la calculatorul specificat în câmpul de mai jos"
+msgid "If enabled, all incoming calls will be forwarded to the host that is specified in the field below if you do not answer the call"
+msgstr "La activare, dacă nu răspundeți la apeluri, toate apelurile primite vor fi redirecționate la calculatorul specificat în câmpul de mai jos"
 
-#: ../ekiga.schemas.in.in.h:36 ../src/gui/preferences.cpp:527
+#: ../ekiga.schemas.in.in.h:36
+#: ../src/gui/preferences.cpp:527
 msgid "If enabled, automatically answer incoming calls"
 msgstr "La activare, apelurile vor fi răspunse automat"
 
-#: ../ekiga.schemas.in.in.h:37 ../src/gui/preferences.cpp:489
+#: ../ekiga.schemas.in.in.h:37
+#: ../src/gui/preferences.cpp:489
 msgid "If enabled, offline contacts will be shown in the roster"
 msgstr "La activare, apelurile primite vor fi afișate în agendă"
 
@@ -232,9 +197,7 @@ msgstr "La activare, anulează automat ecoul"
 
 #: ../ekiga.schemas.in.in.h:39
 msgid "If enabled, use silence detection with the codecs supporting it"
-msgstr ""
-"La activare, pentru codecurile ce suportă aceasta, se detectează intervalele "
-"de liniște"
+msgstr "La activare, pentru codecurile ce suportă aceasta, se detectează intervalele de liniște"
 
 #: ../ekiga.schemas.in.in.h:40
 msgid "Kind of network selected in the druid"
@@ -284,21 +247,23 @@ msgstr "Limită de timp pentru apel nepreluat"
 msgid "Outbound Proxy"
 msgstr "Proxy de ieșire"
 
-#: ../ekiga.schemas.in.in.h:52 ../src/gui/preferences.cpp:496
+#: ../ekiga.schemas.in.in.h:52
+#: ../src/gui/preferences.cpp:496
 msgid "Place windows displaying video above other windows during calls"
-msgstr ""
-"În timpul convorbirilor, plasează ferestrele ce conțin semnal video deasupra "
-"celorlalte ferestre."
+msgstr "În timpul convorbirilor, plasează ferestrele ce conțin semnal video deasupra celorlalte ferestre."
 
-#: ../ekiga.schemas.in.in.h:53 ../src/gui/preferences.cpp:372
+#: ../ekiga.schemas.in.in.h:53
+#: ../src/gui/preferences.cpp:372
 msgid "Play busy tone"
 msgstr "Redă ton de ocupat"
 
-#: ../ekiga.schemas.in.in.h:54 ../src/gui/preferences.cpp:362
+#: ../ekiga.schemas.in.in.h:54
+#: ../src/gui/preferences.cpp:362
 msgid "Play ring tone"
 msgstr "Redă ton de sonerie"
 
-#: ../ekiga.schemas.in.in.h:55 ../src/gui/preferences.cpp:352
+#: ../ekiga.schemas.in.in.h:55
+#: ../src/gui/preferences.cpp:352
 msgid "Play sound on incoming calls"
 msgstr "Redă un sunet la primire apeluri"
 
@@ -356,46 +321,38 @@ msgstr "Dimensiuni ale ferestrei cu video recepționat"
 
 #: ../ekiga.schemas.in.in.h:69
 msgid "Select an alternative audio output device to use for sound events."
-msgstr ""
-"Alegeți dispozitivul de ieșire audio alternativ folosit pentru notificările "
-"sonore."
+msgstr "Alegeți dispozitivul de ieșire audio alternativ folosit pentru notificările sonore."
 
-#: ../ekiga.schemas.in.in.h:70 ../src/gui/preferences.cpp:787
+#: ../ekiga.schemas.in.in.h:70
+#: ../src/gui/preferences.cpp:787
 msgid "Select the audio input device to use"
 msgstr "Alegeți dispozitivul de intrare audio"
 
-#: ../ekiga.schemas.in.in.h:71 ../src/gui/preferences.cpp:780
+#: ../ekiga.schemas.in.in.h:71
+#: ../src/gui/preferences.cpp:780
 msgid "Select the audio output device to use"
 msgstr "Alegeți dispozitivul de ieșire audio"
 
-#: ../ekiga.schemas.in.in.h:72 ../src/gui/preferences.cpp:940
-msgid ""
-"Select the format for video cameras (does not apply to most USB cameras)"
-msgstr ""
-"Alegeți formatul utilizat la camerele video (nu se aplică la majoritatea "
-"camerelor USB)"
+#: ../ekiga.schemas.in.in.h:72
+#: ../src/gui/preferences.cpp:940
+msgid "Select the format for video cameras (does not apply to most USB cameras)"
+msgstr "Alegeți formatul utilizat la camerele video (nu se aplică la majoritatea camerelor USB)"
 
 #: ../ekiga.schemas.in.in.h:73
-msgid ""
-"Select the transmitted video size: Small (QCIF 176x144) or Large (CIF "
-"352x288)"
-msgstr ""
-"Alegeți rezoluția semnalului video transmis: mică (QCIF 176x144) sau mare "
-"(CIF 352x288)"
+msgid "Select the transmitted video size: Small (QCIF 176x144) or Large (CIF 352x288)"
+msgstr "Alegeți rezoluția semnalului video transmis: mică (QCIF 176x144) sau mare (CIF 352x288)"
 
-#: ../ekiga.schemas.in.in.h:74 ../src/gui/preferences.cpp:932
-msgid ""
-"Select the video input device to use. If an error occurs when using this "
-"device a test picture will be transmitted."
-msgstr ""
-"Alegeți dispozitivul video de intrare. O imagine de test va fi transmisă "
-"dacă apare o eroare în timp ce folosiți acest dispozitiv"
+#: ../ekiga.schemas.in.in.h:74
+#: ../src/gui/preferences.cpp:932
+msgid "Select the video input device to use. If an error occurs when using this device a test picture will be transmitted."
+msgstr "Alegeți dispozitivul video de intrare. O imagine de test va fi transmisă dacă apare o eroare în timp ce folosiți acest dispozitiv"
 
 #: ../ekiga.schemas.in.in.h:75
 msgid "Show offline contacts"
 msgstr "Arată contactele deconectate"
 
-#: ../ekiga.schemas.in.in.h:76 ../src/gui/main_window.cpp:3247
+#: ../ekiga.schemas.in.in.h:76
+#: ../src/gui/main_window.cpp:3247
 msgid "Show the call panel"
 msgstr "Arată panoul de apel"
 
@@ -428,14 +385,8 @@ msgid "Specify the software scaling algorithm"
 msgstr "Specifică algoritmul de scalare software"
 
 #: ../ekiga.schemas.in.in.h:84
-msgid ""
-"Specify the software scaling algorithm: 0: nearest neighbor, 1: nearest "
-"neighbor with box filter, 2: bilinear filtering, 3: hyperbolic filtering. "
-"Does not apply on windows systems."
-msgstr ""
-"Specifică algoritmul de scalare software: 0 : vecinul cel mai apropiat, 1 : "
-"vecinul cel mai apropiat cu filtru box, 2 : filtru biliniar, 3 : filtru "
-"hiperbolic.  Nu funcționează în Windows."
+msgid "Specify the software scaling algorithm: 0: nearest neighbor, 1: nearest neighbor with box filter, 2: bilinear filtering, 3: hyperbolic filtering. Does not apply on windows systems."
+msgstr "Specifică algoritmul de scalare software: 0 : vecinul cel mai apropiat, 1 : vecinul cel mai apropiat cu filtru box, 2 : filtru biliniar, 3 : filtru hiperbolic.  Nu funcționează în Windows."
 
 #: ../ekiga.schemas.in.in.h:85
 msgid "Start hidden"
@@ -453,7 +404,8 @@ msgstr "Compromis temporal/spațial"
 msgid "The Audio Codecs List"
 msgstr "Lista codecuri audio"
 
-#: ../ekiga.schemas.in.in.h:89 ../src/gui/preferences.cpp:737
+#: ../ekiga.schemas.in.in.h:89
+#: ../src/gui/preferences.cpp:737
 msgid "The SIP Outbound Proxy to use for outgoing calls"
 msgstr "Proxy-ul de ieșire SIP de utilizat pentru apelurile trimise"
 
@@ -462,13 +414,8 @@ msgid "The STUN Server"
 msgstr "Serverul STUN "
 
 #: ../ekiga.schemas.in.in.h:91
-msgid ""
-"The STUN server to use for STUN Support. STUN is a technology that permits "
-"passage through some types of NAT gateway"
-msgstr ""
-"Serverul STUN ofera suport pentru STUN (Simple Traversal of UDP over NATs). "
-"STUN este o metodă care permite trecerea prin anumite tipuri de gateway-uri "
-"care folosesc translatarea adresei IP (NAT)"
+msgid "The STUN server to use for STUN Support. STUN is a technology that permits passage through some types of NAT gateway"
+msgstr "Serverul STUN ofera suport pentru STUN (Simple Traversal of UDP over NATs). STUN este o metodă care permite trecerea prin anumite tipuri de gateway-uri care folosesc translatarea adresei IP (NAT)"
 
 #: ../ekiga.schemas.in.in.h:92
 msgid "The Video Codecs List"
@@ -487,28 +434,20 @@ msgid "The busy tone sound"
 msgstr "Sunetul pentru ton ocupat"
 
 #: ../ekiga.schemas.in.in.h:96
-msgid ""
-"The chosen sound will be played at the end of calls or calling somebody who "
-"is busy, if enabled"
-msgstr ""
-"La activare, sunetul ales va fi utilizat la sfârșitul convorbirilor sau la "
-"apelul unei persoane ocupate"
+msgid "The chosen sound will be played at the end of calls or calling somebody who is busy, if enabled"
+msgstr "La activare, sunetul ales va fi utilizat la sfârșitul convorbirilor sau la apelul unei persoane ocupate"
 
 #: ../ekiga.schemas.in.in.h:97
 msgid "The chosen sound will be played on incoming calls, if enabled"
 msgstr "La activare, sunetul ales va fi utilizat la primirea apelurilor"
 
 #: ../ekiga.schemas.in.in.h:98
-msgid ""
-"The chosen sound will be played when a new instant message is received, if "
-"enabled"
+msgid "The chosen sound will be played when a new instant message is received, if enabled"
 msgstr "La activare, sunetul ales va fi utilizat când un mesaj nou este primit"
 
 #: ../ekiga.schemas.in.in.h:99
-msgid ""
-"The chosen sound will be played when a new voice mail is received, if enabled"
-msgstr ""
-"La activare, sunetul ales va fi utilizat când un nou mesaj vocal este primit"
+msgid "The chosen sound will be played when a new voice mail is received, if enabled"
+msgstr "La activare, sunetul ales va fi utilizat când un nou mesaj vocal este primit"
 
 #: ../ekiga.schemas.in.in.h:100
 msgid "The chosen sound will be played when calling somebody, if enabled"
@@ -519,12 +458,8 @@ msgid "The default video view"
 msgstr "Imagine video implicită"
 
 #: ../ekiga.schemas.in.in.h:102
-msgid ""
-"The default video view (0: Local, 1: Remote, 2: Both layered, 3: Both with "
-"local video in a separate window, 4: Both)"
-msgstr ""
-"Imagine video implicită (0: locală, 1: la distanță, 2: amândouă, una-în-"
-"alta , 3: amândouă cu cea locală in fereastră nouă, 4: amândouă)"
+msgid "The default video view (0: Local, 1: Remote, 2: Both layered, 3: Both with local video in a separate window, 4: Both)"
+msgstr "Imagine video implicită (0: locală, 1: la distanță, 2: amândouă, una-în-alta , 3: amândouă cu cea locală in fereastră nouă, 4: amândouă)"
 
 #: ../ekiga.schemas.in.in.h:103
 msgid "The dial tone sound"
@@ -534,12 +469,11 @@ msgstr "Sunet ton la apel"
 msgid "The history of the 100 last calls"
 msgstr "Istoricul ultimelor 100 apeluri făcute"
 
-#: ../ekiga.schemas.in.in.h:105 ../src/gui/preferences.cpp:686
+#: ../ekiga.schemas.in.in.h:105
+#: ../src/gui/preferences.cpp:686
 #: ../src/gui/preferences.cpp:740
 msgid "The host where calls should be forwarded if call forwarding is enabled"
-msgstr ""
-"Calculatorul la care trebuie redirectate apelurile dacă s-a ales "
-"redirecționarea apelurilor"
+msgstr "Calculatorul la care trebuie redirectate apelurile dacă s-a ales redirecționarea apelurilor"
 
 #: ../ekiga.schemas.in.in.h:106
 msgid "The incoming call sound"
@@ -554,41 +488,20 @@ msgid "The long status information"
 msgstr "Informație despre starea (in extenso)"
 
 #: ../ekiga.schemas.in.in.h:109
-msgid ""
-"The maximum RX video bitrate in kbit/s. This value will be signaled to the "
-"peer endpoint that can adjust (if it supports it) its TX bitrate if it is "
-"above the signaled value"
-msgstr ""
-"Rata de biți TX maximă în kb/s.  Valoarea va fi semnalată calculatorului de "
-"la distanță care poate ajusta (dacă suportă acest lucru) rata de biți a sa "
-"în cazul în care este mai mare decât această valoare"
+msgid "The maximum RX video bitrate in kbit/s. This value will be signaled to the peer endpoint that can adjust (if it supports it) its TX bitrate if it is above the signaled value"
+msgstr "Rata de biți TX maximă în kb/s.  Valoarea va fi semnalată calculatorului de la distanță care poate ajusta (dacă suportă acest lucru) rata de biți a sa în cazul în care este mai mare decât această valoare"
 
 #: ../ekiga.schemas.in.in.h:110
-msgid ""
-"The maximum TX video bitrate in kbit/s. The video quality and the number of "
-"transmitted frames per second (depends on selected codec) will be "
-"dynamically adjusted above their minimum during calls to try to minimize the "
-"bandwidth to the given value"
-msgstr ""
-"Rata de biți maximă in kb/s. În timpul convorbirilor, calitatea video și "
-"numărul maxim de cadre trimise pe secundă (depinde de codec) vor fi ajustate "
-"dinamic peste valoarea minimă pentru a reduce rate de biți la valoarea "
-"specificată"
+msgid "The maximum TX video bitrate in kbit/s. The video quality and the number of transmitted frames per second (depends on selected codec) will be dynamically adjusted above their minimum during calls to try to minimize the bandwidth to the given value"
+msgstr "Rata de biți maximă in kb/s. În timpul convorbirilor, calitatea video și numărul maxim de cadre trimise pe secundă (depinde de codec) vor fi ajustate dinamic peste valoarea minimă pentru a reduce rate de biți la valoarea specificată"
 
 #: ../ekiga.schemas.in.in.h:111
 msgid "The maximum jitter buffer size for audio reception (in ms)"
 msgstr "Mărime maximă a tamponului jitter pentru recepția audio (în ms)."
 
 #: ../ekiga.schemas.in.in.h:112
-msgid ""
-"The maximum transmitted frame rate in frames/s. This rate may not be reached "
-"in case a minimum quality was configure via a TSTO value smaller than 31 and "
-"the bitrate selected is not sufficient to support this minimum quality"
-msgstr ""
-"Rata maximă de cadre transmise în cadre/s.  Aceasta rată poate să nu fie "
-"atinsă în cazul în care calitatea minimă a fost configurată cu o valoare "
-"TSTP mai mică de 31, iar rata de biți selectată nu este suficientă pentru a "
-"suporta aceasta calitate minimă"
+msgid "The maximum transmitted frame rate in frames/s. This rate may not be reached in case a minimum quality was configure via a TSTO value smaller than 31 and the bitrate selected is not sufficient to support this minimum quality"
+msgstr "Rata maximă de cadre transmise în cadre/s.  Aceasta rată poate să nu fie atinsă în cazul în care calitatea minimă a fost configurată cu o valoare TSTP mai mică de 31, iar rata de biți selectată nu este suficientă pentru a suporta aceasta calitate minimă"
 
 #: ../ekiga.schemas.in.in.h:113
 msgid "The new instant message sound"
@@ -599,20 +512,12 @@ msgid "The new voice mail sound"
 msgstr "Sunet la primerea unui apel"
 
 #: ../ekiga.schemas.in.in.h:115
-msgid ""
-"The port to listen to for incoming connections. Ekiga needs to be restarted "
-"for the new value to take effect"
-msgstr ""
-"Port deschis pentru primirea de apeluri. Ekiga trebuie repornit pentru ca "
-"noua valoare să aibă efect"
+msgid "The port to listen to for incoming connections. Ekiga needs to be restarted for the new value to take effect"
+msgstr "Port deschis pentru primirea de apeluri. Ekiga trebuie repornit pentru ca noua valoare să aibă efect"
 
 #: ../ekiga.schemas.in.in.h:116
-msgid ""
-"The port to listen to for incoming connections. Ekiga needs to be restarted "
-"for the new value to take effect."
-msgstr ""
-"Port deschis pentru primirea de apeluri. Ekiga trebuie repornit pentru ca "
-"noua valoare să aibă efect"
+msgid "The port to listen to for incoming connections. Ekiga needs to be restarted for the new value to take effect."
+msgstr "Port deschis pentru primirea de apeluri. Ekiga trebuie repornit pentru ca noua valoare să aibă efect"
 
 #: ../ekiga.schemas.in.in.h:117
 msgid "The position of the local video window"
@@ -623,14 +528,8 @@ msgid "The position of the remote video window"
 msgstr "Poziție fereastră cu semnal video primit"
 
 #: ../ekiga.schemas.in.in.h:119
-msgid ""
-"The range of TCP ports that Ekiga will use for the H.323 H.245 channel. This "
-"port range has no effect if both participants to the conference are using "
-"H.245 Tunneling."
-msgstr ""
-"Plaja de valori a portului TCP pe care Ekiga îl va utiliza pentru canalul "
-"H.323 H.245.  Această plajă nu are niciun efect dacă ambii participanți la "
-"conferință utilizează tunelarea H.245."
+msgid "The range of TCP ports that Ekiga will use for the H.323 H.245 channel. This port range has no effect if both participants to the conference are using H.245 Tunneling."
+msgstr "Plaja de valori a portului TCP pe care Ekiga îl va utiliza pentru canalul H.323 H.245.  Această plajă nu are niciun efect dacă ambii participanți la conferință utilizează tunelarea H.245."
 
 #: ../ekiga.schemas.in.in.h:120
 msgid "The range of UDP ports that Ekiga will use."
@@ -649,12 +548,8 @@ msgid "The size of the remote video window"
 msgstr "Mărime fereastră la distanță cu semnal video"
 
 #: ../ekiga.schemas.in.in.h:124
-msgid ""
-"The sound that will be played at the end of calls or when calling somebody "
-"who is busy, if enabled"
-msgstr ""
-"La activare, sunetul care de redat la sfârșitul convorbirilor sau la "
-"apelarea unei persoane ocupate"
+msgid "The sound that will be played at the end of calls or when calling somebody who is busy, if enabled"
+msgstr "La activare, sunetul care de redat la sfârșitul convorbirilor sau la apelarea unei persoane ocupate"
 
 #: ../ekiga.schemas.in.in.h:125
 msgid "The sound that will be played on incoming calls, if enabled"
@@ -665,20 +560,17 @@ msgid "The sound that will be played when calling somebody, if enabled"
 msgstr "La activare, sunetul de redat la inițierea unui apel"
 
 #: ../ekiga.schemas.in.in.h:127
-msgid ""
-"The sound that will be played when there is a new instant message, if enabled"
+msgid "The sound that will be played when there is a new instant message, if enabled"
 msgstr "La activare, sunetul de redat la primirea unui mesaj"
 
 #: ../ekiga.schemas.in.in.h:128
-msgid ""
-"The sound that will be played when there is a new voice mail, if enabled"
+msgid "The sound that will be played when there is a new voice mail, if enabled"
 msgstr "La activare, sunetul de redat la apelurile primite"
 
-#: ../ekiga.schemas.in.in.h:129 ../src/gui/preferences.cpp:936
+#: ../ekiga.schemas.in.in.h:129
+#: ../src/gui/preferences.cpp:936
 msgid "The video channel number to use (to select camera, tv or other sources)"
-msgstr ""
-"Numărul canalului video ce va fi folosit (pentru a selecta o videocameră, "
-"televizor, sau alte surse)."
+msgstr "Numărul canalului video ce va fi folosit (pentru a selecta o videocameră, televizor, sau alte surse)."
 
 #: ../ekiga.schemas.in.in.h:130
 msgid "The video codecs list"
@@ -689,68 +581,38 @@ msgid "The video view before having switched to fullscreen"
 msgstr "Vederea video înainte de a schimba imaginea pe tot ecranul"
 
 #: ../ekiga.schemas.in.in.h:132
-msgid ""
-"The video view before having switched to fullscreen (same values as "
-"video_view)"
-msgstr ""
-"Vederea video înainte de a fi schimbat la afișare pe tot ecranul (aceleași "
-"valori ca la video_view)"
+msgid "The video view before having switched to fullscreen (same values as video_view)"
+msgstr "Vederea video înainte de a fi schimbat la afișare pe tot ecranul (aceleași valori ca la video_view)"
 
 #: ../ekiga.schemas.in.in.h:133
 msgid "The zoom value"
 msgstr "Valoare magnificare"
 
 #: ../ekiga.schemas.in.in.h:134
-msgid ""
-"The zoom value in percent to apply to images displayed in the main GUI (can "
-"be 50, 100, or 200)"
-msgstr ""
-"Valoarea magnificării în procente ce va fi aplicată imaginilor afișate în "
-"fereastra principală (poate fi 50, 100 sau 200)"
+msgid "The zoom value in percent to apply to images displayed in the main GUI (can be 50, 100, or 200)"
+msgstr "Valoarea magnificării în procente ce va fi aplicată imaginilor afișate în fereastra principală (poate fi 50, 100 sau 200)"
 
 #: ../ekiga.schemas.in.in.h:135
-msgid ""
-"This allows you to set the mode for sending DTMFs. The values can be "
-"\"RFC2833\" (0), \"INFO\" (1)"
-msgstr ""
-"Permite să configurați modul trimiterii DTMF.  Valorile pot fi "
-"„RFC2833” (0), „INFO” (1)"
+msgid "This allows you to set the mode for sending DTMFs. The values can be \"RFC2833\" (0), \"INFO\" (1)"
+msgstr "Permite să configurați modul trimiterii DTMF.  Valorile pot fi „RFC2833” (0), „INFO” (1)"
 
 #: ../ekiga.schemas.in.in.h:136
-msgid ""
-"This allows you to set the mode for sending DTMFs. The values can be \"String"
-"\" (0), \"Tone\" (1), \"RFC2833\" (2), \"Q.931\" (3) (default is \"String"
-"\"). Choosing other values than \"String\" disables the Text Chat"
-msgstr ""
-"Aceasta stabilește modul trimiterii de DTMF-uri. Valorile pot fi „șir” (0), "
-"„ton” (1), „rfc2833” (2), „Q.931” (3) (implicit este „șir”) Alte moduri "
-"decât „șir” vor face imposibile discuțiile text"
+msgid "This allows you to set the mode for sending DTMFs. The values can be \"String\" (0), \"Tone\" (1), \"RFC2833\" (2), \"Q.931\" (3) (default is \"String\"). Choosing other values than \"String\" disables the Text Chat"
+msgstr "Aceasta stabilește modul trimiterii de DTMF-uri. Valorile pot fi „șir” (0), „ton” (1), „rfc2833” (2), „Q.931” (3) (implicit este „șir”) Alte moduri decât „șir” vor face imposibile discuțiile text"
 
-#: ../ekiga.schemas.in.in.h:137 ../src/gui/preferences.cpp:698
-msgid ""
-"This enables H.245 Tunneling mode. In H.245 Tunneling mode H.245 messages "
-"are encapsulated into the H.225 channel (port 1720). This saves one TCP "
-"connection during calls. H.245 Tunneling was introduced in H.323v2 and "
-"Netmeeting does not support it. Using both Fast Start and H.245 Tunneling "
-"can crash some versions of Netmeeting."
-msgstr ""
-"Aceasta activează modul de tunelare H.245. În modul de tunelare H.245, "
-"mesajele H.245 sunt încapsulate în canalul H.225 (portul 1720). Aceasta "
-"salvează o conexiune TCP în timpul convorbirii. Tunelarea H.245 a fost "
-"introdusă în H.323v2 și Netmeeting nu îl recunoaște. Folosind Start-Rapid și "
-"tunelarea H.245 poate bloca anumite versiuni de Netmeeting."
+#: ../ekiga.schemas.in.in.h:137
+#: ../src/gui/preferences.cpp:698
+msgid "This enables H.245 Tunneling mode. In H.245 Tunneling mode H.245 messages are encapsulated into the H.225 channel (port 1720). This saves one TCP connection during calls. H.245 Tunneling was introduced in H.323v2 and Netmeeting does not support it. Using both Fast Start and H.245 Tunneling can crash some versions of Netmeeting."
+msgstr "Aceasta activează modul de tunelare H.245. În modul de tunelare H.245, mesajele H.245 sunt încapsulate în canalul H.225 (portul 1720). Aceasta salvează o conexiune TCP în timpul convorbirii. Tunelarea H.245 a fost introdusă în H.323v2 și Netmeeting nu îl recunoaște. Folosind Start-Rapid și tunelarea H.245 poate bloca anumite versiuni de Netmeeting."
 
-#: ../ekiga.schemas.in.in.h:138 ../src/gui/preferences.cpp:700
+#: ../ekiga.schemas.in.in.h:138
+#: ../src/gui/preferences.cpp:700
 msgid "This enables H.245 early in the setup"
 msgstr "Aceasta activează opțiunile „early H.245”"
 
 #: ../ekiga.schemas.in.in.h:139
-msgid ""
-"This key disables DirectX (on win32) and XVideo (on Linux) video hardware "
-"acceleration"
-msgstr ""
-"Dezactivează accelerația hardware video DirectX (în win32) și XVideo (în "
-"Linux)"
+msgid "This key disables DirectX (on win32) and XVideo (on Linux) video hardware acceleration"
+msgstr "Dezactivează accelerația hardware video DirectX (în win32) și XVideo (în Linux)"
 
 #: ../ekiga.schemas.in.in.h:140
 msgid "UDP port range"
@@ -764,7 +626,8 @@ msgstr "Canal video"
 msgid "Video format"
 msgstr "Format video"
 
-#: ../ekiga.schemas.in.in.h:143 ../src/gui/assistant.cpp:1143
+#: ../ekiga.schemas.in.in.h:143
+#: ../src/gui/assistant.cpp:1143
 msgid "Video input device"
 msgstr "Dispozitiv video de intrare"
 
@@ -777,15 +640,8 @@ msgid "Video size"
 msgstr "Mărime video"
 
 #: ../ekiga.schemas.in.in.h:146
-msgid ""
-"Whether to prefer to sustain the max. frame rate or lower it possibly in "
-"order to keep a minimum level of (spatial) quality for all frames. 0: "
-"Highest minimal quality, 31: lowest minimal quality"
-msgstr ""
-"Specifică dacă se preferă menținerea numărului maxim de cadre pe secundă sau "
-"micșorarea acestui număr pentru a menține un nivel minim de calitate "
-"(spațială) pentru toate cadrele. 0: cea mai înaltă calitate minimă, 31: cea "
-"mai joasă calitate minimă"
+msgid "Whether to prefer to sustain the max. frame rate or lower it possibly in order to keep a minimum level of (spatial) quality for all frames. 0: Highest minimal quality, 31: lowest minimal quality"
+msgstr "Specifică dacă se preferă menținerea numărului maxim de cadre pe secundă sau micșorarea acestui număr pentru a menține un nivel minim de calitate (spațială) pentru toate cadrele. 0: cea mai înaltă calitate minimă, 31: cea mai joasă calitate minimă"
 
 #: ../lib/engine/addressbook/contact-core.cpp:60
 msgid "_Find"
@@ -856,11 +712,8 @@ msgid "Edit roster element"
 msgstr "Modifică element din agendă"
 
 #: ../lib/engine/components/local-roster/local-presentity.cpp:243
-msgid ""
-"Please fill in this form to change an existing element of ekiga's internal "
-"roster"
-msgstr ""
-"Completați formularul pentru a modifica intrarea din agenda internă Ekiga"
+msgid "Please fill in this form to change an existing element of ekiga's internal roster"
+msgstr "Completați formularul pentru a modifica intrarea din agenda internă Ekiga"
 
 #: ../lib/engine/components/local-roster/local-presentity.cpp:245
 #: ../lib/engine/components/local-roster/local-heap.cpp:235
@@ -964,11 +817,8 @@ msgid "Self"
 msgstr "Însumi"
 
 #: ../lib/engine/components/local-roster/local-heap.cpp:233
-msgid ""
-"Please fill in this form to add a new contact to ekiga's internal roster"
-msgstr ""
-"Completați formularul pentru a adăuga un nou contact la agenda internă a "
-"Ekiga"
+msgid "Please fill in this form to add a new contact to ekiga's internal roster"
+msgstr "Completați formularul pentru a adăuga un nou contact la agenda internă a Ekiga"
 
 #: ../lib/engine/components/local-roster/local-heap.cpp:250
 msgid "Put contact in groups:"
@@ -1301,17 +1151,13 @@ msgstr "Convorbire încheiată"
 
 #: ../lib/engine/components/opal/opal-call-manager.cpp:770
 msgid ""
-"Ekiga did not manage to configure your network settings automatically. You "
-"can still use it, but you need to configure your network settings manually.\n"
+"Ekiga did not manage to configure your network settings automatically. You can still use it, but you need to configure your network settings manually.\n"
 "\n"
-"Please see http://wiki.ekiga.org/index.php/Enable_port_forwarding_manually "
-"for instructions"
+"Please see http://wiki.ekiga.org/index.php/Enable_port_forwarding_manually for instructions"
 msgstr ""
-"Ekiga nu a reușit să configureze automat opțiunile de rețea.  Puteți totuși "
-"utiliza Ekiga, însă trebuie să configurați opțiunile de rețea manual.\n"
+"Ekiga nu a reușit să configureze automat opțiunile de rețea.  Puteți totuși utiliza Ekiga, însă trebuie să configurați opțiunile de rețea manual.\n"
 "\n"
-"Mergeți la http://wiki.ekiga.org/index.php/Enable_port_forwarding_manually "
-"pentru informații"
+"Mergeți la http://wiki.ekiga.org/index.php/Enable_port_forwarding_manually pentru informații"
 
 #: ../lib/engine/components/opal/sip-endpoint.cpp:255
 #: ../lib/engine/components/opal/sip-endpoint.cpp:257
@@ -1332,8 +1178,7 @@ msgstr "Neautorizat"
 
 #: ../lib/engine/components/opal/sip-endpoint.cpp:645
 msgid "Forbidden, please check that username and password are correct"
-msgstr ""
-"Acces interzis, verificați dacă numele de utilizator și parola sunt corecte"
+msgstr "Acces interzis, verificați dacă numele de utilizator și parola sunt corecte"
 
 #: ../lib/engine/components/opal/sip-endpoint.cpp:649
 msgid "Timeout"
@@ -1721,7 +1566,8 @@ msgstr "Se actualizează"
 msgid "Could not initialize server"
 msgstr "Serverul nu poate fi inițializat"
 
-#: ../plugins/ldap/ldap-book.cpp:687 ../plugins/ldap/ldap-book.cpp:732
+#: ../plugins/ldap/ldap-book.cpp:687
+#: ../plugins/ldap/ldap-book.cpp:732
 msgid "LDAP Error: "
 msgstr "Eroare LDAP:"
 
@@ -1735,7 +1581,8 @@ msgid "Could not connect to server"
 msgstr "Nu se poate stabili o conexiune la server"
 
 #. patience == 0
-#: ../plugins/ldap/ldap-book.cpp:828 ../plugins/ldap/ldap-book.cpp:877
+#: ../plugins/ldap/ldap-book.cpp:828
+#: ../plugins/ldap/ldap-book.cpp:877
 msgid "Could not search"
 msgstr "Nu s-a putut căuta"
 
@@ -1785,7 +1632,8 @@ msgstr "Atributul _DisplayName"
 msgid "Call _Attributes"
 msgstr "_Atribute apel"
 
-#: ../plugins/ldap/ldap-book.cpp:956 ../plugins/ldap/ldap-book.cpp:958
+#: ../plugins/ldap/ldap-book.cpp:956
+#: ../plugins/ldap/ldap-book.cpp:958
 msgid "_Filter Template"
 msgstr "Șablon _filtru"
 
@@ -1865,7 +1713,7 @@ msgstr "inactiv"
 #: ../plugins/loudmouth/loudmouth-account.cpp:150
 #, c-format
 msgid "error connecting (%s)"
-msgstr "eroare la conecate (%s)"
+msgstr "eroare la conectare (%s)"
 
 #: ../plugins/loudmouth/loudmouth-account.cpp:156
 msgid "connecting"
@@ -1878,7 +1726,7 @@ msgstr "se autentifică"
 #. FIXME: can't we report better?
 #: ../plugins/loudmouth/loudmouth-account.cpp:210
 msgid "error connecting"
-msgstr "eroare la conecate"
+msgstr "eroare la conectare"
 
 #: ../plugins/loudmouth/loudmouth-account.cpp:222
 msgid "disconnected"
@@ -1905,7 +1753,8 @@ msgstr "Resursă:"
 msgid "Enable account"
 msgstr "Activează contul"
 
-#: ../plugins/loudmouth/loudmouth-account.cpp:362 ../src/gui/accounts.cpp:689
+#: ../plugins/loudmouth/loudmouth-account.cpp:362
+#: ../src/gui/accounts.cpp:689
 msgid "Edit"
 msgstr "Modifică"
 
@@ -1945,13 +1794,11 @@ msgstr "Răspunsul dumneavoastră este:"
 
 #: ../plugins/loudmouth/loudmouth-heap.cpp:315
 msgid "Add a roster element"
-msgstr "Adaugă un elemen în registru"
+msgstr "Adaugă un element în registru"
 
 #: ../plugins/loudmouth/loudmouth-heap.cpp:316
 msgid "Please fill in this form to add a new element to the remote roster"
-msgstr ""
-"Completați formularul pentru a adăuga un nou contact în registrul aflat la "
-"distanță"
+msgstr "Completați formularul pentru a adăuga un nou contact în registrul aflat la distanță"
 
 #: ../plugins/loudmouth/loudmouth-heap.cpp:318
 msgid "Identifier:"
@@ -1973,8 +1820,7 @@ msgstr "Interzice-i să-mi vadă statusul"
 
 #: ../plugins/loudmouth/loudmouth-presentity.cpp:164
 msgid "Ask him/her to see his/her status (pending)"
-msgstr ""
-"Cere-i permisiunea pentru a-i vizualiza statusul (se așteaptă răspunsul)"
+msgstr "Cere-i permisiunea pentru a-i vizualiza statusul (se așteaptă răspunsul)"
 
 #: ../plugins/loudmouth/loudmouth-presentity.cpp:168
 #: ../plugins/loudmouth/loudmouth-presentity.cpp:173
@@ -1990,11 +1836,8 @@ msgid "Continue chat"
 msgstr "Continuă o discuție"
 
 #: ../plugins/loudmouth/loudmouth-presentity.cpp:270
-msgid ""
-"Please fill in this form to change an existing element of the remote roster"
-msgstr ""
-"Completați formularul pentru a modifica intrarea din registrul aflat la "
-"distanță"
+msgid "Please fill in this form to change an existing element of the remote roster"
+msgstr "Completați formularul pentru a modifica intrarea din registrul aflat la distanță"
 
 #: ../plugins/resource-list/rl-cluster.cpp:102
 msgid "New resource list"
@@ -2005,11 +1848,8 @@ msgid "Add new resource-list"
 msgstr "Adaugă o nouă listă de resurse"
 
 #: ../plugins/resource-list/rl-cluster.cpp:167
-msgid ""
-"Please fill in this form to add a new contact list to ekiga's remote roster"
-msgstr ""
-"Completați formularul pentru a adăuga un nou contact la agenda de la "
-"distanță Ekiga"
+msgid "Please fill in this form to add a new contact list to ekiga's remote roster"
+msgstr "Completați formularul pentru a adăuga un nou contact la agenda de la distanță Ekiga"
 
 #: ../plugins/resource-list/rl-cluster.cpp:171
 msgid "Writable:"
@@ -2082,8 +1922,7 @@ msgstr "Adaugă un contact la distanță"
 
 #: ../plugins/resource-list/rl-heap.cpp:513
 msgid "Please fill in this form to create a new contact on a remote server"
-msgstr ""
-"Completați formularul pentru a crea un nou contact pe serverul de la distanță"
+msgstr "Completați formularul pentru a crea un nou contact pe serverul de la distanță"
 
 #: ../plugins/resource-list/rl-list.cpp:182
 #, c-format
@@ -2100,11 +1939,8 @@ msgid "Edit remote contact"
 msgstr "Modifică contact la distanță"
 
 #: ../plugins/resource-list/rl-presentity.cpp:225
-msgid ""
-"Please fill in this form to change an existing contact on a remote server"
-msgstr ""
-"Completați formularul pentru a schimba un contact existent pe serverul de la "
-"distanță"
+msgid "Please fill in this form to change an existing contact on a remote server"
+msgstr "Completați formularul pentru a schimba un contact existent pe serverul de la distanță"
 
 #: ../src/gui/accounts.cpp:566
 msgid "Account Name"
@@ -2114,15 +1950,18 @@ msgstr "Nume cont"
 msgid "Status"
 msgstr "Bară de stare"
 
-#: ../src/gui/accounts.cpp:577 ../src/gui/accounts.cpp:619
+#: ../src/gui/accounts.cpp:577
+#: ../src/gui/accounts.cpp:619
 msgid "Accounts"
 msgstr "Conturi"
 
-#: ../src/gui/accounts.cpp:591 ../src/gui/main_window.cpp:3215
+#: ../src/gui/accounts.cpp:591
+#: ../src/gui/main_window.cpp:3215
 msgid "_Accounts"
 msgstr "_Conturi"
 
-#: ../src/gui/accounts.cpp:595 ../src/gui/main_window.cpp:3298
+#: ../src/gui/accounts.cpp:595
+#: ../src/gui/main_window.cpp:3298
 msgid "_Help"
 msgstr "A_jutor"
 
@@ -2144,23 +1983,20 @@ msgstr "Șterge"
 
 #: ../src/gui/assistant.cpp:320
 msgid ""
-"This is the Ekiga general configuration assistant. The following steps will "
-"set up Ekiga by asking a few simple questions.\n"
+"This is the Ekiga general configuration assistant. The following steps will set up Ekiga by asking a few simple questions.\n"
 "\n"
-"Once you have completed these steps, you can always change them later by "
-"selecting Preferences in the Edit menu."
+"Once you have completed these steps, you can always change them later by selecting Preferences in the Edit menu."
 msgstr ""
-"Acesta este asistentul de configurare generală al Ekiga. Următorii pași vor "
-"configura Ekiga doar punând câteva întrebari simple.\n"
+"Acesta este asistentul de configurare generală al Ekiga. Următorii pași vor configura Ekiga doar punând câteva întrebari simple.\n"
 "\n"
-"După ce ați efectuat acești pași, puteți oricând schimba, mai târziu, "
-"parametrii, selectând Preferințe din meniul Editare."
+"După ce ați efectuat acești pași, puteți oricând schimba, mai târziu, parametrii, selectând Preferințe din meniul Editare."
 
 #: ../src/gui/assistant.cpp:328
 msgid "Welcome to Ekiga"
 msgstr "Bun venit în Ekiga"
 
-#: ../src/gui/assistant.cpp:352 ../src/gui/preferences.cpp:464
+#: ../src/gui/assistant.cpp:352
+#: ../src/gui/preferences.cpp:464
 msgid "Personal Information"
 msgstr "Informații personale"
 
@@ -2170,12 +2006,8 @@ msgid "Please enter your first name and your surname:"
 msgstr "Introduceți prenumele și numele dumneavoastră:"
 
 #: ../src/gui/assistant.cpp:364
-msgid ""
-"Your first name and surname will be used when connecting to other VoIP and "
-"videoconferencing software."
-msgstr ""
-"Prenumele și numele vor fi folosite la conectarea cu alte aplicații pentru "
-"VoIP și videoconferință."
+msgid "Your first name and surname will be used when connecting to other VoIP and videoconferencing software."
+msgstr "Prenumele și numele vor fi folosite la conectarea cu alte aplicații pentru VoIP și videoconferință."
 
 #: ../src/gui/assistant.cpp:558
 msgid "Ekiga.net Account"
@@ -2191,21 +2023,13 @@ msgstr "Introduceți parola:"
 
 #: ../src/gui/assistant.cpp:578
 msgid ""
-"The username and password are used to login to your existing account at the "
-"ekiga.net free SIP service. If you do not have an ekiga.net SIP address yet, "
-"you may first create an account below. This will provide a SIP address that "
-"allows people to call you.\n"
+"The username and password are used to login to your existing account at the ekiga.net free SIP service. If you do not have an ekiga.net SIP address yet, you may first create an account below. This will provide a SIP address that allows people to call you.\n"
 "\n"
-"You may skip this step if you use an alternative SIP service, or if you "
-"would prefer to specify the login details later."
+"You may skip this step if you use an alternative SIP service, or if you would prefer to specify the login details later."
 msgstr ""
-"Numele utilizator și parola sunt utilizate pentru a vă autentifica la contul "
-"dumneavoastră existent la serviciul gratuit ekiga.net.  Dacă nu aveți încă o "
-"adresă SIP ekiga.net, trebuie mai întâi să creați un cont mai jos.  Veți "
-"obține astfel o adresă SIP care permite altor persoane să vă apeleze.\n"
+"Numele utilizator și parola sunt utilizate pentru a vă autentifica la contul dumneavoastră existent la serviciul gratuit ekiga.net.  Dacă nu aveți încă o adresă SIP ekiga.net, trebuie mai întâi să creați un cont mai jos.  Veți obține astfel o adresă SIP care permite altor persoane să vă apeleze.\n"
 "\n"
-"Puteți trece peste această etapă dacă utilizați un serviciu SIP alternativ, "
-"ori dacă preferați să specificați detaliile de conexiune mai târziu."
+"Puteți trece peste această etapă dacă utilizați un serviciu SIP alternativ, ori dacă preferați să specificați detaliile de conexiune mai târziu."
 
 #: ../src/gui/assistant.cpp:605
 msgid "I do not want to sign up for the ekiga.net free service"
@@ -2225,23 +2049,19 @@ msgstr "Introduceți codul PIN:"
 
 #: ../src/gui/assistant.cpp:689
 msgid ""
-"You can make calls to regular phones and cell numbers worldwide using "
-"Ekiga.\n"
+"You can make calls to regular phones and cell numbers worldwide using Ekiga.\n"
 "\n"
 "To enable this, you need to do two things:\n"
 "- First buy an account at the URL below.\n"
 "- Then enter your account ID and PIN code.\n"
-"The service will work only if your account is created using the URL in this "
-"dialog.\n"
+"The service will work only if your account is created using the URL in this dialog.\n"
 msgstr ""
-"Folosind Ekiga, puteți apela telefoane obișnuite sau mobile din întreaga "
-"lume.\n"
+"Folosind Ekiga, puteți apela telefoane obișnuite sau mobile din întreaga lume.\n"
 "\n"
 "Pentru a activa aceasta, aveți nevoie de două lucruri :\n"
 "- Întăi cumpărați un cont la adresa de mai jos.\n"
 "- Apoi introduceți ID-ul contului dumneavoastră și codul PIN.\n"
-"Acest serviciu funcționează numai dacă creați contul utilizând adresa de mai "
-"jos.\n"
+"Acest serviciu funcționează numai dacă creați contul utilizând adresa de mai jos.\n"
 
 #: ../src/gui/assistant.cpp:739
 msgid "Consult the calls history"
@@ -2251,7 +2071,8 @@ msgstr "Consultă istoricul apelurilor"
 msgid "I do not want to sign up for the Ekiga Call Out service"
 msgstr "Nu doresc să mă înregistrez pentru serviciul Ekiga Call Out"
 
-#: ../src/gui/assistant.cpp:815 ../src/gui/assistant.cpp:1375
+#: ../src/gui/assistant.cpp:815
+#: ../src/gui/assistant.cpp:1375
 msgid "Connection Type"
 msgstr "Tip conexiune"
 
@@ -2285,17 +2106,13 @@ msgid "Keep current settings"
 msgstr "Pastrează parametrii curenți"
 
 #: ../src/gui/assistant.cpp:865
-msgid ""
-"The connection type will permit determining the best quality settings that "
-"Ekiga will use during calls. You can later change the settings individually "
-"in the preferences window."
-msgstr ""
-"Tipul conexiunii va permite determinarea celor mai buni parametri pe care "
-"Ekiga îi va folosi în timpul apelurilor. Parametrii pot fi individual "
-"modificați ulterior din fereastra asociată meniului preferințe."
+msgid "The connection type will permit determining the best quality settings that Ekiga will use during calls. You can later change the settings individually in the preferences window."
+msgstr "Tipul conexiunii va permite determinarea celor mai buni parametri pe care Ekiga îi va folosi în timpul apelurilor. Parametrii pot fi individual modificați ulterior din fereastra asociată meniului preferințe."
 
-#: ../src/gui/assistant.cpp:959 ../src/gui/main_window.cpp:3044
-#: ../src/gui/main_window.cpp:3048 ../src/gui/preferences.cpp:770
+#: ../src/gui/assistant.cpp:959
+#: ../src/gui/main_window.cpp:3044
+#: ../src/gui/main_window.cpp:3048
+#: ../src/gui/preferences.cpp:770
 msgid "Audio Devices"
 msgstr "Dispozitive audio"
 
@@ -2304,12 +2121,8 @@ msgid "Please choose the audio ringing device:"
 msgstr "Alegeți dispozitivul audio pentru apel:"
 
 #: ../src/gui/assistant.cpp:981
-msgid ""
-"The audio ringing device is the device that will be used to play the ringing "
-"sound on incoming calls."
-msgstr ""
-"Dispozitivul audio pentru apel este dispozitivul care va fi folosit la "
-"sonerie, când sunteți apelat."
+msgid "The audio ringing device is the device that will be used to play the ringing sound on incoming calls."
+msgstr "Dispozitivul audio pentru apel este dispozitivul care va fi folosit la sonerie, când sunteți apelat."
 
 #. ---
 #: ../src/gui/assistant.cpp:992
@@ -2317,12 +2130,8 @@ msgid "Please choose the audio output device:"
 msgstr "Alegeți dispozitivul audio de ieșire:"
 
 #: ../src/gui/assistant.cpp:1012
-msgid ""
-"The audio output device is the device that will be used to play audio during "
-"calls."
-msgstr ""
-"Dispozitivul audio de ieșire este dispozitivul care va fi folosit la redarea "
-"sunetului în timpul convorbirilor."
+msgid "The audio output device is the device that will be used to play audio during calls."
+msgstr "Dispozitivul audio de ieșire este dispozitivul care va fi folosit la redarea sunetului în timpul convorbirilor."
 
 #. ---
 #: ../src/gui/assistant.cpp:1023
@@ -2330,28 +2139,23 @@ msgid "Please choose the audio input device:"
 msgstr "Alegeți dispozitivul audio de intrare:"
 
 #: ../src/gui/assistant.cpp:1043
-msgid ""
-"The audio input device is the device that will be used to record your voice "
-"during calls."
-msgstr ""
-"Dispozitivul audio de intrare este dispozitivul care va fi folosit la "
-"inregistrarea vocii dumneavoastră  în timpul convorbirilor."
+msgid "The audio input device is the device that will be used to record your voice during calls."
+msgstr "Dispozitivul audio de intrare este dispozitivul care va fi folosit la inregistrarea vocii dumneavoastră  în timpul convorbirilor."
 
 #: ../src/gui/assistant.cpp:1145
 msgid "Please choose your video input device:"
 msgstr "Alegeți dispozitivul video de intrare:"
 
 #: ../src/gui/assistant.cpp:1165
-msgid ""
-"The video input device is the device that will be used to capture video "
-"during calls."
-msgstr ""
-"Dispozitivul video de intrare este folosit la captura video în timpul "
-"convorbirilor."
+msgid "The video input device is the device that will be used to capture video during calls."
+msgstr "Dispozitivul video de intrare este folosit la captura video în timpul convorbirilor."
 
-#: ../src/gui/assistant.cpp:1229 ../src/gui/assistant.cpp:1252
-#: ../src/gui/assistant.cpp:1275 ../src/gui/preferences.cpp:812
-#: ../src/gui/preferences.cpp:836 ../src/gui/preferences.cpp:858
+#: ../src/gui/assistant.cpp:1229
+#: ../src/gui/assistant.cpp:1252
+#: ../src/gui/assistant.cpp:1275
+#: ../src/gui/preferences.cpp:812
+#: ../src/gui/preferences.cpp:836
+#: ../src/gui/preferences.cpp:858
 msgid "No device found"
 msgstr "Nici un dispozitiv nu a fost găsit"
 
@@ -2360,12 +2164,8 @@ msgid "Configuration Complete"
 msgstr "Configurație completă"
 
 #: ../src/gui/assistant.cpp:1308
-msgid ""
-"You have now finished the Ekiga configuration. All the settings can be "
-"changed in the Ekiga preferences. Enjoy!"
-msgstr ""
-"Ați terminat configurarea Ekiga.  Toți parametrii au fost actualizați în "
-"preferințele Ekiga.  Acum bucurați-vă de Ekiga!"
+msgid "You have now finished the Ekiga configuration. All the settings can be changed in the Ekiga preferences. Enjoy!"
+msgstr "Ați terminat configurarea Ekiga.  Toți parametrii au fost actualizați în preferințele Ekiga.  Acum bucurați-vă de Ekiga!"
 
 #: ../src/gui/assistant.cpp:1315
 msgid "Configuration summary:"
@@ -2413,47 +2213,16 @@ msgid "See AUTHORS file for full credits"
 msgstr "Consultați fișierul AUTHORS pentru toate contribuțiile"
 
 #: ../src/gui/callbacks.cpp:114
-msgid ""
-"This program is free software; you can redistribute it and/or modify it "
-"under the terms of the GNU General Public License as published by the Free "
-"Software Foundation; either version 2 of the License, or (at your option) "
-"any later version. "
-msgstr ""
-"Acest program este software liber ; îl puteți redistribuiți și/sau modifica "
-"în termenii licenței GNU General Public License după cum este publicată de "
-"Free Software Foundation ; fie în versiunea 2 a licenței, fie (la "
-"latitudinea dumneavoastră) orice altă versiune ulterioară."
+msgid "This program is free software; you can redistribute it and/or modify it under the terms of the GNU General Public License as published by the Free Software Foundation; either version 2 of the License, or (at your option) any later version. "
+msgstr "Acest program este software liber ; îl puteți redistribuiți și/sau modifica în termenii licenței GNU General Public License după cum este publicată de Free Software Foundation ; fie în versiunea 2 a licenței, fie (la latitudinea dumneavoastră) orice altă versiune ulterioară."
 
 #: ../src/gui/callbacks.cpp:118
-msgid ""
-"This program is distributed in the hope that it will be useful, but WITHOUT "
-"ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or "
-"FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for "
-"more details. You should have received a copy of the GNU General Public "
-"License along with this program; if not, write to the Free Software "
-"Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301, USA."
-msgstr ""
-"Acest program este distribuit în speranța că va fi folositor, dar FĂRĂ NICIO "
-"GARANȚIE ; chiar fără garanția implicită de RĂUTATE sau CORESPUNZĂTOARE UNUI "
-"ANUMIT SCOP.  Vedeți licența GNU General Public License pentru detalii.  "
-"Trebuie să fi primit o copie a acestei licențe împreună cu programul ; dacă "
-"nu, scrieți la Free Software Foundation, Inc., 51 Franklin St, Fifth Floor, "
-"Boston, MA 02110-1301, USA."
+msgid "This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for more details. You should have received a copy of the GNU General Public License along with this program; if not, write to the Free Software Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301, USA."
+msgstr "Acest program este distribuit în speranța că va fi folositor, dar FĂRĂ NICIO GARANȚIE ; chiar fără garanția implicită de RĂUTATE sau CORESPUNZĂTOARE UNUI ANUMIT SCOP.  Vedeți licența GNU General Public License pentru detalii.  Trebuie să fi primit o copie a acestei licențe împreună cu programul ; dacă nu, scrieți la Free Software Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301, USA."
 
 #: ../src/gui/callbacks.cpp:125
-msgid ""
-"Ekiga is licensed under the GPL license and as a special exception, you have "
-"permission to link or otherwise combine this program with the programs OPAL, "
-"OpenH323 and PWLIB, and distribute the combination, without applying the "
-"requirements of the GNU GPL to the OPAL, OpenH323 and PWLIB programs, as "
-"long as you do follow the requirements of the GNU GPL for all the rest of "
-"the software thus combined."
-msgstr ""
-"Ekiga este sub licența GPL și, ca o excepție specială, puteți link-a sau "
-"combina acest program cu programele OPAL, OpenH323 și PWLIB, sau distribui "
-"combinația, fără să aplicați cerințele GNU GPL la programle OPAL, OpenH323 "
-"și PWLIB, atâta timp cât urmați cerințele GNU GPL pentru restul programului "
-"astfel combinat."
+msgid "Ekiga is licensed under the GPL license and as a special exception, you have permission to link or otherwise combine this program with the programs OPAL, OpenH323 and PWLIB, and distribute the combination, without applying the requirements of the GNU GPL to the OPAL, OpenH323 and PWLIB programs, as long as you do follow the requirements of the GNU GPL for all the rest of the software thus combined."
+msgstr "Ekiga este sub licența GPL și, ca o excepție specială, puteți link-a sau combina acest program cu programele OPAL, OpenH323 și PWLIB, sau distribui combinația, fără să aplicați cerințele GNU GPL la programle OPAL, OpenH323 și PWLIB, atâta timp cât urmați cerințele GNU GPL pentru restul programului astfel combinat."
 
 #. Translators: Please write translator credits here, and
 #. * separate names with \n
@@ -2468,14 +2237,8 @@ msgstr ""
 "Adi Roiban <adi@roiban.ro>"
 
 #: ../src/gui/callbacks.cpp:142
-msgid ""
-"Ekiga is full-featured SIP and H.323 compatible VoIP, IP-Telephony and "
-"Videoconferencing application that allows you to make audio and video calls "
-"to remote users with SIP and H.323 hardware or software."
-msgstr ""
-"Ekiga e un program pentru conferințe video compatibile SIP și H.323, pentru "
-"VoIP și pentru Telefonie IP. Ekiga permite convorbiri audio și video cu "
-"utilizatori ce au aparatură sau programe compatibile SIP sau H.323."
+msgid "Ekiga is full-featured SIP and H.323 compatible VoIP, IP-Telephony and Videoconferencing application that allows you to make audio and video calls to remote users with SIP and H.323 hardware or software."
+msgstr "Ekiga e un program pentru conferințe video compatibile SIP și H.323, pentru VoIP și pentru Telefonie IP. Ekiga permite convorbiri audio și video cu utilizatori ce au aparatură sau programe compatibile SIP sau H.323."
 
 #: ../src/gui/callbacks.cpp:216
 msgid "Help display is not supported by your GTK+ version"
@@ -2527,7 +2290,8 @@ msgstr "A:%.1f/%.1f   V:%.1f/%.1f   FPS:%d/%d"
 msgid "Connected with %s"
 msgstr "Conectat cu %s"
 
-#: ../src/gui/main_window.cpp:694 ../src/gui/main_window.cpp:3538
+#: ../src/gui/main_window.cpp:694
+#: ../src/gui/main_window.cpp:3538
 msgid "Standby"
 msgstr "Standby"
 
@@ -2557,20 +2321,12 @@ msgid "No video will be displayed on your machine during this call"
 msgstr "Nicio imagine video nu va fi afișată în timpul acestui apel"
 
 #: ../src/gui/main_window.cpp:992
-msgid ""
-"There was an error opening or initializing the video output. Please verify "
-"that no other application is using the accelerated video output."
-msgstr ""
-"A apărut o eroare la deschiderea sau inițializarea ieșirii video.  "
-"Verificați că nicio altă aplicație nu utilizează ieșirea video accelerată."
+msgid "There was an error opening or initializing the video output. Please verify that no other application is using the accelerated video output."
+msgstr "A apărut o eroare la deschiderea sau inițializarea ieșirii video.  Verificați că nicio altă aplicație nu utilizează ieșirea video accelerată."
 
 #: ../src/gui/main_window.cpp:994
-msgid ""
-"There was an error opening or initializing the video output. Please verify "
-"that you are using a color depth of 24 or 32 bits per pixel."
-msgstr ""
-"A apărut o eroare la deschiderea sau inițializarea ieșirii video.  "
-"Verificați că utilizați o profunzime a culorii de 24 sau 32 biți pe pixel."
+msgid "There was an error opening or initializing the video output. Please verify that you are using a color depth of 24 or 32 bits per pixel."
+msgstr "A apărut o eroare la deschiderea sau inițializarea ieșirii video.  Verificați că utilizați o profunzime a culorii de 24 sau 32 biți pe pixel."
 
 #. Translators: This is a hotplug status
 #: ../src/gui/main_window.cpp:1107
@@ -2594,16 +2350,8 @@ msgid "A moving logo will be transmitted during calls."
 msgstr "Nicio imagine video nu va fi afișată în timpul apelurilor."
 
 #: ../src/gui/main_window.cpp:1143
-msgid ""
-"There was an error while opening the device. In case it is a pluggable "
-"device it may be sufficient to reconnect it. If not, or if it still is not "
-"accessible, please check your permissions and make sure that the appropriate "
-"driver is loaded."
-msgstr ""
-"S-a înregistrat o eroare la deschiderea dispozitivului. În cazul în care "
-"este un dispozitiv pluggable, este suficient să îl reconectați.  Altfel, sau "
-"dacă tot nu este accesibil, vă rog să verificați permisiunile dumneavoastră "
-"și să vă asigurați că dispozitivul este instalat corect. "
+msgid "There was an error while opening the device. In case it is a pluggable device it may be sufficient to reconnect it. If not, or if it still is not accessible, please check your permissions and make sure that the appropriate driver is loaded."
+msgstr "S-a înregistrat o eroare la deschiderea dispozitivului. În cazul în care este un dispozitiv pluggable, este suficient să îl reconectați.  Altfel, sau dacă tot nu este accesibil, vă rog să verificați permisiunile dumneavoastră și să vă asigurați că dispozitivul este instalat corect. "
 
 #: ../src/gui/main_window.cpp:1147
 msgid "Your video driver doesn't support the requested video format."
@@ -2615,15 +2363,11 @@ msgstr "Nu s-a putut deschide canalul ales."
 
 #: ../src/gui/main_window.cpp:1155
 msgid ""
-"Your driver doesn't seem to support any of the color formats supported by "
-"Ekiga.\n"
-" Please check your kernel driver documentation in order to determine which "
-"Palette is supported."
+"Your driver doesn't seem to support any of the color formats supported by Ekiga.\n"
+" Please check your kernel driver documentation in order to determine which Palette is supported."
 msgstr ""
-"Driverul dumneavoastră nu suportă nici unul din formatele de culoare "
-"implementate de Ekiga.\n"
-"Vă rog să verificați documentația driverului din kernel pentru a determina "
-"ce paletă este suportată."
+"Driverul dumneavoastră nu suportă nici unul din formatele de culoare implementate de Ekiga.\n"
+"Vă rog să verificați documentația driverului din kernel pentru a determina ce paletă este suportată."
 
 #: ../src/gui/main_window.cpp:1159
 msgid "Error while setting the frame rate."
@@ -2633,7 +2377,8 @@ msgstr "Eroare la configurarea ratei cadrelor."
 msgid "Error while setting the frame size."
 msgstr "Eroare la configurarea mărimii cadrului."
 
-#: ../src/gui/main_window.cpp:1168 ../src/gui/main_window.cpp:1272
+#: ../src/gui/main_window.cpp:1168
+#: ../src/gui/main_window.cpp:1272
 #: ../src/gui/main_window.cpp:1389
 msgid "Unknown error."
 msgstr "Eroare necunoscută."
@@ -2662,28 +2407,12 @@ msgid "Only silence will be transmitted."
 msgstr "Nici un sunet nu va fi transmis."
 
 #: ../src/gui/main_window.cpp:1263
-msgid ""
-"Unable to open the selected audio device for recording. In case it is a "
-"pluggable device it may be sufficient to reconnect it. If not, or if it "
-"still is not accessible, please check your audio setup, the permissions and "
-"that the device is not busy."
-msgstr ""
-"Este imposibil să deschid dispozitivul audio selectat pentru înregistrare.  "
-"În cazul în care este un dispozitiv pluggable, probabil este suficient să îl "
-"reconectați.  Altfel, sau dacă tot nu funcționează, vă rog verificați "
-"parametrii audio, permisiunile dvs. și faptul că dispozitivul nu este ocupat."
+msgid "Unable to open the selected audio device for recording. In case it is a pluggable device it may be sufficient to reconnect it. If not, or if it still is not accessible, please check your audio setup, the permissions and that the device is not busy."
+msgstr "Este imposibil să deschid dispozitivul audio selectat pentru înregistrare.  În cazul în care este un dispozitiv pluggable, probabil este suficient să îl reconectați.  Altfel, sau dacă tot nu funcționează, vă rog verificați parametrii audio, permisiunile dvs. și faptul că dispozitivul nu este ocupat."
 
 #: ../src/gui/main_window.cpp:1267
-msgid ""
-"The selected audio device was successfully opened but it is impossible to "
-"read data from this device. In case it is a pluggable device it may be "
-"sufficient to reconnect it. If not, or if it still is not accessible, please "
-"check your audio setup."
-msgstr ""
-"Dispozitivul audio selectat a fost deschis cu succes, dar este imposibil de "
-"citit date de la el.  În cazul în care este un dispozitiv amovibil, probabil "
-"este suficient să îl reconectați.  Altfel, sau dacă este tot inaccesibil, "
-"verificați parametrii audio."
+msgid "The selected audio device was successfully opened but it is impossible to read data from this device. In case it is a pluggable device it may be sufficient to reconnect it. If not, or if it still is not accessible, please check your audio setup."
+msgstr "Dispozitivul audio selectat a fost deschis cu succes, dar este imposibil de citit date de la el.  În cazul în care este un dispozitiv amovibil, probabil este suficient să îl reconectați.  Altfel, sau dacă este tot inaccesibil, verificați parametrii audio."
 
 #: ../src/gui/main_window.cpp:1336
 #, c-format
@@ -2705,27 +2434,12 @@ msgid "No incoming sound will be played."
 msgstr "Nici un sunet de primire nu va fi redat."
 
 #: ../src/gui/main_window.cpp:1380
-msgid ""
-"Unable to open the selected audio device for playing. In case it is a "
-"pluggable device it may be sufficient to reconnect it. If not, or if it "
-"still is not accessible, please check your audio setup, the permissions and "
-"that the device is not busy."
-msgstr ""
-"Imposibil de deschis dispozitivul audio selectat pentru redare.  În cazul în "
-"care este un dispozitiv amovibil, probabil este suficient să îl "
-"reconectați.  Altfel, verificați parametrii audio, permisiunile și faptul că "
-"dispozitivul nu este ocupat."
+msgid "Unable to open the selected audio device for playing. In case it is a pluggable device it may be sufficient to reconnect it. If not, or if it still is not accessible, please check your audio setup, the permissions and that the device is not busy."
+msgstr "Imposibil de deschis dispozitivul audio selectat pentru redare.  În cazul în care este un dispozitiv amovibil, probabil este suficient să îl reconectați.  Altfel, verificați parametrii audio, permisiunile și faptul că dispozitivul nu este ocupat."
 
 #: ../src/gui/main_window.cpp:1384
-msgid ""
-"The selected audio device was successfully opened but it is impossible to "
-"write data to this device. In case it is a pluggable device it may be "
-"sufficient to reconnect it. If not, or if it still is not accessible, please "
-"check your audio setup."
-msgstr ""
-"Dispozitivul audio selectat a fost deschis cu succes, dar este imposibil de "
-"transmis date.  În cazul în care este un dispozitiv amovibil, probabil este "
-"suficient să îl reconectați.  Altfel, verificați parametrii audio."
+msgid "The selected audio device was successfully opened but it is impossible to write data to this device. In case it is a pluggable device it may be sufficient to reconnect it. If not, or if it still is not accessible, please check your audio setup."
+msgstr "Dispozitivul audio selectat a fost deschis cu succes, dar este imposibil de transmis date.  În cazul în care este un dispozitiv amovibil, probabil este suficient să îl reconectați.  Altfel, verificați parametrii audio."
 
 #: ../src/gui/main_window.cpp:1570
 msgid "Video Settings"
@@ -2759,11 +2473,13 @@ msgstr "Apel p_rimit"
 msgid "_Hold Call"
 msgstr "_Apel în așteptare"
 
-#: ../src/gui/main_window.cpp:2390 ../src/gui/main_window.cpp:3181
+#: ../src/gui/main_window.cpp:2390
+#: ../src/gui/main_window.cpp:3181
 msgid "Suspend _Audio"
 msgstr "Suspendă _audio"
 
-#: ../src/gui/main_window.cpp:2392 ../src/gui/main_window.cpp:3186
+#: ../src/gui/main_window.cpp:2392
+#: ../src/gui/main_window.cpp:3186
 msgid "Suspend _Video"
 msgstr "Suspendă _video"
 
@@ -2775,27 +2491,33 @@ msgstr "Repornire _audio"
 msgid "Resume _Video"
 msgstr "Repornire _video"
 
-#: ../src/gui/main_window.cpp:2679 ../src/gui/main_window.cpp:2832
+#: ../src/gui/main_window.cpp:2679
+#: ../src/gui/main_window.cpp:2832
 msgid "Reject"
 msgstr "Respinge"
 
-#: ../src/gui/main_window.cpp:2681 ../src/gui/main_window.cpp:2831
+#: ../src/gui/main_window.cpp:2681
+#: ../src/gui/main_window.cpp:2831
 msgid "Accept"
 msgstr "Acceptă"
 
-#: ../src/gui/main_window.cpp:2687 ../src/gui/main_window.cpp:2819
+#: ../src/gui/main_window.cpp:2687
+#: ../src/gui/main_window.cpp:2819
 msgid "Incoming call from"
 msgstr "Apel primit de la"
 
-#: ../src/gui/main_window.cpp:2705 ../src/gui/main_window.cpp:2822
+#: ../src/gui/main_window.cpp:2705
+#: ../src/gui/main_window.cpp:2822
 msgid "Remote URI:"
 msgstr "Adresa URI la distantă:"
 
-#: ../src/gui/main_window.cpp:2717 ../src/gui/main_window.cpp:2824
+#: ../src/gui/main_window.cpp:2717
+#: ../src/gui/main_window.cpp:2824
 msgid "Remote Application:"
 msgstr "Aplicația de la distanță:"
 
-#: ../src/gui/main_window.cpp:2730 ../src/gui/main_window.cpp:2826
+#: ../src/gui/main_window.cpp:2730
+#: ../src/gui/main_window.cpp:2826
 msgid "Account ID:"
 msgstr "ID cont :"
 
@@ -2833,7 +2555,8 @@ msgstr "A fost detectat un nou dispozitiv audio de ieșire:"
 msgid "Detected new video input device:"
 msgstr "A fost detectat un nou dispozitiv video de intrare:"
 
-#: ../src/gui/main_window.cpp:3052 ../src/gui/preferences.cpp:926
+#: ../src/gui/main_window.cpp:3052
+#: ../src/gui/preferences.cpp:926
 msgid "Video Devices"
 msgstr "Dispozitive video"
 
@@ -2885,7 +2608,8 @@ msgstr "Operează pe contactul ales"
 msgid "H_old Call"
 msgstr "_Apel în așteptare"
 
-#: ../src/gui/main_window.cpp:3169 ../src/gui/main_window.cpp:3638
+#: ../src/gui/main_window.cpp:3169
+#: ../src/gui/main_window.cpp:3638
 msgid "Hold the current call"
 msgstr "Reține convorbirea curentă"
 
@@ -2909,7 +2633,8 @@ msgstr "Suspendă sau restabilește transmisia video"
 msgid "Close the Ekiga window"
 msgstr "Închide fereastra Ekiga"
 
-#: ../src/gui/main_window.cpp:3201 ../src/gui/statusicon.cpp:478
+#: ../src/gui/main_window.cpp:3201
+#: ../src/gui/statusicon.cpp:478
 msgid "Quit"
 msgstr "Ieșire"
 
@@ -2981,7 +2706,8 @@ msgstr "Imaginea video de la distanță"
 msgid "_Picture-in-Picture"
 msgstr "_Imagine-în-Imagine"
 
-#: ../src/gui/main_window.cpp:3268 ../src/gui/main_window.cpp:3274
+#: ../src/gui/main_window.cpp:3268
+#: ../src/gui/main_window.cpp:3274
 msgid "Both video images"
 msgstr "Amândouă imagini video"
 
@@ -3009,20 +2735,19 @@ msgstr "_Afișare pe tot ecranul"
 msgid "Switch to fullscreen"
 msgstr "Comută afișarea pe tot ecranul"
 
-#: ../src/gui/main_window.cpp:3301 ../src/gui/statusicon.cpp:466
+#: ../src/gui/main_window.cpp:3301
+#: ../src/gui/statusicon.cpp:466
 msgid "Get help by reading the Ekiga manual"
 msgstr "Primește ajutor prin citirea manualului Ekiga"
 
-#: ../src/gui/main_window.cpp:3306 ../src/gui/statusicon.cpp:471
+#: ../src/gui/main_window.cpp:3306
+#: ../src/gui/statusicon.cpp:471
 msgid "View information about Ekiga"
 msgstr "Afișează informațiile despre Ekiga"
 
 #: ../src/gui/main_window.cpp:3380
-msgid ""
-"Enter a URI on the left, and click this button to place a call or to hangup"
-msgstr ""
-"Introduceți un URL la stânga și efectuați clic pe acest buton pentru a apela "
-"sau a închide"
+msgid "Enter a URI on the left, and click this button to place a call or to hangup"
+msgstr "Introduceți un URL la stânga și efectuați clic pe acest buton pentru a apela sau a închide"
 
 #: ../src/gui/main_window.cpp:3426
 msgid "Contacts"
@@ -3092,24 +2817,16 @@ msgid "No usable audio plugin detected"
 msgstr "Nu a fost detectat nici un modul audio disponibil"
 
 #: ../src/gui/main_window.cpp:4537
-msgid ""
-"Ekiga didn't find any usable audio plugin. Make sure that your installation "
-"is correct."
-msgstr ""
-"Ekiga nu a detectat nici un modul audio disponibil. Verificați faptul că "
-"instalarea a fost făcută corect."
+msgid "Ekiga didn't find any usable audio plugin. Make sure that your installation is correct."
+msgstr "Ekiga nu a detectat nici un modul audio disponibil. Verificați faptul că instalarea a fost făcută corect."
 
 #: ../src/gui/main_window.cpp:4540
 msgid "No usable audio codecs detected"
 msgstr "Nu a fost detectat nici un codec audio utilizabil"
 
 #: ../src/gui/main_window.cpp:4541
-msgid ""
-"Ekiga didn't find any usable audio codec. Make sure that your installation "
-"is correct."
-msgstr ""
-"Ekiga nu a detectat nici un modul audio utilizabil.  Verificați că "
-"instalarea a fost făcută corect."
+msgid "Ekiga didn't find any usable audio codec. Make sure that your installation is correct."
+msgstr "Ekiga nu a detectat nici un modul audio utilizabil.  Verificați că instalarea a fost făcută corect."
 
 #: ../src/gui/preferences.cpp:382
 msgid "Play sound for new voice mails"
@@ -3141,8 +2858,7 @@ msgstr "Afișaj video"
 
 #: ../src/gui/preferences.cpp:496
 msgid "Place windows displaying video _above other windows"
-msgstr ""
-"Plasează ferestrele care conțin imaginea video in f_ața celorlalte ferestre "
+msgstr "Plasează ferestrele care conțin imaginea video in f_ața celorlalte ferestre "
 
 #: ../src/gui/preferences.cpp:500
 msgid "Network Settings"
@@ -3161,53 +2877,34 @@ msgid "_Always forward calls to the given host"
 msgstr "În_aintează întotdeauna toate apelurile la un calculator prestabilit"
 
 #: ../src/gui/preferences.cpp:515
-msgid ""
-"If enabled, all incoming calls will be forwarded to the host that is "
-"specified in the protocol settings"
-msgstr ""
-"La activare, toate apelurile primite vor fi înaintate la calculatorul "
-"specificat în configurările protocolului"
+msgid "If enabled, all incoming calls will be forwarded to the host that is specified in the protocol settings"
+msgstr "La activare, toate apelurile primite vor fi înaintate la calculatorul specificat în configurările protocolului"
 
 #: ../src/gui/preferences.cpp:517
 msgid "Forward calls to the given host if _no answer"
-msgstr ""
-"Înaintează apelurile la calculatorul prestabilit, dacă _nu se primește "
-"răspuns la apel"
+msgstr "Înaintează apelurile la calculatorul prestabilit, dacă _nu se primește răspuns la apel"
 
 #: ../src/gui/preferences.cpp:517
-msgid ""
-"If enabled, all incoming calls will be forwarded to the host that is "
-"specified in the protocol settings if you do not answer the call"
-msgstr ""
-"La activare, dacă nu răspundeți la apeluri, toate apelurile primite vor fi "
-"înaintate la gazda specificată în configurările de la protocol"
+msgid "If enabled, all incoming calls will be forwarded to the host that is specified in the protocol settings if you do not answer the call"
+msgstr "La activare, dacă nu răspundeți la apeluri, toate apelurile primite vor fi înaintate la gazda specificată în configurările de la protocol"
 
 #: ../src/gui/preferences.cpp:519
 msgid "Forward calls to the given host if _busy"
-msgstr ""
-"Înaintează apelurile la calculatorul prestabilit, dacă se primesc ton de "
-"_ocupat"
+msgstr "Înaintează apelurile la calculatorul prestabilit, dacă se primesc ton de _ocupat"
 
 #: ../src/gui/preferences.cpp:519
-msgid ""
-"If enabled, all incoming calls will be forwarded to the host that is "
-"specified in the protocol settings if you already are in a call or if you "
-"are in Do Not Disturb mode"
-msgstr ""
-"La activare, dacă o convorbire e în curs de desfășurare sau modul „nu "
-"deranjați” este activ, toate apelurile primite vor fi înaintate la gazda "
-"specificată în configurările de la protocol"
+msgid "If enabled, all incoming calls will be forwarded to the host that is specified in the protocol settings if you already are in a call or if you are in Do Not Disturb mode"
+msgstr "La activare, dacă o convorbire e în curs de desfășurare sau modul „nu deranjați” este activ, toate apelurile primite vor fi înaintate la gazda specificată în configurările de la protocol"
 
-#: ../src/gui/preferences.cpp:523 ../src/gui/preferences.cpp:1365
+#: ../src/gui/preferences.cpp:523
+#: ../src/gui/preferences.cpp:1365
 msgid "Call Options"
 msgstr "Opțiuni de apel"
 
 #. Add all the fields
 #: ../src/gui/preferences.cpp:526
 msgid "Timeout to reject or forward unanswered incoming calls (in seconds):"
-msgstr ""
-"Limita de timp pentru a respinge sau redirecționa apelurile primite la care "
-"nu răspund (în secunde):"
+msgstr "Limita de timp pentru a respinge sau redirecționa apelurile primite la care nu răspund (în secunde):"
 
 #: ../src/gui/preferences.cpp:527
 msgid "_Automatically answer incoming calls"
@@ -3233,7 +2930,8 @@ msgstr "Alegeți un sunet"
 msgid "Wavefiles"
 msgstr "Fișiere wave"
 
-#: ../src/gui/preferences.cpp:634 ../src/gui/preferences.cpp:653
+#: ../src/gui/preferences.cpp:634
+#: ../src/gui/preferences.cpp:653
 msgid "Play"
 msgstr "Redă sunet"
 
@@ -3245,7 +2943,8 @@ msgstr "Șir de caractere"
 msgid "Tone"
 msgstr "Tonuri"
 
-#: ../src/gui/preferences.cpp:676 ../src/gui/preferences.cpp:725
+#: ../src/gui/preferences.cpp:676
+#: ../src/gui/preferences.cpp:725
 msgid "RFC2833"
 msgstr "RFC2833"
 
@@ -3253,11 +2952,13 @@ msgstr "RFC2833"
 msgid "Q.931"
 msgstr "Q.931"
 
-#: ../src/gui/preferences.cpp:683 ../src/gui/preferences.cpp:735
+#: ../src/gui/preferences.cpp:683
+#: ../src/gui/preferences.cpp:735
 msgid "Misc Settings"
 msgstr "Configurări diverse"
 
-#: ../src/gui/preferences.cpp:686 ../src/gui/preferences.cpp:740
+#: ../src/gui/preferences.cpp:686
+#: ../src/gui/preferences.cpp:740
 msgid "Forward _URI:"
 msgstr "Înaintează către _URI:"
 
@@ -3279,26 +2980,21 @@ msgid "Enable fast _start procedure"
 msgstr "Activează procedura „_Start rapid”"
 
 #: ../src/gui/preferences.cpp:702
-msgid ""
-"Connection will be established in Fast Start mode. Fast Start is a new way "
-"to start calls faster that was introduced in H.323v2. It is not supported by "
-"Netmeeting and using both Fast Start and H.245 Tunneling can crash some "
-"versions of Netmeeting."
-msgstr ""
-"Conexiunea va fi stabilită în mod „Start rapid”. Acest mod reprezintă o noua "
-"metodă de a începe mai repede apelurile, ce a fost definit în H.323v2. Nu "
-"este suportat de Netmeeting și folosirea simultană a Start rapid și "
-"tunelarea H.245 poate să blocheze unele versiuni de Netmeeting."
+msgid "Connection will be established in Fast Start mode. Fast Start is a new way to start calls faster that was introduced in H.323v2. It is not supported by Netmeeting and using both Fast Start and H.245 Tunneling can crash some versions of Netmeeting."
+msgstr "Conexiunea va fi stabilită în mod „Start rapid”. Acest mod reprezintă o noua metodă de a începe mai repede apelurile, ce a fost definit în H.323v2. Nu este suportat de Netmeeting și folosirea simultană a Start rapid și tunelarea H.245 poate să blocheze unele versiuni de Netmeeting."
 
-#: ../src/gui/preferences.cpp:708 ../src/gui/preferences.cpp:748
+#: ../src/gui/preferences.cpp:708
+#: ../src/gui/preferences.cpp:748
 msgid "DTMF Mode"
 msgstr "Mode UTMF"
 
-#: ../src/gui/preferences.cpp:710 ../src/gui/preferences.cpp:750
+#: ../src/gui/preferences.cpp:710
+#: ../src/gui/preferences.cpp:750
 msgid "_Send DTMF as:"
 msgstr "_Trimit DTMF ca:"
 
-#: ../src/gui/preferences.cpp:710 ../src/gui/preferences.cpp:750
+#: ../src/gui/preferences.cpp:710
+#: ../src/gui/preferences.cpp:750
 msgid "This allows you to set the mode for DTMFs sending."
 msgstr "Aceasta permite să definiți modul trimiterii DTMF."
 
@@ -3322,16 +3018,19 @@ msgstr "Alegeți dispozitivul de apel audio"
 msgid "Output device:"
 msgstr "Dispozitiv de ieșire:"
 
-#: ../src/gui/preferences.cpp:787 ../src/gui/preferences.cpp:932
+#: ../src/gui/preferences.cpp:787
+#: ../src/gui/preferences.cpp:932
 msgid "Input device:"
 msgstr "Dispozitiv de intrare:"
 
 #. That button will refresh the device list
-#: ../src/gui/preferences.cpp:792 ../src/gui/preferences.cpp:943
+#: ../src/gui/preferences.cpp:792
+#: ../src/gui/preferences.cpp:943
 msgid "_Detect devices"
 msgstr "_Detectează dispozitive"
 
-#: ../src/gui/preferences.cpp:792 ../src/gui/preferences.cpp:943
+#: ../src/gui/preferences.cpp:792
+#: ../src/gui/preferences.cpp:943
 msgid "Click here to refresh the device list."
 msgstr "Apăsați aici pentru a reactualiza lista de dispozitive."
 
@@ -3368,12 +3067,15 @@ msgstr "Alegeți mărimea imaginii video transmisă"
 msgid "Format:"
 msgstr "Format:"
 
-#: ../src/gui/preferences.cpp:967 ../src/gui/preferences.cpp:1006
-#: ../src/gui/preferences.cpp:1394 ../src/gui/preferences.cpp:1405
+#: ../src/gui/preferences.cpp:967
+#: ../src/gui/preferences.cpp:1006
+#: ../src/gui/preferences.cpp:1394
+#: ../src/gui/preferences.cpp:1405
 msgid "Codecs"
 msgstr "Codecuri"
 
-#: ../src/gui/preferences.cpp:980 ../src/gui/preferences.cpp:1019
+#: ../src/gui/preferences.cpp:980
+#: ../src/gui/preferences.cpp:1019
 msgid "Settings"
 msgstr "Configurări"
 
@@ -3381,14 +3083,11 @@ msgstr "Configurări"
 #. between X and Y ms
 #: ../src/gui/preferences.cpp:984
 msgid "Enable silence _detection"
-msgstr ""
-"Activează _detectarea momentelor de liniște de pe canalul de comunicație"
+msgstr "Activează _detectarea momentelor de liniște de pe canalul de comunicație"
 
 #: ../src/gui/preferences.cpp:984
 msgid "If enabled, use silence detection with the codecs supporting it."
-msgstr ""
-"Dacă este activat, detectează, la codecurile ce suportă aceasta, momentele "
-"de liniște pe canalul de comunicație."
+msgstr "Dacă este activat, detectează, la codecurile ce suportă aceasta, momentele de liniște pe canalul de comunicație."
 
 #: ../src/gui/preferences.cpp:986
 msgid "Enable echo can_celation"
@@ -3404,8 +3103,7 @@ msgstr "Maximul bufferului de _jitter (în ms):"
 
 #: ../src/gui/preferences.cpp:988
 msgid "The maximum jitter buffer size for audio reception (in ms)."
-msgstr ""
-"Marimea maximă a memoriei tampon de jitter pentru recepția audio (în ms)."
+msgstr "Marimea maximă a memoriei tampon de jitter pentru recepția audio (în ms)."
 
 #. Translators: the full sentence is Keep a minimum video quality of X %
 #: ../src/gui/preferences.cpp:1022
@@ -3413,28 +3111,16 @@ msgid "Picture Quality"
 msgstr "Calitate Imaginie"
 
 #: ../src/gui/preferences.cpp:1022
-msgid ""
-"Choose if you want to guarantee a minimum image quality (possibly leading to "
-"dropped frames in order not to surpass the bitrate limit) or if you prefer "
-"to keep the frame rate."
-msgstr ""
-"Alegeți dacă preferați o calitate minimă a imaginii (ce poate duce la cadre "
-"pierdute pentru a nu depăși limita ratei de biți) sau menținerea frecvenței "
-"cadrelor."
+msgid "Choose if you want to guarantee a minimum image quality (possibly leading to dropped frames in order not to surpass the bitrate limit) or if you prefer to keep the frame rate."
+msgstr "Alegeți dacă preferați o calitate minimă a imaginii (ce poate duce la cadre pierdute pentru a nu depăși limita ratei de biți) sau menținerea frecvenței cadrelor."
 
 #: ../src/gui/preferences.cpp:1024
 msgid "Maximum video _bitrate (in kbits/s):"
 msgstr "Rata de _biți video maximă (în kb/s) :"
 
 #: ../src/gui/preferences.cpp:1024
-msgid ""
-"The maximum video bitrate in kbits/s. The video quality and the effective "
-"frame rate will be dynamically adjusted to keep the bitrate at the given "
-"value."
-msgstr ""
-"Rata de biți maximă în kb/s. Calitatea video și numărul real de cadre "
-"trimise pe secundă vor fi ajustate dinamic, în timpul convorbirilor, pentru "
-"a menține rata de biți la valoarea specificată."
+msgid "The maximum video bitrate in kbits/s. The video quality and the effective frame rate will be dynamically adjusted to keep the bitrate at the given value."
+msgstr "Rata de biți maximă în kb/s. Calitatea video și numărul real de cadre trimise pe secundă vor fi ajustate dinamic, în timpul convorbirilor, pentru a menține rata de biți la valoarea specificată."
 
 #: ../src/gui/preferences.cpp:1337
 msgid "Ekiga Preferences"
@@ -3473,7 +3159,8 @@ msgstr "Configurări H.323"
 msgid "Audio"
 msgstr "Audio"
 
-#: ../src/gui/preferences.cpp:1390 ../src/gui/preferences.cpp:1401
+#: ../src/gui/preferences.cpp:1390
+#: ../src/gui/preferences.cpp:1401
 msgid "Devices"
 msgstr "Dispozitive"
 
@@ -3514,7 +3201,8 @@ msgid "Clear"
 msgstr "Șterge"
 
 #. Build the dialog
-#: ../src/gui/statusmenu.cpp:521 ../src/gui/statusmenu.cpp:671
+#: ../src/gui/statusmenu.cpp:521
+#: ../src/gui/statusmenu.cpp:671
 msgid "Custom Message"
 msgstr "Mesaj personalizat"
 
@@ -3528,22 +3216,16 @@ msgstr "Creați un mesaj personalizat:"
 
 #~ msgid "Forbidden"
 #~ msgstr "Interzis"
-
 #~ msgid "Voice Mails"
 #~ msgstr "Mesaje vocale"
-
 #~ msgid "Registered %s"
 #~ msgstr "Înregistrat ca %s"
-
 #~ msgid "Unregistered %s"
 #~ msgstr "Dezînregistrat de la %s."
-
 #~ msgid "Could not unregister %s"
 #~ msgstr "Nu s-a putut dezînregistra %s"
-
 #~ msgid "Could not register %s"
 #~ msgstr "Nu s-a putut înregistra %s"
-
 #~ msgid ""
 #~ "A moving logo will be transmitted during calls. Notice that you can "
 #~ "always transmit a given image or the moving logo by choosing \"Picture\" "
@@ -3553,6 +3235,6 @@ msgstr "Creați un mesaj personalizat:"
 #~ "întotdeauna să transmiteți o anumită imagine sau sigla Ekiga alegând  ca "
 #~ "dispozitiv „Image” ca modul video și „Siglă în mișcare” sau „Imagine "
 #~ "statică”."
-
 #~ msgid "Roster view saving group status"
 #~ msgstr "Vedere agendă salvând starea grupului"
+
