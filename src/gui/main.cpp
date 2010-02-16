@@ -1585,11 +1585,11 @@ gm_mw_video_settings_window_new (EkigaMainWindow *mw)
   gtk_container_set_border_width (GTK_CONTAINER (mw->priv->video_settings_frame), 5);
   
   /* Category */
-  vbox = gtk_vbox_new (0, FALSE);
+  vbox = gtk_vbox_new (FALSE, 0);
   gtk_container_add (GTK_CONTAINER (mw->priv->video_settings_frame), vbox);
   
   /* Brightness */
-  hbox = gtk_hbox_new (0, FALSE);
+  hbox = gtk_hbox_new (FALSE, 0);
   image = gtk_image_new_from_icon_name (GM_ICON_BRIGHTNESS, GTK_ICON_SIZE_MENU);
   gtk_box_pack_start (GTK_BOX (hbox), image, FALSE, FALSE, 0);
 
@@ -1610,7 +1610,7 @@ gm_mw_video_settings_window_new (EkigaMainWindow *mw)
 		    (gpointer) mw);
 
   /* Whiteness */
-  hbox = gtk_hbox_new (0, FALSE);
+  hbox = gtk_hbox_new (FALSE, 0);
   image = gtk_image_new_from_icon_name (GM_ICON_WHITENESS, GTK_ICON_SIZE_MENU);
   gtk_box_pack_start (GTK_BOX (hbox), image, FALSE, FALSE, 0);
 
@@ -1631,7 +1631,7 @@ gm_mw_video_settings_window_new (EkigaMainWindow *mw)
 		    (gpointer) mw);
 
   /* Colour */
-  hbox = gtk_hbox_new (0, FALSE);
+  hbox = gtk_hbox_new (FALSE, 0);
   image = gtk_image_new_from_icon_name (GM_ICON_COLOURNESS, GTK_ICON_SIZE_MENU);
   gtk_box_pack_start (GTK_BOX (hbox), image, FALSE, FALSE, 0);
 
@@ -1652,7 +1652,7 @@ gm_mw_video_settings_window_new (EkigaMainWindow *mw)
 		    (gpointer) mw);
 
   /* Contrast */
-  hbox = gtk_hbox_new (0, FALSE);
+  hbox = gtk_hbox_new (FALSE, 0);
   image = gtk_image_new_from_icon_name (GM_ICON_CONTRAST, GTK_ICON_SIZE_MENU);
   gtk_box_pack_start (GTK_BOX (hbox), image, FALSE, FALSE, 0);
   
@@ -1722,17 +1722,17 @@ gm_mw_audio_settings_window_new (EkigaMainWindow *mw)
 
 
   /* The vbox */
-  vbox = gtk_vbox_new (0, FALSE);
+  vbox = gtk_vbox_new (FALSE, 0);
   gtk_container_add (GTK_CONTAINER (mw->priv->audio_output_volume_frame), vbox);
 
   /* Output volume */
-  hbox = gtk_hbox_new (0, FALSE);
+  hbox = gtk_hbox_new (FALSE, 0);
   gtk_box_pack_start (GTK_BOX (hbox), 
 		      gtk_image_new_from_icon_name (GM_ICON_AUDIO_VOLUME_HIGH, 
 						    GTK_ICON_SIZE_SMALL_TOOLBAR),
 		      FALSE, FALSE, 0);
   
-  small_vbox = gtk_vbox_new (0, FALSE);
+  small_vbox = gtk_vbox_new (FALSE, 0);
   mw->priv->adj_output_volume = gtk_adjustment_new (0, 0.0, 101.0, 1.0, 5.0, 1.0);
   hscale_play = gtk_hscale_new (GTK_ADJUSTMENT (mw->priv->adj_output_volume));
   gtk_range_set_update_policy (GTK_RANGE (hscale_play),
@@ -1758,17 +1758,17 @@ gm_mw_audio_settings_window_new (EkigaMainWindow *mw)
   gtk_container_set_border_width (GTK_CONTAINER (mw->priv->audio_input_volume_frame), 5);
 
   /* The vbox */
-  vbox = gtk_vbox_new (0, FALSE);
+  vbox = gtk_vbox_new (FALSE, 0);
   gtk_container_add (GTK_CONTAINER (mw->priv->audio_input_volume_frame), vbox);
 
   /* Input volume */
-  hbox = gtk_hbox_new (0, FALSE);
+  hbox = gtk_hbox_new (FALSE, 0);
   gtk_box_pack_start (GTK_BOX (hbox),
 		      gtk_image_new_from_icon_name (GM_ICON_MICROPHONE, 
 						    GTK_ICON_SIZE_SMALL_TOOLBAR),
 		      FALSE, FALSE, 0);
 
-  small_vbox = gtk_vbox_new (0, FALSE);
+  small_vbox = gtk_vbox_new (FALSE, 0);
   mw->priv->adj_input_volume = gtk_adjustment_new (0, 0.0, 101.0, 1.0, 5.0, 1.0);
   hscale_rec = gtk_hscale_new (GTK_ADJUSTMENT (mw->priv->adj_input_volume));
   gtk_range_set_update_policy (GTK_RANGE (hscale_rec),
@@ -3684,7 +3684,7 @@ ekiga_main_window_init_gui (EkigaMainWindow *mw)
 
   gtk_window_set_title (GTK_WINDOW (mw), _("Ekiga"));
 
-  window_vbox = gtk_vbox_new (0, FALSE);
+  window_vbox = gtk_vbox_new (FALSE, 0);
   gtk_container_add (GTK_CONTAINER (mw), window_vbox);
   gtk_widget_show_all (window_vbox);
 

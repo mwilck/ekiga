@@ -603,7 +603,7 @@ gm_pw_init_sound_events_page (GtkWidget *prefs_window,
   gtk_tree_view_append_column (GTK_TREE_VIEW (pw->sound_events_list), column);
   gtk_tree_view_column_set_fixed_width (GTK_TREE_VIEW_COLUMN (column), 325);
 
-  hbox = gtk_hbox_new (0, FALSE);
+  hbox = gtk_hbox_new (FALSE, 0);
   gtk_box_pack_start (GTK_BOX (vbox), hbox, FALSE, FALSE, 2);
 
   fsbutton =
