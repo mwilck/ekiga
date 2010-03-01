@@ -705,6 +705,7 @@ fi],enable_gdu=yes)
       AC_MSG_ERROR(Couldn't find scrollkeeper-config. Please install the scrollkeeper package: http://scrollkeeper.sourceforge.net)
     fi
     GDU="enabled"
+    AC_DEFINE(HAVE_GNOME_DOC_UTILS,1,[GNOME-Doc-Utils support])
   fi
 fi
 
