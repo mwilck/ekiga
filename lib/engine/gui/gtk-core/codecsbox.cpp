@@ -41,7 +41,7 @@
 #include "gmconf.h"
 #include "codec-description.h"
 #include <cstdlib>
-#include <string>
+#include <cstring>
 #include <sstream>
 
 /* Columns for the codecs page */
