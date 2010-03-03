@@ -533,7 +533,7 @@ gm_window_set_always_on_top (GdkWindow *window,
 gboolean
 gm_window_is_visible (GtkWidget* w)
 {
-  return (GTK_WIDGET_VISIBLE (w) && !(gdk_window_get_state (GDK_WINDOW (w->window)) & GDK_WINDOW_STATE_ICONIFIED));
+  return (gtk_widget_get_visible (w) && !(gdk_window_get_state (gtk_widget_get_window (w)) & GDK_WINDOW_STATE_ICONIFIED));
 }
 
 

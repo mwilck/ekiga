@@ -121,7 +121,7 @@ gm_entry_dialog_new (const char *label,
   gtk_box_pack_start (GTK_BOX (hbox), ed->label, FALSE, FALSE, 6);
   gtk_box_pack_start (GTK_BOX (hbox), ed->field_entry, FALSE, FALSE, 6);
 
-  gtk_container_add (GTK_CONTAINER (GTK_DIALOG (ed)->vbox), hbox);
+  gtk_container_add (GTK_CONTAINER (gtk_dialog_get_content_area (GTK_DIALOG (ed))), hbox);
 
   gtk_dialog_add_buttons (GTK_DIALOG (ed),
 			  GTK_STOCK_CANCEL, GTK_RESPONSE_REJECT,

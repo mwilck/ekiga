@@ -180,7 +180,7 @@ radio_menu_changed_cb (GtkWidget *widget,
 
   /* Only do something when a new CHECK_MENU_ITEM becomes active,
      not when it becomes inactive */
-  if (GTK_CHECK_MENU_ITEM (widget)->active) {
+  if (gtk_check_menu_item_get_active (GTK_CHECK_MENU_ITEM (widget))) {
 
     while (group) {
 
@@ -203,7 +203,7 @@ toggle_menu_changed_cb (GtkWidget *widget,
   g_return_if_fail (data != NULL);
   
   gm_conf_set_bool ((gchar *) data, 
-		    GTK_CHECK_MENU_ITEM (widget)->active);
+		    gtk_check_menu_item_get_active (GTK_CHECK_MENU_ITEM (widget)));
 }
 
 
@@ -222,7 +222,7 @@ menu_toggle_changed_nt (G_GNUC_UNUSED gpointer id,
     e = GTK_WIDGET (data);
 
     /* We set the new value for the widget */
-    GTK_CHECK_MENU_ITEM (e)->active = gm_conf_entry_get_bool (entry);
+    gtk_check_menu_item_set_active (GTK_CHECK_MENU_ITEM (e), gm_conf_entry_get_bool (entry));
 
     gtk_widget_queue_draw (GTK_WIDGET (e));
   }
@@ -295,8 +295,7 @@ gtk_build_menu (GtkWidget *menubar,
 	
 	menu [i].widget = 
 	  gtk_check_menu_item_new_with_mnemonic (menu_name);
-	GTK_CHECK_MENU_ITEM (menu [i].widget)->active =
-	  menu [i].enabled;
+	gtk_check_menu_item_set_active (GTK_CHECK_MENU_ITEM (menu [i].widget), menu [i].enabled);
 	gtk_widget_queue_draw (menu [i].widget);
       }
       else if (menu [i].type == MENU_RADIO_ENTRY) {
@@ -308,8 +307,7 @@ gtk_build_menu (GtkWidget *menubar,
 	  gtk_radio_menu_item_new_with_mnemonic (group, 
 						 menu_name);
 
-	GTK_CHECK_MENU_ITEM (menu [i].widget)->active =
-	  menu [i].enabled;
+	gtk_check_menu_item_set_active (GTK_CHECK_MENU_ITEM (menu [i].widget), menu [i].enabled);
 	gtk_widget_queue_draw (menu [i].widget);
 
 	group = 
@@ -537,7 +535,7 @@ void
 gtk_toggle_menu_enable (GtkWidget *e, 
 			gboolean show)
 {
-  GTK_CHECK_MENU_ITEM (e)->active = show;
+  gtk_check_menu_item_set_active (GTK_CHECK_MENU_ITEM (e), show);
 
   gtk_widget_queue_draw (GTK_WIDGET (e));
 }
@@ -565,11 +563,10 @@ gtk_radio_menu_select_with_id (GtkWidget *menu,
 						  last pos is 0 */
   while (group) {
 
-    if (GTK_WIDGET_SENSITIVE (GTK_CHECK_MENU_ITEM (group->data)))
-      GTK_CHECK_MENU_ITEM (group->data)->active = 
-        (i == group_last_pos - active);
+    if (gtk_widget_is_sensitive (GTK_WIDGET (group->data)))
+      gtk_check_menu_item_set_active (GTK_CHECK_MENU_ITEM (group->data), (i == group_last_pos - active));
     else
-      GTK_CHECK_MENU_ITEM (group->data)->active = FALSE; 
+      gtk_check_menu_item_set_active (GTK_CHECK_MENU_ITEM (group->data), FALSE);
       
     gtk_widget_queue_draw (GTK_WIDGET (group->data));
       
@@ -595,8 +592,7 @@ gtk_radio_menu_select_with_widget (GtkWidget *widget,
 						  last pos is 0 */
   while (group) {
 
-    GTK_CHECK_MENU_ITEM (group->data)->active = 
-      (i == group_last_pos - active);
+    gtk_check_menu_item_set_active (GTK_CHECK_MENU_ITEM (group->data), (i == group_last_pos - active));
     gtk_widget_queue_draw (GTK_WIDGET (group->data));
       
     group = g_slist_next (group);

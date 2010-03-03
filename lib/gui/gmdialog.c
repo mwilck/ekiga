@@ -151,14 +151,15 @@ warning_dialog_destroyed_cb (GtkWidget *w,
 {
   GList *children = NULL;
   
-  children = gtk_container_get_children (GTK_CONTAINER (GTK_DIALOG (w)->vbox));
+  children = gtk_container_get_children (GTK_CONTAINER (gtk_dialog_get_content_area (GTK_DIALOG (w))));
 
   g_return_if_fail (data != NULL);
 
   while (children) {
     
     if (GTK_IS_TOGGLE_BUTTON (children->data)) 
-      g_object_set_data (G_OBJECT (gtk_window_get_transient_for (GTK_WINDOW (w))), (const char *) data, GINT_TO_POINTER ((int) (GTK_TOGGLE_BUTTON (children->data)->active)));
+      g_object_set_data (G_OBJECT (gtk_window_get_transient_for (GTK_WINDOW (w))), (const char *) data,
+			 GINT_TO_POINTER ((int) (gtk_toggle_button_get_active (GTK_TOGGLE_BUTTON (children->data)))));
   
     children = g_list_next (children);
   }
@@ -271,11 +272,11 @@ gnomemeeting_progress_dialog (GtkWindow *parent,
   
   label = gtk_label_new (NULL);
   gtk_label_set_markup (GTK_LABEL (label), dialog_text);
-  gtk_box_pack_start (GTK_BOX (GTK_DIALOG (dialog)->vbox), label, 
+  gtk_box_pack_start (GTK_BOX (gtk_dialog_get_content_area (GTK_DIALOG (dialog))), label, 
 		      FALSE, FALSE, 0);
   
   progressbar = gtk_progress_bar_new ();
-  gtk_box_pack_start (GTK_BOX (GTK_DIALOG (dialog)->vbox), progressbar, 
+  gtk_box_pack_start (GTK_BOX (gtk_dialog_get_content_area (GTK_DIALOG (dialog))), progressbar, 
 		      FALSE, FALSE, 0);
 
   id = g_timeout_add (100, progress_dialog_pulse_cb, progressbar);
@@ -351,10 +352,9 @@ gnomemeeting_warning_dialog_on_widget (GtkWindow *parent,
   gtk_window_set_transient_for (GTK_WINDOW (dialog), parent);
   
   gtk_window_set_title (GTK_WINDOW (dialog), "");
-  gtk_label_set_markup (GTK_LABEL (GTK_MESSAGE_DIALOG (dialog)->label),
-			dialog_text);
+  gtk_message_dialog_set_markup (GTK_MESSAGE_DIALOG (dialog), dialog_text);
 
-  gtk_container_add (GTK_CONTAINER (GTK_DIALOG (dialog)->vbox), 
+  gtk_container_add (GTK_CONTAINER (gtk_dialog_get_content_area (GTK_DIALOG (dialog))), 
                      button);
   
   /* Can be called from threads */
@@ -416,8 +416,8 @@ gnomemeeting_dialog (GtkWindow *parent,
 			    GTK_BUTTONS_OK, NULL);
 
   gtk_window_set_title (GTK_WINDOW (dialog), "");
-  gtk_label_set_markup (GTK_LABEL (GTK_MESSAGE_DIALOG (dialog)->label),
-			dialog_text);
+  gtk_message_dialog_set_markup (GTK_MESSAGE_DIALOG (dialog),
+				 dialog_text);
   
   g_signal_connect_swapped (GTK_OBJECT (dialog), "response",
                             G_CALLBACK (gtk_widget_destroy),

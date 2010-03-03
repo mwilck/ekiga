@@ -492,6 +492,8 @@ static void gm_smiley_chooser_button_reposition_popup (GmSmileyChooserButton* se
 {
   gint final_x = 0;
   gint final_y = 0;
+  GtkAllocation allocation;
+  GtkAllocation popup_allocation;
 
   g_return_if_fail (self != NULL);
   g_return_if_fail (GM_IS_SMILEY_CHOOSER_BUTTON (self));
@@ -502,13 +504,13 @@ static void gm_smiley_chooser_button_reposition_popup (GmSmileyChooserButton* se
   if (!self->priv->popup_window)
     return;
 
+  gtk_widget_get_allocation (GTK_WIDGET (self), &allocation);
+  gtk_widget_get_allocation (GTK_WIDGET (self->priv->popup_window), &popup_allocation);
+
   /* calculate the new position out of the button's
    * and the smiley's sizes */
-  final_x = ref_x +
-    GTK_WIDGET (self)->allocation.x;
-  final_y = ref_y +
-    GTK_WIDGET (self)->allocation.y -
-    GTK_WIDGET (self->priv->popup_window)->allocation.height;
+  final_x = ref_x + allocation.x;
+  final_y = ref_y + allocation.y - popup_allocation.height;
 
   /* move its ass */
   gtk_window_move (GTK_WINDOW (self->priv->popup_window),
@@ -559,7 +561,7 @@ gm_smiley_chooser_button_popup (GmSmileyChooserButton* self)
   priv = self->priv;
 
   /* get my position data and position the popup */
-  (void) gdk_window_get_origin (GTK_WIDGET (self)->window,
+  (void) gdk_window_get_origin (gtk_widget_get_window (GTK_WIDGET (self)),
                                 &my_x, &my_y);
 
   gtk_window_move (GTK_WINDOW (priv->popup_window),
@@ -785,7 +787,7 @@ gm_smiley_chooser_button_new (void)
   /* if already possible (unlikely), initially set the toplevel reference */
   widget = gtk_widget_get_toplevel (GTK_WIDGET (self));
   if (widget &&
-      GTK_WIDGET_TOPLEVEL (widget) &&
+      gtk_widget_is_toplevel (widget) &&
       GTK_IS_WINDOW (widget))
     {
       g_object_ref_sink (G_OBJECT (widget));

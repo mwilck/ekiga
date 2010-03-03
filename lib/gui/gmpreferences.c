@@ -395,8 +395,10 @@ gnome_prefs_spin_new (GtkWidget *table,
 
   if (box) {
    
+    guint ncols;
+    g_object_get (G_OBJECT (table), "n-columns", &ncols, NULL);
     gtk_table_attach (GTK_TABLE (table), hbox, 
-		      0, GTK_TABLE (table)->ncols, row, row+1,
+		      0, ncols, row, row+1,
 		      (GtkAttachOptions) (GTK_FILL),
 		      (GtkAttachOptions) (GTK_FILL),
 		      0, 0);
@@ -991,7 +993,7 @@ gnome_prefs_window_new (const gchar *logo_name)
 
 
   /* The sections */
-  dialog_vbox = GTK_DIALOG (window)->vbox;
+  dialog_vbox = gtk_dialog_get_content_area (GTK_DIALOG (window));
   
   hbox = gtk_hbox_new (FALSE, 6);
   gtk_container_set_border_width (GTK_CONTAINER (hbox), 6);

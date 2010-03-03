@@ -209,8 +209,8 @@ adjustment_changed (GtkAdjustment *adj,
 
   key = (gchar *) data;
 
-  if (gm_conf_get_int (key) != (int) adj->value)
-    gm_conf_set_int (key, (int) adj->value);
+  if (gm_conf_get_int (key) != (int) gtk_adjustment_get_value (adj))
+    gm_conf_set_int (key, (int) gtk_adjustment_get_value (adj));
 }
 
 
