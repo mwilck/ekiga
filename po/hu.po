@@ -1,17 +1,17 @@
 # Hungarian translation of ekiga.
-# Copyright (C) 2002, 2003, 2004, 2006, 2007, 2008, 2009 Free Software Foundation, Inc.
+# Copyright (C) 2002, 2003, 2004, 2006, 2007, 2008, 2009, 2010 Free Software Foundation, Inc.
 # This file is distributed under the same license as the ekiga package.
 #
 # Andras Timar <timar@gnome.hu>, 2002, 2003.
 # Laszlo Dvornik <dvornik@gnome.hu>, 2004.
 # Gabor Kelemen <kelemeng@gnome.hu>, 2004, 2005, 2006, 2007, 2008, 2009.
-# Gabor Kelemen <kelemeng at gnome dot hu>, 2009.
+# Gabor Kelemen <kelemeng at gnome dot hu>, 2009, 2010.
 msgid ""
 msgstr ""
 "Project-Id-Version: ekiga.HEAD\n"
-"Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2009-11-28 12:13+0100\n"
-"PO-Revision-Date: 2009-11-28 12:21+0100\n"
+"Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?product=ekiga&component=general\n"
+"POT-Creation-Date: 2010-03-02 19:07+0000\n"
+"PO-Revision-Date: 2010-03-04 18:27+0100\n"
 "Last-Translator: Gabor Kelemen <kelemeng at gnome dot hu>\n"
 "Language-Team: Hungarian <gnome at fsf dot hu>\n"
 "MIME-Version: 1.0\n"
@@ -146,7 +146,9 @@ msgstr "Csendérzékelés engedélyezése"
 
 #: ../ekiga.schemas.in.in.h:24 ../src/gui/preferences.cpp:502
 msgid "Enable the automatic network setup resulting from the STUN test"
-msgstr "A STUN teszt által eredményezett automatikus hálózati beállítások engedélyezése"
+msgstr ""
+"A STUN teszt által eredményezett automatikus hálózati beállítások "
+"engedélyezése"
 
 #: ../ekiga.schemas.in.in.h:25
 msgid ""
@@ -215,7 +217,7 @@ msgstr ""
 
 #: ../ekiga.schemas.in.in.h:36 ../src/gui/preferences.cpp:527
 msgid "If enabled, automatically answer incoming calls"
-msgstr ""
+msgstr "Ha engedélyezve van, automatikusan válaszol a bejövő hívásokra"
 
 #: ../ekiga.schemas.in.in.h:37 ../src/gui/preferences.cpp:489
 msgid "If enabled, offline contacts will be shown in the roster"
@@ -582,9 +584,9 @@ msgid ""
 "in case a minimum quality was configure via a TSTO value smaller than 31 and "
 "the bitrate selected is not sufficient to support this minimum quality"
 msgstr ""
-"A maximális átvitt képkockasebesség képkocka/s-ben. Ez a sebesség nem "
-"érhető el, ha a minimális minőséget 31-nél kisebb TSTO értékkel adták meg, "
-"és a bitsebesség nem elegendő ezen minimális minőség kiszolgálásához."
+"A maximális átvitt képkockasebesség képkocka/s-ben. Ez a sebesség nem érhető "
+"el, ha a minimális minőséget 31-nél kisebb TSTO értékkel adták meg, és a "
+"bitsebesség nem elegendő ezen minimális minőség kiszolgálásához."
 
 #: ../ekiga.schemas.in.in.h:113
 msgid "The new instant message sound"
@@ -811,13 +813,91 @@ msgstr "Elmulasztott"
 
 #: ../lib/engine/components/gnome-session/gnome-session-main.cpp:157
 msgid "Call in progress"
-msgstr ""
+msgstr "Hívás folyamatban"
 
 #: ../lib/engine/components/local-roster/local-cluster.cpp:82
 #: ../lib/engine/components/local-roster/local-heap.cpp:117
-#: ../plugins/evolution/evolution-book.cpp:324
+#: ../plugins/evolution/evolution-book.cpp:339
 msgid "New contact"
 msgstr "Új partner"
+
+#: ../lib/engine/components/local-roster/local-presentity.cpp:118
+#: ../plugins/resource-list/rl-entry.cpp:141
+#: ../plugins/resource-list/rl-heap.cpp:102
+#: ../plugins/resource-list/rl-heap.cpp:144
+#: ../plugins/resource-list/rl-heap.cpp:176
+#: ../plugins/resource-list/rl-presentity.cpp:143
+msgid "Unnamed"
+msgstr "Névtelen"
+
+#: ../lib/engine/components/local-roster/local-presentity.cpp:215
+#: ../lib/engine/components/opal/opal-account.cpp:350
+#: ../plugins/evolution/evolution-contact.cpp:218
+#: ../plugins/loudmouth/loudmouth-presentity.cpp:151
+#: ../plugins/resource-list/rl-presentity.cpp:206
+#: ../src/gui/main_window.cpp:3205
+msgid "_Edit"
+msgstr "S_zerkesztés"
+
+#: ../lib/engine/components/local-roster/local-presentity.cpp:217
+#: ../lib/engine/components/opal/opal-account.cpp:352
+#: ../plugins/evolution/evolution-contact.cpp:220
+#: ../plugins/loudmouth/loudmouth-account.cpp:364
+#: ../plugins/loudmouth/loudmouth-presentity.cpp:184
+#: ../plugins/resource-list/rl-presentity.cpp:208
+msgid "_Remove"
+msgstr "_Eltávolítás"
+
+#: ../lib/engine/components/local-roster/local-presentity.cpp:242
+#: ../plugins/loudmouth/loudmouth-presentity.cpp:269
+msgid "Edit roster element"
+msgstr "Partnerlista-elem szerkesztése"
+
+#: ../lib/engine/components/local-roster/local-presentity.cpp:243
+msgid ""
+"Please fill in this form to change an existing element of ekiga's internal "
+"roster"
+msgstr ""
+"Töltse ki ezt az űrlapot az Ekiga belső partnerlistája egy meglévő elemének "
+"módosításához"
+
+#: ../lib/engine/components/local-roster/local-presentity.cpp:245
+#: ../lib/engine/components/local-roster/local-heap.cpp:235
+#: ../lib/engine/components/local-roster/local-heap.cpp:427
+#: ../lib/engine/components/opal/opal-account.cpp:395
+#: ../plugins/evolution/evolution-contact.cpp:314
+#: ../plugins/loudmouth/loudmouth-account.cpp:267
+#: ../plugins/loudmouth/loudmouth-presentity.cpp:272
+#: ../plugins/resource-list/rl-cluster.cpp:169
+#: ../plugins/resource-list/rl-heap.cpp:526
+#: ../plugins/resource-list/rl-presentity.cpp:227
+msgid "Name:"
+msgstr "Név:"
+
+#: ../lib/engine/components/local-roster/local-presentity.cpp:246
+#: ../lib/engine/components/local-roster/local-heap.cpp:244
+#: ../lib/engine/components/local-roster/local-heap.cpp:246
+#: ../plugins/resource-list/rl-cluster.cpp:170
+#: ../plugins/resource-list/rl-heap.cpp:527
+#: ../plugins/resource-list/rl-presentity.cpp:228
+msgid "Address:"
+msgstr "Cím:"
+
+#: ../lib/engine/components/local-roster/local-presentity.cpp:247
+msgid "Is a prefered contact"
+msgstr "Előnyben részesített partner"
+
+#: ../lib/engine/components/local-roster/local-presentity.cpp:249
+#: ../plugins/loudmouth/loudmouth-presentity.cpp:274
+#: ../plugins/resource-list/rl-heap.cpp:528
+#: ../plugins/resource-list/rl-presentity.cpp:230
+msgid "Choose groups:"
+msgstr "Válasszon csoportokat:"
+
+#: ../lib/engine/components/local-roster/local-roster-bridge.cpp:93
+#: ../lib/engine/components/local-roster/local-heap.cpp:232
+msgid "Add to local roster"
+msgstr "Hozzáadás helyi partnerlistához"
 
 #: ../lib/engine/components/local-roster/local-heap.cpp:93
 msgid "Services"
@@ -882,38 +962,11 @@ msgstr "Felettes"
 msgid "Self"
 msgstr "Önmaga"
 
-#: ../lib/engine/components/local-roster/local-heap.cpp:232
-#: ../lib/engine/components/local-roster/local-roster-bridge.cpp:93
-msgid "Add to local roster"
-msgstr "Hozzáadás helyi partnerlistához"
-
 #: ../lib/engine/components/local-roster/local-heap.cpp:233
 msgid "Please fill in this form to add a new contact to ekiga's internal roster"
 msgstr ""
 "Töltse ki ezt az űrlapot új partner felvételéhez az Ekiga belső "
 "partnerlistájára"
-
-#: ../lib/engine/components/local-roster/local-heap.cpp:235
-#: ../lib/engine/components/local-roster/local-heap.cpp:427
-#: ../lib/engine/components/local-roster/local-presentity.cpp:245
-#: ../lib/engine/components/opal/opal-account.cpp:395
-#: ../plugins/evolution/evolution-contact.cpp:314
-#: ../plugins/loudmouth/loudmouth-account.cpp:267
-#: ../plugins/loudmouth/loudmouth-presentity.cpp:269
-#: ../plugins/resource-list/rl-cluster.cpp:169
-#: ../plugins/resource-list/rl-heap.cpp:526
-#: ../plugins/resource-list/rl-presentity.cpp:227
-msgid "Name:"
-msgstr "Név:"
-
-#: ../lib/engine/components/local-roster/local-heap.cpp:244
-#: ../lib/engine/components/local-roster/local-heap.cpp:246
-#: ../lib/engine/components/local-roster/local-presentity.cpp:246
-#: ../plugins/resource-list/rl-cluster.cpp:170
-#: ../plugins/resource-list/rl-heap.cpp:527
-#: ../plugins/resource-list/rl-presentity.cpp:228
-msgid "Address:"
-msgstr "Cím:"
 
 #: ../lib/engine/components/local-roster/local-heap.cpp:250
 msgid "Put contact in groups:"
@@ -934,57 +987,6 @@ msgstr "Csoport átnevezése"
 #: ../lib/engine/components/local-roster/local-heap.cpp:426
 msgid "Please edit this group name"
 msgstr "Módosítsa a csoportnevet"
-
-#: ../lib/engine/components/local-roster/local-presentity.cpp:118
-#: ../plugins/resource-list/rl-entry.cpp:141
-#: ../plugins/resource-list/rl-heap.cpp:102
-#: ../plugins/resource-list/rl-heap.cpp:144
-#: ../plugins/resource-list/rl-heap.cpp:176
-#: ../plugins/resource-list/rl-presentity.cpp:143
-msgid "Unnamed"
-msgstr "Névtelen"
-
-#: ../lib/engine/components/local-roster/local-presentity.cpp:215
-#: ../lib/engine/components/opal/opal-account.cpp:350
-#: ../plugins/evolution/evolution-contact.cpp:218
-#: ../plugins/loudmouth/loudmouth-presentity.cpp:151
-#: ../plugins/resource-list/rl-presentity.cpp:206
-#: ../src/gui/main_window.cpp:3205
-msgid "_Edit"
-msgstr "S_zerkesztés"
-
-#: ../lib/engine/components/local-roster/local-presentity.cpp:217
-#: ../lib/engine/components/opal/opal-account.cpp:352
-#: ../plugins/evolution/evolution-contact.cpp:220
-#: ../plugins/loudmouth/loudmouth-account.cpp:364
-#: ../plugins/loudmouth/loudmouth-presentity.cpp:181
-#: ../plugins/resource-list/rl-presentity.cpp:208
-msgid "_Remove"
-msgstr "_Eltávolítás"
-
-#: ../lib/engine/components/local-roster/local-presentity.cpp:242
-#: ../plugins/loudmouth/loudmouth-presentity.cpp:266
-msgid "Edit roster element"
-msgstr "Partnerlista-elem szerkesztése"
-
-#: ../lib/engine/components/local-roster/local-presentity.cpp:243
-msgid ""
-"Please fill in this form to change an existing element of ekiga's internal "
-"roster"
-msgstr ""
-"Töltse ki ezt az űrlapot az Ekiga belső partnerlistája egy meglévő elemének "
-"módosításához"
-
-#: ../lib/engine/components/local-roster/local-presentity.cpp:247
-msgid "Is a prefered contact"
-msgstr "Előnyben részesített partner"
-
-#: ../lib/engine/components/local-roster/local-presentity.cpp:249
-#: ../plugins/loudmouth/loudmouth-presentity.cpp:271
-#: ../plugins/resource-list/rl-heap.cpp:528
-#: ../plugins/resource-list/rl-presentity.cpp:230
-msgid "Choose groups:"
-msgstr "Válasszon csoportokat:"
 
 #: ../lib/engine/components/opal/h323-endpoint.cpp:131
 #: ../lib/engine/components/opal/sip-endpoint.cpp:230
@@ -1026,8 +1028,8 @@ msgstr "Sikertelen"
 #, c-format
 msgid "%s (with %d voicemail message)"
 msgid_plural "%s (with %d voicemail messages)"
-msgstr[0] ""
-msgstr[1] ""
+msgstr[0] "%s (%d hangpostaüzenettel)"
+msgstr[1] "%s (%d hangpostaüzenettel)"
 
 #: ../lib/engine/components/opal/opal-account.cpp:342
 #: ../plugins/loudmouth/loudmouth-account.cpp:352
@@ -1060,7 +1062,7 @@ msgid "Edit account"
 msgstr "Felhasználói fiók szerkesztése"
 
 #: ../lib/engine/components/opal/opal-account.cpp:393
-#: ../plugins/evolution/evolution-book.cpp:326
+#: ../plugins/evolution/evolution-book.cpp:341
 #: ../plugins/evolution/evolution-contact.cpp:312
 #: ../plugins/loudmouth/loudmouth-account.cpp:264
 msgid "Please update the following fields:"
@@ -1194,7 +1196,7 @@ msgstr "_PIN kód:"
 
 #: ../lib/engine/components/opal/opal-bank.cpp:121
 #: ../lib/engine/components/opal/opal-bank.cpp:131
-#: ../plugins/evolution/evolution-book.cpp:328
+#: ../plugins/evolution/evolution-book.cpp:343
 msgid "_Name:"
 msgstr "_Név:"
 
@@ -1327,7 +1329,7 @@ msgstr "Jogosulatlan"
 
 #: ../lib/engine/components/opal/sip-endpoint.cpp:645
 msgid "Forbidden, please check that username and password are correct"
-msgstr ""
+msgstr "Letiltva, ellenőrizze a felhasználónév és jelszó helyességét"
 
 #: ../lib/engine/components/opal/sip-endpoint.cpp:649
 msgid "Timeout"
@@ -1529,6 +1531,10 @@ msgstr "Hívás folyamatban %s partnerrel"
 msgid "In a call"
 msgstr "Hívás folyamatban"
 
+#: ../lib/engine/gui/gtk-core/form-dialog-gtk.cpp:660
+msgid "Advanced"
+msgstr "Speciális"
+
 #: ../lib/engine/gui/gtk-core/codecsbox.cpp:478
 msgid "Move selected codec priority upwards"
 msgstr "Kiválasztott kodek prioritásának növelése"
@@ -1536,10 +1542,6 @@ msgstr "Kiválasztott kodek prioritásának növelése"
 #: ../lib/engine/gui/gtk-core/codecsbox.cpp:488
 msgid "Move selected codec priority downwards"
 msgstr "Kiválasztott kodek prioritásának csökkentése"
-
-#: ../lib/engine/gui/gtk-core/form-dialog-gtk.cpp:660
-msgid "Advanced"
-msgstr "Speciális"
 
 #: ../lib/engine/gui/gtk-frontend/addressbook-window.cpp:670
 msgid "Address Book"
@@ -1580,7 +1582,7 @@ msgstr "Hivatkozás megnyitása böngészőben"
 msgid "Copy link"
 msgstr "Hivatkozás másolása"
 
-#: ../lib/engine/gui/gtk-frontend/chat-area.cpp:910
+#: ../lib/engine/gui/gtk-frontend/chat-area.cpp:912
 msgid "_Smile..."
 msgstr "_Hangulatjel…"
 
@@ -1589,8 +1591,8 @@ msgstr "_Hangulatjel…"
 msgid "Chat Window"
 msgstr "Csevegőablak"
 
-#: ../lib/engine/gui/gtk-frontend/roster-view-gtk.cpp:977
-#: ../lib/engine/gui/gtk-frontend/roster-view-gtk.cpp:1012
+#: ../lib/engine/gui/gtk-frontend/roster-view-gtk.cpp:971
+#: ../lib/engine/gui/gtk-frontend/roster-view-gtk.cpp:1006
 msgid "Unsorted"
 msgstr "Rendezetlen"
 
@@ -1606,32 +1608,32 @@ msgid_plural "%d users found"
 msgstr[0] "%d felhasználó található"
 msgstr[1] "%d felhasználó található"
 
-#: ../plugins/evolution/evolution-book.cpp:282
+#: ../plugins/evolution/evolution-book.cpp:297
 #: ../plugins/loudmouth/loudmouth-heap.cpp:138
 msgid "New _Contact"
 msgstr "Ú_j névjegy"
 
-#: ../plugins/evolution/evolution-book.cpp:329
+#: ../plugins/evolution/evolution-book.cpp:344
 #: ../plugins/evolution/evolution-contact.cpp:323
 msgid "VoIP _URI:"
 msgstr "VoIP _URI:"
 
-#: ../plugins/evolution/evolution-book.cpp:330
+#: ../plugins/evolution/evolution-book.cpp:345
 #: ../plugins/evolution/evolution-contact.cpp:324
 msgid "_Home phone:"
 msgstr "_Otthoni telefon:"
 
-#: ../plugins/evolution/evolution-book.cpp:331
+#: ../plugins/evolution/evolution-book.cpp:346
 #: ../plugins/evolution/evolution-contact.cpp:325
 msgid "_Office phone:"
 msgstr "M_unkahelyi telefon:"
 
-#: ../plugins/evolution/evolution-book.cpp:332
+#: ../plugins/evolution/evolution-book.cpp:347
 #: ../plugins/evolution/evolution-contact.cpp:326
 msgid "_Cell phone:"
 msgstr "M_obiltelefon:"
 
-#: ../plugins/evolution/evolution-book.cpp:333
+#: ../plugins/evolution/evolution-book.cpp:348
 #: ../plugins/evolution/evolution-contact.cpp:327
 msgid "_Pager:"
 msgstr "S_zemélyhívó:"
@@ -1671,8 +1673,9 @@ msgstr "Őrült"
 msgid "Screencast"
 msgstr "Képernyőküldés"
 
-#: ../plugins/ldap/ldap-book.cpp:414 ../plugins/resource-list/rl-entry.cpp:154
+#: ../plugins/ldap/ldap-book.cpp:414
 #: ../plugins/resource-list/rl-entry-ref.cpp:132
+#: ../plugins/resource-list/rl-entry.cpp:154
 msgid "_Refresh"
 msgstr "_Frissítés"
 
@@ -1858,7 +1861,7 @@ msgstr "inaktív"
 #: ../plugins/loudmouth/loudmouth-account.cpp:150
 #, c-format
 msgid "error connecting (%s)"
-msgstr ""
+msgstr "csatlakozási hiba (%s)"
 
 #: ../plugins/loudmouth/loudmouth-account.cpp:156
 msgid "connecting"
@@ -1871,11 +1874,11 @@ msgstr "hitelesítés"
 #. FIXME: can't we report better?
 #: ../plugins/loudmouth/loudmouth-account.cpp:210
 msgid "error connecting"
-msgstr ""
+msgstr "csatlakozási hiba"
 
 #: ../plugins/loudmouth/loudmouth-account.cpp:222
 msgid "disconnected"
-msgstr ""
+msgstr "leválasztva"
 
 #: ../plugins/loudmouth/loudmouth-account.cpp:239
 msgid "connected"
@@ -1884,7 +1887,7 @@ msgstr "csatlakozva"
 #. FIXME: can't we report something better?
 #: ../plugins/loudmouth/loudmouth-account.cpp:245
 msgid "error authenticating loudmouth account"
-msgstr ""
+msgstr "hiba a loudmouth fiók hitelesítésekor"
 
 #: ../plugins/loudmouth/loudmouth-account.cpp:275
 msgid "Server:"
@@ -1892,7 +1895,7 @@ msgstr "Kiszolgáló:"
 
 #: ../plugins/loudmouth/loudmouth-account.cpp:279
 msgid "Resource:"
-msgstr ""
+msgstr "Erőforrás:"
 
 #: ../plugins/loudmouth/loudmouth-account.cpp:297
 msgid "Enable account"
@@ -1908,44 +1911,41 @@ msgstr "_Jabber/XMPP fiók hozzáadása"
 
 #: ../plugins/loudmouth/loudmouth-heap.cpp:210
 msgid "Authorization to see your presence"
-msgstr ""
+msgstr "Felhatalmazás az állapotának megismerésére"
 
 #: ../plugins/loudmouth/loudmouth-heap.cpp:214
 #, c-format
 msgid "%s asks the permission to see your presence, saying: \"%s\"."
-msgstr ""
+msgstr "%s felhatalmazást kér az Ön állapotának megismerésére, és ezt mondja: „%s”"
 
 #: ../plugins/loudmouth/loudmouth-heap.cpp:218
 #, c-format
 msgid "%s asks the permission to see your presence."
-msgstr ""
+msgstr "%s felhatalmazást kér az Ön állapotának megismerésére."
 
 #: ../plugins/loudmouth/loudmouth-heap.cpp:225
 msgid "grant him/her the permission to see your presence"
-msgstr ""
+msgstr "felhatalmazom az állapotom megismerésére"
 
 #: ../plugins/loudmouth/loudmouth-heap.cpp:226
 msgid "refuse him/her the permission to see your presence"
-msgstr ""
+msgstr "nem hatalmazom fel az állapotom megismerésére"
 
 #: ../plugins/loudmouth/loudmouth-heap.cpp:227
 msgid "decide later (also close or cancel this dialog)"
-msgstr ""
+msgstr "később döntök"
 
 #: ../plugins/loudmouth/loudmouth-heap.cpp:228
 msgid "Your answer is: "
-msgstr ""
+msgstr "Az Ön válasza: "
 
 #: ../plugins/loudmouth/loudmouth-heap.cpp:315
 msgid "Add a roster element"
 msgstr "Partnerlista-elem hozzáadása"
 
 #: ../plugins/loudmouth/loudmouth-heap.cpp:316
-#, fuzzy
-msgid "Please fill in this form to add a newelement to the remote roster"
-msgstr ""
-"Töltse ki ezt az űrlapot új partnerlista felvételéhez az Ekiga távoli "
-"partnerlistájára"
+msgid "Please fill in this form to add a new element to the remote roster"
+msgstr "Töltse ki ezt az űrlapot új elem felvételéhez a távoli partnerlistára"
 
 #: ../plugins/loudmouth/loudmouth-heap.cpp:318
 msgid "Identifier:"
@@ -1958,32 +1958,33 @@ msgstr "azonosító@kiszolgáló"
 #: ../plugins/loudmouth/loudmouth-presentity.cpp:156
 #: ../plugins/loudmouth/loudmouth-presentity.cpp:162
 msgid "Ask him/her to see his/her status"
-msgstr ""
+msgstr "Felhatalmazás kérése az állapota megismeréséhez"
 
 #: ../plugins/loudmouth/loudmouth-presentity.cpp:160
 #: ../plugins/loudmouth/loudmouth-presentity.cpp:172
 msgid "Forbid him/her to see my status"
-msgstr ""
+msgstr "Megtiltom neki az állapotom megismerését"
 
 #: ../plugins/loudmouth/loudmouth-presentity.cpp:164
 msgid "Ask him/her to see his/her status (pending)"
-msgstr ""
+msgstr "Felhatalmazás kérése az állapota megismeréséhez (függőben)"
 
 #: ../plugins/loudmouth/loudmouth-presentity.cpp:168
 #: ../plugins/loudmouth/loudmouth-presentity.cpp:173
 msgid "Stop getting his/her status"
-msgstr ""
+msgstr "Már nem akarom látni az állapotát"
 
 #: ../plugins/loudmouth/loudmouth-presentity.cpp:178
 msgid "Start chat"
 msgstr "Csevegés indítása"
 
-#: ../plugins/loudmouth/loudmouth-presentity.cpp:267
-#, fuzzy
+#: ../plugins/loudmouth/loudmouth-presentity.cpp:181
+msgid "Continue chat"
+msgstr "Csevegés folytatása"
+
+#: ../plugins/loudmouth/loudmouth-presentity.cpp:270
 msgid "Please fill in this form to change an existing element of the remote roster"
-msgstr ""
-"Töltse ki ezt az űrlapot az Ekiga belső partnerlistája egy meglévő elemének "
-"módosításához"
+msgstr "Töltse ki ezt az űrlapot a távoli partnerlista meglévő elemének módosításához"
 
 #: ../plugins/resource-list/rl-cluster.cpp:102
 msgid "New resource list"
@@ -2007,10 +2008,6 @@ msgstr "Írható:"
 msgid "Username:"
 msgstr "Felhasználónév:"
 
-#: ../plugins/resource-list/rl-entry.cpp:197
-msgid "Invalid server data"
-msgstr "Érvénytelen kiszolgálóadatok"
-
 #: ../plugins/resource-list/rl-entry-ref.cpp:53
 msgid "Click to fetch"
 msgstr "Kattintson a lekéréshez"
@@ -2018,6 +2015,10 @@ msgstr "Kattintson a lekéréshez"
 #: ../plugins/resource-list/rl-entry-ref.cpp:120
 msgid "Distant contact"
 msgstr "Távoli partner"
+
+#: ../plugins/resource-list/rl-entry.cpp:197
+msgid "Invalid server data"
+msgstr "Érvénytelen kiszolgálóadatok"
 
 #: ../plugins/resource-list/rl-heap.cpp:198
 msgid "_Add a new contact"
@@ -2571,7 +2572,7 @@ msgstr "Hiba a videoeszköz (%s) elérésekor"
 
 #: ../src/gui/main_window.cpp:1139
 msgid "A moving logo will be transmitted during calls."
-msgstr ""
+msgstr "A hívások alatt egy mozgó logó jelenik meg."
 
 #: ../src/gui/main_window.cpp:1143
 msgid ""
@@ -3184,7 +3185,7 @@ msgstr ""
 
 #: ../src/gui/preferences.cpp:527
 msgid "_Automatically answer incoming calls"
-msgstr ""
+msgstr "Bejö_vő hívások automatikus megválaszolása"
 
 #: ../src/gui/preferences.cpp:558
 msgid "Ekiga Sound Events"
@@ -3236,7 +3237,7 @@ msgstr "_Továbbítási URI:"
 
 #: ../src/gui/preferences.cpp:695
 msgid "Advanced Settings"
-msgstr "Haladó beállítások"
+msgstr "Speciális beállítások"
 
 #. The toggles
 #: ../src/gui/preferences.cpp:698
@@ -3459,7 +3460,7 @@ msgstr[1] "%d üzenete érkezett"
 
 #: ../src/gui/statusicon.cpp:418
 msgid "The following accounts are inactive:"
-msgstr ""
+msgstr "A következő fiókok inaktívak:"
 
 #: ../src/gui/statusmenu.cpp:87
 msgid "Online"
