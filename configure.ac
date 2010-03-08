@@ -8,6 +8,9 @@ AM_INIT_AUTOMAKE
 AM_MAINTAINER_MODE
 AM_CONFIG_HEADER(config.h)
 
+dnl use "make V=1" if you want to see the long awful lines
+m4_ifdef([AM_SILENT_RULES],[AM_SILENT_RULES([yes])])
+
 AC_LANG(C++)
 
 dnl ###########################################################################
