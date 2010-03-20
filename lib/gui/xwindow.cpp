@@ -82,6 +82,7 @@ struct xFormatsentry {
   {"RGBA",   1, 0, LSBFirst,     0x000000FF, 0x0000FF00, 0x00FF0000},  //RGBA *
   {"BGR32",  1, 4, MSBFirst,     0x0000FF00, 0x00FF0000, 0xFF000000},  //BGRA
   {"BGRA",   1, 0, LSBFirst,     0x00FF0000, 0x0000FF00, 0x000000FF},  //BGRA *
+  {"RGB16", 16, 2, LSBFirst,     0x0000F800, 0x000007E0, 0x0000001F},  //RGB16
   {NULL, 0, 0, 0, 0, 0, 0}
 };
 
@@ -1017,6 +1018,17 @@ bool XWindow::checkDepth ()
       _depth = 24;
       if (!XMatchVisualInfo (_display, DefaultScreen (_display), _depth, TrueColor, &_XVInfo)) {
         PTRACE(1, "X11\tCould neither find visual with colordepth of 32 bits per pixel nor with 24 bits per pixel");
+        return false;
+      }
+    }
+  }
+  else if (xwattributes.depth == 16) {
+    _depth = 16;
+    if (!XMatchVisualInfo (_display, DefaultScreen (_display), _depth, TrueColor, &_XVInfo)) {
+      PTRACE(4, "X11\tCould not find visual with colordepth of " << _depth  << " bits per pixel");
+      _depth = 24;
+      if (!XMatchVisualInfo (_display, DefaultScreen (_display), _depth, TrueColor, &_XVInfo)) {
+        PTRACE(1, "X11\tCould neither find visual with colordepth of 16 bits per pixel nor with 24 bits per pixel");
         return false;
       }
     }
