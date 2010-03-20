@@ -157,6 +157,13 @@ pixops_scale_nearest (guchar        *dest_buf,
 	      INNER_LOOP(4, 4, p32=(guint32*)dest;*p32=*((guint32*)p));
 	    }
 	}
+      else if (src_channels == 2)
+	{
+	  if (dest_channels == 2)
+	    {
+	      INNER_LOOP (2, 2, dest[0]=p[0];dest[1]=p[1]);
+	    }
+	}
     }
 }
 
