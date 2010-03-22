@@ -10,7 +10,7 @@ msgstr ""
 "Project-Id-Version: eu\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2010-03-02 20:16+0100\n"
-"PO-Revision-Date: 2010-03-02 20:16+0100\n"
+"PO-Revision-Date: 2010-03-22 17:04+0100\n"
 "Last-Translator: Iñaki Larrañaga Murgoitio <dooteo@euskalgnu.org>\n"
 "Language-Team: Basque <itzulpena@euskalgnu.org>\n"
 "MIME-Version: 1.0\n"
@@ -169,7 +169,7 @@ msgstr "Birbidali deiak emandako ostalariari erantzunik ez badago"
 
 #: ../ekiga.schemas.in.in.h:29 ../src/gui/preferences.cpp:1018
 msgid "Frame Rate"
-msgstr "Fotograma-tasa"
+msgstr "Fotograma-emaria"
 
 #: ../ekiga.schemas.in.in.h:30
 msgid "Full name"
@@ -247,11 +247,11 @@ msgstr "Bideo lokalaren leihoaren zabalera"
 
 #: ../ekiga.schemas.in.in.h:44
 msgid "Maximum RX video bitrate"
-msgstr "Bideoa jasotzeko gehienezko bit-tasa"
+msgstr "Bideoa jasotzeko gehienezko bit-emaria"
 
 #: ../ekiga.schemas.in.in.h:45
 msgid "Maximum TX video bitrate"
-msgstr "Bideoa transmititzeko gehienezko bit-tasa"
+msgstr "Bideoa transmititzeko gehienezko bit-emaria"
 
 #: ../ekiga.schemas.in.in.h:46
 msgid "Maximum jitter buffer"
@@ -538,8 +538,8 @@ msgid ""
 "peer endpoint that can adjust (if it supports it) its TX bitrate if it is "
 "above the signaled value"
 msgstr ""
-"Bideoa jasotzeko gehienezko bit-tasa (Kbit/s). Balio hau amaierako puntura "
-"bidal daiteke bere transmisioko bit-tasa doitzeko (onartzen bada) bidalitako "
+"Bideoa jasotzeko gehienezko bit-emaria (Kbit/s). Balio hau amaierako puntura "
+"bidal daiteke bere transmisioko bit-emaria doitzeko (onartzen bada) bidalitako "
 "balioa baino altuagoa bada."
 
 #: ../ekiga.schemas.in.in.h:108
@@ -549,8 +549,8 @@ msgid ""
 "dynamically adjusted above their minimum during calls to try to minimize the "
 "bandwidth to the given value"
 msgstr ""
-"Bideoaren transmisioaren gehienezko bit-tasa (kbit/s). Bideo-kalitatea eta "
-"transmititutako fotograma-tasa segundoko (hautatutako kodekaren arabera) "
+"Bideoaren transmisioaren gehienezko bit-emaria (kbit/s). Bideo-kalitatea eta "
+"transmititutako fotograma-emaria segundoko (hautatutako kodekaren arabera) "
 "dinamikoki doituko dira beraien gutxienekoaren gainetik deiak martxan dauden "
 "bitartean, banda-zabalera emandako baliora minimizatzen saiatzeko."
 
@@ -564,9 +564,9 @@ msgid ""
 "in case a minimum quality was configure via a TSTO value smaller than 31 and "
 "the bitrate selected is not sufficient to support this minimum quality"
 msgstr ""
-"Transmititutako gehienezko fotograma-tasa (f/s). Baliteke tasa honetara ez "
+"Transmititutako gehienezko fotograma-emaria (f/s). Baliteke emaria honetara ez "
 "iristea TSTOren gutxieneko kalitatea 31 baino baxuagoa bada eta hautatutako "
-"bit-tasa ez bada nahikoa gutxieneko kalitate hau onartzeko."
+"bit-emaria ez bada nahikoa gutxieneko kalitate hau onartzeko."
 
 #: ../ekiga.schemas.in.in.h:111
 msgid "The new instant message sound"
@@ -760,7 +760,7 @@ msgid ""
 "order to keep a minimum level of (spatial) quality for all frames. 0: "
 "Highest minimal quality, 31: lowest minimal quality"
 msgstr ""
-"Gehienezko fotograma-tasa mantentzea edo murriztea nahi den edo fotograma "
+"Gehienezko fotograma-emaria mantentzea edo murriztea nahi den edo fotograma "
 "guztien gutxieneko kalitate (espaziala) maila mantentzeko. 0: gutxieneko "
 "kalitate altuena, 31: gutxieneko kalitate baxuena."
 
@@ -971,7 +971,7 @@ msgstr "Ezin izan da bilatu"
 
 #: ../lib/engine/components/ldap/ldap-book.cpp:829
 msgid "Waiting for search results"
-msgstr "Bilaketaren emaitzen zai"
+msgstr "Bilaketaren emaitzen zain"
 
 #: ../lib/engine/components/ldap/ldap-book.cpp:919
 msgid "Please edit the following fields"
@@ -1615,7 +1615,7 @@ msgstr "SIP bertsioa ez dago onartuta"
 
 #: ../lib/engine/components/opal/sip-endpoint.cpp:801
 msgid "Message too large"
-msgstr "Mezua luzegia"
+msgstr "Mezua luzeegia"
 
 #: ../lib/engine/components/opal/sip-endpoint.cpp:805
 msgid "Busy everywhere"
@@ -1671,7 +1671,7 @@ msgstr "Bete inprimaki hau kontaktu berria ekigako urruneko zerrendari gehitzeko
 
 #: ../lib/engine/components/resource-list/rl-cluster.cpp:171
 msgid "Writable:"
-msgstr "Idazkorra:"
+msgstr "Idazgarria:"
 
 #: ../lib/engine/components/resource-list/rl-cluster.cpp:172
 msgid "Username:"
@@ -1720,7 +1720,7 @@ msgstr "Identifikatzailea"
 
 #: ../lib/engine/components/resource-list/rl-heap.cpp:473
 msgid "Writable"
-msgstr "Idazkorra"
+msgstr "Idazgarria"
 
 #: ../lib/engine/components/resource-list/rl-heap.cpp:474
 msgid "Server username"
@@ -1954,7 +1954,7 @@ msgstr ""
 "oraindik, sortu kontu bat hor behean. Horrela SIP helbidea edukiko duzu "
 "beste erabiltzaileek zuri deitzeko.\n"
 "\n"
-"Urrats hau jaurti dezakezu bestelako SIP zerbizua erabiltzen baduzu, edo "
+"Urrats hau jaurti dezakezu bestelako SIP zerbitzua erabiltzen baduzu, edo "
 "saio-hasierari buruzko xehetasunak beranduago zehaztea nahi baduzu."
 
 #: ../src/gui/assistant.cpp:606
@@ -1967,7 +1967,7 @@ msgstr "Ekiga Call Out kontua"
 
 #: ../src/gui/assistant.cpp:671
 msgid "Please enter your account ID:"
-msgstr "Sartu zure konatuaren IDa:"
+msgstr "Sartu zure kontuaren IDa:"
 
 #: ../src/gui/assistant.cpp:679
 msgid "Please enter your PIN code:"
@@ -2197,7 +2197,7 @@ msgid ""
 "long as you do follow the requirements of the GNU GPL for all the rest of "
 "the software thus combined."
 msgstr ""
-"Ekiga aplikazioa GPL lizentziapean kaleratzen da eta salbuespen berezi gisa, "
+"Ekiga aplikazioa GPL lizentzia pean kaleratzen da eta salbuespen berezi gisa, "
 "baimena duzu OPAL, OpenH323 eta PWLIB programekin estekatzeko edo bestela "
 "konbinatzeko, eta konbinazioa banatzeko (GNU GPL lizentzia OPAL, OpenH323 "
 "eta PWLIB programei aplikatu gabe) GNU GPL lizentziaren betekizunak honela "
@@ -2401,7 +2401,7 @@ msgstr ""
 
 #: ../src/gui/main.cpp:1167
 msgid "Error while setting the frame rate."
-msgstr "Errorea gertatu da fotograma-tasa ezartzean."
+msgstr "Errorea gertatu da fotograma-emaria ezartzean."
 
 #: ../src/gui/main.cpp:1171
 msgid "Error while setting the frame size."
@@ -2781,7 +2781,7 @@ msgstr "Bistaratu pantaila osoa"
 
 #: ../src/gui/main.cpp:3279 ../src/gui/statusicon.cpp:402
 msgid "Get help by reading the Ekiga manual"
-msgstr "Lortu laguntza Ekiga-ren eskuliburua irrakurriz"
+msgstr "Lortu laguntza Ekiga-ren eskuliburua irakurriz"
 
 #: ../src/gui/main.cpp:3284 ../src/gui/statusicon.cpp:407
 msgid "View information about Ekiga"
@@ -3169,12 +3169,12 @@ msgid ""
 "to keep the frame rate."
 msgstr ""
 "Aukeratu irudiaren gutxieneko kalitatea bermatzea nahi duzun (baliteke "
-"fotograma batzuk jaregitea bit-tasaren muga ez gainditzeko), edo fotograma-"
-"tasa mantentzea nahiago duzun."
+"fotograma batzuk jaregitea bit-emariaren muga ez gainditzeko), edo fotograma-"
+"emaria mantentzea nahiago duzun."
 
 #: ../src/gui/preferences.cpp:1020
 msgid "Maximum video _bitrate (in kbits/s):"
-msgstr "Bideoaren gehienezko bit-tasa (kb/s):"
+msgstr "Bideoaren gehienezko bit-emaria (kb/s):"
 
 #: ../src/gui/preferences.cpp:1020
 msgid ""
@@ -3182,9 +3182,9 @@ msgid ""
 "frame rate will be dynamically adjusted to keep the bitrate at the given "
 "value."
 msgstr ""
-"Bideoaren gehienezko bit-tasa (kb/s). Bideo-kalitatea eta transmititutako "
-"fotograma-tasa segundoko (kodekaren arabera) dinamikoki doituko dira bit-"
-"tasa emandako balioan mantentzeko."
+"Bideoaren gehienezko bit-emaria (kb/s). Bideo-kalitatea eta transmititutako "
+"fotograma-emaria segundoko (kodekaren arabera) dinamikoki doituko dira bit-"
+"emaria emandako balioan mantentzeko."
 
 #: ../src/gui/preferences.cpp:1333
 msgid "Ekiga Preferences"
