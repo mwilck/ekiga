@@ -30,14 +30,13 @@
 # Nikos Charonitakis <charosn@her.forthnet.gr>, 2003, 2004, 2005.
 # Kostas Papadimas <pkst@gnome.org>, 2004, 2005, 2006.
 # Jennie Petoumenou <epetoumenou@gmail.com>, 2009.
-#: ../lib/engine/components/resource-list/rl-entry.cpp:161
 msgid ""
 msgstr ""
 "Project-Id-Version: ekiga.HEAD\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2009-05-20 11:48+0100\n"
-"PO-Revision-Date: 2009-05-20 12:02+0200\n"
-"Last-Translator: Βασίλης Κοντογιάνης <vasilisk@ics.forth.gr>\n"
+"POT-Creation-Date: 2010-03-25 09:58+0200\n"
+"PO-Revision-Date: 2010-03-24 17:50+0200\n"
+"Last-Translator: Bakaoukas Nikolaos <nikolaosx1@gmail.com>\n"
 "Language-Team: Greek <team@gnome.gr>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -45,7 +44,9 @@ msgstr ""
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 "X-Generator: Lokalize 0.2\n"
 
-#: ../ekiga.desktop.in.in.h:1
+#. Application name
+#: ../ekiga.desktop.in.in.h:1 ../src/gui/main_window.cpp:4382
+#: ../src/gui/main_window.cpp:4384
 msgid "Ekiga Softphone"
 msgstr "Τηλεφωνία με λογισμικό Ekiga"
 
@@ -54,7 +55,8 @@ msgid "IP Telephony, VoIP and Video Conferencing"
 msgstr "Τηλεφωνία IP, VoIP και τηλεδιάσκεψη"
 
 #: ../ekiga.desktop.in.in.h:3
-msgid "Talk to people over the Internet"
+#, fuzzy
+msgid "Talk to and see people over the Internet"
 msgstr "Επικοινωνήστε μέσω φωνής και βίντεο με άλλους μέσω του διαδικτύου"
 
 #: ../ekiga.schemas.in.in.h:1
@@ -95,7 +97,11 @@ msgstr "Ηχητική συσκευή εισόδου"
 msgid "Audio output device"
 msgstr "Ηχητική συσκευή εξόδου"
 
-#: ../ekiga.schemas.in.in.h:8 ../src/gui/preferences.cpp:516
+#: ../ekiga.schemas.in.in.h:8
+msgid "Automatic answer"
+msgstr "Αυτόματη απάντηση"
+
+#: ../ekiga.schemas.in.in.h:9 ../src/gui/preferences.cpp:526
 msgid ""
 "Automatically reject or forward incoming calls if no answer is given after "
 "the specified amount of time (in seconds)"
@@ -103,15 +109,15 @@ msgstr ""
 "Αυτόματη απόρριψη ή προώθηση εισερχόμενων κλήσεων αν δε δοθεί απάντηση μετά "
 "από ένα καθορισμένο χρονικό διάστημα (σε δευτερόλεπτα)"
 
-#: ../ekiga.schemas.in.in.h:9
+#: ../ekiga.schemas.in.in.h:10
 msgid "Calls history"
 msgstr "Ιστορικό κλήσεων"
 
-#: ../ekiga.schemas.in.in.h:10
+#: ../ekiga.schemas.in.in.h:11
 msgid "Change the main window panel section"
 msgstr "Αλλαγή της ενότητας του πίνακα ελέγχου του κυρίου παραθύρου"
 
-#: ../ekiga.schemas.in.in.h:11
+#: ../ekiga.schemas.in.in.h:12
 msgid ""
 "Connection will be established in Fast Start mode. Fast Start is a new way "
 "to start calls faster that was introduced in H.323v2. It is not supported by "
@@ -124,43 +130,38 @@ msgstr ""
 "τη Γρήγορη Εκκίνηση και το H.245 Tunnelling είναι πιθανόν να κολλήσουν "
 "κάποιες εκδόσεις του Netmeeting"
 
-#: ../ekiga.schemas.in.in.h:12
+#: ../ekiga.schemas.in.in.h:13
 msgid "Contact long status"
 msgstr "Αναλυτική κατάσταση επαφής"
 
-#: ../ekiga.schemas.in.in.h:13
+#: ../ekiga.schemas.in.in.h:14
 msgid "Contact short status"
 msgstr "Συνοπτική κατάσταση επαφής"
 
-#: ../ekiga.schemas.in.in.h:14
+#: ../ekiga.schemas.in.in.h:15
 msgid "DTMF sending"
 msgstr "Αποστολή DTMF"
 
-#: ../ekiga.schemas.in.in.h:15
-msgid "Disable STUN network detection"
-msgstr "Απενεργοποίηση του εντοπισμού δικτύου STUN"
-
-#: ../ekiga.schemas.in.in.h:16 ../src/gui/preferences.cpp:492
-msgid "Disable the automatic network setup resulting from the STUN test"
-msgstr ""
-"Απενεργοποίηση της αυτόματης ρύθμισης του δικτύου ως αποτέλεσμα της δοκιμής "
-"STUN"
-
-#: ../ekiga.schemas.in.in.h:17
+#: ../ekiga.schemas.in.in.h:16
 msgid "Disable video hardware acceleration"
 msgstr "Απενεργοποίηση της επιτάχυνσης υλικού βίντεο"
 
-#: ../ekiga.schemas.in.in.h:18 ../src/gui/main.cpp:3591
+#: ../ekiga.schemas.in.in.h:17 ../src/gui/main_window.cpp:3618
 msgid "Display images from your camera device"
 msgstr "Εμφάνιση εικόνων από τη συσκευή της κάμερας σας"
 
-#: ../ekiga.schemas.in.in.h:19
+#: ../ekiga.schemas.in.in.h:18
 msgid "Enable 'Fast Start'"
 msgstr "Ενεργοποίηση 'Γρήγορης Εκκίνησης'"
 
-#: ../ekiga.schemas.in.in.h:20
+#: ../ekiga.schemas.in.in.h:19
 msgid "Enable H.245 tunneling"
 msgstr "Ενεργοποίηση H.245 tunnelling"
+
+#: ../ekiga.schemas.in.in.h:20
+#, fuzzy
+msgid "Enable STUN network detection"
+msgstr "Απενεργοποίηση του εντοπισμού δικτύου STUN"
 
 #: ../ekiga.schemas.in.in.h:21
 msgid "Enable early H.245"
@@ -174,7 +175,14 @@ msgstr "Ενεργοποίηση Echo cancellation"
 msgid "Enable silence detection"
 msgstr "Ενεργοποίηση εντοπισμού σιωπής"
 
-#: ../ekiga.schemas.in.in.h:24
+#: ../ekiga.schemas.in.in.h:24 ../src/gui/preferences.cpp:502
+#, fuzzy
+msgid "Enable the automatic network setup resulting from the STUN test"
+msgstr ""
+"Απενεργοποίηση της αυτόματης ρύθμισης του δικτύου ως αποτέλεσμα της δοκιμής "
+"STUN"
+
+#: ../ekiga.schemas.in.in.h:25
 msgid ""
 "Enter the number of seconds after which Ekiga should try refreshing the NAT "
 "binding when STUN is being used"
@@ -182,31 +190,31 @@ msgstr ""
 "Εισάγετε τον αριθμό δευτερολέπτων μετά από τα οποία το Ekiga θα ανανεώνει το "
 "NAT binding όταν χρησιμοποιείται το STUN"
 
-#: ../ekiga.schemas.in.in.h:25 ../src/gui/preferences.cpp:459
+#: ../ekiga.schemas.in.in.h:26 ../src/gui/preferences.cpp:469
 msgid "Enter your full name"
 msgstr "Εισάγετε το ονοματεπώνυμό σας"
 
-#: ../ekiga.schemas.in.in.h:26
+#: ../ekiga.schemas.in.in.h:27
 msgid "Forward calls to host"
 msgstr "Προώθηση κλήσεων σε σύστημα"
 
-#: ../ekiga.schemas.in.in.h:27
+#: ../ekiga.schemas.in.in.h:28
 msgid "Forward calls to the given host if busy"
 msgstr "Προώθηση κλήσεων αν το συγκεκριμένο σύστημα είναι κατειλημμένο"
 
-#: ../ekiga.schemas.in.in.h:28
+#: ../ekiga.schemas.in.in.h:29
 msgid "Forward calls to the given host if no answer"
 msgstr "Προώθηση κλήσεων αν το συγκεκριμένο σύστημα δεν απαντά"
 
-#: ../ekiga.schemas.in.in.h:29 ../src/gui/preferences.cpp:1018
+#: ../ekiga.schemas.in.in.h:30 ../src/gui/preferences.cpp:1022
 msgid "Frame Rate"
 msgstr "Καρέ ανά δευτερόλεπτο"
 
-#: ../ekiga.schemas.in.in.h:30
+#: ../ekiga.schemas.in.in.h:31
 msgid "Full name"
 msgstr "Ονοματεπώνυμο"
 
-#: ../ekiga.schemas.in.in.h:31 ../src/gui/preferences.cpp:477
+#: ../ekiga.schemas.in.in.h:32 ../src/gui/preferences.cpp:487
 msgid ""
 "If enabled, Ekiga will start hidden provided that the notification area is "
 "present in the GNOME panel"
@@ -214,7 +222,7 @@ msgstr ""
 "Αν ενεργοποιηθεί, το Ekiga θα ξεκινάει σε απόκρυψη με την προϋπόθεση ότι "
 "είναι παρούσα η περιοχή ειδοποίησης στον πίνακα εφαρμογών του GNOME"
 
-#: ../ekiga.schemas.in.in.h:32
+#: ../ekiga.schemas.in.in.h:33
 msgid ""
 "If enabled, all incoming calls will be forwarded to the host that is "
 "specified in the field below"
@@ -222,7 +230,7 @@ msgstr ""
 "Αν ενεργοποιηθεί, όλες οι εισερχόμενες κλήσεις θα προωθούνται στο σύστημα "
 "που έχει καθοριστεί στο παρακάτω πεδίο"
 
-#: ../ekiga.schemas.in.in.h:33
+#: ../ekiga.schemas.in.in.h:34
 msgid ""
 "If enabled, all incoming calls will be forwarded to the host that is "
 "specified in the field below if you already are in a call or if you are in "
@@ -232,7 +240,7 @@ msgstr ""
 "που έχει καθοριστεί στο παρακάτω πεδίο όταν είστε απασχολημένοι ή σε "
 "λειτουργία Μην Ενοχλείτε"
 
-#: ../ekiga.schemas.in.in.h:34
+#: ../ekiga.schemas.in.in.h:35
 msgid ""
 "If enabled, all incoming calls will be forwarded to the host that is "
 "specified in the field below if you do not answer the call"
@@ -240,165 +248,169 @@ msgstr ""
 "Αν ενεργοποιηθεί, όλες οι εισερχόμενες κλήσεις θα προωθούνται στο σύστημα "
 "που έχει καθοριστεί στο παρακάτω πεδίο όταν δεν απαντάτε στην κλήση"
 
-#: ../ekiga.schemas.in.in.h:35 ../src/gui/preferences.cpp:479
+#: ../ekiga.schemas.in.in.h:36 ../src/gui/preferences.cpp:527
+msgid "If enabled, automatically answer incoming calls"
+msgstr "Αν είναι ενεργοποιημένο, αυτόματη απάντηση εισερχομένων κλήσεων"
+
+#: ../ekiga.schemas.in.in.h:37 ../src/gui/preferences.cpp:489
 msgid "If enabled, offline contacts will be shown in the roster"
 msgstr ""
 "Αν είναι ενεργοποιημένο, θα εμφανίζονται στον κατάλογο οι αποσυνδεδεμένες "
 "επαφές"
 
-#: ../ekiga.schemas.in.in.h:36
+#: ../ekiga.schemas.in.in.h:38
 msgid "If enabled, use echo cancelation"
 msgstr "Αν ενεργοποιηθεί, να χρησιμοποιηθεί echo cancellation"
 
-#: ../ekiga.schemas.in.in.h:37
+#: ../ekiga.schemas.in.in.h:39
 msgid "If enabled, use silence detection with the codecs supporting it"
 msgstr ""
 "Αν ενεργοποιηθεί, θα γίνει χρήση του εντοπισμού σιωπής με τους codecs που το "
 "υποστηρίζουν."
 
-#: ../ekiga.schemas.in.in.h:38
+#: ../ekiga.schemas.in.in.h:40
 msgid "Kind of network selected in the druid"
 msgstr "Το είδος του δικτύου που επιλέχθηκε στο βοηθό ρύθμισης"
 
-#: ../ekiga.schemas.in.in.h:39
+#: ../ekiga.schemas.in.in.h:41
 msgid "LDAP servers"
 msgstr "Εξυπηρετητές LDAP"
 
-#: ../ekiga.schemas.in.in.h:40
+#: ../ekiga.schemas.in.in.h:42
 msgid "List of configured LDAP servers"
 msgstr "Κατάλογος εγκατεστημένων εξυπηρετητών LDAP"
 
-#: ../ekiga.schemas.in.in.h:41
+#: ../ekiga.schemas.in.in.h:43
 msgid "List of folded groups in the roster"
 msgstr "Λίστα των αναδιπλωμένων ομάδων στον κατάλογο επαφών"
 
-#: ../ekiga.schemas.in.in.h:42
+#: ../ekiga.schemas.in.in.h:44
 msgid "Listen port"
-msgstr "Listen Port"
+msgstr "Θήρα ακρόασης"
 
-#: ../ekiga.schemas.in.in.h:43
+#: ../ekiga.schemas.in.in.h:45
 msgid "Local video window size"
 msgstr "Μέγεθος του τοπικού παραθύρου βίντεο"
 
-#: ../ekiga.schemas.in.in.h:44
+#: ../ekiga.schemas.in.in.h:46
 msgid "Maximum RX video bitrate"
 msgstr "Μέγιστη ταχύτητα λήψης βίντεο"
 
-#: ../ekiga.schemas.in.in.h:45
+#: ../ekiga.schemas.in.in.h:47
 msgid "Maximum TX video bitrate"
 msgstr "Μέγιστη ταχύτητα αποστολής βίντεο"
 
-#: ../ekiga.schemas.in.in.h:46
+#: ../ekiga.schemas.in.in.h:48
 msgid "Maximum jitter buffer"
 msgstr "Μέγιστο jitter buffer"
 
-#: ../ekiga.schemas.in.in.h:47
+#: ../ekiga.schemas.in.in.h:49
 msgid "NAT Binding Timeout"
 msgstr "Όριο χρόνου NAT Binding"
 
-#: ../ekiga.schemas.in.in.h:48
+#: ../ekiga.schemas.in.in.h:50
 msgid "No answer timeout"
 msgstr "Όριο χρόνου αναπάντητης"
 
-#: ../ekiga.schemas.in.in.h:49
+#: ../ekiga.schemas.in.in.h:51
 msgid "Outbound Proxy"
 msgstr "Διαμεσολαβητής εξερχομένων"
 
-#: ../ekiga.schemas.in.in.h:50 ../src/gui/preferences.cpp:486
+#: ../ekiga.schemas.in.in.h:52 ../src/gui/preferences.cpp:496
 msgid "Place windows displaying video above other windows during calls"
 msgstr ""
 "Τοποθέτηση παραθύρων που προβάλλουν βίντεο πάνω από άλλα παράθυρα κατά την "
 "διάρκεια κλήσεων"
 
-#: ../ekiga.schemas.in.in.h:51 ../src/gui/preferences.cpp:371
+#: ../ekiga.schemas.in.in.h:53 ../src/gui/preferences.cpp:372
 msgid "Play busy tone"
 msgstr "Αναπαραγωγή ήχου απασχολημένου"
 
-#: ../ekiga.schemas.in.in.h:52 ../src/gui/preferences.cpp:361
+#: ../ekiga.schemas.in.in.h:54 ../src/gui/preferences.cpp:362
 msgid "Play ring tone"
 msgstr "Αναπαραγωγή ring tone"
 
 #
-#: ../ekiga.schemas.in.in.h:53 ../src/gui/preferences.cpp:351
+#: ../ekiga.schemas.in.in.h:55 ../src/gui/preferences.cpp:352
 msgid "Play sound on incoming calls"
 msgstr "Εκτέλεση ήχου σε εισερχόμενες κλήσεις"
 
 #
-#: ../ekiga.schemas.in.in.h:54
+#: ../ekiga.schemas.in.in.h:56
 msgid "Play sound on new message"
 msgstr "Εκτέλεση ήχου σε νέο μήνυμα"
 
 #
-#: ../ekiga.schemas.in.in.h:55
+#: ../ekiga.schemas.in.in.h:57
 msgid "Play sound on new voice mail"
 msgstr "Εκτέλεση ήχου σε νέο ηχητικό μήνυμα"
 
-#: ../ekiga.schemas.in.in.h:56
+#: ../ekiga.schemas.in.in.h:58
 msgid "Position of the local video window"
 msgstr "Θέση του τοπικού παραθύρου βίντεο"
 
-#: ../ekiga.schemas.in.in.h:57
+#: ../ekiga.schemas.in.in.h:59
 msgid "Position on the screen of the address book window"
 msgstr "Θέση στην οθόνη του παράθυρου βιβλίου διευθύνσεων"
 
-#: ../ekiga.schemas.in.in.h:58
+#: ../ekiga.schemas.in.in.h:60
 msgid "Position on the screen of the audio settings window"
 msgstr "Θέση στην οθόνη του παράθυρου ρύθμισης ήχου"
 
-#: ../ekiga.schemas.in.in.h:59
+#: ../ekiga.schemas.in.in.h:61
 msgid "Position on the screen of the chat window"
 msgstr "Θέση στην οθόνη του κύριου παράθυρου συζήτησης κειμένου"
 
-#: ../ekiga.schemas.in.in.h:60
+#: ../ekiga.schemas.in.in.h:62
 msgid "Position on the screen of the druid window"
 msgstr "Θέση στην οθόνη του παράθυρου οδηγού ρυθμίσεων"
 
-#: ../ekiga.schemas.in.in.h:61
+#: ../ekiga.schemas.in.in.h:63
 msgid "Position on the screen of the log window"
 msgstr "Θέση στην οθόνη του παράθυρου καταγραφής"
 
-#: ../ekiga.schemas.in.in.h:62
+#: ../ekiga.schemas.in.in.h:64
 msgid "Position on the screen of the main window"
 msgstr "Θέση στην οθόνη του κύριου παράθυρου"
 
-#: ../ekiga.schemas.in.in.h:63
+#: ../ekiga.schemas.in.in.h:65
 msgid "Position on the screen of the preferences window"
 msgstr "Θέση στην οθόνη του παράθυρου προτιμήσεων"
 
-#: ../ekiga.schemas.in.in.h:64
+#: ../ekiga.schemas.in.in.h:66
 msgid "Position on the screen of the video settings window"
 msgstr "Θέση στην οθόνη του παράθυρου ρύθμισης βίντεο"
 
-#: ../ekiga.schemas.in.in.h:65
+#: ../ekiga.schemas.in.in.h:67
 msgid "Remote video window position"
 msgstr "Θέση του απομακρυσμένου παραθύρου βίντεο"
 
-#: ../ekiga.schemas.in.in.h:66
+#: ../ekiga.schemas.in.in.h:68
 msgid "Remote video window size"
 msgstr "Μέγεθος του απομακρυσμένου παραθύρου βίντεο"
 
-#: ../ekiga.schemas.in.in.h:67
+#: ../ekiga.schemas.in.in.h:69
 msgid "Select an alternative audio output device to use for sound events."
 msgstr ""
 "Επιλογή της συσκευής εξόδου ήχου για χρήση στα ηχητικό γεγονός του "
 "κουδουνίσματος."
 
-#: ../ekiga.schemas.in.in.h:68 ../src/gui/preferences.cpp:777
+#: ../ekiga.schemas.in.in.h:70 ../src/gui/preferences.cpp:787
 msgid "Select the audio input device to use"
 msgstr "Επιλογή της συσκευής εισόδου ήχου για χρήση"
 
-#: ../ekiga.schemas.in.in.h:69 ../src/gui/preferences.cpp:770
+#: ../ekiga.schemas.in.in.h:71 ../src/gui/preferences.cpp:780
 msgid "Select the audio output device to use"
 msgstr "Επιλογή της συσκευής εξόδου ήχου για χρήση"
 
-#: ../ekiga.schemas.in.in.h:70 ../src/gui/preferences.cpp:936
+#: ../ekiga.schemas.in.in.h:72 ../src/gui/preferences.cpp:940
 msgid ""
 "Select the format for video cameras (does not apply to most USB cameras)"
 msgstr ""
 "Επιλέξτε τη μορφή για τις κάμερες βίντεο. (Δεν εφαρμόζεται στις περισσότερες "
 "κάμερες  USB)"
 
-#: ../ekiga.schemas.in.in.h:71
+#: ../ekiga.schemas.in.in.h:73
 msgid ""
 "Select the transmitted video size: Small (QCIF 176x144) or Large (CIF "
 "352x288)"
@@ -406,7 +418,7 @@ msgstr ""
 "Επιλέξτε το μέγεθος του μεταδιδόμενου βίντεο: Μικρό (QCIF 176x144) ή Μεγάλο "
 "(CIF 352x288)"
 
-#: ../ekiga.schemas.in.in.h:72 ../src/gui/preferences.cpp:928
+#: ../ekiga.schemas.in.in.h:74 ../src/gui/preferences.cpp:932
 msgid ""
 "Select the video input device to use. If an error occurs when using this "
 "device a test picture will be transmitted."
@@ -414,47 +426,47 @@ msgstr ""
 "Επιλογή της συσκευής εισόδου ήχου για χρήση. Αν προκύψει σφάλμα κατά την "
 "χρήση της συσκευής μια δοκιμαστική εικόνα θα μεταδοθεί."
 
-#: ../ekiga.schemas.in.in.h:73
+#: ../ekiga.schemas.in.in.h:75
 msgid "Show offline contacts"
 msgstr "Εμφάνιση αποσυνδεδεμένων επαφών"
 
-#: ../ekiga.schemas.in.in.h:74 ../src/gui/main.cpp:3220
+#: ../ekiga.schemas.in.in.h:76 ../src/gui/main_window.cpp:3247
 msgid "Show the call panel"
 msgstr "Εμφάνιση του πίνακα κλήσεων"
 
-#: ../ekiga.schemas.in.in.h:75
+#: ../ekiga.schemas.in.in.h:77
 msgid "Size of the address book window"
 msgstr "Μέγεθος του παραθύρου του βιβλίου διευθύνσεων"
 
 #
-#: ../ekiga.schemas.in.in.h:76
+#: ../ekiga.schemas.in.in.h:78
 msgid "Size of the audio settings window"
 msgstr "Μέγεθος του παραθύρου ρύθμισης ήχου"
 
 #
-#: ../ekiga.schemas.in.in.h:77
+#: ../ekiga.schemas.in.in.h:79
 msgid "Size of the chat window"
 msgstr "Μέγεθος του παραθύρου συζήτησης κειμένου"
 
 #
-#: ../ekiga.schemas.in.in.h:78
+#: ../ekiga.schemas.in.in.h:80
 msgid "Size of the druid window"
 msgstr "Μέγεθος του παραθύρου οδηγού ρυθμίσεων"
 
-#: ../ekiga.schemas.in.in.h:79
+#: ../ekiga.schemas.in.in.h:81
 msgid "Size of the preferences window"
 msgstr "Μέγεθος του παραθύρου προτιμήσεων"
 
 #
-#: ../ekiga.schemas.in.in.h:80
+#: ../ekiga.schemas.in.in.h:82
 msgid "Size of the video settings window"
 msgstr "Μέγεθος του παραθύρου ρύθμισης βίντεο"
 
-#: ../ekiga.schemas.in.in.h:81
+#: ../ekiga.schemas.in.in.h:83
 msgid "Specify the software scaling algorithm"
 msgstr "Καθορισμός του αλγορίθμου κλιμακοθέτησης μέσω λογισμικού"
 
-#: ../ekiga.schemas.in.in.h:82
+#: ../ekiga.schemas.in.in.h:84
 msgid ""
 "Specify the software scaling algorithm: 0: nearest neighbor, 1: nearest "
 "neighbor with box filter, 2: bilinear filtering, 3: hyperbolic filtering. "
@@ -464,33 +476,33 @@ msgstr ""
 "γείτονας, 1: κοντινότερος γείτονας με box filter, 2: διγραμμικό φιλτράρισμα, "
 "3: υπερβολικό φιλτράρισμα. Αυτή η επιλογή δεν αφορά τα συστήματα windows."
 
-#: ../ekiga.schemas.in.in.h:83
+#: ../ekiga.schemas.in.in.h:85
 msgid "Start hidden"
 msgstr "Έναρξη σε απόκρυψη"
 
-#: ../ekiga.schemas.in.in.h:84
+#: ../ekiga.schemas.in.in.h:86
 msgid "TCP port range"
 msgstr "Εύρος θύρας TCP"
 
-#: ../ekiga.schemas.in.in.h:85
+#: ../ekiga.schemas.in.in.h:87
 msgid "Temporal Spatial Trade Off"
 msgstr "Εξισορρόπηση χωρικής και χρονική ποιότητας"
 
-#: ../ekiga.schemas.in.in.h:86
+#: ../ekiga.schemas.in.in.h:88
 msgid "The Audio Codecs List"
 msgstr "Η Λίστα Codecs Ήχου"
 
-#: ../ekiga.schemas.in.in.h:87 ../src/gui/preferences.cpp:727
+#: ../ekiga.schemas.in.in.h:89 ../src/gui/preferences.cpp:737
 msgid "The SIP Outbound Proxy to use for outgoing calls"
 msgstr ""
 "Ο διαμεσολαβητής εξερχομένων SIP που θα χρησιμοποιηθεί για εξερχόμενες "
 "κλήσεις"
 
-#: ../ekiga.schemas.in.in.h:88
+#: ../ekiga.schemas.in.in.h:90
 msgid "The STUN Server"
 msgstr "Ο εξυπηρετητής STUN"
 
-#: ../ekiga.schemas.in.in.h:89
+#: ../ekiga.schemas.in.in.h:91
 msgid ""
 "The STUN server to use for STUN Support. STUN is a technology that permits "
 "passage through some types of NAT gateway"
@@ -498,23 +510,23 @@ msgstr ""
 "Ο εξυπηρετητής STUN που θα χρησιμοποιηθεί για την υποστήριξη STUN. Το STUN "
 "είναι μια τεχνική που επιτρέπει το πέρασμα από ορισμένους τύπους πυλών NAT."
 
-#: ../ekiga.schemas.in.in.h:90
+#: ../ekiga.schemas.in.in.h:92
 msgid "The Video Codecs List"
 msgstr "Η λίστα codecs βίντεο"
 
-#: ../ekiga.schemas.in.in.h:91
+#: ../ekiga.schemas.in.in.h:93
 msgid "The accounts list"
 msgstr "Η λίστα λογαριασμών"
 
-#: ../ekiga.schemas.in.in.h:92
+#: ../ekiga.schemas.in.in.h:94
 msgid "The audio codecs list"
 msgstr "Η λίστα codecs ήχου"
 
-#: ../ekiga.schemas.in.in.h:93
+#: ../ekiga.schemas.in.in.h:95
 msgid "The busy tone sound"
 msgstr "Ο ήχος κατειλημμένου"
 
-#: ../ekiga.schemas.in.in.h:94
+#: ../ekiga.schemas.in.in.h:96
 msgid ""
 "The chosen sound will be played at the end of calls or calling somebody who "
 "is busy, if enabled"
@@ -522,13 +534,13 @@ msgstr ""
 "Ο επιλεγμένος ήχος που θα αναπαράγεται στο τέλος των κλήσεων ή κατά την "
 "κλήση κάποιου που είναι απασχολημένος, αν ενεργοποιηθεί"
 
-#: ../ekiga.schemas.in.in.h:95
+#: ../ekiga.schemas.in.in.h:97
 msgid "The chosen sound will be played on incoming calls, if enabled"
 msgstr ""
 "Ο επιλεγμένος ήχος που θα αναπαράγεται στις εισερχόμενες κλήσεις, αν "
 "ενεργοποιηθεί"
 
-#: ../ekiga.schemas.in.in.h:96
+#: ../ekiga.schemas.in.in.h:98
 msgid ""
 "The chosen sound will be played when a new instant message is received, if "
 "enabled"
@@ -536,23 +548,23 @@ msgstr ""
 "Ο επιλεγμένος ήχος που θα αναπαράγεται όταν λαμβάνετε ένα νέο άμεσο μήνυμα, "
 "αν ενεργοποιηθεί"
 
-#: ../ekiga.schemas.in.in.h:97
+#: ../ekiga.schemas.in.in.h:99
 msgid ""
 "The chosen sound will be played when a new voice mail is received, if enabled"
 msgstr ""
 "Ο επιλεγμένος ήχος που θα αναπαράγεται όταν λαμβάνετε ένα νέο ηχητικό "
 "μήνυμα, αν ενεργοποιηθεί"
 
-#: ../ekiga.schemas.in.in.h:98
+#: ../ekiga.schemas.in.in.h:100
 msgid "The chosen sound will be played when calling somebody, if enabled"
 msgstr ""
 "Ο επιλεγμένος ήχος που θα αναπαράγεται όταν καλείτε κάποιον, αν ενεργοποιηθεί"
 
-#: ../ekiga.schemas.in.in.h:99
+#: ../ekiga.schemas.in.in.h:101
 msgid "The default video view"
 msgstr "Η προεπιλεγμένη προβολή βίντεο"
 
-#: ../ekiga.schemas.in.in.h:100
+#: ../ekiga.schemas.in.in.h:102
 msgid ""
 "The default video view (0: Local, 1: Remote, 2: Both layered, 3: Both with "
 "local video in a separate window, 4: Both)"
@@ -561,35 +573,35 @@ msgstr ""
 "σε επικάλυψη, 3: Και τα δύο με το τοπικό βίντεο σε ξεχωριστό παράθυρο, 4: "
 "Και τα δύο)"
 
-#: ../ekiga.schemas.in.in.h:101
+#: ../ekiga.schemas.in.in.h:103
 msgid "The dial tone sound"
 msgstr "Ο ήχος κλήσης"
 
-#: ../ekiga.schemas.in.in.h:102
+#: ../ekiga.schemas.in.in.h:104
 msgid "The history of the 100 last calls"
 msgstr "Το ιστορικό των τελευταίων 100 κλήσεων"
 
-#: ../ekiga.schemas.in.in.h:103 ../src/gui/preferences.cpp:676
-#: ../src/gui/preferences.cpp:730
+#: ../ekiga.schemas.in.in.h:105 ../src/gui/preferences.cpp:686
+#: ../src/gui/preferences.cpp:740
 msgid "The host where calls should be forwarded if call forwarding is enabled"
 msgstr ""
 "Το κεντρικό σύστημα όπου θα προωθούνται οι κλήσεις στις παραπάνω επιλεγμένες "
 "περιπτώσεις"
 
-#: ../ekiga.schemas.in.in.h:104
+#: ../ekiga.schemas.in.in.h:106
 msgid "The incoming call sound"
 msgstr "Ο ήχος εισερχόμενης κλήσης"
 
-#: ../ekiga.schemas.in.in.h:105
+#: ../ekiga.schemas.in.in.h:107
 msgid "The list of accounts to which Ekiga should register"
 msgstr "Η λίστα λογαριασμών που το Ekiga θα εγγραφεί"
 
 #
-#: ../ekiga.schemas.in.in.h:106
+#: ../ekiga.schemas.in.in.h:108
 msgid "The long status information"
 msgstr "Αναλυτικές πληροφορίες για την κατάσταση"
 
-#: ../ekiga.schemas.in.in.h:107
+#: ../ekiga.schemas.in.in.h:109
 msgid ""
 "The maximum RX video bitrate in kbit/s. This value will be signaled to the "
 "peer endpoint that can adjust (if it supports it) its TX bitrate if it is "
@@ -600,7 +612,7 @@ msgstr ""
 "την ταχύτητα αποστολής του, σε περίπτωση που είναι μεγαλύτερη από την τιμή "
 "που επιλέξατε"
 
-#: ../ekiga.schemas.in.in.h:108
+#: ../ekiga.schemas.in.in.h:110
 msgid ""
 "The maximum TX video bitrate in kbit/s. The video quality and the number of "
 "transmitted frames per second (depends on selected codec) will be "
@@ -612,11 +624,11 @@ msgstr ""
 "του codec) θα προσαρμόζονται δυναμικά πάνω από το ελάχιστο κατά τη διάρκεια "
 "των κλήσεων για να μειωθεί το εύρος μπάντας στην δοθείσα τιμή."
 
-#: ../ekiga.schemas.in.in.h:109
+#: ../ekiga.schemas.in.in.h:111
 msgid "The maximum jitter buffer size for audio reception (in ms)"
 msgstr "Το μέγιστο μέγεθος jitter buffer για λήψη ήχου (σε χιλ.δευτ)"
 
-#: ../ekiga.schemas.in.in.h:110
+#: ../ekiga.schemas.in.in.h:112
 msgid ""
 "The maximum transmitted frame rate in frames/s. This rate may not be reached "
 "in case a minimum quality was configure via a TSTO value smaller than 31 and "
@@ -627,15 +639,15 @@ msgstr ""
 "μικρότερη από 31 και το επιλεγμένο εύρος μπάντας δεν επαρκεί για να αποδώσει "
 "αυτή την ελάχιστη ποιότητα "
 
-#: ../ekiga.schemas.in.in.h:111
+#: ../ekiga.schemas.in.in.h:113
 msgid "The new instant message sound"
 msgstr "Ο ήχος νέου άμεσου μηνύματος"
 
-#: ../ekiga.schemas.in.in.h:112
+#: ../ekiga.schemas.in.in.h:114
 msgid "The new voice mail sound"
 msgstr "Ο ήχος νέου ηχητικού μηνύματος"
 
-#: ../ekiga.schemas.in.in.h:113
+#: ../ekiga.schemas.in.in.h:115
 msgid ""
 "The port to listen to for incoming connections. Ekiga needs to be restarted "
 "for the new value to take effect"
@@ -643,7 +655,7 @@ msgstr ""
 "Η θύρα για listen για εισερχόμενες κλήσεις. Το Ekiga χρειάζεται επανεκκίνηση "
 "για να πραγματοποιηθεί η αλλαγή."
 
-#: ../ekiga.schemas.in.in.h:114
+#: ../ekiga.schemas.in.in.h:116
 msgid ""
 "The port to listen to for incoming connections. Ekiga needs to be restarted "
 "for the new value to take effect."
@@ -651,15 +663,15 @@ msgstr ""
 "Η θύρα για listen για εισερχόμενες κλήσεις. Το Ekiga χρειάζεται επανεκκίνηση "
 "για να πραγματοποιηθεί η αλλαγή."
 
-#: ../ekiga.schemas.in.in.h:115
+#: ../ekiga.schemas.in.in.h:117
 msgid "The position of the local video window"
 msgstr "Η θέση του τοπικού παράθυρου βίντεο"
 
-#: ../ekiga.schemas.in.in.h:116
+#: ../ekiga.schemas.in.in.h:118
 msgid "The position of the remote video window"
 msgstr "Η θέση του απομακρυσμένου παράθυρου βίντεο"
 
-#: ../ekiga.schemas.in.in.h:117
+#: ../ekiga.schemas.in.in.h:119
 msgid ""
 "The range of TCP ports that Ekiga will use for the H.323 H.245 channel. This "
 "port range has no effect if both participants to the conference are using "
@@ -669,24 +681,24 @@ msgstr ""
 "κανάλι H.323 H.245. Αυτή η επιλογή δεν έχει κανένα αποτέλεσμα αν και οι δύο "
 "συμμετέχοντες στη διάσκεψη χρησιμοποιούν H.245 Tunneling."
 
-#: ../ekiga.schemas.in.in.h:118
+#: ../ekiga.schemas.in.in.h:120
 msgid "The range of UDP ports that Ekiga will use."
 msgstr "Οι θύρες UDP που θα χρησιμοποιεί το Ekiga."
 
 #
-#: ../ekiga.schemas.in.in.h:119
+#: ../ekiga.schemas.in.in.h:121
 msgid "The short status information"
 msgstr "Συνοπτικές πληροφορίες για την κατάσταση"
 
-#: ../ekiga.schemas.in.in.h:120
+#: ../ekiga.schemas.in.in.h:122
 msgid "The size of the local video window"
 msgstr "Το μέγεθος του τοπικού παραθύρου βίντεο"
 
-#: ../ekiga.schemas.in.in.h:121
+#: ../ekiga.schemas.in.in.h:123
 msgid "The size of the remote video window"
 msgstr "Το μέγεθος του απομακρυσμένου παραθύρου βίντεο"
 
-#: ../ekiga.schemas.in.in.h:122
+#: ../ekiga.schemas.in.in.h:124
 msgid ""
 "The sound that will be played at the end of calls or when calling somebody "
 "who is busy, if enabled"
@@ -694,41 +706,41 @@ msgstr ""
 "Η ήχος που θα αναπαράγεται στο τερματισμό των κλήσεων ή κατά την κλήση "
 "κάποιου που είναι απασχολημένος, αν ενεργοποιηθεί"
 
-#: ../ekiga.schemas.in.in.h:123
+#: ../ekiga.schemas.in.in.h:125
 msgid "The sound that will be played on incoming calls, if enabled"
 msgstr "Η ήχος που θα αναπαράγεται στις εισερχόμενες κλήσεις, αν ενεργοποιηθεί"
 
-#: ../ekiga.schemas.in.in.h:124
+#: ../ekiga.schemas.in.in.h:126
 msgid "The sound that will be played when calling somebody, if enabled"
 msgstr "Η ήχος που θα αναπαράγεται κατά την κλήση κάποιου, αν ενεργοποιηθεί"
 
-#: ../ekiga.schemas.in.in.h:125
+#: ../ekiga.schemas.in.in.h:127
 msgid ""
 "The sound that will be played when there is a new instant message, if enabled"
 msgstr ""
 "Η ήχος που θα αναπαράγεται όταν υπάρχει νέο άμεσο μήνυμα, αν ενεργοποιηθεί"
 
-#: ../ekiga.schemas.in.in.h:126
+#: ../ekiga.schemas.in.in.h:128
 msgid ""
 "The sound that will be played when there is a new voice mail, if enabled"
 msgstr ""
 "Η ήχος που θα αναπαράγεται όταν υπάρχει νέο ηχητικό μήνυμα, αν ενεργοποιηθεί"
 
-#: ../ekiga.schemas.in.in.h:127 ../src/gui/preferences.cpp:932
+#: ../ekiga.schemas.in.in.h:129 ../src/gui/preferences.cpp:936
 msgid "The video channel number to use (to select camera, tv or other sources)"
 msgstr ""
 "Ο αριθμός καναλιού βίντεο που θα χρησιμοποιηθεί ( για επιλογή κάμερας, TV, ή "
 "άλλες πηγές)"
 
-#: ../ekiga.schemas.in.in.h:128
+#: ../ekiga.schemas.in.in.h:130
 msgid "The video codecs list"
 msgstr "Η Λίστα Codecs βίντεο"
 
-#: ../ekiga.schemas.in.in.h:129
+#: ../ekiga.schemas.in.in.h:131
 msgid "The video view before having switched to fullscreen"
 msgstr "Η προβολή βίντεο πριν τη μετάβαση στη λειτουργία πλήρους οθόνης"
 
-#: ../ekiga.schemas.in.in.h:130
+#: ../ekiga.schemas.in.in.h:132
 msgid ""
 "The video view before having switched to fullscreen (same values as "
 "video_view)"
@@ -736,11 +748,11 @@ msgstr ""
 "Η προβολή βίντεο πριν τη μετάβαση στη λειτουργία πλήρους οθόνης (ισχύουν οι "
 "ίδιες τιμές όπως και για την προβολή βίντεο)"
 
-#: ../ekiga.schemas.in.in.h:131
+#: ../ekiga.schemas.in.in.h:133
 msgid "The zoom value"
 msgstr "Η τιμή του ζουμ"
 
-#: ../ekiga.schemas.in.in.h:132
+#: ../ekiga.schemas.in.in.h:134
 msgid ""
 "The zoom value in percent to apply to images displayed in the main GUI (can "
 "be 50, 100, or 200)"
@@ -748,7 +760,7 @@ msgstr ""
 "Το ποσοστό του ζουμ για τις εικόνες που εμφανίζονται στο κύριο γραφικό "
 "περιβάλλον (μπορεί να είναι  0.50, 1.00, ή 2.00)"
 
-#: ../ekiga.schemas.in.in.h:133
+#: ../ekiga.schemas.in.in.h:135
 msgid ""
 "This allows you to set the mode for sending DTMFs. The values can be "
 "\"RFC2833\" (0), \"INFO\" (1)"
@@ -756,7 +768,7 @@ msgstr ""
 "Αυτό επιτρέπει το ορισμό της λειτουργίας για να γίνεται αποστολή DTMF. Οι "
 "τιμές μπορεί να είναι  \"RFC2833\" (0), \"INFO\" (1)"
 
-#: ../ekiga.schemas.in.in.h:134
+#: ../ekiga.schemas.in.in.h:136
 msgid ""
 "This allows you to set the mode for sending DTMFs. The values can be \"String"
 "\" (0), \"Tone\" (1), \"RFC2833\" (2), \"Q.931\" (3) (default is \"String"
@@ -767,7 +779,7 @@ msgstr ""
 "\"Q.931\" (3) (Η προεπιλογή είναι \"Αλφαριθμητικό\"). Αν χρησιμοποιηθεί άλλη "
 "επιλογή απενεργοποιείται η συζήτηση κειμένου"
 
-#: ../ekiga.schemas.in.in.h:135 ../src/gui/preferences.cpp:688
+#: ../ekiga.schemas.in.in.h:137 ../src/gui/preferences.cpp:698
 msgid ""
 "This enables H.245 Tunneling mode. In H.245 Tunneling mode H.245 messages "
 "are encapsulated into the H.225 channel (port 1720). This saves one TCP "
@@ -782,11 +794,11 @@ msgstr ""
 "Γρήγορη Εκκίνηση και το H.245 Tunnelling είναι πιθανόν να κολλήσουν κάποιες "
 "εκδόσεις του Netmeeting."
 
-#: ../ekiga.schemas.in.in.h:136 ../src/gui/preferences.cpp:690
+#: ../ekiga.schemas.in.in.h:138 ../src/gui/preferences.cpp:700
 msgid "This enables H.245 early in the setup"
 msgstr "Αυτό ενεργοποιεί τη λειτουργία H.245 Tunnelling νωρίς στη ρύθμιση"
 
-#: ../ekiga.schemas.in.in.h:137
+#: ../ekiga.schemas.in.in.h:139
 msgid ""
 "This key disables DirectX (on win32) and XVideo (on Linux) video hardware "
 "acceleration"
@@ -794,32 +806,32 @@ msgstr ""
 "Αυτή η επιλογή απενεργοποιεί την επιτάχυνση υλικού βίντεο DirectX (win32) "
 "και το XVideo (Linux)"
 
-#: ../ekiga.schemas.in.in.h:138
+#: ../ekiga.schemas.in.in.h:140
 msgid "UDP port range"
 msgstr "Εύρος θύρας UDP"
 
-#: ../ekiga.schemas.in.in.h:139
+#: ../ekiga.schemas.in.in.h:141
 msgid "Video channel"
 msgstr "Κανάλι βίντεο"
 
-#: ../ekiga.schemas.in.in.h:140
+#: ../ekiga.schemas.in.in.h:142
 msgid "Video format"
 msgstr "Μορφή βίντεο"
 
 #
-#: ../ekiga.schemas.in.in.h:141 ../src/gui/assistant.cpp:1148
+#: ../ekiga.schemas.in.in.h:143 ../src/gui/assistant.cpp:1143
 msgid "Video input device"
 msgstr "Συσκευή εισόδου βίντεο"
 
-#: ../ekiga.schemas.in.in.h:142
+#: ../ekiga.schemas.in.in.h:144
 msgid "Video preview"
 msgstr "Προεπισκόπηση βίντεο"
 
-#: ../ekiga.schemas.in.in.h:143
+#: ../ekiga.schemas.in.in.h:145
 msgid "Video size"
 msgstr "Μέγεθος βίντεο"
 
-#: ../ekiga.schemas.in.in.h:144
+#: ../ekiga.schemas.in.in.h:146
 msgid ""
 "Whether to prefer to sustain the max. frame rate or lower it possibly in "
 "order to keep a minimum level of (spatial) quality for all frames. 0: "
@@ -834,326 +846,74 @@ msgid "_Find"
 msgstr "_Εύρεση"
 
 #: ../lib/engine/components/avahi/avahi-heap.cpp:125
-#: ../lib/engine/components/avahi/avahi-heap.cpp:319
+#: ../lib/engine/components/avahi/avahi-heap.cpp:332
 msgid "Neighbours"
 msgstr "Γείτονες"
 
 #: ../lib/engine/components/call-history/history-book.cpp:137
-#: ../lib/engine/gui/gtk-frontend/call-history-view-gtk.cpp:162
+#: ../lib/engine/gui/gtk-frontend/call-history-view-gtk.cpp:170
 msgid "Clear List"
 msgstr "Εκκαθάριση λίστας"
 
 #
-#: ../lib/engine/components/call-history/history-contact.cpp:155
+#: ../lib/engine/components/call-history/history-contact.cpp:165
 msgid "Received"
 msgstr "Εισερχόμενες"
 
 #
-#: ../lib/engine/components/call-history/history-contact.cpp:158
+#: ../lib/engine/components/call-history/history-contact.cpp:168
 msgid "Placed"
 msgstr "Εξερχόμενες"
 
 #
-#: ../lib/engine/components/call-history/history-contact.cpp:161
+#: ../lib/engine/components/call-history/history-contact.cpp:171
 msgid "Missed"
 msgstr "Αναπάντητες"
 
-#: ../lib/engine/components/evolution/evolution-book.cpp:76
-#: ../lib/engine/components/ldap/ldap-book.cpp:897
-#, c-format
-msgid "%d user found"
-msgid_plural "%d users found"
-msgstr[0] "Βρέθηκε %d χρήστης"
-msgstr[1] "Βρέθηκαν %d χρήστες"
+#: ../lib/engine/components/gnome-session/gnome-session-main.cpp:157
+msgid "Call in progress"
+msgstr ""
 
-#: ../lib/engine/components/evolution/evolution-book.cpp:283
-msgid "New _Contact"
-msgstr "Νέα _Επαφή"
-
-#: ../lib/engine/components/evolution/evolution-book.cpp:319
 #: ../lib/engine/components/local-roster/local-cluster.cpp:82
 #: ../lib/engine/components/local-roster/local-heap.cpp:117
+#: ../plugins/evolution/evolution-book.cpp:339
 msgid "New contact"
 msgstr "Νέα επαφή"
 
-#: ../lib/engine/components/evolution/evolution-book.cpp:321
-#: ../lib/engine/components/evolution/evolution-contact.cpp:327
-#: ../lib/engine/components/opal/opal-account.cpp:351
-msgid "Please update the following fields:"
-msgstr "Παρακαλώ, ενημερώστε τα παρακάτω πεδία:"
-
 #
-#: ../lib/engine/components/evolution/evolution-book.cpp:323
-msgid "_Name:"
-msgstr "Ό_νομα:"
+#: ../lib/engine/components/local-roster/local-presentity.cpp:118
+#: ../plugins/resource-list/rl-entry.cpp:141
+#: ../plugins/resource-list/rl-heap.cpp:102
+#: ../plugins/resource-list/rl-heap.cpp:144
+#: ../plugins/resource-list/rl-heap.cpp:176
+#: ../plugins/resource-list/rl-presentity.cpp:143
+msgid "Unnamed"
+msgstr "Χωρίς όνομα"
 
-#: ../lib/engine/components/evolution/evolution-book.cpp:324
-#: ../lib/engine/components/evolution/evolution-contact.cpp:338
-msgid "VoIP _URI:"
-msgstr "VoIP _URI:"
-
-#: ../lib/engine/components/evolution/evolution-book.cpp:325
-#: ../lib/engine/components/evolution/evolution-contact.cpp:339
-msgid "_Home phone:"
-msgstr "Τηλέφωνο οι_κίας:"
-
-#: ../lib/engine/components/evolution/evolution-book.cpp:326
-#: ../lib/engine/components/evolution/evolution-contact.cpp:340
-msgid "_Office phone:"
-msgstr "Τηλέφωνο ε_ργασίας:"
-
-#: ../lib/engine/components/evolution/evolution-book.cpp:327
-#: ../lib/engine/components/evolution/evolution-contact.cpp:341
-msgid "_Cell phone:"
-msgstr "_Κινητό τηλέφωνο"
-
-#: ../lib/engine/components/evolution/evolution-book.cpp:328
-#: ../lib/engine/components/evolution/evolution-contact.cpp:342
-msgid "_Pager:"
-msgstr "_Βομβητής:"
-
-#: ../lib/engine/components/evolution/evolution-contact.cpp:234
-#: ../lib/engine/components/local-roster/local-presentity.cpp:199
-#: ../lib/engine/components/opal/opal-account.cpp:308
-#: ../lib/engine/components/resource-list/rl-presentity.cpp:204
-#: ../src/gui/main.cpp:3178
+#: ../lib/engine/components/local-roster/local-presentity.cpp:215
+#: ../lib/engine/components/opal/opal-account.cpp:350
+#: ../plugins/evolution/evolution-contact.cpp:218
+#: ../plugins/loudmouth/loudmouth-presentity.cpp:151
+#: ../plugins/resource-list/rl-presentity.cpp:206
+#: ../src/gui/main_window.cpp:3205
 msgid "_Edit"
 msgstr "_Επεξεργασία"
 
-#: ../lib/engine/components/evolution/evolution-contact.cpp:236
-#: ../lib/engine/components/local-roster/local-presentity.cpp:201
-#: ../lib/engine/components/opal/opal-account.cpp:310
-#: ../lib/engine/components/resource-list/rl-presentity.cpp:206
+#: ../lib/engine/components/local-roster/local-presentity.cpp:217
+#: ../lib/engine/components/opal/opal-account.cpp:352
+#: ../plugins/evolution/evolution-contact.cpp:220
+#: ../plugins/loudmouth/loudmouth-account.cpp:364
+#: ../plugins/loudmouth/loudmouth-presentity.cpp:184
+#: ../plugins/resource-list/rl-presentity.cpp:208
 msgid "_Remove"
 msgstr "_Αφαίρεση"
 
-#
-#: ../lib/engine/components/evolution/evolution-contact.cpp:325
-msgid "Edit contact"
-msgstr "Επεξεργασία επαφής"
-
-#
-#: ../lib/engine/components/evolution/evolution-contact.cpp:329
-#: ../lib/engine/components/local-roster/local-presentity.cpp:226
-#: ../lib/engine/components/local-roster/local-heap.cpp:214
-#: ../lib/engine/components/local-roster/local-heap.cpp:427
-#: ../lib/engine/components/opal/opal-account.cpp:353
-#: ../lib/engine/components/opal/opal-bank.cpp:122
-#: ../lib/engine/components/opal/opal-bank.cpp:132
-#: ../lib/engine/components/resource-list/rl-cluster.cpp:169
-#: ../lib/engine/components/resource-list/rl-heap.cpp:541
-#: ../lib/engine/components/resource-list/rl-presentity.cpp:225
-msgid "Name:"
-msgstr "Όνομα:"
-
-#: ../lib/engine/components/evolution/evolution-contact.cpp:393
-msgid "Remove contact"
-msgstr "Αφαίρεση επαφής"
-
-#: ../lib/engine/components/evolution/evolution-contact.cpp:395
-#, c-format
-msgid "Are you sure you want to remove %s from the addressbook?"
-msgstr ""
-"Είστε σίγουροι ότι θέλετε να διαγράψετε την επαφή %s από το βιβλίο "
-"διευθύνσεων;"
-
-#: ../lib/engine/components/gstreamer/gst-audioinput.cpp:270
-msgid "Audio test"
-msgstr "Δοκιμή ήχου"
-
-#: ../lib/engine/components/gstreamer/gst-audiooutput.cpp:320
-msgid "Silent"
-msgstr "Χωρίς ήχο"
-
-#: ../lib/engine/components/gstreamer/gst-videoinput.cpp:226
-msgid "Video test"
-msgstr "Δοκιμή βίντεο"
-
-#. Translators: "Screencast" means the video input device will be your screen -- the other end will see your desktop
-#: ../lib/engine/components/gstreamer/gst-videoinput.cpp:378
-#: ../lib/engine/components/gstreamer/gst-videoinput.cpp:383
-msgid "Crazy"
-msgstr "Τρελό"
-
-#: ../lib/engine/components/gstreamer/gst-videoinput.cpp:383
-msgid "Screencast"
-msgstr "Οθόνη εργασίας"
-
-#: ../lib/engine/components/ldap/ldap-book.cpp:411
-#: ../lib/engine/components/resource-list/rl-entry.cpp:144
-#: ../lib/engine/components/resource-list/rl-entry-ref.cpp:132
-msgid "_Refresh"
-msgstr "_Ανανέωση"
-
-#: ../lib/engine/components/ldap/ldap-book.cpp:414
-msgid "_Remove addressbook"
-msgstr "Α_φαίρεση βιβλίου διευθύνσεων"
-
-#: ../lib/engine/components/ldap/ldap-book.cpp:416
-msgid "Addressbook _properties"
-msgstr "_Ιδιότητες βιβλίου διευθύνσεων"
-
-#: ../lib/engine/components/ldap/ldap-book.cpp:541
-msgid "LDAP SASL Interaction"
-msgstr "Διάδραση μεταξύ LDAP και SASL"
-
-#. Translators, Howard explained : "Challenge" is a generic term
-#. * in authentication. It's a prompt from the authentication mechanism
-#. * for some type of credential. Exactly what kind of challenge and
-#. * what kind of credential depends on the specific authentication
-#. * mechanism. Since SASL is a generic interface, and can dynamically
-#. * load arbitrary mechanisms, there's not much more specific you can
-#. * say about it. You might google for "challenge response
-#. * authentication" if you'd like more background context.
-#.
-#: ../lib/engine/components/ldap/ldap-book.cpp:583
-msgid "Challenge: "
-msgstr "Πρόκληση:"
-
-#: ../lib/engine/components/ldap/ldap-book.cpp:591
-msgid "Interact"
-msgstr "Διάδραση"
-
-#: ../lib/engine/components/ldap/ldap-book.cpp:660
-msgid "Refreshing"
-msgstr "Ανανέωση"
-
-#: ../lib/engine/components/ldap/ldap-book.cpp:666
-msgid "Could not initialize server"
-msgstr "Δεν ήταν δυνατή η αρχικοποίηση του εξυπηρετητή"
-
-#: ../lib/engine/components/ldap/ldap-book.cpp:680
-#: ../lib/engine/components/ldap/ldap-book.cpp:725
-msgid "LDAP Error: "
-msgstr "Σφάλμα LDAP: "
-
-#: ../lib/engine/components/ldap/ldap-book.cpp:734
-msgid "Contacted server"
-msgstr "Εξυπηρετητές σε επαφή"
-
-#. patience == 0
-#: ../lib/engine/components/ldap/ldap-book.cpp:773
-msgid "Could not connect to server"
-msgstr "Δεν ήταν δυνατή η σύνδεση με τον εξυπηρετητή"
-
-#. patience == 0
-#: ../lib/engine/components/ldap/ldap-book.cpp:821
-#: ../lib/engine/components/ldap/ldap-book.cpp:870
-msgid "Could not search"
-msgstr "Δεν ήταν δυνατή η αναζήτηση"
-
-#: ../lib/engine/components/ldap/ldap-book.cpp:829
-msgid "Waiting for search results"
-msgstr "Αναμονή για τα αποτελέσματα της αναζήτησης"
-
-#: ../lib/engine/components/ldap/ldap-book.cpp:919
-msgid "Please edit the following fields"
-msgstr "Παρακαλώ, αλλάξτε τα παρακάτω πεδία:"
-
-#
-#: ../lib/engine/components/ldap/ldap-book.cpp:921
-msgid "Book _Name"
-msgstr "Ό_νομα βιβλίου"
-
-#: ../lib/engine/components/ldap/ldap-book.cpp:922
-msgid "Server _URI"
-msgstr "_URI εξυπηρετητή"
-
-#: ../lib/engine/components/ldap/ldap-book.cpp:923
-msgid "_Base DN"
-msgstr "_Base DN"
-
-#: ../lib/engine/components/ldap/ldap-book.cpp:929
-msgid "Subtree"
-msgstr "Subtree"
-
-#: ../lib/engine/components/ldap/ldap-book.cpp:930
-msgid "Single Level"
-msgstr "Ένα επίπεδο"
-
-#: ../lib/engine/components/ldap/ldap-book.cpp:931
-msgid "_Search Scope"
-msgstr "Εύ_ρος αναζήτησης"
-
-#: ../lib/engine/components/ldap/ldap-book.cpp:940
-msgid "_DisplayName Attribute"
-msgstr "Ιδιότητα _DisplayName "
-
-#: ../lib/engine/components/ldap/ldap-book.cpp:941
-msgid "Call _Attributes"
-msgstr "_Ιδιότητες κλήσεων"
-
-#: ../lib/engine/components/ldap/ldap-book.cpp:943
-#: ../lib/engine/components/ldap/ldap-book.cpp:945
-msgid "_Filter Template"
-msgstr "Πρότυπο _φίλτρων"
-
-#: ../lib/engine/components/ldap/ldap-book.cpp:947
-msgid "Bind _ID"
-msgstr "Bind _ID"
-
-#: ../lib/engine/components/ldap/ldap-book.cpp:948
-msgid "_Password"
-msgstr "_Κωδικός"
-
-#: ../lib/engine/components/ldap/ldap-book.cpp:949
-msgid "Use TLS"
-msgstr "Χρήση TLS"
-
-#: ../lib/engine/components/ldap/ldap-book.cpp:950
-msgid "Use SASL"
-msgstr "Χρήση SASL"
-
-#: ../lib/engine/components/ldap/ldap-book.cpp:964
-msgid "SASL _Mechanism"
-msgstr "_Μηχανισμός SASL"
-
-#: ../lib/engine/components/ldap/ldap-book.cpp:974
-msgid "Edit LDAP directory"
-msgstr "Επεξεργασία καταλόγου LDAP"
-
-#: ../lib/engine/components/ldap/ldap-book.cpp:1003
-msgid "Please provide a Book Name for this directory\n"
-msgstr "Παρακαλώ, εισάγετε όνομα βιβλίου για τον κατάλογο\n"
-
-#: ../lib/engine/components/ldap/ldap-book.cpp:1006
-msgid "Please provide a Server URI\n"
-msgstr "Παρακαλώ, εισάγετε το URI του εξυπηρετητή\n"
-
-#: ../lib/engine/components/ldap/ldap-book.cpp:1009
-msgid "Please provide a DisplayName Attribute\n"
-msgstr "Παρακαλώ, εισάγετε ιδιότητα DisplayName\n"
-
-#: ../lib/engine/components/ldap/ldap-book.cpp:1012
-msgid "Please provide a Call Attribute\n"
-msgstr "Παρακαλώ, εισάγετε ιδιότητα κλήσεων\n"
-
-#: ../lib/engine/components/ldap/ldap-book.cpp:1015
-msgid "Invalid Server URI\n"
-msgstr "Μη έγκυρο URI εξυπηρετητή\n"
-
-#: ../lib/engine/components/ldap/ldap-source.cpp:130
-msgid "Add an LDAP Address Book"
-msgstr "Προσθήκη Βιβλίου Διευθύνσεων LDAP"
-
-#: ../lib/engine/components/ldap/ldap-source.cpp:132
-msgid "Add the Ekiga.net Directory"
-msgstr "Προσθήκη καταλόγου Ekiga.net"
-
-#: ../lib/engine/components/ldap/ldap-source.cpp:152
-msgid "Create LDAP directory"
-msgstr "Δημιουργία καταλόγου LDAP"
-
-#
-#: ../lib/engine/components/ldap/ldap-source.cpp:167
-msgid "Ekiga.net Directory"
-msgstr "Κατάλογος Ekiga.net"
-
-#: ../lib/engine/components/local-roster/local-presentity.cpp:223
+#: ../lib/engine/components/local-roster/local-presentity.cpp:242
+#: ../plugins/loudmouth/loudmouth-presentity.cpp:269
 msgid "Edit roster element"
 msgstr "Επεξεργασία στοιχείου του καταλόγου επαφών"
 
-#: ../lib/engine/components/local-roster/local-presentity.cpp:224
+#: ../lib/engine/components/local-roster/local-presentity.cpp:243
 msgid ""
 "Please fill in this form to change an existing element of ekiga's internal "
 "roster"
@@ -1161,37 +921,62 @@ msgstr ""
 "Παρακαλώ, συμπληρώστε τη φόρμα για να αλλάξετε στοιχεία του εσωτερικού "
 "καταλόγου του ekiga"
 
-#: ../lib/engine/components/local-roster/local-presentity.cpp:227
-#: ../lib/engine/components/local-roster/local-heap.cpp:223
-#: ../lib/engine/components/local-roster/local-heap.cpp:225
-#: ../lib/engine/components/resource-list/rl-cluster.cpp:170
-#: ../lib/engine/components/resource-list/rl-heap.cpp:542
-#: ../lib/engine/components/resource-list/rl-presentity.cpp:226
+#
+#: ../lib/engine/components/local-roster/local-presentity.cpp:245
+#: ../lib/engine/components/local-roster/local-heap.cpp:235
+#: ../lib/engine/components/local-roster/local-heap.cpp:427
+#: ../lib/engine/components/opal/opal-account.cpp:395
+#: ../plugins/evolution/evolution-contact.cpp:314
+#: ../plugins/loudmouth/loudmouth-account.cpp:267
+#: ../plugins/loudmouth/loudmouth-presentity.cpp:272
+#: ../plugins/resource-list/rl-cluster.cpp:169
+#: ../plugins/resource-list/rl-heap.cpp:526
+#: ../plugins/resource-list/rl-presentity.cpp:227
+msgid "Name:"
+msgstr "Όνομα:"
+
+#: ../lib/engine/components/local-roster/local-presentity.cpp:246
+#: ../lib/engine/components/local-roster/local-heap.cpp:244
+#: ../lib/engine/components/local-roster/local-heap.cpp:246
+#: ../plugins/resource-list/rl-cluster.cpp:170
+#: ../plugins/resource-list/rl-heap.cpp:527
+#: ../plugins/resource-list/rl-presentity.cpp:228
 msgid "Address:"
 msgstr "Διεύθυνση:"
 
-#: ../lib/engine/components/local-roster/local-presentity.cpp:229
-#: ../lib/engine/components/resource-list/rl-heap.cpp:543
-#: ../lib/engine/components/resource-list/rl-presentity.cpp:228
+#: ../lib/engine/components/local-roster/local-presentity.cpp:247
+#, fuzzy
+msgid "Is a prefered contact"
+msgstr "Προσθήκη απομακρυσμένης επαφής"
+
+#: ../lib/engine/components/local-roster/local-presentity.cpp:249
+#: ../plugins/loudmouth/loudmouth-presentity.cpp:274
+#: ../plugins/resource-list/rl-heap.cpp:528
+#: ../plugins/resource-list/rl-presentity.cpp:230
 msgid "Choose groups:"
 msgstr "Επιλογή ομάδων:"
 
 #: ../lib/engine/components/local-roster/local-roster-bridge.cpp:93
-#: ../lib/engine/components/local-roster/local-heap.cpp:211
+#: ../lib/engine/components/local-roster/local-heap.cpp:232
 msgid "Add to local roster"
 msgstr "Προσθήκη στον τοπικό κατάλογο"
 
-#: ../lib/engine/components/local-roster/local-heap.cpp:94
+#: ../lib/engine/components/local-roster/local-heap.cpp:93
 msgid "Services"
 msgstr "Υπηρεσίες"
 
-#: ../lib/engine/components/local-roster/local-heap.cpp:95
+#: ../lib/engine/components/local-roster/local-heap.cpp:94
 msgid "Echo test"
 msgstr "Δοκιμή echo"
 
-#: ../lib/engine/components/local-roster/local-heap.cpp:96
+#: ../lib/engine/components/local-roster/local-heap.cpp:95
 msgid "Conference room"
 msgstr "Αίθουσα διασκέψεων"
+
+#: ../lib/engine/components/local-roster/local-heap.cpp:96
+#, fuzzy
+msgid "Call back test"
+msgstr "_Ιδιότητες κλήσεων"
 
 #: ../lib/engine/components/local-roster/local-heap.cpp:110
 msgid "Local roster"
@@ -1202,46 +987,61 @@ msgstr "Τοπικός κατάλογος επαφών"
 msgid "Rename"
 msgstr "Μετονομασία"
 
-#: ../lib/engine/components/local-roster/local-heap.cpp:190
+#: ../lib/engine/components/local-roster/local-heap.cpp:196
 msgid "Family"
 msgstr "Οικογένεια"
 
-#: ../lib/engine/components/local-roster/local-heap.cpp:191
+#: ../lib/engine/components/local-roster/local-heap.cpp:197
 msgid "Friend"
 msgstr "Φίλος"
 
-#: ../lib/engine/components/local-roster/local-heap.cpp:192
+#. Translator: http://www.ietf.org/rfc/rfc4480.txt proposes several
+#. relationships between you and your contact; associate means
+#. someone who is at the same "level" than you.
+#.
+#: ../lib/engine/components/local-roster/local-heap.cpp:202
 msgid "Associate"
 msgstr "Συνάδελφος"
 
-#: ../lib/engine/components/local-roster/local-heap.cpp:193
+#. Translator: http://www.ietf.org/rfc/rfc4480.txt proposes several
+#. relationships between you and your contact; assistant means
+#. someone who is at a lower "level" than you.
+#.
+#: ../lib/engine/components/local-roster/local-heap.cpp:207
 msgid "Assistant"
 msgstr "Υπάλληλος"
 
-#: ../lib/engine/components/local-roster/local-heap.cpp:194
+#. Translator: http://www.ietf.org/rfc/rfc4480.txt proposes several
+#. relationships between you and your contact; supervisor means
+#. someone who is at a higher "level" than you.
+#.
+#: ../lib/engine/components/local-roster/local-heap.cpp:212
 msgid "Supervisor"
 msgstr "Προϊστάμενος"
 
-#: ../lib/engine/components/local-roster/local-heap.cpp:195
+#. Translator: http://www.ietf.org/rfc/rfc4480.txt proposes several
+#. relationships between you and your contact; self means yourself.
+#.
+#: ../lib/engine/components/local-roster/local-heap.cpp:216
 msgid "Self"
 msgstr "Εαυτός"
 
-#: ../lib/engine/components/local-roster/local-heap.cpp:212
+#: ../lib/engine/components/local-roster/local-heap.cpp:233
 msgid ""
 "Please fill in this form to add a new contact to ekiga's internal roster"
 msgstr ""
 "Παρακαλώ, συμπληρώστε τη φόρμα για να προσθέσετε νέα επαφή στον εσωτερικό "
 "κατάλογο του ekiga"
 
-#: ../lib/engine/components/local-roster/local-heap.cpp:229
+#: ../lib/engine/components/local-roster/local-heap.cpp:250
 msgid "Put contact in groups:"
 msgstr "Ένταξη της επαφής στις ομάδες:"
 
-#: ../lib/engine/components/local-roster/local-heap.cpp:398
+#: ../lib/engine/components/local-roster/local-heap.cpp:412
 msgid "You supplied an unsupported address"
 msgstr "Η διεύθυνση αυτή δεν υποστηρίζεται"
 
-#: ../lib/engine/components/local-roster/local-heap.cpp:400
+#: ../lib/engine/components/local-roster/local-heap.cpp:414
 msgid "You already have a contact with this address!"
 msgstr "Υπάρχει ήδη μία επαφή με αυτή τη διεύθυνση!"
 
@@ -1255,14 +1055,15 @@ msgid "Please edit this group name"
 msgstr "Παρακαλώ, αλλάξτε το όνομα της ομάδας"
 
 #: ../lib/engine/components/opal/h323-endpoint.cpp:131
-#: ../lib/engine/components/opal/sip-endpoint.cpp:221
-#: ../lib/engine/components/opal/sip-endpoint.cpp:225
+#: ../lib/engine/components/opal/sip-endpoint.cpp:230
+#: ../lib/engine/components/opal/sip-endpoint.cpp:234
 msgid "Call"
 msgstr "Κλήση"
 
 #: ../lib/engine/components/opal/h323-endpoint.cpp:134
-#: ../lib/engine/components/opal/sip-endpoint.cpp:222
-#: ../lib/engine/components/opal/sip-endpoint.cpp:226 ../src/gui/main.cpp:2952
+#: ../lib/engine/components/opal/sip-endpoint.cpp:231
+#: ../lib/engine/components/opal/sip-endpoint.cpp:235
+#: ../src/gui/main_window.cpp:2979
 msgid "Transfer"
 msgstr "Μεταφορά"
 
@@ -1276,229 +1077,297 @@ msgid "Bad username/password"
 msgstr "Εσφαλμένο όνομα χρήστη ή κωδικός"
 
 #: ../lib/engine/components/opal/h323-endpoint.cpp:315
-#: ../lib/engine/components/opal/sip-endpoint.cpp:891
+#: ../lib/engine/components/opal/sip-endpoint.cpp:826
 msgid "Transport error"
 msgstr "Σφάλμα μεταφοράς"
 
 #: ../lib/engine/components/opal/h323-endpoint.cpp:326
 #: ../lib/engine/components/opal/h323-endpoint.cpp:331
-#: ../lib/engine/components/opal/sip-endpoint.cpp:898
+#: ../lib/engine/components/opal/sip-endpoint.cpp:833
 msgid "Failed"
 msgstr "Αποτυχία"
 
-#: ../lib/engine/components/opal/opal-account.cpp:300
+#. translators : the result will look like :
+#. * "registered (with 2 voicemail messages)"
+#.
+#: ../lib/engine/components/opal/opal-account.cpp:209
+#, c-format
+msgid "%s (with %d voicemail message)"
+msgid_plural "%s (with %d voicemail messages)"
+msgstr[0] ""
+msgstr[1] ""
+
+#: ../lib/engine/components/opal/opal-account.cpp:342
+#: ../plugins/loudmouth/loudmouth-account.cpp:352
 msgid "_Disable"
 msgstr "_Απενεργοποίηση"
 
-#: ../lib/engine/components/opal/opal-account.cpp:303
+#: ../lib/engine/components/opal/opal-account.cpp:345
+#: ../plugins/loudmouth/loudmouth-account.cpp:356
 msgid "_Enable"
 msgstr "_Ενεργοποίηση"
 
-#: ../lib/engine/components/opal/opal-account.cpp:324
-#: ../src/gui/assistant.cpp:720
+#: ../lib/engine/components/opal/opal-account.cpp:366
+#: ../src/gui/assistant.cpp:715
 msgid "Recharge the account"
 msgstr "Πίστωση του λογαριασμού"
 
 #
-#: ../lib/engine/components/opal/opal-account.cpp:329
-#: ../src/gui/assistant.cpp:732
+#: ../lib/engine/components/opal/opal-account.cpp:371
+#: ../src/gui/assistant.cpp:727
 msgid "Consult the balance history"
 msgstr "Εμφάνιση ιστορικού λογαριασμού"
 
 #
-#: ../lib/engine/components/opal/opal-account.cpp:334
+#: ../lib/engine/components/opal/opal-account.cpp:376
 msgid "Consult the call history"
 msgstr "Εμφάνιση ιστορικού κλήσεων"
 
-#: ../lib/engine/components/opal/opal-account.cpp:349
-#: ../lib/engine/components/opal/opal-bank.cpp:95
+#: ../lib/engine/components/opal/opal-account.cpp:391
+#: ../lib/engine/components/opal/opal-bank.cpp:94
+#: ../plugins/loudmouth/loudmouth-account.cpp:262
 msgid "Edit account"
 msgstr "Επεξεργασία λογαριασμού"
 
-#: ../lib/engine/components/opal/opal-account.cpp:355
-#: ../lib/engine/components/opal/opal-bank.cpp:133
+#: ../lib/engine/components/opal/opal-account.cpp:393
+#: ../plugins/evolution/evolution-book.cpp:341
+#: ../plugins/evolution/evolution-contact.cpp:312
+#: ../plugins/loudmouth/loudmouth-account.cpp:264
+msgid "Please update the following fields:"
+msgstr "Παρακαλώ, ενημερώστε τα παρακάτω πεδία:"
+
+#: ../lib/engine/components/opal/opal-account.cpp:397
 msgid "Registrar:"
 msgstr "Καταχωρητής:"
 
-#: ../lib/engine/components/opal/opal-account.cpp:357
-#: ../lib/engine/components/opal/opal-bank.cpp:123
+#: ../lib/engine/components/opal/opal-account.cpp:399
 msgid "Gatekeeper:"
 msgstr "Gatekeeper:"
 
 #
-#: ../lib/engine/components/opal/opal-account.cpp:358
-#: ../lib/engine/components/opal/opal-bank.cpp:104
-#: ../lib/engine/components/opal/opal-bank.cpp:124
-#: ../lib/engine/components/opal/opal-bank.cpp:134
-#: ../lib/engine/components/resource-list/rl-cluster.cpp:174
+#: ../lib/engine/components/opal/opal-account.cpp:400
+#: ../plugins/loudmouth/loudmouth-account.cpp:271
+#: ../plugins/resource-list/rl-cluster.cpp:174
 msgid "User:"
 msgstr "Χρήστης:"
 
 #. Translators:
 #. * SIP knows two usernames: The name for the client ("User") and the name
 #. * for the authentication procedure ("Authentication User")
-#: ../lib/engine/components/opal/opal-account.cpp:363
-#: ../lib/engine/components/opal/opal-bank.cpp:135
+#: ../lib/engine/components/opal/opal-account.cpp:405
 msgid "Authentication User:"
 msgstr "Χρήστης πιστοποίησης:"
 
-#: ../lib/engine/components/opal/opal-account.cpp:364
-#: ../lib/engine/components/opal/opal-bank.cpp:106
-#: ../lib/engine/components/opal/opal-bank.cpp:126
-#: ../lib/engine/components/opal/opal-bank.cpp:136
-#: ../lib/engine/components/resource-list/rl-cluster.cpp:173
+#: ../lib/engine/components/opal/opal-account.cpp:406
+#: ../plugins/loudmouth/loudmouth-account.cpp:283
+#: ../plugins/resource-list/rl-cluster.cpp:173
 msgid "Password:"
 msgstr "Κωδικός:"
 
-#: ../lib/engine/components/opal/opal-account.cpp:365
-#: ../lib/engine/components/opal/opal-bank.cpp:127
-#: ../lib/engine/components/opal/opal-bank.cpp:137
+#: ../lib/engine/components/opal/opal-account.cpp:407
 msgid "Timeout:"
 msgstr "Λήξη χρόνου:"
 
-#: ../lib/engine/components/opal/opal-account.cpp:366
-#: ../lib/engine/components/opal/opal-bank.cpp:140
+#: ../lib/engine/components/opal/opal-account.cpp:408
+#: ../lib/engine/components/opal/opal-bank.cpp:139
 msgid "Enable Account"
 msgstr "Ενεργοποίηση λογαριασμού"
 
-#: ../lib/engine/components/opal/opal-account.cpp:401
-#: ../lib/engine/components/opal/opal-bank.cpp:181
+#: ../lib/engine/components/opal/opal-account.cpp:434
+#: ../lib/engine/components/opal/opal-bank.cpp:173
 msgid "You did not supply a name for that account."
 msgstr "Δεν παρείχατε όνομα για το λογαριασμό."
 
-#: ../lib/engine/components/opal/opal-account.cpp:403
-#: ../lib/engine/components/opal/opal-bank.cpp:183
+#: ../lib/engine/components/opal/opal-account.cpp:436
+#: ../lib/engine/components/opal/opal-bank.cpp:175
 msgid "You did not supply a host to register to."
 msgstr "Δεν διευκρινίσατε πού θα γίνει η εγγραφή."
 
-#: ../lib/engine/components/opal/opal-account.cpp:405
-#: ../lib/engine/components/opal/opal-bank.cpp:185
+#: ../lib/engine/components/opal/opal-account.cpp:438
+#: ../lib/engine/components/opal/opal-bank.cpp:177
 msgid "You did not supply a user name for that account."
 msgstr "Δεν παρείχατε όνομα χρήστη για το λογαριασμό αυτό."
 
-#: ../lib/engine/components/opal/opal-account.cpp:407
-#: ../lib/engine/components/opal/opal-bank.cpp:187
+#: ../lib/engine/components/opal/opal-account.cpp:440
+#: ../lib/engine/components/opal/opal-bank.cpp:179
 msgid "The timeout should have a bigger value."
 msgstr "Το όριο χρόνου πρέπει να είναι μεγαλύτερο."
 
-#: ../lib/engine/components/opal/opal-bank.cpp:75
+#: ../lib/engine/components/opal/opal-account.cpp:486
+msgid "Registered"
+msgstr "Εγγεγραμμένος "
+
+#: ../lib/engine/components/opal/opal-account.cpp:498
+msgid "Unregistered"
+msgstr "Μη εγγεγραμμένος"
+
+#: ../lib/engine/components/opal/opal-account.cpp:508
+msgid "Could not unregister"
+msgstr "Δεν ήταν δυνατή η κατάργηση της εγγραφής"
+
+#: ../lib/engine/components/opal/opal-account.cpp:521
+msgid "Could not register"
+msgstr "Δεν ήταν δυνατή η εγγραφή"
+
+#: ../lib/engine/components/opal/opal-account.cpp:530
+msgid "Processing..."
+msgstr "Επεξεργασία..."
+
+#: ../lib/engine/components/opal/opal-bank.cpp:74
 msgid "_Add an Ekiga.net Account"
 msgstr "_Προσθήκη λογαριασμού Εkiga.net"
 
-#: ../lib/engine/components/opal/opal-bank.cpp:77
+#: ../lib/engine/components/opal/opal-bank.cpp:76
 msgid "_Add an Ekiga Call Out Account"
 msgstr "_Προσθήκη λογαριασμού Εkiga Call Out"
 
-#: ../lib/engine/components/opal/opal-bank.cpp:79
+#: ../lib/engine/components/opal/opal-bank.cpp:78
 msgid "_Add a SIP Account"
 msgstr "Προσ_θήκη λογαριασμού SIP"
 
-#: ../lib/engine/components/opal/opal-bank.cpp:81
+#: ../lib/engine/components/opal/opal-bank.cpp:80
 msgid "_Add an H.323 Account"
 msgstr "_Προσθήκη ενός λογαριασμού Η.323"
 
-#: ../lib/engine/components/opal/opal-bank.cpp:96
+#: ../lib/engine/components/opal/opal-bank.cpp:95
 msgid "Please update the following fields."
 msgstr "Παρακαλώ, ενημερώστε τα παρακάτω πεδία."
 
-#: ../lib/engine/components/opal/opal-bank.cpp:101
-#: ../src/gui/assistant.cpp:600
+#: ../lib/engine/components/opal/opal-bank.cpp:100
+#: ../src/gui/assistant.cpp:595
 msgid "Get an Ekiga.net SIP account"
 msgstr "Αποκτήστε λογαριασμό SIP ekiga.net"
 
-#: ../lib/engine/components/opal/opal-bank.cpp:111
-#: ../src/gui/assistant.cpp:708
+#
+#: ../lib/engine/components/opal/opal-bank.cpp:103
+#: ../lib/engine/components/opal/opal-bank.cpp:123
+#: ../lib/engine/components/opal/opal-bank.cpp:133
+msgid "_User:"
+msgstr "Χρήστης:"
+
+#: ../lib/engine/components/opal/opal-bank.cpp:105
+#: ../lib/engine/components/opal/opal-bank.cpp:125
+#: ../lib/engine/components/opal/opal-bank.cpp:135
+msgid "_Password:"
+msgstr "_Κωδικός:"
+
+#: ../lib/engine/components/opal/opal-bank.cpp:110
+#: ../src/gui/assistant.cpp:703
 msgid "Get an Ekiga Call Out account"
 msgstr "Αποκτήστε λογαριασμό Ekiga Call Out"
 
-#: ../lib/engine/components/opal/opal-bank.cpp:115 ../src/gui/main.cpp:2706
-#: ../src/gui/main.cpp:2801
-msgid "Account ID:"
-msgstr "Όνομα λογαριασμού:"
+#: ../lib/engine/components/opal/opal-bank.cpp:114
+msgid "_Account ID:"
+msgstr "Αναγνωριστικό λογαριασμού:"
 
-#: ../lib/engine/components/opal/opal-bank.cpp:117
-msgid "PIN Code:"
-msgstr "Κωδικός PIN:"
+#: ../lib/engine/components/opal/opal-bank.cpp:116
+msgid "_PIN Code:"
+msgstr "Κ_ωδικός PIN:"
 
-#: ../lib/engine/components/opal/opal-call.cpp:438
+#
+#: ../lib/engine/components/opal/opal-bank.cpp:121
+#: ../lib/engine/components/opal/opal-bank.cpp:131
+#: ../plugins/evolution/evolution-book.cpp:343
+msgid "_Name:"
+msgstr "Ό_νομα:"
+
+#: ../lib/engine/components/opal/opal-bank.cpp:122
+msgid "_Gatekeeper:"
+msgstr "_Gatekeeper:"
+
+#: ../lib/engine/components/opal/opal-bank.cpp:126
+#: ../lib/engine/components/opal/opal-bank.cpp:136
+msgid "_Timeout:"
+msgstr "Λήξη χρόνου:"
+
+#: ../lib/engine/components/opal/opal-bank.cpp:132
+msgid "_Registrar:"
+msgstr "Καταχωρητής:"
+
+#: ../lib/engine/components/opal/opal-bank.cpp:134
+msgid "_Authentication User:"
+msgstr "Χρήστης πιστοποίησης:"
+
+#: ../lib/engine/components/opal/opal-call.cpp:406
 msgid "Local user cleared the call"
 msgstr "Ο τοπικός χρήστης εκκαθάρισε την κλήση"
 
-#: ../lib/engine/components/opal/opal-call.cpp:441
-#: ../lib/engine/components/opal/opal-call.cpp:444
+#: ../lib/engine/components/opal/opal-call.cpp:409
+#: ../lib/engine/components/opal/opal-call.cpp:412
 msgid "Local user rejected the call"
 msgstr "Ο τοπικός χρήστης απόρριψε την κλήση"
 
-#: ../lib/engine/components/opal/opal-call.cpp:447
+#: ../lib/engine/components/opal/opal-call.cpp:415
 msgid "Remote user cleared the call"
 msgstr "Ο απομακρυσμένος χρήστης εκκαθάρισε την κλήση"
 
-#: ../lib/engine/components/opal/opal-call.cpp:450
+#: ../lib/engine/components/opal/opal-call.cpp:418
 msgid "Remote user rejected the call"
 msgstr "Ο απομακρυσμένος χρήστης απόρριψε την κλήση"
 
-#: ../lib/engine/components/opal/opal-call.cpp:453
+#: ../lib/engine/components/opal/opal-call.cpp:421
 msgid "Remote user has stopped calling"
 msgstr "Ο απομακρυσμένος χρήστης σταμάτησε να καλεί"
 
-#: ../lib/engine/components/opal/opal-call.cpp:456
+#: ../lib/engine/components/opal/opal-call.cpp:424
 msgid "Abnormal call termination"
 msgstr "Μη ομαλός τερματισμός κλήσης"
 
-#: ../lib/engine/components/opal/opal-call.cpp:459 ../src/gui/main.cpp:1496
+#: ../lib/engine/components/opal/opal-call.cpp:427
+#: ../src/gui/main_window.cpp:1492
 msgid "Could not connect to remote host"
 msgstr "Αδυναμία σύνδεσης με απομακρυσμένο σύστημα"
 
-#: ../lib/engine/components/opal/opal-call.cpp:462
+#: ../lib/engine/components/opal/opal-call.cpp:431
 msgid "The Gatekeeper cleared the call"
 msgstr "Ο  Gatekeeper εκκαθάρισε την κλήση"
 
-#: ../lib/engine/components/opal/opal-call.cpp:465
+#: ../lib/engine/components/opal/opal-call.cpp:434
 msgid "User not found"
 msgstr "Ο χρήστης δε βρέθηκε"
 
-#: ../lib/engine/components/opal/opal-call.cpp:468
+#: ../lib/engine/components/opal/opal-call.cpp:437
 msgid "Insufficient bandwidth"
 msgstr "Ανεπαρκές bandwidth"
 
-#: ../lib/engine/components/opal/opal-call.cpp:471
+#: ../lib/engine/components/opal/opal-call.cpp:440
 msgid "No common codec"
 msgstr "Δεν υπάρχει κοινός codec"
 
-#: ../lib/engine/components/opal/opal-call.cpp:474
+#: ../lib/engine/components/opal/opal-call.cpp:443
 msgid "Call forwarded"
 msgstr "Η κλήση προωθήθηκε"
 
-#: ../lib/engine/components/opal/opal-call.cpp:477
+#: ../lib/engine/components/opal/opal-call.cpp:446
 msgid "Security check failed"
 msgstr "Ο έλεγχος ασφαλείας απέτυχε"
 
-#: ../lib/engine/components/opal/opal-call.cpp:480
+#: ../lib/engine/components/opal/opal-call.cpp:449
 msgid "Local user is busy"
 msgstr "Ο τοπικός χρήστης είναι απασχολημένος"
 
-#: ../lib/engine/components/opal/opal-call.cpp:483
-#: ../lib/engine/components/opal/opal-call.cpp:489
+#: ../lib/engine/components/opal/opal-call.cpp:452
+#: ../lib/engine/components/opal/opal-call.cpp:458
 msgid "Congested link to remote party"
 msgstr "Congested link to remote party"
 
-#: ../lib/engine/components/opal/opal-call.cpp:486
+#: ../lib/engine/components/opal/opal-call.cpp:455
 msgid "Remote user is busy"
 msgstr "Ο απομακρυσμένος χρήστης είναι απασχολημένος"
 
-#: ../lib/engine/components/opal/opal-call.cpp:492
+#: ../lib/engine/components/opal/opal-call.cpp:461
 msgid "Remote host is offline"
 msgstr "Το απομακρυσμένο σύστημα είναι αποσυνδεδεμένο"
 
-#: ../lib/engine/components/opal/opal-call.cpp:498
+#: ../lib/engine/components/opal/opal-call.cpp:467
 msgid "User is not available"
 msgstr "Ο χρήστης δεν είναι διαθέσιμος"
 
-#: ../lib/engine/components/opal/opal-call.cpp:510
+#: ../lib/engine/components/opal/opal-call.cpp:478
 msgid "Call completed"
 msgstr "Η κλήση ολοκληρώθηκε"
 
-#: ../lib/engine/components/opal/opal-call-manager.cpp:731
+#: ../lib/engine/components/opal/opal-call-manager.cpp:770
 msgid ""
 "Ekiga did not manage to configure your network settings automatically. You "
 "can still use it, but you need to configure your network settings manually.\n"
@@ -1513,376 +1382,267 @@ msgstr ""
 "Παρακαλώ, δείτε τη σελίδα http://wiki.ekiga.org/index.php/"
 "Enable_port_forwarding_manually για οδηγίες"
 
-#: ../lib/engine/components/opal/sip-endpoint.cpp:246
-#: ../lib/engine/components/opal/sip-endpoint.cpp:248
+#: ../lib/engine/components/opal/sip-endpoint.cpp:255
+#: ../lib/engine/components/opal/sip-endpoint.cpp:257
 msgid "Message"
 msgstr "Μήνυμα"
 
-#: ../lib/engine/components/opal/sip-endpoint.cpp:705
+#: ../lib/engine/components/opal/sip-endpoint.cpp:633
 msgid "Bad request"
 msgstr "Εσφαλμένη αίτηση"
 
-#: ../lib/engine/components/opal/sip-endpoint.cpp:709
+#: ../lib/engine/components/opal/sip-endpoint.cpp:637
 msgid "Payment required"
 msgstr "Απαιτείται πληρωμή"
 
-#: ../lib/engine/components/opal/sip-endpoint.cpp:713
+#: ../lib/engine/components/opal/sip-endpoint.cpp:641
 msgid "Unauthorized"
 msgstr "Μη εγκεκριμένος"
 
-#: ../lib/engine/components/opal/sip-endpoint.cpp:717
-msgid "Forbidden"
-msgstr "Απαγορεύεται "
+#: ../lib/engine/components/opal/sip-endpoint.cpp:645
+msgid "Forbidden, please check that username and password are correct"
+msgstr ""
+"Απαγορεύεται, παρακαλώ ελέγξτε ότι το όνομα χρήστη και ο κωδικός είναι σωστά"
 
-#: ../lib/engine/components/opal/sip-endpoint.cpp:721
+#: ../lib/engine/components/opal/sip-endpoint.cpp:649
 msgid "Timeout"
 msgstr "Λήξη χρόνου"
 
 #
-#: ../lib/engine/components/opal/sip-endpoint.cpp:725
+#: ../lib/engine/components/opal/sip-endpoint.cpp:653
 msgid "Conflict"
 msgstr "Σύγκρουση"
 
-#: ../lib/engine/components/opal/sip-endpoint.cpp:729
+#: ../lib/engine/components/opal/sip-endpoint.cpp:657
 msgid "Temporarily unavailable"
 msgstr "Προσωρινά μη διαθέσιμο"
 
-#: ../lib/engine/components/opal/sip-endpoint.cpp:733
+#: ../lib/engine/components/opal/sip-endpoint.cpp:661
 msgid "Not acceptable"
 msgstr "Μη αποδεκτό"
 
-#: ../lib/engine/components/opal/sip-endpoint.cpp:737
+#: ../lib/engine/components/opal/sip-endpoint.cpp:665
 msgid "Illegal status code"
 msgstr "Μη έγκυρος κωδικός κατάστασης"
 
-#: ../lib/engine/components/opal/sip-endpoint.cpp:741
+#: ../lib/engine/components/opal/sip-endpoint.cpp:669
 msgid "Multiple choices"
 msgstr "Πολλαπλές επιλογές"
 
-#: ../lib/engine/components/opal/sip-endpoint.cpp:745
+#: ../lib/engine/components/opal/sip-endpoint.cpp:673
 msgid "Moved permanently"
 msgstr "Μετακινήθηκε οριστικά"
 
-#: ../lib/engine/components/opal/sip-endpoint.cpp:749
+#: ../lib/engine/components/opal/sip-endpoint.cpp:677
 msgid "Moved temporarily"
 msgstr "Μετακινήθηκε προσωρινά"
 
-#: ../lib/engine/components/opal/sip-endpoint.cpp:753
+#: ../lib/engine/components/opal/sip-endpoint.cpp:681
 msgid "Use proxy"
 msgstr "Χρήση διαμεσολαβητή"
 
-#: ../lib/engine/components/opal/sip-endpoint.cpp:757
+#: ../lib/engine/components/opal/sip-endpoint.cpp:685
 msgid "Alternative service"
 msgstr "Εναλλακτική υπηρεσία"
 
-#: ../lib/engine/components/opal/sip-endpoint.cpp:761
+#: ../lib/engine/components/opal/sip-endpoint.cpp:689
 msgid "Not found"
 msgstr "Δε βρέθηκε"
 
-#: ../lib/engine/components/opal/sip-endpoint.cpp:765
+#: ../lib/engine/components/opal/sip-endpoint.cpp:693
 msgid "Method not allowed"
 msgstr "Μη επιτρεπόμενη μέθοδος"
 
-#: ../lib/engine/components/opal/sip-endpoint.cpp:769
+#: ../lib/engine/components/opal/sip-endpoint.cpp:697
 msgid "Proxy authentication required"
 msgstr "Απαιτείται πιστοποίηση διαμεσολαβητή"
 
-#: ../lib/engine/components/opal/sip-endpoint.cpp:773
+#: ../lib/engine/components/opal/sip-endpoint.cpp:701
 msgid "Length required"
 msgstr "Απαιτείται το μήκος"
 
-#: ../lib/engine/components/opal/sip-endpoint.cpp:777
+#: ../lib/engine/components/opal/sip-endpoint.cpp:705
 msgid "Request entity too big"
 msgstr "Πολύ μεγάλο μήκος αιτήματος"
 
-#: ../lib/engine/components/opal/sip-endpoint.cpp:781
+#: ../lib/engine/components/opal/sip-endpoint.cpp:709
 msgid "Request URI too long"
 msgstr "Πολύ μεγάλο μήκος URI"
 
-#: ../lib/engine/components/opal/sip-endpoint.cpp:785
+#: ../lib/engine/components/opal/sip-endpoint.cpp:713
 msgid "Unsupported media type"
 msgstr "Μη υποστηριζόμενος τύπος αρχείου"
 
-#: ../lib/engine/components/opal/sip-endpoint.cpp:789
+#: ../lib/engine/components/opal/sip-endpoint.cpp:717
 msgid "Unsupported URI scheme"
 msgstr "Μη υποστηριζόμενος τύπος URI"
 
-#. Translators : The extension we are trying to register does not exist
-#: ../lib/engine/components/opal/sip-endpoint.cpp:794
+#. Translators:  The extension we are trying to register does not exist.
+#. * Here extension is a specific "phone number", see
+#. * http://en.wikipedia.org/wiki/Extension_(telephone)
+#. * for more information
+#: ../lib/engine/components/opal/sip-endpoint.cpp:725
 msgid "Bad extension"
 msgstr "Εσφαλμένη επέκταση"
 
-#: ../lib/engine/components/opal/sip-endpoint.cpp:798
+#: ../lib/engine/components/opal/sip-endpoint.cpp:729
 msgid "Extension required"
 msgstr "Απαιτείται επέκταση"
 
-#: ../lib/engine/components/opal/sip-endpoint.cpp:802
+#: ../lib/engine/components/opal/sip-endpoint.cpp:733
 msgid "Interval too brief"
 msgstr "Πολύ σύντομο διάστημα"
 
-#: ../lib/engine/components/opal/sip-endpoint.cpp:806
+#: ../lib/engine/components/opal/sip-endpoint.cpp:737
 msgid "Loop detected"
 msgstr "Εντοπίστηκε βρόγχος"
 
-#: ../lib/engine/components/opal/sip-endpoint.cpp:810
+#: ../lib/engine/components/opal/sip-endpoint.cpp:741
 msgid "Too many hops"
 msgstr "Πάρα πολλές μεταπηδήσεις"
 
-#: ../lib/engine/components/opal/sip-endpoint.cpp:814
+#: ../lib/engine/components/opal/sip-endpoint.cpp:745
 msgid "Address incomplete"
 msgstr "Μη ολοκληρωμένη διεύθυνση"
 
-#: ../lib/engine/components/opal/sip-endpoint.cpp:818
+#: ../lib/engine/components/opal/sip-endpoint.cpp:749
 msgid "Ambiguous"
 msgstr "Ασαφής"
 
-#: ../lib/engine/components/opal/sip-endpoint.cpp:822
+#: ../lib/engine/components/opal/sip-endpoint.cpp:753
 msgid "Busy Here"
 msgstr "Απασχολημένο εδώ"
 
-#: ../lib/engine/components/opal/sip-endpoint.cpp:826
+#: ../lib/engine/components/opal/sip-endpoint.cpp:757
 msgid "Request terminated"
 msgstr "Τερματίστηκε το αίτημα"
 
-#: ../lib/engine/components/opal/sip-endpoint.cpp:830
+#: ../lib/engine/components/opal/sip-endpoint.cpp:761
+msgid "Remote party host is offline"
+msgstr "Το απομακρυσμένο σύστημα είναι αποσυνδεδεμένο"
+
+#: ../lib/engine/components/opal/sip-endpoint.cpp:765
 msgid "Not acceptable here"
 msgstr "Μη αποδεκτό σε αυτή τη θέση"
 
-#: ../lib/engine/components/opal/sip-endpoint.cpp:834
+#: ../lib/engine/components/opal/sip-endpoint.cpp:769
 msgid "Bad event"
 msgstr "Σφάλμα"
 
-#: ../lib/engine/components/opal/sip-endpoint.cpp:838
+#: ../lib/engine/components/opal/sip-endpoint.cpp:773
 msgid "Request pending"
 msgstr "Εκκρεμές αίτημα"
 
-#: ../lib/engine/components/opal/sip-endpoint.cpp:842
+#: ../lib/engine/components/opal/sip-endpoint.cpp:777
 msgid "Undecipherable"
 msgstr "Μη αναγνώσιμο"
 
-#: ../lib/engine/components/opal/sip-endpoint.cpp:846
+#: ../lib/engine/components/opal/sip-endpoint.cpp:781
 msgid "Internal server error"
 msgstr "Εσωτερικό σφάλμα εξυπηρετητή"
 
-#: ../lib/engine/components/opal/sip-endpoint.cpp:850
+#: ../lib/engine/components/opal/sip-endpoint.cpp:785
 msgid "Not implemented"
 msgstr "Δε λειτουργεί"
 
-#: ../lib/engine/components/opal/sip-endpoint.cpp:854
+#: ../lib/engine/components/opal/sip-endpoint.cpp:789
 msgid "Bad gateway"
 msgstr "Εσφαλμένη πύλη:"
 
-#: ../lib/engine/components/opal/sip-endpoint.cpp:858
+#: ../lib/engine/components/opal/sip-endpoint.cpp:793
 msgid "Service unavailable"
 msgstr "Μη διαθέσιμη υπηρεσία"
 
-#: ../lib/engine/components/opal/sip-endpoint.cpp:862
+#: ../lib/engine/components/opal/sip-endpoint.cpp:797
 msgid "Server timeout"
 msgstr "Λήξη ορίου χρόνου εξυπηρετητή"
 
-#: ../lib/engine/components/opal/sip-endpoint.cpp:866
+#: ../lib/engine/components/opal/sip-endpoint.cpp:801
 msgid "SIP version not supported"
 msgstr "Δεν υποστηρίζεται αυτή η έκδοση του SIP"
 
-#: ../lib/engine/components/opal/sip-endpoint.cpp:870
+#: ../lib/engine/components/opal/sip-endpoint.cpp:805
 msgid "Message too large"
 msgstr "Πολύ μεγάλο μήνυμα"
 
-#: ../lib/engine/components/opal/sip-endpoint.cpp:874
+#: ../lib/engine/components/opal/sip-endpoint.cpp:809
 msgid "Busy everywhere"
 msgstr "Απασχολημένο παντού"
 
-#: ../lib/engine/components/opal/sip-endpoint.cpp:878
+#: ../lib/engine/components/opal/sip-endpoint.cpp:813
 msgid "Decline"
 msgstr "Απόρριψη"
 
-#: ../lib/engine/components/opal/sip-endpoint.cpp:882
+#: ../lib/engine/components/opal/sip-endpoint.cpp:817
 msgid "Does not exist anymore"
 msgstr "Δεν υπάρχει πλέον"
 
-#: ../lib/engine/components/opal/sip-endpoint.cpp:886
+#: ../lib/engine/components/opal/sip-endpoint.cpp:821
 msgid "Globally not acceptable"
 msgstr "Μη αποδεκτό πουθενά"
 
-#: ../lib/engine/components/opal/sip-endpoint.cpp:1023
+#: ../lib/engine/components/opal/sip-endpoint.cpp:981
 msgid "Could not send message"
 msgstr "Αδυναμία αποστολής μηνύματος"
 
-#: ../lib/engine/components/opal/sip-endpoint.cpp:1142
+#: ../lib/engine/components/opal/sip-endpoint.cpp:1078
 #, c-format
 msgid "Incoming call from %s"
 msgstr "Εισερχόμενη κλήση από %s"
 
-#: ../lib/engine/components/opal/sip-endpoint.cpp:1144
+#: ../lib/engine/components/opal/sip-endpoint.cpp:1080
 #, c-format
 msgid "Incoming call"
 msgstr "Εισερχόμενη κλήση"
 
-#: ../lib/engine/components/opal/sip-endpoint.cpp:1150
+#: ../lib/engine/components/opal/sip-endpoint.cpp:1086
 #, c-format
 msgid "In a call with %s"
 msgstr "Κλήση σε εξέλιξη με %s"
 
-#: ../lib/engine/components/opal/sip-endpoint.cpp:1152
+#: ../lib/engine/components/opal/sip-endpoint.cpp:1088
 #, c-format
 msgid "In a call"
 msgstr "Κλήση σε εξέλιξη"
-
-#: ../lib/engine/components/resource-list/rl-cluster.cpp:102
-msgid "New resource list"
-msgstr "Νέα λίστα πόρων"
-
-#: ../lib/engine/components/resource-list/rl-cluster.cpp:166
-msgid "Add new resource-list"
-msgstr "Προσθήκη νέας λίστας πόρων"
-
-#: ../lib/engine/components/resource-list/rl-cluster.cpp:167
-msgid ""
-"Please fill in this form to add a new contact list to ekiga's remote roster"
-msgstr ""
-"Παρακαλώ, συμπληρώστε αυτή τη φόρμα για να προσθέσετε νέα λίστα επαφών στον "
-"απομακρυσμένο κατάλογο επαφών του ekiga"
-
-#: ../lib/engine/components/resource-list/rl-cluster.cpp:171
-msgid "Writable:"
-msgstr "Εγγράψιμο:"
-
-#
-#: ../lib/engine/components/resource-list/rl-cluster.cpp:172
-msgid "Username:"
-msgstr "Όνομα χρήστη:"
-
-#
-#: ../lib/engine/components/resource-list/rl-heap.cpp:104
-#: ../lib/engine/components/resource-list/rl-heap.cpp:146
-#: ../lib/engine/components/resource-list/rl-heap.cpp:178
-#: ../lib/engine/components/resource-list/rl-presentity.cpp:134
-#: ../lib/engine/components/resource-list/rl-entry.cpp:131
-msgid "Unnamed"
-msgstr "Χωρίς όνομα"
-
-#: ../lib/engine/components/resource-list/rl-heap.cpp:200
-msgid "_Add a new contact"
-msgstr "_Προσθήκη νέας επαφής"
-
-#
-#: ../lib/engine/components/resource-list/rl-heap.cpp:202
-msgid "_Refresh contact list"
-msgstr "Ανανέ_ωση λίστας επαφών"
-
-#: ../lib/engine/components/resource-list/rl-heap.cpp:204
-msgid "Contact list _properties"
-msgstr "_Ιδιότητες λίστας επαφών"
-
-#
-#: ../lib/engine/components/resource-list/rl-heap.cpp:464
-msgid "Edit contact list properties"
-msgstr "Επεξεργασία ιδιοτήτων λίστας επαφών"
-
-#: ../lib/engine/components/resource-list/rl-heap.cpp:466
-msgid "Please edit the following fields (no identifier means global)"
-msgstr ""
-"Παρακαλώ, αλλάξτε τα ακόλουθα πεδία (αν δεν υπάρχει όρισμα, ισχύουν γενικά)"
-
-#: ../lib/engine/components/resource-list/rl-heap.cpp:469
-msgid "Contact list's name"
-msgstr "Όνομα λίστας επαφών"
-
-#. "Document" used as a name -- uri point to the root of a document tree
-#: ../lib/engine/components/resource-list/rl-heap.cpp:471
-msgid "Document root"
-msgstr "Ρίζα εγγράφων"
-
-#: ../lib/engine/components/resource-list/rl-heap.cpp:472
-msgid "Identifier"
-msgstr "Όρισμα"
-
-#: ../lib/engine/components/resource-list/rl-heap.cpp:473
-msgid "Writable"
-msgstr "Εγγράψιμο"
-
-#: ../lib/engine/components/resource-list/rl-heap.cpp:474
-msgid "Server username"
-msgstr "Όνομα χρήστη εξυπηρετητή"
-
-#: ../lib/engine/components/resource-list/rl-heap.cpp:475
-msgid "Server password"
-msgstr "Συνθηματικό εξυπηρετητή"
-
-#: ../lib/engine/components/resource-list/rl-heap.cpp:527
-msgid "Add a remote contact"
-msgstr "Προσθήκη απομακρυσμένης επαφής"
-
-#: ../lib/engine/components/resource-list/rl-heap.cpp:528
-msgid "Please fill in this form to create a new contact on a remote server"
-msgstr ""
-"Παρακαλώ, συμπληρώστε αυτή τη φόρμα για να δημιουργήσετε νέα επαφή σε "
-"απομακρυσμένο εξυπηρετητή"
-
-#
-#: ../lib/engine/components/resource-list/rl-presentity.cpp:222
-msgid "Edit remote contact"
-msgstr "Επεξεργασία απομακρυσμένης επαφής"
-
-#: ../lib/engine/components/resource-list/rl-presentity.cpp:223
-msgid ""
-"Please fill in this form to change an existing contact on a remote server"
-msgstr ""
-"Παρακαλώ, συμπληρώστε αυτή τη φόρμα για να τροποποιήσετε υπάρχουσα επαφή σε "
-"απομακρυσμένο εξυπηρετητή"
-
-#: ../lib/engine/components/resource-list/rl-entry.cpp:187
-msgid "Invalid server data"
-msgstr "Μη έγκυρα δεδομένα εξυπηρετητή"
-
-#: ../lib/engine/components/resource-list/rl-entry-ref.cpp:53
-msgid "Click to fetch"
-msgstr "Κλικ για λήψη"
-
-#: ../lib/engine/components/resource-list/rl-entry-ref.cpp:120
-msgid "Distant contact"
-msgstr "Μακρινή επαφή"
-
-#: ../lib/engine/components/resource-list/rl-list.cpp:182
-#, c-format
-msgid "%s / List #%d"
-msgstr "%s / Λίστα #%d"
-
-#: ../lib/engine/components/resource-list/rl-list.cpp:186
-#, c-format
-msgid "List #%d"
-msgstr "Λίστα #%d"
 
 #: ../lib/engine/gui/gtk-core/form-dialog-gtk.cpp:660
 msgid "Advanced"
 msgstr "Προχωρημένες Ρυθμίσεις"
 
-#: ../lib/engine/gui/gtk-frontend/addressbook-window.cpp:659
+#: ../lib/engine/gui/gtk-core/codecsbox.cpp:478
+msgid "Move selected codec priority upwards"
+msgstr "Αυξήστε την προτεραιότητα του επιλεγμένου codec"
+
+#: ../lib/engine/gui/gtk-core/codecsbox.cpp:488
+msgid "Move selected codec priority downwards"
+msgstr "Μειώστε την προτεραιότητα του επιλεγμένου codec"
+
+#: ../lib/engine/gui/gtk-frontend/addressbook-window.cpp:670
 msgid "Address Book"
 msgstr "Βιβλίο Διευθύνσεων"
 
-#: ../lib/engine/gui/gtk-frontend/addressbook-window.cpp:675
-#: ../src/gui/main.cpp:3127
+#: ../lib/engine/gui/gtk-frontend/addressbook-window.cpp:686
+#: ../src/gui/main_window.cpp:3154
 msgid "Address _Book"
 msgstr "_Βιβλίο Διευθύνσεων"
 
 #
 #. This will add static and dynamic actions
-#: ../lib/engine/gui/gtk-frontend/addressbook-window.cpp:684
+#: ../lib/engine/gui/gtk-frontend/addressbook-window.cpp:695
 msgid "_Action"
 msgstr "_Ενέργεια"
 
-#: ../lib/engine/gui/gtk-frontend/addressbook-window.cpp:729
+#: ../lib/engine/gui/gtk-frontend/addressbook-window.cpp:740
 msgid "Category"
 msgstr "Κατηγορία"
 
 #
-#: ../lib/engine/gui/gtk-frontend/book-view-gtk.cpp:590
-#: ../src/gui/assistant.cpp:1372
+#: ../lib/engine/gui/gtk-frontend/book-view-gtk.cpp:616
+#: ../src/gui/assistant.cpp:1364
 msgid "Full Name"
 msgstr "Ονοματεπώνυμο"
 
-#: ../lib/engine/gui/gtk-frontend/book-view-gtk.cpp:601
+#: ../lib/engine/gui/gtk-frontend/book-view-gtk.cpp:631
 msgid "_Search Filter:"
 msgstr "_Φίλτρο αναζήτησης:"
 
@@ -1898,7 +1658,7 @@ msgstr "Άνοιγμα του συνδέσμου σε περιηγητή"
 msgid "Copy link"
 msgstr "Αντιγραφή συνδέσμου"
 
-#: ../lib/engine/gui/gtk-frontend/chat-area.cpp:907
+#: ../lib/engine/gui/gtk-frontend/chat-area.cpp:912
 msgid "_Smile..."
 msgstr "_Χαμογελάστε..."
 
@@ -1907,78 +1667,570 @@ msgstr "_Χαμογελάστε..."
 msgid "Chat Window"
 msgstr "Παράθυρο συζήτησης κειμένου"
 
-#: ../lib/engine/gui/gtk-frontend/roster-view-gtk.cpp:989
-#: ../lib/engine/gui/gtk-frontend/roster-view-gtk.cpp:1024
+#: ../lib/engine/gui/gtk-frontend/roster-view-gtk.cpp:971
+#: ../lib/engine/gui/gtk-frontend/roster-view-gtk.cpp:1006
 msgid "Unsorted"
 msgstr "Αταξινόμητα"
 
-#: ../lib/gui/codecsbox.cpp:478
-msgid "Move selected codec priority upwards"
-msgstr "Αυξήστε την προτεραιότητα του επιλεγμένου codec"
-
-#: ../lib/gui/codecsbox.cpp:488
-msgid "Move selected codec priority downwards"
-msgstr "Μειώστε την προτεραιότητα του επιλεγμένου codec"
-
-#: ../lib/gui/gmdialog.c:462
+#: ../lib/gui/gmdialog.c:331
 msgid "Do not show this dialog again"
 msgstr "Να μην εμφανιστεί αυτός ο διάλογος ξανά"
 
-#: ../src/gui/accounts.cpp:230
-msgid "Registered"
-msgstr "Εγγεγραμμένος "
+#: ../plugins/evolution/evolution-book.cpp:75
+#: ../plugins/ldap/ldap-book.cpp:904
+#, c-format
+msgid "%d user found"
+msgid_plural "%d users found"
+msgstr[0] "Βρέθηκε %d χρήστης"
+msgstr[1] "Βρέθηκαν %d χρήστες"
 
-#: ../src/gui/accounts.cpp:234
-msgid "Unregistered"
-msgstr "Μη εγγεγραμμένος"
+#: ../plugins/evolution/evolution-book.cpp:297
+#: ../plugins/loudmouth/loudmouth-heap.cpp:138
+msgid "New _Contact"
+msgstr "Νέα _Επαφή"
 
-#: ../src/gui/accounts.cpp:238
-msgid "Could not unregister"
-msgstr "Δεν ήταν δυνατή η κατάργηση της εγγραφής"
+#: ../plugins/evolution/evolution-book.cpp:344
+#: ../plugins/evolution/evolution-contact.cpp:323
+msgid "VoIP _URI:"
+msgstr "VoIP _URI:"
 
-#: ../src/gui/accounts.cpp:244
-msgid "Could not register"
-msgstr "Δεν ήταν δυνατή η εγγραφή"
+#: ../plugins/evolution/evolution-book.cpp:345
+#: ../plugins/evolution/evolution-contact.cpp:324
+msgid "_Home phone:"
+msgstr "Τηλέφωνο οι_κίας:"
 
-#: ../src/gui/accounts.cpp:250
-msgid "Processing..."
-msgstr "Επεξεργασία..."
+#: ../plugins/evolution/evolution-book.cpp:346
+#: ../plugins/evolution/evolution-contact.cpp:325
+msgid "_Office phone:"
+msgstr "Τηλέφωνο ε_ργασίας:"
 
-#: ../src/gui/accounts.cpp:636
+#: ../plugins/evolution/evolution-book.cpp:347
+#: ../plugins/evolution/evolution-contact.cpp:326
+msgid "_Cell phone:"
+msgstr "_Κινητό τηλέφωνο"
+
+#: ../plugins/evolution/evolution-book.cpp:348
+#: ../plugins/evolution/evolution-contact.cpp:327
+msgid "_Pager:"
+msgstr "_Βομβητής:"
+
+#
+#: ../plugins/evolution/evolution-contact.cpp:310
+msgid "Edit contact"
+msgstr "Επεξεργασία επαφής"
+
+#: ../plugins/evolution/evolution-contact.cpp:364
+msgid "Remove contact"
+msgstr "Αφαίρεση επαφής"
+
+#: ../plugins/evolution/evolution-contact.cpp:366
+#, c-format
+msgid "Are you sure you want to remove %s from the addressbook?"
+msgstr ""
+"Είστε σίγουροι ότι θέλετε να διαγράψετε την επαφή %s από το βιβλίο "
+"διευθύνσεων;"
+
+#: ../plugins/gstreamer/gst-audioinput.cpp:277
+msgid "Audio test"
+msgstr "Δοκιμή ήχου"
+
+#: ../plugins/gstreamer/gst-audiooutput.cpp:328
+msgid "Silent"
+msgstr "Χωρίς ήχο"
+
+#: ../plugins/gstreamer/gst-videoinput.cpp:234
+msgid "Video test"
+msgstr "Δοκιμή βίντεο"
+
+#. Translators: "Screencast" means the video input device will be your screen -- the other end will see your desktop
+#: ../plugins/gstreamer/gst-videoinput.cpp:386
+#: ../plugins/gstreamer/gst-videoinput.cpp:391
+msgid "Crazy"
+msgstr "Τρελό"
+
+#: ../plugins/gstreamer/gst-videoinput.cpp:391
+msgid "Screencast"
+msgstr "Οθόνη εργασίας"
+
+#: ../plugins/ldap/ldap-book.cpp:414
+#: ../plugins/resource-list/rl-entry-ref.cpp:132
+#: ../plugins/resource-list/rl-entry.cpp:154
+msgid "_Refresh"
+msgstr "_Ανανέωση"
+
+#: ../plugins/ldap/ldap-book.cpp:417
+msgid "_Remove addressbook"
+msgstr "Α_φαίρεση βιβλίου διευθύνσεων"
+
+#: ../plugins/ldap/ldap-book.cpp:419
+msgid "Addressbook _properties"
+msgstr "_Ιδιότητες βιβλίου διευθύνσεων"
+
+#: ../plugins/ldap/ldap-book.cpp:550
+msgid "LDAP SASL Interaction"
+msgstr "Διάδραση μεταξύ LDAP και SASL"
+
+#. Translators, Howard explained : "Challenge" is a generic term
+#. * in authentication. It's a prompt from the authentication mechanism
+#. * for some type of credential. Exactly what kind of challenge and
+#. * what kind of credential depends on the specific authentication
+#. * mechanism. Since SASL is a generic interface, and can dynamically
+#. * load arbitrary mechanisms, there's not much more specific you can
+#. * say about it. You might google for "challenge response
+#. * authentication" if you'd like more background context.
+#.
+#: ../plugins/ldap/ldap-book.cpp:592
+msgid "Challenge: "
+msgstr "Πρόκληση:"
+
+#: ../plugins/ldap/ldap-book.cpp:600
+msgid "Interact"
+msgstr "Διάδραση"
+
+#: ../plugins/ldap/ldap-book.cpp:667
+msgid "Refreshing"
+msgstr "Ανανέωση"
+
+#: ../plugins/ldap/ldap-book.cpp:673
+msgid "Could not initialize server"
+msgstr "Δεν ήταν δυνατή η αρχικοποίηση του εξυπηρετητή"
+
+#: ../plugins/ldap/ldap-book.cpp:687 ../plugins/ldap/ldap-book.cpp:732
+msgid "LDAP Error: "
+msgstr "Σφάλμα LDAP: "
+
+#: ../plugins/ldap/ldap-book.cpp:741
+msgid "Contacted server"
+msgstr "Εξυπηρετητές σε επαφή"
+
+#. patience == 0
+#: ../plugins/ldap/ldap-book.cpp:780
+msgid "Could not connect to server"
+msgstr "Δεν ήταν δυνατή η σύνδεση με τον εξυπηρετητή"
+
+#. patience == 0
+#: ../plugins/ldap/ldap-book.cpp:828 ../plugins/ldap/ldap-book.cpp:877
+msgid "Could not search"
+msgstr "Δεν ήταν δυνατή η αναζήτηση"
+
+#: ../plugins/ldap/ldap-book.cpp:836
+msgid "Waiting for search results"
+msgstr "Αναμονή για τα αποτελέσματα της αναζήτησης"
+
+#: ../plugins/ldap/ldap-book.cpp:926
+msgid "Please edit the following fields"
+msgstr "Παρακαλώ, αλλάξτε τα παρακάτω πεδία:"
+
+#
+#: ../plugins/ldap/ldap-book.cpp:928
+msgid "Book _Name"
+msgstr "Ό_νομα βιβλίου"
+
+#: ../plugins/ldap/ldap-book.cpp:929
+msgid "Server _URI"
+msgstr "_URI εξυπηρετητή"
+
+#: ../plugins/ldap/ldap-book.cpp:930
+msgid "_Base DN"
+msgstr "_Base DN"
+
+#: ../plugins/ldap/ldap-book.cpp:936
+msgid "Subtree"
+msgstr "Subtree"
+
+#: ../plugins/ldap/ldap-book.cpp:937
+msgid "Single Level"
+msgstr "Ένα επίπεδο"
+
+#: ../plugins/ldap/ldap-book.cpp:938
+msgid "_Search Scope"
+msgstr "Εύ_ρος αναζήτησης"
+
+#. Translators: DisplayName Attribute is the name of the LDAP
+#. * attribute whose value will be used to name an addressbook entry.
+#. * On Microsoft systems the actual attribute is literally named
+#. * "DisplayName" (i.e., "the name that will be displayed") but on
+#. * most LDAP servers it's "CommonName".
+#.
+#: ../plugins/ldap/ldap-book.cpp:953
+msgid "_DisplayName Attribute"
+msgstr "Ιδιότητα _DisplayName "
+
+#: ../plugins/ldap/ldap-book.cpp:954
+msgid "Call _Attributes"
+msgstr "_Ιδιότητες κλήσεων"
+
+#: ../plugins/ldap/ldap-book.cpp:956 ../plugins/ldap/ldap-book.cpp:958
+msgid "_Filter Template"
+msgstr "Πρότυπο _φίλτρων"
+
+#. Translators: Bind ID - In LDAP, the operation that begins an LDAP
+#. * session and authenticates the user to the directory is called a
+#. * Bind operation.  There are two types of Binds supported in the
+#. * standard protocol - Simple Bind and SASL Bind.  Since both of
+#. * them are used for authentication, both of them require some type
+#. * of user ID as a parameter, and that is supplied here.  (Of
+#. * course, the Bind ID can be left blank, in which case the session
+#. * is anonymous / unauthenticated.)
+#.
+#: ../plugins/ldap/ldap-book.cpp:969
+msgid "Bind _ID"
+msgstr "Bind _ID"
+
+#: ../plugins/ldap/ldap-book.cpp:970
+msgid "_Password"
+msgstr "_Κωδικός"
+
+#: ../plugins/ldap/ldap-book.cpp:971
+msgid "Use TLS"
+msgstr "Χρήση TLS"
+
+#: ../plugins/ldap/ldap-book.cpp:972
+msgid "Use SASL"
+msgstr "Χρήση SASL"
+
+#: ../plugins/ldap/ldap-book.cpp:986
+msgid "SASL _Mechanism"
+msgstr "_Μηχανισμός SASL"
+
+#: ../plugins/ldap/ldap-book.cpp:996
+msgid "Edit LDAP directory"
+msgstr "Επεξεργασία καταλόγου LDAP"
+
+#: ../plugins/ldap/ldap-book.cpp:1018
+msgid "Please provide a Book Name for this directory\n"
+msgstr "Παρακαλώ, εισάγετε όνομα βιβλίου για τον κατάλογο\n"
+
+#: ../plugins/ldap/ldap-book.cpp:1021
+msgid "Please provide a Server URI\n"
+msgstr "Παρακαλώ, εισάγετε το URI του εξυπηρετητή\n"
+
+#: ../plugins/ldap/ldap-book.cpp:1024
+msgid "Please provide a DisplayName Attribute\n"
+msgstr "Παρακαλώ, εισάγετε ιδιότητα DisplayName\n"
+
+#: ../plugins/ldap/ldap-book.cpp:1027
+msgid "Please provide a Call Attribute\n"
+msgstr "Παρακαλώ, εισάγετε ιδιότητα κλήσεων\n"
+
+#: ../plugins/ldap/ldap-book.cpp:1030
+msgid "Invalid Server URI\n"
+msgstr "Μη έγκυρο URI εξυπηρετητή\n"
+
+#: ../plugins/ldap/ldap-source.cpp:129
+msgid "Add an LDAP Address Book"
+msgstr "Προσθήκη Βιβλίου Διευθύνσεων LDAP"
+
+#: ../plugins/ldap/ldap-source.cpp:131
+msgid "Add the Ekiga.net Directory"
+msgstr "Προσθήκη καταλόγου Ekiga.net"
+
+#: ../plugins/ldap/ldap-source.cpp:151
+msgid "Create LDAP directory"
+msgstr "Δημιουργία καταλόγου LDAP"
+
+#
+#: ../plugins/ldap/ldap-source.cpp:159
+msgid "Ekiga.net Directory"
+msgstr "Κατάλογος Ekiga.net"
+
+#: ../plugins/loudmouth/loudmouth-account.cpp:78
+msgid "inactive"
+msgstr ""
+
+#: ../plugins/loudmouth/loudmouth-account.cpp:150
+#, c-format
+msgid "error connecting (%s)"
+msgstr ""
+
+#: ../plugins/loudmouth/loudmouth-account.cpp:156
+#, fuzzy
+msgid "connecting"
+msgstr "Τύπος Σύνδεσης"
+
+#: ../plugins/loudmouth/loudmouth-account.cpp:200
+#, fuzzy
+msgid "authenticating"
+msgstr "Χρήστης πιστοποίησης:"
+
+#. FIXME: can't we report better?
+#: ../plugins/loudmouth/loudmouth-account.cpp:210
+msgid "error connecting"
+msgstr ""
+
+#: ../plugins/loudmouth/loudmouth-account.cpp:222
+msgid "disconnected"
+msgstr ""
+
+#: ../plugins/loudmouth/loudmouth-account.cpp:239
+#, fuzzy
+msgid "connected"
+msgstr "Συνδέθηκε με %s "
+
+#. FIXME: can't we report something better?
+#: ../plugins/loudmouth/loudmouth-account.cpp:245
+msgid "error authenticating loudmouth account"
+msgstr ""
+
+#: ../plugins/loudmouth/loudmouth-account.cpp:275
+#, fuzzy
+msgid "Server:"
+msgstr "Εξυπηρετητής:"
+
+#: ../plugins/loudmouth/loudmouth-account.cpp:279
+msgid "Resource:"
+msgstr ""
+
+#: ../plugins/loudmouth/loudmouth-account.cpp:297
+#, fuzzy
+msgid "Enable account"
+msgstr "Ενεργοποίηση λογαριασμού"
+
+#: ../plugins/loudmouth/loudmouth-account.cpp:362 ../src/gui/accounts.cpp:689
+msgid "Edit"
+msgstr "Επεξεργασία"
+
+#: ../plugins/loudmouth/loudmouth-bank.cpp:118
+msgid "_Add a jabber/XMPP account"
+msgstr "Προσθέστε ένα λογαριασμό jabber/XMPP"
+
+#: ../plugins/loudmouth/loudmouth-heap.cpp:210
+msgid "Authorization to see your presence"
+msgstr ""
+
+#: ../plugins/loudmouth/loudmouth-heap.cpp:214
+#, c-format
+msgid "%s asks the permission to see your presence, saying: \"%s\"."
+msgstr ""
+
+#: ../plugins/loudmouth/loudmouth-heap.cpp:218
+#, c-format
+msgid "%s asks the permission to see your presence."
+msgstr ""
+
+#: ../plugins/loudmouth/loudmouth-heap.cpp:225
+msgid "grant him/her the permission to see your presence"
+msgstr ""
+
+#: ../plugins/loudmouth/loudmouth-heap.cpp:226
+msgid "refuse him/her the permission to see your presence"
+msgstr ""
+
+#: ../plugins/loudmouth/loudmouth-heap.cpp:227
+msgid "decide later (also close or cancel this dialog)"
+msgstr ""
+
+#: ../plugins/loudmouth/loudmouth-heap.cpp:228
+msgid "Your answer is: "
+msgstr "Η απάντησή σας είναι:"
+
+#: ../plugins/loudmouth/loudmouth-heap.cpp:315
+msgid "Add a roster element"
+msgstr "Προσθέστε ένα στοιχείο καταλόγου"
+
+#: ../plugins/loudmouth/loudmouth-heap.cpp:316
+msgid "Please fill in this form to add a new element to the remote roster"
+msgstr ""
+"Παρακαλώ, συμπληρώστε τη παρακάτω φόρμα για να προσθέσετε ένα νέο στοιχείο "
+"στον απομακρυσμένο καταλόγο"
+
+#: ../plugins/loudmouth/loudmouth-heap.cpp:318
+msgid "Identifier:"
+msgstr "Αναγνωριστικό:"
+
+#: ../plugins/loudmouth/loudmouth-heap.cpp:318
+msgid "identifier@server"
+msgstr "αναγνωριστικό@διακομιστής"
+
+#: ../plugins/loudmouth/loudmouth-presentity.cpp:156
+#: ../plugins/loudmouth/loudmouth-presentity.cpp:162
+msgid "Ask him/her to see his/her status"
+msgstr ""
+
+#: ../plugins/loudmouth/loudmouth-presentity.cpp:160
+#: ../plugins/loudmouth/loudmouth-presentity.cpp:172
+msgid "Forbid him/her to see my status"
+msgstr ""
+
+#: ../plugins/loudmouth/loudmouth-presentity.cpp:164
+msgid "Ask him/her to see his/her status (pending)"
+msgstr ""
+
+#: ../plugins/loudmouth/loudmouth-presentity.cpp:168
+#: ../plugins/loudmouth/loudmouth-presentity.cpp:173
+msgid "Stop getting his/her status"
+msgstr ""
+
+#: ../plugins/loudmouth/loudmouth-presentity.cpp:178
+msgid "Start chat"
+msgstr "Έναρξη συνομιλίας"
+
+#: ../plugins/loudmouth/loudmouth-presentity.cpp:181
+msgid "Continue chat"
+msgstr ""
+
+#: ../plugins/loudmouth/loudmouth-presentity.cpp:270
+msgid ""
+"Please fill in this form to change an existing element of the remote roster"
+msgstr ""
+"Παρακαλώ, συμπληρώστε τη παρακάτω φόρμα για να αλλάξετε ένα υπάρχον στοιχείο "
+"του απομακρυσμένου καταλόγου"
+
+#: ../plugins/resource-list/rl-cluster.cpp:102
+msgid "New resource list"
+msgstr "Νέα λίστα πόρων"
+
+#: ../plugins/resource-list/rl-cluster.cpp:166
+msgid "Add new resource-list"
+msgstr "Προσθήκη νέας λίστας πόρων"
+
+#: ../plugins/resource-list/rl-cluster.cpp:167
+msgid ""
+"Please fill in this form to add a new contact list to ekiga's remote roster"
+msgstr ""
+"Παρακαλώ, συμπληρώστε αυτή τη φόρμα για να προσθέσετε νέα λίστα επαφών στον "
+"απομακρυσμένο κατάλογο επαφών του ekiga"
+
+#: ../plugins/resource-list/rl-cluster.cpp:171
+msgid "Writable:"
+msgstr "Εγγράψιμο:"
+
+#
+#: ../plugins/resource-list/rl-cluster.cpp:172
+msgid "Username:"
+msgstr "Όνομα χρήστη:"
+
+#: ../plugins/resource-list/rl-entry-ref.cpp:53
+msgid "Click to fetch"
+msgstr "Κλικ για λήψη"
+
+#: ../plugins/resource-list/rl-entry-ref.cpp:120
+msgid "Distant contact"
+msgstr "Μακρινή επαφή"
+
+#: ../plugins/resource-list/rl-entry.cpp:197
+msgid "Invalid server data"
+msgstr "Μη έγκυρα δεδομένα εξυπηρετητή"
+
+#: ../plugins/resource-list/rl-heap.cpp:198
+msgid "_Add a new contact"
+msgstr "_Προσθήκη νέας επαφής"
+
+#
+#: ../plugins/resource-list/rl-heap.cpp:200
+msgid "_Refresh contact list"
+msgstr "Ανανέ_ωση λίστας επαφών"
+
+#: ../plugins/resource-list/rl-heap.cpp:202
+msgid "Contact list _properties"
+msgstr "_Ιδιότητες λίστας επαφών"
+
+#
+#: ../plugins/resource-list/rl-heap.cpp:462
+msgid "Edit contact list properties"
+msgstr "Επεξεργασία ιδιοτήτων λίστας επαφών"
+
+#: ../plugins/resource-list/rl-heap.cpp:464
+msgid "Please edit the following fields (no identifier means global)"
+msgstr ""
+"Παρακαλώ, αλλάξτε τα ακόλουθα πεδία (αν δεν υπάρχει όρισμα, ισχύουν γενικά)"
+
+#: ../plugins/resource-list/rl-heap.cpp:467
+msgid "Contact list's name"
+msgstr "Όνομα λίστας επαφών"
+
+#. "Document" used as a name -- uri point to the root of a document tree
+#: ../plugins/resource-list/rl-heap.cpp:469
+msgid "Document root"
+msgstr "Ρίζα εγγράφων"
+
+#: ../plugins/resource-list/rl-heap.cpp:470
+msgid "Identifier"
+msgstr "Όρισμα"
+
+#: ../plugins/resource-list/rl-heap.cpp:471
+msgid "Writable"
+msgstr "Εγγράψιμο"
+
+#: ../plugins/resource-list/rl-heap.cpp:472
+msgid "Server username"
+msgstr "Όνομα χρήστη εξυπηρετητή"
+
+#: ../plugins/resource-list/rl-heap.cpp:473
+msgid "Server password"
+msgstr "Συνθηματικό εξυπηρετητή"
+
+#: ../plugins/resource-list/rl-heap.cpp:512
+msgid "Add a remote contact"
+msgstr "Προσθήκη απομακρυσμένης επαφής"
+
+#: ../plugins/resource-list/rl-heap.cpp:513
+msgid "Please fill in this form to create a new contact on a remote server"
+msgstr ""
+"Παρακαλώ, συμπληρώστε αυτή τη φόρμα για να δημιουργήσετε νέα επαφή σε "
+"απομακρυσμένο εξυπηρετητή"
+
+#: ../plugins/resource-list/rl-list.cpp:182
+#, c-format
+msgid "%s / List #%d"
+msgstr "%s / Λίστα #%d"
+
+#: ../plugins/resource-list/rl-list.cpp:186
+#, c-format
+msgid "List #%d"
+msgstr "Λίστα #%d"
+
+#
+#: ../plugins/resource-list/rl-presentity.cpp:224
+msgid "Edit remote contact"
+msgstr "Επεξεργασία απομακρυσμένης επαφής"
+
+#: ../plugins/resource-list/rl-presentity.cpp:225
+msgid ""
+"Please fill in this form to change an existing contact on a remote server"
+msgstr ""
+"Παρακαλώ, συμπληρώστε αυτή τη φόρμα για να τροποποιήσετε υπάρχουσα επαφή σε "
+"απομακρυσμένο εξυπηρετητή"
+
+#: ../src/gui/accounts.cpp:566
 msgid "Account Name"
 msgstr "Όνομα λογαριασμού"
 
-#: ../src/gui/accounts.cpp:637
-msgid "Voice Mails"
-msgstr "Ηχητικά μηνύματα"
-
-#: ../src/gui/accounts.cpp:638
+#: ../src/gui/accounts.cpp:567
 msgid "Status"
 msgstr "Κατάσταση"
 
-#: ../src/gui/accounts.cpp:649 ../src/gui/accounts.cpp:692
+#: ../src/gui/accounts.cpp:577 ../src/gui/accounts.cpp:619
 msgid "Accounts"
 msgstr "Λογαριασμοί"
 
-#: ../src/gui/accounts.cpp:663 ../src/gui/main.cpp:3188
+#: ../src/gui/accounts.cpp:591 ../src/gui/main_window.cpp:3215
 msgid "_Accounts"
 msgstr "_Λογαριασμοί"
 
 #
-#: ../src/gui/accounts.cpp:667 ../src/gui/main.cpp:3271
+#: ../src/gui/accounts.cpp:595 ../src/gui/main_window.cpp:3298
 msgid "_Help"
 msgstr "_Βοήθεια"
 
-#. Translators:
-#. * The following string "A" means "activated" or "active". It's a column
-#. * description in the list of configured accounts, it shows if an account
-#. * is activated or not (a status the user can choose).
-#.
-#: ../src/gui/accounts.cpp:700 ../src/gui/preferences.cpp:586
-msgid "A"
-msgstr "A"
+#
+#: ../src/gui/accounts.cpp:622
+msgid "Active"
+msgstr "_Ενεργό"
 
-#: ../src/gui/assistant.cpp:325
+#: ../src/gui/accounts.cpp:683
+msgid "Enable"
+msgstr "Ενεργοποίηση"
+
+#: ../src/gui/accounts.cpp:686
+msgid "Disable"
+msgstr "_Απενεργοποίηση"
+
+#: ../src/gui/accounts.cpp:692
+msgid "Remove"
+msgstr "_Αφαίρεση"
+
+#: ../src/gui/assistant.cpp:320
 msgid ""
 "This is the Ekiga general configuration assistant. The following steps will "
 "set up Ekiga by asking a few simple questions.\n"
@@ -1992,21 +2244,21 @@ msgstr ""
 "Μετά την  ολοκλήρωση αυτών των βημάτων, θα μπορείτε να κάνετε αλλαγές όποτε "
 "θέλετε με την επιλογή Προτιμήσεις από το μενού Επεξεργασία."
 
-#: ../src/gui/assistant.cpp:333
+#: ../src/gui/assistant.cpp:328
 msgid "Welcome to Ekiga"
 msgstr "Καλώς ήρθατε στο Ekiga"
 
 #
-#: ../src/gui/assistant.cpp:357 ../src/gui/preferences.cpp:454
+#: ../src/gui/assistant.cpp:352 ../src/gui/preferences.cpp:464
 msgid "Personal Information"
 msgstr "Προσωπικές Πληροφορίες"
 
 #. The user fields
-#: ../src/gui/assistant.cpp:360
+#: ../src/gui/assistant.cpp:355
 msgid "Please enter your first name and your surname:"
 msgstr "Παρακαλώ εισάγετε το όνομα και το επίθετο σας:"
 
-#: ../src/gui/assistant.cpp:369
+#: ../src/gui/assistant.cpp:364
 msgid ""
 "Your first name and surname will be used when connecting to other VoIP and "
 "videoconferencing software."
@@ -2014,21 +2266,21 @@ msgstr ""
 "Το όνομα και το επίθετο σας θα χρησιμοποιηθούν κατά τη σύνδεση σε άλλο "
 "λογισμικό VoIP και τηλεδιάσκεψης."
 
-#: ../src/gui/assistant.cpp:563
+#: ../src/gui/assistant.cpp:558
 msgid "Ekiga.net Account"
 msgstr "Λογαριασμός Ekiga.net"
 
 #
-#: ../src/gui/assistant.cpp:565
+#: ../src/gui/assistant.cpp:560
 msgid "Please enter your username:"
 msgstr "Εισάγετε το όνομα χρήστη σας:"
 
 #
-#: ../src/gui/assistant.cpp:573
+#: ../src/gui/assistant.cpp:568
 msgid "Please enter your password:"
 msgstr "Εισάγετε τον κωδικό σας:"
 
-#: ../src/gui/assistant.cpp:583
+#: ../src/gui/assistant.cpp:578
 msgid ""
 "The username and password are used to login to your existing account at the "
 "ekiga.net free SIP service. If you do not have an ekiga.net SIP address yet, "
@@ -2047,25 +2299,25 @@ msgstr ""
 "Μπορείτε να προσπεράσετε αυτό το βήμα αν χρησιμοποιείτε μια διαφορετική "
 "υπηρεσία SIP, ή αν θέλετε να δημιουργήσετε αργότερα ένα λογαριασμό."
 
-#: ../src/gui/assistant.cpp:610
+#: ../src/gui/assistant.cpp:605
 msgid "I do not want to sign up for the ekiga.net free service"
 msgstr "Δεν θέλω να εγγραφώ στην δωρεάν υπηρεσία του ekiga.net"
 
-#: ../src/gui/assistant.cpp:673
+#: ../src/gui/assistant.cpp:668
 msgid "Ekiga Call Out Account"
 msgstr "Λογαριασμός Ekiga Call Out"
 
 #
-#: ../src/gui/assistant.cpp:675
+#: ../src/gui/assistant.cpp:670
 msgid "Please enter your account ID:"
 msgstr "Παρακαλώ, εισάγετε το όνομα του λογαριασμού σας:"
 
 #
-#: ../src/gui/assistant.cpp:683
+#: ../src/gui/assistant.cpp:678
 msgid "Please enter your PIN code:"
 msgstr "Παρακαλώ, εισάγετε το PIN σας:"
 
-#: ../src/gui/assistant.cpp:694
+#: ../src/gui/assistant.cpp:689
 msgid ""
 "You can make calls to regular phones and cell numbers worldwide using "
 "Ekiga.\n"
@@ -2086,50 +2338,50 @@ msgstr ""
 "χρήση του URL που εμφανίζεται στο παρόν παράθυρο.\n"
 
 #
-#: ../src/gui/assistant.cpp:744
+#: ../src/gui/assistant.cpp:739
 msgid "Consult the calls history"
 msgstr "Εμφάνιση ιστορικού κλήσεων"
 
-#: ../src/gui/assistant.cpp:754
+#: ../src/gui/assistant.cpp:749
 msgid "I do not want to sign up for the Ekiga Call Out service"
 msgstr "Δε θέλω να εγγραφώ στην υπηρεσία Ekiga Call Out"
 
-#: ../src/gui/assistant.cpp:820 ../src/gui/assistant.cpp:1383
+#: ../src/gui/assistant.cpp:815 ../src/gui/assistant.cpp:1375
 msgid "Connection Type"
 msgstr "Τύπος Σύνδεσης"
 
 #
 #. The connection type
-#: ../src/gui/assistant.cpp:823
+#: ../src/gui/assistant.cpp:818
 msgid "Please choose your connection type:"
 msgstr "Παρακαλώ επιλέξτε τον τύπο σύνδεσης σας:"
 
-#: ../src/gui/assistant.cpp:840
+#: ../src/gui/assistant.cpp:835
 msgid "56k Modem"
 msgstr "56k Μόντεμ"
 
-#: ../src/gui/assistant.cpp:845
+#: ../src/gui/assistant.cpp:840
 msgid "ISDN"
 msgstr "ISDN"
 
-#: ../src/gui/assistant.cpp:850
+#: ../src/gui/assistant.cpp:845
 msgid "DSL/Cable (128 kbit/s uplink)"
 msgstr "DSL/Καλωδιακή (128 kbit/s αποστολή)"
 
-#: ../src/gui/assistant.cpp:855
+#: ../src/gui/assistant.cpp:850
 msgid "DSL/Cable (512 kbit/s uplink)"
 msgstr "DSL/Καλωδιακή (512 kbit/s αποστολή)"
 
-#: ../src/gui/assistant.cpp:860
+#: ../src/gui/assistant.cpp:855
 msgid "LAN"
 msgstr "LAN"
 
 #
-#: ../src/gui/assistant.cpp:865
+#: ../src/gui/assistant.cpp:860
 msgid "Keep current settings"
 msgstr "Διατήρηση τρεχουσών ρυθμίσεων"
 
-#: ../src/gui/assistant.cpp:870
+#: ../src/gui/assistant.cpp:865
 msgid ""
 "The connection type will permit determining the best quality settings that "
 "Ekiga will use during calls. You can later change the settings individually "
@@ -2140,16 +2392,16 @@ msgstr ""
 "Μπορείτε να αλλάξετε αργότερα τις ρυθμίσεις μεμονωμένα μέσω του παραθύρου "
 "προτιμήσεων."
 
-#: ../src/gui/assistant.cpp:964 ../src/gui/main.cpp:3017
-#: ../src/gui/main.cpp:3021 ../src/gui/preferences.cpp:760
+#: ../src/gui/assistant.cpp:959 ../src/gui/main_window.cpp:3044
+#: ../src/gui/main_window.cpp:3048 ../src/gui/preferences.cpp:770
 msgid "Audio Devices"
 msgstr "Συσκευές Ήχου"
 
-#: ../src/gui/assistant.cpp:966
+#: ../src/gui/assistant.cpp:961
 msgid "Please choose the audio ringing device:"
 msgstr "Παρακαλώ επιλέξτε τη συσκευή εξόδου ήχου κουδουνίσματος:"
 
-#: ../src/gui/assistant.cpp:986
+#: ../src/gui/assistant.cpp:981
 msgid ""
 "The audio ringing device is the device that will be used to play the ringing "
 "sound on incoming calls."
@@ -2158,11 +2410,11 @@ msgstr ""
 "για την αναπαραγωγή ήχου κουδουνίσματος όταν έχετε εισερχόμενες κλήσεις."
 
 #. ---
-#: ../src/gui/assistant.cpp:997
+#: ../src/gui/assistant.cpp:992
 msgid "Please choose the audio output device:"
 msgstr "Παρακαλώ επιλέξτε τη συσκευή εξόδου ήχου:"
 
-#: ../src/gui/assistant.cpp:1017
+#: ../src/gui/assistant.cpp:1012
 msgid ""
 "The audio output device is the device that will be used to play audio during "
 "calls."
@@ -2171,11 +2423,11 @@ msgstr ""
 "αναπαραγωγή του ήχου κατά τη διάρκεια μιας κλήσης."
 
 #. ---
-#: ../src/gui/assistant.cpp:1028
+#: ../src/gui/assistant.cpp:1023
 msgid "Please choose the audio input device:"
 msgstr "Παρακαλώ επιλέξτε τη συσκευή εισόδου ήχου:"
 
-#: ../src/gui/assistant.cpp:1048
+#: ../src/gui/assistant.cpp:1043
 msgid ""
 "The audio input device is the device that will be used to record your voice "
 "during calls."
@@ -2183,11 +2435,11 @@ msgstr ""
 "Η συσκευή εισόδου ήχου είναι η συσκευή που θα χρησιμοποιείται για την "
 "ηχογράφηση της φωνής σας κατά τη διάρκεια μιας κλήσης."
 
-#: ../src/gui/assistant.cpp:1150
+#: ../src/gui/assistant.cpp:1145
 msgid "Please choose your video input device:"
 msgstr "Παρακαλώ επιλέξτε τη συσκευή εισόδου βίντεο:"
 
-#: ../src/gui/assistant.cpp:1170
+#: ../src/gui/assistant.cpp:1165
 msgid ""
 "The video input device is the device that will be used to capture video "
 "during calls."
@@ -2195,17 +2447,17 @@ msgstr ""
 "Η συσκευή εισόδου βίντεο είναι η συσκευή που θα χρησιμοποιείται για την "
 "εγγραφή βίντεο κατά τη διάρκεια μιας κλήσης."
 
-#: ../src/gui/assistant.cpp:1235 ../src/gui/assistant.cpp:1259
-#: ../src/gui/assistant.cpp:1283 ../src/gui/preferences.cpp:805
-#: ../src/gui/preferences.cpp:830 ../src/gui/preferences.cpp:854
+#: ../src/gui/assistant.cpp:1229 ../src/gui/assistant.cpp:1252
+#: ../src/gui/assistant.cpp:1275 ../src/gui/preferences.cpp:812
+#: ../src/gui/preferences.cpp:836 ../src/gui/preferences.cpp:858
 msgid "No device found"
 msgstr "Δε βρέθηκε συσκευή"
 
-#: ../src/gui/assistant.cpp:1314
+#: ../src/gui/assistant.cpp:1306
 msgid "Configuration Complete"
 msgstr "Η ρύθμιση ολοκληρώθηκε"
 
-#: ../src/gui/assistant.cpp:1316
+#: ../src/gui/assistant.cpp:1308
 msgid ""
 "You have now finished the Ekiga configuration. All the settings can be "
 "changed in the Ekiga preferences. Enjoy!"
@@ -2213,53 +2465,53 @@ msgstr ""
 "Ολοκληρώσατε τη ρύθμιση του Ekiga. Μπορείτε να τροποποιήσετε οποιαδήποτε "
 "ρύθμιση επιθυμείτε από τις προτιμήσεις του Ekiga. Καλή διασκέδαση!"
 
-#: ../src/gui/assistant.cpp:1323
+#: ../src/gui/assistant.cpp:1315
 msgid "Configuration summary:"
 msgstr "Περίληψη ρυθμίσεων:"
 
-#: ../src/gui/assistant.cpp:1393
+#: ../src/gui/assistant.cpp:1385
 msgid "Audio Ringing Device"
 msgstr "Ηχητική συσκευή κουδουνίσματος"
 
-#: ../src/gui/assistant.cpp:1402
+#: ../src/gui/assistant.cpp:1394
 msgid "Audio Output Device"
 msgstr "Ηχητική συσκευή εξόδου"
 
-#: ../src/gui/assistant.cpp:1411
+#: ../src/gui/assistant.cpp:1403
 msgid "Audio Input Device"
 msgstr "Ηχητική συσκευή εισόδου"
 
 #
-#: ../src/gui/assistant.cpp:1420
+#: ../src/gui/assistant.cpp:1412
 msgid "Video Input Device"
 msgstr "Συσκευή εισόδου βίντεο"
 
-#: ../src/gui/assistant.cpp:1433
+#: ../src/gui/assistant.cpp:1425
 msgid "SIP URI"
 msgstr "SIP URI"
 
-#: ../src/gui/assistant.cpp:1445
+#: ../src/gui/assistant.cpp:1437
 msgid "Ekiga Call Out"
 msgstr "Ekiga Call Out"
 
-#: ../src/gui/assistant.cpp:1489
+#: ../src/gui/assistant.cpp:1481
 #, c-format
 msgid "Ekiga Configuration Assistant (%d of %d)"
 msgstr "Βοηθός Ρύθμισης Ekiga. (%d από %d)"
 
-#: ../src/gui/callbacks.cpp:131
+#: ../src/gui/callbacks.cpp:78
 msgid "Contributors:"
 msgstr "Συνεργάτες:"
 
-#: ../src/gui/callbacks.cpp:143
+#: ../src/gui/callbacks.cpp:90
 msgid "Artwork:"
 msgstr "Καλλιτεχνική επιμέλεια:"
 
-#: ../src/gui/callbacks.cpp:151
+#: ../src/gui/callbacks.cpp:98
 msgid "See AUTHORS file for full credits"
 msgstr "Δείτε το αρχείο AUTHORS για πλήρη λίστα ατόμων που έχουν συμβάλλει"
 
-#: ../src/gui/callbacks.cpp:167
+#: ../src/gui/callbacks.cpp:114
 msgid ""
 "This program is free software; you can redistribute it and/or modify it "
 "under the terms of the GNU General Public License as published by the Free "
@@ -2272,7 +2524,7 @@ msgstr ""
 "είτε της έκδοσης 2 της άδειας, είτε (κατ' επιλογήν) οποιασδήποτε "
 "μεταγενέστερης έκδοσης."
 
-#: ../src/gui/callbacks.cpp:171
+#: ../src/gui/callbacks.cpp:118
 msgid ""
 "This program is distributed in the hope that it will be useful, but WITHOUT "
 "ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or "
@@ -2288,7 +2540,7 @@ msgstr ""
 "μαζί με το πρόγραμμα. Αν όχι, γράψτε στο Free Software Foundation, Inc., 51 "
 "Franklin St, Fifth Floor, Boston, MA 02110-1301, USA."
 
-#: ../src/gui/callbacks.cpp:178
+#: ../src/gui/callbacks.cpp:125
 msgid ""
 "Ekiga is licensed under the GPL license and as a special exception, you have "
 "permission to link or otherwise combine this program with the programs OPAL, "
@@ -2305,14 +2557,14 @@ msgstr ""
 
 #. Translators: Please write translator credits here, and
 #. * separate names with \n
-#: ../src/gui/callbacks.cpp:190
+#: ../src/gui/callbacks.cpp:137
 msgid "translator-credits"
 msgstr ""
 "Νίκος Χαρωνιτάκης <charosn@her.forthnet.gr>\n"
 "Κώστας Παπαδήμας <pkst@gnome.org>\n"
 "Τζένη Πετούμενου <epetoumenou@gmail.com"
 
-#: ../src/gui/callbacks.cpp:195
+#: ../src/gui/callbacks.cpp:142
 msgid ""
 "Ekiga is full-featured SIP and H.323 compatible VoIP, IP-Telephony and "
 "Videoconferencing application that allows you to make audio and video calls "
@@ -2322,12 +2574,12 @@ msgstr ""
 "καιIP-Τηλεφωνίας που σας επιτρέπει να κάνετε κλήσεις ήχου και βίντεο σε "
 "απομακρυσμένους χρήστες που έχουν SIP ή H.323 υλικό και λογισμικό."
 
-#: ../src/gui/callbacks.cpp:269
+#: ../src/gui/callbacks.cpp:216
 msgid "Help display is not supported by your GTK+ version"
 msgstr ""
 "Η εμφάνιση της βοήθειας δεν υποστηρίζεται από αυτή την έκδοση του GTK+."
 
-#: ../src/gui/callbacks.cpp:277
+#: ../src/gui/callbacks.cpp:224
 msgid "Unable to open help file."
 msgstr "Αδύνατο το άνοιγμα του αρχείου βοήθειας."
 
@@ -2363,68 +2615,48 @@ msgstr "tuv"
 msgid "wxyz"
 msgstr "wxyz"
 
-#. Translators: Is displayed once an account "%s" is registered.
-#: ../src/gui/main.cpp:521
-#, c-format
-msgid "Registered %s"
-msgstr "Εγγεγραμμένος %s"
-
-#. Translators: Is displayed once an account "%s" is unregistered.
-#: ../src/gui/main.cpp:528
-#, c-format
-msgid "Unregistered %s"
-msgstr "Μη εγγεγραμμένος %s"
-
-#: ../src/gui/main.cpp:533
-#, c-format
-msgid "Could not unregister %s"
-msgstr "Δεν ήταν δυνατή η κατάργηση της εγγραφής %s"
-
-#: ../src/gui/main.cpp:537
-#, c-format
-msgid "Could not register %s"
-msgstr "Δεν ήταν δυνατή η εγγραφή %s"
-
-#: ../src/gui/main.cpp:607
+#: ../src/gui/main_window.cpp:610
 #, c-format
 msgid "A:%.1f/%.1f   V:%.1f/%.1f   FPS:%d/%d"
 msgstr "A:%.1f/%.1f   V:%.1f/%.1f   FPS:%d/%d"
 
-#: ../src/gui/main.cpp:653
+#: ../src/gui/main_window.cpp:654
 #, c-format
 msgid "Connected with %s"
 msgstr "Συνδέθηκε με %s "
 
-#: ../src/gui/main.cpp:694 ../src/gui/main.cpp:3517
+#: ../src/gui/main_window.cpp:694 ../src/gui/main_window.cpp:3538
 msgid "Standby"
 msgstr "Σε αναμονή"
 
-#: ../src/gui/main.cpp:755
+#: ../src/gui/main_window.cpp:753
 msgid "Call on hold"
 msgstr "Κλήση σε αναμονή"
 
-#: ../src/gui/main.cpp:766
+#: ../src/gui/main_window.cpp:764
 msgid "Call retrieved"
 msgstr "Ανακτήθηκε η κλήση"
 
-#: ../src/gui/main.cpp:782
+#: ../src/gui/main_window.cpp:779
 #, c-format
 msgid "Missed call from %s"
 msgstr "Αναπάντητη κλήση από %s"
 
-#: ../src/gui/main.cpp:919
+#: ../src/gui/main_window.cpp:916
 msgid "Error"
 msgstr "Σφάλμα"
 
-#: ../src/gui/main.cpp:984
+#: ../src/gui/main_window.cpp:981
 msgid "Error while initializing video output"
 msgstr "Σφάλμα κατά την αρχικοποίηση της εξόδου βίντεο"
 
-#: ../src/gui/main.cpp:985
-msgid "No video will be displayed during this call->"
-msgstr "Δεν θα εμφανίζεται βίντεο κατά τη διάρκεια της κλήσης->"
+#: ../src/gui/main_window.cpp:982
+msgid "No video will be displayed on your machine during this call"
+msgstr ""
+"Δεν θα υπάρχει αναπαραγωγή βίντεο στον υπολογιστή σας κατά τη διάρκεια αυτής "
+"της κλήσης"
 
-#: ../src/gui/main.cpp:995
+#: ../src/gui/main_window.cpp:992
 msgid ""
 "There was an error opening or initializing the video output. Please verify "
 "that no other application is using the accelerated video output."
@@ -2432,7 +2664,7 @@ msgstr ""
 "Σφάλμα κατά το άνοιγμα ή την αρχικοποίηση της εξόδου βίντεο. Παρακαλώ, "
 "βεβαιωθείτε ότι η έξοδος βίντεο δεν χρησιμοποιείται από άλλες εφαρμογές."
 
-#: ../src/gui/main.cpp:997
+#: ../src/gui/main_window.cpp:994
 msgid ""
 "There was an error opening or initializing the video output. Please verify "
 "that you are using a color depth of 24 or 32 bits per pixel."
@@ -2441,35 +2673,28 @@ msgstr ""
 "βεβαιωθείτε ότι χρησιμοποιείτε βάθος χρώματος 24 ή 32 bits/pixel."
 
 #. Translators: This is a hotplug status
-#: ../src/gui/main.cpp:1110
+#: ../src/gui/main_window.cpp:1107
 #, c-format
 msgid "Added video input device %s"
 msgstr "Προσετέθη η συσκευή εισόδου βίντεο %s"
 
 #
 #. Translators: This is a hotplug status
-#: ../src/gui/main.cpp:1122
+#: ../src/gui/main_window.cpp:1119
 #, c-format
 msgid "Removed video input device %s"
 msgstr "Αφαιρέθηκε η συσκευή εισόδου βίντεο %s"
 
-#: ../src/gui/main.cpp:1139
+#: ../src/gui/main_window.cpp:1136
 #, c-format
 msgid "Error while accessing video device %s"
 msgstr "Σφάλμα κατά το άνοιγμα της συσκευής βίντεο %s"
 
-#: ../src/gui/main.cpp:1142
-msgid ""
-"A moving logo will be transmitted during calls. Notice that you can always "
-"transmit a given image or the moving logo by choosing \"Picture\" as video "
-"plugin and \"Moving logo\" or \"Static picture\" as device."
-msgstr ""
-"Κατά τη διάρκεια των κλήσεων θα μεταδίδεται ένας κινούμενος λογότυπος. "
-"Σημειώστε ότι μπορείτε πάντοτε να επιλέξετε να μεταδίδετε μια συγκεκριμένη "
-"εικόνα ή τον κινούμενο λογότυπο επιλέγοντας \"Picture\" ως πρόσθετο βίντεο "
-"και \"MovingLogo\" ή \"StaticPicture\" ως συσκευή."
+#: ../src/gui/main_window.cpp:1139
+msgid "A moving logo will be transmitted during calls."
+msgstr "Ένα κινούμενο λογότυπο θα μεταδίδεται κατά τη διάρκεια των κλήσεων."
 
-#: ../src/gui/main.cpp:1146
+#: ../src/gui/main_window.cpp:1143
 msgid ""
 "There was an error while opening the device. In case it is a pluggable "
 "device it may be sufficient to reconnect it. If not, or if it still is not "
@@ -2481,15 +2706,15 @@ msgstr ""
 "όχι, ή αν παραμένει το πρόβλημα, παρακαλώ ελέγξτε τα δικαιώματα σας και "
 "σιγουρευτείτε ότι φορτώθηκε ο κατάλληλος οδηγός υλικού."
 
-#: ../src/gui/main.cpp:1150
+#: ../src/gui/main_window.cpp:1147
 msgid "Your video driver doesn't support the requested video format."
 msgstr "Ο οδηγός βίντεο δεν υποστηρίζει την αιτούμενη μορφή βίντεο."
 
-#: ../src/gui/main.cpp:1154
+#: ../src/gui/main_window.cpp:1151
 msgid "Could not open the chosen channel."
 msgstr "Αδύνατο το άνοιγμα του επιλεγμένου καναλιού."
 
-#: ../src/gui/main.cpp:1158
+#: ../src/gui/main_window.cpp:1155
 msgid ""
 "Your driver doesn't seem to support any of the color formats supported by "
 "Ekiga.\n"
@@ -2501,42 +2726,43 @@ msgstr ""
 "Παρακαλώ ελέγξτε την τεκμηρίωση του kernel driver για να δείτε ποία παλέττα "
 "υποστηρίζεται."
 
-#: ../src/gui/main.cpp:1162
+#: ../src/gui/main_window.cpp:1159
 msgid "Error while setting the frame rate."
 msgstr "Σφάλμα κατά τον ορισμό των καρέ ανά δευτερόλεπτο."
 
-#: ../src/gui/main.cpp:1166
+#: ../src/gui/main_window.cpp:1163
 msgid "Error while setting the frame size."
 msgstr "Σφάλμα κατά τον ορισμό μεγέθους καρέ."
 
-#: ../src/gui/main.cpp:1171 ../src/gui/main.cpp:1273 ../src/gui/main.cpp:1388
+#: ../src/gui/main_window.cpp:1168 ../src/gui/main_window.cpp:1272
+#: ../src/gui/main_window.cpp:1389
 msgid "Unknown error."
 msgstr "Άγνωστο σφάλμα."
 
 #. Translators: This is a hotplug status
-#: ../src/gui/main.cpp:1221
+#: ../src/gui/main_window.cpp:1220
 #, c-format
 msgid "Added audio input device %s"
 msgstr "Προσετέθη η συσκευή εισόδου ήχου %s"
 
 #. Translators: This is a hotplug status
-#: ../src/gui/main.cpp:1238
+#: ../src/gui/main_window.cpp:1237
 #, c-format
 msgid "Removed audio input device %s"
 msgstr "Αφαιρέθηκε η συσκευή εισόδου ήχου %s"
 
-#: ../src/gui/main.cpp:1255
+#: ../src/gui/main_window.cpp:1254
 #, c-format
 msgid "Error while opening audio input device %s"
 msgstr "Σφάλμα κατά το άνοιγμα της συσκευής εισόδου ήχου %s"
 
 #. Translators: This happens when there is an error with audio input:
 #. * Nothing ("silence") will be transmitted
-#: ../src/gui/main.cpp:1260
+#: ../src/gui/main_window.cpp:1259
 msgid "Only silence will be transmitted."
 msgstr "Δε θα μεταδίδεται κανένας ήχος."
 
-#: ../src/gui/main.cpp:1264
+#: ../src/gui/main_window.cpp:1263
 msgid ""
 "Unable to open the selected audio device for recording. In case it is a "
 "pluggable device it may be sufficient to reconnect it. If not, or if it "
@@ -2548,7 +2774,7 @@ msgstr ""
 "αποσυνδέσετε εκ νέου. Αν όχι, ή αν παραμένει το πρόβλημα, παρακαλώ ελέγξτε "
 "τις ρύθμισεις ήχου,τα δικαιώματα και αν η συσκευή είναι απασχολημένη."
 
-#: ../src/gui/main.cpp:1268
+#: ../src/gui/main_window.cpp:1267
 msgid ""
 "The selected audio device was successfully opened but it is impossible to "
 "read data from this device. In case it is a pluggable device it may be "
@@ -2560,26 +2786,26 @@ msgstr ""
 "αρκεί να την αποσυνδέσετε και να την αποσυνδέσετε εκ νέου. Αν όχι, ή αν "
 "παραμένει το πρόβλημα, παρακαλώ ελέγξτε τις ρυθμίσεις ήχου σας."
 
-#: ../src/gui/main.cpp:1335
+#: ../src/gui/main_window.cpp:1336
 #, c-format
 msgid "Added audio output device %s"
 msgstr "Προσετέθη η συσκευή εξόδου ήχου %s"
 
-#: ../src/gui/main.cpp:1351
+#: ../src/gui/main_window.cpp:1352
 #, c-format
 msgid "Removed audio output device %s"
 msgstr "Αφαιρέθηκε η συσκευή εξόδου ήχου %s"
 
-#: ../src/gui/main.cpp:1372
+#: ../src/gui/main_window.cpp:1373
 #, c-format
 msgid "Error while opening audio output device %s"
 msgstr "Σφάλμα κατά το άνοιγμα της συσκευής εξόδου ήχου %s"
 
-#: ../src/gui/main.cpp:1375
+#: ../src/gui/main_window.cpp:1376
 msgid "No incoming sound will be played."
 msgstr "Δεν θα αναπαράγονται οι εισερχόμενοι ήχοι."
 
-#: ../src/gui/main.cpp:1379
+#: ../src/gui/main_window.cpp:1380
 msgid ""
 "Unable to open the selected audio device for playing. In case it is a "
 "pluggable device it may be sufficient to reconnect it. If not, or if it "
@@ -2591,7 +2817,7 @@ msgstr ""
 "αποσυνδέσετε εκ νέου. Αν όχι, ή αν παραμένει το πρόβλημα, παρακαλώ ελέγξτε "
 "τις ρυθμίσεις ήχου,τα δικαιώματα και αν η συσκευή είναι απασχολημένη."
 
-#: ../src/gui/main.cpp:1383
+#: ../src/gui/main_window.cpp:1384
 msgid ""
 "The selected audio device was successfully opened but it is impossible to "
 "write data to this device. In case it is a pluggable device it may be "
@@ -2603,304 +2829,308 @@ msgstr ""
 "αποσυνδέσετε και να την αποσυνδέσετε εκ νέου. Αν όχι, ή αν παραμένει το "
 "πρόβλημα, παρακαλώ ελέγξτε τις ρυθμίσεις ήχου."
 
-#: ../src/gui/main.cpp:1574
+#: ../src/gui/main_window.cpp:1570
 msgid "Video Settings"
 msgstr "Ρυθμίσεις βίντεο"
 
-#: ../src/gui/main.cpp:1601
+#: ../src/gui/main_window.cpp:1597
 msgid "Adjust brightness"
 msgstr "Ρύθμιση φωτεινότητας"
 
-#: ../src/gui/main.cpp:1622
+#: ../src/gui/main_window.cpp:1618
 msgid "Adjust whiteness"
 msgstr "Προσαρμογή  λευκού"
 
-#: ../src/gui/main.cpp:1643
+#: ../src/gui/main_window.cpp:1639
 msgid "Adjust color"
 msgstr "Ρύθμιση χρώματος"
 
-#: ../src/gui/main.cpp:1664
+#: ../src/gui/main_window.cpp:1660
 msgid "Adjust contrast"
 msgstr "Ρύθμιση αντίθεσης"
 
-#: ../src/gui/main.cpp:1710
+#: ../src/gui/main_window.cpp:1704
 msgid "Audio Settings"
 msgstr "Ρυθμίσεις ή_χου"
 
-#: ../src/gui/main.cpp:2321
+#: ../src/gui/main_window.cpp:2345
 msgid "_Retrieve Call"
 msgstr "Α_νάκτηση κλήσης"
 
-#: ../src/gui/main.cpp:2334
+#: ../src/gui/main_window.cpp:2358
 msgid "_Hold Call"
 msgstr "_Αναμονή Κλήσης"
 
-#: ../src/gui/main.cpp:2366 ../src/gui/main.cpp:3154
+#: ../src/gui/main_window.cpp:2390 ../src/gui/main_window.cpp:3181
 msgid "Suspend _Audio"
 msgstr "Αναστολή Ή_χου"
 
-#: ../src/gui/main.cpp:2368 ../src/gui/main.cpp:3159
+#: ../src/gui/main_window.cpp:2392 ../src/gui/main_window.cpp:3186
 msgid "Suspend _Video"
 msgstr "Αναστολή _Βίντεο"
 
-#: ../src/gui/main.cpp:2370
+#: ../src/gui/main_window.cpp:2394
 msgid "Resume _Audio"
 msgstr "Συνέχεια 'Η_χου"
 
-#: ../src/gui/main.cpp:2372
+#: ../src/gui/main_window.cpp:2396
 msgid "Resume _Video"
 msgstr "Επανάκτηση _βίντεο"
 
-#: ../src/gui/main.cpp:2655 ../src/gui/main.cpp:2807
+#: ../src/gui/main_window.cpp:2679 ../src/gui/main_window.cpp:2832
 msgid "Reject"
 msgstr "Απόρριψη"
 
-#: ../src/gui/main.cpp:2657 ../src/gui/main.cpp:2806
+#: ../src/gui/main_window.cpp:2681 ../src/gui/main_window.cpp:2831
 msgid "Accept"
 msgstr "Αποδοχή"
 
-#: ../src/gui/main.cpp:2663 ../src/gui/main.cpp:2794
+#: ../src/gui/main_window.cpp:2687 ../src/gui/main_window.cpp:2819
 msgid "Incoming call from"
 msgstr "Εισερχόμενη κλήση από"
 
-#: ../src/gui/main.cpp:2681 ../src/gui/main.cpp:2797
+#: ../src/gui/main_window.cpp:2705 ../src/gui/main_window.cpp:2822
 msgid "Remote URI:"
 msgstr "Απομακρυσμένο URI:"
 
-#: ../src/gui/main.cpp:2693 ../src/gui/main.cpp:2799
+#: ../src/gui/main_window.cpp:2717 ../src/gui/main_window.cpp:2824
 msgid "Remote Application:"
 msgstr "Απομακρυσμένη Εφαρμογή:"
 
-#: ../src/gui/main.cpp:2714
+#: ../src/gui/main_window.cpp:2730 ../src/gui/main_window.cpp:2826
+msgid "Account ID:"
+msgstr "Όνομα λογαριασμού:"
+
+#: ../src/gui/main_window.cpp:2738
 #, c-format
 msgid "Call from %s"
 msgstr "Κλήση από %s"
 
-#: ../src/gui/main.cpp:2920
+#: ../src/gui/main_window.cpp:2947
 #, c-format
 msgid "Call Duration: %s\n"
 msgstr "Διάρκεια κλήσης: %s\n"
 
-#: ../src/gui/main.cpp:2951
+#: ../src/gui/main_window.cpp:2978
 msgid "Transfer call to:"
 msgstr "Μεταφορά της κλήσης:"
 
-#: ../src/gui/main.cpp:3003
+#: ../src/gui/main_window.cpp:3030
 msgid "No"
 msgstr "Όχι"
 
-#: ../src/gui/main.cpp:3005
+#: ../src/gui/main_window.cpp:3032
 msgid "Yes"
 msgstr "Ναι"
 
-#: ../src/gui/main.cpp:3016
+#: ../src/gui/main_window.cpp:3043
 msgid "Detected new audio input device:"
 msgstr "Εντοπίστηκε νέα συσκευή εισόδου ήχου:"
 
-#: ../src/gui/main.cpp:3020
+#: ../src/gui/main_window.cpp:3047
 msgid "Detected new audio output device:"
 msgstr "Εντοπίστηκε νέα συσκευή εξόδου ήχου:"
 
-#: ../src/gui/main.cpp:3024
+#: ../src/gui/main_window.cpp:3051
 msgid "Detected new video input device:"
 msgstr "Εντοπίστηκε νέα συσκευή εισόδου βίντεο:"
 
 #
-#: ../src/gui/main.cpp:3025 ../src/gui/preferences.cpp:921
+#: ../src/gui/main_window.cpp:3052 ../src/gui/preferences.cpp:926
 msgid "Video Devices"
 msgstr "Συσκευές Βίντεο"
 
-#: ../src/gui/main.cpp:3043
+#: ../src/gui/main_window.cpp:3070
 msgid "Do you want to use it as default device?"
 msgstr "Θέλετε να είναι η προεπιλεγμένη σας συσκευή;"
 
-#: ../src/gui/main.cpp:3111
+#: ../src/gui/main_window.cpp:3138
 msgid "_Chat"
 msgstr "Σ_υζήτηση κειμένου"
 
-#: ../src/gui/main.cpp:3113
+#: ../src/gui/main_window.cpp:3140
 msgid "Ca_ll"
 msgstr "Κλ_ήση"
 
 #
-#: ../src/gui/main.cpp:3113
+#: ../src/gui/main_window.cpp:3140
 msgid "Place a new call"
 msgstr "Κάνετε μια νέα κλήση"
 
-#: ../src/gui/main.cpp:3116
+#: ../src/gui/main_window.cpp:3143
 msgid "_Hang up"
 msgstr "Α_ποσύνδεση"
 
-#: ../src/gui/main.cpp:3117
+#: ../src/gui/main_window.cpp:3144
 msgid "Terminate the current call"
 msgstr "Τερματισμός τρέχουσας κλήσης"
 
 #
-#: ../src/gui/main.cpp:3123
+#: ../src/gui/main_window.cpp:3150
 msgid "A_dd Contact"
 msgstr "_Προσθήκη επαφής"
 
-#: ../src/gui/main.cpp:3123
+#: ../src/gui/main_window.cpp:3150
 msgid "Add a contact to the roster"
 msgstr "Προσθήκη Επαφής στον κατάλογο επαφών"
 
 #
-#: ../src/gui/main.cpp:3128
+#: ../src/gui/main_window.cpp:3155
 msgid "Find contacts"
 msgstr "Εύρεση επαφών"
 
 #
-#: ../src/gui/main.cpp:3135
-msgid "_Contact"
+#: ../src/gui/main_window.cpp:3162
+msgid "Co_ntact"
 msgstr "Επα_φή"
 
-#: ../src/gui/main.cpp:3136
+#: ../src/gui/main_window.cpp:3163
 msgid "Act on selected contact"
 msgstr "Εφαρμογή στην επιλεγμένη επαφή"
 
-#: ../src/gui/main.cpp:3142
+#: ../src/gui/main_window.cpp:3169
 msgid "H_old Call"
 msgstr "_Αναμονή κλήσης"
 
-#: ../src/gui/main.cpp:3142 ../src/gui/main.cpp:3611
+#: ../src/gui/main_window.cpp:3169 ../src/gui/main_window.cpp:3638
 msgid "Hold the current call"
 msgstr "Αναμονή τρέχουσας κλήσης"
 
-#: ../src/gui/main.cpp:3146
+#: ../src/gui/main_window.cpp:3173
 msgid "_Transfer Call"
 msgstr "Με_ταβίβαση κλήσης"
 
-#: ../src/gui/main.cpp:3147
+#: ../src/gui/main_window.cpp:3174
 msgid "Transfer the current call"
 msgstr "Μεταφορά της τρέχουσας κλήσης"
 
-#: ../src/gui/main.cpp:3155
+#: ../src/gui/main_window.cpp:3182
 msgid "Suspend or resume the audio transmission"
 msgstr "Αναστολή ή συνέχεια της μετάδοσης ήχου"
 
-#: ../src/gui/main.cpp:3160
+#: ../src/gui/main_window.cpp:3187
 msgid "Suspend or resume the video transmission"
 msgstr "Αναστολή ή συνέχεια της μετάδοσης βίντεο"
 
-#: ../src/gui/main.cpp:3167
+#: ../src/gui/main_window.cpp:3194
 msgid "Close the Ekiga window"
 msgstr "Κλείσιμο του παραθύρου Ekiga"
 
-#: ../src/gui/main.cpp:3174 ../src/gui/statusicon.cpp:414
+#: ../src/gui/main_window.cpp:3201 ../src/gui/statusicon.cpp:478
 msgid "Quit"
 msgstr "Έξοδος"
 
-#: ../src/gui/main.cpp:3180
+#: ../src/gui/main_window.cpp:3207
 msgid "_Configuration Assistant"
 msgstr "_Βοηθός Ρύθμισης"
 
-#: ../src/gui/main.cpp:3181
+#: ../src/gui/main_window.cpp:3208
 msgid "Run the configuration assistant"
 msgstr "Εκτέλεση του οδηγού ρύθμισης"
 
-#: ../src/gui/main.cpp:3189
+#: ../src/gui/main_window.cpp:3216
 msgid "Edit your accounts"
 msgstr "Επεξεργασία των λογαριασμών σας"
 
 #
-#: ../src/gui/main.cpp:3195
+#: ../src/gui/main_window.cpp:3222
 msgid "Change your preferences"
 msgstr "Αλλαγή προτιμήσεων χρήστη"
 
 #
-#: ../src/gui/main.cpp:3200
+#: ../src/gui/main_window.cpp:3227
 msgid "_View"
 msgstr "_Προβολή"
 
 #
-#: ../src/gui/main.cpp:3202
+#: ../src/gui/main_window.cpp:3229
 msgid "Con_tacts"
 msgstr "Ε_παφές"
 
 #
-#: ../src/gui/main.cpp:3202
+#: ../src/gui/main_window.cpp:3229
 msgid "View the contacts list"
 msgstr "Εμφάνιση της λίστας επαφών"
 
-#: ../src/gui/main.cpp:3207
+#: ../src/gui/main_window.cpp:3234
 msgid "_Dialpad"
 msgstr "_Καντράν"
 
-#: ../src/gui/main.cpp:3207
+#: ../src/gui/main_window.cpp:3234
 msgid "View the dialpad"
 msgstr "Προβολή του καντράν"
 
-#: ../src/gui/main.cpp:3212
+#: ../src/gui/main_window.cpp:3239
 msgid "_Call History"
 msgstr "Ιστορικό _κλήσεων"
 
 #
-#: ../src/gui/main.cpp:3212
+#: ../src/gui/main_window.cpp:3239
 msgid "View the call history"
 msgstr "Εμφάνιση ιστορικού κλήσεων"
 
-#: ../src/gui/main.cpp:3220
+#: ../src/gui/main_window.cpp:3247
 msgid "_Show Call Panel"
 msgstr "_Εμφάνιση του πίνακα κλήσεων"
 
-#: ../src/gui/main.cpp:3228
+#: ../src/gui/main_window.cpp:3255
 msgid "_Local Video"
 msgstr "_Τοπικό βίντεο"
 
-#: ../src/gui/main.cpp:3229
+#: ../src/gui/main_window.cpp:3256
 msgid "Local video image"
 msgstr "Τοπική εικόνα βίντεο"
 
-#: ../src/gui/main.cpp:3234
+#: ../src/gui/main_window.cpp:3261
 msgid "_Remote Video"
 msgstr "_Απομακρυσμένο βίντεο"
 
-#: ../src/gui/main.cpp:3235
+#: ../src/gui/main_window.cpp:3262
 msgid "Remote video image"
 msgstr "Απομακρυσμένη εικόνα βίντεο"
 
-#: ../src/gui/main.cpp:3240
+#: ../src/gui/main_window.cpp:3267
 msgid "_Picture-in-Picture"
 msgstr "Ε_ικόνα εντός της εικόνας"
 
-#: ../src/gui/main.cpp:3241 ../src/gui/main.cpp:3247
+#: ../src/gui/main_window.cpp:3268 ../src/gui/main_window.cpp:3274
 msgid "Both video images"
 msgstr "Και οι δύο εικόνες βίντεο"
 
-#: ../src/gui/main.cpp:3246
+#: ../src/gui/main_window.cpp:3273
 msgid "Picture-in-Picture in Separate _Window"
 msgstr "_Ξεχωριστό παράθυρο για την \\\"εικόνα εντός της εικόνας\\\""
 
-#: ../src/gui/main.cpp:3254
+#: ../src/gui/main_window.cpp:3281
 msgid "Zoom in"
 msgstr "Μεγέθυνση"
 
-#: ../src/gui/main.cpp:3258
+#: ../src/gui/main_window.cpp:3285
 msgid "Zoom out"
 msgstr "Σμίκρυνση"
 
 #
-#: ../src/gui/main.cpp:3262
+#: ../src/gui/main_window.cpp:3289
 msgid "Normal size"
 msgstr "Κανονικό μέγεθος"
 
-#: ../src/gui/main.cpp:3266
+#: ../src/gui/main_window.cpp:3293
 msgid "_Fullscreen"
 msgstr "_Πλήρης οθόνη"
 
-#: ../src/gui/main.cpp:3266
+#: ../src/gui/main_window.cpp:3293
 msgid "Switch to fullscreen"
 msgstr "Εναλλαγή σε πλήρη οθόνη"
 
-#: ../src/gui/main.cpp:3274 ../src/gui/statusicon.cpp:402
+#: ../src/gui/main_window.cpp:3301 ../src/gui/statusicon.cpp:466
 msgid "Get help by reading the Ekiga manual"
 msgstr "Λήψη βοήθειας με την ανάγνωση του εγχειριδίου του Ekiga"
 
-#: ../src/gui/main.cpp:3279 ../src/gui/statusicon.cpp:407
+#: ../src/gui/main_window.cpp:3306 ../src/gui/statusicon.cpp:471
 msgid "View information about Ekiga"
 msgstr "Προβολή πληροφοριών για το Ekiga"
 
-#: ../src/gui/main.cpp:3353
+#: ../src/gui/main_window.cpp:3380
 msgid ""
 "Enter a URI on the left, and click this button to place a call or to hangup"
 msgstr ""
@@ -2908,45 +3138,45 @@ msgstr ""
 "να τερματίσετε την κλήση"
 
 #
-#: ../src/gui/main.cpp:3404
+#: ../src/gui/main_window.cpp:3426
 msgid "Contacts"
 msgstr "Επαφές"
 
-#: ../src/gui/main.cpp:3427
+#: ../src/gui/main_window.cpp:3449
 msgid "Dialpad"
 msgstr "Καντράν"
 
-#: ../src/gui/main.cpp:3446
+#: ../src/gui/main_window.cpp:3467
 msgid "Call history"
 msgstr "Ιστορικό κλήσεων"
 
-#: ../src/gui/main.cpp:3549
+#: ../src/gui/main_window.cpp:3575
 msgid "Change the volume of your soundcard"
 msgstr "Αλλαγή της έντασης ήχου της κάρτας ήχου"
 
-#: ../src/gui/main.cpp:3569
+#: ../src/gui/main_window.cpp:3596
 msgid "Change the color settings of your video device"
 msgstr "Αλλαγή των ρυθμίσεων χρώματος της συσκευής βίντεο"
 
-#: ../src/gui/main.cpp:3680
+#: ../src/gui/main_window.cpp:3664
 msgid "Ekiga"
 msgstr "Ekiga"
 
-#. Translators:
-#. * TX is a common abbreviation for "transmit"
-#: ../src/gui/main.cpp:4287
+#. Translators: TX is a common abbreviation for "transmit".  As it
+#. * is shown in a tooltip, there is no space constraint
+#: ../src/gui/main_window.cpp:4269
 #, c-format
 msgid "TX: %dx%d "
 msgstr "TX: %dx%d "
 
-#. Translators:
-#. * RX is a common abbreviation for "receive"
-#: ../src/gui/main.cpp:4292
+#. Translators: RX is a common abbreviation for "receive".  As it
+#. * is shown in a tooltip, there is no space constraint
+#: ../src/gui/main_window.cpp:4274
 #, c-format
 msgid "RX: %dx%d "
 msgstr "RX: %dx%d "
 
-#: ../src/gui/main.cpp:4294
+#: ../src/gui/main_window.cpp:4276
 #, c-format
 msgid ""
 "Lost packets: %.1f %%\n"
@@ -2959,26 +3189,26 @@ msgstr ""
 "Πακέτα σε λάθος σειρά: %.1f %%\n"
 "Jitter buffer: %d ms%s%s%s"
 
-#: ../src/gui/main.cpp:4411
+#: ../src/gui/main_window.cpp:4405
 msgid "Prints debug messages in the console (level between 1 and 5)"
 msgstr ""
 "Εκτύπωση μηνυμάτων αποσφαλμάτωσης στην κονσόλα (επίπεδο μεταξύ 1 και 5)"
 
-#: ../src/gui/main.cpp:4416
+#: ../src/gui/main_window.cpp:4410
 msgid "Prints user plane debug messages in the console (level between 1 and 4)"
 msgstr ""
 "Εκτύπωση μηνυμάτων αποσφαλμάτωσης στην κονσόλα (επίπεδο μεταξύ 1 και 4)"
 
-#: ../src/gui/main.cpp:4421
+#: ../src/gui/main_window.cpp:4415
 msgid "Makes Ekiga call the given URI"
 msgstr "Αναγκάζει το Ekiga να καλέσει το καθορισμένο URL"
 
-#: ../src/gui/main.cpp:4533
+#: ../src/gui/main_window.cpp:4536
 msgid "No usable audio plugin detected"
 msgstr ""
 "Δεν εντοπίστηκε πρόσθετη λειτουργία ήχου που να μπορεί να χρησιμοποιηθεί"
 
-#: ../src/gui/main.cpp:4534
+#: ../src/gui/main_window.cpp:4537
 msgid ""
 "Ekiga didn't find any usable audio plugin. Make sure that your installation "
 "is correct."
@@ -2986,11 +3216,11 @@ msgstr ""
 "Το Ekiga δεν εντόπισε πρόσθετη λειτουργία ήχου που να μπορεί να "
 "χρησιμοποιηθεί. Βεβαιωθείτε ότι η εγκατάσταση είναι σωστή."
 
-#: ../src/gui/main.cpp:4537
+#: ../src/gui/main_window.cpp:4540
 msgid "No usable audio codecs detected"
 msgstr "Δεν εντοπίστηκαν κωδικοποιητές ήχου που να μπορούν να χρησιμοποιηθούν"
 
-#: ../src/gui/main.cpp:4538
+#: ../src/gui/main_window.cpp:4541
 msgid ""
 "Ekiga didn't find any usable audio codec. Make sure that your installation "
 "is correct."
@@ -2999,58 +3229,58 @@ msgstr ""
 "Βεβαιωθείτε ότι η εγκατάσταση έχει γίνει καλά."
 
 #
-#: ../src/gui/preferences.cpp:381
+#: ../src/gui/preferences.cpp:382
 msgid "Play sound for new voice mails"
 msgstr "Εκτέλεση ήχου για νέα ηχητικά μηνύματα"
 
 #
-#: ../src/gui/preferences.cpp:391
+#: ../src/gui/preferences.cpp:392
 msgid "Play sound for new instant messages"
 msgstr "Εκτέλεση ήχου σε νέα άμεσα μηνύματα"
 
 #
-#: ../src/gui/preferences.cpp:457
+#: ../src/gui/preferences.cpp:467
 msgid "_Full name:"
 msgstr "_Ονοματεπώνυμο:"
 
-#: ../src/gui/preferences.cpp:475
+#: ../src/gui/preferences.cpp:485
 msgid "User Interface"
 msgstr "Διεπαφή χρήστη"
 
-#: ../src/gui/preferences.cpp:477
+#: ../src/gui/preferences.cpp:487
 msgid "Start _hidden"
 msgstr "Έναρξη σε α_πόκρυψη"
 
-#: ../src/gui/preferences.cpp:479
+#: ../src/gui/preferences.cpp:489
 msgid "Show offline _contacts"
 msgstr "Εμφάνιση _αποσυνδεδεμένων επαφών "
 
 #
-#: ../src/gui/preferences.cpp:484
+#: ../src/gui/preferences.cpp:494
 msgid "Video Display"
 msgstr "Εμφάνιση βίντεο"
 
-#: ../src/gui/preferences.cpp:486
+#: ../src/gui/preferences.cpp:496
 msgid "Place windows displaying video _above other windows"
 msgstr "Τοποθέτηση παραθύρων που εμφανίζουν βίντεο _πάνω από άλλα παράθυρα"
 
-#: ../src/gui/preferences.cpp:490
+#: ../src/gui/preferences.cpp:500
 msgid "Network Settings"
 msgstr "Ρυθμίσεις δικτύου"
 
-#: ../src/gui/preferences.cpp:492
-msgid "Disable network _detection"
-msgstr "Απενεργοποίηση του εντοπισμού _δικτύου"
+#: ../src/gui/preferences.cpp:502
+msgid "Enable network _detection"
+msgstr "Ενεργοποίηση του εντοπισμού _δικτύου"
 
-#: ../src/gui/preferences.cpp:503
+#: ../src/gui/preferences.cpp:513
 msgid "Call Forwarding"
 msgstr "Προώθηση κλήσεων"
 
-#: ../src/gui/preferences.cpp:505
+#: ../src/gui/preferences.cpp:515
 msgid "_Always forward calls to the given host"
 msgstr "Να γίνεται πάντα προώθηση κλήσεων στο καθορισμένο σύστημα"
 
-#: ../src/gui/preferences.cpp:505
+#: ../src/gui/preferences.cpp:515
 msgid ""
 "If enabled, all incoming calls will be forwarded to the host that is "
 "specified in the protocol settings"
@@ -3058,11 +3288,11 @@ msgstr ""
 "Αν ενεργοποιηθεί, όλες οι εισερχόμενες κλήσεις θα προωθούνται στο σύστημα "
 "που έχει καθοριστεί στις ρυθμίσεις πρωτοκόλλου"
 
-#: ../src/gui/preferences.cpp:507
+#: ../src/gui/preferences.cpp:517
 msgid "Forward calls to the given host if _no answer"
 msgstr "Προώθηση κλήσεων στο καθορισμένο σύστημα αν δε_ν υπάρχει απάντηση"
 
-#: ../src/gui/preferences.cpp:507
+#: ../src/gui/preferences.cpp:517
 msgid ""
 "If enabled, all incoming calls will be forwarded to the host that is "
 "specified in the protocol settings if you do not answer the call"
@@ -3070,11 +3300,11 @@ msgstr ""
 "Αν ενεργοποιηθεί, οι εισερχόμενες κλήσεις θα προωθούνται στο σύστημα που "
 "καθορίζεται στις ρυθμίσεις πρωτοκόλλου αν δεν απαντήσετε στην κλήση"
 
-#: ../src/gui/preferences.cpp:509
+#: ../src/gui/preferences.cpp:519
 msgid "Forward calls to the given host if _busy"
 msgstr "Προώθηση κλήσεων στο καθορισμένο σύστημα αν είναι απασχο_λημένο"
 
-#: ../src/gui/preferences.cpp:509
+#: ../src/gui/preferences.cpp:519
 msgid ""
 "If enabled, all incoming calls will be forwarded to the host that is "
 "specified in the protocol settings if you already are in a call or if you "
@@ -3084,78 +3314,86 @@ msgstr ""
 "καθορίζεται στις ρυθμίσεις πρωτοκόλλου αν είστε ήδη σε κλήση ή σε λειτουργία "
 "Μην Ενοχλείτε"
 
-#: ../src/gui/preferences.cpp:513 ../src/gui/preferences.cpp:1361
+#: ../src/gui/preferences.cpp:523 ../src/gui/preferences.cpp:1365
 msgid "Call Options"
 msgstr "Επιλογές κλήσης"
 
 #. Add all the fields
-#: ../src/gui/preferences.cpp:516
+#: ../src/gui/preferences.cpp:526
 msgid "Timeout to reject or forward unanswered incoming calls (in seconds):"
 msgstr "Απόρριψη ή προώθηση αναπάντητων κλήσεων μετά από (σε δευτερόλεπτα):"
 
-#: ../src/gui/preferences.cpp:548
+#: ../src/gui/preferences.cpp:527
+msgid "_Automatically answer incoming calls"
+msgstr "_Αυτόματη απάντηση εισερχομένων κλήσεων"
+
+#: ../src/gui/preferences.cpp:558
 msgid "Ekiga Sound Events"
 msgstr "Ηχητικά Γεγονότα Ekiga "
 
-#: ../src/gui/preferences.cpp:598
+#: ../src/gui/preferences.cpp:596
+msgid "A"
+msgstr "A"
+
+#: ../src/gui/preferences.cpp:608
 msgid "Event"
 msgstr "Γεγονός"
 
-#: ../src/gui/preferences.cpp:610
+#: ../src/gui/preferences.cpp:620
 msgid "Choose a sound"
 msgstr "Επιλογή ενός ήχου"
 
-#: ../src/gui/preferences.cpp:615
+#: ../src/gui/preferences.cpp:625
 msgid "Wavefiles"
 msgstr "Αρχεία wave"
 
-#: ../src/gui/preferences.cpp:624 ../src/gui/preferences.cpp:643
+#: ../src/gui/preferences.cpp:634 ../src/gui/preferences.cpp:653
 msgid "Play"
 msgstr "Αναπαραγωγή"
 
 #
-#: ../src/gui/preferences.cpp:664
+#: ../src/gui/preferences.cpp:674
 msgid "String"
 msgstr "Αλφαριθμητικό"
 
-#: ../src/gui/preferences.cpp:665
+#: ../src/gui/preferences.cpp:675
 msgid "Tone"
 msgstr "Τονικό"
 
-#: ../src/gui/preferences.cpp:666 ../src/gui/preferences.cpp:715
+#: ../src/gui/preferences.cpp:676 ../src/gui/preferences.cpp:725
 msgid "RFC2833"
 msgstr "RFC2833"
 
-#: ../src/gui/preferences.cpp:667
+#: ../src/gui/preferences.cpp:677
 msgid "Q.931"
 msgstr "Q.931"
 
-#: ../src/gui/preferences.cpp:673 ../src/gui/preferences.cpp:725
+#: ../src/gui/preferences.cpp:683 ../src/gui/preferences.cpp:735
 msgid "Misc Settings"
 msgstr "Διάφορες ρυθμίσεις"
 
-#: ../src/gui/preferences.cpp:676 ../src/gui/preferences.cpp:730
+#: ../src/gui/preferences.cpp:686 ../src/gui/preferences.cpp:740
 msgid "Forward _URI:"
 msgstr "_URI προώθησης:"
 
-#: ../src/gui/preferences.cpp:685
+#: ../src/gui/preferences.cpp:695
 msgid "Advanced Settings"
 msgstr "Προχωρημένες Ρυθμίσεις"
 
 #. The toggles
-#: ../src/gui/preferences.cpp:688
+#: ../src/gui/preferences.cpp:698
 msgid "Enable H.245 _tunneling"
 msgstr "Ενεργοποίηση H.245 _tunnelling"
 
-#: ../src/gui/preferences.cpp:690
+#: ../src/gui/preferences.cpp:700
 msgid "Enable _early H.245"
 msgstr "Ενεργοποίηση _early H.245"
 
-#: ../src/gui/preferences.cpp:692
+#: ../src/gui/preferences.cpp:702
 msgid "Enable fast _start procedure"
 msgstr "Ενεργοποίηση διαδικασίας γρήγορης έ_ναρξης"
 
-#: ../src/gui/preferences.cpp:692
+#: ../src/gui/preferences.cpp:702
 msgid ""
 "Connection will be established in Fast Start mode. Fast Start is a new way "
 "to start calls faster that was introduced in H.323v2. It is not supported by "
@@ -3168,128 +3406,128 @@ msgstr ""
 "Γρήγορη Εκκίνηση και το H.245 Tunnelling είναι πιθανόν να κολλήσουν κάποιες "
 "εκδόσεις του Netmeeting."
 
-#: ../src/gui/preferences.cpp:698 ../src/gui/preferences.cpp:738
+#: ../src/gui/preferences.cpp:708 ../src/gui/preferences.cpp:748
 msgid "DTMF Mode"
 msgstr "Λειτουργία DTMF"
 
-#: ../src/gui/preferences.cpp:700 ../src/gui/preferences.cpp:740
+#: ../src/gui/preferences.cpp:710 ../src/gui/preferences.cpp:750
 msgid "_Send DTMF as:"
 msgstr "Απο_στολή DTMF ως:"
 
-#: ../src/gui/preferences.cpp:700 ../src/gui/preferences.cpp:740
+#: ../src/gui/preferences.cpp:710 ../src/gui/preferences.cpp:750
 msgid "This allows you to set the mode for DTMFs sending."
 msgstr ""
 "Αυτό επιτρέπει τον ορισμό της λειτουργίας για να γίνεται αποστολή DTMF."
 
-#: ../src/gui/preferences.cpp:716
+#: ../src/gui/preferences.cpp:726
 msgid "INFO"
 msgstr "INFO"
 
-#: ../src/gui/preferences.cpp:727
+#: ../src/gui/preferences.cpp:737
 msgid "_Outbound Proxy:"
 msgstr "Διαμεσολαβητής ε_ξερχομένων:"
 
-#: ../src/gui/preferences.cpp:768
+#: ../src/gui/preferences.cpp:778
 msgid "Ringing Device"
 msgstr "Συσκευή κουδουνίσματος"
 
-#: ../src/gui/preferences.cpp:768
+#: ../src/gui/preferences.cpp:778
 msgid "Select the ringing audio device to use"
 msgstr "Επιλογή της συσκευής ήχου κουδουνίσματος που θα χρησιμοποιείται"
 
-#: ../src/gui/preferences.cpp:770
+#: ../src/gui/preferences.cpp:780
 msgid "Output device:"
 msgstr "Συσκευή εξόδου:"
 
-#: ../src/gui/preferences.cpp:777 ../src/gui/preferences.cpp:928
+#: ../src/gui/preferences.cpp:787 ../src/gui/preferences.cpp:932
 msgid "Input device:"
 msgstr "Συσκευή εισόδου:"
 
 #. That button will refresh the device list
-#: ../src/gui/preferences.cpp:782 ../src/gui/preferences.cpp:939
+#: ../src/gui/preferences.cpp:792 ../src/gui/preferences.cpp:943
 msgid "_Detect devices"
 msgstr "_Αναγνώριση συσκευών"
 
-#: ../src/gui/preferences.cpp:782 ../src/gui/preferences.cpp:939
+#: ../src/gui/preferences.cpp:792 ../src/gui/preferences.cpp:943
 msgid "Click here to refresh the device list."
 msgstr "Κάντε κλικ εδώ για να ανανεώσετε τη λίστα συσκευών."
 
-#: ../src/gui/preferences.cpp:906
+#: ../src/gui/preferences.cpp:911
 msgid "PAL (Europe)"
 msgstr "PAL (Ευρώπη)"
 
-#: ../src/gui/preferences.cpp:907
+#: ../src/gui/preferences.cpp:912
 msgid "NTSC (America)"
 msgstr "NTSC (Αμερική)"
 
-#: ../src/gui/preferences.cpp:908
+#: ../src/gui/preferences.cpp:913
 msgid "SECAM (France)"
 msgstr "SECAM (Γαλλία)"
 
-#: ../src/gui/preferences.cpp:909
+#: ../src/gui/preferences.cpp:914
 msgid "Auto"
 msgstr "Αυτόματο"
 
 #. Video Channel
-#: ../src/gui/preferences.cpp:932
+#: ../src/gui/preferences.cpp:936
 msgid "Channel:"
 msgstr "Κανάλι:"
 
-#: ../src/gui/preferences.cpp:934
+#: ../src/gui/preferences.cpp:938
 msgid "Size:"
 msgstr "Μέγεθος:"
 
-#: ../src/gui/preferences.cpp:934
+#: ../src/gui/preferences.cpp:938
 msgid "Select the transmitted video size"
 msgstr "Επιλογή του μεγέθους του μεταδιδόμενου βίντεο"
 
-#: ../src/gui/preferences.cpp:936
+#: ../src/gui/preferences.cpp:940
 msgid "Format:"
 msgstr "Μορφή:"
 
-#: ../src/gui/preferences.cpp:963 ../src/gui/preferences.cpp:1002
-#: ../src/gui/preferences.cpp:1386 ../src/gui/preferences.cpp:1396
+#: ../src/gui/preferences.cpp:967 ../src/gui/preferences.cpp:1006
+#: ../src/gui/preferences.cpp:1394 ../src/gui/preferences.cpp:1405
 msgid "Codecs"
 msgstr "Codecs"
 
-#: ../src/gui/preferences.cpp:976 ../src/gui/preferences.cpp:1015
+#: ../src/gui/preferences.cpp:980 ../src/gui/preferences.cpp:1019
 msgid "Settings"
 msgstr "Ρυθμίσεις"
 
 #. Translators: the full sentence is Automatically adjust jitter buffer
 #. between X and Y ms
-#: ../src/gui/preferences.cpp:980
+#: ../src/gui/preferences.cpp:984
 msgid "Enable silence _detection"
 msgstr "Ενεργοποίηση ε_ντοπισμού σιωπής"
 
-#: ../src/gui/preferences.cpp:980
+#: ../src/gui/preferences.cpp:984
 msgid "If enabled, use silence detection with the codecs supporting it."
 msgstr ""
 "Αν ενεργοποιηθεί, θα γίνει χρήση του εντοπισμού σιωπής με τους codecs που το "
 "υποστηρίζουν."
 
-#: ../src/gui/preferences.cpp:982
+#: ../src/gui/preferences.cpp:986
 msgid "Enable echo can_celation"
 msgstr "Ενεργοποίηση Echo can_cellation"
 
-#: ../src/gui/preferences.cpp:982
+#: ../src/gui/preferences.cpp:986
 msgid "If enabled, use echo cancelation."
 msgstr "Αν ενεργοποιηθεί, να γίνει χρήση echo cancellation"
 
-#: ../src/gui/preferences.cpp:984
+#: ../src/gui/preferences.cpp:988
 msgid "Maximum _jitter buffer (in ms):"
 msgstr "Μέγιστο jitter buffer (σε ms):"
 
-#: ../src/gui/preferences.cpp:984
+#: ../src/gui/preferences.cpp:988
 msgid "The maximum jitter buffer size for audio reception (in ms)."
 msgstr "Το μέγιστο μέγεθος jitter buffer για λήψη ήχου (σε χιλ.δευτ)."
 
 #. Translators: the full sentence is Keep a minimum video quality of X %
-#: ../src/gui/preferences.cpp:1018
+#: ../src/gui/preferences.cpp:1022
 msgid "Picture Quality"
 msgstr "Ποιότητα Εικόνας"
 
-#: ../src/gui/preferences.cpp:1018
+#: ../src/gui/preferences.cpp:1022
 msgid ""
 "Choose if you want to guarantee a minimum image quality (possibly leading to "
 "dropped frames in order not to surpass the bitrate limit) or if you prefer "
@@ -3300,11 +3538,11 @@ msgstr ""
 "του ορίου ταχύτητας), ή αν προτιμάτε να διατηρήσετε σταθερά τα καρέ ανά "
 "δευτερόλεπτο."
 
-#: ../src/gui/preferences.cpp:1020
+#: ../src/gui/preferences.cpp:1024
 msgid "Maximum video _bitrate (in kbits/s):"
 msgstr "Μέγιστο _bandwidth βίντεο (σε kbits/s):"
 
-#: ../src/gui/preferences.cpp:1020
+#: ../src/gui/preferences.cpp:1024
 msgid ""
 "The maximum video bitrate in kbits/s. The video quality and the effective "
 "frame rate will be dynamically adjusted to keep the bitrate at the given "
@@ -3314,59 +3552,64 @@ msgstr ""
 "αριθμός των μεταδιδόμενων καρέ ανά δευτερόλεπτο θα προσαρμόζονται δυναμικά "
 "για να παραμένει το εύρος μπάντας στην δοθείσα τιμή."
 
-#: ../src/gui/preferences.cpp:1333
+#: ../src/gui/preferences.cpp:1337
 msgid "Ekiga Preferences"
 msgstr "Προτιμήσεις Ekiga"
 
 #
-#: ../src/gui/preferences.cpp:1351
+#: ../src/gui/preferences.cpp:1355
 msgid "General"
 msgstr "Γενικά"
 
 #
-#: ../src/gui/preferences.cpp:1352
+#: ../src/gui/preferences.cpp:1356
 msgid "Personal Data"
 msgstr "Προσωπικά Δεδομένα"
 
-#: ../src/gui/preferences.cpp:1357
+#: ../src/gui/preferences.cpp:1361
 msgid "General Settings"
 msgstr "Γενικές Ρυθμίσεις"
 
-#: ../src/gui/preferences.cpp:1366
+#: ../src/gui/preferences.cpp:1370
 msgid "Sound Events"
 msgstr "Ηχητικά Γεγονότα"
 
-#: ../src/gui/preferences.cpp:1370
+#: ../src/gui/preferences.cpp:1374
 msgid "Protocols"
 msgstr "Πρωτόκολλα"
 
-#: ../src/gui/preferences.cpp:1372
+#: ../src/gui/preferences.cpp:1376
 msgid "SIP Settings"
 msgstr "Ρυθμίσεις SIP"
 
 #
-#: ../src/gui/preferences.cpp:1377
+#: ../src/gui/preferences.cpp:1381
 msgid "H.323 Settings"
 msgstr "Ρυθμίσεις H.323"
 
-#: ../src/gui/preferences.cpp:1381
+#. The player
+#: ../src/gui/preferences.cpp:1387
 msgid "Audio"
 msgstr "Ήχος"
 
-#: ../src/gui/preferences.cpp:1382 ../src/gui/preferences.cpp:1392
+#: ../src/gui/preferences.cpp:1390 ../src/gui/preferences.cpp:1401
 msgid "Devices"
 msgstr "Συσκευές"
 
-#: ../src/gui/preferences.cpp:1391
+#: ../src/gui/preferences.cpp:1399
 msgid "Video"
 msgstr "Βίντεο"
 
-#: ../src/gui/statusicon.cpp:306
+#: ../src/gui/statusicon.cpp:313
 #, c-format
 msgid "You have %d message"
 msgid_plural "You have %d messages"
 msgstr[0] "Έχετε %d μήνυμα"
 msgstr[1] "Έχετε %d μηνύματα"
+
+#: ../src/gui/statusicon.cpp:418
+msgid "The following accounts are inactive:"
+msgstr ""
 
 #: ../src/gui/statusmenu.cpp:87
 msgid "Online"
@@ -3401,53 +3644,33 @@ msgstr "Διαγραφή προσαρμοσμένων μηνυμάτων:"
 msgid "Define a custom message:"
 msgstr "Ορισμός προσαρμοσμένου μηνύματος:"
 
-#~| msgid "Authentication User:"
-#~ msgid "Automatic answer"
-#~ msgstr "Αυτόματη απάντηση"
+#~ msgid "Forbidden"
+#~ msgstr "Απαγορεύεται "
 
-#~ msgid "If enabled, automatically answer incoming calls"
-#~ msgstr "Αν είναι ενεργοποιημένο, αυτόματη απάντηση εισερχομένων κλήσεων"
+#~ msgid "Voice Mails"
+#~ msgstr "Ηχητικά μηνύματα"
 
-#
-#~| msgid "User:"
-#~ msgid "_User:"
-#~ msgstr "Χρήστης:"
+#~ msgid "Registered %s"
+#~ msgstr "Εγγεγραμμένος %s"
 
-#~| msgid "_Password"
-#~ msgid "_Password:"
-#~ msgstr "_Κωδικός:"
+#~ msgid "Unregistered %s"
+#~ msgstr "Μη εγγεγραμμένος %s"
 
-#~| msgid "Account ID:"
-#~ msgid "_Account ID:"
-#~ msgstr "Αναγνωριστικό λογαριασμού:"
+#~ msgid "Could not unregister %s"
+#~ msgstr "Δεν ήταν δυνατή η κατάργηση της εγγραφής %s"
 
-#~| msgid "Gatekeeper:"
-#~ msgid "_Gatekeeper:"
-#~ msgstr "_Gatekeeper:"
+#~ msgid "Could not register %s"
+#~ msgstr "Δεν ήταν δυνατή η εγγραφή %s"
 
-#~| msgid "Timeout:"
-#~ msgid "_Timeout:"
-#~ msgstr "Λήξη χρόνου:"
-
-#~| msgid "Registrar:"
-#~ msgid "_Registrar:"
-#~ msgstr "Καταχωρητής:"
-
-#~| msgid "Authentication User:"
-#~ msgid "_Authentication User:"
-#~ msgstr "Χρήστης πιστοποίησης:"
-
-#~ msgid "Forbidden, please check that username and password are correct"
+#~ msgid ""
+#~ "A moving logo will be transmitted during calls. Notice that you can "
+#~ "always transmit a given image or the moving logo by choosing \"Picture\" "
+#~ "as video plugin and \"Moving logo\" or \"Static picture\" as device."
 #~ msgstr ""
-#~ "Απαγορεύεται, παρακαλώ ελέγξτε ότι το όνομα χρήστη και ο κωδικός είναι "
-#~ "σωστά"
-
-#~| msgid "Remote host is offline"
-#~ msgid "Remote party host is offline"
-#~ msgstr "Το απομακρυσμένο σύστημα είναι αποσυνδεδεμένο"
-
-#~ msgid "_Automatically answer incoming calls"
-#~ msgstr "_Αυτόματη απάντηση εισερχομένων κλήσεων"
+#~ "Κατά τη διάρκεια των κλήσεων θα μεταδίδεται ένας κινούμενος λογότυπος. "
+#~ "Σημειώστε ότι μπορείτε πάντοτε να επιλέξετε να μεταδίδετε μια "
+#~ "συγκεκριμένη εικόνα ή τον κινούμενο λογότυπο επιλέγοντας \"Picture\" ως "
+#~ "πρόσθετο βίντεο και \"MovingLogo\" ή \"StaticPicture\" ως συσκευή."
 
 #~ msgid "Roster view saving group status"
 #~ msgstr "Η προβολή καταλόγου αποθηκεύει την κατάσταση της ομάδας"
