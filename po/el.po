@@ -34,9 +34,9 @@ msgid ""
 msgstr ""
 "Project-Id-Version: ekiga.HEAD\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2010-03-25 09:58+0200\n"
-"PO-Revision-Date: 2010-03-24 17:50+0200\n"
-"Last-Translator: Bakaoukas Nikolaos <nikolaosx1@gmail.com>\n"
+"POT-Creation-Date: 2010-03-25 10:17+0200\n"
+"PO-Revision-Date: 2010-03-25 10:16+0200\n"
+"Last-Translator: Kostas Papadimas <pkst@gnome.org>\n"
 "Language-Team: Greek <team@gnome.gr>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -55,9 +55,8 @@ msgid "IP Telephony, VoIP and Video Conferencing"
 msgstr "Τηλεφωνία IP, VoIP και τηλεδιάσκεψη"
 
 #: ../ekiga.desktop.in.in.h:3
-#, fuzzy
 msgid "Talk to and see people over the Internet"
-msgstr "Επικοινωνήστε μέσω φωνής και βίντεο με άλλους μέσω του διαδικτύου"
+msgstr "Επικοινωνήστε μέσω φωνής και βίντεο μέσω του διαδικτύου"
 
 #: ../ekiga.schemas.in.in.h:1
 msgid "0: 56Kbps, 1: ISDN, 2:DSL, 3: LAN, 4: Custom"
@@ -77,9 +76,7 @@ msgstr ""
 
 #: ../ekiga.schemas.in.in.h:3
 msgid "Allow picture-in-picture software scaling"
-msgstr ""
-"Να επιτρέπεται η κλιμακοθέτηση μέσω λογισμικού της \\\"εικόνας εντός της "
-"εικόνας\\\" (PIP)"
+msgstr "Να επιτρέπεται η κλιμάκωση εικόνας-σε-εικόνα μέσω λογισμικού"
 
 #: ../ekiga.schemas.in.in.h:4
 msgid "Alternative audio output device"
@@ -159,7 +156,6 @@ msgid "Enable H.245 tunneling"
 msgstr "Ενεργοποίηση H.245 tunnelling"
 
 #: ../ekiga.schemas.in.in.h:20
-#, fuzzy
 msgid "Enable STUN network detection"
 msgstr "Απενεργοποίηση του εντοπισμού δικτύου STUN"
 
@@ -176,7 +172,6 @@ msgid "Enable silence detection"
 msgstr "Ενεργοποίηση εντοπισμού σιωπής"
 
 #: ../ekiga.schemas.in.in.h:24 ../src/gui/preferences.cpp:502
-#, fuzzy
 msgid "Enable the automatic network setup resulting from the STUN test"
 msgstr ""
 "Απενεργοποίηση της αυτόματης ρύθμισης του δικτύου ως αποτέλεσμα της δοκιμής "
@@ -872,7 +867,7 @@ msgstr "Αναπάντητες"
 
 #: ../lib/engine/components/gnome-session/gnome-session-main.cpp:157
 msgid "Call in progress"
-msgstr ""
+msgstr "Κλήση σε εξέλιξη"
 
 #: ../lib/engine/components/local-roster/local-cluster.cpp:82
 #: ../lib/engine/components/local-roster/local-heap.cpp:117
@@ -945,9 +940,8 @@ msgid "Address:"
 msgstr "Διεύθυνση:"
 
 #: ../lib/engine/components/local-roster/local-presentity.cpp:247
-#, fuzzy
 msgid "Is a prefered contact"
-msgstr "Προσθήκη απομακρυσμένης επαφής"
+msgstr "Είναι μια προτιμώμενη επαφή"
 
 #: ../lib/engine/components/local-roster/local-presentity.cpp:249
 #: ../plugins/loudmouth/loudmouth-presentity.cpp:274
@@ -974,9 +968,8 @@ msgid "Conference room"
 msgstr "Αίθουσα διασκέψεων"
 
 #: ../lib/engine/components/local-roster/local-heap.cpp:96
-#, fuzzy
 msgid "Call back test"
-msgstr "_Ιδιότητες κλήσεων"
+msgstr "Δοκιμή επανάκλησης "
 
 #: ../lib/engine/components/local-roster/local-heap.cpp:110
 msgid "Local roster"
@@ -1094,8 +1087,8 @@ msgstr "Αποτυχία"
 #, c-format
 msgid "%s (with %d voicemail message)"
 msgid_plural "%s (with %d voicemail messages)"
-msgstr[0] ""
-msgstr[1] ""
+msgstr[0] "%s (με %d μήνυμα voicemail)"
+msgstr[1] "%s (με %d μηνύματα voicemail)"
 
 #: ../lib/engine/components/opal/opal-account.cpp:342
 #: ../plugins/loudmouth/loudmouth-account.cpp:352
@@ -1936,53 +1929,48 @@ msgstr "Κατάλογος Ekiga.net"
 
 #: ../plugins/loudmouth/loudmouth-account.cpp:78
 msgid "inactive"
-msgstr ""
+msgstr "ανενεργό"
 
 #: ../plugins/loudmouth/loudmouth-account.cpp:150
 #, c-format
 msgid "error connecting (%s)"
-msgstr ""
+msgstr "σφάλμα σύνδεσης (%s)"
 
 #: ../plugins/loudmouth/loudmouth-account.cpp:156
-#, fuzzy
 msgid "connecting"
-msgstr "Τύπος Σύνδεσης"
+msgstr "γίνεται σύνδεση"
 
 #: ../plugins/loudmouth/loudmouth-account.cpp:200
-#, fuzzy
 msgid "authenticating"
-msgstr "Χρήστης πιστοποίησης:"
+msgstr "γίνεται πιστοποίηση"
 
 #. FIXME: can't we report better?
 #: ../plugins/loudmouth/loudmouth-account.cpp:210
 msgid "error connecting"
-msgstr ""
+msgstr "σφάλμα σύνδεσης"
 
 #: ../plugins/loudmouth/loudmouth-account.cpp:222
 msgid "disconnected"
-msgstr ""
+msgstr "αποσυνδέθηκε"
 
 #: ../plugins/loudmouth/loudmouth-account.cpp:239
-#, fuzzy
 msgid "connected"
-msgstr "Συνδέθηκε με %s "
+msgstr "συνδέθηκε"
 
 #. FIXME: can't we report something better?
 #: ../plugins/loudmouth/loudmouth-account.cpp:245
 msgid "error authenticating loudmouth account"
-msgstr ""
+msgstr "σφάλμα πιστοποίησης λογαριασμού loudmouth"
 
 #: ../plugins/loudmouth/loudmouth-account.cpp:275
-#, fuzzy
 msgid "Server:"
 msgstr "Εξυπηρετητής:"
 
 #: ../plugins/loudmouth/loudmouth-account.cpp:279
 msgid "Resource:"
-msgstr ""
+msgstr "Πόρος:"
 
 #: ../plugins/loudmouth/loudmouth-account.cpp:297
-#, fuzzy
 msgid "Enable account"
 msgstr "Ενεργοποίηση λογαριασμού"
 
@@ -1996,29 +1984,29 @@ msgstr "Προσθέστε ένα λογαριασμό jabber/XMPP"
 
 #: ../plugins/loudmouth/loudmouth-heap.cpp:210
 msgid "Authorization to see your presence"
-msgstr ""
+msgstr "Πιστοποίηση για τον έλεγχο της παρουσίας σας"
 
 #: ../plugins/loudmouth/loudmouth-heap.cpp:214
 #, c-format
 msgid "%s asks the permission to see your presence, saying: \"%s\"."
-msgstr ""
+msgstr "Ο/η %s ζητά την άδεια να ελέγξει την παρουσία σας, λέγοντας: \"%s\"."
 
 #: ../plugins/loudmouth/loudmouth-heap.cpp:218
 #, c-format
 msgid "%s asks the permission to see your presence."
-msgstr ""
+msgstr "Ο/η %s ζητά την άδεια να ελέγξει την παρουσία σας."
 
 #: ../plugins/loudmouth/loudmouth-heap.cpp:225
 msgid "grant him/her the permission to see your presence"
-msgstr ""
+msgstr "να του επιτραπεί να ελέγξει την παρουσία σας"
 
 #: ../plugins/loudmouth/loudmouth-heap.cpp:226
 msgid "refuse him/her the permission to see your presence"
-msgstr ""
+msgstr "να μην του επιτραπεί να ελέγξει την παρουσία σας"
 
 #: ../plugins/loudmouth/loudmouth-heap.cpp:227
 msgid "decide later (also close or cancel this dialog)"
-msgstr ""
+msgstr "αποφασίστε αργότερα (και κλείσιμο ή ακύρωση αυτού του διαλόγου)"
 
 #: ../plugins/loudmouth/loudmouth-heap.cpp:228
 msgid "Your answer is: "
@@ -2045,21 +2033,21 @@ msgstr "αναγνωριστικό@διακομιστής"
 #: ../plugins/loudmouth/loudmouth-presentity.cpp:156
 #: ../plugins/loudmouth/loudmouth-presentity.cpp:162
 msgid "Ask him/her to see his/her status"
-msgstr ""
+msgstr "Ερώτηση στο χρήστη για τον έλεγχο την κατάσταση του"
 
 #: ../plugins/loudmouth/loudmouth-presentity.cpp:160
 #: ../plugins/loudmouth/loudmouth-presentity.cpp:172
 msgid "Forbid him/her to see my status"
-msgstr ""
+msgstr "Απαγόρευση στον χρήστη να ελέγξει την κατάσταση σας"
 
 #: ../plugins/loudmouth/loudmouth-presentity.cpp:164
 msgid "Ask him/her to see his/her status (pending)"
-msgstr ""
+msgstr "Ερώτηση στο χρήστη για τον έλεγχο την κατάσταση του (σε εκκρεμότητα)"
 
 #: ../plugins/loudmouth/loudmouth-presentity.cpp:168
 #: ../plugins/loudmouth/loudmouth-presentity.cpp:173
 msgid "Stop getting his/her status"
-msgstr ""
+msgstr "Διακοπή λήψης της κατάστασης του χρήστη"
 
 #: ../plugins/loudmouth/loudmouth-presentity.cpp:178
 msgid "Start chat"
@@ -2067,7 +2055,7 @@ msgstr "Έναρξη συνομιλίας"
 
 #: ../plugins/loudmouth/loudmouth-presentity.cpp:181
 msgid "Continue chat"
-msgstr ""
+msgstr "Συνέχιση chat"
 
 #: ../plugins/loudmouth/loudmouth-presentity.cpp:270
 msgid ""
@@ -3609,7 +3597,7 @@ msgstr[1] "Έχετε %d μηνύματα"
 
 #: ../src/gui/statusicon.cpp:418
 msgid "The following accounts are inactive:"
-msgstr ""
+msgstr "Οι παρακάτω λογαριασμοί είναι ανενεργοί:"
 
 #: ../src/gui/statusmenu.cpp:87
 msgid "Online"
