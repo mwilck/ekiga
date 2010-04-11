@@ -679,24 +679,25 @@ gm_accounts_window_new (Ekiga::ServiceCore &core)
   /* setting up a horizontal button box
    * (each button with be dynamically disabled/enabled as needed)
    */
-  button_box = gtk_hbutton_box_new ();
+  button_box = gtk_vbutton_box_new ();
+  gtk_button_box_set_layout (GTK_BUTTON_BOX (button_box), GTK_BUTTONBOX_CENTER);
   button = gtk_button_new_with_label (_("Enable"));
-  gtk_box_pack_start (GTK_BOX (button_box), button, FALSE, FALSE, 0);
+  gtk_box_pack_start (GTK_BOX (button_box), button, FALSE, FALSE, 3);
   aw->toolbar.add_button ("enable", GTK_BUTTON (button));
   button = gtk_button_new_with_label (_("Disable"));
-  gtk_box_pack_start (GTK_BOX (button_box), button, FALSE, FALSE, 0);
+  gtk_box_pack_start (GTK_BOX (button_box), button, FALSE, FALSE, 3);
   aw->toolbar.add_button ("disable", GTK_BUTTON (button));
   button = gtk_button_new_with_label (_("Edit"));
-  gtk_box_pack_start (GTK_BOX (button_box), button, FALSE, FALSE, 0);
+  gtk_box_pack_start (GTK_BOX (button_box), button, FALSE, FALSE, 3);
   aw->toolbar.add_button ("edit", GTK_BUTTON (button));
   button = gtk_button_new_with_label (_("Remove"));
-  gtk_box_pack_start (GTK_BOX (button_box), button, FALSE, FALSE, 0);
+  gtk_box_pack_start (GTK_BOX (button_box), button, FALSE, FALSE, 3);
   aw->toolbar.add_button ("remove", GTK_BUTTON (button));
+  gtk_box_pack_start (GTK_BOX (hbox), button_box, FALSE, FALSE, 10);
 
   populate_menu (window); // This will add static and dynamic actions
   gtk_box_pack_start (GTK_BOX (GTK_DIALOG (window)->vbox), menu_bar, FALSE, FALSE, 0);
   gtk_box_pack_start (GTK_BOX (GTK_DIALOG (window)->vbox), event_box, TRUE, TRUE, 0);
-  gtk_box_pack_start (GTK_BOX (GTK_DIALOG (window)->vbox), button_box, TRUE, TRUE, 0);
 
   /* Generic signals */
   g_signal_connect_swapped (GTK_OBJECT (window),
