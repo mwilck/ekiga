@@ -115,15 +115,15 @@ ATK_VER := 1.22.0
 ATK_URL := http://ftp.gnome.org/pub/gnome/binaries/win32/atk/1.22
 ATK_ARCHIVE := atk-dev-$(ATK_VER).zip
 
-CAIRO_VER := 1.6.4-2
+CAIRO_VER := 1.8.10-3
 CAIRO_URL := http://ftp.gnome.org/pub/gnome/binaries/win32/dependencies
-CAIRO_ARCHIVE := cairo-dev-$(CAIRO_VER).zip
+CAIRO_ARCHIVE := cairo-dev_$(CAIRO_VER)_win32.zip
 
 PANGO_VER := 1.20.5
 PANGO_URL := http://ftp.gnome.org/pub/gnome/binaries/win32/pango/1.20
 PANGO_ARCHIVE := pango-dev-$(PANGO_VER).zip
 
-XML2_VER := 2.6.26
+XML2_VER := 2.7.3
 XML2_DIR := libxml2-$(XML2_VER)
 XML2_URL := ftp://xmlsoft.org/libxml2
 XML2_ARCHIVE := libxml2-$(XML2_VER).tar.gz
@@ -152,8 +152,9 @@ GETTEXT_VER := 0.17-1
 GETTEXT_URL :=http://ftp.gnome.org/pub/gnome/binaries/win32/dependencies
 GETTEXT_ARCHIVE := gettext-runtime-dev-$(GETTEXT_VER).zip
 
-ICONV_VER := 1.9.1
-ICONV_ARCHIVE := libiconv-$(ICONV_VER).bin.woe32.zip
+ICONV_VER := 1.9.2-1
+ICONV_URL := http://downloads.sourceforge.net/project/gnuwin32/libiconv/$(ICONV_VER)
+ICONV_ARCHIVE := libiconv-$(ICONV_VER)-bin.zip
 
 FFMPEG_VER := 14200
 FFMPEG_URL := svn://svn.mplayerhq.hu/ffmpeg/trunk
@@ -541,7 +542,7 @@ $(LIBDIR)/libintl.a: $(SRCDIR)/$(GETTEXT_ARCHIVE)
 ### libiconv
 update-sources::
 	@echo --- Getting Iconv ...
-	$(WGET) -P $(SRCDIR) $(GIMP_URL)/$(ICONV_ARCHIVE)
+	$(WGET) -P $(SRCDIR) $(ICONV_URL)/$(ICONV_ARCHIVE)
 
 $(LIBDIR)/libiconv.a: $(SRCDIR)/$(ICONV_ARCHIVE)
 	unzip -u $(SRCDIR)/$(ICONV_ARCHIVE) -d $(BUILDROOT)
