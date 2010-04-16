@@ -202,6 +202,12 @@ X264_URL := git://git.videolan.org/x264.git
 X264_DIR := $(BUILDROOT)/x264
 X264_ARCHIVE := x264
 
+# note that every celt release might break API
+CELT_VER := 0.6.1
+CELT_URL := http://downloads.us.xiph.org/releases/celt
+CELT_DIR := $(BUILDROOT)/celt-$(CELT_VER)
+CELT_ARCHIVE := celt-$(CELT_VER).tar.gz
+
 THEORA_VER := 1.1.1
 THEORA_URL := http://downloads.xiph.org/releases/theora
 THEORA_DIR := $(BUILDROOT)/libtheora-$(THEORA_VER)
@@ -252,6 +258,8 @@ confffmpeg := --cross-prefix=i586-mingw32msvc- --enable-shared --enable-memalign
 #	--disable-network
 
 confx264 := --disable-avis-input --prefix=$(BUILDROOT) --host=$(DEB_HOST_GNU_TYPE)
+
+confcelt := $(confflags) --disable-oggtest
 
 conftheora := --host=$(DEB_HOST_GNU_TYPE) --prefix=$(BUILDROOT) --disable-vorbistest --disable-sdltest --disable-examples
 
@@ -474,6 +482,20 @@ $(LIBDIR)/libx264.a: $(X264_DIR)/config.status
 	$(MAKE) -C $(X264_DIR) install
 	touch $@
 
+### celt
+update-sources::
+	echo --- Getting CELT ...
+	$(WGET) -P $(SRCDIR) $(CELT_URL)/$(CELT_ARCHIVE)
+
+$(CELT_DIR)/config.status: $(SRCDIR)/$(CELT_ARCHIVE) $(LIBDIR)/libogg.a
+	rm -rf $(CELT_DIR) $(INCLUDEDIR)/celt
+	tar xfz $(SRCDIR)/$(CELT_ARCHIVE) -C $(BUILDROOT)
+	cd $(CELT_DIR); ./configure $(confcelt)
+
+$(LIBDIR)/libcelt.a: $(CELT_DIR)/config.status
+	$(MAKE) $(MAKE_LIB_OPTS) -C $(CELT_DIR)
+	$(MAKE) -C $(CELT_DIR) install
+
 ### theora
 update-sources::
 	@echo --- Getting theora ...
@@ -500,7 +522,7 @@ else
 	$(SVN) co $(OPAL_URL) $(SRCDIR)/$(OPAL_ARCHIVE) -r $(OPAL_REV)
 endif
 
-$(OPAL_DIR)/configure: binaries $(LIBDIR)/libogg.a $(LIBDIR)/libspeex.a $(LIBDIR)/$(PTLIB_LIB) $(SRCDIR)/$(OPAL_ARCHIVE) $(BINDIR)/avcodec.dll $(LIBDIR)/libx264.a $(LIBDIR)/libtheora.a
+$(OPAL_DIR)/configure: binaries $(LIBDIR)/libogg.a $(LIBDIR)/libspeex.a $(LIBDIR)/$(PTLIB_LIB) $(SRCDIR)/$(OPAL_ARCHIVE) $(BINDIR)/avcodec.dll $(LIBDIR)/libx264.a $(LIBDIR)/libcelt.a $(LIBDIR)/libtheora.a
 	rm -rf $(OPAL_DIR) $(LIBDIR)/$(OPAL_LIB) $(INCLUDEDIR)/opal
 ifeq ($(RELEASE),1)
 	tar xfz $(SRCDIR)/$(OPAL_ARCHIVE) -C $(BUILDROOT)
