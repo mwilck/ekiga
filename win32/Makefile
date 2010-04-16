@@ -1,6 +1,9 @@
 #!/usr/bin/make -f
 
-DEBUG     := 1  # 0=release, 1=debug version
+# RELEASE: 0=from git/svn, 1=release (tar.gz) for ekiga, ptlib and opal
+RELEASE   := 1
+# DEBUG: 0=release, 1=debug version
+DEBUG     := 1
 MAKEFLAGS :=
 MAKEOPTS  := $(MAKEFLAGS)
 MAKE_LIB_OPTS:=$(MAKEFLAGS)
@@ -60,38 +63,59 @@ export PATH:=$(BINDIR):$(PATH)
 export LDD:=$(BUILDROOT)/$(HOST_TOOL_PREFIX)-ldd.sh
 
 
-GIT_EKIGA_REV = reset --hard HEAD
-#GIT_EKIGA_REV = checkout -b gnome-2-26 origin/gnome-2-26
-EKIGA_URL = git://git.gnome.org/ekiga
-EKIGA_ARCHIVE := ekiga
-EKIGA_DIR = $(BUILDROOT)/ekiga
+ifeq ($(RELEASE),1)
+	EKIGA_VER := 3.2.6
+	EKIGA_URL := http://ftp.gnome.org/pub/gnome/sources/ekiga/3.2
+	EKIGA_ARCHIVE := ekiga-$(EKIGA_VER).tar.gz
+	EKIGA_DIR := $(BUILDROOT)/ekiga-$(EKIGA_VER)
+else
+	#GIT_EKIGA_REV = reset --hard HEAD
+	GIT_EKIGA_REV = checkout -b gnome-2-26 origin/gnome-2-26
+	EKIGA_URL = git://git.gnome.org/ekiga
+	EKIGA_ARCHIVE := ekiga
+	EKIGA_DIR = $(BUILDROOT)/ekiga
+	EKIGA_VER := $(strip $(shell grep AC_INIT $(SRCDIR)/$(EKIGA_ARCHIVE)/configure.ac | awk 'BEGIN { FS = "," } ; { print $$2 }'))
+	EKIGA_REV := $(strip $(shell (cd $(SRCDIR)/$(EKIGA_ARCHIVE); git describe | awk 'BEGIN { FS = "-" } ; { print $$2 "_" $$3 }' )))
+ifneq ($(EKIGA_REV),)
+		EKIGA_VER := $(EKIGA_VER)-git-$(EKIGA_REV)
+endif
+endif
 EKIGA_PREFIX:= $(TARGETDIR)/Ekiga
+EKIGA_INSTALLER := ekiga-setup-$(EKIGA_VER).exe
 EKIGA_WIN32_DIR := $(CURDIR)
 EKIGA_WIN32_DIFF_DIR := $(EKIGA_WIN32_DIR)/diff
 EKIGA_INSTALLER_DIR := $(BUILDROOT)/nsisinstaller
-EKIGA_VER := $(strip $(shell grep AC_INIT $(SRCDIR)/$(EKIGA_ARCHIVE)/configure.ac | awk 'BEGIN { FS = "," } ; { print $$2 }'))
-EKIGA_REV := $(strip $(shell (cd $(SRCDIR)/$(EKIGA_ARCHIVE); git describe | awk 'BEGIN { FS = "-" } ; { print $$2 "_" $$3 }' )))
-ifneq ($(EKIGA_REV),)
-	EKIGA_VER := $(EKIGA_VER)-git-$(EKIGA_REV)
-endif
-EKIGA_INSTALLER := ekiga-setup-$(EKIGA_VER).exe
 
-OPAL_VER:= 3.4.1
-OPAL_REV:= HEAD
-OPAL_URL:= https://opalvoip.svn.sourceforge.net/svnroot/opalvoip/opal/tags/v3_4_1
-OPAL_ARCHIVE := opal
-OPAL_DIR:= $(BUILDROOT)/opal
+ifeq ($(RELEASE),1)
+	OPAL_VER := 3.6.6
+	OPAL_URL := http://ftp.gnome.org/pub/gnome/sources/opal/3.6
+	OPAL_ARCHIVE := opal-$(OPAL_VER).tar.gz
+	OPAL_DIR := $(BUILDROOT)/opal-$(OPAL_VER)
+else
+	# OPAL_REV: HEAD or revision number
+	OPAL_REV := HEAD
+	OPAL_URL := https://opalvoip.svn.sourceforge.net/svnroot/opalvoip/opal/branches/v3_6
+	OPAL_ARCHIVE := opal
+	OPAL_DIR := $(BUILDROOT)/opal
+endif
 ifeq ($(DEBUG),1)
 	OPAL_LIB := libopal_d_s.a
 else
 	OPAL_LIB := libopal_s.a
 endif
 
-PTLIB_VER:= 2.4.1
-PTLIB_REV:= HEAD
-PTLIB_URL:= https://opalvoip.svn.sourceforge.net/svnroot/opalvoip/ptlib/tags/v2_4_1
-PTLIB_DIR:= $(BUILDROOT)/ptlib
-PTLIB_ARCHIVE := ptlib
+ifeq ($(RELEASE),1)
+	PTLIB_VER:= 2.6.5
+	PTLIB_URL := http://ftp.gnome.org/pub/gnome/sources/ptlib/2.6
+	PTLIB_ARCHIVE := ptlib-$(PTLIB_VER).tar.gz
+	PTLIB_DIR := $(BUILDROOT)/ptlib-$(PTLIB_VER)
+else
+	# PTLIB_REV: HEAD or revision number
+	PTLIB_REV := HEAD
+	PTLIB_URL := https://opalvoip.svn.sourceforge.net/svnroot/opalvoip/ptlib/branches/v2_6
+	PTLIB_ARCHIVE := ptlib
+	PTLIB_DIR := $(BUILDROOT)/ptlib
+endif
 ifeq ($(DEBUG),1)
 	PTLIB_LIB := libpt_d_s.a
 else
@@ -347,12 +371,20 @@ $(LIBDIR)/libldap.dll: binaries $(OPENLDAP_DIR)/config.status
 
 ### PTLib
 update-sources::
-	@echo --- Getting PTLib $(PTLIB_REV) ...
+	@echo --- Getting PTLib ...
+ifeq ($(RELEASE),1)
+	$(WGET) -P $(SRCDIR) $(PTLIB_URL)/$(PTLIB_ARCHIVE)
+else
 	$(SVN) co $(PTLIB_URL) $(SRCDIR)/$(PTLIB_ARCHIVE) -r $(PTLIB_REV)
+endif
 
 $(PTLIB_DIR)/configure: binaries $(LIBDIR)/libldap.dll $(LIBDIR)/libogg.a $(LIBDIR)/libspeex.a $(SRCDIR)/$(PTLIB_ARCHIVE) $(LIBDIR)/libexpat.a
 	rm -rf $(PTLIB_DIR) $(LIBDIR)/$(PTLIB_LIB) $(INCLUDEDIR)/ptclib $(INCLUDEDIR)/ptlib
+ifeq ($(RELEASE),1)
+	tar xfz $(SRCDIR)/$(PTLIB_ARCHIVE) -C $(BUILDROOT)
+else
 	$(CP) -r $(SRCDIR)/$(PTLIB_ARCHIVE) $(PTLIB_DIR)
+endif
 
 $(PTLIB_DIR)/config.status: binaries $(PTLIB_DIR)/configure
 	rm -f $(LIBDIR)/$(PTLIB_LIB)
@@ -458,12 +490,20 @@ $(LIBDIR)/libtheora.a: $(THEORA_DIR)/config.status
 
 ### OPAL
 update-sources::
-	@echo --- Getting OPAL $(OPAL_REV)...
+	@echo --- Getting OPAL ...
+ifeq ($(RELEASE),1)
+	$(WGET) -P $(SRCDIR) $(OPAL_URL)/$(OPAL_ARCHIVE)
+else
 	$(SVN) co $(OPAL_URL) $(SRCDIR)/$(OPAL_ARCHIVE) -r $(OPAL_REV)
+endif
 
 $(OPAL_DIR)/configure: binaries $(LIBDIR)/libogg.a $(LIBDIR)/libspeex.a $(LIBDIR)/$(PTLIB_LIB) $(SRCDIR)/$(OPAL_ARCHIVE) $(BINDIR)/avcodec.dll $(LIBDIR)/libx264.a $(LIBDIR)/libtheora.a
 	rm -rf $(OPAL_DIR) $(LIBDIR)/$(OPAL_LIB) $(INCLUDEDIR)/opal
+ifeq ($(RELEASE),1)
+	tar xfz $(SRCDIR)/$(OPAL_ARCHIVE) -C $(BUILDROOT)
+else
 	$(CP) -r $(SRCDIR)/$(OPAL_ARCHIVE) $(OPAL_DIR)
+endif
 
 $(OPAL_DIR)/config.status: binaries $(OPAL_DIR)/configure
 	rm -f $(LIBDIR)/$(OPAL_LIB)
@@ -589,25 +629,41 @@ $(LIBDIR)/libxml2.a: binaries $(XML2_DIR)/config.status
 	$(MAKE) $(MAKEOPTS) -C $(XML2_DIR) install
 
 ### GnomeMeeting / Ekiga
-update-sources::
+update-sources2::
 	@echo --- Getting Ekiga ...
+ifeq ($(RELEASE),1)
+	$(WGET) -P $(SRCDIR) $(EKIGA_URL)/$(EKIGA_ARCHIVE)
+else
+ifeq ($(wildcard $(SRCDIR)/$(EKIGA_ARCHIVE)), )
 	$(GIT) clone $(EKIGA_URL) $(SRCDIR)/$(EKIGA_ARCHIVE)
+	# switch to branch
+	cd $(SRCDIR)/$(EKIGA_ARCHIVE); git $(GIT_EKIGA_REV)
+else
+	cd $(SRCDIR)/$(EKIGA_ARCHIVE); $(GIT) pull
+endif
+endif
 
-$(EKIGA_DIR)/autogen.sh: binaries $(SRCDIR)/$(EKIGA_ARCHIVE)
+$(EKIGA_DIR)/configure: binaries $(SRCDIR)/$(EKIGA_ARCHIVE)
 	rm -rf $(EKIGA_DIR)
+ifeq ($(RELEASE),1)
+	tar xfz $(SRCDIR)/$(EKIGA_ARCHIVE) -C $(BUILDROOT)
+else
 	$(CP) -r $(SRCDIR)/$(EKIGA_ARCHIVE) $(EKIGA_DIR)
+	cd $(EKIGA_DIR); NOCONFIGURE=1 ./autogen.sh  # generate configure
+endif
 	touch $@
 
-$(EKIGA_DIR)/config.status: binaries $(EKIGA_DIR)/autogen.sh $(LIBDIR)/$(PTLIB_LIB) $(LIBDIR)/$(OPAL_LIB) \
+$(EKIGA_DIR)/config.status: binaries $(EKIGA_DIR)/configure $(LIBDIR)/$(PTLIB_LIB) $(LIBDIR)/$(OPAL_LIB) \
 	$(LIBDIR)/pkgconfig/gtk+-2.0.pc $(LIBDIR)/pkgconfig/atk-2.0.pc $(LIBDIR)/pkgconfig/glib-2.0.pc \
 	$(LIBDIR)/libpng.a $(LIBDIR)/pkgconfig/pango32.pc $(LIBDIR)/pkgconfig/cairo.pc $(LIBDIR)/libxml2.a \
 	$(LIBDIR)/libintl.a $(LIBDIR)/libiconv.a $(LIBDIR)/libsigc++.a
 	rm -f $(EKIGA_DIR)/src/ekiga.exe
 ifeq ($(DEBUG),1)
-	cd $(EKIGA_DIR); ACLOCAL_FLAGS="-I $(BUILDROOT)/share/aclocal"; ./autogen.sh $(confekiga) --enable-debug
+	cd $(EKIGA_DIR); ACLOCAL_FLAGS="-I $(BUILDROOT)/share/aclocal"; ./configure $(confekiga) --enable-opal-debug
 else
-	cd $(EKIGA_DIR); ACLOCAL_FLAGS="-I $(BUILDROOT)/share/aclocal"; ./autogen.sh $(confekiga)
+	cd $(EKIGA_DIR); ACLOCAL_FLAGS="-I $(BUILDROOT)/share/aclocal"; ./configure $(confekiga)
 endif
+
 $(EKIGA_DIR)/src/ekiga.exe: binaries $(EKIGA_DIR)/config.status
 	$(MAKE) $(MAKEOPTS) -C $(EKIGA_DIR)
 	$(MAKE) $(MAKEOPTS) -C $(EKIGA_DIR)/help
