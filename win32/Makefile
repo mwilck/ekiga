@@ -36,11 +36,11 @@ IX86_TYPE:=5
 
 
 ifeq ($(DEBUG),1)
-        export CC=$(REALCC) -mms-bitfields -g 
+        export CC=$(REALCC) -mms-bitfields -g
         export CXX=$(REALCXX) -mms-bitfields -g
 else
-        export CC=$(REALCC) -mms-bitfields 
-        export CXX=$(REALCXX) -mms-bitfields 
+        export CC=$(REALCC) -mms-bitfields
+        export CXX=$(REALCXX) -mms-bitfields
 endif
 
 export LD:=$(HOST_TOOL_PREFIX)-ld
@@ -228,14 +228,14 @@ update-sources::
 update: update-sources
 
 binaries:
-	echo Checking prerequisites...
+	@echo Checking prerequisites...
 	hash $(REALCC) $(REALCXX) $(LD) $(NM) $(AR) $(RANLIB) $(DLLTOOL) $(DLLWRAP) $(OBJDUMP) $(WINDRES) $(AS)||(echo You need to install mingw32;exit 1)
 	hash tar unzip zip wget $(ACLOCAL) autoheader libtoolize automake-1.9 autoconf pkg-config gnome-autogen.sh bison gdk-pixbuf-csource||(echo we need more binaries ;exit 1)
 	[ -f /usr/share/gnome-doc-utils/gnome-doc-utils.make ]||(echo gnome-doc-tools not installed;exit 1)
 	[ -f /usr/lib/pkgconfig/gconf-2.0.pc ]||(echo libgconf2-dev not installed;exit 1)
 	[ -f /usr/lib/pkgconfig/avahi-glib.pc ]||(echo libavahi-glib-dev not installed;exit 1)
 	[ -f /usr/lib/pkgconfig/avahi-client.pc ]||(echo libavahi-client-dev not installed;exit 1)
-	hash makensis||(echo nsis not installed;exit1) 	 
+	hash makensis||(echo nsis not installed;exit1)
 	hash xmlto||(echo xmlto not installed;exit1)
 #       [ $(BUILDROOT) = $(CURDIR) ]||(echo You are supposed to run this as Makefile in $(BUILDROOT);exit 1)
 	mkdir -p $(INCLUDEDIR) $(LIBDIR)/pkgconfig $(SRCDIR) $(BINDIR)
@@ -244,8 +244,8 @@ binaries:
 	touch $@
 
 ### REGEX
-update-sources:: 
-	echo "--- Getting libregex..."
+update-sources::
+	@echo "--- Getting libregex..."
 	mkdir -p $(SRCDIR)/$(REGEX_ARCHIVE)
 	cd $(SRCDIR)/$(REGEX_ARCHIVE); \
 	for i in regex.c regexec.c regex.h regex_internal.c regex_internal.h regcomp.c alloca_.h alloca.c strcase.h localcharset.c localcharset.h;do \
@@ -253,7 +253,7 @@ update-sources::
 	done
 
 $(REGEX_DIR)/regex.h: $(SRCDIR)/$(REGEX_ARCHIVE)
-	$(RM) -rf $(REGEX_DIR) 
+	$(RM) -rf $(REGEX_DIR)
 	mkdir -p $(REGEX_DIR)
 	$(CP) $(SRCDIR)/$(REGEX_ARCHIVE)/* $(REGEX_DIR)
 	$(MV) $(REGEX_DIR)/alloca_.h $(REGEX_DIR)/alloca.h
@@ -274,10 +274,10 @@ $(LIBDIR)/libregex.a: binaries $(REGEX_DIR)/regex.h
 
 ### libsigc++
 update-sources::
-	echo --- Getting libsigc++ ...
+	@echo --- Getting libsigc++ ...
 	$(WGET) -P src $(SIGC_URL)/$(SIGC_ARCHIVE)
 
-$(SIGC_DIR)/config.status: $(SRCDIR)/$(SIGC_ARCHIVE) 
+$(SIGC_DIR)/config.status: $(SRCDIR)/$(SIGC_ARCHIVE)
 	tar xfz $(SRCDIR)/$(SIGC_ARCHIVE)
 	(cd $(SIGC_DIR); ./configure $(confflags) --enable-shared)
 	touch $@
@@ -289,10 +289,10 @@ $(LIBDIR)/libsigc++.a:  $(SIGC_DIR)/config.status
 
 ### expat
 update-sources::
-	echo --- Getting EXPAT ...
+	@echo --- Getting EXPAT ...
 	$(WGET) -P src $(EXPAT_URL)/$(EXPAT_ARCHIVE)
 
-$(EXPAT_DIR)/config.status: $(SRCDIR)/$(EXPAT_ARCHIVE) 
+$(EXPAT_DIR)/config.status: $(SRCDIR)/$(EXPAT_ARCHIVE)
 	tar xfz $(SRCDIR)/$(EXPAT_ARCHIVE)
 	(cd $(EXPAT_DIR); ./configure $(confflags))
 	touch $@
@@ -307,8 +307,8 @@ $(LIBDIR)/libexpat.a:  $(EXPAT_DIR)/config.status $(INCLUDEDIR)/expat.h
 	touch $@
 
 ### OPENLDAP
-update-sources:: 
-	echo --- Getting OpenLDAP...
+update-sources::
+	@echo --- Getting OpenLDAP...
 	$(WGET) -P $(SRCDIR) $(OPENLDAP_URL)/$(OPENLDAP_ARCHIVE)
 
 $(OPENLDAP_DIR)/configure: $(LIBDIR)/libregex.a $(SRCDIR)/$(OPENLDAP_ARCHIVE)
@@ -328,20 +328,20 @@ $(OPENLDAP_DIR)/config.status: binaries $(OPENLDAP_DIR)/configure
 $(LIBDIR)/libldap.dll: binaries $(OPENLDAP_DIR)/config.status
 	$(MAKE) $(MAKE_LIB_OPTS) -C $(OPENLDAP_DIR)/libraries/liblutil
 	$(CP) -f $(OPENLDAP_DIR)/libraries/liblutil/liblutil.a $(LIBDIR)
-	$(MAKE) $(MAKE_LIB_OPTS) -C $(OPENLDAP_DIR)/libraries/liblber all install 
+	$(MAKE) $(MAKE_LIB_OPTS) -C $(OPENLDAP_DIR)/libraries/liblber all install
 	$(MAKE) $(MAKE_LIB_OPTS) -C $(OPENLDAP_DIR)/include install
 	$(MAKE) $(MAKE_LIB_OPTS) -C $(OPENLDAP_DIR)/libraries/libldap MOD_LIBS="-llutil" all install
 	touch $@
 
 ### PTLib
-update-sources:: 
-	echo --- Getting PTLib $(PTLIB_REV) ...
+update-sources::
+	@echo --- Getting PTLib $(PTLIB_REV) ...
 	$(SVN) co $(PTLIB_URL) $(SRCDIR)/$(PTLIB_ARCHIVE) -r $(PTLIB_REV)
 
 $(PTLIB_DIR)/configure: binaries $(LIBDIR)/libldap.dll $(LIBDIR)/libogg.a $(LIBDIR)/libspeex.a $(SRCDIR)/$(PTLIB_ARCHIVE) $(EKIGA_WIN32_DIFF_DIR)/ptlib_Makefile.am $(LIBDIR)/libexpat.a $(EKIGA_WIN32_DIFF_DIR)/ptlib_configure.ac $(EKIGA_WIN32_DIFF_DIR)/ptlib_ptlib.pc.in
 	rm -f $(LIBDIR)/libpt_s.a
 	rm -rf $(PTLIB_DIR)
-	$(CP) -r $(SRCDIR)/$(PTLIB_ARCHIVE) $(PTLIB_DIR)	
+	$(CP) -r $(SRCDIR)/$(PTLIB_ARCHIVE) $(PTLIB_DIR)
 
 $(PTLIB_DIR)/config.status: binaries $(PTLIB_DIR)/configure
 	rm -f $(LIBDIR)/libpt_s.a
@@ -358,7 +358,7 @@ endif
 
 ### libogg
 update-sources::
-	echo --- Getting Ogg ...
+	@echo --- Getting Ogg ...
 	$(WGET) -P $(SRCDIR) $(OGG_URL)/$(OGG_ARCHIVE)
 
 $(OGG_DIR)/config.status: binaries $(SRCDIR)/$(OGG_ARCHIVE)
@@ -373,8 +373,8 @@ $(LIBDIR)/libogg.a: binaries $(OGG_DIR)/config.status
 	$(MAKE) -C $(OGG_DIR) install
 
 ### libspeex
-update-sources:: 
-	echo --- Getting Vorbis ...
+update-sources::
+	@echo --- Getting Vorbis ...
 	$(WGET) -P $(SRCDIR) $(SPEEX_URL)/$(SPEEX_ARCHIVE)
 
 $(SPEEX_DIR)/config.status: binaries $(SRCDIR)/$(SPEEX_ARCHIVE)
@@ -390,7 +390,7 @@ $(LIBDIR)/libspeex.a: binaries $(SPEEX_DIR)/config.status
 
 ### ffmpeg
 update-sources::
-	echo --- Getting FFMPEG ---
+	@echo --- Getting FFMPEG ---
 	$(SVN) co $(FFMPEG_URL) $(SRCDIR)/$(FFMPEG_ARCHIVE) -r $(FFMPEG_VER)
 
 $(FFMPEG_DIR)/config.status: $(SRCDIR)/$(FFMPEG_ARCHIVE)
@@ -411,11 +411,11 @@ $(BINDIR)/avcodec.dll: $(FFMPEG_DIR)/config.status
 	touch $@
 
 ### x264
-update-sources:: 
-	echo --- Getting x264 ---
+update-sources::
+	@echo --- Getting x264 ---
 	rm -rf $(SRCDIR)/$(X264_ARCHIVE)
 	$(GIT) clone $(X264_URL) $(SRCDIR)/$(X264_ARCHIVE)
-	echo "Updated to revision $(X264_VER)"
+	@echo "Updated to revision $(X264_VER)"
 	touch $(SRCDIR)/$(X264_ARCHIVE)
 
 $(X264_DIR)/config.status: $(SRCDIR)/$(X264_ARCHIVE)
@@ -435,7 +435,7 @@ $(LIBDIR)/libx264.a: $(X264_DIR)/config.status
 
 ### theora
 update-sources::
-	echo --- Getting theora ---
+	@echo --- Getting theora ---
 	$(SVN) co $(THEORA_URL) $(SRCDIR)/$(THEORA_ARCHIVE) -r $(THEORA_VER)
 
 $(THEORA_DIR)/config.status: $(SRCDIR)/$(THEORA_ARCHIVE) $(LIBDIR)/libogg.a
@@ -453,7 +453,7 @@ $(LIBDIR)/libtheora.a: $(THEORA_DIR)/config.status
 
 ### OPAL
 update-sources::
-	echo --- Getting OPAL $(OPAL_REV)...
+	@echo --- Getting OPAL $(OPAL_REV)...
 	$(SVN) co $(OPAL_URL) $(SRCDIR)/$(OPAL_ARCHIVE) -r $(OPAL_REV)
 
 $(OPAL_DIR)/configure: binaries $(LIBDIR)/libogg.a $(LIBDIR)/libspeex.a $(LIBDIR)/libpt_s.a $(SRCDIR)/$(OPAL_ARCHIVE) $(EKIGA_WIN32_DIFF_DIR)/opal_configure.ac $(EKIGA_WIN32_DIFF_DIR)/opal_Makefile.am $(EKIGA_WIN32_DIFF_DIR)/opal_opal.pc.in $(BINDIR)/avcodec.dll $(LIBDIR)/libx264.a $(LIBDIR)/libtheora.a
@@ -470,13 +470,13 @@ endif
 
 $(LIBDIR)/libopal_s.a: binaries $(OPAL_DIR)/config.status
 	rm -f $(LIBDIR)/libopal_s.a
-	$(MAKE) $(MAKEOPTS) -C $(OPAL_DIR) 
-	$(MAKE) -C $(OPAL_DIR) install 
+	$(MAKE) $(MAKEOPTS) -C $(OPAL_DIR)
+	$(MAKE) -C $(OPAL_DIR) install
 #	sed -i -e 's#^prefix=.*$$#prefix=$(BUILDROOT)#g' $(LIBDIR)/pkgconfig/opal*.pc
-	
+
 ### libgtk
 update-sources::
-	echo --- Getting GTK2+ ...
+	@echo --- Getting GTK2+ ...
 	$(WGET) -P $(SRCDIR) $(GTK_URL)/$(GTK_ARCHIVE)
 
 $(LIBDIR)/pkgconfig/gtk+-2.0.pc: $(SRCDIR)/$(GTK_ARCHIVE)
@@ -484,10 +484,10 @@ $(LIBDIR)/pkgconfig/gtk+-2.0.pc: $(SRCDIR)/$(GTK_ARCHIVE)
 	sed -i -e 's#^prefix=.*$$#prefix=$(BUILDROOT)#g' $(LIBDIR)/pkgconfig/g*.pc
 	touch $@
 
-### GTK Runtime 	 
+### GTK Runtime
 update-sources::
-	echo --- Getting GTK2+ Runtime Library ... 	 
-	$(WGET) -P $(SRCDIR) $(GTK_INSTALLER_URL)/$(GTK_BIN_EXE) 	 
+	@echo --- Getting GTK2+ Runtime Library ...
+	$(WGET) -P $(SRCDIR) $(GTK_INSTALLER_URL)/$(GTK_BIN_EXE)
 
 $(LIBDIR)/gtk+-$(GTK_BIN_VER)-setup.exe: $(SRCDIR)/$(GTK_BIN_EXE)
 	$(CP) $(SRCDIR)/$(GTK_BIN_EXE)  $(LIBDIR)/gtk+-$(GTK_BIN_VER)-setup.exe
@@ -495,7 +495,7 @@ $(LIBDIR)/gtk+-$(GTK_BIN_VER)-setup.exe: $(SRCDIR)/$(GTK_BIN_EXE)
 
 ### libglib
 update-sources::
-	echo --- Getting GLib ...
+	@echo --- Getting GLib ...
 	$(WGET) -P $(SRCDIR) $(GLIB_URL)/$(GLIB_ARCHIVE)
 
 $(LIBDIR)/pkgconfig/glib-2.0.pc: $(SRCDIR)/$(GLIB_ARCHIVE)
@@ -505,8 +505,8 @@ $(LIBDIR)/pkgconfig/glib-2.0.pc: $(SRCDIR)/$(GLIB_ARCHIVE)
 	touch $@
 
 ### atk
-update-sources:: 
-	echo --- Getting ATK ...
+update-sources::
+	@echo --- Getting ATK ...
 	$(WGET) -P  $(SRCDIR) $(ATK_URL)/$(ATK_ARCHIVE)
 
 $(LIBDIR)/pkgconfig/atk-2.0.pc: $(SRCDIR)/$(ATK_ARCHIVE)
@@ -516,7 +516,7 @@ $(LIBDIR)/pkgconfig/atk-2.0.pc: $(SRCDIR)/$(ATK_ARCHIVE)
 
 ### libpng
 update-sources::
-	echo --- Getting PNG ...
+	@echo --- Getting PNG ...
 	$(WGET) -P $(SRCDIR) $(GNUWIN32_URL)/libpng-$(LIBPNG_VER)-bin.zip
 	$(WGET) -P $(SRCDIR) $(GNUWIN32_URL)/libpng-$(LIBPNG_VER)-dep.zip
 	$(WGET) -P $(SRCDIR) $(GNUWIN32_URL)/libpng-$(LIBPNG_VER)-lib.zip
@@ -531,7 +531,7 @@ $(LIBDIR)/libpng.a: $(SRCDIR)/libpng-$(LIBPNG_VER)-bin.zip $(SRCDIR)/libpng-$(LI
 
 ### libintl
 update-sources::
-	echo --- Getting Gettext ...
+	@echo --- Getting Gettext ...
 	$(WGET) -P $(SRCDIR) $(GETTEXT_URL)/$(GETTEXT_ARCHIVE)
 
 $(LIBDIR)/libintl.a: $(SRCDIR)/$(GETTEXT_ARCHIVE)
@@ -539,8 +539,8 @@ $(LIBDIR)/libintl.a: $(SRCDIR)/$(GETTEXT_ARCHIVE)
 	touch $@
 
 ### libiconv
-update-sources:: 
-	echo --- Getting Iconv ...
+update-sources::
+	@echo --- Getting Iconv ...
 	$(WGET) -P $(SRCDIR) $(GIMP_URL)/$(ICONV_ARCHIVE)
 
 $(LIBDIR)/libiconv.a: $(SRCDIR)/$(ICONV_ARCHIVE)
@@ -549,8 +549,8 @@ $(LIBDIR)/libiconv.a: $(SRCDIR)/$(ICONV_ARCHIVE)
 	touch $@
 
 ### pango
-update-sources:: 
-	echo --- Getting Pango ...
+update-sources::
+	@echo --- Getting Pango ...
 	$(WGET) -P $(SRCDIR) $(PANGO_URL)/$(PANGO_ARCHIVE)
 
 $(LIBDIR)/pkgconfig/pango32.pc: $(SRCDIR)/$(PANGO_ARCHIVE)
@@ -560,7 +560,7 @@ $(LIBDIR)/pkgconfig/pango32.pc: $(SRCDIR)/$(PANGO_ARCHIVE)
 
 ### cairo
 update-sources::
-	echo --- Getting Cairo ...
+	@echo --- Getting Cairo ...
 	$(WGET) -P $(SRCDIR) $(CAIRO_URL)/$(CAIRO_ARCHIVE)
 
 $(LIBDIR)/pkgconfig/cairo.pc: $(SRCDIR)/$(CAIRO_ARCHIVE)
@@ -570,7 +570,7 @@ $(LIBDIR)/pkgconfig/cairo.pc: $(SRCDIR)/$(CAIRO_ARCHIVE)
 
 ### libxml2
 update-sources::
-	echo --- Getting libXML2 ...
+	@echo --- Getting libXML2 ...
 	$(WGET) -P $(SRCDIR) $(XML2_URL)/$(XML2_ARCHIVE)
 
 $(XML2_DIR)/config.status: binaries $(SRCDIR)/$(XML2_ARCHIVE)
@@ -586,7 +586,7 @@ $(LIBDIR)/libxml2.a: binaries $(XML2_DIR)/config.status
 
 ### GnomeMeeting / Ekiga
 update-sources::
-	echo --- Getting Ekiga $(EKIGA_REV)...
+	@echo --- Getting Ekiga $(EKIGA_REV)...
 	$(SVN) co $(EKIGA_URL) $(SRCDIR)/$(EKIGA_ARCHIVE) -r $(EKIGA_REV)
 
 $(EKIGA_DIR)/autogen.sh: binaries $(SRCDIR)/$(EKIGA_ARCHIVE)
@@ -610,7 +610,7 @@ $(EKIGA_DIR)/src/ekiga.exe: binaries $(EKIGA_DIR)/config.status
 
 $(TARGETDIR)/zips: binaries $(EKIGA_DIR)/src/ekiga.exe
 	-$(RM) -rf $(TARGETDIR)
-	
+
 	mkdir $(TARGETDIR)
 	make -C ekiga install
 	mkdir -p $(EKIGA_PREFIX)/plugins
@@ -626,9 +626,9 @@ $(TARGETDIR)/zips: binaries $(EKIGA_DIR)/src/ekiga.exe
 	install -m 755 $(BINDIR)/avcodec.dll $(EKIGA_PREFIX)
 	install -m 755 $(BINDIR)/libogg-0.dll $(EKIGA_PREFIX)
 	install -m 755  $(SIGC_DIR)/sigc++/.libs/libsigc-2.0-0.dll $(EKIGA_PREFIX)
-ifeq ($(DEBUG),0) 	 
+ifeq ($(DEBUG),0)
 	$(STRIP) $(EKIGA_PREFIX)/*.dll
-	$(STRIP) $(EKIGA_PREFIX)/*.exe; 
+	$(STRIP) $(EKIGA_PREFIX)/*.exe;
 endif
 	for lc in C $(DOC_LINGUAS); do \
 		mkdir -p $(EKIGA_PREFIX)/help/$$lc; \
@@ -649,16 +649,16 @@ endif
 #### README about NSIS installer ####
 #
 # NSIS package shipped with linux distributions does not includes some of the plugins needed.
-# - System.dll : You need to get it from the windows zip archive (http://sourceforge.net/projects/nsis) and extract 
+# - System.dll : You need to get it from the windows zip archive (http://sourceforge.net/projects/nsis) and extract
 #               /Plugins/System.dll TO /usr/share/nsis/Plugins/
 #		/Contrib/Modern UI/System.nsh TO /usr/share/nsis/Contrib/System/
 # - Process.dll : Is a plugin that can be found here http://nsis.sourceforge.net/Processes_plug-in
 #   		extract /bin/Processes.dll TO /usr/share/nsis/Plugins/
-#   		
+#
 ###########################
 
 update-sources::
-	echo --- Getting NSIS Installer ...
+	@echo --- Getting NSIS Installer ...
 	$(WGET) -P $(SRCDIR) $(NSIS_URL)/nsis-$(NSIS_VER).zip
 
 $(NSISPLUGIN_DIR)/SystemLocal.dll: $(SRCDIR)/nsis-$(NSIS_VER).zip
@@ -668,7 +668,7 @@ $(NSISPLUGIN_DIR)/SystemLocal.dll: $(SRCDIR)/nsis-$(NSIS_VER).zip
 	touch $@
 
 update-sources::
-	echo --- Getting NSIS Processes Plugin ...
+	@echo --- Getting NSIS Processes Plugin ...
 	$(WGET) -P $(SRCDIR) $(NSISPROCESSES_URL)/Processes.zip
 
 $(NSISPLUGIN_DIR)/Processes.dll: $(SRCDIR)/Processes.zip
