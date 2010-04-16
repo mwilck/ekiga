@@ -70,8 +70,8 @@ ifeq ($(RELEASE),1)
 	EKIGA_DIR := $(BUILDROOT)/ekiga-$(EKIGA_VER)
 else
 	#GIT_EKIGA_REV = reset --hard HEAD
-	GIT_EKIGA_REV = checkout -b gnome-2-26 origin/gnome-2-26
-	EKIGA_URL = git://git.gnome.org/ekiga
+	GIT_EKIGA_REV := checkout -b gnome-2-26 origin/gnome-2-26
+	EKIGA_URL := git://git.gnome.org/ekiga
 	EKIGA_ARCHIVE := ekiga
 	EKIGA_DIR = $(BUILDROOT)/ekiga
 	EKIGA_VER := $(strip $(shell grep AC_INIT $(SRCDIR)/$(EKIGA_ARCHIVE)/configure.ac | awk 'BEGIN { FS = "," } ; { print $$2 }'))
@@ -80,7 +80,7 @@ ifneq ($(EKIGA_REV),)
 		EKIGA_VER := $(EKIGA_VER)-git-$(EKIGA_REV)
 endif
 endif
-EKIGA_PREFIX:= $(TARGETDIR)/Ekiga
+EKIGA_PREFIX := $(TARGETDIR)/Ekiga
 EKIGA_INSTALLER := ekiga-setup-$(EKIGA_VER).exe
 EKIGA_WIN32_DIR := $(CURDIR)
 EKIGA_WIN32_DIFF_DIR := $(EKIGA_WIN32_DIR)/diff
@@ -105,7 +105,7 @@ else
 endif
 
 ifeq ($(RELEASE),1)
-	PTLIB_VER:= 2.6.5
+	PTLIB_VER := 2.6.5
 	PTLIB_URL := http://ftp.gnome.org/pub/gnome/sources/ptlib/2.6
 	PTLIB_ARCHIVE := ptlib-$(PTLIB_VER).tar.gz
 	PTLIB_DIR := $(BUILDROOT)/ptlib-$(PTLIB_VER)
@@ -226,12 +226,12 @@ ifneq (,$(CONCURRENCY))
 	MAKEOPTS+=-j$(CONCURRENCY)
 endif
 
-confflags:=--prefix=$(BUILDROOT) --build=$(DEB_BUILD_GNU_TYPE) --host=$(DEB_HOST_GNU_TYPE)
-confptlib:=--prefix=$(BUILDROOT) --build=$(DEB_BUILD_GNU_TYPE) --host=$(DEB_HOST_GNU_TYPE) \
+confflags := --prefix=$(BUILDROOT) --build=$(DEB_BUILD_GNU_TYPE) --host=$(DEB_HOST_GNU_TYPE)
+confptlib := --prefix=$(BUILDROOT) --build=$(DEB_BUILD_GNU_TYPE) --host=$(DEB_HOST_GNU_TYPE) \
 	--enable-vfw --enable-vidfile --with-directx-includedir=$(EKIGA_DIR)/win32/directx \
 	--disable-qos --disable-vidfile --disable-alsa --disable-esd --disable-oss --disable-sunaudio --disable-shmaudio \
 	--disable-v4l --disable-v4l2 --disable-bsdvideo --disable-avc --disable-dc
-confopal :=--prefix=$(BUILDROOT) --build=$(DEB_BUILD_GNU_TYPE) --host=$(DEB_HOST_GNU_TYPE) \
+confopal := --prefix=$(BUILDROOT) --build=$(DEB_BUILD_GNU_TYPE) --host=$(DEB_HOST_GNU_TYPE) \
 	--with-ffmpeg-dir=$(FFMPEG_DIR) --disable-ffmpeg-h263
 confekiga:= $(confflags) \
 	--with-directx-dir=$(EKIGA_DIR)/win32/directx --prefix=$(EKIGA_PREFIX) \
@@ -240,7 +240,7 @@ confekiga:= $(confflags) \
 	--disable-dbus --disable-avahi --disable-xv --with-ldap-dir=$(OPENLDAP_DIR) \
 	--enable-static-libs
 
-confffmpeg:=--cross-prefix=i586-mingw32msvc- --enable-shared --enable-memalign-hack \
+confffmpeg := --cross-prefix=i586-mingw32msvc- --enable-shared --enable-memalign-hack \
 	--enable-cross-compile --enable-w32threads --arch=i686 --target-os=mingw32 \
 	--disable-ffserver --disable-ffmpeg --disable-ffplay \
 	--disable-parsers --enable-parser=h264 --enable-parser=mpeg4video --enable-parser=h263 \
@@ -251,9 +251,9 @@ confffmpeg:=--cross-prefix=i586-mingw32msvc- --enable-shared --enable-memalign-h
 	--libdir=$(LIBDIR) --extra-ldflags=-Wl,-static
 #	--disable-network
 
-confx264:=  --disable-avis-input --prefix=$(BUILDROOT) --host=$(DEB_HOST_GNU_TYPE)
+confx264 := --disable-avis-input --prefix=$(BUILDROOT) --host=$(DEB_HOST_GNU_TYPE)
 
-conftheora:=--host=$(DEB_HOST_GNU_TYPE) --prefix=$(BUILDROOT) --disable-vorbistest --disable-sdltest --disable-examples
+conftheora := --host=$(DEB_HOST_GNU_TYPE) --prefix=$(BUILDROOT) --disable-vorbistest --disable-sdltest --disable-examples
 
 all: binaries $(TARGETDIR)/$(EKIGA_INSTALLER)
 	@echo "Built on $(shell date)"
@@ -688,7 +688,7 @@ $(TARGETDIR)/zips: binaries $(EKIGA_DIR)/src/ekiga.exe
 	install -m 755  $(SIGC_DIR)/sigc++/.libs/libsigc-2.0-0.dll $(EKIGA_PREFIX)
 ifeq ($(DEBUG),0)
 	$(STRIP) $(EKIGA_PREFIX)/*.dll
-	$(STRIP) $(EKIGA_PREFIX)/*.exe;
+	$(STRIP) $(EKIGA_PREFIX)/*.exe
 endif
 	for lc in C $(DOC_LINGUAS); do \
 		mkdir -p $(EKIGA_PREFIX)/help/$$lc; \
