@@ -1,15 +1,15 @@
 #!/usr/bin/make -f
 
-SILENT := 0
-DEBUG := 1  # 0=release, 1=debug version
-MAKEFLAGS:=
-MAKEOPTS:=$(MAKEFLAGS)
+SILENT    := 0
+DEBUG     := 1  # 0=release, 1=debug version
+MAKEFLAGS :=
+MAKEOPTS  := $(MAKEFLAGS)
 MAKE_LIB_OPTS:=$(MAKEFLAGS)
 
 BUILDROOT := $(CURDIR)
 TARGETDIR := $(BUILDROOT)/dist
 SRCDIR    := $(BUILDROOT)/src
-INCLUDEDIR:=$(BUILDROOT)/include
+INCLUDEDIR:= $(BUILDROOT)/include
 LIBDIR    := $(BUILDROOT)/lib
 BINDIR    := $(BUILDROOT)/bin
 
@@ -82,12 +82,22 @@ OPAL_REV:= HEAD
 OPAL_URL:= https://opalvoip.svn.sourceforge.net/svnroot/opalvoip/opal/tags/v3_4_1
 OPAL_ARCHIVE := opal
 OPAL_DIR:= $(BUILDROOT)/opal
+ifeq ($(DEBUG),1)
+	OPAL_LIB := libopal_d_s.a
+else
+	OPAL_LIB := libopal_s.a
+endif
 
 PTLIB_VER:= 2.4.1
 PTLIB_REV:= HEAD
 PTLIB_URL:= https://opalvoip.svn.sourceforge.net/svnroot/opalvoip/ptlib/tags/v2_4_1
 PTLIB_DIR:= $(BUILDROOT)/ptlib
 PTLIB_ARCHIVE := ptlib
+ifeq ($(DEBUG),1)
+	PTLIB_LIB := libpt_d_s.a
+else
+	PTLIB_LIB := libpt_s.a
+endif
 
 OPENLDAP_VER := 2.3.28
 OPENLDAP_DIR := $(BUILDROOT)/openldap-$(OPENLDAP_VER)
@@ -136,7 +146,7 @@ XML2_ARCHIVE := libxml2-$(XML2_VER).tar.gz
 LIBPNG_VER := 1.2.8
 GNUWIN32_URL := http://mesh.dl.sourceforge.net/gnuwin32
 
-EXPAT_VER = 2.0.0
+EXPAT_VER = 2.0.1
 EXPAT_DIR = $(BUILDROOT)/expat-$(EXPAT_VER)
 EXPAT_ARCHIVE := expat-$(EXPAT_VER).tar.gz
 EXPAT_URL := http://kent.dl.sourceforge.net/sourceforge/expat
@@ -343,15 +353,14 @@ update-sources::
 	$(SVN) co $(PTLIB_URL) $(SRCDIR)/$(PTLIB_ARCHIVE) -r $(PTLIB_REV)
 
 $(PTLIB_DIR)/configure: binaries $(LIBDIR)/libldap.dll $(LIBDIR)/libogg.a $(LIBDIR)/libspeex.a $(SRCDIR)/$(PTLIB_ARCHIVE) $(LIBDIR)/libexpat.a
-	rm -f $(LIBDIR)/libpt_s.a
-	rm -rf $(PTLIB_DIR)
+	rm -rf $(PTLIB_DIR) $(LIBDIR)/$(PTLIB_LIB) $(INCLUDEDIR)/ptclib $(INCLUDEDIR)/ptlib
 	$(CP) -r $(SRCDIR)/$(PTLIB_ARCHIVE) $(PTLIB_DIR)
 
 $(PTLIB_DIR)/config.status: binaries $(PTLIB_DIR)/configure
-	rm -f $(LIBDIR)/libpt_s.a
+	rm -f $(LIBDIR)/$(PTLIB_LIB)
 	cd $(PTLIB_DIR); ./configure $(confptlib)
 
-$(LIBDIR)/libpt_s.a: binaries $(PTLIB_DIR)/config.status
+$(LIBDIR)/$(PTLIB_LIB): binaries $(PTLIB_DIR)/config.status
 ifeq ($(DEBUG),1)
 	$(MAKE) $(MAKEOPTS) DEBUG=1 debug -C $(PTLIB_DIR)
 	$(MAKE) DEBUG=1 -C $(PTLIB_DIR) install
@@ -421,7 +430,7 @@ update-sources::
 $(X264_DIR)/config.status: $(SRCDIR)/$(X264_ARCHIVE)
 	rm -rf $(X264_DIR)
 	$(CP) -r $(SRCDIR)/$(X264_ARCHIVE) $(X264_DIR)
-	cd $(X264_DIR)/; CC=$(REALCC) ./configure $(confx264); \
+	cd $(X264_DIR); CC=$(REALCC) ./configure $(confx264); \
 	sed -i -e 's#ranlib#$(RANLIB)#g' $(X264_DIR)/Makefile; \
 	sed -i -e 's#strip#$(STRIP)#g' $(X264_DIR)/Makefile; \
 	sed -i -e 's#ar #$(AR) #g' $(X264_DIR)/Makefile
@@ -454,20 +463,20 @@ update-sources::
 	@echo --- Getting OPAL $(OPAL_REV)...
 	$(SVN) co $(OPAL_URL) $(SRCDIR)/$(OPAL_ARCHIVE) -r $(OPAL_REV)
 
-$(OPAL_DIR)/configure: binaries $(LIBDIR)/libogg.a $(LIBDIR)/libspeex.a $(LIBDIR)/libpt_s.a $(SRCDIR)/$(OPAL_ARCHIVE) $(BINDIR)/avcodec.dll $(LIBDIR)/libx264.a $(LIBDIR)/libtheora.a
-	rm -rf $(OPAL_DIR) $(LIBDIR)/libopal_s.a
+$(OPAL_DIR)/configure: binaries $(LIBDIR)/libogg.a $(LIBDIR)/libspeex.a $(LIBDIR)/$(PTLIB_LIB) $(SRCDIR)/$(OPAL_ARCHIVE) $(BINDIR)/avcodec.dll $(LIBDIR)/libx264.a $(LIBDIR)/libtheora.a
+	rm -rf $(OPAL_DIR) $(LIBDIR)/$(OPAL_LIB) $(INCLUDEDIR)/opal
 	$(CP) -r $(SRCDIR)/$(OPAL_ARCHIVE) $(OPAL_DIR)
 
 $(OPAL_DIR)/config.status: binaries $(OPAL_DIR)/configure
-	rm -f $(LIBDIR)/libopal_s.a
+	rm -f $(LIBDIR)/$(OPAL_LIB)
 ifeq ($(DEBUG),1)
 	cd $(OPAL_DIR); ./configure $(confopal) --enable-debug
 else
 	cd $(OPAL_DIR); ./configure $(confopal)
 endif
 
-$(LIBDIR)/libopal_s.a: binaries $(OPAL_DIR)/config.status
-	rm -f $(LIBDIR)/libopal_s.a
+$(LIBDIR)/$(OPAL_LIB): binaries $(OPAL_DIR)/config.status
+	rm -f $(LIBDIR)/$(OPAL_LIB)
 	$(MAKE) $(MAKEOPTS) -C $(OPAL_DIR)
 	$(MAKE) -C $(OPAL_DIR) install
 #	sed -i -e 's#^prefix=.*$$#prefix=$(BUILDROOT)#g' $(LIBDIR)/pkgconfig/opal*.pc
@@ -574,7 +583,7 @@ update-sources::
 $(XML2_DIR)/config.status: binaries $(SRCDIR)/$(XML2_ARCHIVE)
 	rm -f $(LIBDIR)/libxml2.a
 	tar xfz $(SRCDIR)/$(XML2_ARCHIVE) -C $(BUILDROOT)
-	cd $(XML2_DIR)/;./configure $(confflags) --without-python
+	cd $(XML2_DIR); ./configure $(confflags) --without-python
 
 $(LIBDIR)/libxml2.a: binaries $(XML2_DIR)/config.status
 	rm -f $(LIBDIR)/libxml2.a
@@ -591,7 +600,7 @@ $(EKIGA_DIR)/autogen.sh: binaries $(SRCDIR)/$(EKIGA_ARCHIVE)
 	$(CP) -r $(SRCDIR)/$(EKIGA_ARCHIVE) $(EKIGA_DIR)
 	touch $@
 
-$(EKIGA_DIR)/config.status: binaries $(EKIGA_DIR)/autogen.sh $(LIBDIR)/libpt_s.a $(LIBDIR)/libopal_s.a \
+$(EKIGA_DIR)/config.status: binaries $(EKIGA_DIR)/autogen.sh $(LIBDIR)/$(PTLIB_LIB) $(LIBDIR)/$(OPAL_LIB) \
 	$(LIBDIR)/pkgconfig/gtk+-2.0.pc $(LIBDIR)/pkgconfig/atk-2.0.pc $(LIBDIR)/pkgconfig/glib-2.0.pc \
 	$(LIBDIR)/libpng.a $(LIBDIR)/pkgconfig/pango32.pc $(LIBDIR)/pkgconfig/cairo.pc $(LIBDIR)/libxml2.a \
 	$(LIBDIR)/libintl.a $(LIBDIR)/libiconv.a $(LIBDIR)/libsigc++.a
@@ -632,7 +641,7 @@ endif
 		if test -f $(EKIGA_DIR)/help/$$lc/ekiga.xml; then \
 			xmlto -o $(EKIGA_PREFIX)/help/$$lc/ --skip-validation html $(EKIGA_DIR)/help/$$lc/ekiga.xml; \
 		fi ;\
-		install -m 644 $(EKIGA_DIR)/help/$$lc/ekiga.xml $(EKIGA_PREFIX)/help/$$lc/;\
+		install -m 644 $(EKIGA_DIR)/help/$$lc/ekiga.xml $(EKIGA_PREFIX)/help/$$lc;\
 		if test -d $(EKIGA_DIR)/help/$$lc/figures; then \
 			mkdir -p $(EKIGA_PREFIX)/help/$$lc/figures; \
 			install -m 644 $(EKIGA_DIR)/help/$$lc/figures/*.png $(EKIGA_PREFIX)/help/$$lc/figures; \
