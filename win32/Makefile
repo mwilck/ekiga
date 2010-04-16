@@ -179,10 +179,10 @@ X264_URL := git://git.videolan.org/x264.git
 X264_DIR := $(BUILDROOT)/x264
 X264_ARCHIVE := x264
 
-THEORA_VER := 13809
-THEORA_URL := http://svn.xiph.org/trunk/theora
-THEORA_DIR := $(BUILDROOT)/theora
-THEORA_ARCHIVE := theora
+THEORA_VER := 1.1.1
+THEORA_URL := http://downloads.xiph.org/releases/theora
+THEORA_DIR := $(BUILDROOT)/libtheora-$(THEORA_VER)
+THEORA_ARCHIVE := libtheora-$(THEORA_VER).tar.gz
 
 NSIS_VER := 2.29
 NSIS_URL := http://mesh.dl.sourceforge.net/nsis
@@ -443,11 +443,11 @@ $(LIBDIR)/libx264.a: $(X264_DIR)/config.status
 ### theora
 update-sources::
 	@echo --- Getting theora ---
-	$(SVN) co $(THEORA_URL) $(SRCDIR)/$(THEORA_ARCHIVE) -r $(THEORA_VER)
+	$(WGET) -P $(SRCDIR) $(THEORA_URL)/$(THEORA_ARCHIVE)
 
 $(THEORA_DIR)/config.status: $(SRCDIR)/$(THEORA_ARCHIVE) $(LIBDIR)/libogg.a
 	rm -rf $(THEORA_DIR)
-	$(CP) -r $(SRCDIR)/$(THEORA_ARCHIVE) $(THEORA_DIR)
+	tar xfz $(SRCDIR)/$(THEORA_ARCHIVE) -C $(BUILDROOT)
 	cd $(THEORA_DIR); CC=$(REALCC) LD=$(LD) AR=$(AR) RANLIB=$(RANLIB) ./autogen.sh $(conftheora)
 	touch $@
 
