@@ -628,8 +628,8 @@ $(LIBDIR)/libxml2.a: binaries $(XML2_DIR)/config.status
 	$(MAKE) $(MAKEOPTS) -C $(XML2_DIR)
 	$(MAKE) $(MAKEOPTS) -C $(XML2_DIR) install
 
-### GnomeMeeting / Ekiga
-update-sources2::
+### Ekiga
+update-sources::
 	@echo --- Getting Ekiga ...
 ifeq ($(RELEASE),1)
 	$(WGET) -P $(SRCDIR) $(EKIGA_URL)/$(EKIGA_ARCHIVE)
