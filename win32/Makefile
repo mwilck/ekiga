@@ -243,8 +243,8 @@ confekiga:= $(confflags) \
 	--with-directx-dir=$(EKIGA_DIR)/win32/directx --prefix=$(EKIGA_PREFIX) \
 	--bindir=$(EKIGA_PREFIX) --datadir=$(EKIGA_PREFIX) \
 	--sysconfdir=$(EKIGA_PREFIX) --libdir=$(EKIGA_PREFIX) --disable-gnome \
-	--disable-dbus --disable-avahi --disable-xv --with-ldap-dir=$(OPENLDAP_DIR) \
-	--enable-static-libs
+	--disable-dbus --disable-avahi --disable-xv --with-ldap-dir=$(OPENLDAP_DIR)# \
+#	--enable-static-libs
 
 confffmpeg := --cross-prefix=i586-mingw32msvc- --enable-shared --enable-memalign-hack \
 	--enable-cross-compile --enable-w32threads --arch=i686 --target-os=mingw32 \
@@ -690,7 +690,7 @@ else
 endif
 
 $(EKIGA_DIR)/src/ekiga.exe: binaries $(EKIGA_DIR)/config.status
-	$(MAKE) $(MAKEOPTS) -C $(EKIGA_DIR)
+	LDFLAGS="$$LDFLAGS -Wl,-subsystem,windows" $(MAKE) $(MAKEOPTS) -C $(EKIGA_DIR)
 	$(MAKE) $(MAKEOPTS) -C $(EKIGA_DIR)/help
 
 $(TARGETDIR)/zips: binaries $(EKIGA_DIR)/src/ekiga.exe
@@ -705,11 +705,9 @@ $(TARGETDIR)/zips: binaries $(EKIGA_DIR)/src/ekiga.exe
 	for plugin in $(LIBDIR)/opal*/codecs/video/*; do \
 	        install -m 755 $$plugin $(EKIGA_PREFIX)/plugins ;\
 	done
-	for lib in libexpat-1.dll liblber.dll libldap.dll libxml2-2.dll libspeex-1.dll; do \
+	for lib in libexpat-1.dll liblber.dll libldap.dll libxml2-2.dll libspeex-1.dll libspeexdsp-1.dll avcodec.dll libogg-0.dll; do \
 	        install -m 755 $(BINDIR)/$$lib $(EKIGA_PREFIX) ;\
 	done
-	install -m 755 $(BINDIR)/avcodec.dll $(EKIGA_PREFIX)
-	install -m 755 $(BINDIR)/libogg-0.dll $(EKIGA_PREFIX)
 	install -m 755  $(SIGC_DIR)/sigc++/.libs/libsigc-2.0-0.dll $(EKIGA_PREFIX)
 ifeq ($(DEBUG),0)
 	$(STRIP) $(EKIGA_PREFIX)/*.dll
@@ -726,9 +724,9 @@ endif
 			install -m 644 $(EKIGA_DIR)/help/$$lc/figures/*.png $(EKIGA_PREFIX)/help/$$lc/figures; \
 		fi \
 	done
-	cd $(TARGETDIR); zip -9r ekiga.zip Ekiga
-	zip -9r $(TARGETDIR)/ekiga_build.zip Makefile $(EKIGA_WIN32_DIFF_DIR)/* ico/*
-	tar cfvz $(TARGETDIR)/ekiga_build.tgz Makefile $(EKIGA_WIN32_DIFF_DIR)/* ico/*
+	cd $(TARGETDIR); zip -9r ekiga-$(EKIGA_VER).zip Ekiga
+	zip -9r $(TARGETDIR)/ekiga_build-$(EKIGA_VER).zip Makefile $(EKIGA_WIN32_DIFF_DIR)/* ico/*
+	tar cfvz $(TARGETDIR)/ekiga_build-$(EKIGA_VER).tgz Makefile $(EKIGA_WIN32_DIFF_DIR)/* ico/*
 	touch $@
 
 #### README about NSIS installer ####
@@ -796,6 +794,6 @@ distclean:
 	-$(RM) -rf $(THEORA_DIR)
 	-$(RM) -rf make
 	-$(RM) -f binaries
-	-$(RM) -rf $(SRCDIR)/*
+#	-$(RM) -rf $(SRCDIR)/*
 
 .PHONY: clean distclean update update-sources
