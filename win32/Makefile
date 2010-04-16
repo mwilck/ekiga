@@ -1,7 +1,7 @@
 #!/usr/bin/make -f
 
 SILENT := 0
-DEBUG := 1
+DEBUG := 1  # 0=release, 1=debug version
 MAKEFLAGS:=
 MAKEOPTS:=$(MAKEFLAGS)
 MAKE_LIB_OPTS:=$(MAKEFLAGS)
@@ -18,7 +18,7 @@ export PKG_CONFIG_LIBDIR:=$(LIBDIR)
 export DEB_BUILD_GNU_TYPE:=$(shell dpkg-architecture -qDEB_BUILD_GNU_TYPE)
 export DEB_HOST_GNU_TYPE:="i586-pc-mingw32"
 
-WGET := wget -nv -T 60 -N --no-proxy
+WGET := wget -nv -T 60 -N
 
 HOST_TOOL_PREFIX:=i586-mingw32msvc
 
@@ -36,11 +36,11 @@ IX86_TYPE:=5
 
 
 ifeq ($(DEBUG),1)
-        export CC=$(REALCC) -mms-bitfields -g
-        export CXX=$(REALCXX) -mms-bitfields -g
+	export CC=$(REALCC) -mms-bitfields -g
+	export CXX=$(REALCXX) -mms-bitfields -g
 else
-        export CC=$(REALCC) -mms-bitfields
-        export CXX=$(REALCXX) -mms-bitfields
+	export CC=$(REALCC) -mms-bitfields
+	export CXX=$(REALCXX) -mms-bitfields
 endif
 
 export LD:=$(HOST_TOOL_PREFIX)-ld
@@ -61,16 +61,21 @@ export PATH:=$(BINDIR):$(PATH)
 export LDD:=$(BUILDROOT)/$(HOST_TOOL_PREFIX)-ldd.sh
 
 
-EKIGA_VER = 2.9
-EKIGA_REV = HEAD
-EKIGA_URL = http://svn.gnome.org/svn/ekiga/trunk
+GIT_EKIGA_REV = reset --hard HEAD
+#GIT_EKIGA_REV = checkout -b gnome-2-26 origin/gnome-2-26
+EKIGA_URL = git://git.gnome.org/ekiga
 EKIGA_ARCHIVE := ekiga
 EKIGA_DIR = $(BUILDROOT)/ekiga
 EKIGA_PREFIX:= $(TARGETDIR)/Ekiga
 EKIGA_WIN32_DIR := $(CURDIR)
 EKIGA_WIN32_DIFF_DIR := $(EKIGA_WIN32_DIR)/diff
 EKIGA_INSTALLER_DIR := $(BUILDROOT)/nsisinstaller
-EKIGA_INSTALLER := ekiga-setup-${EKIGA_VER}.exe
+EKIGA_VER := $(strip $(shell grep AC_INIT $(SRCDIR)/$(EKIGA_ARCHIVE)/configure.ac | awk 'BEGIN { FS = "," } ; { print $$2 }'))
+EKIGA_REV := $(strip $(shell (cd $(SRCDIR)/$(EKIGA_ARCHIVE); git describe | awk 'BEGIN { FS = "-" } ; { print $$2 "_" $$3 }' )))
+ifneq ($(EKIGA_REV),)
+	EKIGA_VER := $(EKIGA_VER)-git-$(EKIGA_REV)
+endif
+EKIGA_INSTALLER := ekiga-setup-$(EKIGA_VER).exe
 
 OPAL_VER:= 3.4.1
 OPAL_REV:= HEAD
@@ -89,12 +94,12 @@ OPENLDAP_DIR := $(BUILDROOT)/openldap-$(OPENLDAP_VER)
 OPENLDAP_ARCHIVE := openldap-$(OPENLDAP_VER).tgz
 OPENLDAP_URL := http://www.openldap.org/software/download/OpenLDAP/openldap-release
 
-OGG_VER := 1.1.3
+OGG_VER := 1.1.4
 OGG_DIR := $(BUILDROOT)/libogg-$(OGG_VER)
 OGG_ARCHIVE := libogg-$(OGG_VER).tar.gz
 OGG_URL := http://downloads.xiph.org/releases/ogg
 
-SPEEX_VER := 1.1.12
+SPEEX_VER := 1.2rc1
 SPEEX_DIR := $(BUILDROOT)/speex-$(SPEEX_VER)
 SPEEX_ARCHIVE := speex-$(SPEEX_VER).tar.gz
 SPEEX_URL := http://downloads.us.xiph.org/releases/speex
@@ -146,8 +151,6 @@ SIGC_URL := http://ftp.gnome.org/pub/GNOME/sources/libsigc++/2.0
 SIGC_ARCHIVE := libsigc++-$(SIGC_VER).tar.gz
 SIGC_DIR := libsigc++-$(SIGC_VER)
 
-GIMP_URL := http://www.gimp.org/~tml/gimp/win32
-
 GETTEXT_VER := 0.17-1
 GETTEXT_URL :=http://ftp.gnome.org/pub/gnome/binaries/win32/dependencies
 GETTEXT_ARCHIVE := gettext-runtime-dev-$(GETTEXT_VER).zip
@@ -183,38 +186,38 @@ CP:=cp
 MV:=mv
 SVN:=svn
 GIT:=git
-ACLOCAL:=aclocal-1.9
+ACLOCAL:=aclocal
 
 DOC_LINGUAS=bg de es fr pt_BR sv uk
 
 ifneq (,$(CONCURRENCY))
-        MAKEOPTS+=-j$(CONCURRENCY)
+	MAKEOPTS+=-j$(CONCURRENCY)
 endif
 
 confflags:=--prefix=$(BUILDROOT) --build=$(DEB_BUILD_GNU_TYPE) --host=$(DEB_HOST_GNU_TYPE)
 confptlib:=--prefix=$(BUILDROOT) --build=$(DEB_BUILD_GNU_TYPE) --host=$(DEB_HOST_GNU_TYPE) \
-	   --with-directx-includedir=$(BUILDROOT)/directx \
-	   --disable-qos --disable-vidfile --disable-alsa --disable-esd --disable-oss --disable-sunaudio \
-	   --disable-v4l --disable-v4l2 --disable-bsdvideo --disable-avc --disable-dc
+	--enable-vfw --enable-vidfile --with-directx-includedir=$(EKIGA_DIR)/win32/directx \
+	--disable-qos --disable-vidfile --disable-alsa --disable-esd --disable-oss --disable-sunaudio --disable-shmaudio \
+	--disable-v4l --disable-v4l2 --disable-bsdvideo --disable-avc --disable-dc
 confopal :=--prefix=$(BUILDROOT) --build=$(DEB_BUILD_GNU_TYPE) --host=$(DEB_HOST_GNU_TYPE) \
-	   --with-ffmpeg-dir=$(FFMPEG_DIR) --disable-ffmpeg-h263
+	--with-ffmpeg-dir=$(FFMPEG_DIR) --disable-ffmpeg-h263
 confekiga:= $(confflags) \
-	    --with-directx-dir=$(BUILDROOT)/directx --prefix=$(EKIGA_PREFIX) \
-	    --bindir=$(EKIGA_PREFIX) --datadir=$(EKIGA_PREFIX) \
-	    --sysconfdir=$(EKIGA_PREFIX) --libdir=$(EKIGA_PREFIX) --disable-gnome \
-	    --disable-dbus --disable-avahi --disable-xv --with-ldap-dir=$(OPENLDAP_DIR) \
-	    --enable-static-libs
+	--with-directx-dir=$(EKIGA_DIR)/win32/directx --prefix=$(EKIGA_PREFIX) \
+	--bindir=$(EKIGA_PREFIX) --datadir=$(EKIGA_PREFIX) \
+	--sysconfdir=$(EKIGA_PREFIX) --libdir=$(EKIGA_PREFIX) --disable-gnome \
+	--disable-dbus --disable-avahi --disable-xv --with-ldap-dir=$(OPENLDAP_DIR) \
+	--enable-static-libs
 
 confffmpeg:=--cross-prefix=i586-mingw32msvc- --enable-shared --enable-memalign-hack \
-	    --enable-cross-compile --disable-ffserver --target-os=mingw32 \
-	    --enable-w32threads --arch=i686  \
-	    --disable-parsers --enable-parser=h264 --enable-parser=mpeg4video --enable-parser=h263 \
-	    --disable-decoders --enable-decoder=h264 --enable-decoder=mpeg4  --enable-decoder=h263 \
-	    --disable-muxers --enable-muxer=h264 --enable-muxer=mpeg4 --enable-muxer=h263 \
-	    --disable-encoders --enable-encoder=mpeg4 --enable-encoder=h263 \
-	    --disable-protocols --disable-bsfs --disable-ffplay --prefix=$(BUILDROOT) \
-            --libdir=$(LIBDIR) --extra-ldflags=-Wl,-static
-#	    --disable-network
+	--enable-cross-compile --enable-w32threads --arch=i686 --target-os=mingw32 \
+	--disable-ffserver --disable-ffmpeg --disable-ffplay \
+	--disable-parsers --enable-parser=h264 --enable-parser=mpeg4video --enable-parser=h263 \
+	--disable-decoders --enable-decoder=h264 --enable-decoder=mpeg4  --enable-decoder=h263 \
+	--disable-muxers --enable-muxer=h264 --enable-muxer=mpeg4 --enable-muxer=h263 \
+	--disable-encoders --enable-encoder=mpeg4 --enable-encoder=h263 \
+	--disable-protocols --disable-bsfs --disable-ffplay --prefix=$(BUILDROOT) \
+	--libdir=$(LIBDIR) --extra-ldflags=-Wl,-static
+#	--disable-network
 
 confx264:=  --disable-avis-input --prefix=$(BUILDROOT) --host=$(DEB_HOST_GNU_TYPE)
 
@@ -230,8 +233,8 @@ update: update-sources
 
 binaries:
 	@echo Checking prerequisites...
-	hash $(REALCC) $(REALCXX) $(LD) $(NM) $(AR) $(RANLIB) $(DLLTOOL) $(DLLWRAP) $(OBJDUMP) $(WINDRES) $(AS)||(echo You need to install mingw32;exit 1)
-	hash tar unzip zip wget $(ACLOCAL) autoheader libtoolize automake-1.9 autoconf pkg-config gnome-autogen.sh bison gdk-pixbuf-csource||(echo we need more binaries ;exit 1)
+	hash $(REALCC) $(REALCXX) $(LD) $(NM) $(AR) $(RANLIB) $(DLLTOOL) $(DLLWRAP) $(OBJDUMP) $(RC) $(AS)||(echo You need to install mingw32;exit 1)
+	hash tar unzip zip wget $(ACLOCAL) autoheader libtoolize automake autoconf pkg-config gnome-autogen.sh bison gdk-pixbuf-csource||(echo we need more binaries ;exit 1)
 	[ -f /usr/share/gnome-doc-utils/gnome-doc-utils.make ]||(echo gnome-doc-tools not installed;exit 1)
 	[ -f /usr/lib/pkgconfig/gconf-2.0.pc ]||(echo libgconf2-dev not installed;exit 1)
 	[ -f /usr/lib/pkgconfig/avahi-glib.pc ]||(echo libavahi-glib-dev not installed;exit 1)
@@ -315,7 +318,7 @@ update-sources::
 $(OPENLDAP_DIR)/configure: $(LIBDIR)/libregex.a $(SRCDIR)/$(OPENLDAP_ARCHIVE)
 	rm -f $(LIBDIR)/libldap.dll
 	tar xfz $(SRCDIR)/$(OPENLDAP_ARCHIVE) -C $(BUILDROOT)
-	sed -i -e 's#windres#$(WINDRES)#g' $(OPENLDAP_DIR)/libraries/liblutil/Makefile.in
+	sed -i -e 's#windres#$(RC)#g' $(OPENLDAP_DIR)/libraries/liblutil/Makefile.in
 	touch $@
 
 $(OPENLDAP_DIR)/config.status: binaries $(OPENLDAP_DIR)/configure
@@ -339,14 +342,14 @@ update-sources::
 	@echo --- Getting PTLib $(PTLIB_REV) ...
 	$(SVN) co $(PTLIB_URL) $(SRCDIR)/$(PTLIB_ARCHIVE) -r $(PTLIB_REV)
 
-$(PTLIB_DIR)/configure: binaries $(LIBDIR)/libldap.dll $(LIBDIR)/libogg.a $(LIBDIR)/libspeex.a $(SRCDIR)/$(PTLIB_ARCHIVE) $(EKIGA_WIN32_DIFF_DIR)/ptlib_Makefile.am $(LIBDIR)/libexpat.a $(EKIGA_WIN32_DIFF_DIR)/ptlib_configure.ac $(EKIGA_WIN32_DIFF_DIR)/ptlib_ptlib.pc.in
+$(PTLIB_DIR)/configure: binaries $(LIBDIR)/libldap.dll $(LIBDIR)/libogg.a $(LIBDIR)/libspeex.a $(SRCDIR)/$(PTLIB_ARCHIVE) $(LIBDIR)/libexpat.a
 	rm -f $(LIBDIR)/libpt_s.a
 	rm -rf $(PTLIB_DIR)
 	$(CP) -r $(SRCDIR)/$(PTLIB_ARCHIVE) $(PTLIB_DIR)
 
 $(PTLIB_DIR)/config.status: binaries $(PTLIB_DIR)/configure
 	rm -f $(LIBDIR)/libpt_s.a
-	(cd $(PTLIB_DIR)/;./configure $(confptlib) )
+	cd $(PTLIB_DIR); ./configure $(confptlib)
 
 $(LIBDIR)/libpt_s.a: binaries $(PTLIB_DIR)/config.status
 ifeq ($(DEBUG),1)
@@ -365,8 +368,7 @@ update-sources::
 $(OGG_DIR)/config.status: binaries $(SRCDIR)/$(OGG_ARCHIVE)
 	rm -f $(LIBDIR)/libogg.a
 	tar xfz $(SRCDIR)/$(OGG_ARCHIVE) -C $(BUILDROOT)
-	(cd $(OGG_DIR)/;./configure $(confflags) \
-	)
+	cd $(OGG_DIR); ./configure $(confflags)
 
 $(LIBDIR)/libogg.a: binaries $(OGG_DIR)/config.status
 	rm -f $(LIBDIR)/libogg.a
@@ -379,10 +381,9 @@ update-sources::
 	$(WGET) -P $(SRCDIR) $(SPEEX_URL)/$(SPEEX_ARCHIVE)
 
 $(SPEEX_DIR)/config.status: binaries $(SRCDIR)/$(SPEEX_ARCHIVE)
-	rm -f $(LIBDIR)/_ibspeex.a
+	rm -f $(LIBDIR)/libspeex.a
 	tar xfz $(SRCDIR)/$(SPEEX_ARCHIVE) -C $(BUILDROOT)
-	(cd $(SPEEX_DIR)/;LDFLAGS="$$LDFLAGS -no-undefined" ./configure $(confflags) \
-	)
+	cd $(SPEEX_DIR); LDFLAGS="$$LDFLAGS -no-undefined" ./configure $(confflags)
 
 $(LIBDIR)/libspeex.a: binaries $(SPEEX_DIR)/config.status
 	rm -f $(LIBDIR)/libspeex.a
@@ -397,9 +398,7 @@ update-sources::
 $(FFMPEG_DIR)/config.status: $(SRCDIR)/$(FFMPEG_ARCHIVE)
 	rm -rf $(FFMPEG_DIR)
 	$(CP) -r $(SRCDIR)/$(FFMPEG_ARCHIVE) $(FFMPEG_DIR)
-	(cd $(FFMPEG_DIR)/; \
-	./configure $(confffmpeg) \
-	)
+	cd $(FFMPEG_DIR); ./configure $(confffmpeg)
 	touch $@
 
 $(BINDIR)/avcodec.dll: $(FFMPEG_DIR)/config.status
@@ -422,11 +421,10 @@ update-sources::
 $(X264_DIR)/config.status: $(SRCDIR)/$(X264_ARCHIVE)
 	rm -rf $(X264_DIR)
 	$(CP) -r $(SRCDIR)/$(X264_ARCHIVE) $(X264_DIR)
-	(cd $(X264_DIR)/; \
-	CC=$(REALCC) ./configure $(confx264); \
+	cd $(X264_DIR)/; CC=$(REALCC) ./configure $(confx264); \
 	sed -i -e 's#ranlib#$(RANLIB)#g' $(X264_DIR)/Makefile; \
 	sed -i -e 's#strip#$(STRIP)#g' $(X264_DIR)/Makefile; \
-	sed -i -e 's#ar #$(AR) #g' $(X264_DIR)/Makefile )
+	sed -i -e 's#ar #$(AR) #g' $(X264_DIR)/Makefile
 	touch $@
 
 $(LIBDIR)/libx264.a: $(X264_DIR)/config.status
@@ -442,8 +440,7 @@ update-sources::
 $(THEORA_DIR)/config.status: $(SRCDIR)/$(THEORA_ARCHIVE) $(LIBDIR)/libogg.a
 	rm -rf $(THEORA_DIR)
 	$(CP) -r $(SRCDIR)/$(THEORA_ARCHIVE) $(THEORA_DIR)
-	(cd $(THEORA_DIR)/; \
-	CC=$(REALCC) LD=$(LD) AR=$(AR) RANLIB=$(RANLIB) ./autogen.sh $(conftheora); )
+	cd $(THEORA_DIR); CC=$(REALCC) LD=$(LD) AR=$(AR) RANLIB=$(RANLIB) ./autogen.sh $(conftheora)
 	touch $@
 
 $(LIBDIR)/libtheora.a: $(THEORA_DIR)/config.status
@@ -457,16 +454,16 @@ update-sources::
 	@echo --- Getting OPAL $(OPAL_REV)...
 	$(SVN) co $(OPAL_URL) $(SRCDIR)/$(OPAL_ARCHIVE) -r $(OPAL_REV)
 
-$(OPAL_DIR)/configure: binaries $(LIBDIR)/libogg.a $(LIBDIR)/libspeex.a $(LIBDIR)/libpt_s.a $(SRCDIR)/$(OPAL_ARCHIVE) $(EKIGA_WIN32_DIFF_DIR)/opal_configure.ac $(EKIGA_WIN32_DIFF_DIR)/opal_Makefile.am $(EKIGA_WIN32_DIFF_DIR)/opal_opal.pc.in $(BINDIR)/avcodec.dll $(LIBDIR)/libx264.a $(LIBDIR)/libtheora.a
+$(OPAL_DIR)/configure: binaries $(LIBDIR)/libogg.a $(LIBDIR)/libspeex.a $(LIBDIR)/libpt_s.a $(SRCDIR)/$(OPAL_ARCHIVE) $(BINDIR)/avcodec.dll $(LIBDIR)/libx264.a $(LIBDIR)/libtheora.a
 	rm -rf $(OPAL_DIR) $(LIBDIR)/libopal_s.a
 	$(CP) -r $(SRCDIR)/$(OPAL_ARCHIVE) $(OPAL_DIR)
 
 $(OPAL_DIR)/config.status: binaries $(OPAL_DIR)/configure
 	rm -f $(LIBDIR)/libopal_s.a
 ifeq ($(DEBUG),1)
-	(cd $(OPAL_DIR)/; ./configure $(confopal) --enable-debug )
+	cd $(OPAL_DIR); ./configure $(confopal) --enable-debug
 else
-	(cd $(OPAL_DIR)/; ./configure $(confopal)  )
+	cd $(OPAL_DIR); ./configure $(confopal)
 endif
 
 $(LIBDIR)/libopal_s.a: binaries $(OPAL_DIR)/config.status
@@ -577,8 +574,7 @@ update-sources::
 $(XML2_DIR)/config.status: binaries $(SRCDIR)/$(XML2_ARCHIVE)
 	rm -f $(LIBDIR)/libxml2.a
 	tar xfz $(SRCDIR)/$(XML2_ARCHIVE) -C $(BUILDROOT)
-	(cd $(XML2_DIR)/;./configure $(confflags) --without-python \
-	)
+	cd $(XML2_DIR)/;./configure $(confflags) --without-python
 
 $(LIBDIR)/libxml2.a: binaries $(XML2_DIR)/config.status
 	rm -f $(LIBDIR)/libxml2.a
@@ -587,8 +583,8 @@ $(LIBDIR)/libxml2.a: binaries $(XML2_DIR)/config.status
 
 ### GnomeMeeting / Ekiga
 update-sources::
-	@echo --- Getting Ekiga $(EKIGA_REV)...
-	$(SVN) co $(EKIGA_URL) $(SRCDIR)/$(EKIGA_ARCHIVE) -r $(EKIGA_REV)
+	@echo --- Getting Ekiga ...
+	$(GIT) clone $(EKIGA_URL) $(SRCDIR)/$(EKIGA_ARCHIVE)
 
 $(EKIGA_DIR)/autogen.sh: binaries $(SRCDIR)/$(EKIGA_ARCHIVE)
 	rm -rf $(EKIGA_DIR)
@@ -601,9 +597,9 @@ $(EKIGA_DIR)/config.status: binaries $(EKIGA_DIR)/autogen.sh $(LIBDIR)/libpt_s.a
 	$(LIBDIR)/libintl.a $(LIBDIR)/libiconv.a $(LIBDIR)/libsigc++.a
 	rm -f $(EKIGA_DIR)/src/ekiga.exe
 ifeq ($(DEBUG),1)
-	(cd $(EKIGA_DIR)/; ACLOCAL_FLAGS="-I $(BUILDROOT)/share/aclocal"; ./autogen.sh $(confekiga) --enable-debug )
+	cd $(EKIGA_DIR); ACLOCAL_FLAGS="-I $(BUILDROOT)/share/aclocal"; ./autogen.sh $(confekiga) --enable-debug
 else
-	(cd $(EKIGA_DIR)/; ACLOCAL_FLAGS="-I $(BUILDROOT)/share/aclocal"; ./autogen.sh $(confekiga) )
+	cd $(EKIGA_DIR); ACLOCAL_FLAGS="-I $(BUILDROOT)/share/aclocal"; ./autogen.sh $(confekiga)
 endif
 $(EKIGA_DIR)/src/ekiga.exe: binaries $(EKIGA_DIR)/config.status
 	$(MAKE) $(MAKEOPTS) -C $(EKIGA_DIR)
@@ -642,7 +638,7 @@ endif
 			install -m 644 $(EKIGA_DIR)/help/$$lc/figures/*.png $(EKIGA_PREFIX)/help/$$lc/figures; \
 		fi \
 	done
-	(cd $(TARGETDIR)/;zip -9r ekiga.zip Ekiga )
+	cd $(TARGETDIR); zip -9r ekiga.zip Ekiga
 	zip -9r $(TARGETDIR)/ekiga_build.zip Makefile $(EKIGA_WIN32_DIFF_DIR)/* ico/*
 	tar cfvz $(TARGETDIR)/ekiga_build.tgz Makefile $(EKIGA_WIN32_DIFF_DIR)/* ico/*
 	touch $@
@@ -678,11 +674,11 @@ $(NSISPLUGIN_DIR)/Processes.dll: $(SRCDIR)/Processes.zip
 	touch $@
 
 $(TARGETDIR)/$(EKIGA_INSTALLER): $(TARGETDIR)/zips $(LIBDIR)/gtk+-$(GTK_BIN_VER)-setup.exe $(NSISPLUGIN_DIR)/SystemLocal.dll $(NSISPLUGIN_DIR)/Processes.dll
-	(makensis -DEKIGA_VERSION=$(EKIGA_VER) -DEKIGA_DIR=$(EKIGA_DIR) -DBUILDROOT=$(BUILDROOT) \
+	makensis -DEKIGA_VERSION=$(EKIGA_VER) -DEKIGA_DIR=$(EKIGA_DIR) -DBUILDROOT=$(BUILDROOT) \
 	 -DINSTALLER_DIR=$(EKIGA_INSTALLER_DIR) -DLIB_DIR=$(LIBDIR) -DTARGET_DIR=$(TARGETDIR) \
 	 -DCROSS_COMPILING=true -DWITH_GTK=true -DGTK_VERSION=$(GTK_BIN_VER) \
 	 -DNSISSYSTEMDIR=$(NSISSYTEM_DIR) -DNSISPLUGINDIR=$(NSISPLUGIN_DIR) \
-	 $(EKIGA_INSTALLER_DIR)/ekiga.nsi )
+	 $(EKIGA_INSTALLER_DIR)/ekiga.nsi
 	touch $@
 
 clean:
