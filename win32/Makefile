@@ -196,7 +196,6 @@ CP:=cp
 MV:=mv
 SVN:=svn
 GIT:=git
-ACLOCAL:=aclocal
 
 DOC_LINGUAS=bg de es fr pt_BR sv uk
 
@@ -244,7 +243,7 @@ update: update-sources
 binaries:
 	@echo Checking prerequisites...
 	hash $(REALCC) $(REALCXX) $(LD) $(NM) $(AR) $(RANLIB) $(DLLTOOL) $(DLLWRAP) $(OBJDUMP) $(RC) $(AS)||(echo You need to install mingw32;exit 1)
-	hash tar unzip zip wget $(ACLOCAL) autoheader libtoolize automake autoconf pkg-config gnome-autogen.sh bison gdk-pixbuf-csource||(echo we need more binaries ;exit 1)
+	hash tar unzip zip wget aclocal autoheader libtoolize automake autoconf pkg-config gnome-autogen.sh bison gdk-pixbuf-csource||(echo we need more binaries ;exit 1)
 	[ -f /usr/share/gnome-doc-utils/gnome-doc-utils.make ]||(echo gnome-doc-tools not installed;exit 1)
 	[ -f /usr/lib/pkgconfig/gconf-2.0.pc ]||(echo libgconf2-dev not installed;exit 1)
 	[ -f /usr/lib/pkgconfig/avahi-glib.pc ]||(echo libavahi-glib-dev not installed;exit 1)
