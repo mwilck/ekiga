@@ -344,7 +344,7 @@ $(LIBDIR)/libexpat.a:  $(EXPAT_DIR)/config.status $(INCLUDEDIR)/expat.h
 
 ### OPENLDAP
 update-sources::
-	@echo --- Getting OpenLDAP...
+	@echo --- Getting OpenLDAP ...
 	$(WGET) -P $(SRCDIR) $(OPENLDAP_URL)/$(OPENLDAP_ARCHIVE)
 
 $(OPENLDAP_DIR)/configure: $(LIBDIR)/libregex.a $(SRCDIR)/$(OPENLDAP_ARCHIVE)
@@ -431,7 +431,7 @@ $(LIBDIR)/libspeex.a: binaries $(SPEEX_DIR)/config.status
 
 ### ffmpeg
 update-sources::
-	@echo --- Getting FFMPEG ---
+	@echo --- Getting FFMPEG ...
 	$(SVN) co $(FFMPEG_URL) $(SRCDIR)/$(FFMPEG_ARCHIVE) -r $(FFMPEG_VER)
 
 $(FFMPEG_DIR)/config.status: $(SRCDIR)/$(FFMPEG_ARCHIVE)
@@ -451,9 +451,12 @@ $(BINDIR)/avcodec.dll: $(FFMPEG_DIR)/config.status
 
 ### x264
 update-sources::
-	@echo --- Getting x264 ---
-	rm -rf $(SRCDIR)/$(X264_ARCHIVE)
+	@echo --- Getting x264 ...
+ifeq ($(wildcard $(SRCDIR)/$(X264_ARCHIVE)), )
 	$(GIT) clone $(X264_URL) $(SRCDIR)/$(X264_ARCHIVE)
+else
+	cd $(SRCDIR)/$(X264_ARCHIVE); $(GIT) pull
+endif
 	@echo "Updated to revision $(X264_VER)"
 	touch $(SRCDIR)/$(X264_ARCHIVE)
 
@@ -473,7 +476,7 @@ $(LIBDIR)/libx264.a: $(X264_DIR)/config.status
 
 ### theora
 update-sources::
-	@echo --- Getting theora ---
+	@echo --- Getting theora ...
 	$(WGET) -P $(SRCDIR) $(THEORA_URL)/$(THEORA_ARCHIVE)
 
 $(THEORA_DIR)/config.status: $(SRCDIR)/$(THEORA_ARCHIVE) $(LIBDIR)/libogg.a
@@ -628,7 +631,7 @@ $(LIBDIR)/libxml2.a: binaries $(XML2_DIR)/config.status
 	$(MAKE) $(MAKEOPTS) -C $(XML2_DIR)
 	$(MAKE) $(MAKEOPTS) -C $(XML2_DIR) install
 
-### Ekiga
+### GnomeMeeting / Ekiga
 update-sources::
 	@echo --- Getting Ekiga ...
 ifeq ($(RELEASE),1)
