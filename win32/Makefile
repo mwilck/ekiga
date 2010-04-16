@@ -1,6 +1,5 @@
 #!/usr/bin/make -f
 
-SILENT    := 0
 DEBUG     := 1  # 0=release, 1=debug version
 MAKEFLAGS :=
 MAKEOPTS  := $(MAKEFLAGS)
