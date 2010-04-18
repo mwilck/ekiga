@@ -281,7 +281,8 @@ binaries:
 	[ -f /usr/lib/pkgconfig/avahi-client.pc ] || (echo libavahi-client-dev not installed; exit 1)
 	hash makensis || (echo nsis not installed; exit 1)
 	hash xmlto || (echo xmlto not installed; exit 1)
-#       [ $(BUILDROOT) = $(CURDIR) ] || (echo You are supposed to run this as Makefile in $(BUILDROOT); exit 1)
+#	[ $(BUILDROOT) = $(CURDIR) ] || (echo You are supposed to run this as Makefile in $(BUILDROOT); exit 1)
+	[ `grep define.*MINGW32_MINOR_VERSION /usr/i586-mingw32msvc/include/_mingw.h|cut -d" " -f3` -ge 15 ] || (echo 'You need mingw32-runtime at version >= 3.15'; exit 1)
 	mkdir -p $(INCLUDEDIR) $(LIBDIR)/pkgconfig $(SRCDIR) $(BINDIR)
 	$(RM) -f $(BINDIR)/cygpath
 	ln -s /bin/true $(BINDIR)/cygpath
