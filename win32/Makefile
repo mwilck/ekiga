@@ -135,39 +135,39 @@ OGG_URL := http://downloads.xiph.org/releases/ogg
 SPEEX_VER := 1.2rc1
 SPEEX_DIR := $(BUILDROOT)/speex-$(SPEEX_VER)
 SPEEX_ARCHIVE := speex-$(SPEEX_VER).tar.gz
-SPEEX_URL := http://downloads.us.xiph.org/releases/speex
+SPEEX_URL := http://downloads.xiph.org/releases/speex
 
-GTK_VER := 2.12.11
-GTK_URL := http://ftp.gnome.org/pub/gnome/binaries/win32/gtk+/2.12
-GTK_ARCHIVE := gtk+-dev-$(GTK_VER).zip
+GTK_VER := 2.16.0-2
+GTK_URL := http://ftp.gnome.org/pub/gnome/binaries/win32/gtk+/2.16
+GTK_ARCHIVE := gtk+-dev_$(GTK_VER)_win32.zip
 
-GTK_BIN_VER := 2.12.11
-GTK_INSTALLER_URL := http://mesh.dl.sourceforge.net/gtk-win
-GTK_BIN_EXE := gtk2-runtime-2.12.11-2008-07-25-ash.exe
+GTK_BIN_VER := 2.16.0
+GTK_INSTALLER_URL := http://downloads.sourceforge.net/gtk-win
+GTK_BIN_EXE := gtk2-runtime-2.16.0-2009-03-22-ash.exe
 
 GLIB_VER := 2.18.0-2
 GLIB_URL := http://ftp.gnome.org/pub/gnome/binaries/win32/glib/2.18
 GLIB_ARCHIVE := glib-dev_$(GLIB_VER)_win32.zip
 
-ATK_VER := 1.22.0
-ATK_URL := http://ftp.gnome.org/pub/gnome/binaries/win32/atk/1.22
-ATK_ARCHIVE := atk-dev-$(ATK_VER).zip
+ATK_VER := 1.24.0-1
+ATK_URL := http://ftp.gnome.org/pub/gnome/binaries/win32/atk/1.24
+ATK_ARCHIVE := atk-dev_$(ATK_VER)_win32.zip
 
 CAIRO_VER := 1.8.10-3
 CAIRO_URL := http://ftp.gnome.org/pub/gnome/binaries/win32/dependencies
 CAIRO_ARCHIVE := cairo-dev_$(CAIRO_VER)_win32.zip
 
-PANGO_VER := 1.20.5
-PANGO_URL := http://ftp.gnome.org/pub/gnome/binaries/win32/pango/1.20
-PANGO_ARCHIVE := pango-dev-$(PANGO_VER).zip
+PANGO_VER := 1.24.0-1
+PANGO_URL := http://ftp.gnome.org/pub/gnome/binaries/win32/pango/1.24
+PANGO_ARCHIVE := pango-dev_$(PANGO_VER)_win32.zip
 
 XML2_VER := 2.7.3
 XML2_DIR := libxml2-$(XML2_VER)
 XML2_URL := ftp://xmlsoft.org/libxml2
 XML2_ARCHIVE := libxml2-$(XML2_VER).tar.gz
 
-LIBPNG_VER := 1.2.8
-GNUWIN32_URL := http://mesh.dl.sourceforge.net/gnuwin32
+LIBPNG_VER := 1.2.35
+GNUWIN32_URL := http://downloads.sourceforge.net/gnuwin32
 
 EXPAT_VER = 2.0.1
 EXPAT_DIR = $(BUILDROOT)/expat-$(EXPAT_VER)
@@ -179,7 +179,7 @@ LIBINTL_VER := 0.14.4
 REGEX_DIR := $(BUILDROOT)/regex
 REGEX_ARCHIVE := regex
 
-SIGC_VER := 2.0.17
+SIGC_VER := 2.0.18
 SIGC_URL := http://ftp.gnome.org/pub/GNOME/sources/libsigc++/2.0
 SIGC_ARCHIVE := libsigc++-$(SIGC_VER).tar.gz
 SIGC_DIR := libsigc++-$(SIGC_VER)
@@ -204,7 +204,7 @@ X264_ARCHIVE := x264
 
 # note that every celt release might break API
 CELT_VER := 0.6.1
-CELT_URL := http://downloads.us.xiph.org/releases/celt
+CELT_URL := http://downloads.xiph.org/releases/celt
 CELT_DIR := $(BUILDROOT)/celt-$(CELT_VER)
 CELT_ARCHIVE := celt-$(CELT_VER).tar.gz
 
@@ -213,8 +213,8 @@ THEORA_URL := http://downloads.xiph.org/releases/theora
 THEORA_DIR := $(BUILDROOT)/libtheora-$(THEORA_VER)
 THEORA_ARCHIVE := libtheora-$(THEORA_VER).tar.gz
 
-NSIS_VER := 2.29
-NSIS_URL := http://mesh.dl.sourceforge.net/nsis
+NSIS_VER := 2.43
+NSIS_URL := http://downloads.sourceforge.net/nsis
 NSISPROCESSES_URL := http://nsis.sourceforge.net/mediawiki/images/f/f3/
 NSISSYTEM_DIR := /usr/share/nsis/Contrib/Modern\ UI
 NSISPLUGIN_DIR := $(BUILDROOT)/nsisplugins
@@ -653,7 +653,7 @@ $(LIBDIR)/libxml2.a: binaries $(XML2_DIR)/config.status
 	$(MAKE) $(MAKEOPTS) -C $(XML2_DIR)
 	$(MAKE) $(MAKEOPTS) -C $(XML2_DIR) install
 
-### GnomeMeeting / Ekiga
+### ekiga
 update-sources::
 	@echo --- Getting Ekiga ...
 ifeq ($(RELEASE),1)
