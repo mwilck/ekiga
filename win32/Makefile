@@ -323,7 +323,7 @@ update-sources::
 
 $(SIGC_DIR)/config.status: $(SRCDIR)/$(SIGC_ARCHIVE)
 	tar xfz $(SRCDIR)/$(SIGC_ARCHIVE)
-	(cd $(SIGC_DIR); ./configure $(confflags) --enable-shared)
+	cd $(SIGC_DIR); ./configure $(confflags) --enable-shared
 	touch $@
 
 $(LIBDIR)/libsigc++.a:  $(SIGC_DIR)/config.status
@@ -338,7 +338,7 @@ update-sources::
 
 $(EXPAT_DIR)/config.status: $(SRCDIR)/$(EXPAT_ARCHIVE)
 	tar xfz $(SRCDIR)/$(EXPAT_ARCHIVE)
-	(cd $(EXPAT_DIR); ./configure $(confflags))
+	cd $(EXPAT_DIR); ./configure $(confflags)
 	touch $@
 
 $(INCLUDEDIR)/expat.h:
@@ -365,7 +365,7 @@ $(OPENLDAP_DIR)/config.status: binaries $(OPENLDAP_DIR)/configure
 	#-$(MAKE) -C $(OPENLDAP_DIR) clean
 	rm -f $(LIBDIR)/libldap.dll
 	ln -sf $(INCLUDEDIR)/regex.h $(OPENLDAP_DIR)/include/
-	cd $(OPENLDAP_DIR);./configure --with-cyrus-sasl=no --enable-bdb=no --enable-hdb=no $(confflags)
+	cd $(OPENLDAP_DIR); ./configure --with-cyrus-sasl=no --enable-bdb=no --enable-hdb=no $(confflags)
 	$(MAKE) $(MAKEOPTS) -C $(OPENLDAP_DIR) depend
 	touch $@
 
@@ -393,6 +393,7 @@ ifeq ($(RELEASE),1)
 else
 	$(CP) -r $(SRCDIR)/$(PTLIB_ARCHIVE) $(PTLIB_DIR)
 endif
+	touch $@
 
 $(PTLIB_DIR)/config.status: binaries $(PTLIB_DIR)/configure
 	rm -f $(LIBDIR)/$(PTLIB_LIB)
@@ -529,6 +530,7 @@ ifeq ($(RELEASE),1)
 else
 	$(CP) -r $(SRCDIR)/$(OPAL_ARCHIVE) $(OPAL_DIR)
 endif
+	touch $@
 
 $(OPAL_DIR)/config.status: binaries $(OPAL_DIR)/configure
 	rm -f $(LIBDIR)/$(OPAL_LIB)
