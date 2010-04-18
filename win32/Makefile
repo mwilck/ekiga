@@ -489,7 +489,6 @@ $(X264_DIR)/config.status: $(SRCDIR)/$(X264_ARCHIVE)
 $(LIBDIR)/libx264.a: $(X264_DIR)/config.status
 	$(MAKE) $(MAKE_LIB_OPTS) -C $(X264_DIR)
 	$(MAKE) -C $(X264_DIR) install
-	touch $@
 
 ### celt
 update-sources::
@@ -514,13 +513,11 @@ $(THEORA_DIR)/config.status: $(SRCDIR)/$(THEORA_ARCHIVE) $(LIBDIR)/libogg.a
 	rm -rf $(THEORA_DIR)
 	tar xfz $(SRCDIR)/$(THEORA_ARCHIVE) -C $(BUILDROOT)
 	cd $(THEORA_DIR); CC=$(REALCC) LD=$(LD) AR=$(AR) RANLIB=$(RANLIB) ./autogen.sh $(conftheora)
-	touch $@
 
 $(LIBDIR)/libtheora.a: $(THEORA_DIR)/config.status
 	$(MAKE) $(MAKE_LIB_OPTS) -C $(THEORA_DIR)
 	$(MAKE) -C $(THEORA_DIR) install
 	sed -i -e "s#library_names=''#library_names='libtheora\.a'#g" $(LIBDIR)/libtheora.la
-	touch $@
 
 ### OPAL
 update-sources::
