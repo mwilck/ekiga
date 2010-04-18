@@ -262,7 +262,7 @@ confx264 := --disable-avs-input --prefix=$(BUILDROOT) --host=$(DEB_HOST_GNU_TYPE
 
 confcelt := $(confflags) --disable-oggtest
 
-conftheora := --host=$(DEB_HOST_GNU_TYPE) --prefix=$(BUILDROOT) --disable-vorbistest --disable-sdltest --disable-examples
+conftheora := --host=$(DEB_HOST_GNU_TYPE) --prefix=$(BUILDROOT) --disable-vorbistest --disable-sdltest --disable-examples --disable-spec
 
 all: binaries $(TARGETDIR)/$(EKIGA_INSTALLER)
 	@echo "Built on $(shell date)"
