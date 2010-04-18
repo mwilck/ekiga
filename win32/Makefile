@@ -198,7 +198,7 @@ FFMPEG_URL := svn://svn.mplayerhq.hu/ffmpeg/trunk
 FFMPEG_DIR := $(BUILDROOT)/ffmpeg
 FFMPEG_ARCHIVE := ffmpeg
 
-X264_VER := 676
+X264_VER := d2e1e1c35c43ea9c90c9211be
 X264_URL := git://git.videolan.org/x264.git
 X264_DIR := $(BUILDROOT)/x264
 X264_ARCHIVE := x264
@@ -258,7 +258,7 @@ confffmpeg := --cross-prefix=i586-mingw32msvc- --enable-shared --enable-memalign
 	--libdir=$(LIBDIR) --extra-ldflags=-Wl,-static
 #	--disable-network
 
-confx264 := --disable-avis-input --prefix=$(BUILDROOT) --host=$(DEB_HOST_GNU_TYPE)
+confx264 := --disable-avs-input --prefix=$(BUILDROOT) --host=$(DEB_HOST_GNU_TYPE)
 
 confcelt := $(confflags) --disable-oggtest
 
@@ -282,6 +282,7 @@ binaries:
 	[ -f /usr/lib/pkgconfig/avahi-client.pc ] || (echo libavahi-client-dev not installed; exit 1)
 	hash makensis || (echo nsis not installed; exit 1)
 	hash xmlto || (echo xmlto not installed; exit 1)
+	hash yasm || (echo yasm not installed, mandatory for x264; exit 1)
 #	[ $(BUILDROOT) = $(CURDIR) ] || (echo You are supposed to run this as Makefile in $(BUILDROOT); exit 1)
 	[ `grep define.*MINGW32_MINOR_VERSION /usr/i586-mingw32msvc/include/_mingw.h|tr -s " "|cut -d" " -f3` -ge 15 ] || (echo 'You need mingw32-runtime at version >= 3.15'; exit 1)
 	mkdir -p $(INCLUDEDIR) $(LIBDIR)/pkgconfig $(SRCDIR) $(BINDIR)
@@ -472,10 +473,8 @@ update-sources::
 	@echo --- Getting x264 ...
 ifeq ($(wildcard $(SRCDIR)/$(X264_ARCHIVE)), )
 	$(GIT) clone $(X264_URL) $(SRCDIR)/$(X264_ARCHIVE)
-else
-	cd $(SRCDIR)/$(X264_ARCHIVE); $(GIT) pull
 endif
-	@echo "Updated to revision $(X264_VER)"
+	cd $(SRCDIR)/$(X264_ARCHIVE); git reset --hard $(X264_VER)
 	touch $(SRCDIR)/$(X264_ARCHIVE)
 
 $(X264_DIR)/config.status: $(SRCDIR)/$(X264_ARCHIVE)
