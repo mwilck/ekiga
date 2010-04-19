@@ -82,9 +82,8 @@ endif
 endif
 EKIGA_PREFIX := $(TARGETDIR)/Ekiga
 EKIGA_INSTALLER := ekiga-setup-$(EKIGA_VER).exe
-EKIGA_WIN32_DIR := $(CURDIR)
-EKIGA_WIN32_DIFF_DIR := $(EKIGA_WIN32_DIR)/diff
-EKIGA_INSTALLER_DIR := $(BUILDROOT)/nsisinstaller
+EKIGA_WIN32_DIFF_DIR := $(CURDIR)/diff
+EKIGA_INSTALLER_DIR := $(EKIGA_DIR)/win32/nsisinstaller
 
 ifeq ($(RELEASE),1)
 	OPAL_VER := 3.6.6
@@ -701,7 +700,7 @@ $(TARGETDIR)/zips: binaries $(EKIGA_DIR)/src/ekiga.exe
 	-$(RM) -rf $(TARGETDIR)
 
 	mkdir $(TARGETDIR)
-	make -C ekiga install
+	make -C $(EKIGA_DIR) install
 	mkdir -p $(EKIGA_PREFIX)/plugins
 	for plugin in $(LIBDIR)/opal*/codecs/audio/*; do \
 	        install -m 755 $$plugin $(EKIGA_PREFIX)/plugins ;\
@@ -729,8 +728,8 @@ endif
 		fi \
 	done
 	cd $(TARGETDIR); zip -9r ekiga-$(EKIGA_VER).zip Ekiga
-	zip -9r $(TARGETDIR)/ekiga_build-$(EKIGA_VER).zip Makefile $(EKIGA_WIN32_DIFF_DIR)/* ico/*
-	tar cfvz $(TARGETDIR)/ekiga_build-$(EKIGA_VER).tgz Makefile $(EKIGA_WIN32_DIFF_DIR)/* ico/*
+	zip -9r $(TARGETDIR)/ekiga_build-$(EKIGA_VER).zip Makefile #$(EKIGA_WIN32_DIFF_DIR)
+	tar cfvz $(TARGETDIR)/ekiga_build-$(EKIGA_VER).tgz Makefile #$(EKIGA_WIN32_DIFF_DIR)
 	touch $@
 
 #### README about NSIS installer ####
