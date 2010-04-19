@@ -153,7 +153,7 @@ ATK_VER := 1.24.0-1
 ATK_URL := http://ftp.gnome.org/pub/gnome/binaries/win32/atk/1.24
 ATK_ARCHIVE := atk-dev_$(ATK_VER)_win32.zip
 
-CAIRO_VER := 1.8.10-3
+CAIRO_VER := 1.8.6-1
 CAIRO_URL := http://ftp.gnome.org/pub/gnome/binaries/win32/dependencies
 CAIRO_ARCHIVE := cairo-dev_$(CAIRO_VER)_win32.zip
 
