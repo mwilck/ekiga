@@ -771,32 +771,34 @@ $(TARGETDIR)/$(EKIGA_INSTALLER): $(TARGETDIR)/zips $(LIBDIR)/gtk+-$(GTK_BIN_VER)
 	touch $@
 
 clean:
-	-$(RM) -rf $(TARGETDIR)
+	$(RM) -rf $(TARGETDIR)
 
 distclean:
-	-$(RM) -rf $(OPENLDAP_DIR)
-	-$(RM) -rf $(BUILDROOT)/share/
-	-$(RM) -rf $(BINDIR)
-	-$(RM) -rf $(BUILDROOT)/contrib
-	-$(RM) -rf $(BUILDROOT)/etc
-	-$(RM) -rf $(INCLUDEDIR)
-	-$(RM) -rf $(LIBDIR)
-	-$(RM) -rf $(OGG_DIR)
-	-$(RM) -rf $(XML2_DIR)
-	-$(RM) -rf $(BUILDROOT)/man
-	-$(RM) -rf $(BUILDROOT)/manifest
-	-$(RM) -rf $(OPAL_DIR)
-	-$(RM) -rf $(EKIGA_DIR)
-	-$(RM) -rf $(PTLIB_DIR)
-	-$(RM) -rf $(REGEX_DIR)
-	-$(RM) -rf $(SIGC_DIR)
-	-$(RM) -rf $(SPEEX_DIR)
-	-$(RM) -rf $(EXPAT_DIR)
-	-$(RM) -rf $(FFMPEG_DIR)
-	-$(RM) -rf $(X264_DIR)
-	-$(RM) -rf $(THEORA_DIR)
-	-$(RM) -rf make
-	-$(RM) -f binaries
-#	-$(RM) -rf $(SRCDIR)/*
+	$(RM) -rf $(OPENLDAP_DIR)
+	$(RM) -rf $(BUILDROOT)/share/
+	$(RM) -rf $(BINDIR)
+	$(RM) -rf $(BUILDROOT)/contrib
+	$(RM) -rf $(BUILDROOT)/etc
+	$(RM) -rf $(INCLUDEDIR)
+	$(RM) -rf $(LIBDIR)
+	$(RM) -rf $(OGG_DIR)
+	$(RM) -rf $(XML2_DIR)
+	$(RM) -rf $(BUILDROOT)/man
+	$(RM) -rf $(BUILDROOT)/manifest
+	$(RM) -rf $(OPAL_DIR)
+	$(RM) -rf $(EKIGA_DIR)
+	$(RM) -rf $(PTLIB_DIR)
+	$(RM) -rf $(REGEX_DIR)
+	$(RM) -rf $(SIGC_DIR)
+	$(RM) -rf $(SPEEX_DIR)
+	$(RM) -rf $(EXPAT_DIR)
+	$(RM) -rf $(FFMPEG_DIR)
+	$(RM) -rf $(X264_DIR)
+	$(RM) -rf $(THEORA_DIR)
+	$(RM) -rf $(CELT_DIR)
+	$(RM) -rf $(NSISPLUGIN_DIR)
+	$(RM) -rf make
+	$(RM) -f binaries
+#	$(RM) -rf $(SRCDIR)
 
 .PHONY: clean distclean update update-sources
