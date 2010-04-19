@@ -327,7 +327,6 @@ update-sources::
 $(SIGC_DIR)/config.status: $(SRCDIR)/$(SIGC_ARCHIVE)
 	tar xfz $(SRCDIR)/$(SIGC_ARCHIVE)
 	cd $(SIGC_DIR); ./configure $(confflags) --enable-shared
-	touch $@
 
 $(LIBDIR)/libsigc++.a:  $(SIGC_DIR)/config.status
 	$(MAKE) $(MAKEOPTS) -C $(SIGC_DIR)
@@ -342,7 +341,6 @@ update-sources::
 $(EXPAT_DIR)/config.status: $(SRCDIR)/$(EXPAT_ARCHIVE)
 	tar xfz $(SRCDIR)/$(EXPAT_ARCHIVE)
 	cd $(EXPAT_DIR); ./configure $(confflags)
-	touch $@
 
 $(INCLUDEDIR)/expat.h:
 	install -m 644 $(EXPAT_DIR)/lib/expat.h $(INCLUDEDIR)/
@@ -351,7 +349,6 @@ $(INCLUDEDIR)/expat.h:
 $(LIBDIR)/libexpat.a:  $(EXPAT_DIR)/config.status $(INCLUDEDIR)/expat.h
 	$(MAKE) $(MAKEOPTS) -C $(EXPAT_DIR)
 	$(MAKE) $(MAKEOPTS) -C $(EXPAT_DIR) install
-	touch $@
 
 ### OPENLDAP
 update-sources::
