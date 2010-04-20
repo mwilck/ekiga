@@ -57,7 +57,7 @@ export STRIP:=$(HOST_TOOL_PREFIX)-strip
 export AS:=$(HOST_TOOL_PREFIX)-as
 export CFLAGS:=-I$(INCLUDEDIR) $(MACH_FLAGS) -DPTRACING
 export CXXFLAGS:=-I$(INCLUDEDIR) $(MACH_FLAGS) -DPTRACING
-export LDFLAGS:=-L$(LIBDIR)  $(MACH_FLAGS)
+export LDFLAGS:=-L$(LIBDIR) $(MACH_FLAGS)
 export PKG_CONFIG_PATH:=$(LIBDIR)/pkgconfig
 export PATH:=$(BINDIR):$(PATH)
 export LDD:=$(BUILDROOT)/$(HOST_TOOL_PREFIX)-ldd.sh
@@ -430,7 +430,7 @@ update-sources::
 $(SPEEX_DIR)/config.status: binaries $(SRCDIR)/$(SPEEX_ARCHIVE)
 	rm -f $(LIBDIR)/libspeex.a
 	tar xfz $(SRCDIR)/$(SPEEX_ARCHIVE) -C $(BUILDROOT)
-	cd $(SPEEX_DIR); LDFLAGS="$$LDFLAGS -no-undefined" ./configure $(confflags)
+	cd $(SPEEX_DIR); LDFLAGS="$(LDFLAGS) -no-undefined" ./configure $(confflags)
 
 $(LIBDIR)/libspeex.a: binaries $(SPEEX_DIR)/config.status
 	rm -f $(LIBDIR)/libspeex.a
@@ -693,7 +693,7 @@ else
 endif
 
 $(EKIGA_DIR)/src/ekiga.exe: binaries $(EKIGA_DIR)/config.status
-	LDFLAGS="$$LDFLAGS -Wl,-subsystem,windows" $(MAKE) $(MAKEOPTS) -C $(EKIGA_DIR)
+	LDFLAGS="$(LDFLAGS) -Wl,-subsystem,windows" $(MAKE) $(MAKEOPTS) -C $(EKIGA_DIR)
 	$(MAKE) $(MAKEOPTS) -C $(EKIGA_DIR)/help
 
 $(TARGETDIR)/zips: binaries $(EKIGA_DIR)/src/ekiga.exe
