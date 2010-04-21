@@ -731,6 +731,8 @@ $(TARGETDIR)/zips: binaries $(EKIGA_DIR)/src/ekiga.exe
 ifeq ($(DEBUG),0)
 	$(STRIP) $(EKIGA_PREFIX)/*.dll
 	$(STRIP) $(EKIGA_PREFIX)/*.exe
+	$(STRIP) $(EKIGA_PREFIX)/plugins/*.dll
+	$(STRIP) $(EKIGA_PREFIX)/plugins/*.exe
 endif
 	# we cannot strip MS compiled dlls
 	install -m 755 $(LIBSASL2_DIR)/bin/libsasl.dll $(EKIGA_PREFIX)
