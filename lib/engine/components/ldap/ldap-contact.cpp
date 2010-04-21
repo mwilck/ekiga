@@ -36,8 +36,6 @@
  *
  */
 
-#include <iostream>
-
 #include "ldap-contact.h"
 #include "menu-builder-tools.h"
 
