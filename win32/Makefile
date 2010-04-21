@@ -126,6 +126,11 @@ OPENLDAP_DIR := $(BUILDROOT)/openldap-$(OPENLDAP_VER)
 OPENLDAP_ARCHIVE := openldap-$(OPENLDAP_VER).tgz
 OPENLDAP_URL := http://www.openldap.org/software/download/OpenLDAP/openldap-release
 
+LIBSASL2_VER := 2.1.22
+LIBSASL2_DIR := $(BUILDROOT)/cyrus-sasl-$(LIBSASL2_VER)
+LIBSASL2_ARCHIVE := cyrus-sasl-$(LIBSASL2_VER).zip
+LIBSASL2_URL := http://developer.pidgin.im/static/win32
+
 OGG_VER := 1.1.4
 OGG_DIR := $(BUILDROOT)/libogg-$(OGG_VER)
 OGG_ARCHIVE := libogg-$(OGG_VER).tar.gz
@@ -243,8 +248,8 @@ confekiga:= $(confflags) \
 	--with-directx-dir=$(EKIGA_DIR)/win32/directx --prefix=$(EKIGA_PREFIX) \
 	--bindir=$(EKIGA_PREFIX) --datadir=$(EKIGA_PREFIX) \
 	--sysconfdir=$(EKIGA_PREFIX) --libdir=$(EKIGA_PREFIX) --disable-gnome \
-	--disable-dbus --disable-avahi --disable-xv --with-ldap-dir=$(OPENLDAP_DIR)# \
-#	--enable-static-libs
+	--disable-dbus --disable-avahi --disable-xv \
+	--with-ldap-dir=$(OPENLDAP_DIR) --with-libsasl2-dir=$(LIBSASL2_DIR) # --enable-static-libs
 
 confffmpeg := --cross-prefix=i586-mingw32msvc- --enable-shared --enable-memalign-hack \
 	--enable-cross-compile --enable-w32threads --arch=i686 --target-os=mingw32 \
@@ -375,6 +380,17 @@ $(LIBDIR)/libldap.dll: binaries $(OPENLDAP_DIR)/config.status
 	$(MAKE) $(MAKE_LIB_OPTS) -C $(OPENLDAP_DIR)/include install
 	$(MAKE) $(MAKE_LIB_OPTS) -C $(OPENLDAP_DIR)/libraries/libldap MOD_LIBS="-llutil" all install
 	touch $@
+
+### libsasl2
+update-sources::
+	echo --- Getting libsasl2 ...
+	$(WGET) -P $(SRCDIR) $(LIBSASL2_URL)/$(LIBSASL2_ARCHIVE)
+
+$(LIBDIR)/libsasl2.a: $(SRCDIR)/$(LIBSASL2_ARCHIVE)
+	rm -f $(LIBDIR)/libsasl2.a
+	rm -rf $(LIBSASL2_DIR)
+	unzip -u $(SRCDIR)/$(LIBSASL2_ARCHIVE) -d $(BUILDROOT)
+	cp $(LIBSASL2_DIR)/lib/libsasl.lib $(LIBDIR)/libsasl2.a
 
 ### PTLib
 update-sources::
@@ -684,7 +700,7 @@ endif
 $(EKIGA_DIR)/config.status: binaries $(EKIGA_DIR)/configure $(LIBDIR)/$(PTLIB_LIB) $(LIBDIR)/$(OPAL_LIB) \
 	$(LIBDIR)/pkgconfig/gtk+-2.0.pc $(LIBDIR)/pkgconfig/atk-2.0.pc $(LIBDIR)/pkgconfig/glib-2.0.pc \
 	$(LIBDIR)/libpng.a $(LIBDIR)/pkgconfig/pango32.pc $(LIBDIR)/pkgconfig/cairo.pc $(LIBDIR)/libxml2.a \
-	$(LIBDIR)/libintl.a $(LIBDIR)/libiconv.a $(LIBDIR)/libsigc++.a
+	$(LIBDIR)/libintl.a $(LIBDIR)/libiconv.a $(LIBDIR)/libsigc++.a $(LIBDIR)/libsasl2.a
 	rm -f $(EKIGA_DIR)/src/ekiga.exe
 ifeq ($(DEBUG),1)
 	cd $(EKIGA_DIR); ACLOCAL_FLAGS="-I $(BUILDROOT)/share/aclocal"; ./configure $(confekiga) --enable-opal-debug
@@ -697,25 +713,28 @@ $(EKIGA_DIR)/src/ekiga.exe: binaries $(EKIGA_DIR)/config.status
 	$(MAKE) $(MAKEOPTS) -C $(EKIGA_DIR)/help
 
 $(TARGETDIR)/zips: binaries $(EKIGA_DIR)/src/ekiga.exe
-	-$(RM) -rf $(TARGETDIR)
-
+	$(RM) -rf $(TARGETDIR)
 	mkdir $(TARGETDIR)
 	make -C $(EKIGA_DIR) install
+
 	mkdir -p $(EKIGA_PREFIX)/plugins
 	for plugin in $(LIBDIR)/opal*/codecs/audio/*; do \
-	        install -m 755 $$plugin $(EKIGA_PREFIX)/plugins ;\
+		install -m 755 $$plugin $(EKIGA_PREFIX)/plugins ;\
 	done
 	for plugin in $(LIBDIR)/opal*/codecs/video/*; do \
-	        install -m 755 $$plugin $(EKIGA_PREFIX)/plugins ;\
+		install -m 755 $$plugin $(EKIGA_PREFIX)/plugins ;\
 	done
 	for lib in libexpat-1.dll liblber.dll libldap.dll libxml2-2.dll libspeex-1.dll libspeexdsp-1.dll avcodec.dll libogg-0.dll; do \
-	        install -m 755 $(BINDIR)/$$lib $(EKIGA_PREFIX) ;\
+		install -m 755 $(BINDIR)/$$lib $(EKIGA_PREFIX) ;\
 	done
-	install -m 755  $(SIGC_DIR)/sigc++/.libs/libsigc-2.0-0.dll $(EKIGA_PREFIX)
+	install -m 755 $(SIGC_DIR)/sigc++/.libs/libsigc-2.0-0.dll $(EKIGA_PREFIX)
 ifeq ($(DEBUG),0)
 	$(STRIP) $(EKIGA_PREFIX)/*.dll
 	$(STRIP) $(EKIGA_PREFIX)/*.exe
 endif
+	# we cannot strip MS compiled dlls
+	install -m 755 $(LIBSASL2_DIR)/bin/libsasl.dll $(EKIGA_PREFIX)
+
 	for lc in C $(DOC_LINGUAS); do \
 		mkdir -p $(EKIGA_PREFIX)/help/$$lc; \
 		if test -f $(EKIGA_DIR)/help/$$lc/ekiga.xml; then \
@@ -727,6 +746,7 @@ endif
 			install -m 644 $(EKIGA_DIR)/help/$$lc/figures/*.png $(EKIGA_PREFIX)/help/$$lc/figures; \
 		fi \
 	done
+
 	cd $(TARGETDIR); zip -9r ekiga-$(EKIGA_VER).zip Ekiga
 	zip -9r $(TARGETDIR)/ekiga_build-$(EKIGA_VER).zip Makefile #$(EKIGA_WIN32_DIFF_DIR)
 	tar cfvz $(TARGETDIR)/ekiga_build-$(EKIGA_VER).tgz Makefile #$(EKIGA_WIN32_DIFF_DIR)
@@ -775,6 +795,7 @@ clean:
 
 distclean:
 	$(RM) -rf $(OPENLDAP_DIR)
+	$(RM) -rf $(LIBSASL2_DIR)
 	$(RM) -rf $(BUILDROOT)/share/
 	$(RM) -rf $(BINDIR)
 	$(RM) -rf $(BUILDROOT)/contrib
