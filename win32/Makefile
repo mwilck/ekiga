@@ -231,7 +231,7 @@ MV:=mv
 SVN:=svn
 GIT:=git
 
-DOC_LINGUAS=bg de es fr pt_BR sv uk
+DOC_LINGUAS=bg ca de el en_GB es eu fi fr oc pt_BR ru sv uk
 
 ifneq (,$(CONCURRENCY))
 	MAKEOPTS+=-j$(CONCURRENCY)
