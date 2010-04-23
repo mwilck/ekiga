@@ -1,7 +1,7 @@
 ; Ekiga.nsi
 ; ====================================================
 ; NSIS Installer for Ekiga Win32
-; Original Authors: Herman Bloggs <hermanator12002@yahoo.com> 
+; Original Authors: Herman Bloggs <hermanator12002@yahoo.com>
 ; and Daniel Atallah <daniel_atallah@yahoo.com> (GAIM Installler)
 ; Original version : Installer for Ekiga win32
 ; Update: Luba Vincent <luba@novacom.be>
@@ -71,7 +71,7 @@ OutFile "${TARGET_DIR}/ekiga-setup-${EKIGA_VERSION}-nogtk.exe"
 ;Finish Page config
 !define MUI_FINISHPAGE_RUN			"$INSTDIR\ekiga.exe"
 !define MUI_FINISHPAGE_RUN_CHECKED
-  
+
 ; ===========================
 ; Pages
 
@@ -104,6 +104,7 @@ OutFile "${TARGET_DIR}/ekiga-setup-${EKIGA_VERSION}-nogtk.exe"
 ; ===========================
 ; Languages
 
+;!define MUI_LANGDLL_ALLLANGUAGES  ; show all languages during install
 !insertmacro MUI_LANGUAGE "English"
 !insertmacro MUI_LANGUAGE "Hungarian"
 !insertmacro MUI_LANGUAGE "French"
@@ -132,7 +133,7 @@ Section -SecUninstallOldEkiga
         ; Check install rights..
         Call CheckUserInstallRights
         Pop $R0
-        
+
         ;If ekiga is currently set to run on startup,
         ;  save the section of the Registry where the setting is before uninstalling,
         ;  so we can put it back after installing the new version
@@ -185,12 +186,12 @@ Section -SecUninstallOldEkiga
         exec_error:
                 Delete "$TEMP\${EKIGA_UNINST_EXE}"
                 Goto uninstall_problem
- 
+
         uninstall_problem:
                 ; We can't uninstall.  Either the user must manually uninstall or we ignore and reinstall over it.
                 MessageBox MB_OKCANCEL $(EKIGA_PROMPT_CONTINUE_WITHOUT_UNINSTALL) /SD IDOK IDOK done
                 Quit
- 
+
         done:
 SectionEnd
 
@@ -236,22 +237,22 @@ Section $(GTK_SECTION_TITLE) SecGtk
     IfErrors gtk_install_error
     StrCpy $R5 "1"  ; marker that says we installed...
     Goto done
- 
+
   gtk_install_error:
     Call DoWeNeedGtk
     Pop $R0
     StrCmp $R0 "0" done exit_on_error
-    
+
   exit_on_error:
     ;Delete "$TEMP\gtk-runtime.exe"
     MessageBox MB_YESNO $(GTK_INSTALL_ERROR) IDYES docontinue IDNO doexit
-    
+
   doexit:
     Quit
-    
+
   docontinue:
     Goto done
- 
+
   have_gtk:
     StrCpy $GTK_FOLDER $R6
     StrCmp $R1 "NONE" done ; If we have no rights.. can't re-install..
@@ -390,7 +391,7 @@ SubSection /e $(EKIGA_SHORTCUTS_SECTION_TITLE) SecShortcuts
     SetOverwrite off
     SetShellVarContext "current"
   SectionEnd
-  
+
   Section $(EKIGA_RUN_AT_STARTUP) SecStartup
      SetOutPath $INSTDIR
      CreateShortCut "$SMSTARTUP\Ekiga.lnk" "$INSTDIR\ekiga.exe" "" "" 0 SW_SHOWNORMAL
@@ -446,7 +447,7 @@ Section Uninstall
     Delete /REBOOTOK "$SMSTARTUP\Ekiga.lnk"
     RMDir "$SMPROGRAMS\Ekiga"
     Delete "$DESKTOP\Ekiga.lnk"
-    
+
     SetShellVarContext "current"
 
     Delete "$INSTDIR\${EKIGA_UNINST_EXE}"
@@ -506,7 +507,7 @@ Function .onInit
   skip_lang:
     ; If install path was set on the command, use it.
     StrCmp $INSTDIR "" 0 instdir_done
- 
+
     ;  If ekiga is currently intalled, we should default to where it is currently installed
     ClearErrors
     ReadRegStr $INSTDIR HKCU "${EKIGA_REG_KEY}" ""
@@ -540,7 +541,7 @@ FunctionEnd
 
 
 ; ===========================
-; Check if another instance 
+; Check if another instance
 ; of the installer is running
 !macro RunCheckMacro UN
 Function ${UN}RunCheck
@@ -553,7 +554,7 @@ Function ${UN}RunCheck
 
   abort_install:
     Abort
-  
+
   done:
     Pop $R0
 FunctionEnd
