@@ -448,7 +448,7 @@ addressbook_window_add_book (AddressBookWindow *self,
   page = gtk_notebook_append_page (GTK_NOTEBOOK (self->priv->notebook),
                                    view, NULL);
 
-  if (GTK_WIDGET_VISIBLE (self))
+  if (gtk_widget_get_visible (GTK_WIDGET (self)))
     gtk_widget_show_all (view);
 
   g_signal_connect (view, "updated", G_CALLBACK (on_view_updated), self);
