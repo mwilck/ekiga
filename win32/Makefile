@@ -98,9 +98,9 @@ else
 	OPAL_DIR := $(BUILDROOT)/opal
 endif
 ifeq ($(DEBUG),1)
-	OPAL_LIB := libopal_d_s.a
+	OPAL_LIB := libopal_d.$(OPAL_VER).dll
 else
-	OPAL_LIB := libopal_s.a
+	OPAL_LIB := libopal.$(OPAL_VER).dll
 endif
 
 ifeq ($(RELEASE),1)
@@ -116,9 +116,9 @@ else
 	PTLIB_DIR := $(BUILDROOT)/ptlib
 endif
 ifeq ($(DEBUG),1)
-	PTLIB_LIB := libpt_d_s.a
+	PTLIB_LIB := libpt_d.$(PTLIB_VER).dll
 else
-	PTLIB_LIB := libpt_s.a
+	PTLIB_LIB := libpt.$(PTLIB_VER).dll
 endif
 
 OPENLDAP_VER := 2.3.28
@@ -723,6 +723,9 @@ $(TARGETDIR)/zips: binaries $(EKIGA_DIR)/src/ekiga.exe
 	done
 	for plugin in $(LIBDIR)/opal*/codecs/video/*; do \
 		install -m 755 $$plugin $(EKIGA_PREFIX)/plugins ;\
+	done
+	for lib in $(PTLIB_LIB) $(OPAL_LIB); do \
+		install -m 755 $(LIBDIR)/$$lib $(EKIGA_PREFIX) ;\
 	done
 	for lib in libexpat-1.dll liblber.dll libldap.dll libxml2-2.dll libspeex-1.dll libspeexdsp-1.dll avcodec.dll libogg-0.dll; do \
 		install -m 755 $(BINDIR)/$$lib $(EKIGA_PREFIX) ;\
