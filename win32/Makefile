@@ -583,6 +583,7 @@ $(LIBDIR)/gtk+-$(GTK_BIN_VER)-setup.exe: $(SRCDIR)/$(GTK_BIN_EXE)
 	touch $@
 
 ### libglib
+# already found in gtk runtime, but needed for compilation
 update-sources::
 	@echo --- Getting GLib ...
 	$(WGET) -P $(SRCDIR) $(GLIB_URL)/$(GLIB_ARCHIVE)
@@ -594,6 +595,7 @@ $(LIBDIR)/pkgconfig/glib-2.0.pc: $(SRCDIR)/$(GLIB_ARCHIVE)
 	touch $@
 
 ### atk
+# already found in gtk runtime, but needed for compilation
 update-sources::
 	@echo --- Getting ATK ...
 	$(WGET) -P  $(SRCDIR) $(ATK_URL)/$(ATK_ARCHIVE)
@@ -638,6 +640,7 @@ $(LIBDIR)/libiconv.a: $(SRCDIR)/$(ICONV_ARCHIVE)
 	touch $@
 
 ### pango
+# already found in gtk runtime, but needed for compilation
 update-sources::
 	@echo --- Getting Pango ...
 	$(WGET) -P $(SRCDIR) $(PANGO_URL)/$(PANGO_ARCHIVE)
@@ -648,6 +651,7 @@ $(LIBDIR)/pkgconfig/pango32.pc: $(SRCDIR)/$(PANGO_ARCHIVE)
 	touch $@
 
 ### cairo
+# already found in gtk runtime, but needed for compilation
 update-sources::
 	@echo --- Getting Cairo ...
 	$(WGET) -P $(SRCDIR) $(CAIRO_URL)/$(CAIRO_ARCHIVE)
@@ -727,10 +731,9 @@ $(TARGETDIR)/zips: binaries $(EKIGA_DIR)/src/ekiga.exe
 	for lib in $(PTLIB_LIB) $(OPAL_LIB); do \
 		install -m 755 $(LIBDIR)/$$lib $(EKIGA_PREFIX) ;\
 	done
-	for lib in libexpat-1.dll liblber.dll libldap.dll libxml2-2.dll libspeex-1.dll libspeexdsp-1.dll avcodec.dll libogg-0.dll; do \
+	for lib in liblber.dll libldap.dll libxml2-2.dll libspeex-1.dll libspeexdsp-1.dll libtheora-0.dll avcodec-52.dll avutil-50.dll libogg-0.dll libsigc-2.0-0.dll ; do \
 		install -m 755 $(BINDIR)/$$lib $(EKIGA_PREFIX) ;\
 	done
-	install -m 755 $(SIGC_DIR)/sigc++/.libs/libsigc-2.0-0.dll $(EKIGA_PREFIX)
 ifeq ($(DEBUG),0)
 	$(STRIP) $(EKIGA_PREFIX)/*.dll
 	$(STRIP) $(EKIGA_PREFIX)/*.exe
