@@ -353,6 +353,7 @@ $(INCLUDEDIR)/expat.h:
 $(LIBDIR)/libexpat.a:  $(EXPAT_DIR)/config.status $(INCLUDEDIR)/expat.h
 	$(MAKE) $(MAKEOPTS) -C $(EXPAT_DIR)
 	$(MAKE) $(MAKEOPTS) -C $(EXPAT_DIR) install
+	touch $@
 
 ### OPENLDAP
 update-sources::
