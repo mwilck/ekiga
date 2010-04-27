@@ -291,7 +291,7 @@ binaries:
 	[ `grep define.*MINGW32_MINOR_VERSION /usr/i586-mingw32msvc/include/_mingw.h|tr -s " "|cut -d" " -f3` -ge 15 ] || (echo 'You need mingw32-runtime at version >= 3.15'; exit 1)
 	mkdir -p $(INCLUDEDIR) $(LIBDIR)/pkgconfig $(SRCDIR) $(BINDIR)
 	$(RM) -f $(BINDIR)/cygpath
-	ln -s /bin/true $(BINDIR)/cygpath
+	$(LN) -s /bin/true $(BINDIR)/cygpath
 	touch $@
 
 ### REGEX
@@ -369,7 +369,7 @@ $(OPENLDAP_DIR)/configure: $(LIBDIR)/libregex.a $(SRCDIR)/$(OPENLDAP_ARCHIVE)
 $(OPENLDAP_DIR)/config.status: binaries $(OPENLDAP_DIR)/configure
 	#-$(MAKE) -C $(OPENLDAP_DIR) clean
 	rm -f $(LIBDIR)/libldap.dll
-	ln -sf $(INCLUDEDIR)/regex.h $(OPENLDAP_DIR)/include/
+	$(LN) -sf $(INCLUDEDIR)/regex.h $(OPENLDAP_DIR)/include/
 	cd $(OPENLDAP_DIR); ./configure --with-cyrus-sasl=no --enable-bdb=no --enable-hdb=no $(confflags)
 	$(MAKE) $(MAKEOPTS) -C $(OPENLDAP_DIR) depend
 	touch $@
@@ -618,7 +618,7 @@ $(LIBDIR)/libpng.a: $(SRCDIR)/libpng-$(LIBPNG_VER)-bin.zip $(SRCDIR)/libpng-$(LI
 	unzip -u $(SRCDIR)/libpng-$(LIBPNG_VER)-dep.zip -d $(BUILDROOT)
 	unzip -u $(SRCDIR)/libpng-$(LIBPNG_VER)-lib.zip -d $(BUILDROOT)
 	sed -i -e 's#^prefix=.*$$#prefix=$(BUILDROOT)#g' lib/pkgconfig/libpng*.pc
-	ln -s -f libpng.pc lib/pkgconfig/libpng12.pc
+	$(LN) -s -f libpng.pc lib/pkgconfig/libpng12.pc
 	touch $@
 
 ### libintl
