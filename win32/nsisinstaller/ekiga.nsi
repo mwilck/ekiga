@@ -22,7 +22,7 @@ var ALREADY_INSTALLED
 ; Configuration
 
 Name $name
-;SetCompressor /SOLID lzma
+SetCompressor /SOLID lzma
 !ifdef WITH_GTK
 !ifdef DEBUG
 OutFile "${TARGET_DIR}/ekiga-setup-${EKIGA_VERSION}-debug.exe"
