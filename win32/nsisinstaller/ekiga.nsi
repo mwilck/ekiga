@@ -24,13 +24,17 @@ var ALREADY_INSTALLED
 Name $name
 ;SetCompressor /SOLID lzma
 !ifdef WITH_GTK
-OutFile "${TARGET_DIR}/ekiga-setup-${EKIGA_VERSION}.exe"
+!ifdef DEBUG
+OutFile "${TARGET_DIR}/ekiga-setup-${EKIGA_VERSION}-debug.exe"
 !else
-;!ifdef DEBUG
-;OutFile "ekiga-setup-${EKIGA_VERSION}-debug.exe"
-;!else
+OutFile "${TARGET_DIR}/ekiga-setup-${EKIGA_VERSION}.exe"
+!endif
+!else
+!ifdef DEBUG
+OutFile "${TARGET_DIR}/ekiga-setup-${EKIGA_VERSION}-nogtk-debug.exe"
+!else
 OutFile "${TARGET_DIR}/ekiga-setup-${EKIGA_VERSION}-nogtk.exe"
-;!endif
+!endif
 !endif
 
 ; ===========================
