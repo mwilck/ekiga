@@ -2,18 +2,18 @@
 # Estonian translation of Ekiga.
 #
 # Copyright (C) 2005, 2006 Free Software Foundation, Inc.
-# Copyright (C) 2007-2009 The GNOME Project
+# Copyright (C) 2007–2010 The GNOME Project
 # This file is distributed under the same license as the ekiga package.
 #
-# Ivar Smolin <okul@linux.ee>, 2005-2009.
+# Ivar Smolin <okul@linux.ee>, 2005–2010.
 #
 msgid ""
 msgstr ""
 "Project-Id-Version: ekiga HEAD\n"
 "Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?"
 "product=ekiga&component=general\n"
-"POT-Creation-Date: 2009-07-12 14:53+0000\n"
-"PO-Revision-Date: 2009-09-16 06:26+0300\n"
+"POT-Creation-Date: 2010-04-26 08:04+0000\n"
+"PO-Revision-Date: 2010-04-28 09:19+0300\n"
 "Last-Translator: Ivar Smolin <okul@linux.ee>\n"
 "Language-Team: Estonian <gnome-et@linux.ee>\n"
 "MIME-Version: 1.0\n"
@@ -21,6 +21,7 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
+#. Application name
 msgid "Ekiga Softphone"
 msgstr "Ekiga tarkvaraline telefon"
 
@@ -593,219 +594,20 @@ msgstr "Valitud kõned"
 msgid "Missed"
 msgstr "Vastamata kõned"
 
-#, c-format
-msgid "%d user found"
-msgid_plural "%d users found"
-msgstr[0] "%d kasutaja leitud"
-msgstr[1] "%d kasutajat leitud"
-
-msgid "New _Contact"
-msgstr "Uus _kontakt"
+msgid "Call in progress"
+msgstr "Kõne on hetkel käimas"
 
 msgid "New contact"
 msgstr "Uus kontakt"
 
-msgid "Please update the following fields:"
-msgstr "Palun uuenda järgnevaid välju:"
-
-msgid "_Name:"
-msgstr "_Nimi:"
-
-msgid "VoIP _URI:"
-msgstr "VoIP-_URI:"
-
-msgid "_Home phone:"
-msgstr "_Kodutelefon:"
-
-msgid "_Office phone:"
-msgstr "_Töötelefon:"
-
-msgid "_Cell phone:"
-msgstr "_Mobiiltelefon:"
-
-msgid "_Pager:"
-msgstr "_Piipar:"
+msgid "Unnamed"
+msgstr ""
 
 msgid "_Edit"
-msgstr "_Redaktor"
+msgstr "_Muuda"
 
 msgid "_Remove"
 msgstr "_Eemalda"
-
-msgid "Edit contact"
-msgstr "Kontakti muutmine"
-
-msgid "Name:"
-msgstr "Nimi:"
-
-msgid "Remove contact"
-msgstr "Kontakti eemaldamine"
-
-#, c-format
-msgid "Are you sure you want to remove %s from the addressbook?"
-msgstr "Kas soovid kontot %s aadressiraamatust kustutada?"
-
-msgid "Call in progress"
-msgstr "Kõne on hetkel käimas"
-
-msgid "Audio test"
-msgstr "Audio test"
-
-msgid "Silent"
-msgstr "Vaikus"
-
-msgid "Video test"
-msgstr "Video test"
-
-#. Translators: "Screencast" means the video input device will be your screen -- the other end will see your desktop
-msgid "Crazy"
-msgstr ""
-
-msgid "Screencast"
-msgstr ""
-
-msgid "_Refresh"
-msgstr "_Värskenda"
-
-msgid "_Remove addressbook"
-msgstr "_Eemalda aadressiraamat"
-
-msgid "Addressbook _properties"
-msgstr "Aadressiraamatu _omadused"
-
-msgid "LDAP SASL Interaction"
-msgstr ""
-
-#. Translators, Howard explained : "Challenge" is a generic term
-#. * in authentication. It's a prompt from the authentication mechanism
-#. * for some type of credential. Exactly what kind of challenge and
-#. * what kind of credential depends on the specific authentication
-#. * mechanism. Since SASL is a generic interface, and can dynamically
-#. * load arbitrary mechanisms, there's not much more specific you can
-#. * say about it. You might google for "challenge response
-#. * authentication" if you'd like more background context.
-#.
-msgid "Challenge: "
-msgstr ""
-
-msgid "Interact"
-msgstr ""
-
-msgid "Refreshing"
-msgstr "Värskendamine"
-
-msgid "Could not initialize server"
-msgstr "Serverit pole võimalik lähtestada"
-
-msgid "LDAP Error: "
-msgstr "LDAP-viga: "
-
-msgid "Contacted server"
-msgstr ""
-
-#. patience == 0
-msgid "Could not connect to server"
-msgstr "Serveriga pole võimalik ühenduda"
-
-#. patience == 0
-msgid "Could not search"
-msgstr "Otsimine pole võimalik"
-
-msgid "Waiting for search results"
-msgstr "Otsingutulemuste ootamine"
-
-msgid "Please edit the following fields"
-msgstr "Palun redigeeri järgnevaid välju"
-
-msgid "Book _Name"
-msgstr ""
-
-msgid "Server _URI"
-msgstr "Serveri _URI"
-
-msgid "_Base DN"
-msgstr "_Baas-DN"
-
-msgid "Subtree"
-msgstr "Alampuu"
-
-msgid "Single Level"
-msgstr "Üks tase"
-
-msgid "_Search Scope"
-msgstr "Otsingu_skoop:"
-
-#. Translators: DisplayName Attribute is the name of the LDAP
-#. * attribute whose value will be used to name an addressbook entry.
-#. * On Microsoft systems the actual attribute is literally named
-#. * "DisplayName" (i.e., "the name that will be displayed") but on
-#. * most LDAP servers it's "CommonName".
-#.
-msgid "_DisplayName Attribute"
-msgstr ""
-
-msgid "Call _Attributes"
-msgstr ""
-
-msgid "_Filter Template"
-msgstr ""
-
-#. Translators: Bind ID - In LDAP, the operation that begins an LDAP
-#. * session and authenticates the user to the directory is called a
-#. * Bind operation.  There are two types of Binds supported in the
-#. * standard protocol - Simple Bind and SASL Bind.  Since both of
-#. * them are used for authentication, both of them require some type
-#. * of user ID as a parameter, and that is supplied here.  (Of
-#. * course, the Bind ID can be left blank, in which case the session
-#. * is anonymous / unauthenticated.)
-#.
-msgid "Bind _ID"
-msgstr ""
-
-msgid "_Password"
-msgstr "_Parool"
-
-msgid "Use TLS"
-msgstr ""
-
-msgid "Use SASL"
-msgstr ""
-
-msgid "SASL _Mechanism"
-msgstr ""
-
-msgid "Edit LDAP directory"
-msgstr "LDAP-kataloogi redigeerimine"
-
-msgid "Please provide a Book Name for this directory\n"
-msgstr ""
-
-msgid "Please provide a Server URI\n"
-msgstr ""
-
-msgid "Please provide a DisplayName Attribute\n"
-msgstr ""
-
-msgid "Please provide a Call Attribute\n"
-msgstr ""
-
-msgid "Invalid Server URI\n"
-msgstr ""
-
-msgid "Add an LDAP Address Book"
-msgstr "LDAP-aadressiraamatu lisamine"
-
-msgid "Add the Ekiga.net Directory"
-msgstr "Ekiga.net kataloogi lisamine"
-
-msgid "Create LDAP directory"
-msgstr "LDAP-aadressiraamatu loomine"
-
-msgid "Ekiga.net Directory"
-msgstr "Ekiga.net kataloog"
-
-msgid "Unnamed"
-msgstr ""
 
 msgid "Edit roster element"
 msgstr "Nimekirja kirje redigeerimine"
@@ -815,128 +617,20 @@ msgid ""
 "roster"
 msgstr ""
 
+msgid "Name:"
+msgstr "Nimi:"
+
 msgid "Address:"
 msgstr "Aadress:"
 
-msgid "Is a preferred contact"
+msgid "Is a prefered contact"
 msgstr ""
 
 msgid "Choose groups:"
 msgstr "Gruppide valimine:"
 
 msgid "Add to local roster"
-msgstr "Kohalikku nimekirja lisamine"
-
-msgid "inactive"
-msgstr ""
-
-#, c-format
-msgid "error connecting (%s)"
-msgstr ""
-
-msgid "connecting"
-msgstr "ühendumine"
-
-msgid "authenticating"
-msgstr "autentimine"
-
-#. FIXME: can't we report better?
-msgid "error connecting"
-msgstr ""
-
-msgid "disconnected"
-msgstr ""
-
-msgid "connected"
-msgstr "ühendatud"
-
-#. FIXME: can't we report something better?
-msgid "error authenticating loudmouth account"
-msgstr ""
-
-msgid "Edit account"
-msgstr "Konto redigeerimine"
-
-msgid "User:"
-msgstr "Kasutaja:"
-
-msgid "Server:"
-msgstr "Server:"
-
-msgid "Resource:"
-msgstr "Ressurss:"
-
-msgid "Password:"
-msgstr "Parool:"
-
-msgid "Enable account"
-msgstr "Konto on lubatud"
-
-msgid "_Disable"
-msgstr "_Keela"
-
-msgid "_Enable"
-msgstr "_Luba"
-
-msgid "Edit"
-msgstr ""
-
-msgid "_Add a jabber/XMPP account"
-msgstr "Lisa _jabber/XMPP konto"
-
-msgid "Authorization to see your presence"
-msgstr ""
-
-#, c-format
-msgid "%s asks the permission to see your presence, saying: \"%s\"."
-msgstr ""
-
-#, c-format
-msgid "%s asks the permission to see your presence."
-msgstr ""
-
-msgid "grant him/her the permission to see your presence"
-msgstr ""
-
-msgid "refuse him/her the permission to see your presence"
-msgstr ""
-
-msgid "decide later (also close or cancel this dialog)"
-msgstr ""
-
-msgid "Your answer is: "
-msgstr "Sinu vastus: "
-
-msgid "Add a roster element"
-msgstr ""
-
-msgid "Please fill in this form to add a newelement to the remote roster"
-msgstr ""
-
-msgid "Identifier:"
-msgstr "Identifikaator:"
-
-msgid "identifier@server"
-msgstr "identifikaator@server"
-
-msgid "Ask him/her to see his/her status"
-msgstr ""
-
-msgid "Forbid him/her to see my status"
-msgstr ""
-
-msgid "Ask him/her to see his/her status (pending)"
-msgstr ""
-
-msgid "Stop getting his/her status"
-msgstr ""
-
-msgid "Start chat"
-msgstr ""
-
-msgid ""
-"Please fill in this form to change an existing element of the remote roster"
-msgstr ""
+msgstr "Lisa kohalikku nimekirja"
 
 msgid "Services"
 msgstr "Teenused"
@@ -946,6 +640,9 @@ msgstr "Kajatest"
 
 msgid "Conference room"
 msgstr "Konverentsiruum"
+
+msgid "Call back test"
+msgstr ""
 
 msgid "Local roster"
 msgstr "Kohalik nimekiri"
@@ -1033,6 +730,12 @@ msgid_plural "%s (with %d voicemail messages)"
 msgstr[0] "%s (koos %d kõnepostiteatega)"
 msgstr[1] "%s (koos %d kõnepostiteatega)"
 
+msgid "_Disable"
+msgstr "_Keela"
+
+msgid "_Enable"
+msgstr "_Luba"
+
 msgid "Recharge the account"
 msgstr "Kõneaja laadimine"
 
@@ -1042,17 +745,29 @@ msgstr "Vaata kõneaja ajalugu"
 msgid "Consult the call history"
 msgstr "Kõnede ajaloo vaatamine"
 
+msgid "Edit account"
+msgstr "Konto redigeerimine"
+
+msgid "Please update the following fields:"
+msgstr "Palun uuenda järgnevaid välju:"
+
 msgid "Registrar:"
 msgstr "Registreerija:"
 
 msgid "Gatekeeper:"
 msgstr "Väravavalvur:"
 
+msgid "User:"
+msgstr "Kasutaja:"
+
 #. Translators:
 #. * SIP knows two usernames: The name for the client ("User") and the name
 #. * for the authentication procedure ("Authentication User")
 msgid "Authentication User:"
 msgstr "Kasutaja autentimine:"
+
+msgid "Password:"
+msgstr "Parool:"
 
 msgid "Timeout:"
 msgstr "Ajapiirang:"
@@ -1119,6 +834,9 @@ msgstr "_Konto ID:"
 
 msgid "_PIN Code:"
 msgstr "_PIN-kood:"
+
+msgid "_Name:"
+msgstr "_Nimi:"
 
 msgid "_Gatekeeper:"
 msgstr "_Väravavalvur:"
@@ -1364,6 +1082,345 @@ msgstr ""
 msgid "In a call"
 msgstr ""
 
+msgid "Advanced"
+msgstr "Laiendatud"
+
+msgid "Move selected codec priority upwards"
+msgstr ""
+
+msgid "Move selected codec priority downwards"
+msgstr ""
+
+msgid "Address Book"
+msgstr "Aadressiraamat"
+
+msgid "Address _Book"
+msgstr "Aadressi_raamat"
+
+#. This will add static and dynamic actions
+msgid "_Action"
+msgstr "_Tegevus"
+
+msgid "Category"
+msgstr "Kategooria"
+
+msgid "Full Name"
+msgstr "Täisnimi"
+
+msgid "_Search Filter:"
+msgstr "Otsingu_filter:"
+
+msgid "says:"
+msgstr "ütles:"
+
+msgid "Open link in browser"
+msgstr "Ava viit veebisirvijas"
+
+msgid "Copy link"
+msgstr "Kopeeri viit"
+
+msgid "_Smile..."
+msgstr "_Tujunägu..."
+
+#. we can't do much here since we get the Chat as reference...
+msgid "Chat Window"
+msgstr "Vestlusaken"
+
+msgid "Unsorted"
+msgstr "Sortimata"
+
+msgid "Do not show this dialog again"
+msgstr "Seda dialoogi enam mitte näidata"
+
+#, c-format
+msgid "%d user found"
+msgid_plural "%d users found"
+msgstr[0] "Leitud %d kasutaja"
+msgstr[1] "Leitud %d kasutajat"
+
+msgid "New _Contact"
+msgstr "Uus _kontakt"
+
+msgid "VoIP _URI:"
+msgstr "VoIP-_URI:"
+
+msgid "_Home phone:"
+msgstr "_Kodutelefon:"
+
+msgid "_Office phone:"
+msgstr "_Töötelefon:"
+
+msgid "_Cell phone:"
+msgstr "_Mobiiltelefon:"
+
+msgid "_Pager:"
+msgstr "_Piipar:"
+
+msgid "Edit contact"
+msgstr "Kontakti muutmine"
+
+msgid "Remove contact"
+msgstr "Kontakti eemaldamine"
+
+#, c-format
+msgid "Are you sure you want to remove %s from the addressbook?"
+msgstr "Kas soovid kontot %s aadressiraamatust kustutada?"
+
+msgid "Audio test"
+msgstr "Audio test"
+
+msgid "Silent"
+msgstr "Vaikus"
+
+msgid "Video test"
+msgstr "Video test"
+
+#. Translators: "Screencast" means the video input device will be your screen -- the other end will see your desktop
+msgid "Crazy"
+msgstr ""
+
+msgid "Screencast"
+msgstr ""
+
+msgid "_Refresh"
+msgstr "_Värskenda"
+
+msgid "_Remove addressbook"
+msgstr "_Eemalda aadressiraamat"
+
+msgid "Addressbook _properties"
+msgstr "Aadressiraamatu _omadused"
+
+msgid "LDAP SASL Interaction"
+msgstr ""
+
+#. Translators, Howard explained : "Challenge" is a generic term
+#. * in authentication. It's a prompt from the authentication mechanism
+#. * for some type of credential. Exactly what kind of challenge and
+#. * what kind of credential depends on the specific authentication
+#. * mechanism. Since SASL is a generic interface, and can dynamically
+#. * load arbitrary mechanisms, there's not much more specific you can
+#. * say about it. You might google for "challenge response
+#. * authentication" if you'd like more background context.
+#.
+msgid "Challenge: "
+msgstr ""
+
+msgid "Interact"
+msgstr ""
+
+msgid "Refreshing"
+msgstr "Värskendamine"
+
+msgid "Could not initialize server"
+msgstr "Serverit pole võimalik lähtestada"
+
+msgid "LDAP Error: "
+msgstr "LDAP-viga: "
+
+msgid "Contacted server"
+msgstr ""
+
+#. patience == 0
+msgid "Could not connect to server"
+msgstr "Serveriga pole võimalik ühenduda"
+
+#. patience == 0
+msgid "Could not search"
+msgstr "Otsimine pole võimalik"
+
+msgid "Waiting for search results"
+msgstr "Otsingutulemuste ootamine"
+
+msgid "Please edit the following fields"
+msgstr "Palun redigeeri järgnevaid välju"
+
+msgid "Book _Name"
+msgstr "Raamatu _nimi"
+
+msgid "Server _URI"
+msgstr "Serveri _URI"
+
+msgid "_Base DN"
+msgstr "_Baas-DN"
+
+msgid "Subtree"
+msgstr "Alampuu"
+
+msgid "Single Level"
+msgstr "Üks tase"
+
+msgid "_Search Scope"
+msgstr "Otsingu_skoop:"
+
+#. Translators: DisplayName Attribute is the name of the LDAP
+#. * attribute whose value will be used to name an addressbook entry.
+#. * On Microsoft systems the actual attribute is literally named
+#. * "DisplayName" (i.e., "the name that will be displayed") but on
+#. * most LDAP servers it's "CommonName".
+#.
+msgid "_DisplayName Attribute"
+msgstr ""
+
+msgid "Call _Attributes"
+msgstr ""
+
+msgid "_Filter Template"
+msgstr "_Filtrimall"
+
+#. Translators: Bind ID - In LDAP, the operation that begins an LDAP
+#. * session and authenticates the user to the directory is called a
+#. * Bind operation.  There are two types of Binds supported in the
+#. * standard protocol - Simple Bind and SASL Bind.  Since both of
+#. * them are used for authentication, both of them require some type
+#. * of user ID as a parameter, and that is supplied here.  (Of
+#. * course, the Bind ID can be left blank, in which case the session
+#. * is anonymous / unauthenticated.)
+#.
+msgid "Bind _ID"
+msgstr ""
+
+msgid "_Password"
+msgstr "_Parool"
+
+msgid "Use TLS"
+msgstr "Kasutatakse TLS-i"
+
+msgid "Use SASL"
+msgstr "Kasutatakse SASL-i"
+
+msgid "SASL _Mechanism"
+msgstr "SASL-_mehhanism"
+
+msgid "Edit LDAP directory"
+msgstr "LDAP-kataloogi redigeerimine"
+
+msgid "Please provide a Book Name for this directory\n"
+msgstr "Palun määra sellele kataloogile telefonraamatu nimi\n"
+
+msgid "Please provide a Server URI\n"
+msgstr "Palun määra serveri URL\n"
+
+msgid "Please provide a DisplayName Attribute\n"
+msgstr ""
+
+msgid "Please provide a Call Attribute\n"
+msgstr ""
+
+msgid "Invalid Server URI\n"
+msgstr "Vigane serveri URI\n"
+
+msgid "Add an LDAP Address Book"
+msgstr "LDAP-aadressiraamatu lisamine"
+
+msgid "Add the Ekiga.net Directory"
+msgstr "Ekiga.net kataloogi lisamine"
+
+msgid "Create LDAP directory"
+msgstr "LDAP-aadressiraamatu loomine"
+
+msgid "Ekiga.net Directory"
+msgstr "Ekiga.net kataloog"
+
+msgid "inactive"
+msgstr "passiivne"
+
+#, c-format
+msgid "error connecting (%s)"
+msgstr "viga ühendumisel (%s)"
+
+msgid "connecting"
+msgstr "ühendumine"
+
+msgid "authenticating"
+msgstr "autentimine"
+
+#. FIXME: can't we report better?
+msgid "error connecting"
+msgstr "viga ühendumisel"
+
+msgid "disconnected"
+msgstr ""
+
+msgid "connected"
+msgstr "ühendatud"
+
+#. FIXME: can't we report something better?
+msgid "error authenticating loudmouth account"
+msgstr ""
+
+msgid "Server:"
+msgstr "Server:"
+
+msgid "Resource:"
+msgstr "Ressurss:"
+
+msgid "Enable account"
+msgstr "Konto on lubatud"
+
+msgid "Edit"
+msgstr ""
+
+msgid "_Add a jabber/XMPP account"
+msgstr "Lisa _jabber/XMPP konto"
+
+msgid "Authorization to see your presence"
+msgstr ""
+
+#, c-format
+msgid "%s asks the permission to see your presence, saying: \"%s\"."
+msgstr ""
+
+#, c-format
+msgid "%s asks the permission to see your presence."
+msgstr ""
+
+msgid "grant him/her the permission to see your presence"
+msgstr ""
+
+msgid "refuse him/her the permission to see your presence"
+msgstr ""
+
+msgid "decide later (also close or cancel this dialog)"
+msgstr ""
+
+msgid "Your answer is: "
+msgstr "Sinu vastus: "
+
+msgid "Add a roster element"
+msgstr ""
+
+msgid "Please fill in this form to add a new element to the remote roster"
+msgstr ""
+
+msgid "Identifier:"
+msgstr "Identifikaator:"
+
+msgid "identifier@server"
+msgstr "identifikaator@server"
+
+msgid "Ask him/her to see his/her status"
+msgstr ""
+
+msgid "Forbid him/her to see my status"
+msgstr ""
+
+msgid "Ask him/her to see his/her status (pending)"
+msgstr ""
+
+msgid "Stop getting his/her status"
+msgstr ""
+
+msgid "Start chat"
+msgstr ""
+
+msgid "Continue chat"
+msgstr ""
+
+msgid ""
+"Please fill in this form to change an existing element of the remote roster"
+msgstr ""
+
 msgid "New resource list"
 msgstr ""
 
@@ -1379,6 +1436,15 @@ msgstr ""
 
 msgid "Username:"
 msgstr "Kasutajanimi:"
+
+msgid "Click to fetch"
+msgstr ""
+
+msgid "Distant contact"
+msgstr ""
+
+msgid "Invalid server data"
+msgstr "Vigased serveri andmed"
 
 msgid "_Add a new contact"
 msgstr "_Lisa uus kontakt"
@@ -1422,22 +1488,6 @@ msgstr "Kaugkontakti lisamine"
 msgid "Please fill in this form to create a new contact on a remote server"
 msgstr ""
 
-msgid "Edit remote contact"
-msgstr "Kaugkontakti redigeerimine"
-
-msgid ""
-"Please fill in this form to change an existing contact on a remote server"
-msgstr ""
-
-msgid "Invalid server data"
-msgstr "Vigased serveri andmed"
-
-msgid "Click to fetch"
-msgstr ""
-
-msgid "Distant contact"
-msgstr ""
-
 #, c-format
 msgid "%s / List #%d"
 msgstr ""
@@ -1446,55 +1496,12 @@ msgstr ""
 msgid "List #%d"
 msgstr ""
 
-msgid "Advanced"
-msgstr "Laiendatud"
+msgid "Edit remote contact"
+msgstr "Kaugkontakti redigeerimine"
 
-msgid "Address Book"
-msgstr "Aadressiraamat"
-
-msgid "Address _Book"
-msgstr "Aadressi_raamat"
-
-#. This will add static and dynamic actions
-msgid "_Action"
+msgid ""
+"Please fill in this form to change an existing contact on a remote server"
 msgstr ""
-
-msgid "Category"
-msgstr "Kategooria"
-
-msgid "Full Name"
-msgstr "Täisnimi"
-
-msgid "_Search Filter:"
-msgstr "Otsingu_filter:"
-
-msgid "says:"
-msgstr "ütles:"
-
-msgid "Open link in browser"
-msgstr "Ava viit veebisirvijas"
-
-msgid "Copy link"
-msgstr "Kopeeri viit"
-
-msgid "_Smile..."
-msgstr "_Tujunägu..."
-
-#. we can't do much here since we get the Chat as reference...
-msgid "Chat Window"
-msgstr "Vestlusaken"
-
-msgid "Unsorted"
-msgstr "Sortimata"
-
-msgid "Move selected codec priority upwards"
-msgstr ""
-
-msgid "Move selected codec priority downwards"
-msgstr ""
-
-msgid "Do not show this dialog again"
-msgstr "Seda dialoogi enam mitte näidata"
 
 msgid "Account Name"
 msgstr "Konto nimi"
@@ -1691,6 +1698,8 @@ msgid ""
 "You have now finished the Ekiga configuration. All the settings can be "
 "changed in the Ekiga preferences. Enjoy!"
 msgstr ""
+"Sa oled Ekiga seadistamisega lõpule jõudnud. Kõiki sätteid on võimalik muuta "
+"Ekiga eelistuste alt."
 
 msgid "Configuration summary:"
 msgstr "Seadistuste kokkuvõte:"
@@ -1764,7 +1773,7 @@ msgstr ""
 #. Translators: Please write translator credits here, and
 #. * separate names with \n
 msgid "translator-credits"
-msgstr "Ivar Smolin <okul@linux.ee>, 2005-2009."
+msgstr "Ivar Smolin <okul@linux.ee>, 2005–2010."
 
 msgid ""
 "Ekiga is full-featured SIP and H.323 compatible VoIP, IP-Telephony and "
@@ -2532,6 +2541,7 @@ msgstr "SIP-sätted"
 msgid "H.323 Settings"
 msgstr "H.323-sätted"
 
+#. The player
 msgid "Audio"
 msgstr "Audio"
 
@@ -2547,8 +2557,11 @@ msgid_plural "You have %d messages"
 msgstr[0] "Sulle on %d sõnum"
 msgstr[1] "Sulle on %d sõnumit"
 
+msgid "The following accounts are inactive:"
+msgstr "Järgnevad kontod on passiivsed:"
+
 msgid "Online"
-msgstr ""
+msgstr "Ühendatud"
 
 msgid "Away"
 msgstr "Eemal"
