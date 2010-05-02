@@ -413,8 +413,8 @@ else
 endif
 	# apply all ptlib_* patches
 	cd $(PTLIB_DIR); for i in $(EKIGA_DIR)/win32/diff/ptlib_*; do \
-		test `basename $$i` != 'ptlib_*' && patch -p1 <$$i ;\
-	done
+		test `basename $$i` != 'ptlib_*' && (patch -p1 <$$i || exit 1) ;\
+	done; true
 	touch $@
 
 $(PTLIB_DIR)/config.status: binaries $(PTLIB_DIR)/configure
@@ -556,8 +556,8 @@ else
 endif
 	# apply all opal_* patches
 	cd $(OPAL_DIR); for i in $(EKIGA_DIR)/win32/diff/opal_*; do \
-		test `basename $$i` != 'opal_*' && patch -p1 <$$i ;\
-	done
+		test `basename $$i` != 'opal_*' && (patch -p1 <$$i || exit 1) ;\
+	done; true
 	touch $@
 
 $(OPAL_DIR)/config.status: binaries $(OPAL_DIR)/configure
@@ -712,8 +712,8 @@ else
 endif
 	# apply all ekiga_* patches
 	cd $(EKIGA_DIR); for i in $(EKIGA_DIR)/win32/diff/ekiga_*; do \
-		test `basename $$i` != 'ekiga_*' && patch -p1 <$$i ;\
-	done
+		test `basename $$i` != 'ekiga_*' && (patch -p1 <$$i || exit 1) ;\
+	done; true
 	touch $@
 
 $(EKIGA_DIR)/config.status: binaries $(EKIGA_DIR)/configure $(LIBDIR)/$(PTLIB_LIB) $(LIBDIR)/$(OPAL_LIB) \
