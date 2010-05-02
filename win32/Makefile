@@ -82,7 +82,7 @@ endif
 endif
 EKIGA_PREFIX := $(TARGETDIR)/Ekiga
 EKIGA_INSTALLER := ekiga-setup-$(EKIGA_VER).exe
-EKIGA_WIN32_DIFF_DIR := $(CURDIR)/diff
+#EKIGA_WIN32_DIFF_DIR := $(CURDIR)/diff
 EKIGA_INSTALLER_DIR := $(EKIGA_DIR)/win32/nsisinstaller
 
 ifeq ($(RELEASE),1)
@@ -409,6 +409,10 @@ ifeq ($(RELEASE),1)
 else
 	$(CP) -r $(SRCDIR)/$(PTLIB_ARCHIVE) $(PTLIB_DIR)
 endif
+	# apply all ptlib_* patches
+	cd $(PTLIB_DIR); for i in $(EKIGA_DIR)/diff/ptlib_*; do \
+		test `basename $$i` != 'ptlib_*' && patch -p1 <$$i \
+	done
 	touch $@
 
 $(PTLIB_DIR)/config.status: binaries $(PTLIB_DIR)/configure
@@ -548,6 +552,10 @@ ifeq ($(RELEASE),1)
 else
 	$(CP) -r $(SRCDIR)/$(OPAL_ARCHIVE) $(OPAL_DIR)
 endif
+	# apply all opal_* patches
+	cd $(OPAL_DIR); for i in $(EKIGA_DIR)/diff/opal_*; do \
+		test `basename $$i` != 'opal_*' && patch -p1 <$$i \
+	done
 	touch $@
 
 $(OPAL_DIR)/config.status: binaries $(OPAL_DIR)/configure
@@ -700,6 +708,10 @@ else
 	$(CP) -r $(SRCDIR)/$(EKIGA_ARCHIVE) $(EKIGA_DIR)
 	cd $(EKIGA_DIR); NOCONFIGURE=1 ./autogen.sh  # generate configure
 endif
+	# apply all ekiga_* patches
+	cd $(EKIGA_DIR); for i in $(EKIGA_DIR)/diff/ekiga_*; do \
+		test `basename $$i` != 'ekiga_*' && patch -p1 <$$i \
+	done
 	touch $@
 
 $(EKIGA_DIR)/config.status: binaries $(EKIGA_DIR)/configure $(LIBDIR)/$(PTLIB_LIB) $(LIBDIR)/$(OPAL_LIB) \
