@@ -112,14 +112,15 @@ OutFile "${TARGET_DIR}/ekiga-setup-${EKIGA_VERSION}-nogtk.exe"
 !insertmacro MUI_LANGUAGE "English"
 !insertmacro MUI_LANGUAGE "Hungarian"
 !insertmacro MUI_LANGUAGE "French"
+!insertmacro MUI_LANGUAGE "Romanian"
 
-!define EKIGA_DEFAULT_LANGFILE                  "${INSTALLER_DIR}/language_files/english.nsh"
-
+!define EKIGA_DEFAULT_LANGFILE "${INSTALLER_DIR}/language_files/english.nsh"
 
 !include "${INSTALLER_DIR}/langmacros.nsh"
 
-!insertmacro EKIGA_MACRO_INCLUDE_LANGFILE "HUNGARIAN"		"${INSTALLER_DIR}/language_files/hungarian.nsh"
+!insertmacro EKIGA_MACRO_INCLUDE_LANGFILE "HUNGARIAN"	"${INSTALLER_DIR}/language_files/hungarian.nsh"
 !insertmacro EKIGA_MACRO_INCLUDE_LANGFILE "FRENCH"		"${INSTALLER_DIR}/language_files/french.nsh"
+!insertmacro EKIGA_MACRO_INCLUDE_LANGFILE "ROMANIAN"	"${INSTALLER_DIR}/language_files/romanian.nsh"
 !insertmacro EKIGA_MACRO_INCLUDE_LANGFILE "ENGLISH"		"${INSTALLER_DIR}/language_files/english.nsh"
 
 !macro VersionCheckV5 Ver1 Ver2 OutVar
