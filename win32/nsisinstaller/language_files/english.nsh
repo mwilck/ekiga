@@ -1,15 +1,18 @@
-;;
 ;;  english.nsh
 ;;
 ;;  Default language strings for the Windows Ekiga NSIS installer.
 ;;  Windows Code page: 1252
+;;  Author: ...
 ;;
-;;  Version 3
-;;  Note: If translating this file, replace "!insertmacro EKIGA_MACRO_DEFAULT_STRING"
-;;  with "!insertmacro EKIGA_MACRO_DEFAULT_STRING".
-
-; Make sure to update the EKIGA_MACRO_LANGUAGEFILE_END macro in
-; langmacros.nsh when updating this file
+;;  Note: To translate this file:
+;;  - copy this file into another file called yourlanguage.nsh
+;;  - modify yourlanguagefile.nsh like this:
+;;    - replace everywhere "!insertmacro EKIGA_MACRO_DEFAULT_STRING" with "!define"
+;;    - translate all the strings
+;;    - check the Windows Code Page you use, see above
+;;    - add yourself as Author, see above
+;;    - send us the file and remind us to add the entry for your file
+;;      in ekiga.nsi (MUI_LANGUAGE and EKIGA_MACRO_INCLUDE_LANGFILE)
 
 ; Startup Checks
 !insertmacro EKIGA_MACRO_DEFAULT_STRING INSTALLER_IS_RUNNING			"The installer is already running."
