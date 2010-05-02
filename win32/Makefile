@@ -91,6 +91,7 @@ ifeq ($(RELEASE),1)
 	OPAL_ARCHIVE := opal-$(OPAL_VER).tar.gz
 	OPAL_DIR := $(BUILDROOT)/opal-$(OPAL_VER)
 else
+	OPAL_VER := 4.6-beta8
 	# OPAL_REV: HEAD or revision number
 	OPAL_REV := HEAD
 	OPAL_URL := https://opalvoip.svn.sourceforge.net/svnroot/opalvoip/opal/branches/v3_6
@@ -109,6 +110,7 @@ ifeq ($(RELEASE),1)
 	PTLIB_ARCHIVE := ptlib-$(PTLIB_VER).tar.gz
 	PTLIB_DIR := $(BUILDROOT)/ptlib-$(PTLIB_VER)
 else
+	PTLIB_VER := 2.6-beta7
 	# PTLIB_REV: HEAD or revision number
 	PTLIB_REV := HEAD
 	PTLIB_URL := https://opalvoip.svn.sourceforge.net/svnroot/opalvoip/ptlib/branches/v2_6
