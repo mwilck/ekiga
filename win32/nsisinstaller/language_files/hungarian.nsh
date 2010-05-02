@@ -5,11 +5,6 @@
 ;;  Windows Code page: 1252
 ;;
 ;;  Version 3
-;;  Note: If translating this file, replace "!define"
-;;  with "!define".
-
-; Make sure to update the EKIGA_MACRO_LANGUAGEFILE_END macro in
-; langmacros.nsh when updating this file
 
 ; Startup Checks
 !define INSTALLER_IS_RUNNING			"A telepítõprogram már fut."

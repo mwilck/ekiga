@@ -7,9 +7,6 @@
 ;;  Author: Eric Boumaour <zongo_fr@users.sourceforge.net>, 2003-2005.
 ;;
 
-; Make sure to update the EKIGA_MACRO_LANGUAGEFILE_END macro in
-; langmacros.nsh when updating this file
-
 ; Startup Checks
 !define INSTALLER_IS_RUNNING			"Le programme d'installation est déjà en cours d'exécution."
 !define EKIGA_IS_RUNNING				"Une instance de Ekiga est en cours d'exécution. Veuillez quitter Ekiga et réessayer."
