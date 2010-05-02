@@ -91,7 +91,7 @@ ifeq ($(RELEASE),1)
 	OPAL_ARCHIVE := opal-$(OPAL_VER).tar.gz
 	OPAL_DIR := $(BUILDROOT)/opal-$(OPAL_VER)
 else
-	OPAL_VER := 4.6-beta8
+	OPAL_VER := 3.6-beta8
 	# OPAL_REV: HEAD or revision number
 	OPAL_REV := HEAD
 	OPAL_URL := https://opalvoip.svn.sourceforge.net/svnroot/opalvoip/opal/branches/v3_6
