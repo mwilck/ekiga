@@ -502,11 +502,13 @@ Function .onInit
 
   ${GetParameters} $R0
   ClearErrors
-  ${GetOptions} $R0 "/L=" $LANGUAGE
-  IfErrors 0 skip_lang
+  ; if you wish to start with another language, execute for example:
+  ; ekiga-setup.exe /L=1036
+  ${GetOptions} $R0 "/L=" $R1
+  IfErrors skip_lang
 
-  StrCpy $LANGUAGE ${LANG_ENGLISH}
-  !insertmacro MUI_LANGDLL_DISPLAY
+  StrCpy $LANGUAGE $R1
+  ;!insertmacro MUI_LANGDLL_DISPLAY  ; display the language selection dialog
 
   skip_lang:
     ; If install path was set on the command, use it.
