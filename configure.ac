@@ -179,7 +179,7 @@ dnl ###############################
 dnl   Mandatory GTK+ support
 dnl ###############################
 PKG_CHECK_MODULES([GTK], [gtk+-2.0 >= 2.18.0])
-PKG_CHECK_MODULES([GLIB], [glib-2.0 >= 2.8.0 gmodule-2.0 gobject-2.0 gthread-2.0])
+PKG_CHECK_MODULES([GLIB], [glib-2.0 >= 2.14.0 gmodule-2.0 gobject-2.0 gthread-2.0])
 AC_ARG_ENABLE([gtk-debug],
               [AC_HELP_STRING([--enable-gtk-debug],[enable GTK+ debug flags (default is disabled)])],
               [if test "x$enableval" = "xyes"; then
