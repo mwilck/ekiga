@@ -843,7 +843,7 @@ FunctionEnd
         $(GTK_SECTION_DESCRIPTION)
 !endif
   !insertmacro MUI_DESCRIPTION_TEXT ${SecStartup} \
-        "Will launch ekiga when windows Starts"
+        $(EKIGA_STARTUP_SECTION_DESCRIPTION)
   !insertmacro MUI_DESCRIPTION_TEXT ${SecShortcuts} \
         $(EKIGA_SHORTCUTS_SECTION_DESCRIPTION)
   !insertmacro MUI_DESCRIPTION_TEXT ${SecDesktopShortcut} \

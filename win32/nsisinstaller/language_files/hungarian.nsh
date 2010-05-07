@@ -33,6 +33,7 @@
 !define GTK_WIMP_THEME_DESC			"A GTK-Wimp (Windows megszemélyesítõ) olyan  GTK táma, amely jól illeszkedik a Windows munkaasztal környezetébe."
 !define GTK_BLUECURVE_THEME_DESC			"The Bluecurve téma."
 !define GTK_LIGHTHOUSEBLUE_THEME_DESC		"The Lighthouseblue téma."
+!define EKIGA_STARTUP_SECTION_DESCRIPTION	"Will launch Ekiga when Windows starts"
 !define EKIGA_SHORTCUTS_SECTION_DESCRIPTION	"Parancsikonok a Ekiga indításához"
 !define EKIGA_DESKTOP_SHORTCUT_DESC		"Parancsikont hoz létre a munkaasztalon, amely segítségével a Ekiga elérhetõ"
 !define EKIGA_STARTMENU_SHORTCUT_DESC		"Start Menü bejegyzést hoz létre a Ekiga számára"

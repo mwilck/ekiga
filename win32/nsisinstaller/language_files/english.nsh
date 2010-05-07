@@ -41,6 +41,7 @@
 !insertmacro EKIGA_MACRO_DEFAULT_STRING GTK_WIMP_THEME_DESC			"GTK-Wimp (Windows impersonator) is a GTK theme that blends well into the Windows desktop environment."
 !insertmacro EKIGA_MACRO_DEFAULT_STRING GTK_BLUECURVE_THEME_DESC			"The Bluecurve theme."
 !insertmacro EKIGA_MACRO_DEFAULT_STRING GTK_LIGHTHOUSEBLUE_THEME_DESC		"The Lighthouseblue theme."
+!insertmacro EKIGA_MACRO_DEFAULT_STRING EKIGA_STARTUP_SECTION_DESCRIPTION	"Will launch Ekiga when Windows starts"
 !insertmacro EKIGA_MACRO_DEFAULT_STRING EKIGA_SHORTCUTS_SECTION_DESCRIPTION	"Shortcuts for starting Ekiga"
 !insertmacro EKIGA_MACRO_DEFAULT_STRING EKIGA_DESKTOP_SHORTCUT_DESC		"Create a shortcut to Ekiga on the Desktop"
 !insertmacro EKIGA_MACRO_DEFAULT_STRING EKIGA_STARTMENU_SHORTCUT_DESC		"Create a Start Menu entry for Ekiga"
