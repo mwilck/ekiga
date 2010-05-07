@@ -153,7 +153,11 @@ gm_level_meter_set_level (GmLevelMeter *lm,
   if (level > lm->peak)
     lm->peak = level;
 
+#if GTK_CHECK_VERSION(2,20,0)
+  if (gtk_widget_get_realized (GTK_WIDGET (lm)))
+#else
   if (GTK_WIDGET_REALIZED (lm))
+#endif
     gm_level_meter_paint (lm);
 }
 
@@ -164,7 +168,11 @@ gm_level_meter_clear (GmLevelMeter *lm)
   lm->level = 0;
   lm->peak = 0;
 
+#if GTK_CHECK_VERSION(2,20,0)
+  if (gtk_widget_get_realized (GTK_WIDGET (lm)))
+#else
   if (GTK_WIDGET_REALIZED (lm))
+#endif
     gm_level_meter_paint (lm);
 }
 
@@ -178,7 +186,11 @@ gm_level_meter_set_colors (GmLevelMeter* lm,
   if (lm->colorEntries) {
 
     /* free old colors, if they have been allocated; delete old array */
-    if (GTK_WIDGET_REALIZED (lm)) 
+#if GTK_CHECK_VERSION(2,20,0)
+    if (gtk_widget_get_realized (GTK_WIDGET (lm)))
+#else
+    if (GTK_WIDGET_REALIZED (lm))
+#endif
       gm_level_meter_free_colors (lm->colorEntries);
     g_array_free (lm->colorEntries, TRUE);
   }
@@ -193,7 +205,11 @@ gm_level_meter_set_colors (GmLevelMeter* lm,
     g_array_append_val (lm->colorEntries, *entry);
   }
 
+#if GTK_CHECK_VERSION(2,20,0)
+  if (gtk_widget_get_realized (GTK_WIDGET (lm))) {
+#else
   if (GTK_WIDGET_REALIZED (lm)) {
+#endif
 
     gm_level_meter_allocate_colors (lm->colorEntries);
 
@@ -379,7 +395,11 @@ gm_level_meter_create_pixmap (GmLevelMeter *lm)
 
   g_return_if_fail (GM_IS_LEVEL_METER (lm));
 
+#if GTK_CHECK_VERSION(2,20,0)
+  if (gtk_widget_get_realized (GTK_WIDGET (lm))) {
+#else
   if (GTK_WIDGET_REALIZED (lm)) {
+#endif
     widget = GTK_WIDGET (lm);
 
     if (lm->offscreen_image)
@@ -518,7 +538,11 @@ gm_level_meter_paint (GmLevelMeter *lm)
 		     peak_width, peak_height);
 
   /* repaint */
+#if GTK_CHECK_VERSION(2,20,0)
+  if (gtk_widget_is_drawable (widget))
+#else
   if (GTK_WIDGET_DRAWABLE (widget))
+#endif
     gdk_draw_drawable (widget->window,
 		       widget->style->black_gc,
 		       lm->offscreen_image,
@@ -570,7 +594,11 @@ gm_level_meter_size_allocate (GtkWidget *widget,
   g_return_if_fail (allocation != NULL);
 
   widget->allocation = *allocation;
+#if GTK_CHECK_VERSION(2,20,0)
+  if (gtk_widget_get_realized (widget)) {
+#else
   if (GTK_WIDGET_REALIZED (widget)) {
+#endif
 
     gdk_window_move_resize (widget->window,
                             allocation->x, allocation->y,
@@ -596,7 +624,11 @@ gm_level_meter_expose (GtkWidget *widget,
     return FALSE;
 
   /* repaint */
+#if GTK_CHECK_VERSION(2,20,0)
+  if (gtk_widget_is_drawable (widget))
+#else
   if (GTK_WIDGET_DRAWABLE (widget))
+#endif
     gdk_draw_drawable (widget->window,
 		       widget->style->black_gc,
 		       GM_LEVEL_METER (widget)->offscreen_image,

@@ -125,7 +125,12 @@ gdk_window_set_always_on_top (GdkWindow *window,
 gboolean 
 gnomemeeting_window_is_visible (GtkWidget *w)
 {
-  return (GTK_WIDGET_VISIBLE (w) && !(gdk_window_get_state (GDK_WINDOW (w->window)) & GDK_WINDOW_STATE_ICONIFIED));
+#if GTK_CHECK_VERSION(2,18,0)
+  return (gtk_widget_get_visible (GTK_WIDGET (w))
+#else
+  return (GTK_WIDGET_VISIBLE (w)
+#endif
+          && !(gdk_window_get_state (GDK_WINDOW (w->window)) & GDK_WINDOW_STATE_ICONIFIED));
 }
 
 

@@ -782,8 +782,12 @@ gm_smiley_chooser_button_new (void)
   /* if already possible (unlikely), initially set the toplevel reference */
   widget = gtk_widget_get_toplevel (GTK_WIDGET (self));
   if (widget &&
-      GTK_WIDGET_TOPLEVEL (widget) &&
-      GTK_IS_WINDOW (widget))
+#if GTK_CHECK_VERSION(2,18,0)
+      gtk_widget_is_toplevel (widget)
+#else
+      GTK_WIDGET_TOPLEVEL (widget)
+#endif
+      && GTK_IS_WINDOW (widget))
     {
       g_object_ref_sink (G_OBJECT (widget));
       self->priv->toplevel_window_handler[HANDLER_CONFIGURE] =

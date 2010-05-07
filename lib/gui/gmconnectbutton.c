@@ -212,7 +212,11 @@ gm_connect_button_get_connected (GmConnectButton *cb)
   g_return_val_if_fail (cb != NULL, FALSE);
   g_return_val_if_fail (GM_IS_CONNECT_BUTTON (cb), FALSE);
 
+#if GTK_CHECK_VERSION(2,20,0)
+  return (gtk_widget_get_sensitive (GTK_WIDGET (cb->hangup_button)));
+#else
   return (GTK_WIDGET_SENSITIVE (cb->hangup_button));
+#endif
 }
 
 

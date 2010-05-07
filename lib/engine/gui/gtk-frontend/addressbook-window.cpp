@@ -435,26 +435,30 @@ addressbook_window_add_book (AddressBookWindow *self,
   page = gtk_notebook_append_page (GTK_NOTEBOOK (self->priv->notebook),
                                    view, NULL);
 
+#if GTK_CHECK_VERSION(2,18,0)
+  if (gtk_widget_get_visible (GTK_WIDGET (self)))
+#else
   if (GTK_WIDGET_VISIBLE (self))
+#endif
     gtk_widget_show_all (view);
 
   g_signal_connect (view, "updated", G_CALLBACK (on_view_updated), self);
 
   icon = gtk_widget_render_icon (GTK_WIDGET (self->priv->tree_view),
 				 book->get_icon ().c_str (),
-				 GTK_ICON_SIZE_MENU, NULL); 
+				 GTK_ICON_SIZE_MENU, NULL);
 
   store = gtk_tree_view_get_model (GTK_TREE_VIEW (self->priv->tree_view));
   gtk_tree_store_append (GTK_TREE_STORE (store), &iter, NULL);
   gtk_tree_store_set (GTK_TREE_STORE (store), &iter,
-                      COLUMN_PIXBUF, icon, 
+                      COLUMN_PIXBUF, icon,
                       COLUMN_NAME, book->get_name ().c_str (),
-                      COLUMN_BOOK_POINTER, book.get (), 
+                      COLUMN_BOOK_POINTER, book.get (),
                       COLUMN_VIEW, view,
                       -1);
 
   if (!gtk_tree_selection_get_selected (self->priv->selection, &store, &iter)) {
-   
+
     gtk_tree_model_get_iter_first (store, &iter);
     gtk_tree_selection_select_iter (self->priv->selection, &iter);
   }
