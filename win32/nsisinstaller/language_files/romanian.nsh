@@ -32,6 +32,7 @@
 !define GTK_WIMP_THEME_DESC			"GTK-Wimp (Windows impersonator) is a GTK theme that blends well into the Windows desktop environment."
 !define GTK_BLUECURVE_THEME_DESC			"The Bluecurve theme."
 !define GTK_LIGHTHOUSEBLUE_THEME_DESC		"The Lighthouseblue theme."
+!define EKIGA_STARTUP_SECTION_DESCRIPTION	"Executa Ekiga la demararea Windows-ului"
 !define EKIGA_SHORTCUTS_SECTION_DESCRIPTION	"Shortcuts for starting Ekiga"
 !define EKIGA_DESKTOP_SHORTCUT_DESC		"Creează o scurtătură Ekiga pe Desktop"
 !define EKIGA_STARTMENU_SHORTCUT_DESC		"Creează o intrare Ekiga în meniul Start"

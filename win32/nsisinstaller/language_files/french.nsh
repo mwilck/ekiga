@@ -34,6 +34,7 @@
 !define GTK_WIMP_THEME_DESC			"GTK-Wimp (imitateur de Windows) est un thème de GTK+ qui se fond dans l'environnement graphique de Windows."
 !define GTK_BLUECURVE_THEME_DESC		"Thème Bluecurve"
 !define GTK_LIGHTHOUSEBLUE_THEME_DESC		"Thème Lighthouseblue"
+!define EKIGA_STARTUP_SECTION_DESCRIPTION	"Exécuter Ekiga quand Windows démarre"
 !define EKIGA_SHORTCUTS_SECTION_DESCRIPTION	"Raccourcis pour lancer Ekiga"
 !define EKIGA_DESKTOP_SHORTCUT_DESC		"Créer un raccourci pour Ekiga sur le bureau"
 !define EKIGA_STARTMENU_SHORTCUT_DESC		"Créer un raccourci pour Ekiga dans le menu Démarrer"
