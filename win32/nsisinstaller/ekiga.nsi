@@ -284,6 +284,15 @@ SectionEnd ; end of GTK+ section
 Section $(EKIGA_SECTION_TITLE) SecEkiga
   SectionIn 1 RO
 
+  IfFileExists $INSTDIR 0 dirok
+  ; if install directory already exists, install in Ekiga sub-directory instead
+  ; (this is needed upon uninstallation, since the whole install dir is removed)
+  StrCpy $INSTDIR "$INSTDIR\Ekiga"
+  ; if this sub-directory exists too, then abort the installation
+  IfFileExists $INSTDIR 0 dirok
+  abort "Error: $INSTDIR already exists.  Please restart the setup and specify another installation directory"
+
+  dirok:
   ; Check install rights..
   Call CheckUserInstallRights
   Pop $R0
@@ -430,12 +439,7 @@ Section Uninstall
     ; Remove Language preference info
     DeleteRegKey HKCU ${EKIGA_REG_KEY} ;${MUI_LANGDLL_REGISTRY_ROOT} ${MUI_LANGDLL_REGISTRY_KEY}
 
-
-    RMDir "$INSTDIR\pixmaps"
-    RMDir "$INSTDIR\ekiga"
-    RMDir "$INSTDIR\sounds"
-    RMDir "$INSTDIR\locale"
-    Delete /REBOOTOK "$INSTDIR\*.*"
+    ; this is safe, since Ekiga was installed in an empty directory
     RMDir /r /REBOOTOK "$INSTDIR"
 
     SetShellVarContext "all"
@@ -445,12 +449,6 @@ Section Uninstall
     Delete "$DESKTOP\Ekiga.lnk"
     
     SetShellVarContext "current"
-
-    Delete "$INSTDIR\${EKIGA_UNINST_EXE}"
-
-    ;Try to remove Ekiga install dir .. if empty
-    RMDir "$INSTDIR"
-
     ; Shortcuts..
     RMDir /r "$SMPROGRAMS\Ekiga"
     Delete "$DESKTOP\Ekiga.lnk"
