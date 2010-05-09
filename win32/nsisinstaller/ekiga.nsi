@@ -90,14 +90,7 @@ OutFile "${TARGET_DIR}/ekiga-setup-${EKIGA_VERSION}-nogtk.exe"
 !define MUI_LICENSEPAGE_TEXT_BOTTOM		$(EKIGA_LICENSE_BOTTOM_TEXT)
 
 !insertmacro MUI_PAGE_COMPONENTS
-
-; GTK+ install dir page
-!define MUI_PAGE_CUSTOMFUNCTION_PRE		preGtkDirPage
-!define MUI_PAGE_CUSTOMFUNCTION_LEAVE		postGtkDirPage
-
-; Ekiga install dir page
 !insertmacro MUI_PAGE_DIRECTORY
-
 !insertmacro MUI_PAGE_INSTFILES
 !insertmacro MUI_PAGE_FINISH
 
@@ -609,70 +602,6 @@ FunctionEnd
 !insertmacro CheckUserInstallRightsMacro ""
 !insertmacro CheckUserInstallRightsMacro "un."
 
-;
-; Usage:
-;   Push $0 ; Path string
-;   Call VerifyDir
-;   Pop $0 ; 0 - Bad path  1 - Good path
-;
-Function VerifyDir
-  Exch $0
-  Push $1
-  Push $2
-  Loop:
-    IfFileExists $0 dir_exists
-    StrCpy $1 $0 ; save last
-    ${GetParent} $0 $0
-    StrLen $2 $0
-    ; IfFileExists "C:" on xp returns true and on win2k returns false
-    ; So we're done in such a case..
-    IntCmp $2 2 loop_done
-    ; GetParent of "C:" returns ""
-    IntCmp $2 0 loop_done
-    Goto Loop
-
-  loop_done:
-    StrCpy $1 "$0\EkIgaFooB"
-    ; Check if we can create dir on this drive..
-    ClearErrors
-    CreateDirectory $1
-    IfErrors DirBad DirGood
-
-  dir_exists:
-    ClearErrors
-    FileOpen $1 "$0\ekigafoo.bar" w
-    IfErrors PathBad PathGood
-
-  DirGood:
-    RMDir $1
-    Goto PathGood1
-
-  DirBad:
-    RMDir $1
-    Goto PathBad1
-
-  PathBad:
-    FileClose $1
-    Delete "$0\ekigafoo.bar"
-  PathBad1:
-    StrCpy $0 "0"
-    Push $0
-    Goto done
-
-  PathGood:
-    FileClose $1
-    Delete "$0\ekigafoo.bar"
-  PathGood1:
-    StrCpy $0 "1"
-    Push $0
-
-  done:
-    Exch 3 ; The top of the stack contains the output variable
-    Pop $0
-    Pop $2
-    Pop $1
-FunctionEnd
-
 
 ;
 ; Usage:
@@ -769,57 +698,6 @@ Function DoWeNeedGtk
   Pop $5
   Pop $4
   Pop $3
-FunctionEnd
-
-Function preGtkDirPage
-  Push $R0
-  Push $R1
-  Call DoWeNeedGtk
-  Pop $R0
-  Pop $R1
-
-  StrCmp $R0 "0" have_gtk
-  StrCmp $R0 "1" upgrade_gtk
-  StrCmp $R0 "2" no_gtk no_gtk
-
-
-  ; Don't show dir selector.. Upgrades are done to existing path..
-  have_gtk:
-  upgrade_gtk:
-    Abort
-
-  no_gtk:
-    StrCmp $R1 "NONE" 0 no_gtk_cont
-      ; Got no install rights..
-      Abort
-    no_gtk_cont:
-      ; Suggest path..
-      StrCmp $R1 "HKCU" 0 hklm1
-        ${GetParent} $SMPROGRAMS $R0
-        ${GetParent} $R0 $R0
-        StrCpy $R0 "$R0\GTK\2.0"
-        Goto got_path
-      hklm1:
-        StrCpy $R0 "${GTK_DEFAULT_INSTALL_PATH}"
-
-   got_path:
-     StrCpy $name "GTK+ ${GTK_VERSION}"
-     StrCpy $GTK_FOLDER $R0
-     Pop $R1
-     Pop $R0
-FunctionEnd
-
-Function postGtkDirPage
-  Push $R0
-  StrCpy $name "Ekiga ${EKIGA_VERSION}"
-  Push $GTK_FOLDER
-  Call VerifyDir
-  Pop $R0
-  StrCmp $R0 "0" 0 done
-    MessageBox MB_OK "Destination path cannot be opened" /SD IDOK
-    Abort
-  done:
-  Pop $R0
 FunctionEnd
 
 !ifndef WITH_GTK
