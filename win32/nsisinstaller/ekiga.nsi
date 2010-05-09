@@ -1,14 +1,8 @@
-; Ekiga.nsi
-; ====================================================
 ; NSIS Installer for Ekiga Win32
 ; Original Authors: Herman Bloggs <hermanator12002@yahoo.com>
 ; and Daniel Atallah <daniel_atallah@yahoo.com> (GAIM Installler)
 ; Original version : Installer for Ekiga win32
-; Update: Luba Vincent <luba@novacom.be>
-; Installer Version: 1.0
 ; Created : 09/01/06
-; Last Update: 10/13/06
-; ====================================================
 
 !addPluginDir ${NSISPLUGINDIR}
 ; ===========================
@@ -53,21 +47,20 @@ OutFile "${TARGET_DIR}/ekiga-setup-${EKIGA_VERSION}-nogtk.exe"
 ; ===========================
 ; Defines
 
-!define EKIGA_REG_KEY "SOFTWARE\ekiga"
-!define EKIGA_UNINST_EXE "ekiga-uninst.exe"
-!define EKIGA_UNINSTALL_KEY			"SOFTWARE\Microsoft\Windows\CurrentVersion\Uninstall\Ekiga"
-!define HKLM_APP_PATHS_KEY			"SOFTWARE\Microsoft\Windows\CurrentVersion\App Paths\ekiga.exe"
-!define EKIGA_REG_LANG				"Installer Language"
-!define EKIGA_STARTUP_RUN_KEY			"SOFTWARE\Microsoft\Windows\CurrentVersion\Run"
+!define EKIGA_REG_KEY			"SOFTWARE\ekiga"
+!define EKIGA_UNINST_EXE		"ekiga-uninst.exe"
+!define EKIGA_UNINSTALL_KEY		"SOFTWARE\Microsoft\Windows\CurrentVersion\Uninstall\Ekiga"
+!define HKLM_APP_PATHS_KEY 		"SOFTWARE\Microsoft\Windows\CurrentVersion\App Paths\ekiga.exe"
+!define EKIGA_REG_LANG		   	"Installer Language"
+!define EKIGA_STARTUP_RUN_KEY	"SOFTWARE\Microsoft\Windows\CurrentVersion\Run"
 !define GTK_REG_KEY				"SOFTWARE\GTK\2.0"
-!define GTK_DEFAULT_INSTALL_PATH		"$COMMONFILES\GTK\2.0"
-!define GTK_RUNTIME_INSTALLER			"gtk+-${GTK_VERSION}-setup.exe"
-!define GTK_UNINSTALLER_BIN                     "unins000.exe"
+!define GTK_RUNTIME_INSTALLER	"gtk+-${GTK_VERSION}-setup.exe"
+!define GTK_UNINSTALLER_BIN     "unins000.exe"
 
 ; ===========================
 ; Modern UI configuration
-!define MUI_ICON                                "${EKIGA_DIR}/win32/ico/ekiga.ico"
-!define MUI_UNICON                              "${EKIGA_DIR}/win32/ico/ekiga-uninstall.ico" 
+!define MUI_ICON                "${EKIGA_DIR}/win32/ico/ekiga.ico"
+!define MUI_UNICON              "${EKIGA_DIR}/win32/ico/ekiga-uninstall.ico"
 
 !define MUI_HEADERIMAGE
 !define MUI_COMPONENTSPAGE_SMALLDESC
@@ -81,13 +74,14 @@ OutFile "${TARGET_DIR}/ekiga-setup-${EKIGA_VERSION}-nogtk.exe"
 ; Pages
 
 !ifndef WITH_GTK
-  !define MUI_PAGE_CUSTOMFUNCTION_PRE		preWelcomePage
+  !define MUI_PAGE_CUSTOMFUNCTION_PRE preWelcomePage
 !endif
 !insertmacro MUI_PAGE_WELCOME
 
 ; Alter License section
-!define MUI_LICENSEPAGE_BUTTON		        $(EKIGA_LICENSE_BUTTON)
-!define MUI_LICENSEPAGE_TEXT_BOTTOM		$(EKIGA_LICENSE_BOTTOM_TEXT)
+!define MUI_LICENSEPAGE_BUTTON		  $(EKIGA_LICENSE_BUTTON)
+!define MUI_LICENSEPAGE_TEXT_BOTTOM	  $(EKIGA_LICENSE_BOTTOM_TEXT)
+!insertmacro MUI_PAGE_LICENSE         "${EKIGA_DIR}/LICENSE"
 
 !insertmacro MUI_PAGE_COMPONENTS
 !insertmacro MUI_PAGE_DIRECTORY
@@ -602,7 +596,6 @@ FunctionEnd
 !insertmacro CheckUserInstallRightsMacro ""
 !insertmacro CheckUserInstallRightsMacro "un."
 
-
 ;
 ; Usage:
 ; Call DoWeNeedGtk
@@ -722,19 +715,12 @@ FunctionEnd
 ;--------------------------------
 ;Descriptions
 !insertmacro MUI_FUNCTION_DESCRIPTION_BEGIN
-  !insertmacro MUI_DESCRIPTION_TEXT ${SecEkiga} \
-        $(EKIGA_SECTION_DESCRIPTION)
+  !insertmacro MUI_DESCRIPTION_TEXT ${SecEkiga} $(EKIGA_SECTION_DESCRIPTION)
 !ifdef WITH_GTK
-  !insertmacro MUI_DESCRIPTION_TEXT ${SecGtk} \
-        $(GTK_SECTION_DESCRIPTION)
+  !insertmacro MUI_DESCRIPTION_TEXT ${SecGtk} $(GTK_SECTION_DESCRIPTION)
 !endif
-  !insertmacro MUI_DESCRIPTION_TEXT ${SecStartup} \
-        $(EKIGA_STARTUP_SECTION_DESCRIPTION)
-  !insertmacro MUI_DESCRIPTION_TEXT ${SecShortcuts} \
-        $(EKIGA_SHORTCUTS_SECTION_DESCRIPTION)
-  !insertmacro MUI_DESCRIPTION_TEXT ${SecDesktopShortcut} \
-        $(EKIGA_DESKTOP_SHORTCUT_DESC)
-  !insertmacro MUI_DESCRIPTION_TEXT ${SecStartMenuShortcut} \
-        $(EKIGA_STARTMENU_SHORTCUT_DESC)
-
+  !insertmacro MUI_DESCRIPTION_TEXT ${SecStartup} $(EKIGA_STARTUP_SECTION_DESCRIPTION)
+  !insertmacro MUI_DESCRIPTION_TEXT ${SecShortcuts} $(EKIGA_SHORTCUTS_SECTION_DESCRIPTION)
+  !insertmacro MUI_DESCRIPTION_TEXT ${SecDesktopShortcut} $(EKIGA_DESKTOP_SHORTCUT_DESC)
+  !insertmacro MUI_DESCRIPTION_TEXT ${SecStartMenuShortcut} $(EKIGA_STARTMENU_SHORTCUT_DESC)
 !insertmacro MUI_FUNCTION_DESCRIPTION_END

@@ -148,6 +148,7 @@ GTK_URL := http://ftp.gnome.org/pub/gnome/binaries/win32/gtk+/2.16
 GTK_ARCHIVE := gtk+-dev_$(GTK_VER)_win32.zip
 
 # this is an installer, not a zip of files to be manually installed
+# see http://gtk-win.sourceforge.net for more information
 GTK_BIN_VER := 2.16.0
 GTK_INSTALLER_URL := http://downloads.sourceforge.net/gtk-win
 GTK_BIN_EXE := gtk2-runtime-2.16.0-2009-03-22-ash.exe
