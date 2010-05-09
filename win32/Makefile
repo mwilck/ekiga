@@ -463,8 +463,8 @@ $(LIBDIR)/libspeex.a: binaries $(SPEEX_DIR)/config.status
 ### ffmpeg
 update-sources::
 	@echo --- Getting FFMPEG ...
-	# ffmpeg has two "repositories" (ffmpeg and libswscale) into their
-	# repository, so process them separately
+# ffmpeg has two "repositories" (ffmpeg and libswscale) into their
+# repository, so process them separately
 ifeq ($(wildcard $(SRCDIR)/$(FFMPEG_ARCHIVE)),)
 	$(SVN) co $(FFMPEG_URL) $(SRCDIR)/$(FFMPEG_ARCHIVE) -r $(FFMPEG_VER)
 else
