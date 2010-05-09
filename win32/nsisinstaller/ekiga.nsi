@@ -285,13 +285,23 @@ SectionEnd ; end of GTK+ section
 Section $(EKIGA_SECTION_TITLE) SecEkiga
   SectionIn 1 RO
 
-  IfFileExists $INSTDIR 0 dirok
-  ; if install directory already exists, install in Ekiga sub-directory instead
-  ; (this is needed upon uninstallation, since the whole install dir is removed)
+  ; find out a good installation directory, allowing the uninstaller
+  ;   to safely remove the whole installation directory
+  ; if INSTDIR does not end in [Ee]kiga, then add subdir Ekiga
+  ${GetFileName} $INSTDIR $R0
+  StrCmp $R0 ekiga nameok 0  ; unsensitive comparation
   StrCpy $INSTDIR "$INSTDIR\Ekiga"
-  ; if this sub-directory exists too, then abort the installation
+
+  nameok:
+  ; if exists and not empty, then add subdir Ekiga
   IfFileExists $INSTDIR 0 dirok
-  abort "Error: $INSTDIR already exists.  Please restart the setup and specify another installation directory"
+  ${DirState} $INSTDIR $R0
+  IntCmp $R0 0 dirok
+  StrCpy $INSTDIR "$INSTDIR\Ekiga"
+
+  ; if exists, abort
+  IfFileExists $INSTDIR 0 dirok
+  abort "Error: tried $INSTDIR, but it already exists.  Please restart the setup and specify another installation directory"
 
   dirok:
   ; Check install rights..
