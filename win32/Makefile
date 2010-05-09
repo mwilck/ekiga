@@ -143,15 +143,15 @@ SPEEX_DIR := $(BUILDROOT)/speex-$(SPEEX_VER)
 SPEEX_ARCHIVE := speex-$(SPEEX_VER).tar.gz
 SPEEX_URL := http://downloads.xiph.org/releases/speex
 
-GTK_VER := 2.16.0-2
+GTK_VER := 2.16.6-2
 GTK_URL := http://ftp.gnome.org/pub/gnome/binaries/win32/gtk+/2.16
 GTK_ARCHIVE := gtk+-dev_$(GTK_VER)_win32.zip
 
 # this is an installer, not a zip of files to be manually installed
 # see http://gtk-win.sourceforge.net for more information
-GTK_BIN_VER := 2.16.0
+GTK_BIN_VER := 2.16.6
 GTK_INSTALLER_URL := http://downloads.sourceforge.net/gtk-win
-GTK_BIN_EXE := gtk2-runtime-2.16.0-2009-03-22-ash.exe
+GTK_BIN_EXE := gtk2-runtime-2.16.6-2010-02-24-ash.exe
 
 GLIB_VER := 2.18.0-2
 GLIB_URL := http://ftp.gnome.org/pub/gnome/binaries/win32/glib/2.18
