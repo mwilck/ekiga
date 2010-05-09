@@ -10,7 +10,6 @@
 var name
 var GTK_FOLDER
 var STARTUP_RUN_KEY
-var ISSILENT
 var ALREADY_INSTALLED
 ; ===========================
 ; Configuration
@@ -112,7 +111,8 @@ OutFile "${TARGET_DIR}/ekiga-setup-${EKIGA_VERSION}-nogtk.exe"
 !insertmacro EKIGA_MACRO_INCLUDE_LANGFILE "ENGLISH"		"${INSTALLER_DIR}/language_files/english.nsh"
 
 ; ===========================
-; Sections
+; Section SecUninstallOldEkiga
+; ===========================
 Section -SecUninstallOldEkiga
         ; Check install rights..
         Call CheckUserInstallRights
@@ -179,8 +179,9 @@ Section -SecUninstallOldEkiga
         done:
 SectionEnd
 
-
-
+; ===========================
+; Section SecGtk
+; ===========================
 !ifdef WITH_GTK
 Section $(GTK_SECTION_TITLE) SecGtk
   SectionIn 1 RO
@@ -207,14 +208,14 @@ Section $(GTK_SECTION_TITLE) SecGtk
   no_gtk:
     StrCmp $R1 "NONE" gtk_no_install_rights
     ClearErrors
-    ExecWait '"$TEMP\${GTK_RUNTIME_INSTALLER}" /L=$LANGUAGE $ISSILENT /DIR="$GTK_FOLDER" /IGNOREERRORS'
+    ExecWait "$TEMP\${GTK_RUNTIME_INSTALLER}"
     Goto gtk_install_cont
 
   upgrade_gtk:
     StrCpy $GTK_FOLDER $R6
     MessageBox MB_YESNO $(GTK_UPGRADE_PROMPT) /SD IDYES IDNO done
     ClearErrors
-    ExecWait '"$TEMP\${GTK_RUNTIME_INSTALLER}" /L=$LANGUAGE $ISSILENT /DIR="$GTK_FOLDER" /IGNOREERRORS'
+    ExecWait "$TEMP\${GTK_RUNTIME_INSTALLER}"
     Goto gtk_install_cont
 
   gtk_install_cont:
@@ -249,7 +250,7 @@ Section $(GTK_SECTION_TITLE) SecGtk
     ; Install GTK+ to Ekiga install dir
     StrCpy $GTK_FOLDER $INSTDIR
     ClearErrors
-    ExecWait '"$TEMP\${GTK_RUNTIME_INSTALLER}" /L=$LANGUAGE $ISSILENT /DIR="$GTK_FOLDER" /IGNOREERRORS'
+    ExecWait "$TEMP\${GTK_RUNTIME_INSTALLER}"
     IfErrors gtk_install_error
     SetOverwrite on
     ClearErrors
@@ -266,9 +267,9 @@ Section $(GTK_SECTION_TITLE) SecGtk
 SectionEnd ; end of GTK+ section
 !endif
 
-;--------------------------------
-;Ekiga Install Section
-
+; ===========================
+; Section SecEkiga
+; ===========================
 Section $(EKIGA_SECTION_TITLE) SecEkiga
   SectionIn 1 RO
 
@@ -371,9 +372,9 @@ Section $(EKIGA_SECTION_TITLE) SecEkiga
   done:
 SectionEnd ; end of default Ekiga section
 
-;--------------------------------
-;Shortcuts
-
+; ===========================
+; Shortcuts
+; ===========================
 SubSection /e $(EKIGA_SHORTCUTS_SECTION_TITLE) SecShortcuts
   Section $(EKIGA_DESKTOP_SHORTCUT_SECTION_TITLE) SecDesktopShortcut
     SetOutPath "$INSTDIR"
@@ -402,10 +403,9 @@ SubSection /e $(EKIGA_SHORTCUTS_SECTION_TITLE) SecShortcuts
 SubSectionEnd
 
 
-;--------------------------------
-;Uninstaller Section
-
-
+; ===========================
+; Section Uninstall
+; ===========================
 Section Uninstall
   Call un.CheckUserInstallRights
   Pop $R0
@@ -464,13 +464,9 @@ Section Uninstall
   done:
 SectionEnd ; end of uninstall section
 
-; ///////////////////////////////////////
-;; Functions
-; ///////////////////////////////////////
-
 ; ===========================
-; Init Global parameters
-
+; Function .onInit
+; ===========================
 Function .onInit
   Push $R0
   SystemLocal::Call 'kernel32::CreateMutexA(i 0, i 0, t "ekiga_installer_running") i .r1 ?e'
@@ -481,12 +477,6 @@ Function .onInit
   Call RunCheck
 
   StrCpy $name "Ekiga"
-
-  StrCpy $ISSILENT "/NOUI"
-
-  ; GTK installer has two silent states.. one with Message boxes, one without
-  ; If ekiga installer was run silently, we want to supress gtk installer msg boxes.
-  StrCpy $ISSILENT "/SILENT"
 
   ${GetParameters} $R0
   ClearErrors
@@ -537,6 +527,7 @@ FunctionEnd
 ; ===========================
 ; Check if another instance
 ; of the installer is running
+; ===========================
 !macro RunCheckMacro UN
 Function ${UN}RunCheck
   Push $R0
@@ -596,7 +587,9 @@ FunctionEnd
 !insertmacro CheckUserInstallRightsMacro ""
 !insertmacro CheckUserInstallRightsMacro "un."
 
-;
+; ===========================
+; Function doWeNeedGtk
+; ===========================
 ; Usage:
 ; Call DoWeNeedGtk
 ; First Pop:
@@ -639,7 +632,6 @@ Function DoWeNeedGtk
     ReadRegStr $0 HKLM ${GTK_REG_KEY} "Version"
     StrCpy $5 "HKLM"
     StrCmp $0 "" no_gtk have_gtk
-
 
   have_gtk:
     ; GTK+ is already installed.. check version.
@@ -693,6 +685,9 @@ Function DoWeNeedGtk
   Pop $3
 FunctionEnd
 
+; ===========================
+; Function preWelcomePage
+; ===========================
 !ifndef WITH_GTK
 Function preWelcomePage
   ; If this installer dosn't have GTK, check whether we need it.
@@ -712,8 +707,9 @@ Function preWelcomePage
 FunctionEnd
 !endif
 
-;--------------------------------
-;Descriptions
+; ===========================
+; Descriptions
+; ===========================
 !insertmacro MUI_FUNCTION_DESCRIPTION_BEGIN
   !insertmacro MUI_DESCRIPTION_TEXT ${SecEkiga} $(EKIGA_SECTION_DESCRIPTION)
 !ifdef WITH_GTK
