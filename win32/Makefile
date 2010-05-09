@@ -210,7 +210,7 @@ X264_DIR := $(BUILDROOT)/x264
 X264_ARCHIVE := x264
 
 # note that every celt release might break API
-CELT_VER := 0.6.1
+CELT_VER := 0.7.1
 CELT_URL := http://downloads.xiph.org/releases/celt
 CELT_DIR := $(BUILDROOT)/celt-$(CELT_VER)
 CELT_ARCHIVE := celt-$(CELT_VER).tar.gz
