@@ -775,17 +775,9 @@ endif
 	tar cfvz $(TARGETDIR)/ekiga_build-$(EKIGA_VER).tgz Makefile #$(EKIGA_WIN32_DIFF_DIR)
 	touch $@
 
-#### README about NSIS installer ####
-#
-# NSIS package shipped with linux distributions does not includes some of the plugins needed.
-# - System.dll : You need to get it from the windows zip archive (http://sourceforge.net/projects/nsis) and extract
-#               /Plugins/System.dll TO /usr/share/nsis/Plugins/
-#		/Contrib/Modern UI/System.nsh TO /usr/share/nsis/Contrib/System/
-# - Process.dll : Is a plugin that can be found here http://nsis.sourceforge.net/Processes_plug-in
-#   		extract /bin/Processes.dll TO /usr/share/nsis/Plugins/
-#
-###########################
-
+# Two additional plugins are needed from nsis:
+# - System.dll, included in nsis distribution
+# - Processes.dll, not included in nsis distribution
 update-sources::
 	@echo --- Getting NSIS Installer ...
 	$(WGET) -P $(SRCDIR) $(NSIS_URL)/nsis-$(NSIS_VER).zip
