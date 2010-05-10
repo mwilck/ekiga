@@ -4449,10 +4449,8 @@ main (int argc,
   g_free (text_label);
   if (debug_level != 0) {
     std::string desk_path = g_get_user_special_dir (G_USER_DIRECTORY_DESKTOP);
-    if (!desk_path.empty ()) {
-      std::freopen((desk_path + "\\ekiga-stdout.txt").c_str (), "w", stdout);
+    if (!desk_path.empty ())
       std::freopen((desk_path + "\\ekiga-stderr.txt").c_str (), "w", stderr);
-    }
   }
 #endif
 
