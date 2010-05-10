@@ -1,6 +1,4 @@
-;;  romanian.nsh
-;;
-;;  Default language strings for the Windows Ekiga NSIS installer.
+;;  Romanian language strings for the Windows Ekiga NSIS installer.
 ;;  Windows Code page: 1252
 ;;
 ;;  Author: Eugen Dedu <Eugen.Dedu@pu-pm.univ-fcomte.fr>, May 2010
@@ -26,14 +24,14 @@
 !define EKIGA_DESKTOP_SHORTCUT_SECTION_TITLE	"Desktop"
 !define EKIGA_STARTMENU_SHORTCUT_SECTION_TITLE	"Meniul Start"
 !define EKIGA_SECTION_DESCRIPTION			"Fișiere Ekiga de bază și dll-uri"
-!define GTK_SECTION_DESCRIPTION			"A multi-platform GUI toolkit, used by Ekiga"
+!define GTK_SECTION_DESCRIPTION			"Un toolkit grafic multi-platformă, utilizat de Ekiga"
 !define GTK_THEMES_SECTION_DESCRIPTION		"GTK+ Themes can change the look and feel of GTK+ applications."
 !define GTK_NO_THEME_DESC			"Don't install a GTK+ theme"
 !define GTK_WIMP_THEME_DESC			"GTK-Wimp (Windows impersonator) is a GTK theme that blends well into the Windows desktop environment."
 !define GTK_BLUECURVE_THEME_DESC			"The Bluecurve theme."
 !define GTK_LIGHTHOUSEBLUE_THEME_DESC		"The Lighthouseblue theme."
 !define EKIGA_STARTUP_SECTION_DESCRIPTION	"Executa Ekiga la demararea Windows-ului"
-!define EKIGA_SHORTCUTS_SECTION_DESCRIPTION	"Shortcuts for starting Ekiga"
+!define EKIGA_SHORTCUTS_SECTION_DESCRIPTION	"Scurtături pentru lansarea Ekiga"
 !define EKIGA_DESKTOP_SHORTCUT_DESC		"Creează o scurtătură Ekiga pe Desktop"
 !define EKIGA_STARTMENU_SHORTCUT_DESC		"Creează o intrare Ekiga în meniul Start"
 
@@ -58,33 +56,3 @@
 ; Uninstall Section Prompts
 !define un.EKIGA_UNINSTALL_ERROR_1		"The uninstaller could not find registry entries for Ekiga.$\rIt is likely that another user installed this application."
 !define un.EKIGA_UNINSTALL_ERROR_2		"You do not have permission to uninstall this application."
-
-; Spellcheck Section Prompts
-!define EKIGA_SPELLCHECK_SECTION_TITLE		"Spellchecking Support"
-!define EKIGA_SPELLCHECK_ERROR			"Error Installing Spellchecking"
-!define EKIGA_SPELLCHECK_DICT_ERROR		"Error Installing Spellchecking Dictionary"
-!define EKIGA_SPELLCHECK_SECTION_DESCRIPTION	"Support for Spellchecking.  (Internet connection required for installation)"
-!define ASPELL_INSTALL_FAILED			"Installarea a eșuat"
-!define EKIGA_SPELLCHECK_BRETON			"Bretonă"
-!define EKIGA_SPELLCHECK_CATALAN			"Catalană"
-!define EKIGA_SPELLCHECK_CZECH			"Cehă"
-!define EKIGA_SPELLCHECK_WELSH			"Welsh"
-!define EKIGA_SPELLCHECK_DANISH			"Daneză"
-!define EKIGA_SPELLCHECK_GERMAN			"Germană"
-!define EKIGA_SPELLCHECK_GREEK			"Greacă"
-!define EKIGA_SPELLCHECK_ENGLISH			"Engleză"
-!define EKIGA_SPELLCHECK_ESPERANTO		"Esperanto"
-!define EKIGA_SPELLCHECK_SPANISH			"Spaniolă"
-!define EKIGA_SPELLCHECK_FAROESE			"Faroese"
-!define EKIGA_SPELLCHECK_FRENCH			"Franceză"
-!define EKIGA_SPELLCHECK_ITALIAN			"Italiană"
-!define EKIGA_SPELLCHECK_DUTCH			"Dutch"
-!define EKIGA_SPELLCHECK_NORWEGIAN		"Norvegiană"
-!define EKIGA_SPELLCHECK_POLISH			"Poloneză"
-!define EKIGA_SPELLCHECK_PORTUGUESE		"Portugheză"
-!define EKIGA_SPELLCHECK_ROMANIAN			"Română"
-!define EKIGA_SPELLCHECK_RUSSIAN			"Rusă"
-!define EKIGA_SPELLCHECK_SLOVAK			"Slovacă"
-!define EKIGA_SPELLCHECK_SWEDISH			"Suedeză"
-!define EKIGA_SPELLCHECK_UKRAINIAN		"Ucrainiană"
-

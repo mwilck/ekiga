@@ -1,10 +1,5 @@
-;;
-;;  hungarian.nsh
-;;
-;;  Default language strings for the Windows Ekiga NSIS installer.
+;;  Hungarian language strings for the Windows Ekiga NSIS installer.
 ;;  Windows Code page: 1252
-;;
-;;  Version 3
 
 ; Startup Checks
 !define INSTALLER_IS_RUNNING			"A telepítõprogram már fut."
@@ -59,33 +54,3 @@
 ; Uninstall Section Prompts
 !define un.EKIGA_UNINSTALL_ERROR_1		"Az eltávolító nem talált Ekiga könyvtári bejegyzéseket.$\rIt az alkalmazást valószínûleg másik felhasználó telepítette."
 !define un.EKIGA_UNINSTALL_ERROR_2		"Nem jogosult az alkalmazás eltávolítására."
-
-; Spellcheck Section Prompts
-!define EKIGA_SPELLCHECK_SECTION_TITLE		"Helyesírásellenõrzési támogatás"
-!define EKIGA_SPELLCHECK_ERROR			"Hiba a helyesírásellenõrzõ telepítése közben"
-!define EKIGA_SPELLCHECK_DICT_ERROR		"Hiba a helyesírásellenõrzõ szótár telepítése közben"
-!define EKIGA_SPELLCHECK_SECTION_DESCRIPTION	"Támogatás a helyesírásellenõrzéshez .  (A telepítéshez Internet kapcsolatra van szükség)"
-!define ASPELL_INSTALL_FAILED			"A telepítés sikertelen"
-!define EKIGA_SPELLCHECK_BRETON			"Breton"
-!define EKIGA_SPELLCHECK_CATALAN			"Katalán"
-!define EKIGA_SPELLCHECK_CZECH			"Cseh"
-!define EKIGA_SPELLCHECK_WELSH			"Welsh"
-!define EKIGA_SPELLCHECK_DANISH			"Dán"
-!define EKIGA_SPELLCHECK_GERMAN			"Német"
-!define EKIGA_SPELLCHECK_GREEK			"Görög"
-!define EKIGA_SPELLCHECK_ENGLISH			"Angol"
-!define EKIGA_SPELLCHECK_ESPERANTO		"Eszperantó"
-!define EKIGA_SPELLCHECK_SPANISH			"Spanyol"
-!define EKIGA_SPELLCHECK_FAROESE			"Feröer szigeteki"
-!define EKIGA_SPELLCHECK_FRENCH			"Francia"
-!define EKIGA_SPELLCHECK_ITALIAN			"Olasz"
-!define EKIGA_SPELLCHECK_DUTCH			"Holland"
-!define EKIGA_SPELLCHECK_NORWEGIAN		"Norvég"
-!define EKIGA_SPELLCHECK_POLISH			"Lengyel"
-!define EKIGA_SPELLCHECK_PORTUGUESE		"Portugál"
-!define EKIGA_SPELLCHECK_ROMANIAN			"Román"
-!define EKIGA_SPELLCHECK_RUSSIAN			"Orosz"
-!define EKIGA_SPELLCHECK_SLOVAK			"Szlovák"
-!define EKIGA_SPELLCHECK_SWEDISH			"Svéd"
-!define EKIGA_SPELLCHECK_UKRAINIAN		"Ukrán"
-
