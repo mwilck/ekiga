@@ -1,11 +1,7 @@
-;;  french.nsh
-;;
 ;;  French language strings for the Windows Ekiga NSIS installer.
 ;;  Windows Code page: 1252
 ;;
-;;  Version 3
 ;;  Author: Eric Boumaour <zongo_fr@users.sourceforge.net>, 2003-2005.
-;;
 
 ; Startup Checks
 !define INSTALLER_IS_RUNNING			"Le programme d'installation est déjà en cours d'exécution."
@@ -44,7 +40,7 @@
 !define GTK_UPGRADE_PROMPT			"Une ancienne version des bibliothèques GTK+ a été trouvée. Voulez-vous la mettre à jour ?$\rNote : Ekiga peut ne pas fonctionner si vous ne le faites pas."
 
 ; Installer Finish Page
-!define EKIGA_FINISH_VISIT_WEB_SITE		"Visitez la page web de Ekiga Windows" 
+!define EKIGA_FINISH_VISIT_WEB_SITE		"Visitez la page web de Ekiga Windows"
 
 ; Ekiga Section Prompts and Texts
 !define EKIGA_UNINSTALL_DESC			"Ekiga (supprimer uniquement)"
@@ -60,32 +56,3 @@
 ; Uninstall Section Prompts
 !define un.EKIGA_UNINSTALL_ERROR_1		"Le programme de désinstallation n'a pas retrouvé les entrées de Ekiga dans la base de registres.$\rL'application a peut-être été installée par un utilisateur différent."
 !define un.EKIGA_UNINSTALL_ERROR_2		"Vous n'avez pas les permissions pour supprimer cette application."
-
-; Spellcheck Section Prompts
-!define EKIGA_SPELLCHECK_SECTION_TITLE		"Correction orthographique"
-!define EKIGA_SPELLCHECK_ERROR			"Erreur à l'installation du correcteur orthographique"
-!define EKIGA_SPELLCHECK_DICT_ERROR		"Erreur à l'installation du dictionnaire pour le correcteur orthographique"
-!define EKIGA_SPELLCHECK_SECTION_DESCRIPTION	"Correction orthogaphique. (Une connexion internet est nécessaire pour son installation)"
-!define ASPELL_INSTALL_FAILED			"Échec de l'installation"
-!define EKIGA_SPELLCHECK_BRETON			"Breton"
-!define EKIGA_SPELLCHECK_CATALAN			"Catalan"
-!define EKIGA_SPELLCHECK_CZECH			"Tchèque"
-!define EKIGA_SPELLCHECK_WELSH			"Gallois"
-!define EKIGA_SPELLCHECK_DANISH			"Danois"
-!define EKIGA_SPELLCHECK_GERMAN			"Allemand"
-!define EKIGA_SPELLCHECK_GREEK			"Grec"
-!define EKIGA_SPELLCHECK_ENGLISH			"Anglais"
-!define EKIGA_SPELLCHECK_ESPERANTO		"Espéranto"
-!define EKIGA_SPELLCHECK_SPANISH			"Espagnol"
-!define EKIGA_SPELLCHECK_FAROESE			"Féringien"
-!define EKIGA_SPELLCHECK_FRENCH			"Français"
-!define EKIGA_SPELLCHECK_ITALIAN			"Italien"
-!define EKIGA_SPELLCHECK_DUTCH			"Hollandais"
-!define EKIGA_SPELLCHECK_NORWEGIAN		"Norvégien"
-!define EKIGA_SPELLCHECK_POLISH			"Polonais"
-!define EKIGA_SPELLCHECK_PORTUGUESE		"Portugais"
-!define EKIGA_SPELLCHECK_ROMANIAN		"Roumain"
-!define EKIGA_SPELLCHECK_RUSSIAN			"Russe"
-!define EKIGA_SPELLCHECK_SLOVAK			"Slovaque"
-!define EKIGA_SPELLCHECK_SWEDISH			"Suédois"
-!define EKIGA_SPELLCHECK_UKRAINIAN		"Ukrainien"

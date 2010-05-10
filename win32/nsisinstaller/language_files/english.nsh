@@ -1,6 +1,4 @@
-;;  english.nsh
-;;
-;;  Default language strings for the Windows Ekiga NSIS installer.
+;;  Default (English) language strings for the Windows Ekiga NSIS installer.
 ;;  Windows Code page: 1252
 ;;  Author: ...
 ;;
@@ -67,33 +65,3 @@
 ; Uninstall Section Prompts
 !insertmacro EKIGA_MACRO_DEFAULT_STRING un.EKIGA_UNINSTALL_ERROR_1		"The uninstaller could not find registry entries for Ekiga.$\rIt is likely that another user installed this application."
 !insertmacro EKIGA_MACRO_DEFAULT_STRING un.EKIGA_UNINSTALL_ERROR_2		"You do not have permission to uninstall this application."
-
-; Spellcheck Section Prompts
-!insertmacro EKIGA_MACRO_DEFAULT_STRING EKIGA_SPELLCHECK_SECTION_TITLE		"Spellchecking Support"
-!insertmacro EKIGA_MACRO_DEFAULT_STRING EKIGA_SPELLCHECK_ERROR			"Error Installing Spellchecking"
-!insertmacro EKIGA_MACRO_DEFAULT_STRING EKIGA_SPELLCHECK_DICT_ERROR		"Error Installing Spellchecking Dictionary"
-!insertmacro EKIGA_MACRO_DEFAULT_STRING EKIGA_SPELLCHECK_SECTION_DESCRIPTION	"Support for Spellchecking.  (Internet connection required for installation)"
-!insertmacro EKIGA_MACRO_DEFAULT_STRING ASPELL_INSTALL_FAILED			"Installation Failed"
-!insertmacro EKIGA_MACRO_DEFAULT_STRING EKIGA_SPELLCHECK_BRETON			"Breton"
-!insertmacro EKIGA_MACRO_DEFAULT_STRING EKIGA_SPELLCHECK_CATALAN			"Catalan"
-!insertmacro EKIGA_MACRO_DEFAULT_STRING EKIGA_SPELLCHECK_CZECH			"Czech"
-!insertmacro EKIGA_MACRO_DEFAULT_STRING EKIGA_SPELLCHECK_WELSH			"Welsh"
-!insertmacro EKIGA_MACRO_DEFAULT_STRING EKIGA_SPELLCHECK_DANISH			"Danish"
-!insertmacro EKIGA_MACRO_DEFAULT_STRING EKIGA_SPELLCHECK_GERMAN			"German"
-!insertmacro EKIGA_MACRO_DEFAULT_STRING EKIGA_SPELLCHECK_GREEK			"Greek"
-!insertmacro EKIGA_MACRO_DEFAULT_STRING EKIGA_SPELLCHECK_ENGLISH			"English"
-!insertmacro EKIGA_MACRO_DEFAULT_STRING EKIGA_SPELLCHECK_ESPERANTO		"Esperanto"
-!insertmacro EKIGA_MACRO_DEFAULT_STRING EKIGA_SPELLCHECK_SPANISH			"Spanish"
-!insertmacro EKIGA_MACRO_DEFAULT_STRING EKIGA_SPELLCHECK_FAROESE			"Faroese"
-!insertmacro EKIGA_MACRO_DEFAULT_STRING EKIGA_SPELLCHECK_FRENCH			"French"
-!insertmacro EKIGA_MACRO_DEFAULT_STRING EKIGA_SPELLCHECK_ITALIAN			"Italian"
-!insertmacro EKIGA_MACRO_DEFAULT_STRING EKIGA_SPELLCHECK_DUTCH			"Dutch"
-!insertmacro EKIGA_MACRO_DEFAULT_STRING EKIGA_SPELLCHECK_NORWEGIAN		"Norwegian"
-!insertmacro EKIGA_MACRO_DEFAULT_STRING EKIGA_SPELLCHECK_POLISH			"Polish"
-!insertmacro EKIGA_MACRO_DEFAULT_STRING EKIGA_SPELLCHECK_PORTUGUESE		"Portuguese"
-!insertmacro EKIGA_MACRO_DEFAULT_STRING EKIGA_SPELLCHECK_ROMANIAN			"Romanian"
-!insertmacro EKIGA_MACRO_DEFAULT_STRING EKIGA_SPELLCHECK_RUSSIAN			"Russian"
-!insertmacro EKIGA_MACRO_DEFAULT_STRING EKIGA_SPELLCHECK_SLOVAK			"Slovak"
-!insertmacro EKIGA_MACRO_DEFAULT_STRING EKIGA_SPELLCHECK_SWEDISH			"Swedish"
-!insertmacro EKIGA_MACRO_DEFAULT_STRING EKIGA_SPELLCHECK_UKRAINIAN		"Ukrainian"
-
