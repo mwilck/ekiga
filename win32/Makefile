@@ -3,7 +3,7 @@
 # RELEASE: 0=from git/svn, 1=release (tar.gz) for ekiga, ptlib and opal
 RELEASE   := 1
 # DEBUG: 0=release, 1=debug version
-DEBUG     := 1
+DEBUG     := 0
 
 MAKEOPTS  := $(MAKEFLAGS)
 MAKE_LIB_OPTS:=$(MAKEFLAGS)
@@ -80,7 +80,11 @@ ifneq ($(EKIGA_REV),)
 endif
 endif
 EKIGA_PREFIX := $(TARGETDIR)/Ekiga
+ifeq ($(DEBUG),1)
+EKIGA_INSTALLER := ekiga-setup-$(EKIGA_VER)-debug.exe
+else
 EKIGA_INSTALLER := ekiga-setup-$(EKIGA_VER).exe
+endif
 #EKIGA_WIN32_DIFF_DIR := $(CURDIR)/diff
 EKIGA_INSTALLER_DIR := $(EKIGA_DIR)/win32/nsisinstaller
 
@@ -801,8 +805,7 @@ $(TARGETDIR)/$(EKIGA_INSTALLER): $(TARGETDIR)/zips $(LIBDIR)/gtk+-$(GTK_BIN_VER)
 		-DINSTALLER_DIR=$(EKIGA_INSTALLER_DIR) -DLIB_DIR=$(LIBDIR) \
 		-DTARGET_DIR=$(TARGETDIR) -DWITH_GTK=true -DGTK_VERSION=$(GTK_BIN_VER) \
 		-DNSISSYSTEMDIR=$(NSISSYTEM_DIR) -DNSISPLUGINDIR=$(NSISPLUGIN_DIR) \
-		$(EKIGA_INSTALLER_DIR)/ekiga.nsi
-	touch $@
+		-DDEBUG=$(DEBUG) $(EKIGA_INSTALLER_DIR)/ekiga.nsi
 
 clean:
 	$(RM) -rf $(TARGETDIR)
