@@ -522,7 +522,7 @@ $(CELT_DIR)/config.status: $(SRCDIR)/$(CELT_ARCHIVE) $(LIBDIR)/libogg.a
 	tar xfz $(SRCDIR)/$(CELT_ARCHIVE) -C $(BUILDROOT)
 	cd $(CELT_DIR); ./configure $(confcelt)
 
-$(LIBDIR)/libcelt.a: $(CELT_DIR)/config.status
+$(LIBDIR)/libcelt0.a: $(CELT_DIR)/config.status
 	$(MAKE) $(MAKE_LIB_OPTS) -C $(CELT_DIR)
 	$(MAKE) -C $(CELT_DIR) install
 
@@ -550,7 +550,7 @@ else
 	$(SVN) co $(OPAL_URL) $(SRCDIR)/$(OPAL_ARCHIVE) -r $(OPAL_REV)
 endif
 
-$(OPAL_DIR)/configure: binaries $(LIBDIR)/libogg.a $(LIBDIR)/libspeex.a $(LIBDIR)/$(PTLIB_LIB) $(SRCDIR)/$(OPAL_ARCHIVE) $(BINDIR)/avcodec.dll $(LIBDIR)/libx264.a $(LIBDIR)/libcelt.a $(LIBDIR)/libtheora.a
+$(OPAL_DIR)/configure: binaries $(LIBDIR)/libogg.a $(LIBDIR)/libspeex.a $(LIBDIR)/$(PTLIB_LIB) $(SRCDIR)/$(OPAL_ARCHIVE) $(BINDIR)/avcodec.dll $(LIBDIR)/libx264.a $(LIBDIR)/libcelt0.a $(LIBDIR)/libtheora.a
 	rm -rf $(OPAL_DIR) $(LIBDIR)/$(OPAL_LIB) $(INCLUDEDIR)/opal
 ifeq ($(RELEASE),1)
 	tar xfz $(SRCDIR)/$(OPAL_ARCHIVE) -C $(BUILDROOT)
