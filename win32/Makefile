@@ -242,12 +242,14 @@ ifneq (,$(CONCURRENCY))
 endif
 
 confflags := --prefix=$(BUILDROOT) --build=$(DEB_BUILD_GNU_TYPE) --host=$(DEB_HOST_GNU_TYPE)
-confptlib := --prefix=$(BUILDROOT) --build=$(DEB_BUILD_GNU_TYPE) --host=$(DEB_HOST_GNU_TYPE) \
+
+confptlib := $(confflags) \
 	--enable-vfw --enable-vidfile --with-directx-includedir=$(EKIGA_DIR)/win32/directx \
 	--disable-qos --disable-vidfile --disable-alsa --disable-esd --disable-oss --disable-sunaudio --disable-shmaudio \
 	--disable-v4l --disable-v4l2 --disable-bsdvideo --disable-avc --disable-dc
-confopal := --prefix=$(BUILDROOT) --build=$(DEB_BUILD_GNU_TYPE) --host=$(DEB_HOST_GNU_TYPE) \
-	--with-ffmpeg-dir=$(FFMPEG_DIR) --disable-ffmpeg-h263 --disable-t38 --disable-fax
+
+confopal := $(confflags) --with-ffmpeg-dir=$(FFMPEG_DIR) --disable-t38 --disable-fax
+
 confekiga:= $(confflags) \
 	--with-directx-dir=$(EKIGA_DIR)/win32/directx --prefix=$(EKIGA_PREFIX) \
 	--bindir=$(EKIGA_PREFIX) --datadir=$(EKIGA_PREFIX) \
@@ -266,11 +268,11 @@ confffmpeg := --cross-prefix=i586-mingw32msvc- --enable-shared --enable-memalign
 	--libdir=$(LIBDIR) --extra-ldflags=-Wl,-static
 #	--disable-network
 
-confx264 := --disable-avs-input --prefix=$(BUILDROOT) --host=$(DEB_HOST_GNU_TYPE)
+confx264 := $(confflags) --disable-avs-input
 
 confcelt := $(confflags) --disable-oggtest
 
-conftheora := --host=$(DEB_HOST_GNU_TYPE) --prefix=$(BUILDROOT) --disable-vorbistest --disable-sdltest --disable-examples --disable-spec
+conftheora := $(confflags) --disable-vorbistest --disable-sdltest --disable-examples --disable-spec
 
 all: binaries $(TARGETDIR)/$(EKIGA_INSTALLER)
 	@echo "Built on $(shell date)"
