@@ -4,7 +4,7 @@
 RELEASE   := 1
 # DEBUG: 0=release, 1=debug version
 DEBUG     := 1
-MAKEFLAGS :=
+
 MAKEOPTS  := $(MAKEFLAGS)
 MAKE_LIB_OPTS:=$(MAKEFLAGS)
 
@@ -26,7 +26,6 @@ HOST_TOOL_PREFIX:=i586-mingw32msvc
 
 REALCC:=$(HOST_TOOL_PREFIX)-gcc
 REALCXX:=$(HOST_TOOL_PREFIX)-g++
-CONCURRENCY:=1
 
 MACH_FLAGS:=-march=pentium-mmx
 OPTI_FLAGS:=-O3 -fomit-frame-pointer
@@ -236,10 +235,6 @@ SVN:=svn
 GIT:=git
 
 DOC_LINGUAS=bg ca de el en_GB es eu fi fr oc pt_BR ru sv uk
-
-ifneq (,$(CONCURRENCY))
-	MAKEOPTS+=-j$(CONCURRENCY)
-endif
 
 confflags := --prefix=$(BUILDROOT) --build=$(DEB_BUILD_GNU_TYPE) --host=$(DEB_HOST_GNU_TYPE)
 
