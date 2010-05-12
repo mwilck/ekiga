@@ -3759,8 +3759,9 @@ ekiga_main_window_init (EkigaMainWindow *mw)
   mw->priv->current_call = boost::shared_ptr<Ekiga::Call>();
   mw->priv->timeout_id = -1;
   mw->priv->levelmeter_timeout_id = -1;
+  mw->priv->calling_state = Standby;
   mw->priv->audio_transmission_active = false;
-  mw->priv->audio_reception_active = false; 
+  mw->priv->audio_reception_active = false;
   mw->priv->video_transmission_active = false;
   mw->priv->video_reception_active = false;
 #ifndef WIN32
