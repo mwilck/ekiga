@@ -43,6 +43,20 @@
 #include <gtk/gtk.h>
 
 
+/* DESCRIPTION  :  /
+ * BEHAVIOR     :  /
+ * PRE          :  /
+ */
+const gchar *get_default_audio_device_name (void);
+
+
+/* DESCRIPTION  :  /
+ * BEHAVIOR     :  /
+ * PRE          :  /
+ */
+const gchar *get_default_video_device_name (const gchar * const *options);
+
+
 /* DESCRIPTION  :  / 
  * BEHAVIOR     :  Creates a button with the GtkWidget * as pixmap 
  *                 and the label as label.

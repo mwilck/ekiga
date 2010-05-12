@@ -1067,16 +1067,16 @@ prepare_audio_devices_page (EkigaAssistant *assistant)
   char **array;
 
   ringer = gm_conf_get_string (SOUND_EVENTS_KEY "output_device");
-  if (ringer == NULL)
-    ringer = g_strdup ("Default (PTLIB/ALSA)");
+  if (ringer == NULL || !ringer[0])
+    ringer = g_strdup (get_default_audio_device_name ());
 
   player = gm_conf_get_string (AUDIO_DEVICES_KEY "output_device");
-  if (player == NULL)
-    player = g_strdup ("Default (PTLIB/ALSA)");
+  if (player == NULL || !player[0])
+    player = g_strdup (get_default_audio_device_name ());
 
   recorder = gm_conf_get_string (AUDIO_DEVICES_KEY "input_device");
-  if (recorder == NULL)
-    recorder = g_strdup ("Default (PTLIB/ALSA)");
+  if (recorder == NULL || !recorder[0])
+    recorder = g_strdup (get_default_audio_device_name ());
 
   /* FIXME: We should use DetectDevices, however DetectDevices
    * works only for the currently selected audio and video plugins,
@@ -1185,6 +1185,10 @@ prepare_video_devices_page (EkigaAssistant *assistant)
   get_videoinput_devices_list (assistant->priv->core, device_list);
   array = convert_string_list (device_list);
   current_plugin = gm_conf_get_string (VIDEO_DEVICES_KEY "input_device");
+  if (current_plugin == NULL || !current_plugin[0]) {
+    g_free (current_plugin);
+    current_plugin = g_strdup (get_default_video_device_name (array));
+  }
   update_combo_box (GTK_COMBO_BOX (assistant->priv->video_device),
                     array, current_plugin);
   g_free (array);
