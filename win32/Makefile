@@ -154,7 +154,7 @@ GTK_ARCHIVE := gtk+-dev_$(GTK_VER)_win32.zip
 # see http://gtk-win.sourceforge.net for more information
 GTK_BIN_VER := 2.16.6
 GTK_INSTALLER_URL := http://downloads.sourceforge.net/gtk-win
-GTK_BIN_EXE := gtk2-runtime-2.16.6-2010-02-24-ash.exe
+GTK_BIN_EXE := gtk2-runtime-2.16.6-2010-05-12-ash.exe
 
 GLIB_VER := 2.18.0-2
 GLIB_URL := http://ftp.gnome.org/pub/gnome/binaries/win32/glib/2.18
