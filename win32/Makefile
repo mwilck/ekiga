@@ -497,7 +497,7 @@ ifeq ($(wildcard $(SRCDIR)/$(X264_ARCHIVE)), )
 	$(GIT) clone $(X264_URL) $(SRCDIR)/$(X264_ARCHIVE)
 endif
 	cd $(SRCDIR)/$(X264_ARCHIVE); git reset --hard $(X264_VER)
-	touch $(SRCDIR)/$(X264_ARCHIVE)
+	#touch $(SRCDIR)/$(X264_ARCHIVE)
 
 $(X264_DIR)/config.status: $(SRCDIR)/$(X264_ARCHIVE)
 	rm -rf $(X264_DIR)
@@ -773,9 +773,9 @@ endif
 		fi \
 	done
 
-	cd $(TARGETDIR); zip -9r ekiga-$(EKIGA_VER).zip Ekiga
-	zip -9r $(TARGETDIR)/ekiga_build-$(EKIGA_VER).zip Makefile #$(EKIGA_WIN32_DIFF_DIR)
-	tar cfvz $(TARGETDIR)/ekiga_build-$(EKIGA_VER).tgz Makefile #$(EKIGA_WIN32_DIFF_DIR)
+	#cd $(TARGETDIR); zip -9r ekiga-$(EKIGA_VER).zip Ekiga
+	#zip -9r $(TARGETDIR)/ekiga_build-$(EKIGA_VER).zip Makefile #$(EKIGA_WIN32_DIFF_DIR)
+	#tar cfvz $(TARGETDIR)/ekiga_build-$(EKIGA_VER).tgz Makefile #$(EKIGA_WIN32_DIFF_DIR)
 	touch $@
 
 # Two additional plugins are needed from nsis:
