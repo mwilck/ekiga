@@ -775,16 +775,16 @@ gm_pw_init_audio_devices_page (GtkWidget *prefs_window,
   gm_prefs_window_get_audiooutput_devices_list (pw->core, device_list);
   array = gm_prefs_window_convert_string_list(device_list);
   pw->sound_events_output = 
-    gnome_prefs_string_option_menu_new (subsection, _("Ringing Device"), (const gchar **)array, SOUND_EVENTS_KEY "output_device", _("Select the ringing audio device to use"), 0, "Default (PTLIB/ALSA)");
+    gnome_prefs_string_option_menu_new (subsection, _("Ringing Device"), (const gchar **)array, SOUND_EVENTS_KEY "output_device", _("Select the ringing audio device to use"), 0, get_default_audio_device_name ());
   pw->audio_player =
-    gnome_prefs_string_option_menu_new (subsection, _("Output device:"), (const gchar **)array, AUDIO_DEVICES_KEY "output_device", _("Select the audio output device to use"), 1, "Default (PTLIB/ALSA)");
+    gnome_prefs_string_option_menu_new (subsection, _("Output device:"), (const gchar **)array, AUDIO_DEVICES_KEY "output_device", _("Select the audio output device to use"), 1, get_default_audio_device_name ());
   g_free (array);
 
   /* The recorder */
   gm_prefs_window_get_audioinput_devices_list (pw->core, device_list);
   array = gm_prefs_window_convert_string_list(device_list);
   pw->audio_recorder =
-    gnome_prefs_string_option_menu_new (subsection, _("Input device:"), (const gchar **)array, AUDIO_DEVICES_KEY "input_device", _("Select the audio input device to use"), 2, "Default (PTLIB/ALSA)");
+    gnome_prefs_string_option_menu_new (subsection, _("Input device:"), (const gchar **)array, AUDIO_DEVICES_KEY "input_device", _("Select the audio input device to use"), 2, get_default_audio_device_name ());
   g_free (array);
 
 
@@ -1290,11 +1290,11 @@ gm_prefs_window_update_devices_list (GtkWidget *prefs_window)
   gnome_prefs_string_option_menu_update (pw->audio_player,
  					 (const gchar **)array,
  					 AUDIO_DEVICES_KEY "output_device",
-                                         "Default (PTLIB/ALSA)");
+ 					 get_default_audio_device_name ());
   gnome_prefs_string_option_menu_update (pw->sound_events_output,
                                          (const gchar **)array,
                                          SOUND_EVENTS_KEY "output_device",
-                                         "Default (PTLIB/ALSA)");
+                                         get_default_audio_device_name ());
   g_free (array);
 
   /* The recorder */
@@ -1303,7 +1303,7 @@ gm_prefs_window_update_devices_list (GtkWidget *prefs_window)
   gnome_prefs_string_option_menu_update (pw->audio_recorder,
  					 (const gchar **)array,
  					 AUDIO_DEVICES_KEY "input_device",
-                                         "Default (PTLIB/ALSA)");
+ 					 get_default_audio_device_name ());
   g_free (array);
 
 
@@ -1313,7 +1313,7 @@ gm_prefs_window_update_devices_list (GtkWidget *prefs_window)
   gnome_prefs_string_option_menu_update (pw->video_device,
 					 (const gchar **)array,
 					 VIDEO_DEVICES_KEY "input_device",
-                                         NULL);
+					 get_default_video_device_name (array));
   g_free (array);
 }
 
