@@ -40,7 +40,7 @@
 #include "config.h"
 
 #include "preferences.h"
-
+#include "misc.h"
 #include "accounts.h"
 #include "ekiga.h"
 #include "callbacks.h"

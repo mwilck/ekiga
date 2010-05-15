@@ -46,7 +46,7 @@
 #include "gmdialog.h"
 #include "gmconf.h"
 
-#include <glib/gi18n.h>
+#include <glib.h>
 
 
 /* return the default audio device name */

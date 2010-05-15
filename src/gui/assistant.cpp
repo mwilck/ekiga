@@ -46,6 +46,7 @@
 #include "gmconf.h"
 #include "toolbox/toolbox.h"
 #include "assistant.h"
+#include "misc.h"
 
 #include "opal-bank.h"
 #include "videoinput-core.h"
