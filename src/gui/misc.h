@@ -40,6 +40,8 @@
 #ifndef _MISC_H_
 #define _MISC_H_
 
+#include <glib.h>
+
 /* DESCRIPTION  :  /
  * BEHAVIOR     :  /
  * PRE          :  /

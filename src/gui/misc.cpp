@@ -46,8 +46,6 @@
 #include "gmdialog.h"
 #include "gmconf.h"
 
-#include <glib.h>
-
 
 /* return the default audio device name */
 const gchar *get_default_audio_device_name (void)
