@@ -79,6 +79,7 @@
 #else
 #include "platform/winpaths.h"
 #include <gdk/gdkwin32.h>
+#include <cstdio>
 #endif
 
 #ifdef HAVE_NOTIFY
