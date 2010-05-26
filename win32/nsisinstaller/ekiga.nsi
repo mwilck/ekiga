@@ -222,6 +222,18 @@ Section $(GTK_SECTION_TITLE) SecGtk
     StrCmp $R1 "NONE" gtk_no_install_rights
     ClearErrors
     ExecWait '"$TEMP\${GTK_RUNTIME_INSTALLER}" /L=$LANGUAGE $ISSILENT /DIR="$GTK_FOLDER" /IGNOREERRORS'
+    ; now the GTK path needs to be added to the path of the setup
+    ; so that Ekiga could be started from the last page
+    ReadEnvStr $R0 "PATH"
+    StrCmp $R6 "HKLM" hklm1 hkcu1
+    hklm1:
+      ReadRegStr $R3 HKLM ${GTK_REG_KEY} "Path"
+      Goto hk1
+    hkcu1:
+      ReadRegStr $R3 HKCU ${GTK_REG_KEY} "Path"
+    hk1:
+    StrCpy $R0 "$R0;$R3\bin"
+    System::Call 'Kernel32::SetEnvironmentVariableA(t, t) i("PATH", R0).r0'
     Goto gtk_install_cont
 
   upgrade_gtk:
