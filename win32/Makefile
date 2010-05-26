@@ -187,6 +187,9 @@ EXPAT_URL := http://kent.dl.sourceforge.net/sourceforge/expat
 
 LIBINTL_VER := 0.14.4
 
+# choose commit 203e34 (2007-09-30), since since then a few modifications
+# have been done and the compilation needs to be updated
+REGEX_REV := 203e34
 REGEX_DIR := $(BUILDROOT)/regex
 REGEX_ARCHIVE := regex
 
@@ -304,8 +307,8 @@ update-sources::
 	@echo "--- Getting libregex..."
 	mkdir -p $(SRCDIR)/$(REGEX_ARCHIVE)
 	cd $(SRCDIR)/$(REGEX_ARCHIVE); \
-	for i in regex.c regexec.c regex.h regex_internal.c regex_internal.h regcomp.c alloca_.h alloca.c strcase.h localcharset.c localcharset.h;do \
-	  $(WGET) http://cvs.savannah.nongnu.org/viewcvs/*checkout*/gnulib/gnulib/lib/$$i ;\
+	for i in regex.c regexec.c regex.h regex_internal.c regex_internal.h regcomp.c alloca_.h alloca.c localcharset.c localcharset.h; do \
+	  $(WGET) http://git.savannah.gnu.org/cgit/gnulib.git/plain/lib/$$i?id=$(REGEX_REV) -O $$i; \
 	done
 
 $(REGEX_DIR)/regex.h: $(SRCDIR)/$(REGEX_ARCHIVE)
