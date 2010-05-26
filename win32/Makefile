@@ -126,7 +126,7 @@ else
 	PTLIB_LIB := libpt.$(PTLIB_VER).dll
 endif
 
-OPENLDAP_VER := 2.3.28
+OPENLDAP_VER := 2.4.22
 OPENLDAP_DIR := $(BUILDROOT)/openldap-$(OPENLDAP_VER)
 OPENLDAP_ARCHIVE := openldap-$(OPENLDAP_VER).tgz
 OPENLDAP_URL := http://www.openldap.org/software/download/OpenLDAP/openldap-release
@@ -136,7 +136,7 @@ LIBSASL2_DIR := $(BUILDROOT)/cyrus-sasl-$(LIBSASL2_VER)
 LIBSASL2_ARCHIVE := cyrus-sasl-$(LIBSASL2_VER).zip
 LIBSASL2_URL := http://developer.pidgin.im/static/win32
 
-OGG_VER := 1.1.4
+OGG_VER := 1.2.0
 OGG_DIR := $(BUILDROOT)/libogg-$(OGG_VER)
 OGG_ARCHIVE := libogg-$(OGG_VER).tar.gz
 OGG_URL := http://downloads.xiph.org/releases/ogg
@@ -156,7 +156,7 @@ GTK_BIN_VER := 2.16.6
 GTK_INSTALLER_URL := http://downloads.sourceforge.net/gtk-win
 GTK_BIN_EXE := gtk2-runtime-2.16.6-2010-05-12-ash.exe
 
-GLIB_VER := 2.18.0-2
+GLIB_VER := 2.18.4-1
 GLIB_URL := http://ftp.gnome.org/pub/gnome/binaries/win32/glib/2.18
 GLIB_ARCHIVE := glib-dev_$(GLIB_VER)_win32.zip
 
@@ -168,16 +168,16 @@ CAIRO_VER := 1.8.6-1
 CAIRO_URL := http://ftp.gnome.org/pub/gnome/binaries/win32/dependencies
 CAIRO_ARCHIVE := cairo-dev_$(CAIRO_VER)_win32.zip
 
-PANGO_VER := 1.24.0-1
+PANGO_VER := 1.24.5-2
 PANGO_URL := http://ftp.gnome.org/pub/gnome/binaries/win32/pango/1.24
 PANGO_ARCHIVE := pango-dev_$(PANGO_VER)_win32.zip
 
-XML2_VER := 2.7.3
+XML2_VER := 2.7.7
 XML2_DIR := libxml2-$(XML2_VER)
 XML2_URL := ftp://xmlsoft.org/libxml2
 XML2_ARCHIVE := libxml2-$(XML2_VER).tar.gz
 
-LIBPNG_VER := 1.2.35
+LIBPNG_VER := 1.2.37
 GNUWIN32_URL := http://downloads.sourceforge.net/gnuwin32
 
 EXPAT_VER = 2.0.1
@@ -185,16 +185,14 @@ EXPAT_DIR = $(BUILDROOT)/expat-$(EXPAT_VER)
 EXPAT_ARCHIVE := expat-$(EXPAT_VER).tar.gz
 EXPAT_URL := http://kent.dl.sourceforge.net/sourceforge/expat
 
-LIBINTL_VER := 0.14.4
-
 # choose commit 203e34 (2007-09-30), since since then a few modifications
 # have been done and the compilation needs to be updated
 REGEX_REV := 203e34
 REGEX_DIR := $(BUILDROOT)/regex
 REGEX_ARCHIVE := regex
 
-SIGC_VER := 2.0.18
-SIGC_URL := http://ftp.gnome.org/pub/GNOME/sources/libsigc++/2.0
+SIGC_VER := 2.2.7
+SIGC_URL := http://ftp.gnome.org/pub/GNOME/sources/libsigc++/2.2
 SIGC_ARCHIVE := libsigc++-$(SIGC_VER).tar.gz
 SIGC_DIR := libsigc++-$(SIGC_VER)
 
@@ -228,7 +226,7 @@ THEORA_URL := http://downloads.xiph.org/releases/theora
 THEORA_DIR := $(BUILDROOT)/libtheora-$(THEORA_VER)
 THEORA_ARCHIVE := libtheora-$(THEORA_VER).tar.gz
 
-NSIS_VER := 2.43
+NSIS_VER := 2.46
 NSIS_URL := http://downloads.sourceforge.net/nsis
 NSISPROCESSES_URL := http://nsis.sourceforge.net/mediawiki/images/f/f3/
 NSISSYTEM_DIR := /usr/share/nsis/Contrib/Modern\ UI
