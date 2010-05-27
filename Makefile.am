@@ -43,6 +43,7 @@ WIN32_DIST = \
 	win32/nsisinstaller/language_files/english.nsh		\
 	win32/nsisinstaller/language_files/french.nsh		\
 	win32/nsisinstaller/language_files/romanian.nsh		\
+	win32/nsisinstaller/language_files/dutch.nsh		\
 	win32/nsisinstaller/langmacros.nsh
 
 
