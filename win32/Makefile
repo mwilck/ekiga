@@ -764,9 +764,10 @@ endif
 	# we cannot strip MS compiled dlls
 	install -m 755 $(LIBSASL2_DIR)/bin/libsasl.dll $(EKIGA_PREFIX)
 
+	# for RELEASE=0 ekiga.xml files do not exist, so create them
 	for lc in C $(DOC_LINGUAS); do \
 		mkdir -p $(EKIGA_PREFIX)/help/$$lc; \
-		test $$lc != "C" && xml2po -m docbook -e -p $(EKIGA_DIR)/help/$$lc/$$lc.po $(EKIGA_DIR)/help/C/ekiga.xml >$(EKIGA_DIR)/help/$$lc/ekiga.xml ; \
+		test $$lc != "C" -a ! -f $(EKIGA_DIR)/help/$$lc/ekiga.xml && xml2po -m docbook -e -p $(EKIGA_DIR)/help/$$lc/$$lc.po $(EKIGA_DIR)/help/C/ekiga.xml >$(EKIGA_DIR)/help/$$lc/ekiga.xml ; \
 		if test -f $(EKIGA_DIR)/help/$$lc/ekiga.xml; then \
 			xmlto -o $(EKIGA_PREFIX)/help/$$lc/ --skip-validation html $(EKIGA_DIR)/help/$$lc/ekiga.xml; \
 		fi ;\
