@@ -229,7 +229,7 @@ Section $(GTK_SECTION_TITLE) SecGtk
     hkcu1:
       ReadRegStr $R3 HKCU ${GTK_REG_KEY} "Path"
     hk1:
-    StrCpy $R0 "$R0;$R3\bin"
+    StrCpy $R0 "$R0;$R3\bin;$R3\lib;$R3"
     System::Call 'Kernel32::SetEnvironmentVariableA(t, t) i("PATH", R0).r0'
     Goto gtk_install_cont
 
