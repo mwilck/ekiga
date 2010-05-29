@@ -1,3 +1,4 @@
+#include <stdlib.h>
 #include <iostream>
 #include <boost/throw_exception.hpp>
 
