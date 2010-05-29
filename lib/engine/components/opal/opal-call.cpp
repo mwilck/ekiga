@@ -387,6 +387,11 @@ Opal::Call::OnCleared ()
 
   NoAnswerTimer.Stop (false);
 
+  // hack for busy here bug: if we receive a call while in communication, then wait for 1.5 secs, afterwards return.  New smaller bug appears: we are not informed about missed call anymore in this case
+  for (int i=0 ; i<15 && !call_setup ; i++)
+    PThread::Current ()->Sleep (100);
+  if (this != busy_here_hack)
+    return;
   // TODO find a better way than that
   while (!call_setup)
     PThread::Current ()->Sleep (100);
@@ -500,6 +505,7 @@ Opal::Call::OnSetUp (OpalConnection & connection)
   parse_info (connection);
 
   Ekiga::Runtime::emit_signal_in_main (setup);
+  busy_here_hack = this;
   call_setup = true;
 
   cleared.connect (sigc::mem_fun (this, &Opal::Call::on_cleared_call));

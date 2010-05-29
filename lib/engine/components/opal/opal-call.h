@@ -225,6 +225,7 @@ private:
     std::string remote_uri;
     std::string remote_application;
 
+    void *busy_here_hack;  // this variable is a workaround for Busy Here bug
     bool call_setup;
     bool outgoing;
 
