@@ -156,6 +156,14 @@ Section -SecUninstallOldEkiga
                 ; Check if we have uninstall string..
                 IfFileExists $R3 0 uninstall_problem
                 ; Have uninstall string.. go ahead and uninstall.
+                ; but before, prevent removal of non-standard
+                ;   installation directory of ekiga prior to April 2010
+                ; so the lines until nameok1 label could be removed by 2012
+                ${GetFileName} $R1 $R5
+                StrCmp $R5 ekiga nameok1 0  ; unsensitive comparation
+                MessageBox MB_OK "WARNING: Ekiga was installed in $R1, which is not a standard location.  Your old ekiga files will not be removed, please remove manually the directory $R1 after ensuring that you have not added to it useful files for you."
+                Goto done
+                nameok1:
                 SetOverwrite on
                 ; Need to copy uninstaller outside of the install dir
                 ClearErrors
