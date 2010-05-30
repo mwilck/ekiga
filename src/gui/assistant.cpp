@@ -912,9 +912,9 @@ apply_connection_type_page (EkigaAssistant *assistant)
   /* Set the connection quality settings */
   switch (connection_type) {
     case NET_PSTN:
-      break;
-
     case NET_ISDN:
+      gm_conf_set_int (VIDEO_DEVICES_KEY "size", 0); //QCIF
+      gm_conf_set_int (VIDEO_CODECS_KEY "maximum_video_tx_bitrate", 32);
       break;
 
     case NET_DSL128:
