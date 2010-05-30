@@ -4,6 +4,9 @@ stacklib_dir = $(stacklibdir)
 libekiga_la_SOURCES =
 libekiga_la_LDFLAGS = $(STACKLIB_LDFLAGS) $(BOOST_LIBS) $(GLIB_LIBS) $(XML_LIBS) $(GTK_LIBS)
 
+if !WIN32
+libekiga_la_LDFLAGS += -lX11
+endif
 
 CLEANFILES =
 
@@ -654,6 +657,15 @@ if HAVE_GNOME
 libekiga_la_SOURCES += \
 	$(components_dir)/gnome-session/gnome-session-main.h \
 	$(components_dir)/gnome-session/gnome-session-main.cpp
+
+endif
+
+##
+# Support for shared memory
+##
+if HAVE_SHM
+
+libekiga_la_LDFLAGS += $(SHM_LIBS)
 
 endif
 
