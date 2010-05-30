@@ -912,29 +912,24 @@ apply_connection_type_page (EkigaAssistant *assistant)
   /* Set the connection quality settings */
   switch (connection_type) {
     case NET_PSTN:
-      gm_conf_set_bool (VIDEO_CODECS_KEY "enable_video", FALSE);
       break;
 
     case NET_ISDN:
-      gm_conf_set_bool (VIDEO_CODECS_KEY "enable_video", FALSE);
       break;
 
     case NET_DSL128:
       gm_conf_set_int (VIDEO_DEVICES_KEY "size", 0); //QCIF
       gm_conf_set_int (VIDEO_CODECS_KEY "maximum_video_tx_bitrate", 64);
-      gm_conf_set_bool (VIDEO_CODECS_KEY "enable_video", TRUE);
       break;
 
     case NET_DSL512:
       gm_conf_set_int (VIDEO_DEVICES_KEY "size", 3); // 320x240
       gm_conf_set_int (VIDEO_CODECS_KEY "maximum_video_tx_bitrate", 384);
-      gm_conf_set_bool (VIDEO_CODECS_KEY "enable_video", TRUE);
       break;
 
     case NET_LAN:
       gm_conf_set_int (VIDEO_DEVICES_KEY "size", 3); // 320x240
       gm_conf_set_int (VIDEO_CODECS_KEY "maximum_video_tx_bitrate", 1024);
-      gm_conf_set_bool (VIDEO_CODECS_KEY "enable_video", TRUE);
       break;
 
     case NET_CUSTOM:
@@ -1653,11 +1648,9 @@ ekiga_assistant_new (Ekiga::ServiceCore *core)
   assistant->priv->connections.push_back (conn);
 
   /* Notifiers for the VIDEO_CODECS_KEY keys */
-  gm_conf_notifier_add (VIDEO_CODECS_KEY "enable_video",
-			kind_of_net_changed_nt, NULL);	     
-  gm_conf_notifier_add (VIDEO_CODECS_KEY "maximum_video_tx_bitrate", 
+  gm_conf_notifier_add (VIDEO_CODECS_KEY "maximum_video_tx_bitrate",
 			kind_of_net_changed_nt, NULL);
-  gm_conf_notifier_add (VIDEO_CODECS_KEY "temporal_spatial_tradeoff", 
+  gm_conf_notifier_add (VIDEO_CODECS_KEY "temporal_spatial_tradeoff",
 			kind_of_net_changed_nt, NULL);
 
   return GTK_WIDGET (assistant);
