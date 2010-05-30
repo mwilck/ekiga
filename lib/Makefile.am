@@ -18,9 +18,12 @@ BUILT_SOURCES = gmmarshallers.h gmmarshallers.c
 
 INCLUDES =						\
 	-DSYSCONFDIR=\""$(sysconfdir)"\"		\
-	-I$(top_srcdir)					
+	-I$(top_srcdir)
 
 libekiga_la_LDFLAGS = -export-dynamic
+if !WIN32
+libekiga_la_LDFLAGS += -lX11
+endif
 libekiga_la_LIBADD = \
 	gmconf/libgmconf.la \
 	gui/libgmwidgets.la \

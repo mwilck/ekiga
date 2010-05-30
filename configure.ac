@@ -434,6 +434,8 @@ fi],enable_shm=yes)
     if test "x${with_shm}" != "xno"; then
       SHM="enabled"
       AC_DEFINE(HAVE_SHM,1,[SHM Support])
+      SHM_LIBS="-lXext"
+      AC_SUBST(SHM_LIBS)
     fi
   fi
 fi
@@ -896,6 +898,7 @@ fi
 echo "                    LDAP support  :  $LDAP"
 echo ""
 echo "                  XVideo support  :  $XV"
+echo "           Shared Memory support  :  $SHM"
 if test "x${gm_platform}" = "xmingw" ; then
 echo "                 DirectX support  :  $DX"
 fi

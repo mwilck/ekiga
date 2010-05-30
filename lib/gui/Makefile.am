@@ -84,4 +84,7 @@ AM_CXXFLAGS = $(GTK_CFLAGS) $(GLIB_CFLAGS) $(OPAL_CFLAGS) $(PTLIB_CFLAGS) $(XV_C
 AM_LIBS = $(GTK_LIBS) $(GLIB_LIBS) $(OPAL_LIBS) $(PTLIB_LIBS) $(XV_LIBS) $(DX_LIBS) $(GNOME_LIBS) $(SIGC_LIBS)
 
 libgmwidgets_la_LDFLAGS = -export-dynamic
+if HAVE_SHM
+libgmwidgets_la_LDFLAGS += $(SHM_LIBS)
+endif
 libgmwidgets_la_LIBADD = $(AM_LIBS)
