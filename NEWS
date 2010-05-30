@@ -1,4 +1,59 @@
                           -*- mode: outline -*-
+* Changes in ekiga 3.2.7 (2010-05-29)
+** User-visible fixes
+- Use NAT ports instead of local ports for RTP, fixing many connection issues
+- Add workaround for "In some cases ekiga answers always Busy Here"
+- Fix crash in the avahi code
+- Set the default audio and video devices
+- Fix Call buttons do not work
+- Add bpp16 (RGB16) support
+- Add partial support for IPv6
+- Fix number of users found on ekiga.net LDAP directory
+- Fix connection type setting in assistant
+- Use a decent connection type by default (DSL 128kb/s uplink)
+- Check off iLBC, CELT32, CELT48 and G722 audio codecs by default
+- Fix possible crash when PTLib code accessed by thread not created by PTlib
+- Fix issue when deleting a safe object
+- Fix possible NULL pointer access if get multiple NOTIFY messages on a REFER
+
+** Protocol fixes
+- Fix strange issue with SIP call diversion (302 response) to the same endpoint
+- Change to only unregister those contact addresses we successfully registered
+- Fix incorrect change to AlertingPhase in H323
+- Change authentication failure to be fatal and SIP handler removed
+- Fix double authorisation failure leaving SIP handler in the wrong state
+- Fix SIP REFER completion on receiving NOTIFY with id parameter
+- Fix authentication issue when can get to SIP server via two interfaces
+- Fix address translation of REGISTER contact fields when STUN is not used
+- Fix locating correct authorisation credentials for INVITE
+- Fix correct test handling RFC3261/8.2.2.2 merged requests and other
+  "multi-path" received INVITE requests
+- other minor fixes
+
+** Build fixes
+- Fix gdu (gnome-doc-utils) configure option
+- Replace deprecated functions in gtk >= 2.18
+- Fix build with binutils-gold
+- other minor build fixes
+
+** Windows port fixes
+- Fix major bug where the uninstaller could remove non-Ekiga files
+- Fix starting Ekiga from last page of installer
+- Fix language selection during installation
+- Update version of dependent libraries
+- Allow to create executable from release or from git/svn
+- Add Dutch and Romanian translations of Windows installer
+- Add all help localisation files to the installer
+- Fix compilation error on std::freopen on newer gcc
+- other build fixes
+
+** Distributor-visible changes
+
+** Translation fixes
+- Updated translations: bn_IN, eu, gu, kn
+- New translations: ast
+- Updated help translations:
+
 * Changes in ekiga 3.2.6 (2009-09-22)
 ** User-visible fixes
 - Fixed crashes shown as assertion failed in /usr/include/ptlib/safecoll.h:813
