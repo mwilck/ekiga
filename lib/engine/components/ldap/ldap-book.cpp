@@ -894,6 +894,9 @@ OPENLDAP::Book::refresh_result ()
     msg_result = ldap_next_message (ldap_context, msg_result);
   } while (msg_result != NULL);
 
+  // Do not count ekiga.net's first entry "Search Results ... 100 entries"
+  if (strcmp (bookinfo.uri_host.c_str(), "ldap://ekiga.net") == 0)
+    nbr--;
   c_status = g_strdup_printf (ngettext ("%d user found",
 					"%d users found", nbr), nbr);
   status = c_status;
