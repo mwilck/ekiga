@@ -241,7 +241,7 @@ GIT:=git
 
 # additional help languages to be built, eg to build only C and fr use:
 # DOC_LINGUAS := fr
-DOC_LINGUAS := $(strip $(shell grep DOC_LINGUAS $(SRCDIR)/$(EKIGA_ARCHIVE)/help/Makefile.am | cut -d= -f2))
+DOC_LINGUAS := $(strip $(shell grep DOC_LINGUAS $(EKIGA_DIR)/help/Makefile.am | cut -d= -f2))
 
 confflags := --prefix=$(BUILDROOT) --build=$(DEB_BUILD_GNU_TYPE) --host=$(DEB_HOST_GNU_TYPE)
 
