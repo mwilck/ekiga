@@ -1035,7 +1035,7 @@ ekiga_main_window_set_video_size (EkigaMainWindow *mw, int width, int height)
     return;
 
   panel = gtk_paned_get_child2 (GTK_PANED (mw->priv->hpaned));
-  if (GTK_WIDGET_VISIBLE (panel)) {
+  if (gtk_widget_get_visible (panel)) {
     int x, y;
     int rw, pos;
     GtkRequisition req;
@@ -2571,7 +2571,7 @@ ekiga_main_window_show_call_panel (EkigaMainWindow *mw)
   int x, y = 0;
   GtkWidget *call_panel = gtk_paned_get_child2 (GTK_PANED (mw->priv->hpaned));
 
-  if (!GTK_WIDGET_VISIBLE (call_panel)) {
+  if (!gtk_widget_get_visible (call_panel)) {
     gtk_window_get_size (GTK_WINDOW (mw), &x, &y);
     gtk_widget_show_all (call_panel);
     gtk_window_resize (GTK_WINDOW (mw), x + call_panel->allocation.width, y);
@@ -2585,7 +2585,7 @@ ekiga_main_window_hide_call_panel (EkigaMainWindow *mw)
   int x, y = 0;
   GtkWidget *call_panel = gtk_paned_get_child2 (GTK_PANED (mw->priv->hpaned));
 
-  if (GTK_WIDGET_VISIBLE (call_panel)) {
+  if (gtk_widget_get_visible (call_panel)) {
     gtk_window_get_size (GTK_WINDOW (mw), &x, &y);
     gtk_widget_hide (call_panel);
     x = x - call_panel->allocation.width;

@@ -271,7 +271,7 @@ statusicon_activated_cb (G_GNUC_UNUSED GtkStatusIcon *icon,
     window = GnomeMeeting::Process ()->GetMainWindow (); //FIXME
 
     // FIXME when the main window becomes a gobject
-    if (!(GTK_WIDGET_VISIBLE (window) 
+    if (!(gtk_widget_get_visible (window)
           && !(gdk_window_get_state (GDK_WINDOW (window->window)) & GDK_WINDOW_STATE_ICONIFIED))) {
       gtk_widget_show (window);
     }
