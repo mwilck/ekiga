@@ -4491,7 +4491,6 @@ main (int argc,
    * is a fatal error.
    */
   main_window = GnomeMeeting::Process ()->GetMainWindow ();
-  EkigaMainWindow *mw = EKIGA_MAIN_WINDOW (main_window); //TODO no priv here
   boost::shared_ptr<Ekiga::CallCore> call_core = service_core->get<Ekiga::CallCore> ("call-core");
   if (error == -1) {
 
@@ -4567,6 +4566,7 @@ main (int argc,
 
 #ifdef HAVE_DBUS
   /* Create the dbus server instance */
+  EkigaMainWindow *mw = EKIGA_MAIN_WINDOW (main_window);
   EkigaDBusComponent *dbus_component = ekiga_dbus_component_new (mw->priv->core);
 #endif
 
