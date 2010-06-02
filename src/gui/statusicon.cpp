@@ -494,13 +494,8 @@ statusicon_start_blinking (StatusIcon *icon,
   g_return_if_fail (icon != NULL);
 
   icon->priv->blink_image = g_strdup (stock_id);
-#if GLIB_CHECK_VERSION (2, 14, 0)
   if (icon->priv->blink_id == -1)
     icon->priv->blink_id = g_timeout_add_seconds (1, statusicon_blink_cb, icon);
-#else
-  if (icon->priv->blink_id == -1)
-    icon->priv->blink_id = g_timeout_add (1000, statusicon_blink_cb, icon);
-#endif
 }
 
 

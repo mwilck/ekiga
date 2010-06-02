@@ -135,13 +135,8 @@ gm_sb_push_message (GmStatusbar *sb,
         timer_source = 0;
       }
 
-#if GLIB_CHECK_VERSION (2, 14, 0)
       timer_source = g_timeout_add_seconds (15, gm_statusbar_clear_msg_cb, 
 		       GINT_TO_POINTER (msg_id));
-#else
-      timer_source = g_timeout_add (15000, gm_statusbar_clear_msg_cb, 
-		       GINT_TO_POINTER (msg_id));
-#endif
     }
   }
 }

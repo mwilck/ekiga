@@ -1271,12 +1271,7 @@ gm_conf_init ()
   gm_conf_set_bool ("/desktop/gnome/interface/menus_have_icons", TRUE);
 
   /* automatic savings */
-#if GLIB_CHECK_VERSION (2, 14, 0)
   g_timeout_add_seconds (5, (GSourceFunc)saveconf_timer_callback, NULL);
-#else
-  g_timeout_add (5000, (GSourceFunc)saveconf_timer_callback, NULL);
-#endif
-
 }
 
 
