@@ -4350,10 +4350,9 @@ main (int argc,
   Ekiga::ServiceCorePtr service_core(new Ekiga::ServiceCore);
 
   GtkWidget *main_window = NULL;
-  GtkWidget *assistant_window = NULL;
 
   GtkWidget *dialog = NULL;
-  
+
   gchar *path = NULL;
   gchar *url = NULL;
   gchar *msg = NULL;
@@ -4490,33 +4489,26 @@ main (int argc,
   boost::shared_ptr<Ekiga::CallCore> call_core = service_core->get<Ekiga::CallCore> ("call-core");
   if (error == -1) {
 
-    if (gm_conf_get_int (GENERAL_KEY "version") 
-        < 1000 * MAJOR_VERSION + 10 * MINOR_VERSION + BUILD_NUMBER) {
-
-      gnomemeeting_conf_upgrade ();
-      // Only show the assistant window if version older than 2.00
-      if (gm_conf_get_int (GENERAL_KEY "version") < 2000) {
-        assistant_window = GnomeMeeting::Process ()->GetAssistantWindow ();
-        gtk_widget_show_all (assistant_window);
-      }
-      const int schema_version = MAJOR_VERSION * 1000
+    const int schema_version = MAJOR_VERSION * 1000
                                + MINOR_VERSION * 10
                                + BUILD_NUMBER;
+    if (gm_conf_get_int (GENERAL_KEY "version") < schema_version) {
+
+      gnomemeeting_conf_upgrade ();
 
       /* Update the version number */
       gm_conf_set_int (GENERAL_KEY "version", schema_version);
-    }
-    else {
+    } else {
 
       /* Show the main window */
-      if (!gm_conf_get_bool (USER_INTERFACE_KEY "start_hidden")) 
+      if (!gm_conf_get_bool (USER_INTERFACE_KEY "start_hidden"))
         gtk_widget_show (main_window);
       else
         g_timeout_add_seconds (15, (GtkFunction) gnomemeeting_tray_hack_cb, NULL);
     }
 
     /* Call the given host if needed */
-    if (url) 
+    if (url)
       call_core->dial (url);
   }
   else {
