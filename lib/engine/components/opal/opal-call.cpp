@@ -157,11 +157,11 @@ Opal::Call::toggle_hold ()
   PSafePtr<OpalConnection> connection = get_remote_connection ();
   if (connection != NULL) {
 
-    on_hold = connection->IsOnHold (false);
+    on_hold = connection->IsConnectionOnHold (false);
     if (!on_hold)
-      connection->Hold (false, true);
+      connection->HoldConnection ();
     else
-      connection->Hold (false, false);
+      connection->RetrieveConnection ();
   }
 }
 
