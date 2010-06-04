@@ -220,9 +220,4 @@ void GnomeMeeting::BuildGUI (Ekiga::ServiceCorePtr services)
 #else
   PTRACE (1, "GConf support disabled");
 #endif
-#ifdef HAVE_ESD
-  PTRACE (1, "ESound support enabled");
-#else
-  PTRACE (1, "ESound support disabled");
-#endif
 }
