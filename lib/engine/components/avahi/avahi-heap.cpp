@@ -81,11 +81,10 @@ avahi_resolver_callback (AvahiServiceResolver *resolver,
 			 AvahiLookupResultFlags flags,
 			 void *data)
 {
-  if (!(flags & AVAHI_LOOKUP_RESULT_LOCAL))
-    ((Avahi::Heap *)data)->ResolverCallback (resolver, interface, protocol,
-                                             event, name, type, domain,
-                                             host_name, address, port,
-                                             txt, flags);
+  ((Avahi::Heap *)data)->ResolverCallback (resolver, interface, protocol,
+					   event, name, type, domain,
+					   host_name, address, port,
+					   txt, flags);
 }
 
 
@@ -314,7 +313,7 @@ Avahi::Heap::ResolverCallback (AvahiServiceResolver *resolver,
 			       const AvahiAddress */*address*/,
 			       uint16_t port,
 			       AvahiStringList *txt,
-			       AvahiLookupResultFlags /*flags*/)
+			       AvahiLookupResultFlags flags)
 {
   std::string name;
   std::string software;
@@ -322,6 +321,17 @@ Avahi::Heap::ResolverCallback (AvahiServiceResolver *resolver,
   std::string status;
   gchar *url = NULL;
   AvahiStringList *txt_tmp = NULL;
+
+  // filter out seeing ourselves
+  // FIXME: doesn't it hide other people on the same box too?
+  if (flags & AVAHI_LOOKUP_RESULT_LOCAL) {
+
+    avahi_service_resolver_free (resolver);
+#ifdef DEBUG
+    std::cout << __PRETTY_FUNCTION__ << " LOCAL RESULT" << std::endl;
+#endif
+    return;
+  }
 
   switch (event) {
 
@@ -380,6 +390,7 @@ Avahi::Heap::ResolverCallback (AvahiServiceResolver *resolver,
       }
       g_strfreev (broken);
     }
+    avahi_service_resolver_free (resolver);
     break;}
   case AVAHI_RESOLVER_FAILURE:
 
