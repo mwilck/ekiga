@@ -108,7 +108,10 @@ Avahi::Heap::Heap (Ekiga::ServiceCore &_core): core(_core)
   client = avahi_client_new (poll_api, (AvahiClientFlags)AVAHI_CLIENT_NO_FAIL,
 			     avahi_client_callback, this,
 			     &error);
-  /* if (client == NULL); FIXME: better error reporting? */
+#ifdef DEBUG
+  if (client == NULL)
+    std::cout << __PRETTY_FUNCTION__ << " client is NULL!" << std::endl;
+#endif
 }
 
 Avahi::Heap::~Heap ()
@@ -144,6 +147,8 @@ void
 Avahi::Heap::ClientCallback (AvahiClient *_client,
 			     AvahiClientState state)
 {
+  AvahiServiceBrowser* browser = NULL;
+
   /* this is the good client pointer */
   client = _client;
 
@@ -158,23 +163,23 @@ Avahi::Heap::ClientCallback (AvahiClient *_client,
     if (client != NULL)
       avahi_client_free (client);
     client = NULL;
-    ; // FIXME: better error reporting
     break;
   case AVAHI_CLIENT_S_RUNNING:
     /* this may not be the final valid browser pointer...
      * we'll take what our callback gets
      */
-    avahi_service_browser_new (client,
-			       AVAHI_IF_UNSPEC,
-			       AVAHI_PROTO_UNSPEC,
-			       "_sip._udp", NULL,
-			       (AvahiLookupFlags)0,
-			       avahi_browser_callback,
-			       this);
+    browser = avahi_service_browser_new (client,
+					 AVAHI_IF_UNSPEC,
+					 AVAHI_PROTO_UNSPEC,
+					 "_sip._udp", NULL,
+					 (AvahiLookupFlags)0,
+					 avahi_browser_callback,
+					 this);
 #ifdef DEBUG
     std::cout << __PRETTY_FUNCTION__ << " AVAHI_CLIENT_S_RUNNING" << std::endl;
+    if (browser == NULL)
+      std::cout << "but NULL browser!" << std::endl;
 #endif
-    /* if (browser == NULL) FIXME: better error reporting */
     break;
   case AVAHI_CLIENT_CONNECTING:
   case AVAHI_CLIENT_S_REGISTERING:
@@ -219,7 +224,8 @@ Avahi::Heap::BrowserCallback (AvahiServiceBrowser *browser,
 #ifdef DEBUG
     std::cout << __PRETTY_FUNCTION__ << " AVAHI_BROWSER_NEW" << std::endl;
 #endif
-    /* if (resolver == NULL) FIXME: better error reporting */
+    if (resolver == NULL)
+      std::cout << "resolver is NULL!" << std::endl;
     break;
 
   case AVAHI_BROWSER_REMOVE:
@@ -258,7 +264,6 @@ Avahi::Heap::BrowserCallback (AvahiServiceBrowser *browser,
 #endif
     avahi_service_browser_free (browser);
     browser = NULL;
-    ; // FIXME: better error reporting
     break;
   default:
     /* shouldn't happen */
@@ -382,7 +387,6 @@ Avahi::Heap::ResolverCallback (AvahiServiceResolver *resolver,
     std::cout << __PRETTY_FUNCTION__ << " AVAHI_RESOLVER_FAILURE" << std::endl;
 #endif
     avahi_service_resolver_free (resolver);
-    /* FIXME: better error reporting */
     break;
   default:
     /* shouldn't happen */
