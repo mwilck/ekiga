@@ -40,6 +40,8 @@
 
 #include "avahi-heap.h"
 
+#define DEBUG 0
+
 static void
 avahi_client_callback (AvahiClient *client,
 		       AvahiClientState state,
@@ -150,6 +152,9 @@ Avahi::Heap::ClientCallback (AvahiClient *_client,
     /* bad, bad: free the client and try to get another one... but
      * won't I tax the box?
      */
+#ifdef DEBUG
+    std::cout << __PRETTY_FUNCTION__ << " AVAHI_CLIENT_FAILURE" << std::endl;
+#endif
     if (client != NULL)
       avahi_client_free (client);
     client = NULL;
@@ -166,14 +171,23 @@ Avahi::Heap::ClientCallback (AvahiClient *_client,
 			       (AvahiLookupFlags)0,
 			       avahi_browser_callback,
 			       this);
+#ifdef DEBUG
+    std::cout << __PRETTY_FUNCTION__ << " AVAHI_CLIENT_S_RUNNING" << std::endl;
+#endif
     /* if (browser == NULL) FIXME: better error reporting */
     break;
   case AVAHI_CLIENT_CONNECTING:
   case AVAHI_CLIENT_S_REGISTERING:
   case AVAHI_CLIENT_S_COLLISION:
     /* do nothing */
+#ifdef DEBUG
+    std::cout << __PRETTY_FUNCTION__ << " OTHER" << std::endl;
+#endif
     break;
   default:
+#ifdef DEBUG
+    std::cout << __PRETTY_FUNCTION__ << " SHOULDN'T HAPPEN" << std::endl;
+#endif
     /* shouldn't happen */
     break;
   }
@@ -202,10 +216,16 @@ Avahi::Heap::BrowserCallback (AvahiServiceBrowser *browser,
 					   AVAHI_PROTO_UNSPEC,
 					   (AvahiLookupFlags)0,
 					   avahi_resolver_callback, this);
+#ifdef DEBUG
+    std::cout << __PRETTY_FUNCTION__ << " AVAHI_BROWSER_NEW" << std::endl;
+#endif
     /* if (resolver == NULL) FIXME: better error reporting */
     break;
 
   case AVAHI_BROWSER_REMOVE:
+#ifdef DEBUG
+    std::cout << __PRETTY_FUNCTION__ << " AVAHI_BROWSER_REMOVE" << std::endl;
+#endif
     {
       bool found;
       for (iterator iter = begin ();
@@ -222,17 +242,29 @@ Avahi::Heap::BrowserCallback (AvahiServiceBrowser *browser,
     break;
   case AVAHI_BROWSER_CACHE_EXHAUSTED:
     // FIXME: do I care?
+#ifdef DEBUG
+    std::cout << __PRETTY_FUNCTION__ << " AVAHI_BROWSER_CACHE_EXHAUSTED" << std::endl;
+#endif
     break;
   case AVAHI_BROWSER_ALL_FOR_NOW:
     // FIXME: do I care?
+#ifdef DEBUG
+    std::cout << __PRETTY_FUNCTION__ << " AVAHI_BROWSER_ALL_FOR_NOW" << std::endl;
+#endif
     break;
   case AVAHI_BROWSER_FAILURE:
-      avahi_service_browser_free (browser);
+#ifdef DEBUG
+    std::cout << __PRETTY_FUNCTION__ << " AVAHI_BROWSER_FAILURE" << std::endl;
+#endif
+    avahi_service_browser_free (browser);
     browser = NULL;
     ; // FIXME: better error reporting
     break;
   default:
     /* shouldn't happen */
+#ifdef DEBUG
+    std::cout << __PRETTY_FUNCTION__ << " SHOULDN'T HAPPEN" << std::endl;
+#endif
     break;
   }
 }
@@ -289,6 +321,10 @@ Avahi::Heap::ResolverCallback (AvahiServiceResolver *resolver,
   switch (event) {
 
   case AVAHI_RESOLVER_FOUND: {
+#ifdef DEBUG
+    std::cout << __PRETTY_FUNCTION__ << " AVAHI_RESOLVER_FOUND" << std::endl;
+#endif
+
     name = name_;
     for (txt_tmp = txt;  txt_tmp != NULL; txt_tmp = txt_tmp->next) {
 
@@ -342,11 +378,17 @@ Avahi::Heap::ResolverCallback (AvahiServiceResolver *resolver,
     break;}
   case AVAHI_RESOLVER_FAILURE:
 
+#ifdef DEBUG
+    std::cout << __PRETTY_FUNCTION__ << " AVAHI_RESOLVER_FAILURE" << std::endl;
+#endif
     avahi_service_resolver_free (resolver);
     /* FIXME: better error reporting */
     break;
   default:
     /* shouldn't happen */
+#ifdef DEBUG
+    std::cout << __PRETTY_FUNCTION__ << " SHOULDN'T HAPPEN" << std::endl;
+#endif
     break;
   }
 }
