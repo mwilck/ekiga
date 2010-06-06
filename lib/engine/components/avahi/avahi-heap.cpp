@@ -280,7 +280,7 @@ public:
   resolver_callback_helper (const std::string name_): name(name_)
   {}
 
-  bool test (Ekiga::PresentityPtr pres_)
+  bool operator() (Ekiga::PresentityPtr pres_)
   {
     boost::shared_ptr<Ekiga::URIPresentity> presentity_ = boost::dynamic_pointer_cast<Ekiga::URIPresentity> (pres_);
     bool result;
@@ -365,7 +365,7 @@ Avahi::Heap::ResolverCallback (AvahiServiceResolver *resolver,
     }
 
     resolver_callback_helper helper(name);
-    visit_presentities (boost::bind (&resolver_callback_helper::test, helper, _1));
+    visit_presentities (boost::ref (helper));
     if (helper.found_presentity ()) {
 
       /* known contact has been updated */
