@@ -232,7 +232,7 @@ Avahi::Heap::BrowserCallback (AvahiServiceBrowser *browser,
     std::cout << __PRETTY_FUNCTION__ << " AVAHI_BROWSER_REMOVE" << std::endl;
 #endif
     {
-      bool found;
+      bool found = false;
       for (iterator iter = begin ();
 	   !found && iter != end ();
 	   ++iter) {
