@@ -139,7 +139,7 @@ struct has_presentity_with_uri_helper
 
   bool found;
 
-  bool test (Ekiga::PresentityPtr pres)
+  bool operator() (Ekiga::PresentityPtr pres)
   {
     Local::PresentityPtr presentity = boost::dynamic_pointer_cast<Local::Presentity> (pres);
     if (presentity && presentity->get_uri () == uri) {
@@ -156,7 +156,7 @@ Local::Heap::has_presentity_with_uri (const std::string uri)
 {
   has_presentity_with_uri_helper helper(uri);
 
-  visit_presentities (boost::bind (&has_presentity_with_uri_helper::test, helper, _1));
+  visit_presentities (boost::ref (helper));
 
   return helper.found;
 }
@@ -165,7 +165,7 @@ struct existing_groups_helper
 {
   std::set<std::string> groups;
 
-  bool test (Ekiga::PresentityPtr pres)
+  bool operator() (Ekiga::PresentityPtr pres)
   {
     Local::PresentityPtr presentity = boost::dynamic_pointer_cast<Local::Presentity> (pres);
 
@@ -189,7 +189,7 @@ Local::Heap::existing_groups ()
   {
     existing_groups_helper helper;
 
-    visit_presentities (boost::bind (&existing_groups_helper::test, helper, _1));
+    visit_presentities (boost::ref (helper));
     result = helper.groups;
   }
 
@@ -261,7 +261,7 @@ struct push_presence_helper
 						      presence(presence_)
   {}
 
-  bool test (Ekiga::PresentityPtr pres_)
+  bool operator() (Ekiga::PresentityPtr pres_)
   {
     Local::PresentityPtr presentity = boost::dynamic_pointer_cast<Local::Presentity> (pres_);
     if (presentity && presentity->get_uri () == uri) {
@@ -282,7 +282,7 @@ Local::Heap::push_presence (const std::string uri,
 {
   push_presence_helper helper(uri, presence);
 
-  visit_presentities (boost::bind (&push_presence_helper::test, helper, _1));
+  visit_presentities (boost::ref (helper));
 }
 
 struct push_status_helper
@@ -292,7 +292,7 @@ struct push_status_helper
 						  status(status_)
   {}
 
-  bool test (Ekiga::PresentityPtr pres_)
+  bool operator() (Ekiga::PresentityPtr pres_)
   {
     Local::PresentityPtr presentity = boost::dynamic_pointer_cast<Local::Presentity> (pres_);
     if (presentity && presentity->get_uri () == uri) {
@@ -313,7 +313,7 @@ Local::Heap::push_status (const std::string uri,
 {
   push_status_helper helper(uri, status);
 
-  visit_presentities (boost::bind (&push_status_helper::test, helper, _1));
+  visit_presentities (boost::ref (helper));
 }
 
 
@@ -440,7 +440,7 @@ struct rename_group_form_submitted_helper
   const std::string old_name;
   const std::string new_name;
 
-  bool rename_group (Ekiga::PresentityPtr pres)
+  bool operator() (Ekiga::PresentityPtr pres)
   {
     Local::PresentityPtr presentity = boost::dynamic_pointer_cast<Local::Presentity> (pres);
     if (presentity)
@@ -462,7 +462,7 @@ Local::Heap::rename_group_form_submitted (std::string old_name,
   if ( !new_name.empty () && new_name != old_name) {
 
     rename_group_form_submitted_helper helper (old_name, new_name);
-    visit_presentities (boost::bind (&rename_group_form_submitted_helper::rename_group, helper, _1));
+    visit_presentities (boost::ref (helper));
   }
 }
 

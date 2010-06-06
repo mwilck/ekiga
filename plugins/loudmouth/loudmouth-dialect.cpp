@@ -78,7 +78,7 @@ struct open_chat_helper
     presentity(presentity_)
   { }
 
-  bool test (Ekiga::SimpleChatPtr chat_) const
+  bool operator() (Ekiga::SimpleChatPtr chat_) const
   {
     LM::SimpleChatPtr chat = boost::dynamic_pointer_cast<LM::SimpleChat> (chat_);
     bool go_on = true;
@@ -106,7 +106,7 @@ LM::Dialect::open_chat (PresentityPtr presentity)
   } else {
 
     open_chat_helper helper(presentity);
-    visit_simple_chats (boost::bind (&open_chat_helper::test, helper, _1));
+    visit_simple_chats (boost::ref (helper));
   }
 }
 

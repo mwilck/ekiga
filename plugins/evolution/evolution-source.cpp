@@ -110,7 +110,7 @@ public :
   inline void ready ()
   { found = false; }
 
-  bool test (Ekiga::BookPtr book_)
+  bool operator() (Ekiga::BookPtr book_)
   {
     Evolution::BookPtr book = boost::dynamic_pointer_cast<Evolution::Book> (book_);
     if (book) {
@@ -145,7 +145,7 @@ Evolution::Source::remove_group (ESourceGroup *group)
   do {
 
     helper.ready ();
-    visit_books (boost::bind (&remove_helper::test, helper, _1));
+    visit_books (boost::ref (helper));
 
   } while (helper.has_found ());
 }

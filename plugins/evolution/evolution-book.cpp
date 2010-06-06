@@ -105,7 +105,7 @@ public:
     }
   }
 
-  bool test (Ekiga::ContactPtr contact_)
+  bool operator() (Ekiga::ContactPtr contact_)
   {
     Evolution::ContactPtr contact = boost::dynamic_pointer_cast<Evolution::Contact> (contact_);
     bool result = true;
@@ -135,7 +135,7 @@ Evolution::Book::on_view_contacts_removed (GList *ids)
 {
   contacts_removed_helper helper (ids);
 
-  visit_contacts (boost::bind (&contacts_removed_helper::test, helper, _1));
+  visit_contacts (boost::ref (helper));
 }
 
 static void
@@ -155,7 +155,7 @@ public:
     id = (const gchar*)e_contact_get_const (econtact, E_CONTACT_UID);
   }
 
-  bool test (Ekiga::ContactPtr contact_)
+  bool operator() (Ekiga::ContactPtr contact_)
   {
     Evolution::ContactPtr contact = boost::dynamic_pointer_cast<Evolution::Contact> (contact_);
     bool result = true;
@@ -181,7 +181,7 @@ Evolution::Book::on_view_contacts_changed (GList *econtacts)
 
     contact_updated_helper helper (E_CONTACT (econtacts->data));
 
-    visit_contacts (boost::bind (&contact_updated_helper::test, helper, _1));
+    visit_contacts (boost::ref (helper));
   }
 }
 
