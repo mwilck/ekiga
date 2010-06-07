@@ -225,19 +225,15 @@ Opal::AccountPtr
 Opal::Bank::find_account (const std::string& aor)
 {
   AccountPtr result;
-  bool found = false;
 
   for (iterator iter = begin ();
-       !found && iter != end ();
+       iter != end ();
        ++iter) {
-
-    if ((*iter)->get_aor () == aor) {
-
-      found = true;
-      result = *iter;
-    }
+    if (aor.find ("@") != std::string::npos && (*iter)->get_aor () == aor)  // find by account name+host (aor)
+        return *iter;
+    else if ((*iter)->get_host () == aor)  // find by host
+      return *iter;
   }
-
   return result;
 }
 
