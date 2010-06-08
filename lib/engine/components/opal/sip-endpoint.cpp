@@ -395,16 +395,14 @@ Opal::Sip::EndPoint::set_dtmf_mode (unsigned mode)
 {
   switch (mode) {
 
-    // SIP Info
-  case 0:
+  case 0:  // RFC2833
+    SetSendUserInputMode (OpalConnection::SendUserInputAsInlineRFC2833);
+    break;
+  case 1:  // SIP Info
     SetSendUserInputMode (OpalConnection::SendUserInputAsTone);
     break;
-
-    // RFC2833
-  case 1:
-    SetSendUserInputMode (OpalConnection::SendUserInputAsProtocolDefault);
-    break;
   default:
+    g_return_if_reached ();
     break;
   }
 }
@@ -413,14 +411,15 @@ Opal::Sip::EndPoint::set_dtmf_mode (unsigned mode)
 unsigned
 Opal::Sip::EndPoint::get_dtmf_mode () const
 {
-  // SIP Info
-  if (GetSendUserInputMode () == OpalConnection::SendUserInputAsTone)
-    return 0;
-
   // RFC2833
   if (GetSendUserInputMode () == OpalConnection::SendUserInputAsInlineRFC2833)
+    return 0;
+
+  // SIP Info
+  if (GetSendUserInputMode () == OpalConnection::SendUserInputAsTone)
     return 1;
 
+  g_return_val_if_reached (1);
   return 1;
 }
 
