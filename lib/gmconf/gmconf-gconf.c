@@ -425,13 +425,3 @@ gm_conf_unwatch ()
 {
   gconf_client_remove_dir (client, "/apps/" PACKAGE_NAME, NULL);
 }
-
-
-void
-gm_conf_destroy (const gchar *namespac)
-{
-  g_return_if_fail (namespac != NULL);
-
-  gconf_client_recursive_unset (client, namespac,
-				(GConfUnsetFlags)0, NULL);
-}

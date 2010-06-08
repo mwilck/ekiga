@@ -123,9 +123,6 @@ void gm_conf_set_string_list (const gchar *, GSList *);
 /* Should be freed! */
 GSList *gm_conf_get_string_list (const gchar *);
 
-/* to destroy a part of the config */
-void gm_conf_destroy (const gchar *namespac);
-
 /* utility functions */
 gboolean gm_conf_is_key_writable (const gchar *key);
 gchar *gm_conf_escape_key (const gchar *key, gint len);

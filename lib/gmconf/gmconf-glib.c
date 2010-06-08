@@ -1072,44 +1072,6 @@ database_add_entry (DataBase *db,
 			    entry, entry_destroy);
 }
 
-static void
-database_remove_namespace_in_datalist (G_GNUC_UNUSED GQuark key_id,
-				       gpointer data,
-				       gpointer user_data)
-{
-  GmConfEntry *entry = NULL;
-  NamespcWrapper *wrapper = NULL;
-  const gchar *key = NULL;
-
-  g_return_if_fail (data != NULL);
-  g_return_if_fail (user_data != NULL);
-
-  entry = (GmConfEntry *)data;
-  wrapper = (NamespcWrapper *)user_data;
-  key = entry_get_key (entry);
-
-  if (g_str_has_prefix (key, wrapper->namespc))
-    g_datalist_remove_data (wrapper->datalist, key);
-
-}
-
-static void
-database_remove_namespace (DataBase *db,
-			   const gchar *namespc)
-{
-  NamespcWrapper *wrapper = NULL;
-
-  g_return_if_fail (db != NULL);
-  g_return_if_fail (namespc != NULL);
-
-  wrapper = g_new (NamespcWrapper, 1);
-  wrapper->datalist = &db->entries;
-  wrapper->namespc = namespc;
-  g_datalist_foreach (&db->entries,
-		      database_remove_namespace_in_datalist, wrapper);
-  g_free (wrapper);
-}
-
 static GmConfEntry *
 database_get_entry_for_key (DataBase *db,
 			    const gchar *key)
@@ -1557,16 +1519,6 @@ gm_conf_get_string_list (const gchar *key)
   check_entry_for_key_return (entry, key, NULL);
 
   return string_list_deep_copy (entry_get_list (entry));
-}
-
-void
-gm_conf_destroy (const gchar *namespac)
-{
-  DataBase *db = database_get_default ();
-
-  g_return_if_fail (namespac != NULL);
-
-  database_remove_namespace (db, namespac);
 }
 
 gboolean
