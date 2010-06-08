@@ -180,25 +180,6 @@ gm_conf_get_int (const gchar *key)
 
 
 void
-gm_conf_set_float (const gchar *key,
-		   const float v)
-{
-  g_return_if_fail (key != NULL);
-
-  gconf_client_set_float (client, key, v, NULL);
-}
-
-
-gfloat
-gm_conf_get_float (const gchar *key)
-{
-  g_return_val_if_fail (key != NULL, (float)0);
-
-  return gconf_client_get_float (client, key, NULL);
-}
-
-
-void
 gm_conf_set_string_list (const gchar *key,
 			 GSList *l)
 {

@@ -52,9 +52,8 @@ typedef enum {
   GM_CONF_OTHER, /* this basically means only 
 		  * the specific implementation will know 
 		  * what to do with that */
-  GM_CONF_BOOL,   
-  GM_CONF_INT,  
-  GM_CONF_FLOAT,
+  GM_CONF_BOOL, 
+  GM_CONF_INT,
   GM_CONF_STRING,
   GM_CONF_LIST,  /* list of strings! */
 } GmConfEntryType;
@@ -108,8 +107,6 @@ void gm_conf_set_bool (const gchar *, const gboolean);
 gboolean gm_conf_get_bool (const gchar *);
 void gm_conf_set_int (const gchar *, const int);
 int gm_conf_get_int (const gchar *);
-void gm_conf_set_float (const gchar *, const float);
-gfloat gm_conf_get_float (const gchar *);
 void gm_conf_set_string (const gchar *, const gchar *);
 /* Should be freed! */
 gchar *gm_conf_get_string (const gchar *);

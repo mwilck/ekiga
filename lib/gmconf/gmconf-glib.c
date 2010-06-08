@@ -121,7 +121,6 @@ struct _GmConfEntry
   union {
     gboolean boolean;
     gint integer;
-    gfloat floa;
     gchar *string;
     GSList *list;
     GmConfEntry *redirect; /* for GM_CONF_OTHER entries */
@@ -173,12 +172,10 @@ static void string_list_deep_destroy (GSList *);
 
 static gchar *string_from_bool (const gboolean);
 static gchar *string_from_int (const gint);
-static gchar *string_from_float (const gfloat);
 static gchar *string_from_list (const GSList *);
 
 static gboolean bool_from_string (const gchar *);
 static gint int_from_string (const gchar *);
-static gfloat float_from_string (const gchar *);
 static GSList *list_from_string (const gchar *);
 
 /* notifier functions */
@@ -202,9 +199,6 @@ static void entry_set_bool (GmConfEntry *, const gboolean);
 
 static gint entry_get_int (const GmConfEntry *);
 static void entry_set_int (GmConfEntry *, const gint);
-
-static gfloat entry_get_float (const GmConfEntry *);
-static void entry_set_float (GmConfEntry *, const gfloat);
 
 static const gchar *entry_get_string (const GmConfEntry *);
 static void entry_set_string (GmConfEntry *, const gchar *);
@@ -319,19 +313,6 @@ string_from_int (const gint val)
 }
 
 static gchar *
-string_from_float (const gfloat val)
-{
-  gchar *result = NULL;
-  GString *buffer = NULL;
-
-  buffer = g_string_new (NULL);
-  g_string_printf (buffer, "%f", val);
-
-  result = g_string_free (buffer, FALSE);
-  return result;
-}
-
-static gchar *
 string_from_list (const GSList *val)
 {
   gchar *result = NULL;
@@ -386,18 +367,6 @@ int_from_string (const gchar *str)
   g_return_val_if_fail (str != NULL, 0);
 
   result = strtol (str, NULL, 10);
-  return result;
-}
-
-static gfloat
-float_from_string (const gchar *str)
-{
-  gfloat result;
-  int err;
-
-  g_return_val_if_fail (str != NULL, 0);
-
-  err = sscanf (str, "%f", &result);
   return result;
 }
 
@@ -538,8 +507,6 @@ entry_destroy (gpointer ent)
     break;
   case GM_CONF_INT:
     break;
-  case GM_CONF_FLOAT:
-    break;
   case GM_CONF_STRING:
     g_free (entry->value.string);
     break;
@@ -626,24 +593,6 @@ entry_set_int (GmConfEntry *entry,
 
   entry->type = GM_CONF_INT;
   entry->value.boolean = val;
-}
-
-static gfloat
-entry_get_float (const GmConfEntry *entry)
-{
-  check_entry_type_return (entry, GM_CONF_FLOAT, 0);
-
-  return entry->value.floa;
-}
-
-static void
-entry_set_float (GmConfEntry *entry,
-		 const gfloat val)
-{
-  g_return_if_fail (entry != NULL);
-
-  entry->type = GM_CONF_FLOAT;
-  entry->value.floa = val;
 }
 
 static const gchar *
@@ -856,8 +805,6 @@ sch_parser_characters (G_GNUC_UNUSED GMarkupParseContext *context,
       entry_set_type (parser->entry, GM_CONF_BOOL);
     else if (strcmp (text, "int") == 0)
       entry_set_type (parser->entry, GM_CONF_INT);
-    else if (strcmp (text, "float") == 0)
-      entry_set_type (parser->entry, GM_CONF_FLOAT);
     else if (strcmp (text, "string") == 0)
       entry_set_type (parser->entry, GM_CONF_STRING);
     else if (strcmp (text, "list") == 0)
@@ -872,9 +819,6 @@ sch_parser_characters (G_GNUC_UNUSED GMarkupParseContext *context,
       break;
     case GM_CONF_INT:
       entry_set_int (parser->entry, int_from_string (text));
-      break;
-    case GM_CONF_FLOAT:
-      entry_set_float (parser->entry, float_from_string (text));
       break;
     case GM_CONF_STRING:
       entry_set_string (parser->entry, text);
@@ -977,9 +921,6 @@ database_save_entry (G_GNUC_UNUSED GQuark quark,
   case GM_CONF_INT:
     g_io_channel_write_chars (io, "int", -1, NULL, NULL);
     break;
-  case GM_CONF_FLOAT:
-    g_io_channel_write_chars (io, "float", -1, NULL, NULL);
-    break;
   case GM_CONF_STRING:
     g_io_channel_write_chars (io, "string", -1, NULL, NULL);
     break;
@@ -1002,9 +943,6 @@ database_save_entry (G_GNUC_UNUSED GQuark quark,
     break;
   case GM_CONF_INT:
     value = string_from_int (entry_get_int (entry));
-    break;
-  case GM_CONF_FLOAT:
-    value = string_from_float (entry_get_float (entry));
     break;
   case GM_CONF_STRING:
     txt = entry_get_string (entry);
@@ -1392,38 +1330,6 @@ gm_conf_get_int (const gchar *key)
   check_entry_for_key_return (entry, key, 0);
 
   return entry_get_int (entry);
-}
-
-void
-gm_conf_set_float (const gchar *key,
-		   const float val)
-{
-  DataBase *db = database_get_default ();
-  GmConfEntry *entry = NULL;
-
-  g_return_if_fail (key != NULL);
-
-  entry = database_get_entry_for_key_create (db, key);
-
-  g_return_if_fail (entry != NULL);
-
-  entry_set_float (entry, val);
-  database_notify_on_namespace (db, entry_get_key (entry));
-}
-
-gfloat
-gm_conf_get_float (const gchar *key)
-{
-  DataBase *db = database_get_default ();
-  GmConfEntry *entry = NULL;
-
-  g_return_val_if_fail (key != NULL, 0);
-
-  entry = database_get_entry_for_key (db, key);
-
-  check_entry_for_key_return (entry, key, 0);
-
-  return entry_get_float (entry);
 }
 
 void
