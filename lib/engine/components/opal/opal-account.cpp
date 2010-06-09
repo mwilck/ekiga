@@ -204,10 +204,10 @@ Opal::Account::get_status () const
 
     gchar* str = NULL;
     /* translators : the result will look like :
-     * "registered (with 2 voicemail messages)"
+     * "registered (with 2 voice mail messages)"
      */
-    str = g_strdup_printf (ngettext ("%s (with %d voicemail message)",
-				     "%s (with %d voicemail messages)",
+    str = g_strdup_printf (ngettext ("%s (with %d voice mail message)",
+				     "%s (with %d voice mail messages)",
 				     message_waiting_number),
 			   status.c_str (), message_waiting_number);
     result = str;

@@ -478,7 +478,7 @@ Local::Heap::decide (const std::string /*domain*/,
 
     if ((*iter)->get_uri () == token) {
 
-      if ((*iter)->is_prefered ()) {
+      if ((*iter)->is_preferred ()) {
 
 	result = Ekiga::FriendOrFoe::Friend;
       } else {
