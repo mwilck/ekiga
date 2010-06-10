@@ -168,8 +168,9 @@ void ConfBridge::on_property_changed (std::string key, GmConfEntry *entry)
   //
   else if (key == NAT_KEY "stun_server") {
 
-    const char *stun_server = gm_conf_entry_get_string (entry);
+    gchar* stun_server = gm_conf_entry_get_string (entry);
     manager.set_stun_server (stun_server ? stun_server : "stun.ekiga.net");
+    g_free (stun_server);
   }
   else if (key == NAT_KEY "enable_stun") {
 
@@ -269,9 +270,10 @@ void ConfBridge::on_property_changed (std::string key, GmConfEntry *entry)
 
       if (key == SIP_KEY "outbound_proxy_host") {
 
-        const gchar *str = gm_conf_entry_get_string (entry);
+        gchar* str = gm_conf_entry_get_string (entry);
         if (str != NULL)
           sip_manager->set_outbound_proxy (str);
+	g_free (str);
       }
       else if (key == SIP_KEY "dtmf_mode") {
 
@@ -279,9 +281,10 @@ void ConfBridge::on_property_changed (std::string key, GmConfEntry *entry)
       }
       else if (key == SIP_KEY "forward_host") {
 
-        const gchar *str = gm_conf_entry_get_string (entry);
+        gchar* str = gm_conf_entry_get_string (entry);
 	if (str != NULL)
 	  sip_manager->set_forward_uri (str);
+	g_free (str);
       }
       else if (key == SIP_KEY "binding_timeout") {
 
@@ -317,9 +320,10 @@ void ConfBridge::on_property_changed (std::string key, GmConfEntry *entry)
       }
       else if (key == H323_KEY "forward_host") {
 
-        const gchar *str = gm_conf_entry_get_string (entry);
+        gchar* str = gm_conf_entry_get_string (entry);
 	if (str != NULL)
 	  h323_manager->set_forward_uri (str);
+	g_free (str);
       }
     }
   }
@@ -331,9 +335,10 @@ void ConfBridge::on_property_changed (std::string key, GmConfEntry *entry)
   //
   else if (key == PERSONAL_DATA_KEY "full_name") {
 
-    const gchar *str = gm_conf_entry_get_string (entry);
-    if (str != NULL)    
+    gchar* str = gm_conf_entry_get_string (entry);
+    if (str != NULL)
       manager.set_display_name (str);
+    g_free (str);
   }
 
 
@@ -368,13 +373,15 @@ void ConfBridge::on_property_changed (std::string key, GmConfEntry *entry)
   else if (key == PORTS_KEY "udp_port_range"
            || key == PORTS_KEY "tcp_port_range") {
 
-    const gchar *ports = gm_conf_entry_get_string (entry);
+    gchar* ports = NULL;
     gchar **couple = NULL;
     unsigned min_port = 0;
     unsigned max_port = 0;
 
+    ports = gm_conf_entry_get_string (entry);
     if (ports)
       couple = g_strsplit (ports, ":", 2);
+    g_free (ports);
 
     if (couple && couple [0]) 
       min_port = atoi (couple [0]);

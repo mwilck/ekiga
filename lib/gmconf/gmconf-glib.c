@@ -200,7 +200,7 @@ static void entry_set_bool (GmConfEntry *, const gboolean);
 static gint entry_get_int (const GmConfEntry *);
 static void entry_set_int (GmConfEntry *, const gint);
 
-static const gchar *entry_get_string (const GmConfEntry *);
+static gchar *entry_get_string (const GmConfEntry *);
 static void entry_set_string (GmConfEntry *, const gchar *);
 
 static GSList *entry_get_list (const GmConfEntry *);
@@ -595,12 +595,12 @@ entry_set_int (GmConfEntry *entry,
   entry->value.boolean = val;
 }
 
-static const gchar *
+static gchar*
 entry_get_string (const GmConfEntry *entry)
 {
   check_entry_type_return (entry, GM_CONF_STRING, NULL);
 
-  return entry->value.string;
+  return g_strdup (entry->value.string);
 }
 
 static void
@@ -946,9 +946,11 @@ database_save_entry (G_GNUC_UNUSED GQuark quark,
     break;
   case GM_CONF_STRING:
     txt = entry_get_string (entry);
-    if (txt != NULL)
+    if (txt != NULL) {
+
       value = g_markup_escape_text (txt, -1);
-    else
+      g_free (txt);
+    } else
       value = g_strdup ("");
     break;
   case GM_CONF_LIST:
@@ -1252,7 +1254,7 @@ gm_conf_entry_get_int (GmConfEntry *entry)
   return entry_get_int (entry);
 }
 
-const gchar *
+gchar *
 gm_conf_entry_get_string (GmConfEntry *entry)
 {
   g_return_val_if_fail (entry != NULL, NULL);
@@ -1361,7 +1363,7 @@ gm_conf_get_string (const gchar *key)
 
   check_entry_for_key_return (entry, key, NULL);
 
-  return g_strdup (entry_get_string (entry));
+  return entry_get_string (entry);
 }
 
 void

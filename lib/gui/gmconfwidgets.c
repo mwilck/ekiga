@@ -107,7 +107,7 @@ entry_changed_nt (G_GNUC_UNUSED gpointer cid,
   if (gm_conf_entry_get_type(entry) == GM_CONF_STRING) {
 
     e = GTK_WIDGET (data);
-    current_value = (gchar *) gm_conf_entry_get_string (entry);
+    current_value = gm_conf_entry_get_string (entry);
 
     if (current_value
 	&& strcmp (current_value, gtk_entry_get_text (GTK_ENTRY (e)))) {
@@ -134,6 +134,8 @@ entry_changed_nt (G_GNUC_UNUSED gpointer cid,
 					 (gpointer) entry_focus_changed,
 					 NULL);
     }
+
+    g_free (current_value);
   }
 }
 
@@ -361,6 +363,7 @@ string_option_menu_changed_nt (G_GNUC_UNUSED gpointer cid,
   GtkWidget *e = NULL;
   
   gchar *text = NULL;
+  gchar* txt = NULL;
   
   if (gm_conf_entry_get_type (entry) == GM_CONF_STRING) {
    
@@ -373,11 +376,14 @@ string_option_menu_changed_nt (G_GNUC_UNUSED gpointer cid,
     for (cpt = 0 ; cpt < count ; cpt++) {
 
       gtk_tree_model_get (model, &iter, 0, &text, -1);
-      if (text && !strcmp (text, gm_conf_entry_get_string (entry))) {
+      txt = gm_conf_entry_get_string (entry);
+      if (text && !strcmp (text, txt)) {
        
         g_free (text);
+	g_free (txt);
         break;
       }
+      g_free (txt);
       gtk_tree_model_iter_next (model, &iter);
       
       g_free (text);

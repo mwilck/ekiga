@@ -47,10 +47,11 @@ display_name_changed_nt (G_GNUC_UNUSED gpointer id,
                          gpointer data)
 {
   Gmconf::PersonalDetails *details = (Gmconf::PersonalDetails *) data;
-  const gchar* val = gm_conf_entry_get_string (entry);
+  gchar* val = gm_conf_entry_get_string (entry);
 
   if (val != NULL)
     details->display_name_changed (val);
+  g_free (val);
 }
 
 static void
@@ -59,10 +60,11 @@ presence_changed_nt (G_GNUC_UNUSED gpointer id,
                      gpointer data)
 {
   Gmconf::PersonalDetails *details = (Gmconf::PersonalDetails *) data;
-  const gchar* val = gm_conf_entry_get_string (entry);
+  gchar* val = gm_conf_entry_get_string (entry);
 
   if (val != NULL)
     details->presence_changed (val);
+  g_free (val);
 }
 
 static void
@@ -71,10 +73,11 @@ status_changed_nt (G_GNUC_UNUSED gpointer id,
                    gpointer data)
 {
   Gmconf::PersonalDetails *details = (Gmconf::PersonalDetails *) data;
-  const gchar* val = gm_conf_entry_get_string (entry);
+  gchar* val = gm_conf_entry_get_string (entry);
 
   if (val != NULL)
     details->status_changed (val);
+  g_free (val);
 }
 
 Gmconf::PersonalDetails::PersonalDetails ()

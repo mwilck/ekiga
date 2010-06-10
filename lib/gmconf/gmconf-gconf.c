@@ -318,7 +318,7 @@ gm_conf_entry_get_int (GmConfEntry *entry)
 }
 
 
-const gchar *
+gchar *
 gm_conf_entry_get_string (GmConfEntry *entry)
 {
   GConfEntry *gconf_entry = NULL;
@@ -327,7 +327,7 @@ gm_conf_entry_get_string (GmConfEntry *entry)
 
   gconf_entry = (GConfEntry *)entry;
   if (gconf_entry->value)
-    return gconf_value_get_string (gconf_entry->value);
+    return g_strdup (gconf_value_get_string (gconf_entry->value));
 
   return NULL;
 }

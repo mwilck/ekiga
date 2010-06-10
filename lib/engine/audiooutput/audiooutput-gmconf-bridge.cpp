@@ -79,7 +79,7 @@ void AudioOutputCoreConfBridge::on_property_changed (std::string key, GmConfEntr
 
     std::vector <AudioOutputDevice> devices;
     bool found = false;
-    const gchar *value = gm_conf_entry_get_string (entry);
+    gchar* value = gm_conf_entry_get_string (entry);
     audiooutput_core.get_devices (devices);
     if (value != NULL) {
       for (std::vector<AudioOutputDevice>::iterator it = devices.begin ();
@@ -90,6 +90,7 @@ void AudioOutputCoreConfBridge::on_property_changed (std::string key, GmConfEntr
           break;
         }
       }
+      g_free (value);
     }
 
     AudioOutputDevice device;
@@ -115,7 +116,7 @@ void AudioOutputCoreConfBridge::on_property_changed (std::string key, GmConfEntr
 
     PTRACE(4, "AudioOutputCoreConfBridge\tUpdating device");
     AudioOutputDevice device;
-    const gchar *audio_device = NULL;
+    gchar* audio_device = NULL;
     audio_device = gm_conf_entry_get_string (entry);
 
     if (audio_device == NULL) {
@@ -123,6 +124,7 @@ void AudioOutputCoreConfBridge::on_property_changed (std::string key, GmConfEntr
     }
     else {
       device.SetFromString(audio_device);
+      g_free (audio_device);
     }
 
     if ( (device.type   == "" )   ||

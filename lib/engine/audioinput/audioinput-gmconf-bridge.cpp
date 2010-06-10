@@ -62,7 +62,7 @@ void AudioInputCoreConfBridge::on_property_changed (std::string key, GmConfEntry
 
     std::vector <AudioInputDevice> devices;
     bool found = false;
-    const gchar *value = gm_conf_entry_get_string (entry);
+    gchar* value = gm_conf_entry_get_string (entry);
     audioinput_core.get_devices (devices);
     if (value != NULL) {
       for (std::vector<AudioInputDevice>::iterator it = devices.begin ();
@@ -73,6 +73,7 @@ void AudioInputCoreConfBridge::on_property_changed (std::string key, GmConfEntry
           break;
         }
       }
+      g_free (value);
     }
 
     AudioInputDevice device;
