@@ -4340,9 +4340,9 @@ ekiga_main_window_get_current_picture (EkigaMainWindow *mw)
 #endif
 
 /* The main () */
-int 
-main (int argc, 
-      char ** argv, 
+int
+main (int argc,
+      char ** argv,
       char ** /*envp*/)
 {
   GOptionContext *context = NULL;
@@ -4351,16 +4351,11 @@ main (int argc,
 
   GtkWidget *main_window = NULL;
 
-  GtkWidget *dialog = NULL;
-
   gchar *path = NULL;
   gchar *url = NULL;
-  gchar *msg = NULL;
-  gchar *title = NULL;
 
   int debug_level = 0;
   int debug_level_up = 0;
-  int error = -1;
 
   /* Globals */
 #ifndef WIN32
@@ -4398,13 +4393,13 @@ main (int argc,
   GOptionEntry arguments [] =
     {
       {
-	"debug", 'd', 0, G_OPTION_ARG_INT, &debug_level, 
-       N_("Prints debug messages in the console (level between 1 and 5)"), 
+	"debug", 'd', 0, G_OPTION_ARG_INT, &debug_level,
+       N_("Prints debug messages in the console (level between 1 and 5)"),
        NULL
       },
       {
-	"debug_user_plane", 'u', 0, G_OPTION_ARG_INT, &debug_level_up, 
-       N_("Prints user plane debug messages in the console (level between 1 and 4)"), 
+	"debug_user_plane", 'u', 0, G_OPTION_ARG_INT, &debug_level_up,
+       N_("Prints user plane debug messages in the console (level between 1 and 4)"),
        NULL
       },
       {
@@ -4484,66 +4479,28 @@ main (int argc,
    */
   main_window = GnomeMeeting::Process ()->GetMainWindow ();
   boost::shared_ptr<Ekiga::CallCore> call_core = service_core->get<Ekiga::CallCore> ("call-core");
-  if (error == -1) {
 
-    const int schema_version = MAJOR_VERSION * 1000
-                               + MINOR_VERSION * 10
-                               + BUILD_NUMBER;
-    if (gm_conf_get_int (GENERAL_KEY "version") < schema_version) {
+  const int schema_version = MAJOR_VERSION * 1000
+                             + MINOR_VERSION * 10
+                             + BUILD_NUMBER;
+  if (gm_conf_get_int (GENERAL_KEY "version") < schema_version) {
 
-      gnomemeeting_conf_upgrade ();
+    gnomemeeting_conf_upgrade ();
 
-      /* Update the version number */
-      gm_conf_set_int (GENERAL_KEY "version", schema_version);
-    } else {
+    /* Update the version number */
+    gm_conf_set_int (GENERAL_KEY "version", schema_version);
+  } else {
 
-      /* Show the main window */
-      if (!gm_conf_get_bool (USER_INTERFACE_KEY "start_hidden"))
-        gtk_widget_show (main_window);
-      else
-        g_timeout_add_seconds (15, (GtkFunction) gnomemeeting_tray_hack_cb, NULL);
-    }
-
-    /* Call the given host if needed */
-    if (url)
-      call_core->dial (url);
+    /* Show the main window */
+    if (!gm_conf_get_bool (USER_INTERFACE_KEY "start_hidden"))
+      gtk_widget_show (main_window);
+    else
+      g_timeout_add_seconds (15, (GtkFunction) gnomemeeting_tray_hack_cb, NULL);
   }
-  else {
 
-    switch (error) {
-
-    case 1:
-      title = g_strdup (_("No usable audio plugin detected"));
-      msg = g_strdup (_("Ekiga didn't find any usable audio plugin. Make sure that your installation is correct."));
-      break;
-    case 2:
-      title = g_strdup (_("No usable audio codecs detected"));
-      msg = g_strdup (_("Ekiga didn't find any usable audio codec. Make sure that your installation is correct."));
-      break;
-    default:
-      break;
-    }
-
-    dialog = gtk_message_dialog_new (GTK_WINDOW (main_window), 
-                                     GTK_DIALOG_MODAL, 
-                                     GTK_MESSAGE_ERROR,
-                                     GTK_BUTTONS_OK, NULL);
-
-    gtk_window_set_title (GTK_WINDOW (dialog), title);
-    gtk_label_set_markup (GTK_LABEL (GTK_MESSAGE_DIALOG (dialog)->label), msg);
-  
-    g_signal_connect (GTK_OBJECT (dialog), "response",
-                      G_CALLBACK (quit_callback),
-                      GTK_OBJECT (dialog));
-    g_signal_connect_swapped (GTK_OBJECT (dialog), "response",
-                              G_CALLBACK (gtk_widget_destroy),
-                              GTK_OBJECT (dialog));
-  
-    gtk_widget_show_all (dialog);
-
-    g_free (title);
-    g_free (msg);
-  }
+  /* Call the given host if needed */
+  if (url)
+    call_core->dial (url);
 
 #ifdef HAVE_DBUS
   /* Create the dbus server instance */
