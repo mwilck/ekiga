@@ -207,13 +207,8 @@ help_cb (G_GNUC_UNUSED GtkWidget *widget,
 
 #ifdef HAVE_GNOME
   success = gnome_help_display (PACKAGE_NAME ".xml", NULL, &err);
-#elif GTK_CHECK_VERSION(2, 13, 1)
-  success = gtk_show_uri (NULL, "ghelp:" PACKAGE_NAME, GDK_CURRENT_TIME, &err);
 #else
-  success = FALSE;
-  err = g_error_new_literal (g_quark_from_static_string ("ekiga"),
-                             0,
-			     _("Help display is not supported by your GTK+ version"));
+  success = gtk_show_uri (NULL, "ghelp:" PACKAGE_NAME, GDK_CURRENT_TIME, &err);
 #endif
 
   if (!success) {

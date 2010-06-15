@@ -314,21 +314,12 @@ unread_count_cb (G_GNUC_UNUSED GtkWidget *widget,
 					 "You have %d messages",
 					 messages), messages);
 
-#if GTK_CHECK_VERSION(2,16,0)
     gtk_status_icon_set_tooltip_text (GTK_STATUS_ICON (self), message);
-#else
-    gtk_status_icon_set_tooltip (GTK_STATUS_ICON (self), message);
-#endif
 
     g_free (message);
   }
-  else {
-#if GTK_CHECK_VERSION(2,16,0)
+  else
     gtk_status_icon_set_tooltip_text (GTK_STATUS_ICON (self), NULL);
-#else
-    gtk_status_icon_set_tooltip (GTK_STATUS_ICON (self), NULL);
-#endif
-  }
 
   self->priv->unread_messages = (messages > 0);
 }
@@ -441,11 +432,7 @@ on_account_updated (Ekiga::BankPtr /*bank*/,
     message = "";
   }
 
-#if GTK_CHECK_VERSION(2,16,0)
-    gtk_status_icon_set_tooltip_text (GTK_STATUS_ICON (data), message.c_str ());
-#else
-    gtk_status_icon_set_tooltip (GTK_STATUS_ICON (data), message.c_str ());
-#endif
+  gtk_status_icon_set_tooltip_text (GTK_STATUS_ICON (data), message.c_str ());
 }
 
 

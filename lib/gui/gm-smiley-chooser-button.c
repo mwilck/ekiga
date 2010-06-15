@@ -434,10 +434,7 @@ static gboolean on_popup_button_press_event (G_GNUC_UNUSED GtkWidget* widget,
       gm_smiley_chooser_button_popdown (self);
       return FALSE;
       break;
-    /* FIXME is that neccesary? Compiler warnings and so... */
-#if GTK_CHECK_VERSION (2,14,0)
     case GDK_DAMAGE:
-#endif
     case GDK_NOTHING:
     case GDK_DELETE:
     case GDK_DESTROY:
@@ -474,9 +471,7 @@ static gboolean on_popup_button_press_event (G_GNUC_UNUSED GtkWidget* widget,
     case GDK_SETTING:
     case GDK_OWNER_CHANGE:
     case GDK_GRAB_BROKEN:
-#if GTK_CHECK_VERSION (2,18,0)
     case GDK_EVENT_LAST:
-#endif
     default:
       return FALSE;
     }

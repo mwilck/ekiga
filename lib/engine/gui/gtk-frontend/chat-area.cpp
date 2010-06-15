@@ -433,12 +433,8 @@ on_extlink_tag_event (GtkTextTag* tag,
   case GDK_SETTING:
   case GDK_OWNER_CHANGE:
   case GDK_GRAB_BROKEN:
-#if GTK_CHECK_VERSION(2,14,0)
   case GDK_DAMAGE:
-#endif
-#if GTK_CHECK_VERSION (2,18,0)
-    case GDK_EVENT_LAST:
-#endif
+  case GDK_EVENT_LAST:
   default:
     result = FALSE; // nothing
     break; // nothing

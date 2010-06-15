@@ -45,12 +45,8 @@ gm_open_uri (const gchar *uri)
 
   g_return_if_fail (uri != NULL);
 
-#if GTK_CHECK_VERSION(2,13,1)
   if (!gtk_show_uri (NULL, uri, GDK_CURRENT_TIME, &error)) {
     g_error_free (error);
     gm_open_uri_fallback (uri);
   }
-#else
-  gm_open_uri_fallback (uri);
-#endif
 }
