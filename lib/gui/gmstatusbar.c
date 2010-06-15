@@ -110,14 +110,18 @@ gm_sb_push_message (GmStatusbar *sb,
 
   g_return_if_fail (sb != NULL);
 
-  len = g_slist_length ((GSList *) (GTK_STATUSBAR (sb)->messages));
   if (info_message)
     id = gtk_statusbar_get_context_id (GTK_STATUSBAR (sb), "info");
   else
     id = gtk_statusbar_get_context_id (GTK_STATUSBAR (sb), "statusbar");
-  
+
+#if GTK_CHECK_VERSION (2, 22, 0)
+  gtk_statusbar_remove_all (GTK_STATUSBAR (sb), id);
+#else
+  len = g_slist_length ((GSList *) (GTK_STATUSBAR (sb)->messages));
   for (i = 0 ; i < len ; i++)
     gtk_statusbar_pop (GTK_STATUSBAR (sb), id);
+#endif
 
   if (msg) {
 

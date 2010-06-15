@@ -362,7 +362,12 @@ gm_level_meter_realize (GtkWidget *widget)
 
   g_return_if_fail (GM_IS_LEVEL_METER (widget));
 
+#if GTK_CHECK_VERSION(2,20,0)
+  gtk_widget_set_realized (widget, TRUE);
+#else
   GTK_WIDGET_SET_FLAGS (widget, GTK_REALIZED);
+#endif
+
   lm = GM_LEVEL_METER (widget);
   gtk_widget_get_allocation (widget, &allocation);
 
