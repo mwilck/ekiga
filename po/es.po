@@ -18,8 +18,8 @@ msgstr ""
 "Project-Id-Version: ekiga.HEAD\n"
 "Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?"
 "product=ekiga&component=general\n"
-"POT-Creation-Date: 2010-06-03 18:24+0000\n"
-"PO-Revision-Date: 2010-06-03 21:26+0200\n"
+"POT-Creation-Date: 2010-06-15 15:57+0000\n"
+"PO-Revision-Date: 2010-06-15 19:23+0200\n"
 "Last-Translator: Jorge González <jorgegonz@svn.gnome.org>\n"
 "Language-Team: Español <gnome-es-list@gnome.org>\n"
 "MIME-Version: 1.0\n"
@@ -29,8 +29,8 @@ msgstr ""
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
 #. Application name
-#: ../ekiga.desktop.in.in.h:1 ../src/gui/main_window.cpp:4379
-#: ../src/gui/main_window.cpp:4381
+#: ../ekiga.desktop.in.in.h:1 ../src/gui/main_window.cpp:4374
+#: ../src/gui/main_window.cpp:4376
 msgid "Ekiga Softphone"
 msgstr "Softphone Ekiga"
 
@@ -43,9 +43,9 @@ msgid "Talk to and see people over the Internet"
 msgstr "Hable y vea otras personas a través de Internet"
 
 #: ../ekiga.schemas.in.in.h:1
-#| msgid "0: 56kbps, 1: ISDN, 2: DSL128, 3: DSL512, 4: LAN, 5: Custom"
-msgid "0: 56Kbps, 1: ISDN, 2:DSL, 3: LAN, 4: Custom"
-msgstr "0: 56Kbps, 1: RDSI, 2:DSL, 3:LAN, 4: Personalizado"
+#| msgid "0: 56Kbps, 1: ISDN, 2:DSL, 3: LAN, 4: Custom"
+msgid "0: 56kbps, 1: ISDN, 2: DSL128, 3: DSL512, 4: LAN, 5: Custom"
+msgstr "0: 56Kbps, 1: RDSI, 2: DSL128, 3: DSL512, 4: LAN, 5: Personalizado"
 
 #: ../ekiga.schemas.in.in.h:2
 msgid ""
@@ -245,8 +245,8 @@ msgstr ""
 "soporten"
 
 #: ../ekiga.schemas.in.in.h:40
-#| msgid "Kind of network selected in the assistant"
-msgid "Kind of network selected in the druid"
+#| msgid "Kind of network selected in the druid"
+msgid "Kind of network selected in the assistant"
 msgstr "Tipo de red seleccionada en el asistente"
 
 #: ../ekiga.schemas.in.in.h:41
@@ -808,8 +808,8 @@ msgstr ""
 msgid "_Find"
 msgstr "_Buscar"
 
-#: ../lib/engine/components/avahi/avahi-heap.cpp:125
-#: ../lib/engine/components/avahi/avahi-heap.cpp:332
+#: ../lib/engine/components/avahi/avahi-heap.cpp:129
+#: ../lib/engine/components/avahi/avahi-heap.cpp:383
 msgid "Neighbours"
 msgstr "Vecinos"
 
@@ -903,7 +903,8 @@ msgid "Address:"
 msgstr "Dirección:"
 
 #: ../lib/engine/components/local-roster/local-presentity.cpp:247
-msgid "Is a prefered contact"
+#| msgid "Is a prefered contact"
+msgid "Is a preferred contact"
 msgstr "Es un contacto preferido"
 
 # Colisión con image. La resolvemos añadiendo "estática"
@@ -1032,23 +1033,25 @@ msgid "Bad username/password"
 msgstr "Nombre de usuario/contraseña incorrecto"
 
 #: ../lib/engine/components/opal/h323-endpoint.cpp:315
-#: ../lib/engine/components/opal/sip-endpoint.cpp:826
+#: ../lib/engine/components/opal/sip-endpoint.cpp:825
 msgid "Transport error"
 msgstr "Error en el transporte"
 
 #: ../lib/engine/components/opal/h323-endpoint.cpp:326
 #: ../lib/engine/components/opal/h323-endpoint.cpp:331
-#: ../lib/engine/components/opal/sip-endpoint.cpp:833
+#: ../lib/engine/components/opal/sip-endpoint.cpp:832
 msgid "Failed"
 msgstr "Falló"
 
 #. translators : the result will look like :
-#. * "registered (with 2 voicemail messages)"
+#. * "registered (with 2 voice mail messages)"
 #.
 #: ../lib/engine/components/opal/opal-account.cpp:209
 #, c-format
-msgid "%s (with %d voicemail message)"
-msgid_plural "%s (with %d voicemail messages)"
+#| msgid "%s (with %d voicemail message)"
+#| msgid_plural "%s (with %d voicemail messages)"
+msgid "%s (with %d voice mail message)"
+msgid_plural "%s (with %d voice mail messages)"
 msgstr[0] "%s (con %d mensaje de voz)"
 msgstr[1] "%s (con %d mensajes de voz)"
 
@@ -1337,91 +1340,91 @@ msgstr ""
 msgid "Message"
 msgstr "Mensaje"
 
-#: ../lib/engine/components/opal/sip-endpoint.cpp:633
+#: ../lib/engine/components/opal/sip-endpoint.cpp:632
 msgid "Bad request"
 msgstr "Solicitud errónea"
 
-#: ../lib/engine/components/opal/sip-endpoint.cpp:637
+#: ../lib/engine/components/opal/sip-endpoint.cpp:636
 msgid "Payment required"
 msgstr "Pago requerido"
 
-#: ../lib/engine/components/opal/sip-endpoint.cpp:641
+#: ../lib/engine/components/opal/sip-endpoint.cpp:640
 msgid "Unauthorized"
 msgstr "No autorizado"
 
-#: ../lib/engine/components/opal/sip-endpoint.cpp:645
+#: ../lib/engine/components/opal/sip-endpoint.cpp:644
 msgid "Forbidden, please check that username and password are correct"
 msgstr "Denegado, compruebe que el usuario y la contraseña son correctos"
 
-#: ../lib/engine/components/opal/sip-endpoint.cpp:649
+#: ../lib/engine/components/opal/sip-endpoint.cpp:648
 msgid "Timeout"
 msgstr "Retardo"
 
-#: ../lib/engine/components/opal/sip-endpoint.cpp:653
+#: ../lib/engine/components/opal/sip-endpoint.cpp:652
 msgid "Conflict"
 msgstr "Conflicto"
 
-#: ../lib/engine/components/opal/sip-endpoint.cpp:657
+#: ../lib/engine/components/opal/sip-endpoint.cpp:656
 msgid "Temporarily unavailable"
 msgstr "Temporalmente no disponible"
 
-#: ../lib/engine/components/opal/sip-endpoint.cpp:661
+#: ../lib/engine/components/opal/sip-endpoint.cpp:660
 msgid "Not acceptable"
 msgstr "No aceptable"
 
-#: ../lib/engine/components/opal/sip-endpoint.cpp:665
+#: ../lib/engine/components/opal/sip-endpoint.cpp:664
 msgid "Illegal status code"
 msgstr "Código de estado ilegal"
 
-#: ../lib/engine/components/opal/sip-endpoint.cpp:669
+#: ../lib/engine/components/opal/sip-endpoint.cpp:668
 msgid "Multiple choices"
 msgstr "Múltiples opciones"
 
-#: ../lib/engine/components/opal/sip-endpoint.cpp:673
+#: ../lib/engine/components/opal/sip-endpoint.cpp:672
 msgid "Moved permanently"
 msgstr "Movido permanentemente"
 
-#: ../lib/engine/components/opal/sip-endpoint.cpp:677
+#: ../lib/engine/components/opal/sip-endpoint.cpp:676
 msgid "Moved temporarily"
 msgstr "Movido temporalmente"
 
-#: ../lib/engine/components/opal/sip-endpoint.cpp:681
+#: ../lib/engine/components/opal/sip-endpoint.cpp:680
 msgid "Use proxy"
 msgstr "Usar proxy"
 
-#: ../lib/engine/components/opal/sip-endpoint.cpp:685
+#: ../lib/engine/components/opal/sip-endpoint.cpp:684
 msgid "Alternative service"
 msgstr "Servicio alternativo"
 
-#: ../lib/engine/components/opal/sip-endpoint.cpp:689
+#: ../lib/engine/components/opal/sip-endpoint.cpp:688
 msgid "Not found"
 msgstr "No encontrado"
 
-#: ../lib/engine/components/opal/sip-endpoint.cpp:693
+#: ../lib/engine/components/opal/sip-endpoint.cpp:692
 msgid "Method not allowed"
 msgstr "Método no permitido"
 
-#: ../lib/engine/components/opal/sip-endpoint.cpp:697
+#: ../lib/engine/components/opal/sip-endpoint.cpp:696
 msgid "Proxy authentication required"
 msgstr "El proxy requiere autenticación"
 
-#: ../lib/engine/components/opal/sip-endpoint.cpp:701
+#: ../lib/engine/components/opal/sip-endpoint.cpp:700
 msgid "Length required"
 msgstr "Longitud requerida"
 
-#: ../lib/engine/components/opal/sip-endpoint.cpp:705
+#: ../lib/engine/components/opal/sip-endpoint.cpp:704
 msgid "Request entity too big"
 msgstr "La entidad solicitada es demasiado grande"
 
-#: ../lib/engine/components/opal/sip-endpoint.cpp:709
+#: ../lib/engine/components/opal/sip-endpoint.cpp:708
 msgid "Request URI too long"
 msgstr "El URI solicitado es demasiado largo"
 
-#: ../lib/engine/components/opal/sip-endpoint.cpp:713
+#: ../lib/engine/components/opal/sip-endpoint.cpp:712
 msgid "Unsupported media type"
 msgstr "No se soporta el tipo de medio"
 
-#: ../lib/engine/components/opal/sip-endpoint.cpp:717
+#: ../lib/engine/components/opal/sip-endpoint.cpp:716
 msgid "Unsupported URI scheme"
 msgstr "No se soporta el esquema URI"
 
@@ -1429,126 +1432,126 @@ msgstr "No se soporta el esquema URI"
 #. * Here extension is a specific "phone number", see
 #. * http://en.wikipedia.org/wiki/Extension_(telephone)
 #. * for more information
-#: ../lib/engine/components/opal/sip-endpoint.cpp:725
+#: ../lib/engine/components/opal/sip-endpoint.cpp:724
 msgid "Bad extension"
 msgstr "Extensión errónea"
 
-#: ../lib/engine/components/opal/sip-endpoint.cpp:729
+#: ../lib/engine/components/opal/sip-endpoint.cpp:728
 msgid "Extension required"
 msgstr "Extensión requerida"
 
-#: ../lib/engine/components/opal/sip-endpoint.cpp:733
+#: ../lib/engine/components/opal/sip-endpoint.cpp:732
 msgid "Interval too brief"
 msgstr "Intervalo demasiado corto"
 
-#: ../lib/engine/components/opal/sip-endpoint.cpp:737
+#: ../lib/engine/components/opal/sip-endpoint.cpp:736
 msgid "Loop detected"
 msgstr "Bucle detectado"
 
-#: ../lib/engine/components/opal/sip-endpoint.cpp:741
+#: ../lib/engine/components/opal/sip-endpoint.cpp:740
 msgid "Too many hops"
 msgstr "Demasiados saltos"
 
-#: ../lib/engine/components/opal/sip-endpoint.cpp:745
+#: ../lib/engine/components/opal/sip-endpoint.cpp:744
 msgid "Address incomplete"
 msgstr "Dirección incompleta"
 
-#: ../lib/engine/components/opal/sip-endpoint.cpp:749
+#: ../lib/engine/components/opal/sip-endpoint.cpp:748
 msgid "Ambiguous"
 msgstr "Ambiguo"
 
-#: ../lib/engine/components/opal/sip-endpoint.cpp:753
+#: ../lib/engine/components/opal/sip-endpoint.cpp:752
 msgid "Busy Here"
 msgstr "Ocupado aquí"
 
-#: ../lib/engine/components/opal/sip-endpoint.cpp:757
+#: ../lib/engine/components/opal/sip-endpoint.cpp:756
 msgid "Request terminated"
 msgstr "Petición terminada"
 
-#: ../lib/engine/components/opal/sip-endpoint.cpp:761
+#: ../lib/engine/components/opal/sip-endpoint.cpp:760
 msgid "Remote party host is offline"
 msgstr "El equipo remoto no está en línea"
 
-#: ../lib/engine/components/opal/sip-endpoint.cpp:765
+#: ../lib/engine/components/opal/sip-endpoint.cpp:764
 msgid "Not acceptable here"
 msgstr "No es aceptable aquí"
 
-#: ../lib/engine/components/opal/sip-endpoint.cpp:769
+#: ../lib/engine/components/opal/sip-endpoint.cpp:768
 msgid "Bad event"
 msgstr "Evento erróneo"
 
-#: ../lib/engine/components/opal/sip-endpoint.cpp:773
+#: ../lib/engine/components/opal/sip-endpoint.cpp:772
 msgid "Request pending"
 msgstr "Solicitud en espera"
 
-#: ../lib/engine/components/opal/sip-endpoint.cpp:777
+#: ../lib/engine/components/opal/sip-endpoint.cpp:776
 msgid "Undecipherable"
 msgstr "Indescifrable"
 
-#: ../lib/engine/components/opal/sip-endpoint.cpp:781
+#: ../lib/engine/components/opal/sip-endpoint.cpp:780
 msgid "Internal server error"
 msgstr "Error interno del servidor"
 
-#: ../lib/engine/components/opal/sip-endpoint.cpp:785
+#: ../lib/engine/components/opal/sip-endpoint.cpp:784
 msgid "Not implemented"
 msgstr "No implementado"
 
-#: ../lib/engine/components/opal/sip-endpoint.cpp:789
+#: ../lib/engine/components/opal/sip-endpoint.cpp:788
 msgid "Bad gateway"
 msgstr "Pasarela errónea"
 
-#: ../lib/engine/components/opal/sip-endpoint.cpp:793
+#: ../lib/engine/components/opal/sip-endpoint.cpp:792
 msgid "Service unavailable"
 msgstr "Servicio no disponible"
 
-#: ../lib/engine/components/opal/sip-endpoint.cpp:797
+#: ../lib/engine/components/opal/sip-endpoint.cpp:796
 msgid "Server timeout"
 msgstr "Expiró el tiempo de conexión del servidor"
 
-#: ../lib/engine/components/opal/sip-endpoint.cpp:801
+#: ../lib/engine/components/opal/sip-endpoint.cpp:800
 msgid "SIP version not supported"
 msgstr "La versión SIP no está soportada"
 
-#: ../lib/engine/components/opal/sip-endpoint.cpp:805
+#: ../lib/engine/components/opal/sip-endpoint.cpp:804
 msgid "Message too large"
 msgstr "El mensaje es demasiado largo"
 
-#: ../lib/engine/components/opal/sip-endpoint.cpp:809
+#: ../lib/engine/components/opal/sip-endpoint.cpp:808
 msgid "Busy everywhere"
 msgstr "Ocupado en todas partes"
 
-#: ../lib/engine/components/opal/sip-endpoint.cpp:813
+#: ../lib/engine/components/opal/sip-endpoint.cpp:812
 msgid "Decline"
 msgstr "Declinar"
 
-#: ../lib/engine/components/opal/sip-endpoint.cpp:817
+#: ../lib/engine/components/opal/sip-endpoint.cpp:816
 msgid "Does not exist anymore"
 msgstr "Ya no existe"
 
-#: ../lib/engine/components/opal/sip-endpoint.cpp:821
+#: ../lib/engine/components/opal/sip-endpoint.cpp:820
 msgid "Globally not acceptable"
 msgstr "No aceptable globalmente"
 
-#: ../lib/engine/components/opal/sip-endpoint.cpp:981
+#: ../lib/engine/components/opal/sip-endpoint.cpp:980
 msgid "Could not send message"
 msgstr "No se pudo enviar el mensaje"
 
-#: ../lib/engine/components/opal/sip-endpoint.cpp:1078
+#: ../lib/engine/components/opal/sip-endpoint.cpp:1077
 #, c-format
 msgid "Incoming call from %s"
 msgstr "Llamada entrante de %s"
 
-#: ../lib/engine/components/opal/sip-endpoint.cpp:1080
+#: ../lib/engine/components/opal/sip-endpoint.cpp:1079
 #, c-format
 msgid "Incoming call"
 msgstr "Llamada entrante"
 
-#: ../lib/engine/components/opal/sip-endpoint.cpp:1086
+#: ../lib/engine/components/opal/sip-endpoint.cpp:1085
 #, c-format
 msgid "In a call with %s"
 msgstr "En una llamada con %s"
 
-#: ../lib/engine/components/opal/sip-endpoint.cpp:1088
+#: ../lib/engine/components/opal/sip-endpoint.cpp:1087
 #, c-format
 msgid "In a call"
 msgstr "En una llamada"
@@ -1604,7 +1607,7 @@ msgstr "Abrir el enlace en el navegador"
 msgid "Copy link"
 msgstr "Copiar el enlace"
 
-#: ../lib/engine/gui/gtk-frontend/chat-area.cpp:912
+#: ../lib/engine/gui/gtk-frontend/chat-area.cpp:908
 msgid "_Smile..."
 msgstr "E_moticono..."
 
@@ -2492,11 +2495,7 @@ msgstr ""
 "con H.323 y SIP que le permite hacer llamadas de sonido y vídeo a usuarios "
 "remotos con hardware o software H.323 o SIP."
 
-#: ../src/gui/callbacks.cpp:216
-msgid "Help display is not supported by your GTK+ version"
-msgstr "Su versión de GTK+ no soporta el visor de ayuda"
-
-#: ../src/gui/callbacks.cpp:224
+#: ../src/gui/callbacks.cpp:219
 msgid "Unable to open help file."
 msgstr "No se pudo abrir el archivo de ayuda."
 
@@ -2925,7 +2924,7 @@ msgstr "Suspender o reanudar la transmisión de vídeo"
 msgid "Close the Ekiga window"
 msgstr "Cerrar la ventana de Ekiga"
 
-#: ../src/gui/main_window.cpp:3198 ../src/gui/statusicon.cpp:478
+#: ../src/gui/main_window.cpp:3198 ../src/gui/statusicon.cpp:465
 msgid "Quit"
 msgstr "Salir"
 
@@ -3025,11 +3024,11 @@ msgstr "_Pantalla completa"
 msgid "Switch to fullscreen"
 msgstr "Pasar a pantalla completa"
 
-#: ../src/gui/main_window.cpp:3298 ../src/gui/statusicon.cpp:466
+#: ../src/gui/main_window.cpp:3298 ../src/gui/statusicon.cpp:453
 msgid "Get help by reading the Ekiga manual"
 msgstr "Obtenga ayuda leyendo el manual de Ekiga"
 
-#: ../src/gui/main_window.cpp:3303 ../src/gui/statusicon.cpp:471
+#: ../src/gui/main_window.cpp:3303 ../src/gui/statusicon.cpp:458
 msgid "View information about Ekiga"
 msgstr "Ver información acerca de Ekiga"
 
@@ -3091,43 +3090,19 @@ msgstr ""
 "Paquetes desordenados: %.1f %%\n"
 "Búfer de jitter: %d ms%s%s%s"
 
-#: ../src/gui/main_window.cpp:4402
+#: ../src/gui/main_window.cpp:4397
 msgid "Prints debug messages in the console (level between 1 and 5)"
 msgstr "Imprime mensajes de depuración en la consola (nivel entre 1 y 5)"
 
-#: ../src/gui/main_window.cpp:4407
+#: ../src/gui/main_window.cpp:4402
 msgid "Prints user plane debug messages in the console (level between 1 and 4)"
 msgstr ""
 "Imprime mensajes de depuración del plano del usuario en la consola (nivel "
 "entre 1 y 4)"
 
-#: ../src/gui/main_window.cpp:4412
+#: ../src/gui/main_window.cpp:4407
 msgid "Makes Ekiga call the given URI"
 msgstr "Hace que Ekiga llame al URI dado"
-
-#: ../src/gui/main_window.cpp:4519
-msgid "No usable audio plugin detected"
-msgstr "No se detectó ningún complemento de sonido utilizable"
-
-#: ../src/gui/main_window.cpp:4520
-msgid ""
-"Ekiga didn't find any usable audio plugin. Make sure that your installation "
-"is correct."
-msgstr ""
-"Ekiga no encontró ningún complemento de sonido utilizable. Por favor, "
-"asegúrese de que su instalación es correcta."
-
-#: ../src/gui/main_window.cpp:4523
-msgid "No usable audio codecs detected"
-msgstr "No se detectó ningún complemento de sonido utilizable"
-
-#: ../src/gui/main_window.cpp:4524
-msgid ""
-"Ekiga didn't find any usable audio codec. Make sure that your installation "
-"is correct."
-msgstr ""
-"Ekiga no encontró ningún complemento de sonido utilizable. Asegúrese de que "
-"su instalación es correcta."
 
 #: ../src/gui/preferences.cpp:382
 msgid "Play sound for new voice mails"
@@ -3501,7 +3476,7 @@ msgid_plural "You have %d messages"
 msgstr[0] "Tiene %d mensaje"
 msgstr[1] "Tiene %d mensajes"
 
-#: ../src/gui/statusicon.cpp:418
+#: ../src/gui/statusicon.cpp:409
 msgid "The following accounts are inactive:"
 msgstr "Las siguientes cuentas están inactivas:"
 
@@ -3537,6 +3512,29 @@ msgstr "Borrar mensajes personalizados:"
 #: ../src/gui/statusmenu.cpp:692
 msgid "Define a custom message:"
 msgstr "Definir un mensaje personalizado:"
+
+#~ msgid "Help display is not supported by your GTK+ version"
+#~ msgstr "Su versión de GTK+ no soporta el visor de ayuda"
+
+#~ msgid "No usable audio plugin detected"
+#~ msgstr "No se detectó ningún complemento de sonido utilizable"
+
+#~ msgid ""
+#~ "Ekiga didn't find any usable audio plugin. Make sure that your "
+#~ "installation is correct."
+#~ msgstr ""
+#~ "Ekiga no encontró ningún complemento de sonido utilizable. Por favor, "
+#~ "asegúrese de que su instalación es correcta."
+
+#~ msgid "No usable audio codecs detected"
+#~ msgstr "No se detectó ningún complemento de sonido utilizable"
+
+#~ msgid ""
+#~ "Ekiga didn't find any usable audio codec. Make sure that your "
+#~ "installation is correct."
+#~ msgstr ""
+#~ "Ekiga no encontró ningún complemento de sonido utilizable. Asegúrese de "
+#~ "que su instalación es correcta."
 
 #~ msgid "Voice Mails"
 #~ msgstr "Correos de voz"
