@@ -115,7 +115,7 @@ gm_sb_push_message (GmStatusbar *sb,
   else
     id = gtk_statusbar_get_context_id (GTK_STATUSBAR (sb), "statusbar");
 
-#if GTK_CHECK_VERSION (2, 22, 0)
+#if GTK_CHECK_VERSION (2, 21, 2)
   gtk_statusbar_remove_all (GTK_STATUSBAR (sb), id);
 #else
   len = g_slist_length ((GSList *) (GTK_STATUSBAR (sb)->messages));

@@ -139,7 +139,7 @@ menu_item_selected (GtkWidget *w,
     }
     else {
 
-#if GTK_CHECK_VERSION (2, 22, 0)
+#if GTK_CHECK_VERSION (2, 21, 2)
       gtk_statusbar_remove_all (GTK_STATUSBAR (statusbar), id);
 #else
       len = g_slist_length ((GSList *) (GTK_STATUSBAR (statusbar)->messages));
