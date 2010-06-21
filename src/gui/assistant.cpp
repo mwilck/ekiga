@@ -1559,8 +1559,8 @@ ekiga_assistant_cancel (GtkAssistant *gtkassistant)
 
   main_window = GnomeMeeting::Process ()->GetMainWindow ();
 
-  gtk_widget_hide (GTK_WIDGET (gtkassistant));
   gtk_assistant_set_current_page (gtkassistant, 0);
+  gtk_widget_hide (GTK_WIDGET (gtkassistant));
   gtk_widget_show (main_window);
 }
 
@@ -1616,8 +1616,6 @@ ekiga_assistant_new (Ekiga::ServiceCore *core)
   assistant->priv->core = core;
 
   /* FIXME: move this into the caller */
-  g_signal_connect (assistant, "cancel",
-                    G_CALLBACK (gtk_widget_hide), NULL);
   g_signal_connect (assistant, "key-press-event",
                     G_CALLBACK (ekiga_assistant_key_press_cb), NULL);
 
