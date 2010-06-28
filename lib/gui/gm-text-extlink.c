@@ -105,15 +105,15 @@ enhancer_helper_enhance (GmTextBufferEnhancerHelperIFace* self,
 			 gint length)
 {
   GmTextExtlinkPrivate* priv = GM_TEXT_EXTLINK_GET_PRIVATE (self);
-  gchar* link = NULL;
+  gchar* lnk = NULL;
 
-  link = g_malloc0 (length + 1);
+  lnk = g_malloc0 (length + 1);
 
-  strncpy (link, full_text + *start, length);
+  strncpy (lnk, full_text + *start, length);
 
-  gtk_text_buffer_insert_with_tags (buffer, iter, link, length,
+  gtk_text_buffer_insert_with_tags (buffer, iter, lnk, length,
 				    priv->tag, NULL);
-  g_free (link);
+  g_free (lnk);
 
   *start = *start + length;
 }
