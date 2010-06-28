@@ -283,7 +283,7 @@ public:
   bool operator() (Ekiga::PresentityPtr pres_)
   {
     boost::shared_ptr<Ekiga::URIPresentity> presentity_ = boost::dynamic_pointer_cast<Ekiga::URIPresentity> (pres_);
-    bool result;
+    bool result = true;
 
     if (presentity_ && presentity_->get_name () == name) {
 
