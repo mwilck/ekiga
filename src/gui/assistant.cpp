@@ -737,7 +737,7 @@ create_ekiga_out_page (EkigaAssistant *assistant)
   button = gtk_button_new ();
   label = gtk_label_new (NULL);
   text = g_strdup_printf ("<span foreground=\"blue\"><u>%s</u></span>",
-			 _("Consult the calls history"));
+			 _("Consult the call history"));
   gtk_label_set_markup (GTK_LABEL (label), text);
   g_free (text);
   gtk_button_set_relief (GTK_BUTTON (button), GTK_RELIEF_NONE);

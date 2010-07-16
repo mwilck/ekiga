@@ -2813,7 +2813,7 @@ ekiga_main_window_incoming_call_notify (EkigaMainWindow *mw,
   const char *utf8_url = call->get_remote_uri ().c_str ();
   const char *utf8_local = call->get_local_party_name ().c_str ();
 
-  title = g_strdup_printf ("%s %s", _("Incoming call from"), (const char*) utf8_name);
+  title = g_strdup_printf (_("Incoming call from %s"), (const char*) utf8_name);
 
   if (utf8_url)
     uri = g_strdup_printf ("<b>%s</b> %s", _("Remote URI:"), utf8_url);
