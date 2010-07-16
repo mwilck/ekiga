@@ -92,7 +92,7 @@ Opal::Bank::new_account (Account::Type acc_type,
   boost::shared_ptr<Ekiga::FormRequestSimple> request = boost::shared_ptr<Ekiga::FormRequestSimple> (new Ekiga::FormRequestSimple (boost::bind (&Opal::Bank::on_new_account_form_submitted, this, _1, _2, acc_type)));
 
   request->title (_("Edit account"));
-  request->instructions (_("Please update the following fields."));
+  request->instructions (_("Please update the following fields:"));
 
   switch (acc_type) {
 
