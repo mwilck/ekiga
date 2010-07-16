@@ -8,8 +8,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gnomemeeting\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2010-06-21 13:39+0300\n"
-"PO-Revision-Date: 2010-06-21 13:40+0200\n"
+"POT-Creation-Date: 2010-07-16 16:15+0300\n"
+"PO-Revision-Date: 2010-07-16 17:11+0200\n"
 "Last-Translator: Yaron Shahrabani <sh.yaron@gmail.com>\n"
 "Language-Team: Hebrew\n"
 "MIME-Version: 1.0\n"
@@ -18,8 +18,8 @@ msgstr ""
 "Plural-Forms: nplurals=2; plural=( n != 1 );\n"
 
 #. Application name
-#: ../ekiga.desktop.in.in.h:1 ../src/gui/main_window.cpp:4379
-#: ../src/gui/main_window.cpp:4381
+#: ../ekiga.desktop.in.in.h:1 ../src/gui/main_window.cpp:4374
+#: ../src/gui/main_window.cpp:4376
 msgid "Ekiga Softphone"
 msgstr "תוכנת הטלפון Ekiga"
 
@@ -868,8 +868,8 @@ msgid "Address:"
 msgstr "כתובת:"
 
 #: ../lib/engine/components/local-roster/local-presentity.cpp:247
-msgid "Is a prefered contact"
-msgstr "הוא איש קשר מועדף"
+msgid "Is a preferred contact"
+msgstr "הוא/היא איש קשר מועדף"
 
 #: ../lib/engine/components/local-roster/local-presentity.cpp:249
 #: ../plugins/loudmouth/loudmouth-presentity.cpp:274
@@ -880,9 +880,8 @@ msgstr "בחר קבוצות:"
 
 #: ../lib/engine/components/local-roster/local-roster-bridge.cpp:93
 #: ../lib/engine/components/local-roster/local-heap.cpp:232
-#, fuzzy
 msgid "Add to local roster"
-msgstr "נכשל בנסיון לעבד קובץ XML"
+msgstr ""
 
 #: ../lib/engine/components/local-roster/local-heap.cpp:93
 msgid "Services"
@@ -901,9 +900,8 @@ msgid "Call back test"
 msgstr "בדיקת תקשורת"
 
 #: ../lib/engine/components/local-roster/local-heap.cpp:110
-#, fuzzy
 msgid "Local roster"
-msgstr "אנשי קשר מקומיים"
+msgstr ""
 
 #: ../lib/engine/components/local-roster/local-heap.cpp:127
 msgid "Rename"
@@ -996,23 +994,23 @@ msgid "Bad username/password"
 msgstr "שם משתמש/סיסמה שגוי"
 
 #: ../lib/engine/components/opal/h323-endpoint.cpp:315
-#: ../lib/engine/components/opal/sip-endpoint.cpp:826
+#: ../lib/engine/components/opal/sip-endpoint.cpp:825
 msgid "Transport error"
 msgstr "שגיאת העברה"
 
 #: ../lib/engine/components/opal/h323-endpoint.cpp:326
 #: ../lib/engine/components/opal/h323-endpoint.cpp:331
-#: ../lib/engine/components/opal/sip-endpoint.cpp:833
+#: ../lib/engine/components/opal/sip-endpoint.cpp:832
 msgid "Failed"
 msgstr "נכשל"
 
 #. translators : the result will look like :
-#. * "registered (with 2 voicemail messages)"
+#. * "registered (with 2 voice mail messages)"
 #.
 #: ../lib/engine/components/opal/opal-account.cpp:209
 #, c-format
-msgid "%s (with %d voicemail message)"
-msgid_plural "%s (with %d voicemail messages)"
+msgid "%s (with %d voice mail message)"
+msgid_plural "%s (with %d voice mail messages)"
 msgstr[0] "%s (עם הודעה אחת בתא הקולי)"
 msgstr[1] "%s (עם %d הודעות בתא הקולי)"
 
@@ -1047,6 +1045,7 @@ msgid "Edit account"
 msgstr "ערוך חשבון"
 
 #: ../lib/engine/components/opal/opal-account.cpp:393
+#: ../lib/engine/components/opal/opal-bank.cpp:95
 #: ../plugins/evolution/evolution-book.cpp:341
 #: ../plugins/evolution/evolution-contact.cpp:312
 #: ../plugins/loudmouth/loudmouth-account.cpp:264
@@ -1136,7 +1135,7 @@ msgstr "הוסף _חשבון Ekiga.net"
 
 #: ../lib/engine/components/opal/opal-bank.cpp:76
 msgid "_Add an Ekiga Call Out Account"
-msgstr ""
+msgstr "הו_ספת חשבון לשיחות יוצאות של Ekiga "
 
 #: ../lib/engine/components/opal/opal-bank.cpp:78
 msgid "_Add a SIP Account"
@@ -1145,10 +1144,6 @@ msgstr "הוסף ח_שבון SIP"
 #: ../lib/engine/components/opal/opal-bank.cpp:80
 msgid "_Add an H.323 Account"
 msgstr "הוסף חשבון _H.323"
-
-#: ../lib/engine/components/opal/opal-bank.cpp:95
-msgid "Please update the following fields."
-msgstr "נא לעדכן את השדות הבאים:"
 
 #: ../lib/engine/components/opal/opal-bank.cpp:100
 #: ../src/gui/assistant.cpp:596
@@ -1170,7 +1165,7 @@ msgstr "_ססמה:"
 #: ../lib/engine/components/opal/opal-bank.cpp:110
 #: ../src/gui/assistant.cpp:704
 msgid "Get an Ekiga Call Out account"
-msgstr "קבל חשבון שיחות יוצאות של Ekiga"
+msgstr "קבלת חשבון לשיחות יוצאות של Ekiga"
 
 #: ../lib/engine/components/opal/opal-bank.cpp:114
 msgid "_Account ID:"
@@ -1201,9 +1196,8 @@ msgid "_Registrar:"
 msgstr "_רשם:"
 
 #: ../lib/engine/components/opal/opal-bank.cpp:134
-#, fuzzy
 msgid "_Authentication User:"
-msgstr "נדרשת הזדהות מתווך"
+msgstr "משתמש לה_זדהות:"
 
 #: ../lib/engine/components/opal/opal-call.cpp:406
 msgid "Local user cleared the call"
@@ -1292,97 +1286,102 @@ msgid ""
 "Please see http://wiki.ekiga.org/index.php/Enable_port_forwarding_manually "
 "for instructions"
 msgstr ""
+"Ekiga לא הצליחה להגדיר את תצורת הרשת שלך אוטומטית. עדיין ניתן להשתמש בה אך "
+"יהיה עליך להגדיר את תצורת הרשת באופן ידני.\n"
+"\n"
+"נא לעיין בעמוד http://wiki.ekiga.org/index.php/"
+"Enable_port_forwarding_manually לקבלת הנחיות"
 
 #: ../lib/engine/components/opal/sip-endpoint.cpp:255
 #: ../lib/engine/components/opal/sip-endpoint.cpp:257
 msgid "Message"
 msgstr "הודעה"
 
-#: ../lib/engine/components/opal/sip-endpoint.cpp:633
+#: ../lib/engine/components/opal/sip-endpoint.cpp:632
 msgid "Bad request"
 msgstr "בקשה לא תקינה"
 
-#: ../lib/engine/components/opal/sip-endpoint.cpp:637
+#: ../lib/engine/components/opal/sip-endpoint.cpp:636
 msgid "Payment required"
 msgstr "נדרש תשלום"
 
-#: ../lib/engine/components/opal/sip-endpoint.cpp:641
+#: ../lib/engine/components/opal/sip-endpoint.cpp:640
 msgid "Unauthorized"
 msgstr "לא מאושר"
 
-#: ../lib/engine/components/opal/sip-endpoint.cpp:645
+#: ../lib/engine/components/opal/sip-endpoint.cpp:644
 msgid "Forbidden, please check that username and password are correct"
-msgstr ""
+msgstr "אסור, נא לבדוק ששם המשתמש והססמה נכונים"
 
-#: ../lib/engine/components/opal/sip-endpoint.cpp:649
+#: ../lib/engine/components/opal/sip-endpoint.cpp:648
 msgid "Timeout"
 msgstr "תום הזמן"
 
-#: ../lib/engine/components/opal/sip-endpoint.cpp:653
+#: ../lib/engine/components/opal/sip-endpoint.cpp:652
 msgid "Conflict"
 msgstr "התנגשות"
 
-#: ../lib/engine/components/opal/sip-endpoint.cpp:657
+#: ../lib/engine/components/opal/sip-endpoint.cpp:656
 msgid "Temporarily unavailable"
 msgstr "לא זמין זמנית"
 
-#: ../lib/engine/components/opal/sip-endpoint.cpp:661
+#: ../lib/engine/components/opal/sip-endpoint.cpp:660
 msgid "Not acceptable"
 msgstr "לא מקובל"
 
-#: ../lib/engine/components/opal/sip-endpoint.cpp:665
+#: ../lib/engine/components/opal/sip-endpoint.cpp:664
 msgid "Illegal status code"
 msgstr "קוד מצב לא חוקי"
 
-#: ../lib/engine/components/opal/sip-endpoint.cpp:669
+#: ../lib/engine/components/opal/sip-endpoint.cpp:668
 msgid "Multiple choices"
 msgstr "בחירה מרובה"
 
-#: ../lib/engine/components/opal/sip-endpoint.cpp:673
+#: ../lib/engine/components/opal/sip-endpoint.cpp:672
 msgid "Moved permanently"
 msgstr "הועבר לצמיתות"
 
-#: ../lib/engine/components/opal/sip-endpoint.cpp:677
+#: ../lib/engine/components/opal/sip-endpoint.cpp:676
 msgid "Moved temporarily"
 msgstr "הועבר באופן זמני"
 
-#: ../lib/engine/components/opal/sip-endpoint.cpp:681
+#: ../lib/engine/components/opal/sip-endpoint.cpp:680
 msgid "Use proxy"
 msgstr "השתמש במתווך"
 
-#: ../lib/engine/components/opal/sip-endpoint.cpp:685
+#: ../lib/engine/components/opal/sip-endpoint.cpp:684
 msgid "Alternative service"
 msgstr "שירות חלופי"
 
-#: ../lib/engine/components/opal/sip-endpoint.cpp:689
+#: ../lib/engine/components/opal/sip-endpoint.cpp:688
 msgid "Not found"
 msgstr "לא נמצא"
 
-#: ../lib/engine/components/opal/sip-endpoint.cpp:693
+#: ../lib/engine/components/opal/sip-endpoint.cpp:692
 msgid "Method not allowed"
 msgstr "שיטה אינה מורשית"
 
-#: ../lib/engine/components/opal/sip-endpoint.cpp:697
+#: ../lib/engine/components/opal/sip-endpoint.cpp:696
 msgid "Proxy authentication required"
 msgstr "נדרשת הזדהות מתווך"
 
-#: ../lib/engine/components/opal/sip-endpoint.cpp:701
+#: ../lib/engine/components/opal/sip-endpoint.cpp:700
 msgid "Length required"
 msgstr "האורך נדרש"
 
-#: ../lib/engine/components/opal/sip-endpoint.cpp:705
+#: ../lib/engine/components/opal/sip-endpoint.cpp:704
 msgid "Request entity too big"
 msgstr "יישות הבקשה גדולה מדי"
 
-#: ../lib/engine/components/opal/sip-endpoint.cpp:709
+#: ../lib/engine/components/opal/sip-endpoint.cpp:708
 msgid "Request URI too long"
 msgstr "כתובת הבקשה ארוכה מדי"
 
-#: ../lib/engine/components/opal/sip-endpoint.cpp:713
+#: ../lib/engine/components/opal/sip-endpoint.cpp:712
 msgid "Unsupported media type"
 msgstr "סוג המדיה לא נתמך"
 
-#: ../lib/engine/components/opal/sip-endpoint.cpp:717
+#: ../lib/engine/components/opal/sip-endpoint.cpp:716
 msgid "Unsupported URI scheme"
 msgstr "סוג כתובת לא נתמך"
 
@@ -1390,126 +1389,126 @@ msgstr "סוג כתובת לא נתמך"
 #. * Here extension is a specific "phone number", see
 #. * http://en.wikipedia.org/wiki/Extension_(telephone)
 #. * for more information
-#: ../lib/engine/components/opal/sip-endpoint.cpp:725
+#: ../lib/engine/components/opal/sip-endpoint.cpp:724
 msgid "Bad extension"
 msgstr "הרחבה לא תקינה"
 
-#: ../lib/engine/components/opal/sip-endpoint.cpp:729
+#: ../lib/engine/components/opal/sip-endpoint.cpp:728
 msgid "Extension required"
 msgstr "נדרשת הרחבה"
 
-#: ../lib/engine/components/opal/sip-endpoint.cpp:733
+#: ../lib/engine/components/opal/sip-endpoint.cpp:732
 msgid "Interval too brief"
 msgstr "המרווח קצר מדי"
 
-#: ../lib/engine/components/opal/sip-endpoint.cpp:737
+#: ../lib/engine/components/opal/sip-endpoint.cpp:736
 msgid "Loop detected"
 msgstr "התגלתה לולאה"
 
-#: ../lib/engine/components/opal/sip-endpoint.cpp:741
+#: ../lib/engine/components/opal/sip-endpoint.cpp:740
 msgid "Too many hops"
 msgstr "יותר מדי קפיצות"
 
-#: ../lib/engine/components/opal/sip-endpoint.cpp:745
+#: ../lib/engine/components/opal/sip-endpoint.cpp:744
 msgid "Address incomplete"
 msgstr "הכתובת אינה מלאה"
 
-#: ../lib/engine/components/opal/sip-endpoint.cpp:749
+#: ../lib/engine/components/opal/sip-endpoint.cpp:748
 msgid "Ambiguous"
 msgstr "דו משמעי"
 
-#: ../lib/engine/components/opal/sip-endpoint.cpp:753
+#: ../lib/engine/components/opal/sip-endpoint.cpp:752
 msgid "Busy Here"
 msgstr "עסוק כאן"
 
-#: ../lib/engine/components/opal/sip-endpoint.cpp:757
+#: ../lib/engine/components/opal/sip-endpoint.cpp:756
 msgid "Request terminated"
 msgstr "הבקשה נבלמה"
 
-#: ../lib/engine/components/opal/sip-endpoint.cpp:761
+#: ../lib/engine/components/opal/sip-endpoint.cpp:760
 msgid "Remote party host is offline"
 msgstr "המארח המרוחק מנותק"
 
-#: ../lib/engine/components/opal/sip-endpoint.cpp:765
+#: ../lib/engine/components/opal/sip-endpoint.cpp:764
 msgid "Not acceptable here"
 msgstr "לא מקובל כאן"
 
-#: ../lib/engine/components/opal/sip-endpoint.cpp:769
+#: ../lib/engine/components/opal/sip-endpoint.cpp:768
 msgid "Bad event"
 msgstr "אירוע לא תקין"
 
-#: ../lib/engine/components/opal/sip-endpoint.cpp:773
+#: ../lib/engine/components/opal/sip-endpoint.cpp:772
 msgid "Request pending"
 msgstr "בקשה ממתינה"
 
-#: ../lib/engine/components/opal/sip-endpoint.cpp:777
+#: ../lib/engine/components/opal/sip-endpoint.cpp:776
 msgid "Undecipherable"
 msgstr "בלתי ניתן לפיענוח"
 
-#: ../lib/engine/components/opal/sip-endpoint.cpp:781
+#: ../lib/engine/components/opal/sip-endpoint.cpp:780
 msgid "Internal server error"
 msgstr "שגיאת שרת פנימית"
 
-#: ../lib/engine/components/opal/sip-endpoint.cpp:785
+#: ../lib/engine/components/opal/sip-endpoint.cpp:784
 msgid "Not implemented"
 msgstr "לא ממומש"
 
-#: ../lib/engine/components/opal/sip-endpoint.cpp:789
+#: ../lib/engine/components/opal/sip-endpoint.cpp:788
 msgid "Bad gateway"
 msgstr "שער גישה שגוי"
 
-#: ../lib/engine/components/opal/sip-endpoint.cpp:793
+#: ../lib/engine/components/opal/sip-endpoint.cpp:792
 msgid "Service unavailable"
 msgstr "השירות אינו זמין"
 
-#: ../lib/engine/components/opal/sip-endpoint.cpp:797
+#: ../lib/engine/components/opal/sip-endpoint.cpp:796
 msgid "Server timeout"
 msgstr "תם זמן ההתקשרות לשרת"
 
-#: ../lib/engine/components/opal/sip-endpoint.cpp:801
+#: ../lib/engine/components/opal/sip-endpoint.cpp:800
 msgid "SIP version not supported"
 msgstr "גירסת ה-SIP לא נתמכת"
 
-#: ../lib/engine/components/opal/sip-endpoint.cpp:805
+#: ../lib/engine/components/opal/sip-endpoint.cpp:804
 msgid "Message too large"
 msgstr "ההודעה גדולה מדי"
 
-#: ../lib/engine/components/opal/sip-endpoint.cpp:809
+#: ../lib/engine/components/opal/sip-endpoint.cpp:808
 msgid "Busy everywhere"
 msgstr "עסוק בכל מקום"
 
-#: ../lib/engine/components/opal/sip-endpoint.cpp:813
+#: ../lib/engine/components/opal/sip-endpoint.cpp:812
 msgid "Decline"
 msgstr "דחה"
 
-#: ../lib/engine/components/opal/sip-endpoint.cpp:817
+#: ../lib/engine/components/opal/sip-endpoint.cpp:816
 msgid "Does not exist anymore"
 msgstr "לא קיים יותר"
 
-#: ../lib/engine/components/opal/sip-endpoint.cpp:821
+#: ../lib/engine/components/opal/sip-endpoint.cpp:820
 msgid "Globally not acceptable"
 msgstr "לא מקובל באופן גלובלי"
 
-#: ../lib/engine/components/opal/sip-endpoint.cpp:981
+#: ../lib/engine/components/opal/sip-endpoint.cpp:980
 msgid "Could not send message"
 msgstr "לא ניתן לשלוח את ההודעה"
 
-#: ../lib/engine/components/opal/sip-endpoint.cpp:1078
+#: ../lib/engine/components/opal/sip-endpoint.cpp:1077
 #, c-format
 msgid "Incoming call from %s"
 msgstr "שיחה נכנסת מ-%s"
 
-#: ../lib/engine/components/opal/sip-endpoint.cpp:1080
+#: ../lib/engine/components/opal/sip-endpoint.cpp:1079
 #, c-format
 msgid "Incoming call"
 msgstr "שיחה נכנסת"
 
-#: ../lib/engine/components/opal/sip-endpoint.cpp:1086
+#: ../lib/engine/components/opal/sip-endpoint.cpp:1085
 #, c-format
 msgid "In a call with %s"
 msgstr "בשיחה עם %s"
 
-#: ../lib/engine/components/opal/sip-endpoint.cpp:1088
+#: ../lib/engine/components/opal/sip-endpoint.cpp:1087
 #, c-format
 msgid "In a call"
 msgstr "בשיחה"
@@ -1565,7 +1564,7 @@ msgstr "פתח קישור בדפדפן"
 msgid "Copy link"
 msgstr "העתק קישור"
 
-#: ../lib/engine/gui/gtk-frontend/chat-area.cpp:912
+#: ../lib/engine/gui/gtk-frontend/chat-area.cpp:908
 msgid "_Smile..."
 msgstr "_חיוך..."
 
@@ -1634,7 +1633,7 @@ msgstr "הסר איש קשר"
 msgid "Are you sure you want to remove %s from the addressbook?"
 msgstr "אתה בטוח שאתה רוצה למחוק את %s מספר הכתובות?"
 
-#: ../plugins/gstreamer/gst-audioinput.cpp:277
+#: ../plugins/gstreamer/gst-audioinput.cpp:276
 msgid "Audio test"
 msgstr "בדיקת שמע"
 
@@ -1672,7 +1671,7 @@ msgstr "מ_אפייני ספר כתובות"
 
 #: ../plugins/ldap/ldap-book.cpp:550
 msgid "LDAP SASL Interaction"
-msgstr ""
+msgstr "אינטרקציית SASL ל־LDAP"
 
 #. Translators, Howard explained : "Challenge" is a generic term
 #. * in authentication. It's a prompt from the authentication mechanism
@@ -1688,9 +1687,8 @@ msgid "Challenge: "
 msgstr "אתגר:"
 
 #: ../plugins/ldap/ldap-book.cpp:600
-#, fuzzy
 msgid "Interact"
-msgstr "מנשק משתמש"
+msgstr ""
 
 #: ../plugins/ldap/ldap-book.cpp:667
 msgid "Refreshing"
@@ -1736,7 +1734,7 @@ msgstr "_כתובת שרת"
 
 #: ../plugins/ldap/ldap-book.cpp:933
 msgid "_Base DN"
-msgstr ""
+msgstr "_Base DN"
 
 #: ../plugins/ldap/ldap-book.cpp:939
 msgid "Subtree"
@@ -1766,7 +1764,7 @@ msgstr "_תכונות שיחה"
 
 #: ../plugins/ldap/ldap-book.cpp:959 ../plugins/ldap/ldap-book.cpp:961
 msgid "_Filter Template"
-msgstr ""
+msgstr "_תבנית סינון"
 
 #. Translators: Bind ID - In LDAP, the operation that begins an LDAP
 #. * session and authenticates the user to the directory is called a
@@ -1779,7 +1777,7 @@ msgstr ""
 #.
 #: ../plugins/ldap/ldap-book.cpp:972
 msgid "Bind _ID"
-msgstr ""
+msgstr "_איגוד זהות"
 
 #: ../plugins/ldap/ldap-book.cpp:973
 msgid "_Password"
@@ -1811,11 +1809,11 @@ msgstr "נא לציין את כתובת השרת\n"
 
 #: ../plugins/ldap/ldap-book.cpp:1027
 msgid "Please provide a DisplayName Attribute\n"
-msgstr ""
+msgstr "נא לציין מאפיין ל־DisplayName\n"
 
 #: ../plugins/ldap/ldap-book.cpp:1030
 msgid "Please provide a Call Attribute\n"
-msgstr ""
+msgstr "נא לציין מאפיין ל־Call\n"
 
 #: ../plugins/ldap/ldap-book.cpp:1033
 msgid "Invalid Server URI\n"
@@ -1870,7 +1868,7 @@ msgstr "מחובר"
 #. FIXME: can't we report something better?
 #: ../plugins/loudmouth/loudmouth-account.cpp:245
 msgid "error authenticating loudmouth account"
-msgstr ""
+msgstr "שגיאה באימות עם חשבון ה־loudmouth"
 
 #: ../plugins/loudmouth/loudmouth-account.cpp:275
 msgid "Server:"
@@ -1894,38 +1892,37 @@ msgstr "הו_ספת חשבון jabber/XMPP"
 
 #: ../plugins/loudmouth/loudmouth-heap.cpp:210
 msgid "Authorization to see your presence"
-msgstr ""
+msgstr "אישור לצפות במצב הנוכחות שלך"
 
 #: ../plugins/loudmouth/loudmouth-heap.cpp:214
 #, c-format
 msgid "%s asks the permission to see your presence, saying: \"%s\"."
-msgstr ""
+msgstr "התקבלה בקשה מאת %s לצפות במצב הנוכחות שלך, בצירוף ההודעה: \"%s\"."
 
 #: ../plugins/loudmouth/loudmouth-heap.cpp:218
 #, c-format
 msgid "%s asks the permission to see your presence."
-msgstr ""
+msgstr "התקבלה בקשה מאת %s לצפות במצב הנוכחות שלך."
 
 #: ../plugins/loudmouth/loudmouth-heap.cpp:225
 msgid "grant him/her the permission to see your presence"
-msgstr ""
+msgstr "אישור הבקשה לצפייה במצב הנוכחות שלך"
 
 #: ../plugins/loudmouth/loudmouth-heap.cpp:226
 msgid "refuse him/her the permission to see your presence"
-msgstr ""
+msgstr "דחיית הבקשה לצפייה במצב הנוכחות שלך"
 
 #: ../plugins/loudmouth/loudmouth-heap.cpp:227
 msgid "decide later (also close or cancel this dialog)"
-msgstr ""
+msgstr "הכרעה בהמשך (כמו כן הדו־שיח ייסגר או יבוטל)"
 
 #: ../plugins/loudmouth/loudmouth-heap.cpp:228
 msgid "Your answer is: "
 msgstr "תגובתך היא:"
 
 #: ../plugins/loudmouth/loudmouth-heap.cpp:315
-#, fuzzy
 msgid "Add a roster element"
-msgstr "הסר איש קשר"
+msgstr ""
 
 #: ../plugins/loudmouth/loudmouth-heap.cpp:316
 msgid "Please fill in this form to add a new element to the remote roster"
@@ -1951,7 +1948,7 @@ msgstr "אסור עליו/עליה לצפות במצב שלי"
 
 #: ../plugins/loudmouth/loudmouth-presentity.cpp:164
 msgid "Ask him/her to see his/her status (pending)"
-msgstr ""
+msgstr "בקשה להצגת המצב האישי (בהמתנה)"
 
 #: ../plugins/loudmouth/loudmouth-presentity.cpp:168
 #: ../plugins/loudmouth/loudmouth-presentity.cpp:173
@@ -2055,12 +2052,12 @@ msgstr "הוספת איש קשר מרוחק"
 
 #: ../plugins/resource-list/rl-heap.cpp:513
 msgid "Please fill in this form to create a new contact on a remote server"
-msgstr ""
+msgstr "נא למלא טופס זה כדי ליצור איש קשר חדש בשרת מרוחק"
 
 #: ../plugins/resource-list/rl-list.cpp:182
 #, c-format
 msgid "%s / List #%d"
-msgstr ""
+msgstr "%s / רשימה מס' %d"
 
 #: ../plugins/resource-list/rl-list.cpp:186
 #, c-format
@@ -2074,7 +2071,7 @@ msgstr "הוספת איש קשר מרוחק"
 #: ../plugins/resource-list/rl-presentity.cpp:225
 msgid ""
 "Please fill in this form to change an existing contact on a remote server"
-msgstr ""
+msgstr "נא למלא טופס זה כדי לשנות איש קשר קיים בשרת מרוחק"
 
 #: ../src/gui/accounts.cpp:566
 msgid "Account Name"
@@ -2166,6 +2163,12 @@ msgid ""
 "You may skip this step if you use an alternative SIP service, or if you "
 "would prefer to specify the login details later."
 msgstr ""
+"שם המשתמש והססמה ישמשו אותך לכניסה לשירות ה־SIP החופשי של ekiga.net. אם עוד "
+"אין לך כתובת SIP של ekiga.net, ניתן ליצור חשבון להלן. תהליך זה יספק לך כתובת "
+"SIP שתאפשר לאחרים להתקשר אליך.\n"
+"\n"
+"ניתן לדלג על שלב זה אם ברצונך להשתמש בשירות SIP חלופי או אם העדפתך היא להזין "
+"את פרטי הכניסה מאוחר יותר."
 
 #: ../src/gui/assistant.cpp:606
 msgid "I do not want to sign up for the ekiga.net free service"
@@ -2181,10 +2184,9 @@ msgstr "נא להכניס את מזהה החשבון שלך:"
 
 #: ../src/gui/assistant.cpp:679
 msgid "Please enter your PIN code:"
-msgstr "נא להכניס הקוד שלך:"
+msgstr "נא להכניס את הקוד שלך:"
 
 #: ../src/gui/assistant.cpp:690
-#, fuzzy
 msgid ""
 "You can make calls to regular phones and cell numbers worldwide using "
 "Ekiga.\n"
@@ -2198,17 +2200,17 @@ msgstr ""
 "בעזרת Ekiga באפשרותך לבצע שיחות לטלפונים רגילים וסלולריים בכל העולם.\n"
 "\n"
 " כדי לאפשר זאת עליך לעשות שני דברים:\n"
-" - ראשית, עליך לקנות חשבון בכתובת שמתחת.\n"
-" - לאחר מכן הכנס את מזהה החשבון ואת הקוד הסודי שלך.\n"
+" - ראשית, עליך לרכוש חשבון בכתובת שמתחת.\n"
+" - לאחר מכן להזין את מזהה החשבון ואת הקוד הסודי שלך.\n"
 "השירות יעבוד אך ורק עם החשבון נוצר בעזרת הכתובת שבחלון זה.\n"
 
 #: ../src/gui/assistant.cpp:740
 msgid "Consult the calls history"
-msgstr "התייעץ עם היסטוריית השיחות"
+msgstr "ניתן להיוועץ בהיסטוריית השיחות"
 
 #: ../src/gui/assistant.cpp:750
 msgid "I do not want to sign up for the Ekiga Call Out service"
-msgstr "אני לא מעוניין להרשם לשירות החינמי של Ekiga.net"
+msgstr "אין לי עניין בהרשמה לשירות החינמי של Ekiga.net"
 
 #: ../src/gui/assistant.cpp:816 ../src/gui/assistant.cpp:1375
 msgid "Connection Type"
@@ -2217,7 +2219,7 @@ msgstr "סוג החיבור"
 #. The connection type
 #: ../src/gui/assistant.cpp:819
 msgid "Please choose your connection type:"
-msgstr "בחר את סוג החיבור שלך:"
+msgstr "נא לבחור את סוג החיבור שלך:"
 
 #: ../src/gui/assistant.cpp:836
 msgid "56k Modem"
@@ -2229,11 +2231,11 @@ msgstr "ISDN"
 
 #: ../src/gui/assistant.cpp:846
 msgid "DSL/Cable (128 kbit/s uplink)"
-msgstr "‏DSL/כבלים (מהירות יוצאת 128 kbit/s‏)"
+msgstr "‏DSL/כבלים (מהירות יוצאת 128 קסל\"ש‏)"
 
 #: ../src/gui/assistant.cpp:851
 msgid "DSL/Cable (512 kbit/s uplink)"
-msgstr "‏DSL/כבלים (מהירות יוצאת 512 kbit/s‏)"
+msgstr "‏DSL/כבלים (מהירות יוצאת 512 קסל\"ש‏)"
 
 #: ../src/gui/assistant.cpp:856
 msgid "LAN"
@@ -2313,7 +2315,9 @@ msgstr "ההגדרות הסתיימו"
 msgid ""
 "You have now finished the Ekiga configuration. All the settings can be "
 "changed in the Ekiga preferences. Enjoy!"
-msgstr "סיימת להגדיר את Ekiga. ניתן לשנות את ההגדרות מתפריט העדפות Ekiga."
+msgstr ""
+"סיימת להגדיר את Ekiga. ניתן לשנות את ההגדרות מתפריט ההעדפות של Ekiga. תקשורת "
+"מהנה!"
 
 #: ../src/gui/assistant.cpp:1315
 msgid "Configuration summary:"
@@ -2341,7 +2345,7 @@ msgstr "כתובת SIP"
 
 #: ../src/gui/assistant.cpp:1437
 msgid "Ekiga Call Out"
-msgstr ""
+msgstr "שיחות יוצאות של Ekiga"
 
 #: ../src/gui/assistant.cpp:1481
 #, c-format
@@ -2358,7 +2362,7 @@ msgstr "מעצבים:"
 
 #: ../src/gui/callbacks.cpp:98
 msgid "See AUTHORS file for full credits"
-msgstr "ראה את הקובץ AUTHORS לרשימת קרדיטים מלאה"
+msgstr "ניתן לעיין בקובץ AUTHORS לרשימת תודות מלאה"
 
 #: ../src/gui/callbacks.cpp:114
 msgid ""
@@ -2411,6 +2415,7 @@ msgid "translator-credits"
 msgstr ""
 "שוקי וקנין <radioschizo@yahoo.com>\n"
 "יאיר הרשקוביץ <yairhr@gmail.com>\n"
+"ירון שהרבני <sh.yaron@gmail.com>\n"
 "\n"
 "פרוייקט תרגום GNOME לעברית:\n"
 "‏http://gnome-il.berlios.de"
@@ -2423,13 +2428,9 @@ msgid ""
 msgstr ""
 "‏‏Ekiga היא תוכנה בעלת תמיכה מלאה בשיחות VoIP (‏SIP ו-H.323), טלפוניית  IP "
 "וועידות וידאו אשר מאפשרת לך לעשות שיחות אודיו ווידאו למשתמשים מרוחקים "
-"שברשותם חומרה או תוכנה בעלת תמיכה ב-SIP או H.323."
+"שברשותם חומרה או תכנה בעלת תמיכה ב־SIP או H.323."
 
-#: ../src/gui/callbacks.cpp:216
-msgid "Help display is not supported by your GTK+ version"
-msgstr ""
-
-#: ../src/gui/callbacks.cpp:224
+#: ../src/gui/callbacks.cpp:219
 msgid "Unable to open help file."
 msgstr "לא ניתן לפתוח את קובץ העזרה."
 
@@ -2468,12 +2469,12 @@ msgstr "סעפ"
 #: ../src/gui/main_window.cpp:611
 #, c-format
 msgid "A:%.1f/%.1f   V:%.1f/%.1f   FPS:%d/%d"
-msgstr "A:%.1f/%.1f   V:%.1f/%.1f   FPS:%d/%d"
+msgstr "ש:%.1f/%.1f   ו:%.1f/%.1f   FPS:%d/%d"
 
 #: ../src/gui/main_window.cpp:655
 #, c-format
 msgid "Connected with %s"
-msgstr "מחובר עם %s"
+msgstr "בתקשורת עם %s"
 
 #: ../src/gui/main_window.cpp:691 ../src/gui/main_window.cpp:3535
 msgid "Standby"
@@ -2490,7 +2491,7 @@ msgstr "שיחה התקבלה"
 #: ../src/gui/main_window.cpp:776
 #, c-format
 msgid "Missed call from %s"
-msgstr "שיחה שלא נענתה מ-%s"
+msgstr "שיחה שלא נענתה מ־%s"
 
 #: ../src/gui/main_window.cpp:913
 msgid "Error"
@@ -2502,19 +2503,23 @@ msgstr "שגיאה בזמן אתחול התקן יציאת השמע"
 
 #: ../src/gui/main_window.cpp:979
 msgid "No video will be displayed on your machine during this call"
-msgstr ""
+msgstr "לא יוצג וידאו במחשב זה במהלך שיחה זו"
 
 #: ../src/gui/main_window.cpp:989
 msgid ""
 "There was an error opening or initializing the video output. Please verify "
 "that no other application is using the accelerated video output."
 msgstr ""
+"ארעה שגיאה בעת פתיחת או הפעלת פלט הווידאו. נא לוודא שאין יישומים אחרים "
+"המשתמשים בפלט וידאו מואץ."
 
 #: ../src/gui/main_window.cpp:991
 msgid ""
 "There was an error opening or initializing the video output. Please verify "
 "that you are using a color depth of 24 or 32 bits per pixel."
 msgstr ""
+"ארעה שגיאה בעת פתיחת או הפעלת פלט הווידאו. נא לוודא שנעשה שימוש בעומק צבע של "
+"24 או 32 סיביות."
 
 #. Translators: This is a hotplug status
 #: ../src/gui/main_window.cpp:1104
@@ -2600,7 +2605,7 @@ msgstr "שגיאה בזמן פתיחת התקן קלט השמע %s"
 #. * Nothing ("silence") will be transmitted
 #: ../src/gui/main_window.cpp:1256
 msgid "Only silence will be transmitted."
-msgstr ""
+msgstr "תועבר דממה בלבד."
 
 #: ../src/gui/main_window.cpp:1260
 msgid ""
@@ -2655,15 +2660,15 @@ msgstr ""
 "ואת ההרשאות שלך ושההתקן אינו עסוק."
 
 #: ../src/gui/main_window.cpp:1381
-#, fuzzy
 msgid ""
 "The selected audio device was successfully opened but it is impossible to "
 "write data to this device. In case it is a pluggable device it may be "
 "sufficient to reconnect it. If not, or if it still is not accessible, please "
 "check your audio setup."
 msgstr ""
-"התקן האודיו הנבחר (%s) נפתח בהצלחה אבל זה בלתי אפשרי לכתוב מידע אל ההתקן. "
-"אנא בדקו הגדרות אודיו."
+"התקן השמע הנבחר נפתח בהצלחה אך בלתי אפשרי לכתוב מידע אל ההתקן. במידה שזהו "
+"התקן הניתן לניתוק יתכן שדי בחיבורו. במידה שלא או שהוא עדיין אינו נגיש, יש "
+"לבדוק את הגדרות השמע שלך."
 
 #: ../src/gui/main_window.cpp:1567
 msgid "Video Settings"
@@ -2804,9 +2809,8 @@ msgid "A_dd Contact"
 msgstr "_הוסף איש קשר"
 
 #: ../src/gui/main_window.cpp:3147
-#, fuzzy
 msgid "Add a contact to the roster"
-msgstr "הוסף איש קשר לס_פר הכתובות"
+msgstr ""
 
 #: ../src/gui/main_window.cpp:3152
 msgid "Find contacts"
@@ -2848,7 +2852,7 @@ msgstr "הפעל או חדש שליחת וידאו"
 msgid "Close the Ekiga window"
 msgstr "סגור את חלון ה-Ekiga"
 
-#: ../src/gui/main_window.cpp:3198 ../src/gui/statusicon.cpp:478
+#: ../src/gui/main_window.cpp:3198 ../src/gui/statusicon.cpp:465
 msgid "Quit"
 msgstr "יציאה"
 
@@ -2948,19 +2952,18 @@ msgstr "מ_סך מלא"
 msgid "Switch to fullscreen"
 msgstr "החלף למסך מלא"
 
-#: ../src/gui/main_window.cpp:3298 ../src/gui/statusicon.cpp:466
+#: ../src/gui/main_window.cpp:3298 ../src/gui/statusicon.cpp:453
 msgid "Get help by reading the Ekiga manual"
 msgstr "השג עזרה על ידי קריאת מדריך Ekiga"
 
-#: ../src/gui/main_window.cpp:3303 ../src/gui/statusicon.cpp:471
+#: ../src/gui/main_window.cpp:3303 ../src/gui/statusicon.cpp:458
 msgid "View information about Ekiga"
 msgstr "הצג מידע אודות Ekiga"
 
 #: ../src/gui/main_window.cpp:3377
-#, fuzzy
 msgid ""
 "Enter a URI on the left, and click this button to place a call or to hangup"
-msgstr "הכנס כתובת  בצד שמאל, ולחץ על כפתורזה כדי להתקשר"
+msgstr "נא להזין כתובת מימין וללחוץ על לחצן זה כדי להתקשר או לנתק"
 
 #: ../src/gui/main_window.cpp:3423
 msgid "Contacts"
@@ -3001,52 +3004,29 @@ msgid "RX: %dx%d "
 msgstr "RX: %dx%d "
 
 #: ../src/gui/main_window.cpp:4274
-#, fuzzy, c-format
+#, c-format
 msgid ""
 "Lost packets: %.1f %%\n"
 "Late packets: %.1f %%\n"
 "Out of order packets: %.1f %%\n"
 "Jitter buffer: %d ms%s%s%s"
 msgstr ""
-"חבילות שנאבדו: %.1f %%\n"
-"חבילות שאחרו: %.1f %%\n"
-"עיכוב מחזור טעות: %d ms\n"
-"Jitter buffer: %d ms"
+"חבילות שאבדו: %.1f %%\n"
+"חבילות שאיחרו: %.1f %%\n"
+"חבילות החורגות מהסדר: %.1f %%\n"
+"אוגר השהיה: %d מ\"ש%s%s%s"
+
+#: ../src/gui/main_window.cpp:4397
+msgid "Prints debug messages in the console (level between 1 and 5)"
+msgstr "הצגת הודעות ניפוי במסוף (בין רמות 1 ו־5)"
 
 #: ../src/gui/main_window.cpp:4402
-#, fuzzy
-msgid "Prints debug messages in the console (level between 1 and 5)"
-msgstr "הצג הודעות debug במסוף (רמה מ1 עד 6)"
+msgid "Prints user plane debug messages in the console (level between 1 and 4)"
+msgstr "הצגת הודעות ניפוי שגיאות במסוף (בין רמות 1 ו־4)"
 
 #: ../src/gui/main_window.cpp:4407
-#, fuzzy
-msgid "Prints user plane debug messages in the console (level between 1 and 4)"
-msgstr "הצג הודעות debug במסוף (רמה מ1 עד 6)"
-
-#: ../src/gui/main_window.cpp:4412
 msgid "Makes Ekiga call the given URI"
 msgstr "גורם ל-Ekiga להתקשר לכתובת שצוינה"
-
-#: ../src/gui/main_window.cpp:4519
-msgid "No usable audio plugin detected"
-msgstr "לא נתגלה תוסף שמע שמיש"
-
-#: ../src/gui/main_window.cpp:4520
-#, fuzzy
-msgid ""
-"Ekiga didn't find any usable audio plugin. Make sure that your installation "
-"is correct."
-msgstr "‏‏GnomeMeeting לא מוצא שום תוסף אודיו שמיש. וודא שההתקנה נכונה."
-
-#: ../src/gui/main_window.cpp:4523
-msgid "No usable audio codecs detected"
-msgstr "לא התגלו מקודדי שמע שמישים"
-
-#: ../src/gui/main_window.cpp:4524
-msgid ""
-"Ekiga didn't find any usable audio codec. Make sure that your installation "
-"is correct."
-msgstr "‏‏Ekiga לא מצאה תוסף שמע שמיש. וודא שההתקנה נכונה."
 
 #: ../src/gui/preferences.cpp:382
 msgid "Play sound for new voice mails"
@@ -3097,23 +3077,22 @@ msgid "_Always forward calls to the given host"
 msgstr "תמיד העבר שיח_ות אל המארח הנתון"
 
 #: ../src/gui/preferences.cpp:515
-#, fuzzy
 msgid ""
 "If enabled, all incoming calls will be forwarded to the host that is "
 "specified in the protocol settings"
-msgstr "בחירת האפשרות תגרום לכל השיחות הנכנסות להיות מעוברות לשרת שכתוב מתחת"
+msgstr "אם נבחר, כל השיחות הנכנסות יועברו למארח שצוין בהגדרות הפרוטוקול"
 
 #: ../src/gui/preferences.cpp:517
 msgid "Forward calls to the given host if _no answer"
 msgstr "העברת שיחות למארח אם _אין תשובה"
 
 #: ../src/gui/preferences.cpp:517
-#, fuzzy
 msgid ""
 "If enabled, all incoming calls will be forwarded to the host that is "
 "specified in the protocol settings if you do not answer the call"
 msgstr ""
-"בחירת האפשרות תגרום לכל השיחות הנכנסות להיות מעוברות במידה ואינך עונה לשיחה"
+"אם נבחר, כל השיחות הנכנסות יועברו למארח שצוין בהגדרות הפרוטוקול אם השיחה לא "
+"תיענה"
 
 #: ../src/gui/preferences.cpp:519
 msgid "Forward calls to the given host if _busy"
@@ -3231,11 +3210,11 @@ msgstr "אפשרות זו מאפשרת לך להגדיר את מצב שליחת 
 
 #: ../src/gui/preferences.cpp:726
 msgid "INFO"
-msgstr ""
+msgstr "מידע"
 
 #: ../src/gui/preferences.cpp:737
 msgid "_Outbound Proxy:"
-msgstr ""
+msgstr "מתווך לתקשורת _יוצאת:"
 
 #: ../src/gui/preferences.cpp:778
 msgid "Ringing Device"
@@ -3323,9 +3302,8 @@ msgid "If enabled, use echo cancelation."
 msgstr "אם מופעל, השתמש בביטול הד."
 
 #: ../src/gui/preferences.cpp:988
-#, fuzzy
 msgid "Maximum _jitter buffer (in ms):"
-msgstr "Maximum jitter buffer"
+msgstr "הגודל המרבי של אוגר הה_שהיה (במילישניות):"
 
 #: ../src/gui/preferences.cpp:988
 msgid "The maximum jitter buffer size for audio reception (in ms)."
@@ -3342,6 +3320,8 @@ msgid ""
 "dropped frames in order not to surpass the bitrate limit) or if you prefer "
 "to keep the frame rate."
 msgstr ""
+"יש לבחור אם ברצונך להבטיח איכות תמונה מינימלית (כנראה יוביל להשמטת שקופיות "
+"כדי לא לחרוג ממגבלת קצב הסיביות) אם העדפתך היא לשמור על קצב השקופיות."
 
 #: ../src/gui/preferences.cpp:1024
 msgid "Maximum video _bitrate (in kbits/s):"
@@ -3409,7 +3389,7 @@ msgid_plural "You have %d messages"
 msgstr[0] "יש לך הודעה אחת"
 msgstr[1] "יש לך %d הודעות"
 
-#: ../src/gui/statusicon.cpp:418
+#: ../src/gui/statusicon.cpp:409
 msgid "The following accounts are inactive:"
 msgstr "החשבונות הבאים אינם פעילים:"
 
@@ -3445,6 +3425,26 @@ msgstr "מחק הודעות מותאמות אישית:"
 #: ../src/gui/statusmenu.cpp:692
 msgid "Define a custom message:"
 msgstr "הגדר הודעה מותאמת אישית:"
+
+#~ msgid "Please update the following fields."
+#~ msgstr "נא לעדכן את השדות הבאים:"
+
+#~ msgid "No usable audio plugin detected"
+#~ msgstr "לא נתגלה תוסף שמע שמיש"
+
+#, fuzzy
+#~ msgid ""
+#~ "Ekiga didn't find any usable audio plugin. Make sure that your "
+#~ "installation is correct."
+#~ msgstr "‏‏GnomeMeeting לא מוצא שום תוסף אודיו שמיש. וודא שההתקנה נכונה."
+
+#~ msgid "No usable audio codecs detected"
+#~ msgstr "לא התגלו מקודדי שמע שמישים"
+
+#~ msgid ""
+#~ "Ekiga didn't find any usable audio codec. Make sure that your "
+#~ "installation is correct."
+#~ msgstr "‏‏Ekiga לא מצאה תוסף שמע שמיש. וודא שההתקנה נכונה."
 
 #~ msgid "Roster view saving group status"
 #~ msgstr "Roster view saving group status"
