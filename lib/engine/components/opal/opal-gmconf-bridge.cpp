@@ -273,7 +273,7 @@ void ConfBridge::on_property_changed (std::string key, GmConfEntry *entry)
         gchar* str = gm_conf_entry_get_string (entry);
         if (str != NULL)
           sip_manager->set_outbound_proxy (str);
-	g_free (str);
+        g_free (str);
       }
       else if (key == SIP_KEY "dtmf_mode") {
 
@@ -282,9 +282,9 @@ void ConfBridge::on_property_changed (std::string key, GmConfEntry *entry)
       else if (key == SIP_KEY "forward_host") {
 
         gchar* str = gm_conf_entry_get_string (entry);
-	if (str != NULL)
-	  sip_manager->set_forward_uri (str);
-	g_free (str);
+        if (str != NULL)
+          sip_manager->set_forward_uri (str);
+        g_free (str);
       }
       else if (key == SIP_KEY "binding_timeout") {
 
@@ -321,14 +321,14 @@ void ConfBridge::on_property_changed (std::string key, GmConfEntry *entry)
       else if (key == H323_KEY "forward_host") {
 
         gchar* str = gm_conf_entry_get_string (entry);
-	if (str != NULL)
-	  h323_manager->set_forward_uri (str);
-	g_free (str);
+        if (str != NULL)
+          h323_manager->set_forward_uri (str);
+        g_free (str);
       }
     }
   }
 #endif
-  
+
 
   //
   // Personal Data Key
@@ -383,13 +383,13 @@ void ConfBridge::on_property_changed (std::string key, GmConfEntry *entry)
       couple = g_strsplit (ports, ":", 2);
     g_free (ports);
 
-    if (couple && couple [0]) 
+    if (couple && couple [0])
       min_port = atoi (couple [0]);
-    
-    if (couple && couple [1]) 
+
+    if (couple && couple [1])
       max_port = atoi (couple [1]);
-    
-    if (key == PORTS_KEY "udp_port_range") 
+
+    if (key == PORTS_KEY "udp_port_range")
       manager.set_udp_ports (min_port, max_port);
     else
       manager.set_tcp_ports (min_port, max_port);
@@ -397,4 +397,3 @@ void ConfBridge::on_property_changed (std::string key, GmConfEntry *entry)
     g_strfreev (couple);
   }
 }
-

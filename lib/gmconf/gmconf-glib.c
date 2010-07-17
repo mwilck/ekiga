@@ -897,7 +897,7 @@ database_save_entry (G_GNUC_UNUSED GQuark quark,
   GmConfEntry *entry = NULL;
   GIOChannel *io = NULL;
   gchar *value = NULL;
-  const gchar *txt = NULL;
+  gchar *txt = NULL;
 
   g_return_if_fail (data != NULL);
   g_return_if_fail (user_data != NULL);

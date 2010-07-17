@@ -81,24 +81,22 @@ void AudioOutputCoreConfBridge::on_property_changed (std::string key, GmConfEntr
     bool found = false;
     gchar* value = gm_conf_entry_get_string (entry);
     audiooutput_core.get_devices (devices);
-    if (value != NULL) {
+    if (value != NULL)
       for (std::vector<AudioOutputDevice>::iterator it = devices.begin ();
            it < devices.end ();
-           it++) {
+           it++)
         if ((*it).GetString () == value) {
           found = true;
           break;
         }
-      }
-      g_free (value);
-    }
 
     AudioOutputDevice device;
     if (found)
       device.SetFromString (value);
-    else 
+    else
       device.SetFromString (devices.begin ()->GetString ());
-  
+    g_free (value);
+
     if ( (device.type   == "" )   ||
          (device.source == "")  ||
          (device.name   == "" ) ) {
@@ -116,20 +114,18 @@ void AudioOutputCoreConfBridge::on_property_changed (std::string key, GmConfEntr
 
     PTRACE(4, "AudioOutputCoreConfBridge\tUpdating device");
     AudioOutputDevice device;
-    gchar* audio_device = NULL;
-    audio_device = gm_conf_entry_get_string (entry);
+    gchar* audio_device = gm_conf_entry_get_string (entry);
 
-    if (audio_device == NULL) {
+    if (audio_device == NULL)
       PTRACE(1, "AudioOutputCoreConfBridge\t" << AUDIO_DEVICES_KEY "output_device" << " is NULL");
-    }
     else {
       device.SetFromString(audio_device);
       g_free (audio_device);
     }
 
-    if ( (device.type   == "" )   ||
-         (device.source == "")  ||
-         (device.name   == "" ) ) {
+    if ( (device.type   == "") ||
+         (device.source == "") ||
+         (device.name   == "") ) {
       PTRACE(1, "AudioOutputCore\tTried to set malformed device");
       device.type   = AUDIO_OUTPUT_FALLBACK_DEVICE_TYPE;
       device.source = AUDIO_OUTPUT_FALLBACK_DEVICE_SOURCE;

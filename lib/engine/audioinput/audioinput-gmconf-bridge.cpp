@@ -64,23 +64,21 @@ void AudioInputCoreConfBridge::on_property_changed (std::string key, GmConfEntry
     bool found = false;
     gchar* value = gm_conf_entry_get_string (entry);
     audioinput_core.get_devices (devices);
-    if (value != NULL) {
+    if (value != NULL)
       for (std::vector<AudioInputDevice>::iterator it = devices.begin ();
            it < devices.end ();
-           it++) {
+           it++)
         if ((*it).GetString () == value) {
           found = true;
           break;
         }
-      }
-      g_free (value);
-    }
 
     AudioInputDevice device;
     if (found)
       device.SetFromString (value);
-    else 
+    else
       device.SetFromString (devices.begin ()->GetString ());
+    g_free (value);
 
     if ( (device.type == "" )   ||
          (device.source == "")  ||

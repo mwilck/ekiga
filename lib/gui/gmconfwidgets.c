@@ -350,7 +350,7 @@ string_option_menu_changed (GtkWidget *option_menu,
  *                 should be of type string.
  */
 void
-string_option_menu_changed_nt (G_GNUC_UNUSED gpointer cid, 
+string_option_menu_changed_nt (G_GNUC_UNUSED gpointer cid,
 			       GmConfEntry *entry,
 			       gpointer data)
 {
@@ -359,16 +359,16 @@ string_option_menu_changed_nt (G_GNUC_UNUSED gpointer cid,
 
   GtkTreeModel *model = NULL;
   GtkTreeIter iter;
-  
+
   GtkWidget *e = NULL;
-  
+
   gchar *text = NULL;
   gchar* txt = NULL;
-  
+
   if (gm_conf_entry_get_type (entry) == GM_CONF_STRING) {
-   
+
     e = GTK_WIDGET (data);
-    
+
     model = gtk_combo_box_get_model (GTK_COMBO_BOX (e));
     count = gtk_tree_model_iter_n_children (model, NULL);
     gtk_tree_model_get_iter_first (model, &iter);
@@ -378,14 +378,14 @@ string_option_menu_changed_nt (G_GNUC_UNUSED gpointer cid,
       gtk_tree_model_get (model, &iter, 0, &text, -1);
       txt = gm_conf_entry_get_string (entry);
       if (text && !strcmp (text, txt)) {
-       
+
         g_free (text);
-	g_free (txt);
+        g_free (txt);
         break;
       }
       g_free (txt);
       gtk_tree_model_iter_next (model, &iter);
-      
+
       g_free (text);
     }
 
