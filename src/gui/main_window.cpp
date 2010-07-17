@@ -4492,14 +4492,13 @@ main (int argc,
 
     /* Update the version number */
     gm_conf_set_int (GENERAL_KEY "version", schema_version);
-  } else {
-
-    /* Show the main window */
-    if (!gm_conf_get_bool (USER_INTERFACE_KEY "start_hidden"))
-      gtk_widget_show (main_window);
-    else
-      g_timeout_add_seconds (15, (GtkFunction) gnomemeeting_tray_hack_cb, NULL);
   }
+
+  /* Show the main window */
+  if (!gm_conf_get_bool (USER_INTERFACE_KEY "start_hidden"))
+    gtk_widget_show (main_window);
+  else
+    g_timeout_add_seconds (15, (GtkFunction) gnomemeeting_tray_hack_cb, NULL);
 
   /* Call the given host if needed */
   if (url)
