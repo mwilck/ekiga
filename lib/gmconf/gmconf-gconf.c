@@ -392,3 +392,17 @@ gm_conf_notifier_trigger (const gchar *namespac)
 
   gconf_client_notify (client, namespac);
 }
+
+void
+gm_conf_watch ()
+{
+  gconf_client_add_dir (client, "/apps/" PACKAGE_NAME,
+			GCONF_CLIENT_PRELOAD_NONE, NULL);
+}
+
+
+void
+gm_conf_unwatch ()
+{
+  gconf_client_remove_dir (client, "/apps/" PACKAGE_NAME, NULL);
+}

@@ -4469,6 +4469,9 @@ main (int argc,
   }
 #endif
 
+  /* Init gm_conf */
+  gm_conf_watch ();
+
   Ekiga::Runtime::init ();
   engine_init (service_core, argc, argv);
 

@@ -97,6 +97,7 @@
  */
 typedef struct _DataBase
 {
+  gboolean is_watched;
   GData *entries;
 } DataBase;
 
@@ -254,6 +255,7 @@ static GmConfEntry *database_get_entry_for_key (DataBase *, const gchar *);
 static GmConfEntry *database_get_entry_for_key_create (DataBase *,
 						       const gchar *);
 
+static void database_set_watched (DataBase *, const gboolean);
 static void database_notify_on_namespace (DataBase *, const gchar *);
 
 /*
@@ -713,6 +715,7 @@ database_new ()
   DataBase *db = NULL;
 
   db = g_new (DataBase, 1);
+  db->is_watched = FALSE;
   db->entries = NULL;
   g_datalist_init (&db->entries);
   return db;
@@ -1042,6 +1045,15 @@ database_get_entry_for_key_create (DataBase *db,
 }
 
 static void
+database_set_watched (DataBase *db,
+		      const gboolean bool)
+{
+  g_return_if_fail (db != NULL);
+
+  db->is_watched = bool;
+}
+
+static void
 database_notify_on_namespace (DataBase *db,
 			      const gchar *namespac)
 {
@@ -1056,6 +1068,9 @@ database_notify_on_namespace (DataBase *db,
   entry = database_get_entry_for_key (db, namespac);
 
   g_return_if_fail (entry != NULL);
+
+  if (db->is_watched == FALSE)
+    return;
 
   for (key = g_strdup (namespac);
        key[0] != 0;
@@ -1182,6 +1197,22 @@ gm_conf_save ()
   database_save_file (db, user_conf);
 
   g_free (user_conf);
+}
+
+void
+gm_conf_watch ()
+{
+  DataBase *db = database_get_default ();
+
+  database_set_watched (db, TRUE);
+}
+
+void
+gm_conf_unwatch ()
+{
+  DataBase *db = database_get_default ();
+
+  database_set_watched (db, FALSE);
 }
 
 gpointer
