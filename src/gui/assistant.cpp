@@ -1136,7 +1136,7 @@ create_video_devices_page (EkigaAssistant *assistant)
   GtkWidget *label;
   gchar *text;
 
-  vbox = create_page (assistant, _("Video input device"), GTK_ASSISTANT_PAGE_CONTENT);
+  vbox = create_page (assistant, _("Video Input Device"), GTK_ASSISTANT_PAGE_CONTENT);
 
   label = gtk_label_new (_("Please choose your video input device:"));
   gtk_misc_set_alignment (GTK_MISC (label), 0.0, 0.5);

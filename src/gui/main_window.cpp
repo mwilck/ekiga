@@ -2352,7 +2352,7 @@ ekiga_main_window_set_call_hold (EkigaMainWindow *mw,
 
     if (GTK_IS_LABEL (child))
       gtk_label_set_text_with_mnemonic (GTK_LABEL (child),
-					_("_Hold Call"));
+					_("H_old Call"));
 
     gtk_menu_set_sensitive (mw->priv->main_menu, "suspend_audio", TRUE);
     gtk_menu_set_sensitive (mw->priv->main_menu, "suspend_video", TRUE);
