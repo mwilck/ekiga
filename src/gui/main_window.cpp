@@ -4476,29 +4476,32 @@ main (int argc,
   engine_init (service_core, argc, argv);
 
   GnomeMeeting::Process ()->BuildGUI (service_core);
-
-  /* Show the window if there is no error, exit with a popup if there
-   * is a fatal error.
-   */
   main_window = GnomeMeeting::Process ()->GetMainWindow ();
   boost::shared_ptr<Ekiga::CallCore> call_core = service_core->get<Ekiga::CallCore> ("call-core");
 
   const int schema_version = MAJOR_VERSION * 1000
                              + MINOR_VERSION * 10
                              + BUILD_NUMBER;
-  if (gm_conf_get_int (GENERAL_KEY "version") < schema_version) {
+  int crt_version = gm_conf_get_int (GENERAL_KEY "version");
+  if (crt_version < schema_version) {
 
     gnomemeeting_conf_upgrade ();
+
+    // show the assistant if there is no config file
+    if (crt_version == 0)
+      gtk_widget_show_all (GnomeMeeting::Process ()->GetAssistantWindow ());
 
     /* Update the version number */
     gm_conf_set_int (GENERAL_KEY "version", schema_version);
   }
 
-  /* Show the main window */
-  if (!gm_conf_get_bool (USER_INTERFACE_KEY "start_hidden"))
-    gtk_widget_show (main_window);
-  else
-    g_timeout_add_seconds (15, (GtkFunction) gnomemeeting_tray_hack_cb, NULL);
+  /* Show the main window if there was a config file */
+  if (crt_version > 0) {
+    if (!gm_conf_get_bool (USER_INTERFACE_KEY "start_hidden"))
+      gtk_widget_show (main_window);
+    else
+      g_timeout_add_seconds (15, (GtkFunction) gnomemeeting_tray_hack_cb, NULL);
+  }
 
   /* Call the given host if needed */
   if (url)
