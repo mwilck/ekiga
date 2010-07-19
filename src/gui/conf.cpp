@@ -30,10 +30,10 @@
  *                         config.cpp  -  description
  *                         --------------------------
  *   begin                : Wed Feb 14 2001
- *   copyright            : (C) 2000-2006 by Damien Sandras 
+ *   copyright            : (C) 2000-2006 by Damien Sandras
  *   description          : This file contains most of config stuff.
  *                          All notifiers are here.
- *                          Callbacks that updates the config cache 
+ *                          Callbacks that updates the config cache
  *                          are in their file, except some generic one that
  *                          are in this file.
  *   Additional code      : Miguel Rodríguez Pérez  <miguelrp@gmail.com>
@@ -55,45 +55,31 @@
 #include "gmmenuaddon.h"
 #include "gmconfwidgets.h"
 
-
-
-/* Declarations */
-
-
-
-
 /* The functions */
-void 
+void
 gnomemeeting_conf_upgrade ()
 {
-  gchar *conf_url = NULL;
-
-  int version = 0;
-
-  version = gm_conf_get_int (GENERAL_KEY "version");
-  
   /* Install the sip:, h323: and callto: GNOME URL Handlers */
-  conf_url = gm_conf_get_string ("/desktop/gnome/url-handlers/callto/command");
-					       
+  gchar *conf_url = gm_conf_get_string ("/desktop/gnome/url-handlers/callto/command");
+
   if (!conf_url
       || !strcmp (conf_url, "gnomemeeting -c \"%s\"")) {
 
-    
-    gm_conf_set_string ("/desktop/gnome/url-handlers/callto/command", 
+    gm_conf_set_string ("/desktop/gnome/url-handlers/callto/command",
 			"ekiga -c \"%s\"");
 
-    gm_conf_set_bool ("/desktop/gnome/url-handlers/callto/needs_terminal", 
+    gm_conf_set_bool ("/desktop/gnome/url-handlers/callto/needs_terminal",
 		      false);
-    
+
     gm_conf_set_bool ("/desktop/gnome/url-handlers/callto/enabled", true);
   }
   g_free (conf_url);
 
   conf_url = gm_conf_get_string ("/desktop/gnome/url-handlers/h323/command");
-  if (!conf_url 
+  if (!conf_url
       || !strcmp (conf_url, "gnomemeeting -c \"%s\"")) {
 
-    gm_conf_set_string ("/desktop/gnome/url-handlers/h323/command", 
+    gm_conf_set_string ("/desktop/gnome/url-handlers/h323/command",
                         "ekiga -c \"%s\"");
 
     gm_conf_set_bool ("/desktop/gnome/url-handlers/h323/needs_terminal", false);
@@ -103,10 +89,10 @@ gnomemeeting_conf_upgrade ()
   g_free (conf_url);
 
   conf_url = gm_conf_get_string ("/desktop/gnome/url-handlers/sip/command");
-  if (!conf_url 
+  if (!conf_url
       || !strcmp (conf_url, "gnomemeeting -c \"%s\"")) {
 
-    gm_conf_set_string ("/desktop/gnome/url-handlers/sip/command", 
+    gm_conf_set_string ("/desktop/gnome/url-handlers/sip/command",
                         "ekiga -c \"%s\"");
 
     gm_conf_set_bool ("/desktop/gnome/url-handlers/sip/needs_terminal", false);
