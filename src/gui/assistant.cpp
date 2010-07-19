@@ -33,7 +33,7 @@
  *   copyright            : (C) 2000-2008 by Damien Sandras
  *                          (C) 2008 by Steve Frécinaux
  *   description          : This file contains all the functions needed to
- *                          build the druid.
+ *                          build the assistant.
  */
 
 #include <glib/gi18n.h>
@@ -141,13 +141,13 @@ set_current_page_complete (GtkAssistant *assistant,
   gtk_assistant_set_page_complete (assistant, current_page, complete);
 }
 
-void 
+void
 get_audiooutput_devices_list (Ekiga::ServiceCore *core,
                               std::vector<std::string> & device_list);
-void 
+void
 get_audioinput_devices_list (Ekiga::ServiceCore *core,
                              std::vector<std::string> & device_list);
-void 
+void
 get_videoinput_devices_list (Ekiga::ServiceCore *core,
                              std::vector<std::string> & device_list);
 
@@ -178,7 +178,7 @@ update_combo_box (GtkComboBox         *combo_box,
     gtk_list_store_append (GTK_LIST_STORE (model), &iter);
     gtk_list_store_set (GTK_LIST_STORE (model), &iter,
                         0, options [i],
-                        1, true, 
+                        1, true,
                         -1);
   }
 
@@ -251,7 +251,7 @@ remove_combo_box (GtkComboBox         *combo_box,
       if (g_ascii_strcasecmp  (value_string, option) == 0) {
 
         if (cpt == active) {
-          gtk_list_store_set (GTK_LIST_STORE (model), &iter, 
+          gtk_list_store_set (GTK_LIST_STORE (model), &iter,
                               1, FALSE,
                               -1);
         }
@@ -307,7 +307,7 @@ void on_audiooutput_device_removed_cb (const Ekiga::AudioOutputDevice & device, 
 }
 
 static void kind_of_net_changed_nt (G_GNUC_UNUSED gpointer id,
-                                         GmConfEntry *, 
+                                         GmConfEntry *,
                                          gpointer)
 {
   gm_conf_set_int (GENERAL_KEY "kind_of_net", NET_CUSTOM);
@@ -431,7 +431,7 @@ ekiga_out_new_clicked_cb (G_GNUC_UNUSED GtkWidget *widget,
 
   if (account == NULL || password == NULL)
     return; /* no account configured yet */
-  
+
   gm_open_uri ("https://www.diamondcard.us/exec/voip-login?act=sgn&spo=ekiga");
 }
 
@@ -454,7 +454,7 @@ ekiga_out_recharge_clicked_cb (G_GNUC_UNUSED GtkWidget *widget,
 
   if (account == NULL || password == NULL)
     return; /* no account configured yet */
-  
+
   url = g_strdup_printf ("https://www.diamondcard.us/exec/voip-login?accId=%s&pinCode=%s&act=rch&spo=ekiga", account, password);
   gm_open_uri (url);
   g_free (url);
@@ -479,7 +479,7 @@ ekiga_out_history_balance_clicked_cb (G_GNUC_UNUSED GtkWidget *widget,
 
   if (account == NULL || password == NULL)
     return; /* no account configured yet */
-  
+
   url = g_strdup_printf ("https://www.diamondcard.us/exec/voip-login?accId=%s&pinCode=%s&act=bh&spo=ekiga", account, password);
   gm_open_uri (url);
   g_free (url);
@@ -504,7 +504,7 @@ ekiga_out_history_calls_clicked_cb (G_GNUC_UNUSED GtkWidget *widget,
 
   if (account == NULL || password == NULL)
     return; /* no account configured yet */
-  
+
   url = g_strdup_printf ("https://www.diamondcard.us/exec/voip-login?accId=%s&pinCode=%s&act=ch&spo=ekiga", account, password);
   gm_open_uri (url);
   g_free (url);
@@ -949,7 +949,7 @@ create_audio_devices_page (EkigaAssistant *assistant)
   GtkWidget *label;
 
   GtkCellRenderer *renderer;
-  
+
   gchar *text;
 
   vbox = create_page (assistant, _("Audio Devices"), GTK_ASSISTANT_PAGE_CONTENT);
@@ -966,8 +966,8 @@ create_audio_devices_page (EkigaAssistant *assistant)
                                   "text", 0,
                                   "sensitive", 1,
                                   NULL);
-  g_object_set (G_OBJECT (renderer), 
-                "ellipsize-set", TRUE, 
+  g_object_set (G_OBJECT (renderer),
+                "ellipsize-set", TRUE,
                 "ellipsize", PANGO_ELLIPSIZE_END, 
                 "width-chars", 45, NULL);
   gtk_label_set_mnemonic_widget (GTK_LABEL (label), assistant->priv->audio_ringer);
@@ -997,9 +997,9 @@ create_audio_devices_page (EkigaAssistant *assistant)
                                   "text", 0,
                                   "sensitive", 1,
                                   NULL);
-  g_object_set (G_OBJECT (renderer), 
-                "ellipsize-set", TRUE, 
-                "ellipsize", PANGO_ELLIPSIZE_END, 
+  g_object_set (G_OBJECT (renderer),
+                "ellipsize-set", TRUE,
+                "ellipsize", PANGO_ELLIPSIZE_END,
                 "width-chars", 45, NULL);
   gtk_label_set_mnemonic_widget (GTK_LABEL (label), assistant->priv->audio_player);
   gtk_box_pack_start (GTK_BOX (vbox), assistant->priv->audio_player, FALSE, FALSE, 0);
@@ -1028,9 +1028,9 @@ create_audio_devices_page (EkigaAssistant *assistant)
                                   "text", 0,
                                   "sensitive", 1,
                                   NULL);
-  g_object_set (G_OBJECT (renderer), 
-                "ellipsize-set", TRUE, 
-                "ellipsize", PANGO_ELLIPSIZE_END, 
+  g_object_set (G_OBJECT (renderer),
+                "ellipsize-set", TRUE,
+                "ellipsize", PANGO_ELLIPSIZE_END,
                 "width-chars", 45, NULL);
   gtk_label_set_mnemonic_widget (GTK_LABEL (label), assistant->priv->audio_recorder);
   gtk_box_pack_start (GTK_BOX (vbox), assistant->priv->audio_recorder, FALSE, FALSE, 0);
@@ -1150,9 +1150,9 @@ create_video_devices_page (EkigaAssistant *assistant)
                                   "text", 0,
                                   "sensitive", 1,
                                   NULL);
-  g_object_set (G_OBJECT (renderer), 
-                "ellipsize-set", TRUE, 
-                "ellipsize", PANGO_ELLIPSIZE_END, 
+  g_object_set (G_OBJECT (renderer),
+                "ellipsize-set", TRUE,
+                "ellipsize", PANGO_ELLIPSIZE_END,
                 "width-chars", 45, NULL);
   gtk_label_set_mnemonic_widget (GTK_LABEL (label), assistant->priv->video_device);
   gtk_box_pack_start (GTK_BOX (vbox), assistant->priv->video_device, FALSE, FALSE, 0);
@@ -1208,7 +1208,7 @@ apply_video_devices_page (EkigaAssistant *assistant)
 
 
 // FIXME: duplicate to gm_prefs_window_get_video_devices_list
-void 
+void
 get_audiooutput_devices_list (Ekiga::ServiceCore *core,
                               std::vector<std::string> & device_list)
 {
@@ -1231,7 +1231,7 @@ get_audiooutput_devices_list (Ekiga::ServiceCore *core,
 }
 
 
-void 
+void
 get_audioinput_devices_list (Ekiga::ServiceCore *core,
                              std::vector<std::string> & device_list)
 {
@@ -1254,7 +1254,7 @@ get_audioinput_devices_list (Ekiga::ServiceCore *core,
 }
 
 
-void 
+void
 get_videoinput_devices_list (Ekiga::ServiceCore *core,
                                         std::vector<std::string> & device_list)
 {
@@ -1348,7 +1348,7 @@ create_summary_page (EkigaAssistant *assistant)
 }
 
 
-static void 
+static void
 prepare_summary_page (EkigaAssistant *assistant)
 {
   GtkListStore *model = assistant->priv->summary_model;
@@ -1534,8 +1534,6 @@ ekiga_assistant_apply (GtkAssistant *gtkassistant)
 {
   EkigaAssistant *assistant = EKIGA_ASSISTANT (gtkassistant);
 
-  GtkWidget *main_window;
-
   apply_personal_data_page (assistant);
   apply_ekiga_net_page (assistant);
   apply_ekiga_out_page (assistant);
@@ -1543,25 +1541,19 @@ ekiga_assistant_apply (GtkAssistant *gtkassistant)
   apply_audio_devices_page (assistant);
   apply_video_devices_page (assistant);
 
-  main_window = GnomeMeeting::Process ()->GetMainWindow ();
-
-  /* Hide the druid and show the main Ekiga window */
+  /* Hide the assistant and show the main Ekiga window */
   gtk_widget_hide (GTK_WIDGET (assistant));
   gtk_assistant_set_current_page (gtkassistant, 0);
-  gtk_widget_show (main_window);
+  gtk_widget_show (GnomeMeeting::Process ()->GetMainWindow ());
 }
 
 
 static void
 ekiga_assistant_cancel (GtkAssistant *gtkassistant)
 {
-  GtkWidget *main_window;
-
-  main_window = GnomeMeeting::Process ()->GetMainWindow ();
-
   gtk_assistant_set_current_page (gtkassistant, 0);
   gtk_widget_hide (GTK_WIDGET (gtkassistant));
-  gtk_widget_show (main_window);
+  gtk_widget_show (GnomeMeeting::Process ()->GetMainWindow ());
 }
 
 
