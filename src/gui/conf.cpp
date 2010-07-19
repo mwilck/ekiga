@@ -59,6 +59,8 @@
 void
 gnomemeeting_conf_upgrade ()
 {
+  int version = gm_conf_get_int (GENERAL_KEY "version");
+
   /* Install the sip:, h323: and callto: GNOME URL Handlers */
   gchar *conf_url = gm_conf_get_string ("/desktop/gnome/url-handlers/callto/command");
 
@@ -176,4 +178,9 @@ gnomemeeting_conf_upgrade ()
     g_free (new_device);
   }
   g_free (plugin);
+
+  // migrate from Disable to Enable network detection
+  if (version < 3030)
+    gm_conf_set_bool (NAT_KEY "enable_stun",
+                      ! gm_conf_get_bool (NAT_KEY "disable_stun"));
 }
