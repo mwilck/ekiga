@@ -180,7 +180,7 @@ gnomemeeting_conf_upgrade ()
   g_free (plugin);
 
   // migrate from Disable to Enable network detection
-  if (version < 3030)
+  if (version >= 3020 && version < 3030)
     gm_conf_set_bool (NAT_KEY "enable_stun",
                       ! gm_conf_get_bool (NAT_KEY "disable_stun"));
 }
