@@ -27,7 +27,7 @@
 
 
 /*
- *                         gtk_menu_extensions.h  -  description 
+ *                         gtk_menu_extensions.h  -  description
  *                         -------------------------------------
  *   begin                : Mon Sep 29 2003, but based on older code
  *   copyright            : (C) 2000-2006 by Damien Sandras
@@ -107,7 +107,7 @@ typedef struct _MenuEntry {
 {NULL, NULL, NULL, NULL, FALSE, 0, MENU_END, NULL, NULL, NULL, NULL, TRUE, TRUE}
 
 
-/* DESCRIPTION  :  This callback is called when the user 
+/* DESCRIPTION  :  This callback is called when the user
  *                 selects a different option in a radio menu.
  * BEHAVIOR     :  Sets the config key.
  * PRE          :  data is the config key.
@@ -120,32 +120,8 @@ void radio_menu_changed_cb (GtkWidget *,
  * BEHAVIOR     :  Updates the config key given as parameter.
  * PRE          :  data is the key.
  */
-void toggle_menu_changed_cb (GtkWidget *, 
+void toggle_menu_changed_cb (GtkWidget *,
 			     gpointer);
-
-
-/* DESCRIPTION  :  Generic notifiers for toggles in the menu.
- *                 This callback is called when a specific key of
- *                 the config database associated with a toggle changes, this
- *                 only updates the toggle in the menu.
- * BEHAVIOR     :  It only updates the widget.
- * PRE          :  The toggle menu item.
- */
-void menu_toggle_changed_nt (gpointer, 
-			     GmConfEntry *, 
-			     gpointer);
-
-
-/* DESCRIPTION  :  Notifiers for radios menu.
- *                 This callback is called when a specific key of
- *                 the config database associated with a radio menu changes,
- *                 this only updates the radio in the menu.
- * BEHAVIOR     :  It updates the widget.
- * PRE          :  One of the GtkCheckMenuItem of the radio menu.
- */
-void radio_menu_changed_nt (gpointer,
-			    GmConfEntry *,
-			    gpointer);
 
 
 /* DESCRIPTION  :  /
@@ -183,7 +159,7 @@ GtkWidget *gtk_menu_get_widget (GtkWidget *,
 /* DESCRIPTION  :  /
  * BEHAVIOR     :  Builds a menu given a first menu, a structure, an
  *                 AccelGroup and a possible GtkStatusBar where to push
- *                 the tooltips. 
+ *                 the tooltips.
  * PRE          :  /
  */
 void gtk_build_menu (GtkWidget *,
@@ -200,14 +176,6 @@ void gtk_build_menu (GtkWidget *,
 GtkWidget *gtk_build_popup_menu (GtkWidget *,
 				 MenuEntry *,
 				 GtkAccelGroup *);
-
-
-/* DESCRIPTION  :  /
- * BEHAVIOR     :  Update the menu toggle with the new value. 
- * PRE          :  /
- */
-void gtk_toggle_menu_enable (GtkWidget *, 
-			     gboolean);
 
 
 /* DESCRIPTION  :  /
