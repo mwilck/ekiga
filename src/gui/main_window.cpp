@@ -905,18 +905,18 @@ static bool on_handle_errors (std::string error,
 {
   g_return_val_if_fail (data != NULL, false);
 
-  GtkWidget *dialog = gtk_message_dialog_new (GTK_WINDOW (data), 
-                                              GTK_DIALOG_MODAL, 
+  GtkWidget *dialog = gtk_message_dialog_new (GTK_WINDOW (data),
+                                              GTK_DIALOG_MODAL,
                                               GTK_MESSAGE_ERROR,
                                               GTK_BUTTONS_OK, NULL);
 
   gtk_window_set_title (GTK_WINDOW (dialog), _("Error"));
   gtk_label_set_markup (GTK_LABEL (GTK_MESSAGE_DIALOG (dialog)->label), error.c_str ());
-  
+
   g_signal_connect_swapped (GTK_OBJECT (dialog), "response",
                             G_CALLBACK (gtk_widget_destroy),
                             GTK_OBJECT (dialog));
-  
+
   gtk_widget_show_all (dialog);
 
   return true;
@@ -924,24 +924,25 @@ static bool on_handle_errors (std::string error,
 
 
 
-/* 
- * Display Engine Callbacks 
+/*
+ * Display Engine Callbacks
  */
 
-static void 
-on_videooutput_device_opened_cb (Ekiga::VideoOutputManager & /* manager */, 
-                                 Ekiga::VideoOutputAccel /* accel */, 
-                                 Ekiga::VideoOutputMode mode, 
-                                 unsigned zoom, 
+static void
+on_videooutput_device_opened_cb (Ekiga::VideoOutputManager & /* manager */,
+                                 Ekiga::VideoOutputAccel /* accel */,
+                                 Ekiga::VideoOutputMode mode,
+                                 unsigned zoom,
                                  bool both_streams,
                                  gpointer self)
 {
   EkigaMainWindow *mw = EKIGA_MAIN_WINDOW (self);
+  int vv;
 
   if (both_streams) {
        gtk_menu_section_set_sensitive (mw->priv->main_menu, "local_video", TRUE);
        gtk_menu_section_set_sensitive (mw->priv->main_menu, "fullscreen", TRUE);
-  } 
+  }
   else {
 
     if (mode == Ekiga::VO_MODE_LOCAL)
@@ -951,14 +952,21 @@ on_videooutput_device_opened_cb (Ekiga::VideoOutputManager & /* manager */,
        gtk_menu_set_sensitive (mw->priv->main_menu, "remote_video", TRUE);
   }
 
+  // when ending a call and going back to local video, the video_view
+  // setting should not be updated, so memorise the setting and
+  // restore it afterwards
+  if (!both_streams && mode == Ekiga::VO_MODE_LOCAL)
+    vv = gm_conf_get_int (VIDEO_DISPLAY_KEY "video_view");
   gtk_radio_menu_select_with_id (mw->priv->main_menu, "local_video", mode);
+  if (!both_streams && mode == Ekiga::VO_MODE_LOCAL)
+    gm_conf_set_int (VIDEO_DISPLAY_KEY "video_view", vv);
 
   gtk_menu_set_sensitive (mw->priv->main_menu, "zoom_in", zoom != 200);
   gtk_menu_set_sensitive (mw->priv->main_menu, "zoom_out", zoom != 50);
   gtk_menu_set_sensitive (mw->priv->main_menu, "normal_size", zoom != 100);
 }
 
-void 
+void
 on_videooutput_device_closed_cb (Ekiga::VideoOutputManager & /* manager */, gpointer self)
 {
   EkigaMainWindow *mw = EKIGA_MAIN_WINDOW (self);
@@ -970,8 +978,8 @@ on_videooutput_device_closed_cb (Ekiga::VideoOutputManager & /* manager */, gpoi
   gtk_menu_section_set_sensitive (mw->priv->main_menu, "zoom_in", FALSE);
 }
 
-void 
-on_videooutput_device_error_cb (Ekiga::VideoOutputManager & /* manager */, 
+void
+on_videooutput_device_error_cb (Ekiga::VideoOutputManager & /* manager */,
                                 Ekiga::VideoOutputErrorCodes error_code,
                                 gpointer self)
 {
@@ -985,11 +993,11 @@ on_videooutput_device_error_cb (Ekiga::VideoOutputManager & /* manager */,
       break;
     case Ekiga::VO_ERROR:
     default:
-#ifdef WIN32  
+#ifdef WIN32
       dialog_msg = g_strconcat (_("There was an error opening or initializing the video output. Please verify that no other application is using the accelerated video output."), "\n\n", tmp_msg, NULL);
 #else
       dialog_msg = g_strconcat (_("There was an error opening or initializing the video output. Please verify that you are using a color depth of 24 or 32 bits per pixel."), "\n\n", tmp_msg, NULL);
-#endif      
+#endif
       break;
   }
 
