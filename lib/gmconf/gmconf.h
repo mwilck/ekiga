@@ -80,12 +80,6 @@ void gm_conf_init (); /* don't try anything before! */
 void gm_conf_shutdown (); /* don't try anything after! */
 void gm_conf_save (); /* to forcibly save */
 
-/* to accept/refuse that the notifiers get fired:
- * the configuration is still readable/writable, but
- * the changes aren't propagated to the gui */
-void gm_conf_watch ();
-void gm_conf_unwatch ();
-
 /* to set/unset notifiers */
 /* sets a notifier on namespac, calling func, with user_data*/
 gpointer gm_conf_notifier_add (const gchar *namespac, 

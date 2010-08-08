@@ -228,12 +228,15 @@ gm_conf_init ()
 {
   client = gconf_client_get_default ();
   gconf_client_set_error_handling (client, GCONF_CLIENT_HANDLE_UNRETURNED);
+  gconf_client_add_dir (client, "/apps/" PACKAGE_NAME,
+			GCONF_CLIENT_PRELOAD_NONE, NULL);
 }
 
 
 void
 gm_conf_shutdown ()
 {
+  gconf_client_remove_dir (client, "/apps/" PACKAGE_NAME, NULL);
   g_object_unref (client);
 }
 
@@ -391,18 +394,4 @@ gm_conf_notifier_trigger (const gchar *namespac)
   g_return_if_fail (namespac != NULL);
 
   gconf_client_notify (client, namespac);
-}
-
-void
-gm_conf_watch ()
-{
-  gconf_client_add_dir (client, "/apps/" PACKAGE_NAME,
-			GCONF_CLIENT_PRELOAD_NONE, NULL);
-}
-
-
-void
-gm_conf_unwatch ()
-{
-  gconf_client_remove_dir (client, "/apps/" PACKAGE_NAME, NULL);
 }
