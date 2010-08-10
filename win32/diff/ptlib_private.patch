@@ -1,0 +1,14 @@
+# fix compilation error
+
+diff -ur ptlib.orig/include/ptlib/socket.h ptlib/include/ptlib/socket.h
+--- ptlib.orig/include/ptlib/socket.h	2010-06-02 15:03:16.909944344 +0200
++++ ptlib/include/ptlib/socket.h	2010-08-10 17:48:14.180864429 +0200
+@@ -491,7 +491,7 @@
+     SOCKET max_fd;
+     fd_set * set;
+ 
+-  private:
++  public:
+     P_fd_set(const P_fd_set &) {}
+     void operator=(const P_fd_set &) {}
+ };
