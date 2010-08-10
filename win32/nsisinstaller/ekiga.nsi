@@ -1,14 +1,8 @@
-; Ekiga.nsi
-; ====================================================
 ; NSIS Installer for Ekiga Win32
-; Original Authors: Herman Bloggs <hermanator12002@yahoo.com> 
+; Original Authors: Herman Bloggs <hermanator12002@yahoo.com>
 ; and Daniel Atallah <daniel_atallah@yahoo.com> (GAIM Installler)
 ; Original version : Installer for Ekiga win32
-; Update: Luba Vincent <luba@novacom.be>
-; Installer Version: 1.0
 ; Created : 09/01/06
-; Last Update: 10/13/06
-; ====================================================
 
 !addPluginDir ${NSISPLUGINDIR}
 ; ===========================
@@ -16,7 +10,6 @@
 var name
 var GTK_FOLDER
 var STARTUP_RUN_KEY
-var ISSILENT
 var ALREADY_INSTALLED
 ; ===========================
 ; Configuration
@@ -24,17 +17,17 @@ var ALREADY_INSTALLED
 Name $name
 SetCompressor /SOLID lzma
 !ifdef WITH_GTK
-!ifdef DEBUG
-OutFile "${TARGET_DIR}/ekiga-setup-${EKIGA_VERSION}-debug.exe"
+  !if ${DEBUG}
+    OutFile "${TARGET_DIR}/ekiga-setup-${EKIGA_VERSION}-debug.exe"
+  !else
+    OutFile "${TARGET_DIR}/ekiga-setup-${EKIGA_VERSION}.exe"
+  !endif
 !else
-OutFile "${TARGET_DIR}/ekiga-setup-${EKIGA_VERSION}.exe"
-!endif
-!else
-!ifdef DEBUG
-OutFile "${TARGET_DIR}/ekiga-setup-${EKIGA_VERSION}-nogtk-debug.exe"
-!else
-OutFile "${TARGET_DIR}/ekiga-setup-${EKIGA_VERSION}-nogtk.exe"
-!endif
+  !if ${DEBUG}
+    OutFile "${TARGET_DIR}/ekiga-setup-${EKIGA_VERSION}-nogtk-debug.exe"
+  !else
+    OutFile "${TARGET_DIR}/ekiga-setup-${EKIGA_VERSION}-nogtk.exe"
+  !endif
 !endif
 
 ; ===========================
@@ -53,21 +46,20 @@ OutFile "${TARGET_DIR}/ekiga-setup-${EKIGA_VERSION}-nogtk.exe"
 ; ===========================
 ; Defines
 
-!define EKIGA_REG_KEY "SOFTWARE\ekiga"
-!define EKIGA_UNINST_EXE "ekiga-uninst.exe"
-!define EKIGA_UNINSTALL_KEY			"SOFTWARE\Microsoft\Windows\CurrentVersion\Uninstall\Ekiga"
-!define HKLM_APP_PATHS_KEY			"SOFTWARE\Microsoft\Windows\CurrentVersion\App Paths\ekiga.exe"
-!define EKIGA_REG_LANG				"Installer Language"
-!define EKIGA_STARTUP_RUN_KEY			"SOFTWARE\Microsoft\Windows\CurrentVersion\Run"
+!define EKIGA_REG_KEY			"SOFTWARE\ekiga"
+!define EKIGA_UNINST_EXE		"ekiga-uninst.exe"
+!define EKIGA_UNINSTALL_KEY		"SOFTWARE\Microsoft\Windows\CurrentVersion\Uninstall\Ekiga"
+!define HKLM_APP_PATHS_KEY 		"SOFTWARE\Microsoft\Windows\CurrentVersion\App Paths\ekiga.exe"
+!define EKIGA_REG_LANG		   	"Installer Language"
+!define EKIGA_STARTUP_RUN_KEY	"SOFTWARE\Microsoft\Windows\CurrentVersion\Run"
 !define GTK_REG_KEY				"SOFTWARE\GTK\2.0"
-!define GTK_DEFAULT_INSTALL_PATH		"$COMMONFILES\GTK\2.0"
-!define GTK_RUNTIME_INSTALLER			"gtk+-${GTK_VERSION}-setup.exe"
-!define GTK_UNINSTALLER_BIN                     "unins000.exe"
+!define GTK_RUNTIME_INSTALLER	"gtk+-${GTK_VERSION}-setup.exe"
+!define GTK_UNINSTALLER_BIN     "unins000.exe"
 
 ; ===========================
 ; Modern UI configuration
-!define MUI_ICON                                "${EKIGA_DIR}/win32/ico/ekiga.ico"
-!define MUI_UNICON                              "${EKIGA_DIR}/win32/ico/ekiga-uninstall.ico" 
+!define MUI_ICON                "${EKIGA_DIR}/win32/ico/ekiga.ico"
+!define MUI_UNICON              "${EKIGA_DIR}/win32/ico/ekiga-uninstall.ico"
 
 !define MUI_HEADERIMAGE
 !define MUI_COMPONENTSPAGE_SMALLDESC
@@ -76,28 +68,22 @@ OutFile "${TARGET_DIR}/ekiga-setup-${EKIGA_VERSION}-nogtk.exe"
 ;Finish Page config
 !define MUI_FINISHPAGE_RUN			"$INSTDIR\ekiga.exe"
 !define MUI_FINISHPAGE_RUN_CHECKED
-  
+
 ; ===========================
 ; Pages
 
 !ifndef WITH_GTK
-  !define MUI_PAGE_CUSTOMFUNCTION_PRE		preWelcomePage
+  !define MUI_PAGE_CUSTOMFUNCTION_PRE preWelcomePage
 !endif
 !insertmacro MUI_PAGE_WELCOME
 
 ; Alter License section
-!define MUI_LICENSEPAGE_BUTTON		        $(EKIGA_LICENSE_BUTTON)
-!define MUI_LICENSEPAGE_TEXT_BOTTOM		$(EKIGA_LICENSE_BOTTOM_TEXT)
+!define MUI_LICENSEPAGE_BUTTON		  $(EKIGA_LICENSE_BUTTON)
+!define MUI_LICENSEPAGE_TEXT_BOTTOM	  $(EKIGA_LICENSE_BOTTOM_TEXT)
+!insertmacro MUI_PAGE_LICENSE         "${EKIGA_DIR}/LICENSE"
 
 !insertmacro MUI_PAGE_COMPONENTS
-
-; GTK+ install dir page
-!define MUI_PAGE_CUSTOMFUNCTION_PRE		preGtkDirPage
-!define MUI_PAGE_CUSTOMFUNCTION_LEAVE		postGtkDirPage
-
-; Ekiga install dir page
 !insertmacro MUI_PAGE_DIRECTORY
-
 !insertmacro MUI_PAGE_INSTFILES
 !insertmacro MUI_PAGE_FINISH
 
@@ -109,6 +95,7 @@ OutFile "${TARGET_DIR}/ekiga-setup-${EKIGA_VERSION}-nogtk.exe"
 ; ===========================
 ; Languages
 
+;!define MUI_LANGDLL_ALLLANGUAGES  ; show all languages during install
 !insertmacro MUI_LANGUAGE "English"
 !insertmacro MUI_LANGUAGE "Hungarian"
 !insertmacro MUI_LANGUAGE "French"
@@ -126,12 +113,13 @@ OutFile "${TARGET_DIR}/ekiga-setup-${EKIGA_VERSION}-nogtk.exe"
 !insertmacro EKIGA_MACRO_INCLUDE_LANGFILE "DUTCH"		"${INSTALLER_DIR}/language_files/dutch.nsh"
 
 ; ===========================
-; Sections
+; Section SecUninstallOldEkiga
+; ===========================
 Section -SecUninstallOldEkiga
         ; Check install rights..
         Call CheckUserInstallRights
         Pop $R0
-        
+
         ;If ekiga is currently set to run on startup,
         ;  save the section of the Registry where the setting is before uninstalling,
         ;  so we can put it back after installing the new version
@@ -168,6 +156,14 @@ Section -SecUninstallOldEkiga
                 ; Check if we have uninstall string..
                 IfFileExists $R3 0 uninstall_problem
                 ; Have uninstall string.. go ahead and uninstall.
+                ; but before, prevent removal of non-standard
+                ;   installation directory of ekiga prior to April 2010
+                ; so the lines until nameok1 label could be removed by 2012
+                ${GetFileName} $R1 $R5
+                StrCmp $R5 ekiga nameok1 0  ; unsensitive comparation
+                MessageBox MB_OK "WARNING: Ekiga was installed in $R1, which is not a standard location.  Your old ekiga files will not be removed, please remove manually the directory $R1 after ensuring that you have not added to it useful files for you."
+                Goto done
+                nameok1:
                 SetOverwrite on
                 ; Need to copy uninstaller outside of the install dir
                 ClearErrors
@@ -184,17 +180,18 @@ Section -SecUninstallOldEkiga
         exec_error:
                 Delete "$TEMP\${EKIGA_UNINST_EXE}"
                 Goto uninstall_problem
- 
+
         uninstall_problem:
                 ; We can't uninstall.  Either the user must manually uninstall or we ignore and reinstall over it.
                 MessageBox MB_OKCANCEL $(EKIGA_PROMPT_CONTINUE_WITHOUT_UNINSTALL) /SD IDOK IDOK done
                 Quit
- 
+
         done:
 SectionEnd
 
-
-
+; ===========================
+; Section SecGtk
+; ===========================
 !ifdef WITH_GTK
 Section $(GTK_SECTION_TITLE) SecGtk
   SectionIn 1 RO
@@ -221,7 +218,7 @@ Section $(GTK_SECTION_TITLE) SecGtk
   no_gtk:
     StrCmp $R1 "NONE" gtk_no_install_rights
     ClearErrors
-    ExecWait '"$TEMP\${GTK_RUNTIME_INSTALLER}" /L=$LANGUAGE $ISSILENT /DIR="$GTK_FOLDER" /IGNOREERRORS'
+    ExecWait "$TEMP\${GTK_RUNTIME_INSTALLER}"
     ; now the GTK path needs to be added to the path of the setup
     ; so that Ekiga could be started from the last page
     ReadEnvStr $R0 "PATH"
@@ -232,7 +229,7 @@ Section $(GTK_SECTION_TITLE) SecGtk
     hkcu1:
       ReadRegStr $R3 HKCU ${GTK_REG_KEY} "Path"
     hk1:
-    StrCpy $R0 "$R0;$R3\bin"
+    StrCpy $R0 "$R0;$R3\bin;$R3\lib;$R3"
     System::Call 'Kernel32::SetEnvironmentVariableA(t, t) i("PATH", R0).r0'
     Goto gtk_install_cont
 
@@ -240,29 +237,29 @@ Section $(GTK_SECTION_TITLE) SecGtk
     StrCpy $GTK_FOLDER $R6
     MessageBox MB_YESNO $(GTK_UPGRADE_PROMPT) /SD IDYES IDNO done
     ClearErrors
-    ExecWait '"$TEMP\${GTK_RUNTIME_INSTALLER}" /L=$LANGUAGE $ISSILENT /DIR="$GTK_FOLDER" /IGNOREERRORS'
+    ExecWait "$TEMP\${GTK_RUNTIME_INSTALLER}"
     Goto gtk_install_cont
 
   gtk_install_cont:
     IfErrors gtk_install_error
     StrCpy $R5 "1"  ; marker that says we installed...
     Goto done
- 
+
   gtk_install_error:
     Call DoWeNeedGtk
     Pop $R0
     StrCmp $R0 "0" done exit_on_error
-    
+
   exit_on_error:
     ;Delete "$TEMP\gtk-runtime.exe"
     MessageBox MB_YESNO $(GTK_INSTALL_ERROR) IDYES docontinue IDNO doexit
-    
+
   doexit:
     Quit
-    
+
   docontinue:
     Goto done
- 
+
   have_gtk:
     StrCpy $GTK_FOLDER $R6
     StrCmp $R1 "NONE" done ; If we have no rights.. can't re-install..
@@ -275,7 +272,7 @@ Section $(GTK_SECTION_TITLE) SecGtk
     ; Install GTK+ to Ekiga install dir
     StrCpy $GTK_FOLDER $INSTDIR
     ClearErrors
-    ExecWait '"$TEMP\${GTK_RUNTIME_INSTALLER}" /L=$LANGUAGE $ISSILENT /DIR="$GTK_FOLDER" /IGNOREERRORS'
+    ExecWait "$TEMP\${GTK_RUNTIME_INSTALLER}"
     IfErrors gtk_install_error
     SetOverwrite on
     ClearErrors
@@ -292,19 +289,29 @@ Section $(GTK_SECTION_TITLE) SecGtk
 SectionEnd ; end of GTK+ section
 !endif
 
-;--------------------------------
-;Ekiga Install Section
-
+; ===========================
+; Section SecEkiga
+; ===========================
 Section $(EKIGA_SECTION_TITLE) SecEkiga
   SectionIn 1 RO
 
-  IfFileExists $INSTDIR 0 dirok
-  ; if install directory already exists, install in Ekiga sub-directory instead
-  ; (this is needed upon uninstallation, since the whole install dir is removed)
+  ; find out a good installation directory, allowing the uninstaller
+  ;   to safely remove the whole installation directory
+  ; if INSTDIR does not end in [Ee]kiga, then add subdir Ekiga
+  ${GetFileName} $INSTDIR $R0
+  StrCmp $R0 ekiga nameok 0  ; unsensitive comparation
   StrCpy $INSTDIR "$INSTDIR\Ekiga"
-  ; if this sub-directory exists too, then abort the installation
+
+  nameok:
+  ; if exists and not empty, then add subdir Ekiga
   IfFileExists $INSTDIR 0 dirok
-  abort "Error: $INSTDIR already exists.  Please restart the setup and specify another installation directory"
+  ${DirState} $INSTDIR $R0
+  IntCmp $R0 0 dirok
+  StrCpy $INSTDIR "$INSTDIR\Ekiga"
+
+  ; if exists, abort
+  IfFileExists $INSTDIR 0 dirok
+  abort "Error: tried $INSTDIR, but it already exists.  Please restart the setup and specify another installation directory"
 
   dirok:
   ; Check install rights..
@@ -387,9 +394,9 @@ Section $(EKIGA_SECTION_TITLE) SecEkiga
   done:
 SectionEnd ; end of default Ekiga section
 
-;--------------------------------
-;Shortcuts
-
+; ===========================
+; Shortcuts
+; ===========================
 SubSection /e $(EKIGA_SHORTCUTS_SECTION_TITLE) SecShortcuts
   Section $(EKIGA_DESKTOP_SHORTCUT_SECTION_TITLE) SecDesktopShortcut
     SetOutPath "$INSTDIR"
@@ -410,7 +417,7 @@ SubSection /e $(EKIGA_SHORTCUTS_SECTION_TITLE) SecShortcuts
     SetOverwrite off
     SetShellVarContext "current"
   SectionEnd
-  
+
   Section $(EKIGA_RUN_AT_STARTUP) SecStartup
      SetOutPath $INSTDIR
      CreateShortCut "$SMSTARTUP\Ekiga.lnk" "$INSTDIR\ekiga.exe" "" "" 0 SW_SHOWNORMAL
@@ -418,10 +425,9 @@ SubSection /e $(EKIGA_SHORTCUTS_SECTION_TITLE) SecShortcuts
 SubSectionEnd
 
 
-;--------------------------------
-;Uninstaller Section
-
-
+; ===========================
+; Section Uninstall
+; ===========================
 Section Uninstall
   Call un.CheckUserInstallRights
   Pop $R0
@@ -461,7 +467,7 @@ Section Uninstall
     Delete /REBOOTOK "$SMSTARTUP\Ekiga.lnk"
     RMDir "$SMPROGRAMS\Ekiga"
     Delete "$DESKTOP\Ekiga.lnk"
-    
+
     SetShellVarContext "current"
     ; Shortcuts..
     RMDir /r "$SMPROGRAMS\Ekiga"
@@ -480,13 +486,9 @@ Section Uninstall
   done:
 SectionEnd ; end of uninstall section
 
-; ///////////////////////////////////////
-;; Functions
-; ///////////////////////////////////////
-
 ; ===========================
-; Init Global parameters
-
+; Function .onInit
+; ===========================
 Function .onInit
   Push $R0
   SystemLocal::Call 'kernel32::CreateMutexA(i 0, i 0, t "ekiga_installer_running") i .r1 ?e'
@@ -497,12 +499,6 @@ Function .onInit
   Call RunCheck
 
   StrCpy $name "Ekiga"
-
-  StrCpy $ISSILENT "/NOUI"
-
-  ; GTK installer has two silent states.. one with Message boxes, one without
-  ; If ekiga installer was run silently, we want to supress gtk installer msg boxes.
-  StrCpy $ISSILENT "/SILENT"
 
   ${GetParameters} $R0
   ClearErrors
@@ -517,7 +513,7 @@ Function .onInit
   skip_lang:
     ; If install path was set on the command, use it.
     StrCmp $INSTDIR "" 0 instdir_done
- 
+
     ;  If ekiga is currently intalled, we should default to where it is currently installed
     ClearErrors
     ReadRegStr $INSTDIR HKCU "${EKIGA_REG_KEY}" ""
@@ -551,8 +547,9 @@ FunctionEnd
 
 
 ; ===========================
-; Check if another instance 
+; Check if another instance
 ; of the installer is running
+; ===========================
 !macro RunCheckMacro UN
 Function ${UN}RunCheck
   Push $R0
@@ -564,7 +561,7 @@ Function ${UN}RunCheck
 
   abort_install:
     Abort
-  
+
   done:
     Pop $R0
 FunctionEnd
@@ -612,72 +609,9 @@ FunctionEnd
 !insertmacro CheckUserInstallRightsMacro ""
 !insertmacro CheckUserInstallRightsMacro "un."
 
-;
-; Usage:
-;   Push $0 ; Path string
-;   Call VerifyDir
-;   Pop $0 ; 0 - Bad path  1 - Good path
-;
-Function VerifyDir
-  Exch $0
-  Push $1
-  Push $2
-  Loop:
-    IfFileExists $0 dir_exists
-    StrCpy $1 $0 ; save last
-    ${GetParent} $0 $0
-    StrLen $2 $0
-    ; IfFileExists "C:" on xp returns true and on win2k returns false
-    ; So we're done in such a case..
-    IntCmp $2 2 loop_done
-    ; GetParent of "C:" returns ""
-    IntCmp $2 0 loop_done
-    Goto Loop
-
-  loop_done:
-    StrCpy $1 "$0\EkIgaFooB"
-    ; Check if we can create dir on this drive..
-    ClearErrors
-    CreateDirectory $1
-    IfErrors DirBad DirGood
-
-  dir_exists:
-    ClearErrors
-    FileOpen $1 "$0\ekigafoo.bar" w
-    IfErrors PathBad PathGood
-
-  DirGood:
-    RMDir $1
-    Goto PathGood1
-
-  DirBad:
-    RMDir $1
-    Goto PathBad1
-
-  PathBad:
-    FileClose $1
-    Delete "$0\ekigafoo.bar"
-  PathBad1:
-    StrCpy $0 "0"
-    Push $0
-    Goto done
-
-  PathGood:
-    FileClose $1
-    Delete "$0\ekigafoo.bar"
-  PathGood1:
-    StrCpy $0 "1"
-    Push $0
-
-  done:
-    Exch 3 ; The top of the stack contains the output variable
-    Pop $0
-    Pop $2
-    Pop $1
-FunctionEnd
-
-
-;
+; ===========================
+; Function doWeNeedGtk
+; ===========================
 ; Usage:
 ; Call DoWeNeedGtk
 ; First Pop:
@@ -720,7 +654,6 @@ Function DoWeNeedGtk
     ReadRegStr $0 HKLM ${GTK_REG_KEY} "Version"
     StrCpy $5 "HKLM"
     StrCmp $0 "" no_gtk have_gtk
-
 
   have_gtk:
     ; GTK+ is already installed.. check version.
@@ -774,57 +707,9 @@ Function DoWeNeedGtk
   Pop $3
 FunctionEnd
 
-Function preGtkDirPage
-  Push $R0
-  Push $R1
-  Call DoWeNeedGtk
-  Pop $R0
-  Pop $R1
-
-  StrCmp $R0 "0" have_gtk
-  StrCmp $R0 "1" upgrade_gtk
-  StrCmp $R0 "2" no_gtk no_gtk
-
-
-  ; Don't show dir selector.. Upgrades are done to existing path..
-  have_gtk:
-  upgrade_gtk:
-    Abort
-
-  no_gtk:
-    StrCmp $R1 "NONE" 0 no_gtk_cont
-      ; Got no install rights..
-      Abort
-    no_gtk_cont:
-      ; Suggest path..
-      StrCmp $R1 "HKCU" 0 hklm1
-        ${GetParent} $SMPROGRAMS $R0
-        ${GetParent} $R0 $R0
-        StrCpy $R0 "$R0\GTK\2.0"
-        Goto got_path
-      hklm1:
-        StrCpy $R0 "${GTK_DEFAULT_INSTALL_PATH}"
-
-   got_path:
-     StrCpy $name "GTK+ ${GTK_VERSION}"
-     StrCpy $GTK_FOLDER $R0
-     Pop $R1
-     Pop $R0
-FunctionEnd
-
-Function postGtkDirPage
-  Push $R0
-  StrCpy $name "Ekiga ${EKIGA_VERSION}"
-  Push $GTK_FOLDER
-  Call VerifyDir
-  Pop $R0
-  StrCmp $R0 "0" 0 done
-    MessageBox MB_OK "Destination path cannot be opened" /SD IDOK
-    Abort
-  done:
-  Pop $R0
-FunctionEnd
-
+; ===========================
+; Function preWelcomePage
+; ===========================
 !ifndef WITH_GTK
 Function preWelcomePage
   ; If this installer dosn't have GTK, check whether we need it.
@@ -844,22 +729,16 @@ Function preWelcomePage
 FunctionEnd
 !endif
 
-;--------------------------------
-;Descriptions
+; ===========================
+; Descriptions
+; ===========================
 !insertmacro MUI_FUNCTION_DESCRIPTION_BEGIN
-  !insertmacro MUI_DESCRIPTION_TEXT ${SecEkiga} \
-        $(EKIGA_SECTION_DESCRIPTION)
+  !insertmacro MUI_DESCRIPTION_TEXT ${SecEkiga} $(EKIGA_SECTION_DESCRIPTION)
 !ifdef WITH_GTK
-  !insertmacro MUI_DESCRIPTION_TEXT ${SecGtk} \
-        $(GTK_SECTION_DESCRIPTION)
+  !insertmacro MUI_DESCRIPTION_TEXT ${SecGtk} $(GTK_SECTION_DESCRIPTION)
 !endif
-  !insertmacro MUI_DESCRIPTION_TEXT ${SecStartup} \
-        $(EKIGA_STARTUP_SECTION_DESCRIPTION)
-  !insertmacro MUI_DESCRIPTION_TEXT ${SecShortcuts} \
-        $(EKIGA_SHORTCUTS_SECTION_DESCRIPTION)
-  !insertmacro MUI_DESCRIPTION_TEXT ${SecDesktopShortcut} \
-        $(EKIGA_DESKTOP_SHORTCUT_DESC)
-  !insertmacro MUI_DESCRIPTION_TEXT ${SecStartMenuShortcut} \
-        $(EKIGA_STARTMENU_SHORTCUT_DESC)
-
+  !insertmacro MUI_DESCRIPTION_TEXT ${SecStartup} $(EKIGA_STARTUP_SECTION_DESCRIPTION)
+  !insertmacro MUI_DESCRIPTION_TEXT ${SecShortcuts} $(EKIGA_SHORTCUTS_SECTION_DESCRIPTION)
+  !insertmacro MUI_DESCRIPTION_TEXT ${SecDesktopShortcut} $(EKIGA_DESKTOP_SHORTCUT_DESC)
+  !insertmacro MUI_DESCRIPTION_TEXT ${SecStartMenuShortcut} $(EKIGA_STARTMENU_SHORTCUT_DESC)
 !insertmacro MUI_FUNCTION_DESCRIPTION_END

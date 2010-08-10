@@ -3,14 +3,15 @@
 ;;  Author: ...
 ;;
 ;;  Note: To translate this file:
-;;  - copy this file into another file called yourlanguage.nsh
-;;  - modify yourlanguagefile.nsh like this:
-;;    - replace everywhere "!insertmacro EKIGA_MACRO_DEFAULT_STRING" with "!define"
-;;    - translate all the strings
-;;    - check the Windows Code Page you use, see above
-;;    - add yourself as Author, see above
-;;    - send us the file and remind us to add the entry for your file
-;;      in ekiga.nsi (MUI_LANGUAGE and EKIGA_MACRO_INCLUDE_LANGFILE)
+;;  - download this file on your computer
+;;  - translate all the strings into your language
+;;  - put the appropriate Windows Code Page (the one you use) above
+;;  - add yourself as Author above
+;;  - send us the file and remind us:
+;;    - to add the entry for your file in ekiga.nsi
+;;      (MUI_LANGUAGE and EKIGA_MACRO_INCLUDE_LANGFILE)
+;;    - to replace everywhere in your file
+;;      "!insertmacro EKIGA_MACRO_DEFAULT_STRING" with "!define"
 
 ; Startup Checks
 !insertmacro EKIGA_MACRO_DEFAULT_STRING INSTALLER_IS_RUNNING			"The installer is already running."
