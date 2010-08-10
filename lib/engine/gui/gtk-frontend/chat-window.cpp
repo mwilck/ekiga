@@ -76,7 +76,7 @@ static void on_escaped (GtkWidget *widget,
                         gpointer data);
 
 static void on_switch_page (GtkNotebook* notebook,
-			    GtkNotebookPage* page,
+			    gpointer page_,
 			    guint num,
 			    gpointer data);
 
@@ -159,7 +159,7 @@ on_escaped (GtkWidget */*widget*/,
 
 static void
 on_switch_page (G_GNUC_UNUSED GtkNotebook* notebook,
-		G_GNUC_UNUSED GtkNotebookPage* page_,
+		G_GNUC_UNUSED gpointer page_,
 		guint num,
 		gpointer data)
 {

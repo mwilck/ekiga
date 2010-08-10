@@ -391,9 +391,9 @@ static void video_settings_changed_cb (GtkAdjustment *,
  * BEHAVIOR     :  Update the config key accordingly.
  * PRE          :  A valid pointer to the main window GmObject.
  */
-static void panel_section_changed_cb (GtkNotebook *, 
-                                      GtkNotebookPage *,
-                                      gint, 
+static void panel_section_changed_cb (GtkNotebook *,
+                                      gpointer,
+                                      gint,
                                       gpointer);
 
 
@@ -2041,11 +2041,11 @@ video_settings_changed_cb (GtkAdjustment * /*adjustment*/,
 }
 
 
-static void 
+static void
 panel_section_changed_cb (G_GNUC_UNUSED GtkNotebook *notebook,
-                          G_GNUC_UNUSED GtkNotebookPage *page,
+                          G_GNUC_UNUSED gpointer page,
                           G_GNUC_UNUSED gint page_num,
-                          gpointer data) 
+                          gpointer data)
 {
   EkigaMainWindow *mw = EKIGA_MAIN_WINDOW (data);
   gint current_page = 0;
