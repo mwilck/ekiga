@@ -291,15 +291,6 @@ gtk_build_menu (GtkWidget *menubar,
 
       if (menu [i].accel && accel)
 	{
-/*        if ((menu [i].accel == GDK_F1) || (menu [i].accel == GDK_F11))
-          gtk_widget_add_accelerator (menu [i].widget, "activate",
-                                      accel, menu [i].accel,
-                                      0, GTK_ACCEL_VISIBLE);
-        else
-          gtk_widget_add_accelerator (menu [i].widget, "activate",
-                                      accel, menu [i].accel,
-                                      GDK_CONTROL_MASK, GTK_ACCEL_VISIBLE);
-*/
 	  switch (menu [i].accel) {
 		case GDK_F1:
 		case GDK_F11:
