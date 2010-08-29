@@ -9,11 +9,11 @@
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: ekiga HEAD\n"
+"Project-Id-Version: ekiga MASTER\n"
 "Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?"
 "product=ekiga&component=general\n"
-"POT-Creation-Date: 2010-04-26 08:04+0000\n"
-"PO-Revision-Date: 2010-04-28 09:19+0300\n"
+"POT-Creation-Date: 2010-08-27 15:58+0000\n"
+"PO-Revision-Date: 2010-08-29 13:08+0300\n"
 "Last-Translator: Ivar Smolin <okul@linux.ee>\n"
 "Language-Team: Estonian <gnome-et@linux.ee>\n"
 "MIME-Version: 1.0\n"
@@ -31,8 +31,8 @@ msgstr "IP-telefon, VoIP ja videokonverentsid"
 msgid "Talk to and see people over the Internet"
 msgstr "Inimestega vestlemine Interneti kaudu"
 
-msgid "0: 56Kbps, 1: ISDN, 2:DSL, 3: LAN, 4: Custom"
-msgstr "0: 56Kbps, 1: ISDN, 2:DSL, 3: LAN, 4: Kohandatud"
+msgid "0: 56kbps, 1: ISDN, 2: DSL128, 3: DSL512, 4: LAN, 5: Custom"
+msgstr "0: 56Kbps, 1: ISDN, 2:DSL, 3: DSL512, 4: LAN, 5: Kohandatud"
 
 msgid ""
 "Allow Ekiga to fall back to software scaling the picture-in-picture if "
@@ -97,10 +97,10 @@ msgid "Enable 'Fast Start'"
 msgstr "Kiirkäivituse lubamine"
 
 msgid "Enable H.245 tunneling"
-msgstr "H.245 tunneldamine lubatud"
+msgstr "H.245 tunneldamine on lubatud"
 
 msgid "Enable STUN network detection"
-msgstr "STUN-võrgu tuvastamise lubamine"
+msgstr "STUN-võrgu tuvastamise on lubamine"
 
 msgid "Enable early H.245"
 msgstr "Varajane H.245 lubatud"
@@ -180,7 +180,7 @@ msgstr ""
 "Kui märgitud, siis on vaikuse tuvastamine lubatud seda toetavate koodekite "
 "korral"
 
-msgid "Kind of network selected in the druid"
+msgid "Kind of network selected in the assistant"
 msgstr ""
 
 msgid "LDAP servers"
@@ -351,9 +351,6 @@ msgid ""
 msgstr ""
 "STUN-i toe jaoks kasutatav STUN-server. STUN on tehnoloogia, mis võimaldab "
 "kasutada ühendusi läbi mõnda liiki NAT-väravate"
-
-msgid "The Video Codecs List"
-msgstr "Videokoodekite nimekiri"
 
 msgid "The accounts list"
 msgstr "Kontode nimekiri"
@@ -623,7 +620,7 @@ msgstr "Nimi:"
 msgid "Address:"
 msgstr "Aadress:"
 
-msgid "Is a prefered contact"
+msgid "Is a preferred contact"
 msgstr ""
 
 msgid "Choose groups:"
@@ -722,11 +719,11 @@ msgid "Failed"
 msgstr "Tõrge"
 
 #. translators : the result will look like :
-#. * "registered (with 2 voicemail messages)"
+#. * "registered (with 2 voice mail messages)"
 #.
 #, c-format
-msgid "%s (with %d voicemail message)"
-msgid_plural "%s (with %d voicemail messages)"
+msgid "%s (with %d voice mail message)"
+msgid_plural "%s (with %d voice mail messages)"
 msgstr[0] "%s (koos %d kõnepostiteatega)"
 msgstr[1] "%s (koos %d kõnepostiteatega)"
 
@@ -794,7 +791,7 @@ msgid "Unregistered"
 msgstr "Registreerimata"
 
 msgid "Could not unregister"
-msgstr ""
+msgstr "Registreeringust loobumine pole võimalik"
 
 msgid "Could not register"
 msgstr "Registreerimine pole võimalik"
@@ -813,9 +810,6 @@ msgstr "_Lisa SIP-konto"
 
 msgid "_Add an H.323 Account"
 msgstr "_Lisa H.323 konto"
-
-msgid "Please update the following fields."
-msgstr "Palun uuenda järgnevaid välju."
 
 msgid "Get an Ekiga.net SIP account"
 msgstr "Hangi omale Ekiga.net SIP-konto"
@@ -1355,9 +1349,6 @@ msgstr "Server:"
 msgid "Resource:"
 msgstr "Ressurss:"
 
-msgid "Enable account"
-msgstr "Konto on lubatud"
-
 msgid "Edit"
 msgstr ""
 
@@ -1608,9 +1599,14 @@ msgid ""
 "The service will work only if your account is created using the URL in this "
 "dialog.\n"
 msgstr ""
-
-msgid "Consult the calls history"
-msgstr "Vaata kõnede ajalugu"
+"Ekiga abil on Sul võimalik võtta kõnesid tava- ja mobiiltelefonidele üle "
+"maailma.\n"
+"\n"
+"Selle lubamiseks pead Sa tegema kahte asja:\n"
+"- Esmalt ostma omale konto allpool olevalt aadressilt.\n"
+"- Seejärel sisestama oma konto ID ja PIN-koodi.\n"
+"Teenus töötab ainult juhul, kui Su konto on loodud siinses dialoogis pakutud "
+"URL-i abil.\n"
 
 msgid "I do not want to sign up for the Ekiga Call Out service"
 msgstr "Ma ei soovi registreeruda Ekiga.net teenuse kasutajaks"
@@ -1680,6 +1676,9 @@ msgid ""
 msgstr ""
 "Audio sisendseade on kõnede ajal sinu hääle salvestamiseks kasutatav seade."
 
+msgid "Video Input Device"
+msgstr "Videosisendi seade"
+
 msgid "Please choose your video input device:"
 msgstr "Palun vali oma videosisendi seade:"
 
@@ -1712,9 +1711,6 @@ msgstr "Audioväljundi seade"
 
 msgid "Audio Input Device"
 msgstr "Audiosisendi seade"
-
-msgid "Video Input Device"
-msgstr "Videosisendi seade"
 
 msgid "SIP URI"
 msgstr "SIP-URI"
@@ -1782,11 +1778,7 @@ msgid ""
 msgstr ""
 "Ekiga on täisfunktsionaalne SIP- ja H.323-ühilduv VoIP-i, IP-Telefoni ja "
 "videokonverentsi rakendus. Selle abil on võimalik võtta audio- ja "
-"videokõnesid kaugkasutajatele, kes pruugivad SIP ja H.323 riist- või "
-"tarkvara."
-
-msgid "Help display is not supported by your GTK+ version"
-msgstr ""
+"videokõnesid SIP ja H.323 riist- või tarkvara pruukivatele kaugkasutajatele."
 
 msgid "Unable to open help file."
 msgstr "Abiteabe faili pole võimalik avada."
@@ -1817,7 +1809,7 @@ msgstr "wxyz"
 
 #, c-format
 msgid "A:%.1f/%.1f   V:%.1f/%.1f   FPS:%d/%d"
-msgstr ""
+msgstr "A:%.1f/%.1f   V:%.1f/%.1f   Kaadrisagedus:%d/%d"
 
 #, c-format
 msgid "Connected with %s"
@@ -2003,8 +1995,8 @@ msgstr "Audiosätted"
 msgid "_Retrieve Call"
 msgstr ""
 
-msgid "_Hold Call"
-msgstr ""
+msgid "H_old Call"
+msgstr "Pane kõne _ootele"
 
 msgid "Suspend _Audio"
 msgstr "Peata _audio"
@@ -2097,9 +2089,6 @@ msgstr ""
 
 msgid "Act on selected contact"
 msgstr ""
-
-msgid "H_old Call"
-msgstr "Pane kõne _ootele"
 
 msgid "Hold the current call"
 msgstr "Kõne ootelepanek"
@@ -2228,13 +2217,13 @@ msgstr "Ekiga"
 #. * is shown in a tooltip, there is no space constraint
 #, c-format
 msgid "TX: %dx%d "
-msgstr ""
+msgstr "Ülekanne: %dx%d "
 
 #. Translators: RX is a common abbreviation for "receive".  As it
 #. * is shown in a tooltip, there is no space constraint
 #, c-format
 msgid "RX: %dx%d "
-msgstr ""
+msgstr "Vastuvõtt: %dx%d "
 
 #, c-format
 msgid ""
@@ -2256,26 +2245,6 @@ msgstr "Kasutaja silumisteadete väljastamine konsoolile (tasemega 1-4)"
 
 msgid "Makes Ekiga call the given URI"
 msgstr "Ekikaga helistamine määratud URI-ile"
-
-msgid "No usable audio plugin detected"
-msgstr "Kasutuskõlbulikke audiopluginaid ei tuvastatud"
-
-msgid ""
-"Ekiga didn't find any usable audio plugin. Make sure that your installation "
-"is correct."
-msgstr ""
-"Ekiga ei tuvastanud ühtegi kasutuskõlbulikku audiopluginat. Veendu, et "
-"programmi paigaldus on korrektne."
-
-msgid "No usable audio codecs detected"
-msgstr "Kasutuskõlbulikke audiopluginaid ei tuvastatud"
-
-msgid ""
-"Ekiga didn't find any usable audio codec. Make sure that your installation "
-"is correct."
-msgstr ""
-"Ekiga'l pole võimalik ühtki kasutuskõlbulikku audiopluginat leida. Veendu, "
-"et programmi paigaldus on korrektne."
 
 msgid "Play sound for new voice mails"
 msgstr "Heli esitamine kõneposti uute sõnumite korral"
@@ -2398,7 +2367,7 @@ msgid "Enable _early H.245"
 msgstr "_Varajane H.245 lubatud"
 
 msgid "Enable fast _start procedure"
-msgstr "Kiire käivitamise protseduur _lubatud"
+msgstr "Kiirkäivitamise protseduur on _lubatud"
 
 msgid ""
 "Connection will be established in Fast Start mode. Fast Start is a new way "
@@ -2417,7 +2386,7 @@ msgid "This allows you to set the mode for DTMFs sending."
 msgstr ""
 
 msgid "INFO"
-msgstr ""
+msgstr "TEAVE"
 
 msgid "_Outbound Proxy:"
 msgstr "_Väljuvate kõnede proksi:"
@@ -2483,13 +2452,13 @@ msgstr ""
 "korral."
 
 msgid "Enable echo can_celation"
-msgstr "_Kaja eemaldamine lubatud"
+msgstr "_Kaja eemaldamine on lubatud"
 
 msgid "If enabled, use echo cancelation."
 msgstr "Kui märgitud, siis kasutatakse kaja eemaldamist."
 
 msgid "Maximum _jitter buffer (in ms):"
-msgstr "Suurim _värinapuhver (millisekundited):"
+msgstr "Suurim _värinapuhver (millisekundites):"
 
 msgid "The maximum jitter buffer size for audio reception (in ms)."
 msgstr ""
@@ -2584,3 +2553,35 @@ msgstr "Kohandatud sõnumite kustutamine:"
 
 msgid "Define a custom message:"
 msgstr "Kohandatud sõnumite kirjeldamine:"
+
+#~ msgid "The Video Codecs List"
+#~ msgstr "Videokoodekite nimekiri"
+
+#~ msgid "Please update the following fields."
+#~ msgstr "Palun uuenda järgnevaid välju."
+
+#~ msgid "Enable account"
+#~ msgstr "Konto on lubatud"
+
+#~ msgid "Consult the calls history"
+#~ msgstr "Vaata kõnede ajalugu"
+
+#~ msgid "No usable audio plugin detected"
+#~ msgstr "Kasutuskõlbulikke audiopluginaid ei tuvastatud"
+
+#~ msgid ""
+#~ "Ekiga didn't find any usable audio plugin. Make sure that your "
+#~ "installation is correct."
+#~ msgstr ""
+#~ "Ekiga ei tuvastanud ühtegi kasutuskõlbulikku audiopluginat. Veendu, et "
+#~ "programmi paigaldus on korrektne."
+
+#~ msgid "No usable audio codecs detected"
+#~ msgstr "Kasutuskõlbulikke audiopluginaid ei tuvastatud"
+
+#~ msgid ""
+#~ "Ekiga didn't find any usable audio codec. Make sure that your "
+#~ "installation is correct."
+#~ msgstr ""
+#~ "Ekiga'l pole võimalik ühtki kasutuskõlbulikku audiopluginat leida. "
+#~ "Veendu, et programmi paigaldus on korrektne."
