@@ -14,8 +14,8 @@ msgstr ""
 "Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?"
 "product=ekiga&component=general\n"
 "POT-Creation-Date: 2010-09-08 12:18+0000\n"
-"PO-Revision-Date: 2010-09-17 13:56+0300\n"
-"Last-Translator: Ivar Smolin <okul@linux.ee>\n"
+"PO-Revision-Date: 2010-09-18 21:07+0300\n"
+"Last-Translator: Mattias Põldaru <mahfiaz gmail com>\n"
 "Language-Team: Estonian <gnome-et@linux.ee>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -40,9 +40,12 @@ msgid ""
 "hardware support is not available. If this is set to false, Ekiga will not "
 "try to open the PIP if hardware support is not available."
 msgstr ""
+"Võimaldab Ekigal naasta tarkvaralise picture-in-picture skaleerimise juurde, "
+"kui raudvaraline tugi pole saadaval. Kui see väärtus on väär, siis "
+"raudvaralise toe puudumisel Ekiga ei üritagi avada PIP-i."
 
 msgid "Allow picture-in-picture software scaling"
-msgstr ""
+msgstr "Picture-in-picture tarkvaralise skaleerimise lubamine"
 
 msgid "Alternative audio output device"
 msgstr "Alternatiivne audioväljundi seade"
@@ -78,6 +81,10 @@ msgid ""
 "Netmeeting and using both Fast Start and H.245 Tunneling can crash some "
 "versions of Netmeeting"
 msgstr ""
+"Ühendus luuakse kiirkäivituse režiimis. See on uus viis alustada kõnesid "
+"kiiremini, võimalus loodi H.323v2 protokollis. Kahjuks Netmeeting seda ei "
+"toeta ning kiirkäivituse ja H.245 tunneli kooskasutamine võib panna mõned "
+"Netmeetingu kliendid kokku jooksma."
 
 msgid "Contact long status"
 msgstr "Kontakti oleku kirjeldus"
@@ -184,7 +191,7 @@ msgstr ""
 "korral"
 
 msgid "Kind of network selected in the assistant"
-msgstr ""
+msgstr "Assistendis valitud võrgu liik"
 
 msgid "LDAP servers"
 msgstr "LDAP-serverid"
@@ -329,9 +336,9 @@ msgid ""
 "neighbor with box filter, 2: bilinear filtering, 3: hyperbolic filtering. "
 "Does not apply on windows systems."
 msgstr ""
-"Tarkvaralise skaleerimise algoritmi määramine. Võimalikud väärtused on "
-"0: lähim naaber, 1: lähim naaber koos kastifiltriga, 2: bilineaarne "
-"filter, 3: hüperboolfilter. See võti ei kehti windowsiga süsteemide kohta."
+"Tarkvaralise skaleerimise algoritmi määramine. Võimalikud väärtused on 0: "
+"lähim naaber, 1: lähim naaber koos kastifiltriga, 2: bilineaarne filter, 3: "
+"hüperboolfilter. See võti ei kehti windowsiga süsteemide kohta."
 
 msgid "Start hidden"
 msgstr "Käivitumine peidetuna"
@@ -339,8 +346,9 @@ msgstr "Käivitumine peidetuna"
 msgid "TCP port range"
 msgstr "TCP-portide vahemik"
 
+#, fuzzy
 msgid "Temporal Spatial Trade Off"
-msgstr ""
+msgstr "Ajutine ruumikvaliteedi? kompromiss"
 
 msgid "The Audio Codecs List"
 msgstr "Audiokoodekite nimekiri"
@@ -402,6 +410,8 @@ msgid ""
 "The default video view (0: Local, 1: Remote, 2: Both layered, 3: Both with "
 "local video in a separate window, 4: Both)"
 msgstr ""
+"Vaikimisi videovaade (0: kohalik, 1: kaug-, 2: mõlemad kihiti, 3: mõlemad, "
+"kohalik video eraldi aknas, 4: mõlemad)"
 
 msgid "The dial tone sound"
 msgstr "Valimistooni heli"
@@ -446,12 +456,15 @@ msgid "The maximum jitter buffer size for audio reception (in ms)"
 msgstr ""
 "Audiovastuvõtul kasutatava värinapuhvri suurim suurus (millisekundites)"
 
-#, fuzzy
 msgid ""
 "The maximum transmitted frame rate in frames/s. This rate may not be reached "
 "in case a minimum quality was configure via a TSTO value smaller than 31 and "
 "the bitrate selected is not sufficient to support this minimum quality"
-msgstr "Suurim ülekantava kaadrisagedus ühikuga kaadrit sekundi kohta."
+msgstr ""
+"Suurim ülekantav kaadrisagedus ühikuga kaadrit sekundis. Seda sagedust ei "
+"pruugita saavutada juhul, kui minimaalse kvaliteedi TSTO väärtus on väiksem "
+"kui 31 ning valitud bitikiirus ei ole piisav selle minimaalse kvaliteedi "
+"jaoks"
 
 msgid "The new instant message sound"
 msgstr "Uue välksõnumi heli"
@@ -528,12 +541,14 @@ msgid "The video codecs list"
 msgstr "Videokoodekite nimekiri"
 
 msgid "The video view before having switched to fullscreen"
-msgstr ""
+msgstr "Videovaade enne täisekraanile lülitumist"
 
 msgid ""
 "The video view before having switched to fullscreen (same values as "
 "video_view)"
 msgstr ""
+"Videovaade enne täisekraanile lülitumist (samad väärtused nagu võtmel "
+"video_view)"
 
 msgid "The zoom value"
 msgstr "Suurendustegur"
@@ -557,6 +572,10 @@ msgid ""
 "\" (0), \"Tone\" (1), \"RFC2833\" (2), \"Q.931\" (3) (default is \"String"
 "\"). Choosing other values than \"String\" disables the Text Chat"
 msgstr ""
+"See võimaldab määrata DTMF-ide saatmise režiimi. Väärtused võivad olla \"Sõne"
+"\" (0), \"Toon\" (1), \"RFC2833\" (2), \"Q.931\" (3) (vaikimisi on \"Sõne"
+"\"). Kõigi väärtuste puhul peale \"Sõne\" pole võimalik kasutada "
+"tekstivestlust"
 
 msgid ""
 "This enables H.245 Tunneling mode. In H.245 Tunneling mode H.245 messages "
@@ -565,6 +584,11 @@ msgid ""
 "Netmeeting does not support it. Using both Fast Start and H.245 Tunneling "
 "can crash some versions of Netmeeting."
 msgstr ""
+"See võimaldab H.245 tunneli režiimi. H.245 tunneli režiimis pakendatakse "
+"H.245 sõnumid H.225 kanalisse (port 1720). See vähendab TCP ühenduste arvu "
+"kõne ajal. Tunneli võimalus loodi versioonis H.323v2 ning Netmeeting ei "
+"toeta seda. Kiirkäivituse ja H.245 tunneli kooskasutamine võib panna mõned "
+"Netmeetingu versioonid kokku jooksma."
 
 msgid "This enables H.245 early in the setup"
 msgstr "Sellega lubatakse H.245 seadistamise varajases faasis"
@@ -599,6 +623,9 @@ msgid ""
 "order to keep a minimum level of (spatial) quality for all frames. 0: "
 "Highest minimal quality, 31: lowest minimal quality"
 msgstr ""
+"Kas eelistada maksimaalse kaadrikiiruse säilitamist või vähendada seda, et "
+"säilitada kõigi kaadrite minimaalne kvaliteet. 0: kõrgeim minimaalne "
+"kvaliteet, 31: madalaim minimaalne kvaliteet"
 
 msgid "_Find"
 msgstr "_Otsi"
@@ -640,6 +667,7 @@ msgid ""
 "Please fill in this form to change an existing element of ekiga's internal "
 "roster"
 msgstr ""
+"Ekiga sisenimekirja olemasoleva kontakti muutmiseks täida palun see vorm"
 
 msgid "Name:"
 msgstr "Nimi:"
@@ -665,8 +693,9 @@ msgstr "Kajatest"
 msgid "Conference room"
 msgstr "Konverentsiruum"
 
+#, fuzzy
 msgid "Call back test"
-msgstr ""
+msgstr "Tagasihelistamise kontroll"
 
 msgid "Local roster"
 msgstr "Kohalik nimekiri"
@@ -709,7 +738,7 @@ msgstr "Ise"
 
 msgid ""
 "Please fill in this form to add a new contact to ekiga's internal roster"
-msgstr ""
+msgstr "Ekiga sisenimekirja uue kontakti lisamiseks täida palun see vorm"
 
 msgid "Put contact in groups:"
 msgstr "Kontakti paigutamine gruppidesse:"
@@ -913,7 +942,6 @@ msgstr "Tõrge turvakontrollil"
 msgid "Local user is busy"
 msgstr "Kohalik kasutaja on hõivatud"
 
-#, fuzzy
 msgid "Congested link to remote party"
 msgstr "Ühendus teise poolega on vallutatud"
 
@@ -936,6 +964,11 @@ msgid ""
 "Please see http://wiki.ekiga.org/index.php/Enable_port_forwarding_manually "
 "for instructions"
 msgstr ""
+"Ekiga ei suutnud sinu võrgu jaoks automaatselt seadistuda. Sa saad Ekigat "
+"küll kasutada, kuid pead võrgusätted käsitsi määrama.\n"
+"\n"
+"Juhised leiad aadressilt http://wiki.ekiga.org/index.php/"
+"Enable_port_forwarding_manually"
 
 msgid "Message"
 msgstr "Sõnum"
@@ -994,8 +1027,9 @@ msgstr "Vajalik on proksi autentimine"
 msgid "Length required"
 msgstr "Pikkus on vajalik"
 
+#, fuzzy
 msgid "Request entity too big"
-msgstr ""
+msgstr "Päringu üksus liiga suur"
 
 msgid "Request URI too long"
 msgstr "Päritud URI on liiga pikk"
@@ -1019,7 +1053,6 @@ msgstr "Laiend on vajalik"
 msgid "Interval too brief"
 msgstr "Vahemik liiga lühike"
 
-#, fuzzy
 msgid "Loop detected"
 msgstr "Avastati kordus"
 
@@ -1215,7 +1248,6 @@ msgstr "_Eemalda aadressiraamat"
 msgid "Addressbook _properties"
 msgstr "Aadressiraamatu _omadused"
 
-#, fuzzy
 msgid "LDAP SASL Interaction"
 msgstr "LDAP-i SASL-suhtlus"
 
@@ -1229,10 +1261,11 @@ msgstr "LDAP-i SASL-suhtlus"
 #. * authentication" if you'd like more background context.
 #.
 msgid "Challenge: "
-msgstr ""
+msgstr "Väljakutse: "
 
+#, fuzzy
 msgid "Interact"
-msgstr ""
+msgstr "Suhtlus"
 
 msgid "Refreshing"
 msgstr "Värskendamine"
@@ -1244,7 +1277,7 @@ msgid "LDAP Error: "
 msgstr "LDAP-viga: "
 
 msgid "Contacted server"
-msgstr ""
+msgstr "Ühenduti serveriga"
 
 #. patience == 0
 msgid "Could not connect to server"
@@ -1284,8 +1317,9 @@ msgstr "Otsingu_skoop:"
 #. * "DisplayName" (i.e., "the name that will be displayed") but on
 #. * most LDAP servers it's "CommonName".
 #.
+#, fuzzy
 msgid "_DisplayName Attribute"
-msgstr ""
+msgstr "_DisplayName atribuut"
 
 msgid "Call _Attributes"
 msgstr "Kõne _omadused"
@@ -1302,8 +1336,9 @@ msgstr "_Filtrimall"
 #. * course, the Bind ID can be left blank, in which case the session
 #. * is anonymous / unauthenticated.)
 #.
+#, fuzzy
 msgid "Bind _ID"
-msgstr ""
+msgstr "_ID seostamine"
 
 msgid "_Password"
 msgstr "_Parool"
@@ -1373,7 +1408,6 @@ msgid "connected"
 msgstr "ühendatud"
 
 #. FIXME: can't we report something better?
-#, fuzzy
 msgid "error authenticating loudmouth account"
 msgstr "viga loudmouth konto autentimisel"
 
@@ -1389,8 +1423,9 @@ msgstr "Muuda"
 msgid "_Add a jabber/XMPP account"
 msgstr "Lisa _jabber/XMPP konto"
 
+#, fuzzy
 msgid "Authorization to see your presence"
-msgstr ""
+msgstr "Autoriseerimine sinu oleku nägemiseks"
 
 #, c-format
 msgid "%s asks the permission to see your presence, saying: \"%s\"."
@@ -1413,10 +1448,10 @@ msgid "Your answer is: "
 msgstr "Sinu vastus: "
 
 msgid "Add a roster element"
-msgstr ""
+msgstr "Lisa nimekirja uus kontakt"
 
 msgid "Please fill in this form to add a new element to the remote roster"
-msgstr ""
+msgstr "Nimekirja uue kontakti lisamiseks täida see vorm"
 
 msgid "Identifier:"
 msgstr "Identifikaator:"
@@ -1444,7 +1479,7 @@ msgstr "Jätka vestlust"
 
 msgid ""
 "Please fill in this form to change an existing element of the remote roster"
-msgstr ""
+msgstr "Kaugnimekirjas olemasoleva kontakti muutmiseks täida see vorm"
 
 # või on allikaloend parem?
 msgid "New resource list"
@@ -1455,7 +1490,7 @@ msgstr "Lisa uus ressursiloend"
 
 msgid ""
 "Please fill in this form to add a new contact list to ekiga's remote roster"
-msgstr ""
+msgstr "Ekiga kaugnimekirja uue kontakti lisamiseks täida palun see vorm"
 
 msgid "Writable:"
 msgstr "Kirjutatav:"
@@ -1764,7 +1799,7 @@ msgid "Artwork:"
 msgstr "Kunst:"
 
 msgid "See AUTHORS file for full credits"
-msgstr ""
+msgstr "Kõigi autorite loetelu on failis AUTHORS"
 
 msgid ""
 "This program is free software; you can redistribute it and/or modify it "
@@ -1800,6 +1835,11 @@ msgid ""
 "long as you do follow the requirements of the GNU GPL for all the rest of "
 "the software thus combined."
 msgstr ""
+"Ekiga on avaldatud GPL litsentsi all ühe erandiga: sul on lubatud linkida "
+"või muul viisil kombineerida seda programmidega OPAL, OpenH323 ja PWLIB ning "
+"sellist kooslust levitada ilma, et GNU GPL litsentsi nõuded rakenduksid "
+"programmidele OPAL, OpenH323 ja PWLIB, kuni sa järgid GNU GPL litsentsi "
+"tingimusi ülejäänud osale tarkvarast ning nende kombinatsioonile."
 
 #. Translators: Please write translator credits here, and
 #. * separate names with \n
@@ -1876,11 +1916,15 @@ msgid ""
 "There was an error opening or initializing the video output. Please verify "
 "that no other application is using the accelerated video output."
 msgstr ""
+"Videoväljundi avamisel või lähtestamisel esines viga. Palun veendu, et ükski "
+"teine rakendus ei kasutaks kiirendusega videoväljundit."
 
 msgid ""
 "There was an error opening or initializing the video output. Please verify "
 "that you are using a color depth of 24 or 32 bits per pixel."
 msgstr ""
+"Videoväljundi lähtestamisel esines viga. Palun veendu, et kasutatav "
+"värvisügavus on 24 või 32 bitti pikslile."
 
 #. Translators: This is a hotplug status
 #, c-format
@@ -1921,6 +1965,9 @@ msgid ""
 " Please check your kernel driver documentation in order to determine which "
 "Palette is supported."
 msgstr ""
+"Tundub, et sinu draiver ei toeta ühtegi Ekiga poolt toetatud värviformaati.\n"
+"Palun vaata oma kerneli draiveri dokumentatsioonist, milline värvipalett on "
+"toetatud."
 
 msgid "Error while setting the frame rate."
 msgstr "Viga kaadrisageduse määramisel."
@@ -2123,7 +2170,7 @@ msgid "Co_ntact"
 msgstr "_Kontakt"
 
 msgid "Act on selected contact"
-msgstr ""
+msgstr "Valitud kontakti peale reageerimine"
 
 msgid "Hold the current call"
 msgstr "Kõne ootelepanek"
@@ -2243,7 +2290,7 @@ msgid "Change the volume of your soundcard"
 msgstr "Helikaardi valjuse muutmine"
 
 msgid "Change the color settings of your video device"
-msgstr ""
+msgstr "Videoseadme värvisätete muutmine"
 
 msgid "Ekiga"
 msgstr "Ekiga"
@@ -2410,6 +2457,10 @@ msgid ""
 "Netmeeting and using both Fast Start and H.245 Tunneling can crash some "
 "versions of Netmeeting."
 msgstr ""
+"Ühendus luuakse kiirkäivituse režiimis. See on uus viis alustada kõnesid "
+"kiiremini, võimalus loodi H.323v2 protokollis. Kahjuks Netmeeting seda ei "
+"toeta ning kiirkäivituse ja H.245 tunneli kooskasutamine võib panna mõned "
+"Netmeetingu kliendid kokku jooksma."
 
 msgid "DTMF Mode"
 msgstr "DTMF-režiim"
@@ -2418,7 +2469,7 @@ msgid "_Send DTMF as:"
 msgstr "DTMF s_aadetakse kui:"
 
 msgid "This allows you to set the mode for DTMFs sending."
-msgstr ""
+msgstr "See võimaldab määrata DTMF-i saatmise režiimi."
 
 msgid "INFO"
 msgstr "TEAVE"
@@ -2508,6 +2559,9 @@ msgid ""
 "dropped frames in order not to surpass the bitrate limit) or if you prefer "
 "to keep the frame rate."
 msgstr ""
+"Vali, kas tahad tagada minimaalse kvaliteedi (mis võib põhjustada kaadrite "
+"ärajätmist, et mitte ületada bitikiiruse piirangut) või eelistad "
+"kaadrikiiruse tagamist."
 
 msgid "Maximum video _bitrate (in kbits/s):"
 msgstr "_Video suurim läbilaskevõime (kbits/s):"
