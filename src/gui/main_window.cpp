@@ -652,6 +652,8 @@ static void on_established_call_cb (boost::shared_ptr<Ekiga::CallManager>  /*man
   EkigaMainWindow *mw = EKIGA_MAIN_WINDOW (self);
   gchar* info = NULL;
 
+  /* %s is the SIP/H.323 address of the remote user, this text is shown
+     below video during a call */
   info = g_strdup_printf (_("Connected with %s"),
 			  call->get_remote_party_name ().c_str ());
 
