@@ -246,8 +246,8 @@ DOC_LINGUAS := $(strip $(shell grep DOC_LINGUAS $(EKIGA_DIR)/help/Makefile.am | 
 confflags := --prefix=$(BUILDROOT) --build=$(DEB_BUILD_GNU_TYPE) --host=$(DEB_HOST_GNU_TYPE)
 
 confptlib := $(confflags) \
-	--enable-vfw --enable-vidfile --with-directx-includedir=$(EKIGA_DIR)/win32/directx \
-	--disable-qos --disable-vidfile --disable-alsa --disable-esd --disable-oss --disable-sunaudio --disable-shmaudio \
+	--enable-vfw --with-directx-includedir=$(EKIGA_DIR)/win32/directx \
+	--disable-qos --disable-alsa --disable-esd --disable-oss --disable-sunaudio --disable-shmaudio \
 	--disable-v4l --disable-v4l2 --disable-bsdvideo --disable-avc --disable-dc
 
 confopal := $(confflags) --with-ffmpeg-dir=$(FFMPEG_DIR) --disable-t38 --disable-fax
