@@ -273,7 +273,12 @@ Opal::Sip::EndPoint::menu_builder_add_actions (const std::string& fullname,
 void
 Opal::Sip::EndPoint::fetch (const std::string uri)
 {
-  Subscribe (SIPSubscribe::Presence, 300, uri);
+  PSafePtr<OpalPresentity> presentity = manager.AddPresentity (uri);
+
+  presentity->SetPresenceChangeNotifier (PCREATE_PresenceChangeNotifier(OnPresenceChange));
+
+  presentity->Open ();
+
   Subscribe (SIPSubscribe::Dialog, 300, uri);
 }
 
@@ -281,7 +286,8 @@ Opal::Sip::EndPoint::fetch (const std::string uri)
 void
 Opal::Sip::EndPoint::unfetch (const std::string uri)
 {
-  Subscribe (SIPSubscribe::Presence, 0, uri);
+  manager.RemovePresentity (uri);
+
   Subscribe (SIPSubscribe::Dialog, 0, uri);
 }
 
@@ -1000,7 +1006,8 @@ Opal::Sip::EndPoint::GetRegisteredPartyName (const SIPURL & aor,
 
 
 void
-Opal::Sip::EndPoint::OnPresenceInfoReceived (const SIPPresenceInfo& info)
+Opal::Sip::EndPoint::OnPresenceChange (OpalPresentity& /*presentity*/,
+				       const OpalPresenceInfo& info)
 {
   std::string presence = "unknown";
   std::string status;
@@ -1077,6 +1084,10 @@ Opal::Sip::EndPoint::OnPresenceInfoReceived (const SIPPresenceInfo& info)
   std::string _uri = sip_uri.AsString ();
   std::string old_presence = presence_infos[_uri].presence;
   std::string old_status = presence_infos[_uri].status;
+
+  std::cout << "I got presence for " << _uri
+	    << " and state is " << info.m_state
+	    << std::endl;
 
   // If first notification, and no information, then we are offline
   if (presence == "unknown" && old_presence.empty ())
@@ -1235,120 +1246,3 @@ Opal::Sip::EndPoint::mwi_received_in_main (const std::string aor,
     account->handle_message_waiting_information (info);
   }
 }
-
-
-// FIXME -- REMOVE
-//
-// The code below is just a hack to get presence going again in ekiga
-// it's based on code in the lalande branch, and just provides a bridge
-// between opal's old old api and opal's new api.
-//
-// It has been written around 2010-09-25 and isn't supposed to last long
-
-class SIPPresenceEventPackageHandler : public SIPEventPackageHandler
-{
-  virtual PCaselessString GetContentType () const
-  {
-    return "application/pidf+xml";
-  }
-
-  virtual bool OnReceivedNOTIFY(SIPHandler& handler,
-				SIP_PDU& request)
-  {
-    bool result;
-    SIPPresenceInfo info;
-
-    SIPURL from = request.GetMIME ().GetFrom ();
-    SIPURL to = request.GetMIME ().GetTo ();
-
-    from.Sanitise (SIPURL::ExternalURI);
-    info.m_entity = from.AsString ();
-
-    to.Sanitise (SIPURL::ExternalURI);
-    info.m_target = to.AsString ();
-
-    // if we have an empty body, it's just a ping
-    if (request.GetEntityBody ().IsEmpty ()) {
-
-      handler.GetEndPoint ().OnPresenceInfoReceived (info);
-      return false;
-    }
-
-    PXML xml;
-    if (xml.Load (request.GetEntityBody ())) {
-
-      /* now if we get a valid XML fragment, then it look like :
-       * <presence>
-       *   <tuple>
-       *      <status>
-       *         <basic>something</basic>
-       *         <note>something</note>
-       *      </status>
-       *      <contact>something</contact>
-       *   </tuple>
-       * </presence>
-       *
-       * well, it mostly looks like this, because the note element could end
-       * up just under tuple or presence...
-       */
-
-      PXMLElement* presence = NULL;
-      PXMLElement* tuple = NULL;
-      PXMLElement* status = NULL;
-      PXMLElement* basic = NULL;
-      PXMLElement* contact = NULL;
-      PXMLElement* note = NULL;
-
-      presence = xml.GetRootElement ();
-      if (presence && presence->GetName () == "presence") {
-
-	// ok, it looks legit
-	tuple = presence->GetElement ("tuple");
-	if (tuple) {
-
-	  status = tuple->GetElement ("status");
-	  contact = tuple->GetElement ("contact");
-
-	  if (status) {
-
-	    basic = status->GetElement ("basic");
-	    note = status->GetElement ("note");
-	  }
-	}
-
-	// let's deal with the moving note element
-	if (!note)
-	  note = presence->GetElement ("note");
-	if (!note && tuple)
-	  note = tuple->GetElement ("note");
-
-	// we know where everything is : just get the data from there
-	if (basic) {
-
-	  PCaselessString val = basic->GetData ();
-	  if (val == "open")
-	    info.m_state = SIPPresenceInfo::Available;
-	  else if (val == "closed")
-	    info.m_state = SIPPresenceInfo::Unavailable;
-	}
-	if (note) {
-
-	  info.m_note = note->GetData ();
-	}
-	if (contact) {
-
-	  info.m_contact = contact->GetData ();
-	}
-
-	result = true;
-      }
-      
-      if (result)
-	handler.GetEndPoint().OnPresenceInfoReceived(info);
-    }
-
-    return result;
-  }
-};
-
-static SIPEventPackageFactory::Worker<SIPPresenceEventPackageHandler> presenceEventPackageHandler(SIPSubscribe::Presence);

@@ -179,7 +179,7 @@ namespace Opal {
                                  unsigned options,
                                  OpalConnection::StringOptions * stroptions);
 
-      void OnPresenceInfoReceived (const SIPPresenceInfo& info);
+      PDECLARE_PresenceChangeNotifier (EndPoint, OnPresenceChange);
 
       void OnDialogInfoReceived (const SIPDialogNotification & info);
 
