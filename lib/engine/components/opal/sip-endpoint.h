@@ -179,9 +179,7 @@ namespace Opal {
                                  unsigned options,
                                  OpalConnection::StringOptions * stroptions);
 
-      void OnPresenceInfoReceived (const PString & user,
-                                   const PString & basic,
-                                   const PString & note);
+      void OnPresenceInfoReceived (const SIPPresenceInfo& info);
 
       void OnDialogInfoReceived (const SIPDialogNotification & info);
 
