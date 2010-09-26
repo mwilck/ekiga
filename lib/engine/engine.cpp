@@ -244,13 +244,6 @@ engine_init (Ekiga::ServiceCorePtr service_core,
 #endif
 }
 
-
-Ekiga::ServiceCore *
-engine_get_service_core ()
-{
-  return service_core_ptr.get ();
-}
-
 void
 engine_stop ()
 {

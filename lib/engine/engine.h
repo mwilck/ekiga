@@ -49,8 +49,6 @@ void engine_init (Ekiga::ServiceCorePtr service_core,
 		  int argc,
 		  char *argv[]);
 
-Ekiga::ServiceCore* engine_get_service_core ();
-
 void engine_stop ();
 
 /**

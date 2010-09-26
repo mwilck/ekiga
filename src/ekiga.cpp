@@ -115,15 +115,6 @@ GnomeMeeting::Exit ()
 }
 
 
-Ekiga::ServiceCore *
-GnomeMeeting::GetServiceCore ()
-{
-  PWaitAndSignal m(ep_var_mutex);
-  
-  return engine_get_service_core (); 
-}
-
-
 GnomeMeeting *
 GnomeMeeting::Process ()
 {
@@ -139,26 +130,15 @@ GnomeMeeting::GetMainWindow ()
 
 
 GtkWidget *
-GnomeMeeting::GetPrefsWindow (bool create)
+GnomeMeeting::GetPrefsWindow ()
 {
-  if (!prefs_window && create) {
-    prefs_window = gm_prefs_window_new (GetServiceCore ());
-    // FIXME should be moved in ekiga_assistant_new
-    gtk_window_set_transient_for (GTK_WINDOW (prefs_window), GTK_WINDOW (main_window));
-  }
   return prefs_window;
 }
 
 
 GtkWidget *
-GnomeMeeting::GetAssistantWindow (bool create)
+GnomeMeeting::GetAssistantWindow ()
 {
-  if (!assistant_window && create) {
-    assistant_window = ekiga_assistant_new (GetServiceCore ());
-    // FIXME should be moved in ekiga_assistant_new
-    gtk_window_set_transient_for (GTK_WINDOW (assistant_window), GTK_WINDOW (main_window));
-  }
-
   return assistant_window;
 }
 
@@ -189,11 +169,17 @@ void GnomeMeeting::BuildGUI (Ekiga::ServiceCorePtr services)
   /* Build the GUI */
   gtk_window_set_default_icon_name (GM_ICON_LOGO);
   accounts_window = gm_accounts_window_new (*services);
+  prefs_window = gm_prefs_window_new (services.get ());
+  assistant_window = ekiga_assistant_new (services.get ());
 
   statusicon = statusicon_new (*services);
   main_window = gm_main_window_new (*services);
   // FIXME should be moved inside the gm_accounts_window_new code
   gtk_window_set_transient_for (GTK_WINDOW (accounts_window), GTK_WINDOW (main_window));
+  // FIXME should be moved in ekiga_assistant_new
+  gtk_window_set_transient_for (GTK_WINDOW (prefs_window), GTK_WINDOW (main_window));
+  // FIXME should be moved in ekiga_assistant_new
+  gtk_window_set_transient_for (GTK_WINDOW (assistant_window), GTK_WINDOW (main_window));
 
   /* GM is started */
   PTRACE (1, "Ekiga version "

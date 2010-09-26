@@ -1093,7 +1093,7 @@ sound_events_list_changed_nt (G_GNUC_UNUSED gpointer id,
   if (gm_conf_entry_get_type (entry) == GM_CONF_STRING
       || gm_conf_entry_get_type (entry) == GM_CONF_BOOL) {
    
-    prefs_window = GnomeMeeting::Process ()->GetPrefsWindow (false);
+    prefs_window = GnomeMeeting::Process ()->GetPrefsWindow ();
     if (prefs_window) {
       gm_prefs_window_sound_events_list_build (prefs_window);
     }

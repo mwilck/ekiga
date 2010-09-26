@@ -96,14 +96,14 @@ class GnomeMeeting : public PProcess
    * BEHAVIOR     :  Returns a pointer to the preferences window GMObject.
    * PRE          :  /
    */
-  GtkWidget *GetPrefsWindow (bool create = true);
+  GtkWidget* GetPrefsWindow ();
  
   
   /* DESCRIPTION  :  /
    * BEHAVIOR     :  Returns a pointer to the assistant window.
    * PRE          :  /
    */
-  GtkWidget *GetAssistantWindow (bool create = true);
+  GtkWidget* GetAssistantWindow ();
   
   
   /* DESCRIPTION  :  /
@@ -137,8 +137,6 @@ class GnomeMeeting : public PProcess
   void BuildGUI (Ekiga::ServiceCorePtr services);
 
  private:
-
-  Ekiga::ServiceCore *GetServiceCore (); // FIXME: should disappear in the future
   
   PMutex ep_var_mutex;
   PMutex dev_access_mutex;

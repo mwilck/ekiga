@@ -237,8 +237,8 @@ quit_callback (G_GNUC_UNUSED GtkWidget *widget,
   GtkWidget *accounts_window = NULL;
 
   main_window = GnomeMeeting::Process ()->GetMainWindow ();
-  assistant_window = GnomeMeeting::Process ()->GetAssistantWindow (false);
-  prefs_window = GnomeMeeting::Process ()->GetPrefsWindow (false);
+  assistant_window = GnomeMeeting::Process ()->GetAssistantWindow ();
+  prefs_window = GnomeMeeting::Process ()->GetPrefsWindow ();
   accounts_window = GnomeMeeting::Process ()->GetAccountsWindow ();
   
   gtk_widget_hide (main_window);
