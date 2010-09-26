@@ -150,6 +150,7 @@ Opal::Sip::EndPoint::EndPoint (Opal::CallManager & _manager,
 
 Opal::Sip::EndPoint::~EndPoint ()
 {
+  manager.ShutDownEndpoints ();
 }
 
 
