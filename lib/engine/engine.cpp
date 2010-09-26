@@ -223,15 +223,13 @@ engine_init (Ekiga::ServiceCorePtr service_core,
   audiooutput_core->setup_conf_bridge();
   audioinput_core->setup_conf_bridge();
 
-  boost::signals::connection conn;
-  conn = hal_core->videoinput_device_added.connect (boost::bind (&Ekiga::VideoInputCore::add_device, boost::ref (*videoinput_core), _1, _2, _3, _4));
-  conn = hal_core->videoinput_device_removed.connect (boost::bind (&Ekiga::VideoInputCore::remove_device, boost::ref (*videoinput_core), _1, _2, _3, _4));
-  conn = hal_core->audiooutput_device_added.connect (boost::bind (&Ekiga::AudioOutputCore::add_device, boost::ref (*audiooutput_core), _1, _2, _3));
-  conn = hal_core->audiooutput_device_removed.connect (boost::bind (&Ekiga::AudioOutputCore::remove_device, boost::ref (*audiooutput_core), _1, _2, _3));
-  conn = hal_core->audioinput_device_added.connect (boost::bind (&Ekiga::AudioInputCore::add_device, boost::ref (*audioinput_core), _1, _2, _3));
-  conn = hal_core->audioinput_device_removed.connect (boost::bind (&Ekiga::AudioInputCore::remove_device, boost::ref (*audioinput_core), _1, _2, _3));
-  // std::vector<boost::signals::connection> connections;
-  //connections.push_back (conn);
+
+  hal_core->videoinput_device_added.connect (boost::bind (&Ekiga::VideoInputCore::add_device, boost::ref (*videoinput_core), _1, _2, _3, _4));
+  hal_core->videoinput_device_removed.connect (boost::bind (&Ekiga::VideoInputCore::remove_device, boost::ref (*videoinput_core), _1, _2, _3, _4));
+  hal_core->audiooutput_device_added.connect (boost::bind (&Ekiga::AudioOutputCore::add_device, boost::ref (*audiooutput_core), _1, _2, _3));
+  hal_core->audiooutput_device_removed.connect (boost::bind (&Ekiga::AudioOutputCore::remove_device, boost::ref (*audiooutput_core), _1, _2, _3));
+  hal_core->audioinput_device_added.connect (boost::bind (&Ekiga::AudioInputCore::add_device, boost::ref (*audioinput_core), _1, _2, _3));
+  hal_core->audioinput_device_removed.connect (boost::bind (&Ekiga::AudioInputCore::remove_device, boost::ref (*audioinput_core), _1, _2, _3));
 
 #if DEBUG_STARTUP
   std::cout << "Here is what ekiga is made of for this run :" << std::endl;
