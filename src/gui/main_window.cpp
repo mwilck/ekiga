@@ -4530,7 +4530,6 @@ main (int argc,
   /* Exit Ekiga */
   GnomeMeeting::Process ()->Exit ();
 
-  engine_stop ();
   Ekiga::Runtime::quit ();
 
   /* Save and shutdown the configuration */
