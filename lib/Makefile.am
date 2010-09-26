@@ -512,7 +512,9 @@ libekiga_la_SOURCES += \
 	$(components_dir)/opal/opal-videoinput.h \
 	$(components_dir)/opal/opal-videoinput.cpp \
 	$(components_dir)/opal/opal-videooutput.h \
-	$(components_dir)/opal/opal-videooutput.cpp
+	$(components_dir)/opal/opal-videooutput.cpp \
+	$(components_dir)/opal/opal-plugins-hacks.h \
+	$(components_dir)/opal/opal-plugins-hacks.cpp
 
 if HAVE_H323
 libekiga_la_SOURCES += \

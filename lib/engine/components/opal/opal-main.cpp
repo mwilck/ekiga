@@ -54,6 +54,7 @@
 #include "opal-account.h"
 #include "opal-bank.h"
 #include "opal-call-manager.h"
+#include "opal-plugins-hacks.h"
 
 #include "sip-endpoint.h"
 #define SIP_KEY "/apps/" PACKAGE_NAME "/protocols/sip/"
@@ -151,9 +152,7 @@ struct OPALSpark: public Ekiga::Spark
 
       presence_core->add_supported_uri (&is_supported_address); //FIXME
 
-      OpalLinkerHacks::loadOpalVideoInput = 1;
-      OpalLinkerHacks::loadOpalVideoOutput = 1;
-      OpalLinkerHacks::loadOpalAudio = 1;
+      hook_ekiga_plugins_to_opal (core);
 
       result = true;
     }

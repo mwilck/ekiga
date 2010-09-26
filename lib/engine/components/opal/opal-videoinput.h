@@ -40,8 +40,11 @@
 #ifndef _EKIGA_VIDEO_INPUT_H_
 #define _EKIGA_VIDEO_INPUT_H_
 
-#include "videoinput-core.h"
+#include <ptbuildopts.h>
+#include <ptlib.h>
+#include <opal/manager.h>
 
+#include "videoinput-core.h"
 
 class PVideoInputDevice_EKIGA : public PVideoInputDevice 
 {

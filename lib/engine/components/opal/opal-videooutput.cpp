@@ -35,47 +35,15 @@
  *
  */
 
-#define P_FORCE_STATIC_PLUGIN 
-
 #include <ptbuildopts.h>
 #include <ptlib.h>
 #include <opal/manager.h>
 
 #include "opal-videooutput.h"
-#include "engine.h"
-
-namespace OpalLinkerHacks {
-  int loadOpalVideoOutput;
-}
 
 int PVideoOutputDevice_EKIGA::devices_nbr = 0;
 
 PMutex PVideoOutputDevice_EKIGA::videoDisplay_mutex;
-/* Plugin definition */
-class PVideoOutputDevice_EKIGA_PluginServiceDescriptor 
-: public PDevicePluginServiceDescriptor
-{
-  public:
-    virtual PObject *CreateInstance (int) const 
-      {
-	return new PVideoOutputDevice_EKIGA (*(engine_get_service_core ())); 
-      }
-    
-    
-    virtual PStringArray GetDeviceNames(int) const 
-      { 
-	return PStringList("EKIGA"); 
-      }
-    
-    virtual bool ValidateDeviceName (const PString & deviceName, 
-				     int) const 
-      { 
-	return deviceName.Find("EKIGA") == 0; 
-      }
-} PVideoOutputDevice_EKIGA_descriptor;
-
-PCREATE_PLUGIN(EKIGA, PVideoOutputDevice, &PVideoOutputDevice_EKIGA_descriptor);
-
 
 /* The Methods */
 PVideoOutputDevice_EKIGA::PVideoOutputDevice_EKIGA (Ekiga::ServiceCore & _core)

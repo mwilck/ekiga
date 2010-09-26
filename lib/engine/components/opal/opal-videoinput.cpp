@@ -36,44 +36,7 @@
  *
  */
 
-#define P_FORCE_STATIC_PLUGIN
-
-#include <ptbuildopts.h>
-#include <ptlib.h>
-#include <opal/manager.h>
-
 #include "opal-videoinput.h"
-#include "engine.h"
-
-
-namespace OpalLinkerHacks {
-  int loadOpalVideoInput;
-}
-
-/* Plugin definition */
-class PVideoInputDevice_EKIGA_PluginServiceDescriptor 
-: public PDevicePluginServiceDescriptor
-{
-  public:
-    virtual PObject *CreateInstance (int) const 
-      {
-	return new PVideoInputDevice_EKIGA (*(engine_get_service_core ())); 
-      }
-    
-    
-    virtual PStringArray GetDeviceNames(int) const 
-      { 
-	return PStringList("EKIGA"); 
-      }
-    
-    virtual bool ValidateDeviceName (const PString & deviceName, 
-				     int) const 
-      { 
-	return deviceName.Find("EKIGA") == 0; 
-      }
-} PVideoInputDevice_EKIGA_descriptor;
-
-PCREATE_PLUGIN(EKIGA, PVideoInputDevice, &PVideoInputDevice_EKIGA_descriptor);
 
 int PVideoInputDevice_EKIGA::devices_nbr = 0;
 
