@@ -751,12 +751,12 @@ group_hide_show_offline (RosterViewGtk* self,
 
 static gboolean
 heap_hide_show_offline (G_GNUC_UNUSED RosterViewGtk* self,
-			G_GNUC_UNUSED GtkTreeModel* model,
-			G_GNUC_UNUSED GtkTreeIter* iter)
+			GtkTreeModel* model,
+			GtkTreeIter* iter)
 {
   gboolean result;
 
-  result = TRUE;//FIXME for 548750: gtk_tree_model_iter_has_child (model, iter);
+  result = gtk_tree_model_iter_has_child (model, iter);
 
   return result;
 }
