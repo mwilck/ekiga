@@ -148,14 +148,6 @@ namespace Ekiga
       void get_devices(std::vector <AudioInputDevice> & devices);
 
       /** Set a specific device
-       * This function sets the current audio input device. This function can
-       * also be used while in a stream or in preview mode. In that case the old
-       * device is closed and the new device opened automatically.
-       * @param device the new device to be used.
-       */
-      void set_device(const AudioInputDevice & device);
-
-      /** Set a specific device
        * This functions sets the current audio input device.
        * It can also be used while in a stream or in preview mode,
        * in such a case the old device gets closed and the new device is opened.

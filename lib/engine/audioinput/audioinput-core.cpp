@@ -137,18 +137,11 @@ void AudioInputCore::get_devices (std::vector <AudioInputDevice> & devices)
 
 }
 
-void AudioInputCore::set_device(const AudioInputDevice & device)
-{
-  PWaitAndSignal m(core_mutex);
-
-  internal_set_device(device);
-
-  desired_device  = device;
-}
-
 void
 AudioInputCore::set_device (const std::string& device_string)
 {
+  PWaitAndSignal m(core_mutex);
+
   std::vector<AudioInputDevice> devices;
   AudioInputDevice device;
   bool found = false;
@@ -176,7 +169,10 @@ AudioInputCore::set_device (const std::string& device_string)
     device.name = AUDIO_INPUT_FALLBACK_DEVICE_NAME;
   }
 
-  set_device (device);
+  internal_set_device (device);
+
+  desired_device  = device;
+
   PTRACE(4, "AudioInputCore\tSet device to " << device.source << "/" << device.name);
 }
 
