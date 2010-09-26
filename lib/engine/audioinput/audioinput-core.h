@@ -62,27 +62,27 @@ namespace Ekiga
   /** Core object for the audio input support
    * The audio input core abstracts all functionality related to audio input
    * in a thread safe manner. Typically, most of the functions except start_stream(),
-   * stop_stream(), set_stream_buffer_size() and get_frame_data() will be called from 
-   * a UI thread, while the three mentioned funtions will be used by an audio 
+   * stop_stream(), set_stream_buffer_size() and get_frame_data() will be called from
+   * a UI thread, while the three mentioned funtions will be used by an audio
    * streaming thread.
-   * 
-   * The audio input core abstracts different audio input managers, which can 
-   * represent different backends like PTLIB, from the application and can 
+   *
+   * The audio input core abstracts different audio input managers, which can
+   * represent different backends like PTLIB, from the application and can
    * switch the input device transparently for the audio streaming thread
    * even while capturing is in progress.
    *
    * If the removal of an audio input device is detected by a failed
-   * read or by a message from the HalCore, the audio input core will 
+   * read or by a message from the HalCore, the audio input core will
    * determine the responsible audio input manager and send a signal to the UI,
-   * which can be used to update device lists. Also, if the removed device was the 
+   * which can be used to update device lists. Also, if the removed device was the
    * currently used one, the core falls back to the backup device.
-   * 
-   * A similar procedure is performed on the addition of a device. In case we fell 
+   *
+   * A similar procedure is performed on the addition of a device. In case we fell
    * back due to a removed device, and the respective device is re-added to the system,
    * it will be automatically activated.
    *
    * The audio input core can also be used in a preview mode, where it starts a separate
-   * thread (represented by the AudioPreviewManager), which grabs frames from the audio 
+   * thread (represented by the AudioPreviewManager), which grabs frames from the audio
    * input core and passes them to the audio output core. This can be used for audio device
    * testing. Note that, contrary to the video preview, the audio preview does not support
    * direct switching between the preview and the streaming mode, which must tus be
@@ -97,7 +97,7 @@ namespace Ekiga
       /** The constructor
        * @param _videooutput_core reference ot the audio output core.
        */
-      AudioInputCore (boost::shared_ptr<AudioOutputCore> _audio_output_core);
+      AudioInputCore ();
 
       /** The destructor
       */
@@ -150,16 +150,16 @@ namespace Ekiga
       /** Set a specific device
        * This function sets the current audio input device. This function can
        * also be used while in a stream or in preview mode. In that case the old
-       * device is closed and the new device opened automatically. 
+       * device is closed and the new device opened automatically.
        * @param device the new device to be used.
        */
       void set_device(const AudioInputDevice & device);
 
       /** Inform the core of an added audioinout device
        * This function is called by the HalCore when an audio device is added.
-       * It determines responsible managers for that specific device and informs the 
-       * GUI about the device that was added (via device_added signal). 
-       * In case the added device was the desired device and we fell back, 
+       * It determines responsible managers for that specific device and informs the
+       * GUI about the device that was added (via device_added signal).
+       * In case the added device was the desired device and we fell back,
        * we will reactivate it. MUST be called from main thread.
        * @param source the device source (e.g. alsa).
        * @param device_name the name of the added device.
@@ -169,8 +169,8 @@ namespace Ekiga
 
       /** Inform the core of a removed audioinput device
        * This function is called by the HalCore when an audio device is removed.
-       * It determines responsible managers for that specific device and informs the 
-       * GUI about the device that was removed (via device_removed signal). 
+       * It determines responsible managers for that specific device and informs the
+       * GUI about the device that was removed (via device_removed signal).
        * In case the removed device was the current device we fall back to the
        * fallback device. MUST be called from main thread.
        * @param source the device source (e.g. alsa).
@@ -179,11 +179,11 @@ namespace Ekiga
        */
       void remove_device (const std::string & source, const std::string & device_name, HalManager* manager);
 
- 
+
       /*** AudioInput Stream and Preview Management ***/
 
       /** Start the preview mode
-       * Contrary to the video input core this can only be done if 
+       * Contrary to the video input core this can only be done if
        * the streaming mode NOT active (responsability of the UI).
        * @param channels the number of channels (1 or 2).
        * @param samplerate the samplerate.
@@ -204,12 +204,12 @@ namespace Ekiga
       void set_stream_buffer_size (unsigned buffer_size, unsigned num_buffers);
 
       /** Start the stream mode
-       * Contrary to the video input core this can only be done if 
+       * Contrary to the video input core this can only be done if
        * preview is NOT active (responsability of the UI)
        * @param channels the number of channels (1 or 2).
        * @param samplerate the samplerate.
        * @param bits_per_sample the number of bits per sample (e.g. 8, 16).
-       */ 
+       */
       void start_stream (unsigned channels, unsigned samplerate, unsigned bits_per_sample);
 
       /** Stop the stream mode
@@ -219,7 +219,7 @@ namespace Ekiga
 
       /** Get one audio buffer from the current manager.
        * This function will block until the buffer is completely filled.
-       * Requires the stream or the preview (when being called from the 
+       * Requires the stream or the preview (when being called from the
        * VideoPreviewManager) to be started.
        * In case the device returns an error reading the frame, get_frame_data()
        * falls back to the fallback device and reads the frame from there. Thus
@@ -274,8 +274,8 @@ namespace Ekiga
       boost::signal2<void, AudioInputDevice, bool> device_removed;
 
   private:
-      void on_device_opened (AudioInputDevice device,  
-                             AudioInputSettings settings, 
+      void on_device_opened (AudioInputDevice device,
+                             AudioInputSettings settings,
                              AudioInputManager *manager);
       void on_device_closed (AudioInputDevice device, AudioInputManager *manager);
       void on_device_error  (AudioInputDevice device, AudioInputErrorCodes error_code, AudioInputManager *manager);
@@ -291,28 +291,8 @@ namespace Ekiga
 
   private:
 
-      class AudioPreviewManager : public PThread
-      {
-        PCLASSINFO(AudioPreviewManager, PThread);
-
-      public:
-        AudioPreviewManager(AudioInputCore& _audio_input_core, AudioOutputCore& _audio_output_core);
-        ~AudioPreviewManager();
-        virtual void start(){};
-        virtual void stop(){};
-
-      protected:
-        void Main (void);
-        bool stop_thread;
-        char* frame;
-        PMutex quit_mutex;     /* To exit */
-        PSyncPoint thread_sync_point;
-        AudioInputCore& audio_input_core;
-        AudioOutputCore& audio_output_core;
-      };
-
       typedef struct DeviceConfig {
-        bool active;
+	bool active;
 
         unsigned channels;
         unsigned samplerate;
@@ -321,8 +301,6 @@ namespace Ekiga
         unsigned buffer_size;
         unsigned num_buffers;
       } DeviceConfig;
-
-  private:
 
       std::set<AudioInputManager *> managers;
 
@@ -338,7 +316,6 @@ namespace Ekiga
       PMutex core_mutex;
       PMutex volume_mutex;
 
-      AudioPreviewManager preview_manager;
       AudioInputCoreConfBridge* audioinput_core_conf_bridge;
 
       float average_level;

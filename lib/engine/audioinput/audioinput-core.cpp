@@ -1,4 +1,4 @@
-// 
+//
 /*
  * Ekiga -- A VoIP and Video-Conferencing application
  * Copyright (C) 2000-2009 Damien Sandras <dsandras@seconix.com>
@@ -42,74 +42,7 @@
 
 using namespace Ekiga;
 
-AudioInputCore::AudioPreviewManager::AudioPreviewManager (AudioInputCore& _audio_input_core, AudioOutputCore& _audio_output_core)
-: PThread (1000, NoAutoDeleteThread, HighestPriority, "PreviewManager"),
-  audio_input_core (_audio_input_core),
-  audio_output_core (_audio_output_core)
-{
-/*  frame = NULL;
-  // Since windows does not like to restart a thread that 
-  // was never started, we do so here
-  this->Resume ();
-  PWaitAndSignal m(quit_mutex);*/
-}
-
-AudioInputCore::AudioPreviewManager::~AudioPreviewManager ()
-{
-/*  if (!stop_thread)
-    stop();*/
-}
-/*
-void AudioInputCore::AudioPreviewManager::start (unsigned width, unsigned height)
-{
-  PTRACE(0, "PreviewManager\tStarting Preview");
-  stop_thread = false;
-  frame = (char*) malloc (unsigned (width * height * 3 / 2));
-
-  display_core.start();
-  this->Restart ();
-  thread_sync_point.Wait ();
-}
-
-void AudioInputCore::AudioPreviewManager::stop ()
-{
-  PTRACE(0, "PreviewManager\tStopping Preview");
-  stop_thread = true;
-
-  // Wait for the Main () method to be terminated 
-  PWaitAndSignal m(quit_mutex);
-
-  if (frame) {
-    free (frame);
-    frame = NULL;
-  }  
-  display_core.stop();
-}
-*/
-void AudioInputCore::AudioPreviewManager::Main ()
-{
-/*  PWaitAndSignal m(quit_mutex);
-  thread_sync_point.Signal ();
-
-  if (!frame)
-    return;
-    
-  unsigned width = 176;
-  unsigned height = 144;;
-  while (!stop_thread) {
-
-    audioinput_core.get_frame_data(width, height, frame);
-    display_core.set_frame_data(width, height, frame, true, 1);
-
-    // We have to sleep some time outside the mutex lock
-    // to give other threads time to get the mutex
-    // It will be taken into account by PAdaptiveDelay
-    Current()->Sleep (5);
-  }*/
-}
-
-AudioInputCore::AudioInputCore (boost::shared_ptr<AudioOutputCore> _audio_output_core):
-  preview_manager(*this, *_audio_output_core.get ())
+AudioInputCore::AudioInputCore ()
 {
   PWaitAndSignal m_var(core_mutex);
   PWaitAndSignal m_vol(volume_mutex);
@@ -281,7 +214,6 @@ void AudioInputCore::start_preview (unsigned channels, unsigned samplerate, unsi
 
   if (current_manager)
     current_manager->set_buffer_size(preview_config.buffer_size, preview_config.num_buffers);
-//    preview_manager.start(preview_config.channels,preview_config.samplerate);
 
   average_level = 0;
 }
@@ -297,7 +229,6 @@ void AudioInputCore::stop_preview ()
     PTRACE(1, "AudioInputCore\tTrying to stop preview in wrong state");
   }
 
-//     preview_manager.stop();
   internal_close();
   internal_set_manager(desired_device);
   preview_config.active = false;
@@ -386,7 +317,7 @@ void AudioInputCore::get_frame_data (char *data,
     }
   }
 
-  if (calculate_average) 
+  if (calculate_average)
     calculate_average_level((const short*) data, bytes_read);
 }
 
@@ -398,7 +329,7 @@ void AudioInputCore::set_volume (unsigned volume)
 }
 
 void AudioInputCore::on_device_opened (AudioInputDevice device,
-                                       AudioInputSettings settings, 
+                                       AudioInputSettings settings,
                                        AudioInputManager *manager)
 {
   device_opened (*manager, device, settings);
@@ -418,9 +349,6 @@ void AudioInputCore::internal_set_device(const AudioInputDevice & device)
 {
   PTRACE(4, "AudioInputCore\tSetting device: " << device);
 
-  if (preview_config.active)
-    preview_manager.stop();
-
   if (preview_config.active || stream_config.active)
     internal_close();
 
@@ -433,7 +361,6 @@ void AudioInputCore::internal_set_device(const AudioInputDevice & device)
       if (current_manager)
         current_manager->set_buffer_size (preview_config.buffer_size, preview_config.num_buffers);
     }
-//    preview_manager.start();
   }
 
   if (stream_config.active) {
@@ -503,7 +430,7 @@ void AudioInputCore::calculate_average_level (const short *buffer, unsigned size
 {
   int sum = 0;
   unsigned csize = 0;
-  
+
   while (csize < (size>>1) ) {
 
     if (*buffer < 0)
@@ -513,6 +440,6 @@ void AudioInputCore::calculate_average_level (const short *buffer, unsigned size
 
     csize++;
   }
-	  
+
   average_level = log10 (9.0*sum/size/32767+1)*1.0;
 }
