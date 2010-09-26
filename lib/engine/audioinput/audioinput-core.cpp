@@ -108,9 +108,8 @@ void AudioInputCore::AudioPreviewManager::Main ()
   }*/
 }
 
-AudioInputCore::AudioInputCore (AudioOutputCore& _audio_output_core)
-:  preview_manager(*this, _audio_output_core)
-
+AudioInputCore::AudioInputCore (boost::shared_ptr<AudioOutputCore> _audio_output_core):
+  preview_manager(*this, *_audio_output_core.get ())
 {
   PWaitAndSignal m_var(core_mutex);
   PWaitAndSignal m_vol(volume_mutex);

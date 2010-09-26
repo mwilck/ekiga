@@ -97,7 +97,7 @@ namespace Ekiga
       /** The constructor
        * @param _videooutput_core reference ot the audio output core.
        */
-      AudioInputCore (AudioOutputCore& _audio_output_core);
+      AudioInputCore (boost::shared_ptr<AudioOutputCore> _audio_output_core);
 
       /** The destructor
       */
