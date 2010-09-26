@@ -155,6 +155,14 @@ namespace Ekiga
        */
       void set_device(const AudioInputDevice & device);
 
+      /** Set a specific device
+       * This functions sets the current audio input device.
+       * It can also be used while in a stream or in preview mode,
+       * in such a case the old device gets closed and the new device is opened.
+       * @param device_string the new device to be used, as a string
+       */
+      void set_device (const std::string& device_string);
+
       /** Inform the core of an added audioinout device
        * This function is called by the HalCore when an audio device is added.
        * It determines responsible managers for that specific device and informs the

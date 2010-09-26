@@ -60,37 +60,10 @@ void AudioInputCoreConfBridge::on_property_changed (std::string key, GmConfEntry
 
   if (key == AUDIO_DEVICES_KEY "input_device") {
 
-    std::vector <AudioInputDevice> devices;
-    bool found = false;
     gchar* value = gm_conf_entry_get_string (entry);
-    audioinput_core.get_devices (devices);
     if (value != NULL)
-      for (std::vector<AudioInputDevice>::iterator it = devices.begin ();
-           it < devices.end ();
-           it++)
-        if ((*it).GetString () == value) {
-          found = true;
-          break;
-        }
-
-    AudioInputDevice device;
-    if (found)
-      device.SetFromString (value);
-    else
-      device.SetFromString (devices.begin ()->GetString ());
+      audioinput_core.set_device (value);
     g_free (value);
-
-    if ( (device.type == "" )   ||
-         (device.source == "")  ||
-         (device.name == "" ) ) {
-      PTRACE(1, "AudioInputCore\tTried to set malformed device");
-      device.type = AUDIO_INPUT_FALLBACK_DEVICE_TYPE;
-      device.source = AUDIO_INPUT_FALLBACK_DEVICE_SOURCE;
-      device.name = AUDIO_INPUT_FALLBACK_DEVICE_NAME;
-    }
-
-    audioinput_core.set_device (device);
-    PTRACE(4, "AudioInputCoreConfBridge\tSet device to " << device.source << "/" << device.name);
   }
 }
 

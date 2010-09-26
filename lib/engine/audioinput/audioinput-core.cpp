@@ -146,6 +146,39 @@ void AudioInputCore::set_device(const AudioInputDevice & device)
   desired_device  = device;
 }
 
+void
+AudioInputCore::set_device (const std::string& device_string)
+{
+  std::vector<AudioInputDevice> devices;
+  AudioInputDevice device;
+  bool found = false;
+
+  get_devices (devices);
+  for (std::vector<AudioInputDevice>::iterator it = devices.begin ();
+       it < devices.end ();
+       it++)
+    if ((*it).GetString () == device_string) {
+      found = true;
+      break;
+    }
+
+  if (found)
+    device.SetFromString (device_string);
+  else if (!devices.empty ())
+    device.SetFromString (devices.begin ()->GetString ());
+
+  if (device.type == ""
+      || device.source == ""
+      || device.name == "") {
+    PTRACE(1, "AudioInputCore\tTried to set malformed device");
+    device.type = AUDIO_INPUT_FALLBACK_DEVICE_TYPE;
+    device.source = AUDIO_INPUT_FALLBACK_DEVICE_SOURCE;
+    device.name = AUDIO_INPUT_FALLBACK_DEVICE_NAME;
+  }
+
+  set_device (device);
+  PTRACE(4, "AudioInputCore\tSet device to " << device.source << "/" << device.name);
+}
 
 void AudioInputCore::add_device (const std::string & source, const std::string & device_name, HalManager* /*manager*/)
 {
