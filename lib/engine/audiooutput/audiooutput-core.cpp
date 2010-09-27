@@ -111,7 +111,7 @@ void AudioOutputCore::visit_managers (boost::function1<bool, AudioOutputManager 
       go_on = visitor (*(*iter));
 }
 
-void AudioOutputCore::add_event (const std::string & event_name, const std::string & file_name, AudioOutputPS ps,  bool enabled)
+void AudioOutputCore::map_event (const std::string & event_name, const std::string & file_name, AudioOutputPS ps,  bool enabled)
 {
   audio_event_scheduler.set_file_name(event_name, file_name, ps, enabled);
 }

@@ -148,7 +148,7 @@ void AudioOutputCoreConfBridge::on_property_changed (std::string key, GmConfEntr
     file_name = c_file_name;
     g_free (c_file_name);
     enabled = gm_conf_get_bool (SOUND_EVENTS_KEY "enable_busy_tone_sound");
-    audiooutput_core.add_event (name, file_name, primary, enabled);
+    audiooutput_core.map_event (name, file_name, primary, enabled);
   }
 
   if ( (key == SOUND_EVENTS_KEY "incoming_call_sound") ||
@@ -165,7 +165,7 @@ void AudioOutputCoreConfBridge::on_property_changed (std::string key, GmConfEntr
     file_name = c_file_name;
     g_free (c_file_name);
     enabled = gm_conf_get_bool (SOUND_EVENTS_KEY "enable_incoming_call_sound");
-    audiooutput_core.add_event (name, file_name, secondary, enabled);
+    audiooutput_core.map_event (name, file_name, secondary, enabled);
   }
 
   if ( (key == SOUND_EVENTS_KEY "new_message_sound") ||
@@ -182,7 +182,7 @@ void AudioOutputCoreConfBridge::on_property_changed (std::string key, GmConfEntr
     file_name = c_file_name;
     g_free (c_file_name);
     enabled = gm_conf_get_bool (SOUND_EVENTS_KEY "enable_new_message_sound");
-    audiooutput_core.add_event (name, file_name, secondary, enabled);
+    audiooutput_core.map_event (name, file_name, secondary, enabled);
 
   }
 
@@ -200,7 +200,7 @@ void AudioOutputCoreConfBridge::on_property_changed (std::string key, GmConfEntr
     file_name = c_file_name;
     g_free (c_file_name);
     enabled = gm_conf_get_bool (SOUND_EVENTS_KEY "enable_new_voicemail_sound");
-    audiooutput_core.add_event (name, file_name, secondary, enabled);
+    audiooutput_core.map_event (name, file_name, secondary, enabled);
   }
 
   if ( (key == SOUND_EVENTS_KEY "ring_tone_sound") ||
@@ -217,7 +217,7 @@ void AudioOutputCoreConfBridge::on_property_changed (std::string key, GmConfEntr
     file_name = c_file_name;
     g_free (c_file_name);
     enabled = gm_conf_get_bool (SOUND_EVENTS_KEY "enable_ring_tone_sound");
-    audiooutput_core.add_event (name, file_name, primary, enabled);
+    audiooutput_core.map_event (name, file_name, primary, enabled);
   }
 }
 

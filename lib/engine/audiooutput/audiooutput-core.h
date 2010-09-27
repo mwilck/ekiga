@@ -171,14 +171,14 @@ namespace Ekiga
 
       /*** Event Management ***/
 
-      /** Add a mapping between event and file name to the event list
+      /** Add or update a mapping between event and file name to the event list
        * An event shall refer to a specific sound file. This mapping is set here.
        * @param event_name the name of the event.
        * @param file_name the name of the file.
        * @param ps whether the event shall be played on the primary or secondary device preferrably.
        * @param enabled if the event is enabled.
        */
-      void add_event (const std::string & event_name, const std::string & file_name, AudioOutputPS ps, bool enabled);
+      void map_event (const std::string & event_name, const std::string & file_name, AudioOutputPS ps, bool enabled);
 
       /** Play a sound specified by a file name
        * Play a sound file once.
