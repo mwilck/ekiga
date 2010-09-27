@@ -4336,14 +4336,6 @@ ekiga_main_window_update_stats (EkigaMainWindow *mw,
 }
 
 
-GdkPixbuf *
-ekiga_main_window_get_current_picture (EkigaMainWindow *mw)
-{
-  g_return_val_if_fail (EKIGA_IS_MAIN_WINDOW (mw), NULL);
-
-  return gtk_image_get_pixbuf (GTK_IMAGE (mw->priv->main_video_image));
-}
-
 #ifdef WIN32
 // the linker must not find main
 #define main(c,v,e) ekigas_real_main(c,v,e)

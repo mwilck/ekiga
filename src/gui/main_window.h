@@ -354,13 +354,6 @@ void ekiga_main_window_update_stats (EkigaMainWindow *main_window,
 				     unsigned int tr_height);
 
 
-/* DESCRIPTION   :  /
- * BEHAVIOR      : Returns the currently displayed picture as a pixbuf.
- * PRE           : The main window GMObject.
- */
-GdkPixbuf *ekiga_main_window_get_current_picture (EkigaMainWindow *main_window);
-
-
 /* DESCRIPTION  :  /
  * BEHAVIOR     :  Update the main window sensitivity following the opened
  *                 and closed audio and video channels. It also updates
