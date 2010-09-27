@@ -536,9 +536,6 @@ show_offline_contacts_changed_nt (G_GNUC_UNUSED gpointer id,
 {
   RosterViewGtk *self = NULL;
   GtkTreeModel *model = NULL;
-  GtkTreeIter heap_iter;
-  GtkTreeIter iter;
-  gboolean show_offline_contacts = false;
 
   g_return_if_fail (data != NULL);
 
@@ -546,31 +543,11 @@ show_offline_contacts_changed_nt (G_GNUC_UNUSED gpointer id,
 
   if (gm_conf_entry_get_type (entry) == GM_CONF_BOOL) {
 
-    show_offline_contacts = gm_conf_entry_get_bool (entry);
-    if (show_offline_contacts != self->priv->show_offline_contacts) {
+    self->priv->show_offline_contacts = gm_conf_entry_get_bool (entry);
 
-      self->priv->show_offline_contacts = show_offline_contacts;
-
-      /* beware: model is filtered here */
-      model = gtk_tree_view_get_model (self->priv->tree_view);
-      gtk_tree_model_filter_refilter (GTK_TREE_MODEL_FILTER (model));
-
-      /* beware: model is unfiltered here */
-      model = GTK_TREE_MODEL (self->priv->store);
-      if (gtk_tree_model_get_iter_first (model, &heap_iter)) {
-
-	do {
-
-	  if (gtk_tree_model_iter_nth_child (model, &iter, &heap_iter, 0)) {
-
-	    do {
-
-	      update_offline_count (self, &iter);
-	    } while (gtk_tree_model_iter_next (model, &iter));
-	  }
-	} while (gtk_tree_model_iter_next (model, &heap_iter));
-      }
-    }
+    /* beware: model is filtered here */
+    model = gtk_tree_view_get_model (self->priv->tree_view);
+    gtk_tree_model_filter_refilter (GTK_TREE_MODEL_FILTER (model));
   }
 }
 
@@ -728,20 +705,18 @@ group_hide_show_offline (RosterViewGtk* self,
 			 GtkTreeModel* model,
 			 GtkTreeIter* iter)
 {
-  gboolean result;
-  GtkTreeIter child_iter;
+  gboolean result = FALSE;
 
   if (self->priv->show_offline_contacts)
     result = TRUE;
   else {
 
+    GtkTreeIter child_iter;
     if (gtk_tree_model_iter_nth_child (model, &child_iter, iter, 0)) {
 
       do {
 
-	gtk_tree_model_get (model, &child_iter,
-			    COLUMN_OFFLINE, &result,
-			    -1);
+	result = presentity_hide_show_offline (self, model, &child_iter);
       } while (!result && gtk_tree_model_iter_next (model, &child_iter));
     }
   }
@@ -750,13 +725,25 @@ group_hide_show_offline (RosterViewGtk* self,
 }
 
 static gboolean
-heap_hide_show_offline (G_GNUC_UNUSED RosterViewGtk* self,
+heap_hide_show_offline (RosterViewGtk* self,
 			GtkTreeModel* model,
 			GtkTreeIter* iter)
 {
-  gboolean result;
+  gboolean result = false;
 
-  result = gtk_tree_model_iter_has_child (model, iter);
+  if (self->priv->show_offline_contacts)
+    result = TRUE;
+  else {
+
+    GtkTreeIter child_iter;
+    if (gtk_tree_model_iter_nth_child (model, &child_iter, iter, 0)) {
+
+      do {
+
+	result = group_hide_show_offline (self, model, &child_iter);
+      } while (!result && gtk_tree_model_iter_next (model, &child_iter));
+    }
+  }
 
   return result;
 }
