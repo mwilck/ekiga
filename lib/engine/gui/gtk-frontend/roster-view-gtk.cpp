@@ -548,6 +548,22 @@ show_offline_contacts_changed_nt (G_GNUC_UNUSED gpointer id,
     /* beware: model is filtered here */
     model = gtk_tree_view_get_model (self->priv->tree_view);
     gtk_tree_model_filter_refilter (GTK_TREE_MODEL_FILTER (model));
+
+    /* there's an interesting problem there : hiding makes the rows
+     * unexpanded... so they don't come back as they should! */
+    GtkTreeIter heaps;
+    GtkTreePath* path = NULL;
+    if (gtk_tree_model_get_iter_first (model, &heaps)) {
+
+      do {
+
+	path = gtk_tree_model_get_path (model, &heaps);
+	gtk_tree_view_expand_row (self->priv->tree_view, path, FALSE);
+	gtk_tree_path_free (path);
+
+	roster_view_gtk_update_groups (self, &heaps);
+      } while (gtk_tree_model_iter_next (model, &heaps));
+    }
   }
 }
 
