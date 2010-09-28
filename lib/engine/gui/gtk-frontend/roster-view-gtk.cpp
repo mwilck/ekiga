@@ -617,6 +617,9 @@ show_offline_contacts_changed_nt (G_GNUC_UNUSED gpointer id,
     model = gtk_tree_view_get_model (self->priv->tree_view);
     gtk_tree_model_filter_refilter (GTK_TREE_MODEL_FILTER (model));
 
+    /* beware: we want the unfiltered model now */
+    model = GTK_TREE_MODEL (self->priv->store);
+
     /* there's an interesting problem there : hiding makes the rows
      * unexpanded... so they don't come back as they should! */
     GtkTreeIter heaps;
@@ -1054,6 +1057,9 @@ on_presentity_added (Ekiga::ClusterPtr /*cluster*/,
   }
 
   roster_view_gtk_update_groups (self, &heap_iter);
+
+  GtkTreeModel* model = gtk_tree_view_get_model (self->priv->tree_view);
+  gtk_tree_model_filter_refilter (GTK_TREE_MODEL_FILTER (model));
 }
 
 
@@ -1102,6 +1108,9 @@ on_presentity_updated (Ekiga::ClusterPtr cluster,
   }
 
   roster_view_gtk_update_groups (self, &heap_iter);
+
+  model = gtk_tree_view_get_model (self->priv->tree_view);
+  gtk_tree_model_filter_refilter (GTK_TREE_MODEL_FILTER (model));
 }
 
 
