@@ -117,6 +117,11 @@ enum {
 };
 
 /*
+ * Debug helpers
+ */
+//static void dump_model_content (GtkTreeModel* model);
+
+/*
  * Helpers
  */
 
@@ -377,6 +382,69 @@ static void roster_view_gtk_update_groups (RosterViewGtk *view,
                                            GtkTreeIter *heap_iter);
 
 
+/* Implementation of the debuggers */
+
+// static void
+// dump_model_content (GtkTreeModel* model)
+// {
+//   g_return_if_fail (GTK_IS_TREE_MODEL (model));
+
+//   GtkTreeIter heaps;
+//   gchar* name = NULL;
+
+//   if (gtk_tree_model_get_iter_first (model, &heaps)) {
+
+//     do {
+
+//       gtk_tree_model_get (model, &heaps,
+// 			  COLUMN_NAME, &name,
+// 			  -1);
+//       if (name)
+// 	g_print ("%s\n", name);
+//       else
+// 	g_print ("(NULL name)\n");
+//       g_free (name);
+
+//       GtkTreeIter groups;
+//       if (gtk_tree_model_iter_nth_child (model, &groups, &heaps, 0)) {
+
+// 	do {
+
+// 	  gtk_tree_model_get (model, &groups,
+// 			      COLUMN_NAME, &name,
+// 			      -1);
+// 	  if (name)
+// 	    g_print ("\t%s\n", name);
+// 	  else
+// 	    g_print ("\t(NULL name)\n");
+// 	  g_free (name);
+
+// 	  GtkTreeIter presentities;
+// 	  if (gtk_tree_model_iter_nth_child (model, &presentities, &groups, 0)) {
+
+// 	    do {
+
+// 	      gtk_tree_model_get (model, &presentities,
+// 				  COLUMN_NAME, &name,
+// 				  -1);
+// 	      if (name)
+// 		g_print ("\t\t%s\n", name);
+// 	      else
+// 		g_print ("\t\t(NULL name)\n");
+// 	      g_free (name);
+// 	    } while (gtk_tree_model_iter_next (model, &presentities));
+// 	  } else
+// 	    g_print ("\t\t(empty group)");
+
+// 	} while (gtk_tree_model_iter_next (model, &groups));
+//       } else
+// 	g_print ("\t(empty heap)\n");
+
+//     } while (gtk_tree_model_iter_next (model, &heaps));
+
+//   } else
+//     g_print ("(empty model)\n");
+// }
 
 /* Implementation of the helpers */
 
