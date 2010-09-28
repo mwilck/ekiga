@@ -1612,3 +1612,74 @@ roster_view_gtk_new (Ekiga::PresenceCore &core)
 
   return (GtkWidget *) self;
 }
+
+void
+roster_view_gtk_get_selected (RosterViewGtk* self,
+			      Ekiga::Heap** heap,
+			      gchar** group,
+			      Ekiga::Presentity** presentity)
+{
+  g_return_if_fail (IS_ROSTER_VIEW_GTK (self)
+		    && heap != NULL
+		    && group != NULL
+		    && presentity != NULL);
+
+  GtkTreeSelection* selection = NULL;
+  GtkTreeModel* model = NULL;
+  GtkTreeIter iter;
+
+  selection = gtk_tree_view_get_selection (self->priv->tree_view);
+
+  if (gtk_tree_selection_get_selected (selection, &model, &iter)) {
+
+    gint column_type;
+    gchar* group_ = NULL;
+    Ekiga::Heap* heap_ = NULL;
+    Ekiga::Presentity *presentity_ = NULL;
+    gtk_tree_model_get (model, &iter,
+			COLUMN_NAME, &group_,
+			COLUMN_TYPE, &column_type,
+			COLUMN_HEAP, &heap_,
+			COLUMN_PRESENTITY, &presentity_,
+			-1);
+
+    switch (column_type) {
+
+    case TYPE_PRESENTITY: {
+
+      *heap = NULL;
+      *group = NULL;
+      *presentity = presentity_;
+      break;
+    }
+    case TYPE_HEAP: {
+
+      *heap = heap_;
+      *group = NULL;
+      *presentity = NULL;
+      break;
+    }
+
+    case TYPE_GROUP: {
+
+      *heap = heap_;
+      *group = g_strdup (group_);
+      *presentity = NULL;
+      break;
+    }
+    default:
+
+      *heap = NULL;
+      *group = NULL;
+      *presentity = NULL;
+      break;
+    }
+
+    g_free (group_);
+  } else {
+
+    *heap = NULL;
+    *group = NULL;
+    *presentity = NULL;
+  }
+}
