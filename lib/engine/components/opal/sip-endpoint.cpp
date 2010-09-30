@@ -274,11 +274,13 @@ Opal::Sip::EndPoint::menu_builder_add_actions (const std::string& fullname,
 void
 Opal::Sip::EndPoint::fetch (const std::string uri)
 {
+  /* this is for the new opal presence api */
   PSafePtr<OpalPresentity> presentity = manager.AddPresentity (uri);
-
   presentity->SetPresenceChangeNotifier (PCREATE_PresenceChangeNotifier(OnPresenceChange));
-
   presentity->Open ();
+
+  /* this is for the old opal presence api */
+  Subscribe (SIPSubscribe::Presence, 300, uri);
 
   Subscribe (SIPSubscribe::Dialog, 300, uri);
 }
@@ -287,7 +289,11 @@ Opal::Sip::EndPoint::fetch (const std::string uri)
 void
 Opal::Sip::EndPoint::unfetch (const std::string uri)
 {
+  /* this is for the new opal presence api */
   manager.RemovePresentity (uri);
+
+  /* this is for the old opal presence api */
+  Subscribe (SIPSubscribe::Presence, 0, uri);
 
   Subscribe (SIPSubscribe::Dialog, 0, uri);
 }
@@ -1005,10 +1011,21 @@ Opal::Sip::EndPoint::GetRegisteredPartyName (const SIPURL & aor,
   return GetDefaultRegisteredPartyName (transport);
 }
 
+void
+Opal::Sip::EndPoint::OnPresenceInfoReceived (const SIPPresenceInfo& info)
+{
+  treat_presence_info (info);
+}
 
 void
 Opal::Sip::EndPoint::OnPresenceChange (OpalPresentity& /*presentity*/,
 				       const OpalPresenceInfo& info)
+{
+  treat_presence_info (info);
+}
+
+void
+Opal::Sip::EndPoint::treat_presence_info (const OpalPresenceInfo& info)
 {
   std::string presence = "unknown";
   std::string status;
@@ -1085,10 +1102,6 @@ Opal::Sip::EndPoint::OnPresenceChange (OpalPresentity& /*presentity*/,
   std::string _uri = sip_uri.AsString ();
   std::string old_presence = presence_infos[_uri].presence;
   std::string old_status = presence_infos[_uri].status;
-
-  std::cout << "I got presence for " << _uri
-	    << " and state is " << info.m_state
-	    << std::endl;
 
   // If first notification, and no information, then we are offline
   if (presence == "unknown" && old_presence.empty ())

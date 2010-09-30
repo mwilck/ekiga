@@ -179,7 +179,14 @@ namespace Opal {
                                  unsigned options,
                                  OpalConnection::StringOptions * stroptions);
 
+      /* new opal presence api -- doesn't work yet with ekiga.net */
       PDECLARE_PresenceChangeNotifier (EndPoint, OnPresenceChange);
+
+      /* old opal presence api -- the one which works with ekiga.net */
+      void OnPresenceInfoReceived (const SIPPresenceInfo& info);
+
+      /* common function to treat presence information coming from both opal presence api */
+      void treat_presence_info (const OpalPresenceInfo& info);
 
       void OnDialogInfoReceived (const SIPDialogNotification & info);
 
