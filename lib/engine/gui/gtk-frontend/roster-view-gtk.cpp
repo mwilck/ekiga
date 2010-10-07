@@ -1330,14 +1330,24 @@ roster_view_gtk_dispose (GObject *obj)
 
   if (view->priv->tree_view) {
 
-    g_signal_handlers_disconnect_matched (gtk_tree_view_get_selection (view->priv->tree_view),
+    GtkTreeSelection* selection = NULL;
+
+    selection = gtk_tree_view_get_selection (view->priv->tree_view);
+
+    g_signal_handlers_disconnect_matched (selection,
 					  (GSignalMatchType) G_SIGNAL_MATCH_DATA,
 					  0, /* signal_id */
 					  (GQuark) 0, /* detail */
 					  NULL,	/* closure */
 					  NULL,	/* func */
 					  view); /* data */
-    //   gtk_tree_store_clear (view->priv->store);
+    g_signal_handlers_disconnect_matched (view->priv->tree_view,
+					  (GSignalMatchType) G_SIGNAL_MATCH_DATA,
+					  0, /* signal_id */
+					  (GQuark) 0, /* detail */
+					  NULL,	/* closure */
+					  NULL,	/* func */
+					  view); /* data */
 
     g_slist_foreach (view->priv->folded_groups, (GFunc) g_free, NULL);
     g_slist_free (view->priv->folded_groups);
