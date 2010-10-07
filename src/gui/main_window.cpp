@@ -129,6 +129,13 @@ struct _EkigaMainWindowPrivate
   GtkWidget *main_notebook;
   GtkWidget *hpaned;
 
+  /* notebook pages
+   *  (we store the numbers so we know where we are)
+   */
+  gint roster_view_page_number;
+  gint dialpad_page_number;
+  gint call_history_page_number;
+
   /* URI Toolbar */
   GtkWidget *main_toolbar;
   GtkWidget *entry;
@@ -2871,7 +2878,7 @@ ekiga_main_window_set_panel_section (EkigaMainWindow *mw,
   g_return_if_fail (EKIGA_MAIN_WINDOW (mw));
   
   gtk_notebook_set_current_page (GTK_NOTEBOOK (mw->priv->main_notebook), section);
-  
+
   menu = gtk_menu_get_widget (mw->priv->main_menu, "dialpad");
   gtk_radio_menu_select_with_widget (GTK_WIDGET (menu), section);
 }
@@ -3432,8 +3439,7 @@ ekiga_main_window_init_contact_list (EkigaMainWindow *mw)
 
   label = gtk_label_new (_("Contacts"));
   roster_view = roster_view_gtk_new (*presence_core);
-  gtk_notebook_append_page (GTK_NOTEBOOK (mw->priv->main_notebook),
-			      roster_view, label);
+  mw->priv->roster_view_page_number = gtk_notebook_append_page (GTK_NOTEBOOK (mw->priv->main_notebook), roster_view, label);
   g_signal_connect (G_OBJECT (roster_view), "presentity-selected",
 		    G_CALLBACK (on_presentity_selected), mw);
 }
@@ -3454,8 +3460,7 @@ ekiga_main_window_init_dialpad (EkigaMainWindow *mw)
   gtk_container_add (GTK_CONTAINER (alignment), dialpad);
 
   label = gtk_label_new (_("Dialpad"));
-  gtk_notebook_append_page (GTK_NOTEBOOK (mw->priv->main_notebook),
-			    alignment, label);
+  mw->priv->dialpad_page_number = gtk_notebook_append_page (GTK_NOTEBOOK (mw->priv->main_notebook), alignment, label);
 
   g_signal_connect (G_OBJECT (mw), "key-press-event",
                     G_CALLBACK (key_press_event_cb), mw);
@@ -3472,9 +3477,7 @@ ekiga_main_window_init_history (EkigaMainWindow *mw)
   GtkWidget* call_history_view = call_history_view_gtk_new (history_book);
 
   label = gtk_label_new (_("Call history"));
-  gtk_notebook_append_page (GTK_NOTEBOOK (mw->priv->main_notebook),
-			    call_history_view,
-			    label);
+  mw->priv->call_history_page_number = gtk_notebook_append_page (GTK_NOTEBOOK (mw->priv->main_notebook), call_history_view, label);
 }
 
 
