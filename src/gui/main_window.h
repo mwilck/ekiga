@@ -207,16 +207,6 @@ void gm_main_window_get_video_sliders_values (GtkWidget *main_window,
 
 
 /* DESCRIPTION  :  /
- * BEHAVIOR     :  Select the correct panel section in the menus
- * 		   and in the main window.
- * PRE          :  The main window GMObject and a valid section.
- */
-void ekiga_main_window_set_panel_section (EkigaMainWindow *main_window,
-                                          int section);
-
-
-
-/* DESCRIPTION  :  /
  * BEHAVIOR     :  Updates the information displayed in the info label
  * 		   of the main window.
  * PRE          :  The main window GMObject, 

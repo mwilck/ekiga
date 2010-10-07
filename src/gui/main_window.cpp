@@ -1882,12 +1882,17 @@ panel_section_changed_nt (G_GNUC_UNUSED gpointer id,
 {
   gint section = 0;
 
-  g_return_if_fail (data != NULL);
-  
+  g_return_if_fail (EKIGA_IS_MAIN_WINDOW (data));
+
   if (gm_conf_entry_get_type (entry) == GM_CONF_INT) {
 
+    EkigaMainWindow* mw = EKIGA_MAIN_WINDOW (data);
+    GtkWidget* menu = NULL;
     section = gm_conf_entry_get_int (entry);
-    ekiga_main_window_set_panel_section (EKIGA_MAIN_WINDOW (data), section);
+    gtk_notebook_set_current_page (GTK_NOTEBOOK (mw->priv->main_notebook), section);
+
+    menu = gtk_menu_get_widget (mw->priv->main_menu, "dialpad");
+    gtk_radio_menu_select_with_widget (menu, section);
   }
 }
 
@@ -2866,20 +2871,6 @@ ekiga_main_window_incoming_call_notify (EkigaMainWindow *mw,
 }
 #endif
 
-void 
-ekiga_main_window_set_panel_section (EkigaMainWindow *mw,
-                                     int section)
-{
-  GtkWidget *menu = NULL;
-  
-  g_return_if_fail (EKIGA_MAIN_WINDOW (mw));
-  
-  gtk_notebook_set_current_page (GTK_NOTEBOOK (mw->priv->main_notebook), section);
-
-  menu = gtk_menu_get_widget (mw->priv->main_menu, "dialpad");
-  gtk_radio_menu_select_with_widget (GTK_WIDGET (menu), section);
-}
-
 
 void 
 ekiga_main_window_set_call_info (EkigaMainWindow *mw,
@@ -3748,7 +3739,7 @@ ekiga_main_window_init_gui (EkigaMainWindow *mw)
   gtk_widget_show_all (gtk_paned_get_child1 (GTK_PANED (mw->priv->hpaned)));
   if (gm_conf_get_bool (USER_INTERFACE_KEY "main_window/show_call_panel"))
     gtk_widget_show_all (gtk_paned_get_child2 (GTK_PANED (mw->priv->hpaned)));
-  ekiga_main_window_set_panel_section (mw, section);
+  gtk_notebook_set_current_page (GTK_NOTEBOOK (mw->priv->main_notebook), section);
 }
 
 static void
