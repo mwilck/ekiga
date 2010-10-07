@@ -136,6 +136,7 @@ struct _EkigaMainWindowPrivate
   gint dialpad_page_number;
   gint call_history_page_number;
   GtkWidget* roster_view;
+  GtkWidget* call_history_view;
 
   /* URI Toolbar */
   GtkWidget *main_toolbar;
@@ -1854,6 +1855,28 @@ on_selected_item_removed (EkigaMainWindow* mw)
 }
 
 static void
+on_selected_history_contact_updated (History::Contact* contact,
+				     EkigaMainWindow* mw)
+{
+  MenuBuilderGtk builder;
+  GtkWidget *menu = gtk_menu_get_widget (mw->priv->main_menu, "contact");
+
+  gtk_widget_set_sensitive (menu, TRUE);  
+
+  if (contact->populate_menu (builder)) {
+
+    gtk_menu_item_set_submenu (GTK_MENU_ITEM (menu), builder.menu);
+    gtk_widget_show_all (builder.menu);
+  }
+  else {
+
+    gtk_widget_set_sensitive (menu, FALSE);
+    g_object_ref_sink (builder.menu);
+    g_object_unref (builder.menu);
+  }
+}
+
+static void
 on_selected_presentity_updated (Ekiga::Presentity* presentity,
 				EkigaMainWindow* mw)
 {
@@ -1872,6 +1895,41 @@ on_selected_presentity_updated (Ekiga::Presentity* presentity,
     gtk_widget_set_sensitive (menu, FALSE);
     g_object_ref_sink (builder.menu);
     g_object_unref (builder.menu);
+  }
+}
+
+static void
+on_history_contact_selected (G_GNUC_UNUSED GtkWidget* view,
+			     History::Contact* contact,
+			     gpointer self)
+{
+  EkigaMainWindow *mw = EKIGA_MAIN_WINDOW (self);
+  GtkWidget *menu = gtk_menu_get_widget (mw->priv->main_menu, "contact");
+
+  mw->priv->selected_item_updated_connection.disconnect ();
+  mw->priv->selected_item_removed_connection.disconnect ();
+
+  if (contact != NULL) {
+
+    MenuBuilderGtk builder;
+    gtk_widget_set_sensitive (menu, TRUE);
+    mw->priv->selected_item_updated_connection = contact->updated.connect (boost::bind (&on_selected_history_contact_updated, contact, mw));
+    mw->priv->selected_item_removed_connection = contact->removed.connect (boost::bind (&on_selected_item_removed, mw));
+
+    if (contact->populate_menu (builder)) {
+
+      gtk_menu_item_set_submenu (GTK_MENU_ITEM (menu), builder.menu);
+      gtk_widget_show_all (builder.menu);
+    } else {
+
+      gtk_widget_set_sensitive (menu, FALSE);
+      g_object_ref_sink (builder.menu);
+      g_object_unref (builder.menu);
+    }
+  } else {
+
+    gtk_widget_set_sensitive (menu, FALSE);
+    gtk_menu_item_set_submenu (GTK_MENU_ITEM (menu), NULL);
   }
 }
 
@@ -1897,15 +1955,13 @@ on_presentity_selected (G_GNUC_UNUSED GtkWidget* view,
 
       gtk_menu_item_set_submenu (GTK_MENU_ITEM (menu), builder.menu);
       gtk_widget_show_all (builder.menu);
-    }
-    else {
+    } else {
 
       gtk_widget_set_sensitive (menu, FALSE);
       g_object_ref_sink (builder.menu);
       g_object_unref (builder.menu);
     }
-  }
-  else {
+  } else {
 
     gtk_widget_set_sensitive (menu, FALSE);
     gtk_menu_item_set_submenu (GTK_MENU_ITEM (menu), NULL);
@@ -1963,7 +2019,15 @@ panel_section_changed_nt (G_GNUC_UNUSED gpointer id,
 
       if (group)
 	g_free (group);
-    } else {
+    } else if (section == mw->priv->call_history_page_number) {
+
+      History::Contact* contact = NULL;
+      call_history_view_gtk_get_selected (CALL_HISTORY_VIEW_GTK (mw->priv->call_history_view), &contact);
+
+      if (contact)
+	on_history_contact_selected (mw->priv->call_history_view, contact, data);
+
+    } else { // we're not on a page where that menu makes sense
 
       menu = gtk_menu_get_widget (mw->priv->main_menu, "contact");
       mw->priv->selected_item_updated_connection.disconnect ();
@@ -3510,10 +3574,13 @@ ekiga_main_window_init_history (EkigaMainWindow *mw)
 
   boost::shared_ptr<History::Source> history_source = mw->priv->core->get<History::Source> ("call-history-store");
   boost::shared_ptr<History::Book> history_book = history_source->get_book ();
-  GtkWidget* call_history_view = call_history_view_gtk_new (history_book);
+  
+  mw->priv->call_history_view = call_history_view_gtk_new (history_book);
 
   label = gtk_label_new (_("Call history"));
-  mw->priv->call_history_page_number = gtk_notebook_append_page (GTK_NOTEBOOK (mw->priv->main_notebook), call_history_view, label);
+  mw->priv->call_history_page_number = gtk_notebook_append_page (GTK_NOTEBOOK (mw->priv->main_notebook), mw->priv->call_history_view, label);
+  g_signal_connect (G_OBJECT (mw->priv->call_history_view), "contact-selected",
+		    G_CALLBACK (on_history_contact_selected), mw);
 }
 
 
