@@ -202,8 +202,6 @@ struct _EkigaMainWindowPrivate
   std::string received_video_codec;
   std::string received_audio_codec;
 
-  Ekiga::Presentity* presentity;
-
   std::vector<boost::signals::connection> connections;
 };
 
@@ -263,8 +261,6 @@ static void ekiga_main_window_show_call_panel (EkigaMainWindow *mw);
 static void ekiga_main_window_hide_call_panel (EkigaMainWindow *mw);
 
 void ekiga_main_window_clear_signal_levels (EkigaMainWindow *mw);
-
-static void ekiga_main_window_selected_presentity_build_menu (EkigaMainWindow *mw);
 
 static void ekiga_main_window_incoming_call_dialog_show (EkigaMainWindow *mw,
                                                       boost::shared_ptr<Ekiga::Call>  call);
@@ -1851,10 +1847,29 @@ on_presentity_selected (G_GNUC_UNUSED GtkWidget* view,
 			gpointer self)
 {
   EkigaMainWindow *mw = EKIGA_MAIN_WINDOW (self);
+  GtkWidget *menu = gtk_menu_get_widget (mw->priv->main_menu, "contact");
 
-  mw->priv->presentity = presentity;
+  if (presentity != NULL) {
 
-  ekiga_main_window_selected_presentity_build_menu (mw);
+    MenuBuilderGtk builder;
+    gtk_widget_set_sensitive (menu, TRUE);
+    if (presentity->populate_menu (builder)) {
+
+      gtk_menu_item_set_submenu (GTK_MENU_ITEM (menu), builder.menu);
+      gtk_widget_show_all (builder.menu);
+    }
+    else {
+
+      gtk_widget_set_sensitive (menu, FALSE);
+      g_object_ref_sink (builder.menu);
+      g_object_unref (builder.menu);
+    }
+  }
+  else {
+
+    gtk_widget_set_sensitive (menu, FALSE);
+    gtk_menu_item_set_submenu (GTK_MENU_ITEM (menu), NULL);
+  }
 }
 
 
@@ -2426,7 +2441,6 @@ ekiga_main_window_update_calling_state (EkigaMainWindow *mw,
 {
   g_return_if_fail (mw != NULL);
 
-  ekiga_main_window_selected_presentity_build_menu (mw);
   switch (calling_state)
     {
     case Standby:
@@ -2637,34 +2651,6 @@ ekiga_main_window_clear_signal_levels (EkigaMainWindow *mw)
 
   gm_level_meter_clear (GM_LEVEL_METER (mw->priv->output_signal));
   gm_level_meter_clear (GM_LEVEL_METER (mw->priv->input_signal));
-}
-
-static void
-ekiga_main_window_selected_presentity_build_menu (EkigaMainWindow *mw)
-{
-  GtkWidget *menu = gtk_menu_get_widget (mw->priv->main_menu, "contact");
-
-  if (mw->priv->presentity != NULL) {
-
-    MenuBuilderGtk builder;
-    gtk_widget_set_sensitive (menu, TRUE);
-    if (mw->priv->presentity->populate_menu (builder)) {
-
-      gtk_menu_item_set_submenu (GTK_MENU_ITEM (menu), builder.menu);
-      gtk_widget_show_all (builder.menu);
-    } 
-    else {
-
-      gtk_widget_set_sensitive (menu, FALSE);
-      g_object_ref_sink (builder.menu);
-      g_object_unref (builder.menu);
-    }
-  } 
-  else {
-
-    gtk_widget_set_sensitive (menu, FALSE);
-    gtk_menu_item_set_submenu (GTK_MENU_ITEM (menu), NULL);
-  }
 }
 
 
@@ -3752,7 +3738,6 @@ ekiga_main_window_init (EkigaMainWindow *mw)
   gtk_window_add_accel_group (GTK_WINDOW (mw), mw->priv->accel);
   g_object_unref (mw->priv->accel);
 
-  mw->priv->presentity = NULL;
   mw->priv->transfer_call_popup = NULL;
   mw->priv->current_call = boost::shared_ptr<Ekiga::Call>();
   mw->priv->timeout_id = -1;
