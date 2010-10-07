@@ -294,7 +294,8 @@ static void on_chat_unread_alert (GtkWidget*,
 				  gpointer);
 
 /* DESCRIPTION  :  This callback is called when the control panel 
- *                 section key changes.
+ *                 section key changes (which can be when the radio
+ *                 menu is changed!)
  * BEHAVIOR     :  Sets the right page, and also sets 
  *                 the good value for the radio menu. 
  * PRE          :  /
