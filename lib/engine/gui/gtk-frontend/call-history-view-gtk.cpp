@@ -47,6 +47,19 @@
 #include "gm-cell-renderer-bitext.h"
 #include "gmstockicons.h"
 
+
+struct _CallHistoryViewGtkPrivate
+{
+  _CallHistoryViewGtkPrivate (boost::shared_ptr<History::Book> book_)
+    : book(book_)
+  {}
+
+  boost::shared_ptr<History::Book> book;
+  GtkTreeView* tree;
+  std::vector<boost::signals::connection> connections;
+};
+
+/* this is what we put in the view */
 enum {
   COLUMN_CONTACT,
   COLUMN_PIXBUF,
@@ -55,17 +68,15 @@ enum {
   COLUMN_NUMBER
 };
 
+/* and this is the list of signals supported */
+enum {
+  CONTACT_SELECTED_SIGNAL,
+  LAST_SIGNAL
+};
 
-/* make sure we stop watching signals when the widget gets destroyed */
-static void
-destroy_connections (gpointer data,
-		     GObject */*unused*/)
-{
-  std::list<boost::signals::connection> *conns
-    = (std::list<boost::signals::connection> *)data;
+static guint signals[LAST_SIGNAL] = { 0 };
 
-  delete conns;
-}
+static GObjectClass* parent_class = NULL;
 
 /* react to a new call being inserted in history */
 static void
@@ -192,29 +203,158 @@ on_clicked (GtkWidget *tree,
   return TRUE;
 }
 
+static void
+on_selection_changed (GtkTreeSelection* selection,
+		      gpointer data)
+{
+  CallHistoryViewGtk* self = NULL;
+  GtkTreeModel* model = NULL;
+  GtkTreeIter iter;
+
+  self = CALL_HISTORY_VIEW_GTK (data);
+
+  if (gtk_tree_selection_get_selected (selection, &model, &iter)) {
+
+    History::Contact* contact = NULL;
+    gtk_tree_model_get (model, &iter,
+			COLUMN_CONTACT, &contact,
+			-1);
+    g_signal_emit (self, signals[CONTACT_SELECTED_SIGNAL], 0, contact);
+  } else
+    g_signal_emit (self, signals[CONTACT_SELECTED_SIGNAL], 0, NULL);
+}
+
+/* GObject stuff */
+static void
+call_history_view_gtk_dispose (GObject* obj)
+{
+  CallHistoryViewGtk* view = NULL;
+
+  view = CALL_HISTORY_VIEW_GTK (obj);
+
+  for (std::vector<boost::signals::connection>::iterator iter
+	 = view->priv->connections.begin ();
+       iter != view->priv->connections.end ();
+       iter++)
+    iter->disconnect ();
+
+  if (view->priv->tree) {
+
+    GtkTreeSelection* selection = NULL;
+
+    selection = gtk_tree_view_get_selection (view->priv->tree);
+
+    g_signal_handlers_disconnect_matched (selection,
+					  (GSignalMatchType) G_SIGNAL_MATCH_DATA,
+					  0, /* signal_id */
+					  (GQuark) 0, /* detail */
+					  NULL,	/* closure */
+					  NULL,	/* func */
+					  view /* data */);
+
+    g_signal_handlers_disconnect_matched (view->priv->tree,
+					  (GSignalMatchType) G_SIGNAL_MATCH_DATA,
+					  0, /* signal_id */
+					  (GQuark)0, /* detail */
+					  NULL, /* closure */
+					  NULL, /* func */
+					  &(*(view->priv->book)) /* data */);
+    view->priv->tree = NULL;
+  }
+
+  parent_class->dispose (obj);
+}
+
+static void
+call_history_view_gtk_finalize (GObject* obj)
+{
+  CallHistoryViewGtk* view = NULL;
+
+  view = CALL_HISTORY_VIEW_GTK (obj);
+
+  delete view->priv;
+
+  parent_class->finalize (obj);
+}
+
+static void
+call_history_view_gtk_class_init (gpointer g_class,
+				  gpointer /*class_data*/)
+{
+  CallHistoryViewGtkClass* call_history_view_gtk_class = NULL;
+  GObjectClass* gobject_class = NULL;
+
+  parent_class = (GObjectClass*) g_type_class_peek_parent (g_class);
+
+  gobject_class = (GObjectClass*)g_class;
+  gobject_class->dispose = call_history_view_gtk_dispose;
+  gobject_class->finalize = call_history_view_gtk_finalize;
+
+  signals[CONTACT_SELECTED_SIGNAL] =
+    g_signal_new ("contact-selected",
+		  G_OBJECT_CLASS_TYPE (gobject_class),
+		  G_SIGNAL_RUN_LAST,
+		  G_STRUCT_OFFSET (CallHistoryViewGtkClass, contact_selected),
+		  NULL, NULL,
+		  g_cclosure_marshal_VOID__POINTER,
+		  G_TYPE_NONE, 1,
+		  G_TYPE_POINTER);
+
+  /* FIXME: is it useful? */
+  call_history_view_gtk_class = (CallHistoryViewGtkClass*)g_class;
+  call_history_view_gtk_class->contact_selected = NULL;
+}
+
+GType
+call_history_view_gtk_get_type ()
+{
+  static GType result = 0;
+
+  if (result == 0) {
+
+    static const GTypeInfo info = {
+      sizeof (CallHistoryViewGtkClass),
+      NULL,
+      NULL,
+      call_history_view_gtk_class_init,
+      NULL,
+      NULL,
+      sizeof (CallHistoryViewGtk),
+      0,
+      NULL,
+      NULL
+    };
+
+    result = g_type_register_static (GTK_TYPE_SCROLLED_WINDOW,
+				     "CallHistoryViewGtk",
+				     &info, (GTypeFlags)0);
+  }
+
+  return result;
+}
+
 /* public api */
 
 GtkWidget *
 call_history_view_gtk_new (boost::shared_ptr<History::Book> book)
 {
-  GtkWidget *result = NULL;
-  std::list<boost::signals::connection> *conns = NULL;
+  CallHistoryViewGtk* self = NULL;
+
   GtkListStore *store = NULL;
-  GtkWidget *tree = NULL;
   GtkTreeViewColumn *column = NULL;
   GtkCellRenderer *renderer = NULL;
   GtkTreeSelection *selection = NULL;
-  boost::signals::connection connection;
 
-  result = gtk_scrolled_window_new (NULL, NULL);
-  gtk_scrolled_window_set_policy (GTK_SCROLLED_WINDOW (result),
+  boost::signals::connection conn;
+
+  g_return_val_if_fail (book, (GtkWidget*)NULL);
+
+  self = (CallHistoryViewGtk*)g_object_new (CALL_HISTORY_VIEW_GTK_TYPE, NULL);
+
+  self->priv = new _CallHistoryViewGtkPrivate (book);
+
+  gtk_scrolled_window_set_policy (GTK_SCROLLED_WINDOW (self),
 				  GTK_POLICY_AUTOMATIC, GTK_POLICY_AUTOMATIC);
-
-  /* we don't leak conns : it will be freed when we die... and it will
-   * prevent the signals to come to a now-dead GObject
-   */
-  conns = new std::list<boost::signals::connection>;
-  g_object_weak_ref (G_OBJECT (result), destroy_connections, (gpointer)conns);
 
   /* build the store then the tree */
   store = gtk_list_store_new (COLUMN_NUMBER,
@@ -223,10 +363,10 @@ call_history_view_gtk_new (boost::shared_ptr<History::Book> book)
 			      G_TYPE_STRING,
 			      G_TYPE_STRING);
 
-  tree = gtk_tree_view_new_with_model (GTK_TREE_MODEL (store));
+  self->priv->tree = (GtkTreeView*)gtk_tree_view_new_with_model (GTK_TREE_MODEL (store));
   g_object_unref (store);
-  gtk_tree_view_set_headers_visible (GTK_TREE_VIEW (tree), FALSE);
-  gtk_container_add (GTK_CONTAINER (result), tree);
+  gtk_tree_view_set_headers_visible (GTK_TREE_VIEW (self->priv->tree), FALSE);
+  gtk_container_add (GTK_CONTAINER (self), GTK_WIDGET (self->priv->tree));
 
   /* one column should be enough for everyone */
   column = gtk_tree_view_column_new ();
@@ -244,22 +384,45 @@ call_history_view_gtk_new (boost::shared_ptr<History::Book> book)
 				      "primary-text", COLUMN_NAME);
   gtk_tree_view_column_add_attribute (column, renderer,
 				      "secondary-text", COLUMN_INFO);
-  gtk_tree_view_append_column (GTK_TREE_VIEW (tree), column);
+  gtk_tree_view_append_column (self->priv->tree, column);
 
   /* react to user clicks */
-  selection = gtk_tree_view_get_selection (GTK_TREE_VIEW (tree));
+  selection = gtk_tree_view_get_selection (GTK_TREE_VIEW (self->priv->tree));
   gtk_tree_selection_set_mode (selection, GTK_SELECTION_SINGLE);
-  g_signal_connect (G_OBJECT (tree), "event-after",
+  g_signal_connect (G_OBJECT (selection), "changed",
+		    G_CALLBACK (on_selection_changed), self);
+  g_signal_connect (G_OBJECT (self->priv->tree), "event-after",
 		    G_CALLBACK (on_clicked), &(*book));
 
   /* connect to the signals */
-  connection = book->cleared.connect (boost::bind (&gtk_list_store_clear, store));
-  conns->push_front (connection);
-  connection = book->contact_added.connect (boost::bind (&on_contact_added, _1, store));
-  conns->push_front (connection);
+  conn = book->cleared.connect (boost::bind (&gtk_list_store_clear, store));
+  self->priv->connections.push_back (conn);
+  conn = book->contact_added.connect (boost::bind (&on_contact_added, _1, store));
+  self->priv->connections.push_back (conn);
 
   /* populate */
   book->visit_contacts (boost::bind (&on_visit_contacts, _1, store));
 
-  return result;
+  return (GtkWidget*)self;
+}
+
+void
+call_history_view_gtk_get_selected (CallHistoryViewGtk* self,
+				    History::Contact** contact)
+{
+  g_return_if_fail (IS_CALL_HISTORY_VIEW_GTK (self) && contact != NULL);
+
+  GtkTreeSelection* selection = NULL;
+  GtkTreeModel* model = NULL;
+  GtkTreeIter iter;
+
+  selection = gtk_tree_view_get_selection (self->priv->tree);
+
+  if (gtk_tree_selection_get_selected (selection, &model, &iter)) {
+
+    gtk_tree_model_get (model, &iter,
+			COLUMN_CONTACT, contact,
+			-1);
+  } else
+    *contact = NULL;
 }

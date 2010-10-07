@@ -41,6 +41,55 @@
 #include <gtk/gtk.h>
 #include "history-book.h"
 
+typedef struct _CallHistoryViewGtk CallHistoryViewGtk;
+typedef struct _CallHistoryViewGtkPrivate CallHistoryViewGtkPrivate;
+typedef struct _CallHistoryViewGtkClass CallHistoryViewGtkClass;
+
+/*
+ * Public API
+ */
+
+/* creating the widget, connected to an History::Book object */
 GtkWidget *call_history_view_gtk_new (boost::shared_ptr<History::Book> book);
+
+/* Knowing what is selected in the view */
+void call_history_view_gtk_get_selected (CallHistoryViewGtk* self,
+					 History::Contact** contact);
+
+
+/* This widget emits a single signal :
+ * "contact-selected", comes with a pointer which is a History::Contact*
+ * (or NULL if no contact is selected anymore)
+ */
+
+/* GObject thingies */
+struct _CallHistoryViewGtk
+{
+  GtkScrolledWindow parent;
+
+  CallHistoryViewGtkPrivate* priv;
+};
+
+struct _CallHistoryViewGtkClass
+{
+  GtkScrolledWindowClass parent;
+
+  void (*contact_selected) (CallHistoryViewGtk* self,
+			    gpointer contact);
+};
+
+#define CALL_HISTORY_VIEW_GTK_TYPE (call_history_view_gtk_get_type ())
+
+#define CALL_HISTORY_VIEW_GTK(obj) (G_TYPE_CHECK_INSTANCE_CAST ((obj), CALL_HISTORY_VIEW_GTK_TYPE, CallHistoryViewGtk))
+
+#define IS_CALL_HISTORY_VIEW_GTK(obj) (G_TYPE_CHECK_INSTANCE_TYPE ((obj), CALL_HISTORY_VIEW_GTK_TYPE))
+
+#define CALL_HISTORY_VIEW_GTK_CLASS(klass) (G_TYPE_CHECK_CLASS_CAST ((klass), CALL_HISTORY_VIEW_GTK_TYPE, CallHistoryViewGtkClass))
+
+#define IS_CALL_HISTORY_VIEW_GTK_CLASS(klass) (G_TYPE_CHECK_CLASS_TYPE ((klass), CALL_HISTORY_VIEW_GTK_TYPE))
+
+#define CALL_HISTORY_VIEW_GTK_GET_CLASS(obj) (G_TYPE_INSTANCE_GET_CLASS ((obj), CALL_HISTORY_VIEW_GTK_TYPE, CallHistoryViewGtkClass))
+
+GType call_history_view_gtk_get_type ();
 
 #endif
