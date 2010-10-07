@@ -135,6 +135,7 @@ struct _EkigaMainWindowPrivate
   gint roster_view_page_number;
   gint dialpad_page_number;
   gint call_history_page_number;
+  GtkWidget* roster_view;
 
   /* URI Toolbar */
   GtkWidget *main_toolbar;
@@ -1947,6 +1948,29 @@ panel_section_changed_nt (G_GNUC_UNUSED gpointer id,
 
     menu = gtk_menu_get_widget (mw->priv->main_menu, "dialpad");
     gtk_radio_menu_select_with_widget (menu, section);
+
+    if (section == mw->priv->roster_view_page_number) {
+
+      Ekiga::Heap* heap = NULL;
+      Ekiga::Presentity* presentity = NULL;
+      gchar* group = NULL;
+      roster_view_gtk_get_selected (ROSTER_VIEW_GTK (mw->priv->roster_view),
+				    &heap,
+				    &group,
+				    &presentity);
+      if (presentity)
+	on_presentity_selected (mw->priv->roster_view, presentity, data);
+
+      if (group)
+	g_free (group);
+    } else {
+
+      menu = gtk_menu_get_widget (mw->priv->main_menu, "contact");
+      mw->priv->selected_item_updated_connection.disconnect ();
+      mw->priv->selected_item_removed_connection.disconnect ();
+      gtk_widget_set_sensitive (menu, FALSE);
+      gtk_menu_item_set_submenu (GTK_MENU_ITEM (menu), NULL);
+    }
   }
 }
 
@@ -3446,14 +3470,13 @@ static void
 ekiga_main_window_init_contact_list (EkigaMainWindow *mw)
 {
   GtkWidget *label = NULL;
-  GtkWidget* roster_view = NULL;
 
   boost::shared_ptr<Ekiga::PresenceCore> presence_core = mw->priv->core->get<Ekiga::PresenceCore> ("presence-core");
 
   label = gtk_label_new (_("Contacts"));
-  roster_view = roster_view_gtk_new (*presence_core);
-  mw->priv->roster_view_page_number = gtk_notebook_append_page (GTK_NOTEBOOK (mw->priv->main_notebook), roster_view, label);
-  g_signal_connect (G_OBJECT (roster_view), "presentity-selected",
+  mw->priv->roster_view = roster_view_gtk_new (*presence_core);
+  mw->priv->roster_view_page_number = gtk_notebook_append_page (GTK_NOTEBOOK (mw->priv->main_notebook), mw->priv->roster_view, label);
+  g_signal_connect (G_OBJECT (mw->priv->roster_view), "presentity-selected",
 		    G_CALLBACK (on_presentity_selected), mw);
 }
 
