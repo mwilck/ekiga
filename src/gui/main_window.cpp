@@ -2053,14 +2053,10 @@ video_settings_changed_cb (GtkAdjustment * /*adjustment*/,
 static void
 panel_section_changed_cb (G_GNUC_UNUSED GtkNotebook *notebook,
                           G_GNUC_UNUSED gpointer page,
-                          G_GNUC_UNUSED gint page_num,
-                          gpointer data)
+                          gint page_num,
+                          G_GNUC_UNUSED gpointer data)
 {
-  EkigaMainWindow *mw = EKIGA_MAIN_WINDOW (data);
-  gint current_page = 0;
-
-  current_page = gtk_notebook_get_current_page (GTK_NOTEBOOK (mw->priv->main_notebook));
-  gm_conf_set_int (USER_INTERFACE_KEY "main_window/panel_section", current_page);
+  gm_conf_set_int (USER_INTERFACE_KEY "main_window/panel_section", page_num);
 }
 
 
