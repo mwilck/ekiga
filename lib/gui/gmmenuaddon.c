@@ -531,8 +531,22 @@ gtk_radio_menu_select_with_widget (GtkWidget *widget,
   group_last_pos = g_slist_length (group) - 1; /* If length 1, last pos is 0 */
   while (group) {
 
-    gtk_check_menu_item_set_active (GTK_CHECK_MENU_ITEM (group->data), (i == group_last_pos - active));
-    gtk_widget_queue_draw (GTK_WIDGET (group->data));
+    GtkCheckMenuItem* item = GTK_CHECK_MENU_ITEM (group->data);
+    if (gtk_check_menu_item_get_active (item)) {
+
+      if (i != group_last_pos - active) {
+
+	gtk_check_menu_item_set_active (item, FALSE);
+	gtk_widget_queue_draw (GTK_WIDGET (item));
+      }
+    } else {
+
+      if (i == group_last_pos - active) {
+
+	gtk_check_menu_item_set_active (item, TRUE);
+	gtk_widget_queue_draw (GTK_WIDGET (item));
+      }
+    }
 
     group = g_slist_next (group);
     i++;
