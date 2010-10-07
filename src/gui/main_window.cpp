@@ -202,6 +202,8 @@ struct _EkigaMainWindowPrivate
   std::string received_video_codec;
   std::string received_audio_codec;
 
+  boost::signals::connection selected_item_updated_connection;
+  boost::signals::connection selected_item_removed_connection;
   std::vector<boost::signals::connection> connections;
 };
 
@@ -1840,6 +1842,37 @@ gnomemeeting_tray_hack_cb (G_GNUC_UNUSED gpointer data)
   return FALSE;
 }
 
+static void
+on_selected_item_removed (EkigaMainWindow* mw)
+{
+  GtkWidget *menu = gtk_menu_get_widget (mw->priv->main_menu, "contact");
+  mw->priv->selected_item_updated_connection.disconnect ();
+  mw->priv->selected_item_removed_connection.disconnect ();
+  gtk_widget_set_sensitive (menu, FALSE);
+  gtk_menu_item_set_submenu (GTK_MENU_ITEM (menu), NULL);
+}
+
+static void
+on_selected_presentity_updated (Ekiga::Presentity* presentity,
+				EkigaMainWindow* mw)
+{
+  MenuBuilderGtk builder;
+  GtkWidget *menu = gtk_menu_get_widget (mw->priv->main_menu, "contact");
+
+  gtk_widget_set_sensitive (menu, TRUE);  
+
+  if (presentity->populate_menu (builder)) {
+
+    gtk_menu_item_set_submenu (GTK_MENU_ITEM (menu), builder.menu);
+    gtk_widget_show_all (builder.menu);
+  }
+  else {
+
+    gtk_widget_set_sensitive (menu, FALSE);
+    g_object_ref_sink (builder.menu);
+    g_object_unref (builder.menu);
+  }
+}
 
 static void
 on_presentity_selected (G_GNUC_UNUSED GtkWidget* view,
@@ -1849,10 +1882,16 @@ on_presentity_selected (G_GNUC_UNUSED GtkWidget* view,
   EkigaMainWindow *mw = EKIGA_MAIN_WINDOW (self);
   GtkWidget *menu = gtk_menu_get_widget (mw->priv->main_menu, "contact");
 
+  mw->priv->selected_item_updated_connection.disconnect ();
+  mw->priv->selected_item_removed_connection.disconnect ();
+
   if (presentity != NULL) {
 
     MenuBuilderGtk builder;
     gtk_widget_set_sensitive (menu, TRUE);
+    mw->priv->selected_item_updated_connection = presentity->updated.connect (boost::bind (&on_selected_presentity_updated, presentity, mw));
+    mw->priv->selected_item_removed_connection = presentity->removed.connect (boost::bind (&on_selected_item_removed, mw));
+
     if (presentity->populate_menu (builder)) {
 
       gtk_menu_item_set_submenu (GTK_MENU_ITEM (menu), builder.menu);
