@@ -1855,37 +1855,15 @@ on_selected_item_removed (EkigaMainWindow* mw)
 }
 
 static void
-on_selected_history_contact_updated (History::Contact* contact,
-				     EkigaMainWindow* mw)
+on_selected_item_updated (Ekiga::LiveObject* live,
+			  EkigaMainWindow* mw)
 {
   MenuBuilderGtk builder;
   GtkWidget *menu = gtk_menu_get_widget (mw->priv->main_menu, "contact");
 
   gtk_widget_set_sensitive (menu, TRUE);  
 
-  if (contact->populate_menu (builder)) {
-
-    gtk_menu_item_set_submenu (GTK_MENU_ITEM (menu), builder.menu);
-    gtk_widget_show_all (builder.menu);
-  }
-  else {
-
-    gtk_widget_set_sensitive (menu, FALSE);
-    g_object_ref_sink (builder.menu);
-    g_object_unref (builder.menu);
-  }
-}
-
-static void
-on_selected_presentity_updated (Ekiga::Presentity* presentity,
-				EkigaMainWindow* mw)
-{
-  MenuBuilderGtk builder;
-  GtkWidget *menu = gtk_menu_get_widget (mw->priv->main_menu, "contact");
-
-  gtk_widget_set_sensitive (menu, TRUE);  
-
-  if (presentity->populate_menu (builder)) {
+  if (live->populate_menu (builder)) {
 
     gtk_menu_item_set_submenu (GTK_MENU_ITEM (menu), builder.menu);
     gtk_widget_show_all (builder.menu);
@@ -1913,7 +1891,7 @@ on_history_contact_selected (G_GNUC_UNUSED GtkWidget* view,
 
     MenuBuilderGtk builder;
     gtk_widget_set_sensitive (menu, TRUE);
-    mw->priv->selected_item_updated_connection = contact->updated.connect (boost::bind (&on_selected_history_contact_updated, contact, mw));
+    mw->priv->selected_item_updated_connection = contact->updated.connect (boost::bind (&on_selected_item_updated, contact, mw));
     mw->priv->selected_item_removed_connection = contact->removed.connect (boost::bind (&on_selected_item_removed, mw));
 
     if (contact->populate_menu (builder)) {
@@ -1948,7 +1926,7 @@ on_presentity_selected (G_GNUC_UNUSED GtkWidget* view,
 
     MenuBuilderGtk builder;
     gtk_widget_set_sensitive (menu, TRUE);
-    mw->priv->selected_item_updated_connection = presentity->updated.connect (boost::bind (&on_selected_presentity_updated, presentity, mw));
+    mw->priv->selected_item_updated_connection = presentity->updated.connect (boost::bind (&on_selected_item_updated, presentity, mw));
     mw->priv->selected_item_removed_connection = presentity->removed.connect (boost::bind (&on_selected_item_removed, mw));
 
     if (presentity->populate_menu (builder)) {
