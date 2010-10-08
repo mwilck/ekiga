@@ -3233,13 +3233,6 @@ ekiga_main_window_init_menu (EkigaMainWindow *mw)
 
       GTK_MENU_SEPARATOR,
 
-      GTK_MENU_ENTRY("contact", _("Co_ntact"),
-		     _("Act on selected contact"),
-		     GTK_STOCK_EXECUTE, 0,
-		     NULL, NULL, FALSE),
-
-      GTK_MENU_SEPARATOR,
-
       GTK_MENU_ENTRY("hold_call", _("H_old Call"), _("Hold the current call"),
 		     NULL, GDK_h, 
 		     G_CALLBACK (hold_current_call_cb), mw,
@@ -3297,6 +3290,9 @@ ekiga_main_window_init_menu (EkigaMainWindow *mw)
 		     GTK_STOCK_PREFERENCES, 0,
 		     G_CALLBACK (show_window_cb),
 		     (gpointer) prefs_window, TRUE),
+
+      // that one doesn't have a macro :
+      {"contact", _("Co_ntact"), _("Act on the selected contact"), GTK_STOCK_EXECUTE, FALSE, 0, MENU_NEW, NULL, NULL, NULL, NULL, TRUE, FALSE},
 
       GTK_MENU_NEW(_("_View")),
 
