@@ -1877,24 +1877,22 @@ on_selected_item_updated (Ekiga::LiveObject* live,
 }
 
 static void
-on_history_contact_selected (G_GNUC_UNUSED GtkWidget* view,
-			     History::Contact* contact,
-			     gpointer self)
+on_item_selected (EkigaMainWindow* mw,
+		  Ekiga::LiveObject* live)
 {
-  EkigaMainWindow *mw = EKIGA_MAIN_WINDOW (self);
   GtkWidget *menu = gtk_menu_get_widget (mw->priv->main_menu, "contact");
 
   mw->priv->selected_item_updated_connection.disconnect ();
   mw->priv->selected_item_removed_connection.disconnect ();
 
-  if (contact != NULL) {
+  if (live != NULL) {
 
     MenuBuilderGtk builder;
     gtk_widget_set_sensitive (menu, TRUE);
-    mw->priv->selected_item_updated_connection = contact->updated.connect (boost::bind (&on_selected_item_updated, contact, mw));
-    mw->priv->selected_item_removed_connection = contact->removed.connect (boost::bind (&on_selected_item_removed, mw));
+    mw->priv->selected_item_updated_connection = live->updated.connect (boost::bind (&on_selected_item_updated, live, mw));
+    mw->priv->selected_item_removed_connection = live->removed.connect (boost::bind (&on_selected_item_removed, mw));
 
-    if (contact->populate_menu (builder)) {
+    if (live->populate_menu (builder)) {
 
       gtk_menu_item_set_submenu (GTK_MENU_ITEM (menu), builder.menu);
       gtk_widget_show_all (builder.menu);
@@ -1912,38 +1910,21 @@ on_history_contact_selected (G_GNUC_UNUSED GtkWidget* view,
 }
 
 static void
+on_history_contact_selected (G_GNUC_UNUSED GtkWidget* view,
+			     History::Contact* contact,
+			     gpointer self)
+{
+  EkigaMainWindow *mw = EKIGA_MAIN_WINDOW (self);
+  on_item_selected (mw, (Ekiga::LiveObject*)contact);
+}
+
+static void
 on_presentity_selected (G_GNUC_UNUSED GtkWidget* view,
 			Ekiga::Presentity* presentity,
 			gpointer self)
 {
   EkigaMainWindow *mw = EKIGA_MAIN_WINDOW (self);
-  GtkWidget *menu = gtk_menu_get_widget (mw->priv->main_menu, "contact");
-
-  mw->priv->selected_item_updated_connection.disconnect ();
-  mw->priv->selected_item_removed_connection.disconnect ();
-
-  if (presentity != NULL) {
-
-    MenuBuilderGtk builder;
-    gtk_widget_set_sensitive (menu, TRUE);
-    mw->priv->selected_item_updated_connection = presentity->updated.connect (boost::bind (&on_selected_item_updated, presentity, mw));
-    mw->priv->selected_item_removed_connection = presentity->removed.connect (boost::bind (&on_selected_item_removed, mw));
-
-    if (presentity->populate_menu (builder)) {
-
-      gtk_menu_item_set_submenu (GTK_MENU_ITEM (menu), builder.menu);
-      gtk_widget_show_all (builder.menu);
-    } else {
-
-      gtk_widget_set_sensitive (menu, FALSE);
-      g_object_ref_sink (builder.menu);
-      g_object_unref (builder.menu);
-    }
-  } else {
-
-    gtk_widget_set_sensitive (menu, FALSE);
-    gtk_menu_item_set_submenu (GTK_MENU_ITEM (menu), NULL);
-  }
+  on_item_selected (mw, (Ekiga::LiveObject*)presentity);
 }
 
 
