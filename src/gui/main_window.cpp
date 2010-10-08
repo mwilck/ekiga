@@ -3344,7 +3344,7 @@ ekiga_main_window_init_menu (EkigaMainWindow *mw)
 		     (gpointer) prefs_window, TRUE),
 
       // that one doesn't have a macro :
-      {"contact", _("Co_ntact"), _("Act on the selected contact"), GTK_STOCK_EXECUTE, FALSE, 0, MENU_NEW, NULL, NULL, NULL, NULL, TRUE, FALSE},
+      {"contact", _("Co_ntact"), _("Act on selected contact"), GTK_STOCK_EXECUTE, FALSE, 0, MENU_NEW, NULL, NULL, NULL, NULL, TRUE, FALSE},
 
       GTK_MENU_NEW(_("_View")),
 
