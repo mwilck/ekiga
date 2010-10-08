@@ -668,16 +668,16 @@ on_selection_changed (GtkTreeSelection* selection,
 
     case TYPE_PRESENTITY: {
 
-      g_signal_emit (self, signals[PRESENTITY_SELECTED_SIGNAL], 0, presentity);
       g_signal_emit (self, signals[HEAP_SELECTED_SIGNAL], 0, NULL);
       g_signal_emit (self, signals[HEAP_GROUP_SELECTED_SIGNAL], 0, NULL, NULL);
+      g_signal_emit (self, signals[PRESENTITY_SELECTED_SIGNAL], 0, presentity);
       break;
     }
     case TYPE_HEAP: {
 
       g_signal_emit (self, signals[PRESENTITY_SELECTED_SIGNAL], 0, NULL);
-      g_signal_emit (self, signals[HEAP_SELECTED_SIGNAL], 0, heap);
       g_signal_emit (self, signals[HEAP_GROUP_SELECTED_SIGNAL], 0, NULL, NULL);
+      g_signal_emit (self, signals[HEAP_SELECTED_SIGNAL], 0, heap);
       break;
     }
 
