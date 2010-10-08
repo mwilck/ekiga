@@ -1927,6 +1927,52 @@ on_presentity_selected (G_GNUC_UNUSED GtkWidget* view,
   on_item_selected (mw, (Ekiga::LiveObject*)presentity);
 }
 
+static void
+on_heap_selected (G_GNUC_UNUSED GtkWidget* view,
+		  Ekiga::Heap* heap,
+		  gpointer self)
+{
+  EkigaMainWindow *mw = EKIGA_MAIN_WINDOW (self);
+  on_item_selected (mw, (Ekiga::LiveObject*)heap);
+}
+
+
+static void
+on_heap_group_selected (G_GNUC_UNUSED GtkWidget* view,
+			Ekiga::Heap* heap,
+			gchar* group,
+			gpointer self)
+{
+  EkigaMainWindow *mw = EKIGA_MAIN_WINDOW (self);
+  GtkWidget *menu = gtk_menu_get_widget (mw->priv->main_menu, "contact");
+
+  mw->priv->selected_item_updated_connection.disconnect ();
+  mw->priv->selected_item_removed_connection.disconnect ();
+
+  if (heap && group != NULL) {
+
+    MenuBuilderGtk builder;
+    gtk_widget_set_sensitive (menu, TRUE);
+    // we can't get updates about the groups as the contact api currently stands
+    mw->priv->selected_item_updated_connection = heap->updated.connect (boost::bind (&on_selected_item_removed, mw));
+    mw->priv->selected_item_removed_connection = heap->removed.connect (boost::bind (&on_selected_item_removed, mw));
+
+    if (heap->populate_menu_for_group (group, builder)) {
+
+      gtk_menu_item_set_submenu (GTK_MENU_ITEM (menu), builder.menu);
+      gtk_widget_show_all (builder.menu);
+    } else {
+
+      gtk_widget_set_sensitive (menu, FALSE);
+      g_object_ref_sink (builder.menu);
+      g_object_unref (builder.menu);
+    }
+  } else {
+
+    gtk_widget_set_sensitive (menu, FALSE);
+    gtk_menu_item_set_submenu (GTK_MENU_ITEM (menu), NULL);
+  }
+}
 
 static void
 on_chat_unread_alert (G_GNUC_UNUSED GtkWidget* widget,
@@ -1975,6 +2021,12 @@ panel_section_changed_nt (G_GNUC_UNUSED gpointer id,
 				    &presentity);
       if (presentity)
 	on_presentity_selected (mw->priv->roster_view, presentity, data);
+
+      if (heap && group == NULL)
+	on_heap_selected (mw->priv->roster_view, heap, data);
+
+      if (heap && group != NULL)
+	on_heap_group_selected (mw->priv->roster_view, heap, group, data);
 
       if (group)
 	g_free (group);
