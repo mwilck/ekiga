@@ -3547,6 +3547,10 @@ ekiga_main_window_init_contact_list (EkigaMainWindow *mw)
   label = gtk_label_new (_("Contacts"));
   mw->priv->roster_view = roster_view_gtk_new (*presence_core);
   mw->priv->roster_view_page_number = gtk_notebook_append_page (GTK_NOTEBOOK (mw->priv->main_notebook), mw->priv->roster_view, label);
+  g_signal_connect (G_OBJECT (mw->priv->roster_view), "heap-selected",
+		    G_CALLBACK (on_heap_selected), mw);
+  g_signal_connect (G_OBJECT (mw->priv->roster_view), "heap-group-selected",
+		    G_CALLBACK (on_heap_group_selected), mw);
   g_signal_connect (G_OBJECT (mw->priv->roster_view), "presentity-selected",
 		    G_CALLBACK (on_presentity_selected), mw);
 }
