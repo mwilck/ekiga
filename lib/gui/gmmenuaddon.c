@@ -259,7 +259,6 @@ gtk_build_menu (GtkWidget *menubar,
         menu [i].widget = gtk_check_menu_item_new_with_mnemonic (menu_name);
         gtk_check_menu_item_set_active (GTK_CHECK_MENU_ITEM (menu [i].widget),
                                         menu [i].enabled);
-        gtk_widget_queue_draw (menu [i].widget);
       }
       else if (menu [i].type == MENU_RADIO_ENTRY) {
 
@@ -271,7 +270,6 @@ gtk_build_menu (GtkWidget *menubar,
 
         gtk_check_menu_item_set_active (GTK_CHECK_MENU_ITEM (menu [i].widget),
                                         menu [i].enabled);
-        gtk_widget_queue_draw (menu [i].widget);
 
         group = gtk_radio_menu_item_get_group (GTK_RADIO_MENU_ITEM (menu[i].widget));
       }
