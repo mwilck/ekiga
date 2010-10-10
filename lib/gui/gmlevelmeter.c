@@ -152,11 +152,7 @@ gm_level_meter_set_level (GmLevelMeter *lm,
 
   if (level > lm->peak)
     lm->peak = level;
-#if GTK_CHECK_VERSION(2,20,0)
   if (gtk_widget_get_realized (GTK_WIDGET (lm)))
-#else
-  if (GTK_WIDGET_REALIZED (lm))
-#endif
 
     gm_level_meter_paint (lm);
 }
@@ -168,11 +164,7 @@ gm_level_meter_clear (GmLevelMeter *lm)
   lm->level = 0;
   lm->peak = 0;
 
-#if GTK_CHECK_VERSION(2,20,0)
   if (gtk_widget_get_realized (GTK_WIDGET (lm)))
-#else
-  if (GTK_WIDGET_REALIZED (lm))
-#endif
     gm_level_meter_paint (lm);
 }
 
@@ -186,11 +178,7 @@ gm_level_meter_set_colors (GmLevelMeter* lm,
   if (lm->colorEntries) {
 
     /* free old colors, if they have been allocated; delete old array */
-#if GTK_CHECK_VERSION(2,20,0)
     if (gtk_widget_get_realized (GTK_WIDGET (lm)))
-#else
-    if (GTK_WIDGET_REALIZED (lm))
-#endif
       gm_level_meter_free_colors (lm->colorEntries);
     g_array_free (lm->colorEntries, TRUE);
   }
@@ -205,11 +193,7 @@ gm_level_meter_set_colors (GmLevelMeter* lm,
     g_array_append_val (lm->colorEntries, *entry);
   }
 
-#if GTK_CHECK_VERSION(2,20,0)
   if (gtk_widget_get_realized (GTK_WIDGET (lm))) {
-#else
-  if (GTK_WIDGET_REALIZED (lm)) {
-#endif
 
     gm_level_meter_allocate_colors (lm->colorEntries);
 
@@ -362,11 +346,7 @@ gm_level_meter_realize (GtkWidget *widget)
 
   g_return_if_fail (GM_IS_LEVEL_METER (widget));
 
-#if GTK_CHECK_VERSION(2,20,0)
   gtk_widget_set_realized (widget, TRUE);
-#else
-  GTK_WIDGET_SET_FLAGS (widget, GTK_REALIZED);
-#endif
 
   lm = GM_LEVEL_METER (widget);
   gtk_widget_get_allocation (widget, &allocation);
@@ -402,11 +382,7 @@ gm_level_meter_create_pixmap (GmLevelMeter *lm)
 
   g_return_if_fail (GM_IS_LEVEL_METER (lm));
 
-#if GTK_CHECK_VERSION(2,20,0)
   if (gtk_widget_get_realized (GTK_WIDGET (lm))) {
-#else
-  if (GTK_WIDGET_REALIZED (lm)) {
-#endif
 
     GtkAllocation allocation;
 
@@ -604,11 +580,7 @@ gm_level_meter_size_allocate (GtkWidget *widget,
   g_return_if_fail (allocation != NULL);
 
   gtk_widget_set_allocation (widget, allocation);
-#if GTK_CHECK_VERSION(2,20,0)
   if (gtk_widget_get_realized (widget)) {
-#else
-  if (GTK_WIDGET_REALIZED (widget)) {
-#endif
 
     gdk_window_move_resize (gtk_widget_get_window (widget),
                             allocation->x, allocation->y,
