@@ -62,7 +62,8 @@ void call_history_view_gtk_get_selected (CallHistoryViewGtk* self,
  * (or NULL if no contact is selected anymore)
  *
  * "selection-changed", comes with nothing -- it just says that either something
- * else has been selected, or what was selected changed.
+ * else has been selected, or what was selected changed (which can't happen for
+ * call history items!)
  */
 
 /* GObject thingies */

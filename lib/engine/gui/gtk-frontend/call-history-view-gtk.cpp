@@ -223,6 +223,8 @@ on_selection_changed (GtkTreeSelection* selection,
     g_signal_emit (self, signals[CONTACT_SELECTED_SIGNAL], 0, contact);
   } else
     g_signal_emit (self, signals[CONTACT_SELECTED_SIGNAL], 0, NULL);
+
+  g_signal_emit (self, signals[SELECTION_CHANGED_SIGNAL], 0);
 }
 
 /* GObject stuff */
