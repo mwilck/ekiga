@@ -304,7 +304,7 @@ call_history_view_gtk_class_init (gpointer g_class,
 		  G_TYPE_POINTER);
 
   signals[SELECTION_CHANGED_SIGNAL] =
-    g_signal_new ("contact-selected",
+    g_signal_new ("selection-changed",
 		  G_OBJECT_CLASS_TYPE (gobject_class),
 		  G_SIGNAL_RUN_LAST,
 		  G_STRUCT_OFFSET (CallHistoryViewGtkClass, contact_selected),
