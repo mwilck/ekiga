@@ -966,9 +966,18 @@ on_heap_updated (Ekiga::ClusterPtr /*cluster*/,
 {
   RosterViewGtk *self = ROSTER_VIEW_GTK (data);
   GtkTreeIter iter;
+  GtkTreeIter filtered_iter;
   GtkTreeSelection* selection = NULL;
+  gboolean should_emit = FALSE;
 
   roster_view_gtk_find_iter_for_heap (self, heap, &iter);
+
+  selection = gtk_tree_view_get_selection (self->priv->tree_view);
+  GtkTreeModelFilter* model = GTK_TREE_MODEL_FILTER (gtk_tree_view_get_model (self->priv->tree_view));
+
+  if (gtk_tree_model_filter_convert_child_iter_to_iter (model, &filtered_iter, &iter))
+    if (gtk_tree_selection_iter_is_selected (selection, &filtered_iter))
+      should_emit = TRUE;
 
   gtk_tree_store_set (self->priv->store, &iter,
 		      COLUMN_TYPE, TYPE_HEAP,
@@ -977,8 +986,7 @@ on_heap_updated (Ekiga::ClusterPtr /*cluster*/,
 		      -1);
   gtk_tree_view_expand_all (self->priv->tree_view);
 
-  selection = gtk_tree_view_get_selection (self->priv->tree_view);
-  if (gtk_tree_selection_iter_is_selected (selection, &iter))
+  if (should_emit)
     g_signal_emit (self, signals[SELECTION_CHANGED_SIGNAL], 0);
 }
 
@@ -1017,10 +1025,14 @@ on_presentity_added (Ekiga::ClusterPtr /*cluster*/,
   RosterViewGtk *self = ROSTER_VIEW_GTK (data);
   GtkTreeIter heap_iter;
   std::set<std::string> groups = presentity->get_groups ();
+  GtkTreeSelection* selection = gtk_tree_view_get_selection (self->priv->tree_view);
+  GtkTreeModelFilter* filtered_model = GTK_TREE_MODEL_FILTER (gtk_tree_view_get_model (self->priv->tree_view));
   GtkTreeIter group_iter;
   GtkTreeIter iter;
+  GtkTreeIter filtered_iter;
   bool active = false;
   bool away = false;
+  gboolean should_emit = FALSE;
 
   roster_view_gtk_find_iter_for_heap (self, heap, &heap_iter);
 
@@ -1034,6 +1046,11 @@ on_presentity_added (Ekiga::ClusterPtr /*cluster*/,
     roster_view_gtk_find_iter_for_group (self, heap, &heap_iter,
 					 *group, &group_iter);
     roster_view_gtk_find_iter_for_presentity (self, &group_iter, presentity, &iter);
+
+
+    if (gtk_tree_model_filter_convert_child_iter_to_iter (filtered_model, &filtered_iter, &iter))
+      if (gtk_tree_selection_iter_is_selected (selection, &filtered_iter))
+	should_emit = TRUE;
 
     gtk_tree_store_set (self->priv->store, &iter,
 			COLUMN_TYPE, TYPE_PRESENTITY,
@@ -1068,6 +1085,9 @@ on_presentity_added (Ekiga::ClusterPtr /*cluster*/,
 
   GtkTreeModel* model = gtk_tree_view_get_model (self->priv->tree_view);
   gtk_tree_model_filter_refilter (GTK_TREE_MODEL_FILTER (model));
+
+  if (should_emit)
+    g_signal_emit (self, signals[SELECTION_CHANGED_SIGNAL], 0);
 }
 
 
@@ -1084,7 +1104,6 @@ on_presentity_updated (Ekiga::ClusterPtr cluster,
   GtkTreeIter iter;
   gchar *group_name = NULL;
   std::set<std::string> groups = presentity->get_groups ();
-  GtkTreeSelection* selection = NULL;
 
   model = GTK_TREE_MODEL (self->priv->store);
 
@@ -1120,11 +1139,6 @@ on_presentity_updated (Ekiga::ClusterPtr cluster,
 
   model = gtk_tree_view_get_model (self->priv->tree_view);
   gtk_tree_model_filter_refilter (GTK_TREE_MODEL_FILTER (model));
-
-  selection = gtk_tree_view_get_selection (self->priv->tree_view);
-  if (gtk_tree_selection_iter_is_selected (selection, &iter))
-    g_signal_emit (self, signals[SELECTION_CHANGED_SIGNAL], 0);
-
 }
 
 
