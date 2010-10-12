@@ -700,6 +700,8 @@ on_selection_changed (GtkTreeSelection* selection,
     g_signal_emit (self, signals[HEAP_SELECTED_SIGNAL], 0, NULL);
     g_signal_emit (self, signals[HEAP_GROUP_SELECTED_SIGNAL], 0, NULL, NULL);
   }
+
+  g_signal_emit (self, signals[SELECTION_CHANGED_SIGNAL], 0);
 }
 
 static gint
@@ -964,6 +966,7 @@ on_heap_updated (Ekiga::ClusterPtr /*cluster*/,
 {
   RosterViewGtk *self = ROSTER_VIEW_GTK (data);
   GtkTreeIter iter;
+  GtkTreeSelection* selection = NULL;
 
   roster_view_gtk_find_iter_for_heap (self, heap, &iter);
 
@@ -973,6 +976,10 @@ on_heap_updated (Ekiga::ClusterPtr /*cluster*/,
 		      COLUMN_NAME, heap->get_name ().c_str (),
 		      -1);
   gtk_tree_view_expand_all (self->priv->tree_view);
+
+  selection = gtk_tree_view_get_selection (self->priv->tree_view);
+  if (gtk_tree_selection_iter_is_selected (selection, &iter))
+    g_signal_emit (self, signals[SELECTION_CHANGED_SIGNAL], 0);
 }
 
 
@@ -1077,6 +1084,7 @@ on_presentity_updated (Ekiga::ClusterPtr cluster,
   GtkTreeIter iter;
   gchar *group_name = NULL;
   std::set<std::string> groups = presentity->get_groups ();
+  GtkTreeSelection* selection = NULL;
 
   model = GTK_TREE_MODEL (self->priv->store);
 
@@ -1112,6 +1120,11 @@ on_presentity_updated (Ekiga::ClusterPtr cluster,
 
   model = gtk_tree_view_get_model (self->priv->tree_view);
   gtk_tree_model_filter_refilter (GTK_TREE_MODEL_FILTER (model));
+
+  selection = gtk_tree_view_get_selection (self->priv->tree_view);
+  if (gtk_tree_selection_iter_is_selected (selection, &iter))
+    g_signal_emit (self, signals[SELECTION_CHANGED_SIGNAL], 0);
+
 }
 
 
@@ -1703,4 +1716,53 @@ roster_view_gtk_get_selected (RosterViewGtk* self,
     *group = NULL;
     *presentity = NULL;
   }
+}
+
+bool
+roster_view_gtk_populate_menu_for_selected (RosterViewGtk* self,
+					    Ekiga::MenuBuilder& builder)
+{
+  bool result = false;
+  GtkTreeSelection* selection = NULL;
+  GtkTreeModel* model = NULL;
+  GtkTreeIter iter;
+
+  g_return_val_if_fail (IS_ROSTER_VIEW_GTK (self), false);
+
+  selection = gtk_tree_view_get_selection (self->priv->tree_view);
+  if (gtk_tree_selection_get_selected (selection, &model, &iter)) {
+
+    gint column_type;
+    gchar* name = NULL;
+    Ekiga::Heap* heap = NULL;
+    Ekiga::Presentity *presentity = NULL;
+    gtk_tree_model_get (model, &iter,
+			COLUMN_NAME, &name,
+			COLUMN_TYPE, &column_type,
+			COLUMN_HEAP, &heap,
+			COLUMN_PRESENTITY, &presentity,
+			-1);
+    switch (column_type) {
+
+    case TYPE_PRESENTITY:
+
+      result = presentity->populate_menu (builder);
+      break;
+    case TYPE_HEAP:
+
+      result = heap->populate_menu (builder);
+      break;
+
+    case TYPE_GROUP:
+
+      result = heap->populate_menu_for_group (name, builder);
+      break;
+
+    default:
+      break;
+    }
+
+    g_free (name);
+  }
+  return result;
 }

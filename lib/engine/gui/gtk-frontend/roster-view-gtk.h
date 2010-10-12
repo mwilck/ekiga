@@ -66,6 +66,12 @@ void roster_view_gtk_get_selected (RosterViewGtk* self,
 				   gchar** group, /* you'll have to free it */
 				   Ekiga::Presentity** presentity);
 
+/* This method populates the given builder with the actions possible on the
+ * selected item, whatever that is (heap, group, presentity)
+ */
+bool roster_view_gtk_populate_menu_for_selected (RosterViewGtk* self,
+						 Ekiga::MenuBuilder& builder);
+
 /* Signals emitted by that widget :
  *
  * - "heap-selected", comes with a pointer which is an Ekiga::Heap*
