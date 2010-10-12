@@ -57,6 +57,11 @@ void call_history_view_gtk_get_selected (CallHistoryViewGtk* self,
 					 History::Contact** contact);
 
 
+/* Whatever is selected, we want the view to populate the given menu builder
+ * for us with the possible actions */
+bool call_history_view_gtk_populate_menu_for_selected (CallHistoryViewGtk* self,
+						       Ekiga::MenuBuilder &builder);
+
 /* This widget emits two signals :
  * "contact-selected", comes with a pointer which is a History::Contact*
  * (or NULL if no contact is selected anymore)

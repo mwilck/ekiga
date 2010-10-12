@@ -439,3 +439,29 @@ call_history_view_gtk_get_selected (CallHistoryViewGtk* self,
   } else
     *contact = NULL;
 }
+
+bool
+call_history_view_gtk_populate_menu_for_selected (CallHistoryViewGtk* self,
+						  Ekiga::MenuBuilder &builder)
+{
+  g_return_val_if_fail (IS_CALL_HISTORY_VIEW_GTK (self), false);
+
+  bool result = false;
+  GtkTreeSelection* selection = NULL;
+  GtkTreeModel* model = NULL;
+  GtkTreeIter iter;
+
+  selection = gtk_tree_view_get_selection (self->priv->tree);
+
+  if (gtk_tree_selection_get_selected (selection, &model, &iter)) {
+
+    Ekiga::Contact *contact = NULL;
+    gtk_tree_model_get (model, &iter,
+			COLUMN_CONTACT, &contact,
+			-1);
+    if (contact)
+      result = contact->populate_menu (builder);
+  }
+
+  return result;
+}
