@@ -54,18 +54,6 @@ typedef struct _RosterViewGtkClass RosterViewGtkClass;
 GtkWidget *roster_view_gtk_new (Ekiga::PresenceCore &core);
 
 
-/* Knowning what is selected in the view
- * If it's:
- * - a heap, you'll get it through 'heap' and the other two will be NULL ;
- * - a group, you'll get the heap and the name through 'heap' and 'group', and 'presentity' will be NULL ;
- *   (and you'll have to free the group name afterwards)
- * - a presentity, you'll get it through 'presentity', and the other two will be NULL ;
- */
-void roster_view_gtk_get_selected (RosterViewGtk* self,
-				   Ekiga::Heap** heap,
-				   gchar** group, /* you'll have to free it */
-				   Ekiga::Presentity** presentity);
-
 /* This method populates the given builder with the actions possible on the
  * selected item, whatever that is (heap, group, presentity)
  */
@@ -73,16 +61,6 @@ bool roster_view_gtk_populate_menu_for_selected (RosterViewGtk* self,
 						 Ekiga::MenuBuilder& builder);
 
 /* Signals emitted by that widget :
- *
- * - "heap-selected", comes with a pointer which is an Ekiga::Heap*
- * (or NULL if no heap is selected anymore)
- *
- * - "heap-group-selected", comes with a pointer which is an Ekiga::Heap*
- * (or NULL if no group is selected anymore)
- * and a string which is the name of the group
- *
- * - "presentity-selected", comes with a pointer which is an Ekiga::Presentity*
- * (or NULL if no presentity is selected anymore)
  *
  * - "selection-changed", comes with nothing, and notifies whether either the
  * selection changed, or the selected object changed.
@@ -101,13 +79,6 @@ struct _RosterViewGtkClass
 {
   GtkFrameClass parent;
 
-  void (*presentity_selected) (RosterViewGtk* self,
-			       gpointer presentity);
-  void (*heap_selected) (RosterViewGtk* self,
-			 gpointer heap);
-  void (*heap_group_selected) (RosterViewGtk* self,
-			       gpointer heap,
-			       const gchar* group_name);
   void (*selection_changed) (RosterViewGtk* self);
 };
 

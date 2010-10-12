@@ -77,9 +77,6 @@ enum {
 };
 
 enum {
-  PRESENTITY_SELECTED_SIGNAL,
-  HEAP_SELECTED_SIGNAL,
-  HEAP_GROUP_SELECTED_SIGNAL,
   SELECTION_CHANGED_SIGNAL,
   LAST_SIGNAL
 };
@@ -125,12 +122,6 @@ enum {
 /*
  * Helpers
  */
-
-/* DESCRIPTION: Remove a child from a GtkContainer
- *
- */
-static void remove_child (GtkWidget* child,
-			  GtkWidget* container);
 
 /* DESCRIPTION : Set of functions called when the user clicks in a view
  * BEHAVIOUR   : Folds/unfolds, shows a menu or triggers default action
@@ -450,13 +441,6 @@ static void roster_view_gtk_update_groups (RosterViewGtk *view,
 /* Implementation of the helpers */
 
 static void
-remove_child (GtkWidget* child,
-	      GtkWidget* container)
-{
-  gtk_container_remove (GTK_CONTAINER (container), child);
-}
-
-static void
 on_clicked_show_heap_menu (Ekiga::Heap* heap,
 			   GdkEventButton* event)
 {
@@ -641,65 +625,12 @@ show_offline_contacts_changed_nt (G_GNUC_UNUSED gpointer id,
 
 
 static void
-on_selection_changed (GtkTreeSelection* selection,
+on_selection_changed (G_GNUC_UNUSED GtkTreeSelection* selection,
 		      gpointer data)
 {
   RosterViewGtk* self = NULL;
-  GtkTreeModel* model = NULL;
-  GtkTreeIter iter;
 
   self = ROSTER_VIEW_GTK (data);
-
-  if (gtk_tree_selection_get_selected (selection, &model, &iter)) {
-
-    gint column_type;
-    gchar* name = NULL;
-    Ekiga::Heap* heap = NULL;
-    Ekiga::Presentity *presentity = NULL;
-    gtk_tree_model_get (model, &iter,
-			COLUMN_NAME, &name,
-			COLUMN_TYPE, &column_type,
-			COLUMN_HEAP, &heap,
-			COLUMN_PRESENTITY, &presentity,
-			-1);
-    gtk_container_foreach (GTK_CONTAINER (self->priv->toolbar),
-			   (GtkCallback)remove_child, self->priv->toolbar);
-
-    switch (column_type) {
-
-    case TYPE_PRESENTITY: {
-
-      g_signal_emit (self, signals[HEAP_SELECTED_SIGNAL], 0, NULL);
-      g_signal_emit (self, signals[HEAP_GROUP_SELECTED_SIGNAL], 0, NULL, NULL);
-      g_signal_emit (self, signals[PRESENTITY_SELECTED_SIGNAL], 0, presentity);
-      break;
-    }
-    case TYPE_HEAP: {
-
-      g_signal_emit (self, signals[PRESENTITY_SELECTED_SIGNAL], 0, NULL);
-      g_signal_emit (self, signals[HEAP_GROUP_SELECTED_SIGNAL], 0, NULL, NULL);
-      g_signal_emit (self, signals[HEAP_SELECTED_SIGNAL], 0, heap);
-      break;
-    }
-
-    case TYPE_GROUP: {
-
-      g_signal_emit (self, signals[PRESENTITY_SELECTED_SIGNAL], 0, NULL);
-      g_signal_emit (self, signals[HEAP_SELECTED_SIGNAL], 0, NULL);
-      g_signal_emit (self, signals[HEAP_GROUP_SELECTED_SIGNAL], 0, heap, name);
-      break;
-    }
-    default:
-      break;
-    }
-
-    g_free (name);
-  } else {
-
-    g_signal_emit (self, signals[PRESENTITY_SELECTED_SIGNAL], 0, NULL);
-    g_signal_emit (self, signals[HEAP_SELECTED_SIGNAL], 0, NULL);
-    g_signal_emit (self, signals[HEAP_GROUP_SELECTED_SIGNAL], 0, NULL, NULL);
-  }
 
   g_signal_emit (self, signals[SELECTION_CHANGED_SIGNAL], 0);
 }
@@ -1406,7 +1337,6 @@ static void
 roster_view_gtk_class_init (gpointer g_class,
 			    gpointer /*class_data*/)
 {
-  RosterViewGtkClass* roster_view_gtk_class = NULL;
   GObjectClass *gobject_class = NULL;
 
   parent_class = (GObjectClass *) g_type_class_peek_parent (g_class);
@@ -1415,52 +1345,14 @@ roster_view_gtk_class_init (gpointer g_class,
   gobject_class->dispose = roster_view_gtk_dispose;
   gobject_class->finalize = roster_view_gtk_finalize;
 
-  signals[PRESENTITY_SELECTED_SIGNAL] =
-    g_signal_new ("presentity-selected",
-		  G_OBJECT_CLASS_TYPE (gobject_class),
-		  G_SIGNAL_RUN_LAST,
-		  G_STRUCT_OFFSET (RosterViewGtkClass, presentity_selected),
-		  NULL, NULL,
-		  g_cclosure_marshal_VOID__POINTER,
-		  G_TYPE_NONE, 1,
-		  G_TYPE_POINTER);
-
-  signals[HEAP_SELECTED_SIGNAL] =
-    g_signal_new ("heap-selected",
-		  G_OBJECT_CLASS_TYPE (gobject_class),
-		  G_SIGNAL_RUN_LAST,
-		  G_STRUCT_OFFSET (RosterViewGtkClass, heap_selected),
-		  NULL, NULL,
-		  g_cclosure_marshal_VOID__POINTER,
-		  G_TYPE_NONE, 1,
-		  G_TYPE_POINTER);
-
-  signals[HEAP_GROUP_SELECTED_SIGNAL] =
-    g_signal_new ("heap-group-selected",
-		  G_OBJECT_CLASS_TYPE (gobject_class),
-		  G_SIGNAL_RUN_LAST,
-		  G_STRUCT_OFFSET (RosterViewGtkClass, heap_group_selected),
-		  NULL, NULL,
-		  gm_marshal_VOID__POINTER_STRING,
-		  G_TYPE_NONE, 2,
-		  G_TYPE_POINTER,
-		  G_TYPE_STRING);
-
   signals[SELECTION_CHANGED_SIGNAL] =
     g_signal_new ("selection-changed",
 		  G_OBJECT_CLASS_TYPE (gobject_class),
 		  G_SIGNAL_RUN_LAST,
-		  G_STRUCT_OFFSET (RosterViewGtkClass, heap_group_selected),
+		  G_STRUCT_OFFSET (RosterViewGtkClass, selection_changed),
 		  NULL, NULL,
 		  g_cclosure_marshal_VOID__VOID,
 		  G_TYPE_NONE, 0);
-
-  /* FIXME: is it useful? */
-  roster_view_gtk_class = (RosterViewGtkClass*)g_class;
-  roster_view_gtk_class->presentity_selected = NULL;
-  roster_view_gtk_class->heap_selected = NULL;
-  roster_view_gtk_class->heap_group_selected = NULL;
-  roster_view_gtk_class->selection_changed = NULL;
 }
 
 
@@ -1659,77 +1551,6 @@ roster_view_gtk_new (Ekiga::PresenceCore &core)
 			show_offline_contacts_changed_nt, self);
 
   return (GtkWidget *) self;
-}
-
-void
-roster_view_gtk_get_selected (RosterViewGtk* self,
-			      Ekiga::Heap** heap,
-			      gchar** group,
-			      Ekiga::Presentity** presentity)
-{
-  g_return_if_fail (IS_ROSTER_VIEW_GTK (self)
-		    && heap != NULL
-		    && group != NULL
-		    && presentity != NULL);
-
-  GtkTreeSelection* selection = NULL;
-  GtkTreeModel* model = NULL;
-  GtkTreeIter iter;
-
-  selection = gtk_tree_view_get_selection (self->priv->tree_view);
-
-  if (gtk_tree_selection_get_selected (selection, &model, &iter)) {
-
-    gint column_type;
-    gchar* group_ = NULL;
-    Ekiga::Heap* heap_ = NULL;
-    Ekiga::Presentity *presentity_ = NULL;
-    gtk_tree_model_get (model, &iter,
-			COLUMN_NAME, &group_,
-			COLUMN_TYPE, &column_type,
-			COLUMN_HEAP, &heap_,
-			COLUMN_PRESENTITY, &presentity_,
-			-1);
-
-    switch (column_type) {
-
-    case TYPE_PRESENTITY: {
-
-      *heap = NULL;
-      *group = NULL;
-      *presentity = presentity_;
-      break;
-    }
-    case TYPE_HEAP: {
-
-      *heap = heap_;
-      *group = NULL;
-      *presentity = NULL;
-      break;
-    }
-
-    case TYPE_GROUP: {
-
-      *heap = heap_;
-      *group = g_strdup (group_);
-      *presentity = NULL;
-      break;
-    }
-    default:
-
-      *heap = NULL;
-      *group = NULL;
-      *presentity = NULL;
-      break;
-    }
-
-    g_free (group_);
-  } else {
-
-    *heap = NULL;
-    *group = NULL;
-    *presentity = NULL;
-  }
 }
 
 bool

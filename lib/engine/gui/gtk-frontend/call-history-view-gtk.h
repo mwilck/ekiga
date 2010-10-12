@@ -52,23 +52,17 @@ typedef struct _CallHistoryViewGtkClass CallHistoryViewGtkClass;
 /* creating the widget, connected to an History::Book object */
 GtkWidget *call_history_view_gtk_new (boost::shared_ptr<History::Book> book);
 
-/* Knowing what is selected in the view */
-void call_history_view_gtk_get_selected (CallHistoryViewGtk* self,
-					 History::Contact** contact);
-
 
 /* Whatever is selected, we want the view to populate the given menu builder
  * for us with the possible actions */
 bool call_history_view_gtk_populate_menu_for_selected (CallHistoryViewGtk* self,
 						       Ekiga::MenuBuilder &builder);
 
-/* This widget emits two signals :
- * "contact-selected", comes with a pointer which is a History::Contact*
- * (or NULL if no contact is selected anymore)
+/* The signals emitted by this widget:
  *
- * "selection-changed", comes with nothing -- it just says that either something
- * else has been selected, or what was selected changed (which can't happen for
- * call history items!)
+ * - "selection-changed", comes with nothing -- it just says that either
+ * something else has been selected, or what was selected changed (which can't
+ * happen for call history items!)
  */
 
 /* GObject thingies */
@@ -83,8 +77,6 @@ struct _CallHistoryViewGtkClass
 {
   GtkScrolledWindowClass parent;
 
-  void (*contact_selected) (CallHistoryViewGtk* self,
-			    gpointer contact);
   void (*selection_changed) (CallHistoryViewGtk* self);
 };
 

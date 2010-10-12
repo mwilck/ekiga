@@ -70,7 +70,6 @@ enum {
 
 /* and this is the list of signals supported */
 enum {
-  CONTACT_SELECTED_SIGNAL,
   SELECTION_CHANGED_SIGNAL,
   LAST_SIGNAL
 };
@@ -205,24 +204,12 @@ on_clicked (GtkWidget *tree,
 }
 
 static void
-on_selection_changed (GtkTreeSelection* selection,
+on_selection_changed (G_GNUC_UNUSED GtkTreeSelection* selection,
 		      gpointer data)
 {
   CallHistoryViewGtk* self = NULL;
-  GtkTreeModel* model = NULL;
-  GtkTreeIter iter;
 
   self = CALL_HISTORY_VIEW_GTK (data);
-
-  if (gtk_tree_selection_get_selected (selection, &model, &iter)) {
-
-    History::Contact* contact = NULL;
-    gtk_tree_model_get (model, &iter,
-			COLUMN_CONTACT, &contact,
-			-1);
-    g_signal_emit (self, signals[CONTACT_SELECTED_SIGNAL], 0, contact);
-  } else
-    g_signal_emit (self, signals[CONTACT_SELECTED_SIGNAL], 0, NULL);
 
   g_signal_emit (self, signals[SELECTION_CHANGED_SIGNAL], 0);
 }
@@ -284,7 +271,6 @@ static void
 call_history_view_gtk_class_init (gpointer g_class,
 				  gpointer /*class_data*/)
 {
-  CallHistoryViewGtkClass* call_history_view_gtk_class = NULL;
   GObjectClass* gobject_class = NULL;
 
   parent_class = (GObjectClass*) g_type_class_peek_parent (g_class);
@@ -293,29 +279,14 @@ call_history_view_gtk_class_init (gpointer g_class,
   gobject_class->dispose = call_history_view_gtk_dispose;
   gobject_class->finalize = call_history_view_gtk_finalize;
 
-  signals[CONTACT_SELECTED_SIGNAL] =
-    g_signal_new ("contact-selected",
-		  G_OBJECT_CLASS_TYPE (gobject_class),
-		  G_SIGNAL_RUN_LAST,
-		  G_STRUCT_OFFSET (CallHistoryViewGtkClass, contact_selected),
-		  NULL, NULL,
-		  g_cclosure_marshal_VOID__POINTER,
-		  G_TYPE_NONE, 1,
-		  G_TYPE_POINTER);
-
   signals[SELECTION_CHANGED_SIGNAL] =
     g_signal_new ("selection-changed",
 		  G_OBJECT_CLASS_TYPE (gobject_class),
 		  G_SIGNAL_RUN_LAST,
-		  G_STRUCT_OFFSET (CallHistoryViewGtkClass, contact_selected),
+		  G_STRUCT_OFFSET (CallHistoryViewGtkClass, selection_changed),
 		  NULL, NULL,
 		  g_cclosure_marshal_VOID__VOID,
 		  G_TYPE_NONE, 0);
-
-  /* FIXME: is it useful? */
-  call_history_view_gtk_class = (CallHistoryViewGtkClass*)g_class;
-  call_history_view_gtk_class->contact_selected = NULL;
-  call_history_view_gtk_class->selection_changed = NULL;
 }
 
 GType
