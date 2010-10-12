@@ -71,6 +71,7 @@ enum {
 /* and this is the list of signals supported */
 enum {
   CONTACT_SELECTED_SIGNAL,
+  SELECTION_CHANGED_SIGNAL,
   LAST_SIGNAL
 };
 
@@ -300,9 +301,19 @@ call_history_view_gtk_class_init (gpointer g_class,
 		  G_TYPE_NONE, 1,
 		  G_TYPE_POINTER);
 
+  signals[SELECTION_CHANGED_SIGNAL] =
+    g_signal_new ("contact-selected",
+		  G_OBJECT_CLASS_TYPE (gobject_class),
+		  G_SIGNAL_RUN_LAST,
+		  G_STRUCT_OFFSET (CallHistoryViewGtkClass, contact_selected),
+		  NULL, NULL,
+		  g_cclosure_marshal_VOID__VOID,
+		  G_TYPE_NONE, 0);
+
   /* FIXME: is it useful? */
   call_history_view_gtk_class = (CallHistoryViewGtkClass*)g_class;
   call_history_view_gtk_class->contact_selected = NULL;
+  call_history_view_gtk_class->selection_changed = NULL;
 }
 
 GType

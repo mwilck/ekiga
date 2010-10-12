@@ -57,9 +57,12 @@ void call_history_view_gtk_get_selected (CallHistoryViewGtk* self,
 					 History::Contact** contact);
 
 
-/* This widget emits a single signal :
+/* This widget emits two signals :
  * "contact-selected", comes with a pointer which is a History::Contact*
  * (or NULL if no contact is selected anymore)
+ *
+ * "selection-changed", comes with nothing -- it just says that either something
+ * else has been selected, or what was selected changed.
  */
 
 /* GObject thingies */
@@ -76,6 +79,7 @@ struct _CallHistoryViewGtkClass
 
   void (*contact_selected) (CallHistoryViewGtk* self,
 			    gpointer contact);
+  void (*selection_changed) (CallHistoryViewGtk* self);
 };
 
 #define CALL_HISTORY_VIEW_GTK_TYPE (call_history_view_gtk_get_type ())
