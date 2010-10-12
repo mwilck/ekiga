@@ -77,6 +77,9 @@ void roster_view_gtk_get_selected (RosterViewGtk* self,
  *
  * - "presentity-selected", comes with a pointer which is an Ekiga::Presentity*
  * (or NULL if no presentity is selected anymore)
+ *
+ * - "selection-changed", comes with nothing, and notifies whether either the
+ * selection changed, or the selected object changed.
  */
 
 
@@ -99,6 +102,7 @@ struct _RosterViewGtkClass
   void (*heap_group_selected) (RosterViewGtk* self,
 			       gpointer heap,
 			       const gchar* group_name);
+  void (*selection_changed) (RosterViewGtk* self);
 };
 
 #define ROSTER_VIEW_GTK_TYPE (roster_view_gtk_get_type ())

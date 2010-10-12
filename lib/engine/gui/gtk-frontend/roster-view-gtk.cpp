@@ -80,6 +80,7 @@ enum {
   PRESENTITY_SELECTED_SIGNAL,
   HEAP_SELECTED_SIGNAL,
   HEAP_GROUP_SELECTED_SIGNAL,
+  SELECTION_CHANGED_SIGNAL,
   LAST_SIGNAL
 };
 
@@ -1418,11 +1419,21 @@ roster_view_gtk_class_init (gpointer g_class,
 		  G_TYPE_POINTER,
 		  G_TYPE_STRING);
 
+  signals[SELECTION_CHANGED_SIGNAL] =
+    g_signal_new ("selection-changed",
+		  G_OBJECT_CLASS_TYPE (gobject_class),
+		  G_SIGNAL_RUN_LAST,
+		  G_STRUCT_OFFSET (RosterViewGtkClass, heap_group_selected),
+		  NULL, NULL,
+		  g_cclosure_marshal_VOID__VOID,
+		  G_TYPE_NONE, 0);
+
   /* FIXME: is it useful? */
   roster_view_gtk_class = (RosterViewGtkClass*)g_class;
   roster_view_gtk_class->presentity_selected = NULL;
   roster_view_gtk_class->heap_selected = NULL;
   roster_view_gtk_class->heap_group_selected = NULL;
+  roster_view_gtk_class->selection_changed = NULL;
 }
 
 
