@@ -409,6 +409,17 @@
       </locale>
     </schema>
     <schema>
+      <key>/schemas/apps/@PACKAGE_NAME@/protocols/ports/rtp_tos_field</key>
+      <applyto>/apps/@PACKAGE_NAME@/protocols/ports/rtp_tos_field</applyto>
+      <owner>Ekiga</owner>
+      <type>int</type>
+      <default>184</default>
+      <locale name="C">
+        <short>RTP TOS field</short>
+        <long>Set IP header TOS field for RTP packages.</long>
+      </locale>
+    </schema>
+    <schema>
       <key>/schemas/apps/@PACKAGE_NAME@/protocols/h323/enable_h245_tunneling</key>
       <applyto>/apps/@PACKAGE_NAME@/protocols/h323/enable_h245_tunneling</applyto>
       <owner>Ekiga</owner>

@@ -136,6 +136,9 @@ public:
     void get_tcp_ports (unsigned & min_port, 
                         unsigned & max_port) const;
 
+    void get_rtp_tos (unsigned &tos) const;
+    void set_rtp_tos (unsigned tos);
+
     void set_stun_server (const std::string & server);
     void set_stun_enabled (bool);
 

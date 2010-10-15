@@ -396,4 +396,9 @@ void ConfBridge::on_property_changed (std::string key, GmConfEntry *entry)
 
     g_strfreev (couple);
   }
+  else if (key == PORTS_KEY "rtp_tos_field") {
+
+    manager.set_rtp_tos (gm_conf_entry_get_int (entry));
+  }
+
 }

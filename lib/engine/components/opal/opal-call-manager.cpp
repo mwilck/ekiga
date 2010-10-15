@@ -490,6 +490,17 @@ void CallManager::get_tcp_ports (unsigned & min_port,
   max_port = GetTCPPortMax ();
 }
 
+void
+CallManager::get_rtp_tos (unsigned &tos) const
+{
+  tos = GetRtpIpTypeofService ();
+}
+
+void
+CallManager::set_rtp_tos (unsigned tos)
+{
+  SetRtpIpTypeofService (tos);
+}
 
 void CallManager::set_stun_server (const std::string & server)
 {
