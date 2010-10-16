@@ -73,6 +73,8 @@ ConfBridge::ConfBridge (Ekiga::Service & _service)
   Ekiga::ConfKeys keys;
   property_changed.connect (boost::bind (&ConfBridge::on_property_changed, this, _1, _2));
 
+  keys.push_back (PROTOCOLS_KEY "rtp_tos_field");
+
   keys.push_back (PORTS_KEY "udp_port_range");
   keys.push_back (PORTS_KEY "tcp_port_range");
 
@@ -365,6 +367,10 @@ void ConfBridge::on_property_changed (std::string key, GmConfEntry *entry)
 
     manager.set_auto_answer (gm_conf_entry_get_bool (entry));
   }
+  else if (key == PROTOCOLS_KEY "rtp_tos_field") {
+
+    manager.set_rtp_tos (gm_conf_entry_get_int (entry));
+  }
 
 
   //
@@ -395,10 +401,6 @@ void ConfBridge::on_property_changed (std::string key, GmConfEntry *entry)
       manager.set_tcp_ports (min_port, max_port);
 
     g_strfreev (couple);
-  }
-  else if (key == PORTS_KEY "rtp_tos_field") {
-
-    manager.set_rtp_tos (gm_conf_entry_get_int (entry));
   }
 
 }

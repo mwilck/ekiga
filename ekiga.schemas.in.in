@@ -322,6 +322,17 @@
       </locale>
     </schema>
     <schema>
+      <key>/schemas/apps/@PACKAGE_NAME@/protocols/rtp_tos_field</key>
+      <applyto>/apps/@PACKAGE_NAME@/protocols/rtp_tos_field</applyto>
+      <owner>Ekiga</owner>
+      <type>int</type>
+      <default>184</default>
+      <locale name="C">
+        <short>Type of Service (TOS) byte on outgoing RTP IP packets</short>
+        <long>The Type of Service (TOS) byte on outgoing RTP IP packets. This byte is used by the network to provide some level of Quality of Service (QoS). Default value 184 (0xB8) correspond to Expedited Forwarding (EF) PHB as defined in RFC 3246.</long>
+      </locale>
+    </schema>
+    <schema>
       <key>/schemas/apps/@PACKAGE_NAME@/protocols/interface</key>
       <applyto>/apps/@PACKAGE_NAME@/protocols/interface</applyto>
       <owner>Ekiga</owner>
@@ -406,17 +417,6 @@
       <locale name="C">
 	<short>UDP port range</short>
 	<long>The range of UDP ports that Ekiga will use.</long>
-      </locale>
-    </schema>
-    <schema>
-      <key>/schemas/apps/@PACKAGE_NAME@/protocols/ports/rtp_tos_field</key>
-      <applyto>/apps/@PACKAGE_NAME@/protocols/ports/rtp_tos_field</applyto>
-      <owner>Ekiga</owner>
-      <type>int</type>
-      <default>184</default>
-      <locale name="C">
-        <short>RTP TOS field</short>
-        <long>Set IP header TOS field for RTP packages.</long>
       </locale>
     </schema>
     <schema>
