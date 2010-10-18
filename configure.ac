@@ -117,35 +117,6 @@ AC_MSG_RESULT([yes])
 
 AM_CONDITIONAL(WIN32, test "x${win32}" = "x1")
 
-dnl This ARCH stuff is here for reference only and should be removed in the future...
-case $target_os in
-
-  solaris*)
-    ARCH_PTLIB_CFLAGS="-DPTRACING -DNDEBUG -DSOLARIS -g "
-    ARCH_OPAL_LIBS="-lpt -lopal -ldl -lpthread"
-    ;;
-
-  linux-gnulp | linux-gnu | linux-gnueabi | linux | Linux)
-    ARCH_PTLIB_CFLAGS="-DPTRACING -DNDEBUG -Os -g -felide-constructors"
-    ARCH_OPAL_LIBS="-lpt -lopal -ldl -lpthread"
-    ;;
-
-  FreeBSD* | freebsd* | NetBSD* | netbsd* )
-    ARCH_PTLIB_CFLAGS="-DPTRACING -DNDEBUG -Os -g"
-    ARCH_OPAL_LIBS="-lpt -lopal -lpthread"
-    ;;
-
-  darwin* )
-    ARCH_PTLIB_CFLAGS="-Os -DPTRACING -DNDEBUG -DNO_LONG_DOUBLE -DSTATIC_LIBS_USED"
-    ARCH_OPAL_LIBS="-multiply_defined suppress -lh323_Darwin_ppc_r_s -lpt_Darwin_ppc_r_s -lssl -lcrypto -lX11 -framework AudioToolbox -framework CoreAudio -framework CoreServices"
-    ;;
-
-  mingw* )
-    ARCH_PTLIB_CFLAGS="-mms-bitfields -DPTRACING -DSTATIC_LIBS_USED"
-    ARCH_OPAL_LIBS="-mwindows -enable-auto-import -enable-runtime-pseudo-reloc -enable-stdcall-fixup -lpt -lopal -lwinmm -lwsock32 -lsnmpapi -lmpr -lcomdlg32"
-    ;;
-esac
-
 dnl Check the byte order
 AC_MSG_CHECKING(Byte order)
 byte_order="unknown"
