@@ -1,5 +1,7 @@
 SUBDIRS = man sounds pixmaps lib src plugins po 
 
+ACLOCAL_AMFLAGS = -I m4
+
 ### Don't execute make in the help subdirectory if BULD_DOC is set
 if HAVE_GNOME_DOC_UTILS
 SUBDIRS += help
@@ -59,6 +61,12 @@ Applications_DATA = $(DESKTOP_FILE)
 
 ### Dist Clear
 DISTCLEANFILES=gnome-doc-utils.make ekiga.desktop ekiga.schemas
+
+MAINTAINERCLEANFILES= \
+	Makefile.in aclocal.m4 compile config.guess config.sub \
+	depcomp install-sh ltmain.sh missing config.h.in configure \
+	m4/libtool.m4 m4/ltoptions.m4 m4/ltsugar.m4 m4/ltversion.m4 \
+	m4/lt~obsolete.m4 m4/gnome-doc-utils.m4
 
 ### Install the schemas file in /etc if GCONF support is not compiled in,
 ### and do not install the schemas at all
