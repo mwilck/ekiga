@@ -40,7 +40,6 @@
 #include <string>
 #include <sstream>
 #include <sys/time.h>
-#include <string.h>
 
 #include <glib.h>
 
@@ -90,11 +89,11 @@ OPENLDAP::Book::parse_result (LDAPMessage* message)
   while (rc == LDAP_SUCCESS) {
     rc = ldap_get_attribute_ber (ldap_context, message, ber, &bv, &bvals);
     if (bv.bv_val == NULL) break;
-    if (attributes[0] == NULL || !strcasecmp(bv.bv_val, attributes[0])) {
+    if (attributes[0] == NULL || !g_ascii_strcasecmp(bv.bv_val, attributes[0])) {
       username = std::string (bvals[0].bv_val, bvals[0].bv_len);
     } else {
       for (i=1; attributes[i]; i++) {
-        if (!strcasecmp(bv.bv_val,attributes[i]) && bvals && bvals[0].bv_val ) {
+        if (!g_ascii_strcasecmp(bv.bv_val,attributes[i]) && bvals && bvals[0].bv_val ) {
           /* FIXME: this is annoying. Assume if a colon is present that
            * the value is already in URI form, otherwise add a sip: prefix.
            */
@@ -385,9 +384,9 @@ OPENLDAP::BookInfoParse (struct BookInfo &info)
   ldap_url_parse (info.uri.c_str(), &url_tmp);
   if (url_tmp->lud_exts) {
     for (int i=0; url_tmp->lud_exts[i]; i++) {
-      if (!strcasecmp(url_tmp->lud_exts[i], "StartTLS")) {
+      if (!g_ascii_strcasecmp(url_tmp->lud_exts[i], "StartTLS")) {
         info.starttls = true;
-      } else if (!strncasecmp(url_tmp->lud_exts[i], "SASL", 4)) {
+      } else if (!g_ascii_strncasecmp(url_tmp->lud_exts[i], "SASL", 4)) {
         info.sasl = true;
 	if (url_tmp->lud_exts[i][4] == '=')
 	  info.saslMech = std::string(url_tmp->lud_exts[i]+5);

@@ -44,8 +44,6 @@ AC_PROG_CXX
 AC_ISC_POSIX
 AC_HEADER_STDC
 
-AC_CHECK_DECLS(strcasecmp)
-
 dnl Enable compiler warnings
 if test ".$ac_cv_c_compiler_gnu" = .yes; then
    CFLAGS="$CFLAGS -Wall -Wextra -Winit-self -Wswitch-default -Wswitch-enum -Wstrict-aliasing=2 -Wfloat-equal -Wshadow"
