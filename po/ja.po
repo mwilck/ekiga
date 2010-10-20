@@ -12,21 +12,22 @@
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: ekiga master\n"
+"Project-Id-Version: ekiga gnome-2-32\n"
 "Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?"
 "product=ekiga&component=general\n"
-"POT-Creation-Date: 2010-09-17 11:27+0000\n"
-"PO-Revision-Date: 2010-09-18 02:03+0900\n"
+"POT-Creation-Date: 2010-10-11 06:41+0000\n"
+"PO-Revision-Date: 2010-10-19 20:31+0900\n"
 "Last-Translator: KUSANO Takayuki <AE5T-KSN@asahi-net.or.jp>\n"
 "Language-Team: Japanese <gnome-translation@gnome.gr.jp>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
+"Language: ja\n"
 "Plural-Forms: nplurals=1; plural=0;\n"
 
 #. Application name
-#: ../ekiga.desktop.in.in.h:1 ../src/gui/main_window.cpp:4382
-#: ../src/gui/main_window.cpp:4384
+#: ../ekiga.desktop.in.in.h:1 ../src/gui/main_window.cpp:4492
+#: ../src/gui/main_window.cpp:4494
 msgid "Ekiga Softphone"
 msgstr "Ekiga ソフトフォン"
 
@@ -121,7 +122,7 @@ msgstr "DTMF 送信"
 msgid "Disable video hardware acceleration"
 msgstr "ビデオのハードウェア・アクセラレーションを無効にするかどうか"
 
-#: ../ekiga.schemas.in.in.h:17 ../src/gui/main_window.cpp:3623
+#: ../ekiga.schemas.in.in.h:17 ../src/gui/main_window.cpp:3742
 msgid "Display images from your camera device"
 msgstr "カメラ・デバイスからの映像を表示します"
 
@@ -190,8 +191,8 @@ msgid ""
 "If enabled, Ekiga will start hidden provided that the notification area is "
 "present in the GNOME panel"
 msgstr ""
-"TRUE にすると、GNOME パネルの通知エリアに Ekiga のアイコンを表示せずに起動し"
-"ます"
+"TRUE にすると、GNOME パネルの通知領域に Ekiga のアイコンを表示せずに起動しま"
+"す"
 
 #: ../ekiga.schemas.in.in.h:33
 msgid ""
@@ -383,7 +384,7 @@ msgstr ""
 msgid "Show offline contacts"
 msgstr "オフラインの連絡先を表示するかどうか"
 
-#: ../ekiga.schemas.in.in.h:75 ../src/gui/main_window.cpp:3252
+#: ../ekiga.schemas.in.in.h:75 ../src/gui/main_window.cpp:3369
 msgid "Show the call panel"
 msgstr "呼び出しパネルを表示するかどうか"
 
@@ -673,15 +674,15 @@ msgstr "映像コーデックを要素とするリストです。"
 
 #: ../ekiga.schemas.in.in.h:129
 msgid "The video view before having switched to fullscreen"
-msgstr "フルスクリーンモードに切り替える前の表示方法"
+msgstr "フルスクリーンに切り替える前の表示方法"
 
 #: ../ekiga.schemas.in.in.h:130
 msgid ""
 "The video view before having switched to fullscreen (same values as "
 "video_view)"
 msgstr ""
-"映像をフルスクリーンモードに切り替える前の表示方法です (video_view と同じ数値"
-"を指定する)。"
+"映像をフルスクリーンに切り替える前の表示方法です (video_view と同じ数値を指定"
+"する)。"
 
 #: ../ekiga.schemas.in.in.h:131
 msgid "The zoom value"
@@ -782,7 +783,7 @@ msgid "Neighbours"
 msgstr "近くにいる仲間"
 
 #: ../lib/engine/components/call-history/history-book.cpp:137
-#: ../lib/engine/gui/gtk-frontend/call-history-view-gtk.cpp:170
+#: ../lib/engine/gui/gtk-frontend/call-history-view-gtk.cpp:181
 msgid "Clear List"
 msgstr "一覧のクリア"
 
@@ -822,7 +823,7 @@ msgstr "名前なし"
 #: ../plugins/evolution/evolution-contact.cpp:218
 #: ../plugins/loudmouth/loudmouth-presentity.cpp:151
 #: ../plugins/resource-list/rl-presentity.cpp:206
-#: ../src/gui/main_window.cpp:3210
+#: ../src/gui/main_window.cpp:3324
 msgid "_Edit"
 msgstr "編集(_E)"
 
@@ -977,15 +978,15 @@ msgid "Please edit this group name"
 msgstr "このグループの名前を入力してください"
 
 #: ../lib/engine/components/opal/h323-endpoint.cpp:131
-#: ../lib/engine/components/opal/sip-endpoint.cpp:230
-#: ../lib/engine/components/opal/sip-endpoint.cpp:234
+#: ../lib/engine/components/opal/sip-endpoint.cpp:233
+#: ../lib/engine/components/opal/sip-endpoint.cpp:237
 msgid "Call"
 msgstr "発信"
 
 #: ../lib/engine/components/opal/h323-endpoint.cpp:134
-#: ../lib/engine/components/opal/sip-endpoint.cpp:231
-#: ../lib/engine/components/opal/sip-endpoint.cpp:235
-#: ../src/gui/main_window.cpp:2984
+#: ../lib/engine/components/opal/sip-endpoint.cpp:234
+#: ../lib/engine/components/opal/sip-endpoint.cpp:238
+#: ../src/gui/main_window.cpp:3105
 msgid "Transfer"
 msgstr "転送"
 
@@ -999,13 +1000,13 @@ msgid "Bad username/password"
 msgstr "ユーザ名またはパスワードが間違っています"
 
 #: ../lib/engine/components/opal/h323-endpoint.cpp:315
-#: ../lib/engine/components/opal/sip-endpoint.cpp:825
+#: ../lib/engine/components/opal/sip-endpoint.cpp:840
 msgid "Transport error"
 msgstr "転送エラー"
 
 #: ../lib/engine/components/opal/h323-endpoint.cpp:326
 #: ../lib/engine/components/opal/h323-endpoint.cpp:331
-#: ../lib/engine/components/opal/sip-endpoint.cpp:832
+#: ../lib/engine/components/opal/sip-endpoint.cpp:847
 msgid "Failed"
 msgstr "失敗"
 
@@ -1229,7 +1230,7 @@ msgid "Abnormal call termination"
 msgstr "着信が切断されました (異常あり)"
 
 #: ../lib/engine/components/opal/opal-call.cpp:427
-#: ../src/gui/main_window.cpp:1497
+#: ../src/gui/main_window.cpp:1507
 msgid "Could not connect to remote host"
 msgstr "リモート・ホストへ接続できませんでした"
 
@@ -1297,96 +1298,96 @@ msgstr ""
 "設定の手順については http://wiki.ekiga.org/index.php/"
 "Enable_port_forwarding_manually (英文) をご覧ください。"
 
-#: ../lib/engine/components/opal/sip-endpoint.cpp:255
-#: ../lib/engine/components/opal/sip-endpoint.cpp:257
+#: ../lib/engine/components/opal/sip-endpoint.cpp:258
+#: ../lib/engine/components/opal/sip-endpoint.cpp:260
 msgid "Message"
 msgstr "メッセージ"
 
-#: ../lib/engine/components/opal/sip-endpoint.cpp:632
+#: ../lib/engine/components/opal/sip-endpoint.cpp:647
 msgid "Bad request"
 msgstr "おかしな要求です"
 
-#: ../lib/engine/components/opal/sip-endpoint.cpp:636
+#: ../lib/engine/components/opal/sip-endpoint.cpp:651
 msgid "Payment required"
 msgstr "無料ではありません"
 
-#: ../lib/engine/components/opal/sip-endpoint.cpp:640
+#: ../lib/engine/components/opal/sip-endpoint.cpp:655
 msgid "Unauthorized"
 msgstr "まだ認証していません"
 
-#: ../lib/engine/components/opal/sip-endpoint.cpp:644
+#: ../lib/engine/components/opal/sip-endpoint.cpp:659
 msgid "Forbidden, please check that username and password are correct"
 msgstr "拒否されました。ユーザ名とパスワードが正しいか確認してください"
 
-#: ../lib/engine/components/opal/sip-endpoint.cpp:648
+#: ../lib/engine/components/opal/sip-endpoint.cpp:663
 msgid "Timeout"
 msgstr "タイムアウトしました"
 
-#: ../lib/engine/components/opal/sip-endpoint.cpp:652
+#: ../lib/engine/components/opal/sip-endpoint.cpp:667
 msgid "Conflict"
 msgstr "競合しています"
 
-#: ../lib/engine/components/opal/sip-endpoint.cpp:656
+#: ../lib/engine/components/opal/sip-endpoint.cpp:671
 msgid "Temporarily unavailable"
 msgstr "一時的な障害です"
 
-#: ../lib/engine/components/opal/sip-endpoint.cpp:660
+#: ../lib/engine/components/opal/sip-endpoint.cpp:675
 msgid "Not acceptable"
 msgstr "許可できません"
 
-#: ../lib/engine/components/opal/sip-endpoint.cpp:664
+#: ../lib/engine/components/opal/sip-endpoint.cpp:679
 msgid "Illegal status code"
 msgstr "不正なステータス・コードです"
 
-#: ../lib/engine/components/opal/sip-endpoint.cpp:668
+#: ../lib/engine/components/opal/sip-endpoint.cpp:683
 msgid "Multiple choices"
 msgstr "複数の選択"
 
-#: ../lib/engine/components/opal/sip-endpoint.cpp:672
+#: ../lib/engine/components/opal/sip-endpoint.cpp:687
 msgid "Moved permanently"
 msgstr "元に戻せない移動"
 
-#: ../lib/engine/components/opal/sip-endpoint.cpp:676
+#: ../lib/engine/components/opal/sip-endpoint.cpp:691
 msgid "Moved temporarily"
 msgstr "一時的な移動"
 
-#: ../lib/engine/components/opal/sip-endpoint.cpp:680
+#: ../lib/engine/components/opal/sip-endpoint.cpp:695
 msgid "Use proxy"
 msgstr "プロキシを使ってください"
 
-#: ../lib/engine/components/opal/sip-endpoint.cpp:684
+#: ../lib/engine/components/opal/sip-endpoint.cpp:699
 msgid "Alternative service"
 msgstr "代替のサービス"
 
-#: ../lib/engine/components/opal/sip-endpoint.cpp:688
+#: ../lib/engine/components/opal/sip-endpoint.cpp:703
 msgid "Not found"
 msgstr "見つかりません"
 
-#: ../lib/engine/components/opal/sip-endpoint.cpp:692
+#: ../lib/engine/components/opal/sip-endpoint.cpp:707
 msgid "Method not allowed"
 msgstr "利用できない方法です"
 
-#: ../lib/engine/components/opal/sip-endpoint.cpp:696
+#: ../lib/engine/components/opal/sip-endpoint.cpp:711
 msgid "Proxy authentication required"
 msgstr "プロキシの認証が必要です"
 
-#: ../lib/engine/components/opal/sip-endpoint.cpp:700
+#: ../lib/engine/components/opal/sip-endpoint.cpp:715
 msgid "Length required"
 msgstr "Length required"
 
-#: ../lib/engine/components/opal/sip-endpoint.cpp:704
+#: ../lib/engine/components/opal/sip-endpoint.cpp:719
 msgid "Request entity too big"
 msgstr "要求したエントリが大きすぎます"
 
-#: ../lib/engine/components/opal/sip-endpoint.cpp:708
+#: ../lib/engine/components/opal/sip-endpoint.cpp:723
 msgid "Request URI too long"
 msgstr "要求した URI が長すぎます"
 
-#: ../lib/engine/components/opal/sip-endpoint.cpp:712
+#: ../lib/engine/components/opal/sip-endpoint.cpp:727
 msgid "Unsupported media type"
 msgstr "サポートしていないメディアです"
 
-#: ../lib/engine/components/opal/sip-endpoint.cpp:716
+#: ../lib/engine/components/opal/sip-endpoint.cpp:731
 msgid "Unsupported URI scheme"
 msgstr "サポートしていない URI のルールです"
 
@@ -1394,127 +1395,127 @@ msgstr "サポートしていない URI のルールです"
 #. * Here extension is a specific "phone number", see
 #. * http://en.wikipedia.org/wiki/Extension_(telephone)
 #. * for more information
-#: ../lib/engine/components/opal/sip-endpoint.cpp:724
+#: ../lib/engine/components/opal/sip-endpoint.cpp:739
 msgid "Bad extension"
 msgstr "おかしな拡張機能です"
 
-#: ../lib/engine/components/opal/sip-endpoint.cpp:728
+#: ../lib/engine/components/opal/sip-endpoint.cpp:743
 msgid "Extension required"
 msgstr "拡張機能が必要です"
 
-#: ../lib/engine/components/opal/sip-endpoint.cpp:732
+#: ../lib/engine/components/opal/sip-endpoint.cpp:747
 msgid "Interval too brief"
 msgstr "間隔が短すぎます"
 
-#: ../lib/engine/components/opal/sip-endpoint.cpp:736
+#: ../lib/engine/components/opal/sip-endpoint.cpp:751
 msgid "Loop detected"
 msgstr "ループに入りました"
 
-#: ../lib/engine/components/opal/sip-endpoint.cpp:740
+#: ../lib/engine/components/opal/sip-endpoint.cpp:755
 msgid "Too many hops"
 msgstr "ホップの数が多すぎます"
 
-#: ../lib/engine/components/opal/sip-endpoint.cpp:744
+#: ../lib/engine/components/opal/sip-endpoint.cpp:759
 msgid "Address incomplete"
 msgstr "E-メール・アドレスが不完全です"
 
-#: ../lib/engine/components/opal/sip-endpoint.cpp:748
+#: ../lib/engine/components/opal/sip-endpoint.cpp:763
 msgid "Ambiguous"
 msgstr "あいまいです"
 
-#: ../lib/engine/components/opal/sip-endpoint.cpp:752
+#: ../lib/engine/components/opal/sip-endpoint.cpp:767
 msgid "Busy Here"
 msgstr "ここは多忙です"
 
-#: ../lib/engine/components/opal/sip-endpoint.cpp:756
+#: ../lib/engine/components/opal/sip-endpoint.cpp:771
 msgid "Request terminated"
 msgstr "要求が打ち切られました"
 
-#: ../lib/engine/components/opal/sip-endpoint.cpp:760
+#: ../lib/engine/components/opal/sip-endpoint.cpp:775
 msgid "Remote party host is offline"
 msgstr "リモートの仲間のホストはオフラインです"
 
-#: ../lib/engine/components/opal/sip-endpoint.cpp:764
+#: ../lib/engine/components/opal/sip-endpoint.cpp:779
 msgid "Not acceptable here"
 msgstr "許可できません"
 
-#: ../lib/engine/components/opal/sip-endpoint.cpp:768
+#: ../lib/engine/components/opal/sip-endpoint.cpp:783
 msgid "Bad event"
 msgstr "おかしなイベントです"
 
-#: ../lib/engine/components/opal/sip-endpoint.cpp:772
+#: ../lib/engine/components/opal/sip-endpoint.cpp:787
 msgid "Request pending"
 msgstr "要求が保留中です"
 
-#: ../lib/engine/components/opal/sip-endpoint.cpp:776
+#: ../lib/engine/components/opal/sip-endpoint.cpp:791
 msgid "Undecipherable"
 msgstr "解読できません"
 
-#: ../lib/engine/components/opal/sip-endpoint.cpp:780
+#: ../lib/engine/components/opal/sip-endpoint.cpp:795
 msgid "Internal server error"
 msgstr "サーバ内部のエラーです"
 
-#: ../lib/engine/components/opal/sip-endpoint.cpp:784
+#: ../lib/engine/components/opal/sip-endpoint.cpp:799
 msgid "Not implemented"
 msgstr "実装されていません"
 
-#: ../lib/engine/components/opal/sip-endpoint.cpp:788
+#: ../lib/engine/components/opal/sip-endpoint.cpp:803
 msgid "Bad gateway"
 msgstr "おかしなゲートウェイです"
 
-#: ../lib/engine/components/opal/sip-endpoint.cpp:792
+#: ../lib/engine/components/opal/sip-endpoint.cpp:807
 msgid "Service unavailable"
 msgstr "サービスは利用できません"
 
-#: ../lib/engine/components/opal/sip-endpoint.cpp:796
+#: ../lib/engine/components/opal/sip-endpoint.cpp:811
 msgid "Server timeout"
 msgstr "サーバの応答がタイムアウトしました"
 
-#: ../lib/engine/components/opal/sip-endpoint.cpp:800
+#: ../lib/engine/components/opal/sip-endpoint.cpp:815
 msgid "SIP version not supported"
 msgstr "サポートしていないバージョンの SIP"
 
-#: ../lib/engine/components/opal/sip-endpoint.cpp:804
+#: ../lib/engine/components/opal/sip-endpoint.cpp:819
 msgid "Message too large"
 msgstr "メッセージが長すぎます"
 
-#: ../lib/engine/components/opal/sip-endpoint.cpp:808
+#: ../lib/engine/components/opal/sip-endpoint.cpp:823
 msgid "Busy everywhere"
 msgstr "至るところが多忙です"
 
-#: ../lib/engine/components/opal/sip-endpoint.cpp:812
+#: ../lib/engine/components/opal/sip-endpoint.cpp:827
 msgid "Decline"
 msgstr "Decline"
 
-#: ../lib/engine/components/opal/sip-endpoint.cpp:816
+#: ../lib/engine/components/opal/sip-endpoint.cpp:831
 msgid "Does not exist anymore"
 msgstr "誰もいません"
 
-#: ../lib/engine/components/opal/sip-endpoint.cpp:820
+#: ../lib/engine/components/opal/sip-endpoint.cpp:835
 msgid "Globally not acceptable"
 msgstr "グローバルでは許可できません"
 
-#: ../lib/engine/components/opal/sip-endpoint.cpp:980
+#: ../lib/engine/components/opal/sip-endpoint.cpp:995
 msgid "Could not send message"
 msgstr "メッセージを送信できませんでした"
 
-#: ../lib/engine/components/opal/sip-endpoint.cpp:1077
-#: ../src/gui/main_window.cpp:2824
+#: ../lib/engine/components/opal/sip-endpoint.cpp:1138
+#: ../src/gui/main_window.cpp:2959
 #, c-format
 msgid "Incoming call from %s"
 msgstr "%s さんからの着信です"
 
-#: ../lib/engine/components/opal/sip-endpoint.cpp:1079
+#: ../lib/engine/components/opal/sip-endpoint.cpp:1140
 #, c-format
 msgid "Incoming call"
 msgstr "着信中です"
 
-#: ../lib/engine/components/opal/sip-endpoint.cpp:1085
+#: ../lib/engine/components/opal/sip-endpoint.cpp:1146
 #, c-format
 msgid "In a call with %s"
 msgstr "%s さんと話中です"
 
-#: ../lib/engine/components/opal/sip-endpoint.cpp:1087
+#: ../lib/engine/components/opal/sip-endpoint.cpp:1148
 #, c-format
 msgid "In a call"
 msgstr "話中です"
@@ -1536,7 +1537,7 @@ msgid "Address Book"
 msgstr "アドレス帳"
 
 #: ../lib/engine/gui/gtk-frontend/addressbook-window.cpp:686
-#: ../src/gui/main_window.cpp:3159
+#: ../src/gui/main_window.cpp:3280
 msgid "Address _Book"
 msgstr "アドレス帳(_B)"
 
@@ -1579,8 +1580,8 @@ msgstr "顔文字(_S)..."
 msgid "Chat Window"
 msgstr "チャット・ウィンドウ"
 
-#: ../lib/engine/gui/gtk-frontend/roster-view-gtk.cpp:971
-#: ../lib/engine/gui/gtk-frontend/roster-view-gtk.cpp:1006
+#: ../lib/engine/gui/gtk-frontend/roster-view-gtk.cpp:1045
+#: ../lib/engine/gui/gtk-frontend/roster-view-gtk.cpp:1083
 msgid "Unsorted"
 msgstr "未分類"
 
@@ -2090,11 +2091,11 @@ msgstr "状態"
 msgid "Accounts"
 msgstr "アカウント"
 
-#: ../src/gui/accounts.cpp:591 ../src/gui/main_window.cpp:3220
+#: ../src/gui/accounts.cpp:591 ../src/gui/main_window.cpp:3334
 msgid "_Accounts"
 msgstr "アカウント(_A)"
 
-#: ../src/gui/accounts.cpp:595 ../src/gui/main_window.cpp:3303
+#: ../src/gui/accounts.cpp:595 ../src/gui/main_window.cpp:3420
 msgid "_Help"
 msgstr "ヘルプ(_H)"
 
@@ -2262,8 +2263,8 @@ msgstr ""
 "Ekiga から最適な品質で通話できるような接続方法を選択します。あとで設定ウィン"
 "ドウからも変更できます。"
 
-#: ../src/gui/assistant.cpp:955 ../src/gui/main_window.cpp:3049
-#: ../src/gui/main_window.cpp:3053 ../src/gui/preferences.cpp:770
+#: ../src/gui/assistant.cpp:955 ../src/gui/main_window.cpp:3170
+#: ../src/gui/main_window.cpp:3174 ../src/gui/preferences.cpp:770
 msgid "Audio Devices"
 msgstr "音声のデバイス"
 
@@ -2426,7 +2427,7 @@ msgstr ""
 "佐藤 暁 <ss@gnome.gr.jp>\n"
 "OKANO Takayoshi <kano@na.rim.or.jp>\n"
 "草野 貴之 <AE5T-KSN@asahi-net.or.jp>\n"
-"日本GNOMEユーザー会 http://www.gnome.gr.jp/"
+"日本GNOMEユーザー会 <http://www.gnome.gr.jp/>"
 
 #: ../src/gui/callbacks.cpp:142
 msgid ""
@@ -2474,46 +2475,48 @@ msgstr "tuv"
 msgid "wxyz"
 msgstr "wxyz"
 
-#: ../src/gui/main_window.cpp:611
+#: ../src/gui/main_window.cpp:619
 #, c-format
 msgid "A:%.1f/%.1f   V:%.1f/%.1f   FPS:%d/%d"
 msgstr "A:%.1f/%.1f   V:%.1f/%.1f   FPS:%d/%d"
 
-#: ../src/gui/main_window.cpp:655
+#. %s is the SIP/H.323 address of the remote user, this text is shown
+#. below video during a call
+#: ../src/gui/main_window.cpp:665
 #, c-format
 msgid "Connected with %s"
 msgstr "%s で接続しました"
 
-#: ../src/gui/main_window.cpp:691 ../src/gui/main_window.cpp:3543
+#: ../src/gui/main_window.cpp:701 ../src/gui/main_window.cpp:3662
 msgid "Standby"
 msgstr "待機中です"
 
-#: ../src/gui/main_window.cpp:750
+#: ../src/gui/main_window.cpp:760
 msgid "Call on hold"
 msgstr "保留中の発信"
 
-#: ../src/gui/main_window.cpp:761
+#: ../src/gui/main_window.cpp:771
 msgid "Call retrieved"
 msgstr "保留から復帰しました"
 
-#: ../src/gui/main_window.cpp:776
+#: ../src/gui/main_window.cpp:786
 #, c-format
 msgid "Missed call from %s"
 msgstr "\"%s\" さんからの不在着信です"
 
-#: ../src/gui/main_window.cpp:913
+#: ../src/gui/main_window.cpp:923
 msgid "Error"
 msgstr "エラー"
 
-#: ../src/gui/main_window.cpp:986
+#: ../src/gui/main_window.cpp:996
 msgid "Error while initializing video output"
 msgstr "映像出力を初期化する際にエラー"
 
-#: ../src/gui/main_window.cpp:987
+#: ../src/gui/main_window.cpp:997
 msgid "No video will be displayed on your machine during this call"
 msgstr "この会話中は映像を表示しません"
 
-#: ../src/gui/main_window.cpp:997
+#: ../src/gui/main_window.cpp:1007
 msgid ""
 "There was an error opening or initializing the video output. Please verify "
 "that no other application is using the accelerated video output."
@@ -2521,7 +2524,7 @@ msgstr ""
 "映像の出力デバイスをオープンするまたは初期化する際にエラーが発生しました。そ"
 "のデバイスを他のアプリケーションで使用していないか確認してください。"
 
-#: ../src/gui/main_window.cpp:999
+#: ../src/gui/main_window.cpp:1009
 msgid ""
 "There was an error opening or initializing the video output. Please verify "
 "that you are using a color depth of 24 or 32 bits per pixel."
@@ -2531,27 +2534,27 @@ msgstr ""
 "さい。"
 
 #. Translators: This is a hotplug status
-#: ../src/gui/main_window.cpp:1112
+#: ../src/gui/main_window.cpp:1122
 #, c-format
 msgid "Added video input device %s"
 msgstr "ビデオ入力デバイスの %s を挿入しました"
 
 #. Translators: This is a hotplug status
-#: ../src/gui/main_window.cpp:1124
+#: ../src/gui/main_window.cpp:1134
 #, c-format
 msgid "Removed video input device %s"
 msgstr "ビデオ入力デバイスの %s を取り外しました"
 
-#: ../src/gui/main_window.cpp:1141
+#: ../src/gui/main_window.cpp:1151
 #, c-format
 msgid "Error while accessing video device %s"
 msgstr "ビデオ入力デバイスの %s にアクセスする際にエラーが発生しました"
 
-#: ../src/gui/main_window.cpp:1144
+#: ../src/gui/main_window.cpp:1154
 msgid "A moving logo will be transmitted during calls."
 msgstr "呼び出し中は動くロゴが転送されます。"
 
-#: ../src/gui/main_window.cpp:1148
+#: ../src/gui/main_window.cpp:1158
 msgid ""
 "There was an error while opening the device. In case it is a pluggable "
 "device it may be sufficient to reconnect it. If not, or if it still is not "
@@ -2563,17 +2566,17 @@ msgstr ""
 "アクセスが拒否される場合はアクセス権限が正しいか、または妥当なドライバが読み"
 "込まれているかを確認してみてください。"
 
-#: ../src/gui/main_window.cpp:1152
+#: ../src/gui/main_window.cpp:1162
 msgid "Your video driver doesn't support the requested video format."
 msgstr ""
 "お使いのビデオ・ドライバは、要求された映像フォーマットをサポートしていませ"
 "ん。"
 
-#: ../src/gui/main_window.cpp:1156
+#: ../src/gui/main_window.cpp:1166
 msgid "Could not open the chosen channel."
 msgstr "選択したチャンネルを開けませんでした"
 
-#: ../src/gui/main_window.cpp:1160
+#: ../src/gui/main_window.cpp:1170
 msgid ""
 "Your driver doesn't seem to support any of the color formats supported by "
 "Ekiga.\n"
@@ -2585,43 +2588,43 @@ msgstr ""
 "どのパレットがサポートされているかを確認するには、Kernel ドライバのドキュメン"
 "トで確認してみてください。"
 
-#: ../src/gui/main_window.cpp:1164
+#: ../src/gui/main_window.cpp:1174
 msgid "Error while setting the frame rate."
 msgstr "フレーム・レートを設定する際にエラーが発生しました。"
 
-#: ../src/gui/main_window.cpp:1168
+#: ../src/gui/main_window.cpp:1178
 msgid "Error while setting the frame size."
 msgstr "フレーム・サイズを設定する際にエラーが発生しました。"
 
-#: ../src/gui/main_window.cpp:1173 ../src/gui/main_window.cpp:1277
-#: ../src/gui/main_window.cpp:1394
+#: ../src/gui/main_window.cpp:1183 ../src/gui/main_window.cpp:1287
+#: ../src/gui/main_window.cpp:1404
 msgid "Unknown error."
 msgstr "原因不明のエラーです"
 
 #. Translators: This is a hotplug status
-#: ../src/gui/main_window.cpp:1225
+#: ../src/gui/main_window.cpp:1235
 #, c-format
 msgid "Added audio input device %s"
 msgstr "音声入力デバイスの %s を挿入しました"
 
 #. Translators: This is a hotplug status
-#: ../src/gui/main_window.cpp:1242
+#: ../src/gui/main_window.cpp:1252
 #, c-format
 msgid "Removed audio input device %s"
 msgstr "音声入力デバイスの %s を取り外しました"
 
-#: ../src/gui/main_window.cpp:1259
+#: ../src/gui/main_window.cpp:1269
 #, c-format
 msgid "Error while opening audio input device %s"
 msgstr "音声デバイスの %s を開く際にエラーが発生しました"
 
 #. Translators: This happens when there is an error with audio input:
 #. * Nothing ("silence") will be transmitted
-#: ../src/gui/main_window.cpp:1264
+#: ../src/gui/main_window.cpp:1274
 msgid "Only silence will be transmitted."
 msgstr "サイレンス (無音) だけ転送します"
 
-#: ../src/gui/main_window.cpp:1268
+#: ../src/gui/main_window.cpp:1278
 msgid ""
 "Unable to open the selected audio device for recording. In case it is a "
 "pluggable device it may be sufficient to reconnect it. If not, or if it "
@@ -2633,7 +2636,7 @@ msgstr ""
 "してアクセスが拒否される場合はオーディオの設定やデバイスへのアクセス権限、ま"
 "たはデバイスが使用中ではないか確認してみてください。"
 
-#: ../src/gui/main_window.cpp:1272
+#: ../src/gui/main_window.cpp:1282
 msgid ""
 "The selected audio device was successfully opened but it is impossible to "
 "read data from this device. In case it is a pluggable device it may be "
@@ -2645,26 +2648,26 @@ msgstr ""
 "そうではない場合、あるいは依然としてアクセスが拒否される場合はオーディオの設"
 "定を確認してください。"
 
-#: ../src/gui/main_window.cpp:1341
+#: ../src/gui/main_window.cpp:1351
 #, c-format
 msgid "Added audio output device %s"
 msgstr "音声出力デバイスの %s を挿入しました"
 
-#: ../src/gui/main_window.cpp:1357
+#: ../src/gui/main_window.cpp:1367
 #, c-format
 msgid "Removed audio output device %s"
 msgstr "音声出力デバイスの %s を取り外しました"
 
-#: ../src/gui/main_window.cpp:1378
+#: ../src/gui/main_window.cpp:1388
 #, c-format
 msgid "Error while opening audio output device %s"
 msgstr "音声出力デバイスの %s を開く際にエラーが発生しました"
 
-#: ../src/gui/main_window.cpp:1381
+#: ../src/gui/main_window.cpp:1391
 msgid "No incoming sound will be played."
 msgstr "着信音は演奏されていません"
 
-#: ../src/gui/main_window.cpp:1385
+#: ../src/gui/main_window.cpp:1395
 msgid ""
 "Unable to open the selected audio device for playing. In case it is a "
 "pluggable device it may be sufficient to reconnect it. If not, or if it "
@@ -2676,7 +2679,7 @@ msgstr ""
 "してアクセスが拒否される場合はオーディオの設定やデバイスへのアクセス権限、ま"
 "たはデバイスが使用中ではないか確認してみてください。"
 
-#: ../src/gui/main_window.cpp:1389
+#: ../src/gui/main_window.cpp:1399
 msgid ""
 "The selected audio device was successfully opened but it is impossible to "
 "write data to this device. In case it is a pluggable device it may be "
@@ -2688,336 +2691,337 @@ msgstr ""
 "うではない場合、あるいは依然としてアクセスが拒否される場合はオーディオの設定"
 "を確認してください。"
 
-#: ../src/gui/main_window.cpp:1575
+#: ../src/gui/main_window.cpp:1585
 msgid "Video Settings"
 msgstr "映像の設定"
 
-#: ../src/gui/main_window.cpp:1602
+#: ../src/gui/main_window.cpp:1612
 msgid "Adjust brightness"
 msgstr "明るさを調整します"
 
-#: ../src/gui/main_window.cpp:1623
+#: ../src/gui/main_window.cpp:1633
 msgid "Adjust whiteness"
 msgstr "白さを調整します"
 
-#: ../src/gui/main_window.cpp:1644
+#: ../src/gui/main_window.cpp:1654
 msgid "Adjust color"
 msgstr "色を調整します"
 
-#: ../src/gui/main_window.cpp:1665
+#: ../src/gui/main_window.cpp:1675
 msgid "Adjust contrast"
 msgstr "コントラストを調整します"
 
-#: ../src/gui/main_window.cpp:1709
+#: ../src/gui/main_window.cpp:1719
 msgid "Audio Settings"
 msgstr "音声の設定"
 
-#: ../src/gui/main_window.cpp:2350
+#: ../src/gui/main_window.cpp:2514
 msgid "_Retrieve Call"
 msgstr "再開(_R)"
 
-#: ../src/gui/main_window.cpp:2363 ../src/gui/main_window.cpp:3174
+#: ../src/gui/main_window.cpp:2527 ../src/gui/main_window.cpp:3288
 msgid "H_old Call"
 msgstr "保留(_O)"
 
-#: ../src/gui/main_window.cpp:2395 ../src/gui/main_window.cpp:3186
+#: ../src/gui/main_window.cpp:2559 ../src/gui/main_window.cpp:3300
 msgid "Suspend _Audio"
 msgstr "音声の一時停止(_A)"
 
-#: ../src/gui/main_window.cpp:2397 ../src/gui/main_window.cpp:3191
+#: ../src/gui/main_window.cpp:2561 ../src/gui/main_window.cpp:3305
 msgid "Suspend _Video"
 msgstr "映像の一時停止(_V)"
 
-#: ../src/gui/main_window.cpp:2399
+#: ../src/gui/main_window.cpp:2563
 msgid "Resume _Audio"
 msgstr "音声の再開(_A)"
 
-#: ../src/gui/main_window.cpp:2401
+#: ../src/gui/main_window.cpp:2565
 msgid "Resume _Video"
 msgstr "ビデオの再開(_V)"
 
-#: ../src/gui/main_window.cpp:2684 ../src/gui/main_window.cpp:2837
+#: ../src/gui/main_window.cpp:2819 ../src/gui/main_window.cpp:2972
 msgid "Reject"
 msgstr "拒否"
 
-#: ../src/gui/main_window.cpp:2686 ../src/gui/main_window.cpp:2836
+#: ../src/gui/main_window.cpp:2821 ../src/gui/main_window.cpp:2971
 msgid "Accept"
 msgstr "受諾"
 
-#: ../src/gui/main_window.cpp:2692
+#: ../src/gui/main_window.cpp:2827
 msgid "Incoming call from"
 msgstr "着信元"
 
-#: ../src/gui/main_window.cpp:2710 ../src/gui/main_window.cpp:2827
+#: ../src/gui/main_window.cpp:2845 ../src/gui/main_window.cpp:2962
 msgid "Remote URI:"
 msgstr "リモートの URI:"
 
-#: ../src/gui/main_window.cpp:2722 ../src/gui/main_window.cpp:2829
+#: ../src/gui/main_window.cpp:2857 ../src/gui/main_window.cpp:2964
 msgid "Remote Application:"
 msgstr "リモートのアプリ:"
 
-#: ../src/gui/main_window.cpp:2735 ../src/gui/main_window.cpp:2831
+#: ../src/gui/main_window.cpp:2870 ../src/gui/main_window.cpp:2966
 msgid "Account ID:"
 msgstr "アカウントの ID:"
 
-#: ../src/gui/main_window.cpp:2743
+#: ../src/gui/main_window.cpp:2878
 #, c-format
 msgid "Call from %s"
 msgstr "\"%s\" さんからの着信です"
 
-#: ../src/gui/main_window.cpp:2952
+#: ../src/gui/main_window.cpp:3073
 #, c-format
 msgid "Call Duration: %s\n"
 msgstr "通話時間: %s\n"
 
-#: ../src/gui/main_window.cpp:2983
+#: ../src/gui/main_window.cpp:3104
 msgid "Transfer call to:"
 msgstr "転送先:"
 
-#: ../src/gui/main_window.cpp:3035
+#: ../src/gui/main_window.cpp:3156
 msgid "No"
 msgstr "いいえ"
 
-#: ../src/gui/main_window.cpp:3037
+#: ../src/gui/main_window.cpp:3158
 msgid "Yes"
 msgstr "はい"
 
-#: ../src/gui/main_window.cpp:3048
+#: ../src/gui/main_window.cpp:3169
 msgid "Detected new audio input device:"
 msgstr "新しく検出した音声入力デバイス:"
 
-#: ../src/gui/main_window.cpp:3052
+#: ../src/gui/main_window.cpp:3173
 msgid "Detected new audio output device:"
 msgstr "新しく検出した音声出力デバイス:"
 
-#: ../src/gui/main_window.cpp:3056
+#: ../src/gui/main_window.cpp:3177
 msgid "Detected new video input device:"
 msgstr "新しく検出した映像入力デバイス:"
 
-#: ../src/gui/main_window.cpp:3057 ../src/gui/preferences.cpp:926
+#: ../src/gui/main_window.cpp:3178 ../src/gui/preferences.cpp:926
 msgid "Video Devices"
 msgstr "映像のデバイス"
 
-#: ../src/gui/main_window.cpp:3075
+#: ../src/gui/main_window.cpp:3196
 msgid "Do you want to use it as default device?"
 msgstr "これをデフォルトのデバイスとして使用しますか?"
 
-#: ../src/gui/main_window.cpp:3143
+#: ../src/gui/main_window.cpp:3264
 msgid "_Chat"
 msgstr "チャット(_C)"
 
-#: ../src/gui/main_window.cpp:3145
+#: ../src/gui/main_window.cpp:3266
 msgid "Ca_ll"
 msgstr "発信(_L)"
 
-#: ../src/gui/main_window.cpp:3145
+#: ../src/gui/main_window.cpp:3266
 msgid "Place a new call"
 msgstr "発信します"
 
-#: ../src/gui/main_window.cpp:3148
+#: ../src/gui/main_window.cpp:3269
 msgid "_Hang up"
 msgstr "ハングアップ(_H)"
 
-#: ../src/gui/main_window.cpp:3149
+#: ../src/gui/main_window.cpp:3270
 msgid "Terminate the current call"
 msgstr "現在の発信を終了します"
 
-#: ../src/gui/main_window.cpp:3155
+#: ../src/gui/main_window.cpp:3276
 msgid "A_dd Contact"
 msgstr "仲間の追加(_D)"
 
-#: ../src/gui/main_window.cpp:3155
+#: ../src/gui/main_window.cpp:3276
 msgid "Add a contact to the roster"
 msgstr "連絡先をローカルの仲間として追加します"
 
-#: ../src/gui/main_window.cpp:3160
+#: ../src/gui/main_window.cpp:3281
 msgid "Find contacts"
 msgstr "仲間を検索します"
 
-#: ../src/gui/main_window.cpp:3167
-msgid "Co_ntact"
-msgstr "連絡をとる(_N)"
-
-#: ../src/gui/main_window.cpp:3168
-msgid "Act on selected contact"
-msgstr "連絡方法を選択します"
-
-#: ../src/gui/main_window.cpp:3174 ../src/gui/main_window.cpp:3643
+#: ../src/gui/main_window.cpp:3288 ../src/gui/main_window.cpp:3762
 msgid "Hold the current call"
 msgstr "現在の通話を保留します"
 
-#: ../src/gui/main_window.cpp:3178
+#: ../src/gui/main_window.cpp:3292
 msgid "_Transfer Call"
 msgstr "発信の転送(_T)"
 
-#: ../src/gui/main_window.cpp:3179
+#: ../src/gui/main_window.cpp:3293
 msgid "Transfer the current call"
 msgstr "現在の発信を転送します"
 
-#: ../src/gui/main_window.cpp:3187
+#: ../src/gui/main_window.cpp:3301
 msgid "Suspend or resume the audio transmission"
 msgstr "音声の発信を一時停止または再開します"
 
-#: ../src/gui/main_window.cpp:3192
+#: ../src/gui/main_window.cpp:3306
 msgid "Suspend or resume the video transmission"
 msgstr "映像の発信を一時停止または再開します"
 
-#: ../src/gui/main_window.cpp:3199
+#: ../src/gui/main_window.cpp:3313
 msgid "Close the Ekiga window"
 msgstr "Ekiga のウィンドウを閉じます"
 
-#: ../src/gui/main_window.cpp:3206 ../src/gui/statusicon.cpp:465
+#: ../src/gui/main_window.cpp:3320 ../src/gui/statusicon.cpp:465
 msgid "Quit"
 msgstr "終了します"
 
-#: ../src/gui/main_window.cpp:3212
+#: ../src/gui/main_window.cpp:3326
 msgid "_Configuration Assistant"
 msgstr "設定アシスタント(_C)"
 
-#: ../src/gui/main_window.cpp:3213
+#: ../src/gui/main_window.cpp:3327
 msgid "Run the configuration assistant"
 msgstr "設定アシスタントを起動します"
 
-#: ../src/gui/main_window.cpp:3221
+#: ../src/gui/main_window.cpp:3335
 msgid "Edit your accounts"
 msgstr "アカウントを編集します"
 
-#: ../src/gui/main_window.cpp:3227
+#: ../src/gui/main_window.cpp:3341
 msgid "Change your preferences"
 msgstr "設定を変更します"
 
-#: ../src/gui/main_window.cpp:3232
+#. that one doesn't have a macro :
+#: ../src/gui/main_window.cpp:3347
+msgid "Co_ntact"
+msgstr "連絡をとる(_N)"
+
+#: ../src/gui/main_window.cpp:3347
+msgid "Act on selected contact"
+msgstr "連絡方法を選択します"
+
+#: ../src/gui/main_window.cpp:3349
 msgid "_View"
 msgstr "表示(_V)"
 
-#: ../src/gui/main_window.cpp:3234
+#: ../src/gui/main_window.cpp:3351
 msgid "Con_tacts"
 msgstr "仲間一覧(_T)"
 
-#: ../src/gui/main_window.cpp:3234
+#: ../src/gui/main_window.cpp:3351
 msgid "View the contacts list"
 msgstr "仲間一覧を表示します"
 
-#: ../src/gui/main_window.cpp:3239
+#: ../src/gui/main_window.cpp:3356
 msgid "_Dialpad"
 msgstr "ダイアルパッド(_D)"
 
-#: ../src/gui/main_window.cpp:3239
+#: ../src/gui/main_window.cpp:3356
 msgid "View the dialpad"
 msgstr "ダイアルを表示します"
 
-#: ../src/gui/main_window.cpp:3244
+#: ../src/gui/main_window.cpp:3361
 msgid "_Call History"
 msgstr "着信履歴(_C)"
 
-#: ../src/gui/main_window.cpp:3244
+#: ../src/gui/main_window.cpp:3361
 msgid "View the call history"
 msgstr "着信履歴を表示します"
 
-#: ../src/gui/main_window.cpp:3252
+#: ../src/gui/main_window.cpp:3369
 msgid "_Show Call Panel"
 msgstr "着信パネルを表示する(_S)"
 
-#: ../src/gui/main_window.cpp:3260
+#: ../src/gui/main_window.cpp:3377
 msgid "_Local Video"
 msgstr "ローカルの映像(_L)"
 
-#: ../src/gui/main_window.cpp:3261
+#: ../src/gui/main_window.cpp:3378
 msgid "Local video image"
 msgstr "ローカルの映像にします"
 
-#: ../src/gui/main_window.cpp:3266
+#: ../src/gui/main_window.cpp:3383
 msgid "_Remote Video"
 msgstr "リモートの映像(_R)"
 
-#: ../src/gui/main_window.cpp:3267
+#: ../src/gui/main_window.cpp:3384
 msgid "Remote video image"
 msgstr "リモートの映像にします"
 
-#: ../src/gui/main_window.cpp:3272
+#: ../src/gui/main_window.cpp:3389
 msgid "_Picture-in-Picture"
 msgstr "両方 (画像の中に重ねる)(_P)"
 
-#: ../src/gui/main_window.cpp:3273 ../src/gui/main_window.cpp:3279
+#: ../src/gui/main_window.cpp:3390 ../src/gui/main_window.cpp:3396
 msgid "Both video images"
 msgstr "両方の映像にします"
 
-#: ../src/gui/main_window.cpp:3278
+#: ../src/gui/main_window.cpp:3395
 msgid "Picture-in-Picture in Separate _Window"
 msgstr "両方 (別々のウィンドウ)(_W)"
 
-#: ../src/gui/main_window.cpp:3286
+#: ../src/gui/main_window.cpp:3403
 msgid "Zoom in"
 msgstr "映像を拡大します"
 
-#: ../src/gui/main_window.cpp:3290
+#: ../src/gui/main_window.cpp:3407
 msgid "Zoom out"
 msgstr "映像を縮小します"
 
-#: ../src/gui/main_window.cpp:3294
+#: ../src/gui/main_window.cpp:3411
 msgid "Normal size"
 msgstr "デフォルトの映像サイズにします"
 
-#: ../src/gui/main_window.cpp:3298
+#: ../src/gui/main_window.cpp:3415
 msgid "_Fullscreen"
 msgstr "フルスクリーン(_F)"
 
-#: ../src/gui/main_window.cpp:3298
+#: ../src/gui/main_window.cpp:3415
 msgid "Switch to fullscreen"
 msgstr "フルスクリーンに切り替える"
 
-#: ../src/gui/main_window.cpp:3306 ../src/gui/statusicon.cpp:453
+#: ../src/gui/main_window.cpp:3423 ../src/gui/statusicon.cpp:453
 msgid "Get help by reading the Ekiga manual"
 msgstr "Ekiga のマニュアルを表示します"
 
-#: ../src/gui/main_window.cpp:3311 ../src/gui/statusicon.cpp:458
+#: ../src/gui/main_window.cpp:3428 ../src/gui/statusicon.cpp:458
 msgid "View information about Ekiga"
 msgstr "Ekiga の情報を表示します"
 
-#: ../src/gui/main_window.cpp:3385
+#: ../src/gui/main_window.cpp:3502
 msgid ""
 "Enter a URI on the left, and click this button to place a call or to hangup"
 msgstr "左側に URI を入力してから、このボタンをクリックして発信してください"
 
-#: ../src/gui/main_window.cpp:3431
+#: ../src/gui/main_window.cpp:3547
 msgid "Contacts"
 msgstr "仲間"
 
-#: ../src/gui/main_window.cpp:3454
+#: ../src/gui/main_window.cpp:3573
 msgid "Dialpad"
 msgstr "ダイアルパッド"
 
-#: ../src/gui/main_window.cpp:3472
+#: ../src/gui/main_window.cpp:3591
 msgid "Call history"
 msgstr "着信履歴"
 
-#: ../src/gui/main_window.cpp:3580
+#: ../src/gui/main_window.cpp:3699
 msgid "Change the volume of your soundcard"
 msgstr "サウンドカードの音量を変更します"
 
-#: ../src/gui/main_window.cpp:3601
+#: ../src/gui/main_window.cpp:3720
 msgid "Change the color settings of your video device"
 msgstr "映像デバイスの色の設定を変更します"
 
-#: ../src/gui/main_window.cpp:3669
+#: ../src/gui/main_window.cpp:3788
 msgid "Ekiga"
 msgstr "Ekiga"
 
 #. Translators: TX is a common abbreviation for "transmit".  As it
 #. * is shown in a tooltip, there is no space constraint
-#: ../src/gui/main_window.cpp:4275
+#: ../src/gui/main_window.cpp:4393
 #, c-format
 msgid "TX: %dx%d "
 msgstr "TX: %dx%d "
 
 #. Translators: RX is a common abbreviation for "receive".  As it
 #. * is shown in a tooltip, there is no space constraint
-#: ../src/gui/main_window.cpp:4280
+#: ../src/gui/main_window.cpp:4398
 #, c-format
 msgid "RX: %dx%d "
 msgstr "RX: %dx%d "
 
-#: ../src/gui/main_window.cpp:4282
+#: ../src/gui/main_window.cpp:4400
 #, c-format
 msgid ""
 "Lost packets: %.1f %%\n"
@@ -3030,15 +3034,15 @@ msgstr ""
 "順番違いのパケット数: %.1f %%\n"
 "Jitter バッファ: %d ms%s%s%s"
 
-#: ../src/gui/main_window.cpp:4405
+#: ../src/gui/main_window.cpp:4515
 msgid "Prints debug messages in the console (level between 1 and 5)"
 msgstr "端末にデバッグ・メッセージを表示する (レベル: 1〜5)"
 
-#: ../src/gui/main_window.cpp:4410
+#: ../src/gui/main_window.cpp:4520
 msgid "Prints user plane debug messages in the console (level between 1 and 4)"
 msgstr "端末にユーザ向けのデバッグ・メッセージを表示する (レベル: 1〜4)"
 
-#: ../src/gui/main_window.cpp:4415
+#: ../src/gui/main_window.cpp:4525
 msgid "Makes Ekiga call the given URI"
 msgstr "指定した URI を呼び出す"
 
