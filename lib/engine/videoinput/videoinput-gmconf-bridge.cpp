@@ -130,11 +130,21 @@ void VideoInputCoreConfBridge::on_property_changed (std::string key, GmConfEntry
   }
   else if (key == VIDEO_DEVICES_KEY "enable_preview") {
 
-    PTRACE(4, "VidInputCoreConfBridge\tUpdating preview");
-    if (gm_conf_get_bool ( VIDEO_DEVICES_KEY "enable_preview"))
-        videoinput_core.start_preview(); 
+    static bool startup = true;
+
+    if (!startup) {
+
+      PTRACE(4, "VidInputCoreConfBridge\tUpdating preview");
+      if (gm_conf_get_bool ( VIDEO_DEVICES_KEY "enable_preview"))
+        videoinput_core.start_preview();
       else
         videoinput_core.stop_preview();
+    } else {
+
+      startup = false;
+      if (gm_conf_get_bool ( VIDEO_DEVICES_KEY "enable_preview"))
+	Ekiga::Runtime::run_in_main (boost::bind (&VideoInputCore::start_preview, boost::ref (videoinput_core)), 5);
+    }
   }
   else if (key == VIDEO_DEVICES_KEY "image") {
     PTRACE(4, "VidInputCoreConfBridge\tUpdating image");
