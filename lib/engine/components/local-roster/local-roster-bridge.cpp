@@ -112,16 +112,17 @@ struct LOCALROSTERBRIDGESpark: public Ekiga::Spark
 			    int* /*argc*/,
 			    char** /*argv*/[])
   {
-    Ekiga::ServicePtr service = core.get ("local-roster-bridge");
     boost::shared_ptr<Ekiga::ContactCore> contact_core = core.get<Ekiga::ContactCore> ("contact-core");
     boost::shared_ptr<Local::Cluster> cluster = core.get<Local::Cluster> ("local-cluster");
 
-    if (cluster && contact_core && !service) {
+    if (cluster && contact_core) {
 
       boost::shared_ptr<Local::ContactDecorator> decorator (new Local::ContactDecorator (cluster));
-      core.add (decorator);
-      contact_core->add_contact_decorator (decorator);
-      result = true;
+      if (core.add (decorator)) {
+
+	contact_core->add_contact_decorator (decorator);
+	result = true;
+      }
     }
 
     return result;

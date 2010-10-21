@@ -48,15 +48,16 @@ struct AVAHISpark: public Ekiga::Spark
 			    int* /*argc*/,
 			    char** /*argv*/[])
   {
-    Ekiga::ServicePtr service = core.get ("avahi-core");
     boost::shared_ptr<Ekiga::PresenceCore> presence_core = core.get<Ekiga::PresenceCore> ("presence-core");
 
-    if ( !service && presence_core) {
+    if (presence_core) {
 
       boost::shared_ptr<Avahi::Cluster> cluster (new Avahi::Cluster (core));
-      core.add (cluster);
-      presence_core->add_cluster (cluster);
-      result = true;
+      if (core.add (cluster)) {
+
+	presence_core->add_cluster (cluster);
+	result = true;
+      }
     }
 
     return result;

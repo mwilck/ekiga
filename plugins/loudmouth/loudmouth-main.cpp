@@ -54,22 +54,23 @@ struct LOUDMOUTHSpark: public Ekiga::Spark
 			    int* /*argc*/,
 			    char** /*argv*/[])
   {
-    Ekiga::ServicePtr service = core.get ("loudmouth-bank");
     boost::shared_ptr<Ekiga::PresenceCore> presence = core.get<Ekiga::PresenceCore> ("presence-core");
     boost::shared_ptr<Ekiga::AccountCore> account = core.get<Ekiga::AccountCore> ("account-core");
     boost::shared_ptr<Ekiga::ChatCore> chat = core.get<Ekiga::ChatCore> ("chat-core");
     boost::shared_ptr<Ekiga::PersonalDetails> details = core.get<Ekiga::PersonalDetails> ("personal-details");
 
-    if ( !service && presence && account && chat && details) {
+    if (presence && account && chat && details) {
 
       LM::DialectPtr dialect(new LM::Dialect (core));
       LM::ClusterPtr cluster(new LM::Cluster);
       LM::BankPtr bank (new LM::Bank (details, dialect, cluster));
-      core.add (bank);
-      chat->add_dialect (dialect);
-      account->add_bank (bank);
-      presence->add_cluster (cluster);
-      result = true;
+      if (core.add (bank)) {
+
+	chat->add_dialect (dialect);
+	account->add_bank (bank);
+	presence->add_cluster (cluster);
+	result = true;
+      }
     }
 
     return result;

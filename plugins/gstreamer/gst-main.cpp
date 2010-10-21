@@ -74,22 +74,23 @@ struct GSTSpark: public Ekiga::Spark
     boost::shared_ptr<Ekiga::AudioInputCore> audioinput_core = core.get<Ekiga::AudioInputCore> ("audioinput-core");
     boost::shared_ptr<Ekiga::AudioOutputCore> audiooutput_core = core.get<Ekiga::AudioOutputCore> ("audiooutput-core");
     boost::shared_ptr<Ekiga::VideoInputCore> videoinput_core = core.get<Ekiga::VideoInputCore> ("videoinput-core");
-    Ekiga::ServicePtr service = core.get ("gstreamer");
 
-    if (audioinput_core && audiooutput_core && videoinput_core && !service) {
+    if (audioinput_core && audiooutput_core && videoinput_core) {
 
       if (gst_init_check (argc, argv, NULL)) {
 
 	GST::VideoInputManager* video = new GST::VideoInputManager ();
 	GST::AudioInputManager* audioin = new GST::AudioInputManager ();
 	GST::AudioOutputManager* audioout = new GST::AudioOutputManager ();
-	service = Ekiga::ServicePtr (new GStreamerService);
+	Ekiga::ServicePtr service (new GStreamerService);
 
-	core.add (service);
-	audioinput_core->add_manager (*audioin);
-	audiooutput_core->add_manager (*audioout);
-	videoinput_core->add_manager (*video);
-	result = true;
+	if (core.add (service)) {
+
+	  audioinput_core->add_manager (*audioin);
+	  audiooutput_core->add_manager (*audioout);
+	  videoinput_core->add_manager (*video);
+	  result = true;
+	}
       } else {
 
 	std::cout << "gst_init_check failed" << std::endl; // FIXME: remove

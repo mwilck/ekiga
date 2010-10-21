@@ -49,17 +49,18 @@ struct LOCALROSTERSpark: public Ekiga::Spark
 			    int* /*argc*/,
 			    char** /*argv*/[])
   {
-    Ekiga::ServicePtr service = core.get ("local-cluster");
     boost::shared_ptr<Ekiga::PresenceCore> presence_core = core.get<Ekiga::PresenceCore> ("presence-core");
     boost::shared_ptr<Ekiga::FriendOrFoe> iff = core.get<Ekiga::FriendOrFoe> ("friend-or-foe");
 
-    if (presence_core && iff && !service) {
+    if (presence_core && iff) {
 
       boost::shared_ptr<Local::Cluster> cluster (new Local::Cluster (core));
-      core.add (cluster);
-      iff->add_helper (cluster->get_heap ());
-      presence_core->add_cluster (cluster);
-      result = true;
+      if (core.add (cluster)) {
+
+	iff->add_helper (cluster->get_heap ());
+	presence_core->add_cluster (cluster);
+	result = true;
+      }
     }
 
     return result;

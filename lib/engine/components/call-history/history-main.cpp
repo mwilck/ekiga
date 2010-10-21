@@ -49,16 +49,17 @@ struct HISTORYSpark: public Ekiga::Spark
 			    int* /*argc*/,
 			    char** /*argv*/[])
   {
-    Ekiga::ServicePtr service = core.get ("call-history-store");
     boost::shared_ptr<Ekiga::ContactCore> contact_core = core.get<Ekiga::ContactCore> ("contact-core");
     boost::shared_ptr<Ekiga::CallCore> call_core = core.get<Ekiga::CallCore> ("call-core");
 
-    if (contact_core && call_core && !service) {
+    if (contact_core && call_core) {
 
       boost::shared_ptr<History::Source> source (new History::Source (core));
-      core.add (source);
-      contact_core->add_source (source);
-      result = true;
+      if (core.add (source)) {
+
+	contact_core->add_source (source);
+	result = true;
+      }
     }
 
     return result;
