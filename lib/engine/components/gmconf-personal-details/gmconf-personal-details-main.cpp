@@ -37,22 +37,11 @@
 
 #include "gmconf-personal-details-main.h"
 #include "gmconf-personal-details.h"
-#include <iostream>
 
 bool 
 gmconf_personal_details_init (Ekiga::ServiceCore &core,
                               int * /*argc*/,
                               char ** /*argv*/[])
 {
-  bool result = false;
-  boost::shared_ptr<Ekiga::PersonalDetails> personal_details = core.get<Ekiga::PersonalDetails> ("personal-details");
-
-  if ( !personal_details) {
-
-    boost::shared_ptr<Gmconf::PersonalDetails> gmconf_details (new Gmconf::PersonalDetails ());
-    core.add (gmconf_details);
-    result = true;
-  }
-
-  return result;
+  return core.add (boost::shared_ptr<Gmconf::PersonalDetails> (new Gmconf::PersonalDetails ()));
 }
