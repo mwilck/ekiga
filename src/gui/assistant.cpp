@@ -59,6 +59,10 @@ G_DEFINE_TYPE (EkigaAssistant, ekiga_assistant, GTK_TYPE_ASSISTANT);
 struct _EkigaAssistantPrivate
 {
   Ekiga::ServiceCore *core;
+  boost::shared_ptr<Ekiga::VideoInputCore> videoinput_core;
+  boost::shared_ptr<Ekiga::AudioInputCore> audioinput_core;
+  boost::shared_ptr<Ekiga::AudioOutputCore> audiooutput_core;
+  boost::shared_ptr<Opal::Bank> bank;
   GdkPixbuf *icon;
 
   GtkWidget *welcome_page;
@@ -94,7 +98,7 @@ struct _EkigaAssistantPrivate
   std::vector<boost::signals::connection> connections;
 };
 
-/* presenting the network connectoin type to the user */
+/* presenting the network connection type to the user */
 enum {
   CNX_LABEL_COLUMN,
   CNX_CODE_COLUMN
@@ -141,17 +145,14 @@ set_current_page_complete (GtkAssistant *assistant,
   gtk_assistant_set_page_complete (assistant, current_page, complete);
 }
 
-void
-get_audiooutput_devices_list (Ekiga::ServiceCore *core,
-                              std::vector<std::string> & device_list);
-void
-get_audioinput_devices_list (Ekiga::ServiceCore *core,
-                             std::vector<std::string> & device_list);
-void
-get_videoinput_devices_list (Ekiga::ServiceCore *core,
-                             std::vector<std::string> & device_list);
+static void get_audiooutput_devices_list (boost::shared_ptr<Ekiga::AudioOutputCore> audiooutput_core,
+					  std::vector<std::string> & device_list);
+static void get_audioinput_devices_list (boost::shared_ptr<Ekiga::AudioInputCore> audioinput_core,
+					 std::vector<std::string> & device_list);
+static void get_videoinput_devices_list (boost::shared_ptr<Ekiga::VideoInputCore> videoinput_core,
+					 std::vector<std::string> & device_list);
 
-gchar**
+static gchar**
 convert_string_list (const std::vector<std::string> & list);
 
 static void
@@ -268,47 +269,66 @@ remove_combo_box (GtkComboBox         *combo_box,
   }
 }
 
-void on_videoinput_device_added_cb (const Ekiga::VideoInputDevice & device, bool, EkigaAssistant *assistant)
+static void
+on_videoinput_device_added_cb (const Ekiga::VideoInputDevice& device,
+			       bool,
+			       EkigaAssistant* assistant)
 {
   std::string device_string = device.GetString();
   add_combo_box (GTK_COMBO_BOX (assistant->priv->video_device), device_string.c_str());
 }
 
-void on_videoinput_device_removed_cb (const Ekiga::VideoInputDevice & device, bool,  EkigaAssistant *assistant)
+static void
+on_videoinput_device_removed_cb (const Ekiga::VideoInputDevice& device,
+				 bool,
+				 EkigaAssistant* assistant)
 {
   std::string device_string = device.GetString();
   remove_combo_box (GTK_COMBO_BOX (assistant->priv->video_device),  device_string.c_str());
 }
 
-void on_audioinput_device_added_cb (const Ekiga::AudioInputDevice & device, bool, EkigaAssistant *assistant)
+static void
+on_audioinput_device_added_cb (const Ekiga::AudioInputDevice& device,
+			       bool,
+			       EkigaAssistant* assistant)
 {
   std::string device_string = device.GetString();
   add_combo_box (GTK_COMBO_BOX (assistant->priv->audio_recorder), device_string.c_str());
 }
 
-void on_audioinput_device_removed_cb (const Ekiga::AudioInputDevice & device, bool, EkigaAssistant *assistant)
+static void
+on_audioinput_device_removed_cb (const Ekiga::AudioInputDevice& device,
+				 bool,
+				 EkigaAssistant* assistant)
 {
   std::string device_string = device.GetString();
   remove_combo_box (GTK_COMBO_BOX (assistant->priv->audio_recorder),  device_string.c_str());
 }
 
-void on_audiooutput_device_added_cb (const Ekiga::AudioOutputDevice & device, bool, EkigaAssistant *assistant)
+static void
+on_audiooutput_device_added_cb (const Ekiga::AudioOutputDevice& device,
+				bool,
+				EkigaAssistant *assistant)
 {
   std::string device_string = device.GetString();
   add_combo_box (GTK_COMBO_BOX (assistant->priv->audio_player), device_string.c_str());
   add_combo_box (GTK_COMBO_BOX (assistant->priv->audio_ringer), device_string.c_str());
 }
 
-void on_audiooutput_device_removed_cb (const Ekiga::AudioOutputDevice & device, bool, EkigaAssistant *assistant)
+static void
+on_audiooutput_device_removed_cb (const Ekiga::AudioOutputDevice& device,
+				  bool,
+				  EkigaAssistant* assistant)
 {
   std::string device_string = device.GetString();
   remove_combo_box (GTK_COMBO_BOX (assistant->priv->audio_player),  device_string.c_str());
   remove_combo_box (GTK_COMBO_BOX (assistant->priv->audio_ringer),  device_string.c_str());
 }
 
-static void kind_of_net_changed_nt (G_GNUC_UNUSED gpointer id,
-                                         GmConfEntry *,
-                                         gpointer)
+static void
+kind_of_net_changed_nt (G_GNUC_UNUSED gpointer id,
+			GmConfEntry *,
+			gpointer)
 {
   gm_conf_set_int (GENERAL_KEY "kind_of_net", NET_CUSTOM);
 }
@@ -624,8 +644,7 @@ create_ekiga_net_page (EkigaAssistant *assistant)
 static void
 prepare_ekiga_net_page (EkigaAssistant *assistant)
 {
-  boost::shared_ptr<Opal::Bank> bank = assistant->priv->core->get<Opal::Bank> ("opal-account-store");
-  Opal::AccountPtr account = bank->find_account ("ekiga.net");
+  Opal::AccountPtr account = assistant->priv->bank->find_account ("ekiga.net");
 
   if (account && !account->get_username ().empty ())
     gtk_entry_set_text (GTK_ENTRY (assistant->priv->username), account->get_username ().c_str ());
@@ -641,18 +660,17 @@ prepare_ekiga_net_page (EkigaAssistant *assistant)
 static void
 apply_ekiga_net_page (EkigaAssistant *assistant)
 {
-  boost::shared_ptr<Opal::Bank> bank = assistant->priv->core->get<Opal::Bank> ("opal-account-store");
-  Opal::AccountPtr account = bank->find_account ("ekiga.net");
+  Opal::AccountPtr account = assistant->priv->bank->find_account ("ekiga.net");
   bool new_account = !account;
 
   if (!gtk_toggle_button_get_active (GTK_TOGGLE_BUTTON (assistant->priv->skip_ekiga_net))) {
 	if (new_account)
-	  bank->new_account (Opal::Account::Ekiga,
-			     gtk_entry_get_text (GTK_ENTRY (assistant->priv->username)),
-			     gtk_entry_get_text (GTK_ENTRY (assistant->priv->password)));
+	  assistant->priv->bank->new_account (Opal::Account::Ekiga,
+					      gtk_entry_get_text (GTK_ENTRY (assistant->priv->username)),
+					      gtk_entry_get_text (GTK_ENTRY (assistant->priv->password)));
 	else
 	  account->set_authentication_settings (gtk_entry_get_text (GTK_ENTRY (assistant->priv->username)),
-											gtk_entry_get_text (GTK_ENTRY (assistant->priv->password)));
+						gtk_entry_get_text (GTK_ENTRY (assistant->priv->password)));
   }
 }
 
@@ -768,8 +786,7 @@ create_ekiga_out_page (EkigaAssistant *assistant)
 static void
 prepare_ekiga_out_page (EkigaAssistant *assistant)
 {
-  boost::shared_ptr<Opal::Bank> account_core = assistant->priv->core->get<Opal::Bank> ("opal-account-store");
-  Opal::AccountPtr account = account_core->find_account ("sip.diamondcard.us");
+  Opal::AccountPtr account = assistant->priv->bank->find_account ("sip.diamondcard.us");
 
   if (account && !account->get_username ().empty ())
     gtk_entry_set_text (GTK_ENTRY (assistant->priv->dusername), account->get_username ().c_str ());
@@ -786,15 +803,14 @@ static void
 apply_ekiga_out_page (EkigaAssistant *assistant)
 {
   /* Some specific Opal stuff for the Ekiga.net account */
-  boost::shared_ptr<Opal::Bank> bank = assistant->priv->core->get<Opal::Bank> ("opal-account-store");
-  Opal::AccountPtr account = bank->find_account ("sip.diamondcard.us");
+  Opal::AccountPtr account = assistant->priv->bank->find_account ("sip.diamondcard.us");
   bool new_account = !account;
 
   if (!gtk_toggle_button_get_active (GTK_TOGGLE_BUTTON (assistant->priv->skip_ekiga_out))) {
 	if (new_account)
-	  bank->new_account (Opal::Account::DiamondCard,
-			     gtk_entry_get_text (GTK_ENTRY (assistant->priv->dusername)),
-			     gtk_entry_get_text (GTK_ENTRY (assistant->priv->dpassword)));
+	  assistant->priv->bank->new_account (Opal::Account::DiamondCard,
+					      gtk_entry_get_text (GTK_ENTRY (assistant->priv->dusername)),
+					      gtk_entry_get_text (GTK_ENTRY (assistant->priv->dpassword)));
 	else
 	  account->set_authentication_settings (gtk_entry_get_text (GTK_ENTRY (assistant->priv->dusername)),
 						gtk_entry_get_text (GTK_ENTRY (assistant->priv->dpassword)));
@@ -1079,14 +1095,14 @@ prepare_audio_devices_page (EkigaAssistant *assistant)
    */
   std::vector <std::string> device_list;
 
-  get_audiooutput_devices_list (assistant->priv->core, device_list);
+  get_audiooutput_devices_list (assistant->priv->audiooutput_core, device_list);
   array = convert_string_list(device_list);
   update_combo_box (GTK_COMBO_BOX (assistant->priv->audio_ringer), array, ringer);
   update_combo_box (GTK_COMBO_BOX (assistant->priv->audio_player), array, player);
   g_free (array);
 
 
-  get_audioinput_devices_list (assistant->priv->core, device_list);
+  get_audioinput_devices_list (assistant->priv->audioinput_core, device_list);
   array = convert_string_list(device_list);
   update_combo_box (GTK_COMBO_BOX (assistant->priv->audio_recorder), array, recorder);
   g_free (array);
@@ -1177,7 +1193,7 @@ prepare_video_devices_page (EkigaAssistant *assistant)
   gchar** array;
   gchar* current_plugin;
 
-  get_videoinput_devices_list (assistant->priv->core, device_list);
+  get_videoinput_devices_list (assistant->priv->videoinput_core, device_list);
   array = convert_string_list (device_list);
   current_plugin = gm_conf_get_string (VIDEO_DEVICES_KEY "input_device");
   if (current_plugin == NULL || !current_plugin[0]) {
@@ -1208,15 +1224,14 @@ apply_video_devices_page (EkigaAssistant *assistant)
 
 
 // FIXME: duplicate to gm_prefs_window_get_video_devices_list
-void
-get_audiooutput_devices_list (Ekiga::ServiceCore *core,
+static void
+get_audiooutput_devices_list (boost::shared_ptr<Ekiga::AudioOutputCore> audiooutput_core,
                               std::vector<std::string> & device_list)
 {
-  boost::shared_ptr<Ekiga::AudioOutputCore> audiooutput_core = core->get<Ekiga::AudioOutputCore> ("audiooutput-core");
   std::vector <Ekiga::AudioOutputDevice> devices;
 
   device_list.clear();
-  audiooutput_core->get_devices(devices);
+  audiooutput_core->get_devices (devices);
 
   for (std::vector<Ekiga::AudioOutputDevice>::iterator iter = devices.begin ();
        iter != devices.end ();
@@ -1231,15 +1246,14 @@ get_audiooutput_devices_list (Ekiga::ServiceCore *core,
 }
 
 
-void
-get_audioinput_devices_list (Ekiga::ServiceCore *core,
+static void
+get_audioinput_devices_list (boost::shared_ptr<Ekiga::AudioInputCore> audioinput_core,
                              std::vector<std::string> & device_list)
 {
-  boost::shared_ptr<Ekiga::AudioInputCore> audioinput_core = core->get<Ekiga::AudioInputCore> ("audioinput-core");
   std::vector <Ekiga::AudioInputDevice> devices;
 
   device_list.clear();
-  audioinput_core->get_devices(devices);
+  audioinput_core->get_devices (devices);
 
   for (std::vector<Ekiga::AudioInputDevice>::iterator iter = devices.begin ();
        iter != devices.end ();
@@ -1254,15 +1268,14 @@ get_audioinput_devices_list (Ekiga::ServiceCore *core,
 }
 
 
-void
-get_videoinput_devices_list (Ekiga::ServiceCore *core,
-                                        std::vector<std::string> & device_list)
+static void
+get_videoinput_devices_list (boost::shared_ptr<Ekiga::VideoInputCore> videoinput_core,
+			     std::vector<std::string> & device_list)
 {
-  boost::shared_ptr<Ekiga::VideoInputCore> videoinput_core = core->get<Ekiga::VideoInputCore> ("videoinput-core");
   std::vector<Ekiga::VideoInputDevice> devices;
 
   device_list.clear();
-  videoinput_core->get_devices(devices);
+  videoinput_core->get_devices (devices);
 
   for (std::vector<Ekiga::VideoInputDevice>::iterator iter = devices.begin ();
        iter != devices.end ();
@@ -1278,7 +1291,7 @@ get_videoinput_devices_list (Ekiga::ServiceCore *core,
 
 
 // FIXME: duplicate to gm_prefs_window_convert_string_list
-gchar**
+static gchar**
 convert_string_list (const std::vector<std::string> & list)
 {
   gchar **array = NULL;
@@ -1612,23 +1625,24 @@ ekiga_assistant_new (Ekiga::ServiceCore *core)
                     G_CALLBACK (ekiga_assistant_key_press_cb), NULL);
 
   boost::signals::connection conn;
-  boost::shared_ptr<Ekiga::VideoInputCore> videoinput_core = core->get<Ekiga::VideoInputCore> ("videoinput-core");
-  boost::shared_ptr<Ekiga::AudioInputCore> audioinput_core = core->get<Ekiga::AudioInputCore> ("audioinput-core");
-  boost::shared_ptr<Ekiga::AudioOutputCore> audiooutput_core = core->get<Ekiga::AudioOutputCore> ("audiooutput-core");
+  assistant->priv->videoinput_core = core->get<Ekiga::VideoInputCore> ("videoinput-core");
+  assistant->priv->audioinput_core = core->get<Ekiga::AudioInputCore> ("audioinput-core");
+  assistant->priv->audiooutput_core = core->get<Ekiga::AudioOutputCore> ("audiooutput-core");
+  assistant->priv->bank = core->get<Opal::Bank> ("opal-account-store");
 
-  conn = videoinput_core->device_added.connect (boost::bind (&on_videoinput_device_added_cb, _1, _2, assistant));
+  conn = assistant->priv->videoinput_core->device_added.connect (boost::bind (&on_videoinput_device_added_cb, _1, _2, assistant));
   assistant->priv->connections.push_back (conn);
-  conn = videoinput_core->device_removed.connect (boost::bind (&on_videoinput_device_removed_cb, _1, _2, assistant));
-  assistant->priv->connections.push_back (conn);
-
-  conn = audioinput_core->device_added.connect (boost::bind (&on_audioinput_device_added_cb, _1, _2, assistant));
-  assistant->priv->connections.push_back (conn);
-  conn = audioinput_core->device_removed.connect (boost::bind (&on_audioinput_device_removed_cb, _1, _2, assistant));
+  conn = assistant->priv->videoinput_core->device_removed.connect (boost::bind (&on_videoinput_device_removed_cb, _1, _2, assistant));
   assistant->priv->connections.push_back (conn);
 
-  conn = audiooutput_core->device_added.connect (boost::bind (&on_audiooutput_device_added_cb, _1, _2, assistant));
+  conn = assistant->priv->audioinput_core->device_added.connect (boost::bind (&on_audioinput_device_added_cb, _1, _2, assistant));
   assistant->priv->connections.push_back (conn);
-  conn = audiooutput_core->device_removed.connect (boost::bind (&on_audiooutput_device_removed_cb, _1, _2, assistant));
+  conn =assistant->priv-> audioinput_core->device_removed.connect (boost::bind (&on_audioinput_device_removed_cb, _1, _2, assistant));
+  assistant->priv->connections.push_back (conn);
+
+  conn = assistant->priv->audiooutput_core->device_added.connect (boost::bind (&on_audiooutput_device_added_cb, _1, _2, assistant));
+  assistant->priv->connections.push_back (conn);
+  conn = assistant->priv->audiooutput_core->device_removed.connect (boost::bind (&on_audiooutput_device_removed_cb, _1, _2, assistant));
   assistant->priv->connections.push_back (conn);
 
   /* Notifiers for the VIDEO_CODECS_KEY keys */
