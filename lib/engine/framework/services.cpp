@@ -33,7 +33,15 @@
  *
  */
 
+
+/* set DEBUG to 1 and the service core will tell whenever something is added or
+ * asked to it...
+ */
+#define DEBUG 0
+
+#if DEBUG
 #include <iostream>
+#endif
 
 #include "services.h"
 
@@ -52,7 +60,6 @@ Ekiga::ServiceCore::add (ServicePtr service)
   bool result = false;
 
   if ( !get (service->get_name ())) {
-
     services.push_front (service);
     service_added (service);
     result = true;
@@ -60,6 +67,12 @@ Ekiga::ServiceCore::add (ServicePtr service)
 
     result = false;
   }
+#if DEBUG
+  if (result)
+    std::cout << "Ekiga::ServiceCore added " << service->get_name () << std::endl;
+  else
+    std::cout << "Ekiga::ServiceCore already has " << service->get_name () << std::endl;
+#endif
 
   return result;
 }
@@ -76,6 +89,15 @@ Ekiga::ServiceCore::get (const std::string name)
 
       result = *iter;
     }
+
+
+#if DEBUG
+  if (result)
+    std::cout << "Ekiga::ServiceCore returns " << name << std::endl;
+  else
+    std::cout << "Ekiga::ServiceCore doesn't have " << name << std::endl;
+#endif
+
   return result;
 }
 
