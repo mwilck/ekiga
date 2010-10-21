@@ -143,8 +143,7 @@ engine_init (Ekiga::ServiceCorePtr service_core,
     return;
   }
 
-  boost::shared_ptr<Ekiga::PresenceCore> presence_core (new Ekiga::PresenceCore (*service_core));
-  service_core->add (presence_core);
+  service_core->add (boost::shared_ptr<Ekiga::PresenceCore> (new Ekiga::PresenceCore (*service_core)));
 
 #ifndef WIN32
   if (!videooutput_x_init (*service_core, &argc, &argv)) {
