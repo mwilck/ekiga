@@ -40,11 +40,6 @@
 #include "config.h"
 
 #include "misc.h"
-#include "ekiga.h"
-#include "callbacks.h"
-
-#include "gmdialog.h"
-#include "gmconf.h"
 
 
 /* return the default audio device name */
