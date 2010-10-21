@@ -149,7 +149,7 @@ ekiga_dialpad_init (EkigaDialpad *dialpad)
 
   gtk_table_set_col_spacings (GTK_TABLE (dialpad), 2);
   gtk_table_set_row_spacings (GTK_TABLE (dialpad), 2);
-  gtk_table_set_homogeneous (GTK_TABLE (dialpad), true);
+  gtk_table_set_homogeneous (GTK_TABLE (dialpad), TRUE);
 
   /* Create the buttons */
   for (i = 0; i < G_N_ELEMENTS (keys_info); i++) {
@@ -273,7 +273,7 @@ ekiga_dialpad_class_init (EkigaDialpadClass *klass)
 }
 
 guint
-ekiga_dialpad_get_button_code (EkigaDialpad * /* dialpad */,
+ekiga_dialpad_get_button_code (G_GNUC_UNUSED EkigaDialpad *dialpad,
                                char          number)
 {
   unsigned i;

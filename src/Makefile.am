@@ -62,8 +62,6 @@ ekiga_SOURCES +=			\
 	gui/callbacks.cpp		\
 	gui/conf.h			\
 	gui/conf.cpp			\
-	gui/dialpad.h			\
-	gui/dialpad.cpp			\
 	gui/assistant.h			\
 	gui/assistant.cpp		\
 	gui/main_window.h		\

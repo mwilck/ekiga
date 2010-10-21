@@ -155,6 +155,8 @@ endif
 # (those should probably be moved elsewhere like lib/engine/gui/gtk-core/ )
 ##
 libekiga_la_SOURCES += \
+	$(top_srcdir)/lib/gui/dialpad.h \
+	$(top_srcdir)/lib/gui/dialpad.c \
 	$(top_srcdir)/lib/gui/gm-smileys.h \
 	$(top_srcdir)/lib/gui/gm-smileys.c \
 	$(top_srcdir)/lib/gui/gmwindow.c \
