@@ -55,7 +55,7 @@ struct NULLAUDIOOUTPUTSpark: public Ekiga::Spark
     if (audiooutput_core && !service) {
 
       GMAudioOutputManager_null* audiooutput_manager = new GMAudioOutputManager_null(core);
-      service = Ekiga::ServicePtr (new Ekiga::BasicService ("audio-output-null",
+      service = Ekiga::ServicePtr (new Ekiga::BasicService ("null-audio-output",
 							    "\tObject bringing in the null audio output"));
 
       audiooutput_core->add_manager (*audiooutput_manager);
