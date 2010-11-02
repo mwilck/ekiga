@@ -452,7 +452,7 @@ statusicon_build_menu (Ekiga::ServiceCore& services)
       GTK_MENU_ENTRY("help", NULL,
                      _("Get help by reading the Ekiga manual"),
                      GTK_STOCK_HELP, GDK_F1,
-                     G_CALLBACK (help_cb), NULL, TRUE),
+                     G_CALLBACK (help_callback), NULL, TRUE),
 
       GTK_MENU_ENTRY("about", NULL,
 		     _("View information about Ekiga"),

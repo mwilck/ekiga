@@ -163,8 +163,8 @@ GNU GPL for all the rest of the software thus combined.")
 
 
 void
-help_cb (G_GNUC_UNUSED GtkWidget *widget,
-	 G_GNUC_UNUSED gpointer data)
+help_callback (G_GNUC_UNUSED GtkWidget *widget,
+	       G_GNUC_UNUSED gpointer data)
 {
 #ifdef WIN32
   gchar *locale, *loc_ , *index_path;

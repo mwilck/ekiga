@@ -599,7 +599,7 @@ gm_accounts_window_new (Ekiga::ServiceCore &core)
   gtk_menu_item_set_submenu (GTK_MENU_ITEM (menu_item), menu);
   item = gtk_image_menu_item_new_from_stock (GTK_STOCK_HELP, NULL);
   gtk_menu_shell_append (GTK_MENU_SHELL (menu), item);
-  g_signal_connect (G_OBJECT (item), "activate", G_CALLBACK (help_cb), NULL);
+  g_signal_connect (G_OBJECT (item), "activate", G_CALLBACK (help_callback), NULL);
 
   /* The accounts list store */
   list_store = gtk_list_store_new (COLUMN_ACCOUNT_NUMBER,

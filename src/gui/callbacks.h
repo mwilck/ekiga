@@ -56,8 +56,8 @@ void about_callback (GtkWidget *widget,
  * BEHAVIOR     :  Open the help window.
  * PRE          :  /
  */
-void help_cb (GtkWidget *widget,
-              gpointer data);
+void help_callback (GtkWidget *widget,
+		    gpointer data);
 
 
 /* DESCRIPTION  :  This callback is called when the user chooses to quit.
