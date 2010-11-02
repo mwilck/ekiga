@@ -42,7 +42,6 @@
 #include "preferences.h"
 #include "misc.h"
 #include "accounts.h"
-#include "ekiga.h"
 #include "callbacks.h"
 
 #include <gmdialog.h>
@@ -1086,14 +1085,13 @@ audioev_filename_browse_cb (GtkWidget *b,
 static void
 sound_events_list_changed_nt (G_GNUC_UNUSED gpointer id,
 			      GmConfEntry *entry,
-			      G_GNUC_UNUSED gpointer data)
+			      gpointer data)
 {
-  GtkWidget *prefs_window;
+  GtkWidget *prefs_window = (GtkWidget*)data;
 
   if (gm_conf_entry_get_type (entry) == GM_CONF_STRING
       || gm_conf_entry_get_type (entry) == GM_CONF_BOOL) {
-   
-    prefs_window = GnomeMeeting::Process ()->GetPrefsWindow ();
+
     if (prefs_window) {
       gm_prefs_window_sound_events_list_build (prefs_window);
     }
@@ -1438,34 +1436,34 @@ gm_prefs_window_new (Ekiga::ServiceCore *core)
 
   /* Connect notifiers for SOUND_EVENTS_KEY keys */
   gm_conf_notifier_add (SOUND_EVENTS_KEY "enable_incoming_call_sound", 
-			sound_events_list_changed_nt, NULL);
+			sound_events_list_changed_nt, pw);
   
   gm_conf_notifier_add (SOUND_EVENTS_KEY "incoming_call_sound",
-			sound_events_list_changed_nt, NULL);
+			sound_events_list_changed_nt, pw);
 
   gm_conf_notifier_add (SOUND_EVENTS_KEY "enable_ring_tone_sound", 
-			sound_events_list_changed_nt, NULL);
+			sound_events_list_changed_nt, pw);
   
   gm_conf_notifier_add (SOUND_EVENTS_KEY "ring_tone_sound", 
-			sound_events_list_changed_nt, NULL);
+			sound_events_list_changed_nt, pw);
   
   gm_conf_notifier_add (SOUND_EVENTS_KEY "enable_busy_tone_sound", 
-			sound_events_list_changed_nt, NULL);
+			sound_events_list_changed_nt, pw);
   
   gm_conf_notifier_add (SOUND_EVENTS_KEY "busy_tone_sound",
-			sound_events_list_changed_nt, NULL);
+			sound_events_list_changed_nt, pw);
   
   gm_conf_notifier_add (SOUND_EVENTS_KEY "enable_new_voicemail_sound", 
-			sound_events_list_changed_nt, NULL);
+			sound_events_list_changed_nt, pw);
   
   gm_conf_notifier_add (SOUND_EVENTS_KEY "new_voicemail_sound",
-			sound_events_list_changed_nt, NULL);
+			sound_events_list_changed_nt, pw);
 
   gm_conf_notifier_add (SOUND_EVENTS_KEY "enable_new_message_sound",
-			sound_events_list_changed_nt, NULL);
+			sound_events_list_changed_nt, pw);
 
   gm_conf_notifier_add (SOUND_EVENTS_KEY "new_message_sound",
-			sound_events_list_changed_nt, NULL);
+			sound_events_list_changed_nt, pw);
 
   return window;
 }
