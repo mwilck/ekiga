@@ -644,6 +644,9 @@ Opal::Sip::EndPoint::OnRegistrationFailed (const PString & _aor,
   switch (r) {
 
   case SIP_PDU::Failure_BadRequest:
+    /* Translators:  All these strings are answers from the SIP server
+     * when the packet it receives has an error, see
+     * http://www.ietf.org/rfc/rfc3261.txt, chapter 21 for more information */
     info = _("Bad request");
     break;
 
