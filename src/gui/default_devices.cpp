@@ -1,6 +1,6 @@
 
 /* Ekiga -- A VoIP and Video-Conferencing application
- * Copyright (C) 2000-2009 Damien Sandras <dsandras@seconix.com>
+ * Copyright (C) 2000-2010 Damien Sandras <dsandras@seconix.com>
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -27,48 +27,48 @@
 
 
 /*
- *                         misc.cpp  -  description
+ *                         default_devices.cpp  -  description
  *                         ------------------------
  *   begin                : Thu Nov 22 2001
- *   copyright            : (C) 2000-2006 by Damien Sandras
+ *   copyright            : (C) 2000-2010 by Damien Sandras
  *   description          : This file contains miscellaneous functions.
- *   Additional Code      : De Michele Cristiano, Miguel Rodríguez
+ *   Additional Code      : Eugen Dedu, Julien Puydt(Snark)
  *
  */
 
+#include "default_devices.h"
 
-#include "config.h"
-
-#include "misc.h"
-
-
-/* return the default audio device name */
-const gchar *get_default_audio_device_name (void)
+/* returns the default video name from the list of existing devices */
+const gchar *
+get_default_video_device_name (const gchar * const *options)
 {
-#ifdef WIN32
-  return "Default (PTLIB/WindowsMultimedia)";
-#else
-  return "Default (PTLIB/ALSA)";
-#endif
-}
+  int found = -1;
 
-/* return the default video name from the list of existing devices */
-const gchar *get_default_video_device_name (const gchar * const *options)
-{
 #ifdef WIN32
   /* look for the entry containing "PTLIB/DirectShow" or "PTLIB/VideoForWindows" */
-  for (int i = 0; options[i]; i++)
-    if (g_strrstr (options[i], "PTLIB/DirectShow")
-        || g_strrstr (options[i], "PTLIB/VideoForWindows"))
-      return options[i];
+  for (int ii = 0; options[ii]; ii++)
+    if (g_strrstr (options[ii], "PTLIB/DirectShow")
+        || g_strrstr (options[ii], "PTLIB/VideoForWindows")) {
+
+      found = ii;
+      break;
+    }
 #else
   /* look for the entry containing "PTLIB/V4L2", otherwise "PTLIB/V4L" */
-  for (int i = 0; options[i]; i++)
-    if (g_strrstr (options[i], "PTLIB/V4L2"))
-      return options[i];
-  for (int i = 0; options[i]; i++)
-    if (g_strrstr (options[i], "PTLIB/V4L"))
-      return options[i];
+  for (int ii = 0; options[ii]; ii++) {
+
+    if (g_strrstr (options[ii], "PTLIB/V4L2")) {
+
+      found = ii;
+      break; // we break because we prefer that
+    }
+    if (g_strrstr (options[ii], "PTLIB/V4L"))
+      found = ii; // we don't break because we still hope to find V4L2
+  }
 #endif
-  return NULL;  // not found
+
+  if (found != -1)
+    return options[found];
+  else
+    return NULL;  // not found
 }

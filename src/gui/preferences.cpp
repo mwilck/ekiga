@@ -40,7 +40,7 @@
 #include "config.h"
 
 #include "preferences.h"
-#include "misc.h"
+#include "default_devices.h"
 #include "accounts.h"
 #include "callbacks.h"
 
@@ -774,16 +774,16 @@ gm_pw_init_audio_devices_page (GtkWidget *prefs_window,
   gm_prefs_window_get_audiooutput_devices_list (pw->core, device_list);
   array = gm_prefs_window_convert_string_list(device_list);
   pw->sound_events_output = 
-    gnome_prefs_string_option_menu_new (subsection, _("Ringing Device"), (const gchar **)array, SOUND_EVENTS_KEY "output_device", _("Select the ringing audio device to use"), 0, get_default_audio_device_name ());
+    gnome_prefs_string_option_menu_new (subsection, _("Ringing Device"), (const gchar **)array, SOUND_EVENTS_KEY "output_device", _("Select the ringing audio device to use"), 0, DEFAULT_AUDIO_DEVICE_NAME);
   pw->audio_player =
-    gnome_prefs_string_option_menu_new (subsection, _("Output device:"), (const gchar **)array, AUDIO_DEVICES_KEY "output_device", _("Select the audio output device to use"), 1, get_default_audio_device_name ());
+    gnome_prefs_string_option_menu_new (subsection, _("Output device:"), (const gchar **)array, AUDIO_DEVICES_KEY "output_device", _("Select the audio output device to use"), 1, DEFAULT_AUDIO_DEVICE_NAME);
   g_free (array);
 
   /* The recorder */
   gm_prefs_window_get_audioinput_devices_list (pw->core, device_list);
   array = gm_prefs_window_convert_string_list(device_list);
   pw->audio_recorder =
-    gnome_prefs_string_option_menu_new (subsection, _("Input device:"), (const gchar **)array, AUDIO_DEVICES_KEY "input_device", _("Select the audio input device to use"), 2, get_default_audio_device_name ());
+    gnome_prefs_string_option_menu_new (subsection, _("Input device:"), (const gchar **)array, AUDIO_DEVICES_KEY "input_device", _("Select the audio input device to use"), 2, DEFAULT_AUDIO_DEVICE_NAME);
   g_free (array);
 
 
@@ -1288,11 +1288,11 @@ gm_prefs_window_update_devices_list (GtkWidget *prefs_window)
   gnome_prefs_string_option_menu_update (pw->audio_player,
  					 (const gchar **)array,
  					 AUDIO_DEVICES_KEY "output_device",
- 					 get_default_audio_device_name ());
+ 					 DEFAULT_AUDIO_DEVICE_NAME);
   gnome_prefs_string_option_menu_update (pw->sound_events_output,
                                          (const gchar **)array,
                                          SOUND_EVENTS_KEY "output_device",
-                                         get_default_audio_device_name ());
+                                         DEFAULT_AUDIO_DEVICE_NAME);
   g_free (array);
 
   /* The recorder */
@@ -1301,7 +1301,7 @@ gm_prefs_window_update_devices_list (GtkWidget *prefs_window)
   gnome_prefs_string_option_menu_update (pw->audio_recorder,
  					 (const gchar **)array,
  					 AUDIO_DEVICES_KEY "input_device",
- 					 get_default_audio_device_name ());
+ 					 DEFAULT_AUDIO_DEVICE_NAME);
   g_free (array);
 
 

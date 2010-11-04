@@ -66,8 +66,8 @@ ekiga_SOURCES +=			\
 	gui/assistant.cpp		\
 	gui/main_window.h		\
 	gui/main_window.cpp		\
-	gui/misc.cpp			\
-	gui/misc.h			\
+	gui/default_devices.cpp		\
+	gui/default_devices.h		\
 	gui/preferences.h		\
 	gui/preferences.cpp		\
 	gui/statusicon.h		\

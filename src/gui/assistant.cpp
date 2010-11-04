@@ -46,7 +46,7 @@
 #include "gmconf.h"
 #include "toolbox/toolbox.h"
 #include "assistant.h"
-#include "misc.h"
+#include "default_devices.h"
 
 #include "opal-bank.h"
 #include "videoinput-core.h"
@@ -1079,15 +1079,15 @@ prepare_audio_devices_page (EkigaAssistant *assistant)
 
   ringer = gm_conf_get_string (SOUND_EVENTS_KEY "output_device");
   if (ringer == NULL || !ringer[0])
-    ringer = g_strdup (get_default_audio_device_name ());
+    ringer = g_strdup (DEFAULT_AUDIO_DEVICE_NAME);
 
   player = gm_conf_get_string (AUDIO_DEVICES_KEY "output_device");
   if (player == NULL || !player[0])
-    player = g_strdup (get_default_audio_device_name ());
+    player = g_strdup (DEFAULT_AUDIO_DEVICE_NAME);
 
   recorder = gm_conf_get_string (AUDIO_DEVICES_KEY "input_device");
   if (recorder == NULL || !recorder[0])
-    recorder = g_strdup (get_default_audio_device_name ());
+    recorder = g_strdup (DEFAULT_AUDIO_DEVICE_NAME);
 
   /* FIXME: We should use DetectDevices, however DetectDevices
    * works only for the currently selected audio and video plugins,

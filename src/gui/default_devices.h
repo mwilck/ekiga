@@ -1,6 +1,6 @@
 
 /* Ekiga -- A VoIP and Video-Conferencing application
- * Copyright (C) 2000-2009 Damien Sandras <dsandras@seconix.com>
+ * Copyright (C) 2000-2010 Damien Sandras <dsandras@seconix.com>
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -27,31 +27,30 @@
 
 
 /*
- *                         misc.h  -  description
+ *                         default_devices.h  -  description
  *                         ----------------------
  *   begin                : Thu Nov 22 2001
- *   copyright            : (C) 2000-2006 by Damien Sandras
+ *   copyright            : (C) 2000-2010 by Damien Sandras
  *   description          : This file contains miscellaneous functions.
- *   Additional Code      : De Michele Cristiano, Miguel Rodríguez
+ *   Additional Code      : Eugen Dedu, Julien Puydt(Snark)
  *
  */
 
 
-#ifndef _MISC_H_
-#define _MISC_H_
+#ifndef __DEFAULT_DEVICES_H__
+#define __DEFAULT_DEVICES_H__
 
 #include <glib.h>
 
-/* DESCRIPTION  :  /
- * BEHAVIOR     :  /
- * PRE          :  /
- */
-const gchar *get_default_audio_device_name (void);
+/* the default audio device name */
 
+#ifdef WIN32
+#define DEFAULT_AUDIO_DEVICE_NAME "Default (PTLIB/WindowsMultimedia)"
+#else
+#define DEFAULT_AUDIO_DEVICE_NAME "Default (PTLIB/ALSA)"
+#endif
 
-/* DESCRIPTION  :  /
- * BEHAVIOR     :  /
- * PRE          :  /
- */
+/* returns the default video name from the list of existing devices */
 const gchar *get_default_video_device_name (const gchar * const *options);
+
 #endif
