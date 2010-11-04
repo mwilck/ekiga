@@ -2862,12 +2862,29 @@ ekiga_main_window_incoming_call_notify (EkigaMainWindow *mw,
 
   body = g_strdup_printf ("%s\n%s\n%s", uri, app, account);
   
-  notify = notify_notification_new (title, body, GM_ICON_LOGO, NULL);
+
+  notify = notify_notification_new (title, body, GM_ICON_LOGO
+// NOTIFY_CHECK_VERSION appeared in 0.5.2 only
+#ifndef NOTIFY_CHECK_VERSION
+                                    , NULL
+#else
+#if !NOTIFY_CHECK_VERSION(0,7,0)
+                                    , NULL
+#endif
+#endif
+                                    );
   notify_notification_add_action (notify, "accept", _("Accept"), notify_action_cb, mw, NULL);
   notify_notification_add_action (notify, "reject", _("Reject"), notify_action_cb, mw, NULL);
   notify_notification_set_timeout (notify, NOTIFY_EXPIRES_NEVER);
   notify_notification_set_urgency (notify, NOTIFY_URGENCY_CRITICAL);
-  notify_notification_attach_to_status_icon (notify, statusicon);
+// NOTIFY_CHECK_VERSION appeared in 0.5.2 only
+#ifndef NOTIFY_CHECK_VERSION
+    notify_notification_attach_to_status_icon (notify, statusicon);
+#else
+#if !NOTIFY_CHECK_VERSION(0,7,0)
+    notify_notification_attach_to_status_icon (notify, statusicon);
+#endif
+#endif
   if (!notify_notification_show (notify, NULL)) {
     ekiga_main_window_incoming_call_dialog_show (mw, call);
   }

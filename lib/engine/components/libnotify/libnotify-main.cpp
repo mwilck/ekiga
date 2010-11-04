@@ -158,7 +158,16 @@ LibNotify::on_notification_added (boost::shared_ptr<Ekiga::Notification> notific
 
   notif = notify_notification_new (notification->get_title ().c_str (),
 				   notification->get_body ().c_str (),
-				   urgency, NULL);
+				   urgency
+// NOTIFY_CHECK_VERSION appeared in 0.5.2 only
+#ifdef NOTIFY_CHECK_VERSION
+#if !NOTIFY_CHECK_VERSION(0,7,0)
+				     , NULL
+#endif
+#else
+				     , NULL
+#endif
+				   );
 
   g_signal_connect (notif, "closed",
 		    G_CALLBACK (on_notif_closed), notification.get ());
