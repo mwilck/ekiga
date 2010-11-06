@@ -643,46 +643,35 @@ Opal::Sip::EndPoint::OnRegistrationFailed (const PString & _aor,
 
   switch (r) {
 
-  case SIP_PDU::Failure_BadRequest:
-    /* Translators:  All these strings are answers from the SIP server
-     * when the packet it receives has an error, see
-     * http://www.ietf.org/rfc/rfc3261.txt, chapter 21 for more information */
-    info = _("Bad request");
-    break;
-
-  case SIP_PDU::Failure_PaymentRequired:
-    info = _("Payment required");
-    break;
-
-  case SIP_PDU::Failure_UnAuthorised:
-    info = _("Unauthorized");
-    break;
-
-  case SIP_PDU::Failure_Forbidden:
-    info = _("Forbidden, please check that username and password are correct");
-    break;
-
-  case SIP_PDU::Failure_RequestTimeout:
-    info = _("Timeout");
-    break;
-
-  case SIP_PDU::Failure_Conflict:
-    info = _("Conflict");
-    break;
-
-  case SIP_PDU::Failure_TemporarilyUnavailable:
-    info = _("Temporarily unavailable");
-    break;
-
-  case SIP_PDU::Failure_NotAcceptable:
-    info = _("Not acceptable");
-    break;
-
+    // all these codes are defined in opal, file include/sip/sippdu.h
   case SIP_PDU::IllegalStatusCode:
     info = _("Illegal status code");
     break;
 
+  case SIP_PDU::Local_TransportError:
+  case SIP_PDU::Local_BadTransportAddress:
+    info = _("Transport error");
+    break;
+
+  case SIP_PDU::Local_Timeout:
+    /* Translators: Host of the remote party is offline, this should
+     * appear when the remote host does not reply in an acceptable time */
+    info = _("Remote party host is offline");
+    break;
+
+  case SIP_PDU::Information_Trying:
+  case SIP_PDU::Information_Ringing:
+  case SIP_PDU::Information_CallForwarded:
+  case SIP_PDU::Information_Queued:
+  case SIP_PDU::Information_Session_Progress:
+  case SIP_PDU::Successful_OK:
+  case SIP_PDU::Successful_Accepted:
+    break;
+
   case SIP_PDU::Redirection_MultipleChoices:
+    /* Translators: the following strings are answers from the SIP server
+     * when the packet it receives has an error, see
+     * http://www.ietf.org/rfc/rfc3261.txt, chapter 21 for more information */
     info = _("Multiple choices");
     break;
 
@@ -702,6 +691,22 @@ Opal::Sip::EndPoint::OnRegistrationFailed (const PString & _aor,
     info = _("Alternative service");
     break;
 
+  case SIP_PDU::Failure_BadRequest:
+    info = _("Bad request");
+    break;
+
+  case SIP_PDU::Failure_UnAuthorised:
+    info = _("Unauthorized");
+    break;
+
+  case SIP_PDU::Failure_PaymentRequired:
+    info = _("Payment required");
+    break;
+
+  case SIP_PDU::Failure_Forbidden:
+    info = _("Forbidden, please check that username and password are correct");
+    break;
+
   case SIP_PDU::Failure_NotFound:
     info = _("Not found");
     break;
@@ -710,8 +715,20 @@ Opal::Sip::EndPoint::OnRegistrationFailed (const PString & _aor,
     info = _("Method not allowed");
     break;
 
+  case SIP_PDU::Failure_NotAcceptable:
+    info = _("Not acceptable");
+    break;
+
   case SIP_PDU::Failure_ProxyAuthenticationRequired:
     info = _("Proxy authentication required");
+    break;
+
+  case SIP_PDU::Failure_RequestTimeout:
+    info = _("Timeout");
+    break;
+
+  case SIP_PDU::Failure_Conflict:
+    info = _("Conflict");
     break;
 
   case SIP_PDU::Failure_LengthRequired:
@@ -750,6 +767,10 @@ Opal::Sip::EndPoint::OnRegistrationFailed (const PString & _aor,
     info = _("Interval too brief");
     break;
 
+  case SIP_PDU::Failure_TemporarilyUnavailable:
+    info = _("Temporarily unavailable");
+    break;
+
   case SIP_PDU::Failure_LoopDetected:
     info = _("Loop detected");
     break;
@@ -772,10 +793,6 @@ Opal::Sip::EndPoint::OnRegistrationFailed (const PString & _aor,
 
   case SIP_PDU::Failure_RequestTerminated:
     info = _("Request terminated");
-    break;
-
-  case SIP_PDU::Local_Timeout:
-    info = _("Remote party host is offline");
     break;
 
   case SIP_PDU::Failure_NotAcceptableHere:
@@ -838,25 +855,11 @@ Opal::Sip::EndPoint::OnRegistrationFailed (const PString & _aor,
     info = _("Globally not acceptable");
     break;
 
-  case SIP_PDU::Local_TransportError:
-  case SIP_PDU::Local_BadTransportAddress:
-    info = _("Transport error");
-    break;
-
   case SIP_PDU::Failure_TransactionDoesNotExist:
   case SIP_PDU::Failure_Gone:
   case SIP_PDU::MaxStatusCode:
   default:
     info = _("Failed");
-
-  case SIP_PDU::Information_Trying:
-  case SIP_PDU::Information_Ringing:
-  case SIP_PDU::Information_CallForwarded:
-  case SIP_PDU::Information_Queued:
-  case SIP_PDU::Information_Session_Progress:
-  case SIP_PDU::Successful_OK:
-  case SIP_PDU::Successful_Accepted:
-    break;
   }
 
   /* Signal the SIP Endpoint */
