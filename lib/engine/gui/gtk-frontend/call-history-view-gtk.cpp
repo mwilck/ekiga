@@ -373,9 +373,9 @@ call_history_view_gtk_new (boost::shared_ptr<History::Book> book)
   /* react to user clicks */
   selection = gtk_tree_view_get_selection (GTK_TREE_VIEW (self->priv->tree));
   gtk_tree_selection_set_mode (selection, GTK_SELECTION_SINGLE);
-  g_signal_connect (G_OBJECT (selection), "changed",
+  g_signal_connect (selection, "changed",
 		    G_CALLBACK (on_selection_changed), self);
-  g_signal_connect (G_OBJECT (self->priv->tree), "event-after",
+  g_signal_connect (self->priv->tree, "event-after",
 		    G_CALLBACK (on_clicked), &(*book));
 
   /* connect to the signals */

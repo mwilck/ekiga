@@ -241,16 +241,16 @@ gm_window_init (GTypeInstance *instance,
   gtk_accel_group_connect (self->priv->accel, GDK_Escape, (GdkModifierType) 0, GTK_ACCEL_LOCKED,
                            g_cclosure_new_swap (G_CALLBACK (gtk_widget_hide), (gpointer) self, NULL));
 
-  g_signal_connect (G_OBJECT (self), "delete_event",
+  g_signal_connect (self, "delete_event",
 		    G_CALLBACK (gm_window_delete_event), NULL);
 
-  g_signal_connect (G_OBJECT (self), "show",
+  g_signal_connect (self, "show",
                     G_CALLBACK (window_show_cb), self);
 
-  g_signal_connect (G_OBJECT (self), "hide",
+  g_signal_connect (self, "hide",
                     G_CALLBACK (window_hide_cb), self);
 
-  g_signal_connect (G_OBJECT (self), "configure-event",
+  g_signal_connect (self, "configure-event",
                     G_CALLBACK (gm_window_configure_event), self);
 }
 
@@ -664,7 +664,7 @@ gm_window_hide_on_delete (GtkWidget* window)
 {
   g_return_if_fail (GTK_IS_OBJECT (window));
 
-  g_signal_connect (GTK_OBJECT (window), "delete-event",
+  g_signal_connect (window, "delete-event",
 		    G_CALLBACK (delete_event_cb), NULL);
 }
 

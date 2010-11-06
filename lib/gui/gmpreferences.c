@@ -171,11 +171,11 @@ gnome_prefs_entry_new (GtkWidget *table,
 
   g_free (conf_string);
 
-  g_signal_connect_after (G_OBJECT (entry), "focus-out-event",
+  g_signal_connect_after (entry, "focus-out-event",
 			  G_CALLBACK (entry_focus_changed),
 			  (gpointer)conf_key);
 
-  g_signal_connect_after (G_OBJECT (entry), "activate",
+  g_signal_connect_after (entry, "activate",
 			  G_CALLBACK (entry_activate_changed),
 			  (gpointer)conf_key);
 
@@ -233,7 +233,7 @@ gnome_prefs_toggle_new (GtkWidget *table,
   if (gpw && tooltip)
     gtk_widget_set_tooltip_text (toggle, tooltip);
 
-  g_signal_connect (G_OBJECT (toggle), "toggled",
+  g_signal_connect (toggle, "toggled",
 		    G_CALLBACK (toggle_changed), (gpointer) conf_key);
   
   gm_conf_notifier_add (conf_key, toggle_changed_nt, (gpointer) toggle);
@@ -310,7 +310,7 @@ gnome_prefs_scale_new (GtkWidget *table,
   if (gpw && tooltip)
     gtk_widget_set_tooltip_text (hscale, tooltip);
 
-  g_signal_connect (G_OBJECT (adj), "value-changed",
+  g_signal_connect (adj, "value-changed",
 		    G_CALLBACK (adjustment_changed),
 		    (gpointer) conf_key);
 
@@ -408,7 +408,7 @@ gnome_prefs_spin_new (GtkWidget *table,
   if (gpw && tooltip)
     gtk_widget_set_tooltip_text (spin_button, tooltip);
 
-  g_signal_connect (G_OBJECT (adj), "value-changed",
+  g_signal_connect (adj, "value-changed",
 		    G_CALLBACK (adjustment_changed),
 		    (gpointer) conf_key);
 
@@ -503,13 +503,13 @@ gnome_prefs_range_new (GtkWidget *table,
   }
   
 
-  g_signal_connect (G_OBJECT (adj1), "value-changed",
+  g_signal_connect (adj1, "value-changed",
 		    G_CALLBACK (adjustment_changed),
 		    (gpointer) spin1_conf_key);
   gm_conf_notifier_add (spin1_conf_key, adjustment_changed_nt,
 			(gpointer) adj1);
   
-  g_signal_connect (G_OBJECT (adj2), "value-changed",
+  g_signal_connect (adj2, "value-changed",
 		    G_CALLBACK (adjustment_changed),
 		    (gpointer) spin2_conf_key);
   gm_conf_notifier_add (spin2_conf_key, adjustment_changed_nt,
@@ -595,8 +595,8 @@ gnome_prefs_int_option_menu_new (GtkWidget *table,
   if (gpw && tooltip)
     gtk_widget_set_tooltip_text (option_menu, tooltip);
 
-  g_signal_connect (GTK_COMBO_BOX (option_menu), 
-		    "changed", G_CALLBACK (int_option_menu_changed),
+  g_signal_connect (option_menu, "changed",
+		    G_CALLBACK (int_option_menu_changed),
   		    (gpointer) conf_key);                                   
   gm_conf_notifier_add (conf_key, int_option_menu_changed_nt,
 			(gpointer) option_menu);
@@ -707,8 +707,8 @@ gnome_prefs_string_option_menu_new (GtkWidget *table,
   if (gpw && tooltip)
     gtk_widget_set_tooltip_text (option_menu, tooltip);
 
-  g_signal_connect (GTK_COMBO_BOX (option_menu), 
-		    "changed", G_CALLBACK (string_option_menu_changed),
+  g_signal_connect (option_menu, "changed",
+		    G_CALLBACK (string_option_menu_changed),
   		    (gpointer) conf_key);                                   
   gm_conf_notifier_add (conf_key, string_option_menu_changed_nt,
 			(gpointer) option_menu);

@@ -345,7 +345,7 @@ on_contact_clicked (GtkWidget *tree_view,
 	    gtk_widget_show_all (builder.menu);
 	    gtk_menu_popup (GTK_MENU (builder.menu), NULL, NULL,
 			    NULL, NULL, event->button, event->time);
-	    g_signal_connect (G_OBJECT (builder.menu), "hide",
+	    g_signal_connect (builder.menu, "hide",
 			      G_CALLBACK (g_object_unref),
 			      (gpointer) builder.menu);
 	  }
@@ -587,7 +587,7 @@ book_view_gtk_new (Ekiga::BookPtr book)
   g_signal_connect (selection, "changed",
 		    G_CALLBACK (on_selection_changed), result);
 
-  g_signal_connect (G_OBJECT (result->priv->tree_view), "event-after",
+  g_signal_connect (result->priv->tree_view, "event-after",
 		    G_CALLBACK (on_contact_clicked), result);
 
   store = gtk_list_store_new (COLUMN_NUMBER,

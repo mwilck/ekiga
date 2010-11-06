@@ -246,7 +246,7 @@ on_core_updated (gpointer data)
 
   item = gtk_image_menu_item_new_from_stock (GTK_STOCK_CLOSE, self->priv->accel);
   gtk_menu_shell_append (GTK_MENU_SHELL (menu_builder.menu), item);
-  g_signal_connect_swapped (G_OBJECT (item), "activate",
+  g_signal_connect_swapped (item, "activate",
                             G_CALLBACK (gtk_widget_hide),
                             (gpointer) self);
 
@@ -417,7 +417,7 @@ on_book_clicked (GtkWidget *tree_view,
             gtk_menu_popup (GTK_MENU (menu_builder.menu),
                             NULL, NULL, NULL, NULL,
                             event->button, event->time);
-            g_signal_connect (G_OBJECT (menu_builder.menu), "hide",
+            g_signal_connect (menu_builder.menu, "hide",
                               G_CALLBACK (g_object_unref),
                               (gpointer) menu_builder.menu);
           }
@@ -749,9 +749,9 @@ addressbook_window_new (Ekiga::ContactCore &core)
   self->priv->selection = gtk_tree_view_get_selection (GTK_TREE_VIEW (self->priv->tree_view));
   gtk_tree_selection_set_mode (GTK_TREE_SELECTION (self->priv->selection),
                                GTK_SELECTION_SINGLE);
-  g_signal_connect (G_OBJECT (self->priv->selection), "changed",
+  g_signal_connect (self->priv->selection, "changed",
                     G_CALLBACK (on_book_selection_changed), self);
-  g_signal_connect (G_OBJECT (self->priv->tree_view), "event-after",
+  g_signal_connect (self->priv->tree_view, "event-after",
                     G_CALLBACK (on_book_clicked), self);
 
   /* The notebook containing the books */

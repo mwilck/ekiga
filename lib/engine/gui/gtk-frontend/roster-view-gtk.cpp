@@ -1519,9 +1519,9 @@ roster_view_gtk_new (Ekiga::PresenceCore &core)
   /* Callback when the selection has been changed */
   selection = gtk_tree_view_get_selection (self->priv->tree_view);
   gtk_tree_selection_set_mode (selection, GTK_SELECTION_SINGLE);
-  g_signal_connect (G_OBJECT (selection), "changed",
+  g_signal_connect (selection, "changed",
 		    G_CALLBACK (on_selection_changed), self);
-  g_signal_connect (G_OBJECT (self->priv->tree_view), "event-after",
+  g_signal_connect (self->priv->tree_view, "event-after",
 		    G_CALLBACK (on_view_event_after), self);
 
 

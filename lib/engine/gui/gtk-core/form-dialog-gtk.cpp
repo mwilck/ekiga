@@ -754,7 +754,7 @@ FormDialog::link (const std::string _link,
   gtk_button_set_relief (GTK_BUTTON (widget), GTK_RELIEF_NONE);
   gtk_box_pack_start (GTK_BOX (preamble), widget, FALSE, FALSE, 0);
 
-  g_signal_connect_data (G_OBJECT (widget), "clicked",
+  g_signal_connect_data (widget, "clicked",
                          G_CALLBACK (link_clicked_cb), (gpointer) g_strdup (_uri.c_str ()),
                          (GClosureNotify) g_free, (GConnectFlags) 0);
 }
@@ -1118,7 +1118,7 @@ FormDialog::multiple_choice (const std::string name,
                                               "active", MultipleChoiceSubmitter::COLUMN_ACTIVE,
                                               NULL);
   gtk_tree_view_append_column (GTK_TREE_VIEW (tree_view), column);
-  g_signal_connect (G_OBJECT (renderer), "toggled",
+  g_signal_connect (renderer, "toggled",
                     G_CALLBACK (multiple_choice_choice_toggled_cb), list_store);
 
   renderer = gtk_cell_renderer_text_new ();
@@ -1230,7 +1230,7 @@ FormDialog::editable_set (const std::string name,
                                               "active", EditableSetSubmitter::COLUMN_ACTIVE,
                                               NULL);
   gtk_tree_view_append_column (GTK_TREE_VIEW (tree_view), column);
-  g_signal_connect (G_OBJECT (renderer), "toggled",
+  g_signal_connect (renderer, "toggled",
                     G_CALLBACK (editable_set_choice_toggled_cb), list_store);
 
   renderer = gtk_cell_renderer_text_new ();
@@ -1297,11 +1297,11 @@ FormDialog::editable_set (const std::string name,
   gtk_box_pack_start (GTK_BOX (hbox), entry, TRUE, TRUE, 2);
   gtk_box_pack_start (GTK_BOX (hbox), button, FALSE, FALSE, 2);
 
-  g_signal_connect (G_OBJECT (entry), "activate",
+  g_signal_connect (entry, "activate",
 		    (GCallback) editable_set_add_value_activated_cb,
 		    (gpointer) tree_view);
 
-  g_signal_connect (G_OBJECT (button), "clicked",
+  g_signal_connect (button, "clicked",
 		    (GCallback) editable_set_add_value_clicked_cb,
 		    (gpointer) entry);
 

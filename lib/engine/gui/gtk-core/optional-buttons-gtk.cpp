@@ -91,7 +91,7 @@ OptionalButtonsGtk::add_button (const std::string label,
   struct OptionalButtonsGtkHelper* helper = new struct OptionalButtonsGtkHelper;
   g_object_set_data_full (G_OBJECT (button), "ekiga-optional-buttons-gtk-helper",
 			  (gpointer)helper,(GDestroyNotify)optional_buttons_gtk_helper_destroy);
-  g_signal_connect (G_OBJECT (button), "clicked",
+  g_signal_connect (button, "clicked",
 		    G_CALLBACK (on_optional_buttons_gtk_clicked), NULL);
 }
 

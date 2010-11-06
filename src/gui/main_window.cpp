@@ -910,7 +910,7 @@ static bool on_handle_errors (std::string error,
   gtk_window_set_title (GTK_WINDOW (dialog), _("Error"));
   gtk_label_set_markup (GTK_LABEL (GTK_MESSAGE_DIALOG (dialog)->label), error.c_str ());
 
-  g_signal_connect_swapped (GTK_OBJECT (dialog), "response",
+  g_signal_connect_swapped (dialog, "response",
                             G_CALLBACK (gtk_widget_destroy),
                             GTK_OBJECT (dialog));
 
@@ -1598,7 +1598,7 @@ gm_mw_video_settings_window_new (EkigaMainWindow *mw)
 
   gtk_widget_set_tooltip_text (hscale_brightness, _("Adjust brightness"));
 
-  g_signal_connect (G_OBJECT (mw->priv->adj_brightness), "value-changed",
+  g_signal_connect (mw->priv->adj_brightness, "value-changed",
 		    G_CALLBACK (video_settings_changed_cb), 
 		    (gpointer) mw);
 
@@ -1619,7 +1619,7 @@ gm_mw_video_settings_window_new (EkigaMainWindow *mw)
 
   gtk_widget_set_tooltip_text (hscale_whiteness, _("Adjust whiteness"));
 
-  g_signal_connect (G_OBJECT (mw->priv->adj_whiteness), "value-changed",
+  g_signal_connect (mw->priv->adj_whiteness, "value-changed",
 		    G_CALLBACK (video_settings_changed_cb), 
 		    (gpointer) mw);
 
@@ -1640,7 +1640,7 @@ gm_mw_video_settings_window_new (EkigaMainWindow *mw)
 
   gtk_widget_set_tooltip_text (hscale_colour, _("Adjust color"));
 
-  g_signal_connect (G_OBJECT (mw->priv->adj_colour), "value-changed",
+  g_signal_connect (mw->priv->adj_colour, "value-changed",
 		    G_CALLBACK (video_settings_changed_cb), 
 		    (gpointer) mw);
 
@@ -1661,7 +1661,7 @@ gm_mw_video_settings_window_new (EkigaMainWindow *mw)
 
   gtk_widget_set_tooltip_text (hscale_contrast, _("Adjust contrast"));
 
-  g_signal_connect (G_OBJECT (mw->priv->adj_contrast), "value-changed",
+  g_signal_connect (mw->priv->adj_contrast, "value-changed",
 		    G_CALLBACK (video_settings_changed_cb), 
 		    (gpointer) mw);
   
@@ -1778,24 +1778,24 @@ gm_mw_audio_settings_window_new (EkigaMainWindow *mw)
   gtk_widget_show_all (mw->priv->audio_input_volume_frame);
   gtk_widget_set_sensitive (GTK_WIDGET (mw->priv->audio_input_volume_frame),  FALSE);
 
-  g_signal_connect (G_OBJECT (mw->priv->adj_output_volume), "value-changed",
+  g_signal_connect (mw->priv->adj_output_volume, "value-changed",
 		    G_CALLBACK (audio_volume_changed_cb), mw);
 
-  g_signal_connect (G_OBJECT (mw->priv->adj_input_volume), "value-changed",
+  g_signal_connect (mw->priv->adj_input_volume, "value-changed",
 		    G_CALLBACK (audio_volume_changed_cb), mw);
 
   /* That's an usual GtkWindow, connect it to the signals */
-  g_signal_connect_swapped (GTK_OBJECT (window), 
+  g_signal_connect_swapped (window, 
 			    "response", 
 			    G_CALLBACK (gm_window_hide),
 			    (gpointer) window);
 
   gm_window_hide_on_delete (window);
 
-  g_signal_connect (G_OBJECT (window), "show", 
+  g_signal_connect (window, "show", 
                     G_CALLBACK (audio_volume_window_shown_cb), mw);
 
-  g_signal_connect (G_OBJECT (window), "hide", 
+  g_signal_connect (window, "hide", 
                     G_CALLBACK (audio_volume_window_hidden_cb), mw);
 
   return window;
@@ -2383,7 +2383,7 @@ ekiga_main_window_update_logo_have_window (EkigaMainWindow *mw)
 {
   g_return_if_fail (EKIGA_IS_MAIN_WINDOW (mw));
 
-  g_object_set (G_OBJECT (mw->priv->main_video_image),
+  g_object_set (mw->priv->main_video_image,
 		"icon-name", GM_ICON_LOGO,
 		"pixel-size", 72,
 		NULL);
@@ -2428,12 +2428,12 @@ ekiga_main_window_set_call_hold (EkigaMainWindow *mw,
     ekiga_main_window_set_channel_pause (mw, FALSE, TRUE);
   }
   
-  g_signal_handlers_block_by_func (G_OBJECT (mw->priv->hold_button),
+  g_signal_handlers_block_by_func (mw->priv->hold_button,
                                    (gpointer) hold_current_call_cb,
                                    mw);
   gtk_toggle_button_set_active (GTK_TOGGLE_BUTTON (mw->priv->hold_button), 
                                 is_on_hold);
-  g_signal_handlers_unblock_by_func (G_OBJECT (mw->priv->hold_button),
+  g_signal_handlers_unblock_by_func (mw->priv->hold_button,
                                      (gpointer) hold_current_call_cb,
                                      mw);
 }
@@ -2781,9 +2781,9 @@ ekiga_main_window_incoming_call_dialog_show (EkigaMainWindow *mw,
 
   gtk_widget_show_all (incoming_call_popup);
 
-  g_signal_connect (G_OBJECT (incoming_call_popup), "delete_event",
+  g_signal_connect (incoming_call_popup, "delete_event",
                     G_CALLBACK (gtk_widget_hide_on_delete), NULL);
-  g_signal_connect (G_OBJECT (incoming_call_popup), "response",
+  g_signal_connect (incoming_call_popup, "response",
                     G_CALLBACK (incoming_call_response_cb), mw);
 
   call->established.connect (boost::bind (&on_incoming_call_gone_cb,
@@ -3122,22 +3122,22 @@ ekiga_main_window_add_device_dialog_show (EkigaMainWindow *mw,
   gtk_widget_show_all (add_device_popup);
 
 
-//  g_signal_connect (G_OBJECT (add_device_popup), "delete_event",
+//  g_signal_connect (add_device_popup, "delete_event",
 //                    G_CALLBACK (gtk_widget_hide_on_delete), NULL);
-//  g_signal_connect (G_OBJECT (add_device_popup), "response",
+//  g_signal_connect (add_device_popup, "response",
 //                    G_CALLBACK (add_device_response_cb), &device);
 
   deviceStruct* device_struct = g_new(deviceStruct, 1);
   snprintf (device_struct->name, sizeof (device_struct->name), "%s", (device.GetString()).c_str());
   device_struct->deviceType = device_type;
 
-  g_signal_connect_data (G_OBJECT (add_device_popup), "delete_event",
+  g_signal_connect_data (add_device_popup, "delete_event",
                          G_CALLBACK (gtk_widget_hide_on_delete), 
                          (gpointer) device_struct,
                          (GClosureNotify) g_free,
                          (GConnectFlags) 0);
 
-  g_signal_connect_data (G_OBJECT (add_device_popup), "response",
+  g_signal_connect_data (add_device_popup, "response",
                          G_CALLBACK (add_device_response_cb), 
                          (gpointer) device_struct,
                          (GClosureNotify) g_free,
@@ -3394,9 +3394,9 @@ ekiga_main_window_init_uri_toolbar (EkigaMainWindow *mw)
 
   gtk_editable_set_position (GTK_EDITABLE (mw->priv->entry), -1);
 
-  g_signal_connect (G_OBJECT (mw->priv->entry), "changed", 
+  g_signal_connect (mw->priv->entry, "changed", 
 		    G_CALLBACK (url_changed_cb), mw);
-  g_signal_connect (G_OBJECT (mw->priv->entry), "activate", 
+  g_signal_connect (mw->priv->entry, "activate", 
 		    G_CALLBACK (place_call_cb), mw);
 
   gtk_toolbar_insert (GTK_TOOLBAR (mw->priv->main_toolbar), item, 0);
@@ -3415,7 +3415,7 @@ ekiga_main_window_init_uri_toolbar (EkigaMainWindow *mw)
   
   gtk_toolbar_insert (GTK_TOOLBAR (mw->priv->main_toolbar), item, -1);
 
-  g_signal_connect (G_OBJECT (mw->priv->connect_button), "clicked",
+  g_signal_connect (mw->priv->connect_button, "clicked",
                     G_CALLBACK (toggle_call_cb), 
                     mw);
 
@@ -3459,7 +3459,7 @@ ekiga_main_window_init_contact_list (EkigaMainWindow *mw)
   label = gtk_label_new (_("Contacts"));
   mw->priv->roster_view = roster_view_gtk_new (*presence_core);
   mw->priv->roster_view_page_number = gtk_notebook_append_page (GTK_NOTEBOOK (mw->priv->main_notebook), mw->priv->roster_view, label);
-  g_signal_connect (G_OBJECT (mw->priv->roster_view), "selection-changed",
+  g_signal_connect (mw->priv->roster_view, "selection-changed",
 		    G_CALLBACK (on_roster_selection_changed), mw);
 }
 
@@ -3472,7 +3472,7 @@ ekiga_main_window_init_dialpad (EkigaMainWindow *mw)
   GtkWidget *label = NULL;
 
   dialpad = ekiga_dialpad_new (mw->priv->accel);
-  g_signal_connect (G_OBJECT (dialpad), "button-clicked",
+  g_signal_connect (dialpad, "button-clicked",
                     G_CALLBACK (dialpad_button_clicked_cb), mw);
 
   alignment = gtk_alignment_new (0.5, 0.5, 0.2, 0.2);
@@ -3481,7 +3481,7 @@ ekiga_main_window_init_dialpad (EkigaMainWindow *mw)
   label = gtk_label_new (_("Dialpad"));
   mw->priv->dialpad_page_number = gtk_notebook_append_page (GTK_NOTEBOOK (mw->priv->main_notebook), alignment, label);
 
-  g_signal_connect (G_OBJECT (mw), "key-press-event",
+  g_signal_connect (mw, "key-press-event",
                     G_CALLBACK (key_press_event_cb), mw);
 }
 
@@ -3498,7 +3498,7 @@ ekiga_main_window_init_history (EkigaMainWindow *mw)
 
   label = gtk_label_new (_("Call history"));
   mw->priv->call_history_page_number = gtk_notebook_append_page (GTK_NOTEBOOK (mw->priv->main_notebook), mw->priv->call_history_view, label);
-  g_signal_connect (G_OBJECT (mw->priv->call_history_view), "selection-changed",
+  g_signal_connect (mw->priv->call_history_view, "selection-changed",
 		    G_CALLBACK (on_history_selection_changed), mw);
 }
 
@@ -3605,7 +3605,7 @@ ekiga_main_window_init_call_panel (EkigaMainWindow *mw)
                         GTK_TOOL_ITEM (item), -1);
     gtk_tool_item_set_tooltip_text (GTK_TOOL_ITEM (item),
                                     _("Change the volume of your soundcard"));
-    g_signal_connect (G_OBJECT (mw->priv->audio_settings_button), "clicked",
+    g_signal_connect (mw->priv->audio_settings_button, "clicked",
                       G_CALLBACK (show_window_cb),
                       (gpointer) mw->priv->audio_settings_window);
   }
@@ -3627,7 +3627,7 @@ ekiga_main_window_init_call_panel (EkigaMainWindow *mw)
   gtk_tool_item_set_tooltip_text (GTK_TOOL_ITEM (item),
 				   _("Change the color settings of your video device"));
 
-  g_signal_connect (G_OBJECT (mw->priv->video_settings_button), "clicked",
+  g_signal_connect (mw->priv->video_settings_button, "clicked",
 		    G_CALLBACK (show_window_cb),
 		    (gpointer) mw->priv->video_settings_window);
 
@@ -3649,7 +3649,7 @@ ekiga_main_window_init_call_panel (EkigaMainWindow *mw)
   gtk_tool_item_set_tooltip_text (GTK_TOOL_ITEM (item),
 				  _("Display images from your camera device"));
 
-  g_signal_connect (G_OBJECT (mw->priv->preview_button), "toggled",
+  g_signal_connect (mw->priv->preview_button, "toggled",
 		    G_CALLBACK (toolbar_toggle_button_changed_cb),
 		    (gpointer) VIDEO_DEVICES_KEY "enable_preview");
 
@@ -3670,7 +3670,7 @@ ekiga_main_window_init_call_panel (EkigaMainWindow *mw)
 				  _("Hold the current call"));
   gtk_widget_set_sensitive (GTK_WIDGET (mw->priv->hold_button), FALSE);
 
-  g_signal_connect (G_OBJECT (mw->priv->hold_button), "clicked",
+  g_signal_connect (mw->priv->hold_button, "clicked",
 		    G_CALLBACK (hold_current_call_cb), mw);
 
   alignment = gtk_alignment_new (0.0, 0.0, 1.0, 0.0);
@@ -3757,12 +3757,12 @@ ekiga_main_window_init_gui (EkigaMainWindow *mw)
                       FALSE, FALSE, 0);
   gtk_widget_show_all (mw->priv->statusbar_ebox);
 
-  g_signal_connect (G_OBJECT (mw->priv->statusbar_ebox), "button-press-event",
+  g_signal_connect (mw->priv->statusbar_ebox, "button-press-event",
 		    G_CALLBACK (statusbar_clicked_cb), mw);
  
   gtk_widget_realize (GTK_WIDGET (mw));
   ekiga_main_window_update_logo_have_window (mw);
-  g_signal_connect_after (G_OBJECT (mw->priv->main_notebook), "switch-page",
+  g_signal_connect_after (mw->priv->main_notebook, "switch-page",
 			  G_CALLBACK (panel_section_changed_cb), 
 			  mw);
 
@@ -4146,7 +4146,7 @@ gm_main_window_new (Ekiga::ServiceCore & core)
   /* Track status icon embed changes */
   /* FIXME: move this to the status icon code */
   status_icon = GTK_STATUS_ICON (GnomeMeeting::Process ()->GetStatusicon ());
-  g_signal_connect (G_OBJECT (status_icon), "notify::embedded",
+  g_signal_connect (status_icon, "notify::embedded",
 		    G_CALLBACK (on_status_icon_embedding_change), NULL);
 
   return window;

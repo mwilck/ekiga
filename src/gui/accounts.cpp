@@ -193,7 +193,7 @@ populate_menu (GtkWidget *window)
   }
   item = gtk_image_menu_item_new_from_stock (GTK_STOCK_CLOSE, aw->accel);
   gtk_menu_shell_append (GTK_MENU_SHELL (builder.menu), item);
-  g_signal_connect_swapped (G_OBJECT (item), "activate",
+  g_signal_connect_swapped (item, "activate",
                             G_CALLBACK (gtk_widget_hide),
                             (gpointer) window);
 
@@ -257,7 +257,7 @@ account_clicked_cb (G_GNUC_UNUSED GtkWidget *w,
         gtk_widget_show_all (builder.menu);
         gtk_menu_popup (GTK_MENU (builder.menu), NULL, NULL,
                         NULL, NULL, event->button, event->time);
-        g_signal_connect (G_OBJECT (builder.menu), "hide",
+        g_signal_connect (builder.menu, "hide",
                           G_CALLBACK (g_object_unref),
                           (gpointer) builder.menu);
       }
@@ -599,7 +599,7 @@ gm_accounts_window_new (Ekiga::ServiceCore &core)
   gtk_menu_item_set_submenu (GTK_MENU_ITEM (menu_item), menu);
   item = gtk_image_menu_item_new_from_stock (GTK_STOCK_HELP, NULL);
   gtk_menu_shell_append (GTK_MENU_SHELL (menu), item);
-  g_signal_connect (G_OBJECT (item), "activate", G_CALLBACK (help_callback), NULL);
+  g_signal_connect (item, "activate", G_CALLBACK (help_callback), NULL);
 
   /* The accounts list store */
   list_store = gtk_list_store_new (COLUMN_ACCOUNT_NUMBER,
@@ -625,7 +625,7 @@ gm_accounts_window_new (Ekiga::ServiceCore &core)
 						     COLUMN_ACCOUNT_IS_ENABLED,
 						     NULL);
   gtk_tree_view_append_column (GTK_TREE_VIEW (aw->accounts_list), column);
-  g_signal_connect (G_OBJECT (renderer), "toggled",
+  g_signal_connect (renderer, "toggled",
 		    G_CALLBACK (account_toggled_cb),
 		    (gpointer)window);
 
@@ -647,7 +647,7 @@ gm_accounts_window_new (Ekiga::ServiceCore &core)
     gtk_tree_view_column_set_sort_column_id (column, i);
   }
 
-  g_signal_connect (G_OBJECT (aw->accounts_list), "event_after",
+  g_signal_connect (aw->accounts_list, "event_after",
 		    G_CALLBACK (account_clicked_cb), window);
 
   selection = gtk_tree_view_get_selection (GTK_TREE_VIEW (aw->accounts_list));
@@ -700,8 +700,7 @@ gm_accounts_window_new (Ekiga::ServiceCore &core)
   gtk_box_pack_start (GTK_BOX (GTK_DIALOG (window)->vbox), event_box, TRUE, TRUE, 0);
 
   /* Generic signals */
-  g_signal_connect_swapped (GTK_OBJECT (window),
-			    "response",
+  g_signal_connect_swapped (window, "response",
 			    G_CALLBACK (gm_window_hide),
 			    (gpointer) window);
 

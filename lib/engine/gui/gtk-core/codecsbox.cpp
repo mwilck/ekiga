@@ -425,7 +425,7 @@ codecs_box_init (CodecsBox *self)
                                       "activatable", COLUMN_CODEC_SELECTABLE);
   gtk_tree_view_column_set_fixed_width (GTK_TREE_VIEW_COLUMN (column), 25);
   gtk_tree_view_append_column (GTK_TREE_VIEW (self->priv->codecs_list), column);
-  g_signal_connect (G_OBJECT (renderer), "toggled",
+  g_signal_connect (renderer, "toggled",
                     G_CALLBACK (codec_toggled_cb),
                     (gpointer) self);
 
@@ -478,7 +478,7 @@ codecs_box_init (CodecsBox *self)
   gtk_widget_set_tooltip_text (button, _("Move selected codec priority upwards"));
   gtk_box_pack_start (GTK_BOX (buttons_vbox), button, FALSE, FALSE, 0);
   g_object_set_data (G_OBJECT (button), "operation", (gpointer) "up");
-  g_signal_connect (G_OBJECT (button), "clicked",
+  g_signal_connect (button, "clicked",
                     G_CALLBACK (codec_moved_cb), 
                     (gpointer) self);
 
@@ -488,7 +488,7 @@ codecs_box_init (CodecsBox *self)
   gtk_widget_set_tooltip_text (button, _("Move selected codec priority downwards"));
   gtk_box_pack_start (GTK_BOX (buttons_vbox), button, FALSE, FALSE, 0);
   g_object_set_data (G_OBJECT (button), "operation", (gpointer) "down");
-  g_signal_connect (G_OBJECT (button), "clicked",
+  g_signal_connect (button, "clicked",
                     G_CALLBACK (codec_moved_cb), 
                     (gpointer) self);
 

@@ -201,7 +201,7 @@ gm_smiley_chooser_button_init (GTypeInstance* instance,
   priv->frame = NULL;
   priv->table = NULL;
 
-  g_signal_connect (G_OBJECT (self), "toggled",
+  g_signal_connect (self, "toggled",
 		    G_CALLBACK (on_smiley_chooser_button_toggled), NULL);
 }
 
@@ -318,16 +318,16 @@ on_button_hierarchy_changed (GtkWidget* widget,
     {
       g_object_ref_sink (G_OBJECT (new_toplevel));
       priv->toplevel_window_handler[HANDLER_CONFIGURE] =
-	g_signal_connect (G_OBJECT (new_toplevel), "configure-event",
+	g_signal_connect (new_toplevel, "configure-event",
 			  G_CALLBACK (on_toplevel_configure_event), self);
       priv->toplevel_window_handler[HANDLER_SCREEN_CHANGED] =
-	g_signal_connect (G_OBJECT (new_toplevel), "screen-changed",
+	g_signal_connect (new_toplevel, "screen-changed",
 			  G_CALLBACK (on_toplevel_screen_changed), self);
       priv->toplevel_window_handler[HANDLER_HIDE] =
-	g_signal_connect (G_OBJECT (new_toplevel), "hide",
+	g_signal_connect (new_toplevel, "hide",
 			  G_CALLBACK (on_toplevel_hide), self);
       priv->toplevel_window_handler[HANDLER_DELETE_EVENT] =
-	g_signal_connect (G_OBJECT (new_toplevel), "delete-event",
+	g_signal_connect (new_toplevel, "delete-event",
 			  G_CALLBACK (on_toplevel_delete_event), self);
       gtk_window_set_transient_for (GTK_WINDOW (priv->popup_window),
 				    GTK_WINDOW (new_toplevel));
@@ -655,7 +655,7 @@ static void gm_smiley_chooser_build_view (GmSmileyChooserButton* self)
   /* the popup window */
   priv->popup_window = gtk_window_new (GTK_WINDOW_TOPLEVEL);
   g_object_ref_sink (G_OBJECT (priv->popup_window));
-  g_signal_connect (G_OBJECT (priv->popup_window), "button-press-event",
+  g_signal_connect (priv->popup_window, "button-press-event",
 		    G_CALLBACK (on_popup_button_press_event), self);
 //  gtk_window_set_title (GTK_WINDOW (priv->popup_window), _("Smile!"));
   gtk_window_set_type_hint (GTK_WINDOW (priv->popup_window),
@@ -720,7 +720,7 @@ static void gm_smiley_chooser_build_view (GmSmileyChooserButton* self)
                               "smiley_characters",
                               (gpointer) g_strdup (smiley_set[smiley]),
                               g_free);
-      g_signal_connect (G_OBJECT (button), "clicked",
+      g_signal_connect (button, "clicked",
                         G_CALLBACK (on_smiley_image_clicked), self);
 
       gtk_table_attach_defaults (GTK_TABLE (priv->table),
@@ -787,20 +787,20 @@ gm_smiley_chooser_button_new (void)
     {
       g_object_ref_sink (G_OBJECT (widget));
       self->priv->toplevel_window_handler[HANDLER_CONFIGURE] =
-	g_signal_connect (G_OBJECT (widget), "configure-event",
+	g_signal_connect (widget, "configure-event",
 			  G_CALLBACK (on_toplevel_configure_event), self);
       self->priv->toplevel_window_handler[HANDLER_SCREEN_CHANGED] = 
-        g_signal_connect (G_OBJECT (widget), "screen-changed",
+        g_signal_connect (widget, "screen-changed",
                           G_CALLBACK (on_toplevel_screen_changed), self);
       self->priv->toplevel_window_handler[HANDLER_HIDE] =
-        g_signal_connect (G_OBJECT (widget), "hide",
+        g_signal_connect (widget, "hide",
                           G_CALLBACK (on_toplevel_hide), self);
       self->priv->toplevel_window_handler[HANDLER_DELETE_EVENT] =
-        g_signal_connect (G_OBJECT (widget), "delete-event",
+        g_signal_connect (widget, "delete-event",
                           G_CALLBACK (on_toplevel_delete_event), self);
     }
 
-  g_signal_connect (G_OBJECT (self), "hierarchy-changed",
+  g_signal_connect (self, "hierarchy-changed",
     		    G_CALLBACK (on_button_hierarchy_changed), self);
 
   gm_smiley_chooser_button_set_smiley_set (self, gm_get_smileys());

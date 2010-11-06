@@ -391,7 +391,7 @@ create_personal_data_page (EkigaAssistant *assistant)
   gtk_misc_set_alignment (GTK_MISC (label), 0.0, 0.5);
   gtk_box_pack_start (GTK_BOX (vbox), label, FALSE, TRUE, 0);
 
-  g_signal_connect (G_OBJECT (assistant->priv->name), "changed",
+  g_signal_connect (assistant->priv->name, "changed",
                     G_CALLBACK (name_changed_cb), assistant);
 
   assistant->priv->personal_data_page = vbox;

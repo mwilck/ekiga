@@ -368,13 +368,13 @@ on_extlink_tag_event (GtkTextTag* tag,
 			      g_strdup (link), g_free);
 
       menu_item = gtk_menu_item_new_with_label (_("Open link in browser"));
-      g_signal_connect_after (G_OBJECT (menu_item), "activate",
+      g_signal_connect_after (menu_item, "activate",
 			      G_CALLBACK (on_open_link_activate), menu);
       gtk_widget_show (menu_item);
       gtk_menu_shell_append (GTK_MENU_SHELL (menu), menu_item);
 
       menu_item = gtk_menu_item_new_with_label (_("Copy link"));
-      g_signal_connect_after (G_OBJECT (menu_item), "activate",
+      g_signal_connect_after (menu_item, "activate",
 			      G_CALLBACK (on_copy_link_activate), menu);
       gtk_widget_show (menu_item);
       gtk_menu_shell_append (GTK_MENU_SHELL (menu), menu_item);
@@ -769,7 +769,7 @@ chat_area_init (GTypeInstance* instance,
      GTK_POLICY_AUTOMATIC, GTK_POLICY_AUTOMATIC);
 
   self->priv->text_view = gtk_text_view_new ();
-  g_signal_connect (G_OBJECT (self->priv->text_view), "motion-notify-event",
+  g_signal_connect (self->priv->text_view, "motion-notify-event",
 		    G_CALLBACK (on_motion_notify_event), NULL);
   buffer = gtk_text_view_get_buffer (GTK_TEXT_VIEW (self->priv->text_view));
 
@@ -807,7 +807,7 @@ chat_area_init (GTypeInstance* instance,
 				    "foreground", "blue",
 				    "underline", PANGO_UNDERLINE_SINGLE,
 				    NULL);
-  g_signal_connect (G_OBJECT (tag), "event",
+  g_signal_connect (tag, "event",
 		    G_CALLBACK (on_extlink_tag_event), NULL);
   {
     GdkCursor* cursor = gdk_cursor_new (GDK_HAND2);
@@ -909,7 +909,7 @@ chat_area_init (GTypeInstance* instance,
   gtk_button_set_image (GTK_BUTTON(smiley_chooser_button), smiley_button);
   gtk_button_set_relief (GTK_BUTTON(smiley_chooser_button), GTK_RELIEF_NONE);
   gtk_button_set_focus_on_click (GTK_BUTTON (smiley_chooser_button), FALSE);
-  g_signal_connect (G_OBJECT (smiley_chooser_button), "smiley_selected",
+  g_signal_connect (smiley_chooser_button, "smiley_selected",
 		    G_CALLBACK (on_smiley_selected), self);
   gtk_box_pack_start (GTK_BOX (bbox), smiley_chooser_button,
 		      FALSE, TRUE, 2);
@@ -922,7 +922,7 @@ chat_area_init (GTypeInstance* instance,
 			  (gpointer) "</b>", NULL);
   gtk_button_set_relief (GTK_BUTTON (button), GTK_RELIEF_NONE);
   gtk_button_set_focus_on_click (GTK_BUTTON (button), FALSE);
-  g_signal_connect (G_OBJECT (button), "clicked",
+  g_signal_connect (button, "clicked",
 		    G_CALLBACK (on_font_changed), self);
   gtk_box_pack_start (GTK_BOX (bbox), button,
 		      FALSE, TRUE, 2);
@@ -936,7 +936,7 @@ chat_area_init (GTypeInstance* instance,
 			  (gpointer) "</i>", NULL);
   gtk_button_set_relief (GTK_BUTTON (button), GTK_RELIEF_NONE);
   gtk_button_set_focus_on_click (GTK_BUTTON (button), FALSE);
-  g_signal_connect (G_OBJECT (button), "clicked",
+  g_signal_connect (button, "clicked",
 		    G_CALLBACK (on_font_changed), self);
   gtk_box_pack_start (GTK_BOX (bbox), button,
 		      FALSE, TRUE, 2);
@@ -950,7 +950,7 @@ chat_area_init (GTypeInstance* instance,
 			  (gpointer) "</u>", NULL);
   gtk_button_set_relief (GTK_BUTTON (button), GTK_RELIEF_NONE);
   gtk_button_set_focus_on_click (GTK_BUTTON (button), FALSE);
-  g_signal_connect (G_OBJECT (button), "clicked",
+  g_signal_connect (button, "clicked",
 		    G_CALLBACK (on_font_changed), self);
   gtk_box_pack_start (GTK_BOX (bbox), button,
 		      FALSE, TRUE, 2);
@@ -963,7 +963,7 @@ chat_area_init (GTypeInstance* instance,
   gtk_text_view_set_wrap_mode (GTK_TEXT_VIEW (self->priv->message),
                                GTK_WRAP_WORD_CHAR);
   gtk_text_view_set_cursor_visible  (GTK_TEXT_VIEW (self->priv->message), true);
-  g_signal_connect (GTK_OBJECT (self->priv->message), "key-press-event",
+  g_signal_connect (self->priv->message, "key-press-event",
                     G_CALLBACK (message_activated_cb), self);
   gtk_box_pack_start (GTK_BOX (vbox), self->priv->message,
 		      TRUE, TRUE, 2);
@@ -971,9 +971,9 @@ chat_area_init (GTypeInstance* instance,
   gtk_widget_set_size_request (GTK_WIDGET (self->priv->message), 155, -1);
   gtk_widget_show_all (vbox);
 
-  g_signal_connect (G_OBJECT (self), "focus",
+  g_signal_connect (self, "focus",
 		    G_CALLBACK (on_chat_area_focus), NULL);
-  g_signal_connect (G_OBJECT (self), "grab-focus",
+  g_signal_connect (self, "grab-focus",
 		    G_CALLBACK (on_chat_area_grab_focus), self->priv->message);
   gtk_widget_grab_focus (self->priv->message);
 }

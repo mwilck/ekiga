@@ -312,14 +312,14 @@ gtk_build_menu (GtkWidget *menubar,
       if (menu [i].func) {
 
         if (menu [i].clofunc) {
-          g_signal_connect_data (G_OBJECT (menu [i].widget),
+          g_signal_connect_data (menu [i].widget,
                                  "activate", menu [i].func,
                                  menu [i].data,
                                  (GClosureNotify) menu [i].clofunc,
                                  (GConnectFlags) G_CONNECT_AFTER);
         }
         else {
-          g_signal_connect (G_OBJECT (menu [i].widget),
+          g_signal_connect (menu [i].widget,
                             "activate", menu [i].func,
                             menu [i].data);
         }
@@ -327,10 +327,10 @@ gtk_build_menu (GtkWidget *menubar,
 
       g_object_set_data (G_OBJECT (menu [i].widget),
 			 "statusbar", statusbar);
-      g_signal_connect (G_OBJECT (menu [i].widget),
+      g_signal_connect (menu [i].widget,
 			"select", G_CALLBACK (menu_item_selected),
 			(gpointer) menu [i].tooltip);
-      g_signal_connect (G_OBJECT (menu [i].widget),
+      g_signal_connect (menu [i].widget,
 			"deselect", G_CALLBACK (menu_item_selected),
 			NULL);
     }
@@ -391,7 +391,7 @@ gtk_build_menu (GtkWidget *menubar,
 			     menus_have_icons_changed_nt,
 			     menubar);
 
-  g_signal_connect (G_OBJECT (menubar), "destroy",
+  g_signal_connect (menubar, "destroy",
 		    G_CALLBACK (menu_widget_destroyed), id);
 }
 
@@ -409,7 +409,7 @@ gtk_build_popup_menu (GtkWidget *widget,
 
   if (widget) {
 
-    g_signal_connect (G_OBJECT (widget), "button_press_event",
+    g_signal_connect (widget, "button_press_event",
                       G_CALLBACK (popup_menu_callback),
                       (gpointer) popup_menu_widget);
 

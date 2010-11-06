@@ -103,7 +103,7 @@ simple_chat_page_init (GTypeInstance* instance,
   self->priv = g_new (SimpleChatPagePrivate, 1);
   self->priv->area = NULL;
 
-  g_signal_connect (G_OBJECT (self), "grab-focus",
+  g_signal_connect (self, "grab-focus",
 		    G_CALLBACK (on_page_grab_focus), NULL);
 }
 

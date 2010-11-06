@@ -437,7 +437,7 @@ gm_pw_add_update_button (G_GNUC_UNUSED GtkWidget *prefs_window,
 
   gtk_box_pack_start (GTK_BOX (box), alignment, TRUE, TRUE, 0);
 
-  g_signal_connect (G_OBJECT (button), "clicked",
+  g_signal_connect (button, "clicked",
                     G_CALLBACK (func), 
                     (gpointer) data);
 
@@ -599,7 +599,7 @@ gm_pw_init_sound_events_page (GtkWidget *prefs_window,
                                                      NULL);
   gtk_tree_view_column_set_fixed_width (GTK_TREE_VIEW_COLUMN (column), 25);
   gtk_tree_view_append_column (GTK_TREE_VIEW (pw->sound_events_list), column);
-  g_signal_connect (G_OBJECT (renderer), "toggled",
+  g_signal_connect (renderer, "toggled",
                     G_CALLBACK (sound_event_toggled_cb), 
                     GTK_TREE_MODEL (list_store));
 
@@ -637,22 +637,22 @@ gm_pw_init_sound_events_page (GtkWidget *prefs_window,
   gtk_file_chooser_set_extra_widget (GTK_FILE_CHOOSER (pw->fsbutton),
                                      selector_hbox);
 
-  g_signal_connect (G_OBJECT (selector_playbutton), "clicked",
+  g_signal_connect (selector_playbutton, "clicked",
                     G_CALLBACK (audioev_filename_browse_play_cb),
                     (gpointer) prefs_window);
 
-  g_signal_connect (G_OBJECT (pw->fsbutton), "selection-changed",
+  g_signal_connect (pw->fsbutton, "selection-changed",
                     G_CALLBACK (audioev_filename_browse_cb),
                     (gpointer) prefs_window);
 
-  g_signal_connect (G_OBJECT (selection), "changed",
+  g_signal_connect (selection, "changed",
                     G_CALLBACK (sound_event_clicked_cb),
                     (gpointer) pw->fsbutton);
 
   button = gtk_button_new_with_label (_("Play"));
   gtk_box_pack_start (GTK_BOX (hbox), button, FALSE, FALSE, 2);
 
-  g_signal_connect (G_OBJECT (button), "clicked",
+  g_signal_connect (button, "clicked",
                     G_CALLBACK (sound_event_play_cb),
                     (gpointer) prefs_window);
 
@@ -1406,8 +1406,7 @@ gm_prefs_window_new (Ekiga::ServiceCore *core)
 
 
   /* That's an usual GtkWindow, connect it to the signals */
-  g_signal_connect_swapped (GTK_OBJECT (window), 
-			    "response", 
+  g_signal_connect_swapped (window, "response",
 			    G_CALLBACK (gm_window_hide),
 			    (gpointer) window);
 

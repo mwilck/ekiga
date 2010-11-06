@@ -852,7 +852,7 @@ status_menu_new (Ekiga::ServiceCore & core)
   gtk_container_set_border_width (GTK_CONTAINER (self), 0);
   status_menu_set_option (self, self->priv->personal_details->get_presence (), self->priv->personal_details->get_status ());
 
-  g_signal_connect (G_OBJECT (self), "changed",
+  g_signal_connect (self, "changed",
                     G_CALLBACK (status_menu_option_changed), self);
 
   gm_conf_notifier_add (PERSONAL_DATA_KEY "online_custom_status", 

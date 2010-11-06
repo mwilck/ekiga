@@ -185,7 +185,7 @@ gm_connect_button_new (const char *pickup,
   gtk_button_set_relief (GTK_BUTTON (button), GTK_RELIEF_NONE);
   cb->image = gtk_image_new_from_stock (pickup, size); 
   gtk_container_add (GTK_CONTAINER (button), cb->image);
-  g_signal_connect (G_OBJECT (button), "clicked", 
+  g_signal_connect (button, "clicked", 
                     G_CALLBACK (gm_connect_button_clicked_cb), cb);
 
   gtk_box_pack_start (GTK_BOX (cb), button, FALSE, FALSE, 0);
