@@ -38,6 +38,33 @@
 
 #include "gmlevelmeter.h"
 
+struct _GmLevelMeterPrivate {
+
+  /* Orientation of the level meter */
+  GtkOrientation orientation;
+
+  /* show a peak indicator */
+  gboolean showPeak;
+
+  /* show a continous or a segmented (LED like) display */
+  gboolean isSegmented;
+
+  /* The ranges of different color of the display */
+  GArray* colorEntries;
+
+  /* The pixmap for double buffering */
+  GdkPixmap* offscreen_image;
+
+  /* The pixmap with the highlighted bar */
+  GdkPixmap* offscreen_image_hl;
+
+  /* The pixmap with the dark bar */
+  GdkPixmap* offscreen_image_dark;
+
+  /* The levels */
+  gfloat level, peak;
+};
+
 G_DEFINE_TYPE (GmLevelMeter, gm_level_meter, GTK_TYPE_WIDGET);
 
 static void gm_level_meter_finalize (GObject *object);
@@ -65,28 +92,32 @@ gm_level_meter_class_init (GmLevelMeterClass *klass)
   widget_class->size_allocate = gm_level_meter_size_allocate;
   widget_class->expose_event = gm_level_meter_expose;
   widget_class->realize = gm_level_meter_realize;
+
+  g_type_class_add_private (klass, sizeof (GmLevelMeterPrivate));
 }
 
 
 static void
 gm_level_meter_init (GmLevelMeter *lm)
 {
-  lm->orientation = GTK_ORIENTATION_HORIZONTAL;
-  lm->showPeak = TRUE;
-  lm->isSegmented = FALSE;
-  lm->colorEntries = NULL;
-  lm->offscreen_image = NULL;
-  lm->offscreen_image_hl = NULL;
-  lm->offscreen_image_dark = NULL;
-  lm->level = .0;
-  lm->peak = .0;
+  lm->priv = G_TYPE_INSTANCE_GET_PRIVATE (lm, GM_TYPE_LEVEL_METER, GmLevelMeterPrivate);
+
+  lm->priv->orientation = GTK_ORIENTATION_HORIZONTAL;
+  lm->priv->showPeak = TRUE;
+  lm->priv->isSegmented = FALSE;
+  lm->priv->colorEntries = NULL;
+  lm->priv->offscreen_image = NULL;
+  lm->priv->offscreen_image_hl = NULL;
+  lm->priv->offscreen_image_dark = NULL;
+  lm->priv->level = .0;
+  lm->priv->peak = .0;
 }
 
 
 GtkWidget*
 gm_level_meter_new ()
 {
-  return GTK_WIDGET (g_object_new (GM_TYPE_LEVEL_METER, NULL)); 
+  return GTK_WIDGET (g_object_new (GM_TYPE_LEVEL_METER, NULL));
 }
 
 
@@ -103,8 +134,8 @@ gm_level_meter_set_default_colors (GArray *colors)
   entry.stopvalue = 1.0;
   g_array_append_val (colors, entry);
 }
- 
- 
+
+
 static void
 gm_level_meter_finalize (GObject *object)
 {
@@ -114,31 +145,30 @@ gm_level_meter_finalize (GObject *object)
 
   lm = GM_LEVEL_METER (object);
 
-  if (lm->colorEntries) {
+  if (lm->priv->colorEntries) {
 
-    gm_level_meter_free_colors (lm->colorEntries);
-    g_array_free (lm->colorEntries, TRUE);
-    lm->colorEntries = NULL;
+    gm_level_meter_free_colors (lm->priv->colorEntries);
+    g_array_free (lm->priv->colorEntries, TRUE);
+    lm->priv->colorEntries = NULL;
   }
 
-  if (lm->offscreen_image) {
+  if (lm->priv->offscreen_image) {
 
-    g_object_unref (lm->offscreen_image);
-    lm->offscreen_image = NULL;
+    g_object_unref (lm->priv->offscreen_image);
+    lm->priv->offscreen_image = NULL;
   }
 
-  if (lm->offscreen_image_hl) {
+  if (lm->priv->offscreen_image_hl) {
 
-    g_object_unref (lm->offscreen_image_hl);
-    lm->offscreen_image_hl = NULL;
+    g_object_unref (lm->priv->offscreen_image_hl);
+    lm->priv->offscreen_image_hl = NULL;
   }
 
-  if (lm->offscreen_image_dark) {
+  if (lm->priv->offscreen_image_dark) {
 
-    g_object_unref (lm->offscreen_image_dark);
-    lm->offscreen_image_dark = NULL;
+    g_object_unref (lm->priv->offscreen_image_dark);
+    lm->priv->offscreen_image_dark = NULL;
   }
-
 
   G_OBJECT_CLASS (gm_level_meter_parent_class)->finalize (object);
 }
@@ -148,10 +178,10 @@ void
 gm_level_meter_set_level (GmLevelMeter *lm,
                           gfloat level)
 {
-  lm->level = level;
+  lm->priv->level = level;
 
-  if (level > lm->peak)
-    lm->peak = level;
+  if (level > lm->priv->peak)
+    lm->priv->peak = level;
   if (gtk_widget_get_realized (GTK_WIDGET (lm)))
 
     gm_level_meter_paint (lm);
@@ -161,8 +191,8 @@ gm_level_meter_set_level (GmLevelMeter *lm,
 void
 gm_level_meter_clear (GmLevelMeter *lm)
 {
-  lm->level = 0;
-  lm->peak = 0;
+  lm->priv->level = 0;
+  lm->priv->peak = 0;
 
   if (gtk_widget_get_realized (GTK_WIDGET (lm)))
     gm_level_meter_paint (lm);
@@ -175,27 +205,27 @@ gm_level_meter_set_colors (GmLevelMeter* lm,
 {
   unsigned i;
 
-  if (lm->colorEntries) {
+  if (lm->priv->colorEntries) {
 
     /* free old colors, if they have been allocated; delete old array */
     if (gtk_widget_get_realized (GTK_WIDGET (lm)))
-      gm_level_meter_free_colors (lm->colorEntries);
-    g_array_free (lm->colorEntries, TRUE);
+      gm_level_meter_free_colors (lm->priv->colorEntries);
+    g_array_free (lm->priv->colorEntries, TRUE);
   }
 
-  lm->colorEntries =
+  lm->priv->colorEntries =
     g_array_new (FALSE, FALSE, sizeof (GmLevelMeterColorEntry));
 
   /* copy array */
   for (i = 0 ; i < colors->len ; i++) {
     GmLevelMeterColorEntry* entry =
       &g_array_index (colors, GmLevelMeterColorEntry, i);
-    g_array_append_val (lm->colorEntries, *entry);
+    g_array_append_val (lm->priv->colorEntries, *entry);
   }
 
   if (gtk_widget_get_realized (GTK_WIDGET (lm))) {
 
-    gm_level_meter_allocate_colors (lm->colorEntries);
+    gm_level_meter_allocate_colors (lm->priv->colorEntries);
 
     /* recalc */
     gm_level_meter_rebuild_pixmap (lm);
@@ -247,8 +277,8 @@ gm_level_meter_allocate_colors (GArray *colors)
     light = &(g_array_index (colors, GmLevelMeterColorEntry, i).color);
     dark = &(g_array_index (colors, GmLevelMeterColorEntry, i).darkcolor);
     dark->red = light->red * .4;
-    dark->green = light->green * .4; 
-    dark->blue = light->blue * .4; 
+    dark->green = light->green * .4;
+    dark->blue = light->blue * .4;
     gdk_colormap_alloc_color (gdk_colormap_get_system (), light, FALSE, TRUE);
     gdk_colormap_alloc_color (gdk_colormap_get_system (), dark, FALSE, TRUE);
   }
@@ -274,19 +304,19 @@ gm_level_meter_rebuild_pixmap (GmLevelMeter *lm)
   gint width_y = 0;
   unsigned i = 0;
 
-  gc = gdk_gc_new (lm->offscreen_image);
+  gc = gdk_gc_new (lm->priv->offscreen_image);
   gtk_widget_get_allocation (widget, &allocation);
 
-  borders = (gint *) g_new (int, lm->colorEntries->len + 1);
+  borders = (gint *) g_new (int, lm->priv->colorEntries->len + 1);
 
   gtk_paint_box (gtk_widget_get_style (widget),
-                 lm->offscreen_image_dark,
+                 lm->priv->offscreen_image_dark,
                  GTK_STATE_PRELIGHT, GTK_SHADOW_IN,
                  NULL, widget, "bar",
                  0, 0,
                  allocation.width, allocation.height);
 
-  switch (lm->orientation) {
+  switch (lm->priv->orientation) {
   case GTK_ORIENTATION_VERTICAL:
     bar_length = allocation.height - 2 * gtk_widget_get_style (widget)->ythickness;
     borders[0] = gtk_widget_get_style (widget)->ythickness;
@@ -297,13 +327,13 @@ gm_level_meter_rebuild_pixmap (GmLevelMeter *lm)
     borders[0] = gtk_widget_get_style (widget)->xthickness;
   }
 
-  for (i = 0 ; i < lm->colorEntries->len ; i++) {
+  for (i = 0 ; i < lm->priv->colorEntries->len ; i++) {
 
     /* Calculate position of borders */
     borders[i+1] = borders[0] + bar_length *
-      g_array_index (lm->colorEntries, GmLevelMeterColorEntry, i).stopvalue;
+      g_array_index (lm->priv->colorEntries, GmLevelMeterColorEntry, i).stopvalue;
 
-    switch (lm->orientation) {
+    switch (lm->priv->orientation) {
     case GTK_ORIENTATION_VERTICAL:
       start_x = gtk_widget_get_style (widget)->xthickness;
       width_x = allocation.width - 2 * gtk_widget_get_style (widget)->xthickness;
@@ -318,13 +348,13 @@ gm_level_meter_rebuild_pixmap (GmLevelMeter *lm)
       width_y = allocation.height - 2 * gtk_widget_get_style (widget)->ythickness;
     }
 
-    gdk_gc_set_foreground (gc, &(g_array_index (lm->colorEntries, GmLevelMeterColorEntry, i).color) );
-    gdk_draw_rectangle (lm->offscreen_image_hl,
+    gdk_gc_set_foreground (gc, &(g_array_index (lm->priv->colorEntries, GmLevelMeterColorEntry, i).color) );
+    gdk_draw_rectangle (lm->priv->offscreen_image_hl,
 			gc, TRUE,
 			start_x, start_y,
 			width_x, width_y);
-    gdk_gc_set_foreground (gc, &(g_array_index (lm->colorEntries, GmLevelMeterColorEntry, i).darkcolor) );
-    gdk_draw_rectangle (lm->offscreen_image_dark,
+    gdk_gc_set_foreground (gc, &(g_array_index (lm->priv->colorEntries, GmLevelMeterColorEntry, i).darkcolor) );
+    gdk_draw_rectangle (lm->priv->offscreen_image_dark,
 			gc,
 			TRUE, /* filled */
 			start_x, start_y,
@@ -389,40 +419,40 @@ gm_level_meter_create_pixmap (GmLevelMeter *lm)
     widget = GTK_WIDGET (lm);
     gtk_widget_get_allocation (widget, &allocation);
 
-    if (lm->offscreen_image)
-      g_object_unref (lm->offscreen_image);
-    if (lm->offscreen_image_hl)
-      g_object_unref (lm->offscreen_image_hl);
-    if (lm->offscreen_image_dark)
-      g_object_unref (lm->offscreen_image_dark);
+    if (lm->priv->offscreen_image)
+      g_object_unref (lm->priv->offscreen_image);
+    if (lm->priv->offscreen_image_hl)
+      g_object_unref (lm->priv->offscreen_image_hl);
+    if (lm->priv->offscreen_image_dark)
+      g_object_unref (lm->priv->offscreen_image_dark);
 
-    lm->offscreen_image = gdk_pixmap_new (gtk_widget_get_window (widget),
-					  allocation.width,
-					  allocation.height,
-					  -1);
-    lm->offscreen_image_hl = gdk_pixmap_new (gtk_widget_get_window (widget),
-					     allocation.width,
-					     allocation.height,
-					     -1);
-    lm->offscreen_image_dark = gdk_pixmap_new (gtk_widget_get_window (widget),
-					       allocation.width,
-					       allocation.height,
-					       -1);
-    gdk_draw_rectangle (lm->offscreen_image, gtk_widget_get_style (widget)->black_gc, TRUE,
+    lm->priv->offscreen_image = gdk_pixmap_new (gtk_widget_get_window (widget),
+						allocation.width,
+						allocation.height,
+						-1);
+    lm->priv->offscreen_image_hl = gdk_pixmap_new (gtk_widget_get_window (widget),
+						   allocation.width,
+						   allocation.height,
+						   -1);
+    lm->priv->offscreen_image_dark = gdk_pixmap_new (gtk_widget_get_window (widget),
+						     allocation.width,
+						     allocation.height,
+						     -1);
+    gdk_draw_rectangle (lm->priv->offscreen_image, gtk_widget_get_style (widget)->black_gc, TRUE,
 		        0, 0,
 			allocation.width, allocation.height);
-    gdk_draw_rectangle (lm->offscreen_image_hl, gtk_widget_get_style (widget)->black_gc, TRUE,
+    gdk_draw_rectangle (lm->priv->offscreen_image_hl, gtk_widget_get_style (widget)->black_gc, TRUE,
                         0, 0,
                         allocation.width, allocation.height);
-    gdk_draw_rectangle (lm->offscreen_image_dark, gtk_widget_get_style (widget)->black_gc, TRUE,
+    gdk_draw_rectangle (lm->priv->offscreen_image_dark, gtk_widget_get_style (widget)->black_gc, TRUE,
                         0, 0,
                         allocation.width, allocation.height);
 
-    if (lm->colorEntries == NULL)
-      lm->colorEntries =
+    if (lm->priv->colorEntries == NULL)
+      lm->priv->colorEntries =
         g_array_new (FALSE, FALSE, sizeof (GmLevelMeterColorEntry));
 
-    gm_level_meter_allocate_colors (lm->colorEntries);
+    gm_level_meter_allocate_colors (lm->priv->colorEntries);
     gm_level_meter_rebuild_pixmap (lm);
     gm_level_meter_paint (lm);
   }
@@ -459,21 +489,21 @@ gm_level_meter_paint (GmLevelMeter *lm)
   inner_width = allocation.width - 2 * gtk_widget_get_style (widget)->xthickness;
   inner_height = allocation.height - 2 * gtk_widget_get_style (widget)->ythickness;
 
-  if (lm->peak > 1.0 ) lm->peak = 1.0;
-  if (lm->level < 0 ) lm->level = 0;
+  if (lm->priv->peak > 1.0 ) lm->priv->peak = 1.0;
+  if (lm->priv->level < 0 ) lm->priv->level = 0;
 
-  switch (lm->orientation) {
+  switch (lm->priv->orientation) {
   case GTK_ORIENTATION_VERTICAL:
     peak_width = inner_width;
     peak_height = PEAKSTRENGTH;
     peak_start_x = 0;
     hl_width = inner_width;
-    hl_start_y = (1.0 - lm->level) * inner_height;
-    peak_start_y = (1.0 - lm->peak) * inner_height;
+    hl_start_y = (1.0 - lm->priv->level) * inner_height;
+    peak_start_y = (1.0 - lm->priv->peak) * inner_height;
 
     if (peak_start_y + peak_height > inner_height)
       peak_height = inner_height - peak_start_y;
-    if (hl_start_y - PEAKSTRENGTH <= peak_start_y) 
+    if (hl_start_y - PEAKSTRENGTH <= peak_start_y)
       hl_start_y = peak_start_y + PEAKSTRENGTH + 1;
     hl_height = inner_height - hl_start_y;
     if (hl_height < 0)
@@ -485,15 +515,15 @@ gm_level_meter_paint (GmLevelMeter *lm)
     peak_height = inner_height;
     peak_start_y = 0;
     hl_start_y = 0;
-    hl_width = lm->level * inner_width;
-    peak_start_x = (lm->peak * inner_width) - PEAKSTRENGTH;
+    hl_width = lm->priv->level * inner_width;
+    peak_start_x = (lm->priv->peak * inner_width) - PEAKSTRENGTH;
 
     if (peak_start_x < 0) {
       peak_width += peak_start_x;
       peak_start_x = 0;
     }
     hl_height = inner_height;
-    if (hl_width >= peak_start_x) 
+    if (hl_width >= peak_start_x)
       hl_width = peak_start_x-1;
     if (hl_width < 0)
       hl_width = 0;
@@ -506,23 +536,23 @@ gm_level_meter_paint (GmLevelMeter *lm)
   hl_start_y += gtk_widget_get_style (widget)->ythickness;
 
   /* fill with dark and border */
-  gdk_draw_drawable (lm->offscreen_image,
+  gdk_draw_drawable (lm->priv->offscreen_image,
 		     gtk_widget_get_style (widget)->black_gc,
-		     lm->offscreen_image_dark,
+		     lm->priv->offscreen_image_dark,
 		     0, 0,
 		     0, 0,
 		     allocation.width, allocation.height);
   /* paint level bar */
-  gdk_draw_drawable (lm->offscreen_image,
+  gdk_draw_drawable (lm->priv->offscreen_image,
 		     gtk_widget_get_style (widget)->black_gc,
-		     lm->offscreen_image_hl,
-		     hl_start_x, hl_start_y, 
+		     lm->priv->offscreen_image_hl,
+		     hl_start_x, hl_start_y,
 		     hl_start_x, hl_start_y,
 		     hl_width, hl_height);
   /* paint peak */
-  gdk_draw_drawable (lm->offscreen_image,
+  gdk_draw_drawable (lm->priv->offscreen_image,
 		     gtk_widget_get_style (widget)->black_gc,
-		     lm->offscreen_image_hl,
+		     lm->priv->offscreen_image_hl,
 		     peak_start_x, peak_start_y,
 		     peak_start_x, peak_start_y,
 		     peak_width, peak_height);
@@ -531,7 +561,7 @@ gm_level_meter_paint (GmLevelMeter *lm)
   if (gtk_widget_is_drawable (widget))
     gdk_draw_drawable (gtk_widget_get_window (widget),
 		       gtk_widget_get_style (widget)->black_gc,
-		       lm->offscreen_image,
+		       lm->priv->offscreen_image,
 		       0, 0,
 		       0, 0,
 		       allocation.width, allocation.height);
@@ -547,7 +577,7 @@ gm_level_meter_paint (GmLevelMeter *lm)
  *                 on the orientation and the border sizes
  * PRE          :  /
  */
-static void 
+static void
 gm_level_meter_size_request (GtkWidget *widget,
 			     GtkRequisition *requisition)
 {
@@ -557,7 +587,7 @@ gm_level_meter_size_request (GtkWidget *widget,
 
   lm = GM_LEVEL_METER (widget);
 
-  switch (lm->orientation) {
+  switch (lm->priv->orientation) {
   case GTK_ORIENTATION_VERTICAL:
     requisition->width = 4;
     requisition->height = 100;
@@ -609,7 +639,7 @@ gm_level_meter_expose (GtkWidget *widget,
   if (gtk_widget_is_drawable (widget))
     gdk_draw_drawable (gtk_widget_get_window (widget),
 		       gtk_widget_get_style (widget)->black_gc,
-		       GM_LEVEL_METER (widget)->offscreen_image,
+		       GM_LEVEL_METER (widget)->priv->offscreen_image,
 		       event->area.x, event->area.y,
 		       event->area.x, event->area.y,
 		       event->area.width,
