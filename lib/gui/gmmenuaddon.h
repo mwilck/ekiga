@@ -41,8 +41,6 @@
 
 #include <gtk/gtk.h>
 
-#include "gmconf.h"
-
 
 G_BEGIN_DECLS
 
