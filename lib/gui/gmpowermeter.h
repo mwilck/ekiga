@@ -48,17 +48,9 @@
 #ifndef __GM_POWERMETER_H__
 #define __GM_POWERMETER_H__
 
-#include <glib.h>
 #include <gtk/gtk.h>
 
 G_BEGIN_DECLS
-
-#define GM_POWERMETER_TYPE              (gm_powermeter_get_type())
-#define GM_POWERMETER(obj)              (G_TYPE_CHECK_INSTANCE_CAST ((obj), GM_POWERMETER_TYPE, GmPowermeter))
-#define GM_POWERMETER_CLASS(klass)      ((G_TYPE_CHECK_CLASS_CAST ((klass), GM_POWERMETER_TYPE, GmPowermeterClass)))
-#define GM_IS_POWERMETER(obj)           (G_TYPE_CHECK_INSTANCE_TYPE ((obj), GM_POWERMETER_TYPE))
-#define GM_IS_POWERMETER_CLASS(klass)   (G_TYPE_CHECK_CLASS_TYPE ((klass), GM_POWERMETER_TYPE))
-
 
 typedef struct {
   guint max_index;
@@ -71,6 +63,13 @@ typedef struct {
  * \see _GmPowermeter
  */
 typedef struct _GmPowermeter GmPowermeter;
+
+
+/*!\typedef GmPowermeterPrivate
+ * \brief type for the _GmPowermeterPrivate private instance structure
+ * \see _GmPowermeterPrivate
+ */
+typedef struct _GmPowermeterPrivate GmPowermeterPrivate;
 
 /*!\typedef GmPowermeterClass
  * \brief type for the _GmPowermeterClass class structure
@@ -88,11 +87,8 @@ struct _GmPowermeter
   GtkImage actualimage;
   /*!< parent widget, a GtkImage */
 
-  GmPowermeterIconset *iconset;
-  /*!< used icons to draw the level, in a NULL terminated vector */
-
-  gfloat level;
-  /*!< the level to display, a float between 0.0 and 1.0 */
+  GmPowermeterPrivate* priv;
+  /*< private data*/
 };
 
 
@@ -106,35 +102,12 @@ struct _GmPowermeterClass
   /*!< parent class, a GtkImageClass */
 };
 
-
-/*!\fn gm_powermeter_get_type (void)
- * \brief retrieve the GType of the GmPowermeter
- *
- * Usually used by the macros or by GLib/GTK itself
- * \see GM_POWERMETER_TYPE()
- * \see GM_POWERMETER()
- * \see GM_POWERMETER_CLASS()
- * \see GM_IS_POWERMETER()
- * \see GM_IS_POWERMETER_CLASS()
- */
-GType                           gm_powermeter_get_type (void);
-
 /*!\fn gm_powermeter_new (void)
  * \brief return a new instance of a GmPowermeter, with default icon set
  * \see GmPowermeter
  * \see _GmPowermeter
  */
 GtkWidget*                      gm_powermeter_new (void);
-
-/*!\fn gm_powermeter_new_with_icon_set (GdkPixbuf**)
- * \brief return a new instance of a GmPowermeter, with a given icon set
- *
- * The GmPowermeter does NOT make a private copy of the vector and its data.
- * It MUST NOT be freed while the stuff is running.
- * \see GmPowermeter
- * \see _GmPowermeter
- */
-GtkWidget*                      gm_powermeter_new_with_icon_set (GmPowermeterIconset*);
 
 /*!\fn gm_powermeter_set_level (gfloat)
  * \brief sets the level to display
@@ -151,6 +124,16 @@ void                            gm_powermeter_set_level (GmPowermeter*,
  * \see gm_powermeter_set_level()
  */
 gfloat                          gm_powermeter_get_level (GmPowermeter*);
+
+/* GObject boilerplate */
+
+GType                           gm_powermeter_get_type (void);
+
+#define GM_TYPE_POWERMETER              (gm_powermeter_get_type())
+#define GM_POWERMETER(obj)              (G_TYPE_CHECK_INSTANCE_CAST ((obj), GM_TYPE_POWERMETER, GmPowermeter))
+#define GM_POWERMETER_CLASS(klass)      ((G_TYPE_CHECK_CLASS_CAST ((klass), GM_TYPE_POWERMETER, GmPowermeterClass)))
+#define GM_IS_POWERMETER(obj)           (G_TYPE_CHECK_INSTANCE_TYPE ((obj), GM_TYPE_POWERMETER))
+#define GM_IS_POWERMETER_CLASS(klass)   (G_TYPE_CHECK_CLASS_TYPE ((klass), GM_TYPE_POWERMETER))
 
 G_END_DECLS
 
