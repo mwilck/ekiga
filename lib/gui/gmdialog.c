@@ -52,10 +52,6 @@
 
 #include "gmwindow.h"
 
-#ifdef WIN32
-#define vsnprintf _vsnprintf
-#endif
-
 #include "config.h"
 
 
@@ -257,7 +253,7 @@ gnomemeeting_progress_dialog (GtkWindow *parent,
   if (format == NULL)
     buffer[0] = 0;
   else 
-    vsnprintf (buffer, 1024, format, args);
+    g_vsnprintf (buffer, 1024, format, args);
 
   dialog_text =
     g_strdup_printf ("%s\n\n%s", primary_text, buffer);
@@ -335,7 +331,7 @@ gnomemeeting_warning_dialog_on_widget (GtkWindow *parent,
   if (format == NULL)
     buffer[0] = 0;
   else 
-    vsnprintf (buffer, 1024, format, args);
+    g_vsnprintf (buffer, 1024, format, args);
 
   prim_text =
     g_strdup_printf ("<span weight=\"bold\" size=\"larger\">%s</span>",
@@ -404,7 +400,7 @@ gnomemeeting_dialog (GtkWindow *parent,
   if (format == NULL)
     buffer[0] = 0;
   else 
-    vsnprintf (buffer, 1024, format, args);
+    g_vsnprintf (buffer, 1024, format, args);
 
   dialog_text =
     g_strdup_printf ("%s\n\n%s", primary_text, buffer);
