@@ -40,7 +40,6 @@
 
 #include "gmconfwidgets.h"
 
-#include <string.h>
 #include <libintl.h>
 
 enum {
@@ -669,7 +668,7 @@ gnome_prefs_string_option_menu_new (GtkWidget *table,
     conf_string = g_strdup (default_value);
   while (options [cpt]) {
 
-    if (conf_string && !strcmp (conf_string, options [cpt]))
+    if (conf_string && !g_strcmp0 (conf_string, options [cpt]))
       history = cpt;
 
     gtk_list_store_append (GTK_LIST_STORE (list_store), &iter);
@@ -683,7 +682,7 @@ gnome_prefs_string_option_menu_new (GtkWidget *table,
 
   if (history == -1) {
 
-    if (conf_string && strcmp (conf_string, "")) {
+    if (conf_string && g_strcmp0 (conf_string, "")) {
 
       gtk_list_store_append (GTK_LIST_STORE (list_store), &iter);
       gtk_list_store_set (GTK_LIST_STORE (list_store), &iter,
@@ -749,7 +748,7 @@ gnome_prefs_string_option_menu_update (GtkWidget *option_menu,
   cpt = 0;
   while (options [cpt]) {
 
-    if (conf_string && !strcmp (options [cpt], conf_string)) 
+    if (conf_string && !g_strcmp0 (options [cpt], conf_string)) 
       history = cpt;
 
     gtk_list_store_append (GTK_LIST_STORE (model), &iter);
@@ -763,7 +762,7 @@ gnome_prefs_string_option_menu_update (GtkWidget *option_menu,
 
   if (history == -1) {
     
-    if (conf_string && strcmp (conf_string, "")) {
+    if (conf_string && g_strcmp0 (conf_string, "")) {
 
       gtk_list_store_append (GTK_LIST_STORE (model), &iter);
       gtk_list_store_set (GTK_LIST_STORE (model), &iter,
