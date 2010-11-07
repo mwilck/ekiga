@@ -30,62 +30,36 @@
  *                         connectbutton.c  -  description
  *                         -------------------------------
  *   begin                : Tue Nov 01 2005
- *   copyright            : (C) 2000-2006 by Damien Sandras 
- *   description          : Contains a connectbutton widget 
+ *   copyright            : (C) 2000-2006 by Damien Sandras
+ *   description          : Contains a connectbutton widget
  *
  */
 
 
 
-#ifndef __GM_connect_button_H
-#define __GM_connect_button_H
+#ifndef __GM_CONNECT_BUTTON_H__
+#define __GM_CONNECT_BUTTON_H__
 
-#include <glib-object.h>
 #include <gtk/gtk.h>
-
 
 G_BEGIN_DECLS
 
-#define GM_CONNECT_BUTTON_TYPE (gm_connect_button_get_type ())
-#define GM_CONNECT_BUTTON(o) (G_TYPE_CHECK_INSTANCE_CAST ((o), GM_CONNECT_BUTTON_TYPE, GmConnectButton))
-#define GM_CONNECT_BUTTON_CLASS(k) (G_TYPE_CHECK_CLASS_CAST((k), GM_CONNECT_BUTTON_TYPE, GmConnectButtonClass))
-#define GM_IS_CONNECT_BUTTON(o) (G_TYPE_CHECK_INSTANCE_TYPE ((o), GM_CONNECT_BUTTON_TYPE))
-#define GM_IS_CONNECT_BUTTON_CLASS(k) (G_TYPE_CHECK_CLASS_TYPE ((k), GM_CONNECT_BUTTON_TYPE))
-#define GM_CONNECT_BUTTON_GET_CLASS(o) (G_TYPE_INSTANCE_GET_CLASS ((o), GM_CONNECT_BUTTON_TYPE, GmConnectButtonClass))
-
-
-typedef struct GmConnectButtonPrivate GmConnectButtonPrivate;
-
+typedef struct _GmConnectButtonPrivate GmConnectButtonPrivate;
 
 typedef struct
 {
-  GtkHBox parent;
-  GtkWidget *image;
+  GtkButton parent;
 
-  gchar *pickup;
-  gchar *hangup;
-  
-  GtkIconSize stock_size;
-  gboolean connected;
-  
+  GmConnectButtonPrivate* priv;
+
 } GmConnectButton;
 
 
 typedef struct
 {
-  GtkHBoxClass parent_class;
-  guint clicked_signal;
-  
+  GtkButtonClass parent_class;
+
 } GmConnectButtonClass;
-
-
-/* The functions */
-
-/* DESCRIPTION  :  /
- * BEHAVIOR     :  Returns the GType for the GmConnectButton.
- * PRE          :  /
- */
-GType gm_connect_button_get_type (void);
 
 
 /* DESCRIPTION  :  /
@@ -111,6 +85,17 @@ void gm_connect_button_set_connected (GmConnectButton *,
  */
 gboolean gm_connect_button_get_connected (GmConnectButton *);
 
+/* GObject boilerplate */
+
+GType gm_connect_button_get_type ();
+
+#define GM_TYPE_CONNECT_BUTTON (gm_connect_button_get_type ())
+#define GM_CONNECT_BUTTON(o) (G_TYPE_CHECK_INSTANCE_CAST ((o), GM_TYPE_CONNECT_BUTTON, GmConnectButton))
+#define GM_CONNECT_BUTTON_CLASS(k) (G_TYPE_CHECK_CLASS_CAST((k), GM_TYPE_CONNECT_BUTTON, GmConnectButtonClass))
+#define GM_IS_CONNECT_BUTTON(o) (G_TYPE_CHECK_INSTANCE_TYPE ((o), GM_TYPE_CONNECT_BUTTON))
+#define GM_IS_CONNECT_BUTTON_CLASS(k) (G_TYPE_CHECK_CLASS_TYPE ((k), GM_TYPE_CONNECT_BUTTON))
+#define GM_CONNECT_BUTTON_GET_CLASS(o) (G_TYPE_INSTANCE_GET_CLASS ((o), GM_TYPE_CONNECT_BUTTON, GmConnectButtonClass))
+
 G_END_DECLS
 
-#endif /* __GM_connect_button_H */
+#endif

@@ -30,191 +30,193 @@
  *                         connectbutton.c  -  description
  *                         -------------------------------
  *   begin                : Tue Nov 01 2005
- *   copyright            : (C) 2000-2006 by Damien Sandras 
- *   description          : Contains a connectbutton widget 
+ *   copyright            : (C) 2000-2006 by Damien Sandras
+ *   description          : Contains a connectbutton widget
  *
  */
 
 
 #include "gmconnectbutton.h"
 
-#include <string.h>
+struct _GmConnectButtonPrivate
+{
+  gchar* pickup;
+  gchar* hangup;
+  GtkIconSize stock_size;
+  gboolean connected;
+};
 
-/* Static functions and declarations */
-static void gm_connect_button_clicked_cb (GtkWidget *button,
-                                          gpointer data);
+enum
+{
+  PROP_0,
+  PROP_HANGUP,
+  PROP_PICKUP,
+  PROP_STOCKSIZE
+};
 
-static void gm_connect_button_class_init (GmConnectButtonClass *);
-
-static void gm_connect_button_init (GmConnectButton *);
-
-static void gm_connect_button_destroy (GtkObject *);
-
-static GtkHBoxClass *parent_class = NULL;
-
+G_DEFINE_TYPE (GmConnectButton, gm_connect_button, GTK_TYPE_BUTTON);
 
 static void
-gm_connect_button_clicked_cb (G_GNUC_UNUSED GtkWidget *button,
-                              gpointer data)
+gm_connect_button_get_property (GObject* object,
+				guint prop_id,
+				GValue* value,
+				GParamSpec* pspec)
 {
-  GmConnectButton *cb = NULL;
+  GmConnectButton* self = GM_CONNECT_BUTTON (object);
 
-  g_return_if_fail (data != NULL);
+  switch (prop_id) {
 
-  cb = GM_CONNECT_BUTTON (data);
+  case PROP_PICKUP:
+    g_value_set_string (value, self->priv->pickup);
+    break;
 
-  g_signal_emit_by_name (GM_CONNECT_BUTTON (data), "clicked", NULL);
+  case PROP_HANGUP:
+    g_value_set_string (value, self->priv->hangup);
+    break;
+
+  case PROP_STOCKSIZE:
+    g_value_set_enum (value, self->priv->stock_size);
+    break;
+
+  default:
+    G_OBJECT_WARN_INVALID_PROPERTY_ID (object, prop_id, pspec);
+    break;
+  }
 }
 
-
 static void
-gm_connect_button_class_init (GmConnectButtonClass *klass)
+gm_connect_button_set_property (GObject* object,
+				guint prop_id,
+				const GValue* value,
+				GParamSpec* pspec)
 {
-  static gboolean initialized = FALSE;
+  GmConnectButton* self = GM_CONNECT_BUTTON (object);
 
-  GObjectClass *object_class = NULL;
-  GtkObjectClass *gtkobject_class = NULL;
-  GmConnectButtonClass *connect_button_class = NULL;
+  switch (prop_id) {
 
-  gtkobject_class = GTK_OBJECT_CLASS (klass);
-  object_class = G_OBJECT_CLASS (klass);
-  parent_class = g_type_class_peek_parent (klass);
-  connect_button_class = GM_CONNECT_BUTTON_CLASS (klass);
+  case PROP_PICKUP:
+    g_free (self->priv->pickup);
+    self->priv->pickup = g_value_dup_string (value);
+    if ( !self->priv->connected) {
 
-  gtkobject_class->destroy = gm_connect_button_destroy;
+      GtkImage* image = GTK_IMAGE (gtk_button_get_image (GTK_BUTTON (self)));
+      gtk_image_set_from_stock (image, self->priv->pickup, self->priv->stock_size);
+    }
+    break;
 
-  if (!initialized) {
+  case PROP_HANGUP:
+    g_free (self->priv->hangup);
+    self->priv->hangup = g_value_dup_string (value);
+    if (self->priv->connected) {
 
-    klass->clicked_signal =
-      g_signal_new ("clicked",
-                    G_OBJECT_CLASS_TYPE (klass),
-                    G_SIGNAL_RUN_FIRST,
-                    0, NULL, NULL,
-                    g_cclosure_marshal_VOID__VOID,
-                    G_TYPE_NONE,
-                    0, NULL);
+      GtkImage* image = GTK_IMAGE (gtk_button_get_image (GTK_BUTTON (self)));
+      gtk_image_set_from_stock (image, self->priv->hangup, self->priv->stock_size);
+  }
+    break;
 
-    initialized = TRUE;
+  case PROP_STOCKSIZE:
+    self->priv->stock_size = g_value_get_enum (value);
+    break;
+
+  default:
+    G_OBJECT_WARN_INVALID_PROPERTY_ID (object, prop_id, pspec);
+    break;
   }
 }
 
 static void
 gm_connect_button_init (GmConnectButton *cb)
 {
-  g_return_if_fail (cb != NULL);
-  g_return_if_fail (GM_IS_CONNECT_BUTTON (cb));
+  cb->priv = G_TYPE_INSTANCE_GET_PRIVATE (cb, GM_TYPE_CONNECT_BUTTON, GmConnectButtonPrivate);
 
-  cb->image = NULL;
-  cb->pickup = NULL;
-  cb->hangup = NULL;
-  cb->connected = FALSE;
+  cb->priv->pickup = NULL;
+  cb->priv->hangup = NULL;
+  cb->priv->connected = FALSE;
+
+  gtk_button_set_relief (GTK_BUTTON (cb), GTK_RELIEF_NONE);
 }
 
 
 static void
-gm_connect_button_destroy (GtkObject *object)
+gm_connect_button_finalize (GObject* object)
 {
-  GmConnectButton *cb = NULL;
+  GmConnectButton *cb = GM_CONNECT_BUTTON (object);
 
-  g_return_if_fail (object != NULL);
-  g_return_if_fail (GM_IS_CONNECT_BUTTON (object));
+  g_free (cb->priv->pickup);
+  g_free (cb->priv->hangup);
 
-  cb = GM_CONNECT_BUTTON (object);
-  
-  if (GTK_OBJECT_CLASS (parent_class)->destroy)
-    (*GTK_OBJECT_CLASS (parent_class)->destroy) (object);
+  G_OBJECT_CLASS (gm_connect_button_parent_class)->finalize (object);
+}
 
-  g_free (cb->pickup);
-  cb->pickup = NULL;
-  g_free (cb->hangup);
-  cb->hangup = NULL;
+static void
+gm_connect_button_class_init (GmConnectButtonClass *klass)
+{
+  GObjectClass* gobject_class = G_OBJECT_CLASS (klass);
+
+  gobject_class->finalize = gm_connect_button_finalize;
+  gobject_class->get_property = gm_connect_button_get_property;
+  gobject_class->set_property = gm_connect_button_set_property;
+
+  g_object_class_install_property (gobject_class, PROP_HANGUP,
+				   g_param_spec_string ("hangup", "Hangup", "Hangup",
+							NULL,
+							G_PARAM_READWRITE));
+
+  g_object_class_install_property (gobject_class, PROP_PICKUP,
+				   g_param_spec_string ("pickup", "Pickup", "Pickup",
+							NULL,
+							G_PARAM_READWRITE));
+
+  g_object_class_install_property (gobject_class, PROP_STOCKSIZE,
+				   g_param_spec_enum ("stock-size", "Stock size", "Stock size",
+						      GTK_TYPE_ICON_SIZE, GTK_ICON_SIZE_BUTTON,
+						      G_PARAM_READWRITE));
+
+  g_type_class_add_private (klass, sizeof (GmConnectButtonPrivate));
 }
 
 
-/* Global functions */
-GType
-gm_connect_button_get_type (void)
-{
-  static GType gm_connect_button_type = 0;
-  
-  if (gm_connect_button_type == 0)
-  {
-    static const GTypeInfo connect_button_info =
-    {
-      sizeof (GmConnectButtonClass),
-      NULL,
-      NULL,
-      (GClassInitFunc) gm_connect_button_class_init,
-      NULL,
-      NULL,
-      sizeof (GmConnectButton),
-      0,
-      (GInstanceInitFunc) gm_connect_button_init,
-      NULL
-    };
-    
-    gm_connect_button_type =
-      g_type_register_static (GTK_TYPE_HBOX,
-			      "GmConnectButton",
-			      &connect_button_info,
-			      (GTypeFlags) 0);
-  }
-  
-  return gm_connect_button_type;
-}
+/* public api */
 
-
-GtkWidget *
+GtkWidget*
 gm_connect_button_new (const char *pickup,
 		       const char *hangup,
 		       GtkIconSize size)
 {
-  GmConnectButton *cb = NULL;
-  
-  GtkWidget *button = NULL;
-  
-  g_return_val_if_fail (pickup != NULL, NULL);
-  g_return_val_if_fail (hangup != NULL, NULL);
-  
-  cb = GM_CONNECT_BUTTON (g_object_new (GM_CONNECT_BUTTON_TYPE, NULL));
-  cb->pickup = g_strdup (pickup);
-  cb->hangup = g_strdup (hangup);
-  cb->stock_size = size;
+  gpointer result;
+  GtkWidget* image = NULL;
 
-  button = gtk_button_new ();
-  gtk_button_set_relief (GTK_BUTTON (button), GTK_RELIEF_NONE);
-  cb->image = gtk_image_new_from_stock (pickup, size); 
-  gtk_container_add (GTK_CONTAINER (button), cb->image);
-  g_signal_connect (button, "clicked", 
-                    G_CALLBACK (gm_connect_button_clicked_cb), cb);
+  g_return_val_if_fail (pickup != NULL && hangup != NULL, NULL);
 
-  gtk_box_pack_start (GTK_BOX (cb), button, FALSE, FALSE, 0);
+  image = gtk_image_new_from_stock (GTK_STOCK_OK, GTK_ICON_SIZE_BUTTON);
 
-  gm_connect_button_set_connected (cb, FALSE);
+  result = g_object_new (GM_TYPE_CONNECT_BUTTON,
+			 "image", image,
+			 "stock-size", size,
+			 "hangup", hangup,
+			 "pickup", pickup,
+			 NULL);
 
-  return GTK_WIDGET (cb);
+  return GTK_WIDGET (result);
 }
 
-
-void 
+void
 gm_connect_button_set_connected (GmConnectButton *cb,
 				 gboolean state)
 {
-  g_return_if_fail (cb != NULL);
+  GtkWidget* image = NULL;
+
   g_return_if_fail (GM_IS_CONNECT_BUTTON (cb));
 
-  cb->connected = state;
-  gtk_image_set_from_stock (GTK_IMAGE (cb->image), state ? cb->hangup : cb->pickup, cb->stock_size); 
+  cb->priv->connected = state;
+  image = gtk_button_get_image (GTK_BUTTON (cb));
+  gtk_image_set_from_stock (GTK_IMAGE (image), state ? cb->priv->hangup : cb->priv->pickup, cb->priv->stock_size);
 }
 
-
-gboolean 
+gboolean
 gm_connect_button_get_connected (GmConnectButton *cb)
 {
-  g_return_val_if_fail (cb != NULL, FALSE);
   g_return_val_if_fail (GM_IS_CONNECT_BUTTON (cb), FALSE);
 
-  return cb->connected;
+  return cb->priv->connected;
 }
-
-
