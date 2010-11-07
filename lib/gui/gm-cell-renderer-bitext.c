@@ -38,8 +38,6 @@
  *
  */
 
-#include <string.h>
-
 #include "gm-cell-renderer-bitext.h"
 
 struct _GmCellRendererBitextPrivate
@@ -59,7 +57,7 @@ enum
   GM_CELL_RENDERER_BITEXT_PROP_SECONDARY_TEXT
 };
 
-static GObjectClass *parent_class = NULL;
+G_DEFINE_TYPE (GmCellRendererBitext, gm_cell_renderer_bitext, GTK_TYPE_CELL_RENDERER_TEXT);
 
 /* helper function */
 
@@ -85,7 +83,7 @@ gm_cell_renderer_bitext_update_text (GmCellRendererBitext *renderer,
 
   /* secondary text will be in italic */
   attr_style = pango_attr_style_new (PANGO_STYLE_NORMAL);
-  attr_style->start_index = strlen (renderer->priv->primary_text) + 1;
+  attr_style->start_index = g_utf8_strlen (renderer->priv->primary_text, -1) + 1;
   attr_style->end_index = (guint) - 1;
   pango_attr_list_insert (attr_list, attr_style);
 
@@ -105,7 +103,7 @@ gm_cell_renderer_bitext_update_text (GmCellRendererBitext *renderer,
   attr_size->end_index = (guint) - 1;
   pango_attr_list_insert (attr_list, attr_size);
 
-  if (renderer->priv->secondary_text && strcmp (renderer->priv->secondary_text, ""))
+  if (renderer->priv->secondary_text && g_strcmp0 (renderer->priv->secondary_text, ""))
     str = g_strdup_printf ("%s\n%s",
                            renderer->priv->primary_text,
                            renderer->priv->secondary_text);
@@ -139,15 +137,17 @@ gm_cell_renderer_bitext_get_size (GtkCellRenderer *cell,
 				  gint *height)
 {
   GmCellRendererBitext *renderer = NULL;
+  GtkCellRendererClass* parent_class = NULL;
 
   renderer = (GmCellRendererBitext *)cell;
+  parent_class = GTK_CELL_RENDERER_CLASS (gm_cell_renderer_bitext_parent_class);
 
   gm_cell_renderer_bitext_update_text (renderer, widget,
 				       renderer->priv->is_selected);
 
-  ((GtkCellRendererClass *)parent_class)->get_size (cell, widget, cell_area,
-						    x_offset, y_offset,
-						    width, height);
+  parent_class->get_size (cell, widget, cell_area,
+			  x_offset, y_offset,
+			  width, height);
 }
 
 static void
@@ -160,14 +160,16 @@ gm_cell_renderer_bitext_render (GtkCellRenderer *cell,
 				GtkCellRendererState flags)
 {
   GmCellRendererBitext *renderer = NULL;
+  GtkCellRendererClass* parent_class = NULL;
 
   renderer = (GmCellRendererBitext *)cell;
+  parent_class = GTK_CELL_RENDERER_CLASS (gm_cell_renderer_bitext_parent_class);
 
   gm_cell_renderer_bitext_update_text (renderer, widget,
 				       (flags & GTK_CELL_RENDERER_SELECTED));
-  ((GtkCellRendererClass *)parent_class)->render (cell, window, widget,
-						  background_area, cell_area,
-						  expose_area, flags);
+  parent_class->render (cell, window, widget,
+			background_area, cell_area,
+			expose_area, flags);
 }
 
 /* GObject code */
@@ -182,7 +184,7 @@ gm_cell_renderer_bitext_finalize (GObject *obj)
   g_free (self->priv->primary_text);
   g_free (self->priv->secondary_text);
 
-  parent_class->finalize (obj);
+  G_OBJECT_CLASS (gm_cell_renderer_bitext_parent_class)->finalize (obj);
 }
 
 static void
@@ -247,24 +249,25 @@ gm_cell_renderer_bitext_set_property (GObject *obj,
 }
 
 static void
-gm_cell_renderer_bitext_class_init (gpointer g_class,
-				    gpointer class_data)
+gm_cell_renderer_bitext_init (GmCellRendererBitext* self)
+{
+  self->priv = G_TYPE_INSTANCE_GET_PRIVATE (self,
+					    GM_TYPE_CELL_RENDERER_BITEXT,
+					    GmCellRendererBitextPrivate);
+  self->priv->primary_text = g_strdup ("");
+  self->priv->secondary_text = g_strdup ("");
+}
+
+static void
+gm_cell_renderer_bitext_class_init (GmCellRendererBitextClass* klass)
 {
   GObjectClass *gobject_class = NULL;
   GtkCellRendererClass *renderer_class = NULL;
   GParamSpec *spec = NULL;
 
-  (void)class_data; /* -Wextra */
+  g_type_class_add_private (klass, sizeof (GmCellRendererBitextPrivate));
 
-  parent_class = (GObjectClass *)g_type_class_peek_parent (g_class);
-
-  g_type_class_add_private (g_class, sizeof (GmCellRendererBitextPrivate));
-
-  renderer_class = (GtkCellRendererClass *) g_class;
-  renderer_class->get_size = gm_cell_renderer_bitext_get_size;
-  renderer_class->render = gm_cell_renderer_bitext_render;
-
-  gobject_class = (GObjectClass *) g_class;
+  gobject_class = G_OBJECT_CLASS (klass);
   gobject_class->finalize = gm_cell_renderer_bitext_finalize;
   gobject_class->get_property = gm_cell_renderer_bitext_get_property;
   gobject_class->set_property = gm_cell_renderer_bitext_set_property;
@@ -284,51 +287,10 @@ gm_cell_renderer_bitext_class_init (gpointer g_class,
   g_object_class_install_property (gobject_class,
 				   GM_CELL_RENDERER_BITEXT_PROP_SECONDARY_TEXT,
 				   spec);
-}
 
-static void
-gm_cell_renderer_bitext_init (GTypeInstance *instance,
-			      gpointer g_class)
-{
-  GmCellRendererBitext *self = NULL;
-
-  (void)g_class; /* -Wextra */
-
-  self = (GmCellRendererBitext *)instance;
-
-  self->priv = G_TYPE_INSTANCE_GET_PRIVATE (self,
-					    GM_TYPE_CELL_RENDERER_BITEXT,
-					    GmCellRendererBitextPrivate);
-  self->priv->primary_text = g_strdup ("");
-  self->priv->secondary_text = g_strdup ("");
-}
-
-GType
-gm_cell_renderer_bitext_get_type ()
-{
-  static GType result = 0;
-
-  if (result == 0) {
-
-    static const GTypeInfo info = {
-      sizeof (GmCellRendererBitextClass),
-      NULL,
-      NULL,
-      gm_cell_renderer_bitext_class_init,
-      NULL,
-      NULL,
-      sizeof (GmCellRendererBitext),
-      0,
-      gm_cell_renderer_bitext_init,
-      NULL
-    };
-
-    result = g_type_register_static (GTK_TYPE_CELL_RENDERER_TEXT,
-				     "GmCellRendererBitextType",
-				     &info, (GTypeFlags) 0);
-  }
-
-  return result;
+  renderer_class = GTK_CELL_RENDERER_CLASS (klass);
+  renderer_class->get_size = gm_cell_renderer_bitext_get_size;
+  renderer_class->render = gm_cell_renderer_bitext_render;
 }
 
 /* public api */
@@ -336,6 +298,5 @@ gm_cell_renderer_bitext_get_type ()
 GtkCellRenderer *
 gm_cell_renderer_bitext_new ()
 {
-  return (GtkCellRenderer *)g_object_new (GM_TYPE_CELL_RENDERER_BITEXT,
-					  NULL);
+  return GTK_CELL_RENDERER (g_object_new (GM_TYPE_CELL_RENDERER_BITEXT, NULL));
 }
