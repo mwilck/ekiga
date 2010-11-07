@@ -30,7 +30,7 @@
  *                         gmentrydialog.h  -  description
  *                         -------------------------------
  *   begin                : Sat Jan 03 2004
- *   copyright            : (C) 2000-2006 by Damien Sandras 
+ *   copyright            : (C) 2000-2006 by Damien Sandras
  *   description          : Contains a gmentrydialog widget permitting to
  *                          quickly build GtkDialogs with a +rw GtkEntry
  *                          field.
@@ -38,52 +38,33 @@
  */
 
 
-#ifndef __GM_ENTRY_DIALOG_H
-#define __GM_ENTRY_DIALOG_H
+#ifndef __GM_ENTRY_DIALOG_H__
+#define __GM_ENTRY_DIALOG_H__
 
-#include <glib-object.h>
 #include <gtk/gtk.h>
 
 
 G_BEGIN_DECLS
 
-#define GM_ENTRY_DIALOG_TYPE (gm_entry_dialog_get_type ())
-#define GM_ENTRY_DIALOG(o) (G_TYPE_CHECK_INSTANCE_CAST ((o), GM_ENTRY_DIALOG_TYPE, GmEntryDialog))
-#define GM_ENTRY_DIALOG_CLASS(k) (G_TYPE_CHECK_CLASS_CAST((k), GM_ENTRY_DIALOG_TYPE, GmEntryDialogClass))
-#define GM_IS_ENTRY_DIALOG(o) (G_TYPE_CHECK_INSTANCE_TYPE ((o), GM_ENTRY_DIALOG_TYPE))
-#define GM_IS_ENTRY_DIALOG_CLASS(k) (G_TYPE_CHECK_CLASS_TYPE ((k), GM_ENTRY_DIALOG_TYPE))
-#define GM_ENTRY_DIALOG_GET_CLASS(o) (G_TYPE_INSTANCE_GET_CLASS ((o), GM_ENTRY_DIALOG_TYPE, GmEntryDialogClass))
-
-
-typedef struct GmEntryDialogPrivate GmEntryDialogPrivate;
-
+typedef struct _GmEntryDialogPrivate GmEntryDialogPrivate;
 
 typedef struct
 {
   GtkDialog parent;
-  
-  
-  GtkWidget *field_entry;
-  GtkWidget *label;
-  
+
+  GmEntryDialogPrivate* priv;
+
 } GmEntryDialog;
 
 
 typedef struct
 {
   GtkDialogClass parent_class;
-  
+
 } GmEntryDialogClass;
 
 
 /* The functions */
-
-/* DESCRIPTION  :  /
- * BEHAVIOR     :  Returns the GType for the GmEntryDialog.
- * PRE          :  /
- */
-GType gm_entry_dialog_get_type (void);
-
 
 /* DESCRIPTION  :  /
  * BEHAVIOR     :  Creates a new GmEntryDialog with the specified text and
@@ -91,8 +72,8 @@ GType gm_entry_dialog_get_type (void);
  *                 answer.
  * PRE          :  Both texts must be != NULL.
  */
-GtkWidget *gm_entry_dialog_new (const char *,
-				const char *);
+GtkWidget* gm_entry_dialog_new (const char* label,
+				const char* button_label);
 
 
 /* DESCRIPTION  :  /
@@ -100,17 +81,29 @@ GtkWidget *gm_entry_dialog_new (const char *,
  *                 given GmEntryDialog.
  * PRE          :  Both parameters must be != NULL.
  */
-void gm_entry_dialog_set_text (GmEntryDialog *,
-			       const char *);
+void gm_entry_dialog_set_text (GmEntryDialog*,
+			       const char* text);
 
 
 /* DESCRIPTION  :  /
  * BEHAVIOR     :  Returns the text in the GtkEntry inside the GmEntryDialog.
  * PRE          :  Non-NULL GmEntryDialog.
  */
-const char *gm_entry_dialog_get_text (GmEntryDialog *);
+const gchar* gm_entry_dialog_get_text (GmEntryDialog*);
+
+
+/* GObject boilerplate */
+
+GType gm_entry_dialog_get_type (void);
+
+#define GM_TYPE_ENTRY_DIALOG (gm_entry_dialog_get_type ())
+#define GM_ENTRY_DIALOG(o) (G_TYPE_CHECK_INSTANCE_CAST ((o), GM_TYPE_ENTRY_DIALOG, GmEntryDialog))
+#define GM_ENTRY_DIALOG_CLASS(k) (G_TYPE_CHECK_CLASS_CAST((k), GM_TYPE_ENTRY_DIALOG, GmEntryDialogClass))
+#define GM_IS_ENTRY_DIALOG(o) (G_TYPE_CHECK_INSTANCE_TYPE ((o), GM_TYPE_ENTRY_DIALOG))
+#define GM_IS_ENTRY_DIALOG_CLASS(k) (G_TYPE_CHECK_CLASS_TYPE ((k), GM_TYPE_ENTRY_DIALOG))
+#define GM_ENTRY_DIALOG_GET_CLASS(o) (G_TYPE_INSTANCE_GET_CLASS ((o), GM_TYPE_ENTRY_DIALOG, GmEntryDialogClass))
 
 
 G_END_DECLS
 
-#endif /* __GM_ENTRY_DIALOG_H */
+#endif

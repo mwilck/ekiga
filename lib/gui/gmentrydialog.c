@@ -30,7 +30,7 @@
  *                         gmentrydialog.c  -  description
  *                         -------------------------------
  *   begin                : Sat Jan 03 2004
- *   copyright            : (C) 2000-2006 by Damien Sandras 
+ *   copyright            : (C) 2000-2006 by Damien Sandras
  *   description          : Contains a gmentrydialog widget permitting to
  *                          quickly build GtkDialogs with a +rw GtkEntry
  *                          field.
@@ -41,96 +41,71 @@
 #include "gmentrydialog.h"
 
 
+struct _GmEntryDialogPrivate {
+
+  GtkWidget *field_entry;
+  GtkWidget *label;
+};
+
+G_DEFINE_TYPE (GmEntryDialog, gm_entry_dialog, GTK_TYPE_DIALOG);
+
 /* Static functions and declarations */
 static void gm_entry_dialog_class_init (GmEntryDialogClass *);
 
 static void gm_entry_dialog_init (GmEntryDialog *);
 
-static GtkDialogClass *parent_class = NULL;
-
 
 static void
 gm_entry_dialog_class_init (GmEntryDialogClass *klass)
 {
-  GObjectClass *object_class = NULL;
-  GmEntryDialogClass *entry_dialog_class = NULL;
-
-  object_class = G_OBJECT_CLASS (klass);
-  parent_class = g_type_class_peek_parent (klass);
-  entry_dialog_class = GM_ENTRY_DIALOG_CLASS (klass);
+  g_type_class_add_private (klass, sizeof (GmEntryDialogPrivate));
 }
 
 
 static void
-gm_entry_dialog_init (GmEntryDialog *ed)
+gm_entry_dialog_init (GmEntryDialog* self)
 {
-  ed->field_entry = gtk_entry_new ();
-  gtk_entry_set_activates_default (GTK_ENTRY (ed->field_entry), TRUE);
-  
-  ed->label = gtk_label_new (NULL);
+  GtkWidget *hbox = NULL;
+
+  self->priv = G_TYPE_INSTANCE_GET_PRIVATE (self,
+					    GM_TYPE_ENTRY_DIALOG,
+					    GmEntryDialogPrivate);
+  self->priv->field_entry = gtk_entry_new ();
+  gtk_entry_set_activates_default (GTK_ENTRY (self->priv->field_entry), TRUE);
+
+  self->priv->label = gtk_label_new (NULL);
+
+  hbox = gtk_hbox_new (FALSE, 6);
+  gtk_box_pack_start (GTK_BOX (hbox), self->priv->label, FALSE, FALSE, 6);
+  gtk_box_pack_start (GTK_BOX (hbox), self->priv->field_entry, FALSE, FALSE, 6);
+
+  gtk_container_add (GTK_CONTAINER (gtk_dialog_get_content_area (GTK_DIALOG (self))), hbox);
+
+  gtk_dialog_add_buttons (GTK_DIALOG (self),
+			  GTK_STOCK_CANCEL, GTK_RESPONSE_REJECT, NULL);
+
+  gtk_window_set_modal (GTK_WINDOW (self), TRUE);
 }
 
 
-/* Global functions */
-GType
-gm_entry_dialog_get_type (void)
-{
-  static GType gm_entry_dialog_type = 0;
-  
-  if (gm_entry_dialog_type == 0)
-  {
-    static const GTypeInfo entry_dialog_info =
-    {
-      sizeof (GmEntryDialogClass),
-      NULL,
-      NULL,
-      (GClassInitFunc) gm_entry_dialog_class_init,
-      NULL,
-      NULL,
-      sizeof (GmEntryDialog),
-      0,
-      (GInstanceInitFunc) gm_entry_dialog_init,
-      NULL
-    };
-    
-    gm_entry_dialog_type =
-      g_type_register_static (GTK_TYPE_DIALOG,
-			      "GmEntryDialog",
-			      &entry_dialog_info,
-			      (GTypeFlags) 0);
-  }
-  
-  return gm_entry_dialog_type;
-}
-
+/* public api */
 
 GtkWidget *
 gm_entry_dialog_new (const char *label,
 		     const char *button_label)
 {
-  GtkWidget *hbox = NULL;
   GmEntryDialog *ed = NULL;
-  
-  ed = 
-    GM_ENTRY_DIALOG (g_object_new (GM_ENTRY_DIALOG_TYPE, NULL));
 
-  if (label)
-    gtk_label_set_text (GTK_LABEL (GM_ENTRY_DIALOG (ed)->label), label);
+  ed =
+    GM_ENTRY_DIALOG (g_object_new (GM_TYPE_ENTRY_DIALOG, NULL));
 
-  hbox = gtk_hbox_new (FALSE, 6);
-  gtk_box_pack_start (GTK_BOX (hbox), ed->label, FALSE, FALSE, 6);
-  gtk_box_pack_start (GTK_BOX (hbox), ed->field_entry, FALSE, FALSE, 6);
-
-  gtk_container_add (GTK_CONTAINER (gtk_dialog_get_content_area (GTK_DIALOG (ed))), hbox);
+  gtk_label_set_text (GTK_LABEL (GM_ENTRY_DIALOG (ed)->priv->label), label);
 
   gtk_dialog_add_buttons (GTK_DIALOG (ed),
-			  GTK_STOCK_CANCEL, GTK_RESPONSE_REJECT,
 			  button_label, GTK_RESPONSE_ACCEPT, NULL);
 
-  gtk_window_set_modal (GTK_WINDOW (ed), TRUE);
-  
-  gtk_widget_show_all (hbox);
-  
+  gtk_widget_show_all (GTK_WIDGET (ed));
+
   return GTK_WIDGET (ed);
 }
 
@@ -139,17 +114,17 @@ void
 gm_entry_dialog_set_text (GmEntryDialog *ed,
 			  const char *text)
 {
-  g_return_if_fail (ed != NULL);
+  g_return_if_fail (GM_ENTRY_DIALOG (ed));
   g_return_if_fail (text != NULL);
-  
-  gtk_entry_set_text (GTK_ENTRY (ed->field_entry), text);
+
+  gtk_entry_set_text (GTK_ENTRY (ed->priv->field_entry), text);
 }
 
 
-const char *
+const gchar *
 gm_entry_dialog_get_text (GmEntryDialog *ed)
 {
-  g_return_val_if_fail (ed != NULL, NULL);
+  g_return_val_if_fail (GM_ENTRY_DIALOG (ed), NULL);
 
-  return gtk_entry_get_text (GTK_ENTRY (ed->field_entry));
+  return gtk_entry_get_text (GTK_ENTRY (ed->priv->field_entry));
 }
