@@ -43,7 +43,6 @@
 
 #include "ekiga.h"
 
-#include "gmentrydialog.h"
 #include "gmconf.h"
 #include "gmdialog.h"
 #include "gmwindow.h"
