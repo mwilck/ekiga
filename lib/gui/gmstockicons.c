@@ -32,9 +32,6 @@
  */
 
 #include <gtk/gtk.h>
-#include <glib.h>
-#include <stdio.h>
-#include <string.h>
 
 #include "pixmaps/inlines.h"
 #include "gmstockicons.h"
