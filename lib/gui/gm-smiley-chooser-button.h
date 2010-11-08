@@ -68,18 +68,18 @@ struct _GmSmileyChooserButtonClass {
 			   gpointer characters);
 };
 
-#define GM_SMILEY_CHOOSER_BUTTON_TYPE            \
+#define GM_TYPE_SMILEY_CHOOSER_BUTTON            \
   (gm_smiley_chooser_button_get_type ())
 #define GM_SMILEY_CHOOSER_BUTTON(obj)            \
-  (G_TYPE_CHECK_INSTANCE_CAST ((obj), GM_SMILEY_CHOOSER_BUTTON_TYPE, GmSmileyChooserButton))
+  (G_TYPE_CHECK_INSTANCE_CAST ((obj), GM_TYPE_SMILEY_CHOOSER_BUTTON, GmSmileyChooserButton))
 #define GM_IS_SMILEY_CHOOSER_BUTTON(obj)         \
-  (G_TYPE_CHECK_INSTANCE_TYPE ((obj), GM_SMILEY_CHOOSER_BUTTON_TYPE))
+  (G_TYPE_CHECK_INSTANCE_TYPE ((obj), GM_TYPE_SMILEY_CHOOSER_BUTTON))
 #define GM_SMILEY_CHOOSER_BUTTON_CLASS(klass)    \
-  (G_TYPE_CHECK_CLASS_CAST ((klass), GM_SMILEY_CHOOSER_BUTTON_TYPE, GmSmileyChooserButtonClass))
+  (G_TYPE_CHECK_CLASS_CAST ((klass), GM_TYPE_SMILEY_CHOOSER_BUTTON, GmSmileyChooserButtonClass))
 #define GM_IS_SMILEY_CHOOSER_BUTTON_CLASS(klass) \
-  (G_TYPE_CHECK_CLASS_TYPE ((klass), GM_SMILEY_CHOOSER_BUTTON_TYPE))
+  (G_TYPE_CHECK_CLASS_TYPE ((klass), GM_TYPE_SMILEY_CHOOSER_BUTTON))
 #define GM_SMILEY_CHOOSER_BUTTON_GET_CLASS(obj)  \
-  (G_TYPE_INSTANCE_GET_CLASS ((obj), GM_SMILEY_CHOOSER_BUTTON_TYPE, GmSmileyChooserButtonClass))
+  (G_TYPE_INSTANCE_GET_CLASS ((obj), GM_TYPE_SMILEY_CHOOSER_BUTTON, GmSmileyChooserButtonClass))
 
 
 /**

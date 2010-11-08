@@ -68,6 +68,7 @@ enum {
 static guint signals[SIG_LAST] = { 0 };
 
 struct _GmSmileyChooserButtonPrivate {
+
   gulong toplevel_window_handler[HANDLER_NUM];
   gchar** smiley_set;
 
@@ -78,20 +79,14 @@ struct _GmSmileyChooserButtonPrivate {
   GtkWidget* table;
 };
 
-/* a permanent pointer to the parent class,
- * saves typing and hassle.
- * set in gm_smiley_chooser_button_class_init()
- */
-static GObjectClass *parent_class = NULL;
+G_DEFINE_TYPE (GmSmileyChooserButton, gm_smiley_chooser_button, GTK_TYPE_TOGGLE_BUTTON);
 
 /* Prototyping of the internal API */
 
 /* GObjecting */
-static void gm_smiley_chooser_button_class_init (gpointer,
-						 gpointer);
+static void gm_smiley_chooser_button_class_init (GmSmileyChooserButtonClass* klass);
 
-static void gm_smiley_chooser_button_init (GTypeInstance*,
-					   gpointer);
+static void gm_smiley_chooser_button_init (GmSmileyChooserButton* self);
 
 static void gm_smiley_chooser_button_dispose (GObject*);
 
@@ -151,21 +146,13 @@ static void gm_smiley_chooser_button_popdown (GmSmileyChooserButton*);
 /* Implementation of the internal API */
 
 static void
-gm_smiley_chooser_button_class_init (gpointer g_class,
-				     G_GNUC_UNUSED gpointer class_data)
+gm_smiley_chooser_button_class_init (GmSmileyChooserButtonClass* klass)
 {
-  GObjectClass* gobject_class = NULL;
-  GtkWidgetClass* widget_class = NULL;
-
-  parent_class = (GObjectClass *) g_type_class_peek_parent (g_class);
-  g_type_class_add_private (g_class, sizeof (GmSmileyChooserButtonPrivate));
-
-  gobject_class = (GObjectClass*) g_class;
-  widget_class = GTK_WIDGET_CLASS (g_class);
+  GObjectClass* gobject_class = G_OBJECT_CLASS (klass);
 
   gobject_class->dispose = gm_smiley_chooser_button_dispose;
   gobject_class->finalize = gm_smiley_chooser_button_finalize;
-  
+
   /* the "smiley_selected" signal */
   signals[SIG_SMILEY_SELECTED] =
     g_signal_new ("smiley_selected",
@@ -177,29 +164,25 @@ gm_smiley_chooser_button_class_init (gpointer g_class,
 		  G_TYPE_NONE, 1,
 		  G_TYPE_POINTER);
 
+  g_type_class_add_private (klass, sizeof (GmSmileyChooserButtonPrivate));
 }
 
 static void
-gm_smiley_chooser_button_init (GTypeInstance* instance,
-			       G_GNUC_UNUSED gpointer g_class)
+gm_smiley_chooser_button_init (GmSmileyChooserButton* self)
 {
-  GmSmileyChooserButton* self = NULL;
-  GmSmileyChooserButtonPrivate* priv = NULL;
+  self->priv = G_TYPE_INSTANCE_GET_PRIVATE (self,
+					    GM_TYPE_SMILEY_CHOOSER_BUTTON,
+					    GmSmileyChooserButtonPrivate);
 
-  self = (GM_SMILEY_CHOOSER_BUTTON (instance));
-
-  self->priv = g_new (GmSmileyChooserButtonPrivate, 1);
-  priv = self->priv;
-
-  priv->popped_up = FALSE;
-  priv->toplevel_window_handler[HANDLER_CONFIGURE] = 0;
-  priv->toplevel_window_handler[HANDLER_SCREEN_CHANGED] = 0;
-  priv->toplevel_window_handler[HANDLER_HIDE] = 0;
-  priv->toplevel_window_handler[HANDLER_DELETE_EVENT] = 0;
-  priv->smiley_set = NULL;
-  priv->popup_window = NULL;
-  priv->frame = NULL;
-  priv->table = NULL;
+  self->priv->popped_up = FALSE;
+  self->priv->toplevel_window_handler[HANDLER_CONFIGURE] = 0;
+  self->priv->toplevel_window_handler[HANDLER_SCREEN_CHANGED] = 0;
+  self->priv->toplevel_window_handler[HANDLER_HIDE] = 0;
+  self->priv->toplevel_window_handler[HANDLER_DELETE_EVENT] = 0;
+  self->priv->smiley_set = NULL;
+  self->priv->popup_window = NULL;
+  self->priv->frame = NULL;
+  self->priv->table = NULL;
 
   g_signal_connect (self, "toggled",
 		    G_CALLBACK (on_smiley_chooser_button_toggled), NULL);
@@ -209,12 +192,10 @@ static void
 gm_smiley_chooser_button_dispose (GObject* object)
 {
   GmSmileyChooserButton* self = NULL;
-  GmSmileyChooserButtonPrivate* priv = NULL;
 
   self = GM_SMILEY_CHOOSER_BUTTON (object);
-  priv = self->priv;
 
-  if (priv->popped_up)
+  if (self->priv->popped_up)
     gm_smiley_chooser_button_popdown (self);
 
   gm_smiley_chooser_button_destroy_view (self);
@@ -224,27 +205,27 @@ static void
 gm_smiley_chooser_button_finalize (GObject* object)
 {
   GmSmileyChooserButton* self = NULL;
-  GmSmileyChooserButtonPrivate* priv = NULL;
 
   self = GM_SMILEY_CHOOSER_BUTTON (object);
-  priv = self->priv;
 
-  if (priv->smiley_set)
-    {
-      g_strfreev (priv->smiley_set);
-      priv->smiley_set = NULL;
-    }
+  if (self->priv->smiley_set) {
+
+    g_strfreev (self->priv->smiley_set);
+    self->priv->smiley_set = NULL;
+  }
 }
 
 /* internal callbacks */
 
-static void on_smiley_chooser_button_toggled (GtkToggleButton* toggle_button,
-                                              G_GNUC_UNUSED gpointer data)
+static void
+on_smiley_chooser_button_toggled (GtkToggleButton* toggle_button,
+				  G_GNUC_UNUSED gpointer data)
 {
   GmSmileyChooserButton* self = NULL;
 
+  g_return_if_fail (GM_IS_SMILEY_CHOOSER_BUTTON (toggle_button));
+
   self = GM_SMILEY_CHOOSER_BUTTON (toggle_button);
-  g_return_if_fail (GM_IS_SMILEY_CHOOSER_BUTTON (self));
 
   if (gtk_toggle_button_get_active (toggle_button))
     {
@@ -264,72 +245,68 @@ on_button_hierarchy_changed (GtkWidget* widget,
 			     gpointer data)
 {
   GmSmileyChooserButton* self = NULL;
-  GmSmileyChooserButtonPrivate* priv = NULL;
   GtkWidget* new_toplevel = NULL;
 
-  g_return_if_fail (data != NULL);
+  g_return_if_fail (data != NULL && GM_IS_SMILEY_CHOOSER_BUTTON (data));
+
   self = GM_SMILEY_CHOOSER_BUTTON (data);
-  g_return_if_fail (GM_IS_SMILEY_CHOOSER_BUTTON (self));
-
-  priv = self->priv;
 
   if (old_toplevel &&
-      priv->toplevel_window_handler[HANDLER_CONFIGURE])
-    {
+      self->priv->toplevel_window_handler[HANDLER_CONFIGURE]) {
+
       g_signal_handler_disconnect (G_OBJECT (old_toplevel),
-				   priv->toplevel_window_handler[HANDLER_CONFIGURE]);
-      priv->toplevel_window_handler[HANDLER_CONFIGURE] = 0;
+				   self->priv->toplevel_window_handler[HANDLER_CONFIGURE]);
+      self->priv->toplevel_window_handler[HANDLER_CONFIGURE] = 0;
     }
 
   if (old_toplevel &&
-      priv->toplevel_window_handler[HANDLER_SCREEN_CHANGED])
-    {
+      self->priv->toplevel_window_handler[HANDLER_SCREEN_CHANGED]) {
+
       g_signal_handler_disconnect (G_OBJECT (old_toplevel),
-				   priv->toplevel_window_handler[HANDLER_SCREEN_CHANGED]);
-      priv->toplevel_window_handler[HANDLER_SCREEN_CHANGED] = 0;
+				   self->priv->toplevel_window_handler[HANDLER_SCREEN_CHANGED]);
+      self->priv->toplevel_window_handler[HANDLER_SCREEN_CHANGED] = 0;
     }
 
   if (old_toplevel &&
-      priv->toplevel_window_handler[HANDLER_HIDE])
-    {
+      self->priv->toplevel_window_handler[HANDLER_HIDE]) {
+
       g_signal_handler_disconnect (G_OBJECT (old_toplevel),
-				   priv->toplevel_window_handler[HANDLER_HIDE]);
-      priv->toplevel_window_handler[HANDLER_HIDE] = 0;
+				   self->priv->toplevel_window_handler[HANDLER_HIDE]);
+      self->priv->toplevel_window_handler[HANDLER_HIDE] = 0;
     }
 
   if (old_toplevel &&
-      priv->toplevel_window_handler[HANDLER_DELETE_EVENT])
-    {
+      self->priv->toplevel_window_handler[HANDLER_DELETE_EVENT]) {
+
       g_signal_handler_disconnect (G_OBJECT (old_toplevel),
-				   priv->toplevel_window_handler[HANDLER_DELETE_EVENT]);
-      priv->toplevel_window_handler[HANDLER_DELETE_EVENT] = 0;
+				   self->priv->toplevel_window_handler[HANDLER_DELETE_EVENT]);
+      self->priv->toplevel_window_handler[HANDLER_DELETE_EVENT] = 0;
     }
 
-  if (old_toplevel)
-    {
-      gtk_window_set_transient_for (GTK_WINDOW (priv->popup_window), NULL);
+  if (old_toplevel) {
+
+      gtk_window_set_transient_for (GTK_WINDOW (self->priv->popup_window), NULL);
       g_object_unref (G_OBJECT (old_toplevel));
     }
 
   new_toplevel = gtk_widget_get_toplevel (widget);
 
-  if (new_toplevel &&
-      GTK_IS_WINDOW (new_toplevel))
-    {
+  if (GTK_IS_WINDOW (new_toplevel)) {
+
       g_object_ref_sink (G_OBJECT (new_toplevel));
-      priv->toplevel_window_handler[HANDLER_CONFIGURE] =
+      self->priv->toplevel_window_handler[HANDLER_CONFIGURE] =
 	g_signal_connect (new_toplevel, "configure-event",
 			  G_CALLBACK (on_toplevel_configure_event), self);
-      priv->toplevel_window_handler[HANDLER_SCREEN_CHANGED] =
+      self->priv->toplevel_window_handler[HANDLER_SCREEN_CHANGED] =
 	g_signal_connect (new_toplevel, "screen-changed",
 			  G_CALLBACK (on_toplevel_screen_changed), self);
-      priv->toplevel_window_handler[HANDLER_HIDE] =
+      self->priv->toplevel_window_handler[HANDLER_HIDE] =
 	g_signal_connect (new_toplevel, "hide",
 			  G_CALLBACK (on_toplevel_hide), self);
-      priv->toplevel_window_handler[HANDLER_DELETE_EVENT] =
+      self->priv->toplevel_window_handler[HANDLER_DELETE_EVENT] =
 	g_signal_connect (new_toplevel, "delete-event",
 			  G_CALLBACK (on_toplevel_delete_event), self);
-      gtk_window_set_transient_for (GTK_WINDOW (priv->popup_window),
+      gtk_window_set_transient_for (GTK_WINDOW (self->priv->popup_window),
 				    GTK_WINDOW (new_toplevel));
     }
 }
@@ -342,9 +319,9 @@ on_toplevel_configure_event (G_GNUC_UNUSED GtkWidget* widget,
 {
   GmSmileyChooserButton* self = NULL;
 
-  g_return_val_if_fail (data != NULL, FALSE);
+  g_return_val_if_fail (GM_IS_SMILEY_CHOOSER_BUTTON (data), FALSE);
+
   self = GM_SMILEY_CHOOSER_BUTTON (data);
-  g_return_val_if_fail (GM_IS_SMILEY_CHOOSER_BUTTON (self), FALSE);
 
   /* reposition, if we show our popup */
   if (self->priv->popped_up &&
@@ -355,15 +332,16 @@ on_toplevel_configure_event (G_GNUC_UNUSED GtkWidget* widget,
   return FALSE;
 }
 
-static void on_toplevel_screen_changed (G_GNUC_UNUSED GtkWidget* widget,
-                                        G_GNUC_UNUSED GdkScreen* old_screen,
-                                        gpointer data)
+static void
+on_toplevel_screen_changed (G_GNUC_UNUSED GtkWidget* widget,
+			    G_GNUC_UNUSED GdkScreen* old_screen,
+			    gpointer data)
 {
   GmSmileyChooserButton* self = NULL;
 
-  g_return_if_fail (data != NULL);
+  g_return_if_fail (GM_IS_SMILEY_CHOOSER_BUTTON (data));
+
   self = GM_SMILEY_CHOOSER_BUTTON (data);
-  g_return_if_fail (GM_IS_SMILEY_CHOOSER_BUTTON (self));
 
   if (self->priv->popped_up)
     {
@@ -372,26 +350,29 @@ static void on_toplevel_screen_changed (G_GNUC_UNUSED GtkWidget* widget,
     }
 }
 
-static void on_toplevel_hide (G_GNUC_UNUSED GtkWidget* window,
-                              gpointer data)
+static void
+on_toplevel_hide (G_GNUC_UNUSED GtkWidget* window,
+		  gpointer data)
 {
   GmSmileyChooserButton* self = NULL;
 
-  g_return_if_fail (data != NULL);
+  g_return_if_fail (GM_IS_SMILEY_CHOOSER_BUTTON (data));
+
   self = GM_SMILEY_CHOOSER_BUTTON (data);
-  g_return_if_fail (GM_IS_SMILEY_CHOOSER_BUTTON (self));
 
   gm_smiley_chooser_button_popdown (self);
 }
 
-static gboolean on_toplevel_delete_event (G_GNUC_UNUSED GtkWidget* window,
-                                          G_GNUC_UNUSED GdkEvent* event,
-                                          gpointer data)
+static gboolean
+on_toplevel_delete_event (G_GNUC_UNUSED GtkWidget* window,
+			  G_GNUC_UNUSED GdkEvent* event,
+			  gpointer data)
 {
   GmSmileyChooserButton* self = NULL;
-  g_return_val_if_fail (data != NULL, FALSE);
+
+  g_return_val_if_fail (GM_IS_SMILEY_CHOOSER_BUTTON (data), FALSE);
+
   self = GM_SMILEY_CHOOSER_BUTTON (data);
-  g_return_val_if_fail (GM_IS_SMILEY_CHOOSER_BUTTON (self), FALSE);
 
   gm_smiley_chooser_button_popdown (self);
   /* FIXME - delete us! */
@@ -399,15 +380,16 @@ static gboolean on_toplevel_delete_event (G_GNUC_UNUSED GtkWidget* window,
   return FALSE;
 }
 
-static void on_smiley_image_clicked (GtkButton* button,
+static void
+on_smiley_image_clicked (GtkButton* button,
                                      gpointer data)
 {
   GmSmileyChooserButton* self = NULL;
   gchar* smiley_characters = NULL;
 
-  g_return_if_fail (data != NULL);
+  g_return_if_fail (GM_IS_SMILEY_CHOOSER_BUTTON (data));
+
   self = GM_SMILEY_CHOOSER_BUTTON (data);
-  g_return_if_fail (GM_IS_SMILEY_CHOOSER_BUTTON (self));
 
   smiley_characters = (gchar*) g_object_get_data (G_OBJECT (button),
 						  "smiley_characters");
@@ -418,79 +400,32 @@ static void on_smiley_image_clicked (GtkButton* button,
 			 g_strdup (smiley_characters));
 }
 
-static gboolean on_popup_button_press_event (G_GNUC_UNUSED GtkWidget* widget,
-					     GdkEventButton* event,
-					     gpointer data)
+static gboolean
+on_popup_button_press_event (G_GNUC_UNUSED GtkWidget* widget,
+			     GdkEventButton* event,
+			     gpointer data)
 {
-  GmSmileyChooserButton* self = NULL;
+  g_return_val_if_fail (GM_IS_SMILEY_CHOOSER_BUTTON (data), FALSE);
 
-  g_return_val_if_fail (data != NULL, FALSE);
-  self = GM_SMILEY_CHOOSER_BUTTON (data);
-  g_return_val_if_fail (GM_IS_SMILEY_CHOOSER_BUTTON (self), FALSE);
-
-  switch (event->type)
-    {
-    case GDK_BUTTON_PRESS:
-      gm_smiley_chooser_button_popdown (self);
-      return FALSE;
-      break;
-    case GDK_DAMAGE:
-    case GDK_NOTHING:
-    case GDK_DELETE:
-    case GDK_DESTROY:
-    case GDK_EXPOSE:
-    case GDK_MOTION_NOTIFY:
-    case GDK_2BUTTON_PRESS:
-    case GDK_3BUTTON_PRESS:
-    case GDK_BUTTON_RELEASE:
-    case GDK_KEY_PRESS:
-    case GDK_KEY_RELEASE:
-    case GDK_ENTER_NOTIFY:
-    case GDK_LEAVE_NOTIFY:
-    case GDK_FOCUS_CHANGE:
-    case GDK_CONFIGURE:
-    case GDK_MAP:
-    case GDK_UNMAP:
-    case GDK_PROPERTY_NOTIFY:
-    case GDK_SELECTION_CLEAR:
-    case GDK_SELECTION_REQUEST:
-    case GDK_SELECTION_NOTIFY:
-    case GDK_PROXIMITY_IN:
-    case GDK_PROXIMITY_OUT:
-    case GDK_DRAG_ENTER:
-    case GDK_DRAG_LEAVE:
-    case GDK_DRAG_MOTION:
-    case GDK_DRAG_STATUS:
-    case GDK_DROP_START:
-    case GDK_DROP_FINISHED:
-    case GDK_CLIENT_EVENT:
-    case GDK_VISIBILITY_NOTIFY:
-    case GDK_NO_EXPOSE:
-    case GDK_SCROLL:
-    case GDK_WINDOW_STATE:
-    case GDK_SETTING:
-    case GDK_OWNER_CHANGE:
-    case GDK_GRAB_BROKEN:
-    case GDK_EVENT_LAST:
-    default:
-      return FALSE;
-    }
+  if (event->type == GDK_BUTTON_PRESS)
+    gm_smiley_chooser_button_popdown (GM_SMILEY_CHOOSER_BUTTON (data));
 
   return FALSE;
 }
 
 
 /* real internal API */
-static void gm_smiley_chooser_button_reposition_popup (GmSmileyChooserButton* self,
-                                                       gint ref_x,
-                                                       gint ref_y)
+
+static void
+gm_smiley_chooser_button_reposition_popup (GmSmileyChooserButton* self,
+					   gint ref_x,
+					   gint ref_y)
 {
   gint final_x = 0;
   gint final_y = 0;
   GtkAllocation allocation;
   GtkAllocation popup_allocation;
 
-  g_return_if_fail (self != NULL);
   g_return_if_fail (GM_IS_SMILEY_CHOOSER_BUTTON (self));
 
   /* return if nothing useful to do */
@@ -512,30 +447,22 @@ static void gm_smiley_chooser_button_reposition_popup (GmSmileyChooserButton* se
                    final_x, final_y);
 }
 
-
 static void
 gm_smiley_chooser_button_set_smiley_set (GmSmileyChooserButton* self,
 					 const gchar** smiley_set)
 {
-  GmSmileyChooserButtonPrivate* priv = NULL;
+  g_return_if_fail (GM_IS_SMILEY_CHOOSER_BUTTON (self) && smiley_set != NULL);
 
-  g_return_if_fail (self != NULL);
-  g_return_if_fail (smiley_set != NULL);
-  g_return_if_fail (GM_IS_SMILEY_CHOOSER_BUTTON (self));
+  if (self->priv->smiley_set)
+    g_strfreev (self->priv->smiley_set);
 
-  priv = self->priv;
-
-  if (priv->smiley_set)
-    g_strfreev (priv->smiley_set);
-
-  priv->smiley_set = g_strdupv ((gchar**) smiley_set);
+  self->priv->smiley_set = g_strdupv ((gchar**) smiley_set);
 }
 
 
 static void
 gm_smiley_chooser_button_reload_smiley_set (GmSmileyChooserButton* self)
 {
-  g_return_if_fail (self != NULL);
   g_return_if_fail (GM_IS_SMILEY_CHOOSER_BUTTON (self));
 
   /* nothing but kill and rebuild our view */
@@ -546,26 +473,22 @@ gm_smiley_chooser_button_reload_smiley_set (GmSmileyChooserButton* self)
 static void
 gm_smiley_chooser_button_popup (GmSmileyChooserButton* self)
 {
-  GmSmileyChooserButtonPrivate* priv = NULL;
   gint my_x = 0;
   gint my_y = 0;
 
-  g_return_if_fail (self != NULL);
   g_return_if_fail (GM_IS_SMILEY_CHOOSER_BUTTON (self));
-
-  priv = self->priv;
 
   /* get my position data and position the popup */
   (void) gdk_window_get_origin (gtk_widget_get_window (GTK_WIDGET (self)),
                                 &my_x, &my_y);
 
-  gtk_window_move (GTK_WINDOW (priv->popup_window),
+  gtk_window_move (GTK_WINDOW (self->priv->popup_window),
 		   my_x, my_y);
 
-  gtk_widget_show_all (priv->popup_window);
-  gtk_window_present (GTK_WINDOW (priv->popup_window));
+  gtk_widget_show_all (self->priv->popup_window);
+  gtk_window_present (GTK_WINDOW (self->priv->popup_window));
 
-  priv->popped_up = TRUE;
+  self->priv->popped_up = TRUE;
 
   gm_smiley_chooser_button_reposition_popup (self, my_x, my_y);
 
@@ -575,65 +498,53 @@ gm_smiley_chooser_button_popup (GmSmileyChooserButton* self)
 static void
 gm_smiley_chooser_button_popdown (GmSmileyChooserButton* self)
 {
-  GmSmileyChooserButtonPrivate* priv = NULL;
-
-  g_return_if_fail (self != NULL);
   g_return_if_fail (GM_IS_SMILEY_CHOOSER_BUTTON (self));
 
-  priv = self->priv;
-
-  gtk_widget_hide_all (GTK_WIDGET (priv->popup_window));
+  gtk_widget_hide_all (GTK_WIDGET (self->priv->popup_window));
 
   gtk_toggle_button_set_active (GTK_TOGGLE_BUTTON (self), FALSE);
 
-  priv->popped_up = FALSE;
+  self->priv->popped_up = FALSE;
 }
 
 static void
 gm_smiley_chooser_button_destroy_view (GmSmileyChooserButton* self)
 {
-  GmSmileyChooserButtonPrivate* priv = NULL;
-
-  g_return_if_fail (self != NULL);
   g_return_if_fail (GM_IS_SMILEY_CHOOSER_BUTTON (self));
 
-  priv = self->priv;
-
-  if (priv->popped_up)
+  if (self->priv->popped_up)
     gm_smiley_chooser_button_popdown (self);
 
-  if (priv->table)
+  if (self->priv->table)
     {
-      g_object_unref (G_OBJECT (priv->table));
-      gtk_widget_destroy (priv->table);
-      priv->table = NULL;
+      g_object_unref (G_OBJECT (self->priv->table));
+      gtk_widget_destroy (self->priv->table);
+      self->priv->table = NULL;
     }
 
-  if (priv->frame)
+  if (self->priv->frame)
     {
-      g_object_unref (G_OBJECT (priv->frame));
-      gtk_widget_destroy (priv->frame);
-      priv->frame = NULL;
+      g_object_unref (G_OBJECT (self->priv->frame));
+      gtk_widget_destroy (self->priv->frame);
+      self->priv->frame = NULL;
     }
 
-  if (priv->popup_window)
+  if (self->priv->popup_window)
     {
-      g_object_unref (G_OBJECT (priv->popup_window));
-      gtk_widget_destroy (priv->popup_window);
-      priv->popup_window = NULL;
+      g_object_unref (G_OBJECT (self->priv->popup_window));
+      gtk_widget_destroy (self->priv->popup_window);
+      self->priv->popup_window = NULL;
     }
 }
 
 
-static void gm_smiley_chooser_build_view (GmSmileyChooserButton* self)
+static void
+gm_smiley_chooser_build_view (GmSmileyChooserButton* self)
 {
-  GmSmileyChooserButtonPrivate* priv = NULL;
-
   GtkWidget* button = NULL;
   GtkWidget* image = NULL;
   GdkPixbuf* pixbuf = NULL;
 
-  gchar** smiley_set = NULL;
   const gfloat golden_ratio = 1.6180339887;
   guint smiley = 0;
   guint num_smileys = 0;
@@ -643,35 +554,30 @@ static void gm_smiley_chooser_build_view (GmSmileyChooserButton* self)
   guint iter_x = 0;
   guint iter_y = 0;
 
-  g_return_if_fail (self != NULL);
-  g_return_if_fail (GM_IS_SMILEY_CHOOSER_BUTTON (self));
-
-  priv = self->priv;
-
-  g_return_if_fail (priv->smiley_set != NULL);
-  smiley_set = priv->smiley_set;
-  g_return_if_fail (smiley_set[0] != NULL);
+  g_return_if_fail (GM_IS_SMILEY_CHOOSER_BUTTON (self)
+		    && self->priv->smiley_set != NULL
+		    && self->priv->smiley_set[0] != NULL);
 
   /* the popup window */
-  priv->popup_window = gtk_window_new (GTK_WINDOW_TOPLEVEL);
-  g_object_ref_sink (G_OBJECT (priv->popup_window));
-  g_signal_connect (priv->popup_window, "button-press-event",
+  self->priv->popup_window = gtk_window_new (GTK_WINDOW_TOPLEVEL);
+  g_object_ref_sink (G_OBJECT (self->priv->popup_window));
+  g_signal_connect (self->priv->popup_window, "button-press-event",
 		    G_CALLBACK (on_popup_button_press_event), self);
-//  gtk_window_set_title (GTK_WINDOW (priv->popup_window), _("Smile!"));
-  gtk_window_set_type_hint (GTK_WINDOW (priv->popup_window),
+//  gtk_window_set_title (GTK_WINDOW (self->priv->popup_window), _("Smile!"));
+  gtk_window_set_type_hint (GTK_WINDOW (self->priv->popup_window),
 			    GDK_WINDOW_TYPE_HINT_UTILITY);
-  gtk_window_set_skip_taskbar_hint (GTK_WINDOW (priv->popup_window), TRUE);
-  gtk_window_set_resizable (GTK_WINDOW (priv->popup_window), FALSE);
-  gtk_window_set_decorated (GTK_WINDOW (priv->popup_window), FALSE);
+  gtk_window_set_skip_taskbar_hint (GTK_WINDOW (self->priv->popup_window), TRUE);
+  gtk_window_set_resizable (GTK_WINDOW (self->priv->popup_window), FALSE);
+  gtk_window_set_decorated (GTK_WINDOW (self->priv->popup_window), FALSE);
 
   /* the frame */
-//  priv->frame = gtk_frame_new (_("Smile!"));
-  priv->frame = gtk_frame_new (NULL);
-  g_object_ref_sink (G_OBJECT (priv->frame));
+//  self->priv->frame = gtk_frame_new (_("Smile!"));
+  self->priv->frame = gtk_frame_new (NULL);
+  g_object_ref_sink (G_OBJECT (self->priv->frame));
 
   /* compute the number of available smileys */
   for (smiley = 0;
-       smiley_set[smiley] != NULL;
+       self->priv->smiley_set[smiley] != NULL;
        smiley = smiley + 2) {}
   num_smileys = smiley / 2;
 
@@ -698,8 +604,8 @@ static void gm_smiley_chooser_build_view (GmSmileyChooserButton* self)
   }
 
   /* the table */
-  priv->table = gtk_table_new (table_height, table_width, TRUE);
-  g_object_ref (G_OBJECT (priv->table));
+  self->priv->table = gtk_table_new (table_height, table_width, TRUE);
+  g_object_ref (G_OBJECT (self->priv->table));
 
   /* populate the table with the smiley buttons */
   smiley = 0;
@@ -712,18 +618,18 @@ static void gm_smiley_chooser_build_view (GmSmileyChooserButton* self)
       button = gtk_button_new ();
       gtk_button_set_relief (GTK_BUTTON (button), GTK_RELIEF_NONE);
       pixbuf = gtk_icon_theme_load_icon (gtk_icon_theme_get_default (),
-                                         smiley_set[smiley + 1], 16,
+                                         self->priv->smiley_set[smiley + 1], 16,
                                          (GtkIconLookupFlags)0, NULL);
       image = gtk_image_new_from_pixbuf (pixbuf);
       gtk_container_add (GTK_CONTAINER (button), image);
       g_object_set_data_full (G_OBJECT (button),
                               "smiley_characters",
-                              (gpointer) g_strdup (smiley_set[smiley]),
+                              (gpointer) g_strdup (self->priv->smiley_set[smiley]),
                               g_free);
       g_signal_connect (button, "clicked",
                         G_CALLBACK (on_smiley_image_clicked), self);
 
-      gtk_table_attach_defaults (GTK_TABLE (priv->table),
+      gtk_table_attach_defaults (GTK_TABLE (self->priv->table),
                                  button,
                                  iter_x, iter_x + 1,
                                  iter_y, iter_y + 1);
@@ -732,42 +638,14 @@ static void gm_smiley_chooser_build_view (GmSmileyChooserButton* self)
   } /* for (iter_y) */
 
   /* glue it all together */
-  gtk_container_add (GTK_CONTAINER (priv->popup_window), priv->frame);
-  gtk_container_add (GTK_CONTAINER (priv->frame), priv->table);
-  gtk_widget_show (priv->frame);
-  gtk_widget_show_all (priv->table);
+  gtk_container_add (GTK_CONTAINER (self->priv->popup_window), self->priv->frame);
+  gtk_container_add (GTK_CONTAINER (self->priv->frame), self->priv->table);
+  gtk_widget_show (self->priv->frame);
+  gtk_widget_show_all (self->priv->table);
 }
 
 
 /* Implementation of the public API */
-
-GType
-gm_smiley_chooser_button_get_type (void)
-{
-  static GType result = 0;
-
-  if (!result) {
-
-    static const GTypeInfo info = {
-      sizeof (GmSmileyChooserButtonClass),
-      NULL,
-      NULL,
-      gm_smiley_chooser_button_class_init,
-      NULL,
-      NULL,
-      sizeof (GmSmileyChooserButton),
-      0,
-      gm_smiley_chooser_button_init,
-      NULL
-    };
-
-    result = g_type_register_static (GTK_TYPE_TOGGLE_BUTTON,
-				     "GmSmileyChooserButton",
-				     &info, (GTypeFlags) 0);
-  }
-
-  return result;
-}
 
 GtkWidget*
 gm_smiley_chooser_button_new (void)
@@ -776,7 +654,7 @@ gm_smiley_chooser_button_new (void)
   GtkWidget* widget = NULL;
 
   self =
-    (GmSmileyChooserButton*) g_object_new (GM_SMILEY_CHOOSER_BUTTON_TYPE, NULL);
+    (GmSmileyChooserButton*) g_object_new (GM_TYPE_SMILEY_CHOOSER_BUTTON, NULL);
   gtk_button_set_use_underline (GTK_BUTTON (self), TRUE);
 
   /* if already possible (unlikely), initially set the toplevel reference */
@@ -789,7 +667,7 @@ gm_smiley_chooser_button_new (void)
       self->priv->toplevel_window_handler[HANDLER_CONFIGURE] =
 	g_signal_connect (widget, "configure-event",
 			  G_CALLBACK (on_toplevel_configure_event), self);
-      self->priv->toplevel_window_handler[HANDLER_SCREEN_CHANGED] = 
+      self->priv->toplevel_window_handler[HANDLER_SCREEN_CHANGED] =
         g_signal_connect (widget, "screen-changed",
                           G_CALLBACK (on_toplevel_screen_changed), self);
       self->priv->toplevel_window_handler[HANDLER_HIDE] =
