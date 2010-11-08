@@ -68,11 +68,14 @@ GmTextBufferEnhancerHelperIFace* gm_text_anchored_tag_new (const gchar* anchor,
 
 /* GObject boilerplate */
 
-typedef struct _GmTextAnchoredTag      GmTextAnchoredTag;
+typedef struct _GmTextAnchoredTag  GmTextAnchoredTag;
+typedef struct _GmTextAnchoredTagPrivate GmTextAnchoredTagPrivate;
 typedef struct _GmTextAnchoredTagClass GmTextAnchoredTagClass;
 
 struct _GmTextAnchoredTag {
   GObject parent;
+
+  GmTextAnchoredTagPrivate* priv;
 };
 
 struct _GmTextAnchoredTagClass {

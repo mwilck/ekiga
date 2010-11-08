@@ -39,17 +39,11 @@
 
 #include <string.h>
 
-typedef struct _GmTextAnchoredTagPrivate GmTextAnchoredTagPrivate;
-
 struct _GmTextAnchoredTagPrivate {
   gchar* anchor;
   GtkTextTag* tag;
   gboolean opening;
 };
-
-#define GM_TEXT_ANCHORED_TAG_GET_PRIVATE(o) (G_TYPE_INSTANCE_GET_PRIVATE((o), GM_TYPE_TEXT_ANCHORED_TAG, GmTextAnchoredTagPrivate))
-
-static GObjectClass* parent_class = NULL;
 
 /* declaration of the GmTextBufferEnhancerHelperIFace code */
 
@@ -70,6 +64,10 @@ static void enhancer_helper_enhance (GmTextBufferEnhancerHelperIFace* self,
 static void enhancer_helper_iface_init (gpointer g_iface,
 					gpointer iface_data);
 
+G_DEFINE_TYPE_EXTENDED (GmTextAnchoredTag, gm_text_anchored_tag, G_TYPE_OBJECT, 0,
+			G_IMPLEMENT_INTERFACE (GM_TYPE_TEXT_BUFFER_ENHANCER_HELPER_IFACE,
+					       enhancer_helper_iface_init));
+
 /* implementation of the GmTextBufferEnhancerHelperIFace code */
 
 static void
@@ -79,7 +77,7 @@ enhancer_helper_check (GmTextBufferEnhancerHelperIFace* self,
 		       gint* start,
 		       gint* length)
 {
-  GmTextAnchoredTagPrivate* priv = GM_TEXT_ANCHORED_TAG_GET_PRIVATE (self);
+  GmTextAnchoredTagPrivate* priv = GM_TEXT_ANCHORED_TAG (self)->priv;
   char* found = NULL;
 
   found = strstr (full_text + from, priv->anchor);
@@ -101,7 +99,7 @@ enhancer_helper_enhance (GmTextBufferEnhancerHelperIFace* self,
 			 gint* start,
 			 gint length)
 {
-  GmTextAnchoredTagPrivate* priv = GM_TEXT_ANCHORED_TAG_GET_PRIVATE (self);
+  GmTextAnchoredTagPrivate* priv = GM_TEXT_ANCHORED_TAG (self)->priv;
 
   if (priv->opening)
     *tags = g_slist_prepend (*tags, priv->tag);
@@ -127,7 +125,7 @@ enhancer_helper_iface_init (gpointer g_iface,
 static void
 gm_text_anchored_tag_dispose (GObject* obj)
 {
-  GmTextAnchoredTagPrivate* priv = GM_TEXT_ANCHORED_TAG_GET_PRIVATE(obj);
+  GmTextAnchoredTagPrivate* priv = GM_TEXT_ANCHORED_TAG (obj)->priv;
 
   if (priv->tag != NULL) {
 
@@ -135,13 +133,13 @@ gm_text_anchored_tag_dispose (GObject* obj)
     priv->tag = NULL;
   }
 
-  parent_class->dispose (obj);
+  G_OBJECT_CLASS (gm_text_anchored_tag_parent_class)->dispose (obj);
 }
 
 static void
 gm_text_anchored_tag_finalize (GObject* obj)
 {
-  GmTextAnchoredTagPrivate* priv = GM_TEXT_ANCHORED_TAG_GET_PRIVATE(obj);
+  GmTextAnchoredTagPrivate* priv = GM_TEXT_ANCHORED_TAG (obj)->priv;
 
   if (priv->anchor != NULL) {
 
@@ -149,66 +147,29 @@ gm_text_anchored_tag_finalize (GObject* obj)
     priv->anchor = NULL;
   }
 
-  parent_class->finalize (obj);
+  G_OBJECT_CLASS (gm_text_anchored_tag_parent_class)->finalize (obj);
 }
 
 static void
-gm_text_anchored_tag_class_init (GmTextAnchoredTagClass* g_class)
+gm_text_anchored_tag_class_init (GmTextAnchoredTagClass* klass)
 {
-  GObjectClass* gobject_class = NULL;
+  GObjectClass* gobject_class = G_OBJECT_CLASS (klass);
 
-  parent_class = g_type_class_peek_parent (g_class);
-
-  gobject_class = (GObjectClass*)g_class;
   gobject_class->dispose = gm_text_anchored_tag_dispose;
   gobject_class->finalize = gm_text_anchored_tag_finalize;
 
-  g_type_class_add_private (gobject_class, sizeof (GmTextAnchoredTagPrivate));
+  g_type_class_add_private (klass, sizeof (GmTextAnchoredTagPrivate));
 }
 
 static void
 gm_text_anchored_tag_init (GmTextAnchoredTag* obj)
 {
-  GmTextAnchoredTagPrivate* priv = GM_TEXT_ANCHORED_TAG_GET_PRIVATE(obj);
+  obj->priv = G_TYPE_INSTANCE_GET_PRIVATE (obj, GM_TYPE_TEXT_ANCHORED_TAG,
+					   GmTextAnchoredTagPrivate);
 
-  priv->anchor = NULL;
-  priv->tag = NULL;
-  priv->opening = TRUE;
-}
-
-GType
-gm_text_anchored_tag_get_type (void)
-{
-  static GType result = 0;
-  if (!result) {
-
-    static const GTypeInfo my_info = {
-      sizeof(GmTextAnchoredTagClass),
-      NULL,
-      NULL,
-      (GClassInitFunc) gm_text_anchored_tag_class_init,
-      NULL,
-      NULL,
-      sizeof(GmTextAnchoredTag),
-      0,
-      (GInstanceInitFunc) gm_text_anchored_tag_init,
-      NULL
-    };
-
-    static const GInterfaceInfo enhancer_helper_info = {
-      enhancer_helper_iface_init,
-      NULL,
-      NULL
-    };
-
-    result = g_type_register_static (G_TYPE_OBJECT,
-				     "GmTextAnchoredTag",
-				     &my_info, 0);
-    g_type_add_interface_static (result,
-				 GM_TYPE_TEXT_BUFFER_ENHANCER_HELPER_IFACE,
-				 &enhancer_helper_info);
-  }
-  return result;
+  obj->priv->anchor = NULL;
+  obj->priv->tag = NULL;
+  obj->priv->opening = TRUE;
 }
 
 /* Implementation of the public api */
@@ -219,21 +180,17 @@ gm_text_anchored_tag_new (const gchar* anchor,
 			  gboolean opening)
 {
   GmTextAnchoredTag* result = NULL;
-  GmTextAnchoredTagPrivate* priv = NULL;
 
-  g_return_val_if_fail (anchor != NULL, NULL);
-  g_return_val_if_fail (GTK_IS_TEXT_TAG (tag), NULL);
+  g_return_val_if_fail (anchor != NULL && GTK_IS_TEXT_TAG (tag), NULL);
 
   result = (GmTextAnchoredTag*)g_object_new (GM_TYPE_TEXT_ANCHORED_TAG, NULL);
 
-  priv = GM_TEXT_ANCHORED_TAG_GET_PRIVATE (result);
-
-  priv->anchor = g_strdup (anchor);
+  result->priv->anchor = g_strdup (anchor);
 
   g_object_ref (tag);
-  priv->tag = tag;
+  result->priv->tag = tag;
 
-  priv->opening = opening;
+  result->priv->opening = opening;
 
   return GM_TEXT_BUFFER_ENHANCER_HELPER_IFACE (result);
 }
