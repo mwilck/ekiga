@@ -38,7 +38,7 @@
 #ifndef __GM_TEXT_ANCHORED_TAG_H__
 #define __GM_TEXT_ANCHORED_TAG_H__
 
-#include "gm-text-buffer-enhancer-helper-iface.h"
+#include "gm-text-buffer-enhancer-helper-interface.h"
 
 #include <gtk/gtk.h>
 
@@ -62,9 +62,9 @@ G_BEGIN_DECLS
  *  g_object_unref (helper);
  *
  */
-GmTextBufferEnhancerHelperIFace* gm_text_anchored_tag_new (const gchar* anchor,
-							   GtkTextTag* tag,
-							   gboolean opening);
+GmTextBufferEnhancerHelper* gm_text_anchored_tag_new (const gchar* anchor,
+						      GtkTextTag* tag,
+						      gboolean opening);
 
 /* GObject boilerplate */
 

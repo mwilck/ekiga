@@ -176,7 +176,7 @@ gm_chat_area_define_simple_text_tag (GtkTextBuffer* buffer,
 {
   va_list args;
   GtkTextTag* tag = NULL;
-  GmTextBufferEnhancerHelperIFace* helper = NULL;
+  GmTextBufferEnhancerHelper* helper = NULL;
   gchar* tmp_tagstring = NULL;
 
   g_return_if_fail (buffer != NULL);
@@ -746,7 +746,7 @@ chat_area_init (GTypeInstance* instance,
 {
   ChatArea* self = NULL;
   GtkTextBuffer* buffer = NULL;
-  GmTextBufferEnhancerHelperIFace* helper = NULL;
+  GmTextBufferEnhancerHelper* helper = NULL;
   GtkTextTag* tag = NULL;
   GtkTextIter iter;
   GtkWidget *frame = NULL;

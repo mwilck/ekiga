@@ -4,8 +4,7 @@
 #ifndef __GM_TEXT_BUFFER_ENHANCER_H__
 #define __GM_TEXT_BUFFER_ENHANCER_H__
 
-#include <gtk/gtk.h>
-#include "gm-text-buffer-enhancer-helper-iface.h"
+#include "gm-text-buffer-enhancer-helper-interface.h"
 
 G_BEGIN_DECLS
 
@@ -34,7 +33,7 @@ GType gm_text_buffer_enhancer_get_type () G_GNUC_CONST;
 GmTextBufferEnhancer* gm_text_buffer_enhancer_new (GtkTextBuffer* buffer);
 
 void gm_text_buffer_enhancer_add_helper (GmTextBufferEnhancer* self,
-					 GmTextBufferEnhancerHelperIFace* helper);
+					 GmTextBufferEnhancerHelper* helper);
 
 void gm_text_buffer_enhancer_insert_text (GmTextBufferEnhancer* self,
 					  GtkTextIter* iter,

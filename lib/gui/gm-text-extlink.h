@@ -38,14 +38,14 @@
 #ifndef __GM_TEXT_EXTLINK_H__
 #define __GM_TEXT_EXTLINK_H__
 
-#include "gm-text-buffer-enhancer-helper-iface.h"
+#include "gm-text-buffer-enhancer-helper-interface.h"
 
 G_BEGIN_DECLS
 
 /* public api */
 
-GmTextBufferEnhancerHelperIFace* gm_text_extlink_new (const gchar* regex,
-						      GtkTextTag* tag);
+GmTextBufferEnhancerHelper* gm_text_extlink_new (const gchar* regex,
+						 GtkTextTag* tag);
 
 /* GObject boilerplate */
 

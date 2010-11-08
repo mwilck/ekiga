@@ -27,7 +27,7 @@
 
 
 /*
- *                        gm-text-buffer-enhancer-helper-iface.c  -  description
+ *                        gm-text-buffer-enhancer-helper-interface.c  -  description
  *                         --------------------------------
  *   begin                : written in july 2008 by Julien Puydt
  *   copyright            : (C) 2008 by Julien Puydt
@@ -36,61 +36,34 @@
  *
  */
 
-#include "gm-text-buffer-enhancer-helper-iface.h"
+#include "gm-text-buffer-enhancer-helper-interface.h"
 
 /* GObject code */
 
 static void
-gm_text_buffer_enhancer_helper_iface_base_init (G_GNUC_UNUSED gpointer g_class)
+gm_text_buffer_enhancer_helper_default_init (G_GNUC_UNUSED GmTextBufferEnhancerHelperInterface* iface)
 {
-  static gboolean initialized = FALSE;
-  if (!initialized) {
-    /* nothing */
-    initialized = TRUE;
-  }
+  /* nothing */
 }
-GType
-gm_text_buffer_enhancer_helper_iface_get_type (void)
-{
-  static GType result = 0;
-  if (!result) {
 
-    static const GTypeInfo my_info = {
-      sizeof(GmTextBufferEnhancerHelperIFaceClass),
-      gm_text_buffer_enhancer_helper_iface_base_init,
-      NULL,
-      NULL,
-      NULL,
-      NULL,
-      0,
-      0,
-      NULL,
-      NULL
-    };
-
-    result = g_type_register_static (G_TYPE_INTERFACE,
-				     "GmTextBufferEnhancerHelperIFace",
-				     &my_info, 0);
-
-    g_type_interface_add_prerequisite (result, G_TYPE_OBJECT);
-  }
-  return result;
-}
+G_DEFINE_INTERFACE (GmTextBufferEnhancerHelper, gm_text_buffer_enhancer_helper, G_TYPE_OBJECT);
 
 /* public api */
 
 void
-gm_text_buffer_enhancer_helper_check (GmTextBufferEnhancerHelperIFace* self,
+gm_text_buffer_enhancer_helper_check (GmTextBufferEnhancerHelper* self,
 				      const gchar* full_text,
 				      gint from,
 				      gint* start,
 				      gint* length)
 {
-  GM_TEXT_BUFFER_ENHANCER_HELPER_IFACE_GET_CLASS (self)->do_check (self, full_text, from, start, length);
+  g_return_if_fail (GM_IS_TEXT_BUFFER_ENHANCER_HELPER (self));
+
+  (*GM_TEXT_BUFFER_ENHANCER_HELPER_GET_INTERFACE (self)->do_check) (self, full_text, from, start, length);
 }
 
 void
-gm_text_buffer_enhancer_helper_enhance (GmTextBufferEnhancerHelperIFace* self,
+gm_text_buffer_enhancer_helper_enhance (GmTextBufferEnhancerHelper* self,
 					GtkTextBuffer* buffer,
 					GtkTextIter* iter,
 					GSList** tags,
@@ -98,5 +71,7 @@ gm_text_buffer_enhancer_helper_enhance (GmTextBufferEnhancerHelperIFace* self,
 					gint* start,
 					gint length)
 {
-  GM_TEXT_BUFFER_ENHANCER_HELPER_IFACE_GET_CLASS (self)->do_enhance (self, buffer, iter, tags, full_text, start, length);
+  g_return_if_fail (GM_IS_TEXT_BUFFER_ENHANCER_HELPER (self));
+
+  (*GM_TEXT_BUFFER_ENHANCER_HELPER_GET_INTERFACE (self)->do_enhance) (self, buffer, iter, tags, full_text, start, length);
 }

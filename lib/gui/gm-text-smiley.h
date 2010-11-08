@@ -38,13 +38,13 @@
 #ifndef __GM_TEXT_SMILEY_H__
 #define __GM_TEXT_SMILEY_H__
 
-#include "gm-text-buffer-enhancer-helper-iface.h"
+#include "gm-text-buffer-enhancer-helper-interface.h"
 
 G_BEGIN_DECLS
 
 /* public api */
 
-GmTextBufferEnhancerHelperIFace* gm_text_smiley_new ();
+GmTextBufferEnhancerHelper* gm_text_smiley_new ();
 
 /* GObject boilerplate */
 

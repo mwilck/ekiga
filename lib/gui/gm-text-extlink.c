@@ -52,15 +52,15 @@ struct _GmTextExtlinkPrivate {
 
 #define GM_TEXT_EXTLINK_GET_PRIVATE(o) (G_TYPE_INSTANCE_GET_PRIVATE((o), GM_TYPE_TEXT_EXTLINK, GmTextExtlinkPrivate))
 
-/* declaration of the GmTextBufferEnhancerHelperIFace code */
+/* declaration of the GmTextBufferEnhancerHelperInterface code */
 
-static void enhancer_helper_check (GmTextBufferEnhancerHelperIFace* self,
+static void enhancer_helper_check (GmTextBufferEnhancerHelper* self,
 				   const gchar* full_text,
 				   gint from,
 				   gint* start,
 				   gint* length);
 
-static void enhancer_helper_enhance (GmTextBufferEnhancerHelperIFace* self,
+static void enhancer_helper_enhance (GmTextBufferEnhancerHelper* self,
 				     GtkTextBuffer* buffer,
 				     GtkTextIter* iter,
 				     GSList** tags,
@@ -68,13 +68,12 @@ static void enhancer_helper_enhance (GmTextBufferEnhancerHelperIFace* self,
 				     gint* start,
 				     gint length);
 
-static void enhancer_helper_iface_init (gpointer g_iface,
-					gpointer iface_data);
+static void enhancer_helper_iface_init (GmTextBufferEnhancerHelperInterface* iface);
 
-/* implementation of the GmTextBufferEnhancerHelperIFace code */
+/* implementation of the GmTextBufferEnhancerHelperInterface code */
 
 static void
-enhancer_helper_check (GmTextBufferEnhancerHelperIFace* self,
+enhancer_helper_check (GmTextBufferEnhancerHelper* self,
 		       const gchar* full_text,
 		       gint from,
 		       gint* start,
@@ -96,7 +95,7 @@ enhancer_helper_check (GmTextBufferEnhancerHelperIFace* self,
 }
 
 static void
-enhancer_helper_enhance (GmTextBufferEnhancerHelperIFace* self,
+enhancer_helper_enhance (GmTextBufferEnhancerHelper* self,
 			 GtkTextBuffer* buffer,
 			 GtkTextIter* iter,
 			 G_GNUC_UNUSED GSList** tags,
@@ -119,12 +118,8 @@ enhancer_helper_enhance (GmTextBufferEnhancerHelperIFace* self,
 }
 
 static void
-enhancer_helper_iface_init (gpointer g_iface,
-			    G_GNUC_UNUSED gpointer iface_data)
+enhancer_helper_iface_init (GmTextBufferEnhancerHelperInterface* iface)
 {
-  GmTextBufferEnhancerHelperIFaceClass* iface = NULL;
-
-  iface = (GmTextBufferEnhancerHelperIFaceClass*)g_iface;
   iface->do_check = &enhancer_helper_check;
   iface->do_enhance = &enhancer_helper_enhance;
 }
@@ -202,7 +197,7 @@ gm_text_extlink_get_type ()
 				     "GmTextExtlink",
 				     &my_info, 0);
     g_type_add_interface_static (result,
-				 GM_TYPE_TEXT_BUFFER_ENHANCER_HELPER_IFACE,
+				 GM_TYPE_TEXT_BUFFER_ENHANCER_HELPER,
 				 &enhancer_helper_info);
   }
   return result;
@@ -210,16 +205,16 @@ gm_text_extlink_get_type ()
 
 /* public api */
 
-GmTextBufferEnhancerHelperIFace*
+GmTextBufferEnhancerHelper*
 gm_text_extlink_new (const gchar* regex,
 		     GtkTextTag* tag)
 {
-  GmTextBufferEnhancerHelperIFace* result = NULL;
+  GmTextBufferEnhancerHelper* result = NULL;
   GmTextExtlinkPrivate* priv = NULL;
 
   g_return_val_if_fail (regex != NULL, NULL);
 
-  result = (GmTextBufferEnhancerHelperIFace*)g_object_new(GM_TYPE_TEXT_EXTLINK, NULL);
+  result = GM_TEXT_BUFFER_ENHANCER_HELPER (g_object_new(GM_TYPE_TEXT_EXTLINK, NULL));
   priv = GM_TEXT_EXTLINK_GET_PRIVATE (result);
 
   g_object_ref (tag);

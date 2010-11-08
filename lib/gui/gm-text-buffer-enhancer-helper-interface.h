@@ -27,7 +27,7 @@
 
 
 /*
- *                        gm-text-buffer-enhancer-helper-iface.h  -  description
+ *                        gm-text-buffer-enhancer-helper-interface.h  -  description
  *                         --------------------------------
  *   begin                : written in july 2008 by Julien Puydt
  *   copyright            : (C) 2008 by Julien Puydt
@@ -36,15 +36,15 @@
  *
  */
 
-#ifndef __GM_TEXT_BUFFER_ENHANCER_HELPER_IFACE_H__
-#define __GM_TEXT_BUFFER_ENHANCER_HELPER_IFACE_H__
+#ifndef __GM_TEXT_BUFFER_ENHANCER_HELPER_INTERFACE_H__
+#define __GM_TEXT_BUFFER_ENHANCER_HELPER_INTERFACE_H__
 
 #include <gtk/gtk.h>
 
 G_BEGIN_DECLS
 
-typedef struct _GmTextBufferEnhancerHelperIFace      GmTextBufferEnhancerHelperIFace;
-typedef struct _GmTextBufferEnhancerHelperIFaceClass GmTextBufferEnhancerHelperIFaceClass;
+typedef struct _GmTextBufferEnhancerHelper GmTextBufferEnhancerHelper;
+typedef struct _GmTextBufferEnhancerHelperInterface GmTextBufferEnhancerHelperInterface;
 
 /* public api */
 
@@ -65,7 +65,7 @@ typedef struct _GmTextBufferEnhancerHelperIFaceClass GmTextBufferEnhancerHelperI
  * - the length allows the enhancer to prefer the helper which saw "fooz" when
  *   compared to the one which saw "foo".
  */
-void gm_text_buffer_enhancer_helper_check (GmTextBufferEnhancerHelperIFace* self,
+void gm_text_buffer_enhancer_helper_check (GmTextBufferEnhancerHelper* self,
 					   const gchar* full_text,
 					   gint from,
 					   gint* start,
@@ -87,7 +87,7 @@ void gm_text_buffer_enhancer_helper_check (GmTextBufferEnhancerHelperIFace* self
  * "the helper said" means those values are those the helper answered in its
  * check method.
  */
-void gm_text_buffer_enhancer_helper_enhance (GmTextBufferEnhancerHelperIFace* self,
+void gm_text_buffer_enhancer_helper_enhance (GmTextBufferEnhancerHelper* self,
 					     GtkTextBuffer* buffer,
 					     GtkTextIter* iter,
 					     GSList** tags,
@@ -97,16 +97,17 @@ void gm_text_buffer_enhancer_helper_enhance (GmTextBufferEnhancerHelperIFace* se
 
 /* GObject boilerplate */
 
-struct _GmTextBufferEnhancerHelperIFaceClass {
+struct _GmTextBufferEnhancerHelperInterface {
+
   GTypeInterface parent;
 
-  void (*do_check) (GmTextBufferEnhancerHelperIFace* self,
+  void (*do_check) (GmTextBufferEnhancerHelper* self,
 		    const gchar* full_text,
 		    gint from,
 		    gint* start,
 		    gint* length);
 
-  void (*do_enhance) (GmTextBufferEnhancerHelperIFace* self,
+  void (*do_enhance) (GmTextBufferEnhancerHelper* self,
 		      GtkTextBuffer* buffer,
 		      GtkTextIter* iter,
 		      GSList** tags,
@@ -115,15 +116,13 @@ struct _GmTextBufferEnhancerHelperIFaceClass {
 		      gint length);
 };
 
-#define GM_TYPE_TEXT_BUFFER_ENHANCER_HELPER_IFACE (gm_text_buffer_enhancer_helper_iface_get_type())
-#define GM_TEXT_BUFFER_ENHANCER_HELPER_IFACE(obj) (G_TYPE_CHECK_INSTANCE_CAST((obj),GM_TYPE_TEXT_BUFFER_ENHANCER_HELPER_IFACE,GmTextBufferEnhancerHelperIFace))
-#define GM_TEXT_BUFFER_ENHANCER_HELPER_IFACE_CLASS(vtable) (G_TYPE_CHECK_CLASS_CAST((vtable),GM_TYPE_TEXT_BUFFER_ENHANCER_HELPER_IFACE,GTypeInterface))
-#define GM_IS_TEXT_BUFFER_ENHANCER_HELPER_IFACE(obj) (G_TYPE_CHECK_INSTANCE_TYPE((obj),GM_TYPE_TEXT_BUFFER_ENHANCER_HELPER_IFACE))
-#define GM_IS_TEXT_BUFFER_ENHANCER_HELPER_IFACE_CLASS(vtable) (G_TYPE_CHECK_CLASS_TYPE((vtable),GM_TYPE_TEXT_BUFFER_ENHANCER_HELPER_IFACE))
-#define GM_TEXT_BUFFER_ENHANCER_HELPER_IFACE_GET_CLASS(inst) (G_TYPE_INSTANCE_GET_INTERFACE((inst),GM_TYPE_TEXT_BUFFER_ENHANCER_HELPER_IFACE,GmTextBufferEnhancerHelperIFaceClass))
+#define GM_TYPE_TEXT_BUFFER_ENHANCER_HELPER (gm_text_buffer_enhancer_helper_get_type())
+#define GM_TEXT_BUFFER_ENHANCER_HELPER(obj) (G_TYPE_CHECK_INSTANCE_CAST((obj),GM_TYPE_TEXT_BUFFER_ENHANCER_HELPER, GmTextBufferEnhancerHelper))
+#define GM_IS_TEXT_BUFFER_ENHANCER_HELPER(obj) (G_TYPE_CHECK_INSTANCE_TYPE((obj),GM_TYPE_TEXT_BUFFER_ENHANCER_HELPER))
+#define GM_TEXT_BUFFER_ENHANCER_HELPER_GET_INTERFACE(obj) (G_TYPE_INSTANCE_GET_INTERFACE((obj),GM_TYPE_TEXT_BUFFER_ENHANCER_HELPER, GmTextBufferEnhancerHelperInterface))
 
-GType gm_text_buffer_enhancer_helper_iface_get_type () G_GNUC_CONST;
+GType gm_text_buffer_enhancer_helper_get_type () G_GNUC_CONST;
 
 G_END_DECLS
 
-#endif /* __GM_TEXT_BUFFER_ENHANCER_HELPER_IFACE_H__ */
+#endif

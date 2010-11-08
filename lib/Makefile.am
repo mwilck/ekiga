@@ -185,8 +185,8 @@ libekiga_la_SOURCES += \
 	$(top_srcdir)/lib/gui/gmcellrendererexpander.h \
 	$(top_srcdir)/lib/gui/gm-cell-renderer-bitext.c \
 	$(top_srcdir)/lib/gui/gm-cell-renderer-bitext.h \
-	$(top_srcdir)/lib/gui/gm-text-buffer-enhancer-helper-iface.c \
-	$(top_srcdir)/lib/gui/gm-text-buffer-enhancer-helper-iface.h \
+	$(top_srcdir)/lib/gui/gm-text-buffer-enhancer-helper-interface.c \
+	$(top_srcdir)/lib/gui/gm-text-buffer-enhancer-helper-interface.h \
 	$(top_srcdir)/lib/gui/gm-text-anchored-tag.c \
 	$(top_srcdir)/lib/gui/gm-text-anchored-tag.h \
 	$(top_srcdir)/lib/gui/gm-text-smiley.c \

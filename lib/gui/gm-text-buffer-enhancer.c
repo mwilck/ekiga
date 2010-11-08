@@ -118,12 +118,12 @@ gm_text_buffer_enhancer_new (GtkTextBuffer* buffer)
 
 void
 gm_text_buffer_enhancer_add_helper (GmTextBufferEnhancer* self,
-				    GmTextBufferEnhancerHelperIFace* helper)
+				    GmTextBufferEnhancerHelper* helper)
 {
   GmTextBufferEnhancerPrivate* priv = NULL;
 
   g_return_if_fail (GM_IS_TEXT_BUFFER_ENHANCER (self));
-  g_return_if_fail (GM_IS_TEXT_BUFFER_ENHANCER_HELPER_IFACE (helper));
+  g_return_if_fail (GM_IS_TEXT_BUFFER_ENHANCER_HELPER (helper));
 
   priv = GM_TEXT_BUFFER_ENHANCER_GET_PRIVATE(self);
   g_object_ref (helper);
@@ -140,11 +140,11 @@ gm_text_buffer_enhancer_insert_text (GmTextBufferEnhancer* self,
   gint position = 0;
   gint length = 0;
   GSList* active_tags = NULL;
-  GmTextBufferEnhancerHelperIFace* best_helper = NULL;
+  GmTextBufferEnhancerHelper* best_helper = NULL;
   gint best_start = 0;
   gint best_length = 0;
   GSList* helper_ptr = NULL;
-  GmTextBufferEnhancerHelperIFace* considered_helper = NULL;
+  GmTextBufferEnhancerHelper* considered_helper = NULL;
   gint considered_start = 0;
   gint considered_length = 0;
   GSList* tag_ptr = NULL;
@@ -176,7 +176,7 @@ gm_text_buffer_enhancer_insert_text (GmTextBufferEnhancer* self,
 	 helper_ptr = g_slist_next (helper_ptr)) {
 
       considered_helper
-	= GM_TEXT_BUFFER_ENHANCER_HELPER_IFACE (helper_ptr->data);
+	= GM_TEXT_BUFFER_ENHANCER_HELPER (helper_ptr->data);
       gm_text_buffer_enhancer_helper_check (considered_helper,
 					    text, position,
 					    &considered_start,

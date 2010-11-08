@@ -37,23 +37,22 @@
 
 #include "gm-text-anchored-tag.h"
 
-#include <string.h>
-
 struct _GmTextAnchoredTagPrivate {
+
   gchar* anchor;
   GtkTextTag* tag;
   gboolean opening;
 };
 
-/* declaration of the GmTextBufferEnhancerHelperIFace code */
+/* declaration of the GmTextBufferEnhancerHelperInterface code */
 
-static void enhancer_helper_check (GmTextBufferEnhancerHelperIFace* self,
+static void enhancer_helper_check (GmTextBufferEnhancerHelper* self,
 				   const gchar* full_text,
 				   gint from,
 				   gint* start,
 				   gint* length);
 
-static void enhancer_helper_enhance (GmTextBufferEnhancerHelperIFace* self,
+static void enhancer_helper_enhance (GmTextBufferEnhancerHelper* self,
 				     GtkTextBuffer* buffer,
 				     GtkTextIter* iter,
 				     GSList** tags,
@@ -61,17 +60,16 @@ static void enhancer_helper_enhance (GmTextBufferEnhancerHelperIFace* self,
 				     gint* start,
 				     gint length);
 
-static void enhancer_helper_iface_init (gpointer g_iface,
-					gpointer iface_data);
+static void enhancer_helper_interface_init (GmTextBufferEnhancerHelperInterface* iface);
 
 G_DEFINE_TYPE_EXTENDED (GmTextAnchoredTag, gm_text_anchored_tag, G_TYPE_OBJECT, 0,
-			G_IMPLEMENT_INTERFACE (GM_TYPE_TEXT_BUFFER_ENHANCER_HELPER_IFACE,
-					       enhancer_helper_iface_init));
+			G_IMPLEMENT_INTERFACE (GM_TYPE_TEXT_BUFFER_ENHANCER_HELPER,
+					       enhancer_helper_interface_init));
 
-/* implementation of the GmTextBufferEnhancerHelperIFace code */
+/* implementation of the GmTextBufferEnhancerHelperInterface code */
 
 static void
-enhancer_helper_check (GmTextBufferEnhancerHelperIFace* self,
+enhancer_helper_check (GmTextBufferEnhancerHelper* self,
 		       const gchar* full_text,
 		       gint from,
 		       gint* start,
@@ -80,18 +78,18 @@ enhancer_helper_check (GmTextBufferEnhancerHelperIFace* self,
   GmTextAnchoredTagPrivate* priv = GM_TEXT_ANCHORED_TAG (self)->priv;
   char* found = NULL;
 
-  found = strstr (full_text + from, priv->anchor);
+  found = g_strstr_len (full_text + from, -1, priv->anchor);
 
   if (found != NULL) {
 
     *start = found - full_text;
-    *length = strlen (priv->anchor);
+    *length = g_utf8_strlen (priv->anchor, -1);
   } else
     *length = 0;
 }
 
 static void
-enhancer_helper_enhance (GmTextBufferEnhancerHelperIFace* self,
+enhancer_helper_enhance (GmTextBufferEnhancerHelper* self,
 			 G_GNUC_UNUSED GtkTextBuffer* buffer,
 			 G_GNUC_UNUSED GtkTextIter* iter,
 			 GSList** tags,
@@ -110,14 +108,10 @@ enhancer_helper_enhance (GmTextBufferEnhancerHelperIFace* self,
 }
 
 static void
-enhancer_helper_iface_init (gpointer g_iface,
-			    G_GNUC_UNUSED gpointer iface_data)
+enhancer_helper_interface_init (GmTextBufferEnhancerHelperInterface* iface)
 {
-  GmTextBufferEnhancerHelperIFaceClass* iface = NULL;
-
-  iface = (GmTextBufferEnhancerHelperIFaceClass*)g_iface;
-  iface->do_check = &enhancer_helper_check;
-  iface->do_enhance = &enhancer_helper_enhance;
+  iface->do_check = enhancer_helper_check;
+  iface->do_enhance = enhancer_helper_enhance;
 }
 
 /* GObject boilerplate */
@@ -174,7 +168,7 @@ gm_text_anchored_tag_init (GmTextAnchoredTag* obj)
 
 /* Implementation of the public api */
 
-GmTextBufferEnhancerHelperIFace*
+GmTextBufferEnhancerHelper*
 gm_text_anchored_tag_new (const gchar* anchor,
 			  GtkTextTag* tag,
 			  gboolean opening)
@@ -192,5 +186,5 @@ gm_text_anchored_tag_new (const gchar* anchor,
 
   result->priv->opening = opening;
 
-  return GM_TEXT_BUFFER_ENHANCER_HELPER_IFACE (result);
+  return GM_TEXT_BUFFER_ENHANCER_HELPER (result);
 }
