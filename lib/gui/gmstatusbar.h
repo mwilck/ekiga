@@ -37,25 +37,12 @@
 
 
 
-#ifndef __GM_STATUSBAR_H
-#define __GM_STATUSBAR_H
+#ifndef __GM_STATUSBAR_H__
+#define __GM_STATUSBAR_H__
 
-#include <glib-object.h>
 #include <gtk/gtk.h>
 
-
 G_BEGIN_DECLS
-
-#define GM_STATUSBAR_TYPE (gm_statusbar_get_type ())
-#define GM_STATUSBAR(o) (G_TYPE_CHECK_INSTANCE_CAST ((o), GM_STATUSBAR_TYPE, GmStatusbar))
-#define GM_STATUSBAR_CLASS(k) (G_TYPE_CHECK_CLASS_CAST((k), GM_STATUSBAR_TYPE, GmStatusbarClass))
-#define GM_IS_STATUSBAR(o) (G_TYPE_CHECK_INSTANCE_TYPE ((o), GM_STATUSBAR_TYPE))
-#define GM_IS_STATUSBAR_CLASS(k) (G_TYPE_CHECK_CLASS_TYPE ((k), GM_STATUSBAR_TYPE))
-#define GM_STATUSBAR_GET_CLASS(o) (G_TYPE_INSTANCE_GET_CLASS ((o), GM_STATUSBAR_TYPE, GmStatusbarClass))
-
-
-typedef struct GmStatusbarPrivate GmStatusbarPrivate;
-
 
 typedef struct
 {
@@ -69,15 +56,6 @@ typedef struct
   GtkStatusbarClass parent_class;
   
 } GmStatusbarClass;
-
-
-/* The functions */
-
-/* DESCRIPTION  :  /
- * BEHAVIOR     :  Returns the GType for the GmStatusbar.
- * PRE          :  /
- */
-GType gm_statusbar_get_type (void);
 
 
 /* DESCRIPTION  :  /
@@ -118,6 +96,17 @@ void gm_statusbar_push_info_message (GmStatusbar *,
 				     const char *msg, 
 				     ...) G_GNUC_PRINTF(2,3);
 
+/* GObject boilerplate */
+
+GType gm_statusbar_get_type (void);
+
+#define GM_TYPE_STATUSBAR (gm_statusbar_get_type ())
+#define GM_STATUSBAR(o) (G_TYPE_CHECK_INSTANCE_CAST ((o), GM_TYPE_STATUSBAR, GmStatusbar))
+#define GM_STATUSBAR_CLASS(k) (G_TYPE_CHECK_CLASS_CAST((k), GM_TYPE_STATUSBAR, GmStatusbarClass))
+#define GM_IS_STATUSBAR(o) (G_TYPE_CHECK_INSTANCE_TYPE ((o), GM_TYPE_STATUSBAR))
+#define GM_IS_STATUSBAR_CLASS(k) (G_TYPE_CHECK_CLASS_TYPE ((k), GM_TYPE_STATUSBAR))
+#define GM_STATUSBAR_GET_CLASS(o) (G_TYPE_INSTANCE_GET_CLASS ((o), GM_TYPE_STATUSBAR, GmStatusbarClass))
+
 G_END_DECLS
 
-#endif /* __GM_statusbar_H */
+#endif

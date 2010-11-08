@@ -30,21 +30,31 @@
  *                         gmstatusbar.c  -  description
  *                         -------------------------------
  *   begin                : Tue Nov 01 2005
- *   copyright            : (C) 2000-2006 by Damien Sandras 
- *   description          : Contains a statusbar widget 
+ *   copyright            : (C) 2000-2006 by Damien Sandras
+ *   description          : Contains a statusbar widget
  *
  */
 
 
 #include "gmstatusbar.h"
 
+G_DEFINE_TYPE (GmStatusbar, gm_statusbar, GTK_TYPE_STATUSBAR);
+
+/* this is ugly, but we want to give several pieces of data to a callback...
+ * (and this hack replaces one using a global piece of data... yurk!)
+ */
+typedef struct {
+
+  GtkStatusbar* statusbar;
+  gint msg_id;
+} callback_info;
 
 /* Static functions and declarations */
 static void gm_statusbar_class_init (GmStatusbarClass *);
 
 static void gm_statusbar_init (GmStatusbar *);
 
-static void gm_sb_push_message (GmStatusbar *, 
+static void gm_sb_push_message (GmStatusbar *,
 				gboolean,
 				gboolean,
 				const char *,
@@ -52,54 +62,39 @@ static void gm_sb_push_message (GmStatusbar *,
 
 static int  gm_statusbar_clear_msg_cb (gpointer);
 
-
-static GtkStatusbarClass *parent_class = NULL;
-static GmStatusbar *object = NULL;
-
-
 static void
-gm_statusbar_class_init (GmStatusbarClass *klass)
+gm_statusbar_class_init (G_GNUC_UNUSED GmStatusbarClass *klass)
 {
-  GObjectClass *object_class = NULL;
-  GtkObjectClass *gtkobject_class = NULL;
-  GmStatusbarClass *statusbar_class = NULL;
-
-  gtkobject_class = GTK_OBJECT_CLASS (klass);
-  object_class = G_OBJECT_CLASS (klass);
-  parent_class = g_type_class_peek_parent (klass);
-  statusbar_class = GM_STATUSBAR_CLASS (klass);
 }
 
 
 static void
-gm_statusbar_init (GmStatusbar *sb)
+gm_statusbar_init (G_GNUC_UNUSED GmStatusbar *sb)
 {
-  g_return_if_fail (sb != NULL);
-  g_return_if_fail (GM_IS_STATUSBAR (sb));
-
-  object = sb;
 }
 
 
-static int 
+static int
 gm_statusbar_clear_msg_cb (gpointer data)
 {
+  GtkStatusbar* statusbar = ((callback_info*)data)->statusbar;
+  gint msg_id = ((callback_info*)data)->msg_id;
   gint id = 0;
-  
-  g_return_val_if_fail (data != NULL, FALSE);
-  
-  id = gtk_statusbar_get_context_id (GTK_STATUSBAR (object), "statusbar");
-  gtk_statusbar_remove (GTK_STATUSBAR (object), id, GPOINTER_TO_INT (data));
+
+  id = gtk_statusbar_get_context_id (statusbar, "statusbar");
+  gtk_statusbar_remove (statusbar, id, msg_id);
+
+  /*  g_free (data); yes, it's tempting, but we have a destroy notifier which will do it */
 
   return FALSE;
 }
 
 
-static void 
-gm_sb_push_message (GmStatusbar *sb, 
+static void
+gm_sb_push_message (GmStatusbar *sb,
 		    gboolean flash_message,
 		    gboolean info_message,
-		    const char *msg, 
+		    const char *msg,
 		    va_list args)
 {
   gint id = 0;
@@ -127,7 +122,7 @@ gm_sb_push_message (GmStatusbar *sb,
 
     char buffer [1025];
 
-    vsnprintf (buffer, 1024, msg, args);
+    g_vsnprintf (buffer, 1024, msg, args);
 
     msg_id = gtk_statusbar_push (GTK_STATUSBAR (sb), id, buffer);
 
@@ -139,62 +134,35 @@ gm_sb_push_message (GmStatusbar *sb,
         timer_source = 0;
       }
 
-      timer_source = g_timeout_add_seconds (15, gm_statusbar_clear_msg_cb, 
-		       GINT_TO_POINTER (msg_id));
+      callback_info* info = g_new0 (callback_info, 1);
+      info->statusbar = GTK_STATUSBAR (sb);
+      info->msg_id = msg_id;
+      timer_source = g_timeout_add_seconds_full (G_PRIORITY_DEFAULT,
+						 15, gm_statusbar_clear_msg_cb, info,
+						 g_free);
     }
   }
 }
 
 
-/* Global functions */
-GType
-gm_statusbar_get_type (void)
-{
-  static GType gm_statusbar_type = 0;
-  
-  if (gm_statusbar_type == 0)
-  {
-    static const GTypeInfo statusbar_info =
-    {
-      sizeof (GmStatusbarClass),
-      NULL,
-      NULL,
-      (GClassInitFunc) gm_statusbar_class_init,
-      NULL,
-      NULL,
-      sizeof (GmStatusbar),
-      0,
-      (GInstanceInitFunc) gm_statusbar_init,
-      NULL
-    };
-    
-    gm_statusbar_type =
-      g_type_register_static (GTK_TYPE_STATUSBAR,
-			      "GmStatusbar",
-			      &statusbar_info,
-			      (GTypeFlags) 0);
-  }
-  
-  return gm_statusbar_type;
-}
-
+/* public api */
 
 GtkWidget *
 gm_statusbar_new ()
 {
-  GmStatusbar *sb = NULL;
-  
-  sb = GM_STATUSBAR (g_object_new (GM_STATUSBAR_TYPE, NULL));
+  GObject* result = NULL;
 
-  gtk_statusbar_set_has_resize_grip (GTK_STATUSBAR (object), FALSE);
+  result = g_object_new (GM_TYPE_STATUSBAR, NULL);
 
-  return GTK_WIDGET (sb);
+  gtk_statusbar_set_has_resize_grip (GTK_STATUSBAR (result), FALSE);
+
+  return GTK_WIDGET (result);
 }
 
 
-void 
-gm_statusbar_flash_message (GmStatusbar *sb, 
-			    const char *msg, 
+void
+gm_statusbar_flash_message (GmStatusbar *sb,
+			    const char *msg,
 			    ...)
 {
   va_list args;
@@ -206,9 +174,9 @@ gm_statusbar_flash_message (GmStatusbar *sb,
 }
 
 
-void 
-gm_statusbar_push_message (GmStatusbar *sb, 
-			   const char *msg, 
+void
+gm_statusbar_push_message (GmStatusbar *sb,
+			   const char *msg,
 			   ...)
 {
   va_list args;
@@ -220,9 +188,9 @@ gm_statusbar_push_message (GmStatusbar *sb,
 }
 
 
-void 
-gm_statusbar_push_info_message (GmStatusbar *sb, 
-				const char *msg, 
+void
+gm_statusbar_push_info_message (GmStatusbar *sb,
+				const char *msg,
 				...)
 {
   va_list args;
