@@ -76,7 +76,7 @@ enum {
 
 static guint signals[LAST_SIGNAL] = { 0 };
 
-static GObjectClass* parent_class = NULL;
+G_DEFINE_TYPE (CallHistoryViewGtk, call_history_view_gtk, GTK_TYPE_SCROLLED_WINDOW);
 
 /* react to a new call being inserted in history */
 static void
@@ -252,7 +252,7 @@ call_history_view_gtk_dispose (GObject* obj)
     view->priv->tree = NULL;
   }
 
-  parent_class->dispose (obj);
+  G_OBJECT_CLASS (call_history_view_gtk_parent_class)->dispose (obj);
 }
 
 static void
@@ -264,18 +264,19 @@ call_history_view_gtk_finalize (GObject* obj)
 
   delete view->priv;
 
-  parent_class->finalize (obj);
+  G_OBJECT_CLASS (call_history_view_gtk_parent_class)->finalize (obj);
 }
 
 static void
-call_history_view_gtk_class_init (gpointer g_class,
-				  gpointer /*class_data*/)
+call_history_view_gtk_init (G_GNUC_UNUSED CallHistoryViewGtk* self)
 {
-  GObjectClass* gobject_class = NULL;
+  /* empty because we don't have the core */
+}
 
-  parent_class = (GObjectClass*) g_type_class_peek_parent (g_class);
-
-  gobject_class = (GObjectClass*)g_class;
+static void
+call_history_view_gtk_class_init (CallHistoryViewGtkClass* klass)
+{
+  GObjectClass* gobject_class = G_OBJECT_CLASS (klass);
   gobject_class->dispose = call_history_view_gtk_dispose;
   gobject_class->finalize = call_history_view_gtk_finalize;
 
@@ -287,34 +288,6 @@ call_history_view_gtk_class_init (gpointer g_class,
 		  NULL, NULL,
 		  g_cclosure_marshal_VOID__VOID,
 		  G_TYPE_NONE, 0);
-}
-
-GType
-call_history_view_gtk_get_type ()
-{
-  static GType result = 0;
-
-  if (result == 0) {
-
-    static const GTypeInfo info = {
-      sizeof (CallHistoryViewGtkClass),
-      NULL,
-      NULL,
-      call_history_view_gtk_class_init,
-      NULL,
-      NULL,
-      sizeof (CallHistoryViewGtk),
-      0,
-      NULL,
-      NULL
-    };
-
-    result = g_type_register_static (GTK_TYPE_SCROLLED_WINDOW,
-				     "CallHistoryViewGtk",
-				     &info, (GTypeFlags)0);
-  }
-
-  return result;
 }
 
 /* public api */
