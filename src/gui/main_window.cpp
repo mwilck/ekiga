@@ -118,7 +118,7 @@ struct deviceStruct {
   DeviceType deviceType;
 };
 
-G_DEFINE_TYPE (EkigaMainWindow, ekiga_main_window, GM_WINDOW_TYPE);
+G_DEFINE_TYPE (EkigaMainWindow, ekiga_main_window, GM_TYPE_WINDOW);
 
 struct _EkigaMainWindowPrivate
 {

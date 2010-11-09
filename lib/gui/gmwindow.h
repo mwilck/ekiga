@@ -61,22 +61,6 @@ struct _GmWindowClass
   GtkWindowClass parent;
 };
 
-#define GM_WINDOW_TYPE (gm_window_get_type ())
-
-#define GM_WINDOW(obj) (G_TYPE_CHECK_INSTANCE_CAST ((obj), GM_WINDOW_TYPE, GmWindow))
-
-#define IS_GM_WINDOW(obj) (G_TYPE_CHECK_INSTANCE_TYPE ((obj), GM_WINDOW_TYPE))
-
-#define GM_WINDOW_CLASS(klass) (G_TYPE_CHECK_CLASS_CAST ((klass), GM_WINDOW_TYPE, GmWindowClass))
-
-#define IS_GM_WINDOW_CLASS(klass) (G_TYPE_CHECK_CLASS_TYPE ((klass), GM_WINDOW_TYPE))
-
-#define GM_WINDOW_GET_CLASS(obj) (G_TYPE_INSTANCE_GET_CLASS ((obj), GM_WINDOW_TYPE, GmWindowClass))
-
-GType gm_window_get_type ();
-
-
-
 /* Public API */
 
 /** Create a new GmWindow.
@@ -152,6 +136,24 @@ void gm_window_hide (GtkWidget* window);
  * @param window is a GtkWindow
  */
 void gm_window_hide_on_delete (GtkWidget* window);
+
+/* GObject boilerplate */
+
+#define GM_TYPE_WINDOW (gm_window_get_type ())
+
+#define GM_WINDOW(obj) (G_TYPE_CHECK_INSTANCE_CAST ((obj), GM_TYPE_WINDOW, GmWindow))
+
+#define GM_IS_WINDOW(obj) (G_TYPE_CHECK_INSTANCE_TYPE ((obj), GM_TYPE_WINDOW))
+
+#define GM_WINDOW_CLASS(klass) (G_TYPE_CHECK_CLASS_CAST ((klass), GM_TYPE_WINDOW, GmWindowClass))
+
+#define GM_IS_WINDOW_CLASS(klass) (G_TYPE_CHECK_CLASS_TYPE ((klass), GM_TYPE_WINDOW))
+
+#define GM_WINDOW_GET_CLASS(obj) (G_TYPE_INSTANCE_GET_CLASS ((obj), GM_TYPE_WINDOW, GmWindowClass))
+
+GType gm_window_get_type ();
+
+
 
 G_END_DECLS
 

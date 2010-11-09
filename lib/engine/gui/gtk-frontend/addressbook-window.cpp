@@ -636,7 +636,7 @@ addressbook_window_get_type ()
       NULL
     };
 
-    result = g_type_register_static (GM_WINDOW_TYPE,
+    result = g_type_register_static (GM_TYPE_WINDOW,
                                      "AddressBookWindowType",
                                      &info, (GTypeFlags) 0);
   }

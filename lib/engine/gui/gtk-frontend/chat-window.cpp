@@ -452,7 +452,7 @@ chat_window_get_type ()
       NULL
     };
 
-    result = g_type_register_static (GM_WINDOW_TYPE,
+    result = g_type_register_static (GM_TYPE_WINDOW,
 				     "ChatWindow",
 				     &info, (GTypeFlags) 0);
   }
