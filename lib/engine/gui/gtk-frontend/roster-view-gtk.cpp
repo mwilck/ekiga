@@ -83,8 +83,7 @@ enum {
 
 static guint signals[LAST_SIGNAL] = { 0 };
 
-static GObjectClass *parent_class = NULL;
-
+G_DEFINE_TYPE (RosterViewGtk, roster_view_gtk, GTK_TYPE_FRAME);
 
 /* This is how things will be stored roughly :
  * - the heaps are at the top ;
@@ -1316,7 +1315,7 @@ roster_view_gtk_dispose (GObject *obj)
     view->priv->tree_view = NULL;
   }
 
-  parent_class->dispose (obj);
+  G_OBJECT_CLASS (roster_view_gtk_parent_class)->dispose (obj);
 }
 
 
@@ -1329,19 +1328,20 @@ roster_view_gtk_finalize (GObject *obj)
 
   delete view->priv;
 
-  parent_class->finalize (obj);
+  G_OBJECT_CLASS (roster_view_gtk_parent_class)->finalize (obj);
 }
 
+static void
+roster_view_gtk_init (G_GNUC_UNUSED RosterViewGtk* self)
+{
+  /* we can't do anything here because we don't have the core :-/ */
+}
 
 static void
-roster_view_gtk_class_init (gpointer g_class,
-			    gpointer /*class_data*/)
+roster_view_gtk_class_init (RosterViewGtkClass* klass)
 {
-  GObjectClass *gobject_class = NULL;
+  GObjectClass *gobject_class = G_OBJECT_CLASS (klass);
 
-  parent_class = (GObjectClass *) g_type_class_peek_parent (g_class);
-
-  gobject_class = (GObjectClass *) g_class;
   gobject_class->dispose = roster_view_gtk_dispose;
   gobject_class->finalize = roster_view_gtk_finalize;
 
@@ -1354,36 +1354,6 @@ roster_view_gtk_class_init (gpointer g_class,
 		  g_cclosure_marshal_VOID__VOID,
 		  G_TYPE_NONE, 0);
 }
-
-
-GType
-roster_view_gtk_get_type ()
-{
-  static GType result = 0;
-
-  if (result == 0) {
-
-    static const GTypeInfo info = {
-      sizeof (RosterViewGtkClass),
-      NULL,
-      NULL,
-      roster_view_gtk_class_init,
-      NULL,
-      NULL,
-      sizeof (RosterViewGtk),
-      0,
-      NULL,
-      NULL
-    };
-
-    result = g_type_register_static (GTK_TYPE_FRAME,
-				     "RosterViewGtk",
-				     &info, (GTypeFlags) 0);
-  }
-
-  return result;
-}
-
 
 /*
  * Public API
