@@ -67,6 +67,13 @@ struct _ChatWindowClass
   void (*unread_alert) (ChatWindow* self);
 };
 
+/* Public API */
+
+GtkWidget* chat_window_new (Ekiga::ChatCore& core,
+			    const std::string key);
+
+/* GObject's boilerplate */
+
 #define CHAT_WINDOW_TYPE (chat_window_get_type ())
 
 #define CHAT_WINDOW(obj) (G_TYPE_CHECK_INSTANCE_CAST ((obj), CHAT_WINDOW_TYPE, ChatWindow))
@@ -81,11 +88,6 @@ struct _ChatWindowClass
 
 GType chat_window_get_type ();
 
-
-/* Public API */
-
-GtkWidget* chat_window_new (Ekiga::ChatCore& core,
-			    const std::string key);
 
 G_END_DECLS
 

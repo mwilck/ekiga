@@ -61,7 +61,7 @@ enum {
 
 static guint signals[LAST_SIGNAL] = { 0 };
 
-static GObjectClass* parent_class = NULL;
+G_DEFINE_TYPE (ChatWindow, chat_window, GM_TYPE_WINDOW);
 
 /* helper (declaration) */
 
@@ -359,16 +359,6 @@ on_some_chat_user_requested (ChatWindow* self,
 /* GObject code */
 
 static void
-chat_window_dispose (GObject* obj)
-{
-  ChatWindow* self = NULL;
-
-  self = CHAT_WINDOW (obj);
-
-  parent_class->dispose (obj);
-}
-
-static void
 chat_window_finalize (GObject* obj)
 {
   ChatWindow* self = NULL;
@@ -384,20 +374,14 @@ chat_window_finalize (GObject* obj)
   delete self->priv;
   self->priv = NULL;
 
-  parent_class->finalize (obj);
+  G_OBJECT_CLASS (chat_window_parent_class)->finalize (obj);
 }
 
 static void
-chat_window_class_init (gpointer g_class,
-			G_GNUC_UNUSED gpointer class_data)
+chat_window_class_init (ChatWindowClass* klass)
 {
-  ChatWindowClass* chat_window_class = NULL;
-  GObjectClass* gobject_class = NULL;
+  GObjectClass* gobject_class = G_OBJECT_CLASS (klass);
 
-  parent_class = (GObjectClass*) g_type_class_peek_parent (g_class);
-
-  gobject_class = (GObjectClass*) g_class;
-  gobject_class->dispose = chat_window_dispose;
   gobject_class->finalize = chat_window_finalize;
 
   signals[UNREAD_COUNT] =
@@ -418,46 +402,13 @@ chat_window_class_init (gpointer g_class,
 		  NULL, NULL,
 		  g_cclosure_marshal_VOID__VOID,
 		  G_TYPE_NONE, 0);
-
-  /* FIXME: is it useful? */
-  chat_window_class = (ChatWindowClass*)g_class;
-  chat_window_class->unread_count = NULL;
 }
 
 static void
-chat_window_init (GTypeInstance* instance,
-		  G_GNUC_UNUSED gpointer g_class)
+chat_window_init (ChatWindow* self)
 {
   /* we can't do much here since we get the Chat as reference... */
-  gtk_window_set_title (GTK_WINDOW (instance), _("Chat Window"));
-}
-
-GType
-chat_window_get_type ()
-{
-  static GType result = 0;
-
-  if (result == 0) {
-
-    static const GTypeInfo info = {
-      sizeof (ChatWindowClass),
-      NULL,
-      NULL,
-      chat_window_class_init,
-      NULL,
-      NULL,
-      sizeof (ChatWindow),
-      0,
-      chat_window_init,
-      NULL
-    };
-
-    result = g_type_register_static (GM_TYPE_WINDOW,
-				     "ChatWindow",
-				     &info, (GTypeFlags) 0);
-  }
-
-  return result;
+  gtk_window_set_title (GTK_WINDOW (self), _("Chat Window"));
 }
 
 /* public api */
