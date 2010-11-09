@@ -49,14 +49,19 @@ GmTextBufferEnhancerHelper* gm_text_extlink_new (const gchar* regex,
 
 /* GObject boilerplate */
 
-typedef struct _GmTextExtlink      GmTextExtlink;
+typedef struct _GmTextExtlink GmTextExtlink;
 typedef struct _GmTextExtlinkClass GmTextExtlinkClass;
+typedef struct _GmTextExtlinkPrivate GmTextExtlinkPrivate;
 
 struct _GmTextExtlink {
+
   GObject parent;
+
+  GmTextExtlinkPrivate* priv;
 };
 
 struct _GmTextExtlinkClass {
+
   GObjectClass parent_class;
 };
 

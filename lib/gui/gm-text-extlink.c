@@ -41,16 +41,11 @@
 #include <sys/types.h>
 #include <regex.h>
 
-static GObjectClass* parent_class = NULL;
-
-typedef struct _GmTextExtlinkPrivate GmTextExtlinkPrivate;
-
 struct _GmTextExtlinkPrivate {
+
   regex_t* regex;
   GtkTextTag* tag;
 };
-
-#define GM_TEXT_EXTLINK_GET_PRIVATE(o) (G_TYPE_INSTANCE_GET_PRIVATE((o), GM_TYPE_TEXT_EXTLINK, GmTextExtlinkPrivate))
 
 /* declaration of the GmTextBufferEnhancerHelperInterface code */
 
@@ -68,7 +63,11 @@ static void enhancer_helper_enhance (GmTextBufferEnhancerHelper* self,
 				     gint* start,
 				     gint length);
 
-static void enhancer_helper_iface_init (GmTextBufferEnhancerHelperInterface* iface);
+static void enhancer_helper_interface_init (GmTextBufferEnhancerHelperInterface* iface);
+
+G_DEFINE_TYPE_EXTENDED (GmTextExtlink, gm_text_extlink, G_TYPE_OBJECT, 0,
+			G_IMPLEMENT_INTERFACE (GM_TYPE_TEXT_BUFFER_ENHANCER_HELPER,
+					       enhancer_helper_interface_init));
 
 /* implementation of the GmTextBufferEnhancerHelperInterface code */
 
@@ -79,7 +78,7 @@ enhancer_helper_check (GmTextBufferEnhancerHelper* self,
 		       gint* start,
 		       gint* length)
 {
-  GmTextExtlinkPrivate* priv = GM_TEXT_EXTLINK_GET_PRIVATE (self);
+  GmTextExtlinkPrivate* priv = GM_TEXT_EXTLINK (self)->priv;
   gint match;
   regmatch_t regmatch;
 
@@ -103,7 +102,7 @@ enhancer_helper_enhance (GmTextBufferEnhancerHelper* self,
 			 gint* start,
 			 gint length)
 {
-  GmTextExtlinkPrivate* priv = GM_TEXT_EXTLINK_GET_PRIVATE (self);
+  GmTextExtlinkPrivate* priv = GM_TEXT_EXTLINK (self)->priv;
   gchar* lnk = NULL;
 
   lnk = g_malloc0 (length + 1);
@@ -118,7 +117,7 @@ enhancer_helper_enhance (GmTextBufferEnhancerHelper* self,
 }
 
 static void
-enhancer_helper_iface_init (GmTextBufferEnhancerHelperInterface* iface)
+enhancer_helper_interface_init (GmTextBufferEnhancerHelperInterface* iface)
 {
   iface->do_check = &enhancer_helper_check;
   iface->do_enhance = &enhancer_helper_enhance;
@@ -129,7 +128,7 @@ enhancer_helper_iface_init (GmTextBufferEnhancerHelperInterface* iface)
 static void
 gm_text_extlink_dispose (GObject* obj)
 {
-  GmTextExtlinkPrivate* priv = GM_TEXT_EXTLINK_GET_PRIVATE(obj);
+  GmTextExtlinkPrivate* priv = GM_TEXT_EXTLINK(obj)->priv;
 
   if (priv->tag != NULL) {
 
@@ -137,13 +136,13 @@ gm_text_extlink_dispose (GObject* obj)
     priv->tag = NULL;
   }
 
-  parent_class->dispose (obj);
+  G_OBJECT_CLASS (gm_text_extlink_parent_class)->dispose (obj);
 }
 
 static void
 gm_text_extlink_finalize (GObject* obj)
 {
-  GmTextExtlinkPrivate* priv = GM_TEXT_EXTLINK_GET_PRIVATE(obj);
+  GmTextExtlinkPrivate* priv = GM_TEXT_EXTLINK(obj)->priv;
 
   if (priv->regex != NULL) {
 
@@ -151,56 +150,27 @@ gm_text_extlink_finalize (GObject* obj)
     priv->regex = NULL;
   }
 
-  parent_class->finalize (obj);
+  G_OBJECT_CLASS (gm_text_extlink_parent_class)->finalize (obj);
 }
 
 static void
-gm_text_extlink_class_init (GmTextExtlinkClass* g_class)
+gm_text_extlink_init (GmTextExtlink* self)
 {
-  GObjectClass* gobject_class = NULL;
+  self->priv = G_TYPE_INSTANCE_GET_PRIVATE (self, GM_TYPE_TEXT_EXTLINK,
+					    GmTextExtlinkPrivate);
+  self->priv->tag = NULL;
+  self->priv->regex = NULL;
+}
 
-  parent_class = g_type_class_peek_parent (g_class);
+static void
+gm_text_extlink_class_init (GmTextExtlinkClass* klass)
+{
+  GObjectClass* gobject_class = G_OBJECT_CLASS (klass);
 
-  gobject_class = (GObjectClass*)g_class;
   gobject_class->dispose = gm_text_extlink_dispose;
   gobject_class->finalize = gm_text_extlink_finalize;
 
-  g_type_class_add_private (gobject_class, sizeof (GmTextExtlinkPrivate));
-}
-
-GType
-gm_text_extlink_get_type ()
-{
-  static GType result = 0;
-  if (!result) {
-
-    static const GTypeInfo my_info = {
-      sizeof(GmTextExtlinkClass),
-      NULL,
-      NULL,
-      (GClassInitFunc) gm_text_extlink_class_init,
-      NULL,
-      NULL,
-      sizeof(GmTextExtlink),
-      0,
-      NULL,
-      NULL
-    };
-
-    static const GInterfaceInfo enhancer_helper_info = {
-      enhancer_helper_iface_init,
-      NULL,
-      NULL
-    };
-
-    result = g_type_register_static (G_TYPE_OBJECT,
-				     "GmTextExtlink",
-				     &my_info, 0);
-    g_type_add_interface_static (result,
-				 GM_TYPE_TEXT_BUFFER_ENHANCER_HELPER,
-				 &enhancer_helper_info);
-  }
-  return result;
+  g_type_class_add_private (klass, sizeof (GmTextExtlinkPrivate));
 }
 
 /* public api */
@@ -209,25 +179,23 @@ GmTextBufferEnhancerHelper*
 gm_text_extlink_new (const gchar* regex,
 		     GtkTextTag* tag)
 {
-  GmTextBufferEnhancerHelper* result = NULL;
-  GmTextExtlinkPrivate* priv = NULL;
+  GmTextExtlink* result = NULL;
 
   g_return_val_if_fail (regex != NULL, NULL);
 
-  result = GM_TEXT_BUFFER_ENHANCER_HELPER (g_object_new(GM_TYPE_TEXT_EXTLINK, NULL));
-  priv = GM_TEXT_EXTLINK_GET_PRIVATE (result);
+  result = GM_TEXT_EXTLINK (g_object_new(GM_TYPE_TEXT_EXTLINK, NULL));
 
   g_object_ref (tag);
-  priv->tag = tag;
+  result->priv->tag = tag;
 
-  priv->regex = (regex_t*)g_malloc0 (sizeof(regex_t));
-  if (regcomp (priv->regex, regex, REG_EXTENDED) != 0) {
+  result->priv->regex = (regex_t*)g_malloc0 (sizeof(regex_t));
+  if (regcomp (result->priv->regex, regex, REG_EXTENDED) != 0) {
 
-    regfree (priv->regex);
-    priv->regex = NULL;
+    regfree (result->priv->regex);
+    result->priv->regex = NULL;
     g_object_unref (result);
     result = NULL;
   }
 
-  return result;
+  return GM_TEXT_BUFFER_ENHANCER_HELPER (result);
 }
