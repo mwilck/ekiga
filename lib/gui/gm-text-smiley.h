@@ -48,14 +48,19 @@ GmTextBufferEnhancerHelper* gm_text_smiley_new ();
 
 /* GObject boilerplate */
 
-typedef struct _GmTextSmiley      GmTextSmiley;
+typedef struct _GmTextSmiley GmTextSmiley;
+typedef struct _GmTextSmileyPrivate GmTextSmileyPrivate;
 typedef struct _GmTextSmileyClass GmTextSmileyClass;
 
 struct _GmTextSmiley {
+
   GObject parent;
+
+  GmTextSmileyPrivate* priv;
 };
 
 struct _GmTextSmileyClass {
+
   GObjectClass parent_class;
 };
 

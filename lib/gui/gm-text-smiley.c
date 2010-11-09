@@ -41,8 +41,6 @@
 
 #include <string.h>
 
-static GObjectClass* parent_class = NULL;
-
 /* declaration of the GmTextBufferEnhancerHelperIFace code */
 
 static void enhancer_helper_check (GmTextBufferEnhancerHelper* self,
@@ -59,7 +57,12 @@ static void enhancer_helper_enhance (GmTextBufferEnhancerHelper* self,
 				     gint* start,
 				     gint length);
 
-static void enhancer_helper_iface_init (GmTextBufferEnhancerHelperInterface* iface);
+static void enhancer_helper_interface_init (GmTextBufferEnhancerHelperInterface* iface);
+
+
+G_DEFINE_TYPE_EXTENDED (GmTextSmiley, gm_text_smiley, G_TYPE_OBJECT, 0,
+			G_IMPLEMENT_INTERFACE (GM_TYPE_TEXT_BUFFER_ENHANCER_HELPER,
+					       enhancer_helper_interface_init));
 
 /* implementation of the GmTextBufferEnhancerHelperInterface code */
 
@@ -149,7 +152,7 @@ enhancer_helper_enhance (G_GNUC_UNUSED GmTextBufferEnhancerHelper* self,
 }
 
 static void
-enhancer_helper_iface_init (GmTextBufferEnhancerHelperInterface* iface)
+enhancer_helper_interface_init (GmTextBufferEnhancerHelperInterface* iface)
 {
   iface->do_check = &enhancer_helper_check;
   iface->do_enhance = &enhancer_helper_enhance;
@@ -158,44 +161,13 @@ enhancer_helper_iface_init (GmTextBufferEnhancerHelperInterface* iface)
 /* GObject boilerplate */
 
 static void
-gm_text_smiley_class_init (GmTextSmileyClass* g_class)
+gm_text_smiley_class_init (G_GNUC_UNUSED GmTextSmileyClass* g_class)
 {
-  parent_class = g_type_class_peek_parent (g_class);
 }
 
-GType
-gm_text_smiley_get_type ()
+static void
+gm_text_smiley_init (G_GNUC_UNUSED GmTextSmiley* self)
 {
-  static GType result = 0;
-  if (!result) {
-
-    static const GTypeInfo my_info = {
-      sizeof(GmTextSmileyClass),
-      NULL,
-      NULL,
-      (GClassInitFunc) gm_text_smiley_class_init,
-      NULL,
-      NULL,
-      sizeof(GmTextSmiley),
-      0,
-      NULL,
-      NULL
-    };
-
-    static const GInterfaceInfo enhancer_helper_info = {
-      enhancer_helper_iface_init,
-      NULL,
-      NULL
-    };
-
-    result = g_type_register_static (G_TYPE_OBJECT,
-				     "GmTextSmiley",
-				     &my_info, 0);
-    g_type_add_interface_static (result,
-				 GM_TYPE_TEXT_BUFFER_ENHANCER_HELPER,
-				 &enhancer_helper_info);
-  }
-  return result;
 }
 
 /* public api */
