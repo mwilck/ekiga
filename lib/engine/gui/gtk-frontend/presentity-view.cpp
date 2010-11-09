@@ -52,7 +52,7 @@ enum {
   PRESENTITY_VIEW_PROP_PRESENTITY = 1
 };
 
-static GObjectClass* parent_class = NULL;
+G_DEFINE_TYPE (PresentityView, presentity_view, GTK_TYPE_HBOX);
 
 /* declaration of callbacks */
 
@@ -126,16 +126,14 @@ presentity_view_unset_presentity (PresentityView* self)
 static void
 presentity_view_finalize (GObject* obj)
 {
-  PresentityView* self = NULL;
-
-  self = (PresentityView*)obj;
+  PresentityView* self = (PresentityView*)obj;
 
   presentity_view_unset_presentity (self);
 
   delete self->priv;
   self->priv = NULL;
 
-  parent_class->finalize (obj);
+  G_OBJECT_CLASS (presentity_view_parent_class)->finalize (obj);
 }
 
 static void
@@ -164,15 +162,11 @@ presentity_view_set_property (GObject* obj,
 }
 
 static void
-presentity_view_class_init (gpointer g_class,
-			    G_GNUC_UNUSED gpointer class_data)
+presentity_view_class_init (PresentityViewClass* klass)
 {
-  GObjectClass* gobject_class = NULL;
+  GObjectClass* gobject_class = G_OBJECT_CLASS (klass);
   GParamSpec* spec = NULL;
 
-  parent_class = (GObjectClass*)g_type_class_peek_parent (g_class);
-
-  gobject_class = (GObjectClass*)g_class;
   gobject_class->finalize = presentity_view_finalize;
   gobject_class->set_property = presentity_view_set_property;
 
@@ -186,13 +180,8 @@ presentity_view_class_init (gpointer g_class,
 }
 
 static void
-presentity_view_init (GTypeInstance* instance,
-		      G_GNUC_UNUSED gpointer g_class)
+presentity_view_init (PresentityView* self)
 {
-  PresentityView* self = NULL;
-
-  self = (PresentityView*)instance;
-
   self->priv = new PresentityViewPrivate;
 
   self->priv->presentity = NULL;
@@ -206,35 +195,6 @@ presentity_view_init (GTypeInstance* instance,
   gtk_box_pack_start (GTK_BOX (self), self->priv->name_status,
 		      FALSE, TRUE, 2);
   gtk_widget_show (self->priv->name_status);
-}
-
-
-GType
-presentity_view_get_type ()
-{
-  static GType result = 0;
-
-  if (result == 0) {
-
-    static const GTypeInfo info = {
-      sizeof (PresentityViewClass),
-      NULL,
-      NULL,
-      presentity_view_class_init,
-      NULL,
-      NULL,
-      sizeof (PresentityView),
-      0,
-      presentity_view_init,
-      NULL
-    };
-
-    result = g_type_register_static (GTK_TYPE_HBOX,
-				     "PresentityView",
-				     &info, (GTypeFlags) 0);
-  }
-
-  return result;
 }
 
 /* public api */
