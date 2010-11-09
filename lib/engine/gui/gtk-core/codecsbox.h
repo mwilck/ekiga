@@ -46,7 +46,6 @@
 
 #include "call.h"
 
-
 /** This implements a CodecsBox for the Ekiga Engine.
  * The codecs list is loaded from the GmConf configuration engine, 
  * using the /apps/ekiga/codecs/audio/list or /apps/ekiga/codecs/video/list
@@ -56,13 +55,6 @@
  */
 
 G_BEGIN_DECLS
-
-#define CODECS_BOX_TYPE (codecs_box_get_type ())
-#define CODECS_BOX(o) (G_TYPE_CHECK_INSTANCE_CAST ((o), CODECS_BOX_TYPE, CodecsBox))
-#define CODECS_BOX_CLASS(k) (G_TYPE_CHECK_CLASS_CAST((k), CODECS_BOX_TYPE, CodecsBoxClass))
-#define IS_CODECS_BOX(o) (G_TYPE_CHECK_INSTANCE_TYPE ((o), CODECS_BOX_TYPE))
-#define IS_CODECS_BOX_CLASS(k) (G_TYPE_CHECK_CLASS_TYPE ((k), CODECS_BOX_TYPE))
-#define CODECS_BOX_GET_CLASS(o) (G_TYPE_INSTANCE_GET_CLASS ((o), CODECS_BOX_TYPE, CodecsBoxClass))
 
 typedef struct _CodecsBox CodecsBox;
 typedef struct _CodecsBoxPrivate CodecsBoxPrivate;
@@ -81,8 +73,6 @@ struct _CodecsBoxClass
   GtkHBoxClass parent_class;
 };
 
-GType codecs_box_get_type (void);
-
 
 /** Create a new CodecsBox for Ekiga::Call::Audio codecs.
  */
@@ -93,6 +83,18 @@ GtkWidget *codecs_box_new ();
  * @param type is a valid Ekiga::Call::StreamType (Audio or Video supported).
  */
 GtkWidget *codecs_box_new_with_type (Ekiga::Call::StreamType type);
+
+
+/* GObject boilerplate */
+
+GType codecs_box_get_type (void);
+
+#define CODECS_BOX_TYPE (codecs_box_get_type ())
+#define CODECS_BOX(o) (G_TYPE_CHECK_INSTANCE_CAST ((o), CODECS_BOX_TYPE, CodecsBox))
+#define CODECS_BOX_CLASS(k) (G_TYPE_CHECK_CLASS_CAST((k), CODECS_BOX_TYPE, CodecsBoxClass))
+#define IS_CODECS_BOX(o) (G_TYPE_CHECK_INSTANCE_TYPE ((o), CODECS_BOX_TYPE))
+#define IS_CODECS_BOX_CLASS(k) (G_TYPE_CHECK_CLASS_TYPE ((k), CODECS_BOX_TYPE))
+#define CODECS_BOX_GET_CLASS(o) (G_TYPE_INSTANCE_GET_CLASS ((o), CODECS_BOX_TYPE, CodecsBoxClass))
 
 G_END_DECLS
 

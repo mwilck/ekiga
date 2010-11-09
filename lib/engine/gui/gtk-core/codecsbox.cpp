@@ -65,8 +65,7 @@ struct _CodecsBoxPrivate
 
 enum { TYPE = 1 };
 
-static GObjectClass *parent_class = NULL;
-
+G_DEFINE_TYPE (CodecsBox, codecs_box, GTK_TYPE_HBOX);
 
 /* Static functions */
 static void codecs_box_set_codecs (CodecsBox *self,
@@ -83,16 +82,11 @@ static void codec_moved_cb (GtkWidget *widget,
 
 static GSList *codecs_box_to_gm_conf_list (CodecsBox *self);
 
-
-/* Static functions and declarations */
-static void codecs_box_class_init (gpointer g_class,
-                                   gpointer class_data);
+static void codecs_box_class_init (CodecsBoxClass* klass);
 
 static void codecs_box_init (CodecsBox *);
 
 static void codecs_box_dispose (GObject *obj);
-
-static void codecs_box_finalize (GObject *obj);
 
 static void codecs_box_get_property (GObject *obj,
                                      guint prop_id,
@@ -103,8 +97,6 @@ static void codecs_box_set_property (GObject *obj,
                                      guint prop_id,
                                      const GValue *value,
                                      GParamSpec *spec);
-
-
 
 static void 
 codecs_box_set_codecs (CodecsBox *self,
@@ -120,8 +112,6 @@ codecs_box_set_codecs (CodecsBox *self,
   gchar *selected_codec = NULL;
   unsigned select_rate = 0;
   bool selected = false;
-
-  g_return_if_fail (self != NULL);
 
   model = gtk_tree_view_get_model (GTK_TREE_VIEW (self->priv->codecs_list));
   codecs_data = list;
@@ -196,9 +186,6 @@ codec_toggled_cb (G_GNUC_UNUSED GtkCellRendererToggle *cell,
 
   gboolean fixed = FALSE;
 
-  g_return_if_fail (data != NULL);
-  g_return_if_fail (IS_CODECS_BOX (data));
-
   self = CODECS_BOX (data);
 
   model = gtk_tree_view_get_model (GTK_TREE_VIEW (self->priv->codecs_list));
@@ -237,9 +224,6 @@ codec_moved_cb (GtkWidget *widget,
   GSList *codecs_data = NULL;
 
   gchar *path_str = NULL;
-
-  g_return_if_fail (data != NULL);
-  g_return_if_fail (IS_CODECS_BOX (data));
 
   self = CODECS_BOX (data);
 
@@ -298,9 +282,6 @@ codecs_box_to_gm_conf_list (CodecsBox *self)
 
   GSList *codecs_data = NULL;
 
-  g_return_val_if_fail (self != NULL, NULL);
-  g_return_val_if_fail (IS_CODECS_BOX (self), NULL);
-
   model = gtk_tree_view_get_model (GTK_TREE_VIEW (self->priv->codecs_list));
   if (gtk_tree_model_get_iter_first (GTK_TREE_MODEL (model), &iter)) {
 
@@ -353,23 +334,20 @@ codecs_list_changed_nt (G_GNUC_UNUSED gpointer id,
 
 
 static void
-codecs_box_class_init (gpointer g_class,
-                       gpointer /*class_data*/)
+codecs_box_class_init (CodecsBoxClass* klass)
 {
-  GObjectClass *gobject_class = NULL;
+  GObjectClass *gobject_class = G_OBJECT_CLASS (klass);
   GParamSpec *spec = NULL;
 
-  parent_class = (GObjectClass *) g_type_class_peek_parent (g_class);
-
-  gobject_class = (GObjectClass *) g_class;
   gobject_class->dispose = codecs_box_dispose;
-  gobject_class->finalize = codecs_box_finalize;
   gobject_class->get_property = codecs_box_get_property;
   gobject_class->set_property = codecs_box_set_property;
 
   spec = g_param_spec_int ("type", "Type", "Type",
                            0, 1, 0, (GParamFlags) G_PARAM_READWRITE);
   g_object_class_install_property (gobject_class, TYPE, spec);
+
+  g_type_class_add_private (klass, sizeof (CodecsBoxPrivate));
 }
 
 
@@ -387,16 +365,12 @@ codecs_box_init (CodecsBox *self)
   GtkCellRenderer *renderer = NULL;
   GtkTreeViewColumn *column = NULL;
 
-  g_return_if_fail (self != NULL);
-  g_return_if_fail (IS_CODECS_BOX (self));
-
-  self->priv = new CodecsBoxPrivate;
+  self->priv = G_TYPE_INSTANCE_GET_PRIVATE (self, CODECS_BOX_TYPE, CodecsBoxPrivate);
   self->priv->type = Ekiga::Call::Audio;
+  self->priv->codecs_list = gtk_tree_view_new ();
 
   gtk_box_set_spacing (GTK_BOX (self), 6);
   gtk_box_set_homogeneous (GTK_BOX (self), FALSE);
-
-  self->priv->codecs_list = gtk_tree_view_new ();
 
   list_store = gtk_list_store_new (COLUMN_CODEC_NUMBER,
                                    G_TYPE_BOOLEAN,
@@ -507,16 +481,8 @@ codecs_box_dispose (GObject *obj)
 
   self->priv->codecs_list = NULL;
 
-  parent_class->dispose (obj);
+  G_OBJECT_CLASS (codecs_box_parent_class)->dispose (obj);
 }
-
-
-static void
-codecs_box_finalize (GObject *obj)
-{
-  parent_class->finalize (obj);
-}
-
 
 static void
 codecs_box_get_property (GObject *obj,
@@ -524,9 +490,7 @@ codecs_box_get_property (GObject *obj,
                          GValue *value,
                          GParamSpec *spec)
 {
-  CodecsBox *self = NULL;
-
-  self = CODECS_BOX (obj);
+  CodecsBox *self = CODECS_BOX (obj);
 
   switch (prop_id) {
 
@@ -547,10 +511,8 @@ codecs_box_set_property (GObject *obj,
                          const GValue *value,
                          GParamSpec *spec)
 {
-  CodecsBox *self = NULL;
+  CodecsBox *self = CODECS_BOX (obj);
   GSList *list = NULL;
-
-  self = CODECS_BOX (obj);
 
   switch (prop_id) {
 
@@ -580,53 +542,17 @@ codecs_box_set_property (GObject *obj,
 }
 
 
-/* Global functions */
-GType
-codecs_box_get_type (void)
-{
-  static GType codecs_box_type = 0;
-
-  if (codecs_box_type == 0)
-    {
-      static const GTypeInfo codecs_box_info =
-        {
-          sizeof (CodecsBoxClass),
-          NULL,
-          NULL,
-          (GClassInitFunc) codecs_box_class_init,
-          NULL,
-          NULL,
-          sizeof (CodecsBox),
-          0,
-          (GInstanceInitFunc) codecs_box_init,
-          NULL
-        };
-
-      codecs_box_type =
-        g_type_register_static (GTK_TYPE_HBOX,
-                                "CodecsBox",
-                                &codecs_box_info,
-                                (GTypeFlags) 0);
-    }
-
-  return codecs_box_type;
-}
-
+/* public api */
 
 GtkWidget *
 codecs_box_new ()
 {
-  return GTK_WIDGET (CODECS_BOX (g_object_new (CODECS_BOX_TYPE, NULL)));
+  return GTK_WIDGET (g_object_new (CODECS_BOX_TYPE, NULL));
 }
 
 
 GtkWidget *
 codecs_box_new_with_type (Ekiga::Call::StreamType type)
 {
-  GtkWidget *codecs_box = NULL;
-
-  codecs_box = codecs_box_new ();
-  g_object_set (G_OBJECT (codecs_box), "type", type, NULL);
-
-  return codecs_box;
+  return GTK_WIDGET (g_object_new (CODECS_BOX_TYPE, "type", type, NULL));
 }
