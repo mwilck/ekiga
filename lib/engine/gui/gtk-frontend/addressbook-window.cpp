@@ -76,9 +76,7 @@ enum {
   DIALOG_COLUMN_SOURCE_POINTER
 };
 
-
-static GObjectClass *parent_class = NULL;
-
+G_DEFINE_TYPE (AddressBookWindow, addressbook_window, GM_TYPE_WINDOW);
 
 /*
  * Callbacks
@@ -564,9 +562,7 @@ find_iter_for_book (AddressBookWindow *self,
 static void
 addressbook_window_dispose (GObject *obj)
 {
-  AddressBookWindow *self = NULL;
-
-  self = ADDRESSBOOK_WINDOW (obj);
+  AddressBookWindow *self = ADDRESSBOOK_WINDOW (obj);
 
   if (self->priv->menu_item_view) {
 
@@ -580,16 +576,14 @@ addressbook_window_dispose (GObject *obj)
     self->priv->menu_item_core = NULL;
   }
 
-  parent_class->dispose (obj);
+  G_OBJECT_CLASS (addressbook_window_parent_class)->dispose (obj);
 }
 
 
 static void
 addressbook_window_finalize (GObject *obj)
 {
-  AddressBookWindow *self = NULL;
-
-  self = ADDRESSBOOK_WINDOW (obj);
+  AddressBookWindow *self = ADDRESSBOOK_WINDOW (obj);
 
   for (std::vector<boost::signals::connection>::iterator iter
 	 = self->priv->connections.begin ();
@@ -599,51 +593,23 @@ addressbook_window_finalize (GObject *obj)
 
   delete self->priv;
 
-  parent_class->finalize (obj);
+  G_OBJECT_CLASS (addressbook_window_parent_class)->finalize (obj);
 }
 
+static void
+addressbook_window_init (G_GNUC_UNUSED AddressBookWindow* self)
+{
+  /* can't do anything here... we're waiting for a core :-/ */
+}
 
 static void
 addressbook_window_class_init (AddressBookWindowClass *klass)
 {
-  GObjectClass *gobject_class = NULL;
+  GObjectClass *gobject_class = G_OBJECT_CLASS (klass);
 
-  parent_class = (GObjectClass *) g_type_class_peek_parent (klass);
-
-  gobject_class = (GObjectClass *) klass;
   gobject_class->dispose = addressbook_window_dispose;
   gobject_class->finalize = addressbook_window_finalize;
 }
-
-
-GType
-addressbook_window_get_type ()
-{
-  static GType result = 0;
-
-  if (result == 0) {
-
-    static const GTypeInfo info = {
-      sizeof (AddressBookWindowClass),
-      NULL,
-      NULL,
-      (GClassInitFunc) addressbook_window_class_init,
-      NULL,
-      NULL,
-      sizeof (AddressBookWindow),
-      0,
-      NULL,
-      NULL
-    };
-
-    result = g_type_register_static (GM_TYPE_WINDOW,
-                                     "AddressBookWindowType",
-                                     &info, (GTypeFlags) 0);
-  }
-
-  return result;
-}
-
 
 /*
  * Public API 
