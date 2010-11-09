@@ -42,7 +42,7 @@ struct _MultipleChatPagePrivate {
   GtkWidget* area;
 };
 
-static GObjectClass *parent_class = NULL;
+G_DEFINE_TYPE (MultipleChatPage, multiple_chat_page, GTK_TYPE_HBOX);
 
 static void on_page_grab_focus (GtkWidget*,
 				gpointer);
@@ -59,75 +59,17 @@ static void on_page_grab_focus (GtkWidget* widget,
 }
 
 static void
-multiple_chat_page_dispose (GObject *obj)
+multiple_chat_page_init (MultipleChatPage* self)
 {
-  MultipleChatPage* self = NULL;
-
-  self = (MultipleChatPage*)obj;
-
-  self->priv->area = NULL;
-
-  parent_class->dispose (obj);
-}
-
-static void
-multiple_chat_page_finalize (GObject *obj)
-{
-
-  parent_class->finalize (obj);
-}
-
-static void
-multiple_chat_page_init (GTypeInstance* instance,
-		       G_GNUC_UNUSED gpointer g_class)
-{
-  MultipleChatPage* self = NULL;
-
-  self = (MultipleChatPage*)instance;
-
-  self->priv = g_new (MultipleChatPagePrivate, 1);
-  self->priv->area = NULL;
+  self->priv = g_new0 (MultipleChatPagePrivate, 1);
 
   g_signal_connect (self, "grab-focus",
                     G_CALLBACK (on_page_grab_focus), NULL);
 }
 
 static void
-multiple_chat_page_class_init (gpointer g_class,
-			     G_GNUC_UNUSED gpointer class_data)
+multiple_chat_page_class_init (G_GNUC_UNUSED MultipleChatPageClass* klass)
 {
-  GObjectClass* gobject_class = NULL;
-
-  parent_class = (GObjectClass*)g_type_class_peek_parent (g_class);
-
-  gobject_class = (GObjectClass*)g_class;
-  gobject_class->dispose = multiple_chat_page_dispose;
-  gobject_class->finalize = multiple_chat_page_finalize;
-}
-
-GType
-multiple_chat_page_get_type ()
-{
-  static GType result = 0;
-  if (!result) {
-    static const GTypeInfo my_info = {
-      sizeof(MultipleChatPageClass),
-      NULL,
-      NULL,
-      multiple_chat_page_class_init,
-      NULL,
-      NULL,
-      sizeof (MultipleChatPage),
-      1,
-      multiple_chat_page_init,
-      NULL
-    };
-
-    result = g_type_register_static (GTK_TYPE_HBOX,
-				      "MultipleChatPage",
-				     &my_info, (GTypeFlags)0);
-  }
-  return result;
 }
 
 /* implementation of the public api */
