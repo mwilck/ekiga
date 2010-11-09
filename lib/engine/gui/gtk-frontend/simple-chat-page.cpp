@@ -50,7 +50,7 @@ enum {
 
 static guint signals[LAST_SIGNAL] = { 0 };
 
-static GObjectClass *parent_class = NULL;
+G_DEFINE_TYPE (SimpleChatPage, simple_chat_page, GTK_TYPE_VBOX);
 
 static void on_page_grab_focus (GtkWidget*,
 				gpointer);
@@ -74,50 +74,30 @@ on_message_notice_event (G_GNUC_UNUSED GtkWidget* widget,
 }
 
 static void
-simple_chat_page_dispose (GObject *obj)
-{
-  SimpleChatPage* self = NULL;
-
-  self = (SimpleChatPage*)obj;
-
-  self->priv->area = NULL;
-
-  parent_class->dispose (obj);
-}
-
-static void
 simple_chat_page_finalize (GObject *obj)
 {
+  SimpleChatPage* self = (SimpleChatPage*)obj;
 
-  parent_class->finalize (obj);
+  self->priv->area = NULL;
+  g_free (self->priv);
+
+  G_OBJECT_CLASS (simple_chat_page_parent_class)->finalize (obj);
 }
 
 static void
-simple_chat_page_init (GTypeInstance* instance,
-		       G_GNUC_UNUSED gpointer g_class)
+simple_chat_page_init (SimpleChatPage* self)
 {
-  SimpleChatPage* self = NULL;
-
-  self = (SimpleChatPage*)instance;
-
-  self->priv = g_new (SimpleChatPagePrivate, 1);
-  self->priv->area = NULL;
+  self->priv = g_new0 (SimpleChatPagePrivate, 1);
 
   g_signal_connect (self, "grab-focus",
 		    G_CALLBACK (on_page_grab_focus), NULL);
 }
 
 static void
-simple_chat_page_class_init (gpointer g_class,
-			     G_GNUC_UNUSED gpointer class_data)
+simple_chat_page_class_init (SimpleChatPageClass* klass)
 {
-  SimpleChatPageClass* simple_chat_page_class = NULL;
-  GObjectClass* gobject_class = NULL;
+  GObjectClass* gobject_class = G_OBJECT_CLASS (klass);
 
-  parent_class = (GObjectClass*)g_type_class_peek_parent (g_class);
-
-  gobject_class = (GObjectClass*)g_class;
-  gobject_class->dispose = simple_chat_page_dispose;
   gobject_class->finalize = simple_chat_page_finalize;
 
   signals[MESSAGE_NOTICE_EVENT] =
@@ -128,35 +108,6 @@ simple_chat_page_class_init (gpointer g_class,
 		  NULL, NULL,
 		  g_cclosure_marshal_VOID__VOID,
 		  G_TYPE_NONE, 0);
-
-  /* FIXME: is it useful? */
-  simple_chat_page_class = (SimpleChatPageClass*)g_class;
-  simple_chat_page_class->message_notice_event = NULL;
-}
-
-GType
-simple_chat_page_get_type ()
-{
-  static GType result = 0;
-  if (!result) {
-    static const GTypeInfo my_info = {
-      sizeof(SimpleChatPageClass),
-      NULL,
-      NULL,
-      simple_chat_page_class_init,
-      NULL,
-      NULL,
-      sizeof (SimpleChatPage),
-      1,
-      simple_chat_page_init,
-      NULL
-    };
-
-    result = g_type_register_static (GTK_TYPE_VBOX,
-				      "SimpleChatPage",
-				     &my_info, (GTypeFlags)0);
-  }
-  return result;
 }
 
 /* implementation of the public api */
