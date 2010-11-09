@@ -80,7 +80,7 @@ enum {
 
 static guint signals[LAST_SIGNAL] = { 0 };
 
-static GObjectClass* parent_class = NULL;
+G_DEFINE_TYPE (ChatArea, chat_area, GTK_TYPE_VPANED);
 
 /* declaration of internal api */
 
@@ -628,7 +628,7 @@ chat_area_dispose (GObject* obj)
     self->priv->smiley_menu = NULL;
   }
 
-  parent_class->dispose (obj);
+  G_OBJECT_CLASS (chat_area_parent_class)->dispose (obj);
 }
 
 static void
@@ -648,7 +648,7 @@ chat_area_finalize (GObject* obj)
     self->priv->chat = NULL;
   }
 
-  parent_class->finalize (obj);
+  G_OBJECT_CLASS (chat_area_parent_class)->finalize (obj);
 }
 
 static void
@@ -701,18 +701,13 @@ chat_area_set_property (GObject* obj,
 }
 
 static void
-chat_area_class_init (gpointer g_class,
-		      G_GNUC_UNUSED gpointer class_data)
+chat_area_class_init (ChatAreaClass* klass)
 {
-  ChatAreaClass* chat_area_class = NULL;
-  GObjectClass* gobject_class = NULL;
+  GObjectClass* gobject_class = G_OBJECT_CLASS (klass);
   GParamSpec* spec = NULL;
 
-  parent_class = (GObjectClass*)g_type_class_peek_parent (g_class);
+  g_type_class_add_private (klass, sizeof (ChatAreaPrivate));
 
-  g_type_class_add_private (g_class, sizeof (ChatAreaPrivate));
-
-  gobject_class = (GObjectClass*)g_class;
   gobject_class->dispose = chat_area_dispose;
   gobject_class->finalize = chat_area_finalize;
   gobject_class->get_property = chat_area_get_property;
@@ -734,25 +729,17 @@ chat_area_class_init (gpointer g_class,
 		  NULL, NULL,
 		  g_cclosure_marshal_VOID__VOID,
 		  G_TYPE_NONE, 0);
-
-  /* FIXME: is it useful? */
-  chat_area_class = (ChatAreaClass*)g_class;
-  chat_area_class->message_notice_event = NULL;
 }
 
 static void
-chat_area_init (GTypeInstance* instance,
-		G_GNUC_UNUSED gpointer g_class)
+chat_area_init (ChatArea* self)
 {
-  ChatArea* self = NULL;
   GtkTextBuffer* buffer = NULL;
   GmTextBufferEnhancerHelper* helper = NULL;
   GtkTextTag* tag = NULL;
   GtkTextIter iter;
   GtkWidget *frame = NULL;
   GtkWidget *sep = NULL;
-
-  self = (ChatArea*)instance;
 
   self->priv = G_TYPE_INSTANCE_GET_PRIVATE (self,
 					    TYPE_CHAT_AREA,
@@ -976,35 +963,6 @@ chat_area_init (GTypeInstance* instance,
   g_signal_connect (self, "grab-focus",
 		    G_CALLBACK (on_chat_area_grab_focus), self->priv->message);
   gtk_widget_grab_focus (self->priv->message);
-}
-
-
-GType
-chat_area_get_type ()
-{
-  static GType result = 0;
-
-  if (result == 0) {
-
-    static const GTypeInfo info = {
-      sizeof (ChatAreaClass),
-      NULL,
-      NULL,
-      chat_area_class_init,
-      NULL,
-      NULL,
-      sizeof (ChatArea),
-      0,
-      chat_area_init,
-      NULL
-    };
-
-    result = g_type_register_static (GTK_TYPE_VPANED,
-				     "ChatArea",
-				     &info, (GTypeFlags) 0);
-  }
-
-  return result;
 }
 
 /* public api */
