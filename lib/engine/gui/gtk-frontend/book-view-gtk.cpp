@@ -74,8 +74,7 @@ enum {
   COLUMN_NUMBER
 };
 
-static GObjectClass *parent_class = NULL;
-
+G_DEFINE_TYPE (BookViewGtk, book_view_gtk, GTK_TYPE_FRAME);
 
 /*
  * Callbacks
@@ -481,7 +480,7 @@ book_view_gtk_dispose (GObject *obj)
     view->priv->tree_view = NULL;
   }
 
-  parent_class->dispose (obj);
+  G_OBJECT_CLASS (book_view_gtk_parent_class)->dispose (obj);
 }
 
 
@@ -494,56 +493,27 @@ book_view_gtk_finalize (GObject *obj)
 
   delete view->priv;
 
-  parent_class->finalize (obj);
+  G_OBJECT_CLASS (book_view_gtk_parent_class)->finalize (obj);
 }
 
+static void
+book_view_gtk_init (G_GNUC_UNUSED BookViewGtk* self)
+{
+  /* can't do anything here... waiting for a core :-/ */
+}
 
 static void
-book_view_gtk_class_init (gpointer g_class,
-			  gpointer /*class_data*/)
+book_view_gtk_class_init (BookViewGtkClass* klass)
 {
-  GObjectClass *gobject_class = NULL;
-
-  parent_class = (GObjectClass *)g_type_class_peek_parent (g_class);
-
-  gobject_class = (GObjectClass *)g_class;
+  GObjectClass *gobject_class = G_OBJECT_CLASS (klass);
   gobject_class->dispose = book_view_gtk_dispose;
   gobject_class->finalize = book_view_gtk_finalize;
 
   g_signal_new ("updated",
-                G_OBJECT_CLASS_TYPE (g_class),
+                G_OBJECT_CLASS_TYPE (klass),
                 G_SIGNAL_RUN_FIRST,
                 0, NULL, NULL,
                 g_cclosure_marshal_VOID__VOID, G_TYPE_NONE, 0, NULL);
-}
-
-
-GType
-book_view_gtk_get_type ()
-{
-  static GType result = 0;
-
-  if (result == 0) {
-
-    static const GTypeInfo info = {
-      sizeof (BookViewGtkClass),
-      NULL,
-      NULL,
-      book_view_gtk_class_init,
-      NULL,
-      NULL,
-      sizeof (BookViewGtk),
-      0,
-      NULL,
-      NULL
-    };
-
-    result = g_type_register_static (GTK_TYPE_FRAME,
-				     "BookViewGtkType",
-				     &info, (GTypeFlags) 0);
-  }
-
-  return result;
 }
 
 
