@@ -3457,7 +3457,7 @@ ekiga_main_window_init_contact_list (EkigaMainWindow *mw)
   boost::shared_ptr<Ekiga::PresenceCore> presence_core = mw->priv->core->get<Ekiga::PresenceCore> ("presence-core");
 
   label = gtk_label_new (_("Contacts"));
-  mw->priv->roster_view = roster_view_gtk_new (*presence_core);
+  mw->priv->roster_view = roster_view_gtk_new (presence_core);
   mw->priv->roster_view_page_number = gtk_notebook_append_page (GTK_NOTEBOOK (mw->priv->main_notebook), mw->priv->roster_view, label);
   g_signal_connect (mw->priv->roster_view, "selection-changed",
 		    G_CALLBACK (on_roster_selection_changed), mw);

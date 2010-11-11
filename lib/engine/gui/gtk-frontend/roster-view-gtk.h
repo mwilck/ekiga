@@ -51,7 +51,7 @@ typedef struct _RosterViewGtkClass RosterViewGtkClass;
  */
 
 /* Creating the widget, connected to an Ekiga::PresenceCore object */
-GtkWidget *roster_view_gtk_new (Ekiga::PresenceCore &core);
+GtkWidget *roster_view_gtk_new (boost::shared_ptr<Ekiga::PresenceCore> core);
 
 
 /* This method populates the given builder with the actions possible on the

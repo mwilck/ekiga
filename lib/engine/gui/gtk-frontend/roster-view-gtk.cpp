@@ -55,7 +55,7 @@
  */
 struct _RosterViewGtkPrivate
 {
-  _RosterViewGtkPrivate (Ekiga::PresenceCore &_core) : core (_core) { }
+  boost::shared_ptr<Ekiga::PresenceCore> core;
 
   std::vector<boost::signals::connection> connections;
   GtkTreeStore *store;
@@ -65,7 +65,6 @@ struct _RosterViewGtkPrivate
   GtkWidget* toolbar;
   GSList *folded_groups;
   gboolean show_offline_contacts;
-  Ekiga::PresenceCore & core;
 };
 
 /* the different type of things which will appear in the view */
@@ -372,6 +371,13 @@ static void roster_view_gtk_find_iter_for_presentity (RosterViewGtk *view,
 static void roster_view_gtk_update_groups (RosterViewGtk *view,
                                            GtkTreeIter *heap_iter);
 
+
+/* DESCRIPTION  : /
+ * BEHAVIOR     : Set the PresenceCore which is represented by the RosterViewGk
+ * PRE          : /
+ */
+static void roster_view_gtk_set_core (RosterViewGtk* self,
+				      boost::shared_ptr<Ekiga::PresenceCore> core);
 
 /* Implementation of the debuggers */
 
@@ -1250,6 +1256,54 @@ roster_view_gtk_update_groups (RosterViewGtk *view,
   }
 }
 
+static void
+roster_view_gtk_set_core (RosterViewGtk* self,
+			  boost::shared_ptr<Ekiga::PresenceCore> core)
+{
+  if (self->priv->core) {
+
+    for (std::vector<boost::signals::connection>::iterator iter
+	   = self->priv->connections.begin ();
+	 iter != self->priv->connections.end ();
+	 iter++)
+      iter->disconnect ();
+
+    self->priv->connections.clear ();
+  }
+
+  if (core) {
+
+    boost::signals::connection conn;
+
+    conn = core->cluster_added.connect (boost::bind (&on_cluster_added, self, _1));
+    self->priv->connections.push_back (conn);
+    conn = core->heap_added.connect (boost::bind (&on_heap_added, self, _1, _2));
+    self->priv->connections.push_back (conn);
+    conn = core->heap_updated.connect (boost::bind (&on_heap_updated, self, _1, _2));
+    self->priv->connections.push_back (conn);
+    conn = core->heap_removed.connect (boost::bind (&on_heap_removed, self, _1, _2));
+    self->priv->connections.push_back (conn);
+    conn = core->presentity_added.connect (boost::bind (&on_presentity_added, self, _1, _2, _3));
+    self->priv->connections.push_back (conn);
+    conn = core->presentity_updated.connect (boost::bind (&on_presentity_updated, self, _1, _2, _3));
+    self->priv->connections.push_back (conn);
+    conn = core->presentity_removed.connect (boost::bind (&on_presentity_removed, self, _1, _2, _3));
+    self->priv->connections.push_back (conn);
+    conn = core->questions.connect (boost::bind (&on_handle_questions, self, _1));
+    self->priv->connections.push_back (conn);
+  }
+
+  // FIXME: for some reason we can be called without it being the case :-/
+  if (GTK_IS_TREE_STORE (self->priv->store))
+    gtk_tree_store_clear (self->priv->store);
+
+  self->priv->core = core;
+
+  if (self->priv->core) {
+
+    core->visit_clusters (boost::bind (&on_visit_clusters, self, _1));
+  }
+}
 
 /*
  * GObject stuff
@@ -1257,44 +1311,7 @@ roster_view_gtk_update_groups (RosterViewGtk *view,
 static void
 roster_view_gtk_dispose (GObject *obj)
 {
-  RosterViewGtk *view = NULL;
-
-  view = ROSTER_VIEW_GTK (obj);
-
-  for (std::vector<boost::signals::connection>::iterator iter
-	 = view->priv->connections.begin ();
-       iter != view->priv->connections.end ();
-       iter++)
-    iter->disconnect ();
-
-  if (view->priv->tree_view) {
-
-    GtkTreeSelection* selection = NULL;
-
-    selection = gtk_tree_view_get_selection (view->priv->tree_view);
-
-    g_signal_handlers_disconnect_matched (selection,
-					  (GSignalMatchType) G_SIGNAL_MATCH_DATA,
-					  0, /* signal_id */
-					  (GQuark) 0, /* detail */
-					  NULL,	/* closure */
-					  NULL,	/* func */
-					  view); /* data */
-    g_signal_handlers_disconnect_matched (view->priv->tree_view,
-					  (GSignalMatchType) G_SIGNAL_MATCH_DATA,
-					  0, /* signal_id */
-					  (GQuark) 0, /* detail */
-					  NULL,	/* closure */
-					  NULL,	/* func */
-					  view); /* data */
-
-    g_slist_foreach (view->priv->folded_groups, (GFunc) g_free, NULL);
-    g_slist_free (view->priv->folded_groups);
-    view->priv->folded_groups = NULL;
-
-    view->priv->store = NULL;
-    view->priv->tree_view = NULL;
-  }
+  roster_view_gtk_set_core (ROSTER_VIEW_GTK (obj), boost::shared_ptr<Ekiga::PresenceCore> ());
 
   G_OBJECT_CLASS (roster_view_gtk_parent_class)->dispose (obj);
 }
@@ -1307,7 +1324,10 @@ roster_view_gtk_finalize (GObject *obj)
 
   view = (RosterViewGtk *)obj;
 
-  delete view->priv;
+  g_slist_foreach (view->priv->folded_groups, (GFunc) g_free, NULL);
+  g_slist_free (view->priv->folded_groups);
+  view->priv->folded_groups = NULL;
+  g_free (view->priv);
 
   G_OBJECT_CLASS (roster_view_gtk_parent_class)->finalize (obj);
 }
@@ -1315,45 +1335,12 @@ roster_view_gtk_finalize (GObject *obj)
 static void
 roster_view_gtk_init (G_GNUC_UNUSED RosterViewGtk* self)
 {
-  /* we can't do anything here because we don't have the core :-/ */
-}
-
-static void
-roster_view_gtk_class_init (RosterViewGtkClass* klass)
-{
-  GObjectClass *gobject_class = G_OBJECT_CLASS (klass);
-
-  gobject_class->dispose = roster_view_gtk_dispose;
-  gobject_class->finalize = roster_view_gtk_finalize;
-
-  signals[SELECTION_CHANGED_SIGNAL] =
-    g_signal_new ("selection-changed",
-		  G_OBJECT_CLASS_TYPE (gobject_class),
-		  G_SIGNAL_RUN_LAST,
-		  G_STRUCT_OFFSET (RosterViewGtkClass, selection_changed),
-		  NULL, NULL,
-		  g_cclosure_marshal_VOID__VOID,
-		  G_TYPE_NONE, 0);
-}
-
-/*
- * Public API
- */
-GtkWidget *
-roster_view_gtk_new (Ekiga::PresenceCore &core)
-{
-  RosterViewGtk *self = NULL;
-
-  boost::signals::connection conn;
-
   GtkTreeModel *filtered = NULL;
   GtkTreeSelection *selection = NULL;
   GtkTreeViewColumn *col = NULL;
   GtkCellRenderer *renderer = NULL;
 
-  self = (RosterViewGtk *) g_object_new (ROSTER_VIEW_GTK_TYPE, NULL);
-
-  self->priv = new _RosterViewGtkPrivate (core);
+  self->priv = g_new0 (RosterViewGtkPrivate, 1);
 
   self->priv->folded_groups = gm_conf_get_string_list ("/apps/" PACKAGE_NAME "/contacts/roster_folded_groups");
   self->priv->show_offline_contacts = gm_conf_get_bool ("/apps/" PACKAGE_NAME "/contacts/show_offline_contacts");
@@ -1475,31 +1462,40 @@ roster_view_gtk_new (Ekiga::PresenceCore &core)
   g_signal_connect (self->priv->tree_view, "event-after",
 		    G_CALLBACK (on_view_event_after), self);
 
-
-  /* Relay signals */
-  conn = core.cluster_added.connect (boost::bind (&on_cluster_added, self, _1));
-  self->priv->connections.push_back (conn);
-  conn = core.heap_added.connect (boost::bind (&on_heap_added, self, _1, _2));
-  self->priv->connections.push_back (conn);
-  conn = core.heap_updated.connect (boost::bind (&on_heap_updated, self, _1, _2));
-  self->priv->connections.push_back (conn);
-  conn = core.heap_removed.connect (boost::bind (&on_heap_removed, self, _1, _2));
-
-  self->priv->connections.push_back (conn);
-  conn = core.presentity_added.connect (boost::bind (&on_presentity_added, self, _1, _2, _3));
-  self->priv->connections.push_back (conn);
-  conn = core.presentity_updated.connect (boost::bind (&on_presentity_updated, self, _1, _2, _3));
-  self->priv->connections.push_back (conn);
-  conn = core.presentity_removed.connect (boost::bind (&on_presentity_removed, self, _1, _2, _3));
-  self->priv->connections.push_back (conn);
-  conn = core.questions.connect (boost::bind (&on_handle_questions, self, _1));
-  self->priv->connections.push_back (conn);
-
-  core.visit_clusters (boost::bind (&on_visit_clusters, self, _1));
-
   /* Notifiers */
   gm_conf_notifier_add ("/apps/" PACKAGE_NAME "/contacts/show_offline_contacts",
 			show_offline_contacts_changed_nt, self);
+}
+
+static void
+roster_view_gtk_class_init (RosterViewGtkClass* klass)
+{
+  GObjectClass *gobject_class = G_OBJECT_CLASS (klass);
+
+  gobject_class->dispose = roster_view_gtk_dispose;
+  gobject_class->finalize = roster_view_gtk_finalize;
+
+  signals[SELECTION_CHANGED_SIGNAL] =
+    g_signal_new ("selection-changed",
+		  G_OBJECT_CLASS_TYPE (gobject_class),
+		  G_SIGNAL_RUN_LAST,
+		  G_STRUCT_OFFSET (RosterViewGtkClass, selection_changed),
+		  NULL, NULL,
+		  g_cclosure_marshal_VOID__VOID,
+		  G_TYPE_NONE, 0);
+}
+
+/*
+ * Public API
+ */
+GtkWidget *
+roster_view_gtk_new (boost::shared_ptr<Ekiga::PresenceCore> core)
+{
+  RosterViewGtk *self = NULL;
+
+  self = (RosterViewGtk *) g_object_new (ROSTER_VIEW_GTK_TYPE, NULL);
+
+  roster_view_gtk_set_core (self, core);
 
   return (GtkWidget *) self;
 }
