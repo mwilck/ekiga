@@ -276,10 +276,10 @@ gnomemeeting_progress_dialog (GtkWindow *parent,
 		      FALSE, FALSE, 0);
 
   id = g_timeout_add (100, progress_dialog_pulse_cb, progressbar);
-  g_signal_connect (GTK_OBJECT (dialog), "destroy",
+  g_signal_connect (dialog, "destroy",
 		    G_CALLBACK (progress_dialog_destroyed_cb),
 		    GINT_TO_POINTER (id));
-  g_signal_connect (GTK_OBJECT (dialog), "delete-event",
+  g_signal_connect (dialog, "delete-event",
 		    G_CALLBACK (progress_dialog_delete_event_cb),
 		    NULL);
   g_free (dialog_text);
@@ -356,7 +356,7 @@ gnomemeeting_warning_dialog_on_widget (GtkWindow *parent,
   /* Can be called from threads */
   gm_window_show (dialog);
 
-  g_signal_connect_data (GTK_OBJECT (dialog), "response",
+  g_signal_connect_data (dialog, "response",
 			 G_CALLBACK (warning_dialog_destroyed_cb),
 			 (gpointer) g_strdup (key),
 			 (GClosureNotify) g_free,
@@ -415,7 +415,7 @@ gnomemeeting_dialog (GtkWindow *parent,
   gtk_message_dialog_set_markup (GTK_MESSAGE_DIALOG (dialog),
 				 dialog_text);
   
-  g_signal_connect_swapped (GTK_OBJECT (dialog), "response",
+  g_signal_connect_swapped (dialog, "response",
                             G_CALLBACK (gtk_widget_destroy),
                             GTK_OBJECT (dialog));
   
