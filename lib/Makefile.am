@@ -456,6 +456,8 @@ libekiga_la_SOURCES += \
 	$(engine_dir)/gui/gtk-frontend/call-history-view-gtk.cpp \
 	$(engine_dir)/gui/gtk-frontend/presentity-view.h \
 	$(engine_dir)/gui/gtk-frontend/presentity-view.cpp \
+	$(engine_dir)/gui/gtk-frontend/heap-view.h \
+	$(engine_dir)/gui/gtk-frontend/heap-view.cpp \
 	$(engine_dir)/gui/gtk-frontend/chat-area.h \
 	$(engine_dir)/gui/gtk-frontend/chat-area.cpp \
 	$(engine_dir)/gui/gtk-frontend/simple-chat-page.h \
