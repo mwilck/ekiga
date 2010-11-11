@@ -969,6 +969,9 @@ on_presentity_added (Ekiga::ClusterPtr /*cluster*/,
   active = presentity->get_presence () != "offline";
   away = presentity->get_presence () == "away";
 
+  if (groups.empty ())
+    groups.insert (_("Unsorted"));
+
   for (std::set<std::string>::const_iterator group = groups.begin ();
        group != groups.end ();
        group++) {
@@ -991,23 +994,6 @@ on_presentity_added (Ekiga::ClusterPtr /*cluster*/,
 			COLUMN_STATUS, presentity->get_status ().c_str (),
 			COLUMN_PRESENCE, presentity->get_presence ().c_str (),
 			COLUMN_ACTIVE, (!active || away) ? "gray" : "black",
-			-1);
-  }
-
-  if (groups.empty ()) {
-
-    roster_view_gtk_find_iter_for_group (self, heap, &heap_iter,
-					 _("Unsorted"), &group_iter);
-    roster_view_gtk_find_iter_for_presentity (self, &group_iter, presentity, &iter);
-    gtk_tree_store_set (self->priv->store, &iter,
-			COLUMN_TYPE, TYPE_PRESENTITY,
-			COLUMN_OFFLINE, active,
-			COLUMN_HEAP, heap.get (),
-			COLUMN_PRESENTITY, presentity.get (),
-			COLUMN_NAME, presentity->get_name ().c_str (),
-			COLUMN_STATUS, presentity->get_status ().c_str (),
-			COLUMN_PRESENCE, presentity->get_presence ().c_str (),
-			COLUMN_ACTIVE, active ? "black" : "gray",
 			-1);
   }
 
