@@ -223,41 +223,41 @@ static void expand_cell_data_func (GtkTreeViewColumn *column,
  * BEHAVIOR     : Visits the cluster's heaps, and add them to the view
  * PRE          : /
  */
-static bool on_visit_clusters (Ekiga::ClusterPtr cluster,
-			       gpointer data);
+static bool on_visit_clusters (RosterViewGtk* self,
+			       Ekiga::ClusterPtr cluster);
 
 
 /* DESCRIPTION  : Called when a new cluster has been added
  * BEHAVIOR     : Visits the cluster's heaps, and add them to the view
  * PRE          : /
  */
-static void on_cluster_added (Ekiga::ClusterPtr cluster,
-			      gpointer data);
+static void on_cluster_added (RosterViewGtk* self,
+			      Ekiga::ClusterPtr cluster);
 
 
 /* DESCRIPTION  : Called when visiting a new cluster
  * BEHAVIOR     : Adds in the cluster heaps
  * PRE          : /
  */
-static bool visit_heaps (Ekiga::HeapPtr heap,
+static bool visit_heaps (RosterViewGtk* self,
 			 Ekiga::ClusterPtr cluster,
-			 gpointer data);
+			 Ekiga::HeapPtr heap);
 
 /* DESCRIPTION  : Called when the or heap_added signal has been emitted
  * BEHAVIOR     : Add or Update the Heap in the GtkTreeView.
  * PRE          : /
  */
-static void on_heap_added (Ekiga::ClusterPtr cluster,
-			   Ekiga::HeapPtr heap,
-			   gpointer data);
+static void on_heap_added (RosterViewGtk* self,
+			   Ekiga::ClusterPtr cluster,
+			   Ekiga::HeapPtr heap);
 
 /* DESCRIPTION  : Called when the heap_updated signal has been emitted
  * BEHAVIOR     : Add or Update the Heap in the GtkTreeView.
  * PRE          : /
  */
-static void on_heap_updated (Ekiga::ClusterPtr cluster,
-			     Ekiga::HeapPtr heap,
-			     gpointer data);
+static void on_heap_updated (RosterViewGtk* self,
+			     Ekiga::ClusterPtr cluster,
+			     Ekiga::HeapPtr heap);
 
 
 /* DESCRIPTION  : Called when the heap_removed signal has been emitted
@@ -267,19 +267,19 @@ static void on_heap_updated (Ekiga::ClusterPtr cluster,
  *                the view.
  * PRE          : /
  */
-static void on_heap_removed (Ekiga::ClusterPtr cluster,
-			     Ekiga::HeapPtr heap,
-			     gpointer data);
+static void on_heap_removed (RosterViewGtk* self,
+			     Ekiga::ClusterPtr cluster,
+			     Ekiga::HeapPtr heap);
 
 
 /* DESCRIPTION  : Called when visiting a new heap
  * BEHAVIOR     : Adds in the heap presentities
  * PRE          : /
  */
-static bool visit_presentities (Ekiga::PresentityPtr presentity,
+static bool visit_presentities (RosterViewGtk* self,
 				Ekiga::ClusterPtr cluster,
 				Ekiga::HeapPtr heap,
-				gpointer data);
+				Ekiga::PresentityPtr presentity);
 
 
 /* DESCRIPTION  : Called when the presentity_added signal has been emitted
@@ -288,10 +288,10 @@ static bool visit_presentities (Ekiga::PresentityPtr presentity,
  *                added.
  * PRE          : A valid Heap.
  */
-static void on_presentity_added (Ekiga::ClusterPtr cluster,
+static void on_presentity_added (RosterViewGtk* self,
+				 Ekiga::ClusterPtr cluster,
 				 Ekiga::HeapPtr heap,
-				 Ekiga::PresentityPtr presentity,
-				 gpointer data);
+				 Ekiga::PresentityPtr presentity);
 
 
 /* DESCRIPTION  : Called when the presentity_updated signal has been emitted
@@ -299,10 +299,10 @@ static void on_presentity_added (Ekiga::ClusterPtr cluster,
  * BEHAVIOR     : Update the given Presentity into the Heap.
  * PRE          : A valid Heap.
  */
-static void on_presentity_updated (Ekiga::ClusterPtr cluster,
+static void on_presentity_updated (RosterViewGtk* self,
+				   Ekiga::ClusterPtr cluster,
 				   Ekiga::HeapPtr heap,
-				   Ekiga::PresentityPtr presentity,
-				   gpointer data);
+				   Ekiga::PresentityPtr presentity);
 
 
 /* DESCRIPTION  : Called when the presentity_removed signal has been emitted
@@ -310,18 +310,18 @@ static void on_presentity_updated (Ekiga::ClusterPtr cluster,
  * BEHAVIOR     : Remove the given Presentity from the given Heap.
  * PRE          : A valid Heap.
  */
-static void on_presentity_removed (Ekiga::ClusterPtr cluster,
+static void on_presentity_removed (RosterViewGtk* self,
+				   Ekiga::ClusterPtr cluster,
 				   Ekiga::HeapPtr heap,
-				   Ekiga::PresentityPtr presentity,
-				   gpointer data);
+				   Ekiga::PresentityPtr presentity);
 
 
 /* DESCRIPTION  : Called when the PresenceCore has a form request to handle
  * BEHAVIOR     : Runs the form request in gtk+
  * PRE          : The given pointer is the roster view widget
  */
-static bool on_handle_questions (Ekiga::FormRequestPtr request,
-				 gpointer data);
+static bool on_handle_questions (RosterViewGtk* self,
+				 Ekiga::FormRequestPtr request);
 
 
 /*
@@ -855,46 +855,45 @@ expand_cell_data_func (GtkTreeViewColumn *column,
 }
 
 static bool
-on_visit_clusters (Ekiga::ClusterPtr cluster,
-		   gpointer data)
+on_visit_clusters (RosterViewGtk* self,
+		   Ekiga::ClusterPtr cluster)
 {
-  on_cluster_added (cluster, data);
+  on_cluster_added (self, cluster);
   return true;
 }
 
 static void
-on_cluster_added (Ekiga::ClusterPtr cluster,
-		  gpointer data)
+on_cluster_added (RosterViewGtk* self,
+		  Ekiga::ClusterPtr cluster)
 {
-  cluster->visit_heaps (boost::bind (&visit_heaps, _1, cluster, data));
+  cluster->visit_heaps (boost::bind (&visit_heaps, self, cluster, _1));
 }
 
 static bool
-visit_heaps (Ekiga::HeapPtr heap,
+visit_heaps (RosterViewGtk* self,
 	     Ekiga::ClusterPtr cluster,
-	     gpointer data)
+	     Ekiga::HeapPtr heap)
 {
-  on_heap_updated (cluster, heap, data);
-  heap->visit_presentities (boost::bind (&visit_presentities, _1, cluster, heap, data));
+  on_heap_updated (self, cluster, heap);
+  heap->visit_presentities (boost::bind (&visit_presentities, self, cluster, heap, _1));
 
   return true;
 }
 
 static void
-on_heap_added (Ekiga::ClusterPtr cluster,
-	       Ekiga::HeapPtr heap,
-	       gpointer data)
+on_heap_added (RosterViewGtk* self,
+	       Ekiga::ClusterPtr cluster,
+	       Ekiga::HeapPtr heap)
 {
-  on_heap_updated (cluster, heap, data);
-  heap->visit_presentities (boost::bind (&visit_presentities, _1, cluster, heap, data));
+  on_heap_updated (self, cluster, heap);
+  heap->visit_presentities (boost::bind (&visit_presentities, self, cluster, heap, _1));
 }
 
 static void
-on_heap_updated (Ekiga::ClusterPtr /*cluster*/,
-		 Ekiga::HeapPtr heap,
-		 gpointer data)
+on_heap_updated (RosterViewGtk* self,
+		 G_GNUC_UNUSED Ekiga::ClusterPtr cluster,
+		 Ekiga::HeapPtr heap)
 {
-  RosterViewGtk *self = ROSTER_VIEW_GTK (data);
   GtkTreeIter iter;
   GtkTreeIter filtered_iter;
   GtkTreeSelection* selection = NULL;
@@ -922,11 +921,10 @@ on_heap_updated (Ekiga::ClusterPtr /*cluster*/,
 
 
 static void
-on_heap_removed (Ekiga::ClusterPtr /*cluster*/,
-		 Ekiga::HeapPtr heap,
-		 gpointer data)
+on_heap_removed (RosterViewGtk* self,
+		 G_GNUC_UNUSED Ekiga::ClusterPtr cluster,
+		 Ekiga::HeapPtr heap)
 {
-  RosterViewGtk *self = ROSTER_VIEW_GTK (data);
   GtkTreeIter iter;
 
   roster_view_gtk_find_iter_for_heap (self, heap, &iter);
@@ -936,23 +934,22 @@ on_heap_removed (Ekiga::ClusterPtr /*cluster*/,
 
 
 static bool
-visit_presentities (Ekiga::PresentityPtr presentity,
+visit_presentities (RosterViewGtk* self,
 		    Ekiga::ClusterPtr cluster,
 		    Ekiga::HeapPtr heap,
-		    gpointer data)
+		    Ekiga::PresentityPtr presentity)
 {
-  on_presentity_added (cluster, heap, presentity, data);
+  on_presentity_added (self, cluster, heap, presentity);
 
   return true;
 }
 
 static void
-on_presentity_added (Ekiga::ClusterPtr /*cluster*/,
+on_presentity_added (RosterViewGtk* self,
+		     G_GNUC_UNUSED Ekiga::ClusterPtr cluster,
 		     Ekiga::HeapPtr heap,
-		     Ekiga::PresentityPtr presentity,
-		     gpointer data)
+		     Ekiga::PresentityPtr presentity)
 {
-  RosterViewGtk *self = ROSTER_VIEW_GTK (data);
   GtkTreeIter heap_iter;
   std::set<std::string> groups = presentity->get_groups ();
   GtkTreeSelection* selection = gtk_tree_view_get_selection (self->priv->tree_view);
@@ -1008,12 +1005,11 @@ on_presentity_added (Ekiga::ClusterPtr /*cluster*/,
 
 
 static void
-on_presentity_updated (Ekiga::ClusterPtr cluster,
+on_presentity_updated (RosterViewGtk* self,
+		       Ekiga::ClusterPtr cluster,
 		       Ekiga::HeapPtr heap,
-		       Ekiga::PresentityPtr presentity,
-		       gpointer data)
+		       Ekiga::PresentityPtr presentity)
 {
-  RosterViewGtk *self = (RosterViewGtk *)data;
   GtkTreeModel *model;
   GtkTreeIter heap_iter;
   GtkTreeIter group_iter;
@@ -1027,7 +1023,7 @@ on_presentity_updated (Ekiga::ClusterPtr cluster,
     groups.insert (_("Unsorted"));
 
   // This makes sure we are in all groups where we should
-  on_presentity_added (cluster, heap, presentity, data);
+  on_presentity_added (self, cluster, heap, presentity);
 
   // Now let's remove from all the others
   roster_view_gtk_find_iter_for_heap (self, heap, &heap_iter);
@@ -1059,12 +1055,11 @@ on_presentity_updated (Ekiga::ClusterPtr cluster,
 
 
 static void
-on_presentity_removed (Ekiga::ClusterPtr /*cluster*/,
+on_presentity_removed (RosterViewGtk* self,
+		       G_GNUC_UNUSED Ekiga::ClusterPtr cluster,
 		       Ekiga::HeapPtr heap,
-		       Ekiga::PresentityPtr presentity,
-		       gpointer data)
+		       Ekiga::PresentityPtr presentity)
 {
-  RosterViewGtk *self = ROSTER_VIEW_GTK (data);
   GtkTreeModel *model = NULL;
   GtkTreeIter heap_iter;
   GtkTreeIter group_iter;
@@ -1086,10 +1081,10 @@ on_presentity_removed (Ekiga::ClusterPtr /*cluster*/,
 }
 
 static bool
-on_handle_questions (Ekiga::FormRequestPtr request,
-		     gpointer data)
+on_handle_questions (RosterViewGtk* self,
+		     Ekiga::FormRequestPtr request)
 {
-  GtkWidget *parent = gtk_widget_get_toplevel (GTK_WIDGET (data));
+  GtkWidget *parent = gtk_widget_get_toplevel (GTK_WIDGET (self));
   FormDialog dialog (request, parent);
 
   dialog.run ();
@@ -1482,25 +1477,25 @@ roster_view_gtk_new (Ekiga::PresenceCore &core)
 
 
   /* Relay signals */
-  conn = core.cluster_added.connect (boost::bind (&on_cluster_added, _1, (gpointer) self));
+  conn = core.cluster_added.connect (boost::bind (&on_cluster_added, self, _1));
   self->priv->connections.push_back (conn);
-  conn = core.heap_added.connect (boost::bind (&on_heap_added, _1, _2, (gpointer) self));
+  conn = core.heap_added.connect (boost::bind (&on_heap_added, self, _1, _2));
   self->priv->connections.push_back (conn);
-  conn = core.heap_updated.connect (boost::bind (&on_heap_updated, _1, _2, (gpointer) self));
+  conn = core.heap_updated.connect (boost::bind (&on_heap_updated, self, _1, _2));
   self->priv->connections.push_back (conn);
-  conn = core.heap_removed.connect (boost::bind (&on_heap_removed, _1, _2, (gpointer) self));
+  conn = core.heap_removed.connect (boost::bind (&on_heap_removed, self, _1, _2));
 
   self->priv->connections.push_back (conn);
-  conn = core.presentity_added.connect (boost::bind (&on_presentity_added, _1, _2, _3, (gpointer) self));
+  conn = core.presentity_added.connect (boost::bind (&on_presentity_added, self, _1, _2, _3));
   self->priv->connections.push_back (conn);
-  conn = core.presentity_updated.connect (boost::bind (&on_presentity_updated, _1, _2, _3, self));
+  conn = core.presentity_updated.connect (boost::bind (&on_presentity_updated, self, _1, _2, _3));
   self->priv->connections.push_back (conn);
-  conn = core.presentity_removed.connect (boost::bind (&on_presentity_removed, _1, _2, _3, (gpointer) self));
+  conn = core.presentity_removed.connect (boost::bind (&on_presentity_removed, self, _1, _2, _3));
   self->priv->connections.push_back (conn);
-  conn = core.questions.connect (boost::bind (&on_handle_questions, _1, (gpointer) self));
+  conn = core.questions.connect (boost::bind (&on_handle_questions, self, _1));
   self->priv->connections.push_back (conn);
 
-  core.visit_clusters (boost::bind (&on_visit_clusters, _1, (gpointer) self));
+  core.visit_clusters (boost::bind (&on_visit_clusters, self, _1));
 
   /* Notifiers */
   gm_conf_notifier_add ("/apps/" PACKAGE_NAME "/contacts/show_offline_contacts",
