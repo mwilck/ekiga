@@ -1871,27 +1871,30 @@ on_roster_selection_changed (G_GNUC_UNUSED GtkWidget* view,
   gint section;
   GtkWidget* menu = gtk_menu_get_widget (mw->priv->main_menu, "contact");
 
-  section = gtk_notebook_get_current_page (GTK_NOTEBOOK (mw->priv->main_notebook));
+  if (GTK_IS_MENU (menu)) {
 
-  if (section == mw->priv->roster_view_page_number) {
+    section = gtk_notebook_get_current_page (GTK_NOTEBOOK (mw->priv->main_notebook));
 
-    MenuBuilderGtk builder;
-    gtk_widget_set_sensitive (menu, TRUE);
+    if (section == mw->priv->roster_view_page_number) {
 
-    if (roster_view_gtk_populate_menu_for_selected (ROSTER_VIEW_GTK (mw->priv->roster_view), builder)) {
+      MenuBuilderGtk builder;
+      gtk_widget_set_sensitive (menu, TRUE);
 
-      gtk_menu_item_set_submenu (GTK_MENU_ITEM (menu), builder.menu);
-      gtk_widget_show_all (builder.menu);
+      if (roster_view_gtk_populate_menu_for_selected (ROSTER_VIEW_GTK (mw->priv->roster_view), builder)) {
+
+	gtk_menu_item_set_submenu (GTK_MENU_ITEM (menu), builder.menu);
+	gtk_widget_show_all (builder.menu);
+      } else {
+
+	gtk_widget_set_sensitive (menu, FALSE);
+	g_object_ref_sink (builder.menu);
+	g_object_unref (builder.menu);
+      }
     } else {
 
       gtk_widget_set_sensitive (menu, FALSE);
-      g_object_ref_sink (builder.menu);
-      g_object_unref (builder.menu);
+      gtk_menu_item_set_submenu (GTK_MENU_ITEM (menu), NULL);
     }
-  } else {
-
-    gtk_widget_set_sensitive (menu, FALSE);
-    gtk_menu_item_set_submenu (GTK_MENU_ITEM (menu), NULL);
   }
 }
 
