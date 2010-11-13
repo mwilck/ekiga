@@ -1,0 +1,3262 @@
+# Uyghur translation for ekiga.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# Gheyret Kenji <gheyret@yahoo.com>, 2010.
+# Sahran <sahran@live.com>,2010
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: ekiga\n"
+"Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?product=ekiga&component=general\n"
+"POT-Creation-Date: 2010-10-21 18:54+0000\n"
+"PO-Revision-Date: 2010-10-21 18:54+0000\n"
+"Last-Translator: Gheyret Kenji <gheyret@yahoo.com>\n"
+"Language-Team: Uyghur Computer Science Association <UKIJ@yahoogroups.com>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=1; plural=0;\n"
+
+#. Application name
+#: ../ekiga.desktop.in.in.h:1 ../src/gui/main_window.cpp:4383
+#: ../src/gui/main_window.cpp:4385
+msgid "Ekiga Softphone"
+msgstr "Ekiga Softphone"
+
+#: ../ekiga.desktop.in.in.h:2
+msgid "IP Telephony, VoIP and Video Conferencing"
+msgstr "IP تېلېفونى، VoIP ۋە سىن يىغىنى"
+
+#: ../ekiga.desktop.in.in.h:3
+msgid "Talk to and see people over the Internet"
+msgstr "ئىنتېرنېتتىكى كىشىلەر بىلەن سۆزلىشىش ۋە كۆرۈشۈش"
+
+#: ../ekiga.schemas.in.in.h:1
+msgid "0: 56kbps, 1: ISDN, 2: DSL128, 3: DSL512, 4: LAN, 5: Custom"
+msgstr "0 (56Kbps)、1 (ISDN)、2 (DSL 128)、3 (DSL 512)、4 (LAN)、 5 (باشقىلار)"
+
+#: ../ekiga.schemas.in.in.h:2
+msgid ""
+"Allow Ekiga to fall back to software scaling the picture-in-picture if "
+"hardware support is not available. If this is set to false, Ekiga will not "
+"try to open the PIP if hardware support is not available."
+msgstr "قاتتىق دېتالدا رەسىم ئىچىدە رەسىم كۆرسىتىشنى ئىشلەتكىلى بولمىسا، Ekiga يۇمشاق دېتال ئارقىلىق رەسىم ئىچىدە رەسىم نى چوڭايتىشقا رۇخسەت قىلىدۇ. بۇ false قىلىنسا، قاتتىق دېتالدا بۇ ئىقتىدارىنى ئىشلەتكىلى بولمىغان ئەھۋالدا يۇمشاق دېتالدا بۇ ئىقتىدارىنى ئىشلەتمەيدۇ"
+
+#: ../ekiga.schemas.in.in.h:3
+msgid "Allow picture-in-picture software scaling"
+msgstr "رەسىم ئىچىدە رەسىم بولغاندا يۇمشاق دېتال ئارقىلىق چوڭلۇقىنى ئۆزگەرتىشكە رۇخسەت قىل"
+
+#: ../ekiga.schemas.in.in.h:4
+msgid "Alternative audio output device"
+msgstr "يەنە بىر ئۈن چىقىرىش ئۈسكۈنىسى"
+
+#: ../ekiga.schemas.in.in.h:5
+msgid "Always forward calls to the given host"
+msgstr "كەلگەن تېلېفونلارنى ھەمىشە بېرىلگەن host قا ئۇلاپ بېرىش"
+
+#: ../ekiga.schemas.in.in.h:6
+msgid "Audio input device"
+msgstr "ئۈن كىرگۈزۈش ئۈسكۈنىسى"
+
+#: ../ekiga.schemas.in.in.h:7
+msgid "Audio output device"
+msgstr "ئۈن چىقىرىش ئۈسكۈنىسى"
+
+#: ../ekiga.schemas.in.in.h:8
+msgid "Automatic answer"
+msgstr "ئاپتوماتىك جاۋاب"
+
+#: ../ekiga.schemas.in.in.h:9 ../src/gui/preferences.cpp:526
+msgid ""
+"Automatically reject or forward incoming calls if no answer is given after "
+"the specified amount of time (in seconds)"
+msgstr "كەلگەن تېلېفونغا كۆرسىتىلگەن ۋاقىت(سېكۇنت) ئىچىدە جاۋاب بېرىلمىسە، ئۇنى ئۇنى ئاپتوماتىك رەت قىلىدۇ ياكى باشقا يەرگە ئۇلاپ بېرىدۇ."
+
+#: ../ekiga.schemas.in.in.h:10
+msgid "Calls history"
+msgstr "تېلېفون ئىزلىرى"
+
+#: ../ekiga.schemas.in.in.h:11
+msgid "Change the main window panel section"
+msgstr "باش كۆزنەكتىكى كۆزنەكچە بۆلەكلىرىنى ئۆزگەرتمەك"
+
+#: ../ekiga.schemas.in.in.h:12
+msgid ""
+"Connection will be established in Fast Start mode. Fast Start is a new way "
+"to start calls faster that was introduced in H.323v2. It is not supported by "
+"Netmeeting and using both Fast Start and H.245 Tunneling can crash some "
+"versions of Netmeeting"
+msgstr "تەز باشلاش ھالىتىدە باغلىنىدۇ. تەز باشلاش ھالىتى دېگىنىمىز H.323v2 نىڭدا تونۇشتۇرۇلغان ئۇسۇلدۇر. Netmeeting دا ئىشلەتكىلى بولمايدۇ. ئەگەر تەز باشلاش H.245 تونەللاش بىرگە ئىشلىتىلسە بەزى نەشردىكى Netmeeting غۇلاپ كېتىدۇ(crash)"
+
+#: ../ekiga.schemas.in.in.h:13
+msgid "Contact long status"
+msgstr "قارشى تەرەپتە كۆرسىتىدىغان ھالەت (ئۇزۇن)"
+
+#: ../ekiga.schemas.in.in.h:14
+msgid "Contact short status"
+msgstr "قارشى تەرەپتە كۆرسىتىدىغان ھالەت (قىسقا)"
+
+#: ../ekiga.schemas.in.in.h:15
+msgid "DTMF sending"
+msgstr "DTMF ئەۋەتىش"
+
+#: ../ekiga.schemas.in.in.h:16
+msgid "Disable video hardware acceleration"
+msgstr "سىن قاتتىق دېتال تېزلىتىش ئىقتىدارىنى ئىناۋەتسىز قىلماق"
+
+#: ../ekiga.schemas.in.in.h:17 ../src/gui/main_window.cpp:3633
+msgid "Display images from your camera device"
+msgstr "كامېرادىن كەلگەن سۈرەتلەرنى كۆرسەتمەك"
+
+#: ../ekiga.schemas.in.in.h:18
+msgid "Enable 'Fast Start'"
+msgstr "«تەز باشلاش» نى ئىناۋەتلىك قىلماق"
+
+#: ../ekiga.schemas.in.in.h:19
+msgid "Enable H.245 tunneling"
+msgstr "H.245 تونەللاشنى ئىناۋەتلىك قىلماق"
+
+#: ../ekiga.schemas.in.in.h:20
+msgid "Enable STUN network detection"
+msgstr "STUN ئارقىلىق بايقاشنى ئىناۋەتلىك قىلماق"
+
+#: ../ekiga.schemas.in.in.h:21
+msgid "Enable early H.245"
+msgstr "H.245 (دەسلەپكى)نى ئىناۋەتلىك قىلماق"
+
+#: ../ekiga.schemas.in.in.h:22
+msgid "Enable echo cancelation"
+msgstr "شاۋقۇن ئاۋاز پەسەيتىشنى ئىناۋەتلىك قىلماق"
+
+#: ../ekiga.schemas.in.in.h:23
+msgid "Enable silence detection"
+msgstr "ئۇنسىز يەرلەرنى بىلىپ بىر تەرەپ قىلىشنى ئىناۋەتلىك قىلماق"
+
+#: ../ekiga.schemas.in.in.h:24 ../src/gui/preferences.cpp:502
+msgid "Enable the automatic network setup resulting from the STUN test"
+msgstr "STUN سىنىقى ئارقىلىق تور تەڭشىكىنى ئاپتوماتىك بېكىتىشنى ئىناۋەتلىك قىلىش"
+
+#: ../ekiga.schemas.in.in.h:25
+msgid ""
+"Enter the number of seconds after which Ekiga should try refreshing the NAT "
+"binding when STUN is being used"
+msgstr "STUN ئىشلىتىلگەن ۋاقىتتا، Ekiga نىڭ NAT بىلەن بولغان باغلانمىسىنى يېڭىلايدىغان ۋاقىت (سېكۇنت)"
+
+#: ../ekiga.schemas.in.in.h:26 ../src/gui/preferences.cpp:469
+msgid "Enter your full name"
+msgstr "تولۇق ئاتىڭىزنى كىرگۈزۈڭ"
+
+#: ../ekiga.schemas.in.in.h:27
+msgid "Forward calls to host"
+msgstr "چاقىرىشنى ئۇلاپ بېرىدىغان ماشىنا"
+
+#: ../ekiga.schemas.in.in.h:28
+msgid "Forward calls to the given host if busy"
+msgstr "ئالدىراش ۋاقىتتا، چاقىرىشنى كۆرسىتىلگەن ماشىنىغا ئۇلاپ بەر"
+
+#: ../ekiga.schemas.in.in.h:29
+msgid "Forward calls to the given host if no answer"
+msgstr "جاۋاب بەرمىسە، چاقىرىشنى كۆرسىتىلگەن ماشىنىغا ئۇلاپ بەر"
+
+#: ../ekiga.schemas.in.in.h:30 ../src/gui/preferences.cpp:1022
+msgid "Frame Rate"
+msgstr "كاندۇك تېزلىكى"
+
+#: ../ekiga.schemas.in.in.h:31
+msgid "Full name"
+msgstr "تولۇق ئاتى"
+
+#: ../ekiga.schemas.in.in.h:32 ../src/gui/preferences.cpp:487
+msgid ""
+"If enabled, Ekiga will start hidden provided that the notification area is "
+"present in the GNOME panel"
+msgstr "TRUE تاللانسا، GNOME تاختىيىنىڭ ئۇقتۇرۇش رايونىدا Ekiga نىڭ سىنبەلگىسىنى كۆرسەتمەيلا قوزغىلىدۇ"
+
+#: ../ekiga.schemas.in.in.h:33
+msgid ""
+"If enabled, all incoming calls will be forwarded to the host that is "
+"specified in the field below"
+msgstr "TRUE تاللانسا، بارلىق چاقىرىشلار(تېلېفونلار) تۆۋەندە كۆرسىتىلگەن ماشىنىغا ئۇلىنىدۇ."
+
+#: ../ekiga.schemas.in.in.h:34
+msgid ""
+"If enabled, all incoming calls will be forwarded to the host that is "
+"specified in the field below if you already are in a call or if you are in "
+"Do Not Disturb mode"
+msgstr "TRUE تاللانسا، سۆزلىشىۋاتقان ياكى «دەخلى قىلماڭ» دېگەن ھالەتتىكى چاغدا، بارلىق چاقىرىشلار(تېلېفونلار) تۆۋەندە كۆرسىتىلگەن ماشىنىغا ئۇلىنىدۇ."
+
+#: ../ekiga.schemas.in.in.h:35
+msgid ""
+"If enabled, all incoming calls will be forwarded to the host that is "
+"specified in the field below if you do not answer the call"
+msgstr "TRUE تاللانسا، چاقىرىشقا جاۋاب بەرمىسىڭىز، بارلىق چاقىرىشلار(تېلېفونلار) تۆۋەندە كۆرسىتىلگەن ماشىنىغا ئۇلىنىدۇ."
+
+#: ../ekiga.schemas.in.in.h:36 ../src/gui/preferences.cpp:527
+msgid "If enabled, automatically answer incoming calls"
+msgstr "TRUE تاللانسا، چاقىرىشلارغا ئاپتوماتىك جاۋاب بېرىدۇ."
+
+#: ../ekiga.schemas.in.in.h:37 ../src/gui/preferences.cpp:489
+msgid "If enabled, offline contacts will be shown in the roster"
+msgstr "TRUE تاللانسا، توردا يوق ئالاقىداشنى ئالاقە دەپتىرىدە كۆرسىتىدۇ"
+
+#: ../ekiga.schemas.in.in.h:38
+msgid "If enabled, use echo cancelation"
+msgstr "TRUE تاللانسا echo cancelation ئىقتىدارى ئىشلىتىلىدۇ"
+
+#: ../ekiga.schemas.in.in.h:39
+msgid "If enabled, use silence detection with the codecs supporting it"
+msgstr "TRUE تاللانسا، codecs دا ئىشلەتكىلى بولىدىغان جىمجىتلىقنى بايقاش ئىقتىدارى ئىشلىتىلىدۇ"
+
+#: ../ekiga.schemas.in.in.h:40
+msgid "Kind of network selected in the assistant"
+msgstr "تەڭشەك ياردەمچىسىدە تاللانغان تورنىڭ تىپى"
+
+#: ../ekiga.schemas.in.in.h:41
+msgid "LDAP servers"
+msgstr "LDAP مۇلازىمېتىرلىرى"
+
+#: ../ekiga.schemas.in.in.h:42
+msgid "List of configured LDAP servers"
+msgstr "تەڭشىلىپ بولغان LDAP مۇلازىمېتىرلىرىنىڭ تىزىملىكى"
+
+#: ../ekiga.schemas.in.in.h:43
+msgid "List of folded groups in the roster"
+msgstr "ئالاقە دەپتىرىدە قاتلانغان گۇرۇپپىلارنىڭ تىزىملىكى"
+
+#: ../ekiga.schemas.in.in.h:44
+msgid "Listen port"
+msgstr "كۈتىدىغان ئېغىز(نومۇرى)"
+
+#: ../ekiga.schemas.in.in.h:45
+msgid "Local video window size"
+msgstr "يەرلىك سىن كۆزنىكىنىڭ چوڭلۇقى"
+
+#: ../ekiga.schemas.in.in.h:46
+msgid "Maximum RX video bitrate"
+msgstr "ئەڭ چوڭ RX سىن  بىت تېزلىكى(bitrate)"
+
+#: ../ekiga.schemas.in.in.h:47
+msgid "Maximum TX video bitrate"
+msgstr "ئەڭ چوڭ TX سىن بىت تېزلىكى(bitrate)"
+
+#: ../ekiga.schemas.in.in.h:48
+msgid "Maximum jitter buffer"
+msgstr "Jitter يىغلەكىنىڭ ئەڭ چوڭ قىممىتى"
+
+#: ../ekiga.schemas.in.in.h:49
+msgid "NAT Binding Timeout"
+msgstr ""
+
+#: ../ekiga.schemas.in.in.h:50
+msgid "No answer timeout"
+msgstr "«جاۋاب يوق» نىڭ ۋاقىت چېكى"
+
+#: ../ekiga.schemas.in.in.h:51
+msgid "Outbound Proxy"
+msgstr "سىرتقى ۋاكالەتچى"
+
+#: ../ekiga.schemas.in.in.h:52 ../src/gui/preferences.cpp:496
+msgid "Place windows displaying video above other windows during calls"
+msgstr "سۆزلىشىۋاتقاندا، باشقا كۆزنەك ئۇستى قىسمىغا سىن كۆرسىتىدىغان كۆزنەك ئورۇنلاشتۇرىدۇ"
+
+#: ../ekiga.schemas.in.in.h:53 ../src/gui/preferences.cpp:372
+msgid "Play busy tone"
+msgstr ""
+
+#: ../ekiga.schemas.in.in.h:54 ../src/gui/preferences.cpp:362
+msgid "Play ring tone"
+msgstr ""
+
+#: ../ekiga.schemas.in.in.h:55 ../src/gui/preferences.cpp:352
+msgid "Play sound on incoming calls"
+msgstr "باشقىلار چاقىرغاندا ئاۋاز چىقار"
+
+#: ../ekiga.schemas.in.in.h:56
+msgid "Play sound on new message"
+msgstr "يېڭى ئۇچۇر كەلگەندە ئاۋاز چىقار"
+
+#: ../ekiga.schemas.in.in.h:57
+msgid "Play sound on new voice mail"
+msgstr "يېڭى ئۈنخەت كەلگەندە ئاۋاز چىقار"
+
+#: ../ekiga.schemas.in.in.h:58
+msgid "Position of the local video window"
+msgstr "يەرلىك سىن كۆزنىكىنىڭ ئورنى"
+
+#: ../ekiga.schemas.in.in.h:59
+msgid "Position on the screen of the address book window"
+msgstr "ئادرېس دەپتىرى كۆزنىكىنىڭ ئورنى"
+
+#: ../ekiga.schemas.in.in.h:60
+msgid "Position on the screen of the audio settings window"
+msgstr "ئۈن تەڭشەكلىرى كۆزنىكىنىڭ ئورنى"
+
+#: ../ekiga.schemas.in.in.h:61
+msgid "Position on the screen of the chat window"
+msgstr "پاراڭ كۆزنىكىنىڭ ئورنى"
+
+#: ../ekiga.schemas.in.in.h:62
+msgid "Position on the screen of the druid window"
+msgstr "druid كۆزنىكىنىڭ ئورنى"
+
+#: ../ekiga.schemas.in.in.h:63
+msgid "Position on the screen of the main window"
+msgstr "ئاساسىي كۆزنەكنىڭ ئورنى"
+
+#: ../ekiga.schemas.in.in.h:64
+msgid "Position on the screen of the preferences window"
+msgstr "تەڭشەك كۆزنىكىنىڭ ئورنى"
+
+#: ../ekiga.schemas.in.in.h:65
+msgid "Position on the screen of the video settings window"
+msgstr "سىن تەڭشەكلىرى كۆزنىكىنىڭ ئورنى"
+
+#: ../ekiga.schemas.in.in.h:66
+msgid "Remote video window position"
+msgstr "يىراقتىكى سىن كۆزنىكىنىڭ ئورنى"
+
+#: ../ekiga.schemas.in.in.h:67
+msgid "Remote video window size"
+msgstr "يىراقتىكى سىن كۆزنىكىنىڭ چوڭلۇقى"
+
+#: ../ekiga.schemas.in.in.h:68
+msgid "Select an alternative audio output device to use for sound events."
+msgstr "ئاۋاز چىقىرىش ئۈچۈن ئىشلىتىدىغان يەنە بىر ئۈن ئۈسكۈنىسىنى تاللايدۇ."
+
+#: ../ekiga.schemas.in.in.h:69 ../src/gui/preferences.cpp:787
+msgid "Select the audio input device to use"
+msgstr "ئىشلىتىدىغان ئۈن كىرگۈزۈش(مىكروفون) ئۈسكۈنىسىنى تاللا"
+
+#: ../ekiga.schemas.in.in.h:70 ../src/gui/preferences.cpp:780
+msgid "Select the audio output device to use"
+msgstr "ئىشلىتىدىغان ئۈن چىقىرىش(ياڭراتقۇ) ئۈسكۈنىسىنى تاللا"
+
+#: ../ekiga.schemas.in.in.h:71 ../src/gui/preferences.cpp:940
+msgid ""
+"Select the format for video cameras (does not apply to most USB cameras)"
+msgstr "سىن كامېراسىنىڭ فورماتى(كۆپلىگەن USB كامېراغا ماس كەلمەيدۇ)"
+
+#: ../ekiga.schemas.in.in.h:72
+msgid ""
+"Select the transmitted video size: Small (QCIF 176x144) or Large (CIF "
+"352x288)"
+msgstr "يوللايدىغان سىننىڭ چوڭلۇقى: Small (QCIF 176x144) ياكى Large (CIF 352x288)"
+
+#: ../ekiga.schemas.in.in.h:73 ../src/gui/preferences.cpp:932
+msgid ""
+"Select the video input device to use. If an error occurs when using this "
+"device a test picture will be transmitted."
+msgstr "ئىشلىتىدىغان سىن كىرگۈزۈش ئۈسكۈنىسىنى تاللايدۇ. بۇنى ئىشلىتىۋاتقاندا خاتالىق كۆرۈلسە سىناق سۈرەت يوللىنىدۇ"
+
+#: ../ekiga.schemas.in.in.h:74
+msgid "Show offline contacts"
+msgstr "توردا يوق ئالاقەداشلارنىمۇ كۆرسەت"
+
+#: ../ekiga.schemas.in.in.h:75 ../src/gui/main_window.cpp:3264
+msgid "Show the call panel"
+msgstr "چاقىرىش تاختىسىنى كۆرسەت"
+
+#: ../ekiga.schemas.in.in.h:76
+msgid "Size of the address book window"
+msgstr "ئادرېس دەپتىرى كۆزنىكىنىڭ چوڭلۇقى"
+
+#: ../ekiga.schemas.in.in.h:77
+msgid "Size of the audio settings window"
+msgstr "ئۈن تەڭشەكلىرى كۆزنىكىنىڭ چوڭلۇقى"
+
+#: ../ekiga.schemas.in.in.h:78
+msgid "Size of the chat window"
+msgstr "پاراڭ كۆزنىكىنىڭ چوڭلۇقى"
+
+#: ../ekiga.schemas.in.in.h:79
+msgid "Size of the druid window"
+msgstr "druid كۆزنىكىنىڭ چوڭلۇقى"
+
+#: ../ekiga.schemas.in.in.h:80
+msgid "Size of the preferences window"
+msgstr "تەڭشەك كۆزنىكىنىڭ چوڭلۇقى"
+
+#: ../ekiga.schemas.in.in.h:81
+msgid "Size of the video settings window"
+msgstr "سىن تەڭشەكلىرى كۆزنىكىنىڭ چوڭلۇقى"
+
+#: ../ekiga.schemas.in.in.h:82
+msgid "Specify the software scaling algorithm"
+msgstr "سىن چوڭلۇقىنى ئۆزگەرتىش ئالگورىزىمى(ھېسابلاش ئۇسۇلى)"
+
+#: ../ekiga.schemas.in.in.h:83
+msgid ""
+"Specify the software scaling algorithm: 0: nearest neighbor, 1: nearest "
+"neighbor with box filter, 2: bilinear filtering, 3: hyperbolic filtering. "
+"Does not apply on windows systems."
+msgstr "سىن چوڭلۇقىنى ئۆزگەرتىش ئالگورىزىمى : 0 ئەڭ يېقىن قوشنا، 1: ئەڭ يېڭى قوشنا(كۆزنەكچە سۈزگۈچى بار) 2: قوش سىزىقلىق سۈزۈش، 3: hyperbolic سۈزۈش. كۆزنەك سىستېمىلىرىغا ماس كەلمەيدۇ"
+
+#: ../ekiga.schemas.in.in.h:84
+msgid "Start hidden"
+msgstr "يوشۇرۇن قوزغال"
+
+#: ../ekiga.schemas.in.in.h:85
+msgid "TCP port range"
+msgstr "TCP ئېغىزىنىڭ دائىرىسى"
+
+#: ../ekiga.schemas.in.in.h:86
+msgid "Temporal Spatial Trade Off"
+msgstr ""
+
+#: ../ekiga.schemas.in.in.h:87
+msgid "The Audio Codecs List"
+msgstr "ئۈن Codec لىرى تىزىملىكى"
+
+#: ../ekiga.schemas.in.in.h:88 ../src/gui/preferences.cpp:737
+msgid "The SIP Outbound Proxy to use for outgoing calls"
+msgstr "باشقىلارنى چاقىرغاندا ئىشلىتىدىغان سىرتقى SIP ۋاكالەتچىسى"
+
+#: ../ekiga.schemas.in.in.h:89
+msgid "The STUN Server"
+msgstr "STUN مۇلازىمېتىرى"
+
+#: ../ekiga.schemas.in.in.h:90
+msgid ""
+"The STUN server to use for STUN Support. STUN is a technology that permits "
+"passage through some types of NAT gateway"
+msgstr "STUN ئىشلىتىدىغان STUN مۇلازىمېتىرىدۇر. STUN بولسا NAT دەرۋازىسىدىن ئۆتۈشتە ئىشلىتىلىدىغان تېخنىكا."
+
+#: ../ekiga.schemas.in.in.h:91
+msgid ""
+"The Type of Service (TOS) byte on outgoing RTP IP packets. This byte is used "
+"by the network to provide some level of Quality of Service (QoS). Default "
+"value 184 (0xB8) correspond to Expedited Forwarding (EF) PHB as defined in "
+"RFC 3246."
+msgstr ""
+
+#: ../ekiga.schemas.in.in.h:92
+msgid "The accounts list"
+msgstr "ھېساباتلار"
+
+#: ../ekiga.schemas.in.in.h:93
+msgid "The audio codecs list"
+msgstr "ئۈن كودلىغۇچلار"
+
+#: ../ekiga.schemas.in.in.h:94
+msgid "The busy tone sound"
+msgstr ""
+
+#: ../ekiga.schemas.in.in.h:95
+msgid ""
+"The chosen sound will be played at the end of calls or calling somebody who "
+"is busy, if enabled"
+msgstr "سۆزلىشىش تاماملانغاندا ياكى قارشى تەرەپ ئالدىراش چاغدا تاللانغان ئاۋازنى قويىدۇ(ئەگەر ئىناۋەتلىك قىلىنغان بولسا)"
+
+#: ../ekiga.schemas.in.in.h:96
+msgid "The chosen sound will be played on incoming calls, if enabled"
+msgstr "چاقىرىق كەلگەندە تاللانغان ئاۋازنى قويىدۇ (ئەگەر ئىناۋەتلىك قىلىنغان بولسا)"
+
+#: ../ekiga.schemas.in.in.h:97
+msgid ""
+"The chosen sound will be played when a new instant message is received, if "
+"enabled"
+msgstr "يېڭى ئۇچۇر كەلسە تاللانغان ئاۋازنى قويىدۇ (ئەگەر ئىناۋەتلىك قىلىنغان بولسا)"
+
+#: ../ekiga.schemas.in.in.h:98
+msgid ""
+"The chosen sound will be played when a new voice mail is received, if enabled"
+msgstr "يېڭىدىن ئۈنخەت كەلگەندە تاللانغان ئاۋازنى قويىدۇ.  (ئەگەر ئىناۋەتلىك قىلىنغان بولسا)"
+
+#: ../ekiga.schemas.in.in.h:99
+msgid "The chosen sound will be played when calling somebody, if enabled"
+msgstr "بىرەرىنى چاقىرغاندا تاللانغان ئاۋازنى قويىدۇ.  (ئەگەر ئىناۋەتلىك قىلىنغان بولسا)"
+
+#: ../ekiga.schemas.in.in.h:100
+msgid "The default video view"
+msgstr "سىننىڭ كۆرۈنۈشى (كۆڭۈلدىكى قىممىتى)"
+
+#: ../ekiga.schemas.in.in.h:101
+msgid ""
+"The default video view (0: Local, 1: Remote, 2: Both layered, 3: Both with "
+"local video in a separate window, 4: Both)"
+msgstr "سىننىڭ كۆرۈنۈشنىڭ كۆڭۈلدىكى قىممىتى(0: ئوز سىنى، 1:قارشى تەرەپ سىنى، 2:ئىككىلىسىنى قەۋەتلەشتۈرۈپ 3: ئىككىلىسىنى، بىراق ئۆزىنىڭكىنى باشقا كۆزنەكتە، 4:ئىككىلىسىنى)"
+
+#: ../ekiga.schemas.in.in.h:102
+msgid "The dial tone sound"
+msgstr "نومۇر باسقاندىكى ئاۋاز"
+
+#: ../ekiga.schemas.in.in.h:103
+msgid "The history of the 100 last calls"
+msgstr "ئىزلار (100 قېتىملىق)"
+
+#: ../ekiga.schemas.in.in.h:104 ../src/gui/preferences.cpp:686
+#: ../src/gui/preferences.cpp:740
+msgid "The host where calls should be forwarded if call forwarding is enabled"
+msgstr ""
+
+#: ../ekiga.schemas.in.in.h:105
+msgid "The incoming call sound"
+msgstr "چاقىرىق كەلگەندە قويىدىغان ئاۋاز"
+
+#: ../ekiga.schemas.in.in.h:106
+msgid "The list of accounts to which Ekiga should register"
+msgstr "Ekiga غا خەتلىتىلگەن ھېساباتلار"
+
+#: ../ekiga.schemas.in.in.h:107
+msgid "The long status information"
+msgstr "ھالەت ئۇچۇرى (ئۇزۇن تېكىستتە ئىپادىلەنگەن)."
+
+#: ../ekiga.schemas.in.in.h:108
+msgid ""
+"The maximum RX video bitrate in kbit/s. This value will be signaled to the "
+"peer endpoint that can adjust (if it supports it) its TX bitrate if it is "
+"above the signaled value"
+msgstr ""
+
+#: ../ekiga.schemas.in.in.h:109
+msgid ""
+"The maximum TX video bitrate in kbit/s. The video quality and the number of "
+"transmitted frames per second (depends on selected codec) will be "
+"dynamically adjusted above their minimum during calls to try to minimize the "
+"bandwidth to the given value"
+msgstr ""
+
+#: ../ekiga.schemas.in.in.h:110
+msgid "The maximum jitter buffer size for audio reception (in ms)"
+msgstr "ئاۋازنى قوبۇل قىلىشىشتا ئىشلىتىلىدىغان ئەڭ چوڭ jitter يىغلەكىنىڭ چوڭلۇقى(مىللىسېكۇنت)"
+
+#: ../ekiga.schemas.in.in.h:111
+msgid ""
+"The maximum transmitted frame rate in frames/s. This rate may not be reached "
+"in case a minimum quality was configure via a TSTO value smaller than 31 and "
+"the bitrate selected is not sufficient to support this minimum quality"
+msgstr ""
+
+#: ../ekiga.schemas.in.in.h:112
+msgid "The new instant message sound"
+msgstr "يېڭى كەلگەن مۇڭداشما ئاۋازى"
+
+#: ../ekiga.schemas.in.in.h:113
+msgid "The new voice mail sound"
+msgstr "يېڭى كەلگەن سىنخەتنىڭ ئاۋازى"
+
+#: ../ekiga.schemas.in.in.h:114
+msgid ""
+"The port to listen to for incoming connections. Ekiga needs to be restarted "
+"for the new value to take effect"
+msgstr "كەلگەن باغلىنىشنى كۈتىدىغان ئېغىز. بۇ ئۆزگەرتىلسە Ekiga نى قايتا قوزغىتىش كېرەك"
+
+#: ../ekiga.schemas.in.in.h:115
+msgid ""
+"The port to listen to for incoming connections. Ekiga needs to be restarted "
+"for the new value to take effect."
+msgstr "كەلگەن باغلىنىشنى كۈتىدىغان ئېغىز. بۇ ئۆزگەرتىلسە Ekiga نى قايتا قوزغىتىش كېرەك."
+
+#: ../ekiga.schemas.in.in.h:116
+msgid "The position of the local video window"
+msgstr "سىن كۆزنىكىنىڭ ئورنى (ئۆزىڭىزنىڭ)"
+
+#: ../ekiga.schemas.in.in.h:117
+msgid "The position of the remote video window"
+msgstr "سىن كۆزنىكىنىڭ ئورنى (قارىشى تەرەپنىڭ)"
+
+#: ../ekiga.schemas.in.in.h:118
+msgid ""
+"The range of TCP ports that Ekiga will use for the H.323 H.245 channel. This "
+"port range has no effect if both participants to the conference are using "
+"H.245 Tunneling."
+msgstr "H.323/H.245 قانىلىدا ئىشلىتىلىدىغان TCP ئېغىزىنىڭ دائىرىسى، يىغىنغا قاتنىشىۋاتقان ئىككىلا تەرەپ H.245 نى ئىشلىتىۋاتقان بولسا بۇنىڭ ھېچقانداق ئۈنۈمى يوق."
+
+#: ../ekiga.schemas.in.in.h:119
+msgid "The range of UDP ports that Ekiga will use."
+msgstr "Ekiga ئىشلىتىۋاتقان UDP ئېغىزىنىڭ دائىرىسى."
+
+#: ../ekiga.schemas.in.in.h:120
+msgid "The short status information"
+msgstr "ھالەت ئۇچۇرى (قىسقا تېكىستتە ئىپادىلەنگەن)."
+
+#: ../ekiga.schemas.in.in.h:121
+msgid "The size of the local video window"
+msgstr "سىن كۆزنىكىنىڭ چوڭلۇقى (ئۆزىڭىزنىڭ)"
+
+#: ../ekiga.schemas.in.in.h:122
+msgid "The size of the remote video window"
+msgstr "سىن كۆزنىكىنىڭ چوڭلۇقى (قارىشى تەرەپنىڭ)"
+
+#: ../ekiga.schemas.in.in.h:123
+msgid ""
+"The sound that will be played at the end of calls or when calling somebody "
+"who is busy, if enabled"
+msgstr "سۆزلىشىش تاماملانغاندا ياكى قارشى تەرەپ ئالدىراش چاغدا قويىدىغان ئاۋاز(ئەگەر ئىناۋەتلىك قىلىنغان بولسا)"
+
+#: ../ekiga.schemas.in.in.h:124
+msgid "The sound that will be played on incoming calls, if enabled"
+msgstr "چاقىرىق كەلگەندە چاغدا قويىدىغان ئاۋاز(ئەگەر ئىناۋەتلىك قىلىنغان بولسا)"
+
+#: ../ekiga.schemas.in.in.h:125
+msgid "The sound that will be played when calling somebody, if enabled"
+msgstr "بىرەرىنى چاقىرىۋاتقاندا قويىدىغان ئاۋاز(ئەگەر ئىناۋەتلىك قىلىنغان بولسا)"
+
+#: ../ekiga.schemas.in.in.h:126
+msgid ""
+"The sound that will be played when there is a new instant message, if enabled"
+msgstr "يېڭى مۇڭداشما ئۇچۇرى كەلگەندە قويىدىغان ئاۋاز(ئەگەر ئىناۋەتلىك قىلىنغان بولسا)"
+
+#: ../ekiga.schemas.in.in.h:127
+msgid ""
+"The sound that will be played when there is a new voice mail, if enabled"
+msgstr "يېڭى ئۈنخەت كەلگەندە قويىدىغان ئاۋاز(ئەگەر ئىناۋەتلىك قىلىنغان بولسا)"
+
+#: ../ekiga.schemas.in.in.h:128 ../src/gui/preferences.cpp:936
+msgid "The video channel number to use (to select camera, tv or other sources)"
+msgstr "ئىشلىتىدىغان سىن قانىلىنىڭ سانى(كامېرا تاللاش، تېلېۋىزور ياكى مەنبە)"
+
+#: ../ekiga.schemas.in.in.h:129
+msgid "The video codecs list"
+msgstr "سىن كودلىغۇچ-يەشكۈچلەر"
+
+#: ../ekiga.schemas.in.in.h:130
+msgid "The video view before having switched to fullscreen"
+msgstr "تولۇق ئېكرانغا ئالمىشىشتىن بۇرۇنقى سىننىڭ كۆرۈنۈشى"
+
+#: ../ekiga.schemas.in.in.h:131
+msgid ""
+"The video view before having switched to fullscreen (same values as "
+"video_view)"
+msgstr "تولۇق ئېكرانغا ئالمىشىشتىن بۇرۇنقى سىننىڭ كۆرۈنۈشى(video_view نىڭ قىممىتى بىلەن ئوخشاش)"
+
+#: ../ekiga.schemas.in.in.h:132
+msgid "The zoom value"
+msgstr "چوڭايتىش-كىچىكلىتىش قىممىتى"
+
+#: ../ekiga.schemas.in.in.h:133
+msgid ""
+"The zoom value in percent to apply to images displayed in the main GUI (can "
+"be 50, 100, or 200)"
+msgstr ""
+
+#: ../ekiga.schemas.in.in.h:134
+msgid ""
+"This allows you to set the mode for sending DTMFs. The values can be "
+"\"RFC2833\" (0), \"INFO\" (1)"
+msgstr "DTMFs نى ئەۋەتىشتە سىزنىڭ ھالەت بەلگىلىشىڭىزگە يول قويىدۇ. قىممەتلەر: \"RFC2833\" (0), \"INFO\" (1)"
+
+#: ../ekiga.schemas.in.in.h:135
+msgid ""
+"This allows you to set the mode for sending DTMFs. The values can be \"String"
+"\" (0), \"Tone\" (1), \"RFC2833\" (2), \"Q.931\" (3) (default is \"String"
+"\"). Choosing other values than \"String\" disables the Text Chat"
+msgstr ""
+
+#: ../ekiga.schemas.in.in.h:136 ../src/gui/preferences.cpp:698
+msgid ""
+"This enables H.245 Tunneling mode. In H.245 Tunneling mode H.245 messages "
+"are encapsulated into the H.225 channel (port 1720). This saves one TCP "
+"connection during calls. H.245 Tunneling was introduced in H.323v2 and "
+"Netmeeting does not support it. Using both Fast Start and H.245 Tunneling "
+"can crash some versions of Netmeeting."
+msgstr ""
+
+#: ../ekiga.schemas.in.in.h:137 ../src/gui/preferences.cpp:700
+msgid "This enables H.245 early in the setup"
+msgstr "H.245 ئىناۋەتلىك قىلىدۇ."
+
+#: ../ekiga.schemas.in.in.h:138
+msgid ""
+"This key disables DirectX (on win32) and XVideo (on Linux) video hardware "
+"acceleration"
+msgstr "بۇ ئاچقۇچ DirectX (win32 دىكى) ۋە XVideo (Linux دىكى) سىن قاتتىق دېتالىنىڭ تېزلىتىش ئىقتىدارىنى ئىناۋەتسىز قىلىدۇ"
+
+#: ../ekiga.schemas.in.in.h:139
+msgid "Type of Service (TOS) byte on outgoing RTP IP packets"
+msgstr ""
+
+#: ../ekiga.schemas.in.in.h:140
+msgid "UDP port range"
+msgstr "UDP ئېغىز دائىرىسى"
+
+#: ../ekiga.schemas.in.in.h:141
+msgid "Video channel"
+msgstr "سىن قانىلى"
+
+#: ../ekiga.schemas.in.in.h:142
+msgid "Video format"
+msgstr "سىن فورماتى"
+
+#: ../ekiga.schemas.in.in.h:143
+msgid "Video input device"
+msgstr "سىن كىرگۈزۈش ئۈسكۈنىسى"
+
+#: ../ekiga.schemas.in.in.h:144
+msgid "Video preview"
+msgstr "سىننى ئالدىن كۆرۈش"
+
+#: ../ekiga.schemas.in.in.h:145
+msgid "Video size"
+msgstr "سىن چوڭلۇقى"
+
+#: ../ekiga.schemas.in.in.h:146
+msgid ""
+"Whether to prefer to sustain the max. frame rate or lower it possibly in "
+"order to keep a minimum level of (spatial) quality for all frames. 0: "
+"Highest minimal quality, 31: lowest minimal quality"
+msgstr ""
+
+#: ../lib/engine/addressbook/contact-core.cpp:60
+msgid "_Find"
+msgstr "ئىزدە(_F)"
+
+#: ../lib/engine/components/avahi/avahi-heap.cpp:129
+#: ../lib/engine/components/avahi/avahi-heap.cpp:383
+msgid "Neighbours"
+msgstr "قوشۇلار"
+
+#: ../lib/engine/components/call-history/history-book.cpp:137
+#: ../lib/engine/gui/gtk-frontend/call-history-view-gtk.cpp:181
+msgid "Clear List"
+msgstr "تىزىملىكنى تازىلا"
+
+#: ../lib/engine/components/call-history/history-contact.cpp:165
+msgid "Received"
+msgstr "تاپشۇرۇۋالغىنى"
+
+#: ../lib/engine/components/call-history/history-contact.cpp:168
+msgid "Placed"
+msgstr "چاقىرغانلىرى"
+
+#: ../lib/engine/components/call-history/history-contact.cpp:171
+msgid "Missed"
+msgstr "ئالمىغانلىرى"
+
+#: ../lib/engine/components/gnome-session/gnome-session-main.cpp:157
+msgid "Call in progress"
+msgstr "چاقىرىۋاتىدۇ"
+
+#: ../lib/engine/components/local-roster/local-cluster.cpp:82
+#: ../lib/engine/components/local-roster/local-heap.cpp:117
+#: ../plugins/evolution/evolution-book.cpp:339
+msgid "New contact"
+msgstr "يېڭى ئالاقەداش"
+
+#: ../lib/engine/components/local-roster/local-presentity.cpp:118
+#: ../plugins/resource-list/rl-entry.cpp:141
+#: ../plugins/resource-list/rl-heap.cpp:102
+#: ../plugins/resource-list/rl-heap.cpp:144
+#: ../plugins/resource-list/rl-heap.cpp:176
+#: ../plugins/resource-list/rl-presentity.cpp:143
+msgid "Unnamed"
+msgstr "ئاتسىز"
+
+#: ../lib/engine/components/local-roster/local-presentity.cpp:215
+#: ../lib/engine/components/opal/opal-account.cpp:350
+#: ../plugins/evolution/evolution-contact.cpp:218
+#: ../plugins/loudmouth/loudmouth-presentity.cpp:151
+#: ../plugins/resource-list/rl-presentity.cpp:206
+#: ../src/gui/main_window.cpp:3219
+msgid "_Edit"
+msgstr "تەھرىر(_E)"
+
+#: ../lib/engine/components/local-roster/local-presentity.cpp:217
+#: ../lib/engine/components/opal/opal-account.cpp:352
+#: ../plugins/evolution/evolution-contact.cpp:220
+#: ../plugins/loudmouth/loudmouth-account.cpp:364
+#: ../plugins/loudmouth/loudmouth-presentity.cpp:184
+#: ../plugins/resource-list/rl-presentity.cpp:208
+msgid "_Remove"
+msgstr "ئۆچۈر(_R)"
+
+#: ../lib/engine/components/local-roster/local-presentity.cpp:242
+#: ../plugins/loudmouth/loudmouth-presentity.cpp:269
+msgid "Edit roster element"
+msgstr "ئىسىملىكنى تەھرىرلەش"
+
+#: ../lib/engine/components/local-roster/local-presentity.cpp:243
+msgid ""
+"Please fill in this form to change an existing element of ekiga's internal "
+"roster"
+msgstr "Ekiga ئىچىدىكى ئىسىملىكنى ئۆزگەرتىش ئۈچۈن بۇ جەدۋەلنى تولدۇرۇڭ"
+
+#: ../lib/engine/components/local-roster/local-presentity.cpp:245
+#: ../lib/engine/components/local-roster/local-heap.cpp:235
+#: ../lib/engine/components/local-roster/local-heap.cpp:427
+#: ../lib/engine/components/opal/opal-account.cpp:395
+#: ../plugins/evolution/evolution-contact.cpp:314
+#: ../plugins/loudmouth/loudmouth-account.cpp:267
+#: ../plugins/loudmouth/loudmouth-presentity.cpp:272
+#: ../plugins/resource-list/rl-cluster.cpp:169
+#: ../plugins/resource-list/rl-heap.cpp:526
+#: ../plugins/resource-list/rl-presentity.cpp:227
+msgid "Name:"
+msgstr "ئاتى:"
+
+#: ../lib/engine/components/local-roster/local-presentity.cpp:246
+#: ../lib/engine/components/local-roster/local-heap.cpp:244
+#: ../lib/engine/components/local-roster/local-heap.cpp:246
+#: ../plugins/resource-list/rl-cluster.cpp:170
+#: ../plugins/resource-list/rl-heap.cpp:527
+#: ../plugins/resource-list/rl-presentity.cpp:228
+msgid "Address:"
+msgstr "ئادرېس:"
+
+#: ../lib/engine/components/local-roster/local-presentity.cpp:247
+msgid "Is a preferred contact"
+msgstr "دائىملىق ئالاقەدىشىڭىزمۇ ئەمەس"
+
+#: ../lib/engine/components/local-roster/local-presentity.cpp:249
+#: ../plugins/loudmouth/loudmouth-presentity.cpp:274
+#: ../plugins/resource-list/rl-heap.cpp:528
+#: ../plugins/resource-list/rl-presentity.cpp:230
+msgid "Choose groups:"
+msgstr "گۇرۇپپا:"
+
+#: ../lib/engine/components/local-roster/local-roster-bridge.cpp:93
+#: ../lib/engine/components/local-roster/local-heap.cpp:232
+msgid "Add to local roster"
+msgstr "يەرلىك ئىسىملىككە قوش"
+
+#: ../lib/engine/components/local-roster/local-heap.cpp:93
+msgid "Services"
+msgstr "مۇلازىمەتلەر"
+
+#: ../lib/engine/components/local-roster/local-heap.cpp:94
+msgid "Echo test"
+msgstr "سىناق كۆرۈش"
+
+#: ../lib/engine/components/local-roster/local-heap.cpp:95
+msgid "Conference room"
+msgstr "مەجلىسخانا"
+
+#: ../lib/engine/components/local-roster/local-heap.cpp:96
+msgid "Call back test"
+msgstr ""
+
+#: ../lib/engine/components/local-roster/local-heap.cpp:110
+msgid "Local roster"
+msgstr "يەرلىك ئىسىملىك"
+
+#: ../lib/engine/components/local-roster/local-heap.cpp:127
+msgid "Rename"
+msgstr "ئات ئۆزگەرت"
+
+#: ../lib/engine/components/local-roster/local-heap.cpp:196
+msgid "Family"
+msgstr "جەمەتىم"
+
+#: ../lib/engine/components/local-roster/local-heap.cpp:197
+msgid "Friend"
+msgstr "دوستۇم"
+
+#. Translator: http://www.ietf.org/rfc/rfc4480.txt proposes several
+#. relationships between you and your contact; associate means
+#. someone who is at the same "level" than you.
+#.
+#: ../lib/engine/components/local-roster/local-heap.cpp:202
+msgid "Associate"
+msgstr "خىزمەتداش"
+
+#. Translator: http://www.ietf.org/rfc/rfc4480.txt proposes several
+#. relationships between you and your contact; assistant means
+#. someone who is at a lower "level" than you.
+#.
+#: ../lib/engine/components/local-roster/local-heap.cpp:207
+msgid "Assistant"
+msgstr "ياردەمچى"
+
+#. Translator: http://www.ietf.org/rfc/rfc4480.txt proposes several
+#. relationships between you and your contact; supervisor means
+#. someone who is at a higher "level" than you.
+#.
+#: ../lib/engine/components/local-roster/local-heap.cpp:212
+msgid "Supervisor"
+msgstr "باشلىقىم"
+
+#. Translator: http://www.ietf.org/rfc/rfc4480.txt proposes several
+#. relationships between you and your contact; self means yourself.
+#.
+#: ../lib/engine/components/local-roster/local-heap.cpp:216
+msgid "Self"
+msgstr "ئۆزۈم"
+
+#: ../lib/engine/components/local-roster/local-heap.cpp:233
+msgid ""
+"Please fill in this form to add a new contact to ekiga's internal roster"
+msgstr "Ekiga نىڭ ئىچكى ئىسىملىكىگە قوشۇش ئۈچۈن، بۇ جەدۋەلنى تولدۇرۇڭ"
+
+#: ../lib/engine/components/local-roster/local-heap.cpp:250
+msgid "Put contact in groups:"
+msgstr "ئالاقىداشنى بۇ گۇرۇپپىغا قوش:"
+
+#: ../lib/engine/components/local-roster/local-heap.cpp:412
+msgid "You supplied an unsupported address"
+msgstr "بۇ ئادرېسنى ئىشلەتكىلى بولمايدۇ"
+
+#: ../lib/engine/components/local-roster/local-heap.cpp:414
+msgid "You already have a contact with this address!"
+msgstr "بۇنداق ئېلخەت ئادرېسى بار ئالاقەداش مەۋجۇت!"
+
+#: ../lib/engine/components/local-roster/local-heap.cpp:425
+msgid "Rename group"
+msgstr "گۇرۇپپا ئاتىنى ئۆزگەرت"
+
+#: ../lib/engine/components/local-roster/local-heap.cpp:426
+msgid "Please edit this group name"
+msgstr "گۇرۇپپا ئاتىنى تەھرىرلەڭ"
+
+#: ../lib/engine/components/opal/h323-endpoint.cpp:131
+#: ../lib/engine/components/opal/sip-endpoint.cpp:233
+#: ../lib/engine/components/opal/sip-endpoint.cpp:237
+msgid "Call"
+msgstr "چاقىر"
+
+#: ../lib/engine/components/opal/h323-endpoint.cpp:134
+#: ../lib/engine/components/opal/sip-endpoint.cpp:234
+#: ../lib/engine/components/opal/sip-endpoint.cpp:238
+#: ../src/gui/main_window.cpp:3000
+msgid "Transfer"
+msgstr "يوللا"
+
+#. Translators : The alias we are registering already exists : failure
+#: ../lib/engine/components/opal/h323-endpoint.cpp:309
+msgid "Duplicate alias"
+msgstr "تەكرارلانغان لەقەملەر"
+
+#: ../lib/engine/components/opal/h323-endpoint.cpp:312
+msgid "Bad username/password"
+msgstr "ئاتى ياكى ئىمى خاتا"
+
+#: ../lib/engine/components/opal/h323-endpoint.cpp:315
+#: ../lib/engine/components/opal/sip-endpoint.cpp:840
+msgid "Transport error"
+msgstr "يوللاش خاتالىقى"
+
+#: ../lib/engine/components/opal/h323-endpoint.cpp:326
+#: ../lib/engine/components/opal/h323-endpoint.cpp:331
+#: ../lib/engine/components/opal/sip-endpoint.cpp:847
+msgid "Failed"
+msgstr "مەغلۇپ بولدى"
+
+#. translators : the result will look like :
+#. * "registered (with 2 voice mail messages)"
+#.
+#: ../lib/engine/components/opal/opal-account.cpp:209
+#, c-format
+msgid "%s (with %d voice mail message)"
+msgid_plural "%s (with %d voice mail messages)"
+msgstr[0] "%s (سىنخەتتىن %d دانە بار)"
+
+#: ../lib/engine/components/opal/opal-account.cpp:342
+#: ../plugins/loudmouth/loudmouth-account.cpp:352
+msgid "_Disable"
+msgstr "قوزغاتما(_D)"
+
+#: ../lib/engine/components/opal/opal-account.cpp:345
+#: ../plugins/loudmouth/loudmouth-account.cpp:356
+msgid "_Enable"
+msgstr "قوزغات(_E)"
+
+#: ../lib/engine/components/opal/opal-account.cpp:366
+#: ../src/gui/assistant.cpp:734
+msgid "Recharge the account"
+msgstr "قايتا ھېسابات ئېچىش"
+
+#: ../lib/engine/components/opal/opal-account.cpp:371
+#: ../src/gui/assistant.cpp:746
+msgid "Consult the balance history"
+msgstr ""
+
+#: ../lib/engine/components/opal/opal-account.cpp:376
+#: ../src/gui/assistant.cpp:758
+msgid "Consult the call history"
+msgstr "ئىزلارنى كۆرۈش"
+
+#: ../lib/engine/components/opal/opal-account.cpp:391
+#: ../lib/engine/components/opal/opal-bank.cpp:94
+#: ../plugins/loudmouth/loudmouth-account.cpp:262
+msgid "Edit account"
+msgstr "ھېسابات تەھرىرلەش"
+
+#: ../lib/engine/components/opal/opal-account.cpp:393
+#: ../lib/engine/components/opal/opal-bank.cpp:95
+#: ../plugins/evolution/evolution-book.cpp:341
+#: ../plugins/evolution/evolution-contact.cpp:312
+#: ../plugins/loudmouth/loudmouth-account.cpp:264
+msgid "Please update the following fields:"
+msgstr "تۆۋەندىكى تۈرلەرنى يېڭىلاڭ:"
+
+#: ../lib/engine/components/opal/opal-account.cpp:397
+msgid "Registrar:"
+msgstr "خەتلىگۈچى(مۇلازىمېتىر):"
+
+#: ../lib/engine/components/opal/opal-account.cpp:399
+msgid "Gatekeeper:"
+msgstr "دەرۋازىۋەن:"
+
+#: ../lib/engine/components/opal/opal-account.cpp:400
+#: ../plugins/loudmouth/loudmouth-account.cpp:271
+#: ../plugins/resource-list/rl-cluster.cpp:174
+msgid "User:"
+msgstr "ئىشلەتكۈچى:"
+
+#. Translators:
+#. * SIP knows two usernames: The name for the client ("User") and the name
+#. * for the authentication procedure ("Authentication User")
+#: ../lib/engine/components/opal/opal-account.cpp:405
+msgid "Authentication User:"
+msgstr ""
+
+#: ../lib/engine/components/opal/opal-account.cpp:406
+#: ../plugins/loudmouth/loudmouth-account.cpp:283
+#: ../plugins/resource-list/rl-cluster.cpp:173
+msgid "Password:"
+msgstr "ئىم:"
+
+#: ../lib/engine/components/opal/opal-account.cpp:407
+msgid "Timeout:"
+msgstr "مۆھلەت:"
+
+#: ../lib/engine/components/opal/opal-account.cpp:408
+#: ../lib/engine/components/opal/opal-bank.cpp:139
+#: ../plugins/loudmouth/loudmouth-account.cpp:297
+msgid "Enable Account"
+msgstr "ھېساباتنى ئىناۋەتلىك قىلىش"
+
+#: ../lib/engine/components/opal/opal-account.cpp:434
+#: ../lib/engine/components/opal/opal-bank.cpp:173
+msgid "You did not supply a name for that account."
+msgstr "ھېساباتقا كېرەكلىك ئاتنى كىرگۈزمىدىڭىز."
+
+#: ../lib/engine/components/opal/opal-account.cpp:436
+#: ../lib/engine/components/opal/opal-bank.cpp:175
+msgid "You did not supply a host to register to."
+msgstr "خەتلەتمەكچى بولغان ماشىنىنىڭ ئاتىنى كىرگۈزمىدىڭىز."
+
+#: ../lib/engine/components/opal/opal-account.cpp:438
+#: ../lib/engine/components/opal/opal-bank.cpp:177
+msgid "You did not supply a user name for that account."
+msgstr "ھېساباتقا كېرەكلىك ئىشلەتكۈچى ئاتىنى كىرگۈزمىدىڭىز."
+
+#: ../lib/engine/components/opal/opal-account.cpp:440
+#: ../lib/engine/components/opal/opal-bank.cpp:179
+msgid "The timeout should have a bigger value."
+msgstr "مۆھلەت قىممىتىنى چوڭراق قىلىڭ."
+
+#: ../lib/engine/components/opal/opal-account.cpp:486
+msgid "Registered"
+msgstr "خەتلىتىلدى"
+
+#: ../lib/engine/components/opal/opal-account.cpp:498
+msgid "Unregistered"
+msgstr "رويخەتتىن ئۆچۈرۈلدى"
+
+#: ../lib/engine/components/opal/opal-account.cpp:508
+msgid "Could not unregister"
+msgstr "رويخەتتىن ئۆچۈرگىلى بولمىدى"
+
+#: ../lib/engine/components/opal/opal-account.cpp:521
+msgid "Could not register"
+msgstr "خەتلىگىلى بولمىدى"
+
+#: ../lib/engine/components/opal/opal-account.cpp:530
+msgid "Processing..."
+msgstr "بىر تەرەپ قىلىۋاتىدۇ…"
+
+#: ../lib/engine/components/opal/opal-bank.cpp:74
+msgid "_Add an Ekiga.net Account"
+msgstr "Ekiga.net ھېساباتى قوش(_A)"
+
+#: ../lib/engine/components/opal/opal-bank.cpp:76
+msgid "_Add an Ekiga Call Out Account"
+msgstr "Ekiga Call Out ھېساباتى قوش(_A)"
+
+#: ../lib/engine/components/opal/opal-bank.cpp:78
+msgid "_Add a SIP Account"
+msgstr "SIP ھېساباتى قوش(_A)"
+
+#: ../lib/engine/components/opal/opal-bank.cpp:80
+msgid "_Add an H.323 Account"
+msgstr "H.323 ھېساباتى قوش(_A)"
+
+#: ../lib/engine/components/opal/opal-bank.cpp:100
+#: ../src/gui/assistant.cpp:616
+msgid "Get an Ekiga.net SIP account"
+msgstr "Ekiga.net نىڭ  SIP ھېساباتى ئاچىدۇ"
+
+#: ../lib/engine/components/opal/opal-bank.cpp:103
+#: ../lib/engine/components/opal/opal-bank.cpp:123
+#: ../lib/engine/components/opal/opal-bank.cpp:133
+msgid "_User:"
+msgstr "ئىشلەتكۈچى(_U):"
+
+#: ../lib/engine/components/opal/opal-bank.cpp:105
+#: ../lib/engine/components/opal/opal-bank.cpp:125
+#: ../lib/engine/components/opal/opal-bank.cpp:135
+msgid "_Password:"
+msgstr "ئىم(_P):"
+
+#: ../lib/engine/components/opal/opal-bank.cpp:110
+#: ../src/gui/assistant.cpp:722
+msgid "Get an Ekiga Call Out account"
+msgstr "Ekiga نىڭ Call Out ھېساباتى ئاچىدۇ"
+
+#: ../lib/engine/components/opal/opal-bank.cpp:114
+msgid "_Account ID:"
+msgstr "ھېسابات ID(_A):"
+
+#: ../lib/engine/components/opal/opal-bank.cpp:116
+msgid "_PIN Code:"
+msgstr "PIN كودى(_P):"
+
+#: ../lib/engine/components/opal/opal-bank.cpp:121
+#: ../lib/engine/components/opal/opal-bank.cpp:131
+#: ../plugins/evolution/evolution-book.cpp:343
+msgid "_Name:"
+msgstr "ئاتى(_N):"
+
+#: ../lib/engine/components/opal/opal-bank.cpp:122
+msgid "_Gatekeeper:"
+msgstr "دەرۋازىۋەن(_G):"
+
+#: ../lib/engine/components/opal/opal-bank.cpp:126
+#: ../lib/engine/components/opal/opal-bank.cpp:136
+msgid "_Timeout:"
+msgstr "ۋاقىت ھالقىش(_T):"
+
+#: ../lib/engine/components/opal/opal-bank.cpp:132
+msgid "_Registrar:"
+msgstr "خەتلىگۈچى(مۇلازىمېتىر)(_R):"
+
+#: ../lib/engine/components/opal/opal-bank.cpp:134
+msgid "_Authentication User:"
+msgstr ""
+
+#: ../lib/engine/components/opal/opal-call.cpp:406
+msgid "Local user cleared the call"
+msgstr "يەرلىك ئىشلەتكۈچى ئۈزۈۋەتتى"
+
+#: ../lib/engine/components/opal/opal-call.cpp:409
+#: ../lib/engine/components/opal/opal-call.cpp:412
+msgid "Local user rejected the call"
+msgstr "يەرلىك ئىشلەتكۈچى رەت قىلدى"
+
+#: ../lib/engine/components/opal/opal-call.cpp:415
+msgid "Remote user cleared the call"
+msgstr "يىراقتىكى ئىشلەتكۈچى ئۈزۈۋەتتى"
+
+#: ../lib/engine/components/opal/opal-call.cpp:418
+msgid "Remote user rejected the call"
+msgstr "يىراقتىكى ئىشلەتكۈچى رەت قىلدى"
+
+#: ../lib/engine/components/opal/opal-call.cpp:421
+msgid "Remote user has stopped calling"
+msgstr "يىراقتىكى ئىشلەتكۈچى سۆزلىشىشنى توختاتتى"
+
+#: ../lib/engine/components/opal/opal-call.cpp:424
+msgid "Abnormal call termination"
+msgstr "سۆزلىشىش ئۈزۈلدى (بىنورمال)"
+
+#: ../lib/engine/components/opal/opal-call.cpp:427
+#: ../src/gui/main_window.cpp:1494
+msgid "Could not connect to remote host"
+msgstr "يىراقتىكى ماشىنىغا باغلانغىلى بولمىدى"
+
+#: ../lib/engine/components/opal/opal-call.cpp:431
+msgid "The Gatekeeper cleared the call"
+msgstr "دەرۋازىۋەن سۆزلىشىشنى ئۈزۈۋەتتى"
+
+#: ../lib/engine/components/opal/opal-call.cpp:434
+msgid "User not found"
+msgstr "ئىشلەتكۈچى تېپىلمىدى"
+
+#: ../lib/engine/components/opal/opal-call.cpp:437
+msgid "Insufficient bandwidth"
+msgstr "تور قىنى يېتەرلىك ئەمەس"
+
+#: ../lib/engine/components/opal/opal-call.cpp:440
+msgid "No common codec"
+msgstr "ئورتاق كودلىغۇچ-يەشكۈچ مەۋجۇت ئەمەس"
+
+#: ../lib/engine/components/opal/opal-call.cpp:443
+msgid "Call forwarded"
+msgstr ""
+
+#: ../lib/engine/components/opal/opal-call.cpp:446
+msgid "Security check failed"
+msgstr "بىخەتەرلىك تەكشۈرۈش مەغلۇپ بولدى"
+
+#: ../lib/engine/components/opal/opal-call.cpp:449
+msgid "Local user is busy"
+msgstr "يەرلىك ئىشلەتكۈچى ئالدىراشتەك قىلىدۇ"
+
+#: ../lib/engine/components/opal/opal-call.cpp:452
+#: ../lib/engine/components/opal/opal-call.cpp:458
+msgid "Congested link to remote party"
+msgstr ""
+
+#: ../lib/engine/components/opal/opal-call.cpp:455
+msgid "Remote user is busy"
+msgstr "يىراقتىكى ئىشلەتكۈچى ئالدىراشتەك قىلىدۇ"
+
+#: ../lib/engine/components/opal/opal-call.cpp:461
+msgid "Remote host is offline"
+msgstr "يىراقتىكى ماشىنا تورغا باغلانمىغان"
+
+#: ../lib/engine/components/opal/opal-call.cpp:467
+msgid "User is not available"
+msgstr "ئىشلەتكۈچى يوق ئىكەن."
+
+#: ../lib/engine/components/opal/opal-call.cpp:478
+msgid "Call completed"
+msgstr "سۆزلىشىش تامام"
+
+#: ../lib/engine/components/opal/opal-call-manager.cpp:781
+msgid ""
+"Ekiga did not manage to configure your network settings automatically. You "
+"can still use it, but you need to configure your network settings manually.\n"
+"\n"
+"Please see http://wiki.ekiga.org/index.php/Enable_port_forwarding_manually "
+"for instructions"
+msgstr ""
+
+#: ../lib/engine/components/opal/sip-endpoint.cpp:258
+#: ../lib/engine/components/opal/sip-endpoint.cpp:260
+msgid "Message"
+msgstr "ئۇچۇر"
+
+#: ../lib/engine/components/opal/sip-endpoint.cpp:647
+msgid "Bad request"
+msgstr "خاتا ئىلتىماس"
+
+#: ../lib/engine/components/opal/sip-endpoint.cpp:651
+msgid "Payment required"
+msgstr "ھەقسىز ئەمەس"
+
+#: ../lib/engine/components/opal/sip-endpoint.cpp:655
+msgid "Unauthorized"
+msgstr ""
+
+#: ../lib/engine/components/opal/sip-endpoint.cpp:659
+msgid "Forbidden, please check that username and password are correct"
+msgstr "رەت قىلىندى. ئىشلەتكۈچى ئاتى ۋە ئىم توغرىمۇ تەكشۈرۈڭ"
+
+#: ../lib/engine/components/opal/sip-endpoint.cpp:663
+msgid "Timeout"
+msgstr "ۋاقىت ھالقىش"
+
+#: ../lib/engine/components/opal/sip-endpoint.cpp:667
+msgid "Conflict"
+msgstr "توقۇنۇش"
+
+#: ../lib/engine/components/opal/sip-endpoint.cpp:671
+msgid "Temporarily unavailable"
+msgstr "ھازىرچە ئىشلەتكىلى بولمايدۇ"
+
+#: ../lib/engine/components/opal/sip-endpoint.cpp:675
+msgid "Not acceptable"
+msgstr "بولمايدۇ"
+
+#: ../lib/engine/components/opal/sip-endpoint.cpp:679
+msgid "Illegal status code"
+msgstr "ھالەت كودى توغرا ئەمەس"
+
+#: ../lib/engine/components/opal/sip-endpoint.cpp:683
+msgid "Multiple choices"
+msgstr "كوپ تاللاش"
+
+#: ../lib/engine/components/opal/sip-endpoint.cpp:687
+msgid "Moved permanently"
+msgstr "يۆتكىۋېتىلدى(ئەسلىگە كەلمەيدۇ)"
+
+#: ../lib/engine/components/opal/sip-endpoint.cpp:691
+msgid "Moved temporarily"
+msgstr "ۋاقىتلىق يۆتكىۋېتىلدى"
+
+#: ../lib/engine/components/opal/sip-endpoint.cpp:695
+msgid "Use proxy"
+msgstr "ۋاكالەتچى ئىشلەت"
+
+#: ../lib/engine/components/opal/sip-endpoint.cpp:699
+msgid "Alternative service"
+msgstr "ئورۇنباسار مۇلازىمەت"
+
+#: ../lib/engine/components/opal/sip-endpoint.cpp:703
+msgid "Not found"
+msgstr "تېپىلمىدى"
+
+#: ../lib/engine/components/opal/sip-endpoint.cpp:707
+msgid "Method not allowed"
+msgstr "بۇ ئۇسۇلنى ئىشلەتسە بولمايدۇ"
+
+#: ../lib/engine/components/opal/sip-endpoint.cpp:711
+msgid "Proxy authentication required"
+msgstr ""
+
+#: ../lib/engine/components/opal/sip-endpoint.cpp:715
+msgid "Length required"
+msgstr "ئۇزۇنلۇقى كېرەك"
+
+#: ../lib/engine/components/opal/sip-endpoint.cpp:719
+msgid "Request entity too big"
+msgstr "ئىلتىماس مەزمۇنى بەك چوڭ"
+
+#: ../lib/engine/components/opal/sip-endpoint.cpp:723
+msgid "Request URI too long"
+msgstr "ئىلتىماس URI ئى بەك ئۇزۇن"
+
+#: ../lib/engine/components/opal/sip-endpoint.cpp:727
+msgid "Unsupported media type"
+msgstr "ۋاسىتە تىپىنى ئىشلەتكىلى بولمايدۇ"
+
+#: ../lib/engine/components/opal/sip-endpoint.cpp:731
+msgid "Unsupported URI scheme"
+msgstr "URI لايىھىسىنى ئىشلەتكىلى بولمايدۇ"
+
+#. Translators:  The extension we are trying to register does not exist.
+#. * Here extension is a specific "phone number", see
+#. * http://en.wikipedia.org/wiki/Extension_(telephone)
+#. * for more information
+#: ../lib/engine/components/opal/sip-endpoint.cpp:739
+msgid "Bad extension"
+msgstr "كېڭەيتىلمە توغرا ئەمەس"
+
+#: ../lib/engine/components/opal/sip-endpoint.cpp:743
+msgid "Extension required"
+msgstr "كېڭەيتىلمە زۆرۈر"
+
+#: ../lib/engine/components/opal/sip-endpoint.cpp:747
+msgid "Interval too brief"
+msgstr "ئارىلىق بەك قىسقا"
+
+#: ../lib/engine/components/opal/sip-endpoint.cpp:751
+msgid "Loop detected"
+msgstr "دەۋرىيلىك بايقالدى"
+
+#: ../lib/engine/components/opal/sip-endpoint.cpp:755
+msgid "Too many hops"
+msgstr "hops بەك جىق"
+
+#: ../lib/engine/components/opal/sip-endpoint.cpp:759
+msgid "Address incomplete"
+msgstr "ئېلخەت ئادرېسى مۇكەممەل ئەمەس"
+
+#: ../lib/engine/components/opal/sip-endpoint.cpp:763
+msgid "Ambiguous"
+msgstr "مۈجمەل"
+
+#: ../lib/engine/components/opal/sip-endpoint.cpp:767
+msgid "Busy Here"
+msgstr "بۇ يەر بەك ئالدىراش"
+
+#: ../lib/engine/components/opal/sip-endpoint.cpp:771
+msgid "Request terminated"
+msgstr "ئىلتىماس ئۈزۈلدى"
+
+#: ../lib/engine/components/opal/sip-endpoint.cpp:775
+msgid "Remote party host is offline"
+msgstr "يىراقتىكى سۆھبەتداشنىڭ ماشىنىسى توغرا باغلانمىغان"
+
+#: ../lib/engine/components/opal/sip-endpoint.cpp:779
+msgid "Not acceptable here"
+msgstr "بۇ يەردە بولمايدۇ"
+
+#: ../lib/engine/components/opal/sip-endpoint.cpp:783
+msgid "Bad event"
+msgstr "خاتا ھادىسە"
+
+#: ../lib/engine/components/opal/sip-endpoint.cpp:787
+msgid "Request pending"
+msgstr "ئىلتىماسنى باستۇرۇپ قويدى"
+
+#: ../lib/engine/components/opal/sip-endpoint.cpp:791
+msgid "Undecipherable"
+msgstr "شىفىرنى يەشكىلى بولمايدۇ"
+
+#: ../lib/engine/components/opal/sip-endpoint.cpp:795
+msgid "Internal server error"
+msgstr "مۇلازىمېتىرنىڭ ئىچكى خاتالىقى"
+
+#: ../lib/engine/components/opal/sip-endpoint.cpp:799
+msgid "Not implemented"
+msgstr "تېخى ئىشلەتكىلى بولمايدۇ"
+
+#: ../lib/engine/components/opal/sip-endpoint.cpp:803
+msgid "Bad gateway"
+msgstr "دەرۋازا توغرا ئەمەس"
+
+#: ../lib/engine/components/opal/sip-endpoint.cpp:807
+msgid "Service unavailable"
+msgstr "مۇلازىمەتنى ئىشلەتكىلى بولمايدۇ"
+
+#: ../lib/engine/components/opal/sip-endpoint.cpp:811
+msgid "Server timeout"
+msgstr ""
+
+#: ../lib/engine/components/opal/sip-endpoint.cpp:815
+msgid "SIP version not supported"
+msgstr "بۇ SIP نەشرنى تېخى قوللىمايدۇ"
+
+#: ../lib/engine/components/opal/sip-endpoint.cpp:819
+msgid "Message too large"
+msgstr "ئۇچۇر بەك ئۇزۇن"
+
+#: ../lib/engine/components/opal/sip-endpoint.cpp:823
+msgid "Busy everywhere"
+msgstr "ھەممە يەر ئالدىراش"
+
+#: ../lib/engine/components/opal/sip-endpoint.cpp:827
+msgid "Decline"
+msgstr "قوشۇلما"
+
+#: ../lib/engine/components/opal/sip-endpoint.cpp:831
+msgid "Does not exist anymore"
+msgstr "ھېچكىم يوق"
+
+#: ../lib/engine/components/opal/sip-endpoint.cpp:835
+msgid "Globally not acceptable"
+msgstr ""
+
+#: ../lib/engine/components/opal/sip-endpoint.cpp:995
+msgid "Could not send message"
+msgstr "ئۇچۇر يوللىيالمىدى"
+
+#: ../lib/engine/components/opal/sip-endpoint.cpp:1138
+#: ../src/gui/main_window.cpp:2854
+#, c-format
+msgid "Incoming call from %s"
+msgstr "%s دىن كەلگەن تېلېفون"
+
+#: ../lib/engine/components/opal/sip-endpoint.cpp:1140
+#, c-format
+msgid "Incoming call"
+msgstr "سۆزلىشىۋاتىدۇ"
+
+#: ../lib/engine/components/opal/sip-endpoint.cpp:1146
+#, c-format
+msgid "In a call with %s"
+msgstr "%s بىلەن سۆزلىشىۋاتىدۇ"
+
+#: ../lib/engine/components/opal/sip-endpoint.cpp:1148
+#, c-format
+msgid "In a call"
+msgstr "سۆزلىشىۋاتىدۇ"
+
+#: ../lib/engine/gui/gtk-core/form-dialog-gtk.cpp:660
+msgid "Advanced"
+msgstr "ئالىي"
+
+#: ../lib/engine/gui/gtk-core/codecsbox.cpp:478
+msgid "Move selected codec priority upwards"
+msgstr "تاللانغان كودلىغۇچ-يەشكۈچنىڭ ئالدىنقىنى يۇقىرىلىتىدۇ"
+
+#: ../lib/engine/gui/gtk-core/codecsbox.cpp:488
+msgid "Move selected codec priority downwards"
+msgstr "تاللانغان كودلىغۇچ-يەشكۈچنىڭ ئالدىنقىنى تۆۋەنلىتىدۇ"
+
+#: ../lib/engine/gui/gtk-frontend/addressbook-window.cpp:670
+msgid "Address Book"
+msgstr "ئادرېس دەپتىرى"
+
+#: ../lib/engine/gui/gtk-frontend/addressbook-window.cpp:686
+#: ../src/gui/main_window.cpp:3175
+msgid "Address _Book"
+msgstr "ئادرېس دەپتىرى(_B)"
+
+#. This will add static and dynamic actions
+#: ../lib/engine/gui/gtk-frontend/addressbook-window.cpp:695
+msgid "_Action"
+msgstr "مەشغۇلات(_A)"
+
+#: ../lib/engine/gui/gtk-frontend/addressbook-window.cpp:740
+msgid "Category"
+msgstr "كاتېگورىيە"
+
+#: ../lib/engine/gui/gtk-frontend/book-view-gtk.cpp:616
+#: ../src/gui/assistant.cpp:1377
+msgid "Full Name"
+msgstr "تولۇق ئاتى"
+
+#: ../lib/engine/gui/gtk-frontend/book-view-gtk.cpp:631
+msgid "_Search Filter:"
+msgstr "ئىزدەيدىغان تېكىست(_S):"
+
+#: ../lib/engine/gui/gtk-frontend/chat-area.cpp:247
+msgid "says:"
+msgstr "دېدى:"
+
+#: ../lib/engine/gui/gtk-frontend/chat-area.cpp:370
+msgid "Open link in browser"
+msgstr "ئۇلانمىنى توركۆرگۈدە ئاچ"
+
+#: ../lib/engine/gui/gtk-frontend/chat-area.cpp:376
+msgid "Copy link"
+msgstr "ئۇلانما كۆچۈر"
+
+#: ../lib/engine/gui/gtk-frontend/chat-area.cpp:908
+msgid "_Smile..."
+msgstr "كۈلكە(_S)..."
+
+#. we can't do much here since we get the Chat as reference...
+#: ../lib/engine/gui/gtk-frontend/chat-window.cpp:432
+msgid "Chat Window"
+msgstr "پاراڭ كۆزنىكى"
+
+#: ../lib/engine/gui/gtk-frontend/roster-view-gtk.cpp:1001
+#: ../lib/engine/gui/gtk-frontend/roster-view-gtk.cpp:1042
+msgid "Unsorted"
+msgstr "تەرتىپلەنمىگەن"
+
+#: ../lib/gui/gmdialog.c:331
+msgid "Do not show this dialog again"
+msgstr "بۇ سۆزلەشكۈنى ئەمدى كۆرسەتكۈچى بولما"
+
+#: ../plugins/evolution/evolution-book.cpp:75
+#: ../plugins/ldap/ldap-book.cpp:906
+#, c-format
+msgid "%d user found"
+msgid_plural "%d users found"
+msgstr[0] "%d كىشى تېپىلدى"
+
+#: ../plugins/evolution/evolution-book.cpp:297
+#: ../plugins/loudmouth/loudmouth-heap.cpp:138
+msgid "New _Contact"
+msgstr "يېڭى ئالاقەداش(_C)"
+
+#: ../plugins/evolution/evolution-book.cpp:344
+#: ../plugins/evolution/evolution-contact.cpp:323
+msgid "VoIP _URI:"
+msgstr "VoIP نىڭ URI(_U):"
+
+#: ../plugins/evolution/evolution-book.cpp:345
+#: ../plugins/evolution/evolution-contact.cpp:324
+msgid "_Home phone:"
+msgstr "ئۆي تېلېفونى(_H):"
+
+#: ../plugins/evolution/evolution-book.cpp:346
+#: ../plugins/evolution/evolution-contact.cpp:325
+msgid "_Office phone:"
+msgstr "ئىشخانا تېلېفونى(_O):"
+
+#: ../plugins/evolution/evolution-book.cpp:347
+#: ../plugins/evolution/evolution-contact.cpp:326
+msgid "_Cell phone:"
+msgstr "يانفون(_C):"
+
+#: ../plugins/evolution/evolution-book.cpp:348
+#: ../plugins/evolution/evolution-contact.cpp:327
+msgid "_Pager:"
+msgstr ""
+
+#: ../plugins/evolution/evolution-contact.cpp:310
+msgid "Edit contact"
+msgstr "ئالاقەداش تەھرىرلەش"
+
+#: ../plugins/evolution/evolution-contact.cpp:364
+msgid "Remove contact"
+msgstr "ئالاقەداش ئۆچۈر"
+
+#: ../plugins/evolution/evolution-contact.cpp:366
+#, c-format
+msgid "Are you sure you want to remove %s from the addressbook?"
+msgstr "%s نى ئادرېس دەپتىرىدىن راستلا ئۆچۈرەمسىز؟"
+
+#: ../plugins/gstreamer/gst-audioinput.cpp:276
+msgid "Audio test"
+msgstr "ئۈن سىنىقى"
+
+#: ../plugins/gstreamer/gst-audiooutput.cpp:328
+msgid "Silent"
+msgstr "جىمجىت"
+
+#: ../plugins/gstreamer/gst-videoinput.cpp:234
+msgid "Video test"
+msgstr "سىن سىنىقى"
+
+#. Translators: "Screencast" means the video input device will be your screen -- the other end will see your desktop
+#: ../plugins/gstreamer/gst-videoinput.cpp:386
+#: ../plugins/gstreamer/gst-videoinput.cpp:391
+msgid "Crazy"
+msgstr ""
+
+#: ../plugins/gstreamer/gst-videoinput.cpp:391
+msgid "Screencast"
+msgstr ""
+
+#: ../plugins/ldap/ldap-book.cpp:413
+#: ../plugins/resource-list/rl-entry-ref.cpp:132
+#: ../plugins/resource-list/rl-entry.cpp:154
+msgid "_Refresh"
+msgstr "يېڭىلا(_R)"
+
+#: ../plugins/ldap/ldap-book.cpp:416
+msgid "_Remove addressbook"
+msgstr "ئادرېس دەپتىرىنى ئۆچۈر(_R)"
+
+#: ../plugins/ldap/ldap-book.cpp:418
+msgid "Addressbook _properties"
+msgstr "ئادرېس دەپتىرى تەڭشىكى(_P)"
+
+#: ../plugins/ldap/ldap-book.cpp:549
+msgid "LDAP SASL Interaction"
+msgstr ""
+
+#. Translators, Howard explained : "Challenge" is a generic term
+#. * in authentication. It's a prompt from the authentication mechanism
+#. * for some type of credential. Exactly what kind of challenge and
+#. * what kind of credential depends on the specific authentication
+#. * mechanism. Since SASL is a generic interface, and can dynamically
+#. * load arbitrary mechanisms, there's not much more specific you can
+#. * say about it. You might google for "challenge response
+#. * authentication" if you'd like more background context.
+#.
+#: ../plugins/ldap/ldap-book.cpp:591
+msgid "Challenge: "
+msgstr ""
+
+#: ../plugins/ldap/ldap-book.cpp:599
+msgid "Interact"
+msgstr "ئىنكاس"
+
+#: ../plugins/ldap/ldap-book.cpp:666
+msgid "Refreshing"
+msgstr "يېڭىلاۋاتىدۇ"
+
+#: ../plugins/ldap/ldap-book.cpp:672
+msgid "Could not initialize server"
+msgstr "مۇلازىمېتىرنى دەسلەپلەشتۈرگىلى بولمىدى"
+
+#: ../plugins/ldap/ldap-book.cpp:686 ../plugins/ldap/ldap-book.cpp:731
+msgid "LDAP Error: "
+msgstr "LDAP تىكى خاتالىق: "
+
+#: ../plugins/ldap/ldap-book.cpp:740
+msgid "Contacted server"
+msgstr ""
+
+#. patience == 0
+#: ../plugins/ldap/ldap-book.cpp:779
+msgid "Could not connect to server"
+msgstr "مۇلازىمېتىرغا ئۇلىنالمىدى"
+
+#. patience == 0
+#: ../plugins/ldap/ldap-book.cpp:827 ../plugins/ldap/ldap-book.cpp:876
+msgid "Could not search"
+msgstr "ئىزدىگىلى بولمىدى"
+
+#: ../plugins/ldap/ldap-book.cpp:835
+msgid "Waiting for search results"
+msgstr "ئىزدەش نەتىجىسىنى ساقلاۋاتىدۇ"
+
+#: ../plugins/ldap/ldap-book.cpp:928
+msgid "Please edit the following fields"
+msgstr "تۆۋەندىكى تۈرلەرنى تەھرىرلەڭ:"
+
+#: ../plugins/ldap/ldap-book.cpp:930
+msgid "Book _Name"
+msgstr "ئادرېس دەپتىرىنىڭ ئاتى(_N):"
+
+#: ../plugins/ldap/ldap-book.cpp:931
+msgid "Server _URI"
+msgstr "مۇلازىمېتىرنىڭ URI(_U):"
+
+#: ../plugins/ldap/ldap-book.cpp:932
+msgid "_Base DN"
+msgstr "ئاساسىي DN(_B):"
+
+#: ../plugins/ldap/ldap-book.cpp:938
+msgid "Subtree"
+msgstr ""
+
+#: ../plugins/ldap/ldap-book.cpp:939
+msgid "Single Level"
+msgstr "دەرىجە 1"
+
+#: ../plugins/ldap/ldap-book.cpp:940
+msgid "_Search Scope"
+msgstr "ئىزدەش دائىرىسى(_S):"
+
+#. Translators: DisplayName Attribute is the name of the LDAP
+#. * attribute whose value will be used to name an addressbook entry.
+#. * On Microsoft systems the actual attribute is literally named
+#. * "DisplayName" (i.e., "the name that will be displayed") but on
+#. * most LDAP servers it's "CommonName".
+#.
+#: ../plugins/ldap/ldap-book.cpp:955
+msgid "_DisplayName Attribute"
+msgstr "DisplayName نىڭ خاسلىقى(_D):"
+
+#: ../plugins/ldap/ldap-book.cpp:956
+msgid "Call _Attributes"
+msgstr "Call نىڭ خاسلىقى(_A):"
+
+#: ../plugins/ldap/ldap-book.cpp:958 ../plugins/ldap/ldap-book.cpp:960
+msgid "_Filter Template"
+msgstr "سۈزگۈچ(_F):"
+
+#. Translators: Bind ID - In LDAP, the operation that begins an LDAP
+#. * session and authenticates the user to the directory is called a
+#. * Bind operation.  There are two types of Binds supported in the
+#. * standard protocol - Simple Bind and SASL Bind.  Since both of
+#. * them are used for authentication, both of them require some type
+#. * of user ID as a parameter, and that is supplied here.  (Of
+#. * course, the Bind ID can be left blank, in which case the session
+#. * is anonymous / unauthenticated.)
+#.
+#: ../plugins/ldap/ldap-book.cpp:971
+msgid "Bind _ID"
+msgstr "باغلاش ID(_I):"
+
+#: ../plugins/ldap/ldap-book.cpp:972
+msgid "_Password"
+msgstr "ئىم(_P)"
+
+#: ../plugins/ldap/ldap-book.cpp:973
+msgid "Use TLS"
+msgstr "TLS ئىشلەت"
+
+#: ../plugins/ldap/ldap-book.cpp:974
+msgid "Use SASL"
+msgstr "SASL ئىشلەت"
+
+#: ../plugins/ldap/ldap-book.cpp:988
+msgid "SASL _Mechanism"
+msgstr "SASL نىڭ مېخانىزمى(_M):"
+
+#: ../plugins/ldap/ldap-book.cpp:998
+msgid "Edit LDAP directory"
+msgstr "LDAP مۇندەرىجىسىنى تەھرىرلەش"
+
+#: ../plugins/ldap/ldap-book.cpp:1020
+msgid "Please provide a Book Name for this directory\n"
+msgstr "بۇ مۇندەرىجە ئۈچۈن ئىشلىتىدىغان ئادرېس دەپتىرىنىڭ ئاتىنى دەپ بېرىڭ\n"
+
+#: ../plugins/ldap/ldap-book.cpp:1023
+msgid "Please provide a Server URI\n"
+msgstr "مۇلازىمېتىرنىڭ URI نى دەپ بېرىڭ\n"
+
+#: ../plugins/ldap/ldap-book.cpp:1026
+msgid "Please provide a DisplayName Attribute\n"
+msgstr "DisplayName خاسلىقىنى دەپ بېرىڭ\n"
+
+#: ../plugins/ldap/ldap-book.cpp:1029
+msgid "Please provide a Call Attribute\n"
+msgstr "Call خاسلىقىنى دەپ بېرىڭ\n"
+
+#: ../plugins/ldap/ldap-book.cpp:1032
+msgid "Invalid Server URI\n"
+msgstr "مۇلازىمېتىرنىڭ URI ئىناۋەتسىز\n"
+
+#: ../plugins/ldap/ldap-source.cpp:129
+msgid "Add an LDAP Address Book"
+msgstr "LDAP ئادرېس دەپتىرى قوشۇش"
+
+#: ../plugins/ldap/ldap-source.cpp:131
+msgid "Add the Ekiga.net Directory"
+msgstr "Ekiga.net مۇندەرىجىسى قوشۇش"
+
+#: ../plugins/ldap/ldap-source.cpp:151
+msgid "Create LDAP directory"
+msgstr "LDAP مۇندەرىجىسى قۇرۇش"
+
+#: ../plugins/ldap/ldap-source.cpp:159
+msgid "Ekiga.net Directory"
+msgstr "Ekiga.net مۇندەرىجىسى"
+
+#: ../plugins/loudmouth/loudmouth-account.cpp:78
+msgid "inactive"
+msgstr "ئاكتىپسىز"
+
+#: ../plugins/loudmouth/loudmouth-account.cpp:150
+#, c-format
+msgid "error connecting (%s)"
+msgstr "باغلىنىشتا خاتالىق كۆرۈلدى (%s)"
+
+#: ../plugins/loudmouth/loudmouth-account.cpp:156
+msgid "connecting"
+msgstr "باغلىنىۋاتىدۇ"
+
+#: ../plugins/loudmouth/loudmouth-account.cpp:200
+msgid "authenticating"
+msgstr ""
+
+#. FIXME: can't we report better?
+#: ../plugins/loudmouth/loudmouth-account.cpp:210
+msgid "error connecting"
+msgstr "باغلىنىشتا خاتالىق كۆرۈلدى"
+
+#: ../plugins/loudmouth/loudmouth-account.cpp:222
+msgid "disconnected"
+msgstr "ئۇلانمىدى"
+
+#: ../plugins/loudmouth/loudmouth-account.cpp:239
+msgid "connected"
+msgstr "باغلاندى"
+
+#. FIXME: can't we report something better?
+#: ../plugins/loudmouth/loudmouth-account.cpp:245
+msgid "error authenticating loudmouth account"
+msgstr "loudmouth ھېساباتىنى authenticate قىلىۋاتقاندا خاتالىق كۆرۈلدى"
+
+#: ../plugins/loudmouth/loudmouth-account.cpp:275
+msgid "Server:"
+msgstr "مۇلازىمېتىر:"
+
+#: ../plugins/loudmouth/loudmouth-account.cpp:279
+msgid "Resource:"
+msgstr "مەنبە:"
+
+#: ../plugins/loudmouth/loudmouth-account.cpp:362 ../src/gui/accounts.cpp:690
+msgid "Edit"
+msgstr "تەھرىر"
+
+#: ../plugins/loudmouth/loudmouth-bank.cpp:118
+msgid "_Add a jabber/XMPP account"
+msgstr "jabber/XMPP ھېساباتى قوش(_A)"
+
+#: ../plugins/loudmouth/loudmouth-heap.cpp:210
+msgid "Authorization to see your presence"
+msgstr ""
+
+#: ../plugins/loudmouth/loudmouth-heap.cpp:214
+#, c-format
+msgid "%s asks the permission to see your presence, saying: \"%s\"."
+msgstr ""
+
+#: ../plugins/loudmouth/loudmouth-heap.cpp:218
+#, c-format
+msgid "%s asks the permission to see your presence."
+msgstr ""
+
+#: ../plugins/loudmouth/loudmouth-heap.cpp:225
+msgid "grant him/her the permission to see your presence"
+msgstr ""
+
+#: ../plugins/loudmouth/loudmouth-heap.cpp:226
+msgid "refuse him/her the permission to see your presence"
+msgstr ""
+
+#: ../plugins/loudmouth/loudmouth-heap.cpp:227
+msgid "decide later (also close or cancel this dialog)"
+msgstr "كېيىن بېكىتىش (شۇنداقلا بۇ سۆزلەشكۈنى ياپىدۇ ياكى ۋاز كېچىدۇ)"
+
+#: ../plugins/loudmouth/loudmouth-heap.cpp:228
+msgid "Your answer is: "
+msgstr "جاۋابىڭىز: "
+
+#: ../plugins/loudmouth/loudmouth-heap.cpp:315
+msgid "Add a roster element"
+msgstr "ئىسىملىككە قوشۇش"
+
+#: ../plugins/loudmouth/loudmouth-heap.cpp:316
+msgid "Please fill in this form to add a new element to the remote roster"
+msgstr "يىراقتىكى ئىسىملىككە قوشۇش ئۈچۈن تۆۋەندىكى جەدۋەلنى تولدۇرۇڭ"
+
+#: ../plugins/loudmouth/loudmouth-heap.cpp:318
+msgid "Identifier:"
+msgstr "بەلگە:"
+
+#: ../plugins/loudmouth/loudmouth-heap.cpp:318
+msgid "identifier@server"
+msgstr ""
+
+#: ../plugins/loudmouth/loudmouth-presentity.cpp:156
+#: ../plugins/loudmouth/loudmouth-presentity.cpp:162
+msgid "Ask him/her to see his/her status"
+msgstr "ھالىتىنى كۆرسە بولامدۇ ئۇنىڭدىن سوراش"
+
+#: ../plugins/loudmouth/loudmouth-presentity.cpp:160
+#: ../plugins/loudmouth/loudmouth-presentity.cpp:172
+msgid "Forbid him/her to see my status"
+msgstr "ئۇنىڭ مېنىڭ ھالىتىمنى كۆرۈشىنى چەكلەش"
+
+#: ../plugins/loudmouth/loudmouth-presentity.cpp:164
+msgid "Ask him/her to see his/her status (pending)"
+msgstr "ھالىتىنى كۆرسە بولامدۇ ئۇنىڭدىن سوراش(باستۇرۇپ قويۇلغان)"
+
+#: ../plugins/loudmouth/loudmouth-presentity.cpp:168
+#: ../plugins/loudmouth/loudmouth-presentity.cpp:173
+msgid "Stop getting his/her status"
+msgstr "ئۇنىڭ ھالىتىنى ئېلىشنى توختات"
+
+#: ../plugins/loudmouth/loudmouth-presentity.cpp:178
+msgid "Start chat"
+msgstr "پاراڭنى باشلاش"
+
+#: ../plugins/loudmouth/loudmouth-presentity.cpp:181
+msgid "Continue chat"
+msgstr "پاراڭنى داۋاملاشتۇرۇش"
+
+#: ../plugins/loudmouth/loudmouth-presentity.cpp:270
+msgid ""
+"Please fill in this form to change an existing element of the remote roster"
+msgstr "يىراقتىكى ئىسىملىكنى ئۆزگەرتىش ئۈچۈن تۆۋەندىكى جەدۋەلنى تولدۇرۇڭ"
+
+#: ../plugins/resource-list/rl-cluster.cpp:102
+msgid "New resource list"
+msgstr "يېڭى مەنبەلەر"
+
+#: ../plugins/resource-list/rl-cluster.cpp:166
+msgid "Add new resource-list"
+msgstr "يېڭى مەنبەلەرنى قوشۇش"
+
+#: ../plugins/resource-list/rl-cluster.cpp:167
+msgid ""
+"Please fill in this form to add a new contact list to ekiga's remote roster"
+msgstr "Ekiga نىڭ يىراقتىكى ئىسىملىكىگە قوشۇش ئۈچۈن تۆۋەندىكى جەدۋەلنى تولدۇرۇڭ"
+
+#: ../plugins/resource-list/rl-cluster.cpp:171
+msgid "Writable:"
+msgstr "يازغىلى بولىدۇ:"
+
+#: ../plugins/resource-list/rl-cluster.cpp:172
+msgid "Username:"
+msgstr "ئىشلەتكۈچى ئاتى:"
+
+#: ../plugins/resource-list/rl-entry-ref.cpp:53
+msgid "Click to fetch"
+msgstr ""
+
+#: ../plugins/resource-list/rl-entry-ref.cpp:120
+msgid "Distant contact"
+msgstr "يىراقتىكى ئالاقەداش"
+
+#: ../plugins/resource-list/rl-entry.cpp:197
+msgid "Invalid server data"
+msgstr "مۇلازىمېتىر سانلىق-مەلۇماتى ئىناۋەتسىز"
+
+#: ../plugins/resource-list/rl-heap.cpp:198
+msgid "_Add a new contact"
+msgstr "يېڭى ئالاقەداش قوش(_A)"
+
+#: ../plugins/resource-list/rl-heap.cpp:200
+msgid "_Refresh contact list"
+msgstr "ئالاقەداشلارنى يېڭىلا(_R)"
+
+#: ../plugins/resource-list/rl-heap.cpp:202
+msgid "Contact list _properties"
+msgstr "ئالاقەداشلار خاسلىقى(_P)"
+
+#: ../plugins/resource-list/rl-heap.cpp:462
+msgid "Edit contact list properties"
+msgstr "ئالاقەداشلار خاسلىقىنى تەھرىرلەش"
+
+#: ../plugins/resource-list/rl-heap.cpp:464
+msgid "Please edit the following fields (no identifier means global)"
+msgstr ""
+
+#: ../plugins/resource-list/rl-heap.cpp:467
+msgid "Contact list's name"
+msgstr "ئالاقەداشلارنىڭ ئاتى"
+
+#. "Document" used as a name -- uri point to the root of a document tree
+#: ../plugins/resource-list/rl-heap.cpp:469
+msgid "Document root"
+msgstr "پۈتۈك غولى"
+
+#: ../plugins/resource-list/rl-heap.cpp:470
+msgid "Identifier"
+msgstr "بەلگە"
+
+#: ../plugins/resource-list/rl-heap.cpp:471
+msgid "Writable"
+msgstr "يازغىلى بولامدۇ يوق"
+
+#: ../plugins/resource-list/rl-heap.cpp:472
+msgid "Server username"
+msgstr "مۇلازىمېتىر ئىشلەتكۈچى ئاتى"
+
+#: ../plugins/resource-list/rl-heap.cpp:473
+msgid "Server password"
+msgstr "مۇلازىمېتىر ئىمى"
+
+#: ../plugins/resource-list/rl-heap.cpp:512
+msgid "Add a remote contact"
+msgstr "يىراقتىكى ئالاقىداشنى قوشىدۇ"
+
+#: ../plugins/resource-list/rl-heap.cpp:513
+msgid "Please fill in this form to create a new contact on a remote server"
+msgstr "يىراقتىكى مۇلازىمېتىرغا يېڭى ئالاقەداش قوشۇش ئۈچۈن تۆۋەندىكى جەدۋەلنى تولدۇرۇڭ:"
+
+#: ../plugins/resource-list/rl-list.cpp:182
+#, c-format
+msgid "%s / List #%d"
+msgstr "%s / #%d"
+
+#: ../plugins/resource-list/rl-list.cpp:186
+#, c-format
+msgid "List #%d"
+msgstr "#%d"
+
+#: ../plugins/resource-list/rl-presentity.cpp:224
+msgid "Edit remote contact"
+msgstr "يىراقتىكى ئالاقىداشنى تەھرىرلەش"
+
+#: ../plugins/resource-list/rl-presentity.cpp:225
+msgid ""
+"Please fill in this form to change an existing contact on a remote server"
+msgstr "يىراقتىكى مۇلازىمېتىردىكى ئالاقىداشنى ئۆزگەرتىش ئۈچۈن تۆۋەندىكى جەدۋەلنى تولدۇرۇڭ:"
+
+#: ../src/gui/accounts.cpp:566
+msgid "Account Name"
+msgstr "ھېسابات ئاتى"
+
+#: ../src/gui/accounts.cpp:567
+msgid "Status"
+msgstr "ھالىتى"
+
+#: ../src/gui/accounts.cpp:577 ../src/gui/accounts.cpp:619
+msgid "Accounts"
+msgstr "ھېسابات"
+
+#: ../src/gui/accounts.cpp:591 ../src/gui/main_window.cpp:3229
+msgid "_Accounts"
+msgstr "ھېسابات (_A)"
+
+#: ../src/gui/accounts.cpp:595 ../src/gui/main_window.cpp:3315
+msgid "_Help"
+msgstr "ياردەم(_H)"
+
+#: ../src/gui/accounts.cpp:622
+msgid "Active"
+msgstr "ئاكتىپ"
+
+#: ../src/gui/accounts.cpp:684
+msgid "Enable"
+msgstr "ئىناۋەتلىك"
+
+#: ../src/gui/accounts.cpp:687
+msgid "Disable"
+msgstr "ئىناۋەتسىز"
+
+#: ../src/gui/accounts.cpp:693
+msgid "Remove"
+msgstr "چىقىرىۋەت"
+
+#: ../src/gui/assistant.cpp:341
+msgid ""
+"This is the Ekiga general configuration assistant. The following steps will "
+"set up Ekiga by asking a few simple questions.\n"
+"\n"
+"Once you have completed these steps, you can always change them later by "
+"selecting Preferences in the Edit menu."
+msgstr ""
+
+#: ../src/gui/assistant.cpp:349
+msgid "Welcome to Ekiga"
+msgstr "Ekiga غا مەرھابا"
+
+#: ../src/gui/assistant.cpp:373 ../src/gui/preferences.cpp:464
+msgid "Personal Information"
+msgstr "شەخسىي ئۇچۇرلارنى"
+
+#. The user fields
+#: ../src/gui/assistant.cpp:376
+msgid "Please enter your first name and your surname:"
+msgstr "ئىسىم ۋە تەگاتىڭىزنى كىرگۈزۈڭ:"
+
+#: ../src/gui/assistant.cpp:385
+msgid ""
+"Your first name and surname will be used when connecting to other VoIP and "
+"videoconferencing software."
+msgstr "ئىسىم ۋە تەگاتىڭىز VoIP ۋە سىن يىغىنى پروگراممىسىدا ئىشلىتىلىدۇ(كۆرسىتىلىدۇ)"
+
+#: ../src/gui/assistant.cpp:579
+msgid "Ekiga.net Account"
+msgstr "Ekiga.net ھېساباتى"
+
+#: ../src/gui/assistant.cpp:581
+msgid "Please enter your username:"
+msgstr "ئاتىڭىزنى كىرگۈزۈڭ:"
+
+#: ../src/gui/assistant.cpp:589
+msgid "Please enter your password:"
+msgstr "ئىمنى كىرگۈز:"
+
+#: ../src/gui/assistant.cpp:599
+msgid ""
+"The username and password are used to login to your existing account at the "
+"ekiga.net free SIP service. If you do not have an ekiga.net SIP address yet, "
+"you may first create an account below. This will provide a SIP address that "
+"allows people to call you.\n"
+"\n"
+"You may skip this step if you use an alternative SIP service, or if you "
+"would prefer to specify the login details later."
+msgstr ""
+
+#: ../src/gui/assistant.cpp:626
+msgid "I do not want to sign up for the ekiga.net free service"
+msgstr "ekiga.net ھەقسىز مۇلازىمىتىگە خەتلەتمەيمەن"
+
+#: ../src/gui/assistant.cpp:687
+msgid "Ekiga Call Out Account"
+msgstr "Ekiga Call Out ھېساباتى"
+
+#: ../src/gui/assistant.cpp:689
+msgid "Please enter your account ID:"
+msgstr "ھېسابات ID نى كىرگۈزۈڭ:"
+
+#: ../src/gui/assistant.cpp:697
+msgid "Please enter your PIN code:"
+msgstr "PIN كودىنى كىرگۈزۈڭ:"
+
+#: ../src/gui/assistant.cpp:708
+msgid ""
+"You can make calls to regular phones and cell numbers worldwide using "
+"Ekiga.\n"
+"\n"
+"To enable this, you need to do two things:\n"
+"- First buy an account at the URL below.\n"
+"- Then enter your account ID and PIN code.\n"
+"The service will work only if your account is created using the URL in this "
+"dialog.\n"
+msgstr ""
+
+#: ../src/gui/assistant.cpp:768
+msgid "I do not want to sign up for the Ekiga Call Out service"
+msgstr "Ekiga Call Out مۇلازىمىتىگە خەتلەتمەيمەن"
+
+#: ../src/gui/assistant.cpp:832 ../src/gui/assistant.cpp:1388
+msgid "Connection Type"
+msgstr "باغلىنىش تىپى"
+
+#. The connection type
+#: ../src/gui/assistant.cpp:835
+msgid "Please choose your connection type:"
+msgstr "باشلىنىش تىپىنى تاللاڭ:"
+
+#: ../src/gui/assistant.cpp:852
+msgid "56k Modem"
+msgstr "56k مودېم"
+
+#: ../src/gui/assistant.cpp:857
+msgid "ISDN"
+msgstr "ISDN"
+
+#: ../src/gui/assistant.cpp:862
+msgid "DSL/Cable (128 kbit/s uplink)"
+msgstr "DSL/سىمى (128 kbit/s uplink)"
+
+#: ../src/gui/assistant.cpp:867
+msgid "DSL/Cable (512 kbit/s uplink)"
+msgstr "DSL/سىمى (512 kbit/s uplink)"
+
+#: ../src/gui/assistant.cpp:872
+msgid "LAN"
+msgstr "LAN"
+
+#: ../src/gui/assistant.cpp:877
+msgid "Keep current settings"
+msgstr "ھازىرقى تەڭشەكنى ئۆزگەرتمە"
+
+#: ../src/gui/assistant.cpp:882
+msgid ""
+"The connection type will permit determining the best quality settings that "
+"Ekiga will use during calls. You can later change the settings individually "
+"in the preferences window."
+msgstr ""
+
+#: ../src/gui/assistant.cpp:971 ../src/gui/main_window.cpp:3065
+#: ../src/gui/main_window.cpp:3069 ../src/gui/preferences.cpp:770
+msgid "Audio Devices"
+msgstr "ئۈن ئۈسكۈنىسى"
+
+#: ../src/gui/assistant.cpp:973
+msgid "Please choose the audio ringing device:"
+msgstr ""
+
+#: ../src/gui/assistant.cpp:993
+msgid ""
+"The audio ringing device is the device that will be used to play the ringing "
+"sound on incoming calls."
+msgstr ""
+
+#. ---
+#: ../src/gui/assistant.cpp:1004
+msgid "Please choose the audio output device:"
+msgstr "ئۈن چىقىرىش ئۈسكۈنىسىنى تاللاڭ:"
+
+#: ../src/gui/assistant.cpp:1024
+msgid ""
+"The audio output device is the device that will be used to play audio during "
+"calls."
+msgstr "ئۈن چىقىرىش ئۈسكۈنىسى سۆزلىشىۋاتقاندا ئىشلىتىلىدۇ"
+
+#. ---
+#: ../src/gui/assistant.cpp:1035
+msgid "Please choose the audio input device:"
+msgstr "ئۈن كىرگۈزۈش ئۈسكۈنىسىنى تاللاڭ:"
+
+#: ../src/gui/assistant.cpp:1055
+msgid ""
+"The audio input device is the device that will be used to record your voice "
+"during calls."
+msgstr "ئۈن كىرگۈزۈش ئۈسكۈنىسى سۆزلىشىۋاتقاندا ئاۋازىڭىزنى خاتىرىلەش ئۈچۈن ئىشلىتىلىدۇ"
+
+#: ../src/gui/assistant.cpp:1155 ../src/gui/assistant.cpp:1425
+msgid "Video Input Device"
+msgstr "سىن كىرگۈزۈش ئۈسكۈنىسى"
+
+#: ../src/gui/assistant.cpp:1157
+msgid "Please choose your video input device:"
+msgstr "سىن كىرگۈزۈش ئۈسكۈنىسىنى تاللاڭ:"
+
+#: ../src/gui/assistant.cpp:1177
+msgid ""
+"The video input device is the device that will be used to capture video "
+"during calls."
+msgstr "سىن كىرگۈزۈش ئۈسكۈنىسى سۆزلىشىۋاتقاندا سىننى خاتىرىلەش ئۈچۈن ئىشلىتىلىدۇ"
+
+#: ../src/gui/assistant.cpp:1244 ../src/gui/assistant.cpp:1266
+#: ../src/gui/assistant.cpp:1288 ../src/gui/preferences.cpp:812
+#: ../src/gui/preferences.cpp:836 ../src/gui/preferences.cpp:858
+msgid "No device found"
+msgstr "ئۈسكىنە تېپىلمىدى"
+
+#: ../src/gui/assistant.cpp:1319
+msgid "Configuration Complete"
+msgstr "تەڭشەش تاماملاندى"
+
+#: ../src/gui/assistant.cpp:1321
+msgid ""
+"You have now finished the Ekiga configuration. All the settings can be "
+"changed in the Ekiga preferences. Enjoy!"
+msgstr "Ekiga تەڭشەپ بولدىڭىز. Ekiga تەڭشەك سۆزلەشكۈسىدىمۇ ئۆزگەرتىشكە بولىدۇ. قېنى ئەمدى ئويناشنى باشلاڭ!"
+
+#: ../src/gui/assistant.cpp:1328
+msgid "Configuration summary:"
+msgstr "تەڭشەك نەتىجىسى:"
+
+#: ../src/gui/assistant.cpp:1398
+msgid "Audio Ringing Device"
+msgstr ""
+
+#: ../src/gui/assistant.cpp:1407
+msgid "Audio Output Device"
+msgstr "ئۈن چىقىرىش ئۈسكۈنىسى"
+
+#: ../src/gui/assistant.cpp:1416
+msgid "Audio Input Device"
+msgstr "ئۈن كىرگۈزۈش ئۈسكۈنىسى"
+
+#: ../src/gui/assistant.cpp:1438
+msgid "SIP URI"
+msgstr "SIP نىڭ URI ئى"
+
+#: ../src/gui/assistant.cpp:1450
+msgid "Ekiga Call Out"
+msgstr "Ekiga Call Out"
+
+#: ../src/gui/assistant.cpp:1494
+#, c-format
+msgid "Ekiga Configuration Assistant (%d of %d)"
+msgstr "Ekiga تەڭشەك ياردەمچىسى (%d / %d)"
+
+#: ../src/gui/callbacks.cpp:78
+msgid "Contributors:"
+msgstr "تۆھپىكارلار:"
+
+#: ../src/gui/callbacks.cpp:90
+msgid "Artwork:"
+msgstr ""
+
+#: ../src/gui/callbacks.cpp:98
+msgid "See AUTHORS file for full credits"
+msgstr ""
+
+#: ../src/gui/callbacks.cpp:114
+msgid ""
+"This program is free software; you can redistribute it and/or modify it "
+"under the terms of the GNU General Public License as published by the Free "
+"Software Foundation; either version 2 of the License, or (at your option) "
+"any later version. "
+msgstr "بۇ پروگرامما ئەركىن يۇمشاق دېتال؛ سىز ئەركىن يۇمشاق دېتال ۋەخپىسى تارقاتقان GNU ئادەتتىكى ئاممىۋى ئىجازەتنامە بويىچە ئۇنى قايتا تارقىتىپ ياكى ئۆزگەرتەلەيسىز؛ سىز شۇ ئىجازەت كېلىشىمىنىڭ ئىككىنچى نەشرى ياكى يۇقىرى نەشرىنى ئىشلەتسىڭىز بولىدۇ. "
+
+#: ../src/gui/callbacks.cpp:118
+msgid ""
+"This program is distributed in the hope that it will be useful, but WITHOUT "
+"ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or "
+"FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for "
+"more details. You should have received a copy of the GNU General Public "
+"License along with this program; if not, write to the Free Software "
+"Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301, USA."
+msgstr ""
+
+#: ../src/gui/callbacks.cpp:125
+msgid ""
+"Ekiga is licensed under the GPL license and as a special exception, you have "
+"permission to link or otherwise combine this program with the programs OPAL, "
+"OpenH323 and PWLIB, and distribute the combination, without applying the "
+"requirements of the GNU GPL to the OPAL, OpenH323 and PWLIB programs, as "
+"long as you do follow the requirements of the GNU GPL for all the rest of "
+"the software thus combined."
+msgstr ""
+
+#. Translators: Please write translator credits here, and
+#. * separate names with \n
+#: ../src/gui/callbacks.cpp:137
+msgid "translator-credits"
+msgstr "Sahran <sahran@live.com>\n"
+"Gheyret T.Kenji <gheyret@yahoo.com>\n"
+"Zeper <zeper@msn.com>\n"
+"Abduxukur Abdurixit <abduxukur.abdurixit@t-systems.ch>"
+
+#: ../src/gui/callbacks.cpp:142
+msgid ""
+"Ekiga is full-featured SIP and H.323 compatible VoIP, IP-Telephony and "
+"Videoconferencing application that allows you to make audio and video calls "
+"to remote users with SIP and H.323 hardware or software."
+msgstr "Ekiga بولسا SIP ۋە H.323 نىڭ ئۆلچىمىگە تولۇق چۈشىدىغان، كوپ ئىقتىدارلىق VoIP/IP تېلېفون ۋە شۇنداقلا سىن يىغىن پروگراممىسى. سىز SIP ۋە H.323 قاتتىق دېتالى ياكى يۇمشاق ئىشلەتكەن يىراقتىكى ئىشلەتكۈچى بىلەن ئۈن ياكىن ئۈن-سىن ئالاقىسى ئېلىپ بارالايسىز."
+
+#: ../src/gui/callbacks.cpp:219
+msgid "Unable to open help file."
+msgstr "ياردەم ھۆججىتىنى ئاچقىلى بولمىدى"
+
+#: ../src/gui/dialpad.cpp:52
+msgid "abc"
+msgstr "abc"
+
+#: ../src/gui/dialpad.cpp:53
+msgid "def"
+msgstr "def"
+
+#: ../src/gui/dialpad.cpp:54
+msgid "ghi"
+msgstr "ghi"
+
+#: ../src/gui/dialpad.cpp:55
+msgid "jkl"
+msgstr "jkl"
+
+#: ../src/gui/dialpad.cpp:56
+msgid "mno"
+msgstr "mno"
+
+#: ../src/gui/dialpad.cpp:57
+msgid "pqrs"
+msgstr "pqrs"
+
+#: ../src/gui/dialpad.cpp:58
+msgid "tuv"
+msgstr "tuv"
+
+#: ../src/gui/dialpad.cpp:59
+msgid "wxyz"
+msgstr "wxyz"
+
+#: ../src/gui/main_window.cpp:606
+#, c-format
+msgid "A:%.1f/%.1f   V:%.1f/%.1f   FPS:%d/%d"
+msgstr "A:%.1f/%.1f   V:%.1f/%.1f   FPS:%d/%d"
+
+#. %s is the SIP/H.323 address of the remote user, this text is shown
+#. below video during a call
+#: ../src/gui/main_window.cpp:652
+#, c-format
+msgid "Connected with %s"
+msgstr "%s بىلەن باغلاندى"
+
+#: ../src/gui/main_window.cpp:688 ../src/gui/main_window.cpp:3553
+msgid "Standby"
+msgstr "كۈت"
+
+#: ../src/gui/main_window.cpp:747
+msgid "Call on hold"
+msgstr ""
+
+#: ../src/gui/main_window.cpp:758
+msgid "Call retrieved"
+msgstr ""
+
+#: ../src/gui/main_window.cpp:773
+#, c-format
+msgid "Missed call from %s"
+msgstr ""
+
+#: ../src/gui/main_window.cpp:910
+msgid "Error"
+msgstr "خاتالىق"
+
+#: ../src/gui/main_window.cpp:983
+msgid "Error while initializing video output"
+msgstr "سىن چىقىرىشنى دەسلەپلەشتۈرۈشتە خاتالىق كۆرۈلدى"
+
+#: ../src/gui/main_window.cpp:984
+msgid "No video will be displayed on your machine during this call"
+msgstr "سۆزلىشىۋاتقاندا سىن كۆرسىتىلمەيدۇ"
+
+#: ../src/gui/main_window.cpp:994
+msgid ""
+"There was an error opening or initializing the video output. Please verify "
+"that no other application is using the accelerated video output."
+msgstr "سىن چىقىرىشنى دەسلەپلەشتۈرۈشتە خاتالىق كۆرۈلدى. باشقا پروگراممىلار تېزلەشتۈرۈلگەن سىن چىقىرىش ئىقتىدارىنى ئىشلىتىۋاتامدۇ تەكشۈرۈپ كۆرۈڭ."
+
+#: ../src/gui/main_window.cpp:996
+msgid ""
+"There was an error opening or initializing the video output. Please verify "
+"that you are using a color depth of 24 or 32 bits per pixel."
+msgstr "سىن چىقىرىشنى دەسلەپلەشتۈرۈشتە خاتالىق كۆرۈلدى. سىن قوزغاتقۇ 24 ياكى 32 بىتلىق رەڭ كۆرسىتىشنى ئىشلىتىپتىمۇ قاراپ بېقىڭ"
+
+#. Translators: This is a hotplug status
+#: ../src/gui/main_window.cpp:1109
+#, c-format
+msgid "Added video input device %s"
+msgstr "سىن كىرگۈزۈش ئۈسكۈنىسى %s قوشۇلدى"
+
+#. Translators: This is a hotplug status
+#: ../src/gui/main_window.cpp:1121
+#, c-format
+msgid "Removed video input device %s"
+msgstr "سىن كىرگۈزۈش ئۈسكۈنىسى %s ئۆچۈرۈلدى"
+
+#: ../src/gui/main_window.cpp:1138
+#, c-format
+msgid "Error while accessing video device %s"
+msgstr "سىن كىرگۈزۈش ئۈسكۈنىسى %s زىيارەت قىلىۋاتقاندا خاتالىق كۆرۈلدى"
+
+#: ../src/gui/main_window.cpp:1141
+msgid "A moving logo will be transmitted during calls."
+msgstr ""
+
+#: ../src/gui/main_window.cpp:1145
+msgid ""
+"There was an error while opening the device. In case it is a pluggable "
+"device it may be sufficient to reconnect it. If not, or if it still is not "
+"accessible, please check your permissions and make sure that the appropriate "
+"driver is loaded."
+msgstr ""
+
+#: ../src/gui/main_window.cpp:1149
+msgid "Your video driver doesn't support the requested video format."
+msgstr "ئىشلىتىۋاتقان سىن قوزغاتقۇدا تەلەپ قىلىنغان سىن فورماتىنى ئىشلەتكىلى بولمايدىكەن."
+
+#: ../src/gui/main_window.cpp:1153
+msgid "Could not open the chosen channel."
+msgstr "تاللانغان قانالنى ئاچقىلى بولمىدى."
+
+#: ../src/gui/main_window.cpp:1157
+msgid ""
+"Your driver doesn't seem to support any of the color formats supported by "
+"Ekiga.\n"
+" Please check your kernel driver documentation in order to determine which "
+"Palette is supported."
+msgstr "قوزغاتقۇ Ekiga ئىشلىتىلىدىغان رەڭ فورماتىنى قوللىمايدىغاندەك قىلىدۇ.\n"
+"قانداق Palette نى قوللايدىغانلىقىنى، Kernel قوزغاتقۇ قوللانمىسىدىن كۆرۈپ بېقىڭ."
+
+#: ../src/gui/main_window.cpp:1161
+msgid "Error while setting the frame rate."
+msgstr "كاندۇك تېزلىكىنى تەڭشەشتە خاتالىق كۆرۈلدى."
+
+#: ../src/gui/main_window.cpp:1165
+msgid "Error while setting the frame size."
+msgstr "كاندۇك چوڭلۇقىنى تەڭشەشتە خاتالىق كۆرۈلدى."
+
+#: ../src/gui/main_window.cpp:1170 ../src/gui/main_window.cpp:1274
+#: ../src/gui/main_window.cpp:1391
+msgid "Unknown error."
+msgstr "نامەلۇم خاتالىق."
+
+#. Translators: This is a hotplug status
+#: ../src/gui/main_window.cpp:1222
+#, c-format
+msgid "Added audio input device %s"
+msgstr "ئۈن كىرگۈزۈش ئۈسكۈنىسى %s قوشۇلدى"
+
+#. Translators: This is a hotplug status
+#: ../src/gui/main_window.cpp:1239
+#, c-format
+msgid "Removed audio input device %s"
+msgstr "ئۈن كىرگۈزۈش ئۈسكۈنىسى %s ئۆچۈرۈلدى"
+
+#: ../src/gui/main_window.cpp:1256
+#, c-format
+msgid "Error while opening audio input device %s"
+msgstr "ئۈن كىرگۈزۈش ئۈسكۈنىسى %s نى ئېچىشتا خاتالىق كۆرۈلدى."
+
+#. Translators: This happens when there is an error with audio input:
+#. * Nothing ("silence") will be transmitted
+#: ../src/gui/main_window.cpp:1261
+msgid "Only silence will be transmitted."
+msgstr "جىمجىتلىق (ئۈنسىز) نىلا يوللايدۇ."
+
+#: ../src/gui/main_window.cpp:1265
+msgid ""
+"Unable to open the selected audio device for recording. In case it is a "
+"pluggable device it may be sufficient to reconnect it. If not, or if it "
+"still is not accessible, please check your audio setup, the permissions and "
+"that the device is not busy."
+msgstr ""
+
+#: ../src/gui/main_window.cpp:1269
+msgid ""
+"The selected audio device was successfully opened but it is impossible to "
+"read data from this device. In case it is a pluggable device it may be "
+"sufficient to reconnect it. If not, or if it still is not accessible, please "
+"check your audio setup."
+msgstr ""
+
+#: ../src/gui/main_window.cpp:1338
+#, c-format
+msgid "Added audio output device %s"
+msgstr "ئۈن چىقىرىش ئۈسكۈنىسى %s قوشۇلدى"
+
+#: ../src/gui/main_window.cpp:1354
+#, c-format
+msgid "Removed audio output device %s"
+msgstr "ئۈن چىقىرىش ئۈسكۈنىسى %s ئۆچۈرۈلدى"
+
+#: ../src/gui/main_window.cpp:1375
+#, c-format
+msgid "Error while opening audio output device %s"
+msgstr "ئۈن چىقىرىش ئۈسكۈنىسى %s نى ئېچىشتا خاتالىق كۆرۈلدى"
+
+#: ../src/gui/main_window.cpp:1378
+msgid "No incoming sound will be played."
+msgstr "كىرگەن ئاۋازلار ئاڭلانمايدۇ."
+
+#: ../src/gui/main_window.cpp:1382
+msgid ""
+"Unable to open the selected audio device for playing. In case it is a "
+"pluggable device it may be sufficient to reconnect it. If not, or if it "
+"still is not accessible, please check your audio setup, the permissions and "
+"that the device is not busy."
+msgstr ""
+
+#: ../src/gui/main_window.cpp:1386
+msgid ""
+"The selected audio device was successfully opened but it is impossible to "
+"write data to this device. In case it is a pluggable device it may be "
+"sufficient to reconnect it. If not, or if it still is not accessible, please "
+"check your audio setup."
+msgstr ""
+
+#: ../src/gui/main_window.cpp:1572
+msgid "Video Settings"
+msgstr "سىن تەڭشەكلىرى"
+
+#: ../src/gui/main_window.cpp:1599
+msgid "Adjust brightness"
+msgstr "يورۇقلۇق دەرىجىسى تەڭشەش"
+
+#: ../src/gui/main_window.cpp:1620
+msgid "Adjust whiteness"
+msgstr "ئاقلىقىنى تەڭشەش"
+
+#: ../src/gui/main_window.cpp:1641
+msgid "Adjust color"
+msgstr "رەڭ تەڭشەش"
+
+#: ../src/gui/main_window.cpp:1662
+msgid "Adjust contrast"
+msgstr ""
+
+#: ../src/gui/main_window.cpp:1706
+msgid "Audio Settings"
+msgstr "ئۈن تەڭشىكى"
+
+#: ../src/gui/main_window.cpp:2409
+msgid "_Retrieve Call"
+msgstr ""
+
+#: ../src/gui/main_window.cpp:2422 ../src/gui/main_window.cpp:3183
+msgid "H_old Call"
+msgstr ""
+
+#: ../src/gui/main_window.cpp:2454 ../src/gui/main_window.cpp:3195
+msgid "Suspend _Audio"
+msgstr "ئۈننى ۋاقىتلىق توختات(_A)"
+
+#: ../src/gui/main_window.cpp:2456 ../src/gui/main_window.cpp:3200
+msgid "Suspend _Video"
+msgstr "سىننى ۋاقىتلىق توختات(_V)"
+
+#: ../src/gui/main_window.cpp:2458
+msgid "Resume _Audio"
+msgstr "ئۈنى قايتا باشلا(_A)"
+
+#: ../src/gui/main_window.cpp:2460
+msgid "Resume _Video"
+msgstr "سىننى قايتا باشلا(_V)"
+
+#: ../src/gui/main_window.cpp:2714 ../src/gui/main_window.cpp:2867
+msgid "Reject"
+msgstr "رەت قىل"
+
+#: ../src/gui/main_window.cpp:2716 ../src/gui/main_window.cpp:2866
+msgid "Accept"
+msgstr "قوشۇل"
+
+#: ../src/gui/main_window.cpp:2722
+msgid "Incoming call from"
+msgstr "چاقىرىقنىڭ كەلگەن ئورنى"
+
+#: ../src/gui/main_window.cpp:2740 ../src/gui/main_window.cpp:2857
+msgid "Remote URI:"
+msgstr "يىراقتىكى URI:"
+
+#: ../src/gui/main_window.cpp:2752 ../src/gui/main_window.cpp:2859
+msgid "Remote Application:"
+msgstr "يىراقتىكى پروگرامما:"
+
+#: ../src/gui/main_window.cpp:2765 ../src/gui/main_window.cpp:2861
+msgid "Account ID:"
+msgstr "ھېسابات ID:"
+
+#: ../src/gui/main_window.cpp:2773
+#, c-format
+msgid "Call from %s"
+msgstr "\"%s\" دىن كەلگەن تېلېفون"
+
+#: ../src/gui/main_window.cpp:2968
+#, c-format
+msgid "Call Duration: %s\n"
+msgstr "سۆزلىشىش ۋاقتى: %s\n"
+
+#: ../src/gui/main_window.cpp:2999
+msgid "Transfer call to:"
+msgstr "تېلېفوننى غا يوللا:"
+
+#: ../src/gui/main_window.cpp:3051
+msgid "No"
+msgstr "ياق"
+
+#: ../src/gui/main_window.cpp:3053
+msgid "Yes"
+msgstr "ھەئە"
+
+#: ../src/gui/main_window.cpp:3064
+msgid "Detected new audio input device:"
+msgstr "يېڭى ئۈن كىرگۈزۈش ئۈسكۈنىسى بايقالدى:"
+
+#: ../src/gui/main_window.cpp:3068
+msgid "Detected new audio output device:"
+msgstr "يېڭى ئۈن چىقىرىش ئۈسكۈنىسى بايقالدى:"
+
+#: ../src/gui/main_window.cpp:3072
+msgid "Detected new video input device:"
+msgstr "يېڭى سىن كىرگۈزۈش ئۈسكۈنىسى بايقالدى:"
+
+#: ../src/gui/main_window.cpp:3073 ../src/gui/preferences.cpp:926
+msgid "Video Devices"
+msgstr "سىن ئۈسكۈنىلىرى"
+
+#: ../src/gui/main_window.cpp:3091
+msgid "Do you want to use it as default device?"
+msgstr "بۇنى كۆڭۈلدىكى ئۈسكىنە سۈپىتىدە ئىشلىتەمسىز؟"
+
+#: ../src/gui/main_window.cpp:3159
+msgid "_Chat"
+msgstr "پاراڭ(_C)"
+
+#: ../src/gui/main_window.cpp:3161
+msgid "Ca_ll"
+msgstr "سۆزلەش(_L)"
+
+#: ../src/gui/main_window.cpp:3161
+msgid "Place a new call"
+msgstr "يېڭى سۆزلىشىش باشلايدۇ"
+
+#: ../src/gui/main_window.cpp:3164
+msgid "_Hang up"
+msgstr "تېلېفوننى قوي(_H)"
+
+#: ../src/gui/main_window.cpp:3165
+msgid "Terminate the current call"
+msgstr "ھازىرقى سۆزلىشىشنى توختىتىدۇ"
+
+#: ../src/gui/main_window.cpp:3171
+msgid "A_dd Contact"
+msgstr "ئالاقەداش قوش(_D)"
+
+#: ../src/gui/main_window.cpp:3171
+msgid "Add a contact to the roster"
+msgstr "ئىسىملىككە يېڭى ئالاقەداش قوشىدۇ"
+
+#: ../src/gui/main_window.cpp:3176
+msgid "Find contacts"
+msgstr "ئالاقەداش ئىزدەيدۇ"
+
+#: ../src/gui/main_window.cpp:3183 ../src/gui/main_window.cpp:3653
+msgid "Hold the current call"
+msgstr ""
+
+#: ../src/gui/main_window.cpp:3187
+msgid "_Transfer Call"
+msgstr ""
+
+#: ../src/gui/main_window.cpp:3188
+msgid "Transfer the current call"
+msgstr ""
+
+#: ../src/gui/main_window.cpp:3196
+msgid "Suspend or resume the audio transmission"
+msgstr ""
+
+#: ../src/gui/main_window.cpp:3201
+msgid "Suspend or resume the video transmission"
+msgstr ""
+
+#: ../src/gui/main_window.cpp:3208
+msgid "Close the Ekiga window"
+msgstr "Ekiga كۆزنىكىنى ياپىدۇ"
+
+#: ../src/gui/main_window.cpp:3215 ../src/gui/statusicon.cpp:465
+msgid "Quit"
+msgstr "چېكىن"
+
+#: ../src/gui/main_window.cpp:3221
+msgid "_Configuration Assistant"
+msgstr "تەڭشەك ياردەمچىسى(_C)"
+
+#: ../src/gui/main_window.cpp:3222
+msgid "Run the configuration assistant"
+msgstr "تەڭشەك ياردەمچىسىنى ئىجرا قىلىدۇ"
+
+#: ../src/gui/main_window.cpp:3230
+msgid "Edit your accounts"
+msgstr "ھېساباتلىرىڭىزنى تەھرىرلەيدۇ"
+
+#: ../src/gui/main_window.cpp:3236
+msgid "Change your preferences"
+msgstr "تەڭشەكلىرىڭىزنى ئۆزگەرتىدۇ"
+
+#. that one doesn't have a macro :
+#: ../src/gui/main_window.cpp:3242
+msgid "Co_ntact"
+msgstr "ئالاقە قىل(_N)"
+
+#: ../src/gui/main_window.cpp:3242
+msgid "Act on selected contact"
+msgstr ""
+
+#: ../src/gui/main_window.cpp:3244
+msgid "_View"
+msgstr "كۆرۈنۈش(_V)"
+
+#: ../src/gui/main_window.cpp:3246
+msgid "Con_tacts"
+msgstr "ئالاقەداشلار(_T)"
+
+#: ../src/gui/main_window.cpp:3246
+msgid "View the contacts list"
+msgstr "ئالاقەداشلارنى كۆرسىتىدۇ"
+
+#: ../src/gui/main_window.cpp:3251
+msgid "_Dialpad"
+msgstr "نومۇر تاختىسى(_D)"
+
+#: ../src/gui/main_window.cpp:3251
+msgid "View the dialpad"
+msgstr "نومۇر تاختىسىنى كۆرسىتىدۇ"
+
+#: ../src/gui/main_window.cpp:3256
+msgid "_Call History"
+msgstr "سۆزلىشىش ئىزى(_C)"
+
+#: ../src/gui/main_window.cpp:3256
+msgid "View the call history"
+msgstr "سۆزلىشىش ئىزلىرىنى كۆرسىتىدۇ"
+
+#: ../src/gui/main_window.cpp:3264
+msgid "_Show Call Panel"
+msgstr "سۆزلىشىش تاختىسىنى كۆرسەت(_S)"
+
+#: ../src/gui/main_window.cpp:3272
+msgid "_Local Video"
+msgstr "يەرلىك سىن(_L)"
+
+#: ../src/gui/main_window.cpp:3273
+msgid "Local video image"
+msgstr ""
+
+#: ../src/gui/main_window.cpp:3278
+msgid "_Remote Video"
+msgstr "يىراقتىكى سىن(_R)"
+
+#: ../src/gui/main_window.cpp:3279
+msgid "Remote video image"
+msgstr ""
+
+#: ../src/gui/main_window.cpp:3284
+msgid "_Picture-in-Picture"
+msgstr "سۈرەت ئىچىدە سۈرەت(_P)"
+
+#: ../src/gui/main_window.cpp:3285 ../src/gui/main_window.cpp:3291
+msgid "Both video images"
+msgstr ""
+
+#: ../src/gui/main_window.cpp:3290
+msgid "Picture-in-Picture in Separate _Window"
+msgstr "سۈرەت ئىچىدە سۈرەت(باشقا كۆزنەك)(_W)"
+
+#: ../src/gui/main_window.cpp:3298
+msgid "Zoom in"
+msgstr "چوڭايتىش"
+
+#: ../src/gui/main_window.cpp:3302
+msgid "Zoom out"
+msgstr "كىچىكلىتىش"
+
+#: ../src/gui/main_window.cpp:3306
+msgid "Normal size"
+msgstr "نورمال چوڭلۇقى"
+
+#: ../src/gui/main_window.cpp:3310
+msgid "_Fullscreen"
+msgstr "تولۇق ئېكران(_F)"
+
+#: ../src/gui/main_window.cpp:3310
+msgid "Switch to fullscreen"
+msgstr "تولۇق ئېكرانغا ئۆزگەرتمەك"
+
+#: ../src/gui/main_window.cpp:3318 ../src/gui/statusicon.cpp:453
+msgid "Get help by reading the Ekiga manual"
+msgstr "Ekiga نىڭ قوللانمىسىنى كۆرسىتىدۇ"
+
+#: ../src/gui/main_window.cpp:3323 ../src/gui/statusicon.cpp:458
+msgid "View information about Ekiga"
+msgstr "Ekiga ھەققىدىكى ئۇچۇرنى كۆرسىتىدۇ"
+
+#: ../src/gui/main_window.cpp:3397
+msgid ""
+"Enter a URI on the left, and click this button to place a call or to hangup"
+msgstr "سول تەرەپكە URI نى كىرگۈزۈپ، بۇ توپچىنى بېسىپ چاقىرىڭ ياكى توختىتىڭ"
+
+#: ../src/gui/main_window.cpp:3442
+msgid "Contacts"
+msgstr "ئالاقەداشلار"
+
+#: ../src/gui/main_window.cpp:3464
+msgid "Dialpad"
+msgstr "نومۇر تاختىسى"
+
+#: ../src/gui/main_window.cpp:3482
+msgid "Call history"
+msgstr "ئىز"
+
+#: ../src/gui/main_window.cpp:3590
+msgid "Change the volume of your soundcard"
+msgstr "ئۈن كارتىسىنىڭ ئاۋاز چوڭلۇقىنى ئۆزگەرتىدۇ"
+
+#: ../src/gui/main_window.cpp:3611
+msgid "Change the color settings of your video device"
+msgstr "سىن ئۈسكۈنىسىنىڭ رەڭ تەڭشىكىنى ئۆزگەرتىدۇ"
+
+#: ../src/gui/main_window.cpp:3679
+msgid "Ekiga"
+msgstr "Ekiga"
+
+#. Translators: TX is a common abbreviation for "transmit".  As it
+#. * is shown in a tooltip, there is no space constraint
+#: ../src/gui/main_window.cpp:4284
+#, c-format
+msgid "TX: %dx%d "
+msgstr "TX: %dx%d "
+
+#. Translators: RX is a common abbreviation for "receive".  As it
+#. * is shown in a tooltip, there is no space constraint
+#: ../src/gui/main_window.cpp:4289
+#, c-format
+msgid "RX: %dx%d "
+msgstr "RX: %dx%d "
+
+#: ../src/gui/main_window.cpp:4291
+#, c-format
+msgid ""
+"Lost packets: %.1f %%\n"
+"Late packets: %.1f %%\n"
+"Out of order packets: %.1f %%\n"
+"Jitter buffer: %d ms%s%s%s"
+msgstr "يوقالغان packet: %.1f %%\n"
+"كېچىككەن packet: %.1f %%\n"
+"تەرتىپسىز packet: %.1f %%\n"
+"Jitter يىغلەكى: %d ms%s%s%s"
+
+#: ../src/gui/main_window.cpp:4406
+msgid "Prints debug messages in the console (level between 1 and 5)"
+msgstr "console دا سازلاش ئۇچۇرلىرىنى كۆرسىتىدۇ(دەرىجىسى: 1～5)"
+
+#: ../src/gui/main_window.cpp:4411
+msgid "Prints user plane debug messages in the console (level between 1 and 4)"
+msgstr "console دا ئىشلەتكۈچىگە ماس كەلگەن سازلاش ئۇچۇرلىرىنى كۆرسىتىدۇ (レベル: 1〜4)"
+
+#: ../src/gui/main_window.cpp:4416
+msgid "Makes Ekiga call the given URI"
+msgstr "كۆرسىتىلگەن URI نى چاقىرىش"
+
+#: ../src/gui/preferences.cpp:382
+msgid "Play sound for new voice mails"
+msgstr "يېڭىدىن سىنخەت تاپشۇرۇپ ئالغاندا ئۈن قويىدۇ"
+
+#: ../src/gui/preferences.cpp:392
+msgid "Play sound for new instant messages"
+msgstr "يېڭىدىن مۇڭدىشىش تاپشۇرۇپ ئالغاندا ئۈن قويىدۇ"
+
+#: ../src/gui/preferences.cpp:467
+msgid "_Full name:"
+msgstr "تولۇق ئاتى(_F):"
+
+#: ../src/gui/preferences.cpp:485
+msgid "User Interface"
+msgstr "ئىشلەتكۈچى كۆرۈنمە يۈزى"
+
+#: ../src/gui/preferences.cpp:487
+msgid "Start _hidden"
+msgstr "يوشۇرۇن قوزغات(_H)"
+
+#: ../src/gui/preferences.cpp:489
+msgid "Show offline _contacts"
+msgstr "توردا يوق ئالاقەداشلارنىمۇ كۆرسەت(_C)"
+
+#: ../src/gui/preferences.cpp:494
+msgid "Video Display"
+msgstr "سىن كۆرسىتىش"
+
+#: ../src/gui/preferences.cpp:496
+msgid "Place windows displaying video _above other windows"
+msgstr ""
+
+#: ../src/gui/preferences.cpp:500
+msgid "Network Settings"
+msgstr "تور تەڭشەكلىرى"
+
+#: ../src/gui/preferences.cpp:502
+msgid "Enable network _detection"
+msgstr "تور بايقاش ئىناۋەتلىك(_D)"
+
+#: ../src/gui/preferences.cpp:513
+msgid "Call Forwarding"
+msgstr ""
+
+#: ../src/gui/preferences.cpp:515
+msgid "_Always forward calls to the given host"
+msgstr ""
+
+#: ../src/gui/preferences.cpp:515
+msgid ""
+"If enabled, all incoming calls will be forwarded to the host that is "
+"specified in the protocol settings"
+msgstr ""
+
+#: ../src/gui/preferences.cpp:517
+msgid "Forward calls to the given host if _no answer"
+msgstr ""
+
+#: ../src/gui/preferences.cpp:517
+msgid ""
+"If enabled, all incoming calls will be forwarded to the host that is "
+"specified in the protocol settings if you do not answer the call"
+msgstr ""
+
+#: ../src/gui/preferences.cpp:519
+msgid "Forward calls to the given host if _busy"
+msgstr ""
+
+#: ../src/gui/preferences.cpp:519
+msgid ""
+"If enabled, all incoming calls will be forwarded to the host that is "
+"specified in the protocol settings if you already are in a call or if you "
+"are in Do Not Disturb mode"
+msgstr ""
+
+#: ../src/gui/preferences.cpp:523 ../src/gui/preferences.cpp:1365
+msgid "Call Options"
+msgstr "چاقىرىش تاللانمىلىرى"
+
+#. Add all the fields
+#: ../src/gui/preferences.cpp:526
+msgid "Timeout to reject or forward unanswered incoming calls (in seconds):"
+msgstr ""
+
+#: ../src/gui/preferences.cpp:527
+msgid "_Automatically answer incoming calls"
+msgstr "چاقىرىق كەلسە ئاپتوماتىك قوبۇل قىل(_A)"
+
+#: ../src/gui/preferences.cpp:558
+msgid "Ekiga Sound Events"
+msgstr "Ekiga ئاۋاز ئۈنۈملىرى"
+
+#: ../src/gui/preferences.cpp:596
+msgid "A"
+msgstr "A"
+
+#: ../src/gui/preferences.cpp:608
+msgid "Event"
+msgstr "ھادىسە"
+
+#: ../src/gui/preferences.cpp:620
+msgid "Choose a sound"
+msgstr "ئاۋاز تاللاڭ"
+
+#: ../src/gui/preferences.cpp:625
+msgid "Wavefiles"
+msgstr "WAVE ھۆججەتلەر"
+
+#: ../src/gui/preferences.cpp:634 ../src/gui/preferences.cpp:653
+msgid "Play"
+msgstr "قوي"
+
+#: ../src/gui/preferences.cpp:674
+msgid "String"
+msgstr "ھەرپ-بەلگە تىزىقى"
+
+#: ../src/gui/preferences.cpp:675
+msgid "Tone"
+msgstr ""
+
+#: ../src/gui/preferences.cpp:676 ../src/gui/preferences.cpp:725
+msgid "RFC2833"
+msgstr "RFC2833"
+
+#: ../src/gui/preferences.cpp:677
+msgid "Q.931"
+msgstr "Q.931"
+
+#: ../src/gui/preferences.cpp:683 ../src/gui/preferences.cpp:735
+msgid "Misc Settings"
+msgstr "باشقا تەڭشەكلەر"
+
+#: ../src/gui/preferences.cpp:686 ../src/gui/preferences.cpp:740
+msgid "Forward _URI:"
+msgstr ""
+
+#: ../src/gui/preferences.cpp:695
+msgid "Advanced Settings"
+msgstr "ئالىي تەڭشەك"
+
+#. The toggles
+#: ../src/gui/preferences.cpp:698
+msgid "Enable H.245 _tunneling"
+msgstr ""
+
+#: ../src/gui/preferences.cpp:700
+msgid "Enable _early H.245"
+msgstr "دەسلەپكى مەزگىلدىكى H.245 نى ئىناۋەتلىك قىلىش(_E)"
+
+#: ../src/gui/preferences.cpp:702
+msgid "Enable fast _start procedure"
+msgstr "تەز قوزغىلىشنى ئىناۋەتلىك قىلىش(_S)"
+
+#: ../src/gui/preferences.cpp:702
+msgid ""
+"Connection will be established in Fast Start mode. Fast Start is a new way "
+"to start calls faster that was introduced in H.323v2. It is not supported by "
+"Netmeeting and using both Fast Start and H.245 Tunneling can crash some "
+"versions of Netmeeting."
+msgstr ""
+
+#: ../src/gui/preferences.cpp:708 ../src/gui/preferences.cpp:748
+msgid "DTMF Mode"
+msgstr "DTMF ھالەت"
+
+#: ../src/gui/preferences.cpp:710 ../src/gui/preferences.cpp:750
+msgid "_Send DTMF as:"
+msgstr "DTMF ھالەتتە ئەۋەت(_S):"
+
+#: ../src/gui/preferences.cpp:710 ../src/gui/preferences.cpp:750
+msgid "This allows you to set the mode for DTMFs sending."
+msgstr "DTMF ھالەتتە ئەۋەتىشنى بەلگىلەيدۇ."
+
+#: ../src/gui/preferences.cpp:726
+msgid "INFO"
+msgstr "INFO"
+
+#: ../src/gui/preferences.cpp:737
+msgid "_Outbound Proxy:"
+msgstr "سىرتتىكى ۋاكالەتچى(_O):"
+
+#: ../src/gui/preferences.cpp:778
+msgid "Ringing Device"
+msgstr "سايرايدىغان ئۈسكىنە"
+
+#: ../src/gui/preferences.cpp:778
+msgid "Select the ringing audio device to use"
+msgstr "تېلېفون كەلگەندە سايرايدىغان ئۈسكىنىنى تاللاڭ"
+
+#: ../src/gui/preferences.cpp:780
+msgid "Output device:"
+msgstr "چىقىرىش ئۈسكۈنىسى:"
+
+#: ../src/gui/preferences.cpp:787 ../src/gui/preferences.cpp:932
+msgid "Input device:"
+msgstr "كىرگۈزۈش ئۈسكۈنىسى:"
+
+#. That button will refresh the device list
+#: ../src/gui/preferences.cpp:792 ../src/gui/preferences.cpp:943
+msgid "_Detect devices"
+msgstr "ئۈسكۈنىلەرنى تاپ(_D)"
+
+#: ../src/gui/preferences.cpp:792 ../src/gui/preferences.cpp:943
+msgid "Click here to refresh the device list."
+msgstr "بۇ يەر چېكىلسە ئۈسكىنە تىزىملىكى يېڭىلىنىدۇ"
+
+#: ../src/gui/preferences.cpp:911
+msgid "PAL (Europe)"
+msgstr "PAL (ياۋروپا)"
+
+#: ../src/gui/preferences.cpp:912
+msgid "NTSC (America)"
+msgstr "NTSC (ئامېرىكا)"
+
+#: ../src/gui/preferences.cpp:913
+msgid "SECAM (France)"
+msgstr "SECAM (فىرانسىيە)"
+
+#: ../src/gui/preferences.cpp:914
+msgid "Auto"
+msgstr "ئاپتوماتىك"
+
+#. Video Channel
+#: ../src/gui/preferences.cpp:936
+msgid "Channel:"
+msgstr "قانال:"
+
+#: ../src/gui/preferences.cpp:938
+msgid "Size:"
+msgstr "چوڭلۇقى:"
+
+#: ../src/gui/preferences.cpp:938
+msgid "Select the transmitted video size"
+msgstr "يوللايدىغان سىننىڭ ئۇزۇنلۇقىنى تاللايدۇ."
+
+#: ../src/gui/preferences.cpp:940
+msgid "Format:"
+msgstr "فورمات:"
+
+#: ../src/gui/preferences.cpp:967 ../src/gui/preferences.cpp:1006
+#: ../src/gui/preferences.cpp:1394 ../src/gui/preferences.cpp:1405
+msgid "Codecs"
+msgstr "كودلىغۇچ-يەشكۈچ"
+
+#: ../src/gui/preferences.cpp:980 ../src/gui/preferences.cpp:1019
+msgid "Settings"
+msgstr "تەڭشەكلەر"
+
+#. Translators: the full sentence is Automatically adjust jitter buffer
+#. between X and Y ms
+#: ../src/gui/preferences.cpp:984
+msgid "Enable silence _detection"
+msgstr "ئۈنسىز يەرلەرنى بىلىپ بىر تەرەپ قىل(_D)"
+
+#: ../src/gui/preferences.cpp:984
+msgid "If enabled, use silence detection with the codecs supporting it."
+msgstr "TRUE قىلىنسا ئۈنسىز يەرلەرنى بىلىپ بىر تەرەپ قىلىدۇ."
+
+#: ../src/gui/preferences.cpp:986
+msgid "Enable echo can_celation"
+msgstr "شاۋقۇن ئاۋاز پەسەيتىشنى ئىناۋەتلىك قىل(_C)"
+
+#: ../src/gui/preferences.cpp:986
+msgid "If enabled, use echo cancelation."
+msgstr "TRUE تاللانسا، شاۋقۇن ئاۋاز پەسەيتىدىغان ئىقتىدارى ئىشقا كىرىشىدۇ."
+
+#: ../src/gui/preferences.cpp:988
+msgid "Maximum _jitter buffer (in ms):"
+msgstr "Jitter غەملىكىنىڭ ئەڭ چوڭ قىممىتى (_J):"
+
+#: ../src/gui/preferences.cpp:988
+msgid "The maximum jitter buffer size for audio reception (in ms)."
+msgstr "ئۈننى قوبۇل قىلىشتا ئىشلىتىلىدىغان Jitter غەملىكىنىڭ ئەڭ چوڭ قىممىتى (مىللىسېكۇنت)"
+
+#. Translators: the full sentence is Keep a minimum video quality of X %
+#: ../src/gui/preferences.cpp:1022
+msgid "Picture Quality"
+msgstr "سۈرەت سۈپىتى"
+
+#: ../src/gui/preferences.cpp:1022
+msgid ""
+"Choose if you want to guarantee a minimum image quality (possibly leading to "
+"dropped frames in order not to surpass the bitrate limit) or if you prefer "
+"to keep the frame rate."
+msgstr ""
+
+#: ../src/gui/preferences.cpp:1024
+msgid "Maximum video _bitrate (in kbits/s):"
+msgstr "سىننىڭ ئەڭ چوڭ bitrate ئى (Kkbits/s)(_B):"
+
+#: ../src/gui/preferences.cpp:1024
+msgid ""
+"The maximum video bitrate in kbits/s. The video quality and the effective "
+"frame rate will be dynamically adjusted to keep the bitrate at the given "
+"value."
+msgstr "سىننىڭ ئەڭ چوڭ bitrate ئى kbits/s ئارقىلىق ئىپادىلىنىدۇ. سۈرەتنىڭ سۈپىتى ۋە كاندۇك تېزلىكى بۇ يەردە كۆرسىتىلگەن bitrate گە ئاساسەن ئاپتوماتىك تەڭشىلىپ تۇرىدۇ."
+
+#: ../src/gui/preferences.cpp:1337
+msgid "Ekiga Preferences"
+msgstr "Ekiga تەڭشىكى"
+
+#: ../src/gui/preferences.cpp:1355
+msgid "General"
+msgstr "ئادەتتە"
+
+#: ../src/gui/preferences.cpp:1356
+msgid "Personal Data"
+msgstr "شەخسىي سانلىق مەلۇمات"
+
+#: ../src/gui/preferences.cpp:1361
+msgid "General Settings"
+msgstr "ئادەتتىكى تەڭشەك"
+
+#: ../src/gui/preferences.cpp:1370
+msgid "Sound Events"
+msgstr "ئاۋازلىق ھادىسىلەر"
+
+#: ../src/gui/preferences.cpp:1374
+msgid "Protocols"
+msgstr "كېلىشىم"
+
+#: ../src/gui/preferences.cpp:1376
+msgid "SIP Settings"
+msgstr "SIP تەڭشىكى"
+
+#: ../src/gui/preferences.cpp:1381
+msgid "H.323 Settings"
+msgstr "H.323 تەڭشىكى"
+
+#. The player
+#: ../src/gui/preferences.cpp:1387
+msgid "Audio"
+msgstr "ئاۋاز"
+
+#: ../src/gui/preferences.cpp:1390 ../src/gui/preferences.cpp:1401
+msgid "Devices"
+msgstr "ئۈسكۈنىلەر"
+
+#: ../src/gui/preferences.cpp:1399
+msgid "Video"
+msgstr "سىن"
+
+#: ../src/gui/statusicon.cpp:313
+#, c-format
+msgid "You have %d message"
+msgid_plural "You have %d messages"
+msgstr[0] "سىز %d دانە ئۇچۇرىڭىز بار"
+
+#: ../src/gui/statusicon.cpp:409
+msgid "The following accounts are inactive:"
+msgstr "تۆۋەندىكى ھېساباتلار ئاكتىپ ئەمەس:"
+
+#: ../src/gui/statusmenu.cpp:87
+msgid "Online"
+msgstr "توردا"
+
+#: ../src/gui/statusmenu.cpp:88
+msgid "Away"
+msgstr "يوق"
+
+#: ../src/gui/statusmenu.cpp:89
+msgid "Do Not Disturb"
+msgstr "ئاۋارە قىلماڭ"
+
+#: ../src/gui/statusmenu.cpp:387
+msgid "Custom message..."
+msgstr "ئۆزگىچە ئۇچۇر..."
+
+#: ../src/gui/statusmenu.cpp:430
+msgid "Clear"
+msgstr "تازىلا"
+
+#. Build the dialog
+#: ../src/gui/statusmenu.cpp:521 ../src/gui/statusmenu.cpp:671
+msgid "Custom Message"
+msgstr "ئۆزگىچە ئۇچۇر"
+
+#: ../src/gui/statusmenu.cpp:537
+msgid "Delete custom messages:"
+msgstr "ئۆزگىچە ئۇچۇرنى ئۆچۈرمەك:"
+
+#: ../src/gui/statusmenu.cpp:692
+msgid "Define a custom message:"
+msgstr "ئىشلىتىلىدىغان ئۆزگىچە ئۇچۇر:"
