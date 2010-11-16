@@ -176,17 +176,29 @@ struct _EkigaMainWindowPrivate
   GtkWidget *audio_output_volume_frame;
   GtkWidget *input_signal;
   GtkWidget *output_signal;
+#if GTK_CHECK_VERSION (3, 0, 0)
+  GtkAdjustment *adj_input_volume;
+  GtkAdjustment *adj_output_volume;
+#else
   GtkObject *adj_input_volume;
   GtkObject *adj_output_volume;
+#endif
   unsigned int levelmeter_timeout_id;
 
   /* Video Settings Window */
   GtkWidget *video_settings_window;
   GtkWidget *video_settings_frame;
+#if GTK_CHECK_VERSION (3, 0, 0)
+  GtkWidget *adj_whiteness;
+  GtkAdjustment *adj_brightness;
+  GtkAdjustment *adj_colour;
+  GtkAdjustment *adj_contrast;
+#else
   GtkObject *adj_whiteness;
   GtkObject *adj_brightness;
   GtkObject *adj_colour;
   GtkObject *adj_contrast;
+#endif
 
   /* Misc Dialogs */
   GtkWidget *transfer_call_popup;
@@ -912,7 +924,7 @@ static bool on_handle_errors (std::string error,
 
   g_signal_connect_swapped (dialog, "response",
                             G_CALLBACK (gtk_widget_destroy),
-                            GTK_OBJECT (dialog));
+                            dialog);
 
   gtk_widget_show_all (dialog);
 
@@ -1672,7 +1684,7 @@ gm_mw_video_settings_window_new (EkigaMainWindow *mw)
   gtk_widget_set_sensitive (GTK_WIDGET (mw->priv->video_settings_frame), FALSE);
   
   /* That's an usual GtkWindow, connect it to the signals */
-  g_signal_connect_swapped (GTK_OBJECT (window), 
+  g_signal_connect_swapped (window, 
 			    "response", 
 			    G_CALLBACK (gm_window_hide),
 			    (gpointer) window);

@@ -417,7 +417,7 @@ gnomemeeting_dialog (GtkWindow *parent,
   
   g_signal_connect_swapped (dialog, "response",
                             G_CALLBACK (gtk_widget_destroy),
-                            GTK_OBJECT (dialog));
+                            dialog);
   
   /* Can be called from threads */
   gm_window_show (dialog);
