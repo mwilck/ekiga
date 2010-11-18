@@ -233,6 +233,38 @@ enum {
   CHANNEL_LAST
 };
 
+/* Non-GUI functions */
+
+struct name_from_uri_helper
+{
+  name_from_uri_helper (boost::shared_ptr<Ekiga::PresenceCore> presence_core_,
+			boost::shared_ptr<Ekiga::ContactCore> contact_core_):
+    presence_core (presence_core_), contact_core(contact_core_)
+  {}
+
+  const std::string search_name_for_uri (const std::string uri);
+
+private:
+
+  boost::shared_ptr<Ekiga::PresenceCore> presence_core;
+  boost::shared_ptr<Ekiga::ContactCore> contact_core;
+
+  bool on_visit_sources (Ekiga::SourcePtr source,
+			 const std::string uri);
+  bool on_visit_books (Ekiga::BookPtr book,
+		       const std::string uri);
+  bool on_visit_contacts (Ekiga::ContactPtr contact,
+			  const std::string uri);
+
+  bool on_visit_clusters (Ekiga::ClusterPtr cluster,
+			  const std::string uri);
+  bool on_visit_heaps (Ekiga::HeapPtr heap,
+		       const std::string uri);
+  bool on_visit_presentities (Ekiga::PresentityPtr presentity,
+			      const std::string uri);
+
+  std::set<std::string> possible_names;
+};
 
 /* GUI Functions */
 
@@ -470,9 +502,8 @@ static void zoom_out_changed_cb (GtkWidget *,
 static void zoom_normal_changed_cb (GtkWidget *,
 				    gpointer);
 
-void 
-display_changed_cb (GtkWidget *widget,
-		    gpointer data);
+void display_changed_cb (GtkWidget *widget,
+			 gpointer data);
 
 /* DESCRIPTION  :  This callback is called when the user toggles fullscreen
  *                 factor in the popup menu.
@@ -526,6 +557,82 @@ static void ekiga_main_window_add_device_dialog_show (EkigaMainWindow *main_wind
  * PRE           : The main window GMObject.
  */
 static const std::string ekiga_main_window_get_call_url (EkigaMainWindow *mw);
+
+/* implementation of the name_from_uri_helper */
+
+const std::string
+name_from_uri_helper::search_name_for_uri (const std::string uri)
+{
+  std::string result;
+
+  possible_names.clear ();
+
+  contact_core->visit_sources (boost::bind (&name_from_uri_helper::on_visit_sources, this, _1, uri));
+  presence_core->visit_clusters (boost::bind (&name_from_uri_helper::on_visit_clusters, this, _1, uri));
+
+  if (possible_names.empty ())
+    result = _("Unknown");
+  else
+    result = *(possible_names.begin ()); // stupid, but should mostly work
+
+  return result;
+}
+
+bool
+name_from_uri_helper::on_visit_sources (Ekiga::SourcePtr source,
+					const std::string uri)
+{
+  source->visit_books (boost::bind (&name_from_uri_helper::on_visit_books, this, _1, uri));
+
+  return true;
+}
+
+bool
+name_from_uri_helper::on_visit_books (Ekiga::BookPtr book,
+				      const std::string uri)
+{
+  book->visit_contacts (boost::bind (&name_from_uri_helper::on_visit_contacts, this, _1, uri));
+
+  return true;
+}
+
+bool
+name_from_uri_helper::on_visit_contacts (Ekiga::ContactPtr contact,
+					 const std::string uri)
+{
+  if (contact->has_uri (uri))
+    possible_names.insert (contact->get_name ());
+
+  return true;
+}
+
+bool
+name_from_uri_helper::on_visit_clusters (Ekiga::ClusterPtr cluster,
+					 const std::string uri)
+{
+  cluster->visit_heaps (boost::bind (&name_from_uri_helper::on_visit_heaps, this, _1, uri));
+
+  return true;
+}
+
+bool
+name_from_uri_helper::on_visit_heaps (Ekiga::HeapPtr heap,
+				      const std::string uri)
+{
+  heap->visit_presentities (boost::bind (&name_from_uri_helper::on_visit_presentities, this, _1, uri));
+
+  return true;
+}
+
+bool
+name_from_uri_helper::on_visit_presentities (Ekiga::PresentityPtr presentity,
+					     const std::string uri)
+{
+  if (presentity->has_uri (uri))
+    possible_names.insert (presentity->get_name ());
+
+  return true;
+}
 
 /* 
  * Engine Callbacks 
