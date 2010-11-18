@@ -79,6 +79,12 @@ Echo::Presentity::get_uri () const
 }
 
 bool
+Echo::Presentity::has_uri (const std::string) const
+{
+  return false; // should be good enough
+}
+
+bool
 Echo::Presentity::populate_menu (Ekiga::MenuBuilder &)
 {
   return false; // FIXME?

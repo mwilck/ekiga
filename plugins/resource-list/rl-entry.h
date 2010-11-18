@@ -82,6 +82,8 @@ namespace RL {
     const std::set<std::string> get_groups () const
     { return groups; }
 
+    bool has_uri (const std::string uri) const;
+
     bool populate_menu (Ekiga::MenuBuilder& builder);
 
   private:

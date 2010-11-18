@@ -71,6 +71,8 @@ namespace RL
 
     const std::string get_uri () const;
 
+    bool has_uri (const std::string uri) const;
+
     void set_presence (const std::string _presence);
 
     void set_status (const std::string _status);

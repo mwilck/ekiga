@@ -71,6 +71,12 @@ LM::Presentity::get_name () const
   return result;
 }
 
+bool
+LM::Presentity::has_uri (const std::string uri) const
+{
+  return get_jid () == uri; // FIXME: this isn't 100% exact : if our jid is "foo@server/resource", then we also have "foo@server" as uri!
+}
+
 const std::string
 LM::Presentity::get_presence () const
 {

@@ -145,6 +145,12 @@ RL::Entry::get_name () const
 }
 
 bool
+RL::Entry::has_uri (const std::string uri) const
+{
+  return get_uri () == uri;
+}
+
+bool
 RL::Entry::populate_menu (Ekiga::MenuBuilder& builder)
 {
   bool populated = false;

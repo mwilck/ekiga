@@ -191,6 +191,12 @@ RL::Presentity::set_status (const std::string _status)
 
 
 bool
+RL::Presentity::has_uri (const std::string uri) const
+{
+  return uri == get_uri ();
+}
+
+bool
 RL::Presentity::populate_menu (Ekiga::MenuBuilder &builder)
 {
   bool populated = false;

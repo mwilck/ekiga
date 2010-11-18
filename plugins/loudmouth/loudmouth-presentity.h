@@ -61,6 +61,8 @@ namespace LM
 
     const std::set<std::string> get_groups () const;
 
+    bool has_uri (const std::string uri) const;
+
     bool populate_menu (Ekiga::MenuBuilder& builder);
 
     /* special presentity stuff */

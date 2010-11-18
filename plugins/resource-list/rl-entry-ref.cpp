@@ -123,6 +123,12 @@ RL::EntryRef::get_name () const
 }
 
 bool
+RL::EntryRef::has_uri (const std::string uri) const
+{
+  return uri == get_uri ();
+}
+
+bool
 RL::EntryRef::populate_menu (Ekiga::MenuBuilder& builder)
 {
   bool populated = false;

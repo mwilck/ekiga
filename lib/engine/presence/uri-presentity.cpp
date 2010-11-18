@@ -95,6 +95,12 @@ Ekiga::URIPresentity::get_uri () const
 }
 
 bool
+Ekiga::URIPresentity::has_uri (const std::string uri_) const
+{
+  return uri == uri_;
+}
+
+bool
 Ekiga::URIPresentity::populate_menu (Ekiga::MenuBuilder &builder)
 {
   boost::shared_ptr<Ekiga::PresenceCore> presence_core = core.get<Ekiga::PresenceCore> ("presence-core");

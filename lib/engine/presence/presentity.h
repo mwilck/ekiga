@@ -79,6 +79,11 @@ namespace Ekiga
      * @return The Presentity's set of groups.
      */
     virtual const std::set<std::string> get_groups () const = 0;
+
+    /** Returns whether the Presentity has this uri.
+     * @return Whether the Presentity has this uri.
+     */
+    virtual bool has_uri (const std::string uri) const = 0;
   };
 
   typedef boost::shared_ptr<Presentity> PresentityPtr;

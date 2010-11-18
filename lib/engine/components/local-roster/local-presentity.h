@@ -98,6 +98,7 @@ namespace Local
 
     const std::string get_uri () const;
 
+    bool has_uri (const std::string uri) const;
 
     /**
      * This will set a new presence string

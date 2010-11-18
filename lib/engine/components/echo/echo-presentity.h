@@ -59,6 +59,8 @@ namespace Echo
 
     const std::string get_uri () const;
 
+    bool has_uri (const std::string uri) const;
+
     bool populate_menu (Ekiga::MenuBuilder &);
   };
 

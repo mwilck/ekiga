@@ -183,6 +183,11 @@ Local::Presentity::get_uri () const
   return uri;
 }
 
+bool
+Local::Presentity::has_uri (const std::string uri) const
+{
+  return uri == get_uri ();
+}
 
 void
 Local::Presentity::set_presence (const std::string _presence)
