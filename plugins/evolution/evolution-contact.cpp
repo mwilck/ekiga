@@ -93,6 +93,16 @@ Evolution::Contact::get_name () const
   return name;
 }
 
+bool
+Evolution::Contact::has_uri (const std::string uri) const
+{
+  return (get_attribute_value (ATTR_HOME) == uri
+	  || get_attribute_value (ATTR_CELL) == uri
+	  || get_attribute_value (ATTR_WORK) == uri
+	  || get_attribute_value (ATTR_PAGER) == uri
+	  || get_attribute_value (ATTR_VIDEO) == uri);
+}
+
 void
 Evolution::Contact::update_econtact (EContact *_econtact)
 {

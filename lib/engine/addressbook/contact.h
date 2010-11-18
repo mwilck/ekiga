@@ -69,6 +69,13 @@ namespace Ekiga
      * @return The name of the Ekiga::Contact.
      */
     virtual const std::string get_name () const = 0;
+
+    /** Returns whether that Ekiga::Contact corresponds to this uri.
+     * This function is purely virtual and should be implemented by the
+     * Ekiga::Contact descendant.
+     * @return whether that Ekiga::Contact corresponds to this uri.
+     */
+    virtual bool has_uri (const std::string uri) const = 0;
   };
 
 

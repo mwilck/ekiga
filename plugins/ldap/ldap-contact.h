@@ -62,6 +62,8 @@ namespace OPENLDAP
 
     const std::string get_name () const;
 
+    bool has_uri (const std::string uri) const;
+
     bool populate_menu (Ekiga::MenuBuilder &builder);
 
   private:

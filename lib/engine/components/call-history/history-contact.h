@@ -81,6 +81,8 @@ namespace History
 
     const std::string get_name () const;
 
+    bool has_uri (const std::string uri_) const;
+
     const std::set<std::string> get_groups () const;
 
     bool populate_menu (Ekiga::MenuBuilder &builder);

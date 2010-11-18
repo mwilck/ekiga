@@ -155,6 +155,12 @@ History::Contact::get_name () const
   return name;
 }
 
+bool
+History::Contact::has_uri (const std::string uri_) const
+{
+  return uri == uri_;
+}
+
 const std::set<std::string>
 History::Contact::get_groups () const
 {

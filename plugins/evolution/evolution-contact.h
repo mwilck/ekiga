@@ -67,6 +67,8 @@ namespace Evolution
 
     const std::string get_name () const;
 
+    bool has_uri (const std::string uri) const;
+
     bool populate_menu (Ekiga::MenuBuilder &builder);
 
     void update_econtact (EContact *econtact);

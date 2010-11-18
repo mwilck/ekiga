@@ -66,6 +66,21 @@ KAB::Contact::get_name () const
 }
 
 bool
+KAB::Contact::has_uri (const std::string uri) const
+{
+  bool result = false;
+  KABC::PhoneNumber::List phoneNumbers = addressee.phoneNumbers ();
+  for (KABC::PhoneNumber::List::const_iterator iter = phoneNumbers.begin ();
+       !result && iter != phoneNumbers.end ();
+       iter++) {
+
+    result = uri == (*iter).number ().toUtf8 ().constData ();
+  }
+
+  return result;
+}
+
+bool
 KAB::Contact::populate_menu (Ekiga::MenuBuilder &builder)
 {
   bool result = false;

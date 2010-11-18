@@ -69,6 +69,21 @@ OPENLDAP::Contact::get_name () const
 }
 
 bool
+OPENLDAP::Contact::has_uri (const std::string uri) const
+{
+  bool result = false;
+
+  for (std::map<std::string, std::string>::const_iterator iter = uris.begin ();
+       !result && iter != uris.end ();
+       iter++) {
+
+    result = (uri == iter->second);
+  }
+
+  return result;
+}
+
+bool
 OPENLDAP::Contact::populate_menu (Ekiga::MenuBuilder &builder)
 {
   boost::shared_ptr<Ekiga::ContactCore> contact_core = core.get<Ekiga::ContactCore> ("contact-core");
