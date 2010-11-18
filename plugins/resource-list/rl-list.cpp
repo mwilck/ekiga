@@ -179,10 +179,12 @@ RL::ListImpl::ListImpl (Ekiga::ServiceCore& core_,
 
     if ( !group_.empty ()) {
 
+      /* Translators: #%d - ordinal number */
       raw = g_strdup_printf (_("%s / List #%d"),
 			     group_.c_str (), position);
     } else {
 
+      /* Translators: #%d - ordinal number */
       raw = g_strdup_printf (_("List #%d"), position);
     }
     position_name = raw;
