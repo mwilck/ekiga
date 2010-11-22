@@ -298,13 +298,10 @@ Opal::Call::parse_info (OpalConnection & connection)
 
   if (!PIsDescendant(&connection, OpalPCSSConnection)) {
 
-    remote_uri = (const char *) connection.GetRemotePartyCallbackURL ();
+    remote_uri = (const char *) connection.GetRemotePartyAddress ();
 
     l_party_name = (const char *) connection.GetLocalPartyName ();
-    if (connection.GetRemotePartyName () == connection.GetRemotePartyAddress ())
-      r_party_name = remote_uri;
-    else
-      r_party_name = (const char *) connection.GetRemotePartyName ();
+    r_party_name = (const char *) connection.GetRemotePartyName ();
     app = (const char *) connection.GetRemoteProductInfo ().AsString ();
     start_time = connection.GetConnectionStartTime ();
     if (!start_time.IsValid ())
