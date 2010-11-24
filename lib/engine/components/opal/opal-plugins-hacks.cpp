@@ -118,9 +118,9 @@ private:
 
 // now, let's rock :
 
-boost::shared_ptr<PSoundChannel_EKIGA_PluginServiceDescriptor> audio;
-boost::shared_ptr<PVideoInputDevice_EKIGA_PluginServiceDescriptor> videoinput;
-boost::shared_ptr<PVideoOutputDevice_EKIGA_PluginServiceDescriptor> videooutput;
+static boost::shared_ptr<PSoundChannel_EKIGA_PluginServiceDescriptor> audio;
+static boost::shared_ptr<PVideoInputDevice_EKIGA_PluginServiceDescriptor> videoinput;
+static boost::shared_ptr<PVideoOutputDevice_EKIGA_PluginServiceDescriptor> videooutput;
 
 void
 hook_ekiga_plugins_to_opal (Ekiga::ServiceCore& core)
