@@ -118,6 +118,8 @@ struct OPALSpark: public Ekiga::Spark
 	&& audiooutput_core && videooutput_core && personal_details
 	&& !account_store && !sip_endpoint) {
 
+      hook_ekiga_plugins_to_opal (core);
+
       boost::shared_ptr<CallManager> call_manager (new CallManager (core));
 
       boost::shared_ptr<Opal::Bank> bank (new Bank (core));
@@ -151,8 +153,6 @@ struct OPALSpark: public Ekiga::Spark
       new ConfBridge (*call_manager); // FIXME: isn't that leaked!?
 
       presence_core->add_supported_uri (&is_supported_address); //FIXME
-
-      hook_ekiga_plugins_to_opal (core);
 
       result = true;
     }
