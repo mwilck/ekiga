@@ -27,7 +27,7 @@
 
 
 /*
- *                         opal-plugins-hacks.cpp  -  description
+ *                         opal-plugins-hook.cpp  -  description
  *                         --------------------------------
  *   begin                : Sun Sept 26 2010
  *   copyright            : (C) 2010 by Julien Puydt
@@ -35,15 +35,11 @@
  *
  */
 
-/*
- * Notice that we use engine_get_service_core, which is an awful hack to get
- * a static object -- it should be possible to register those plugins at
- * runtime through a function, getting the necessary service core directly.
- */
-
 #include "opal-audio.h"
 #include "opal-videoinput.h"
 #include "opal-videooutput.h"
+
+#include "opal-plugins-hook.h"
 
 // we first declare the three plugin service descriptor classes
 

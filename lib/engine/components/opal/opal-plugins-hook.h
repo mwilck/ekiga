@@ -27,7 +27,7 @@
 
 
 /*
- *                         opal-plugins-hacks.h  -  description
+ *                         opal-plugins-hook.h  -  description
  *                         --------------------------------
  *   begin                : Sun Sept 26 2010
  *   copyright            : (C) 2010 by Julien Puydt

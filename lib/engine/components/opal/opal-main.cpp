@@ -54,7 +54,7 @@
 #include "opal-account.h"
 #include "opal-bank.h"
 #include "opal-call-manager.h"
-#include "opal-plugins-hacks.h"
+#include "opal-plugins-hook.h"
 
 #include "sip-endpoint.h"
 #define SIP_KEY "/apps/" PACKAGE_NAME "/protocols/sip/"
