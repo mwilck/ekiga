@@ -64,13 +64,6 @@
 #define H323_KEY "/apps/" PACKAGE_NAME "/protocols/h323/"
 #endif
 
-namespace OpalLinkerHacks {
-  extern int loadOpalVideoInput;
-  extern int loadOpalVideoOutput;
-  extern int loadOpalAudio;
-}
-
-
 static bool
 is_supported_address (const std::string uri)
 {
