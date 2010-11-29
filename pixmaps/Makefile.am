@@ -76,7 +76,7 @@ IMAGES= \
 	gm_internet_group_chat_24_stock_data $(srcdir)/24x24/internet-group-chat.png \
 	gm_logo_16_stock_data $(srcdir)/16x16/apps/@PACKAGE_NAME@.png \
 	gm_logo_22_stock_data $(srcdir)/22x22/apps/@PACKAGE_NAME@.png \
-	gm_logo_24_stock_data $(srcdir)/24x24/apps/@PACKAGE_NAME@.png \	
+	gm_logo_24_stock_data $(srcdir)/24x24/apps/@PACKAGE_NAME@.png \
 	gm_logo_32_stock_data $(srcdir)/32x32/apps/@PACKAGE_NAME@.png \
 	gm_logo_48_stock_data $(srcdir)/48x48/apps/@PACKAGE_NAME@.png \
 	gm_logo_72_stock_data $(srcdir)/72x72/apps/@PACKAGE_NAME@.png \
@@ -103,7 +103,7 @@ IMAGES= \
 	gm_phone_hang_up_stock_data_24 $(srcdir)/24x24/phone-hang-up.png \
 	gm_phone_pick_up_stock_data_24 $(srcdir)/24x24/phone-pick-up.png \
 	gm_phone_hang_up_stock_data_16 $(srcdir)/16x16/phone-hang-up.png \
-	gm_phone_pick_up_stock_data_16 $(srcdir)/16x16/phone-pick-up.png 
+	gm_phone_pick_up_stock_data_16 $(srcdir)/16x16/phone-pick-up.png
 
 
 noinst_DATA = inlines.h
