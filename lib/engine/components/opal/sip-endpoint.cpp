@@ -17,7 +17,7 @@
  * Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301, USA.
  *
  *
- * Ekiga is licensed under the GPL license and as a special exc_managertion,
+ * Ekiga is licensed under the GPL license and as a special exception,
  * you have permission to link or otherwise combine this program with the
  * programs OPAL, OpenH323 and PWLIB, and distribute the combination,
  * without applying the requirements of the GNU GPL to the OPAL, OpenH323
