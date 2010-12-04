@@ -246,10 +246,6 @@ static void database_save_entry (GQuark quark, gpointer data,
 				 gpointer user_data);
 static gboolean database_save_file (DataBase *, const gchar *);
 static void database_add_entry (DataBase *, GmConfEntry *);
-static void database_remove_namespace_in_datalist (GQuark key_id,
-						   gpointer data,
-						   gpointer user_data);
-static void database_remove_namespace (DataBase *, const gchar *);
 static GmConfEntry *database_get_entry_for_key (DataBase *, const gchar *);
 static GmConfEntry *database_get_entry_for_key_create (DataBase *,
 						       const gchar *);
