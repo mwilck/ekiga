@@ -704,7 +704,7 @@ $(LIBDIR)/pkgconfig/gdk-pixbuf-2.0.pc: $(SRCDIR)/$(GDKPIXBUF_ARCHIVE)
 	unzip -u $(SRCDIR)/$(GDKPIXBUF_ARCHIVE) -d $(BUILDROOT)
 	sed -i -e 's#^prefix=.*$$#prefix=$(BUILDROOT)#g' $(LIBDIR)/pkgconfig/gdk-pixbuf*.pc
 # remove -lpng14, which is not needed, to avoid hassle to compile it
-	sed -i -e sed -e 's#^\(Libs: .*\)-lpng14\(.*\)#\1\2#g' $(LIBDIR)/pkgconfig/gdk-pixbuf*.pc
+	sed -i -e 's#^\(Libs: .*\)-lpng14\(.*\)#\1\2#g' $(LIBDIR)/pkgconfig/gdk-pixbuf*.pc
 	touch $@
 
 ### freetype
@@ -774,6 +774,7 @@ endif
 $(EKIGA_DIR)/config.status: binaries $(EKIGA_DIR)/configure $(LIBDIR)/$(PTLIB_LIB) $(LIBDIR)/$(OPAL_LIB) \
 	$(LIBDIR)/pkgconfig/gtk+-2.0.pc $(LIBDIR)/pkgconfig/atk-2.0.pc $(LIBDIR)/pkgconfig/glib-2.0.pc \
 	$(LIBDIR)/libpng.a $(LIBDIR)/pkgconfig/pango32.pc $(LIBDIR)/pkgconfig/cairo.pc $(LIBDIR)/libxml2.a \
+	$(LIBDIR)/pkgconfig/freetype2.pc $(LIBDIR)/pkgconfig/fontconfig.pc $(LIBDIR)/pkgconfig/gdk-pixbuf-2.0.pc \
 	$(LIBDIR)/libintl.a $(LIBDIR)/libiconv.a $(LIBDIR)/libboost_signals.dll $(LIBDIR)/libsasl2.a
 	rm -f $(EKIGA_DIR)/src/ekiga.exe
 ifeq ($(DEBUG),1)
