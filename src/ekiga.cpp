@@ -39,23 +39,15 @@
 #include "config.h"
 
 #include "ekiga.h"
-#include "callbacks.h"
 #include "preferences.h"
-#include "chat-window.h"
 #include "assistant.h"
-#include "statusicon.h"
 #include "accounts.h"
 #include "main_window.h"
+#include "gmstockicons.h"
 
 #ifdef HAVE_DBUS
 #include "dbus.h"
 #endif
-
-#include "engine.h"
-
-#include "gmdialog.h"
-#include "gmstockicons.h"
-#include "gmconf.h"
 
 #define new PNEW
 
@@ -68,7 +60,7 @@ GnomeMeeting::GnomeMeeting ()
 
 {
   GM = this;
-  
+
   call_number = 0;
 
   assistant_window = NULL;
@@ -77,7 +69,7 @@ GnomeMeeting::GnomeMeeting ()
 
 
 GnomeMeeting::~GnomeMeeting()
-{ 
+{
   Exit ();
 }
 
@@ -90,15 +82,15 @@ GnomeMeeting::Exit ()
   if (prefs_window)
     gtk_widget_destroy (prefs_window);
   prefs_window = NULL;
-  
+
   if (main_window)
     gtk_widget_destroy (main_window);
   main_window = NULL;
-  
+
   if (assistant_window)
     gtk_widget_destroy (assistant_window);
   assistant_window = NULL;
-  
+
   if (accounts_window)
     gtk_widget_destroy (accounts_window);
   accounts_window = NULL;
@@ -106,7 +98,7 @@ GnomeMeeting::Exit ()
   if (statusicon)
     g_object_unref (statusicon);
   statusicon = NULL;
-  
+
 #ifdef HAVE_DBUS
   if (dbus_component)
     g_object_unref (dbus_component);
@@ -165,7 +157,7 @@ void GnomeMeeting::BuildGUI (Ekiga::ServiceCorePtr services)
 {
   /* Init the stock icons */
   gnomemeeting_stock_icons_init ();
-  
+
   /* Build the GUI */
   gtk_window_set_default_icon_name (GM_ICON_LOGO);
   accounts_window = gm_accounts_window_new (*services);
