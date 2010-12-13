@@ -1435,34 +1435,34 @@ gm_prefs_window_new (Ekiga::ServiceCore *core)
 
   /* Connect notifiers for SOUND_EVENTS_KEY keys */
   gm_conf_notifier_add (SOUND_EVENTS_KEY "enable_incoming_call_sound", 
-			sound_events_list_changed_nt, pw);
+			sound_events_list_changed_nt, window);
   
   gm_conf_notifier_add (SOUND_EVENTS_KEY "incoming_call_sound",
-			sound_events_list_changed_nt, pw);
+			sound_events_list_changed_nt, window);
 
   gm_conf_notifier_add (SOUND_EVENTS_KEY "enable_ring_tone_sound", 
-			sound_events_list_changed_nt, pw);
+			sound_events_list_changed_nt, window);
   
   gm_conf_notifier_add (SOUND_EVENTS_KEY "ring_tone_sound", 
-			sound_events_list_changed_nt, pw);
+			sound_events_list_changed_nt, window);
   
   gm_conf_notifier_add (SOUND_EVENTS_KEY "enable_busy_tone_sound", 
-			sound_events_list_changed_nt, pw);
+			sound_events_list_changed_nt, window);
   
   gm_conf_notifier_add (SOUND_EVENTS_KEY "busy_tone_sound",
-			sound_events_list_changed_nt, pw);
+			sound_events_list_changed_nt, window);
   
   gm_conf_notifier_add (SOUND_EVENTS_KEY "enable_new_voicemail_sound", 
-			sound_events_list_changed_nt, pw);
+			sound_events_list_changed_nt, window);
   
   gm_conf_notifier_add (SOUND_EVENTS_KEY "new_voicemail_sound",
-			sound_events_list_changed_nt, pw);
+			sound_events_list_changed_nt, window);
 
   gm_conf_notifier_add (SOUND_EVENTS_KEY "enable_new_message_sound",
-			sound_events_list_changed_nt, pw);
+			sound_events_list_changed_nt, window);
 
   gm_conf_notifier_add (SOUND_EVENTS_KEY "new_message_sound",
-			sound_events_list_changed_nt, pw);
+			sound_events_list_changed_nt, window);
 
   return window;
 }
