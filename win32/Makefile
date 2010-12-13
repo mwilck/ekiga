@@ -257,9 +257,10 @@ MV:=mv
 SVN:=svn
 GIT:=git
 
-# additional help languages to be built, eg to build only C and fr use:
-# DOC_LINGUAS := fr
-DOC_LINGUAS := $(strip $(shell grep DOC_LINGUAS $(EKIGA_DIR)/help/Makefile.am | cut -d= -f2))
+# write country codes you want to build help for (in addition to C),
+#   or leave blank to build help for all available languages;
+#   e.g. for French and C put: DOC_LINGUAS := fr
+DOC_LINGUAS :=
 
 confflags := --prefix=$(BUILDROOT) --build=$(DEB_BUILD_GNU_TYPE) --host=$(DEB_HOST_GNU_TYPE)
 
@@ -819,7 +820,7 @@ endif
 	install -m 755 $(LIBSASL2_DIR)/bin/libsasl.dll $(EKIGA_PREFIX)
 
 	# for RELEASE=0 ekiga.xml files do not exist, so create them
-	for lc in C $(DOC_LINGUAS); do \
+	D=$(DOC_LINGUAS); test -z "$(DOC_LINGUAS)" && D=`grep DOC_LINGUAS $(EKIGA_DIR)/help/Makefile.am | cut -d= -f2`; for lc in C $$D; do \
 		mkdir -p $(EKIGA_PREFIX)/help/$$lc; \
 		test $$lc != "C" -a ! -f $(EKIGA_DIR)/help/$$lc/ekiga.xml && xml2po -m docbook -e -p $(EKIGA_DIR)/help/$$lc/$$lc.po $(EKIGA_DIR)/help/C/ekiga.xml >$(EKIGA_DIR)/help/$$lc/ekiga.xml ; \
 		if test -f $(EKIGA_DIR)/help/$$lc/ekiga.xml; then \
