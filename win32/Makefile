@@ -126,7 +126,8 @@ else
 	PTLIB_LIB := libpt.$(PTLIB_VER).dll
 endif
 
-OPENLDAP_VER := 2.4.22
+##############   ekiga/ptlib/opal library and headers dependencies
+OPENLDAP_VER := 2.4.23
 OPENLDAP_DIR := $(BUILDROOT)/openldap-$(OPENLDAP_VER)
 OPENLDAP_ARCHIVE := openldap-$(OPENLDAP_VER).tgz
 OPENLDAP_URL := http://www.openldap.org/software/download/OpenLDAP/openldap-release
@@ -136,7 +137,7 @@ LIBSASL2_DIR := $(BUILDROOT)/cyrus-sasl-$(LIBSASL2_VER)
 LIBSASL2_ARCHIVE := cyrus-sasl-$(LIBSASL2_VER).zip
 LIBSASL2_URL := http://developer.pidgin.im/static/win32
 
-OGG_VER := 1.2.0
+OGG_VER := 1.2.1
 OGG_DIR := $(BUILDROOT)/libogg-$(OGG_VER)
 OGG_ARCHIVE := libogg-$(OGG_VER).tar.gz
 OGG_URL := http://downloads.xiph.org/releases/ogg
@@ -146,39 +147,10 @@ SPEEX_DIR := $(BUILDROOT)/speex-$(SPEEX_VER)
 SPEEX_ARCHIVE := speex-$(SPEEX_VER).tar.gz
 SPEEX_URL := http://downloads.xiph.org/releases/speex
 
-GTK_VER := 2.20.1-1
-GTK_URL := http://ftp.gnome.org/pub/gnome/binaries/win32/gtk+/2.20
-GTK_ARCHIVE := gtk+-dev_$(GTK_VER)_win32.zip
-
-# this is an installer, not a zip of files to be manually installed
-# see http://gtk-win.sourceforge.net for more information
-GTK_BIN_VER := 2.20
-GTK_INSTALLER_URL := #http://www.pateam.org/archive/tmp/ekiga-win32/trunk
-GTK_BIN_EXE := gtk2-runtime-2.20-2010-04-30-ts.exe
-
-GLIB_VER := 2.18.4-1
-GLIB_URL := http://ftp.gnome.org/pub/gnome/binaries/win32/glib/2.18
-GLIB_ARCHIVE := glib-dev_$(GLIB_VER)_win32.zip
-
-ATK_VER := 1.24.0-1
-ATK_URL := http://ftp.gnome.org/pub/gnome/binaries/win32/atk/1.24
-ATK_ARCHIVE := atk-dev_$(ATK_VER)_win32.zip
-
-CAIRO_VER := 1.8.6-1
-CAIRO_URL := http://ftp.gnome.org/pub/gnome/binaries/win32/dependencies
-CAIRO_ARCHIVE := cairo-dev_$(CAIRO_VER)_win32.zip
-
-PANGO_VER := 1.24.5-2
-PANGO_URL := http://ftp.gnome.org/pub/gnome/binaries/win32/pango/1.24
-PANGO_ARCHIVE := pango-dev_$(PANGO_VER)_win32.zip
-
-XML2_VER := 2.7.7
+XML2_VER := 2.7.8
 XML2_DIR := libxml2-$(XML2_VER)
 XML2_URL := ftp://xmlsoft.org/libxml2
 XML2_ARCHIVE := libxml2-$(XML2_VER).tar.gz
-
-LIBPNG_VER := 1.2.37
-GNUWIN32_URL := http://downloads.sourceforge.net/gnuwin32
 
 EXPAT_VER = 2.0.1
 EXPAT_DIR = $(BUILDROOT)/expat-$(EXPAT_VER)
@@ -191,15 +163,16 @@ REGEX_REV := 203e34
 REGEX_DIR := $(BUILDROOT)/regex
 REGEX_ARCHIVE := regex
 
-BOOST_VER := 1.43.0
+BOOST_VER := 1.45.0
 BOOST_URL := http://downloads.sourceforge.net/project/boost/boost/$(BOOST_VER)
 BOOST_ARCHIVE := boost_$(shell echo $(BOOST_VER)|tr . _).tar.gz
 BOOST_DIR := $(BUILDROOT)/boost_$(shell echo $(BOOST_VER)|tr . _)
 
 GETTEXT_VER := 0.17-1
-GETTEXT_URL :=http://ftp.gnome.org/pub/gnome/binaries/win32/dependencies
+GETTEXT_URL := http://ftp.gnome.org/pub/gnome/binaries/win32/dependencies
 GETTEXT_ARCHIVE := gettext-runtime-dev-$(GETTEXT_VER).zip
 
+# what is iconv useful for?
 ICONV_VER := 1.9.2-1
 ICONV_URL := http://downloads.sourceforge.net/project/gnuwin32/libiconv/$(ICONV_VER)
 ICONV_ARCHIVE := libiconv-$(ICONV_VER)-bin.zip
@@ -231,6 +204,51 @@ NSIS_URL := http://downloads.sourceforge.net/nsis
 NSISPROCESSES_URL := http://nsis.sourceforge.net/mediawiki/images/f/f3/
 NSISSYTEM_DIR := /usr/share/nsis/Contrib/Modern\ UI
 NSISPLUGIN_DIR := $(BUILDROOT)/nsisplugins
+
+# gtk headers
+GTK_VER := 2.22.0-2
+GTK_URL := http://ftp.gnome.org/pub/gnome/binaries/win32/gtk+/2.22
+GTK_ARCHIVE := gtk+-dev_$(GTK_VER)_win32.zip
+
+# gtk library
+# this is an installer, not a zip of files to be manually installed
+# see http://gtk-win.sourceforge.net for more information
+GTK_BIN_VER := 2.22
+GTK_INSTALLER_URL := http://downloads.sourceforge.net/gtk-win
+GTK_BIN_EXE := gtk2-runtime-2.22.0-2010-10-21-ash.exe
+
+##############   gtk headers dependencies
+# during building, ekiga uses gtk.h, which needs headers of various libraries
+GLIB_VER := 2.26.0-2
+GLIB_URL := http://ftp.gnome.org/pub/gnome/binaries/win32/glib/2.26
+GLIB_ARCHIVE := glib-dev_$(GLIB_VER)_win32.zip
+
+ATK_VER := 1.32.0-1
+ATK_URL := http://ftp.gnome.org/pub/gnome/binaries/win32/atk/1.32
+ATK_ARCHIVE := atk-dev_$(ATK_VER)_win32.zip
+
+CAIRO_VER := 1.10.0-2
+CAIRO_URL := http://ftp.gnome.org/pub/gnome/binaries/win32/dependencies
+CAIRO_ARCHIVE := cairo-dev_$(CAIRO_VER)_win32.zip
+
+PANGO_VER := 1.28.3-1
+PANGO_URL := http://ftp.gnome.org/pub/gnome/binaries/win32/pango/1.28
+PANGO_ARCHIVE := pango-dev_$(PANGO_VER)_win32.zip
+
+FREETYPE_VER := 2.4.2-1
+FREETYPE_URL := http://ftp.gnome.org/pub/gnome/binaries/win32/dependencies/
+FREETYPE_ARCHIVE := freetype-dev_$(FREETYPE_VER)_win32.zip
+
+FONTCONFIG_VER := 2.8.0-2
+FONTCONFIG_URL := http://ftp.gnome.org/pub/gnome/binaries/win32/dependencies/
+FONTCONFIG_ARCHIVE := fontconfig-dev_$(FONTCONFIG_VER)_win32.zip
+
+GDKPIXBUF_VER := 2.22.0-1
+GDKPIXBUF_URL := http://ftp.gnome.org/pub/gnome/binaries/win32/gdk-pixbuf/2.22
+GDKPIXBUF_ARCHIVE := gdk-pixbuf-dev_$(GDKPIXBUF_VER)_win32.zip
+
+LIBPNG_VER := 1.2.37
+GNUWIN32_URL := http://downloads.sourceforge.net/gnuwin32
 
 LN:=ln
 RM:=rm
@@ -603,7 +621,6 @@ $(LIBDIR)/gtk+-$(GTK_BIN_VER)-setup.exe: $(SRCDIR)/$(GTK_BIN_EXE)
 	touch $@
 
 ### libglib
-# already found in gtk runtime, but needed for compilation
 update-sources::
 	@echo --- Getting GLib ...
 	$(WGET) -P $(SRCDIR) $(GLIB_URL)/$(GLIB_ARCHIVE)
@@ -615,7 +632,6 @@ $(LIBDIR)/pkgconfig/glib-2.0.pc: $(SRCDIR)/$(GLIB_ARCHIVE)
 	touch $@
 
 ### atk
-# already found in gtk runtime, but needed for compilation
 update-sources::
 	@echo --- Getting ATK ...
 	$(WGET) -P  $(SRCDIR) $(ATK_URL)/$(ATK_ARCHIVE)
@@ -660,7 +676,6 @@ $(LIBDIR)/libiconv.a: $(SRCDIR)/$(ICONV_ARCHIVE)
 	touch $@
 
 ### pango
-# already found in gtk runtime, but needed for compilation
 update-sources::
 	@echo --- Getting Pango ...
 	$(WGET) -P $(SRCDIR) $(PANGO_URL)/$(PANGO_ARCHIVE)
@@ -671,7 +686,6 @@ $(LIBDIR)/pkgconfig/pango32.pc: $(SRCDIR)/$(PANGO_ARCHIVE)
 	touch $@
 
 ### cairo
-# already found in gtk runtime, but needed for compilation
 update-sources::
 	@echo --- Getting Cairo ...
 	$(WGET) -P $(SRCDIR) $(CAIRO_URL)/$(CAIRO_ARCHIVE)
@@ -679,6 +693,38 @@ update-sources::
 $(LIBDIR)/pkgconfig/cairo.pc: $(SRCDIR)/$(CAIRO_ARCHIVE)
 	unzip -u $(SRCDIR)/$(CAIRO_ARCHIVE) -d $(BUILDROOT)
 	sed -i -e 's#^prefix=.*$$#prefix=$(BUILDROOT)#g' $(LIBDIR)/pkgconfig/cairo*.pc
+	touch $@
+
+### gdk-pixbuf
+update-sources::
+	@echo --- Getting GDK Pixbuf ...
+	$(WGET) -P $(SRCDIR) $(GDKPIXBUF_URL)/$(GDKPIXBUF_ARCHIVE)
+
+$(LIBDIR)/pkgconfig/gdk-pixbuf-2.0.pc: $(SRCDIR)/$(GDKPIXBUF_ARCHIVE)
+	unzip -u $(SRCDIR)/$(GDKPIXBUF_ARCHIVE) -d $(BUILDROOT)
+	sed -i -e 's#^prefix=.*$$#prefix=$(BUILDROOT)#g' $(LIBDIR)/pkgconfig/gdk-pixbuf*.pc
+# remove -lpng14, which is not needed, to avoid hassle to compile it
+	sed -i -e sed -e 's#^\(Libs: .*\)-lpng14\(.*\)#\1\2#g' $(LIBDIR)/pkgconfig/gdk-pixbuf*.pc
+	touch $@
+
+### freetype
+update-sources::
+	@echo --- Getting Freetype ...
+	$(WGET) -P $(SRCDIR) $(FREETYPE_URL)/$(FREETYPE_ARCHIVE)
+
+$(LIBDIR)/pkgconfig/freetype2.pc: $(SRCDIR)/$(FREETYPE_ARCHIVE)
+	unzip -u $(SRCDIR)/$(FREETYPE_ARCHIVE) -d $(BUILDROOT)
+	sed -i -e 's#^prefix=.*$$#prefix=$(BUILDROOT)#g' $(LIBDIR)/pkgconfig/freetype2.pc
+	touch $@
+
+### fontconfig
+update-sources::
+	@echo --- Getting Fontconfig ...
+	$(WGET) -P $(SRCDIR) $(FONTCONFIG_URL)/$(FONTCONFIG_ARCHIVE)
+
+$(LIBDIR)/pkgconfig/fontconfig.pc: $(SRCDIR)/$(FONTCONFIG_ARCHIVE)
+	unzip -u $(SRCDIR)/$(FONTCONFIG_ARCHIVE) -d $(BUILDROOT)
+	sed -i -e 's#^prefix=.*$$#prefix=$(BUILDROOT)#g' $(LIBDIR)/pkgconfig/fontconfig.pc
 	touch $@
 
 ### libxml2
@@ -744,8 +790,11 @@ $(TARGETDIR)/zips: binaries $(EKIGA_DIR)/src/ekiga.exe
 	$(RM) -rf $(TARGETDIR)
 	mkdir $(TARGETDIR)
 	make -C $(EKIGA_DIR) install
+# remove unneeded files, if any
+	rm -f $(EKIGA_PREFIX)/plugins/*.dll.a
+	rm -f $(EKIGA_PREFIX)/plugins/*.la
 
-	mkdir -p $(EKIGA_PREFIX)/plugins
+	mkdir -p $(EKIGA_PREFIX)/plugins  # create directory, if does not exist
 	for plugin in $(LIBDIR)/opal*/codecs/audio/*; do \
 		install -m 755 $$plugin $(EKIGA_PREFIX)/plugins ;\
 	done
