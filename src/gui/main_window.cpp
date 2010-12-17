@@ -44,7 +44,6 @@
 #include "ekiga.h"
 #include "conf.h"
 #include "callbacks.h"
-#include "statusicon.h"
 #include "dialpad.h"
 #include "statusmenu.h"
 
@@ -55,11 +54,9 @@
 #include "gmstockicons.h"
 #include "gmconf.h"
 #include <boost/smart_ptr.hpp>
-#include "gmwindow.h"
 #include "gmmenuaddon.h"
 #include "gmlevelmeter.h"
 #include "gmpowermeter.h"
-#include "gmconfwidgets.h"
 #include "trigger.h"
 #include "menu-builder-gtk.h"
 
@@ -89,22 +86,16 @@
 #include <libintl.h>
 #endif
 
-#include <libxml/parser.h>
-
 #include "engine.h"
 
 #include "videoinput-core.h"
 #include "audioinput-core.h"
 #include "audiooutput-core.h"
 
-#include "call-core.h"
-#include "account.h"
 #include "gtk-frontend.h"
 #include "roster-view-gtk.h"
 #include "call-history-view-gtk.h"
 #include "history-source.h"
-#include "services.h"
-#include "form-dialog-gtk.h"
 
 #include "opal-bank.h"
 
