@@ -3986,9 +3986,15 @@ ekiga_main_window_expose_event (GtkWidget      *widget,
   display_info.x = video_widget->allocation.x;
   display_info.y = video_widget->allocation.y;
 
-#ifdef WIN32  
+#ifdef WIN32
   display_info.hwnd = ((HWND) GDK_WINDOW_HWND (video_widget->window));
-#else 
+  // translate coordinates from call_panel_frame to window
+  g_warn_if_fail (gtk_widget_translate_coordinates
+                  (mw->priv->call_panel_frame,
+                   gtk_widget_get_toplevel(mw->priv->call_panel_frame),
+                   display_info.x, display_info.y,
+                   &display_info.x, &display_info.y));
+#else
   if (!mw->priv->video_widget_gc) {
     mw->priv->video_widget_gc = gdk_gc_new (video_widget->window);
     g_return_val_if_fail (mw->priv->video_widget_gc != NULL, handled);
