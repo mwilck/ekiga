@@ -78,13 +78,6 @@ void gm_main_window_press_dialpad (GtkWidget *main_window,
 
 
 /* DESCRIPTION  :  /
- * BEHAVIOR     :  Return the video widget in which we can display.
- * PRE          :  The main window GMObject.
- */
-GtkWidget *ekiga_main_window_get_video_widget (EkigaMainWindow *main_window);
-
-
-/* DESCRIPTION  :  /
  * BEHAVIOR     :  Displays the gnomemeeting logo in the video window.
  * PRE          :  The main window GMObject.
  */

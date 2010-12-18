@@ -2483,14 +2483,6 @@ gm_main_window_press_dialpad (GtkWidget *main_window,
 }
 
 
-GtkWidget*
-ekiga_main_window_get_video_widget (EkigaMainWindow *mw)
-{
-  g_return_val_if_fail (EKIGA_IS_MAIN_WINDOW (mw), NULL);
-  return mw->priv->main_video_image;
-}
-
-
 void 
 ekiga_main_window_update_logo_have_window (EkigaMainWindow *mw)
 {
