@@ -70,9 +70,11 @@ components_dir = $(top_srcdir)/lib/engine/components
 # Sources out of this directory
 ##
 
-libekiga_la_SOURCES += \
+nodist_libekiga_la_SOURCES = \
 	gmmarshallers.c \
 	gmmarshallers.h
+CLEANFILES += gmmarshallers.c gmmarshallers.h
+EXTRA_DIST = gmmarshallers.list
 
 # forces the HAVE :
 BUILT_SOURCES = gmmarshallers.h gmmarshallers.c
@@ -122,6 +124,7 @@ endif
 if !WIN32
 
 INCLUDES += -I$(top_srcdir)/lib/pixops
+EXTRA_DIST += $(top_srcdir)/lib/pixops/README
 
 libekiga_la_SOURCES += \
 	$(top_srcdir)/lib/pixops/pixops.h \
@@ -638,7 +641,7 @@ libekiga_la_SOURCES += \
 	$(components_dir)/hal-dbus/hal-v4l-helper.c
 endif
 
-nodist_libekiga_la_SOURCES = \
+nodist_libekiga_la_SOURCES += \
 	$(builddir)/hal-marshal.h \
 	$(builddir)/hal-marshal.c
 
@@ -647,6 +650,7 @@ libekiga_la_LDFLAGS += $(DBUS_LIBS)
 # forces the HAVE :
 BUILT_SOURCES += $(builddir)/hal-marshal.h $(builddir)/hal-marshal.c
 CLEANFILES += $(builddir)/hal-marshal.h $(builddir)/hal-marshal.c
+EXTRA_DIST += $(components_dir)/hal-dbus/hal-marshal.list
 
 $(builddir)/hal-marshal.h: $(components_dir)/hal-dbus/hal-marshal.list
 	$(LIBTOOL) --mode=execute glib-genmarshal --prefix=gm_hal_dbus_marshal $^ --header > $@.tmp && mv $@.tmp $@

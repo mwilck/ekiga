@@ -33,12 +33,20 @@ WIN32_DIST = \
         win32/directx/mingw_dshow_port.h                        \
         win32/directx/strmif.h                                  \
         win32/directx/uuids.h                                   \
+        win32/diff/README                                       \
+        win32/diff/ekiga_sticonmenu1.patch                      \
+        win32/diff/ekiga_sticonmenu2.patch                      \
+        win32/diff/ekiga_sticonmenu3.patch                      \
+        win32/diff/ptlib_private.patch                          \
 	win32/ekiga-rc.rc					\
 	win32/Makefile						\
 	win32/nsisinstaller/ekiga.nsi				\
 	win32/nsisinstaller/language_files/hungarian.nsh	\
 	win32/nsisinstaller/language_files/english.nsh		\
 	win32/nsisinstaller/language_files/french.nsh		\
+	win32/nsisinstaller/language_files/dutch.nsh		\
+	win32/nsisinstaller/language_files/romanian.nsh		\
+	win32/nsisinstaller/language_files/russian.nsh		\
 	win32/nsisinstaller/langmacros.nsh
 
 
@@ -52,7 +60,6 @@ EXTRA_DIST = \
         LICENSE                                                 \
         MAINTAINERS                                             \
 	$(SCHEMAS_FILE) 					\
-	lib/gmmarshallers.list					\
 	$(WIN32_DIST)
 
 Applicationsdir = $(datadir)/applications
