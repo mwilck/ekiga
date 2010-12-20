@@ -13,10 +13,11 @@ msgstr ""
 "Project-Id-Version: ekiga MASTER\n"
 "Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?"
 "product=ekiga&component=general\n"
-"POT-Creation-Date: 2010-09-08 12:18+0000\n"
-"PO-Revision-Date: 2010-09-27 08:07+0300\n"
-"Last-Translator: Ivar Smolin <okul@linux.ee>\n"
+"POT-Creation-Date: 2010-12-18 23:02+0000\n"
+"PO-Revision-Date: 2010-12-18 23:04+0300\n"
+"Last-Translator: Mattias Põldaru <mahfiaz gmail com>\n"
 "Language-Team: Estonian <gnome-et@linux.ee>\n"
+"Language: et\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -330,15 +331,14 @@ msgstr "Videosätete akna suurus"
 msgid "Specify the software scaling algorithm"
 msgstr "Tarkvaralise skaleerimise algoritm"
 
-#, fuzzy
 msgid ""
 "Specify the software scaling algorithm: 0: nearest neighbor, 1: nearest "
 "neighbor with box filter, 2: bilinear filtering, 3: hyperbolic filtering. "
 "Does not apply on windows systems."
 msgstr ""
-"Tarkvaralise skaleerimise algoritmi määramine. Võimalikud väärtused on 0: "
-"lähim naaber, 1: lähim naaber koos kastifiltriga, 2: bilineaarne filter, 3: "
-"hüperboolfilter. See võti ei kehti windowsiga süsteemide kohta."
+"Tarkvaralise skaleerimise algoritm: 0: lähim naaber, 1: lähim naaber koos "
+"kastifiltriga, 2: bilineaarne filter, 3: hüperboolfilter. See võti ei kehti "
+"Windowsi süsteemide kohta."
 
 msgid "Start hidden"
 msgstr "Käivitumine peidetuna"
@@ -364,6 +364,17 @@ msgid ""
 msgstr ""
 "STUN-i toe jaoks kasutatav STUN-server. STUN on tehnoloogia, mis võimaldab "
 "kasutada ühendusi läbi mõnda liiki NAT-väravate"
+
+msgid ""
+"The Type of Service (TOS) byte on outgoing RTP IP packets. This byte is used "
+"by the network to provide some level of Quality of Service (QoS). Default "
+"value 184 (0xB8) correspond to Expedited Forwarding (EF) PHB as defined in "
+"RFC 3246."
+msgstr ""
+"Väljuvate RT IP pakettide Type of Service (TOS) bait. Seda baiti kasutatakse "
+"võrgus kvaliteediteenuse (QoS) tagamiseks. Vaikimisi väärtus 184 (0xB8) "
+"tähendab kiirendatud edastust (Expedited Forwarding, EF PHB), nagu määrab "
+"RFC 3246."
 
 msgid "The accounts list"
 msgstr "Kontode nimekiri"
@@ -598,6 +609,9 @@ msgid ""
 msgstr ""
 "Selle võtmega saab videoseadme riistvaralist kiirendit (DirectX win32 "
 "platvormil ja XVideo Linuxi platvormil) välja lülitada"
+
+msgid "Type of Service (TOS) byte on outgoing RTP IP packets"
+msgstr "Väljuvate RT IP pakettide Type of Service (TOS) bait"
 
 msgid "UDP port range"
 msgstr "UDP-portide vahemik"
@@ -973,33 +987,17 @@ msgstr ""
 msgid "Message"
 msgstr "Sõnum"
 
-msgid "Bad request"
-msgstr "Vigane päring"
-
-msgid "Payment required"
-msgstr "Vajalik on makse"
-
-msgid "Unauthorized"
-msgstr "Autoriseerimata"
-
-msgid "Forbidden, please check that username and password are correct"
-msgstr "Keelatud, veendu, et kasutajanimi ja parool on õiged"
-
-msgid "Timeout"
-msgstr "Ajapiirang"
-
-msgid "Conflict"
-msgstr "Vastuolu"
-
-msgid "Temporarily unavailable"
-msgstr "Ajutiselt pole saadaval"
-
-msgid "Not acceptable"
-msgstr "Vastuvõetamatu"
-
 msgid "Illegal status code"
 msgstr "Lubamatu olekukood"
 
+#. Translators: Host of the remote party is offline, this should
+#. * appear when the remote host does not reply in an acceptable time
+msgid "Remote party host is offline"
+msgstr "Teise poole host pole võrku ühendatud"
+
+#. Translators: the following strings are answers from the SIP server
+#. * when the packet it receives has an error, see
+#. * http://www.ietf.org/rfc/rfc3261.txt, chapter 21 for more information
 msgid "Multiple choices"
 msgstr "Mitu valikut"
 
@@ -1015,14 +1013,35 @@ msgstr "Proxy kasutamine"
 msgid "Alternative service"
 msgstr "Alternatiivne teenus"
 
+msgid "Bad request"
+msgstr "Vigane päring"
+
+msgid "Unauthorized"
+msgstr "Autoriseerimata"
+
+msgid "Payment required"
+msgstr "Vajalik on makse"
+
+msgid "Forbidden, please check that username and password are correct"
+msgstr "Keelatud, veendu, et kasutajanimi ja parool on õiged"
+
 msgid "Not found"
 msgstr "Ei leitud"
 
 msgid "Method not allowed"
 msgstr "Meetod pole lubatud"
 
+msgid "Not acceptable"
+msgstr "Vastuvõetamatu"
+
 msgid "Proxy authentication required"
 msgstr "Vajalik on proksi autentimine"
+
+msgid "Timeout"
+msgstr "Ajapiirang"
+
+msgid "Conflict"
+msgstr "Vastuolu"
 
 msgid "Length required"
 msgstr "Pikkus on vajalik"
@@ -1052,6 +1071,9 @@ msgstr "Laiend on vajalik"
 msgid "Interval too brief"
 msgstr "Vahemik liiga lühike"
 
+msgid "Temporarily unavailable"
+msgstr "Ajutiselt pole saadaval"
+
 msgid "Loop detected"
 msgstr "Avastati kordus"
 
@@ -1070,9 +1092,6 @@ msgstr "Selles kohas hõivatud"
 
 msgid "Request terminated"
 msgstr "Päring katkestatud"
-
-msgid "Remote party host is offline"
-msgstr "Teise poole host pole võrku ühendatud"
 
 msgid "Not acceptable here"
 msgstr "Pole siin vastuvõetav"
@@ -1185,6 +1204,30 @@ msgstr "Vestlusaken"
 msgid "Unsorted"
 msgstr "Sortimata"
 
+msgid "abc"
+msgstr "abc"
+
+msgid "def"
+msgstr "def"
+
+msgid "ghi"
+msgstr "ghi"
+
+msgid "jkl"
+msgstr "jkl"
+
+msgid "mno"
+msgstr "mno"
+
+msgid "pqrs"
+msgstr "pqrs"
+
+msgid "tuv"
+msgstr "tuv"
+
+msgid "wxyz"
+msgstr "wxyz"
+
 msgid "Do not show this dialog again"
 msgstr "Seda dialoogi enam mitte näidata"
 
@@ -1262,7 +1305,6 @@ msgstr "LDAP-i SASL-suhtlus"
 msgid "Challenge: "
 msgstr "Väljakutse: "
 
-#, fuzzy
 msgid "Interact"
 msgstr "Suhtlus"
 
@@ -1543,10 +1585,12 @@ msgstr "Kaugkontakti lisamine"
 msgid "Please fill in this form to create a new contact on a remote server"
 msgstr "Palun täida see vorm, et lisada kaugserverisse uus kontakt"
 
+#. Translators: #%d - ordinal number
 #, c-format
 msgid "%s / List #%d"
 msgstr "%s / %d. loend"
 
+#. Translators: #%d - ordinal number
 #, c-format
 msgid "List #%d"
 msgstr "%d. loend"
@@ -1854,35 +1898,16 @@ msgstr ""
 msgid "Unable to open help file."
 msgstr "Abiteabe faili pole võimalik avada."
 
-msgid "abc"
-msgstr "abc"
-
-msgid "def"
-msgstr "def"
-
-msgid "ghi"
-msgstr "ghi"
-
-msgid "jkl"
-msgstr "jkl"
-
-msgid "mno"
-msgstr "mno"
-
-msgid "pqrs"
-msgstr "pqrs"
-
-msgid "tuv"
-msgstr "tuv"
-
-msgid "wxyz"
-msgstr "wxyz"
+msgid "Unknown"
+msgstr "Tundmatu"
 
 #, c-format
 msgid "A:%.1f/%.1f   V:%.1f/%.1f   FPS:%d/%d"
 msgstr "A:%.1f/%.1f   V:%.1f/%.1f   Kaadrisagedus:%d/%d"
 
 # näidatakse kõne ajal kasutaja pildi all, %s on nimi
+#. %s is the SIP/H.323 address of the remote user, this text is shown
+#. below video during a call
 #, c-format
 msgid "Connected with %s"
 msgstr "%s (ühendatud)"
@@ -2155,6 +2180,12 @@ msgstr "_Katkesta"
 msgid "Terminate the current call"
 msgstr "Käimasoleva kõne katkestamine"
 
+msgid "Co_ntact"
+msgstr "_Kontakt"
+
+msgid "Act on selected contact"
+msgstr "Valitud kontakti peale reageerimine"
+
 msgid "A_dd Contact"
 msgstr "_Lisa kontakt"
 
@@ -2163,12 +2194,6 @@ msgstr "Kontakti lisamine röstrisse"
 
 msgid "Find contacts"
 msgstr "Kontaktide otsimine"
-
-msgid "Co_ntact"
-msgstr "_Kontakt"
-
-msgid "Act on selected contact"
-msgstr "Valitud kontakti peale reageerimine"
 
 msgid "Hold the current call"
 msgstr "Kõne ootelepanek"
