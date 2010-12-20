@@ -92,6 +92,10 @@ ekiga_SOURCES +=		\
 	dbus-helper/dbus.h	\
 	dbus-helper/dbus.cpp
 
+# find gmmarshallers.h
+INCLUDES += \
+	-I$(top_builddir)/lib
+
 nodist_ekiga_SOURCES +=		\
 	dbus-helper/dbus-stub.h
 
