@@ -1,4 +1,53 @@
                           -*- mode: outline -*-
+* Major changes in ekiga 3.3.0 (2010-12-20)
+** Distributor-specific changes
+- New pulse audio plugin (in ptlib)
+- ekiga is now split between one executable, one library and two
+  plugins (evolution and ldap).  This means that evolution-data-server
+  for ex. can be used during building, but is not mandatory upon
+  execution: if it exists, ekiga will use it, if not it just does not
+  use it :o)  As a consequence, this allows to install ekiga without
+  e-d-s and its many dependencies (see
+  http://bugs.debian.org/cgi-bin/bugreport.cgi?bug=520830 for ex.)
+- Some dependencies versions have been raised, configure checks them
+- Depend on boost instead of sigc++
+- Update to the new libnotify 0.7.0 library
+- By default, use quiet compilation; use make VERBOSE=1 for ptlib and
+  opal to get "noisy" command lines during compilation, and make V=1
+  for ekiga
+** User-visible changes
+- New pulse audio plugin (in ptlib)
+- Various SIP/H.323 fixes
+- When a registrar refuses several Contact-s during registration,
+  automatically retry registration with only one Contact (previous
+  "%limit" workaround)
+- Fix "Ekiga crashes when restart a holding call established by H.323"
+- Fix "Cseq value is empty, malformed packet as per Wireshark"
+- Fix "Text on first page of assistant is sometimes not shown"
+- Fix DTMF signaling
+- Fix pre-fill account name and password in assistant
+- Fix dialog info presence handling
+- Add a TOS field config option
+- Update the "Contact" menu when selecting a heap or a group
+- Distribute a 24x24 icon too
+- Always honour show_hidden setting for main window
+- Adjust defaults (show offline users, use picture-in-picture)
+** Developer-specific changes
+- Many code cleanups
+- Various deprecated code replaced with current equivalents
+** Windows port changes
+- Fix video position with gtk >=2.20
+- Update dependency versions
+- Add Russian translation of installer
+** Translation updates
+- Updated translations: as, ast, bg, bn, bn_IN, ca, ca@valencia, cs,
+  da, de, el, en_GB, eo, es, et, eu, fr, gl, gu, he, hi, hu, it, kn,
+  ko, lt, lv, ja, ml, nb, nn, or, pa, pl, pt, pt_BR, ro, ru, sl, sk,
+  sr, sr@latin, sv, ta, th, uk, zh_CN, zh-HK, ZH-TW
+- New translations: en@shaw, kk, ug
+- Updated help translations: de, el, sl, uk
+- New help translations: zh_CN
+
 * Changes in ekiga 3.2.7 (2010-05-31)
 ** User-visible fixes
 - Use NAT ports instead of local ports for RTP, fixing many connection issues
