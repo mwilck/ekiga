@@ -63,8 +63,8 @@ export LDD:=$(BUILDROOT)/$(HOST_TOOL_PREFIX)-ldd.sh
 
 
 ifeq ($(RELEASE),1)
-	EKIGA_VER := 3.2.7
-	EKIGA_URL := http://ftp.gnome.org/pub/gnome/sources/ekiga/3.2
+	EKIGA_VER := 3.3.0
+	EKIGA_URL := http://ftp.gnome.org/pub/gnome/sources/ekiga/3.3
 	EKIGA_ARCHIVE := ekiga-$(EKIGA_VER).tar.gz
 	EKIGA_DIR := $(BUILDROOT)/ekiga-$(EKIGA_VER)
 else
@@ -76,7 +76,7 @@ else
 	EKIGA_VER := $(strip $(shell grep AC_INIT $(SRCDIR)/$(EKIGA_ARCHIVE)/configure.ac | awk 'BEGIN { FS = "," } ; { print $$2 }'))
 	EKIGA_REV := $(strip $(shell (cd $(SRCDIR)/$(EKIGA_ARCHIVE); git describe | awk 'BEGIN { FS = "-" } ; { print $$2 "_" $$3 }' )))
 ifneq ($(EKIGA_REV),)
-		EKIGA_VER := $(EKIGA_VER)-git-$(EKIGA_REV)
+	EKIGA_VER := $(EKIGA_VER)-git-$(EKIGA_REV)
 endif
 endif
 EKIGA_PREFIX := $(TARGETDIR)/Ekiga
@@ -89,12 +89,12 @@ endif
 EKIGA_INSTALLER_DIR := $(EKIGA_DIR)/win32/nsisinstaller
 
 ifeq ($(RELEASE),1)
-	OPAL_VER := 3.6.8
-	OPAL_URL := http://ftp.gnome.org/pub/gnome/sources/opal/3.6
+	OPAL_VER := 3.8.3
+	OPAL_URL := http://ftp.gnome.org/pub/gnome/sources/opal/3.8
 	OPAL_ARCHIVE := opal-$(OPAL_VER).tar.gz
 	OPAL_DIR := $(BUILDROOT)/opal-$(OPAL_VER)
 else
-	OPAL_VER := 3.8-beta3
+	OPAL_VER := 3.8-beta4
 	# OPAL_REV: HEAD or revision number
 	OPAL_REV := HEAD
 	OPAL_URL := https://opalvoip.svn.sourceforge.net/svnroot/opalvoip/opal/branches/v3_8
@@ -108,12 +108,12 @@ else
 endif
 
 ifeq ($(RELEASE),1)
-	PTLIB_VER := 2.6.7
-	PTLIB_URL := http://ftp.gnome.org/pub/gnome/sources/ptlib/2.6
+	PTLIB_VER := 2.8.3
+	PTLIB_URL := http://ftp.gnome.org/pub/gnome/sources/ptlib/2.8
 	PTLIB_ARCHIVE := ptlib-$(PTLIB_VER).tar.gz
 	PTLIB_DIR := $(BUILDROOT)/ptlib-$(PTLIB_VER)
 else
-	PTLIB_VER := 2.8-beta3
+	PTLIB_VER := 2.8-beta4
 	# PTLIB_REV: HEAD or revision number
 	PTLIB_REV := HEAD
 	PTLIB_URL := https://opalvoip.svn.sourceforge.net/svnroot/opalvoip/ptlib/branches/v2_8
