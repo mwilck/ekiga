@@ -58,16 +58,16 @@ nodist_ekiga_SOURCES =
 ekiga_SOURCES +=			\
 	gui/accounts.h    		\
 	gui/accounts.cpp		\
-	gui/callbacks.h			\
-	gui/callbacks.cpp		\
-	gui/conf.h			\
-	gui/conf.cpp			\
 	gui/assistant.h			\
 	gui/assistant.cpp		\
+	gui/callbacks.h			\
+	gui/callbacks.cpp		\
+	gui/conf.h				\
+	gui/conf.cpp			\
+	gui/default_devices.cpp	\
+	gui/default_devices.h	\
 	gui/main_window.h		\
 	gui/main_window.cpp		\
-	gui/default_devices.cpp		\
-	gui/default_devices.h		\
 	gui/preferences.h		\
 	gui/preferences.cpp		\
 	gui/statusicon.h		\
@@ -76,8 +76,8 @@ ekiga_SOURCES +=			\
 	gui/statusmenu.cpp
 
 # Endpoints
-ekiga_SOURCES +=				\
-	ekiga.h			                \
+ekiga_SOURCES +=			\
+	ekiga.h			        \
 	ekiga.cpp
 
 # resources
@@ -156,6 +156,10 @@ AM_LIBS = $(GTK_LIBS) $(GLIB_LIBS) $(GNOME_LIBS) $(DBUS_LIBS) $(BONOBO_LIBS) $(O
 
 ekiga_LDADD = \
 	$(top_builddir)/lib/libekiga.la $(AM_LIBS)
+
+if !WIN32
+ekiga_LDFLAGS = -lX11
+endif
 
 EXTRA_DIST = \
 	$(service_in_files)		\
