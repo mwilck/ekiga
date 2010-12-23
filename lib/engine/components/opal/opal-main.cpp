@@ -115,8 +115,9 @@ struct OPALSpark: public Ekiga::Spark
       hook_ekiga_plugins_to_opal (core);
 
       boost::shared_ptr<CallManager> call_manager (new CallManager (core));
+      core.add (call_manager);
+
       boost::shared_ptr<Bank> bank (new Bank (core));
-      boost::shared_ptr<PresenceManager> presence_manager (new PresenceManager (bank));
 
       account_core->add_bank (bank);
       core.add (bank);
@@ -124,13 +125,16 @@ struct OPALSpark: public Ekiga::Spark
 
       unsigned sip_port = gm_conf_get_int (SIP_KEY "listen_port");
       boost::shared_ptr<Sip::EndPoint> sip_manager (new Sip::EndPoint (*call_manager, core, sip_port));
+      core.add (sip_manager);
+
       call_manager->add_protocol_manager (sip_manager);
       contact_core->add_contact_decorator (sip_manager);
       presence_core->add_presentity_decorator (sip_manager);
       presence_core->add_presence_fetcher (sip_manager);
       presence_core->add_presence_publisher (sip_manager);
+
+      boost::shared_ptr<PresenceManager> presence_manager (new PresenceManager (bank));
       presence_core->add_presence_publisher (presence_manager);
-      core.add (sip_manager);
 
 #ifdef HAVE_H323
       unsigned h323_port = gm_conf_get_int (H323_KEY "listen_port");
@@ -142,8 +146,6 @@ struct OPALSpark: public Ekiga::Spark
 #endif
 
       call_core->add_manager (call_manager);
-
-      core.add (call_manager);
 
       new ConfBridge (*call_manager); // FIXME: isn't that leaked!?
 
