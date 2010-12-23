@@ -472,6 +472,21 @@ Opal::Account::on_consult (const std::string url)
   gm_open_uri (url.c_str ());
 }
 
+void
+Opal::Account::publish (const Ekiga::PersonalDetails& details)
+{
+  if (presentity && presentity->IsOpen ()) {
+
+    std::string presence = details.get_presence ();
+    OpalPresenceInfo::State personal_state = OpalPresenceInfo::Unavailable;
+
+    // FIXME: complete!
+    if (presence == "online")
+      personal_state = OpalPresenceInfo::Available;
+
+    presentity->SetLocalPresence (personal_state, details.get_status ());
+  }
+}
 
 void
 Opal::Account::handle_registration_event (RegistrationState state_,
@@ -490,7 +505,7 @@ Opal::Account::handle_registration_event (RegistrationState state_,
 	presence_core->publish (personal_details);
       state = state_;
       updated ();
-    } 
+    }
     break;
 
   case Unregistered:

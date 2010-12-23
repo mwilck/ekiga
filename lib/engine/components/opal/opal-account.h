@@ -38,8 +38,11 @@
 #ifndef __OPAL_ACCOUNT_H__
 #define __OPAL_ACCOUNT_H__
 
+#include <opal/pres_ent.h>
+
 #include "services.h"
 #include "account-core.h"
+#include "personal-details.h"
 #include "account.h"
 #include "form.h"
 #include "bank-impl.h"
@@ -142,6 +145,8 @@ public:
 
     boost::signal0<void> trigger_saving;
 
+    void publish (const Ekiga::PersonalDetails& details);
+
     /* This method is public to be called by an opal endpoint, which will push
      * this Opal::Account's new registration state
      * Notice : it's very wrong to make that a const method, but Opal seems to
@@ -176,6 +181,7 @@ private:
     std::string auth_username;
     std::string password;
     Type type;
+    boost::shared_ptr<OpalPresentity> presentity;
 
     Ekiga::ServiceCore & core;
   };
