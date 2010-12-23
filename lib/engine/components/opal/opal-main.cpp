@@ -55,6 +55,7 @@
 #include "opal-bank.h"
 #include "opal-call-manager.h"
 #include "opal-plugins-hook.h"
+#include "opal-presence-manager.h"
 
 #include "sip-endpoint.h"
 #define SIP_KEY "/apps/" PACKAGE_NAME "/protocols/sip/"
@@ -103,7 +104,7 @@ struct OPALSpark: public Ekiga::Spark
     boost::shared_ptr<Ekiga::AudioOutputCore> audiooutput_core = core.get<Ekiga::AudioOutputCore> ("audiooutput-core");
     boost::shared_ptr<Ekiga::VideoOutputCore> videooutput_core = core.get<Ekiga::VideoOutputCore> ("videooutput-core");
     boost::shared_ptr<Ekiga::PersonalDetails> personal_details = core.get<Ekiga::PersonalDetails> ("personal-details");
-    Ekiga::ServicePtr account_store = core.get ("opal-account-store");
+    boost::shared_ptr<Bank> account_store = core.get<Bank> ("opal-account-store");
     Ekiga::ServicePtr sip_endpoint = core.get ("opal-sip-endpoint");
 
     if (contact_core && presence_core && call_core && chat_core
@@ -114,8 +115,8 @@ struct OPALSpark: public Ekiga::Spark
       hook_ekiga_plugins_to_opal (core);
 
       boost::shared_ptr<CallManager> call_manager (new CallManager (core));
-
-      boost::shared_ptr<Opal::Bank> bank (new Bank (core));
+      boost::shared_ptr<Bank> bank (new Bank (core));
+      boost::shared_ptr<PresenceManager> presence_manager (new PresenceManager (bank));
 
       account_core->add_bank (bank);
       core.add (bank);
@@ -128,6 +129,7 @@ struct OPALSpark: public Ekiga::Spark
       presence_core->add_presentity_decorator (sip_manager);
       presence_core->add_presence_fetcher (sip_manager);
       presence_core->add_presence_publisher (sip_manager);
+      presence_core->add_presence_publisher (presence_manager);
       core.add (sip_manager);
 
 #ifdef HAVE_H323

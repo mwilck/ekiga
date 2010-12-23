@@ -501,6 +501,8 @@ libekiga_la_SOURCES += \
 	$(components_dir)/opal/opal-bank.cpp \
 	$(components_dir)/opal/opal-call.h \
 	$(components_dir)/opal/opal-call.cpp \
+	$(components_dir)/opal/opal-presence-manager.h \
+	$(components_dir)/opal/opal-presence-manager.cpp \
 	$(components_dir)/opal/opal-codec-description.h \
 	$(components_dir)/opal/opal-codec-description.cpp \
 	$(components_dir)/opal/opal-gmconf-bridge.h \
