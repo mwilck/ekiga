@@ -64,7 +64,6 @@ namespace Opal {
 		     public Ekiga::Service,
 		     public Ekiga::CallProtocolManager,
 		     public Ekiga::PresenceFetcher,
-		     public Ekiga::PresencePublisher,
 		     public Ekiga::PresentityDecorator,
 		     public Ekiga::ContactDecorator
     {
@@ -111,10 +110,6 @@ namespace Opal {
       /* PresenceFetcher */
       void fetch (const std::string uri);
       void unfetch (const std::string uri);
-
-
-      /* PresencePublisher */
-      void publish (const Ekiga::PersonalDetails & details);
 
 
       /* Chat subsystem */

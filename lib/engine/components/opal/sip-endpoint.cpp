@@ -299,67 +299,6 @@ Opal::Sip::EndPoint::unfetch (const std::string uri)
 }
 
 
-void
-Opal::Sip::EndPoint::publish (const Ekiga::PersonalDetails & details)
-{
-  std::map<std::string, PString> to_publish;
-  std::string hostname = (const char *) PIPSocket::GetHostName ();
-  std::string presence = ((Ekiga::PersonalDetails &) (details)).get_presence ();
-  std::string status = ((Ekiga::PersonalDetails &) (details)).get_status ();
-
-  for (PSafePtr<SIPHandler> handler = activeSIPHandlers.GetFirstHandler(); handler != NULL; ++handler) {
-
-    if (handler->GetMethod() == SIP_PDU::Method_REGISTER && handler->GetState () == SIPHandler::Subscribed) {
-
-      PString data;
-      std::string to = handler->GetAddressOfRecord ().AsString ().Mid (4);
-      data += "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\r\n";
-
-      data += "<presence xmlns=\"urn:ietf:params:xml:ns:pidf\" entity=\"pres:";
-      data += to;
-      data += "\">\r\n";
-
-      data += "<tuple id=\"sip:";
-      data += to;
-      data += "_on_";
-      data += hostname;
-      data += "\">\r\n";
-
-      data += "<note>";
-      data += presence.c_str ();
-      if (!status.empty ()) {
-        data += " - ";
-        data += status.c_str ();
-      }
-      data += "</note>\r\n";
-
-      data += "<status>\r\n";
-      data += "<basic>";
-      data += "open";
-      data += "</basic>\r\n";
-      data += "</status>\r\n";
-
-      data += "<contact priority=\"1\">";
-      data += to;
-      data += "</contact>\r\n";
-
-      data += "</tuple>\r\n";
-      data += "</presence>\r\n";
-
-      if (publications[to] != data) {
-        publications[to] = data;
-        to_publish[to] = data;
-      }
-    }
-  }
-
-  for (std::map<std::string, PString>::const_iterator iter = to_publish.begin ();
-       iter != to_publish.end ();
-       ++iter)
-    Publish (iter->first, iter->second, 500); // TODO: allow to change the 500
-}
-
-
 bool
 Opal::Sip::EndPoint::send_message (const std::string & _uri,
 				   const std::string & _message)
