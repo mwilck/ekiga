@@ -129,6 +129,11 @@ Opal::Account::Account (Ekiga::ServiceCore & _core,
     type = Account::H323;
 
   limited = (name.find ("%limit") != std::string::npos);
+
+
+  boost::shared_ptr<CallManager> manager = core.get<CallManager> ("opal-component");
+  PURL url = PString (get_aor ());
+  presentity = boost::shared_ptr<OpalPresentity> (OpalPresentity::Create (*manager, url));
 }
 
 
@@ -159,6 +164,10 @@ Opal::Account::Account (Ekiga::ServiceCore & _core,
   password = _password;
   timeout = _timeout;
   type = t;
+
+  boost::shared_ptr<CallManager> manager = core.get<CallManager> ("opal-component");
+  PURL url = PString (get_aor ());
+  presentity = boost::shared_ptr<OpalPresentity> (OpalPresentity::Create (*manager, url));
 
   if (enabled)
     enable ();
@@ -285,6 +294,7 @@ void Opal::Account::enable ()
 
   boost::shared_ptr<Sip::EndPoint> endpoint = core.get<Sip::EndPoint> ("opal-sip-endpoint");
   endpoint->subscribe (*this);
+  presentity->Open ();
 
   updated ();
   trigger_saving ();
@@ -297,6 +307,8 @@ void Opal::Account::disable ()
 
   boost::shared_ptr<Sip::EndPoint> endpoint = core.get<Sip::EndPoint> ("opal-sip-endpoint");
   endpoint->unsubscribe (*this);
+
+  presentity->Close ();
 
   updated ();
   trigger_saving ();
@@ -476,6 +488,8 @@ void
 Opal::Account::publish (const Ekiga::PersonalDetails& details)
 {
   if (presentity && presentity->IsOpen ()) {
+
+    std::cout << __PRETTY_FUNCTION__ << ": ok" << std::endl;
 
     std::string presence = details.get_presence ();
     OpalPresenceInfo::State personal_state = OpalPresenceInfo::Unavailable;
