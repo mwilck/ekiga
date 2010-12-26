@@ -41,6 +41,7 @@
 #include <opal/pres_ent.h>
 
 #include "services.h"
+#include "presence-core.h"
 #include "account-core.h"
 #include "personal-details.h"
 #include "account.h"
@@ -54,7 +55,10 @@ namespace Opal
    * @internal
    * @{
    */
-  class Account: public Ekiga::Account
+  class Account:
+    public Ekiga::Account,
+    public Ekiga::PresencePublisher,
+    public Ekiga::PresenceFetcher
   {
 public:
 
@@ -146,8 +150,8 @@ public:
     boost::signal0<void> trigger_saving;
 
     /*
-     * This part of the api allows using each account to handle
-     * some piece of the presence
+     * This is because an opal account is an Ekiga::PresencePublisher
+     * and an Ekiga::PresenceFetcher
      */
     void publish (const Ekiga::PersonalDetails& details);
     void fetch (const std::string uri);
