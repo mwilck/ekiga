@@ -49,3 +49,21 @@ Opal::PresenceManager::publish (const Ekiga::PersonalDetails& details)
        iter++)
     (*iter)->publish (details);
 }
+
+void
+Opal::PresenceManager::fetch (const std::string uri)
+{
+  for (Opal::Bank::iterator iter = bank->begin ();
+       iter != bank->end ();
+       iter++)
+    (*iter)->fetch (uri);
+}
+
+void
+Opal::PresenceManager::unfetch (const std::string uri)
+{
+  for (Opal::Bank::iterator iter = bank->begin ();
+       iter != bank->end ();
+       iter++)
+    (*iter)->unfetch (uri);
+}

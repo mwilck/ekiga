@@ -503,6 +503,18 @@ Opal::Account::publish (const Ekiga::PersonalDetails& details)
 }
 
 void
+Opal::Account::fetch (const std::string uri)
+{
+  std::cout << __PRETTY_FUNCTION__ << " " << uri << std::endl;
+}
+
+void
+Opal::Account::unfetch (const std::string uri)
+{
+  std::cout << __PRETTY_FUNCTION__ << " " << uri << std::endl;
+}
+
+void
 Opal::Account::handle_registration_event (RegistrationState state_,
 					  const std::string info) const
 {

@@ -134,6 +134,7 @@ struct OPALSpark: public Ekiga::Spark
 
       boost::shared_ptr<PresenceManager> presence_manager (new PresenceManager (bank));
       presence_core->add_presence_publisher (presence_manager);
+      presence_core->add_presence_fetcher (presence_manager);
 
 #ifdef HAVE_H323
       unsigned h323_port = gm_conf_get_int (H323_KEY "listen_port");

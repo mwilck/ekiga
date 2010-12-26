@@ -145,7 +145,13 @@ public:
 
     boost::signal0<void> trigger_saving;
 
+    /*
+     * This part of the api allows using each account to handle
+     * some piece of the presence
+     */
     void publish (const Ekiga::PersonalDetails& details);
+    void fetch (const std::string uri);
+    void unfetch (const std::string uri);
 
     /* This method is public to be called by an opal endpoint, which will push
      * this Opal::Account's new registration state

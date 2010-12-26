@@ -44,13 +44,19 @@
 
 namespace Opal {
 
-  class PresenceManager: public Ekiga::PresencePublisher
+  class PresenceManager:
+    public Ekiga::PresencePublisher,
+    public Ekiga::PresenceFetcher
   {
   public:
 
     PresenceManager (boost::shared_ptr<Opal::Bank> bank_);
 
     void publish (const Ekiga::PersonalDetails& details);
+
+    void fetch (const std::string uri);
+
+    void unfetch (const std::string uri);
 
   private:
 
