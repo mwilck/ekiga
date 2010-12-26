@@ -38,6 +38,7 @@
 #ifndef __OPAL_BANK_H__
 #define __OPAL_BANK_H__
 
+#include "presence-core.h"
 #include "bank-impl.h"
 #include "opal-account.h"
 #include "services.h"
@@ -51,6 +52,8 @@ namespace Opal
    */
   class Bank: 
       public Ekiga::BankImpl<Account>,
+      public Ekiga::PresencePublisher,
+      public Ekiga::PresenceFetcher,
       public Ekiga::Service
   {
 public:
@@ -66,6 +69,15 @@ public:
 
     const std::string get_description () const
     { return "\tStores the opal accounts"; }
+
+    /*
+     * this object is an Ekiga::PresenceFetcher and an Ekiga::PresencePublisher
+     */
+    void publish (const Ekiga::PersonalDetails& details);
+
+    void fetch (const std::string uri);
+
+    void unfetch (const std::string uri);
 
     void new_account (Account::Type acc_type,
                       std::string username = "",

@@ -256,3 +256,30 @@ Opal::Bank::save () const
   g_slist_foreach (accounts, (GFunc) g_free, NULL);
   g_slist_free (accounts);
 }
+
+void
+Opal::Bank::publish (const Ekiga::PersonalDetails& details)
+{
+  for (iterator iter = begin ();
+       iter != end ();
+       iter++)
+    (*iter)->publish (details);
+}
+
+void
+Opal::Bank::fetch (const std::string uri)
+{
+  for (iterator iter = begin ();
+       iter != end ();
+       iter++)
+    (*iter)->fetch (uri);
+}
+
+void
+Opal::Bank::unfetch (const std::string uri)
+{
+  for (iterator iter = begin ();
+       iter != end ();
+       iter++)
+    (*iter)->unfetch (uri);
+}

@@ -55,7 +55,6 @@
 #include "opal-bank.h"
 #include "opal-call-manager.h"
 #include "opal-plugins-hook.h"
-#include "opal-presence-manager.h"
 
 #include "sip-endpoint.h"
 #define SIP_KEY "/apps/" PACKAGE_NAME "/protocols/sip/"
@@ -132,9 +131,8 @@ struct OPALSpark: public Ekiga::Spark
       presence_core->add_presentity_decorator (sip_manager);
       presence_core->add_presence_fetcher (sip_manager);
 
-      boost::shared_ptr<PresenceManager> presence_manager (new PresenceManager (bank));
-      presence_core->add_presence_publisher (presence_manager);
-      presence_core->add_presence_fetcher (presence_manager);
+      presence_core->add_presence_publisher (bank);
+      presence_core->add_presence_fetcher (bank);
 
 #ifdef HAVE_H323
       unsigned h323_port = gm_conf_get_int (H323_KEY "listen_port");
