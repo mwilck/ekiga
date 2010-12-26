@@ -60,6 +60,8 @@ Opal::Bank::Bank (Ekiga::ServiceCore &_core): core(_core)
 
     add_account (account);
     Ekiga::BankImpl<Account>::add_connection (account, account->trigger_saving.connect (boost::bind (&Opal::Bank::save, this)));
+    Ekiga::BankImpl<Account>::add_connection (account, account->presence_received.connect (boost::ref (presence_received)));
+    Ekiga::BankImpl<Account>::add_connection (account, account->status_received.connect (boost::ref (status_received)));
     accounts_iter = g_slist_next (accounts_iter);
   }
 
@@ -207,6 +209,8 @@ void Opal::Bank::add (Account::Type acc_type,
 						     timeout));
   add_account (account);
   Ekiga::BankImpl<Account>::add_connection (account, account->trigger_saving.connect (boost::bind (&Opal::Bank::save, this)));
+  Ekiga::BankImpl<Account>::add_connection (account, account->presence_received.connect (boost::ref (presence_received)));
+  Ekiga::BankImpl<Account>::add_connection (account, account->status_received.connect (boost::ref (status_received)));
 }
 
 void
