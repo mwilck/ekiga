@@ -505,13 +505,23 @@ Opal::Account::publish (const Ekiga::PersonalDetails& details)
 void
 Opal::Account::fetch (const std::string uri)
 {
-  std::cout << __PRETTY_FUNCTION__ << " " << uri << std::endl;
+  if (presentity && presentity->IsOpen ()) {
+
+    std::cout << __PRETTY_FUNCTION__ << " " << uri << std::endl;
+
+    presentity->SubscribeToPresence (PString (uri));
+  }
 }
 
 void
 Opal::Account::unfetch (const std::string uri)
 {
-  std::cout << __PRETTY_FUNCTION__ << " " << uri << std::endl;
+  if (presentity && presentity->IsOpen ()) {
+
+    std::cout << __PRETTY_FUNCTION__ << " " << uri << std::endl;
+
+    presentity->UnsubscribeFromPresence (PString (uri));
+  }
 }
 
 void
