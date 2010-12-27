@@ -42,7 +42,6 @@ INCLUDES = \
 	-I$(top_srcdir)/lib/engine/components/dx-videooutput \
 	-I$(top_srcdir)/lib/engine/components/echo \
 	-I$(top_srcdir)/lib/engine/components/gmconf-personal-details \
-	-I$(top_srcdir)/lib/engine/components/gnome-session \
 	-I$(top_srcdir)/lib/engine/components/hal-dbus \
 	-I$(top_srcdir)/lib/engine/components/libnotify \
 	-I$(top_srcdir)/lib/engine/components/local-roster \
@@ -54,12 +53,11 @@ INCLUDES = \
 	-I$(top_srcdir)/lib/engine/components/x-videooutput
 
 AM_CFLAGS = \
-	$(GLIB_CFLAGS) $(GTK_CFLAGS) $(GCONF_CFLAGS) \
-	$(DBUS_CFLAGS) $(GNOME_CFLAGS)
+	$(GLIB_CFLAGS) $(GTK_CFLAGS) $(GCONF_CFLAGS) $(DBUS_CFLAGS)
 
 AM_CPPFLAGS = \
 	$(BOOST_CPPFLAGS) $(GLIB_CFLAGS) $(XML_CFLAGS) $(GTK_CFLAGS) \
-	$(DBUS_CFLAGS) $(GNOME_CFLAGS) $(PTLIB_CFLAGS) $(OPAL_CFLAGS)
+	$(DBUS_CFLAGS) $(PTLIB_CFLAGS) $(OPAL_CFLAGS)
 AM_LIBS = \
 	$(BOOST_LIBS) $(GLIB_LIBS) $(XML_LIBS) $(GTK_LIBS)
 
@@ -97,11 +95,7 @@ libekiga_la_SOURCES += \
 if WIN32
 libekiga_la_SOURCES += $(top_srcdir)/lib/toolbox/toolbox-win32.c
 else
-if HAVE_GNOME
-libekiga_la_SOURCES += $(top_srcdir)/lib/toolbox/toolbox-gnome.c
-else
 libekiga_la_SOURCES += $(top_srcdir)/lib/toolbox/toolbox-gtk.c
-endif
 endif
 
 ##
@@ -657,17 +651,6 @@ $(builddir)/hal-marshal.h: $(components_dir)/hal-dbus/hal-marshal.list
 
 $(builddir)/hal-marshal.c: $(components_dir)/hal-dbus/hal-marshal.list
 	$(LIBTOOL) --mode=execute glib-genmarshal --prefix=gm_hal_dbus_marshal $^ --body > $@.tmp && mv $@.tmp $@
-
-endif
-
-##
-# Sources of the gnome session component
-##
-if HAVE_GNOME
-
-libekiga_la_SOURCES += \
-	$(components_dir)/gnome-session/gnome-session-main.h \
-	$(components_dir)/gnome-session/gnome-session-main.cpp
 
 endif
 

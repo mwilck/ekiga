@@ -59,16 +59,11 @@
 
 #include <glib/gi18n.h>
 
-#undef GTK_DISABLE_DEPRECATED
-#ifdef HAVE_GNOME
-#include <libgnome/gnome-help.h>
-#endif
-
 
 /* The callbacks */
 
 void
-about_callback (G_GNUC_UNUSED GtkWidget *widget, 
+about_callback (G_GNUC_UNUSED GtkWidget *widget,
 		gpointer parent_window)
 {
   const gchar *authors [] = {
@@ -79,7 +74,7 @@ about_callback (G_GNUC_UNUSED GtkWidget *widget,
       "Eugen Dedu <eugen.dedu@pu-pm.univ-fcomte.fr>",
       "Yannick Defais <sevmek@free.fr>",
       "Steve Fr\303\251cinaux <code@istique.net>",
-      "Kilian Krause <kk@verfaction.de>", 
+      "Kilian Krause <kk@verfaction.de>",
       "Vincent Luba <luba@novacom.be>",
       "Julien Puydt <julien.puydt@laposte.net>",
       "Luc Saillard <luc@saillard.org>",
@@ -98,11 +93,11 @@ about_callback (G_GNUC_UNUSED GtkWidget *widget,
       N_("See AUTHORS file for full credits"),
       NULL
   };
-	
+
   authors [2] = gettext (authors [2]);
   authors [12] = gettext (authors [12]);
   authors [20] = gettext (authors [20]);
-  
+
   const gchar *documenters [] = {
     "Damien Sandras <dsandras@seconix.com>",
     "Christopher Warner <zanee@kernelcode.com>",
@@ -138,9 +133,9 @@ GNU GPL for all the rest of the software thus combined.")
   if (strcmp (translator_credits, "translator-credits") == 0)
     translator_credits = "No translators, English by\n"
         "Damien Sandras <dsandras@seconix.com>";
- 
+
   const gchar *comments =  _("Ekiga is full-featured SIP and H.323 compatible VoIP, IP-Telephony and Videoconferencing application that allows you to make audio and video calls to remote users with SIP and H.323 hardware or software.");
- 
+
   license_trans = g_strconcat (_(license[0]), "\n\n", _(license[1]), "\n\n",
                                _(license[2]), "\n\n", NULL);
 
@@ -205,17 +200,13 @@ help_callback (G_GNUC_UNUSED GtkWidget *widget,
   GError *err = NULL;
   gboolean success = FALSE;
 
-#ifdef HAVE_GNOME
-  success = gnome_help_display (PACKAGE_NAME ".xml", NULL, &err);
-#else
   success = gtk_show_uri (NULL, "ghelp:" PACKAGE_NAME, GDK_CURRENT_TIME, &err);
-#endif
 
   if (!success) {
     GtkWidget *d;
-    d = gtk_message_dialog_new (GTK_WINDOW (GnomeMeeting::Process ()->GetMainWindow ()), 
+    d = gtk_message_dialog_new (GTK_WINDOW (GnomeMeeting::Process ()->GetMainWindow ()),
                                 (GtkDialogFlags) (GTK_DIALOG_MODAL | GTK_DIALOG_DESTROY_WITH_PARENT),
-                                GTK_MESSAGE_ERROR, GTK_BUTTONS_CLOSE, 
+                                GTK_MESSAGE_ERROR, GTK_BUTTONS_CLOSE,
                                 "%s", _("Unable to open help file."));
     gtk_message_dialog_format_secondary_text (GTK_MESSAGE_DIALOG (d),
                                               "%s", err->message);
@@ -228,7 +219,7 @@ help_callback (G_GNUC_UNUSED GtkWidget *widget,
 
 
 void
-quit_callback (G_GNUC_UNUSED GtkWidget *widget, 
+quit_callback (G_GNUC_UNUSED GtkWidget *widget,
 	       G_GNUC_UNUSED gpointer data)
 {
   GtkWidget *main_window = NULL;
@@ -240,7 +231,7 @@ quit_callback (G_GNUC_UNUSED GtkWidget *widget,
   assistant_window = GnomeMeeting::Process ()->GetAssistantWindow ();
   prefs_window = GnomeMeeting::Process ()->GetPrefsWindow ();
   accounts_window = GnomeMeeting::Process ()->GetAccountsWindow ();
-  
+
   gtk_widget_hide (main_window);
   if (assistant_window)
     gm_window_hide (assistant_window);
@@ -252,6 +243,4 @@ quit_callback (G_GNUC_UNUSED GtkWidget *widget,
     gtk_main_iteration ();
 
   gtk_main_quit ();
-}  
-
-
+}

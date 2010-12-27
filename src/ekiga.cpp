@@ -178,11 +178,6 @@ void GnomeMeeting::BuildGUI (Ekiga::ServiceCorePtr services)
 	  << MAJOR_VERSION << "." << MINOR_VERSION << "." << BUILD_NUMBER);
   PTRACE (1, "OPAL version " << OPAL_VERSION);
   PTRACE (1, "PTLIB version " << PTLIB_VERSION);
-#ifdef HAVE_GNOME
-  PTRACE (1, "GNOME support enabled");
-#else
-  PTRACE (1, "GNOME support disabled");
-#endif
 #if defined HAVE_XV || defined HAVE_DX
   PTRACE (1, "Accelerated rendering support enabled");
 #else

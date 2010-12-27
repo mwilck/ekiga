@@ -184,31 +184,6 @@ AC_SUBST(XML_LIBS)
 
 
 dnl ###############################
-dnl   GNOME support
-dnl ###############################
-GNOME="unneeded"
-
-if test "x${gm_platform}" != "xmingw" ; then
-  if $PKG_CONFIG --max-version 2.13.1 gtk+-2.0; then
-    GNOME="disabled"
-    AC_ARG_ENABLE(gnome, AS_HELP_STRING([--enable-gnome],[enable GNOME support (default is to enable if needed)]),
-[if test "x$enableval" = "xyes"; then
-  enable_gnome=yes
-fi],enable_gnome=yes)
-
-    if test "x$enable_gnome" = "xyes"; then
-      PKG_CHECK_MODULES([GNOME], [libgnome-2.0 >= 2.14.0 libgnomeui-2.0 >= 2.14.0], [found_gnome=yes])
-      AC_SUBST(GNOME_CFLAGS)
-      AC_SUBST(GNOME_LIBS)
-      GNOME="enabled"
-      AC_DEFINE(HAVE_GNOME,1,[GNOME support])
-    fi
-  fi
-fi
-AM_CONDITIONAL(HAVE_GNOME, test "x$found_gnome" = "xyes")
-
-
-dnl ###############################
 dnl   GConf support
 dnl ###############################
 GCONF="disabled"
@@ -895,7 +870,6 @@ echo "================ Final configuration ==================="
 echo "          Installing into prefix  :  $prefix"
 echo ""
 if test "x${gm_platform}" != "xmingw" ; then
-echo "                   GNOME support  :  $GNOME"
 echo "                   GConf support  :  $GCONF"
 echo "   Evolution-Data-Server support  :  $EDS"
 echo "                  NOTIFY support  :  $NOTIFY"

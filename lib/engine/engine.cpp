@@ -80,9 +80,6 @@
 
 #ifdef HAVE_DBUS
 #include "hal-main-dbus.h"
-#ifdef HAVE_GNOME
-#include "gnome-session-main.h"
-#endif
 #endif
 
 #include "opal-main.h"
@@ -185,12 +182,6 @@ engine_init (Ekiga::ServiceCorePtr service_core,
 #ifdef HAVE_AVAHI
   avahi_init (kickstart);
   avahi_publisher_init (kickstart);
-#endif
-
-#ifdef HAVE_GNOME
-#ifdef HAVE_DBUS
-  gnomesession_init (kickstart);
-#endif
 #endif
 
   history_init (kickstart);
