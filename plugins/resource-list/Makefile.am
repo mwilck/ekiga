@@ -2,7 +2,7 @@ plugin_LTLIBRARIES = libgmresource_list.la
 
 resource_list_dir = $(top_srcdir)/plugins/resource-list/
 
-AM_CXXFLAGS = $(BOOST_CPPFLAGS) $(SIGC_CFLAGS) $(GLIB_CFLAGS) $(XML_CFLAGS)
+AM_CXXFLAGS = $(BOOST_CPPFLAGS) $(GLIB_CFLAGS) $(XML_CFLAGS)
 
 INCLUDES = 						\
 	-I$(top_srcdir)/lib/gmconf			\

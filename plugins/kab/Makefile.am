@@ -2,7 +2,7 @@ plugin_LTLIBRARIES = libgmkab.la
 
 kab_dir = $(top_srcdir)/plugins/kab
 
-AM_CPPFLAGS = $(BOOST_CPPFLAGS) $(SIGC_CFLAGS) $(KAB_CFLAGS)
+AM_CPPFLAGS = $(BOOST_CPPFLAGS) $(KAB_CFLAGS)
 
 INCLUDES = \
 	-I$(top_srcdir)/lib/engine/framework \

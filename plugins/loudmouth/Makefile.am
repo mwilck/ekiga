@@ -2,7 +2,7 @@ plugin_LTLIBRARIES = libgmloudmouth.la
 
 loudmouth_dir = $(top_srcdir)/plugins/loudmouth
 
-AM_CXXFLAGS = $(BOOST_CPPFLAGS) $(SIGC_CFLAGS) $(XML_CFLAGS) $(LOUDMOUTH_CFLAGS)
+AM_CXXFLAGS = $(BOOST_CPPFLAGS) $(XML_CFLAGS) $(LOUDMOUTH_CFLAGS)
 
 INCLUDES = \
 	-I$(top_srcdir)/lib/gmconf \

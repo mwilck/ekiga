@@ -2,7 +2,7 @@ plugin_LTLIBRARIES = libgmldap.la
 
 ldap_dir = $(top_srcdir)/plugins/ldap
 
-AM_CPPFLAGS = $(LDAP_CFLAGS) $(BOOST_CPPFLAGS) $(SIGC_CFLAGS) $(GLIB_CFLAGS) $(XML_CFLAGS)
+AM_CPPFLAGS = $(LDAP_CFLAGS) $(BOOST_CPPFLAGS) $(GLIB_CFLAGS) $(XML_CFLAGS)
 
 INCLUDES = \
 	-I$(top_srcdir)/lib/gmconf 			\
