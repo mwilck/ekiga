@@ -24,8 +24,7 @@ INCLUDES = \
 	-I$(top_srcdir)/src				\
 	-I$(top_srcdir)/src/dbus-helper/		\
 	-I$(top_srcdir)/src/gui/			\
-	-I$(top_builddir)/src/dbus-helper/		\
-	$(GNOME_INCLUDEDIR)
+	-I$(top_builddir)/src/dbus-helper/
 
 BUILT_SOURCES = src/revision.h
 
@@ -151,8 +150,8 @@ src/revision.h:
           fi \
         fi
 
-AM_CXXFLAGS = $(GTK_CFLAGS) $(GLIB_CFLAGS) $(DBUS_CFLAGS) $(BONOBO_CFLAGS) $(OPAL_CFLAGS) $(PTLIB_CFLAGS) $(BOOST_CPPFLAGS) $(XML_CFLAGS) $(NOTIFY_CFLAGS)
-AM_LIBS = $(GTK_LIBS) $(GLIB_LIBS) $(DBUS_LIBS) $(BONOBO_LIBS) $(OPAL_LIBS) $(PTLIB_LIBS) $(BOOST_LDFLAGS) $(BOOST_LIBS) $(XML_LIBS) $(NOTIFY_LIBS)
+AM_CXXFLAGS = $(GTK_CFLAGS) $(GLIB_CFLAGS) $(DBUS_CFLAGS) $(OPAL_CFLAGS) $(PTLIB_CFLAGS) $(BOOST_CPPFLAGS) $(XML_CFLAGS) $(NOTIFY_CFLAGS)
+AM_LIBS = $(GTK_LIBS) $(GLIB_LIBS) $(DBUS_LIBS) $(OPAL_LIBS) $(PTLIB_LIBS) $(BOOST_LDFLAGS) $(BOOST_LIBS) $(XML_LIBS) $(NOTIFY_LIBS)
 
 ekiga_LDADD = \
 	$(top_builddir)/lib/libekiga.la $(AM_LIBS)
