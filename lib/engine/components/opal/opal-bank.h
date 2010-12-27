@@ -42,6 +42,7 @@
 #include "bank-impl.h"
 #include "opal-account.h"
 #include "services.h"
+#include "runtime.h"
 
 namespace Opal
 {
@@ -97,6 +98,12 @@ public:
 private:
     Ekiga::ServiceCore &core;
 
+    PDECLARE_PresenceChangeNotifier (Bank, OnPresenceChange);
+
+    void presence_status_in_main (std::string uri,
+				  std::string presence,
+				  std::string status);
+
     void on_new_account_form_submitted (bool submitted,
 					Ekiga::Form& form,
 					Account::Type acc_type);
@@ -111,6 +118,16 @@ private:
               unsigned timeout);
 
     void save () const;
+
+    typedef struct {
+
+      std::string presence;
+      std::string status;
+      bool requested;
+    } uri_info;
+    
+    std::map<std::string, uri_info> presence_infos;
+
   };
 
   /**

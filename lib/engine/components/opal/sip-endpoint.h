@@ -63,7 +63,6 @@ namespace Opal {
     class EndPoint : public SIPEndPoint,
 		     public Ekiga::Service,
 		     public Ekiga::CallProtocolManager,
-		     public Ekiga::PresenceFetcher,
 		     public Ekiga::PresentityDecorator,
 		     public Ekiga::ContactDecorator
     {
@@ -73,12 +72,6 @@ namespace Opal {
 
       typedef std::list<std::string> domain_list;
       typedef std::list<std::string>::iterator domain_list_iterator;
-      typedef struct {
-        std::string presence;
-        std::string status;
-        bool requested;
-      } uri_info;
-      typedef std::map<std::string, uri_info> uri_info_map;
 
       EndPoint (CallManager& ep,
 		Ekiga::ServiceCore& core,
@@ -105,11 +98,6 @@ namespace Opal {
       bool menu_builder_add_actions (const std::string & fullname,
                                      const std::string& uri,
                                      Ekiga::MenuBuilder & builder);
-
-
-      /* PresenceFetcher */
-      void fetch (const std::string uri);
-      void unfetch (const std::string uri);
 
 
       /* Chat subsystem */
@@ -173,15 +161,6 @@ namespace Opal {
       bool OnIncomingConnection (OpalConnection &connection,
                                  unsigned options,
                                  OpalConnection::StringOptions * stroptions);
-
-      /* new opal presence api -- doesn't work yet with ekiga.net */
-      PDECLARE_PresenceChangeNotifier (EndPoint, OnPresenceChange);
-
-      /* old opal presence api -- the one which works with ekiga.net */
-      void OnPresenceInfoReceived (const SIPPresenceInfo& info);
-
-      /* common function to treat presence information coming from both opal presence api */
-      void treat_presence_info (const OpalPresenceInfo& info);
 
       void OnDialogInfoReceived (const SIPDialogNotification & info);
 
@@ -249,9 +228,6 @@ namespace Opal {
       bool auto_answer_call;
 
       boost::shared_ptr<SIP::Dialect> dialect;
-
-      uri_info_map presence_infos;  // List of uri presences
-      uri_info_map dialog_infos;    // List of uri dialog informations
     };
   };
 };

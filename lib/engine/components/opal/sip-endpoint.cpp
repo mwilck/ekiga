@@ -53,8 +53,6 @@
 #include "personal-details.h"
 #include "opal-account.h"
 
-#include <ptclib/pxml.h>
-
 namespace Opal {
 
   namespace Sip {
@@ -268,34 +266,6 @@ Opal::Sip::EndPoint::menu_builder_add_actions (const std::string& fullname,
   populated = true;
 
   return populated;
-}
-
-
-void
-Opal::Sip::EndPoint::fetch (const std::string uri)
-{
-  /* this is for the new opal presence api */
-  PSafePtr<OpalPresentity> presentity = manager.AddPresentity (uri);
-  presentity->SetPresenceChangeNotifier (PCREATE_PresenceChangeNotifier(OnPresenceChange));
-  presentity->Open ();
-
-  /* this is for the old opal presence api */
-  Subscribe (SIPSubscribe::Presence, 300, uri);
-
-  Subscribe (SIPSubscribe::Dialog, 300, uri);
-}
-
-
-void
-Opal::Sip::EndPoint::unfetch (const std::string uri)
-{
-  /* this is for the new opal presence api */
-  manager.RemovePresentity (uri);
-
-  /* this is for the old opal presence api */
-  Subscribe (SIPSubscribe::Presence, 0, uri);
-
-  Subscribe (SIPSubscribe::Dialog, 0, uri);
 }
 
 
@@ -956,113 +926,6 @@ Opal::Sip::EndPoint::GetRegisteredPartyName (const SIPURL & aor,
   return GetDefaultRegisteredPartyName (transport);
 }
 
-void
-Opal::Sip::EndPoint::OnPresenceInfoReceived (const SIPPresenceInfo& info)
-{
-  treat_presence_info (info);
-}
-
-void
-Opal::Sip::EndPoint::OnPresenceChange (OpalPresentity& /*presentity*/,
-				       const OpalPresenceInfo& info)
-{
-  treat_presence_info (info);
-}
-
-void
-Opal::Sip::EndPoint::treat_presence_info (const OpalPresenceInfo& info)
-{
-  std::string presence = "unknown";
-  std::string status;
-
-  /* we could do something precise */
-  switch (info.m_state) {
-
-  case OpalPresenceInfo::InternalError:
-  case OpalPresenceInfo::Forbidden:
-  case OpalPresenceInfo::NoPresence:
-  case OpalPresenceInfo::Unchanged:
-  case OpalPresenceInfo::Unavailable:
-    presence = "offline";
-    break;
-
-  case OpalPresenceInfo::Available:
-  case OpalPresenceInfo::UnknownExtended:
-  case OpalPresenceInfo::Appointment:
-  case OpalPresenceInfo::Away:
-  case OpalPresenceInfo::Breakfast:
-  case OpalPresenceInfo::Busy:
-  case OpalPresenceInfo::Dinner:
-  case OpalPresenceInfo::Holiday:
-  case OpalPresenceInfo::InTransit:
-  case OpalPresenceInfo::LookingForWork:
-  case OpalPresenceInfo::Lunch:
-  case OpalPresenceInfo::Meal:
-  case OpalPresenceInfo::Meeting:
-  case OpalPresenceInfo::OnThePhone:
-  case OpalPresenceInfo::Other:
-  case OpalPresenceInfo::Performance:
-  case OpalPresenceInfo::PermanentAbsence:
-  case OpalPresenceInfo::Playing:
-  case OpalPresenceInfo::Presentation:
-  case OpalPresenceInfo:: Shopping:
-  case OpalPresenceInfo::Sleeping:
-  case OpalPresenceInfo::Spectator:
-  case OpalPresenceInfo::Steering:
-  case OpalPresenceInfo::Travel:
-  case OpalPresenceInfo::TV:
-  case OpalPresenceInfo::Vacation:
-  case OpalPresenceInfo::Working:
-  case OpalPresenceInfo:: Worship:
-    presence = "online";
-    break;
-  default:
-    presence = "offline";
-    break;
-  }
-
-  if (!info.m_note.IsEmpty ()) {
-
-    PINDEX j;
-    PCaselessString note = info.m_note;
-    if (note.Find ("Away") != P_MAX_INDEX)
-      presence = "away";
-    else if (note.Find ("On the phone") != P_MAX_INDEX)
-      presence = "inacall";
-    else if (note.Find ("Ringing") != P_MAX_INDEX)
-      presence = "ringing";
-    else if (note.Find ("dnd") != P_MAX_INDEX
-             || note.Find ("Do Not Disturb") != P_MAX_INDEX)
-      presence = "dnd";
-
-    else if (note.Find ("Free For Chat") != P_MAX_INDEX)
-      presence = "freeforchat";
-
-    if ((j = note.Find (" - ")) != P_MAX_INDEX)
-      status = (const char *) info.m_note.Mid (j + 3);
-  }
-
-  SIPURL sip_uri = SIPURL (info.m_entity);
-  sip_uri.Sanitise (SIPURL::ExternalURI);
-  std::string _uri = sip_uri.AsString ();
-  std::string old_presence = presence_infos[_uri].presence;
-  std::string old_status = presence_infos[_uri].status;
-
-  // If first notification, and no information, then we are offline
-  if (presence == "unknown" && old_presence.empty ())
-    presence = "offline";
-
-  // If presence change, then signal it to the various components
-  // If presence is unknown (notification with empty body), and it is not the
-  // first notification, and we can conclude it is a ping back from the server
-  // to indicate the presence status did not change, hence we do nothing.
-  if (presence != "unknown" && (old_presence != presence || old_status != status)) {
-    presence_infos[_uri].presence = presence;
-    presence_infos[_uri].status = status;
-    Ekiga::Runtime::run_in_main (boost::bind (&Opal::Sip::EndPoint::presence_status_in_main, this, _uri, presence_infos[_uri].presence, presence_infos[_uri].status));
-  }
-}
-
 
 void
 Opal::Sip::EndPoint::OnDialogInfoReceived (const SIPDialogNotification & info)
@@ -1099,17 +962,6 @@ Opal::Sip::EndPoint::OnDialogInfoReceived (const SIPDialogNotification & info)
   case SIPDialogNotification::Terminated:
     break;
   }
-
-  dialog_infos[uri].presence = presence;
-  dialog_infos[uri].status = status;
-
-  if (presence_infos[uri].presence.empty ())
-    presence_infos[uri].presence = "online";
-
-  if (_status)
-    Ekiga::Runtime::run_in_main (boost::bind (&Opal::Sip::EndPoint::presence_status_in_main, this, uri, dialog_infos[uri].presence, dialog_infos[uri].status));
-  else
-    Ekiga::Runtime::run_in_main (boost::bind (&Opal::Sip::EndPoint::presence_status_in_main, this, uri, presence_infos[uri].presence, presence_infos[uri].status));
 }
 
 
@@ -1165,16 +1017,6 @@ Opal::Sip::EndPoint::registration_event_in_main (const std::string aor,
 
   if (account)
     account->handle_registration_event (state, msg);
-}
-
-
-void
-Opal::Sip::EndPoint::presence_status_in_main (std::string uri,
-					      std::string presence,
-					      std::string status)
-{
-  presence_received (uri, presence);
-  status_received (uri, status);
 }
 
 void

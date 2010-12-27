@@ -129,7 +129,6 @@ struct OPALSpark: public Ekiga::Spark
       call_manager->add_protocol_manager (sip_manager);
       contact_core->add_contact_decorator (sip_manager);
       presence_core->add_presentity_decorator (sip_manager);
-      presence_core->add_presence_fetcher (sip_manager);
 
       presence_core->add_presence_publisher (bank);
       presence_core->add_presence_fetcher (bank);

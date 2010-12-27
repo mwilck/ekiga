@@ -43,6 +43,8 @@
 
 #include <glib/gi18n.h>
 
+#include <sip/sipep.h>
+
 #include "gmconf.h"
 #include "menu-builder.h"
 
@@ -286,4 +288,109 @@ Opal::Bank::unfetch (const std::string uri)
        iter != end ();
        iter++)
     (*iter)->unfetch (uri);
+}
+
+void
+Opal::Bank::OnPresenceChange (OpalPresentity& /*presentity*/,
+			      const OpalPresenceInfo& info)
+{
+  std::string presence = "unknown";
+  std::string status;
+
+  /* we could do something precise */
+  switch (info.m_state) {
+
+  case OpalPresenceInfo::InternalError:
+  case OpalPresenceInfo::Forbidden:
+  case OpalPresenceInfo::NoPresence:
+  case OpalPresenceInfo::Unchanged:
+  case OpalPresenceInfo::Unavailable:
+    presence = "offline";
+    break;
+
+  case OpalPresenceInfo::Available:
+  case OpalPresenceInfo::UnknownExtended:
+  case OpalPresenceInfo::Appointment:
+  case OpalPresenceInfo::Away:
+  case OpalPresenceInfo::Breakfast:
+  case OpalPresenceInfo::Busy:
+  case OpalPresenceInfo::Dinner:
+  case OpalPresenceInfo::Holiday:
+  case OpalPresenceInfo::InTransit:
+  case OpalPresenceInfo::LookingForWork:
+  case OpalPresenceInfo::Lunch:
+  case OpalPresenceInfo::Meal:
+  case OpalPresenceInfo::Meeting:
+  case OpalPresenceInfo::OnThePhone:
+  case OpalPresenceInfo::Other:
+  case OpalPresenceInfo::Performance:
+  case OpalPresenceInfo::PermanentAbsence:
+  case OpalPresenceInfo::Playing:
+  case OpalPresenceInfo::Presentation:
+  case OpalPresenceInfo:: Shopping:
+  case OpalPresenceInfo::Sleeping:
+  case OpalPresenceInfo::Spectator:
+  case OpalPresenceInfo::Steering:
+  case OpalPresenceInfo::Travel:
+  case OpalPresenceInfo::TV:
+  case OpalPresenceInfo::Vacation:
+  case OpalPresenceInfo::Working:
+  case OpalPresenceInfo:: Worship:
+    presence = "online";
+    break;
+  default:
+    presence = "offline";
+    break;
+  }
+
+  if (!info.m_note.IsEmpty ()) {
+
+    PINDEX j;
+    PCaselessString note = info.m_note;
+    if (note.Find ("Away") != P_MAX_INDEX)
+      presence = "away";
+    else if (note.Find ("On the phone") != P_MAX_INDEX)
+      presence = "inacall";
+    else if (note.Find ("Ringing") != P_MAX_INDEX)
+      presence = "ringing";
+    else if (note.Find ("dnd") != P_MAX_INDEX
+             || note.Find ("Do Not Disturb") != P_MAX_INDEX)
+      presence = "dnd";
+
+    else if (note.Find ("Free For Chat") != P_MAX_INDEX)
+      presence = "freeforchat";
+
+    if ((j = note.Find (" - ")) != P_MAX_INDEX)
+      status = (const char *) info.m_note.Mid (j + 3);
+  }
+
+  SIPURL sip_uri = SIPURL (info.m_entity);
+  sip_uri.Sanitise (SIPURL::ExternalURI);
+  std::string uri = sip_uri.AsString ();
+  std::string old_presence = presence_infos[uri].presence;
+  std::string old_status = presence_infos[uri].status;
+
+  // If first notification, and no information, then we are offline
+  if (presence == "unknown" && old_presence.empty ())
+    presence = "offline";
+
+  // If presence change, then signal it to the various components
+  // If presence is unknown (notification with empty body), and it is not the
+  // first notification, and we can conclude it is a ping back from the server
+  // to indicate the presence status did not change, hence we do nothing.
+  if (presence != "unknown" && (old_presence != presence || old_status != status)) {
+    presence_infos[uri].presence = presence;
+    presence_infos[uri].status = status;
+    Ekiga::Runtime::run_in_main (boost::bind (&Opal::Bank::presence_status_in_main, this, uri, presence_infos[uri].presence, presence_infos[uri].status));
+  }
+}
+
+
+void
+Opal::Bank::presence_status_in_main (std::string uri,
+				     std::string presence,
+				     std::string status)
+{
+  presence_received (uri, presence);
+  status_received (uri, status);
 }

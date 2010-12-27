@@ -487,7 +487,7 @@ Opal::Account::on_consult (const std::string url)
 void
 Opal::Account::publish (const Ekiga::PersonalDetails& details)
 {
-  if (presentity && presentity->IsOpen ()) {
+  if (presentity) {
 
     std::cout << __PRETTY_FUNCTION__ << ": ok" << std::endl;
 
@@ -505,7 +505,7 @@ Opal::Account::publish (const Ekiga::PersonalDetails& details)
 void
 Opal::Account::fetch (const std::string uri)
 {
-  if (presentity && presentity->IsOpen ()) {
+  if (presentity) {
 
     std::cout << __PRETTY_FUNCTION__ << " " << uri << std::endl;
 
@@ -516,7 +516,7 @@ Opal::Account::fetch (const std::string uri)
 void
 Opal::Account::unfetch (const std::string uri)
 {
-  if (presentity && presentity->IsOpen ()) {
+  if (presentity) {
 
     std::cout << __PRETTY_FUNCTION__ << " " << uri << std::endl;
 
