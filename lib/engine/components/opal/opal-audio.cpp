@@ -121,7 +121,7 @@ bool PSoundChannel_EKIGA::Close()
 
 bool PSoundChannel_EKIGA::Write (const void *buf, PINDEX len)
 {
-  unsigned bytesWritten;
+  unsigned bytesWritten = 0;
 
   if (direction == Player) {
     audiooutput_core->set_frame_data((char*)buf, len, bytesWritten);
@@ -134,7 +134,7 @@ bool PSoundChannel_EKIGA::Write (const void *buf, PINDEX len)
 
 bool PSoundChannel_EKIGA::Read (void * buf, PINDEX len)
 {
-  unsigned bytesRead;
+  unsigned bytesRead = 0;
 
   if (direction == Recorder) {
     audioinput_core->get_frame_data((char*)buf, len, bytesRead);
