@@ -1021,26 +1021,30 @@ DXWindow::NewWindow (int x, int y, int windowWidth, int windowHeight)
 const char* 
 DXWindow::ErrorMessage()
 {
-  static char string [1024];
+  static char buffer[1024];
+  static char result[1024];
   DWORD dwMsgLen;
 
-  memset (string, 0, sizeof (string));
+  memset (buffer, 0, sizeof (buffer));
+  memset (result, 0, sizeof (result));
   dwMsgLen = FormatMessageA (FORMAT_MESSAGE_FROM_SYSTEM | FORMAT_MESSAGE_IGNORE_INSERTS,
                              NULL,
                              GetLastError (),
                              MAKELANGID (LANG_NEUTRAL, SUBLANG_DEFAULT),
-                             (LPSTR) string,
-                             sizeof (string)-1,
+                             (LPSTR) buffer,
+                             sizeof (buffer)-1,
                              NULL);
   if (dwMsgLen) {
-    string [ strlen(string) - 2 ] = 0;
-    snprintf (string, sizeof (string), "%s (%u)", string, (int) GetLastError ());
+    buffer [ strlen(buffer) - 2 ] = 0;
+    g_snprintf (result, sizeof (result), "%s (%u)",
+		buffer, (int) GetLastError ());
   }
   else {
-    snprintf (string, sizeof (string), "%u", (int) GetLastError ());
+    g_snprintf (result, sizeof (result), "%u",
+		(int) GetLastError ());
   }
 
-  return string;
+  return result;
 }
 
 
