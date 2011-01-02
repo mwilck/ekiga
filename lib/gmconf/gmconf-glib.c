@@ -1043,7 +1043,7 @@ database_notify_on_namespace (DataBase *db,
 {
   GmConfEntry *parent_entry = NULL, *entry = NULL;
   gchar *key = NULL;
-
+  gchar* key_ptr = NULL;
 
   g_return_if_fail (db != NULL);
   g_return_if_fail (namespac != NULL);
@@ -1053,10 +1053,11 @@ database_notify_on_namespace (DataBase *db,
 
   g_return_if_fail (entry != NULL);
 
-  for (key = g_strdup (namespac);
-       key[0] != 0;
-       g_strrstr (key, "/")[0] = 0) {
-    parent_entry = database_get_entry_for_key (db, key);
+  key = g_strdup (namespac);
+  for (key_ptr = key;
+       key_ptr[0] != 0;
+       g_strrstr (key_ptr, "/")[0] = 0) {
+    parent_entry = database_get_entry_for_key (db, key_ptr);
     if (parent_entry != NULL) {
       if (entry_get_type (parent_entry) == GM_CONF_OTHER)
 	entry_set_redirect (parent_entry, entry);
