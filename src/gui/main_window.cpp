@@ -103,7 +103,7 @@
 
 enum CallingState {Standby, Calling, Connected, Called};
 
-enum DeviceType { AudioInput, AudioOutput, VideoInput} ;
+enum DeviceType {AudioInput, AudioOutput, Ringer, VideoInput};
 struct deviceStruct {
   char name[256];
   DeviceType deviceType;
@@ -1334,8 +1334,7 @@ on_audioinput_device_added_cb (const Ekiga::AudioInputDevice & device,
   ekiga_main_window_flash_message (mw, "%s", message);
   g_free (message);
   if (!is_desired  && mw->priv->calling_state == Standby && !mw->priv->current_call)
-    ekiga_main_window_add_device_dialog_show (mw, device,  AudioInput);
-    
+    ekiga_main_window_add_device_dialog_show (mw, device, AudioInput);
 }
 
 void 
@@ -1448,8 +1447,10 @@ on_audiooutput_device_added_cb (const Ekiga::AudioOutputDevice & device,
   message = g_strdup_printf (_("Added audio output device %s"), device.GetString().c_str ());
   ekiga_main_window_flash_message (mw, "%s", message);
   g_free (message);
-  if (!is_desired && mw->priv->calling_state == Standby && !mw->priv->current_call)
+  if (!is_desired && mw->priv->calling_state == Standby && !mw->priv->current_call) {
     ekiga_main_window_add_device_dialog_show (mw, device, AudioOutput);
+    ekiga_main_window_add_device_dialog_show (mw, device, Ringer);
+  }
 }
 
 void 
@@ -1556,9 +1557,12 @@ add_device_response_cb (GtkDialog *add_device_popup,
      case AudioOutput:
        gm_conf_set_string (AUDIO_DEVICES_KEY "output_device", device_struct->name);
        break;
+     case Ringer:
+       gm_conf_set_string (SOUND_EVENTS_KEY "output_device", device_struct->name);
+       break;
      case VideoInput:
        gm_conf_set_string (VIDEO_DEVICES_KEY "input_device", device_struct->name);
-       break;	                
+       break;
      default:;
     }
   }
@@ -1578,7 +1582,7 @@ place_call_cb (GtkWidget * /*widget*/,
   if (mw->priv->calling_state == Standby && !mw->priv->current_call) {
 
     size_t pos;
-    
+
     // Check for empty uri
     uri = ekiga_main_window_get_call_url (mw);
     pos = uri.find (":");
@@ -3188,6 +3192,10 @@ ekiga_main_window_add_device_dialog_show (EkigaMainWindow *mw,
       break;
     case AudioOutput:
       msg = _("Detected new audio output device:");
+      title = _("Audio Devices");
+      break;
+    case Ringer:
+      msg = _("Detected new ringer device:");
       title = _("Audio Devices");
       break;
     case VideoInput:
