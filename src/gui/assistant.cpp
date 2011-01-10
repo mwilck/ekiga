@@ -622,9 +622,7 @@ create_ekiga_net_page (EkigaAssistant *assistant)
   g_signal_connect (button, "clicked",
                     G_CALLBACK (ekiga_net_button_clicked_cb), NULL);
 
-  assistant->priv->skip_ekiga_net = gtk_check_button_new ();
-  label = gtk_label_new (_("I do not want to sign up for the ekiga.net free service"));
-  gtk_container_add (GTK_CONTAINER (assistant->priv->skip_ekiga_net), label);
+  assistant->priv->skip_ekiga_net = gtk_check_button_new (_("I do not want to sign up for the ekiga.net free service"));
   align = gtk_alignment_new (0, 1.0, 0, 0);
   gtk_container_add (GTK_CONTAINER (align), assistant->priv->skip_ekiga_net);
   gtk_box_pack_start (GTK_BOX (vbox), align, TRUE, TRUE, 0);
@@ -764,9 +762,7 @@ create_ekiga_out_page (EkigaAssistant *assistant)
   g_signal_connect (button, "clicked",
                     G_CALLBACK (ekiga_out_history_calls_clicked_cb), assistant);
 
-  assistant->priv->skip_ekiga_out = gtk_check_button_new ();
-  label = gtk_label_new (_("I do not want to sign up for the Ekiga Call Out service"));
-  gtk_container_add (GTK_CONTAINER (assistant->priv->skip_ekiga_out), label);
+  assistant->priv->skip_ekiga_out = gtk_check_button_new (_("I do not want to sign up for the Ekiga Call Out service"));
   align = gtk_alignment_new (0, 1.0, 0, 0);
   gtk_container_add (GTK_CONTAINER (align), assistant->priv->skip_ekiga_out);
   gtk_box_pack_start (GTK_BOX (vbox), align, TRUE, TRUE, 0);
