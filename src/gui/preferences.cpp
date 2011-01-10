@@ -335,7 +335,7 @@ gm_prefs_window_sound_events_list_build (GtkWidget *prefs_window)
 
   pw = gm_pw_get_pw (prefs_window);
 
-  selection = 
+  selection =
     gtk_tree_view_get_selection (GTK_TREE_VIEW (pw->sound_events_list));
 
   if (gtk_tree_selection_get_selected (selection, &model, &selected_iter))
@@ -383,7 +383,7 @@ gm_prefs_window_sound_events_list_build (GtkWidget *prefs_window)
 		      3, SOUND_EVENTS_KEY "enable_new_voicemail_sound",
 		      4, "new_voicemail_sound",
 		      -1);
-  
+
   enabled = gm_conf_get_bool (SOUND_EVENTS_KEY "enable_new_message_sound");
   gtk_list_store_append (GTK_LIST_STORE (model), &iter);
   gtk_list_store_set (GTK_LIST_STORE (model), &iter,
@@ -419,14 +419,13 @@ gm_pw_add_update_button (G_GNUC_UNUSED GtkWidget *prefs_window,
   GtkWidget* hbox = NULL;
   GtkWidget* label = NULL;
 
-
   /* Update Button */
   image = gtk_image_new_from_stock (stock_id, GTK_ICON_SIZE_BUTTON);
   button = gtk_button_new ();
   label = gtk_label_new_with_mnemonic (label_);
   hbox = gtk_hbox_new (FALSE, 0);
 
-  gtk_box_pack_start(GTK_BOX (hbox), image, TRUE, TRUE, 0);  
+  gtk_box_pack_start(GTK_BOX (hbox), image, TRUE, TRUE, 0);
   gtk_box_pack_start(GTK_BOX (hbox), label, TRUE, TRUE, 0);
 
   gtk_container_add (GTK_CONTAINER (button), hbox);
@@ -438,9 +437,8 @@ gm_pw_add_update_button (G_GNUC_UNUSED GtkWidget *prefs_window,
   gtk_box_pack_start (GTK_BOX (box), alignment, TRUE, TRUE, 0);
 
   g_signal_connect (button, "clicked",
-                    G_CALLBACK (func), 
+                    G_CALLBACK (func),
                     (gpointer) data);
-
 
   return button;
 }
@@ -458,12 +456,10 @@ gm_pw_init_general_page (GtkWidget *prefs_window,
   pw = gm_pw_get_pw (prefs_window);
 
   /* Personal Information */
-  subsection =
-    gnome_prefs_subsection_new (prefs_window, container,
+  subsection = gnome_prefs_subsection_new (prefs_window, container,
                                 _("Personal Information"), 2, 2);
 
-  entry =
-    gnome_prefs_entry_new (subsection, _("_Full name:"),
+  entry = gnome_prefs_entry_new (subsection, _("_Full name:"),
                            PERSONAL_DATA_KEY "full_name",
                            _("Enter your full name"), 0, false);
   gtk_widget_set_size_request (GTK_WIDGET (entry), 250, -1);
@@ -479,8 +475,7 @@ gm_pw_init_interface_page (GtkWidget *prefs_window,
 
 
   /* GnomeMeeting GUI */
-  subsection =
-    gnome_prefs_subsection_new (prefs_window, container,
+  subsection = gnome_prefs_subsection_new (prefs_window, container,
                                 _("User Interface"), 2, 2);
 
   gnome_prefs_toggle_new (subsection, _("Start _hidden"), USER_INTERFACE_KEY "start_hidden", _("If enabled, Ekiga will start hidden provided that the notification area is present in the GNOME panel"), 1);
@@ -488,8 +483,7 @@ gm_pw_init_interface_page (GtkWidget *prefs_window,
   gnome_prefs_toggle_new (subsection, _("Show offline _contacts"), CONTACTS_KEY "show_offline_contacts", _("If enabled, offline contacts will be shown in the roster"), 2);
 
   /* Video Display */
-  subsection =
-    gnome_prefs_subsection_new (prefs_window, container,
+  subsection = gnome_prefs_subsection_new (prefs_window, container,
                                 _("Video Display"), 1, 2);
 
   gnome_prefs_toggle_new (subsection, _("Place windows displaying video _above other windows"), VIDEO_DISPLAY_KEY "stay_on_top", _("Place windows displaying video above other windows during calls"), 0);
@@ -499,7 +493,6 @@ gm_pw_init_interface_page (GtkWidget *prefs_window,
                                            _("Network Settings"), 1, 2);
 
   gnome_prefs_toggle_new (subsection, _("Enable network _detection"), NAT_KEY "enable_stun", _("Enable the automatic network setup resulting from the STUN test"), 0);
-
 }
 
 static void
@@ -606,7 +599,7 @@ gm_pw_init_sound_events_page (GtkWidget *prefs_window,
   renderer = gtk_cell_renderer_text_new ();
   column = gtk_tree_view_column_new_with_attributes (_("Event"),
                                                      renderer,
-                                                     "text", 
+                                                     "text",
                                                      1,
                                                      NULL);
   gtk_tree_view_append_column (GTK_TREE_VIEW (pw->sound_events_list), column);
@@ -669,13 +662,12 @@ gm_pw_init_h323_page (GtkWidget *prefs_window,
   GtkWidget *entry = NULL;
   GtkWidget *subsection = NULL;
 
-  const gchar *capabilities [] = 
+  const gchar *capabilities [] =
     {_("String"),
       _("Tone"),
       _("RFC2833"),
       _("Q.931"),
       NULL};
-
 
   /* Add Misc Settings */
   subsection = gnome_prefs_subsection_new (prefs_window, container,
@@ -686,11 +678,8 @@ gm_pw_init_h323_page (GtkWidget *prefs_window,
   if (!strcmp (gtk_entry_get_text (GTK_ENTRY (entry)), ""))
     gtk_entry_set_text (GTK_ENTRY (entry), "h323:");
 
-
-
   /* Packing widget */
-  subsection =
-    gnome_prefs_subsection_new (prefs_window, container,
+  subsection = gnome_prefs_subsection_new (prefs_window, container,
                                 _("Advanced Settings"), 3, 1);
 
   /* The toggles */
@@ -700,13 +689,11 @@ gm_pw_init_h323_page (GtkWidget *prefs_window,
 
   gnome_prefs_toggle_new (subsection, _("Enable fast _start procedure"), H323_KEY "enable_fast_start", _("Connection will be established in Fast Start mode. Fast Start is a new way to start calls faster that was introduced in H.323v2. It is not supported by Netmeeting and using both Fast Start and H.245 Tunneling can crash some versions of Netmeeting."), 2);
 
-
-  /* Packing widget */                                                         
-  subsection =
-    gnome_prefs_subsection_new (prefs_window, container,
+  /* Packing widget */
+  subsection = gnome_prefs_subsection_new (prefs_window, container,
                                 _("DTMF Mode"), 1, 1);
 
-  gnome_prefs_int_option_menu_new (subsection, _("_Send DTMF as:"), capabilities, H323_KEY "dtmf_mode", _("This allows you to set the mode for DTMFs sending."), 0);
+  gnome_prefs_int_option_menu_new (subsection, _("_Send DTMF as:"), capabilities, H323_KEY "dtmf_mode", _("Select the mode for DTMFs sending"), 0);
 }
 
 
@@ -719,15 +706,14 @@ gm_pw_init_sip_page (GtkWidget *prefs_window,
   GtkWidget *entry = NULL;
   GtkWidget *subsection = NULL;
 
-  const gchar *capabilities [] = 
+  const gchar *capabilities [] =
     {
       _("RFC2833"),
-      _("INFO"), 
+      _("INFO"),
       NULL
     };
 
   pw = gm_pw_get_pw (prefs_window);
-
 
   /* Add Misc Settings */
   subsection = gnome_prefs_subsection_new (prefs_window, container,
@@ -740,13 +726,11 @@ gm_pw_init_sip_page (GtkWidget *prefs_window,
   if (!strcmp (gtk_entry_get_text (GTK_ENTRY (entry)), ""))
     gtk_entry_set_text (GTK_ENTRY (entry), "sip:");
 
-
-  /* Packing widget */                                                         
-  subsection =
-    gnome_prefs_subsection_new (prefs_window, container,
+  /* Packing widget */
+  subsection = gnome_prefs_subsection_new (prefs_window, container,
                                 _("DTMF Mode"), 1, 1);
 
-  gnome_prefs_int_option_menu_new (subsection, _("_Send DTMF as:"), capabilities, SIP_KEY "dtmf_mode", _("This allows you to set the mode for DTMFs sending."), 0);
+  gnome_prefs_int_option_menu_new (subsection, _("_Send DTMF as:"), capabilities, SIP_KEY "dtmf_mode", _("Select the mode for DTMFs sending"), 0);
 }
 
 
@@ -773,7 +757,7 @@ gm_pw_init_audio_devices_page (GtkWidget *prefs_window,
 
   gm_prefs_window_get_audiooutput_devices_list (pw->core, device_list);
   array = gm_prefs_window_convert_string_list(device_list);
-  pw->sound_events_output = 
+  pw->sound_events_output =
     gnome_prefs_string_option_menu_new (subsection, _("Ringing Device"), (const gchar **)array, SOUND_EVENTS_KEY "output_device", _("Select the ringing audio device to use"), 0, DEFAULT_AUDIO_DEVICE_NAME);
   pw->audio_player =
     gnome_prefs_string_option_menu_new (subsection, _("Output device:"), (const gchar **)array, AUDIO_DEVICES_KEY "output_device", _("Select the audio output device to use"), 1, DEFAULT_AUDIO_DEVICE_NAME);
@@ -786,13 +770,12 @@ gm_pw_init_audio_devices_page (GtkWidget *prefs_window,
     gnome_prefs_string_option_menu_new (subsection, _("Input device:"), (const gchar **)array, AUDIO_DEVICES_KEY "input_device", _("Select the audio input device to use"), 2, DEFAULT_AUDIO_DEVICE_NAME);
   g_free (array);
 
-
   /* That button will refresh the device list */
-  gm_pw_add_update_button (prefs_window, container, GTK_STOCK_REFRESH, _("_Detect devices"), G_CALLBACK (refresh_devices_list_cb), _("Click here to refresh the device list."), 1, prefs_window);
+  gm_pw_add_update_button (prefs_window, container, GTK_STOCK_REFRESH, _("_Detect devices"), G_CALLBACK (refresh_devices_list_cb), _("Click here to refresh the device list"), 1, prefs_window);
 }
 
 
-int 
+int
 gm_prefs_window_get_videoinput_devices_list (Ekiga::ServiceCore *core,
                                              std::vector<std::string> & device_list)
 {
@@ -804,17 +787,17 @@ gm_prefs_window_get_videoinput_devices_list (Ekiga::ServiceCore *core,
 
   for (std::vector<Ekiga::VideoInputDevice>::iterator iter = devices.begin ();
        iter != devices.end ();
-       iter++) 
+       iter++)
     device_list.push_back(iter->GetString());
 
-  if (device_list.size() == 0) 
+  if (device_list.size() == 0)
     device_list.push_back(_("No device found"));
 
   return device_list.size ();
 }
 
 
-int 
+int
 gm_prefs_window_get_audiooutput_devices_list (Ekiga::ServiceCore *core,
                                               std::vector<std::string> & device_list)
 {
@@ -898,23 +881,21 @@ gm_pw_init_video_devices_page (GtkWidget *prefs_window,
   gchar *video_size[NB_VIDEO_SIZES+1];
   unsigned int i;
 
-  for (i=0; i< NB_VIDEO_SIZES; i++) {
-
-    video_size[i] = g_strdup_printf  ( "%dx%d", Ekiga::VideoSizes[i].width, Ekiga::VideoSizes[i].height);
-  }
+  for (i=0; i< NB_VIDEO_SIZES; i++)
+    video_size[i] = g_strdup_printf ("%dx%d", Ekiga::VideoSizes[i].width, Ekiga::VideoSizes[i].height);
 
   video_size [NB_VIDEO_SIZES] = NULL;
 
-  const gchar *video_format [] = 
+  const gchar *video_format [] =
     {
-      _("PAL (Europe)"), 
-      _("NTSC (America)"), 
-      _("SECAM (France)"), 
-      _("Auto"), 
+      _("PAL (Europe)"),
+      _("NTSC (America)"),
+      _("SECAM (France)"),
+      _("Auto"),
       NULL
     };
 
-  pw = gm_pw_get_pw (prefs_window); 
+  pw = gm_pw_get_pw (prefs_window);
 
 
   std::vector <std::string> device_list;
@@ -939,13 +920,10 @@ gm_pw_init_video_devices_page (GtkWidget *prefs_window,
   gnome_prefs_int_option_menu_new (subsection, _("Format:"), video_format, VIDEO_DEVICES_KEY "format", _("Select the format for video cameras (does not apply to most USB cameras)"), 2);
 
   /* That button will refresh the device list */
-  gm_pw_add_update_button (prefs_window, container, GTK_STOCK_REFRESH, _("_Detect devices"), G_CALLBACK (refresh_devices_list_cb), _("Click here to refresh the device list."), 1, prefs_window);
+  gm_pw_add_update_button (prefs_window, container, GTK_STOCK_REFRESH, _("_Detect devices"), G_CALLBACK (refresh_devices_list_cb), _("Click here to refresh the device list"), 1, prefs_window);
 
-  for (i=0; i< NB_VIDEO_SIZES; i++) {
-
+  for (i=0; i< NB_VIDEO_SIZES; i++)
     g_free (video_size[i]);
-  }
-
 }
 
 
@@ -961,30 +939,28 @@ gm_pw_init_audio_codecs_page (GtkWidget *prefs_window,
   pw = gm_pw_get_pw (prefs_window);
 
   /* Packing widgets */
-  subsection =
-    gnome_prefs_subsection_new (prefs_window, container,
+  subsection = gnome_prefs_subsection_new (prefs_window, container,
 				_("Codecs"), 1, 1);
 
   codecs_list = codecs_box_new_with_type (Ekiga::Call::Audio);
-  gtk_table_attach (GTK_TABLE (subsection), 
+  gtk_table_attach (GTK_TABLE (subsection),
                     codecs_list,
-		    0, 1, 0, 1,
-		    (GtkAttachOptions) (GTK_SHRINK), 
-		    (GtkAttachOptions) (GTK_SHRINK),
-		    0, 0);
+                    0, 1, 0, 1,
+                    (GtkAttachOptions) (GTK_SHRINK),
+                    (GtkAttachOptions) (GTK_SHRINK),
+                    0, 0);
 
   /* Here we add the audio codecs options */
-  subsection = 
-    gnome_prefs_subsection_new (prefs_window, container,
+  subsection = gnome_prefs_subsection_new (prefs_window, container,
 				_("Settings"), 3, 1);
 
   /* Translators: the full sentence is Automatically adjust jitter buffer
      between X and Y ms */
-  gnome_prefs_toggle_new (subsection, _("Enable silence _detection"), AUDIO_CODECS_KEY "enable_silence_detection", _("If enabled, use silence detection with the codecs supporting it."), 0);
-  
-  gnome_prefs_toggle_new (subsection, _("Enable echo can_celation"), AUDIO_CODECS_KEY "enable_echo_cancelation", _("If enabled, use echo cancelation."), 1);
+  gnome_prefs_toggle_new (subsection, _("Enable silence _detection"), AUDIO_CODECS_KEY "enable_silence_detection", _("If enabled, use silence detection with the codecs supporting it"), 0);
 
-  gnome_prefs_spin_new (subsection, _("Maximum _jitter buffer (in ms):"), AUDIO_CODECS_KEY "maximum_jitter_buffer", _("The maximum jitter buffer size for audio reception (in ms)."), 20.0, 2000.0, 50.0, 2, NULL, true);
+  gnome_prefs_toggle_new (subsection, _("Enable echo can_celation"), AUDIO_CODECS_KEY "enable_echo_cancelation", _("If enabled, use echo cancelation"), 1);
+
+  gnome_prefs_spin_new (subsection, _("Maximum _jitter buffer (in ms):"), AUDIO_CODECS_KEY "maximum_jitter_buffer", _("The maximum jitter buffer size for audio reception (in ms)"), 20.0, 2000.0, 50.0, 2, NULL, true);
 }
 
 
@@ -1000,28 +976,25 @@ gm_pw_init_video_codecs_page (GtkWidget *prefs_window,
   pw = gm_pw_get_pw (prefs_window);
 
   /* Packing widgets */
-  subsection =
-    gnome_prefs_subsection_new (prefs_window, container,
+  subsection = gnome_prefs_subsection_new (prefs_window, container,
 				_("Codecs"), 1, 1);
 
   codecs_list = codecs_box_new_with_type (Ekiga::Call::Video);
-  gtk_table_attach (GTK_TABLE (subsection), 
+  gtk_table_attach (GTK_TABLE (subsection),
                     codecs_list,
-		    0, 1, 0, 1,
-		    (GtkAttachOptions) (GTK_SHRINK), 
-		    (GtkAttachOptions) (GTK_SHRINK),
-		    0, 0);
+                    0, 1, 0, 1,
+                    (GtkAttachOptions) (GTK_SHRINK),
+                    (GtkAttachOptions) (GTK_SHRINK),
+                    0, 0);
 
   /* Here we add the video codecs options */
-  subsection = 
-    gnome_prefs_subsection_new (prefs_window, container,
+  subsection = gnome_prefs_subsection_new (prefs_window, container,
 				_("Settings"), 3, 1);
 
   /* Translators: the full sentence is Keep a minimum video quality of X % */
-  gnome_prefs_scale_new (subsection, _("Picture Quality"), _("Frame Rate"), VIDEO_CODECS_KEY "temporal_spatial_tradeoff", _("Choose if you want to guarantee a minimum image quality (possibly leading to dropped frames in order not to surpass the bitrate limit) or if you prefer to keep the frame rate."), 0.0, 32.0, 1.0, 2);
+  gnome_prefs_scale_new (subsection, _("Picture Quality"), _("Frame Rate"), VIDEO_CODECS_KEY "temporal_spatial_tradeoff", _("Choose if you want to guarantee a minimum image quality (possibly leading to dropped frames in order not to surpass the bitrate limit) or if you prefer to keep the frame rate"), 0.0, 32.0, 1.0, 2);
 
   gnome_prefs_spin_new (subsection, _("Maximum video _bitrate (in kbits/s):"), VIDEO_CODECS_KEY "maximum_video_tx_bitrate", _("The maximum video bitrate in kbits/s. The video quality and the effective frame rate will be dynamically adjusted to keep the bitrate at the given value."), 16.0, 10240.0, 1.0, 1, NULL, true);
-
 }
 
 
@@ -1034,7 +1007,6 @@ refresh_devices_list_cb (G_GNUC_UNUSED GtkWidget *widget,
   GtkWidget *prefs_window = GTK_WIDGET (data);
 
   gm_prefs_window_update_devices_list(prefs_window);
-
 }
 
 
@@ -1068,7 +1040,7 @@ audioev_filename_browse_cb (GtkWidget *b,
       filename = gtk_file_chooser_get_filename (GTK_FILE_CHOOSER (b));
       if (filename) {
         sound_event = gm_conf_get_string (conf_key);
-        
+
         if (!sound_event || strcmp (filename, sound_event))
           gm_conf_set_string (conf_key, (gchar *) filename);
 
@@ -1092,9 +1064,8 @@ sound_events_list_changed_nt (G_GNUC_UNUSED gpointer id,
   if (gm_conf_entry_get_type (entry) == GM_CONF_STRING
       || gm_conf_entry_get_type (entry) == GM_CONF_BOOL) {
 
-    if (prefs_window) {
+    if (prefs_window)
       gm_prefs_window_sound_events_list_build (prefs_window);
-    }
   }
 }
 
@@ -1115,21 +1086,21 @@ sound_event_clicked_cb (GtkTreeSelection *selection,
     gtk_tree_model_get (GTK_TREE_MODEL (model), &iter,
 			2, &conf_key, -1);
 
-    if (conf_key) { 
+    if (conf_key) {
 
       sound_event = gm_conf_get_string (conf_key);
 
       if (sound_event) {
 
-	if (!g_path_is_absolute (sound_event))
-	  filename = g_build_filename (DATA_DIR, "sounds", PACKAGE_NAME,
-				       sound_event, NULL);
-	else
-	  filename = g_strdup (sound_event);
+        if (!g_path_is_absolute (sound_event))
+          filename = g_build_filename (DATA_DIR, "sounds", PACKAGE_NAME,
+                                       sound_event, NULL);
+        else
+          filename = g_strdup (sound_event);
 
         gtk_file_chooser_set_filename (GTK_FILE_CHOOSER (data), filename);
-	g_free (filename);
-	g_free (sound_event);
+        g_free (filename);
+        g_free (sound_event);
       }
 
       g_free (conf_key);
@@ -1163,7 +1134,7 @@ sound_event_play_cb (G_GNUC_UNUSED GtkWidget *widget,
 
     boost::shared_ptr<Ekiga::AudioOutputCore> audiooutput_core = pw->core->get<Ekiga::AudioOutputCore> ("audiooutput-core");
 
-    if (sound_event) { 
+    if (sound_event) {
       audiooutput_core->play_event(sound_event);
       g_free (sound_event);
     }
@@ -1346,7 +1317,7 @@ gm_prefs_window_new (Ekiga::ServiceCore *core)
 
   pw->core = core;
 
-  g_object_set_data_full (G_OBJECT (window), "GMObject", 
+  g_object_set_data_full (G_OBJECT (window), "GMObject",
 			  pw, (GDestroyNotify) gm_pw_destroy);
 
 
@@ -1372,18 +1343,18 @@ gm_prefs_window_new (Ekiga::ServiceCore *core)
   gnome_prefs_window_section_new (window, _("Protocols"));
   container = gnome_prefs_window_subsection_new (window,
 						 _("SIP Settings"));
-  gm_pw_init_sip_page (window, container);          
+  gm_pw_init_sip_page (window, container);
   gtk_widget_show_all (GTK_WIDGET (container));
 
   container = gnome_prefs_window_subsection_new (window,
 						 _("H.323 Settings"));
-  gm_pw_init_h323_page (window, container);          
+  gm_pw_init_h323_page (window, container);
   gtk_widget_show_all (GTK_WIDGET (container));
 
 
   /* The player */
   gnome_prefs_window_section_new (window, _("Audio"));
-  if (gm_prefs_window_get_audiooutput_devices_list (core, device_list) > 1 
+  if (gm_prefs_window_get_audiooutput_devices_list (core, device_list) > 1
       || gm_prefs_window_get_audioinput_devices_list (core, device_list) > 1) {
     container = gnome_prefs_window_subsection_new (window, _("Devices"));
     gm_pw_init_audio_devices_page (window, container);
