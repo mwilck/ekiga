@@ -96,11 +96,13 @@ namespace Ekiga
     void text (const std::string text,
 	       const std::string description,
 	       const std::string value,
+	       const std::string tooltip,
 	       bool advanced = false);
 
     void private_text (const std::string text,
 		       const std::string description,
 		       const std::string value,
+               const std::string tooltip,
 		       bool advanced = false);
 
     void multi_text (const std::string text,
@@ -158,14 +160,16 @@ namespace Ekiga
       TextField (const std::string _name,
 		 const std::string _description,
 		 const std::string _value,
+		 const std::string _tooltip,
 		 bool _advanced): name(_name),
 				  description(_description),
-				  value(_value), advanced(_advanced)
+                  value(_value), tooltip (_tooltip), advanced(_advanced)
       {}
 
       const std::string name;
       const std::string description;
       const std::string value;
+      const std::string tooltip;
       bool advanced;
     };
 

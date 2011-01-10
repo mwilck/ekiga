@@ -232,7 +232,7 @@ Local::Heap::new_presentity (const std::string name,
     request->title (_("Add to local roster"));
     request->instructions (_("Please fill in this form to add a new contact "
 			    "to ekiga's internal roster"));
-    request->text ("name", _("Name:"), name);
+    request->text ("name", _("Name:"), name, _("Name of the contact, as shown in your roster"));
     if (presence_core->is_supported_uri (uri)) {
 
       request->hidden ("good-uri", "yes");
@@ -241,9 +241,9 @@ Local::Heap::new_presentity (const std::string name,
 
       request->hidden ("good-uri", "no");
       if ( !uri.empty ())
-	request->text ("uri", _("Address:"), uri);
+        request->text ("uri", _("Address:"), uri, _("Address, e.g. sip:xyz@ekiga.net"));
       else
-	request->text ("uri", _("Address:"), "sip:"); // let's put a default
+        request->text ("uri", _("Address:"), "sip:", _("Address, e.g. sip:xyz@ekiga.net")); // let's put a default
     }
 
     request->editable_set ("groups",
@@ -424,7 +424,7 @@ Local::Heap::on_rename_group (std::string name)
 
   request->title (_("Rename group"));
   request->instructions (_("Please edit this group name"));
-  request->text ("name", _("Name:"), name);
+  request->text ("name", _("Name:"), name, std::string ());
 
   questions (request);
 }

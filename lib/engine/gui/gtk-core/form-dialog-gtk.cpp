@@ -220,9 +220,11 @@ public:
 
   TextSubmitter (const std::string _name,
 		 const std::string _description,
+		 const std::string _tooltip,
 		 bool _advanced,
 		 GtkWidget *_widget): name(_name),
 				      description(_description),
+				      tooltip(_tooltip),
 				      advanced(_advanced),
 				      widget(_widget)
   { }
@@ -233,7 +235,7 @@ public:
   void submit (Ekiga::FormBuilder &builder)
   {
     builder.text (name, description,
-		  gtk_entry_get_text (GTK_ENTRY (widget)),
+          gtk_entry_get_text (GTK_ENTRY (widget)), tooltip,
 		  advanced);
   }
 
@@ -241,6 +243,7 @@ private:
 
   const std::string name;
   const std::string description;
+  const std::string tooltip;
   bool advanced;
   GtkWidget *widget;
 };
@@ -264,7 +267,7 @@ public:
 
   void submit (Ekiga::FormBuilder &builder)
   {
-    builder.private_text (name, description,
+    builder.private_text (name, description, tooltip,
 			  gtk_entry_get_text (GTK_ENTRY (widget)),
 			  advanced);
   }
@@ -273,6 +276,7 @@ private:
 
   const std::string name;
   const std::string description;
+  const std::string tooltip;
   bool advanced;
   GtkWidget *widget;
 };
@@ -818,6 +822,7 @@ void
 FormDialog::text (const std::string name,
 		  const std::string description,
 		  const std::string value,
+		  const std::string tooltip,
 		  bool advanced)
 {
   GtkWidget *label = NULL;
@@ -836,6 +841,7 @@ FormDialog::text (const std::string name,
   g_free (label_text);
 
   widget = gtk_entry_new ();
+  gtk_widget_set_tooltip_text (widget, tooltip.c_str ());
   gtk_label_set_mnemonic_widget (GTK_LABEL (label), widget);
   gtk_entry_set_activates_default (GTK_ENTRY (widget), true);
   gtk_size_group_add_widget (options_group, widget);
@@ -867,7 +873,7 @@ FormDialog::text (const std::string name,
 		      0, 0);
   }
 
-  submitter = new TextSubmitter (name, description, advanced, widget);
+  submitter = new TextSubmitter (name, description, tooltip, advanced, widget);
   submitters.push_back (submitter);
 }
 
@@ -875,6 +881,7 @@ FormDialog::text (const std::string name,
 void
 FormDialog::private_text (const std::string name,
 			  const std::string description,
+			  const std::string tooltip,
 			  const std::string value,
 			  bool advanced)
 {
@@ -894,6 +901,7 @@ FormDialog::private_text (const std::string name,
   g_free (label_text);
 
   widget = gtk_entry_new ();
+  gtk_widget_set_tooltip_text (widget, tooltip.c_str ());
   gtk_label_set_mnemonic_widget (GTK_LABEL (label), widget);
   gtk_entry_set_activates_default (GTK_ENTRY (widget), true);
   gtk_entry_set_visibility (GTK_ENTRY (widget), FALSE);

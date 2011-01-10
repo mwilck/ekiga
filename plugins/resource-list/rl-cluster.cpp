@@ -166,12 +166,12 @@ RL::Cluster::new_heap (const std::string name,
   request->title (_("Add new resource-list"));
   request->instructions (_("Please fill in this form to add a new "
 			   "contact list to ekiga's remote roster"));
-  request->text ("name", _("Name:"), name);
-  request->text ("uri", _("Address:"), uri);
+  request->text ("name", _("Name:"), name, std::string ());
+  request->text ("uri", _("Address:"), uri, std::string ());
   request->boolean ("writable", _("Writable:"), writable);
-  request->text ("username", _("Username:"), username);
-  request->private_text ("password", _("Password:"), password);
-  request->text ("user", _("User:"), user);
+  request->text ("username", _("Username:"), username, std::string ());
+  request->private_text ("password", _("Password:"), password, std::string ());
+  request->text ("user", _("User:"), user, std::string ());
 
   questions (request);
 }

@@ -464,13 +464,13 @@ RL::Heap::edit ()
   request->instructions (_("Please edit the following fields (no identifier"
 			   " means global)"));
 
-  request->text ("name", _("Contact list's name"), get_name ());
+  request->text ("name", _("Contact list's name"), get_name (), std::string ());
   /* "Document" used as a name -- uri point to the root of a document tree */
-  request->text ("root", _("Document root"), root_str);
-  request->text ("user", _("Identifier"), user_str);
+  request->text ("root", _("Document root"), root_str, std::string ());
+  request->text ("user", _("Identifier"), user_str, std::string ());
   request->boolean ("writable", _("Writable"), writable);
-  request->text ("username", _("Server username"), username_str);
-  request->private_text ("password", _("Server password"), password_str);
+  request->text ("username", _("Server username"), username_str, std::string ());
+  request->private_text ("password", _("Server password"), password_str, std::string ());
 
   questions (request);
 }
@@ -523,8 +523,8 @@ RL::Heap::new_entry ()
     all_groups.insert (groups.begin (), groups.end ());
   }
 
-  request->text ("name", _("Name:"), "");
-  request->text ("uri", _("Address:"), "");
+  request->text ("name", _("Name:"), "", std::string ());
+  request->text ("uri", _("Address:"), "", std::string ());
   request->editable_set ("groups", _("Choose groups:"),
 			 std::set<std::string>(), all_groups);
 

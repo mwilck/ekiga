@@ -100,9 +100,9 @@ Opal::Bank::new_account (Account::Type acc_type,
     request->link (_("Get an Ekiga.net SIP account"), "http://www.ekiga.net");
     request->hidden ("name", "Ekiga.net");
     request->hidden ("host", "ekiga.net");
-    request->text ("user", _("_User:"), username);
+    request->text ("user", _("_User:"), username, _("The user name, e.g. jim"));
     request->hidden ("authentication_user", username);
-    request->private_text ("password", _("_Password:"), password);
+    request->private_text ("password", _("_Password:"), password, _("Password associated to the user"));
     request->hidden ("timeout", "3600");
     break;
 
@@ -111,29 +111,29 @@ Opal::Bank::new_account (Account::Type acc_type,
 		   "https://www.diamondcard.us/exec/voip-login?act=sgn&spo=ekiga");
     request->hidden ("name", "Ekiga Call Out");
     request->hidden ("host", "sip.diamondcard.us");
-    request->text ("user", _("_Account ID:"), username);
+    request->text ("user", _("_Account ID:"), username, _("The user name, e.g. jim"));
     request->hidden ("authentication_user", username);
-    request->private_text ("password", _("_PIN Code:"), password);
+    request->private_text ("password", _("_PIN Code:"), password, _("Password associated to the user"));
     request->hidden ("timeout", "3600");
     break;
 
   case Opal::Account::H323:
-    request->text ("name", _("_Name:"), std::string ());
-    request->text ("host", _("_Gatekeeper:"), std::string ());
-    request->text ("user", _("_User:"), username);
+    request->text ("name", _("_Name:"), std::string (), _("Account name, e.g. MyAccount"));
+    request->text ("host", _("_Gatekeeper:"), std::string (), _("The gatekeeper, e.g. ekiga.net"));
+    request->text ("user", _("_User:"), username, _("The user name, e.g. jim"));
     request->hidden ("authentication_user", username);
-    request->private_text ("password", _("_Password:"), password);
-    request->text ("timeout", _("_Timeout:"), "3600");
+    request->private_text ("password", _("_Password:"), password, _("Password associated to the user"));
+    request->text ("timeout", _("_Timeout:"), "3600", _("Time in seconds after which the account registration is automatically retried"));
     break;
 
   case Opal::Account::SIP:
   default:
-    request->text ("name", _("_Name:"), std::string ());
-    request->text ("host", _("_Registrar:"), std::string ());
-    request->text ("user", _("_User:"), username);
-    request->text ("authentication_user", _("_Authentication User:"), std::string ());
-    request->private_text ("password", _("_Password:"), password);
-    request->text ("timeout", _("_Timeout:"), "3600");
+    request->text ("name", _("_Name:"), std::string (), _("Account name, e.g. MyAccount"));
+    request->text ("host", _("_Registrar:"), std::string (), _("The registrar, e.g. ekiga.net"));
+    request->text ("user", _("_User:"), username, _("The user name, e.g. jim"));
+    request->text ("authentication_user", _("_Authentication User:"), std::string (), _("The user name used during authentication, if different than the user name; leave empty if you do not have one"));
+    request->private_text ("password", _("_Password:"), password, _("Password associated to the user"));
+    request->text ("timeout", _("_Timeout:"), "3600", _("Time in seconds after which the account registration is automatically retried"));
     break;
   }
   request->boolean ("enabled", _("Enable Account"), true);
@@ -176,7 +176,7 @@ void Opal::Bank::on_new_account_form_submitted (bool submitted,
   else if (new_user.empty ())
     error = _("You did not supply a user name for that account.");
   else if (new_timeout < 10)
-    error = _("The timeout should have a bigger value.");
+    error = _("The timeout should be at least 10 seconds.");
 
   if (!error.empty ()) {
     request->error (error);

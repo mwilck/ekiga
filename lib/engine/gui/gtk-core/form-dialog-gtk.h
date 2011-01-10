@@ -84,11 +84,13 @@ public:
   void text (const std::string name,
 	     const std::string description,
 	     const std::string value,
+	     const std::string tooltip,
 	     bool advanced);
 
   void private_text (const std::string name,
 		     const std::string description,
 		     const std::string value,
+             const std::string tooltip,
 		     bool advanced);
 
   void multi_text (const std::string name,

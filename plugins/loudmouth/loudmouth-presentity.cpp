@@ -275,7 +275,7 @@ LM::Presentity::edit_presentity ()
   request->title (_("Edit roster element"));
   request->instructions (_("Please fill in this form to change an existing "
 			   "element of the remote roster"));
-  request->text ("name", _("Name:"), get_name ());
+  request->text ("name", _("Name:"), get_name (), std::string ());
 
   request->editable_set ("groups", _("Choose groups:"),
 			 get_groups (), get_groups ());

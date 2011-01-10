@@ -392,19 +392,19 @@ void Opal::Account::edit ()
 
   request->instructions (_("Please update the following fields:"));
 
-  request->text ("name", _("Name:"), get_name ());
+  request->text ("name", _("Name:"), get_name (), _("Account name, e.g. MyAccount"));
   if (get_protocol_name () == "SIP")
-    request->text ("host", _("Registrar:"), get_host ());
+    request->text ("host", _("Registrar:"), get_host (), _("The registrar, e.g. ekiga.net"));
   else
-    request->text ("host", _("Gatekeeper:"), get_host ());
-  request->text ("user", _("User:"), get_username ());
+    request->text ("host", _("Gatekeeper:"), get_host (), _("The gatekeeper, e.g. ekiga.net"));
+  request->text ("user", _("User:"), get_username (), _("The user name, e.g. jim"));
   if (get_protocol_name () == "SIP")
     /* Translators:
      * SIP knows two usernames: The name for the client ("User") and the name
      * for the authentication procedure ("Authentication User") */
-    request->text ("authentication_user", _("Authentication User:"), get_authentication_username ());
-  request->private_text ("password", _("Password:"), get_password ());
-  request->text ("timeout", _("Timeout:"), str.str ());
+    request->text ("authentication_user", _("Authentication User:"), get_authentication_username (), _("The user name used during authentication, if different than the user name; leave empty if you do not have one"));
+  request->private_text ("password", _("Password:"), get_password (), _("Password associated to the user"));
+  request->text ("timeout", _("Timeout:"), str.str (), _("Time in seconds after which the account registration is automatically retried"));
   request->boolean ("enabled", _("Enable Account"), enabled);
 
   questions (request);
@@ -437,7 +437,7 @@ void Opal::Account::on_edit_form_submitted (bool submitted,
   else if (new_user.empty ())
     error = _("You did not supply a user name for that account.");
   else if (new_timeout < 10)
-    error = _("The timeout should have a bigger value.");
+    error = _("The timeout should be at least 10 seconds.");
 
   if (!error.empty ()) {
 

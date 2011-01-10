@@ -321,7 +321,7 @@ Evolution::Contact::edit_action ()
 
   request->instructions (_("Please update the following fields:"));
 
-  request->text ("name", _("Name:"), get_name ());
+  request->text ("name", _("Name:"), get_name (), std::string ());
 
   {
     std::string home_uri = get_attribute_value (ATTR_HOME);
@@ -330,11 +330,11 @@ Evolution::Contact::edit_action ()
     std::string pager_uri = get_attribute_value (ATTR_PAGER);
     std::string video_uri = get_attribute_value (ATTR_VIDEO);
 
-    request->text ("video", _("VoIP _URI:"), video_uri);
-    request->text ("home", _("_Home phone:"), home_uri);
-    request->text ("work", _("_Office phone:"), work_uri);
-    request->text ("cell", _("_Cell phone:"), cell_phone_uri);
-    request->text ("pager", _("_Pager:"), pager_uri);
+    request->text ("video", _("VoIP _URI:"), video_uri, std::string ());
+    request->text ("home", _("_Home phone:"), home_uri, std::string ());
+    request->text ("work", _("_Office phone:"), work_uri, std::string ());
+    request->text ("cell", _("_Cell phone:"), cell_phone_uri, std::string ());
+    request->text ("pager", _("_Pager:"), pager_uri, std::string ());
   }
 
   questions (request);

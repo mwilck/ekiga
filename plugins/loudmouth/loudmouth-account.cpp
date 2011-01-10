@@ -264,23 +264,23 @@ LM::Account::edit ()
   request->instructions (_("Please update the following fields:"));
 
   xml_str = xmlGetProp (node, BAD_CAST "name");
-  request->text ("name", _("Name:"), (const char*)xml_str);
+  request->text ("name", _("Name:"), (const char*)xml_str, std::string ());
   xmlFree (xml_str);
 
   xml_str = xmlGetProp (node, BAD_CAST "user");
-  request->text ("user", _("User:"), (const char*)xml_str);
+  request->text ("user", _("User:"), (const char*)xml_str, std::string ());
   xmlFree (xml_str);
 
   xml_str = xmlGetProp (node, BAD_CAST "server");
-  request->text ("server", _("Server:"), (const char*)xml_str);
+  request->text ("server", _("Server:"), (const char*)xml_str, std::string ());
   xmlFree (xml_str);
 
   xml_str = xmlGetProp (node, BAD_CAST "resource");
-  request->text ("resource", _("Resource:"), (const char*)xml_str);
+  request->text ("resource", _("Resource:"), (const char*)xml_str, std::string ());
   xmlFree (xml_str);
 
   xml_str = xmlGetProp (node, BAD_CAST "password");
-  request->private_text ("password", _("Password:"), (const char*)xml_str);
+  request->private_text ("password", _("Password:"), (const char*)xml_str, std::string ());
   xmlFree (xml_str);
 
   xml_str = xmlGetProp (node, BAD_CAST "startup");

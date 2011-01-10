@@ -340,12 +340,12 @@ Evolution::Book::new_contact_action ()
 
   request->instructions (_("Please update the following fields:"));
 
-  request->text ("name", _("_Name:"), "");
-  request->text ("video", _("VoIP _URI:"), "");
-  request->text ("home", _("_Home phone:"), "");
-  request->text ("work", _("_Office phone:"), "");
-  request->text ("cell", _("_Cell phone:"), "");
-  request->text ("pager", _("_Pager:"), "");
+  request->text ("name", _("_Name:"), "", std::string ());
+  request->text ("video", _("VoIP _URI:"), "", std::string ());
+  request->text ("home", _("_Home phone:"), "", std::string ());
+  request->text ("work", _("_Office phone:"), "", std::string ());
+  request->text ("cell", _("_Cell phone:"), "", std::string ());
+  request->text ("pager", _("_Pager:"), "", std::string ());
 
   questions (request);
 }

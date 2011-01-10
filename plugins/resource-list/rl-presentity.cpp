@@ -230,8 +230,8 @@ RL::Presentity::edit_presentity ()
   request->title (_("Edit remote contact"));
   request->instructions (_("Please fill in this form to change an existing "
 			  "contact on a remote server"));
-  request->text ("name", _("Name:"), get_name ());
-  request->text ("uri", _("Address:"), uri);
+  request->text ("name", _("Name:"), get_name (), std::string ());
+  request->text ("uri", _("Address:"), uri, std::string ());
 
   request->editable_set ("groups", _("Choose groups:"),
 			groups, all_groups);

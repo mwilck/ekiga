@@ -74,10 +74,12 @@ namespace Ekiga
     virtual void text (const std::string name,
 		       const std::string description,
 		       const std::string value,
+		       const std::string tooltip,
 		       bool advanced) = 0;
 
     virtual void private_text (const std::string name,
 			       const std::string description,
+			       const std::string tooltip,
 			       const std::string value,
 			       bool advanced) = 0;
 
