@@ -134,6 +134,7 @@ struct _EkigaMainWindowPrivate
   GtkWidget *entry;
   GtkListStore *completion;
   GtkWidget *connect_button;
+  gboolean connect_button_connected;
 
   /* Status Toolbar */
   GtkWidget *status_toolbar;
@@ -223,6 +224,31 @@ enum {
   CHANNEL_VIDEO,
   CHANNEL_LAST
 };
+
+static GtkWidget*
+connect_button_new (EkigaMainWindow *mw)
+{
+  GtkButton *button;
+  GtkWidget* image;
+
+  button = (GtkButton*) gtk_button_new ();
+  image = gtk_image_new_from_stock (GM_STOCK_PHONE_PICK_UP_24, GTK_ICON_SIZE_LARGE_TOOLBAR);
+  gtk_button_set_image (button, image);
+  gtk_button_set_relief (button, GTK_RELIEF_NONE);
+  mw->priv->connect_button_connected = FALSE;
+
+  return GTK_WIDGET (button);
+}
+
+static void
+connect_button_set_connected (EkigaMainWindow *mw, gboolean state)
+{
+  GtkWidget* image;
+
+  mw->priv->connect_button_connected = state;
+  image = gtk_button_get_image (GTK_BUTTON (mw->priv->connect_button));
+  gtk_image_set_from_stock (GTK_IMAGE (image), state ? GM_STOCK_PHONE_HANG_UP_24 : GM_STOCK_PHONE_PICK_UP_24, GTK_ICON_SIZE_LARGE_TOOLBAR);
+}
 
 /* Non-GUI functions */
 
@@ -1631,7 +1657,7 @@ toggle_call_cb (GtkWidget *widget,
 {
   EkigaMainWindow *mw = EKIGA_MAIN_WINDOW (data);
 
-  if (gm_connect_button_get_connected (GM_CONNECT_BUTTON (mw->priv->connect_button)))
+  if (mw->priv->connect_button_connected)
     hangup_call_cb (widget, data);
   else {
     if (!mw->priv->current_call)
@@ -2586,28 +2612,27 @@ ekiga_main_window_update_calling_state (EkigaMainWindow *mw,
   switch (calling_state)
     {
     case Standby:
-      
+
       /* Update the hold state */
       ekiga_main_window_set_call_hold (mw, FALSE);
 
       /* Update the sensitivity, all channels are closed */
       ekiga_main_window_update_sensitivity (mw, TRUE, FALSE, FALSE);
       ekiga_main_window_update_sensitivity (mw, FALSE, FALSE, FALSE);
-      
+
       /* Update the menus and toolbar items */
       gtk_menu_set_sensitive (mw->priv->main_menu, "connect", TRUE);
       gtk_menu_set_sensitive (mw->priv->main_menu, "disconnect", FALSE);
       gtk_menu_section_set_sensitive (mw->priv->main_menu, "hold_call", FALSE);
       gtk_widget_set_sensitive (GTK_WIDGET (mw->priv->hold_button), FALSE);
       gtk_widget_set_sensitive (GTK_WIDGET (mw->priv->preview_button), TRUE);
-      
+
       /* Update the connect button */
-      gm_connect_button_set_connected (GM_CONNECT_BUTTON (mw->priv->connect_button),
-				       FALSE);
-	
+      connect_button_set_connected (mw, FALSE);
+
       /* Destroy the transfer call popup */
-      if (mw->priv->transfer_call_popup) 
-	gtk_dialog_response (GTK_DIALOG (mw->priv->transfer_call_popup),
+      if (mw->priv->transfer_call_popup)
+        gtk_dialog_response (GTK_DIALOG (mw->priv->transfer_call_popup),
 			     GTK_RESPONSE_REJECT);
       break;
 
@@ -2620,9 +2645,7 @@ ekiga_main_window_update_calling_state (EkigaMainWindow *mw,
       gtk_widget_set_sensitive (GTK_WIDGET (mw->priv->preview_button), FALSE);
 
       /* Update the connect button */
-      gm_connect_button_set_connected (GM_CONNECT_BUTTON (mw->priv->connect_button),
-				       TRUE);
-      
+      connect_button_set_connected (mw, TRUE);
       break;
 
 
@@ -2636,8 +2659,7 @@ ekiga_main_window_update_calling_state (EkigaMainWindow *mw,
       gtk_widget_set_sensitive (GTK_WIDGET (mw->priv->preview_button), FALSE);
 
       /* Update the connect button */
-      gm_connect_button_set_connected (GM_CONNECT_BUTTON (mw->priv->connect_button),
-				       TRUE);
+      connect_button_set_connected (mw, TRUE);
       break;
 
 
@@ -2647,9 +2669,7 @@ ekiga_main_window_update_calling_state (EkigaMainWindow *mw,
       gtk_menu_set_sensitive (mw->priv->main_menu, "disconnect", TRUE);
 
       /* Update the connect button */
-      gm_connect_button_set_connected (GM_CONNECT_BUTTON (mw->priv->connect_button),
- 				       TRUE);
-      
+      connect_button_set_connected (mw, TRUE);
       break;
 
     default:
@@ -3520,9 +3540,7 @@ ekiga_main_window_init_uri_toolbar (EkigaMainWindow *mw)
 
   /* The connect button */
   item = gtk_tool_item_new ();
-  mw->priv->connect_button = gm_connect_button_new (GM_STOCK_PHONE_PICK_UP_24,
-						    GM_STOCK_PHONE_HANG_UP_24,
-						    GTK_ICON_SIZE_LARGE_TOOLBAR);
+  mw->priv->connect_button = connect_button_new (mw);
   gtk_container_add (GTK_CONTAINER (item), mw->priv->connect_button);
   gtk_container_set_border_width (GTK_CONTAINER (mw->priv->connect_button), 0);
   gtk_tool_item_set_expand (GTK_TOOL_ITEM (item), FALSE);

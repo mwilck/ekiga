@@ -46,7 +46,6 @@
 #include "gmconf.h"
 #include "gmdialog.h"
 #include "gmwindow.h"
-#include "gmconnectbutton.h"
 #include "gmmenuaddon.h"
 #include "gmstockicons.h"
 

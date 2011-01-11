@@ -160,8 +160,6 @@ libekiga_la_SOURCES += \
 	$(top_srcdir)/lib/gui/gmwindow.h \
 	$(top_srcdir)/lib/gui/gmconfwidgets.c \
 	$(top_srcdir)/lib/gui/gmconfwidgets.h \
-	$(top_srcdir)/lib/gui/gmconnectbutton.c	\
-	$(top_srcdir)/lib/gui/gmconnectbutton.h	\
 	$(top_srcdir)/lib/gui/gmdialog.c \
 	$(top_srcdir)/lib/gui/gmdialog.h \
 	$(top_srcdir)/lib/gui/gmentrydialog.c \
