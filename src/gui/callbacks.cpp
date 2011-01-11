@@ -42,11 +42,7 @@
 #include "callbacks.h"
 
 #include "ekiga.h"
-
-#include "gmconf.h"
-#include "gmdialog.h"
 #include "gmwindow.h"
-#include "gmmenuaddon.h"
 #include "gmstockicons.h"
 
 #ifdef WIN32
