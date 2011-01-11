@@ -927,9 +927,9 @@ OPENLDAP::BookForm (boost::shared_ptr<Ekiga::FormRequestSimple> request,
 
   request->instructions (_("Please edit the following fields"));
 
-  request->text ("name", _("Book _Name"), info.name, _("Book name, as shown in your dialog box"));
-  request->text ("uri", _("Server _URI"), info.uri_host, _("Name of LDAP server, prefixed by ldap://"));
-  request->text ("base", _("_Base DN"), info.urld->lud_dn, std::string ());
+  request->text ("name", _("Book _Name:"), info.name, _("Book name, as shown in your dialog box"));
+  request->text ("uri", _("Server _URI:"), info.uri_host, _("Name of LDAP server, prefixed by ldap://"));
+  request->text ("base", _("_Base DN:"), info.urld->lud_dn, std::string ());
 
   {
     std::map<std::string, std::string> choices;
@@ -952,12 +952,12 @@ OPENLDAP::BookForm (boost::shared_ptr<Ekiga::FormRequestSimple> request,
    * "DisplayName" (i.e., "the name that will be displayed") but on
    * most LDAP servers it's "CommonName".
    */
-  request->text ("nameAttr", _("_DisplayName Attribute"), info.urld->lud_attrs[0], std::string ());
-  request->text ("callAttr", _("Call _Attributes"), callAttr, _("The field you are searching for"));
+  request->text ("nameAttr", _("_DisplayName Attribute:"), info.urld->lud_attrs[0], std::string ());
+  request->text ("callAttr", _("Call _Attributes:"), callAttr, _("The field you are searching for"));
   if (info.urld->lud_filter != NULL)
-    request->text ("filter", _("_Filter Template"), info.urld->lud_filter, _("Here, a \"$\" is replaced by the search string"));
+    request->text ("filter", _("_Filter Template:"), info.urld->lud_filter, _("Here, a \"$\" is replaced by the search string"));
   else
-    request->text ("filter", _("_Filter Template"), "", _("Here, a \"$\" is replaced by the search string"));
+    request->text ("filter", _("_Filter Template:"), "", _("Here, a \"$\" is replaced by the search string"));
 
   /* Translators: Bind ID - In LDAP, the operation that begins an LDAP
    * session and authenticates the user to the directory is called a
@@ -968,8 +968,8 @@ OPENLDAP::BookForm (boost::shared_ptr<Ekiga::FormRequestSimple> request,
    * course, the Bind ID can be left blank, in which case the session
    * is anonymous / unauthenticated.)
    */
-  request->text ("authcID", _("Bind _ID"), info.authcID, _("User ID; leave blank for anonymous / nonauthenticated"));
-  request->private_text ("password", _("_Password"), info.password, _("The password for the user ID above, if any"));
+  request->text ("authcID", _("Bind _ID:"), info.authcID, _("User ID; leave blank for anonymous / nonauthenticated"));
+  request->private_text ("password", _("_Password:"), info.password, _("The password for the user ID above, if any"));
   request->boolean ("startTLS", _("Use TLS"), info.starttls);
   request->boolean ("sasl", _("Use SASL"), info.sasl);
   {
