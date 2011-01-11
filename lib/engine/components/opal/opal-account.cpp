@@ -294,7 +294,8 @@ void Opal::Account::enable ()
 
   boost::shared_ptr<Sip::EndPoint> endpoint = core.get<Sip::EndPoint> ("opal-sip-endpoint");
   endpoint->subscribe (*this);
-  presentity->Open ();
+  if (presentity)
+    presentity->Open ();
 
   updated ();
   trigger_saving ();
@@ -308,7 +309,8 @@ void Opal::Account::disable ()
   boost::shared_ptr<Sip::EndPoint> endpoint = core.get<Sip::EndPoint> ("opal-sip-endpoint");
   endpoint->unsubscribe (*this);
 
-  presentity->Close ();
+  if (presentity)
+    presentity->Close ();
 
   updated ();
   trigger_saving ();
@@ -498,7 +500,8 @@ Opal::Account::publish (const Ekiga::PersonalDetails& details)
     if (presence == "online")
       personal_state = OpalPresenceInfo::Available;
 
-    presentity->SetLocalPresence (personal_state, details.get_status ());
+    if (presentity)
+      presentity->SetLocalPresence (personal_state, details.get_status ());
   }
 }
 
