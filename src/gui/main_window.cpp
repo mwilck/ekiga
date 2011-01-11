@@ -50,7 +50,6 @@
 #include "gmdialog.h"
 #include "gmentrydialog.h"
 #include "gmstatusbar.h"
-#include "gmconnectbutton.h"
 #include "gmstockicons.h"
 #include "gmconf.h"
 #include <boost/smart_ptr.hpp>
