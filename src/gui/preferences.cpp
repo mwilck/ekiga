@@ -417,7 +417,7 @@ gm_pw_add_update_button (GtkWidget *box,
   /* Update Button */
   button = gtk_button_new_with_mnemonic (label);
   image = gtk_image_new_from_stock (stock_id, GTK_ICON_SIZE_BUTTON);
-  gtk_button_set_image ((GTK_BUTTON) button, image);
+  gtk_button_set_image (GTK_BUTTON (button), image);
   gtk_widget_set_tooltip_text (button, tooltip);
 
   alignment = gtk_alignment_new (1, valign, 0, 0);
