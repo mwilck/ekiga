@@ -46,7 +46,6 @@
 
 #include "gmconf.h"
 #include "gmwindow.h"
-#include "gmdialog.h"
 
 #include "services.h"
 #include "menu-builder-tools.h"

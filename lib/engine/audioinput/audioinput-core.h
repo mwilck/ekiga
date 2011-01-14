@@ -41,7 +41,6 @@
 #include "runtime.h"
 
 #include "audioinput-manager.h"
-#include "audiooutput-core.h"
 #include "hal-core.h"
 #include "audioinput-gmconf-bridge.h"
 

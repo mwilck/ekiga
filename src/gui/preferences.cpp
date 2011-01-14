@@ -41,10 +41,7 @@
 
 #include "preferences.h"
 #include "default_devices.h"
-#include "accounts.h"
-#include "callbacks.h"
 
-#include <gmdialog.h>
 #include "gmwindow.h"
 #include <gmpreferences.h>
 #include <gmconf.h>

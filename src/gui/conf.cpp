@@ -45,15 +45,7 @@
 
 #include "conf.h"
 
-#include "ekiga.h"
-#include "preferences.h"
-#include "assistant.h"
-#include "accounts.h"
-
-#include "gmdialog.h"
-#include "gmstockicons.h"
-#include "gmmenuaddon.h"
-#include "gmconfwidgets.h"
+#include "gmconf.h"
 
 /* The functions */
 void
