@@ -247,8 +247,9 @@ GDKPIXBUF_VER := 2.22.0-1
 GDKPIXBUF_URL := http://ftp.gnome.org/pub/gnome/binaries/win32/gdk-pixbuf/2.22
 GDKPIXBUF_ARCHIVE := gdk-pixbuf-dev_$(GDKPIXBUF_VER)_win32.zip
 
-LIBPNG_VER := 1.2.37
-GNUWIN32_URL := http://downloads.sourceforge.net/gnuwin32
+PNG_VER := 1.4.3-1
+PNG_URL := http://ftp.gnome.org/pub/gnome/binaries/win32/dependencies/
+PNG_ARCHIVE := libpng-dev_$(PNG_VER)_win32.zip
 
 LN:=ln
 RM:=rm
@@ -635,26 +636,21 @@ $(LIBDIR)/pkgconfig/glib-2.0.pc: $(SRCDIR)/$(GLIB_ARCHIVE)
 ### atk
 update-sources::
 	@echo --- Getting ATK ...
-	$(WGET) -P  $(SRCDIR) $(ATK_URL)/$(ATK_ARCHIVE)
+	$(WGET) -P $(SRCDIR) $(ATK_URL)/$(ATK_ARCHIVE)
 
 $(LIBDIR)/pkgconfig/atk-2.0.pc: $(SRCDIR)/$(ATK_ARCHIVE)
 	unzip -u $(SRCDIR)/$(ATK_ARCHIVE) -d $(BUILDROOT)
 	sed -i -e 's#^prefix=.*$$#prefix=$(BUILDROOT)#g' $(LIBDIR)/pkgconfig/atk*.pc
 	touch $@
 
-### libpng
+### png
 update-sources::
 	@echo --- Getting PNG ...
-	$(WGET) -P $(SRCDIR) $(GNUWIN32_URL)/libpng-$(LIBPNG_VER)-bin.zip
-	$(WGET) -P $(SRCDIR) $(GNUWIN32_URL)/libpng-$(LIBPNG_VER)-dep.zip
-	$(WGET) -P $(SRCDIR) $(GNUWIN32_URL)/libpng-$(LIBPNG_VER)-lib.zip
+	$(WGET) -P $(SRCDIR) $(PNG_URL)/$(PNG_ARCHIVE)
 
-$(LIBDIR)/libpng.a: $(SRCDIR)/libpng-$(LIBPNG_VER)-bin.zip $(SRCDIR)/libpng-$(LIBPNG_VER)-dep.zip $(SRCDIR)/libpng-$(LIBPNG_VER)-lib.zip
-	unzip -u $(SRCDIR)/libpng-$(LIBPNG_VER)-bin.zip -d $(BUILDROOT)
-	unzip -u $(SRCDIR)/libpng-$(LIBPNG_VER)-dep.zip -d $(BUILDROOT)
-	unzip -u $(SRCDIR)/libpng-$(LIBPNG_VER)-lib.zip -d $(BUILDROOT)
-	sed -i -e 's#^prefix=.*$$#prefix=$(BUILDROOT)#g' lib/pkgconfig/libpng*.pc
-	$(LN) -s -f libpng.pc lib/pkgconfig/libpng12.pc
+$(LIBDIR)/pkgconfig/libpng.pc: $(SRCDIR)/$(PNG_ARCHIVE)
+	unzip -u $(SRCDIR)/$(PNG_ARCHIVE) -d $(BUILDROOT)
+	sed -i -e 's#^prefix=.*$$#prefix=$(BUILDROOT)#g' $(LIBDIR)/pkgconfig/libpng*.pc
 	touch $@
 
 ### libintl
@@ -704,7 +700,7 @@ update-sources::
 $(LIBDIR)/pkgconfig/gdk-pixbuf-2.0.pc: $(SRCDIR)/$(GDKPIXBUF_ARCHIVE)
 	unzip -u $(SRCDIR)/$(GDKPIXBUF_ARCHIVE) -d $(BUILDROOT)
 	sed -i -e 's#^prefix=.*$$#prefix=$(BUILDROOT)#g' $(LIBDIR)/pkgconfig/gdk-pixbuf*.pc
-# remove -lpng14, which is not needed, to avoid hassle to compile it
+# remove -lpng14, which is not needed, to avoid downloading it
 	sed -i -e 's#^\(Libs: .*\)-lpng14\(.*\)#\1\2#g' $(LIBDIR)/pkgconfig/gdk-pixbuf*.pc
 	touch $@
 
@@ -774,7 +770,7 @@ endif
 
 $(EKIGA_DIR)/config.status: binaries $(EKIGA_DIR)/configure $(LIBDIR)/$(PTLIB_LIB) $(LIBDIR)/$(OPAL_LIB) \
 	$(LIBDIR)/pkgconfig/gtk+-2.0.pc $(LIBDIR)/pkgconfig/atk-2.0.pc $(LIBDIR)/pkgconfig/glib-2.0.pc \
-	$(LIBDIR)/libpng.a $(LIBDIR)/pkgconfig/pango32.pc $(LIBDIR)/pkgconfig/cairo.pc $(LIBDIR)/libxml2.a \
+	$(LIBDIR)/pkgconfig/libpng.pc $(LIBDIR)/pkgconfig/pango32.pc $(LIBDIR)/pkgconfig/cairo.pc $(LIBDIR)/libxml2.a \
 	$(LIBDIR)/pkgconfig/freetype2.pc $(LIBDIR)/pkgconfig/fontconfig.pc $(LIBDIR)/pkgconfig/gdk-pixbuf-2.0.pc \
 	$(LIBDIR)/libintl.a $(LIBDIR)/libiconv.a $(LIBDIR)/libboost_signals.dll $(LIBDIR)/libsasl2.a
 	rm -f $(EKIGA_DIR)/src/ekiga.exe
