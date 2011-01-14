@@ -191,7 +191,9 @@ private:
     std::string auth_username;
     std::string password;
     Type type;
-    boost::shared_ptr<OpalPresentity> presentity;
+
+    PSafePtr<OpalPresentity> presentity;
+    void setup_presentity ();
 
     Ekiga::ServiceCore & core;
   };

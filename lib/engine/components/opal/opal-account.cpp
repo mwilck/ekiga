@@ -42,9 +42,12 @@
 
 #include <glib.h>
 #include <glib/gi18n.h>
+
 #include <ptlib.h>
-#include <opal/opal.h>
 #include <ptclib/guid.h>
+
+#include <opal/opal.h>
+#include <sip/sippres.h>
 
 #include "opal-account.h"
 #include "form-request-simple.h"
@@ -55,6 +58,8 @@
 #include "audiooutput-core.h"
 
 #include "sip-endpoint.h"
+
+#define SCHEME "sip:"
 
 Opal::Account::Account (Ekiga::ServiceCore & _core,
                         const std::string & account)
@@ -130,10 +135,7 @@ Opal::Account::Account (Ekiga::ServiceCore & _core,
 
   limited = (name.find ("%limit") != std::string::npos);
 
-
-  boost::shared_ptr<CallManager> manager = core.get<CallManager> ("opal-component");
-  PURL url = PString (get_aor ());
-  presentity = boost::shared_ptr<OpalPresentity> (OpalPresentity::Create (*manager, url));
+  setup_presentity ();
 }
 
 
@@ -165,9 +167,7 @@ Opal::Account::Account (Ekiga::ServiceCore & _core,
   timeout = _timeout;
   type = t;
 
-  boost::shared_ptr<CallManager> manager = core.get<CallManager> ("opal-component");
-  PURL url = PString (get_aor ());
-  presentity = boost::shared_ptr<OpalPresentity> (OpalPresentity::Create (*manager, url));
+  setup_presentity ();
 
   if (enabled)
     enable ();
@@ -294,8 +294,11 @@ void Opal::Account::enable ()
 
   boost::shared_ptr<Sip::EndPoint> endpoint = core.get<Sip::EndPoint> ("opal-sip-endpoint");
   endpoint->subscribe (*this);
-  if (presentity)
+  if (presentity) {
+
+    std::cout << "opening presentity for " << get_aor () << std::endl;
     presentity->Open ();
+  }
 
   updated ();
   trigger_saving ();
@@ -309,8 +312,11 @@ void Opal::Account::disable ()
   boost::shared_ptr<Sip::EndPoint> endpoint = core.get<Sip::EndPoint> ("opal-sip-endpoint");
   endpoint->unsubscribe (*this);
 
-  if (presentity)
+  if (presentity) {
+
+    std::cout << "closing presentity for " << get_aor () << std::endl;
     presentity->Close ();
+  }
 
   updated ();
   trigger_saving ();
@@ -491,8 +497,6 @@ Opal::Account::publish (const Ekiga::PersonalDetails& details)
 {
   if (presentity) {
 
-    std::cout << __PRETTY_FUNCTION__ << ": ok" << std::endl;
-
     std::string presence = details.get_presence ();
     OpalPresenceInfo::State personal_state = OpalPresenceInfo::Unavailable;
 
@@ -500,8 +504,8 @@ Opal::Account::publish (const Ekiga::PersonalDetails& details)
     if (presence == "online")
       personal_state = OpalPresenceInfo::Available;
 
-    if (presentity)
-      presentity->SetLocalPresence (personal_state, details.get_status ());
+    std::cout << "calling SetLocalPresence for " << get_aor () << std::endl;
+    presentity->SetLocalPresence (personal_state, details.get_status ());
   }
 }
 
@@ -510,8 +514,7 @@ Opal::Account::fetch (const std::string uri)
 {
   if (presentity) {
 
-    std::cout << __PRETTY_FUNCTION__ << " " << uri << std::endl;
-
+    std::cout << "subscribing to presence of " <<  uri << " for " << get_aor () << std::endl;
     presentity->SubscribeToPresence (PString (uri));
   }
 }
@@ -521,8 +524,8 @@ Opal::Account::unfetch (const std::string uri)
 {
   if (presentity) {
 
-    std::cout << __PRETTY_FUNCTION__ << " " << uri << std::endl;
 
+    std::cout << "unsubscribing to presence of " <<  uri << " for " << get_aor () << std::endl;
     presentity->UnsubscribeFromPresence (PString (uri));
   }
 }
@@ -611,4 +614,21 @@ Opal::Account::Type
 Opal::Account::get_type () const
 {
   return type;
+}
+
+void
+Opal::Account::setup_presentity ()
+{
+  boost::shared_ptr<CallManager> manager = core.get<CallManager> ("opal-component");
+  PURL url = PString (get_aor ());
+  presentity = manager->AddPresentity (url);
+
+  if (presentity) {
+
+    presentity->GetAttributes().Set(SIP_Presentity::AuthNameKey, username);
+    presentity->GetAttributes().Set(SIP_Presentity::AuthPasswordKey, password);
+    presentity->GetAttributes().Set(SIP_Presentity::DefaultPresenceServerKey, host);
+    std::cout << "got presentity for " << url << std::endl;
+  } else
+    std::cout << "NULL presentity for " << url << std::endl;
 }
