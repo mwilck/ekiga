@@ -85,12 +85,6 @@ void ekiga_main_window_update_logo_have_window (EkigaMainWindow *main_window);
 
 
 /* DESCRIPTION  :  /
- * BEHAVIOR     :  Displays the gnomemeeting logo in the video window.
- * PRE          :  /
- */
-void gm_main_window_update_logo ();
-
-/* DESCRIPTION  :  /
  * BEHAVIOR     :  Update the main window hold call menu and toolbar items
  * 		   following the call is on hold (TRUE) or not (FALSE).
  * PRE          :  The main window GMObject.
@@ -143,63 +137,6 @@ void ekiga_main_window_set_busy (EkigaMainWindow *main_window,
 
 
 /* DESCRIPTION  :  /
- * BEHAVIOR     :  Update the main window audio sliders to the given values,
- * 		   notice it only updates the GUI.
- * PRE          :  A valid pointer to the main window GMObject, followed
- * 		   by the output and input volumes.
- * 		   Their values must be comprised between -1 (no change) and 
- * 		   255.
- */
-void gm_main_window_set_volume_sliders_values (GtkWidget *main_window,
-					       int output_volume,
-					       int input_volume);
-
-
-/* DESCRIPTION  :  /
- * BEHAVIOR     :  Gets the values of the main window audio sliders.
- * PRE          :  A valid pointer to the main window GMObject, followed
- * 		   by the output and input volumes.
- * 		   Their values will be comprised between 0 and 255 when 
- * 		   the function returns.
- */
-void gm_main_window_get_volume_sliders_values (GtkWidget *main_window,
-					       int &output_volume,
-					       int &input_volume);
-
-
-/* DESCRIPTION  :  /
- * BEHAVIOR     :  Update the main window video sliders to the given values,
- * 		   notice it only updates the GUI.
- * PRE          :  A valid pointer to the main window GMObject, followed
- * 		   by the whiteness, brightness, colourness and contrast.
- * 		   Their values must be comprised between -1 (no change) and 
- * 		   255.
- */
-void gm_main_window_set_video_sliders_values (GtkWidget *main_window,
-					      int whiteness,
-					      int brightness,
-					      int colour,
-					      int contrast);
-
-
-/* DESCRIPTION  :  /
- * BEHAVIOR     :  Gets the values for the main window video sliders and
- * 		   updates the parameters accordingly.
- * 		   Notice it only reads the values from the GUI, not from
- * 		   the video grabber.
- * PRE          :  A valid pointer to the main window GMObject, followed
- * 		   by the whiteness, brightness, colourness and contrast.
- * 		   Their values will be comprised between 0 and 255 when
- * 		   the function returns.
- */
-void gm_main_window_get_video_sliders_values (GtkWidget *main_window,
-					      int &whiteness,
-					      int &brightness,
-					      int &colour,
-					      int &contrast);
-
-
-/* DESCRIPTION  :  /
  * BEHAVIOR     :  Updates the information displayed in the info label
  * 		   of the main window.
  * PRE          :  The main window GMObject, 
@@ -229,24 +166,6 @@ void ekiga_main_window_set_call_duration (EkigaMainWindow *main_window,
  */
 void ekiga_main_window_set_status (EkigaMainWindow *main_window,
 				   const char *status);
-
-
-/* DESCRIPTION  :  /
- * BEHAVIOR     :  Update the speed dials menu in the call menu given the
- *                 main window GMObject and using the address book.
- * PRE          :  The main window GMObject and the GSList of GmContacts.
- */
-void gm_main_window_speed_dials_menu_update (GtkWidget *main_window,
-					     GSList *glist);
-
-
-/* DESCRIPTION  :  /
- * BEHAVIOR     :  Update the urls in the cache of the url entry. It is done
- * 		   using the list of the last 100 given/received/missed calls,
- * 		   but also using the address book contacts.
- * PRE          :  The main window GMObject.
- */
-void gm_main_window_urls_history_update (GtkWidget *main_window);
 
 
 /* DESCRIPTION  :  /
@@ -352,13 +271,4 @@ void ekiga_main_window_update_sensitivity (EkigaMainWindow *main_window,
 					   bool is_video,
 					   bool is_receiving,
 					   bool is_transmitting);
-
-
-/* DESCRIPTION   :  /
- * BEHAVIOR      : Updates the menu sensitivity
- * PRE           : The main window GMObject.
- */
-void gm_main_window_fullscreen_menu_update_sensitivity (bool fullscreen);
-
 #endif
-
