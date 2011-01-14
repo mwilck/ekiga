@@ -224,31 +224,6 @@ enum {
   CHANNEL_LAST
 };
 
-static GtkWidget*
-connect_button_new (EkigaMainWindow *mw)
-{
-  GtkButton *button;
-  GtkWidget* image;
-
-  button = (GtkButton*) gtk_button_new ();
-  image = gtk_image_new_from_stock (GM_STOCK_PHONE_PICK_UP_24, GTK_ICON_SIZE_LARGE_TOOLBAR);
-  gtk_button_set_image (button, image);
-  gtk_button_set_relief (button, GTK_RELIEF_NONE);
-  mw->priv->connect_button_connected = FALSE;
-
-  return GTK_WIDGET (button);
-}
-
-static void
-connect_button_set_connected (EkigaMainWindow *mw, gboolean state)
-{
-  GtkWidget* image;
-
-  mw->priv->connect_button_connected = state;
-  image = gtk_button_get_image (GTK_BUTTON (mw->priv->connect_button));
-  gtk_image_set_from_stock (GTK_IMAGE (image), state ? GM_STOCK_PHONE_HANG_UP_24 : GM_STOCK_PHONE_PICK_UP_24, GTK_ICON_SIZE_LARGE_TOOLBAR);
-}
-
 /* Non-GUI functions */
 
 struct name_from_uri_helper
@@ -293,14 +268,14 @@ static void show_window_cb (GtkWidget *widget,
 
 /* DESCRIPTION  : /
  * BEHAVIOR     : Builds the video settings popup of the main window.
- * PRE          : The given GtkWidget pointer must be the main window GMObject. 
+ * PRE          : The given GtkWidget pointer must be the main window GMObject.
  */
 static GtkWidget *gm_mw_video_settings_window_new (EkigaMainWindow *);
 
 
 /* DESCRIPTION  : /
  * BEHAVIOR     : Builds the audio settings popup for the main window.
- * PRE          : The given GtkWidget pointer must be the main window GMObject. 
+ * PRE          : The given GtkWidget pointer must be the main window GMObject.
  */
 static GtkWidget *gm_mw_audio_settings_window_new (EkigaMainWindow *);
 
@@ -312,6 +287,7 @@ static GtkWidget *gm_mw_audio_settings_window_new (EkigaMainWindow *);
  */
 static void ekiga_main_window_zooms_menu_update_sensitivity (EkigaMainWindow *main_window,
 							     unsigned int zoom);
+
 static void gm_main_window_toggle_fullscreen (Ekiga::VideoOutputFSToggle toggle,
                                               GtkWidget   *main_window);
 
@@ -340,11 +316,11 @@ static void ekiga_main_window_incoming_call_notify (EkigaMainWindow *mw,
 static void on_chat_unread_alert (GtkWidget*,
 				  gpointer);
 
-/* DESCRIPTION  :  This callback is called when the control panel 
+/* DESCRIPTION  :  This callback is called when the control panel
  *                 section key changes (which can be when the radio
  *                 menu is changed!)
- * BEHAVIOR     :  Sets the right page, and also sets 
- *                 the good value for the radio menu. 
+ * BEHAVIOR     :  Sets the right page, and also sets
+ *                 the good value for the radio menu.
  * PRE          :  /
  */
 static void panel_section_changed_nt (gpointer id,
@@ -352,23 +328,23 @@ static void panel_section_changed_nt (gpointer id,
                                       gpointer data);
 
 
-/* DESCRIPTION  :  This callback is called when the call panel 
+/* DESCRIPTION  :  This callback is called when the call panel
  *                 section key changes.
  * BEHAVIOR     :  Show it or hide it, resize the window appropriately.
  * PRE          :  /
  */
-static void show_call_panel_changed_nt (G_GNUC_UNUSED gpointer id, 
-                                        GmConfEntry *entry, 
+static void show_call_panel_changed_nt (G_GNUC_UNUSED gpointer id,
+                                        GmConfEntry *entry,
                                         gpointer data);
 
 
-/* DESCRIPTION  :  This callback is called when the "stay_on_top" 
+/* DESCRIPTION  :  This callback is called when the "stay_on_top"
  *                 config value changes.
  * BEHAVIOR     :  Changes the hint for the video windows.
  * PRE          :  /
  */
 static void stay_on_top_changed_nt (G_GNUC_UNUSED gpointer id,
-                                    GmConfEntry *entry, 
+                                    GmConfEntry *entry,
                                     gpointer data);
 
 
@@ -398,17 +374,17 @@ static void hold_current_call_cb (GtkWidget *,
 
 /* DESCRIPTION  :  /
  * BEHAVIOR     :  Set the current active call audio channel on pause or not
- * PRE          :  a pointer to the main window 
+ * PRE          :  a pointer to the main window
  */
-static void toggle_audio_stream_pause_cb (GtkWidget *, 
+static void toggle_audio_stream_pause_cb (GtkWidget *,
                                           gpointer);
 
 
 /* DESCRIPTION  :  /
  * BEHAVIOR     :  Set the current active call video channel on pause or not
- * PRE          :  a pointer to the main window 
+ * PRE          :  a pointer to the main window
  */
-static void toggle_video_stream_pause_cb (GtkWidget *, 
+static void toggle_video_stream_pause_cb (GtkWidget *,
                                           gpointer);
 
 
@@ -427,17 +403,17 @@ static void transfer_current_call_cb (GtkWidget *,
  *                 fails, the sliders are put back to 0.
  * PRE          :  The main window GMObject.
  */
-static void audio_volume_changed_cb (GtkAdjustment *, 
+static void audio_volume_changed_cb (GtkAdjustment *,
 				     gpointer);
 
 
-/* DESCRIPTION  :  This callback is called when the user changes one of the 
+/* DESCRIPTION  :  This callback is called when the user changes one of the
  *                 video settings sliders in the main notebook.
- * BEHAVIOR     :  Updates the value in real time, if it fails, reset 
+ * BEHAVIOR     :  Updates the value in real time, if it fails, reset
  * 		   all sliders to 0.
  * PRE          :  gpointer is a valid pointer to the main window GmObject.
  */
-static void video_settings_changed_cb (GtkAdjustment *, 
+static void video_settings_changed_cb (GtkAdjustment *,
 				       gpointer);
 
 
@@ -452,8 +428,8 @@ static void panel_section_changed_cb (GtkNotebook *,
                                       gpointer);
 
 
-/* DESCRIPTION  :  This callback is called when the user 
- *                 presses a key. 
+/* DESCRIPTION  :  This callback is called when the user
+ *                 presses a key.
  * BEHAVIOR     :  Sends a DTMF if we are in a call.
  * PRE          :  A valid pointer to the main window GMObject.
  */
@@ -461,7 +437,7 @@ static gboolean key_press_event_cb (EkigaMainWindow *mw,
                                     GdkEventKey *key);
 
 
-/* DESCRIPTION  :  This callback is called when the user 
+/* DESCRIPTION  :  This callback is called when the user
  *                 clicks on the dialpad button.
  * BEHAVIOR     :  Generates a dialpad event.
  * PRE          :  A valid pointer to the main window GMObject.
@@ -473,12 +449,12 @@ static void dialpad_button_clicked_cb (EkigaDialpad  *dialpad,
 
 /* DESCRIPTION  :  This callback is called when the user tries to close
  *                 the application using the window manager.
- * BEHAVIOR     :  Calls the real callback if the notification icon is 
+ * BEHAVIOR     :  Calls the real callback if the notification icon is
  *                 not shown else hide GM.
  * PRE          :  A valid pointer to the main window GMObject.
  */
-static gint window_closed_cb (GtkWidget *, 
-			      GdkEvent *, 
+static gint window_closed_cb (GtkWidget *,
+			      GdkEvent *,
 			      gpointer);
 
 
@@ -523,8 +499,8 @@ void display_changed_cb (GtkWidget *widget,
 
 /* DESCRIPTION  :  This callback is called when the user toggles fullscreen
  *                 factor in the popup menu.
- * BEHAVIOR     :  Toggles the fullscreen configuration key. 
- * PRE          :  / 
+ * BEHAVIOR     :  Toggles the fullscreen configuration key.
+ * PRE          :  /
  */
 static void fullscreen_changed_cb (GtkWidget *,
 				   gpointer);
@@ -533,18 +509,18 @@ static void fullscreen_changed_cb (GtkWidget *,
  * 		   in the URL bar.
  * BEHAVIOR     :  It udpates the tooltip with the new URL
  *                 and the completion cache.
- * PRE          :  A valid pointer to the main window GMObject. 
+ * PRE          :  A valid pointer to the main window GMObject.
  */
-static void url_changed_cb (GtkEditable *, 
+static void url_changed_cb (GtkEditable *,
 			    gpointer);
 
 /* DESCRIPTION  :  This callback is called when the user presses a
- *                 button in the toolbar. 
+ *                 button in the toolbar.
  *                 (See menu_toggle_changed)
  * BEHAVIOR     :  Updates the config cache.
  * PRE          :  data is the key.
  */
-static void toolbar_toggle_button_changed_cb (GtkWidget *, 
+static void toolbar_toggle_button_changed_cb (GtkWidget *,
 					      gpointer);
 
 
@@ -566,6 +542,229 @@ static void audio_volume_window_hidden_cb (GtkWidget *widget,
 static void ekiga_main_window_add_device_dialog_show (EkigaMainWindow *main_window,
                                                       const Ekiga::Device & device,
                                                       DeviceType device_type);
+
+
+/* DESCRIPTION  :  /
+ * BEHAVIOR     :  Press the given dialpad key.
+ * PRE          :  The main window GMObject, the key to press (0 - 9, *, #).
+ */
+static void gm_main_window_press_dialpad (GtkWidget *main_window,
+				   const char c);
+
+
+/* DESCRIPTION  :  /
+ * BEHAVIOR     :  Displays the gnomemeeting logo in the video window.
+ * PRE          :  The main window GMObject.
+ */
+static void ekiga_main_window_update_logo_have_window (EkigaMainWindow *main_window);
+
+
+/* DESCRIPTION  :  /
+ * BEHAVIOR     :  Update the main window hold call menu and toolbar items
+ * 		   following the call is on hold (TRUE) or not (FALSE).
+ * PRE          :  The main window GMObject.
+ */
+static void ekiga_main_window_set_call_hold (EkigaMainWindow *main_window,
+                                      bool is_on_hold);
+
+
+/* DESCRIPTION  :  /
+ * BEHAVIOR     :  Update the main window pause channel menu and toolbar items
+ * 		   following the channel is paused (TRUE) or not (FALSE). The
+ * 		   last argument is true if we are modifying a video channel
+ * 		   item.
+ * PRE          :  The main window GMObject.
+ */
+static void ekiga_main_window_set_channel_pause (EkigaMainWindow *main_window,
+					  gboolean pause,
+					  gboolean is_video);
+
+
+/* DESCRIPTION  :  /
+ * BEHAVIOR     :  Update the main window sensitivity and state following
+ * 		   the given calling state.
+ * 		   The state of widgets that depend on the calling state only
+ * 		   is updated:
+ * 		   - the sensitivity of menu and toolbar items,
+ * 		   - the stay on top state of windows depending of the main window,
+ * 		   - the state of the calling button,
+ * 		   - the transfer call window,
+ * 		   - the incoming call window can be destroyed or not.
+ * 		   Widgets for which the state depends on other parameters
+ * 		   are udpated in separate functions.
+ * PRE          :  The main window GMObject.
+ * 		   A valid GMH323Endpoint calling state.
+ */
+static void ekiga_main_window_update_calling_state (EkigaMainWindow *mw,
+					     unsigned calling_state);
+
+
+/* DESCRIPTION  :  /
+ * BEHAVIOR     :  Update the main window sensitivity following the opened
+ *                 and closed audio and video channels. It also updates
+ *                 the state of the video preview button.
+ * PRE          :  The main window GMObject.
+ * 		   The first parameter is TRUE if we are updating video
+ *                 channels related items, FALSE if we are updating audio
+ *                 channels related items. The second parameter is TRUE
+ *                 if we are transmitting audio (or video), the third is TRUE
+ *                 if we are receiving audio (or video).
+ */
+static void ekiga_main_window_update_sensitivity (EkigaMainWindow *main_window,
+					   bool is_video,
+					   bool is_receiving,
+					   bool is_transmitting);
+
+
+/* DESCRIPTION  :  /
+ * BEHAVIOR     :  Update the main window busy state. When the window is busy,
+ *                 a busy cursor is displayed and you can not exit.
+ * PRE          :  The main window GMObject.
+ * 		   The first parameter is TRUE if we are busy.
+ */
+static void ekiga_main_window_set_busy (EkigaMainWindow *main_window,
+			      bool busy);
+
+
+/* DESCRIPTION  :  /
+ * BEHAVIOR     :  Updates the information displayed in the info label
+ * 		   of the main window.
+ * PRE          :  The main window GMObject,
+ * 		   the transmitted audio codec,
+ * 		   the received audio codec (if any),
+ * 		   the transmitted video codec,
+ * 		   the received video codec(if any).
+ */
+static void ekiga_main_window_set_call_info (EkigaMainWindow *main_window,
+				      const char *tr_audio_codec,
+				      const char *re_audio_codec,
+				      const char *tr_video_codec,
+				      const char *re_video_codec);
+
+
+/* DESCRIPTION   :  /
+ * BEHAVIOR      : Sets the current call duration (as a string) in the GUI.
+ * PRE           : The main window GMObject.
+ */
+static void ekiga_main_window_set_call_duration (EkigaMainWindow *main_window,
+                                          const char *duration);
+
+
+/* DESCRIPTION   :  /
+ * BEHAVIOR      : Sets the current status in the GUI.
+ * PRE           : The main window GMObject.
+ */
+static void ekiga_main_window_set_status (EkigaMainWindow *main_window,
+				   const char *status);
+
+
+/* DESCRIPTION  :  /
+ * BEHAVIOR     :  Runs a dialog to transfer a call.
+ * 		   Returns TRUE if the user chose to transfer.
+ * PRE          :  The main window GMObject, the parent window, the URL
+ * 		   to put in the dialog as default.
+ */
+static gboolean ekiga_main_window_transfer_dialog_run (EkigaMainWindow *main_window,
+					        GtkWidget *parent_window,
+					        const char *u);
+
+
+/* DESCRIPTION   :  /
+ * BEHAVIOR      : Flashes a message on the statusbar during a few seconds.
+ *                 Removes the previous message.
+ * PRE           : The main window GMObject, followed by printf syntax format.
+ */
+static void ekiga_main_window_flash_message (EkigaMainWindow *main_window,
+				      const char *msg,
+				      ...) G_GNUC_PRINTF(2,3);
+
+
+/* DESCRIPTION   :  /
+ * BEHAVIOR      : Displays a message on the statusbar or clears it if msg = 0.
+ *                 Removes the previous message.
+ * PRE           : The main window GMObject, followed by printf syntax format.
+ */
+static void ekiga_main_window_push_message (EkigaMainWindow *main_window,
+				     const char *msg,
+				     ...) G_GNUC_PRINTF(2,3);
+
+
+/* DESCRIPTION   :  /
+ * BEHAVIOR      : Displays an info message on the statusbar. An info message
+ * 		   is only cleared when the user clicks on it.
+ * PRE           : The main window GMObject, followed by printf syntax format.
+ */
+static void ekiga_main_window_push_info_message (EkigaMainWindow *main_window,
+					  const char *msg,
+					  ...) G_GNUC_PRINTF(2,3);
+
+/* DESCRIPTION   :  /
+ * BEHAVIOR      : Sets the given URL as called URL.
+ * PRE           : The main window GMObject.
+ */
+static void ekiga_main_window_set_call_url (EkigaMainWindow *mw,
+				     const char *url);
+
+
+/* DESCRIPTION   :  /
+ * BEHAVIOR      : Appends the given string to the current URL. Replaces the
+ * 		   current selection if any.
+ * PRE           : The main window GMObject.
+ */
+static void ekiga_main_window_append_call_url (EkigaMainWindow *mw,
+					const char *url);
+
+
+/* DESCRIPTION   :  /
+ * BEHAVIOR      : Clears the stats area in the control panel.
+ * PRE           : The main window GMObject.
+ */
+static void ekiga_main_window_clear_stats (EkigaMainWindow *main_window);
+
+
+/* DESCRIPTION   :  /
+ * BEHAVIOR      : Updates the stats area in the control panel.
+ * PRE           : The main window GMObject, lost, late packets, rtt, jitter,
+ * 		   video bytes received, transmitted, audio bytes received,
+ * 		   transmitted. All >= 0.
+ */
+static void ekiga_main_window_update_stats (EkigaMainWindow *main_window,
+				     float lost,
+				     float late,
+				     float out_of_order,
+				     int jitter,
+				     unsigned int re_width,
+				     unsigned int re_height,
+				     unsigned int tr_width,
+				     unsigned int tr_height);
+
+
+// creates the connect two-icon button
+static GtkWidget*
+connect_button_new (EkigaMainWindow *mw)
+{
+  GtkButton *button;
+  GtkWidget* image;
+
+  button = (GtkButton*) gtk_button_new ();
+  image = gtk_image_new_from_stock (GM_STOCK_PHONE_PICK_UP_24, GTK_ICON_SIZE_LARGE_TOOLBAR);
+  gtk_button_set_image (button, image);
+  gtk_button_set_relief (button, GTK_RELIEF_NONE);
+  mw->priv->connect_button_connected = FALSE;
+
+  return GTK_WIDGET (button);
+}
+
+// set the connected status and change the icon
+static void
+connect_button_set_connected (EkigaMainWindow *mw, gboolean state)
+{
+  GtkWidget* image;
+
+  mw->priv->connect_button_connected = state;
+  image = gtk_button_get_image (GTK_BUTTON (mw->priv->connect_button));
+  gtk_image_set_from_stock (GTK_IMAGE (image), state ? GM_STOCK_PHONE_HANG_UP_24 : GM_STOCK_PHONE_PICK_UP_24, GTK_ICON_SIZE_LARGE_TOOLBAR);
+}
 
 
 /* DESCRIPTION   :  /
@@ -2494,8 +2693,7 @@ statusbar_clicked_cb (G_GNUC_UNUSED GtkWidget *widget,
 }
 
 
-/* Public functions */
-void 
+static void
 gm_main_window_press_dialpad (GtkWidget *main_window,
 			      const char c)
 {
@@ -2512,7 +2710,7 @@ gm_main_window_press_dialpad (GtkWidget *main_window,
 }
 
 
-void 
+static void
 ekiga_main_window_update_logo_have_window (EkigaMainWindow *mw)
 {
   g_return_if_fail (EKIGA_IS_MAIN_WINDOW (mw));
@@ -2521,17 +2719,17 @@ ekiga_main_window_update_logo_have_window (EkigaMainWindow *mw)
 		"icon-name", GM_ICON_LOGO,
 		"pixel-size", 72,
 		NULL);
-  
+
   ekiga_main_window_set_video_size (mw, GM_QCIF_WIDTH, GM_QCIF_HEIGHT);
 }
 
 
-void 
+static void
 ekiga_main_window_set_call_hold (EkigaMainWindow *mw,
                                  bool is_on_hold)
 {
   GtkWidget *child = NULL;
-  
+
   g_return_if_fail (EKIGA_IS_MAIN_WINDOW (mw));
 
   child = GTK_BIN (gtk_menu_get_widget (mw->priv->main_menu, "hold_call"))->child;
@@ -2545,7 +2743,7 @@ ekiga_main_window_set_call_hold (EkigaMainWindow *mw,
     /* Set the audio and video menu to unsensitive */
     gtk_menu_set_sensitive (mw->priv->main_menu, "suspend_audio", FALSE);
     gtk_menu_set_sensitive (mw->priv->main_menu, "suspend_video", FALSE);
-    
+
     ekiga_main_window_set_channel_pause (mw, TRUE, FALSE);
     ekiga_main_window_set_channel_pause (mw, TRUE, TRUE);
   }
@@ -2561,11 +2759,11 @@ ekiga_main_window_set_call_hold (EkigaMainWindow *mw,
     ekiga_main_window_set_channel_pause (mw, FALSE, FALSE);
     ekiga_main_window_set_channel_pause (mw, FALSE, TRUE);
   }
-  
+
   g_signal_handlers_block_by_func (mw->priv->hold_button,
                                    (gpointer) hold_current_call_cb,
                                    mw);
-  gtk_toggle_button_set_active (GTK_TOGGLE_BUTTON (mw->priv->hold_button), 
+  gtk_toggle_button_set_active (GTK_TOGGLE_BUTTON (mw->priv->hold_button),
                                 is_on_hold);
   g_signal_handlers_unblock_by_func (mw->priv->hold_button,
                                      (gpointer) hold_current_call_cb,
@@ -2573,7 +2771,7 @@ ekiga_main_window_set_call_hold (EkigaMainWindow *mw,
 }
 
 
-void 
+static void
 ekiga_main_window_set_channel_pause (EkigaMainWindow *mw,
 				     gboolean pause,
 				     gboolean is_video)
@@ -2581,7 +2779,7 @@ ekiga_main_window_set_channel_pause (EkigaMainWindow *mw,
   GtkWidget *widget = NULL;
   GtkWidget *child = NULL;
   gchar *msg = NULL;
-  
+
   g_return_if_fail (EKIGA_IS_MAIN_WINDOW (mw));
 
   if (!pause && !is_video)
@@ -2595,14 +2793,14 @@ ekiga_main_window_set_channel_pause (EkigaMainWindow *mw,
 
   widget = gtk_menu_get_widget (mw->priv->main_menu,
 			        is_video ? "suspend_video" : "suspend_audio");
-  child = GTK_BIN (widget)->child; 
+  child = GTK_BIN (widget)->child;
 
-  if (GTK_IS_LABEL (child)) 
+  if (GTK_IS_LABEL (child))
     gtk_label_set_text_with_mnemonic (GTK_LABEL (child), msg);
 }
 
 
-void
+static void
 ekiga_main_window_update_calling_state (EkigaMainWindow *mw,
 					unsigned calling_state)
 {
@@ -2679,7 +2877,7 @@ ekiga_main_window_update_calling_state (EkigaMainWindow *mw,
 }
 
 
-void
+static void
 ekiga_main_window_update_sensitivity (EkigaMainWindow *mw,
 				      bool is_video,
 				      bool /*is_receiving*/,
@@ -2689,11 +2887,11 @@ ekiga_main_window_update_sensitivity (EkigaMainWindow *mw,
 
   if (is_transmitting) {
 
-    if (!is_video) 
+    if (!is_video)
       gtk_menu_set_sensitive (mw->priv->main_menu, "suspend_audio", TRUE);
-    else 
+    else
       gtk_menu_set_sensitive (mw->priv->main_menu, "suspend_video", TRUE);
-  }	
+  }
   else {
 
     if (!is_video)
@@ -2784,7 +2982,7 @@ ekiga_main_window_hide_call_panel (EkigaMainWindow *mw)
 }
 
 
-void
+static void
 ekiga_main_window_set_busy (EkigaMainWindow *mw,
 			    bool busy)
 {
@@ -3036,7 +3234,7 @@ ekiga_main_window_incoming_call_notify (EkigaMainWindow *mw,
 #endif
 
 
-void 
+static void
 ekiga_main_window_set_call_info (EkigaMainWindow *mw,
 				const char *tr_audio_codec,
 				G_GNUC_UNUSED const char *re_audio_codec,
@@ -3071,7 +3269,7 @@ ekiga_main_window_set_call_info (EkigaMainWindow *mw,
 }
 
 
-void 
+static void
 ekiga_main_window_set_status (EkigaMainWindow *mw,
 			      const char *status)
 {
@@ -3097,7 +3295,7 @@ ekiga_main_window_set_status (EkigaMainWindow *mw,
 }
 
 
-void 
+static void
 ekiga_main_window_set_call_duration (EkigaMainWindow *mw,
                                      const char *duration)
 {
@@ -3128,7 +3326,7 @@ ekiga_main_window_set_call_duration (EkigaMainWindow *mw,
 }
 
 
-gboolean 
+static gboolean
 ekiga_main_window_transfer_dialog_run (EkigaMainWindow *mw,
 				       GtkWidget *parent_window,
 				       const char *u)
@@ -4293,7 +4491,7 @@ gm_main_window_new (Ekiga::ServiceCore & core)
 }
 
 
-void 
+static void
 ekiga_main_window_flash_message (EkigaMainWindow *mw,
 				 const char *msg,
 				 ...)
@@ -4315,7 +4513,7 @@ ekiga_main_window_flash_message (EkigaMainWindow *mw,
 }
 
 
-void 
+static void
 ekiga_main_window_push_message (EkigaMainWindow *mw, 
 				const char *msg, 
 				...)
@@ -4337,7 +4535,7 @@ ekiga_main_window_push_message (EkigaMainWindow *mw,
 }
 
 
-void 
+static void
 ekiga_main_window_push_info_message (EkigaMainWindow *mw, 
 				     const char *msg, 
 				     ...)
@@ -4355,7 +4553,7 @@ ekiga_main_window_push_info_message (EkigaMainWindow *mw,
 }
 
 
-void 
+static void
 ekiga_main_window_set_call_url (EkigaMainWindow *mw, 
 				const char *url)
 {
@@ -4368,7 +4566,7 @@ ekiga_main_window_set_call_url (EkigaMainWindow *mw,
 }
 
 
-void 
+static void
 ekiga_main_window_append_call_url (EkigaMainWindow *mw, 
 				   const char *url)
 {
@@ -4404,7 +4602,7 @@ ekiga_main_window_get_call_url (EkigaMainWindow *mw)
 }
 
 
-void 
+static void
 ekiga_main_window_clear_stats (EkigaMainWindow *mw)
 {
   g_return_if_fail (EKIGA_IS_MAIN_WINDOW (mw));
@@ -4415,7 +4613,7 @@ ekiga_main_window_clear_stats (EkigaMainWindow *mw)
 }
 
 
-void 
+static void
 ekiga_main_window_update_stats (EkigaMainWindow *mw,
 				float lost,
 				float late,
