@@ -663,24 +663,19 @@ AM_CONDITIONAL(HAVE_LOUDMOUTH, test "x$found_loudmouth" = "xyes")
 dnl ###############################
 dnl   Gnome-Doc-Utils
 dnl ###############################
-GDU="disabled"
-if test "x${gm_platform}" = "xmingw" ; then
-  GNOME_DOC_INIT_ARG=:
-fi
-
-GNOME_DOC_INIT(,,[$GNOME_DOC_INIT_ARG])
 if test "x${gm_platform}" != "xmingw" ; then
-  AC_ARG_ENABLE(gdu, AS_HELP_STRING([--enable-gdu],[enable GNOME-Doc-Utils support (default is enabled)]),
+  GDU="disabled"
+  AC_ARG_ENABLE(gdu, AS_HELP_STRING([--enable-gdu],[enable GNOME-Doc-Utils support, i.e. help file generation (default is enabled)]),
 [if test "x$enableval" = "xyes"; then
   enable_gdu=yes
 fi],enable_gdu=yes)
   if test "x$enable_gdu" = "xyes"; then
     AC_PATH_PROG(SK_CONFIG,scrollkeeper-config,no)
-    if test "x$SK_CONFIG" = "xno"; then
-      AC_MSG_ERROR([Could not find scrollkeeper-config. Please install the scrollkeeper package: http://scrollkeeper.sourceforge.net])
+    GNOME_DOC_INIT(,,[GDI=no])
+    if test "x$SK_CONFIG" != "xno" -a "x$GDI" != "xno"; then
+      GDU="enabled"
+      AC_DEFINE(HAVE_GNOME_DOC_UTILS,1,[GNOME-Doc-Utils support])
     fi
-    GDU="enabled"
-    AC_DEFINE(HAVE_GNOME_DOC_UTILS,1,[GNOME-Doc-Utils support])
   fi
 fi
 
@@ -870,6 +865,7 @@ echo "================ Final configuration ==================="
 echo "          Installing into prefix  :  $prefix"
 echo ""
 if test "x${gm_platform}" != "xmingw" ; then
+echo "                     GDU support  :  $GDU"
 echo "                   GConf support  :  $GCONF"
 echo "   Evolution-Data-Server support  :  $EDS"
 echo "                  NOTIFY support  :  $NOTIFY"
