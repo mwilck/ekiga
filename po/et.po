@@ -2,10 +2,10 @@
 # Estonian translation of Ekiga.
 #
 # Copyright (C) 2005, 2006 Free Software Foundation, Inc.
-# Copyright (C) 2007–2010 The GNOME Project
+# Copyright (C) 2007–2011 The GNOME Project
 # This file is distributed under the same license as the ekiga package.
 #
-# Ivar Smolin <okul@linux.ee>, 2005–2010.
+# Ivar Smolin <okul@linux.ee>, 2005–2011.
 # Mattias Põldaru <mahfiaz gmail com>, 2010.
 #
 msgid ""
@@ -13,14 +13,14 @@ msgstr ""
 "Project-Id-Version: ekiga MASTER\n"
 "Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?"
 "product=ekiga&component=general\n"
-"POT-Creation-Date: 2010-12-18 23:02+0000\n"
-"PO-Revision-Date: 2010-12-18 23:04+0300\n"
-"Last-Translator: Mattias Põldaru <mahfiaz gmail com>\n"
+"POT-Creation-Date: 2011-01-12 10:31+0000\n"
+"PO-Revision-Date: 2011-01-15 15:39+0200\n"
+"Last-Translator: Ivar Smolin <okul@linux.ee>\n"
 "Language-Team: Estonian <gnome-et@linux.ee>\n"
-"Language: et\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
+"Language: et\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
 #. Application name
@@ -73,8 +73,15 @@ msgstr ""
 msgid "Calls history"
 msgstr "Kõnede ajalugu"
 
-msgid "Change the main window panel section"
-msgstr "Põhiakna paneelisektsiooni muutmine"
+#, fuzzy
+#| msgid "Position on the screen of the main window"
+msgid "Change the panel section of the main window"
+msgstr "Põhiakna asukoht ekraanil"
+
+msgid ""
+"Change the panel section of the main window (0=Contacts, 1=Dialpad, 2=Call "
+"history)"
+msgstr ""
 
 msgid ""
 "Connection will be established in Fast Start mode. Fast Start is a new way "
@@ -290,6 +297,32 @@ msgstr ""
 "Videokaamera poolt kasutatava vormingu valimine (ei kehti enamuse USB-"
 "kaamerate kohta)"
 
+#, fuzzy
+#| msgid ""
+#| "This allows you to set the mode for sending DTMFs. The values can be "
+#| "\"RFC2833\" (0), \"INFO\" (1)"
+msgid ""
+"Select the mode for sending DTMFs. The values can be 0 (for \"RFC2833\") and "
+"1 (for \"INFO\")"
+msgstr ""
+"Selle võtmega lubatakse DTMF-i saatmise režiim. Võimalikud väärtused on "
+"\"RFC2833\" (0) ja \"INFO\" (1)"
+
+#, fuzzy
+#| msgid ""
+#| "This allows you to set the mode for sending DTMFs. The values can be "
+#| "\"String\" (0), \"Tone\" (1), \"RFC2833\" (2), \"Q.931\" (3) (default is "
+#| "\"String\"). Choosing other values than \"String\" disables the Text Chat"
+msgid ""
+"Select the mode for sending DTMFs. The values can be 0 (for \"String\"), 1 "
+"(for \"Tone\"), 2 (for \"RFC2833\"), or 3 (for \"Q.931\") (default is "
+"\"String\"). Choosing other values than \"String\" disables the Text Chat."
+msgstr ""
+"See võimaldab määrata DTMF-ide saatmise režiimi. Väärtused võivad olla \"Sõne"
+"\" (0), \"Toon\" (1), \"RFC2833\" (2), \"Q.931\" (3) (vaikimisi on \"Sõne"
+"\"). Kõigi väärtuste puhul peale \"Sõne\" pole võimalik kasutada "
+"tekstivestlust"
+
 msgid ""
 "Select the transmitted video size: Small (QCIF 176x144) or Large (CIF "
 "352x288)"
@@ -416,9 +449,13 @@ msgstr ""
 msgid "The default video view"
 msgstr "Vaikimisi videovaade"
 
+#, fuzzy
+#| msgid ""
+#| "The default video view (0: Local, 1: Remote, 2: Both layered, 3: Both "
+#| "with local video in a separate window, 4: Both)"
 msgid ""
-"The default video view (0: Local, 1: Remote, 2: Both layered, 3: Both with "
-"local video in a separate window, 4: Both)"
+"The default video view (0: Local, 1: Remote, 2: Both, 3: Both in a separate "
+"window)"
 msgstr ""
 "Vaikimisi videovaade (0: kohalik, 1: kaugvaade, 2: mõlemad kihiti, 3: "
 "mõlemad, kohalik video eraldi aknas, 4: mõlemad)"
@@ -571,23 +608,6 @@ msgstr ""
 "Võimalikud väärtused on 50, 100 ja 200)"
 
 msgid ""
-"This allows you to set the mode for sending DTMFs. The values can be "
-"\"RFC2833\" (0), \"INFO\" (1)"
-msgstr ""
-"Selle võtmega lubatakse DTMF-i saatmise režiim. Võimalikud väärtused on "
-"\"RFC2833\" (0) ja \"INFO\" (1)"
-
-msgid ""
-"This allows you to set the mode for sending DTMFs. The values can be \"String"
-"\" (0), \"Tone\" (1), \"RFC2833\" (2), \"Q.931\" (3) (default is \"String"
-"\"). Choosing other values than \"String\" disables the Text Chat"
-msgstr ""
-"See võimaldab määrata DTMF-ide saatmise režiimi. Väärtused võivad olla \"Sõne"
-"\" (0), \"Toon\" (1), \"RFC2833\" (2), \"Q.931\" (3) (vaikimisi on \"Sõne"
-"\"). Kõigi väärtuste puhul peale \"Sõne\" pole võimalik kasutada "
-"tekstivestlust"
-
-msgid ""
 "This enables H.245 Tunneling mode. In H.245 Tunneling mode H.245 messages "
 "are encapsulated into the H.225 channel (port 1720). This saves one TCP "
 "connection during calls. H.245 Tunneling was introduced in H.323v2 and "
@@ -657,9 +677,6 @@ msgstr "Valitud kõned"
 
 msgid "Missed"
 msgstr "Vastamata kõned"
-
-msgid "Call in progress"
-msgstr "Kõne on hetkel käimas"
 
 msgid "New contact"
 msgstr "Uus kontakt"
@@ -753,6 +770,14 @@ msgid ""
 "Please fill in this form to add a new contact to ekiga's internal roster"
 msgstr "Ekiga sisenimekirja uue kontakti lisamiseks täida palun see vorm"
 
+#, fuzzy
+#| msgid "If enabled, offline contacts will be shown in the roster"
+msgid "Name of the contact, as shown in your roster"
+msgstr "Kui märgitud, siis näidatakse nimekirjas ka ühendamata kontakte"
+
+msgid "Address, e.g. sip:xyz@ekiga.net"
+msgstr "Aadress. Näiteks sip:xyz@ekiga.net"
+
 msgid "Put contact in groups:"
 msgstr "Kontakti paigutamine gruppidesse:"
 
@@ -817,26 +842,52 @@ msgstr "Konto redigeerimine"
 msgid "Please update the following fields:"
 msgstr "Palun uuenda järgnevaid välju:"
 
+msgid "Account name, e.g. MyAccount"
+msgstr "Konto nimi. Näiteks MinuKonto"
+
 msgid "Registrar:"
 msgstr "Registreerija:"
+
+msgid "The registrar, e.g. ekiga.net"
+msgstr "Registreerija. Näiteks ekiga.net"
 
 msgid "Gatekeeper:"
 msgstr "Väravavalvur:"
 
+msgid "The gatekeeper, e.g. ekiga.net"
+msgstr "Väravavalvur. Näiteks ekiga.net"
+
 msgid "User:"
 msgstr "Kasutaja:"
+
+msgid "The user name, e.g. jim"
+msgstr "Kasutajanimi. Näiteks kalevipoeg"
 
 #. Translators:
 #. * SIP knows two usernames: The name for the client ("User") and the name
 #. * for the authentication procedure ("Authentication User")
 msgid "Authentication User:"
-msgstr "Kasutaja autentimine:"
+msgstr "Kasutaja autentimisel:"
+
+msgid ""
+"The user name used during authentication, if different than the user name; "
+"leave empty if you do not have one"
+msgstr ""
+"Autentimisel kasutatav kasutajanimi juhul, kui see erineb  põhilisest "
+"kasutajanimest. Kui ei erine, siis jäta see väli tühjaks."
 
 msgid "Password:"
 msgstr "Parool:"
 
+msgid "Password associated to the user"
+msgstr "Kasutajale määratud parool"
+
 msgid "Timeout:"
 msgstr "Ajapiirang:"
+
+msgid ""
+"Time in seconds after which the account registration is automatically retried"
+msgstr ""
 
 msgid "Enable Account"
 msgstr "Konto on lubatud"
@@ -850,8 +901,8 @@ msgstr "Sa ei määranud hosti, millele registreeruda."
 msgid "You did not supply a user name for that account."
 msgstr "Sa ei määranud sellele kontole kasutajanime."
 
-msgid "The timeout should have a bigger value."
-msgstr "Ajapiiranguks peaks olema suurem väärtus."
+msgid "The timeout should be at least 10 seconds."
+msgstr "Ajapiirang peaks olema vähemalt 10 sekundit."
 
 msgid "Registered"
 msgstr "Registreeritud"
@@ -1334,14 +1385,20 @@ msgstr "Otsingutulemuste ootamine"
 msgid "Please edit the following fields"
 msgstr "Palun redigeeri järgnevaid välju"
 
-msgid "Book _Name"
-msgstr "Raamatu _nimi"
+msgid "Book _Name:"
+msgstr "Raamatu _nimi:"
 
-msgid "Server _URI"
-msgstr "Serveri _URI"
+msgid "Book name, as shown in your dialog box"
+msgstr ""
 
-msgid "_Base DN"
-msgstr "_Baas-DN"
+msgid "Server _URI:"
+msgstr "Serveri _URI:"
+
+msgid "Name of LDAP server, prefixed by ldap://"
+msgstr "LDAP-serveri nimi, mille ette käib ldap://"
+
+msgid "_Base DN:"
+msgstr "_Baas-DN:"
 
 msgid "Subtree"
 msgstr "Alampuu"
@@ -1358,14 +1415,20 @@ msgstr "Otsingu_skoop:"
 #. * "DisplayName" (i.e., "the name that will be displayed") but on
 #. * most LDAP servers it's "CommonName".
 #.
-msgid "_DisplayName Attribute"
-msgstr "KuvamisNime (_DisplayName) atribuut"
+msgid "_DisplayName Attribute:"
+msgstr "KuvamisNime (_DisplayName) atribuut:"
 
-msgid "Call _Attributes"
-msgstr "Kõne _atribuudid"
+msgid "Call _Attributes:"
+msgstr "Kõne _atribuudid:"
 
-msgid "_Filter Template"
-msgstr "_Filtrimall"
+msgid "The field you are searching for"
+msgstr ""
+
+msgid "_Filter Template:"
+msgstr "_Filtrimall:"
+
+msgid "Here, a \"$\" is replaced by the search string"
+msgstr ""
 
 #. Translators: Bind ID - In LDAP, the operation that begins an LDAP
 #. * session and authenticates the user to the directory is called a
@@ -1376,11 +1439,14 @@ msgstr "_Filtrimall"
 #. * course, the Bind ID can be left blank, in which case the session
 #. * is anonymous / unauthenticated.)
 #.
-msgid "Bind _ID"
-msgstr "Ühendumise _ID"
+msgid "Bind _ID:"
+msgstr "Ühendumise _ID:"
 
-msgid "_Password"
-msgstr "_Parool"
+msgid "User ID; leave blank for anonymous / nonauthenticated"
+msgstr ""
+
+msgid "The password for the user ID above, if any"
+msgstr ""
 
 msgid "Use TLS"
 msgstr "Kasutatakse TLS-i"
@@ -1560,24 +1626,18 @@ msgstr ""
 "Palun redigeeri järgnevaid välju (identifikaatorita väljad tähendavad "
 "globaalseid välju)"
 
-msgid "Contact list's name"
-msgstr "Kontaktiloendi nimi"
+msgid "Contact list's name:"
+msgstr "Kontaktiloendi nimi:"
 
 #. "Document" used as a name -- uri point to the root of a document tree
-msgid "Document root"
-msgstr "Dokumendi juur"
+msgid "Document root:"
+msgstr "Dokumendi juur:"
 
-msgid "Identifier"
-msgstr "Identifikaator"
+msgid "Server username:"
+msgstr "Serveri kasutajanimi:"
 
-msgid "Writable"
-msgstr "Kirjutatav"
-
-msgid "Server username"
-msgstr "Serveri kasutajanimi"
-
-msgid "Server password"
-msgstr "Serveri parool"
+msgid "Server password:"
+msgstr "Serveri parool:"
 
 msgid "Add a remote contact"
 msgstr "Kaugkontakti lisamine"
@@ -1697,10 +1757,18 @@ msgstr "Palun sisesta oma kasutaja ID:"
 msgid "Please enter your PIN code:"
 msgstr "Palun sisesta oma PIN-kood:"
 
+#, fuzzy
+#| msgid ""
+#| "You can make calls to regular phones and cell numbers worldwide using "
+#| "Ekiga.\n"
+#| "\n"
+#| "To enable this, you need to do two things:\n"
+#| "- First buy an account at the URL below.\n"
+#| "- Then enter your account ID and PIN code.\n"
+#| "The service will work only if your account is created using the URL in "
+#| "this dialog.\n"
 msgid ""
-"You can make calls to regular phones and cell numbers worldwide using "
-"Ekiga.\n"
-"\n"
+"You can make calls to regular phones and cell numbers worldwide using Ekiga. "
 "To enable this, you need to do two things:\n"
 "- First buy an account at the URL below.\n"
 "- Then enter your account ID and PIN code.\n"
@@ -1883,7 +1951,7 @@ msgstr ""
 #. * separate names with \n
 msgid "translator-credits"
 msgstr ""
-"Ivar Smolin <okul@linux.ee>, 2005–2010.\n"
+"Ivar Smolin <okul@linux.ee>, 2005–2011.\n"
 "Mattias Põldaru <mahfiaz gmail com>, 2010."
 
 msgid ""
@@ -2155,6 +2223,9 @@ msgstr "Tuvastati uus audiosisendi seade:"
 
 msgid "Detected new audio output device:"
 msgstr "Tuvastati uus audioväljundi seade:"
+
+msgid "Detected new ringer device:"
+msgstr "Tuvastati uus helinaseade:"
 
 msgid "Detected new video input device:"
 msgstr "Tuvastati uus videosisendi seade:"
@@ -2491,7 +2562,9 @@ msgstr "DTMF-režiim"
 msgid "_Send DTMF as:"
 msgstr "DTMF s_aadetakse kui:"
 
-msgid "This allows you to set the mode for DTMFs sending."
+#, fuzzy
+#| msgid "This allows you to set the mode for DTMFs sending."
+msgid "Select the mode for DTMFs sending"
 msgstr "See võimaldab määrata DTMF-i saatmise režiimi."
 
 msgid "INFO"
@@ -2516,7 +2589,9 @@ msgstr "Sisendseade:"
 msgid "_Detect devices"
 msgstr "_Tuvasta seadmed"
 
-msgid "Click here to refresh the device list."
+#, fuzzy
+#| msgid "Click here to refresh the device list."
+msgid "Click here to refresh the device list"
 msgstr "Seadmete nimekirja uuendamiseks klõpsa siia."
 
 msgid "PAL (Europe)"
@@ -2555,32 +2630,25 @@ msgstr "Sätted"
 msgid "Enable silence _detection"
 msgstr "_Vaikuse tuvastamine on lubatud"
 
-msgid "If enabled, use silence detection with the codecs supporting it."
-msgstr ""
-"Kui märgitud, siis on vaikuse tuvastamine lubatud seda toetavate koodekite "
-"korral."
-
 msgid "Enable echo can_celation"
 msgstr "_Kaja eemaldamine on lubatud"
 
-msgid "If enabled, use echo cancelation."
-msgstr "Kui märgitud, siis kasutatakse kaja eemaldamist."
-
 msgid "Maximum _jitter buffer (in ms):"
 msgstr "Suurim _värinapuhver (millisekundites):"
-
-msgid "The maximum jitter buffer size for audio reception (in ms)."
-msgstr ""
-"Audiovastuvõtul kasutatava värinapuhvri suurim suurus (millisekundites)."
 
 #. Translators: the full sentence is Keep a minimum video quality of X %
 msgid "Picture Quality"
 msgstr "Pildikvaliteet"
 
+#, fuzzy
+#| msgid ""
+#| "Choose if you want to guarantee a minimum image quality (possibly leading "
+#| "to dropped frames in order not to surpass the bitrate limit) or if you "
+#| "prefer to keep the frame rate."
 msgid ""
 "Choose if you want to guarantee a minimum image quality (possibly leading to "
 "dropped frames in order not to surpass the bitrate limit) or if you prefer "
-"to keep the frame rate."
+"to keep the frame rate"
 msgstr ""
 "Vali, kas tahad tagada minimaalse kvaliteedi (mis võib põhjustada kaadrite "
 "ärajätmist, et mitte ületada bitikiiruse piirangut) või eelistad "
@@ -2665,3 +2733,30 @@ msgstr "Kohandatud sõnumite kustutamine:"
 
 msgid "Define a custom message:"
 msgstr "Kohandatud sõnumite kirjeldamine:"
+
+#~ msgid "Change the main window panel section"
+#~ msgstr "Põhiakna paneelisektsiooni muutmine"
+
+#~ msgid "Call in progress"
+#~ msgstr "Kõne on hetkel käimas"
+
+#~ msgid "_Password"
+#~ msgstr "_Parool"
+
+#~ msgid "Identifier"
+#~ msgstr "Identifikaator"
+
+#~ msgid "Writable"
+#~ msgstr "Kirjutatav"
+
+#~ msgid "If enabled, use silence detection with the codecs supporting it."
+#~ msgstr ""
+#~ "Kui märgitud, siis on vaikuse tuvastamine lubatud seda toetavate "
+#~ "koodekite korral."
+
+#~ msgid "If enabled, use echo cancelation."
+#~ msgstr "Kui märgitud, siis kasutatakse kaja eemaldamist."
+
+#~ msgid "The maximum jitter buffer size for audio reception (in ms)."
+#~ msgstr ""
+#~ "Audiovastuvõtul kasutatava värinapuhvri suurim suurus (millisekundites)."
