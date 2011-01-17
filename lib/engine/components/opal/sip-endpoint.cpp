@@ -898,19 +898,6 @@ Opal::Sip::EndPoint::OnReceivedMESSAGE (OpalTransport & transport,
 }
 
 
-void
-Opal::Sip::EndPoint::OnMessageFailed (const SIPURL & messageUrl,
-				      SIP_PDU::StatusCodes /*reason*/)
-{
-  SIPURL to = messageUrl;
-  to.Sanitise (SIPURL::ToURI);
-  std::string uri = (const char *) to.AsString ();
-  std::string display_name = (const char *) to.GetDisplayName ();
-
-  Ekiga::Runtime::run_in_main (boost::bind (&Opal::Sip::EndPoint::push_notice_in_main, this, uri, display_name, _("Could not send message")));
-}
-
-
 SIPURL
 Opal::Sip::EndPoint::GetRegisteredPartyName (const SIPURL & aor,
 					     const OpalTransport & transport)
