@@ -545,14 +545,6 @@ static void ekiga_main_window_add_device_dialog_show (EkigaMainWindow *main_wind
 
 
 /* DESCRIPTION  :  /
- * BEHAVIOR     :  Press the given dialpad key.
- * PRE          :  The main window GMObject, the key to press (0 - 9, *, #).
- */
-static void gm_main_window_press_dialpad (GtkWidget *main_window,
-				   const char c);
-
-
-/* DESCRIPTION  :  /
  * BEHAVIOR     :  Displays the gnomemeeting logo in the video window.
  * PRE          :  The main window GMObject.
  */
@@ -615,15 +607,6 @@ static void ekiga_main_window_update_sensitivity (EkigaMainWindow *main_window,
 					   bool is_receiving,
 					   bool is_transmitting);
 
-
-/* DESCRIPTION  :  /
- * BEHAVIOR     :  Update the main window busy state. When the window is busy,
- *                 a busy cursor is displayed and you can not exit.
- * PRE          :  The main window GMObject.
- * 		   The first parameter is TRUE if we are busy.
- */
-static void ekiga_main_window_set_busy (EkigaMainWindow *main_window,
-			      bool busy);
 
 
 /* DESCRIPTION  :  /
@@ -688,15 +671,6 @@ static void ekiga_main_window_push_message (EkigaMainWindow *main_window,
 				     const char *msg,
 				     ...) G_GNUC_PRINTF(2,3);
 
-
-/* DESCRIPTION   :  /
- * BEHAVIOR      : Displays an info message on the statusbar. An info message
- * 		   is only cleared when the user clicks on it.
- * PRE           : The main window GMObject, followed by printf syntax format.
- */
-static void ekiga_main_window_push_info_message (EkigaMainWindow *main_window,
-					  const char *msg,
-					  ...) G_GNUC_PRINTF(2,3);
 
 /* DESCRIPTION   :  /
  * BEHAVIOR      : Sets the given URL as called URL.
@@ -2694,23 +2668,6 @@ statusbar_clicked_cb (G_GNUC_UNUSED GtkWidget *widget,
 
 
 static void
-gm_main_window_press_dialpad (GtkWidget *main_window,
-			      const char c)
-{
-  guint key = 0;
-
-  if (c == '*')
-    key = GDK_KP_Multiply;
-  else if (c == '#')
-    key = GDK_numbersign;
-  else
-    key = GDK_KP_0 + atoi (&c);
-
-  gtk_accel_groups_activate (G_OBJECT (main_window), key, (GdkModifierType) 0);
-}
-
-
-static void
 ekiga_main_window_update_logo_have_window (EkigaMainWindow *mw)
 {
   g_return_if_fail (EKIGA_IS_MAIN_WINDOW (mw));
@@ -2979,28 +2936,6 @@ ekiga_main_window_hide_call_panel (EkigaMainWindow *mw)
     x = x - call_panel->allocation.width;
     gtk_window_resize (GTK_WINDOW (mw), x, y);
   }
-}
-
-
-static void
-ekiga_main_window_set_busy (EkigaMainWindow *mw,
-			    bool busy)
-{
-  GdkCursor *cursor = NULL;
-
-  g_return_if_fail (EKIGA_IS_MAIN_WINDOW (mw));
-
-  gtk_widget_set_sensitive (mw->priv->main_toolbar, !busy);
-  gtk_widget_set_sensitive (mw->priv->main_menu, !busy);
-
-  if (busy) {
-
-    cursor = gdk_cursor_new (GDK_WATCH);
-    gdk_window_set_cursor (GTK_WIDGET (mw)->window, cursor);
-    gdk_cursor_unref (cursor);
-  }
-  else
-    gdk_window_set_cursor (GTK_WIDGET (mw)->window, NULL);
 }
 
 void
@@ -4531,24 +4466,6 @@ ekiga_main_window_push_message (EkigaMainWindow *mw,
     vsnprintf (buffer, 1024, msg, args);
 
   gm_statusbar_push_message (GM_STATUSBAR (mw->priv->statusbar), "%s", buffer);
-  va_end (args);
-}
-
-
-static void
-ekiga_main_window_push_info_message (EkigaMainWindow *mw, 
-				     const char *msg, 
-				     ...)
-{
-  char *buffer;
-  va_list args;
-
-  g_return_if_fail (EKIGA_IS_MAIN_WINDOW (mw));
-
-  va_start (args, msg);
-  buffer = g_strdup_vprintf (msg, args);
-  gm_statusbar_push_info_message (GM_STATUSBAR (mw->priv->statusbar), "%s", buffer);
-  g_free (buffer);
   va_end (args);
 }
 
