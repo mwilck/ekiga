@@ -663,6 +663,8 @@ AM_CONDITIONAL(HAVE_LOUDMOUTH, test "x$found_loudmouth" = "xyes")
 dnl ###############################
 dnl   Gnome-Doc-Utils
 dnl ###############################
+# GDU is disabled for Windows; help is generated separately manually in Makefile
+GNOME_DOC_INIT(,,[GDI=no])
 if test "x${gm_platform}" != "xmingw" ; then
   GDU="disabled"
   AC_ARG_ENABLE(gdu, AS_HELP_STRING([--enable-gdu],[enable GNOME-Doc-Utils support, i.e. help file generation (default is enabled)]),
@@ -671,7 +673,6 @@ if test "x${gm_platform}" != "xmingw" ; then
 fi],enable_gdu=yes)
   if test "x$enable_gdu" = "xyes"; then
     AC_PATH_PROG(SK_CONFIG,scrollkeeper-config,no)
-    GNOME_DOC_INIT(,,[GDI=no])
     if test "x$SK_CONFIG" != "xno" -a "x$GDI" != "xno"; then
       GDU="enabled"
       AC_DEFINE(HAVE_GNOME_DOC_UTILS,1,[GNOME-Doc-Utils support])
