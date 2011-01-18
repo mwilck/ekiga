@@ -275,7 +275,7 @@ confopal := $(confflags) --with-ffmpeg-dir=$(FFMPEG_DIR) --disable-t38 --disable
 confekiga:= $(confflags) \
 	--with-directx-dir=$(EKIGA_DIR)/win32/directx --prefix=$(EKIGA_PREFIX) \
 	--bindir=$(EKIGA_PREFIX) --datadir=$(EKIGA_PREFIX) \
-	--sysconfdir=$(EKIGA_PREFIX) --libdir=$(EKIGA_PREFIX) --disable-gnome \
+	--sysconfdir=$(EKIGA_PREFIX) --libdir=$(EKIGA_PREFIX) \
 	--disable-dbus --disable-avahi --disable-xv \
 	--with-ldap-dir=$(OPENLDAP_DIR) --with-libsasl2-dir=$(LIBSASL2_DIR) --with-boost=$(BUILDROOT) # --enable-static-libs
 
