@@ -455,12 +455,14 @@ gm_window_get_hide_on_delete (GmWindow *window)
   return window->priv->hide_on_delete;
 }
 
+#ifndef WIN32
 // helper copied from gdk
 static void
 gdk_wmspec_change_state (gboolean add,
 			 GdkWindow *window,
 			 GdkAtom state1,
 			 GdkAtom state2);
+#endif
 
 void
 gm_window_set_always_on_top (GdkWindow *window,
