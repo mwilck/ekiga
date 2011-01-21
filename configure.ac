@@ -189,7 +189,7 @@ dnl ###############################
 GCONF="disabled"
 
 if test "x${gm_platform}" != "xmingw" ; then
-  AC_ARG_ENABLE(gconf, AS_HELP_STRING([--enable-gconf],[enable GConf support (default is disabled)]),
+  AC_ARG_ENABLE(gconf, AS_HELP_STRING([--enable-gconf],[enable GConf support (default is enabled)]),
 [if test "x$enableval" = "xyes"; then
   enable_gconf = yes
 fi],enable_gconf=yes)
@@ -495,7 +495,7 @@ dnl ###############################
 AVAHI="disabled"
 
 if test "x${gm_platform}" != "xmingw" ; then
-  AC_ARG_ENABLE(avahi, AS_HELP_STRING([--enable-avahi],[enable mDNS support (default is yes)]),
+  AC_ARG_ENABLE(avahi, AS_HELP_STRING([--enable-avahi],[enable mDNS support (default is enabled)]),
 [if test "x$enableval" = "xyes"; then
   enable_avahi=yes
 fi],enable_avahi=yes)
@@ -641,12 +641,15 @@ fi
 
 AM_CONDITIONAL(HAVE_XCAP, test "x$found_xcap" = "xyes")
 
-
+dnl ###############################
 dnl   LOUDMOUTH support
 dnl ###############################
 LOUDMOUTH="disabled"
 
-AC_ARG_ENABLE(loudmouth, [  --enable-loudmouth           Enable Loudmouth support],enable_loudmouth=yes,)
+AC_ARG_ENABLE(loudmouth, AS_HELP_STRING([--enable-loudmouth],[enable experimental Loudmouth support (default is disabled)]),
+[if test "x$enableval" = "xyes"; then
+  enable_loudmouth=yes
+fi],)
 
 if test "x$enable_loudmouth" = "xyes"; then
    PKG_CHECK_MODULES([LOUDMOUTH], [loudmouth-1.0])
