@@ -15,35 +15,16 @@ INCLUDEDIR:= $(BUILDROOT)/include
 LIBDIR    := $(BUILDROOT)/lib
 BINDIR    := $(BUILDROOT)/bin
 
-export PKG_CONFIG_LIBDIR:=$(LIBDIR)
-
 export DEB_BUILD_GNU_TYPE:=$(shell dpkg-architecture -qDEB_BUILD_GNU_TYPE)
 export DEB_HOST_GNU_TYPE:="i586-pc-mingw32"
 
 WGET := wget -nv -T 60 -N
 
 HOST_TOOL_PREFIX:=i586-mingw32msvc
-
 REALCC:=$(HOST_TOOL_PREFIX)-gcc
 REALCXX:=$(HOST_TOOL_PREFIX)-g++
-
-MACH_FLAGS:=-march=pentium-mmx
-OPTI_FLAGS:=-O3 -fomit-frame-pointer
-#	IX86_TYPE according to Intel
-#	0 : 8086/88, 2 = 80286, 3 = 80386
-#	4 = 80486, 5 = Pentium(R) Processor, 6 = PentiumPro(R) Processor
-#       7 or higher = Processor beyond the PentiumPro6(R) Processor
-IX86_TYPE:=5
-
-
-ifeq ($(DEBUG),1)
-	export CC=$(REALCC) -mms-bitfields -g
-	export CXX=$(REALCXX) -mms-bitfields -g
-else
-	export CC=$(REALCC) -mms-bitfields
-	export CXX=$(REALCXX) -mms-bitfields
-endif
-
+export CC=$(REALCC) -mms-bitfields -g -O2
+export CXX=$(REALCXX) -mms-bitfields -g -O2
 export LD:=$(HOST_TOOL_PREFIX)-ld
 export NM:=$(HOST_TOOL_PREFIX)-nm
 export AR:=$(HOST_TOOL_PREFIX)-ar
@@ -54,12 +35,14 @@ export OBJDUMP:=$(HOST_TOOL_PREFIX)-objdump
 export RC:=$(HOST_TOOL_PREFIX)-windres
 export STRIP:=$(HOST_TOOL_PREFIX)-strip
 export AS:=$(HOST_TOOL_PREFIX)-as
-export CFLAGS:=-I$(INCLUDEDIR) $(MACH_FLAGS)
-export CXXFLAGS:=-I$(INCLUDEDIR) $(MACH_FLAGS)
+export LDD:=$(BUILDROOT)/$(HOST_TOOL_PREFIX)-ldd.sh
+
+export CFLAGS:=-I$(INCLUDEDIR) -march=pentium-mmx
+export CXXFLAGS:=-I$(INCLUDEDIR) -march=pentium-mmx
 export LDFLAGS:=-L$(LIBDIR) $(MACH_FLAGS)
 export PKG_CONFIG_PATH:=$(LIBDIR)/pkgconfig
+export PKG_CONFIG_LIBDIR:=$(LIBDIR)
 export PATH:=$(BINDIR):$(PATH)
-export LDD:=$(BUILDROOT)/$(HOST_TOOL_PREFIX)-ldd.sh
 
 
 ifeq ($(RELEASE),1)
@@ -101,11 +84,7 @@ else
 	OPAL_ARCHIVE := opal
 	OPAL_DIR := $(BUILDROOT)/opal
 endif
-ifeq ($(DEBUG),1)
-	OPAL_LIB := libopal_d.$(OPAL_VER).dll
-else
-	OPAL_LIB := libopal.$(OPAL_VER).dll
-endif
+OPAL_LIB := libopal.$(OPAL_VER).dll
 
 ifeq ($(RELEASE),1)
 	PTLIB_VER := 2.8.3
@@ -120,11 +99,7 @@ else
 	PTLIB_ARCHIVE := ptlib
 	PTLIB_DIR := $(BUILDROOT)/ptlib
 endif
-ifeq ($(DEBUG),1)
-	PTLIB_LIB := libpt_d.$(PTLIB_VER).dll
-else
-	PTLIB_LIB := libpt.$(PTLIB_VER).dll
-endif
+PTLIB_LIB := libpt.$(PTLIB_VER).dll
 
 ##############   ekiga/ptlib/opal library and headers dependencies
 OPENLDAP_VER := 2.4.23
@@ -360,7 +335,8 @@ update-sources::
 
 $(BOOST_DIR)/config.status: $(SRCDIR)/$(BOOST_ARCHIVE)
 	tar xfz $(SRCDIR)/$(BOOST_ARCHIVE)
-	cd $(BOOST_DIR); ./bootstrap.sh --prefix=$(BUILDROOT)
+	# avoid configuring error at -g
+	cd $(BOOST_DIR); CC="$(REALCC) -mms-bitfields" ./bootstrap.sh --prefix=$(BUILDROOT)
 	touch $@
 
 $(LIBDIR)/libboost_signals.dll: $(BOOST_DIR)/config.status
@@ -451,13 +427,8 @@ $(PTLIB_DIR)/config.status: binaries $(PTLIB_DIR)/configure
 	cd $(PTLIB_DIR); ./configure $(confptlib)
 
 $(LIBDIR)/$(PTLIB_LIB): binaries $(PTLIB_DIR)/config.status
-ifeq ($(DEBUG),1)
-	$(MAKE) $(MAKEOPTS) DEBUG=1 debug -C $(PTLIB_DIR)
-	$(MAKE) DEBUG=1 -C $(PTLIB_DIR) install
-else
-	$(MAKE) $(MAKEOPTS) -C $(PTLIB_DIR)
+	$(MAKE) $(MAKEOPTS) VERBOSE=1 -C $(PTLIB_DIR)
 	$(MAKE) -C $(PTLIB_DIR) install
-endif
 
 ### libogg
 update-sources::
@@ -528,7 +499,8 @@ endif
 $(X264_DIR)/config.status: $(SRCDIR)/$(X264_ARCHIVE)
 	rm -rf $(X264_DIR)
 	$(CP) -r $(SRCDIR)/$(X264_ARCHIVE) $(X264_DIR)
-	cd $(X264_DIR); CC=$(REALCC) ./configure $(confx264); \
+	#cd $(X264_DIR); CC=$(REALCC) ./configure $(confx264);
+	cd $(X264_DIR); ./configure $(confx264); \
 	sed -i -e 's#ranlib#$(RANLIB)#g' $(X264_DIR)/Makefile; \
 	sed -i -e 's#strip#$(STRIP)#g' $(X264_DIR)/Makefile; \
 	sed -i -e 's#ar #$(AR) #g' $(X264_DIR)/Makefile
@@ -560,7 +532,8 @@ update-sources::
 $(THEORA_DIR)/config.status: $(SRCDIR)/$(THEORA_ARCHIVE) $(LIBDIR)/libogg.a
 	rm -rf $(THEORA_DIR)
 	tar xfz $(SRCDIR)/$(THEORA_ARCHIVE) -C $(BUILDROOT)
-	cd $(THEORA_DIR); CC=$(REALCC) LD=$(LD) AR=$(AR) RANLIB=$(RANLIB) ./autogen.sh $(conftheora)
+	#cd $(THEORA_DIR); CC=$(REALCC) LD=$(LD) AR=$(AR) RANLIB=$(RANLIB) ./autogen.sh $(conftheora)
+	cd $(THEORA_DIR); ./autogen.sh $(conftheora)
 
 $(LIBDIR)/libtheora.a: $(THEORA_DIR)/config.status
 	$(MAKE) $(MAKE_LIB_OPTS) -C $(THEORA_DIR)
@@ -591,15 +564,11 @@ endif
 
 $(OPAL_DIR)/config.status: binaries $(OPAL_DIR)/configure
 	rm -f $(LIBDIR)/$(OPAL_LIB)
-ifeq ($(DEBUG),1)
-	cd $(OPAL_DIR); ./configure $(confopal) --enable-debug
-else
 	cd $(OPAL_DIR); ./configure $(confopal)
-endif
 
 $(LIBDIR)/$(OPAL_LIB): binaries $(OPAL_DIR)/config.status
 	rm -f $(LIBDIR)/$(OPAL_LIB)
-	$(MAKE) $(MAKEOPTS) -C $(OPAL_DIR)
+	$(MAKE) $(MAKEOPTS) VERBOSE=1 -C $(OPAL_DIR)
 	$(MAKE) -C $(OPAL_DIR) install
 #	sed -i -e 's#^prefix=.*$$#prefix=$(BUILDROOT)#g' $(LIBDIR)/pkgconfig/opal*.pc
 
@@ -774,15 +743,11 @@ $(EKIGA_DIR)/config.status: binaries $(EKIGA_DIR)/configure $(LIBDIR)/$(PTLIB_LI
 	$(LIBDIR)/pkgconfig/freetype2.pc $(LIBDIR)/pkgconfig/fontconfig.pc $(LIBDIR)/pkgconfig/gdk-pixbuf-2.0.pc \
 	$(LIBDIR)/libintl.a $(LIBDIR)/libiconv.a $(LIBDIR)/libboost_signals.dll $(LIBDIR)/libsasl2.a
 	rm -f $(EKIGA_DIR)/src/ekiga.exe
-ifeq ($(DEBUG),1)
-	cd $(EKIGA_DIR); ACLOCAL_FLAGS="-I $(BUILDROOT)/share/aclocal" LDFLAGS="$(LDFLAGS) -Wl,-subsystem,windows" ./configure $(confekiga) --enable-opal-debug
-else
 	cd $(EKIGA_DIR); ACLOCAL_FLAGS="-I $(BUILDROOT)/share/aclocal" LDFLAGS="$(LDFLAGS) -Wl,-subsystem,windows" ./configure $(confekiga)
-endif
 
 $(EKIGA_DIR)/src/ekiga.exe: binaries $(EKIGA_DIR)/config.status
-	$(MAKE) $(MAKEOPTS) -C $(EKIGA_DIR)
-	$(MAKE) $(MAKEOPTS) -C $(EKIGA_DIR)/help
+	$(MAKE) $(MAKEOPTS) V=1 -C $(EKIGA_DIR)
+	$(MAKE) $(MAKEOPTS) V=1 -C $(EKIGA_DIR)/help
 
 $(TARGETDIR)/zips: binaries $(EKIGA_DIR)/src/ekiga.exe
 	$(RM) -rf $(TARGETDIR)
