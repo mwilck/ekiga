@@ -4800,7 +4800,7 @@ main (int argc,
 
   /* Exit Ekiga */
   GnomeMeeting::Process ()->Exit ();
-
+  service_core.reset ();
   Ekiga::Runtime::quit ();
 
   /* Save and shutdown the configuration */
