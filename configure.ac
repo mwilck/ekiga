@@ -1,12 +1,12 @@
-AC_INIT(ekiga, 3.3.1, http://bugzilla.gnome.org/enter_bug.cgi?product=ekiga)
+AC_INIT([ekiga],[3.3.1],[http://bugzilla.gnome.org/enter_bug.cgi?product=ekiga])
 AC_CANONICAL_TARGET
-AC_PREREQ(2.53)
+AC_PREREQ([2.53])
 AC_CONFIG_MACRO_DIR([m4])
 AC_CONFIG_SRCDIR(src/ekiga.cpp)
 AM_INIT_AUTOMAKE
 
 AM_MAINTAINER_MODE
-AM_CONFIG_HEADER(config.h)
+AC_CONFIG_HEADERS([config.h])
 
 dnl use "make V=1" if you want to see the long awful lines
 m4_ifdef([AM_SILENT_RULES],[AM_SILENT_RULES([yes])])
@@ -37,11 +37,11 @@ dnl ###########################################################################
 PKG_PROG_PKG_CONFIG
 
 AC_DISABLE_STATIC
-AC_PROG_LIBTOOL
+LT_INIT
 
 AC_PROG_CC_C99
 AC_PROG_CXX
-AC_ISC_POSIX
+AC_SEARCH_LIBS([strerror],[cposix])
 AC_HEADER_STDC
 
 dnl Enable compiler warnings
@@ -150,7 +150,7 @@ dnl ###############################
 PKG_CHECK_MODULES([GTK], [gtk+-2.0 >= 2.20.0])
 PKG_CHECK_MODULES([GLIB], [glib-2.0 >= 2.24.0 gmodule-2.0 gobject-2.0 gthread-2.0])
 AC_ARG_ENABLE([gtk-debug],
-              [AC_HELP_STRING([--enable-gtk-debug],[enable GTK+ debug flags (default is disabled)])],
+              [AS_HELP_STRING([--enable-gtk-debug],[enable GTK+ debug flags (default is disabled)])],
               [if test "x$enableval" = "xyes"; then
                 GTK_CFLAGS="$GTK_CFLAGS -DGDK_PIXBUF_DISABLE_DEPRECATED -DGDK_DISABLE_DEPRECATED -DGTK_DISABLE_DEPRECATED -DGDK_PIXBUF_DISABLE_SINGLE_INCLUDES -DGTK_DISABLE_SINGLE_INCLUDES"
                 GLIB_CFLAGS="$GLIB_CFLAGS -DG_DISABLE_SINGLE_INCLUDES"
@@ -694,13 +694,13 @@ PKG_CHECK_MODULES([OPAL], [opal >= ${OPAL_REC_VERSION}])
 
 SUFFIX=
 AC_ARG_ENABLE([opal-debug],
-              [AC_HELP_STRING([--enable-opal-debug],[link to debug versions of opal and ptlib (opal_d and ptlib_d) (default is disabled)])],
+              [AS_HELP_STRING([--enable-opal-debug],[link to debug versions of opal and ptlib (opal_d and ptlib_d) (default is disabled)])],
               [if test "x$enableval" = "xyes"; then
                 SUFFIX="_d"
               fi])
 
 AC_ARG_ENABLE([static-libs],
-              [AC_HELP_STRING([--enable-static-libs],[link to opal and ptlib static libraries (default is disabled)])],
+              [AS_HELP_STRING([--enable-static-libs],[link to opal and ptlib static libraries (default is disabled)])],
               [if test "x$enableval" = "xyes"; then
                 SUFFIX="${SUFFIX}_s"
                fi
@@ -717,8 +717,7 @@ AC_SUBST(OPAL_CFLAGS)
 AC_SUBST(OPAL_LIBS)
 
 # check for H.323 support
-AC_ARG_ENABLE(h323, AC_HELP_STRING([--enable-h323],
-              [enable H.323 support (default same as opal)]),
+AC_ARG_ENABLE(h323, AS_HELP_STRING([--enable-h323],[enable H.323 support (default same as opal)]),
               enable_h323=$enableval)
 if test x$enable_h323 != xno; then
   dnl The =1 checks are here only for backward compatibility
@@ -760,7 +759,7 @@ dnl DEBUG support
 dnl ###############################
 has_debug=
 AC_ARG_ENABLE([debug],
-              [AC_HELP_STRING([--enable-debug],[Compile with debug support (default is disabled)])],
+              [AS_HELP_STRING([--enable-debug],[Compile with debug support (default is disabled)])],
               [if test "x$enableval" = "xyes"; then
                 CPPFLAGS="-DDEBUG $CPPFLAGS"
                 has_debug="yes"
@@ -835,8 +834,7 @@ AC_SUBST(STACKLIB_LDFLAGS)
 dnl ###########################################################################
 dnl  Output the different Makefiles
 dnl ###########################################################################
-AC_OUTPUT(
-Makefile
+AC_CONFIG_FILES([Makefile
 Doxyfile
 src/AC_PACKAGE_NAME-config-tool
 AC_PACKAGE_NAME.schemas.in
@@ -857,7 +855,8 @@ plugins/ldap/Makefile
 plugins/loudmouth/Makefile
 plugins/resource-list/Makefile
 plugins/xcap/Makefile
-)
+])
+AC_OUTPUT
 
 
 dnl ###########################################################################
