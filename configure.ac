@@ -36,8 +36,7 @@ dnl ###########################################################################
 
 PKG_PROG_PKG_CONFIG
 
-AC_DISABLE_STATIC
-LT_INIT
+LT_INIT([dlopen disable-static])
 
 AC_PROG_CC_C99
 AC_PROG_CXX
