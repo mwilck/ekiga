@@ -1,4 +1,5 @@
 AC_INIT([ekiga],[3.3.1],[http://bugzilla.gnome.org/enter_bug.cgi?product=ekiga])
+
 AC_CANONICAL_TARGET
 AC_PREREQ([2.53])
 AC_CONFIG_MACRO_DIR([m4])
@@ -769,9 +770,7 @@ AM_CONDITIONAL(DEBUG, test "x$has_debug" = "xyes")
 dnl #########################################################################
 dnl  Support for internationalization
 dnl ########################################################################
-GETTEXT_PACKAGE=AC_PACKAGE_NAME
-AC_SUBST(GETTEXT_PACKAGE)
-AC_DEFINE_UNQUOTED(GETTEXT_PACKAGE, "$GETTEXT_PACKAGE",[fix])
+AC_DEFINE_UNQUOTED(GETTEXT_PACKAGE, [AC_PACKAGE_NAME],[fix])
 AM_GLIB_GNU_GETTEXT
 
 
@@ -835,9 +834,9 @@ dnl  Output the different Makefiles
 dnl ###########################################################################
 AC_CONFIG_FILES([Makefile
 Doxyfile
-src/AC_PACKAGE_NAME-config-tool
-AC_PACKAGE_NAME.schemas.in
-AC_PACKAGE_NAME.desktop.in
+src/ekiga-config-tool
+ekiga.schemas.in
+ekiga.desktop.in
 lib/Makefile
 po/Makefile.in
 man/Makefile
@@ -856,7 +855,6 @@ plugins/resource-list/Makefile
 plugins/xcap/Makefile
 ])
 AC_OUTPUT
-
 
 dnl ###########################################################################
 dnl Summary
