@@ -1,6 +1,6 @@
 SUBDIRS = man sounds pixmaps lib src plugins po 
 
-ACLOCAL_AMFLAGS = -I m4
+ACLOCAL_AMFLAGS = -I m4 ${ACLOCAL_FLAGS}
 
 ### Don't execute make in the help subdirectory if BULD_DOC is set
 if HAVE_GNOME_DOC_UTILS
