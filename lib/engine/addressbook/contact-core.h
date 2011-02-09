@@ -66,6 +66,7 @@ namespace Ekiga
    * be freed here : it's up to you to free them somehow.
    */
   class ContactCore:
+    public virtual LiveObject,
     public Service
   {
   public:
@@ -95,6 +96,8 @@ namespace Ekiga
     const std::string get_description () const
     { return "\tContact managing object"; }
 
+    /*** LiveObject implementation ***/
+    bool populate_menu (MenuBuilder& builder);
 
     /*** Public API ***/
 
@@ -170,26 +173,7 @@ namespace Ekiga
 
     std::list<boost::shared_ptr<ContactDecorator> > contact_decorators;
 
-
-    /*** Misc ***/
-
-  public:
-
-    /** Create the menu for the ContactCore and its actions.
-     * @param A MenuBuilder object to populate.
-     */
-    bool populate_menu (MenuBuilder &builder);
-
-    /** This signal is emitted when the ContactCore Service has been
-     * updated.
-     */
-    boost::signal0<void> updated;
-
-
-    /** This chain allows the ContactCore to present forms to the user
-     */
-    ChainOfResponsibility<FormRequestPtr> questions;
-
+    /*** Misc stuff ***/
     std::list<boost::signals::connection> conns;
   };
 
