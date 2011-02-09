@@ -57,6 +57,7 @@
 #include "gmlevelmeter.h"
 #include "gmpowermeter.h"
 #include "trigger.h"
+#include "menu-builder-tools.h"
 #include "menu-builder-gtk.h"
 
 #include "platform/gm-platform.h"
@@ -256,6 +257,11 @@ private:
 
   std::set<std::string> possible_names;
 };
+
+/* This function is to be called whenever some core gets updated,
+ * so we update the menu of the main possible actions
+ */
+static void on_some_core_updated (EkigaMainWindow* self);
 
 /* GUI Functions */
 
@@ -712,6 +718,39 @@ static void ekiga_main_window_update_stats (EkigaMainWindow *main_window,
 				     unsigned int tr_width,
 				     unsigned int tr_height);
 
+static
+void on_some_core_updated (EkigaMainWindow* self)
+{
+  GtkWidget* menu = gtk_menu_get_widget (self->priv->main_menu, "core-actions");
+  MenuBuilderGtk builder;
+  Ekiga::TemporaryMenuBuilder tmp_builder;
+
+  boost::shared_ptr<Ekiga::PresenceCore> presence_core = self->priv->core->get<Ekiga::PresenceCore> ("presence-core");
+  if (presence_core->populate_menu (tmp_builder)) {
+
+    builder.add_ghost ("", _("Presence"));
+    tmp_builder.populate_menu (builder);
+  }
+
+  boost::shared_ptr<Ekiga::ContactCore> contact_core = self->priv->core->get<Ekiga::ContactCore> ("contact-core");
+  if (contact_core->populate_menu (tmp_builder)) {
+
+    builder.add_ghost ("", _("Addressbook"));
+    tmp_builder.populate_menu (builder);
+  }
+
+  if (!builder.empty ()) {
+
+    gtk_widget_set_sensitive (menu, TRUE);
+    gtk_menu_item_set_submenu (GTK_MENU_ITEM (menu), builder.menu);
+    gtk_widget_show_all (builder.menu);
+  } else {
+
+    gtk_widget_set_sensitive (menu, FALSE);
+    g_object_ref_sink (builder.menu);
+    g_object_unref (builder.menu);
+  }
+}
 
 // creates the connect two-icon button
 static GtkWidget*
@@ -3494,6 +3533,14 @@ ekiga_main_window_init_menu (EkigaMainWindow *mw)
 
       GTK_MENU_SEPARATOR,
 
+      // FIXME: that isn't a very good way to do things
+      GTK_MENU_ENTRY ("core-actions", _("Other"),
+		      _("Other possible actions"),
+		      GTK_STOCK_EXECUTE, 0,
+		      NULL, NULL, FALSE),
+
+      GTK_MENU_SEPARATOR,
+
       GTK_MENU_ENTRY("close", NULL, _("Close the Ekiga window"),
 		     GTK_STOCK_CLOSE, 'W', 
 		     G_CALLBACK (window_closed_from_menu_cb),
@@ -4379,6 +4426,13 @@ ekiga_main_window_connect_engine_signals (EkigaMainWindow *mw)
 
   conn = call_core->errors.connect (boost::bind (&on_handle_errors, _1, (gpointer) mw));
   mw->priv->connections.push_back (conn);
+
+  // FIXME: here we should watch for updates of the presence core
+  // and call on_some_core_updated... it it had such a signal!
+
+  boost::shared_ptr<Ekiga::ContactCore> contact_core = mw->priv->core->get<Ekiga::ContactCore> ("contact-core");
+  conn = contact_core->updated.connect (boost::bind (&on_some_core_updated, mw));
+  mw->priv->connections.push_back (conn);
 }
 
 GtkWidget *
@@ -4390,6 +4444,9 @@ ekiga_main_window_new (Ekiga::ServiceCore *core)
                                         "service-core", core, NULL));
   gm_window_set_key (GM_WINDOW (mw), USER_INTERFACE_KEY "main_window");
   ekiga_main_window_connect_engine_signals (mw);
+
+  // initial population
+  on_some_core_updated (mw);
 
   return GTK_WIDGET (mw);
 }
