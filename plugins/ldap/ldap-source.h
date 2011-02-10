@@ -78,11 +78,9 @@ namespace OPENLDAP
     Ekiga::ServiceCore &core;
     boost::shared_ptr<xmlDoc> doc;
 
-    struct BookInfo bookinfo;
-
     void add (xmlNodePtr node);
 
-    void add ();
+    void add (struct BookInfo bookinfo);
 
     void common_add (BookPtr book);
 

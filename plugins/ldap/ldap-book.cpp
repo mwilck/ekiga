@@ -187,7 +187,6 @@ OPENLDAP::Book::Book (Ekiga::ServiceCore &_core,
   bookinfo.authcID = "";
   bookinfo.password = "";
   bookinfo.saslMech = "";
-  bookinfo.urld = NULL;
   bookinfo.sasl = false;
   bookinfo.starttls = false;
 
@@ -371,7 +370,6 @@ OPENLDAP::Book::Book (Ekiga::ServiceCore &_core,
 
 OPENLDAP::Book::~Book ()
 {
-  if (bookinfo.urld) ldap_free_urldesc(bookinfo.urld);
 }
 
 void
@@ -393,7 +391,7 @@ OPENLDAP::BookInfoParse (struct BookInfo &info)
       }
     }
   }
-  info.urld = url_tmp;
+  info.urld = boost::shared_ptr<LDAPURLDesc> (url_tmp, ldap_url_desc_deleter ());
   pos = info.uri.find ('/', strlen(info.urld->lud_scheme) + 3);
   if (pos != std::string::npos)
     info.uri_host = info.uri.substr (0,pos);
@@ -1077,8 +1075,7 @@ OPENLDAP::BookFormInfo (Ekiga::Form &result,
   url_base->lud_filter = NULL;
   ldap_free_urldesc (url_base);
 
-  if (bookinfo.urld) ldap_free_urldesc (bookinfo.urld);
-  bookinfo.urld = url_host;
+  bookinfo.urld = boost::shared_ptr<LDAPURLDesc> (url_host, ldap_url_desc_deleter ());
   url_str = ldap_url_desc2str (url_host);
   bookinfo.uri = std::string(url_str);
   ldap_memfree (url_str);

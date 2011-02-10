@@ -56,6 +56,11 @@
 
 namespace OPENLDAP
 {
+  struct ldap_url_desc_deleter
+  {
+    void operator() (LDAPURLDesc* p)
+    { if (p) ldap_free_urldesc (p); }
+  };
 
   struct BookInfo {
     std::string name;
@@ -64,7 +69,7 @@ namespace OPENLDAP
     std::string authcID;
     std::string password;
     std::string saslMech;
-    LDAPURLDesc *urld;
+    boost::shared_ptr<LDAPURLDesc> urld;
     bool sasl;
     bool starttls;
   };
@@ -74,7 +79,7 @@ namespace OPENLDAP
 		 std::string title );
 
   int BookFormInfo (Ekiga::Form &result, struct BookInfo &info,
-  	std::string &errmsg);
+		    std::string &errmsg);
 
   void BookInfoParse (struct BookInfo &info);
 

@@ -104,7 +104,7 @@ OPENLDAP::Source::add (xmlNodePtr node)
 }
 
 void
-OPENLDAP::Source::add ()
+OPENLDAP::Source::add (struct BookInfo bookinfo)
 {
   xmlNodePtr root;
 
@@ -121,6 +121,7 @@ OPENLDAP::Source::common_add (BookPtr book)
 {
   book->trigger_saving.connect (boost::bind (&OPENLDAP::Source::save, this));
   add_book (book);
+  save ();
 }
 
 bool
@@ -137,13 +138,13 @@ void
 OPENLDAP::Source::new_book ()
 {
   boost::shared_ptr<Ekiga::FormRequestSimple> request = boost::shared_ptr<Ekiga::FormRequestSimple> (new Ekiga::FormRequestSimple (boost::bind (&OPENLDAP::Source::on_new_book_form_submitted, this, _1, _2)));
+  struct BookInfo bookinfo;
 
   bookinfo.name = "";
   bookinfo.uri = "ldap://localhost/dc=net?cn,telephoneNumber?sub?(cn=$)";
   bookinfo.authcID = "";
   bookinfo.password = "";
   bookinfo.saslMech = "";
-  bookinfo.urld = NULL;
   bookinfo.sasl = false;
   bookinfo.starttls = false;
 
@@ -156,18 +157,17 @@ OPENLDAP::Source::new_book ()
 void
 OPENLDAP::Source::new_ekiga_net_book ()
 {
+  struct BookInfo bookinfo;
   bookinfo.name = _("Ekiga.net Directory");
   bookinfo.uri =
     "ldap://ekiga.net/dc=ekiga,dc=net?givenName,telephoneNumber?sub?(cn=$)";
   bookinfo.authcID = "";
   bookinfo.password = "";
   bookinfo.saslMech = "";
-  bookinfo.urld = NULL;
   bookinfo.sasl = false;
   bookinfo.starttls = false;
 
-  add ();
-  save ();
+  add (bookinfo);
 }
 
 void
@@ -178,6 +178,7 @@ OPENLDAP::Source::on_new_book_form_submitted (bool submitted,
     return;
 
   std::string errmsg;
+  struct BookInfo bookinfo;
 
   if (OPENLDAP::BookFormInfo (result, bookinfo, errmsg)) {
     boost::shared_ptr<Ekiga::FormRequestSimple> request = boost::shared_ptr<Ekiga::FormRequestSimple> (new Ekiga::FormRequestSimple (boost::bind (&OPENLDAP::Source::on_new_book_form_submitted, this, _1, _2)));
@@ -189,8 +190,7 @@ OPENLDAP::Source::on_new_book_form_submitted (bool submitted,
     return;
   }
 
-  add ();
-  save ();
+  add (bookinfo);
 }
 
 void
