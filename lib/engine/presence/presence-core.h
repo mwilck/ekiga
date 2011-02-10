@@ -135,6 +135,7 @@ namespace Ekiga
    *         special registering magic?
    */
   class PresenceCore:
+    public virtual LiveObject,
     public Service
   {
   public:
@@ -307,7 +308,8 @@ namespace Ekiga
 
     std::list<boost::function1<bool, std::string> > uri_testers;
 
-    /*** Misc ***/
+    /*** LiveObject implementation ***/
+
   public:
 
     /** Create the menu of the actions available in the PresenceCore.
@@ -315,9 +317,9 @@ namespace Ekiga
      */
     bool populate_menu (MenuBuilder &builder);
 
-    /** This chain allows the PresenceCore to present forms to the user
-     */
-    ChainOfResponsibility<FormRequestPtr> questions;
+    /*** Misc ***/
+
+  private:
 
     std::list<boost::signals::connection> conns;
   };
