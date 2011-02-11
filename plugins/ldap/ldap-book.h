@@ -126,6 +126,8 @@ namespace OPENLDAP
 
     boost::signal0<void> trigger_saving;
 
+    bool is_ekiga_net_book () const;
+
     /* public for access from C */
     void on_sasl_form_submitted (bool, Ekiga::Form &);
     Ekiga::FormBuilder *saslform;
@@ -160,6 +162,8 @@ namespace OPENLDAP
 
     std::string status;
     std::string search_filter;
+
+    bool I_am_an_ekiga_net_book;
   };
 
   typedef boost::shared_ptr<Book> BookPtr;

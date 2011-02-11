@@ -50,6 +50,8 @@
 #include "ldap-book.h"
 #include "robust-xml.h"
 
+#define EKIGA_NET_URI "ldap://ekiga.net:389"
+
 /* little helper function... can probably be made more complete */
 static const std::string
 fix_to_utf8 (const std::string str)
@@ -333,6 +335,10 @@ OPENLDAP::Book::Book (Ekiga::ServiceCore &_core,
     trigger_saving ();
   }
   OPENLDAP::BookInfoParse (bookinfo);
+  if (bookinfo.uri_host == EKIGA_NET_URI)
+    I_am_an_ekiga_net_book = true;
+  else
+    I_am_an_ekiga_net_book = false;
 }
 
 OPENLDAP::Book::Book (Ekiga::ServiceCore &_core,
@@ -366,10 +372,20 @@ OPENLDAP::Book::Book (Ekiga::ServiceCore &_core,
 			       BAD_CAST robust_xmlEscape (node->doc,
 							  bookinfo.password).c_str ());
   OPENLDAP::BookInfoParse (bookinfo);
+  if (bookinfo.uri_host == EKIGA_NET_URI)
+    I_am_an_ekiga_net_book = true;
+  else
+    I_am_an_ekiga_net_book = false;
 }
 
 OPENLDAP::Book::~Book ()
 {
+}
+
+bool
+OPENLDAP::Book::is_ekiga_net_book () const
+{
+  return I_am_an_ekiga_net_book;
 }
 
 void
@@ -1116,6 +1132,12 @@ OPENLDAP::Book::on_edit_form_submitted (bool submitted,
   robust_xmlNodeSetContent (node, &authcID_node, "authcID", bookinfo.authcID);
 
   robust_xmlNodeSetContent (node, &password_node, "password", bookinfo.password);
+
+  if (bookinfo.uri_host == EKIGA_NET_URI)
+    I_am_an_ekiga_net_book = true;
+  else
+    I_am_an_ekiga_net_book = false;
+
   updated ();
   trigger_saving ();
 }

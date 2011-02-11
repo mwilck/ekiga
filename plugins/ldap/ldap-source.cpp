@@ -129,8 +129,11 @@ OPENLDAP::Source::populate_menu (Ekiga::MenuBuilder &builder)
 {
   builder.add_action ("add", _("Add an LDAP Address Book"),
 		      boost::bind (&OPENLDAP::Source::new_book, this));
-  builder.add_action ("add", _("Add the Ekiga.net Directory"),
-		      boost::bind (&OPENLDAP::Source::new_ekiga_net_book, this));
+  if (!has_ekiga_net_book ()) {
+
+    builder.add_action ("add", _("Add the Ekiga.net Directory"),
+			boost::bind (&OPENLDAP::Source::new_ekiga_net_book, this));
+  }
   return true;
 }
 
@@ -204,6 +207,18 @@ OPENLDAP::Source::save ()
   gm_conf_set_string (KEY, (const char *)buffer);
 
   xmlFree (buffer);
+}
+
+bool
+OPENLDAP::Source::has_ekiga_net_book () const
+{
+  bool result = false;
+  for (const_iterator iter = begin ();
+       iter != end () && !result;
+       ++iter)
+    result = (*iter)->is_ekiga_net_book ();
+
+  return result;
 }
 
 void
