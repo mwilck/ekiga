@@ -10,8 +10,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: ekiga-master-po-gl-24088\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2011-01-26 23:59+0100\n"
-"PO-Revision-Date: 2011-01-26 13:53+0100\n"
+"POT-Creation-Date: 2011-02-13 13:58+0100\n"
+"PO-Revision-Date: 2011-02-13 13:59+0100\n"
 "Last-Translator: Fran Diéguez <frandieguez@ubuntu.com>\n"
 "Language-Team: Galician <gnome-gl-list@gnome.org>\n"
 "Language: gl\n"
@@ -22,8 +22,8 @@ msgstr ""
 "X-Generator: KBabel 1.11.4\n"
 
 #. Application name
-#: ../ekiga.desktop.in.in.h:1 ../src/gui/main_window.cpp:4655
-#: ../src/gui/main_window.cpp:4657
+#: ../ekiga.desktop.in.in.h:1 ../src/gui/main_window.cpp:4712
+#: ../src/gui/main_window.cpp:4714
 msgid "Ekiga Softphone"
 msgstr "Softphone do Ekiga"
 
@@ -126,7 +126,7 @@ msgstr "Envío de DTMF"
 msgid "Disable video hardware acceleration"
 msgstr "Desactivar a aceleración de hardware de vídeo"
 
-#: ../ekiga.schemas.in.in.h:18 ../src/gui/main_window.cpp:3917
+#: ../ekiga.schemas.in.in.h:18 ../src/gui/main_window.cpp:3964
 msgid "Display images from your camera device"
 msgstr "Mostra as imaxes da cámara de vídeo"
 
@@ -416,7 +416,7 @@ msgstr ""
 msgid "Show offline contacts"
 msgstr "Mostrar os contactos desconectados"
 
-#: ../ekiga.schemas.in.in.h:78 ../src/gui/main_window.cpp:3550
+#: ../ekiga.schemas.in.in.h:78 ../src/gui/main_window.cpp:3597
 msgid "Show the call panel"
 msgstr "Mostrar o panel de chamada"
 
@@ -862,7 +862,7 @@ msgstr "Sen nome"
 #: ../plugins/evolution/evolution-contact.cpp:228
 #: ../plugins/loudmouth/loudmouth-presentity.cpp:157
 #: ../plugins/resource-list/rl-presentity.cpp:212
-#: ../src/gui/main_window.cpp:3508
+#: ../src/gui/main_window.cpp:3555
 msgid "_Edit"
 msgstr "_Editar"
 
@@ -1034,7 +1034,7 @@ msgstr "Chamada"
 #: ../lib/engine/components/opal/h323-endpoint.cpp:134
 #: ../lib/engine/components/opal/sip-endpoint.cpp:232
 #: ../lib/engine/components/opal/sip-endpoint.cpp:236
-#: ../src/gui/main_window.cpp:3278
+#: ../src/gui/main_window.cpp:3317
 msgid "Transfer"
 msgstr "Transferir"
 
@@ -1264,7 +1264,7 @@ msgstr "_Usuario:"
 #: ../lib/engine/components/opal/opal-bank.cpp:109
 #: ../lib/engine/components/opal/opal-bank.cpp:129
 #: ../lib/engine/components/opal/opal-bank.cpp:139
-#: ../plugins/ldap/ldap-book.cpp:972
+#: ../plugins/ldap/ldap-book.cpp:986
 msgid "_Password:"
 msgstr "_Contrasinal:"
 
@@ -1330,7 +1330,7 @@ msgid "Abnormal call termination"
 msgstr "A chamada non finalizou normalmente"
 
 #: ../lib/engine/components/opal/opal-call.cpp:424
-#: ../src/gui/main_window.cpp:1806
+#: ../src/gui/main_window.cpp:1845
 msgid "Could not connect to remote host"
 msgstr "Non foi posíbel conectar co servidor remoto"
 
@@ -1601,23 +1601,27 @@ msgstr "Xa non existe"
 msgid "Globally not acceptable"
 msgstr "Non é aceptábel globalmente"
 
-#: ../lib/engine/components/opal/sip-endpoint.cpp:933
-#: ../src/gui/main_window.cpp:3115
+#: ../lib/engine/components/opal/sip-endpoint.cpp:910
+msgid "Could not send message"
+msgstr "Non foi posíbel enviar a mensaxe"
+
+#: ../lib/engine/components/opal/sip-endpoint.cpp:946
+#: ../src/gui/main_window.cpp:3154
 #, c-format
 msgid "Incoming call from %s"
 msgstr "Chamada entrante de %s"
 
-#: ../lib/engine/components/opal/sip-endpoint.cpp:935
+#: ../lib/engine/components/opal/sip-endpoint.cpp:948
 #, c-format
 msgid "Incoming call"
 msgstr "Chamada entrante"
 
-#: ../lib/engine/components/opal/sip-endpoint.cpp:941
+#: ../lib/engine/components/opal/sip-endpoint.cpp:954
 #, c-format
 msgid "In a call with %s"
 msgstr "Nunha chamada con %s"
 
-#: ../lib/engine/components/opal/sip-endpoint.cpp:943
+#: ../lib/engine/components/opal/sip-endpoint.cpp:956
 #, c-format
 msgid "In a call"
 msgstr "Nunha chamada"
@@ -1639,7 +1643,7 @@ msgid "Address Book"
 msgstr "Axenda de enderezos"
 
 #: ../lib/engine/gui/gtk-frontend/addressbook-window.cpp:652
-#: ../src/gui/main_window.cpp:3464
+#: ../src/gui/main_window.cpp:3503
 msgid "Address _Book"
 msgstr "_Axenda de enderezos"
 
@@ -1726,7 +1730,7 @@ msgid "Do not show this dialog again"
 msgstr "Non mostrar de novo esta caixa de diálogo"
 
 #: ../plugins/evolution/evolution-book.cpp:75
-#: ../plugins/ldap/ldap-book.cpp:906
+#: ../plugins/ldap/ldap-book.cpp:920
 #, c-format
 msgid "%d user found"
 msgid_plural "%d users found"
@@ -1798,21 +1802,21 @@ msgstr "Tolo"
 msgid "Screencast"
 msgstr "Gravación de pantalla"
 
-#: ../plugins/ldap/ldap-book.cpp:413
+#: ../plugins/ldap/ldap-book.cpp:427
 #: ../plugins/resource-list/rl-entry-ref.cpp:138
 #: ../plugins/resource-list/rl-entry.cpp:160
 msgid "_Refresh"
 msgstr "_Actualizar"
 
-#: ../plugins/ldap/ldap-book.cpp:416
+#: ../plugins/ldap/ldap-book.cpp:430
 msgid "_Remove addressbook"
 msgstr "_Eliminar a axenda de enderezos"
 
-#: ../plugins/ldap/ldap-book.cpp:418
+#: ../plugins/ldap/ldap-book.cpp:432
 msgid "Addressbook _properties"
 msgstr "_Propiedades da axenda de enderezos"
 
-#: ../plugins/ldap/ldap-book.cpp:549
+#: ../plugins/ldap/ldap-book.cpp:563
 msgid "LDAP SASL Interaction"
 msgstr "Interacción con LDAP SASL"
 
@@ -1825,77 +1829,77 @@ msgstr "Interacción con LDAP SASL"
 #. * say about it. You might google for "challenge response
 #. * authentication" if you'd like more background context.
 #.
-#: ../plugins/ldap/ldap-book.cpp:591
+#: ../plugins/ldap/ldap-book.cpp:605
 msgid "Challenge: "
 msgstr "Desafío: "
 
-#: ../plugins/ldap/ldap-book.cpp:599
+#: ../plugins/ldap/ldap-book.cpp:613
 msgid "Interact"
 msgstr "Interacción"
 
-#: ../plugins/ldap/ldap-book.cpp:666
+#: ../plugins/ldap/ldap-book.cpp:680
 msgid "Refreshing"
 msgstr "Actualizando"
 
-#: ../plugins/ldap/ldap-book.cpp:672
+#: ../plugins/ldap/ldap-book.cpp:686
 msgid "Could not initialize server"
 msgstr "Non foi posíbel iniciar o servidor"
 
-#: ../plugins/ldap/ldap-book.cpp:686 ../plugins/ldap/ldap-book.cpp:731
+#: ../plugins/ldap/ldap-book.cpp:700 ../plugins/ldap/ldap-book.cpp:745
 msgid "LDAP Error: "
 msgstr "Erro de LDAP_"
 
-#: ../plugins/ldap/ldap-book.cpp:740
+#: ../plugins/ldap/ldap-book.cpp:754
 msgid "Contacted server"
 msgstr "Servidor contactado"
 
 #. patience == 0
-#: ../plugins/ldap/ldap-book.cpp:779
+#: ../plugins/ldap/ldap-book.cpp:793
 msgid "Could not connect to server"
 msgstr "Non é posíbel conectar co servidor"
 
 #. patience == 0
-#: ../plugins/ldap/ldap-book.cpp:827 ../plugins/ldap/ldap-book.cpp:876
+#: ../plugins/ldap/ldap-book.cpp:841 ../plugins/ldap/ldap-book.cpp:890
 msgid "Could not search"
 msgstr "Non foi posíbel buscar"
 
-#: ../plugins/ldap/ldap-book.cpp:835
+#: ../plugins/ldap/ldap-book.cpp:849
 msgid "Waiting for search results"
 msgstr "Agardando os resultados da busca"
 
-#: ../plugins/ldap/ldap-book.cpp:928
+#: ../plugins/ldap/ldap-book.cpp:942
 msgid "Please edit the following fields"
 msgstr "Edite os seguintes campos"
 
-#: ../plugins/ldap/ldap-book.cpp:930
+#: ../plugins/ldap/ldap-book.cpp:944
 msgid "Book _Name:"
 msgstr "_Nome do libro:"
 
-#: ../plugins/ldap/ldap-book.cpp:930
+#: ../plugins/ldap/ldap-book.cpp:944
 msgid "Book name, as shown in your dialog box"
 msgstr "Nome do libro, como se mostra na caixa de diálogo"
 
-#: ../plugins/ldap/ldap-book.cpp:931
+#: ../plugins/ldap/ldap-book.cpp:945
 msgid "Server _URI:"
 msgstr "_URI do servidor:"
 
-#: ../plugins/ldap/ldap-book.cpp:931
+#: ../plugins/ldap/ldap-book.cpp:945
 msgid "Name of LDAP server, prefixed by ldap://"
 msgstr "Nome do servidor LDAP, prefixado por ldap://"
 
-#: ../plugins/ldap/ldap-book.cpp:932
+#: ../plugins/ldap/ldap-book.cpp:946
 msgid "_Base DN:"
 msgstr "DN _base:"
 
-#: ../plugins/ldap/ldap-book.cpp:938
+#: ../plugins/ldap/ldap-book.cpp:952
 msgid "Subtree"
 msgstr "Subárbore"
 
-#: ../plugins/ldap/ldap-book.cpp:939
+#: ../plugins/ldap/ldap-book.cpp:953
 msgid "Single Level"
 msgstr "Nivel sinxelo"
 
-#: ../plugins/ldap/ldap-book.cpp:940
+#: ../plugins/ldap/ldap-book.cpp:954
 msgid "_Search Scope"
 msgstr "Ámbito de bu_sca"
 
@@ -1905,23 +1909,23 @@ msgstr "Ámbito de bu_sca"
 #. * "DisplayName" (i.e., "the name that will be displayed") but on
 #. * most LDAP servers it's "CommonName".
 #.
-#: ../plugins/ldap/ldap-book.cpp:955
+#: ../plugins/ldap/ldap-book.cpp:969
 msgid "_DisplayName Attribute:"
 msgstr "Atributo _DisplayName:"
 
-#: ../plugins/ldap/ldap-book.cpp:956
+#: ../plugins/ldap/ldap-book.cpp:970
 msgid "Call _Attributes:"
 msgstr "_Atributos de chamada:"
 
-#: ../plugins/ldap/ldap-book.cpp:956
+#: ../plugins/ldap/ldap-book.cpp:970
 msgid "The field you are searching for"
 msgstr "O cambo polo que está buscando"
 
-#: ../plugins/ldap/ldap-book.cpp:958 ../plugins/ldap/ldap-book.cpp:960
+#: ../plugins/ldap/ldap-book.cpp:972 ../plugins/ldap/ldap-book.cpp:974
 msgid "_Filter Template:"
 msgstr "Plantilla de _filtrado:"
 
-#: ../plugins/ldap/ldap-book.cpp:958 ../plugins/ldap/ldap-book.cpp:960
+#: ../plugins/ldap/ldap-book.cpp:972 ../plugins/ldap/ldap-book.cpp:974
 msgid "Here, a \"$\" is replaced by the search string"
 msgstr "Aquí, un \"$\" é substituído pola cadea de busca"
 
@@ -1934,69 +1938,69 @@ msgstr "Aquí, un \"$\" é substituído pola cadea de busca"
 #. * course, the Bind ID can be left blank, in which case the session
 #. * is anonymous / unauthenticated.)
 #.
-#: ../plugins/ldap/ldap-book.cpp:971
+#: ../plugins/ldap/ldap-book.cpp:985
 msgid "Bind _ID:"
 msgstr "Ligar _ID:"
 
-#: ../plugins/ldap/ldap-book.cpp:971
+#: ../plugins/ldap/ldap-book.cpp:985
 msgid "User ID; leave blank for anonymous / nonauthenticated"
 msgstr ""
 "O ID do usuario, déixeo en branco para autenticación anónima / non-"
 "autenticado"
 
-#: ../plugins/ldap/ldap-book.cpp:972
+#: ../plugins/ldap/ldap-book.cpp:986
 msgid "The password for the user ID above, if any"
 msgstr "O contrasinal para o ID de usuario de enriba, se hai"
 
-#: ../plugins/ldap/ldap-book.cpp:973
+#: ../plugins/ldap/ldap-book.cpp:987
 msgid "Use TLS"
 msgstr "Usar TLS"
 
-#: ../plugins/ldap/ldap-book.cpp:974
+#: ../plugins/ldap/ldap-book.cpp:988
 msgid "Use SASL"
 msgstr "Usar SASL"
 
-#: ../plugins/ldap/ldap-book.cpp:988
+#: ../plugins/ldap/ldap-book.cpp:1002
 msgid "SASL _Mechanism"
 msgstr "_Mecanismo SASL"
 
-#: ../plugins/ldap/ldap-book.cpp:998
+#: ../plugins/ldap/ldap-book.cpp:1012
 msgid "Edit LDAP directory"
 msgstr "Editar o directorio LDAP"
 
-#: ../plugins/ldap/ldap-book.cpp:1020
+#: ../plugins/ldap/ldap-book.cpp:1034
 msgid "Please provide a Book Name for this directory\n"
 msgstr "Forneza un Nome de libro para este cartafol\n"
 
-#: ../plugins/ldap/ldap-book.cpp:1023
+#: ../plugins/ldap/ldap-book.cpp:1037
 msgid "Please provide a Server URI\n"
 msgstr "Forneza o URI do servidor\n"
 
-#: ../plugins/ldap/ldap-book.cpp:1026
+#: ../plugins/ldap/ldap-book.cpp:1040
 msgid "Please provide a DisplayName Attribute\n"
 msgstr "Forneza o atributo DisplayName\n"
 
-#: ../plugins/ldap/ldap-book.cpp:1029
+#: ../plugins/ldap/ldap-book.cpp:1043
 msgid "Please provide a Call Attribute\n"
 msgstr "Forneza o Atributo de chamada\n"
 
-#: ../plugins/ldap/ldap-book.cpp:1032
+#: ../plugins/ldap/ldap-book.cpp:1046
 msgid "Invalid Server URI\n"
 msgstr "O URI do servidor é incorrecto\n"
 
-#: ../plugins/ldap/ldap-source.cpp:129
+#: ../plugins/ldap/ldap-source.cpp:130
 msgid "Add an LDAP Address Book"
 msgstr "Engadir unha axenda de enderezos LDAP"
 
-#: ../plugins/ldap/ldap-source.cpp:131
+#: ../plugins/ldap/ldap-source.cpp:134
 msgid "Add the Ekiga.net Directory"
 msgstr "Engadir o cartafol de Ekiga.net"
 
-#: ../plugins/ldap/ldap-source.cpp:151
+#: ../plugins/ldap/ldap-source.cpp:155
 msgid "Create LDAP directory"
 msgstr "Crear cartafol LDAP"
 
-#: ../plugins/ldap/ldap-source.cpp:159
+#: ../plugins/ldap/ldap-source.cpp:164
 msgid "Ekiga.net Directory"
 msgstr "Cartafol Ekiga.net"
 
@@ -2249,11 +2253,11 @@ msgstr "Estado"
 msgid "Accounts"
 msgstr "Contas"
 
-#: ../src/gui/accounts.cpp:590 ../src/gui/main_window.cpp:3518
+#: ../src/gui/accounts.cpp:590 ../src/gui/main_window.cpp:3565
 msgid "_Accounts"
 msgstr "_Contas"
 
-#: ../src/gui/accounts.cpp:594 ../src/gui/main_window.cpp:3601
+#: ../src/gui/accounts.cpp:594 ../src/gui/main_window.cpp:3648
 msgid "_Help"
 msgstr "_Axuda"
 
@@ -2417,8 +2421,8 @@ msgstr ""
 "calidade que o Ekiga usará durante as chamadas. Pode cambialos máis adiante "
 "individualmente na xanela de preferencias."
 
-#: ../src/gui/assistant.cpp:967 ../src/gui/main_window.cpp:3343
-#: ../src/gui/main_window.cpp:3347 ../src/gui/main_window.cpp:3351
+#: ../src/gui/assistant.cpp:967 ../src/gui/main_window.cpp:3382
+#: ../src/gui/main_window.cpp:3386 ../src/gui/main_window.cpp:3390
 #: ../src/gui/preferences.cpp:738
 msgid "Audio Devices"
 msgstr "Dispositivos de audio"
@@ -2609,52 +2613,60 @@ msgstr ""
 msgid "Unable to open help file."
 msgstr "Non é posíbel abrir o ficheiro de axuda."
 
-#: ../src/gui/main_window.cpp:763
+#: ../src/gui/main_window.cpp:731
+msgid "Presence"
+msgstr "Presencia"
+
+#: ../src/gui/main_window.cpp:738
+msgid "Addressbook"
+msgstr "Axenda de enderezos"
+
+#: ../src/gui/main_window.cpp:802
 msgid "Unknown"
 msgstr "Descoñecido"
 
-#: ../src/gui/main_window.cpp:914
+#: ../src/gui/main_window.cpp:953
 #, c-format
 msgid "A:%.1f/%.1f   V:%.1f/%.1f   FPS:%d/%d"
 msgstr "A:%.1f/%.1f   V:%.1f/%.1f   FPS:%d/%d"
 
 #. %s is the SIP/H.323 address of the remote user, this text is shown
 #. below video during a call
-#: ../src/gui/main_window.cpp:960
+#: ../src/gui/main_window.cpp:999
 #, c-format
 msgid "Connected with %s"
 msgstr "Conectado con %s"
 
-#: ../src/gui/main_window.cpp:996 ../src/gui/main_window.cpp:3837
+#: ../src/gui/main_window.cpp:1035 ../src/gui/main_window.cpp:3884
 msgid "Standby"
 msgstr "En espera"
 
-#: ../src/gui/main_window.cpp:1055
+#: ../src/gui/main_window.cpp:1094
 msgid "Call on hold"
 msgstr "Chamada en espera"
 
-#: ../src/gui/main_window.cpp:1066
+#: ../src/gui/main_window.cpp:1105
 msgid "Call retrieved"
 msgstr "Chamada recuperada"
 
-#: ../src/gui/main_window.cpp:1081
+#: ../src/gui/main_window.cpp:1120
 #, c-format
 msgid "Missed call from %s"
 msgstr "Chamada perdida de %s"
 
-#: ../src/gui/main_window.cpp:1218
+#: ../src/gui/main_window.cpp:1257
 msgid "Error"
 msgstr "Erro"
 
-#: ../src/gui/main_window.cpp:1291
+#: ../src/gui/main_window.cpp:1330
 msgid "Error while initializing video output"
 msgstr "Produciuse un erro ao inicializar a saída de vídeo"
 
-#: ../src/gui/main_window.cpp:1292
+#: ../src/gui/main_window.cpp:1331
 msgid "No video will be displayed on your machine during this call"
 msgstr "Non se mostrará o vídeo no seu equipo durante esta chamada"
 
-#: ../src/gui/main_window.cpp:1302
+#: ../src/gui/main_window.cpp:1341
 msgid ""
 "There was an error opening or initializing the video output. Please verify "
 "that no other application is using the accelerated video output."
@@ -2662,7 +2674,7 @@ msgstr ""
 "Produciuse un erro ao abrir ou inicializar a saída de vídeo. Verifique que "
 "non hai ningún outro aplicativo que estea usando a saída de vídeo acelerada."
 
-#: ../src/gui/main_window.cpp:1304
+#: ../src/gui/main_window.cpp:1343
 msgid ""
 "There was an error opening or initializing the video output. Please verify "
 "that you are using a color depth of 24 or 32 bits per pixel."
@@ -2671,27 +2683,27 @@ msgstr ""
 "está a usar unha profundidade de cor de 24 ou 32 bits por píxel."
 
 #. Translators: This is a hotplug status
-#: ../src/gui/main_window.cpp:1417
+#: ../src/gui/main_window.cpp:1456
 #, c-format
 msgid "Added video input device %s"
 msgstr "Engadiuse o dispositivo de entrada de vídeo %s"
 
 #. Translators: This is a hotplug status
-#: ../src/gui/main_window.cpp:1429
+#: ../src/gui/main_window.cpp:1468
 #, c-format
 msgid "Removed video input device %s"
 msgstr "Eliminouse o dispositivo de entrada de vídeo %s"
 
-#: ../src/gui/main_window.cpp:1446
+#: ../src/gui/main_window.cpp:1485
 #, c-format
 msgid "Error while accessing video device %s"
 msgstr "Produciuse un erro ao acceder ao dispositivo de vídeo %s"
 
-#: ../src/gui/main_window.cpp:1449
+#: ../src/gui/main_window.cpp:1488
 msgid "A moving logo will be transmitted during calls."
 msgstr "Un logo móbil transmitirase durante as chamadas."
 
-#: ../src/gui/main_window.cpp:1453
+#: ../src/gui/main_window.cpp:1492
 msgid ""
 "There was an error while opening the device. In case it is a pluggable "
 "device it may be sufficient to reconnect it. If not, or if it still is not "
@@ -2703,16 +2715,16 @@ msgstr ""
 "así ou se aínda non está accesíbel, verifique os seus permisos e asegúrese "
 "de que está cargado o controlador apropiado."
 
-#: ../src/gui/main_window.cpp:1457
+#: ../src/gui/main_window.cpp:1496
 msgid "Your video driver doesn't support the requested video format."
 msgstr ""
 "O controlador de vídeo non é compatíbel co formato de vídeo solicitado."
 
-#: ../src/gui/main_window.cpp:1461
+#: ../src/gui/main_window.cpp:1500
 msgid "Could not open the chosen channel."
 msgstr "Non foi posíbel abrir o canal seleccionado."
 
-#: ../src/gui/main_window.cpp:1465
+#: ../src/gui/main_window.cpp:1504
 msgid ""
 "Your driver doesn't seem to support any of the color formats supported by "
 "Ekiga.\n"
@@ -2724,43 +2736,43 @@ msgstr ""
 " Verifique a documentación do seu controlador do núcleo para determinar que "
 "paleta é compatíbel."
 
-#: ../src/gui/main_window.cpp:1469
+#: ../src/gui/main_window.cpp:1508
 msgid "Error while setting the frame rate."
 msgstr "Produciuse un erro ao configurar a taxa de fotogramas."
 
-#: ../src/gui/main_window.cpp:1473
+#: ../src/gui/main_window.cpp:1512
 msgid "Error while setting the frame size."
 msgstr "Produciuse un erro ao configurar o tamaño de fotograma."
 
-#: ../src/gui/main_window.cpp:1478 ../src/gui/main_window.cpp:1581
-#: ../src/gui/main_window.cpp:1700
+#: ../src/gui/main_window.cpp:1517 ../src/gui/main_window.cpp:1620
+#: ../src/gui/main_window.cpp:1739
 msgid "Unknown error."
 msgstr "Erro descoñecido."
 
 #. Translators: This is a hotplug status
-#: ../src/gui/main_window.cpp:1530
+#: ../src/gui/main_window.cpp:1569
 #, c-format
 msgid "Added audio input device %s"
 msgstr "Engadiuse o dispositivo de audio %s"
 
 #. Translators: This is a hotplug status
-#: ../src/gui/main_window.cpp:1546
+#: ../src/gui/main_window.cpp:1585
 #, c-format
 msgid "Removed audio input device %s"
 msgstr "Eliminouse o dispositivo de audio %s"
 
-#: ../src/gui/main_window.cpp:1563
+#: ../src/gui/main_window.cpp:1602
 #, c-format
 msgid "Error while opening audio input device %s"
 msgstr "Produciuse un erro ao abrir o dispositivo de audio %s"
 
 #. Translators: This happens when there is an error with audio input:
 #. * Nothing ("silence") will be transmitted
-#: ../src/gui/main_window.cpp:1568
+#: ../src/gui/main_window.cpp:1607
 msgid "Only silence will be transmitted."
 msgstr "Só se transmitirá silencio."
 
-#: ../src/gui/main_window.cpp:1572
+#: ../src/gui/main_window.cpp:1611
 msgid ""
 "Unable to open the selected audio device for recording. In case it is a "
 "pluggable device it may be sufficient to reconnect it. If not, or if it "
@@ -2773,7 +2785,7 @@ msgstr ""
 "súa configuración de audio, os permisos e que o dispositivo non estea "
 "ocupado."
 
-#: ../src/gui/main_window.cpp:1576
+#: ../src/gui/main_window.cpp:1615
 msgid ""
 "The selected audio device was successfully opened but it is impossible to "
 "read data from this device. In case it is a pluggable device it may be "
@@ -2785,26 +2797,26 @@ msgstr ""
 "conectábel pode ser suficiente con conectalo de novo. Se non é así ou se "
 "aínda non está accesíbel, verifique a súa configuración de audio."
 
-#: ../src/gui/main_window.cpp:1645
+#: ../src/gui/main_window.cpp:1684
 #, c-format
 msgid "Added audio output device %s"
 msgstr "Engadiuse o dispositivo de saída de audio %s"
 
-#: ../src/gui/main_window.cpp:1663
+#: ../src/gui/main_window.cpp:1702
 #, c-format
 msgid "Removed audio output device %s"
 msgstr "Eliminouse o dispositivo de saída de audio %s"
 
-#: ../src/gui/main_window.cpp:1684
+#: ../src/gui/main_window.cpp:1723
 #, c-format
 msgid "Error while opening audio output device %s"
 msgstr "Produciuse un erro ao abrir o dispositivo de saída de audio %s"
 
-#: ../src/gui/main_window.cpp:1687
+#: ../src/gui/main_window.cpp:1726
 msgid "No incoming sound will be played."
 msgstr "Non se reproducirá ningún son entrante."
 
-#: ../src/gui/main_window.cpp:1691
+#: ../src/gui/main_window.cpp:1730
 msgid ""
 "Unable to open the selected audio device for playing. In case it is a "
 "pluggable device it may be sufficient to reconnect it. If not, or if it "
@@ -2817,7 +2829,7 @@ msgstr ""
 "súa configuración de audio, os permisos e que o dispositivo non estea "
 "ocupado."
 
-#: ../src/gui/main_window.cpp:1695
+#: ../src/gui/main_window.cpp:1734
 msgid ""
 "The selected audio device was successfully opened but it is impossible to "
 "write data to this device. In case it is a pluggable device it may be "
@@ -2829,342 +2841,351 @@ msgstr ""
 "suficiente con conectalo de novo. Se non é así ou se aínda non está "
 "accesíbel, verifique a súa configuración de audio."
 
-#: ../src/gui/main_window.cpp:1884
+#: ../src/gui/main_window.cpp:1923
 msgid "Video Settings"
 msgstr "Configuración de vídeo"
 
-#: ../src/gui/main_window.cpp:1911
+#: ../src/gui/main_window.cpp:1950
 msgid "Adjust brightness"
 msgstr "Axustar o brillo"
 
-#: ../src/gui/main_window.cpp:1932
+#: ../src/gui/main_window.cpp:1971
 msgid "Adjust whiteness"
 msgstr "Axustar os brancos"
 
-#: ../src/gui/main_window.cpp:1953
+#: ../src/gui/main_window.cpp:1992
 msgid "Adjust color"
 msgstr "Axustar a cor"
 
-#: ../src/gui/main_window.cpp:1974
+#: ../src/gui/main_window.cpp:2013
 msgid "Adjust contrast"
 msgstr "Axustar o contraste"
 
-#: ../src/gui/main_window.cpp:2018
+#: ../src/gui/main_window.cpp:2057
 msgid "Audio Settings"
 msgstr "Configuración de audio"
 
-#: ../src/gui/main_window.cpp:2698
+#: ../src/gui/main_window.cpp:2737
 msgid "_Retrieve Call"
 msgstr "_Recuperar a chamada"
 
-#: ../src/gui/main_window.cpp:2711 ../src/gui/main_window.cpp:3472
+#: ../src/gui/main_window.cpp:2750 ../src/gui/main_window.cpp:3511
 msgid "H_old Call"
 msgstr "Pór a chamada en _espera"
 
-#: ../src/gui/main_window.cpp:2743 ../src/gui/main_window.cpp:3484
+#: ../src/gui/main_window.cpp:2782 ../src/gui/main_window.cpp:3523
 msgid "Suspend _Audio"
 msgstr "Suspender o _Audio"
 
-#: ../src/gui/main_window.cpp:2745 ../src/gui/main_window.cpp:3489
+#: ../src/gui/main_window.cpp:2784 ../src/gui/main_window.cpp:3528
 msgid "Suspend _Video"
 msgstr "Suspender o _Vídeo"
 
-#: ../src/gui/main_window.cpp:2747
+#: ../src/gui/main_window.cpp:2786
 msgid "Resume _Audio"
 msgstr "Retomar o _Audio"
 
-#: ../src/gui/main_window.cpp:2749
+#: ../src/gui/main_window.cpp:2788
 msgid "Resume _Video"
 msgstr "Retomar o _Vídeo"
 
-#: ../src/gui/main_window.cpp:2975 ../src/gui/main_window.cpp:3138
+#: ../src/gui/main_window.cpp:3014 ../src/gui/main_window.cpp:3177
 msgid "Reject"
 msgstr "Rexeitar"
 
-#: ../src/gui/main_window.cpp:2977 ../src/gui/main_window.cpp:3137
+#: ../src/gui/main_window.cpp:3016 ../src/gui/main_window.cpp:3176
 msgid "Accept"
 msgstr "Aceptar"
 
-#: ../src/gui/main_window.cpp:2983
+#: ../src/gui/main_window.cpp:3022
 msgid "Incoming call from"
 msgstr "Chamada entrante de"
 
-#: ../src/gui/main_window.cpp:3001 ../src/gui/main_window.cpp:3118
+#: ../src/gui/main_window.cpp:3040 ../src/gui/main_window.cpp:3157
 msgid "Remote URI:"
 msgstr "URI remoto:"
 
-#: ../src/gui/main_window.cpp:3013 ../src/gui/main_window.cpp:3120
+#: ../src/gui/main_window.cpp:3052 ../src/gui/main_window.cpp:3159
 msgid "Remote Application:"
 msgstr "Aplicativo remoto:"
 
-#: ../src/gui/main_window.cpp:3026 ../src/gui/main_window.cpp:3122
+#: ../src/gui/main_window.cpp:3065 ../src/gui/main_window.cpp:3161
 msgid "Account ID:"
 msgstr "ID de conta:"
 
-#: ../src/gui/main_window.cpp:3034
+#: ../src/gui/main_window.cpp:3073
 #, c-format
 msgid "Call from %s"
 msgstr "Chamada de %s"
 
-#: ../src/gui/main_window.cpp:3246
+#: ../src/gui/main_window.cpp:3285
 #, c-format
 msgid "Call Duration: %s\n"
 msgstr "Duración da chamada: %s\n"
 
-#: ../src/gui/main_window.cpp:3277
+#: ../src/gui/main_window.cpp:3316
 msgid "Transfer call to:"
 msgstr "Transferir a chamada a:"
 
-#: ../src/gui/main_window.cpp:3329
+#: ../src/gui/main_window.cpp:3368
 msgid "No"
 msgstr "Non"
 
-#: ../src/gui/main_window.cpp:3331
+#: ../src/gui/main_window.cpp:3370
 msgid "Yes"
 msgstr "Si"
 
-#: ../src/gui/main_window.cpp:3342
+#: ../src/gui/main_window.cpp:3381
 msgid "Detected new audio input device:"
 msgstr "Detectouse un dispositivo novo de entrada de audio:"
 
-#: ../src/gui/main_window.cpp:3346
+#: ../src/gui/main_window.cpp:3385
 msgid "Detected new audio output device:"
 msgstr "Detectouse un dispositivo novo de saída de audio:"
 
-#: ../src/gui/main_window.cpp:3350
+#: ../src/gui/main_window.cpp:3389
 msgid "Detected new ringer device:"
 msgstr "Detectouse un novo dispositivo de timbre:"
 
-#: ../src/gui/main_window.cpp:3354
+#: ../src/gui/main_window.cpp:3393
 msgid "Detected new video input device:"
 msgstr "Detectouse un dispositivo novo de entrada de vídeo:"
 
-#: ../src/gui/main_window.cpp:3355 ../src/gui/preferences.cpp:891
+#: ../src/gui/main_window.cpp:3394 ../src/gui/preferences.cpp:891
 msgid "Video Devices"
 msgstr "Dispositivos de vídeo"
 
-#: ../src/gui/main_window.cpp:3373
+#: ../src/gui/main_window.cpp:3412
 msgid "Do you want to use it as default device?"
 msgstr "Quere usalo como o dispositivo predeterminado?"
 
-#: ../src/gui/main_window.cpp:3441
+#: ../src/gui/main_window.cpp:3480
 msgid "_Chat"
 msgstr "_Conversa"
 
-#: ../src/gui/main_window.cpp:3443
+#: ../src/gui/main_window.cpp:3482
 msgid "Ca_ll"
 msgstr "C_hamar"
 
-#: ../src/gui/main_window.cpp:3443
+#: ../src/gui/main_window.cpp:3482
 msgid "Place a new call"
 msgstr "Realizar unha nova chamada"
 
-#: ../src/gui/main_window.cpp:3446
+#: ../src/gui/main_window.cpp:3485
 msgid "_Hang up"
 msgstr "_Colgar"
 
-#: ../src/gui/main_window.cpp:3447
+#: ../src/gui/main_window.cpp:3486
 msgid "Terminate the current call"
 msgstr "Terminar a chamada actual"
 
-#: ../src/gui/main_window.cpp:3453
+#: ../src/gui/main_window.cpp:3492
 msgid "Co_ntact"
 msgstr "_Contacto"
 
-#: ../src/gui/main_window.cpp:3454
+#: ../src/gui/main_window.cpp:3493
 msgid "Act on selected contact"
 msgstr "Actuar sobre o contacto seleccionado"
 
-#: ../src/gui/main_window.cpp:3460
+#: ../src/gui/main_window.cpp:3499
 msgid "A_dd Contact"
 msgstr "Enga_dir un contacto"
 
-#: ../src/gui/main_window.cpp:3460
+#: ../src/gui/main_window.cpp:3499
 msgid "Add a contact to the roster"
 msgstr "Engadir un contacto á lista de contactos"
 
-#: ../src/gui/main_window.cpp:3465
+#: ../src/gui/main_window.cpp:3504
 msgid "Find contacts"
 msgstr "Buscar contactos"
 
-#: ../src/gui/main_window.cpp:3472 ../src/gui/main_window.cpp:3937
+#: ../src/gui/main_window.cpp:3511 ../src/gui/main_window.cpp:3984
 msgid "Hold the current call"
 msgstr "Pór a chamada actual en espera"
 
-#: ../src/gui/main_window.cpp:3476
+#: ../src/gui/main_window.cpp:3515
 msgid "_Transfer Call"
 msgstr "_Transferir chamada"
 
-#: ../src/gui/main_window.cpp:3477
+#: ../src/gui/main_window.cpp:3516
 msgid "Transfer the current call"
 msgstr "Transferir a chamada actual"
 
-#: ../src/gui/main_window.cpp:3485
+#: ../src/gui/main_window.cpp:3524
 msgid "Suspend or resume the audio transmission"
 msgstr "Suspender ou continuar a transmisión de audio"
 
-#: ../src/gui/main_window.cpp:3490
+#: ../src/gui/main_window.cpp:3529
 msgid "Suspend or resume the video transmission"
 msgstr "Suspender ou continuar a transmisión de vídeo"
 
-#: ../src/gui/main_window.cpp:3497
+#. FIXME: that isn't a very good way to do things
+#: ../src/gui/main_window.cpp:3537
+msgid "Other"
+msgstr "Outras"
+
+#: ../src/gui/main_window.cpp:3538
+msgid "Other possible actions"
+msgstr "Outras accións posíbeis"
+
+#: ../src/gui/main_window.cpp:3544
 msgid "Close the Ekiga window"
 msgstr "Pechar a xanela do Ekiga"
 
-#: ../src/gui/main_window.cpp:3504 ../src/gui/statusicon.cpp:465
+#: ../src/gui/main_window.cpp:3551 ../src/gui/statusicon.cpp:465
 msgid "Quit"
 msgstr "Saír"
 
-#: ../src/gui/main_window.cpp:3510
+#: ../src/gui/main_window.cpp:3557
 msgid "_Configuration Assistant"
 msgstr "Asistente de _configuración"
 
-#: ../src/gui/main_window.cpp:3511
+#: ../src/gui/main_window.cpp:3558
 msgid "Run the configuration assistant"
 msgstr "Executar o asistente de configuración"
 
-#: ../src/gui/main_window.cpp:3519
+#: ../src/gui/main_window.cpp:3566
 msgid "Edit your accounts"
 msgstr "Editar as contas"
 
-#: ../src/gui/main_window.cpp:3525
+#: ../src/gui/main_window.cpp:3572
 msgid "Change your preferences"
 msgstr "Cambiar as preferencias"
 
-#: ../src/gui/main_window.cpp:3530
+#: ../src/gui/main_window.cpp:3577
 msgid "_View"
 msgstr "_Ver"
 
-#: ../src/gui/main_window.cpp:3532
+#: ../src/gui/main_window.cpp:3579
 msgid "Con_tacts"
 msgstr "Con_tactos"
 
-#: ../src/gui/main_window.cpp:3532
+#: ../src/gui/main_window.cpp:3579
 msgid "View the contacts list"
 msgstr "Ver a lista de contactos"
 
-#: ../src/gui/main_window.cpp:3537
+#: ../src/gui/main_window.cpp:3584
 msgid "_Dialpad"
 msgstr "_Marcador"
 
-#: ../src/gui/main_window.cpp:3537
+#: ../src/gui/main_window.cpp:3584
 msgid "View the dialpad"
 msgstr "Mostrar o marcador"
 
-#: ../src/gui/main_window.cpp:3542
+#: ../src/gui/main_window.cpp:3589
 msgid "_Call History"
 msgstr "Historial de _chamadas"
 
-#: ../src/gui/main_window.cpp:3542
+#: ../src/gui/main_window.cpp:3589
 msgid "View the call history"
 msgstr "Ver o historial de chamadas"
 
-#: ../src/gui/main_window.cpp:3550
+#: ../src/gui/main_window.cpp:3597
 msgid "_Show Call Panel"
 msgstr "Mo_strar o panel de chamadas"
 
-#: ../src/gui/main_window.cpp:3558
+#: ../src/gui/main_window.cpp:3605
 msgid "_Local Video"
 msgstr "Vídeo _local"
 
-#: ../src/gui/main_window.cpp:3559
+#: ../src/gui/main_window.cpp:3606
 msgid "Local video image"
 msgstr "Imaxe de vídeo local"
 
-#: ../src/gui/main_window.cpp:3564
+#: ../src/gui/main_window.cpp:3611
 msgid "_Remote Video"
 msgstr "Vídeo _remoto"
 
-#: ../src/gui/main_window.cpp:3565
+#: ../src/gui/main_window.cpp:3612
 msgid "Remote video image"
 msgstr "Imaxe de vídeo remoto"
 
-#: ../src/gui/main_window.cpp:3570
+#: ../src/gui/main_window.cpp:3617
 msgid "_Picture-in-Picture"
 msgstr "Ima_xe dentro da imaxe"
 
-#: ../src/gui/main_window.cpp:3571 ../src/gui/main_window.cpp:3577
+#: ../src/gui/main_window.cpp:3618 ../src/gui/main_window.cpp:3624
 msgid "Both video images"
 msgstr "Ambas as imaxes de vídeo"
 
-#: ../src/gui/main_window.cpp:3576
+#: ../src/gui/main_window.cpp:3623
 msgid "Picture-in-Picture in Separate _Window"
 msgstr "Imaxe dentro da imaxe en _xanelas separadas"
 
-#: ../src/gui/main_window.cpp:3584
+#: ../src/gui/main_window.cpp:3631
 msgid "Zoom in"
 msgstr "Ampliar"
 
-#: ../src/gui/main_window.cpp:3588
+#: ../src/gui/main_window.cpp:3635
 msgid "Zoom out"
 msgstr "Reducir"
 
-#: ../src/gui/main_window.cpp:3592
+#: ../src/gui/main_window.cpp:3639
 msgid "Normal size"
 msgstr "Tamaño normal"
 
-#: ../src/gui/main_window.cpp:3596
+#: ../src/gui/main_window.cpp:3643
 msgid "_Fullscreen"
 msgstr "_Pantalla completa"
 
-#: ../src/gui/main_window.cpp:3596
+#: ../src/gui/main_window.cpp:3643
 msgid "Switch to fullscreen"
 msgstr "Cambiar ao modo de pantalla completa"
 
-#: ../src/gui/main_window.cpp:3604 ../src/gui/statusicon.cpp:453
+#: ../src/gui/main_window.cpp:3651 ../src/gui/statusicon.cpp:453
 msgid "Get help by reading the Ekiga manual"
 msgstr "Obteña axuda lendo o manual do Ekiga"
 
-#: ../src/gui/main_window.cpp:3609 ../src/gui/statusicon.cpp:458
+#: ../src/gui/main_window.cpp:3656 ../src/gui/statusicon.cpp:458
 msgid "View information about Ekiga"
 msgstr "Ver información sobre o Ekiga"
 
-#: ../src/gui/main_window.cpp:3681
+#: ../src/gui/main_window.cpp:3728
 msgid ""
 "Enter a URI on the left, and click this button to place a call or to hangup"
 msgstr ""
 "Introduza un URI na esquerda e prema neste botón para efectuar unha chamada "
 "ou colgala"
 
-#: ../src/gui/main_window.cpp:3726
+#: ../src/gui/main_window.cpp:3773
 msgid "Contacts"
 msgstr "Contactos"
 
-#: ../src/gui/main_window.cpp:3748
+#: ../src/gui/main_window.cpp:3795
 msgid "Dialpad"
 msgstr "Marcador"
 
-#: ../src/gui/main_window.cpp:3766
+#: ../src/gui/main_window.cpp:3813
 msgid "Call history"
 msgstr "Historial de chamadas"
 
-#: ../src/gui/main_window.cpp:3874
+#: ../src/gui/main_window.cpp:3921
 msgid "Change the volume of your soundcard"
 msgstr "Cambiar o volume da súa tarxeta de son"
 
-#: ../src/gui/main_window.cpp:3895
+#: ../src/gui/main_window.cpp:3942
 msgid "Change the color settings of your video device"
 msgstr "Cambiar as configuracións de cor do dispositivo de vídeo"
 
-#: ../src/gui/main_window.cpp:3963
+#: ../src/gui/main_window.cpp:4010
 msgid "Ekiga"
 msgstr "Ekiga"
 
 #. Translators: TX is a common abbreviation for "transmit".  As it
 #. * is shown in a tooltip, there is no space constraint
-#: ../src/gui/main_window.cpp:4556
+#: ../src/gui/main_window.cpp:4613
 #, c-format
 msgid "TX: %dx%d "
 msgstr "TX: %dx%d "
 
 #. Translators: RX is a common abbreviation for "receive".  As it
 #. * is shown in a tooltip, there is no space constraint
-#: ../src/gui/main_window.cpp:4561
+#: ../src/gui/main_window.cpp:4618
 #, c-format
 msgid "RX: %dx%d "
 msgstr "RX: %dx%d "
 
-#: ../src/gui/main_window.cpp:4563
+#: ../src/gui/main_window.cpp:4620
 #, c-format
 msgid ""
 "Lost packets: %.1f %%\n"
@@ -3177,18 +3198,18 @@ msgstr ""
 "Paquetes inservíbeis: %.1f %%\n"
 "Búfer de jitter: %d ms%s%s%s"
 
-#: ../src/gui/main_window.cpp:4678
+#: ../src/gui/main_window.cpp:4735
 msgid "Prints debug messages in the console (level between 1 and 5)"
 msgstr ""
 "Imprime as mensaxes de depuración na consola (un nivel entre o 1 e o 5)"
 
-#: ../src/gui/main_window.cpp:4683
+#: ../src/gui/main_window.cpp:4740
 msgid "Prints user plane debug messages in the console (level between 1 and 4)"
 msgstr ""
 "Imprime as mensaxes de depuración do usuario na consola (un nivel entre o 1 "
 "e o 4)"
 
-#: ../src/gui/main_window.cpp:4688
+#: ../src/gui/main_window.cpp:4745
 msgid "Makes Ekiga call the given URI"
 msgstr "Fai que o Ekiga chame ao URI indicado"
 
@@ -3584,9 +3605,6 @@ msgstr "Eliminar as mensaxes personalizadas:"
 #: ../src/gui/statusmenu.cpp:692
 msgid "Define a custom message:"
 msgstr "Definir unha mensaxe personalizada:"
-
-#~ msgid "Could not send message"
-#~ msgstr "Non foi posíbel enviar a mensaxe"
 
 #~ msgid "Change the main window panel section"
 #~ msgstr "Cambiar a sección do panel da xanela principal"
