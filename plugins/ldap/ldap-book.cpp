@@ -915,7 +915,7 @@ OPENLDAP::Book::refresh_result ()
   } while (msg_result != NULL);
 
   // Do not count ekiga.net's first entry "Search Results ... 100 entries"
-  if (strcmp (bookinfo.uri_host.c_str(), EKIGA_NET_URI) == 0)
+  if (bookinfo.uri_host == EKIGA_NET_URI)
     nbr--;
   c_status = g_strdup_printf (ngettext ("%d user found",
 					"%d users found", nbr), nbr);
