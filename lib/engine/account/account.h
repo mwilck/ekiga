@@ -42,9 +42,7 @@
 #include <string>
 
 #include <boost/smart_ptr.hpp>
-#include "chain-of-responsibility.h"
-#include "form-request.h"
-#include "menu-builder.h"
+#include "live-object.h"
 
 namespace Ekiga
 {
@@ -54,7 +52,8 @@ namespace Ekiga
    * @{
    */
 
-  class Account
+  class Account:
+    public virtual LiveObject
   {
   public:
 
@@ -94,33 +93,6 @@ namespace Ekiga
      * @return Whether the account is active
      */
     virtual bool is_active () const = 0;
-
-
-    /** Create the menu for that account and its actions.
-     * This function is purely virtual and should be implemented by
-     * the descendant of the Ekiga::Contact.
-     * @param A MenuBuilder object to populate.
-     */
-    virtual bool populate_menu (MenuBuilder &) = 0;
-
-
-    /**
-     * Signals on that object
-     */
-
-    /** This signal is emitted when the Account has been updated.
-     */
-    boost::signal0<void> updated;
-
-
-    /** This signal is emitted when the Account has been removed.
-     */
-    boost::signal0<void> removed;
-
-
-    /** This chain allows the Account to present forms to the user
-     */
-    ChainOfResponsibility<FormRequestPtr> questions;
   };
 
   typedef boost::shared_ptr<Account> AccountPtr;

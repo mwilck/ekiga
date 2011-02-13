@@ -298,6 +298,8 @@ void Opal::Account::enable ()
 
     std::cout << "opening presentity for " << get_aor () << std::endl;
     presentity->Open ();
+    presentity->SubscribeToPresence ("sip:julien.puydt@ekiga.net");
+    presentity->SubscribeToPresence ("sip:eugen.dedu@ekiga.net");
   }
 
   updated ();
