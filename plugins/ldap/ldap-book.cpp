@@ -50,7 +50,7 @@
 #include "ldap-book.h"
 #include "robust-xml.h"
 
-#define EKIGA_NET_URI "ldap://ekiga.net:389"
+#define EKIGA_NET_URI "ldap://ekiga.net"
 
 /* little helper function... can probably be made more complete */
 static const std::string
@@ -915,7 +915,7 @@ OPENLDAP::Book::refresh_result ()
   } while (msg_result != NULL);
 
   // Do not count ekiga.net's first entry "Search Results ... 100 entries"
-  if (strcmp (bookinfo.uri_host.c_str(), "ldap://ekiga.net") == 0)
+  if (strcmp (bookinfo.uri_host.c_str(), EKIGA_NET_URI) == 0)
     nbr--;
   c_status = g_strdup_printf (ngettext ("%d user found",
 					"%d users found", nbr), nbr);
