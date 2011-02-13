@@ -120,9 +120,11 @@ void
 Ekiga::RefLister<ObjectType>::add_object (boost::shared_ptr<ObjectType> obj)
 {
   objects[obj].push_back (obj->updated.connect (boost::bind (boost::ref (object_updated), obj)));
+  objects[obj].push_back (obj->updated.connect (boost::ref (updated)));
   objects[obj].push_back (obj->removed.connect (boost::bind (&Ekiga::RefLister<ObjectType>::remove_object, this, obj)));
 
   object_added (obj);
+  updated ();
 }
 
 template<typename ObjectType>
@@ -144,6 +146,7 @@ Ekiga::RefLister<ObjectType>::remove_object (boost::shared_ptr<ObjectType> obj)
     iter->disconnect ();
   objects.erase (objects.find (obj));
   object_removed (obj);
+  updated ();
 }
 
 template<typename ObjectType>
