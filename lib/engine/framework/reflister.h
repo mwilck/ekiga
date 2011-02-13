@@ -42,13 +42,16 @@
 #include <list>
 
 #include <boost/smart_ptr.hpp>
+
+#include "live-object.h"
 #include "map-key-iterator.h"
 #include "map-key-const-iterator.h"
 
 namespace Ekiga
 {
   template<typename ObjectType>
-  class RefLister
+  class RefLister:
+    public virtual LiveObject
   {
   protected:
 
