@@ -102,6 +102,7 @@ SetCompressor /SOLID lzma
 !insertmacro MUI_LANGUAGE "Romanian"
 !insertmacro MUI_LANGUAGE "Dutch"
 !insertmacro MUI_LANGUAGE "Russian"
+!insertmacro MUI_LANGUAGE "German"
 
 !define EKIGA_DEFAULT_LANGFILE "${INSTALLER_DIR}/language_files/english.nsh"
 
@@ -113,6 +114,7 @@ SetCompressor /SOLID lzma
 !insertmacro EKIGA_MACRO_INCLUDE_LANGFILE "ROMANIAN"	"${INSTALLER_DIR}/language_files/romanian.nsh"
 !insertmacro EKIGA_MACRO_INCLUDE_LANGFILE "DUTCH"		"${INSTALLER_DIR}/language_files/dutch.nsh"
 !insertmacro EKIGA_MACRO_INCLUDE_LANGFILE "RUSSIAN"		"${INSTALLER_DIR}/language_files/russian.nsh"
+!insertmacro EKIGA_MACRO_INCLUDE_LANGFILE "GERMAN"		"${INSTALLER_DIR}/language_files/german.nsh"
 
 ; ===========================
 ; Section SecUninstallOldEkiga
