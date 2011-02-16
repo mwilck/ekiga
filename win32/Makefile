@@ -152,9 +152,9 @@ ICONV_VER := 1.9.2-1
 ICONV_URL := http://downloads.sourceforge.net/project/gnuwin32/libiconv/$(ICONV_VER)
 ICONV_ARCHIVE := libiconv-$(ICONV_VER)-bin.zip
 
-# use date for FFMPEG_VER, because it has two "repositories"
-FFMPEG_VER := {2009-04-14}
-FFMPEG_URL := svn://svn.mplayerhq.hu/ffmpeg/trunk
+# use a revision from 2009-04-13, known to work with current ekiga
+FFMPEG_VER := c573eb85f
+FFMPEG_URL := git://git.ffmpeg.org/ffmpeg.git
 FFMPEG_DIR := $(BUILDROOT)/ffmpeg
 FFMPEG_ARCHIVE := ffmpeg
 
@@ -463,14 +463,11 @@ $(LIBDIR)/libspeex.a: binaries $(SPEEX_DIR)/config.status
 ### ffmpeg
 update-sources::
 	@echo --- Getting FFMPEG ...
-# ffmpeg has two "repositories" (ffmpeg and libswscale) into their
-# repository, so process them separately
 ifeq ($(wildcard $(SRCDIR)/$(FFMPEG_ARCHIVE)),)
-	$(SVN) co $(FFMPEG_URL) $(SRCDIR)/$(FFMPEG_ARCHIVE) -r $(FFMPEG_VER)
-else
-	cd $(SRCDIR)/$(FFMPEG_ARCHIVE); $(SVN) up --ignore-externals -r $(FFMPEG_VER)
+	$(GIT) clone $(FFMPEG_URL) $(SRCDIR)/$(FFMPEG_ARCHIVE)
 endif
-	cd $(SRCDIR)/$(FFMPEG_ARCHIVE); $(SVN) up -r $(FFMPEG_VER) libswscale
+	cd $(SRCDIR)/$(FFMPEG_ARCHIVE); git reset --hard $(FFMPEG_VER)
+	#touch $(SRCDIR)/$(FFMPEG_ARCHIVE)
 
 $(FFMPEG_DIR)/config.status: $(SRCDIR)/$(FFMPEG_ARCHIVE)
 	rm -rf $(FFMPEG_DIR)
