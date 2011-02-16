@@ -355,6 +355,7 @@ void Opal::Account::remove ()
   endpoint->unsubscribe (*this);
 
   trigger_saving ();
+  removed ();
 }
 
 
