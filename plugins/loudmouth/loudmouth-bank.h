@@ -77,9 +77,14 @@ namespace LM
 
     xmlDocPtr doc;
 
-    void add (xmlNodePtr node);
+    void add (boost::shared_ptr<Account> account);
 
     void save () const;
+
+    void new_account ();
+
+    void on_new_account_form_submitted (bool submitted,
+					Ekiga::Form& result);
   };
 
   typedef boost::shared_ptr<Bank> BankPtr;

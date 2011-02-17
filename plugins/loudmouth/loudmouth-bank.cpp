@@ -41,6 +41,8 @@
 
 #include "loudmouth-bank.h"
 
+#include "form-request-simple.h"
+
 #define KEY "/apps/" PACKAGE_NAME "/contacts/jabber"
 
 LM::Bank::Bank (boost::shared_ptr<Ekiga::PersonalDetails> details_,
@@ -65,7 +67,8 @@ LM::Bank::Bank (boost::shared_ptr<Ekiga::PersonalDetails> details_,
 
       if (child->type == XML_ELEMENT_NODE && child->name != NULL && xmlStrEqual (BAD_CAST ("entry"), child->name)) {
 
-	add (child);
+	boost::shared_ptr<Account> account (new Account (details, dialect, cluster, child));
+	add (account);
       }
     }
     g_free (c_raw);
@@ -79,18 +82,8 @@ LM::Bank::Bank (boost::shared_ptr<Ekiga::PersonalDetails> details_,
 }
 
 void
-LM::Bank::add (xmlNodePtr node)
+LM::Bank::add (boost::shared_ptr<Account> account)
 {
-  boost::shared_ptr<Account> account (new Account (details, dialect, cluster, node));
-
-  if (node == NULL) { // that was a new one
-
-    xmlNodePtr root = xmlDocGetRootElement (doc);
-    xmlAddChild (root, account->get_node ());
-
-    save ();
-  }
-
   account->trigger_saving.connect (boost::bind (&LM::Bank::save, this));
   add_account (account);
 }
@@ -116,6 +109,50 @@ bool
 LM::Bank::populate_menu (Ekiga::MenuBuilder& builder)
 {
   builder.add_action ("add", _("_Add a jabber/XMPP account"),
-		      boost::bind (&LM::Bank::add, this, (xmlNodePtr)NULL));
+		      boost::bind (&LM::Bank::new_account, this));
   return true;
+}
+
+void
+LM::Bank::new_account ()
+{
+  boost::shared_ptr<Ekiga::FormRequestSimple> request = boost::shared_ptr<Ekiga::FormRequestSimple> (new Ekiga::FormRequestSimple (boost::bind (&LM::Bank::on_new_account_form_submitted, this, _1, _2)));
+
+  request->title (_("Edit account"));
+
+  request->instructions (_("Please fill in the following fields:"));
+
+  request->text ("name", _("Name:"), "", "");
+  request->text ("user", _("User:"), "", "");
+  request->text ("server", _("Server:"), "", "");
+  request->text ("resource", _("Resource:"), "", "");
+  request->private_text ("password", _("Password:"), "", "");
+  request->boolean ("enabled", _("Enable Account"), true);
+
+  questions (request);
+}
+
+void
+LM::Bank::on_new_account_form_submitted (bool submitted,
+					 Ekiga::Form &result)
+{
+  if (!submitted)
+    return;
+
+  std::string name = result.text ("name");
+  std::string user = result.text ("user");
+  std::string server = result.text ("server");
+  std::string resource = result.text ("resource");
+  std::string password = result.private_text ("password");
+  bool enable_on_startup = result.boolean ("enabled");
+
+  boost::shared_ptr<Account> account (new Account (details, dialect, cluster,
+						   name, user, server, 5222,
+						   resource, password,
+						   enable_on_startup));
+  xmlNodePtr root = xmlDocGetRootElement (doc);
+  xmlAddChild (root, account->get_node ());
+
+  save ();
+  add (account);
 }

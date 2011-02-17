@@ -53,6 +53,14 @@ namespace LM
 	     boost::shared_ptr<Cluster> cluster_,
 	     xmlNodePtr node_);
 
+    Account (boost::shared_ptr<Ekiga::PersonalDetails> details_,
+	     boost::shared_ptr<Dialect> dialect_,
+	     boost::shared_ptr<Cluster> cluster_,
+	     const std::string name, const std::string user,
+	     const std::string server, int port,
+	     const std::string resource, const std::string password,
+	     bool enable_on_startup);
+
     ~Account ();
 
     void enable ();

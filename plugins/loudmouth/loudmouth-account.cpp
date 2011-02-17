@@ -33,6 +33,8 @@
  *
  */
 
+#include <sstream>
+
 #include <glib/gi18n.h>
 
 #include "form-request-simple.h"
@@ -72,25 +74,12 @@ LM::Account::Account (boost::shared_ptr<Ekiga::PersonalDetails> details_,
 		      xmlNodePtr node_):
   details(details_), dialect(dialect_), cluster(cluster_), node(node_)
 {
-  xmlChar* xml_str = NULL;
-  bool enable_on_startup = false;
+  if (node == NULL) throw std::logic_error ("NULL node pointer received");
 
   status = _("inactive");
 
-  if (node == NULL) {
-
-    node = xmlNewNode (NULL, BAD_CAST "entry");
-    /* FIXME: make translatable */
-    xmlSetProp (node, BAD_CAST "name", BAD_CAST "Jabber/XMPP account to configure");
-    xmlSetProp (node, BAD_CAST "user", BAD_CAST "username");
-    xmlSetProp (node, BAD_CAST "password", BAD_CAST "");
-    xmlSetProp (node, BAD_CAST "resource", BAD_CAST "ekiga");
-    xmlSetProp (node, BAD_CAST "server", BAD_CAST "localhost");
-    xmlSetProp (node, BAD_CAST "port", BAD_CAST "5222");
-    xmlSetProp (node, BAD_CAST "startup", BAD_CAST "false");
-  }
-
-  xml_str = xmlGetProp (node, BAD_CAST "startup");
+  xmlChar* xml_str = xmlGetProp (node, BAD_CAST "startup");
+  bool enable_on_startup = false;
   if (xml_str != NULL) {
 
     if (xmlStrEqual (xml_str, BAD_CAST "true")) {
@@ -102,6 +91,46 @@ LM::Account::Account (boost::shared_ptr<Ekiga::PersonalDetails> details_,
     }
   }
   xmlFree (xml_str);
+
+  connection = lm_connection_new (NULL);
+  lm_connection_set_disconnect_function (connection, (LmDisconnectFunction)on_disconnected_c,
+					 this, NULL);
+  if (enable_on_startup) {
+
+    enable ();
+  }
+}
+
+LM::Account::Account (boost::shared_ptr<Ekiga::PersonalDetails> details_,
+		      boost::shared_ptr<Dialect> dialect_,
+		      boost::shared_ptr<Cluster> cluster_,
+		      const std::string name, const std::string user,
+		      const std::string server, int port,
+		      const std::string resource, const std::string password,
+		      bool enable_on_startup):
+  details(details_), dialect(dialect_), cluster(cluster_)
+{
+  status = _("inactive");
+
+  node = xmlNewNode (NULL, BAD_CAST "entry");
+  xmlSetProp (node, BAD_CAST "name", BAD_CAST name.c_str ());
+  xmlSetProp (node, BAD_CAST "user", BAD_CAST user.c_str ());
+  xmlSetProp (node, BAD_CAST "server", BAD_CAST server.c_str ());
+  {
+    std::stringstream sstream;
+    sstream << port;
+    xmlSetProp (node, BAD_CAST "port", BAD_CAST sstream.str ().c_str ());
+  }
+  xmlSetProp (node, BAD_CAST "resource", BAD_CAST resource.c_str ());
+  xmlSetProp (node, BAD_CAST "password", BAD_CAST password.c_str ());
+
+  if (enable_on_startup) {
+
+    xmlSetProp (node, BAD_CAST "startup", BAD_CAST "true");
+  } else {
+
+    xmlSetProp (node, BAD_CAST "startup", BAD_CAST "false");
+  }
 
   connection = lm_connection_new (NULL);
   lm_connection_set_disconnect_function (connection, (LmDisconnectFunction)on_disconnected_c,
