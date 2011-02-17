@@ -267,9 +267,9 @@ public:
 
   void submit (Ekiga::FormBuilder &builder)
   {
-    builder.private_text (name, description, tooltip,
+    builder.private_text (name, description,
 			  gtk_entry_get_text (GTK_ENTRY (widget)),
-			  advanced);
+			  tooltip, advanced);
   }
 
 private:
@@ -881,8 +881,8 @@ FormDialog::text (const std::string name,
 void
 FormDialog::private_text (const std::string name,
 			  const std::string description,
-			  const std::string tooltip,
 			  const std::string value,
+			  const std::string tooltip,
 			  bool advanced)
 {
   GtkWidget *label = NULL;
