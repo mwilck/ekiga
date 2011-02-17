@@ -102,7 +102,7 @@ namespace Ekiga
     void private_text (const std::string text,
 		       const std::string description,
 		       const std::string value,
-               const std::string tooltip,
+		       const std::string tooltip,
 		       bool advanced = false);
 
     void multi_text (const std::string text,
