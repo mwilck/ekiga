@@ -37,13 +37,13 @@
 #include <string>
 
 /* DESCRIPTION  :  /
- * BEHAVIOR     :  Change encoding from latin-1 to utf-8.
+ * BEHAVIOR     :  Change encoding from windows codepage to utf-8.
  * PRE          :  /
  */
-const std::string latin2utf (const std::string str);
+const std::string codepage2utf (const std::string str);
 
 /* DESCRIPTION  :  /
- * BEHAVIOR     :  Change encoding from utf-8 to latin-1.
+ * BEHAVIOR     :  Change encoding from utf-8 to windows codepage.
  * PRE          :  A validated utf-8 string.
  */
-const std::string utf2latin (const std::string str);
+const std::string utf2codepage (const std::string str);

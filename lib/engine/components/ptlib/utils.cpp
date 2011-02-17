@@ -39,19 +39,13 @@
 #include "utils.h"
 
 const std::string
-latin2utf (const std::string str)
+codepage2utf (const std::string str)
 {
   gchar *utf8_str;
   std::string result;
 
-#ifdef WIN32
   utf8_str = g_locale_to_utf8 (str.c_str (), -1,
                                NULL, NULL, NULL);
-#else
-  utf8_str = g_convert (str.c_str (), -1,
-                        "UTF-8", "ISO-8859-1",
-                        NULL, NULL, NULL);
-#endif
   g_warn_if_fail (utf8_str != NULL);
   if (utf8_str == NULL)  /* conversion error */
     return "";
@@ -62,20 +56,14 @@ latin2utf (const std::string str)
 
 
 const std::string
-utf2latin (const std::string str)
+utf2codepage (const std::string str)
 {
   gchar *latin_str;
   std::string result;
 
   g_warn_if_fail (g_utf8_validate (str.c_str (), -1, NULL));
-#ifdef WIN32
   latin_str = g_locale_from_utf8 (str.c_str (), -1,
                                   NULL, NULL, NULL);
-#else
-  latin_str = g_convert (str.c_str (), -1,
-                         "ISO-8859-1", "UTF-8",
-                         NULL, NULL, NULL);
-#endif
   g_warn_if_fail (latin_str != NULL);
   if (latin_str == NULL)  /* conversion error */
     return "";

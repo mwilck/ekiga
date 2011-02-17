@@ -77,9 +77,12 @@ void GMAudioInputManager_ptlib::get_devices(std::vector <Ekiga::AudioInputDevice
 
       for (PINDEX j = 0; devices_array[j] != NULL; j++) {
 
-        /* linux USB subsystem uses latin-1 encoding, Windows codepage,
-           while ekiga uses utf-8 */
-        device.name = latin2utf (devices_array[j]);
+#ifdef WIN32
+        /* Windows uses codepage encoding for device name, while ekiga uses utf-8 */
+        device.name = codepage2utf (devices_array[j]);
+#else
+        device.name = devices_array[j];
+#endif
         devices.push_back(device);
       }
       free (devices_array);
@@ -110,7 +113,11 @@ bool GMAudioInputManager_ptlib::open (unsigned channels, unsigned samplerate, un
   current_state.bits_per_sample = bits_per_sample;
 
   input_device = PSoundChannel::CreateOpenedChannel (current_state.device.source,
-                                                     utf2latin (current_state.device.name),  // reencode back to latin-1 or codepage
+#ifdef WIN32
+                                                     utf2codepage (current_state.device.name),  // reencode back to codepage
+#else
+                                                     current_state.device.name,
+#endif
                                                      PSoundChannel::Recorder,
                                                      channels,
                                                      samplerate,
