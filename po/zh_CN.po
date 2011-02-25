@@ -16,7 +16,7 @@ msgstr ""
 "Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?"
 "product=ekiga&component=general\n"
 "POT-Creation-Date: 2011-02-21 15:27+0000\n"
-"PO-Revision-Date: 2011-02-25 08:51+0800\n"
+"PO-Revision-Date: 2011-02-25 09:06+0800\n"
 "Last-Translator: Lele Long <schemacs@gmail.com>\n"
 "Language-Team: Chinese/Simplified <i18n-translation@lists.linux.net.cn>\n"
 "MIME-Version: 1.0\n"
@@ -1797,11 +1797,10 @@ msgstr "服务器 URI(_U)："
 msgid "Name of LDAP server, prefixed by ldap://"
 msgstr "LDAP 服务器的名字，以 ldap:// 开头"
 
-# Base 应该是根DN
+# http://www.idevelopment.info/data/LDAP/LDAP_Resources/DEPLOY_Choosing_a_Base_DN.shtml
 #: ../plugins/ldap/ldap-book.cpp:946
-#, fuzzy
 msgid "_Base DN:"
-msgstr "基于 DN (_B)："
+msgstr "根 DN (_B)："
 
 #: ../plugins/ldap/ldap-book.cpp:952
 msgid "Subtree"
@@ -1822,9 +1821,8 @@ msgstr "搜索范围(_S)"
 #. * most LDAP servers it's "CommonName".
 #.
 #: ../plugins/ldap/ldap-book.cpp:969
-#, fuzzy
 msgid "_DisplayName Attribute:"
-msgstr "DisplayName 属性(_D)："
+msgstr "_DisplayName 属性："
 
 #: ../plugins/ldap/ldap-book.cpp:970
 msgid "Call _Attributes:"
