@@ -1,7 +1,7 @@
 # Swedish messages for ekiga.
-# Copyright (C) 2001-2010 Free Software Foundation, Inc.
+# Copyright (C) 2001-2011 Free Software Foundation, Inc.
 # Christian Rose <menthos@menthos.com>, 2001, 2002, 2003, 2004, 2005.
-# Daniel Nylander <po@danielnylander.se>, 2006, 2008, 2009, 2010.
+# Daniel Nylander <po@danielnylander.se>, 2006, 2008, 2009, 2010, 2011.
 #
 # $Id: sv.po,v 1.151 2006/12/28 06:50:05 dnylande Exp $
 #
@@ -9,8 +9,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: ekiga\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2010-12-29 15:46+0100\n"
-"PO-Revision-Date: 2010-12-29 16:55+0100\n"
+"POT-Creation-Date: 2011-02-27 18:09+0100\n"
+"PO-Revision-Date: 2011-02-27 18:11+0100\n"
 "Last-Translator: Daniel Nylander <po@danielnylander.se>\n"
 "Language-Team: Swedish <tp-sv@listor.tp-sv.se>\n"
 "Language: sv\n"
@@ -21,8 +21,8 @@ msgstr ""
 
 #. Application name
 #: ../ekiga.desktop.in.in.h:1
-#: ../src/gui/main_window.cpp:4515
-#: ../src/gui/main_window.cpp:4517
+#: ../src/gui/main_window.cpp:4712
+#: ../src/gui/main_window.cpp:4714
 msgid "Ekiga Softphone"
 msgstr "Programtelefonen Ekiga"
 
@@ -67,7 +67,7 @@ msgid "Automatic answer"
 msgstr "Automatiskt svar"
 
 #: ../ekiga.schemas.in.in.h:9
-#: ../src/gui/preferences.cpp:525
+#: ../src/gui/preferences.cpp:503
 msgid "Automatically reject or forward incoming calls if no answer is given after the specified amount of time (in seconds)"
 msgstr "Avvisa eller vidarekoppla automatiskt inkommande samtal om inget svar ges inom den angivna tiden (i sekunder)"
 
@@ -76,154 +76,157 @@ msgid "Calls history"
 msgstr "Samtalshistorik"
 
 #: ../ekiga.schemas.in.in.h:11
-msgid "Change the main window panel section"
-msgstr "Ändra huvudfönsterpanelssektionen"
+#, fuzzy
+msgid "Change the panel section of the main window"
+msgstr "Position på skärmen för huvudfönstret"
 
 #: ../ekiga.schemas.in.in.h:12
+msgid "Change the panel section of the main window (0=Contacts, 1=Dialpad, 2=Call history)"
+msgstr ""
+
+#: ../ekiga.schemas.in.in.h:13
 msgid "Connection will be established in Fast Start mode. Fast Start is a new way to start calls faster that was introduced in H.323v2. It is not supported by Netmeeting and using both Fast Start and H.245 Tunneling can crash some versions of Netmeeting"
 msgstr "Anslutning kommer att etableras i snabbstartläge. Snabbstart är en nytt sätt att starta samtal snabbare och som introducerades i H.323v2. Den stöds inte av Netmeeting och att använda både snabbstart och H.245-tunnling kan krascha en del versioner av Netmeeting"
 
-#: ../ekiga.schemas.in.in.h:13
+#: ../ekiga.schemas.in.in.h:14
 msgid "Contact long status"
 msgstr "Kontaktens långa status"
 
-#: ../ekiga.schemas.in.in.h:14
+#: ../ekiga.schemas.in.in.h:15
 msgid "Contact short status"
 msgstr "Kontaktens korta status"
 
-#: ../ekiga.schemas.in.in.h:15
+#: ../ekiga.schemas.in.in.h:16
 msgid "DTMF sending"
 msgstr "Skickande av DTMF"
 
-#: ../ekiga.schemas.in.in.h:16
+#: ../ekiga.schemas.in.in.h:17
 msgid "Disable video hardware acceleration"
 msgstr "Inaktivera accelerering av videohårdvara"
 
-#: ../ekiga.schemas.in.in.h:17
-#: ../src/gui/main_window.cpp:3759
+#: ../ekiga.schemas.in.in.h:18
+#: ../src/gui/main_window.cpp:3964
 msgid "Display images from your camera device"
 msgstr "Visa bilder från din kameraenhet"
 
-#: ../ekiga.schemas.in.in.h:18
+#: ../ekiga.schemas.in.in.h:19
 msgid "Enable 'Fast Start'"
 msgstr "Aktivera snabbstart"
 
-#: ../ekiga.schemas.in.in.h:19
+#: ../ekiga.schemas.in.in.h:20
 msgid "Enable H.245 tunneling"
 msgstr "Aktivera H.245-tunnling"
 
-#: ../ekiga.schemas.in.in.h:20
+#: ../ekiga.schemas.in.in.h:21
 msgid "Enable STUN network detection"
 msgstr "Aktivera STUN-nätverksdetektering"
 
-#: ../ekiga.schemas.in.in.h:21
+#: ../ekiga.schemas.in.in.h:22
 msgid "Enable early H.245"
 msgstr "Aktivera tidig H.245"
 
-#: ../ekiga.schemas.in.in.h:22
+#: ../ekiga.schemas.in.in.h:23
 msgid "Enable echo cancelation"
 msgstr "Aktivera ekoutsläckning"
 
-#: ../ekiga.schemas.in.in.h:23
+#: ../ekiga.schemas.in.in.h:24
 msgid "Enable silence detection"
 msgstr "Aktivera tystnadsdetektering"
 
-#: ../ekiga.schemas.in.in.h:24
-#: ../src/gui/preferences.cpp:501
+#: ../ekiga.schemas.in.in.h:25
+#: ../src/gui/preferences.cpp:480
 msgid "Enable the automatic network setup resulting from the STUN test"
 msgstr "Aktivera den automatiska nätverkskonfigurationen som togs fram av STUN-testet"
 
-#: ../ekiga.schemas.in.in.h:25
+#: ../ekiga.schemas.in.in.h:26
 msgid "Enter the number of seconds after which Ekiga should try refreshing the NAT binding when STUN is being used"
 msgstr "Ange antalet sekunder efter vilka Ekiga ska försöka uppdater NAT-bindningen när STUN används"
 
-#: ../ekiga.schemas.in.in.h:26
-#: ../src/gui/preferences.cpp:468
+#: ../ekiga.schemas.in.in.h:27
+#: ../src/gui/preferences.cpp:449
 msgid "Enter your full name"
 msgstr "Ange ditt fullständiga namn"
 
-#: ../ekiga.schemas.in.in.h:27
+#: ../ekiga.schemas.in.in.h:28
 msgid "Forward calls to host"
 msgstr "Vidarekoppla samtal till värd"
 
-#: ../ekiga.schemas.in.in.h:28
+#: ../ekiga.schemas.in.in.h:29
 msgid "Forward calls to the given host if busy"
 msgstr "Vidarekoppla samtal till den angivna värden om upptagen"
 
-#: ../ekiga.schemas.in.in.h:29
+#: ../ekiga.schemas.in.in.h:30
 msgid "Forward calls to the given host if no answer"
 msgstr "Vidarekoppla samtal till den angivna värden om inget svar"
 
 # http://bugzilla.gnome.org/show_bug.cgi?id=145353
 # Frame rate == bildfrekvens
 #
-#: ../ekiga.schemas.in.in.h:30
-#: ../src/gui/preferences.cpp:1021
+#: ../ekiga.schemas.in.in.h:31
+#: ../src/gui/preferences.cpp:980
 msgid "Frame Rate"
 msgstr "Bildfrekvens"
 
-#: ../ekiga.schemas.in.in.h:31
+#: ../ekiga.schemas.in.in.h:32
 msgid "Full name"
 msgstr "Fullständigt namn"
 
-#: ../ekiga.schemas.in.in.h:32
-#: ../src/gui/preferences.cpp:486
+#: ../ekiga.schemas.in.in.h:33
+#: ../src/gui/preferences.cpp:466
 msgid "If enabled, Ekiga will start hidden provided that the notification area is present in the GNOME panel"
 msgstr "Om detta är aktiverat kommer Ekiga att startas dolt, förutsatt att notifieringsytan finns i GNOME-panelen"
 
-#: ../ekiga.schemas.in.in.h:33
+#: ../ekiga.schemas.in.in.h:34
 msgid "If enabled, all incoming calls will be forwarded to the host that is specified in the field below"
 msgstr "Om detta är aktiverat kommer alla inkommande samtal att vidarekopplas till den värd som är angiven i fältet nedan"
 
-#: ../ekiga.schemas.in.in.h:34
+#: ../ekiga.schemas.in.in.h:35
 msgid "If enabled, all incoming calls will be forwarded to the host that is specified in the field below if you already are in a call or if you are in Do Not Disturb mode"
 msgstr "Om detta är aktiverat kommer alla inkommande samtal att vidarekopplas till den värd som är angiven i fältet nedan om du redan är i ett samtal eller om du är i Stör inte-läge"
 
-#: ../ekiga.schemas.in.in.h:35
+#: ../ekiga.schemas.in.in.h:36
 msgid "If enabled, all incoming calls will be forwarded to the host that is specified in the field below if you do not answer the call"
 msgstr "Om detta är aktiverat kommer alla inkommande samtal att vidarekopplas till den värd som är angiven i fältet nedan om du inte svarar på samtalet"
 
-#: ../ekiga.schemas.in.in.h:36
-#: ../src/gui/preferences.cpp:526
+#: ../ekiga.schemas.in.in.h:37
+#: ../src/gui/preferences.cpp:504
 msgid "If enabled, automatically answer incoming calls"
 msgstr "Om detta är aktiverat kommer inkommande samtal att automatiskt besvaras"
 
-#: ../ekiga.schemas.in.in.h:37
-#: ../src/gui/preferences.cpp:488
+#: ../ekiga.schemas.in.in.h:38
+#: ../src/gui/preferences.cpp:468
 msgid "If enabled, offline contacts will be shown in the roster"
 msgstr "Om aktiverad kommer frånkopplade kontakter att visas i kontaktlistan"
 
-#: ../ekiga.schemas.in.in.h:38
+#: ../ekiga.schemas.in.in.h:39
+#: ../src/gui/preferences.cpp:946
 msgid "If enabled, use echo cancelation"
 msgstr "Om detta är aktiverat kommer automatisk ekoutsläckning att användas"
 
-#: ../ekiga.schemas.in.in.h:39
+#: ../ekiga.schemas.in.in.h:40
+#: ../src/gui/preferences.cpp:944
 msgid "If enabled, use silence detection with the codecs supporting it"
 msgstr "Om detta är aktiverat kommer tystnadsdetektering användas med de kodekar som har stöd för det"
 
-#: ../ekiga.schemas.in.in.h:40
+#: ../ekiga.schemas.in.in.h:41
 msgid "Kind of network selected in the assistant"
 msgstr "Typ av nätverk som valts i guiden"
 
-#: ../ekiga.schemas.in.in.h:41
+#: ../ekiga.schemas.in.in.h:42
 msgid "LDAP servers"
 msgstr "LDAP-servrar"
 
-#: ../ekiga.schemas.in.in.h:42
+#: ../ekiga.schemas.in.in.h:43
 msgid "List of configured LDAP servers"
 msgstr "Lista över konfigurerade LDAP-servrar"
 
-#: ../ekiga.schemas.in.in.h:43
+#: ../ekiga.schemas.in.in.h:44
 msgid "List of folded groups in the roster"
 msgstr "Lista över infällda grupper i kontaktlistan"
 
-#: ../ekiga.schemas.in.in.h:44
+#: ../ekiga.schemas.in.in.h:45
 msgid "Listen port"
 msgstr "Lyssningsport"
-
-#: ../ekiga.schemas.in.in.h:45
-msgid "Local video window size"
-msgstr "Storlek på lokalt videofönster"
 
 #: ../ekiga.schemas.in.in.h:46
 msgid "Maximum RX video bitrate"
@@ -250,22 +253,22 @@ msgid "Outbound Proxy"
 msgstr "Utgående proxy"
 
 #: ../ekiga.schemas.in.in.h:52
-#: ../src/gui/preferences.cpp:495
+#: ../src/gui/preferences.cpp:474
 msgid "Place windows displaying video above other windows during calls"
 msgstr "Placera fönster som visar video över andra fönster under samtal"
 
 #: ../ekiga.schemas.in.in.h:53
-#: ../src/gui/preferences.cpp:371
+#: ../src/gui/preferences.cpp:366
 msgid "Play busy tone"
 msgstr "Spela upptagetton"
 
 #: ../ekiga.schemas.in.in.h:54
-#: ../src/gui/preferences.cpp:361
+#: ../src/gui/preferences.cpp:356
 msgid "Play ring tone"
 msgstr "Spela ringsignal"
 
 #: ../ekiga.schemas.in.in.h:55
-#: ../src/gui/preferences.cpp:351
+#: ../src/gui/preferences.cpp:346
 msgid "Play sound on incoming calls"
 msgstr "Spela ljud vid inkommande samtal"
 
@@ -278,248 +281,252 @@ msgid "Play sound on new voice mail"
 msgstr "Spela upp ljud vid nytt röstmeddelande"
 
 #: ../ekiga.schemas.in.in.h:58
-msgid "Position of the local video window"
-msgstr "Positionen för fönstret för lokal video"
-
-#: ../ekiga.schemas.in.in.h:59
 msgid "Position on the screen of the address book window"
 msgstr "Position på skärmen för adressboksfönstret"
 
-#: ../ekiga.schemas.in.in.h:60
+#: ../ekiga.schemas.in.in.h:59
 msgid "Position on the screen of the audio settings window"
 msgstr "Position på skärmen för ljudinställningsfönstret"
 
-#: ../ekiga.schemas.in.in.h:61
+#: ../ekiga.schemas.in.in.h:60
 msgid "Position on the screen of the chat window"
 msgstr "Position på skärmen för chattfönstret"
 
-#: ../ekiga.schemas.in.in.h:62
+#: ../ekiga.schemas.in.in.h:61
 msgid "Position on the screen of the druid window"
 msgstr "Position på skärmen för guidefönstret"
 
-#: ../ekiga.schemas.in.in.h:63
+#: ../ekiga.schemas.in.in.h:62
 msgid "Position on the screen of the main window"
 msgstr "Position på skärmen för huvudfönstret"
 
-#: ../ekiga.schemas.in.in.h:64
+#: ../ekiga.schemas.in.in.h:63
 msgid "Position on the screen of the preferences window"
 msgstr "Position på skärmen för inställningsfönstret"
 
-#: ../ekiga.schemas.in.in.h:65
+#: ../ekiga.schemas.in.in.h:64
 msgid "Position on the screen of the video settings window"
 msgstr "Position på skärmen för videoinställningsfönstret"
 
-#: ../ekiga.schemas.in.in.h:66
+#: ../ekiga.schemas.in.in.h:65
 msgid "Remote video window position"
 msgstr "Position för fjärrvideofönster"
 
-#: ../ekiga.schemas.in.in.h:67
+#: ../ekiga.schemas.in.in.h:66
 msgid "Remote video window size"
 msgstr "Storlek på fjärrvideofönster"
 
-#: ../ekiga.schemas.in.in.h:68
+#: ../ekiga.schemas.in.in.h:67
 msgid "Select an alternative audio output device to use for sound events."
 msgstr "Välj en alternativ ljudutgångsenhet som ska användas för ljudhändelser."
 
-#: ../ekiga.schemas.in.in.h:69
-#: ../src/gui/preferences.cpp:786
+#: ../ekiga.schemas.in.in.h:68
+#: ../src/gui/preferences.cpp:755
 msgid "Select the audio input device to use"
 msgstr "Välj den ljudingångsenhet som ska användas"
 
-#: ../ekiga.schemas.in.in.h:70
-#: ../src/gui/preferences.cpp:779
+#: ../ekiga.schemas.in.in.h:69
+#: ../src/gui/preferences.cpp:748
 msgid "Select the audio output device to use"
 msgstr "Välj den ljudutgångsenhet som ska användas"
 
-#: ../ekiga.schemas.in.in.h:71
-#: ../src/gui/preferences.cpp:939
+#: ../ekiga.schemas.in.in.h:70
+#: ../src/gui/preferences.cpp:905
 msgid "Select the format for video cameras (does not apply to most USB cameras)"
 msgstr "Ange formatet för videokameror (är inte tillämpbart för de flesta USB-kameror)"
 
+#: ../ekiga.schemas.in.in.h:71
+#, fuzzy
+msgid "Select the mode for sending DTMFs. The values can be 0 (for \"RFC2833\") and 1 (for \"INFO\")"
+msgstr "Detta tillåts lägesinställning för DTMF-sändning. Värden kan vara \"RFC2833\" (0), \"INFO\" (1)"
+
 #: ../ekiga.schemas.in.in.h:72
+#, fuzzy
+msgid "Select the mode for sending DTMFs. The values can be 0 (for \"String\"), 1 (for \"Tone\"), 2 (for \"RFC2833\"), or 3 (for \"Q.931\") (default is \"String\"). Choosing other values than \"String\" disables the Text Chat."
+msgstr "Detta tillåter lägesinställning för DTMF-sändning. Värden kan vara \"String\" (0), \"Tone\" (1), \"RFC2833\" (2), \"Q.931\" (3) (standard är \"String\"). Välja andra värden än \"String\" inaktiverar textchatten"
+
+#: ../ekiga.schemas.in.in.h:73
 msgid "Select the transmitted video size: Small (QCIF 176x144) or Large (CIF 352x288)"
 msgstr "Välj den överförda videostorleken: Liten (QCIF 176×144) eller Stor (CIF 352×288)"
 
-#: ../ekiga.schemas.in.in.h:73
-#: ../src/gui/preferences.cpp:931
+#: ../ekiga.schemas.in.in.h:74
+#: ../src/gui/preferences.cpp:897
 msgid "Select the video input device to use. If an error occurs when using this device a test picture will be transmitted."
 msgstr "Välj den videoingångsenhet som ska användas. Om ett fel inträffar då denna enhet används kommer en bild att överföras."
 
-#: ../ekiga.schemas.in.in.h:74
+#: ../ekiga.schemas.in.in.h:75
 msgid "Show offline contacts"
 msgstr "Visa frånkopplade kontakter"
 
-#: ../ekiga.schemas.in.in.h:75
-#: ../src/gui/main_window.cpp:3390
+#: ../ekiga.schemas.in.in.h:76
+#: ../src/gui/main_window.cpp:3597
 msgid "Show the call panel"
 msgstr "Visa samtalspanelen"
 
-#: ../ekiga.schemas.in.in.h:76
+#: ../ekiga.schemas.in.in.h:77
 msgid "Size of the address book window"
 msgstr "Storlek på adressboksfönstret"
 
-#: ../ekiga.schemas.in.in.h:77
+#: ../ekiga.schemas.in.in.h:78
 msgid "Size of the audio settings window"
 msgstr "Storlek på ljudinställningsfönstret"
 
-#: ../ekiga.schemas.in.in.h:78
+#: ../ekiga.schemas.in.in.h:79
 msgid "Size of the chat window"
 msgstr "Storlek på chattfönstret"
 
-#: ../ekiga.schemas.in.in.h:79
+#: ../ekiga.schemas.in.in.h:80
 msgid "Size of the druid window"
 msgstr "Storlek på guidefönstret"
 
-#: ../ekiga.schemas.in.in.h:80
+#: ../ekiga.schemas.in.in.h:81
 msgid "Size of the preferences window"
 msgstr "Storlek på inställningsfönstret"
 
-#: ../ekiga.schemas.in.in.h:81
+#: ../ekiga.schemas.in.in.h:82
 msgid "Size of the video settings window"
 msgstr "Storlek på videoinställningsfönstret"
 
-#: ../ekiga.schemas.in.in.h:82
+#: ../ekiga.schemas.in.in.h:83
 msgid "Specify the software scaling algorithm"
 msgstr "Ange algoritm för programvaruskalning"
 
-#: ../ekiga.schemas.in.in.h:83
+#: ../ekiga.schemas.in.in.h:84
 msgid "Specify the software scaling algorithm: 0: nearest neighbor, 1: nearest neighbor with box filter, 2: bilinear filtering, 3: hyperbolic filtering. Does not apply on windows systems."
 msgstr "Ange algoritm för programvaruskalning: 0: närmsta granne, 1: närmsta granne med rutfilter, 2: bilinjär filtrering, 3: hyperbolisk filtrering. Gäller inte för Windows-system."
 
-#: ../ekiga.schemas.in.in.h:84
+#: ../ekiga.schemas.in.in.h:85
 msgid "Start hidden"
 msgstr "Starta dold"
 
-#: ../ekiga.schemas.in.in.h:85
+#: ../ekiga.schemas.in.in.h:86
 msgid "TCP port range"
 msgstr "TCP-portintervall"
 
-#: ../ekiga.schemas.in.in.h:86
+#: ../ekiga.schemas.in.in.h:87
 msgid "Temporal Spatial Trade Off"
 msgstr "Temporär spatial kompromiss"
 
-#: ../ekiga.schemas.in.in.h:87
+#: ../ekiga.schemas.in.in.h:88
 msgid "The Audio Codecs List"
 msgstr "Listan över ljudkodekar"
 
-#: ../ekiga.schemas.in.in.h:88
-#: ../src/gui/preferences.cpp:736
+#: ../ekiga.schemas.in.in.h:89
+#: ../src/gui/preferences.cpp:707
 msgid "The SIP Outbound Proxy to use for outgoing calls"
 msgstr "Utgående SIP-proxy att använda för utgående samtal"
 
-#: ../ekiga.schemas.in.in.h:89
+#: ../ekiga.schemas.in.in.h:90
 msgid "The STUN Server"
 msgstr "STUN-servern"
 
-#: ../ekiga.schemas.in.in.h:90
+#: ../ekiga.schemas.in.in.h:91
 msgid "The STUN server to use for STUN Support. STUN is a technology that permits passage through some types of NAT gateway"
 msgstr "STUN-servern att använda för STUN-stöd. STUN är en teknik som tillåter att vissa typer av NAT-gatewayer kan passeras"
 
-#: ../ekiga.schemas.in.in.h:91
+#: ../ekiga.schemas.in.in.h:92
 msgid "The Type of Service (TOS) byte on outgoing RTP IP packets. This byte is used by the network to provide some level of Quality of Service (QoS). Default value 184 (0xB8) correspond to Expedited Forwarding (EF) PHB as defined in RFC 3246."
 msgstr "Type of Service-byte (TOS) på utgående RTP IP-paket. Denna byte används av nätverket för att tillhandahålla någon nivå av Quality of Service (QoS). Standardvärdet 184 (0xB8) motsvarar Expedited Forwarding (EF) PHB som definierats i RFC 3246."
 
-#: ../ekiga.schemas.in.in.h:92
+#: ../ekiga.schemas.in.in.h:93
 msgid "The accounts list"
 msgstr "Kontolistan"
 
-#: ../ekiga.schemas.in.in.h:93
+#: ../ekiga.schemas.in.in.h:94
 msgid "The audio codecs list"
 msgstr "Listan över ljudkodekar"
 
-#: ../ekiga.schemas.in.in.h:94
+#: ../ekiga.schemas.in.in.h:95
 msgid "The busy tone sound"
 msgstr "Upptagettonen"
 
-#: ../ekiga.schemas.in.in.h:95
+#: ../ekiga.schemas.in.in.h:96
 msgid "The chosen sound will be played at the end of calls or calling somebody who is busy, if enabled"
 msgstr "Det valda ljudet kommer att spelas vid slutet av samtal eller då någon som är upptagen rings upp, om aktiverat"
 
-#: ../ekiga.schemas.in.in.h:96
+#: ../ekiga.schemas.in.in.h:97
 msgid "The chosen sound will be played on incoming calls, if enabled"
 msgstr "Det valda ljudet kommer att spelas vid inkommande samtal, om aktiverat"
 
-#: ../ekiga.schemas.in.in.h:97
+#: ../ekiga.schemas.in.in.h:98
 msgid "The chosen sound will be played when a new instant message is received, if enabled"
 msgstr "Det valda ljudet kommer att spelas upp då ett nytt snabbmeddelande tas emot, om aktiverat"
 
-#: ../ekiga.schemas.in.in.h:98
+#: ../ekiga.schemas.in.in.h:99
 msgid "The chosen sound will be played when a new voice mail is received, if enabled"
 msgstr "Det valda ljudet kommer att spelas upp då ett nytt röstmeddelande tas emot, om aktiverat"
 
-#: ../ekiga.schemas.in.in.h:99
+#: ../ekiga.schemas.in.in.h:100
 msgid "The chosen sound will be played when calling somebody, if enabled"
 msgstr "Det valda ljudet kommer att spelas då någon rings upp, om aktiverat"
 
-#: ../ekiga.schemas.in.in.h:100
+#: ../ekiga.schemas.in.in.h:101
 msgid "The default video view"
 msgstr "Standardvideovyn"
 
-#: ../ekiga.schemas.in.in.h:101
-msgid "The default video view (0: Local, 1: Remote, 2: Both layered, 3: Both with local video in a separate window, 4: Both)"
+#: ../ekiga.schemas.in.in.h:102
+#, fuzzy
+msgid "The default video view (0: Local, 1: Remote, 2: Both, 3: Both in a separate window)"
 msgstr "Standardvideovyn (0: Lokal, 1: Fjärr, 2: Båda överlagrade, 3: Båda med lokal video i separat fönster, 4: Båda)"
 
-#: ../ekiga.schemas.in.in.h:102
+#: ../ekiga.schemas.in.in.h:103
 msgid "The dial tone sound"
 msgstr "Ljudet för ringtonen"
 
-#: ../ekiga.schemas.in.in.h:103
+#: ../ekiga.schemas.in.in.h:104
 msgid "The history of the 100 last calls"
 msgstr "Historiken för de 100 senaste samtalen"
 
-#: ../ekiga.schemas.in.in.h:104
-#: ../src/gui/preferences.cpp:685
-#: ../src/gui/preferences.cpp:739
+#: ../ekiga.schemas.in.in.h:105
+#: ../src/gui/preferences.cpp:662
+#: ../src/gui/preferences.cpp:710
 msgid "The host where calls should be forwarded if call forwarding is enabled"
 msgstr "Den värd dit samtal ska vidarekopplas till om vidarekoppling av samtal är aktiverat"
 
-#: ../ekiga.schemas.in.in.h:105
+#: ../ekiga.schemas.in.in.h:106
 msgid "The incoming call sound"
 msgstr "Ljudet för inkommande samtal"
 
-#: ../ekiga.schemas.in.in.h:106
+#: ../ekiga.schemas.in.in.h:107
 msgid "The list of accounts to which Ekiga should register"
 msgstr "Listan på konton till vilka Ekiga ska registrera sig"
 
-#: ../ekiga.schemas.in.in.h:107
+#: ../ekiga.schemas.in.in.h:108
 msgid "The long status information"
 msgstr "Den långa statusinformationen"
 
-#: ../ekiga.schemas.in.in.h:108
+#: ../ekiga.schemas.in.in.h:109
 msgid "The maximum RX video bitrate in kbit/s. This value will be signaled to the peer endpoint that can adjust (if it supports it) its TX bitrate if it is above the signaled value"
 msgstr "Den maximala bitfrekvensen för mottagning av video i kbit/s. Detta värde kommer att signaleras till motparten så den justera (om stöd finns) dess bitfrekvens för sändning om det är över det signalerade värdet"
 
-#: ../ekiga.schemas.in.in.h:109
+#: ../ekiga.schemas.in.in.h:110
 msgid "The maximum TX video bitrate in kbit/s. The video quality and the number of transmitted frames per second (depends on selected codec) will be dynamically adjusted above their minimum during calls to try to minimize the bandwidth to the given value"
 msgstr "Den maximala bitfrekvensen för videosändning i kbit/s. Videokvaliteten och antalet överförda bildrutor per sekund (beroende på vald kodek) kommer att justeras dynamiskt över dess minimum under samtal för att försöka minimera bandbredden till det angivna värdet"
 
-#: ../ekiga.schemas.in.in.h:110
+#: ../ekiga.schemas.in.in.h:111
+#: ../src/gui/preferences.cpp:948
 msgid "The maximum jitter buffer size for audio reception (in ms)"
 msgstr "Den maximala jitterbuffertstorleken för ljudmottagning (i ms)"
 
-#: ../ekiga.schemas.in.in.h:111
+#: ../ekiga.schemas.in.in.h:112
 msgid "The maximum transmitted frame rate in frames/s. This rate may not be reached in case a minimum quality was configure via a TSTO value smaller than 31 and the bitrate selected is not sufficient to support this minimum quality"
 msgstr "Den maximala överförda bildfrekvensen i bilder/s. Denna frekvens kanske inte uppnås om minimumkvaliteten konfigurerades via ett TSTO-värde mindre än 31 och vald bitfrekvens inte är tillräcklig för att ge stöd för denna minimumkvalitet"
 
-#: ../ekiga.schemas.in.in.h:112
+#: ../ekiga.schemas.in.in.h:113
 msgid "The new instant message sound"
 msgstr "Det nya ljudet för snabbmeddelande"
 
-#: ../ekiga.schemas.in.in.h:113
+#: ../ekiga.schemas.in.in.h:114
 msgid "The new voice mail sound"
 msgstr "Det nya ljudet för nytt röstmeddelande"
 
-#: ../ekiga.schemas.in.in.h:114
+#: ../ekiga.schemas.in.in.h:115
 msgid "The port to listen to for incoming connections. Ekiga needs to be restarted for the new value to take effect"
 msgstr "Porten att lyssna på för inkommande anslutningar. Ekiga måste startas om för att detta nya värde ska börja gälla."
 
-#: ../ekiga.schemas.in.in.h:115
+#: ../ekiga.schemas.in.in.h:116
 msgid "The port to listen to for incoming connections. Ekiga needs to be restarted for the new value to take effect."
 msgstr "Porten att lyssna på för inkommande anslutningar. Ekiga måste startas om för att detta nya värde ska börja gälla."
-
-#: ../ekiga.schemas.in.in.h:116
-msgid "The position of the local video window"
-msgstr "Position för fönstret för lokal video"
 
 #: ../ekiga.schemas.in.in.h:117
 msgid "The position of the remote video window"
@@ -538,109 +545,97 @@ msgid "The short status information"
 msgstr "Den korta statusinformationen"
 
 #: ../ekiga.schemas.in.in.h:121
-msgid "The size of the local video window"
-msgstr "Storleken på fönstret för lokal video"
-
-#: ../ekiga.schemas.in.in.h:122
 msgid "The size of the remote video window"
 msgstr "Storleken på fönstret för fjärrvideo"
 
-#: ../ekiga.schemas.in.in.h:123
+#: ../ekiga.schemas.in.in.h:122
 msgid "The sound that will be played at the end of calls or when calling somebody who is busy, if enabled"
 msgstr "Ljudet som kommer att spelas vid slutet av samtal eller då någon som är upptagen rings upp, om aktiverat"
 
-#: ../ekiga.schemas.in.in.h:124
+#: ../ekiga.schemas.in.in.h:123
 msgid "The sound that will be played on incoming calls, if enabled"
 msgstr "Ljudet som kommer att spelas för inkommande samtal, om aktiverat"
 
-#: ../ekiga.schemas.in.in.h:125
+#: ../ekiga.schemas.in.in.h:124
 msgid "The sound that will be played when calling somebody, if enabled"
 msgstr "Ljudet som kommer att spelas då någon rings upp, om aktiverat"
 
-#: ../ekiga.schemas.in.in.h:126
+#: ../ekiga.schemas.in.in.h:125
 msgid "The sound that will be played when there is a new instant message, if enabled"
 msgstr "Ljudet som kommer att spelas upp då det finns ett nytt snabbmeddelande, om aktiverat"
 
-#: ../ekiga.schemas.in.in.h:127
+#: ../ekiga.schemas.in.in.h:126
 msgid "The sound that will be played when there is a new voice mail, if enabled"
 msgstr "Ljudet som kommer att spelas upp då det finns ett nytt röstmeddelande, om aktiverat"
 
-#: ../ekiga.schemas.in.in.h:128
-#: ../src/gui/preferences.cpp:935
+#: ../ekiga.schemas.in.in.h:127
+#: ../src/gui/preferences.cpp:901
 msgid "The video channel number to use (to select camera, tv or other sources)"
 msgstr "Videokanalnumret att använda (för att välja kamera, tv eller andra källor)"
 
-#: ../ekiga.schemas.in.in.h:129
+#: ../ekiga.schemas.in.in.h:128
 msgid "The video codecs list"
 msgstr "Listan över videokodekar"
 
-#: ../ekiga.schemas.in.in.h:130
+#: ../ekiga.schemas.in.in.h:129
 msgid "The video view before having switched to fullscreen"
 msgstr "Videovyn innan växling till helskärmsläge"
 
-#: ../ekiga.schemas.in.in.h:131
+#: ../ekiga.schemas.in.in.h:130
 msgid "The video view before having switched to fullscreen (same values as video_view)"
 msgstr "Videovyn innan växling till helskärmsläge (samma värden som video_view)"
 
-#: ../ekiga.schemas.in.in.h:132
+#: ../ekiga.schemas.in.in.h:131
 msgid "The zoom value"
 msgstr "Zoomvärdet"
 
-#: ../ekiga.schemas.in.in.h:133
+#: ../ekiga.schemas.in.in.h:132
 msgid "The zoom value in percent to apply to images displayed in the main GUI (can be 50, 100, or 200)"
 msgstr "Zoomvärdet, i procent, som ska tillämpas på bilderna som visas i huvudanvändargränssnittet (kan vara 50, 100 eller 200)"
 
-#: ../ekiga.schemas.in.in.h:134
-msgid "This allows you to set the mode for sending DTMFs. The values can be \"RFC2833\" (0), \"INFO\" (1)"
-msgstr "Detta tillåts lägesinställning för DTMF-sändning. Värden kan vara \"RFC2833\" (0), \"INFO\" (1)"
-
-#: ../ekiga.schemas.in.in.h:135
-msgid "This allows you to set the mode for sending DTMFs. The values can be \"String\" (0), \"Tone\" (1), \"RFC2833\" (2), \"Q.931\" (3) (default is \"String\"). Choosing other values than \"String\" disables the Text Chat"
-msgstr "Detta tillåter lägesinställning för DTMF-sändning. Värden kan vara \"String\" (0), \"Tone\" (1), \"RFC2833\" (2), \"Q.931\" (3) (standard är \"String\"). Välja andra värden än \"String\" inaktiverar textchatten"
-
-#: ../ekiga.schemas.in.in.h:136
-#: ../src/gui/preferences.cpp:697
+#: ../ekiga.schemas.in.in.h:133
+#: ../src/gui/preferences.cpp:671
 msgid "This enables H.245 Tunneling mode. In H.245 Tunneling mode H.245 messages are encapsulated into the H.225 channel (port 1720). This saves one TCP connection during calls. H.245 Tunneling was introduced in H.323v2 and Netmeeting does not support it. Using both Fast Start and H.245 Tunneling can crash some versions of Netmeeting."
 msgstr "Detta aktiverar H.245-tunnlingsläge. I H.245-tunnlingsläge kapslas H.245-meddelanden in i H.225-kanalen (port 1720). Detta sparar en TCP-anslutning under samtal. H.245-tunnling introducerades i H.323v2 och Netmeeting saknar stöd för det. Att använda både snabbstart och H.245-tunnling kan krascha en del versioner av Netmeeting."
 
-#: ../ekiga.schemas.in.in.h:137
-#: ../src/gui/preferences.cpp:699
+#: ../ekiga.schemas.in.in.h:134
+#: ../src/gui/preferences.cpp:673
 msgid "This enables H.245 early in the setup"
 msgstr "Detta aktiverar H.245 tidigt i konfigurationen"
 
-#: ../ekiga.schemas.in.in.h:138
+#: ../ekiga.schemas.in.in.h:135
 msgid "This key disables DirectX (on win32) and XVideo (on Linux) video hardware acceleration"
 msgstr "Den här nyckeln inaktiverar DirectX-accelering (på win32) och XVideo (på Linux) för videohårdvara"
 
-#: ../ekiga.schemas.in.in.h:139
+#: ../ekiga.schemas.in.in.h:136
 msgid "Type of Service (TOS) byte on outgoing RTP IP packets"
 msgstr "Type of Service-byte (TOS) på utgående RTP IP-paket"
 
-#: ../ekiga.schemas.in.in.h:140
+#: ../ekiga.schemas.in.in.h:137
 msgid "UDP port range"
 msgstr "UDP-portintervall"
 
-#: ../ekiga.schemas.in.in.h:141
+#: ../ekiga.schemas.in.in.h:138
 msgid "Video channel"
 msgstr "Videokanal"
 
-#: ../ekiga.schemas.in.in.h:142
+#: ../ekiga.schemas.in.in.h:139
 msgid "Video format"
 msgstr "Videoformat"
 
-#: ../ekiga.schemas.in.in.h:143
+#: ../ekiga.schemas.in.in.h:140
 msgid "Video input device"
 msgstr "Videoingångsenhet"
 
-#: ../ekiga.schemas.in.in.h:144
+#: ../ekiga.schemas.in.in.h:141
 msgid "Video preview"
 msgstr "Förhandsgranskning av video"
 
-#: ../ekiga.schemas.in.in.h:145
+#: ../ekiga.schemas.in.in.h:142
 msgid "Video size"
 msgstr "Videostorlek"
 
-#: ../ekiga.schemas.in.in.h:146
+#: ../ekiga.schemas.in.in.h:143
 msgid "Whether to prefer to sustain the max. frame rate or lower it possibly in order to keep a minimum level of (spatial) quality for all frames. 0: Highest minimal quality, 31: lowest minimal quality"
 msgstr "Huruvida föredraget val är att upprätthålla maximum bildfrekvens eller att sänka den för att möjligen behålla en minimumnivå av (spatial) kvalitet för alla bildrutor. 0: Högsta minimala kvalitet, 31: lägsta minimala kvalitet"
 
@@ -686,18 +681,18 @@ msgid "Unnamed"
 msgstr "Namnlös"
 
 #: ../lib/engine/components/local-roster/local-presentity.cpp:220
-#: ../lib/engine/components/opal/opal-account.cpp:350
+#: ../lib/engine/components/opal/opal-account.cpp:373
 #: ../plugins/evolution/evolution-contact.cpp:228
 #: ../plugins/loudmouth/loudmouth-presentity.cpp:157
 #: ../plugins/resource-list/rl-presentity.cpp:212
-#: ../src/gui/main_window.cpp:3348
+#: ../src/gui/main_window.cpp:3555
 msgid "_Edit"
 msgstr "_Redigera"
 
 #: ../lib/engine/components/local-roster/local-presentity.cpp:222
-#: ../lib/engine/components/opal/opal-account.cpp:352
+#: ../lib/engine/components/opal/opal-account.cpp:375
 #: ../plugins/evolution/evolution-contact.cpp:230
-#: ../plugins/loudmouth/loudmouth-account.cpp:364
+#: ../plugins/loudmouth/loudmouth-account.cpp:393
 #: ../plugins/loudmouth/loudmouth-presentity.cpp:190
 #: ../plugins/resource-list/rl-presentity.cpp:214
 msgid "_Remove"
@@ -715,9 +710,10 @@ msgstr "Fyll i detta formulär för att ändra ett befintligt element i Ekigas i
 #: ../lib/engine/components/local-roster/local-presentity.cpp:250
 #: ../lib/engine/components/local-roster/local-heap.cpp:235
 #: ../lib/engine/components/local-roster/local-heap.cpp:427
-#: ../lib/engine/components/opal/opal-account.cpp:395
+#: ../lib/engine/components/opal/opal-account.cpp:418
 #: ../plugins/evolution/evolution-contact.cpp:324
-#: ../plugins/loudmouth/loudmouth-account.cpp:267
+#: ../plugins/loudmouth/loudmouth-account.cpp:296
+#: ../plugins/loudmouth/loudmouth-bank.cpp:125
 #: ../plugins/loudmouth/loudmouth-presentity.cpp:278
 #: ../plugins/resource-list/rl-cluster.cpp:169
 #: ../plugins/resource-list/rl-heap.cpp:526
@@ -817,6 +813,16 @@ msgstr "Själv"
 msgid "Please fill in this form to add a new contact to ekiga's internal roster"
 msgstr "Fyll i detta formulär för att lägga till en ny kontakt i Ekigas interna kontaktlista"
 
+#: ../lib/engine/components/local-roster/local-heap.cpp:235
+#, fuzzy
+msgid "Name of the contact, as shown in your roster"
+msgstr "Om aktiverad kommer frånkopplade kontakter att visas i kontaktlistan"
+
+#: ../lib/engine/components/local-roster/local-heap.cpp:244
+#: ../lib/engine/components/local-roster/local-heap.cpp:246
+msgid "Address, e.g. sip:xyz@ekiga.net"
+msgstr "Adress, t.ex. sip:xyz@ekiga.net"
+
 #: ../lib/engine/components/local-roster/local-heap.cpp:250
 msgid "Put contact in groups:"
 msgstr "Lägg kontakt i grupper:"
@@ -838,15 +844,15 @@ msgid "Please edit this group name"
 msgstr "Redigera detta gruppnamn"
 
 #: ../lib/engine/components/opal/h323-endpoint.cpp:131
-#: ../lib/engine/components/opal/sip-endpoint.cpp:233
-#: ../lib/engine/components/opal/sip-endpoint.cpp:237
+#: ../lib/engine/components/opal/sip-endpoint.cpp:231
+#: ../lib/engine/components/opal/sip-endpoint.cpp:235
 msgid "Call"
 msgstr "Ring"
 
 #: ../lib/engine/components/opal/h323-endpoint.cpp:134
-#: ../lib/engine/components/opal/sip-endpoint.cpp:234
-#: ../lib/engine/components/opal/sip-endpoint.cpp:238
-#: ../src/gui/main_window.cpp:3122
+#: ../lib/engine/components/opal/sip-endpoint.cpp:232
+#: ../lib/engine/components/opal/sip-endpoint.cpp:236
+#: ../src/gui/main_window.cpp:3317
 msgid "Transfer"
 msgstr "Skicka vidare"
 
@@ -860,208 +866,257 @@ msgid "Bad username/password"
 msgstr "Felaktigt användarnamn/lösenord"
 
 #: ../lib/engine/components/opal/h323-endpoint.cpp:315
-#: ../lib/engine/components/opal/sip-endpoint.cpp:653
+#: ../lib/engine/components/opal/sip-endpoint.cpp:562
 msgid "Transport error"
 msgstr "Transportfel"
 
 #: ../lib/engine/components/opal/h323-endpoint.cpp:326
 #: ../lib/engine/components/opal/h323-endpoint.cpp:331
-#: ../lib/engine/components/opal/sip-endpoint.cpp:862
+#: ../lib/engine/components/opal/sip-endpoint.cpp:771
 msgid "Failed"
 msgstr "Misslyckades"
 
 #. translators : the result will look like :
 #. * "registered (with 2 voice mail messages)"
 #.
-#: ../lib/engine/components/opal/opal-account.cpp:209
+#: ../lib/engine/components/opal/opal-account.cpp:218
 #, c-format
 msgid "%s (with %d voice mail message)"
 msgid_plural "%s (with %d voice mail messages)"
 msgstr[0] "%s (med %d röstmeddelande)"
 msgstr[1] "%s (med %d röstmeddelanden)"
 
-#: ../lib/engine/components/opal/opal-account.cpp:342
-#: ../plugins/loudmouth/loudmouth-account.cpp:352
+#: ../lib/engine/components/opal/opal-account.cpp:365
+#: ../plugins/loudmouth/loudmouth-account.cpp:381
 msgid "_Disable"
 msgstr "_Inaktivera"
 
-#: ../lib/engine/components/opal/opal-account.cpp:345
-#: ../plugins/loudmouth/loudmouth-account.cpp:356
+#: ../lib/engine/components/opal/opal-account.cpp:368
+#: ../plugins/loudmouth/loudmouth-account.cpp:385
 msgid "_Enable"
 msgstr "_Aktivera"
 
-#: ../lib/engine/components/opal/opal-account.cpp:366
-#: ../src/gui/assistant.cpp:734
+#: ../lib/engine/components/opal/opal-account.cpp:389
+#: ../src/gui/assistant.cpp:732
 msgid "Recharge the account"
 msgstr "Ladda upp kontot"
 
-#: ../lib/engine/components/opal/opal-account.cpp:371
-#: ../src/gui/assistant.cpp:746
+#: ../lib/engine/components/opal/opal-account.cpp:394
+#: ../src/gui/assistant.cpp:744
 msgid "Consult the balance history"
 msgstr "Visa saldohistoriken"
 
-#: ../lib/engine/components/opal/opal-account.cpp:376
-#: ../src/gui/assistant.cpp:758
+#: ../lib/engine/components/opal/opal-account.cpp:399
+#: ../src/gui/assistant.cpp:756
 msgid "Consult the call history"
 msgstr "Referera till samtalshistoriken"
 
-#: ../lib/engine/components/opal/opal-account.cpp:391
-#: ../lib/engine/components/opal/opal-bank.cpp:94
-#: ../plugins/loudmouth/loudmouth-account.cpp:262
+#: ../lib/engine/components/opal/opal-account.cpp:414
+#: ../lib/engine/components/opal/opal-bank.cpp:98
+#: ../plugins/loudmouth/loudmouth-account.cpp:291
+#: ../plugins/loudmouth/loudmouth-bank.cpp:121
 msgid "Edit account"
 msgstr "Redigera konto"
 
-#: ../lib/engine/components/opal/opal-account.cpp:393
-#: ../lib/engine/components/opal/opal-bank.cpp:95
+#: ../lib/engine/components/opal/opal-account.cpp:416
+#: ../lib/engine/components/opal/opal-bank.cpp:99
 #: ../plugins/evolution/evolution-book.cpp:341
 #: ../plugins/evolution/evolution-contact.cpp:322
-#: ../plugins/loudmouth/loudmouth-account.cpp:264
+#: ../plugins/loudmouth/loudmouth-account.cpp:293
 msgid "Please update the following fields:"
 msgstr "Uppdatera följande fält:"
 
-#: ../lib/engine/components/opal/opal-account.cpp:397
+#: ../lib/engine/components/opal/opal-account.cpp:418
+#: ../lib/engine/components/opal/opal-bank.cpp:125
+#: ../lib/engine/components/opal/opal-bank.cpp:135
+msgid "Account name, e.g. MyAccount"
+msgstr "Kontonamn, t.ex. MittKonto"
+
+#: ../lib/engine/components/opal/opal-account.cpp:420
 msgid "Registrar:"
 msgstr "Registrator:"
 
-#: ../lib/engine/components/opal/opal-account.cpp:399
+#: ../lib/engine/components/opal/opal-account.cpp:420
+#: ../lib/engine/components/opal/opal-bank.cpp:136
+msgid "The registrar, e.g. ekiga.net"
+msgstr ""
+
+#: ../lib/engine/components/opal/opal-account.cpp:422
 msgid "Gatekeeper:"
 msgstr "Portvakt:"
 
-#: ../lib/engine/components/opal/opal-account.cpp:400
-#: ../plugins/loudmouth/loudmouth-account.cpp:271
+#: ../lib/engine/components/opal/opal-account.cpp:422
+#: ../lib/engine/components/opal/opal-bank.cpp:126
+msgid "The gatekeeper, e.g. ekiga.net"
+msgstr ""
+
+#: ../lib/engine/components/opal/opal-account.cpp:423
+#: ../plugins/loudmouth/loudmouth-account.cpp:300
+#: ../plugins/loudmouth/loudmouth-bank.cpp:126
 #: ../plugins/resource-list/rl-cluster.cpp:174
 msgid "User:"
 msgstr "Användare:"
 
+#: ../lib/engine/components/opal/opal-account.cpp:423
+#: ../lib/engine/components/opal/opal-bank.cpp:107
+#: ../lib/engine/components/opal/opal-bank.cpp:118
+#: ../lib/engine/components/opal/opal-bank.cpp:127
+#: ../lib/engine/components/opal/opal-bank.cpp:137
+msgid "The user name, e.g. jim"
+msgstr "Användarnamnet, t.ex. johan"
+
 #. Translators:
 #. * SIP knows two usernames: The name for the client ("User") and the name
 #. * for the authentication procedure ("Authentication User")
-#: ../lib/engine/components/opal/opal-account.cpp:405
+#: ../lib/engine/components/opal/opal-account.cpp:428
 msgid "Authentication User:"
 msgstr "Användarnamn för autentisering:"
 
-#: ../lib/engine/components/opal/opal-account.cpp:406
-#: ../plugins/loudmouth/loudmouth-account.cpp:283
+#: ../lib/engine/components/opal/opal-account.cpp:428
+#: ../lib/engine/components/opal/opal-bank.cpp:138
+msgid "The user name used during authentication, if different than the user name; leave empty if you do not have one"
+msgstr ""
+
+#: ../lib/engine/components/opal/opal-account.cpp:429
+#: ../plugins/loudmouth/loudmouth-account.cpp:312
+#: ../plugins/loudmouth/loudmouth-bank.cpp:129
 #: ../plugins/resource-list/rl-cluster.cpp:173
 msgid "Password:"
 msgstr "Lösenord:"
 
-#: ../lib/engine/components/opal/opal-account.cpp:407
+#: ../lib/engine/components/opal/opal-account.cpp:429
+#: ../lib/engine/components/opal/opal-bank.cpp:109
+#: ../lib/engine/components/opal/opal-bank.cpp:120
+#: ../lib/engine/components/opal/opal-bank.cpp:129
+#: ../lib/engine/components/opal/opal-bank.cpp:139
+msgid "Password associated to the user"
+msgstr ""
+
+#: ../lib/engine/components/opal/opal-account.cpp:430
 msgid "Timeout:"
 msgstr "Tidsgräns:"
 
-#: ../lib/engine/components/opal/opal-account.cpp:408
-#: ../lib/engine/components/opal/opal-bank.cpp:139
-#: ../plugins/loudmouth/loudmouth-account.cpp:297
+#: ../lib/engine/components/opal/opal-account.cpp:430
+#: ../lib/engine/components/opal/opal-bank.cpp:130
+#: ../lib/engine/components/opal/opal-bank.cpp:140
+#, fuzzy
+msgid "Time in seconds after which the account registration is automatically retried"
+msgstr "Tidsgräns efter vilken användaren automatiskt ställs in som frånvarande"
+
+#: ../lib/engine/components/opal/opal-account.cpp:431
+#: ../lib/engine/components/opal/opal-bank.cpp:143
+#: ../plugins/loudmouth/loudmouth-account.cpp:326
+#: ../plugins/loudmouth/loudmouth-bank.cpp:130
 msgid "Enable Account"
 msgstr "Aktivera konto"
 
-#: ../lib/engine/components/opal/opal-account.cpp:434
-#: ../lib/engine/components/opal/opal-bank.cpp:173
+#: ../lib/engine/components/opal/opal-account.cpp:457
+#: ../lib/engine/components/opal/opal-bank.cpp:177
 msgid "You did not supply a name for that account."
 msgstr "Du angav inte ett namn för kontot."
 
-#: ../lib/engine/components/opal/opal-account.cpp:436
-#: ../lib/engine/components/opal/opal-bank.cpp:175
+#: ../lib/engine/components/opal/opal-account.cpp:459
+#: ../lib/engine/components/opal/opal-bank.cpp:179
 msgid "You did not supply a host to register to."
 msgstr "Du angav inte ett värdnamn att registrera mot."
 
-#: ../lib/engine/components/opal/opal-account.cpp:438
-#: ../lib/engine/components/opal/opal-bank.cpp:177
+#: ../lib/engine/components/opal/opal-account.cpp:461
+#: ../lib/engine/components/opal/opal-bank.cpp:181
 msgid "You did not supply a user name for that account."
 msgstr "Du angav inte ett användarnamn för kontot."
 
-#: ../lib/engine/components/opal/opal-account.cpp:440
-#: ../lib/engine/components/opal/opal-bank.cpp:179
-msgid "The timeout should have a bigger value."
-msgstr "Tidsgränsen bör ha ett större värde."
+#: ../lib/engine/components/opal/opal-account.cpp:463
+#: ../lib/engine/components/opal/opal-bank.cpp:183
+msgid "The timeout should be at least 10 seconds."
+msgstr "Tidsgränsen bör vara minst 10 sekunder."
 
-#: ../lib/engine/components/opal/opal-account.cpp:486
+#: ../lib/engine/components/opal/opal-account.cpp:546
 msgid "Registered"
 msgstr "Registrerad"
 
-#: ../lib/engine/components/opal/opal-account.cpp:498
+#: ../lib/engine/components/opal/opal-account.cpp:558
 msgid "Unregistered"
 msgstr "Avregistrerad"
 
-#: ../lib/engine/components/opal/opal-account.cpp:508
+#: ../lib/engine/components/opal/opal-account.cpp:568
 msgid "Could not unregister"
 msgstr "Kunde inte avregistrera"
 
-#: ../lib/engine/components/opal/opal-account.cpp:521
+#: ../lib/engine/components/opal/opal-account.cpp:581
 msgid "Could not register"
 msgstr "Kunde inte registrera"
 
-#: ../lib/engine/components/opal/opal-account.cpp:530
+#: ../lib/engine/components/opal/opal-account.cpp:590
 msgid "Processing..."
 msgstr "Behandlar..."
 
-#: ../lib/engine/components/opal/opal-bank.cpp:74
+#: ../lib/engine/components/opal/opal-bank.cpp:78
 msgid "_Add an Ekiga.net Account"
 msgstr "_Lägg till ett Ekiga.net-konto"
 
-#: ../lib/engine/components/opal/opal-bank.cpp:76
+#: ../lib/engine/components/opal/opal-bank.cpp:80
 msgid "_Add an Ekiga Call Out Account"
 msgstr "_Lägg till ett Ekiga Ring ut-konto"
 
-#: ../lib/engine/components/opal/opal-bank.cpp:78
+#: ../lib/engine/components/opal/opal-bank.cpp:82
 msgid "_Add a SIP Account"
 msgstr "_Lägg till ett SIP-konto"
 
-#: ../lib/engine/components/opal/opal-bank.cpp:80
+#: ../lib/engine/components/opal/opal-bank.cpp:84
 msgid "_Add an H.323 Account"
 msgstr "_Lägg till ett H.323-konto"
 
-#: ../lib/engine/components/opal/opal-bank.cpp:100
+#: ../lib/engine/components/opal/opal-bank.cpp:104
 #: ../src/gui/assistant.cpp:616
 msgid "Get an Ekiga.net SIP account"
 msgstr "Skaffa ett SIP-konto på Ekiga.net"
 
-#: ../lib/engine/components/opal/opal-bank.cpp:103
-#: ../lib/engine/components/opal/opal-bank.cpp:123
-#: ../lib/engine/components/opal/opal-bank.cpp:133
+#: ../lib/engine/components/opal/opal-bank.cpp:107
+#: ../lib/engine/components/opal/opal-bank.cpp:127
+#: ../lib/engine/components/opal/opal-bank.cpp:137
 msgid "_User:"
 msgstr "_Användare:"
 
-#: ../lib/engine/components/opal/opal-bank.cpp:105
-#: ../lib/engine/components/opal/opal-bank.cpp:125
-#: ../lib/engine/components/opal/opal-bank.cpp:135
+#: ../lib/engine/components/opal/opal-bank.cpp:109
+#: ../lib/engine/components/opal/opal-bank.cpp:129
+#: ../lib/engine/components/opal/opal-bank.cpp:139
+#: ../plugins/ldap/ldap-book.cpp:986
 msgid "_Password:"
 msgstr "_Lösenord:"
 
-#: ../lib/engine/components/opal/opal-bank.cpp:110
-#: ../src/gui/assistant.cpp:722
+#: ../lib/engine/components/opal/opal-bank.cpp:114
+#: ../src/gui/assistant.cpp:720
 msgid "Get an Ekiga Call Out account"
 msgstr "Skaffa ett Ekiga Ring ut-konto"
 
-#: ../lib/engine/components/opal/opal-bank.cpp:114
+#: ../lib/engine/components/opal/opal-bank.cpp:118
 msgid "_Account ID:"
 msgstr "K_onto-ID:"
 
-#: ../lib/engine/components/opal/opal-bank.cpp:116
+#: ../lib/engine/components/opal/opal-bank.cpp:120
 msgid "_PIN Code:"
 msgstr "PIN-_kod:"
 
-#: ../lib/engine/components/opal/opal-bank.cpp:121
-#: ../lib/engine/components/opal/opal-bank.cpp:131
+#: ../lib/engine/components/opal/opal-bank.cpp:125
+#: ../lib/engine/components/opal/opal-bank.cpp:135
 #: ../plugins/evolution/evolution-book.cpp:343
 msgid "_Name:"
 msgstr "_Namn:"
 
-#: ../lib/engine/components/opal/opal-bank.cpp:122
+#: ../lib/engine/components/opal/opal-bank.cpp:126
 msgid "_Gatekeeper:"
 msgstr "_Portvakt:"
 
-#: ../lib/engine/components/opal/opal-bank.cpp:126
-#: ../lib/engine/components/opal/opal-bank.cpp:136
+#: ../lib/engine/components/opal/opal-bank.cpp:130
+#: ../lib/engine/components/opal/opal-bank.cpp:140
 msgid "_Timeout:"
 msgstr "_Tidsgräns:"
 
-#: ../lib/engine/components/opal/opal-bank.cpp:132
+#: ../lib/engine/components/opal/opal-bank.cpp:136
 msgid "_Registrar:"
 msgstr "_Registrator:"
 
-#: ../lib/engine/components/opal/opal-bank.cpp:134
+#: ../lib/engine/components/opal/opal-bank.cpp:138
 msgid "_Authentication User:"
 msgstr "Använ_darnamn för autentisering:"
 
@@ -1091,7 +1146,7 @@ msgid "Abnormal call termination"
 msgstr "Onormal samtalsavslutning"
 
 #: ../lib/engine/components/opal/opal-call.cpp:424
-#: ../src/gui/main_window.cpp:1604
+#: ../src/gui/main_window.cpp:1845
 msgid "Could not connect to remote host"
 msgstr "Kunde inte ansluta till fjärrvärden"
 
@@ -1154,101 +1209,101 @@ msgstr ""
 "\n"
 "Se http://wiki.ekiga.org/index.php/Enable_port_forwarding_manually för instruktioner"
 
+#: ../lib/engine/components/opal/sip-endpoint.cpp:256
 #: ../lib/engine/components/opal/sip-endpoint.cpp:258
-#: ../lib/engine/components/opal/sip-endpoint.cpp:260
 msgid "Message"
 msgstr "Meddelande"
 
-#: ../lib/engine/components/opal/sip-endpoint.cpp:648
+#: ../lib/engine/components/opal/sip-endpoint.cpp:557
 msgid "Illegal status code"
 msgstr "Otillåten statuskod"
 
 #. Translators: Host of the remote party is offline, this should
 #. * appear when the remote host does not reply in an acceptable time
-#: ../lib/engine/components/opal/sip-endpoint.cpp:659
+#: ../lib/engine/components/opal/sip-endpoint.cpp:568
 msgid "Remote party host is offline"
 msgstr "Fjärrvärden är frånkopplad"
 
 #. Translators: the following strings are answers from the SIP server
 #. * when the packet it receives has an error, see
 #. * http://www.ietf.org/rfc/rfc3261.txt, chapter 21 for more information
-#: ../lib/engine/components/opal/sip-endpoint.cpp:675
+#: ../lib/engine/components/opal/sip-endpoint.cpp:584
 msgid "Multiple choices"
 msgstr "Flera val"
 
-#: ../lib/engine/components/opal/sip-endpoint.cpp:679
+#: ../lib/engine/components/opal/sip-endpoint.cpp:588
 msgid "Moved permanently"
 msgstr "Permanent flyttad"
 
-#: ../lib/engine/components/opal/sip-endpoint.cpp:683
+#: ../lib/engine/components/opal/sip-endpoint.cpp:592
 msgid "Moved temporarily"
 msgstr "Temporärt flyttad"
 
-#: ../lib/engine/components/opal/sip-endpoint.cpp:687
+#: ../lib/engine/components/opal/sip-endpoint.cpp:596
 msgid "Use proxy"
 msgstr "Använd proxyserver"
 
-#: ../lib/engine/components/opal/sip-endpoint.cpp:691
+#: ../lib/engine/components/opal/sip-endpoint.cpp:600
 msgid "Alternative service"
 msgstr "Alternativ tjänst"
 
-#: ../lib/engine/components/opal/sip-endpoint.cpp:695
+#: ../lib/engine/components/opal/sip-endpoint.cpp:604
 msgid "Bad request"
 msgstr "Felaktig begäran"
 
-#: ../lib/engine/components/opal/sip-endpoint.cpp:699
+#: ../lib/engine/components/opal/sip-endpoint.cpp:608
 msgid "Unauthorized"
 msgstr "Inte behörig"
 
-#: ../lib/engine/components/opal/sip-endpoint.cpp:703
+#: ../lib/engine/components/opal/sip-endpoint.cpp:612
 msgid "Payment required"
 msgstr "Betalning krävs"
 
-#: ../lib/engine/components/opal/sip-endpoint.cpp:707
+#: ../lib/engine/components/opal/sip-endpoint.cpp:616
 msgid "Forbidden, please check that username and password are correct"
 msgstr "Förbjudet, kontrollera att användarnamn och lösenord är korrekta"
 
-#: ../lib/engine/components/opal/sip-endpoint.cpp:711
+#: ../lib/engine/components/opal/sip-endpoint.cpp:620
 msgid "Not found"
 msgstr "Hittades inte"
 
-#: ../lib/engine/components/opal/sip-endpoint.cpp:715
+#: ../lib/engine/components/opal/sip-endpoint.cpp:624
 msgid "Method not allowed"
 msgstr "Metoden tillåts inte"
 
-#: ../lib/engine/components/opal/sip-endpoint.cpp:719
+#: ../lib/engine/components/opal/sip-endpoint.cpp:628
 msgid "Not acceptable"
 msgstr "Inte acceptabelt"
 
-#: ../lib/engine/components/opal/sip-endpoint.cpp:723
+#: ../lib/engine/components/opal/sip-endpoint.cpp:632
 msgid "Proxy authentication required"
 msgstr "Proxyautentisering krävs"
 
-#: ../lib/engine/components/opal/sip-endpoint.cpp:727
+#: ../lib/engine/components/opal/sip-endpoint.cpp:636
 msgid "Timeout"
 msgstr "Tidsgräns"
 
-#: ../lib/engine/components/opal/sip-endpoint.cpp:731
+#: ../lib/engine/components/opal/sip-endpoint.cpp:640
 msgid "Conflict"
 msgstr "Konflikt"
 
-#: ../lib/engine/components/opal/sip-endpoint.cpp:735
+#: ../lib/engine/components/opal/sip-endpoint.cpp:644
 msgid "Length required"
 msgstr "Längd krävs"
 
-#: ../lib/engine/components/opal/sip-endpoint.cpp:739
+#: ../lib/engine/components/opal/sip-endpoint.cpp:648
 msgid "Request entity too big"
 msgstr "Entiteten för begäran är för stor"
 
-#: ../lib/engine/components/opal/sip-endpoint.cpp:743
+#: ../lib/engine/components/opal/sip-endpoint.cpp:652
 msgid "Request URI too long"
 msgstr "URI för begäran är för lång"
 
-#: ../lib/engine/components/opal/sip-endpoint.cpp:747
+#: ../lib/engine/components/opal/sip-endpoint.cpp:656
 msgid "Unsupported media type"
 msgstr "Mediatypen stöds inte"
 
-#: ../lib/engine/components/opal/sip-endpoint.cpp:751
+#: ../lib/engine/components/opal/sip-endpoint.cpp:660
 msgid "Unsupported URI scheme"
 msgstr "URI-schemat stöds inte"
 
@@ -1256,132 +1311,128 @@ msgstr "URI-schemat stöds inte"
 #. * Here extension is a specific "phone number", see
 #. * http://en.wikipedia.org/wiki/Extension_(telephone)
 #. * for more information
-#: ../lib/engine/components/opal/sip-endpoint.cpp:759
+#: ../lib/engine/components/opal/sip-endpoint.cpp:668
 msgid "Bad extension"
 msgstr "Felaktig anknytning"
 
-#: ../lib/engine/components/opal/sip-endpoint.cpp:763
+#: ../lib/engine/components/opal/sip-endpoint.cpp:672
 msgid "Extension required"
 msgstr "Anknytning krävs"
 
-#: ../lib/engine/components/opal/sip-endpoint.cpp:767
+#: ../lib/engine/components/opal/sip-endpoint.cpp:676
 msgid "Interval too brief"
 msgstr "Intervallet för litet"
 
-#: ../lib/engine/components/opal/sip-endpoint.cpp:771
+#: ../lib/engine/components/opal/sip-endpoint.cpp:680
 msgid "Temporarily unavailable"
 msgstr "Inte tillgänglig för närvarande"
 
-#: ../lib/engine/components/opal/sip-endpoint.cpp:775
+#: ../lib/engine/components/opal/sip-endpoint.cpp:684
 msgid "Loop detected"
 msgstr "Slinga har upptäckts"
 
-#: ../lib/engine/components/opal/sip-endpoint.cpp:779
+#: ../lib/engine/components/opal/sip-endpoint.cpp:688
 msgid "Too many hops"
 msgstr "För många hopp"
 
-#: ../lib/engine/components/opal/sip-endpoint.cpp:783
+#: ../lib/engine/components/opal/sip-endpoint.cpp:692
 msgid "Address incomplete"
 msgstr "Adressen är inte fullständig"
 
-#: ../lib/engine/components/opal/sip-endpoint.cpp:787
+#: ../lib/engine/components/opal/sip-endpoint.cpp:696
 msgid "Ambiguous"
 msgstr "Tvetydig"
 
-#: ../lib/engine/components/opal/sip-endpoint.cpp:791
+#: ../lib/engine/components/opal/sip-endpoint.cpp:700
 msgid "Busy Here"
 msgstr "Upptaget här"
 
-#: ../lib/engine/components/opal/sip-endpoint.cpp:795
+#: ../lib/engine/components/opal/sip-endpoint.cpp:704
 msgid "Request terminated"
 msgstr "Begäran terminerad"
 
-#: ../lib/engine/components/opal/sip-endpoint.cpp:799
+#: ../lib/engine/components/opal/sip-endpoint.cpp:708
 msgid "Not acceptable here"
 msgstr "Inte acceptabel här"
 
-#: ../lib/engine/components/opal/sip-endpoint.cpp:803
+#: ../lib/engine/components/opal/sip-endpoint.cpp:712
 msgid "Bad event"
 msgstr "Felaktig händelse"
 
-#: ../lib/engine/components/opal/sip-endpoint.cpp:807
+#: ../lib/engine/components/opal/sip-endpoint.cpp:716
 msgid "Request pending"
 msgstr "Begäran väntar"
 
-#: ../lib/engine/components/opal/sip-endpoint.cpp:811
+#: ../lib/engine/components/opal/sip-endpoint.cpp:720
 msgid "Undecipherable"
 msgstr "Inte möjlig att dekryptera"
 
-#: ../lib/engine/components/opal/sip-endpoint.cpp:815
+#: ../lib/engine/components/opal/sip-endpoint.cpp:724
 msgid "Internal server error"
 msgstr "Internt serverfel"
 
-#: ../lib/engine/components/opal/sip-endpoint.cpp:819
+#: ../lib/engine/components/opal/sip-endpoint.cpp:728
 msgid "Not implemented"
 msgstr "Inte implementerat"
 
-#: ../lib/engine/components/opal/sip-endpoint.cpp:823
+#: ../lib/engine/components/opal/sip-endpoint.cpp:732
 msgid "Bad gateway"
 msgstr "Felaktig gateway"
 
-#: ../lib/engine/components/opal/sip-endpoint.cpp:827
+#: ../lib/engine/components/opal/sip-endpoint.cpp:736
 msgid "Service unavailable"
 msgstr "Tjänst inte tillgänglig"
 
-#: ../lib/engine/components/opal/sip-endpoint.cpp:831
+#: ../lib/engine/components/opal/sip-endpoint.cpp:740
 msgid "Server timeout"
 msgstr "Tidsgräns för server"
 
-#: ../lib/engine/components/opal/sip-endpoint.cpp:835
+#: ../lib/engine/components/opal/sip-endpoint.cpp:744
 msgid "SIP version not supported"
 msgstr "SIP-versionen stöds inte"
 
-#: ../lib/engine/components/opal/sip-endpoint.cpp:839
+#: ../lib/engine/components/opal/sip-endpoint.cpp:748
 msgid "Message too large"
 msgstr "Meddelandet för långt"
 
-#: ../lib/engine/components/opal/sip-endpoint.cpp:843
+#: ../lib/engine/components/opal/sip-endpoint.cpp:752
 msgid "Busy everywhere"
 msgstr "Upptaget överallt"
 
-#: ../lib/engine/components/opal/sip-endpoint.cpp:847
+#: ../lib/engine/components/opal/sip-endpoint.cpp:756
 msgid "Decline"
 msgstr "Neka"
 
-#: ../lib/engine/components/opal/sip-endpoint.cpp:851
+#: ../lib/engine/components/opal/sip-endpoint.cpp:760
 msgid "Does not exist anymore"
 msgstr "Finns inte längre"
 
-#: ../lib/engine/components/opal/sip-endpoint.cpp:855
+#: ../lib/engine/components/opal/sip-endpoint.cpp:764
 msgid "Globally not acceptable"
 msgstr "Allmänt inte acceptabel"
 
-#: ../lib/engine/components/opal/sip-endpoint.cpp:1001
-msgid "Could not send message"
-msgstr "Kunde inte skicka meddelande"
-
-#: ../lib/engine/components/opal/sip-endpoint.cpp:1144
-#: ../src/gui/main_window.cpp:2959
+#: ../lib/engine/components/opal/sip-endpoint.cpp:933
+#: ../src/gui/main_window.cpp:3154
 #, c-format
 msgid "Incoming call from %s"
 msgstr "Inkommande samtal från %s"
 
-#: ../lib/engine/components/opal/sip-endpoint.cpp:1146
+#: ../lib/engine/components/opal/sip-endpoint.cpp:935
 #, c-format
 msgid "Incoming call"
 msgstr "Inkommande samtal"
 
-#: ../lib/engine/components/opal/sip-endpoint.cpp:1152
+#: ../lib/engine/components/opal/sip-endpoint.cpp:941
 #, c-format
 msgid "In a call with %s"
 msgstr "I ett samtal med %s"
 
-#: ../lib/engine/components/opal/sip-endpoint.cpp:1154
+#: ../lib/engine/components/opal/sip-endpoint.cpp:943
 #, c-format
 msgid "In a call"
 msgstr "I ett samtal"
 
-#: ../lib/engine/gui/gtk-core/form-dialog-gtk.cpp:660
+#: ../lib/engine/gui/gtk-core/form-dialog-gtk.cpp:664
 msgid "Advanced"
 msgstr "Avancerat"
 
@@ -1398,7 +1449,7 @@ msgid "Address Book"
 msgstr "Adressbok"
 
 #: ../lib/engine/gui/gtk-frontend/addressbook-window.cpp:652
-#: ../src/gui/main_window.cpp:3304
+#: ../src/gui/main_window.cpp:3503
 msgid "Address _Book"
 msgstr "Adress_bok"
 
@@ -1412,7 +1463,7 @@ msgid "Category"
 msgstr "Kategori"
 
 #: ../lib/engine/gui/gtk-frontend/book-view-gtk.cpp:586
-#: ../src/gui/assistant.cpp:1377
+#: ../src/gui/assistant.cpp:1373
 msgid "Full Name"
 msgstr "Fullständigt namn"
 
@@ -1485,7 +1536,7 @@ msgid "Do not show this dialog again"
 msgstr "Visa inte denna dialog igen"
 
 #: ../plugins/evolution/evolution-book.cpp:75
-#: ../plugins/ldap/ldap-book.cpp:906
+#: ../plugins/ldap/ldap-book.cpp:920
 #, c-format
 msgid "%d user found"
 msgid_plural "%d users found"
@@ -1557,21 +1608,21 @@ msgstr "Galen"
 msgid "Screencast"
 msgstr "Skärmsändning"
 
-#: ../plugins/ldap/ldap-book.cpp:413
+#: ../plugins/ldap/ldap-book.cpp:427
 #: ../plugins/resource-list/rl-entry-ref.cpp:138
 #: ../plugins/resource-list/rl-entry.cpp:160
 msgid "_Refresh"
 msgstr "_Uppdatera"
 
-#: ../plugins/ldap/ldap-book.cpp:416
+#: ../plugins/ldap/ldap-book.cpp:430
 msgid "_Remove addressbook"
 msgstr "_Ta bort adressbok"
 
-#: ../plugins/ldap/ldap-book.cpp:418
+#: ../plugins/ldap/ldap-book.cpp:432
 msgid "Addressbook _properties"
 msgstr "_Egenskaper för adressbok"
 
-#: ../plugins/ldap/ldap-book.cpp:549
+#: ../plugins/ldap/ldap-book.cpp:563
 msgid "LDAP SASL Interaction"
 msgstr "LDAP SASL-interagering"
 
@@ -1584,71 +1635,79 @@ msgstr "LDAP SASL-interagering"
 #. * say about it. You might google for "challenge response
 #. * authentication" if you'd like more background context.
 #.
-#: ../plugins/ldap/ldap-book.cpp:591
+#: ../plugins/ldap/ldap-book.cpp:605
 msgid "Challenge: "
 msgstr "Motkrav: "
 
-#: ../plugins/ldap/ldap-book.cpp:599
+#: ../plugins/ldap/ldap-book.cpp:613
 msgid "Interact"
 msgstr "Interagera"
 
-#: ../plugins/ldap/ldap-book.cpp:666
+#: ../plugins/ldap/ldap-book.cpp:680
 msgid "Refreshing"
 msgstr "Uppdaterar"
 
-#: ../plugins/ldap/ldap-book.cpp:672
+#: ../plugins/ldap/ldap-book.cpp:686
 msgid "Could not initialize server"
 msgstr "Kunde inte initiera server"
 
-#: ../plugins/ldap/ldap-book.cpp:686
-#: ../plugins/ldap/ldap-book.cpp:731
+#: ../plugins/ldap/ldap-book.cpp:700
+#: ../plugins/ldap/ldap-book.cpp:745
 msgid "LDAP Error: "
 msgstr "LDAP-fel: "
 
-#: ../plugins/ldap/ldap-book.cpp:740
+#: ../plugins/ldap/ldap-book.cpp:754
 msgid "Contacted server"
 msgstr "Kontaktad server"
 
 #. patience == 0
-#: ../plugins/ldap/ldap-book.cpp:779
+#: ../plugins/ldap/ldap-book.cpp:793
 msgid "Could not connect to server"
 msgstr "Kunde inte ansluta till server"
 
 #. patience == 0
-#: ../plugins/ldap/ldap-book.cpp:827
-#: ../plugins/ldap/ldap-book.cpp:876
+#: ../plugins/ldap/ldap-book.cpp:841
+#: ../plugins/ldap/ldap-book.cpp:890
 msgid "Could not search"
 msgstr "Kunde inte söka"
 
-#: ../plugins/ldap/ldap-book.cpp:835
+#: ../plugins/ldap/ldap-book.cpp:849
 msgid "Waiting for search results"
 msgstr "Väntar på sökresultat"
 
-#: ../plugins/ldap/ldap-book.cpp:928
+#: ../plugins/ldap/ldap-book.cpp:942
 msgid "Please edit the following fields"
 msgstr "Redigera följande fält"
 
-#: ../plugins/ldap/ldap-book.cpp:930
-msgid "Book _Name"
-msgstr "Bok_namn"
+#: ../plugins/ldap/ldap-book.cpp:944
+msgid "Book _Name:"
+msgstr "Bok_namn:"
 
-#: ../plugins/ldap/ldap-book.cpp:931
-msgid "Server _URI"
-msgstr "Server-_URI"
+#: ../plugins/ldap/ldap-book.cpp:944
+msgid "Book name, as shown in your dialog box"
+msgstr ""
 
-#: ../plugins/ldap/ldap-book.cpp:932
-msgid "_Base DN"
-msgstr "_Bas-DN"
+#: ../plugins/ldap/ldap-book.cpp:945
+msgid "Server _URI:"
+msgstr "Server-_URI:"
 
-#: ../plugins/ldap/ldap-book.cpp:938
+#: ../plugins/ldap/ldap-book.cpp:945
+msgid "Name of LDAP server, prefixed by ldap://"
+msgstr ""
+
+#: ../plugins/ldap/ldap-book.cpp:946
+msgid "_Base DN:"
+msgstr "_Bas-DN:"
+
+#: ../plugins/ldap/ldap-book.cpp:952
 msgid "Subtree"
 msgstr "Underträd"
 
-#: ../plugins/ldap/ldap-book.cpp:939
+#: ../plugins/ldap/ldap-book.cpp:953
 msgid "Single Level"
 msgstr "En nivå"
 
-#: ../plugins/ldap/ldap-book.cpp:940
+#: ../plugins/ldap/ldap-book.cpp:954
 msgid "_Search Scope"
 msgstr "_Sökomfång"
 
@@ -1658,18 +1717,27 @@ msgstr "_Sökomfång"
 #. * "DisplayName" (i.e., "the name that will be displayed") but on
 #. * most LDAP servers it's "CommonName".
 #.
-#: ../plugins/ldap/ldap-book.cpp:955
-msgid "_DisplayName Attribute"
-msgstr "_DisplayName-attribut"
+#: ../plugins/ldap/ldap-book.cpp:969
+msgid "_DisplayName Attribute:"
+msgstr "_DisplayName-attribut:"
 
-#: ../plugins/ldap/ldap-book.cpp:956
-msgid "Call _Attributes"
-msgstr "Samtals_attribut"
+#: ../plugins/ldap/ldap-book.cpp:970
+msgid "Call _Attributes:"
+msgstr "Samtals_attribut:"
 
-#: ../plugins/ldap/ldap-book.cpp:958
-#: ../plugins/ldap/ldap-book.cpp:960
-msgid "_Filter Template"
-msgstr "_Filtermall"
+#: ../plugins/ldap/ldap-book.cpp:970
+msgid "The field you are searching for"
+msgstr ""
+
+#: ../plugins/ldap/ldap-book.cpp:972
+#: ../plugins/ldap/ldap-book.cpp:974
+msgid "_Filter Template:"
+msgstr "_Filtermall:"
+
+#: ../plugins/ldap/ldap-book.cpp:972
+#: ../plugins/ldap/ldap-book.cpp:974
+msgid "Here, a \"$\" is replaced by the search string"
+msgstr ""
 
 #. Translators: Bind ID - In LDAP, the operation that begins an LDAP
 #. * session and authenticates the user to the directory is called a
@@ -1680,117 +1748,128 @@ msgstr "_Filtermall"
 #. * course, the Bind ID can be left blank, in which case the session
 #. * is anonymous / unauthenticated.)
 #.
-#: ../plugins/ldap/ldap-book.cpp:971
-msgid "Bind _ID"
-msgstr "Bind-_ID"
+#: ../plugins/ldap/ldap-book.cpp:985
+msgid "Bind _ID:"
+msgstr "Bind-_ID:"
 
-#: ../plugins/ldap/ldap-book.cpp:972
-msgid "_Password"
-msgstr "_Lösenord"
+#: ../plugins/ldap/ldap-book.cpp:985
+msgid "User ID; leave blank for anonymous / nonauthenticated"
+msgstr ""
 
-#: ../plugins/ldap/ldap-book.cpp:973
+#: ../plugins/ldap/ldap-book.cpp:986
+msgid "The password for the user ID above, if any"
+msgstr ""
+
+#: ../plugins/ldap/ldap-book.cpp:987
 msgid "Use TLS"
 msgstr "Använd TLS"
 
-#: ../plugins/ldap/ldap-book.cpp:974
+#: ../plugins/ldap/ldap-book.cpp:988
 msgid "Use SASL"
 msgstr "Använd SASL"
 
-#: ../plugins/ldap/ldap-book.cpp:988
+#: ../plugins/ldap/ldap-book.cpp:1002
 msgid "SASL _Mechanism"
 msgstr "SASL-_mekanism"
 
-#: ../plugins/ldap/ldap-book.cpp:998
+#: ../plugins/ldap/ldap-book.cpp:1012
 msgid "Edit LDAP directory"
 msgstr "Redigera LDAP-katalog"
 
-#: ../plugins/ldap/ldap-book.cpp:1020
+#: ../plugins/ldap/ldap-book.cpp:1034
 msgid "Please provide a Book Name for this directory\n"
 msgstr "Ange ett boknamn för denna katalog\n"
 
-#: ../plugins/ldap/ldap-book.cpp:1023
+#: ../plugins/ldap/ldap-book.cpp:1037
 msgid "Please provide a Server URI\n"
 msgstr "Ange en server-uri\n"
 
-#: ../plugins/ldap/ldap-book.cpp:1026
+#: ../plugins/ldap/ldap-book.cpp:1040
 msgid "Please provide a DisplayName Attribute\n"
 msgstr "Ange ett DisplayName-attribut\n"
 
-#: ../plugins/ldap/ldap-book.cpp:1029
+#: ../plugins/ldap/ldap-book.cpp:1043
 msgid "Please provide a Call Attribute\n"
 msgstr "Ange ett samtalsattribut\n"
 
-#: ../plugins/ldap/ldap-book.cpp:1032
+#: ../plugins/ldap/ldap-book.cpp:1046
 msgid "Invalid Server URI\n"
 msgstr "Ogiltig server-uri\n"
 
-#: ../plugins/ldap/ldap-source.cpp:129
+#: ../plugins/ldap/ldap-source.cpp:130
 msgid "Add an LDAP Address Book"
 msgstr "Lägg till en LDAP-adressbok"
 
-#: ../plugins/ldap/ldap-source.cpp:131
+#: ../plugins/ldap/ldap-source.cpp:134
 msgid "Add the Ekiga.net Directory"
 msgstr "Lägg till Ekiga.net-katalogen"
 
-#: ../plugins/ldap/ldap-source.cpp:151
+#: ../plugins/ldap/ldap-source.cpp:155
 msgid "Create LDAP directory"
 msgstr "Skapa LDAP-katalog"
 
-#: ../plugins/ldap/ldap-source.cpp:159
+#: ../plugins/ldap/ldap-source.cpp:164
 msgid "Ekiga.net Directory"
 msgstr "Ekiga.net-katalog"
 
-#: ../plugins/loudmouth/loudmouth-account.cpp:78
+#: ../plugins/loudmouth/loudmouth-account.cpp:79
+#: ../plugins/loudmouth/loudmouth-account.cpp:113
 msgid "inactive"
 msgstr "inaktiv"
 
-#: ../plugins/loudmouth/loudmouth-account.cpp:150
+#: ../plugins/loudmouth/loudmouth-account.cpp:179
 #, c-format
 msgid "error connecting (%s)"
 msgstr "fel vid anslutning (%s)"
 
-#: ../plugins/loudmouth/loudmouth-account.cpp:156
+#: ../plugins/loudmouth/loudmouth-account.cpp:185
 msgid "connecting"
 msgstr "ansluter"
 
-#: ../plugins/loudmouth/loudmouth-account.cpp:200
+#: ../plugins/loudmouth/loudmouth-account.cpp:229
 msgid "authenticating"
 msgstr "autentiserar"
 
 #. FIXME: can't we report better?
-#: ../plugins/loudmouth/loudmouth-account.cpp:210
+#: ../plugins/loudmouth/loudmouth-account.cpp:239
 msgid "error connecting"
 msgstr "fel vid anslutning"
 
-#: ../plugins/loudmouth/loudmouth-account.cpp:222
+#: ../plugins/loudmouth/loudmouth-account.cpp:251
 msgid "disconnected"
 msgstr "frånkopplad"
 
-#: ../plugins/loudmouth/loudmouth-account.cpp:239
+#: ../plugins/loudmouth/loudmouth-account.cpp:268
 msgid "connected"
 msgstr "ansluten"
 
 #. FIXME: can't we report something better?
-#: ../plugins/loudmouth/loudmouth-account.cpp:245
+#: ../plugins/loudmouth/loudmouth-account.cpp:274
 msgid "error authenticating loudmouth account"
 msgstr "fel vid autentisering mot loudmouth-konto"
 
-#: ../plugins/loudmouth/loudmouth-account.cpp:275
+#: ../plugins/loudmouth/loudmouth-account.cpp:304
+#: ../plugins/loudmouth/loudmouth-bank.cpp:127
 msgid "Server:"
 msgstr "Server:"
 
-#: ../plugins/loudmouth/loudmouth-account.cpp:279
+#: ../plugins/loudmouth/loudmouth-account.cpp:308
+#: ../plugins/loudmouth/loudmouth-bank.cpp:128
 msgid "Resource:"
 msgstr "Resurs:"
 
-#: ../plugins/loudmouth/loudmouth-account.cpp:362
-#: ../src/gui/accounts.cpp:690
+#: ../plugins/loudmouth/loudmouth-account.cpp:391
+#: ../src/gui/accounts.cpp:689
 msgid "Edit"
 msgstr "Redigera"
 
-#: ../plugins/loudmouth/loudmouth-bank.cpp:118
+#: ../plugins/loudmouth/loudmouth-bank.cpp:111
 msgid "_Add a jabber/XMPP account"
 msgstr "_Lägg till ett Jabber/XMPP-konto"
+
+#: ../plugins/loudmouth/loudmouth-bank.cpp:123
+msgid "Please fill in the following fields:"
+msgstr "Fyll i följande fält:"
 
 #: ../plugins/loudmouth/loudmouth-heap.cpp:210
 msgid "Authorization to see your presence"
@@ -1831,6 +1910,7 @@ msgid "Please fill in this form to add a new element to the remote roster"
 msgstr "Fyll i detta formulär för att lägga till ett nytt element till kontaktlistan"
 
 #: ../plugins/loudmouth/loudmouth-heap.cpp:318
+#: ../plugins/resource-list/rl-heap.cpp:470
 msgid "Identifier:"
 msgstr "Identifierare:"
 
@@ -1882,6 +1962,7 @@ msgid "Please fill in this form to add a new contact list to ekiga's remote rost
 msgstr "Fyll i detta formulär för att lägga till en ny kontaktlista i Ekigas fjärrlista"
 
 #: ../plugins/resource-list/rl-cluster.cpp:171
+#: ../plugins/resource-list/rl-heap.cpp:471
 msgid "Writable:"
 msgstr "Skrivbar:"
 
@@ -1922,29 +2003,21 @@ msgid "Please edit the following fields (no identifier means global)"
 msgstr "Redigera följande fält (ingen identifierare betyder allmän)"
 
 #: ../plugins/resource-list/rl-heap.cpp:467
-msgid "Contact list's name"
-msgstr "Kontaktlistans namn"
+msgid "Contact list's name:"
+msgstr "Kontaktlistans namn:"
 
 #. "Document" used as a name -- uri point to the root of a document tree
 #: ../plugins/resource-list/rl-heap.cpp:469
-msgid "Document root"
-msgstr "Dokumentrot"
-
-#: ../plugins/resource-list/rl-heap.cpp:470
-msgid "Identifier"
-msgstr "Identifierare"
-
-#: ../plugins/resource-list/rl-heap.cpp:471
-msgid "Writable"
-msgstr "Skrivbar"
+msgid "Document root:"
+msgstr "Dokumentrot:"
 
 #: ../plugins/resource-list/rl-heap.cpp:472
-msgid "Server username"
-msgstr "Användarnamn för server"
+msgid "Server username:"
+msgstr "Användarnamn för server:"
 
 #: ../plugins/resource-list/rl-heap.cpp:473
-msgid "Server password"
-msgstr "Lösenord för server"
+msgid "Server password:"
+msgstr "Lösenord för server:"
 
 #: ../plugins/resource-list/rl-heap.cpp:512
 msgid "Add a remote contact"
@@ -1974,42 +2047,42 @@ msgstr "Redigera fjärrkontakt"
 msgid "Please fill in this form to change an existing contact on a remote server"
 msgstr "Fyll i detta formulär för att ändra en befintlig kontakt på en fjärrserver"
 
-#: ../src/gui/accounts.cpp:566
+#: ../src/gui/accounts.cpp:565
 msgid "Account Name"
 msgstr "Kontonamn"
 
-#: ../src/gui/accounts.cpp:567
+#: ../src/gui/accounts.cpp:566
 msgid "Status"
 msgstr "Status"
 
-#: ../src/gui/accounts.cpp:577
-#: ../src/gui/accounts.cpp:619
+#: ../src/gui/accounts.cpp:576
+#: ../src/gui/accounts.cpp:618
 msgid "Accounts"
 msgstr "Konton"
 
-#: ../src/gui/accounts.cpp:591
-#: ../src/gui/main_window.cpp:3358
+#: ../src/gui/accounts.cpp:590
+#: ../src/gui/main_window.cpp:3565
 msgid "_Accounts"
 msgstr "K_onton"
 
-#: ../src/gui/accounts.cpp:595
-#: ../src/gui/main_window.cpp:3441
+#: ../src/gui/accounts.cpp:594
+#: ../src/gui/main_window.cpp:3648
 msgid "_Help"
 msgstr "_Hjälp"
 
-#: ../src/gui/accounts.cpp:622
+#: ../src/gui/accounts.cpp:621
 msgid "Active"
 msgstr "Aktiv"
 
-#: ../src/gui/accounts.cpp:684
+#: ../src/gui/accounts.cpp:683
 msgid "Enable"
 msgstr "Aktivera"
 
-#: ../src/gui/accounts.cpp:687
+#: ../src/gui/accounts.cpp:686
 msgid "Disable"
 msgstr "Inaktivera"
 
-#: ../src/gui/accounts.cpp:693
+#: ../src/gui/accounts.cpp:692
 msgid "Remove"
 msgstr "Ta bort"
 
@@ -2028,7 +2101,7 @@ msgid "Welcome to Ekiga"
 msgstr "Välkommen till Ekiga"
 
 #: ../src/gui/assistant.cpp:373
-#: ../src/gui/preferences.cpp:463
+#: ../src/gui/preferences.cpp:445
 msgid "Personal Information"
 msgstr "Personlig information"
 
@@ -2063,27 +2136,26 @@ msgstr ""
 "\n"
 "Du kan hoppa över det här steget om du använder en alternativ SIP-tjänst eller om du föredrar att ange inloggningsdetaljer senare."
 
-#: ../src/gui/assistant.cpp:626
+#: ../src/gui/assistant.cpp:625
 msgid "I do not want to sign up for the ekiga.net free service"
 msgstr "Jag vill inte registrera mig för den fria tjänsten på ekiga.net"
 
-#: ../src/gui/assistant.cpp:687
+#: ../src/gui/assistant.cpp:685
 msgid "Ekiga Call Out Account"
 msgstr "Ekiga Ring ut-konto"
 
-#: ../src/gui/assistant.cpp:689
+#: ../src/gui/assistant.cpp:687
 msgid "Please enter your account ID:"
 msgstr "Ange ditt användar-id:"
 
-#: ../src/gui/assistant.cpp:697
+#: ../src/gui/assistant.cpp:695
 msgid "Please enter your PIN code:"
 msgstr "Ange din PIN-kod:"
 
-#: ../src/gui/assistant.cpp:708
+#: ../src/gui/assistant.cpp:706
+#, fuzzy
 msgid ""
-"You can make calls to regular phones and cell numbers worldwide using Ekiga.\n"
-"\n"
-"To enable this, you need to do two things:\n"
+"You can make calls to regular phones and cell numbers worldwide using Ekiga. To enable this, you need to do two things:\n"
 "- First buy an account at the URL below.\n"
 "- Then enter your account ID and PIN code.\n"
 "The service will work only if your account is created using the URL in this dialog.\n"
@@ -2096,272 +2168,281 @@ msgstr ""
 "- Ange sedan din användaridentitet och PIN-kod.\n"
 "Tjänsten kommer endast att fungera om ditt konto har skapats via URL:en i denna dialog.\n"
 
-#: ../src/gui/assistant.cpp:768
+#: ../src/gui/assistant.cpp:765
 msgid "I do not want to sign up for the Ekiga Call Out service"
 msgstr "Jag vill inte registrera mig för tjänsten Ekiga Ring ut"
 
-#: ../src/gui/assistant.cpp:832
-#: ../src/gui/assistant.cpp:1388
+#: ../src/gui/assistant.cpp:828
+#: ../src/gui/assistant.cpp:1384
 msgid "Connection Type"
 msgstr "Anslutningstyp"
 
 #. The connection type
-#: ../src/gui/assistant.cpp:835
+#: ../src/gui/assistant.cpp:831
 msgid "Please choose your connection type:"
 msgstr "Välj din anslutningstyp:"
 
-#: ../src/gui/assistant.cpp:852
+#: ../src/gui/assistant.cpp:848
 msgid "56k Modem"
 msgstr "56 kb/s-modem"
 
-#: ../src/gui/assistant.cpp:857
+#: ../src/gui/assistant.cpp:853
 msgid "ISDN"
 msgstr "ISDN"
 
-#: ../src/gui/assistant.cpp:862
+#: ../src/gui/assistant.cpp:858
 msgid "DSL/Cable (128 kbit/s uplink)"
 msgstr "DSL/Kabel (128 kbit/s upplänk)"
 
-#: ../src/gui/assistant.cpp:867
+#: ../src/gui/assistant.cpp:863
 msgid "DSL/Cable (512 kbit/s uplink)"
 msgstr "DSL/Kabel (512 kbit/s upplänk)"
 
-#: ../src/gui/assistant.cpp:872
+#: ../src/gui/assistant.cpp:868
 msgid "LAN"
 msgstr "Lokalt nätverk"
 
-#: ../src/gui/assistant.cpp:877
+#: ../src/gui/assistant.cpp:873
 msgid "Keep current settings"
 msgstr "Behåll nuvarande inställningar"
 
-#: ../src/gui/assistant.cpp:882
+#: ../src/gui/assistant.cpp:878
 msgid "The connection type will permit determining the best quality settings that Ekiga will use during calls. You can later change the settings individually in the preferences window."
 msgstr "Anslutningstypen kommer att tillåta avgörande av de bästa kvalitetsinställningarna som Ekiga kommer att använda under samtal. Du kan ändra inställningarna individuellt senare i inställningsfönstret."
 
-#: ../src/gui/assistant.cpp:971
-#: ../src/gui/main_window.cpp:3187
-#: ../src/gui/main_window.cpp:3191
-#: ../src/gui/preferences.cpp:769
+#: ../src/gui/assistant.cpp:967
+#: ../src/gui/main_window.cpp:3382
+#: ../src/gui/main_window.cpp:3386
+#: ../src/gui/main_window.cpp:3390
+#: ../src/gui/preferences.cpp:738
 msgid "Audio Devices"
 msgstr "Ljudenheter"
 
-#: ../src/gui/assistant.cpp:973
+#: ../src/gui/assistant.cpp:969
 msgid "Please choose the audio ringing device:"
 msgstr "Välj ljudenhet för ringsignalen:"
 
-#: ../src/gui/assistant.cpp:993
+#: ../src/gui/assistant.cpp:989
 msgid "The audio ringing device is the device that will be used to play the ringing sound on incoming calls."
 msgstr "Ljudenheten för ringsignal är enheten som kommer att användas för att spela upp ringljudet vid inkommande samtal."
 
 #. ---
-#: ../src/gui/assistant.cpp:1004
+#: ../src/gui/assistant.cpp:1000
 msgid "Please choose the audio output device:"
 msgstr "Välj ljudutgångsenheten:"
 
-#: ../src/gui/assistant.cpp:1024
+#: ../src/gui/assistant.cpp:1020
 msgid "The audio output device is the device that will be used to play audio during calls."
 msgstr "Ljudutgångsenheten är enheten som kommer att användas för att spela upp ljud under samtal."
 
 #. ---
-#: ../src/gui/assistant.cpp:1035
+#: ../src/gui/assistant.cpp:1031
 msgid "Please choose the audio input device:"
 msgstr "Välj ljudingångsenheten:"
 
-#: ../src/gui/assistant.cpp:1055
+#: ../src/gui/assistant.cpp:1051
 msgid "The audio input device is the device that will be used to record your voice during calls."
 msgstr "Ljudingångsenheten är enheten som kommer att användas för att spela in din röst under samtal."
 
-#: ../src/gui/assistant.cpp:1155
-#: ../src/gui/assistant.cpp:1425
+#: ../src/gui/assistant.cpp:1151
+#: ../src/gui/assistant.cpp:1421
 msgid "Video Input Device"
 msgstr "Ingångsenhet för video"
 
-#: ../src/gui/assistant.cpp:1157
+#: ../src/gui/assistant.cpp:1153
 msgid "Please choose your video input device:"
 msgstr "Välj din ingångsenhet för video:"
 
-#: ../src/gui/assistant.cpp:1177
+#: ../src/gui/assistant.cpp:1173
 msgid "The video input device is the device that will be used to capture video during calls."
 msgstr "Videoingångsenheten är den enhet som kommer att användas för att fånga video under samtal."
 
-#: ../src/gui/assistant.cpp:1244
-#: ../src/gui/assistant.cpp:1266
-#: ../src/gui/assistant.cpp:1288
-#: ../src/gui/preferences.cpp:811
-#: ../src/gui/preferences.cpp:835
-#: ../src/gui/preferences.cpp:857
+#: ../src/gui/assistant.cpp:1240
+#: ../src/gui/assistant.cpp:1262
+#: ../src/gui/assistant.cpp:1284
+#: ../src/gui/preferences.cpp:779
+#: ../src/gui/preferences.cpp:803
+#: ../src/gui/preferences.cpp:825
 msgid "No device found"
 msgstr "Ingen enhet hittades"
 
-#: ../src/gui/assistant.cpp:1319
+#: ../src/gui/assistant.cpp:1315
 msgid "Configuration Complete"
 msgstr "Konfigurationen är färdig"
 
-#: ../src/gui/assistant.cpp:1321
+#: ../src/gui/assistant.cpp:1317
 msgid "You have now finished the Ekiga configuration. All the settings can be changed in the Ekiga preferences. Enjoy!"
 msgstr "Du är nu färdig med konfigurationen av Ekiga. Alla inställningar kan ändras i Ekigas inställningsmeny. Lycka till!"
 
-#: ../src/gui/assistant.cpp:1328
+#: ../src/gui/assistant.cpp:1324
 msgid "Configuration summary:"
 msgstr "Konfigurationssammandrag:"
 
-#: ../src/gui/assistant.cpp:1398
+#: ../src/gui/assistant.cpp:1394
 msgid "Audio Ringing Device"
 msgstr "Utgångsenhet för ringsignal"
 
-#: ../src/gui/assistant.cpp:1407
+#: ../src/gui/assistant.cpp:1403
 msgid "Audio Output Device"
 msgstr "Utgångsenhet för ljud"
 
-#: ../src/gui/assistant.cpp:1416
+#: ../src/gui/assistant.cpp:1412
 msgid "Audio Input Device"
 msgstr "Ingångsenhet för ljud"
 
-#: ../src/gui/assistant.cpp:1438
+#: ../src/gui/assistant.cpp:1434
 msgid "SIP URI"
 msgstr "SIP-URI"
 
-#: ../src/gui/assistant.cpp:1450
+#: ../src/gui/assistant.cpp:1446
 msgid "Ekiga Call Out"
 msgstr "Ekiga Ring ut"
 
-#: ../src/gui/assistant.cpp:1494
+#: ../src/gui/assistant.cpp:1490
 #, c-format
 msgid "Ekiga Configuration Assistant (%d of %d)"
 msgstr "Ekigas konfigurationsguide (%d av %d)"
 
-#: ../src/gui/callbacks.cpp:72
+#: ../src/gui/callbacks.cpp:67
 msgid "Contributors:"
 msgstr "Bidragsgivare:"
 
-#: ../src/gui/callbacks.cpp:85
+#: ../src/gui/callbacks.cpp:80
 msgid "Artwork:"
 msgstr "Grafik:"
 
-#: ../src/gui/callbacks.cpp:93
+#: ../src/gui/callbacks.cpp:88
 msgid "See AUTHORS file for full credits"
 msgstr "Se filen AUTHORS för mer information"
 
-#: ../src/gui/callbacks.cpp:109
+#: ../src/gui/callbacks.cpp:104
 msgid "This program is free software; you can redistribute it and/or modify it under the terms of the GNU General Public License as published by the Free Software Foundation; either version 2 of the License, or (at your option) any later version. "
 msgstr "Detta program är fri programvara. Du kan distribuera det och/eller modifiera det under villkoren i GNU General Public License, publicerad av Free Software Foundation, antingen version 2 eller (om du så vill) någon senare version."
 
-#: ../src/gui/callbacks.cpp:113
+#: ../src/gui/callbacks.cpp:108
 msgid "This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for more details. You should have received a copy of the GNU General Public License along with this program; if not, write to the Free Software Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301, USA."
 msgstr "Detta program distribueras i hopp om att det ska vara användbart, men UTAN NÅGON SOM HELST GARANTI, även utan underförstådd garanti om SÄLJBARHET eller LÄMPLIGHET FÖR NÅGOT SPECIELLT ÄNDAMÅL. Se GNU General Public License för ytterligare information. Du bör ha fått en kopia av GNU General Public License tillsammans med detta program. Om inte, skriv till Free Software Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301, USA."
 
-#: ../src/gui/callbacks.cpp:120
+#: ../src/gui/callbacks.cpp:115
 msgid "Ekiga is licensed under the GPL license and as a special exception, you have permission to link or otherwise combine this program with the programs OPAL, OpenH323 and PWLIB, and distribute the combination, without applying the requirements of the GNU GPL to the OPAL, OpenH323 and PWLIB programs, as long as you do follow the requirements of the GNU GPL for all the rest of the software thus combined."
 msgstr "Ekiga är licensierad under licensen GPL och som ett special undantag har du tillåtelse att länka eller annars kombinera detta program med programmen OPAL, OpenH323 och PWLIB, samt att distribuera kombinationen, utan att tillämpa kraven för GNU GPL till programmen OPAL, OpenH323 och PWLIB, så länge som du följer kraven för GNU GPL för resten av programvaran härigenom kombinerad."
 
 #. Translators: Please write translator credits here, and
 #. * separate names with \n
-#: ../src/gui/callbacks.cpp:132
+#: ../src/gui/callbacks.cpp:127
 msgid "translator-credits"
 msgstr ""
-"Daniel Nylander\n"
+"Daniel Nylander <po@danielnylander.se>\n"
 "Christian Rose\n"
 "\n"
 "Skicka synpunkter på översättningen till\n"
-"tp-sv@listor.tp-sv.se"
+"<tp-sv@listor.tp-sv.se>."
 
-#: ../src/gui/callbacks.cpp:137
+#: ../src/gui/callbacks.cpp:132
 msgid "Ekiga is full-featured SIP and H.323 compatible VoIP, IP-Telephony and Videoconferencing application that allows you to make audio and video calls to remote users with SIP and H.323 hardware or software."
 msgstr "Ekiga är ett komplett SIP- och H.323-kompatibelt program för VoIP, IP-telefoni och videokonferens som låter dig göra röst- och videosamtal till fjärranvändare med SIP och H.323-hårdvara eller -programvara."
 
-#: ../src/gui/callbacks.cpp:210
+#: ../src/gui/callbacks.cpp:205
 msgid "Unable to open help file."
 msgstr "Kunde inte öppna hjälpfilen."
 
-#: ../src/gui/main_window.cpp:565
+#: ../src/gui/main_window.cpp:731
+msgid "Presence"
+msgstr ""
+
+#: ../src/gui/main_window.cpp:738
+msgid "Addressbook"
+msgstr "Adressbok"
+
+#: ../src/gui/main_window.cpp:802
 msgid "Unknown"
 msgstr "Okänd"
 
-#: ../src/gui/main_window.cpp:716
+#: ../src/gui/main_window.cpp:953
 #, c-format
 msgid "A:%.1f/%.1f   V:%.1f/%.1f   FPS:%d/%d"
 msgstr "A:%.1f/%.1f   V:%.1f/%.1f   Bilder/s:%d/%d"
 
 #. %s is the SIP/H.323 address of the remote user, this text is shown
 #. below video during a call
-#: ../src/gui/main_window.cpp:762
+#: ../src/gui/main_window.cpp:999
 #, c-format
 msgid "Connected with %s"
 msgstr "Ansluten till %s"
 
-#: ../src/gui/main_window.cpp:798
-#: ../src/gui/main_window.cpp:3679
+#: ../src/gui/main_window.cpp:1035
+#: ../src/gui/main_window.cpp:3884
 msgid "Standby"
 msgstr "Viloläge"
 
-#: ../src/gui/main_window.cpp:857
+#: ../src/gui/main_window.cpp:1094
 msgid "Call on hold"
 msgstr "Samtalet parkerat"
 
 # FIXME. Måste testas
-#: ../src/gui/main_window.cpp:868
+#: ../src/gui/main_window.cpp:1105
 msgid "Call retrieved"
 msgstr "Samtalet besvarades"
 
-#: ../src/gui/main_window.cpp:883
+#: ../src/gui/main_window.cpp:1120
 #, c-format
 msgid "Missed call from %s"
 msgstr "Missat samtal från %s"
 
-#: ../src/gui/main_window.cpp:1020
+#: ../src/gui/main_window.cpp:1257
 msgid "Error"
 msgstr "Fel"
 
-#: ../src/gui/main_window.cpp:1093
+#: ../src/gui/main_window.cpp:1330
 msgid "Error while initializing video output"
 msgstr "Fel vid initiering av videoutgång"
 
-#: ../src/gui/main_window.cpp:1094
+#: ../src/gui/main_window.cpp:1331
 msgid "No video will be displayed on your machine during this call"
 msgstr "Ingen video kommer att visas på din dator under detta samtal"
 
-#: ../src/gui/main_window.cpp:1104
+#: ../src/gui/main_window.cpp:1341
 msgid "There was an error opening or initializing the video output. Please verify that no other application is using the accelerated video output."
 msgstr "Det uppstod ett fel vid öppning eller initiering av videoutgången. Verifiera att inga andra program använder den accelererade videoutgången."
 
-#: ../src/gui/main_window.cpp:1106
+#: ../src/gui/main_window.cpp:1343
 msgid "There was an error opening or initializing the video output. Please verify that you are using a color depth of 24 or 32 bits per pixel."
 msgstr "Det uppstod ett fel vid öppning eller initiering av videoutgången. Verifiera att du använder ett färgdjup på 24 eller 32 bitar per bildpunkt."
 
 #. Translators: This is a hotplug status
-#: ../src/gui/main_window.cpp:1219
+#: ../src/gui/main_window.cpp:1456
 #, c-format
 msgid "Added video input device %s"
 msgstr "Lade till videoingångsenheten %s"
 
 #. Translators: This is a hotplug status
-#: ../src/gui/main_window.cpp:1231
+#: ../src/gui/main_window.cpp:1468
 #, c-format
 msgid "Removed video input device %s"
 msgstr "Tog bort videoingångsenheten %s"
 
-#: ../src/gui/main_window.cpp:1248
+#: ../src/gui/main_window.cpp:1485
 #, c-format
 msgid "Error while accessing video device %s"
 msgstr "Fel vid åtkomst till videoenheten %s"
 
-#: ../src/gui/main_window.cpp:1251
+#: ../src/gui/main_window.cpp:1488
 msgid "A moving logo will be transmitted during calls."
 msgstr "En enkel logotyp kommer att överföras under samtal."
 
-#: ../src/gui/main_window.cpp:1255
+#: ../src/gui/main_window.cpp:1492
 msgid "There was an error while opening the device. In case it is a pluggable device it may be sufficient to reconnect it. If not, or if it still is not accessible, please check your permissions and make sure that the appropriate driver is loaded."
 msgstr "Ett fel uppstod vid öppnandet av enheten. Om detta är en flyttbar enhet kan det räcka med att koppla från den och sedan ansluta den igen. Om inte, eller om den fortfarande inte är åtkomlig, kontrollera dina rättigheter och försäkra dig om att en lämplig drivrutin är inläst."
 
-#: ../src/gui/main_window.cpp:1259
+#: ../src/gui/main_window.cpp:1496
 msgid "Your video driver doesn't support the requested video format."
 msgstr "Din videodrivrutin stöder inte det begärda videoformatet."
 
-#: ../src/gui/main_window.cpp:1263
+#: ../src/gui/main_window.cpp:1500
 msgid "Could not open the chosen channel."
 msgstr "Kunde inte öppna den valda kanalen."
 
-#: ../src/gui/main_window.cpp:1267
+#: ../src/gui/main_window.cpp:1504
 msgid ""
 "Your driver doesn't seem to support any of the color formats supported by Ekiga.\n"
 " Please check your kernel driver documentation in order to determine which Palette is supported."
@@ -2369,421 +2450,435 @@ msgstr ""
 "Din drivrutin verkar inte stöda några av de färgformat som stöds av Ekiga.\n"
 " Undersök dokumentationen för din kärndrivrutin för att fastställa vilken palett som stöds."
 
-#: ../src/gui/main_window.cpp:1271
+#: ../src/gui/main_window.cpp:1508
 msgid "Error while setting the frame rate."
 msgstr "Fel vid inställning av bildfrekvensen."
 
-#: ../src/gui/main_window.cpp:1275
+#: ../src/gui/main_window.cpp:1512
 msgid "Error while setting the frame size."
 msgstr "Fel vid inställning av bildstorleken."
 
-#: ../src/gui/main_window.cpp:1280
-#: ../src/gui/main_window.cpp:1384
-#: ../src/gui/main_window.cpp:1501
+#: ../src/gui/main_window.cpp:1517
+#: ../src/gui/main_window.cpp:1620
+#: ../src/gui/main_window.cpp:1739
 msgid "Unknown error."
 msgstr "Okänt fel."
 
 #. Translators: This is a hotplug status
-#: ../src/gui/main_window.cpp:1332
+#: ../src/gui/main_window.cpp:1569
 #, c-format
 msgid "Added audio input device %s"
 msgstr "Lade till ljudingångsenheten %s"
 
 #. Translators: This is a hotplug status
-#: ../src/gui/main_window.cpp:1349
+#: ../src/gui/main_window.cpp:1585
 #, c-format
 msgid "Removed audio input device %s"
 msgstr "Tog bort ljudingångsenheten %s"
 
-#: ../src/gui/main_window.cpp:1366
+#: ../src/gui/main_window.cpp:1602
 #, c-format
 msgid "Error while opening audio input device %s"
 msgstr "Fel vid öppnande av videoingångsenheten %s"
 
 #. Translators: This happens when there is an error with audio input:
 #. * Nothing ("silence") will be transmitted
-#: ../src/gui/main_window.cpp:1371
+#: ../src/gui/main_window.cpp:1607
 msgid "Only silence will be transmitted."
 msgstr "Endast tystnad kommer att sändas."
 
-#: ../src/gui/main_window.cpp:1375
+#: ../src/gui/main_window.cpp:1611
 msgid "Unable to open the selected audio device for recording. In case it is a pluggable device it may be sufficient to reconnect it. If not, or if it still is not accessible, please check your audio setup, the permissions and that the device is not busy."
 msgstr "Kunde inte öppna den valda ljudenheten för inspelning. Om detta är en flyttbar enhet kan det räcka med att koppla från den och sedan ansluta den igen. Om inte, eller om den fortfarande inte är åtkomlig, kontrollera din ljudkonfiguration, rättigheterna och att enheten inte är upptagen."
 
-#: ../src/gui/main_window.cpp:1379
+#: ../src/gui/main_window.cpp:1615
 msgid "The selected audio device was successfully opened but it is impossible to read data from this device. In case it is a pluggable device it may be sufficient to reconnect it. If not, or if it still is not accessible, please check your audio setup."
 msgstr "Den valda ljudenheten kunde öppnas men det är omöjligt att läsa data från denna enhet. Om detta är en flyttbar enhet kan det räcka med att koppla från den och sedan ansluta den igen. Om inte, eller om den fortfarande inte är åtkomlig, kontrollera din ljudkonfiguration."
 
-#: ../src/gui/main_window.cpp:1448
+#: ../src/gui/main_window.cpp:1684
 #, c-format
 msgid "Added audio output device %s"
 msgstr "Lade till ljudutgångsenheten %s"
 
-#: ../src/gui/main_window.cpp:1464
+#: ../src/gui/main_window.cpp:1702
 #, c-format
 msgid "Removed audio output device %s"
 msgstr "Tog bort ljudutgångsenheten %s"
 
-#: ../src/gui/main_window.cpp:1485
+#: ../src/gui/main_window.cpp:1723
 #, c-format
 msgid "Error while opening audio output device %s"
 msgstr "Fel vid öppnande av ljudutgångsenheten %s"
 
-#: ../src/gui/main_window.cpp:1488
+#: ../src/gui/main_window.cpp:1726
 msgid "No incoming sound will be played."
 msgstr "Inga inkommande ljud kommer att spelas upp."
 
-#: ../src/gui/main_window.cpp:1492
+#: ../src/gui/main_window.cpp:1730
 msgid "Unable to open the selected audio device for playing. In case it is a pluggable device it may be sufficient to reconnect it. If not, or if it still is not accessible, please check your audio setup, the permissions and that the device is not busy."
 msgstr "Omöjligt att öppna den valda ljudenheten för uppspelning. Om detta är en flyttbar enhet kan det räcka med att koppla från den och sedan ansluta den igen. Om inte, eller om den fortfarande inte är åtkomlig, kontrollera din ljudkonfiguration, rättigheterna och att enheten inte är upptagen."
 
-#: ../src/gui/main_window.cpp:1496
+#: ../src/gui/main_window.cpp:1734
 msgid "The selected audio device was successfully opened but it is impossible to write data to this device. In case it is a pluggable device it may be sufficient to reconnect it. If not, or if it still is not accessible, please check your audio setup."
 msgstr "Den valda ljudenheten kunde öppnas men det är omöjligt att skriva data till denna enhet. Om detta är en flyttbar enhet så kan det räcka med att koppla från den och sedan ansluta den igen. Om inte, eller om den fortfarande inte är åtkomlig, kontrollera din ljudkonfiguration."
 
-#: ../src/gui/main_window.cpp:1682
+#: ../src/gui/main_window.cpp:1923
 msgid "Video Settings"
 msgstr "Videoinställningar"
 
-#: ../src/gui/main_window.cpp:1709
+#: ../src/gui/main_window.cpp:1950
 msgid "Adjust brightness"
 msgstr "Justera ljusstyrka"
 
-#: ../src/gui/main_window.cpp:1730
+#: ../src/gui/main_window.cpp:1971
 msgid "Adjust whiteness"
 msgstr "Justera vithet"
 
-#: ../src/gui/main_window.cpp:1751
+#: ../src/gui/main_window.cpp:1992
 msgid "Adjust color"
 msgstr "Justera färg"
 
-#: ../src/gui/main_window.cpp:1772
+#: ../src/gui/main_window.cpp:2013
 msgid "Adjust contrast"
 msgstr "Justera kontrast"
 
-#: ../src/gui/main_window.cpp:1816
+#: ../src/gui/main_window.cpp:2057
 msgid "Audio Settings"
 msgstr "Ljudinställningar"
 
-#: ../src/gui/main_window.cpp:2514
+#: ../src/gui/main_window.cpp:2737
 msgid "_Retrieve Call"
 msgstr "_Återuppta samtal"
 
-#: ../src/gui/main_window.cpp:2527
-#: ../src/gui/main_window.cpp:3312
+#: ../src/gui/main_window.cpp:2750
+#: ../src/gui/main_window.cpp:3511
 msgid "H_old Call"
 msgstr "_Parkera samtal"
 
-#: ../src/gui/main_window.cpp:2559
-#: ../src/gui/main_window.cpp:3324
+#: ../src/gui/main_window.cpp:2782
+#: ../src/gui/main_window.cpp:3523
 msgid "Suspend _Audio"
 msgstr "Stäng av lj_ud"
 
-#: ../src/gui/main_window.cpp:2561
-#: ../src/gui/main_window.cpp:3329
+#: ../src/gui/main_window.cpp:2784
+#: ../src/gui/main_window.cpp:3528
 msgid "Suspend _Video"
 msgstr "Stäng av _video"
 
-#: ../src/gui/main_window.cpp:2563
+#: ../src/gui/main_window.cpp:2786
 msgid "Resume _Audio"
 msgstr "Återuppta _ljud"
 
-#: ../src/gui/main_window.cpp:2565
+#: ../src/gui/main_window.cpp:2788
 msgid "Resume _Video"
 msgstr "Återuppta _video"
 
-#: ../src/gui/main_window.cpp:2819
-#: ../src/gui/main_window.cpp:2982
+#: ../src/gui/main_window.cpp:3014
+#: ../src/gui/main_window.cpp:3177
 msgid "Reject"
 msgstr "Avvisa"
 
-#: ../src/gui/main_window.cpp:2821
-#: ../src/gui/main_window.cpp:2981
+#: ../src/gui/main_window.cpp:3016
+#: ../src/gui/main_window.cpp:3176
 msgid "Accept"
 msgstr "Godta"
 
-#: ../src/gui/main_window.cpp:2827
+#: ../src/gui/main_window.cpp:3022
 msgid "Incoming call from"
 msgstr "Inkommande samtal från"
 
-#: ../src/gui/main_window.cpp:2845
-#: ../src/gui/main_window.cpp:2962
+#: ../src/gui/main_window.cpp:3040
+#: ../src/gui/main_window.cpp:3157
 msgid "Remote URI:"
 msgstr "Fjärr-uri:"
 
-#: ../src/gui/main_window.cpp:2857
-#: ../src/gui/main_window.cpp:2964
+#: ../src/gui/main_window.cpp:3052
+#: ../src/gui/main_window.cpp:3159
 msgid "Remote Application:"
 msgstr "Fjärrprogram:"
 
-#: ../src/gui/main_window.cpp:2870
-#: ../src/gui/main_window.cpp:2966
+#: ../src/gui/main_window.cpp:3065
+#: ../src/gui/main_window.cpp:3161
 msgid "Account ID:"
 msgstr "Konto-ID:"
 
-#: ../src/gui/main_window.cpp:2878
+#: ../src/gui/main_window.cpp:3073
 #, c-format
 msgid "Call from %s"
 msgstr "Samtal från %s"
 
-#: ../src/gui/main_window.cpp:3090
+#: ../src/gui/main_window.cpp:3285
 #, c-format
 msgid "Call Duration: %s\n"
 msgstr "Samtalslängd: %s\n"
 
-#: ../src/gui/main_window.cpp:3121
+#: ../src/gui/main_window.cpp:3316
 msgid "Transfer call to:"
 msgstr "Skicka vidare samtalet till:"
 
-#: ../src/gui/main_window.cpp:3173
+#: ../src/gui/main_window.cpp:3368
 msgid "No"
 msgstr "Nej"
 
-#: ../src/gui/main_window.cpp:3175
+#: ../src/gui/main_window.cpp:3370
 msgid "Yes"
 msgstr "Ja"
 
-#: ../src/gui/main_window.cpp:3186
+#: ../src/gui/main_window.cpp:3381
 msgid "Detected new audio input device:"
 msgstr "Hittade ny ljudingångsenhet:"
 
-#: ../src/gui/main_window.cpp:3190
+#: ../src/gui/main_window.cpp:3385
 msgid "Detected new audio output device:"
 msgstr "Hittade ny ljudutmatningsenhet:"
 
-#: ../src/gui/main_window.cpp:3194
+#: ../src/gui/main_window.cpp:3389
+#, fuzzy
+msgid "Detected new ringer device:"
+msgstr "Hittade ny ljudingångsenhet:"
+
+#: ../src/gui/main_window.cpp:3393
 msgid "Detected new video input device:"
 msgstr "Hittade ny videoingångsenhet:"
 
-#: ../src/gui/main_window.cpp:3195
-#: ../src/gui/preferences.cpp:925
+#: ../src/gui/main_window.cpp:3394
+#: ../src/gui/preferences.cpp:891
 msgid "Video Devices"
 msgstr "Videoenheter"
 
-#: ../src/gui/main_window.cpp:3213
+#: ../src/gui/main_window.cpp:3412
 msgid "Do you want to use it as default device?"
 msgstr "Vill du använda den som standardenhet?"
 
-#: ../src/gui/main_window.cpp:3281
+#: ../src/gui/main_window.cpp:3480
 msgid "_Chat"
 msgstr "_Chatta"
 
-#: ../src/gui/main_window.cpp:3283
+#: ../src/gui/main_window.cpp:3482
 msgid "Ca_ll"
 msgstr "R_ing"
 
-#: ../src/gui/main_window.cpp:3283
+#: ../src/gui/main_window.cpp:3482
 msgid "Place a new call"
 msgstr "Ring ett nytt samtal"
 
-#: ../src/gui/main_window.cpp:3286
+#: ../src/gui/main_window.cpp:3485
 msgid "_Hang up"
 msgstr "_Lägg på"
 
-#: ../src/gui/main_window.cpp:3287
+#: ../src/gui/main_window.cpp:3486
 msgid "Terminate the current call"
 msgstr "Avsluta det aktuella samtalet"
 
-#: ../src/gui/main_window.cpp:3293
+#: ../src/gui/main_window.cpp:3492
 msgid "Co_ntact"
 msgstr "Ko_ntakt"
 
-#: ../src/gui/main_window.cpp:3294
+#: ../src/gui/main_window.cpp:3493
 msgid "Act on selected contact"
 msgstr "Agera på markerad kontakt"
 
-#: ../src/gui/main_window.cpp:3300
+#: ../src/gui/main_window.cpp:3499
 msgid "A_dd Contact"
 msgstr "L_ägg till kontakt"
 
-#: ../src/gui/main_window.cpp:3300
+#: ../src/gui/main_window.cpp:3499
 msgid "Add a contact to the roster"
 msgstr "Lägg till en kontakt i kontaktlistan"
 
-#: ../src/gui/main_window.cpp:3305
+#: ../src/gui/main_window.cpp:3504
 msgid "Find contacts"
 msgstr "Sök kontakter"
 
-#: ../src/gui/main_window.cpp:3312
-#: ../src/gui/main_window.cpp:3779
+#: ../src/gui/main_window.cpp:3511
+#: ../src/gui/main_window.cpp:3984
 msgid "Hold the current call"
 msgstr "Parkera det aktuella samtalet"
 
-#: ../src/gui/main_window.cpp:3316
+#: ../src/gui/main_window.cpp:3515
 msgid "_Transfer Call"
 msgstr "_Skicka samtalet vidare"
 
-#: ../src/gui/main_window.cpp:3317
+#: ../src/gui/main_window.cpp:3516
 msgid "Transfer the current call"
 msgstr "Skicka vidare det aktuella samtalet"
 
-#: ../src/gui/main_window.cpp:3325
+#: ../src/gui/main_window.cpp:3524
 msgid "Suspend or resume the audio transmission"
 msgstr "Stäng av eller återuppta ljudöverföringen"
 
-#: ../src/gui/main_window.cpp:3330
+#: ../src/gui/main_window.cpp:3529
 msgid "Suspend or resume the video transmission"
 msgstr "Stäng av eller återuppta videoöverföringen"
 
-#: ../src/gui/main_window.cpp:3337
+#. FIXME: that isn't a very good way to do things
+#: ../src/gui/main_window.cpp:3537
+msgid "Other"
+msgstr ""
+
+#: ../src/gui/main_window.cpp:3538
+msgid "Other possible actions"
+msgstr ""
+
+#: ../src/gui/main_window.cpp:3544
 msgid "Close the Ekiga window"
 msgstr "Stäng Ekiga-fönstret"
 
-#: ../src/gui/main_window.cpp:3344
+#: ../src/gui/main_window.cpp:3551
 #: ../src/gui/statusicon.cpp:465
 msgid "Quit"
 msgstr "Avsluta"
 
-#: ../src/gui/main_window.cpp:3350
+#: ../src/gui/main_window.cpp:3557
 msgid "_Configuration Assistant"
 msgstr "_Konfigurationsguide"
 
-#: ../src/gui/main_window.cpp:3351
+#: ../src/gui/main_window.cpp:3558
 msgid "Run the configuration assistant"
 msgstr "Kör konfigurationsguiden"
 
-#: ../src/gui/main_window.cpp:3359
+#: ../src/gui/main_window.cpp:3566
 msgid "Edit your accounts"
 msgstr "Redigera dina konton"
 
-#: ../src/gui/main_window.cpp:3365
+#: ../src/gui/main_window.cpp:3572
 msgid "Change your preferences"
 msgstr "Ändra dina inställningar"
 
-#: ../src/gui/main_window.cpp:3370
+#: ../src/gui/main_window.cpp:3577
 msgid "_View"
 msgstr "_Visa"
 
-#: ../src/gui/main_window.cpp:3372
+#: ../src/gui/main_window.cpp:3579
 msgid "Con_tacts"
 msgstr "Kon_takter"
 
-#: ../src/gui/main_window.cpp:3372
+#: ../src/gui/main_window.cpp:3579
 msgid "View the contacts list"
 msgstr "Visa kontaktlistan"
 
-#: ../src/gui/main_window.cpp:3377
+#: ../src/gui/main_window.cpp:3584
 msgid "_Dialpad"
 msgstr "_Knappsats"
 
-#: ../src/gui/main_window.cpp:3377
+#: ../src/gui/main_window.cpp:3584
 msgid "View the dialpad"
 msgstr "Visa knappsatsen"
 
-#: ../src/gui/main_window.cpp:3382
+#: ../src/gui/main_window.cpp:3589
 msgid "_Call History"
 msgstr "Sa_mtalshistorik"
 
-#: ../src/gui/main_window.cpp:3382
+#: ../src/gui/main_window.cpp:3589
 msgid "View the call history"
 msgstr "Visa samtalshistoriken"
 
-#: ../src/gui/main_window.cpp:3390
+#: ../src/gui/main_window.cpp:3597
 msgid "_Show Call Panel"
 msgstr "_Visa samtalspanel"
 
-#: ../src/gui/main_window.cpp:3398
+#: ../src/gui/main_window.cpp:3605
 msgid "_Local Video"
 msgstr "_Lokal video"
 
-#: ../src/gui/main_window.cpp:3399
+#: ../src/gui/main_window.cpp:3606
 msgid "Local video image"
 msgstr "Lokal videobild"
 
-#: ../src/gui/main_window.cpp:3404
+#: ../src/gui/main_window.cpp:3611
 msgid "_Remote Video"
 msgstr "_Fjärrvideo"
 
-#: ../src/gui/main_window.cpp:3405
+#: ../src/gui/main_window.cpp:3612
 msgid "Remote video image"
 msgstr "Fjärrvideobild"
 
-#: ../src/gui/main_window.cpp:3410
+#: ../src/gui/main_window.cpp:3617
 msgid "_Picture-in-Picture"
 msgstr "_Bild-i-bild"
 
-#: ../src/gui/main_window.cpp:3411
-#: ../src/gui/main_window.cpp:3417
+#: ../src/gui/main_window.cpp:3618
+#: ../src/gui/main_window.cpp:3624
 msgid "Both video images"
 msgstr "Båda videobilder"
 
-#: ../src/gui/main_window.cpp:3416
+#: ../src/gui/main_window.cpp:3623
 msgid "Picture-in-Picture in Separate _Window"
 msgstr "Bild-i-bild i separat _fönster"
 
-#: ../src/gui/main_window.cpp:3424
+#: ../src/gui/main_window.cpp:3631
 msgid "Zoom in"
 msgstr "Zooma in"
 
-#: ../src/gui/main_window.cpp:3428
+#: ../src/gui/main_window.cpp:3635
 msgid "Zoom out"
 msgstr "Zooma ut"
 
-#: ../src/gui/main_window.cpp:3432
+#: ../src/gui/main_window.cpp:3639
 msgid "Normal size"
 msgstr "Normal storlek"
 
-#: ../src/gui/main_window.cpp:3436
+#: ../src/gui/main_window.cpp:3643
 msgid "_Fullscreen"
 msgstr "_Helskärm"
 
-#: ../src/gui/main_window.cpp:3436
+#: ../src/gui/main_window.cpp:3643
 msgid "Switch to fullscreen"
 msgstr "Växla till helskärmsläge"
 
-#: ../src/gui/main_window.cpp:3444
+#: ../src/gui/main_window.cpp:3651
 #: ../src/gui/statusicon.cpp:453
 msgid "Get help by reading the Ekiga manual"
 msgstr "Få hjälp genom att läsa Ekiga-handboken"
 
-#: ../src/gui/main_window.cpp:3449
+#: ../src/gui/main_window.cpp:3656
 #: ../src/gui/statusicon.cpp:458
 msgid "View information about Ekiga"
 msgstr "Visa information om Ekiga"
 
-#: ../src/gui/main_window.cpp:3523
+#: ../src/gui/main_window.cpp:3728
 msgid "Enter a URI on the left, and click this button to place a call or to hangup"
 msgstr "Ange en uri att ringa upp till vänster och klicka på denna knapp för att ringa ett samtal eller lägga på"
 
-#: ../src/gui/main_window.cpp:3568
+#: ../src/gui/main_window.cpp:3773
 msgid "Contacts"
 msgstr "Kontakter"
 
-#: ../src/gui/main_window.cpp:3590
+#: ../src/gui/main_window.cpp:3795
 msgid "Dialpad"
 msgstr "Knappsats"
 
-#: ../src/gui/main_window.cpp:3608
+#: ../src/gui/main_window.cpp:3813
 msgid "Call history"
 msgstr "Samtalshistorik"
 
-#: ../src/gui/main_window.cpp:3716
+#: ../src/gui/main_window.cpp:3921
 msgid "Change the volume of your soundcard"
 msgstr "Ändra volymen på ditt ljudkort"
 
-#: ../src/gui/main_window.cpp:3737
+#: ../src/gui/main_window.cpp:3942
 msgid "Change the color settings of your video device"
 msgstr "Ändra färginställningarna för din videoenhet"
 
-#: ../src/gui/main_window.cpp:3805
+#: ../src/gui/main_window.cpp:4010
 msgid "Ekiga"
 msgstr "Ekiga"
 
 #. Translators: TX is a common abbreviation for "transmit".  As it
 #. * is shown in a tooltip, there is no space constraint
-#: ../src/gui/main_window.cpp:4416
+#: ../src/gui/main_window.cpp:4613
 #, c-format
 msgid "TX: %dx%d "
 msgstr "Ut: %dx%d "
 
 #. Translators: RX is a common abbreviation for "receive".  As it
 #. * is shown in a tooltip, there is no space constraint
-#: ../src/gui/main_window.cpp:4421
+#: ../src/gui/main_window.cpp:4618
 #, c-format
 msgid "RX: %dx%d "
 msgstr "In: %dx%d "
 
-#: ../src/gui/main_window.cpp:4423
+#: ../src/gui/main_window.cpp:4620
 #, c-format
 msgid ""
 "Lost packets: %.1f %%\n"
@@ -2796,355 +2891,346 @@ msgstr ""
 "Paket i fel ordning: %.1f %%\n"
 "Jitterbuffert: %d ms%s%s%s"
 
-#: ../src/gui/main_window.cpp:4538
+#: ../src/gui/main_window.cpp:4735
 msgid "Prints debug messages in the console (level between 1 and 5)"
 msgstr "Skriver ut felsökningsmeddelanden i konsollen (nivå mellan 1 och 5)"
 
-#: ../src/gui/main_window.cpp:4543
+#: ../src/gui/main_window.cpp:4740
 msgid "Prints user plane debug messages in the console (level between 1 and 4)"
 msgstr "Skriver ut felsökningsmeddelanden på användarnivå på konsollen (nivå mellan 1 och 4)"
 
-#: ../src/gui/main_window.cpp:4548
+#: ../src/gui/main_window.cpp:4745
 msgid "Makes Ekiga call the given URI"
 msgstr "Gör så att Ekiga ringer den angivna uri:en"
 
-#: ../src/gui/preferences.cpp:381
+#: ../src/gui/preferences.cpp:376
 msgid "Play sound for new voice mails"
 msgstr "Spela upp ljud vid nytt röstmeddelande"
 
-#: ../src/gui/preferences.cpp:391
+#: ../src/gui/preferences.cpp:386
 msgid "Play sound for new instant messages"
 msgstr "Spela upp ljud vid nya snabbmeddelanden"
 
-#: ../src/gui/preferences.cpp:466
+#: ../src/gui/preferences.cpp:447
 msgid "_Full name:"
 msgstr "_Fullständigt namn:"
 
-#: ../src/gui/preferences.cpp:484
+#: ../src/gui/preferences.cpp:464
 msgid "User Interface"
 msgstr "Användargränssnitt"
 
-#: ../src/gui/preferences.cpp:486
+#: ../src/gui/preferences.cpp:466
 msgid "Start _hidden"
 msgstr "Starta _minimerad"
 
-#: ../src/gui/preferences.cpp:488
+#: ../src/gui/preferences.cpp:468
 msgid "Show offline _contacts"
 msgstr "Visa frånkopplade _kontakter"
 
-#: ../src/gui/preferences.cpp:493
+#: ../src/gui/preferences.cpp:472
 msgid "Video Display"
 msgstr "Videovisning"
 
-#: ../src/gui/preferences.cpp:495
+#: ../src/gui/preferences.cpp:474
 msgid "Place windows displaying video _above other windows"
 msgstr "Placera fönster som visar video _över andra fönster"
 
-#: ../src/gui/preferences.cpp:499
+#: ../src/gui/preferences.cpp:478
 msgid "Network Settings"
 msgstr "Nätverksinställningar"
 
-#: ../src/gui/preferences.cpp:501
+#: ../src/gui/preferences.cpp:480
 msgid "Enable network _detection"
 msgstr "Aktivera nätverks_detektering"
 
-#: ../src/gui/preferences.cpp:512
+#: ../src/gui/preferences.cpp:490
 msgid "Call Forwarding"
 msgstr "Vidarekoppling av samtal"
 
-#: ../src/gui/preferences.cpp:514
+#: ../src/gui/preferences.cpp:492
 msgid "_Always forward calls to the given host"
 msgstr "_Vidarekoppla alltid samtal till den angivna värden"
 
-#: ../src/gui/preferences.cpp:514
+#: ../src/gui/preferences.cpp:492
 msgid "If enabled, all incoming calls will be forwarded to the host that is specified in the protocol settings"
 msgstr "Om detta är aktiverat kommer alla inkommande samtal att vidarekopplas till den värd som är angiven i protokollinställningarna"
 
-#: ../src/gui/preferences.cpp:516
+#: ../src/gui/preferences.cpp:494
 msgid "Forward calls to the given host if _no answer"
 msgstr "Vidarekoppla samtal till den angivna värden om i_nget svar"
 
-#: ../src/gui/preferences.cpp:516
+#: ../src/gui/preferences.cpp:494
 msgid "If enabled, all incoming calls will be forwarded to the host that is specified in the protocol settings if you do not answer the call"
 msgstr "Om detta är aktiverat kommer alla inkommande samtal att vidarekopplas till den värd som är angiven i protokollinställningarna om du inte svarar på samtalet"
 
-#: ../src/gui/preferences.cpp:518
+#: ../src/gui/preferences.cpp:496
 msgid "Forward calls to the given host if _busy"
 msgstr "Vidarekoppla samtal till den angivna värden om _upptagen"
 
-#: ../src/gui/preferences.cpp:518
+#: ../src/gui/preferences.cpp:496
 msgid "If enabled, all incoming calls will be forwarded to the host that is specified in the protocol settings if you already are in a call or if you are in Do Not Disturb mode"
 msgstr "Om detta är aktiverat kommer alla inkommande samtal att vidarekopplas till den värd som är angiven i protokollinställningarna om du redan är i ett samtal eller om du är i Stör inte-läge"
 
-#: ../src/gui/preferences.cpp:522
-#: ../src/gui/preferences.cpp:1363
+#: ../src/gui/preferences.cpp:500
+#: ../src/gui/preferences.cpp:1319
 msgid "Call Options"
 msgstr "Samtalsalternativ"
 
 #. Add all the fields
-#: ../src/gui/preferences.cpp:525
+#: ../src/gui/preferences.cpp:503
 msgid "Timeout to reject or forward unanswered incoming calls (in seconds):"
 msgstr "Tidsgräns för avvisning eller vidarekoppling av inkommande samtal som inte besvarats (i sekunder):"
 
-#: ../src/gui/preferences.cpp:526
+#: ../src/gui/preferences.cpp:504
 msgid "_Automatically answer incoming calls"
 msgstr "Svara _automatiskt på inkommande samtal"
 
-#: ../src/gui/preferences.cpp:557
+#: ../src/gui/preferences.cpp:535
 msgid "Ekiga Sound Events"
 msgstr "Ljudhändelser för Ekiga"
 
-#: ../src/gui/preferences.cpp:595
+#: ../src/gui/preferences.cpp:573
 msgid "A"
 msgstr "L"
 
-#: ../src/gui/preferences.cpp:607
+#: ../src/gui/preferences.cpp:585
 msgid "Event"
 msgstr "Händelse"
 
-#: ../src/gui/preferences.cpp:619
+#: ../src/gui/preferences.cpp:597
 msgid "Choose a sound"
 msgstr "Välj ett ljud"
 
-#: ../src/gui/preferences.cpp:624
+#: ../src/gui/preferences.cpp:602
 msgid "Wavefiles"
 msgstr "Wav-filer"
 
-#: ../src/gui/preferences.cpp:633
-#: ../src/gui/preferences.cpp:652
+#: ../src/gui/preferences.cpp:611
+#: ../src/gui/preferences.cpp:630
 msgid "Play"
 msgstr "Spela"
 
-#: ../src/gui/preferences.cpp:673
+#: ../src/gui/preferences.cpp:651
 msgid "String"
 msgstr "Sträng"
 
-#: ../src/gui/preferences.cpp:674
+#: ../src/gui/preferences.cpp:652
 msgid "Tone"
 msgstr "Ton"
 
-#: ../src/gui/preferences.cpp:675
-#: ../src/gui/preferences.cpp:724
+#: ../src/gui/preferences.cpp:653
+#: ../src/gui/preferences.cpp:696
 msgid "RFC2833"
 msgstr "RFC2833"
 
-#: ../src/gui/preferences.cpp:676
+#: ../src/gui/preferences.cpp:654
 msgid "Q.931"
 msgstr "Q.931"
 
-#: ../src/gui/preferences.cpp:682
-#: ../src/gui/preferences.cpp:734
+#: ../src/gui/preferences.cpp:659
+#: ../src/gui/preferences.cpp:705
 msgid "Misc Settings"
 msgstr "Diverse inställningar"
 
-#: ../src/gui/preferences.cpp:685
-#: ../src/gui/preferences.cpp:739
+#: ../src/gui/preferences.cpp:662
+#: ../src/gui/preferences.cpp:710
 msgid "Forward _URI:"
 msgstr "_Uri för vidarekoppling:"
 
-#: ../src/gui/preferences.cpp:694
+#: ../src/gui/preferences.cpp:668
 msgid "Advanced Settings"
 msgstr "Avancerade inställningar"
 
 #. The toggles
-#: ../src/gui/preferences.cpp:697
+#: ../src/gui/preferences.cpp:671
 msgid "Enable H.245 _tunneling"
 msgstr "Aktivera H.245-_tunnling"
 
-#: ../src/gui/preferences.cpp:699
+#: ../src/gui/preferences.cpp:673
 msgid "Enable _early H.245"
 msgstr "Aktivera _tidig H.245"
 
-#: ../src/gui/preferences.cpp:701
+#: ../src/gui/preferences.cpp:675
 msgid "Enable fast _start procedure"
 msgstr "Aktivera _snabbstartsprocedur"
 
-#: ../src/gui/preferences.cpp:701
+#: ../src/gui/preferences.cpp:675
 msgid "Connection will be established in Fast Start mode. Fast Start is a new way to start calls faster that was introduced in H.323v2. It is not supported by Netmeeting and using both Fast Start and H.245 Tunneling can crash some versions of Netmeeting."
 msgstr "Anslutning kommer att etableras i snabbstartläge. Snabbstart är en ny metod att starta samtal snabbare som introducerades i H.323v2. Den stöds inte av Netmeeting och att använda både snabbstart och H.245-tunnling kan krascha en del versioner av Netmeeting."
 
-#: ../src/gui/preferences.cpp:707
-#: ../src/gui/preferences.cpp:747
+#: ../src/gui/preferences.cpp:679
+#: ../src/gui/preferences.cpp:716
 msgid "DTMF Mode"
 msgstr "DTMF-läge"
 
-#: ../src/gui/preferences.cpp:709
-#: ../src/gui/preferences.cpp:749
+#: ../src/gui/preferences.cpp:681
+#: ../src/gui/preferences.cpp:718
 msgid "_Send DTMF as:"
 msgstr "_Skicka DTMF som:"
 
-#: ../src/gui/preferences.cpp:709
-#: ../src/gui/preferences.cpp:749
-msgid "This allows you to set the mode for DTMFs sending."
+#: ../src/gui/preferences.cpp:681
+#: ../src/gui/preferences.cpp:718
+#, fuzzy
+msgid "Select the mode for DTMFs sending"
 msgstr "Detta tillåter lägesinställning för DTMF-sändning."
 
-#: ../src/gui/preferences.cpp:725
+#: ../src/gui/preferences.cpp:697
 msgid "INFO"
 msgstr "INFO"
 
-#: ../src/gui/preferences.cpp:736
+#: ../src/gui/preferences.cpp:707
 msgid "_Outbound Proxy:"
 msgstr "_Utgående proxy:"
 
-#: ../src/gui/preferences.cpp:777
+#: ../src/gui/preferences.cpp:746
 msgid "Ringing Device"
 msgstr "Enhet för ringsignal"
 
-#: ../src/gui/preferences.cpp:777
+#: ../src/gui/preferences.cpp:746
 msgid "Select the ringing audio device to use"
 msgstr "Välj den ljudenhet som ska användas för ringsignal"
 
-#: ../src/gui/preferences.cpp:779
+#: ../src/gui/preferences.cpp:748
 msgid "Output device:"
 msgstr "Utgångsenhet:"
 
-#: ../src/gui/preferences.cpp:786
-#: ../src/gui/preferences.cpp:931
+#: ../src/gui/preferences.cpp:755
+#: ../src/gui/preferences.cpp:897
 msgid "Input device:"
 msgstr "Ingångsenhet:"
 
 #. That button will refresh the device list
-#: ../src/gui/preferences.cpp:791
-#: ../src/gui/preferences.cpp:942
+#: ../src/gui/preferences.cpp:759
+#: ../src/gui/preferences.cpp:908
 msgid "_Detect devices"
 msgstr "_Identifiera enheter"
 
-#: ../src/gui/preferences.cpp:791
-#: ../src/gui/preferences.cpp:942
-msgid "Click here to refresh the device list."
+#: ../src/gui/preferences.cpp:759
+#: ../src/gui/preferences.cpp:908
+#, fuzzy
+msgid "Click here to refresh the device list"
 msgstr "Klicka här för att uppdatera enhetslistan."
 
-#: ../src/gui/preferences.cpp:910
+#: ../src/gui/preferences.cpp:876
 msgid "PAL (Europe)"
 msgstr "PAL (Europa)"
 
-#: ../src/gui/preferences.cpp:911
+#: ../src/gui/preferences.cpp:877
 msgid "NTSC (America)"
 msgstr "NTSC (Amerika)"
 
-#: ../src/gui/preferences.cpp:912
+#: ../src/gui/preferences.cpp:878
 msgid "SECAM (France)"
 msgstr "SECAM (Frankrike)"
 
-#: ../src/gui/preferences.cpp:913
+#: ../src/gui/preferences.cpp:879
 msgid "Auto"
 msgstr "Automatiskt"
 
 #. Video Channel
-#: ../src/gui/preferences.cpp:935
+#: ../src/gui/preferences.cpp:901
 msgid "Channel:"
 msgstr "Kanal:"
 
-#: ../src/gui/preferences.cpp:937
+#: ../src/gui/preferences.cpp:903
 msgid "Size:"
 msgstr "Storlek:"
 
-#: ../src/gui/preferences.cpp:937
+#: ../src/gui/preferences.cpp:903
 msgid "Select the transmitted video size"
 msgstr "Välj storlek för överförd video"
 
-#: ../src/gui/preferences.cpp:939
+#: ../src/gui/preferences.cpp:905
 msgid "Format:"
 msgstr "Format:"
 
-#: ../src/gui/preferences.cpp:966
-#: ../src/gui/preferences.cpp:1005
-#: ../src/gui/preferences.cpp:1392
-#: ../src/gui/preferences.cpp:1403
+#: ../src/gui/preferences.cpp:928
+#: ../src/gui/preferences.cpp:965
+#: ../src/gui/preferences.cpp:1348
+#: ../src/gui/preferences.cpp:1359
 msgid "Codecs"
 msgstr "Kodekar"
 
-#: ../src/gui/preferences.cpp:979
-#: ../src/gui/preferences.cpp:1018
+#: ../src/gui/preferences.cpp:940
+#: ../src/gui/preferences.cpp:977
 msgid "Settings"
 msgstr "Inställningar"
 
 #. Translators: the full sentence is Automatically adjust jitter buffer
 #. between X and Y ms
-#: ../src/gui/preferences.cpp:983
+#: ../src/gui/preferences.cpp:944
 msgid "Enable silence _detection"
 msgstr "Aktivera tystnads_detektering"
 
-#: ../src/gui/preferences.cpp:983
-msgid "If enabled, use silence detection with the codecs supporting it."
-msgstr "Om detta är aktiverat ska tystnadsdetektering användas med de kodekar som har stöd för det."
-
-#: ../src/gui/preferences.cpp:985
+#: ../src/gui/preferences.cpp:946
 msgid "Enable echo can_celation"
 msgstr "Aktivera ekout_släckning"
 
-#: ../src/gui/preferences.cpp:985
-msgid "If enabled, use echo cancelation."
-msgstr "Om detta är aktiverat används ekoutsläckning."
-
-#: ../src/gui/preferences.cpp:987
+#: ../src/gui/preferences.cpp:948
 msgid "Maximum _jitter buffer (in ms):"
 msgstr "Maximal _jitterbuffert (i ms):"
 
-#: ../src/gui/preferences.cpp:987
-msgid "The maximum jitter buffer size for audio reception (in ms)."
-msgstr "Den maximala jitterbuffertstorleken för ljudmottagning (i ms)."
-
 #. Translators: the full sentence is Keep a minimum video quality of X %
-#: ../src/gui/preferences.cpp:1021
+#: ../src/gui/preferences.cpp:980
 msgid "Picture Quality"
 msgstr "Bildkvalitet"
 
-#: ../src/gui/preferences.cpp:1021
-msgid "Choose if you want to guarantee a minimum image quality (possibly leading to dropped frames in order not to surpass the bitrate limit) or if you prefer to keep the frame rate."
+#: ../src/gui/preferences.cpp:980
+#, fuzzy
+msgid "Choose if you want to guarantee a minimum image quality (possibly leading to dropped frames in order not to surpass the bitrate limit) or if you prefer to keep the frame rate"
 msgstr "Välj om du vill garantera minimum bildkvalitet (leder möjligen till förkastade bildrutor för att inte överstiga bitfrekvensgränsen) eller om du föredrar att behålla bildfrekvensen."
 
-#: ../src/gui/preferences.cpp:1023
+#: ../src/gui/preferences.cpp:982
 msgid "Maximum video _bitrate (in kbits/s):"
 msgstr "Maximal bitfrekvens för _video (i kbit/s):"
 
-#: ../src/gui/preferences.cpp:1023
+#: ../src/gui/preferences.cpp:982
 msgid "The maximum video bitrate in kbits/s. The video quality and the effective frame rate will be dynamically adjusted to keep the bitrate at the given value."
 msgstr "Den maximala bitfrekvensen för video i kbit/s. Videokvaliteten och den effektiva bildfrekvensen kommer att justeras dynamiskt för att behålla bitfrekvensen på angivet värde."
 
-#: ../src/gui/preferences.cpp:1335
+#: ../src/gui/preferences.cpp:1291
 msgid "Ekiga Preferences"
 msgstr "Inställningar för Ekiga"
 
-#: ../src/gui/preferences.cpp:1353
+#: ../src/gui/preferences.cpp:1309
 msgid "General"
 msgstr "Allmänt"
 
-#: ../src/gui/preferences.cpp:1354
+#: ../src/gui/preferences.cpp:1310
 msgid "Personal Data"
 msgstr "Personlig data"
 
-#: ../src/gui/preferences.cpp:1359
+#: ../src/gui/preferences.cpp:1315
 msgid "General Settings"
 msgstr "Allmänna inställningar"
 
-#: ../src/gui/preferences.cpp:1368
+#: ../src/gui/preferences.cpp:1324
 msgid "Sound Events"
 msgstr "Ljudhändelser"
 
-#: ../src/gui/preferences.cpp:1372
+#: ../src/gui/preferences.cpp:1328
 msgid "Protocols"
 msgstr "Protokoll"
 
-#: ../src/gui/preferences.cpp:1374
+#: ../src/gui/preferences.cpp:1330
 msgid "SIP Settings"
 msgstr "SIP-inställningar"
 
-#: ../src/gui/preferences.cpp:1379
+#: ../src/gui/preferences.cpp:1335
 msgid "H.323 Settings"
 msgstr "Inställningar för H.323"
 
 #. The player
-#: ../src/gui/preferences.cpp:1385
+#: ../src/gui/preferences.cpp:1341
 msgid "Audio"
 msgstr "Ljud"
 
-#: ../src/gui/preferences.cpp:1388
-#: ../src/gui/preferences.cpp:1399
+#: ../src/gui/preferences.cpp:1344
+#: ../src/gui/preferences.cpp:1355
 msgid "Devices"
 msgstr "Enheter"
 
-#: ../src/gui/preferences.cpp:1397
+#: ../src/gui/preferences.cpp:1353
 msgid "Video"
 msgstr "Video"
 
@@ -3193,6 +3279,34 @@ msgstr "Ta bort anpassade meddelanden:"
 msgid "Define a custom message:"
 msgstr "Definiera ett anpassat meddelande:"
 
+#~ msgid "Change the main window panel section"
+#~ msgstr "Ändra huvudfönsterpanelssektionen"
+#~ msgid "Local video window size"
+#~ msgstr "Storlek på lokalt videofönster"
+#~ msgid "Position of the local video window"
+#~ msgstr "Positionen för fönstret för lokal video"
+#~ msgid "The position of the local video window"
+#~ msgstr "Position för fönstret för lokal video"
+#~ msgid "The size of the local video window"
+#~ msgstr "Storleken på fönstret för lokal video"
+#~ msgid "Could not send message"
+#~ msgstr "Kunde inte skicka meddelande"
+#~ msgid "_Base DN"
+#~ msgstr "_Bas-DN"
+#~ msgid "_Password"
+#~ msgstr "_Lösenord"
+#~ msgid "Identifier"
+#~ msgstr "Identifierare"
+#~ msgid "Writable"
+#~ msgstr "Skrivbar"
+#~ msgid "If enabled, use silence detection with the codecs supporting it."
+#~ msgstr ""
+#~ "Om detta är aktiverat ska tystnadsdetektering användas med de kodekar som "
+#~ "har stöd för det."
+#~ msgid "If enabled, use echo cancelation."
+#~ msgstr "Om detta är aktiverat används ekoutsläckning."
+#~ msgid "The maximum jitter buffer size for audio reception (in ms)."
+#~ msgstr "Den maximala jitterbuffertstorleken för ljudmottagning (i ms)."
 #~ msgid "Position on the screen of the log window"
 #~ msgstr "Position på skärmen för loggfönstret"
 #~ msgid "Call in progress"
@@ -3320,8 +3434,6 @@ msgstr "Definiera ett anpassat meddelande:"
 #~ msgstr "_Värdnamn:"
 #~ msgid "_Port:"
 #~ msgstr "_Port:"
-#~ msgid "_Base DN:"
-#~ msgstr "_Bas-DN:"
 #~ msgid "_Subtree"
 #~ msgstr "_Underträd"
 #~ msgid "Single _Level"
@@ -3443,9 +3555,6 @@ msgstr "Definiera ett anpassat meddelande:"
 #~ msgstr "Antalet bilder som överförs i varje paket för G.711-kodeken"
 #~ msgid "Number of frames transmitted in each packet for the GSM codec"
 #~ msgstr "Antalet bilder som överförs i varje paket för GSM-kodeken"
-#~ msgid "Timeout after which the user is automatically set as away"
-#~ msgstr ""
-#~ "Tidsgräns efter vilken användaren automatiskt ställs in som frånvarande"
 #~ msgid "User directory"
 #~ msgstr "Användarkatalog"
 
