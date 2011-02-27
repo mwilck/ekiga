@@ -3,22 +3,23 @@
 # This file is distributed under the same license as the ekiga package.
 # Yuriy Syrota <yuri@renome.rovno.ua>
 # Maxim Dziumanenko <dziumanenko@gmail.com>, 2004-2010.
-#
 # wanderlust <wanderlust@ukr.net>, 2009.
+# Korostil Daniel <ted.korostiled@gmail.com>, 2011.
 msgid ""
 msgstr ""
 "Project-Id-Version: ekiga\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2011-02-27 12:59+0200\n"
-"PO-Revision-Date: 2010-03-26 17:30+0300\n"
-"Last-Translator: Maxim Dziumanenko <dziumanenko@gmail.com>\n"
-"Language-Team: ukrainian <Ukrainian <uk@li.org>>\n"
-"Language: \n"
+"PO-Revision-Date: 2011-02-27 14:04+0300\n"
+"Last-Translator: Korostil Daniel <ted.korostiled@gmail.com>\n"
+"Language-Team: translation@linux.org.ua\n"
+"Language: uk\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Plural-Forms: nplurals=3; plural=(n%10==1 && n%100!=11 ? 0 : n%10>=2 && n"
-"%10<=4 && (n%100<10 || n%100>=20) ? 1 : 2);\n"
+"Plural-Forms: nplurals=3; plural=(n%10==1 && n%100!=11 ? 0 : n%10>=2 && n%"
+"10<=4 && (n%100<10 || n%100>=20) ? 1 : 2);\n"
+"X-Generator: Virtaal 0.6.1\n"
 
 #. Application name
 #: ../ekiga.desktop.in.in.h:1 ../src/gui/main_window.cpp:4712
@@ -28,16 +29,15 @@ msgstr "Програмний телефон Ekiga"
 
 #: ../ekiga.desktop.in.in.h:2
 msgid "IP Telephony, VoIP and Video Conferencing"
-msgstr "IP-телефонія, VoIP та відеоконференції"
+msgstr "Телефонія IP, VoIP та відеоконференції"
 
 #: ../ekiga.desktop.in.in.h:3
 msgid "Talk to and see people over the Internet"
 msgstr "Живе спілкування через Інтернет"
 
 #: ../ekiga.schemas.in.in.h:1
-#, fuzzy
 msgid "0: 56kbps, 1: ISDN, 2: DSL128, 3: DSL512, 4: LAN, 5: Custom"
-msgstr "0: 56Kbps, 1: ISDN, 2:DSL, 3: LAN, 4: Інше"
+msgstr "0: 56kbps, 1: ISDN, 2: DSL128, 3: DSL512, 4: LAN, 5: Власне"
 
 #: ../ekiga.schemas.in.in.h:2
 msgid ""
@@ -87,15 +87,16 @@ msgid "Calls history"
 msgstr "Історія викликів"
 
 #: ../ekiga.schemas.in.in.h:11
-#, fuzzy
 msgid "Change the panel section of the main window"
-msgstr "Позиція основного вікна"
+msgstr "Змінити розділ панелі головного вікна"
 
 #: ../ekiga.schemas.in.in.h:12
 msgid ""
 "Change the panel section of the main window (0=Contacts, 1=Dialpad, 2=Call "
 "history)"
 msgstr ""
+"Змінити розділ панелі головного вікна (0=Контакти, 1=Набір, 2=Історія "
+"викликів)"
 
 #: ../ekiga.schemas.in.in.h:13
 msgid ""
@@ -156,7 +157,7 @@ msgstr "Увімкнути виявлення мовчання"
 #: ../ekiga.schemas.in.in.h:25 ../src/gui/preferences.cpp:480
 msgid "Enable the automatic network setup resulting from the STUN test"
 msgstr ""
-"Вмикає автоматичне налаштування мережі відповідно до результатів STUN-тесту"
+"Вмикає автоматичне налаштування мережі відповідно до результатів тесту STUN"
 
 #: ../ekiga.schemas.in.in.h:26
 msgid ""
@@ -241,9 +242,8 @@ msgstr ""
 "Використовувати виявлення мовчання для кодеків, що підтримують цю функцію."
 
 #: ../ekiga.schemas.in.in.h:41
-#, fuzzy
 msgid "Kind of network selected in the assistant"
-msgstr "Тип підключення до мережі"
+msgstr "Тип мережі, вибраної в помічнику"
 
 #: ../ekiga.schemas.in.in.h:42
 msgid "LDAP servers"
@@ -366,25 +366,22 @@ msgstr ""
 "Виберіть формат для відеокамер (не застосовується до більшості камер USB)"
 
 #: ../ekiga.schemas.in.in.h:71
-#, fuzzy
 msgid ""
 "Select the mode for sending DTMFs. The values can be 0 (for \"RFC2833\") and "
 "1 (for \"INFO\")"
 msgstr ""
-"Дозволяє встановлення режиму для надсилання DTMF. Можливі значення: лише "
-"\"RFC2833\" (0), \"INFO\" (1)"
+"Виберіть режим для відправлення DTMF. Доступні значення 0 (для «RFC2833») і "
+"1 (для «INFO»)"
 
 #: ../ekiga.schemas.in.in.h:72
-#, fuzzy
 msgid ""
 "Select the mode for sending DTMFs. The values can be 0 (for \"String\"), 1 "
 "(for \"Tone\"), 2 (for \"RFC2833\"), or 3 (for \"Q.931\") (default is "
 "\"String\"). Choosing other values than \"String\" disables the Text Chat."
 msgstr ""
-"Цей параметр дозволяє встановити режим надсилання DTMF. Допустимі значення: "
-"\"Рядок\" (0), \"Тон\" (1), \"RFC2833\" (2), \"Q.931\" (3) (типово \"Рядок"
-"\"). Вибір будь-якого значення, відмінного від \"Рядок\" вмикає текстовий "
-"діалог"
+"Виберіть режим відправлення DTMF. Доступні значення 0 (для «String»), 1 (для "
+"«Tone»), 2 (для «RFC2833») та 3 (для «Q.931»). Типовий (для «String»). "
+"Вибравши відмінне від «String» значення, вимикає текстове переписування."
 
 #: ../ekiga.schemas.in.in.h:73
 msgid ""
@@ -487,6 +484,10 @@ msgid ""
 "value 184 (0xB8) correspond to Expedited Forwarding (EF) PHB as defined in "
 "RFC 3246."
 msgstr ""
+"Біт типу служби (TOS) на пакетах IP вихідного RTP. Цей байт потрібен мережі "
+"для забезпечення деякого рівня якості служби (QoS). Типове значення 184 "
+"(0xB8) відповідає за розширене переспрямування (EF) PHB як визначено в RFC "
+"3246."
 
 #: ../ekiga.schemas.in.in.h:93
 msgid "The accounts list"
@@ -532,13 +533,12 @@ msgid "The default video view"
 msgstr "Початкове відео"
 
 #: ../ekiga.schemas.in.in.h:102
-#, fuzzy
 msgid ""
 "The default video view (0: Local, 1: Remote, 2: Both, 3: Both in a separate "
 "window)"
 msgstr ""
-"Початкове відео (0 — локальне, 1 — віддалене, 2 — обидва з перекриттям, 3 — "
-"обидва з локальним в окремому вікні, 4 — обидва)"
+"Типовий перегляд відео (0: локальне, 1: віддалене, 2: обидва, 3: обидва в "
+"окремому вікні)"
 
 #: ../ekiga.schemas.in.in.h:103
 msgid "The dial tone sound"
@@ -722,7 +722,7 @@ msgid ""
 "can crash some versions of Netmeeting."
 msgstr ""
 "Вмикає режим тунелювання H.245. В цьому режимі повідомлення H.245 "
-"інкапсулюються в канал H.225 (порт 1270). Це дозволяє не створювати ще одне "
+"вбудовано в канал H.225 (порт 1270). Це дозволяє не створювати ще одне "
 "з'єднання TCP на викликах. Тунелювання H.245 було представлено в H.323v2. "
 "Воно не підтримується в Netmeeting, і одночасне використання швидкого старту "
 "і тунелювання H.245 може призвести до збоїв деяких версій Netmeeting"
@@ -741,7 +741,7 @@ msgstr ""
 
 #: ../ekiga.schemas.in.in.h:136
 msgid "Type of Service (TOS) byte on outgoing RTP IP packets"
-msgstr ""
+msgstr "Байт типу служби (TOS) на пакеті IP вихідному RTP"
 
 #: ../ekiga.schemas.in.in.h:137
 msgid "UDP port range"
@@ -847,7 +847,7 @@ msgid ""
 "Please fill in this form to change an existing element of ekiga's internal "
 "roster"
 msgstr ""
-"Заповніть цю форму для зміни існуючого елементу локального списку ekiga"
+"Заповніть цю форму для зміни наявного елементу локального списку ekiga"
 
 #: ../lib/engine/components/local-roster/local-presentity.cpp:250
 #: ../lib/engine/components/local-roster/local-heap.cpp:235
@@ -873,9 +873,8 @@ msgid "Address:"
 msgstr "Адреса:"
 
 #: ../lib/engine/components/local-roster/local-presentity.cpp:252
-#, fuzzy
 msgid "Is a preferred contact"
-msgstr "Є уподобаним контактом"
+msgstr "Є бажаним контактом"
 
 #: ../lib/engine/components/local-roster/local-presentity.cpp:254
 #: ../plugins/loudmouth/loudmouth-presentity.cpp:280
@@ -958,16 +957,13 @@ msgid ""
 msgstr "Заповніть форму та додайте новий контакт до локального списку"
 
 #: ../lib/engine/components/local-roster/local-heap.cpp:235
-#, fuzzy
 msgid "Name of the contact, as shown in your roster"
-msgstr ""
-"Якщо увімкнено, у списку контактів будуть показані контакти які зараз не в "
-"мережі"
+msgstr "Ім'я, яке показано в контактах"
 
 #: ../lib/engine/components/local-roster/local-heap.cpp:244
 #: ../lib/engine/components/local-roster/local-heap.cpp:246
 msgid "Address, e.g. sip:xyz@ekiga.net"
-msgstr ""
+msgstr "Адреса, наприклад, sip:xyz@ekiga.net"
 
 #: ../lib/engine/components/local-roster/local-heap.cpp:250
 msgid "Put contact in groups:"
@@ -1026,12 +1022,12 @@ msgstr "Не вдається"
 #. * "registered (with 2 voice mail messages)"
 #.
 #: ../lib/engine/components/opal/opal-account.cpp:218
-#, fuzzy, c-format
+#, c-format
 msgid "%s (with %d voice mail message)"
 msgid_plural "%s (with %d voice mail messages)"
-msgstr[0] "%s (з %d голосове повідомлення)"
-msgstr[1] "%s (з %d голосових повідомлення)"
-msgstr[2] "%s (з %d голосових повідомлень)"
+msgstr[0] "%s (з %d голосовим повідомленням)"
+msgstr[1] "%s (з %d голосовими повідомленнями)"
+msgstr[2] "%s (з %d голосовими повідомленнями)"
 
 #: ../lib/engine/components/opal/opal-account.cpp:365
 #: ../plugins/loudmouth/loudmouth-account.cpp:381
@@ -1077,7 +1073,7 @@ msgstr "Заповніть наступні поля:"
 #: ../lib/engine/components/opal/opal-bank.cpp:125
 #: ../lib/engine/components/opal/opal-bank.cpp:135
 msgid "Account name, e.g. MyAccount"
-msgstr ""
+msgstr "Обліковий запис, наприклад, Василь"
 
 #: ../lib/engine/components/opal/opal-account.cpp:420
 msgid "Registrar:"
@@ -1086,7 +1082,7 @@ msgstr "Сервер:"
 #: ../lib/engine/components/opal/opal-account.cpp:420
 #: ../lib/engine/components/opal/opal-bank.cpp:136
 msgid "The registrar, e.g. ekiga.net"
-msgstr ""
+msgstr "Сервер, наприклад, ekiga.net"
 
 #: ../lib/engine/components/opal/opal-account.cpp:422
 msgid "Gatekeeper:"
@@ -1095,7 +1091,7 @@ msgstr "Вузол gatekeeper:"
 #: ../lib/engine/components/opal/opal-account.cpp:422
 #: ../lib/engine/components/opal/opal-bank.cpp:126
 msgid "The gatekeeper, e.g. ekiga.net"
-msgstr ""
+msgstr "Вузол gatekeeper, наприклад, ekiga.net"
 
 #: ../lib/engine/components/opal/opal-account.cpp:423
 #: ../plugins/loudmouth/loudmouth-account.cpp:300
@@ -1110,7 +1106,7 @@ msgstr "Користувач:"
 #: ../lib/engine/components/opal/opal-bank.cpp:127
 #: ../lib/engine/components/opal/opal-bank.cpp:137
 msgid "The user name, e.g. jim"
-msgstr ""
+msgstr "Користувач, наприклад, jim"
 
 #. Translators:
 #. * SIP knows two usernames: The name for the client ("User") and the name
@@ -1124,7 +1120,7 @@ msgstr "Користувач:"
 msgid ""
 "The user name used during authentication, if different than the user name; "
 "leave empty if you do not have one"
-msgstr ""
+msgstr "Користувача протягом авторизації; залишіть порожнім, якщо нема такого"
 
 #: ../lib/engine/components/opal/opal-account.cpp:429
 #: ../plugins/loudmouth/loudmouth-account.cpp:312
@@ -1139,7 +1135,7 @@ msgstr "Пароль:"
 #: ../lib/engine/components/opal/opal-bank.cpp:129
 #: ../lib/engine/components/opal/opal-bank.cpp:139
 msgid "Password associated to the user"
-msgstr ""
+msgstr "Пароль пов'язаний з користувачем"
 
 #: ../lib/engine/components/opal/opal-account.cpp:430
 msgid "Timeout:"
@@ -1150,7 +1146,7 @@ msgstr "Затримка:"
 #: ../lib/engine/components/opal/opal-bank.cpp:140
 msgid ""
 "Time in seconds after which the account registration is automatically retried"
-msgstr ""
+msgstr "Час у секундах повторного запиту на реєстрацію облікового запису"
 
 #: ../lib/engine/components/opal/opal-account.cpp:431
 #: ../lib/engine/components/opal/opal-bank.cpp:143
@@ -1176,9 +1172,8 @@ msgstr "Не вказано ім'я користувача у цьому обл�
 
 #: ../lib/engine/components/opal/opal-account.cpp:463
 #: ../lib/engine/components/opal/opal-bank.cpp:183
-#, fuzzy
 msgid "The timeout should be at least 10 seconds."
-msgstr "Значення затримки надто мале."
+msgstr "Час очікування повинен мати щонайменше 10 секунд."
 
 #: ../lib/engine/components/opal/opal-account.cpp:546
 msgid "Registered"
@@ -1245,7 +1240,7 @@ msgstr "_Ідентифікатор:"
 
 #: ../lib/engine/components/opal/opal-bank.cpp:120
 msgid "_PIN Code:"
-msgstr "_PIN-код:"
+msgstr "_Код PIN:"
 
 #: ../lib/engine/components/opal/opal-bank.cpp:125
 #: ../lib/engine/components/opal/opal-bank.cpp:135
@@ -1833,27 +1828,24 @@ msgid "Please edit the following fields"
 msgstr "Відредагуйте наступні поля"
 
 #: ../plugins/ldap/ldap-book.cpp:944
-#, fuzzy
 msgid "Book _Name:"
-msgstr "_Назва книги"
+msgstr "_Назва книги:"
 
 #: ../plugins/ldap/ldap-book.cpp:944
 msgid "Book name, as shown in your dialog box"
-msgstr ""
+msgstr "Назва книги, яку буде показано у вашому вікні "
 
 #: ../plugins/ldap/ldap-book.cpp:945
-#, fuzzy
 msgid "Server _URI:"
-msgstr "_URI сервера"
+msgstr "URI _сервера:"
 
 #: ../plugins/ldap/ldap-book.cpp:945
 msgid "Name of LDAP server, prefixed by ldap://"
-msgstr ""
+msgstr "Назва сервера LDAP, з префіксом ldap://"
 
 #: ../plugins/ldap/ldap-book.cpp:946
-#, fuzzy
 msgid "_Base DN:"
-msgstr "_Базова DN:"
+msgstr "_Основна DN:"
 
 #: ../plugins/ldap/ldap-book.cpp:952
 msgid "Subtree"
@@ -1874,27 +1866,24 @@ msgstr "Область по_шуку:"
 #. * most LDAP servers it's "CommonName".
 #.
 #: ../plugins/ldap/ldap-book.cpp:969
-#, fuzzy
 msgid "_DisplayName Attribute:"
-msgstr "Атрибут _ВизначногоІмені (DN)"
+msgstr "_Атрибут DisplayName:"
 
 #: ../plugins/ldap/ldap-book.cpp:970
-#, fuzzy
 msgid "Call _Attributes:"
-msgstr "_Атрибут виклику"
+msgstr "А_трибути виклику:"
 
 #: ../plugins/ldap/ldap-book.cpp:970
 msgid "The field you are searching for"
-msgstr ""
+msgstr "Поле для пошуку"
 
 #: ../plugins/ldap/ldap-book.cpp:972 ../plugins/ldap/ldap-book.cpp:974
-#, fuzzy
 msgid "_Filter Template:"
-msgstr "Шаблон _фільтру"
+msgstr "Шаблон _фільтру:"
 
 #: ../plugins/ldap/ldap-book.cpp:972 ../plugins/ldap/ldap-book.cpp:974
 msgid "Here, a \"$\" is replaced by the search string"
-msgstr ""
+msgstr "Тут, «$» заміняється рядком пошуку"
 
 #. Translators: Bind ID - In LDAP, the operation that begins an LDAP
 #. * session and authenticates the user to the directory is called a
@@ -1906,17 +1895,18 @@ msgstr ""
 #. * is anonymous / unauthenticated.)
 #.
 #: ../plugins/ldap/ldap-book.cpp:985
-#, fuzzy
 msgid "Bind _ID:"
-msgstr "_Ідентифікатор прив'язки"
+msgstr "_Ідентифікатор прив'язки:"
 
 #: ../plugins/ldap/ldap-book.cpp:985
 msgid "User ID; leave blank for anonymous / nonauthenticated"
 msgstr ""
+"Ідентифікатор користувача; залишіть порожнім для анонімності / "
+"безавторизації"
 
 #: ../plugins/ldap/ldap-book.cpp:986
 msgid "The password for the user ID above, if any"
-msgstr ""
+msgstr "Пароль для ідентифікатора користувача зверху, якщо такі є"
 
 #: ../plugins/ldap/ldap-book.cpp:987
 msgid "Use TLS"
@@ -1944,7 +1934,7 @@ msgstr "Вкажіть URI сервера\n"
 
 #: ../plugins/ldap/ldap-book.cpp:1040
 msgid "Please provide a DisplayName Attribute\n"
-msgstr "Вкажіть атрибут ВизначногоІмені (DN)\n"
+msgstr "Вкажіть атрибут DisplayName (DN)\n"
 
 #: ../plugins/ldap/ldap-book.cpp:1043
 msgid "Please provide a Call Attribute\n"
@@ -2025,9 +2015,8 @@ msgid "_Add a jabber/XMPP account"
 msgstr "_Додати рахунок jabber/XMPP"
 
 #: ../plugins/loudmouth/loudmouth-bank.cpp:123
-#, fuzzy
 msgid "Please fill in the following fields:"
-msgstr "Відредагуйте наступні поля"
+msgstr "Будь ласка, заповніть такі поля:"
 
 #: ../plugins/loudmouth/loudmouth-heap.cpp:210
 msgid "Authorization to see your presence"
@@ -2107,7 +2096,7 @@ msgstr "Продовжити бесіду"
 #: ../plugins/loudmouth/loudmouth-presentity.cpp:276
 msgid ""
 "Please fill in this form to change an existing element of the remote roster"
-msgstr "Заповніть цю форму для зміни існуючого елементу віддаленого списку"
+msgstr "Заповніть цю форму для зміни наявного елементу віддаленого списку"
 
 #: ../plugins/resource-list/rl-cluster.cpp:102
 msgid "New resource list"
@@ -2164,25 +2153,21 @@ msgid "Please edit the following fields (no identifier means global)"
 msgstr "Будь-ласка, відредагуйте наступні поля"
 
 #: ../plugins/resource-list/rl-heap.cpp:467
-#, fuzzy
 msgid "Contact list's name:"
-msgstr "Назва списку контактів"
+msgstr "Назва списку контактів:"
 
 #. "Document" used as a name -- uri point to the root of a document tree
 #: ../plugins/resource-list/rl-heap.cpp:469
-#, fuzzy
 msgid "Document root:"
-msgstr "Корінь адресної книги"
+msgstr "Корінь документа:"
 
 #: ../plugins/resource-list/rl-heap.cpp:472
-#, fuzzy
 msgid "Server username:"
-msgstr "Користувач на сервері"
+msgstr "Користувач на сервері:"
 
 #: ../plugins/resource-list/rl-heap.cpp:473
-#, fuzzy
 msgid "Server password:"
-msgstr "Пароль на сервері"
+msgstr "Пароль на сервері:"
 
 #: ../plugins/resource-list/rl-heap.cpp:512
 msgid "Add a remote contact"
@@ -2212,7 +2197,7 @@ msgstr "Редагування віддаленого контакту"
 #: ../plugins/resource-list/rl-presentity.cpp:231
 msgid ""
 "Please fill in this form to change an existing contact on a remote server"
-msgstr "Заповніть цю форму для зміни існуючого контакту на віддаленому сервері"
+msgstr "Заповніть цю форму для зміни наявного контакту на віддаленому сервері"
 
 #: ../src/gui/accounts.cpp:565
 msgid "Account Name"
@@ -2307,7 +2292,7 @@ msgid ""
 "You may skip this step if you use an alternative SIP service, or if you "
 "would prefer to specify the login details later."
 msgstr ""
-"Ім'я користувача та пароль, що використовуються для підключення до існуючого "
+"Користувач та пароль, що використовуються для під'єднання до наявного "
 "облікового запису на безкоштовній службі SIP ekiga.net. Якщо у вас ще немає "
 "облікового рахунку ekiga.net, ви можете отримати його за вказаним нижче "
 "посиланням. Вам буде надано адресу SIP, яка дасть можливість іншим людям "
@@ -2330,10 +2315,9 @@ msgstr "Введіть свій номер рахунку:"
 
 #: ../src/gui/assistant.cpp:695
 msgid "Please enter your PIN code:"
-msgstr "Введіть свій PIN-код:"
+msgstr "Введіть свій код PIN:"
 
 #: ../src/gui/assistant.cpp:706
-#, fuzzy
 msgid ""
 "You can make calls to regular phones and cell numbers worldwide using Ekiga. "
 "To enable this, you need to do two things:\n"
@@ -2343,14 +2327,11 @@ msgid ""
 "dialog.\n"
 msgstr ""
 "Ви можете здійснювати дзвінки на стаціонарні та мобільні телефони по цілому "
-"світу за допомогою Ekiga.\n"
-"\n"
-"Щоб активувати цю послугу потрібні дві речі:\n"
-"- Створити обліковий запис, використовуючи наведене нижче посилання.\n"
-"- Ввести номер облікового запису та PIN-код.\n"
-"\n"
-"Переконайтесь, що ви використовуєте наведене нижче посилання для отримання "
-"облікового запису, у іншому випадку послуга не буде працювати.\n"
+"світу за допомогою Ekiga. Щоб увімкнути цю послугу потрібні дві речі:\n"
+"— Спочатку купити обліковий запис за URL вище.\n"
+"— Ввести ідентифікатор облікового запису та код PIN.\n"
+"Послуга працюватиме лише, якщо ваш обліковий запис створено за допомогою URL "
+"з цього вікна.\n"
 
 #: ../src/gui/assistant.cpp:765
 msgid "I do not want to sign up for the Ekiga Call Out service"
@@ -2535,9 +2516,9 @@ msgid ""
 msgstr ""
 "Програма поширюється зі сподіванням, що буде корисною, але БЕЗ ЖОДНИХ "
 "ГАРАНТІЙ; не гарантується навіть ПРИДАТНІСТЬ та ВІДПОВІДНІСТЬ БУДЬ-"
-"ЯКИМВИМОГАМ. Для отримання додаткової інформації ознайомтесь з GNU General "
+"ЯКИМ ВИМОГАМ. Для отримання додаткової інформації ознайомтесь з GNU General "
 "Public License. Ви мали б отримати з програмою копію GNU General Public "
-"License. Якщоцього не сталося, напишіть до Free Software Foundation, Inc., "
+"License. Якщо цього не сталося, напишіть до Free Software Foundation, Inc., "
 "51 Franklin St, Fifth Floor, Boston, MA 02111-1307, USA."
 
 #: ../src/gui/callbacks.cpp:115
@@ -2562,6 +2543,7 @@ msgid "translator-credits"
 msgstr ""
 "Юрій Сирота <yuriy@beer.com>\n"
 "Максим Дзюманенко <dziumanenko@gmail.com>"
+"Daniel Korostil <ted.korostiled@gmail.com>"
 
 #: ../src/gui/callbacks.cpp:132
 msgid ""
@@ -2569,8 +2551,8 @@ msgid ""
 "Videoconferencing application that allows you to make audio and video calls "
 "to remote users with SIP and H.323 hardware or software."
 msgstr ""
-"Ekiga - повноцінна SIP та H.323-сумісна програма для відеоконференцій, VoIP "
-"та IP-телефонії, що дозволяє з'єднуватись з іншими користувачами, які "
+"Ekiga - повноцінна SIP та сумісна з H.323 програма для відеоконференцій, VoIP "
+"та телефонії IP, що дозволяє з'єднуватись з іншими користувачами, які "
 "використовують програмне чи апаратне забезпечення SIP чи H.323."
 
 #: ../src/gui/callbacks.cpp:205
@@ -2579,17 +2561,15 @@ msgstr "Не можу відкрити файл довідки."
 
 #: ../src/gui/main_window.cpp:731
 msgid "Presence"
-msgstr ""
+msgstr "Присутній"
 
 #: ../src/gui/main_window.cpp:738
-#, fuzzy
 msgid "Addressbook"
 msgstr "Адресна книга"
 
 #: ../src/gui/main_window.cpp:802
-#, fuzzy
 msgid "Unknown"
-msgstr "Невідома помилка."
+msgstr "Невідомо"
 
 #: ../src/gui/main_window.cpp:953
 #, c-format
@@ -2667,7 +2647,7 @@ msgstr "Не вдається отримати доступ до пристро�
 
 #: ../src/gui/main_window.cpp:1488
 msgid "A moving logo will be transmitted during calls."
-msgstr "Під час дзвінків буде відображатися логотип."
+msgstr "Під час дзвінків буде показано логотип."
 
 #: ../src/gui/main_window.cpp:1492
 msgid ""
@@ -2722,7 +2702,7 @@ msgstr "Додано пристрій вводу звуку %s"
 #: ../src/gui/main_window.cpp:1585
 #, c-format
 msgid "Removed audio input device %s"
-msgstr "Видалено пристрій вводу звуку %s"
+msgstr "Вилучено пристрій вводу звуку %s"
 
 #: ../src/gui/main_window.cpp:1602
 #, c-format
@@ -2766,7 +2746,7 @@ msgstr "Додано пристрій виводу звуку %s"
 #: ../src/gui/main_window.cpp:1702
 #, c-format
 msgid "Removed audio output device %s"
-msgstr "Видалено пристрій виводу звуку %s"
+msgstr "Вилучено пристрій виводу звуку %s"
 
 #: ../src/gui/main_window.cpp:1723
 #, c-format
@@ -2903,9 +2883,8 @@ msgid "Detected new audio output device:"
 msgstr "Виберіть пристрій виводу звуку:"
 
 #: ../src/gui/main_window.cpp:3389
-#, fuzzy
 msgid "Detected new ringer device:"
-msgstr "Виберіть пристрій вводу звуку:"
+msgstr "Виявлено новий пристрій для дзвінків:"
 
 #: ../src/gui/main_window.cpp:3393
 msgid "Detected new video input device:"
@@ -2982,11 +2961,11 @@ msgstr "Призупинити чи продовжити передавання 
 #. FIXME: that isn't a very good way to do things
 #: ../src/gui/main_window.cpp:3537
 msgid "Other"
-msgstr ""
+msgstr "Інші"
 
 #: ../src/gui/main_window.cpp:3538
 msgid "Other possible actions"
-msgstr ""
+msgstr "Інші можливі дії"
 
 #: ../src/gui/main_window.cpp:3544
 msgid "Close the Ekiga window"
@@ -3196,11 +3175,11 @@ msgstr "Показувати користувачів, які поза в мер
 
 #: ../src/gui/preferences.cpp:472
 msgid "Video Display"
-msgstr "Відображення відео"
+msgstr "Показ відео"
 
 #: ../src/gui/preferences.cpp:474
 msgid "Place windows displaying video _above other windows"
-msgstr "Розміщати вікна, що відображують відео, _над іншими вікнами"
+msgstr "Розміщати вікна, що показують відео, _над іншими вікнами"
 
 #: ../src/gui/preferences.cpp:478
 msgid "Network Settings"
@@ -3351,9 +3330,8 @@ msgid "_Send DTMF as:"
 msgstr "_Надсилати DTMF у форматі:"
 
 #: ../src/gui/preferences.cpp:681 ../src/gui/preferences.cpp:718
-#, fuzzy
 msgid "Select the mode for DTMFs sending"
-msgstr "Дозволяє встановити тип DTMF сигналів."
+msgstr "Вибрати режим для відправлення DTMF"
 
 #: ../src/gui/preferences.cpp:697
 msgid "INFO"
@@ -3385,9 +3363,8 @@ msgid "_Detect devices"
 msgstr "_Пошук пристроїв"
 
 #: ../src/gui/preferences.cpp:759 ../src/gui/preferences.cpp:908
-#, fuzzy
 msgid "Click here to refresh the device list"
-msgstr "Натисніть, щоб оновити перелік пристроїв."
+msgstr "Натисніть, щоб оновити перелік пристроїв"
 
 #: ../src/gui/preferences.cpp:876
 msgid "PAL (Europe)"
@@ -3451,7 +3428,6 @@ msgid "Picture Quality"
 msgstr "Якість зображення"
 
 #: ../src/gui/preferences.cpp:980
-#, fuzzy
 msgid ""
 "Choose if you want to guarantee a minimum image quality (possibly leading to "
 "dropped frames in order not to surpass the bitrate limit) or if you prefer "
@@ -3459,7 +3435,7 @@ msgid ""
 msgstr ""
 "Виберіть, чи потрібно гарантувати мінімальну якість зображення (що, можливо, "
 "призведе до втрат пакетів через обмеження каналу) чи зберігати частоту "
-"кадрів."
+"кадрів"
 
 #: ../src/gui/preferences.cpp:982
 msgid "Maximum video _bitrate (in kbits/s):"
@@ -3546,7 +3522,7 @@ msgstr "Не турбувати"
 
 #: ../src/gui/statusmenu.cpp:387
 msgid "Custom message..."
-msgstr "Інше..."
+msgstr "Інше…"
 
 #: ../src/gui/statusmenu.cpp:430
 msgid "Clear"
@@ -3559,7 +3535,7 @@ msgstr "Стан"
 
 #: ../src/gui/statusmenu.cpp:537
 msgid "Delete custom messages:"
-msgstr "Видаліть стан:"
+msgstr "Вилучіть стан"
 
 #: ../src/gui/statusmenu.cpp:692
 msgid "Define a custom message:"
