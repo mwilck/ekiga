@@ -51,18 +51,18 @@ AudioOutputCoreConfBridge::AudioOutputCoreConfBridge (Ekiga::Service & _service)
   Ekiga::ConfKeys keys;
   property_changed.connect (boost::bind (&AudioOutputCoreConfBridge::on_property_changed, this, _1, _2));
 
-  keys.push_back (AUDIO_DEVICES_KEY "output_device"); 
-  keys.push_back (SOUND_EVENTS_KEY "output_device"); 
-  keys.push_back (SOUND_EVENTS_KEY "busy_tone_sound"); 
-  keys.push_back (SOUND_EVENTS_KEY "incoming_call_sound"); 
-  keys.push_back (SOUND_EVENTS_KEY "new_message_sound"); 
-  keys.push_back (SOUND_EVENTS_KEY "new_voicemail_sound"); 
-  keys.push_back (SOUND_EVENTS_KEY "ring_tone_sound"); 
-  keys.push_back (SOUND_EVENTS_KEY "enable_busy_tone_sound"); 
-  keys.push_back (SOUND_EVENTS_KEY "enable_incoming_call_sound"); 
-  keys.push_back (SOUND_EVENTS_KEY "enable_new_message_sound"); 
-  keys.push_back (SOUND_EVENTS_KEY "enable_new_voicemail_sound"); 
-  keys.push_back (SOUND_EVENTS_KEY "enable_ring_tone_sound"); 
+  keys.push_back (AUDIO_DEVICES_KEY "output_device");
+  keys.push_back (SOUND_EVENTS_KEY "output_device");
+  keys.push_back (SOUND_EVENTS_KEY "busy_tone_sound");
+  keys.push_back (SOUND_EVENTS_KEY "incoming_call_sound");
+  keys.push_back (SOUND_EVENTS_KEY "new_message_sound");
+  keys.push_back (SOUND_EVENTS_KEY "new_voicemail_sound");
+  keys.push_back (SOUND_EVENTS_KEY "ring_tone_sound");
+  keys.push_back (SOUND_EVENTS_KEY "enable_busy_tone_sound");
+  keys.push_back (SOUND_EVENTS_KEY "enable_incoming_call_sound");
+  keys.push_back (SOUND_EVENTS_KEY "enable_new_message_sound");
+  keys.push_back (SOUND_EVENTS_KEY "enable_new_voicemail_sound");
+  keys.push_back (SOUND_EVENTS_KEY "enable_ring_tone_sound");
 
   load (keys);
 }
@@ -93,8 +93,15 @@ void AudioOutputCoreConfBridge::on_property_changed (std::string key, GmConfEntr
     AudioOutputDevice device;
     if (found)
       device.SetFromString (value);
-    else
-      device.SetFromString (devices.begin ()->GetString ());
+    else {
+      if (!devices.empty())
+        device.SetFromString (devices.begin ()->GetString ());
+      else {
+        // if there is no audio device / ptlib plugin, use fallback device below
+        g_warning ("Error: no audio device found!");
+        device.type == "";
+      }
+    }
     g_free (value);
 
     if ( (device.type   == "" )   ||
