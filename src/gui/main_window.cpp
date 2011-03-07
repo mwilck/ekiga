@@ -101,6 +101,9 @@
 
 #include <algorithm>
 
+// this is a bad way to do things,but still
+#undef CORE_ACTIONS_MENU
+
 enum CallingState {Standby, Calling, Connected, Called};
 
 enum DeviceType {AudioInput, AudioOutput, Ringer, VideoInput};
@@ -722,6 +725,11 @@ static
 void on_some_core_updated (EkigaMainWindow* self)
 {
   GtkWidget* menu = gtk_menu_get_widget (self->priv->main_menu, "core-actions");
+
+  // this can happen if the menu is compiled out
+  if (menu == NULL)
+    return;
+
   MenuBuilderGtk builder;
   Ekiga::TemporaryMenuBuilder tmp_builder;
 
@@ -3533,6 +3541,7 @@ ekiga_main_window_init_menu (EkigaMainWindow *mw)
 
       GTK_MENU_SEPARATOR,
 
+#ifdef CORE_ACTIONS_MENU
       // FIXME: that isn't a very good way to do things
       GTK_MENU_ENTRY ("core-actions", _("Other"),
 		      _("Other possible actions"),
@@ -3540,6 +3549,7 @@ ekiga_main_window_init_menu (EkigaMainWindow *mw)
 		      NULL, NULL, FALSE),
 
       GTK_MENU_SEPARATOR,
+#endif
 
       GTK_MENU_ENTRY("close", NULL, _("Close the Ekiga window"),
 		     GTK_STOCK_CLOSE, 'W', 
