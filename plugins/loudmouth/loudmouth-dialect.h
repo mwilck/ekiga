@@ -62,6 +62,8 @@ namespace LM
   private:
 
     Ekiga::ServiceCore& core;
+
+    void group_chat_action ();
   };
 
   typedef boost::shared_ptr<Dialect> DialectPtr;

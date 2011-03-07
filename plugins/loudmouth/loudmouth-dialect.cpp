@@ -33,6 +33,8 @@
  *
  */
 
+#include <glib/gi18n.h>
+
 #include "loudmouth-dialect.h"
 
 LM::Dialect::Dialect (Ekiga::ServiceCore& core_):
@@ -111,7 +113,16 @@ LM::Dialect::open_chat (PresentityPtr presentity)
 }
 
 bool
-LM::Dialect::populate_menu (Ekiga::MenuBuilder& /*builder*/)
+LM::Dialect::populate_menu (Ekiga::MenuBuilder& builder)
 {
-  return false;
+  builder.add_action ("group_chat", _("Join a discussion group"),
+		      boost::bind (&LM::Dialect::group_chat_action, this));
+
+  return true;
+}
+
+void
+LM::Dialect::group_chat_action ()
+{
+  //std::cout << __PRETTY_FUNCTION__ << std::endl;
 }
