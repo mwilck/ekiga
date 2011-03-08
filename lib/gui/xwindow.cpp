@@ -130,7 +130,7 @@ XWindow::XWindow()
 #ifdef HAVE_SHM
   _XShmInfo.shmaddr = NULL;
 #endif
- _scalingAlgorithm = NULL;
+ _scalingAlgorithm = PIXOPS_INTERP_NEAREST;
 }
 
 
