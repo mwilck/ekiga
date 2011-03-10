@@ -231,19 +231,13 @@ Avahi::Heap::BrowserCallback (AvahiServiceBrowser *browser,
 #if DEBUG
     std::cout << __PRETTY_FUNCTION__ << " AVAHI_BROWSER_REMOVE" << std::endl;
 #endif
-    {
-      bool found = false;
-      for (iterator iter = begin ();
-	   !found && iter != end ();
-	   ++iter) {
-
-	if ((*iter)->get_name () == name) {
-
-	  found = true;
-	  (*iter)->removed ();
-	}
+    for (iterator iter = begin ();
+         iter != end ();
+         ++iter)
+      if ((*iter)->get_name () == name) {
+        (*iter)->removed ();
+        break;
       }
-    }
     break;
   case AVAHI_BROWSER_CACHE_EXHAUSTED:
     // FIXME: do I care?
