@@ -10,9 +10,9 @@ msgid ""
 msgstr ""
 "Project-Id-Version: ekiga\n"
 "Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?product=ekiga&keywords=I18N+L10N&component=general\n"
-"POT-Creation-Date: 2011-03-11 11:52+0000\n"
-"PO-Revision-Date: 2011-03-11 20:38+0100\n"
-"Last-Translator: Matej Urbančič <mateju@svn.gnome.org>\n"
+"POT-Creation-Date: 2011-03-15 02:36+0000\n"
+"PO-Revision-Date: 2011-03-15 09:53+0100\n"
+"Last-Translator: Andrej Žnidaršič <andrej.znidarsic@gmail.com>\n"
 "Language-Team: Slovenščina <gnome-si@googlegroups.com>\n"
 "Language: \n"
 "MIME-Version: 1.0\n"
@@ -80,13 +80,12 @@ msgid "Calls history"
 msgstr "Zgodovina klicev"
 
 #: ../ekiga.schemas.in.in.h:11
-#, fuzzy
 msgid "Change the panel section of the main window"
-msgstr "Spremeni pult glavnega okna"
+msgstr "Spremeni odsek pladnja glavnega okna"
 
 #: ../ekiga.schemas.in.in.h:12
 msgid "Change the panel section of the main window (0=Contacts, 1=Dialpad, 2=Call history)"
-msgstr ""
+msgstr "Spremeni odsek pladnja glavnega okna (0=stiki, 1=številčnica, 2=zgodovina klicev)"
 
 #: ../ekiga.schemas.in.in.h:13
 msgid "Connection will be established in Fast Start mode. Fast Start is a new way to start calls faster that was introduced in H.323v2. It is not supported by Netmeeting and using both Fast Start and H.245 Tunneling can crash some versions of Netmeeting"
@@ -337,14 +336,12 @@ msgid "Select the format for video cameras (does not apply to most USB cameras)"
 msgstr "Izberite zapis video kamer (ne vpliva na večino kamer USB)"
 
 #: ../ekiga.schemas.in.in.h:71
-#, fuzzy
 msgid "Select the mode for sending DTMFs. The values can be 0 (for \"RFC2833\") and 1 (for \"INFO\")"
-msgstr "Omogoča nastavitev načina za pošiljanje DTMF-jev. Vrednosti so lahko \"RFC2833\" (0), \"INFO\" (1)"
+msgstr "Izberite način za pošiljanje DTMF-jev. Vrednosti so lahko 0 (za \"RFC2833\"), 1 (za \"INFO\")"
 
 #: ../ekiga.schemas.in.in.h:72
-#, fuzzy
 msgid "Select the mode for sending DTMFs. The values can be 0 (for \"String\"), 1 (for \"Tone\"), 2 (for \"RFC2833\"), or 3 (for \"Q.931\") (default is \"String\"). Choosing other values than \"String\" disables the Text Chat."
-msgstr "Omogoča nastavitev načina za pošiljanje DTMF-jev. Vrednosti so lahko le \"Niz\" (0), \"Ton\" (1), \"RFC2833\" (2), \"Q.931\" (3) (privzeto je \"Niz\"). Če izberete drugo vrednost kot \"Niz\", onemogočite besedilni klepet"
+msgstr "Izberite način za pošiljanje DTMF-jev. Vrednosti so lahko 0 (za  \"Niz\"), 1 (za \"Ton\"), 2 za (\"RFC2833\"), 3 (za \"Q.931\") (privzeto je \"Niz\"). Če izberete drugo vrednost kot \"Niz\", s tem onemogočite besedilni klepet."
 
 #: ../ekiga.schemas.in.in.h:73
 msgid "Select the transmitted video size: Small (QCIF 176x144) or Large (CIF 352x288)"
@@ -466,9 +463,8 @@ msgid "The default video view"
 msgstr "Privzet pogled videa"
 
 #: ../ekiga.schemas.in.in.h:102
-#, fuzzy
 msgid "The default video view (0: Local, 1: Remote, 2: Both, 3: Both in a separate window)"
-msgstr "Privzet pogled videa (0: krajevno, 1: oddaljeno, 2: oba skupaj, 3: oba v ločenih oknih, 4: oba)"
+msgstr "Privzet pogled videa (0: krajevno, 1: oddaljeno, 2: oba, 3: oba v ločenih oknih)"
 
 #: ../ekiga.schemas.in.in.h:103
 msgid "The dial tone sound"
@@ -977,7 +973,7 @@ msgstr "Overitev uporabnika:"
 #: ../lib/engine/components/opal/opal-account.cpp:428
 #: ../lib/engine/components/opal/opal-bank.cpp:138
 msgid "The user name used during authentication, if different than the user name; leave empty if you do not have one"
-msgstr ""
+msgstr "Uporabniško ime, ki se uporablja med overitvijo, če je drugačno kot uporabniško ime. Pustite prazno, če ga nimate"
 
 #: ../lib/engine/components/opal/opal-account.cpp:429
 #: ../plugins/loudmouth/loudmouth-account.cpp:312
@@ -1002,7 +998,7 @@ msgstr "Zakasnitev:"
 #: ../lib/engine/components/opal/opal-bank.cpp:130
 #: ../lib/engine/components/opal/opal-bank.cpp:140
 msgid "Time in seconds after which the account registration is automatically retried"
-msgstr ""
+msgstr "Čas v sekundah po katerem se vpis računa samodejno znova preizkusi"
 
 #: ../lib/engine/components/opal/opal-account.cpp:431
 #: ../lib/engine/components/opal/opal-bank.cpp:143
@@ -1688,7 +1684,7 @@ msgstr "Ime _knjige:"
 
 #: ../plugins/ldap/ldap-book.cpp:944
 msgid "Book name, as shown in your dialog box"
-msgstr ""
+msgstr "Ime knjige kot je prikazano v vašem pogovornem polju"
 
 #: ../plugins/ldap/ldap-book.cpp:945
 msgid "Server _URI:"
@@ -1730,7 +1726,7 @@ msgstr "Atributi k_lica:"
 
 #: ../plugins/ldap/ldap-book.cpp:970
 msgid "The field you are searching for"
-msgstr ""
+msgstr "Polje, ki ga iščete"
 
 #: ../plugins/ldap/ldap-book.cpp:972
 #: ../plugins/ldap/ldap-book.cpp:974
@@ -1740,7 +1736,7 @@ msgstr "Predloga _filtra:"
 #: ../plugins/ldap/ldap-book.cpp:972
 #: ../plugins/ldap/ldap-book.cpp:974
 msgid "Here, a \"$\" is replaced by the search string"
-msgstr ""
+msgstr "Tukaj je \"$\" zamenjan z iskalnim nizom"
 
 #. Translators: Bind ID - In LDAP, the operation that begins an LDAP
 #. * session and authenticates the user to the directory is called a
@@ -1757,11 +1753,11 @@ msgstr "Vezni _ID"
 
 #: ../plugins/ldap/ldap-book.cpp:985
 msgid "User ID; leave blank for anonymous / nonauthenticated"
-msgstr ""
+msgstr "Uporabniški ID, pustite prazno za anonimni/neoverjen"
 
 #: ../plugins/ldap/ldap-book.cpp:986
 msgid "The password for the user ID above, if any"
-msgstr ""
+msgstr "Geslo za uporabniški ID zgoraj, če obstaja"
 
 #: ../plugins/ldap/ldap-book.cpp:987
 msgid "Use TLS"
@@ -2633,9 +2629,8 @@ msgid "Detected new audio output device:"
 msgstr "Zaznaj napravo za izhod zvoka:"
 
 #: ../src/gui/main_window.cpp:3397
-#, fuzzy
 msgid "Detected new ringer device:"
-msgstr "Zaznaj napravo za dovod zvoka:"
+msgstr "Zaznana je bila nova naprava zvonenja:"
 
 #: ../src/gui/main_window.cpp:3401
 msgid "Detected new video input device:"
@@ -3070,9 +3065,8 @@ msgstr "_Pošlji DTMF kot:"
 
 #: ../src/gui/preferences.cpp:681
 #: ../src/gui/preferences.cpp:718
-#, fuzzy
 msgid "Select the mode for DTMFs sending"
-msgstr "Nastavitev omogoča nastavljanje načina za pošiljanje DTMF-jev."
+msgstr "Izberite način za pošiljanje DTMF-jev"
 
 #: ../src/gui/preferences.cpp:697
 msgid "INFO"
@@ -3175,9 +3169,8 @@ msgid "Picture Quality"
 msgstr "Kakovost slike"
 
 #: ../src/gui/preferences.cpp:980
-#, fuzzy
 msgid "Choose if you want to guarantee a minimum image quality (possibly leading to dropped frames in order not to surpass the bitrate limit) or if you prefer to keep the frame rate"
-msgstr "Izberite, če zahtevate uporabo ustrezne kakovosti slik (okvirji slik bodo izpuščeni brez spremembe hitrosti prenosa) ali pa, če želite ohraniti hitrost prenosa slik."
+msgstr "Izberite, če zahtevate uporabo najmenjše kakovosti slik (okvirji slik bodo izpuščeni brez spremembe hitrosti prenosa) ali pa, če želite ohraniti hitrost prenosa slik."
 
 #: ../src/gui/preferences.cpp:982
 msgid "Maximum video _bitrate (in kbits/s):"
