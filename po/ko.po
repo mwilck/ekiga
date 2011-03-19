@@ -9,20 +9,21 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: ekiga\n"
-"Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?product=ekiga&component=general\n"
-"POT-Creation-Date: 2011-02-26 21:49+0900\n"
-"PO-Revision-Date: 2011-02-26 22:35+0900\n"
+"Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?"
+"product=ekiga&component=general\n"
+"POT-Creation-Date: 2011-03-10 11:37+0000\n"
+"PO-Revision-Date: 2011-03-19 22:00+0900\n"
 "Last-Translator: Changwoo Ryu <cwryu@debian.org>\n"
 "Language-Team: GNOME Korea <gnome-kr@googlegroups.com>\n"
-"Language: Korean\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
+"Language: Korean\n"
 "Plural-Forms: nplurals=1; plural=0;\n"
 
 #. Application name
-#: ../ekiga.desktop.in.in.h:1 ../src/gui/main_window.cpp:4712
-#: ../src/gui/main_window.cpp:4714
+#: ../ekiga.desktop.in.in.h:1 ../src/gui/main_window.cpp:4722
+#: ../src/gui/main_window.cpp:4724
 msgid "Ekiga Softphone"
 msgstr "에키가 소프트전화"
 
@@ -122,7 +123,7 @@ msgstr "DTMF 보내기"
 msgid "Disable video hardware acceleration"
 msgstr "비디오 하드웨어 가속 기능 사용하지 않음"
 
-#: ../ekiga.schemas.in.in.h:18 ../src/gui/main_window.cpp:3964
+#: ../ekiga.schemas.in.in.h:18 ../src/gui/main_window.cpp:3974
 msgid "Display images from your camera device"
 msgstr "카메라 장치에서 입력되는 이미지를 보여줍니다"
 
@@ -359,7 +360,8 @@ msgstr ""
 msgid ""
 "Select the mode for sending DTMFs. The values can be 0 (for \"RFC2833\") and "
 "1 (for \"INFO\")"
-msgstr "DTMF 보내기 모드를 설정합니다. 가능한 값은 0 (\"RFC2833\") 및 1 (\"정보\")."
+msgstr ""
+"DTMF 보내기 모드를 설정합니다. 가능한 값은 0 (\"RFC2833\") 및 1 (\"정보\")."
 
 # gconf 타입은 int임.
 #: ../ekiga.schemas.in.in.h:72
@@ -367,7 +369,10 @@ msgid ""
 "Select the mode for sending DTMFs. The values can be 0 (for \"String\"), 1 "
 "(for \"Tone\"), 2 (for \"RFC2833\"), or 3 (for \"Q.931\") (default is "
 "\"String\"). Choosing other values than \"String\" disables the Text Chat."
-msgstr "DTMF 보내기 모드를 설정합니다. 가능한 값은 0 (\"문자열\"), 1 (\"톤\"), 2 (\"RFC2833\") 및 3 (\"Q.931\"). (기본값은 \"문자열\"입니다.) \"문자열\" 이외의 값을 사용하면 문자 대화를 사용하지 않습니다."
+msgstr ""
+"DTMF 보내기 모드를 설정합니다. 가능한 값은 0 (\"문자열\"), 1 (\"톤\"), 2 "
+"(\"RFC2833\") 및 3 (\"Q.931\"). (기본값은 \"문자열\"입니다.) \"문자열\" 이외"
+"의 값을 사용하면 문자 대화를 사용하지 않습니다."
 
 #: ../ekiga.schemas.in.in.h:73
 msgid ""
@@ -389,7 +394,7 @@ msgstr ""
 msgid "Show offline contacts"
 msgstr "오프라인 연락쳐 보기"
 
-#: ../ekiga.schemas.in.in.h:76 ../src/gui/main_window.cpp:3597
+#: ../ekiga.schemas.in.in.h:76 ../src/gui/main_window.cpp:3607
 msgid "Show the call panel"
 msgstr "호출 패널을 봅니다"
 
@@ -470,7 +475,11 @@ msgid ""
 "by the network to provide some level of Quality of Service (QoS). Default "
 "value 184 (0xB8) correspond to Expedited Forwarding (EF) PHB as defined in "
 "RFC 3246."
-msgstr "보내는 RTP IP 패킷의 서비스 종류 (Type of Service, TOS) 바이트. 이 바이트를 사용해 네트워크에서 서비스 품질을 (Quality of Service, QOS) 어느 정도로 제공할지 결정합니다. 기본값 184는 (0xB8) RFC3246에 정의된 신속 포워딩 (Expedited Forwarding, EF) 기능을 말합니다."
+msgstr ""
+"보내는 RTP IP 패킷의 서비스 종류 (Type of Service, TOS) 바이트. 이 바이트를 "
+"사용해 네트워크에서 서비스 품질을 (Quality of Service, QOS) 어느 정도로 제공"
+"할지 결정합니다. 기본값 184는 (0xB8) RFC3246에 정의된 신속 포워딩 (Expedited "
+"Forwarding, EF) 기능을 말합니다."
 
 #: ../ekiga.schemas.in.in.h:93
 msgid "The accounts list"
@@ -796,7 +805,7 @@ msgstr "이름 없음"
 #: ../plugins/evolution/evolution-contact.cpp:228
 #: ../plugins/loudmouth/loudmouth-presentity.cpp:157
 #: ../plugins/resource-list/rl-presentity.cpp:212
-#: ../src/gui/main_window.cpp:3555
+#: ../src/gui/main_window.cpp:3565
 msgid "_Edit"
 msgstr "편집(_E)"
 
@@ -965,7 +974,7 @@ msgstr "호출"
 #: ../lib/engine/components/opal/h323-endpoint.cpp:134
 #: ../lib/engine/components/opal/sip-endpoint.cpp:232
 #: ../lib/engine/components/opal/sip-endpoint.cpp:236
-#: ../src/gui/main_window.cpp:3317
+#: ../src/gui/main_window.cpp:3325
 msgid "Transfer"
 msgstr "전달"
 
@@ -1089,7 +1098,9 @@ msgstr "인증 사용자:"
 msgid ""
 "The user name used during authentication, if different than the user name; "
 "leave empty if you do not have one"
-msgstr "인증에 사용할 사용자 이름, 실제 사용자 이름과 다른 경우. 없으면 빈 칸으로 두십시오."
+msgstr ""
+"인증에 사용할 사용자 이름, 실제 사용자 이름과 다른 경우. 없으면 빈 칸으로 두"
+"십시오."
 
 #: ../lib/engine/components/opal/opal-account.cpp:429
 #: ../plugins/loudmouth/loudmouth-account.cpp:312
@@ -1260,7 +1271,7 @@ msgid "Abnormal call termination"
 msgstr "비정상적인 호출 종료"
 
 #: ../lib/engine/components/opal/opal-call.cpp:424
-#: ../src/gui/main_window.cpp:1845
+#: ../src/gui/main_window.cpp:1853
 msgid "Could not connect to remote host"
 msgstr "원격 호스트에 연결할 수 없습니다"
 
@@ -1530,7 +1541,7 @@ msgid "Globally not acceptable"
 msgstr "전체적으로 받아들일 수 없습니다"
 
 #: ../lib/engine/components/opal/sip-endpoint.cpp:933
-#: ../src/gui/main_window.cpp:3154
+#: ../src/gui/main_window.cpp:3162
 #, c-format
 msgid "Incoming call from %s"
 msgstr "호출 받음: %s"
@@ -1567,7 +1578,7 @@ msgid "Address Book"
 msgstr "주소록"
 
 #: ../lib/engine/gui/gtk-frontend/addressbook-window.cpp:652
-#: ../src/gui/main_window.cpp:3503
+#: ../src/gui/main_window.cpp:3511
 msgid "Address _Book"
 msgstr "주소록(_B)"
 
@@ -1986,6 +1997,10 @@ msgstr "재버/XMPP 계정 추가(_A)"
 msgid "Please fill in the following fields:"
 msgstr "다음 항목을 입력하십시오:"
 
+#: ../plugins/loudmouth/loudmouth-dialect.cpp:118
+msgid "Join a discussion group"
+msgstr "토론 그룹에 참여"
+
 #: ../plugins/loudmouth/loudmouth-heap.cpp:210
 msgid "Authorization to see your presence"
 msgstr "내 상태를 확인하는 인증"
@@ -2178,11 +2193,11 @@ msgstr "상태"
 msgid "Accounts"
 msgstr "계정"
 
-#: ../src/gui/accounts.cpp:590 ../src/gui/main_window.cpp:3565
+#: ../src/gui/accounts.cpp:590 ../src/gui/main_window.cpp:3575
 msgid "_Accounts"
 msgstr "계정(_A)"
 
-#: ../src/gui/accounts.cpp:594 ../src/gui/main_window.cpp:3648
+#: ../src/gui/accounts.cpp:594 ../src/gui/main_window.cpp:3658
 msgid "_Help"
 msgstr "도움말(_H)"
 
@@ -2289,7 +2304,8 @@ msgid ""
 "The service will work only if your account is created using the URL in this "
 "dialog.\n"
 msgstr ""
-"에키가를 이용해 전세계의 일반 전화에 전화를 걸 수 있습니다. 이 기능을 사용하려면 두 가지를 해야 합니다:\n"
+"에키가를 이용해 전세계의 일반 전화에 전화를 걸 수 있습니다. 이 기능을 사용하"
+"려면 두 가지를 해야 합니다:\n"
 "- 먼저 아래의 URL에서 계정을 등록합니다.\n"
 "- 그리고 계정 아이디와 비밀번호를 입력합니다.\n"
 "이 대화 상자의 이 URL을 사용해 계정을 만든 경우에만 이 서비스가 동작합니다.\n"
@@ -2341,8 +2357,8 @@ msgstr ""
 "연결 종류는 에키가 호출에 사용할 최고의 품질 설정을 합니다. 나중에 기본 설정 "
 "창에서 이 설정을 따로 바꿀 수 있습니다."
 
-#: ../src/gui/assistant.cpp:967 ../src/gui/main_window.cpp:3382
-#: ../src/gui/main_window.cpp:3386 ../src/gui/main_window.cpp:3390
+#: ../src/gui/assistant.cpp:967 ../src/gui/main_window.cpp:3390
+#: ../src/gui/main_window.cpp:3394 ../src/gui/main_window.cpp:3398
 #: ../src/gui/preferences.cpp:738
 msgid "Audio Devices"
 msgstr "오디오 장치"
@@ -2516,60 +2532,60 @@ msgstr ""
 msgid "Unable to open help file."
 msgstr "도움말 파일을 열 수 없습니다."
 
-#: ../src/gui/main_window.cpp:731
+#: ../src/gui/main_window.cpp:739
 msgid "Presence"
 msgstr "내 상태"
 
-#: ../src/gui/main_window.cpp:738
+#: ../src/gui/main_window.cpp:746
 msgid "Addressbook"
 msgstr "주소록"
 
-#: ../src/gui/main_window.cpp:802
+#: ../src/gui/main_window.cpp:810
 msgid "Unknown"
 msgstr "알 수 없음"
 
-#: ../src/gui/main_window.cpp:953
+#: ../src/gui/main_window.cpp:961
 #, c-format
 msgid "A:%.1f/%.1f   V:%.1f/%.1f   FPS:%d/%d"
 msgstr "오디오:%.1f/%.1f   비디오:%.1f/%.1f   프레임:%d/%d"
 
 #. %s is the SIP/H.323 address of the remote user, this text is shown
 #. below video during a call
-#: ../src/gui/main_window.cpp:999
+#: ../src/gui/main_window.cpp:1007
 #, c-format
 msgid "Connected with %s"
 msgstr "%s(으)로 연결"
 
-#: ../src/gui/main_window.cpp:1035 ../src/gui/main_window.cpp:3884
+#: ../src/gui/main_window.cpp:1043 ../src/gui/main_window.cpp:3894
 msgid "Standby"
 msgstr "대기 상태"
 
-#: ../src/gui/main_window.cpp:1094
+#: ../src/gui/main_window.cpp:1102
 msgid "Call on hold"
 msgstr "호출 대기"
 
-#: ../src/gui/main_window.cpp:1105
+#: ../src/gui/main_window.cpp:1113
 msgid "Call retrieved"
 msgstr "호출 받음"
 
-#: ../src/gui/main_window.cpp:1120
+#: ../src/gui/main_window.cpp:1128
 #, c-format
 msgid "Missed call from %s"
 msgstr "호출 놓침 (건 사람: %s)"
 
-#: ../src/gui/main_window.cpp:1257
+#: ../src/gui/main_window.cpp:1265
 msgid "Error"
 msgstr "오류"
 
-#: ../src/gui/main_window.cpp:1330
+#: ../src/gui/main_window.cpp:1338
 msgid "Error while initializing video output"
 msgstr "비디오 출력을 초기화하는데 오류 발생"
 
-#: ../src/gui/main_window.cpp:1331
+#: ../src/gui/main_window.cpp:1339
 msgid "No video will be displayed on your machine during this call"
 msgstr "이 호출 중에는 비디오를 표시하지 않습니다"
 
-#: ../src/gui/main_window.cpp:1341
+#: ../src/gui/main_window.cpp:1349
 msgid ""
 "There was an error opening or initializing the video output. Please verify "
 "that no other application is using the accelerated video output."
@@ -2577,7 +2593,7 @@ msgstr ""
 "비디오 출력을 열거나 초기화하는데 오류가 발생했습니다. 다른 프로그램이 비디"
 "오 출력 가속을 사용하지 않도록 하십시오."
 
-#: ../src/gui/main_window.cpp:1343
+#: ../src/gui/main_window.cpp:1351
 msgid ""
 "There was an error opening or initializing the video output. Please verify "
 "that you are using a color depth of 24 or 32 bits per pixel."
@@ -2586,27 +2602,27 @@ msgstr ""
 "트 색을 사용해야 합니다."
 
 #. Translators: This is a hotplug status
-#: ../src/gui/main_window.cpp:1456
+#: ../src/gui/main_window.cpp:1464
 #, c-format
 msgid "Added video input device %s"
 msgstr "비디오 입력 장치를 (%s) 더했습니다"
 
 #. Translators: This is a hotplug status
-#: ../src/gui/main_window.cpp:1468
+#: ../src/gui/main_window.cpp:1476
 #, c-format
 msgid "Removed video input device %s"
 msgstr "비디오 입력 장치를 (%s) 지웠습니다"
 
-#: ../src/gui/main_window.cpp:1485
+#: ../src/gui/main_window.cpp:1493
 #, c-format
 msgid "Error while accessing video device %s"
 msgstr "비디오 장치에 (%s) 접근하는데 오류 발생"
 
-#: ../src/gui/main_window.cpp:1488
+#: ../src/gui/main_window.cpp:1496
 msgid "A moving logo will be transmitted during calls."
 msgstr "호출 중에 움직이는 로고를 전송합니다."
 
-#: ../src/gui/main_window.cpp:1492
+#: ../src/gui/main_window.cpp:1500
 msgid ""
 "There was an error while opening the device. In case it is a pluggable "
 "device it may be sufficient to reconnect it. If not, or if it still is not "
@@ -2617,15 +2633,15 @@ msgstr ""
 "만 하면 됩니다. 연결하는 장치가 아니거나 계속 열 수 없는 경우에는 권한이 올바"
 "른지 확인하고 해당 드라이버를 읽어들였는지 확인하십시오."
 
-#: ../src/gui/main_window.cpp:1496
+#: ../src/gui/main_window.cpp:1504
 msgid "Your video driver doesn't support the requested video format."
 msgstr "비디오 드라이버가 요청한 비디오 형식을 지원하지 않습니다."
 
-#: ../src/gui/main_window.cpp:1500
+#: ../src/gui/main_window.cpp:1508
 msgid "Could not open the chosen channel."
 msgstr "선택한 채널을 열 수 없습니다."
 
-#: ../src/gui/main_window.cpp:1504
+#: ../src/gui/main_window.cpp:1512
 msgid ""
 "Your driver doesn't seem to support any of the color formats supported by "
 "Ekiga.\n"
@@ -2635,43 +2651,43 @@ msgstr ""
 "드라이버가 에키가가 지원하는 색 형식중에 아무 것도 지원하지 않습니다.\n"
 "어떤 팔레트를 지원하는 지에 대해서는 커널 드라이버의 문서를 확인하십시오."
 
-#: ../src/gui/main_window.cpp:1508
+#: ../src/gui/main_window.cpp:1516
 msgid "Error while setting the frame rate."
 msgstr "프레임 전송률을 설정하는데 오류."
 
-#: ../src/gui/main_window.cpp:1512
+#: ../src/gui/main_window.cpp:1520
 msgid "Error while setting the frame size."
 msgstr "프레임 크기를 설정하는데 오류."
 
-#: ../src/gui/main_window.cpp:1517 ../src/gui/main_window.cpp:1620
-#: ../src/gui/main_window.cpp:1739
+#: ../src/gui/main_window.cpp:1525 ../src/gui/main_window.cpp:1628
+#: ../src/gui/main_window.cpp:1747
 msgid "Unknown error."
 msgstr "알 수 없는 오류."
 
 #. Translators: This is a hotplug status
-#: ../src/gui/main_window.cpp:1569
+#: ../src/gui/main_window.cpp:1577
 #, c-format
 msgid "Added audio input device %s"
 msgstr "오디오 입력 장치를 (%s) 더했습니다"
 
 #. Translators: This is a hotplug status
-#: ../src/gui/main_window.cpp:1585
+#: ../src/gui/main_window.cpp:1593
 #, c-format
 msgid "Removed audio input device %s"
 msgstr "오디오 입력 장치를 (%s) 지웠습니다"
 
-#: ../src/gui/main_window.cpp:1602
+#: ../src/gui/main_window.cpp:1610
 #, c-format
 msgid "Error while opening audio input device %s"
 msgstr "오디오 입력 장치를 (%s) 여는데 오류 발생"
 
 #. Translators: This happens when there is an error with audio input:
 #. * Nothing ("silence") will be transmitted
-#: ../src/gui/main_window.cpp:1607
+#: ../src/gui/main_window.cpp:1615
 msgid "Only silence will be transmitted."
 msgstr "묵음만 전달합니다."
 
-#: ../src/gui/main_window.cpp:1611
+#: ../src/gui/main_window.cpp:1619
 msgid ""
 "Unable to open the selected audio device for recording. In case it is a "
 "pluggable device it may be sufficient to reconnect it. If not, or if it "
@@ -2682,7 +2698,7 @@ msgstr ""
 "연결하기만 하면 됩니다. 연결하는 장치가 아니거나 계속 열 수 없는 경우에는 오"
 "디오 설정, 권한이 올바른지 확인하고 장치가 사용 중이 아닌지 확인하십시오."
 
-#: ../src/gui/main_window.cpp:1615
+#: ../src/gui/main_window.cpp:1623
 msgid ""
 "The selected audio device was successfully opened but it is impossible to "
 "read data from this device. In case it is a pluggable device it may be "
@@ -2693,26 +2709,26 @@ msgstr ""
 "다. 연결하는 방식의 장치인 경우 다시 연결하기만 하면 됩니다. 연결하는 장치가 "
 "아니거나 계속 읽을 수 없는 경우에는 오디오 설정이 올바른지 확인하십시오."
 
-#: ../src/gui/main_window.cpp:1684
+#: ../src/gui/main_window.cpp:1692
 #, c-format
 msgid "Added audio output device %s"
 msgstr "오디오 출력 장치를 (%s) 더했습니다"
 
-#: ../src/gui/main_window.cpp:1702
+#: ../src/gui/main_window.cpp:1710
 #, c-format
 msgid "Removed audio output device %s"
 msgstr "오디오 출력 장치를 (%s) 지웠습니다"
 
-#: ../src/gui/main_window.cpp:1723
+#: ../src/gui/main_window.cpp:1731
 #, c-format
 msgid "Error while opening audio output device %s"
 msgstr "오디오 출력 장치를 (%s) 여는데 오류 발생"
 
-#: ../src/gui/main_window.cpp:1726
+#: ../src/gui/main_window.cpp:1734
 msgid "No incoming sound will be played."
 msgstr "받은 소리를 재생하지 않습니다."
 
-#: ../src/gui/main_window.cpp:1730
+#: ../src/gui/main_window.cpp:1738
 msgid ""
 "Unable to open the selected audio device for playing. In case it is a "
 "pluggable device it may be sufficient to reconnect it. If not, or if it "
@@ -2723,7 +2739,7 @@ msgstr ""
 "시 연결하기만 하면 됩니다. 연결하는 장치가 아니거나 계속 열 수 없는 경우에는 "
 "오디오 설정, 권한이 올바른지 확인하고 장치가 사용 중이 아닌지 확인하십시오."
 
-#: ../src/gui/main_window.cpp:1734
+#: ../src/gui/main_window.cpp:1742
 msgid ""
 "The selected audio device was successfully opened but it is impossible to "
 "write data to this device. In case it is a pluggable device it may be "
@@ -2734,367 +2750,367 @@ msgstr ""
 "연결하는 방식의 장치인 경우 다시 연결하기만 하면 됩니다. 연결하는 장치가 아니"
 "거나 계속 쓸 수 없는 경우에는 오디오 설정을 확인하십시오."
 
-#: ../src/gui/main_window.cpp:1923
+#: ../src/gui/main_window.cpp:1931
 msgid "Video Settings"
 msgstr "비디오 설정"
 
-#: ../src/gui/main_window.cpp:1950
+#: ../src/gui/main_window.cpp:1958
 msgid "Adjust brightness"
 msgstr "밝기 조정"
 
-#: ../src/gui/main_window.cpp:1971
+#: ../src/gui/main_window.cpp:1979
 msgid "Adjust whiteness"
 msgstr "백색 조정"
 
-#: ../src/gui/main_window.cpp:1992
+#: ../src/gui/main_window.cpp:2000
 msgid "Adjust color"
 msgstr "색 조정"
 
-#: ../src/gui/main_window.cpp:2013
+#: ../src/gui/main_window.cpp:2021
 msgid "Adjust contrast"
 msgstr "대비 조정"
 
-#: ../src/gui/main_window.cpp:2057
+#: ../src/gui/main_window.cpp:2065
 msgid "Audio Settings"
 msgstr "오디오 설정"
 
-#: ../src/gui/main_window.cpp:2737
+#: ../src/gui/main_window.cpp:2745
 msgid "_Retrieve Call"
 msgstr "호출 중지(_R)"
 
-#: ../src/gui/main_window.cpp:2750 ../src/gui/main_window.cpp:3511
+#: ../src/gui/main_window.cpp:2758 ../src/gui/main_window.cpp:3519
 msgid "H_old Call"
 msgstr "호출 보류(_O)"
 
-#: ../src/gui/main_window.cpp:2782 ../src/gui/main_window.cpp:3523
+#: ../src/gui/main_window.cpp:2790 ../src/gui/main_window.cpp:3531
 msgid "Suspend _Audio"
 msgstr "오디오 일시 정지(_A)"
 
-#: ../src/gui/main_window.cpp:2784 ../src/gui/main_window.cpp:3528
+#: ../src/gui/main_window.cpp:2792 ../src/gui/main_window.cpp:3536
 msgid "Suspend _Video"
 msgstr "비디오 일시 정지(_V)"
 
-#: ../src/gui/main_window.cpp:2786
+#: ../src/gui/main_window.cpp:2794
 msgid "Resume _Audio"
 msgstr "오디오 다시 시작(_A)"
 
-#: ../src/gui/main_window.cpp:2788
+#: ../src/gui/main_window.cpp:2796
 msgid "Resume _Video"
 msgstr "비디오 다시 시작(_V)"
 
-#: ../src/gui/main_window.cpp:3014 ../src/gui/main_window.cpp:3177
+#: ../src/gui/main_window.cpp:3022 ../src/gui/main_window.cpp:3185
 msgid "Reject"
 msgstr "거부"
 
-#: ../src/gui/main_window.cpp:3016 ../src/gui/main_window.cpp:3176
+#: ../src/gui/main_window.cpp:3024 ../src/gui/main_window.cpp:3184
 msgid "Accept"
 msgstr "허용"
 
-#: ../src/gui/main_window.cpp:3022
+#: ../src/gui/main_window.cpp:3030
 msgid "Incoming call from"
 msgstr "다음에서 호출 들어옴:"
 
-#: ../src/gui/main_window.cpp:3040 ../src/gui/main_window.cpp:3157
+#: ../src/gui/main_window.cpp:3048 ../src/gui/main_window.cpp:3165
 msgid "Remote URI:"
 msgstr "원격 URI:"
 
-#: ../src/gui/main_window.cpp:3052 ../src/gui/main_window.cpp:3159
+#: ../src/gui/main_window.cpp:3060 ../src/gui/main_window.cpp:3167
 msgid "Remote Application:"
 msgstr "원격 프로그램:"
 
-#: ../src/gui/main_window.cpp:3065 ../src/gui/main_window.cpp:3161
+#: ../src/gui/main_window.cpp:3073 ../src/gui/main_window.cpp:3169
 msgid "Account ID:"
 msgstr "계정 ID:"
 
-#: ../src/gui/main_window.cpp:3073
+#: ../src/gui/main_window.cpp:3081
 #, c-format
 msgid "Call from %s"
 msgstr "%s에서 호출"
 
-#: ../src/gui/main_window.cpp:3285
+#: ../src/gui/main_window.cpp:3293
 #, c-format
 msgid "Call Duration: %s\n"
 msgstr "호출 시간: %s\n"
 
-#: ../src/gui/main_window.cpp:3316
+#: ../src/gui/main_window.cpp:3324
 msgid "Transfer call to:"
 msgstr "호출 전달:"
 
-#: ../src/gui/main_window.cpp:3368
+#: ../src/gui/main_window.cpp:3376
 msgid "No"
 msgstr "아니요"
 
-#: ../src/gui/main_window.cpp:3370
+#: ../src/gui/main_window.cpp:3378
 msgid "Yes"
 msgstr "예"
 
-#: ../src/gui/main_window.cpp:3381
+#: ../src/gui/main_window.cpp:3389
 msgid "Detected new audio input device:"
 msgstr "새 오디오 입력 장치를 검색했습니다:"
 
-#: ../src/gui/main_window.cpp:3385
+#: ../src/gui/main_window.cpp:3393
 msgid "Detected new audio output device:"
 msgstr "새 오디오 출력 장치를 검색했습니다:"
 
-#: ../src/gui/main_window.cpp:3389
+#: ../src/gui/main_window.cpp:3397
 msgid "Detected new ringer device:"
 msgstr "새 벨소리 장치를 검색했습니다:"
 
-#: ../src/gui/main_window.cpp:3393
+#: ../src/gui/main_window.cpp:3401
 msgid "Detected new video input device:"
 msgstr "새 비디오 입력 장치를 검색했습니다:"
 
-#: ../src/gui/main_window.cpp:3394 ../src/gui/preferences.cpp:891
+#: ../src/gui/main_window.cpp:3402 ../src/gui/preferences.cpp:891
 msgid "Video Devices"
 msgstr "비디오 장치"
 
-#: ../src/gui/main_window.cpp:3412
+#: ../src/gui/main_window.cpp:3420
 msgid "Do you want to use it as default device?"
 msgstr "기본 장치로 사용하시겠습니까?"
 
-#: ../src/gui/main_window.cpp:3480
+#: ../src/gui/main_window.cpp:3488
 msgid "_Chat"
 msgstr "대화(_C)"
 
-#: ../src/gui/main_window.cpp:3482
+#: ../src/gui/main_window.cpp:3490
 msgid "Ca_ll"
 msgstr "호출(_L)"
 
-#: ../src/gui/main_window.cpp:3482
+#: ../src/gui/main_window.cpp:3490
 msgid "Place a new call"
 msgstr "새로 호출합니다"
 
-#: ../src/gui/main_window.cpp:3485
+#: ../src/gui/main_window.cpp:3493
 msgid "_Hang up"
 msgstr "끊기(_H)"
 
-#: ../src/gui/main_window.cpp:3486
+#: ../src/gui/main_window.cpp:3494
 msgid "Terminate the current call"
 msgstr "현재 호출을 멈춥니다"
 
-#: ../src/gui/main_window.cpp:3492
+#: ../src/gui/main_window.cpp:3500
 msgid "Co_ntact"
 msgstr "연락처(_N)"
 
 # 도구 설명
-#: ../src/gui/main_window.cpp:3493
+#: ../src/gui/main_window.cpp:3501
 msgid "Act on selected contact"
 msgstr "선택한 연락처에 대한 동작"
 
-#: ../src/gui/main_window.cpp:3499
+#: ../src/gui/main_window.cpp:3507
 msgid "A_dd Contact"
 msgstr "연락처 추가(_D)"
 
 # 도구 설명
-#: ../src/gui/main_window.cpp:3499
+#: ../src/gui/main_window.cpp:3507
 msgid "Add a contact to the roster"
 msgstr "연락처를 목록에 추가합니다"
 
-#: ../src/gui/main_window.cpp:3504
+#: ../src/gui/main_window.cpp:3512
 msgid "Find contacts"
 msgstr "연락처 찾기"
 
 # 도구 설명
-#: ../src/gui/main_window.cpp:3511 ../src/gui/main_window.cpp:3984
+#: ../src/gui/main_window.cpp:3519 ../src/gui/main_window.cpp:3994
 msgid "Hold the current call"
 msgstr "현재 호출을 중지합니다"
 
-#: ../src/gui/main_window.cpp:3515
+#: ../src/gui/main_window.cpp:3523
 msgid "_Transfer Call"
 msgstr "호출 넘기기(_T)"
 
 # 도구 설명
-#: ../src/gui/main_window.cpp:3516
+#: ../src/gui/main_window.cpp:3524
 msgid "Transfer the current call"
 msgstr "현재 호출을 넘깁니다"
 
 # 도구 설명
-#: ../src/gui/main_window.cpp:3524
+#: ../src/gui/main_window.cpp:3532
 msgid "Suspend or resume the audio transmission"
 msgstr "오디오 송신을 일시 정지하거나 다시 시작합니다"
 
 # 도구 설명
-#: ../src/gui/main_window.cpp:3529
+#: ../src/gui/main_window.cpp:3537
 msgid "Suspend or resume the video transmission"
 msgstr "비디오 송신을 일시 정지하거나 다시 시작합니다"
 
 #. FIXME: that isn't a very good way to do things
-#: ../src/gui/main_window.cpp:3537
+#: ../src/gui/main_window.cpp:3546
 msgid "Other"
 msgstr "기타"
 
-#: ../src/gui/main_window.cpp:3538
+#: ../src/gui/main_window.cpp:3547
 msgid "Other possible actions"
 msgstr "기타 가능한 동작"
 
 # 도구 설명
-#: ../src/gui/main_window.cpp:3544
+#: ../src/gui/main_window.cpp:3554
 msgid "Close the Ekiga window"
 msgstr "에키가 창을 닫습니다"
 
-#: ../src/gui/main_window.cpp:3551 ../src/gui/statusicon.cpp:465
+#: ../src/gui/main_window.cpp:3561 ../src/gui/statusicon.cpp:465
 msgid "Quit"
 msgstr "끝내기"
 
-#: ../src/gui/main_window.cpp:3557
+#: ../src/gui/main_window.cpp:3567
 msgid "_Configuration Assistant"
 msgstr "설정 도우미(_C)"
 
 # 도구 설명
-#: ../src/gui/main_window.cpp:3558
+#: ../src/gui/main_window.cpp:3568
 msgid "Run the configuration assistant"
 msgstr "설정 도우미를 실행합니다"
 
 # 도구 설명
-#: ../src/gui/main_window.cpp:3566
+#: ../src/gui/main_window.cpp:3576
 msgid "Edit your accounts"
 msgstr "계정을 편집합니다"
 
 # 도구 설명
-#: ../src/gui/main_window.cpp:3572
+#: ../src/gui/main_window.cpp:3582
 msgid "Change your preferences"
 msgstr "기본 설정을 바꿉니다"
 
-#: ../src/gui/main_window.cpp:3577
+#: ../src/gui/main_window.cpp:3587
 msgid "_View"
 msgstr "보기(_V)"
 
-#: ../src/gui/main_window.cpp:3579
+#: ../src/gui/main_window.cpp:3589
 msgid "Con_tacts"
 msgstr "연락처(_T)"
 
 # 도구 설명
-#: ../src/gui/main_window.cpp:3579
+#: ../src/gui/main_window.cpp:3589
 msgid "View the contacts list"
 msgstr "연락처 목록을 봅니다"
 
-#: ../src/gui/main_window.cpp:3584
+#: ../src/gui/main_window.cpp:3594
 msgid "_Dialpad"
 msgstr "숫자판(_D)"
 
 # 도구 설명
-#: ../src/gui/main_window.cpp:3584
+#: ../src/gui/main_window.cpp:3594
 msgid "View the dialpad"
 msgstr "숫자판을 봅니다"
 
-#: ../src/gui/main_window.cpp:3589
+#: ../src/gui/main_window.cpp:3599
 msgid "_Call History"
 msgstr "호출 기록(_C)"
 
 # 도구 설명
-#: ../src/gui/main_window.cpp:3589
+#: ../src/gui/main_window.cpp:3599
 msgid "View the call history"
 msgstr "호출 기록을 봅니다"
 
-#: ../src/gui/main_window.cpp:3597
+#: ../src/gui/main_window.cpp:3607
 msgid "_Show Call Panel"
 msgstr "호출 패널 표시(_S)"
 
-#: ../src/gui/main_window.cpp:3605
+#: ../src/gui/main_window.cpp:3615
 msgid "_Local Video"
 msgstr "로컬 비디오(_L)"
 
 # 도구 설명
-#: ../src/gui/main_window.cpp:3606
+#: ../src/gui/main_window.cpp:3616
 msgid "Local video image"
 msgstr "로컬 비디오 이미지"
 
-#: ../src/gui/main_window.cpp:3611
+#: ../src/gui/main_window.cpp:3621
 msgid "_Remote Video"
 msgstr "원격 비디오(_R)"
 
 # 도구 설명
-#: ../src/gui/main_window.cpp:3612
+#: ../src/gui/main_window.cpp:3622
 msgid "Remote video image"
 msgstr "원격 비디오 이미지"
 
-#: ../src/gui/main_window.cpp:3617
+#: ../src/gui/main_window.cpp:3627
 msgid "_Picture-in-Picture"
 msgstr "화면 안에 화면(_P)"
 
 # 도구 설명
-#: ../src/gui/main_window.cpp:3618 ../src/gui/main_window.cpp:3624
+#: ../src/gui/main_window.cpp:3628 ../src/gui/main_window.cpp:3634
 msgid "Both video images"
 msgstr "모든 비디오 이미지"
 
-#: ../src/gui/main_window.cpp:3623
+#: ../src/gui/main_window.cpp:3633
 msgid "Picture-in-Picture in Separate _Window"
 msgstr "화면 안에 화면 별도 창에(_W)"
 
-#: ../src/gui/main_window.cpp:3631
+#: ../src/gui/main_window.cpp:3641
 msgid "Zoom in"
 msgstr "확대"
 
-#: ../src/gui/main_window.cpp:3635
+#: ../src/gui/main_window.cpp:3645
 msgid "Zoom out"
 msgstr "축소"
 
-#: ../src/gui/main_window.cpp:3639
+#: ../src/gui/main_window.cpp:3649
 msgid "Normal size"
 msgstr "보통 크기"
 
-#: ../src/gui/main_window.cpp:3643
+#: ../src/gui/main_window.cpp:3653
 msgid "_Fullscreen"
 msgstr "전체 화면(_F)"
 
-#: ../src/gui/main_window.cpp:3643
+#: ../src/gui/main_window.cpp:3653
 msgid "Switch to fullscreen"
 msgstr "전체 화면으로 전환"
 
 # 도구 설명
-#: ../src/gui/main_window.cpp:3651 ../src/gui/statusicon.cpp:453
+#: ../src/gui/main_window.cpp:3661 ../src/gui/statusicon.cpp:453
 msgid "Get help by reading the Ekiga manual"
 msgstr "에키가 사용 설명서를 읽습니다"
 
 # 도구 설명
-#: ../src/gui/main_window.cpp:3656 ../src/gui/statusicon.cpp:458
+#: ../src/gui/main_window.cpp:3666 ../src/gui/statusicon.cpp:458
 msgid "View information about Ekiga"
 msgstr "에키가에 대한 정보를 봅니다"
 
-#: ../src/gui/main_window.cpp:3728
+#: ../src/gui/main_window.cpp:3738
 msgid ""
 "Enter a URI on the left, and click this button to place a call or to hangup"
 msgstr "호출하거나 끊으려면 왼쪽에 URI를 입력하고 이 단추를 누르십시오"
 
-#: ../src/gui/main_window.cpp:3773
+#: ../src/gui/main_window.cpp:3783
 msgid "Contacts"
 msgstr "연락처"
 
-#: ../src/gui/main_window.cpp:3795
+#: ../src/gui/main_window.cpp:3805
 msgid "Dialpad"
 msgstr "숫자판"
 
-#: ../src/gui/main_window.cpp:3813
+#: ../src/gui/main_window.cpp:3823
 msgid "Call history"
 msgstr "호출 기록"
 
-#: ../src/gui/main_window.cpp:3921
+#: ../src/gui/main_window.cpp:3931
 msgid "Change the volume of your soundcard"
 msgstr "사운드카드의 볼륨을 조정합니다"
 
-#: ../src/gui/main_window.cpp:3942
+#: ../src/gui/main_window.cpp:3952
 msgid "Change the color settings of your video device"
 msgstr "비디오 장치의 컬러 설정을 조정합니다"
 
-#: ../src/gui/main_window.cpp:4010
+#: ../src/gui/main_window.cpp:4020
 msgid "Ekiga"
 msgstr "에키가"
 
 #. Translators: TX is a common abbreviation for "transmit".  As it
 #. * is shown in a tooltip, there is no space constraint
-#: ../src/gui/main_window.cpp:4613
+#: ../src/gui/main_window.cpp:4623
 #, c-format
 msgid "TX: %dx%d "
 msgstr "송신: %dx%d "
 
 #. Translators: RX is a common abbreviation for "receive".  As it
 #. * is shown in a tooltip, there is no space constraint
-#: ../src/gui/main_window.cpp:4618
+#: ../src/gui/main_window.cpp:4628
 #, c-format
 msgid "RX: %dx%d "
 msgstr "수신: %dx%d "
 
-#: ../src/gui/main_window.cpp:4620
+#: ../src/gui/main_window.cpp:4630
 #, c-format
 msgid ""
 "Lost packets: %.1f %%\n"
@@ -3107,15 +3123,15 @@ msgstr ""
 "순서가 바뀐 패킷: %.1f %%\n"
 "지터 버퍼: %d ms%s%s%s"
 
-#: ../src/gui/main_window.cpp:4735
+#: ../src/gui/main_window.cpp:4745
 msgid "Prints debug messages in the console (level between 1 and 5)"
 msgstr "콘솔에 디버깅 메시지를 표시합니다 (1에서 5 사이의 레벨)"
 
-#: ../src/gui/main_window.cpp:4740
+#: ../src/gui/main_window.cpp:4750
 msgid "Prints user plane debug messages in the console (level between 1 and 4)"
 msgstr "콘솔에 사용자 지정 디버깅 메시지를 씁니다 (1에서 4 사이의 레벨)"
 
-#: ../src/gui/main_window.cpp:4745
+#: ../src/gui/main_window.cpp:4755
 msgid "Makes Ekiga call the given URI"
 msgstr "에키가에서 주어진 URI로 호출합니다"
 
@@ -3402,7 +3418,9 @@ msgid ""
 "Choose if you want to guarantee a minimum image quality (possibly leading to "
 "dropped frames in order not to surpass the bitrate limit) or if you prefer "
 "to keep the frame rate"
-msgstr "최소 화질을 유지하고 싶거나 (비트전송률 제한때문에 프레임을 버릴 수도 있습니다) 프레임 전송률을 유지하고 싶은 경우 지정하십시오"
+msgstr ""
+"최소 화질을 유지하고 싶거나 (비트전송률 제한때문에 프레임을 버릴 수도 있습니"
+"다) 프레임 전송률을 유지하고 싶은 경우 지정하십시오"
 
 #: ../src/gui/preferences.cpp:982
 msgid "Maximum video _bitrate (in kbits/s):"
