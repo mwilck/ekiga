@@ -787,6 +787,29 @@ connect_button_set_connected (EkigaMainWindow *mw, gboolean state)
   gtk_image_set_from_stock (GTK_IMAGE (image), state ? GM_STOCK_PHONE_HANG_UP_24 : GM_STOCK_PHONE_PICK_UP_24, GTK_ICON_SIZE_LARGE_TOOLBAR);
 }
 
+#ifdef HAVE_NOTIFY
+// return if the notify server accepts actions (i.e. buttons)
+// taken from https://wiki.ubuntu.com/NotificationDevelopmentGuidelines#Avoiding%20actions
+int hasActionsCap (void)
+{
+  static int accepts_actions = -1;
+  if (accepts_actions == -1) {  // initialise accepts_actions at the first call
+    accepts_actions = 0;
+    GList *capabilities = notify_get_server_caps ();
+    if (capabilities != NULL) {
+      for (GList *c = capabilities ; c != NULL ; c = c->next) {
+        if (strcmp ((char*)c->data, "actions") == 0 ) {
+          accepts_actions = 1;
+          break;
+        }
+      }
+      g_list_foreach (capabilities, (GFunc)g_free, NULL);
+      g_list_free (capabilities);
+    }
+  }
+  return accepts_actions;
+}
+#endif
 
 /* DESCRIPTION   :  /
  * BEHAVIOR      : Returns the currently called URL in the URL bar.
@@ -917,7 +940,10 @@ static void on_setup_call_cb (boost::shared_ptr<Ekiga::CallManager> manager,
     ekiga_main_window_update_calling_state (mw, Called);
     audiooutput_core->start_play_event ("incoming_call_sound", 4000, 256);
 #ifdef HAVE_NOTIFY
-    ekiga_main_window_incoming_call_notify (mw, call);
+    if (hasActionsCap ())
+      ekiga_main_window_incoming_call_notify (mw, call);
+    else
+      ekiga_main_window_incoming_call_dialog_show (mw, call);
 #else
     ekiga_main_window_incoming_call_dialog_show (mw, call);
 #endif
@@ -1075,7 +1101,10 @@ static void on_cleared_incoming_call_cb (std::string /*reason*/,
   audiooutput_core->stop_play_event("ring_tone_sound");
 
 #ifdef HAVE_NOTIFY
-  notify_notification_close (NOTIFY_NOTIFICATION (self), NULL);
+  if (hasActionsCap ())
+    notify_notification_close (NOTIFY_NOTIFICATION (self), NULL);
+  else
+    gtk_widget_destroy (GTK_WIDGET (self));
 #else
   gtk_widget_destroy (GTK_WIDGET (self));
 #endif
@@ -1085,7 +1114,10 @@ static void on_cleared_incoming_call_cb (std::string /*reason*/,
 static void on_incoming_call_gone_cb (gpointer self)
 {
 #ifdef HAVE_NOTIFY
-  notify_notification_close (NOTIFY_NOTIFICATION (self), NULL);
+  if (hasActionsCap ())
+    notify_notification_close (NOTIFY_NOTIFICATION (self), NULL);
+  else
+    gtk_widget_destroy (GTK_WIDGET (self));
 #else
   gtk_widget_destroy (GTK_WIDGET (self));
 #endif
@@ -3086,6 +3118,8 @@ ekiga_main_window_incoming_call_dialog_show (EkigaMainWindow *mw,
   gtk_window_set_urgency_hint (GTK_WINDOW (mw), TRUE);
   gtk_window_set_transient_for (GTK_WINDOW (incoming_call_popup),
 				GTK_WINDOW (mw));
+  // do not steal the focus, to avoid that user take the call by inadvertently pressing enter in another application
+  gtk_window_set_focus_on_map (GTK_WINDOW (incoming_call_popup), FALSE);
 
   gtk_widget_show_all (incoming_call_popup);
 
