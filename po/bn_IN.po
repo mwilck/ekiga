@@ -5,25 +5,25 @@
 #
 # INDRANIL DAS GUPTA <indradg@cal.vsnl.net.in>, 2003.
 # Sankarshan Mukhopadhyay <sankarshan@randomink.org>, 2008.
-# Runa Bhattacharjee <runab@redhat.com>, 2008, 2009, 2010.
+# Runa Bhattacharjee <runab@redhat.com>, 2008, 2009, 2010, 2011.
 msgid ""
 msgstr ""
 "Project-Id-Version: bn_IN\n"
-"Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?"
-"product=ekiga&component=general\n"
-"POT-Creation-Date: 2010-04-12 11:18+0000\n"
-"PO-Revision-Date: 2010-04-12 20:50+0530\n"
-"Last-Translator: Runa Bhattacharjee <runab@redhat.com>\n"
-"Language-Team: Bengali INDIA <anubad@lists.ankur.org.in>\n"
+"Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug."
+"cgi?product=ekiga&component=general\n"
+"POT-Creation-Date: 2011-03-10 11:37+0000\n"
+"PO-Revision-Date: 2011-03-21 20:41+0530\n"
+"Last-Translator: \n"
+"Language-Team: Bengali (India) <anubad@lists.ankur.org.in>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Generator: KBabel 1.11.4\n"
+"X-Generator: Lokalize 1.1\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
 #. Application name
-#: ../ekiga.desktop.in.in.h:1 ../src/gui/main_window.cpp:4382
-#: ../src/gui/main_window.cpp:4384
+#: ../ekiga.desktop.in.in.h:1 ../src/gui/main_window.cpp:4722
+#: ../src/gui/main_window.cpp:4724
 msgid "Ekiga Softphone"
 msgstr "Ekiga Softphone"
 
@@ -32,13 +32,13 @@ msgid "IP Telephony, VoIP and Video Conferencing"
 msgstr "IP টেলিফোনি, VoIP ও ভিডিও সম্মেলন"
 
 #: ../ekiga.desktop.in.in.h:3
-#, fuzzy
 msgid "Talk to and see people over the Internet"
-msgstr "ইন্টারনেটের সাহায্যে যোগাযোগস্থাপন করুন"
+msgstr "ইন্টারনেটের সাহায্যে অন্যান্যদের সাথে যোগাযোগ স্থাপন করুন"
 
 #: ../ekiga.schemas.in.in.h:1
-msgid "0: 56Kbps, 1: ISDN, 2:DSL, 3: LAN, 4: Custom"
-msgstr "0: ৫৬কিলোবাইট/সেকেন্ড, 1: ISDN, 2:DSL, 3: LAN, 4: স্বনির্ধারিত"
+#| msgid "0: 56Kbps, 1: ISDN, 2:DSL, 3: LAN, 4: Custom"
+msgid "0: 56kbps, 1: ISDN, 2: DSL128, 3: DSL512, 4: LAN, 5: Custom"
+msgstr "0: 56kbps, 1: ISDN, 2: DSL128, 3: DSL512, 4: LAN, 5: স্বনির্ধারিত"
 
 #: ../ekiga.schemas.in.in.h:2
 msgid ""
@@ -71,11 +71,10 @@ msgid "Audio output device"
 msgstr "অডিও আউটপুট ডিভাইস"
 
 #: ../ekiga.schemas.in.in.h:8
-#, fuzzy
 msgid "Automatic answer"
-msgstr "অনুমোদনের নাম:"
+msgstr "স্বয়ংক্রিয় উত্তর"
 
-#: ../ekiga.schemas.in.in.h:9 ../src/gui/preferences.cpp:526
+#: ../ekiga.schemas.in.in.h:9 ../src/gui/preferences.cpp:503
 msgid ""
 "Automatically reject or forward incoming calls if no answer is given after "
 "the specified amount of time (in seconds)"
@@ -88,10 +87,19 @@ msgid "Calls history"
 msgstr "কল সংক্রান্ত পূর্ববর্তী তথ্য"
 
 #: ../ekiga.schemas.in.in.h:11
-msgid "Change the main window panel section"
-msgstr "প্রধান উইন্ডোর প্যানেল বিভাগে পরিবর্তন করুন"
+#| msgid "Position on the screen of the main window"
+msgid "Change the panel section of the main window"
+msgstr "প্রধান উইন্ডোর মধ্যে প্যানেল বিভাগ পরিবর্তন করুন"
 
 #: ../ekiga.schemas.in.in.h:12
+msgid ""
+"Change the panel section of the main window (0=Contacts, 1=Dialpad, 2=Call "
+"history)"
+msgstr ""
+"প্রধান উইন্ডোর মধ্যে প্যানেল বিভাগ পরিবর্তন করুন (0=পরিচিতি, 1=ডায়াল-প্যাড, 2=কল "
+"সংক্রান্ত পূর্ববর্তী তথ্য)"
+
+#: ../ekiga.schemas.in.in.h:13
 msgid ""
 "Connection will be established in Fast Start mode. Fast Start is a new way "
 "to start calls faster that was introduced in H.323v2. It is not supported by "
@@ -102,57 +110,55 @@ msgstr ""
 "উপলব্ধ করা হয়েছিল ও  Netmeeting দ্বারা এটি সমর্থিত নয়। ফাস্ট স্টার্ট ও H.245 "
 "টানেলিং একযোগে ব্যবহারে Netmeeting-র কিছু সংস্করণ বিকল হতে পারে।"
 
-#: ../ekiga.schemas.in.in.h:13
+#: ../ekiga.schemas.in.in.h:14
 msgid "Contact long status"
 msgstr "সংযোগের অবস্থা"
 
-#: ../ekiga.schemas.in.in.h:14
+#: ../ekiga.schemas.in.in.h:15
 msgid "Contact short status"
 msgstr "পরিচিতির অবস্থার সংক্ষিপ্ত সূচনা"
 
-#: ../ekiga.schemas.in.in.h:15
+#: ../ekiga.schemas.in.in.h:16
 msgid "DTMF sending"
 msgstr "DTMF পাঠানো হচ্ছে"
 
-#: ../ekiga.schemas.in.in.h:16
+#: ../ekiga.schemas.in.in.h:17
 msgid "Disable video hardware acceleration"
 msgstr "ভিডিও হার্ডওয়্যার অ্যাকসেলেরেশন নিষ্ক্রিয় করুন"
 
-#: ../ekiga.schemas.in.in.h:17 ../src/gui/main_window.cpp:3618
+#: ../ekiga.schemas.in.in.h:18 ../src/gui/main_window.cpp:3974
 msgid "Display images from your camera device"
 msgstr "ক্যামেরা ডিভাইস থেকে ছবি প্রদর্শন করা হবে"
 
-#: ../ekiga.schemas.in.in.h:18
+#: ../ekiga.schemas.in.in.h:19
 msgid "Enable 'Fast Start'"
 msgstr "'দ্রুত আরম্ভ' পদ্ধতি সক্রিয় করা হবে"
 
-#: ../ekiga.schemas.in.in.h:19
+#: ../ekiga.schemas.in.in.h:20
 msgid "Enable H.245 tunneling"
 msgstr "H.245 টানেলিং সক্রিয় করুন"
 
-#: ../ekiga.schemas.in.in.h:20
-#, fuzzy
-msgid "Enable STUN network detection"
-msgstr "STUN নেটওয়ার্ক সনাক্তরণ ব্যবস্থা নিষ্ক্রিয় করুন"
-
 #: ../ekiga.schemas.in.in.h:21
+msgid "Enable STUN network detection"
+msgstr "STUN নেটওয়ার্ক সনাক্তকরণ ব্যবস্থা সক্রিয় করুন"
+
+#: ../ekiga.schemas.in.in.h:22
 msgid "Enable early H.245"
 msgstr "শীঘ্র H.245 সক্রিয় করুন"
 
-#: ../ekiga.schemas.in.in.h:22
+#: ../ekiga.schemas.in.in.h:23
 msgid "Enable echo cancelation"
 msgstr "প্রতিধ্বনি বাতিল করার ব্যবস্থা সক্রিয় করুন"
 
-#: ../ekiga.schemas.in.in.h:23
+#: ../ekiga.schemas.in.in.h:24
 msgid "Enable silence detection"
 msgstr "নৈশব্দ সনাক্তকরণ সক্রিয় করুন"
 
-#: ../ekiga.schemas.in.in.h:24 ../src/gui/preferences.cpp:502
-#, fuzzy
+#: ../ekiga.schemas.in.in.h:25 ../src/gui/preferences.cpp:480
 msgid "Enable the automatic network setup resulting from the STUN test"
-msgstr "STUN পরীক্ষার ফলে স্বয়ংক্রিয়ভাবে নেটওয়ার্ক নির্ধারণ ব্যবস্থা নিষ্ক্রিয় করুন"
+msgstr "STUN পরীক্ষার ফলে স্বয়ংক্রিয়ভাবে নেটওয়ার্ক নির্ধারণ ব্যবস্থা সক্রিয় করুন"
 
-#: ../ekiga.schemas.in.in.h:25
+#: ../ekiga.schemas.in.in.h:26
 msgid ""
 "Enter the number of seconds after which Ekiga should try refreshing the NAT "
 "binding when STUN is being used"
@@ -160,31 +166,31 @@ msgstr ""
 "STUN ব্যবহারকালে Ekiga দ্বারা NAT বাইন্ডিং পুনরায় প্রচেষ্টার পূর্বে কত সময় (সেকেন্ডে "
 "ব্যক্ত) অপেক্ষা করা হবে"
 
-#: ../ekiga.schemas.in.in.h:26 ../src/gui/preferences.cpp:469
+#: ../ekiga.schemas.in.in.h:27 ../src/gui/preferences.cpp:449
 msgid "Enter your full name"
 msgstr "আপনার নাম লিখুন"
 
-#: ../ekiga.schemas.in.in.h:27
+#: ../ekiga.schemas.in.in.h:28
 msgid "Forward calls to host"
 msgstr "সব কল হোস্টে পাঠানো হবে"
 
-#: ../ekiga.schemas.in.in.h:28
+#: ../ekiga.schemas.in.in.h:29
 msgid "Forward calls to the given host if busy"
 msgstr "ব্যস্ত থাকলে সুনির্দিষ্ট হোস্টের উদ্দেশ্যে কল অনুবর্তন করা হবে"
 
-#: ../ekiga.schemas.in.in.h:29
+#: ../ekiga.schemas.in.in.h:30
 msgid "Forward calls to the given host if no answer"
 msgstr "উত্তর না পাওয়া গেলে সুনির্দিষ্ট হোস্টের উদ্দেশ্যে কল অনুবর্তন করা হবে"
 
-#: ../ekiga.schemas.in.in.h:30 ../src/gui/preferences.cpp:1022
+#: ../ekiga.schemas.in.in.h:31 ../src/gui/preferences.cpp:980
 msgid "Frame Rate"
 msgstr "ফ্রেমের হার"
 
-#: ../ekiga.schemas.in.in.h:31
+#: ../ekiga.schemas.in.in.h:32
 msgid "Full name"
 msgstr "সম্পূর্ণ নাম"
 
-#: ../ekiga.schemas.in.in.h:32 ../src/gui/preferences.cpp:487
+#: ../ekiga.schemas.in.in.h:33 ../src/gui/preferences.cpp:466
 msgid ""
 "If enabled, Ekiga will start hidden provided that the notification area is "
 "present in the GNOME panel"
@@ -192,7 +198,7 @@ msgstr ""
 "সক্রিয় হলে, GNOME প্যানেলের মধ্যে বিজ্ঞপ্তিস্থল উপস্থিত থাকলে আড়াল করা অবস্থায় Ekiga "
 "আরম্ভ করা হবে"
 
-#: ../ekiga.schemas.in.in.h:33
+#: ../ekiga.schemas.in.in.h:34
 msgid ""
 "If enabled, all incoming calls will be forwarded to the host that is "
 "specified in the field below"
@@ -200,7 +206,7 @@ msgstr ""
 "সক্রিয় থাকলে, নিম্নলিখিত ক্ষেত্রের বৈশিষ্ট্য অনুযায়ী নির্ধারিত হোস্টে সকল কল অনুবর্তন "
 "করা হবে"
 
-#: ../ekiga.schemas.in.in.h:34
+#: ../ekiga.schemas.in.in.h:35
 msgid ""
 "If enabled, all incoming calls will be forwarded to the host that is "
 "specified in the field below if you already are in a call or if you are in "
@@ -209,7 +215,7 @@ msgstr ""
 "সক্রিয় থাকলে, কোনো কলে ব্যস্ত থাকলে অথবা 'বিঘ্নিত করা হবে না' মোডে চিহ্নিত থাকলে "
 "নিম্নলিখিত ক্ষেত্রের বৈশিষ্ট্য অনুযায়ী নির্ধারিত হোস্টে সকল কল অনুবর্তন করা হবে"
 
-#: ../ekiga.schemas.in.in.h:35
+#: ../ekiga.schemas.in.in.h:36
 msgid ""
 "If enabled, all incoming calls will be forwarded to the host that is "
 "specified in the field below if you do not answer the call"
@@ -217,45 +223,42 @@ msgstr ""
 "সক্রিয় থাকলে, কোনো কলের উত্তর দিতে ইচ্ছুক না হলে নিম্নলিখিত ক্ষেত্রের বৈশিষ্ট্য "
 "অনুযায়ী নির্ধারিত হোস্টে সকল কল অনুবর্তন করা হবে"
 
-#: ../ekiga.schemas.in.in.h:36 ../src/gui/preferences.cpp:527
+#: ../ekiga.schemas.in.in.h:37 ../src/gui/preferences.cpp:504
 msgid "If enabled, automatically answer incoming calls"
-msgstr ""
+msgstr "সক্রিয় থাকলে, আগত কলগুলির স্বয়ংক্রিয়ভাবে উত্তর দেওয়া হবে"
 
-#: ../ekiga.schemas.in.in.h:37 ../src/gui/preferences.cpp:489
+#: ../ekiga.schemas.in.in.h:38 ../src/gui/preferences.cpp:468
 msgid "If enabled, offline contacts will be shown in the roster"
 msgstr "সক্রিয় হলে, অফ-লাইন পরিচিতদের নাম পরিচিতি তালিকা প্রদর্শিত হবে"
 
-#: ../ekiga.schemas.in.in.h:38
+#: ../ekiga.schemas.in.in.h:39 ../src/gui/preferences.cpp:946
 msgid "If enabled, use echo cancelation"
 msgstr "সক্রিয় হলে, স্বয়ংক্রিয় প্রতিধ্বনি বাতিল ব্যবস্থা প্রয়োগ করা হবে"
 
-#: ../ekiga.schemas.in.in.h:39
+#: ../ekiga.schemas.in.in.h:40 ../src/gui/preferences.cpp:944
 msgid "If enabled, use silence detection with the codecs supporting it"
 msgstr "সক্রিয় হলে, সমর্থনকারী কোডেকের ক্ষেত্রে নিঃশব্দ অবস্থা সনাক্ত করা হবে"
 
-#: ../ekiga.schemas.in.in.h:40
-msgid "Kind of network selected in the druid"
-msgstr "druid-র মধ্যে নির্বাচিত নেটওয়ার্কের ধরন"
-
 #: ../ekiga.schemas.in.in.h:41
+#| msgid "Kind of network selected in the druid"
+msgid "Kind of network selected in the assistant"
+msgstr "সহায়ক ব্যবস্থার মধ্যে নির্বাচিত নেটওয়ার্কের ধরন"
+
+#: ../ekiga.schemas.in.in.h:42
 msgid "LDAP servers"
 msgstr "LDAP সার্ভার"
 
-#: ../ekiga.schemas.in.in.h:42
+#: ../ekiga.schemas.in.in.h:43
 msgid "List of configured LDAP servers"
 msgstr "কনফিগার করা LDAP সার্ভারের তালিকা"
 
-#: ../ekiga.schemas.in.in.h:43
+#: ../ekiga.schemas.in.in.h:44
 msgid "List of folded groups in the roster"
 msgstr "রোস্টার-এ অন্তর্ভুক্ত ফোল্ডেড গ্রুপের তালিকা"
 
-#: ../ekiga.schemas.in.in.h:44
+#: ../ekiga.schemas.in.in.h:45
 msgid "Listen port"
 msgstr "অপেক্ষার জন্য ব্যবহৃত পোর্ট"
-
-#: ../ekiga.schemas.in.in.h:45
-msgid "Local video window size"
-msgstr "স্থানীয় ভিডিও প্রদর্শনের জন্য উইন্ডোর মাপ"
 
 #: ../ekiga.schemas.in.in.h:46
 msgid "Maximum RX video bitrate"
@@ -281,19 +284,19 @@ msgstr "প্রত্যুত্তোর প্রাপ্তির সম�
 msgid "Outbound Proxy"
 msgstr "বাহিরমূখী প্রক্সি"
 
-#: ../ekiga.schemas.in.in.h:52 ../src/gui/preferences.cpp:496
+#: ../ekiga.schemas.in.in.h:52 ../src/gui/preferences.cpp:474
 msgid "Place windows displaying video above other windows during calls"
 msgstr "কল চলাকালে, ভিডিওর উইন্ডোগুলি অন্যান্য উইন্ডোর উপরে প্রদর্শন করা হবে"
 
-#: ../ekiga.schemas.in.in.h:53 ../src/gui/preferences.cpp:372
+#: ../ekiga.schemas.in.in.h:53 ../src/gui/preferences.cpp:366
 msgid "Play busy tone"
 msgstr "ব্যস্ত চিহ্নকারী শব্দ বাজানো হবে"
 
-#: ../ekiga.schemas.in.in.h:54 ../src/gui/preferences.cpp:362
+#: ../ekiga.schemas.in.in.h:54 ../src/gui/preferences.cpp:356
 msgid "Play ring tone"
 msgstr "রিং টোন বাজান"
 
-#: ../ekiga.schemas.in.in.h:55 ../src/gui/preferences.cpp:352
+#: ../ekiga.schemas.in.in.h:55 ../src/gui/preferences.cpp:346
 msgid "Play sound on incoming calls"
 msgstr "কল প্রাপ্ত হলে শব্দ বাজিয়ে সূচিত করা হবে"
 
@@ -306,74 +309,89 @@ msgid "Play sound on new voice mail"
 msgstr "ভয়েস-মেইল প্রাপ্ত হলে শব্দ বাজিয়ে সূচিত করা হবে"
 
 #: ../ekiga.schemas.in.in.h:58
-msgid "Position of the local video window"
-msgstr "স্থানীয় ভিডিও উইন্ডোর অবস্থান"
-
-#: ../ekiga.schemas.in.in.h:59
 msgid "Position on the screen of the address book window"
 msgstr "পর্দার মধ্যে ঠিকানা বইয়ের উইন্ডোর অবস্থান"
 
-#: ../ekiga.schemas.in.in.h:60
+#: ../ekiga.schemas.in.in.h:59
 msgid "Position on the screen of the audio settings window"
 msgstr "পর্দার মধ্যে অডিও সংক্রান্ত বৈশিষ্ট্যের উইন্ডোর অবস্থান"
 
-#: ../ekiga.schemas.in.in.h:61
+#: ../ekiga.schemas.in.in.h:60
 msgid "Position on the screen of the chat window"
 msgstr "পর্দার মধ্যে আলাপন উইন্ডোর অবস্থান"
 
-#: ../ekiga.schemas.in.in.h:62
+#: ../ekiga.schemas.in.in.h:61
 msgid "Position on the screen of the druid window"
 msgstr "পর্দার মধ্যে druid উইন্ডোর অবস্থান"
 
-#: ../ekiga.schemas.in.in.h:63
-msgid "Position on the screen of the log window"
-msgstr "পর্দার মধ্যে লগ উইন্ডোর অবস্থান"
-
-#: ../ekiga.schemas.in.in.h:64
+#: ../ekiga.schemas.in.in.h:62
 msgid "Position on the screen of the main window"
 msgstr "পর্দার মধ্যে প্রধান উইন্ডোর অবস্থান"
 
-#: ../ekiga.schemas.in.in.h:65
+#: ../ekiga.schemas.in.in.h:63
 msgid "Position on the screen of the preferences window"
 msgstr "পর্দার মধ্যে পছন্দসই বৈশিষ্ট্যের উইন্ডোর অবস্থান"
 
-#: ../ekiga.schemas.in.in.h:66
+#: ../ekiga.schemas.in.in.h:64
 msgid "Position on the screen of the video settings window"
 msgstr "পর্দার মধ্যে ভিডিও সংক্রান্ত বৈশিষ্ট্যের উইন্ডোর অবস্থান"
 
-#: ../ekiga.schemas.in.in.h:67
+#: ../ekiga.schemas.in.in.h:65
 msgid "Remote video window position"
 msgstr "দূরবর্তী ভিডিও উইন্ডোর অবস্থান"
 
-#: ../ekiga.schemas.in.in.h:68
+#: ../ekiga.schemas.in.in.h:66
 msgid "Remote video window size"
 msgstr "দূরবর্তী ভিডিও উইন্ডোর মাপ"
 
-#: ../ekiga.schemas.in.in.h:69
+#: ../ekiga.schemas.in.in.h:67
 msgid "Select an alternative audio output device to use for sound events."
 msgstr "শব্দ সহ ইভেন্টের জন্য বিকল্প অডিও আউটপুট ডিভাইস নির্বাচন করুন।"
 
-#: ../ekiga.schemas.in.in.h:70 ../src/gui/preferences.cpp:787
+#: ../ekiga.schemas.in.in.h:68 ../src/gui/preferences.cpp:755
 msgid "Select the audio input device to use"
 msgstr "ব্যবহারের জন্য অডিও ইনপুট ডিভাইস নির্বাচন করুন"
 
-#: ../ekiga.schemas.in.in.h:71 ../src/gui/preferences.cpp:780
+#: ../ekiga.schemas.in.in.h:69 ../src/gui/preferences.cpp:748
 msgid "Select the audio output device to use"
 msgstr "ব্যবহারের জন্য অডিও আউটপুট ডিভাইস নির্বাচন করুন"
 
-#: ../ekiga.schemas.in.in.h:72 ../src/gui/preferences.cpp:940
-msgid ""
-"Select the format for video cameras (does not apply to most USB cameras)"
+#: ../ekiga.schemas.in.in.h:70 ../src/gui/preferences.cpp:905
+msgid "Select the format for video cameras (does not apply to most USB cameras)"
 msgstr "ভিডিও ক্যামেরার বিন্যাস বেছে নিন (অধিকাংশ USB ক্যামেরার ক্ষেত্রে প্রযোজ্য নয়)"
+
+#: ../ekiga.schemas.in.in.h:71
+#| msgid ""
+#| "This allows you to set the mode for sending DTMFs. The values can be "
+#| "\"RFC2833\" (0), \"INFO\" (1)"
+msgid ""
+"Select the mode for sending DTMFs. The values can be 0 (for \"RFC2833\") and "
+"1 (for \"INFO\")"
+msgstr ""
+"DTMF প্রেরণের মোড নির্ধারণ করুন। সম্ভাব্য মান হল 0 (\"RFC2833\"-র ক্ষেত্রে), ও 1 "
+"(\"INFO\"-র ক্ষেত্রে)"
+
+#: ../ekiga.schemas.in.in.h:72
+#| msgid ""
+#| "This allows you to set the mode for sending DTMFs. The values can be "
+#| "\"String\" (0), \"Tone\" (1), \"RFC2833\" (2), \"Q.931\" (3) (default is "
+#| "\"String\"). Choosing other values than \"String\" disables the Text Chat"
+msgid ""
+"Select the mode for sending DTMFs. The values can be 0 (for \"String\"), 1 "
+"(for \"Tone\"), 2 (for \"RFC2833\"), or 3 (for \"Q.931\") (default is "
+"\"String\"). Choosing other values than \"String\" disables the Text Chat."
+msgstr ""
+"DTMF প্রেরণের মোড নির্ধারণ করুন। সম্ভাব্য মান 0, (\"String\"-র ক্ষেত্রে), 1 (\"Tone\"-র "
+"ক্ষেত্রে), 2 (\"RFC2833\"-র ক্ষেত্রে), 3 (\"Q.931\"-র ক্ষেত্রে) (ডিফল্ট মান হল "
+"\"String\")। \"String\" ভিন্ন অন্য কোনো মান নির্ধারিত হলে টেক্স চ্যাট নিষ্ক্রিয় হবে।"
 
 #: ../ekiga.schemas.in.in.h:73
 msgid ""
 "Select the transmitted video size: Small (QCIF 176x144) or Large (CIF "
 "352x288)"
-msgstr ""
-"সম্প্রচার করা ভিডিও মাপ নির্বাচন করুন: ছোট (QCIF 176x144) অথবা বড় (CIF 352x288)"
+msgstr "সম্প্রচার করা ভিডিও মাপ নির্বাচন করুন: ছোট (QCIF 176x144) অথবা বড় (CIF 352x288)"
 
-#: ../ekiga.schemas.in.in.h:74 ../src/gui/preferences.cpp:932
+#: ../ekiga.schemas.in.in.h:74 ../src/gui/preferences.cpp:897
 msgid ""
 "Select the video input device to use. If an error occurs when using this "
 "device a test picture will be transmitted."
@@ -385,7 +403,7 @@ msgstr ""
 msgid "Show offline contacts"
 msgstr "অফ-লাইন অবস্থায় ধার্য পরিচিতিদের তালিকা প্রদর্শন করা হবে"
 
-#: ../ekiga.schemas.in.in.h:76 ../src/gui/main_window.cpp:3247
+#: ../ekiga.schemas.in.in.h:76 ../src/gui/main_window.cpp:3607
 msgid "Show the call panel"
 msgstr "কলের প্যানেল প্রদর্শন করা হবে"
 
@@ -445,7 +463,7 @@ msgstr "টেম্পোরাল স্পেশিয়াল ট্রেড 
 msgid "The Audio Codecs List"
 msgstr "অডিও কোডেকের তালিকা"
 
-#: ../ekiga.schemas.in.in.h:89 ../src/gui/preferences.cpp:737
+#: ../ekiga.schemas.in.in.h:89 ../src/gui/preferences.cpp:707
 msgid "The SIP Outbound Proxy to use for outgoing calls"
 msgstr "বাহিরমুখী কলের জন্য ব্যবহৃত SIP Outbound Proxy নির্বাচন করুন"
 
@@ -462,8 +480,16 @@ msgstr ""
 "মধ্যে পথ প্রস্তুত করা সম্ভব"
 
 #: ../ekiga.schemas.in.in.h:92
-msgid "The Video Codecs List"
-msgstr "ভিডিও কোডেকের তালিকা"
+msgid ""
+"The Type of Service (TOS) byte on outgoing RTP IP packets. This byte is used "
+"by the network to provide some level of Quality of Service (QoS). Default "
+"value 184 (0xB8) correspond to Expedited Forwarding (EF) PHB as defined in "
+"RFC 3246."
+msgstr ""
+"বাহিরমুখী RTP IP প্যাকেটের ক্ষেত্রে প্রযোজ্য টাইপ অফ সার্ভিস (TOS) বাইট। এই বাইটের "
+"সাহায্যে নেটওয়ার্ক দ্বারা কিছু মাত্রার কোয়ালিটি অফ সার্ভিস (QoS) উপলব্ধ করা হয়। ডিফল্ট "
+"মান 184 (0xB8) দ্বারা RFC 3246-র ব্যাখ্যা অনুযায়ী এক্সপিডিয়েটেড ফরওয়ার্ডিং (EF) চিহ্নিত "
+"করা হয়।"
 
 #: ../ekiga.schemas.in.in.h:93
 msgid "The accounts list"
@@ -496,8 +522,7 @@ msgid ""
 msgstr "সক্রিয় থাকলে নতুন বার্তা গ্রহণ করার সময় এই ধ্বনি বাজানো হবে"
 
 #: ../ekiga.schemas.in.in.h:99
-msgid ""
-"The chosen sound will be played when a new voice mail is received, if enabled"
+msgid "The chosen sound will be played when a new voice mail is received, if enabled"
 msgstr "সক্রিয় হলে, নতুন ভয়েস মেইল প্রাপ্ত হলে নির্বাচিত শব্দ বাজানো হবে"
 
 #: ../ekiga.schemas.in.in.h:100
@@ -509,12 +534,15 @@ msgid "The default video view"
 msgstr "ডিফল্ট ভিডিও দর্শনের ধরন"
 
 #: ../ekiga.schemas.in.in.h:102
+#| msgid ""
+#| "The default video view (0: Local, 1: Remote, 2: Both layered, 3: Both "
+#| "with local video in a separate window, 4: Both)"
 msgid ""
-"The default video view (0: Local, 1: Remote, 2: Both layered, 3: Both with "
-"local video in a separate window, 4: Both)"
+"The default video view (0: Local, 1: Remote, 2: Both, 3: Both in a separate "
+"window)"
 msgstr ""
 "ডিফল্ট ভিডিও দর্শনের ধরন (0: স্থানীয়, 1: দূরবর্তী, 2: উভয় স্তর বিশিষ্ট, 3: উভয়, "
-"কিন্তু স্থানীয় ভিডিওর জন্য একটি পৃথক উইন্ডো ব্যবহার করা হবে, 4: উভয়)"
+"কিন্তু স্থানীয় ভিডিওর জন্য একটি পৃথক উইন্ডো ব্যবহার করা হবে)"
 
 #: ../ekiga.schemas.in.in.h:103
 msgid "The dial tone sound"
@@ -524,11 +552,10 @@ msgstr "ডায়াল টোনের ধ্বনি"
 msgid "The history of the 100 last calls"
 msgstr "পূর্ববর্তী ১০০-টি কল সম্পর্কিত তথ্য"
 
-#: ../ekiga.schemas.in.in.h:105 ../src/gui/preferences.cpp:686
-#: ../src/gui/preferences.cpp:740
+#: ../ekiga.schemas.in.in.h:105 ../src/gui/preferences.cpp:662
+#: ../src/gui/preferences.cpp:710
 msgid "The host where calls should be forwarded if call forwarding is enabled"
-msgstr ""
-"কল অনুবর্তনের ব্যবস্থা সক্রিয় করা থাকলে, যে হোস্টের উদ্দেশ্যে কল অনুবর্তন করা হবে"
+msgstr "কল অনুবর্তনের ব্যবস্থা সক্রিয় করা থাকলে, যে হোস্টের উদ্দেশ্যে কল অনুবর্তন করা হবে"
 
 #: ../ekiga.schemas.in.in.h:106
 msgid "The incoming call sound"
@@ -564,7 +591,7 @@ msgstr ""
 "সংখ্যাগুলি তৎক্ষনাৎ পরিবর্তন করা হবে (নির্বাচিত কোডেকের উপর নির্ভরশীল) ও সর্বনিম্ন "
 "পরিমাণের চেয়ে বেশি মাপে ধার্য করা হবে।"
 
-#: ../ekiga.schemas.in.in.h:111
+#: ../ekiga.schemas.in.in.h:111 ../src/gui/preferences.cpp:948
 msgid "The maximum jitter buffer size for audio reception (in ms)"
 msgstr "অডিও গ্রহণের উদ্দেশ্যে jitter বাফারের সর্বাধিক মাপ (মিলিসেকেন্ডে ধার্য)"
 
@@ -603,14 +630,10 @@ msgstr ""
 "করা আবশ্যক।"
 
 #: ../ekiga.schemas.in.in.h:117
-msgid "The position of the local video window"
-msgstr "স্থানীয় ভিডিও উইন্ডোর অবস্থান"
-
-#: ../ekiga.schemas.in.in.h:118
 msgid "The position of the remote video window"
 msgstr "দূরবর্তী ভিডিও উইন্ডোর অবস্থান"
 
-#: ../ekiga.schemas.in.in.h:119
+#: ../ekiga.schemas.in.in.h:118
 msgid ""
 "The range of TCP ports that Ekiga will use for the H.323 H.245 channel. This "
 "port range has no effect if both participants to the conference are using "
@@ -620,23 +643,19 @@ msgstr ""
 "অংশগ্রহকারী দ্বারা H.245 টানেলিং ব্যবহার করা হলে পোর্টের এই সীমা দ্বারা কোনো "
 "প্রভাব সৃষ্টি হবে না।"
 
-#: ../ekiga.schemas.in.in.h:120
+#: ../ekiga.schemas.in.in.h:119
 msgid "The range of UDP ports that Ekiga will use."
 msgstr "Ekiga দ্বারা ব্যবহারযোগ্য UDP পোর্টের সীমা।"
 
-#: ../ekiga.schemas.in.in.h:121
+#: ../ekiga.schemas.in.in.h:120
 msgid "The short status information"
 msgstr "অবস্থা সম্পর্কিত সংক্ষিপ্ত সূচনা"
 
-#: ../ekiga.schemas.in.in.h:122
-msgid "The size of the local video window"
-msgstr "স্থানীয় ভিডিও উইন্ডোর মাপ"
-
-#: ../ekiga.schemas.in.in.h:123
+#: ../ekiga.schemas.in.in.h:121
 msgid "The size of the remote video window"
 msgstr "দূরবর্তী ভিডিও উইন্ডোর মাপ"
 
-#: ../ekiga.schemas.in.in.h:124
+#: ../ekiga.schemas.in.in.h:122
 msgid ""
 "The sound that will be played at the end of calls or when calling somebody "
 "who is busy, if enabled"
@@ -644,74 +663,53 @@ msgstr ""
 "বৈশিষ্ট্য সক্রিয় করা হলে, কলের সমাপ্তির পরে অথবা কল করা ব্যক্তি ব্যস্ত থাকলে চিহ্নিত "
 "শব্দ বাজানো হবে"
 
-#: ../ekiga.schemas.in.in.h:125
+#: ../ekiga.schemas.in.in.h:123
 msgid "The sound that will be played on incoming calls, if enabled"
 msgstr "সক্রিয় হলে‌, আগত কলের জন্য যে শব্দ বাজানো হবে"
 
-#: ../ekiga.schemas.in.in.h:126
+#: ../ekiga.schemas.in.in.h:124
 msgid "The sound that will be played when calling somebody, if enabled"
 msgstr "সক্রিয় হলে‌, কোনো ব্যক্তিকে কল করার সময় যে শব্দ বাজানো হবে"
 
-#: ../ekiga.schemas.in.in.h:127
-msgid ""
-"The sound that will be played when there is a new instant message, if enabled"
+#: ../ekiga.schemas.in.in.h:125
+msgid "The sound that will be played when there is a new instant message, if enabled"
 msgstr "সক্রিয় হলে‌, নতুন ইন্সট্যান্ট বার্তা প্রাপ্ত হলে যে শব্দ বাজানো হবে"
 
-#: ../ekiga.schemas.in.in.h:128
-msgid ""
-"The sound that will be played when there is a new voice mail, if enabled"
+#: ../ekiga.schemas.in.in.h:126
+msgid "The sound that will be played when there is a new voice mail, if enabled"
 msgstr "সক্রিয় হলে‌, নতুন ভয়েস মেইল প্রাপ্ত হলে যে শব্দ বাজানো হবে"
 
-#: ../ekiga.schemas.in.in.h:129 ../src/gui/preferences.cpp:936
+#: ../ekiga.schemas.in.in.h:127 ../src/gui/preferences.cpp:901
 msgid "The video channel number to use (to select camera, tv or other sources)"
 msgstr ""
 "ব্যবহারযোগ্য ভিডিও চ্যানেলের সংখ্যা (ক্যামেরা, টিভি অথবা অন্যান্য উৎস নির্বাচনের জন্য)"
 
-#: ../ekiga.schemas.in.in.h:130
+#: ../ekiga.schemas.in.in.h:128
 msgid "The video codecs list"
 msgstr "ভিডিও কোডেকের তালিকা"
 
-#: ../ekiga.schemas.in.in.h:131
+#: ../ekiga.schemas.in.in.h:129
 msgid "The video view before having switched to fullscreen"
 msgstr "পূর্ণ পর্দা জুড়ে প্রদর্শনের পূর্বে ভিডিও প্রদর্শনের ক্ষেত্র"
 
-#: ../ekiga.schemas.in.in.h:132
+#: ../ekiga.schemas.in.in.h:130
 msgid ""
 "The video view before having switched to fullscreen (same values as "
 "video_view)"
 msgstr ""
 "পূর্ণ পর্দা জুড়ে প্রদর্শনের পূর্বে ভিডিও প্রদর্শনের ক্ষেত্র (video_view-র সমান মাপ)"
 
-#: ../ekiga.schemas.in.in.h:133
+#: ../ekiga.schemas.in.in.h:131
 msgid "The zoom value"
 msgstr "প্রদর্শনের মাত্রা"
 
-#: ../ekiga.schemas.in.in.h:134
+#: ../ekiga.schemas.in.in.h:132
 msgid ""
 "The zoom value in percent to apply to images displayed in the main GUI (can "
 "be 50, 100, or 200)"
-msgstr ""
-"প্রধান GUI-র মধ্যে প্রদর্শিত ছবির মাপ, শতাংশে ধার্য (যেমন ৫০, ১০০, অথবা ২০০)"
+msgstr "প্রধান GUI-র মধ্যে প্রদর্শিত ছবির মাপ, শতাংশে ধার্য (যেমন ৫০, ১০০, অথবা ২০০)"
 
-#: ../ekiga.schemas.in.in.h:135
-msgid ""
-"This allows you to set the mode for sending DTMFs. The values can be "
-"\"RFC2833\" (0), \"INFO\" (1)"
-msgstr ""
-"এর সাহায্যে DTMF প্রেরণের মোড নির্ধারণ করা যাবে। সম্ভাব্য মান হল \"RFC2833\" (0), "
-"\"INFO\" (1)"
-
-#: ../ekiga.schemas.in.in.h:136
-msgid ""
-"This allows you to set the mode for sending DTMFs. The values can be \"String"
-"\" (0), \"Tone\" (1), \"RFC2833\" (2), \"Q.931\" (3) (default is \"String"
-"\"). Choosing other values than \"String\" disables the Text Chat"
-msgstr ""
-"এর সাহায্যে DTMF প্রেরণের মোড নির্ধারণ করা যাবে। সম্ভাব্য মান \"String\" (0), "
-"\"Tone\" (1), \"RFC2833\" (2), \"Q.931\" (3) (ডিফল্ট মান হল \"String\")। "
-"\"String\" ভিন্ন অন্য কোনো মান নির্ধারিত হলে টেক্স চ্যাট নিষ্ক্রিয় হবে"
-
-#: ../ekiga.schemas.in.in.h:137 ../src/gui/preferences.cpp:698
+#: ../ekiga.schemas.in.in.h:133 ../src/gui/preferences.cpp:671
 msgid ""
 "This enables H.245 Tunneling mode. In H.245 Tunneling mode H.245 messages "
 "are encapsulated into the H.225 channel (port 1720). This saves one TCP "
@@ -725,11 +723,11 @@ msgstr ""
 "হয়েছিল ও  Netmeeting দ্বারা এটি সমর্থিত নয়। ফাস্ট স্টার্ট ও H.245 টানেলিং একযোগে "
 "ব্যবহারে Netmeeting-র কিছু সংস্করণ বিকল হতে পারে।"
 
-#: ../ekiga.schemas.in.in.h:138 ../src/gui/preferences.cpp:700
+#: ../ekiga.schemas.in.in.h:134 ../src/gui/preferences.cpp:673
 msgid "This enables H.245 early in the setup"
 msgstr "এর ফলে, প্রস্তুতির প্রারম্ভিক ধাপে H.245 সক্রিয় করা হবে"
 
-#: ../ekiga.schemas.in.in.h:139
+#: ../ekiga.schemas.in.in.h:135
 msgid ""
 "This key disables DirectX (on win32) and XVideo (on Linux) video hardware "
 "acceleration"
@@ -737,31 +735,35 @@ msgstr ""
 "এই কি-র ফলে, DirectX (win32-র ক্ষেত্রে) ও XVideo (Linux-র ক্ষেত্রে) ভিডিও "
 "হার্ডওয়্যার গতিবর্ধন ব্যবস্থা নিষ্ক্রিয় করা হবে"
 
-#: ../ekiga.schemas.in.in.h:140
+#: ../ekiga.schemas.in.in.h:136
+msgid "Type of Service (TOS) byte on outgoing RTP IP packets"
+msgstr "বাহিরমুখী RTP IP প্যাকেটের ক্ষেত্রে প্রযোজ্য টাইপ অফ সার্ভিস (TOS) বাইট।"
+
+#: ../ekiga.schemas.in.in.h:137
 msgid "UDP port range"
 msgstr "UDP পোর্টের সীমা"
 
-#: ../ekiga.schemas.in.in.h:141
+#: ../ekiga.schemas.in.in.h:138
 msgid "Video channel"
 msgstr "ভিডিও চ্যানেল"
 
-#: ../ekiga.schemas.in.in.h:142
+#: ../ekiga.schemas.in.in.h:139
 msgid "Video format"
 msgstr "ভিডিওর বিন্যাস"
 
-#: ../ekiga.schemas.in.in.h:143 ../src/gui/assistant.cpp:1143
+#: ../ekiga.schemas.in.in.h:140
 msgid "Video input device"
 msgstr "ভিডিও ইনপুট ডিভাইস"
 
-#: ../ekiga.schemas.in.in.h:144
+#: ../ekiga.schemas.in.in.h:141
 msgid "Video preview"
 msgstr "ভিডিওর পূর্বদৃশ্য"
 
-#: ../ekiga.schemas.in.in.h:145
+#: ../ekiga.schemas.in.in.h:142
 msgid "Video size"
 msgstr "ভিডিওর মাপ"
 
-#: ../ekiga.schemas.in.in.h:146
+#: ../ekiga.schemas.in.in.h:143
 msgid ""
 "Whether to prefer to sustain the max. frame rate or lower it possibly in "
 "order to keep a minimum level of (spatial) quality for all frames. 0: "
@@ -775,31 +777,27 @@ msgstr ""
 msgid "_Find"
 msgstr "অনুসন্ধান (_F)"
 
-#: ../lib/engine/components/avahi/avahi-heap.cpp:125
-#: ../lib/engine/components/avahi/avahi-heap.cpp:332
+#: ../lib/engine/components/avahi/avahi-heap.cpp:129
+#: ../lib/engine/components/avahi/avahi-heap.cpp:383
 msgid "Neighbours"
 msgstr "প্রতিবেশি"
 
 #: ../lib/engine/components/call-history/history-book.cpp:137
-#: ../lib/engine/gui/gtk-frontend/call-history-view-gtk.cpp:170
+#: ../lib/engine/gui/gtk-frontend/call-history-view-gtk.cpp:181
 msgid "Clear List"
 msgstr "তালিকা মুছে ফেলুন"
 
-#: ../lib/engine/components/call-history/history-contact.cpp:165
+#: ../lib/engine/components/call-history/history-contact.cpp:171
 msgid "Received"
 msgstr "প্রাপ্ত"
 
-#: ../lib/engine/components/call-history/history-contact.cpp:168
+#: ../lib/engine/components/call-history/history-contact.cpp:174
 msgid "Placed"
 msgstr "সম্পন্ন কল"
 
-#: ../lib/engine/components/call-history/history-contact.cpp:171
+#: ../lib/engine/components/call-history/history-contact.cpp:177
 msgid "Missed"
 msgstr "জবাববিহীন"
-
-#: ../lib/engine/components/gnome-session/gnome-session-main.cpp:157
-msgid "Call in progress"
-msgstr ""
 
 #: ../lib/engine/components/local-roster/local-cluster.cpp:82
 #: ../lib/engine/components/local-roster/local-heap.cpp:117
@@ -816,30 +814,30 @@ msgstr "নতুন পরিচিতি"
 msgid "Unnamed"
 msgstr "নামবিহীন"
 
-#: ../lib/engine/components/local-roster/local-presentity.cpp:215
-#: ../lib/engine/components/opal/opal-account.cpp:350
-#: ../plugins/evolution/evolution-contact.cpp:218
-#: ../plugins/loudmouth/loudmouth-presentity.cpp:151
-#: ../plugins/resource-list/rl-presentity.cpp:206
-#: ../src/gui/main_window.cpp:3205
+#: ../lib/engine/components/local-roster/local-presentity.cpp:220
+#: ../lib/engine/components/opal/opal-account.cpp:373
+#: ../plugins/evolution/evolution-contact.cpp:228
+#: ../plugins/loudmouth/loudmouth-presentity.cpp:157
+#: ../plugins/resource-list/rl-presentity.cpp:212
+#: ../src/gui/main_window.cpp:3565
 msgid "_Edit"
 msgstr "সম্পাদনা (_E)"
 
-#: ../lib/engine/components/local-roster/local-presentity.cpp:217
-#: ../lib/engine/components/opal/opal-account.cpp:352
-#: ../plugins/evolution/evolution-contact.cpp:220
-#: ../plugins/loudmouth/loudmouth-account.cpp:364
-#: ../plugins/loudmouth/loudmouth-presentity.cpp:184
-#: ../plugins/resource-list/rl-presentity.cpp:208
+#: ../lib/engine/components/local-roster/local-presentity.cpp:222
+#: ../lib/engine/components/opal/opal-account.cpp:375
+#: ../plugins/evolution/evolution-contact.cpp:230
+#: ../plugins/loudmouth/loudmouth-account.cpp:393
+#: ../plugins/loudmouth/loudmouth-presentity.cpp:190
+#: ../plugins/resource-list/rl-presentity.cpp:214
 msgid "_Remove"
 msgstr "সরিয়ে ফেলুন (_R)"
 
-#: ../lib/engine/components/local-roster/local-presentity.cpp:242
-#: ../plugins/loudmouth/loudmouth-presentity.cpp:269
+#: ../lib/engine/components/local-roster/local-presentity.cpp:247
+#: ../plugins/loudmouth/loudmouth-presentity.cpp:275
 msgid "Edit roster element"
 msgstr "রোস্টারের বস্তু সম্পাদন করুন"
 
-#: ../lib/engine/components/local-roster/local-presentity.cpp:243
+#: ../lib/engine/components/local-roster/local-presentity.cpp:248
 msgid ""
 "Please fill in this form to change an existing element of ekiga's internal "
 "roster"
@@ -847,37 +845,37 @@ msgstr ""
 "ekiga-র অভ্যন্তরীণ তালিকার মধ্যে উপস্থিত কোনো সামগ্রীর তথ্য পরিবর্তন করার জন্য অনুগ্রহ "
 "করে এই ফর্মটি পূরণ করুন"
 
-#: ../lib/engine/components/local-roster/local-presentity.cpp:245
+#: ../lib/engine/components/local-roster/local-presentity.cpp:250
 #: ../lib/engine/components/local-roster/local-heap.cpp:235
 #: ../lib/engine/components/local-roster/local-heap.cpp:427
-#: ../lib/engine/components/opal/opal-account.cpp:395
-#: ../plugins/evolution/evolution-contact.cpp:314
-#: ../plugins/loudmouth/loudmouth-account.cpp:267
-#: ../plugins/loudmouth/loudmouth-presentity.cpp:272
+#: ../lib/engine/components/opal/opal-account.cpp:418
+#: ../plugins/evolution/evolution-contact.cpp:324
+#: ../plugins/loudmouth/loudmouth-account.cpp:296
+#: ../plugins/loudmouth/loudmouth-bank.cpp:125
+#: ../plugins/loudmouth/loudmouth-presentity.cpp:278
 #: ../plugins/resource-list/rl-cluster.cpp:169
 #: ../plugins/resource-list/rl-heap.cpp:526
-#: ../plugins/resource-list/rl-presentity.cpp:227
+#: ../plugins/resource-list/rl-presentity.cpp:233
 msgid "Name:"
 msgstr "নাম:"
 
-#: ../lib/engine/components/local-roster/local-presentity.cpp:246
+#: ../lib/engine/components/local-roster/local-presentity.cpp:251
 #: ../lib/engine/components/local-roster/local-heap.cpp:244
 #: ../lib/engine/components/local-roster/local-heap.cpp:246
 #: ../plugins/resource-list/rl-cluster.cpp:170
 #: ../plugins/resource-list/rl-heap.cpp:527
-#: ../plugins/resource-list/rl-presentity.cpp:228
+#: ../plugins/resource-list/rl-presentity.cpp:234
 msgid "Address:"
 msgstr "ঠিকানা:"
 
-#: ../lib/engine/components/local-roster/local-presentity.cpp:247
-#, fuzzy
-msgid "Is a prefered contact"
-msgstr "দূরবর্তী পরিচিতি যোগ করুন"
+#: ../lib/engine/components/local-roster/local-presentity.cpp:252
+msgid "Is a preferred contact"
+msgstr "পছন্দের পরিচিতি"
 
-#: ../lib/engine/components/local-roster/local-presentity.cpp:249
-#: ../plugins/loudmouth/loudmouth-presentity.cpp:274
+#: ../lib/engine/components/local-roster/local-presentity.cpp:254
+#: ../plugins/loudmouth/loudmouth-presentity.cpp:280
 #: ../plugins/resource-list/rl-heap.cpp:528
-#: ../plugins/resource-list/rl-presentity.cpp:230
+#: ../plugins/resource-list/rl-presentity.cpp:236
 msgid "Choose groups:"
 msgstr "দল নির্বাচন করুন:"
 
@@ -899,9 +897,8 @@ msgid "Conference room"
 msgstr "বৈঠকের ঘর"
 
 #: ../lib/engine/components/local-roster/local-heap.cpp:96
-#, fuzzy
 msgid "Call back test"
-msgstr "কলের বৈশিষ্ট্য (_A)"
+msgstr "কল-ব্যাক পরীক্ষা"
 
 #: ../lib/engine/components/local-roster/local-heap.cpp:110
 msgid "Local roster"
@@ -951,11 +948,20 @@ msgid "Self"
 msgstr "স্বয়ং"
 
 #: ../lib/engine/components/local-roster/local-heap.cpp:233
-msgid ""
-"Please fill in this form to add a new contact to ekiga's internal roster"
+msgid "Please fill in this form to add a new contact to ekiga's internal roster"
 msgstr ""
 "ekiga-র অভ্যন্তরীণ তালিকার মধ্যে নতুন পরিচিতির তথ্য সংযোজন করার জন্য অনুগ্রহ করে এই "
 "ফর্মটি পূরণ করুন"
+
+#: ../lib/engine/components/local-roster/local-heap.cpp:235
+#| msgid "If enabled, offline contacts will be shown in the roster"
+msgid "Name of the contact, as shown in your roster"
+msgstr "রোস্টার অনুযায়ী পরিচিতির নাম"
+
+#: ../lib/engine/components/local-roster/local-heap.cpp:244
+#: ../lib/engine/components/local-roster/local-heap.cpp:246
+msgid "Address, e.g. sip:xyz@ekiga.net"
+msgstr "ঠিকানা, উদাহরণ, sip:xyz@ekiga.net"
 
 #: ../lib/engine/components/local-roster/local-heap.cpp:250
 msgid "Put contact in groups:"
@@ -978,15 +984,15 @@ msgid "Please edit this group name"
 msgstr "অনুগ্রহ করে চিহ্নিত দলের নাম পরিবর্তন করুন"
 
 #: ../lib/engine/components/opal/h323-endpoint.cpp:131
-#: ../lib/engine/components/opal/sip-endpoint.cpp:230
-#: ../lib/engine/components/opal/sip-endpoint.cpp:234
+#: ../lib/engine/components/opal/sip-endpoint.cpp:231
+#: ../lib/engine/components/opal/sip-endpoint.cpp:235
 msgid "Call"
 msgstr "কল করুন"
 
 #: ../lib/engine/components/opal/h323-endpoint.cpp:134
-#: ../lib/engine/components/opal/sip-endpoint.cpp:231
-#: ../lib/engine/components/opal/sip-endpoint.cpp:235
-#: ../src/gui/main_window.cpp:2979
+#: ../lib/engine/components/opal/sip-endpoint.cpp:232
+#: ../lib/engine/components/opal/sip-endpoint.cpp:236
+#: ../src/gui/main_window.cpp:3325
 msgid "Transfer"
 msgstr "বদলি"
 
@@ -1000,300 +1006,344 @@ msgid "Bad username/password"
 msgstr "ব্যবহারকারী নাম/পাসওয়ার্ড সঠিক নয়"
 
 #: ../lib/engine/components/opal/h323-endpoint.cpp:315
-#: ../lib/engine/components/opal/sip-endpoint.cpp:826
+#: ../lib/engine/components/opal/sip-endpoint.cpp:562
 msgid "Transport error"
 msgstr "সম্প্রচার করতে সমস্যা"
 
 #: ../lib/engine/components/opal/h323-endpoint.cpp:326
 #: ../lib/engine/components/opal/h323-endpoint.cpp:331
-#: ../lib/engine/components/opal/sip-endpoint.cpp:833
+#: ../lib/engine/components/opal/sip-endpoint.cpp:771
 msgid "Failed"
 msgstr "বিফল"
 
 #. translators : the result will look like :
-#. * "registered (with 2 voicemail messages)"
+#. * "registered (with 2 voice mail messages)"
 #.
-#: ../lib/engine/components/opal/opal-account.cpp:209
+#: ../lib/engine/components/opal/opal-account.cpp:218
 #, c-format
-msgid "%s (with %d voicemail message)"
-msgid_plural "%s (with %d voicemail messages)"
-msgstr[0] ""
-msgstr[1] ""
+msgid "%s (with %d voice mail message)"
+msgid_plural "%s (with %d voice mail messages)"
+msgstr[0] "%s (%d-টি ভয়েস মেইল বার্তা সহ)"
+msgstr[1] "%s (%d-টি ভয়েস মেইল বার্তা সহ)"
 
-#: ../lib/engine/components/opal/opal-account.cpp:342
-#: ../plugins/loudmouth/loudmouth-account.cpp:352
+#: ../lib/engine/components/opal/opal-account.cpp:365
+#: ../plugins/loudmouth/loudmouth-account.cpp:381
 msgid "_Disable"
 msgstr "নিষ্ক্রিয় (_D)"
 
-#: ../lib/engine/components/opal/opal-account.cpp:345
-#: ../plugins/loudmouth/loudmouth-account.cpp:356
+#: ../lib/engine/components/opal/opal-account.cpp:368
+#: ../plugins/loudmouth/loudmouth-account.cpp:385
 msgid "_Enable"
 msgstr "সক্রিয় (_E)"
 
-#: ../lib/engine/components/opal/opal-account.cpp:366
-#: ../src/gui/assistant.cpp:715
+#: ../lib/engine/components/opal/opal-account.cpp:389
+#: ../src/gui/assistant.cpp:732
 msgid "Recharge the account"
 msgstr "অ্যাকাউন্ট রি-চার্জ করুন"
 
-#: ../lib/engine/components/opal/opal-account.cpp:371
-#: ../src/gui/assistant.cpp:727
+#: ../lib/engine/components/opal/opal-account.cpp:394
+#: ../src/gui/assistant.cpp:744
 msgid "Consult the balance history"
 msgstr "অবশিষ্ট পরিমাণের তথ্য যাচাই করুন"
 
-#: ../lib/engine/components/opal/opal-account.cpp:376
+#: ../lib/engine/components/opal/opal-account.cpp:399
+#: ../src/gui/assistant.cpp:756
 msgid "Consult the call history"
 msgstr "কলের সংক্রান্ত পূর্ববর্তী তথ্য যাচাই করা হবে"
 
-#: ../lib/engine/components/opal/opal-account.cpp:391
-#: ../lib/engine/components/opal/opal-bank.cpp:94
-#: ../plugins/loudmouth/loudmouth-account.cpp:262
+#: ../lib/engine/components/opal/opal-account.cpp:414
+#: ../lib/engine/components/opal/opal-bank.cpp:98
+#: ../plugins/loudmouth/loudmouth-account.cpp:291
+#: ../plugins/loudmouth/loudmouth-bank.cpp:121
 msgid "Edit account"
 msgstr "অ্যাকউন্ট সংক্রান্ত তথ্য সম্পাদনা করুন"
 
-#: ../lib/engine/components/opal/opal-account.cpp:393
+#: ../lib/engine/components/opal/opal-account.cpp:416
+#: ../lib/engine/components/opal/opal-bank.cpp:99
 #: ../plugins/evolution/evolution-book.cpp:341
-#: ../plugins/evolution/evolution-contact.cpp:312
-#: ../plugins/loudmouth/loudmouth-account.cpp:264
+#: ../plugins/evolution/evolution-contact.cpp:322
+#: ../plugins/loudmouth/loudmouth-account.cpp:293
 msgid "Please update the following fields:"
 msgstr "অনুগ্রহ করে নিম্নলিখিত ক্ষেত্রগুলি আপডেট করুন:"
 
-#: ../lib/engine/components/opal/opal-account.cpp:397
+#: ../lib/engine/components/opal/opal-account.cpp:418
+#: ../lib/engine/components/opal/opal-bank.cpp:125
+#: ../lib/engine/components/opal/opal-bank.cpp:135
+msgid "Account name, e.g. MyAccount"
+msgstr "অ্যাকাউন্টের নাম, উদাহরণ MyAccount"
+
+#: ../lib/engine/components/opal/opal-account.cpp:420
 msgid "Registrar:"
 msgstr "নিবন্ধনকারী:"
 
-#: ../lib/engine/components/opal/opal-account.cpp:399
+#: ../lib/engine/components/opal/opal-account.cpp:420
+#: ../lib/engine/components/opal/opal-bank.cpp:136
+msgid "The registrar, e.g. ekiga.net"
+msgstr "নিবন্ধনকারী, যেমন ekiga.net"
+
+#: ../lib/engine/components/opal/opal-account.cpp:422
 msgid "Gatekeeper:"
 msgstr "গেট-কিপার:"
 
-#: ../lib/engine/components/opal/opal-account.cpp:400
-#: ../plugins/loudmouth/loudmouth-account.cpp:271
+#: ../lib/engine/components/opal/opal-account.cpp:422
+#: ../lib/engine/components/opal/opal-bank.cpp:126
+msgid "The gatekeeper, e.g. ekiga.net"
+msgstr "গেট-কিপার, যেমন, ekiga.net"
+
+#: ../lib/engine/components/opal/opal-account.cpp:423
+#: ../plugins/loudmouth/loudmouth-account.cpp:300
+#: ../plugins/loudmouth/loudmouth-bank.cpp:126
 #: ../plugins/resource-list/rl-cluster.cpp:174
 msgid "User:"
 msgstr "ব্যবহারকারী:"
 
+#: ../lib/engine/components/opal/opal-account.cpp:423
+#: ../lib/engine/components/opal/opal-bank.cpp:107
+#: ../lib/engine/components/opal/opal-bank.cpp:118
+#: ../lib/engine/components/opal/opal-bank.cpp:127
+#: ../lib/engine/components/opal/opal-bank.cpp:137
+msgid "The user name, e.g. jim"
+msgstr "ব্যবহারকারী নাম, যেমন jim"
+
 #. Translators:
 #. * SIP knows two usernames: The name for the client ("User") and the name
 #. * for the authentication procedure ("Authentication User")
-#: ../lib/engine/components/opal/opal-account.cpp:405
+#: ../lib/engine/components/opal/opal-account.cpp:428
 msgid "Authentication User:"
 msgstr "অনুমোদনের নাম:"
 
-#: ../lib/engine/components/opal/opal-account.cpp:406
-#: ../plugins/loudmouth/loudmouth-account.cpp:283
+#: ../lib/engine/components/opal/opal-account.cpp:428
+#: ../lib/engine/components/opal/opal-bank.cpp:138
+msgid ""
+"The user name used during authentication, if different than the user name; "
+"leave empty if you do not have one"
+msgstr ""
+"ব্যবহারকারী নাম পৃথক হলে, অনুমোদনের সময় ব্যবহৃত ব্যবহারকারীর নাম; "
+"উপস্থিত না থাকলে এটি ফাঁকা রাখুন"
+
+#: ../lib/engine/components/opal/opal-account.cpp:429
+#: ../plugins/loudmouth/loudmouth-account.cpp:312
+#: ../plugins/loudmouth/loudmouth-bank.cpp:129
 #: ../plugins/resource-list/rl-cluster.cpp:173
 msgid "Password:"
 msgstr "পাসওয়ার্ড:"
 
-#: ../lib/engine/components/opal/opal-account.cpp:407
+#: ../lib/engine/components/opal/opal-account.cpp:429
+#: ../lib/engine/components/opal/opal-bank.cpp:109
+#: ../lib/engine/components/opal/opal-bank.cpp:120
+#: ../lib/engine/components/opal/opal-bank.cpp:129
+#: ../lib/engine/components/opal/opal-bank.cpp:139
+msgid "Password associated to the user"
+msgstr "ব্যবহারকারীর সাথে যুক্ত পাসওয়ার্ড"
+
+#: ../lib/engine/components/opal/opal-account.cpp:430
 msgid "Timeout:"
 msgstr "সময়সীমা:"
 
-#: ../lib/engine/components/opal/opal-account.cpp:408
-#: ../lib/engine/components/opal/opal-bank.cpp:139
+#: ../lib/engine/components/opal/opal-account.cpp:430
+#: ../lib/engine/components/opal/opal-bank.cpp:130
+#: ../lib/engine/components/opal/opal-bank.cpp:140
+msgid "Time in seconds after which the account registration is automatically retried"
+msgstr "অ্যাকাউন্টের নিবন্ধন যে সংখ্যক সেকেন্ডের পরে স্বয়ংক্রিয়ভাবে বাতিল করা হয়"
+
+#: ../lib/engine/components/opal/opal-account.cpp:431
+#: ../lib/engine/components/opal/opal-bank.cpp:143
+#: ../plugins/loudmouth/loudmouth-account.cpp:326
+#: ../plugins/loudmouth/loudmouth-bank.cpp:130
 msgid "Enable Account"
 msgstr "অ্যাকাউন্ট সক্রিয় করুন"
 
-#: ../lib/engine/components/opal/opal-account.cpp:434
-#: ../lib/engine/components/opal/opal-bank.cpp:173
+#: ../lib/engine/components/opal/opal-account.cpp:457
+#: ../lib/engine/components/opal/opal-bank.cpp:177
 msgid "You did not supply a name for that account."
 msgstr "চিহ্নিত অ্যাকাউন্টের নাম উল্লেখ করা হয়নি।"
 
-#: ../lib/engine/components/opal/opal-account.cpp:436
-#: ../lib/engine/components/opal/opal-bank.cpp:175
+#: ../lib/engine/components/opal/opal-account.cpp:459
+#: ../lib/engine/components/opal/opal-bank.cpp:179
 msgid "You did not supply a host to register to."
 msgstr "নিবন্ধনের জন্য কোনো হোস্ট উল্লেখ করা হয়নি।"
 
-#: ../lib/engine/components/opal/opal-account.cpp:438
-#: ../lib/engine/components/opal/opal-bank.cpp:177
+#: ../lib/engine/components/opal/opal-account.cpp:461
+#: ../lib/engine/components/opal/opal-bank.cpp:181
 msgid "You did not supply a user name for that account."
 msgstr "চিহ্নিত অ্যাকাউন্টের জন্য কোনো ব্যবহারকারীর নাম উল্লেখ করা হয়নি।"
 
-#: ../lib/engine/components/opal/opal-account.cpp:440
-#: ../lib/engine/components/opal/opal-bank.cpp:179
-msgid "The timeout should have a bigger value."
-msgstr "সময়সীমার মান বেশি হওয়া উচিত।"
+#: ../lib/engine/components/opal/opal-account.cpp:463
+#: ../lib/engine/components/opal/opal-bank.cpp:183
+#| msgid "The timeout should have a bigger value."
+msgid "The timeout should be at least 10 seconds."
+msgstr "সময়সীমার মান অন্তত ১০ সেকেন্ড হওয়া আবশ্যক।"
 
-#: ../lib/engine/components/opal/opal-account.cpp:486
+#: ../lib/engine/components/opal/opal-account.cpp:546
 msgid "Registered"
 msgstr "নিবন্ধিত"
 
-#: ../lib/engine/components/opal/opal-account.cpp:498
+#: ../lib/engine/components/opal/opal-account.cpp:558
 msgid "Unregistered"
 msgstr "নিবন্ধিত নয়"
 
-#: ../lib/engine/components/opal/opal-account.cpp:508
+#: ../lib/engine/components/opal/opal-account.cpp:568
 msgid "Could not unregister"
 msgstr "নিবন্ধন বাতিল করতে ব্যর্থ"
 
-#: ../lib/engine/components/opal/opal-account.cpp:521
+#: ../lib/engine/components/opal/opal-account.cpp:581
 msgid "Could not register"
 msgstr "নিবন্ধন করতে ব্যর্থ"
 
-#: ../lib/engine/components/opal/opal-account.cpp:530
+#: ../lib/engine/components/opal/opal-account.cpp:590
 msgid "Processing..."
 msgstr "প্রসেস করা হচ্ছে..."
 
-#: ../lib/engine/components/opal/opal-bank.cpp:74
+#: ../lib/engine/components/opal/opal-bank.cpp:78
 msgid "_Add an Ekiga.net Account"
 msgstr "একটি Ekiga.net অ্যাকাউন্ট যোগ করুন (_A)"
 
-#: ../lib/engine/components/opal/opal-bank.cpp:76
+#: ../lib/engine/components/opal/opal-bank.cpp:80
 msgid "_Add an Ekiga Call Out Account"
 msgstr "Ekiga-র একটি কল-আউট অ্যাকাউন্ট যোগ করুন (_A)"
 
-#: ../lib/engine/components/opal/opal-bank.cpp:78
+#: ../lib/engine/components/opal/opal-bank.cpp:82
 msgid "_Add a SIP Account"
 msgstr "একটি SIP অ্যাকাউন্ট যোগ করুন (_A)"
 
-#: ../lib/engine/components/opal/opal-bank.cpp:80
+#: ../lib/engine/components/opal/opal-bank.cpp:84
 msgid "_Add an H.323 Account"
 msgstr "একটি H.323 অ্যাকাউন্ট যোগ করুন (_A)"
 
-#: ../lib/engine/components/opal/opal-bank.cpp:95
-msgid "Please update the following fields."
-msgstr "অনুগ্রহ করে নিমনলিখিত ক্ষেত্রে মান পূরণ করুন।"
-
-#: ../lib/engine/components/opal/opal-bank.cpp:100
-#: ../src/gui/assistant.cpp:595
+#: ../lib/engine/components/opal/opal-bank.cpp:104
+#: ../src/gui/assistant.cpp:616
 msgid "Get an Ekiga.net SIP account"
 msgstr "একটি Ekiga.net SIP অ্যাকাউন্ট প্রাপ্ত করুন"
 
-#: ../lib/engine/components/opal/opal-bank.cpp:103
-#: ../lib/engine/components/opal/opal-bank.cpp:123
-#: ../lib/engine/components/opal/opal-bank.cpp:133
-#, fuzzy
+#: ../lib/engine/components/opal/opal-bank.cpp:107
+#: ../lib/engine/components/opal/opal-bank.cpp:127
+#: ../lib/engine/components/opal/opal-bank.cpp:137
 msgid "_User:"
-msgstr "ব্যবহারকারী:"
+msgstr "ব্যবহারকারী: (_U)"
 
-#: ../lib/engine/components/opal/opal-bank.cpp:105
-#: ../lib/engine/components/opal/opal-bank.cpp:125
-#: ../lib/engine/components/opal/opal-bank.cpp:135
-#, fuzzy
+#: ../lib/engine/components/opal/opal-bank.cpp:109
+#: ../lib/engine/components/opal/opal-bank.cpp:129
+#: ../lib/engine/components/opal/opal-bank.cpp:139
+#: ../plugins/ldap/ldap-book.cpp:986
 msgid "_Password:"
-msgstr "পাসওয়ার্ড (_P)"
+msgstr "পাসওয়ার্ড: (_P)"
 
-#: ../lib/engine/components/opal/opal-bank.cpp:110
-#: ../src/gui/assistant.cpp:703
+#: ../lib/engine/components/opal/opal-bank.cpp:114
+#: ../src/gui/assistant.cpp:720
 msgid "Get an Ekiga Call Out account"
 msgstr "একটি Ekiga কল-আউট অ্যাকাউন্ট যোগ করুন"
 
-#: ../lib/engine/components/opal/opal-bank.cpp:114
-#, fuzzy
+#: ../lib/engine/components/opal/opal-bank.cpp:118
 msgid "_Account ID:"
-msgstr "অ্যাকাউন্টের ID:"
+msgstr "অ্যাকাউন্টের ID: (_A)"
 
-#: ../lib/engine/components/opal/opal-bank.cpp:116
-#, fuzzy
+#: ../lib/engine/components/opal/opal-bank.cpp:120
 msgid "_PIN Code:"
-msgstr "PIN কোড:"
+msgstr "PIN কোড: (_P)"
 
-#: ../lib/engine/components/opal/opal-bank.cpp:121
-#: ../lib/engine/components/opal/opal-bank.cpp:131
+#: ../lib/engine/components/opal/opal-bank.cpp:125
+#: ../lib/engine/components/opal/opal-bank.cpp:135
 #: ../plugins/evolution/evolution-book.cpp:343
 msgid "_Name:"
 msgstr "নাম: (_N)"
 
-#: ../lib/engine/components/opal/opal-bank.cpp:122
-#, fuzzy
-msgid "_Gatekeeper:"
-msgstr "গেট-কিপার:"
-
 #: ../lib/engine/components/opal/opal-bank.cpp:126
-#: ../lib/engine/components/opal/opal-bank.cpp:136
-#, fuzzy
+msgid "_Gatekeeper:"
+msgstr "গেট-কিপার: (_G)"
+
+#: ../lib/engine/components/opal/opal-bank.cpp:130
+#: ../lib/engine/components/opal/opal-bank.cpp:140
 msgid "_Timeout:"
-msgstr "সময়সীমা:"
+msgstr "সময়সীমা: (_T)"
 
-#: ../lib/engine/components/opal/opal-bank.cpp:132
-#, fuzzy
+#: ../lib/engine/components/opal/opal-bank.cpp:136
 msgid "_Registrar:"
-msgstr "নিবন্ধনকারী:"
+msgstr "নিবন্ধনকারী: (_R)"
 
-#: ../lib/engine/components/opal/opal-bank.cpp:134
-#, fuzzy
+#: ../lib/engine/components/opal/opal-bank.cpp:138
 msgid "_Authentication User:"
-msgstr "অনুমোদনের নাম:"
+msgstr "অনুমোদনের নাম: (_U)"
 
-#: ../lib/engine/components/opal/opal-call.cpp:406
+#: ../lib/engine/components/opal/opal-call.cpp:403
 msgid "Local user cleared the call"
 msgstr "স্থানীয় ব্যবহারকারী দ্বারা কল অনুমোদন করা হয়েছে"
 
+#: ../lib/engine/components/opal/opal-call.cpp:406
 #: ../lib/engine/components/opal/opal-call.cpp:409
-#: ../lib/engine/components/opal/opal-call.cpp:412
 msgid "Local user rejected the call"
 msgstr "স্থানীয় ব্যবহারকারী দ্বারা কল প্রত্যাখ্যান করা হয়েছে"
 
-#: ../lib/engine/components/opal/opal-call.cpp:415
+#: ../lib/engine/components/opal/opal-call.cpp:412
 msgid "Remote user cleared the call"
 msgstr "দূরবর্তী ব্যবহারকারী দ্বারা কল অনুমোদন করা হয়েছে"
 
-#: ../lib/engine/components/opal/opal-call.cpp:418
+#: ../lib/engine/components/opal/opal-call.cpp:415
 msgid "Remote user rejected the call"
 msgstr "দূরবর্তী ব্যবহারকারী দ্বারা কল প্রত্যাখ্যান করা হয়েছে"
 
-#: ../lib/engine/components/opal/opal-call.cpp:421
+#: ../lib/engine/components/opal/opal-call.cpp:418
 msgid "Remote user has stopped calling"
 msgstr "দূরবর্তী ব্যবহারকারী কলটি থামিয়ে দিয়েছেন"
 
-#: ../lib/engine/components/opal/opal-call.cpp:424
+#: ../lib/engine/components/opal/opal-call.cpp:421
 msgid "Abnormal call termination"
 msgstr "অস্বাভাবিক ভাবে কলের সমাপ্তি হয়েছে"
 
-#: ../lib/engine/components/opal/opal-call.cpp:427
-#: ../src/gui/main_window.cpp:1492
+#: ../lib/engine/components/opal/opal-call.cpp:424
+#: ../src/gui/main_window.cpp:1853
 msgid "Could not connect to remote host"
 msgstr "দূরবর্তী হোস্টের সঙ্গে সংযোগের চেষ্ঠা ব্যর্থ"
 
-#: ../lib/engine/components/opal/opal-call.cpp:431
+#: ../lib/engine/components/opal/opal-call.cpp:428
 msgid "The Gatekeeper cleared the call"
 msgstr "গেটকিপার দ্বারা কলটি অনুমোদন করা হয়েছে"
 
-#: ../lib/engine/components/opal/opal-call.cpp:434
+#: ../lib/engine/components/opal/opal-call.cpp:431
 msgid "User not found"
 msgstr "ব্যবহারকারীকে খুঁজে পাওয়া যায়নি"
 
-#: ../lib/engine/components/opal/opal-call.cpp:437
+#: ../lib/engine/components/opal/opal-call.cpp:434
 msgid "Insufficient bandwidth"
 msgstr "অপর্যাপ্ত ব্যান্ডউইর্থ"
 
-#: ../lib/engine/components/opal/opal-call.cpp:440
+#: ../lib/engine/components/opal/opal-call.cpp:437
 msgid "No common codec"
 msgstr "সাধারণ কোডেক উপস্থিত নেই"
 
-#: ../lib/engine/components/opal/opal-call.cpp:443
+#: ../lib/engine/components/opal/opal-call.cpp:440
 msgid "Call forwarded"
 msgstr "কল অনুবর্তন করা হয়েছে"
 
-#: ../lib/engine/components/opal/opal-call.cpp:446
+#: ../lib/engine/components/opal/opal-call.cpp:443
 msgid "Security check failed"
 msgstr "নিরাপত্তা পরীক্ষা বিফল হয়েছে"
 
-#: ../lib/engine/components/opal/opal-call.cpp:449
+#: ../lib/engine/components/opal/opal-call.cpp:446
 msgid "Local user is busy"
 msgstr "স্থানীয় ব্যবহারকারী ব্যস্ত আছেন"
 
-#: ../lib/engine/components/opal/opal-call.cpp:452
-#: ../lib/engine/components/opal/opal-call.cpp:458
+#: ../lib/engine/components/opal/opal-call.cpp:449
+#: ../lib/engine/components/opal/opal-call.cpp:455
 msgid "Congested link to remote party"
 msgstr "দূরবর্তী ব্যবহারকারীর সাথে সংযোগের পথ বর্তমানে ভিড়াক্রান্ত"
 
-#: ../lib/engine/components/opal/opal-call.cpp:455
+#: ../lib/engine/components/opal/opal-call.cpp:452
 msgid "Remote user is busy"
 msgstr "দূরবর্তী ব্যবহারকারী ব্যস্ত আছেন"
 
-#: ../lib/engine/components/opal/opal-call.cpp:461
+#: ../lib/engine/components/opal/opal-call.cpp:458
 msgid "Remote host is offline"
 msgstr "দূরবর্তী হোস্ট অফলাইন রয়েছেন"
 
-#: ../lib/engine/components/opal/opal-call.cpp:467
+#: ../lib/engine/components/opal/opal-call.cpp:464
 msgid "User is not available"
 msgstr "ব্যবহারকারী উপস্থিত নয়"
 
-#: ../lib/engine/components/opal/opal-call.cpp:478
+#: ../lib/engine/components/opal/opal-call.cpp:475
 msgid "Call completed"
 msgstr "কল সমাপ্ত"
 
-#: ../lib/engine/components/opal/opal-call-manager.cpp:770
+#: ../lib/engine/components/opal/opal-call-manager.cpp:781
 msgid ""
 "Ekiga did not manage to configure your network settings automatically. You "
 "can still use it, but you need to configure your network settings manually.\n"
@@ -1308,96 +1358,101 @@ msgstr ""
 "অধিক বিবরণের জন্য অনুগ্রহ করে http://wiki.ekiga.org/index.php/"
 "Enable_port_forwarding_manually দেখুন।"
 
-#: ../lib/engine/components/opal/sip-endpoint.cpp:255
-#: ../lib/engine/components/opal/sip-endpoint.cpp:257
+#: ../lib/engine/components/opal/sip-endpoint.cpp:256
+#: ../lib/engine/components/opal/sip-endpoint.cpp:258
 msgid "Message"
 msgstr "বার্তা"
 
-#: ../lib/engine/components/opal/sip-endpoint.cpp:633
-msgid "Bad request"
-msgstr "অনুরোধ সঠিক নয়"
-
-#: ../lib/engine/components/opal/sip-endpoint.cpp:637
-msgid "Payment required"
-msgstr "মূল্য প্রদান করা আবশ্যক"
-
-#: ../lib/engine/components/opal/sip-endpoint.cpp:641
-msgid "Unauthorized"
-msgstr "অনুমোদিত নয়"
-
-#: ../lib/engine/components/opal/sip-endpoint.cpp:645
-msgid "Forbidden, please check that username and password are correct"
-msgstr ""
-
-#: ../lib/engine/components/opal/sip-endpoint.cpp:649
-msgid "Timeout"
-msgstr "সময়সীমা"
-
-#: ../lib/engine/components/opal/sip-endpoint.cpp:653
-msgid "Conflict"
-msgstr "দ্বন্দ্ব"
-
-#: ../lib/engine/components/opal/sip-endpoint.cpp:657
-msgid "Temporarily unavailable"
-msgstr "সাময়িকরূপে উপলব্ধ নয়"
-
-#: ../lib/engine/components/opal/sip-endpoint.cpp:661
-msgid "Not acceptable"
-msgstr "গ্রহণযোগ্য নয়"
-
-#: ../lib/engine/components/opal/sip-endpoint.cpp:665
+#: ../lib/engine/components/opal/sip-endpoint.cpp:557
 msgid "Illegal status code"
 msgstr "অবস্থাসূচক কোড বৈধ নয়"
 
-#: ../lib/engine/components/opal/sip-endpoint.cpp:669
+#. Translators: Host of the remote party is offline, this should
+#. * appear when the remote host does not reply in an acceptable time
+#: ../lib/engine/components/opal/sip-endpoint.cpp:568
+msgid "Remote party host is offline"
+msgstr "দূরবর্তী হোস্ট অফলাইন রয়েছেন"
+
+#. Translators: the following strings are answers from the SIP server
+#. * when the packet it receives has an error, see
+#. * http://www.ietf.org/rfc/rfc3261.txt, chapter 21 for more information
+#: ../lib/engine/components/opal/sip-endpoint.cpp:584
 msgid "Multiple choices"
 msgstr "একাধিক নির্বাচিত মান"
 
-#: ../lib/engine/components/opal/sip-endpoint.cpp:673
+#: ../lib/engine/components/opal/sip-endpoint.cpp:588
 msgid "Moved permanently"
 msgstr "স্থায়ীরূপে স্থানান্তর করা হয়েছে"
 
-#: ../lib/engine/components/opal/sip-endpoint.cpp:677
+#: ../lib/engine/components/opal/sip-endpoint.cpp:592
 msgid "Moved temporarily"
 msgstr "সাময়িকভাবে স্থানান্তর করা হয়েছে"
 
-#: ../lib/engine/components/opal/sip-endpoint.cpp:681
+#: ../lib/engine/components/opal/sip-endpoint.cpp:596
 msgid "Use proxy"
 msgstr "প্রক্সি ব্যবহার করা হবে"
 
-#: ../lib/engine/components/opal/sip-endpoint.cpp:685
+#: ../lib/engine/components/opal/sip-endpoint.cpp:600
 msgid "Alternative service"
 msgstr "বিকল্প পরিসেবা"
 
-#: ../lib/engine/components/opal/sip-endpoint.cpp:689
+#: ../lib/engine/components/opal/sip-endpoint.cpp:604
+msgid "Bad request"
+msgstr "অনুরোধ সঠিক নয়"
+
+#: ../lib/engine/components/opal/sip-endpoint.cpp:608
+msgid "Unauthorized"
+msgstr "অনুমোদিত নয়"
+
+#: ../lib/engine/components/opal/sip-endpoint.cpp:612
+msgid "Payment required"
+msgstr "মূল্য প্রদান করা আবশ্যক"
+
+#: ../lib/engine/components/opal/sip-endpoint.cpp:616
+msgid "Forbidden, please check that username and password are correct"
+msgstr "প্রতিরোধিত, অনুগ্রহ করে পরীক্ষা করুন ব্যবহারকারীর নাম ও পাসওয়ার্ড সঠিক কি না"
+
+#: ../lib/engine/components/opal/sip-endpoint.cpp:620
 msgid "Not found"
 msgstr "পাওয়া যায়নি"
 
-#: ../lib/engine/components/opal/sip-endpoint.cpp:693
+#: ../lib/engine/components/opal/sip-endpoint.cpp:624
 msgid "Method not allowed"
 msgstr "পদ্ধতির ব্যবহার অনুমোদিত নয়"
 
-#: ../lib/engine/components/opal/sip-endpoint.cpp:697
+#: ../lib/engine/components/opal/sip-endpoint.cpp:628
+msgid "Not acceptable"
+msgstr "গ্রহণযোগ্য নয়"
+
+#: ../lib/engine/components/opal/sip-endpoint.cpp:632
 msgid "Proxy authentication required"
 msgstr "প্রক্সি অনুমোদন প্রয়োজন"
 
-#: ../lib/engine/components/opal/sip-endpoint.cpp:701
+#: ../lib/engine/components/opal/sip-endpoint.cpp:636
+msgid "Timeout"
+msgstr "সময়সীমা"
+
+#: ../lib/engine/components/opal/sip-endpoint.cpp:640
+msgid "Conflict"
+msgstr "দ্বন্দ্ব"
+
+#: ../lib/engine/components/opal/sip-endpoint.cpp:644
 msgid "Length required"
 msgstr "দৈর্ঘ্য আবশ্যক"
 
-#: ../lib/engine/components/opal/sip-endpoint.cpp:705
+#: ../lib/engine/components/opal/sip-endpoint.cpp:648
 msgid "Request entity too big"
 msgstr "অনুরোধ করা স্বত্ত্বা অত্যন্ত বড়"
 
-#: ../lib/engine/components/opal/sip-endpoint.cpp:709
+#: ../lib/engine/components/opal/sip-endpoint.cpp:652
 msgid "Request URI too long"
 msgstr "অনুরোধ করা URI অত্যাধিক লম্বা"
 
-#: ../lib/engine/components/opal/sip-endpoint.cpp:713
+#: ../lib/engine/components/opal/sip-endpoint.cpp:656
 msgid "Unsupported media type"
 msgstr "মিডিয়ার ধরন সমর্থিত নয়"
 
-#: ../lib/engine/components/opal/sip-endpoint.cpp:717
+#: ../lib/engine/components/opal/sip-endpoint.cpp:660
 msgid "Unsupported URI scheme"
 msgstr "অসমর্থিত URI স্কিম"
 
@@ -1405,167 +1460,163 @@ msgstr "অসমর্থিত URI স্কিম"
 #. * Here extension is a specific "phone number", see
 #. * http://en.wikipedia.org/wiki/Extension_(telephone)
 #. * for more information
-#: ../lib/engine/components/opal/sip-endpoint.cpp:725
+#: ../lib/engine/components/opal/sip-endpoint.cpp:668
 msgid "Bad extension"
 msgstr "ত্রুটিপূর্ণ এক্সটেনশন"
 
-#: ../lib/engine/components/opal/sip-endpoint.cpp:729
+#: ../lib/engine/components/opal/sip-endpoint.cpp:672
 msgid "Extension required"
 msgstr "এক্সটেনশন আবশ্যক"
 
-#: ../lib/engine/components/opal/sip-endpoint.cpp:733
+#: ../lib/engine/components/opal/sip-endpoint.cpp:676
 msgid "Interval too brief"
 msgstr "অত্যন্ত স্বল্প বিরতিকাল"
 
-#: ../lib/engine/components/opal/sip-endpoint.cpp:737
+#: ../lib/engine/components/opal/sip-endpoint.cpp:680
+msgid "Temporarily unavailable"
+msgstr "সাময়িকরূপে উপলব্ধ নয়"
+
+#: ../lib/engine/components/opal/sip-endpoint.cpp:684
 msgid "Loop detected"
 msgstr "লুপ সনাক্ত হয়েছে"
 
-#: ../lib/engine/components/opal/sip-endpoint.cpp:741
+#: ../lib/engine/components/opal/sip-endpoint.cpp:688
 msgid "Too many hops"
 msgstr "অত্যাধিক সংখ্যক হপ"
 
-#: ../lib/engine/components/opal/sip-endpoint.cpp:745
+#: ../lib/engine/components/opal/sip-endpoint.cpp:692
 msgid "Address incomplete"
 msgstr "ঠিকানার সম্পূর্ণ নয়"
 
-#: ../lib/engine/components/opal/sip-endpoint.cpp:749
+#: ../lib/engine/components/opal/sip-endpoint.cpp:696
 msgid "Ambiguous"
 msgstr "বিভ্রান্তিকর"
 
-#: ../lib/engine/components/opal/sip-endpoint.cpp:753
+#: ../lib/engine/components/opal/sip-endpoint.cpp:700
 msgid "Busy Here"
 msgstr "এখানে ব্যস্ত"
 
-#: ../lib/engine/components/opal/sip-endpoint.cpp:757
+#: ../lib/engine/components/opal/sip-endpoint.cpp:704
 msgid "Request terminated"
 msgstr "অনুরোধ সমাপ্ত হয়েছে"
 
-#: ../lib/engine/components/opal/sip-endpoint.cpp:761
-#, fuzzy
-msgid "Remote party host is offline"
-msgstr "দূরবর্তী হোস্ট অফলাইন রয়েছেন"
-
-#: ../lib/engine/components/opal/sip-endpoint.cpp:765
+#: ../lib/engine/components/opal/sip-endpoint.cpp:708
 msgid "Not acceptable here"
 msgstr "এইস্থানে গ্রহণযোগ্য নয়"
 
-#: ../lib/engine/components/opal/sip-endpoint.cpp:769
+#: ../lib/engine/components/opal/sip-endpoint.cpp:712
 msgid "Bad event"
 msgstr "ঘটনা সঠিক নয়"
 
-#: ../lib/engine/components/opal/sip-endpoint.cpp:773
+#: ../lib/engine/components/opal/sip-endpoint.cpp:716
 msgid "Request pending"
 msgstr "অনুরোধ সম্পূর্ণ হয়নি"
 
-#: ../lib/engine/components/opal/sip-endpoint.cpp:777
+#: ../lib/engine/components/opal/sip-endpoint.cpp:720
 msgid "Undecipherable"
 msgstr "বোধগম্য নয়"
 
-#: ../lib/engine/components/opal/sip-endpoint.cpp:781
+#: ../lib/engine/components/opal/sip-endpoint.cpp:724
 msgid "Internal server error"
 msgstr "সার্ভারের অভ্যন্তরীণ সমস্যা"
 
-#: ../lib/engine/components/opal/sip-endpoint.cpp:785
+#: ../lib/engine/components/opal/sip-endpoint.cpp:728
 msgid "Not implemented"
 msgstr "বাস্তবায়িত হয়নি"
 
-#: ../lib/engine/components/opal/sip-endpoint.cpp:789
+#: ../lib/engine/components/opal/sip-endpoint.cpp:732
 msgid "Bad gateway"
 msgstr "গেটওয়ে সঠিক নয়"
 
-#: ../lib/engine/components/opal/sip-endpoint.cpp:793
+#: ../lib/engine/components/opal/sip-endpoint.cpp:736
 msgid "Service unavailable"
 msgstr "পরিসেবা উপলব্ধ নয়"
 
-#: ../lib/engine/components/opal/sip-endpoint.cpp:797
+#: ../lib/engine/components/opal/sip-endpoint.cpp:740
 msgid "Server timeout"
 msgstr "সার্ভারের সময়সীমা"
 
-#: ../lib/engine/components/opal/sip-endpoint.cpp:801
+#: ../lib/engine/components/opal/sip-endpoint.cpp:744
 msgid "SIP version not supported"
 msgstr "SIP-র সংস্করণ সমর্থিত"
 
-#: ../lib/engine/components/opal/sip-endpoint.cpp:805
+#: ../lib/engine/components/opal/sip-endpoint.cpp:748
 msgid "Message too large"
 msgstr "বার্তা অত্যাধিক বড়"
 
-#: ../lib/engine/components/opal/sip-endpoint.cpp:809
+#: ../lib/engine/components/opal/sip-endpoint.cpp:752
 msgid "Busy everywhere"
 msgstr "সর্বত্র ব্যস্ত"
 
-#: ../lib/engine/components/opal/sip-endpoint.cpp:813
+#: ../lib/engine/components/opal/sip-endpoint.cpp:756
 msgid "Decline"
 msgstr "প্রত্যাখ্যান করুন"
 
-#: ../lib/engine/components/opal/sip-endpoint.cpp:817
+#: ../lib/engine/components/opal/sip-endpoint.cpp:760
 msgid "Does not exist anymore"
 msgstr "বর্তমানে উপস্থিত নয়"
 
-#: ../lib/engine/components/opal/sip-endpoint.cpp:821
+#: ../lib/engine/components/opal/sip-endpoint.cpp:764
 msgid "Globally not acceptable"
 msgstr "সার্বজনীন রূপে গ্রহণযোগ্য নয়"
 
-#: ../lib/engine/components/opal/sip-endpoint.cpp:981
-msgid "Could not send message"
-msgstr "বার্তা পাঠাতে ব্যর্থ"
-
-#: ../lib/engine/components/opal/sip-endpoint.cpp:1078
+#: ../lib/engine/components/opal/sip-endpoint.cpp:933
+#: ../src/gui/main_window.cpp:3162
 #, c-format
 msgid "Incoming call from %s"
 msgstr "%s থেকে প্রাপ্ত কল"
 
-#: ../lib/engine/components/opal/sip-endpoint.cpp:1080
+#: ../lib/engine/components/opal/sip-endpoint.cpp:935
 #, c-format
 msgid "Incoming call"
 msgstr "আগত কল"
 
-#: ../lib/engine/components/opal/sip-endpoint.cpp:1086
+#: ../lib/engine/components/opal/sip-endpoint.cpp:941
 #, c-format
 msgid "In a call with %s"
 msgstr "%s-র সাথে কল চলমান"
 
-#: ../lib/engine/components/opal/sip-endpoint.cpp:1088
+#: ../lib/engine/components/opal/sip-endpoint.cpp:943
 #, c-format
 msgid "In a call"
 msgstr "কল চলমান"
 
-#: ../lib/engine/gui/gtk-core/form-dialog-gtk.cpp:660
+#: ../lib/engine/gui/gtk-core/form-dialog-gtk.cpp:664
 msgid "Advanced"
 msgstr "উন্নত"
 
-#: ../lib/engine/gui/gtk-core/codecsbox.cpp:478
+#: ../lib/engine/gui/gtk-core/codecsbox.cpp:452
 msgid "Move selected codec priority upwards"
 msgstr "নির্বাচিত codec-র গুরুত্ব বৃদ্ধি করা হবে"
 
-#: ../lib/engine/gui/gtk-core/codecsbox.cpp:488
+#: ../lib/engine/gui/gtk-core/codecsbox.cpp:462
 msgid "Move selected codec priority downwards"
 msgstr "নির্বাচিত codec-র গুরুত্ব হ্রাস করা হবে"
 
-#: ../lib/engine/gui/gtk-frontend/addressbook-window.cpp:670
+#: ../lib/engine/gui/gtk-frontend/addressbook-window.cpp:636
 msgid "Address Book"
 msgstr "ঠিকানা বই"
 
-#: ../lib/engine/gui/gtk-frontend/addressbook-window.cpp:686
-#: ../src/gui/main_window.cpp:3154
+#: ../lib/engine/gui/gtk-frontend/addressbook-window.cpp:652
+#: ../src/gui/main_window.cpp:3511
 msgid "Address _Book"
 msgstr "ঠিকানা বই (_B)"
 
 #. This will add static and dynamic actions
-#: ../lib/engine/gui/gtk-frontend/addressbook-window.cpp:695
+#: ../lib/engine/gui/gtk-frontend/addressbook-window.cpp:661
 msgid "_Action"
 msgstr "কর্ম (_A)"
 
-#: ../lib/engine/gui/gtk-frontend/addressbook-window.cpp:740
+#: ../lib/engine/gui/gtk-frontend/addressbook-window.cpp:706
 msgid "Category"
 msgstr "শ্রেণী"
 
-#: ../lib/engine/gui/gtk-frontend/book-view-gtk.cpp:616
-#: ../src/gui/assistant.cpp:1364
+#: ../lib/engine/gui/gtk-frontend/book-view-gtk.cpp:586
+#: ../src/gui/assistant.cpp:1373
 msgid "Full Name"
 msgstr "সম্পূর্ণ নাম"
 
-#: ../lib/engine/gui/gtk-frontend/book-view-gtk.cpp:631
+#: ../lib/engine/gui/gtk-frontend/book-view-gtk.cpp:601
 msgid "_Search Filter:"
 msgstr "অনুসন্ধানের ফিল্টার: (_S)"
 
@@ -1581,26 +1632,60 @@ msgstr "ব্রাউজারের মধ্যে লিংক খুলু
 msgid "Copy link"
 msgstr "লিংক দ্বারা চিহ্নিত ঠিকানা কপি করুন"
 
-#: ../lib/engine/gui/gtk-frontend/chat-area.cpp:912
+#: ../lib/engine/gui/gtk-frontend/chat-area.cpp:895
 msgid "_Smile..."
 msgstr "হাসিমুখ...(_S)"
 
 #. we can't do much here since we get the Chat as reference...
-#: ../lib/engine/gui/gtk-frontend/chat-window.cpp:432
+#: ../lib/engine/gui/gtk-frontend/chat-window.cpp:411
 msgid "Chat Window"
 msgstr "আলাপনের উইন্ডো"
 
-#: ../lib/engine/gui/gtk-frontend/roster-view-gtk.cpp:971
-#: ../lib/engine/gui/gtk-frontend/roster-view-gtk.cpp:1006
+#: ../lib/engine/gui/gtk-frontend/heap-view.cpp:238
+#: ../lib/engine/gui/gtk-frontend/heap-view.cpp:277
+#: ../lib/engine/gui/gtk-frontend/roster-view-gtk.cpp:976
+#: ../lib/engine/gui/gtk-frontend/roster-view-gtk.cpp:1029
 msgid "Unsorted"
 msgstr "অবিন্যস্ত"
 
-#: ../lib/gui/gmdialog.c:331
+#: ../lib/gui/dialpad.c:52
+msgid "abc"
+msgstr "abc"
+
+#: ../lib/gui/dialpad.c:53
+msgid "def"
+msgstr "def"
+
+#: ../lib/gui/dialpad.c:54
+msgid "ghi"
+msgstr "ghi"
+
+#: ../lib/gui/dialpad.c:55
+msgid "jkl"
+msgstr "jkl"
+
+#: ../lib/gui/dialpad.c:56
+msgid "mno"
+msgstr "mno"
+
+#: ../lib/gui/dialpad.c:57
+msgid "pqrs"
+msgstr "pqrs"
+
+#: ../lib/gui/dialpad.c:58
+msgid "tuv"
+msgstr "tuv"
+
+#: ../lib/gui/dialpad.c:59
+msgid "wxyz"
+msgstr "wxyz"
+
+#: ../lib/gui/gmdialog.c:327
 msgid "Do not show this dialog again"
 msgstr "এই ডায়লগটি পুনরায় প্রদর্শন করা হবে না"
 
 #: ../plugins/evolution/evolution-book.cpp:75
-#: ../plugins/ldap/ldap-book.cpp:904
+#: ../plugins/ldap/ldap-book.cpp:920
 #, c-format
 msgid "%d user found"
 msgid_plural "%d users found"
@@ -1613,44 +1698,44 @@ msgid "New _Contact"
 msgstr "নতুন পরিচিতি (_C)"
 
 #: ../plugins/evolution/evolution-book.cpp:344
-#: ../plugins/evolution/evolution-contact.cpp:323
+#: ../plugins/evolution/evolution-contact.cpp:333
 msgid "VoIP _URI:"
 msgstr "VoIP _URI:"
 
 #: ../plugins/evolution/evolution-book.cpp:345
-#: ../plugins/evolution/evolution-contact.cpp:324
+#: ../plugins/evolution/evolution-contact.cpp:334
 msgid "_Home phone:"
 msgstr "গৃহের ফোন: (_H)"
 
 #: ../plugins/evolution/evolution-book.cpp:346
-#: ../plugins/evolution/evolution-contact.cpp:325
+#: ../plugins/evolution/evolution-contact.cpp:335
 msgid "_Office phone:"
 msgstr "কর্মস্থলের ফোন: (_O)"
 
 #: ../plugins/evolution/evolution-book.cpp:347
-#: ../plugins/evolution/evolution-contact.cpp:326
+#: ../plugins/evolution/evolution-contact.cpp:336
 msgid "_Cell phone:"
 msgstr "সেল ফোনের সংখ্যা: (_C)"
 
 #: ../plugins/evolution/evolution-book.cpp:348
-#: ../plugins/evolution/evolution-contact.cpp:327
+#: ../plugins/evolution/evolution-contact.cpp:337
 msgid "_Pager:"
 msgstr "পেজার: (_P)"
 
-#: ../plugins/evolution/evolution-contact.cpp:310
+#: ../plugins/evolution/evolution-contact.cpp:320
 msgid "Edit contact"
 msgstr "পরিচিতির তথ্য সম্পাদনা"
 
-#: ../plugins/evolution/evolution-contact.cpp:364
+#: ../plugins/evolution/evolution-contact.cpp:374
 msgid "Remove contact"
 msgstr "পরিচিতি সরিয়ে ফেলুন"
 
-#: ../plugins/evolution/evolution-contact.cpp:366
+#: ../plugins/evolution/evolution-contact.cpp:376
 #, c-format
 msgid "Are you sure you want to remove %s from the addressbook?"
 msgstr "আপনি কি নিশ্চিতরূপে %s-কে ঠিকানাবই থেকে সরিয়ে ফেলতে ইচ্ছুক?"
 
-#: ../plugins/gstreamer/gst-audioinput.cpp:277
+#: ../plugins/gstreamer/gst-audioinput.cpp:276
 msgid "Audio test"
 msgstr "অডিও পরীক্ষা"
 
@@ -1672,21 +1757,21 @@ msgstr "এলোমেলো"
 msgid "Screencast"
 msgstr "স্ক্রিন-কাস্ট"
 
-#: ../plugins/ldap/ldap-book.cpp:414
-#: ../plugins/resource-list/rl-entry-ref.cpp:132
-#: ../plugins/resource-list/rl-entry.cpp:154
+#: ../plugins/ldap/ldap-book.cpp:427
+#: ../plugins/resource-list/rl-entry-ref.cpp:138
+#: ../plugins/resource-list/rl-entry.cpp:160
 msgid "_Refresh"
 msgstr "নতুন করে প্রদর্শন (_R)"
 
-#: ../plugins/ldap/ldap-book.cpp:417
+#: ../plugins/ldap/ldap-book.cpp:430
 msgid "_Remove addressbook"
 msgstr "ঠিকানা বই মুছে ফেলুন (_R)"
 
-#: ../plugins/ldap/ldap-book.cpp:419
+#: ../plugins/ldap/ldap-book.cpp:432
 msgid "Addressbook _properties"
 msgstr "ঠিকানা-বইয়ের বৈশিষ্ট্য (_p)"
 
-#: ../plugins/ldap/ldap-book.cpp:550
+#: ../plugins/ldap/ldap-book.cpp:563
 msgid "LDAP SASL Interaction"
 msgstr "LDAP SASL ইন্টারেকশন"
 
@@ -1699,69 +1784,80 @@ msgstr "LDAP SASL ইন্টারেকশন"
 #. * say about it. You might google for "challenge response
 #. * authentication" if you'd like more background context.
 #.
-#: ../plugins/ldap/ldap-book.cpp:592
+#: ../plugins/ldap/ldap-book.cpp:605
 msgid "Challenge: "
 msgstr "পরিচয়ের অনুরোধ: "
 
-#: ../plugins/ldap/ldap-book.cpp:600
+#: ../plugins/ldap/ldap-book.cpp:613
 msgid "Interact"
 msgstr "ইন্টারেক্ট করুন"
 
-#: ../plugins/ldap/ldap-book.cpp:667
+#: ../plugins/ldap/ldap-book.cpp:680
 msgid "Refreshing"
 msgstr "নতুন করে প্রদর্শন করা হচ্ছে"
 
-#: ../plugins/ldap/ldap-book.cpp:673
+#: ../plugins/ldap/ldap-book.cpp:686
 msgid "Could not initialize server"
 msgstr "সার্ভার আরম্ভ করতে ব্যর্থ"
 
-#: ../plugins/ldap/ldap-book.cpp:687 ../plugins/ldap/ldap-book.cpp:732
+#: ../plugins/ldap/ldap-book.cpp:700 ../plugins/ldap/ldap-book.cpp:745
 msgid "LDAP Error: "
 msgstr "LDAP ত্রুটি: "
 
-#: ../plugins/ldap/ldap-book.cpp:741
+#: ../plugins/ldap/ldap-book.cpp:754
 msgid "Contacted server"
 msgstr "সার্ভারের সাথে সংযোগ স্থাপিত হয়েছে"
 
 #. patience == 0
-#: ../plugins/ldap/ldap-book.cpp:780
+#: ../plugins/ldap/ldap-book.cpp:793
 msgid "Could not connect to server"
 msgstr "সার্ভারের সাথে সংযোগ স্থাপন করতে ব্যর্থ"
 
 #. patience == 0
-#: ../plugins/ldap/ldap-book.cpp:828 ../plugins/ldap/ldap-book.cpp:877
+#: ../plugins/ldap/ldap-book.cpp:841 ../plugins/ldap/ldap-book.cpp:890
 msgid "Could not search"
 msgstr "অনুসন্ধান করতে ব্যর্থ"
 
-#: ../plugins/ldap/ldap-book.cpp:836
+#: ../plugins/ldap/ldap-book.cpp:849
 msgid "Waiting for search results"
 msgstr "অনুসন্ধানের ফলাফলের অপেক্ষা করা হচ্ছে"
 
-#: ../plugins/ldap/ldap-book.cpp:926
+#: ../plugins/ldap/ldap-book.cpp:942
 msgid "Please edit the following fields"
 msgstr "অনুগ্রহ করে নিম্নলিখিত ক্ষেত্রগুলি সম্পাদনা করুন"
 
-#: ../plugins/ldap/ldap-book.cpp:928
-msgid "Book _Name"
-msgstr "বইয়ের নাম (_N)"
+#: ../plugins/ldap/ldap-book.cpp:944
+#| msgid "Book _Name"
+msgid "Book _Name:"
+msgstr "বইয়ের নাম: (_N)"
 
-#: ../plugins/ldap/ldap-book.cpp:929
-msgid "Server _URI"
-msgstr "সার্ভারের URI (_U)"
+#: ../plugins/ldap/ldap-book.cpp:944
+msgid "Book name, as shown in your dialog box"
+msgstr "বইয়ের নাম, ডায়লগ বক্সের প্রদর্শন অনুযায়ী"
 
-#: ../plugins/ldap/ldap-book.cpp:930
-msgid "_Base DN"
-msgstr "বেস DN (_B)"
+#: ../plugins/ldap/ldap-book.cpp:945
+#| msgid "Server _URI"
+msgid "Server _URI:"
+msgstr "সার্ভারের URI: (_U)"
 
-#: ../plugins/ldap/ldap-book.cpp:936
+#: ../plugins/ldap/ldap-book.cpp:945
+msgid "Name of LDAP server, prefixed by ldap://"
+msgstr "একটি LDAP সার্ভারের নাম ও প্রারম্ভে ldap:// লিখুন"
+
+#: ../plugins/ldap/ldap-book.cpp:946
+#| msgid "_Base DN"
+msgid "_Base DN:"
+msgstr "বেস DN: (_B)"
+
+#: ../plugins/ldap/ldap-book.cpp:952
 msgid "Subtree"
 msgstr "সাব-ট্রি"
 
-#: ../plugins/ldap/ldap-book.cpp:937
+#: ../plugins/ldap/ldap-book.cpp:953
 msgid "Single Level"
 msgstr "একটি স্তর"
 
-#: ../plugins/ldap/ldap-book.cpp:938
+#: ../plugins/ldap/ldap-book.cpp:954
 msgid "_Search Scope"
 msgstr "অনুসন্ধানের পরিধি (_S)"
 
@@ -1771,17 +1867,28 @@ msgstr "অনুসন্ধানের পরিধি (_S)"
 #. * "DisplayName" (i.e., "the name that will be displayed") but on
 #. * most LDAP servers it's "CommonName".
 #.
-#: ../plugins/ldap/ldap-book.cpp:953
-msgid "_DisplayName Attribute"
-msgstr "DisplayName অ্যাট্রিবিউট (_D)"
+#: ../plugins/ldap/ldap-book.cpp:969
+#| msgid "_DisplayName Attribute"
+msgid "_DisplayName Attribute:"
+msgstr "DisplayName অ্যাট্রিবিউট: (_D)"
 
-#: ../plugins/ldap/ldap-book.cpp:954
-msgid "Call _Attributes"
-msgstr "কলের বৈশিষ্ট্য (_A)"
+#: ../plugins/ldap/ldap-book.cpp:970
+#| msgid "Call _Attributes"
+msgid "Call _Attributes:"
+msgstr "কলের বৈশিষ্ট্য: (_A)"
 
-#: ../plugins/ldap/ldap-book.cpp:956 ../plugins/ldap/ldap-book.cpp:958
-msgid "_Filter Template"
-msgstr "টেমপ্লেট ফিল্টার করুন (_F)"
+#: ../plugins/ldap/ldap-book.cpp:970
+msgid "The field you are searching for"
+msgstr "অনুসন্ধান করা ক্ষেত্র"
+
+#: ../plugins/ldap/ldap-book.cpp:972 ../plugins/ldap/ldap-book.cpp:974
+#| msgid "_Filter Template"
+msgid "_Filter Template:"
+msgstr "টেমপ্লেট ফিল্টার করুন: (_F)"
+
+#: ../plugins/ldap/ldap-book.cpp:972 ../plugins/ldap/ldap-book.cpp:974
+msgid "Here, a \"$\" is replaced by the search string"
+msgstr "এই ক্ষেত্রে, \"$\"-র পরিবর্তে অনুসন্ধানযোগ্য পংক্তি ব্যবহার করুন"
 
 #. Translators: Bind ID - In LDAP, the operation that begins an LDAP
 #. * session and authenticates the user to the directory is called a
@@ -1792,216 +1899,215 @@ msgstr "টেমপ্লেট ফিল্টার করুন (_F)"
 #. * course, the Bind ID can be left blank, in which case the session
 #. * is anonymous / unauthenticated.)
 #.
-#: ../plugins/ldap/ldap-book.cpp:969
-msgid "Bind _ID"
-msgstr "বাইন্ড ID (_I)"
+#: ../plugins/ldap/ldap-book.cpp:985
+#| msgid "Bind _ID"
+msgid "Bind _ID:"
+msgstr "বাইন্ড ID: (_I)"
 
-#: ../plugins/ldap/ldap-book.cpp:970
-msgid "_Password"
-msgstr "পাসওয়ার্ড (_P)"
+#: ../plugins/ldap/ldap-book.cpp:985
+msgid "User ID; leave blank for anonymous / nonauthenticated"
+msgstr "ব্যবহারকারীর ID; অ্যানোনিমাস/অনুমোদনবিহীন ব্যবহারকারীদের ক্ষেত্রে ফাঁকা রাখুন"
 
-#: ../plugins/ldap/ldap-book.cpp:971
+#: ../plugins/ldap/ldap-book.cpp:986
+msgid "The password for the user ID above, if any"
+msgstr "উপরোক্ত ব্যবহারকারী ID-র জন্য পাসওয়ার্ড"
+
+#: ../plugins/ldap/ldap-book.cpp:987
 msgid "Use TLS"
 msgstr "TLS ব্যবহার করা হবে"
 
-#: ../plugins/ldap/ldap-book.cpp:972
+#: ../plugins/ldap/ldap-book.cpp:988
 msgid "Use SASL"
 msgstr "SASL ব্যবহার করা হবে"
 
-#: ../plugins/ldap/ldap-book.cpp:986
+#: ../plugins/ldap/ldap-book.cpp:1002
 msgid "SASL _Mechanism"
 msgstr "SASL পদ্ধতি (_M)"
 
-#: ../plugins/ldap/ldap-book.cpp:996
+#: ../plugins/ldap/ldap-book.cpp:1012
 msgid "Edit LDAP directory"
 msgstr "LDAP ডিরেক্টরি সম্পাদনা করুন"
 
-#: ../plugins/ldap/ldap-book.cpp:1018
+#: ../plugins/ldap/ldap-book.cpp:1034
 msgid "Please provide a Book Name for this directory\n"
 msgstr "অনুগ্রহ করে এই ডিরেক্টরির জন্য একটি বইয়ের নাম নির্ধারণ করুন\n"
 
-#: ../plugins/ldap/ldap-book.cpp:1021
+#: ../plugins/ldap/ldap-book.cpp:1037
 msgid "Please provide a Server URI\n"
 msgstr "অনুগ্রহ করে একটি সার্ভারের URI নির্ধারণ করুন\n"
 
-#: ../plugins/ldap/ldap-book.cpp:1024
+#: ../plugins/ldap/ldap-book.cpp:1040
 msgid "Please provide a DisplayName Attribute\n"
 msgstr "অনুগ্রহ করে DisplayName অ্যাট্রিবিউট নির্ধারণ করুন\n"
 
-#: ../plugins/ldap/ldap-book.cpp:1027
+#: ../plugins/ldap/ldap-book.cpp:1043
 msgid "Please provide a Call Attribute\n"
 msgstr "অনুগ্রহ করে একটি Call অ্যাট্রিবিউট নির্ধারণ করুন\n"
 
-#: ../plugins/ldap/ldap-book.cpp:1030
+#: ../plugins/ldap/ldap-book.cpp:1046
 msgid "Invalid Server URI\n"
 msgstr "সার্ভারের URI বৈধ নয়\n"
 
-#: ../plugins/ldap/ldap-source.cpp:129
+#: ../plugins/ldap/ldap-source.cpp:130
 msgid "Add an LDAP Address Book"
 msgstr "LDAP ঠিকানা বই যোগ করুন"
 
-#: ../plugins/ldap/ldap-source.cpp:131
+#: ../plugins/ldap/ldap-source.cpp:134
 msgid "Add the Ekiga.net Directory"
 msgstr "Ekiga.net ডিরেক্টরিটি যোগ করুন"
 
-#: ../plugins/ldap/ldap-source.cpp:151
+#: ../plugins/ldap/ldap-source.cpp:155
 msgid "Create LDAP directory"
 msgstr "LDAP ডিরেক্টরি নির্মাণ করুন"
 
-#: ../plugins/ldap/ldap-source.cpp:159
+#: ../plugins/ldap/ldap-source.cpp:164
 msgid "Ekiga.net Directory"
 msgstr "Ekiga.net ডিরেক্টরি"
 
-#: ../plugins/loudmouth/loudmouth-account.cpp:78
+#: ../plugins/loudmouth/loudmouth-account.cpp:79
+#: ../plugins/loudmouth/loudmouth-account.cpp:113
 msgid "inactive"
-msgstr ""
+msgstr "নিষ্ক্রিয়"
 
-#: ../plugins/loudmouth/loudmouth-account.cpp:150
+#: ../plugins/loudmouth/loudmouth-account.cpp:179
 #, c-format
 msgid "error connecting (%s)"
-msgstr ""
+msgstr "সংযোগ করতে ত্রুটি (%s)"
 
-#: ../plugins/loudmouth/loudmouth-account.cpp:156
-#, fuzzy
+#: ../plugins/loudmouth/loudmouth-account.cpp:185
 msgid "connecting"
-msgstr "সংযোগের ধরন"
+msgstr "সংযোগ করা হচ্ছে"
 
-#: ../plugins/loudmouth/loudmouth-account.cpp:200
-#, fuzzy
+#: ../plugins/loudmouth/loudmouth-account.cpp:229
 msgid "authenticating"
-msgstr "অনুমোদনের নাম:"
+msgstr "অনুমোদন করা হচ্ছে"
 
 #. FIXME: can't we report better?
-#: ../plugins/loudmouth/loudmouth-account.cpp:210
-msgid "error connecting"
-msgstr ""
-
-#: ../plugins/loudmouth/loudmouth-account.cpp:222
-msgid "disconnected"
-msgstr ""
-
 #: ../plugins/loudmouth/loudmouth-account.cpp:239
-#, fuzzy
+msgid "error connecting"
+msgstr "সংযোগ করতে ত্রুটি"
+
+#: ../plugins/loudmouth/loudmouth-account.cpp:251
+msgid "disconnected"
+msgstr "বিচ্ছিন্ন"
+
+#: ../plugins/loudmouth/loudmouth-account.cpp:268
 msgid "connected"
-msgstr "%s-র সংযুক্ত"
+msgstr "সংযুক্ত"
 
 #. FIXME: can't we report something better?
-#: ../plugins/loudmouth/loudmouth-account.cpp:245
+#: ../plugins/loudmouth/loudmouth-account.cpp:274
 msgid "error authenticating loudmouth account"
-msgstr ""
+msgstr "loudmouth অ্যাকাউন্টের অনুমোদন করতে ব্যর্থ"
 
-#: ../plugins/loudmouth/loudmouth-account.cpp:275
-#, fuzzy
+#: ../plugins/loudmouth/loudmouth-account.cpp:304
+#: ../plugins/loudmouth/loudmouth-bank.cpp:127
 msgid "Server:"
-msgstr "সার্ভারের URI (_U)"
+msgstr "সার্ভার:"
 
-#: ../plugins/loudmouth/loudmouth-account.cpp:279
+#: ../plugins/loudmouth/loudmouth-account.cpp:308
+#: ../plugins/loudmouth/loudmouth-bank.cpp:128
 msgid "Resource:"
-msgstr ""
+msgstr "রিসোর্স:"
 
-#: ../plugins/loudmouth/loudmouth-account.cpp:297
-#, fuzzy
-msgid "Enable account"
-msgstr "অ্যাকাউন্ট সক্রিয় করুন"
-
-#: ../plugins/loudmouth/loudmouth-account.cpp:362 ../src/gui/accounts.cpp:690
-#, fuzzy
+#: ../plugins/loudmouth/loudmouth-account.cpp:391 ../src/gui/accounts.cpp:689
 msgid "Edit"
-msgstr "সম্পাদনা (_E)"
+msgstr "সম্পাদনা"
 
-#: ../plugins/loudmouth/loudmouth-bank.cpp:118
-#, fuzzy
+#: ../plugins/loudmouth/loudmouth-bank.cpp:111
 msgid "_Add a jabber/XMPP account"
-msgstr "একটি SIP অ্যাকাউন্ট যোগ করুন (_A)"
+msgstr "একটি jabber/XMPP অ্যাকাউন্ট যোগ করুন (_A)"
+
+#: ../plugins/loudmouth/loudmouth-bank.cpp:123
+#| msgid "Please edit the following fields"
+msgid "Please fill in the following fields:"
+msgstr "অনুগ্রহ করে নিম্নলিখিত ক্ষেত্রগুলি সম্পাদনা করুন:"
+
+#: ../plugins/loudmouth/loudmouth-dialect.cpp:118
+msgid "Join a discussion group"
+msgstr "আলোচনার দলে যোগ দিন"
 
 #: ../plugins/loudmouth/loudmouth-heap.cpp:210
 msgid "Authorization to see your presence"
-msgstr ""
+msgstr "আপনার উপস্থিত জানার অনুমোদন"
 
 #: ../plugins/loudmouth/loudmouth-heap.cpp:214
 #, c-format
 msgid "%s asks the permission to see your presence, saying: \"%s\"."
-msgstr ""
+msgstr "%s দ্বারা চিহ্নিত বার্তা সহ আপনার উপস্থিতি জানার অনুরোধ করা হয়েছে: \"%s\"।"
 
 #: ../plugins/loudmouth/loudmouth-heap.cpp:218
 #, c-format
 msgid "%s asks the permission to see your presence."
-msgstr ""
+msgstr "%s দ্বারা আপনার উপস্থিতি জানার অনুরোধ করা হয়েছে।"
 
 #: ../plugins/loudmouth/loudmouth-heap.cpp:225
 msgid "grant him/her the permission to see your presence"
-msgstr ""
+msgstr "চিহ্নিত ব্যক্তিকে আপনার উপস্থিতি সংক্রান্ত তথ্য দেখার অনুমতি প্রদান করুন"
 
 #: ../plugins/loudmouth/loudmouth-heap.cpp:226
 msgid "refuse him/her the permission to see your presence"
-msgstr ""
+msgstr "চিহ্নিত ব্যক্তিকে আপনার উপস্থিতি সংক্রান্ত তথ্য দেখতে প্রতিরোধ করুন"
 
 #: ../plugins/loudmouth/loudmouth-heap.cpp:227
 msgid "decide later (also close or cancel this dialog)"
-msgstr ""
+msgstr "পরে নির্ধারণ করা হবে (উপরন্তু বন্ধ করুন অথবা এই ডায়লগ বাতিল করুন)"
 
 #: ../plugins/loudmouth/loudmouth-heap.cpp:228
-#, fuzzy
 msgid "Your answer is: "
-msgstr "প্রত্যুত্তোর প্রাপ্তির সময়সীমা"
+msgstr "আপনার উত্তর হল: "
 
 #: ../plugins/loudmouth/loudmouth-heap.cpp:315
-#, fuzzy
 msgid "Add a roster element"
-msgstr "রোস্টারের বস্তু সম্পাদন করুন"
+msgstr "রোস্টারে একটি বস্তু যোগ করুন"
 
 #: ../plugins/loudmouth/loudmouth-heap.cpp:316
-#, fuzzy
 msgid "Please fill in this form to add a new element to the remote roster"
 msgstr ""
-"ekiga-র দূরবর্তী তালিকার মধ্যে নতুন পরিচিতির তথ্য সংযোজন করার জন্য অনুগ্রহ করে এই "
+"দূরবর্তী রোস্টারের মধ্যে নতুন পরিচিতির তথ্য সংযোজন করার জন্য অনুগ্রহ করে এই "
 "ফর্মটি পূরণ করুন"
 
 #: ../plugins/loudmouth/loudmouth-heap.cpp:318
-#, fuzzy
+#: ../plugins/resource-list/rl-heap.cpp:470
 msgid "Identifier:"
-msgstr "আইডেন্টিফায়ার"
+msgstr "আইডেন্টিফায়ার:"
 
 #: ../plugins/loudmouth/loudmouth-heap.cpp:318
-#, fuzzy
 msgid "identifier@server"
-msgstr "আইডেন্টিফায়ার"
+msgstr "identifier@server"
 
-#: ../plugins/loudmouth/loudmouth-presentity.cpp:156
 #: ../plugins/loudmouth/loudmouth-presentity.cpp:162
-msgid "Ask him/her to see his/her status"
-msgstr ""
-
-#: ../plugins/loudmouth/loudmouth-presentity.cpp:160
-#: ../plugins/loudmouth/loudmouth-presentity.cpp:172
-msgid "Forbid him/her to see my status"
-msgstr ""
-
-#: ../plugins/loudmouth/loudmouth-presentity.cpp:164
-msgid "Ask him/her to see his/her status (pending)"
-msgstr ""
-
 #: ../plugins/loudmouth/loudmouth-presentity.cpp:168
-#: ../plugins/loudmouth/loudmouth-presentity.cpp:173
-msgid "Stop getting his/her status"
-msgstr ""
+msgid "Ask him/her to see his/her status"
+msgstr "চিহ্নিত ব্যক্তির অবস্থাসূচক বার্তা দেখার অনুরোধ করুন"
 
+#: ../plugins/loudmouth/loudmouth-presentity.cpp:166
 #: ../plugins/loudmouth/loudmouth-presentity.cpp:178
-#, fuzzy
+msgid "Forbid him/her to see my status"
+msgstr "চিহ্নিত ব্যক্তিকে আমার অবস্থাসূচক বার্তা দেখতে প্রতিরোধ করা হবে"
+
+#: ../plugins/loudmouth/loudmouth-presentity.cpp:170
+msgid "Ask him/her to see his/her status (pending)"
+msgstr "চিহ্নিত ব্যক্তির অবস্থাসূচক বার্তা দেখার অনুরোধ করুন (অসমাপ্ত)"
+
+#: ../plugins/loudmouth/loudmouth-presentity.cpp:174
+#: ../plugins/loudmouth/loudmouth-presentity.cpp:179
+msgid "Stop getting his/her status"
+msgstr "চিহ্নিত ব্যক্তির অবস্থাসূচকা বার্তা প্রাপ্ত করা বন্ধ করা হবে"
+
+#: ../plugins/loudmouth/loudmouth-presentity.cpp:184
 msgid "Start chat"
-msgstr "আড়াল করে আরম্ভ করা হবে"
+msgstr "আলাপন আরম্ভ করুন"
 
-#: ../plugins/loudmouth/loudmouth-presentity.cpp:181
+#: ../plugins/loudmouth/loudmouth-presentity.cpp:187
 msgid "Continue chat"
-msgstr ""
+msgstr "আলাপনে এগিয়ে চলুন"
 
-#: ../plugins/loudmouth/loudmouth-presentity.cpp:270
-#, fuzzy
-msgid ""
-"Please fill in this form to change an existing element of the remote roster"
+#: ../plugins/loudmouth/loudmouth-presentity.cpp:276
+msgid "Please fill in this form to change an existing element of the remote roster"
 msgstr ""
-"ekiga-র অভ্যন্তরীণ তালিকার মধ্যে উপস্থিত কোনো সামগ্রীর তথ্য পরিবর্তন করার জন্য অনুগ্রহ "
-"করে এই ফর্মটি পূরণ করুন"
+"দূরবর্তী রোস্টারের মধ্যে উপস্থিত কোনো সামগ্রীর তথ্য পরিবর্তন করার জন্য অনুগ্রহ করে এই "
+"ফর্মটি পূরণ করুন"
 
 #: ../plugins/resource-list/rl-cluster.cpp:102
 msgid "New resource list"
@@ -2012,13 +2118,13 @@ msgid "Add new resource-list"
 msgstr "নতুন রিসোর্স তালিকা যোগ করুন"
 
 #: ../plugins/resource-list/rl-cluster.cpp:167
-msgid ""
-"Please fill in this form to add a new contact list to ekiga's remote roster"
+msgid "Please fill in this form to add a new contact list to ekiga's remote roster"
 msgstr ""
 "ekiga-র দূরবর্তী তালিকার মধ্যে নতুন পরিচিতির তথ্য সংযোজন করার জন্য অনুগ্রহ করে এই "
 "ফর্মটি পূরণ করুন"
 
 #: ../plugins/resource-list/rl-cluster.cpp:171
+#: ../plugins/resource-list/rl-heap.cpp:471
 msgid "Writable:"
 msgstr "লিখনযোগ্য:"
 
@@ -2034,7 +2140,7 @@ msgstr "প্রাপ্ত করার জন্য ক্লিক কর�
 msgid "Distant contact"
 msgstr "দূরবর্তী পরিচিতি"
 
-#: ../plugins/resource-list/rl-entry.cpp:197
+#: ../plugins/resource-list/rl-entry.cpp:203
 msgid "Invalid server data"
 msgstr "সার্ভারের তথ্য বৈধ নয়"
 
@@ -2061,29 +2167,25 @@ msgstr ""
 "গ্লোবাল ধার্য করা হবে)"
 
 #: ../plugins/resource-list/rl-heap.cpp:467
-msgid "Contact list's name"
-msgstr "পরিচিতদের তালিকার নাম"
+#| msgid "Contact list's name"
+msgid "Contact list's name:"
+msgstr "পরিচিতদের তালিকার নাম:"
 
 #. "Document" used as a name -- uri point to the root of a document tree
 #: ../plugins/resource-list/rl-heap.cpp:469
-msgid "Document root"
-msgstr "নথিপত্রের root"
-
-#: ../plugins/resource-list/rl-heap.cpp:470
-msgid "Identifier"
-msgstr "আইডেন্টিফায়ার"
-
-#: ../plugins/resource-list/rl-heap.cpp:471
-msgid "Writable"
-msgstr "লিখনযোগ্য"
+#| msgid "Document root"
+msgid "Document root:"
+msgstr "নথিপত্রের root:"
 
 #: ../plugins/resource-list/rl-heap.cpp:472
-msgid "Server username"
-msgstr "সার্ভারে ব্যবহারকারীর নাম"
+#| msgid "Server username"
+msgid "Server username:"
+msgstr "সার্ভারে ব্যবহারকারীর নাম:"
 
 #: ../plugins/resource-list/rl-heap.cpp:473
-msgid "Server password"
-msgstr "সার্ভারের পাসওয়ার্ড"
+#| msgid "Server password"
+msgid "Server password:"
+msgstr "সার্ভারের পাসওয়ার্ড:"
 
 #: ../plugins/resource-list/rl-heap.cpp:512
 msgid "Add a remote contact"
@@ -2095,68 +2197,65 @@ msgstr ""
 "দূরবর্তী সার্ভারের মধ্যে নতুন পরিচিতি যোগ করার জন্য অনুগ্রহ করে এই ফর্মের মধ্যে তথ্য "
 "পূরণ করুন"
 
-#: ../plugins/resource-list/rl-list.cpp:182
+#. Translators: #%d - ordinal number
+#: ../plugins/resource-list/rl-list.cpp:183
 #, c-format
 msgid "%s / List #%d"
 msgstr "%s / তালিকা #%d"
 
-#: ../plugins/resource-list/rl-list.cpp:186
+#. Translators: #%d - ordinal number
+#: ../plugins/resource-list/rl-list.cpp:188
 #, c-format
 msgid "List #%d"
 msgstr "তালিকা #%d"
 
-#: ../plugins/resource-list/rl-presentity.cpp:224
+#: ../plugins/resource-list/rl-presentity.cpp:230
 msgid "Edit remote contact"
 msgstr "দূরবর্তী পরিচিতির তথ্য সম্পাদনা"
 
-#: ../plugins/resource-list/rl-presentity.cpp:225
-msgid ""
-"Please fill in this form to change an existing contact on a remote server"
+#: ../plugins/resource-list/rl-presentity.cpp:231
+msgid "Please fill in this form to change an existing contact on a remote server"
 msgstr ""
 "দূরবর্তী সার্ভারের মধ্যে উপস্থিত পরিচিতি যোগ করার জন্য অনুগ্রহ করে এই ফর্মের মধ্যে তথ্য "
 "পূরণ করুন"
 
-#: ../src/gui/accounts.cpp:566
+#: ../src/gui/accounts.cpp:565
 msgid "Account Name"
 msgstr "অ্যাকাউন্টের নাম"
 
-#: ../src/gui/accounts.cpp:567
+#: ../src/gui/accounts.cpp:566
 msgid "Status"
 msgstr "অবস্থা"
 
-#: ../src/gui/accounts.cpp:577 ../src/gui/accounts.cpp:619
+#: ../src/gui/accounts.cpp:576 ../src/gui/accounts.cpp:618
 msgid "Accounts"
 msgstr "অ্যাকাউন্ট"
 
-#: ../src/gui/accounts.cpp:591 ../src/gui/main_window.cpp:3215
+#: ../src/gui/accounts.cpp:590 ../src/gui/main_window.cpp:3575
 msgid "_Accounts"
 msgstr "অ্যাকাউন্ট (_A)"
 
-#: ../src/gui/accounts.cpp:595 ../src/gui/main_window.cpp:3298
+#: ../src/gui/accounts.cpp:594 ../src/gui/main_window.cpp:3658
 msgid "_Help"
 msgstr "সাহায্য (_H)"
 
-#: ../src/gui/accounts.cpp:622
-#, fuzzy
+#: ../src/gui/accounts.cpp:621
 msgid "Active"
-msgstr "কর্ম (_A)"
+msgstr "সক্রিয়"
 
-#: ../src/gui/accounts.cpp:684
-#, fuzzy
+#: ../src/gui/accounts.cpp:683
 msgid "Enable"
-msgstr "সক্রিয় (_E)"
+msgstr "সক্রিয় করুন"
 
-#: ../src/gui/accounts.cpp:687
-#, fuzzy
+#: ../src/gui/accounts.cpp:686
 msgid "Disable"
-msgstr "নিষ্ক্রিয় (_D)"
+msgstr "নিষ্ক্রিয় করুন"
 
-#: ../src/gui/accounts.cpp:693
-#, fuzzy
+#: ../src/gui/accounts.cpp:692
 msgid "Remove"
-msgstr "সরিয়ে ফেলুন (_R)"
+msgstr "সরিয়ে ফেলুন"
 
-#: ../src/gui/assistant.cpp:320
+#: ../src/gui/assistant.cpp:341
 msgid ""
 "This is the Ekiga general configuration assistant. The following steps will "
 "set up Ekiga by asking a few simple questions.\n"
@@ -2171,20 +2270,20 @@ msgstr ""
 "এই ধাপগুলি সমাপ্তির পরে, কোনো বৈশিষ্ট্য পরিবর্তনের জন্য 'সম্পাদনা' শীর্ষক মেনু থেকে "
 "'পছন্দ' নির্বাচন করুন।"
 
-#: ../src/gui/assistant.cpp:328
+#: ../src/gui/assistant.cpp:349
 msgid "Welcome to Ekiga"
 msgstr "Ekiga-এ স্বাগতম"
 
-#: ../src/gui/assistant.cpp:352 ../src/gui/preferences.cpp:464
+#: ../src/gui/assistant.cpp:373 ../src/gui/preferences.cpp:445
 msgid "Personal Information"
 msgstr "ব্যক্তিগত তথ্যাদি"
 
 #. The user fields
-#: ../src/gui/assistant.cpp:355
+#: ../src/gui/assistant.cpp:376
 msgid "Please enter your first name and your surname:"
 msgstr "অনুগ্রহ করে আপনার নাম ও পদবি লিখুন:"
 
-#: ../src/gui/assistant.cpp:364
+#: ../src/gui/assistant.cpp:385
 msgid ""
 "Your first name and surname will be used when connecting to other VoIP and "
 "videoconferencing software."
@@ -2192,19 +2291,19 @@ msgstr ""
 "অন্যান্য VoIP ও ভিডিও-কনফারেন্স সফ্টওয়্যারের সাথে সংযোগ করার সময় আপনার নাম ও পদবি "
 "ব্যবহার করা হবে।"
 
-#: ../src/gui/assistant.cpp:558
+#: ../src/gui/assistant.cpp:579
 msgid "Ekiga.net Account"
 msgstr "Ekiga.net অ্যাকাউন্ট"
 
-#: ../src/gui/assistant.cpp:560
+#: ../src/gui/assistant.cpp:581
 msgid "Please enter your username:"
 msgstr "অনুগ্রহ করে আপনার অ্যাকাউন্টের ব্যবহারকারীর নাম লিখুন:"
 
-#: ../src/gui/assistant.cpp:568
+#: ../src/gui/assistant.cpp:589
 msgid "Please enter your password:"
 msgstr "অনুগ্রহ করে আপনার পাসওয়ার্ড লিখুন:"
 
-#: ../src/gui/assistant.cpp:578
+#: ../src/gui/assistant.cpp:599
 msgid ""
 "The username and password are used to login to your existing account at the "
 "ekiga.net free SIP service. If you do not have an ekiga.net SIP address yet, "
@@ -2222,27 +2321,34 @@ msgstr ""
 "অন্য কোনো SIP পরিসেবা ব্যবহার করে থাকলে অথবা লগ-ইন সংক্রান্ত বিবরণ পরে পূরণ করতে "
 "ইচ্ছুক হলে এই ধাপটি উপেক্ষা করা যাবে।"
 
-#: ../src/gui/assistant.cpp:605
+#: ../src/gui/assistant.cpp:625
 msgid "I do not want to sign up for the ekiga.net free service"
 msgstr "বিনামূল্যের ekiga.net পরিসেবা ব্যবহার করতে আমি ইচ্ছুক নই"
 
-#: ../src/gui/assistant.cpp:668
+#: ../src/gui/assistant.cpp:685
 msgid "Ekiga Call Out Account"
 msgstr "Ekiga কল-আউট অ্যাকাউন্ট"
 
-#: ../src/gui/assistant.cpp:670
+#: ../src/gui/assistant.cpp:687
 msgid "Please enter your account ID:"
 msgstr "অনুগ্রহ করে আপনার অ্যাকাউন্টের ID লিখুন:"
 
-#: ../src/gui/assistant.cpp:678
+#: ../src/gui/assistant.cpp:695
 msgid "Please enter your PIN code:"
 msgstr "অনুগ্রহ করে আপনার PIN কোড লিখুন:"
 
-#: ../src/gui/assistant.cpp:689
+#: ../src/gui/assistant.cpp:706
+#| msgid ""
+#| "You can make calls to regular phones and cell numbers worldwide using "
+#| "Ekiga.\n"
+#| "\n"
+#| "To enable this, you need to do two things:\n"
+#| "- First buy an account at the URL below.\n"
+#| "- Then enter your account ID and PIN code.\n"
+#| "The service will work only if your account is created using the URL in "
+#| "this dialog.\n"
 msgid ""
-"You can make calls to regular phones and cell numbers worldwide using "
-"Ekiga.\n"
-"\n"
+"You can make calls to regular phones and cell numbers worldwide using Ekiga. "
 "To enable this, you need to do two things:\n"
 "- First buy an account at the URL below.\n"
 "- Then enter your account ID and PIN code.\n"
@@ -2252,54 +2358,50 @@ msgstr ""
 "Ekiga-র মাধ্যমে সারা বিশ্বের যে কোনো স্থানে আপনি স্বাভাবিক ফোন ও সেল ফোনে কল "
 "করতে পারবেন।\n"
 "\n"
-"এই ব্যবস্থা সক্রিয় করার জন্য দুটি ধাপ পালন করা আবশ্যক:\n"
+"এই ব্যবস্থা সক্রিয় করার জন্য দুটি কাজ করা আবশ্যক:\n"
 "- প্রথমত, নিম্নলিখিত URL-এ গিয়ে একটি অ্যাকাউন্ট কিনুন\n"
 "- এর পরে, আপনার অ্যাকাউন্টের ID ও PIN কোড লিখুন।\n"
 "উল্লেখ্য, শুধুমাত্র এই ডায়লগে প্রদর্শিত নিম্নলিখিত URL-র মাধ্যমে অ্যাকাউন্ট নির্মিত হলে "
 "এই পরিসেবা ব্যবহার করা সম্ভব হবে।\n"
 
-#: ../src/gui/assistant.cpp:739
-msgid "Consult the calls history"
-msgstr "কল সংক্রান্ত পূর্ববর্তী তথ্য যাচাই করা হবে"
-
-#: ../src/gui/assistant.cpp:749
+#: ../src/gui/assistant.cpp:765
 msgid "I do not want to sign up for the Ekiga Call Out service"
 msgstr "Ekiga Call Out পরিসেবা ব্যবহার করতে আমি ইচ্ছুক নই"
 
-#: ../src/gui/assistant.cpp:815 ../src/gui/assistant.cpp:1375
+#: ../src/gui/assistant.cpp:828 ../src/gui/assistant.cpp:1384
 msgid "Connection Type"
 msgstr "সংযোগের ধরন"
 
 #. The connection type
-#: ../src/gui/assistant.cpp:818
+#: ../src/gui/assistant.cpp:831
 msgid "Please choose your connection type:"
 msgstr "অনুগ্রহ করে সংযোগের ধরন নির্বাচন করুন:"
 
-#: ../src/gui/assistant.cpp:835
+#: ../src/gui/assistant.cpp:848
 msgid "56k Modem"
 msgstr "৫৬কিলেবাইট মোডেম"
 
-#: ../src/gui/assistant.cpp:840
+#: ../src/gui/assistant.cpp:853
 msgid "ISDN"
 msgstr "ISDN"
 
-#: ../src/gui/assistant.cpp:845
+#: ../src/gui/assistant.cpp:858
 msgid "DSL/Cable (128 kbit/s uplink)"
 msgstr "DSL/কেবল (১২৮ কিলোবাইট/সেকেন্ড আপলিংক)"
 
-#: ../src/gui/assistant.cpp:850
+#: ../src/gui/assistant.cpp:863
 msgid "DSL/Cable (512 kbit/s uplink)"
 msgstr "DSL/কেবল (৫১২ কিলোবাইট/সেকেন্ড আপলিংক)"
 
-#: ../src/gui/assistant.cpp:855
+#: ../src/gui/assistant.cpp:868
 msgid "LAN"
 msgstr "LAN"
 
-#: ../src/gui/assistant.cpp:860
+#: ../src/gui/assistant.cpp:873
 msgid "Keep current settings"
 msgstr "বর্তমান বৈশিষ্ট্য পরিবর্তন করা হবে না"
 
-#: ../src/gui/assistant.cpp:865
+#: ../src/gui/assistant.cpp:878
 msgid ""
 "The connection type will permit determining the best quality settings that "
 "Ekiga will use during calls. You can later change the settings individually "
@@ -2309,65 +2411,69 @@ msgstr ""
 "নির্ধারণ করা হবে। পছন্দের মান নির্ধারণের উইন্ডোর মাধ্যমে এই বৈশিষ্ট্যগুলি স্বতন্ত্রভাবে "
 "পরে পরিবর্তন করা যাবে।"
 
-#: ../src/gui/assistant.cpp:959 ../src/gui/main_window.cpp:3044
-#: ../src/gui/main_window.cpp:3048 ../src/gui/preferences.cpp:770
+#: ../src/gui/assistant.cpp:967 ../src/gui/main_window.cpp:3390
+#: ../src/gui/main_window.cpp:3394 ../src/gui/main_window.cpp:3398
+#: ../src/gui/preferences.cpp:738
 msgid "Audio Devices"
 msgstr "অডিও ডিভাইস"
 
-#: ../src/gui/assistant.cpp:961
+#: ../src/gui/assistant.cpp:969
 msgid "Please choose the audio ringing device:"
 msgstr "অনুগ্রহ করে অডিও রিংয়ের ডিভাইস নির্বাচন করুন:"
 
-#: ../src/gui/assistant.cpp:981
+#: ../src/gui/assistant.cpp:989
 msgid ""
 "The audio ringing device is the device that will be used to play the ringing "
 "sound on incoming calls."
 msgstr "অডিও রিংয়ের ডিভাইসটি আগমনকারী কলের সংকেত ধ্বনির জন্য ব্যবহার করা হবে।"
 
 #. ---
-#: ../src/gui/assistant.cpp:992
+#: ../src/gui/assistant.cpp:1000
 msgid "Please choose the audio output device:"
 msgstr "অনুগ্রহ করে অডিও আউটপুট ডিভাইস নির্বাচন করুন:"
 
-#: ../src/gui/assistant.cpp:1012
+#: ../src/gui/assistant.cpp:1020
 msgid ""
 "The audio output device is the device that will be used to play audio during "
 "calls."
 msgstr "অডিও আউটপুট ডিভাইসটি কল চলাকালীন অডিও ধ্বনির জন্য ব্যবহার করা হবে।"
 
 #. ---
-#: ../src/gui/assistant.cpp:1023
+#: ../src/gui/assistant.cpp:1031
 msgid "Please choose the audio input device:"
 msgstr "অনুগ্রহ করে অডিও ইনপুট ডিভাইস নির্বাচন করুন:"
 
-#: ../src/gui/assistant.cpp:1043
+#: ../src/gui/assistant.cpp:1051
 msgid ""
 "The audio input device is the device that will be used to record your voice "
 "during calls."
-msgstr ""
-"অডিও ইনপুট ডিভাইসটি কল চলাকালীন আপনার কন্ঠস্বর রেকর্ড করার জন্য ব্যবহার করা হবে।"
+msgstr "অডিও ইনপুট ডিভাইসটি কল চলাকালীন আপনার কন্ঠস্বর রেকর্ড করার জন্য ব্যবহার করা হবে।"
 
-#: ../src/gui/assistant.cpp:1145
+#: ../src/gui/assistant.cpp:1151 ../src/gui/assistant.cpp:1421
+msgid "Video Input Device"
+msgstr "ভিডিও ইনপুট ডিভাইস"
+
+#: ../src/gui/assistant.cpp:1153
 msgid "Please choose your video input device:"
 msgstr "অনুগ্রহ করে অডিও আউটপুট ডিভাইস নির্বাচন করুন:"
 
-#: ../src/gui/assistant.cpp:1165
+#: ../src/gui/assistant.cpp:1173
 msgid ""
 "The video input device is the device that will be used to capture video "
 "during calls."
 msgstr "ভিডিও ইনপুট ডিভাইসটি কল চলাকালীন ভিডিও গ্রহণ করার জন্য ব্যবহার করা হবে।"
 
-#: ../src/gui/assistant.cpp:1229 ../src/gui/assistant.cpp:1252
-#: ../src/gui/assistant.cpp:1275 ../src/gui/preferences.cpp:812
-#: ../src/gui/preferences.cpp:836 ../src/gui/preferences.cpp:858
+#: ../src/gui/assistant.cpp:1240 ../src/gui/assistant.cpp:1262
+#: ../src/gui/assistant.cpp:1284 ../src/gui/preferences.cpp:779
+#: ../src/gui/preferences.cpp:803 ../src/gui/preferences.cpp:825
 msgid "No device found"
 msgstr "কোনো ডিভাইস পাওয়া যায়নি"
 
-#: ../src/gui/assistant.cpp:1306
+#: ../src/gui/assistant.cpp:1315
 msgid "Configuration Complete"
 msgstr "কনফিগারেশন সমাপ্ত"
 
-#: ../src/gui/assistant.cpp:1308
+#: ../src/gui/assistant.cpp:1317
 msgid ""
 "You have now finished the Ekiga configuration. All the settings can be "
 "changed in the Ekiga preferences. Enjoy!"
@@ -2375,52 +2481,48 @@ msgstr ""
 "Ekiga-র কনফিগারেশন সম্পূর্ণ হয়েছে। এই সকল বৈশিষ্ট্যগুলির মান Ekiga-র পছন্দ তালিকা "
 "থেকে পরিবর্তন করা যাবে!"
 
-#: ../src/gui/assistant.cpp:1315
+#: ../src/gui/assistant.cpp:1324
 msgid "Configuration summary:"
 msgstr "কনফিগারেশনের সংক্ষিপ্ত তথ্য:"
 
-#: ../src/gui/assistant.cpp:1385
+#: ../src/gui/assistant.cpp:1394
 msgid "Audio Ringing Device"
 msgstr "অডিও রিংয়ের ডিভাইস"
 
-#: ../src/gui/assistant.cpp:1394
+#: ../src/gui/assistant.cpp:1403
 msgid "Audio Output Device"
 msgstr "অডিও আউটপুট ডিভাইস"
 
-#: ../src/gui/assistant.cpp:1403
+#: ../src/gui/assistant.cpp:1412
 msgid "Audio Input Device"
 msgstr "অডিও ইনপুট ডিভাইস"
 
-#: ../src/gui/assistant.cpp:1412
-msgid "Video Input Device"
-msgstr "ভিডিও ইনপুট ডিভাইস"
-
-#: ../src/gui/assistant.cpp:1425
+#: ../src/gui/assistant.cpp:1434
 msgid "SIP URI"
 msgstr "SIP URI"
 
-#: ../src/gui/assistant.cpp:1437
+#: ../src/gui/assistant.cpp:1446
 msgid "Ekiga Call Out"
 msgstr "Ekiga কল-আউট"
 
-#: ../src/gui/assistant.cpp:1481
+#: ../src/gui/assistant.cpp:1490
 #, c-format
 msgid "Ekiga Configuration Assistant (%d of %d)"
 msgstr "Ekiga কনফিগারেশন সহায়ক ব্যবস্থা (%d, সর্বমোট %d)"
 
-#: ../src/gui/callbacks.cpp:78
+#: ../src/gui/callbacks.cpp:67
 msgid "Contributors:"
 msgstr "অবদানকারী:"
 
-#: ../src/gui/callbacks.cpp:90
+#: ../src/gui/callbacks.cpp:80
 msgid "Artwork:"
 msgstr "শিল্পী:"
 
-#: ../src/gui/callbacks.cpp:98
+#: ../src/gui/callbacks.cpp:88
 msgid "See AUTHORS file for full credits"
 msgstr "সম্পূর্ণ স্বীকৃতি তালিকা AUTHORS ফাইলের মধ্যে উপস্থিত রয়েছে"
 
-#: ../src/gui/callbacks.cpp:114
+#: ../src/gui/callbacks.cpp:104
 msgid ""
 "This program is free software; you can redistribute it and/or modify it "
 "under the terms of the GNU General Public License as published by the Free "
@@ -2432,7 +2534,7 @@ msgstr ""
 "Software Foundation; either version 2 of the License, or (at your option) "
 "any later version. "
 
-#: ../src/gui/callbacks.cpp:118
+#: ../src/gui/callbacks.cpp:108
 msgid ""
 "This program is distributed in the hope that it will be useful, but WITHOUT "
 "ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or "
@@ -2448,7 +2550,7 @@ msgstr ""
 "License along with this program; if not, write to the Free Software "
 "Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301, USA."
 
-#: ../src/gui/callbacks.cpp:125
+#: ../src/gui/callbacks.cpp:115
 msgid ""
 "Ekiga is licensed under the GPL license and as a special exception, you have "
 "permission to link or otherwise combine this program with the programs OPAL, "
@@ -2466,14 +2568,14 @@ msgstr ""
 
 #. Translators: Please write translator credits here, and
 #. * separate names with \n
-#: ../src/gui/callbacks.cpp:137
+#: ../src/gui/callbacks.cpp:127
 msgid "translator-credits"
 msgstr ""
 "অঙ্কুর প্রকল্পের পক্ষে ইন্দ্রনীল দাশ গুপ্ত <indradg@ilug-cal.org>\n"
 "সঙ্কর্ষণ মুখোপাধ্যায় <sankarshan@randomink.org>\n"
 "রুণা ভট্টাচার্য্য <runab@redhat.com>"
 
-#: ../src/gui/callbacks.cpp:142
+#: ../src/gui/callbacks.cpp:132
 msgid ""
 "Ekiga is full-featured SIP and H.323 compatible VoIP, IP-Telephony and "
 "Videoconferencing application that allows you to make audio and video calls "
@@ -2483,87 +2585,66 @@ msgstr ""
 "টেলিফোনি ও ভিডিও-কনফারেন্সিংয়ের অ্যাপ্লিকেশন। এর সাহায্যে SIP ও H.323 হার্ডওয়্যার "
 "অথবা সফ্টওয়্যারের মাধ্যমে দূরবর্তী ব্যবহারকারীদের সাথে অডিও ও ভিডিও কল করা যাবে।"
 
-#: ../src/gui/callbacks.cpp:216
-msgid "Help display is not supported by your GTK+ version"
-msgstr "ব্যবহৃত GTK+ সংস্করণ দ্বারা সহায়তার তথ্য প্রদর্শন করা সম্ভব নয়"
-
-#: ../src/gui/callbacks.cpp:224
+#: ../src/gui/callbacks.cpp:205
 msgid "Unable to open help file."
 msgstr "সাহায্যের ফাইল খুলতে ব্যর্থ।"
 
-#: ../src/gui/dialpad.cpp:55
-msgid "abc"
-msgstr "abc"
+#: ../src/gui/main_window.cpp:739
+msgid "Presence"
+msgstr "উপস্থিতি"
 
-#: ../src/gui/dialpad.cpp:56
-msgid "def"
-msgstr "def"
+#: ../src/gui/main_window.cpp:746
+#| msgid "Address Book"
+msgid "Addressbook"
+msgstr "ঠিকানা বই"
 
-#: ../src/gui/dialpad.cpp:57
-msgid "ghi"
-msgstr "ghi"
+#: ../src/gui/main_window.cpp:810
+#| msgid "Unknown error."
+msgid "Unknown"
+msgstr "অজানা"
 
-#: ../src/gui/dialpad.cpp:58
-msgid "jkl"
-msgstr "jkl"
-
-#: ../src/gui/dialpad.cpp:59
-msgid "mno"
-msgstr "mno"
-
-#: ../src/gui/dialpad.cpp:60
-msgid "pqrs"
-msgstr "pqrs"
-
-#: ../src/gui/dialpad.cpp:61
-msgid "tuv"
-msgstr "tuv"
-
-#: ../src/gui/dialpad.cpp:62
-msgid "wxyz"
-msgstr "wxyz"
-
-#: ../src/gui/main_window.cpp:610
+#: ../src/gui/main_window.cpp:961
 #, c-format
 msgid "A:%.1f/%.1f   V:%.1f/%.1f   FPS:%d/%d"
 msgstr "A:%.1f/%.1f   V:%.1f/%.1f   FPS:%d/%d"
 
-#: ../src/gui/main_window.cpp:654
+#. %s is the SIP/H.323 address of the remote user, this text is shown
+#. below video during a call
+#: ../src/gui/main_window.cpp:1007
 #, c-format
 msgid "Connected with %s"
 msgstr "%s-র সংযুক্ত"
 
-#: ../src/gui/main_window.cpp:694 ../src/gui/main_window.cpp:3538
+#: ../src/gui/main_window.cpp:1043 ../src/gui/main_window.cpp:3894
 msgid "Standby"
 msgstr "মুলতুবি"
 
-#: ../src/gui/main_window.cpp:753
+#: ../src/gui/main_window.cpp:1102
 msgid "Call on hold"
 msgstr "ধরে থাকা কল"
 
-#: ../src/gui/main_window.cpp:764
+#: ../src/gui/main_window.cpp:1113
 msgid "Call retrieved"
 msgstr "কল পুনরুদ্ধার করা হয়েছে"
 
-#: ../src/gui/main_window.cpp:779
+#: ../src/gui/main_window.cpp:1128
 #, c-format
 msgid "Missed call from %s"
 msgstr "%s থেকে প্রাপ্ত কলের জবাব দেওয়া হয়নি"
 
-#: ../src/gui/main_window.cpp:916
+#: ../src/gui/main_window.cpp:1265
 msgid "Error"
 msgstr "ত্রুটি"
 
-#: ../src/gui/main_window.cpp:981
+#: ../src/gui/main_window.cpp:1338
 msgid "Error while initializing video output"
 msgstr "ভিডিও আউটপুট ডিভাইস আরম্ভ করতে সমস্যা"
 
-#: ../src/gui/main_window.cpp:982
-#, fuzzy
+#: ../src/gui/main_window.cpp:1339
 msgid "No video will be displayed on your machine during this call"
-msgstr "এই কলের সময় কোনো ভিডিও প্রদর্শন করা হবে না->"
+msgstr "এই কলের সময় আপনার মেশিনে কোনো ভিডিও প্রদর্শন করা হবে না"
 
-#: ../src/gui/main_window.cpp:992
+#: ../src/gui/main_window.cpp:1349
 msgid ""
 "There was an error opening or initializing the video output. Please verify "
 "that no other application is using the accelerated video output."
@@ -2571,7 +2652,7 @@ msgstr ""
 "ভিডিও আউটপুট খুলতে অথবা আরম্ভ করতে সমস্যা দেখা দিয়েছে। অনুগ্রহ করে পরীক্ষা করুন, অন্য "
 "কোনো অ্যাপ্লিকেশন দ্বারা দ্রুত গতির ভিডিও আউটপুট ব্যবহার করা হচ্ছে কি না।"
 
-#: ../src/gui/main_window.cpp:994
+#: ../src/gui/main_window.cpp:1351
 msgid ""
 "There was an error opening or initializing the video output. Please verify "
 "that you are using a color depth of 24 or 32 bits per pixel."
@@ -2580,28 +2661,27 @@ msgstr ""
 "গভীরতা ২৪ অথবা ৩২ বিট প্রতি পিক্সেল মাপেনির্ধারিত হয়েছে কি না।"
 
 #. Translators: This is a hotplug status
-#: ../src/gui/main_window.cpp:1107
+#: ../src/gui/main_window.cpp:1464
 #, c-format
 msgid "Added video input device %s"
 msgstr "ভিডিও ইনপুট ডিভাইস %s যোগ করা হয়েছে"
 
 #. Translators: This is a hotplug status
-#: ../src/gui/main_window.cpp:1119
+#: ../src/gui/main_window.cpp:1476
 #, c-format
 msgid "Removed video input device %s"
 msgstr "ভিডিও ইনপুট ডিভাইস %s সরিয়ে ফেলা হয়েছে"
 
-#: ../src/gui/main_window.cpp:1136
+#: ../src/gui/main_window.cpp:1493
 #, c-format
 msgid "Error while accessing video device %s"
 msgstr "ভিডিও ডিভাইস %s খোলার সময়ে ত্রুটি"
 
-#: ../src/gui/main_window.cpp:1139
-#, fuzzy
+#: ../src/gui/main_window.cpp:1496
 msgid "A moving logo will be transmitted during calls."
-msgstr "এই কলের সময় কোনো ভিডিও প্রদর্শন করা হবে না->"
+msgstr "এই কলের সময় একটি ভাসমান লোগো পরিবাহিত হবে।"
 
-#: ../src/gui/main_window.cpp:1143
+#: ../src/gui/main_window.cpp:1500
 msgid ""
 "There was an error while opening the device. In case it is a pluggable "
 "device it may be sufficient to reconnect it. If not, or if it still is not "
@@ -2612,15 +2692,15 @@ msgstr ""
 "পুনরায় সেটি সংযুক্ত করলে সমস্যা মিটে যেতে পারে। যদি তথাপি এটি ব্যবহার করা সম্ভব না "
 "হয়, তাহলে ব্যবহারের অনুমতি পরীক্ষা করুন ও যথাযত ড্রাইভার লোড করা হয়েছে কি না দেখুন।"
 
-#: ../src/gui/main_window.cpp:1147
+#: ../src/gui/main_window.cpp:1504
 msgid "Your video driver doesn't support the requested video format."
 msgstr "আপনার ভিডিও ড্রাইভারটি প্রয়োজনীয় ভিডিও ধরনটিকে সমর্থন করে না"
 
-#: ../src/gui/main_window.cpp:1151
+#: ../src/gui/main_window.cpp:1508
 msgid "Could not open the chosen channel."
 msgstr "নির্বাচিত চ্যানেল খুলতে ব্যর্থ।"
 
-#: ../src/gui/main_window.cpp:1155
+#: ../src/gui/main_window.cpp:1512
 msgid ""
 "Your driver doesn't seem to support any of the color formats supported by "
 "Ekiga.\n"
@@ -2630,43 +2710,43 @@ msgstr ""
 "Ekiga দ্বারা সমর্থিত রংয়ের বিন্যাস সম্ভবত ব্যবহৃত ড্রাইভার দ্বারা সমর্থিত নয়।\n"
 " সমর্থিত প্যালেট জানার জন্য অনুগ্রহ করে কার্নেল ড্রাইভারের নথিপত্র যাচাই করুন।"
 
-#: ../src/gui/main_window.cpp:1159
+#: ../src/gui/main_window.cpp:1516
 msgid "Error while setting the frame rate."
 msgstr "ফ্রেমের হার (রেট) নির্ধারণের ক্ষেত্রে ত্রুটি"
 
-#: ../src/gui/main_window.cpp:1163
+#: ../src/gui/main_window.cpp:1520
 msgid "Error while setting the frame size."
 msgstr "ফ্রেমের মাপ নির্ধারণ করতে ত্রুটি দেখা দিয়েছে।"
 
-#: ../src/gui/main_window.cpp:1168 ../src/gui/main_window.cpp:1272
-#: ../src/gui/main_window.cpp:1389
+#: ../src/gui/main_window.cpp:1525 ../src/gui/main_window.cpp:1628
+#: ../src/gui/main_window.cpp:1747
 msgid "Unknown error."
 msgstr "অজানা ত্রুটি।"
 
 #. Translators: This is a hotplug status
-#: ../src/gui/main_window.cpp:1220
+#: ../src/gui/main_window.cpp:1577
 #, c-format
 msgid "Added audio input device %s"
 msgstr "অডিও ইনপুট ডিভাইস %s যোগ করা হয়েছে"
 
 #. Translators: This is a hotplug status
-#: ../src/gui/main_window.cpp:1237
+#: ../src/gui/main_window.cpp:1593
 #, c-format
 msgid "Removed audio input device %s"
 msgstr "অডিও ইনপুট ডিভাইস %s সরিয়ে ফেলা হয়েছে"
 
-#: ../src/gui/main_window.cpp:1254
+#: ../src/gui/main_window.cpp:1610
 #, c-format
 msgid "Error while opening audio input device %s"
 msgstr "অডিও ইনপুট ডিভাইস %s খোলার সময়ে ত্রুটি"
 
 #. Translators: This happens when there is an error with audio input:
 #. * Nothing ("silence") will be transmitted
-#: ../src/gui/main_window.cpp:1259
+#: ../src/gui/main_window.cpp:1615
 msgid "Only silence will be transmitted."
 msgstr "কোনো শব্দ পরিবহন করা হবে না।"
 
-#: ../src/gui/main_window.cpp:1263
+#: ../src/gui/main_window.cpp:1619
 msgid ""
 "Unable to open the selected audio device for recording. In case it is a "
 "pluggable device it may be sufficient to reconnect it. If not, or if it "
@@ -2678,7 +2758,7 @@ msgstr ""
 "ব্যবহার করা সম্ভব না হয়, তাহলে অডিওর বৈশিষ্ট্য, ব্যবহারের অনুমতি পরীক্ষা করুন ও "
 "ডিভাইসটি ব্যস্ত কি না দেখুন।"
 
-#: ../src/gui/main_window.cpp:1267
+#: ../src/gui/main_window.cpp:1623
 msgid ""
 "The selected audio device was successfully opened but it is impossible to "
 "read data from this device. In case it is a pluggable device it may be "
@@ -2690,26 +2770,26 @@ msgstr ""
 "যেতে পারে। যদি তথাপি এটি ব্যবহার করা সম্ভব না হয়, তাহলে অডিও সংক্রান্ত "
 "বৈশিষ্ট্যগুলি যাচাই করুন।"
 
-#: ../src/gui/main_window.cpp:1336
+#: ../src/gui/main_window.cpp:1692
 #, c-format
 msgid "Added audio output device %s"
 msgstr "অডিও আউটপুট ডিভাইস %s যোগ করা হয়েছে"
 
-#: ../src/gui/main_window.cpp:1352
+#: ../src/gui/main_window.cpp:1710
 #, c-format
 msgid "Removed audio output device %s"
 msgstr "অডিও আউটপুট ডিভাইস %s সরিয়ে ফেলা হয়েছে"
 
-#: ../src/gui/main_window.cpp:1373
+#: ../src/gui/main_window.cpp:1731
 #, c-format
 msgid "Error while opening audio output device %s"
 msgstr "অডিও আউটপুট ডিভাইস %s খোলার সময়ে ত্রুটি"
 
-#: ../src/gui/main_window.cpp:1376
+#: ../src/gui/main_window.cpp:1734
 msgid "No incoming sound will be played."
 msgstr "আগত কোনো শব্দ বাজানো হবে না।"
 
-#: ../src/gui/main_window.cpp:1380
+#: ../src/gui/main_window.cpp:1738
 msgid ""
 "Unable to open the selected audio device for playing. In case it is a "
 "pluggable device it may be sufficient to reconnect it. If not, or if it "
@@ -2721,7 +2801,7 @@ msgstr ""
 "ব্যবহার করা সম্ভব না হয়, তাহলে অডিওর বৈশিষ্ট্য, ব্যবহারের অনুমতি পরীক্ষা করুন ও "
 "ডিভাইসটি ব্যস্ত কি না দেখুন।"
 
-#: ../src/gui/main_window.cpp:1384
+#: ../src/gui/main_window.cpp:1742
 msgid ""
 "The selected audio device was successfully opened but it is impossible to "
 "write data to this device. In case it is a pluggable device it may be "
@@ -2733,341 +2813,349 @@ msgstr ""
 "করলে সমস্যা মিটে যেতে পারে। যদি তথাপি এটি ব্যবহার করা সম্ভব না হয়, তাহলে অডিওর "
 "বৈশিষ্ট্য পরীক্ষা করুন।"
 
-#: ../src/gui/main_window.cpp:1570
+#: ../src/gui/main_window.cpp:1931
 msgid "Video Settings"
 msgstr "ভিডিও সংক্রান্ত বৈশিষ্ট্য"
 
-#: ../src/gui/main_window.cpp:1597
+#: ../src/gui/main_window.cpp:1958
 msgid "Adjust brightness"
 msgstr "ঔজ্জ্বল্যের মাত্রা নিয়ন্ত্রণ"
 
-#: ../src/gui/main_window.cpp:1618
+#: ../src/gui/main_window.cpp:1979
 msgid "Adjust whiteness"
 msgstr "সাদা রংয়ের মাত্রা নিয়ন্ত্রণ"
 
-#: ../src/gui/main_window.cpp:1639
+#: ../src/gui/main_window.cpp:2000
 msgid "Adjust color"
 msgstr "রংয়ের মাত্রা নিয়ন্ত্রণ"
 
-#: ../src/gui/main_window.cpp:1660
+#: ../src/gui/main_window.cpp:2021
 msgid "Adjust contrast"
 msgstr "রংয়ের বৈপরিত্য নিয়ন্ত্রণ"
 
-#: ../src/gui/main_window.cpp:1704
+#: ../src/gui/main_window.cpp:2065
 msgid "Audio Settings"
 msgstr "অডিও সংক্রান্ত বৈশিষ্ট্য"
 
-#: ../src/gui/main_window.cpp:2345
+#: ../src/gui/main_window.cpp:2745
 msgid "_Retrieve Call"
 msgstr "কল পুনরুদ্ধার করুন (_R)"
 
-#: ../src/gui/main_window.cpp:2358
-msgid "_Hold Call"
-msgstr "কল ধরে থাকুন (_H)"
+#: ../src/gui/main_window.cpp:2758 ../src/gui/main_window.cpp:3519
+msgid "H_old Call"
+msgstr "কল ধরে থাকুন (_o)"
 
-#: ../src/gui/main_window.cpp:2390 ../src/gui/main_window.cpp:3181
+#: ../src/gui/main_window.cpp:2790 ../src/gui/main_window.cpp:3531
 msgid "Suspend _Audio"
 msgstr "অডিও মুলতুবি করুন (_A)"
 
-#: ../src/gui/main_window.cpp:2392 ../src/gui/main_window.cpp:3186
+#: ../src/gui/main_window.cpp:2792 ../src/gui/main_window.cpp:3536
 msgid "Suspend _Video"
 msgstr "ভিডিও মুলতুবি করুন (_V)"
 
-#: ../src/gui/main_window.cpp:2394
+#: ../src/gui/main_window.cpp:2794
 msgid "Resume _Audio"
 msgstr "অডিও পুনরায় আরম্ভ করা হবে (_A)"
 
-#: ../src/gui/main_window.cpp:2396
+#: ../src/gui/main_window.cpp:2796
 msgid "Resume _Video"
 msgstr "ভিডিও পুনরায় আরম্ভ করা হবে (_V)"
 
-#: ../src/gui/main_window.cpp:2679 ../src/gui/main_window.cpp:2832
+#: ../src/gui/main_window.cpp:3022 ../src/gui/main_window.cpp:3185
 msgid "Reject"
 msgstr "বাতিল"
 
-#: ../src/gui/main_window.cpp:2681 ../src/gui/main_window.cpp:2831
+#: ../src/gui/main_window.cpp:3024 ../src/gui/main_window.cpp:3184
 msgid "Accept"
 msgstr "গ্রহণ করুন"
 
-#: ../src/gui/main_window.cpp:2687 ../src/gui/main_window.cpp:2819
+#: ../src/gui/main_window.cpp:3030
 msgid "Incoming call from"
 msgstr "কলের উৎসস্থল"
 
-#: ../src/gui/main_window.cpp:2705 ../src/gui/main_window.cpp:2822
+#: ../src/gui/main_window.cpp:3048 ../src/gui/main_window.cpp:3165
 msgid "Remote URI:"
 msgstr "দূরবর্তী URI:"
 
-#: ../src/gui/main_window.cpp:2717 ../src/gui/main_window.cpp:2824
+#: ../src/gui/main_window.cpp:3060 ../src/gui/main_window.cpp:3167
 msgid "Remote Application:"
 msgstr "দূরবর্তী অ্যাপ্লিকেশন:"
 
-#: ../src/gui/main_window.cpp:2730 ../src/gui/main_window.cpp:2826
+#: ../src/gui/main_window.cpp:3073 ../src/gui/main_window.cpp:3169
 msgid "Account ID:"
 msgstr "অ্যাকাউন্টের ID:"
 
-#: ../src/gui/main_window.cpp:2738
+#: ../src/gui/main_window.cpp:3081
 #, c-format
 msgid "Call from %s"
 msgstr "%s থেকে প্রাপ্ত কল"
 
-#: ../src/gui/main_window.cpp:2947
+#: ../src/gui/main_window.cpp:3293
 #, c-format
 msgid "Call Duration: %s\n"
 msgstr "কলের অবকাল: %s\n"
 
-#: ../src/gui/main_window.cpp:2978
+#: ../src/gui/main_window.cpp:3324
 msgid "Transfer call to:"
 msgstr "উদ্দিষ্ট স্থানে কল বদল করা হবে:"
 
-#: ../src/gui/main_window.cpp:3030
+#: ../src/gui/main_window.cpp:3376
 msgid "No"
 msgstr "না"
 
-#: ../src/gui/main_window.cpp:3032
+#: ../src/gui/main_window.cpp:3378
 msgid "Yes"
 msgstr "হ্যাঁ"
 
-#: ../src/gui/main_window.cpp:3043
+#: ../src/gui/main_window.cpp:3389
 msgid "Detected new audio input device:"
 msgstr "নতুন অডিও ইনপুট ডিভাইস সনাক্ত হয়েছে:"
 
-#: ../src/gui/main_window.cpp:3047
+#: ../src/gui/main_window.cpp:3393
 msgid "Detected new audio output device:"
 msgstr "নতুন অডিও আউটপুট ডিভাইস সনাক্ত হয়েছে:"
 
-#: ../src/gui/main_window.cpp:3051
+#: ../src/gui/main_window.cpp:3397
+#| msgid "Detected new audio input device:"
+msgid "Detected new ringer device:"
+msgstr "নতুন রিংগার ডিভাইস সনাক্ত হয়েছে:"
+
+#: ../src/gui/main_window.cpp:3401
 msgid "Detected new video input device:"
 msgstr "নতুন ভিডিও ইনপুট ডিভাইস সনাক্ত হয়েছে:"
 
-#: ../src/gui/main_window.cpp:3052 ../src/gui/preferences.cpp:926
+#: ../src/gui/main_window.cpp:3402 ../src/gui/preferences.cpp:891
 msgid "Video Devices"
 msgstr "ভিডিও ডিভাইস"
 
-#: ../src/gui/main_window.cpp:3070
+#: ../src/gui/main_window.cpp:3420
 msgid "Do you want to use it as default device?"
 msgstr "এটি কি ডিফল্ট ডিভাইস রূপে নির্ধারণ করতে করা হবে?"
 
-#: ../src/gui/main_window.cpp:3138
+#: ../src/gui/main_window.cpp:3488
 msgid "_Chat"
 msgstr "আলাপন (_C)"
 
-#: ../src/gui/main_window.cpp:3140
+#: ../src/gui/main_window.cpp:3490
 msgid "Ca_ll"
 msgstr "কল করুন (_l)"
 
-#: ../src/gui/main_window.cpp:3140
+#: ../src/gui/main_window.cpp:3490
 msgid "Place a new call"
 msgstr "নতুন কল আরম্ভ করুন"
 
-#: ../src/gui/main_window.cpp:3143
+#: ../src/gui/main_window.cpp:3493
 msgid "_Hang up"
 msgstr "কেটে দিন (_H)"
 
-#: ../src/gui/main_window.cpp:3144
+#: ../src/gui/main_window.cpp:3494
 msgid "Terminate the current call"
 msgstr "বর্তমান কল কেটে দিন"
 
-#: ../src/gui/main_window.cpp:3150
-msgid "A_dd Contact"
-msgstr "পরিচিতির তথ্য যোগ করুন (_d)"
-
-#: ../src/gui/main_window.cpp:3150
-msgid "Add a contact to the roster"
-msgstr "পরিচিতি তালিকায় পরিচিতি যোগ করুন"
-
-#: ../src/gui/main_window.cpp:3155
-msgid "Find contacts"
-msgstr "পরিচিত ব্যক্তির তথ্য অনুসন্ধান করুন"
-
-#: ../src/gui/main_window.cpp:3162
-#, fuzzy
+#: ../src/gui/main_window.cpp:3500
 msgid "Co_ntact"
-msgstr "পরিচিত ব্যক্তি (_C)"
+msgstr "পরিচিত ব্যক্তি (_n)"
 
-#: ../src/gui/main_window.cpp:3163
+#: ../src/gui/main_window.cpp:3501
 msgid "Act on selected contact"
 msgstr "নির্বাচিত পরিচিতির ক্ষেত্রে"
 
-#: ../src/gui/main_window.cpp:3169
-msgid "H_old Call"
-msgstr "কল ধরে থাকুন (_o)"
+#: ../src/gui/main_window.cpp:3507
+msgid "A_dd Contact"
+msgstr "পরিচিতির তথ্য যোগ করুন (_d)"
 
-#: ../src/gui/main_window.cpp:3169 ../src/gui/main_window.cpp:3638
+#: ../src/gui/main_window.cpp:3507
+msgid "Add a contact to the roster"
+msgstr "পরিচিতি তালিকায় পরিচিতি যোগ করুন"
+
+#: ../src/gui/main_window.cpp:3512
+msgid "Find contacts"
+msgstr "পরিচিত ব্যক্তির তথ্য অনুসন্ধান করুন"
+
+#: ../src/gui/main_window.cpp:3519 ../src/gui/main_window.cpp:3994
 msgid "Hold the current call"
 msgstr "বর্তমান কলটি ধরে রাখুন"
 
-#: ../src/gui/main_window.cpp:3173
+#: ../src/gui/main_window.cpp:3523
 msgid "_Transfer Call"
 msgstr "কল বদলি করুন (_T)"
 
-#: ../src/gui/main_window.cpp:3174
+#: ../src/gui/main_window.cpp:3524
 msgid "Transfer the current call"
 msgstr "বর্তমান কলটিকে স্থানান্তর করুন"
 
-#: ../src/gui/main_window.cpp:3182
+#: ../src/gui/main_window.cpp:3532
 msgid "Suspend or resume the audio transmission"
 msgstr "অডিও সম্প্রচার সাময়িক ভাবে মুলতুবি করুন অথবা পুনরায় চালু করুন"
 
-#: ../src/gui/main_window.cpp:3187
+#: ../src/gui/main_window.cpp:3537
 msgid "Suspend or resume the video transmission"
 msgstr "ভিডিও সম্প্রচার সাময়িক ভাবে মুলতুবি করুন অথবা পুনরায় চালু করুন"
 
-#: ../src/gui/main_window.cpp:3194
+#. FIXME: that isn't a very good way to do things
+#: ../src/gui/main_window.cpp:3546
+msgid "Other"
+msgstr "অন্যান্য"
+
+#: ../src/gui/main_window.cpp:3547
+msgid "Other possible actions"
+msgstr "অন্যান্য সম্ভাব্য কর্ম"
+
+#: ../src/gui/main_window.cpp:3554
 msgid "Close the Ekiga window"
 msgstr "Ekiga উইন্ডো বন্ধ করুন"
 
-#: ../src/gui/main_window.cpp:3201 ../src/gui/statusicon.cpp:478
+#: ../src/gui/main_window.cpp:3561 ../src/gui/statusicon.cpp:465
 msgid "Quit"
 msgstr "প্রস্থান"
 
-#: ../src/gui/main_window.cpp:3207
+#: ../src/gui/main_window.cpp:3567
 msgid "_Configuration Assistant"
 msgstr "কনফিগারেশনের সহায়ক ব্যবস্থা (_C)"
 
-#: ../src/gui/main_window.cpp:3208
+#: ../src/gui/main_window.cpp:3568
 msgid "Run the configuration assistant"
 msgstr "কনফিগারেশনের সহায়ক ব্যবস্থা সঞ্চালন করা হবে"
 
-#: ../src/gui/main_window.cpp:3216
+#: ../src/gui/main_window.cpp:3576
 msgid "Edit your accounts"
 msgstr "অ্যাকাউন্টের তথ্য সম্পাদনা করুন"
 
-#: ../src/gui/main_window.cpp:3222
+#: ../src/gui/main_window.cpp:3582
 msgid "Change your preferences"
 msgstr "পছন্দসই বৈশিষ্ট্য পরিবর্তন করুন"
 
-#: ../src/gui/main_window.cpp:3227
+#: ../src/gui/main_window.cpp:3587
 msgid "_View"
 msgstr "প্রদর্শন (_V)"
 
-#: ../src/gui/main_window.cpp:3229
+#: ../src/gui/main_window.cpp:3589
 msgid "Con_tacts"
 msgstr "পরিচিতি তালিকা (_t)"
 
-#: ../src/gui/main_window.cpp:3229
+#: ../src/gui/main_window.cpp:3589
 msgid "View the contacts list"
 msgstr "পরিচিতদের তালিকা প্রদর্শন করুন"
 
-#: ../src/gui/main_window.cpp:3234
+#: ../src/gui/main_window.cpp:3594
 msgid "_Dialpad"
 msgstr "ডায়েল প্যাড (_D)"
 
-#: ../src/gui/main_window.cpp:3234
+#: ../src/gui/main_window.cpp:3594
 msgid "View the dialpad"
 msgstr "ডায়েল প্যাড প্রদর্শিত হবে"
 
-#: ../src/gui/main_window.cpp:3239
+#: ../src/gui/main_window.cpp:3599
 msgid "_Call History"
 msgstr "কল সংক্রান্ত পূর্ববর্তী তথ্য (_C)"
 
-#: ../src/gui/main_window.cpp:3239
+#: ../src/gui/main_window.cpp:3599
 msgid "View the call history"
 msgstr "কল সংক্রান্ত পূর্ববর্তী তথ্য প্রদর্শন করা হবে"
 
-#: ../src/gui/main_window.cpp:3247
+#: ../src/gui/main_window.cpp:3607
 msgid "_Show Call Panel"
 msgstr "কল প্যানেল প্রদর্শন করা হবে (_S)"
 
-#: ../src/gui/main_window.cpp:3255
+#: ../src/gui/main_window.cpp:3615
 msgid "_Local Video"
 msgstr "স্থানীয় ভিডিও (_L)"
 
-#: ../src/gui/main_window.cpp:3256
+#: ../src/gui/main_window.cpp:3616
 msgid "Local video image"
 msgstr "স্থানীয় ভিডিও ছবি"
 
-#: ../src/gui/main_window.cpp:3261
+#: ../src/gui/main_window.cpp:3621
 msgid "_Remote Video"
 msgstr "দূরবর্তী ভিডিও (_R)"
 
-#: ../src/gui/main_window.cpp:3262
+#: ../src/gui/main_window.cpp:3622
 msgid "Remote video image"
 msgstr "দূরবর্তী ভিডিও ছবি"
 
-#: ../src/gui/main_window.cpp:3267
+#: ../src/gui/main_window.cpp:3627
 msgid "_Picture-in-Picture"
 msgstr "ছবির-মধ্যে-ছবি (_P)"
 
-#: ../src/gui/main_window.cpp:3268 ../src/gui/main_window.cpp:3274
+#: ../src/gui/main_window.cpp:3628 ../src/gui/main_window.cpp:3634
 msgid "Both video images"
 msgstr "উভয় ভিডিও ছবি"
 
-#: ../src/gui/main_window.cpp:3273
+#: ../src/gui/main_window.cpp:3633
 msgid "Picture-in-Picture in Separate _Window"
 msgstr "পৃথক উইন্ডোর মধ্যে প্রদর্শিত ছবির-মধ্যে-ছবি (_W)"
 
-#: ../src/gui/main_window.cpp:3281
+#: ../src/gui/main_window.cpp:3641
 msgid "Zoom in"
 msgstr "বড় মাপে প্রদর্শন"
 
-#: ../src/gui/main_window.cpp:3285
+#: ../src/gui/main_window.cpp:3645
 msgid "Zoom out"
 msgstr "ছোট মাপে প্রদর্শন"
 
-#: ../src/gui/main_window.cpp:3289
+#: ../src/gui/main_window.cpp:3649
 msgid "Normal size"
 msgstr "স্বাভাবিক মাপ"
 
-#: ../src/gui/main_window.cpp:3293
+#: ../src/gui/main_window.cpp:3653
 msgid "_Fullscreen"
 msgstr "সম্পূর্ণ পর্দায় প্রদর্শন (_F)"
 
-#: ../src/gui/main_window.cpp:3293
+#: ../src/gui/main_window.cpp:3653
 msgid "Switch to fullscreen"
 msgstr "সম্পূর্ণ পর্দা জুড়ে প্রদর্শন"
 
-#: ../src/gui/main_window.cpp:3301 ../src/gui/statusicon.cpp:466
+#: ../src/gui/main_window.cpp:3661 ../src/gui/statusicon.cpp:453
 msgid "Get help by reading the Ekiga manual"
 msgstr "Ekiga-র সহায়ক নথিপত্র পড়ে সাহায্যে প্রাপ্ত করুন"
 
-#: ../src/gui/main_window.cpp:3306 ../src/gui/statusicon.cpp:471
+#: ../src/gui/main_window.cpp:3666 ../src/gui/statusicon.cpp:458
 msgid "View information about Ekiga"
 msgstr "Ekiga সংক্রান্ত তথ্য দেখুন"
 
-#: ../src/gui/main_window.cpp:3380
-msgid ""
-"Enter a URI on the left, and click this button to place a call or to hangup"
+#: ../src/gui/main_window.cpp:3738
+msgid "Enter a URI on the left, and click this button to place a call or to hangup"
 msgstr "বাঁদিকে URI লিখে, এই বাটনে ক্লিক করে কল আরম্ভ করুন অথবা সমাপ্ত করুন"
 
-#: ../src/gui/main_window.cpp:3426
+#: ../src/gui/main_window.cpp:3783
 msgid "Contacts"
 msgstr "পরিচিতদের তালিকা"
 
-#: ../src/gui/main_window.cpp:3449
+#: ../src/gui/main_window.cpp:3805
 msgid "Dialpad"
 msgstr "ডায়েল প্যাড"
 
-#: ../src/gui/main_window.cpp:3467
+#: ../src/gui/main_window.cpp:3823
 msgid "Call history"
 msgstr "কল সংক্রান্ত পূর্ববর্তী তথ্য"
 
-#: ../src/gui/main_window.cpp:3575
+#: ../src/gui/main_window.cpp:3931
 msgid "Change the volume of your soundcard"
 msgstr "সাউন্ড-কার্ডের শব্দের মাত্রা পরিবর্তন করুন"
 
-#: ../src/gui/main_window.cpp:3596
+#: ../src/gui/main_window.cpp:3952
 msgid "Change the color settings of your video device"
 msgstr "ভিডিও ডিভাইসের রঙের বৈশিষ্ট্য পরিবর্তন করুন"
 
-#: ../src/gui/main_window.cpp:3664
+#: ../src/gui/main_window.cpp:4020
 msgid "Ekiga"
 msgstr "Ekiga"
 
 #. Translators: TX is a common abbreviation for "transmit".  As it
 #. * is shown in a tooltip, there is no space constraint
-#: ../src/gui/main_window.cpp:4269
+#: ../src/gui/main_window.cpp:4623
 #, c-format
 msgid "TX: %dx%d "
 msgstr "TX: %dx%d "
 
 #. Translators: RX is a common abbreviation for "receive".  As it
 #. * is shown in a tooltip, there is no space constraint
-#: ../src/gui/main_window.cpp:4274
+#: ../src/gui/main_window.cpp:4628
 #, c-format
 msgid "RX: %dx%d "
 msgstr "RX: %dx%d "
 
-#: ../src/gui/main_window.cpp:4276
+#: ../src/gui/main_window.cpp:4630
 #, c-format
 msgid ""
 "Lost packets: %.1f %%\n"
@@ -3080,104 +3168,78 @@ msgstr ""
 "অবিন্যস্ত প্যাকেট: %.1f %%\n"
 "জিটার বাফার: %d ms%s%s%s"
 
-#: ../src/gui/main_window.cpp:4405
+#: ../src/gui/main_window.cpp:4745
 msgid "Prints debug messages in the console (level between 1 and 5)"
 msgstr "ডিবাগ বার্তা কনসোলে প্রদর্শিত হবে (মাত্রা ১ থেকে ৫-র মধ্যে)"
 
-#: ../src/gui/main_window.cpp:4410
+#: ../src/gui/main_window.cpp:4750
 msgid "Prints user plane debug messages in the console (level between 1 and 4)"
-msgstr ""
-"ব্যবহারকারীর স্তরের ডিবাগ বার্তা কনসোলে প্রদর্শন করা হবে (১ থেকে ৪ সংখ্যক স্তরে)"
+msgstr "ব্যবহারকারীর স্তরের ডিবাগ বার্তা কনসোলে প্রদর্শন করা হবে (১ থেকে ৪ সংখ্যক স্তরে)"
 
-#: ../src/gui/main_window.cpp:4415
+#: ../src/gui/main_window.cpp:4755
 msgid "Makes Ekiga call the given URI"
 msgstr "Ekiga দ্বারা নির্দিষ্ট URI কল করতে ব্যবহার করা হবে"
 
-#: ../src/gui/main_window.cpp:4536
-msgid "No usable audio plugin detected"
-msgstr "ব্যবহারযোগ্য অডিও প্লাগ-ইন পাওয়া যায়নি"
-
-#: ../src/gui/main_window.cpp:4537
-msgid ""
-"Ekiga didn't find any usable audio plugin. Make sure that your installation "
-"is correct."
-msgstr ""
-"Ekiga দ্বারা ব্যবহারযোগ্য কোনো অডিও প্লাগ-ইন সনাক্ত হয়নি। অনুগ্রহ করে পরীক্ষা করুন "
-"সঠিকভাবে ইনস্টলেশন করা হয়েছে কি না।"
-
-#: ../src/gui/main_window.cpp:4540
-msgid "No usable audio codecs detected"
-msgstr "ব্যবহারযোগ্য অডিও কোডেক পাওয়া যায়নি"
-
-#: ../src/gui/main_window.cpp:4541
-msgid ""
-"Ekiga didn't find any usable audio codec. Make sure that your installation "
-"is correct."
-msgstr ""
-"Ekiga দ্বারা ব্যবহারযোগ্য কোনো কোডেক সনাক্ত হয়নি। অনুগ্রহ করে পরীক্ষা করুন সঠিকভাবে "
-"ইনস্টলেশন করা হয়েছে কি না।"
-
-#: ../src/gui/preferences.cpp:382
+#: ../src/gui/preferences.cpp:376
 msgid "Play sound for new voice mails"
 msgstr "নতুন ভয়েস মেইল প্রাপ্ত হলে শব্দ বাজানো হবে"
 
-#: ../src/gui/preferences.cpp:392
+#: ../src/gui/preferences.cpp:386
 msgid "Play sound for new instant messages"
 msgstr "নতুন ইনস্ট্যান্ট বার্তার জন্য শব্দ বাজানো হবে"
 
-#: ../src/gui/preferences.cpp:467
+#: ../src/gui/preferences.cpp:447
 msgid "_Full name:"
 msgstr "সম্পূর্ণ নাম: (_F)"
 
-#: ../src/gui/preferences.cpp:485
+#: ../src/gui/preferences.cpp:464
 msgid "User Interface"
 msgstr "ইউজার ইন্টারফেস"
 
-#: ../src/gui/preferences.cpp:487
+#: ../src/gui/preferences.cpp:466
 msgid "Start _hidden"
 msgstr "প্রারম্ভে আড়াল করা হবে (_h)"
 
-#: ../src/gui/preferences.cpp:489
+#: ../src/gui/preferences.cpp:468
 msgid "Show offline _contacts"
 msgstr "অফ-লাইন পরিচিতদের তথ্য প্রদর্শন করা হবে (_c)"
 
-#: ../src/gui/preferences.cpp:494
+#: ../src/gui/preferences.cpp:472
 msgid "Video Display"
 msgstr "ভিডিও প্রদর্শন"
 
-#: ../src/gui/preferences.cpp:496
+#: ../src/gui/preferences.cpp:474
 msgid "Place windows displaying video _above other windows"
 msgstr "ভিডিও প্রদর্শনকারী উইন্ডোগুলি অন্যান্য উইন্ডোর উপরে স্থাপিত হবে (_a)"
 
-#: ../src/gui/preferences.cpp:500
+#: ../src/gui/preferences.cpp:478
 msgid "Network Settings"
 msgstr "নেটওয়ার্ক সংক্রান্ত বৈশিষ্ট্য"
 
-#: ../src/gui/preferences.cpp:502
-#, fuzzy
+#: ../src/gui/preferences.cpp:480
 msgid "Enable network _detection"
-msgstr "নেটওয়ার্ক সনাক্তকরণ ব্যবস্থা নিষ্ক্রিয় করুন (_d)"
+msgstr "নেটওয়ার্ক সনাক্তকরণ ব্যবস্থা সক্রিয় করুন (_d)"
 
-#: ../src/gui/preferences.cpp:513
+#: ../src/gui/preferences.cpp:490
 msgid "Call Forwarding"
 msgstr "কল অনুবর্তন"
 
-#: ../src/gui/preferences.cpp:515
+#: ../src/gui/preferences.cpp:492
 msgid "_Always forward calls to the given host"
 msgstr "সর্বদা উল্লিখিত হোস্টে কল অনুবর্তন করা হবে (_A)"
 
-#: ../src/gui/preferences.cpp:515
+#: ../src/gui/preferences.cpp:492
 msgid ""
 "If enabled, all incoming calls will be forwarded to the host that is "
 "specified in the protocol settings"
 msgstr ""
 "সক্রিয় থাকলে, প্রোটোকলের বৈশিষ্ট্য অনুযায়ী নির্ধারিত হোস্টে সকল কল অনুবর্তন করা হবে"
 
-#: ../src/gui/preferences.cpp:517
+#: ../src/gui/preferences.cpp:494
 msgid "Forward calls to the given host if _no answer"
 msgstr "উত্তর না দেওয়া হলে, চিহ্নিত হোস্টে কল অনুবর্তন করা হবে (_n)"
 
-#: ../src/gui/preferences.cpp:517
+#: ../src/gui/preferences.cpp:494
 msgid ""
 "If enabled, all incoming calls will be forwarded to the host that is "
 "specified in the protocol settings if you do not answer the call"
@@ -3185,11 +3247,11 @@ msgstr ""
 "সক্রিয় থাকলে, আপনার উত্তর না দেওয়া কলগুলি প্রোটোকলের বৈশিষ্ট্য অনুযায়ী নির্ধারিত "
 "হোস্টে অনুবর্তন করা হবে"
 
-#: ../src/gui/preferences.cpp:519
+#: ../src/gui/preferences.cpp:496
 msgid "Forward calls to the given host if _busy"
 msgstr "ব্যস্ত থাকলে, চিহ্নিত হোস্টে কল অনুবর্তন করা হবে (_b)"
 
-#: ../src/gui/preferences.cpp:519
+#: ../src/gui/preferences.cpp:496
 msgid ""
 "If enabled, all incoming calls will be forwarded to the host that is "
 "specified in the protocol settings if you already are in a call or if you "
@@ -3198,86 +3260,85 @@ msgstr ""
 "সক্রিয় থাকলে, কোনো কলে ব্যস্ত থাকলে অথবা 'বিঘ্নিত করা হবে না' মোডে চিহ্নিত থাকলে "
 "প্রোটোকলের বৈশিষ্ট্য অনুযায়ী নির্ধারিত হোস্টে সকল কল অনুবর্তন করা হবে"
 
-#: ../src/gui/preferences.cpp:523 ../src/gui/preferences.cpp:1365
+#: ../src/gui/preferences.cpp:500 ../src/gui/preferences.cpp:1319
 msgid "Call Options"
 msgstr "কল সংক্রান্ত বিকল্প"
 
 #. Add all the fields
-#: ../src/gui/preferences.cpp:526
+#: ../src/gui/preferences.cpp:503
 msgid "Timeout to reject or forward unanswered incoming calls (in seconds):"
-msgstr ""
-"জবাব না দেওয়া আগত কলগুলি প্রত্যাখ্যান অথবা অনুবর্তনের সময় সীমা (সেকেন্ডে ধার্য):"
+msgstr "জবাব না দেওয়া আগত কলগুলি প্রত্যাখ্যান অথবা অনুবর্তনের সময় সীমা (সেকেন্ডে ধার্য):"
 
-#: ../src/gui/preferences.cpp:527
+#: ../src/gui/preferences.cpp:504
 msgid "_Automatically answer incoming calls"
-msgstr ""
+msgstr "আগত কলের স্বয়ংক্রিয়ভাবে উত্তর দেওয়া হবে (_A)"
 
-#: ../src/gui/preferences.cpp:558
+#: ../src/gui/preferences.cpp:535
 msgid "Ekiga Sound Events"
 msgstr "Ekiga-র সাউন্ড ইভেন্ট"
 
-#: ../src/gui/preferences.cpp:596
+#: ../src/gui/preferences.cpp:573
 msgid "A"
 msgstr "অ"
 
-#: ../src/gui/preferences.cpp:608
+#: ../src/gui/preferences.cpp:585
 msgid "Event"
 msgstr "ইভেন্ট"
 
-#: ../src/gui/preferences.cpp:620
+#: ../src/gui/preferences.cpp:597
 msgid "Choose a sound"
 msgstr "একটি শব্দ নির্বাচন করুন"
 
-#: ../src/gui/preferences.cpp:625
+#: ../src/gui/preferences.cpp:602
 msgid "Wavefiles"
 msgstr "Wavefiles"
 
-#: ../src/gui/preferences.cpp:634 ../src/gui/preferences.cpp:653
+#: ../src/gui/preferences.cpp:611 ../src/gui/preferences.cpp:630
 msgid "Play"
 msgstr "বাজানো হবে"
 
-#: ../src/gui/preferences.cpp:674
+#: ../src/gui/preferences.cpp:651
 msgid "String"
 msgstr "স্ট্রিং"
 
-#: ../src/gui/preferences.cpp:675
+#: ../src/gui/preferences.cpp:652
 msgid "Tone"
 msgstr "টোন"
 
-#: ../src/gui/preferences.cpp:676 ../src/gui/preferences.cpp:725
+#: ../src/gui/preferences.cpp:653 ../src/gui/preferences.cpp:696
 msgid "RFC2833"
 msgstr "RFC2833"
 
-#: ../src/gui/preferences.cpp:677
+#: ../src/gui/preferences.cpp:654
 msgid "Q.931"
 msgstr "Q.931"
 
-#: ../src/gui/preferences.cpp:683 ../src/gui/preferences.cpp:735
+#: ../src/gui/preferences.cpp:659 ../src/gui/preferences.cpp:705
 msgid "Misc Settings"
 msgstr "বিবিধ বৈশিষ্ট্যের মান"
 
-#: ../src/gui/preferences.cpp:686 ../src/gui/preferences.cpp:740
+#: ../src/gui/preferences.cpp:662 ../src/gui/preferences.cpp:710
 msgid "Forward _URI:"
 msgstr "অনুবর্তনের URI: (_U)"
 
-#: ../src/gui/preferences.cpp:695
+#: ../src/gui/preferences.cpp:668
 msgid "Advanced Settings"
 msgstr "উন্নত বৈশিষ্ট্য"
 
 #. The toggles
-#: ../src/gui/preferences.cpp:698
+#: ../src/gui/preferences.cpp:671
 msgid "Enable H.245 _tunneling"
 msgstr "H.245 টানেল ব্যবস্থা সক্রিয় করা হবে (_t)"
 
-#: ../src/gui/preferences.cpp:700
+#: ../src/gui/preferences.cpp:673
 msgid "Enable _early H.245"
 msgstr "শীঘ্র H.245 সক্রিয় করা হবে (_e)"
 
-#: ../src/gui/preferences.cpp:702
+#: ../src/gui/preferences.cpp:675
 msgid "Enable fast _start procedure"
 msgstr "দ্রুত প্রারম্ভের প্রক্রিয়া সক্রিয় করা হবে (_s)"
 
-#: ../src/gui/preferences.cpp:702
+#: ../src/gui/preferences.cpp:675
 msgid ""
 "Connection will be established in Fast Start mode. Fast Start is a new way "
 "to start calls faster that was introduced in H.323v2. It is not supported by "
@@ -3288,140 +3349,132 @@ msgstr ""
 "উপলব্ধ করা হয়েছিল ও  Netmeeting দ্বারা এটি সমর্থিত নয়। ফাস্ট স্টার্ট ও H.245 "
 "টানেলিং একযোগে ব্যবহারে Netmeeting-র কিছু সংস্করণ বিকল হতে পারে।"
 
-#: ../src/gui/preferences.cpp:708 ../src/gui/preferences.cpp:748
+#: ../src/gui/preferences.cpp:679 ../src/gui/preferences.cpp:716
 msgid "DTMF Mode"
 msgstr "DTMF মোড"
 
-#: ../src/gui/preferences.cpp:710 ../src/gui/preferences.cpp:750
+#: ../src/gui/preferences.cpp:681 ../src/gui/preferences.cpp:718
 msgid "_Send DTMF as:"
 msgstr "DTMF প্রেরণের রূপ: (_S)"
 
-#: ../src/gui/preferences.cpp:710 ../src/gui/preferences.cpp:750
-msgid "This allows you to set the mode for DTMFs sending."
-msgstr "এর সাহায্যে DTMF প্রেরণের মোড নির্ধারণ করা হবে।"
+#: ../src/gui/preferences.cpp:681 ../src/gui/preferences.cpp:718
+#| msgid "This allows you to set the mode for DTMFs sending."
+msgid "Select the mode for DTMFs sending"
+msgstr "DTMF প্রেরণের মোড নির্বাচন করা হবে।"
 
-#: ../src/gui/preferences.cpp:726
+#: ../src/gui/preferences.cpp:697
 msgid "INFO"
 msgstr "INFO"
 
-#: ../src/gui/preferences.cpp:737
+#: ../src/gui/preferences.cpp:707
 msgid "_Outbound Proxy:"
 msgstr "বাহিরমূখী প্রক্সি: (_O)"
 
-#: ../src/gui/preferences.cpp:778
+#: ../src/gui/preferences.cpp:746
 msgid "Ringing Device"
 msgstr "রিংয়ের জন্য ব্যবহৃত ডিভাইস"
 
-#: ../src/gui/preferences.cpp:778
+#: ../src/gui/preferences.cpp:746
 msgid "Select the ringing audio device to use"
 msgstr "রিংয়ের জন্য ব্যবহারযোগ্য অডিও ডিভাইস নির্বাচন করুন"
 
-#: ../src/gui/preferences.cpp:780
+#: ../src/gui/preferences.cpp:748
 msgid "Output device:"
 msgstr "আউটপুট ডিভাইস:"
 
-#: ../src/gui/preferences.cpp:787 ../src/gui/preferences.cpp:932
+#: ../src/gui/preferences.cpp:755 ../src/gui/preferences.cpp:897
 msgid "Input device:"
 msgstr "ইনপুট ডিভাইস:"
 
 #. That button will refresh the device list
-#: ../src/gui/preferences.cpp:792 ../src/gui/preferences.cpp:943
+#: ../src/gui/preferences.cpp:759 ../src/gui/preferences.cpp:908
 msgid "_Detect devices"
 msgstr "ডিভাইস সনাক্ত করা হবে (_D)"
 
-#: ../src/gui/preferences.cpp:792 ../src/gui/preferences.cpp:943
-msgid "Click here to refresh the device list."
+#: ../src/gui/preferences.cpp:759 ../src/gui/preferences.cpp:908
+#| msgid "Click here to refresh the device list."
+msgid "Click here to refresh the device list"
 msgstr "ডিভাইস তালিকা নতুন করে প্রদর্শনের জন্য এখানে ক্লিক করুন।"
 
-#: ../src/gui/preferences.cpp:911
+#: ../src/gui/preferences.cpp:876
 msgid "PAL (Europe)"
 msgstr "PAL (ইউরোপ)"
 
-#: ../src/gui/preferences.cpp:912
+#: ../src/gui/preferences.cpp:877
 msgid "NTSC (America)"
 msgstr "NTSC (আমেরিকা)"
 
-#: ../src/gui/preferences.cpp:913
+#: ../src/gui/preferences.cpp:878
 msgid "SECAM (France)"
 msgstr "SECAM (ফ্রান্স)"
 
-#: ../src/gui/preferences.cpp:914
+#: ../src/gui/preferences.cpp:879
 msgid "Auto"
 msgstr "স্বয়ংক্রিয়"
 
 #. Video Channel
-#: ../src/gui/preferences.cpp:936
+#: ../src/gui/preferences.cpp:901
 msgid "Channel:"
 msgstr "চ্যানেল:"
 
-#: ../src/gui/preferences.cpp:938
+#: ../src/gui/preferences.cpp:903
 msgid "Size:"
 msgstr "মাপ:"
 
-#: ../src/gui/preferences.cpp:938
+#: ../src/gui/preferences.cpp:903
 msgid "Select the transmitted video size"
 msgstr "সম্প্রচার করা ভিডিওর মাপ নির্বাচন করুন"
 
-#: ../src/gui/preferences.cpp:940
+#: ../src/gui/preferences.cpp:905
 msgid "Format:"
 msgstr "বিন্যাস:"
 
-#: ../src/gui/preferences.cpp:967 ../src/gui/preferences.cpp:1006
-#: ../src/gui/preferences.cpp:1394 ../src/gui/preferences.cpp:1405
+#: ../src/gui/preferences.cpp:928 ../src/gui/preferences.cpp:965
+#: ../src/gui/preferences.cpp:1348 ../src/gui/preferences.cpp:1359
 msgid "Codecs"
 msgstr "কোডেক"
 
-#: ../src/gui/preferences.cpp:980 ../src/gui/preferences.cpp:1019
+#: ../src/gui/preferences.cpp:940 ../src/gui/preferences.cpp:977
 msgid "Settings"
 msgstr "বিবিধ বৈশিষ্ট্য"
 
 #. Translators: the full sentence is Automatically adjust jitter buffer
 #. between X and Y ms
-#: ../src/gui/preferences.cpp:984
+#: ../src/gui/preferences.cpp:944
 msgid "Enable silence _detection"
 msgstr "নৈশব্দ সন্ধান সক্রিয় (_d)"
 
-#: ../src/gui/preferences.cpp:984
-msgid "If enabled, use silence detection with the codecs supporting it."
-msgstr ""
-"সক্রিয় করা হলে, কোডেক দ্বারা সমর্থিত হলে নিঃশব্দ অবস্থার সনাক্তকরণ ব্যবস্থা প্রয়োগ "
-"করা হবে।"
-
-#: ../src/gui/preferences.cpp:986
+#: ../src/gui/preferences.cpp:946
 msgid "Enable echo can_celation"
 msgstr "প্রতিধ্বনি বাতিল করার ব্যবস্থা সক্রিয় করা হবে (_c)"
 
-#: ../src/gui/preferences.cpp:986
-msgid "If enabled, use echo cancelation."
-msgstr "সক্রিয় হলে,  প্রতিধ্বনি বাতিল করার ব্যবস্থা প্রয়োগ করা হবে।"
-
-#: ../src/gui/preferences.cpp:988
+#: ../src/gui/preferences.cpp:948
 msgid "Maximum _jitter buffer (in ms):"
 msgstr "সর্বাধিক jitter বাফার (মিলিসেকেন্ডে ধার্য): (_j)"
 
-#: ../src/gui/preferences.cpp:988
-msgid "The maximum jitter buffer size for audio reception (in ms)."
-msgstr "অডিও গ্রহণের উদ্দেশ্যে jitter বাফারের সর্বাধিক  map (মিলিসেকেন্ড অনুযায়ী)"
-
 #. Translators: the full sentence is Keep a minimum video quality of X %
-#: ../src/gui/preferences.cpp:1022
+#: ../src/gui/preferences.cpp:980
 msgid "Picture Quality"
 msgstr "ছবির গুণমান"
 
-#: ../src/gui/preferences.cpp:1022
+#: ../src/gui/preferences.cpp:980
+#| msgid ""
+#| "Choose if you want to guarantee a minimum image quality (possibly leading "
+#| "to dropped frames in order not to surpass the bitrate limit) or if you "
+#| "prefer to keep the frame rate."
 msgid ""
 "Choose if you want to guarantee a minimum image quality (possibly leading to "
 "dropped frames in order not to surpass the bitrate limit) or if you prefer "
-"to keep the frame rate."
+"to keep the frame rate"
 msgstr ""
 "ছবির সর্বনিম্ন গুণমানের মাত্রা নির্ধারিত হবে (এর ফলে, বিটের হারের সীমা অতিক্রম না "
 "করার প্রচেষ্টায় কিছু ফ্রেম পরিত্যাগ করা হবে) নাকি ফ্রেমের গতি বজায় রাখত আপনি ইচ্ছুক।"
 
-#: ../src/gui/preferences.cpp:1024
+#: ../src/gui/preferences.cpp:982
 msgid "Maximum video _bitrate (in kbits/s):"
 msgstr "ভিডিওর সর্বাধিক বিটের মাত্রা (কিলোবাইট/সেকেন্ড): (_b)"
 
-#: ../src/gui/preferences.cpp:1024
+#: ../src/gui/preferences.cpp:982
 msgid ""
 "The maximum video bitrate in kbits/s. The video quality and the effective "
 "frame rate will be dynamically adjusted to keep the bitrate at the given "
@@ -3430,48 +3483,48 @@ msgstr ""
 "কিলোবাইট/সেকেন্ডে ধার্য ভিডিওর সর্বাধিক বিটের হার। সুনির্দিষ্ট বিটের হার বজায় "
 "রাখার জন্য ভিডিও গুনমান ও ফ্রেমের হার সংখ্যাগুলি তৎক্ষনাৎ পরিবর্তন করা হবে।"
 
-#: ../src/gui/preferences.cpp:1337
+#: ../src/gui/preferences.cpp:1291
 msgid "Ekiga Preferences"
 msgstr "Ekiga সংক্রান্ত পছন্দসই মান"
 
-#: ../src/gui/preferences.cpp:1355
+#: ../src/gui/preferences.cpp:1309
 msgid "General"
 msgstr "সাধারণ"
 
-#: ../src/gui/preferences.cpp:1356
+#: ../src/gui/preferences.cpp:1310
 msgid "Personal Data"
 msgstr "ব্যক্তিগত তথ্যাদি"
 
-#: ../src/gui/preferences.cpp:1361
+#: ../src/gui/preferences.cpp:1315
 msgid "General Settings"
 msgstr "সাধারণ বৈশিষ্ট্য"
 
-#: ../src/gui/preferences.cpp:1370
+#: ../src/gui/preferences.cpp:1324
 msgid "Sound Events"
 msgstr "শব্দ সংক্রান্ত ইভেন্ট"
 
-#: ../src/gui/preferences.cpp:1374
+#: ../src/gui/preferences.cpp:1328
 msgid "Protocols"
 msgstr "প্রোটোকল"
 
-#: ../src/gui/preferences.cpp:1376
+#: ../src/gui/preferences.cpp:1330
 msgid "SIP Settings"
 msgstr "SIP সংক্রান্ত বৈশিষ্ট্য"
 
-#: ../src/gui/preferences.cpp:1381
+#: ../src/gui/preferences.cpp:1335
 msgid "H.323 Settings"
 msgstr "H.323 সংক্রান্ত বৈশিষ্ট্য"
 
 #. The player
-#: ../src/gui/preferences.cpp:1387
+#: ../src/gui/preferences.cpp:1341
 msgid "Audio"
 msgstr "অডিও"
 
-#: ../src/gui/preferences.cpp:1390 ../src/gui/preferences.cpp:1401
+#: ../src/gui/preferences.cpp:1344 ../src/gui/preferences.cpp:1355
 msgid "Devices"
 msgstr "ডিভাইস"
 
-#: ../src/gui/preferences.cpp:1399
+#: ../src/gui/preferences.cpp:1353
 msgid "Video"
 msgstr "ভিডিও"
 
@@ -3482,9 +3535,9 @@ msgid_plural "You have %d messages"
 msgstr[0] "%d-টি বার্তা প্রাপ্ত হয়েছে"
 msgstr[1] "%d-টি বার্তা প্রাপ্ত হয়েছে"
 
-#: ../src/gui/statusicon.cpp:418
+#: ../src/gui/statusicon.cpp:409
 msgid "The following accounts are inactive:"
-msgstr ""
+msgstr "নিম্নলিখিত অ্যাকাউন্টগুলি বর্তমানে অব্যবহৃত:"
 
 #: ../src/gui/statusmenu.cpp:87
 msgid "Online"
@@ -3518,6 +3571,86 @@ msgstr "স্বনির্ধারিত বার্তা মুছে ফ
 #: ../src/gui/statusmenu.cpp:692
 msgid "Define a custom message:"
 msgstr "একটি স্বনির্ধারিত বার্তা নির্ধারণ করুন:"
+
+#~ msgid "Change the main window panel section"
+#~ msgstr "প্রধান উইন্ডোর প্যানেল বিভাগে পরিবর্তন করুন"
+
+#~ msgid "Local video window size"
+#~ msgstr "স্থানীয় ভিডিও প্রদর্শনের জন্য উইন্ডোর মাপ"
+
+#~ msgid "Position of the local video window"
+#~ msgstr "স্থানীয় ভিডিও উইন্ডোর অবস্থান"
+
+#~ msgid "Position on the screen of the log window"
+#~ msgstr "পর্দার মধ্যে লগ উইন্ডোর অবস্থান"
+
+#~ msgid "The Video Codecs List"
+#~ msgstr "ভিডিও কোডেকের তালিকা"
+
+#~ msgid "The position of the local video window"
+#~ msgstr "স্থানীয় ভিডিও উইন্ডোর অবস্থান"
+
+#~ msgid "The size of the local video window"
+#~ msgstr "স্থানীয় ভিডিও উইন্ডোর মাপ"
+
+#~ msgid "Please update the following fields."
+#~ msgstr "অনুগ্রহ করে নিমনলিখিত ক্ষেত্রে মান পূরণ করুন।"
+
+#~ msgid "Could not send message"
+#~ msgstr "বার্তা পাঠাতে ব্যর্থ"
+
+#~ msgid "_Password"
+#~ msgstr "পাসওয়ার্ড (_P)"
+
+#, fuzzy
+#~ msgid "Enable account"
+#~ msgstr "অ্যাকাউন্ট সক্রিয় করুন"
+
+#~ msgid "Identifier"
+#~ msgstr "আইডেন্টিফায়ার"
+
+#~ msgid "Writable"
+#~ msgstr "লিখনযোগ্য"
+
+#~ msgid "Consult the calls history"
+#~ msgstr "কল সংক্রান্ত পূর্ববর্তী তথ্য যাচাই করা হবে"
+
+#~ msgid "Help display is not supported by your GTK+ version"
+#~ msgstr "ব্যবহৃত GTK+ সংস্করণ দ্বারা সহায়তার তথ্য প্রদর্শন করা সম্ভব নয়"
+
+#~ msgid "_Hold Call"
+#~ msgstr "কল ধরে থাকুন (_H)"
+
+#~ msgid "No usable audio plugin detected"
+#~ msgstr "ব্যবহারযোগ্য অডিও প্লাগ-ইন পাওয়া যায়নি"
+
+#~ msgid ""
+#~ "Ekiga didn't find any usable audio plugin. Make sure that your "
+#~ "installation is correct."
+#~ msgstr ""
+#~ "Ekiga দ্বারা ব্যবহারযোগ্য কোনো অডিও প্লাগ-ইন সনাক্ত হয়নি। অনুগ্রহ করে পরীক্ষা করুন "
+#~ "সঠিকভাবে ইনস্টলেশন করা হয়েছে কি না।"
+
+#~ msgid "No usable audio codecs detected"
+#~ msgstr "ব্যবহারযোগ্য অডিও কোডেক পাওয়া যায়নি"
+
+#~ msgid ""
+#~ "Ekiga didn't find any usable audio codec. Make sure that your "
+#~ "installation is correct."
+#~ msgstr ""
+#~ "Ekiga দ্বারা ব্যবহারযোগ্য কোনো কোডেক সনাক্ত হয়নি। অনুগ্রহ করে পরীক্ষা করুন "
+#~ "সঠিকভাবে ইনস্টলেশন করা হয়েছে কি না।"
+
+#~ msgid "If enabled, use silence detection with the codecs supporting it."
+#~ msgstr ""
+#~ "সক্রিয় করা হলে, কোডেক দ্বারা সমর্থিত হলে নিঃশব্দ অবস্থার সনাক্তকরণ ব্যবস্থা প্রয়োগ "
+#~ "করা হবে।"
+
+#~ msgid "If enabled, use echo cancelation."
+#~ msgstr "সক্রিয় হলে,  প্রতিধ্বনি বাতিল করার ব্যবস্থা প্রয়োগ করা হবে।"
+
+#~ msgid "The maximum jitter buffer size for audio reception (in ms)."
+#~ msgstr "অডিও গ্রহণের উদ্দেশ্যে jitter বাফারের সর্বাধিক  map (মিলিসেকেন্ড অনুযায়ী)"
 
 #~ msgid "Forbidden"
 #~ msgstr "নিষিদ্ধ"
