@@ -1,7 +1,7 @@
 # Simplified Chinese translation for ekiga.
-# Copyright (C) 2002-2009 Free Software Foundation, Inc.
+# Copyright (C) 2002, 2003, 2004, 2006, 2009, 2011 Free Software Foundation, Inc.
 # Abel Cheung <maddog@linux.org.hk>, 2001.
-# Chung-Yen Chang <candyz@linux.org.tw>, 2002-2003.
+# Chung-Yen Chang <candyz@linux.org.tw>, 2002, 2003.
 # llc <lilicheng@163.net>, 2003.
 # Funda Wang <fundawang@linux.net.cn>, 2003, 2004, 2006.
 # jan2xue <75jan@163.com>, 2004. 周延潮
@@ -9,24 +9,25 @@
 # 甘露(Gan Lu) <rhythm.gan@gmail.com>, 2009.
 # Ray Wang <wanglei1123 at gmail dot com>, 2009.
 # Lele Long <schemacs@gmail.com>, 2011.
+# liu zhen <liuzhen1191@gmail.com>, 2011.
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: gnome-2-26\n"
+"Project-Id-Version: ekiga master\n"
 "Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?"
-"product=ekiga&component=general\n"
-"POT-Creation-Date: 2011-02-21 15:27+0000\n"
-"PO-Revision-Date: 2011-02-25 09:06+0800\n"
-"Last-Translator: Lele Long <schemacs@gmail.com>\n"
-"Language-Team: Chinese/Simplified <i18n-translation@lists.linux.net.cn>\n"
+"product=ekiga&keywords=I18N+L10N&component=general\n"
+"POT-Creation-Date: 2011-03-21 00:05+0000\n"
+"PO-Revision-Date: 2011-03-21 23:32+0800\n"
+"Last-Translator: liu zhen <liuzhen1191@gmail.com>\n"
+"Language-Team: Chinese (simplified) <i18n-zh@googlegroups.com>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=1; plural=0;\n"
 
 #. Application name
-#: ../ekiga.desktop.in.in.h:1 ../src/gui/main_window.cpp:4712
-#: ../src/gui/main_window.cpp:4714
+#: ../ekiga.desktop.in.in.h:1 ../src/gui/main_window.cpp:4756
+#: ../src/gui/main_window.cpp:4758
 msgid "Ekiga Softphone"
 msgstr "Ekiga 软电话"
 
@@ -86,7 +87,6 @@ msgid "Calls history"
 msgstr "通话记录"
 
 #: ../ekiga.schemas.in.in.h:11
-#, fuzzy
 msgid "Change the panel section of the main window"
 msgstr "更改主窗口面板区域内容"
 
@@ -123,7 +123,7 @@ msgstr "发送 DTMF"
 msgid "Disable video hardware acceleration"
 msgstr "禁用视频硬件加速"
 
-#: ../ekiga.schemas.in.in.h:18 ../src/gui/main_window.cpp:3964
+#: ../ekiga.schemas.in.in.h:18 ../src/gui/main_window.cpp:4008
 msgid "Display images from your camera device"
 msgstr "显示您的摄影设备中的图像"
 
@@ -364,9 +364,9 @@ msgid ""
 "(for \"Tone\"), 2 (for \"RFC2833\"), or 3 (for \"Q.931\") (default is "
 "\"String\"). Choosing other values than \"String\" disables the Text Chat."
 msgstr ""
-"这里允许设置 DTMF 的传送模式。可选值有：0 (代表“字符串”)，1 (代表“铃声”)，"
-"2 (代表 RFC2833)，3 (代表 Q.931)，默认是“字符串”。选择“字符串”之外的将禁用"
-"文字聊天。"
+"这里允许设置 DTMF 的传送模式。可选值有：0 (代表“字符串”)，1 (代表“铃声”)，2 "
+"(代表 RFC2833)，3 (代表 Q.931)，默认是“字符串”。选择“字符串”之外的将禁用文字"
+"聊天。"
 
 #: ../ekiga.schemas.in.in.h:73
 msgid ""
@@ -386,7 +386,7 @@ msgstr ""
 msgid "Show offline contacts"
 msgstr "显示离线联系人"
 
-#: ../ekiga.schemas.in.in.h:76 ../src/gui/main_window.cpp:3597
+#: ../ekiga.schemas.in.in.h:76 ../src/gui/main_window.cpp:3641
 msgid "Show the call panel"
 msgstr "显示来电面板"
 
@@ -734,7 +734,7 @@ msgid "_Find"
 msgstr "查找(_F)"
 
 #: ../lib/engine/components/avahi/avahi-heap.cpp:129
-#: ../lib/engine/components/avahi/avahi-heap.cpp:383
+#: ../lib/engine/components/avahi/avahi-heap.cpp:377
 msgid "Neighbours"
 msgstr "芳邻"
 
@@ -775,7 +775,7 @@ msgstr "未命名"
 #: ../plugins/evolution/evolution-contact.cpp:228
 #: ../plugins/loudmouth/loudmouth-presentity.cpp:157
 #: ../plugins/resource-list/rl-presentity.cpp:212
-#: ../src/gui/main_window.cpp:3555
+#: ../src/gui/main_window.cpp:3599
 msgid "_Edit"
 msgstr "编辑(_E)"
 
@@ -944,7 +944,7 @@ msgstr "呼叫"
 #: ../lib/engine/components/opal/h323-endpoint.cpp:134
 #: ../lib/engine/components/opal/sip-endpoint.cpp:232
 #: ../lib/engine/components/opal/sip-endpoint.cpp:236
-#: ../src/gui/main_window.cpp:3317
+#: ../src/gui/main_window.cpp:3359
 msgid "Transfer"
 msgstr "传送"
 
@@ -1065,12 +1065,12 @@ msgstr "已验证用户："
 
 #: ../lib/engine/components/opal/opal-account.cpp:428
 #: ../lib/engine/components/opal/opal-bank.cpp:138
-#, fuzzy
 msgid ""
 "The user name used during authentication, if different than the user name; "
 "leave empty if you do not have one"
 msgstr ""
-"认证过程的用户名，如果此用户名与您使用的不是同一个；如果您没有使用，请留空。"
+"验证过程中使用的用户名，如果此用户名与您使用的不是同一个；如果您没有用户名，"
+"请留空。"
 
 #: ../lib/engine/components/opal/opal-account.cpp:429
 #: ../plugins/loudmouth/loudmouth-account.cpp:312
@@ -1094,10 +1094,9 @@ msgstr "超时："
 #: ../lib/engine/components/opal/opal-account.cpp:430
 #: ../lib/engine/components/opal/opal-bank.cpp:130
 #: ../lib/engine/components/opal/opal-bank.cpp:140
-#, fuzzy
 msgid ""
 "Time in seconds after which the account registration is automatically retried"
-msgstr "帐户注册自动重试后的时间，以秒为单位。"
+msgstr "几秒钟后将自动重新注册帐号。"
 
 #: ../lib/engine/components/opal/opal-account.cpp:431
 #: ../lib/engine/components/opal/opal-bank.cpp:143
@@ -1244,7 +1243,7 @@ msgid "Abnormal call termination"
 msgstr "呼叫异常中断"
 
 #: ../lib/engine/components/opal/opal-call.cpp:424
-#: ../src/gui/main_window.cpp:1845
+#: ../src/gui/main_window.cpp:1885
 msgid "Could not connect to remote host"
 msgstr "无法连接到远程主机"
 
@@ -1514,7 +1513,7 @@ msgid "Globally not acceptable"
 msgstr "全局不接受"
 
 #: ../lib/engine/components/opal/sip-endpoint.cpp:933
-#: ../src/gui/main_window.cpp:3154
+#: ../src/gui/main_window.cpp:3196
 #, c-format
 msgid "Incoming call from %s"
 msgstr "来电，呼出者 %s"
@@ -1551,7 +1550,7 @@ msgid "Address Book"
 msgstr "地址簿"
 
 #: ../lib/engine/gui/gtk-frontend/addressbook-window.cpp:652
-#: ../src/gui/main_window.cpp:3503
+#: ../src/gui/main_window.cpp:3545
 msgid "Address _Book"
 msgstr "地址簿(_B)"
 
@@ -1780,12 +1779,10 @@ msgid "Please edit the following fields"
 msgstr "请编辑下列字段"
 
 #: ../plugins/ldap/ldap-book.cpp:944
-#, fuzzy
 msgid "Book _Name:"
 msgstr "簿名(_N)"
 
 #: ../plugins/ldap/ldap-book.cpp:944
-#, fuzzy
 msgid "Book name, as shown in your dialog box"
 msgstr "薄名，如您的对话框中所示"
 
@@ -1970,6 +1967,10 @@ msgstr "添加一个 jabber/XMPP 帐户(_A)"
 #: ../plugins/loudmouth/loudmouth-bank.cpp:123
 msgid "Please fill in the following fields:"
 msgstr "请填写下列字段："
+
+#: ../plugins/loudmouth/loudmouth-dialect.cpp:118
+msgid "Join a discussion group"
+msgstr "加入一个讨论小组"
 
 #: ../plugins/loudmouth/loudmouth-heap.cpp:210
 msgid "Authorization to see your presence"
@@ -2162,11 +2163,11 @@ msgstr "状态"
 msgid "Accounts"
 msgstr "帐户"
 
-#: ../src/gui/accounts.cpp:590 ../src/gui/main_window.cpp:3565
+#: ../src/gui/accounts.cpp:590 ../src/gui/main_window.cpp:3609
 msgid "_Accounts"
 msgstr "帐户(_A)"
 
-#: ../src/gui/accounts.cpp:594 ../src/gui/main_window.cpp:3648
+#: ../src/gui/accounts.cpp:594 ../src/gui/main_window.cpp:3692
 msgid "_Help"
 msgstr "帮助(_H)"
 
@@ -2263,7 +2264,6 @@ msgid "Please enter your PIN code:"
 msgstr "请输入您的 PIN 码："
 
 #: ../src/gui/assistant.cpp:706
-#, fuzzy
 msgid ""
 "You can make calls to regular phones and cell numbers worldwide using Ekiga. "
 "To enable this, you need to do two things:\n"
@@ -2324,8 +2324,8 @@ msgstr ""
 "连接类型允许检测在 Ekiga 呼叫中可使用的最好质量，您可以随后在首选项窗口中单独"
 "改变设置。"
 
-#: ../src/gui/assistant.cpp:967 ../src/gui/main_window.cpp:3382
-#: ../src/gui/main_window.cpp:3386 ../src/gui/main_window.cpp:3390
+#: ../src/gui/assistant.cpp:967 ../src/gui/main_window.cpp:3424
+#: ../src/gui/main_window.cpp:3428 ../src/gui/main_window.cpp:3432
 #: ../src/gui/preferences.cpp:738
 msgid "Audio Devices"
 msgstr "音频设备"
@@ -2499,60 +2499,60 @@ msgstr ""
 msgid "Unable to open help file."
 msgstr "无法打开帮助文件。"
 
-#: ../src/gui/main_window.cpp:731
+#: ../src/gui/main_window.cpp:739
 msgid "Presence"
 msgstr "在线状态"
 
-#: ../src/gui/main_window.cpp:738
+#: ../src/gui/main_window.cpp:746
 msgid "Addressbook"
 msgstr "地址簿"
 
-#: ../src/gui/main_window.cpp:802
+#: ../src/gui/main_window.cpp:833
 msgid "Unknown"
 msgstr "未知"
 
-#: ../src/gui/main_window.cpp:953
+#: ../src/gui/main_window.cpp:987
 #, c-format
 msgid "A:%.1f/%.1f   V:%.1f/%.1f   FPS:%d/%d"
 msgstr "A:%.1f/%.1f   V:%.1f/%.1f   FPS:%d/%d"
 
 #. %s is the SIP/H.323 address of the remote user, this text is shown
 #. below video during a call
-#: ../src/gui/main_window.cpp:999
+#: ../src/gui/main_window.cpp:1033
 #, c-format
 msgid "Connected with %s"
 msgstr "已与 %s 连接"
 
-#: ../src/gui/main_window.cpp:1035 ../src/gui/main_window.cpp:3884
+#: ../src/gui/main_window.cpp:1069 ../src/gui/main_window.cpp:3928
 msgid "Standby"
 msgstr "待机"
 
-#: ../src/gui/main_window.cpp:1094
+#: ../src/gui/main_window.cpp:1134
 msgid "Call on hold"
 msgstr "呼叫等待中"
 
-#: ../src/gui/main_window.cpp:1105
+#: ../src/gui/main_window.cpp:1145
 msgid "Call retrieved"
 msgstr "呼叫已恢复"
 
-#: ../src/gui/main_window.cpp:1120
+#: ../src/gui/main_window.cpp:1160
 #, c-format
 msgid "Missed call from %s"
 msgstr "来自 %s 的未接来电"
 
-#: ../src/gui/main_window.cpp:1257
+#: ../src/gui/main_window.cpp:1297
 msgid "Error"
 msgstr "错误"
 
-#: ../src/gui/main_window.cpp:1330
+#: ../src/gui/main_window.cpp:1370
 msgid "Error while initializing video output"
 msgstr "初始化视频输出时出错"
 
-#: ../src/gui/main_window.cpp:1331
+#: ../src/gui/main_window.cpp:1371
 msgid "No video will be displayed on your machine during this call"
 msgstr "在这个通话中没有视频将在您的机器上显示"
 
-#: ../src/gui/main_window.cpp:1341
+#: ../src/gui/main_window.cpp:1381
 msgid ""
 "There was an error opening or initializing the video output. Please verify "
 "that no other application is using the accelerated video output."
@@ -2560,7 +2560,7 @@ msgstr ""
 "打开及初始化视频输出时出现一个错误。请确认没有其他程序正在使用加速后的视频输"
 "出。"
 
-#: ../src/gui/main_window.cpp:1343
+#: ../src/gui/main_window.cpp:1383
 msgid ""
 "There was an error opening or initializing the video output. Please verify "
 "that you are using a color depth of 24 or 32 bits per pixel."
@@ -2569,27 +2569,27 @@ msgstr ""
 "素。"
 
 #. Translators: This is a hotplug status
-#: ../src/gui/main_window.cpp:1456
+#: ../src/gui/main_window.cpp:1496
 #, c-format
 msgid "Added video input device %s"
 msgstr "已添加音频输入设备 %s"
 
 #. Translators: This is a hotplug status
-#: ../src/gui/main_window.cpp:1468
+#: ../src/gui/main_window.cpp:1508
 #, c-format
 msgid "Removed video input device %s"
 msgstr "已移除视频输入设备 %s"
 
-#: ../src/gui/main_window.cpp:1485
+#: ../src/gui/main_window.cpp:1525
 #, c-format
 msgid "Error while accessing video device %s"
 msgstr "访问视频设备 %s 时出错"
 
-#: ../src/gui/main_window.cpp:1488
+#: ../src/gui/main_window.cpp:1528
 msgid "A moving logo will be transmitted during calls."
 msgstr "在通话中一个移动的标志将被传输。"
 
-#: ../src/gui/main_window.cpp:1492
+#: ../src/gui/main_window.cpp:1532
 msgid ""
 "There was an error while opening the device. In case it is a pluggable "
 "device it may be sufficient to reconnect it. If not, or if it still is not "
@@ -2599,15 +2599,15 @@ msgstr ""
 "打开设备时出错。要是它是一个可插拔设备，那么重新连一下可能就可以了。如果不"
 "是，或还是无法访问，请检查您的权限，并确定对应的驱动程序已经装入。"
 
-#: ../src/gui/main_window.cpp:1496
+#: ../src/gui/main_window.cpp:1536
 msgid "Your video driver doesn't support the requested video format."
 msgstr "此视频驱动程序不支持所需的视频格式。"
 
-#: ../src/gui/main_window.cpp:1500
+#: ../src/gui/main_window.cpp:1540
 msgid "Could not open the chosen channel."
 msgstr "无法打开所选的通道。"
 
-#: ../src/gui/main_window.cpp:1504
+#: ../src/gui/main_window.cpp:1544
 msgid ""
 "Your driver doesn't seem to support any of the color formats supported by "
 "Ekiga.\n"
@@ -2617,43 +2617,43 @@ msgstr ""
 "您的驱动程序似乎不支持 Ekiga 支持的任何颜色格式。\n"
 "请检查您的内核驱动程序文档以确定所支持的调色板。"
 
-#: ../src/gui/main_window.cpp:1508
+#: ../src/gui/main_window.cpp:1548
 msgid "Error while setting the frame rate."
 msgstr "设置帧速率错误。"
 
-#: ../src/gui/main_window.cpp:1512
+#: ../src/gui/main_window.cpp:1552
 msgid "Error while setting the frame size."
 msgstr "设置帧大小错误。"
 
-#: ../src/gui/main_window.cpp:1517 ../src/gui/main_window.cpp:1620
-#: ../src/gui/main_window.cpp:1739
+#: ../src/gui/main_window.cpp:1557 ../src/gui/main_window.cpp:1660
+#: ../src/gui/main_window.cpp:1779
 msgid "Unknown error."
 msgstr "未知错误"
 
 #. Translators: This is a hotplug status
-#: ../src/gui/main_window.cpp:1569
+#: ../src/gui/main_window.cpp:1609
 #, c-format
 msgid "Added audio input device %s"
 msgstr "已添加音频输入设备 %s"
 
 #. Translators: This is a hotplug status
-#: ../src/gui/main_window.cpp:1585
+#: ../src/gui/main_window.cpp:1625
 #, c-format
 msgid "Removed audio input device %s"
 msgstr "已移除音频输入设备 %s"
 
-#: ../src/gui/main_window.cpp:1602
+#: ../src/gui/main_window.cpp:1642
 #, c-format
 msgid "Error while opening audio input device %s"
 msgstr "打开视频输入设备 %s 时出错"
 
 #. Translators: This happens when there is an error with audio input:
 #. * Nothing ("silence") will be transmitted
-#: ../src/gui/main_window.cpp:1607
+#: ../src/gui/main_window.cpp:1647
 msgid "Only silence will be transmitted."
 msgstr "仅传送静音"
 
-#: ../src/gui/main_window.cpp:1611
+#: ../src/gui/main_window.cpp:1651
 msgid ""
 "Unable to open the selected audio device for recording. In case it is a "
 "pluggable device it may be sufficient to reconnect it. If not, or if it "
@@ -2663,7 +2663,7 @@ msgstr ""
 "无法打开选定的音频设备进行录制。要是它是一个可插拔设备，那么重新连一下可能就"
 "可以了。如果不是，或还是无法访问，请检查您的音频设置，权限以及设备是否忙。"
 
-#: ../src/gui/main_window.cpp:1615
+#: ../src/gui/main_window.cpp:1655
 msgid ""
 "The selected audio device was successfully opened but it is impossible to "
 "read data from this device. In case it is a pluggable device it may be "
@@ -2673,26 +2673,26 @@ msgstr ""
 "选定的音频设备成功打开，但无法读取数据。要是它是一个可插拔设备，那么重新连一"
 "下可能就可以了。如果不是，或还是无法访问，请检查您的音频设置。"
 
-#: ../src/gui/main_window.cpp:1684
+#: ../src/gui/main_window.cpp:1724
 #, c-format
 msgid "Added audio output device %s"
 msgstr "已添加音频输出设备 %s"
 
-#: ../src/gui/main_window.cpp:1702
+#: ../src/gui/main_window.cpp:1742
 #, c-format
 msgid "Removed audio output device %s"
 msgstr "已移除音频输出设备 %s"
 
-#: ../src/gui/main_window.cpp:1723
+#: ../src/gui/main_window.cpp:1763
 #, c-format
 msgid "Error while opening audio output device %s"
 msgstr "打开视频输出设备 %s 时出错"
 
-#: ../src/gui/main_window.cpp:1726
+#: ../src/gui/main_window.cpp:1766
 msgid "No incoming sound will be played."
 msgstr "不播放来电声音"
 
-#: ../src/gui/main_window.cpp:1730
+#: ../src/gui/main_window.cpp:1770
 msgid ""
 "Unable to open the selected audio device for playing. In case it is a "
 "pluggable device it may be sufficient to reconnect it. If not, or if it "
@@ -2702,7 +2702,7 @@ msgstr ""
 "无法打开选定的音频设备进行播放。要是它是一个可插拔设备，那么重新连一下可能就"
 "可以了。如果不是，或还是无法访问，请检查您的音频设置，权限以及设备是否忙。"
 
-#: ../src/gui/main_window.cpp:1734
+#: ../src/gui/main_window.cpp:1774
 msgid ""
 "The selected audio device was successfully opened but it is impossible to "
 "write data to this device. In case it is a pluggable device it may be "
@@ -2712,351 +2712,351 @@ msgstr ""
 "选定的音频设备成功打开，但无法写入数据。要是它是一个可插拔设备，那么重新连一"
 "下可能就可以了。如果不是，或还是无法访问，请检查您的音频设置。"
 
-#: ../src/gui/main_window.cpp:1923
+#: ../src/gui/main_window.cpp:1963
 msgid "Video Settings"
 msgstr "视频设置"
 
-#: ../src/gui/main_window.cpp:1950
+#: ../src/gui/main_window.cpp:1990
 msgid "Adjust brightness"
 msgstr "调整亮度"
 
-#: ../src/gui/main_window.cpp:1971
+#: ../src/gui/main_window.cpp:2011
 msgid "Adjust whiteness"
 msgstr "调整白平衡"
 
-#: ../src/gui/main_window.cpp:1992
+#: ../src/gui/main_window.cpp:2032
 msgid "Adjust color"
 msgstr "调整颜色"
 
-#: ../src/gui/main_window.cpp:2013
+#: ../src/gui/main_window.cpp:2053
 msgid "Adjust contrast"
 msgstr "调整对比度"
 
-#: ../src/gui/main_window.cpp:2057
+#: ../src/gui/main_window.cpp:2097
 msgid "Audio Settings"
 msgstr "音频设置"
 
-#: ../src/gui/main_window.cpp:2737
+#: ../src/gui/main_window.cpp:2777
 msgid "_Retrieve Call"
 msgstr "收到来电(_R)"
 
-#: ../src/gui/main_window.cpp:2750 ../src/gui/main_window.cpp:3511
+#: ../src/gui/main_window.cpp:2790 ../src/gui/main_window.cpp:3553
 msgid "H_old Call"
 msgstr "稍候(_O)"
 
-#: ../src/gui/main_window.cpp:2782 ../src/gui/main_window.cpp:3523
+#: ../src/gui/main_window.cpp:2822 ../src/gui/main_window.cpp:3565
 msgid "Suspend _Audio"
 msgstr "暂停音频(_A)"
 
-#: ../src/gui/main_window.cpp:2784 ../src/gui/main_window.cpp:3528
+#: ../src/gui/main_window.cpp:2824 ../src/gui/main_window.cpp:3570
 msgid "Suspend _Video"
 msgstr "暂停视频(_V)"
 
-#: ../src/gui/main_window.cpp:2786
+#: ../src/gui/main_window.cpp:2826
 msgid "Resume _Audio"
 msgstr "恢复音频(_A)"
 
-#: ../src/gui/main_window.cpp:2788
+#: ../src/gui/main_window.cpp:2828
 msgid "Resume _Video"
 msgstr "恢复视频(_V)"
 
-#: ../src/gui/main_window.cpp:3014 ../src/gui/main_window.cpp:3177
+#: ../src/gui/main_window.cpp:3054 ../src/gui/main_window.cpp:3219
 msgid "Reject"
 msgstr "拒绝"
 
-#: ../src/gui/main_window.cpp:3016 ../src/gui/main_window.cpp:3176
+#: ../src/gui/main_window.cpp:3056 ../src/gui/main_window.cpp:3218
 msgid "Accept"
 msgstr "接听"
 
-#: ../src/gui/main_window.cpp:3022
+#: ../src/gui/main_window.cpp:3062
 msgid "Incoming call from"
 msgstr "来电，呼出者"
 
 # src/main_window.cpp:854 src/main_window.cpp:879
-#: ../src/gui/main_window.cpp:3040 ../src/gui/main_window.cpp:3157
+#: ../src/gui/main_window.cpp:3080 ../src/gui/main_window.cpp:3199
 msgid "Remote URI:"
 msgstr "远程 URI："
 
-#: ../src/gui/main_window.cpp:3052 ../src/gui/main_window.cpp:3159
+#: ../src/gui/main_window.cpp:3092 ../src/gui/main_window.cpp:3201
 msgid "Remote Application:"
 msgstr "远程应用程序："
 
-#: ../src/gui/main_window.cpp:3065 ../src/gui/main_window.cpp:3161
+#: ../src/gui/main_window.cpp:3105 ../src/gui/main_window.cpp:3203
 msgid "Account ID:"
 msgstr "帐户 ID："
 
-#: ../src/gui/main_window.cpp:3073
+#: ../src/gui/main_window.cpp:3113
 #, c-format
 msgid "Call from %s"
 msgstr "来自 %s 的呼叫"
 
-#: ../src/gui/main_window.cpp:3285
+#: ../src/gui/main_window.cpp:3327
 #, c-format
 msgid "Call Duration: %s\n"
 msgstr "通话时长：%s\n"
 
-#: ../src/gui/main_window.cpp:3316
+#: ../src/gui/main_window.cpp:3358
 msgid "Transfer call to:"
 msgstr "将呼叫转移到："
 
 # src/pref_window.cpp:850
-#: ../src/gui/main_window.cpp:3368
+#: ../src/gui/main_window.cpp:3410
 msgid "No"
 msgstr "不"
 
-#: ../src/gui/main_window.cpp:3370
+#: ../src/gui/main_window.cpp:3412
 msgid "Yes"
 msgstr "是"
 
-#: ../src/gui/main_window.cpp:3381
+#: ../src/gui/main_window.cpp:3423
 msgid "Detected new audio input device:"
 msgstr "探测到新音频输入设备："
 
-#: ../src/gui/main_window.cpp:3385
+#: ../src/gui/main_window.cpp:3427
 msgid "Detected new audio output device:"
 msgstr "探测到新音频输出设备："
 
-#: ../src/gui/main_window.cpp:3389
+#: ../src/gui/main_window.cpp:3431
 msgid "Detected new ringer device:"
 msgstr "探测到新的振铃设备："
 
-#: ../src/gui/main_window.cpp:3393
+#: ../src/gui/main_window.cpp:3435
 msgid "Detected new video input device:"
 msgstr "探测到新视频输入设备："
 
-#: ../src/gui/main_window.cpp:3394 ../src/gui/preferences.cpp:891
+#: ../src/gui/main_window.cpp:3436 ../src/gui/preferences.cpp:891
 msgid "Video Devices"
 msgstr "视频设备"
 
-#: ../src/gui/main_window.cpp:3412
+#: ../src/gui/main_window.cpp:3454
 msgid "Do you want to use it as default device?"
 msgstr "您想把它用作默认设备吗？"
 
-#: ../src/gui/main_window.cpp:3480
+#: ../src/gui/main_window.cpp:3522
 msgid "_Chat"
 msgstr "聊天(_C)"
 
-#: ../src/gui/main_window.cpp:3482
+#: ../src/gui/main_window.cpp:3524
 msgid "Ca_ll"
 msgstr "呼叫(_L)"
 
-#: ../src/gui/main_window.cpp:3482
+#: ../src/gui/main_window.cpp:3524
 msgid "Place a new call"
 msgstr "打一通电话"
 
-#: ../src/gui/main_window.cpp:3485
+#: ../src/gui/main_window.cpp:3527
 msgid "_Hang up"
 msgstr "挂断(_H)"
 
-#: ../src/gui/main_window.cpp:3486
+#: ../src/gui/main_window.cpp:3528
 msgid "Terminate the current call"
 msgstr "终止当前呼叫"
 
-#: ../src/gui/main_window.cpp:3492
+#: ../src/gui/main_window.cpp:3534
 msgid "Co_ntact"
 msgstr "联系人(_N)"
 
-#: ../src/gui/main_window.cpp:3493
+#: ../src/gui/main_window.cpp:3535
 msgid "Act on selected contact"
 msgstr "在选定联系人上的行动"
 
-#: ../src/gui/main_window.cpp:3499
+#: ../src/gui/main_window.cpp:3541
 msgid "A_dd Contact"
 msgstr "添加联系人(_D)"
 
-#: ../src/gui/main_window.cpp:3499
+#: ../src/gui/main_window.cpp:3541
 msgid "Add a contact to the roster"
 msgstr "添加一个联系人到花名册"
 
-#: ../src/gui/main_window.cpp:3504
+#: ../src/gui/main_window.cpp:3546
 msgid "Find contacts"
 msgstr "查找联系人"
 
-#: ../src/gui/main_window.cpp:3511 ../src/gui/main_window.cpp:3984
+#: ../src/gui/main_window.cpp:3553 ../src/gui/main_window.cpp:4028
 msgid "Hold the current call"
 msgstr "保留当前呼叫"
 
-#: ../src/gui/main_window.cpp:3515
+#: ../src/gui/main_window.cpp:3557
 msgid "_Transfer Call"
 msgstr "转移呼叫(_T)"
 
-#: ../src/gui/main_window.cpp:3516
+#: ../src/gui/main_window.cpp:3558
 msgid "Transfer the current call"
 msgstr "转移当前呼叫"
 
-#: ../src/gui/main_window.cpp:3524
+#: ../src/gui/main_window.cpp:3566
 msgid "Suspend or resume the audio transmission"
 msgstr "挂起或恢复音频传送"
 
-#: ../src/gui/main_window.cpp:3529
+#: ../src/gui/main_window.cpp:3571
 msgid "Suspend or resume the video transmission"
 msgstr "挂起或恢复视频传送"
 
 #. FIXME: that isn't a very good way to do things
-#: ../src/gui/main_window.cpp:3537
+#: ../src/gui/main_window.cpp:3580
 msgid "Other"
 msgstr "其它"
 
-#: ../src/gui/main_window.cpp:3538
+#: ../src/gui/main_window.cpp:3581
 msgid "Other possible actions"
 msgstr "其它可能的动作"
 
-#: ../src/gui/main_window.cpp:3544
+#: ../src/gui/main_window.cpp:3588
 msgid "Close the Ekiga window"
 msgstr "关闭 Ekiga 窗口"
 
-#: ../src/gui/main_window.cpp:3551 ../src/gui/statusicon.cpp:465
+#: ../src/gui/main_window.cpp:3595 ../src/gui/statusicon.cpp:465
 msgid "Quit"
 msgstr "退出"
 
-#: ../src/gui/main_window.cpp:3557
+#: ../src/gui/main_window.cpp:3601
 msgid "_Configuration Assistant"
 msgstr "配置助手(_C)"
 
-#: ../src/gui/main_window.cpp:3558
+#: ../src/gui/main_window.cpp:3602
 msgid "Run the configuration assistant"
 msgstr "运行配置助手"
 
-#: ../src/gui/main_window.cpp:3566
+#: ../src/gui/main_window.cpp:3610
 msgid "Edit your accounts"
 msgstr "编辑您的帐户"
 
-#: ../src/gui/main_window.cpp:3572
+#: ../src/gui/main_window.cpp:3616
 msgid "Change your preferences"
 msgstr "更改您的首选项"
 
-#: ../src/gui/main_window.cpp:3577
+#: ../src/gui/main_window.cpp:3621
 msgid "_View"
 msgstr "查看(_V)"
 
-#: ../src/gui/main_window.cpp:3579
+#: ../src/gui/main_window.cpp:3623
 msgid "Con_tacts"
 msgstr "联系人(_T)"
 
-#: ../src/gui/main_window.cpp:3579
+#: ../src/gui/main_window.cpp:3623
 msgid "View the contacts list"
 msgstr "查看联系人列表"
 
-#: ../src/gui/main_window.cpp:3584
+#: ../src/gui/main_window.cpp:3628
 msgid "_Dialpad"
 msgstr "拨号盘(_D)"
 
-#: ../src/gui/main_window.cpp:3584
+#: ../src/gui/main_window.cpp:3628
 msgid "View the dialpad"
 msgstr "查看拨号盘"
 
-#: ../src/gui/main_window.cpp:3589
+#: ../src/gui/main_window.cpp:3633
 msgid "_Call History"
 msgstr "通话记录(_C)"
 
-#: ../src/gui/main_window.cpp:3589
+#: ../src/gui/main_window.cpp:3633
 msgid "View the call history"
 msgstr "查看通话记录"
 
-#: ../src/gui/main_window.cpp:3597
+#: ../src/gui/main_window.cpp:3641
 msgid "_Show Call Panel"
 msgstr "显示呼叫面板(_S)"
 
-#: ../src/gui/main_window.cpp:3605
+#: ../src/gui/main_window.cpp:3649
 msgid "_Local Video"
 msgstr "本地视频(_L)"
 
-#: ../src/gui/main_window.cpp:3606
+#: ../src/gui/main_window.cpp:3650
 msgid "Local video image"
 msgstr "本地视频图像"
 
-#: ../src/gui/main_window.cpp:3611
+#: ../src/gui/main_window.cpp:3655
 msgid "_Remote Video"
 msgstr "远程视频(_R)"
 
-#: ../src/gui/main_window.cpp:3612
+#: ../src/gui/main_window.cpp:3656
 msgid "Remote video image"
 msgstr "远程视频影像"
 
-#: ../src/gui/main_window.cpp:3617
+#: ../src/gui/main_window.cpp:3661
 msgid "_Picture-in-Picture"
 msgstr "画中画(_P)"
 
-#: ../src/gui/main_window.cpp:3618 ../src/gui/main_window.cpp:3624
+#: ../src/gui/main_window.cpp:3662 ../src/gui/main_window.cpp:3668
 msgid "Both video images"
 msgstr "本机和远程的视频影像"
 
-#: ../src/gui/main_window.cpp:3623
+#: ../src/gui/main_window.cpp:3667
 msgid "Picture-in-Picture in Separate _Window"
 msgstr "画中画(单独窗口)(_W)"
 
-#: ../src/gui/main_window.cpp:3631
+#: ../src/gui/main_window.cpp:3675
 msgid "Zoom in"
 msgstr "放大"
 
-#: ../src/gui/main_window.cpp:3635
+#: ../src/gui/main_window.cpp:3679
 msgid "Zoom out"
 msgstr "缩小"
 
-#: ../src/gui/main_window.cpp:3639
+#: ../src/gui/main_window.cpp:3683
 msgid "Normal size"
 msgstr "正常大小"
 
-#: ../src/gui/main_window.cpp:3643
+#: ../src/gui/main_window.cpp:3687
 msgid "_Fullscreen"
 msgstr "全屏幕(_F)"
 
-#: ../src/gui/main_window.cpp:3643
+#: ../src/gui/main_window.cpp:3687
 msgid "Switch to fullscreen"
 msgstr "切换至全屏幕"
 
-#: ../src/gui/main_window.cpp:3651 ../src/gui/statusicon.cpp:453
+#: ../src/gui/main_window.cpp:3695 ../src/gui/statusicon.cpp:453
 msgid "Get help by reading the Ekiga manual"
 msgstr "阅读 Ekiga 手册获得帮助"
 
-#: ../src/gui/main_window.cpp:3656 ../src/gui/statusicon.cpp:458
+#: ../src/gui/main_window.cpp:3700 ../src/gui/statusicon.cpp:458
 msgid "View information about Ekiga"
 msgstr "查看 Ekiga 的讯息"
 
-#: ../src/gui/main_window.cpp:3728
+#: ../src/gui/main_window.cpp:3772
 msgid ""
 "Enter a URI on the left, and click this button to place a call or to hangup"
 msgstr "在左侧输入 URL，点击此按钮可以进行呼叫或挂断"
 
-#: ../src/gui/main_window.cpp:3773
+#: ../src/gui/main_window.cpp:3817
 msgid "Contacts"
 msgstr "联系人"
 
-#: ../src/gui/main_window.cpp:3795
+#: ../src/gui/main_window.cpp:3839
 msgid "Dialpad"
 msgstr "拨号盘"
 
-#: ../src/gui/main_window.cpp:3813
+#: ../src/gui/main_window.cpp:3857
 msgid "Call history"
 msgstr "通话记录"
 
-#: ../src/gui/main_window.cpp:3921
+#: ../src/gui/main_window.cpp:3965
 msgid "Change the volume of your soundcard"
 msgstr "更改声卡音量"
 
-#: ../src/gui/main_window.cpp:3942
+#: ../src/gui/main_window.cpp:3986
 msgid "Change the color settings of your video device"
 msgstr "更改视频设备的颜色设定"
 
-#: ../src/gui/main_window.cpp:4010
+#: ../src/gui/main_window.cpp:4054
 msgid "Ekiga"
 msgstr "Ekiga"
 
 #. Translators: TX is a common abbreviation for "transmit".  As it
 #. * is shown in a tooltip, there is no space constraint
-#: ../src/gui/main_window.cpp:4613
+#: ../src/gui/main_window.cpp:4657
 #, c-format
 msgid "TX: %dx%d "
 msgstr "TX(传输): %dx%d "
 
 #. Translators: RX is a common abbreviation for "receive".  As it
 #. * is shown in a tooltip, there is no space constraint
-#: ../src/gui/main_window.cpp:4618
+#: ../src/gui/main_window.cpp:4662
 #, c-format
 msgid "RX: %dx%d "
 msgstr "RX(接收): %dx%d "
 
-#: ../src/gui/main_window.cpp:4620
+#: ../src/gui/main_window.cpp:4664
 #, c-format
 msgid ""
 "Lost packets: %.1f %%\n"
@@ -3069,15 +3069,15 @@ msgstr ""
 "故障封包：%1.f %%\n"
 "抗抖动缓冲：%d ms%s%s%s"
 
-#: ../src/gui/main_window.cpp:4735
+#: ../src/gui/main_window.cpp:4779
 msgid "Prints debug messages in the console (level between 1 and 5)"
 msgstr "在控制台中打印调试信息(等级从1至5)"
 
-#: ../src/gui/main_window.cpp:4740
+#: ../src/gui/main_window.cpp:4784
 msgid "Prints user plane debug messages in the console (level between 1 and 4)"
 msgstr "在控制台中打印用户层面调试信息(等级从1至4)"
 
-#: ../src/gui/main_window.cpp:4745
+#: ../src/gui/main_window.cpp:4789
 msgid "Makes Ekiga call the given URI"
 msgstr "使 Ekiga 呼叫给定的 URI"
 
@@ -3356,14 +3356,13 @@ msgid "Picture Quality"
 msgstr "图片质量"
 
 #: ../src/gui/preferences.cpp:980
-#, fuzzy
 msgid ""
 "Choose if you want to guarantee a minimum image quality (possibly leading to "
 "dropped frames in order not to surpass the bitrate limit) or if you prefer "
 "to keep the frame rate"
 msgstr ""
-"选择此处如果您想保证的最小图像质量(可能因为保证不超过带宽限制而导致掉帧)，或"
-"您想保持现有的帧速率。"
+"如果您选择想保证最小图像质量(可能导致比特率超过限制而丢帧的现象)，或您想保持"
+"现有的帧速率。"
 
 # src/pref_window.cpp:1554
 #: ../src/gui/preferences.cpp:982
