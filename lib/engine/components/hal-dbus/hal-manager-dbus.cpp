@@ -362,7 +362,7 @@ void HalManager_dbus::get_interface_name_ip (const char * interface, NmInterface
   DBusGProxy * interface_proxy = NULL;
   GError *error = NULL;
   gchar* c_value = NULL;
-  unsigned address = NULL;
+  unsigned address = 0;
   gboolean active = FALSE;
 
   interface_proxy = dbus_g_proxy_new_for_name (bus, "org.freedesktop.NetworkManager",
