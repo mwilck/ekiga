@@ -630,7 +630,7 @@ Opal::Account::setup_presentity ()
 
     presentity->GetAttributes().Set(SIP_Presentity::AuthNameKey, username);
     presentity->GetAttributes().Set(SIP_Presentity::AuthPasswordKey, password);
-    presentity->GetAttributes().Set(SIP_Presentity::SubProtocolKey, SIP_Presentity::e_WithAgent);
+    presentity->GetAttributes().Set(SIP_Presentity::SubProtocolKey, "Agent");
     //    presentity->GetAttributes().Set(SIP_Presentity::DefaultPresenceServerKey, host);
     std::cout << "got presentity for " << url << std::endl;
   } else
