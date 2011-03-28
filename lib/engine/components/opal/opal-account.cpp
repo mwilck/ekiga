@@ -507,7 +507,7 @@ Opal::Account::publish (const Ekiga::PersonalDetails& details)
     if (presence == "online")
       personal_state = OpalPresenceInfo::Available;
 
-    std::cout << "calling SetLocalPresence for " << get_aor () << std::endl;
+    std::cout << "calling SetLocalPresence for " << get_aor () << " to " << details.get_status () << std::endl;
     presentity->SetLocalPresence (personal_state, details.get_status ());
   }
 }
