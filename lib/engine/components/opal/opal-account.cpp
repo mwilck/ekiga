@@ -578,6 +578,7 @@ Opal::Account::handle_registration_event (RegistrationState state_,
       boost::shared_ptr<Sip::EndPoint> endpoint = core.get<Sip::EndPoint> ("opal-sip-endpoint");
       endpoint->subscribe (*this);
     } else {
+      limited = false;  // since limited did not work, put it back to false, to avoid being stuck to limited=true when retrying register later
       status = _("Could not register");
       if (!info.empty ())
         status = status + " (" + info + ")";
