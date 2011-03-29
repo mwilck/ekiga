@@ -4737,7 +4737,6 @@ main (int argc,
   gchar *url = NULL;
 
   int debug_level = 0;
-  int debug_level_up = 0;
 
   /* Globals */
 #ifndef WIN32
@@ -4780,11 +4779,6 @@ main (int argc,
        NULL
       },
       {
-	"debug_user_plane", 'u', 0, G_OPTION_ARG_INT, &debug_level_up,
-       N_("Prints user plane debug messages in the console (level between 1 and 4)"),
-       NULL
-      },
-      {
 	"call", 'c', 0, G_OPTION_ARG_STRING, &url,
 	N_("Makes Ekiga call the given URI"),
 	NULL
@@ -4811,14 +4805,8 @@ main (int argc,
   char* text_label =  g_strdup_printf ("%d", debug_level);
   setenv ("PTLIB_TRACE_CODECS", text_label, TRUE);
   g_free (text_label);
-  text_label =  g_strdup_printf ("%d", debug_level_up);
-  setenv ("PTLIB_TRACE_CODECS_USER_PLANE", text_label, TRUE);
-  g_free (text_label);
 #else
   char* text_label =  g_strdup_printf ("PTLIB_TRACE_CODECS=%d", debug_level);
-  _putenv (text_label);
-  g_free (text_label);
-  text_label =  g_strdup_printf ("PTLIB_TRACE_CODECS_USER_PLANE=%d", debug_level_up);
   _putenv (text_label);
   g_free (text_label);
   if (debug_level != 0) {
