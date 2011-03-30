@@ -644,7 +644,7 @@ Opal::Account::OnPresenceChange (OpalPresentity& /*presentity*/,
 				 const OpalPresenceInfo& info)
 {
   std::string presence = "unknown";
-  std::string status;
+  std::string statusdeux;
 
   /* we could do something precise */
   switch (info.m_state) {
@@ -710,7 +710,7 @@ Opal::Account::OnPresenceChange (OpalPresentity& /*presentity*/,
       presence = "freeforchat";
 
     if ((j = note.Find (" - ")) != P_MAX_INDEX)
-      status = (const char *) info.m_note.Mid (j + 3);
+      statusdeux = (const char *) info.m_note.Mid (j + 3);
   }
 
   SIPURL sip_uri = SIPURL (info.m_entity);
@@ -727,9 +727,9 @@ Opal::Account::OnPresenceChange (OpalPresentity& /*presentity*/,
   // If presence is unknown (notification with empty body), and it is not the
   // first notification, and we can conclude it is a ping back from the server
   // to indicate the presence status did not change, hence we do nothing.
-  if (presence != "unknown" && (old_presence != presence || old_status != status)) {
+  if (presence != "unknown" && (old_presence != presence || old_status != statusdeux)) {
     presence_infos[uri].presence = presence;
-    presence_infos[uri].status = status;
+    presence_infos[uri].status = statusdeux;
     Ekiga::Runtime::run_in_main (boost::bind (&Opal::Account::presence_status_in_main, this, uri, presence_infos[uri].presence, presence_infos[uri].status));
   }
 }
@@ -738,8 +738,8 @@ Opal::Account::OnPresenceChange (OpalPresentity& /*presentity*/,
 void
 Opal::Account::presence_status_in_main (std::string uri,
 					std::string presence,
-					std::string status)
+					std::string statusdeux)
 {
   presence_received (uri, presence);
-  status_received (uri, status);
+  status_received (uri, statusdeux);
 }
