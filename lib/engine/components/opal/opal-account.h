@@ -195,6 +195,21 @@ private:
     PSafePtr<OpalPresentity> presentity;
     void setup_presentity ();
 
+    typedef struct {
+
+      std::string presence;
+      std::string status;
+      bool requested;
+    } uri_info;
+    
+    std::map<std::string, uri_info> presence_infos;
+
+    PDECLARE_PresenceChangeNotifier (Account, OnPresenceChange);
+
+    void presence_status_in_main (std::string uri,
+				  std::string presence,
+				  std::string status);
+
     Ekiga::ServiceCore & core;
   };
 
