@@ -4816,9 +4816,6 @@ main (int argc,
   }
 #endif
 
-  /* Ekiga initialisation */
-  static GnomeMeeting instance;
-
 #if PTRACING
   if (debug_level != 0)
     PTrace::Initialise (PMAX (PMIN (5, debug_level), 0), NULL,
@@ -4826,9 +4823,14 @@ main (int argc,
 			| PTrace::Blocks | PTrace::DateAndTime);
 #endif
 
+  PTRACE(1, "Ekiga version " << MAJOR_VERSION << "." << MINOR_VERSION << "." << BUILD_NUMBER);
 #ifdef EKIGA_REVISION
   PTRACE(1, "Ekiga git revision: " << EKIGA_REVISION);
 #endif
+
+  /* Ekiga initialisation */
+  // should come *after* ptrace initialisation, to track codec loading for ex.
+  static GnomeMeeting instance;
 
 #ifdef HAVE_DBUS
   if (!ekiga_dbus_claim_ownership ()) {
@@ -4914,7 +4916,7 @@ typedef struct {
 } _startupinfo;
 
 extern "C" void __getmainargs (int *argcp, char ***argvp, char ***envp, int glob, _startupinfo *sinfo);
-int 
+int
 APIENTRY WinMain (HINSTANCE hInstance,
 		  HINSTANCE hPrevInstance,
 		  LPSTR     lpCmdLine,
@@ -4941,4 +4943,3 @@ APIENTRY WinMain (HINSTANCE hInstance,
   return iresult;
 }
 #endif
-
