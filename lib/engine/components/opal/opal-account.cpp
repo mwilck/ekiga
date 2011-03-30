@@ -719,6 +719,8 @@ Opal::Account::OnPresenceChange (OpalPresentity& /*presentity*/,
   std::string old_presence = presence_infos[uri].presence;
   std::string old_status = presence_infos[uri].status;
 
+  std::cout << "OnPresenceChange called about " << uri << " with " << info.m_state << std::endl;
+
   // If first notification, and no information, then we are offline
   if (presence == "unknown" && old_presence.empty ())
     presence = "offline";
