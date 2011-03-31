@@ -507,7 +507,13 @@ Opal::Account::publish (const Ekiga::PersonalDetails& details)
     // FIXME: complete!
     if (presence == "online")
       personal_state = OpalPresenceInfo::Available;
+    if (presence == "away")
+      personal_state = OpalPresenceInfo::Away;
+    if (presence == "dnd")
+      personal_state = OpalPresenceInfo::Busy;
 
+
+    std::cout << "internal presence: " << presence << std::endl;
     std::cout << "calling SetLocalPresence for " << get_aor ()
 	      << " with presence " << personal_state
 	      << " and status \"" << details.get_status () << "\""
@@ -662,13 +668,17 @@ Opal::Account::OnPresenceChange (OpalPresentity& /*presentity*/,
   case OpalPresenceInfo::Unavailable:
     presence = "offline";
     break;
+  case OpalPresenceInfo::Away:
+    presence = "away";
+    break;
+  case OpalPresenceInfo::Busy:
+    presence = "dnd";
+    break;
 
   case OpalPresenceInfo::Available:
   case OpalPresenceInfo::UnknownExtended:
   case OpalPresenceInfo::Appointment:
-  case OpalPresenceInfo::Away:
   case OpalPresenceInfo::Breakfast:
-  case OpalPresenceInfo::Busy:
   case OpalPresenceInfo::Dinner:
   case OpalPresenceInfo::Holiday:
   case OpalPresenceInfo::InTransit:
