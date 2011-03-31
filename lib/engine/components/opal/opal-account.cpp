@@ -298,8 +298,9 @@ void Opal::Account::enable ()
 
     std::cout << "opening presentity for " << get_aor () << std::endl;
     presentity->Open ();
-    //presentity->SubscribeToPresence ("sip:julien.puydt@ekiga.net");
-    //presentity->SubscribeToPresence ("sip:eugen.dedu@ekiga.net");
+    for (std::set<std::string>::iterator iter = watched_uris.begin ();
+	 iter != watched_uris.end (); ++iter)
+      presentity->SubscribeToPresence (PString (*iter));
   }
 
   updated ();
@@ -518,6 +519,7 @@ Opal::Account::publish (const Ekiga::PersonalDetails& details)
 void
 Opal::Account::fetch (const std::string uri)
 {
+  watched_uris.insert (uri);
   if (presentity) {
 
     std::cout << "subscribing to presence of " <<  uri << " for " << get_aor () << std::endl;
@@ -528,6 +530,7 @@ Opal::Account::fetch (const std::string uri)
 void
 Opal::Account::unfetch (const std::string uri)
 {
+  watched_uris.erase (uri);
   if (presentity) {
 
 

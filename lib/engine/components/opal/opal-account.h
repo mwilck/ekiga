@@ -206,6 +206,7 @@ private:
 
     PDECLARE_PresenceChangeNotifier (Account, OnPresenceChange);
 
+    std::set<std::string> watched_uris; // FIXME: that is wrong... the opal code should do that!
     void presence_status_in_main (std::string uri,
 				  std::string presence,
 				  std::string status);
