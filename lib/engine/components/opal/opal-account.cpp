@@ -655,8 +655,15 @@ void
 Opal::Account::OnPresenceChange (OpalPresentity& /*presentity*/,
 				 const OpalPresenceInfo& info)
 {
-  std::string presence = "unknown";
-  std::string new_status;
+  std::string new_presence = "unknown";
+  std::string new_status = "";
+
+  SIPURL sip_uri = SIPURL (info.m_entity);
+  sip_uri.Sanitise (SIPURL::ExternalURI);
+  std::string uri = sip_uri.AsString ();
+
+  std::string old_presence = presence_infos[uri].presence;
+  std::string old_status = presence_infos[uri].status;
 
   /* we could do something precise */
   switch (info.m_state) {
@@ -666,90 +673,104 @@ Opal::Account::OnPresenceChange (OpalPresentity& /*presentity*/,
   case OpalPresenceInfo::NoPresence:
   case OpalPresenceInfo::Unchanged:
   case OpalPresenceInfo::Unavailable:
-    presence = "offline";
+    new_presence = "offline";
     break;
   case OpalPresenceInfo::Away:
-    presence = "away";
+    new_presence = "away";
     break;
   case OpalPresenceInfo::Busy:
-    presence = "dnd";
+    new_presence = "dnd";
     break;
 
   case OpalPresenceInfo::Available:
+    new_presence = "online";
+    break;
   case OpalPresenceInfo::UnknownExtended:
   case OpalPresenceInfo::Appointment:
+    new_presence = "busy";
+    new_status = _("Appointment");
+    break;
   case OpalPresenceInfo::Breakfast:
+    new_presence = "away";
+    new_status =  _("Breakfast");
+    break;
   case OpalPresenceInfo::Dinner:
+    new_presence = "away";
+    new_status =  _("Dinner");
+    break;
   case OpalPresenceInfo::Holiday:
+    new_presence = "away";
+    new_status =  _("Holiday");
+    break;
   case OpalPresenceInfo::InTransit:
+    new_presence = "away";
+    new_status =  _("In transit");
+    break;
   case OpalPresenceInfo::LookingForWork:
+    new_presence = "away";
+    new_status =  _("Looking for work");
+    break;
   case OpalPresenceInfo::Lunch:
+    new_presence = "away";
+    new_status =  _("Lunch");
+    break;
   case OpalPresenceInfo::Meal:
+    new_presence = "away";
+    new_status =  _("Meal");
+    break;
   case OpalPresenceInfo::Meeting:
+    new_presence = "away";
+    new_status =  _("Meeting");
+    break;
   case OpalPresenceInfo::OnThePhone:
+    new_presence = "away";
+    new_status =  _("Breakfast");
+    break;
+  case OpalPresenceInfo::Playing:
+    new_presence = "busy";
+    new_presence = _("Playing");
+    break;
+  case OpalPresenceInfo::Shopping:
+    new_presence = "away";
+    new_status =  _("Shopping");
+    break;
+  case OpalPresenceInfo::Sleeping:
+    new_presence = "away";
+    new_status = _("Sleeping");
+    break;
+  case OpalPresenceInfo::Working:
+    new_presence = "busy";
+    new_status = _("Working");
+    break;
   case OpalPresenceInfo::Other:
   case OpalPresenceInfo::Performance:
   case OpalPresenceInfo::PermanentAbsence:
-  case OpalPresenceInfo::Playing:
   case OpalPresenceInfo::Presentation:
-  case OpalPresenceInfo:: Shopping:
-  case OpalPresenceInfo::Sleeping:
   case OpalPresenceInfo::Spectator:
   case OpalPresenceInfo::Steering:
   case OpalPresenceInfo::Travel:
   case OpalPresenceInfo::TV:
   case OpalPresenceInfo::Vacation:
-  case OpalPresenceInfo::Working:
-  case OpalPresenceInfo:: Worship:
-    presence = "online";
+  case OpalPresenceInfo::Worship:
+    new_presence = "online";
     break;
   default:
-    presence = "offline";
+    new_presence = "offline";
     break;
   }
 
-  if (!info.m_note.IsEmpty ()) {
+  std::cout << "OnPresenceChange called about " << uri << " with " << info.m_state << " and note: " << info.m_note <<  std::endl;
 
-    PINDEX j;
-    PCaselessString note = info.m_note;
-    if (note.Find ("Away") != P_MAX_INDEX)
-      presence = "away";
-    else if (note.Find ("On the phone") != P_MAX_INDEX)
-      presence = "inacall";
-    else if (note.Find ("Ringing") != P_MAX_INDEX)
-      presence = "ringing";
-    else if (note.Find ("dnd") != P_MAX_INDEX
-             || note.Find ("Do Not Disturb") != P_MAX_INDEX)
-      presence = "dnd";
-
-    else if (note.Find ("Free For Chat") != P_MAX_INDEX)
-      presence = "freeforchat";
-
-    if ((j = note.Find (" - ")) != P_MAX_INDEX)
-      new_status = (const char *) info.m_note.Mid (j + 3);
-  }
-
-  SIPURL sip_uri = SIPURL (info.m_entity);
-  sip_uri.Sanitise (SIPURL::ExternalURI);
-  std::string uri = sip_uri.AsString ();
-  std::string old_presence = presence_infos[uri].presence;
-  std::string old_status = presence_infos[uri].status;
-
-  std::cout << "OnPresenceChange called about " << uri << " with " << info.m_state << std::endl;
-
-  // If first notification, and no information, then we are offline
-  if (presence == "unknown" && old_presence.empty ())
-    presence = "offline";
+  if (!info.m_note.IsEmpty ())
+    new_status = (const char*) info.m_note; // casting a PString to a std::string isn't straightforward
 
   // If presence change, then signal it to the various components
   // If presence is unknown (notification with empty body), and it is not the
   // first notification, and we can conclude it is a ping back from the server
   // to indicate the presence status did not change, hence we do nothing.
-  if (presence != "unknown" && (old_presence != presence || old_status != new_status)) {
-    presence_infos[uri].presence = presence;
-    presence_infos[uri].status = new_status;
-    Ekiga::Runtime::run_in_main (boost::bind (&Opal::Account::presence_status_in_main, this, uri, presence_infos[uri].presence, presence_infos[uri].status));
-  }
+  presence_infos[uri].presence = new_presence;
+  presence_infos[uri].status = new_status;
+  Ekiga::Runtime::run_in_main (boost::bind (&Opal::Account::presence_status_in_main, this, uri, presence_infos[uri].presence, presence_infos[uri].status));
 }
 
 
