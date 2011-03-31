@@ -662,9 +662,6 @@ Opal::Account::OnPresenceChange (OpalPresentity& /*presentity*/,
   sip_uri.Sanitise (SIPURL::ExternalURI);
   std::string uri = sip_uri.AsString ();
 
-  std::string old_presence = presence_infos[uri].presence;
-  std::string old_status = presence_infos[uri].status;
-
   /* we could do something precise */
   switch (info.m_state) {
 
@@ -764,13 +761,7 @@ Opal::Account::OnPresenceChange (OpalPresentity& /*presentity*/,
   if (!info.m_note.IsEmpty ())
     new_status = (const char*) info.m_note; // casting a PString to a std::string isn't straightforward
 
-  // If presence change, then signal it to the various components
-  // If presence is unknown (notification with empty body), and it is not the
-  // first notification, and we can conclude it is a ping back from the server
-  // to indicate the presence status did not change, hence we do nothing.
-  presence_infos[uri].presence = new_presence;
-  presence_infos[uri].status = new_status;
-  Ekiga::Runtime::run_in_main (boost::bind (&Opal::Account::presence_status_in_main, this, uri, presence_infos[uri].presence, presence_infos[uri].status));
+  Ekiga::Runtime::run_in_main (boost::bind (&Opal::Account::presence_status_in_main, this, uri, new_presence, new_status));
 }
 
 
