@@ -5,6 +5,7 @@
 # Andras Timar <timar at gnome dot hu>, 2002, 2003.
 # Laszlo Dvornik <dvornik at gnome dot hu>, 2004.
 # Gabor Kelemen <kelemeng at gnome dot hu>, 2004, 2005, 2006, 2007, 2008, 2009, 2010, 2011.
+
 msgid ""
 msgstr ""
 "Project-Id-Version: ekiga master\n"
@@ -245,7 +246,7 @@ msgstr ""
 
 #: ../ekiga.schemas.in.in.h:41
 msgid "Kind of network selected in the assistant"
-msgstr "Az asszisztensben kiválasztott hálózattípus"
+msgstr "A varázslóban kiválasztott hálózattípus"
 
 #: ../ekiga.schemas.in.in.h:42
 msgid "LDAP servers"
@@ -325,7 +326,7 @@ msgstr "A csevegésablak pozíciója a képernyőn"
 
 #: ../ekiga.schemas.in.in.h:61
 msgid "Position on the screen of the druid window"
-msgstr "Az asszisztensablak pozíciója a képernyőn"
+msgstr "A varázslóablak pozíciója a képernyőn"
 
 #: ../ekiga.schemas.in.in.h:62
 msgid "Position on the screen of the main window"
@@ -424,7 +425,7 @@ msgstr "A csevegőablak mérete"
 
 #: ../ekiga.schemas.in.in.h:80
 msgid "Size of the druid window"
-msgstr "Az asszisztensablak mérete"
+msgstr "A varázslóablak mérete"
 
 #: ../ekiga.schemas.in.in.h:81
 msgid "Size of the preferences window"
@@ -2255,10 +2256,10 @@ msgid ""
 "Once you have completed these steps, you can always change them later by "
 "selecting Preferences in the Edit menu."
 msgstr ""
-"Ez az Ekiga általános beállítóasszisztense. A következő lépésekben néhány "
+"Ez az Ekiga általános beállítóvarázslója. A következő lépésekben néhány "
 "egyszerű kérdés megválaszolásával beállíthatja az Ekigat.\n"
 "\n"
-"Az asszisztens befejeződése után a beállításokat később bármikor "
+"A varázsló befejeződése után a beállításokat később bármikor "
 "megváltoztathatja a Szerkesztés menü Beállítások pontjával."
 
 #: ../src/gui/assistant.cpp:349
@@ -2490,7 +2491,7 @@ msgstr "Ekiga PC→telefon"
 #: ../src/gui/assistant.cpp:1490
 #, c-format
 msgid "Ekiga Configuration Assistant (%d of %d)"
-msgstr "Ekiga beállítóasszisztens (%d./%d oldal)"
+msgstr "Ekiga beállítóvarázsló (%d./%d oldal)"
 
 #: ../src/gui/callbacks.cpp:67
 msgid "Contributors:"
@@ -2992,11 +2993,11 @@ msgstr "Kilépés"
 
 #: ../src/gui/main_window.cpp:3567
 msgid "_Configuration Assistant"
-msgstr "_Beállítóasszisztens"
+msgstr "_Beállítóvarázsló"
 
 #: ../src/gui/main_window.cpp:3568
 msgid "Run the configuration assistant"
-msgstr "A beállítóasszisztens futtatása"
+msgstr "A beállítóvarázsló futtatása"
 
 #: ../src/gui/main_window.cpp:3576
 msgid "Edit your accounts"
@@ -3431,6 +3432,10 @@ msgid "Enable silence _detection"
 msgstr "_Csendérzékelés engedélyezése"
 
 #: ../src/gui/preferences.cpp:946
+msgid "If enabled, use silence detection with the codecs supporting it."
+msgstr "Ezzel engedélyezheti a csendérzékelés használatát az azt támogató kodekeknél."
+
+#: ../src/gui/preferences.cpp:986
 msgid "Enable echo can_celation"
 msgstr "_Visszhangtörlés engedélyezése"
 
