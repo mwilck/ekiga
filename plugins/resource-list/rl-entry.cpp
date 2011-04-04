@@ -161,7 +161,7 @@ RL::Entry::populate_menu (Ekiga::MenuBuilder& builder)
 		      boost::bind (&RL::Entry::refresh, this));
 
   if ( !uri.empty ())
-    populated = presence_core->populate_presentity_menu (Ekiga::PresentityPtr (this, null_deleter), uri, builder)
+    populated = presence_core->populate_presentity_menu (Ekiga::PresentityPtr (this, null_deleter ()), uri, builder)
       || populated;
 
   return populated;

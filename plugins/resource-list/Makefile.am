@@ -1,6 +1,6 @@
 plugin_LTLIBRARIES = libgmresource_list.la
 
-resource_list_dir = $(top_srcdir)/plugins/resource-list/
+resource_list_dir = $(top_srcdir)/plugins/resource-list
 
 AM_CXXFLAGS = $(BOOST_CPPFLAGS) $(GLIB_CFLAGS) $(XML_CFLAGS)
 
