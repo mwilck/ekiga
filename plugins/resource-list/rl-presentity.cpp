@@ -66,7 +66,7 @@ RL::Presentity::Presentity (Ekiga::ServiceCore &services_,
   boost::shared_ptr<Ekiga::PresenceCore> presence_core(services.get<Ekiga::PresenceCore> ("presence-core"));
   xmlChar *xml_str = NULL;
   xmlNsPtr ns = xmlSearchNsByHref (doc.get (), node,
-				   BAD_CAST "http://www.ekiga.org");
+                                   BAD_CAST "http://www.ekiga.org");
 
   if (ns == NULL) {
 
@@ -94,25 +94,25 @@ RL::Presentity::Presentity (Ekiga::ServiceCore &services_,
 
       if (xmlStrEqual (BAD_CAST ("display-name"), child->name)) {
 
-	name_node = child;
-	continue;
+        name_node = child;
+        continue;
       }
       else if (xmlStrEqual (BAD_CAST ("group"), child->name)
-	       && child->ns == ns) {
+               && child->ns == ns) {
 
         xml_str = xmlNodeGetContent (child);
-	if (xml_str != NULL)
-	  group_nodes[(const char *)xml_str] = child;
-	else
-	  group_nodes[""] = child;
+        if (xml_str != NULL)
+          group_nodes[(const char *)xml_str] = child;
+        else
+          group_nodes[""] = child;
         xmlFree (xml_str);
-	continue;
+        continue;
       }
     }
   }
 
   for (std::map<std::string, xmlNodePtr>::const_iterator iter
-	 = group_nodes.begin ();
+         = group_nodes.begin ();
        iter != group_nodes.end ();
        iter++)
     groups.insert (iter->first);
@@ -229,12 +229,12 @@ RL::Presentity::edit_presentity ()
 
   request->title (_("Edit remote contact"));
   request->instructions (_("Please fill in this form to change an existing "
-			  "contact on a remote server"));
+                           "contact on a remote server"));
   request->text ("name", _("Name:"), get_name (), std::string ());
   request->text ("uri", _("Address:"), uri, std::string ());
 
   request->editable_set ("groups", _("Choose groups:"),
-			groups, all_groups);
+                         groups, all_groups);
 
   questions (request);
 }
@@ -252,7 +252,7 @@ RL::Presentity::edit_presentity_form_submitted (bool submitted,
   const std::set<std::string> new_groups = result.editable_set ("groups");
   std::map<std::string, xmlNodePtr> future_group_nodes;
   xmlNsPtr ns = xmlSearchNsByHref (node->doc, node,
-				   BAD_CAST "http://www.ekiga.org");
+                                   BAD_CAST "http://www.ekiga.org");
   bool reload = false;
 
   robust_xmlNodeSetContent (node, &name_node, "name", new_name);
@@ -266,7 +266,7 @@ RL::Presentity::edit_presentity_form_submitted (bool submitted,
   }
 
   for (std::map<std::string, xmlNodePtr>::const_iterator iter
-	 = group_nodes.begin ();
+         = group_nodes.begin ();
        iter != group_nodes.end () ;
        iter++) {
 
@@ -306,8 +306,8 @@ RL::Presentity::save (bool reload)
 
     boost::shared_ptr<XCAP::Core> xcap = services.get<XCAP::Core> ("xcap-core");
     xcap->write (path, "application/xcap-el+xml",
-		 (const char*)xmlBufferContent (buffer),
-		 boost::bind (&RL::Presentity::save_result, this, _1, reload));
+                 (const char*)xmlBufferContent (buffer),
+                 boost::bind (&RL::Presentity::save_result, this, _1, reload));
   }
 
   xmlBufferFree (buffer);
@@ -325,7 +325,7 @@ RL::Presentity::remove ()
 
   boost::shared_ptr<XCAP::Core> xcap = services.get<XCAP::Core> ("xcap-core");
   xcap->erase (path,
-	       boost::bind (&RL::Presentity::erase_result, this, _1));
+               boost::bind (&RL::Presentity::erase_result, this, _1));
 }
 
 void

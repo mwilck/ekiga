@@ -58,8 +58,8 @@ RL::EntryRef::EntryRef (Ekiga::ServiceCore& core_,
 
 
     if (child->type == XML_ELEMENT_NODE
-	&& child->name != NULL
-	&& xmlStrEqual (BAD_CAST "display-name", child->name)) {
+        && child->name != NULL
+        && xmlStrEqual (BAD_CAST "display-name", child->name)) {
 
       name_node = child;
     }
@@ -139,8 +139,7 @@ RL::EntryRef::populate_menu (Ekiga::MenuBuilder& builder)
 		      boost::bind (&RL::EntryRef::refresh, this));
 
   if ( !uri.empty ())
-    populated = presence_core->populate_presentity_menu (Ekiga::PresentityPtr (this), uri, builder)
-      || populated;
+    populated = presence_core->populate_presentity_menu (Ekiga::PresentityPtr (this), uri, builder);
 
   return populated;
 }

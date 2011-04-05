@@ -161,8 +161,7 @@ RL::Entry::populate_menu (Ekiga::MenuBuilder& builder)
 		      boost::bind (&RL::Entry::refresh, this));
 
   if ( !uri.empty ())
-    populated = presence_core->populate_presentity_menu (Ekiga::PresentityPtr (this, null_deleter ()), uri, builder)
-      || populated;
+    populated = presence_core->populate_presentity_menu (Ekiga::PresentityPtr (this, null_deleter ()), uri, builder);
 
   return populated;
 }
@@ -197,8 +196,8 @@ RL::Entry::on_xcap_answer (bool error,
 
     node = xmlDocGetRootElement (doc.get ());
     if (node == NULL
-	|| node->name == NULL
-	|| !xmlStrEqual (BAD_CAST "entry", node->name)) {
+        || node->name == NULL
+        || !xmlStrEqual (BAD_CAST "entry", node->name)) {
 
       set_status (_("Invalid server data"));
     } else {
@@ -215,10 +214,9 @@ RL::Entry::parse ()
 {
   for (xmlNodePtr child = node->children; child != NULL; child = child->next) {
 
-
     if (child->type == XML_ELEMENT_NODE
-	&& child->name != NULL
-	&& xmlStrEqual (BAD_CAST "display-name", child->name)) {
+        && child->name != NULL
+        && xmlStrEqual (BAD_CAST "display-name", child->name)) {
 
       name_node = child;
     }
