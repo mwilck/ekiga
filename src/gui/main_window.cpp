@@ -2195,7 +2195,7 @@ ekiga_main_window_zooms_menu_update_sensitivity (EkigaMainWindow *mw,
 
 
 /* GTK callbacks */
-static gint
+static gboolean
 gnomemeeting_tray_hack_cb (G_GNUC_UNUSED gpointer data)
 {
   GtkWidget *main_window = NULL;
@@ -2203,10 +2203,11 @@ gnomemeeting_tray_hack_cb (G_GNUC_UNUSED gpointer data)
 
   statusicon = GTK_STATUS_ICON (GnomeMeeting::Process ()->GetStatusicon ());
   main_window = GnomeMeeting::Process ()->GetMainWindow ();
-  
-  if (!gtk_status_icon_is_embedded (GTK_STATUS_ICON (statusicon))) 
+
+  // show the main window if the icon has not appeared in tray
+  if (!gtk_status_icon_is_embedded (GTK_STATUS_ICON (statusicon)))
     gtk_widget_show (main_window);
-  
+
   return FALSE;
 }
 
@@ -4857,7 +4858,7 @@ main (int argc,
     if (!gm_conf_get_bool (USER_INTERFACE_KEY "start_hidden"))
       gtk_widget_show (main_window);
     else
-      g_timeout_add_seconds (15, (GtkFunction) gnomemeeting_tray_hack_cb, NULL);
+      g_timeout_add_seconds (15, gnomemeeting_tray_hack_cb, NULL);
   }
 
   /* Call the given host if needed */
