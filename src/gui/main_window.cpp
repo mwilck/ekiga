@@ -1980,8 +1980,6 @@ gm_mw_video_settings_window_new (EkigaMainWindow *mw)
   mw->priv->adj_brightness = gtk_adjustment_new (brightness, 0.0,
                                                  255.0, 1.0, 5.0, 1.0);
   hscale_brightness = gtk_hscale_new (GTK_ADJUSTMENT (mw->priv->adj_brightness));
-  gtk_range_set_update_policy (GTK_RANGE (hscale_brightness),
-			       GTK_UPDATE_DELAYED);
   gtk_scale_set_draw_value (GTK_SCALE (hscale_brightness), FALSE);
   gtk_scale_set_value_pos (GTK_SCALE (hscale_brightness), GTK_POS_RIGHT);
   gtk_box_pack_start (GTK_BOX (hbox), hscale_brightness, TRUE, TRUE, 2);
@@ -2001,8 +1999,6 @@ gm_mw_video_settings_window_new (EkigaMainWindow *mw)
   mw->priv->adj_whiteness = gtk_adjustment_new (whiteness, 0.0, 
 						255.0, 1.0, 5.0, 1.0);
   hscale_whiteness = gtk_hscale_new (GTK_ADJUSTMENT (mw->priv->adj_whiteness));
-  gtk_range_set_update_policy (GTK_RANGE (hscale_whiteness),
-			       GTK_UPDATE_DELAYED);
   gtk_scale_set_draw_value (GTK_SCALE (hscale_whiteness), FALSE);
   gtk_scale_set_value_pos (GTK_SCALE (hscale_whiteness), GTK_POS_RIGHT);
   gtk_box_pack_start (GTK_BOX (hbox), hscale_whiteness, TRUE, TRUE, 2);
@@ -2022,8 +2018,6 @@ gm_mw_video_settings_window_new (EkigaMainWindow *mw)
   mw->priv->adj_colour = gtk_adjustment_new (colour, 0.0, 
 					     255.0, 1.0, 5.0, 1.0);
   hscale_colour = gtk_hscale_new (GTK_ADJUSTMENT (mw->priv->adj_colour));
-  gtk_range_set_update_policy (GTK_RANGE (hscale_colour),
-			       GTK_UPDATE_DELAYED);
   gtk_scale_set_draw_value (GTK_SCALE (hscale_colour), FALSE);
   gtk_scale_set_value_pos (GTK_SCALE (hscale_colour), GTK_POS_RIGHT);
   gtk_box_pack_start (GTK_BOX (hbox), hscale_colour, TRUE, TRUE, 2);
@@ -2043,8 +2037,6 @@ gm_mw_video_settings_window_new (EkigaMainWindow *mw)
   mw->priv->adj_contrast = gtk_adjustment_new (contrast, 0.0, 
 					       255.0, 1.0, 5.0, 1.0);
   hscale_contrast = gtk_hscale_new (GTK_ADJUSTMENT (mw->priv->adj_contrast));
-  gtk_range_set_update_policy (GTK_RANGE (hscale_contrast),
-			       GTK_UPDATE_DELAYED);
   gtk_scale_set_draw_value (GTK_SCALE (hscale_contrast), FALSE);
   gtk_scale_set_value_pos (GTK_SCALE (hscale_contrast), GTK_POS_RIGHT);
   gtk_box_pack_start (GTK_BOX (hbox), hscale_contrast, TRUE, TRUE, 2);
@@ -2117,8 +2109,6 @@ gm_mw_audio_settings_window_new (EkigaMainWindow *mw)
   small_vbox = gtk_vbox_new (FALSE, 0);
   mw->priv->adj_output_volume = gtk_adjustment_new (0, 0.0, 101.0, 1.0, 5.0, 1.0);
   hscale_play = gtk_hscale_new (GTK_ADJUSTMENT (mw->priv->adj_output_volume));
-  gtk_range_set_update_policy (GTK_RANGE (hscale_play),
-			       GTK_UPDATE_DELAYED);
   gtk_scale_set_value_pos (GTK_SCALE (hscale_play), GTK_POS_RIGHT); 
   gtk_scale_set_draw_value (GTK_SCALE (hscale_play), FALSE);
   gtk_box_pack_start (GTK_BOX (small_vbox), hscale_play, TRUE, TRUE, 0);
@@ -2153,8 +2143,6 @@ gm_mw_audio_settings_window_new (EkigaMainWindow *mw)
   small_vbox = gtk_vbox_new (FALSE, 0);
   mw->priv->adj_input_volume = gtk_adjustment_new (0, 0.0, 101.0, 1.0, 5.0, 1.0);
   hscale_rec = gtk_hscale_new (GTK_ADJUSTMENT (mw->priv->adj_input_volume));
-  gtk_range_set_update_policy (GTK_RANGE (hscale_rec),
-			       GTK_UPDATE_DELAYED);
   gtk_scale_set_value_pos (GTK_SCALE (hscale_rec), GTK_POS_RIGHT); 
   gtk_scale_set_draw_value (GTK_SCALE (hscale_rec), FALSE);
   gtk_box_pack_start (GTK_BOX (small_vbox), hscale_rec, TRUE, TRUE, 0);

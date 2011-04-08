@@ -1112,30 +1112,26 @@ prepare_audio_devices_page (EkigaAssistant *assistant)
 static void
 apply_audio_devices_page (EkigaAssistant *assistant)
 {
-  GtkComboBox *combo_box;
   gchar *device;
+  GtkTreeIter citer;
 
-  combo_box = GTK_COMBO_BOX (assistant->priv->audio_ringer);
-  device = gtk_combo_box_get_active_text (combo_box);
-  if (device) {
-    gm_conf_set_string (SOUND_EVENTS_KEY "output_device", device);
-    g_free (device);
-  }
+  if (!gtk_combo_box_get_active_iter (GTK_COMBO_BOX (assistant->priv->audio_ringer), &citer))
+    g_warn_if_reached ();
+  gtk_tree_model_get (gtk_combo_box_get_model (GTK_COMBO_BOX (assistant->priv->audio_ringer)), &citer, 0, &device, -1);
+  gm_conf_set_string (SOUND_EVENTS_KEY "output_device", device);
+  g_free (device);
 
-  combo_box = GTK_COMBO_BOX (assistant->priv->audio_player);
-  device = gtk_combo_box_get_active_text (combo_box);
-  if (device) {
-    gm_conf_set_string (AUDIO_DEVICES_KEY "output_device", device);
-    g_free (device);
-  }
+  if (!gtk_combo_box_get_active_iter (GTK_COMBO_BOX (assistant->priv->audio_player), &citer))
+    g_warn_if_reached ();
+  gtk_tree_model_get (gtk_combo_box_get_model (GTK_COMBO_BOX (assistant->priv->audio_player)), &citer, 0, &device, -1);
+  gm_conf_set_string (AUDIO_DEVICES_KEY "output_device", device);
+  g_free (device);
 
-  combo_box = GTK_COMBO_BOX (assistant->priv->audio_recorder);
-  device = gtk_combo_box_get_active_text (combo_box);
-  if (device) {
-    gm_conf_set_string (AUDIO_DEVICES_KEY "input_device", device);
-    g_free (device);
-  }
-
+  if (!gtk_combo_box_get_active_iter (GTK_COMBO_BOX (assistant->priv->audio_recorder), &citer))
+    g_warn_if_reached ();
+  gtk_tree_model_get (gtk_combo_box_get_model (GTK_COMBO_BOX (assistant->priv->audio_recorder)), &citer, 0, &device, -1);
+  gm_conf_set_string (AUDIO_DEVICES_KEY "input_device", device);
+  g_free (device);
 }
 
 
@@ -1389,7 +1385,9 @@ prepare_summary_page (EkigaAssistant *assistant)
 
   /* The audio ringing device */
   gtk_list_store_append (model, &iter);
-  value = gtk_combo_box_get_active_text (GTK_COMBO_BOX (assistant->priv->audio_ringer));
+  if (!gtk_combo_box_get_active_iter (GTK_COMBO_BOX (assistant->priv->audio_ringer), &citer))
+    g_warn_if_reached ();
+  gtk_tree_model_get (gtk_combo_box_get_model (GTK_COMBO_BOX (assistant->priv->audio_ringer)), &citer, 0, &value, -1);
   gtk_list_store_set (model, &iter,
                       SUMMARY_KEY_COLUMN, _("Audio Ringing Device"),
                       SUMMARY_VALUE_COLUMN, value,
@@ -1398,7 +1396,9 @@ prepare_summary_page (EkigaAssistant *assistant)
 
   /* The audio playing device */
   gtk_list_store_append (model, &iter);
-  value = gtk_combo_box_get_active_text (GTK_COMBO_BOX (assistant->priv->audio_player));
+  if (!gtk_combo_box_get_active_iter (GTK_COMBO_BOX (assistant->priv->audio_player), &citer))
+    g_warn_if_reached ();
+  gtk_tree_model_get (gtk_combo_box_get_model (GTK_COMBO_BOX (assistant->priv->audio_player)), &citer, 0, &value, -1);
   gtk_list_store_set (model, &iter,
                       SUMMARY_KEY_COLUMN, _("Audio Output Device"),
                       SUMMARY_VALUE_COLUMN, value,
@@ -1407,7 +1407,9 @@ prepare_summary_page (EkigaAssistant *assistant)
 
   /* The audio recording device */
   gtk_list_store_append (model, &iter);
-  value = gtk_combo_box_get_active_text (GTK_COMBO_BOX (assistant->priv->audio_recorder));
+  if (!gtk_combo_box_get_active_iter (GTK_COMBO_BOX (assistant->priv->audio_recorder), &citer))
+    g_warn_if_reached ();
+  gtk_tree_model_get (gtk_combo_box_get_model (GTK_COMBO_BOX (assistant->priv->audio_recorder)), &citer, 0, &value, -1);
   gtk_list_store_set (model, &iter,
                       SUMMARY_KEY_COLUMN, _("Audio Input Device"),
                       SUMMARY_VALUE_COLUMN, value,
@@ -1416,7 +1418,9 @@ prepare_summary_page (EkigaAssistant *assistant)
 
   /* The video manager */
   gtk_list_store_append (model, &iter);
-  value = gtk_combo_box_get_active_text (GTK_COMBO_BOX (assistant->priv->video_device));
+  if (!gtk_combo_box_get_active_iter (GTK_COMBO_BOX (assistant->priv->video_device), &citer))
+    g_warn_if_reached ();
+  gtk_tree_model_get (gtk_combo_box_get_model (GTK_COMBO_BOX (assistant->priv->video_device)), &citer, 0, &value, -1);
   gtk_list_store_set (model, &iter,
                       SUMMARY_KEY_COLUMN, _("Video Input Device"),
                       SUMMARY_VALUE_COLUMN, value,

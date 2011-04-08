@@ -1341,7 +1341,7 @@ FormDialog::submit ()
 {
   Ekiga::FormBuilder builder;
 
-  gtk_widget_hide_all (GTK_WIDGET (window));
+  gtk_widget_hide (GTK_WIDGET (window));
 
   for (std::list<Submitter *>::iterator iter = submitters.begin ();
        iter != submitters.end ();
@@ -1354,7 +1354,7 @@ FormDialog::submit ()
 void
 FormDialog::cancel ()
 {
-  gtk_widget_hide_all (GTK_WIDGET (window));
+  gtk_widget_hide (GTK_WIDGET (window));
   request->cancel ();
 }
 
