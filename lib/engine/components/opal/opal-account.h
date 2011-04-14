@@ -198,6 +198,8 @@ private:
     PDECLARE_PresenceChangeNotifier (Account, OnPresenceChange);
 
     std::set<std::string> watched_uris; // FIXME: that is wrong... the opal code should do that!
+    OpalPresenceInfo::State personal_state; // FIXME: shouldn't the opal code do that too?
+    std::string presence_status; // FIXME: shouldn't the opal code do that too?
     void presence_status_in_main (std::string uri,
 				  std::string presence,
 				  std::string status);

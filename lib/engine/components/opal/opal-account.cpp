@@ -296,11 +296,13 @@ void Opal::Account::enable ()
   endpoint->subscribe (*this);
   if (presentity) {
 
-    std::cout << "opening presentity for " << get_aor () << std::endl;
     presentity->Open ();
+    // FIXME : the following actions should probably be done by opal itself,
+    // remembering what ekiga asked...
     for (std::set<std::string>::iterator iter = watched_uris.begin ();
 	 iter != watched_uris.end (); ++iter)
       presentity->SubscribeToPresence (PString (*iter));
+    presentity->SetLocalPresence (personal_state, presence_status);
   }
 
   updated ();
@@ -315,11 +317,8 @@ void Opal::Account::disable ()
   boost::shared_ptr<Sip::EndPoint> endpoint = core.get<Sip::EndPoint> ("opal-sip-endpoint");
   endpoint->unsubscribe (*this);
 
-  if (presentity) {
-
-    std::cout << "closing presentity for " << get_aor () << std::endl;
+  if (presentity)
     presentity->Close ();
-  }
 
   updated ();
   trigger_saving ();
@@ -499,50 +498,38 @@ Opal::Account::on_consult (const std::string url)
 void
 Opal::Account::publish (const Ekiga::PersonalDetails& details)
 {
-  if (presentity) {
+  std::string presence = details.get_presence ();
 
-    std::string presence = details.get_presence ();
-    OpalPresenceInfo::State personal_state = OpalPresenceInfo::Unavailable;
+  // FIXME: complete!
+  if (presence == "online")
+    personal_state = OpalPresenceInfo::Available;
+  if (presence == "away")
+    personal_state = OpalPresenceInfo::Away;
+  if (presence == "dnd")
+    personal_state = OpalPresenceInfo::Busy;
 
-    // FIXME: complete!
-    if (presence == "online")
-      personal_state = OpalPresenceInfo::Available;
-    if (presence == "away")
-      personal_state = OpalPresenceInfo::Away;
-    if (presence == "dnd")
-      personal_state = OpalPresenceInfo::Busy;
+  presence_status = details.get_status ();
 
+  PTRACE (3, "Ekiga tries to publish presence");
 
-    std::cout << "internal presence: " << presence << std::endl;
-    std::cout << "calling SetLocalPresence for " << get_aor ()
-	      << " with presence " << personal_state
-	      << " and status \"" << details.get_status () << "\""
-	      << std::endl;
-    presentity->SetLocalPresence (personal_state, details.get_status ());
-  }
+  if (presentity)
+    presentity->SetLocalPresence (personal_state, presence_status);
 }
 
 void
 Opal::Account::fetch (const std::string uri)
 {
   watched_uris.insert (uri);
-  if (presentity) {
-
-    std::cout << "subscribing to presence of " <<  uri << " for " << get_aor () << std::endl;
+  if (presentity)
     presentity->SubscribeToPresence (PString (uri));
-  }
 }
 
 void
 Opal::Account::unfetch (const std::string uri)
 {
   watched_uris.erase (uri);
-  if (presentity) {
-
-
-    std::cout << "unsubscribing to presence of " <<  uri << " for " << get_aor () << std::endl;
+  if (presentity)
     presentity->UnsubscribeFromPresence (PString (uri));
-  }
 }
 
 void
@@ -645,10 +632,7 @@ Opal::Account::setup_presentity ()
     presentity->GetAttributes().Set(SIP_Presentity::AuthNameKey, username);
     presentity->GetAttributes().Set(SIP_Presentity::AuthPasswordKey, password);
     presentity->GetAttributes().Set(SIP_Presentity::SubProtocolKey, "Agent");
-    //    presentity->GetAttributes().Set(SIP_Presentity::DefaultPresenceServerKey, host);
-    std::cout << "got presentity for " << url << std::endl;
-  } else
-    std::cout << "NULL presentity for " << url << std::endl;
+  }
 }
 
 void
@@ -657,6 +641,8 @@ Opal::Account::OnPresenceChange (OpalPresentity& /*presentity*/,
 {
   std::string new_presence = "unknown";
   std::string new_status = "";
+
+  PTRACE (4, "Ekiga's OnPresenceChange callback is triggered");
 
   SIPURL sip_uri = SIPURL (info.m_entity);
   sip_uri.Sanitise (SIPURL::ExternalURI);
@@ -755,8 +741,6 @@ Opal::Account::OnPresenceChange (OpalPresentity& /*presentity*/,
     new_presence = "offline";
     break;
   }
-
-  std::cout << "OnPresenceChange called about " << uri << " with " << info.m_state << " and note: " << info.m_note <<  std::endl;
 
   if (!info.m_note.IsEmpty ())
     new_status = (const char*) info.m_note; // casting a PString to a std::string isn't straightforward
