@@ -13,16 +13,17 @@
 # Taylon Silmer <taylonsilva@gmail.com>, 2009.
 # César Veiga <tombs@linuxmail.org>, 2009.
 # Flamarion Jorge <jorge.flamarion@gmail.com>, 2011.
+# Gabriel F. Vilar <cogumm@gmail.com>, 2011.
 #
 msgid ""
 msgstr ""
 "Project-Id-Version: ekiga\n"
 "Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?"
 "product=ekiga&keywords=I18N+L10N&component=general\n"
-"POT-Creation-Date: 2011-03-12 19:28+0000\n"
-"PO-Revision-Date: 2011-03-12 20:31-0300\n"
-"Last-Translator: Flamarion Jorge <jorge.flamarion@gmail.com>\n"
-"Language-Team: Brazilian Portuguese <gnome-pt_br-list@gnome.com>\n"
+"POT-Creation-Date: 2011-04-14 13:19+0000\n"
+"PO-Revision-Date: 2011-03-31 17:46-0300\n"
+"Last-Translator: Gabriel F. Vilar <cogumm@gmail.com>\n"
+"Language-Team: Português Brasileiro <gnome-pt_br-list@gnome.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -32,8 +33,8 @@ msgstr ""
 "X-Poedit-Bookmarks: -1,-1,-1,464,-1,-1,-1,-1,-1,-1\n"
 
 #. Application name
-#: ../ekiga.desktop.in.in.h:1 ../src/gui/main_window.cpp:4722
-#: ../src/gui/main_window.cpp:4724
+#: ../ekiga.desktop.in.in.h:1 ../src/gui/main_window.cpp:4744
+#: ../src/gui/main_window.cpp:4746
 msgid "Ekiga Softphone"
 msgstr "Ekiga Softfone"
 
@@ -136,7 +137,7 @@ msgstr "Envio de DTMF"
 msgid "Disable video hardware acceleration"
 msgstr "Desabilitar aceleração de hardware de vídeo"
 
-#: ../ekiga.schemas.in.in.h:18 ../src/gui/main_window.cpp:3974
+#: ../ekiga.schemas.in.in.h:18 ../src/gui/main_window.cpp:3997
 msgid "Display images from your camera device"
 msgstr "Exibir imagens da sua câmera de vídeo"
 
@@ -417,7 +418,7 @@ msgstr ""
 msgid "Show offline contacts"
 msgstr "Mostrar contatos desconectados"
 
-#: ../ekiga.schemas.in.in.h:76 ../src/gui/main_window.cpp:3607
+#: ../ekiga.schemas.in.in.h:76 ../src/gui/main_window.cpp:3630
 msgid "Show the call panel"
 msgstr "Mostrar o painel de chamadas"
 
@@ -847,7 +848,7 @@ msgstr "Sem nome"
 #: ../plugins/evolution/evolution-contact.cpp:228
 #: ../plugins/loudmouth/loudmouth-presentity.cpp:157
 #: ../plugins/resource-list/rl-presentity.cpp:212
-#: ../src/gui/main_window.cpp:3565
+#: ../src/gui/main_window.cpp:3588
 msgid "_Edit"
 msgstr "_Editar"
 
@@ -1020,7 +1021,7 @@ msgstr "Chamar"
 #: ../lib/engine/components/opal/h323-endpoint.cpp:134
 #: ../lib/engine/components/opal/sip-endpoint.cpp:232
 #: ../lib/engine/components/opal/sip-endpoint.cpp:236
-#: ../src/gui/main_window.cpp:3325
+#: ../src/gui/main_window.cpp:3348
 msgid "Transfer"
 msgstr "Transferir"
 
@@ -1203,18 +1204,19 @@ msgstr "Você não forneceu um nome de usuário para esta conta."
 msgid "The timeout should be at least 10 seconds."
 msgstr "O tempo de espera dever ser no mínimo de 10 segundos."
 
-#: ../lib/engine/components/opal/opal-account.cpp:546
+#: ../lib/engine/components/opal/opal-account.cpp:545
 msgid "Registered"
 msgstr "Registrado"
 
-#: ../lib/engine/components/opal/opal-account.cpp:558
+#: ../lib/engine/components/opal/opal-account.cpp:557
 msgid "Unregistered"
 msgstr "Não registrado"
 
-#: ../lib/engine/components/opal/opal-account.cpp:568
+#: ../lib/engine/components/opal/opal-account.cpp:567
 msgid "Could not unregister"
 msgstr "Não foi possível remover o registro"
 
+#. since limited did not work, put it back to false, to avoid being stuck to limited=true when retrying register later
 #: ../lib/engine/components/opal/opal-account.cpp:581
 msgid "Could not register"
 msgstr "Não foi possível registrar"
@@ -1222,6 +1224,59 @@ msgstr "Não foi possível registrar"
 #: ../lib/engine/components/opal/opal-account.cpp:590
 msgid "Processing..."
 msgstr "Processando..."
+
+#: ../lib/engine/components/opal/opal-account.cpp:674
+msgid "Appointment"
+msgstr "Compromissos"
+
+#: ../lib/engine/components/opal/opal-account.cpp:678
+#: ../lib/engine/components/opal/opal-account.cpp:710
+msgid "Breakfast"
+msgstr "Café da manhã"
+
+#: ../lib/engine/components/opal/opal-account.cpp:682
+msgid "Dinner"
+msgstr "Jantar"
+
+#: ../lib/engine/components/opal/opal-account.cpp:686
+msgid "Holiday"
+msgstr "Feriado"
+
+#: ../lib/engine/components/opal/opal-account.cpp:690
+msgid "In transit"
+msgstr "Em trânsito"
+
+#: ../lib/engine/components/opal/opal-account.cpp:694
+msgid "Looking for work"
+msgstr "Procurando trabalho"
+
+#: ../lib/engine/components/opal/opal-account.cpp:698
+msgid "Lunch"
+msgstr "Almoço"
+
+#: ../lib/engine/components/opal/opal-account.cpp:702
+msgid "Meal"
+msgstr "Refeição"
+
+#: ../lib/engine/components/opal/opal-account.cpp:706
+msgid "Meeting"
+msgstr "Reunião"
+
+#: ../lib/engine/components/opal/opal-account.cpp:714
+msgid "Playing"
+msgstr "Reproduzir"
+
+#: ../lib/engine/components/opal/opal-account.cpp:718
+msgid "Shopping"
+msgstr "Compras"
+
+#: ../lib/engine/components/opal/opal-account.cpp:722
+msgid "Sleeping"
+msgstr "Dormindo"
+
+#: ../lib/engine/components/opal/opal-account.cpp:726
+msgid "Working"
+msgstr "Trabalhando"
 
 #: ../lib/engine/components/opal/opal-bank.cpp:78
 msgid "_Add an Ekiga.net Account"
@@ -1319,7 +1374,7 @@ msgid "Abnormal call termination"
 msgstr "Término anormal da chamada"
 
 #: ../lib/engine/components/opal/opal-call.cpp:424
-#: ../src/gui/main_window.cpp:1853
+#: ../src/gui/main_window.cpp:1885
 msgid "Could not connect to remote host"
 msgstr "Não foi possível conectar à máquina remota"
 
@@ -1590,7 +1645,7 @@ msgid "Globally not acceptable"
 msgstr "Não aceitável globalmente"
 
 #: ../lib/engine/components/opal/sip-endpoint.cpp:933
-#: ../src/gui/main_window.cpp:3162
+#: ../src/gui/main_window.cpp:3185
 #, c-format
 msgid "Incoming call from %s"
 msgstr "Chamada recebida de %s"
@@ -1627,7 +1682,7 @@ msgid "Address Book"
 msgstr "Catálogo de endereços"
 
 #: ../lib/engine/gui/gtk-frontend/addressbook-window.cpp:652
-#: ../src/gui/main_window.cpp:3511
+#: ../src/gui/main_window.cpp:3534
 msgid "Address _Book"
 msgstr "Ca_tálogo de endereços"
 
@@ -1641,7 +1696,7 @@ msgid "Category"
 msgstr "Categoria"
 
 #: ../lib/engine/gui/gtk-frontend/book-view-gtk.cpp:586
-#: ../src/gui/assistant.cpp:1373
+#: ../src/gui/assistant.cpp:1369
 msgid "Full Name"
 msgstr "Nome completo"
 
@@ -2163,7 +2218,7 @@ msgstr "Clique para buscar"
 msgid "Distant contact"
 msgstr "Contato distante"
 
-#: ../plugins/resource-list/rl-entry.cpp:203
+#: ../plugins/resource-list/rl-entry.cpp:202
 msgid "Invalid server data"
 msgstr "Dado inválido do servidor"
 
@@ -2250,11 +2305,11 @@ msgstr "Status"
 msgid "Accounts"
 msgstr "Contas"
 
-#: ../src/gui/accounts.cpp:590 ../src/gui/main_window.cpp:3575
+#: ../src/gui/accounts.cpp:590 ../src/gui/main_window.cpp:3598
 msgid "_Accounts"
 msgstr "_Contas"
 
-#: ../src/gui/accounts.cpp:594 ../src/gui/main_window.cpp:3658
+#: ../src/gui/accounts.cpp:594 ../src/gui/main_window.cpp:3681
 msgid "_Help"
 msgstr "Aj_uda"
 
@@ -2376,7 +2431,7 @@ msgstr ""
 msgid "I do not want to sign up for the Ekiga Call Out service"
 msgstr "Eu não quero me inscrever no serviço de chamada do Ekiga"
 
-#: ../src/gui/assistant.cpp:828 ../src/gui/assistant.cpp:1384
+#: ../src/gui/assistant.cpp:828 ../src/gui/assistant.cpp:1380
 msgid "Connection Type"
 msgstr "Tipo de conexão"
 
@@ -2419,8 +2474,8 @@ msgstr ""
 "qualidade a serem usadas pelo Ekiga durante as chamadas. Você pode alterar "
 "as configurações individualmente mais tarde na janela de preferências."
 
-#: ../src/gui/assistant.cpp:967 ../src/gui/main_window.cpp:3390
-#: ../src/gui/main_window.cpp:3394 ../src/gui/main_window.cpp:3398
+#: ../src/gui/assistant.cpp:967 ../src/gui/main_window.cpp:3413
+#: ../src/gui/main_window.cpp:3417 ../src/gui/main_window.cpp:3421
 #: ../src/gui/preferences.cpp:738
 msgid "Audio Devices"
 msgstr "Dispositivos de áudio"
@@ -2463,15 +2518,15 @@ msgstr ""
 "O dispositivo de entrada de áudio é o dispositivo que será usado para gravar "
 "a sua voz durante as chamadas."
 
-#: ../src/gui/assistant.cpp:1151 ../src/gui/assistant.cpp:1421
+#: ../src/gui/assistant.cpp:1147 ../src/gui/assistant.cpp:1425
 msgid "Video Input Device"
 msgstr "Dispositivo de entrada de vídeo"
 
-#: ../src/gui/assistant.cpp:1153
+#: ../src/gui/assistant.cpp:1149
 msgid "Please choose your video input device:"
 msgstr "Por favor escolha o seu dispositivo de entrada de vídeo:"
 
-#: ../src/gui/assistant.cpp:1173
+#: ../src/gui/assistant.cpp:1169
 msgid ""
 "The video input device is the device that will be used to capture video "
 "during calls."
@@ -2479,17 +2534,17 @@ msgstr ""
 "O dispositivo de entrada de vídeo é o dispositivo que será usado para "
 "capturar vídeo durante as chamadas."
 
-#: ../src/gui/assistant.cpp:1240 ../src/gui/assistant.cpp:1262
-#: ../src/gui/assistant.cpp:1284 ../src/gui/preferences.cpp:779
+#: ../src/gui/assistant.cpp:1236 ../src/gui/assistant.cpp:1258
+#: ../src/gui/assistant.cpp:1280 ../src/gui/preferences.cpp:779
 #: ../src/gui/preferences.cpp:803 ../src/gui/preferences.cpp:825
 msgid "No device found"
 msgstr "Nenhum dispositivo localizado"
 
-#: ../src/gui/assistant.cpp:1315
+#: ../src/gui/assistant.cpp:1311
 msgid "Configuration Complete"
 msgstr "Configuração concluída"
 
-#: ../src/gui/assistant.cpp:1317
+#: ../src/gui/assistant.cpp:1313
 msgid ""
 "You have now finished the Ekiga configuration. All the settings can be "
 "changed in the Ekiga preferences. Enjoy!"
@@ -2497,11 +2552,11 @@ msgstr ""
 "Você finalizou a configuração do Ekiga. Todas as configurações podem ser "
 "alteradas nas preferências do Ekiga. Aproveite!"
 
-#: ../src/gui/assistant.cpp:1324
+#: ../src/gui/assistant.cpp:1320
 msgid "Configuration summary:"
 msgstr "Resumo das configurações:"
 
-#: ../src/gui/assistant.cpp:1394
+#: ../src/gui/assistant.cpp:1392
 msgid "Audio Ringing Device"
 msgstr "Dispositivo de áudio para toque"
 
@@ -2509,19 +2564,19 @@ msgstr "Dispositivo de áudio para toque"
 msgid "Audio Output Device"
 msgstr "Dispositivo de saída de áudio"
 
-#: ../src/gui/assistant.cpp:1412
+#: ../src/gui/assistant.cpp:1414
 msgid "Audio Input Device"
 msgstr "Dispositivo de entrada de áudio"
 
-#: ../src/gui/assistant.cpp:1434
+#: ../src/gui/assistant.cpp:1438
 msgid "SIP URI"
 msgstr "URI SIP"
 
-#: ../src/gui/assistant.cpp:1446
+#: ../src/gui/assistant.cpp:1450
 msgid "Ekiga Call Out"
 msgstr "Chamada do Ekiga"
 
-#: ../src/gui/assistant.cpp:1490
+#: ../src/gui/assistant.cpp:1494
 #, c-format
 msgid "Ekiga Configuration Assistant (%d of %d)"
 msgstr "Assistente de configuração do Ekiga (página %d de %d)"
@@ -2596,7 +2651,8 @@ msgstr ""
 "Vladimir Melo <vmelo@gnome.org>\n"
 "Taylon Silmer <taylonsilva@gmail.com>\n"
 "César Veiga <tombs@linuxmail.org>\n"
-"Felipe Vieira Borges <felipe10borges@gmail.com>"
+"Felipe Vieira Borges <felipe10borges@gmail.com>\n"
+"Gabriel F. Vilar <cogumm@gmail.com>"
 
 #: ../src/gui/callbacks.cpp:132
 msgid ""
@@ -2620,52 +2676,52 @@ msgstr "Presença"
 msgid "Addressbook"
 msgstr "Catálogo de endereços"
 
-#: ../src/gui/main_window.cpp:810
+#: ../src/gui/main_window.cpp:833
 msgid "Unknown"
 msgstr "Desconhecido"
 
-#: ../src/gui/main_window.cpp:961
+#: ../src/gui/main_window.cpp:987
 #, c-format
 msgid "A:%.1f/%.1f   V:%.1f/%.1f   FPS:%d/%d"
 msgstr "A:%.1f/%.1f   V:%.1f/%.1f  FPS:%d/%d"
 
 #. %s is the SIP/H.323 address of the remote user, this text is shown
 #. below video during a call
-#: ../src/gui/main_window.cpp:1007
+#: ../src/gui/main_window.cpp:1033
 #, c-format
 msgid "Connected with %s"
 msgstr "Conectado com %s"
 
-#: ../src/gui/main_window.cpp:1043 ../src/gui/main_window.cpp:3894
+#: ../src/gui/main_window.cpp:1069 ../src/gui/main_window.cpp:3917
 msgid "Standby"
 msgstr "Em espera"
 
-#: ../src/gui/main_window.cpp:1102
+#: ../src/gui/main_window.cpp:1134
 msgid "Call on hold"
 msgstr "Chamada em espera"
 
-#: ../src/gui/main_window.cpp:1113
+#: ../src/gui/main_window.cpp:1145
 msgid "Call retrieved"
 msgstr "Chamada recuperada"
 
-#: ../src/gui/main_window.cpp:1128
+#: ../src/gui/main_window.cpp:1160
 #, c-format
 msgid "Missed call from %s"
 msgstr "Chamada não atendida de %s"
 
-#: ../src/gui/main_window.cpp:1265
+#: ../src/gui/main_window.cpp:1297
 msgid "Error"
 msgstr "Erro"
 
-#: ../src/gui/main_window.cpp:1338
+#: ../src/gui/main_window.cpp:1370
 msgid "Error while initializing video output"
 msgstr "Erro ao inicializar a saída de vídeo"
 
-#: ../src/gui/main_window.cpp:1339
+#: ../src/gui/main_window.cpp:1371
 msgid "No video will be displayed on your machine during this call"
 msgstr "Nenhum vídeo será exibido na sua máquina durante esta chamada"
 
-#: ../src/gui/main_window.cpp:1349
+#: ../src/gui/main_window.cpp:1381
 msgid ""
 "There was an error opening or initializing the video output. Please verify "
 "that no other application is using the accelerated video output."
@@ -2674,7 +2730,7 @@ msgstr ""
 "certifique-se de que nenhuma outra aplicação está usando a saída de "
 "aceleração de vídeo."
 
-#: ../src/gui/main_window.cpp:1351
+#: ../src/gui/main_window.cpp:1383
 msgid ""
 "There was an error opening or initializing the video output. Please verify "
 "that you are using a color depth of 24 or 32 bits per pixel."
@@ -2684,27 +2740,27 @@ msgstr ""
 "bits por pixel."
 
 #. Translators: This is a hotplug status
-#: ../src/gui/main_window.cpp:1464
+#: ../src/gui/main_window.cpp:1496
 #, c-format
 msgid "Added video input device %s"
 msgstr "Dispositivo de entrada de vídeo %s adicionado"
 
 #. Translators: This is a hotplug status
-#: ../src/gui/main_window.cpp:1476
+#: ../src/gui/main_window.cpp:1508
 #, c-format
 msgid "Removed video input device %s"
 msgstr "Dispositivo de entrada de video %s removido"
 
-#: ../src/gui/main_window.cpp:1493
+#: ../src/gui/main_window.cpp:1525
 #, c-format
 msgid "Error while accessing video device %s"
 msgstr "Erro ao acessar o dispositivo de vídeo %s"
 
-#: ../src/gui/main_window.cpp:1496
+#: ../src/gui/main_window.cpp:1528
 msgid "A moving logo will be transmitted during calls."
 msgstr "Um logotipo animado será transmitido durante as chamadas."
 
-#: ../src/gui/main_window.cpp:1500
+#: ../src/gui/main_window.cpp:1532
 msgid ""
 "There was an error while opening the device. In case it is a pluggable "
 "device it may be sufficient to reconnect it. If not, or if it still is not "
@@ -2716,17 +2772,17 @@ msgstr ""
 "ainda não estiver acessível, por favor, verifique as suas permissões e "
 "certifique-se que o controlador apropriado está carregado."
 
-#: ../src/gui/main_window.cpp:1504
+#: ../src/gui/main_window.cpp:1536
 msgid "Your video driver doesn't support the requested video format."
 msgstr ""
 "O seu controlador de vídeo não tem suporte para o formato de vídeo "
 "solicitado."
 
-#: ../src/gui/main_window.cpp:1508
+#: ../src/gui/main_window.cpp:1540
 msgid "Could not open the chosen channel."
 msgstr "Não foi possível abrir o canal escolhido."
 
-#: ../src/gui/main_window.cpp:1512
+#: ../src/gui/main_window.cpp:1544
 msgid ""
 "Your driver doesn't seem to support any of the color formats supported by "
 "Ekiga.\n"
@@ -2738,43 +2794,43 @@ msgstr ""
 "Por favor, verifique a documentação do seu controlador de kernel para "
 "determinar qual paleta tem suporte."
 
-#: ../src/gui/main_window.cpp:1516
+#: ../src/gui/main_window.cpp:1548
 msgid "Error while setting the frame rate."
 msgstr "Erro ao definir a taxa de quadros."
 
-#: ../src/gui/main_window.cpp:1520
+#: ../src/gui/main_window.cpp:1552
 msgid "Error while setting the frame size."
 msgstr "Erro ao definir o tamanho dos quadros."
 
-#: ../src/gui/main_window.cpp:1525 ../src/gui/main_window.cpp:1628
-#: ../src/gui/main_window.cpp:1747
+#: ../src/gui/main_window.cpp:1557 ../src/gui/main_window.cpp:1660
+#: ../src/gui/main_window.cpp:1779
 msgid "Unknown error."
 msgstr "Erro desconhecido."
 
 #. Translators: This is a hotplug status
-#: ../src/gui/main_window.cpp:1577
+#: ../src/gui/main_window.cpp:1609
 #, c-format
 msgid "Added audio input device %s"
 msgstr "Dispositivo de entrada áudio %s adicionado"
 
 #. Translators: This is a hotplug status
-#: ../src/gui/main_window.cpp:1593
+#: ../src/gui/main_window.cpp:1625
 #, c-format
 msgid "Removed audio input device %s"
 msgstr "Dispositivo de entrada de áudio %s removido"
 
-#: ../src/gui/main_window.cpp:1610
+#: ../src/gui/main_window.cpp:1642
 #, c-format
 msgid "Error while opening audio input device %s"
 msgstr "Erro ao abrir o dispositivo de entrada de áudio %s"
 
 #. Translators: This happens when there is an error with audio input:
 #. * Nothing ("silence") will be transmitted
-#: ../src/gui/main_window.cpp:1615
+#: ../src/gui/main_window.cpp:1647
 msgid "Only silence will be transmitted."
 msgstr "Apenas silêncio será transmitido."
 
-#: ../src/gui/main_window.cpp:1619
+#: ../src/gui/main_window.cpp:1651
 msgid ""
 "Unable to open the selected audio device for recording. In case it is a "
 "pluggable device it may be sufficient to reconnect it. If not, or if it "
@@ -2787,7 +2843,7 @@ msgstr ""
 "as suas configurações de áudio, as permissões e se o dispositivo não está "
 "ocupado."
 
-#: ../src/gui/main_window.cpp:1623
+#: ../src/gui/main_window.cpp:1655
 msgid ""
 "The selected audio device was successfully opened but it is impossible to "
 "read data from this device. In case it is a pluggable device it may be "
@@ -2800,26 +2856,26 @@ msgstr ""
 "ainda não estiver acessível, por favor verifique as suas configurações de "
 "áudio."
 
-#: ../src/gui/main_window.cpp:1692
+#: ../src/gui/main_window.cpp:1724
 #, c-format
 msgid "Added audio output device %s"
 msgstr "Dispositivo de saída de áudio %s adicionado"
 
-#: ../src/gui/main_window.cpp:1710
+#: ../src/gui/main_window.cpp:1742
 #, c-format
 msgid "Removed audio output device %s"
 msgstr "Dispositivo de saída de áudio %s removido"
 
-#: ../src/gui/main_window.cpp:1731
+#: ../src/gui/main_window.cpp:1763
 #, c-format
 msgid "Error while opening audio output device %s"
 msgstr "Erro ao abrir o dispositivo de saída de áudio %s"
 
-#: ../src/gui/main_window.cpp:1734
+#: ../src/gui/main_window.cpp:1766
 msgid "No incoming sound will be played."
 msgstr "Nenhum som de entrada será reproduzido."
 
-#: ../src/gui/main_window.cpp:1738
+#: ../src/gui/main_window.cpp:1770
 msgid ""
 "Unable to open the selected audio device for playing. In case it is a "
 "pluggable device it may be sufficient to reconnect it. If not, or if it "
@@ -2832,7 +2888,7 @@ msgstr ""
 "as suas configurações de áudio, as permissões e se o dispositivo não está "
 "ocupado."
 
-#: ../src/gui/main_window.cpp:1742
+#: ../src/gui/main_window.cpp:1774
 msgid ""
 "The selected audio device was successfully opened but it is impossible to "
 "write data to this device. In case it is a pluggable device it may be "
@@ -2844,351 +2900,351 @@ msgstr ""
 "reconectá-lo pode ser o suficiente. Caso contrário, ou se ele ainda não "
 "estiver acessível, por favor verifique as suas configurações de áudio."
 
-#: ../src/gui/main_window.cpp:1931
+#: ../src/gui/main_window.cpp:1963
 msgid "Video Settings"
 msgstr "Configurações de vídeo"
 
-#: ../src/gui/main_window.cpp:1958
+#: ../src/gui/main_window.cpp:1988
 msgid "Adjust brightness"
 msgstr "Ajustar brilho"
 
-#: ../src/gui/main_window.cpp:1979
+#: ../src/gui/main_window.cpp:2007
 msgid "Adjust whiteness"
 msgstr "Ajustar branco"
 
-#: ../src/gui/main_window.cpp:2000
+#: ../src/gui/main_window.cpp:2026
 msgid "Adjust color"
 msgstr "Ajustar cor"
 
-#: ../src/gui/main_window.cpp:2021
+#: ../src/gui/main_window.cpp:2045
 msgid "Adjust contrast"
 msgstr "Ajustar contraste"
 
-#: ../src/gui/main_window.cpp:2065
+#: ../src/gui/main_window.cpp:2089
 msgid "Audio Settings"
 msgstr "Configurações de áudio"
 
-#: ../src/gui/main_window.cpp:2745
+#: ../src/gui/main_window.cpp:2766
 msgid "_Retrieve Call"
 msgstr "_Recuperar chamada"
 
-#: ../src/gui/main_window.cpp:2758 ../src/gui/main_window.cpp:3519
+#: ../src/gui/main_window.cpp:2779 ../src/gui/main_window.cpp:3542
 msgid "H_old Call"
 msgstr "Pô_r chamada em espera"
 
-#: ../src/gui/main_window.cpp:2790 ../src/gui/main_window.cpp:3531
+#: ../src/gui/main_window.cpp:2811 ../src/gui/main_window.cpp:3554
 msgid "Suspend _Audio"
 msgstr "Suspender á_udio"
 
-#: ../src/gui/main_window.cpp:2792 ../src/gui/main_window.cpp:3536
+#: ../src/gui/main_window.cpp:2813 ../src/gui/main_window.cpp:3559
 msgid "Suspend _Video"
 msgstr "Suspender _vídeo"
 
-#: ../src/gui/main_window.cpp:2794
+#: ../src/gui/main_window.cpp:2815
 msgid "Resume _Audio"
 msgstr "Reestabelecer á_udio"
 
-#: ../src/gui/main_window.cpp:2796
+#: ../src/gui/main_window.cpp:2817
 msgid "Resume _Video"
 msgstr "Reestabelecer _vídeo"
 
-#: ../src/gui/main_window.cpp:3022 ../src/gui/main_window.cpp:3185
+#: ../src/gui/main_window.cpp:3043 ../src/gui/main_window.cpp:3208
 msgid "Reject"
 msgstr "Rejeitar"
 
-#: ../src/gui/main_window.cpp:3024 ../src/gui/main_window.cpp:3184
+#: ../src/gui/main_window.cpp:3045 ../src/gui/main_window.cpp:3207
 msgid "Accept"
 msgstr "Aceitar"
 
-#: ../src/gui/main_window.cpp:3030
+#: ../src/gui/main_window.cpp:3051
 msgid "Incoming call from"
 msgstr "Chamada recebida de"
 
-#: ../src/gui/main_window.cpp:3048 ../src/gui/main_window.cpp:3165
+#: ../src/gui/main_window.cpp:3069 ../src/gui/main_window.cpp:3188
 msgid "Remote URI:"
 msgstr "URI remota:"
 
-#: ../src/gui/main_window.cpp:3060 ../src/gui/main_window.cpp:3167
+#: ../src/gui/main_window.cpp:3081 ../src/gui/main_window.cpp:3190
 msgid "Remote Application:"
 msgstr "Aplicativo remoto:"
 
-#: ../src/gui/main_window.cpp:3073 ../src/gui/main_window.cpp:3169
+#: ../src/gui/main_window.cpp:3094 ../src/gui/main_window.cpp:3192
 msgid "Account ID:"
 msgstr "ID de conta:"
 
-#: ../src/gui/main_window.cpp:3081
+#: ../src/gui/main_window.cpp:3102
 #, c-format
 msgid "Call from %s"
 msgstr "Chamada de %s"
 
-#: ../src/gui/main_window.cpp:3293
+#: ../src/gui/main_window.cpp:3316
 #, c-format
 msgid "Call Duration: %s\n"
 msgstr "Duração da chamada: %s\n"
 
-#: ../src/gui/main_window.cpp:3324
+#: ../src/gui/main_window.cpp:3347
 msgid "Transfer call to:"
 msgstr "Transferir chamada para:"
 
-#: ../src/gui/main_window.cpp:3376
+#: ../src/gui/main_window.cpp:3399
 msgid "No"
 msgstr "Não"
 
-#: ../src/gui/main_window.cpp:3378
+#: ../src/gui/main_window.cpp:3401
 msgid "Yes"
 msgstr "Sim"
 
-#: ../src/gui/main_window.cpp:3389
+#: ../src/gui/main_window.cpp:3412
 msgid "Detected new audio input device:"
 msgstr "Novo dispositivo de entrada de áudio detectado:"
 
-#: ../src/gui/main_window.cpp:3393
+#: ../src/gui/main_window.cpp:3416
 msgid "Detected new audio output device:"
 msgstr "Novo dispositivo de saída de áudio detectado:"
 
-#: ../src/gui/main_window.cpp:3397
+#: ../src/gui/main_window.cpp:3420
 msgid "Detected new ringer device:"
 msgstr "Novo dispositivo de campainha detectado:"
 
-#: ../src/gui/main_window.cpp:3401
+#: ../src/gui/main_window.cpp:3424
 msgid "Detected new video input device:"
 msgstr "Novo dispositivo de entrada de vídeo detectado:"
 
-#: ../src/gui/main_window.cpp:3402 ../src/gui/preferences.cpp:891
+#: ../src/gui/main_window.cpp:3425 ../src/gui/preferences.cpp:891
 msgid "Video Devices"
 msgstr "Dispositivos de vídeo"
 
-#: ../src/gui/main_window.cpp:3420
+#: ../src/gui/main_window.cpp:3443
 msgid "Do you want to use it as default device?"
 msgstr "Você quer usá-lo como dispositivo padrão?"
 
-#: ../src/gui/main_window.cpp:3488
+#: ../src/gui/main_window.cpp:3511
 msgid "_Chat"
 msgstr "_Bate-papo"
 
-#: ../src/gui/main_window.cpp:3490
+#: ../src/gui/main_window.cpp:3513
 msgid "Ca_ll"
 msgstr "C_hamar"
 
-#: ../src/gui/main_window.cpp:3490
+#: ../src/gui/main_window.cpp:3513
 msgid "Place a new call"
 msgstr "Faz uma nova chamada"
 
-#: ../src/gui/main_window.cpp:3493
+#: ../src/gui/main_window.cpp:3516
 msgid "_Hang up"
 msgstr "_Desligar"
 
-#: ../src/gui/main_window.cpp:3494
+#: ../src/gui/main_window.cpp:3517
 msgid "Terminate the current call"
 msgstr "Finaliza a chamada atual"
 
-#: ../src/gui/main_window.cpp:3500
+#: ../src/gui/main_window.cpp:3523
 msgid "Co_ntact"
 msgstr "Co_ntato"
 
-#: ../src/gui/main_window.cpp:3501
+#: ../src/gui/main_window.cpp:3524
 msgid "Act on selected contact"
 msgstr "Agir sobre o contato selecionado"
 
-#: ../src/gui/main_window.cpp:3507
+#: ../src/gui/main_window.cpp:3530
 msgid "A_dd Contact"
 msgstr "A_dicionar contato"
 
-#: ../src/gui/main_window.cpp:3507
+#: ../src/gui/main_window.cpp:3530
 msgid "Add a contact to the roster"
 msgstr "Adiciona um contato à lista"
 
-#: ../src/gui/main_window.cpp:3512
+#: ../src/gui/main_window.cpp:3535
 msgid "Find contacts"
 msgstr "Localiza contatos"
 
-#: ../src/gui/main_window.cpp:3519 ../src/gui/main_window.cpp:3994
+#: ../src/gui/main_window.cpp:3542 ../src/gui/main_window.cpp:4017
 msgid "Hold the current call"
 msgstr "Põe a chamada atual em espera"
 
-#: ../src/gui/main_window.cpp:3523
+#: ../src/gui/main_window.cpp:3546
 msgid "_Transfer Call"
 msgstr "_Transferir chamada"
 
-#: ../src/gui/main_window.cpp:3524
+#: ../src/gui/main_window.cpp:3547
 msgid "Transfer the current call"
 msgstr "Transfere a chamada atual"
 
-#: ../src/gui/main_window.cpp:3532
+#: ../src/gui/main_window.cpp:3555
 msgid "Suspend or resume the audio transmission"
 msgstr "Suspende ou reestabelece a transmissão de áudio"
 
-#: ../src/gui/main_window.cpp:3537
+#: ../src/gui/main_window.cpp:3560
 msgid "Suspend or resume the video transmission"
 msgstr "Suspende ou reestabelece a transmissão de vídeo"
 
 #. FIXME: that isn't a very good way to do things
-#: ../src/gui/main_window.cpp:3546
+#: ../src/gui/main_window.cpp:3569
 msgid "Other"
 msgstr "Outro"
 
-#: ../src/gui/main_window.cpp:3547
+#: ../src/gui/main_window.cpp:3570
 msgid "Other possible actions"
 msgstr "Outras ações possíveis"
 
-#: ../src/gui/main_window.cpp:3554
+#: ../src/gui/main_window.cpp:3577
 msgid "Close the Ekiga window"
 msgstr "Fechar a janela do Ekiga"
 
-#: ../src/gui/main_window.cpp:3561 ../src/gui/statusicon.cpp:465
+#: ../src/gui/main_window.cpp:3584 ../src/gui/statusicon.cpp:465
 msgid "Quit"
 msgstr "Sair"
 
-#: ../src/gui/main_window.cpp:3567
+#: ../src/gui/main_window.cpp:3590
 msgid "_Configuration Assistant"
 msgstr "Assistente de _configuração"
 
-#: ../src/gui/main_window.cpp:3568
+#: ../src/gui/main_window.cpp:3591
 msgid "Run the configuration assistant"
 msgstr "Executa o assistente de configuração"
 
-#: ../src/gui/main_window.cpp:3576
+#: ../src/gui/main_window.cpp:3599
 msgid "Edit your accounts"
 msgstr "Edita as suas contas"
 
-#: ../src/gui/main_window.cpp:3582
+#: ../src/gui/main_window.cpp:3605
 msgid "Change your preferences"
 msgstr "Altera as suas preferências"
 
-#: ../src/gui/main_window.cpp:3587
+#: ../src/gui/main_window.cpp:3610
 msgid "_View"
 msgstr "_Ver"
 
-#: ../src/gui/main_window.cpp:3589
+#: ../src/gui/main_window.cpp:3612
 msgid "Con_tacts"
 msgstr "C_ontatos"
 
-#: ../src/gui/main_window.cpp:3589
+#: ../src/gui/main_window.cpp:3612
 msgid "View the contacts list"
 msgstr "Vê a lista de contatos"
 
-#: ../src/gui/main_window.cpp:3594
+#: ../src/gui/main_window.cpp:3617
 msgid "_Dialpad"
 msgstr "_Teclado"
 
-#: ../src/gui/main_window.cpp:3594
+#: ../src/gui/main_window.cpp:3617
 msgid "View the dialpad"
 msgstr "Vê o teclado numérico"
 
-#: ../src/gui/main_window.cpp:3599
+#: ../src/gui/main_window.cpp:3622
 msgid "_Call History"
 msgstr "Histórico de _chamadas"
 
-#: ../src/gui/main_window.cpp:3599
+#: ../src/gui/main_window.cpp:3622
 msgid "View the call history"
 msgstr "Vê o histórico de chamadas"
 
-#: ../src/gui/main_window.cpp:3607
+#: ../src/gui/main_window.cpp:3630
 msgid "_Show Call Panel"
 msgstr "_Mostrar o painel de chamadas"
 
-#: ../src/gui/main_window.cpp:3615
+#: ../src/gui/main_window.cpp:3638
 msgid "_Local Video"
 msgstr "Vídeo _local"
 
-#: ../src/gui/main_window.cpp:3616
+#: ../src/gui/main_window.cpp:3639
 msgid "Local video image"
 msgstr "Imagem de vídeo local"
 
-#: ../src/gui/main_window.cpp:3621
+#: ../src/gui/main_window.cpp:3644
 msgid "_Remote Video"
 msgstr "Vídeo _remoto"
 
-#: ../src/gui/main_window.cpp:3622
+#: ../src/gui/main_window.cpp:3645
 msgid "Remote video image"
 msgstr "Imagem de vídeo remota"
 
-#: ../src/gui/main_window.cpp:3627
+#: ../src/gui/main_window.cpp:3650
 msgid "_Picture-in-Picture"
 msgstr "_Picture-in-Picture (Canais simultâneos)"
 
-#: ../src/gui/main_window.cpp:3628 ../src/gui/main_window.cpp:3634
+#: ../src/gui/main_window.cpp:3651 ../src/gui/main_window.cpp:3657
 msgid "Both video images"
 msgstr "Ambas as imagens de vídeo"
 
-#: ../src/gui/main_window.cpp:3633
+#: ../src/gui/main_window.cpp:3656
 msgid "Picture-in-Picture in Separate _Window"
 msgstr "Picture-in-picture em _janela separada"
 
-#: ../src/gui/main_window.cpp:3641
+#: ../src/gui/main_window.cpp:3664
 msgid "Zoom in"
 msgstr "Ampliar"
 
-#: ../src/gui/main_window.cpp:3645
+#: ../src/gui/main_window.cpp:3668
 msgid "Zoom out"
 msgstr "Reduzir"
 
-#: ../src/gui/main_window.cpp:3649
+#: ../src/gui/main_window.cpp:3672
 msgid "Normal size"
 msgstr "Tamanho normal"
 
-#: ../src/gui/main_window.cpp:3653
+#: ../src/gui/main_window.cpp:3676
 msgid "_Fullscreen"
 msgstr "Tela _cheia"
 
-#: ../src/gui/main_window.cpp:3653
+#: ../src/gui/main_window.cpp:3676
 msgid "Switch to fullscreen"
 msgstr "Troca para tela cheia"
 
-#: ../src/gui/main_window.cpp:3661 ../src/gui/statusicon.cpp:453
+#: ../src/gui/main_window.cpp:3684 ../src/gui/statusicon.cpp:453
 msgid "Get help by reading the Ekiga manual"
 msgstr "Obtém ajuda lendo o manual do Ekiga"
 
-#: ../src/gui/main_window.cpp:3666 ../src/gui/statusicon.cpp:458
+#: ../src/gui/main_window.cpp:3689 ../src/gui/statusicon.cpp:458
 msgid "View information about Ekiga"
 msgstr "Vê informações sobre o Ekiga"
 
-#: ../src/gui/main_window.cpp:3738
+#: ../src/gui/main_window.cpp:3761
 msgid ""
 "Enter a URI on the left, and click this button to place a call or to hangup"
 msgstr ""
 "Digite uma URI à esquerda e clique neste botão para fazer uma chamada ou "
 "para desligar"
 
-#: ../src/gui/main_window.cpp:3783
+#: ../src/gui/main_window.cpp:3806
 msgid "Contacts"
 msgstr "Contatos"
 
-#: ../src/gui/main_window.cpp:3805
+#: ../src/gui/main_window.cpp:3828
 msgid "Dialpad"
 msgstr "Teclado"
 
-#: ../src/gui/main_window.cpp:3823
+#: ../src/gui/main_window.cpp:3846
 msgid "Call history"
 msgstr "Histórico de chamadas"
 
-#: ../src/gui/main_window.cpp:3931
+#: ../src/gui/main_window.cpp:3954
 msgid "Change the volume of your soundcard"
 msgstr "Alterar o volume de sua placa de som"
 
-#: ../src/gui/main_window.cpp:3952
+#: ../src/gui/main_window.cpp:3975
 msgid "Change the color settings of your video device"
 msgstr "Alterar as configurações de cor de seu dispositivo de vídeo"
 
-#: ../src/gui/main_window.cpp:4020
+#: ../src/gui/main_window.cpp:4043
 msgid "Ekiga"
 msgstr "Ekiga"
 
 #. Translators: TX is a common abbreviation for "transmit".  As it
 #. * is shown in a tooltip, there is no space constraint
-#: ../src/gui/main_window.cpp:4623
+#: ../src/gui/main_window.cpp:4646
 #, c-format
 msgid "TX: %dx%d "
 msgstr "TX: %dx%d "
 
 #. Translators: RX is a common abbreviation for "receive".  As it
 #. * is shown in a tooltip, there is no space constraint
-#: ../src/gui/main_window.cpp:4628
+#: ../src/gui/main_window.cpp:4651
 #, c-format
 msgid "RX: %dx%d "
 msgstr "RX: %dx%d "
 
-#: ../src/gui/main_window.cpp:4630
+#: ../src/gui/main_window.cpp:4653
 #, c-format
 msgid ""
 "Lost packets: %.1f %%\n"
@@ -3201,17 +3257,11 @@ msgstr ""
 "Pacotes fora de ordem: %.1f %%\n"
 "Buffer de jitter: %d ms%s%s%s"
 
-#: ../src/gui/main_window.cpp:4745
+#: ../src/gui/main_window.cpp:4767
 msgid "Prints debug messages in the console (level between 1 and 5)"
 msgstr "Imprime mensagens de depuração no terminal (nível entre 1 e 5)"
 
-#: ../src/gui/main_window.cpp:4750
-msgid "Prints user plane debug messages in the console (level between 1 and 4)"
-msgstr ""
-"Imprime mensagens de depuração do plano do usuário no terminal (nível entre "
-"1 e 4)"
-
-#: ../src/gui/main_window.cpp:4755
+#: ../src/gui/main_window.cpp:4772
 msgid "Makes Ekiga call the given URI"
 msgstr "Faz o Ekiga chamar a URI indicada"
 
@@ -3608,2789 +3658,3 @@ msgstr "Excluir mensagens personalizadas:"
 msgid "Define a custom message:"
 msgstr "Definir uma mensagem personalizada:"
 
-#~ msgid "Change the main window panel section"
-#~ msgstr "Alterar a seção do painel da janela principal"
-
-#~ msgid "Local video window size"
-#~ msgstr "Tamanho da janela de vídeo local"
-
-#~ msgid "Position of the local video window"
-#~ msgstr "Posição da janela de vídeo local"
-
-#~ msgid "The position of the local video window"
-#~ msgstr "A posição da janela de vídeo local"
-
-#~ msgid "The size of the local video window"
-#~ msgstr "O tamanho da janela de vídeo local"
-
-#~ msgid "Call in progress"
-#~ msgstr "Chamada em progresso"
-
-#~ msgid "Could not send message"
-#~ msgstr "Não foi possível enviar a mensagem"
-
-#~ msgid "_Base DN"
-#~ msgstr "_DN Base"
-
-#~ msgid "_Password"
-#~ msgstr "_Senha"
-
-#~ msgid "Identifier"
-#~ msgstr "Identificador"
-
-#~ msgid "Writable"
-#~ msgstr "Gravável"
-
-#~ msgid "If enabled, use silence detection with the codecs supporting it."
-#~ msgstr ""
-#~ "Se habilitado, usa a detecção de silêncio com os codecs com suporte."
-
-#~ msgid "If enabled, use echo cancelation."
-#~ msgstr "Se habilitado, usa cancelamento de eco."
-
-#~ msgid "The maximum jitter buffer size for audio reception (in ms)."
-#~ msgstr "O buffer de jitter máximo para recepção de áudio (em ms)."
-
-#~ msgid "Position on the screen of the log window"
-#~ msgstr "Posição na tela da janela de log"
-
-#~ msgid "The Video Codecs List"
-#~ msgstr "A lista de codecs de vídeo"
-
-#~ msgid "Please update the following fields."
-#~ msgstr "Por favor atualize os seguintes campos."
-
-#~ msgid "Enable account"
-#~ msgstr "Habilitar conta"
-
-#~ msgid "Consult the calls history"
-#~ msgstr "Consultar o histórico de chamadas"
-
-#~ msgid "Help display is not supported by your GTK+ version"
-#~ msgstr "A exibição de ajuda não é suportada pela sua versão do GTK+"
-
-#~ msgid "_Hold Call"
-#~ msgstr "Pô_r Chamada em espera"
-
-#~ msgid "No usable audio plugin detected"
-#~ msgstr "Nenhum plug-in de áudio utilizável foi detectado"
-
-#~ msgid ""
-#~ "Ekiga didn't find any usable audio plugin. Make sure that your "
-#~ "installation is correct."
-#~ msgstr ""
-#~ "O Ekiga não localizou nenhum plug-in de áudio utilizável. Verifique se a "
-#~ "sua instalação está correta."
-
-#~ msgid "No usable audio codecs detected"
-#~ msgstr "Nenhum codec de áudio utilizável foi detectado"
-
-#~ msgid ""
-#~ "Ekiga didn't find any usable audio codec. Make sure that your "
-#~ "installation is correct."
-#~ msgstr ""
-#~ "O Ekiga não localizou nenhum codec de áudio utilizável. Verifique se a "
-#~ "sua instalação está correta."
-
-#~ msgid "Voice Mails"
-#~ msgstr "Mensagens de voz"
-
-#~ msgid "Registered %s"
-#~ msgstr "%s registrado"
-
-#~ msgid "Unregistered %s"
-#~ msgstr "%s não registrado"
-
-#~ msgid "Could not unregister %s"
-#~ msgstr "Não foi possível remover o registro %s"
-
-#~ msgid "Could not register %s"
-#~ msgstr "Não foi possível registrar %s"
-
-#~ msgid "Roster view saving group status"
-#~ msgstr "Visão da lista salvando o status do grupo"
-
-#~ msgid "Forbidden"
-#~ msgstr "Proibido"
-
-#~ msgid ""
-#~ "A moving logo will be transmitted during calls. Notice that you can "
-#~ "always transmit a given image or the moving logo by choosing \"Picture\" "
-#~ "as video plugin and \"Moving logo\" or \"Static picture\" as device."
-#~ msgstr ""
-#~ "Um logotipo animado será transmitido durante as chamadas. Note que você "
-#~ "sempre pode transmitir uma imagem específica ou o logotipo animado "
-#~ "escolhendo \"Picture\" como plug-in de vídeo e \"MovingLogo\" ou "
-#~ "\"StaticPicture\" como dispositivo."
-
-#~ msgid "Automatic echo cancellation"
-#~ msgstr "Cancelamento automático de eco"
-
-#~ msgid "Country code"
-#~ msgstr "Código do país"
-
-#~ msgid "Display a popup window when receiving a call"
-#~ msgstr "Exibir uma janela instantânea ao receber uma chamada"
-
-#~ msgid "Enable video support"
-#~ msgstr "Habilitar suporte a vídeo"
-
-#~ msgid ""
-#~ "If enabled, a popup window will be displayed when receiving an incoming "
-#~ "call"
-#~ msgstr ""
-#~ "Se habilitado, uma janela instantânea será exibida ao receber uma chamada"
-
-#~ msgid "Output device type"
-#~ msgstr "Tipo do dispositivo de saída"
-
-#~ msgid "Registration timeout"
-#~ msgstr "Tempo de espera para registro"
-
-#~ msgid "Revision of the schema file"
-#~ msgstr "Revisão do arquivo de esquema"
-
-#~ msgid ""
-#~ "The Automatic Echo Cancellation level: Off, Low, Medium, High, Automatic "
-#~ "Gain Compensation. Choosing Automatic Gain Compensation modulates the "
-#~ "volume for best quality."
-#~ msgstr ""
-#~ "O nível de cancelamento automático de eco: desligado, baixo, médio, alto, "
-#~ "compensação automática de ganho. Selecionar compensação automatica de "
-#~ "ganho modula o volume para a melhor qualidade."
-
-#~ msgid ""
-#~ "The image to transmit if \"Picture\" is selected as video plugin or if "
-#~ "the opening of the device fails. Leave blank to use the default Ekiga "
-#~ "logo."
-#~ msgstr ""
-#~ "A imagem a transmitir se \"Picture\" estiver selecionado como plug-in de "
-#~ "vídeo ou se a abertura do dispositivo falhar. Deixe em branco para usar o "
-#~ "logotipo padrão do Ekiga."
-
-#~ msgid ""
-#~ "The output device type is the type of device connected to your Quicknet "
-#~ "card. It can be either a POTS (Plain Old Telephone System) or a headset."
-#~ msgstr ""
-#~ "O tipo do dispositivo de saída é o tipo de dispositivo conectado a sua "
-#~ "placa Quicknet. Ele pode ser um POTS (telefone comum) ou um fone de "
-#~ "ouvido com microfone."
-
-#~ msgid ""
-#~ "The prefix that will be used to save pictures of the conversation. That "
-#~ "prefix is followed by the snapshot number."
-#~ msgstr ""
-#~ "O prefixo a ser usado para gravar imagens da conversação. Esse prefixo é "
-#~ "seguido pelo número da captura."
-
-#~ msgid "The save prefix"
-#~ msgstr "O prefixo de salvamento"
-
-#~ msgid ""
-#~ "The time after which Ekiga will renew its registration with the registrar"
-#~ msgstr ""
-#~ "O tempo depois do qual o Ekiga renovará seu registro com o registrador"
-
-#~ msgid ""
-#~ "The two-letter country code of your country (e.g.: BE, UK, FR, DE, ...)"
-#~ msgstr "O código de duas letras para o seu país (ex.: BR, UK, FR, DE, ...)"
-
-#~ msgid "Version"
-#~ msgstr "Versão"
-
-#~ msgid "Video image"
-#~ msgstr "Imagem de vídeo"
-
-#~ msgid "_Hostname:"
-#~ msgstr "Nome da _máquina:"
-
-#~ msgid "_Port:"
-#~ msgstr "_Porta:"
-
-#~ msgid "_Subtree"
-#~ msgstr "_Sub-árvore"
-
-#~ msgid "Single _Level"
-#~ msgstr "_Nível único"
-
-#~ msgid "_Scope"
-#~ msgstr "E_scopo"
-
-#~ msgid "Password"
-#~ msgstr "Senha"
-
-#~ msgid "_Properties"
-#~ msgstr "_Propriedades"
-
-#~ msgid "Could not contact server"
-#~ msgstr "Não foi possível contactar o servidor"
-
-#~ msgid "_Hostname"
-#~ msgstr "Nome da _máquina:"
-
-#~ msgid "_Port"
-#~ msgstr "_Porta:"
-
-#~ msgid "Configuration database corruption"
-#~ msgstr "Corrupção do banco de dados de configurações"
-
-#~ msgid ""
-#~ "Ekiga got an invalid value for the configuration key %s.\n"
-#~ "\n"
-#~ "It probably means that your configuration schemas have not been correctly "
-#~ "installed or that the permissions are not correct.\n"
-#~ "\n"
-#~ "Please check the FAQ (http://www.ekiga.org/), the troubleshooting section "
-#~ "of the GConf site (http://www.gnome.org/projects/gconf/) or the mailing "
-#~ "list archives for more information (http://mail.gnome.org) about this "
-#~ "problem."
-#~ msgstr ""
-#~ "O Ekiga obteve um valor inválido para a chave de configuração %s.\n"
-#~ "\n"
-#~ "Isto provavelmente significa que os seus esquemas de configuração não "
-#~ "foram instalados corretamente ou que as permissões não estão corretas.\n"
-#~ "\n"
-#~ "Favor verificar o FAQ (http://www.ekiga.org/), a seção de resolução de "
-#~ "problemas da página do GConf (http://www.gnome.org/projects/gconf/) ou os "
-#~ "arquivos da lista de discussão (http://mail.gnome.org) para obter mais "
-#~ "informações sobre este problema."
-
-#~ msgid "_Send"
-#~ msgstr "_Enviar"
-
-#~ msgid "You say:\n"
-#~ msgstr "Você diz:\n"
-
-#~ msgid "Opening device for playing"
-#~ msgstr "Abrindo dispositivo para reprodução"
-
-#~ msgid "Opening device for recording"
-#~ msgstr "Abrindo dispositivo para gravação"
-
-#~ msgid ""
-#~ "Impossible to open the selected audio device (%s) for recording. Please "
-#~ "check your audio setup, the permissions and that the device is not busy."
-#~ msgstr ""
-#~ "Não é possível abrir o dispositivo de áudio selecionado (%s) para "
-#~ "gravação. Por favor verifique as suas configurações de áudio, as "
-#~ "permissões e se o dispositivo não está ocupado."
-
-#~ msgid ""
-#~ "Impossible to open the selected audio device (%s) for playing. Please "
-#~ "check your audio setup, the permissions and that the device is not busy."
-#~ msgstr ""
-#~ "Não é possível abrir o dispositivo de áudio selecionado (%s) para "
-#~ "reprodução. Por favor verifique as suas configurações de áudio, as "
-#~ "permissões e se o dispositivo não está ocupado."
-
-#~ msgid "Cannot use the audio device"
-#~ msgstr "Não é possível usar o dispositivo de áudio"
-
-#~ msgid ""
-#~ "The selected audio device (%s) was successfully opened but it is "
-#~ "impossible to read data from this device. Please check your audio setup."
-#~ msgstr ""
-#~ "O dispositivo áudio selecionado (%s) foi aberto com sucesso, mas não é "
-#~ "possível ler dados deste dispositivo. Por favor, verifique as suas "
-#~ "configurações de áudio."
-
-#~ msgid "Recording your voice"
-#~ msgstr "Gravando a sua voz"
-
-#~ msgid "Recording and playing back"
-#~ msgstr "Gravando e reproduzindo"
-
-#~ msgid ""
-#~ "The selected audio device (%s) was successfully opened but it is "
-#~ "impossible to write data to this device. Please check your audio setup."
-#~ msgstr ""
-#~ "O dispositivo áudio selecionado (%s) foi aberto com sucesso, mas não é "
-#~ "possível escrever dados neste dispositivo. Por favor, verifique as suas "
-#~ "configurações de áudio."
-
-#~ msgid "Audio test running"
-#~ msgstr "Teste de áudio em execução"
-
-#~ msgid ""
-#~ "Ekiga is now recording from %s and playing back to %s. Please say \"1, 2, "
-#~ "3, Ekiga rocks!\" in your microphone. You should hear yourself from the "
-#~ "speakers after a four-second delay."
-#~ msgstr ""
-#~ "O Ekiga agora está gravando de %s e reproduzindo em %s. Por favor, diga "
-#~ "\"1, 2, 3, o Ekiga é bom demais!\" no seu microfone. Você deverá ouvir-se "
-#~ "nas caixas de som com um atraso de 4 segundos."
-
-#~ msgid "_Contents"
-#~ msgstr "_Conteúdo"
-
-#~ msgid "_About"
-#~ msgstr "_Sobre"
-
-#~ msgid "Position on the screen of the PC-To-Phone window"
-#~ msgstr "Posição na tela da janela PC-To-Phone"
-
-#~ msgid "Size of the PC-To-Phone window"
-#~ msgstr "Tamanho da janela PC-To-Phone"
-
-#~ msgid "Account"
-#~ msgstr "Conta"
-
-#~ msgid "_Apply"
-#~ msgstr "A_plicar"
-
-#~ msgid ""
-#~ "Click here to update the users directory you are registered to with the "
-#~ "new First Name, Last Name, E-Mail, Comment and Location"
-#~ msgstr ""
-#~ "Clique aqui para atualizar o diretório de usuários onde você está "
-#~ "registrado com os novos Nome, Sobrenome, E-mail, Comentário e Localização"
-
-#~ msgid "Auto Away Timeout"
-#~ msgstr "Tempo de espera para ausência automática"
-
-#~ msgid "Number of frames for G.711"
-#~ msgstr "Número de quadros para G.711"
-
-#~ msgid "Number of frames for GSM"
-#~ msgstr "Número de quadros para GSM"
-
-#~ msgid "Number of frames transmitted in each packet for the G.711 codec"
-#~ msgstr "Número de quadros transmitidos em cada pacote para o codec G.711"
-
-#~ msgid "Number of frames transmitted in each packet for the GSM codec"
-#~ msgstr "Número de quadros transmitidos em cada pacote para o codec GSM"
-
-#~ msgid "User directory"
-#~ msgstr "Diretório do usuário"
-
-#~ msgid "Please confirm you want that contact removed"
-#~ msgstr "Por favor, confirme a remoção do contato"
-
-#~ msgid "Address Books"
-#~ msgstr "Catálogos de endereços"
-
-#~ msgid "Remote user is not available"
-#~ msgstr "O usuário remoto não está disponível"
-
-#~ msgid "Forward"
-#~ msgstr "Encaminhar"
-
-#~ msgid ""
-#~ "The video manager is the plugin that will manage your video devices, "
-#~ "Video4Linux is the most common choice if you own a webcam."
-#~ msgstr ""
-#~ "O gerenciador de vídeo é o plugin que irá gerenciar os seus dispositivos "
-#~ "de vídeo. Video4Linux é a escolha mais comum se você possui uma webcam."
-
-#~ msgid "_Find Contacts"
-#~ msgstr "_Localizar contatos"
-
-#~ msgid "Missed calls: %d - Voice Mails: %d"
-#~ msgstr "Chamadas não atendidas: %d - Mensagens de voz: %d"
-
-#~ msgid "Enter your first name"
-#~ msgstr "Digite seu primeiro nome"
-
-#~ msgid "Auto Away"
-#~ msgstr "Ausência automática"
-
-#~ msgid ""
-#~ "Timeout after which the user is automatically set as away (in minutes):"
-#~ msgstr ""
-#~ "Tempo de espera após o qual o usuário é automaticamente marcado como "
-#~ "ausente (em minutos):"
-
-#~ msgid ""
-#~ "Automatically set the user as away after the timeout has elapsed (in "
-#~ "minutes)"
-#~ msgstr ""
-#~ "Marcar usuário automaticamente como ausente após passar o tempo de espera "
-#~ "(em minutos)"
-
-#~ msgid "Image:"
-#~ msgstr "Imagem:"
-
-#~ msgid "Choose a Picture"
-#~ msgstr "Escolher uma figura"
-
-#~ msgid "Preview"
-#~ msgstr "Visualização"
-
-#~ msgid "Images"
-#~ msgstr "Imagens"
-
-#~ msgid "Address of public IP detector"
-#~ msgstr "Endereço do detector de IP público"
-
-#~ msgid "Audio plugin"
-#~ msgstr "Plugin de áudio"
-
-#~ msgid "Clear inactive calls"
-#~ msgstr "Limpar chamadas inativas"
-
-#~ msgid "Enable IP checking"
-#~ msgstr "Habilitar verificação de IP"
-
-#~ msgid ""
-#~ "Enter a valid URL to connect to a web application that outputs the public "
-#~ "IP of your host"
-#~ msgstr ""
-#~ "Digite uma URL válida para conectar a um aplicativo web que fornece o IP "
-#~ "público de sua máquina"
-
-#~ msgid ""
-#~ "Enter the public IP of your NAT/PAT router if you want to use IP "
-#~ "translation"
-#~ msgstr ""
-#~ "Digite o IP público do seu roteador NAT/PAT se você quiser usar tradução "
-#~ "de IP"
-
-#~ msgid "First name"
-#~ msgstr "Primeiro nome"
-
-#~ msgid "Gateway/proxy host"
-#~ msgstr "Máquina do gateway/proxy"
-
-#~ msgid ""
-#~ "If enabled, calls for which no audio and video has been received in the "
-#~ "last 30 seconds are automatically cleared"
-#~ msgstr ""
-#~ "Se habilitado, chamadas para as quais nem áudio nem vídeo foram recebidos "
-#~ "nos últimos 30 segundos serão limpas automaticamente"
-
-#~ msgid "Last name"
-#~ msgstr "Último nome"
-
-#~ msgid "Minimum jitter buffer"
-#~ msgstr "Buffer de jitter mínimo"
-
-#~ msgid "Public IP of the NAT/PAT router"
-#~ msgstr "IP público do routador NAT/PAT"
-
-#~ msgid ""
-#~ "Select the contact status: 0 (Online), 1 (Offline), 2 (Unknown), 3 "
-#~ "(Away), 4 (DND), 5 (Free For Chat), 6 (Invisible)"
-#~ msgstr ""
-#~ "Selecione o status do contato: 0 (On-line), 1 (Off-line), 2 "
-#~ "(Desconhecido), 3 (Ausente), 4 (Não Perturbe), 5 (Livre Para Conversar), "
-#~ "6 (Invisível)"
-
-#~ msgid ""
-#~ "Select the desired method for NAT traversal (STUN is strongly suggested)"
-#~ msgstr ""
-#~ "Selecione o método desejado para NAT transversal (STUN é altamente "
-#~ "recomendado)"
-
-#~ msgid ""
-#~ "The Gateway host is the host to use to do H.323 calls through a gateway "
-#~ "that will relay calls"
-#~ msgstr ""
-#~ "A máquina guardião é a maquina usada para fazer chamadas H.323 através de "
-#~ "um gateway que encaminhará as chamadas"
-
-#~ msgid "The NAT method"
-#~ msgstr "O método NAT"
-
-#~ msgid ""
-#~ "The audio plugin that will be used to detect the devices and manage them"
-#~ msgstr ""
-#~ "O plugin de áudio que será usado para detectar os dispositivos e gerenciá-"
-#~ "los"
-
-#~ msgid "The minimum jitter buffer size for audio reception (in ms)"
-#~ msgstr "O buffer de jitter mínimo para recepção de áudio (em ms)"
-
-#~ msgid "The network interface"
-#~ msgstr "A interface de rede"
-
-#~ msgid "The network interface to listen on"
-#~ msgstr "A interface de rede na qual ouvir"
-
-#~ msgid ""
-#~ "The range of UDP ports that Ekiga will use for RTP (audio and video "
-#~ "communication channels). Ekiga needs to be restarted for the new values "
-#~ "to take effect."
-#~ msgstr ""
-#~ "A faixa de portas UDP que o Ekiga usará para os canais RTP (canais de "
-#~ "comunicação de áudio e vídeo). O Ekiga precisa ser reiniciado para que os "
-#~ "novos valores tenham efeito."
-
-#~ msgid ""
-#~ "The range of UDP ports that Ekiga will use for SIP signaling and when "
-#~ "registering to gatekeepers. Ekiga needs to be restarted for the new "
-#~ "values to take effect."
-#~ msgstr ""
-#~ "A faixa de portas UDP que o Ekiga usará para sinalização SIP e quando se "
-#~ "registrar nos guardiões. O Ekiga precisa ser reiniciado para que os novos "
-#~ "valores tenham efeito."
-
-#~ msgid ""
-#~ "The video plugin that will be used to detect the devices and manage them"
-#~ msgstr ""
-#~ "O plugin de vídeo que será usado para detectar os dispositivos e gerenciá-"
-#~ "los"
-
-#~ msgid ""
-#~ "This enables IP checking from ekiga.com. The returned IP is only used "
-#~ "when IP Translation is enabled."
-#~ msgstr ""
-#~ "Isto habilita a verificação de IP do ekiga.com. O IP devolvido só é usado "
-#~ "ao a tradução de IP estiver habilitada."
-
-#~ msgid "Video plugin"
-#~ msgstr "Plugin de vídeo"
-
-#~ msgid "Free For Chat"
-#~ msgstr "Livre Para Conversar"
-
-#~ msgid "Group"
-#~ msgstr "Grupo"
-
-#~ msgid "Delete"
-#~ msgstr "Excluir"
-
-#~ msgid "Delete group %s?"
-#~ msgstr "Excluir grupo %s?"
-
-#~ msgid "Could not delete group!"
-#~ msgstr "Não foi possível excluir grupo!"
-
-#~ msgid "Group renamed."
-#~ msgstr "Grupo renomead."
-
-#~ msgid "Could not rename group!"
-#~ msgstr "Não foi possível renomear grupo!"
-
-#~ msgid "Open NAT"
-#~ msgstr "NAT Aberto"
-
-#~ msgid "Cone NAT"
-#~ msgstr "NAT Cone"
-
-#~ msgid "Restricted NAT"
-#~ msgstr "NAT Restrito"
-
-#~ msgid "Port Restricted NAT"
-#~ msgstr "NAT com Restrição de Porta"
-
-#~ msgid "Symmetric NAT"
-#~ msgstr "NAT Simétrico"
-
-#~ msgid "Symmetric Firewall"
-#~ msgstr "Firewall Simétrico"
-
-#~ msgid "Blocked"
-#~ msgstr "Bloqueado"
-
-#~ msgid "Partially Blocked"
-#~ msgstr "Bloqueado Parcialmente"
-
-#~ msgid "No NAT"
-#~ msgstr "Sem NAT"
-
-#~ msgid ""
-#~ "STUN test result: %s.\n"
-#~ "\n"
-#~ "Ekiga could not detect the type of NAT you are using. The most "
-#~ "appropriate method, if your router does not natively support SIP or "
-#~ "H.323, is probably to forward the required ports to your internal machine "
-#~ "and use IP translation if you are behind a NAT router. Please also make "
-#~ "sure you are not running a local firewall."
-#~ msgstr ""
-#~ "Resultado do teste STUN: %s.\n"
-#~ "\n"
-#~ "O Ekiga não pôde detectar o tipo de NAT que você está usando. O método "
-#~ "mais apropriado, se seu roteador não suporta SIP ou H.323 nativamente é, "
-#~ "provavelmente, encaminhar as portas necessárias para sua máquina interna "
-#~ "e usar tradução de IP se você estiver atrás de um roteador NAT. Confira "
-#~ "também se você não está executando um firewall local."
-
-#~ msgid ""
-#~ "STUN test result: %s.\n"
-#~ "\n"
-#~ "Your system does not need any specific configuration as long as you do "
-#~ "not have a local firewall blocking the ports required by Ekiga."
-#~ msgstr ""
-#~ "Resultado do teste de STUN: %s.\n"
-#~ "\n"
-#~ "Seu sistema não precisa de configurações específicas desde que você não "
-#~ "tenha um firewall local bloqueando as portas necessárias ao Ekiga."
-
-#~ msgid ""
-#~ "Ekiga detected Symmetric NAT. The most appropriate method, if your router "
-#~ "does not natively support SIP or H.323, is to forward the required ports "
-#~ "to your internal machine in order to change your Symmetric NAT into Cone "
-#~ "NAT. If you run this test again after the port forwarding has been done, "
-#~ "it should report Cone NAT. This should allow Ekiga to be used with STUN "
-#~ "support enabled. If it does not report Cone NAT, then it means that there "
-#~ "is a problem in your forwarding rules."
-#~ msgstr ""
-#~ "O Ekiga detectou NAT Simétrico. O método mais apropriado, se seu roteador "
-#~ "não suporta SIP ou H.323 nativamente, é encaminhar as portas necessárias "
-#~ "para sua máquina interna para substituir seu NAT Simétrico por NAT Cone. "
-#~ "Executar este teste novamente depois de ter feito o encaminhamento das "
-#~ "portas deverá reportar NAT Cone e o Ekiga poderá ser usado com o suporte "
-#~ "a STUN ativado. Se o teste não reportar NAT Cone, então existe um "
-#~ "problema nas suas regras de encaminhamento."
-
-#~ msgid ""
-#~ "STUN test result: %s.\n"
-#~ "\n"
-#~ "You do not seem to be using a NAT router. STUN support is not required."
-#~ msgstr ""
-#~ "Resultado do teste de STUN: %s.\n"
-#~ "\n"
-#~ "Você não parece estar usando um roteador NAT. O suporte a STUN não é "
-#~ "requerido."
-
-#~ msgid ""
-#~ "STUN test result: %s.\n"
-#~ "\n"
-#~ "Using a STUN server is most probably the most appropriate method if your "
-#~ "router does not natively support SIP or H.323.\n"
-#~ "\n"
-#~ "Enable STUN Support?"
-#~ msgstr ""
-#~ "Resultado do teste de STUN: %s.\n"
-#~ "\n"
-#~ "Usar um servidor STUN é provavelmente o método mais apropriado se seu "
-#~ "roteador não suporta SIP e H.323 nativamente.\n"
-#~ "\n"
-#~ "Deseja habilitar o suporte a STUN?"
-
-#~ msgid "NAT Detection Finished"
-#~ msgstr "Detecção de NAT finalizada"
-
-#~ msgid "The detection of your NAT type is finished"
-#~ msgstr "A detecção do seu tipo de NAT terminou"
-
-#~ msgid "Please wait while your type of NAT is being detected."
-#~ msgstr "Por favor, aguarde enquanto o seu tipo de NAT está sendo detectado."
-
-#~ msgid "Cannot run Ekiga"
-#~ msgstr "Não foi possível executar o Ekiga"
-
-#~ msgid ""
-#~ "Ekiga is already running, if you want it to call a given SIP, H.323, or "
-#~ "callto address, please use \"ekiga -c address\"."
-#~ msgstr ""
-#~ "O Ekiga já está executando, se você quiser chamar um endereço SIP, H.323 "
-#~ "ou callto, por favor use \"ekiga -c endereço\"."
-
-#~ msgid ""
-#~ "It appears that you do not have ekiga.server installed in a valid "
-#~ "location. Factory mode disabled.\n"
-#~ msgstr ""
-#~ "Parece que você não tem o arquivo ekiga.server instalado em um local "
-#~ "válido. O modo fábrica será desabilitado.\n"
-
-#~ msgid ""
-#~ "Error registering Ekiga with the activation service; factory mode "
-#~ "disabled.\n"
-#~ msgstr ""
-#~ "Erro ao registrar o Ekiga com o serviço de ativação; modo fábrica "
-#~ "desabilitado.\n"
-
-#~ msgid "Failed to retrieve Ekiga server from activation server\n"
-#~ msgstr "Falha ao obter o servidor Ekiga do servidor de ativação\n"
-
-#~ msgid "Picture"
-#~ msgstr "Picture"
-
-#~ msgid ""
-#~ "Ekiga is now testing the %s video device. If you experience machine "
-#~ "crashes, then report a bug to the video driver author."
-#~ msgstr ""
-#~ "O Ekiga está testando agora o dispositivo de vídeo %s. Se a sua máquina "
-#~ "travar, relate o erro ao autor do controlador de vídeo."
-
-#~ msgid "Test %d done"
-#~ msgstr "Teste %d efetuado"
-
-#~ msgid "Test %d failed"
-#~ msgstr "Teste %d falhou"
-
-#~ msgid "Error while opening %s."
-#~ msgstr "Erro ao abrir %s."
-
-#~ msgid "Could not open the chosen channel with the chosen video format."
-#~ msgstr ""
-#~ "Não foi possível abrir o canal escolhido com o formato de vídeo escolhido."
-
-#~ msgid "Your driver doesn't support any of the color formats tried by Ekiga"
-#~ msgstr ""
-#~ "O seu controlador não suporta nenhum dos formatos de cor tentados pelo "
-#~ "Ekiga"
-
-#~ msgid "Error with the frame rate."
-#~ msgstr "Erro na taxa de quadros."
-
-#~ msgid "Error with the frame size."
-#~ msgstr "Erro no tamanho dos quadros."
-
-#~ msgid "Answering call..."
-#~ msgstr "Atendendo chamada..."
-
-#~ msgid "Could not open audio channel for audio transmission"
-#~ msgstr "Não foi possível abrir canal de áudio para transmissão de áudio"
-
-#~ msgid ""
-#~ "An error occurred while trying to record from the soundcard for the audio "
-#~ "transmission. Please check that your soundcard is not busy and that your "
-#~ "driver supports full-duplex.\n"
-#~ "The audio transmission has been disabled."
-#~ msgstr ""
-#~ "Ocorreu um erro ao tentar gravar da placa de som para a transmissão de "
-#~ "áudio. Por favor, verifique se sua placa de som não está ocupada e se o "
-#~ "seu driver tem suporte a full-duplex.\n"
-#~ "A transmissão de áudio foi desabilitada."
-
-#~ msgid "Could not open audio channel for audio reception"
-#~ msgstr "Não foi possível abrir canal de áudio para recepção de áudio"
-
-#~ msgid ""
-#~ "An error occurred while trying to play audio to the soundcard for the "
-#~ "audio reception. Please check that your soundcard is not busy and that "
-#~ "your driver supports full-duplex.\n"
-#~ "The audio reception has been disabled."
-#~ msgstr ""
-#~ "Ocorreu um erro ao tentar reproduzir áudio na placa de som para a "
-#~ "recepção de áudio. Por favor, verifique se sua placa de som não está "
-#~ "ocupada e se o seu driver tem suporte a full-duplex.\n"
-#~ "A recepção de áudio foi desabilitada."
-
-#~ msgid "Invalid URL handler"
-#~ msgstr "Tratador de URL inválido"
-
-#~ msgid ""
-#~ "Please specify a valid URL handler. Currently h323:, callto: and sip: are "
-#~ "supported."
-#~ msgstr ""
-#~ "Por favor, especifique um manipulador de URL válido. Atualmente há "
-#~ "suporte para h323:, callto: e sip:."
-
-#~ msgid "Transferring call to %s"
-#~ msgstr "Encaminhando chamada para %s"
-
-#~ msgid "Failed to call user"
-#~ msgstr "Falha ao chamar o usuário"
-
-#~ msgid "Edit the Account Information"
-#~ msgstr "Editar as informações de conta"
-
-#~ msgid "Account Name:"
-#~ msgstr "Nome da Conta:"
-
-#~ msgid "Protocol:"
-#~ msgstr "Protocolo:"
-
-#~ msgid "More _Options"
-#~ msgstr "Mais _Opções"
-
-#~ msgid "Gatekeeper ID:"
-#~ msgstr "ID do guardião:"
-
-#~ msgid "Registration Timeout:"
-#~ msgstr "Tempo de registro esgotado:"
-
-#~ msgid "Missing or wrong information"
-#~ msgstr "Informação ausente ou incorreta"
-
-#~ msgid ""
-#~ "Please make sure to provide at least an <b>account name</b>, a "
-#~ "<b>username</b> and a valid <b>timeout in seconds</b>."
-#~ msgstr ""
-#~ "Por favor, certifique-se de fornecer ao menos um <b>nome de conta</b>, um "
-#~ "<b>nome de usuário</b> e um <b>tempo limite em segundos</b> válido."
-
-#~ msgid "Are you sure you want to delete account %s?"
-#~ msgstr "Você tem certeza que deseja excluir a conta %s?"
-
-#~ msgid "Realm/Domain:"
-#~ msgstr "Reino/Domínio:"
-
-#~ msgid "Protocol"
-#~ msgstr "Protocolo"
-
-#~ msgid "_Default"
-#~ msgstr "_Padrão"
-
-#~ msgid "Changing this setting will only affect new calls"
-#~ msgstr "Alterar esta configuração afetará apenas novas chamadas"
-
-#~ msgid ""
-#~ "Ekiga cannot apply one or more changes to the current call. Your new "
-#~ "settings will take effect for the next call."
-#~ msgstr ""
-#~ "O Ekiga não pode aplicar uma ou mais alterações à chamada atual. Suas "
-#~ "novas configurações só terão efeito a partir da próxima chamada."
-
-#~ msgid "Personal Information - page %d/%d"
-#~ msgstr "Informações Pessoais - página %d/%d"
-
-#~ msgid "NAT Type - page %d/%d"
-#~ msgstr "Tipo de NAT - página %d/%d"
-
-#~ msgid "Click here to detect your NAT Type:"
-#~ msgstr "Clique aqui para detectar o seu tipo de NAT:"
-
-#~ msgid "Detect NAT Type"
-#~ msgstr "Detectar Tipo de NAT"
-
-#~ msgid ""
-#~ "The NAT type detection will permit to assist you in configuring your NAT "
-#~ "router to be able to do calls with Ekiga."
-#~ msgstr ""
-#~ "A detecção de tipo de NAT ajudará você na configuração do seu roteador "
-#~ "NAT para fazer chamadas com o Ekiga."
-
-#~ msgid "Audio Manager - page %d/%d"
-#~ msgstr "Gerenciador de Áudio - página %d/%d"
-
-#~ msgid "Please choose your audio manager:"
-#~ msgstr "Por favor escolha o seu gerenciador de áudio:"
-
-#~ msgid ""
-#~ "The audio manager is the plugin that will manage your audio devices. "
-#~ "WindowsMultimedia is probably the best choice when available."
-#~ msgstr ""
-#~ "O gerenciador de áudio é o plugin que gerenciará seus dispositivos de "
-#~ "áudio. WindowsMultimedia é provavelmente a melhor opção, quando "
-#~ "disponível."
-
-#~ msgid ""
-#~ "The audio manager is the plugin that will manage your audio devices. ALSA "
-#~ "is probably the best choice when available."
-#~ msgstr ""
-#~ "O gerenciador de áudio é o plugin que gerenciará seus dispositivos de "
-#~ "áudio. ALSA é provavelmente a melhor opção, quando disponível."
-
-#~ msgid "Audio Devices - page %d/%d"
-#~ msgstr "Dispositivos de Áudio - página %d/%d"
-
-#~ msgid "Test Settings"
-#~ msgstr "Testar Configurações"
-
-#~ msgid "Video Manager - page %d/%d"
-#~ msgstr "Gerenciador de Vídeo - página %d/%d"
-
-#~ msgid "Please choose your video manager:"
-#~ msgstr "Por favor escolha o seu gerenciador de vídeo:"
-
-#~ msgid "Video Devices - page %d/%d"
-#~ msgstr "Dispositivos de Vídeo - página %d/%d"
-
-#~ msgid "xDSL/Cable"
-#~ msgstr "xDSL/Cabo"
-
-#~ msgid ""
-#~ "You have now finished the Ekiga configuration. All the settings can be "
-#~ "changed in the Ekiga preferences. Enjoy!\n"
-#~ "\n"
-#~ "\n"
-#~ "Configuration summary:\n"
-#~ "\n"
-#~ "Username: %s\n"
-#~ "Connection type: %s\n"
-#~ "Audio manager: %s\n"
-#~ "Audio player: %s\n"
-#~ "Audio recorder: %s\n"
-#~ "Video manager: %s\n"
-#~ "Video input: %s\n"
-#~ "SIP URI: %s\n"
-#~ msgstr ""
-#~ "Você terminou a configuração do Ekiga. Todos os parâmetros podem ser "
-#~ "alterados nas preferências do Ekiga. Divirta-se!\n"
-#~ "\n"
-#~ "\n"
-#~ "Resumo da configuração:\n"
-#~ "\n"
-#~ "Usuário: %s\n"
-#~ "Tipo de conexão: %s\n"
-#~ "Gerenciador de áudio: %s\n"
-#~ "Reprodutor de áudio: %s\n"
-#~ "Gravador de áudio: %s\n"
-#~ "Gerenciador de vídeo: %s\n"
-#~ "Entrada de vídeo: %s\n"
-#~ "URI SIP: %s\n"
-
-#~ msgid "Invisible"
-#~ msgstr "Invisível"
-
-#~ msgid "C_all"
-#~ msgstr "_Chamada"
-
-#~ msgid "_Online"
-#~ msgstr "_On-line"
-
-#~ msgid "_Away"
-#~ msgstr "_Ausente"
-
-#~ msgid "Do Not _Disturb"
-#~ msgstr "Não _Perturbe"
-
-#~ msgid "_Free For Chat"
-#~ msgstr "Li_vre Para Conversar"
-
-#~ msgid "Save a snapshot of the current video"
-#~ msgstr "Salva uma imagem do vídeo atual"
-
-#~ msgid "Panel"
-#~ msgstr "Painel"
-
-#~ msgid "Calls _History"
-#~ msgstr "_Histórico de Chamadas"
-
-#~ msgid "View the call information"
-#~ msgstr "Ver informações da chamada"
-
-#~ msgid "_Tools"
-#~ msgstr "_Ferramentas"
-
-#~ msgid "PC-To-Phone Account"
-#~ msgstr "Conta PC-To-Phone"
-
-#~ msgid "Manage your PC-To-Phone account"
-#~ msgstr "Gerenciar a sua conta PC-To-Phone"
-
-#~ msgid "Sent DTMF %c"
-#~ msgstr "DTMF %c enviado"
-
-#~ msgid "_First name:"
-#~ msgstr "_Primeiro nome:"
-
-#~ msgid "Sur_name:"
-#~ msgstr "_Sobrenome:"
-
-#~ msgid "Enter your surname"
-#~ msgstr "Digite seu sobrenome"
-
-#~ msgid "Ekiga GUI"
-#~ msgstr "GUI do Ekiga"
-
-#~ msgid "Automatically _clear calls after 30 seconds of inactivity"
-#~ msgstr "_Limpar chamada automaticamente após 30 segundos de inatividade"
-
-#~ msgid "Alternative output device:"
-#~ msgstr "Dispositivo de saída alternativo:"
-
-#~ msgid "Select an alternative audio output device to use for sound events"
-#~ msgstr ""
-#~ "Selecione o dispositivo de saída de áudio alternativo para usar nos "
-#~ "eventos de som"
-
-#~ msgid "STUN"
-#~ msgstr "STUN"
-
-#~ msgid "IP Translation"
-#~ msgstr "Tradução de IP"
-
-#~ msgid "Listen on:"
-#~ msgstr "Ouvir em:"
-
-#~ msgid "NAT Traversal Method:"
-#~ msgstr "Método de NAT Tranversal:"
-
-#~ msgid "The STUN server to use for STUN Support."
-#~ msgstr "O servidor STUN para usar o suporte a STUN."
-
-#~ msgid "Click here to update your NAT settings"
-#~ msgstr "Clique aqui para atualizar suas configurações de NAT"
-
-#~ msgid "Audio Plugin"
-#~ msgstr "Plugin de Áudio"
-
-#~ msgid "Audio plugin:"
-#~ msgstr "Plugin de áudio:"
-
-#~ msgid ""
-#~ "The audio plugin that will be used to detect the devices and manage them."
-#~ msgstr ""
-#~ "O plugin de áudio que será usado para detectar os dispositivos e gerenciá-"
-#~ "los."
-
-#~ msgid "Video Plugin"
-#~ msgstr "Plugin de Vídeo"
-
-#~ msgid "Video plugin:"
-#~ msgstr "Plugin de vídeo:"
-
-#~ msgid "Available Audio Codecs"
-#~ msgstr "Codecs de Áudio Disponíveis"
-
-#~ msgid "Audio Codecs Settings"
-#~ msgstr "Configurações de Codecs de Áudio"
-
-#~ msgid "Automatically adjust _jitter buffer between"
-#~ msgstr "Ajustar automaticamente o buffer de _jitter entre"
-
-#~ msgid "and"
-#~ msgstr "e"
-
-#~ msgid "ms"
-#~ msgstr "ms"
-
-#~ msgid "The minimum jitter buffer size for audio reception (in ms)."
-#~ msgstr "O buffer de jitter mínimo para recepção de áudio (em ms)."
-
-#~ msgid "Available Video Codecs"
-#~ msgstr "Codecs de Vídeo Disponíveis"
-
-#~ msgid "Video Codecs Settings"
-#~ msgstr "Configurações de Codecs de Vídeo"
-
-#~ msgid "Enable _video support"
-#~ msgstr "Habilitar suporte a _vídeo"
-
-#~ msgid "If enabled, allows video during calls."
-#~ msgstr "Se habilitado, permite vídeo durante as chamadas."
-
-#~ msgid "Invalid parameters"
-#~ msgstr "Parâmetros inválidos"
-
-#~ msgid ""
-#~ "Please provide your username and password in order to be able to use the "
-#~ "PC-To-Phone service."
-#~ msgstr ""
-#~ "Por favor, digite seu nome de usuário e senha para poder usar o serviço "
-#~ "PC-To-Phone."
-
-#~ msgid "PC-To-Phone Settings"
-#~ msgstr "Configurações PC-To-Phone"
-
-#~ msgid "Account _number:"
-#~ msgstr "_Número de conta:"
-
-#~ msgid "Use PC-To-Phone service"
-#~ msgstr "Usar o serviço PC-To-Phone"
-
-#~ msgid ""
-#~ "Click on one of the following links to get more information about your "
-#~ "existing Ekiga PC-To-Phone account, or to create a new account."
-#~ msgstr ""
-#~ "Clique num dos seguintes atalhos para obter mais informações sobre a sua "
-#~ "conta PC-To-Phone do Ekiga existente ou para cria uma nova conta."
-
-#~ msgid "Minimum transmitted video quality"
-#~ msgstr "Qualidade mínima de vídeo transmitido"
-
-#~ msgid "Size of the log window"
-#~ msgstr "Tamanho da janela do registro"
-
-#~ msgid "The local zoom value"
-#~ msgstr "O valor da ampliação local"
-
-#~ msgid ""
-#~ "The minimum transmitted video quality to keep when trying to minimize the "
-#~ "used bandwidth: choose 100% on a LAN for the best quality, 1% being the "
-#~ "worst quality"
-#~ msgstr ""
-#~ "A qualidade mínima do vídeo transmitido a ser mantida ao tentar minimizar "
-#~ "a largura de banda: selecione 100% em uma LAN para a melhor qualidade, 1% "
-#~ "é a pior qualidade"
-
-#~ msgid "The remote zoom value"
-#~ msgstr "O valor da ampliação remota"
-
-#~ msgid ""
-#~ "The zoom value to apply to images displayed in the local video window "
-#~ "(can be 0.50, 1.00, or 2.00)"
-#~ msgstr ""
-#~ "O valor da ampliação a ser aplicada nas imagens exibidas na janela de "
-#~ "vídeo local (pode ser 0.50, 1.00 ou 2.00)"
-
-#~ msgid ""
-#~ "The zoom value to apply to images displayed in the remote video window "
-#~ "(can be 0.50, 1.00, or 2.00)"
-#~ msgstr ""
-#~ "O valor da ampliação a ser aplicada nas imagens exibidas na janela de "
-#~ "vídeo remoto (pode ser 0.50, 1.00 ou 2.00)"
-
-#~ msgid ""
-#~ "An error has happened in the configuration backend.\n"
-#~ "Maybe some of your settings won't be saved."
-#~ msgstr ""
-#~ "Ocorreu um erro no sistema de configuração.\n"
-#~ "Possivelmente algumas das suas configurações não serão salvas."
-
-#~ msgid "On This Computer"
-#~ msgstr "Neste computador"
-
-#~ msgid "Personal"
-#~ msgstr "Pessoal"
-
-#~ msgid "Colleagues"
-#~ msgstr "Colegas"
-
-#~ msgid "Orientation"
-#~ msgstr "Orientação"
-
-#~ msgid "The orientation of the tray."
-#~ msgstr "A orientação da bandeja."
-
-#~ msgid "STUN server set to %s"
-#~ msgstr "Servidor STUN definido como %s"
-
-#~ msgid "Removed STUN server"
-#~ msgstr "Servidor STUN removido"
-
-#~ msgid "Set STUN server to %s (%s)"
-#~ msgstr "Definir servidor STUN para %s (%s)"
-
-#~ msgid "Ignored STUN server (%s)"
-#~ msgstr "Servidor STUN ignorado (%s)"
-
-#~ msgid "Opening video device %s with plugin %s"
-#~ msgstr "Abrindo dispositivo de vídeo %s com plugin %s"
-
-#~ msgid "Successfully opened video device %s, channel %d"
-#~ msgstr "Dispositivo de vídeo %s, canal %d, foi aberto com sucesso"
-
-#~ msgid "Couldn't open the video device"
-#~ msgstr "Não foi possível abrir o dispositivo de cídeo"
-
-#~ msgid "Opened the video device using the \"Picture\" video plugin"
-#~ msgstr ""
-#~ "O dispositivo de vídeo foi aberto usando o plugin de vídeo \"Picture\""
-
-#~ msgid "Registration of %s to %s failed"
-#~ msgstr "Registro de %s em %s falhou"
-
-#~ msgid "Registration failed"
-#~ msgstr "Falha ao registrar"
-
-#~ msgid "Unregistering"
-#~ msgstr "Desfazendo registro"
-
-#~ msgid "Gatekeeper registration failed: duplicate alias"
-#~ msgstr "Registro no guardião falhou: apelido duplicado"
-
-#~ msgid "Gatekeeper registration failed: bad username/password"
-#~ msgstr "Registro no guardião falhou: nome de usuário e/ou senha errados"
-
-#~ msgid "Gatekeeper registration failed: transport error"
-#~ msgstr "Registro no guardião falhou: erro de transporte"
-
-#~ msgid "Gatekeeper registration failed"
-#~ msgstr "Registro no guardião falhou"
-
-#~ msgid "Started Ekiga %d.%d.%d for user %s"
-#~ msgstr "Ekiga %d.%d.%d iniciado para o usuário %s"
-
-#~ msgid "Rejecting incoming call"
-#~ msgstr "Rejeitando chamada recebida"
-
-#~ msgid "Rejecting incoming call from %s"
-#~ msgstr "Rejeitando chamada recebida de %s"
-
-#~ msgid "Forwarding incoming call"
-#~ msgstr "Encaminhando chamada recebida"
-
-#~ msgid "Forwarding incoming call from %s to %s"
-#~ msgstr "Encaminhando chamada recebida de %s para %s"
-
-#~ msgid "Auto-Answering incoming call from %s"
-#~ msgstr "Atendendo automaticamente a chamada recebida de %s"
-
-#~ msgid "Connected with %s using %s"
-#~ msgstr "Conectado com %s usando %s"
-
-#~ msgid "Error while starting the listener for the H.323 protocol"
-#~ msgstr "Erro ao iniciar o listener para o protocolo H.323"
-
-#~ msgid ""
-#~ "You will not be able to receive incoming H.323 calls. Please check that "
-#~ "no other program is already running on the port used by Ekiga."
-#~ msgstr ""
-#~ "Você não poderá receber chamadas H.323. Por favor, verifique se nenhum "
-#~ "outro programa já está usando a porta utilizada pelo Ekiga."
-
-#~ msgid "Error while starting the listener for the SIP protocol"
-#~ msgstr "Erro ao iniciar o listener para o protocolo SIP"
-
-#~ msgid ""
-#~ "You will not be able to receive incoming SIP calls. Please check that no "
-#~ "other program is already running on the ports used by Ekiga."
-#~ msgstr ""
-#~ "Você não poderá receber chamadas SIP. Por favor, verifique se nenhum "
-#~ "outro programa está usando as portas utilizadas pelo Ekiga."
-
-#~ msgid "Opened codec %s for transmission"
-#~ msgstr "Codec %s foi aberto para transmissão"
-
-#~ msgid "Closed codec %s which was opened for transmission"
-#~ msgstr "Codec %s, que fora aberto para transmissão, foi fechado"
-
-#~ msgid "Opened codec %s for reception"
-#~ msgstr "Codec %s foi aberto para recepção"
-
-#~ msgid "Closed codec %s which was opened for reception"
-#~ msgstr "Codec %s, que fora aberto para recepção, foi fechado"
-
-#~ msgid "Opened %s for recording with plugin %s"
-#~ msgstr "%s foi aberto para gravação com plug-in %s"
-
-#~ msgid "Opened %s for playing with plugin %s"
-#~ msgstr "%s foi aberto para reprodução com plug-in %s"
-
-#~ msgid "Registration of %s failed: %s"
-#~ msgstr "Falha no registro de %s: %s"
-
-#~ msgid "Unregistration of %s failed: %s"
-#~ msgstr "Falha ao desfazer registro de %s: %s"
-
-#~ msgid "Unregistration failed"
-#~ msgstr "Falha ao desfazer registro"
-
-#~ msgid "Error: User not found"
-#~ msgstr "Erro: Usuário não encontrado"
-
-#~ msgid "Error: User offline"
-#~ msgstr "Erro: Usuário desconectado"
-
-#~ msgid "Error: Forbidden"
-#~ msgstr "Erro: Proibido"
-
-#~ msgid "Error: Timeout"
-#~ msgstr "Erro: Tempo esgotado"
-
-#~ msgid "Error: Failed to transmit message"
-#~ msgstr "Erro: Falha ao transmitir a mensagem"
-
-#~ msgid ""
-#~ "Another contact with the same speed dial already exists in your address "
-#~ "book:\n"
-#~ "\n"
-#~ "<b>Name</b>: %s\n"
-#~ "<b>URI</b>: %s\n"
-#~ "<b>Speed Dial</b>: %s\n"
-#~ msgstr ""
-#~ "Já existe outro contato com a mesma discagem rápida no seu catálogo de "
-#~ "endereços:\n"
-#~ "\n"
-#~ "<b>Nome</b>: %s\n"
-#~ "<b>URI</b>: %s\n"
-#~ "<b>Discagem rápida</b>: %s\n"
-
-#~ msgid ""
-#~ "Another contact with similar information already exists in your address "
-#~ "book:\n"
-#~ "\n"
-#~ "<b>Name</b>: %s\n"
-#~ "<b>URI</b>: %s\n"
-#~ "<b>Speed Dial</b>: %s\n"
-#~ "\n"
-#~ "Do you still want to add the contact?"
-#~ msgstr ""
-#~ "Já existe outro contato com informação similar no seu catálogo de "
-#~ "endereços:\n"
-#~ "\n"
-#~ "<b>Nome</b>: %s\n"
-#~ "<b>URI</b>: %s\n"
-#~ "<b>Discagem rápida</b>: %s\n"
-#~ "\n"
-#~ "Você quer adicionar este contato assim mesmo?"
-
-#~ msgid "S"
-#~ msgstr "E"
-
-#~ msgid "Comment"
-#~ msgstr "Comentário"
-
-#~ msgid "Software"
-#~ msgstr "Software"
-
-#~ msgid "E-Mail"
-#~ msgstr "E-mail"
-
-#~ msgid "Location"
-#~ msgstr "Localização"
-
-#~ msgid "Speed Dial"
-#~ msgstr "Discagem Rápida"
-
-#~ msgid "Name contains"
-#~ msgstr "Nome contém"
-
-#~ msgid "URI contains"
-#~ msgstr "URI contém"
-
-#~ msgid "Belongs to category"
-#~ msgstr "Pertence à categoria"
-
-#~ msgid "Location contains"
-#~ msgstr "Localização contém"
-
-#~ msgid "Error while fetching the user list from %s"
-#~ msgstr "Erro ao obter a lista de usuários de %s"
-
-#~ msgid "Found %d user in %s"
-#~ msgid_plural "Found %d users in %s"
-#~ msgstr[0] "%d usuário encontrado em %s"
-#~ msgstr[1] "%d usuários encontrados em %s"
-
-#~ msgid "Found %d user in %s for a total of %d users"
-#~ msgid_plural "Found %d users in %s for a total of %d users"
-#~ msgstr[0] "%d usuário encontrado em %s para um total de %d usuários"
-#~ msgstr[1] "%d usuários encontrados em %s para um total de %d usuários"
-
-#~ msgid "C_ontact"
-#~ msgstr "C_ontatos"
-
-#~ msgid "_Copy URI to Clipboard"
-#~ msgstr "_Copiar URI para a Área de Transferência"
-
-#~ msgid "_Write e-Mail"
-#~ msgstr "Escre_ver e-mail"
-
-#~ msgid "Add Contact to _Address Book"
-#~ msgstr "A_dicionar Contato ao Catálogo de Endereços"
-
-#~ msgid "New _Address Book"
-#~ msgstr "No_vo Catálogo de Endereços"
-
-#~ msgid "Local Contacts"
-#~ msgstr "Contatos Locais"
-
-#~ msgid "Email:"
-#~ msgstr "E-mail:"
-
-#~ msgid "Speed Dial:"
-#~ msgstr "Discagem rápida:"
-
-#~ msgid "Categories:"
-#~ msgstr "Categorias:"
-
-#~ msgid "Local Addressbook:"
-#~ msgstr "Catálogo de Endereços Local:"
-
-#~ msgid "Missing information"
-#~ msgstr "Informação faltando"
-
-#~ msgid ""
-#~ "Please make sure to provide at least a full name or an URI for the "
-#~ "contact."
-#~ msgstr ""
-#~ "Por favor forneça pelo menos um nome completo ou um URI para o contato."
-
-#~ msgid "Are you sure you want to delete %s?"
-#~ msgstr "Você tem certeza que deseja excluir %s?"
-
-#~ msgid "Edit an address book"
-#~ msgstr "Editar um livro de endereços"
-
-#~ msgid "Type:"
-#~ msgstr "Tipo:"
-
-#~ msgid "Local"
-#~ msgstr "Local"
-
-#~ msgid "Remote LDAP"
-#~ msgstr "LDAP Remoto"
-
-#~ msgid "Remote ILS"
-#~ msgstr "ILS Remoto"
-
-#~ msgid "Please make sure you fill in all required fields."
-#~ msgstr "Por favor, certifique-se de preencher todos os campos requeridos."
-
-#~ msgid "Are you sure you want to delete %s and all its contacts?"
-#~ msgstr ""
-#~ "Você tem certeza que você deseja excluir %s e todos os seus contatos?"
-
-#~ msgid "Type"
-#~ msgstr "Tipo"
-
-#~ msgid "Date"
-#~ msgstr "Data"
-
-#~ msgid "Duration"
-#~ msgstr "Duração"
-
-#~ msgid "Call this user"
-#~ msgstr "Chamar este usuário"
-
-#~ msgid "_Open URL"
-#~ msgstr "_Abrir URL"
-
-#~ msgid "_Copy URL to Clipboard"
-#~ msgstr "_Copiar URL para a Área de Transferência"
-
-#~ msgid "C_all Contact"
-#~ msgstr "_Chamar Contato"
-
-#~ msgid "You"
-#~ msgstr "Você"
-
-#~ msgid "New Remote User"
-#~ msgstr "Novo Usuário Remoto"
-
-#~ msgid "H.245 Tunneling disabled"
-#~ msgstr "Encapsulamento H.245 desabilitado"
-
-#~ msgid "H.245 Tunneling enabled"
-#~ msgstr "Encapsulamento H.245 habilitado"
-
-#~ msgid "Early H.245 disabled"
-#~ msgstr "H.245 precoce habilitado"
-
-#~ msgid "Early H.245 enabled"
-#~ msgstr "H.245 precoce habilitado"
-
-#~ msgid "Fast Start disabled"
-#~ msgstr "Início rápido desabilitado"
-
-#~ msgid "Fast Start enabled"
-#~ msgstr "Início rápido habilitado"
-
-#~ msgid "Enabled silence detection"
-#~ msgstr "Detecção de silêncio habilitada"
-
-#~ msgid "Enabled echo cancelation"
-#~ msgstr "Cancelamento de eco habilitado"
-
-#~ msgid "Disabled echo cancelation"
-#~ msgstr "Cancelamento de eco desabilitado"
-
-#~ msgid "Edit Groups"
-#~ msgstr "Editar Grupos"
-
-#~ msgid "More _Settings"
-#~ msgstr "Mais _Opções"
-
-#~ msgid ""
-#~ "Please make sure to provide at least a full name and an URI for the "
-#~ "contact."
-#~ msgstr ""
-#~ "Por favor forneça pelo menos um nome completo ou um URI para o contato."
-
-#~ msgid "General History"
-#~ msgstr "Histórico Geral"
-
-#~ msgid "New Contact"
-#~ msgstr "Novo Contato"
-
-#~ msgid "Open text chat"
-#~ msgstr "Abrir conversa em texto"
-
-#~ msgid "Speed dials"
-#~ msgstr "Discagens rápidas"
-
-#~ msgid "Open the address book"
-#~ msgstr "Abrir o catálogo de endereços"
-
-#~ msgid "C_hat Window"
-#~ msgstr "Janela de Con_versa"
-
-#~ msgid "Open the chat window"
-#~ msgstr "Abre a janela de conversa"
-
-#~ msgid "View the operations history"
-#~ msgstr "Ver histórico de operações"
-
-#~ msgid "Notification area not detected"
-#~ msgstr "Área de notificação não detectada"
-
-#~ msgid ""
-#~ "The notification area is not present in your panel, so Ekiga cannot start "
-#~ "hidden."
-#~ msgstr ""
-#~ "A área de notificação não está presente no seu painel, portanto o Ekiga "
-#~ "não pode iniciar oculto."
-
-#~ msgid "Normal"
-#~ msgstr "Normal"
-
-#~ msgid "Large"
-#~ msgstr "Grande"
-
-#~ msgid ""
-#~ "Select the transmitted video size: Normal (QCIF 176x144) or Large (CIF "
-#~ "352x288)"
-#~ msgstr ""
-#~ "Selecione o tamanho do vídeo transmitido: Normal (QCIF 176x144) ou Grande "
-#~ "(CIF 352x288)"
-
-#~ msgid ""
-#~ "Automatically switch to fullscreen for images displayed in the main GUI "
-#~ "at the beginning of the call"
-#~ msgstr ""
-#~ "Trocar automaticamente para tela cheia para imagens exibidas na janela "
-#~ "principal ao iniciar uma chamada"
-
-#~ msgid "Incoming call mode"
-#~ msgstr "Modo de chamada recebida"
-
-#~ msgid ""
-#~ "The way to react to incoming calls: 0 displays a popup, 1 automatically "
-#~ "answers the call, 2 automatically rejects the call and 3 forwards the "
-#~ "call to the given URL, if any"
-#~ msgstr ""
-#~ "A maneira de reagir a chamadas recebidas: 0 exibe uma janela instantânea, "
-#~ "1 atende a chamada automaticamente, 2 rejeita a chamada automaticamente e "
-#~ "3 encaminha a chamada para a URL, se fornecida"
-
-#~ msgid "Unregistered from %s"
-#~ msgstr "Registro desfeito de %s"
-
-#~ msgid "Hang _up"
-#~ msgstr "_Desligar"
-
-#~ msgid "_Available"
-#~ msgstr "Dispo_nível"
-
-#~ msgid "Display a popup to accept the call"
-#~ msgstr "Exibir uma janela instantânea para aceitar chamada"
-
-#~ msgid "Auto answer calls"
-#~ msgstr "Atender automaticamente chamadas"
-
-#~ msgid "Reject calls"
-#~ msgstr "Rejeitar chamadas"
-
-#~ msgid "Forward calls"
-#~ msgstr "Encaminhar chamadas"
-
-#~ msgid "Both (Both in New Windows)"
-#~ msgstr "Ambos (Ambos em Novas Janelas)"
-
-#~ msgid "Enable bilinear filtering on displayed video"
-#~ msgstr "Habilitar filtro bilinear no vídeo exibido"
-
-#~ msgid ""
-#~ "Enable or disable bilinear interpolation when rendering video images "
-#~ "(this has no effect in fullscreen mode)"
-#~ msgstr ""
-#~ "Habilitar ou desabilitar interpolação bilinear ao compor imagens de vídeo "
-#~ "(não tem nenhum efeito no modo tela cheia)"
-
-#~ msgid "Credits"
-#~ msgstr "Créditos"
-
-#~ msgid "Written by"
-#~ msgstr "Escrito por"
-
-#~ msgid "Translated by"
-#~ msgstr "Traduzido por"
-
-#~ msgid "C_redits"
-#~ msgstr "C_réditos"
-
-#~ msgid "Authors"
-#~ msgstr "Autores"
-
-#~ msgid "Documenter entry"
-#~ msgstr "Entrada de documentador"
-
-#~ msgid "A single documenter entry"
-#~ msgstr "Uma única entrada de documentador"
-
-#~ msgid "About %s"
-#~ msgstr "Sobre %s"
-
-#~ msgid ""
-#~ "Please provide your first name and e-mail in the Personal Data section in "
-#~ "order to be able to register to the users directory."
-#~ msgstr ""
-#~ "Por favor, digite o seu primeiro nome e e-mail na seção de Dados Pessoais "
-#~ "para que seja possível registrar-se no diretório de usuários."
-
-#~ msgid "Operation impossible since there is no users directory specified."
-#~ msgstr ""
-#~ "Operação impossível pois não foi especificado nenhum diretório de "
-#~ "usuários."
-
-#~ msgid "Failed to parse XML file"
-#~ msgstr "Falha ao analisar arquivo XML"
-
-#~ msgid ""
-#~ "There was an error while parsing the XML file. Please make sure that it "
-#~ "is correctly installed in your system."
-#~ msgstr ""
-#~ "Houve um erro ao analisar o arquivo XML. Por favor, certifique-se de que "
-#~ "ele está corretamente instalado em seu sistema."
-
-#~ msgid "Bad information"
-#~ msgstr "Informação inválida"
-
-#~ msgid "Bad LDAP information from XML file: %s."
-#~ msgstr "Informação LDAP inválida no arquivo XML: %s."
-
-#~ msgid "ILS registration failed: unable to connect to %s"
-#~ msgstr "Registro ILS falhou: não foi possível conectar a %s"
-
-#~ msgid "ILS registration failed: unable to set time limit on operations"
-#~ msgstr ""
-#~ "Registro ILS falhou: não foi possível definir o tempo limite para as "
-#~ "operações."
-
-#~ msgid "ILS registration failed: failed to bind to %s"
-#~ msgstr "Registro ISL falhou: falha ao tentar obter porta %s"
-
-#~ msgid "Updated information on %s"
-#~ msgstr "Informações sobre %s atualizadas"
-
-#~ msgid ""
-#~ "Please make sure to provide a valid account name, host name, and user "
-#~ "name."
-#~ msgstr ""
-#~ "Por favor, forneça um nome de conta, de máquina e de usuário válidos."
-
-#~ msgid "E-_mail address:"
-#~ msgstr "_Endereço de e-mail:"
-
-#~ msgid "Enter your e-mail address"
-#~ msgstr "Digite seu endereço de e-mail"
-
-#~ msgid "_Comment:"
-#~ msgstr "_Comentário:"
-
-#~ msgid "Enter a comment about yourself"
-#~ msgstr "Digite um comentário sobre si"
-
-#~ msgid "Enter your country or city"
-#~ msgstr "Digite seu país ou cidade"
-
-#~ msgid "Users Directory"
-#~ msgstr "Diretório de Usuários"
-
-#~ msgid "Users directory:"
-#~ msgstr "Diretório de usuários:"
-
-#~ msgid "The users directory server to register with"
-#~ msgstr "A máquina de diretório de usuários onde se registrar"
-
-#~ msgid "Enable _registering"
-#~ msgstr "Habilitar _registro"
-
-#~ msgid "If enabled, register with the selected users directory"
-#~ msgstr "Se habilitado, registra-se no diretório de usuários selecionado"
-
-#~ msgid "_Publish my details in the users directory when registering"
-#~ msgstr "_Publique os meus detalhes no diretório de usuários ao registrar"
-
-#~ msgid ""
-#~ "If enabled, your details are shown to people browsing the users "
-#~ "directory. If disabled, you are not visible to users browsing the users "
-#~ "directory, but they can still use the callto URI to call you."
-#~ msgstr ""
-#~ "Se habilitado, os seus detalhes são mostrados para pessoas pesquisando o "
-#~ "diretório de usuários. Se desabilitado, você não será visível a usuários "
-#~ "que pesquisem o diretório de usuários, mas eles podem usar a URL 'callto' "
-#~ "para lhe chamar."
-
-#~ msgid "Directory Settings"
-#~ msgstr "Configurações de Diretório"
-
-#~ msgid "Change the view mode of the UI"
-#~ msgstr "Alterar o modo de exibição da interface"
-
-#~ msgid "Change the view mode of the UI (softphone, videophone, full view)"
-#~ msgstr ""
-#~ "Alterar o modo de exibição da interface (softfone, videofone e visão "
-#~ "completa)"
-
-#~ msgid "Missed calls history"
-#~ msgstr "Histórico de chamadas não atendidas"
-
-#~ msgid "Placed calls history"
-#~ msgstr "Histórico de chamadas feitas"
-
-#~ msgid "Position on the screen of the calls history window"
-#~ msgstr "Posição na tela da janela do histórico de chamadas"
-
-#~ msgid "Received calls history"
-#~ msgstr "Histórico de chamadas recebidas"
-
-#~ msgid "Size of the calls history window"
-#~ msgstr "Tamanho da janela do histórico de chamadas"
-
-#~ msgid "The history of the last 100 missed calls"
-#~ msgstr "O histórico das últimas 100 chamadas não atendidas"
-
-#~ msgid "The history of the last 100 received calls"
-#~ msgstr "O histórico das últimas 100 chamadas recebidas"
-
-#~ msgid "Call not answered in the required time"
-#~ msgstr "Chamada não foi atendida no tempo exigido"
-
-#~ msgid "Remote user is unreachable"
-#~ msgstr "Usuário remoto não pode ser alcançado"
-
-#~ msgid "_Close"
-#~ msgstr "_Fechar"
-
-#~ msgid "Remote User"
-#~ msgstr "Usuário Remoto"
-
-#~ msgid "Call End Reason"
-#~ msgstr "Razão do Fim da Chamada"
-
-#~ msgid "Change the view mode"
-#~ msgstr "Altera o modo de exibição"
-
-#~ msgid ""
-#~ "Audio transmission status. During a call, click here to suspend or resume "
-#~ "the audio transmission."
-#~ msgstr ""
-#~ "Estado da transmissão de áudio. Durante uma chamada, clique aqui para "
-#~ "suspender ou reestabelecer a transmissão de áudio."
-
-#~ msgid ""
-#~ "Video transmission status. During a call, click here to suspend or resume "
-#~ "the video transmission."
-#~ msgstr ""
-#~ "Estado da transmissão de vídeo. Durante uma chamada, clique aqui para "
-#~ "suspender ou reestabelecer a transmissão de vídeo."
-
-#~ msgid "_Save Current Picture"
-#~ msgstr "_Salvar Imagem Atual"
-
-#~ msgid "Quit Ekiga"
-#~ msgstr "Sai do Ekiga"
-
-#~ msgid "View _Mode"
-#~ msgstr "_Modo de Exibição"
-
-#~ msgid "Softp_hone"
-#~ msgstr "Sof_tfone"
-
-#~ msgid "Show the softphone view"
-#~ msgstr "Mostra a exibição de softfone"
-
-#~ msgid "Show the videophone view"
-#~ msgstr "Mostra a exibição de videofone"
-
-#~ msgid "View all components"
-#~ msgstr "Mostra todos os componentes"
-
-#~ msgid "Control Panel"
-#~ msgstr "Painel de Controle"
-
-#~ msgid "View audio settings"
-#~ msgstr "Ver configurações de áudio"
-
-#~ msgid "View video settings"
-#~ msgstr "Ver configurações de vídeo"
-
-#~ msgid "Statistics"
-#~ msgstr "Estatísticas"
-
-#~ msgid "View audio/video transmission and reception statistics"
-#~ msgstr "Ver estatísticas de transmissão e recepção de áudio/vídeo"
-
-#~ msgid "Both (Side-by-Side)"
-#~ msgstr "Ambas (Lado-a-Lado)"
-
-#~ msgid "Normal Size"
-#~ msgstr "Tamanho Normal"
-
-#~ msgid "Out:"
-#~ msgstr "Saída:"
-
-#~ msgid "In:"
-#~ msgstr "Entrada:"
-
-#~ msgid "Registered accounts:"
-#~ msgstr "Contas registradas:"
-
-#~ msgid "Gconf key error"
-#~ msgstr "Erro de chave Gconf"
-
-#~ msgid "Bandwidth"
-#~ msgstr "Largura de Banda"
-
-#~ msgid "Clock Rate"
-#~ msgstr "Taxa do Relógio"
-
-#~ msgid ""
-#~ "This permits to set the mode for DTMFs sending. The values can be \"String"
-#~ "\" (0), \"Tone\" (1), \"RFC2833\" (2), \"Q.931\" (3) (default is \"String"
-#~ "\"). Choosing other values than \"String\" disables the Text Chat."
-#~ msgstr ""
-#~ "Isto permite definir o modo para envio de DTMFs. Os valores podem ser "
-#~ "\"Expressão\" (0), \"Tom\" (1), \"RFC2833\" (2) ou \"Q.931\" (3) (o "
-#~ "padrão é \"Expressão\"). Selecionar outros valores além de \"Expressão\" "
-#~ "desabilita a conversa em texto."
-
-#~ msgid ""
-#~ "This permits to set the mode for DTMFs sending. The value can be \"RFC2833"
-#~ "\" (0) only."
-#~ msgstr ""
-#~ "Isto permite definir o modo de envio de DTMFs. O valor pode ser apenas "
-#~ "\"RFC2833\"."
-
-#~ msgid "Click here to refresh the devices list"
-#~ msgstr "Clique aqui para atualizar a lista de dispositivos"
-
-#~ msgid "Bandwidth Control"
-#~ msgstr "Controle da Largura de Banda"
-
-#~ msgid "Advanced Quality Settings"
-#~ msgstr "Configurações Avançadas de Qualidade"
-
-#~ msgid "Remote user is offline"
-#~ msgstr "Usuário remoto está desconectado"
-
-#~ msgid "GnomeMeeting"
-#~ msgstr "GnomeMeeting"
-
-#~ msgid "Videoconferencing"
-#~ msgstr "Vídeo conferência"
-
-#~ msgid "Automatically clear the text chat at the end of calls"
-#~ msgstr "Limpar automaticamente a conversa em texto ao final da chamada"
-
-#~ msgid ""
-#~ "Change the control panel section (4 means that the control panel is off)"
-#~ msgstr ""
-#~ "Alterar a seção do painel de controle (4 significa que o painel de "
-#~ "controle está desligado)"
-
-#~ msgid ""
-#~ "Choose the number of blocks (that have not changed) transmitted with each "
-#~ "frame. These blocks fill in the background"
-#~ msgstr ""
-#~ "Escolha o número de blocos (que não tenham mudado) transmitidos em cada "
-#~ "quadro. Estes blocos irão preencher o plano de fundo"
-
-#~ msgid "E-mail address"
-#~ msgstr "Endereço de e-mail"
-
-#~ msgid "Enable H.245 tunnelling"
-#~ msgstr "Habilitar tunelamento H.245"
-
-#~ msgid "Enable IP translation"
-#~ msgstr "Habilitar tradução de IP"
-
-#~ msgid "Enable video reception"
-#~ msgstr "Habilitar recepção de vídeo"
-
-#~ msgid "Enable video transmission"
-#~ msgstr "Habilitar transmissão de vídeo"
-
-#~ msgid "Enter a comment about yourself for the user directory"
-#~ msgstr "Digite um comentário sobre si para o diretório de usuários"
-
-#~ msgid ""
-#~ "Enter the public IP of your NAT/PAT router if you want to use IP "
-#~ "translation. If you are registered to ils.seconix.com, GnomeMeeting will "
-#~ "automatically fetch the public IP using the ILS service"
-#~ msgstr ""
-#~ "Entre o IP público do seu roteador NAT/PAT se desejar usar tradução de "
-#~ "IP. Se você estiver registrado no ils.seconix.com, o GnomeMeeting irá "
-#~ "obter o IP público utilizando o serviço ILS automaticamente"
-
-#~ msgid "Enter your location (country or city) for the user directory"
-#~ msgstr ""
-#~ "Entre a sua localização (país ou cidade) para o diretório de usuários"
-
-#~ msgid "Gatekeeper ID"
-#~ msgstr "ID do guardião"
-
-#~ msgid "Gatekeeper alias"
-#~ msgstr "Apelido do guardião"
-
-#~ msgid "Gatekeeper alias as primary alias"
-#~ msgstr "Apelido do guardião como apelido primário"
-
-#~ msgid "Gatekeeper host"
-#~ msgstr "Máquina do guardião"
-
-#~ msgid "If enabled, register with the selected user directory"
-#~ msgstr "Se ativado, registra-se no diretório de usuários selecionado"
-
-#~ msgid ""
-#~ "If enabled, the splash screen will be displayed when GnomeMeeting starts"
-#~ msgstr ""
-#~ "Se ativado, a tela de abertura será exibida no início do GnomeMeeting"
-
-#~ msgid ""
-#~ "If enabled, the text chat will automatically be cleared at the end of "
-#~ "calls"
-#~ msgstr ""
-#~ "Se ativado, a conversa em texto será limpa automaticamente ao final das "
-#~ "chamadas"
-
-#~ msgid "If enabled, video is transmitted during a call"
-#~ msgstr "Se ativado, vídeo é transmitido durante uma chamada"
-
-#~ msgid ""
-#~ "If enabled, your details are shown to people browsing the user directory. "
-#~ "If disabled, you are not visible to users browsing the user directory, "
-#~ "but they can still use the callto URL to call you"
-#~ msgstr ""
-#~ "Se ativado, os seus detalhes são mostrados para pessoas pesquisando o "
-#~ "diretório de usuários. Se desativado, você não será visível a usuários "
-#~ "que pesquisem o diretório de usuários, mas eles podem usar a URL 'callto' "
-#~ "para lhe chamar"
-
-#~ msgid "Show my details to other registered users"
-#~ msgstr "Mostrar os meus detalhes para outros usuários registrados"
-
-#~ msgid "Show splash screen at startup"
-#~ msgstr "Mostrar tela de abertura ao iniciar"
-
-#~ msgid "Show the chat window in the main window"
-#~ msgstr "Mostrar a janela de conversa na janela principal"
-
-#~ msgid ""
-#~ "The Gatekeeper alias to use when registering (string, or E164 ID if only "
-#~ "0123456789#)"
-#~ msgstr ""
-#~ "O apelido do guardião a usar quando registrando (texto, ou ID E164 se "
-#~ "apenas 0123456789#)"
-
-#~ msgid "The Gatekeeper host to register with"
-#~ msgstr "A máquina guardião onde se registrar"
-
-#~ msgid "The Gatekeeper identifier to register with"
-#~ msgstr "O identificador guardião com que se registrar"
-
-#~ msgid ""
-#~ "The Gatekeeper password to use for H.235 authentication to the Gatekeeper"
-#~ msgstr "A senha do guardião para usar na autenticação H.235 com o guardião"
-
-#~ msgid ""
-#~ "The range of UDP ports that GnomeMeeting will use for RTP (audio and "
-#~ "video communication channels). You can change the UDP port range if you "
-#~ "are using IP translation and if you need to have several GnomeMeeting "
-#~ "running behind your NAT/PAT router. GnomeMeeting needs to be restarted "
-#~ "for the new values to take effect."
-#~ msgstr ""
-#~ "A faixa de portas UDP que o GnomeMeeting irá usar para RTP (canais de "
-#~ "comunicação de áudio e vídeo). Você pode alterar o intervalo de portas "
-#~ "UDP caso você esteja usando tradução de IP e precise ter vários "
-#~ "GnomeMeetings executando atrás do seu roteador NAT/PAT. O GnomeMeeting "
-#~ "precisa ser reiniciado para que os novos valores tenham efeito."
-
-#~ msgid ""
-#~ "The range of UDP ports that GnomeMeeting will use when registering to "
-#~ "gatekeepers. You can change the UDP port range if you are using IP "
-#~ "translation and if you need to have several GnomeMeeting running behind "
-#~ "your NAT/PAT router. GnomeMeeting needs to be restarted for the new "
-#~ "values to take effect. This port range has no effect if you are not "
-#~ "registering to a gatekeeper."
-#~ msgstr ""
-#~ "A faixa de portas UDP que o GnomeMeeting irá usar para se registrar nos "
-#~ "guardiões. Você pode alterar o intervalo de portas UDP caso você esteja "
-#~ "usando tradução IP e precise ter vários GnomeMeetings executando atrás do "
-#~ "seu roteador NAT/PAT. O GnomeMeeting precisa ser reiniciado para que os "
-#~ "novos valores tenham efeito. Esta faixa de portas não tem efeito se você "
-#~ "não está se registrando em um guardião."
-
-#~ msgid "The registering method to use"
-#~ msgstr "O método de registro a usar"
-
-#~ msgid "The user directory server to register with"
-#~ msgstr "A máquina de diretório de usuários onde se registrar"
-
-#~ msgid ""
-#~ "This enables H.245 Tunnelling mode. In H.245 Tunnelling mode H.245 "
-#~ "messages are encapsulated into the the H.225 channel (port 1720). This "
-#~ "saves one TCP connection during calls. H.245 Tunnelling was introduced in "
-#~ "H.323v2 and Netmeeting does not support it. Using both Fast Start and "
-#~ "H.245 Tunnelling can crash some versions of Netmeeting."
-#~ msgstr ""
-#~ "Isto habilita modo de Tunelamento H.245. Em modo de Tunelamento H.245, as "
-#~ "mensagens H.245 são encapsuladas no canal H.225 (porta 1720). Isto "
-#~ "permite economizar uma conexão TCP durante as chamadas. O Tunelamento "
-#~ "H.245 foi introduzido no H.323v2 e o NetMeeting não o suporta. Usar o "
-#~ "Início rápido e o tunelamento H.245 poderá capotar algumas versões do "
-#~ "Netmeeting."
-
-#~ msgid ""
-#~ "This enables IP checking from seconix.com and fills the IP in the public "
-#~ "IP of the NAT/PAT gateway field of GnomeMeeting. The returned IP is only "
-#~ "used when IP Translation is enabled. If you disable IP checking, you will "
-#~ "have to manually enter the IP of your gateway in the GnomeMeeting "
-#~ "preferences"
-#~ msgstr ""
-#~ "Isto habilita a verificação de IP de seconix.com e preenche o IP no campo "
-#~ "IP público do gateway NAT/PAT do GnomeMeeting. O IP retornado é usado "
-#~ "apenas quando a tradução de IP está habilitada. Se você desabilitar a "
-#~ "verificação de IP, você terá que entrar manualmente o IP do seu gateway "
-#~ "nas preferências do GnomeMeeting"
-
-#~ msgid ""
-#~ "This enables IP translation. IP translation is useful if GnomeMeeting is "
-#~ "running behind a NAT/PAT router. You have to put the public IP of the "
-#~ "router in the field below. If you are registered to ils.seconix.com, "
-#~ "GnomeMeeting will automatically fetch the public IP using the ILS "
-#~ "service. If your router natively supports H.323, you can disable this"
-#~ msgstr ""
-#~ "Isto habilita a tradução de IP. A tradução de IP é útil se o GnomeMeeting "
-#~ "estiver executando atrás de um roteador NAT/PAT. Deve-se colocar o IP "
-#~ "público do roteador no campo abaixo. Caso se esteja registrado no ils."
-#~ "seconix.com, o GnomeMeeting irá obter automaticamente o IP público "
-#~ "utilizando o serviço ILS. Se o seu roteador suportar H.323 nativamente, "
-#~ "pode-se desabilitar esta opção"
-
-#~ msgid ""
-#~ "This enables STUN Support. STUN is a technic that permits to go through "
-#~ "some types of NAT gateways."
-#~ msgstr ""
-#~ "Isto habilita o suporte a STUN. STUN é uma técnica que permite passar "
-#~ "através de alguns tipos de gateways NAT."
-
-#~ msgid "Transmitted background blocks"
-#~ msgstr "Blocos de plano de fundo transmitidos"
-
-#~ msgid "Use the specified gateway to do calls"
-#~ msgstr "Usar o gateway especificado para fazer chamadas"
-
-#~ msgid ""
-#~ "Use this option to ensure the above alias is used as the primary alias "
-#~ "when registering with a gatekeeper. This may be required if your "
-#~ "gatekeeper can only perform authentication using the first alias in the "
-#~ "list"
-#~ msgstr ""
-#~ "Use esta opção para garantir que o apelido acima é usado como o apelido "
-#~ "primário ao se registrar com o guardião. Isto pode ser necessário se o "
-#~ "guardião só pode realizar a autenticação usando o promeiro apelido na "
-#~ "lista"
-
-#~ msgid "Total: %.2f MB"
-#~ msgstr "Total: %.2f MB"
-
-#~ msgid "URL"
-#~ msgstr "URL"
-
-#~ msgid "Code contributors:"
-#~ msgstr "Contribuintes de código:"
-
-#~ msgid "---- Call begins at %s\n"
-#~ msgstr "---- Chamada começa em %s\n"
-
-#~ msgid "---- Call ends at %s\n"
-#~ msgstr "---- Chamada termina em %s\n"
-
-#~ msgid "Copy Link Location"
-#~ msgstr "Copiar Endereço do Vínculo"
-
-#~ msgid "Connect to"
-#~ msgstr "Conectar a"
-
-#~ msgid "Add to Address Book"
-#~ msgstr "Adicionar ao Catálogo de Endereços"
-
-#~ msgid "YES"
-#~ msgstr "SIM"
-
-#~ msgid "Sorry, this script won't work while GnomeMeeting is running"
-#~ msgstr "Este script não funcionará durante a execução do GnomeMeeting"
-
-#~ msgid "  WARNING!!!"
-#~ msgstr "  AVISO!!!"
-
-#~ msgid ""
-#~ "  This script will delete all user GnomeMeeting configuration,\n"
-#~ "  including preferences that may be important! \n"
-#~ "  The GConf daemon will be shut down, so make sure you have no\n"
-#~ "  applications depending on it running.\n"
-#~ "\n"
-#~ "  Do you really want to do this?\n"
-#~ "\n"
-#~ "  If so, say \"YES\".\n"
-#~ "\n"
-#~ msgstr ""
-#~ "  Este script irá remover todas as configurações de usuário do\n"
-#~ "  GnomeMeeting, incluindo preferências que podem ser importantes! \n"
-#~ "  O daemon GConf será desligado, então certifique-se de que nenhum\n"
-#~ "  aplicativo dependente dele esteja em execução.\n"
-#~ "\n"
-#~ "  Deseja mesmo fazer isto?\n"
-#~ "\n"
-#~ "  Se sim, diga \"YES\".\n"
-#~ "\n"
-
-#~ msgid "Removing $HOME/.gconf/apps/gnomemeeting"
-#~ msgstr "Removendo $HOME/.gconf/apps/gnomemeeting"
-
-#~ msgid "Shutting down GConf daemon"
-#~ msgstr "Desligando o daemon GConf"
-
-#~ msgid "...Done."
-#~ msgstr "...Pronto."
-
-#~ msgid "Leaving configuration alone."
-#~ msgstr "Deixando a configuração intacta."
-
-#~ msgid "Have a nice day."
-#~ msgstr "Tenha um bom dia."
-
-#~ msgid ""
-#~ "  The GConf daemon will be shut down, so make sure you have no\n"
-#~ "  applications depending on it running.\n"
-#~ "\n"
-#~ "  Do you really want to do this?\n"
-#~ "\n"
-#~ "  If so, say \"YES\".\n"
-#~ "\n"
-#~ msgstr ""
-#~ "  O daemon GConf será desligado, então certifique-se de que nenhum\n"
-#~ "  aplicativo dependente dele esteja em execução.\n"
-#~ "\n"
-#~ "  Deseja mesmo fazer isto?\n"
-#~ "\n"
-#~ "  Se sim, diga \"YES\".\n"
-#~ "\n"
-
-#~ msgid "Removing schemas"
-#~ msgstr "Removendo esquemas"
-
-#~ msgid "Installing schemas"
-#~ msgstr "Instalando esquemas"
-
-#~ msgid ""
-#~ "CRITICAL ERROR -- Schema installation failed.\n"
-#~ "Most probably you have the GConf daemon running as root.\n"
-#~ "\n"
-#~ "Run \"gnomemeeting-config-tool --install-schemas\" as root.\n"
-#~ msgstr ""
-#~ "ERRO CRÍTICO -- Falha na instalação de esquemas.\n"
-#~ "Provavelmente o daemon GConf está executando como root.\n"
-#~ "\n"
-#~ "Execute \"gnomemeeting-config-tool --install-schemas\" como root.\n"
-
-#~ msgid "Usage:  gnomemeeting-config-tool OPTION"
-#~ msgstr "Uso: gnomemeeting-config-tool OPÇÃO"
-
-#~ msgid "Fixes problems with the GnomeMeeting settings"
-#~ msgstr "Corrige problemas com as configurações do GnomeMeeting"
-
-#~ msgid "  --clean                remove all user settings"
-#~ msgstr "  --clean                remove todas as configurações de usuário"
-
-#~ msgid ""
-#~ "  --install-schemas      install schemas with default settings (run as "
-#~ "root)"
-#~ msgstr ""
-#~ "  --install-schemas      instala esquemas com configurações padrão "
-#~ "(executar como root)"
-
-#~ msgid ""
-#~ "  --clean-schemas        remove schemas with default settings (run as "
-#~ "root)"
-#~ msgstr ""
-#~ "  --clean-schemas        remove esquemas com configurações padrão "
-#~ "(executar como root)"
-
-#~ msgid ""
-#~ "  --fix-permissions      fix permissions of GConf repository (run as root)"
-#~ msgstr ""
-#~ "  --fix-permissions      corrige permissões do repositório GConf "
-#~ "(executar como root)"
-
-#~ msgid "No gateway or proxy specified"
-#~ msgstr "Não existe gateway ou proxy especificado"
-
-#~ msgid "Forward URL not specified"
-#~ msgstr "Não foi especificada uma URL de encaminhamento"
-
-#~ msgid ""
-#~ "You need to specify an URL where to forward calls in the call forwarding "
-#~ "section of the preferences!\n"
-#~ "\n"
-#~ "Disabling forwarding."
-#~ msgstr ""
-#~ "Deve ser especificada uma URL para onde encaminhar as chamadas na seção "
-#~ "de encaminhamento de chamadas nas preferências!\n"
-#~ "\n"
-#~ "Desativando o encaminhamento."
-
-#~ msgid "Failure opening %s for transmission, will try with next common codec"
-#~ msgstr ""
-#~ "Falha ao abrir %s para transmissão, vou tentar o próximo codec comum"
-
-#~ msgid "Failure opening %s for reception, will try with next common codec"
-#~ msgstr "Falha ao abrir %s para recepção, vou tentar o próximo codec comum"
-
-#~ msgid "Call transfer failed"
-#~ msgstr "Transferência de chamada falhou"
-
-#~ msgid ""
-#~ "The remote user tried to transfer your call to another user, but it "
-#~ "failed."
-#~ msgstr ""
-#~ "O usuário remoto tentou transferir a sua chamada para outro usuário, mas "
-#~ "a transferência falhou."
-
-#~ msgid "Callto URL - page %d/%d"
-#~ msgstr "URL Callto - página %d/%d"
-
-#~ msgid ""
-#~ "Your e-mail address is used when registering to the GnomeMeeting users "
-#~ "directory. It is used to create a callto address permitting your contacts "
-#~ "to easily call you wherever you are."
-#~ msgstr ""
-#~ "Seu endereço de e-mail é usado ao se registrar no diretório de usuários "
-#~ "do GnomeMeeting. Ele é usado para criar um endereço callto que permite a "
-#~ "seus contatos te chamarem facilmente não importa onde você esteja."
-
-#~ msgid ""
-#~ "I don't want to register to the GnomeMeeting users directory and get a "
-#~ "callto address"
-#~ msgstr ""
-#~ "Eu não quero me registrar no diretório de usuários e receber um endereço "
-#~ "callto"
-
-#~ msgid "Forwarding call from %s to %s (Forward all calls)"
-#~ msgstr "Encaminhando chamada de %s para %s (Encaminhar todas as chamadas)"
-
-#~ msgid "Rejecting call from %s (Do Not Disturb)"
-#~ msgstr "Rejeitando chamada de %s (Não Perturbe)"
-
-#~ msgid "Accepting call from %s (Auto Answer)"
-#~ msgstr "Aceitando chamada de %s (Auto Resposta)"
-
-#~ msgid "Error while forwarding call to %s"
-#~ msgstr "Erro ao encaminhar chamada para %s"
-
-#~ msgid "There was an error when forwarding the call to the given host."
-#~ msgstr ""
-#~ "Ocorreu um erro ao encaminhar a chamada para a máquina especificada."
-
-#~ msgid "Missed %d call"
-#~ msgid_plural "Missed %d calls"
-#~ msgstr[0] "%d chamada não atendida"
-#~ msgstr[1] "%d chamadas não atendidas"
-
-#~ msgid "Attaching lid hardware to codec"
-#~ msgstr "A ligar junção de equipamento ao codec"
-
-#~ msgid "Forwarding Call to %s (No Answer)"
-#~ msgstr "Encaminhando chamada para %s (Sem Resposta)"
-
-#~ msgid "Unregistered from gatekeeper %s"
-#~ msgstr "Removendo registro do guardião %s"
-
-#~ msgid "Invalid gatekeeper hostname"
-#~ msgstr "Nome de máquina do guardião inválido"
-
-#~ msgid "Please provide a valid ID for the gatekeeper."
-#~ msgstr "Por favor indique um ID válido para o guardião."
-
-#~ msgid "Gatekeeper set to %s"
-#~ msgstr "Guardião definido como %s"
-
-#~ msgid "Trying to stop calling"
-#~ msgstr "Tentando parar de chamar"
-
-#~ msgid "Stopping current call"
-#~ msgstr "Parando chamada atual"
-
-#~ msgid "Opened Quicknet device %s"
-#~ msgstr "Dispositivo Quicknet %s foi aberto"
-
-#~ msgid "Error while opening the Quicknet device."
-#~ msgstr "Erro ao abrir o dispositivo Quicknet."
-
-#~ msgid ""
-#~ "Please check that your driver is correctly installed and that the device "
-#~ "is working correctly."
-#~ msgstr ""
-#~ "Por favor verifique que o seu controlador está corretamente instalado e "
-#~ "que o dispositivo está funcionando corretamente."
-
-#~ msgid "Closed Quicknet device %s"
-#~ msgstr "Dispositivo Quicknet %s foi fechado"
-
-#~ msgid "Phone is off hook"
-#~ msgstr "Telefone está fora do gancho"
-
-#~ msgid "Phone is on hook"
-#~ msgstr "Telefone está no gancho"
-
-#~ msgid "Open control panel"
-#~ msgstr "Abrir painel de controle"
-
-#~ msgid "Create a new connection"
-#~ msgstr "Criar uma nova conexão"
-
-#~ msgid "Close the current connection"
-#~ msgstr "Fechar a conexão actual"
-
-#~ msgid "Quit GnomeMeeting"
-#~ msgstr "Sair do GnomeMeeting"
-
-#~ msgid "Text Chat"
-#~ msgstr "Conversa em Texto"
-
-#~ msgid "View/Hide the text chat window"
-#~ msgstr "Ver/ocultar a janela de conversa em texto"
-
-#~ msgid "Off"
-#~ msgstr "Desligado"
-
-#~ msgid "_Clear Text Chat"
-#~ msgstr "_Limpar Conversa em Texto"
-
-#~ msgid "Clear the text chat"
-#~ msgstr "Limpar a conversa em texto"
-
-#~ msgid ""
-#~ "Lost packets:\n"
-#~ "Late packets:\n"
-#~ "Round-trip delay:\n"
-#~ "Jitter buffer:"
-#~ msgstr ""
-#~ "Pacotes perdidos:\n"
-#~ "Pacotes atrasados:\n"
-#~ "Atraso de ida e volta:\n"
-#~ "Buffer de jitter:"
-
-#~ msgid "Generic error"
-#~ msgstr "Erro genérico"
-
-#~ msgid "GnomeMeeting GUI"
-#~ msgstr "Interface Gráfica GnomeMeeting"
-
-#~ msgid "_Show splash screen"
-#~ msgstr "_Mostrar tela de abertura"
-
-#~ msgid "Forward calls to _host:"
-#~ msgstr "_Encaminhar chamadas para a máquina:"
-
-#~ msgid ""
-#~ "If enabled, all incoming calls will be forwarded to the host that is "
-#~ "specified in the field above"
-#~ msgstr ""
-#~ "Se ativado, todas as chamadas recebidas serão encaminhadas para a máquina "
-#~ "especificada no campo acima"
-
-#~ msgid "seconds"
-#~ msgstr "segundos"
-
-#~ msgid "GnomeMeeting Sound Events"
-#~ msgstr "Eventos de Som do GnomeMeeting"
-
-#~ msgid "Sound to play:"
-#~ msgstr "Som a reproduzir:"
-
-#~ msgid "All"
-#~ msgstr "Tudo"
-
-#~ msgid "rfc2833"
-#~ msgstr "rfc2833"
-
-#~ msgid "Signal"
-#~ msgstr "Sinal"
-
-#~ msgid "H.323 Version 2 Settings"
-#~ msgstr "Configurações H.323 Versão 2"
-
-#~ msgid "DTMF Sending"
-#~ msgstr "Envio de DTMF"
-
-#~ msgid ""
-#~ "This permits to set the mode for DTMFs sending. The values can be \"All"
-#~ "\", \"None\", \"rfc2833\", \"Signal\" or \"String\" (default is \"All\"). "
-#~ "Choosing other values than \"All\", \"String\" or \"rfc2833\" disables "
-#~ "the Text Chat."
-#~ msgstr ""
-#~ "Isto permite definir o modo para envio de DTMF. Os valores podem ser "
-#~ "\"Tudo\", \"Nenhum\", \"rfc2833\", \"Sinal\" ou \"Expressão\" (o padrão é "
-#~ "\"Tudo\"). Selecionar outros valores além de \"Tudo\", \"Expressão\" ou "
-#~ "\"rfc2833\" desabilita a conversa em texto."
-
-#~ msgid "Automatically discover"
-#~ msgstr "Descobrir automaticamente"
-
-#~ msgid "Gatekeeper _host:"
-#~ msgstr "Se_rvidor do guardião:"
-
-#~ msgid "Gatekeeper _alias:"
-#~ msgstr "_Apelido do guardião: "
-
-#~ msgid "Gatekeeper _password:"
-#~ msgstr "_Senha do guardião:"
-
-#~ msgid "Registration timeout of"
-#~ msgstr "Tempo de espera de registro de"
-
-#~ msgid "minutes"
-#~ msgstr "minutos"
-
-#~ msgid "Register this alias as the primary alias with the gatekeeper"
-#~ msgstr "Registrar este apelido como o apelido primário no guardião"
-
-#~ msgid ""
-#~ "Use this option to ensure the above alias is used as the primary alias "
-#~ "when registering with a gatekeeper. This may be required if your "
-#~ "gatekeeper can only perform authentication using the first alias in the "
-#~ "list."
-#~ msgstr ""
-#~ "Use esta opção para garantir que o apelido acima é usado como o apelido "
-#~ "primário ao se registrar com o guardião. Isto pode ser necessário se o "
-#~ "guardião só pode realizar a autenticação usando o promeiro apelido na "
-#~ "lista."
-
-#~ msgid "Registering method:"
-#~ msgstr "Método de registro:"
-
-#~ msgid "Click here to update your Gatekeeper settings"
-#~ msgstr "Clique aqui para atualizar as suas configurações do guardião"
-
-#~ msgid "Gateway/Proxy"
-#~ msgstr "Gateway/Proxy"
-
-#~ msgid "Gateway / Proxy host:"
-#~ msgstr "Máquina gateway / proxy:"
-
-#~ msgid "Enable IP _translation"
-#~ msgstr "Ativar _tradução de IP"
-
-#~ msgid ""
-#~ "This enables IP translation. IP translation is useful if GnomeMeeting is "
-#~ "running behind a NAT/PAT router. You have to put the public IP of the "
-#~ "router in the field below. If you are registered to ils.seconix.com, "
-#~ "GnomeMeeting will automatically fetch the public IP using the ILS "
-#~ "service. If your router natively supports H.323, you can disable this."
-#~ msgstr ""
-#~ "Isto habilita a tradução de IP. A tradução de IP é útil se o GnomeMeeting "
-#~ "estiver executando atrás de um roteador NAT/PAT. Deve-se colocar o IP "
-#~ "público do roteador no campo abaixo. Caso se esteja registrado no ils."
-#~ "seconix.com, o GnomeMeeting irá obter automaticamente o IP público "
-#~ "utilizando o serviço ILS. Se o seu roteador suportar H.323 nativamente, "
-#~ "pode-se desabilitar esta opção."
-
-#~ msgid "Enable _automatic IP checking"
-#~ msgstr "Ativar _verificação automática de IP"
-
-#~ msgid ""
-#~ "This enables IP checking from seconix.com and fills the IP in the public "
-#~ "IP of the NAT/PAT gateway field of GnomeMeeting. The returned IP is only "
-#~ "used when IP Translation is enabled. If you disable IP checking, you will "
-#~ "have to manually enter the IP of your gateway in the GnomeMeeting "
-#~ "preferences."
-#~ msgstr ""
-#~ "Isto habilita a verificação de IP de seconix.com e preenche o IP no campo "
-#~ "IP público do gateway NAT/PAT do GnomeMeeting. O IP retornado é usado "
-#~ "apenas quando a tradução de IP está habilitada. Se você desabilitar a "
-#~ "verificação de IP, você terá que entrar manualmente o IP do seu gateway "
-#~ "nas preferências do GnomeMeeting."
-
-#~ msgid "Public _IP of the NAT/PAT router:"
-#~ msgstr "IP _público do roteador NAT/PAT:"
-
-#~ msgid ""
-#~ "Enter the public IP of your NAT/PAT router if you want to use IP "
-#~ "translation. If you are registered to ils.seconix.com, GnomeMeeting will "
-#~ "automatically fetch the public IP using the ILS service."
-#~ msgstr ""
-#~ "Entre o IP público do seu roteador NAT/PAT se desejar usar tradução de "
-#~ "IP. Se você estiver registrado no ils.seconix.com, o GnomeMeeting irá "
-#~ "obter o IP público utilizando o serviço ILS automaticamente."
-
-#~ msgid "STUN Support"
-#~ msgstr "Suporte a STUN"
-
-#~ msgid "Low"
-#~ msgstr "Baixo"
-
-#~ msgid "Medium"
-#~ msgstr "Médio"
-
-#~ msgid "High"
-#~ msgstr "Alto"
-
-#~ msgid "AGC"
-#~ msgstr "AGC"
-
-#~ msgid "POTS"
-#~ msgstr "POTS"
-
-#~ msgid "Headset"
-#~ msgstr "Fone de ouvido com microfone"
-
-#~ msgid "Quicknet Hardware"
-#~ msgstr "Hardware Quicknet"
-
-#~ msgid "Output device type:"
-#~ msgstr "Tipo do dispositivo de saída:"
-
-#~ msgid "Country _code:"
-#~ msgstr "Código do _país:"
-
-#~ msgid ""
-#~ "The two-letter country code of your country (e.g.: BE, UK, FR, DE, ...)."
-#~ msgstr "O código de duas letras para o seu país (ex.: BR, UK, FR, DE, ...)."
-
-#~ msgid "Small"
-#~ msgstr "Pequeno"
-
-#~ msgid "Enable video _transmission"
-#~ msgstr "Ativar _transmissão de vídeo"
-
-#~ msgid "Enable video _reception"
-#~ msgstr "Ativar _recepção de vídeo"
-
-#~ msgid "kB/s"
-#~ msgstr "kB/s"
-
-#~ msgid "Transmit"
-#~ msgstr "Transmitir"
-
-#~ msgid ""
-#~ "Choose the number of blocks (that have not changed) transmitted with each "
-#~ "frame. These blocks fill in the background."
-#~ msgstr ""
-#~ "Escolha o número de blocos (que não tenham mudado) transmitidos em cada "
-#~ "quadro. Estes blocos irão preencher o plano de fundo."
-
-#~ msgid "background _blocks with each frame"
-#~ msgstr "_blocos de fundo a cada quadro"
-
-#~ msgid "GnomeMeeting Preferences"
-#~ msgstr "Preferências do GnomeMeeting"
-
-#~ msgid "Gatekeeper Settings"
-#~ msgstr "Configurações do guardião"
-
-#~ msgid "Gateway / Proxy Settings"
-#~ msgstr "Configurações de gateway / proxy"
-
-#~ msgid "The type of NAT was successfully detected"
-#~ msgstr "O tipo de NAT foi detectado com sucesso"
-
-#~ msgid "Use your MicroTelco account number"
-#~ msgstr "Use o seu número de conta MicroTelco"
-
-#~ msgid "_Pin:"
-#~ msgstr "_PIN:"
-
-#~ msgid "Use your MicroTelco PIN"
-#~ msgstr "Use o seu PIN MicroTelco"
-
-#~ msgid "GnomeMeeting Tray Icon"
-#~ msgstr "Ícone de Área de Notificação do GnomeMeeting"
-
-#~ msgid "_Connect"
-#~ msgstr "_Conectar"
-
-#~ msgid ""
-#~ "The call transfer failed, the user was either unreachable, or simply busy "
-#~ "when he received the call transfer request."
-#~ msgstr ""
-#~ "A transferência de chamada falhou, o usuário estava inalcançável ou "
-#~ "simplesmente ocupado quando recebeu o pedido de transferência de chamada."
-
-#~ msgid "No contact with speed dial %s# found, will call number %s instead"
-#~ msgstr ""
-#~ "Nenhum contato com discagem rápida %s# foi encontrado, vou chamar o "
-#~ "número %s no lugar"
-
-#~ msgid "Fullscreen height"
-#~ msgstr "Altura da tela cheia"
-
-#~ msgid "Fullscreen width"
-#~ msgstr "Largura da tela cheia"
-
-#~ msgid "Show a status bar at the bottom of the main window"
-#~ msgstr "Mostrar uma barra de estado na base da janela principal"
-
-#~ msgid "Show status bar"
-#~ msgstr "Mostrar barra de estado"
-
-#~ msgid "The image height for fullscreen"
-#~ msgstr "A altura da imagem em tela cheia"
-
-#~ msgid "The list of called URLs"
-#~ msgstr "A lista de URLs chamadas"
-
-#~ msgid "The list of groups"
-#~ msgstr "A lista de grupos"
-
-#~ msgid "Title"
-#~ msgstr "Título"
-
-#~ msgid "Title of the druid"
-#~ msgstr "Título do assistente"
-
-#~ msgid "Logo"
-#~ msgstr "Logotipo"
-
-#~ msgid "Logo image"
-#~ msgstr "Imagem de logotipo"
-
-#~ msgid "Top Watermark"
-#~ msgstr "Marca d'água superior"
-
-#~ msgid "Watermark image for the top"
-#~ msgstr "Imagem marca d'água para o topo"
-
-#~ msgid "Title Foreground"
-#~ msgstr "Primeiro plano do título"
-
-#~ msgid "Foreground color of the title"
-#~ msgstr "Cor do primeiro plano do título"
-
-#~ msgid "Title Foreground Color"
-#~ msgstr "Cor do primeiro plano do título"
-
-#~ msgid "Foreground color of the title as a GdkColor"
-#~ msgstr "Cor do primeiro plano do título como um GdkColor"
-
-#~ msgid "Title Foreground color set"
-#~ msgstr "Cor do primeiro plano do título definida"
-
-#~ msgid "Foreground color of the title is set"
-#~ msgstr "Cor do primeiro plano do título está definida"
-
-#~ msgid "Background Color"
-#~ msgstr "Cor de Fundo"
-
-#~ msgid "Background color"
-#~ msgstr "Cor de fundo"
-
-#~ msgid "Background color as a GdkColor"
-#~ msgstr "Cor de fundo como um GdkColor"
-
-#~ msgid "Background color set"
-#~ msgstr "Cor de fundo definida"
-
-#~ msgid "Background color is set"
-#~ msgstr "Cor de fundo está definida"
-
-#~ msgid "Logo Background Color"
-#~ msgstr "Cor de fundo do logotipo"
-
-#~ msgid "Logo Background color"
-#~ msgstr "Cor de fundo do logotipo"
-
-#~ msgid "Logo Background color as a GdkColor"
-#~ msgstr "Cor de fundo do logotipo como um GdkColor"
-
-#~ msgid "Logo Background color set"
-#~ msgstr "Cor de fundo do logotipo definida"
-
-#~ msgid "Logo Background color is set"
-#~ msgstr "Cor de fundo do logotipo está definida"
-
-#~ msgid "Show Finish"
-#~ msgstr "Mostrar Terminar"
-
-#~ msgid "Show the 'Finish' button instead of the 'Next' button"
-#~ msgstr "Mostrar o botão 'Terminar' no lugar do botão 'Próximo'"
-
-#~ msgid "Show Help"
-#~ msgstr "Mostrar Ajuda"
-
-#~ msgid "Show the 'Help' button"
-#~ msgstr "Mostrar o botão 'Ajuda'"
-
-#~ msgid "Audio transmission: suspended"
-#~ msgstr "Transmissão de áudio: suspensa"
-
-#~ msgid "Audio transmission: resumed"
-#~ msgstr "Transmissão de áudio: reestabelecida"
-
-#~ msgid "Video transmission: suspended"
-#~ msgstr "Transmissão de vídeo: suspensa"
-
-#~ msgid "Video transmission: resumed"
-#~ msgstr "Transmissão de vídeo: reestabelecida"
-
-#~ msgid "Unanswered Calls"
-#~ msgstr "Chamadas Não Atendidas"
-
-#~ msgid "Welcome to GnomeMeeting 1.00!"
-#~ msgstr "Bem-vindo ao GnomeMeeting 1.00!"
-
-#~ msgid ""
-#~ "Congratulations, you have just successfully launched GnomeMeeting 1.00 "
-#~ "for the first time.\n"
-#~ "GnomeMeeting is the leading VoIP, videoconferencing and telephony "
-#~ "software for Unix.\n"
-#~ "\n"
-#~ "Thanks to all of you who have helped us along the road to our golden 1.00 "
-#~ "release!\n"
-#~ "\n"
-#~ "The GnomeMeeting Team."
-#~ msgstr ""
-#~ "Parabéns, você acaba de executar com sucesso o GnomeMeeting 1.00 pela "
-#~ "primeira vez.\n"
-#~ "GnomeMeeting é o programa líder em VoIP, vídeo conferência e telefonia "
-#~ "para Unix.\n"
-#~ "\n"
-#~ "Obrigado a todos vocês que nos ajudaram na jornada para a nossa dourada "
-#~ "versão 1.00!\n"
-#~ "\n"
-#~ "O time GnomeMeeting."
-
-#~ msgid ""
-#~ "Another user already exists with the same alias, please use another alias."
-#~ msgstr ""
-#~ "Já existe outro usuário com o mesmo apelido, por favor use outro apelido."
-
-#~ msgid ""
-#~ "You are not allowed to register to the gatekeeper. Please check your "
-#~ "login, password and firewall."
-#~ msgstr ""
-#~ "Você não tem permissão para se registrar no guardião. Por favor verifique "
-#~ "o seu login, senha e firewall."
-
-#~ msgid "No gatekeeper corresponding to your options has been found."
-#~ msgstr "Nenhum guardião correspondente às suas opções foi encontrado."
-
-#~ msgid "Error while registering with gatekeeper"
-#~ msgstr "Erro ao se registrar com o guardião"
-
-#~ msgid "Cannot contact the users directory"
-#~ msgstr "Não foi possível contatar o diretório de usuários"
-
-#~ msgid ""
-#~ "Failed to contact the users directory %s:%d. The directory is probably "
-#~ "currently overloaded, please try again later."
-#~ msgstr ""
-#~ "Falha ao contatar o diretório de usuários %s:%d. O diretório está "
-#~ "provavelmente sobrecarregado, tente novamente mais tarde."
-
-#~ msgid "Failed to bind to users directory: %s."
-#~ msgstr "Falha ao ligar-se ao diretório de usuários: %s."
-
-#~ msgid "Unregistered from the users directory %s."
-#~ msgstr "Removendo registro do diretório de usuários %s."
-
-#~ msgid "_Busy"
-#~ msgstr "_Ocupado"
-
-#~ msgid "View/Hide the status bar"
-#~ msgstr "Ver/ocultar a barra de estado"
-
-#~ msgid "Both (Local Video Incrusted)"
-#~ msgstr "Ambos (Vídeo Local Embutido)"
-
-#~ msgid "Both (Local Video in New Window)"
-#~ msgstr "Ambos (Vídeo Local em Nova Janela)"
-
-#~ msgid "Sent dtmf %c"
-#~ msgstr "DTMF %c enviado"
-
-#~ msgid "_About..."
-#~ msgstr "_Sobre..."
-
-#~ msgid "Use a fullscreen size of"
-#~ msgstr "Usar um tamanho de tela cheia de"
-
-#~ msgid "by"
-#~ msgstr "por"
-
-#~ msgid "pixels"
-#~ msgstr "pixels"
-
-#~ msgid "The image width for fullscreen."
-#~ msgstr "A largura da imagem em tela cheia."
-
-#~ msgid "The image height for fullscreen."
-#~ msgstr "A altura da imagem em tela cheia."
-
-#~ msgid "Buy a card"
-#~ msgstr "Comprar um cartão"
-
-#~ msgid "Consult my account details"
-#~ msgstr "Consultar os detalhes da minha conta"
-
-#~ msgid "Invalid users directory"
-#~ msgstr "Diretório de usuários inválido"
