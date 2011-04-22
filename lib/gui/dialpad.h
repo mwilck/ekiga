@@ -41,7 +41,7 @@ G_BEGIN_DECLS
 
 #define EKIGA_TYPE_DIALPAD             (ekiga_dialpad_get_type())
 #define EKIGA_DIALPAD(obj)             (G_TYPE_CHECK_INSTANCE_CAST((obj), EKIGA_TYPE_DIALPAD, EkigaDialpad))
-#define EKIGA_DIALPAD_CLASS(klass)     (G_TYPE_CHECK_CLASS_CAST((klass), EKIGA_TYOE_DIALPAD, EkigaDialpadClass))
+#define EKIGA_DIALPAD_CLASS(klass)     (G_TYPE_CHECK_CLASS_CAST((klass), EKIGA_TYPE_DIALPAD, EkigaDialpadClass))
 #define EKIGA_IS_DIALPAD(obj)          (G_TYPE_CHECK_INSTANCE_TYPE((obj), EKIGA_TYPE_DIALPAD))
 #define EKIGA_IS_DIALPAD_CLASS(klass)  (G_TYPE_CHECK_CLASS_TYPE ((klass), EKIGA_TYPE_DIALPAD))
 #define EKIGA_DIALPAD_GET_CLASS(obj)   (G_TYPE_INSTANCE_GET_CLASS((obj), EKIGA_TYPE_DIALPAD, EkigaDialpadClass))
