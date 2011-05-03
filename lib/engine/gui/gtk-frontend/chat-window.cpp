@@ -285,7 +285,6 @@ on_simple_chat_added (ChatWindow* self,
   GtkWidget* label = NULL;
   GtkWidget* close_button = NULL;
   GtkWidget* close_image = NULL;
-  gint num;
 
   page = simple_chat_page_new (chat);
   hbox = gtk_hbox_new (FALSE, 2);
@@ -313,8 +312,8 @@ on_simple_chat_added (ChatWindow* self,
   g_object_set_data (G_OBJECT (hbox), "close-button-widget", close_button);
   gtk_widget_show_all (hbox);
 
-  num = gtk_notebook_append_page (GTK_NOTEBOOK (self->priv->notebook),
-				  page, hbox);
+  gtk_notebook_append_page (GTK_NOTEBOOK (self->priv->notebook),
+			    page, hbox);
   gtk_widget_show (page);
   g_signal_connect (page, "message-notice-event",
 		    G_CALLBACK (on_message_notice_event), self);
@@ -330,13 +329,12 @@ on_multiple_chat_added (ChatWindow* self,
 {
   GtkWidget* page = NULL;
   GtkWidget* label = NULL;
-  gint num;
 
   page = multiple_chat_page_new (chat);
   label = gtk_label_new (chat->get_title ().c_str ());
 
-  num = gtk_notebook_append_page (GTK_NOTEBOOK (self->priv->notebook),
-				  page, label);
+  gtk_notebook_append_page (GTK_NOTEBOOK (self->priv->notebook),
+			    page, label);
   gtk_widget_show_all (page);
 
   self->priv->connections.push_front (chat->user_requested.connect (boost::bind (&on_some_chat_user_requested, self, page)));

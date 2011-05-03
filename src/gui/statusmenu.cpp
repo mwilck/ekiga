@@ -510,11 +510,9 @@ status_menu_clear_status_message_dialog_run (StatusMenu *self)
   int response = 0;
   int i = 0;
   gchar *message = NULL;
-  gchar *presence = NULL;
   gchar *status = NULL;
 
   // Current status
-  presence = gm_conf_get_string (PERSONAL_DATA_KEY "short_status");
   status = gm_conf_get_string (PERSONAL_DATA_KEY "long_status");
 
   // Build the dialog

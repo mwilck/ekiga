@@ -2537,9 +2537,7 @@ window_closed_cb (G_GNUC_UNUSED GtkWidget *widget,
 		  gpointer data)
 {
   GtkStatusIcon *statusicon = NULL;
-  GtkWidget *main_window = NULL;
 
-  main_window = GnomeMeeting::Process ()->GetMainWindow ();
   statusicon = GTK_STATUS_ICON (GnomeMeeting::Process ()->GetStatusicon ());
 
   if (!gtk_status_icon_is_embedded (GTK_STATUS_ICON (statusicon)))
@@ -3024,8 +3022,6 @@ ekiga_main_window_incoming_call_dialog_show (EkigaMainWindow *mw,
 
   GtkWidget *label = NULL;
   GtkWidget *vbox = NULL;
-  GtkWidget *b1 = NULL;
-  GtkWidget *b2 = NULL;
   GtkWidget *incoming_call_popup = NULL;
 
   gchar *msg = NULL;
@@ -3039,10 +3035,10 @@ ekiga_main_window_incoming_call_dialog_show (EkigaMainWindow *mw,
   g_return_if_fail (EKIGA_IS_MAIN_WINDOW (mw));
 
   incoming_call_popup = gtk_dialog_new ();
-  b2 = gtk_dialog_add_button (GTK_DIALOG (incoming_call_popup),
-			      _("Reject"), 0);
-  b1 = gtk_dialog_add_button (GTK_DIALOG (incoming_call_popup),
-			      _("Accept"), 2);
+  gtk_dialog_add_button (GTK_DIALOG (incoming_call_popup),
+			 _("Reject"), 0);
+  gtk_dialog_add_button (GTK_DIALOG (incoming_call_popup),
+			 _("Accept"), 2);
 
   gtk_dialog_set_default_response (GTK_DIALOG (incoming_call_popup), 2);
 
@@ -3388,17 +3384,15 @@ ekiga_main_window_add_device_dialog_show (EkigaMainWindow *mw,
 {
   GtkWidget *label = NULL;
   GtkWidget *vbox = NULL;
-  GtkWidget *b1 = NULL;
-  GtkWidget *b2 = NULL;
   GtkWidget *add_device_popup = NULL;
 
   g_return_if_fail (EKIGA_IS_MAIN_WINDOW (mw));
 
   add_device_popup = gtk_dialog_new ();
-  b2 = gtk_dialog_add_button (GTK_DIALOG (add_device_popup),
-			      _("No"), 0);
-  b1 = gtk_dialog_add_button (GTK_DIALOG (add_device_popup),
-			      _("Yes"), 2);
+  gtk_dialog_add_button (GTK_DIALOG (add_device_popup),
+			 _("No"), 0);
+  gtk_dialog_add_button (GTK_DIALOG (add_device_popup),
+			 _("Yes"), 2);
 
   gtk_dialog_set_default_response (GTK_DIALOG (add_device_popup), 2);
 
@@ -4488,10 +4482,7 @@ GtkWidget *
 gm_main_window_new (Ekiga::ServiceCore & core)
 {
   GtkWidget *window = NULL;
-  EkigaMainWindow *mw = NULL;
-  
   GtkStatusIcon *status_icon = NULL;
-
   GtkWidget *chat_window = NULL;
 
   /* initialize the callback to play IM message sound */
@@ -4504,7 +4495,6 @@ gm_main_window_new (Ekiga::ServiceCore & core)
 
   /* The Top-level window */
   window = ekiga_main_window_new (&core);
-  mw = EKIGA_MAIN_WINDOW (window);
 
   /* Track status icon embed changes */
   /* FIXME: move this to the status icon code */

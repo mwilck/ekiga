@@ -146,8 +146,6 @@ void
 Avahi::Heap::ClientCallback (AvahiClient *_client,
 			     AvahiClientState state)
 {
-  AvahiServiceBrowser* browser = NULL;
-
   /* this is the good client pointer */
   client = _client;
 
@@ -164,16 +162,16 @@ Avahi::Heap::ClientCallback (AvahiClient *_client,
     client = NULL;
     break;
   case AVAHI_CLIENT_S_RUNNING:
-    /* this may not be the final valid browser pointer...
-     * we'll take what our callback gets
+    /* ignore what we get from the new, as it may not be the final
+     * valid browser pointer... we'll take what our callback gets
      */
-    browser = avahi_service_browser_new (client,
-					 AVAHI_IF_UNSPEC,
-					 AVAHI_PROTO_UNSPEC,
-					 "_sip._udp", NULL,
-					 (AvahiLookupFlags)0,
-					 avahi_browser_callback,
-					 this);
+    avahi_service_browser_new (client,
+			       AVAHI_IF_UNSPEC,
+			       AVAHI_PROTO_UNSPEC,
+			       "_sip._udp", NULL,
+			       (AvahiLookupFlags)0,
+			       avahi_browser_callback,
+			       this);
 #if DEBUG
     std::cout << __PRETTY_FUNCTION__ << " AVAHI_CLIENT_S_RUNNING" << std::endl;
     if (browser == NULL)

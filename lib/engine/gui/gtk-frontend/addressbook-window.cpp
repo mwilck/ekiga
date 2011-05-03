@@ -439,12 +439,11 @@ addressbook_window_add_book (AddressBookWindow *self,
   GtkTreeModel *store = NULL;
   GtkWidget *view = NULL;
   GdkPixbuf *icon = NULL;
-  gint page = -1;
 
   view = book_view_gtk_new (book);
 
-  page = gtk_notebook_append_page (GTK_NOTEBOOK (self->priv->notebook),
-                                   view, NULL);
+  gtk_notebook_append_page (GTK_NOTEBOOK (self->priv->notebook),
+			    view, NULL);
 
   if (gtk_widget_get_visible (GTK_WIDGET (self)))
     gtk_widget_show_all (view);

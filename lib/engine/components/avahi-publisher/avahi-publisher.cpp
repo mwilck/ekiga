@@ -94,7 +94,6 @@ Avahi::PresencePublisher::publish (G_GNUC_UNUSED const Ekiga::PersonalDetails& d
 
     Ekiga::CallManager::InterfaceList interfaces;
     AvahiStringList* txt_record = NULL;
-    int ret;
 
     txt_record = prepare_txt_record ();
     for (Ekiga::CallCore::const_iterator iter = call_core.begin ();
@@ -117,12 +116,11 @@ Avahi::PresencePublisher::publish (G_GNUC_UNUSED const Ekiga::PersonalDetails& d
 			     iter->protocol.c_str ());
 
       /* FIXME: no collision checking here */
-      ret =
-	avahi_entry_group_update_service_txt_strlst (group, AVAHI_IF_UNSPEC,
-						     AVAHI_PROTO_UNSPEC,
-						     (AvahiPublishFlags)0,
-						     name, typ, NULL,
-						     txt_record);
+      avahi_entry_group_update_service_txt_strlst (group, AVAHI_IF_UNSPEC,
+						   AVAHI_PROTO_UNSPEC,
+						   (AvahiPublishFlags)0,
+						   name, typ, NULL,
+						   txt_record);
 
       g_free (typ);
     }
@@ -241,7 +239,6 @@ Avahi::PresencePublisher::add_services ()
 {
   Ekiga::CallManager::InterfaceList interfaces;
   AvahiStringList* txt_record = NULL;
-  int ret;
 
   for (Ekiga::CallCore::const_iterator iter = call_core.begin ();
        iter != call_core.end ();
@@ -265,17 +262,17 @@ Avahi::PresencePublisher::add_services ()
 			   iter->protocol.c_str ());
 
     /* FIXME: no collision checking here */
-    ret = avahi_entry_group_add_service_strlst (group, AVAHI_IF_UNSPEC,
-						AVAHI_PROTO_UNSPEC,
-						(AvahiPublishFlags)0,
-						name, typ,
-						NULL, NULL,
-						iter->port, txt_record);
+    avahi_entry_group_add_service_strlst (group, AVAHI_IF_UNSPEC,
+					  AVAHI_PROTO_UNSPEC,
+					  (AvahiPublishFlags)0,
+					  name, typ,
+					  NULL, NULL,
+					  iter->port, txt_record);
 
     g_free (typ);
   }
   avahi_string_list_free (txt_record);
-  ret = avahi_entry_group_commit (group);
+  avahi_entry_group_commit (group);
 }
 
 AvahiStringList*

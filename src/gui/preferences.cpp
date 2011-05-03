@@ -433,12 +433,8 @@ static void
 gm_pw_init_general_page (GtkWidget *prefs_window,
                          GtkWidget *container)
 {
-  GmPreferencesWindow *pw = NULL;
-
   GtkWidget *subsection = NULL;
   GtkWidget *entry = NULL;
-
-  pw = gm_pw_get_pw (prefs_window);
 
   /* Personal Information */
   subsection = gnome_prefs_subsection_new (prefs_window, container,
@@ -686,8 +682,6 @@ static void
 gm_pw_init_sip_page (GtkWidget *prefs_window,
                      GtkWidget *container)
 {
-  GmPreferencesWindow *pw = NULL;
-
   GtkWidget *entry = NULL;
   GtkWidget *subsection = NULL;
 
@@ -697,8 +691,6 @@ gm_pw_init_sip_page (GtkWidget *prefs_window,
       _("INFO"),
       NULL
     };
-
-  pw = gm_pw_get_pw (prefs_window);
 
   /* Add Misc Settings */
   subsection = gnome_prefs_subsection_new (prefs_window, container,
@@ -723,13 +715,10 @@ static void
 gm_pw_init_audio_devices_page (GtkWidget *prefs_window,
                                GtkWidget *container)
 {
-  GmPreferencesWindow *pw = NULL;
-
   GtkWidget *subsection = NULL;
-
   PStringArray devs;
-
   gchar **array = NULL;
+  GmPreferencesWindow *pw = NULL;
 
   pw = gm_pw_get_pw (prefs_window);
 
@@ -919,10 +908,6 @@ gm_pw_init_audio_codecs_page (GtkWidget *prefs_window,
   GtkWidget *subsection = NULL;
   GtkWidget *codecs_list = NULL;
 
-  GmPreferencesWindow *pw = NULL;
-
-  pw = gm_pw_get_pw (prefs_window);
-
   /* Packing widgets */
   subsection = gnome_prefs_subsection_new (prefs_window, container,
 				_("Codecs"), 1, 1);
@@ -955,10 +940,6 @@ gm_pw_init_video_codecs_page (GtkWidget *prefs_window,
 {
   GtkWidget *subsection = NULL;
   GtkWidget *codecs_list = NULL;
-
-  GmPreferencesWindow *pw = NULL;
-
-  pw = gm_pw_get_pw (prefs_window);
 
   /* Packing widgets */
   subsection = gnome_prefs_subsection_new (prefs_window, container,
