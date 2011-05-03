@@ -353,7 +353,7 @@ if test "x$use_x86_asm" = "xyes"; then
     ac_ext=S
 
     AC_MSG_CHECKING(compiler support for MMX)
-    cp lib/pixops/scale_line_22_33_mmx.S conftest.S
+    cp $srcdir/lib/pixops/scale_line_22_33_mmx.S conftest.S
     if AC_TRY_EVAL(ac_compile); then
         use_mmx_asm=yes
     fi
