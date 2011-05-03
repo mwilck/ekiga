@@ -123,6 +123,22 @@ struct _EkigaMainWindowPrivate
   GtkWidget *main_notebook;
   GtkWidget *hpaned;
 
+  /* The problem is the following :
+   * without that boolean, changing the ui will trigger
+   * a callback, which will store in the settings that
+   * the user wants only local video... in fact the
+   * problem is that we use a single ui+settings to mean
+   * both "what the user wants during a call"
+   * and "what we are doing right now".
+   *
+   * So we set that boolean to true,
+   * ask the ui to change,
+   * notice that we don't want to update the settings
+   * set the boolean to false...
+   * then run as usual.
+   */
+  bool changing_back_to_local_after_a_call;
+
   /* notebook pages
    *  (we store the numbers so we know where we are)
    */
@@ -503,8 +519,8 @@ static void zoom_out_changed_cb (GtkWidget *,
 static void zoom_normal_changed_cb (GtkWidget *,
 				    gpointer);
 
-void display_changed_cb (GtkWidget *widget,
-			 gpointer data);
+static void display_changed_cb (GtkWidget *widget,
+				gpointer data);
 
 /* DESCRIPTION  :  This callback is called when the user toggles fullscreen
  *                 factor in the popup menu.
@@ -1341,7 +1357,9 @@ on_videooutput_device_opened_cb (Ekiga::VideoOutputManager & /* manager */,
   // restore it afterwards
   if (!both_streams && mode == Ekiga::VO_MODE_LOCAL)
     vv = gm_conf_get_int (VIDEO_DISPLAY_KEY "video_view");
+  mw->priv->changing_back_to_local_after_a_call = true;
   gtk_radio_menu_select_with_id (mw->priv->main_menu, "local_video", mode);
+  mw->priv->changing_back_to_local_after_a_call = false;
   if (!both_streams && mode == Ekiga::VO_MODE_LOCAL)
     gm_conf_set_int (VIDEO_DISPLAY_KEY "video_view", vv);
 
@@ -2617,19 +2635,17 @@ zoom_normal_changed_cb (G_GNUC_UNUSED GtkWidget *widget,
 }
 
 
-void 
+static void
 display_changed_cb (GtkWidget *widget,
-		       gpointer data)
+		    gpointer data)
 {
-  GtkWidget *main_window = GnomeMeeting::Process ()->GetMainWindow ();
+  EkigaMainWindow *main_window = EKIGA_MAIN_WINDOW (GnomeMeeting::Process ()->GetMainWindow ());
   g_return_if_fail (main_window != NULL);
-
   g_return_if_fail (data != NULL);
 
   GSList *group = NULL;
   int group_last_pos = 0;
   int active = 0;
-  Ekiga::DisplayInfo display_info;
 
   group = gtk_radio_menu_item_get_group (GTK_RADIO_MENU_ITEM (widget));
   group_last_pos = g_slist_length (group) - 1; /* If length 1, last pos is 0 */
@@ -2647,7 +2663,8 @@ display_changed_cb (GtkWidget *widget,
       group = g_slist_next (group);
     }
 
-    gm_conf_set_int ((gchar *) data, group_last_pos - active);
+    if ( !main_window->priv->changing_back_to_local_after_a_call)
+      gm_conf_set_int ((gchar *) data, group_last_pos - active);
   }
 }
 
@@ -4126,6 +4143,8 @@ ekiga_main_window_init (EkigaMainWindow *mw)
   mw->priv->accel = gtk_accel_group_new ();
   gtk_window_add_accel_group (GTK_WINDOW (mw), mw->priv->accel);
   g_object_unref (mw->priv->accel);
+
+  mw->priv->changing_back_to_local_after_a_call = false;
 
   mw->priv->transfer_call_popup = NULL;
   mw->priv->current_call = boost::shared_ptr<Ekiga::Call>();

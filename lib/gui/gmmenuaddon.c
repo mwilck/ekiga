@@ -502,11 +502,10 @@ gtk_radio_menu_select_with_id (GtkWidget *menu,
   group_last_pos = g_slist_length (group) - 1; /* If length 1, last pos is 0 */
   while (group) {
 
-    // note: the following calls must not call callbacks
     if (gtk_widget_is_sensitive (GTK_WIDGET (group->data)))
-      GTK_CHECK_MENU_ITEM (group->data)->active = (i == group_last_pos - active);
+      gtk_check_menu_item_set_active (group->data,  (i == group_last_pos - active));
     else
-      GTK_CHECK_MENU_ITEM (group->data)->active = FALSE;
+      gtk_check_menu_item_set_active (group->data, FALSE);
 
     gtk_widget_queue_draw (GTK_WIDGET (group->data));
 
