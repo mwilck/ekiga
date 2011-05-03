@@ -1201,17 +1201,14 @@ prepare_video_devices_page (EkigaAssistant *assistant)
 static void
 apply_video_devices_page (EkigaAssistant *assistant)
 {
+  gchar *device;
+  GtkTreeIter citer;
 
-  GtkComboBox *combo_box;
-  gchar *video_device;
-
-  combo_box = GTK_COMBO_BOX (assistant->priv->video_device);
-  video_device = gtk_combo_box_get_active_text (combo_box);
-
-  if (video_device) {
-    gm_conf_set_string (VIDEO_DEVICES_KEY "input_device", video_device);
-    g_free (video_device);
-  }
+  if (!gtk_combo_box_get_active_iter (GTK_COMBO_BOX (assistant->priv->video_device), &citer))
+    g_warn_if_reached ();
+  gtk_tree_model_get (gtk_combo_box_get_model (GTK_COMBO_BOX (assistant->priv->video_device)), &citer, 0, &device, -1);
+  gm_conf_set_string (VIDEO_DEVICES_KEY "input_device", device);
+  g_free (device);
 }
 
 
