@@ -49,6 +49,8 @@
 #include "call-manager.h"
 #include "form-request-simple.h"
 
+#include <stdlib.h>
+
 static  bool same_codec_desc (Ekiga::CodecDescription a, Ekiga::CodecDescription b)
 {
   return (a.name == b.name && a.rate == b.rate);
@@ -99,8 +101,17 @@ using namespace Opal;
 CallManager::CallManager (Ekiga::ServiceCore & _core)
   : core (_core)
 {
-  /* Initialise the endpoint paramaters */
+  /* Initialise the endpoint parameters */
+#if P_HAS_IPV6
+  char * ekiga_ipv6 = getenv("EKIGA_IPV6");
+  // use IPv6 instead of IPv4 if EKIGA_IPV6 env var is set
+  if (ekiga_ipv6 && PIPSocket::IsIpAddressFamilyV6Supported())
+    PIPSocket::SetDefaultIpAddressFamilyV6();
+  else
+    PIPSocket::SetDefaultIpAddressFamilyV4();
+#else
   PIPSocket::SetDefaultIpAddressFamilyV4();
+#endif
   SetAutoStartTransmitVideo (true);
   SetAutoStartReceiveVideo (true);
   SetUDPPorts (5000, 5100);
