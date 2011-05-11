@@ -4773,7 +4773,7 @@ main (int argc,
     {
       {
 	"debug", 'd', 0, G_OPTION_ARG_INT, &debug_level,
-       N_("Prints debug messages in the console (level between 1 and 5)"),
+       N_("Prints debug messages in the console (level between 1 and 8)"),
        NULL
       },
       {
@@ -4816,7 +4816,7 @@ main (int argc,
 
 #if PTRACING
   if (debug_level != 0)
-    PTrace::Initialise (PMAX (PMIN (5, debug_level), 0), NULL,
+    PTrace::Initialise (PMAX (PMIN (8, debug_level), 0), NULL,
 			PTrace::Timestamp | PTrace::Thread
 			| PTrace::Blocks | PTrace::DateAndTime);
 #endif
@@ -4825,6 +4825,7 @@ main (int argc,
 #ifdef EKIGA_REVISION
   PTRACE(1, "Ekiga git revision: " << EKIGA_REVISION);
 #endif
+  PTRACE(1, "Debug level: " << debug_level);
 
   /* Ekiga initialisation */
   // should come *after* ptrace initialisation, to track codec loading for ex.
