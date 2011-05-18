@@ -59,8 +59,6 @@
 
 #include "sip-endpoint.h"
 
-#define SCHEME "sip:"
-
 Opal::Account::Account (Ekiga::ServiceCore & _core,
                         const std::string & account)
   : core (_core)
