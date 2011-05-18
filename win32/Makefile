@@ -1,7 +1,7 @@
 #!/usr/bin/make -f
 
 # RELEASE: 0=from git/svn, 1=release (tar.gz) for ekiga, ptlib and opal
-RELEASE   := 1
+RELEASE   := 0
 # DEBUG: 0=release, 1=debug version
 DEBUG     := 0
 
