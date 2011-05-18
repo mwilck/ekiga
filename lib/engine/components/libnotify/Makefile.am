@@ -2,7 +2,7 @@ noinst_LTLIBRARIES = libgmlibnotify.la
 
 libnotify_dir = $(top_srcdir)/lib/engine/components/libnotify
 
-AM_CXXFLAGS = $(SIGC_CFLAGS) $(NOTIFY_CFLAGS)
+AM_CXXFLAGS = $(SIGC_CFLAGS) $(NOTIFY_CFLAGS) $(GTK_CFLAGS)
 
 INCLUDES = \
 	-I$(top_srcdir)/lib/engine/framework \
