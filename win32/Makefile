@@ -1,7 +1,7 @@
 #!/usr/bin/make -f
 
 # RELEASE: 0=from git/svn, 1=release (tar.gz) for ekiga, ptlib and opal
-RELEASE   := 1
+RELEASE   := 0
 # DEBUG: 0=release, 1=debug version
 DEBUG     := 0
 
@@ -56,7 +56,7 @@ else
 	EKIGA_URL := git://git.gnome.org/ekiga
 	EKIGA_ARCHIVE := ekiga
 	EKIGA_DIR = $(BUILDROOT)/ekiga
-	EKIGA_VER := $(strip $(shell grep AC_INIT $(SRCDIR)/$(EKIGA_ARCHIVE)/configure.ac | awk 'BEGIN { FS = "," } ; { print $$2 }'))
+	EKIGA_VER := $(strip $(shell grep AC_INIT $(SRCDIR)/$(EKIGA_ARCHIVE)/configure.ac | awk 'BEGIN { FS = "," } ; { print $$2 }' | tr -d '[]'))
 	EKIGA_REV := $(strip $(shell (cd $(SRCDIR)/$(EKIGA_ARCHIVE); git describe | awk 'BEGIN { FS = "-" } ; { print $$2 "_" $$3 }' )))
 ifneq ($(EKIGA_REV),)
 	EKIGA_VER := $(EKIGA_VER)-git-$(EKIGA_REV)
@@ -77,10 +77,10 @@ ifeq ($(RELEASE),1)
 	OPAL_ARCHIVE := opal-$(OPAL_VER).tar.gz
 	OPAL_DIR := $(BUILDROOT)/opal-$(OPAL_VER)
 else
-	OPAL_VER := 3.8-beta4
+	OPAL_VER := 3.10-beta1
 	# OPAL_REV: HEAD or revision number
 	OPAL_REV := HEAD
-	OPAL_URL := https://opalvoip.svn.sourceforge.net/svnroot/opalvoip/opal/branches/v3_8
+	OPAL_URL := https://opalvoip.svn.sourceforge.net/svnroot/opalvoip/opal/branches/v3_10
 	OPAL_ARCHIVE := opal
 	OPAL_DIR := $(BUILDROOT)/opal
 endif
@@ -92,16 +92,17 @@ ifeq ($(RELEASE),1)
 	PTLIB_ARCHIVE := ptlib-$(PTLIB_VER).tar.gz
 	PTLIB_DIR := $(BUILDROOT)/ptlib-$(PTLIB_VER)
 else
-	PTLIB_VER := 2.8-beta4
+	PTLIB_VER := 2.10-beta1
 	# PTLIB_REV: HEAD or revision number
 	PTLIB_REV := HEAD
-	PTLIB_URL := https://opalvoip.svn.sourceforge.net/svnroot/opalvoip/ptlib/branches/v2_8
+	PTLIB_URL := https://opalvoip.svn.sourceforge.net/svnroot/opalvoip/ptlib/branches/v2_10
 	PTLIB_ARCHIVE := ptlib
 	PTLIB_DIR := $(BUILDROOT)/ptlib
 endif
 PTLIB_LIB := libpt.$(PTLIB_VER).dll
 
 ##############   ekiga/ptlib/opal library and headers dependencies
+# 2.4.24 added mandatory MozNSS support, do not use it for the moment
 OPENLDAP_VER := 2.4.23
 OPENLDAP_DIR := $(BUILDROOT)/openldap-$(OPENLDAP_VER)
 OPENLDAP_ARCHIVE := openldap-$(OPENLDAP_VER).tgz
@@ -112,7 +113,7 @@ LIBSASL2_DIR := $(BUILDROOT)/cyrus-sasl-$(LIBSASL2_VER)
 LIBSASL2_ARCHIVE := cyrus-sasl-$(LIBSASL2_VER).zip
 LIBSASL2_URL := http://developer.pidgin.im/static/win32
 
-OGG_VER := 1.2.1
+OGG_VER := 1.2.2
 OGG_DIR := $(BUILDROOT)/libogg-$(OGG_VER)
 OGG_ARCHIVE := libogg-$(OGG_VER).tar.gz
 OGG_URL := http://downloads.xiph.org/releases/ogg
@@ -138,7 +139,7 @@ REGEX_REV := 203e34
 REGEX_DIR := $(BUILDROOT)/regex
 REGEX_ARCHIVE := regex
 
-BOOST_VER := 1.45.0
+BOOST_VER := 1.46.1
 BOOST_URL := http://downloads.sourceforge.net/project/boost/boost/$(BOOST_VER)
 BOOST_ARCHIVE := boost_$(shell echo $(BOOST_VER)|tr . _).tar.gz
 BOOST_DIR := $(BUILDROOT)/boost_$(shell echo $(BOOST_VER)|tr . _)
@@ -154,7 +155,7 @@ ICONV_ARCHIVE := libiconv-$(ICONV_VER)-bin.zip
 
 # use a revision from 2009-04-13, known to work with current ekiga
 FFMPEG_VER := c573eb85f
-FFMPEG_URL := git://git.ffmpeg.org/ffmpeg.git
+FFMPEG_URL := git://git.videolan.org/ffmpeg.git
 FFMPEG_DIR := $(BUILDROOT)/ffmpeg
 FFMPEG_ARCHIVE := ffmpeg
 
@@ -194,15 +195,15 @@ GTK_BIN_EXE := gtk2-runtime-2.22.0-2010-10-21-ash.exe
 
 ##############   gtk headers dependencies
 # during building, ekiga uses gtk.h, which needs headers of various libraries
-GLIB_VER := 2.26.0-2
-GLIB_URL := http://ftp.gnome.org/pub/gnome/binaries/win32/glib/2.26
+GLIB_VER := 2.28.1-1
+GLIB_URL := http://ftp.gnome.org/pub/gnome/binaries/win32/glib/2.28
 GLIB_ARCHIVE := glib-dev_$(GLIB_VER)_win32.zip
 
 ATK_VER := 1.32.0-1
 ATK_URL := http://ftp.gnome.org/pub/gnome/binaries/win32/atk/1.32
 ATK_ARCHIVE := atk-dev_$(ATK_VER)_win32.zip
 
-CAIRO_VER := 1.10.0-2
+CAIRO_VER := 1.10.2-1
 CAIRO_URL := http://ftp.gnome.org/pub/gnome/binaries/win32/dependencies
 CAIRO_ARCHIVE := cairo-dev_$(CAIRO_VER)_win32.zip
 
@@ -210,7 +211,7 @@ PANGO_VER := 1.28.3-1
 PANGO_URL := http://ftp.gnome.org/pub/gnome/binaries/win32/pango/1.28
 PANGO_ARCHIVE := pango-dev_$(PANGO_VER)_win32.zip
 
-FREETYPE_VER := 2.4.2-1
+FREETYPE_VER := 2.4.4-1
 FREETYPE_URL := http://ftp.gnome.org/pub/gnome/binaries/win32/dependencies/
 FREETYPE_ARCHIVE := freetype-dev_$(FREETYPE_VER)_win32.zip
 
@@ -218,7 +219,7 @@ FONTCONFIG_VER := 2.8.0-2
 FONTCONFIG_URL := http://ftp.gnome.org/pub/gnome/binaries/win32/dependencies/
 FONTCONFIG_ARCHIVE := fontconfig-dev_$(FONTCONFIG_VER)_win32.zip
 
-GDKPIXBUF_VER := 2.22.0-1
+GDKPIXBUF_VER := 2.22.1-1
 GDKPIXBUF_URL := http://ftp.gnome.org/pub/gnome/binaries/win32/gdk-pixbuf/2.22
 GDKPIXBUF_ARCHIVE := gdk-pixbuf-dev_$(GDKPIXBUF_VER)_win32.zip
 
@@ -245,7 +246,8 @@ confptlib := $(confflags) \
 	--disable-qos --disable-alsa --disable-esd --disable-oss --disable-sunaudio --disable-shmaudio \
 	--disable-v4l --disable-v4l2 --disable-bsdvideo --disable-avc --disable-dc
 
-confopal := $(confflags) --with-ffmpeg-dir=$(FFMPEG_DIR) --disable-t38 --disable-fax
+	# disable ilbc and silk non-free codecs
+confopal := $(confflags) --with-ffmpeg-dir=$(FFMPEG_DIR) --disable-t38 --disable-fax --disable-iLBC --disable-silk
 
 confekiga:= $(confflags) \
 	--with-directx-dir=$(EKIGA_DIR)/win32/directx --prefix=$(EKIGA_PREFIX) \
@@ -416,6 +418,9 @@ ifeq ($(RELEASE),1)
 else
 	$(CP) -r $(SRCDIR)/$(PTLIB_ARCHIVE) $(PTLIB_DIR)
 endif
+	# regenerate configure, since it might be older than configure.ac
+	cd $(PTLIB_DIR); aclocal && autoconf
+	cd $(PTLIB_DIR)/plugins; aclocal && autoconf
 	# apply all ptlib_* patches
 	cd $(PTLIB_DIR); for i in $(EKIGA_DIR)/win32/diff/ptlib_*; do \
 		test `basename $$i` != 'ptlib_*' && (patch -p1 <$$i || exit 1) ;\
@@ -553,6 +558,9 @@ ifeq ($(RELEASE),1)
 else
 	$(CP) -r $(SRCDIR)/$(OPAL_ARCHIVE) $(OPAL_DIR)
 endif
+	# regenerate configure, since it might be older than configure.ac
+	cd $(OPAL_DIR); aclocal && autoconf
+	cd $(OPAL_DIR)/plugins; aclocal && autoconf
 	# apply all opal_* patches
 	cd $(OPAL_DIR); for i in $(EKIGA_DIR)/win32/diff/opal_*; do \
 		test `basename $$i` != 'opal_*' && (patch -p1 <$$i || exit 1) ;\
