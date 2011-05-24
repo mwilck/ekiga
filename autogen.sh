@@ -43,5 +43,7 @@ if test -z "$gnome_autogen" ; then
   exit 1
 fi
 
-# -I /usr/local/share/aclocal is needed for FreeBSD ports
-ACLOCAL_FLAGS="$ACLOCAL_FLAGS -I /usr/share/aclocal -I /usr/local/share/aclocal" GNOME_DATADIR="$gnome_datadir" USE_GNOME2_MACROS=1 . $gnome_autogen
+# FreeBSD ports needs -I /usr/local/share/aclocal, and only this
+test -d /usr/local/share/aclocal && ACLOCAL_DIR="-I /usr/local/share/aclocal"
+test -d /usr/share/aclocal && ACLOCAL_DIR="-I /usr/share/aclocal"
+ACLOCAL_FLAGS="$ACLOCAL_FLAGS $ACLOCAL_DIR" GNOME_DATADIR="$gnome_datadir" USE_GNOME2_MACROS=1 . $gnome_autogen
