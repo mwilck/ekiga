@@ -508,7 +508,7 @@ Opal::Account::publish (const Ekiga::PersonalDetails& details)
 
   presence_status = details.get_status ();
 
-  PTRACE (3, "Ekiga tries to publish presence");
+  PTRACE (4, "Ekiga sends its own presence (publish) for " << get_aor() << ": " << presence);
 
   if (presentity)
     presentity->SetLocalPresence (personal_state, presence_status);
@@ -630,7 +630,9 @@ Opal::Account::setup_presentity ()
     presentity->GetAttributes().Set(SIP_Presentity::AuthNameKey, username);
     presentity->GetAttributes().Set(SIP_Presentity::AuthPasswordKey, password);
     presentity->GetAttributes().Set(SIP_Presentity::SubProtocolKey, "Agent");
-  }
+    PTRACE (4, "Added presentity for " << get_aor());
+  } else
+    PTRACE (4, "Error: cannot add presentity for " << get_aor());
 }
 
 void
@@ -640,7 +642,7 @@ Opal::Account::OnPresenceChange (OpalPresentity& /*presentity*/,
   std::string new_presence = "unknown";
   std::string new_status = "";
 
-  PTRACE (4, "Ekiga's OnPresenceChange callback is triggered");
+  PTRACE (4, "Ekiga receives a presence change (notify) for " << get_aor() << ": " << info.m_state);
 
   SIPURL sip_uri = SIPURL (info.m_entity);
   sip_uri.Sanitise (SIPURL::ExternalURI);
@@ -649,10 +651,12 @@ Opal::Account::OnPresenceChange (OpalPresentity& /*presentity*/,
   /* we could do something precise */
   switch (info.m_state) {
 
+  case OpalPresenceInfo::Unchanged:
+    // do not change presence
+    break;
   case OpalPresenceInfo::InternalError:
   case OpalPresenceInfo::Forbidden:
   case OpalPresenceInfo::NoPresence:
-  case OpalPresenceInfo::Unchanged:
   case OpalPresenceInfo::Unavailable:
     new_presence = "offline";
     break;
@@ -736,14 +740,14 @@ Opal::Account::OnPresenceChange (OpalPresentity& /*presentity*/,
     new_presence = "online";
     break;
   default:
-    new_presence = "offline";
     break;
   }
 
   if (!info.m_note.IsEmpty ())
     new_status = (const char*) info.m_note; // casting a PString to a std::string isn't straightforward
 
-  Ekiga::Runtime::run_in_main (boost::bind (&Opal::Account::presence_status_in_main, this, uri, new_presence, new_status));
+  if (info.m_state != OpalPresenceInfo::Unchanged)
+    Ekiga::Runtime::run_in_main (boost::bind (&Opal::Account::presence_status_in_main, this, uri, new_presence, new_status));
 }
 
 
