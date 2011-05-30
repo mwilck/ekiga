@@ -498,7 +498,9 @@ Opal::Account::publish (const Ekiga::PersonalDetails& details)
 {
   std::string presence = details.get_presence ();
 
-  // FIXME: complete!
+  // FIXME : if we decide to have more presence states,
+  // the compiler won't be able to tell us we don't have
+  // a complete conversion here...
   if (presence == "online")
     personal_state = OpalPresenceInfo::Available;
   if (presence == "away")
