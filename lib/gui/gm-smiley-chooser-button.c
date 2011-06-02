@@ -500,7 +500,7 @@ gm_smiley_chooser_button_popdown (GmSmileyChooserButton* self)
 {
   g_return_if_fail (GM_IS_SMILEY_CHOOSER_BUTTON (self));
 
-  gtk_widget_hide_all (GTK_WIDGET (self->priv->popup_window));
+  gtk_widget_hide (GTK_WIDGET (self->priv->popup_window));
 
   gtk_toggle_button_set_active (GTK_TOGGLE_BUTTON (self), FALSE);
 
