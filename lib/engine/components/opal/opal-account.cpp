@@ -682,15 +682,20 @@ Opal::Account::OnPresenceChange (OpalPresentity& /*presentity*/,
   sip_uri.Sanitise (SIPURL::ExternalURI);
   std::string uri = sip_uri.AsString ();
 
-  if (uri.find ("sip:pres:") == 0) {  // old presentity type (ekiga <= 3.2.x, using .6 ptlib/opal branches)
-    PTRACE (4, "Ekiga received a presence change (notify) using old API for " << info.m_entity << ": note " << info.m_note);
-    uri.erase (4, 5);  // remove "pres:"
+  PTRACE (4, "Ekiga received a presence change (notify) for " << info.m_entity << ": state " << info.m_state << ", note " << info.m_note);
+
+  if (uri.compare (0, 5, "pres:"))
+    g_warning ("Presentity entity should start with \"pres:\", presence might not work");
+  uri.replace (0, 5, "sip:");  // replace "pres:" sith "sip:"
+
+  if (info.m_state == OpalPresenceInfo::Available
+      && (info.m_note.Find ("online - ") != P_MAX_INDEX
+          || info.m_note.Find ("away - ") != P_MAX_INDEX
+          || info.m_note.Find ("dnd - ") != P_MAX_INDEX)) {  // old presentity type (ekiga <= 3.2.x, using .6 ptlib/opal branches)
     old_presentity (info.m_note, new_presence, new_status);
     Ekiga::Runtime::run_in_main (boost::bind (&Opal::Account::presence_status_in_main, this, uri, new_presence, new_status));
     return;
   }
-
-  PTRACE (4, "Ekiga received a presence change (notify) for " << info.m_entity << ": state " << info.m_state << ", note " << info.m_note);
 
   switch (info.m_state) {
 
