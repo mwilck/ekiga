@@ -898,6 +898,31 @@ Opal::Sip::EndPoint::OnReceivedMESSAGE (OpalTransport & transport,
 }
 
 
+void
+Opal::Sip::EndPoint::OnMESSAGECompleted (const SIPMessage::Params & params,
+                                         SIP_PDU::StatusCodes reason)
+{
+  PTRACE (4, "IM sending completed, reason: " << reason);
+
+  // after TemporarilyUnavailable, RequestTimeout appears too, hence do not process it too
+  if (reason == SIP_PDU::Successful_OK || reason == SIP_PDU::Failure_RequestTimeout)
+    return;
+
+  SIPURL to = params.m_remoteAddress;
+  to.Sanitise (SIPURL::ToURI);
+  std::string uri = (const char*) to.AsString ();
+  std::string display_name = (const char*) to.GetDisplayName ();
+
+  std::string reason_shown = _("Could not send message");
+  if (reason == SIP_PDU::Failure_TemporarilyUnavailable)
+    reason_shown += _(": user offline");
+  else
+    reason_shown += SIP_PDU::GetStatusCodeDescription (reason);  // too many to translate them with _()...
+
+  Ekiga::Runtime::run_in_main (boost::bind (&Opal::Sip::EndPoint::push_notice_in_main, this, uri, display_name, reason_shown));
+}
+
+
 SIPURL
 Opal::Sip::EndPoint::GetRegisteredPartyName (const SIPURL & aor,
 					     const OpalTransport & transport)
@@ -908,8 +933,7 @@ Opal::Sip::EndPoint::GetRegisteredPartyName (const SIPURL & aor,
   if (!local_aor.empty ())
     return local_aor.c_str ();
 
-  /* As a last resort, use the local address
-   */
+  // as a last resort, use the local address
   return GetDefaultRegisteredPartyName (transport);
 }
 

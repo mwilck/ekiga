@@ -169,6 +169,9 @@ namespace Opal {
       bool OnReceivedMESSAGE (OpalTransport & transport,
                               SIP_PDU & pdu);
 
+      void OnMESSAGECompleted (const SIPMessage::Params & params,
+                               SIP_PDU::StatusCodes reason);
+
       SIPURL GetRegisteredPartyName (const SIPURL & host,
 				     const OpalTransport & transport);
 
