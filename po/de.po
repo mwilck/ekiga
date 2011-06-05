@@ -16,8 +16,8 @@ msgstr ""
 "Project-Id-Version: Ekiga master\n"
 "Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?"
 "product=ekiga&keywords=I18N+L10N&component=general\n"
-"POT-Creation-Date: 2011-05-18 16:20+0000\n"
-"PO-Revision-Date: 2011-05-26 22:29+0100\n"
+"POT-Creation-Date: 2011-06-04 11:15+0000\n"
+"PO-Revision-Date: 2011-06-05 12:49+0100\n"
 "Last-Translator: Mario Blättermann <mariobl@freenet.de>\n"
 "Language-Team: Deutsch <gnome-de@gnome.org>\n"
 "MIME-Version: 1.0\n"
@@ -1209,77 +1209,82 @@ msgstr "Sie haben keinen Benutzernamen für dieses Konto angegeben."
 msgid "The timeout should be at least 10 seconds."
 msgstr "Die Wartezeit sollte mindestens 10 Sekunden betragen."
 
-#: ../lib/engine/components/opal/opal-account.cpp:543
+#: ../lib/engine/components/opal/opal-account.cpp:549
 msgid "Registered"
 msgstr "Angemeldet"
 
-#: ../lib/engine/components/opal/opal-account.cpp:555
+#: ../lib/engine/components/opal/opal-account.cpp:561
 msgid "Unregistered"
 msgstr "Abgemeldet"
 
-#: ../lib/engine/components/opal/opal-account.cpp:565
+#: ../lib/engine/components/opal/opal-account.cpp:571
 msgid "Could not unregister"
 msgstr "Abmelden nicht möglich"
 
 #. since limited did not work, put it back to false, to avoid being stuck to limited=true when retrying register later
-#: ../lib/engine/components/opal/opal-account.cpp:579
+#: ../lib/engine/components/opal/opal-account.cpp:585
 msgid "Could not register"
 msgstr "Anmelden nicht möglich"
 
-#: ../lib/engine/components/opal/opal-account.cpp:588
+#: ../lib/engine/components/opal/opal-account.cpp:594
 msgid "Processing..."
 msgstr "Verarbeitung läuft …"
 
-#: ../lib/engine/components/opal/opal-account.cpp:672
+#. Translators: see RFC 4480 for more information about activities
+#: ../lib/engine/components/opal/opal-account.cpp:725
 msgid "Appointment"
 msgstr "Termin"
 
-#: ../lib/engine/components/opal/opal-account.cpp:676
-#: ../lib/engine/components/opal/opal-account.cpp:708
+#: ../lib/engine/components/opal/opal-account.cpp:729
 msgid "Breakfast"
 msgstr "Frühstück"
 
-#: ../lib/engine/components/opal/opal-account.cpp:680
+#: ../lib/engine/components/opal/opal-account.cpp:733
 msgid "Dinner"
 msgstr "Abendessen"
 
-#: ../lib/engine/components/opal/opal-account.cpp:684
+#: ../lib/engine/components/opal/opal-account.cpp:737
 msgid "Holiday"
 msgstr "Urlaub"
 
-#: ../lib/engine/components/opal/opal-account.cpp:688
+#: ../lib/engine/components/opal/opal-account.cpp:741
 msgid "In transit"
 msgstr "Unterwegs"
 
-#: ../lib/engine/components/opal/opal-account.cpp:692
+#: ../lib/engine/components/opal/opal-account.cpp:745
 msgid "Looking for work"
 msgstr "Arbeitssuchend"
 
-#: ../lib/engine/components/opal/opal-account.cpp:696
+#: ../lib/engine/components/opal/opal-account.cpp:749
 msgid "Lunch"
 msgstr "Mittagessen"
 
-#: ../lib/engine/components/opal/opal-account.cpp:700
+#: ../lib/engine/components/opal/opal-account.cpp:753
 msgid "Meal"
 msgstr "Mahlzeit"
 
-#: ../lib/engine/components/opal/opal-account.cpp:704
+#: ../lib/engine/components/opal/opal-account.cpp:757
 msgid "Meeting"
 msgstr "Besprechung"
 
-#: ../lib/engine/components/opal/opal-account.cpp:712
+#: ../lib/engine/components/opal/opal-account.cpp:761
+#| msgid "_Office phone:"
+msgid "On the phone"
+msgstr "Am Telefon"
+
+#: ../lib/engine/components/opal/opal-account.cpp:765
 msgid "Playing"
 msgstr "Spielen"
 
-#: ../lib/engine/components/opal/opal-account.cpp:716
+#: ../lib/engine/components/opal/opal-account.cpp:769
 msgid "Shopping"
 msgstr "Einkaufen"
 
-#: ../lib/engine/components/opal/opal-account.cpp:720
+#: ../lib/engine/components/opal/opal-account.cpp:773
 msgid "Sleeping"
 msgstr "Schlafen"
 
-#: ../lib/engine/components/opal/opal-account.cpp:724
+#: ../lib/engine/components/opal/opal-account.cpp:777
 msgid "Working"
 msgstr "Arbeiten"
 
@@ -1651,23 +1656,32 @@ msgstr "Besteht nicht mehr"
 msgid "Globally not acceptable"
 msgstr "Überall nicht annehmbar"
 
-#: ../lib/engine/components/opal/sip-endpoint.cpp:933
+#: ../lib/engine/components/opal/sip-endpoint.cpp:916
+msgid "Could not send message"
+msgstr "Nachricht konnte nicht abgeschickt werden"
+
+#: ../lib/engine/components/opal/sip-endpoint.cpp:918
+#| msgid "Error: User offline"
+msgid ": user offline"
+msgstr ": Benutzer ist abgemeldet"
+
+#: ../lib/engine/components/opal/sip-endpoint.cpp:957
 #: ../src/gui/main_window.cpp:3198
 #, c-format
 msgid "Incoming call from %s"
 msgstr "Eingehender Anruf von %s"
 
-#: ../lib/engine/components/opal/sip-endpoint.cpp:935
+#: ../lib/engine/components/opal/sip-endpoint.cpp:959
 #, c-format
 msgid "Incoming call"
 msgstr "Eingehender Anruf"
 
-#: ../lib/engine/components/opal/sip-endpoint.cpp:941
+#: ../lib/engine/components/opal/sip-endpoint.cpp:965
 #, c-format
 msgid "In a call with %s"
 msgstr "In einem Gespräch mit %s"
 
-#: ../lib/engine/components/opal/sip-endpoint.cpp:943
+#: ../lib/engine/components/opal/sip-endpoint.cpp:967
 #, c-format
 msgid "In a call"
 msgstr "In einem Gespräch"
@@ -3706,9 +3720,6 @@ msgstr "Angepasste Nachricht bearbeiten:"
 #~ msgid "Call in progress"
 #~ msgstr "Gespräch wird geführt"
 
-#~ msgid "Could not send message"
-#~ msgstr "Nachricht konnte nicht abgeschickt werden"
-
 #~ msgid "_Base DN"
 #~ msgstr "_Basis-DN:"
 
@@ -4789,9 +4800,6 @@ msgstr "Angepasste Nachricht bearbeiten:"
 
 #~ msgid "Error: User not found"
 #~ msgstr "Fehler: Benutzer nicht gefunden"
-
-#~ msgid "Error: User offline"
-#~ msgstr "Fehler: Benutzer ist abgemeldet"
 
 #~ msgid "Error: Forbidden"
 #~ msgstr "Fehler: Verboten"
