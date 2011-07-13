@@ -53,9 +53,6 @@
 
 #include "opal-call-manager.h"
 
-PDICTIONARY (msgDict, PString, PString);
-
-
 namespace Opal {
 
   namespace Sip {
@@ -205,9 +202,6 @@ namespace Opal {
 
       void mwi_received_in_main (const std::string aor,
 				 const std::string info);
-
-      PMutex msgDataMutex;
-      msgDict msgData;
 
       PMutex aorMutex;
       std::map<std::string, std::string> accounts;

@@ -867,9 +867,6 @@ bool
 Opal::Sip::EndPoint::OnReceivedMESSAGE (OpalTransport & transport,
 					SIP_PDU & pdu)
 {
-  PString *last = NULL;
-  PString *val = NULL;
-
   PString from = pdu.GetMIME().GetFrom();
   PINDEX j = from.Find (';');
   if (j != P_MAX_INDEX)
@@ -878,21 +875,13 @@ Opal::Sip::EndPoint::OnReceivedMESSAGE (OpalTransport & transport,
   if (j != P_MAX_INDEX && from.Find ('>') == P_MAX_INDEX)
     from += '>';
 
-  PWaitAndSignal m(msgDataMutex);
-  last = msgData.GetAt (SIPURL (from).AsString ());
-  if (!last || *last != pdu.GetMIME ().GetFrom ()) {
+  SIPURL uri = from;
+  uri.Sanitise (SIPURL::RequestURI);
+  std::string display_name = (const char *) uri.GetDisplayName ();
+  std::string message_uri = (const char *) uri.AsString ();
+  std::string _message = (const char *) pdu.GetEntityBody ();
 
-    val = new PString (pdu.GetMIME ().GetFrom ());
-    msgData.SetAt (SIPURL (from).AsString (), val);
-
-    SIPURL uri = from;
-    uri.Sanitise (SIPURL::RequestURI);
-    std::string display_name = (const char *) uri.GetDisplayName ();
-    std::string message_uri = (const char *) uri.AsString ();
-    std::string _message = (const char *) pdu.GetEntityBody ();
-
-    Ekiga::Runtime::run_in_main (boost::bind (&Opal::Sip::EndPoint::push_message_in_main, this, message_uri, display_name, _message));
-  }
+  Ekiga::Runtime::run_in_main (boost::bind (&Opal::Sip::EndPoint::push_message_in_main, this, message_uri, display_name, _message));
 
   return SIPEndPoint::OnReceivedMESSAGE (transport, pdu);
 }
