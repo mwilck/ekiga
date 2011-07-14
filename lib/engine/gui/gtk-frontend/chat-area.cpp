@@ -555,7 +555,11 @@ message_activated_cb (G_GNUC_UNUSED GtkWidget *w,
 
   g_return_val_if_fail (data != NULL, false);
 
-  if (key->keyval == GDK_Return) {
+  // if ...-shift-enter, insert newline
+  // if enter, send message
+  // note there are two enter: from main kbd and from keypad
+  if ((key->keyval == GDK_Return || key->keyval == GDK_KEY_KP_Enter)
+      && (key->state & GDK_SHIFT_MASK) == 0) {
 
     buffer = gtk_text_view_get_buffer (GTK_TEXT_VIEW (self->priv->message));
     gtk_text_buffer_get_start_iter (GTK_TEXT_BUFFER (buffer), &start_iter);
@@ -570,10 +574,10 @@ message_activated_cb (G_GNUC_UNUSED GtkWidget *w,
     if (self->priv->chat->send_message (body))
       gtk_text_buffer_delete (GTK_TEXT_BUFFER (buffer), &start_iter, &end_iter);
 
-    return true;
+    return TRUE;
   }
 
-  return false;
+  return FALSE;
 }
 
 static void
