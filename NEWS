@@ -1,4 +1,63 @@
                           -*- mode: outline -*-
+* Major changes in ekiga 3.3.1 (2011-07-15)
+** User-visible fixes
+- Fix crash when no audio device exists
+- Fix crash in avahi when peer goes offline
+- Add back presence, lost in 3.3.0 (still not yet 100% reliable)
+- Improve failure indication when sending instant messages
+- Improve Enter key usage in chat (use shift-Enter for soft Enter)
+- Improvements to still partial support for IPv6
+- Fix "PTLib assumes all Ethernet devices are named ethX"
+- Fix crash in __gnu_cxx:bitmap_allocator using newer gcc
+- Use DNS SRV caching (fix ekiga takes minutes to start)
+- Reduce CPU usage with H264
+- New audio codecs: SILK (used by skype), G.722.1 (aka Siren 7),
+  G.722.2 (aka GSM-AMR Wide band)
+- Improve audio accuracy on some audio cards
+- Ask user about new ringing device too when pluging an audio output device
+- Small reduction of assistant window size, useful for small screens
+- Add tooltips to various windows and dialog boxes
+- Fix addressbook key in schemas
+- Propose to add an ekiga.net book only when it hasn't one already
+- Remove obsolete reencoding (to utf8) of device names on Linux
+- Made creating an XMPP/Jabber account nicer
+- Usability improvements to notification dialog
+- other fixes
+
+** Protocol fixes
+- Fix "Ekiga ignores Service-Route recommended by server"
+- Fix "SIP: incoming call failing when using localhost"
+- Reset SIP Contacts "limited" workaround if it does not work
+- Various other SIP/H.323 fixes
+
+** Distributor-visible changes
+- New SILK (used by skype) and AMR-WB audio codecs
+
+** Windows port fixes
+- Fix crash on quit
+- Update dependencies
+- Make use of png dependency better
+- Cleanup build flags
+
+** Build fixes
+- Fix compatibility with modern autoconf
+- Remove obsolete SSL2 support
+- Fix build with binutils-gold and with -Wl,-z,defs
+- Fix gdu build option
+- Fix loudmouth build option and comment for gconf build option
+- Made configure honor ACLOCAL_FLAGS
+- Fix compilation of xcap plugin
+- Fix compilation errors with GTK 2.24
+- Fix building on FreeBSD
+- Code cleanup
+
+** Translation updates
+- Updated translations: ar, as, bg, bn_IN, ca, cs, da, de, el, eo,
+  en_GB, es, et, eu, fr, gl, gu, he, hu, id, ja, kn, ko, lv, mr, nb,
+  pa, pl, pt, pt_BR, ro, ru, sk, sl, sr, sr@latin, sv, ta, tr, ug, uk,
+  zh_CN, zh_HK, za_TW
+- Updated help translations: es
+
 * Major changes in ekiga 3.3.0 (2010-12-21)
 ** Distributor-specific changes
 - New pulse audio plugin (in ptlib)
@@ -43,7 +102,7 @@
 - Updated translations: as, ast, bg, bn, bn_IN, ca, ca@valencia, cs,
   da, de, el, en_GB, eo, es, et, eu, fr, gl, gu, he, hi, hu, it, kn,
   ko, lt, lv, ja, ml, nb, nn, or, pa, pl, pt, pt_BR, ro, ru, sl, sk,
-  sr, sr@latin, sv, ta, th, uk, zh_CN, zh-HK, ZH-TW
+  sr, sr@latin, sv, ta, th, uk, zh_CN, zh_HK, ZH_TW
 - New translations: en@shaw, kk, ug
 - Updated help translations: de, el, sl, uk
 - New help translations: zh_CN
