@@ -48,7 +48,7 @@ export PATH:=$(BINDIR):$(PATH)
 ifeq ($(RELEASE),1)
 	EKIGA_VER := 3.3.1
 	EKIGA_URL := http://ftp.gnome.org/pub/gnome/sources/ekiga/3.3
-	EKIGA_ARCHIVE := ekiga-$(EKIGA_VER).tar.gz
+	EKIGA_ARCHIVE := ekiga-$(EKIGA_VER).tar.xz
 	EKIGA_DIR := $(BUILDROOT)/ekiga-$(EKIGA_VER)
 else
 	GIT_EKIGA_REV = reset --hard HEAD
@@ -74,7 +74,7 @@ EKIGA_INSTALLER_DIR := $(EKIGA_DIR)/win32/nsisinstaller
 ifeq ($(RELEASE),1)
 	OPAL_VER := 3.10.1
 	OPAL_URL := http://ftp.gnome.org/pub/gnome/sources/opal/3.10
-	OPAL_ARCHIVE := opal-$(OPAL_VER).tar.gz
+	OPAL_ARCHIVE := opal-$(OPAL_VER).tar.xz
 	OPAL_DIR := $(BUILDROOT)/opal-$(OPAL_VER)
 else
 	OPAL_VER := 3.10-beta2
@@ -89,7 +89,7 @@ OPAL_LIB := libopal.$(OPAL_VER).dll
 ifeq ($(RELEASE),1)
 	PTLIB_VER := 2.10.1
 	PTLIB_URL := http://ftp.gnome.org/pub/gnome/sources/ptlib/2.10
-	PTLIB_ARCHIVE := ptlib-$(PTLIB_VER).tar.gz
+	PTLIB_ARCHIVE := ptlib-$(PTLIB_VER).tar.xz
 	PTLIB_DIR := $(BUILDROOT)/ptlib-$(PTLIB_VER)
 else
 	PTLIB_VER := 2.10-beta2
@@ -414,7 +414,7 @@ endif
 $(PTLIB_DIR)/configure: binaries $(LIBDIR)/libldap.dll $(LIBDIR)/libogg.a $(LIBDIR)/libspeex.a $(SRCDIR)/$(PTLIB_ARCHIVE) $(LIBDIR)/libexpat.a
 	rm -rf $(PTLIB_DIR) $(LIBDIR)/$(PTLIB_LIB) $(INCLUDEDIR)/ptclib $(INCLUDEDIR)/ptlib
 ifeq ($(RELEASE),1)
-	tar xfz $(SRCDIR)/$(PTLIB_ARCHIVE) -C $(BUILDROOT)
+	tar Jxf $(SRCDIR)/$(PTLIB_ARCHIVE) -C $(BUILDROOT)
 else
 	$(CP) -r $(SRCDIR)/$(PTLIB_ARCHIVE) $(PTLIB_DIR)
 endif
@@ -554,7 +554,7 @@ endif
 $(OPAL_DIR)/configure: binaries $(LIBDIR)/libogg.a $(LIBDIR)/libspeex.a $(LIBDIR)/$(PTLIB_LIB) $(SRCDIR)/$(OPAL_ARCHIVE) $(BINDIR)/avcodec.dll $(LIBDIR)/libx264.a $(LIBDIR)/libcelt0.a $(LIBDIR)/libtheora.a
 	rm -rf $(OPAL_DIR) $(LIBDIR)/$(OPAL_LIB) $(INCLUDEDIR)/opal
 ifeq ($(RELEASE),1)
-	tar xfz $(SRCDIR)/$(OPAL_ARCHIVE) -C $(BUILDROOT)
+	tar Jxf $(SRCDIR)/$(OPAL_ARCHIVE) -C $(BUILDROOT)
 else
 	$(CP) -r $(SRCDIR)/$(OPAL_ARCHIVE) $(OPAL_DIR)
 endif
@@ -731,7 +731,7 @@ endif
 $(EKIGA_DIR)/configure: binaries $(SRCDIR)/$(EKIGA_ARCHIVE)
 	rm -rf $(EKIGA_DIR)
 ifeq ($(RELEASE),1)
-	tar xfz $(SRCDIR)/$(EKIGA_ARCHIVE) -C $(BUILDROOT)
+	tar Jxf $(SRCDIR)/$(EKIGA_ARCHIVE) -C $(BUILDROOT)
 else
 	$(CP) -r $(SRCDIR)/$(EKIGA_ARCHIVE) $(EKIGA_DIR)
 	cd $(EKIGA_DIR); NOCONFIGURE=1 ./autogen.sh  # generate configure
