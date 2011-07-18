@@ -113,7 +113,7 @@ ekiga_dbus_component_show (G_GNUC_UNUSED EkigaDBusComponent *self,
   PTRACE (1, "DBus\tShow");
 
   GtkWidget *window = GnomeMeeting::Process ()->GetMainWindow ();
-  if (GTK_WIDGET_VISIBLE (window))
+  if (gtk_widget_get_visible (GTK_WIDGET (window)))
     gtk_window_set_urgency_hint (GTK_WINDOW (window), TRUE);
   else
     gtk_window_present (GTK_WINDOW (window));

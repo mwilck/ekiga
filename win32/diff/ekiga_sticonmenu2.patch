@@ -27,7 +27,7 @@ diff -ur ekiga.orig/src/gui/statusicon.cpp ekiga/src/gui/statusicon.cpp
 +{
 +  GtkWidget *popup = GTK_WIDGET (data);
 +
-+  if (GTK_WIDGET_VISIBLE (popup)) {
++  if (gtk_widget_get_visible (popup)) {
 +    gtk_menu_popdown (GTK_MENU (popup));
 +    return TRUE;
 +  }
