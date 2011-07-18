@@ -902,9 +902,9 @@ Opal::Sip::EndPoint::OnMESSAGECompleted (const SIPMessage::Params & params,
   std::string uri = (const char*) to.AsString ();
   std::string display_name = (const char*) to.GetDisplayName ();
 
-  std::string reason_shown = _("Could not send message");
+  std::string reason_shown = _("Could not send message: ");
   if (reason == SIP_PDU::Failure_TemporarilyUnavailable)
-    reason_shown += _(": user offline");
+    reason_shown += _("user offline");
   else
     reason_shown += SIP_PDU::GetStatusCodeDescription (reason);  // too many to translate them with _()...
 
