@@ -175,7 +175,7 @@ GMVideoOutputManager_x::setup_frame_display ()
     if (current_frame.accel == Ekiga::VO_ACCEL_NONE) {
       PTRACE(3, "GMVideoOutputManager_X\tFalling back to SW" << ((local_display_info.disable_hw_accel) 
                                       ? " since HW acceleration was deactivated by configuration" 
-                                      : " since HW acceleration failed to initalize"));
+                                      : " since HW acceleration failed to initialize"));
       lxWindow = new XWindow ();
       if (lxWindow->Init (lDisplay, 
                             local_display_info.window, 
@@ -237,7 +237,7 @@ GMVideoOutputManager_x::setup_frame_display ()
     if (current_frame.accel == Ekiga::VO_ACCEL_NONE) {
       PTRACE(3, "GMVideoOutputManager_X\tFalling back to SW" << ((local_display_info.disable_hw_accel) 
                                       ? " since HW acceleration was deactivated by configuration" 
-                                      : " since HW acceleration failed to initalize"));
+                                      : " since HW acceleration failed to initialize"));
       rxWindow = new XWindow ();
       if ( rxWindow->Init (rDisplay, 
                              local_display_info.window, 
@@ -303,7 +303,7 @@ GMVideoOutputManager_x::setup_frame_display ()
     if (current_frame.accel == Ekiga::VO_ACCEL_NONE) {
       PTRACE(3, "GMVideoOutputManager_X\tFalling back to SW" << ((local_display_info.disable_hw_accel) 
                                       ? " since HW acceleration was deactivated by configuration" 
-                                      : " since HW acceleration failed to initalize"));
+                                      : " since HW acceleration failed to initialize"));
       rxWindow = new XWindow ();
       if (rxWindow->Init ( rDisplay, 
                              (current_frame.mode == Ekiga::VO_MODE_PIP) ? local_display_info.window : DefaultRootWindow (rDisplay), 
@@ -354,7 +354,7 @@ GMVideoOutputManager_x::setup_frame_display ()
     if ((current_frame.accel != Ekiga::VO_ACCEL_ALL) && (local_display_info.allow_pip_sw_scaling)) {
       PTRACE(3, "GMVideoOutputManager_X\tFalling back to SW" << ((local_display_info.disable_hw_accel) 
                                       ? " since HW acceleration was deactivated by configuration" 
-                                      : " since HW acceleration failed to initalize"));
+                                      : " since HW acceleration failed to initialize"));
       lxWindow = new XWindow ();
       if (lxWindow->Init ( lDisplay, 
                              rxWindow->GetWindowHandle (),

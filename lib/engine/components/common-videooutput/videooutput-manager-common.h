@@ -65,7 +65,7 @@
    * accesses to a specific window not only have to be thread-safe, but also have to
    * come all from the same thread). The main task of that thread is to wait for triggers
    * and then act on them, the thread itself will be active for the whole lifetime of Ekiga.
-   * A call to open() from the core will signal the thread to execute the initalize function,
+   * A call to open() from the core will signal the thread to execute the initialize function,
    * with open() blocking until the thread has finished its task. 
    * The thread is now ready to accept frames, which will arrive from the core via
    * set_frame_data(). set_frame_data will make a local copy of the image via memcpy,

@@ -175,4 +175,9 @@ gnomemeeting_conf_upgrade ()
   if (version >= 3020 && version < 3030)
     gm_conf_set_bool (NAT_KEY "enable_stun",
                       ! gm_conf_get_bool (NAT_KEY "disable_stun"));
+
+  // migrate from cancelation to cancellation
+  if (version <= 3031)
+    gm_conf_set_bool (AUDIO_CODECS_KEY "enable_echo_cancellation",
+                      gm_conf_get_bool (AUDIO_CODECS_KEY "enable_echo_cancelation"));
 }

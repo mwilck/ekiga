@@ -79,7 +79,7 @@ ConfBridge::ConfBridge (Ekiga::Service & _service)
   keys.push_back (PORTS_KEY "tcp_port_range");
 
   keys.push_back (AUDIO_CODECS_KEY "enable_silence_detection");
-  keys.push_back (AUDIO_CODECS_KEY "enable_echo_cancelation");
+  keys.push_back (AUDIO_CODECS_KEY "enable_echo_cancellation");
 
   keys.push_back (AUDIO_CODECS_KEY "media_list");
   keys.push_back (VIDEO_CODECS_KEY "media_list");
@@ -199,9 +199,9 @@ void ConfBridge::on_property_changed (std::string key, GmConfEntry *entry)
 
 
   //
-  // Echo cancelation
+  // Echo cancellation
   //
-  else if (key == AUDIO_CODECS_KEY "enable_echo_cancelation") {
+  else if (key == AUDIO_CODECS_KEY "enable_echo_cancellation") {
 
     manager.set_echo_cancellation (gm_conf_entry_get_bool (entry));
   }
