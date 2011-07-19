@@ -770,7 +770,9 @@ AM_CONDITIONAL(DEBUG, test "x$has_debug" = "xyes")
 dnl #########################################################################
 dnl  Support for internationalization
 dnl ########################################################################
-AC_DEFINE(GETTEXT_PACKAGE, "[AC_PACKAGE_NAME]",[fix])
+GETTEXT_PACKAGE=AC_PACKAGE_NAME
+AC_SUBST(GETTEXT_PACKAGE)  # needed by gettext in po directory
+AC_DEFINE_UNQUOTED(GETTEXT_PACKAGE, "$GETTEXT_PACKAGE",[fix])
 AM_GLIB_GNU_GETTEXT
 
 
