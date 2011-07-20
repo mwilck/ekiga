@@ -423,7 +423,7 @@ endif
 	cd $(PTLIB_DIR)/plugins; aclocal && autoconf
 	# apply all ptlib_* patches
 	cd $(PTLIB_DIR); for i in $(EKIGA_DIR)/win32/diff/ptlib_*; do \
-		test `basename $$i` != 'ptlib_*' && (patch -p1 <$$i || exit 1) ;\
+		test "`basename $$i`" != 'ptlib_*' && (patch -p1 <$$i || exit 1) ;\
 	done; true
 	touch $@
 
@@ -563,7 +563,7 @@ endif
 	cd $(OPAL_DIR)/plugins; aclocal && autoconf
 	# apply all opal_* patches
 	cd $(OPAL_DIR); for i in $(EKIGA_DIR)/win32/diff/opal_*; do \
-		test `basename $$i` != 'opal_*' && (patch -p1 <$$i || exit 1) ;\
+		test "`basename $$i`" != 'opal_*' && (patch -p1 <$$i || exit 1) ;\
 	done; true
 	touch $@
 
@@ -738,7 +738,7 @@ else
 endif
 	# apply all ekiga_* patches
 	cd $(EKIGA_DIR); for i in $(EKIGA_DIR)/win32/diff/ekiga_*; do \
-		test `basename $$i` != 'ekiga_*' && (patch -p1 <$$i || exit 1) ;\
+		test "`basename $$i`" != 'ekiga_*' && (patch -p1 <$$i || exit 1) ;\
 	done; true
 	touch $@
 
