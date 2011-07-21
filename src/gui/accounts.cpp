@@ -680,16 +680,16 @@ gm_accounts_window_new (Ekiga::ServiceCore &core)
    */
   button_box = gtk_vbutton_box_new ();
   gtk_button_box_set_layout (GTK_BUTTON_BOX (button_box), GTK_BUTTONBOX_CENTER);
-  button = gtk_button_new_with_label (_("Enable"));
+  button = gtk_button_new_with_mnemonic (_("_Enable"));
   gtk_box_pack_start (GTK_BOX (button_box), button, FALSE, FALSE, 3);
   aw->toolbar.add_button ("enable", GTK_BUTTON (button));
-  button = gtk_button_new_with_label (_("Disable"));
+  button = gtk_button_new_with_mnemonic (_("_Disable"));
   gtk_box_pack_start (GTK_BOX (button_box), button, FALSE, FALSE, 3);
   aw->toolbar.add_button ("disable", GTK_BUTTON (button));
-  button = gtk_button_new_with_label (_("Edit"));
+  button = gtk_button_new_with_mnemonic (_("Edi_t"));
   gtk_box_pack_start (GTK_BOX (button_box), button, FALSE, FALSE, 3);
   aw->toolbar.add_button ("edit", GTK_BUTTON (button));
-  button = gtk_button_new_with_label (_("Remove"));
+  button = gtk_button_new_with_mnemonic (_("_Remove"));
   gtk_box_pack_start (GTK_BOX (button_box), button, FALSE, FALSE, 3);
   aw->toolbar.add_button ("remove", GTK_BUTTON (button));
   gtk_box_pack_start (GTK_BOX (hbox), button_box, FALSE, FALSE, 10);
