@@ -17,8 +17,8 @@ msgstr ""
 "Project-Id-Version: ekiga\n"
 "Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?"
 "product=ekiga&keywords=I18N+L10N&component=general\n"
-"POT-Creation-Date: 2011-06-04 11:15+0000\n"
-"PO-Revision-Date: 2011-06-07 17:55+0200\n"
+"POT-Creation-Date: 2011-07-18 14:51+0000\n"
+"PO-Revision-Date: 2011-07-21 10:05+0200\n"
 "Last-Translator: Marek Černocký <marek@manet.cz>\n"
 "Language-Team: Czech <gnome-cs-list@gnome.org>\n"
 "MIME-Version: 1.0\n"
@@ -153,7 +153,8 @@ msgid "Enable early H.245"
 msgstr "Povolit brzké H.245"
 
 #: ../ekiga.schemas.in.in.h:23
-msgid "Enable echo cancelation"
+#| msgid "Enable echo cancelation"
+msgid "Enable echo cancellation"
 msgstr "Povolit potlačení ozvěny"
 
 #: ../ekiga.schemas.in.in.h:24
@@ -239,7 +240,8 @@ msgid "If enabled, offline contacts will be shown in the roster"
 msgstr "Je-li povoleno, budou se odpojené kontakty zobrazovat v seznamu"
 
 #: ../ekiga.schemas.in.in.h:39 ../src/gui/preferences.cpp:931
-msgid "If enabled, use echo cancelation"
+#| msgid "If enabled, use echo cancelation"
+msgid "If enabled, use echo cancellation"
 msgstr "Je-li povoleno, bude se používat potlačení ozvěny"
 
 #: ../ekiga.schemas.in.in.h:40 ../src/gui/preferences.cpp:929
@@ -1254,7 +1256,6 @@ msgid "Meeting"
 msgstr "Mám schůzku"
 
 #: ../lib/engine/components/opal/opal-account.cpp:761
-#| msgid "_Office phone:"
 msgid "On the phone"
 msgstr "Na telefonu"
 
@@ -1639,31 +1640,33 @@ msgstr "Už neexistuje"
 msgid "Globally not acceptable"
 msgstr "Obecně nepřijatelné"
 
-#: ../lib/engine/components/opal/sip-endpoint.cpp:916
-msgid "Could not send message"
-msgstr "Nelze odeslat zprávu"
+#: ../lib/engine/components/opal/sip-endpoint.cpp:905
+#| msgid "Could not send message"
+msgid "Could not send message: "
+msgstr "Nelze odeslat zprávu: "
 
-#: ../lib/engine/components/opal/sip-endpoint.cpp:918
-msgid ": user offline"
-msgstr ": uživatel je odpojen"
+#: ../lib/engine/components/opal/sip-endpoint.cpp:907
+#| msgid ": user offline"
+msgid "user offline"
+msgstr "uživatel je odpojen"
 
-#: ../lib/engine/components/opal/sip-endpoint.cpp:957
+#: ../lib/engine/components/opal/sip-endpoint.cpp:946
 #: ../src/gui/main_window.cpp:3198
 #, c-format
 msgid "Incoming call from %s"
 msgstr "Příchozí hovor od %s"
 
-#: ../lib/engine/components/opal/sip-endpoint.cpp:959
+#: ../lib/engine/components/opal/sip-endpoint.cpp:948
 #, c-format
 msgid "Incoming call"
 msgstr "Příchozí hovor"
 
-#: ../lib/engine/components/opal/sip-endpoint.cpp:965
+#: ../lib/engine/components/opal/sip-endpoint.cpp:954
 #, c-format
 msgid "In a call with %s"
 msgstr "Voláte s %s"
 
-#: ../lib/engine/components/opal/sip-endpoint.cpp:967
+#: ../lib/engine/components/opal/sip-endpoint.cpp:956
 #, c-format
 msgid "In a call"
 msgstr "Voláte"
@@ -1719,7 +1722,7 @@ msgstr "Otevřít odkaz v prohlížeči"
 msgid "Copy link"
 msgstr "Zkopírovat odkaz"
 
-#: ../lib/engine/gui/gtk-frontend/chat-area.cpp:895
+#: ../lib/engine/gui/gtk-frontend/chat-area.cpp:899
 msgid "_Smile..."
 msgstr "_Smajlík…"
 
@@ -2649,7 +2652,8 @@ msgstr ""
 "Petr Tomeš <ptomes@gmail.com>\n"
 "Jakub Friedl <jfriedl@suse.cz>\n"
 "Michal Pěnka <michal@penka.name>\n"
-"Petr Kovář <pknbe@volny.cz>"
+"Petr Kovář <pknbe@volny.cz>\n"
+"Marek Černocký <marek@manet.cz>"
 
 #: ../src/gui/callbacks.cpp:132
 msgid ""
