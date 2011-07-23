@@ -19,8 +19,8 @@ msgstr ""
 "Project-Id-Version: ekiga.master\n"
 "Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?"
 "product=ekiga&keywords=I18N+L10N&component=general\n"
-"POT-Creation-Date: 2011-07-18 14:51+0000\n"
-"PO-Revision-Date: 2011-07-18 17:42+0200\n"
+"POT-Creation-Date: 2011-07-21 13:09+0000\n"
+"PO-Revision-Date: 2011-07-21 17:55+0200\n"
 "Last-Translator: Daniel Mustieles <daniel.mustieles@gmail.com>\n"
 "Language-Team: Español <gnome-es-list@gnome.org>\n"
 "MIME-Version: 1.0\n"
@@ -154,7 +154,6 @@ msgid "Enable early H.245"
 msgstr "Activar H.245 antiguo"
 
 #: ../ekiga.schemas.in.in.h:23
-#| msgid "Enable echo cancelation"
 msgid "Enable echo cancellation"
 msgstr "Activa la cancelación de eco"
 
@@ -244,7 +243,6 @@ msgid "If enabled, offline contacts will be shown in the roster"
 msgstr "Si está activada, se mostrarán los contactos desconectados en la lista"
 
 #: ../ekiga.schemas.in.in.h:39 ../src/gui/preferences.cpp:931
-#| msgid "If enabled, use echo cancelation"
 msgid "If enabled, use echo cancellation"
 msgstr "Si está activada, usa la cancelación de eco"
 
@@ -860,7 +858,7 @@ msgstr "_Editar"
 #: ../plugins/evolution/evolution-contact.cpp:230
 #: ../plugins/loudmouth/loudmouth-account.cpp:393
 #: ../plugins/loudmouth/loudmouth-presentity.cpp:190
-#: ../plugins/resource-list/rl-presentity.cpp:214
+#: ../plugins/resource-list/rl-presentity.cpp:214 ../src/gui/accounts.cpp:692
 msgid "_Remove"
 msgstr "_Quitar"
 
@@ -1060,12 +1058,12 @@ msgstr[0] "%s (con %d mensaje de voz)"
 msgstr[1] "%s (con %d mensajes de voz)"
 
 #: ../lib/engine/components/opal/opal-account.cpp:363
-#: ../plugins/loudmouth/loudmouth-account.cpp:381
+#: ../plugins/loudmouth/loudmouth-account.cpp:381 ../src/gui/accounts.cpp:686
 msgid "_Disable"
 msgstr "_Desactivar"
 
 #: ../lib/engine/components/opal/opal-account.cpp:366
-#: ../plugins/loudmouth/loudmouth-account.cpp:385
+#: ../plugins/loudmouth/loudmouth-account.cpp:385 ../src/gui/accounts.cpp:683
 msgid "_Enable"
 msgstr "Ac_tivar"
 
@@ -1653,12 +1651,10 @@ msgid "Globally not acceptable"
 msgstr "No aceptable globalmente"
 
 #: ../lib/engine/components/opal/sip-endpoint.cpp:905
-#| msgid "Could not send message"
 msgid "Could not send message: "
 msgstr "No se pudo enviar el mensaje: "
 
 #: ../lib/engine/components/opal/sip-endpoint.cpp:907
-#| msgid ": user offline"
 msgid "user offline"
 msgstr "usuario desconectado"
 
@@ -2105,7 +2101,7 @@ msgstr "Servidor:"
 msgid "Resource:"
 msgstr "Recurso:"
 
-#: ../plugins/loudmouth/loudmouth-account.cpp:391 ../src/gui/accounts.cpp:689
+#: ../plugins/loudmouth/loudmouth-account.cpp:391
 msgid "Edit"
 msgstr "Editar"
 
@@ -2333,17 +2329,10 @@ msgstr "Ay_uda"
 msgid "Active"
 msgstr "Activo"
 
-#: ../src/gui/accounts.cpp:683
-msgid "Enable"
-msgstr "Activar"
-
-#: ../src/gui/accounts.cpp:686
-msgid "Disable"
-msgstr "Desactivar"
-
-#: ../src/gui/accounts.cpp:692
-msgid "Remove"
-msgstr "Quitar"
+#: ../src/gui/accounts.cpp:689
+#| msgid "Edit"
+msgid "Edi_t"
+msgstr "Edi_tar"
 
 #: ../src/gui/assistant.cpp:341
 msgid ""
@@ -3661,6 +3650,15 @@ msgstr "Borrar mensajes personalizados:"
 #: ../src/gui/statusmenu.cpp:690
 msgid "Define a custom message:"
 msgstr "Definir un mensaje personalizado:"
+
+#~ msgid "Enable"
+#~ msgstr "Activar"
+
+#~ msgid "Disable"
+#~ msgstr "Desactivar"
+
+#~ msgid "Remove"
+#~ msgstr "Quitar"
 
 #~ msgid ""
 #~ "Prints user plane debug messages in the console (level between 1 and 4)"
