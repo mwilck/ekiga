@@ -692,6 +692,12 @@ dnl ###########################################################################
 PKG_CHECK_MODULES([PTLIB], [ptlib >= ${PTLIB_REC_VERSION}])
 PKG_CHECK_MODULES([OPAL], [opal >= ${OPAL_REC_VERSION}])
 
+# expat is mandatory for presence (at least)
+PTLIB_EXPAT=`$PKG_CONFIG ptlib --variable=PTLIB_EXPAT`
+if test "x$PTLIB_EXPAT" != "xyes"; then
+  AC_MSG_ERROR([You need ptlib expat support to compile ekiga])
+fi
+
 SUFFIX=
 AC_ARG_ENABLE([opal-debug],
               [AS_HELP_STRING([--enable-opal-debug],[link to debug versions of opal and ptlib (opal_d and ptlib_d) (default is disabled)])],
