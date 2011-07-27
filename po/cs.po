@@ -17,8 +17,8 @@ msgstr ""
 "Project-Id-Version: ekiga\n"
 "Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?"
 "product=ekiga&keywords=I18N+L10N&component=general\n"
-"POT-Creation-Date: 2011-07-18 14:51+0000\n"
-"PO-Revision-Date: 2011-07-21 10:05+0200\n"
+"POT-Creation-Date: 2011-07-21 13:09+0000\n"
+"PO-Revision-Date: 2011-07-27 22:22+0200\n"
 "Last-Translator: Marek Černocký <marek@manet.cz>\n"
 "Language-Team: Czech <gnome-cs-list@gnome.org>\n"
 "MIME-Version: 1.0\n"
@@ -153,7 +153,6 @@ msgid "Enable early H.245"
 msgstr "Povolit brzké H.245"
 
 #: ../ekiga.schemas.in.in.h:23
-#| msgid "Enable echo cancelation"
 msgid "Enable echo cancellation"
 msgstr "Povolit potlačení ozvěny"
 
@@ -240,7 +239,6 @@ msgid "If enabled, offline contacts will be shown in the roster"
 msgstr "Je-li povoleno, budou se odpojené kontakty zobrazovat v seznamu"
 
 #: ../ekiga.schemas.in.in.h:39 ../src/gui/preferences.cpp:931
-#| msgid "If enabled, use echo cancelation"
 msgid "If enabled, use echo cancellation"
 msgstr "Je-li povoleno, bude se používat potlačení ozvěny"
 
@@ -850,7 +848,7 @@ msgstr "_Upravit"
 #: ../plugins/evolution/evolution-contact.cpp:230
 #: ../plugins/loudmouth/loudmouth-account.cpp:393
 #: ../plugins/loudmouth/loudmouth-presentity.cpp:190
-#: ../plugins/resource-list/rl-presentity.cpp:214
+#: ../plugins/resource-list/rl-presentity.cpp:214 ../src/gui/accounts.cpp:692
 msgid "_Remove"
 msgstr "_Odstranit"
 
@@ -1050,12 +1048,12 @@ msgstr[1] "%s (se %d hlasovými zprávami)"
 msgstr[2] "%s (s %d hlasovými zprávami)"
 
 #: ../lib/engine/components/opal/opal-account.cpp:363
-#: ../plugins/loudmouth/loudmouth-account.cpp:381
+#: ../plugins/loudmouth/loudmouth-account.cpp:381 ../src/gui/accounts.cpp:686
 msgid "_Disable"
 msgstr "_Zakázat"
 
 #: ../lib/engine/components/opal/opal-account.cpp:366
-#: ../plugins/loudmouth/loudmouth-account.cpp:385
+#: ../plugins/loudmouth/loudmouth-account.cpp:385 ../src/gui/accounts.cpp:683
 msgid "_Enable"
 msgstr "_Povolit"
 
@@ -1641,12 +1639,10 @@ msgid "Globally not acceptable"
 msgstr "Obecně nepřijatelné"
 
 #: ../lib/engine/components/opal/sip-endpoint.cpp:905
-#| msgid "Could not send message"
 msgid "Could not send message: "
 msgstr "Nelze odeslat zprávu: "
 
 #: ../lib/engine/components/opal/sip-endpoint.cpp:907
-#| msgid ": user offline"
 msgid "user offline"
 msgstr "uživatel je odpojen"
 
@@ -2095,7 +2091,7 @@ msgstr "Server:"
 msgid "Resource:"
 msgstr "Zdroj:"
 
-#: ../plugins/loudmouth/loudmouth-account.cpp:391 ../src/gui/accounts.cpp:689
+#: ../plugins/loudmouth/loudmouth-account.cpp:391
 msgid "Edit"
 msgstr "Upravit"
 
@@ -2324,17 +2320,10 @@ msgstr "_Nápověda"
 msgid "Active"
 msgstr "Aktivní"
 
-#: ../src/gui/accounts.cpp:683
-msgid "Enable"
-msgstr "Povolit"
-
-#: ../src/gui/accounts.cpp:686
-msgid "Disable"
-msgstr "Zakázat"
-
-#: ../src/gui/accounts.cpp:692
-msgid "Remove"
-msgstr "Odstranit"
+#: ../src/gui/accounts.cpp:689
+#| msgid "Edit"
+msgid "Edi_t"
+msgstr "Upravi_t"
 
 #: ../src/gui/assistant.cpp:341
 msgid ""
