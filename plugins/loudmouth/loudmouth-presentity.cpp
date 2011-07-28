@@ -93,6 +93,7 @@ LM::Presentity::get_presence () const
 
 	best = iter->second;
       }
+      ++iter;
     }
     if (best.presence == "") {
 
@@ -122,6 +123,7 @@ LM::Presentity::get_status () const
 
 	best = iter->second;
       }
+      ++iter;
     }
     result = best.status;
   }
