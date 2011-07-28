@@ -693,7 +693,9 @@ PKG_CHECK_MODULES([PTLIB], [ptlib >= ${PTLIB_REC_VERSION}])
 PKG_CHECK_MODULES([OPAL], [opal >= ${OPAL_REC_VERSION}])
 
 # expat is mandatory for presence (at least)
+AC_MSG_CHECKING(for PTLIB support for expat)
 PTLIB_EXPAT=`$PKG_CONFIG ptlib --variable=PTLIB_EXPAT`
+AC_MSG_RESULT($PTLIB_EXPAT)
 if test "x$PTLIB_EXPAT" != "xyes"; then
   AC_MSG_ERROR([You need ptlib expat support to compile ekiga])
 fi
