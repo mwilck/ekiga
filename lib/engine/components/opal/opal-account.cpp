@@ -689,9 +689,12 @@ Opal::Account::OnPresenceChange (OpalPresentity& /*presentity*/,
   uri.replace (0, 5, "sip:");  // replace "pres:" sith "sip:"
 
   if (info.m_state == OpalPresenceInfo::Available
-      && (info.m_note.Find ("online - ") != P_MAX_INDEX
-          || info.m_note.Find ("away - ") != P_MAX_INDEX
-          || info.m_note.Find ("dnd - ") != P_MAX_INDEX)) {  // old presentity type (ekiga <= 3.2.x, using .6 ptlib/opal branches)
+      && (info.m_note.Find ("online") != P_MAX_INDEX
+          || info.m_note.Find ("away") != P_MAX_INDEX
+          || info.m_note.Find ("dnd") != P_MAX_INDEX)) {  // old presentity type (ekiga <= 3.2.x, using .6 ptlib/opal branches)
+    // adding support for old presentity creates a bug:
+    // if the user selects online or away or dnd as note, then this will
+    // replace the real status
     old_presentity (info.m_note, new_presence, new_status);
     Ekiga::Runtime::run_in_main (boost::bind (&Opal::Account::presence_status_in_main, this, uri, new_presence, new_status));
     return;
