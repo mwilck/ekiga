@@ -1454,8 +1454,7 @@ prepare_summary_page (EkigaAssistant *assistant)
 static void
 ekiga_assistant_init (EkigaAssistant *assistant)
 {
-  assistant->priv = G_TYPE_INSTANCE_GET_PRIVATE (assistant, EKIGA_TYPE_ASSISTANT,
-                                                 EkigaAssistantPrivate);
+  assistant->priv = new EkigaAssistantPrivate;
 
   gtk_window_set_default_size (GTK_WINDOW (assistant), 500, 300);
   gtk_window_set_position (GTK_WINDOW (assistant), GTK_WIN_POS_CENTER);
@@ -1574,9 +1573,11 @@ ekiga_assistant_finalize (GObject *object)
 
   g_object_unref (assistant->priv->icon);
 
+  delete assistant->priv;
+  assistant->priv = NULL;
+
   G_OBJECT_CLASS (ekiga_assistant_parent_class)->finalize (object);
 }
-
 
 static void
 ekiga_assistant_class_init (EkigaAssistantClass *klass)
@@ -1589,8 +1590,6 @@ ekiga_assistant_class_init (EkigaAssistantClass *klass)
   assistant_class->cancel = ekiga_assistant_cancel;
 
   object_class->finalize = ekiga_assistant_finalize;
-
-  g_type_class_add_private (klass, sizeof (EkigaAssistantPrivate));
 }
 
 
