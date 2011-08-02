@@ -1,6 +1,6 @@
 plugin_LTLIBRARIES = libgmxcap.la
 
-xcap_dir = $(top_srcdir)/plugins/xcap/
+xcap_dir = $(top_srcdir)/plugins/xcap
 
 AM_CXXFLAGS = $(BOOST_CPPFLAGS) $(SOUP_CFLAGS)
 
@@ -16,4 +16,6 @@ libgmxcap_la_SOURCES = \
 	$(xcap_dir)/xcap-main.cpp
 
 libgmxcap_la_LDFLAGS = $(PLUGINS_LIBTOOL_FLAGS)
-libgmxcap_la_LIBADD = $(BOOST_LDFLAGS) $(BOOST_LIBS) $(SOUP_LIBS)
+libgmxcap_la_LIBADD = \
+	$(top_builddir)/lib/libekiga.la \
+	$(BOOST_LDFLAGS) $(BOOST_LIBS) $(SOUP_LIBS)

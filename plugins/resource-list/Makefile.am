@@ -31,5 +31,6 @@ libgmresource_list_la_LDFLAGS = \
 	-L$(top_builddir)/plugins/xcap \
 	$(PLUGINS_LIBTOOL_FLAGS)
 libgmresource_list_la_LIBADD = \
+	$(top_builddir)/lib/libekiga.la \
 	$(top_builddir)/plugins/xcap/libgmxcap.la \
 	$(BOOST_LDFLAGS) $(BOOST_LIBS) $(GLIB_LIBS) $(XML_LIBS)
