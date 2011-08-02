@@ -191,9 +191,9 @@ RL::Presentity::set_status (const std::string _status)
 
 
 bool
-RL::Presentity::has_uri (const std::string uri) const
+RL::Presentity::has_uri (const std::string _uri) const
 {
-  return uri == get_uri ();
+  return _uri == get_uri ();
 }
 
 bool
