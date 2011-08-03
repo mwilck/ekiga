@@ -274,10 +274,11 @@ Opal::Sip::EndPoint::send_message (const std::string & _uri,
 				   const std::string & _message)
 {
   if (!_uri.empty () && (_uri.find ("sip:") == 0 || _uri.find (':') == string::npos) && !_message.empty ()) {
-
-    PURL fromAddress;
-    PString conversationId;
-    Message (PURL(_uri), "text/plain;charset=UTF-8", _message, fromAddress, conversationId);
+    OpalIM im;
+    im.m_to = PURL (_uri);
+    im.m_mimeType = "text/plain;charset=UTF-8";
+    im.m_body = _message;
+    Message (im);
     return true;
   }
 
