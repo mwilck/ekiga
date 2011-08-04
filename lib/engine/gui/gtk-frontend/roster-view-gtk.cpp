@@ -39,6 +39,7 @@
 #include <iostream>
 #include <vector>
 #include <glib/gi18n.h>
+#include <gdk/gdkkeysyms.h>
 
 #include "gmmarshallers.h"
 #include "gm-cell-renderer-bitext.h"
@@ -161,8 +162,8 @@ static void show_offline_contacts_changed_nt (gpointer id,
 static void on_selection_changed (GtkTreeSelection* selection,
 				  gpointer data);
 
-/* DESCRIPTION  : Called when the user right-clicks on a heap, group or
- *                presentity.
+/* DESCRIPTION  : Called when the user clicks or presses Enter
+ *                on a heap, group or presentity.
  * BEHAVIOR     : Update the menu and displays it as a popup.
  * PRE          : The gpointer must point to the RosterViewGtk GObject.
  */
@@ -498,7 +499,7 @@ on_clicked_show_presentity_menu (Ekiga::Heap* heap,
   if (!builder.empty ()) {
     gtk_widget_show_all (builder.menu);
     gtk_menu_popup (GTK_MENU (builder.menu), NULL, NULL,
-		    NULL, NULL, event->button, event->time);
+                    NULL, NULL, event->button, event->time);
   }
   g_object_ref_sink (builder.menu);
   g_object_unref (builder.menu);
@@ -530,7 +531,7 @@ on_clicked_fold (RosterViewGtk* self,
     if (existing_group != NULL) {
 
       self->priv->folded_groups
-	= g_slist_remove_link (self->priv->folded_groups, existing_group);
+        = g_slist_remove_link (self->priv->folded_groups, existing_group);
 
       g_free ((gchar *) existing_group->data);
       g_slist_free_1 (existing_group);
@@ -568,21 +569,21 @@ update_offline_count (RosterViewGtk* self,
     do {
 
       gtk_tree_model_get (model, &loop_iter,
-			  COLUMN_TYPE, &column_type,
-			  COLUMN_PRESENTITY, &presentity,
-			  -1);
+                          COLUMN_TYPE, &column_type,
+                          COLUMN_PRESENTITY, &presentity,
+                          -1);
       if (column_type == TYPE_PRESENTITY
-	  && (presentity->get_presence () == "offline"
-	      || presentity->get_presence () == "unknown"))
-	offline_count++;
+          && (presentity->get_presence () == "offline"
+              || presentity->get_presence () == "unknown"))
+        offline_count++;
     } while (gtk_tree_model_iter_next (model, &loop_iter));
   }
 
   total = gtk_tree_model_iter_n_children (model, iter);
   size = g_strdup_printf ("(%d/%d)", total - offline_count, total);
   gtk_tree_store_set (GTK_TREE_STORE (model), iter,
-		      COLUMN_GROUP_SIZE, size,
-		      -1);
+                      COLUMN_GROUP_SIZE, size,
+                      -1);
   g_free (size);
 
 }
@@ -618,11 +619,11 @@ show_offline_contacts_changed_nt (G_GNUC_UNUSED gpointer id,
 
       do {
 
-	path = gtk_tree_model_get_path (model, &heaps);
-	gtk_tree_view_expand_row (self->priv->tree_view, path, FALSE);
-	gtk_tree_path_free (path);
+        path = gtk_tree_model_get_path (model, &heaps);
+        gtk_tree_view_expand_row (self->priv->tree_view, path, FALSE);
+        gtk_tree_path_free (path);
 
-	roster_view_gtk_update_groups (self, &heaps);
+        roster_view_gtk_update_groups (self, &heaps);
       } while (gtk_tree_model_iter_next (model, &heaps));
     }
   }
@@ -650,61 +651,71 @@ on_view_event_after (GtkWidget *tree_view,
   GtkTreePath *path = NULL;
   GtkTreeIter iter;
 
-  if (event->type != GDK_BUTTON_PRESS && event->type != GDK_2BUTTON_PRESS)
+  // take into account only clicks and Enter keys
+  if (event->type != GDK_BUTTON_PRESS && event->type != GDK_2BUTTON_PRESS && event->type != GDK_KEY_PRESS)
+    return FALSE;
+  if (event->type == GDK_KEY_PRESS && ((GdkEventKey*)event)->keyval != GDK_Return && ((GdkEventKey*)event)->keyval != GDK_KP_Enter)
     return FALSE;
 
   self = ROSTER_VIEW_GTK (data);
   model = gtk_tree_view_get_model (self->priv->tree_view);
 
-  if (gtk_tree_view_get_path_at_pos (GTK_TREE_VIEW (tree_view),
-				     (gint) event->x, (gint) event->y,
-				     &path, NULL, NULL, NULL)) {
+  // get the line clicked or currently selected
+  gboolean ret = true;
+  if (event->type == GDK_KEY_PRESS)
+    gtk_tree_view_get_cursor (GTK_TREE_VIEW (tree_view), &path, NULL);
+  else
+    ret = gtk_tree_view_get_path_at_pos (GTK_TREE_VIEW (tree_view),
+                                         (gint) event->x, (gint) event->y,
+                                         &path, NULL, NULL, NULL);
 
-    if (gtk_tree_model_get_iter (model, &iter, path)) {
+  if (!ret)
+    return TRUE;  // click on an empty line
 
-      gint column_type;
-      gchar *name = NULL;
-      Ekiga::Heap *heap = NULL;
-      Ekiga::Presentity *presentity = NULL;
-      gtk_tree_model_get (model, &iter,
-			  COLUMN_NAME, &name,
-			  COLUMN_TYPE, &column_type,
-			  COLUMN_HEAP, &heap,
-			  COLUMN_PRESENTITY, &presentity,
-			  -1);
+  if (gtk_tree_model_get_iter (model, &iter, path)) {
 
-      switch (column_type) {
+    gint column_type;
+    gchar *name = NULL;
+    Ekiga::Heap *heap = NULL;
+    Ekiga::Presentity *presentity = NULL;
+    gtk_tree_model_get (model, &iter,
+                        COLUMN_NAME, &name,
+                        COLUMN_TYPE, &column_type,
+                        COLUMN_HEAP, &heap,
+                        COLUMN_PRESENTITY, &presentity,
+                        -1);
 
-      case TYPE_HEAP:
+    switch (column_type) {
 
-	if (event->type == GDK_BUTTON_PRESS && event->button == 1 && name)
-	  on_clicked_fold (self, path, name);
-	if (event->type == GDK_BUTTON_PRESS && event->button == 3)
-	  on_clicked_show_heap_menu (heap, event);
-	break;
-      case TYPE_GROUP:
+    case TYPE_HEAP:
 
-	if (event->type == GDK_BUTTON_PRESS && event->button == 1 && name)
-	  on_clicked_fold (self, path, name);
-	if (event->type == GDK_BUTTON_PRESS && event->button == 3)
-	  on_clicked_show_heap_group_menu (heap, name, event);
-	break;
-      case TYPE_PRESENTITY:
+      if (event->type == GDK_BUTTON_PRESS && event->button == 1 && name)
+        on_clicked_fold (self, path, name);
+      if (event->type == GDK_BUTTON_PRESS && event->button == 3)
+        on_clicked_show_heap_menu (heap, event);
+      break;
+    case TYPE_GROUP:
 
-	if (event->type == GDK_BUTTON_PRESS && event->button == 3)
-	  on_clicked_show_presentity_menu (heap, presentity, event);
-	if (event->type == GDK_2BUTTON_PRESS)
-	  on_clicked_trigger_presentity (presentity);
-	break;
-      default:
+      if (event->type == GDK_BUTTON_PRESS && event->button == 1 && name)
+        on_clicked_fold (self, path, name);
+      if (event->type == GDK_BUTTON_PRESS && event->button == 3)
+        on_clicked_show_heap_group_menu (heap, name, event);
+      break;
+    case TYPE_PRESENTITY:
 
-	g_assert_not_reached ();
-	break; // shouldn't happen
-      }
-      g_free (name);
+      if (event->type == GDK_BUTTON_PRESS && event->button == 3)
+        on_clicked_show_presentity_menu (heap, presentity, event);
+      if (event->type == GDK_2BUTTON_PRESS || event->type == GDK_KEY_PRESS)
+        on_clicked_trigger_presentity (presentity);
+      break;
+    default:
+
+      g_assert_not_reached ();
+      break; // shouldn't happen
     }
-    gtk_tree_path_free (path);
+    g_free (name);
   }
+  gtk_tree_path_free (path);
 
   return TRUE;
 }
@@ -728,8 +739,8 @@ presentity_hide_show_offline (RosterViewGtk* self,
 
 static gboolean
 group_hide_show_offline (RosterViewGtk* self,
-			 GtkTreeModel* model,
-			 GtkTreeIter* iter)
+                         GtkTreeModel* model,
+                         GtkTreeIter* iter)
 {
   gboolean result = FALSE;
 
@@ -742,7 +753,7 @@ group_hide_show_offline (RosterViewGtk* self,
 
       do {
 
-	result = presentity_hide_show_offline (self, model, &child_iter);
+        result = presentity_hide_show_offline (self, model, &child_iter);
       } while (!result && gtk_tree_model_iter_next (model, &child_iter));
     }
   }
@@ -766,7 +777,7 @@ heap_hide_show_offline (RosterViewGtk* self,
 
       do {
 
-	result = group_hide_show_offline (self, model, &child_iter);
+        result = group_hide_show_offline (self, model, &child_iter);
       } while (!result && gtk_tree_model_iter_next (model, &child_iter));
     }
   }
@@ -1039,16 +1050,16 @@ on_presentity_updated (RosterViewGtk* self,
     do {
 
       gtk_tree_model_get (model, &group_iter,
-			  COLUMN_NAME, &group_name,
-			  -1);
+                          COLUMN_NAME, &group_name,
+                          -1);
       if (group_name != NULL) {
 
-	if (groups.find (group_name) == groups.end ()) {
+        if (groups.find (group_name) == groups.end ()) {
 
-	  roster_view_gtk_find_iter_for_presentity (self, &group_iter, presentity, &iter);
-	  gtk_tree_store_remove (self->priv->store, &iter);
-	}
-	g_free (group_name);
+          roster_view_gtk_find_iter_for_presentity (self, &group_iter, presentity, &iter);
+          gtk_tree_store_remove (self->priv->store, &iter);
+        }
+        g_free (group_name);
       }
     } while (gtk_tree_model_iter_next (model, &group_iter));
   }
@@ -1119,7 +1130,7 @@ roster_view_gtk_find_iter_for_heap (RosterViewGtk *view,
 
       gtk_tree_model_get (model, iter, COLUMN_HEAP, &iter_heap, -1);
       if (iter_heap == heap.get ())
-	found = TRUE;
+        found = TRUE;
     } while (!found && gtk_tree_model_iter_next (model, iter));
   }
 
@@ -1158,7 +1169,7 @@ roster_view_gtk_find_iter_for_group (RosterViewGtk *view,
     gtk_tree_store_append (view->priv->store, iter, heap_iter);
     gtk_tree_store_set (view->priv->store, iter,
                         COLUMN_TYPE, TYPE_GROUP,
-			COLUMN_HEAP, heap.get (),
+                        COLUMN_HEAP, heap.get (),
                         COLUMN_NAME, name.c_str (),
                         -1);
   }
@@ -1183,7 +1194,7 @@ roster_view_gtk_find_iter_for_presentity (RosterViewGtk *view,
 
       gtk_tree_model_get (model, iter, COLUMN_PRESENTITY, &iter_presentity, -1);
       if (iter_presentity == presentity.get ())
-	found = TRUE;
+        found = TRUE;
     } while (!found && gtk_tree_model_iter_next (model, iter));
   }
 
@@ -1216,7 +1227,7 @@ roster_view_gtk_update_groups (RosterViewGtk *view,
       if (gtk_tree_model_iter_has_child (model, &iter)) {
 
 
-	update_offline_count (view, &iter);
+        update_offline_count (view, &iter);
         gtk_tree_model_get (model, &iter,
                             COLUMN_NAME, &name, -1);
         if (name) {
