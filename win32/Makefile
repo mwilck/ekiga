@@ -4,6 +4,10 @@
 RELEASE   := 0
 # DEBUG: 0=release, 1=debug version
 DEBUG     := 0
+# MINGW32: 1=use old mingw32, 0=use new mingw-w64
+MINGW32   := 1
+# BIT32 (used only for mingw-w64): 1=generate 32bit, 0=generate 64bit
+BIT32     := 0
 
 MAKEOPTS  := $(MAKEFLAGS)
 MAKE_LIB_OPTS:=$(MAKEFLAGS)
@@ -16,11 +20,21 @@ LIBDIR    := $(BUILDROOT)/lib
 BINDIR    := $(BUILDROOT)/bin
 
 export DEB_BUILD_GNU_TYPE:=$(shell dpkg-architecture -qDEB_BUILD_GNU_TYPE)
-export DEB_HOST_GNU_TYPE:="i586-pc-mingw32"
 
 WGET := wget -nv -T 60 -N
 
+ifeq ($(MINGW32), 1)
 HOST_TOOL_PREFIX:=i586-mingw32msvc
+export DEB_HOST_GNU_TYPE:="i586-pc-mingw32"
+else
+ifeq ($(BIT32), 1)
+HOST_TOOL_PREFIX:=i686-w64-mingw32
+export DEB_HOST_GNU_TYPE:="i686-pc-mingw32"
+else
+HOST_TOOL_PREFIX:=x86_64-w64-mingw32
+export DEB_HOST_GNU_TYPE:="x86_64-pc-mingw32"
+endif
+endif
 REALCC:=$(HOST_TOOL_PREFIX)-gcc
 REALCXX:=$(HOST_TOOL_PREFIX)-g++
 export CC=$(REALCC) -mms-bitfields -g -O2
@@ -256,8 +270,11 @@ confekiga:= $(confflags) \
 	--disable-dbus --disable-avahi --disable-xv \
 	--with-ldap-dir=$(OPENLDAP_DIR) --with-libsasl2-dir=$(LIBSASL2_DIR) --with-boost=$(BUILDROOT) # --enable-static-libs
 
-confffmpeg := --cross-prefix=i586-mingw32msvc- --enable-shared --enable-memalign-hack \
-	--enable-cross-compile --enable-w32threads --arch=i686 --target-os=mingw32 \
+#TODO http://ac3filter.net/wiki/How_to_build_ffmpeg tells that
+# --extra-cflags='-Dstrtod=__strtod'
+#should also be used, check if it is needed
+confffmpeg := --cross-prefix=$(HOST_TOOL_PREFIX)- --enable-shared --enable-memalign-hack \
+	--enable-cross-compile --enable-w32threads --arch=`echo $|cut -d -f1` --target-os=mingw32 \
 	--disable-ffserver --disable-ffmpeg --disable-ffplay \
 	--disable-parsers --enable-parser=h264 --enable-parser=mpeg4video --enable-parser=h263 \
 	--disable-decoders --enable-decoder=h264 --enable-decoder=mpeg4  --enable-decoder=h263 \
@@ -273,6 +290,7 @@ confcelt := $(confflags) --disable-oggtest
 
 conftheora := $(confflags) --disable-vorbistest --disable-sdltest --disable-examples --disable-spec
 
+# only signals is needed
 confboost := --user-config=user-config.jam --layout=system variant=release threading=multi link=shared runtime-link=shared target-os=windows threadapi=win32 --without-math --without-python --without-mpi --without-serialization --without-test --without-thread --without-wave --without-date_time --without-system --without-filesystem --without-graph --without-graph_parallel --without-iostreams --without-program_options --without-regex --without-random -q stage
 
 all: binaries $(TARGETDIR)/$(EKIGA_INSTALLER)
@@ -285,7 +303,7 @@ update: update-sources
 
 binaries:
 	@echo Checking prerequisites...
-	hash $(REALCC) $(REALCXX) $(LD) $(NM) $(AR) $(RANLIB) $(DLLTOOL) $(DLLWRAP) $(OBJDUMP) $(RC) $(AS)||(echo You need to install mingw32;exit 1)
+	hash $(REALCC) $(REALCXX) $(LD) $(NM) $(AR) $(RANLIB) $(DLLTOOL) $(DLLWRAP) $(OBJDUMP) $(RC) $(AS)||(echo You need to install mingw-w64 or mingw32; exit 1)
 	hash tar unzip zip wget aclocal autoheader libtoolize automake autoconf pkg-config gnome-autogen.sh bison gdk-pixbuf-csource || (echo we need more binaries ; exit 1)
 	[ -f /usr/share/gnome-doc-utils/gnome-doc-utils.make ] || (echo gnome-doc-tools not installed; exit 1)
 	[ -f /usr/lib/pkgconfig/gconf-2.0.pc ] || (echo libgconf2-dev not installed; exit 1)
@@ -295,7 +313,9 @@ binaries:
 	hash xmlto || (echo xmlto not installed; exit 1)
 	hash yasm || (echo yasm not installed, mandatory for x264; exit 1)
 #	[ $(BUILDROOT) = $(CURDIR) ] || (echo You are supposed to run this as Makefile in $(BUILDROOT); exit 1)
+ifeq ($(MINGW32), 1)
 	[ `grep define.*MINGW32_MINOR_VERSION /usr/i586-mingw32msvc/include/_mingw.h|tr -s " "|cut -d" " -f3` -ge 15 ] || (echo 'You need mingw32-runtime at version >= 3.15'; exit 1)
+endif
 	mkdir -p $(INCLUDEDIR) $(LIBDIR)/pkgconfig $(SRCDIR) $(BINDIR)
 	$(RM) -f $(BINDIR)/cygpath
 	$(LN) -s /bin/true $(BINDIR)/cygpath
@@ -342,7 +362,7 @@ $(BOOST_DIR)/config.status: $(SRCDIR)/$(BOOST_ARCHIVE)
 	touch $@
 
 $(LIBDIR)/libboost_signals.dll: $(BOOST_DIR)/config.status
-	echo "using gcc : : i586-mingw32msvc-g++ : ;" >$(BOOST_DIR)/user-config.jam
+	echo "using gcc : : $(HOST_TOOL_PREFIX)-g++ : ;" >$(BOOST_DIR)/user-config.jam
 	cd $(BOOST_DIR); ./bjam $(confboost)
 	cd $(BOOST_DIR); ./bjam $(confboost) install
 
@@ -458,7 +478,7 @@ update-sources::
 $(SPEEX_DIR)/config.status: binaries $(SRCDIR)/$(SPEEX_ARCHIVE)
 	rm -f $(LIBDIR)/libspeex.a
 	tar xfz $(SRCDIR)/$(SPEEX_ARCHIVE) -C $(BUILDROOT)
-	cd $(SPEEX_DIR); LDFLAGS="$(LDFLAGS) -no-undefined" ./configure $(confflags)
+	cd $(SPEEX_DIR); ./configure $(confflags)
 
 $(LIBDIR)/libspeex.a: binaries $(SPEEX_DIR)/config.status
 	rm -f $(LIBDIR)/libspeex.a
@@ -477,6 +497,12 @@ endif
 $(FFMPEG_DIR)/config.status: $(SRCDIR)/$(FFMPEG_ARCHIVE)
 	rm -rf $(FFMPEG_DIR)
 	$(CP) -r $(SRCDIR)/$(FFMPEG_ARCHIVE) $(FFMPEG_DIR)
+ifeq ($(MINGW32), 0)
+	#avoid unnecessary configuration error
+	# see also http://ac3filter.net/wiki/How_to_build_ffmpeg
+	sed -i -e 's#die "ERROR: MinGW runtime version must be >= 3.15."#echo die#g' $(FFMPEG_DIR)/configure
+	sed -i -e 's#die "ERROR: avisynth and vfwcap_demuxer require w32api version 3.13 or later."#echo die#g' $(FFMPEG_DIR)/configure
+endif
 	cd $(FFMPEG_DIR); ./configure $(confffmpeg)
 	touch $@
 
@@ -775,7 +801,9 @@ $(TARGETDIR)/zips: binaries $(EKIGA_DIR)/src/ekiga.exe
 	for lib in liblber.dll libldap.dll libxml2-2.dll libspeex-1.dll libspeexdsp-1.dll libtheora-0.dll avcodec-52.dll avutil-50.dll libogg-0.dll; do \
 		install -m 755 $(BINDIR)/$$lib $(EKIGA_PREFIX) ;\
 	done
+ifeq ($(MINGW32), 1)
 	cd $(EKIGA_PREFIX); cp /usr/share/doc/mingw32-runtime/mingwm10.dll.gz . && gunzip mingwm10.dll.gz
+endif
 ifeq ($(DEBUG),0)
 	$(STRIP) $(EKIGA_PREFIX)/*.dll
 	$(STRIP) $(EKIGA_PREFIX)/*.exe
