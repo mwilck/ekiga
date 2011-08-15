@@ -153,7 +153,7 @@ REGEX_REV := 203e34
 REGEX_DIR := $(BUILDROOT)/regex
 REGEX_ARCHIVE := regex
 
-BOOST_VER := 1.46.1
+BOOST_VER := 1.47.0
 BOOST_URL := http://downloads.sourceforge.net/project/boost/boost/$(BOOST_VER)
 BOOST_ARCHIVE := boost_$(shell echo $(BOOST_VER)|tr . _).tar.gz
 BOOST_DIR := $(BUILDROOT)/boost_$(shell echo $(BOOST_VER)|tr . _)
@@ -167,13 +167,16 @@ ICONV_VER := 1.9.2-1
 ICONV_URL := http://downloads.sourceforge.net/project/gnuwin32/libiconv/$(ICONV_VER)
 ICONV_ARCHIVE := libiconv-$(ICONV_VER)-bin.zip
 
-# use a revision from 2009-04-13, known to work with current ekiga
-FFMPEG_VER := c573eb85f
-FFMPEG_URL := git://git.videolan.org/ffmpeg.git
-FFMPEG_DIR := $(BUILDROOT)/ffmpeg
-FFMPEG_ARCHIVE := ffmpeg
+# they provide also Windows libs+include, is it better to use them?
+# this is the one used in debian unstable as of 2011-08-07 and is known to work
+LIBAV_VER := 0.6.2
+LIBAV_URL := http://www.libav.org/releases
+LIBAV_DIR := $(BUILDROOT)/libav-$(LIBAV_VER)
+LIBAV_ARCHIVE := libav-$(LIBAV_VER).tar.gz
 
-X264_VER := d2e1e1c35c43ea9c90c9211be
+# this is the one used in debian unstable as of 2011-08-07 and is known to work
+#old: d2e1e1c35c43ea9c90c9211be
+X264_VER := f8ebd4a
 X264_URL := git://git.videolan.org/x264.git
 X264_DIR := $(BUILDROOT)/x264
 X264_ARCHIVE := x264
@@ -261,7 +264,7 @@ confptlib := $(confflags) \
 	--disable-v4l --disable-v4l2 --disable-bsdvideo --disable-avc --disable-dc
 
 	# disable ilbc and silk non-free codecs
-confopal := $(confflags) --with-ffmpeg-dir=$(FFMPEG_DIR) --disable-t38 --disable-fax --disable-iLBC --disable-silk
+confopal := $(confflags) --with-ffmpeg-dir=$(LIBAV_DIR) --disable-t38 --disable-fax --disable-iLBC --disable-silk
 
 confekiga:= $(confflags) \
 	--with-directx-dir=$(EKIGA_DIR)/win32/directx --prefix=$(EKIGA_PREFIX) \
@@ -273,25 +276,24 @@ confekiga:= $(confflags) \
 #TODO http://ac3filter.net/wiki/How_to_build_ffmpeg tells that
 # --extra-cflags='-Dstrtod=__strtod'
 #should also be used, check if it is needed
-confffmpeg := --cross-prefix=$(HOST_TOOL_PREFIX)- --enable-shared --enable-memalign-hack \
-	--enable-cross-compile --enable-w32threads --arch=`echo $|cut -d -f1` --target-os=mingw32 \
+conflibav := --cross-prefix=$(HOST_TOOL_PREFIX)- --enable-shared --enable-memalign-hack \
+	--enable-cross-compile --enable-w32threads --arch=`echo $(HOST_TOOL_PREFIX)|cut -d- -f1` --target-os=mingw32 \
 	--disable-ffserver --disable-ffmpeg --disable-ffplay \
 	--disable-parsers --enable-parser=h264 --enable-parser=mpeg4video --enable-parser=h263 \
-	--disable-decoders --enable-decoder=h264 --enable-decoder=mpeg4  --enable-decoder=h263 \
+	--disable-decoders --enable-decoder=h264 --enable-decoder=mpeg4 --enable-decoder=h263 \
 	--disable-muxers --enable-muxer=h264 --enable-muxer=mpeg4 --enable-muxer=h263 \
 	--disable-encoders --enable-encoder=mpeg4 --enable-encoder=h263 \
-	--disable-protocols --disable-bsfs --disable-ffplay --prefix=$(BUILDROOT) \
-	--libdir=$(LIBDIR) --extra-ldflags=-Wl,-static
-#	--disable-network
+	--disable-protocols --disable-bsfs --prefix=$(BUILDROOT) \
+	--libdir=$(LIBDIR) --extra-ldflags=-Wl,-static --disable-network
 
-confx264 := $(confflags) --disable-avs-input
+confx264 := $(confflags) --enable-shared --disable-cli --enable-win32thread --disable-avs
 
 confcelt := $(confflags) --disable-oggtest
 
 conftheora := $(confflags) --disable-vorbistest --disable-sdltest --disable-examples --disable-spec
 
 # only signals is needed
-confboost := --user-config=user-config.jam --layout=system variant=release threading=multi link=shared runtime-link=shared target-os=windows threadapi=win32 --without-math --without-python --without-mpi --without-serialization --without-test --without-thread --without-wave --without-date_time --without-system --without-filesystem --without-graph --without-graph_parallel --without-iostreams --without-program_options --without-regex --without-random -q stage
+confboost := --user-config=user-config.jam --layout=system variant=release threading=multi link=shared runtime-link=shared target-os=windows threadapi=win32 --without-chrono --without-exception --without-math --without-python --without-mpi --without-serialization --without-test --without-thread --without-wave --without-date_time --without-system --without-filesystem --without-graph --without-graph_parallel --without-iostreams --without-program_options --without-regex --without-random -q stage
 
 all: binaries $(TARGETDIR)/$(EKIGA_INSTALLER)
 	@echo "Built on $(shell date)"
@@ -307,8 +309,8 @@ binaries:
 	hash tar unzip zip wget aclocal autoheader libtoolize automake autoconf pkg-config gnome-autogen.sh bison gdk-pixbuf-csource || (echo we need more binaries ; exit 1)
 	[ -f /usr/share/gnome-doc-utils/gnome-doc-utils.make ] || (echo gnome-doc-tools not installed; exit 1)
 	[ -f /usr/lib/pkgconfig/gconf-2.0.pc ] || (echo libgconf2-dev not installed; exit 1)
-	[ -f /usr/lib/pkgconfig/avahi-glib.pc ] || (echo libavahi-glib-dev not installed; exit 1)
-	[ -f /usr/lib/pkgconfig/avahi-client.pc ] || (echo libavahi-client-dev not installed; exit 1)
+	[ -f /usr/lib/`dpkg-architecture -qDEB_HOST_MULTIARCH`/pkgconfig/avahi-glib.pc -o /usr/lib/pkgconfig/avahi-glib.pc ] || (echo libavahi-glib-dev not installed; exit 1)
+	[ -f /usr/lib/`dpkg-architecture -qDEB_HOST_MULTIARCH`/pkgconfig/avahi-client.pc -o /usr/lib/pkgconfig/avahi-client.pc ] || (echo libavahi-client-dev not installed; exit 1)
 	hash makensis || (echo nsis not installed; exit 1)
 	hash xmlto || (echo xmlto not installed; exit 1)
 	hash yasm || (echo yasm not installed, mandatory for x264; exit 1)
@@ -379,7 +381,7 @@ $(INCLUDEDIR)/expat.h:
 	install -m 644 $(EXPAT_DIR)/lib/expat.h $(INCLUDEDIR)/
 	touch $@
 
-$(LIBDIR)/libexpat.a:  $(EXPAT_DIR)/config.status $(INCLUDEDIR)/expat.h
+$(LIBDIR)/libexpat.a: $(EXPAT_DIR)/config.status $(INCLUDEDIR)/expat.h
 	$(MAKE) $(MAKEOPTS) -C $(EXPAT_DIR)
 	$(MAKE) $(MAKEOPTS) -C $(EXPAT_DIR) install
 	touch $@
@@ -485,34 +487,36 @@ $(LIBDIR)/libspeex.a: binaries $(SPEEX_DIR)/config.status
 	$(MAKE) $(MAKE_LIB_OPTS) -C $(SPEEX_DIR)
 	$(MAKE) -C $(SPEEX_DIR) install
 
-### ffmpeg
+### libav
 update-sources::
-	@echo --- Getting FFMPEG ...
-ifeq ($(wildcard $(SRCDIR)/$(FFMPEG_ARCHIVE)),)
-	$(GIT) clone $(FFMPEG_URL) $(SRCDIR)/$(FFMPEG_ARCHIVE)
-endif
-	cd $(SRCDIR)/$(FFMPEG_ARCHIVE); git reset --hard $(FFMPEG_VER)
-	#touch $(SRCDIR)/$(FFMPEG_ARCHIVE)
+	@echo --- Getting libav ...
+	$(WGET) -P $(SRCDIR) $(LIBAV_URL)/$(LIBAV_ARCHIVE)
+	#touch $(SRCDIR)/$(LIBAV_ARCHIVE)
 
-$(FFMPEG_DIR)/config.status: $(SRCDIR)/$(FFMPEG_ARCHIVE)
-	rm -rf $(FFMPEG_DIR)
-	$(CP) -r $(SRCDIR)/$(FFMPEG_ARCHIVE) $(FFMPEG_DIR)
+$(LIBAV_DIR)/config.status: $(SRCDIR)/$(LIBAV_ARCHIVE)
+	rm -rf $(LIBAV_DIR)
+	tar xfz $(SRCDIR)/$(LIBAV_ARCHIVE) -C $(BUILDROOT)
 ifeq ($(MINGW32), 0)
 	#avoid unnecessary configuration error
 	# see also http://ac3filter.net/wiki/How_to_build_ffmpeg
-	sed -i -e 's#die "ERROR: MinGW runtime version must be >= 3.15."#echo die#g' $(FFMPEG_DIR)/configure
-	sed -i -e 's#die "ERROR: avisynth and vfwcap_demuxer require w32api version 3.13 or later."#echo die#g' $(FFMPEG_DIR)/configure
+ifeq ($(BIT32), 1)
+	sed -i -e 's#die "ERROR: MinGW runtime version must be >= 3.15."#echo die#g' $(LIBAV_DIR)/configure
+	sed -i -e 's#die "ERROR: avisynth and vfwcap_demuxer require w32api version 3.13 or later."#echo die#g' $(LIBAV_DIR)/configure
 endif
-	cd $(FFMPEG_DIR); ./configure $(confffmpeg)
+else
+	# workaround a bug in gcc 4.2.x (http://code.google.com/p/chromium/issues/detail?id=37905)
+	sed -i -e 's#check_cflags -Werror=missing-prototypes##g' $(LIBAV_DIR)/configure
+endif
+	cd $(LIBAV_DIR); ./configure $(conflibav)
 	touch $@
 
-$(BINDIR)/avcodec.dll: $(FFMPEG_DIR)/config.status
-	$(MAKE) $(MAKE_LIB_OPTS) -C $(FFMPEG_DIR)/libavutil
-	$(MAKE) $(MAKE_LIB_OPTS) -C $(FFMPEG_DIR)/libavcodec
-	$(MAKE) $(MAKE_LIB_OPTS) -C $(FFMPEG_DIR)/libavformat
-	$(MAKE) $(MAKE_LIB_OPTS) -C $(FFMPEG_DIR)/libavdevice
-	$(MAKE) $(MAKE_LIB_OPTS) -C $(FFMPEG_DIR)
-	$(MAKE) -C $(FFMPEG_DIR) install
+$(BINDIR)/avcodec.dll: $(LIBAV_DIR)/config.status
+	$(MAKE) V=1 $(MAKE_LIB_OPTS) -C $(LIBAV_DIR)/libavutil
+	$(MAKE) V=1 $(MAKE_LIB_OPTS) -C $(LIBAV_DIR)/libavcodec
+	$(MAKE) V=1 $(MAKE_LIB_OPTS) -C $(LIBAV_DIR)/libavformat
+	$(MAKE) V=1 $(MAKE_LIB_OPTS) -C $(LIBAV_DIR)/libavdevice
+	$(MAKE) V=1 $(MAKE_LIB_OPTS) -C $(LIBAV_DIR)
+	$(MAKE) -C $(LIBAV_DIR) install
 	touch $@
 
 ### x264
@@ -527,7 +531,6 @@ endif
 $(X264_DIR)/config.status: $(SRCDIR)/$(X264_ARCHIVE)
 	rm -rf $(X264_DIR)
 	$(CP) -r $(SRCDIR)/$(X264_ARCHIVE) $(X264_DIR)
-	#cd $(X264_DIR); CC=$(REALCC) ./configure $(confx264);
 	cd $(X264_DIR); ./configure $(confx264); \
 	sed -i -e 's#ranlib#$(RANLIB)#g' $(X264_DIR)/Makefile; \
 	sed -i -e 's#strip#$(STRIP)#g' $(X264_DIR)/Makefile; \
@@ -560,7 +563,6 @@ update-sources::
 $(THEORA_DIR)/config.status: $(SRCDIR)/$(THEORA_ARCHIVE) $(LIBDIR)/libogg.a
 	rm -rf $(THEORA_DIR)
 	tar xfz $(SRCDIR)/$(THEORA_ARCHIVE) -C $(BUILDROOT)
-	#cd $(THEORA_DIR); CC=$(REALCC) LD=$(LD) AR=$(AR) RANLIB=$(RANLIB) ./autogen.sh $(conftheora)
 	cd $(THEORA_DIR); ./autogen.sh $(conftheora)
 
 $(LIBDIR)/libtheora.a: $(THEORA_DIR)/config.status
@@ -601,7 +603,6 @@ $(LIBDIR)/$(OPAL_LIB): binaries $(OPAL_DIR)/config.status
 	rm -f $(LIBDIR)/$(OPAL_LIB)
 	$(MAKE) $(MAKEOPTS) VERBOSE=1 -C $(OPAL_DIR)
 	$(MAKE) -C $(OPAL_DIR) install
-#	sed -i -e 's#^prefix=.*$$#prefix=$(BUILDROOT)#g' $(LIBDIR)/pkgconfig/opal*.pc
 
 ### libgtk
 update-sources::
@@ -619,7 +620,7 @@ update-sources::
 	$(WGET) -P $(SRCDIR) $(GTK_INSTALLER_URL)/$(GTK_BIN_EXE)
 
 $(LIBDIR)/gtk+-$(GTK_BIN_VER)-setup.exe: $(SRCDIR)/$(GTK_BIN_EXE)
-	$(CP) $(SRCDIR)/$(GTK_BIN_EXE)  $(LIBDIR)/gtk+-$(GTK_BIN_VER)-setup.exe
+	$(CP) $(SRCDIR)/$(GTK_BIN_EXE) $(LIBDIR)/gtk+-$(GTK_BIN_VER)-setup.exe
 	touch $@
 
 ### libglib
@@ -884,7 +885,7 @@ distclean:
 	$(RM) -rf $(BOOST_DIR)
 	$(RM) -rf $(SPEEX_DIR)
 	$(RM) -rf $(EXPAT_DIR)
-	$(RM) -rf $(FFMPEG_DIR)
+	$(RM) -rf $(LIBAV_DIR)
 	$(RM) -rf $(X264_DIR)
 	$(RM) -rf $(THEORA_DIR)
 	$(RM) -rf $(CELT_DIR)
