@@ -531,10 +531,7 @@ endif
 $(X264_DIR)/config.status: $(SRCDIR)/$(X264_ARCHIVE)
 	rm -rf $(X264_DIR)
 	$(CP) -r $(SRCDIR)/$(X264_ARCHIVE) $(X264_DIR)
-	cd $(X264_DIR); ./configure $(confx264); \
-	sed -i -e 's#ranlib#$(RANLIB)#g' $(X264_DIR)/Makefile; \
-	sed -i -e 's#strip#$(STRIP)#g' $(X264_DIR)/Makefile; \
-	sed -i -e 's#ar #$(AR) #g' $(X264_DIR)/Makefile
+	cd $(X264_DIR); ./configure $(confx264)
 	touch $@
 
 $(LIBDIR)/libx264.a: $(X264_DIR)/config.status
