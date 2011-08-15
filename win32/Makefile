@@ -276,7 +276,7 @@ confekiga:= $(confflags) \
 #TODO http://ac3filter.net/wiki/How_to_build_ffmpeg tells that
 # --extra-cflags='-Dstrtod=__strtod'
 #should also be used, check if it is needed
-conflibav := --cross-prefix=$(HOST_TOOL_PREFIX)- --enable-shared --enable-memalign-hack \
+conflibav := --cross-prefix=$(HOST_TOOL_PREFIX)- --enable-static --enable-memalign-hack \
 	--enable-cross-compile --enable-w32threads --arch=`echo $(HOST_TOOL_PREFIX)|cut -d- -f1` --target-os=mingw32 \
 	--disable-ffserver --disable-ffmpeg --disable-ffplay \
 	--disable-parsers --enable-parser=h264 --enable-parser=mpeg4video --enable-parser=h263 \
