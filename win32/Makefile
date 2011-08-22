@@ -60,7 +60,7 @@ export PATH:=$(BINDIR):$(PATH)
 
 
 ifeq ($(RELEASE),1)
-	EKIGA_VER := 3.3.1
+	EKIGA_VER := 3.3.2
 	EKIGA_URL := http://ftp.gnome.org/pub/gnome/sources/ekiga/3.3
 	EKIGA_ARCHIVE := ekiga-$(EKIGA_VER).tar.xz
 	EKIGA_DIR := $(BUILDROOT)/ekiga-$(EKIGA_VER)
@@ -86,12 +86,12 @@ endif
 EKIGA_INSTALLER_DIR := $(EKIGA_DIR)/win32/nsisinstaller
 
 ifeq ($(RELEASE),1)
-	OPAL_VER := 3.10.1
+	OPAL_VER := 3.10.2
 	OPAL_URL := http://ftp.gnome.org/pub/gnome/sources/opal/3.10
 	OPAL_ARCHIVE := opal-$(OPAL_VER).tar.xz
 	OPAL_DIR := $(BUILDROOT)/opal-$(OPAL_VER)
 else
-	OPAL_VER := 3.10-beta2
+	OPAL_VER := 3.10-beta3
 	# OPAL_REV: HEAD or revision number
 	OPAL_REV := HEAD
 	OPAL_URL := https://opalvoip.svn.sourceforge.net/svnroot/opalvoip/opal/branches/v3_10
@@ -101,12 +101,12 @@ endif
 OPAL_LIB := libopal.$(OPAL_VER).dll
 
 ifeq ($(RELEASE),1)
-	PTLIB_VER := 2.10.1
+	PTLIB_VER := 2.10.2
 	PTLIB_URL := http://ftp.gnome.org/pub/gnome/sources/ptlib/2.10
 	PTLIB_ARCHIVE := ptlib-$(PTLIB_VER).tar.xz
 	PTLIB_DIR := $(BUILDROOT)/ptlib-$(PTLIB_VER)
 else
-	PTLIB_VER := 2.10-beta2
+	PTLIB_VER := 2.10-beta3
 	# PTLIB_REV: HEAD or revision number
 	PTLIB_REV := HEAD
 	PTLIB_URL := https://opalvoip.svn.sourceforge.net/svnroot/opalvoip/ptlib/branches/v2_10
