@@ -503,7 +503,7 @@ Opal::Sip::EndPoint::Register (const std::string username,
   params.m_addressOfRecord = PString (aor.str ());
   params.m_registrarAddress = PString (host_);
   if (is_limited)
-    params.m_contactAddress = "%LIMITED";
+    params.m_compatibility = SIPRegister::e_CannotRegisterMultipleContacts;
   params.m_authID = auth_username;
   params.m_password = password;
   params.m_expire = is_enabled ? timeout : 0;
