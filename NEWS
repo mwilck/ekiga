@@ -1,4 +1,28 @@
                           -*- mode: outline -*-
+* Changes in ekiga 3.3.2 (2011-08-23)
+** User-visible fixes
+- Re-add back H264 and H263+ video plugins
+- Fix presence in case of several tuples
+- Fix presence when receiving old presentity type without note
+- Re-add contact limited compatibility mode for bogus registrars
+- Fix leaking the opal account store in the assistant
+- Make Enter key in roster (contact list) make a call
+- Fix infinite loops in the loudmouth presentity code
+- Add mnemonics to buttons in Accounts dialog box
+- Fix _dl_close failed assertion at quit
+** Distributor-visible changes
+- Re-add back H264 and H263+ video plugins
+** Windows port fixes
+- Various build fixes and dependency updates
+** Build fixes
+- Fix generation of po translation files
+- Fix compilation error with older GTK on GDK_KEY_KP_Enter
+- Replace some deprecated symbols in gtk 2.18
+- Fix build with -Wl,-z,defs of xcap plugin
+- Check for ptlib expat support during configure
+** Translation updates
+- Updated translations: cs, de, es, fr, ru, sl
+
 * Major changes in ekiga 3.3.1 (2011-07-16)
 ** User-visible fixes
 - Fix crash when no audio device exists
