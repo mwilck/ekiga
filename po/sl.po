@@ -10,8 +10,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: ekiga\n"
 "Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?product=ekiga&keywords=I18N+L10N&component=general\n"
-"POT-Creation-Date: 2011-07-19 08:16+0000\n"
-"PO-Revision-Date: 2011-07-19 22:11+0100\n"
+"POT-Creation-Date: 2011-08-23 18:13+0000\n"
+"PO-Revision-Date: 2011-08-29 20:14+0100\n"
 "Last-Translator: Matej Urbančič <mateju@svn.gnome.org>\n"
 "Language-Team: Slovenščina <gnome-si@googlegroups.com>\n"
 "Language: \n"
@@ -680,7 +680,7 @@ msgstr "Neimenovano"
 #: ../lib/engine/components/local-roster/local-presentity.cpp:220
 #: ../lib/engine/components/opal/opal-account.cpp:371
 #: ../plugins/evolution/evolution-contact.cpp:228
-#: ../plugins/loudmouth/loudmouth-presentity.cpp:157
+#: ../plugins/loudmouth/loudmouth-presentity.cpp:159
 #: ../plugins/resource-list/rl-presentity.cpp:212
 #: ../src/gui/main_window.cpp:3599
 msgid "_Edit"
@@ -690,13 +690,14 @@ msgstr "_Uredi"
 #: ../lib/engine/components/opal/opal-account.cpp:373
 #: ../plugins/evolution/evolution-contact.cpp:230
 #: ../plugins/loudmouth/loudmouth-account.cpp:393
-#: ../plugins/loudmouth/loudmouth-presentity.cpp:190
+#: ../plugins/loudmouth/loudmouth-presentity.cpp:192
 #: ../plugins/resource-list/rl-presentity.cpp:214
+#: ../src/gui/accounts.cpp:692
 msgid "_Remove"
 msgstr "_Odstrani"
 
 #: ../lib/engine/components/local-roster/local-presentity.cpp:247
-#: ../plugins/loudmouth/loudmouth-presentity.cpp:275
+#: ../plugins/loudmouth/loudmouth-presentity.cpp:277
 msgid "Edit roster element"
 msgstr "Uredi predmet seznama stikov"
 
@@ -711,7 +712,7 @@ msgstr "Izpolnite obrazec za spremembo obstoječega vnosa v notranji seznam stik
 #: ../plugins/evolution/evolution-contact.cpp:324
 #: ../plugins/loudmouth/loudmouth-account.cpp:296
 #: ../plugins/loudmouth/loudmouth-bank.cpp:125
-#: ../plugins/loudmouth/loudmouth-presentity.cpp:278
+#: ../plugins/loudmouth/loudmouth-presentity.cpp:280
 #: ../plugins/resource-list/rl-cluster.cpp:169
 #: ../plugins/resource-list/rl-heap.cpp:526
 #: ../plugins/resource-list/rl-presentity.cpp:233
@@ -732,7 +733,7 @@ msgid "Is a preferred contact"
 msgstr "Je prednostni stik"
 
 #: ../lib/engine/components/local-roster/local-presentity.cpp:254
-#: ../plugins/loudmouth/loudmouth-presentity.cpp:280
+#: ../plugins/loudmouth/loudmouth-presentity.cpp:282
 #: ../plugins/resource-list/rl-heap.cpp:528
 #: ../plugins/resource-list/rl-presentity.cpp:236
 msgid "Choose groups:"
@@ -862,13 +863,13 @@ msgid "Bad username/password"
 msgstr "Napačno uporabniško ime ali geslo"
 
 #: ../lib/engine/components/opal/h323-endpoint.cpp:315
-#: ../lib/engine/components/opal/sip-endpoint.cpp:562
+#: ../lib/engine/components/opal/sip-endpoint.cpp:563
 msgid "Transport error"
 msgstr "Napaka prenosa"
 
 #: ../lib/engine/components/opal/h323-endpoint.cpp:326
 #: ../lib/engine/components/opal/h323-endpoint.cpp:331
-#: ../lib/engine/components/opal/sip-endpoint.cpp:771
+#: ../lib/engine/components/opal/sip-endpoint.cpp:772
 msgid "Failed"
 msgstr "Spodletelo"
 
@@ -886,11 +887,13 @@ msgstr[3] "%s (s skupno %d glasovnimi sporočili)"
 
 #: ../lib/engine/components/opal/opal-account.cpp:363
 #: ../plugins/loudmouth/loudmouth-account.cpp:381
+#: ../src/gui/accounts.cpp:686
 msgid "_Disable"
 msgstr "O_nemogoči"
 
 #: ../lib/engine/components/opal/opal-account.cpp:366
 #: ../plugins/loudmouth/loudmouth-account.cpp:385
+#: ../src/gui/accounts.cpp:683
 msgid "_Enable"
 msgstr "_Omogoči"
 
@@ -1049,59 +1052,59 @@ msgid "Processing..."
 msgstr "Obdelovanje ..."
 
 #. Translators: see RFC 4480 for more information about activities
-#: ../lib/engine/components/opal/opal-account.cpp:725
+#: ../lib/engine/components/opal/opal-account.cpp:728
 msgid "Appointment"
 msgstr "Sestanek"
 
-#: ../lib/engine/components/opal/opal-account.cpp:729
+#: ../lib/engine/components/opal/opal-account.cpp:732
 msgid "Breakfast"
 msgstr "Zajterk"
 
-#: ../lib/engine/components/opal/opal-account.cpp:733
+#: ../lib/engine/components/opal/opal-account.cpp:736
 msgid "Dinner"
 msgstr "Večerja"
 
-#: ../lib/engine/components/opal/opal-account.cpp:737
+#: ../lib/engine/components/opal/opal-account.cpp:740
 msgid "Holiday"
 msgstr "Prazniki"
 
-#: ../lib/engine/components/opal/opal-account.cpp:741
+#: ../lib/engine/components/opal/opal-account.cpp:744
 msgid "In transit"
 msgstr "Vmesni čas"
 
-#: ../lib/engine/components/opal/opal-account.cpp:745
+#: ../lib/engine/components/opal/opal-account.cpp:748
 msgid "Looking for work"
 msgstr "Iskanje dela"
 
-#: ../lib/engine/components/opal/opal-account.cpp:749
+#: ../lib/engine/components/opal/opal-account.cpp:752
 msgid "Lunch"
 msgstr "Kosilo"
 
-#: ../lib/engine/components/opal/opal-account.cpp:753
+#: ../lib/engine/components/opal/opal-account.cpp:756
 msgid "Meal"
 msgstr "Obrok"
 
-#: ../lib/engine/components/opal/opal-account.cpp:757
+#: ../lib/engine/components/opal/opal-account.cpp:760
 msgid "Meeting"
 msgstr "Srečanje"
 
-#: ../lib/engine/components/opal/opal-account.cpp:761
+#: ../lib/engine/components/opal/opal-account.cpp:764
 msgid "On the phone"
 msgstr "Na telefonu"
 
-#: ../lib/engine/components/opal/opal-account.cpp:765
+#: ../lib/engine/components/opal/opal-account.cpp:768
 msgid "Playing"
 msgstr "Igra"
 
-#: ../lib/engine/components/opal/opal-account.cpp:769
+#: ../lib/engine/components/opal/opal-account.cpp:772
 msgid "Shopping"
 msgstr "Nakupovanje"
 
-#: ../lib/engine/components/opal/opal-account.cpp:773
+#: ../lib/engine/components/opal/opal-account.cpp:776
 msgid "Sleeping"
 msgstr "Spanje"
 
-#: ../lib/engine/components/opal/opal-account.cpp:777
+#: ../lib/engine/components/opal/opal-account.cpp:780
 msgid "Working"
 msgstr "Delo"
 
@@ -1269,96 +1272,96 @@ msgstr ""
 msgid "Message"
 msgstr "Sporočilo"
 
-#: ../lib/engine/components/opal/sip-endpoint.cpp:557
+#: ../lib/engine/components/opal/sip-endpoint.cpp:558
 msgid "Illegal status code"
 msgstr "Neveljavna koda stanja"
 
 #. Translators: Host of the remote party is offline, this should
 #. * appear when the remote host does not reply in an acceptable time
-#: ../lib/engine/components/opal/sip-endpoint.cpp:568
+#: ../lib/engine/components/opal/sip-endpoint.cpp:569
 msgid "Remote party host is offline"
 msgstr "Oddaljen gostitelj ni povezan"
 
 #. Translators: the following strings are answers from the SIP server
 #. * when the packet it receives has an error, see
 #. * http://www.ietf.org/rfc/rfc3261.txt, chapter 21 for more information
-#: ../lib/engine/components/opal/sip-endpoint.cpp:584
+#: ../lib/engine/components/opal/sip-endpoint.cpp:585
 msgid "Multiple choices"
 msgstr "Več možnosti"
 
-#: ../lib/engine/components/opal/sip-endpoint.cpp:588
+#: ../lib/engine/components/opal/sip-endpoint.cpp:589
 msgid "Moved permanently"
 msgstr "Trajno premaknjeno"
 
-#: ../lib/engine/components/opal/sip-endpoint.cpp:592
+#: ../lib/engine/components/opal/sip-endpoint.cpp:593
 msgid "Moved temporarily"
 msgstr "Začasno premaknjeno"
 
-#: ../lib/engine/components/opal/sip-endpoint.cpp:596
+#: ../lib/engine/components/opal/sip-endpoint.cpp:597
 msgid "Use proxy"
 msgstr "Uporabi posredniški strežnik"
 
-#: ../lib/engine/components/opal/sip-endpoint.cpp:600
+#: ../lib/engine/components/opal/sip-endpoint.cpp:601
 msgid "Alternative service"
 msgstr "Dodatna storitev"
 
-#: ../lib/engine/components/opal/sip-endpoint.cpp:604
+#: ../lib/engine/components/opal/sip-endpoint.cpp:605
 msgid "Bad request"
 msgstr "Napačna zahteva"
 
-#: ../lib/engine/components/opal/sip-endpoint.cpp:608
+#: ../lib/engine/components/opal/sip-endpoint.cpp:609
 msgid "Unauthorized"
 msgstr "Nepooblaščeno"
 
-#: ../lib/engine/components/opal/sip-endpoint.cpp:612
+#: ../lib/engine/components/opal/sip-endpoint.cpp:613
 msgid "Payment required"
 msgstr "Zahtevano je plačilo"
 
-#: ../lib/engine/components/opal/sip-endpoint.cpp:616
+#: ../lib/engine/components/opal/sip-endpoint.cpp:617
 msgid "Forbidden, please check that username and password are correct"
 msgstr "Nedovoljen dostop; preverite, da sta uporabniško ime in geslo prava"
 
-#: ../lib/engine/components/opal/sip-endpoint.cpp:620
+#: ../lib/engine/components/opal/sip-endpoint.cpp:621
 msgid "Not found"
 msgstr "Ni najdeno"
 
-#: ../lib/engine/components/opal/sip-endpoint.cpp:624
+#: ../lib/engine/components/opal/sip-endpoint.cpp:625
 msgid "Method not allowed"
 msgstr "Način ni dovoljen"
 
-#: ../lib/engine/components/opal/sip-endpoint.cpp:628
+#: ../lib/engine/components/opal/sip-endpoint.cpp:629
 msgid "Not acceptable"
 msgstr "Ni sprejemljivo"
 
-#: ../lib/engine/components/opal/sip-endpoint.cpp:632
+#: ../lib/engine/components/opal/sip-endpoint.cpp:633
 msgid "Proxy authentication required"
 msgstr "Zahtevana je overitev posredniškega strežnika"
 
-#: ../lib/engine/components/opal/sip-endpoint.cpp:636
+#: ../lib/engine/components/opal/sip-endpoint.cpp:637
 msgid "Timeout"
 msgstr "Zakasnitev"
 
-#: ../lib/engine/components/opal/sip-endpoint.cpp:640
+#: ../lib/engine/components/opal/sip-endpoint.cpp:641
 msgid "Conflict"
 msgstr "Spor"
 
-#: ../lib/engine/components/opal/sip-endpoint.cpp:644
+#: ../lib/engine/components/opal/sip-endpoint.cpp:645
 msgid "Length required"
 msgstr "Zahtevana dolžina"
 
-#: ../lib/engine/components/opal/sip-endpoint.cpp:648
+#: ../lib/engine/components/opal/sip-endpoint.cpp:649
 msgid "Request entity too big"
 msgstr "Zahtevan predmet je prevelik"
 
-#: ../lib/engine/components/opal/sip-endpoint.cpp:652
+#: ../lib/engine/components/opal/sip-endpoint.cpp:653
 msgid "Request URI too long"
 msgstr "Zahtevan naslov URI je predolg"
 
-#: ../lib/engine/components/opal/sip-endpoint.cpp:656
+#: ../lib/engine/components/opal/sip-endpoint.cpp:657
 msgid "Unsupported media type"
 msgstr "Nepodprta vrsta medija"
 
-#: ../lib/engine/components/opal/sip-endpoint.cpp:660
+#: ../lib/engine/components/opal/sip-endpoint.cpp:661
 msgid "Unsupported URI scheme"
 msgstr "Nepodprta shema URI"
 
@@ -1366,131 +1369,131 @@ msgstr "Nepodprta shema URI"
 #. * Here extension is a specific "phone number", see
 #. * http://en.wikipedia.org/wiki/Extension_(telephone)
 #. * for more information
-#: ../lib/engine/components/opal/sip-endpoint.cpp:668
+#: ../lib/engine/components/opal/sip-endpoint.cpp:669
 msgid "Bad extension"
 msgstr "Slaba pripona"
 
-#: ../lib/engine/components/opal/sip-endpoint.cpp:672
+#: ../lib/engine/components/opal/sip-endpoint.cpp:673
 msgid "Extension required"
 msgstr "Zahtevana je razširitev"
 
-#: ../lib/engine/components/opal/sip-endpoint.cpp:676
+#: ../lib/engine/components/opal/sip-endpoint.cpp:677
 msgid "Interval too brief"
 msgstr "Interval je prekratek"
 
-#: ../lib/engine/components/opal/sip-endpoint.cpp:680
+#: ../lib/engine/components/opal/sip-endpoint.cpp:681
 msgid "Temporarily unavailable"
 msgstr "Začasno nedostopno"
 
-#: ../lib/engine/components/opal/sip-endpoint.cpp:684
+#: ../lib/engine/components/opal/sip-endpoint.cpp:685
 msgid "Loop detected"
 msgstr "Zaznana je bila zanka"
 
-#: ../lib/engine/components/opal/sip-endpoint.cpp:688
+#: ../lib/engine/components/opal/sip-endpoint.cpp:689
 msgid "Too many hops"
 msgstr "Preveč skokov"
 
-#: ../lib/engine/components/opal/sip-endpoint.cpp:692
+#: ../lib/engine/components/opal/sip-endpoint.cpp:693
 msgid "Address incomplete"
 msgstr "Nepopoln naslov"
 
-#: ../lib/engine/components/opal/sip-endpoint.cpp:696
+#: ../lib/engine/components/opal/sip-endpoint.cpp:697
 msgid "Ambiguous"
 msgstr "Dvoumno"
 
-#: ../lib/engine/components/opal/sip-endpoint.cpp:700
+#: ../lib/engine/components/opal/sip-endpoint.cpp:701
 msgid "Busy Here"
 msgstr "Zaposleno tukaj"
 
-#: ../lib/engine/components/opal/sip-endpoint.cpp:704
+#: ../lib/engine/components/opal/sip-endpoint.cpp:705
 msgid "Request terminated"
 msgstr "Zahteva je bila končana"
 
-#: ../lib/engine/components/opal/sip-endpoint.cpp:708
+#: ../lib/engine/components/opal/sip-endpoint.cpp:709
 msgid "Not acceptable here"
 msgstr "Tukaj ni sprejemljivo"
 
-#: ../lib/engine/components/opal/sip-endpoint.cpp:712
+#: ../lib/engine/components/opal/sip-endpoint.cpp:713
 msgid "Bad event"
 msgstr "Napačna zahteva"
 
-#: ../lib/engine/components/opal/sip-endpoint.cpp:716
+#: ../lib/engine/components/opal/sip-endpoint.cpp:717
 msgid "Request pending"
 msgstr "Zahteva v čakanju"
 
-#: ../lib/engine/components/opal/sip-endpoint.cpp:720
+#: ../lib/engine/components/opal/sip-endpoint.cpp:721
 msgid "Undecipherable"
 msgstr "Ni mogoče dešifrirati"
 
-#: ../lib/engine/components/opal/sip-endpoint.cpp:724
+#: ../lib/engine/components/opal/sip-endpoint.cpp:725
 msgid "Internal server error"
 msgstr "Notranja napaka strežnika"
 
-#: ../lib/engine/components/opal/sip-endpoint.cpp:728
+#: ../lib/engine/components/opal/sip-endpoint.cpp:729
 msgid "Not implemented"
 msgstr "Ni podprto"
 
-#: ../lib/engine/components/opal/sip-endpoint.cpp:732
+#: ../lib/engine/components/opal/sip-endpoint.cpp:733
 msgid "Bad gateway"
 msgstr "Neveljaven prehod"
 
-#: ../lib/engine/components/opal/sip-endpoint.cpp:736
+#: ../lib/engine/components/opal/sip-endpoint.cpp:737
 msgid "Service unavailable"
 msgstr "Storitev ni na voljo"
 
-#: ../lib/engine/components/opal/sip-endpoint.cpp:740
+#: ../lib/engine/components/opal/sip-endpoint.cpp:741
 msgid "Server timeout"
 msgstr "Zakasnitev strežnika"
 
-#: ../lib/engine/components/opal/sip-endpoint.cpp:744
+#: ../lib/engine/components/opal/sip-endpoint.cpp:745
 msgid "SIP version not supported"
 msgstr "Različica SIP ni podprta"
 
-#: ../lib/engine/components/opal/sip-endpoint.cpp:748
+#: ../lib/engine/components/opal/sip-endpoint.cpp:749
 msgid "Message too large"
 msgstr "Sporočilo je preveliko"
 
-#: ../lib/engine/components/opal/sip-endpoint.cpp:752
+#: ../lib/engine/components/opal/sip-endpoint.cpp:753
 msgid "Busy everywhere"
 msgstr "Zaposleno povsod"
 
-#: ../lib/engine/components/opal/sip-endpoint.cpp:756
+#: ../lib/engine/components/opal/sip-endpoint.cpp:757
 msgid "Decline"
 msgstr "Odkloni"
 
-#: ../lib/engine/components/opal/sip-endpoint.cpp:760
+#: ../lib/engine/components/opal/sip-endpoint.cpp:761
 msgid "Does not exist anymore"
 msgstr "Ne obstaja več"
 
-#: ../lib/engine/components/opal/sip-endpoint.cpp:764
+#: ../lib/engine/components/opal/sip-endpoint.cpp:765
 msgid "Globally not acceptable"
 msgstr "Splošno ni sprejemljivo"
 
-#: ../lib/engine/components/opal/sip-endpoint.cpp:905
+#: ../lib/engine/components/opal/sip-endpoint.cpp:906
 msgid "Could not send message: "
 msgstr "Ni mogoče poslati sporočila:"
 
-#: ../lib/engine/components/opal/sip-endpoint.cpp:907
+#: ../lib/engine/components/opal/sip-endpoint.cpp:908
 msgid "user offline"
 msgstr "uporabnik ni povezan"
 
-#: ../lib/engine/components/opal/sip-endpoint.cpp:946
+#: ../lib/engine/components/opal/sip-endpoint.cpp:947
 #: ../src/gui/main_window.cpp:3198
 #, c-format
 msgid "Incoming call from %s"
 msgstr "Dohodni klic od %s"
 
-#: ../lib/engine/components/opal/sip-endpoint.cpp:948
+#: ../lib/engine/components/opal/sip-endpoint.cpp:949
 #, c-format
 msgid "Incoming call"
 msgstr "Dohodni klic"
 
-#: ../lib/engine/components/opal/sip-endpoint.cpp:954
+#: ../lib/engine/components/opal/sip-endpoint.cpp:955
 #, c-format
 msgid "In a call with %s"
 msgstr "V pogovoru z %s"
 
-#: ../lib/engine/components/opal/sip-endpoint.cpp:956
+#: ../lib/engine/components/opal/sip-endpoint.cpp:957
 #, c-format
 msgid "In a call"
 msgstr "V pogovoru"
@@ -1557,8 +1560,8 @@ msgstr "Klepetalno okno"
 
 #: ../lib/engine/gui/gtk-frontend/heap-view.cpp:238
 #: ../lib/engine/gui/gtk-frontend/heap-view.cpp:277
-#: ../lib/engine/gui/gtk-frontend/roster-view-gtk.cpp:976
-#: ../lib/engine/gui/gtk-frontend/roster-view-gtk.cpp:1029
+#: ../lib/engine/gui/gtk-frontend/roster-view-gtk.cpp:987
+#: ../lib/engine/gui/gtk-frontend/roster-view-gtk.cpp:1040
 msgid "Unsorted"
 msgstr "Nerazvrščeno"
 
@@ -1924,7 +1927,6 @@ msgid "Resource:"
 msgstr "Vir:"
 
 #: ../plugins/loudmouth/loudmouth-account.cpp:391
-#: ../src/gui/accounts.cpp:689
 msgid "Edit"
 msgstr "Uredi"
 
@@ -1987,34 +1989,34 @@ msgstr "Določilo:"
 msgid "identifier@server"
 msgstr "določilo@strežnik"
 
-#: ../plugins/loudmouth/loudmouth-presentity.cpp:162
-#: ../plugins/loudmouth/loudmouth-presentity.cpp:168
+#: ../plugins/loudmouth/loudmouth-presentity.cpp:164
+#: ../plugins/loudmouth/loudmouth-presentity.cpp:170
 msgid "Ask him/her to see his/her status"
 msgstr "Vprašaj za ogled stanja stika"
 
-#: ../plugins/loudmouth/loudmouth-presentity.cpp:166
-#: ../plugins/loudmouth/loudmouth-presentity.cpp:178
+#: ../plugins/loudmouth/loudmouth-presentity.cpp:168
+#: ../plugins/loudmouth/loudmouth-presentity.cpp:180
 msgid "Forbid him/her to see my status"
 msgstr "Prepovej ogled mojega stanja"
 
-#: ../plugins/loudmouth/loudmouth-presentity.cpp:170
+#: ../plugins/loudmouth/loudmouth-presentity.cpp:172
 msgid "Ask him/her to see his/her status (pending)"
 msgstr "Vprašaj za prikaz stanja (čakanje na odziv)"
 
-#: ../plugins/loudmouth/loudmouth-presentity.cpp:174
-#: ../plugins/loudmouth/loudmouth-presentity.cpp:179
+#: ../plugins/loudmouth/loudmouth-presentity.cpp:176
+#: ../plugins/loudmouth/loudmouth-presentity.cpp:181
 msgid "Stop getting his/her status"
 msgstr "Zaustavi pridobivanje stanja tega uporabnika"
 
-#: ../plugins/loudmouth/loudmouth-presentity.cpp:184
+#: ../plugins/loudmouth/loudmouth-presentity.cpp:186
 msgid "Start chat"
 msgstr "Začni klepet"
 
-#: ../plugins/loudmouth/loudmouth-presentity.cpp:187
+#: ../plugins/loudmouth/loudmouth-presentity.cpp:189
 msgid "Continue chat"
 msgstr "Nadaljuj klepet"
 
-#: ../plugins/loudmouth/loudmouth-presentity.cpp:276
+#: ../plugins/loudmouth/loudmouth-presentity.cpp:278
 msgid "Please fill in this form to change an existing element of the remote roster"
 msgstr "Izpolnite obrazec za spreminjanje obstoječega predmeta v oddaljenem seznamu stikov"
 
@@ -2143,17 +2145,9 @@ msgstr "Pomo_č"
 msgid "Active"
 msgstr "Dejavno"
 
-#: ../src/gui/accounts.cpp:683
-msgid "Enable"
-msgstr "Omogoči"
-
-#: ../src/gui/accounts.cpp:686
-msgid "Disable"
-msgstr "Onemogoči"
-
-#: ../src/gui/accounts.cpp:692
-msgid "Remove"
-msgstr "Odstrani"
+#: ../src/gui/accounts.cpp:689
+msgid "Edi_t"
+msgstr "_Uredi"
 
 #: ../src/gui/assistant.cpp:341
 msgid ""
@@ -2364,7 +2358,7 @@ msgstr "SIP URI"
 msgid "Ekiga Call Out"
 msgstr "Ekigi klici"
 
-#: ../src/gui/assistant.cpp:1491
+#: ../src/gui/assistant.cpp:1490
 #, c-format
 msgid "Ekiga Configuration Assistant (%d of %d)"
 msgstr "Pomočnik za nastavitve Ekige (%d od %d)"
@@ -3334,6 +3328,15 @@ msgstr "Izbriši sporočila po meri:"
 #: ../src/gui/statusmenu.cpp:690
 msgid "Define a custom message:"
 msgstr "Določi sporočilo po meri:"
+
+#~ msgid "Enable"
+#~ msgstr "Omogoči"
+
+#~ msgid "Disable"
+#~ msgstr "Onemogoči"
+
+#~ msgid "Remove"
+#~ msgstr "Odstrani"
 
 #~ msgid ""
 #~ "Prints user plane debug messages in the console (level between 1 and 4)"
