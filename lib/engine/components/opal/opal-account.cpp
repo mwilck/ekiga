@@ -151,6 +151,7 @@ Opal::Account::Account (Ekiga::ServiceCore & _core,
 {
   dead = false;
   state = Unregistered;
+  status = _("Unregistered");
   message_waiting_number = 0;
   enabled = _enabled;
   aid = (const char *) PGloballyUniqueID ().AsString ();
