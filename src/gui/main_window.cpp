@@ -4922,7 +4922,7 @@ APIENTRY WinMain (HINSTANCE hInstance,
 		  int       nCmdShow)
 {
   HANDLE ekr_mutex;
-  int iresult;
+  int iresult = 0;
   char **env;
   char **argv;
   int argc;
