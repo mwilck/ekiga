@@ -39,21 +39,13 @@
 
 #include "opal-main.h"
 
-#include "bank.h"
-#include "contact-core.h"
-#include "presence-core.h"
-#include "call-core.h"
 #include "chat-core.h"
 #include "audioinput-core.h"
 #include "audiooutput-core.h"
 #include "videoinput-core.h"
 #include "videooutput-core.h"
-#include "personal-details.h"
 
 #include "opal-gmconf-bridge.h"
-#include "opal-account.h"
-#include "opal-bank.h"
-#include "opal-call-manager.h"
 #include "opal-plugins-hook.h"
 
 #include "sip-endpoint.h"

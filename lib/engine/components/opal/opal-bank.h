@@ -38,11 +38,7 @@
 #ifndef __OPAL_BANK_H__
 #define __OPAL_BANK_H__
 
-#include "presence-core.h"
-#include "bank-impl.h"
 #include "opal-account.h"
-#include "services.h"
-#include "runtime.h"
 
 namespace Opal
 {

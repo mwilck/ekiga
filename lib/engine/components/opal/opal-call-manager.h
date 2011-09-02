@@ -44,24 +44,13 @@
 
 #include <ptlib.h>
 
-#include <opal/manager.h>
-#include <opal/pcss.h>
-
 #include <h323/h323.h>
 #include <sip/sip.h>
 
-#include "gmconf-bridge.h"
-#include "runtime.h"
-#include "contact-core.h"
-#include "presence-core.h"
 #include "call-manager.h"
-#include "call.h"
 #include "opal-call.h"
 
-#include <boost/signals.hpp>
-#include <boost/bind.hpp>
 #include <boost/enable_shared_from_this.hpp>
-#include <string>
 
 
 class GMLid;

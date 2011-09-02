@@ -40,12 +40,8 @@
 
 #include <opal/pres_ent.h>
 
-#include "services.h"
 #include "presence-core.h"
-#include "account-core.h"
 #include "personal-details.h"
-#include "account.h"
-#include "form.h"
 #include "bank-impl.h"
 
 namespace Opal
@@ -66,12 +62,12 @@ public:
 
     typedef enum { Processing, Registered, Unregistered, RegistrationFailed, UnregistrationFailed } RegistrationState;
 
-    Account (Ekiga::ServiceCore & core, 
+    Account (Ekiga::ServiceCore & core,
              const std::string & account);
 
     Account (Ekiga::ServiceCore & core,
              Type t,
-             std::string name, 
+             std::string name,
              std::string host,
              std::string user,
              std::string auth_user,
@@ -170,7 +166,7 @@ public:
      */
     void handle_message_waiting_information (const std::string info);
 
- 
+
 private:
     void on_edit_form_submitted (bool submitted,
 				 Ekiga::Form &result);
