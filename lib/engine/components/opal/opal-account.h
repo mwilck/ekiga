@@ -183,7 +183,7 @@ private:
     unsigned timeout;
     std::string aid;
     std::string name;
-    mutable std::string status;
+    mutable std::string status;  // the state, as a string
     int message_waiting_number;
     std::string protocol_name;
     std::string host;

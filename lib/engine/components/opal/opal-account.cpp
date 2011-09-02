@@ -65,6 +65,7 @@ Opal::Account::Account (Ekiga::ServiceCore & _core,
 {
   dead = false;
   state = Unregistered;
+  status = _("Unregistered");
   message_waiting_number = 0;
 
   int i = 0;
@@ -214,9 +215,9 @@ Opal::Account::get_status () const
      * "registered (with 2 voice mail messages)"
      */
     str = g_strdup_printf (ngettext ("%s (with %d voice mail message)",
-				     "%s (with %d voice mail messages)",
-				     message_waiting_number),
-			   status.c_str (), message_waiting_number);
+                                     "%s (with %d voice mail messages)",
+                                     message_waiting_number),
+                           status.c_str (), message_waiting_number);
     result = str;
     g_free (str);
   } else {
@@ -546,6 +547,8 @@ Opal::Account::handle_registration_event (RegistrationState state_,
 
     if (state != Registered) {
 
+      // Translators: this is a state, not an action, i.e. it should be read as
+      // "(you are) registered", and not as "(you have been) registered"
       status = _("Registered");
       boost::shared_ptr<Ekiga::PresenceCore> presence_core = core.get<Ekiga::PresenceCore> ("presence-core");
       boost::shared_ptr<Ekiga::PersonalDetails> personal_details = core.get<Ekiga::PersonalDetails> ("personal-details");
@@ -558,6 +561,8 @@ Opal::Account::handle_registration_event (RegistrationState state_,
 
   case Unregistered:
 
+    // Translators: this is a state, not an action, i.e. it should be read as
+    // "(you are) unregistered", and not as "(you have been) unregistered"
     status = _("Unregistered");
     updated ();
     /* delay destruction of this account until the
