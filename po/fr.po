@@ -20,8 +20,8 @@ msgstr ""
 "Project-Id-Version: Ekiga HEAD\n"
 "Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?"
 "product=ekiga&keywords=I18N+L10N&component=general\n"
-"POT-Creation-Date: 2011-07-21 13:09+0000\n"
-"PO-Revision-Date: 2011-08-02 21:28+0200\n"
+"POT-Creation-Date: 2011-08-02 19:36+0000\n"
+"PO-Revision-Date: 2011-09-04 12:26+0200\n"
 "Last-Translator: Bruno Brouard <annoa.b@gmail.com>\n"
 "Language-Team: GNOME French Team <gnomefr@traduc.org>\n"
 "MIME-Version: 1.0\n"
@@ -596,7 +596,7 @@ msgid ""
 "peer endpoint that can adjust (if it supports it) its TX bitrate if it is "
 "above the signaled value"
 msgstr ""
-"Débit maximal de la réception vidéo, en ko/s. Cette valeur sera transmise au "
+"Débit maximal de la réception vidéo, en kbit/s. Cette valeur sera transmise au "
 "point de connexion de votre correspondant afin que celui-ci ajuste (s'il le "
 "peut) sa vitesse d'émission au cas où elle excède la valeur signalée."
 
@@ -607,7 +607,7 @@ msgid ""
 "dynamically adjusted above their minimum during calls to try to minimize the "
 "bandwidth to the given value"
 msgstr ""
-"Débit maximal de l'émission vidéo, en ko/s. La qualité vidéo et le nombre "
+"Débit maximal de l'émission vidéo, en kbit/s. La qualité vidéo et le nombre "
 "d'images transmises par seconde seront ajustés dynamiquement autour de leur "
 "minima au cours de l'appel pour maintenir la bande passante à la valeur "
 "donnée"
@@ -851,7 +851,7 @@ msgstr "Anonyme"
 #: ../lib/engine/components/local-roster/local-presentity.cpp:220
 #: ../lib/engine/components/opal/opal-account.cpp:371
 #: ../plugins/evolution/evolution-contact.cpp:228
-#: ../plugins/loudmouth/loudmouth-presentity.cpp:157
+#: ../plugins/loudmouth/loudmouth-presentity.cpp:159
 #: ../plugins/resource-list/rl-presentity.cpp:212
 #: ../src/gui/main_window.cpp:3599
 msgid "_Edit"
@@ -861,13 +861,13 @@ msgstr "É_dition"
 #: ../lib/engine/components/opal/opal-account.cpp:373
 #: ../plugins/evolution/evolution-contact.cpp:230
 #: ../plugins/loudmouth/loudmouth-account.cpp:393
-#: ../plugins/loudmouth/loudmouth-presentity.cpp:190
+#: ../plugins/loudmouth/loudmouth-presentity.cpp:192
 #: ../plugins/resource-list/rl-presentity.cpp:214 ../src/gui/accounts.cpp:692
 msgid "_Remove"
 msgstr "_Supprimer"
 
 #: ../lib/engine/components/local-roster/local-presentity.cpp:247
-#: ../plugins/loudmouth/loudmouth-presentity.cpp:275
+#: ../plugins/loudmouth/loudmouth-presentity.cpp:277
 msgid "Edit roster element"
 msgstr "Modifier un élément de la liste de contacts"
 
@@ -886,7 +886,7 @@ msgstr ""
 #: ../plugins/evolution/evolution-contact.cpp:324
 #: ../plugins/loudmouth/loudmouth-account.cpp:296
 #: ../plugins/loudmouth/loudmouth-bank.cpp:125
-#: ../plugins/loudmouth/loudmouth-presentity.cpp:278
+#: ../plugins/loudmouth/loudmouth-presentity.cpp:280
 #: ../plugins/resource-list/rl-cluster.cpp:169
 #: ../plugins/resource-list/rl-heap.cpp:526
 #: ../plugins/resource-list/rl-presentity.cpp:233
@@ -907,7 +907,7 @@ msgid "Is a preferred contact"
 msgstr "Est un contact favori"
 
 #: ../lib/engine/components/local-roster/local-presentity.cpp:254
-#: ../plugins/loudmouth/loudmouth-presentity.cpp:280
+#: ../plugins/loudmouth/loudmouth-presentity.cpp:282
 #: ../plugins/resource-list/rl-heap.cpp:528
 #: ../plugins/resource-list/rl-presentity.cpp:236
 msgid "Choose groups:"
@@ -1232,59 +1232,59 @@ msgid "Processing..."
 msgstr "Traitement en cours ..."
 
 #. Translators: see RFC 4480 for more information about activities
-#: ../lib/engine/components/opal/opal-account.cpp:725
+#: ../lib/engine/components/opal/opal-account.cpp:728
 msgid "Appointment"
 msgstr "Rendez-vous"
 
-#: ../lib/engine/components/opal/opal-account.cpp:729
+#: ../lib/engine/components/opal/opal-account.cpp:732
 msgid "Breakfast"
 msgstr "Petit-déjeuner"
 
-#: ../lib/engine/components/opal/opal-account.cpp:733
+#: ../lib/engine/components/opal/opal-account.cpp:736
 msgid "Dinner"
 msgstr "Diner"
 
-#: ../lib/engine/components/opal/opal-account.cpp:737
+#: ../lib/engine/components/opal/opal-account.cpp:740
 msgid "Holiday"
 msgstr "Vacances"
 
-#: ../lib/engine/components/opal/opal-account.cpp:741
+#: ../lib/engine/components/opal/opal-account.cpp:744
 msgid "In transit"
 msgstr "En déplacement"
 
-#: ../lib/engine/components/opal/opal-account.cpp:745
+#: ../lib/engine/components/opal/opal-account.cpp:748
 msgid "Looking for work"
 msgstr "Recherche du travail"
 
-#: ../lib/engine/components/opal/opal-account.cpp:749
+#: ../lib/engine/components/opal/opal-account.cpp:752
 msgid "Lunch"
 msgstr "Déjeuner"
 
-#: ../lib/engine/components/opal/opal-account.cpp:753
+#: ../lib/engine/components/opal/opal-account.cpp:756
 msgid "Meal"
 msgstr "Repas"
 
-#: ../lib/engine/components/opal/opal-account.cpp:757
+#: ../lib/engine/components/opal/opal-account.cpp:760
 msgid "Meeting"
 msgstr "Réunion"
 
-#: ../lib/engine/components/opal/opal-account.cpp:761
+#: ../lib/engine/components/opal/opal-account.cpp:764
 msgid "On the phone"
 msgstr "Au téléphone"
 
-#: ../lib/engine/components/opal/opal-account.cpp:765
+#: ../lib/engine/components/opal/opal-account.cpp:768
 msgid "Playing"
 msgstr "En train de jouer"
 
-#: ../lib/engine/components/opal/opal-account.cpp:769
+#: ../lib/engine/components/opal/opal-account.cpp:772
 msgid "Shopping"
 msgstr "En course"
 
-#: ../lib/engine/components/opal/opal-account.cpp:773
+#: ../lib/engine/components/opal/opal-account.cpp:776
 msgid "Sleeping"
 msgstr "En train de dormir"
 
-#: ../lib/engine/components/opal/opal-account.cpp:777
+#: ../lib/engine/components/opal/opal-account.cpp:780
 msgid "Working"
 msgstr "Au travail"
 
@@ -2173,34 +2173,34 @@ msgstr "Identifiant :"
 msgid "identifier@server"
 msgstr "identifiant@serveur"
 
-#: ../plugins/loudmouth/loudmouth-presentity.cpp:162
-#: ../plugins/loudmouth/loudmouth-presentity.cpp:168
+#: ../plugins/loudmouth/loudmouth-presentity.cpp:164
+#: ../plugins/loudmouth/loudmouth-presentity.cpp:170
 msgid "Ask him/her to see his/her status"
 msgstr "Lui demander de voir son état"
 
-#: ../plugins/loudmouth/loudmouth-presentity.cpp:166
-#: ../plugins/loudmouth/loudmouth-presentity.cpp:178
+#: ../plugins/loudmouth/loudmouth-presentity.cpp:168
+#: ../plugins/loudmouth/loudmouth-presentity.cpp:180
 msgid "Forbid him/her to see my status"
 msgstr "Lui interdire de voir mon état"
 
-#: ../plugins/loudmouth/loudmouth-presentity.cpp:170
+#: ../plugins/loudmouth/loudmouth-presentity.cpp:172
 msgid "Ask him/her to see his/her status (pending)"
 msgstr "Lui demander de voir son état (en attente)"
 
-#: ../plugins/loudmouth/loudmouth-presentity.cpp:174
-#: ../plugins/loudmouth/loudmouth-presentity.cpp:179
+#: ../plugins/loudmouth/loudmouth-presentity.cpp:176
+#: ../plugins/loudmouth/loudmouth-presentity.cpp:181
 msgid "Stop getting his/her status"
 msgstr "Arrêter l'obtention de son état"
 
-#: ../plugins/loudmouth/loudmouth-presentity.cpp:184
+#: ../plugins/loudmouth/loudmouth-presentity.cpp:186
 msgid "Start chat"
 msgstr "Démarrer la discussion"
 
-#: ../plugins/loudmouth/loudmouth-presentity.cpp:187
+#: ../plugins/loudmouth/loudmouth-presentity.cpp:189
 msgid "Continue chat"
 msgstr "Poursuivre la discussion"
 
-#: ../plugins/loudmouth/loudmouth-presentity.cpp:276
+#: ../plugins/loudmouth/loudmouth-presentity.cpp:278
 msgid ""
 "Please fill in this form to change an existing element of the remote roster"
 msgstr ""
@@ -2463,11 +2463,11 @@ msgstr "RNIS"
 
 #: ../src/gui/assistant.cpp:858
 msgid "DSL/Cable (128 kbit/s uplink)"
-msgstr "DSL / Câble (émission à 128 ko/s)"
+msgstr "DSL / Câble (émission à 128 kbit/s)"
 
 #: ../src/gui/assistant.cpp:863
 msgid "DSL/Cable (512 kbit/s uplink)"
-msgstr "DSL / Câble (émission à 512 ko/s)"
+msgstr "DSL / Câble (émission à 512 kbit/s)"
 
 #: ../src/gui/assistant.cpp:868
 msgid "LAN"
@@ -2589,7 +2589,7 @@ msgstr "URI SIP"
 msgid "Ekiga Call Out"
 msgstr "PC-To-Phone Ekiga"
 
-#: ../src/gui/assistant.cpp:1491
+#: ../src/gui/assistant.cpp:1490
 #, c-format
 msgid "Ekiga Configuration Assistant (%d of %d)"
 msgstr "Assistant de configuration Ekiga (étape %d sur %d)"
@@ -3672,4 +3672,3 @@ msgstr "Effacer les messages personnalisés :"
 #: ../src/gui/statusmenu.cpp:690
 msgid "Define a custom message:"
 msgstr "Définir un message personnalisé :"
-
