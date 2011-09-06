@@ -463,12 +463,14 @@ Opal::Call::OnCleared ()
     case OpalConnection::EndedByNoAnswer :
       reason = _("User is not available");
       break;
+    case OpalConnection::EndedByOutOfService:
+      reason = _("Service unavailable");  // this appears when 500 does not work
+      break;
     case OpalConnection::EndedByQ931Cause:
     case OpalConnection::EndedByDurationLimit:
     case OpalConnection::EndedByInvalidConferenceID:
     case OpalConnection::EndedByNoDialTone:
     case OpalConnection::EndedByNoRingBackTone:
-    case OpalConnection::EndedByOutOfService:
     case OpalConnection::EndedByAcceptingCallWaiting:
     case OpalConnection::NumCallEndReasons:
     default :
