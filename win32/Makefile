@@ -534,7 +534,7 @@ $(X264_DIR)/config.status: $(SRCDIR)/$(X264_ARCHIVE)
 	cd $(X264_DIR); ./configure $(confx264)
 	touch $@
 
-$(LIBDIR)/libx264.a: $(X264_DIR)/config.status
+$(LIBDIR)/libx264.dll.a: $(X264_DIR)/config.status
 	$(MAKE) $(MAKE_LIB_OPTS) -C $(X264_DIR)
 	$(MAKE) -C $(X264_DIR) install
 
