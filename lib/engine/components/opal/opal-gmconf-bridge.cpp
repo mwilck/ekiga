@@ -130,6 +130,7 @@ void ConfBridge::on_property_changed (std::string key, GmConfEntry *entry)
     CallManager::VideoOptions options;
     manager.get_video_options (options);
     options.maximum_transmitted_bitrate = gm_conf_entry_get_int (entry);
+    PTRACE(4, "OpalConfBridge\tmaximum_video_tx_bitrate set to " << options.maximum_transmitted_bitrate << "kb/s");
     manager.set_video_options (options);
   }
   else if (key == VIDEO_CODECS_KEY "temporal_spatial_tradeoff") {
