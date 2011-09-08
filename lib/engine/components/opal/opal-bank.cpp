@@ -43,8 +43,6 @@
 
 #include <glib/gi18n.h>
 
-#include <sip/sipep.h>
-
 #include "gmconf.h"
 #include "menu-builder.h"
 

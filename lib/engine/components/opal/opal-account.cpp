@@ -132,7 +132,8 @@ Opal::Account::Account (Ekiga::ServiceCore & _core,
   else
     type = Account::H323;
 
-  limited = (name.find ("%limit") != std::string::npos);
+  if (name.find ("%limit") != std::string::npos)
+    compat_mode = SIPRegister::e_CannotRegisterMultipleContacts;  // start registration in this compat mode
 
   setup_presentity ();
 }
@@ -340,9 +341,9 @@ bool Opal::Account::is_active () const
 }
 
 
-bool Opal::Account::is_limited () const
+SIPRegister::CompatibilityModes Opal::Account::get_compat_mode () const
 {
-  return limited;
+  return compat_mode;
 }
 
 
@@ -542,6 +543,7 @@ void
 Opal::Account::handle_registration_event (RegistrationState state_,
 					  const std::string info) const
 {
+  boost::shared_ptr<Sip::EndPoint> endpoint;
   switch (state_) {
 
   case Registered:
@@ -582,16 +584,32 @@ Opal::Account::handle_registration_event (RegistrationState state_,
 
   case RegistrationFailed:
 
-    if (!limited) {
-      limited = true;
-      boost::shared_ptr<Sip::EndPoint> endpoint = core.get<Sip::EndPoint> ("opal-sip-endpoint");
+    switch (compat_mode) {
+    case SIPRegister::e_FullyCompliant:
+      // FullyCompliant did not work, try next compat mode
+      compat_mode = SIPRegister::e_CannotRegisterMultipleContacts;
+      PTRACE (4, "Register failed in FullyCompliant mode, retrying in CannotRegisterMultipleContacts mode");
+      endpoint = core.get<Sip::EndPoint> ("opal-sip-endpoint");
       endpoint->subscribe (*this);
-    } else {
-      limited = false;  // since limited did not work, put it back to false, to avoid being stuck to limited=true when retrying register later
+      break;
+    case SIPRegister::e_CannotRegisterMultipleContacts:
+      // CannotRegMC did not work, try next compat mode
+      compat_mode = SIPRegister::e_CannotRegisterPrivateContacts;
+      PTRACE (4, "Register failed in CannotRegisterMultipleContacts mode, retrying in CannotRegisterPrivateContacts mode");
+      endpoint = core.get<Sip::EndPoint> ("opal-sip-endpoint");
+      endpoint->subscribe (*this);
+      break;
+    case SIPRegister::e_CannotRegisterPrivateContacts:
+      // CannotRegPC did not work, stop registration with error
+      compat_mode = SIPRegister::e_FullyCompliant;
+      PTRACE (4, "Register failed in CannotRegisterPrivateContacts mode, aborting registration");
       status = _("Could not register");
       if (!info.empty ())
         status = status + " (" + info + ")";
       updated ();
+      break;
+    default:
+      break;
     }
     break;
 

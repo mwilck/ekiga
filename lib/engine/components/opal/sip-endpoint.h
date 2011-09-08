@@ -140,8 +140,7 @@ namespace Opal {
 		     const std::string auth_username,
 		     const std::string password,
 		     bool is_enabled,
-		     bool is_limited, /* limited registrar = which do not accept
-                                 extra contact addresses, such as private ones*/
+		     SIPRegister::CompatibilityModes compat_mode,
 		     unsigned timeout);
 
       void OnRegistered (const PString & aor,

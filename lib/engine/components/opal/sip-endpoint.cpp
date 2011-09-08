@@ -82,7 +82,7 @@ namespace Opal {
 			    account.get_authentication_username (),
 			    account.get_password (),
 			    account.is_enabled (),
-			    account.is_limited (),
+			    account.get_compat_mode (),
 			    account.get_timeout ());
 	} else {
 
@@ -484,7 +484,7 @@ Opal::Sip::EndPoint::Register (const std::string username,
 			       const std::string auth_username,
 			       const std::string password,
 			       bool is_enabled,
-			       bool is_limited,
+			       SIPRegister::CompatibilityModes compat_mode,
 			       unsigned timeout)
 {
   PString _aor;
@@ -502,8 +502,7 @@ Opal::Sip::EndPoint::Register (const std::string username,
   SIPRegister::Params params;
   params.m_addressOfRecord = PString (aor.str ());
   params.m_registrarAddress = PString (host_);
-  if (is_limited)
-    params.m_compatibility = SIPRegister::e_CannotRegisterMultipleContacts;
+  params.m_compatibility = compat_mode;
   params.m_authID = auth_username;
   params.m_password = password;
   params.m_expire = is_enabled ? timeout : 0;

@@ -43,6 +43,7 @@
 #include "presence-core.h"
 #include "personal-details.h"
 #include "bank-impl.h"
+#include <sip/sippdu.h>
 
 namespace Opal
 {
@@ -133,7 +134,7 @@ public:
 
     bool is_active () const;
 
-    bool is_limited () const;
+    SIPRegister::CompatibilityModes get_compat_mode () const;
 
     void remove ();
 
@@ -175,7 +176,7 @@ private:
     mutable RegistrationState state;
     bool dead;
     bool enabled;
-    mutable bool limited;
+    mutable SIPRegister::CompatibilityModes compat_mode;
     unsigned timeout;
     std::string aid;
     std::string name;
