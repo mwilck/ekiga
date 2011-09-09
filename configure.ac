@@ -6,7 +6,7 @@ AC_CONFIG_MACRO_DIR([m4])
 AC_CONFIG_SRCDIR(src/ekiga.cpp)
 AM_INIT_AUTOMAKE([1.11 no-dist-gzip dist-xz tar-ustar])
 
-AM_MAINTAINER_MODE
+AM_MAINTAINER_MODE([enable])
 AC_CONFIG_HEADERS([config.h])
 
 dnl use "make V=1" if you want to see the long awful lines
