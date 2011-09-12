@@ -506,8 +506,8 @@ Opal::Sip::EndPoint::Register (const std::string username,
   params.m_authID = auth_username;
   params.m_password = password;
   params.m_expire = is_enabled ? timeout : 0;
-  params.m_minRetryTime = 0;
-  params.m_maxRetryTime = 0;
+  params.m_minRetryTime = PMaxTimeInterval;  // use default value
+  params.m_maxRetryTime = PMaxTimeInterval;  // use default value
 
   // Register the given aor to the give registrar
   if (!SIPEndPoint::Register (params, _aor))
