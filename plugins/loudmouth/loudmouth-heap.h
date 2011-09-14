@@ -106,6 +106,15 @@ namespace LM
     void on_personal_details_updated ();
 
     void on_chat_requested (PresentityPtr presentity);
+
+    LmHandlerResult iq_handler_roster (LmMessage* message);
+    LmHandlerResult iq_handler_muc (LmMessage* message);
+
+    LmHandlerResult presence_handler_roster (LmMessage* message);
+    LmHandlerResult presence_handler_muc (LmMessage* message);
+
+    LmHandlerResult message_handler_roster (LmMessage* message);
+    LmHandlerResult message_handler_muc (LmMessage* message);
   };
 
   typedef boost::shared_ptr<Heap> HeapPtr;

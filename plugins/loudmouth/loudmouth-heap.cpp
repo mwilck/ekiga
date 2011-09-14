@@ -157,6 +157,18 @@ LM::Heap::disconnected ()
 LmHandlerResult
 LM::Heap::iq_handler (LmMessage* message)
 {
+  return iq_handler_roster (message);
+}
+
+LmHandlerResult
+LM::Heap::iq_handler_muc (LmMessage* message)
+{
+  return LM_HANDLER_RESULT_ALLOW_MORE_HANDLERS; // FIXME: implement properly
+}
+
+LmHandlerResult
+LM::Heap::iq_handler_roster (LmMessage* message)
+{
   if (lm_message_get_sub_type (message) == LM_MESSAGE_SUB_TYPE_SET
       || lm_message_get_sub_type (message) == LM_MESSAGE_SUB_TYPE_RESULT) {
 
@@ -174,9 +186,20 @@ LM::Heap::iq_handler (LmMessage* message)
   return LM_HANDLER_RESULT_ALLOW_MORE_HANDLERS;
 }
 
-
 LmHandlerResult
 LM::Heap::presence_handler (LmMessage* message)
+{
+  return presence_handler_roster (message);
+}
+
+LmHandlerResult
+LM::Heap::presence_handler_muc (LmMessage* message)
+{
+  return LM_HANDLER_RESULT_ALLOW_MORE_HANDLERS; // FIXME: implement properly
+}
+
+LmHandlerResult
+LM::Heap::presence_handler_roster (LmMessage* message)
 {
   const gchar* from_c = lm_message_node_get_attribute (lm_message_get_node (message), "from");
   const gchar* type_attr = lm_message_node_get_attribute (lm_message_get_node (message), "type");
@@ -244,6 +267,18 @@ LM::Heap::presence_handler (LmMessage* message)
 
 LmHandlerResult
 LM::Heap::message_handler (LmMessage* message)
+{
+  return message_handler_roster (message);
+}
+
+LmHandlerResult
+LM::Heap::message_handler_muc (LmMessage* message)
+{
+  return LM_HANDLER_RESULT_ALLOW_MORE_HANDLERS; // FIXME: implement properly
+}
+
+LmHandlerResult
+LM::Heap::message_handler_roster (LmMessage* message)
 {
   LmMessageNode* node = lm_message_get_node (message);
   const gchar* from_c = lm_message_node_get_attribute (node, "from");
