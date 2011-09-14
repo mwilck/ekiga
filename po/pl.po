@@ -8,8 +8,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: ekiga\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2011-09-08 22:01+0200\n"
-"PO-Revision-Date: 2011-09-08 22:02+0200\n"
+"POT-Creation-Date: 2011-09-14 17:09+0200\n"
+"PO-Revision-Date: 2011-09-14 17:10+0200\n"
 "Last-Translator: Piotr Drąg <piotrdrag@gmail.com>\n"
 "Language-Team: Polish <gnomepl@aviary.pl>\n"
 "Language: pl\n"
@@ -1726,7 +1726,7 @@ msgid "_Smile..."
 msgstr "_Uśmiech..."
 
 #. we can't do much here since we get the Chat as reference...
-#: ../lib/engine/gui/gtk-frontend/chat-window.cpp:409
+#: ../lib/engine/gui/gtk-frontend/chat-window.cpp:426
 msgid "Chat Window"
 msgstr "Okno rozmowy tekstowej"
 
@@ -2107,55 +2107,80 @@ msgstr "Dod_aj konto sieci Jabber/XMPP"
 msgid "Please fill in the following fields:"
 msgstr "Proszę wypełnić poniższe pola:"
 
-#: ../plugins/loudmouth/loudmouth-dialect.cpp:118
+#. FIXME: this is here until the feature is ready
+#: ../plugins/loudmouth/loudmouth-dialect.cpp:121
 msgid "Join a discussion group"
 msgstr "Dołącz do grupy dyskusyjnej"
 
-#: ../plugins/loudmouth/loudmouth-heap.cpp:210
+#: ../plugins/loudmouth/loudmouth-dialect.cpp:132
+msgid "Open a group chat room"
+msgstr "Otwórz pokój rozmów grupowych"
+
+#: ../plugins/loudmouth/loudmouth-dialect.cpp:134
+msgid "Please provide a room name"
+msgstr "Proszę wprowadzić nazwę pokoju"
+
+#: ../plugins/loudmouth/loudmouth-dialect.cpp:136
+msgid "Room name"
+msgstr "Nazwa pokoju"
+
+#: ../plugins/loudmouth/loudmouth-dialect.cpp:136
+msgid "The name of the room you want to enter"
+msgstr "Nazwa pokoju, do którego wejść"
+
+#: ../plugins/loudmouth/loudmouth-dialect.cpp:138
+msgid "Pseudonym"
+msgstr "Pseudonim"
+
+#: ../plugins/loudmouth/loudmouth-dialect.cpp:138
+msgid "The pseudonym you'll have in the room"
+msgstr "Pseudonim posiadany w pokoju"
+
+#: ../plugins/loudmouth/loudmouth-heap.cpp:234
 msgid "Authorization to see your presence"
 msgstr "Upoważnienie spowoduje wyświetlanie obecności"
 
-#: ../plugins/loudmouth/loudmouth-heap.cpp:214
+#: ../plugins/loudmouth/loudmouth-heap.cpp:238
 #, c-format
 msgid "%s asks the permission to see your presence, saying: \"%s\"."
 msgstr "%s prosi o upoważnienie do wyświetlania obecności, mówiąc: \"%s\"."
 
-#: ../plugins/loudmouth/loudmouth-heap.cpp:218
+#: ../plugins/loudmouth/loudmouth-heap.cpp:242
 #, c-format
 msgid "%s asks the permission to see your presence."
 msgstr "%s prosi o upoważnienie do wyświetlania obecności."
 
-#: ../plugins/loudmouth/loudmouth-heap.cpp:225
+#: ../plugins/loudmouth/loudmouth-heap.cpp:249
 msgid "grant him/her the permission to see your presence"
 msgstr "udziel upoważnienia do wyświetlania obecności"
 
-#: ../plugins/loudmouth/loudmouth-heap.cpp:226
+#: ../plugins/loudmouth/loudmouth-heap.cpp:250
 msgid "refuse him/her the permission to see your presence"
 msgstr "odmów upoważnienia do wyświetlania obecności"
 
-#: ../plugins/loudmouth/loudmouth-heap.cpp:227
+#: ../plugins/loudmouth/loudmouth-heap.cpp:251
 msgid "decide later (also close or cancel this dialog)"
 msgstr "zdecyduj później (spowoduje zamknięcie lub anulowanie tego okna)"
 
-#: ../plugins/loudmouth/loudmouth-heap.cpp:228
+#: ../plugins/loudmouth/loudmouth-heap.cpp:252
 msgid "Your answer is: "
 msgstr "Odpowiedź:"
 
-#: ../plugins/loudmouth/loudmouth-heap.cpp:315
+#: ../plugins/loudmouth/loudmouth-heap.cpp:354
 msgid "Add a roster element"
 msgstr "Dodanie elementu listy kontaktów"
 
-#: ../plugins/loudmouth/loudmouth-heap.cpp:316
+#: ../plugins/loudmouth/loudmouth-heap.cpp:355
 msgid "Please fill in this form to add a new element to the remote roster"
 msgstr ""
 "Proszę wypełnić formularz, aby dodać nowy kontakt do zdalnej listy kontaktów"
 
-#: ../plugins/loudmouth/loudmouth-heap.cpp:318
+#: ../plugins/loudmouth/loudmouth-heap.cpp:357
 #: ../plugins/resource-list/rl-heap.cpp:470
 msgid "Identifier:"
 msgstr "Identyfikator:"
 
-#: ../plugins/loudmouth/loudmouth-heap.cpp:318
+#: ../plugins/loudmouth/loudmouth-heap.cpp:357
 msgid "identifier@server"
 msgstr "identyfikator@serwer"
 
