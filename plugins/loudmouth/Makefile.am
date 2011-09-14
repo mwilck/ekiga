@@ -26,6 +26,8 @@ libgmloudmouth_la_SOURCES = \
 	$(loudmouth_dir)/loudmouth-presentity.cpp \
 	$(loudmouth_dir)/loudmouth-chat-simple.h \
 	$(loudmouth_dir)/loudmouth-chat-simple.cpp \
+	$(loudmouth_dir)/loudmouth-chat-multiple.h \
+	$(loudmouth_dir)/loudmouth-chat-multiple.cpp \
 	$(loudmouth_dir)/loudmouth-dialect.h \
 	$(loudmouth_dir)/loudmouth-dialect.cpp
 
