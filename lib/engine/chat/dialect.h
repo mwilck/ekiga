@@ -81,7 +81,7 @@ namespace Ekiga
 
     /** This chain allows the Dialect to present forms to the user.
      */
-    ChainOfResponsibility<FormRequest*> questions;
+    ChainOfResponsibility<FormRequestPtr> questions;
   };
 
   typedef boost::shared_ptr<Dialect> DialectPtr;
