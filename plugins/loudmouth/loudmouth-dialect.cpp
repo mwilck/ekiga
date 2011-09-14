@@ -35,6 +35,8 @@
 
 #include <glib/gi18n.h>
 
+#include "form-request-simple.h"
+
 #include "loudmouth-dialect.h"
 
 LM::Dialect::Dialect (Ekiga::ServiceCore& core_):
@@ -115,6 +117,7 @@ LM::Dialect::open_chat (PresentityPtr presentity)
 bool
 LM::Dialect::populate_menu (Ekiga::MenuBuilder& builder)
 {
+  return false; // FIXME: this is here until the feature is ready
   builder.add_action ("group_chat", _("Join a discussion group"),
 		      boost::bind (&LM::Dialect::group_chat_action, this));
 
@@ -124,5 +127,28 @@ LM::Dialect::populate_menu (Ekiga::MenuBuilder& builder)
 void
 LM::Dialect::group_chat_action ()
 {
-  //std::cout << __PRETTY_FUNCTION__ << std::endl;
+  boost::shared_ptr<Ekiga::FormRequestSimple> request = boost::shared_ptr<Ekiga::FormRequestSimple> (new Ekiga::FormRequestSimple (boost::bind (&LM::Dialect::on_open_group_chat_submitted, this, _1, _2)));
+
+  request->title (_("Open a group chat room"));
+
+  request->instructions (_("Please provide a room name"));
+
+  request->text ("name", _("Room name"), "", _("The name of the room you want to enter"));
+
+  request->text ("pseudo", _("Pseudonym"), "FIXME", _("The pseudonym you'll have in the room"));
+
+  questions (request);
+}
+
+void
+LM::Dialect::on_open_group_chat_submitted (bool submitted,
+					   Ekiga::Form& result)
+{
+  if ( !submitted)
+    return;
+
+  std::string name = result.text ("name");
+  std::string pseudo = result.text ("pseudo");
+
+  std::cout << "Should enter the room '" << name << "' with pseudonym '" << pseudo << "'" << std::endl;
 }

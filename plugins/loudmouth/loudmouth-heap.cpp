@@ -136,6 +136,7 @@ bool
 LM::Heap::populate_menu (Ekiga::MenuBuilder& builder)
 {
   builder.add_action ("new", _("New _Contact"), boost::bind (&LM::Heap::add_item, this));
+  dialect->populate_menu (builder);
   return true;
 }
 

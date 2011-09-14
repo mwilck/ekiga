@@ -64,6 +64,8 @@ namespace LM
     Ekiga::ServiceCore& core;
 
     void group_chat_action ();
+    void on_open_group_chat_submitted (bool submitted,
+				       Ekiga::Form& result);
   };
 
   typedef boost::shared_ptr<Dialect> DialectPtr;
