@@ -38,6 +38,9 @@
 #include <gdk/gdkkeysyms.h>
 #include <glib/gi18n.h>
 
+#include "menu-builder-gtk.h"
+#include "form-dialog-gtk.h"
+
 #include "chat-window.h"
 #include "simple-chat-page.h"
 #include "multiple-chat-page.h"
@@ -68,6 +71,9 @@ G_DEFINE_TYPE (ChatWindow, chat_window, GM_TYPE_WINDOW);
 static void update_unread (ChatWindow* self);
 
 /* signal callbacks (declarations) */
+
+static bool on_handle_questions (ChatWindow* self,
+				 Ekiga::FormRequestPtr request);
 
 static void on_close_button_clicked (GtkButton* button,
 				     gpointer data);
@@ -125,6 +131,17 @@ update_unread (ChatWindow* self)
 }
 
 /* signal callbacks (implementations) */
+
+static bool on_handle_questions (ChatWindow* self,
+				 Ekiga::FormRequestPtr request)
+{
+  GtkWidget *parent = gtk_widget_get_toplevel (GTK_WIDGET (self));
+  FormDialog dialog (request, parent);
+
+  dialog.run ();
+
+  return true;
+}
 
 static void
 on_close_button_clicked (GtkButton* button,
@@ -441,6 +458,7 @@ chat_window_new (Ekiga::ChatCore& core,
 		    G_CALLBACK (on_switch_page), result);
 
   result->priv->connections.push_front (core.dialect_added.connect (boost::bind (&on_dialect_added, result, _1)));
+  result->priv->connections.push_front (core.questions.connect (boost::bind (&on_handle_questions, result, _1)));
   core.visit_dialects (boost::bind (&on_dialect_added, result, _1));
 
   return (GtkWidget*)result;
