@@ -245,8 +245,9 @@ LM::Heap::presence_handler (LmMessage* message)
 LmHandlerResult
 LM::Heap::message_handler (LmMessage* message)
 {
-  const gchar* from_c = lm_message_node_get_attribute (lm_message_get_node (message), "from");
-  const gchar* type_attr = lm_message_node_get_attribute (lm_message_get_node (message), "type");
+  LmMessageNode* node = lm_message_get_node (message);
+  const gchar* from_c = lm_message_node_get_attribute (node, "from");
+  const gchar* type_attr = lm_message_node_get_attribute (node, "type");
   std::string base_jid;
 
   if (from_c != 0) {
@@ -262,11 +263,13 @@ LM::Heap::message_handler (LmMessage* message)
       || (type_attr != NULL && strcmp (type_attr, "normal") == 0)
       || (type_attr != NULL && strcmp (type_attr, "chat") == 0)) {
 
-    LmMessageNode* body = lm_message_node_find_child (lm_message_get_node (message), "body");
-    if (lm_message_node_get_value (body) != NULL) {
+    // let's imagine it's a basic chat message
+    LmMessageNode* body = lm_message_node_find_child (node, "body");
+    if (body && lm_message_node_get_value (body) != NULL) {
 
       dialect->push_message (item, lm_message_node_get_value (body));
     }
+    // it could also be an avatar or a pubsub event or...
   }
 
   return LM_HANDLER_RESULT_ALLOW_MORE_HANDLERS;
