@@ -1206,8 +1206,6 @@ FormDialog::editable_set (const std::string name,
 
   EditableSetSubmitter *submitter = NULL;
 
-  grow_fields (advanced);
-
   /* The label */
   label = gtk_label_new (NULL);
   gtk_misc_set_alignment (GTK_MISC (label), 0.0, 0.5);
@@ -1275,11 +1273,13 @@ FormDialog::editable_set (const std::string name,
 
   if (advanced) {
 
+    grow_fields (advanced);
     gtk_table_attach (GTK_TABLE (advanced_fields), label,
 		      0, 2, advanced_rows - 1, advanced_rows,
 		      (GtkAttachOptions) (GTK_FILL|GTK_EXPAND),
 		      (GtkAttachOptions) (GTK_FILL|GTK_EXPAND),
 		      0, 0);
+    grow_fields (advanced);
     gtk_table_attach (GTK_TABLE (advanced_fields), frame,
 		      0, 2, advanced_rows - 1, advanced_rows,
 		      (GtkAttachOptions) (GTK_FILL|GTK_EXPAND),
@@ -1287,11 +1287,13 @@ FormDialog::editable_set (const std::string name,
 		      0, 0);
   } else {
 
+    grow_fields (advanced);
     gtk_table_attach (GTK_TABLE (fields), label,
 		      0, 2, rows - 1, rows,
 		      (GtkAttachOptions) (GTK_FILL|GTK_EXPAND),
 		      (GtkAttachOptions) (GTK_FILL|GTK_EXPAND),
 		      0, 0);
+    grow_fields (advanced);
     gtk_table_attach (GTK_TABLE (fields), frame,
 		      0, 2, rows - 1, rows,
 		      (GtkAttachOptions) (GTK_FILL|GTK_EXPAND),
@@ -1313,9 +1315,7 @@ FormDialog::editable_set (const std::string name,
 		    (GCallback) editable_set_add_value_clicked_cb,
 		    (gpointer) entry);
 
-
   grow_fields (advanced);
-
   if (advanced) {
 
     gtk_table_attach (GTK_TABLE (advanced_fields), hbox,
