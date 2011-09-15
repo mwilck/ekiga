@@ -641,13 +641,15 @@ void CallManager::get_video_options (CallManager::VideoOptions & options) const
     OpalMediaFormat media_format = media_formats_list [i];
     if (media_format.GetMediaType () == OpalMediaType::Video ()) {
 
-      int j = 0;
+      int j;
       for (j = 0; j < NB_VIDEO_SIZES; j++) {
 
         if (Ekiga::VideoSizes [j].width == media_format.GetOptionInteger (OpalVideoFormat::FrameWidthOption ())
-            && Ekiga::VideoSizes [j].width == media_format.GetOptionInteger (OpalVideoFormat::FrameWidthOption ()))
+            && Ekiga::VideoSizes [j].height == media_format.GetOptionInteger (OpalVideoFormat::FrameHeightOption ()))
           break;
       }
+      if (j >= NB_VIDEO_SIZES)
+        g_error ("Cannot find video size");
       options.size = j;
 
       options.maximum_frame_rate =
