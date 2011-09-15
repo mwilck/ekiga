@@ -38,52 +38,52 @@
 
 #include "form-request-simple.h"
 
-#include "loudmouth-heap.h"
+#include "loudmouth-heap-roster.h"
 
-static LmHandlerResult
-iq_handler_c (LmMessageHandler* /*handler*/,
-	      LmConnection* /*connection*/,
-	      LmMessage* message,
-	      LM::Heap* heap)
+LM::HeapRoster::HeapRoster (boost::shared_ptr<Ekiga::PersonalDetails> details_,
+			    DialectPtr dialect_):
+  details(details_), dialect(dialect_)
 {
-  return heap->iq_handler (message);
+  details->updated.connect (boost::bind (&LM::HeapRoster::on_personal_details_updated, this));
 }
 
-static LmHandlerResult
-presence_handler_c (LmMessageHandler* /*handler*/,
-		    LmConnection* /*connection*/,
-		    LmMessage* message,
-		    LM::Heap* heap)
+LM::HeapRoster::~HeapRoster ()
 {
-  return heap->presence_handler (message);
 }
 
-static LmHandlerResult
-message_handler_c (LmMessageHandler* /*handler*/,
-		   LmConnection* /*connection*/,
-		   LmMessage* message,
-		   LM::Heap* heap)
+const std::string
+LM::HeapRoster::get_name () const
 {
-  return heap->message_handler (message);
+  return name;
 }
 
-LM::Heap::Heap (boost::shared_ptr<Ekiga::PersonalDetails> details_,
-		DialectPtr dialect_,
-		LmConnection* connection_):
-  details(details_), dialect(dialect_), connection(connection_)
+LmConnection*
+LM::HeapRoster::get_connection () const
 {
-  details->updated.connect (boost::bind (&LM::Heap::on_personal_details_updated, this));
+  return connection;
+}
 
-  lm_connection_ref (connection);
+bool
+LM::HeapRoster::populate_menu (Ekiga::MenuBuilder& builder)
+{
+  builder.add_action ("new", _("New _Contact"), boost::bind (&LM::HeapRoster::add_item, this));
+  dialect->populate_menu (builder);
+  return true;
+}
 
-  iq_lm_handler = lm_message_handler_new ((LmHandleMessageFunction)iq_handler_c, this, NULL);
-  lm_connection_register_message_handler (connection, iq_lm_handler, LM_MESSAGE_TYPE_IQ, LM_HANDLER_PRIORITY_NORMAL);
+bool
+LM::HeapRoster::populate_menu_for_group (const std::string /*group*/,
+					 Ekiga::MenuBuilder& /*builder*/)
+{
+  return false;
+}
 
-  presence_lm_handler = lm_message_handler_new ((LmHandleMessageFunction)presence_handler_c, this, NULL);
-  lm_connection_register_message_handler (connection, presence_lm_handler, LM_MESSAGE_TYPE_PRESENCE, LM_HANDLER_PRIORITY_NORMAL);
-
-  message_lm_handler = lm_message_handler_new ((LmHandleMessageFunction)message_handler_c, this, NULL);
-  lm_connection_register_message_handler (connection, message_lm_handler, LM_MESSAGE_TYPE_MESSAGE, LM_HANDLER_PRIORITY_NORMAL);
+void
+LM::HeapRoster::handle_up (LmConnection* connection_,
+			   const std::string name_)
+{
+  connection = connection_;
+  name = name_;
 
   { // populate the roster
     LmMessage* roster_request = lm_message_new_with_sub_type (NULL, LM_MESSAGE_TYPE_IQ, LM_MESSAGE_SUB_TYPE_GET);
@@ -99,76 +99,20 @@ LM::Heap::Heap (boost::shared_ptr<Ekiga::PersonalDetails> details_,
   }
 
   on_personal_details_updated (); // fake, but if we start as dnd, we want it known
-}
-
-LM::Heap::~Heap ()
-{
-  lm_connection_unregister_message_handler (connection, iq_lm_handler, LM_MESSAGE_TYPE_IQ);
-  lm_message_handler_unref (iq_lm_handler);
-  iq_lm_handler = 0;
-
-  lm_connection_unregister_message_handler (connection, presence_lm_handler, LM_MESSAGE_TYPE_PRESENCE);
-  lm_message_handler_unref (presence_lm_handler);
-  presence_lm_handler = 0;
-
-  lm_connection_unregister_message_handler (connection, message_lm_handler, LM_MESSAGE_TYPE_MESSAGE);
-  lm_message_handler_unref (message_lm_handler);
-  message_lm_handler = 0;
-
-  lm_connection_unref (connection);
-  connection = 0;
-}
-
-const std::string
-LM::Heap::get_name () const
-{
-  return name;
-}
-
-void
-LM::Heap::set_name (const std::string name_)
-{
-  name = name_;
   updated ();
 }
 
-bool
-LM::Heap::populate_menu (Ekiga::MenuBuilder& builder)
-{
-  builder.add_action ("new", _("New _Contact"), boost::bind (&LM::Heap::add_item, this));
-  dialect->populate_menu (builder);
-  return true;
-}
-
-bool
-LM::Heap::populate_menu_for_group (const std::string /*group*/,
-				   Ekiga::MenuBuilder& /*builder*/)
-{
-  return false;
-}
-
-
 void
-LM::Heap::disconnected ()
+LM::HeapRoster::handle_down (LmConnection* /*connection*/)
 {
   removed ();
 }
 
 LmHandlerResult
-LM::Heap::iq_handler (LmMessage* message)
+LM::HeapRoster::handle_iq (LmConnection* /*connection*/,
+			   LmMessage* message)
 {
-  return iq_handler_roster (message);
-}
-
-LmHandlerResult
-LM::Heap::iq_handler_muc (LmMessage* message)
-{
-  return LM_HANDLER_RESULT_ALLOW_MORE_HANDLERS; // FIXME: implement properly
-}
-
-LmHandlerResult
-LM::Heap::iq_handler_roster (LmMessage* message)
-{
+  LmHandlerResult result = LM_HANDLER_RESULT_ALLOW_MORE_HANDLERS;
   if (lm_message_get_sub_type (message) == LM_MESSAGE_SUB_TYPE_SET
       || lm_message_get_sub_type (message) == LM_MESSAGE_SUB_TYPE_RESULT) {
 
@@ -179,28 +123,19 @@ LM::Heap::iq_handler_roster (LmMessage* message)
       if (xmlns != NULL && strcmp (xmlns, "jabber:iq:roster") == 0) {
 
 	parse_roster (node);
+	result = LM_HANDLER_RESULT_REMOVE_MESSAGE;
       }
     }
   }
 
-  return LM_HANDLER_RESULT_ALLOW_MORE_HANDLERS;
+  return result;
 }
 
 LmHandlerResult
-LM::Heap::presence_handler (LmMessage* message)
+LM::HeapRoster::handle_presence (LmConnection* /*connection*/,
+				 LmMessage* message)
 {
-  return presence_handler_roster (message);
-}
-
-LmHandlerResult
-LM::Heap::presence_handler_muc (LmMessage* message)
-{
-  return LM_HANDLER_RESULT_ALLOW_MORE_HANDLERS; // FIXME: implement properly
-}
-
-LmHandlerResult
-LM::Heap::presence_handler_roster (LmMessage* message)
-{
+  LmHandlerResult result = LM_HANDLER_RESULT_ALLOW_MORE_HANDLERS;
   const gchar* from_c = lm_message_node_get_attribute (lm_message_get_node (message), "from");
   const gchar* type_attr = lm_message_node_get_attribute (lm_message_get_node (message), "type");
   std::string base_jid;
@@ -218,7 +153,8 @@ LM::Heap::presence_handler_roster (LmMessage* message)
 
   if (type_attr != NULL && strcmp (type_attr, "subscribe") == 0) {
 
-    boost::shared_ptr<Ekiga::FormRequestSimple> request = boost::shared_ptr<Ekiga::FormRequestSimple> (new Ekiga::FormRequestSimple (boost::bind (&LM::Heap::subscribe_from_form_submitted, this, _1, _2)));
+    result = LM_HANDLER_RESULT_REMOVE_MESSAGE;
+    boost::shared_ptr<Ekiga::FormRequestSimple> request = boost::shared_ptr<Ekiga::FormRequestSimple> (new Ekiga::FormRequestSimple (boost::bind (&LM::HeapRoster::subscribe_from_form_submitted, this, _1, _2)));
     LmMessageNode* status = lm_message_node_find_child (lm_message_get_node (message), "status");
     gchar* instructions = NULL;
     std::string item_name;
@@ -258,28 +194,19 @@ LM::Heap::presence_handler_roster (LmMessage* message)
 
     if (item) {
 
-      item->push_presence (resource, lm_message_get_node (message));
+     result = LM_HANDLER_RESULT_REMOVE_MESSAGE;
+     item->push_presence (resource, lm_message_get_node (message));
     }
   }
 
-  return LM_HANDLER_RESULT_ALLOW_MORE_HANDLERS;
+  return result;
 }
 
 LmHandlerResult
-LM::Heap::message_handler (LmMessage* message)
+LM::HeapRoster::handle_message (LmConnection* /*connection*/,
+				LmMessage* message)
 {
-  return message_handler_roster (message);
-}
-
-LmHandlerResult
-LM::Heap::message_handler_muc (LmMessage* message)
-{
-  return LM_HANDLER_RESULT_ALLOW_MORE_HANDLERS; // FIXME: implement properly
-}
-
-LmHandlerResult
-LM::Heap::message_handler_roster (LmMessage* message)
-{
+  LmHandlerResult result = LM_HANDLER_RESULT_ALLOW_MORE_HANDLERS;
   LmMessageNode* node = lm_message_get_node (message);
   const gchar* from_c = lm_message_node_get_attribute (node, "from");
   const gchar* type_attr = lm_message_node_get_attribute (node, "type");
@@ -302,16 +229,17 @@ LM::Heap::message_handler_roster (LmMessage* message)
     LmMessageNode* body = lm_message_node_find_child (node, "body");
     if (body && lm_message_node_get_value (body) != NULL) {
 
+      result = LM_HANDLER_RESULT_REMOVE_MESSAGE;
       dialect->push_message (item, lm_message_node_get_value (body));
     }
     // it could also be an avatar or a pubsub event or...
   }
 
-  return LM_HANDLER_RESULT_ALLOW_MORE_HANDLERS;
+  return result;
 }
 
 void
-LM::Heap::parse_roster (LmMessageNode* query)
+LM::HeapRoster::parse_roster (LmMessageNode* query)
 {
   for (LmMessageNode* node = query->children; node != NULL; node = node->next) {
 
@@ -340,16 +268,16 @@ LM::Heap::parse_roster (LmMessageNode* query)
     if ( !found) {
 
       PresentityPtr presentity(new Presentity (connection, node));
-      presentity->chat_requested.connect (boost::bind (&LM::Heap::on_chat_requested, this, presentity));
+      presentity->chat_requested.connect (boost::bind (&LM::HeapRoster::on_chat_requested, this, presentity));
       add_presentity (presentity);
     }
   }
 }
 
 void
-LM::Heap::add_item ()
+LM::HeapRoster::add_item ()
 {
-  boost::shared_ptr<Ekiga::FormRequestSimple> request = boost::shared_ptr<Ekiga::FormRequestSimple> (new Ekiga::FormRequestSimple (boost::bind (&LM::Heap::add_item_form_submitted, this, _1, _2)));
+  boost::shared_ptr<Ekiga::FormRequestSimple> request = boost::shared_ptr<Ekiga::FormRequestSimple> (new Ekiga::FormRequestSimple (boost::bind (&LM::HeapRoster::add_item_form_submitted, this, _1, _2)));
 
   request->title (_("Add a roster element"));
   request->instructions (_("Please fill in this form to add a new"
@@ -360,8 +288,8 @@ LM::Heap::add_item ()
 }
 
 void
-LM::Heap::add_item_form_submitted (bool submitted,
-				   Ekiga::Form& result)
+LM::HeapRoster::add_item_form_submitted (bool submitted,
+					 Ekiga::Form& result)
 {
   if ( !submitted)
     return;
@@ -380,8 +308,8 @@ LM::Heap::add_item_form_submitted (bool submitted,
 }
 
 void
-LM::Heap::subscribe_from_form_submitted (bool submitted,
-					 Ekiga::Form& result)
+LM::HeapRoster::subscribe_from_form_submitted (bool submitted,
+					       Ekiga::Form& result)
 {
   if ( !submitted)
     return;
@@ -418,7 +346,7 @@ LM::Heap::subscribe_from_form_submitted (bool submitted,
 }
 
 LM::PresentityPtr
-LM::Heap::find_item (const std::string jid)
+LM::HeapRoster::find_item (const std::string jid)
 {
   PresentityPtr result;
 
@@ -435,7 +363,7 @@ LM::Heap::find_item (const std::string jid)
 }
 
 void
-LM::Heap::on_personal_details_updated ()
+LM::HeapRoster::on_personal_details_updated ()
 {
   LmMessage* message = lm_message_new (NULL, LM_MESSAGE_TYPE_PRESENCE);
 
@@ -447,7 +375,7 @@ LM::Heap::on_personal_details_updated ()
 }
 
 void
-LM::Heap::on_chat_requested (PresentityPtr presentity)
+LM::HeapRoster::on_chat_requested (PresentityPtr presentity)
 {
   dialect->open_chat (presentity);
 }

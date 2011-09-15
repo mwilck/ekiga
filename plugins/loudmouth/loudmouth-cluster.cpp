@@ -35,7 +35,9 @@
 
 #include "loudmouth-cluster.h"
 
-LM::Cluster::Cluster ()
+LM::Cluster::Cluster (boost::shared_ptr<LM::Dialect> dialect_,
+		      boost::shared_ptr<Ekiga::PersonalDetails> details_):
+  dialect(dialect_), details(details_)
 {
 }
 
@@ -47,4 +49,80 @@ bool
 LM::Cluster::populate_menu (Ekiga::MenuBuilder& /*builder*/)
 {
   return false;
+}
+
+void
+LM::Cluster::handle_up (LmConnection* connection,
+			const std::string name)
+{
+  HeapRosterPtr heap = boost::shared_ptr<HeapRoster> (new HeapRoster (details, dialect));
+  add_heap (heap);
+  heap->handle_up (connection, name);
+}
+
+void
+LM::Cluster::handle_down (LmConnection* connection)
+{
+  for (iterator it = begin (); it != end (); ++it) {
+
+    if ((*it)->get_connection () == connection) {
+
+      (*it)->handle_down (connection);
+      break;
+    }
+  }
+}
+
+LmHandlerResult
+LM::Cluster::handle_iq (LmConnection* connection,
+			LmMessage* message)
+{
+  LmHandlerResult result = LM_HANDLER_RESULT_ALLOW_MORE_HANDLERS;
+
+  for (iterator it = begin (); it != end (); ++it) {
+
+    if ((*it)->get_connection () == connection) {
+
+      result = (*it)->handle_iq (connection, message);
+      break;
+    }
+  }
+
+  return result;
+}
+
+LmHandlerResult
+LM::Cluster::handle_message (LmConnection* connection,
+			     LmMessage* message)
+{
+  LmHandlerResult result = LM_HANDLER_RESULT_ALLOW_MORE_HANDLERS;
+
+  for (iterator it = begin (); it != end (); ++it) {
+
+    if ((*it)->get_connection () == connection) {
+
+      result = (*it)->handle_message (connection, message);
+      break;
+    }
+  }
+
+  return result;
+}
+
+LmHandlerResult
+LM::Cluster::handle_presence (LmConnection* connection,
+			      LmMessage* message)
+{
+  LmHandlerResult result = LM_HANDLER_RESULT_ALLOW_MORE_HANDLERS;
+
+  for (iterator it = begin (); it != end (); ++it) {
+
+    if ((*it)->get_connection () == connection) {
+
+      result = (*it)->handle_presence (connection, message);
+      break;
+    }
+  }
+
+  return result;
 }

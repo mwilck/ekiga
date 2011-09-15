@@ -38,22 +38,41 @@
 
 #include "cluster-impl.h"
 
-#include "loudmouth-heap.h"
+#include "loudmouth-handler.h"
+#include "loudmouth-heap-roster.h"
 
 namespace LM
 {
   class Cluster:
-    public Ekiga::ClusterImpl<Heap>
+    public Ekiga::ClusterImpl<HeapRoster>,
+    public LM::Handler
   {
   public:
 
-    Cluster ();
+    Cluster (boost::shared_ptr<LM::Dialect> dialect_,
+	     boost::shared_ptr<Ekiga::PersonalDetails> details_);
 
     ~Cluster ();
 
-    using Ekiga::ClusterImpl<Heap>::add_heap;
+    using Ekiga::ClusterImpl<HeapRoster>::add_heap;
 
     bool populate_menu (Ekiga::MenuBuilder& builder);
+
+    /* LM::Handler implementation */
+    void handle_up (LmConnection* connection,
+		    const std::string name);
+    void handle_down (LmConnection* connection);
+    LmHandlerResult handle_iq (LmConnection* connection,
+			       LmMessage* message);
+    LmHandlerResult handle_message (LmConnection* connection,
+				    LmMessage* message);
+    LmHandlerResult handle_presence (LmConnection* connection,
+				     LmMessage* message);
+
+  private:
+
+    boost::shared_ptr<LM::Dialect> dialect;
+    boost::shared_ptr<Ekiga::PersonalDetails> details;
   };
 
   typedef boost::shared_ptr<Cluster> ClusterPtr;

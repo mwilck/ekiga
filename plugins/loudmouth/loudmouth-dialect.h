@@ -59,6 +59,17 @@ namespace LM
 
     void open_chat (PresentityPtr presentity);
 
+    /* LM::Handler implementation */
+    void handle_up (LmConnection* connection,
+		    const std::string name);
+    void handle_down (LmConnection* connection);
+    LmHandlerResult handle_iq (LmConnection* connection,
+			       LmMessage* message);
+    LmHandlerResult handle_message (LmConnection* connection,
+				    LmMessage* message);
+    LmHandlerResult handle_presence (LmConnection* connection,
+				     LmMessage* message);
+
   private:
 
     Ekiga::ServiceCore& core;

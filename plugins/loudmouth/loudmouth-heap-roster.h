@@ -25,34 +25,35 @@
 
 
 /*
- *                         loudmouth-heap.h  -  description
+ *                         loudmouth-heap-roster.h  -  description
  *                         ------------------------------------------
- *   begin                : written in 2008 by Julien Puydt
- *   copyright            : (c) 2008 by Julien Puydt
- *   description          : declaration of a loudmouth heap
+ *   begin                : written in 2008-2011 by Julien Puydt
+ *   copyright            : (c) 2008-2011 by Julien Puydt
+ *   description          : declaration of a loudmouth heap for the roster
  *
  */
 
-#ifndef __LOUDMOUTH_HEAP_H__
-#define __LOUDMOUTH_HEAP_H__
+#ifndef __LOUDMOUTH_HEAP_ROSTER_H__
+#define __LOUDMOUTH_HEAP_ROSTER_H__
 
 #include "heap-impl.h"
 #include "personal-details.h"
 #include "loudmouth-dialect.h"
+#include "loudmouth-handler.h"
 
 namespace LM
 {
-  class Heap:
+  class HeapRoster:
     public Ekiga::HeapImpl<Presentity>,
+    public LM::Handler,
     public boost::signals::trackable
   {
   public:
 
-    Heap (boost::shared_ptr<Ekiga::PersonalDetails> details_,
-	  DialectPtr dialect_,
-	  LmConnection* connection_);
+    HeapRoster (boost::shared_ptr<Ekiga::PersonalDetails> details_,
+		DialectPtr dialect_);
 
-    ~Heap ();
+    ~HeapRoster ();
 
     const std::string get_name () const;
 
@@ -61,11 +62,7 @@ namespace LM
     bool populate_menu_for_group (const std::string group,
 				  Ekiga::MenuBuilder& builder);
 
-    void disconnected ();
-
-    /* public to be accessed by the account */
-
-    void set_name (const std::string name_);
+    LmConnection* get_connection () const;
 
     /* public to be accessed by C callbacks */
 
@@ -74,6 +71,17 @@ namespace LM
     LmHandlerResult presence_handler (LmMessage* message);
 
     LmHandlerResult message_handler (LmMessage* message);
+
+    // implementation of the LM::Handler abstract class :
+    void handle_up (LmConnection* connection,
+		    const std::string name);
+    void handle_down (LmConnection* connection);
+    LmHandlerResult handle_iq (LmConnection* connection,
+			       LmMessage* message);
+    LmHandlerResult handle_message (LmConnection* connection,
+				    LmMessage* message);
+    LmHandlerResult handle_presence (LmConnection* connection,
+				     LmMessage* message);
 
   private:
 
@@ -84,12 +92,6 @@ namespace LM
     std::string name;
 
     LmConnection* connection;
-
-    LmMessageHandler* iq_lm_handler;
-
-    LmMessageHandler* presence_lm_handler;
-
-    LmMessageHandler* message_lm_handler;
 
     void parse_roster (LmMessageNode* query);
 
@@ -117,7 +119,7 @@ namespace LM
     LmHandlerResult message_handler_muc (LmMessage* message);
   };
 
-  typedef boost::shared_ptr<Heap> HeapPtr;
+  typedef boost::shared_ptr<HeapRoster> HeapRosterPtr;
 
 };
 

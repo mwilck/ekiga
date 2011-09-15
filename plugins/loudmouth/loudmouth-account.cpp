@@ -41,6 +41,12 @@
 
 #include "loudmouth-account.h"
 
+#define DEBUG 0
+
+#if DEBUG
+#include <iostream>
+#endif
+
 /* here come the C callbacks, which just push to C++ code */
 static void
 on_connection_opened_c (LmConnection* /*unused*/,
@@ -64,6 +70,33 @@ on_authenticate_c (LmConnection* /*unused*/,
 		   LM::Account* account)
 {
   account->on_authenticate (result);
+}
+
+static LmHandlerResult
+iq_handler_c (LmMessageHandler* /*handler*/,
+	      LmConnection* /*connection*/,
+	      LmMessage* message,
+	      LM::Account* account)
+{
+  return account->handle_iq (message);
+}
+
+static LmHandlerResult
+presence_handler_c (LmMessageHandler* /*handler*/,
+		    LmConnection* /*connection*/,
+		    LmMessage* message,
+		    LM::Account* account)
+{
+  return account->handle_presence (message);
+}
+
+static LmHandlerResult
+message_handler_c (LmMessageHandler* /*handler*/,
+		   LmConnection* /*connection*/,
+		   LmMessage* message,
+		   LM::Account* account)
+{
+  return account->handle_message (message);
 }
 
 /* and here is the C++ code : */
@@ -93,6 +126,16 @@ LM::Account::Account (boost::shared_ptr<Ekiga::PersonalDetails> details_,
   xmlFree (xml_str);
 
   connection = lm_connection_new (NULL);
+
+  iq_lm_handler = lm_message_handler_new ((LmHandleMessageFunction)iq_handler_c, this, NULL);
+  lm_connection_register_message_handler (connection, iq_lm_handler, LM_MESSAGE_TYPE_IQ, LM_HANDLER_PRIORITY_NORMAL);
+
+  presence_lm_handler = lm_message_handler_new ((LmHandleMessageFunction)presence_handler_c, this, NULL);
+  lm_connection_register_message_handler (connection, presence_lm_handler, LM_MESSAGE_TYPE_PRESENCE, LM_HANDLER_PRIORITY_NORMAL);
+
+  message_lm_handler = lm_message_handler_new ((LmHandleMessageFunction)message_handler_c, this, NULL);
+  lm_connection_register_message_handler (connection, message_lm_handler, LM_MESSAGE_TYPE_MESSAGE, LM_HANDLER_PRIORITY_NORMAL);
+
   lm_connection_set_disconnect_function (connection, (LmDisconnectFunction)on_disconnected_c,
 					 this, NULL);
   if (enable_on_startup) {
@@ -204,16 +247,24 @@ LM::Account::disable ()
 
 LM::Account::~Account ()
 {
-  if (heap) {
-
-    heap->disconnected ();
-    heap.reset ();
-  }
-
   if (lm_connection_is_open (connection)) {
 
+    handle_down ();
     lm_connection_close (connection, NULL);
   }
+
+  lm_connection_unregister_message_handler (connection, iq_lm_handler, LM_MESSAGE_TYPE_IQ);
+  lm_message_handler_unref (iq_lm_handler);
+  iq_lm_handler = 0;
+
+  lm_connection_unregister_message_handler (connection, presence_lm_handler, LM_MESSAGE_TYPE_PRESENCE);
+  lm_message_handler_unref (presence_lm_handler);
+  presence_lm_handler = 0;
+
+  lm_connection_unregister_message_handler (connection, message_lm_handler, LM_MESSAGE_TYPE_MESSAGE);
+  lm_message_handler_unref (message_lm_handler);
+  message_lm_handler = 0;
+
   lm_connection_unref (connection);
   connection = 0;
 }
@@ -244,13 +295,10 @@ LM::Account::on_connection_opened (bool result)
 void
 LM::Account::on_disconnected (LmDisconnectReason /*reason*/)
 {
-  if (heap) {
+  handle_down ();
 
-    heap->disconnected ();
-    heap.reset ();
-    status = _("disconnected");
-    updated ();
-  }
+  status = _("disconnected");
+  updated ();
 }
 
 void
@@ -258,13 +306,7 @@ LM::Account::on_authenticate (bool result)
 {
   if (result) {
 
-    heap = boost::shared_ptr<Heap> (new Heap (details, dialect, connection));
-    {
-      xmlChar *xml_str = xmlGetProp (node, BAD_CAST "name");
-      heap->set_name ((const char*)xml_str);
-      xmlFree (xml_str);
-    }
-    cluster->add_heap (heap);
+    handle_up ();
     status = _("connected");
     updated ();
   } else {
@@ -444,4 +486,93 @@ LM::Account::get_name () const
   xmlFree (xml_str);
 
   return name;
+}
+
+void
+LM::Account::handle_up ()
+{
+  dialect->handle_up (connection, get_name ());
+  cluster->handle_up (connection, get_name ());
+}
+
+void
+LM::Account::handle_down ()
+{
+  dialect->handle_down (connection);
+  cluster->handle_down (connection);
+}
+
+LmHandlerResult
+LM::Account::handle_iq (LmMessage* message)
+{
+  LmHandlerResult result = LM_HANDLER_RESULT_ALLOW_MORE_HANDLERS;
+
+  if (result == LM_HANDLER_RESULT_ALLOW_MORE_HANDLERS) {
+
+    result = dialect->handle_iq (connection, message);
+  }
+
+  if (result == LM_HANDLER_RESULT_ALLOW_MORE_HANDLERS) {
+
+    result = cluster->handle_iq (connection, message);
+  }
+
+#if DEBUG
+  if (result == LM_HANDLER_RESULT_ALLOW_MORE_HANDLERS) {
+
+    std::cout << "Nobody cared about : " << lm_message_node_to_string (lm_message_get_node (message)) << std::endl;
+  }
+#endif
+
+  return result;
+}
+
+LmHandlerResult
+LM::Account::handle_message (LmMessage* message)
+{
+  LmHandlerResult result = LM_HANDLER_RESULT_ALLOW_MORE_HANDLERS;
+
+  if (result == LM_HANDLER_RESULT_ALLOW_MORE_HANDLERS) {
+
+    result = dialect->handle_message (connection, message);
+  }
+
+  if (result == LM_HANDLER_RESULT_ALLOW_MORE_HANDLERS) {
+
+    result = cluster->handle_message (connection, message);
+  }
+
+#if DEBUG
+  if (result == LM_HANDLER_RESULT_ALLOW_MORE_HANDLERS) {
+
+    std::cout << "Nobody cared about : " << lm_message_node_to_string (lm_message_get_node (message)) << std::endl;
+  }
+#endif
+
+  return result;
+}
+
+LmHandlerResult
+LM::Account::handle_presence (LmMessage* message)
+{
+  LmHandlerResult result = LM_HANDLER_RESULT_ALLOW_MORE_HANDLERS;
+
+  if (result == LM_HANDLER_RESULT_ALLOW_MORE_HANDLERS) {
+
+    result = dialect->handle_presence (connection, message);
+  }
+
+  if (result == LM_HANDLER_RESULT_ALLOW_MORE_HANDLERS) {
+
+    result = cluster->handle_presence (connection, message);
+  }
+
+#if DEBUG
+  if (result == LM_HANDLER_RESULT_ALLOW_MORE_HANDLERS) {
+
+    std::cout << "Nobody cared about : " << lm_message_node_to_string (lm_message_get_node (message)) << std::endl;
+  }
+#endif
+
+  return result;
 }

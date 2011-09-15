@@ -152,3 +152,37 @@ LM::Dialect::on_open_group_chat_submitted (bool submitted,
 
   std::cout << "Should enter the room '" << name << "' with pseudonym '" << pseudo << "'" << std::endl;
 }
+
+void
+LM::Dialect::handle_up (LmConnection* connection,
+			const std::string name)
+{
+  /* nothing to do afaict */
+}
+
+void
+LM::Dialect::handle_down (LmConnection* connection)
+{
+  // FIXME: here we should find all dead c(h)ats
+}
+
+LmHandlerResult
+LM::Dialect::handle_iq (LmConnection* connection,
+			LmMessage* message)
+{
+  return LM_HANDLER_RESULT_ALLOW_MORE_HANDLERS; // FIXME: implement properly
+}
+
+LmHandlerResult
+LM::Dialect::handle_message (LmConnection* connection,
+			     LmMessage* message)
+{
+  return LM_HANDLER_RESULT_ALLOW_MORE_HANDLERS; // FIXME: implement properly
+}
+
+LmHandlerResult
+LM::Dialect::handle_presence (LmConnection* connection,
+			      LmMessage* message)
+{
+  return LM_HANDLER_RESULT_ALLOW_MORE_HANDLERS; // FIXME: implement properly
+}

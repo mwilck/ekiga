@@ -39,7 +39,7 @@
 #include "services.h"
 #include "chat-multiple.h"
 
-#include "loudmouth-heap.h"
+#include <loudmouth/loudmouth.h>
 
 namespace LM
 {
@@ -75,7 +75,7 @@ namespace LM
     Ekiga::ServiceCore& core;
     LmConnection* connection;
     std::list<boost::shared_ptr<Ekiga::ChatObserver> > observers;
-    HeapPtr heap;
+    Ekiga::HeapPtr heap; // FIXME: it needs a loudmouth-heap-chat!
     std::string my_name;
   };
 

@@ -40,6 +40,7 @@
 
 #include "account.h"
 
+#include "loudmouth-dialect.h"
 #include "loudmouth-cluster.h"
 
 namespace LM
@@ -88,7 +89,21 @@ namespace LM
 
     void on_authenticate (bool result);
 
+    /* LM::Handler-like interface
+     * but not exactly, since it's the hub from which all information flows
+     * to the real handlers
+     */
+    void handle_up ();
+    void handle_down ();
+    LmHandlerResult handle_iq (LmMessage* message);
+    LmHandlerResult handle_message (LmMessage* message);
+    LmHandlerResult handle_presence (LmMessage* message);
+
   private:
+
+    LmMessageHandler* iq_lm_handler;
+    LmMessageHandler* presence_lm_handler;
+    LmMessageHandler* message_lm_handler;
 
     void edit ();
     void on_edit_form_submitted (bool submitted,
@@ -104,8 +119,6 @@ namespace LM
     std::string status;
 
     LmConnection* connection;
-
-    boost::shared_ptr<Heap> heap;
   };
 };
 
