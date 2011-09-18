@@ -39,6 +39,7 @@
 
 #include "form-request-simple.h"
 
+#include "loudmouth-helpers.h"
 #include "loudmouth-presentity.h"
 
 LM::Presentity::Presentity (LmConnection* connection_,
@@ -315,8 +316,21 @@ LM::Presentity::edit_presentity_form_submitted (bool submitted,
     g_free (escaped);
   }
 
-  lm_connection_send (connection, message, NULL);
+  lm_connection_send_with_reply (connection, message,
+				 build_message_handler (boost::bind(&LM::Presentity::handle_edit_reply, this, _1, _2)), NULL);
   lm_message_unref (message);
+}
+
+LmHandlerResult
+LM::Presentity::handle_edit_reply (LmConnection* /*connection*/,
+				   LmMessage* message)
+{
+  if (lm_message_get_sub_type (message) == LM_MESSAGE_SUB_TYPE_ERROR) {
+
+    // FIXME: perhaps we should display an error notice here...
+  }
+
+  return LM_HANDLER_RESULT_REMOVE_MESSAGE;
 }
 
 void
