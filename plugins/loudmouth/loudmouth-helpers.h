@@ -43,4 +43,6 @@
 
 LmMessageHandler* build_message_handler (boost::function2<LmHandlerResult, LmConnection*, LmMessage*> callback);
 
+LmMessageHandler* get_ignore_answer_handler ();
+
 #endif

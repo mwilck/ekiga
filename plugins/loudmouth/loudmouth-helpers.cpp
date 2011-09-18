@@ -41,6 +41,8 @@
 
 #include "loudmouth-helpers.h"
 
+boost::shared_ptr<LmMessageHandler> ignore_message_handler;
+
 struct handler_data
 {
   handler_data (boost::function2<LmHandlerResult, LmConnection*, LmMessage*> callback_):
@@ -49,6 +51,15 @@ struct handler_data
 
   boost::function2<LmHandlerResult, LmConnection*, LmMessage*> callback;
 };
+
+static LmHandlerResult
+ignorer_handler (LmMessageHandler* /*handler*/,
+	   LmConnection* /*connection*/,
+	   LmMessage* /*message*/,
+	   gpointer /*data*/)
+{
+  return LM_HANDLER_RESULT_REMOVE_MESSAGE;
+}
 
 static LmHandlerResult
 handler_function_c (LmMessageHandler* handler,
@@ -71,4 +82,15 @@ build_message_handler (boost::function2<LmHandlerResult, LmConnection*, LmMessag
   LmMessageHandler* result = lm_message_handler_new ((LmHandleMessageFunction)handler_function_c, data, NULL);
 
   return result;
+}
+
+LmMessageHandler*
+get_ignore_answer_handler ()
+{
+  if ( !ignore_message_handler) {
+
+    ignore_message_handler = boost::shared_ptr<LmMessageHandler> (lm_message_handler_new (ignorer_handler, NULL, NULL), lm_message_handler_unref);
+  }
+
+  return ignore_message_handler.get ();
 }
