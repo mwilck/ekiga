@@ -38,6 +38,8 @@
 
 #include "form-request-simple.h"
 
+#include "loudmouth-helpers.h"
+
 #include "loudmouth-heap-roster.h"
 
 LM::HeapRoster::HeapRoster (boost::shared_ptr<Ekiga::PersonalDetails> details_,
@@ -89,7 +91,8 @@ LM::HeapRoster::handle_up (LmConnection* connection_,
     LmMessage* roster_request = lm_message_new_with_sub_type (NULL, LM_MESSAGE_TYPE_IQ, LM_MESSAGE_SUB_TYPE_GET);
     LmMessageNode* node = lm_message_node_add_child (lm_message_get_node (roster_request), "query", NULL);
     lm_message_node_set_attributes (node, "xmlns", "jabber:iq:roster", NULL);
-    lm_connection_send (connection, roster_request, NULL);
+    lm_connection_send_with_reply (connection, roster_request,
+				   build_message_handler (boost::bind (&LM::HeapRoster::handle_initial_roster_reply, this, _1, _2)), NULL);
     lm_message_unref (roster_request);
   }
   { // initial presence push
@@ -113,8 +116,7 @@ LM::HeapRoster::handle_iq (LmConnection* /*connection*/,
 			   LmMessage* message)
 {
   LmHandlerResult result = LM_HANDLER_RESULT_ALLOW_MORE_HANDLERS;
-  if (lm_message_get_sub_type (message) == LM_MESSAGE_SUB_TYPE_SET
-      || lm_message_get_sub_type (message) == LM_MESSAGE_SUB_TYPE_RESULT) {
+  if (lm_message_get_sub_type (message) == LM_MESSAGE_SUB_TYPE_SET) {
 
     LmMessageNode* node = lm_message_node_get_child (lm_message_get_node (message), "query");
     if (node != NULL) {
@@ -233,6 +235,28 @@ LM::HeapRoster::handle_message (LmConnection* /*connection*/,
       dialect->push_message (item, lm_message_node_get_value (body));
     }
     // it could also be an avatar or a pubsub event or...
+  }
+
+  return result;
+}
+
+LmHandlerResult
+LM::HeapRoster::handle_initial_roster_reply (LmConnection* /*connection*/,
+					     LmMessage* message)
+{
+  LmHandlerResult result = LM_HANDLER_RESULT_ALLOW_MORE_HANDLERS;
+  if (lm_message_get_sub_type (message) == LM_MESSAGE_SUB_TYPE_RESULT) {
+
+    LmMessageNode* node = lm_message_node_get_child (lm_message_get_node (message), "query");
+    if (node != NULL) {
+
+      const gchar* xmlns = lm_message_node_get_attribute (node, "xmlns");
+      if (xmlns != NULL && strcmp (xmlns, "jabber:iq:roster") == 0) {
+
+	parse_roster (node);
+	result = LM_HANDLER_RESULT_REMOVE_MESSAGE;
+      }
+    }
   }
 
   return result;

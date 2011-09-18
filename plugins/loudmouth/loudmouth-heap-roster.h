@@ -93,6 +93,8 @@ namespace LM
 
     LmConnection* connection;
 
+    LmHandlerResult handle_initial_roster_reply (LmConnection* connection,
+						 LmMessage* message);
     void parse_roster (LmMessageNode* query);
 
     void add_item ();
