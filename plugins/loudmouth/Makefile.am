@@ -15,6 +15,8 @@ libgmloudmouth_la_SOURCES = \
 	$(loudmouth_dir)/loudmouth-main.h \
 	$(loudmouth_dir)/loudmouth-main.cpp \
 	$(loudmouth_dir)/loudmouth-handler.h \
+	$(loudmouth_dir)/loudmouth-helpers.h \
+	$(loudmouth_dir)/loudmouth-helpers.cpp \
 	$(loudmouth_dir)/loudmouth-bank.h \
 	$(loudmouth_dir)/loudmouth-bank.cpp \
 	$(loudmouth_dir)/loudmouth-account.h \
