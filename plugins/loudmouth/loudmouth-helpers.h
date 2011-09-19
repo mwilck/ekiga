@@ -41,8 +41,18 @@
 
 #include <loudmouth/loudmouth.h>
 
+/* This function is intended to make it easy to use a C++ function
+ * as a callback for the lm_connection_send_with_reply C function ;
+ * so when launching an IQ request/order, then it's easy to get the
+ * result back in C++
+ */
 LmMessageHandler* build_message_handler (boost::function2<LmHandlerResult, LmConnection*, LmMessage*> callback);
 
+/* sometimes it's too cumbersome to write the code to handle errors
+ * properly ; this function just makes it ignored. Looking for places
+ * where that function is used is a simple way to find where such code
+ * is lacking.
+ */
 LmMessageHandler* get_ignore_answer_handler ();
 
 #endif
