@@ -346,7 +346,7 @@ LM::Presentity::remove_presentity ()
 				  "subscription", "remove",
 				  NULL);
 
-  lm_connection_send (connection, message, NULL);
+  lm_connection_send_with_reply (connection, message, get_ignore_answer_handler (), NULL);
   lm_message_unref (message);
 }
 
@@ -358,7 +358,7 @@ LM::Presentity::revoke_from ()
 				  "to", get_jid ().c_str (),
 				  "type", "unsubscribed",
 				  NULL);
-  lm_connection_send (connection, message, NULL);
+  lm_connection_send_with_reply (connection, message, get_ignore_answer_handler (), NULL);
   lm_message_unref (message);
 }
 
@@ -369,7 +369,7 @@ void LM::Presentity::ask_to ()
 				  "to", get_jid ().c_str (),
 				  "type", "subscribe",
 				  NULL);
-  lm_connection_send (connection, message, NULL);
+  lm_connection_send_with_reply (connection, message, get_ignore_answer_handler (), NULL);
   lm_message_unref (message);
 }
 
@@ -381,6 +381,6 @@ LM::Presentity::stop_to ()
 				  "to", get_jid ().c_str (),
 				  "type", "unsubscribe",
 				  NULL);
-  lm_connection_send (connection, message, NULL);
+  lm_connection_send_with_reply (connection, message, get_ignore_answer_handler (), NULL);
   lm_message_unref (message);
 }
