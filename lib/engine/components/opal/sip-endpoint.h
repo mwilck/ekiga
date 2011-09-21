@@ -220,6 +220,7 @@ namespace Opal {
       unsigned listen_port;
       bool auto_answer_call;
 
+      boost::weak_ptr<Opal::Bank> bank;
       boost::shared_ptr<SIP::Dialect> dialect;
     };
   };

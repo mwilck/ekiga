@@ -109,7 +109,6 @@ Opal::Sip::EndPoint::EndPoint (Opal::CallManager & _manager,
 	core (_core)
 {
   boost::shared_ptr<Ekiga::ChatCore> chat_core = core.get<Ekiga::ChatCore> ("chat-core");
-  boost::shared_ptr<Opal::Bank> bank = core.get<Opal::Bank> ("opal-account-store");
 
   auto_answer_call = false;
   protocol_name = "sip";
@@ -119,9 +118,13 @@ Opal::Sip::EndPoint::EndPoint (Opal::CallManager & _manager,
   dialect = boost::shared_ptr<SIP::Dialect>(new SIP::Dialect (core, boost::bind (&Opal::Sip::EndPoint::send_message, this, _1, _2)));
   chat_core->add_dialect (dialect);
 
-  bank->account_added.connect (boost::bind (&Opal::Sip::EndPoint::on_bank_updated, this, _1));
-  bank->account_removed.connect (boost::bind (&Opal::Sip::EndPoint::on_bank_updated, this, _1));
-  bank->account_updated.connect (boost::bind (&Opal::Sip::EndPoint::on_bank_updated, this, _1));
+  bank = core.get<Opal::Bank> ("opal-account-store");
+  if (boost::shared_ptr<Opal::Bank> bk = bank.lock ()) { // should always happen, but still
+
+    bk->account_added.connect (boost::bind (&Opal::Sip::EndPoint::on_bank_updated, this, _1));
+    bk->account_removed.connect (boost::bind (&Opal::Sip::EndPoint::on_bank_updated, this, _1));
+    bk->account_updated.connect (boost::bind (&Opal::Sip::EndPoint::on_bank_updated, this, _1));
+  }
 
   /* Timeouts */
   SetAckTimeout (PTimeInterval (0, 32));
@@ -176,8 +179,10 @@ Opal::Sip::EndPoint::menu_builder_add_actions (const std::string& fullname,
 					       Ekiga::MenuBuilder & builder)
 {
   bool populated = false;
+  boost::shared_ptr<Opal::Bank> bk = bank.lock ();
 
-  boost::shared_ptr<Opal::Bank> bank = core.get<Opal::Bank> ("opal-account-store");
+  if (!bk)
+    return false;
 
   std::list<std::string> uris;
   std::list<std::string> accounts_list;
@@ -187,8 +192,8 @@ Opal::Sip::EndPoint::menu_builder_add_actions (const std::string& fullname,
 
   if (uri.find ("@") == string::npos) {
 
-    for (Opal::Bank::iterator it = bank->begin ();
-	 it != bank->end ();
+    for (Opal::Bank::iterator it = bk->begin ();
+	 it != bk->end ();
 	 it++) {
 
       if ((*it)->get_protocol_name () == "SIP" && (*it)->is_enabled ()) {
@@ -990,8 +995,8 @@ void Opal::Sip::EndPoint::on_transfer (std::string uri)
 void
 Opal::Sip::EndPoint::on_bank_updated (Ekiga::AccountPtr /*account*/)
 {
-  boost::shared_ptr<Opal::Bank> bank = core.get<Opal::Bank> ("opal-account-store");
-  bank->visit_accounts (boost::bind (&Opal::Sip::EndPoint::visit_accounts, this, _1));
+  if (boost::shared_ptr<Opal::Bank> bk = bank.lock ())
+    bk->visit_accounts (boost::bind (&Opal::Sip::EndPoint::visit_accounts, this, _1));
 }
 
 
@@ -1012,11 +1017,13 @@ Opal::Sip::EndPoint::registration_event_in_main (const std::string aor,
 						 Opal::Account::RegistrationState state,
 						 const std::string msg)
 {
-  boost::shared_ptr<Opal::Bank> bank = core.get<Opal::Bank> ("opal-account-store");
-  AccountPtr account = bank->find_account (aor);
+  if (boost::shared_ptr<Opal::Bank> bk = bank.lock ()) {
 
-  if (account)
-    account->handle_registration_event (state, msg);
+    AccountPtr account = bk->find_account (aor);
+
+    if (account)
+      account->handle_registration_event (state, msg);
+  }
 }
 
 void
@@ -1039,11 +1046,13 @@ void
 Opal::Sip::EndPoint::mwi_received_in_main (const std::string aor,
 					   const std::string info)
 {
-  boost::shared_ptr<Opal::Bank> bank = core.get<Opal::Bank> ("opal-account-store");
-  AccountPtr account = bank->find_account (aor);
+  if (boost::shared_ptr<Opal::Bank> bk = bank.lock ()) {
 
-  if (account) {
+    AccountPtr account = bk->find_account (aor);
 
-    account->handle_message_waiting_information (info);
+    if (account) {
+
+      account->handle_message_waiting_information (info);
+    }
   }
 }
