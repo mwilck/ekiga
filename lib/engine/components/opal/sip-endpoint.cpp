@@ -62,11 +62,25 @@ namespace Opal {
       PCLASSINFO(subscriber, PThread);
 
     public:
-      subscriber (const Opal::Account & _account,
+      subscriber (std::string _username,
+		  std::string _host,
+		  std::string _authentication_username,
+		  std::string _password,
+		  bool _is_enabled,
+		  SIPRegister::CompatibilityModes _compat_mode,
+		  unsigned _timeout,
+		  std::string _aor,
                   Opal::Sip::EndPoint & _manager,
 		  bool _registering)
         : PThread (1000, AutoDeleteThread),
-	  account (_account),
+	  username(_username),
+	  host(_host),
+	  authentication_username(_authentication_username),
+	  password(_password),
+	  is_enabled(_is_enabled),
+	  compat_mode(_compat_mode),
+	  timeout(_timeout),
+	  aor(_aor),
 	  manager (_manager),
 	  registering (_registering)
       {
@@ -77,21 +91,22 @@ namespace Opal {
       {
 	if (registering) {
 
-	  manager.Register (account.get_username (),
-			    account.get_host (),
-			    account.get_authentication_username (),
-			    account.get_password (),
-			    account.is_enabled (),
-			    account.get_compat_mode (),
-			    account.get_timeout ());
+	  manager.Register (username, host, authentication_username, password, is_enabled, compat_mode, timeout);
 	} else {
 
-	  manager.Unregister (account.get_aor ());
+	  manager.Unregister (aor);
 	}
       };
 
     private:
-      const Opal::Account & account;
+      std::string username;
+      std::string host;
+      std::string authentication_username;
+      std::string password;
+      bool is_enabled;
+      SIPRegister::CompatibilityModes compat_mode;
+      unsigned timeout;
+      std::string aor;
       Opal::Sip::EndPoint & manager;
       bool registering;
     };
@@ -467,7 +482,15 @@ Opal::Sip::EndPoint::subscribe (const Opal::Account & account)
   if (account.get_protocol_name () != "SIP")
     return false;
 
-  new subscriber (account, *this, true);
+  new subscriber (account.get_username (),
+		  account.get_host (),
+		  account.get_authentication_username (),
+		  account.get_password (),
+		  account.is_enabled (),
+		  account.get_compat_mode (),
+		  account.get_timeout (),
+		  account.get_aor (),
+		  *this, true);
   return true;
 }
 
@@ -478,7 +501,15 @@ Opal::Sip::EndPoint::unsubscribe (const Opal::Account & account)
   if (account.get_protocol_name () != "SIP")
     return false;
 
-  new subscriber (account, *this, false);
+  new subscriber (account.get_username (),
+		  account.get_host (),
+		  account.get_authentication_username (),
+		  account.get_password (),
+		  account.is_enabled (),
+		  account.get_compat_mode (),
+		  account.get_timeout (),
+		  account.get_aor (),
+		  *this, false);
   return true;
 }
 
