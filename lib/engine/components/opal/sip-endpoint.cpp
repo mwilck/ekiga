@@ -133,14 +133,6 @@ Opal::Sip::EndPoint::EndPoint (Opal::CallManager & _manager,
   dialect = boost::shared_ptr<SIP::Dialect>(new SIP::Dialect (core, boost::bind (&Opal::Sip::EndPoint::send_message, this, _1, _2)));
   chat_core->add_dialect (dialect);
 
-  bank = core.get<Opal::Bank> ("opal-account-store");
-  if (boost::shared_ptr<Opal::Bank> bk = bank.lock ()) { // should always happen, but still
-
-    bk->account_added.connect (boost::bind (&Opal::Sip::EndPoint::on_bank_updated, this, _1));
-    bk->account_removed.connect (boost::bind (&Opal::Sip::EndPoint::on_bank_updated, this, _1));
-    bk->account_updated.connect (boost::bind (&Opal::Sip::EndPoint::on_bank_updated, this, _1));
-  }
-
   /* Timeouts */
   SetAckTimeout (PTimeInterval (0, 32));
   SetPduCleanUpTimeout (PTimeInterval (0, 1));
@@ -1024,26 +1016,6 @@ void Opal::Sip::EndPoint::on_transfer (std::string uri)
 
 
 void
-Opal::Sip::EndPoint::on_bank_updated (Ekiga::AccountPtr /*account*/)
-{
-  if (boost::shared_ptr<Opal::Bank> bk = bank.lock ())
-    bk->visit_accounts (boost::bind (&Opal::Sip::EndPoint::visit_accounts, this, _1));
-}
-
-
-bool
-Opal::Sip::EndPoint::visit_accounts (Ekiga::AccountPtr account_)
-{
-  Opal::AccountPtr account = boost::dynamic_pointer_cast<Opal::Account> (account_);
-
-  PWaitAndSignal m(aorMutex);
-  accounts[account->get_host ()] = account->get_aor ();
-
-  return true;
-}
-
-
-void
 Opal::Sip::EndPoint::registration_event_in_main (const std::string aor,
 						 Opal::Account::RegistrationState state,
 						 const std::string msg)
@@ -1086,4 +1058,35 @@ Opal::Sip::EndPoint::mwi_received_in_main (const std::string aor,
       account->handle_message_waiting_information (info);
     }
   }
+}
+
+void
+Opal::Sip::EndPoint::update_bank ()
+{
+  bank = core.get<Opal::Bank> ("opal-account-store");
+  if (boost::shared_ptr<Opal::Bank> bk = bank.lock ()) { // should always happen, but still
+
+    bk->account_added.connect (boost::bind (&Opal::Sip::EndPoint::on_bank_updated, this, _1));
+    bk->account_removed.connect (boost::bind (&Opal::Sip::EndPoint::on_bank_updated, this, _1));
+    bk->account_updated.connect (boost::bind (&Opal::Sip::EndPoint::on_bank_updated, this, _1));
+  }
+}
+
+void
+Opal::Sip::EndPoint::on_bank_updated (Ekiga::AccountPtr /*account*/)
+{
+  if (boost::shared_ptr<Opal::Bank> bk = bank.lock ())
+    bk->visit_accounts (boost::bind (&Opal::Sip::EndPoint::visit_accounts, this, _1));
+}
+
+
+bool
+Opal::Sip::EndPoint::visit_accounts (Ekiga::AccountPtr account_)
+{
+  Opal::AccountPtr account = boost::dynamic_pointer_cast<Opal::Account> (account_);
+
+  PWaitAndSignal m(aorMutex);
+  accounts[account->get_host ()] = account->get_aor ();
+
+  return true;
 }

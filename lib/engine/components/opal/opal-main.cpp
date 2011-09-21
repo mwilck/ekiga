@@ -108,12 +108,6 @@ struct OPALSpark: public Ekiga::Spark
       boost::shared_ptr<CallManager> call_manager (new CallManager (core));
       core.add (call_manager);
 
-      boost::shared_ptr<Bank> bank (new Bank (core));
-
-      account_core->add_bank (bank);
-      core.add (bank);
-      call_manager->ready.connect (boost::bind (&Opal::Bank::call_manager_ready, &*bank));
-
       unsigned sip_port = gm_conf_get_int (SIP_KEY "listen_port");
       boost::shared_ptr<Sip::EndPoint> sip_manager (new Sip::EndPoint (*call_manager, core, sip_port));
       core.add (sip_manager);
@@ -122,6 +116,11 @@ struct OPALSpark: public Ekiga::Spark
       contact_core->add_contact_decorator (sip_manager);
       presence_core->add_presentity_decorator (sip_manager);
 
+      boost::shared_ptr<Bank> bank (new Bank (core));
+      account_core->add_bank (bank);
+      core.add (bank);
+      sip_manager->update_bank ();
+      call_manager->ready.connect (boost::bind (&Opal::Bank::call_manager_ready, &*bank));
       presence_core->add_presence_publisher (bank);
       presence_core->add_presence_fetcher (bank);
 

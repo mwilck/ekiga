@@ -133,6 +133,8 @@ namespace Opal {
       /* Helper */
       static std::string get_aor_domain (const std::string & aor);
 
+      /* FIXME: doesn't look 100% right */
+      void update_bank ();
 
       /* OPAL Methods */
       void Register (const std::string username,
