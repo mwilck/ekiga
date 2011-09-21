@@ -67,6 +67,7 @@ struct _EkigaAssistantPrivate
 
   GtkWidget *welcome_page;
   GtkWidget *personal_data_page;
+  GtkWidget *info_page;
   GtkWidget *ekiga_net_page;
   GtkWidget *ekiga_out_page;
   GtkWidget *connection_type_page;
@@ -424,6 +425,35 @@ apply_personal_data_page (EkigaAssistant *assistant)
 
   if (full_name)
     gm_conf_set_string (PERSONAL_DATA_KEY "full_name", full_name);
+}
+
+
+static void
+create_info_page (EkigaAssistant *assistant)
+{
+  GtkWidget *label;
+
+  label = gtk_label_new (_("If you do not have a SIP or H323 account, ekiga "
+                           "can only be used on your local internal network "
+                           "(inside your company, for example).  You will "
+                           "require an account if you want to be accessible "
+                           "to people on the Internet.  Many web sites allow "
+                           "you to create an account.  We suggest that you use "
+                           "a free ekiga.net account, which allows you to be "
+                           "joined by any person with a SIP account.  If you "
+                           "want to call regular phone lines too, we suggest "
+                           "that you purchase an inexpensive call out account."
+                           "\n\nThe following two pages allow you to create "
+                           "such accounts."));
+  gtk_label_set_line_wrap (GTK_LABEL (label), TRUE);
+  gtk_widget_show (label);
+  gtk_assistant_append_page (GTK_ASSISTANT (assistant), label);
+  gtk_assistant_set_page_title (GTK_ASSISTANT (assistant), label, _("Account Information"));
+  gtk_assistant_set_page_type (GTK_ASSISTANT (assistant), label, GTK_ASSISTANT_PAGE_CONTENT);
+  gtk_assistant_set_page_header_image (GTK_ASSISTANT (assistant), label, assistant->priv->icon);
+  gtk_assistant_set_page_complete (GTK_ASSISTANT (assistant), label, TRUE);
+
+  assistant->priv->info_page = label;
 }
 
 
@@ -1467,6 +1497,7 @@ ekiga_assistant_init (EkigaAssistant *assistant)
 
   create_welcome_page (assistant);
   create_personal_data_page (assistant);
+  create_info_page (assistant);
   create_ekiga_net_page (assistant);
   create_ekiga_out_page (assistant);
   create_connection_type_page (assistant);
