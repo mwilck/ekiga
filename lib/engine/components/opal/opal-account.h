@@ -47,6 +47,9 @@
 
 namespace Opal
 {
+  // forward declaration:
+  namespace Sip { class EndPoint; };
+
   /**
    * @addtogroup accounts
    * @internal
@@ -202,6 +205,7 @@ private:
 				  std::string status);
 
     Ekiga::ServiceCore & core;
+    boost::shared_ptr<Sip::EndPoint> endpoint;
   };
 
   typedef boost::shared_ptr<Account> AccountPtr;

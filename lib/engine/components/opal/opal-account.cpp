@@ -63,6 +63,7 @@ Opal::Account::Account (Ekiga::ServiceCore & _core,
                         const std::string & account)
   : core (_core)
 {
+  endpoint = core.get<Sip::EndPoint> ("opal-sip-endpoint");
   dead = false;
   state = Unregistered;
   status = _("Unregistered");
@@ -177,6 +178,8 @@ Opal::Account::Account (Ekiga::ServiceCore & _core,
 
 Opal::Account::~Account ()
 {
+  if (state == Registered)
+    endpoint->unsubscribe (*this);
 }
 
 
@@ -293,7 +296,6 @@ void Opal::Account::enable ()
 {
   enabled = true;
 
-  boost::shared_ptr<Sip::EndPoint> endpoint = core.get<Sip::EndPoint> ("opal-sip-endpoint");
   endpoint->subscribe (*this);
   if (presentity) {
 
@@ -315,7 +317,6 @@ void Opal::Account::disable ()
 {
   enabled = false;
 
-  boost::shared_ptr<Sip::EndPoint> endpoint = core.get<Sip::EndPoint> ("opal-sip-endpoint");
   endpoint->unsubscribe (*this);
 
   if (presentity)
@@ -352,7 +353,6 @@ void Opal::Account::remove ()
   enabled = false;
   dead = true;
 
-  boost::shared_ptr<Sip::EndPoint> endpoint = core.get<Sip::EndPoint> ("opal-sip-endpoint");
   endpoint->unsubscribe (*this);
 
   trigger_saving ();
@@ -543,7 +543,6 @@ void
 Opal::Account::handle_registration_event (RegistrationState state_,
 					  const std::string info) const
 {
-  boost::shared_ptr<Sip::EndPoint> endpoint;
   switch (state_) {
 
   case Registered:
@@ -589,14 +588,12 @@ Opal::Account::handle_registration_event (RegistrationState state_,
       // FullyCompliant did not work, try next compat mode
       compat_mode = SIPRegister::e_CannotRegisterMultipleContacts;
       PTRACE (4, "Register failed in FullyCompliant mode, retrying in CannotRegisterMultipleContacts mode");
-      endpoint = core.get<Sip::EndPoint> ("opal-sip-endpoint");
       endpoint->subscribe (*this);
       break;
     case SIPRegister::e_CannotRegisterMultipleContacts:
       // CannotRegMC did not work, try next compat mode
       compat_mode = SIPRegister::e_CannotRegisterPrivateContacts;
       PTRACE (4, "Register failed in CannotRegisterMultipleContacts mode, retrying in CannotRegisterPrivateContacts mode");
-      endpoint = core.get<Sip::EndPoint> ("opal-sip-endpoint");
       endpoint->subscribe (*this);
       break;
     case SIPRegister::e_CannotRegisterPrivateContacts:
