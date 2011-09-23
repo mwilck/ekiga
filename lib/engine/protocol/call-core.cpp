@@ -48,7 +48,10 @@ using namespace Ekiga;
 
 CallCore::~CallCore ()
 {
-  manager_connections.clear ();
+  for (std::list<boost::signals::connection>::iterator iter = manager_connections.begin ();
+       iter != manager_connections.end ();
+       ++iter)
+    iter->disconnect ();
 }
 
 
