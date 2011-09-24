@@ -1066,27 +1066,46 @@ Opal::Sip::EndPoint::update_bank ()
   bank = core.get<Opal::Bank> ("opal-account-store");
   if (boost::shared_ptr<Opal::Bank> bk = bank.lock ()) { // should always happen, but still
 
-    bk->account_added.connect (boost::bind (&Opal::Sip::EndPoint::on_bank_updated, this, _1));
-    bk->account_removed.connect (boost::bind (&Opal::Sip::EndPoint::on_bank_updated, this, _1));
-    bk->account_updated.connect (boost::bind (&Opal::Sip::EndPoint::on_bank_updated, this, _1));
+    bk->account_added.connect (boost::bind (&Opal::Sip::EndPoint::account_added, this, _1));
+    bk->account_updated.connect (boost::bind (&Opal::Sip::EndPoint::account_updated_or_removed, this, _1));
+    bk->account_removed.connect (boost::bind (&Opal::Sip::EndPoint::account_updated_or_removed, this, _1));
+    account_updated_or_removed (Ekiga::AccountPtr ()/* unused*/);
   }
 }
 
 void
-Opal::Sip::EndPoint::on_bank_updated (Ekiga::AccountPtr /*account*/)
+Opal::Sip::EndPoint::account_updated_or_removed (Ekiga::AccountPtr /*account*/)
 {
-  if (boost::shared_ptr<Opal::Bank> bk = bank.lock ())
-    bk->visit_accounts (boost::bind (&Opal::Sip::EndPoint::visit_accounts, this, _1));
+  /* we don't remember what the account information was, so we need
+   * to clear our current information everytime something changed
+   * (hopefully nobody has hundreds of opal accounts that get updated
+   * often, so performance shouldn't be an issue!
+   */
+
+  { // keep the mutex only to clear the accounts variable...
+    PWaitAndSignal m(aorMutex);
+    accounts.clear ();
+  }
+  { // ... because here we call something which will want that very same mutex!
+    bank = core.get<Opal::Bank> ("opal-account-store");
+    if (boost::shared_ptr<Opal::Bank> bk = bank.lock ()) { // should always happen, but still
+
+      bk->visit_accounts (boost::bind (&Opal::Sip::EndPoint::visit_account, this, _1));
+    }
+  }
 }
 
-
 bool
-Opal::Sip::EndPoint::visit_accounts (Ekiga::AccountPtr account_)
+Opal::Sip::EndPoint::visit_account (Ekiga::AccountPtr _account)
 {
-  Opal::AccountPtr account = boost::dynamic_pointer_cast<Opal::Account> (account_);
+  account_added (_account);
+  return true;
+}
 
+void
+Opal::Sip::EndPoint::account_added (Ekiga::AccountPtr _account)
+{
+  Opal::AccountPtr account = boost::dynamic_pointer_cast<Opal::Account> (_account);
   PWaitAndSignal m(aorMutex);
   accounts[account->get_host ()] = account->get_aor ();
-
-  return true;
 }

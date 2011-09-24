@@ -181,9 +181,9 @@ namespace Opal {
 		       std::string name);
       void on_transfer (std::string uri);
 
-      void on_bank_updated (Ekiga::AccountPtr account);
-
-      bool visit_accounts (Ekiga::AccountPtr account);
+      void account_updated_or_removed (Ekiga::AccountPtr account);
+      bool visit_account (Ekiga::AccountPtr account);
+      void account_added (Ekiga::AccountPtr account);
 
       void registration_event_in_main (const std::string aor,
 				       Account::RegistrationState state,
