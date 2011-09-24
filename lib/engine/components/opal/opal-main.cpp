@@ -56,6 +56,13 @@
 #define H323_KEY "/apps/" PACKAGE_NAME "/protocols/h323/"
 #endif
 
+// opal manages its endpoints itself, so we must be wary
+struct null_deleter
+{
+    void operator()(void const *) const
+    { }
+};
+
 static bool
 is_supported_address (const std::string uri)
 {
@@ -109,7 +116,7 @@ struct OPALSpark: public Ekiga::Spark
       core.add (call_manager);
 
       unsigned sip_port = gm_conf_get_int (SIP_KEY "listen_port");
-      boost::shared_ptr<Sip::EndPoint> sip_manager (new Sip::EndPoint (*call_manager, core, sip_port));
+      boost::shared_ptr<Sip::EndPoint> sip_manager (new Sip::EndPoint (*call_manager, core, sip_port), null_deleter ());
       core.add (sip_manager);
 
       call_manager->add_protocol_manager (sip_manager);
@@ -124,9 +131,10 @@ struct OPALSpark: public Ekiga::Spark
       presence_core->add_presence_publisher (bank);
       presence_core->add_presence_fetcher (bank);
 
+
 #ifdef HAVE_H323
       unsigned h323_port = gm_conf_get_int (H323_KEY "listen_port");
-      boost::shared_ptr<H323::EndPoint> h323_manager (new H323::EndPoint (*call_manager, core, h323_port));
+      boost::shared_ptr<H323::EndPoint> h323_manager (new H323::EndPoint (*call_manager, core, h323_port), null_deleter ());
       call_manager->add_protocol_manager (h323_manager);
       contact_core->add_contact_decorator (h323_manager);
       presence_core->add_presentity_decorator (h323_manager);
