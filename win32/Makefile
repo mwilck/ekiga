@@ -9,8 +9,11 @@ MINGW32   := 1
 # BIT32 (used only for mingw-w64): 1=generate 32bit, 0=generate 64bit
 BIT32     := 0
 
-MAKEOPTS  := $(MAKEFLAGS)
-MAKE_LIB_OPTS:=$(MAKEFLAGS)
+# flags used by make for each of the libraries and ekiga
+# using $(MAKEFLAGS) here might lead to interferences between variables in this
+#   Makefile (e.g. DEBUG) and lib own flags
+MAKEOPTS  := -j2
+MAKE_LIB_OPTS:=
 
 BUILDROOT := $(CURDIR)
 TARGETDIR := $(BUILDROOT)/dist
@@ -576,7 +579,7 @@ else
 	$(SVN) co $(OPAL_URL) $(SRCDIR)/$(OPAL_ARCHIVE) -r $(OPAL_REV)
 endif
 
-$(OPAL_DIR)/configure: binaries $(LIBDIR)/libogg.a $(LIBDIR)/libspeex.a $(LIBDIR)/$(PTLIB_LIB) $(SRCDIR)/$(OPAL_ARCHIVE) $(BINDIR)/avcodec.dll $(LIBDIR)/libx264.a $(LIBDIR)/libcelt0.a $(LIBDIR)/libtheora.a
+$(OPAL_DIR)/configure: binaries $(LIBDIR)/libogg.a $(LIBDIR)/libspeex.a $(LIBDIR)/$(PTLIB_LIB) $(SRCDIR)/$(OPAL_ARCHIVE) $(BINDIR)/avcodec.dll $(LIBDIR)/libx264.dll.a $(LIBDIR)/libcelt0.a $(LIBDIR)/libtheora.a
 	rm -rf $(OPAL_DIR) $(LIBDIR)/$(OPAL_LIB) $(INCLUDEDIR)/opal
 ifeq ($(RELEASE),1)
 	tar Jxf $(SRCDIR)/$(OPAL_ARCHIVE) -C $(BUILDROOT)
