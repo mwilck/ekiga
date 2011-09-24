@@ -192,6 +192,8 @@ private:
     std::string password;
     Type type;
 
+    mutable bool failed_registration_already_notified;
+
     PSafePtr<OpalPresentity> presentity;
     void setup_presentity ();
 

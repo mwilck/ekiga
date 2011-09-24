@@ -68,6 +68,7 @@ Opal::Account::Account (Ekiga::ServiceCore & _core,
   state = Unregistered;
   status = _("Unregistered");
   message_waiting_number = 0;
+  failed_registration_already_notified = false;
 
   int i = 0;
   char *pch = strtok ((char *) account.c_str (), "|");
@@ -168,6 +169,7 @@ Opal::Account::Account (Ekiga::ServiceCore & _core,
   password = _password;
   timeout = _timeout;
   type = t;
+  failed_registration_already_notified = false;
 
   setup_presentity ();
 
@@ -557,6 +559,7 @@ Opal::Account::handle_registration_event (RegistrationState state_,
       if (presence_core && personal_details)
 	presence_core->publish (personal_details);
       state = state_;
+      failed_registration_already_notified = false;
       updated ();
     }
     break;
@@ -566,6 +569,8 @@ Opal::Account::handle_registration_event (RegistrationState state_,
     // Translators: this is a state, not an action, i.e. it should be read as
     // "(you are) unregistered", and not as "(you have been) unregistered"
     status = _("Unregistered");
+    failed_registration_already_notified = false;
+
     updated ();
     /* delay destruction of this account until the
        unsubscriber thread has called back */
@@ -576,6 +581,7 @@ Opal::Account::handle_registration_event (RegistrationState state_,
   case UnregistrationFailed:
 
     status = _("Could not unregister");
+    failed_registration_already_notified = false;
     if (!info.empty ())
       status = status + " (" + info + ")";
     updated ();
@@ -603,7 +609,9 @@ Opal::Account::handle_registration_event (RegistrationState state_,
       status = _("Could not register");
       if (!info.empty ())
         status = status + " (" + info + ")";
-      updated ();
+      if ( !failed_registration_already_notified)
+	updated ();
+      failed_registration_already_notified = true;
       break;
     default:
       break;
