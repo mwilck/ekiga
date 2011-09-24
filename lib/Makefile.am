@@ -35,22 +35,18 @@ INCLUDES = \
 	-I$(top_srcdir)/lib/engine/protocol \
 	-I$(top_srcdir)/lib/engine/videoinput \
 	-I$(top_srcdir)/lib/engine/videooutput \
-	-I$(top_srcdir)/lib/engine/components/avahi \
-	-I$(top_srcdir)/lib/engine/components/avahi-publisher \
 	-I$(top_srcdir)/lib/engine/components/call-history \
 	-I$(top_srcdir)/lib/engine/components/common-videooutput \
 	-I$(top_srcdir)/lib/engine/components/dx-videooutput \
 	-I$(top_srcdir)/lib/engine/components/echo \
 	-I$(top_srcdir)/lib/engine/components/gmconf-personal-details \
 	-I$(top_srcdir)/lib/engine/components/hal-dbus \
-	-I$(top_srcdir)/lib/engine/components/libnotify \
 	-I$(top_srcdir)/lib/engine/components/local-roster \
 	-I$(top_srcdir)/lib/engine/components/mlogo-videoinput \
 	-I$(top_srcdir)/lib/engine/components/null-audioinput \
 	-I$(top_srcdir)/lib/engine/components/null-audiooutput \
 	-I$(top_srcdir)/lib/engine/components/opal \
-	-I$(top_srcdir)/lib/engine/components/ptlib \
-	-I$(top_srcdir)/lib/engine/components/x-videooutput
+	-I$(top_srcdir)/lib/engine/components/ptlib
 
 AM_CFLAGS = \
 	$(GLIB_CFLAGS) $(GTK_CFLAGS) $(GCONF_CFLAGS) $(DBUS_CFLAGS)
@@ -662,31 +658,19 @@ libekiga_la_LDFLAGS += $(SHM_LIBS)
 endif
 
 ##
-# Common support for avahi
+# Support for avahi
 ##
 if HAVE_AVAHI
 
-libekiga_la_LDFLAGS += $(AVAHI_LIBS)
-
-endif
-
-##
-# Sources of the avahi publisher component
-##
-if HAVE_AVAHI
+INCLUDES += \
+	-I$(top_srcdir)/lib/engine/components/avahi \
+	-I$(top_srcdir)/lib/engine/components/avahi-publisher
 
 libekiga_la_SOURCES += \
 	$(components_dir)/avahi-publisher/avahi-publisher-main.cpp \
 	$(components_dir)/avahi-publisher/avahi-publisher-main.h \
 	$(components_dir)/avahi-publisher/avahi-publisher.cpp \
 	$(components_dir)/avahi-publisher/avahi-publisher.h
-
-endif
-
-##
-# Sources of the avahi browser component
-##
-if HAVE_AVAHI
 
 libekiga_la_SOURCES += \
 	$(components_dir)/avahi/avahi-heap.h \
@@ -696,12 +680,17 @@ libekiga_la_SOURCES += \
 	$(components_dir)/avahi/avahi-main.h \
 	$(components_dir)/avahi/avahi-main.cpp
 
+libekiga_la_LDFLAGS += $(AVAHI_LIBS)
+
 endif
 
 ##
 # Sources of the libnotify component
 ##
 if HAVE_NOTIFY
+
+INCLUDES += \
+	-I$(top_srcdir)/lib/engine/components/libnotify
 
 libekiga_la_SOURCES += \
 	$(components_dir)/libnotify/libnotify-main.h \
@@ -724,6 +713,9 @@ libekiga_la_SOURCES += \
 ##
 
 if !WIN32
+
+INCLUDES += \
+	-I$(top_srcdir)/lib/engine/components/x-videooutput
 
 libekiga_la_SOURCES += \
 	$(components_dir)/x-videooutput/videooutput-manager-x.cpp \
