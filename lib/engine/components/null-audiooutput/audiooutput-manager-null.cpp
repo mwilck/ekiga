@@ -38,6 +38,12 @@
 #define DEVICE_SOURCE "Ekiga"
 #define DEVICE_NAME   "SILENT"
 
+#if DEBUG
+#define DEBUG_ARG(a) a
+#else
+#define DEBUG_ARG(a)
+#endif
+
 GMAudioOutputManager_null::GMAudioOutputManager_null (Ekiga::ServiceCore & _core)
 : core (_core)
 {
@@ -49,7 +55,8 @@ GMAudioOutputManager_null::~GMAudioOutputManager_null ()
 {
 }
 
-void GMAudioOutputManager_null::get_devices(std::vector <Ekiga::AudioOutputDevice> & devices)
+void
+GMAudioOutputManager_null::get_devices(std::vector <Ekiga::AudioOutputDevice> & DEBUG_ARG(devices))
 {
 #if DEBUG
   Ekiga::AudioOutputDevice device;
@@ -61,7 +68,9 @@ void GMAudioOutputManager_null::get_devices(std::vector <Ekiga::AudioOutputDevic
 }
 
 
-bool GMAudioOutputManager_null::set_device (Ekiga::AudioOutputPS ps, const Ekiga::AudioOutputDevice & device)
+bool
+GMAudioOutputManager_null::set_device (Ekiga::AudioOutputPS ps,
+				       const Ekiga::AudioOutputDevice & device)
 {
   if ( ( device.type   == DEVICE_TYPE ) &&
        ( device.source == DEVICE_SOURCE) &&
@@ -74,7 +83,11 @@ bool GMAudioOutputManager_null::set_device (Ekiga::AudioOutputPS ps, const Ekiga
   return false;
 }
 
-bool GMAudioOutputManager_null::open (Ekiga::AudioOutputPS ps, unsigned channels, unsigned samplerate, unsigned bits_per_sample)
+bool
+GMAudioOutputManager_null::open (Ekiga::AudioOutputPS ps,
+				 unsigned channels,
+				 unsigned samplerate,
+				 unsigned bits_per_sample)
 {
   current_state[ps].channels        = channels;
   current_state[ps].samplerate      = samplerate;
@@ -94,17 +107,19 @@ bool GMAudioOutputManager_null::open (Ekiga::AudioOutputPS ps, unsigned channels
   return true;
 }
 
-void GMAudioOutputManager_null::close(Ekiga::AudioOutputPS ps)
+void
+GMAudioOutputManager_null::close(Ekiga::AudioOutputPS ps)
 {
   current_state[ps].opened = false;
   Ekiga::Runtime::run_in_main (boost::bind (&GMAudioOutputManager_null::device_closed_in_main, this, ps, current_state[ps].device));
 }
 
 
-bool GMAudioOutputManager_null::set_frame_data (Ekiga::AudioOutputPS ps, 
-                     const char */*data*/, 
-                     unsigned size,
-		     unsigned & bytes_written)
+bool
+GMAudioOutputManager_null::set_frame_data (Ekiga::AudioOutputPS ps, 
+					   const char */*data*/, 
+					   unsigned size,
+					   unsigned & bytes_written)
 {
   if (!current_state[ps].opened) {
     PTRACE(1, "GMAudioOutputManager_null\tTrying to get frame from closed device[" << ps << "]");
@@ -117,7 +132,10 @@ bool GMAudioOutputManager_null::set_frame_data (Ekiga::AudioOutputPS ps,
   return true;
 }
 
-bool GMAudioOutputManager_null::has_device(const std::string & /*sink*/, const std::string & /*device_name*/, Ekiga::AudioOutputDevice & /*device*/)
+bool
+GMAudioOutputManager_null::has_device(const std::string & /*sink*/,
+				      const std::string & /*device_name*/,
+				      Ekiga::AudioOutputDevice & /*device*/)
 {
   return false;
 }

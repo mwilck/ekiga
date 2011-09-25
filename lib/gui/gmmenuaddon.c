@@ -123,8 +123,11 @@ menu_item_selected (GtkWidget *w,
   GtkWidget *statusbar = NULL;
 
   gint id = 0;
+#if GTK_CHECK_VERSION (2, 21, 2)
+#else
   int len = 0;
   int i = 0;
+#endif
 
   statusbar = (GtkWidget *) g_object_get_data (G_OBJECT (w), "statusbar");
 

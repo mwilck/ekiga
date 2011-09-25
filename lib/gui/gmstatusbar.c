@@ -97,11 +97,14 @@ gm_sb_push_message (GmStatusbar *sb,
 		    const char *msg,
 		    va_list args)
 {
+  static guint timer_source;
   gint id = 0;
   gint msg_id = 0;
+#if GTK_CHECK_VERSION (2, 21, 2)
+#else
   int len = 0;
   int i = 0;
-  static guint timer_source;
+#endif
 
   g_return_if_fail (sb != NULL);
 
