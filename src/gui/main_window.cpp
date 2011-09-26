@@ -227,6 +227,7 @@ struct _EkigaMainWindowPrivate
   std::string received_video_codec;
   std::string received_audio_codec;
 
+  gulong roster_selection_connection_id;
   std::vector<boost::signals::connection> connections;
 };
 
@@ -3817,8 +3818,9 @@ ekiga_main_window_init_contact_list (EkigaMainWindow *mw)
   label = gtk_label_new (_("Contacts"));
   mw->priv->roster_view = roster_view_gtk_new (presence_core);
   mw->priv->roster_view_page_number = gtk_notebook_append_page (GTK_NOTEBOOK (mw->priv->main_notebook), mw->priv->roster_view, label);
-  g_signal_connect (mw->priv->roster_view, "selection-changed",
-		    G_CALLBACK (on_roster_selection_changed), mw);
+  g_object_ref (mw->priv->roster_view); // keep it alive as long as we didn't unconnect the signal :
+  mw->priv->roster_selection_connection_id = g_signal_connect (mw->priv->roster_view, "selection-changed",
+							       G_CALLBACK (on_roster_selection_changed), mw);
 }
 
 
@@ -4185,6 +4187,22 @@ ekiga_main_window_constructor (GType the_type,
 }
 
 static void
+ekiga_main_window_dispose (GObject* gobject)
+{
+  EkigaMainWindow *mw = EKIGA_MAIN_WINDOW (gobject);
+
+  if (mw->priv->roster_view) {
+
+    g_signal_handler_disconnect (mw->priv->roster_view,
+				 mw->priv->roster_selection_connection_id);
+    g_object_unref (mw->priv->roster_view);
+    mw->priv->roster_view = NULL;
+  }
+
+  G_OBJECT_CLASS (ekiga_main_window_parent_class)->dispose (gobject);
+}
+
+static void
 ekiga_main_window_finalize (GObject *gobject)
 {
   EkigaMainWindow *mw = EKIGA_MAIN_WINDOW (gobject);
@@ -4331,6 +4349,7 @@ ekiga_main_window_class_init (EkigaMainWindowClass *klass)
   GObjectClass *object_class = G_OBJECT_CLASS (klass);
 
   object_class->constructor = ekiga_main_window_constructor;
+  object_class->dispose = ekiga_main_window_dispose;
   object_class->finalize = ekiga_main_window_finalize;
   object_class->get_property = ekiga_main_window_get_property;
   object_class->set_property = ekiga_main_window_set_property;
