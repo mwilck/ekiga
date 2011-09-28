@@ -279,7 +279,7 @@ confekiga:= $(confflags) \
 #TODO http://ac3filter.net/wiki/How_to_build_ffmpeg tells that
 # --extra-cflags='-Dstrtod=__strtod'
 #should also be used, check if it is needed
-conflibav := --cross-prefix=$(HOST_TOOL_PREFIX)- --enable-static --enable-memalign-hack \
+conflibav := --cross-prefix=$(HOST_TOOL_PREFIX)- --enable-shared --enable-memalign-hack \
 	--enable-cross-compile --enable-w32threads --arch=`echo $(HOST_TOOL_PREFIX)|cut -d- -f1` --target-os=mingw32 \
 	--disable-ffserver --disable-ffmpeg --disable-ffplay \
 	--disable-parsers --enable-parser=h264 --enable-parser=mpeg4video --enable-parser=h263 \
@@ -289,7 +289,7 @@ conflibav := --cross-prefix=$(HOST_TOOL_PREFIX)- --enable-static --enable-memali
 	--disable-protocols --disable-bsfs --prefix=$(BUILDROOT) \
 	--libdir=$(LIBDIR) --extra-ldflags=-Wl,-static --disable-network
 
-confx264 := $(confflags) --enable-shared --disable-cli --enable-win32thread --disable-avs
+confx264 := $(confflags) --enable-static --disable-cli --enable-win32thread --disable-avs
 
 confcelt := $(confflags) --disable-oggtest
 
@@ -535,7 +535,7 @@ $(X264_DIR)/config.status: $(SRCDIR)/$(X264_ARCHIVE)
 	cd $(X264_DIR); ./configure $(confx264)
 	touch $@
 
-$(LIBDIR)/libx264.dll.a: $(X264_DIR)/config.status
+$(LIBDIR)/libx264.a: $(X264_DIR)/config.status
 	$(MAKE) $(MAKE_LIB_OPTS) -C $(X264_DIR)
 	$(MAKE) -C $(X264_DIR) install
 
@@ -577,7 +577,7 @@ else
 	$(SVN) co $(OPAL_URL) $(SRCDIR)/$(OPAL_ARCHIVE) -r $(OPAL_REV)
 endif
 
-$(OPAL_DIR)/configure: binaries $(LIBDIR)/libogg.a $(LIBDIR)/libspeex.a $(LIBDIR)/$(PTLIB_LIB) $(SRCDIR)/$(OPAL_ARCHIVE) $(BINDIR)/avcodec.dll $(LIBDIR)/libx264.dll.a $(LIBDIR)/libcelt0.a $(LIBDIR)/libtheora.a
+$(OPAL_DIR)/configure: binaries $(LIBDIR)/libogg.a $(LIBDIR)/libspeex.a $(LIBDIR)/$(PTLIB_LIB) $(SRCDIR)/$(OPAL_ARCHIVE) $(BINDIR)/avcodec.dll $(LIBDIR)/libx264.a $(LIBDIR)/libcelt0.a $(LIBDIR)/libtheora.a
 	rm -rf $(OPAL_DIR) $(LIBDIR)/$(OPAL_LIB) $(INCLUDEDIR)/opal
 ifeq ($(RELEASE),1)
 	tar Jxf $(SRCDIR)/$(OPAL_ARCHIVE) -C $(BUILDROOT)
