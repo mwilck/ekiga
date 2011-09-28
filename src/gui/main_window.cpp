@@ -1008,7 +1008,7 @@ static gboolean on_stats_refresh_cb (gpointer self)
                            mw->priv->current_call->get_received_video_bandwidth (),
                            videooutput_stats.tx_fps,
                            videooutput_stats.rx_fps);
-    ekiga_main_window_flash_message (mw, msg);
+    ekiga_main_window_flash_message (mw, "%s", msg);
     ekiga_main_window_set_call_duration (mw, mw->priv->current_call->get_duration ().c_str ());
     g_free (msg);
 

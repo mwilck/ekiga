@@ -512,7 +512,7 @@ Opal::Account::publish (const Ekiga::PersonalDetails& details)
   else {  // ekiga knows only these three presence types
     std::string s = "Warning: Unknown presence type ";
     s.append (presence);
-    g_warning (s.data());
+    g_warning ("%s",s.data());
   }
 
   presence_status = details.get_status ();
