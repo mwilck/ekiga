@@ -136,6 +136,8 @@ Opal::Account::Account (Ekiga::ServiceCore & _core,
 
   if (name.find ("%limit") != std::string::npos)
     compat_mode = SIPRegister::e_CannotRegisterMultipleContacts;  // start registration in this compat mode
+  else
+    compat_mode = SIPRegister::e_FullyCompliant;
 
   setup_presentity ();
 }
