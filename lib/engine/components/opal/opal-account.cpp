@@ -519,8 +519,6 @@ Opal::Account::publish (const Ekiga::PersonalDetails& details)
 
   presence_status = details.get_status ();
 
-  // add presence + " - " for backward compatibility with ekiga <= 3.2.x, see OnPresenceChange method too
-  presence_status = presence + " - " + presence_status;
   if (presentity) {
     presentity->SetLocalPresence (personal_state, presence_status);
     PTRACE (4, "Ekiga sent its own presence (publish) for " << get_aor() << ": " << presence << ", note " << presence_status);
@@ -664,43 +662,16 @@ Opal::Account::setup_presentity ()
   if (presentity) {
 
     presentity->SetPresenceChangeNotifier (PCREATE_PresenceChangeNotifier (OnPresenceChange));
-    presentity->GetAttributes().Set(SIP_Presentity::AuthNameKey, username);
-    presentity->GetAttributes().Set(SIP_Presentity::AuthPasswordKey, password);
-    presentity->GetAttributes().Set(SIP_Presentity::SubProtocolKey, "Agent");
+    presentity->GetAttributes().Set(OpalPresentity::AuthNameKey, username);
+    presentity->GetAttributes().Set(OpalPresentity::AuthPasswordKey, password);
+    if (type != H323) {
+      presentity->GetAttributes().Set(SIP_Presentity::SubProtocolKey, "Agent");
+    }
     PTRACE (4, "Created presentity for " << get_aor());
   } else
     PTRACE (4, "Error: cannot create presentity for " << get_aor());
 }
 
-/* ekiga 3.2.x (which used old .6 branches for ptlib/opal) put both
- *   presence and status in note field
- * this function extracts presence and status from note field
- * e.g. note = "dnd - alpha" => pres = "dnd", stat = "alpha"
-*/
-static void old_presentity (const PString &note, std::string &pres, std::string &stat)
-{
-  PINDEX j;
-  PCaselessString s = note;
-
-  if (s.Find ("Away") != P_MAX_INDEX)
-    pres = "away";
-  else if (s.Find ("On the phone") != P_MAX_INDEX)
-    pres = "inacall";
-  else if (s.Find ("Ringing") != P_MAX_INDEX)
-    pres = "ringing";
-  else if (s.Find ("dnd") != P_MAX_INDEX
-           || s.Find ("Do Not Disturb") != P_MAX_INDEX)
-    pres = "dnd";
-  else if (s.Find ("Free For Chat") != P_MAX_INDEX)
-    pres = "freeforchat";
-  else
-    pres = "online";
-
-  if ((j = s.Find (" - ")) != P_MAX_INDEX)
-    stat = (const char *) note.Mid (j + 3);
-  else
-    stat = "";
-}
 
 void
 Opal::Account::OnPresenceChange (OpalPresentity& /*presentity*/,
@@ -712,29 +683,36 @@ Opal::Account::OnPresenceChange (OpalPresentity& /*presentity*/,
   SIPURL sip_uri = SIPURL (info.m_entity);
   sip_uri.Sanitise (SIPURL::ExternalURI);
   std::string uri = sip_uri.AsString ();
+  PCaselessString note = info.m_note;
 
   PTRACE (4, "Ekiga received a presence change (notify) for " << info.m_entity << ": state " << info.m_state << ", note " << info.m_note);
 
-  if (uri.compare (0, 5, "pres:"))
-    g_warning ("Presentity entity should start with \"pres:\", presence might not work");
-  uri.replace (0, 5, "sip:");  // replace "pres:" sith "sip:"
-
-  if (info.m_state == OpalPresenceInfo::Available
-      && (info.m_note.Find ("online") != P_MAX_INDEX
-          || info.m_note.Find ("away") != P_MAX_INDEX
-          || info.m_note.Find ("dnd") != P_MAX_INDEX)) {  // old presentity type (ekiga <= 3.2.x, using .6 ptlib/opal branches)
-    // adding support for old presentity creates a bug:
-    // if the user selects online or away or dnd as note, then this will
-    // replace the real status
-    old_presentity (info.m_note, new_presence, new_status);
-    Ekiga::Runtime::run_in_main (boost::bind (&Opal::Account::presence_status_in_main, this, uri, new_presence, new_status));
+  if (info.m_state == OpalPresenceInfo::Unchanged)
     return;
-  }
 
+  if (!uri.compare (0, 5, "pres:"))
+    uri.replace (0, 5, "sip:");  // replace "pres:" sith "sip:" FIXME
+
+  new_status = (const char*) info.m_note;
   switch (info.m_state) {
 
   case OpalPresenceInfo::Unchanged:
     // do not change presence
+    break;
+  case OpalPresenceInfo::Available:
+    new_presence = "online";
+    if (!note.IsEmpty ()) {
+      if (note.Find ("dnd") != P_MAX_INDEX
+          || note.Find ("do not disturb") != P_MAX_INDEX
+          || note.Find ("busy") != P_MAX_INDEX) {
+        new_presence = "dnd";
+      }
+      else if (note.Find ("away") != P_MAX_INDEX
+               || note.Find ("holiday") != P_MAX_INDEX
+               || note.Find ("lunch") != P_MAX_INDEX) {
+        new_presence = "away";
+      }
+    }
     break;
   case OpalPresenceInfo::InternalError:
   case OpalPresenceInfo::Forbidden:
@@ -745,70 +723,83 @@ Opal::Account::OnPresenceChange (OpalPresentity& /*presentity*/,
     break;
   case OpalPresenceInfo::Away:
     new_presence = "away";
+    if (new_status.empty ())
+      new_status = _("Appointment");
     break;
   case OpalPresenceInfo::Busy:
     new_presence = "dnd";
     break;
-
-  case OpalPresenceInfo::Available:
-    new_presence = "online";
-    break;
   case OpalPresenceInfo::Appointment:
     new_presence = "busy";
     // Translators: see RFC 4480 for more information about activities
-    new_status = _("Appointment");
+    if (new_status.empty ())
+      new_status = _("Appointment");
     break;
   case OpalPresenceInfo::Breakfast:
     new_presence = "away";
-    new_status =  _("Breakfast");
+    if (new_status.empty ())
+      new_status = _("Breakfast");
     break;
   case OpalPresenceInfo::Dinner:
     new_presence = "away";
-    new_status =  _("Dinner");
+    if (new_status.empty ())
+      new_status = _("Dinner");
     break;
+  case OpalPresenceInfo::Vacation:
   case OpalPresenceInfo::Holiday:
     new_presence = "away";
-    new_status =  _("Holiday");
+    if (new_status.empty ())
+      new_status = _("Holiday");
     break;
   case OpalPresenceInfo::InTransit:
     new_presence = "away";
-    new_status =  _("In transit");
+    if (new_status.empty ())
+      new_status = _("In transit");
     break;
   case OpalPresenceInfo::LookingForWork:
     new_presence = "away";
-    new_status =  _("Looking for work");
+    if (new_status.empty ())
+      new_status = _("Looking for work");
     break;
   case OpalPresenceInfo::Lunch:
     new_presence = "away";
-    new_status =  _("Lunch");
+    if (new_status.empty ())
+      new_status = _("Lunch");
     break;
   case OpalPresenceInfo::Meal:
     new_presence = "away";
-    new_status =  _("Meal");
+    if (new_status.empty ())
+      new_status = _("Meal");
     break;
   case OpalPresenceInfo::Meeting:
     new_presence = "away";
-    new_status =  _("Meeting");
+    if (new_status.empty ())
+      new_status = _("Meeting");
     break;
   case OpalPresenceInfo::OnThePhone:
-    new_presence = "away";
-    new_status =  _("On the phone");
+    new_presence = "inacall";
+    if (new_status.empty ())
+      new_status = _("On the phone");
     break;
   case OpalPresenceInfo::Playing:
     new_presence = "busy";
-    new_status = _("Playing");
+    if (new_status.empty ())
+      new_status = _("Playing");
     break;
   case OpalPresenceInfo::Shopping:
     new_presence = "away";
-    new_status =  _("Shopping");
+    if (new_status.empty ())
+      new_status = _("Shopping");
     break;
   case OpalPresenceInfo::Sleeping:
     new_presence = "away";
-    new_status = _("Sleeping");
+    if (new_status.empty ())
+      new_status = _("Sleeping");
     break;
   case OpalPresenceInfo::Working:
     new_presence = "busy";
-    new_status = _("Working");
+    if (new_status.empty ())
+      new_status = _("Working");
     break;
   case OpalPresenceInfo::Other:
   case OpalPresenceInfo::Performance:
@@ -818,24 +809,14 @@ Opal::Account::OnPresenceChange (OpalPresentity& /*presentity*/,
   case OpalPresenceInfo::Steering:
   case OpalPresenceInfo::Travel:
   case OpalPresenceInfo::TV:
-  case OpalPresenceInfo::Vacation:
   case OpalPresenceInfo::Worship:
-    new_presence = "online";
+    new_presence = "away";
     break;
   default:
     break;
   }
 
-  if (!info.m_note.IsEmpty ()) {
-    size_t pos;
-    new_status = (const char*) info.m_note; // casting a PString to a std::string isn't straightforward
-    // remove "presence - ", used for backward compatibility, see publish method too
-    if ((pos = new_status.find (" - ")) != string::npos)
-      new_status = new_status.erase (0, pos + 3);  // remove everything until -
-  }
-
-  if (info.m_state != OpalPresenceInfo::Unchanged)
-    Ekiga::Runtime::run_in_main (boost::bind (&Opal::Account::presence_status_in_main, this, uri, new_presence, new_status));
+  Ekiga::Runtime::run_in_main (boost::bind (&Opal::Account::presence_status_in_main, this, uri, new_presence, new_status));
 }
 
 
