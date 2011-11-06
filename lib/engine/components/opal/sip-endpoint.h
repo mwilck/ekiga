@@ -189,10 +189,6 @@ namespace Opal {
 				       Account::RegistrationState state,
 				       const std::string msg);
 
-      void presence_status_in_main (std::string uri,
-				    std::string presence,
-				    std::string status);
-
       void push_message_in_main (const std::string uri,
 				 const std::string name,
 				 const std::string msg);
