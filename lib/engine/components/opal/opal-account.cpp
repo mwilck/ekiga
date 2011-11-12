@@ -154,6 +154,7 @@ Opal::Account::Account (Ekiga::ServiceCore & _core,
                         unsigned _timeout)
   : core (_core)
 {
+  endpoint = core.get<Sip::EndPoint> ("opal-sip-endpoint");
   dead = false;
   state = Unregistered;
   status = _("Unregistered");
