@@ -4848,7 +4848,7 @@ main (int argc,
 
   /* Ekiga initialisation */
   // should come *after* ptrace initialisation, to track codec loading for ex.
-  static GnomeMeeting instance;
+  GnomeMeeting instance;
 
 #ifdef HAVE_DBUS
   if (!ekiga_dbus_claim_ownership ()) {
