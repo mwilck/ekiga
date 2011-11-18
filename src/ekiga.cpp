@@ -65,6 +65,9 @@ GnomeMeeting::GnomeMeeting ()
 
   assistant_window = NULL;
   prefs_window = NULL;
+#ifdef HAVE_DBUS
+  dbus_component = NULL;
+#endif
 }
 
 
