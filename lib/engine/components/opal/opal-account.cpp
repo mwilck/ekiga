@@ -529,6 +529,17 @@ Opal::Account::publish (const Ekiga::PersonalDetails& details)
 void
 Opal::Account::fetch (const std::string uri)
 {
+  if (!is_enabled ())
+    return;
+
+  size_t pos = uri.find ("@");
+  if (pos == string::npos)
+    return;
+
+  std::string uri_host = uri.substr (++pos);
+  if (uri_host != get_host ())
+    return;
+
   watched_uris.insert (uri);
   if (presentity)
     presentity->SubscribeToPresence (PString (uri));
