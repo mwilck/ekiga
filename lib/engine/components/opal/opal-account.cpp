@@ -704,11 +704,14 @@ Opal::Account::OnPresenceChange (OpalPresentity& /*presentity*/,
     new_presence = "online";
     if (!note.IsEmpty ()) {
       if (note.Find ("dnd") != P_MAX_INDEX
+          || note.Find ("meeting") != P_MAX_INDEX
           || note.Find ("do not disturb") != P_MAX_INDEX
           || note.Find ("busy") != P_MAX_INDEX) {
         new_presence = "dnd";
       }
       else if (note.Find ("away") != P_MAX_INDEX
+               || note.Find ("out") != P_MAX_INDEX
+               || note.Find ("vacation") != P_MAX_INDEX
                || note.Find ("holiday") != P_MAX_INDEX
                || note.Find ("lunch") != P_MAX_INDEX) {
         new_presence = "away";
