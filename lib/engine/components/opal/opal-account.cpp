@@ -727,6 +727,11 @@ Opal::Account::OnPresenceChange (OpalPresentity& /*presentity*/,
                || note.Find ("lunch") != P_MAX_INDEX) {
         new_presence = "away";
       }
+      else if (note.Find ("phone") != P_MAX_INDEX
+               || note.Find ("ringing") != P_MAX_INDEX
+               || note.Find ("call") != P_MAX_INDEX) {
+        new_presence = "inacall";
+      }
     }
     break;
   case OpalPresenceInfo::InternalError:
