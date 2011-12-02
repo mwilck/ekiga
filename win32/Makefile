@@ -784,6 +784,8 @@ $(TARGETDIR)/zips: binaries $(EKIGA_DIR)/src/ekiga.exe
 	mkdir $(TARGETDIR)
 	make -C $(EKIGA_DIR) install
 # remove unneeded files, if any
+	rm -f $(EKIGA_PREFIX)/*.dll.a
+	rm -f $(EKIGA_PREFIX)/*.la
 	rm -f $(EKIGA_PREFIX)/plugins/*.dll.a
 	rm -f $(EKIGA_PREFIX)/plugins/*.la
 
