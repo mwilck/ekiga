@@ -308,8 +308,9 @@ void Opal::Account::enable ()
     // FIXME : the following actions should probably be done by opal itself,
     // remembering what ekiga asked...
     for (std::set<std::string>::iterator iter = watched_uris.begin ();
-         iter != watched_uris.end (); ++iter)
+         iter != watched_uris.end (); ++iter) {
       presentity->SubscribeToPresence (PString (*iter));
+    }
     presentity->SetLocalPresence (personal_state, presence_status);
   }
 
@@ -324,8 +325,17 @@ void Opal::Account::disable ()
 
   endpoint->unsubscribe (*this);
 
-  if (presentity)
+  if (presentity) {
+
     presentity->Close ();
+    // FIXME : the following actions should probably be done by opal itself,
+    // remembering what ekiga asked...
+    for (std::set<std::string>::iterator iter = watched_uris.begin ();
+         iter != watched_uris.end (); ++iter) {
+      presentity->UnsubscribeFromPresence (PString (*iter));
+      Ekiga::Runtime::run_in_main (boost::bind (&Opal::Account::presence_status_in_main, this, (*iter), "unknown", ""));
+    }
+  }
 
   updated ();
   trigger_saving ();
@@ -529,6 +539,9 @@ Opal::Account::publish (const Ekiga::PersonalDetails& details)
 void
 Opal::Account::fetch (const std::string uri)
 {
+  watched_uris.insert (uri); // URI will be watched, but we only subscribe for
+                             // presence information if the account is enabled
+
   if (!is_enabled ())
     return;
 
@@ -540,7 +553,6 @@ Opal::Account::fetch (const std::string uri)
   if (uri_host != get_host ())
     return;
 
-  watched_uris.insert (uri);
   if (presentity)
     presentity->SubscribeToPresence (PString (uri));
 }
