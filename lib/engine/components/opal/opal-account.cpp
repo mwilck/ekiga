@@ -614,6 +614,7 @@ Opal::Account::handle_registration_event (RegistrationState state_,
   case RegistrationFailed:
 
     switch (compat_mode) {
+    case SIPRegister::e_HasApplicationLayerGateway:
     case SIPRegister::e_FullyCompliant:
       // FullyCompliant did not work, try next compat mode
       compat_mode = SIPRegister::e_CannotRegisterMultipleContacts;
