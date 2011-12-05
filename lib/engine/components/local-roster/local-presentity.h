@@ -47,6 +47,11 @@
 #include "presence-core.h"
 #include "presentity.h"
 
+// remove leading and trailing spaces (useful for copy/paste)
+// also, if no protocol specified, add leading "sip:"
+std::string
+canonise_uri (std::string uri);
+
 namespace Local
 {
 

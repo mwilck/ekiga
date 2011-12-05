@@ -42,6 +42,26 @@
 #include "robust-xml.h"
 #include "local-presentity.h"
 
+
+// remove leading and trailing spaces and tabs (useful for copy/paste)
+// also, if no protocol specified, add leading "sip:"
+std::string
+canonise_uri (std::string uri)
+{
+  const size_t begin_str = uri.find_first_not_of (" \t");
+  if (begin_str == std::string::npos)  // there is no content
+    return "";
+
+  const size_t end_str = uri.find_last_not_of (" \t");
+  const size_t range = end_str - begin_str + 1;
+  uri = uri.substr (begin_str, range);
+  const size_t pos = uri.find (":");
+  if (pos == std::string::npos)
+    uri = uri.insert (0, "sip:");
+  return uri;
+}
+
+
 /* at one point we will return a smart pointer on this... and if we don't use
  * a false smart pointer, we will crash : the reference count isn't embedded!
  */
@@ -272,9 +292,8 @@ Local::Presentity::edit_presentity_form_submitted (bool submitted,
   const std::string uri = get_uri ();
   bool preferred = result.boolean ("preferred");
   std::set<xmlNodePtr> nodes_to_remove;
-  size_t pos = new_uri.find_first_of (' ');
-  if (pos != std::string::npos)
-    new_uri = new_uri.substr (0, pos);
+
+  new_uri = canonise_uri (new_uri);
 
   for (xmlNodePtr child = node->children ;
        child != NULL ;
