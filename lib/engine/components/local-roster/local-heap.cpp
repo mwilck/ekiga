@@ -395,9 +395,18 @@ Local::Heap::new_presentity_form_submitted (bool submitted,
   else
     uri = result.text ("uri");
 
-  size_t pos = uri.find_first_of (' ');
-  if (pos != std::string::npos)
-    uri = uri.substr (0, pos);
+  // remove leading and trailing spaces (useful for copy/paste)
+  const size_t begin_str = uri.find_first_not_of (" \t");
+  if (begin_str != std::string::npos) {  // there is content
+    const size_t end_str = uri.find_last_not_of (" \t");
+    const size_t range = end_str - begin_str + 1;
+    uri = uri.substr (begin_str, range);
+    const size_t pos = uri.find (":");
+    // if no protocol specified, add leading "sip:"
+    if (pos == std::string::npos)
+      uri = uri.insert (0, "sip:");
+  }
+
   if (presence_core->is_supported_uri (uri)
       && !has_presentity_with_uri (uri)) {
 
