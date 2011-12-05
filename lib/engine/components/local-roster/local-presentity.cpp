@@ -247,8 +247,8 @@ Local::Presentity::edit_presentity ()
   request->title (_("Edit roster element"));
   request->instructions (_("Please fill in this form to change an existing "
 			   "element of ekiga's internal roster"));
-  request->text ("name", _("Name:"), name, std::string ());
-  request->text ("uri", _("Address:"), uri, std::string ());
+  request->text ("name", _("Name:"), name, _("Name of the contact, as shown in your roster"));
+  request->text ("uri", _("Address:"), uri, _("Address, e.g. sip:xyz@ekiga.net"));
   request->boolean ("preferred", _("Is a preferred contact"), is_preferred ());
 
   request->editable_set ("groups", _("Choose groups:"),
