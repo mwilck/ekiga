@@ -756,8 +756,6 @@ Opal::Account::OnPresenceChange (OpalPresentity& /*presentity*/,
     break;
   case OpalPresenceInfo::Away:
     new_presence = "away";
-    if (new_status.empty ())
-      new_status = _("Appointment");
     break;
   case OpalPresenceInfo::Busy:
     new_presence = "dnd";
