@@ -953,6 +953,10 @@ static void on_setup_call_cb (boost::shared_ptr<Ekiga::CallManager> manager,
   EkigaMainWindow *mw = EKIGA_MAIN_WINDOW (self);
   boost::shared_ptr<Ekiga::AudioOutputCore> audiooutput_core = mw->priv->core->get<Ekiga::AudioOutputCore> ("audiooutput-core");
 
+  // No Call Waiting support
+  if (mw->priv->current_call)
+    return; // Trying to setup a call while there is another one : not supported yet
+
   if (!call->is_outgoing () && !manager->get_auto_answer ()) {
     ekiga_main_window_update_calling_state (mw, Called);
     audiooutput_core->start_play_event ("incoming_call_sound", 4000, 256);
@@ -1075,10 +1079,14 @@ static void on_established_call_cb (boost::shared_ptr<Ekiga::CallManager>  /*man
 
 static void on_cleared_call_cb (boost::shared_ptr<Ekiga::CallManager>  /*manager*/,
                                 boost::shared_ptr<Ekiga::Call>  call,
-                                std::string reason, 
+                                std::string reason,
                                 gpointer self)
 {
   EkigaMainWindow *mw = EKIGA_MAIN_WINDOW (self);
+
+  if (mw->priv->current_call && mw->priv->current_call->get_id () != call->get_id ()) {
+    return; // Trying to clear another call than the current active one
+  }
 
   if (gm_conf_get_bool (VIDEO_DISPLAY_KEY "stay_on_top"))
     ekiga_main_window_set_stay_on_top (mw, FALSE);
@@ -1090,10 +1098,10 @@ static void on_cleared_call_cb (boost::shared_ptr<Ekiga::CallManager>  /*manager
   if (!gm_conf_get_bool (USER_INTERFACE_KEY "main_window/show_call_panel"))
     ekiga_main_window_hide_call_panel (mw);
   ekiga_main_window_clear_stats (mw);
-  ekiga_main_window_push_message (mw, "%s", reason.c_str ());
+  ekiga_main_window_flash_message (mw, "%s", reason.c_str ());
   ekiga_main_window_update_logo_have_window (mw);
 
-  if (mw->priv->current_call && mw->priv->current_call->get_id () == call->get_id ()) {
+  if (mw->priv->current_call) {
     mw->priv->current_call = boost::shared_ptr<Ekiga::Call>();
     g_source_remove (mw->priv->timeout_id);
     mw->priv->timeout_id = -1;
@@ -1104,7 +1112,6 @@ static void on_cleared_call_cb (boost::shared_ptr<Ekiga::CallManager>  /*manager
   audiooutput_core->stop_play_event("ring_tone_sound");
 
   ekiga_main_window_clear_signal_levels (mw);
-
 }
 
 
@@ -1178,8 +1185,6 @@ static void on_missed_call_cb (boost::shared_ptr<Ekiga::CallManager>  /*manager*
 			  call->get_remote_party_name ().c_str ());
   ekiga_main_window_push_message (mw, "%s", info);
   g_free (info);
-
-  ekiga_main_window_update_calling_state (mw, Standby);
 }
 
 
