@@ -3200,8 +3200,8 @@ ekiga_main_window_incoming_call_notify (EkigaMainWindow *mw,
 #endif
 #endif
                                     );
-  notify_notification_add_action (notify, "accept", _("Accept"), notify_action_cb, mw, NULL);
   notify_notification_add_action (notify, "reject", _("Reject"), notify_action_cb, mw, NULL);
+  notify_notification_add_action (notify, "accept", _("Accept"), notify_action_cb, mw, NULL);
   notify_notification_set_timeout (notify, NOTIFY_EXPIRES_NEVER);
   notify_notification_set_urgency (notify, NOTIFY_URGENCY_CRITICAL);
 // NOTIFY_CHECK_VERSION appeared in 0.5.2 only
