@@ -3053,7 +3053,6 @@ ekiga_main_window_incoming_call_dialog_show (EkigaMainWindow *mw,
   const char *utf8_name = call->get_remote_party_name ().c_str ();
   const char *utf8_app = call->get_remote_application ().c_str ();
   const char *utf8_url = call->get_remote_uri ().c_str ();
-  const char *utf8_local = call->get_local_party_name ().c_str ();
 
   g_return_if_fail (EKIGA_IS_MAIN_WINDOW (mw));
 
@@ -3082,7 +3081,7 @@ ekiga_main_window_incoming_call_dialog_show (EkigaMainWindow *mw,
   g_object_unref (pixbuf);
 
   if (utf8_url) {
-    
+
     label = gtk_label_new (NULL);
     msg = g_strdup_printf ("<b>%s</b> <span foreground=\"blue\"><u>%s</u></span>",
                            _("Remote URI:"), utf8_url);
@@ -3098,19 +3097,6 @@ ekiga_main_window_incoming_call_dialog_show (EkigaMainWindow *mw,
     label = gtk_label_new (NULL);
     msg = g_strdup_printf ("<b>%s</b> %s",
 			   _("Remote Application:"), utf8_app);
-    gtk_label_set_markup (GTK_LABEL (label), msg);
-    gtk_label_set_line_wrap (GTK_LABEL (label), TRUE);
-    gtk_box_pack_start (GTK_BOX (vbox), label, FALSE, FALSE, 2);
-    gtk_misc_set_alignment (GTK_MISC (label), 0.0, 0.0);
-    g_free (msg);
-  }
-
-  if (utf8_local) {
-    
-    label = gtk_label_new (NULL);
-    msg =
-      g_strdup_printf ("<b>%s</b> %s",
-		       _("Account ID:"), utf8_local);
     gtk_label_set_markup (GTK_LABEL (label), msg);
     gtk_label_set_line_wrap (GTK_LABEL (label), TRUE);
     gtk_box_pack_start (GTK_BOX (vbox), label, FALSE, FALSE, 2);
@@ -3185,21 +3171,15 @@ ekiga_main_window_incoming_call_notify (EkigaMainWindow *mw,
                                         boost::shared_ptr<Ekiga::Call>  call)
 {
   NotifyNotification *notify = NULL;
-  
-  GtkStatusIcon *statusicon = NULL;
 
   gchar *uri = NULL;
   gchar *app = NULL;
-  gchar *account = NULL;
   gchar *body = NULL;
   gchar *title = NULL;
-
-  statusicon = GTK_STATUS_ICON (GnomeMeeting::Process ()->GetStatusicon ());
 
   const char *utf8_name = call->get_remote_party_name ().c_str ();
   const char *utf8_app = call->get_remote_application ().c_str ();
   const char *utf8_url = call->get_remote_uri ().c_str ();
-  const char *utf8_local = call->get_local_party_name ().c_str ();
 
   title = g_strdup_printf (_("Incoming call from %s"), (const char*) utf8_name);
 
@@ -3207,13 +3187,10 @@ ekiga_main_window_incoming_call_notify (EkigaMainWindow *mw,
     uri = g_strdup_printf ("<b>%s</b> %s", _("Remote URI:"), utf8_url);
   if (utf8_app)
     app = g_strdup_printf ("<b>%s</b> %s", _("Remote Application:"), utf8_app);
-  if (utf8_local)
-    account = g_strdup_printf ("<b>%s</b> %s", _("Account ID:"), utf8_local);
 
-  body = g_strdup_printf ("%s\n%s\n%s", uri, app, account);
-  
+  body = g_strdup_printf ("%s\n%s", uri, app);
 
-  notify = notify_notification_new (title, body, GM_ICON_LOGO
+  notify = notify_notification_new (title, body, NULL
 // NOTIFY_CHECK_VERSION appeared in 0.5.2 only
 #ifndef NOTIFY_CHECK_VERSION
                                     , NULL
@@ -3243,7 +3220,7 @@ ekiga_main_window_incoming_call_notify (EkigaMainWindow *mw,
                                            (gpointer) notify));
     call->cleared.connect (boost::bind (&on_cleared_incoming_call_cb, _1,
                                       (gpointer) notify));
-    call->missed.connect (boost::bind (&on_incoming_call_gone_cb, 
+    call->missed.connect (boost::bind (&on_incoming_call_gone_cb,
                                      (gpointer) notify));
   }
 
@@ -3251,7 +3228,6 @@ ekiga_main_window_incoming_call_notify (EkigaMainWindow *mw,
 
   g_free (uri);
   g_free (app);
-  g_free (account);
   g_free (title);
   g_free (body);
 }
