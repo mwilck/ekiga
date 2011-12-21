@@ -2,6 +2,7 @@
 # Copyright © 2009 GNOME i18n Project for Vietnamese.
 # Nguyễn Thái Ngọc Duy <pclouds@gmail.net>, 2002-2004.
 # Clytie Siddall <clytie@riverland.net.au>, 2005-2009.
+# Nguyen Vu Hung <vuhung16plus@gmail.com>, 2011
 #
 msgid ""
 msgstr ""
@@ -9,9 +10,9 @@ msgstr ""
 "Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?"
 "product=ekiga&keywords=I18N+L10N&component=general\n"
 "POT-Creation-Date: 2011-12-19 09:28+0000\n"
-"PO-Revision-Date: 2011-12-21 19:25+0700\n"
-"Last-Translator: Clytie Siddall <clytie@riverland.net.au>\n"
-"Language-Team: Vietnamese <vi-VN@googlegroups.com>\n"
+"PO-Revision-Date: 2011-12-21 19:26+0700\n"
+"Last-Translator: Nguyễn Vũ Hưng <vuhung16plus@gmail.com>\n"
+"Language-Team: Vietnamese <du-an-most@lists.hanoilug.org >\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -46,13 +47,13 @@ msgid ""
 "hardware support is not available. If this is set to false, Ekiga will not "
 "try to open the PIP if hardware support is not available."
 msgstr ""
-"Cho phép Ekiga phục hồi phần mềm co giãn ảnh-bên-trong-ảnh nếu không có sẵn "
-"hỗ trợ phần cứng. Đặt tùy chọn này thành sai (false) thì Ekiga sẽ không thử "
-"mở PIP nếu hỗ trợ phần cứng không sẵn sàng."
+"Cho phép Ekiga dùng thu phóng phần mềm dự phòng nếu phần cứng không được hỗ "
+"trợ. Nếu đặt thành Sai (False), Ekiga sẽ không mở PIP khi không có hỗ trợ "
+"phần cứng."
 
 #: ../ekiga.schemas.in.in.h:3
 msgid "Allow picture-in-picture software scaling"
-msgstr "Cho phép phần mềm co giãn ảnh-bên-trong-ảnh"
+msgstr "Cho co giãn phần mềm ảnh-tới-ảnh"
 
 #: ../ekiga.schemas.in.in.h:4
 msgid "Alternative audio output device"
@@ -82,7 +83,7 @@ msgid ""
 "the specified amount of time (in seconds)"
 msgstr ""
 "Tự động từ chối hay chuyển tiếp các cuộc gọi được gửi đến nếu không có trả "
-"lời trong vòng được lập (theo giây)."
+"lời trong khoảng thời gian đã chỉ định (tính bằng giây)"
 
 #: ../ekiga.schemas.in.in.h:10
 msgid "Calls history"
@@ -107,18 +108,18 @@ msgid ""
 "Netmeeting and using both Fast Start and H.245 Tunneling can crash some "
 "versions of Netmeeting"
 msgstr ""
-"Kết nối sẽ được thiết lập ở chế độ Sở khởi Nhanh. Sở khởi Nhanh là một "
-"phương pháp sở khơi nhanh cuộc gọi được giới thiệu trong H.323v2. Nó không "
-"phải được Netmeeting hỗ trợ, và trường hợp chạy cả hai Sở khởi Nhanh và "
-"Đường hầm H.245 có thể gây ra một số phiên bản Netmeeting sụp đổ."
+"Kết nối sẽ được thiết lập ở chế độ Khởi động nhanh. Khởi động nhanh là một "
+"phương pháp khởi động nhanh cuộc gọi được giới thiệu trong H.323v2. Nó không "
+"được Netmeeting hỗ trợ, và nếu dùng cả khởi động nhanh và H.245 Tunnel có "
+"thể gây ra đổ vỡ với một số phiên bản Netmeeting"
 
 #: ../ekiga.schemas.in.in.h:14
 msgid "Contact long status"
-msgstr "Trạng thái liên lạc dài"
+msgstr "Trạng thái gọi dài"
 
 #: ../ekiga.schemas.in.in.h:15
 msgid "Contact short status"
-msgstr "Trạng thái liên lạc ngắn"
+msgstr "Trạng thái gọi ngắn"
 
 #: ../ekiga.schemas.in.in.h:16
 msgid "DTMF sending"
@@ -126,19 +127,19 @@ msgstr "Gửi DTMF"
 
 #: ../ekiga.schemas.in.in.h:17
 msgid "Disable video hardware acceleration"
-msgstr "Tắt chức năng tăng tốc phần cứng ảnh động"
+msgstr "Tắt tăng tốc phần cứng video"
 
 #: ../ekiga.schemas.in.in.h:18 ../src/gui/main_window.cpp:4049
 msgid "Display images from your camera device"
-msgstr "Hiện ảnh từ thiết bị máy ảnh của bạn."
+msgstr "Hiện ảnh từ camera của bạn"
 
 #: ../ekiga.schemas.in.in.h:19
 msgid "Enable 'Fast Start'"
-msgstr "Bật « Sở khởi nhanh »"
+msgstr "Bật 'Khởi động nhanh'"
 
 #: ../ekiga.schemas.in.in.h:20
 msgid "Enable H.245 tunneling"
-msgstr "Bật đường hầm H.245"
+msgstr "Bật H.245 tunnel"
 
 #: ../ekiga.schemas.in.in.h:21
 #, fuzzy
@@ -171,23 +172,23 @@ msgid ""
 "Enter the number of seconds after which Ekiga should try refreshing the NAT "
 "binding when STUN is being used"
 msgstr ""
-"Hãy gõ số giây sau đó Ekiga nên thử cập nhật tổ hợp NAT khi sử dụng STUN."
+"Hãy gõ số giây mà Ekiga nên thử sau khi cập nhật tổ hợp NAT khi sử dụng STUN"
 
 #: ../ekiga.schemas.in.in.h:27 ../src/gui/preferences.cpp:445
 msgid "Enter your full name"
-msgstr "Gõ họ tên của bạn"
+msgstr "Nhập họ tên của bạn"
 
 #: ../ekiga.schemas.in.in.h:28
 msgid "Forward calls to host"
-msgstr "Chuyển tiếp cuộc gọi cho máy"
+msgstr "Chuyển tiếp cuộc gọi tới máy"
 
 #: ../ekiga.schemas.in.in.h:29
 msgid "Forward calls to the given host if busy"
-msgstr "Chuyển tiếp cuộc gọi đến máy cho trước nếu bận"
+msgstr "Chuyển tiếp cuộc gọi đến máy đã chỉ định nếu bận"
 
 #: ../ekiga.schemas.in.in.h:30
 msgid "Forward calls to the given host if no answer"
-msgstr "Chuyển tiếp cuộc gọi đến máy cho trước nếu không có trả lời"
+msgstr "Chuyển tiếp cuộc gọi đến máy đã chỉ định nếu không có trả lời"
 
 #: ../ekiga.schemas.in.in.h:31 ../src/gui/preferences.cpp:961
 msgid "Frame Rate"
@@ -202,16 +203,15 @@ msgid ""
 "If enabled, Ekiga will start hidden provided that the notification area is "
 "present in the GNOME panel"
 msgstr ""
-"Bật thì Ekiga sẽ khởi chạy bị ẩn, miễn là vùng thông báo ở bảng điều khiển "
-"GNOME."
+"Nếu bật, Ekiga sẽ khởi chạy ẩn nếu vùng thông báo ở bảng điều khiển GNOME"
 
 #: ../ekiga.schemas.in.in.h:34
 msgid ""
 "If enabled, all incoming calls will be forwarded to the host that is "
 "specified in the field below"
 msgstr ""
-"Bật thì mọi cuộc gọi được gửi đến sẽ được chuyển tiếp đến máy được xác định "
-"trong trường bên dưới"
+"Nếu bật, mọi cuộc gọi đến sẽ chuyển tiếp đến máy được chỉ định trong trường "
+"dưới đây"
 
 #: ../ekiga.schemas.in.in.h:35
 msgid ""
@@ -219,17 +219,16 @@ msgid ""
 "specified in the field below if you already are in a call or if you are in "
 "Do Not Disturb mode"
 msgstr ""
-"Bật thì mọi cuộc gọi được gửi đến sẽ được chuyển tiếp đến máy được xác định "
-"trong trường bên dưới nếu bạn ở cuộc gọi khác, hoặc nếu bạn ở chế độ Đừng "
-"Làm Phiền"
+"Nếu bật, mọi cuộc gọi đến sẽ được chuyển tiếp đến máy được chỉ định trong "
+"trường dưới đây đang ở cuộc gọi khác, hoặc nếu đang ở chế độ Đừng Làm Phiền"
 
 #: ../ekiga.schemas.in.in.h:36
 msgid ""
 "If enabled, all incoming calls will be forwarded to the host that is "
 "specified in the field below if you do not answer the call"
 msgstr ""
-"Bật thì mọi cuộc gọi được gửi đến sẽ được chuyển tiếp đến máy được xác định "
-"trong trường bên dưới nếu bạn không trả lời cuộc gọi"
+"Nếu bật, mọi cuộc gửi đến sẽ chuyển tiếp đến máy được chỉ định trong trường "
+"bên dưới nếu bạn không trả lời cuộc gọi"
 
 #: ../ekiga.schemas.in.in.h:37 ../src/gui/preferences.cpp:500
 msgid "If enabled, automatically answer incoming calls"
@@ -237,7 +236,7 @@ msgstr ""
 
 #: ../ekiga.schemas.in.in.h:38 ../src/gui/preferences.cpp:464
 msgid "If enabled, offline contacts will be shown in the roster"
-msgstr "Bật thì các liên kết ngoại tuyến cũng được hiển thị trên bản liệt kê."
+msgstr "Nếu bật, các liên kết ngoại tuyến cũng được hiển thị trong danh sách"
 
 #: ../ekiga.schemas.in.in.h:39 ../src/gui/preferences.cpp:931
 #, fuzzy
@@ -247,7 +246,7 @@ msgstr "Bật thì hủy bỏ tiếng vòng"
 
 #: ../ekiga.schemas.in.in.h:40 ../src/gui/preferences.cpp:929
 msgid "If enabled, use silence detection with the codecs supporting it"
-msgstr "Bật thì phát hiện im lặng bằng các codec hỗ trợ"
+msgstr "Nếu bật, sẽ dò im lặng bằng các codec"
 
 #: ../ekiga.schemas.in.in.h:41
 #, fuzzy
@@ -261,15 +260,15 @@ msgstr "Máy phục vụ LDAP"
 
 #: ../ekiga.schemas.in.in.h:43
 msgid "List of configured LDAP servers"
-msgstr "Danh sách các máy phục vụ LDAP đã cấu hình"
+msgstr "Danh sách máy phục vụ LDAP đã cấu hình"
 
 #: ../ekiga.schemas.in.in.h:44
 msgid "List of folded groups in the roster"
-msgstr "Danh sách các nhóm đã gấp trong bản liệt kê"
+msgstr "Danh sách các nhóm đã gấp trong danh sách"
 
 #: ../ekiga.schemas.in.in.h:45
 msgid "Listen port"
-msgstr "Cổng lắng nghe"
+msgstr "Cổng nghe"
 
 #: ../ekiga.schemas.in.in.h:46
 msgid "Maximum RX video bitrate"
@@ -281,11 +280,11 @@ msgstr "Tỷ lệ bit ảnh động TX tối đa"
 
 #: ../ekiga.schemas.in.in.h:48
 msgid "Maximum jitter buffer"
-msgstr "Vùng đệm tối đa biến đổi tính thời gian ngẫu nhiên"
+msgstr "Vùng đệm biến đổi tối đa"
 
 #: ../ekiga.schemas.in.in.h:49
 msgid "NAT Binding Timeout"
-msgstr "Thời hạn tổ hợp NAT"
+msgstr "Thời hạn kết nối NAT"
 
 #: ../ekiga.schemas.in.in.h:50
 msgid "No answer timeout"
@@ -293,11 +292,11 @@ msgstr "Thời hạn không trả lời"
 
 #: ../ekiga.schemas.in.in.h:51
 msgid "Outbound Proxy"
-msgstr "Ủy nhiệm đi ra"
+msgstr "Máy ủy nhiệm ra"
 
 #: ../ekiga.schemas.in.in.h:52 ../src/gui/preferences.cpp:470
 msgid "Place windows displaying video above other windows during calls"
-msgstr "Để cửa sổ hiển thị ảnh động trên mọi cửa sổ khác trong suốt cuộc gọi."
+msgstr "Để cửa sổ hiển thị ảnh động trên mọi cửa sổ khác trong suốt cuộc gọi"
 
 #: ../ekiga.schemas.in.in.h:53 ../src/gui/preferences.cpp:366
 msgid "Play busy tone"
