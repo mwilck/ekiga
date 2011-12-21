@@ -54,7 +54,11 @@ CodecDescription::CodecDescription (OpalMediaFormat & format)
   : Ekiga::CodecDescription ()
 {
   name = (const char *) format.GetEncodingName ();
-  if (name == "G722")
+  // if a codec does not have a IANA encoding name, use its name instead
+  // (it is the case for MS-IMA-ADPCM for ex.)
+  if (name.empty())
+    name = (const char *) format.GetName ();
+  if (name == "G722")  // G722 has the wrong rate in RFC
     rate = 16000;
   else
     rate = format.GetClockRate ();
