@@ -58,6 +58,9 @@ CodecDescription::CodecDescription (OpalMediaFormat & format)
   // (it is the case for MS-IMA-ADPCM for ex.)
   if (name.empty())
     name = (const char *) format.GetName ();
+  if (name.empty()) {
+    PTRACE (1, "OpalCodecDescription\tError: found unnamed codec, it will not be used");
+  }
   if (name == "G722")  // G722 has the wrong rate in RFC
     rate = 16000;
   else
