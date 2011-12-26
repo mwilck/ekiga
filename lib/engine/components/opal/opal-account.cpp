@@ -511,6 +511,22 @@ Opal::Account::on_consult (const std::string url)
   gm_open_uri (url.c_str ());
 }
 
+
+bool
+Opal::Account::is_myself (const std::string uri) const
+{
+  size_t pos = uri.find ("@");
+  if (pos == string::npos)
+    return false;
+
+  std::string uri_host = uri.substr (++pos);
+  if (uri_host != get_host ())
+    return false;
+
+  return true;
+}
+
+
 void
 Opal::Account::publish (const Ekiga::PersonalDetails& details)
 {
@@ -536,33 +552,26 @@ Opal::Account::publish (const Ekiga::PersonalDetails& details)
   }
 }
 
+
 void
 Opal::Account::fetch (const std::string uri)
 {
-  watched_uris.insert (uri); // URI will be watched, but we only subscribe for
-                             // presence information if the account is enabled
-
   if (!is_enabled ())
     return;
 
-  size_t pos = uri.find ("@");
-  if (pos == string::npos)
-    return;
-
-  std::string uri_host = uri.substr (++pos);
-  if (uri_host != get_host ())
-    return;
-
-  if (presentity)
+  if (is_myself (uri) && presentity) {
     presentity->SubscribeToPresence (PString (uri));
+    watched_uris.insert (uri);
+  }
 }
 
 void
 Opal::Account::unfetch (const std::string uri)
 {
-  watched_uris.erase (uri);
-  if (presentity)
+  if (is_myself (uri) && presentity) {
     presentity->UnsubscribeFromPresence (PString (uri));
+    watched_uris.erase (uri);
+  }
 }
 
 void

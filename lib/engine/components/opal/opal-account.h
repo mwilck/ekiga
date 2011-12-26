@@ -175,6 +175,7 @@ private:
     void on_edit_form_submitted (bool submitted,
 				 Ekiga::Form &result);
     void on_consult (const std::string url);
+    bool is_myself (const std::string uri) const;
 
     mutable RegistrationState state;
     bool dead;
