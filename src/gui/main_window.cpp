@@ -3825,20 +3825,20 @@ ekiga_main_window_init_status_toolbar (EkigaMainWindow *mw)
   gtk_toolbar_set_show_arrow (GTK_TOOLBAR (mw->priv->status_toolbar), FALSE);
 
   item = gtk_tool_item_new ();
-  mw->priv->status_option_menu = status_menu_new (*mw->priv->core); 
-  status_menu_set_parent_window (STATUS_MENU (mw->priv->status_option_menu), 
+  mw->priv->status_option_menu = status_menu_new (*mw->priv->core);
+  status_menu_set_parent_window (STATUS_MENU (mw->priv->status_option_menu),
                                  GTK_WINDOW (mw));
   gtk_container_add (GTK_CONTAINER (item), mw->priv->status_option_menu);
   gtk_container_set_border_width (GTK_CONTAINER (item), 0);
   gtk_tool_item_set_expand (GTK_TOOL_ITEM (item), TRUE);
-  
+
   gtk_toolbar_insert (GTK_TOOLBAR (mw->priv->status_toolbar), item, 0);
 
   gtk_widget_show_all (mw->priv->status_toolbar);
 }
 
 
-static void 
+static void
 ekiga_main_window_init_contact_list (EkigaMainWindow *mw)
 {
   GtkWidget *label = NULL;
@@ -3908,28 +3908,41 @@ ekiga_main_window_init_call_panel (EkigaMainWindow *mw)
   mw->priv->call_panel_frame = gtk_frame_new (NULL);
   gtk_frame_set_shadow_type (GTK_FRAME (mw->priv->call_panel_frame), GTK_SHADOW_NONE);
   event_box = gtk_event_box_new ();
-  table = gtk_table_new (3, 4, FALSE);
+  table = gtk_table_new (3, 5, FALSE);
   gtk_container_add (GTK_CONTAINER (event_box), table);
   gtk_container_add (GTK_CONTAINER (mw->priv->call_panel_frame), event_box);
+
+  /* The widgets toolbar */
+  mw->priv->call_panel_toolbar = gtk_toolbar_new ();
+  gtk_toolbar_set_style (GTK_TOOLBAR (mw->priv->call_panel_toolbar), GTK_TOOLBAR_ICONS);
+  gtk_toolbar_set_show_arrow (GTK_TOOLBAR (mw->priv->call_panel_toolbar), FALSE);
+
+  alignment = gtk_alignment_new (0.0, 0.0, 1.0, 0.0);
+  gtk_container_add (GTK_CONTAINER (alignment), mw->priv->call_panel_toolbar);
+  gtk_table_attach (GTK_TABLE (table), alignment,
+                    0, 4, 0, 1,
+                    (GtkAttachOptions) (GTK_FILL | GTK_EXPAND),
+                    (GtkAttachOptions) (GTK_FILL | GTK_EXPAND),
+                    0, 0);
 
   /* The frame that contains the video */
   mw->priv->video_frame = gtk_frame_new (NULL);
   gtk_frame_set_shadow_type (GTK_FRAME (mw->priv->video_frame), 
                              GTK_SHADOW_NONE);
-  
+
   mw->priv->main_video_image = gtk_image_new ();
   gtk_container_set_border_width (GTK_CONTAINER (mw->priv->video_frame), 0);
   gtk_container_add (GTK_CONTAINER (mw->priv->video_frame), mw->priv->main_video_image);
   gtk_table_attach (GTK_TABLE (table), GTK_WIDGET (mw->priv->video_frame),
-                    0, 4, 1, 2,         
-                    (GtkAttachOptions) GTK_EXPAND,      
-                    (GtkAttachOptions) GTK_EXPAND,      
+                    0, 4, 1, 2,
+                    (GtkAttachOptions) GTK_EXPAND,
+                    (GtkAttachOptions) GTK_EXPAND,
                     4, 24);
 
   /* The frame that contains information about the call */
   /* Text buffer */
   GtkTextBuffer *buffer = NULL;
-  
+
   mw->priv->info_text = gtk_text_view_new ();
   gtk_text_view_set_editable (GTK_TEXT_VIEW (mw->priv->info_text), FALSE);
   gtk_widget_set_sensitive (GTK_WIDGET (mw->priv->info_text), FALSE);
@@ -3978,16 +3991,11 @@ ekiga_main_window_init_call_panel (EkigaMainWindow *mw)
                     (GtkAttachOptions) (GTK_FILL | GTK_EXPAND),
                     0, 0);
 
-  /* The toolbar */
-  mw->priv->call_panel_toolbar = gtk_toolbar_new ();
-  gtk_toolbar_set_style (GTK_TOOLBAR (mw->priv->call_panel_toolbar), GTK_TOOLBAR_ICONS);
-  gtk_toolbar_set_show_arrow (GTK_TOOLBAR (mw->priv->call_panel_toolbar), FALSE);
-
   /* Audio Volume */
   boost::shared_ptr<Ekiga::AudioOutputCore> audiooutput_core = mw->priv->core->get<Ekiga::AudioOutputCore> ("audiooutput-core");
   std::vector <Ekiga::AudioOutputDevice> devices;
   audiooutput_core->get_devices (devices);
-  if (!(devices.size () == 1 && devices[0].source == "Pulse")) { 
+  if (!(devices.size () == 1 && devices[0].source == "Pulse")) {
 
     item = gtk_tool_item_new ();
     mw->priv->audio_settings_button = gtk_button_new ();
@@ -4008,7 +4016,7 @@ ekiga_main_window_init_call_panel (EkigaMainWindow *mw)
                       G_CALLBACK (show_window_cb),
                       (gpointer) mw->priv->audio_settings_window);
   }
-  
+
   /* Video Settings */
   item = gtk_tool_item_new ();
   mw->priv->video_settings_button = gtk_button_new ();
@@ -4018,7 +4026,7 @@ ekiga_main_window_init_call_panel (EkigaMainWindow *mw)
   gtk_container_add (GTK_CONTAINER (mw->priv->video_settings_button), image);
   gtk_container_add (GTK_CONTAINER (item), mw->priv->video_settings_button);
   gtk_tool_item_set_expand (GTK_TOOL_ITEM (item), FALSE);
-  
+
   gtk_widget_show (mw->priv->video_settings_button);
   gtk_widget_set_sensitive (mw->priv->video_settings_button, FALSE);
   gtk_toolbar_insert (GTK_TOOLBAR (mw->priv->call_panel_toolbar),
@@ -4036,12 +4044,12 @@ ekiga_main_window_init_call_panel (EkigaMainWindow *mw)
   gtk_button_set_relief (GTK_BUTTON (mw->priv->preview_button), GTK_RELIEF_NONE);
   gtk_toggle_button_set_active (GTK_TOGGLE_BUTTON (mw->priv->preview_button),
                                 gm_conf_get_bool (VIDEO_DEVICES_KEY "enable_preview"));
-  image = gtk_image_new_from_icon_name (GM_ICON_CAMERA_VIDEO, 
+  image = gtk_image_new_from_icon_name (GM_ICON_CAMERA_VIDEO,
                                         GTK_ICON_SIZE_MENU);
   gtk_container_add (GTK_CONTAINER (mw->priv->preview_button), image);
   gtk_container_add (GTK_CONTAINER (item), mw->priv->preview_button);
   gtk_tool_item_set_expand (GTK_TOOL_ITEM (item), FALSE);
-  
+
   gtk_widget_show (mw->priv->preview_button);
   gtk_toolbar_insert (GTK_TOOLBAR (mw->priv->call_panel_toolbar),
 		      GTK_TOOL_ITEM (item), -1);
@@ -4061,7 +4069,7 @@ ekiga_main_window_init_call_panel (EkigaMainWindow *mw)
   gtk_container_add (GTK_CONTAINER (mw->priv->hold_button), image);
   gtk_container_add (GTK_CONTAINER (item), mw->priv->hold_button);
   gtk_tool_item_set_expand (GTK_TOOL_ITEM (item), FALSE);
-  
+
   gtk_widget_show (mw->priv->hold_button);
   gtk_toolbar_insert (GTK_TOOLBAR (mw->priv->call_panel_toolbar),
 		      GTK_TOOL_ITEM (item), -1);
@@ -4072,16 +4080,18 @@ ekiga_main_window_init_call_panel (EkigaMainWindow *mw)
   g_signal_connect (mw->priv->hold_button, "clicked",
 		    G_CALLBACK (hold_current_call_cb), mw);
 
+  gtk_paned_pack2 (GTK_PANED (mw->priv->hpaned), mw->priv->call_panel_frame, true, false);
+  gtk_widget_realize (mw->priv->main_video_image);
+
+  /* The URI toolbar */
+  ekiga_main_window_init_uri_toolbar (mw);
   alignment = gtk_alignment_new (0.0, 0.0, 1.0, 0.0);
-  gtk_container_add (GTK_CONTAINER (alignment), mw->priv->call_panel_toolbar);
+  gtk_container_add (GTK_CONTAINER (alignment), mw->priv->main_toolbar);
   gtk_table_attach (GTK_TABLE (table), alignment,
-                    0, 4, 0, 1,
+                    0, 4, 3, 4,
                     (GtkAttachOptions) (GTK_FILL | GTK_EXPAND),
                     (GtkAttachOptions) (GTK_FILL | GTK_EXPAND),
                     0, 0);
-
-  gtk_paned_pack2 (GTK_PANED (mw->priv->hpaned), mw->priv->call_panel_frame, true, false);
-  gtk_widget_realize (mw->priv->main_video_image);
 }
 
 
@@ -4094,21 +4104,21 @@ ekiga_main_window_init_gui (EkigaMainWindow *mw)
 
   gtk_window_set_title (GTK_WINDOW (mw), _("Ekiga"));
 
-  window_vbox = gtk_vbox_new (FALSE, 0);
+  window_vbox = gtk_vbox_new (false, 0);
   gtk_container_add (GTK_CONTAINER (mw), window_vbox);
   gtk_widget_show_all (window_vbox);
 
   /* The main menu */
   mw->priv->statusbar = gm_statusbar_new ();
 
-  ekiga_main_window_init_menu (mw); 
+  ekiga_main_window_init_menu (mw);
   gtk_box_pack_start (GTK_BOX (window_vbox), mw->priv->main_menu,
                       FALSE, FALSE, 0);
 
-  /* The URI toolbar */
-  ekiga_main_window_init_uri_toolbar (mw);
-  gtk_box_pack_start (GTK_BOX (window_vbox), mw->priv->main_toolbar,
-                      false, false, 0); 
+  /* The status toolbar */
+  ekiga_main_window_init_status_toolbar (mw);
+  gtk_box_pack_start (GTK_BOX (window_vbox), mw->priv->status_toolbar,
+                      false, true, 0);
 
   /* The Audio & Video Settings windows */
   mw->priv->audio_settings_window = gm_mw_audio_settings_window_new (mw);
@@ -4130,11 +4140,6 @@ ekiga_main_window_init_gui (EkigaMainWindow *mw)
   gtk_paned_pack1 (GTK_PANED (mw->priv->hpaned), mw->priv->main_notebook, true, false);
 
   ekiga_main_window_init_call_panel (mw);
-
-  /* The status toolbar */
-  ekiga_main_window_init_status_toolbar (mw);
-  gtk_box_pack_start (GTK_BOX (window_vbox), mw->priv->status_toolbar,
-                      false, false, 0); 
 
   /* The statusbar with qualitymeter */
   gtk_statusbar_set_has_resize_grip (GTK_STATUSBAR (mw->priv->statusbar), TRUE);
