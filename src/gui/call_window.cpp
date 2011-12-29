@@ -1667,6 +1667,10 @@ ekiga_call_window_init_gui (EkigaCallWindow *cw)
   GtkWidget *image = NULL;
   GtkWidget *alignment = NULL;
 
+  /* The Audio & Video Settings windows */
+  cw->priv->audio_settings_window = gm_cw_audio_settings_window_new (cw);
+  cw->priv->video_settings_window = gm_cw_video_settings_window_new (cw);
+
   /* The main table */
   cw->priv->call_panel_frame = gtk_frame_new (NULL);
   gtk_frame_set_shadow_type (GTK_FRAME (cw->priv->call_panel_frame), GTK_SHADOW_NONE);
@@ -1854,10 +1858,6 @@ ekiga_call_window_init_gui (EkigaCallWindow *cw)
                     (GtkAttachOptions) (GTK_FILL | GTK_EXPAND),
                     (GtkAttachOptions) (GTK_FILL | GTK_EXPAND),
                     0, 0);
-
-  /* The Audio & Video Settings windows */
-  cw->priv->audio_settings_window = gm_cw_audio_settings_window_new (cw);
-  cw->priv->video_settings_window = gm_cw_video_settings_window_new (cw);
 }
 
 static void
