@@ -114,6 +114,7 @@ struct deviceStruct {
 
 G_DEFINE_TYPE (EkigaMainWindow, ekiga_main_window, GM_TYPE_WINDOW);
 
+
 struct _EkigaMainWindowPrivate
 {
   Ekiga::ServiceCore *core;
@@ -3774,7 +3775,7 @@ ekiga_main_window_init_uri_toolbar (EkigaMainWindow *mw)
   gtk_container_add (GTK_CONTAINER (item), mw->priv->entry);
   gtk_container_set_border_width (GTK_CONTAINER (item), 0);
   gtk_tool_item_set_expand (GTK_TOOL_ITEM (item), true);
-  
+
   ekiga_main_window_set_call_url (mw, "sip:");
 
   // activate Ctrl-L to get the entry focus
@@ -4269,51 +4270,6 @@ ekiga_main_window_show (GtkWidget *widget)
 }
 
 static gboolean
-ekiga_main_window_expose_event (GtkWidget      *widget,
-                                GdkEventExpose *event)
-{
-  EkigaMainWindow *mw = EKIGA_MAIN_WINDOW (widget);
-  GtkWidget* video_widget = mw->priv->main_video_image;
-  Ekiga::DisplayInfo display_info;
-  gboolean handled = FALSE;
-
-  handled = GTK_WIDGET_CLASS (ekiga_main_window_parent_class)->expose_event (widget, event);
-
-  display_info.x = video_widget->allocation.x;
-  display_info.y = video_widget->allocation.y;
-
-#ifdef WIN32
-  display_info.hwnd = ((HWND) GDK_WINDOW_HWND (video_widget->window));
-  // translate coordinates from call_panel_frame to window
-  g_warn_if_fail (gtk_widget_translate_coordinates
-                  (mw->priv->call_panel_frame,
-                   gtk_widget_get_toplevel(mw->priv->call_panel_frame),
-                   display_info.x, display_info.y,
-                   &display_info.x, &display_info.y));
-#else
-  if (!mw->priv->video_widget_gc) {
-    mw->priv->video_widget_gc = gdk_gc_new (video_widget->window);
-    g_return_val_if_fail (mw->priv->video_widget_gc != NULL, handled);
-  }
-
-  display_info.gc = GDK_GC_XGC (mw->priv->video_widget_gc);
-  display_info.xdisplay = GDK_GC_XDISPLAY (mw->priv->video_widget_gc);
-  display_info.window = GDK_WINDOW_XWINDOW (video_widget->window);
-
-  g_return_val_if_fail (display_info.window != 0, handled);
-
-  gdk_flush();
-#endif
-
-  display_info.widget_info_set = TRUE;
-
-  boost::shared_ptr<Ekiga::VideoOutputCore> videooutput_core = mw->priv->core->get<Ekiga::VideoOutputCore> ("videooutput-core");
-  videooutput_core->set_display_info (display_info);
-
-  return handled;
-}
-
-static gboolean
 ekiga_main_window_focus_in_event (GtkWidget     *widget,
                                   GdkEventFocus *event)
 {
@@ -4399,7 +4355,6 @@ ekiga_main_window_class_init (EkigaMainWindowClass *klass)
   object_class->set_property = ekiga_main_window_set_property;
 
   widget_class->show = ekiga_main_window_show;
-  widget_class->expose_event = ekiga_main_window_expose_event;
   widget_class->focus_in_event = ekiga_main_window_focus_in_event;
   widget_class->delete_event = ekiga_main_window_delete_event;
 

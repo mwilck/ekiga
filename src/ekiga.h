@@ -70,7 +70,7 @@ class GnomeMeeting : public PProcess
 
 
   /* DESCRIPTION  :  Destructor.
-   * BEHAVIOR     :  
+   * BEHAVIOR     :
    * PRE          :  /
    */
   ~GnomeMeeting ();
@@ -83,7 +83,7 @@ class GnomeMeeting : public PProcess
    */
   void Exit ();
 
-  
+
   /* DESCRIPTION  :  /
    * BEHAVIOR     :  Returns a pointer to the GmWindow structure
    *                 of widgets.
@@ -93,26 +93,33 @@ class GnomeMeeting : public PProcess
 
 
   /* DESCRIPTION  :  /
+   * BEHAVIOR     :  Returns a pointer to the call window GObject.
+   * PRE          :  /
+   */
+  GtkWidget *GetCallWindow ();
+
+
+  /* DESCRIPTION  :  /
    * BEHAVIOR     :  Returns a pointer to the preferences window GMObject.
    * PRE          :  /
    */
   GtkWidget* GetPrefsWindow ();
- 
-  
+
+
   /* DESCRIPTION  :  /
    * BEHAVIOR     :  Returns a pointer to the assistant window.
    * PRE          :  /
    */
   GtkWidget* GetAssistantWindow ();
-  
-  
+
+
   /* DESCRIPTION  :  /
    * BEHAVIOR     :  Returns a pointer to the accounts window.
    * PRE          :  /
    */
   GtkWidget *GetAccountsWindow ();
-  
-  
+
+
   /* DESCRIPTION  :  /
    * BEHAVIOR     :  Returns a pointer to the tray.
    * PRE          :  /
@@ -122,11 +129,9 @@ class GnomeMeeting : public PProcess
 
   /* Needed for PProcess */
   void Main();
-  
-
   static GnomeMeeting *Process ();
 
-  
+
   /* DESCRIPTION  :  /
    * BEHAVIOR     :  Builds the GUI of GnomeMeeting. The config, GNOME
    *                 and GTK need to have been initialized before.
@@ -137,7 +142,7 @@ class GnomeMeeting : public PProcess
   void BuildGUI (Ekiga::ServiceCorePtr services);
 
  private:
-  
+
   PMutex ep_var_mutex;
   PMutex dev_access_mutex;
   int call_number;
@@ -145,6 +150,7 @@ class GnomeMeeting : public PProcess
 
   /* The different components of the GUI */
   GtkWidget *main_window;
+  GtkWidget *call_window;
   GtkWidget *history_window;
   GtkWidget *assistant_window;
   GtkWidget *prefs_window;
@@ -156,7 +162,7 @@ class GnomeMeeting : public PProcess
   GObject *dbus_component;
 #endif
 
-  static GnomeMeeting *GM; 
+  static GnomeMeeting *GM;
 };
 
 #endif
