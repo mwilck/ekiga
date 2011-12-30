@@ -289,10 +289,17 @@ static void on_some_core_updated (EkigaMainWindow* self);
 
 /* DESCRIPTION  : /
  * BEHAVIOR     : Shows a window
- * PRE          : The given data pointer should be a window
+ * PRE          : The given data pointer should be a GMWindow (Gobject based)
  */
 static void show_window_cb (GtkWidget *widget,
 			    gpointer data);
+
+/* DESCRIPTION  : /
+ * BEHAVIOR     : Shows a window
+ * PRE          : The given data pointer should be a GMWindow (non Gobject)
+ */
+static void show_gm_window_cb (GtkWidget *widget,
+                               gpointer data);
 
 /* DESCRIPTION  : /
  * BEHAVIOR     : Builds the video settings popup of the main window.
@@ -322,10 +329,6 @@ static void gm_main_window_toggle_fullscreen (Ekiga::VideoOutputFSToggle toggle,
 static void ekiga_main_window_set_stay_on_top (EkigaMainWindow *mw,
                                                gboolean stay_on_top);
 
-static void ekiga_main_window_show_call_panel (EkigaMainWindow *mw);
-
-static void ekiga_main_window_hide_call_panel (EkigaMainWindow *mw);
-
 void ekiga_main_window_clear_signal_levels (EkigaMainWindow *mw);
 
 static void ekiga_main_window_incoming_call_dialog_show (EkigaMainWindow *mw,
@@ -354,26 +357,6 @@ static void on_chat_unread_alert (GtkWidget*,
 static void panel_section_changed_nt (gpointer id,
                                       GmConfEntry *entry,
                                       gpointer data);
-
-
-/* DESCRIPTION  :  This callback is called when the call panel
- *                 section key changes.
- * BEHAVIOR     :  Show it or hide it, resize the window appropriately.
- * PRE          :  /
- */
-static void show_call_panel_changed_nt (G_GNUC_UNUSED gpointer id,
-                                        GmConfEntry *entry,
-                                        gpointer data);
-
-
-/* DESCRIPTION  :  This callback is called when the "stay_on_top"
- *                 config value changes.
- * BEHAVIOR     :  Changes the hint for the video windows.
- * PRE          :  /
- */
-static void stay_on_top_changed_nt (G_GNUC_UNUSED gpointer id,
-                                    GmConfEntry *entry,
-                                    gpointer data);
 
 
 /** Pull a trigger from a Ekiga::Service
@@ -928,14 +911,19 @@ name_from_uri_helper::on_visit_presentities (Ekiga::PresentityPtr presentity,
 /* 
  * Engine Callbacks 
  */
-
 static void
 show_window_cb (G_GNUC_UNUSED GtkWidget *widget,
 		gpointer data)
 {
-  gm_window_show (GTK_WIDGET (data));
+  gtk_widget_show (GTK_WIDGET (data));
 }
 
+static void
+show_gm_window_cb (G_GNUC_UNUSED GtkWidget *widget,
+                   gpointer data)
+{
+  gm_window_show (GTK_WIDGET (data));
+}
 
 static void
 on_account_updated (Ekiga::BankPtr /*bank*/,
@@ -1073,8 +1061,6 @@ static void on_established_call_cb (boost::shared_ptr<Ekiga::CallManager>  /*man
     ekiga_main_window_set_stay_on_top (mw, TRUE);
   ekiga_main_window_set_status (mw, info);
   ekiga_main_window_flash_message (mw, "%s", info);
-  if (!gm_conf_get_bool (USER_INTERFACE_KEY "main_window/show_call_panel"))
-    ekiga_main_window_show_call_panel (mw);
   ekiga_main_window_update_calling_state (mw, Connected);
 
   mw->priv->current_call = call;
@@ -1109,8 +1095,6 @@ static void on_cleared_call_cb (boost::shared_ptr<Ekiga::CallManager>  /*manager
   ekiga_main_window_set_call_duration (mw, NULL);
   ekiga_main_window_set_bandwidth (mw, 0.0, 0.0, 0.0, 0.0, 0, 0);
   ekiga_main_window_set_call_info (mw, NULL, NULL, NULL, NULL);
-  if (!gm_conf_get_bool (USER_INTERFACE_KEY "main_window/show_call_panel"))
-    ekiga_main_window_hide_call_panel (mw);
   ekiga_main_window_clear_stats (mw);
   ekiga_main_window_flash_message (mw, "%s", reason.c_str ());
   ekiga_main_window_update_logo_have_window (mw);
@@ -2367,39 +2351,6 @@ panel_section_changed_nt (G_GNUC_UNUSED gpointer id,
 
 
 static void 
-show_call_panel_changed_nt (G_GNUC_UNUSED gpointer id, 
-                            GmConfEntry *entry, 
-                            gpointer data)
-{
-  g_return_if_fail (data != NULL);
-
-  if (gm_conf_entry_get_type (entry) == GM_CONF_BOOL) {
-
-    if (gm_conf_entry_get_bool (entry)) 
-      ekiga_main_window_show_call_panel (EKIGA_MAIN_WINDOW (data));
-    else 
-      ekiga_main_window_hide_call_panel (EKIGA_MAIN_WINDOW (data));
-  }
-}
-
-static void 
-stay_on_top_changed_nt (G_GNUC_UNUSED gpointer id,
-                        GmConfEntry *entry, 
-                        gpointer data)
-{
-  bool val = false;
-    
-  g_return_if_fail (data != NULL);
-
-  if (gm_conf_entry_get_type (entry) == GM_CONF_BOOL) {
-
-    val = gm_conf_entry_get_bool (entry);
-    ekiga_main_window_set_stay_on_top (EKIGA_MAIN_WINDOW (data), val);
-  }
-}
-
-
-static void 
 pull_trigger_cb (GtkWidget * /*widget*/,
                  gpointer data)
 {
@@ -3013,34 +2964,6 @@ ekiga_main_window_set_stay_on_top (EkigaMainWindow *mw,
   gm_window_set_always_on_top (GTK_WIDGET (mw)->window, stay_on_top);
 }
 
-static void 
-ekiga_main_window_show_call_panel (EkigaMainWindow *mw)
-{
-  int x, y = 0;
-  GtkWidget *call_panel = gtk_paned_get_child2 (GTK_PANED (mw->priv->hpaned));
-
-  if (!gtk_widget_get_visible (call_panel)) {
-    gtk_window_get_size (GTK_WINDOW (mw), &x, &y);
-    gtk_widget_show_all (call_panel);
-    gtk_window_resize (GTK_WINDOW (mw), x + call_panel->allocation.width, y);
-  }
-}
-
-
-static void 
-ekiga_main_window_hide_call_panel (EkigaMainWindow *mw)
-{
-  int x, y = 0;
-  GtkWidget *call_panel = gtk_paned_get_child2 (GTK_PANED (mw->priv->hpaned));
-
-  if (gtk_widget_get_visible (call_panel)) {
-    gtk_window_get_size (GTK_WINDOW (mw), &x, &y);
-    gtk_widget_hide (call_panel);
-    x = x - call_panel->allocation.width;
-    gtk_window_resize (GTK_WINDOW (mw), x, y);
-  }
-}
-
 void
 ekiga_main_window_clear_signal_levels (EkigaMainWindow *mw)
 {
@@ -3527,10 +3450,9 @@ ekiga_main_window_init_menu (EkigaMainWindow *mw)
 {
   GtkWidget *addressbook_window = NULL;
   GtkWidget *accounts_window = NULL;
+  GtkWidget *call_window = NULL;
   GtkWidget *prefs_window = NULL;
   GtkWidget *assistant_window = NULL;
-
-  bool show_call_panel = false;
 
   PanelSection cps = DIALPAD;
 
@@ -3538,26 +3460,26 @@ ekiga_main_window_init_menu (EkigaMainWindow *mw)
 
   boost::shared_ptr<Ekiga::Trigger> local_cluster_trigger = mw->priv->core->get<Ekiga::Trigger> ("local-cluster");
   boost::shared_ptr<GtkFrontend> gtk_frontend = mw->priv->core->get<GtkFrontend> ("gtk-frontend");
-  addressbook_window = GTK_WIDGET (gtk_frontend->get_addressbook_window ()); 
+  addressbook_window = GTK_WIDGET (gtk_frontend->get_addressbook_window ());
   accounts_window = GnomeMeeting::Process ()->GetAccountsWindow ();
+  call_window = GnomeMeeting::Process ()->GetCallWindow ();
   prefs_window = GnomeMeeting::Process ()->GetPrefsWindow ();
   assistant_window = GnomeMeeting::Process ()->GetAssistantWindow ();
 
   mw->priv->main_menu = gtk_menu_bar_new ();
 
   /* Default values */
-  show_call_panel = gm_conf_get_bool (USER_INTERFACE_KEY "main_window/show_call_panel");
   cps = (PanelSection) gm_conf_get_int (USER_INTERFACE_KEY "main_window/panel_section");
 
   static MenuEntry gnomemeeting_menu [] =
     {
       GTK_MENU_NEW (_("_Chat")),
 
-      GTK_MENU_ENTRY("connect", _("Ca_ll"), _("Place a new call"), 
+      GTK_MENU_ENTRY("connect", _("Ca_ll"), _("Place a new call"),
 		     GM_STOCK_PHONE_PICK_UP_16, 'o',
 		     G_CALLBACK (place_call_cb), mw, TRUE),
       GTK_MENU_ENTRY("disconnect", _("_Hang up"),
-		     _("Terminate the current call"), 
+		     _("Terminate the current call"),
  		     GM_STOCK_PHONE_HANG_UP_16, GDK_Escape,
 		     G_CALLBACK (hangup_call_cb), mw, FALSE),
 
@@ -3571,7 +3493,7 @@ ekiga_main_window_init_menu (EkigaMainWindow *mw)
       GTK_MENU_SEPARATOR,
 
       GTK_MENU_ENTRY("add_contact", _("A_dd Contact"), _("Add a contact to the roster"),
-		     GTK_STOCK_ADD, 'n', 
+		     GTK_STOCK_ADD, 'n',
 		     G_CALLBACK (pull_trigger_cb), &*local_cluster_trigger, true),
 
       GTK_MENU_THEME_ENTRY("address_book", _("Address _Book"),
@@ -3583,12 +3505,12 @@ ekiga_main_window_init_menu (EkigaMainWindow *mw)
       GTK_MENU_SEPARATOR,
 
       GTK_MENU_ENTRY("hold_call", _("H_old Call"), _("Hold the current call"),
-		     NULL, GDK_h, 
+		     NULL, GDK_h,
 		     G_CALLBACK (hold_current_call_cb), mw,
 		     FALSE),
       GTK_MENU_ENTRY("transfer_call", _("_Transfer Call"),
 		     _("Transfer the current call"),
- 		     NULL, GDK_t, 
+ 		     NULL, GDK_t,
 		     G_CALLBACK (transfer_current_call_cb), mw,
 		     FALSE),
 
@@ -3601,7 +3523,7 @@ ekiga_main_window_init_menu (EkigaMainWindow *mw)
 		     mw, FALSE),
       GTK_MENU_ENTRY("suspend_video", _("Suspend _Video"),
 		     _("Suspend or resume the video transmission"),
-		     NULL, GDK_p, 
+		     NULL, GDK_p,
 		     G_CALLBACK (toggle_video_stream_pause_cb),
 		     mw, FALSE),
 
@@ -3618,36 +3540,36 @@ ekiga_main_window_init_menu (EkigaMainWindow *mw)
 #endif
 
       GTK_MENU_ENTRY("close", NULL, _("Close the Ekiga window"),
-		     GTK_STOCK_CLOSE, 'W', 
+		     GTK_STOCK_CLOSE, 'W',
 		     G_CALLBACK (window_closed_from_menu_cb),
 		     (gpointer) mw, TRUE),
 
       GTK_MENU_SEPARATOR,
-      
+
       GTK_MENU_ENTRY("quit", NULL, _("Quit"),
-		     GTK_STOCK_QUIT, 'Q', 
+		     GTK_STOCK_QUIT, 'Q',
 		     G_CALLBACK (quit_callback), NULL, TRUE),
 
       GTK_MENU_NEW (_("_Edit")),
 
       GTK_MENU_ENTRY("configuration_assistant", _("_Configuration Assistant"),
 		     _("Run the configuration assistant"),
-		     NULL, 0, 
-		     G_CALLBACK (show_window_cb),
+		     NULL, 0,
+		     G_CALLBACK (show_gm_window_cb),
 		     (gpointer) assistant_window, TRUE),
 
       GTK_MENU_SEPARATOR,
-      
+
       GTK_MENU_ENTRY("accounts", _("_Accounts"),
-		     _("Edit your accounts"), 
+		     _("Edit your accounts"),
 		     NULL, 'E',
-		     G_CALLBACK (show_window_cb),
+		     G_CALLBACK (show_gm_window_cb),
 		     (gpointer) accounts_window, TRUE),
 
       GTK_MENU_ENTRY("preferences", NULL,
-		     _("Change your preferences"), 
+		     _("Change your preferences"),
 		     GTK_STOCK_PREFERENCES, 0,
-		     G_CALLBACK (show_window_cb),
+		     G_CALLBACK (show_gm_window_cb),
 		     (gpointer) prefs_window, TRUE),
 
       GTK_MENU_NEW(_("_View")),
@@ -3659,7 +3581,7 @@ ekiga_main_window_init_menu (EkigaMainWindow *mw)
 			   (cps == CONTACTS), TRUE),
       GTK_MENU_RADIO_ENTRY("dialpad", _("_Dialpad"), _("View the dialpad"),
 			   NULL, 0,
-			   G_CALLBACK (radio_menu_changed_cb), 
+			   G_CALLBACK (radio_menu_changed_cb),
 			   (gpointer) USER_INTERFACE_KEY "main_window/panel_section",
 			   (cps == DIALPAD), TRUE),
       GTK_MENU_RADIO_ENTRY("callhistory", _("_Call History"), _("View the call history"),
@@ -3670,77 +3592,77 @@ ekiga_main_window_init_menu (EkigaMainWindow *mw)
 
       GTK_MENU_SEPARATOR,
 
-      GTK_MENU_TOGGLE_ENTRY("callpanel", _("_Show Call Panel"), _("Show the call panel"),
-                            NULL, 'J', 
-                            G_CALLBACK (toggle_menu_changed_cb),
-                            (gpointer) USER_INTERFACE_KEY "main_window/show_call_panel", 
-                            show_call_panel, TRUE),
+      GTK_MENU_ENTRY("callwindow", _("Call Window"),
+                     _("Show the call window"),
+                     NULL, 'J',
+                     G_CALLBACK (show_window_cb),
+                     (gpointer) call_window, TRUE),
 
       GTK_MENU_SEPARATOR,
 
       GTK_MENU_RADIO_ENTRY("local_video", _("_Local Video"),
 			   _("Local video image"),
-			   NULL, '1', 
+			   NULL, '1',
 			   G_CALLBACK (display_changed_cb),
 			   (gpointer) VIDEO_DISPLAY_KEY "video_view",
 			   TRUE, FALSE),
       GTK_MENU_RADIO_ENTRY("remote_video", _("_Remote Video"),
 			   _("Remote video image"),
-			   NULL, '2', 
-			   G_CALLBACK (display_changed_cb), 
+			   NULL, '2',
+			   G_CALLBACK (display_changed_cb),
 			   (gpointer) VIDEO_DISPLAY_KEY "video_view",
 			   FALSE, FALSE),
       GTK_MENU_RADIO_ENTRY("both_incrusted", _("_Picture-in-Picture"),
 			   _("Both video images"),
-			   NULL, '3', 
-			   G_CALLBACK (display_changed_cb), 
+			   NULL, '3',
+			   G_CALLBACK (display_changed_cb),
 			   (gpointer) VIDEO_DISPLAY_KEY "video_view",
 			   FALSE, FALSE),
       GTK_MENU_RADIO_ENTRY("both_incrusted_window", _("Picture-in-Picture in Separate _Window"),
 			   _("Both video images"),
-			   NULL, '4', 
-			   G_CALLBACK (display_changed_cb), 
+			   NULL, '4',
+			   G_CALLBACK (display_changed_cb),
 			   (gpointer) VIDEO_DISPLAY_KEY "video_view",
 			   FALSE, FALSE),
       GTK_MENU_SEPARATOR,
 
-      GTK_MENU_ENTRY("zoom_in", NULL, _("Zoom in"), 
-		     GTK_STOCK_ZOOM_IN, '+', 
+      GTK_MENU_ENTRY("zoom_in", NULL, _("Zoom in"),
+		     GTK_STOCK_ZOOM_IN, '+',
 		     G_CALLBACK (zoom_in_changed_cb),
 		     (gpointer) VIDEO_DISPLAY_KEY "zoom", FALSE),
-      GTK_MENU_ENTRY("zoom_out", NULL, _("Zoom out"), 
-		     GTK_STOCK_ZOOM_OUT, '-', 
+      GTK_MENU_ENTRY("zoom_out", NULL, _("Zoom out"),
+		     GTK_STOCK_ZOOM_OUT, '-',
 		     G_CALLBACK (zoom_out_changed_cb),
 		     (gpointer) VIDEO_DISPLAY_KEY "zoom", FALSE),
-      GTK_MENU_ENTRY("normal_size", NULL, _("Normal size"), 
+      GTK_MENU_ENTRY("normal_size", NULL, _("Normal size"),
 		     GTK_STOCK_ZOOM_100, '0',
 		     G_CALLBACK (zoom_normal_changed_cb),
 		     (gpointer) VIDEO_DISPLAY_KEY "zoom", FALSE),
-      GTK_MENU_ENTRY("fullscreen", _("_Fullscreen"), _("Switch to fullscreen"), 
-		     GTK_STOCK_ZOOM_IN, GDK_F11, 
+      GTK_MENU_ENTRY("fullscreen", _("_Fullscreen"), _("Switch to fullscreen"),
+		     GTK_STOCK_ZOOM_IN, GDK_F11,
 		     G_CALLBACK (fullscreen_changed_cb),
 		     (gpointer) mw, FALSE),
 
       GTK_MENU_NEW(_("_Help")),
 
-      GTK_MENU_ENTRY("help", NULL, 
+      GTK_MENU_ENTRY("help", NULL,
                      _("Get help by reading the Ekiga manual"),
-                     GTK_STOCK_HELP, GDK_F1, 
+                     GTK_STOCK_HELP, GDK_F1,
                      G_CALLBACK (help_callback), NULL, TRUE),
 
       GTK_MENU_ENTRY("about", NULL,
 		     _("View information about Ekiga"),
-		     GTK_STOCK_ABOUT, 0, 
+		     GTK_STOCK_ABOUT, 0,
 		     G_CALLBACK (about_callback), (gpointer) mw,
 		     TRUE),
-       
+
       GTK_MENU_END
     };
 
 
-  gtk_build_menu (mw->priv->main_menu, 
-		  gnomemeeting_menu, 
-		  mw->priv->accel, 
+  gtk_build_menu (mw->priv->main_menu,
+		  gnomemeeting_menu,
+		  mw->priv->accel,
 		  mw->priv->statusbar);
 
   gtk_widget_show_all (GTK_WIDGET (mw->priv->main_menu));
@@ -4014,7 +3936,7 @@ ekiga_main_window_init_call_panel (EkigaMainWindow *mw)
     gtk_tool_item_set_tooltip_text (GTK_TOOL_ITEM (item),
                                     _("Change the volume of your soundcard"));
     g_signal_connect (mw->priv->audio_settings_button, "clicked",
-                      G_CALLBACK (show_window_cb),
+                      G_CALLBACK (show_gm_window_cb),
                       (gpointer) mw->priv->audio_settings_window);
   }
 
@@ -4036,7 +3958,7 @@ ekiga_main_window_init_call_panel (EkigaMainWindow *mw)
 				   _("Change the color settings of your video device"));
 
   g_signal_connect (mw->priv->video_settings_button, "clicked",
-		    G_CALLBACK (show_window_cb),
+		    G_CALLBACK (show_gm_window_cb),
 		    (gpointer) mw->priv->video_settings_window);
 
   /* Video Preview Button */
@@ -4176,8 +4098,6 @@ ekiga_main_window_init_gui (EkigaMainWindow *mw)
                gm_conf_get_int (USER_INTERFACE_KEY "main_window/panel_section");
   gtk_widget_show (mw->priv->hpaned);
   gtk_widget_show_all (gtk_paned_get_child1 (GTK_PANED (mw->priv->hpaned)));
-  if (gm_conf_get_bool (USER_INTERFACE_KEY "main_window/show_call_panel"))
-    gtk_widget_show_all (gtk_paned_get_child2 (GTK_PANED (mw->priv->hpaned)));
   gtk_notebook_set_current_page (GTK_NOTEBOOK (mw->priv->main_notebook), section);
 }
 
@@ -4222,11 +4142,6 @@ ekiga_main_window_constructor (GType the_type,
   /* GConf Notifiers */
   gm_conf_notifier_add (USER_INTERFACE_KEY "main_window/panel_section",
                         panel_section_changed_nt, object);
-  gm_conf_notifier_add (USER_INTERFACE_KEY "main_window/show_call_panel",
-                        show_call_panel_changed_nt, object);
-  gm_conf_notifier_add (VIDEO_DISPLAY_KEY "stay_on_top", 
-			stay_on_top_changed_nt, object);
-
 
   return object;
 }
