@@ -54,8 +54,6 @@
 #include "gmconf.h"
 #include <boost/smart_ptr.hpp>
 #include "gmmenuaddon.h"
-#include "gmlevelmeter.h"
-#include "gmpowermeter.h"
 #include "trigger.h"
 #include "menu-builder-tools.h"
 #include "menu-builder-gtk.h"
@@ -124,22 +122,6 @@ struct _EkigaMainWindowPrivate
   GtkWidget *main_notebook;
   GtkWidget *hpaned;
 
-  /* The problem is the following :
-   * without that boolean, changing the ui will trigger
-   * a callback, which will store in the settings that
-   * the user wants only local video... in fact the
-   * problem is that we use a single ui+settings to mean
-   * both "what the user wants during a call"
-   * and "what we are doing right now".
-   *
-   * So we set that boolean to true,
-   * ask the ui to change,
-   * notice that we don't want to update the settings
-   * set the boolean to false...
-   * then run as usual.
-   */
-  bool changing_back_to_local_after_a_call;
-
   /* notebook pages
    *  (we store the numbers so we know where we are)
    */
@@ -149,13 +131,6 @@ struct _EkigaMainWindowPrivate
   GtkWidget* roster_view;
   GtkWidget* call_history_view;
 
-  /* URI Toolbar */
-  GtkWidget *main_toolbar;
-  GtkWidget *entry;
-  GtkListStore *completion;
-  GtkWidget *connect_button;
-  gboolean connect_button_connected;
-
   /* Status Toolbar */
   GtkWidget *status_toolbar;
   GtkWidget *status_option_menu;
@@ -163,62 +138,12 @@ struct _EkigaMainWindowPrivate
   /* Statusbar */
   GtkWidget *statusbar;
   GtkWidget *statusbar_ebox;
-  GtkWidget *qualitymeter;
-
-  /* Call panel */
-  GtkWidget *call_panel_frame;
-  GtkWidget *video_frame;
-  GtkWidget *main_video_image;
-  GtkWidget *info_text;
-  GtkTextTag *status_tag;
-  GtkTextTag *codecs_tag;
-  GtkTextTag *call_duration_tag;
-  GtkTextTag *bandwidth_tag;
-  GtkWidget *call_panel_toolbar;
-  GtkWidget *preview_button;
-  GtkWidget *hold_button;
-  GtkWidget *audio_settings_button;
-  GtkWidget *video_settings_button;
-#ifndef WIN32
-  GdkGC* video_widget_gc;
-#endif
-
-  /* Audio Settings Window */
-  GtkWidget *audio_settings_window;
-  GtkWidget *audio_input_volume_frame;
-  GtkWidget *audio_output_volume_frame;
-  GtkWidget *input_signal;
-  GtkWidget *output_signal;
-#if GTK_CHECK_VERSION (3, 0, 0)
-  GtkAdjustment *adj_input_volume;
-  GtkAdjustment *adj_output_volume;
-#else
-  GtkObject *adj_input_volume;
-  GtkObject *adj_output_volume;
-#endif
-  unsigned int levelmeter_timeout_id;
-
-  /* Video Settings Window */
-  GtkWidget *video_settings_window;
-  GtkWidget *video_settings_frame;
-#if GTK_CHECK_VERSION (3, 0, 0)
-  GtkWidget *adj_whiteness;
-  GtkAdjustment *adj_brightness;
-  GtkAdjustment *adj_colour;
-  GtkAdjustment *adj_contrast;
-#else
-  GtkObject *adj_whiteness;
-  GtkObject *adj_brightness;
-  GtkObject *adj_colour;
-  GtkObject *adj_contrast;
-#endif
 
   /* Misc Dialogs */
   GtkWidget *transfer_call_popup;
 
   /* Calls */
   boost::shared_ptr<Ekiga::Call> current_call;
-  unsigned timeout_id;
   unsigned calling_state;
   bool audio_transmission_active;
   bool audio_reception_active;
@@ -301,19 +226,6 @@ static void show_window_cb (GtkWidget *widget,
 static void show_gm_window_cb (GtkWidget *widget,
                                gpointer data);
 
-/* DESCRIPTION  : /
- * BEHAVIOR     : Builds the video settings popup of the main window.
- * PRE          : The given GtkWidget pointer must be the main window GMObject.
- */
-static GtkWidget *gm_mw_video_settings_window_new (EkigaMainWindow *);
-
-
-/* DESCRIPTION  : /
- * BEHAVIOR     : Builds the audio settings popup for the main window.
- * PRE          : The given GtkWidget pointer must be the main window GMObject.
- */
-static GtkWidget *gm_mw_audio_settings_window_new (EkigaMainWindow *);
-
 
 /* DESCRIPTION  :  /
  * BEHAVIOR     :  enables/disables the zoom related menuitems according
@@ -325,11 +237,6 @@ static void ekiga_main_window_zooms_menu_update_sensitivity (EkigaMainWindow *ma
 
 static void gm_main_window_toggle_fullscreen (Ekiga::VideoOutputFSToggle toggle,
                                               GtkWidget   *main_window);
-
-static void ekiga_main_window_set_stay_on_top (EkigaMainWindow *mw,
-                                               gboolean stay_on_top);
-
-void ekiga_main_window_clear_signal_levels (EkigaMainWindow *mw);
 
 static void ekiga_main_window_incoming_call_dialog_show (EkigaMainWindow *mw,
                                                       boost::shared_ptr<Ekiga::Call>  call);
@@ -406,26 +313,6 @@ static void toggle_video_stream_pause_cb (GtkWidget *,
  */
 static void transfer_current_call_cb (GtkWidget *,
 				      gpointer);
-
-
-/* DESCRIPTION  :  This callback is called when the user changes the
- *                 audio settings sliders in the main notebook.
- * BEHAVIOR     :  Update the volume of the choosen mixers. If the update
- *                 fails, the sliders are put back to 0.
- * PRE          :  The main window GMObject.
- */
-static void audio_volume_changed_cb (GtkAdjustment *,
-				     gpointer);
-
-
-/* DESCRIPTION  :  This callback is called when the user changes one of the
- *                 video settings sliders in the main notebook.
- * BEHAVIOR     :  Updates the value in real time, if it fails, reset
- * 		   all sliders to 0.
- * PRE          :  gpointer is a valid pointer to the main window GmObject.
- */
-static void video_settings_changed_cb (GtkAdjustment *,
-				       gpointer);
 
 
 /* DESCRIPTION  :  This callback is called when the user changes the
@@ -516,25 +403,6 @@ static void display_changed_cb (GtkWidget *widget,
 static void fullscreen_changed_cb (GtkWidget *,
 				   gpointer);
 
-/* DESCRIPTION  :  This callback is called when the user changes the URL
- * 		   in the URL bar.
- * BEHAVIOR     :  It udpates the tooltip with the new URL
- *                 and the completion cache.
- * PRE          :  A valid pointer to the main window GMObject.
- */
-static void url_changed_cb (GtkEditable *,
-			    gpointer);
-
-/* DESCRIPTION  :  This callback is called when the user presses a
- *                 button in the toolbar.
- *                 (See menu_toggle_changed)
- * BEHAVIOR     :  Updates the config cache.
- * PRE          :  data is the key.
- */
-static void toolbar_toggle_button_changed_cb (GtkWidget *,
-					      gpointer);
-
-
 /* DESCRIPTION  :  This callback is called when the status bar is clicked.
  * BEHAVIOR     :  Clear all info message, not normal messages.
  * PRE          :  The main window GMObject.
@@ -544,22 +412,9 @@ static gboolean statusbar_clicked_cb (GtkWidget *,
 				      gpointer);
 
 
-static void audio_volume_window_shown_cb (GtkWidget *widget,
-	                                  gpointer data);
-
-static void audio_volume_window_hidden_cb (GtkWidget *widget,
-	                                   gpointer data);
-
 static void ekiga_main_window_add_device_dialog_show (EkigaMainWindow *main_window,
                                                       const Ekiga::Device & device,
                                                       DeviceType device_type);
-
-
-/* DESCRIPTION  :  /
- * BEHAVIOR     :  Displays the gnomemeeting logo in the video window.
- * PRE          :  The main window GMObject.
- */
-static void ekiga_main_window_update_logo_have_window (EkigaMainWindow *main_window);
 
 
 /* DESCRIPTION  :  /
@@ -568,7 +423,7 @@ static void ekiga_main_window_update_logo_have_window (EkigaMainWindow *main_win
  * PRE          :  The main window GMObject.
  */
 static void ekiga_main_window_set_call_hold (EkigaMainWindow *main_window,
-                                      bool is_on_hold);
+                                             bool is_on_hold);
 
 
 /* DESCRIPTION  :  /
@@ -581,25 +436,6 @@ static void ekiga_main_window_set_call_hold (EkigaMainWindow *main_window,
 static void ekiga_main_window_set_channel_pause (EkigaMainWindow *main_window,
 					  gboolean pause,
 					  gboolean is_video);
-
-
-/* DESCRIPTION  :  /
- * BEHAVIOR     :  Update the main window sensitivity and state following
- * 		   the given calling state.
- * 		   The state of widgets that depend on the calling state only
- * 		   is updated:
- * 		   - the sensitivity of menu and toolbar items,
- * 		   - the stay on top state of windows depending of the main window,
- * 		   - the state of the calling button,
- * 		   - the transfer call window,
- * 		   - the incoming call window can be destroyed or not.
- * 		   Widgets for which the state depends on other parameters
- * 		   are udpated in separate functions.
- * PRE          :  The main window GMObject.
- * 		   A valid GMH323Endpoint calling state.
- */
-static void ekiga_main_window_update_calling_state (EkigaMainWindow *mw,
-					     unsigned calling_state);
 
 
 /* DESCRIPTION  :  /
@@ -617,52 +453,6 @@ static void ekiga_main_window_update_sensitivity (EkigaMainWindow *main_window,
 					   bool is_video,
 					   bool is_receiving,
 					   bool is_transmitting);
-
-
-
-/* DESCRIPTION  :  /
- * BEHAVIOR     :  Updates the information displayed in the info label
- * 		   of the main window.
- * PRE          :  The main window GMObject,
- * 		   the transmitted audio codec,
- * 		   the received audio codec (if any),
- * 		   the transmitted video codec,
- * 		   the received video codec(if any).
- */
-static void ekiga_main_window_set_call_info (EkigaMainWindow *main_window,
-                                             const char *tr_audio_codec,
-                                             const char *re_audio_codec,
-                                             const char *tr_video_codec,
-                                             const char *re_video_codec);
-
-
-/* DESCRIPTION   :  /
- * BEHAVIOR      : Sets the current call duration (as a string) in the GUI.
- * PRE           : The main window GMObject.
- */
-static void ekiga_main_window_set_call_duration (EkigaMainWindow *main_window,
-                                                 const char *duration);
-
-
-/* DESCRIPTION   :  /
- * BEHAVIOR      : Sets the current call audio and video bandwidth, and FPS.
- * PRE           : The main window GMObject. Valid values.
- */
-static void ekiga_main_window_set_bandwidth (EkigaMainWindow *mw,
-                                             float ta,
-                                             float ra,
-                                             float tv,
-                                             float rv,
-                                             int tfps,
-                                             int rfps);
-
-
-/* DESCRIPTION   :  /
- * BEHAVIOR      : Sets the current status in the GUI.
- * PRE           : The main window GMObject.
- */
-static void ekiga_main_window_set_status (EkigaMainWindow *main_window,
-				   const char *status);
 
 
 /* DESCRIPTION  :  /
@@ -695,46 +485,6 @@ static void ekiga_main_window_push_message (EkigaMainWindow *main_window,
 				     const char *msg,
 				     ...) G_GNUC_PRINTF(2,3);
 
-
-/* DESCRIPTION   :  /
- * BEHAVIOR      : Sets the given URL as called URL.
- * PRE           : The main window GMObject.
- */
-static void ekiga_main_window_set_call_url (EkigaMainWindow *mw,
-				     const char *url);
-
-
-/* DESCRIPTION   :  /
- * BEHAVIOR      : Appends the given string to the current URL. Replaces the
- * 		   current selection if any.
- * PRE           : The main window GMObject.
- */
-static void ekiga_main_window_append_call_url (EkigaMainWindow *mw,
-					const char *url);
-
-
-/* DESCRIPTION   :  /
- * BEHAVIOR      : Clears the stats area in the control panel.
- * PRE           : The main window GMObject.
- */
-static void ekiga_main_window_clear_stats (EkigaMainWindow *main_window);
-
-
-/* DESCRIPTION   :  /
- * BEHAVIOR      : Updates the stats area in the control panel.
- * PRE           : The main window GMObject, lost, late packets, rtt, jitter,
- * 		   video bytes received, transmitted, audio bytes received,
- * 		   transmitted. All >= 0.
- */
-static void ekiga_main_window_update_stats (EkigaMainWindow *main_window,
-				     float lost,
-				     float late,
-				     float out_of_order,
-				     int jitter,
-				     unsigned int re_width,
-				     unsigned int re_height,
-				     unsigned int tr_width,
-				     unsigned int tr_height);
 
 static
 void on_some_core_updated (EkigaMainWindow* self)
@@ -775,33 +525,6 @@ void on_some_core_updated (EkigaMainWindow* self)
   }
 }
 
-// creates the connect two-icon button
-static GtkWidget*
-connect_button_new (EkigaMainWindow *mw)
-{
-  GtkButton *button;
-  GtkWidget* image;
-
-  button = (GtkButton*) gtk_button_new ();
-  image = gtk_image_new_from_stock (GM_STOCK_PHONE_PICK_UP_24, GTK_ICON_SIZE_LARGE_TOOLBAR);
-  gtk_button_set_image (button, image);
-  gtk_button_set_relief (button, GTK_RELIEF_NONE);
-  mw->priv->connect_button_connected = FALSE;
-
-  return GTK_WIDGET (button);
-}
-
-// set the connected status and change the icon
-static void
-connect_button_set_connected (EkigaMainWindow *mw, gboolean state)
-{
-  GtkWidget* image;
-
-  mw->priv->connect_button_connected = state;
-  image = gtk_button_get_image (GTK_BUTTON (mw->priv->connect_button));
-  gtk_image_set_from_stock (GTK_IMAGE (image), state ? GM_STOCK_PHONE_HANG_UP_24 : GM_STOCK_PHONE_PICK_UP_24, GTK_ICON_SIZE_LARGE_TOOLBAR);
-}
-
 #ifdef HAVE_NOTIFY
 // return if the notify server accepts actions (i.e. buttons)
 // taken from https://wiki.ubuntu.com/NotificationDevelopmentGuidelines#Avoiding%20actions
@@ -826,14 +549,8 @@ int hasActionsCap (void)
 }
 #endif
 
-/* DESCRIPTION   :  /
- * BEHAVIOR      : Returns the currently called URL in the URL bar.
- * PRE           : The main window GMObject.
- */
-static const std::string ekiga_main_window_get_call_url (EkigaMainWindow *mw);
 
 /* implementation of the name_from_uri_helper */
-
 const std::string
 name_from_uri_helper::search_name_for_uri (const std::string uri)
 {
@@ -908,8 +625,8 @@ name_from_uri_helper::on_visit_presentities (Ekiga::PresentityPtr presentity,
   return true;
 }
 
-/* 
- * Engine Callbacks 
+/*
+ * Engine Callbacks
  */
 static void
 show_window_cb (G_GNUC_UNUSED GtkWidget *widget,
@@ -956,12 +673,7 @@ static void on_setup_call_cb (boost::shared_ptr<Ekiga::CallManager> manager,
   EkigaMainWindow *mw = EKIGA_MAIN_WINDOW (self);
   boost::shared_ptr<Ekiga::AudioOutputCore> audiooutput_core = mw->priv->core->get<Ekiga::AudioOutputCore> ("audiooutput-core");
 
-  // No Call Waiting support
-  if (mw->priv->current_call)
-    return; // Trying to setup a call while there is another one : not supported yet
-
   if (!call->is_outgoing () && !manager->get_auto_answer ()) {
-    ekiga_main_window_update_calling_state (mw, Called);
     audiooutput_core->start_play_event ("incoming_call_sound", 4000, 256);
 #ifdef HAVE_NOTIFY
     if (hasActionsCap ())
@@ -974,9 +686,6 @@ static void on_setup_call_cb (boost::shared_ptr<Ekiga::CallManager> manager,
     mw->priv->current_call = call;
   }
   else {
-    ekiga_main_window_update_calling_state (mw, Calling);
-    if (!call->get_remote_uri ().empty ())
-      ekiga_main_window_set_call_url (mw, call->get_remote_uri ().c_str());
     mw->priv->current_call = call;
   }
 }
@@ -995,123 +704,48 @@ static void on_ringing_call_cb (boost::shared_ptr<Ekiga::CallManager>  /*manager
 }
 
 
-
-static gboolean on_stats_refresh_cb (gpointer self)
-{
-  EkigaMainWindow *mw = EKIGA_MAIN_WINDOW (self);
-
-  if (mw->priv->calling_state == Connected && mw->priv->current_call) {
-
-    Ekiga::VideoOutputStats videooutput_stats;
-    boost::shared_ptr<Ekiga::VideoOutputCore> videooutput_core = mw->priv->core->get<Ekiga::VideoOutputCore> ("videooutput-core");
-    videooutput_core->get_videooutput_stats(videooutput_stats);
-
-    ekiga_main_window_set_call_duration (mw, mw->priv->current_call->get_duration ().c_str ());
-    ekiga_main_window_set_bandwidth (mw,
-                                     mw->priv->current_call->get_transmitted_audio_bandwidth (),
-                                     mw->priv->current_call->get_received_audio_bandwidth (),
-                                     mw->priv->current_call->get_transmitted_video_bandwidth (),
-                                     mw->priv->current_call->get_received_video_bandwidth (),
-                                     videooutput_stats.tx_fps,
-                                     videooutput_stats.rx_fps);
-
-    unsigned int jitter = mw->priv->current_call->get_jitter_size ();
-    double lost = mw->priv->current_call->get_lost_packets ();
-    double late = mw->priv->current_call->get_late_packets ();
-    double out_of_order = mw->priv->current_call->get_out_of_order_packets ();
-
-    ekiga_main_window_update_stats (mw, lost, late, out_of_order, jitter,
-                                    videooutput_stats.rx_width,
-                                    videooutput_stats.rx_height,
-                                    videooutput_stats.tx_width,
-                                    videooutput_stats.tx_height);
-  }
-
-  return true;
-}
-
-
-static gboolean on_signal_level_refresh_cb (gpointer self)
-{
-  EkigaMainWindow *mw = EKIGA_MAIN_WINDOW (self);
-
-  boost::shared_ptr<Ekiga::AudioInputCore> audioinput_core = mw->priv->core->get<Ekiga::AudioInputCore> ("audioinput-core");
-  boost::shared_ptr<Ekiga::AudioOutputCore> audiooutput_core = mw->priv->core->get<Ekiga::AudioOutputCore> ("audiooutput-core");
-
-  gm_level_meter_set_level (GM_LEVEL_METER (mw->priv->output_signal), audiooutput_core->get_average_level());
-  gm_level_meter_set_level (GM_LEVEL_METER (mw->priv->input_signal), audioinput_core->get_average_level());
-  return true;
-}
-
 static void on_established_call_cb (boost::shared_ptr<Ekiga::CallManager>  /*manager*/,
                                     boost::shared_ptr<Ekiga::Call>  call,
                                     gpointer self)
 {
   EkigaMainWindow *mw = EKIGA_MAIN_WINDOW (self);
+  GtkWidget *call_window = NULL;
   gchar* info = NULL;
 
   /* %s is the SIP/H.323 address of the remote user, this text is shown
      below video during a call */
   info = g_strdup_printf (_("Connected with %s"),
 			  call->get_remote_party_name ().c_str ());
-
-  if (!call->get_remote_uri ().empty ())
-    ekiga_main_window_set_call_url (mw, call->get_remote_uri ().c_str());
-  if (gm_conf_get_bool (VIDEO_DISPLAY_KEY "stay_on_top"))
-    ekiga_main_window_set_stay_on_top (mw, TRUE);
-  ekiga_main_window_set_status (mw, info);
   ekiga_main_window_flash_message (mw, "%s", info);
-  ekiga_main_window_update_calling_state (mw, Connected);
+  g_free (info);
 
-  mw->priv->current_call = call;
-
-  mw->priv->timeout_id = g_timeout_add_seconds (1, on_stats_refresh_cb, self);
-
+  /* Manage sound events */
   boost::shared_ptr<Ekiga::AudioOutputCore> audiooutput_core = mw->priv->core->get<Ekiga::AudioOutputCore> ("audiooutput-core");
 
   audiooutput_core->stop_play_event("incoming_call_sound");
   audiooutput_core->stop_play_event("ring_tone_sound");
 
-  g_free (info);
+  /* Show call window */
+  call_window = GnomeMeeting::Process ()->GetCallWindow ();
+  gtk_widget_show (call_window);
 }
 
 
 static void on_cleared_call_cb (boost::shared_ptr<Ekiga::CallManager>  /*manager*/,
-                                boost::shared_ptr<Ekiga::Call>  call,
+                                boost::shared_ptr<Ekiga::Call> /*call*/,
                                 std::string reason,
                                 gpointer self)
 {
   EkigaMainWindow *mw = EKIGA_MAIN_WINDOW (self);
 
-  if (mw->priv->current_call && mw->priv->current_call->get_id () != call->get_id ()) {
-    return; // Trying to clear another call than the current active one
-  }
-
-  if (gm_conf_get_bool (VIDEO_DISPLAY_KEY "stay_on_top"))
-    ekiga_main_window_set_stay_on_top (mw, FALSE);
-  ekiga_main_window_update_calling_state (mw, Standby);
-  ekiga_main_window_set_status (mw, _("Standby"));
-  ekiga_main_window_set_call_url (mw, "sip:");
-  ekiga_main_window_set_call_duration (mw, NULL);
-  ekiga_main_window_set_bandwidth (mw, 0.0, 0.0, 0.0, 0.0, 0, 0);
-  ekiga_main_window_set_call_info (mw, NULL, NULL, NULL, NULL);
-  ekiga_main_window_clear_stats (mw);
+  /* Info message */
   ekiga_main_window_flash_message (mw, "%s", reason.c_str ());
-  ekiga_main_window_update_logo_have_window (mw);
 
-  if (mw->priv->current_call) {
-    mw->priv->current_call = boost::shared_ptr<Ekiga::Call>();
-    g_source_remove (mw->priv->timeout_id);
-    mw->priv->timeout_id = -1;
-  }
+  /* Sound events */
   boost::shared_ptr<Ekiga::AudioOutputCore> audiooutput_core = mw->priv->core->get<Ekiga::AudioOutputCore> ("audiooutput-core");
-
   audiooutput_core->stop_play_event("incoming_call_sound");
   audiooutput_core->stop_play_event("ring_tone_sound");
-
-  ekiga_main_window_clear_signal_levels (mw);
 }
-
 
 static void on_cleared_incoming_call_cb (std::string /*reason*/,
                                          gpointer self)
@@ -1227,11 +861,6 @@ static void on_stream_opened_cb (boost::shared_ptr<Ekiga::CallManager>  /*manage
                                         is_video,
                                         is_video ? mw->priv->video_reception_active : mw->priv->audio_reception_active,
                                         is_video ? mw->priv->video_transmission_active : mw->priv->audio_transmission_active);
-  ekiga_main_window_set_call_info (mw, 
-                                   mw->priv->transmitted_audio_codec.c_str (), 
-                                   mw->priv->received_audio_codec.c_str (),
-                                   mw->priv->transmitted_video_codec.c_str (), 
-                                   mw->priv->received_audio_codec.c_str ());
 }
 
 
@@ -1276,11 +905,6 @@ static void on_stream_closed_cb (boost::shared_ptr<Ekiga::CallManager>  /*manage
                                         is_video,
                                         is_video ? mw->priv->video_reception_active : mw->priv->audio_reception_active,
                                         is_video ? mw->priv->video_transmission_active : mw->priv->audio_transmission_active);
-  ekiga_main_window_set_call_info (mw, 
-                                   mw->priv->transmitted_audio_codec.c_str (), 
-                                   mw->priv->received_audio_codec.c_str (),
-                                   mw->priv->transmitted_video_codec.c_str (), 
-                                   mw->priv->received_audio_codec.c_str ());
 }
 
 
@@ -1331,184 +955,13 @@ static bool on_handle_errors (std::string error,
 /*
  * Display Engine Callbacks
  */
-
-static void
-on_videooutput_device_opened_cb (Ekiga::VideoOutputManager & /* manager */,
-                                 Ekiga::VideoOutputAccel /* accel */,
-                                 Ekiga::VideoOutputMode mode,
-                                 unsigned zoom,
-                                 bool both_streams,
-                                 gpointer self)
-{
-  EkigaMainWindow *mw = EKIGA_MAIN_WINDOW (self);
-  int vv;
-
-  if (both_streams) {
-       gtk_menu_section_set_sensitive (mw->priv->main_menu, "local_video", TRUE);
-       gtk_menu_section_set_sensitive (mw->priv->main_menu, "fullscreen", TRUE);
-  }
-  else {
-
-    if (mode == Ekiga::VO_MODE_LOCAL)
-      gtk_menu_set_sensitive (mw->priv->main_menu, "local_video", TRUE);
-
-    if (mode == Ekiga::VO_MODE_REMOTE)
-       gtk_menu_set_sensitive (mw->priv->main_menu, "remote_video", TRUE);
-  }
-
-  // when ending a call and going back to local video, the video_view
-  // setting should not be updated, so memorise the setting and
-  // restore it afterwards
-  if (!both_streams && mode == Ekiga::VO_MODE_LOCAL)
-    vv = gm_conf_get_int (VIDEO_DISPLAY_KEY "video_view");
-  mw->priv->changing_back_to_local_after_a_call = true;
-  gtk_radio_menu_select_with_id (mw->priv->main_menu, "local_video", mode);
-  mw->priv->changing_back_to_local_after_a_call = false;
-  if (!both_streams && mode == Ekiga::VO_MODE_LOCAL)
-    gm_conf_set_int (VIDEO_DISPLAY_KEY "video_view", vv);
-
-  gtk_menu_set_sensitive (mw->priv->main_menu, "zoom_in", zoom != 200);
-  gtk_menu_set_sensitive (mw->priv->main_menu, "zoom_out", zoom != 50);
-  gtk_menu_set_sensitive (mw->priv->main_menu, "normal_size", zoom != 100);
-}
-
 void
-on_videooutput_device_closed_cb (Ekiga::VideoOutputManager & /* manager */, gpointer self)
-{
-  EkigaMainWindow *mw = EKIGA_MAIN_WINDOW (self);
-
-  gtk_menu_section_set_sensitive (mw->priv->main_menu, "local_video", FALSE);
-
-  gtk_menu_section_set_sensitive (mw->priv->main_menu, "fullscreen", TRUE);
-
-  gtk_menu_section_set_sensitive (mw->priv->main_menu, "zoom_in", FALSE);
-}
-
-void
-on_videooutput_device_error_cb (Ekiga::VideoOutputManager & /* manager */,
-                                Ekiga::VideoOutputErrorCodes error_code,
-                                gpointer self)
-{
-  const gchar *dialog_title =  _("Error while initializing video output");
-  const gchar *tmp_msg = _("No video will be displayed on your machine during this call");
-  gchar *dialog_msg = NULL;
-
-  switch (error_code) {
-
-    case Ekiga::VO_ERROR_NONE:
-      break;
-    case Ekiga::VO_ERROR:
-    default:
-#ifdef WIN32
-      dialog_msg = g_strconcat (_("There was an error opening or initializing the video output. Please verify that no other application is using the accelerated video output."), "\n\n", tmp_msg, NULL);
-#else
-      dialog_msg = g_strconcat (_("There was an error opening or initializing the video output. Please verify that you are using a color depth of 24 or 32 bits per pixel."), "\n\n", tmp_msg, NULL);
-#endif
-      break;
-  }
-
-  gnomemeeting_warning_dialog_on_widget (GTK_WINDOW (self),
-                                         "show_device_warnings",
-                                         dialog_title,
-                                         "%s", dialog_msg);
-  g_free (dialog_msg);
-}
-
-void 
 on_fullscreen_mode_changed_cb (Ekiga::VideoOutputManager & /* manager */, Ekiga::VideoOutputFSToggle toggle,  gpointer self)
 {
   gm_main_window_toggle_fullscreen (toggle, GTK_WIDGET (self));
 }
 
-static void
-ekiga_main_window_set_video_size (EkigaMainWindow *mw, int width, int height)
-{
-  int pw, ph;
-  GtkWidget *panel;
-
-  g_return_if_fail (width > 0 && height > 0);
-
-  gtk_widget_get_size_request (mw->priv->main_video_image, &pw, &ph);
-
-  /* No size requisition yet
-   * It's our first call so we silently set the new requisition and exit...
-   */
-  if (pw == -1) {
-    gtk_widget_set_size_request (mw->priv->main_video_image, width, height);
-    return;
-  }
-
-  /* Do some kind of filtering here. We often get duplicate "size-changed" events...
-   * Note that we currently only bother about the width of the video.
-   */
-  if (pw == width)
-    return;
-
-  panel = gtk_paned_get_child2 (GTK_PANED (mw->priv->hpaned));
-  if (gtk_widget_get_visible (panel)) {
-    int x, y;
-    int rw, pos;
-    GtkRequisition req;
-
-    gtk_window_get_size (GTK_WINDOW (mw), &x, &y);
-    pos = gtk_paned_get_position (GTK_PANED (mw->priv->hpaned));
-
-    rw = x - panel->allocation.width;
-
-    gtk_widget_set_size_request (mw->priv->main_video_image, width, height);
-    gtk_widget_size_request (panel, &req);
-
-    gtk_window_resize (GTK_WINDOW (mw), rw + req.width, y);
-    gtk_paned_set_position (GTK_PANED (mw->priv->hpaned), pos);
-  }
-  else {
-    gtk_widget_set_size_request (mw->priv->main_video_image, width, height);
-  }
-
-  gdk_window_invalidate_rect (GTK_WIDGET (mw)->window,
-                              &(GTK_WIDGET (mw)->allocation), TRUE);
-}
-
-static void 
-on_size_changed_cb (Ekiga::VideoOutputManager & /* manager */, unsigned width, unsigned height, gpointer self)
-{
-  EkigaMainWindow *mw = EKIGA_MAIN_WINDOW (self);
-
-  ekiga_main_window_set_video_size (EKIGA_MAIN_WINDOW (mw), width, height);
-}
-
 void
-on_videoinput_device_opened_cb (Ekiga::VideoInputManager & /* manager */,
-                                Ekiga::VideoInputDevice & /* device */,
-                                Ekiga::VideoInputSettings & settings,
-                                gpointer self)
-{
-  EkigaMainWindow *mw = EKIGA_MAIN_WINDOW (self);
-
-  gtk_widget_set_sensitive (mw->priv->video_settings_frame,  settings.modifyable ? TRUE : FALSE);
-  gtk_widget_set_sensitive (mw->priv->video_settings_button,  settings.modifyable ? TRUE : FALSE);
-  GTK_ADJUSTMENT (mw->priv->adj_whiteness)->value = settings.whiteness;
-  GTK_ADJUSTMENT (mw->priv->adj_brightness)->value = settings.brightness;
-  GTK_ADJUSTMENT (mw->priv->adj_colour)->value = settings.colour;
-  GTK_ADJUSTMENT (mw->priv->adj_contrast)->value = settings.contrast;
-
-  gtk_widget_queue_draw (mw->priv->video_settings_frame);
-}
-
-
-void 
-on_videoinput_device_closed_cb (Ekiga::VideoInputManager & /* manager */, Ekiga::VideoInputDevice & /*device*/, gpointer self)
-{
-  EkigaMainWindow *mw = EKIGA_MAIN_WINDOW (self);
-
-  ekiga_main_window_update_sensitivity (mw, TRUE, FALSE, FALSE);
-  ekiga_main_window_update_logo_have_window (mw);
-
-  gtk_widget_set_sensitive (mw->priv->video_settings_button,  FALSE);
-}
-
-
-void 
 on_videoinput_device_added_cb (const Ekiga::VideoInputDevice & device, bool is_desired, gpointer self)
 {
   EkigaMainWindow *mw = EKIGA_MAIN_WINDOW (self);
@@ -1519,11 +972,11 @@ on_videoinput_device_added_cb (const Ekiga::VideoInputDevice & device, bool is_d
 			       device.GetString().c_str ());
   ekiga_main_window_flash_message (mw, "%s", message);
   g_free (message);
-  if (!is_desired && mw->priv->calling_state == Standby && !mw->priv->current_call) 
+  if (!is_desired && mw->priv->calling_state == Standby && !mw->priv->current_call)
     ekiga_main_window_add_device_dialog_show (mw, device, VideoInput);
 }
 
-void 
+void
 on_videoinput_device_removed_cb (const Ekiga::VideoInputDevice & device, bool, gpointer self)
 {
   /* Translators: This is a hotplug status */
@@ -1533,94 +986,8 @@ on_videoinput_device_removed_cb (const Ekiga::VideoInputDevice & device, bool, g
   g_free (message);
 }
 
-void 
-on_videoinput_device_error_cb (Ekiga::VideoInputManager & /* manager */, 
-                               Ekiga::VideoInputDevice & device, 
-                               Ekiga::VideoInputErrorCodes error_code, 
-                               gpointer self)
-{
-  gchar *dialog_title = NULL;
-  gchar *dialog_msg = NULL;
-  gchar *tmp_msg = NULL;
-
-  dialog_title =
-  g_strdup_printf (_("Error while accessing video device %s"),
-                   (const char *) device.name.c_str());
-
-  tmp_msg = g_strdup (_("A moving logo will be transmitted during calls."));
-  switch (error_code) {
-
-    case Ekiga::VI_ERROR_DEVICE:
-      dialog_msg = g_strconcat (_("There was an error while opening the device. In case it is a pluggable device it may be sufficient to reconnect it. If not, or if it still is not accessible, please check your permissions and make sure that the appropriate driver is loaded."), "\n\n", tmp_msg, NULL);
-      break;
-
-    case Ekiga::VI_ERROR_FORMAT:
-      dialog_msg = g_strconcat (_("Your video driver doesn't support the requested video format."), "\n\n", tmp_msg, NULL);
-      break;
-
-    case Ekiga::VI_ERROR_CHANNEL:
-      dialog_msg = g_strconcat (_("Could not open the chosen channel."), "\n\n", tmp_msg, NULL);
-      break;
-
-    case Ekiga::VI_ERROR_COLOUR:
-      dialog_msg = g_strconcat (_("Your driver doesn't seem to support any of the color formats supported by Ekiga.\n Please check your kernel driver documentation in order to determine which Palette is supported."), "\n\n", tmp_msg, NULL);
-      break;
-
-    case Ekiga::VI_ERROR_FPS:
-      dialog_msg = g_strconcat (_("Error while setting the frame rate."), "\n\n", tmp_msg, NULL);
-      break;
-
-    case Ekiga::VI_ERROR_SCALE:
-      dialog_msg = g_strconcat (_("Error while setting the frame size."), "\n\n", tmp_msg, NULL);
-      break;
-
-    case Ekiga::VI_ERROR_NONE:
-    default:
-      dialog_msg = g_strconcat (_("Unknown error."), "\n\n", tmp_msg, NULL);
-      break;
-  }
-
-  gnomemeeting_warning_dialog_on_widget (GTK_WINDOW (GTK_WIDGET (self)),
-                                         "show_device_warnings",
-                                         dialog_title,
-                                         "%s", dialog_msg);
-  g_free (dialog_msg);
-  g_free (dialog_title);
-  g_free (tmp_msg);
-}
-
 void
-on_audioinput_device_opened_cb (Ekiga::AudioInputManager & /* manager */,
-                                Ekiga::AudioInputDevice & /* device */,
-                                Ekiga::AudioInputSettings & settings,
-                                gpointer self)
-{
-  EkigaMainWindow *mw = EKIGA_MAIN_WINDOW (self);
-
-  gtk_widget_set_sensitive (mw->priv->audio_input_volume_frame, settings.modifyable);
-  if (mw->priv->audio_settings_button)
-    gtk_widget_set_sensitive (mw->priv->audio_settings_button, settings.modifyable);
-  GTK_ADJUSTMENT (mw->priv->adj_input_volume)->value = settings.volume;
-  
-  gtk_widget_queue_draw (mw->priv->audio_input_volume_frame);
-}
-
-
-
-void 
-on_audioinput_device_closed_cb (Ekiga::AudioInputManager & /* manager */, 
-                                Ekiga::AudioInputDevice & /*device*/, 
-                                gpointer self)
-{
-  EkigaMainWindow *mw = EKIGA_MAIN_WINDOW (self);
-
-  if (mw->priv->audio_settings_button)
-    gtk_widget_set_sensitive (mw->priv->audio_settings_button, FALSE);
-  gtk_widget_set_sensitive (mw->priv->audio_input_volume_frame, FALSE);
-}
-
-void 
-on_audioinput_device_added_cb (const Ekiga::AudioInputDevice & device, 
+on_audioinput_device_added_cb (const Ekiga::AudioInputDevice & device,
                                bool is_desired,
                                gpointer self)
 {
@@ -1632,12 +999,12 @@ on_audioinput_device_added_cb (const Ekiga::AudioInputDevice & device,
 			     device.GetString().c_str ());
   ekiga_main_window_flash_message (mw, "%s", message);
   g_free (message);
-  if (!is_desired  && mw->priv->calling_state == Standby && !mw->priv->current_call)
+  if (!is_desired  && mw->priv->calling_state == Standby)
     ekiga_main_window_add_device_dialog_show (mw, device, AudioInput);
 }
 
-void 
-on_audioinput_device_removed_cb (const Ekiga::AudioInputDevice & device, 
+void
+on_audioinput_device_removed_cb (const Ekiga::AudioInputDevice & device,
                                  bool,
                                  gpointer self)
 {
@@ -1650,89 +1017,8 @@ on_audioinput_device_removed_cb (const Ekiga::AudioInputDevice & device,
   g_free (message);
 }
 
-void 
-on_audioinput_device_error_cb (Ekiga::AudioInputManager & /* manager */, 
-                               Ekiga::AudioInputDevice & device, 
-                               Ekiga::AudioInputErrorCodes error_code, 
-                               gpointer self)
-{
-  gchar *dialog_title = NULL;
-  gchar *dialog_msg = NULL;
-  gchar *tmp_msg = NULL;
-
-  dialog_title =
-  g_strdup_printf (_("Error while opening audio input device %s"),
-                   (const char *) device.name.c_str());
-
-  /* Translators: This happens when there is an error with audio input:
-   * Nothing ("silence") will be transmitted */
-  tmp_msg = g_strdup (_("Only silence will be transmitted."));
-  switch (error_code) {
-
-    case Ekiga::AI_ERROR_DEVICE:
-      dialog_msg = g_strconcat (tmp_msg, "\n\n", _("Unable to open the selected audio device for recording. In case it is a pluggable device it may be sufficient to reconnect it. If not, or if it still is not accessible, please check your audio setup, the permissions and that the device is not busy."), NULL);
-      break;
-
-    case Ekiga::AI_ERROR_READ:
-      dialog_msg = g_strconcat (tmp_msg, "\n\n", _("The selected audio device was successfully opened but it is impossible to read data from this device. In case it is a pluggable device it may be sufficient to reconnect it. If not, or if it still is not accessible, please check your audio setup."), NULL);
-      break;
-
-    case Ekiga::AI_ERROR_NONE:
-    default:
-      dialog_msg = g_strconcat (tmp_msg, "\n\n", _("Unknown error."), NULL);
-      break;
-  }
-
-  gnomemeeting_warning_dialog_on_widget (GTK_WINDOW (self),
-                                         "show_device_warnings",
-                                         dialog_title,
-                                         "%s", dialog_msg);
-  g_free (dialog_msg);
-  g_free (dialog_title);
-  g_free (tmp_msg);
-
-}
-
 void
-on_audiooutput_device_opened_cb (Ekiga::AudioOutputManager & /*manager*/,
-                                 Ekiga::AudioOutputPS ps,
-                                 Ekiga::AudioOutputDevice & /*device*/,
-                                 Ekiga::AudioOutputSettings & settings,
-                                 gpointer self)
-{
-  EkigaMainWindow *mw = EKIGA_MAIN_WINDOW (self);
-
-  if (ps == Ekiga::secondary)
-    return;
-
-  if (mw->priv->audio_settings_button)
-    gtk_widget_set_sensitive (mw->priv->audio_settings_button, settings.modifyable);
-  gtk_widget_set_sensitive (mw->priv->audio_output_volume_frame, settings.modifyable);
-  GTK_ADJUSTMENT (mw->priv->adj_output_volume)->value = settings.volume;
-
-  gtk_widget_queue_draw (mw->priv->audio_output_volume_frame);
-}
-
-
-
-void 
-on_audiooutput_device_closed_cb (Ekiga::AudioOutputManager & /*manager*/, 
-                                 Ekiga::AudioOutputPS ps, 
-                                 Ekiga::AudioOutputDevice & /*device*/, 
-                                 gpointer self)
-{
-  EkigaMainWindow *mw = EKIGA_MAIN_WINDOW (self);
-
-  if (ps == Ekiga::secondary)
-    return;
-
-  if (mw->priv->audio_settings_button)
-    gtk_widget_set_sensitive (mw->priv->audio_settings_button, FALSE);
-  gtk_widget_set_sensitive (mw->priv->audio_output_volume_frame, FALSE);
-}
-
-void 
-on_audiooutput_device_added_cb (const Ekiga::AudioOutputDevice & device, 
+on_audiooutput_device_added_cb (const Ekiga::AudioOutputDevice & device,
                                 bool is_desired,
                                 gpointer self)
 {
@@ -1752,8 +1038,8 @@ on_audiooutput_device_added_cb (const Ekiga::AudioOutputDevice & device,
   }
 }
 
-void 
-on_audiooutput_device_removed_cb (const Ekiga::AudioOutputDevice & device, 
+void
+on_audiooutput_device_removed_cb (const Ekiga::AudioOutputDevice & device,
                                   bool,
                                   gpointer self)
 {
@@ -1766,51 +1052,6 @@ on_audiooutput_device_removed_cb (const Ekiga::AudioOutputDevice & device,
   ekiga_main_window_flash_message (EKIGA_MAIN_WINDOW (self), "%s", message);
   g_free (message);
 }
-
-void 
-on_audiooutput_device_error_cb (Ekiga::AudioOutputManager & /*manager */, 
-                                Ekiga::AudioOutputPS ps,
-                                Ekiga::AudioOutputDevice & device, 
-                                Ekiga::AudioOutputErrorCodes error_code, 
-                                gpointer self)
-{
-  if (ps == Ekiga::secondary)
-    return;
-
-  gchar *dialog_title = NULL;
-  gchar *dialog_msg = NULL;
-  gchar *tmp_msg = NULL;
-
-  dialog_title =
-  g_strdup_printf (_("Error while opening audio output device %s"),
-                   (const char *) device.name.c_str());
-
-  tmp_msg = g_strdup (_("No incoming sound will be played."));
-  switch (error_code) {
-
-    case Ekiga::AO_ERROR_DEVICE:
-      dialog_msg = g_strconcat (tmp_msg, "\n\n", _("Unable to open the selected audio device for playing. In case it is a pluggable device it may be sufficient to reconnect it. If not, or if it still is not accessible, please check your audio setup, the permissions and that the device is not busy."), NULL);
-      break;
-
-    case Ekiga::AO_ERROR_WRITE:
-      dialog_msg = g_strconcat (tmp_msg, "\n\n", _("The selected audio device was successfully opened but it is impossible to write data to this device. In case it is a pluggable device it may be sufficient to reconnect it. If not, or if it still is not accessible, please check your audio setup."), NULL);
-      break;
-
-    case Ekiga::AO_ERROR_NONE:
-    default:
-      dialog_msg = g_strconcat (tmp_msg, "\n\n", _("Unknown error."), NULL);
-      break;
-  }
-
-  gnomemeeting_warning_dialog_on_widget (GTK_WINDOW (GTK_WIDGET (self)),
-                                         "show_device_warnings",
-                                         dialog_title,
-                                         "%s", dialog_msg);
-  g_free (dialog_msg);
-  g_free (dialog_title);
-  g_free (tmp_msg);
-}
-
 
 /* Implementation */
 static void
@@ -1868,80 +1109,6 @@ add_device_response_cb (GtkDialog *add_device_popup,
 }
 
 static void
-place_call_cb (GtkWidget * /*widget*/,
-               gpointer data)
-{
-  std::string uri;
-  EkigaMainWindow *mw = NULL;
-
-  g_return_if_fail (EKIGA_IS_MAIN_WINDOW (data));
-
-  mw = EKIGA_MAIN_WINDOW (data);
-
-  if (mw->priv->calling_state == Standby && !mw->priv->current_call) {
-
-    size_t pos;
-
-    // Check for empty uri
-    uri = ekiga_main_window_get_call_url (mw);
-    pos = uri.find (":");
-    if (pos != std::string::npos)
-      if (uri.substr (++pos).empty ())
-        return;
-
-    ekiga_main_window_update_calling_state (mw, Calling);
-    boost::shared_ptr<Ekiga::CallCore> call_core = mw->priv->core->get<Ekiga::CallCore> ("call-core");
-
-    // Remove appended spaces
-    pos = uri.find_first_of (' ');
-    if (pos != std::string::npos)
-      uri = uri.substr (0, pos);
-
-    // Dial
-    if (call_core->dial (uri)) {
-
-      // nothing special
-
-    } else {
-
-      ekiga_main_window_flash_message (mw, _("Could not connect to remote host"));
-      ekiga_main_window_update_calling_state (mw, Standby);
-    }
-  }
-  else if (mw->priv->calling_state == Called && mw->priv->current_call)
-    mw->priv->current_call->answer ();
-}
-
-
-static void
-hangup_call_cb (GtkWidget * /*widget*/,
-                gpointer data)
-{
-  EkigaMainWindow *mw = EKIGA_MAIN_WINDOW (data);
-
-  if (mw->priv->current_call)
-    mw->priv->current_call->hangup ();
-}
-
-
-static void 
-toggle_call_cb (GtkWidget *widget,
-                gpointer data)
-{
-  EkigaMainWindow *mw = EKIGA_MAIN_WINDOW (data);
-
-  if (mw->priv->connect_button_connected)
-    hangup_call_cb (widget, data);
-  else {
-    if (!mw->priv->current_call)
-      place_call_cb (widget, data);
-    else
-      mw->priv->current_call->answer ();
-  }
-}
-
-
-static void
 on_status_icon_embedding_change (G_GNUC_UNUSED GObject obj,
 				 G_GNUC_UNUSED GParamSpec param,
 				 G_GNUC_UNUSED gpointer data)
@@ -1956,253 +1123,6 @@ on_status_icon_embedding_change (G_GNUC_UNUSED GObject obj,
   if (!gtk_status_icon_is_embedded (GTK_STATUS_ICON (status_icon)))
     gtk_widget_show (main_window);
 }
-
-	
-static GtkWidget * 
-gm_mw_video_settings_window_new (EkigaMainWindow *mw)
-{
-  GtkWidget *hbox = NULL;
-  GtkWidget *vbox = NULL;
-  GtkWidget *image = NULL;
-  GtkWidget *window = NULL;
-
-  GtkWidget *hscale_brightness = NULL;
-  GtkWidget *hscale_colour = NULL;
-  GtkWidget *hscale_contrast = NULL;
-  GtkWidget *hscale_whiteness = NULL;
-
-  int brightness = 0, colour = 0, contrast = 0, whiteness = 0;
-
-  /* Build the window */
-  window = gtk_dialog_new ();
-  g_object_set_data_full (G_OBJECT (window), "window_name",
-			  g_strdup ("video_settings_window"), g_free); 
-  gtk_dialog_add_button (GTK_DIALOG (window), 
-                         GTK_STOCK_CLOSE, 
-                         GTK_RESPONSE_CANCEL);
-
-  gtk_window_set_title (GTK_WINDOW (window), 
-                        _("Video Settings"));
-
-  /* Webcam Control Frame, we need it to disable controls */		
-  mw->priv->video_settings_frame = gtk_frame_new (NULL);
-  gtk_frame_set_shadow_type (GTK_FRAME (mw->priv->video_settings_frame), 
-			     GTK_SHADOW_NONE);
-  gtk_container_set_border_width (GTK_CONTAINER (mw->priv->video_settings_frame), 5);
-  
-  /* Category */
-  vbox = gtk_vbox_new (FALSE, 0);
-  gtk_container_add (GTK_CONTAINER (mw->priv->video_settings_frame), vbox);
-  
-  /* Brightness */
-  hbox = gtk_hbox_new (FALSE, 0);
-  image = gtk_image_new_from_icon_name (GM_ICON_BRIGHTNESS, GTK_ICON_SIZE_MENU);
-  gtk_box_pack_start (GTK_BOX (hbox), image, FALSE, FALSE, 0);
-
-  mw->priv->adj_brightness = gtk_adjustment_new (brightness, 0.0,
-                                                 255.0, 1.0, 5.0, 1.0);
-  hscale_brightness = gtk_hscale_new (GTK_ADJUSTMENT (mw->priv->adj_brightness));
-  gtk_scale_set_draw_value (GTK_SCALE (hscale_brightness), FALSE);
-  gtk_scale_set_value_pos (GTK_SCALE (hscale_brightness), GTK_POS_RIGHT);
-  gtk_box_pack_start (GTK_BOX (hbox), hscale_brightness, TRUE, TRUE, 2);
-  gtk_box_pack_start (GTK_BOX (vbox), hbox, FALSE, FALSE, 3);
-
-  gtk_widget_set_tooltip_text (hscale_brightness, _("Adjust brightness"));
-
-  g_signal_connect (mw->priv->adj_brightness, "value-changed",
-		    G_CALLBACK (video_settings_changed_cb), 
-		    (gpointer) mw);
-
-  /* Whiteness */
-  hbox = gtk_hbox_new (FALSE, 0);
-  image = gtk_image_new_from_icon_name (GM_ICON_WHITENESS, GTK_ICON_SIZE_MENU);
-  gtk_box_pack_start (GTK_BOX (hbox), image, FALSE, FALSE, 0);
-
-  mw->priv->adj_whiteness = gtk_adjustment_new (whiteness, 0.0, 
-						255.0, 1.0, 5.0, 1.0);
-  hscale_whiteness = gtk_hscale_new (GTK_ADJUSTMENT (mw->priv->adj_whiteness));
-  gtk_scale_set_draw_value (GTK_SCALE (hscale_whiteness), FALSE);
-  gtk_scale_set_value_pos (GTK_SCALE (hscale_whiteness), GTK_POS_RIGHT);
-  gtk_box_pack_start (GTK_BOX (hbox), hscale_whiteness, TRUE, TRUE, 2);
-  gtk_box_pack_start (GTK_BOX (vbox), hbox, FALSE, FALSE, 3);
-
-  gtk_widget_set_tooltip_text (hscale_whiteness, _("Adjust whiteness"));
-
-  g_signal_connect (mw->priv->adj_whiteness, "value-changed",
-		    G_CALLBACK (video_settings_changed_cb), 
-		    (gpointer) mw);
-
-  /* Colour */
-  hbox = gtk_hbox_new (FALSE, 0);
-  image = gtk_image_new_from_icon_name (GM_ICON_COLOURNESS, GTK_ICON_SIZE_MENU);
-  gtk_box_pack_start (GTK_BOX (hbox), image, FALSE, FALSE, 0);
-
-  mw->priv->adj_colour = gtk_adjustment_new (colour, 0.0, 
-					     255.0, 1.0, 5.0, 1.0);
-  hscale_colour = gtk_hscale_new (GTK_ADJUSTMENT (mw->priv->adj_colour));
-  gtk_scale_set_draw_value (GTK_SCALE (hscale_colour), FALSE);
-  gtk_scale_set_value_pos (GTK_SCALE (hscale_colour), GTK_POS_RIGHT);
-  gtk_box_pack_start (GTK_BOX (hbox), hscale_colour, TRUE, TRUE, 2);
-  gtk_box_pack_start (GTK_BOX (vbox), hbox, FALSE, FALSE, 3);
-
-  gtk_widget_set_tooltip_text (hscale_colour, _("Adjust color"));
-
-  g_signal_connect (mw->priv->adj_colour, "value-changed",
-		    G_CALLBACK (video_settings_changed_cb), 
-		    (gpointer) mw);
-
-  /* Contrast */
-  hbox = gtk_hbox_new (FALSE, 0);
-  image = gtk_image_new_from_icon_name (GM_ICON_CONTRAST, GTK_ICON_SIZE_MENU);
-  gtk_box_pack_start (GTK_BOX (hbox), image, FALSE, FALSE, 0);
-  
-  mw->priv->adj_contrast = gtk_adjustment_new (contrast, 0.0, 
-					       255.0, 1.0, 5.0, 1.0);
-  hscale_contrast = gtk_hscale_new (GTK_ADJUSTMENT (mw->priv->adj_contrast));
-  gtk_scale_set_draw_value (GTK_SCALE (hscale_contrast), FALSE);
-  gtk_scale_set_value_pos (GTK_SCALE (hscale_contrast), GTK_POS_RIGHT);
-  gtk_box_pack_start (GTK_BOX (hbox), hscale_contrast, TRUE, TRUE, 2);
-  gtk_box_pack_start (GTK_BOX (vbox), hbox, FALSE, FALSE, 3);
-
-  gtk_widget_set_tooltip_text (hscale_contrast, _("Adjust contrast"));
-
-  g_signal_connect (mw->priv->adj_contrast, "value-changed",
-		    G_CALLBACK (video_settings_changed_cb), 
-		    (gpointer) mw);
-  
-  gtk_container_add (GTK_CONTAINER (GTK_DIALOG (window)->vbox), 
-                     mw->priv->video_settings_frame);
-  gtk_widget_show_all (mw->priv->video_settings_frame);
-
-  gtk_widget_set_sensitive (GTK_WIDGET (mw->priv->video_settings_frame), FALSE);
-  
-  /* That's an usual GtkWindow, connect it to the signals */
-  g_signal_connect_swapped (window, 
-			    "response", 
-			    G_CALLBACK (gm_window_hide),
-			    (gpointer) window);
-
-  gm_window_hide_on_delete (window);
-
-  return window;
-}
-
-
-
-static GtkWidget * 
-gm_mw_audio_settings_window_new (EkigaMainWindow *mw)
-{
-  GtkWidget *hscale_play = NULL; 
-  GtkWidget *hscale_rec = NULL;
-  GtkWidget *hbox = NULL;
-  GtkWidget *vbox = NULL;
-  GtkWidget *small_vbox = NULL;
-  GtkWidget *window = NULL;
-  
-  /* Build the window */
-  window = gtk_dialog_new ();
-  g_object_set_data_full (G_OBJECT (window), "window_name",
-			  g_strdup ("audio_settings_window"), g_free); 
-  gtk_dialog_add_button (GTK_DIALOG (window), 
-                         GTK_STOCK_CLOSE, 
-                         GTK_RESPONSE_CANCEL);
-
-  gtk_window_set_title (GTK_WINDOW (window), 
-                        _("Audio Settings"));
-
-  /* Audio control frame, we need it to disable controls */		
-  mw->priv->audio_output_volume_frame = gtk_frame_new (NULL);
-  gtk_frame_set_shadow_type (GTK_FRAME (mw->priv->audio_output_volume_frame), 
-			     GTK_SHADOW_NONE);
-  gtk_container_set_border_width (GTK_CONTAINER (mw->priv->audio_output_volume_frame), 5);
-
-
-  /* The vbox */
-  vbox = gtk_vbox_new (FALSE, 0);
-  gtk_container_add (GTK_CONTAINER (mw->priv->audio_output_volume_frame), vbox);
-
-  /* Output volume */
-  hbox = gtk_hbox_new (FALSE, 0);
-  gtk_box_pack_start (GTK_BOX (hbox), 
-		      gtk_image_new_from_icon_name (GM_ICON_AUDIO_VOLUME_HIGH, 
-						    GTK_ICON_SIZE_SMALL_TOOLBAR),
-		      FALSE, FALSE, 0);
-  
-  small_vbox = gtk_vbox_new (FALSE, 0);
-  mw->priv->adj_output_volume = gtk_adjustment_new (0, 0.0, 101.0, 1.0, 5.0, 1.0);
-  hscale_play = gtk_hscale_new (GTK_ADJUSTMENT (mw->priv->adj_output_volume));
-  gtk_scale_set_value_pos (GTK_SCALE (hscale_play), GTK_POS_RIGHT); 
-  gtk_scale_set_draw_value (GTK_SCALE (hscale_play), FALSE);
-  gtk_box_pack_start (GTK_BOX (small_vbox), hscale_play, TRUE, TRUE, 0);
-
-  mw->priv->output_signal = gm_level_meter_new ();
-  gtk_box_pack_start (GTK_BOX (small_vbox), mw->priv->output_signal, TRUE, TRUE, 0);
-  gtk_box_pack_start (GTK_BOX (hbox), small_vbox, TRUE, TRUE, 2);
-  gtk_box_pack_start (GTK_BOX (vbox), hbox, FALSE, FALSE, 3);
-
-  gtk_container_add (GTK_CONTAINER (GTK_DIALOG (window)->vbox), 
-                     mw->priv->audio_output_volume_frame);
-  gtk_widget_show_all (mw->priv->audio_output_volume_frame);
-  gtk_widget_set_sensitive (GTK_WIDGET (mw->priv->audio_output_volume_frame),  FALSE);
-
-  /* Audio control frame, we need it to disable controls */		
-  mw->priv->audio_input_volume_frame = gtk_frame_new (NULL);
-  gtk_frame_set_shadow_type (GTK_FRAME (mw->priv->audio_input_volume_frame), 
-			     GTK_SHADOW_NONE);
-  gtk_container_set_border_width (GTK_CONTAINER (mw->priv->audio_input_volume_frame), 5);
-
-  /* The vbox */
-  vbox = gtk_vbox_new (FALSE, 0);
-  gtk_container_add (GTK_CONTAINER (mw->priv->audio_input_volume_frame), vbox);
-
-  /* Input volume */
-  hbox = gtk_hbox_new (FALSE, 0);
-  gtk_box_pack_start (GTK_BOX (hbox),
-		      gtk_image_new_from_icon_name (GM_ICON_MICROPHONE, 
-						    GTK_ICON_SIZE_SMALL_TOOLBAR),
-		      FALSE, FALSE, 0);
-
-  small_vbox = gtk_vbox_new (FALSE, 0);
-  mw->priv->adj_input_volume = gtk_adjustment_new (0, 0.0, 101.0, 1.0, 5.0, 1.0);
-  hscale_rec = gtk_hscale_new (GTK_ADJUSTMENT (mw->priv->adj_input_volume));
-  gtk_scale_set_value_pos (GTK_SCALE (hscale_rec), GTK_POS_RIGHT); 
-  gtk_scale_set_draw_value (GTK_SCALE (hscale_rec), FALSE);
-  gtk_box_pack_start (GTK_BOX (small_vbox), hscale_rec, TRUE, TRUE, 0);
-
-  mw->priv->input_signal = gm_level_meter_new ();
-  gtk_box_pack_start (GTK_BOX (small_vbox), mw->priv->input_signal, TRUE, TRUE, 0);
-  gtk_box_pack_start (GTK_BOX (hbox), small_vbox, TRUE, TRUE, 2);
-  gtk_box_pack_start (GTK_BOX (vbox), hbox, FALSE, FALSE, 3);
-
-  gtk_container_add (GTK_CONTAINER (GTK_DIALOG (window)->vbox), 
-                     mw->priv->audio_input_volume_frame);
-  gtk_widget_show_all (mw->priv->audio_input_volume_frame);
-  gtk_widget_set_sensitive (GTK_WIDGET (mw->priv->audio_input_volume_frame),  FALSE);
-
-  g_signal_connect (mw->priv->adj_output_volume, "value-changed",
-		    G_CALLBACK (audio_volume_changed_cb), mw);
-
-  g_signal_connect (mw->priv->adj_input_volume, "value-changed",
-		    G_CALLBACK (audio_volume_changed_cb), mw);
-
-  /* That's an usual GtkWindow, connect it to the signals */
-  g_signal_connect_swapped (window, 
-			    "response", 
-			    G_CALLBACK (gm_window_hide),
-			    (gpointer) window);
-
-  gm_window_hide_on_delete (window);
-
-  g_signal_connect (window, "show", 
-                    G_CALLBACK (audio_volume_window_shown_cb), mw);
-
-  g_signal_connect (window, "hide", 
-                    G_CALLBACK (audio_volume_window_hidden_cb), mw);
-
-  return window;
-}
-
-
 
 static void
 ekiga_main_window_zooms_menu_update_sensitivity (EkigaMainWindow *mw,
@@ -2410,71 +1330,13 @@ transfer_current_call_cb (G_GNUC_UNUSED GtkWidget *widget,
 			  gpointer data)
 {
   GtkWidget *mw = NULL;
-  
+
   g_return_if_fail (data != NULL);
-  
+
   mw = GnomeMeeting::Process ()->GetMainWindow ();
 
   ekiga_main_window_transfer_dialog_run (EKIGA_MAIN_WINDOW (mw), GTK_WIDGET (data), NULL);  
 }
-
-
-static void 
-audio_volume_changed_cb (GtkAdjustment * /*adjustment*/,
-			 gpointer data)
-{
-  EkigaMainWindow *mw = EKIGA_MAIN_WINDOW (data);
-
-  boost::shared_ptr<Ekiga::AudioInputCore> audioinput_core = mw->priv->core->get<Ekiga::AudioInputCore> ("audioinput-core");
-  boost::shared_ptr<Ekiga::AudioOutputCore> audiooutput_core = mw->priv->core->get<Ekiga::AudioOutputCore> ("audiooutput-core");
-
-  audiooutput_core->set_volume (Ekiga::primary, (unsigned) GTK_ADJUSTMENT (mw->priv->adj_output_volume)->value);
-  audioinput_core->set_volume ((unsigned) GTK_ADJUSTMENT (mw->priv->adj_input_volume)->value);
-}
-
-static void 
-audio_volume_window_shown_cb (GtkWidget * /*widget*/,
-	                      gpointer data)
-{
-  EkigaMainWindow *mw = EKIGA_MAIN_WINDOW (data);
-
-  boost::shared_ptr<Ekiga::AudioInputCore> audioinput_core = mw->priv->core->get<Ekiga::AudioInputCore> ("audioinput-core");
-  boost::shared_ptr<Ekiga::AudioOutputCore> audiooutput_core = mw->priv->core->get<Ekiga::AudioOutputCore> ("audiooutput-core");
-
-  audioinput_core->set_average_collection (true);
-  audiooutput_core->set_average_collection (true);
-  mw->priv->levelmeter_timeout_id = g_timeout_add_full (G_PRIORITY_DEFAULT_IDLE, 50, on_signal_level_refresh_cb, data, NULL);
-}
-
-
-static void 
-audio_volume_window_hidden_cb (GtkWidget * /*widget*/,
-                               gpointer data)
-{
-  EkigaMainWindow *mw = EKIGA_MAIN_WINDOW (data);
-
-  boost::shared_ptr<Ekiga::AudioInputCore> audioinput_core = mw->priv->core->get<Ekiga::AudioInputCore> ("audioinput-core");
-  boost::shared_ptr<Ekiga::AudioOutputCore> audiooutput_core = mw->priv->core->get<Ekiga::AudioOutputCore> ("audiooutput-core");
-
-  g_source_remove (mw->priv->levelmeter_timeout_id);
-  audioinput_core->set_average_collection (false);
-  audiooutput_core->set_average_collection (false);
-}
-
-static void 
-video_settings_changed_cb (GtkAdjustment * /*adjustment*/,
-			   gpointer data)
-{ 
-  EkigaMainWindow *mw = EKIGA_MAIN_WINDOW (data);
-
-  boost::shared_ptr<Ekiga::VideoInputCore> videoinput_core = mw->priv->core->get<Ekiga::VideoInputCore> ("videoinput-core");
-
-  videoinput_core->set_whiteness ((unsigned) GTK_ADJUSTMENT (mw->priv->adj_whiteness)->value);
-  videoinput_core->set_brightness ((unsigned) GTK_ADJUSTMENT (mw->priv->adj_brightness)->value);
-  videoinput_core->set_colour ((unsigned) GTK_ADJUSTMENT (mw->priv->adj_colour)->value);
-  videoinput_core->set_contrast ((unsigned) GTK_ADJUSTMENT (mw->priv->adj_contrast)->value);
-}
-
 
 static void
 panel_section_changed_cb (G_GNUC_UNUSED GtkNotebook *notebook,
@@ -2493,8 +1355,6 @@ dialpad_button_clicked_cb (EkigaDialpad  * /* dialpad */,
 {
   if (mw->priv->current_call)
     mw->priv->current_call->send_dtmf (button_text[0]);
-  else
-    ekiga_main_window_append_call_url (mw, button_text);
 }
 
 
@@ -2587,8 +1447,7 @@ zoom_out_changed_cb (G_GNUC_UNUSED GtkWidget *widget,
   ekiga_main_window_zooms_menu_update_sensitivity (EKIGA_MAIN_WINDOW (main_window), display_info.zoom);
 }
 
-
-static void 
+static void
 zoom_normal_changed_cb (G_GNUC_UNUSED GtkWidget *widget,
 			gpointer data)
 {
@@ -2605,7 +1464,6 @@ zoom_normal_changed_cb (G_GNUC_UNUSED GtkWidget *widget,
   ekiga_main_window_zooms_menu_update_sensitivity (EKIGA_MAIN_WINDOW (main_window), display_info.zoom);
 }
 
-
 static void
 display_changed_cb (GtkWidget *widget,
 		    gpointer data)
@@ -2615,32 +1473,31 @@ display_changed_cb (GtkWidget *widget,
   g_return_if_fail (data != NULL);
 
   GSList *group = NULL;
-  int group_last_pos = 0;
+//  int group_last_pos = 0;
   int active = 0;
 
   group = gtk_radio_menu_item_get_group (GTK_RADIO_MENU_ITEM (widget));
-  group_last_pos = g_slist_length (group) - 1; /* If length 1, last pos is 0 */
+//  group_last_pos = g_slist_length (group) - 1; /* If length 1, last pos is 0 */
 
   /* Only do something when a new CHECK_MENU_ITEM becomes active,
      not when it becomes inactive */
   if (GTK_CHECK_MENU_ITEM (widget)->active) {
 
     while (group) {
-
-      if (group->data == widget) 
+      if (group->data == widget)
 	break;
-      
+
       active++;
       group = g_slist_next (group);
     }
 
-    if ( !main_window->priv->changing_back_to_local_after_a_call)
-      gm_conf_set_int ((gchar *) data, group_last_pos - active);
+    // FIXME
+//    if ( !main_window->priv->changing_back_to_local_after_a_call)
+  //    gm_conf_set_int ((gchar *) data, group_last_pos - active);
   }
 }
 
-
-static void 
+static void
 fullscreen_changed_cb (G_GNUC_UNUSED GtkWidget *widget,
 		       G_GNUC_UNUSED gpointer data)
 {
@@ -2649,66 +1506,7 @@ fullscreen_changed_cb (G_GNUC_UNUSED GtkWidget *widget,
   gm_main_window_toggle_fullscreen (Ekiga::VO_FS_TOGGLE, main_window);
 }
 
-
-static bool
-account_completion_helper (Ekiga::AccountPtr acc,
-			   const gchar* text,
-			   EkigaMainWindow* mw)
-{
-  Opal::AccountPtr account = boost::dynamic_pointer_cast<Opal::Account>(acc);
-  if (account && account->is_enabled ()) {
-
-    if (g_ascii_strncasecmp (text, "sip:", 4) == 0 && account->get_protocol_name () == "SIP") {
-
-      GtkTreeIter iter;
-      gchar* entry = NULL;
-
-      entry = g_strdup_printf ("%s@%s", text, account->get_host ().c_str ());
-      gtk_list_store_append (mw->priv->completion, &iter);
-      gtk_list_store_set (mw->priv->completion, &iter, 0, entry, -1);
-      g_free (entry);
-    }
-  }
-
-  return true;
-}
-
-static void
-url_changed_cb (GtkEditable *e,
-		gpointer data)
-{
-  EkigaMainWindow *mw = EKIGA_MAIN_WINDOW (data);
-  const char *tip_text = NULL;
-
-  tip_text = gtk_entry_get_text (GTK_ENTRY (e));
-
-  if (g_strrstr (tip_text, "@") == NULL) {
-
-    boost::shared_ptr<Opal::Bank> bank = mw->priv->core->get<Opal::Bank> ("opal-account-store");
-
-    if (bank) {
-
-      gtk_list_store_clear (mw->priv->completion);
-
-      bank->visit_accounts (boost::bind (&account_completion_helper, _1, tip_text, mw));
-    }
-  }
-
-  gtk_widget_set_tooltip_text (GTK_WIDGET (e), tip_text);
-}
-
-
-static void 
-toolbar_toggle_button_changed_cb (G_GNUC_UNUSED GtkWidget *widget,
-				  gpointer data)
-{
-  bool shown = gm_conf_get_bool ((gchar *) data);
-
-  gm_conf_set_bool ((gchar *) data, !shown);
-}
-
-
-static gboolean 
+static gboolean
 statusbar_clicked_cb (G_GNUC_UNUSED GtkWidget *widget,
 		      G_GNUC_UNUSED GdkEventButton *event,
 		      gpointer data)
@@ -2719,21 +1517,6 @@ statusbar_clicked_cb (G_GNUC_UNUSED GtkWidget *widget,
 
   return FALSE;
 }
-
-
-static void
-ekiga_main_window_update_logo_have_window (EkigaMainWindow *mw)
-{
-  g_return_if_fail (EKIGA_IS_MAIN_WINDOW (mw));
-
-  g_object_set (mw->priv->main_video_image,
-		"icon-name", GM_ICON_LOGO,
-		"pixel-size", 72,
-		NULL);
-
-  ekiga_main_window_set_video_size (mw, GM_QCIF_WIDTH, GM_QCIF_HEIGHT);
-}
-
 
 static void
 ekiga_main_window_set_call_hold (EkigaMainWindow *mw,
@@ -2771,7 +1554,7 @@ ekiga_main_window_set_call_hold (EkigaMainWindow *mw,
     ekiga_main_window_set_channel_pause (mw, FALSE, TRUE);
   }
 
-  g_signal_handlers_block_by_func (mw->priv->hold_button,
+/*  g_signal_handlers_block_by_func (mw->priv->hold_button,
                                    (gpointer) hold_current_call_cb,
                                    mw);
   gtk_toggle_button_set_active (GTK_TOGGLE_BUTTON (mw->priv->hold_button),
@@ -2779,6 +1562,7 @@ ekiga_main_window_set_call_hold (EkigaMainWindow *mw,
   g_signal_handlers_unblock_by_func (mw->priv->hold_button,
                                      (gpointer) hold_current_call_cb,
                                      mw);
+                                     */ //FIXME
 }
 
 
@@ -2808,83 +1592,6 @@ ekiga_main_window_set_channel_pause (EkigaMainWindow *mw,
 
   if (GTK_IS_LABEL (child))
     gtk_label_set_text_with_mnemonic (GTK_LABEL (child), msg);
-}
-
-
-static void
-ekiga_main_window_update_calling_state (EkigaMainWindow *mw,
-					unsigned calling_state)
-{
-  g_return_if_fail (mw != NULL);
-
-  switch (calling_state)
-    {
-    case Standby:
-
-      /* Update the hold state */
-      ekiga_main_window_set_call_hold (mw, FALSE);
-
-      /* Update the sensitivity, all channels are closed */
-      ekiga_main_window_update_sensitivity (mw, TRUE, FALSE, FALSE);
-      ekiga_main_window_update_sensitivity (mw, FALSE, FALSE, FALSE);
-
-      /* Update the menus and toolbar items */
-      gtk_menu_set_sensitive (mw->priv->main_menu, "connect", TRUE);
-      gtk_menu_set_sensitive (mw->priv->main_menu, "disconnect", FALSE);
-      gtk_menu_section_set_sensitive (mw->priv->main_menu, "hold_call", FALSE);
-      gtk_widget_set_sensitive (GTK_WIDGET (mw->priv->hold_button), FALSE);
-      gtk_widget_set_sensitive (GTK_WIDGET (mw->priv->preview_button), TRUE);
-
-      /* Update the connect button */
-      connect_button_set_connected (mw, FALSE);
-
-      /* Destroy the transfer call popup */
-      if (mw->priv->transfer_call_popup)
-        gtk_dialog_response (GTK_DIALOG (mw->priv->transfer_call_popup),
-			     GTK_RESPONSE_REJECT);
-      break;
-
-
-    case Calling:
-
-      /* Update the menus and toolbar items */
-      gtk_menu_set_sensitive (mw->priv->main_menu, "connect", FALSE);
-      gtk_menu_set_sensitive (mw->priv->main_menu, "disconnect", TRUE);
-      gtk_widget_set_sensitive (GTK_WIDGET (mw->priv->preview_button), FALSE);
-
-      /* Update the connect button */
-      connect_button_set_connected (mw, TRUE);
-      break;
-
-
-    case Connected:
-
-      /* Update the menus and toolbar items */
-      gtk_menu_set_sensitive (mw->priv->main_menu, "connect", FALSE);
-      gtk_menu_set_sensitive (mw->priv->main_menu, "disconnect", TRUE);
-      gtk_menu_section_set_sensitive (mw->priv->main_menu, "hold_call", TRUE);
-      gtk_widget_set_sensitive (GTK_WIDGET (mw->priv->hold_button), TRUE);
-      gtk_widget_set_sensitive (GTK_WIDGET (mw->priv->preview_button), FALSE);
-
-      /* Update the connect button */
-      connect_button_set_connected (mw, TRUE);
-      break;
-
-
-    case Called:
-
-      /* Update the menus and toolbar items */
-      gtk_menu_set_sensitive (mw->priv->main_menu, "disconnect", TRUE);
-
-      /* Update the connect button */
-      connect_button_set_connected (mw, TRUE);
-      break;
-
-    default:
-      break;
-    }
-
-  mw->priv->calling_state = calling_state;
 }
 
 
@@ -2953,26 +1660,6 @@ gm_main_window_toggle_fullscreen (Ekiga::VideoOutputFSToggle toggle,
       break;
   }
 }
-
-static void 
-ekiga_main_window_set_stay_on_top (EkigaMainWindow *mw,
-				   gboolean stay_on_top)
-{
-  g_return_if_fail (EKIGA_IS_MAIN_WINDOW (mw));
-
-  /* Update the stay-on-top attribute */
-  gm_window_set_always_on_top (GTK_WIDGET (mw)->window, stay_on_top);
-}
-
-void
-ekiga_main_window_clear_signal_levels (EkigaMainWindow *mw)
-{
-  g_return_if_fail (EKIGA_IS_MAIN_WINDOW (mw));
-
-  gm_level_meter_clear (GM_LEVEL_METER (mw->priv->output_signal));
-  gm_level_meter_clear (GM_LEVEL_METER (mw->priv->input_signal));
-}
-
 
 static void
 ekiga_main_window_incoming_call_dialog_show (EkigaMainWindow *mw,
@@ -3170,135 +1857,6 @@ ekiga_main_window_incoming_call_notify (EkigaMainWindow *mw,
 }
 #endif
 
-
-static void
-ekiga_main_window_set_call_info (EkigaMainWindow *mw,
-				const char *tr_audio_codec,
-				G_GNUC_UNUSED const char *re_audio_codec,
-				const char *tr_video_codec,
-				G_GNUC_UNUSED const char *re_video_codec)
-{
-  GtkTextIter iter;
-  GtkTextIter *end_iter = NULL;
-  GtkTextBuffer *buffer = NULL;
-
-  gchar *info = NULL;
-
-  g_return_if_fail (EKIGA_IS_MAIN_WINDOW (mw));
-
-  if (!tr_audio_codec && !tr_video_codec)
-    info = g_strdup (" \n");
-  else
-    info = g_strdup_printf ("%s - %s\n",
-                            tr_audio_codec?tr_audio_codec:"",
-                            tr_video_codec?tr_video_codec:"");
-
-  buffer = gtk_text_view_get_buffer (GTK_TEXT_VIEW (mw->priv->info_text));
-  gtk_text_buffer_get_start_iter (buffer, &iter);
-  gtk_text_iter_forward_lines (&iter, 3);
-  end_iter = gtk_text_iter_copy (&iter);
-  gtk_text_iter_forward_line (end_iter);
-  gtk_text_buffer_delete (buffer, &iter, end_iter);
-  gtk_text_iter_free (end_iter);
-  gtk_text_buffer_insert_with_tags_by_name (buffer, &iter, info,
-                                            -1, "codecs", NULL);
-  g_free (info);
-}
-
-
-static void
-ekiga_main_window_set_status (EkigaMainWindow *mw,
-			      const char *status)
-{
-  GtkTextIter iter;
-  GtkTextIter* end_iter = NULL;
-  GtkTextBuffer *buffer = NULL;
-
-  gchar *info = NULL;
-
-  g_return_if_fail (EKIGA_IS_MAIN_WINDOW (mw));
-
-  info = g_strdup_printf ("%s\n", status);
-
-  buffer = gtk_text_view_get_buffer (GTK_TEXT_VIEW (mw->priv->info_text));
-  gtk_text_buffer_get_start_iter (buffer, &iter);
-  end_iter = gtk_text_iter_copy (&iter);
-  gtk_text_iter_forward_line (end_iter);
-  gtk_text_buffer_delete (buffer, &iter, end_iter);
-  gtk_text_iter_free (end_iter);
-  gtk_text_buffer_insert_with_tags_by_name (buffer, &iter, info,
-                                            -1, "status", NULL);
-  g_free (info);
-}
-
-
-static void
-ekiga_main_window_set_call_duration (EkigaMainWindow *mw,
-                                     const char *duration)
-{
-  GtkTextIter iter;
-  GtkTextIter* end_iter = NULL;
-  GtkTextBuffer *buffer = NULL;
-
-  gchar *info = NULL;
-
-  g_return_if_fail (EKIGA_IS_MAIN_WINDOW (mw));
-
-  if (duration)
-    info = g_strdup_printf (_("%s\n"), duration);
-  else
-    info = g_strdup ("\n");
-
-  buffer = gtk_text_view_get_buffer (GTK_TEXT_VIEW (mw->priv->info_text));
-  gtk_text_buffer_get_start_iter (buffer, &iter);
-  gtk_text_iter_forward_line (&iter);
-  end_iter = gtk_text_iter_copy (&iter);
-  gtk_text_iter_forward_line (end_iter);
-  gtk_text_buffer_delete (buffer, &iter, end_iter);
-  gtk_text_iter_free (end_iter);
-  gtk_text_buffer_insert_with_tags_by_name (buffer, &iter, info,
-                                            -1, "call-duration", NULL);
-
-  g_free (info);
-}
-
-
-static void
-ekiga_main_window_set_bandwidth (EkigaMainWindow *mw,
-                                 float ta,
-                                 float ra,
-                                 float tv,
-                                 float rv,
-                                 int tfps,
-                                 int rfps)
-{
-  GtkTextIter iter;
-  GtkTextIter* end_iter = NULL;
-  GtkTextBuffer *buffer = NULL;
-
-  gchar *msg = NULL;
-
-  g_return_if_fail (EKIGA_IS_MAIN_WINDOW (mw));
-
-  if (ta > 0.0 || ra > 0.0 || tv > 0.0 || rv > 0.0 || tfps > 0 || rfps > 0)
-    msg = g_strdup_printf (_("A:%.1f/%.1f   V:%.1f/%.1f   FPS:%d/%d\n"),
-                           ta, ra, tv, rv, tfps, rfps);
-  else
-    msg = g_strdup (" \n");
-  buffer = gtk_text_view_get_buffer (GTK_TEXT_VIEW (mw->priv->info_text));
-  gtk_text_buffer_get_start_iter (buffer, &iter);
-  gtk_text_iter_forward_lines (&iter, 2);
-  end_iter = gtk_text_iter_copy (&iter);
-  gtk_text_iter_forward_line (end_iter);
-  gtk_text_buffer_delete (buffer, &iter, end_iter);
-  gtk_text_iter_free (end_iter);
-  gtk_text_buffer_insert_with_tags_by_name (buffer, &iter, msg,
-                                            -1, "bandwidth", NULL);
-
-  g_free (msg);
-}
-
-
 static gboolean
 ekiga_main_window_transfer_dialog_run (EkigaMainWindow *mw,
 				       GtkWidget *parent_window,
@@ -3477,11 +2035,7 @@ ekiga_main_window_init_menu (EkigaMainWindow *mw)
 
       GTK_MENU_ENTRY("connect", _("Ca_ll"), _("Place a new call"),
 		     GM_STOCK_PHONE_PICK_UP_16, 'o',
-		     G_CALLBACK (place_call_cb), mw, TRUE),
-      GTK_MENU_ENTRY("disconnect", _("_Hang up"),
-		     _("Terminate the current call"),
- 		     GM_STOCK_PHONE_HANG_UP_16, GDK_Escape,
-		     G_CALLBACK (hangup_call_cb), mw, FALSE),
+		     G_CALLBACK (show_window_cb), call_window, TRUE),
 
       GTK_MENU_SEPARATOR,
 
@@ -3668,73 +2222,6 @@ ekiga_main_window_init_menu (EkigaMainWindow *mw)
   gtk_widget_show_all (GTK_WIDGET (mw->priv->main_menu));
 }
 
-
-static void
-ekiga_main_window_init_uri_toolbar (EkigaMainWindow *mw)
-{
-  GtkToolItem *item = NULL;
-  GtkEntryCompletion *completion = NULL;
-
-  g_return_if_fail (EKIGA_IS_MAIN_WINDOW (mw));
-
-  /* The main horizontal toolbar */
-  mw->priv->main_toolbar = gtk_toolbar_new ();
-  gtk_toolbar_set_style (GTK_TOOLBAR (mw->priv->main_toolbar), GTK_TOOLBAR_ICONS);
-  gtk_toolbar_set_show_arrow (GTK_TOOLBAR (mw->priv->main_toolbar), FALSE);
-
-  /* URL bar */
-  /* Entry */
-  item = gtk_tool_item_new ();
-  mw->priv->entry = gtk_entry_new ();
-  mw->priv->completion = gtk_list_store_new (1, G_TYPE_STRING);
-  completion = gtk_entry_completion_new ();
-  gtk_entry_completion_set_model (GTK_ENTRY_COMPLETION (completion), GTK_TREE_MODEL (mw->priv->completion));
-  gtk_entry_set_completion (GTK_ENTRY (mw->priv->entry), completion);
-  gtk_entry_completion_set_inline_completion (GTK_ENTRY_COMPLETION (completion), false);
-  gtk_entry_completion_set_popup_completion (GTK_ENTRY_COMPLETION (completion), true);
-  gtk_entry_completion_set_text_column (GTK_ENTRY_COMPLETION (completion), 0);
-
-  gtk_container_add (GTK_CONTAINER (item), mw->priv->entry);
-  gtk_container_set_border_width (GTK_CONTAINER (item), 0);
-  gtk_tool_item_set_expand (GTK_TOOL_ITEM (item), true);
-
-  ekiga_main_window_set_call_url (mw, "sip:");
-
-  // activate Ctrl-L to get the entry focus
-  gtk_widget_add_accelerator (mw->priv->entry, "grab-focus",
-			      mw->priv->accel, GDK_L,
-			      (GdkModifierType) GDK_CONTROL_MASK,
-			      (GtkAccelFlags) 0);
-
-  gtk_editable_set_position (GTK_EDITABLE (mw->priv->entry), -1);
-
-  g_signal_connect (mw->priv->entry, "changed", 
-		    G_CALLBACK (url_changed_cb), mw);
-  g_signal_connect (mw->priv->entry, "activate", 
-		    G_CALLBACK (place_call_cb), mw);
-
-  gtk_toolbar_insert (GTK_TOOLBAR (mw->priv->main_toolbar), item, 0);
-
-  /* The connect button */
-  item = gtk_tool_item_new ();
-  mw->priv->connect_button = connect_button_new (mw);
-  gtk_container_add (GTK_CONTAINER (item), mw->priv->connect_button);
-  gtk_container_set_border_width (GTK_CONTAINER (mw->priv->connect_button), 0);
-  gtk_tool_item_set_expand (GTK_TOOL_ITEM (item), FALSE);
-
-  gtk_widget_set_tooltip_text (GTK_WIDGET (mw->priv->connect_button),
-			       _("Enter a URI on the left, and click this button to place a call or to hangup"));
-  
-  gtk_toolbar_insert (GTK_TOOLBAR (mw->priv->main_toolbar), item, -1);
-
-  g_signal_connect (mw->priv->connect_button, "clicked",
-                    G_CALLBACK (toggle_call_cb), 
-                    mw);
-
-  gtk_widget_show_all (GTK_WIDGET (mw->priv->main_toolbar));
-}
-
-
 static void
 ekiga_main_window_init_status_toolbar (EkigaMainWindow *mw)
 {
@@ -3815,215 +2302,10 @@ ekiga_main_window_init_history (EkigaMainWindow *mw)
 		    G_CALLBACK (on_history_selection_changed), mw);
 }
 
-
-static void 
-ekiga_main_window_init_call_panel (EkigaMainWindow *mw)
-{
-  GtkWidget *event_box = NULL;
-  GtkWidget *table = NULL;
-
-  GtkToolItem *item = NULL;
-
-  GtkWidget *image = NULL;
-  GtkWidget *alignment = NULL;
-
-  /* The main table */
-  mw->priv->call_panel_frame = gtk_frame_new (NULL);
-  gtk_frame_set_shadow_type (GTK_FRAME (mw->priv->call_panel_frame), GTK_SHADOW_NONE);
-  event_box = gtk_event_box_new ();
-  table = gtk_table_new (3, 5, FALSE);
-  gtk_container_add (GTK_CONTAINER (event_box), table);
-  gtk_container_add (GTK_CONTAINER (mw->priv->call_panel_frame), event_box);
-
-  /* The widgets toolbar */
-  mw->priv->call_panel_toolbar = gtk_toolbar_new ();
-  gtk_toolbar_set_style (GTK_TOOLBAR (mw->priv->call_panel_toolbar), GTK_TOOLBAR_ICONS);
-  gtk_toolbar_set_show_arrow (GTK_TOOLBAR (mw->priv->call_panel_toolbar), FALSE);
-
-  alignment = gtk_alignment_new (0.0, 0.0, 1.0, 0.0);
-  gtk_container_add (GTK_CONTAINER (alignment), mw->priv->call_panel_toolbar);
-  gtk_table_attach (GTK_TABLE (table), alignment,
-                    0, 4, 0, 1,
-                    (GtkAttachOptions) (GTK_FILL | GTK_EXPAND),
-                    (GtkAttachOptions) (GTK_FILL | GTK_EXPAND),
-                    0, 0);
-
-  /* The frame that contains the video */
-  mw->priv->video_frame = gtk_frame_new (NULL);
-  gtk_frame_set_shadow_type (GTK_FRAME (mw->priv->video_frame), 
-                             GTK_SHADOW_NONE);
-
-  mw->priv->main_video_image = gtk_image_new ();
-  gtk_container_set_border_width (GTK_CONTAINER (mw->priv->video_frame), 0);
-  gtk_container_add (GTK_CONTAINER (mw->priv->video_frame), mw->priv->main_video_image);
-  gtk_table_attach (GTK_TABLE (table), GTK_WIDGET (mw->priv->video_frame),
-                    0, 4, 1, 2,
-                    (GtkAttachOptions) GTK_EXPAND,
-                    (GtkAttachOptions) GTK_EXPAND,
-                    4, 24);
-
-  /* The frame that contains information about the call */
-  /* Text buffer */
-  GtkTextBuffer *buffer = NULL;
-
-  mw->priv->info_text = gtk_text_view_new ();
-  gtk_text_view_set_editable (GTK_TEXT_VIEW (mw->priv->info_text), FALSE);
-  gtk_widget_set_sensitive (GTK_WIDGET (mw->priv->info_text), FALSE);
-  gtk_text_view_set_wrap_mode (GTK_TEXT_VIEW (mw->priv->info_text),
-			       GTK_WRAP_WORD);
-
-  buffer = gtk_text_view_get_buffer (GTK_TEXT_VIEW (mw->priv->info_text));
-  gtk_text_view_set_cursor_visible  (GTK_TEXT_VIEW (mw->priv->info_text), FALSE);
-
-  mw->priv->status_tag =
-    gtk_text_buffer_create_tag (buffer, "status",
-                                "justification", GTK_JUSTIFY_CENTER,
-                                "weight", PANGO_WEIGHT_BOLD,
-                                "scale", 1.2,
-                                NULL);
-  mw->priv->codecs_tag =
-    gtk_text_buffer_create_tag (buffer, "codecs",
-                                "justification", GTK_JUSTIFY_RIGHT,
-                                "stretch", PANGO_STRETCH_CONDENSED,
-                                "scale", 0.8,
-                                NULL);
-
-  mw->priv->call_duration_tag =
-    gtk_text_buffer_create_tag (buffer, "call-duration",
-                                "justification", GTK_JUSTIFY_CENTER,
-                                "weight", PANGO_WEIGHT_BOLD,
-                                NULL);
-
-  mw->priv->bandwidth_tag =
-    gtk_text_buffer_create_tag (buffer, "bandwidth",
-                                "justification", GTK_JUSTIFY_LEFT,
-                                "weight", PANGO_STRETCH_CONDENSED,
-                                "scale", 0.8,
-                                NULL);
-
-  ekiga_main_window_set_status (mw, _("Standby"));
-  ekiga_main_window_set_call_duration (mw, NULL);
-  ekiga_main_window_set_bandwidth (mw, 0.0, 0.0, 0.0, 0.0, 0, 0);
-  ekiga_main_window_set_call_info (mw, NULL, NULL, NULL, NULL);
-
-  alignment = gtk_alignment_new (0.0, 0.0, 1.0, 0.0);
-  gtk_container_add (GTK_CONTAINER (alignment), mw->priv->info_text);
-  gtk_table_attach (GTK_TABLE (table), alignment,
-                    0, 4, 2, 3,
-                    (GtkAttachOptions) (GTK_FILL | GTK_EXPAND),
-                    (GtkAttachOptions) (GTK_FILL | GTK_EXPAND),
-                    0, 0);
-
-  /* Audio Volume */
-  boost::shared_ptr<Ekiga::AudioOutputCore> audiooutput_core = mw->priv->core->get<Ekiga::AudioOutputCore> ("audiooutput-core");
-  std::vector <Ekiga::AudioOutputDevice> devices;
-  audiooutput_core->get_devices (devices);
-  if (!(devices.size () == 1 && devices[0].source == "Pulse")) {
-
-    item = gtk_tool_item_new ();
-    mw->priv->audio_settings_button = gtk_button_new ();
-    gtk_button_set_relief (GTK_BUTTON (mw->priv->audio_settings_button), GTK_RELIEF_NONE);
-    image = gtk_image_new_from_icon_name (GM_ICON_AUDIO_VOLUME_HIGH,
-                                          GTK_ICON_SIZE_MENU);
-    gtk_container_add (GTK_CONTAINER (mw->priv->audio_settings_button), image);
-    gtk_container_add (GTK_CONTAINER (item), mw->priv->audio_settings_button);
-    gtk_tool_item_set_expand (GTK_TOOL_ITEM (item), FALSE);
-
-    gtk_widget_show (mw->priv->audio_settings_button);
-    gtk_widget_set_sensitive (mw->priv->audio_settings_button, FALSE);
-    gtk_toolbar_insert (GTK_TOOLBAR (mw->priv->call_panel_toolbar),
-                        GTK_TOOL_ITEM (item), -1);
-    gtk_tool_item_set_tooltip_text (GTK_TOOL_ITEM (item),
-                                    _("Change the volume of your soundcard"));
-    g_signal_connect (mw->priv->audio_settings_button, "clicked",
-                      G_CALLBACK (show_gm_window_cb),
-                      (gpointer) mw->priv->audio_settings_window);
-  }
-
-  /* Video Settings */
-  item = gtk_tool_item_new ();
-  mw->priv->video_settings_button = gtk_button_new ();
-  gtk_button_set_relief (GTK_BUTTON (mw->priv->video_settings_button), GTK_RELIEF_NONE);
-  image = gtk_image_new_from_stock (GM_STOCK_COLOR_BRIGHTNESS_CONTRAST,
-                                    GTK_ICON_SIZE_MENU);
-  gtk_container_add (GTK_CONTAINER (mw->priv->video_settings_button), image);
-  gtk_container_add (GTK_CONTAINER (item), mw->priv->video_settings_button);
-  gtk_tool_item_set_expand (GTK_TOOL_ITEM (item), FALSE);
-
-  gtk_widget_show (mw->priv->video_settings_button);
-  gtk_widget_set_sensitive (mw->priv->video_settings_button, FALSE);
-  gtk_toolbar_insert (GTK_TOOLBAR (mw->priv->call_panel_toolbar),
-		      GTK_TOOL_ITEM (item), -1);
-  gtk_tool_item_set_tooltip_text (GTK_TOOL_ITEM (item),
-				   _("Change the color settings of your video device"));
-
-  g_signal_connect (mw->priv->video_settings_button, "clicked",
-		    G_CALLBACK (show_gm_window_cb),
-		    (gpointer) mw->priv->video_settings_window);
-
-  /* Video Preview Button */
-  item = gtk_tool_item_new ();
-  mw->priv->preview_button = gtk_toggle_button_new ();
-  gtk_button_set_relief (GTK_BUTTON (mw->priv->preview_button), GTK_RELIEF_NONE);
-  gtk_toggle_button_set_active (GTK_TOGGLE_BUTTON (mw->priv->preview_button),
-                                gm_conf_get_bool (VIDEO_DEVICES_KEY "enable_preview"));
-  image = gtk_image_new_from_icon_name (GM_ICON_CAMERA_VIDEO,
-                                        GTK_ICON_SIZE_MENU);
-  gtk_container_add (GTK_CONTAINER (mw->priv->preview_button), image);
-  gtk_container_add (GTK_CONTAINER (item), mw->priv->preview_button);
-  gtk_tool_item_set_expand (GTK_TOOL_ITEM (item), FALSE);
-
-  gtk_widget_show (mw->priv->preview_button);
-  gtk_toolbar_insert (GTK_TOOLBAR (mw->priv->call_panel_toolbar),
-		      GTK_TOOL_ITEM (item), -1);
-  gtk_tool_item_set_tooltip_text (GTK_TOOL_ITEM (item),
-				  _("Display images from your camera device"));
-
-  g_signal_connect (mw->priv->preview_button, "toggled",
-		    G_CALLBACK (toolbar_toggle_button_changed_cb),
-		    (gpointer) VIDEO_DEVICES_KEY "enable_preview");
-
-  /* Call Pause */
-  item = gtk_tool_item_new ();
-  mw->priv->hold_button = gtk_toggle_button_new ();
-  image = gtk_image_new_from_icon_name (GM_ICON_MEDIA_PLAYBACK_PAUSE,
-                                        GTK_ICON_SIZE_MENU);
-  gtk_button_set_relief (GTK_BUTTON (mw->priv->hold_button), GTK_RELIEF_NONE);
-  gtk_container_add (GTK_CONTAINER (mw->priv->hold_button), image);
-  gtk_container_add (GTK_CONTAINER (item), mw->priv->hold_button);
-  gtk_tool_item_set_expand (GTK_TOOL_ITEM (item), FALSE);
-
-  gtk_widget_show (mw->priv->hold_button);
-  gtk_toolbar_insert (GTK_TOOLBAR (mw->priv->call_panel_toolbar),
-		      GTK_TOOL_ITEM (item), -1);
-  gtk_tool_item_set_tooltip_text (GTK_TOOL_ITEM (item),
-				  _("Hold the current call"));
-  gtk_widget_set_sensitive (GTK_WIDGET (mw->priv->hold_button), FALSE);
-
-  g_signal_connect (mw->priv->hold_button, "clicked",
-		    G_CALLBACK (hold_current_call_cb), mw);
-
-  gtk_paned_pack2 (GTK_PANED (mw->priv->hpaned), mw->priv->call_panel_frame, true, false);
-  gtk_widget_realize (mw->priv->main_video_image);
-
-  /* The URI toolbar */
-  ekiga_main_window_init_uri_toolbar (mw);
-  alignment = gtk_alignment_new (0.0, 0.0, 1.0, 0.0);
-  gtk_container_add (GTK_CONTAINER (alignment), mw->priv->main_toolbar);
-  gtk_table_attach (GTK_TABLE (table), alignment,
-                    0, 4, 3, 4,
-                    (GtkAttachOptions) (GTK_FILL | GTK_EXPAND),
-                    (GtkAttachOptions) (GTK_FILL | GTK_EXPAND),
-                    0, 0);
-}
-
-
 static void
 ekiga_main_window_init_gui (EkigaMainWindow *mw)
 {
   GtkWidget *window_vbox;
-  GtkShadowType shadow_type;
-  GtkWidget *frame;
 
   gtk_window_set_title (GTK_WINDOW (mw), _("Ekiga"));
 
@@ -4043,10 +2325,6 @@ ekiga_main_window_init_gui (EkigaMainWindow *mw)
   gtk_box_pack_start (GTK_BOX (window_vbox), mw->priv->status_toolbar,
                       false, true, 0);
 
-  /* The Audio & Video Settings windows */
-  mw->priv->audio_settings_window = gm_mw_audio_settings_window_new (mw);
-  mw->priv->video_settings_window = gm_mw_video_settings_window_new (mw);
-
   /* The 2 parts of the gui */
   mw->priv->hpaned = gtk_hpaned_new ();
   gtk_box_pack_start (GTK_BOX (window_vbox), mw->priv->hpaned,
@@ -4062,35 +2340,20 @@ ekiga_main_window_init_gui (EkigaMainWindow *mw)
   ekiga_main_window_init_history (mw);
   gtk_paned_pack1 (GTK_PANED (mw->priv->hpaned), mw->priv->main_notebook, true, false);
 
-  ekiga_main_window_init_call_panel (mw);
-
-  /* The statusbar with qualitymeter */
+  /* The statusbar */
   gtk_statusbar_set_has_resize_grip (GTK_STATUSBAR (mw->priv->statusbar), TRUE);
-  gtk_widget_style_get (mw->priv->statusbar, "shadow-type", &shadow_type, NULL);
-
-  frame = gtk_frame_new (NULL);
-  gtk_frame_set_shadow_type (GTK_FRAME (frame), shadow_type);
-  gtk_box_pack_start (GTK_BOX (mw->priv->statusbar), frame, FALSE, TRUE, 0);
-
-  gtk_box_reorder_child (GTK_BOX (mw->priv->statusbar), frame, 0);
-
-  mw->priv->qualitymeter = gm_powermeter_new ();
-  gtk_container_add (GTK_CONTAINER (frame), mw->priv->qualitymeter);
-
   mw->priv->statusbar_ebox = gtk_event_box_new ();
   gtk_container_add (GTK_CONTAINER (mw->priv->statusbar_ebox), mw->priv->statusbar);
-
   gtk_box_pack_start (GTK_BOX (window_vbox), mw->priv->statusbar_ebox,
                       FALSE, FALSE, 0);
   gtk_widget_show_all (mw->priv->statusbar_ebox);
 
   g_signal_connect (mw->priv->statusbar_ebox, "button-press-event",
 		    G_CALLBACK (statusbar_clicked_cb), mw);
- 
+
   gtk_widget_realize (GTK_WIDGET (mw));
-  ekiga_main_window_update_logo_have_window (mw);
   g_signal_connect_after (mw->priv->main_notebook, "switch-page",
-			  G_CALLBACK (panel_section_changed_cb), 
+			  G_CALLBACK (panel_section_changed_cb),
 			  mw);
 
   /* Show the current panel section */
@@ -4111,20 +2374,13 @@ ekiga_main_window_init (EkigaMainWindow *mw)
   gtk_window_add_accel_group (GTK_WINDOW (mw), mw->priv->accel);
   g_object_unref (mw->priv->accel);
 
-  mw->priv->changing_back_to_local_after_a_call = false;
-
   mw->priv->transfer_call_popup = NULL;
   mw->priv->current_call = boost::shared_ptr<Ekiga::Call>();
-  mw->priv->timeout_id = -1;
-  mw->priv->levelmeter_timeout_id = -1;
   mw->priv->calling_state = Standby;
   mw->priv->audio_transmission_active = false;
   mw->priv->audio_reception_active = false;
   mw->priv->video_transmission_active = false;
   mw->priv->video_reception_active = false;
-#ifndef WIN32
-  mw->priv->video_widget_gc = NULL;
-#endif
 }
 
 static GObject *
@@ -4167,21 +2423,9 @@ ekiga_main_window_finalize (GObject *gobject)
 {
   EkigaMainWindow *mw = EKIGA_MAIN_WINDOW (gobject);
 
-  gtk_widget_destroy (mw->priv->audio_settings_window);
-  gtk_widget_destroy (mw->priv->video_settings_window);
-
   delete mw->priv;
 
   G_OBJECT_CLASS (ekiga_main_window_parent_class)->finalize (gobject);
-}
-
-static void
-ekiga_main_window_show (GtkWidget *widget)
-{
-  EkigaMainWindow *mw = EKIGA_MAIN_WINDOW (widget);
-  if (gm_conf_get_bool (VIDEO_DISPLAY_KEY "stay_on_top") && mw->priv->current_call)
-    gm_window_set_always_on_top (widget->window, TRUE);
-  GTK_WIDGET_CLASS (ekiga_main_window_parent_class)->show (widget);
 }
 
 static gboolean
@@ -4269,7 +2513,6 @@ ekiga_main_window_class_init (EkigaMainWindowClass *klass)
   object_class->get_property = ekiga_main_window_get_property;
   object_class->set_property = ekiga_main_window_set_property;
 
-  widget_class->show = ekiga_main_window_show;
   widget_class->focus_in_event = ekiga_main_window_focus_in_event;
   widget_class->delete_event = ekiga_main_window_delete_event;
 
@@ -4290,78 +2533,30 @@ ekiga_main_window_connect_engine_signals (EkigaMainWindow *mw)
 
   g_return_if_fail (EKIGA_IS_MAIN_WINDOW (mw));
 
-  /* New Display Engine signals */
-  boost::shared_ptr<Ekiga::VideoOutputCore> videooutput_core = mw->priv->core->get<Ekiga::VideoOutputCore> ("videooutput-core");
-
-  conn = videooutput_core->device_opened.connect (boost::bind (&on_videooutput_device_opened_cb, _1, _2, _3, _4, _5, (gpointer) mw));
-  mw->priv->connections.push_back (conn);
-
-  conn = videooutput_core->device_closed.connect (boost::bind (&on_videooutput_device_closed_cb, _1, (gpointer) mw));
-  mw->priv->connections.push_back (conn);
-
-  conn = videooutput_core->device_error.connect (boost::bind (&on_videooutput_device_error_cb, _1, _2, (gpointer) mw));
-  mw->priv->connections.push_back (conn);
-
-  conn = videooutput_core->size_changed.connect (boost::bind (&on_size_changed_cb, _1, _2, _3, (gpointer) mw));
-  mw->priv->connections.push_back (conn);
-
-  conn = videooutput_core->fullscreen_mode_changed.connect (boost::bind (&on_fullscreen_mode_changed_cb, _1, _2, (gpointer) mw));
-  mw->priv->connections.push_back (conn);
-
   /* New VideoInput Engine signals */
   boost::shared_ptr<Ekiga::VideoInputCore> videoinput_core = mw->priv->core->get<Ekiga::VideoInputCore> ("videoinput-core");
-
-  conn = videoinput_core->device_opened.connect (boost::bind (&on_videoinput_device_opened_cb, _1, _2, _3, (gpointer) mw));
-  mw->priv->connections.push_back (conn);
-
-  conn = videoinput_core->device_closed.connect (boost::bind (&on_videoinput_device_closed_cb, _1, _2, (gpointer) mw));
-  mw->priv->connections.push_back (conn);
-
   conn = videoinput_core->device_added.connect (boost::bind (&on_videoinput_device_added_cb, _1, _2, (gpointer) mw));
   mw->priv->connections.push_back (conn);
 
   conn = videoinput_core->device_removed.connect (boost::bind (&on_videoinput_device_removed_cb, _1, _2, (gpointer) mw));
   mw->priv->connections.push_back (conn);
 
-  conn = videoinput_core->device_error.connect (boost::bind (&on_videoinput_device_error_cb, _1, _2, _3, (gpointer) mw));
-  mw->priv->connections.push_back (conn);
-
   /* New AudioInput Engine signals */
   boost::shared_ptr<Ekiga::AudioInputCore> audioinput_core = mw->priv->core->get<Ekiga::AudioInputCore> ("audioinput-core");
-
-  conn = audioinput_core->device_opened.connect (boost::bind (&on_audioinput_device_opened_cb, _1, _2, _3, (gpointer) mw));
-  mw->priv->connections.push_back (conn);
-
-  conn = audioinput_core->device_closed.connect (boost::bind (&on_audioinput_device_closed_cb, _1, _2, (gpointer) mw));
-  mw->priv->connections.push_back (conn);
-
   conn = audioinput_core->device_added.connect (boost::bind (&on_audioinput_device_added_cb, _1, _2, (gpointer) mw));
   mw->priv->connections.push_back (conn);
 
   conn = audioinput_core->device_removed.connect (boost::bind (&on_audioinput_device_removed_cb, _1, _2, (gpointer) mw));
   mw->priv->connections.push_back (conn);
 
-  conn = audioinput_core->device_error.connect (boost::bind (&on_audioinput_device_error_cb, _1, _2, _3, (gpointer) mw));
-  mw->priv->connections.push_back (conn);
-
   /* New AudioOutput Engine signals */
   boost::shared_ptr<Ekiga::AudioOutputCore> audiooutput_core = mw->priv->core->get<Ekiga::AudioOutputCore> ("audiooutput-core");
-
-  conn = audiooutput_core->device_opened.connect (boost::bind (&on_audiooutput_device_opened_cb, _1, _2, _3, _4, (gpointer) mw));
-  mw->priv->connections.push_back (conn);
-
-  conn = audiooutput_core->device_closed.connect (boost::bind (&on_audiooutput_device_closed_cb, _1, _2, _3, (gpointer) mw));
-  mw->priv->connections.push_back (conn);
-
   conn = audiooutput_core->device_added.connect (boost::bind (&on_audiooutput_device_added_cb, _1, _2, (gpointer) mw));
   mw->priv->connections.push_back (conn);
 
   conn = audiooutput_core->device_removed.connect (boost::bind (&on_audiooutput_device_removed_cb, _1, _2, (gpointer) mw));
   mw->priv->connections.push_back (conn);
 
-  conn = audiooutput_core->device_error.connect (boost::bind (&on_audiooutput_device_error_cb, _1, _2, _3, _4, (gpointer) mw));
-  mw->priv->connections.push_back (conn);
-    
   /* New Call Engine signals */
   boost::shared_ptr<Ekiga::CallCore> call_core = mw->priv->core->get<Ekiga::CallCore> ("call-core");
   boost::shared_ptr<Ekiga::AccountCore> account_core = mw->priv->core->get<Ekiga::AccountCore> ("account-core");
@@ -4408,7 +2603,6 @@ ekiga_main_window_connect_engine_signals (EkigaMainWindow *mw)
 
   // FIXME: here we should watch for updates of the presence core
   // and call on_some_core_updated... it it had such a signal!
-
   boost::shared_ptr<Ekiga::ContactCore> contact_core = mw->priv->core->get<Ekiga::ContactCore> ("contact-core");
   conn = contact_core->updated.connect (boost::bind (&on_some_core_updated, mw));
   mw->priv->connections.push_back (conn);
@@ -4472,7 +2666,7 @@ ekiga_main_window_flash_message (EkigaMainWindow *mw,
 
   if (msg == NULL)
     buffer[0] = 0;
-  else 
+  else
     vsnprintf (buffer, 1024, msg, args);
 
   gm_statusbar_flash_message (GM_STATUSBAR (mw->priv->statusbar), "%s", buffer);
@@ -4481,8 +2675,8 @@ ekiga_main_window_flash_message (EkigaMainWindow *mw,
 
 
 static void
-ekiga_main_window_push_message (EkigaMainWindow *mw, 
-				const char *msg, 
+ekiga_main_window_push_message (EkigaMainWindow *mw,
+				const char *msg,
 				...)
 {
   char buffer [1025];
@@ -4494,158 +2688,12 @@ ekiga_main_window_push_message (EkigaMainWindow *mw,
 
   if (msg == NULL)
     buffer[0] = 0;
-  else 
+  else
     vsnprintf (buffer, 1024, msg, args);
 
   gm_statusbar_push_message (GM_STATUSBAR (mw->priv->statusbar), "%s", buffer);
   va_end (args);
 }
-
-
-static void
-ekiga_main_window_set_call_url (EkigaMainWindow *mw, 
-				const char *url)
-{
-  g_return_if_fail (mw != NULL && url != NULL);
-
-  gtk_entry_set_text (GTK_ENTRY (mw->priv->entry), url);
-  gtk_editable_set_position (GTK_EDITABLE (mw->priv->entry), -1);
-  gtk_widget_grab_focus (GTK_WIDGET (mw->priv->entry));
-  gtk_editable_select_region (GTK_EDITABLE (mw->priv->entry), -1, -1);
-}
-
-
-static void
-ekiga_main_window_append_call_url (EkigaMainWindow *mw, 
-				   const char *url)
-{
-  int pos = -1;
-  GtkEditable *entry;
-
-  g_return_if_fail (EKIGA_IS_MAIN_WINDOW (mw));
-  g_return_if_fail (url != NULL);
-
-  entry = GTK_EDITABLE (mw->priv->entry);
-
-  if (gtk_editable_get_selection_bounds (entry, NULL, NULL)) 
-    gtk_editable_delete_selection (entry);
-
-  pos = gtk_editable_get_position (entry);
-  gtk_editable_insert_text (entry, url, strlen (url), &pos);
-  gtk_editable_select_region (entry, -1, -1);
-  gtk_editable_set_position (entry, pos);
-}
-
-
-static const std::string
-ekiga_main_window_get_call_url (EkigaMainWindow *mw)
-{
-  g_return_val_if_fail (EKIGA_IS_MAIN_WINDOW (mw), NULL);
-
-  const gchar* entry_text = gtk_entry_get_text (GTK_ENTRY (mw->priv->entry));
-
-  if (entry_text != NULL)
-    return entry_text;
-  else
-    return "";
-}
-
-
-static void
-ekiga_main_window_clear_stats (EkigaMainWindow *mw)
-{
-  g_return_if_fail (EKIGA_IS_MAIN_WINDOW (mw));
-
-  ekiga_main_window_update_stats (mw, 0, 0, 0, 0, 0, 0, 0, 0);
-  if (mw->priv->qualitymeter)
-    gm_powermeter_set_level (GM_POWERMETER (mw->priv->qualitymeter), 0.0);
-}
-
-
-static void
-ekiga_main_window_update_stats (EkigaMainWindow *mw,
-				float lost,
-				float late,
-				float out_of_order,
-				int jitter,
-				unsigned int re_width,
-				unsigned int re_height,
-				unsigned int tr_width,
-				unsigned int tr_height)
-{
-  gchar *stats_msg = NULL;
-  gchar *stats_msg_tr = NULL;
-  gchar *stats_msg_re = NULL;
-
-  int jitter_quality = 0;
-  gfloat quality_level = 0.0;
-
-  g_return_if_fail (EKIGA_IS_MAIN_WINDOW (mw));
-
-  if ((tr_width > 0) && (tr_height > 0))
-    /* Translators: TX is a common abbreviation for "transmit".  As it
-     * is shown in a tooltip, there is no space constraint */
-    stats_msg_tr = g_strdup_printf (_("TX: %dx%d "), tr_width, tr_height);
-
-  if ((re_width > 0) && (re_height > 0))
-    /* Translators: RX is a common abbreviation for "receive".  As it
-     * is shown in a tooltip, there is no space constraint */
-    stats_msg_re = g_strdup_printf (_("RX: %dx%d "), re_width, re_height);
-
-  stats_msg = g_strdup_printf (_("Lost packets: %.1f %%\nLate packets: %.1f %%\nOut of order packets: %.1f %%\nJitter buffer: %d ms%s%s%s"), 
-                                  lost, 
-                                  late, 
-                                  out_of_order, 
-                                  jitter,
-                                  (stats_msg_tr || stats_msg_re) ? "\nResolution: " : "", 
-                                  (stats_msg_tr) ? stats_msg_tr : "", 
-                                  (stats_msg_re) ? stats_msg_re : "");
-
-  g_free(stats_msg_tr);
-  g_free(stats_msg_re);
-
-
-  if (mw->priv->statusbar_ebox) {
-    gtk_widget_set_tooltip_text (GTK_WIDGET (mw->priv->statusbar_ebox), stats_msg);
-  }
-  g_free (stats_msg);
-
-  /* "arithmetics" for the quality level */
-  /* Thanks Snark for the math hints */
-  if (jitter < 30)
-    jitter_quality = 100;
-  if (jitter >= 30 && jitter < 50)
-    jitter_quality = 100 - (jitter - 30);
-  if (jitter >= 50 && jitter < 100)
-    jitter_quality = 80 - (jitter - 50) * 20 / 50;
-  if (jitter >= 100 && jitter < 150)
-    jitter_quality = 60 - (jitter - 100) * 20 / 50;
-  if (jitter >= 150 && jitter < 200)
-    jitter_quality = 40 - (jitter - 150) * 20 / 50;
-  if (jitter >= 200 && jitter < 300)
-    jitter_quality = 20 - (jitter - 200) * 20 / 100;
-  if (jitter >= 300 || jitter_quality < 0)
-    jitter_quality = 0;
-
-  quality_level = (float) jitter_quality / 100;
-
-  if ( (lost > 0.0) ||
-       (late > 0.0) ||
-       ((out_of_order > 0.0) && quality_level > 0.2) ) {
-    quality_level = 0.2;
-  }
-
-  if ( (lost > 0.02) ||
-       (late > 0.02) ||
-       (out_of_order > 0.02) ) {
-    quality_level = 0;
-  }
-
-  if (mw->priv->qualitymeter)
-    gm_powermeter_set_level (GM_POWERMETER (mw->priv->qualitymeter),
-			     quality_level);
-}
-
 
 #ifdef WIN32
 // the linker must not find main

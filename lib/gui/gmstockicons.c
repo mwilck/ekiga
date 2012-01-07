@@ -48,11 +48,11 @@ gnomemeeting_stock_icons_init (void)
 	GtkIconFactory *factory;
 	int i;
 
-        typedef struct 
+        typedef struct
         {
                 char *id;
                 const guint8 *data;
-        } GmStockIcon;                
+        } GmStockIcon;
 
 	static const GmStockIcon items[] =
 	{
@@ -80,12 +80,12 @@ gnomemeeting_stock_icons_init (void)
 		{ GM_STOCK_PHONE_PICK_UP_24, gm_phone_pick_up_stock_data_24},
 	};
 
-        typedef struct 
+        typedef struct
         {
                 char *id;
                 gint size;
                 const guint8 *data;
-        } GmThemeIcon;                
+        } GmThemeIcon;
 
 	static const GmThemeIcon theme_builtins[] =
 	{
@@ -101,6 +101,7 @@ gnomemeeting_stock_icons_init (void)
 	        { GM_ICON_LOGO, 32, gm_logo_32_stock_data },
 	        { GM_ICON_LOGO, 48, gm_logo_48_stock_data },
 	        { GM_ICON_LOGO, 72, gm_logo_72_stock_data },
+		{ GM_ICON_AVATAR, 256, gm_avatar_256_stock_data},
 		{ GM_ICON_MEDIA_PLAYBACK_PAUSE, 16, gm_media_playback_pause_16_stock_data },
 		{ GM_ICON_MICROPHONE, 24, gm_microphone_24_stock_data },
 		{ GM_ICON_SYSTEM_SEARCH, 16, gm_system_search_16_stock_data},
@@ -122,12 +123,11 @@ gnomemeeting_stock_icons_init (void)
 
 		gtk_icon_factory_add (factory, items[i].id, icon_set);
 		gtk_icon_set_unref (icon_set);
-		
+
 		g_object_unref (G_OBJECT (pixbuf));
 	}
-
 	g_object_unref (G_OBJECT (factory));
-	
+
 	/* Now install theme builtins */
 	for (i = 0; i < (int) G_N_ELEMENTS (theme_builtins); i++)
 	{

@@ -53,6 +53,7 @@ G_BEGIN_DECLS
 #define GM_ICON_SYSTEM_SEARCH              "system-search"
 #define GM_ICON_WHITENESS                  "stock_channel-blue"
 #define GM_ICON_ADDRESSBOOK                "stock_addressbook"
+#define GM_ICON_AVATAR                     "avatar"
 
 /* True stock icons */
 #define GM_STOCK_COLOR_BRIGHTNESS_CONTRAST   "gm_color_brightness_contrast_stock"

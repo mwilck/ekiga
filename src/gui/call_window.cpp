@@ -734,6 +734,8 @@ on_videooutput_device_closed_cb (Ekiga::VideoOutputManager & /* manager */, gpoi
   gtk_menu_section_set_sensitive (cw->priv->call_menu, "zoom_in", FALSE);*/ //FIXME
 }
 
+//FIXME Set_stay_on_top "window_show object"
+
 static void
 on_videooutput_device_error_cb (Ekiga::VideoOutputManager & /* manager */,
                                 Ekiga::VideoOutputErrorCodes error_code,
@@ -1830,11 +1832,10 @@ ekiga_call_window_update_logo (EkigaCallWindow *cw)
   g_return_if_fail (EKIGA_IS_CALL_WINDOW (cw));
 
   gtk_widget_realize (GTK_WIDGET (cw));
-
-  g_object_set (cw->priv->main_video_image,
-		"icon-name", GM_ICON_LOGO,
-		"pixel-size", 72,
-		NULL);
+  g_object_set (G_OBJECT (cw->priv->main_video_image),
+                "icon-name", GM_ICON_AVATAR,
+                "pixel-size", 128,
+                NULL);
 
   ekiga_call_window_set_video_size (cw, GM_QCIF_WIDTH, GM_QCIF_HEIGHT);
 }
@@ -2004,12 +2005,6 @@ ekiga_call_window_connect_engine_signals (EkigaCallWindow *cw)
   conn = call_core->errors.connect (boost::bind (&on_handle_errors, _1, (gpointer) cw));
   cw->priv->connections.push_back (conn);
 */
-  // FIXME: here we should watch for updates of the presence core
-  // and call on_some_core_updated... it it had such a signal!
-
- // boost::shared_ptr<Ekiga::ContactCore> contact_core = cw->priv->core->get<Ekiga::ContactCore> ("contact-core");
- //FIXME conn = contact_core->updated.connect (boost::bind (&on_some_core_updated, cw));
-  //cw->priv->connections.push_back (conn);
 }
 
 static void
@@ -2240,10 +2235,11 @@ ekiga_call_window_init_gui (EkigaCallWindow *cw)
                     (GtkAttachOptions) (GTK_FILL | GTK_EXPAND),
                     (GtkAttachOptions) (GTK_FILL | GTK_EXPAND),
                     0, 0);
-  gtk_widget_show_all (cw->priv->statusbar_ebox);
 
   /* Logo */
   ekiga_call_window_update_logo (cw);
+
+  gtk_widget_show_all (cw->priv->call_panel_frame);
 }
 
 static void
@@ -2457,11 +2453,6 @@ gm_call_window_new (Ekiga::ServiceCore & core)
                                         "service-core", &core, NULL));
   gm_window_set_key (GM_WINDOW (cw), USER_INTERFACE_KEY "call_window");
   ekiga_call_window_connect_engine_signals (cw);
-
-  // initial population
- // on_some_core_updated (cw);
-
-  gtk_widget_show_all (GTK_WIDGET (cw));
 
   return GTK_WIDGET (cw);
 }

@@ -26,6 +26,7 @@ IMAGES_FILES= \
 	32x32/multimedia-headset.png \
 	32x32/multimedia-headset.svg \
 	256x256/multimedia-headset.png \
+	256x256/avatar-default.png \
 	16x16/audio-volume-high.png \
 	16x16/camera-video.png \
 	16x16/media-playback-pause.png \
@@ -80,6 +81,7 @@ IMAGES= \
 	gm_logo_32_stock_data $(srcdir)/32x32/apps/@PACKAGE_NAME@.png \
 	gm_logo_48_stock_data $(srcdir)/48x48/apps/@PACKAGE_NAME@.png \
 	gm_logo_72_stock_data $(srcdir)/72x72/apps/@PACKAGE_NAME@.png \
+        gm_avatar_256_stock_data $(srcdir)/256x256/avatar-default.png \
 	gm_media_playback_pause_16_stock_data $(srcdir)/16x16/media-playback-pause.png \
 	gm_microphone_24_stock_data $(srcdir)/24x24/audio-input-microphone.png \
 	gm_system_search_16_stock_data $(srcdir)/16x16/system-search.png \
