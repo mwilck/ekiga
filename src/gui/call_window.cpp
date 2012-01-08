@@ -120,6 +120,8 @@ struct _EkigaCallWindowPrivate
   boost::shared_ptr<Ekiga::Call> current_call;
   unsigned calling_state;
 
+  GtkWidget *main_menu;
+
   GtkWidget *call_panel_frame;
   GtkWidget *video_frame;
   GtkWidget *main_video_image;
@@ -218,6 +220,24 @@ enum {
 static bool account_completion_helper (Ekiga::AccountPtr acc,
                                        const gchar* text,
                                        EkigaCallWindow* cw);
+
+static void window_closed_from_menu_cb (GtkWidget *widget,
+                                        gpointer data);
+
+static void zoom_in_changed_cb (G_GNUC_UNUSED GtkWidget *widget,
+                                gpointer data);
+
+static void zoom_out_changed_cb (G_GNUC_UNUSED GtkWidget *widget,
+                                 gpointer data);
+
+static void zoom_normal_changed_cb (G_GNUC_UNUSED GtkWidget *widget,
+                                    gpointer data);
+
+static void display_changed_cb (GtkWidget *widget,
+                                gpointer data);
+
+static void fullscreen_changed_cb (G_GNUC_UNUSED GtkWidget *widget,
+                                   G_GNUC_UNUSED gpointer data);
 
 static void stay_on_top_changed_nt (G_GNUC_UNUSED gpointer id,
                                     GmConfEntry *entry,
@@ -410,8 +430,10 @@ static GtkWidget* ekiga_call_window_call_button_new (EkigaCallWindow *cw);
 
 static void ekiga_call_window_update_logo (EkigaCallWindow *cw);
 
-static void  ekiga_call_window_call_button_set_connected (EkigaCallWindow *cw,
-                                                          gboolean state);
+static void ekiga_call_window_toggle_fullscreen (Ekiga::VideoOutputFSToggle toggle);
+
+static void ekiga_call_window_call_button_set_connected (EkigaCallWindow *cw,
+                                                         gboolean state);
 
 static gboolean ekiga_call_window_transfer_dialog_run (EkigaCallWindow *cw,
                                                        GtkWidget *parent_window,
@@ -458,6 +480,111 @@ account_completion_helper (Ekiga::AccountPtr acc,
     }
   }
   return true;
+}
+
+static void
+window_closed_from_menu_cb (GtkWidget *widget,
+                           gpointer data)
+{
+  gtk_widget_hide (GTK_WIDGET (data));
+}
+
+static void
+zoom_in_changed_cb (G_GNUC_UNUSED GtkWidget *widget,
+		    gpointer data)
+{
+  GtkWidget *call_window = GnomeMeeting::Process ()->GetCallWindow ();
+  g_return_if_fail (call_window != NULL);
+
+  g_return_if_fail (data != NULL);
+
+  Ekiga::DisplayInfo display_info;
+
+  display_info.zoom = gm_conf_get_int ((char *) data);
+
+  if (display_info.zoom < 200)
+    display_info.zoom = display_info.zoom * 2;
+
+  gm_conf_set_int ((char *) data, display_info.zoom);
+  // FIXME ekiga_call_window_zooms_menu_update_sensitivity (EKIGA_call_window (call_window), display_info.zoom);
+}
+
+static void
+zoom_out_changed_cb (G_GNUC_UNUSED GtkWidget *widget,
+		     gpointer data)
+{
+  GtkWidget *call_window = GnomeMeeting::Process ()->GetCallWindow ();
+  g_return_if_fail (call_window != NULL);
+
+  g_return_if_fail (data != NULL);
+
+  Ekiga::DisplayInfo display_info;
+
+  display_info.zoom = gm_conf_get_int ((char *) data);
+
+  if (display_info.zoom  > 50)
+    display_info.zoom  = (unsigned int) (display_info.zoom  / 2);
+
+  gm_conf_set_int ((char *) data, display_info.zoom);
+//FIXME  ekiga_call_window_zooms_menu_update_sensitivity (EKIGA_call_window (call_window), display_info.zoom);
+}
+
+static void
+zoom_normal_changed_cb (G_GNUC_UNUSED GtkWidget *widget,
+			gpointer data)
+{
+  GtkWidget *call_window = GnomeMeeting::Process ()->GetCallWindow ();
+  g_return_if_fail (call_window != NULL);
+
+  g_return_if_fail (data != NULL);
+
+  Ekiga::DisplayInfo display_info;
+
+  display_info.zoom  = 100;
+
+  gm_conf_set_int ((char *) data, display_info.zoom);
+//FIXME  ekiga_call_window_zooms_menu_update_sensitivity (EKIGA_call_window (call_window), display_info.zoom);
+}
+
+static void
+display_changed_cb (GtkWidget *widget,
+		    gpointer data)
+{
+  GtkWidget *call_window = GnomeMeeting::Process ()->GetCallWindow ();
+  g_return_if_fail (call_window != NULL);
+  g_return_if_fail (data != NULL);
+
+  GSList *group = NULL;
+  int group_last_pos = 0;
+  int active = 0;
+
+  group = gtk_radio_menu_item_get_group (GTK_RADIO_MENU_ITEM (widget));
+  group_last_pos = g_slist_length (group) - 1; /* If length 1, last pos is 0 */
+
+  /* Only do something when a new CHECK_MENU_ITEM becomes active,
+     not when it becomes inactive */
+  if (GTK_CHECK_MENU_ITEM (widget)->active) {
+
+    while (group) {
+      if (group->data == widget)
+        break;
+
+      active++;
+      group = g_slist_next (group);
+    }
+
+    if (!EKIGA_CALL_WINDOW(call_window)->priv->changing_back_to_local_after_a_call)
+      gm_conf_set_int ((gchar *) data, group_last_pos - active);
+  }
+}
+
+static void
+fullscreen_changed_cb (G_GNUC_UNUSED GtkWidget *widget,
+		       G_GNUC_UNUSED gpointer data)
+{
+  GtkWidget* call_window = GnomeMeeting::Process()->GetCallWindow ();
+  g_return_if_fail (call_window != NULL);
+  ekiga_call_window_toggle_fullscreen (Ekiga::VO_FS_TOGGLE);
 }
 
 static void
@@ -767,9 +894,9 @@ on_videooutput_device_error_cb (Ekiga::VideoOutputManager & /* manager */,
 }
 
 static void
-on_fullscreen_mode_changed_cb (Ekiga::VideoOutputManager & /* manager */, Ekiga::VideoOutputFSToggle toggle,  gpointer self)
+on_fullscreen_mode_changed_cb (Ekiga::VideoOutputManager & /* manager */, Ekiga::VideoOutputFSToggle toggle, gpointer self)
 {
-  //FIXME gm_call_window_toggle_fullscreen (toggle, GTK_WIDGET (self));
+  ekiga_call_window_toggle_fullscreen (toggle);
 }
 
 static void
@@ -1851,6 +1978,45 @@ ekiga_call_window_call_button_set_connected (EkigaCallWindow *cw,
   gtk_image_set_from_stock (GTK_IMAGE (image), state ? GM_STOCK_PHONE_HANG_UP_24 : GM_STOCK_PHONE_PICK_UP_24, GTK_ICON_SIZE_LARGE_TOOLBAR);
 }
 
+static void
+ekiga_call_window_toggle_fullscreen (Ekiga::VideoOutputFSToggle toggle)
+{
+  Ekiga::VideoOutputMode videooutput_mode;
+
+  switch (toggle) {
+    case Ekiga::VO_FS_OFF:
+      if (gm_conf_get_int (VIDEO_DISPLAY_KEY "video_view") == Ekiga::VO_MODE_FULLSCREEN) {
+
+        videooutput_mode = (Ekiga::VideoOutputMode) gm_conf_get_int (VIDEO_DISPLAY_KEY "video_view_before_fullscreen");
+        gm_conf_set_int (VIDEO_DISPLAY_KEY "video_view", videooutput_mode);
+      }
+      break;
+    case Ekiga::VO_FS_ON:
+      if (gm_conf_get_int (VIDEO_DISPLAY_KEY "video_view") != Ekiga::VO_MODE_FULLSCREEN) {
+
+        videooutput_mode = (Ekiga::VideoOutputMode) gm_conf_get_int (VIDEO_DISPLAY_KEY "video_view");
+        gm_conf_set_int (VIDEO_DISPLAY_KEY "video_view_before_fullscreen", videooutput_mode);
+        gm_conf_set_int (VIDEO_DISPLAY_KEY "video_view", Ekiga::VO_MODE_FULLSCREEN);
+      }
+      break;
+
+    case Ekiga::VO_FS_TOGGLE:
+    default:
+      if (gm_conf_get_int (VIDEO_DISPLAY_KEY "video_view") == Ekiga::VO_MODE_FULLSCREEN) {
+
+        videooutput_mode = (Ekiga::VideoOutputMode) gm_conf_get_int (VIDEO_DISPLAY_KEY "video_view_before_fullscreen");
+        gm_conf_set_int (VIDEO_DISPLAY_KEY "video_view", videooutput_mode);
+      }
+      else {
+
+        videooutput_mode =  (Ekiga::VideoOutputMode) gm_conf_get_int (VIDEO_DISPLAY_KEY "video_view");
+        gm_conf_set_int (VIDEO_DISPLAY_KEY "video_view_before_fullscreen", videooutput_mode);
+        gm_conf_set_int (VIDEO_DISPLAY_KEY "video_view", Ekiga::VO_MODE_FULLSCREEN);
+      }
+      break;
+  }
+}
+
 static gboolean
 ekiga_call_window_transfer_dialog_run (EkigaCallWindow *cw,
 				       GtkWidget *parent_window,
@@ -2008,6 +2174,116 @@ ekiga_call_window_connect_engine_signals (EkigaCallWindow *cw)
 }
 
 static void
+ekiga_call_window_init_menu (EkigaCallWindow *cw)
+{
+  g_return_if_fail (cw != NULL);
+
+  cw->priv->main_menu = gtk_menu_bar_new ();
+
+  static MenuEntry gnomemeeting_menu [] =
+    {
+      GTK_MENU_NEW (_("_Chat")),
+
+      GTK_MENU_ENTRY("connect", _("Ca_ll"), _("Place a new call"),
+		     GM_STOCK_PHONE_PICK_UP_16, 'o',
+		     G_CALLBACK (show_window_cb), NULL, TRUE),
+
+      GTK_MENU_ENTRY("disconnect", _("_Hangup"), _("Hangup the current call"),
+		     GM_STOCK_PHONE_PICK_UP_16, 'o',
+		     G_CALLBACK (show_window_cb), NULL, TRUE),
+
+      GTK_MENU_SEPARATOR,
+
+      GTK_MENU_ENTRY("hold_call", _("H_old Call"), _("Hold the current call"),
+		     NULL, GDK_h,
+		     G_CALLBACK (hold_current_call_cb), cw,
+		     FALSE),
+      GTK_MENU_ENTRY("transfer_call", _("_Transfer Call"),
+		     _("Transfer the current call"),
+ 		     NULL, GDK_t,
+		     G_CALLBACK (transfer_current_call_cb), cw,
+		     FALSE),
+
+      GTK_MENU_SEPARATOR,
+
+      GTK_MENU_ENTRY("suspend_audio", _("Suspend _Audio"),
+		     _("Suspend or resume the audio transmission"),
+		     NULL, GDK_m,
+		     G_CALLBACK (toggle_audio_stream_pause_cb),
+		     cw, FALSE),
+      GTK_MENU_ENTRY("suspend_video", _("Suspend _Video"),
+		     _("Suspend or resume the video transmission"),
+		     NULL, GDK_p,
+		     G_CALLBACK (toggle_video_stream_pause_cb),
+		     cw, FALSE),
+
+      GTK_MENU_SEPARATOR,
+
+      GTK_MENU_ENTRY("close", NULL, _("Close the call window"),
+		     GTK_STOCK_CLOSE, 'W',
+		     G_CALLBACK (window_closed_from_menu_cb),
+		     (gpointer) cw, TRUE),
+
+      GTK_MENU_SEPARATOR,
+
+      GTK_MENU_NEW(_("_View")),
+
+      GTK_MENU_RADIO_ENTRY("local_video", _("_Local Video"),
+			   _("Local video image"),
+			   NULL, '1',
+			   G_CALLBACK (display_changed_cb),
+			   (gpointer) VIDEO_DISPLAY_KEY "video_view",
+			   TRUE, FALSE),
+      GTK_MENU_RADIO_ENTRY("remote_video", _("_Remote Video"),
+			   _("Remote video image"),
+			   NULL, '2',
+			   G_CALLBACK (display_changed_cb),
+			   (gpointer) VIDEO_DISPLAY_KEY "video_view",
+			   FALSE, FALSE),
+      GTK_MENU_RADIO_ENTRY("both_incrusted", _("_Picture-in-Picture"),
+			   _("Both video images"),
+			   NULL, '3',
+			   G_CALLBACK (display_changed_cb),
+			   (gpointer) VIDEO_DISPLAY_KEY "video_view",
+			   FALSE, FALSE),
+      GTK_MENU_RADIO_ENTRY("both_incrusted_window", _("Picture-in-Picture in Separate _Window"),
+			   _("Both video images"),
+			   NULL, '4',
+			   G_CALLBACK (display_changed_cb),
+			   (gpointer) VIDEO_DISPLAY_KEY "video_view",
+			   FALSE, FALSE),
+      GTK_MENU_SEPARATOR,
+
+      GTK_MENU_ENTRY("zoom_in", NULL, _("Zoom in"),
+		     GTK_STOCK_ZOOM_IN, '+',
+		     G_CALLBACK (zoom_in_changed_cb),
+		     (gpointer) VIDEO_DISPLAY_KEY "zoom", FALSE),
+      GTK_MENU_ENTRY("zoom_out", NULL, _("Zoom out"),
+		     GTK_STOCK_ZOOM_OUT, '-',
+		     G_CALLBACK (zoom_out_changed_cb),
+		     (gpointer) VIDEO_DISPLAY_KEY "zoom", FALSE),
+      GTK_MENU_ENTRY("normal_size", NULL, _("Normal size"),
+		     GTK_STOCK_ZOOM_100, '0',
+		     G_CALLBACK (zoom_normal_changed_cb),
+		     (gpointer) VIDEO_DISPLAY_KEY "zoom", FALSE),
+      GTK_MENU_ENTRY("fullscreen", _("_Fullscreen"), _("Switch to fullscreen"),
+		     GTK_STOCK_ZOOM_IN, GDK_F11,
+		     G_CALLBACK (fullscreen_changed_cb),
+		     (gpointer) cw, FALSE),
+
+      GTK_MENU_END
+    };
+
+
+  gtk_build_menu (cw->priv->main_menu,
+		  gnomemeeting_menu,
+		  cw->priv->accel,
+		  cw->priv->statusbar);
+
+  gtk_widget_show_all (GTK_WIDGET (cw->priv->main_menu));
+}
+
+static void
 ekiga_call_window_init_gui (EkigaCallWindow *cw)
 {
   GtkWidget *frame = NULL;
@@ -2029,10 +2305,18 @@ ekiga_call_window_init_gui (EkigaCallWindow *cw)
   cw->priv->call_panel_frame = gtk_frame_new (NULL);
   gtk_frame_set_shadow_type (GTK_FRAME (cw->priv->call_panel_frame), GTK_SHADOW_NONE);
   event_box = gtk_event_box_new ();
-  table = gtk_table_new (3, 5, FALSE);
+  table = gtk_table_new (4, 5, FALSE);
   gtk_container_add (GTK_CONTAINER (event_box), table);
   gtk_container_add (GTK_CONTAINER (cw->priv->call_panel_frame), event_box);
   gtk_container_add (GTK_CONTAINER (cw), cw->priv->call_panel_frame);
+
+  /* Menu */
+  ekiga_call_window_init_menu (cw);
+  gtk_table_attach (GTK_TABLE (table), GTK_WIDGET (cw->priv->main_menu),
+                    0, 4, 0, 1,
+                    (GtkAttachOptions) GTK_EXPAND,
+                    (GtkAttachOptions) GTK_EXPAND,
+                    0, 0);
 
   /* The widgets toolbar */
   cw->priv->call_panel_toolbar = gtk_toolbar_new ();
@@ -2042,7 +2326,7 @@ ekiga_call_window_init_gui (EkigaCallWindow *cw)
   alignment = gtk_alignment_new (0.0, 0.0, 1.0, 0.0);
   gtk_container_add (GTK_CONTAINER (alignment), cw->priv->call_panel_toolbar);
   gtk_table_attach (GTK_TABLE (table), alignment,
-                    0, 4, 0, 1,
+                    0, 4, 1, 2,
                     (GtkAttachOptions) (GTK_FILL | GTK_EXPAND),
                     (GtkAttachOptions) (GTK_FILL | GTK_EXPAND),
                     0, 0);
@@ -2056,7 +2340,7 @@ ekiga_call_window_init_gui (EkigaCallWindow *cw)
   gtk_container_set_border_width (GTK_CONTAINER (cw->priv->video_frame), 0);
   gtk_container_add (GTK_CONTAINER (cw->priv->video_frame), cw->priv->main_video_image);
   gtk_table_attach (GTK_TABLE (table), GTK_WIDGET (cw->priv->video_frame),
-                    0, 4, 1, 2,
+                    0, 4, 2, 3,
                     (GtkAttachOptions) GTK_EXPAND,
                     (GtkAttachOptions) GTK_EXPAND,
                     4, 24);
@@ -2208,7 +2492,7 @@ ekiga_call_window_init_gui (EkigaCallWindow *cw)
   alignment = gtk_alignment_new (0.0, 0.0, 1.0, 0.0);
   gtk_container_add (GTK_CONTAINER (alignment), cw->priv->main_toolbar);
   gtk_table_attach (GTK_TABLE (table), alignment,
-                    0, 4, 3, 4,
+                    0, 4, 4, 5,
                     (GtkAttachOptions) (GTK_FILL | GTK_EXPAND),
                     (GtkAttachOptions) (GTK_FILL | GTK_EXPAND),
                     0, 0);
@@ -2231,7 +2515,7 @@ ekiga_call_window_init_gui (EkigaCallWindow *cw)
   gtk_container_add (GTK_CONTAINER (cw->priv->statusbar_ebox), cw->priv->statusbar);
 
   gtk_table_attach (GTK_TABLE (table), cw->priv->statusbar_ebox,
-                    0, 4, 4, 5,
+                    0, 4, 5, 6,
                     (GtkAttachOptions) (GTK_FILL | GTK_EXPAND),
                     (GtkAttachOptions) (GTK_FILL | GTK_EXPAND),
                     0, 0);
