@@ -122,8 +122,6 @@ struct _EkigaCallWindowPrivate
 
   GtkWidget *main_menu;
 
-  GtkWidget *call_panel_frame;
-  GtkWidget *video_frame;
   GtkWidget *main_video_image;
   GtkWidget *info_text;
 
@@ -415,8 +413,8 @@ static void ekiga_call_window_set_bandwidth (EkigaCallWindow *cw,
 static void ekiga_call_window_set_call_url (EkigaCallWindow *cw,
                                             const char *url);
 
-static void ekiga_call_window_append_call_url (EkigaCallWindow *cw,
-                                               const char *url);
+G_GNUC_UNUSED static void ekiga_call_window_append_call_url (EkigaCallWindow *cw,
+                                                             const char *url);
 
 static const std::string ekiga_call_window_get_call_url (EkigaCallWindow *cw);
 
@@ -2283,9 +2281,9 @@ ekiga_call_window_init_menu (EkigaCallWindow *cw)
 static void
 ekiga_call_window_init_gui (EkigaCallWindow *cw)
 {
-  GtkWidget *frame = NULL;
   GtkWidget *event_box = NULL;
-  GtkWidget *table = NULL;
+  GtkWidget *vbox = NULL;
+  GtkWidget *frame = NULL;
 
   GtkToolItem *item = NULL;
 
@@ -2299,21 +2297,19 @@ ekiga_call_window_init_gui (EkigaCallWindow *cw)
   cw->priv->video_settings_window = gm_cw_video_settings_window_new (cw);
 
   /* The main table */
-  cw->priv->call_panel_frame = gtk_frame_new (NULL);
-  gtk_frame_set_shadow_type (GTK_FRAME (cw->priv->call_panel_frame), GTK_SHADOW_NONE);
   event_box = gtk_event_box_new ();
-  table = gtk_table_new (4, 5, FALSE);
-  gtk_container_add (GTK_CONTAINER (event_box), table);
-  gtk_container_add (GTK_CONTAINER (cw->priv->call_panel_frame), event_box);
-  gtk_container_add (GTK_CONTAINER (cw), cw->priv->call_panel_frame);
+  vbox = gtk_vbox_new (FALSE, 0);
+  frame = gtk_frame_new (NULL);
+  gtk_frame_set_shadow_type (GTK_FRAME (frame), GTK_SHADOW_NONE);
+  event_box = gtk_event_box_new ();
+  gtk_container_set_border_width (GTK_CONTAINER (frame), 0);
+  gtk_container_add (GTK_CONTAINER (event_box), vbox);
+  gtk_container_add (GTK_CONTAINER (frame), event_box);
+  gtk_container_add (GTK_CONTAINER (cw), frame);
 
   /* Menu */
   ekiga_call_window_init_menu (cw);
-  gtk_table_attach (GTK_TABLE (table), GTK_WIDGET (cw->priv->main_menu),
-                    0, 4, 0, 1,
-                    (GtkAttachOptions) GTK_EXPAND,
-                    (GtkAttachOptions) GTK_EXPAND,
-                    0, 0);
+  gtk_box_pack_start (GTK_BOX (vbox), GTK_WIDGET (cw->priv->main_menu), FALSE, FALSE, 0);
 
   /* The widgets toolbar */
   cw->priv->call_panel_toolbar = gtk_toolbar_new ();
@@ -2322,25 +2318,11 @@ ekiga_call_window_init_gui (EkigaCallWindow *cw)
 
   alignment = gtk_alignment_new (0.0, 0.0, 1.0, 0.0);
   gtk_container_add (GTK_CONTAINER (alignment), cw->priv->call_panel_toolbar);
-  gtk_table_attach (GTK_TABLE (table), alignment,
-                    0, 4, 1, 2,
-                    (GtkAttachOptions) (GTK_FILL | GTK_EXPAND),
-                    (GtkAttachOptions) (GTK_FILL | GTK_EXPAND),
-                    0, 0);
+  gtk_box_pack_start (GTK_BOX (vbox), GTK_WIDGET (alignment), FALSE, FALSE, 0);
 
   /* The frame that contains the video */
-  cw->priv->video_frame = gtk_frame_new (NULL);
-  gtk_frame_set_shadow_type (GTK_FRAME (cw->priv->video_frame),
-                             GTK_SHADOW_NONE);
-
   cw->priv->main_video_image = gtk_image_new ();
-  gtk_container_set_border_width (GTK_CONTAINER (cw->priv->video_frame), 0);
-  gtk_container_add (GTK_CONTAINER (cw->priv->video_frame), cw->priv->main_video_image);
-  gtk_table_attach (GTK_TABLE (table), GTK_WIDGET (cw->priv->video_frame),
-                    0, 4, 2, 3,
-                    (GtkAttachOptions) GTK_EXPAND,
-                    (GtkAttachOptions) GTK_EXPAND,
-                    4, 24);
+  gtk_box_pack_start (GTK_BOX (vbox), GTK_WIDGET (cw->priv->main_video_image), TRUE, TRUE, 0);
 
   /* The frame that contains information about the call */
   /* Text buffer */
@@ -2388,11 +2370,7 @@ ekiga_call_window_init_gui (EkigaCallWindow *cw)
 
   alignment = gtk_alignment_new (0.0, 0.0, 1.0, 0.0);
   gtk_container_add (GTK_CONTAINER (alignment), cw->priv->info_text);
-  gtk_table_attach (GTK_TABLE (table), alignment,
-                    0, 4, 2, 3,
-                    (GtkAttachOptions) (GTK_FILL | GTK_EXPAND),
-                    (GtkAttachOptions) (GTK_FILL | GTK_EXPAND),
-                    0, 0);
+  gtk_box_pack_start (GTK_BOX (vbox), GTK_WIDGET (alignment), FALSE, FALSE, 0);
 
   /* Audio Volume */
   boost::shared_ptr<Ekiga::AudioOutputCore> audiooutput_core = cw->priv->core->get<Ekiga::AudioOutputCore> ("audiooutput-core");
@@ -2488,11 +2466,8 @@ ekiga_call_window_init_gui (EkigaCallWindow *cw)
   ekiga_call_window_init_uri_toolbar (cw);
   alignment = gtk_alignment_new (0.0, 0.0, 1.0, 0.0);
   gtk_container_add (GTK_CONTAINER (alignment), cw->priv->main_toolbar);
-  gtk_table_attach (GTK_TABLE (table), alignment,
-                    0, 4, 4, 5,
-                    (GtkAttachOptions) (GTK_FILL | GTK_EXPAND),
-                    (GtkAttachOptions) (GTK_FILL | GTK_EXPAND),
-                    0, 0);
+  gtk_box_pack_start (GTK_BOX (vbox), GTK_WIDGET (alignment), FALSE, FALSE, 0);
+  gtk_widget_show_all (frame);
 
   /* The statusbar */
   cw->priv->statusbar = gm_statusbar_new ();
@@ -2501,8 +2476,7 @@ ekiga_call_window_init_gui (EkigaCallWindow *cw)
 
   frame = gtk_frame_new (NULL);
   gtk_frame_set_shadow_type (GTK_FRAME (frame), shadow_type);
-  gtk_box_pack_start (GTK_BOX (cw->priv->statusbar), frame, FALSE, TRUE, 0);
-
+  gtk_box_pack_start (GTK_BOX (cw->priv->statusbar), frame, FALSE, FALSE, 0);
   gtk_box_reorder_child (GTK_BOX (cw->priv->statusbar), frame, 0);
 
   cw->priv->qualitymeter = gm_powermeter_new ();
@@ -2510,17 +2484,11 @@ ekiga_call_window_init_gui (EkigaCallWindow *cw)
 
   cw->priv->statusbar_ebox = gtk_event_box_new ();
   gtk_container_add (GTK_CONTAINER (cw->priv->statusbar_ebox), cw->priv->statusbar);
-
-  gtk_table_attach (GTK_TABLE (table), cw->priv->statusbar_ebox,
-                    0, 4, 5, 6,
-                    (GtkAttachOptions) (GTK_FILL | GTK_EXPAND),
-                    (GtkAttachOptions) (GTK_FILL | GTK_EXPAND),
-                    0, 0);
+  gtk_box_pack_start (GTK_BOX (vbox), GTK_WIDGET (cw->priv->statusbar_ebox), FALSE, FALSE, 0);
+  gtk_widget_show_all (frame);
 
   /* Logo */
   ekiga_call_window_update_logo (cw);
-
-  gtk_widget_show_all (cw->priv->call_panel_frame);
 }
 
 static void
