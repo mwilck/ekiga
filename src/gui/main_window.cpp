@@ -235,9 +235,6 @@ static void show_gm_window_cb (GtkWidget *widget,
 static void ekiga_main_window_zooms_menu_update_sensitivity (EkigaMainWindow *main_window,
 							     unsigned int zoom);
 
-static void gm_main_window_toggle_fullscreen (Ekiga::VideoOutputFSToggle toggle,
-                                              GtkWidget   *main_window);
-
 static void ekiga_main_window_incoming_call_dialog_show (EkigaMainWindow *mw,
                                                       boost::shared_ptr<Ekiga::Call>  call);
 
@@ -364,44 +361,6 @@ static gint window_closed_cb (GtkWidget *,
 
 static void window_closed_from_menu_cb (GtkWidget *,
                                        gpointer);
-
-
-/* DESCRIPTION  :  This callback is called when the user changes the zoom
- *                 factor in the menu, and chooses to zoom in.
- * BEHAVIOR     :  zoom *= 2.
- * PRE          :  The GConf key to update with the new zoom.
- */
-static void zoom_in_changed_cb (GtkWidget *,
-				gpointer);
-
-
-/* DESCRIPTION  :  This callback is called when the user changes the zoom
- *                 factor in the menu, and chooses to zoom in.
- * BEHAVIOR     :  zoom /= 2.
- * PRE          :  The GConf key to update with the new zoom.
- */
-static void zoom_out_changed_cb (GtkWidget *,
-				 gpointer);
-
-
-/* DESCRIPTION  :  This callback is called when the user changes the zoom
- *                 factor in the menu, and chooses to zoom in.
- * BEHAVIOR     :  zoom = 1.
- * PRE          :  The GConf key to update with the new zoom.
- */
-static void zoom_normal_changed_cb (GtkWidget *,
-				    gpointer);
-
-static void display_changed_cb (GtkWidget *widget,
-				gpointer data);
-
-/* DESCRIPTION  :  This callback is called when the user toggles fullscreen
- *                 factor in the popup menu.
- * BEHAVIOR     :  Toggles the fullscreen configuration key.
- * PRE          :  /
- */
-static void fullscreen_changed_cb (GtkWidget *,
-				   gpointer);
 
 /* DESCRIPTION  :  This callback is called when the status bar is clicked.
  * BEHAVIOR     :  Clear all info message, not normal messages.
@@ -956,12 +915,6 @@ static bool on_handle_errors (std::string error,
  * Display Engine Callbacks
  */
 void
-on_fullscreen_mode_changed_cb (Ekiga::VideoOutputManager & /* manager */, Ekiga::VideoOutputFSToggle toggle,  gpointer self)
-{
-  gm_main_window_toggle_fullscreen (toggle, GTK_WIDGET (self));
-}
-
-void
 on_videoinput_device_added_cb (const Ekiga::VideoInputDevice & device, bool is_desired, gpointer self)
 {
   EkigaMainWindow *mw = EKIGA_MAIN_WINDOW (self);
@@ -1402,108 +1355,7 @@ static void
 window_closed_from_menu_cb (GtkWidget *widget,
                            gpointer data)
 {
-window_closed_cb (widget, NULL, data);
-}
-
-
-static void 
-zoom_in_changed_cb (G_GNUC_UNUSED GtkWidget *widget,
-		    gpointer data)
-{
-  GtkWidget *main_window = GnomeMeeting::Process ()->GetMainWindow ();
-  g_return_if_fail (main_window != NULL);
-
-  g_return_if_fail (data != NULL);
-
-  Ekiga::DisplayInfo display_info;
-
-  display_info.zoom = gm_conf_get_int ((char *) data);
-
-  if (display_info.zoom < 200)
-    display_info.zoom = display_info.zoom * 2;
-
-  gm_conf_set_int ((char *) data, display_info.zoom);
-  ekiga_main_window_zooms_menu_update_sensitivity (EKIGA_MAIN_WINDOW (main_window), display_info.zoom);
-}
-
-
-static void 
-zoom_out_changed_cb (G_GNUC_UNUSED GtkWidget *widget,
-		     gpointer data)
-{
-  GtkWidget *main_window = GnomeMeeting::Process ()->GetMainWindow ();
-  g_return_if_fail (main_window != NULL);
-
-  g_return_if_fail (data != NULL);
-
-  Ekiga::DisplayInfo display_info;
-
-  display_info.zoom = gm_conf_get_int ((char *) data);
-
-  if (display_info.zoom  > 50)
-    display_info.zoom  = (unsigned int) (display_info.zoom  / 2);
-
-  gm_conf_set_int ((char *) data, display_info.zoom);
-  ekiga_main_window_zooms_menu_update_sensitivity (EKIGA_MAIN_WINDOW (main_window), display_info.zoom);
-}
-
-static void
-zoom_normal_changed_cb (G_GNUC_UNUSED GtkWidget *widget,
-			gpointer data)
-{
-  GtkWidget *main_window = GnomeMeeting::Process ()->GetMainWindow ();
-  g_return_if_fail (main_window != NULL);
-
-  g_return_if_fail (data != NULL);
-
-  Ekiga::DisplayInfo display_info;
-
-  display_info.zoom  = 100;
-
-  gm_conf_set_int ((char *) data, display_info.zoom);
-  ekiga_main_window_zooms_menu_update_sensitivity (EKIGA_MAIN_WINDOW (main_window), display_info.zoom);
-}
-
-static void
-display_changed_cb (GtkWidget *widget,
-		    gpointer data)
-{
-  EkigaMainWindow *main_window = EKIGA_MAIN_WINDOW (GnomeMeeting::Process ()->GetMainWindow ());
-  g_return_if_fail (main_window != NULL);
-  g_return_if_fail (data != NULL);
-
-  GSList *group = NULL;
-//  int group_last_pos = 0;
-  int active = 0;
-
-  group = gtk_radio_menu_item_get_group (GTK_RADIO_MENU_ITEM (widget));
-//  group_last_pos = g_slist_length (group) - 1; /* If length 1, last pos is 0 */
-
-  /* Only do something when a new CHECK_MENU_ITEM becomes active,
-     not when it becomes inactive */
-  if (GTK_CHECK_MENU_ITEM (widget)->active) {
-
-    while (group) {
-      if (group->data == widget)
-	break;
-
-      active++;
-      group = g_slist_next (group);
-    }
-
-    // FIXME
-//    if ( !main_window->priv->changing_back_to_local_after_a_call)
-  //    gm_conf_set_int ((gchar *) data, group_last_pos - active);
-  }
-}
-
-static void
-fullscreen_changed_cb (G_GNUC_UNUSED GtkWidget *widget,
-		       G_GNUC_UNUSED gpointer data)
-{
-  GtkWidget* main_window = GnomeMeeting::Process()->GetMainWindow ();
-  g_return_if_fail (main_window != NULL);
-  gm_main_window_toggle_fullscreen (Ekiga::VO_FS_TOGGLE, main_window);
+  window_closed_cb (widget, NULL, data);
 }
 
 static gboolean
@@ -1620,46 +1472,6 @@ ekiga_main_window_update_sensitivity (EkigaMainWindow *mw,
   }
 }
 
-
-void
-gm_main_window_toggle_fullscreen (Ekiga::VideoOutputFSToggle toggle,
-                                  G_GNUC_UNUSED GtkWidget   *main_window)
-{
-  Ekiga::VideoOutputMode videooutput_mode;
-
-  switch (toggle) {
-    case Ekiga::VO_FS_OFF:
-      if (gm_conf_get_int (VIDEO_DISPLAY_KEY "video_view") == Ekiga::VO_MODE_FULLSCREEN) {
-
-        videooutput_mode = (Ekiga::VideoOutputMode) gm_conf_get_int (VIDEO_DISPLAY_KEY "video_view_before_fullscreen");
-        gm_conf_set_int (VIDEO_DISPLAY_KEY "video_view", videooutput_mode);
-      }
-      break;
-    case Ekiga::VO_FS_ON:
-      if (gm_conf_get_int (VIDEO_DISPLAY_KEY "video_view") != Ekiga::VO_MODE_FULLSCREEN) {
-
-        videooutput_mode = (Ekiga::VideoOutputMode) gm_conf_get_int (VIDEO_DISPLAY_KEY "video_view");
-        gm_conf_set_int (VIDEO_DISPLAY_KEY "video_view_before_fullscreen", videooutput_mode);
-        gm_conf_set_int (VIDEO_DISPLAY_KEY "video_view", Ekiga::VO_MODE_FULLSCREEN);
-      }
-      break;
-
-    case Ekiga::VO_FS_TOGGLE:
-    default:
-      if (gm_conf_get_int (VIDEO_DISPLAY_KEY "video_view") == Ekiga::VO_MODE_FULLSCREEN) {
-
-        videooutput_mode = (Ekiga::VideoOutputMode) gm_conf_get_int (VIDEO_DISPLAY_KEY "video_view_before_fullscreen");
-        gm_conf_set_int (VIDEO_DISPLAY_KEY "video_view", videooutput_mode);
-      }
-      else {
-
-        videooutput_mode =  (Ekiga::VideoOutputMode) gm_conf_get_int (VIDEO_DISPLAY_KEY "video_view");
-        gm_conf_set_int (VIDEO_DISPLAY_KEY "video_view_before_fullscreen", videooutput_mode);
-        gm_conf_set_int (VIDEO_DISPLAY_KEY "video_view", Ekiga::VO_MODE_FULLSCREEN);
-      }
-      break;
-  }
-}
 
 static void
 ekiga_main_window_incoming_call_dialog_show (EkigaMainWindow *mw,
@@ -2151,51 +1963,6 @@ ekiga_main_window_init_menu (EkigaMainWindow *mw)
                      NULL, 'J',
                      G_CALLBACK (show_window_cb),
                      (gpointer) call_window, TRUE),
-
-      GTK_MENU_SEPARATOR,
-
-      GTK_MENU_RADIO_ENTRY("local_video", _("_Local Video"),
-			   _("Local video image"),
-			   NULL, '1',
-			   G_CALLBACK (display_changed_cb),
-			   (gpointer) VIDEO_DISPLAY_KEY "video_view",
-			   TRUE, FALSE),
-      GTK_MENU_RADIO_ENTRY("remote_video", _("_Remote Video"),
-			   _("Remote video image"),
-			   NULL, '2',
-			   G_CALLBACK (display_changed_cb),
-			   (gpointer) VIDEO_DISPLAY_KEY "video_view",
-			   FALSE, FALSE),
-      GTK_MENU_RADIO_ENTRY("both_incrusted", _("_Picture-in-Picture"),
-			   _("Both video images"),
-			   NULL, '3',
-			   G_CALLBACK (display_changed_cb),
-			   (gpointer) VIDEO_DISPLAY_KEY "video_view",
-			   FALSE, FALSE),
-      GTK_MENU_RADIO_ENTRY("both_incrusted_window", _("Picture-in-Picture in Separate _Window"),
-			   _("Both video images"),
-			   NULL, '4',
-			   G_CALLBACK (display_changed_cb),
-			   (gpointer) VIDEO_DISPLAY_KEY "video_view",
-			   FALSE, FALSE),
-      GTK_MENU_SEPARATOR,
-
-      GTK_MENU_ENTRY("zoom_in", NULL, _("Zoom in"),
-		     GTK_STOCK_ZOOM_IN, '+',
-		     G_CALLBACK (zoom_in_changed_cb),
-		     (gpointer) VIDEO_DISPLAY_KEY "zoom", FALSE),
-      GTK_MENU_ENTRY("zoom_out", NULL, _("Zoom out"),
-		     GTK_STOCK_ZOOM_OUT, '-',
-		     G_CALLBACK (zoom_out_changed_cb),
-		     (gpointer) VIDEO_DISPLAY_KEY "zoom", FALSE),
-      GTK_MENU_ENTRY("normal_size", NULL, _("Normal size"),
-		     GTK_STOCK_ZOOM_100, '0',
-		     G_CALLBACK (zoom_normal_changed_cb),
-		     (gpointer) VIDEO_DISPLAY_KEY "zoom", FALSE),
-      GTK_MENU_ENTRY("fullscreen", _("_Fullscreen"), _("Switch to fullscreen"),
-		     GTK_STOCK_ZOOM_IN, GDK_F11,
-		     G_CALLBACK (fullscreen_changed_cb),
-		     (gpointer) mw, FALSE),
 
       GTK_MENU_NEW(_("_Help")),
 
