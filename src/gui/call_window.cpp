@@ -433,6 +433,14 @@ static void ekiga_call_window_toggle_fullscreen (Ekiga::VideoOutputFSToggle togg
 static void ekiga_call_window_call_button_set_connected (EkigaCallWindow *cw,
                                                          gboolean state);
 
+static void ekiga_call_window_zooms_menu_update_sensitivity (EkigaCallWindow *cw,
+                                                             unsigned int zoom);
+
+static void ekiga_call_window_channels_menu_update_sensitivity (EkigaCallWindow *cw,
+                                                                bool is_video,
+                                                                G_GNUC_UNUSED bool is_receiving,
+                                                                bool is_transmitting);
+
 static gboolean ekiga_call_window_transfer_dialog_run (EkigaCallWindow *cw,
                                                        GtkWidget *parent_window,
                                                        const char *u);
@@ -497,6 +505,7 @@ zoom_in_changed_cb (G_GNUC_UNUSED GtkWidget *widget,
   g_return_if_fail (data != NULL);
 
   Ekiga::DisplayInfo display_info;
+  ekiga_call_window_set_video_size (EKIGA_CALL_WINDOW (call_window), GM_QCIF_WIDTH, GM_QCIF_HEIGHT);
 
   display_info.zoom = gm_conf_get_int ((char *) data);
 
@@ -504,7 +513,7 @@ zoom_in_changed_cb (G_GNUC_UNUSED GtkWidget *widget,
     display_info.zoom = display_info.zoom * 2;
 
   gm_conf_set_int ((char *) data, display_info.zoom);
-  // FIXME ekiga_call_window_zooms_menu_update_sensitivity (EKIGA_call_window (call_window), display_info.zoom);
+  ekiga_call_window_zooms_menu_update_sensitivity (EKIGA_CALL_WINDOW (call_window), display_info.zoom);
 }
 
 static void
@@ -517,6 +526,7 @@ zoom_out_changed_cb (G_GNUC_UNUSED GtkWidget *widget,
   g_return_if_fail (data != NULL);
 
   Ekiga::DisplayInfo display_info;
+  ekiga_call_window_set_video_size (EKIGA_CALL_WINDOW (call_window), GM_QCIF_WIDTH, GM_QCIF_HEIGHT);
 
   display_info.zoom = gm_conf_get_int ((char *) data);
 
@@ -524,7 +534,7 @@ zoom_out_changed_cb (G_GNUC_UNUSED GtkWidget *widget,
     display_info.zoom  = (unsigned int) (display_info.zoom  / 2);
 
   gm_conf_set_int ((char *) data, display_info.zoom);
-//FIXME  ekiga_call_window_zooms_menu_update_sensitivity (EKIGA_call_window (call_window), display_info.zoom);
+  ekiga_call_window_zooms_menu_update_sensitivity (EKIGA_CALL_WINDOW (call_window), display_info.zoom);
 }
 
 static void
@@ -537,11 +547,12 @@ zoom_normal_changed_cb (G_GNUC_UNUSED GtkWidget *widget,
   g_return_if_fail (data != NULL);
 
   Ekiga::DisplayInfo display_info;
+  ekiga_call_window_set_video_size (EKIGA_CALL_WINDOW (call_window), GM_QCIF_WIDTH, GM_QCIF_HEIGHT);
 
   display_info.zoom  = 100;
 
   gm_conf_set_int ((char *) data, display_info.zoom);
-//FIXME  ekiga_call_window_zooms_menu_update_sensitivity (EKIGA_call_window (call_window), display_info.zoom);
+  ekiga_call_window_zooms_menu_update_sensitivity (EKIGA_CALL_WINDOW (call_window), display_info.zoom);
 }
 
 static void
@@ -636,7 +647,7 @@ place_call_cb (GtkWidget * /*widget*/,
       if (uri.substr (++pos).empty ())
         return;
 
-//FIXME    ekiga_main_window_update_calling_state (cw, Calling);
+    ekiga_call_window_update_calling_state (cw, Calling);
     boost::shared_ptr<Ekiga::CallCore> call_core = cw->priv->core->get<Ekiga::CallCore> ("call-core");
 
     // Remove appended spaces
@@ -652,7 +663,7 @@ place_call_cb (GtkWidget * /*widget*/,
     } else {
 
   //FIXME    ekiga_main_window_flash_message (cw, _("Could not connect to remote host"));
- //FIXME     ekiga_main_window_update_calling_state (cw, Standby);
+      ekiga_call_window_update_calling_state (cw, Standby);
     }
   }
   else if (cw->priv->calling_state == Called && cw->priv->current_call)
@@ -731,10 +742,6 @@ transfer_current_call_cb (G_GNUC_UNUSED GtkWidget *widget,
   GtkWidget *cw = NULL;
 
   g_return_if_fail (data != NULL);
-
-  //FIXME
-//  cw = GnomeMeeting::Process ()->GetCallWindow ();
-
   ekiga_call_window_transfer_dialog_run (EKIGA_CALL_WINDOW (cw), GTK_WIDGET (data), NULL);
 }
 
@@ -839,9 +846,7 @@ on_videooutput_device_opened_cb (Ekiga::VideoOutputManager & /* manager */,
   if (!both_streams && mode == Ekiga::VO_MODE_LOCAL)
     gm_conf_set_int (VIDEO_DISPLAY_KEY "video_view", vv);
 
-  gtk_menu_set_sensitive (cw->priv->main_menu, "zoom_in", zoom != 200);
-  gtk_menu_set_sensitive (cw->priv->main_menu, "zoom_out", zoom != 50);
-  gtk_menu_set_sensitive (cw->priv->main_menu, "normal_size", zoom != 100);
+  ekiga_call_window_zooms_menu_update_sensitivity (cw, zoom);
 }
 
 static void
@@ -959,8 +964,8 @@ on_videoinput_device_closed_cb (Ekiga::VideoInputManager & /* manager */,
                                 gpointer self)
 {
   EkigaCallWindow *cw = EKIGA_CALL_WINDOW (self);
-// FIXME
-//  ekiga_call_window_update_sensitivity (cw, TRUE, FALSE, FALSE);
+
+  ekiga_call_window_channels_menu_update_sensitivity (cw, TRUE, FALSE, FALSE);
   ekiga_call_window_update_logo (cw);
 
   gtk_widget_set_sensitive (cw->priv->video_settings_button,  FALSE);
@@ -1279,13 +1284,13 @@ ekiga_call_window_update_calling_state (EkigaCallWindow *cw,
 //      ekiga_call_window_set_call_hold (cw, FALSE);
 
       /* Update the sensitivity, all channels are closed */
-  //    ekiga_call_window_update_sensitivity (cw, TRUE, FALSE, FALSE);
-    //  ekiga_call_window_update_sensitivity (cw, FALSE, FALSE, FALSE);
+      ekiga_call_window_channels_menu_update_sensitivity (cw, TRUE, FALSE, FALSE);
+      ekiga_call_window_channels_menu_update_sensitivity (cw, FALSE, FALSE, FALSE);
 
       /* Update the menus and toolbar items */
-      //gtk_menu_set_sensitive (cw->priv->main_menu, "connect", TRUE);
-      //gtk_menu_set_sensitive (cw->priv->main_menu, "disconnect", FALSE);
-      //gtk_menu_section_set_sensitive (cw->priv->main_menu, "hold_call", FALSE);
+      gtk_menu_set_sensitive (cw->priv->main_menu, "connect", TRUE);
+      gtk_menu_set_sensitive (cw->priv->main_menu, "disconnect", FALSE);
+      gtk_menu_section_set_sensitive (cw->priv->main_menu, "hold_call", FALSE);
       gtk_widget_set_sensitive (GTK_WIDGET (cw->priv->hold_button), FALSE);
       gtk_widget_set_sensitive (GTK_WIDGET (cw->priv->preview_button), TRUE);
 
@@ -1302,8 +1307,8 @@ ekiga_call_window_update_calling_state (EkigaCallWindow *cw,
     case Calling:
 
       /* Update the menus and toolbar items */
-      //gtk_menu_set_sensitive (cw->priv->main_menu, "connect", FALSE);
-      //gtk_menu_set_sensitive (cw->priv->main_menu, "disconnect", TRUE);
+      gtk_menu_set_sensitive (cw->priv->main_menu, "connect", FALSE);
+      gtk_menu_set_sensitive (cw->priv->main_menu, "disconnect", TRUE);
       gtk_widget_set_sensitive (GTK_WIDGET (cw->priv->preview_button), FALSE);
 
       /* Update the connect button */
@@ -1314,9 +1319,9 @@ ekiga_call_window_update_calling_state (EkigaCallWindow *cw,
     case Connected:
 
       /* Update the menus and toolbar items */
-      //gtk_menu_set_sensitive (cw->priv->main_menu, "connect", FALSE);
-      //gtk_menu_set_sensitive (cw->priv->main_menu, "disconnect", TRUE);
-      //gtk_menu_section_set_sensitive (cw->priv->main_menu, "hold_call", TRUE);
+      gtk_menu_set_sensitive (cw->priv->main_menu, "connect", FALSE);
+      gtk_menu_set_sensitive (cw->priv->main_menu, "disconnect", TRUE);
+      gtk_menu_section_set_sensitive (cw->priv->main_menu, "hold_call", TRUE);
       gtk_widget_set_sensitive (GTK_WIDGET (cw->priv->hold_button), TRUE);
       gtk_widget_set_sensitive (GTK_WIDGET (cw->priv->preview_button), FALSE);
 
@@ -1328,7 +1333,7 @@ ekiga_call_window_update_calling_state (EkigaCallWindow *cw,
     case Called:
 
       /* Update the menus and toolbar items */
-      //gtk_menu_set_sensitive (cw->priv->main_menu, "disconnect", TRUE);
+      gtk_menu_set_sensitive (cw->priv->main_menu, "disconnect", TRUE);
 
       /* Update the connect button */
       ekiga_call_window_call_button_set_connected (cw, TRUE);
@@ -1963,17 +1968,6 @@ ekiga_call_window_update_logo (EkigaCallWindow *cw)
 }
 
 static void
-ekiga_call_window_call_button_set_connected (EkigaCallWindow *cw,
-                                             gboolean state)
-{
-  GtkWidget* image;
-
-  cw->priv->ekiga_call_window_call_button_connected = state;
-  image = gtk_button_get_image (GTK_BUTTON (cw->priv->call_button));
-  gtk_image_set_from_stock (GTK_IMAGE (image), state ? GM_STOCK_PHONE_HANG_UP_24 : GM_STOCK_PHONE_PICK_UP_24, GTK_ICON_SIZE_LARGE_TOOLBAR);
-}
-
-static void
 ekiga_call_window_toggle_fullscreen (Ekiga::VideoOutputFSToggle toggle)
 {
   Ekiga::VideoOutputMode videooutput_mode;
@@ -2010,6 +2004,50 @@ ekiga_call_window_toggle_fullscreen (Ekiga::VideoOutputFSToggle toggle)
       }
       break;
   }
+}
+
+static void
+ekiga_call_window_zooms_menu_update_sensitivity (EkigaCallWindow *cw,
+                                                 unsigned int zoom)
+{
+  /* between 0.5 and 2.0 zoom */
+  /* like above, also update the popup menus of the separate video windows */
+  gtk_menu_set_sensitive (cw->priv->main_menu, "zoom_in", zoom != 200);
+  gtk_menu_set_sensitive (cw->priv->main_menu, "zoom_out", zoom != 50);
+  gtk_menu_set_sensitive (cw->priv->main_menu, "normal_size", zoom != 100);
+}
+
+static void
+ekiga_call_window_channels_menu_update_sensitivity (EkigaCallWindow *cw,
+                                                    bool is_video,
+                                                    G_GNUC_UNUSED bool is_receiving,
+                                                    bool is_transmitting)
+{
+  g_return_if_fail (EKIGA_IS_CALL_WINDOW (cw));
+
+  if (is_transmitting) {
+    if (!is_video)
+      gtk_menu_set_sensitive (cw->priv->main_menu, "suspend_audio", TRUE);
+    else
+      gtk_menu_set_sensitive (cw->priv->main_menu, "suspend_video", TRUE);
+  }
+  else {
+    if (!is_video)
+      gtk_menu_set_sensitive (cw->priv->main_menu, "suspend_audio", FALSE);
+    else
+      gtk_menu_set_sensitive (cw->priv->main_menu, "suspend_video", FALSE);
+  }
+}
+
+static void
+ekiga_call_window_call_button_set_connected (EkigaCallWindow *cw,
+                                             gboolean state)
+{
+  GtkWidget* image;
+
+  cw->priv->ekiga_call_window_call_button_connected = state;
+  image = gtk_button_get_image (GTK_BUTTON (cw->priv->call_button));
+  gtk_image_set_from_stock (GTK_IMAGE (image), state ? GM_STOCK_PHONE_HANG_UP_24 : GM_STOCK_PHONE_PICK_UP_24, GTK_ICON_SIZE_LARGE_TOOLBAR);
 }
 
 static gboolean
@@ -2184,8 +2222,8 @@ ekiga_call_window_init_menu (EkigaCallWindow *cw)
 		     G_CALLBACK (show_window_cb), NULL, TRUE),
 
       GTK_MENU_ENTRY("disconnect", _("_Hangup"), _("Hangup the current call"),
-		     GM_STOCK_PHONE_PICK_UP_16, 'o',
-		     G_CALLBACK (show_window_cb), NULL, TRUE),
+		     GM_STOCK_PHONE_HANG_UP_16, 'd',
+		     G_CALLBACK (show_window_cb), NULL, FALSE),
 
       GTK_MENU_SEPARATOR,
 
@@ -2218,8 +2256,6 @@ ekiga_call_window_init_menu (EkigaCallWindow *cw)
 		     GTK_STOCK_CLOSE, 'W',
 		     G_CALLBACK (window_closed_from_menu_cb),
 		     (gpointer) cw, TRUE),
-
-      GTK_MENU_SEPARATOR,
 
       GTK_MENU_NEW(_("_View")),
 
@@ -2488,6 +2524,7 @@ ekiga_call_window_init_gui (EkigaCallWindow *cw)
   gtk_widget_show_all (frame);
 
   /* Logo */
+  gtk_window_set_resizable (GTK_WINDOW (cw), FALSE);
   ekiga_call_window_update_logo (cw);
 }
 
