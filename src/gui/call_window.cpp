@@ -2358,7 +2358,9 @@ ekiga_call_window_init_gui (EkigaCallWindow *cw)
 
   /* The frame that contains the video */
   cw->priv->main_video_image = gtk_image_new ();
-  gtk_box_pack_start (GTK_BOX (vbox), GTK_WIDGET (cw->priv->main_video_image), TRUE, TRUE, 0);
+  alignment = gtk_alignment_new (0.5, 0.0, 1.0, 0.0);
+  gtk_container_add (GTK_CONTAINER (alignment), cw->priv->main_video_image);
+  gtk_box_pack_start (GTK_BOX (vbox), GTK_WIDGET (alignment), TRUE, TRUE, 0);
 
   /* The frame that contains information about the call */
   /* Text buffer */

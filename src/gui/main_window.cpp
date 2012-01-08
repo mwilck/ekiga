@@ -227,14 +227,6 @@ static void show_gm_window_cb (GtkWidget *widget,
                                gpointer data);
 
 
-/* DESCRIPTION  :  /
- * BEHAVIOR     :  enables/disables the zoom related menuitems according
- *                 to zoom factor
- * PRE          :  The main window GMObject.
- */
-static void ekiga_main_window_zooms_menu_update_sensitivity (EkigaMainWindow *main_window,
-							     unsigned int zoom);
-
 static void ekiga_main_window_incoming_call_dialog_show (EkigaMainWindow *mw,
                                                       boost::shared_ptr<Ekiga::Call>  call);
 
@@ -1075,17 +1067,6 @@ on_status_icon_embedding_change (G_GNUC_UNUSED GObject obj,
   /* force the main window to show if no status icon for the user */
   if (!gtk_status_icon_is_embedded (GTK_STATUS_ICON (status_icon)))
     gtk_widget_show (main_window);
-}
-
-static void
-ekiga_main_window_zooms_menu_update_sensitivity (EkigaMainWindow *mw,
-                                                 unsigned int zoom)
-{
-  /* between 0.5 and 2.0 zoom */
-  /* like above, also update the popup menus of the separate video windows */
-  gtk_menu_set_sensitive (mw->priv->main_menu, "zoom_in", zoom != 200);
-  gtk_menu_set_sensitive (mw->priv->main_menu, "zoom_out", zoom != 50);
-  gtk_menu_set_sensitive (mw->priv->main_menu, "normal_size", zoom != 100);
 }
 
 
