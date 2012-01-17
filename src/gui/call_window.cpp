@@ -2613,12 +2613,6 @@ ekiga_call_window_expose_event (GtkWidget *widget,
 
 #ifdef WIN32
   display_info.hwnd = ((HWND) GDK_WINDOW_HWND (video_widget->window));
-  // translate coordinates from call_panel_frame to window
-  g_warn_if_fail (gtk_widget_translate_coordinates
-                  (cw->priv->call_panel_frame,
-                   gtk_widget_get_toplevel(cw->priv->call_panel_frame),
-                   display_info.x, display_info.y,
-                   &display_info.x, &display_info.y));
 #else
   if (!cw->priv->video_widget_gc) {
     cw->priv->video_widget_gc = gdk_gc_new (video_widget->window);
