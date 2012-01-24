@@ -433,6 +433,10 @@ void CallManager::set_codecs (Ekiga::CodecList & _codecs)
   mask += "MSRP";
   mask += "SIP-IM";
 
+  // Blacklist NSE, since it is unused in ekiga and might create
+  // problems with some registrars (such as Eutelia)
+  mask += "NamedSignalEvent";
+
   // Update the OpalManager
   SetMediaFormatMask (mask);
   SetMediaFormatOrder (order);
