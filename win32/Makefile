@@ -416,7 +416,7 @@ $(LIBDIR)/libldap.dll: binaries $(OPENLDAP_DIR)/config.status
 
 ### libsasl2
 update-sources::
-	echo --- Getting libsasl2 ...
+	@echo --- Getting libsasl2 ...
 	$(WGET) -P $(SRCDIR) $(LIBSASL2_URL)/$(LIBSASL2_ARCHIVE)
 
 $(LIBDIR)/libsasl2.a: $(SRCDIR)/$(LIBSASL2_ARCHIVE)
@@ -541,7 +541,7 @@ $(LIBDIR)/libx264.a: $(X264_DIR)/config.status
 
 ### celt
 update-sources::
-	echo --- Getting CELT ...
+	@echo --- Getting CELT ...
 	$(WGET) -P $(SRCDIR) $(CELT_URL)/$(CELT_ARCHIVE)
 
 $(CELT_DIR)/config.status: $(SRCDIR)/$(CELT_ARCHIVE) $(LIBDIR)/libogg.a
