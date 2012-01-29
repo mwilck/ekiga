@@ -2541,16 +2541,13 @@ ekiga_call_window_connect_engine_signals (EkigaCallWindow *cw)
 
   conn = call_core->retrieved_call.connect (boost::bind (&on_retrieved_call_cb, _1, _2, (gpointer) cw));
   cw->priv->connections.push_back (conn);
-/*
-  conn = call_core->missed_call.connect (boost::bind (&on_missed_call_cb, _1, _2, (gpointer) cw));
-  cw->priv->connections.push_back (conn);
 
   conn = call_core->stream_opened.connect (boost::bind (&on_stream_opened_cb, _1, _2, _3, _4, _5, (gpointer) cw));
   cw->priv->connections.push_back (conn);
-  
+
   conn = call_core->stream_closed.connect (boost::bind (&on_stream_closed_cb, _1, _2, _3, _4, _5, (gpointer) cw));
   cw->priv->connections.push_back (conn);
-*/
+
   conn = call_core->stream_paused.connect (boost::bind (&on_stream_paused_cb, _1, _2, _3, _4, (gpointer) cw));
   cw->priv->connections.push_back (conn);
 
