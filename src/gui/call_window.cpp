@@ -2607,12 +2607,18 @@ ekiga_call_window_focus_in_event (GtkWidget     *widget,
 }
 
 static gboolean
-ekiga_call_window_delete_event (GtkWidget   *widget,
+ekiga_call_window_delete_event (GtkWidget *widget,
 				G_GNUC_UNUSED GdkEventAny *event)
 {
-  gtk_widget_hide (widget);
+  EkigaCallWindow *cw = NULL;
+  g_return_val_if_fail (EKIGA_IS_CALL_WINDOW (cw), FALSE);
 
-  return TRUE;
+  cw = EKIGA_CALL_WINDOW (widget);
+
+  if (cw->priv->current_call)
+    cw->priv->current_call->hangup ();
+
+  return FALSE;
 }
 
 static void
