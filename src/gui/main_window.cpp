@@ -548,10 +548,8 @@ place_call_cb (GtkWidget * /*widget*/,
       uri = uri.substr (0, pos);
 
     // Dial
-    if (!call_core->dial (uri)) {
-
+    if (!call_core->dial (uri))
       gm_statusbar_flash_message (GM_STATUSBAR (mw->priv->statusbar), _("Could not connect to remote host"));
-    }
   }
 }
 
