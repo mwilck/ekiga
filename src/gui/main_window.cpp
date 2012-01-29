@@ -219,9 +219,6 @@ static void url_changed_cb (GtkEditable *e,
 static void show_dialpad_cb (GtkWidget *widget,
                              gpointer data);
 
-static void show_window_cb (GtkWidget *widget,
-			    gpointer data);
-
 static void show_gm_window_cb (GtkWidget *widget,
                                gpointer data);
 
@@ -585,13 +582,6 @@ show_dialpad_cb (G_GNUC_UNUSED GtkWidget *widget,
   EkigaMainWindow *mw = EKIGA_MAIN_WINDOW (data);
 
   gtk_notebook_set_current_page (GTK_NOTEBOOK (mw->priv->main_notebook), 1);
-}
-
-static void
-show_window_cb (G_GNUC_UNUSED GtkWidget *widget,
-		gpointer data)
-{
-  gtk_widget_show (GTK_WIDGET (data));
 }
 
 static void
@@ -1563,7 +1553,6 @@ ekiga_main_window_init_menu (EkigaMainWindow *mw)
 {
   GtkWidget *addressbook_window = NULL;
   GtkWidget *accounts_window = NULL;
-  GtkWidget *call_window = NULL;
   GtkWidget *prefs_window = NULL;
   GtkWidget *assistant_window = NULL;
 
@@ -1575,7 +1564,6 @@ ekiga_main_window_init_menu (EkigaMainWindow *mw)
   boost::shared_ptr<GtkFrontend> gtk_frontend = mw->priv->core->get<GtkFrontend> ("gtk-frontend");
   addressbook_window = GTK_WIDGET (gtk_frontend->get_addressbook_window ());
   accounts_window = GnomeMeeting::Process ()->GetAccountsWindow ();
-  call_window = GnomeMeeting::Process ()->GetCallWindow ();
   prefs_window = GnomeMeeting::Process ()->GetPrefsWindow ();
   assistant_window = GnomeMeeting::Process ()->GetAssistantWindow ();
 
