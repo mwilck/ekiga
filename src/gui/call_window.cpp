@@ -1093,6 +1093,8 @@ on_established_call_cb (boost::shared_ptr<Ekiga::CallManager>  /*manager*/,
   EkigaCallWindow *cw = EKIGA_CALL_WINDOW (self);
   gchar* info = NULL;
 
+  gtk_window_set_title (GTK_WINDOW (cw), call->get_remote_party_name ().c_str ());
+
   /* %s is the SIP/H.323 address of the remote user, this text is shown
      below video during a call */
   info = g_strdup_printf (_("Connected with %s"),
