@@ -674,7 +674,7 @@ static void on_established_call_cb (boost::shared_ptr<Ekiga::CallManager>  /*man
 
   /* Show call window */
   call_window = GnomeMeeting::Process ()->GetCallWindow ();
-  gtk_widget_show (call_window);
+  gtk_widget_show_all (call_window);
 }
 
 
