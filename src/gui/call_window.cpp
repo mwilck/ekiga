@@ -1935,7 +1935,7 @@ ekiga_call_window_init_menu (EkigaCallWindow *cw)
 
       GTK_MENU_ENTRY("disconnect", _("_Hangup"), _("Hangup the current call"),
 		     GM_STOCK_PHONE_HANG_UP_16, 'd',
-		     G_CALLBACK (hangup_call_cb), NULL, FALSE),
+		     G_CALLBACK (hangup_call_cb), cw, FALSE),
 
       GTK_MENU_SEPARATOR,
 
