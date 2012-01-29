@@ -1867,13 +1867,13 @@ ekiga_main_window_connect_engine_signals (EkigaMainWindow *mw)
 
   conn = call_core->ringing_call.connect (boost::bind (&on_ringing_call_cb, _1, _2, (gpointer) mw));
   mw->priv->connections.push_back (conn);
-  
+
   conn = call_core->established_call.connect (boost::bind (&on_established_call_cb, _1, _2, (gpointer) mw));
   mw->priv->connections.push_back (conn);
-  
+
   conn = call_core->cleared_call.connect (boost::bind (&on_cleared_call_cb, _1, _2, _3, (gpointer) mw));
   mw->priv->connections.push_back (conn);
-  
+
   conn = call_core->missed_call.connect (boost::bind (&on_missed_call_cb, _1, _2, (gpointer) mw));
   mw->priv->connections.push_back (conn);
 
