@@ -228,9 +228,6 @@ static bool account_completion_helper (Ekiga::AccountPtr acc,
                                        const gchar* text,
                                        EkigaCallWindow* cw);
 
-static void window_closed_from_menu_cb (GtkWidget *widget,
-                                        gpointer data);
-
 static void zoom_in_changed_cb (GtkWidget *widget,
                                 gpointer data);
 
@@ -539,13 +536,6 @@ account_completion_helper (Ekiga::AccountPtr acc,
     }
   }
   return true;
-}
-
-static void
-window_closed_from_menu_cb (G_GNUC_UNUSED GtkWidget *widget,
-                            gpointer data)
-{
-  gtk_widget_hide (GTK_WIDGET (data));
 }
 
 static void
