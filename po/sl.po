@@ -10,8 +10,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: ekiga master\n"
 "Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?product=ekiga&keywords=I18N+L10N&component=general\n"
-"POT-Creation-Date: 2012-01-17 18:52+0000\n"
-"PO-Revision-Date: 2012-01-20 20:58+0100\n"
+"POT-Creation-Date: 2012-01-29 17:55+0000\n"
+"PO-Revision-Date: 2012-01-29 20:33+0100\n"
 "Last-Translator: Matej Urbančič <mateju@svn.gnome.org>\n"
 "Language-Team: Slovenščina <gnome-si@googlegroups.com>\n"
 "Language: \n"
@@ -25,8 +25,8 @@ msgstr ""
 
 #. Application name
 #: ../ekiga.desktop.in.in.h:1
-#: ../src/gui/main_window.cpp:2482
-#: ../src/gui/main_window.cpp:2484
+#: ../src/gui/main_window.cpp:2186
+#: ../src/gui/main_window.cpp:2188
 msgid "Ekiga Softphone"
 msgstr "Programski telefon Ekiga"
 
@@ -108,7 +108,7 @@ msgid "Disable video hardware acceleration"
 msgstr "Onemogoči strojno pospeševanje videa"
 
 #: ../ekiga.schemas.in.in.h:18
-#: ../src/gui/call_window.cpp:2476
+#: ../src/gui/call_window.cpp:2439
 msgid "Display images from your camera device"
 msgstr "Pokaži slike iz naprave vaše kamere"
 
@@ -811,7 +811,7 @@ msgstr "Neimenovano"
 #: ../plugins/evolution/evolution-contact.cpp:228
 #: ../plugins/loudmouth/loudmouth-presentity.cpp:160
 #: ../plugins/resource-list/rl-presentity.cpp:212
-#: ../src/gui/main_window.cpp:1900
+#: ../src/gui/main_window.cpp:1629
 msgid "_Edit"
 msgstr "_Uredi"
 
@@ -854,8 +854,7 @@ msgstr "Kliči"
 #: ../lib/engine/components/opal/h323-endpoint.cpp:133
 #: ../lib/engine/components/opal/sip-endpoint.cpp:244
 #: ../lib/engine/components/opal/sip-endpoint.cpp:248
-#: ../src/gui/call_window.cpp:2067
-#: ../src/gui/main_window.cpp:1667
+#: ../src/gui/call_window.cpp:2124
 msgid "Transfer"
 msgstr "Prenos"
 
@@ -1214,6 +1213,7 @@ msgid "Abnormal call termination"
 msgstr "Nenavadno končanje klica"
 
 #: ../lib/engine/components/opal/opal-call.cpp:424
+#: ../src/gui/main_window.cpp:552
 msgid "Could not connect to remote host"
 msgstr "Ni se mogoče povezati z oddaljenim gostiteljem"
 
@@ -1271,7 +1271,7 @@ msgstr "Storitev ni na voljo"
 msgid "Call completed"
 msgstr "Klic je končan"
 
-#: ../lib/engine/components/opal/opal-call-manager.cpp:794
+#: ../lib/engine/components/opal/opal-call-manager.cpp:798
 msgid ""
 "Ekiga did not manage to configure your network settings automatically. You can still use it, but you need to configure your network settings manually.\n"
 "\n"
@@ -1488,7 +1488,7 @@ msgid "user offline"
 msgstr "uporabnik ni povezan"
 
 #: ../lib/engine/components/opal/sip-endpoint.cpp:974
-#: ../src/gui/main_window.cpp:1601
+#: ../src/gui/main_window.cpp:1346
 #, c-format
 msgid "Incoming call from %s"
 msgstr "Dohodni klic od %s"
@@ -1525,7 +1525,7 @@ msgid "Address Book"
 msgstr "Imenik"
 
 #: ../lib/engine/gui/gtk-frontend/addressbook-window.cpp:651
-#: ../src/gui/main_window.cpp:1846
+#: ../src/gui/main_window.cpp:1600
 msgid "Address _Book"
 msgstr "_Imenik"
 
@@ -2167,12 +2167,12 @@ msgid "Accounts"
 msgstr "Računi"
 
 #: ../src/gui/accounts.cpp:590
-#: ../src/gui/main_window.cpp:1910
+#: ../src/gui/main_window.cpp:1639
 msgid "_Accounts"
 msgstr "R_ačuni"
 
 #: ../src/gui/accounts.cpp:594
-#: ../src/gui/main_window.cpp:1948
+#: ../src/gui/main_window.cpp:1669
 msgid "_Help"
 msgstr "Pomo_č"
 
@@ -2320,9 +2320,9 @@ msgid "The connection type will permit determining the best quality settings tha
 msgstr "Vrsta povezave bo omogočila ugotavljanje nastavitev za najboljšo kakovost, ki jih bo program uporabljal med klici. Pozneje lahko spremenite nastavitve v oknu možnosti."
 
 #: ../src/gui/assistant.cpp:997
-#: ../src/gui/main_window.cpp:1730
-#: ../src/gui/main_window.cpp:1734
-#: ../src/gui/main_window.cpp:1738
+#: ../src/gui/main_window.cpp:1425
+#: ../src/gui/main_window.cpp:1429
+#: ../src/gui/main_window.cpp:1433
 #: ../src/gui/preferences.cpp:727
 msgid "Audio Devices"
 msgstr "Zvočne naprave"
@@ -2452,44 +2452,44 @@ msgstr "Ekiga je s SIP in H.323 združljiv program za VoIP, IP-telefonijo in vid
 msgid "Unable to open help file."
 msgstr "Ni mogoče odpreti datoteke pomoči."
 
-#: ../src/gui/call_window.cpp:869
+#: ../src/gui/call_window.cpp:776
 msgid "Error while initializing video output"
 msgstr "Napaka med zaganjanjem izhoda videa"
 
-#: ../src/gui/call_window.cpp:870
+#: ../src/gui/call_window.cpp:777
 msgid "No video will be displayed on your machine during this call"
 msgstr "Med trenutnim klicanjem video povezava ni na voljo"
 
-#: ../src/gui/call_window.cpp:880
+#: ../src/gui/call_window.cpp:787
 msgid "There was an error opening or initializing the video output. Please verify that no other application is using the accelerated video output."
 msgstr "Prišlo je do napake med odpiranjem ali zaganjanjem izhoda videa. Preverite, da pospešenega izhoda slike ne uporablja drug program."
 
-#: ../src/gui/call_window.cpp:882
+#: ../src/gui/call_window.cpp:789
 msgid "There was an error opening or initializing the video output. Please verify that you are using a color depth of 24 or 32 bits per pixel."
 msgstr "Prišlo je do napake med odpiranjem ali zaganjanjem izhoda videa. Preverite, da uporabljate barvno globino 24 ali 32 bitov na točko."
 
-#: ../src/gui/call_window.cpp:985
+#: ../src/gui/call_window.cpp:892
 #, c-format
 msgid "Error while accessing video device %s"
 msgstr "Prišlo je do napake med dostopom do video naprave %s"
 
-#: ../src/gui/call_window.cpp:988
+#: ../src/gui/call_window.cpp:895
 msgid "A moving logo will be transmitted during calls."
 msgstr "Med klici bo prikazan premikajoči se logotip."
 
-#: ../src/gui/call_window.cpp:992
+#: ../src/gui/call_window.cpp:899
 msgid "There was an error while opening the device. In case it is a pluggable device it may be sufficient to reconnect it. If not, or if it still is not accessible, please check your permissions and make sure that the appropriate driver is loaded."
 msgstr "Prišlo je do napake med odpiranjem naprave. V primeru, da je napravo mogoče priklopiti od zunaj, je morda dovolj, da jo ponovno povežete. V primeru, da naprave še vedno ni mogoče uporabljati, preverite svoja dovoljenja in se prepričajte, da je naložen ustrezen gonilnik."
 
-#: ../src/gui/call_window.cpp:996
+#: ../src/gui/call_window.cpp:903
 msgid "Your video driver doesn't support the requested video format."
 msgstr "Vaš gonilnik videa ne podpira zahtevane vrste videa."
 
-#: ../src/gui/call_window.cpp:1000
+#: ../src/gui/call_window.cpp:907
 msgid "Could not open the chosen channel."
 msgstr "Ni mogoče odpreti izbranega kanala."
 
-#: ../src/gui/call_window.cpp:1004
+#: ../src/gui/call_window.cpp:911
 msgid ""
 "Your driver doesn't seem to support any of the color formats supported by Ekiga.\n"
 " Please check your kernel driver documentation in order to determine which Palette is supported."
@@ -2497,84 +2497,92 @@ msgstr ""
 "Vaš gonilnik ne podpira nobenega barvnega zapisa, ki ga podpira Ekiga.\n"
 " V primeru, da želite ugotoviti, katera paleta je podprta, preglejte dokumentacijo gonilnika vašega jedra."
 
-#: ../src/gui/call_window.cpp:1008
+#: ../src/gui/call_window.cpp:915
 msgid "Error while setting the frame rate."
 msgstr "Napaka med nastavljanjem hitrosti sličic."
 
-#: ../src/gui/call_window.cpp:1012
+#: ../src/gui/call_window.cpp:919
 msgid "Error while setting the frame size."
 msgstr "Napaka med nastavljanjem velikosti sličic."
 
-#: ../src/gui/call_window.cpp:1017
-#: ../src/gui/call_window.cpp:1087
-#: ../src/gui/call_window.cpp:1168
+#: ../src/gui/call_window.cpp:924
+#: ../src/gui/call_window.cpp:994
+#: ../src/gui/call_window.cpp:1075
 msgid "Unknown error."
 msgstr "Neznana napaka."
 
-#: ../src/gui/call_window.cpp:1069
+#: ../src/gui/call_window.cpp:976
 #, c-format
 msgid "Error while opening audio input device %s"
 msgstr "Napaka med odpiranjem vhodne zvočne naprave %s"
 
 #. Translators: This happens when there is an error with audio input:
 #. * Nothing ("silence") will be transmitted
-#: ../src/gui/call_window.cpp:1074
+#: ../src/gui/call_window.cpp:981
 msgid "Only silence will be transmitted."
 msgstr "Oddana bo le tišina."
 
-#: ../src/gui/call_window.cpp:1078
+#: ../src/gui/call_window.cpp:985
 msgid "Unable to open the selected audio device for recording. In case it is a pluggable device it may be sufficient to reconnect it. If not, or if it still is not accessible, please check your audio setup, the permissions and that the device is not busy."
 msgstr "Ni mogoče odpreti izbrane zvočne naprave za snemanje. V primeru, da je napravo mogoče priklopiti od zunaj, je morda dovolj, da jo ponovno povežete.  V primeru, da do naprave še vedno ni mogoče uporabiti, preverite svoje zvočne nastavitve, dovoljenja in ali je naprava zaposlena."
 
-#: ../src/gui/call_window.cpp:1082
+#: ../src/gui/call_window.cpp:989
 msgid "The selected audio device was successfully opened but it is impossible to read data from this device. In case it is a pluggable device it may be sufficient to reconnect it. If not, or if it still is not accessible, please check your audio setup."
 msgstr "Izbrana zvočna naprava je bila uspešno odprta, vendar iz nje ni mogoče brati podatkov.  V primeru, da je napravo mogoče priklopiti od zunaj, je morda dovolj, da jo ponovno povežete. V primeru, da do naprave še vedno ni mogoče uporabiti, preverite svoje zvočne nastavitve."
 
-#: ../src/gui/call_window.cpp:1152
+#: ../src/gui/call_window.cpp:1059
 #, c-format
 msgid "Error while opening audio output device %s"
 msgstr "Napaka med odpiranjem zvočne naprave %s"
 
-#: ../src/gui/call_window.cpp:1155
+#: ../src/gui/call_window.cpp:1062
 msgid "No incoming sound will be played."
 msgstr "Prihajajoči zvoki ne bodo predvajani."
 
-#: ../src/gui/call_window.cpp:1159
+#: ../src/gui/call_window.cpp:1066
 msgid "Unable to open the selected audio device for playing. In case it is a pluggable device it may be sufficient to reconnect it. If not, or if it still is not accessible, please check your audio setup, the permissions and that the device is not busy."
 msgstr "Ni mogoče odpreti izbrane zvočne naprave za predvajanje. V primeru, da je napravo mogoče priklopiti od zunaj, je morda dovolj, da jo ponovno povežite. V primeru, da do naprave še vedno ni mogoče uporabiti, preverite svoje zvočne nastavitve, dovoljenja in ali je naprava zaposlena."
 
-#: ../src/gui/call_window.cpp:1163
+#: ../src/gui/call_window.cpp:1070
 msgid "The selected audio device was successfully opened but it is impossible to write data to this device. In case it is a pluggable device it may be sufficient to reconnect it. If not, or if it still is not accessible, please check your audio setup."
 msgstr "Izbrana zvočna naprava je bila uspešno odprta, vendar nanjo ni mogoče pisati podatkov. V primeru, da je napravo mogoče priklopiti od zunaj, je morda dovolj, da jo ponovno povežite. V primeru, da do naprave še vedno ni mogoče uporabiti, preverite svoje zvočne nastavitve."
 
 #. %s is the SIP/H.323 address of the remote user, this text is shown
 #. below video during a call
-#: ../src/gui/call_window.cpp:1191
-#: ../src/gui/main_window.cpp:668
+#: ../src/gui/call_window.cpp:1100
+#: ../src/gui/main_window.cpp:670
 #, c-format
 msgid "Connected with %s"
 msgstr "Povezan z %s"
 
-#: ../src/gui/call_window.cpp:1222
-#: ../src/gui/call_window.cpp:2404
+#: ../src/gui/call_window.cpp:1129
+#: ../src/gui/call_window.cpp:2347
 msgid "Standby"
 msgstr "V pripravljenosti"
 
+#: ../src/gui/call_window.cpp:1152
+msgid "Call on hold"
+msgstr "Klic na čakanju"
+
+#: ../src/gui/call_window.cpp:1163
+msgid "Call retrieved"
+msgstr "Klic prejet"
+
 #. Translators: TX is a common abbreviation for "transmit".  As it
 #. * is shown in a tooltip, there is no space constraint
-#: ../src/gui/call_window.cpp:1400
+#: ../src/gui/call_window.cpp:1424
 #, c-format
 msgid "TX: %dx%d "
 msgstr "TX: %dx%d "
 
 #. Translators: RX is a common abbreviation for "receive".  As it
 #. * is shown in a tooltip, there is no space constraint
-#: ../src/gui/call_window.cpp:1405
+#: ../src/gui/call_window.cpp:1429
 #, c-format
 msgid "RX: %dx%d "
 msgstr "RX: %dx%d "
 
-#: ../src/gui/call_window.cpp:1407
+#: ../src/gui/call_window.cpp:1431
 #, c-format
 msgid ""
 "Lost packets: %.1f %%\n"
@@ -2587,436 +2595,412 @@ msgstr ""
 "Pokvarjeni paketi: %.1f %%\n"
 "Medpomnilnik trepetanja: %d ms%s%s%s"
 
-#: ../src/gui/call_window.cpp:1534
+#: ../src/gui/call_window.cpp:1558
 #, c-format
 msgid "%s\n"
 msgstr "%s\n"
 
-#: ../src/gui/call_window.cpp:1570
+#: ../src/gui/call_window.cpp:1594
 #, c-format
 msgid "A:%.1f/%.1f   V:%.1f/%.1f   FPS:%d/%d\n"
 msgstr "A:%.1f/%.1f   V:%.1f/%.1f   FPS:%d/%d\n"
 
-#: ../src/gui/call_window.cpp:1658
-msgid "Video Settings"
-msgstr "Nastavitve videa"
+#: ../src/gui/call_window.cpp:1625
+msgid "_Retrieve Call"
+msgstr "P_ridobi klic"
 
-#: ../src/gui/call_window.cpp:1683
-msgid "Adjust brightness"
-msgstr "Prilagodi svetlost"
-
-#: ../src/gui/call_window.cpp:1702
-msgid "Adjust whiteness"
-msgstr "Prilagodi belino"
-
-#: ../src/gui/call_window.cpp:1721
-msgid "Adjust color"
-msgstr "Prilagodi barvo"
-
-#: ../src/gui/call_window.cpp:1740
-msgid "Adjust contrast"
-msgstr "Prilagodi kontrast"
-
-#: ../src/gui/call_window.cpp:1782
-msgid "Audio Settings"
-msgstr "Nastavitve zvoka"
-
-#: ../src/gui/call_window.cpp:1930
-msgid "Enter a URI on the left, and click this button to place a call or to hangup"
-msgstr "Vnesite URL na levi in kliknite ta gumb za klic ali za prekinitev klica"
-
-#: ../src/gui/call_window.cpp:2066
-#: ../src/gui/main_window.cpp:1666
-msgid "Transfer call to:"
-msgstr "Prenesi klic na:"
-
-#: ../src/gui/call_window.cpp:2218
-#: ../src/gui/main_window.cpp:1827
-msgid "_Chat"
-msgstr "_Klepet"
-
-#: ../src/gui/call_window.cpp:2220
-#: ../src/gui/main_window.cpp:1829
-msgid "Ca_ll"
-msgstr "K_liči"
-
-#: ../src/gui/call_window.cpp:2220
-#: ../src/gui/main_window.cpp:1829
-msgid "Place a new call"
-msgstr "Nov klic"
-
-#: ../src/gui/call_window.cpp:2224
-msgid "_Hangup"
-msgstr "_Končaj"
-
-#: ../src/gui/call_window.cpp:2224
-msgid "Hangup the current call"
-msgstr "Končaj trenutni klic"
-
-#: ../src/gui/call_window.cpp:2230
-#: ../src/gui/main_window.cpp:1381
-#: ../src/gui/main_window.cpp:1854
+#: ../src/gui/call_window.cpp:1638
+#: ../src/gui/call_window.cpp:1944
 msgid "H_old Call"
 msgstr "_Zadrži klic"
 
-#: ../src/gui/call_window.cpp:2230
-#: ../src/gui/call_window.cpp:2496
-#: ../src/gui/main_window.cpp:1854
-msgid "Hold the current call"
-msgstr "Zadrži trenutni klic"
-
-#: ../src/gui/call_window.cpp:2234
-#: ../src/gui/main_window.cpp:1858
-msgid "_Transfer Call"
-msgstr "_Prenesi klic"
-
-#: ../src/gui/call_window.cpp:2235
-#: ../src/gui/main_window.cpp:1859
-msgid "Transfer the current call"
-msgstr "Prenese trenutni klic"
-
-#: ../src/gui/call_window.cpp:2242
-#: ../src/gui/main_window.cpp:1414
-#: ../src/gui/main_window.cpp:1866
+#: ../src/gui/call_window.cpp:1669
+#: ../src/gui/call_window.cpp:1956
 msgid "Suspend _Audio"
 msgstr "Z_austavi zvok"
 
-#: ../src/gui/call_window.cpp:2243
-#: ../src/gui/main_window.cpp:1867
-msgid "Suspend or resume the audio transmission"
-msgstr "Zaustavi ali nadaljuje prenos zvoka"
-
-#: ../src/gui/call_window.cpp:2247
-#: ../src/gui/main_window.cpp:1416
-#: ../src/gui/main_window.cpp:1871
+#: ../src/gui/call_window.cpp:1671
+#: ../src/gui/call_window.cpp:1961
 msgid "Suspend _Video"
 msgstr "Zaustavi _video"
 
-#: ../src/gui/call_window.cpp:2248
-#: ../src/gui/main_window.cpp:1872
+#: ../src/gui/call_window.cpp:1673
+msgid "Resume _Audio"
+msgstr "N_adaljuj zvok"
+
+#: ../src/gui/call_window.cpp:1675
+msgid "Resume _Video"
+msgstr "Nadaljuj _video"
+
+#: ../src/gui/call_window.cpp:1709
+msgid "Video Settings"
+msgstr "Nastavitve videa"
+
+#: ../src/gui/call_window.cpp:1734
+msgid "Adjust brightness"
+msgstr "Prilagodi svetlost"
+
+#: ../src/gui/call_window.cpp:1753
+msgid "Adjust whiteness"
+msgstr "Prilagodi belino"
+
+#: ../src/gui/call_window.cpp:1772
+msgid "Adjust color"
+msgstr "Prilagodi barvo"
+
+#: ../src/gui/call_window.cpp:1791
+msgid "Adjust contrast"
+msgstr "Prilagodi kontrast"
+
+#: ../src/gui/call_window.cpp:1833
+msgid "Audio Settings"
+msgstr "Nastavitve zvoka"
+
+#: ../src/gui/call_window.cpp:1936
+msgid "_Call"
+msgstr "Po_kliči"
+
+#: ../src/gui/call_window.cpp:1938
+msgid "_Hangup"
+msgstr "_Končaj"
+
+#: ../src/gui/call_window.cpp:1938
+msgid "Hangup the current call"
+msgstr "Končaj trenutni klic"
+
+#: ../src/gui/call_window.cpp:1944
+#: ../src/gui/call_window.cpp:2459
+msgid "Hold the current call"
+msgstr "Zadrži trenutni klic"
+
+#: ../src/gui/call_window.cpp:1948
+msgid "_Transfer Call"
+msgstr "_Prenesi klic"
+
+#: ../src/gui/call_window.cpp:1949
+msgid "Transfer the current call"
+msgstr "Prenese trenutni klic"
+
+#: ../src/gui/call_window.cpp:1957
+msgid "Suspend or resume the audio transmission"
+msgstr "Zaustavi ali nadaljuje prenos zvoka"
+
+#: ../src/gui/call_window.cpp:1962
 msgid "Suspend or resume the video transmission"
 msgstr "Zaustavi ali nadaljuje prenos videa"
 
-#: ../src/gui/call_window.cpp:2255
-msgid "Close the call window"
-msgstr "Zapri okno pogovora"
-
-#: ../src/gui/call_window.cpp:2260
-#: ../src/gui/main_window.cpp:1922
+#: ../src/gui/call_window.cpp:1967
+#: ../src/gui/main_window.cpp:1651
 msgid "_View"
 msgstr "_Pogled"
 
-#: ../src/gui/call_window.cpp:2262
+#: ../src/gui/call_window.cpp:1969
 msgid "_Local Video"
 msgstr "_Krajevni video"
 
-#: ../src/gui/call_window.cpp:2263
+#: ../src/gui/call_window.cpp:1970
 msgid "Local video image"
 msgstr "Slika krajevnega videa"
 
-#: ../src/gui/call_window.cpp:2268
+#: ../src/gui/call_window.cpp:1975
 msgid "_Remote Video"
 msgstr "_Oddaljeni video"
 
-#: ../src/gui/call_window.cpp:2269
+#: ../src/gui/call_window.cpp:1976
 msgid "Remote video image"
 msgstr "Slika oddaljenega videa"
 
-#: ../src/gui/call_window.cpp:2274
+#: ../src/gui/call_window.cpp:1981
 msgid "_Picture-in-Picture"
 msgstr "_Slika v sliki"
 
-#: ../src/gui/call_window.cpp:2275
-#: ../src/gui/call_window.cpp:2281
+#: ../src/gui/call_window.cpp:1982
+#: ../src/gui/call_window.cpp:1988
 msgid "Both video images"
 msgstr "Obe sliki videa"
 
-#: ../src/gui/call_window.cpp:2280
+#: ../src/gui/call_window.cpp:1987
 msgid "Picture-in-Picture in Separate _Window"
 msgstr "Slika v sliki v _ločenem oknu"
 
-#: ../src/gui/call_window.cpp:2288
+#: ../src/gui/call_window.cpp:1995
 msgid "Zoom in"
 msgstr "Približaj"
 
-#: ../src/gui/call_window.cpp:2292
+#: ../src/gui/call_window.cpp:1999
 msgid "Zoom out"
 msgstr "Oddalji"
 
-#: ../src/gui/call_window.cpp:2296
+#: ../src/gui/call_window.cpp:2003
 msgid "Normal size"
 msgstr "Običajna velikost"
 
-#: ../src/gui/call_window.cpp:2300
+#: ../src/gui/call_window.cpp:2007
 msgid "_Fullscreen"
 msgstr "_Celozaslonski način"
 
-#: ../src/gui/call_window.cpp:2300
+#: ../src/gui/call_window.cpp:2007
 msgid "Switch to fullscreen"
 msgstr "Preklopi na celozaslonski način"
 
-#: ../src/gui/call_window.cpp:2433
+#: ../src/gui/call_window.cpp:2123
+msgid "Transfer call to:"
+msgstr "Prenesi klic na:"
+
+#: ../src/gui/call_window.cpp:2367
+msgid "Hang up the current call"
+msgstr "Končaj trenutni klic"
+
+#: ../src/gui/call_window.cpp:2396
 msgid "Change the volume of your soundcard"
 msgstr "Spreminjanje glasnosti zvočne kartice"
 
-#: ../src/gui/call_window.cpp:2454
+#: ../src/gui/call_window.cpp:2417
 msgid "Change the color settings of your video device"
 msgstr "Spreminjanje nastavitev barv na video napravi"
 
-#: ../src/gui/main_window.cpp:455
+#: ../src/gui/main_window.cpp:372
 msgid "Presence"
 msgstr "Prisotnost"
 
-#: ../src/gui/main_window.cpp:462
+#: ../src/gui/main_window.cpp:379
 msgid "Addressbook"
 msgstr "Imenik"
 
-#: ../src/gui/main_window.cpp:516
+#: ../src/gui/main_window.cpp:433
 msgid "Unknown"
 msgstr "Neznano"
 
-#: ../src/gui/main_window.cpp:741
-msgid "Call on hold"
-msgstr "Klic na čakanju"
-
-#: ../src/gui/main_window.cpp:752
-msgid "Call retrieved"
-msgstr "Klic prejet"
-
-#: ../src/gui/main_window.cpp:767
+#: ../src/gui/main_window.cpp:757
 #, c-format
 msgid "Missed call from %s"
 msgstr "Zgrešen klic od %s"
 
-#: ../src/gui/main_window.cpp:892
+#: ../src/gui/main_window.cpp:774
 msgid "Error"
 msgstr "Napaka"
 
 #. Translators: This is a hotplug status
-#: ../src/gui/main_window.cpp:916
+#: ../src/gui/main_window.cpp:797
 #, c-format
 msgid "Added video input device %s"
 msgstr "Dodana je bila naprava za zajem videa %s"
 
 #. Translators: This is a hotplug status
-#: ../src/gui/main_window.cpp:928
+#: ../src/gui/main_window.cpp:809
 #, c-format
 msgid "Removed video input device %s"
 msgstr "Odstranjena je bila naprava za zajem videa %s"
 
 #. Translators: This is a hotplug status
-#: ../src/gui/main_window.cpp:943
+#: ../src/gui/main_window.cpp:824
 #, c-format
 msgid "Added audio input device %s"
 msgstr "Dodana je bila naprava za zvočni vhod %s"
 
 #. Translators: This is a hotplug status
-#: ../src/gui/main_window.cpp:959
+#: ../src/gui/main_window.cpp:840
 #, c-format
 msgid "Removed audio input device %s"
 msgstr "Odstranjena je bila naprava za zvočni vhod %s"
 
-#: ../src/gui/main_window.cpp:977
+#: ../src/gui/main_window.cpp:858
 #, c-format
 msgid "Added audio output device %s"
 msgstr "Dodana je bila naprava za zvočni izhod %s"
 
-#: ../src/gui/main_window.cpp:995
+#: ../src/gui/main_window.cpp:876
 #, c-format
 msgid "Removed audio output device %s"
 msgstr "Odstranjena naprava za zvočni izhod %s"
 
-#: ../src/gui/main_window.cpp:1368
-msgid "_Retrieve Call"
-msgstr "P_ridobi klic"
-
-#: ../src/gui/main_window.cpp:1418
-msgid "Resume _Audio"
-msgstr "N_adaljuj zvok"
-
-#: ../src/gui/main_window.cpp:1420
-msgid "Resume _Video"
-msgstr "Nadaljuj _video"
-
-#: ../src/gui/main_window.cpp:1478
-#: ../src/gui/main_window.cpp:1620
+#: ../src/gui/main_window.cpp:1211
+#: ../src/gui/main_window.cpp:1365
 msgid "Reject"
 msgstr "Zavrni"
 
-#: ../src/gui/main_window.cpp:1480
-#: ../src/gui/main_window.cpp:1621
+#: ../src/gui/main_window.cpp:1213
+#: ../src/gui/main_window.cpp:1366
 msgid "Accept"
 msgstr "Sprejmi"
 
-#: ../src/gui/main_window.cpp:1486
+#: ../src/gui/main_window.cpp:1219
 msgid "Incoming call from"
 msgstr "Dohodni klic od"
 
-#: ../src/gui/main_window.cpp:1504
-#: ../src/gui/main_window.cpp:1604
+#: ../src/gui/main_window.cpp:1237
+#: ../src/gui/main_window.cpp:1349
 msgid "Remote URI:"
 msgstr "Oddaljen URI:"
 
-#: ../src/gui/main_window.cpp:1516
-#: ../src/gui/main_window.cpp:1606
+#: ../src/gui/main_window.cpp:1249
+#: ../src/gui/main_window.cpp:1351
 msgid "Remote Application:"
 msgstr "Oddaljen program:"
 
-#: ../src/gui/main_window.cpp:1524
+#: ../src/gui/main_window.cpp:1257
 #, c-format
 msgid "Call from %s"
 msgstr "Klic od %s"
 
-#: ../src/gui/main_window.cpp:1716
+#: ../src/gui/main_window.cpp:1411
 msgid "No"
 msgstr "Ne"
 
-#: ../src/gui/main_window.cpp:1718
+#: ../src/gui/main_window.cpp:1413
 msgid "Yes"
 msgstr "Da"
 
-#: ../src/gui/main_window.cpp:1729
+#: ../src/gui/main_window.cpp:1424
 msgid "Detected new audio input device:"
 msgstr "Zaznaj napravo za vhod zvoka:"
 
-#: ../src/gui/main_window.cpp:1733
+#: ../src/gui/main_window.cpp:1428
 msgid "Detected new audio output device:"
 msgstr "Zaznaj napravo za izhod zvoka:"
 
-#: ../src/gui/main_window.cpp:1737
+#: ../src/gui/main_window.cpp:1432
 msgid "Detected new ringer device:"
 msgstr "Zaznana je bila nova naprava zvonenja:"
 
-#: ../src/gui/main_window.cpp:1741
+#: ../src/gui/main_window.cpp:1436
 msgid "Detected new video input device:"
 msgstr "Zaznaj napravo za zajem videa:"
 
-#: ../src/gui/main_window.cpp:1742
+#: ../src/gui/main_window.cpp:1437
 #: ../src/gui/preferences.cpp:880
 msgid "Video Devices"
 msgstr "Video naprave"
 
-#: ../src/gui/main_window.cpp:1760
+#: ../src/gui/main_window.cpp:1455
 msgid "Do you want to use it as default device?"
 msgstr "Ali jo želite uporabljati kot privzeto napravo?"
 
-#: ../src/gui/main_window.cpp:1835
+#: ../src/gui/main_window.cpp:1546
+msgid "Enter a URI on the left, and click this button to place a call or to hangup"
+msgstr "Vnesite URL na levi in kliknite ta gumb za klic ali za končanje klica"
+
+#: ../src/gui/main_window.cpp:1581
+msgid "_Chat"
+msgstr "_Klepet"
+
+#: ../src/gui/main_window.cpp:1583
+msgid "Ca_ll"
+msgstr "K_liči"
+
+#: ../src/gui/main_window.cpp:1583
+msgid "Place a new call"
+msgstr "Nov klic"
+
+#: ../src/gui/main_window.cpp:1589
 msgid "Co_ntact"
 msgstr "_Stik"
 
-#: ../src/gui/main_window.cpp:1836
+#: ../src/gui/main_window.cpp:1590
 msgid "Act on selected contact"
 msgstr "Odziv na izbrani stik"
 
-#: ../src/gui/main_window.cpp:1842
+#: ../src/gui/main_window.cpp:1596
 msgid "A_dd Contact"
 msgstr "_Dodaj stik"
 
-#: ../src/gui/main_window.cpp:1842
+#: ../src/gui/main_window.cpp:1596
 msgid "Add a contact to the roster"
 msgstr "Dodaj stik v osebni seznam"
 
-#: ../src/gui/main_window.cpp:1847
+#: ../src/gui/main_window.cpp:1601
 msgid "Find contacts"
 msgstr "Poišči stike"
 
 #. FIXME: that isn't a very good way to do things
-#: ../src/gui/main_window.cpp:1881
+#: ../src/gui/main_window.cpp:1610
 msgid "Other"
 msgstr "Drugo"
 
-#: ../src/gui/main_window.cpp:1882
+#: ../src/gui/main_window.cpp:1611
 msgid "Other possible actions"
 msgstr "Druga mogoča dejanja"
 
-#: ../src/gui/main_window.cpp:1889
+#: ../src/gui/main_window.cpp:1618
 msgid "Close the Ekiga window"
 msgstr "Zapre okno programa"
 
-#: ../src/gui/main_window.cpp:1896
+#: ../src/gui/main_window.cpp:1625
 #: ../src/gui/statusicon.cpp:465
 msgid "Quit"
 msgstr "Končaj"
 
-#: ../src/gui/main_window.cpp:1902
+#: ../src/gui/main_window.cpp:1631
 msgid "_Configuration Assistant"
 msgstr "_Pomočnik za nastavitve"
 
-#: ../src/gui/main_window.cpp:1903
+#: ../src/gui/main_window.cpp:1632
 msgid "Run the configuration assistant"
 msgstr "Zažene pomočnik za nastavitve"
 
-#: ../src/gui/main_window.cpp:1911
+#: ../src/gui/main_window.cpp:1640
 msgid "Edit your accounts"
 msgstr "Urejanje vaših računov"
 
-#: ../src/gui/main_window.cpp:1917
+#: ../src/gui/main_window.cpp:1646
 msgid "Change your preferences"
 msgstr "Spremenite svoje nastavitve"
 
-#: ../src/gui/main_window.cpp:1924
+#: ../src/gui/main_window.cpp:1653
 msgid "Con_tacts"
 msgstr "S_tiki"
 
-#: ../src/gui/main_window.cpp:1924
+#: ../src/gui/main_window.cpp:1653
 msgid "View the contacts list"
 msgstr "Ogled seznama stikov"
 
-#: ../src/gui/main_window.cpp:1929
+#: ../src/gui/main_window.cpp:1658
 msgid "_Dialpad"
 msgstr "Š_tevilčnica"
 
-#: ../src/gui/main_window.cpp:1929
+#: ../src/gui/main_window.cpp:1658
 msgid "View the dialpad"
 msgstr "Pokaži številčnico"
 
-#: ../src/gui/main_window.cpp:1934
+#: ../src/gui/main_window.cpp:1663
 msgid "_Call History"
 msgstr "_Zgodovina klicev"
 
-#: ../src/gui/main_window.cpp:1934
+#: ../src/gui/main_window.cpp:1663
 msgid "View the call history"
 msgstr "Ogled zgodovine klicev"
 
-#: ../src/gui/main_window.cpp:1942
-msgid "Call Window"
-msgstr "Okno pogovora"
-
-#: ../src/gui/main_window.cpp:1943
-msgid "Show the call window"
-msgstr "Pokaži okno pogovora"
-
-#: ../src/gui/main_window.cpp:1951
+#: ../src/gui/main_window.cpp:1672
 #: ../src/gui/statusicon.cpp:453
 msgid "Get help by reading the Ekiga manual"
 msgstr "Dobite pomoč z branjem priročnika Ekige"
 
-#: ../src/gui/main_window.cpp:1956
+#: ../src/gui/main_window.cpp:1677
 #: ../src/gui/statusicon.cpp:458
 msgid "View information about Ekiga"
 msgstr "Ogled podatkov o programu"
 
-#: ../src/gui/main_window.cpp:2006
+#: ../src/gui/main_window.cpp:1727
 msgid "Contacts"
 msgstr "Stiki"
 
-#: ../src/gui/main_window.cpp:2029
+#: ../src/gui/main_window.cpp:1756
 msgid "Dialpad"
 msgstr "Številčnica"
 
-#: ../src/gui/main_window.cpp:2047
+#: ../src/gui/main_window.cpp:1774
 msgid "Call history"
 msgstr "Zgodovina klicev"
 
-#: ../src/gui/main_window.cpp:2058
+#: ../src/gui/main_window.cpp:1785
 msgid "Ekiga"
 msgstr "Ekiga"
 
-#: ../src/gui/main_window.cpp:2505
+#: ../src/gui/main_window.cpp:2209
 msgid "Prints debug messages in the console (level between 1 and 8)"
 msgstr "Izpiše sporočila razhroščevanja  v konzoli (raven med 1 in 5)"
 
-#: ../src/gui/main_window.cpp:2510
+#: ../src/gui/main_window.cpp:2214
 msgid "Makes Ekiga call the given URI"
 msgstr "Ekigi ukaže klic danega URI-ja"
 
@@ -3394,6 +3378,15 @@ msgstr "Izbriši sporočila po meri:"
 #: ../src/gui/statusmenu.cpp:690
 msgid "Define a custom message:"
 msgstr "Določi sporočilo po meri:"
+
+#~ msgid "Close the call window"
+#~ msgstr "Zapri okno pogovora"
+
+#~ msgid "Call Window"
+#~ msgstr "Okno pogovora"
+
+#~ msgid "Show the call window"
+#~ msgstr "Pokaži okno pogovora"
 
 #~ msgid "Terminate the current call"
 #~ msgstr "Konča trenutni klic"
