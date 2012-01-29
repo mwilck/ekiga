@@ -1935,7 +1935,7 @@ ekiga_call_window_init_menu (EkigaCallWindow *cw)
 
       GTK_MENU_ENTRY("disconnect", _("_Hangup"), _("Hangup the current call"),
 		     GM_STOCK_PHONE_HANG_UP_16, 'd',
-		     G_CALLBACK (show_window_cb), NULL, FALSE), // FIXME
+		     G_CALLBACK (hangup_call_cb), NULL, FALSE),
 
       GTK_MENU_SEPARATOR,
 
@@ -2259,7 +2259,7 @@ ekiga_call_window_init_gui (EkigaCallWindow *cw)
 {
   GtkWidget *event_box = NULL;
   GtkWidget *vbox = NULL;
-  GtkWidget *call_button = NULL;
+  GtkWidget *button = NULL;
   GtkWidget *frame = NULL;
 
   GtkToolItem *item = NULL;
@@ -2353,17 +2353,17 @@ ekiga_call_window_init_gui (EkigaCallWindow *cw)
 
   /* Hangup */
   item = gtk_tool_item_new ();
-  call_button = gtk_button_new ();
+  button = gtk_button_new ();
   image = gtk_image_new_from_stock (GM_STOCK_PHONE_HANG_UP_24, GTK_ICON_SIZE_LARGE_TOOLBAR);
-  gtk_container_add (GTK_CONTAINER (call_button), image);
-  gtk_container_add (GTK_CONTAINER (item), call_button);
-  gtk_button_set_relief (GTK_BUTTON (call_button), GTK_RELIEF_NONE);
-  gtk_widget_show (call_button);
+  gtk_container_add (GTK_CONTAINER (button), image);
+  gtk_container_add (GTK_CONTAINER (item), button);
+  gtk_button_set_relief (GTK_BUTTON (button), GTK_RELIEF_NONE);
+  gtk_widget_show (button);
   gtk_toolbar_insert (GTK_TOOLBAR (cw->priv->call_panel_toolbar),
 		      GTK_TOOL_ITEM (item), -1);
   gtk_tool_item_set_tooltip_text (GTK_TOOL_ITEM (item),
 				  _("Hang up the current call"));
-  g_signal_connect (call_button, "clicked",
+  g_signal_connect (button, "clicked",
 		    G_CALLBACK (hangup_call_cb), cw);
 
   /* Separator */
