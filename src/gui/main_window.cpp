@@ -216,6 +216,9 @@ static void place_call_cb (GtkWidget * /*widget*/,
 static void url_changed_cb (GtkEditable *e,
                             gpointer data);
 
+static void show_dialpad_cb (GtkWidget *widget,
+                             gpointer data);
+
 static void show_window_cb (GtkWidget *widget,
 			    gpointer data);
 
@@ -573,6 +576,15 @@ url_changed_cb (GtkEditable *e,
   }
 
   gtk_widget_set_tooltip_text (GTK_WIDGET (e), tip_text);
+}
+
+static void
+show_dialpad_cb (G_GNUC_UNUSED GtkWidget *widget,
+                 gpointer data)
+{
+  EkigaMainWindow *mw = EKIGA_MAIN_WINDOW (data);
+
+  gtk_notebook_set_current_page (GTK_NOTEBOOK (mw->priv->main_notebook), 1);
 }
 
 static void
@@ -1046,9 +1058,9 @@ on_chat_unread_alert (G_GNUC_UNUSED GtkWidget* widget,
 }
 
 
-static void 
-panel_section_changed_nt (G_GNUC_UNUSED gpointer id, 
-                          GmConfEntry *entry, 
+static void
+panel_section_changed_nt (G_GNUC_UNUSED gpointer id,
+                          GmConfEntry *entry,
                           gpointer data)
 {
   gint section = 0;
@@ -1576,10 +1588,9 @@ ekiga_main_window_init_menu (EkigaMainWindow *mw)
     {
       GTK_MENU_NEW (_("_Chat")),
 
-      // FIXME
       GTK_MENU_ENTRY("connect", _("Ca_ll"), _("Place a new call"),
 		     GM_STOCK_PHONE_PICK_UP_16, 'o',
-		     G_CALLBACK (show_window_cb), call_window, TRUE),
+		     G_CALLBACK (show_dialpad_cb), mw, TRUE),
 
       GTK_MENU_SEPARATOR,
 
@@ -1830,7 +1841,7 @@ ekiga_main_window_init_gui (EkigaMainWindow *mw)
 
   /* Show the current panel section */
   PanelSection section = (PanelSection)
-               gm_conf_get_int (USER_INTERFACE_KEY "main_window/panel_section");
+    gm_conf_get_int (USER_INTERFACE_KEY "main_window/panel_section");
   gtk_widget_show (mw->priv->hpaned);
   gtk_widget_show_all (gtk_paned_get_child1 (GTK_PANED (mw->priv->hpaned)));
   gtk_notebook_set_current_page (GTK_NOTEBOOK (mw->priv->main_notebook), section);
