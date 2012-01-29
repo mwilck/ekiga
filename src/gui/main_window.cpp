@@ -684,6 +684,7 @@ static void on_cleared_call_cb (boost::shared_ptr<Ekiga::CallManager>  /*manager
                                 gpointer self)
 {
   EkigaMainWindow *mw = EKIGA_MAIN_WINDOW (self);
+  GtkWidget *call_window = NULL;
 
   /* Info message */
   ekiga_main_window_flash_message (mw, "%s", reason.c_str ());
@@ -692,12 +693,17 @@ static void on_cleared_call_cb (boost::shared_ptr<Ekiga::CallManager>  /*manager
   boost::shared_ptr<Ekiga::AudioOutputCore> audiooutput_core = mw->priv->core->get<Ekiga::AudioOutputCore> ("audiooutput-core");
   audiooutput_core->stop_play_event("incoming_call_sound");
   audiooutput_core->stop_play_event("ring_tone_sound");
+
+  /* Hide call window */
+  call_window = GnomeMeeting::Process ()->GetCallWindow ();
+  gtk_widget_hide_all (call_window);
 }
 
 static void on_cleared_incoming_call_cb (std::string /*reason*/,
                                          gpointer self)
 {
   EkigaMainWindow *mw = EKIGA_MAIN_WINDOW (GnomeMeeting::Process ()->GetMainWindow ());
+  GtkWidget *call_window = NULL;
 
   boost::shared_ptr<Ekiga::AudioOutputCore> audiooutput_core = mw->priv->core->get<Ekiga::AudioOutputCore> ("audiooutput-core");
   audiooutput_core->stop_play_event("incoming_call_sound");
@@ -711,6 +717,10 @@ static void on_cleared_incoming_call_cb (std::string /*reason*/,
 #else
   gtk_widget_destroy (GTK_WIDGET (self));
 #endif
+
+  /* Hide call window */
+  call_window = GnomeMeeting::Process ()->GetCallWindow ();
+  gtk_widget_hide_all (call_window);
 }
 
 
@@ -1566,6 +1576,7 @@ ekiga_main_window_init_menu (EkigaMainWindow *mw)
     {
       GTK_MENU_NEW (_("_Chat")),
 
+      // FIXME
       GTK_MENU_ENTRY("connect", _("Ca_ll"), _("Place a new call"),
 		     GM_STOCK_PHONE_PICK_UP_16, 'o',
 		     G_CALLBACK (show_window_cb), call_window, TRUE),
@@ -1651,14 +1662,6 @@ ekiga_main_window_init_menu (EkigaMainWindow *mw)
 			   G_CALLBACK (radio_menu_changed_cb),
 			   (gpointer) USER_INTERFACE_KEY "main_window/panel_section",
 			   (cps == CALL), TRUE),
-
-      GTK_MENU_SEPARATOR,
-
-      GTK_MENU_ENTRY("callwindow", _("Call Window"),
-                     _("Show the call window"),
-                     NULL, 'J',
-                     G_CALLBACK (show_window_cb),
-                     (gpointer) call_window, TRUE),
 
       GTK_MENU_NEW(_("_Help")),
 
