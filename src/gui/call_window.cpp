@@ -2351,6 +2351,26 @@ ekiga_call_window_init_gui (EkigaCallWindow *cw)
   gtk_container_add (GTK_CONTAINER (alignment), cw->priv->info_text);
   gtk_box_pack_start (GTK_BOX (vbox), GTK_WIDGET (alignment), FALSE, FALSE, 0);
 
+  /* Hangup */
+  item = gtk_tool_item_new ();
+  call_button = gtk_button_new ();
+  image = gtk_image_new_from_stock (GM_STOCK_PHONE_HANG_UP_24, GTK_ICON_SIZE_LARGE_TOOLBAR);
+  gtk_container_add (GTK_CONTAINER (call_button), image);
+  gtk_container_add (GTK_CONTAINER (item), call_button);
+  gtk_button_set_relief (GTK_BUTTON (call_button), GTK_RELIEF_NONE);
+  gtk_widget_show (call_button);
+  gtk_toolbar_insert (GTK_TOOLBAR (cw->priv->call_panel_toolbar),
+		      GTK_TOOL_ITEM (item), -1);
+  gtk_tool_item_set_tooltip_text (GTK_TOOL_ITEM (item),
+				  _("Hang up the current call"));
+  g_signal_connect (call_button, "clicked",
+		    G_CALLBACK (hangup_call_cb), cw);
+
+  /* Separator */
+  item = gtk_separator_tool_item_new ();
+  gtk_toolbar_insert (GTK_TOOLBAR (cw->priv->call_panel_toolbar),
+		      GTK_TOOL_ITEM (item), -1);
+
   /* Audio Volume */
   boost::shared_ptr<Ekiga::AudioOutputCore> audiooutput_core = cw->priv->core->get<Ekiga::AudioOutputCore> ("audiooutput-core");
   std::vector <Ekiga::AudioOutputDevice> devices;
@@ -2439,21 +2459,6 @@ ekiga_call_window_init_gui (EkigaCallWindow *cw)
 
   g_signal_connect (cw->priv->hold_button, "clicked",
 		    G_CALLBACK (hold_current_call_cb), cw);
-
-  /* Hangup */
-  item = gtk_tool_item_new ();
-  call_button = gtk_button_new ();
-  image = gtk_image_new_from_stock (GM_STOCK_PHONE_HANG_UP_24, GTK_ICON_SIZE_LARGE_TOOLBAR);
-  gtk_container_add (GTK_CONTAINER (call_button), image);
-  gtk_container_add (GTK_CONTAINER (item), call_button);
-  gtk_button_set_relief (GTK_BUTTON (call_button), GTK_RELIEF_NONE);
-  gtk_widget_show (call_button);
-  gtk_toolbar_insert (GTK_TOOLBAR (cw->priv->call_panel_toolbar),
-		      GTK_TOOL_ITEM (item), -1);
-  gtk_tool_item_set_tooltip_text (GTK_TOOL_ITEM (item),
-				  _("Hang up the current call"));
-  g_signal_connect (call_button, "clicked",
-		    G_CALLBACK (hangup_call_cb), cw);
 
   /* The statusbar */
   cw->priv->statusbar = gm_statusbar_new ();
