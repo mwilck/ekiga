@@ -43,6 +43,8 @@
 
 #include <map>
 
+struct gstreamer_worker;
+
 namespace GST
 {
   class AudioOutputManager: public Ekiga::AudioOutputManager
@@ -93,7 +95,7 @@ namespace GST
      * the actual device */
     std::map<std::pair<std::string, std::string>, std::string> devices_by_name;
 
-    GstElement* pipeline[2];
+    gstreamer_worker* worker[2];
   };
 };
 

@@ -35,34 +35,109 @@
  *
  */
 
-#include <glib/gi18n.h>
+#include <string.h>
 
-#include "gst-audiooutput.h"
+#include <glib/gi18n.h>
 
 #include <gst/interfaces/propertyprobe.h>
 #include <gst/app/gstappsrc.h>
 #include <gst/app/gstappbuffer.h>
 
-#include <string.h>
+#include "runtime.h"
 
-static gboolean
-pipeline_cleaner (GstBus* /*bus*/,
-		  GstMessage* message,
-		  gpointer pipeline)
+#include "gst-audiooutput.h"
+
+struct gstreamer_worker
 {
-  bool result = TRUE;
+  GstElement* pipeline;
+  GstElement* volume;
+  GstElement* src;
+};
 
-  if (GST_MESSAGE_TYPE (message) == GST_MESSAGE_EOS
-      && GST_MESSAGE_SRC (message) == GST_OBJECT_CAST (pipeline)) {
+static void
+gstreamer_worker_setup (gstreamer_worker* self,
+			const gchar* command)
+{
+  g_message ("%s\t%s\n", __PRETTY_FUNCTION__, command);
+  self->pipeline = gst_parse_launch (command, NULL);
+  (void)gst_element_set_state (self->pipeline, GST_STATE_PLAYING);
+  self->volume = gst_bin_get_by_name (GST_BIN (self->pipeline), "ekiga_volume");
+  self->src = gst_bin_get_by_name (GST_BIN (self->pipeline), "ekiga_src");
+}
 
-    result = FALSE;
-    gst_element_set_state (GST_ELEMENT (pipeline), GST_STATE_NULL);
-    g_object_unref (pipeline);
-  }
+static void
+gstreamer_worker_destroy (gstreamer_worker* self)
+{
+  g_object_unref (self->src);
+  self->src = NULL;
+  if (self->volume)
+    g_object_unref (self->volume);
+  self->volume = NULL;
+  g_object_unref (self->pipeline);
+  self->pipeline = NULL;
+  g_free (self);
+}
+
+static void
+gstreamer_worker_close (gstreamer_worker* self)
+{
+  g_message ("%s\n", __PRETTY_FUNCTION__);
+  if (self->src)
+    gst_app_src_end_of_stream (GST_APP_SRC (self->src));
+  Ekiga::Runtime::run_in_main (boost::bind(&gstreamer_worker_destroy, self), 1);
+}
+
+static void
+gstreamer_worker_set_volume (gstreamer_worker* self,
+			     gfloat valf)
+{
+  g_message ("%s\t%f\n", __PRETTY_FUNCTION__, valf);
+  if (self->volume)
+    g_object_set (G_OBJECT (self->volume),
+		  "volume", valf,
+		  NULL);
+}
+
+static gfloat
+gstreamer_worker_get_volume (gstreamer_worker* self)
+{
+  gfloat result = -1;
+  if (self->volume)
+    g_object_get (G_OBJECT (self->volume),
+		  "volume", &result,
+		  NULL);
 
   return result;
 }
 
+static void
+gstreamer_worker_set_buffer_size (gstreamer_worker* self,
+				  unsigned size)
+{
+  g_message ("%s\t%d\n", __PRETTY_FUNCTION__, size);
+  if (self->src)
+    g_object_set (G_OBJECT (self->src),
+		  "blocksize", size,
+		  NULL);
+}
+
+static void
+gstreamer_worker_set_frame_data (gstreamer_worker* self,
+				 const char* data,
+				 unsigned size)
+{
+  gchar* tmp = NULL;
+  GstBuffer* buffer = NULL;
+
+  if (self->src) {
+
+    tmp = (gchar*)g_malloc0 (size);
+    memcpy (tmp, data, size);
+    buffer = gst_app_buffer_new (tmp, size,
+				 (GstAppBufferFinalizeFunc)g_free, tmp);
+    gst_app_src_push_buffer (GST_APP_SRC (self->src), buffer);
+  }
+}
 
 GST::AudioOutputManager::AudioOutputManager ():
   already_detected_devices(false)
@@ -117,11 +192,11 @@ GST::AudioOutputManager::open (Ekiga::AudioOutputPS ps,
 			       unsigned samplerate,
 			       unsigned bits_per_sample)
 {
-  bool result = false;
+  g_message ("%s\n", __PRETTY_FUNCTION__);
   unsigned ii = (ps == Ekiga::primary)?0:1;
   gchar* command = NULL;
-  GError* error = NULL;
-  GstState current;
+
+  worker[ii] = g_new0 (gstreamer_worker, 1);
 
   if ( !already_detected_devices)
     detect_devices ();
@@ -133,96 +208,42 @@ GST::AudioOutputManager::open (Ekiga::AudioOutputPS ps,
 			     ",width=%d"
 			     ",depth=%d"
 			     ",signed=true,endianness=1234"
-			     " ! %s",
+			     " ! audiorate ! %s",
 			     samplerate, channels, bits_per_sample, bits_per_sample,
 			     devices_by_name[std::pair<std::string,std::string>(current_state[ii].device.source, current_state[ii].device.name)].c_str ());
-  //g_print ("Pipeline: %s\n", command);
-  pipeline[ii] = gst_parse_launch (command, &error);
-
-  if (error == NULL) {
-
-    (void)gst_element_set_state (pipeline[ii], GST_STATE_PLAYING);
-
-    // this will make us wait so we can return the right value...
-    (void)gst_element_get_state (pipeline[ii],
-				 &current,
-				 NULL,
-				 GST_SECOND);
-
-    if ( !(current == GST_STATE_PLAYING
-	   || current == GST_STATE_PAUSED)) {
-
-      gst_element_set_state (pipeline[ii], GST_STATE_NULL);
-      gst_object_unref (GST_OBJECT (pipeline[ii]));
-      pipeline[ii] = NULL;
-      result = false;
-    } else {
-
-      Ekiga::AudioOutputSettings settings;
-      GstElement* volume = NULL;
-      gfloat val;
-
-      volume = gst_bin_get_by_name (GST_BIN (pipeline[ii]), "ekiga_volume");
-      if (volume != NULL) {
-
-	g_object_get (G_OBJECT (volume),
-		      "volume", &val,
-		      NULL);
-	settings.volume = (unsigned)(255*val);
-	settings.modifyable = true;
-	g_object_unref (volume);
-      } else {
-
-	settings.modifyable = false;
-      }
-      current_state[ii].channels = channels;
-      current_state[ii].samplerate = samplerate;
-      current_state[ii].bits_per_sample = bits_per_sample;
-      device_opened (ps, current_state[ii].device, settings);
-      result = true;
-    }
-
-  } else {
-
-    g_error_free (error);
-    result = false;
-  }
-
+  gstreamer_worker_setup (worker[ii], command);
   g_free (command);
 
-  current_state[ii].opened = result;
+  Ekiga::AudioOutputSettings settings;
+  gfloat vol = gstreamer_worker_get_volume (worker[ii]);
+  if (vol >= 0) {
 
-//   std::cout << __PRETTY_FUNCTION__
-// 	    << " result=";
-//   if (result)
-//     std::cout << "TRUE";
-//   else
-//     std::cout << "FALSE";
-//   std::cout << std::endl;
+    settings.volume = (unsigned)(255*vol);
+    settings.modifyable = true;
+  } else {
 
-  return result;
+    settings.modifyable = false;
+  }
+  current_state[ii].channels = channels;
+  current_state[ii].samplerate = samplerate;
+  current_state[ii].bits_per_sample = bits_per_sample;
+  current_state[ii].opened = true;
+  device_opened (ps, current_state[ii].device, settings);
+
+  return true;
 }
 
 void
 GST::AudioOutputManager::close (Ekiga::AudioOutputPS ps)
 {
+  g_message ("%s\n", __PRETTY_FUNCTION__);
   unsigned ii = (ps == Ekiga::primary)?0:1;
-  if (pipeline[ii] != NULL) {
 
-    GstElement* src = gst_bin_get_by_name (GST_BIN (pipeline[ii]), "ekiga_src");
-
-    if (src != NULL) {
-
-      gst_app_src_end_of_stream (GST_APP_SRC (src));
-      GstBus* bus = gst_pipeline_get_bus (GST_PIPELINE (pipeline[ii]));
-      gst_bus_add_watch (bus, pipeline_cleaner, pipeline[ii]);
-      gst_object_unref (bus);
-      gst_element_set_state (pipeline[ii], GST_STATE_NULL);
-      pipeline[ii] = NULL;
-      device_closed (ps, current_state[ii].device);
-    }
-  }
+  if (worker[ii])
+      gstreamer_worker_close (worker[ii]);
+  device_closed (ps, current_state[ii].device);
   current_state[ii].opened = false;
+  worker[ii] = NULL;
 }
 
 void
@@ -231,17 +252,7 @@ GST::AudioOutputManager::set_buffer_size (Ekiga::AudioOutputPS ps,
 					  unsigned /*num_buffers*/)
 {
   unsigned ii = (ps == Ekiga::primary)?0:1;
-  GstElement* src = NULL;
-
-  src = gst_bin_get_by_name (GST_BIN (pipeline[ii]), "ekiga_src");
-
-  if (src != NULL) {
-
-    g_object_set (G_OBJECT (src),
-		  "blocksize", buffer_size,
-		  NULL);
-    g_object_unref (src);
-  }
+  gstreamer_worker_set_buffer_size (worker[ii], buffer_size);
 }
 
 bool
@@ -250,30 +261,20 @@ GST::AudioOutputManager::set_frame_data (Ekiga::AudioOutputPS ps,
 					 unsigned size,
 					 unsigned& written)
 {
-  bool result = false;
+  bool result;
   unsigned ii = (ps == Ekiga::primary)?0:1;
-  gchar* tmp = NULL;
-  GstBuffer* buffer = NULL;
-  GstElement* src = NULL;
 
-  written = 0;
+  if (worker[ii]) {
 
-  g_return_val_if_fail (GST_IS_BIN (pipeline[ii]), false);
-
-  src = gst_bin_get_by_name (GST_BIN (pipeline[ii]), "ekiga_src");
-
-  if (src != NULL) {
-
-    tmp = (gchar*)g_malloc0 (size);
-    memcpy (tmp, data, size);
-    buffer = gst_app_buffer_new (tmp, size,
-				 (GstAppBufferFinalizeFunc)g_free, tmp);
-    gst_app_src_push_buffer (GST_APP_SRC (src), buffer);
+    gstreamer_worker_set_frame_data (worker[ii], data, size);
     written = size;
     result = true;
-    g_object_unref (src);
-  }
+  } else {
 
+    // we're closed already!
+    written = 0;
+    result = false;
+  }
   return result;
 }
 
@@ -282,19 +283,8 @@ GST::AudioOutputManager::set_volume (Ekiga::AudioOutputPS ps,
 				     unsigned valu)
 {
   unsigned ii = (ps == Ekiga::primary)?0:1;
-  GstElement* volume = NULL;
-  gfloat valf;
 
-  valf = valu / 255.0;
-
-  volume = gst_bin_get_by_name (GST_BIN (pipeline[ii]), "ekiga_volume");
-  if (volume != NULL) {
-
-    g_object_set (G_OBJECT (volume),
-		  "volume", valf,
-		  NULL);
-    g_object_unref (volume);
-  }
+  gstreamer_worker_set_volume (worker[ii], valu / 255.0);
 }
 
 bool
