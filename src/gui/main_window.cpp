@@ -139,9 +139,6 @@ struct _EkigaMainWindowPrivate
   GtkWidget *statusbar;
   GtkWidget *statusbar_ebox;
 
-  /* Misc Dialogs */
-  GtkWidget *transfer_call_popup;
-
   /* Calls */
   boost::shared_ptr<Ekiga::Call> current_call;
   unsigned calling_state;
@@ -174,6 +171,7 @@ enum {
 
 /* Non-GUI functions */
 
+//FIXME Does not seem to be used anymore
 struct name_from_uri_helper
 {
   name_from_uri_helper (boost::shared_ptr<Ekiga::PresenceCore> presence_core_,
@@ -271,39 +269,6 @@ static void  show_widget_cb (GtkWidget * /*widget*/,
                              gpointer data);
 
 
-/* DESCRIPTION  :  /
- * BEHAVIOR     :  Set the current active call on hold.
- * PRE          :  /
- */
-static void hold_current_call_cb (GtkWidget *,
-				  gpointer);
-
-
-/* DESCRIPTION  :  /
- * BEHAVIOR     :  Set the current active call audio channel on pause or not
- * PRE          :  a pointer to the main window
- */
-static void toggle_audio_stream_pause_cb (GtkWidget *,
-                                          gpointer);
-
-
-/* DESCRIPTION  :  /
- * BEHAVIOR     :  Set the current active call video channel on pause or not
- * PRE          :  a pointer to the main window
- */
-static void toggle_video_stream_pause_cb (GtkWidget *,
-                                          gpointer);
-
-
-/* DESCRIPTION  :  /
- * BEHAVIOR     :  Creates a dialog to transfer the current call and transfer
- * 		   it if required.
- * PRE          :  The parent window.
- */
-static void transfer_current_call_cb (GtkWidget *,
-				      gpointer);
-
-
 /* DESCRIPTION  :  This callback is called when the user changes the
  *                 page in the main notebook.
  * BEHAVIOR     :  Update the config key accordingly.
@@ -369,27 +334,6 @@ static void ekiga_main_window_add_device_dialog_show (EkigaMainWindow *main_wind
 
 
 /* DESCRIPTION  :  /
- * BEHAVIOR     :  Update the main window hold call menu and toolbar items
- * 		   following the call is on hold (TRUE) or not (FALSE).
- * PRE          :  The main window GMObject.
- */
-static void ekiga_main_window_set_call_hold (EkigaMainWindow *main_window,
-                                             bool is_on_hold);
-
-
-/* DESCRIPTION  :  /
- * BEHAVIOR     :  Update the main window pause channel menu and toolbar items
- * 		   following the channel is paused (TRUE) or not (FALSE). The
- * 		   last argument is true if we are modifying a video channel
- * 		   item.
- * PRE          :  The main window GMObject.
- */
-static void ekiga_main_window_set_channel_pause (EkigaMainWindow *main_window,
-					  gboolean pause,
-					  gboolean is_video);
-
-
-/* DESCRIPTION  :  /
  * BEHAVIOR     :  Update the main window sensitivity following the opened
  *                 and closed audio and video channels. It also updates
  *                 the state of the video preview button.
@@ -404,17 +348,6 @@ static void ekiga_main_window_update_sensitivity (EkigaMainWindow *main_window,
 					   bool is_video,
 					   bool is_receiving,
 					   bool is_transmitting);
-
-
-/* DESCRIPTION  :  /
- * BEHAVIOR     :  Runs a dialog to transfer a call.
- * 		   Returns TRUE if the user chose to transfer.
- * PRE          :  The main window GMObject, the parent window, the URL
- * 		   to put in the dialog as default.
- */
-static gboolean ekiga_main_window_transfer_dialog_run (EkigaMainWindow *main_window,
-					        GtkWidget *parent_window,
-					        const char *u);
 
 
 /* DESCRIPTION   :  /
@@ -731,28 +664,6 @@ static void on_incoming_call_gone_cb (gpointer self)
 }
 
 
-static void on_held_call_cb (boost::shared_ptr<Ekiga::CallManager>  /*manager*/,
-                             boost::shared_ptr<Ekiga::Call>  /*call*/,
-                             gpointer self)
-{
-  EkigaMainWindow *mw = EKIGA_MAIN_WINDOW (self);
-
-  ekiga_main_window_set_call_hold (mw, true);
-  ekiga_main_window_flash_message (mw, "%s", _("Call on hold"));
-}
-
-
-static void on_retrieved_call_cb (boost::shared_ptr<Ekiga::CallManager>  /*manager*/,
-                                  boost::shared_ptr<Ekiga::Call>  /*call*/,
-                                  gpointer self)
-{
-  EkigaMainWindow *mw = EKIGA_MAIN_WINDOW (self);
-
-  ekiga_main_window_set_call_hold (mw, false);
-  ekiga_main_window_flash_message (mw, "%s", _("Call retrieved"));
-}
-
-
 static void on_missed_call_cb (boost::shared_ptr<Ekiga::CallManager>  /*manager*/,
                                boost::shared_ptr<Ekiga::Call>  call,
                                gpointer self)
@@ -857,27 +768,6 @@ static void on_stream_closed_cb (boost::shared_ptr<Ekiga::CallManager>  /*manage
                                         is_video ? mw->priv->video_reception_active : mw->priv->audio_reception_active,
                                         is_video ? mw->priv->video_transmission_active : mw->priv->audio_transmission_active);
 }
-
-
-static void on_stream_paused_cb (boost::shared_ptr<Ekiga::CallManager>  /*manager*/,
-                                 boost::shared_ptr<Ekiga::Call>  /*call*/,
-                                 std::string /*name*/,
-                                 Ekiga::Call::StreamType type,
-                                 gpointer self)
-{
-  ekiga_main_window_set_channel_pause (EKIGA_MAIN_WINDOW (self), true, (type == Ekiga::Call::Video));
-}
-
-
-static void on_stream_resumed_cb (boost::shared_ptr<Ekiga::CallManager>  /*manager*/,
-                                  boost::shared_ptr<Ekiga::Call>  /*call*/,
-                                  std::string /*name*/,
-                                  Ekiga::Call::StreamType type,
-                                  gpointer self)
-{
-  ekiga_main_window_set_channel_pause (EKIGA_MAIN_WINDOW (self), false, (type == Ekiga::Call::Video));
-}
-
 
 static bool on_handle_errors (std::string error,
                               gpointer data)
@@ -1204,7 +1094,7 @@ panel_section_changed_nt (G_GNUC_UNUSED gpointer id,
 }
 
 
-static void 
+static void
 pull_trigger_cb (GtkWidget * /*widget*/,
                  gpointer data)
 {
@@ -1216,7 +1106,7 @@ pull_trigger_cb (GtkWidget * /*widget*/,
 }
 
 
-static void 
+static void
 show_widget_cb (GtkWidget * /*widget*/,
                 gpointer data)
 {
@@ -1225,52 +1115,6 @@ show_widget_cb (GtkWidget * /*widget*/,
   gtk_widget_show_all (GTK_WIDGET (data));
 }
 
-
-static void 
-hold_current_call_cb (G_GNUC_UNUSED GtkWidget *widget,
-		      gpointer data)
-{
-  EkigaMainWindow *mw = EKIGA_MAIN_WINDOW (data);
-
-  if (mw->priv->current_call)
-    mw->priv->current_call->toggle_hold ();
-}
-
-
-static void
-toggle_audio_stream_pause_cb (GtkWidget * /*widget*/,
-                              gpointer data)
-{
-  EkigaMainWindow *mw = EKIGA_MAIN_WINDOW (data);
-
-  if (mw->priv->current_call)
-    mw->priv->current_call->toggle_stream_pause (Ekiga::Call::Audio);
-}
-
-
-static void
-toggle_video_stream_pause_cb (GtkWidget * /*widget*/,
-                              gpointer data)
-{
-  EkigaMainWindow *mw = EKIGA_MAIN_WINDOW (data);
-
-  if (mw->priv->current_call)
-    mw->priv->current_call->toggle_stream_pause (Ekiga::Call::Video);
-}
-
-
-static void 
-transfer_current_call_cb (G_GNUC_UNUSED GtkWidget *widget,
-			  gpointer data)
-{
-  GtkWidget *mw = NULL;
-
-  g_return_if_fail (data != NULL);
-
-  mw = GnomeMeeting::Process ()->GetMainWindow ();
-
-  ekiga_main_window_transfer_dialog_run (EKIGA_MAIN_WINDOW (mw), GTK_WIDGET (data), NULL);  
-}
 
 static void
 panel_section_changed_cb (G_GNUC_UNUSED GtkNotebook *notebook,
@@ -1349,82 +1193,6 @@ statusbar_clicked_cb (G_GNUC_UNUSED GtkWidget *widget,
   ekiga_main_window_push_message (EKIGA_MAIN_WINDOW (data), NULL);
 
   return FALSE;
-}
-
-static void
-ekiga_main_window_set_call_hold (EkigaMainWindow *mw,
-                                 bool is_on_hold)
-{
-  GtkWidget *child = NULL;
-
-  g_return_if_fail (EKIGA_IS_MAIN_WINDOW (mw));
-
-  child = GTK_BIN (gtk_menu_get_widget (mw->priv->main_menu, "hold_call"))->child;
-
-  if (is_on_hold) {
-
-    if (GTK_IS_LABEL (child))
-      gtk_label_set_text_with_mnemonic (GTK_LABEL (child),
-					_("_Retrieve Call"));
-
-    /* Set the audio and video menu to unsensitive */
-    gtk_menu_set_sensitive (mw->priv->main_menu, "suspend_audio", FALSE);
-    gtk_menu_set_sensitive (mw->priv->main_menu, "suspend_video", FALSE);
-
-    ekiga_main_window_set_channel_pause (mw, TRUE, FALSE);
-    ekiga_main_window_set_channel_pause (mw, TRUE, TRUE);
-  }
-  else {
-
-    if (GTK_IS_LABEL (child))
-      gtk_label_set_text_with_mnemonic (GTK_LABEL (child),
-					_("H_old Call"));
-
-    gtk_menu_set_sensitive (mw->priv->main_menu, "suspend_audio", TRUE);
-    gtk_menu_set_sensitive (mw->priv->main_menu, "suspend_video", TRUE);
-
-    ekiga_main_window_set_channel_pause (mw, FALSE, FALSE);
-    ekiga_main_window_set_channel_pause (mw, FALSE, TRUE);
-  }
-
-/*  g_signal_handlers_block_by_func (mw->priv->hold_button,
-                                   (gpointer) hold_current_call_cb,
-                                   mw);
-  gtk_toggle_button_set_active (GTK_TOGGLE_BUTTON (mw->priv->hold_button),
-                                is_on_hold);
-  g_signal_handlers_unblock_by_func (mw->priv->hold_button,
-                                     (gpointer) hold_current_call_cb,
-                                     mw);
-                                     */ //FIXME
-}
-
-
-static void
-ekiga_main_window_set_channel_pause (EkigaMainWindow *mw,
-				     gboolean pause,
-				     gboolean is_video)
-{
-  GtkWidget *widget = NULL;
-  GtkWidget *child = NULL;
-  gchar *msg = NULL;
-
-  g_return_if_fail (EKIGA_IS_MAIN_WINDOW (mw));
-
-  if (!pause && !is_video)
-    msg = _("Suspend _Audio");
-  else if (!pause && is_video)
-    msg = _("Suspend _Video");
-  else if (pause && !is_video)
-    msg = _("Resume _Audio");
-  else if (pause && is_video)
-    msg = _("Resume _Video");
-
-  widget = gtk_menu_get_widget (mw->priv->main_menu,
-			        is_video ? "suspend_video" : "suspend_audio");
-  child = GTK_BIN (widget)->child;
-
-  if (GTK_IS_LABEL (child))
-    gtk_label_set_text_with_mnemonic (GTK_LABEL (child), msg);
 }
 
 
@@ -1650,56 +1418,6 @@ ekiga_main_window_incoming_call_notify (EkigaMainWindow *mw,
 }
 #endif
 
-static gboolean
-ekiga_main_window_transfer_dialog_run (EkigaMainWindow *mw,
-				       GtkWidget *parent_window,
-				       const char *u)
-{
-  gint answer = 0;
-
-  const char *forward_url = NULL;
-
-  g_return_val_if_fail (EKIGA_IS_MAIN_WINDOW (mw), FALSE);
-  g_return_val_if_fail (GTK_IS_WINDOW (parent_window), FALSE);
-
-  mw->priv->transfer_call_popup =
-    gm_entry_dialog_new (_("Transfer call to:"),
-			 _("Transfer"));
-
-  gtk_window_set_transient_for (GTK_WINDOW (mw->priv->transfer_call_popup),
-				GTK_WINDOW (parent_window));
-
-  gtk_dialog_set_default_response (GTK_DIALOG (mw->priv->transfer_call_popup),
-				   GTK_RESPONSE_ACCEPT);
-
-  if (u && !strcmp (u, ""))
-    gm_entry_dialog_set_text (GM_ENTRY_DIALOG (mw->priv->transfer_call_popup), u);
-  else
-    gm_entry_dialog_set_text (GM_ENTRY_DIALOG (mw->priv->transfer_call_popup), "sip:");
-
-  gm_window_show (mw->priv->transfer_call_popup);
-
-  answer = gtk_dialog_run (GTK_DIALOG (mw->priv->transfer_call_popup));
-  switch (answer) {
-
-  case GTK_RESPONSE_ACCEPT:
-
-    forward_url = gm_entry_dialog_get_text (GM_ENTRY_DIALOG (mw->priv->transfer_call_popup));
-    if (strcmp (forward_url, "") && mw->priv->current_call)
-      mw->priv->current_call->transfer (forward_url);
-    break;
-
-  default:
-    break;
-  }
-
-  gtk_widget_destroy (mw->priv->transfer_call_popup);
-  mw->priv->transfer_call_popup = NULL;
-
-  return (answer == GTK_RESPONSE_ACCEPT);
-}
-
-
 static void
 ekiga_main_window_add_device_dialog_show (EkigaMainWindow *mw,
                                           const Ekiga::Device & device,
@@ -1848,31 +1566,6 @@ ekiga_main_window_init_menu (EkigaMainWindow *mw)
  			   GM_ICON_ADDRESSBOOK, 'b',
 			   G_CALLBACK (show_widget_cb),
 			   (gpointer) addressbook_window, TRUE),
-
-      GTK_MENU_SEPARATOR,
-
-      GTK_MENU_ENTRY("hold_call", _("H_old Call"), _("Hold the current call"),
-		     NULL, GDK_h,
-		     G_CALLBACK (hold_current_call_cb), mw,
-		     FALSE),
-      GTK_MENU_ENTRY("transfer_call", _("_Transfer Call"),
-		     _("Transfer the current call"),
- 		     NULL, GDK_t,
-		     G_CALLBACK (transfer_current_call_cb), mw,
-		     FALSE),
-
-      GTK_MENU_SEPARATOR,
-
-      GTK_MENU_ENTRY("suspend_audio", _("Suspend _Audio"),
-		     _("Suspend or resume the audio transmission"),
-		     NULL, GDK_m,
-		     G_CALLBACK (toggle_audio_stream_pause_cb),
-		     mw, FALSE),
-      GTK_MENU_ENTRY("suspend_video", _("Suspend _Video"),
-		     _("Suspend or resume the video transmission"),
-		     NULL, GDK_p,
-		     G_CALLBACK (toggle_video_stream_pause_cb),
-		     mw, FALSE),
 
       GTK_MENU_SEPARATOR,
 
@@ -2122,7 +1815,6 @@ ekiga_main_window_init (EkigaMainWindow *mw)
   gtk_window_add_accel_group (GTK_WINDOW (mw), mw->priv->accel);
   g_object_unref (mw->priv->accel);
 
-  mw->priv->transfer_call_popup = NULL;
   mw->priv->current_call = boost::shared_ptr<Ekiga::Call>();
   mw->priv->calling_state = Standby;
   mw->priv->audio_transmission_active = false;
@@ -2325,12 +2017,6 @@ ekiga_main_window_connect_engine_signals (EkigaMainWindow *mw)
   conn = call_core->cleared_call.connect (boost::bind (&on_cleared_call_cb, _1, _2, _3, (gpointer) mw));
   mw->priv->connections.push_back (conn);
   
-  conn = call_core->held_call.connect (boost::bind (&on_held_call_cb, _1, _2, (gpointer) mw));
-  mw->priv->connections.push_back (conn);
-  
-  conn = call_core->retrieved_call.connect (boost::bind (&on_retrieved_call_cb, _1, _2, (gpointer) mw));
-  mw->priv->connections.push_back (conn);
-  
   conn = call_core->missed_call.connect (boost::bind (&on_missed_call_cb, _1, _2, (gpointer) mw));
   mw->priv->connections.push_back (conn);
 
@@ -2338,12 +2024,6 @@ ekiga_main_window_connect_engine_signals (EkigaMainWindow *mw)
   mw->priv->connections.push_back (conn);
   
   conn = call_core->stream_closed.connect (boost::bind (&on_stream_closed_cb, _1, _2, _3, _4, _5, (gpointer) mw));
-  mw->priv->connections.push_back (conn);
-
-  conn = call_core->stream_paused.connect (boost::bind (&on_stream_paused_cb, _1, _2, _3, _4, (gpointer) mw));
-  mw->priv->connections.push_back (conn);
-
-  conn = call_core->stream_resumed.connect (boost::bind (&on_stream_resumed_cb, _1, _2, _3, _4, (gpointer) mw));
   mw->priv->connections.push_back (conn);
 
   conn = call_core->errors.connect (boost::bind (&on_handle_errors, _1, (gpointer) mw));
