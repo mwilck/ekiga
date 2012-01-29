@@ -2171,8 +2171,6 @@ ekiga_call_window_init_menu (EkigaCallWindow *cw)
 		     G_CALLBACK (toggle_video_stream_pause_cb),
 		     cw, FALSE),
 
-      GTK_MENU_SEPARATOR,
-
       GTK_MENU_NEW(_("_View")),
 
       GTK_MENU_RADIO_ENTRY("local_video", _("_Local Video"),
