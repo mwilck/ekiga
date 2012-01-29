@@ -620,6 +620,7 @@ static void on_setup_call_cb (boost::shared_ptr<Ekiga::CallManager> manager,
                               gpointer self)
 {
   EkigaMainWindow *mw = EKIGA_MAIN_WINDOW (self);
+  GtkWidget *call_window = NULL;
   boost::shared_ptr<Ekiga::AudioOutputCore> audiooutput_core = mw->priv->core->get<Ekiga::AudioOutputCore> ("audiooutput-core");
 
   if (!call->is_outgoing () && !manager->get_auto_answer ()) {
@@ -635,6 +636,11 @@ static void on_setup_call_cb (boost::shared_ptr<Ekiga::CallManager> manager,
     mw->priv->current_call = call;
   }
   else {
+
+    /* Show call window */
+    call_window = GnomeMeeting::Process ()->GetCallWindow ();
+    gtk_widget_show_all (call_window);
+
     mw->priv->current_call = call;
   }
 }
