@@ -122,6 +122,11 @@ struct _EkigaMainWindowPrivate
   GtkWidget *main_notebook;
   GtkWidget *hpaned;
 
+  /* Dialpad uri toolbar */
+  GtkWidget *uri_toolbar;
+  GtkWidget *entry;
+  GtkListStore *completion;
+
   /* notebook pages
    *  (we store the numbers so we know where we are)
    */
@@ -201,24 +206,27 @@ private:
 static void on_some_core_updated (EkigaMainWindow* self);
 
 /* GUI Functions */
+static bool account_completion_helper_cb (Ekiga::AccountPtr acc,
+                                          const gchar* text,
+                                          EkigaMainWindow* mw);
 
-/* DESCRIPTION  : /
- * BEHAVIOR     : Shows a window
- * PRE          : The given data pointer should be a GMWindow (Gobject based)
- */
+static void place_call_cb (GtkWidget * /*widget*/,
+                           gpointer data);
+
+static void url_changed_cb (GtkEditable *e,
+                            gpointer data);
+
 static void show_window_cb (GtkWidget *widget,
 			    gpointer data);
 
-/* DESCRIPTION  : /
- * BEHAVIOR     : Shows a window
- * PRE          : The given data pointer should be a GMWindow (non Gobject)
- */
 static void show_gm_window_cb (GtkWidget *widget,
                                gpointer data);
 
 
 static void ekiga_main_window_incoming_call_dialog_show (EkigaMainWindow *mw,
                                                       boost::shared_ptr<Ekiga::Call>  call);
+
+static const std::string ekiga_main_window_get_call_url (EkigaMainWindow *mw);
 
 #ifdef HAVE_NOTIFY
 static void ekiga_main_window_incoming_call_notify (EkigaMainWindow *mw,
@@ -319,6 +327,7 @@ static gboolean statusbar_clicked_cb (GtkWidget *,
 				      GdkEventButton *,
 				      gpointer);
 
+static void ekiga_main_window_init_uri_toolbar (EkigaMainWindow *mw);
 
 static void ekiga_main_window_add_device_dialog_show (EkigaMainWindow *main_window,
                                                       const Ekiga::Device & device,
@@ -485,8 +494,87 @@ name_from_uri_helper::on_visit_presentities (Ekiga::PresentityPtr presentity,
 }
 
 /*
- * Engine Callbacks
+ * Callbacks
  */
+static bool
+account_completion_helper_cb (Ekiga::AccountPtr acc,
+                              const gchar* text,
+                              EkigaMainWindow* mw)
+{
+  Opal::AccountPtr account = boost::dynamic_pointer_cast<Opal::Account>(acc);
+  if (account && account->is_enabled ()) {
+
+    if (g_ascii_strncasecmp (text, "sip:", 4) == 0 && account->get_protocol_name () == "SIP") {
+
+      GtkTreeIter iter;
+      gchar* entry = NULL;
+
+      entry = g_strdup_printf ("%s@%s", text, account->get_host ().c_str ());
+      gtk_list_store_append (mw->priv->completion, &iter);
+      gtk_list_store_set (mw->priv->completion, &iter, 0, entry, -1);
+      g_free (entry);
+    }
+  }
+  return true;
+}
+
+static void
+place_call_cb (GtkWidget * /*widget*/,
+               gpointer data)
+{
+  std::string uri;
+  EkigaMainWindow *mw = NULL;
+
+  g_return_if_fail (EKIGA_IS_MAIN_WINDOW (data));
+
+  mw = EKIGA_MAIN_WINDOW (data);
+
+  if (mw->priv->calling_state == Standby) {
+
+    size_t pos;
+
+    // Check for empty uri
+    uri = ekiga_main_window_get_call_url (mw);
+    pos = uri.find (":");
+    if (pos != std::string::npos)
+      if (uri.substr (++pos).empty ())
+        return;
+
+    boost::shared_ptr<Ekiga::CallCore> call_core = mw->priv->core->get<Ekiga::CallCore> ("call-core");
+
+    // Remove appended spaces
+    pos = uri.find_first_of (' ');
+    if (pos != std::string::npos)
+      uri = uri.substr (0, pos);
+
+    // Dial
+    if (!call_core->dial (uri)) {
+
+      gm_statusbar_flash_message (GM_STATUSBAR (mw->priv->statusbar), _("Could not connect to remote host"));
+    }
+  }
+}
+
+static void
+url_changed_cb (GtkEditable *e,
+		gpointer data)
+{
+  EkigaMainWindow *mw = EKIGA_MAIN_WINDOW (data);
+  const char *tip_text = NULL;
+
+  tip_text = gtk_entry_get_text (GTK_ENTRY (e));
+
+  if (g_strrstr (tip_text, "@") == NULL) {
+    boost::shared_ptr<Opal::Bank> bank = mw->priv->core->get<Opal::Bank> ("opal-account-store");
+    if (bank) {
+      gtk_list_store_clear (mw->priv->completion);
+      bank->visit_accounts (boost::bind (&account_completion_helper_cb, _1, tip_text, mw));
+    }
+  }
+
+  gtk_widget_set_tooltip_text (GTK_WIDGET (e), tip_text);
+}
+
 static void
 show_window_cb (G_GNUC_UNUSED GtkWidget *widget,
 		gpointer data)
@@ -1196,9 +1284,8 @@ notify_action_cb (NotifyNotification *notification,
   }
 }
 
-
 static void
-closed_cb (NotifyNotification* /*notify*/, 
+closed_cb (NotifyNotification* /*notify*/,
            gpointer main_window)
 {
   EkigaMainWindow *mw;
@@ -1208,8 +1295,21 @@ closed_cb (NotifyNotification* /*notify*/,
   mw = EKIGA_MAIN_WINDOW (main_window);
 
   boost::shared_ptr<Ekiga::AudioOutputCore> audiooutput_core = mw->priv->core->get<Ekiga::AudioOutputCore> ("audiooutput-core");
-  if (audiooutput_core) 
+  if (audiooutput_core)
     audiooutput_core->stop_play_event ("incoming_call_sound");
+}
+
+static const std::string
+ekiga_main_window_get_call_url (EkigaMainWindow *mw)
+{
+  g_return_val_if_fail (EKIGA_IS_MAIN_WINDOW (mw), NULL);
+
+  const gchar* entry_text = gtk_entry_get_text (GTK_ENTRY (mw->priv->entry));
+
+  if (entry_text != NULL)
+    return entry_text;
+  else
+    return "";
 }
 
 static void
@@ -1328,7 +1428,7 @@ ekiga_main_window_add_device_dialog_show (EkigaMainWindow *mw,
   gtk_box_pack_start (GTK_BOX (vbox), label, FALSE, FALSE, 2);
   gtk_misc_set_alignment (GTK_MISC (label), 0.0, 0.0);
   gtk_label_set_line_wrap (GTK_LABEL (label), TRUE);
-  
+
   msg  = "<b>" + device.GetString() + "</b>";
   label = gtk_label_new (NULL);
   gtk_label_set_markup (GTK_LABEL (label), msg.c_str());
@@ -1352,27 +1452,88 @@ ekiga_main_window_add_device_dialog_show (EkigaMainWindow *mw,
 
   gtk_widget_show_all (add_device_popup);
 
-
-//  g_signal_connect (add_device_popup, "delete_event",
-//                    G_CALLBACK (gtk_widget_hide_on_delete), NULL);
-//  g_signal_connect (add_device_popup, "response",
-//                    G_CALLBACK (add_device_response_cb), &device);
-
   deviceStruct* device_struct = g_new(deviceStruct, 1);
   snprintf (device_struct->name, sizeof (device_struct->name), "%s", (device.GetString()).c_str());
   device_struct->deviceType = device_type;
 
   g_signal_connect_data (add_device_popup, "delete_event",
-                         G_CALLBACK (gtk_widget_hide_on_delete), 
+                         G_CALLBACK (gtk_widget_hide_on_delete),
                          (gpointer) device_struct,
                          (GClosureNotify) g_free,
                          (GConnectFlags) 0);
 
   g_signal_connect_data (add_device_popup, "response",
-                         G_CALLBACK (add_device_response_cb), 
+                         G_CALLBACK (add_device_response_cb),
                          (gpointer) device_struct,
                          (GClosureNotify) g_free,
                          (GConnectFlags) 0);
+}
+
+static void
+ekiga_main_window_init_uri_toolbar (EkigaMainWindow *mw)
+{
+  GtkWidget *call_button = NULL;
+  GtkWidget *image = NULL;
+  GtkToolItem *item = NULL;
+  GtkEntryCompletion *completion = NULL;
+
+  g_return_if_fail (EKIGA_IS_MAIN_WINDOW (mw));
+
+  /* The call horizontal toolbar */
+  mw->priv->uri_toolbar = gtk_toolbar_new ();
+  gtk_toolbar_set_style (GTK_TOOLBAR (mw->priv->uri_toolbar), GTK_TOOLBAR_ICONS);
+  gtk_toolbar_set_show_arrow (GTK_TOOLBAR (mw->priv->uri_toolbar), FALSE);
+
+  /* URL bar */
+  /* Entry */
+  item = gtk_tool_item_new ();
+  mw->priv->entry = gtk_entry_new ();
+  mw->priv->completion = gtk_list_store_new (1, G_TYPE_STRING);
+  completion = gtk_entry_completion_new ();
+  gtk_entry_completion_set_model (GTK_ENTRY_COMPLETION (completion), GTK_TREE_MODEL (mw->priv->completion));
+  gtk_entry_set_completion (GTK_ENTRY (mw->priv->entry), completion);
+  gtk_entry_set_text (GTK_ENTRY (mw->priv->entry), "sip:");
+  gtk_entry_completion_set_inline_completion (GTK_ENTRY_COMPLETION (completion), false);
+  gtk_entry_completion_set_popup_completion (GTK_ENTRY_COMPLETION (completion), true);
+  gtk_entry_completion_set_text_column (GTK_ENTRY_COMPLETION (completion), 0);
+
+  gtk_container_add (GTK_CONTAINER (item), mw->priv->entry);
+  gtk_container_set_border_width (GTK_CONTAINER (item), 0);
+  gtk_tool_item_set_expand (GTK_TOOL_ITEM (item), true);
+
+  // activate Ctrl-L to get the entry focus
+  gtk_widget_add_accelerator (mw->priv->entry, "grab-focus",
+			      mw->priv->accel, GDK_L,
+			      (GdkModifierType) GDK_CONTROL_MASK,
+			      (GtkAccelFlags) 0);
+
+  gtk_editable_set_position (GTK_EDITABLE (mw->priv->entry), -1);
+
+  g_signal_connect (mw->priv->entry, "changed",
+		    G_CALLBACK (url_changed_cb), mw);
+  g_signal_connect (mw->priv->entry, "activate",
+		    G_CALLBACK (place_call_cb), mw);
+
+  gtk_toolbar_insert (GTK_TOOLBAR (mw->priv->uri_toolbar), item, 0);
+
+  /* The call button */
+  item = gtk_tool_item_new ();
+  call_button = gtk_button_new ();
+  image = gtk_image_new_from_stock (GM_STOCK_PHONE_PICK_UP_24, GTK_ICON_SIZE_LARGE_TOOLBAR);
+  gtk_button_set_image (GTK_BUTTON (call_button), image);
+  gtk_button_set_relief (GTK_BUTTON (call_button), GTK_RELIEF_NONE);
+  gtk_container_add (GTK_CONTAINER (item), call_button);
+  gtk_container_set_border_width (GTK_CONTAINER (call_button), 0);
+  gtk_tool_item_set_expand (GTK_TOOL_ITEM (item), FALSE);
+
+  gtk_widget_set_tooltip_text (GTK_WIDGET (call_button),
+			       _("Enter a URI on the left, and click this button to place a call or to hangup"));
+
+  gtk_toolbar_insert (GTK_TOOLBAR (mw->priv->uri_toolbar), item, -1);
+
+  g_signal_connect (call_button, "clicked",
+                    G_CALLBACK (place_call_cb),
+                    mw);
 }
 
 static void
@@ -1566,22 +1727,28 @@ ekiga_main_window_init_contact_list (EkigaMainWindow *mw)
 }
 
 
-static void 
+static void
 ekiga_main_window_init_dialpad (EkigaMainWindow *mw)
 {
   GtkWidget *dialpad = NULL;
   GtkWidget *alignment = NULL;
   GtkWidget *label = NULL;
+  GtkWidget *vbox = NULL;
 
+  vbox = gtk_vbox_new (false, 0);
   dialpad = ekiga_dialpad_new (mw->priv->accel);
   g_signal_connect (dialpad, "button-clicked",
                     G_CALLBACK (dialpad_button_clicked_cb), mw);
 
   alignment = gtk_alignment_new (0.5, 0.5, 0.2, 0.2);
   gtk_container_add (GTK_CONTAINER (alignment), dialpad);
+  gtk_box_pack_start (GTK_BOX (vbox), alignment, true, true, 0);
+
+  ekiga_main_window_init_uri_toolbar (mw);
+  gtk_box_pack_start (GTK_BOX (vbox), mw->priv->uri_toolbar, false, false, 0);
 
   label = gtk_label_new (_("Dialpad"));
-  mw->priv->dialpad_page_number = gtk_notebook_append_page (GTK_NOTEBOOK (mw->priv->main_notebook), alignment, label);
+  mw->priv->dialpad_page_number = gtk_notebook_append_page (GTK_NOTEBOOK (mw->priv->main_notebook), vbox, label);
 
   g_signal_connect (mw, "key-press-event",
                     G_CALLBACK (key_press_event_cb), mw);
@@ -1595,7 +1762,7 @@ ekiga_main_window_init_history (EkigaMainWindow *mw)
 
   boost::shared_ptr<History::Source> history_source = mw->priv->core->get<History::Source> ("call-history-store");
   boost::shared_ptr<History::Book> history_book = history_source->get_book ();
-  
+
   mw->priv->call_history_view = call_history_view_gtk_new (history_book);
 
   label = gtk_label_new (_("Call history"));

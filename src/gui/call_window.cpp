@@ -129,7 +129,6 @@ struct _EkigaCallWindowPrivate
   GtkTextTag *bandwidth_tag;
 
   GtkWidget *main_menu;
-  GtkWidget *main_toolbar;
   GtkWidget *call_panel_toolbar;
   GtkWidget *preview_button;
   GtkWidget *hold_button;
@@ -200,11 +199,6 @@ struct _EkigaCallWindowPrivate
    */
   bool changing_back_to_local_after_a_call;
 
-  GtkWidget *entry;
-  GtkListStore *completion;
-  GtkWidget *call_button;
-  gboolean ekiga_call_window_call_button_connected;
-
   GtkWidget *transfer_call_popup;
 
   std::vector<boost::signals::connection> connections;
@@ -224,9 +218,6 @@ enum {
   CHANNEL_LAST
 };
 
-static bool account_completion_helper (Ekiga::AccountPtr acc,
-                                       const gchar* text,
-                                       EkigaCallWindow* cw);
 
 static void zoom_in_changed_cb (GtkWidget *widget,
                                 gpointer data);
@@ -247,17 +238,8 @@ static void stay_on_top_changed_nt (gpointer id,
                                     GmConfEntry *entry,
                                     gpointer data);
 
-static void url_changed_cb (GtkEditable *e,
-                            gpointer data);
-
 static void toolbar_toggle_button_changed_cb (GtkWidget *widget,
                                               gpointer data);
-
-static void place_call_cb (GtkWidget * /*widget*/,
-                           gpointer data);
-
-static void toggle_call_cb (GtkWidget *widget,
-                            gpointer data);
 
 static void hangup_call_cb (GtkWidget * /*widget*/,
                             gpointer data);
@@ -458,30 +440,15 @@ static void ekiga_call_window_set_channel_pause (EkigaCallWindow *cw,
                                                  gboolean pause,
                                                  gboolean is_video);
 
-static void ekiga_call_window_set_call_url (EkigaCallWindow *cw,
-                                            const char *url);
-
-G_GNUC_UNUSED static void ekiga_call_window_append_call_url (EkigaCallWindow *cw,
-                                                             const char *url);
-
-static const std::string ekiga_call_window_get_call_url (EkigaCallWindow *cw);
-
 static void ekiga_call_window_init_menu (EkigaCallWindow *cw);
-
-static void ekiga_call_window_init_uri_toolbar (EkigaCallWindow *cw);
 
 static GtkWidget * gm_cw_audio_settings_window_new (EkigaCallWindow *cw);
 
 static GtkWidget *gm_cw_video_settings_window_new (EkigaCallWindow *cw);
 
-static GtkWidget* ekiga_call_window_call_button_new (EkigaCallWindow *cw);
-
 static void ekiga_call_window_update_logo (EkigaCallWindow *cw);
 
 static void ekiga_call_window_toggle_fullscreen (Ekiga::VideoOutputFSToggle toggle);
-
-static void ekiga_call_window_call_button_set_connected (EkigaCallWindow *cw,
-                                                         gboolean state);
 
 static void ekiga_call_window_zooms_menu_update_sensitivity (EkigaCallWindow *cw,
                                                              unsigned int zoom);
@@ -516,27 +483,6 @@ stay_on_top_changed_nt (G_GNUC_UNUSED gpointer id,
   }
 }
 
-static bool
-account_completion_helper (Ekiga::AccountPtr acc,
-			   const gchar* text,
-			   EkigaCallWindow* cw)
-{
-  Opal::AccountPtr account = boost::dynamic_pointer_cast<Opal::Account>(acc);
-  if (account && account->is_enabled ()) {
-
-    if (g_ascii_strncasecmp (text, "sip:", 4) == 0 && account->get_protocol_name () == "SIP") {
-
-      GtkTreeIter iter;
-      gchar* entry = NULL;
-
-      entry = g_strdup_printf ("%s@%s", text, account->get_host ().c_str ());
-      gtk_list_store_append (cw->priv->completion, &iter);
-      gtk_list_store_set (cw->priv->completion, &iter, 0, entry, -1);
-      g_free (entry);
-    }
-  }
-  return true;
-}
 
 static void
 zoom_in_changed_cb (G_GNUC_UNUSED GtkWidget *widget,
@@ -640,95 +586,12 @@ fullscreen_changed_cb (G_GNUC_UNUSED GtkWidget *widget,
 }
 
 static void
-url_changed_cb (GtkEditable *e,
-		gpointer data)
-{
-  EkigaCallWindow *cw = EKIGA_CALL_WINDOW (data);
-  const char *tip_text = NULL;
-
-  tip_text = gtk_entry_get_text (GTK_ENTRY (e));
-
-  if (g_strrstr (tip_text, "@") == NULL) {
-    boost::shared_ptr<Opal::Bank> bank = cw->priv->core->get<Opal::Bank> ("opal-account-store");
-    if (bank) {
-      gtk_list_store_clear (cw->priv->completion);
-      bank->visit_accounts (boost::bind (&account_completion_helper, _1, tip_text, cw));
-    }
-  }
-
-  gtk_widget_set_tooltip_text (GTK_WIDGET (e), tip_text);
-}
-
-static void
 toolbar_toggle_button_changed_cb (G_GNUC_UNUSED GtkWidget *widget,
 				  gpointer data)
 {
   bool shown = gm_conf_get_bool ((gchar *) data);
 
   gm_conf_set_bool ((gchar *) data, !shown);
-}
-
-static void
-place_call_cb (GtkWidget * /*widget*/,
-               gpointer data)
-{
-  std::string uri;
-  EkigaCallWindow *cw = NULL;
-
-  g_return_if_fail (EKIGA_IS_CALL_WINDOW (data));
-
-  cw = EKIGA_CALL_WINDOW (data);
-
-  if (cw->priv->calling_state == Standby && !cw->priv->current_call) {
-
-    size_t pos;
-
-    // Check for empty uri
-    uri = ekiga_call_window_get_call_url (cw);
-    pos = uri.find (":");
-    if (pos != std::string::npos)
-      if (uri.substr (++pos).empty ())
-        return;
-
-    ekiga_call_window_update_calling_state (cw, Calling);
-    boost::shared_ptr<Ekiga::CallCore> call_core = cw->priv->core->get<Ekiga::CallCore> ("call-core");
-
-    // Remove appended spaces
-    pos = uri.find_first_of (' ');
-    if (pos != std::string::npos)
-      uri = uri.substr (0, pos);
-
-    // Dial
-    if (call_core->dial (uri)) {
-
-      // nothing special
-
-    } else {
-
-      //FIXME
-      gm_statusbar_flash_message (GM_STATUSBAR (cw->priv->statusbar), _("Could not connect to remote host"));
-      ekiga_call_window_update_calling_state (cw, Standby);
-    }
-  }
-  else if (cw->priv->calling_state == Called && cw->priv->current_call)
-    cw->priv->current_call->answer ();
-}
-
-// FIXME ??? Useless ?
-static void
-toggle_call_cb (GtkWidget *widget,
-                gpointer data)
-{
-  EkigaCallWindow *cw = EKIGA_CALL_WINDOW (data);
-
-  if (cw->priv->ekiga_call_window_call_button_connected)
-    hangup_call_cb (widget, data);
-  else {
-    if (!cw->priv->current_call)
-      place_call_cb (widget, data);
-    else
-      cw->priv->current_call->answer ();
-  }
 }
 
 static void
@@ -1235,8 +1098,6 @@ on_established_call_cb (boost::shared_ptr<Ekiga::CallManager>  /*manager*/,
   info = g_strdup_printf (_("Connected with %s"),
 			  call->get_remote_party_name ().c_str ());
 
-  if (!call->get_remote_uri ().empty ())
-    ekiga_call_window_set_call_url (cw, call->get_remote_uri ().c_str());
   if (gm_conf_get_bool (VIDEO_DISPLAY_KEY "stay_on_top"))
     ekiga_call_window_set_stay_on_top (cw, TRUE);
   ekiga_call_window_set_status (cw, info);
@@ -1264,7 +1125,6 @@ on_cleared_call_cb (G_GNUC_UNUSED boost::shared_ptr<Ekiga::CallManager> manager,
     ekiga_call_window_set_stay_on_top (cw, FALSE);
   ekiga_call_window_update_calling_state (cw, Standby);
   ekiga_call_window_set_status (cw, _("Standby"));
-  ekiga_call_window_set_call_url (cw, "sip:");
   ekiga_call_window_set_call_duration (cw, NULL);
   ekiga_call_window_set_bandwidth (cw, 0.0, 0.0, 0.0, 0.0, 0, 0);
   ekiga_call_window_set_call_info (cw, NULL, NULL, NULL, NULL);
@@ -1470,9 +1330,6 @@ ekiga_call_window_update_calling_state (EkigaCallWindow *cw,
       gtk_widget_set_sensitive (GTK_WIDGET (cw->priv->hold_button), FALSE);
       gtk_widget_set_sensitive (GTK_WIDGET (cw->priv->preview_button), TRUE);
 
-      /* Update the connect button */
-      ekiga_call_window_call_button_set_connected (cw, FALSE);
-
       /* Destroy the transfer call popup */
       if (cw->priv->transfer_call_popup)
         gtk_dialog_response (GTK_DIALOG (cw->priv->transfer_call_popup),
@@ -1485,9 +1342,6 @@ ekiga_call_window_update_calling_state (EkigaCallWindow *cw,
       /* Update the menus and toolbar items */
       gtk_menu_set_sensitive (cw->priv->main_menu, "disconnect", TRUE);
       gtk_widget_set_sensitive (GTK_WIDGET (cw->priv->preview_button), FALSE);
-
-      /* Update the connect button */
-      ekiga_call_window_call_button_set_connected (cw, TRUE);
       break;
 
 
@@ -1498,9 +1352,6 @@ ekiga_call_window_update_calling_state (EkigaCallWindow *cw,
       gtk_menu_section_set_sensitive (cw->priv->main_menu, "hold_call", TRUE);
       gtk_widget_set_sensitive (GTK_WIDGET (cw->priv->hold_button), TRUE);
       gtk_widget_set_sensitive (GTK_WIDGET (cw->priv->preview_button), FALSE);
-
-      /* Update the connect button */
-      ekiga_call_window_call_button_set_connected (cw, TRUE);
       break;
 
 
@@ -1508,9 +1359,6 @@ ekiga_call_window_update_calling_state (EkigaCallWindow *cw,
 
       /* Update the menus and toolbar items */
       gtk_menu_set_sensitive (cw->priv->main_menu, "disconnect", TRUE);
-
-      /* Update the connect button */
-      ekiga_call_window_call_button_set_connected (cw, TRUE);
       break;
 
     default:
@@ -1830,53 +1678,6 @@ ekiga_call_window_set_channel_pause (EkigaCallWindow *cw,
 
   if (GTK_IS_LABEL (child))
     gtk_label_set_text_with_mnemonic (GTK_LABEL (child), msg);
-}
-
-static void
-ekiga_call_window_set_call_url (EkigaCallWindow *cw,
-				const char *url)
-{
-  g_return_if_fail (cw != NULL && url != NULL);
-
-  gtk_entry_set_text (GTK_ENTRY (cw->priv->entry), url);
-  gtk_editable_set_position (GTK_EDITABLE (cw->priv->entry), -1);
-  gtk_widget_grab_focus (GTK_WIDGET (cw->priv->entry));
-  gtk_editable_select_region (GTK_EDITABLE (cw->priv->entry), -1, -1);
-}
-
-static void
-ekiga_call_window_append_call_url (EkigaCallWindow *cw,
-				   const char *url)
-{
-  int pos = -1;
-  GtkEditable *entry;
-
-  g_return_if_fail (EKIGA_IS_CALL_WINDOW (cw));
-  g_return_if_fail (url != NULL);
-
-  entry = GTK_EDITABLE (cw->priv->entry);
-
-  if (gtk_editable_get_selection_bounds (entry, NULL, NULL))
-    gtk_editable_delete_selection (entry);
-
-  pos = gtk_editable_get_position (entry);
-  gtk_editable_insert_text (entry, url, strlen (url), &pos);
-  gtk_editable_select_region (entry, -1, -1);
-  gtk_editable_set_position (entry, pos);
-}
-
-
-static const std::string
-ekiga_call_window_get_call_url (EkigaCallWindow *cw)
-{
-  g_return_val_if_fail (EKIGA_IS_CALL_WINDOW (cw), NULL);
-
-  const gchar* entry_text = gtk_entry_get_text (GTK_ENTRY (cw->priv->entry));
-
-  if (entry_text != NULL)
-    return entry_text;
-  else
-    return "";
 }
 
 static GtkWidget *
@@ -2219,86 +2020,6 @@ ekiga_call_window_init_menu (EkigaCallWindow *cw)
 }
 
 static void
-ekiga_call_window_init_uri_toolbar (EkigaCallWindow *cw)
-{
-  GtkToolItem *item = NULL;
-  GtkEntryCompletion *completion = NULL;
-
-  g_return_if_fail (EKIGA_IS_CALL_WINDOW (cw));
-
-  /* The call horizontal toolbar */
-  cw->priv->main_toolbar = gtk_toolbar_new ();
-  gtk_toolbar_set_style (GTK_TOOLBAR (cw->priv->main_toolbar), GTK_TOOLBAR_ICONS);
-  gtk_toolbar_set_show_arrow (GTK_TOOLBAR (cw->priv->main_toolbar), FALSE);
-
-  /* URL bar */
-  /* Entry */
-  item = gtk_tool_item_new ();
-  cw->priv->entry = gtk_entry_new ();
-  cw->priv->completion = gtk_list_store_new (1, G_TYPE_STRING);
-  completion = gtk_entry_completion_new ();
-  gtk_entry_completion_set_model (GTK_ENTRY_COMPLETION (completion), GTK_TREE_MODEL (cw->priv->completion));
-  gtk_entry_set_completion (GTK_ENTRY (cw->priv->entry), completion);
-  gtk_entry_completion_set_inline_completion (GTK_ENTRY_COMPLETION (completion), false);
-  gtk_entry_completion_set_popup_completion (GTK_ENTRY_COMPLETION (completion), true);
-  gtk_entry_completion_set_text_column (GTK_ENTRY_COMPLETION (completion), 0);
-
-  gtk_container_add (GTK_CONTAINER (item), cw->priv->entry);
-  gtk_container_set_border_width (GTK_CONTAINER (item), 0);
-  gtk_tool_item_set_expand (GTK_TOOL_ITEM (item), true);
-
-  ekiga_call_window_set_call_url (cw, "sip:");
-
-  // activate Ctrl-L to get the entry focus
-  gtk_widget_add_accelerator (cw->priv->entry, "grab-focus",
-			      cw->priv->accel, GDK_L,
-			      (GdkModifierType) GDK_CONTROL_MASK,
-			      (GtkAccelFlags) 0);
-
-  gtk_editable_set_position (GTK_EDITABLE (cw->priv->entry), -1);
-
-  g_signal_connect (cw->priv->entry, "changed",
-		    G_CALLBACK (url_changed_cb), cw);
-  g_signal_connect (cw->priv->entry, "activate",
-		    G_CALLBACK (place_call_cb), cw);
-
-  gtk_toolbar_insert (GTK_TOOLBAR (cw->priv->main_toolbar), item, 0);
-
-  /* The connect button */
-  item = gtk_tool_item_new ();
-  cw->priv->call_button = ekiga_call_window_call_button_new (cw);
-  gtk_container_add (GTK_CONTAINER (item), cw->priv->call_button);
-  gtk_container_set_border_width (GTK_CONTAINER (cw->priv->call_button), 0);
-  gtk_tool_item_set_expand (GTK_TOOL_ITEM (item), FALSE);
-
-  gtk_widget_set_tooltip_text (GTK_WIDGET (cw->priv->call_button),
-			       _("Enter a URI on the left, and click this button to place a call or to hangup"));
-
-  gtk_toolbar_insert (GTK_TOOLBAR (cw->priv->main_toolbar), item, -1);
-
-  g_signal_connect (cw->priv->call_button, "clicked",
-                    G_CALLBACK (toggle_call_cb),
-                    cw);
-
-  gtk_widget_show_all (GTK_WIDGET (cw->priv->main_toolbar));
-}
-
-static GtkWidget*
-ekiga_call_window_call_button_new (EkigaCallWindow *cw)
-{
-  GtkButton *button;
-  GtkWidget* image;
-
-  button = (GtkButton*) gtk_button_new ();
-  image = gtk_image_new_from_stock (GM_STOCK_PHONE_PICK_UP_24, GTK_ICON_SIZE_LARGE_TOOLBAR);
-  gtk_button_set_image (button, image);
-  gtk_button_set_relief (button, GTK_RELIEF_NONE);
-  cw->priv->ekiga_call_window_call_button_connected = FALSE;
-
-  return GTK_WIDGET (button);
-}
-
-static void
 ekiga_call_window_update_logo (EkigaCallWindow *cw)
 {
   g_return_if_fail (EKIGA_IS_CALL_WINDOW (cw));
@@ -2382,18 +2103,6 @@ ekiga_call_window_channels_menu_update_sensitivity (EkigaCallWindow *cw,
     else
       gtk_menu_set_sensitive (cw->priv->main_menu, "suspend_video", FALSE);
   }
-}
-
-static void
-ekiga_call_window_call_button_set_connected (EkigaCallWindow *cw,
-                                             gboolean state)
-{
-  GtkWidget* image;
-
-  cw->priv->ekiga_call_window_call_button_connected = state;
-  image = gtk_button_get_image (GTK_BUTTON (cw->priv->call_button));
-  gtk_image_set_from_stock (GTK_IMAGE (image), state ? GM_STOCK_PHONE_HANG_UP_24 : GM_STOCK_PHONE_PICK_UP_24,
-                            GTK_ICON_SIZE_LARGE_TOOLBAR);
 }
 
 static gboolean
@@ -2730,13 +2439,6 @@ ekiga_call_window_init_gui (EkigaCallWindow *cw)
   g_signal_connect (cw->priv->hold_button, "clicked",
 		    G_CALLBACK (hold_current_call_cb), cw);
   gtk_widget_realize (cw->priv->main_video_image);
-
-  /* The URI toolbar */
-  ekiga_call_window_init_uri_toolbar (cw);
-  alignment = gtk_alignment_new (0.0, 0.0, 1.0, 0.0);
-  gtk_container_add (GTK_CONTAINER (alignment), cw->priv->main_toolbar);
-  gtk_box_pack_start (GTK_BOX (vbox), GTK_WIDGET (alignment), FALSE, FALSE, 0);
-  gtk_widget_show_all (frame);
 
   /* The statusbar */
   cw->priv->statusbar = gm_statusbar_new ();
