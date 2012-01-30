@@ -1315,19 +1315,6 @@ closed_cb (NotifyNotification* /*notify*/,
     audiooutput_core->stop_play_event ("incoming_call_sound");
 }
 
-static const std::string
-ekiga_main_window_get_call_url (EkigaMainWindow *mw)
-{
-  g_return_val_if_fail (EKIGA_IS_MAIN_WINDOW (mw), NULL);
-
-  const gchar* entry_text = gtk_entry_get_text (GTK_ENTRY (mw->priv->entry));
-
-  if (entry_text != NULL)
-    return entry_text;
-  else
-    return "";
-}
-
 static void
 ekiga_main_window_incoming_call_notify (EkigaMainWindow *mw,
                                         boost::shared_ptr<Ekiga::Call>  call)
@@ -1394,6 +1381,19 @@ ekiga_main_window_incoming_call_notify (EkigaMainWindow *mw,
   g_free (body);
 }
 #endif
+
+static const std::string
+ekiga_main_window_get_call_url (EkigaMainWindow *mw)
+{
+  g_return_val_if_fail (EKIGA_IS_MAIN_WINDOW (mw), NULL);
+
+  const gchar* entry_text = gtk_entry_get_text (GTK_ENTRY (mw->priv->entry));
+
+  if (entry_text != NULL)
+    return entry_text;
+  else
+    return "";
+}
 
 static void
 ekiga_main_window_add_device_dialog_show (EkigaMainWindow *mw,
