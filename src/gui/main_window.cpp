@@ -702,7 +702,7 @@ static void on_cleared_call_cb (boost::shared_ptr<Ekiga::CallManager>  /*manager
 
   /* Hide call window */
   call_window = GnomeMeeting::Process ()->GetCallWindow ();
-  gtk_widget_hide_all (call_window);
+  gtk_widget_hide (call_window);
 }
 
 static void on_cleared_incoming_call_cb (std::string /*reason*/,
@@ -726,7 +726,7 @@ static void on_cleared_incoming_call_cb (std::string /*reason*/,
 
   /* Hide call window */
   call_window = GnomeMeeting::Process ()->GetCallWindow ();
-  gtk_widget_hide_all (call_window);
+  gtk_widget_hide (call_window);
 }
 
 
