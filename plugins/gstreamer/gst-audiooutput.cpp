@@ -207,7 +207,8 @@ GST::AudioOutputManager::detect_devices ()
   detect_alsasink_devices ();
   detect_pulsesink_devices ();
   detect_sdlsink_devices ();
-  devices_by_name[std::pair<std::string,std::string>("FILE","/tmp/sound.wav")] = "volume name=ekiga_volume ! filesink location=/tmp/sound.wav";
+  devices_by_name[std::pair<std::string,std::string>("FILE","event")] = "volume name=ekiga_volume ! filesink location=/tmp/event";
+  devices_by_name[std::pair<std::string,std::string>("FILE","in_a_call")] = "volume name=ekiga_volume ! filesink location=/tmp/in_a_call";
 }
 
 void
