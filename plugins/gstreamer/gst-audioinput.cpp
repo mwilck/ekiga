@@ -45,105 +45,6 @@
 
 #include <string.h>
 
-struct gstreamer_worker
-{
-  GstElement* pipeline;
-  GstElement* volume;
-  GstElement* sink;
-};
-
-static void
-gstreamer_worker_setup (gstreamer_worker* self,
-			const gchar* command)
-{
-  g_message ("%s\t%s\n", __PRETTY_FUNCTION__, command);
-  self->pipeline = gst_parse_launch (command, NULL);
-  (void)gst_element_set_state (self->pipeline, GST_STATE_PLAYING);
-  self->volume = gst_bin_get_by_name (GST_BIN (self->pipeline), "ekiga_volume");
-  self->sink = gst_bin_get_by_name (GST_BIN (self->pipeline), "ekiga_sink");
-}
-
-static void
-gstreamer_worker_destroy (gstreamer_worker* self)
-{
-  g_object_unref (self->sink);
-  self->sink = NULL;
-  if (self->volume)
-    g_object_unref (self->volume);
-  self->volume = NULL;
-  g_object_unref (self->pipeline);
-  self->pipeline = NULL;
-  g_free (self);
-}
-
-static void
-gstreamer_worker_close (gstreamer_worker* self)
-{
-  g_message ("%s\n", __PRETTY_FUNCTION__);
-  gst_element_set_state (self->pipeline, GST_STATE_NULL);
-  Ekiga::Runtime::run_in_main (boost::bind(&gstreamer_worker_destroy, self), 1);
-}
-
-static void
-gstreamer_worker_set_volume (gstreamer_worker* self,
-			     gfloat valf)
-{
-  g_message ("%s\t%f\n", __PRETTY_FUNCTION__, valf);
-  if (self->volume)
-    g_object_set (G_OBJECT (self->volume),
-		  "volume", valf,
-		  NULL);
-}
-
-static gfloat
-gstreamer_worker_get_volume (gstreamer_worker* self)
-{
-  gfloat result = -1;
-  if (self->volume)
-    g_object_get (G_OBJECT (self->volume),
-		  "volume", &result,
-		  NULL);
-
-  return result;
-}
-
-static void
-gstreamer_worker_set_buffer_size (gstreamer_worker* self,
-				  unsigned size)
-{
-  g_message ("%s\t%d\n", __PRETTY_FUNCTION__, size);
-  if (self->sink)
-    g_object_set (G_OBJECT (self->sink),
-		  "blocksize", size,
-		  NULL);
-}
-
-
-
-bool
-gstreamer_worker_get_frame_data (gstreamer_worker* self,
-				 char* data,
-				 unsigned size,
-				 unsigned& read)
-{
-  bool result = false;
-  GstBuffer* buffer = NULL;
-
-  read = 0;
-
-  buffer = gst_app_sink_pull_buffer (GST_APP_SINK (self->sink));
-
-  if (buffer != NULL) {
-
-    read = MIN (GST_BUFFER_SIZE (buffer), size);
-    memcpy (data, GST_BUFFER_DATA (buffer), read);
-    result = true;
-    gst_buffer_unref (buffer);
-  }
-
-  return result;
-}
-
 GST::AudioInputManager::AudioInputManager ():
   already_detected_devices(false), worker(NULL)
 {
@@ -194,10 +95,7 @@ GST::AudioInputManager::open (unsigned channels,
 			      unsigned samplerate,
 			      unsigned bits_per_sample)
 {
-  g_message ("%s\n", __PRETTY_FUNCTION__);
   gchar* command = NULL;
-
-  worker = g_new0 (gstreamer_worker, 1);
 
   if ( !already_detected_devices)
     detect_devices ();
@@ -211,11 +109,11 @@ GST::AudioInputManager::open (unsigned channels,
 			     devices_by_name[std::pair<std::string,std::string>(current_state.device.source, current_state.device.name)].c_str (),
 			     samplerate, channels, bits_per_sample);
 
-  gstreamer_worker_setup (worker, command);
+  worker = gst_helper_new (command);
   g_free (command);
 
   Ekiga::AudioInputSettings settings;
-  gfloat vol = gstreamer_worker_get_volume (worker);
+  gfloat vol = gst_helper_get_volume (worker);
   if (vol >= 0) {
 
     settings.volume = (unsigned)(255*vol);
@@ -234,10 +132,8 @@ GST::AudioInputManager::open (unsigned channels,
 void
 GST::AudioInputManager::close ()
 {
-  g_message ("%s\n", __PRETTY_FUNCTION__);
-
   if (worker)
-      gstreamer_worker_close (worker);
+    gst_helper_close (worker);
   Ekiga::Runtime::run_in_main (boost::bind (boost::ref(device_closed),
 					    current_state.device));
   current_state.opened = false;
@@ -249,7 +145,7 @@ GST::AudioInputManager::set_buffer_size (unsigned buffer_size,
 					 unsigned /*num_buffers*/)
 {
   if (worker)
-    gstreamer_worker_set_buffer_size (worker, buffer_size);
+    gst_helper_set_buffer_size (worker, buffer_size);
 }
 
 bool
@@ -260,7 +156,7 @@ GST::AudioInputManager::get_frame_data (char* data,
   bool result = false;
   read = 0;
   if (worker)
-    result = gstreamer_worker_get_frame_data (worker, data, size, read);
+    result = gst_helper_get_frame_data (worker, data, size, read);
 
   return result;
 }
@@ -268,7 +164,7 @@ GST::AudioInputManager::get_frame_data (char* data,
 void
 GST::AudioInputManager::set_volume (unsigned valu)
 {
-  gstreamer_worker_set_volume (worker, valu / 255.0);
+  gst_helper_set_volume (worker, valu / 255.0);
 }
 
 bool

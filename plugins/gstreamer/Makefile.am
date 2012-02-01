@@ -14,6 +14,8 @@ INCLUDES = 						\
 	-I$(top_srcdir)/lib/engine/hal
 
 libgmgstreamer_la_SOURCES = \
+	$(gstreamer_dir)/gst-helper.h \
+	$(gstreamer_dir)/gst-helper.cpp \
 	$(gstreamer_dir)/gst-main.h \
 	$(gstreamer_dir)/gst-main.cpp \
 	$(gstreamer_dir)/gst-videoinput.h \

@@ -42,7 +42,7 @@
 #include <gst/gst.h>
 #include <map>
 
-struct gstreamer_worker;
+#include "gst-helper.h"
 
 namespace GST
 {
@@ -85,7 +85,7 @@ namespace GST
      * the actual device */
     std::map<std::pair<std::string, std::string>, std::string> devices_by_name;
 
-    gstreamer_worker* worker;
+    gst_helper* worker;
   };
 };
 

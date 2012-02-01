@@ -40,10 +40,9 @@
 
 #include "audiooutput-manager.h"
 #include <gst/gst.h>
+#include "gst-helper.h"
 
 #include <map>
-
-struct gstreamer_worker;
 
 namespace GST
 {
@@ -95,7 +94,7 @@ namespace GST
      * the actual device */
     std::map<std::pair<std::string, std::string>, std::string> devices_by_name;
 
-    gstreamer_worker* worker[2];
+    gst_helper* worker[2];
   };
 };
 
