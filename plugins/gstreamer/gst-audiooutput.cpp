@@ -228,7 +228,7 @@ GST::AudioOutputManager::open (Ekiga::AudioOutputPS ps,
   current_state[ii].samplerate = samplerate;
   current_state[ii].bits_per_sample = bits_per_sample;
   current_state[ii].opened = true;
-  device_opened (ps, current_state[ii].device, settings);
+  Ekiga::Runtime::run_in_main (boost::bind (boost::ref(device_opened), ps, current_state[ii].device, settings));
 
   return true;
 }
@@ -241,7 +241,7 @@ GST::AudioOutputManager::close (Ekiga::AudioOutputPS ps)
 
   if (worker[ii])
       gstreamer_worker_close (worker[ii]);
-  device_closed (ps, current_state[ii].device);
+  Ekiga::Runtime::run_in_main (boost::bind (boost::ref(device_closed), ps, current_state[ii].device));
   current_state[ii].opened = false;
   worker[ii] = NULL;
 }
@@ -303,7 +303,7 @@ GST::AudioOutputManager::detect_devices ()
   detect_alsasink_devices ();
   detect_pulsesink_devices ();
   detect_sdlsink_devices ();
-devices_by_name[std::pair<std::string,std::string>("FILE","/tmp/sound.wav")] = "volume name=ekiga_volume ! filesink location=/tmp/sound.wav";
+  devices_by_name[std::pair<std::string,std::string>("FILE","/tmp/sound.wav")] = "volume name=ekiga_volume ! filesink location=/tmp/sound.wav";
 }
 
 void
