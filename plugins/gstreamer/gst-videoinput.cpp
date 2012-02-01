@@ -38,22 +38,83 @@
 #include <glib/gi18n.h>
 
 #include "gst-videoinput.h"
+#include "runtime.h"
 
 #include <gst/interfaces/propertyprobe.h>
 #include <gst/app/gstappsink.h>
 
 #include <string.h>
 
+struct gstreamer_worker
+{
+  GstElement* pipeline;
+  GstElement* volume;
+  GstElement* sink;
+};
+
+static void
+gstreamer_worker_setup (gstreamer_worker* self,
+			const gchar* command)
+{
+  g_message ("%s\t%s\n", __PRETTY_FUNCTION__, command);
+  self->pipeline = gst_parse_launch (command, NULL);
+  (void)gst_element_set_state (self->pipeline, GST_STATE_PLAYING);
+  self->volume = gst_bin_get_by_name (GST_BIN (self->pipeline), "ekiga_volume");
+  self->sink = gst_bin_get_by_name (GST_BIN (self->pipeline), "ekiga_sink");
+}
+
+static void
+gstreamer_worker_destroy (gstreamer_worker* self)
+{
+  g_object_unref (self->sink);
+  self->sink = NULL;
+  if (self->volume)
+    g_object_unref (self->volume);
+  self->volume = NULL;
+  g_object_unref (self->pipeline);
+  self->pipeline = NULL;
+  g_free (self);
+}
+
+static void
+gstreamer_worker_close (gstreamer_worker* self)
+{
+  g_message ("%s\n", __PRETTY_FUNCTION__);
+  gst_element_set_state (self->pipeline, GST_STATE_NULL);
+  Ekiga::Runtime::run_in_main (boost::bind(&gstreamer_worker_destroy, self), 1);
+}
+
+static bool
+gstreamer_worker_get_frame_data (gstreamer_worker* self,
+				 char* data,
+				 unsigned size,
+				 unsigned& read)
+{
+  bool result = false;
+  GstBuffer* buffer = NULL;
+
+  read = 0;
+
+  buffer = gst_app_sink_pull_buffer (GST_APP_SINK (self->sink));
+
+  if (buffer != NULL) {
+
+    read = MIN (GST_BUFFER_SIZE (buffer), size);
+    memcpy (data, GST_BUFFER_DATA (buffer), read);
+    result = true;
+    gst_buffer_unref (buffer);
+  }
+
+  return result;
+}
+
 GST::VideoInputManager::VideoInputManager ():
-  already_detected_devices(false), pipeline(NULL)
+  already_detected_devices(false), worker(NULL)
 {
 }
 
 GST::VideoInputManager::~VideoInputManager ()
 {
-  if (pipeline != NULL)
-    g_object_unref (pipeline);
-  pipeline = NULL;
 }
 
 void
@@ -106,10 +167,9 @@ GST::VideoInputManager::open (unsigned width,
 			      unsigned height,
 			      unsigned fps)
 {
-  bool result;
   gchar* command = NULL;
-  GError* error = NULL;
-  GstState current;
+
+  worker = g_new0 (gstreamer_worker, 1);
 
   if ( !already_detected_devices)
     detect_devices ();
@@ -122,82 +182,40 @@ GST::VideoInputManager::open (unsigned width,
 			     " name=ekiga_sink",
 			     devices_by_name[std::pair<std::string,std::string>(current_state.device.source, current_state.device.name)].c_str (),
 			     width, height, fps);
-  //g_print ("Pipeline: %s\n", command);
-  pipeline = gst_parse_launch (command, &error);
 
-  if (error == NULL) {
-
-    (void)gst_element_set_state (pipeline, GST_STATE_PLAYING);
-
-    // this will make us wait so we can return the right value...
-    (void)gst_element_get_state (pipeline,
-				 &current,
-				 NULL,
-				 GST_SECOND);
-
-    if (current != GST_STATE_PLAYING) {
-
-      gst_element_set_state (pipeline, GST_STATE_NULL);
-      gst_object_unref (GST_OBJECT (pipeline));
-      pipeline = NULL;
-      result = false;
-    } else {
-
-      Ekiga::VideoInputSettings settings;
-      settings.modifyable = false;
-      device_opened (current_state.device, settings);
-      result = true;
-    }
-  } else {
-
-    g_error_free (error);
-    result = false;
-  }
-
+  gstreamer_worker_setup (worker, command);
   g_free (command);
 
-  current_state.opened = result;
-  return result;
+  Ekiga::VideoInputSettings settings;
+  settings.modifyable = false;
+  Ekiga::Runtime::run_in_main (boost::bind (boost::ref (device_opened), current_state.device, settings));
+
+  return true;
 }
 
 void
 GST::VideoInputManager::close ()
 {
-  if (pipeline != NULL) {
+  g_message ("%s\n", __PRETTY_FUNCTION__);
 
-    gst_element_set_state (pipeline, GST_STATE_NULL);
-    device_closed (current_state.device);
-    g_object_unref (pipeline);
-    pipeline = NULL;
-  }
+  if (worker)
+      gstreamer_worker_close (worker);
+  Ekiga::Runtime::run_in_main (boost::bind (boost::ref(device_closed),
+					    current_state.device));
   current_state.opened = false;
+  worker = NULL;
 }
 
 bool
 GST::VideoInputManager::get_frame_data (char* data)
 {
   bool result = false;
-  GstBuffer* buffer = NULL;
-  GstElement* sink = NULL;
+  unsigned read;
 
-  g_return_val_if_fail (GST_IS_BIN (pipeline), false);
-
-  sink = gst_bin_get_by_name (GST_BIN (pipeline), "ekiga_sink");
-
-  if (sink != NULL) {
-
-    buffer = gst_app_sink_pull_buffer (GST_APP_SINK (sink));
-
-    if (buffer != NULL) {
-
-      uint size = MIN (GST_BUFFER_SIZE (buffer),
-		       current_state.width * current_state.height * 3 / 2);
-      memcpy (data, GST_BUFFER_DATA (buffer), size);
-      result = true;
-      gst_buffer_unref (buffer);
-    }
-    g_object_unref (sink);
-  }
+  if (worker)
+    result = gstreamer_worker_get_frame_data (worker, data,
+					      current_state.width * current_state.height * 3 / 2,
+					      read);
 
   return result;
 }
@@ -346,7 +364,7 @@ GST::VideoInputManager::detect_dv1394src_devices ()
 	g_object_set_property (G_OBJECT (elt), "guid", guid);
 
 	g_object_get (G_OBJECT (elt), "device-name", &name, NULL);
-	descr = g_strdup_printf ("dv1394src guid=%Ld"
+	descr = g_strdup_printf ("dv1394src guid=%lX"
 				 " ! decodebin"
 				 " ! videoscale"
 				 " ! ffmpegcolorspace",

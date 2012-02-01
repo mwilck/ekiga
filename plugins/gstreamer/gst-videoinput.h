@@ -42,6 +42,8 @@
 #include <gst/gst.h>
 #include <map>
 
+struct gstreamer_worker;
+
 namespace GST
 {
   class VideoInputManager: public Ekiga::VideoInputManager
@@ -83,7 +85,7 @@ namespace GST
      * the actual device */
     std::map<std::pair<std::string, std::string>, std::string> devices_by_name;
 
-    GstElement* pipeline;
+    gstreamer_worker* worker;
   };
 };
 
