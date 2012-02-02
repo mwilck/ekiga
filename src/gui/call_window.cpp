@@ -392,6 +392,10 @@ static void on_stream_resumed_cb (boost::shared_ptr<Ekiga::CallManager>  /*manag
 
 static gboolean on_stats_refresh_cb (gpointer self);
 
+static gboolean ekiga_call_window_delete_event_cb (GtkWidget *widget,
+                                                   G_GNUC_UNUSED GdkEventAny *event);
+
+
 /**/
 static void ekiga_call_window_update_calling_state (EkigaCallWindow *cw,
                                                     unsigned calling_state);
@@ -1305,6 +1309,21 @@ on_stats_refresh_cb (gpointer self)
                                     videooutput_stats.tx_width,
                                     videooutput_stats.tx_height);
   }
+
+  return true;
+}
+
+static gboolean
+ekiga_call_window_delete_event_cb (GtkWidget *widget,
+                                   G_GNUC_UNUSED GdkEventAny *event)
+{
+  EkigaCallWindow *cw = NULL;
+
+  cw = EKIGA_CALL_WINDOW (widget);
+  g_return_val_if_fail (EKIGA_IS_CALL_WINDOW (cw), FALSE);
+
+  if (cw->priv->current_call)
+    cw->priv->current_call->hangup ();
 
   return true;
 }
@@ -2493,6 +2512,8 @@ ekiga_call_window_init (EkigaCallWindow *cw)
 
   cw->priv->accel = gtk_accel_group_new ();
   gtk_window_add_accel_group (GTK_WINDOW (cw), cw->priv->accel);
+  gtk_accel_group_connect (cw->priv->accel, GDK_Escape, (GdkModifierType) 0, GTK_ACCEL_LOCKED,
+                           g_cclosure_new (G_CALLBACK (hangup_call_cb), (gpointer) cw, NULL));
   g_object_unref (cw->priv->accel);
 
   cw->priv->changing_back_to_local_after_a_call = false;
@@ -2509,6 +2530,9 @@ ekiga_call_window_init (EkigaCallWindow *cw)
 #ifndef WIN32
   cw->priv->video_widget_gc = NULL;
 #endif
+
+  g_signal_connect (cw, "delete-event",
+		    G_CALLBACK (ekiga_call_window_delete_event_cb), NULL);
 }
 
 static GObject *
@@ -2606,21 +2630,6 @@ ekiga_call_window_focus_in_event (GtkWidget     *widget,
   return GTK_WIDGET_CLASS (ekiga_call_window_parent_class)->focus_in_event (widget, event);
 }
 
-static gboolean
-ekiga_call_window_delete_event (GtkWidget *widget,
-				G_GNUC_UNUSED GdkEventAny *event)
-{
-  EkigaCallWindow *cw = NULL;
-  g_return_val_if_fail (EKIGA_IS_CALL_WINDOW (cw), FALSE);
-
-  cw = EKIGA_CALL_WINDOW (widget);
-
-  if (cw->priv->current_call)
-    cw->priv->current_call->hangup ();
-
-  return FALSE;
-}
-
 static void
 ekiga_call_window_get_property (GObject *object,
                                 guint property_id,
@@ -2680,7 +2689,6 @@ ekiga_call_window_class_init (EkigaCallWindowClass *klass)
   widget_class->show = ekiga_call_window_show;
   widget_class->expose_event = ekiga_call_window_expose_event;
   widget_class->focus_in_event = ekiga_call_window_focus_in_event;
-  widget_class->delete_event = ekiga_call_window_delete_event;
 
   g_object_class_install_property (object_class,
                                    PROP_SERVICE_CORE,
@@ -2700,6 +2708,8 @@ gm_call_window_new (Ekiga::ServiceCore & core)
   cw = EKIGA_CALL_WINDOW (g_object_new (EKIGA_TYPE_CALL_WINDOW,
                                         "service-core", &core, NULL));
   gm_window_set_key (GM_WINDOW (cw), USER_INTERFACE_KEY "call_window");
+  gm_window_set_hide_on_delete (GM_WINDOW (cw), false);
+  gm_window_set_hide_on_escape (GM_WINDOW (cw), false);
   ekiga_call_window_connect_engine_signals (cw);
 
   return GTK_WIDGET (cw);
