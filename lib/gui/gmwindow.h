@@ -108,7 +108,18 @@ void gm_window_set_hide_on_delete (GmWindow *window,
 /** Check if the GmWindow will hide or event-relay on a delete-event
  * @param window is the GmWindow
  */
-gboolean gm_window_get_hide_on_delete (GmWindow *window);		    
+gboolean gm_window_get_hide_on_escape (GmWindow *window);
+
+/** Check if the GmWindow will hide or event-relay on an escape event
+ * @param window is the GmWindow
+ */
+void gm_window_set_hide_on_escape (GmWindow *window,
+                                   gboolean hide_on_escape);
+
+/** Check if the GmWindow will hide or event-relay on an escape event
+ * @param window is the GmWindow
+ */
+gboolean gm_window_get_hide_on_escape (GmWindow *window);
 
 /** Makes sure the given window is always on top
  * @param window is a GdkWindow
@@ -132,10 +143,11 @@ void gm_window_show (GtkWidget* window);
  */
 void gm_window_hide (GtkWidget* window);
 
-/** Make the window only be hidden on delete
+/** Hide on delete the given window : only for old-style GMWindows
  * @param window is a GtkWindow
  */
 void gm_window_hide_on_delete (GtkWidget* window);
+
 
 /* GObject boilerplate */
 

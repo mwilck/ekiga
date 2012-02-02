@@ -29,8 +29,8 @@
 /*
  *                         gmwindow.c -  description
  *                         -------------------------
- *   begin                : 16 August 2007 
- *   copyright            : (c) 2007 by Damien Sandras 
+ *   begin                : 16 August 2007
+ *   copyright            : (c) 2007 by Damien Sandras
  *   description          : Implementation of a GtkWindow able to restore
  *                          its position and size in a GmConf key.
  *
@@ -77,8 +77,8 @@ enum {
 G_DEFINE_TYPE (GmWindow, gm_window, GTK_TYPE_WINDOW);
 
 static gboolean
-gm_window_delete_event (GtkWidget *w,
-			gpointer data);
+gm_window_delete_event_cb (GtkWidget *w,
+                           gpointer data);
 
 static void
 window_show_cb (GtkWidget *w,
@@ -88,12 +88,12 @@ static void
 window_hide_cb (GtkWidget *w,
 		gpointer data);
 
-static gboolean 
+static gboolean
 gm_window_configure_event (GtkWidget *widget,
                            GdkEventConfigure *event);
 
 
-/* 
+/*
  * GObject stuff
  */
 
@@ -196,13 +196,13 @@ gm_window_class_init (GmWindowClass* klass)
   gobject_class->get_property = gm_window_get_property;
   gobject_class->set_property = gm_window_set_property;
 
-  spec = g_param_spec_string ("key", "Key", "Key", 
+  spec = g_param_spec_string ("key", "Key", "Key",
                               NULL, (GParamFlags) G_PARAM_READWRITE);
-  g_object_class_install_property (gobject_class, GM_WINDOW_KEY, spec); 
+  g_object_class_install_property (gobject_class, GM_WINDOW_KEY, spec);
 
-  spec = g_param_spec_boolean ("hide_on_esc", "Hide on Escape", "Hide on Escape", 
+  spec = g_param_spec_boolean ("hide_on_esc", "Hide on Escape", "Hide on Escape",
                                TRUE, (GParamFlags) G_PARAM_READWRITE);
-  g_object_class_install_property (gobject_class, GM_HIDE_ON_ESC, spec); 
+  g_object_class_install_property (gobject_class, GM_HIDE_ON_ESC, spec);
 
   spec = g_param_spec_boolean ("hide_on_delete", "Hide on delete-event", "Hide on delete-event (or just relay the event)",
 			       TRUE, (GParamFlags) G_PARAM_READWRITE);
@@ -223,8 +223,8 @@ gm_window_init (GmWindow* self)
   gtk_accel_group_connect (self->priv->accel, GDK_Escape, (GdkModifierType) 0, GTK_ACCEL_LOCKED,
                            g_cclosure_new_swap (G_CALLBACK (gtk_widget_hide), (gpointer) self, NULL));
 
-  g_signal_connect (self, "delete_event",
-		    G_CALLBACK (gm_window_delete_event), NULL);
+  g_signal_connect (self, "delete-event",
+		    G_CALLBACK (gm_window_delete_event_cb), NULL);
 
   g_signal_connect (self, "show",
                     G_CALLBACK (window_show_cb), self);
@@ -236,34 +236,35 @@ gm_window_init (GmWindow* self)
                     G_CALLBACK (gm_window_configure_event), self);
 }
 
-/* 
+
+/*
  * Our own stuff
  */
-
+// FIXME drop this when removing old GMWindows
 static gboolean
-delete_event_cb (GtkWidget* window,
-		 G_GNUC_UNUSED gpointer data)
+old_style_gm_window_delete_event_cb (GtkWidget* window,
+                                     G_GNUC_UNUSED gpointer data)
 {
-  gm_window_hide (window);
+    gm_window_hide (window);
+    return TRUE;
+ }
 
-  return TRUE;
-}
 
 static gboolean
-gm_window_delete_event (GtkWidget *w,
-                        G_GNUC_UNUSED gpointer data)
+gm_window_delete_event_cb (GtkWidget *w,
+                           G_GNUC_UNUSED gpointer data)
 {
   GmWindow* self = NULL;
 
   self = GM_WINDOW (w);
 
-  if (self->priv->hide_on_delete) {
-    gtk_widget_hide (w);
-    return TRUE;
-  } else {
-    return FALSE;
-  }
+  if (self->priv->hide_on_delete)
+    gm_window_hide (w);
+
+
+  return FALSE;
 }
+
 
 static void
 window_show_cb (GtkWidget *w,
@@ -279,7 +280,7 @@ window_show_cb (GtkWidget *w,
   gchar *size = NULL;
   gchar *position = NULL;
   gchar **couple = NULL;
-  
+
   self = GM_WINDOW (w);
 
   g_return_if_fail (strcmp (self->priv->key, ""));
@@ -341,9 +342,9 @@ window_hide_cb (GtkWidget *w,
   gchar *conf_key_position = NULL;
   gchar *size = NULL;
   gchar *position = NULL;
-  
+
   g_return_if_fail (w != NULL);
-  
+
   self = GM_WINDOW (w);
 
   g_return_if_fail (strcmp (self->priv->key, ""));
@@ -363,13 +364,13 @@ window_hide_cb (GtkWidget *w,
     gm_conf_set_string (conf_key_size, size);
     g_free (size);
   }
-  
+
   g_free (conf_key_position);
   g_free (conf_key_size);
 }
 
 
-static gboolean 
+static gboolean
 gm_window_configure_event (GtkWidget *self,
                            GdkEventConfigure *event)
 {
@@ -382,7 +383,7 @@ gm_window_configure_event (GtkWidget *self,
 }
 
 
-/* 
+/*
  * Public API
  */
 GtkWidget *
@@ -412,7 +413,7 @@ gm_window_set_key (GmWindow *window,
 }
 
 
-void 
+void
 gm_window_get_size (GmWindow *self,
                     int *x,
                     int *y)
@@ -438,6 +439,7 @@ gm_window_get_size (GmWindow *self,
   g_strfreev (couple);
 }
 
+
 void
 gm_window_set_hide_on_delete (GmWindow *window,
 			      gboolean hide_on_delete)
@@ -447,6 +449,7 @@ gm_window_set_hide_on_delete (GmWindow *window,
   g_object_set (window, "hide_on_delete", hide_on_delete, NULL);
 }
 
+
 gboolean
 gm_window_get_hide_on_delete (GmWindow *window)
 {
@@ -454,6 +457,26 @@ gm_window_get_hide_on_delete (GmWindow *window)
 
   return window->priv->hide_on_delete;
 }
+
+
+void
+gm_window_set_hide_on_escape (GmWindow *window,
+			      gboolean hide_on_esc)
+{
+  g_return_if_fail (GM_IS_WINDOW (window));
+
+  g_object_set (window, "hide_on_esc", hide_on_esc, NULL);
+}
+
+
+gboolean
+gm_window_get_hide_on_escape (GmWindow *window)
+{
+  g_return_val_if_fail (GM_IS_WINDOW (window), FALSE);
+
+  return window->priv->hide_on_esc;
+}
+
 
 #ifndef WIN32
 // helper copied from gdk
@@ -604,14 +627,17 @@ gm_window_hide (GtkWidget* w)
   g_free (conf_key_size);
 }
 
+
 void
 gm_window_hide_on_delete (GtkWidget* window)
 {
   g_return_if_fail (GTK_IS_WIDGET (window));
 
   g_signal_connect (window, "delete-event",
-		    G_CALLBACK (delete_event_cb), NULL);
+                    G_CALLBACK (old_style_gm_window_delete_event_cb), NULL);
 }
+
+
 
 /* Stolen from GDK */
 #ifndef WIN32
@@ -621,25 +647,25 @@ gdk_wmspec_change_state (gboolean add,
 			 GdkAtom state1,
 			 GdkAtom state2)
 {
-  GdkDisplay *display = 
+  GdkDisplay *display =
     gdk_screen_get_display (gdk_drawable_get_screen (GDK_DRAWABLE (window)));
   XEvent xev;
-  
+
 #define _NET_WM_STATE_REMOVE        0    /* remove/unset property */
 #define _NET_WM_STATE_ADD           1    /* add/set property */
-#define _NET_WM_STATE_TOGGLE        2    /* toggle property  */  
-  
+#define _NET_WM_STATE_TOGGLE        2    /* toggle property  */
+
   xev.xclient.type = ClientMessage;
   xev.xclient.serial = 0;
   xev.xclient.send_event = True;
   xev.xclient.window = GDK_WINDOW_XID (window);
-  xev.xclient.message_type = 
+  xev.xclient.message_type =
     gdk_x11_get_xatom_by_name_for_display (display, "_NET_WM_STATE");
   xev.xclient.format = 32;
   xev.xclient.data.l[0] = add ? _NET_WM_STATE_ADD : _NET_WM_STATE_REMOVE;
   xev.xclient.data.l[1] = gdk_x11_atom_to_xatom_for_display (display, state1);
   xev.xclient.data.l[2] = gdk_x11_atom_to_xatom_for_display (display, state2);
-  
+
   XSendEvent (GDK_WINDOW_XDISPLAY (window),
 	      GDK_WINDOW_XWINDOW (gdk_screen_get_root_window (gdk_drawable_get_screen (GDK_DRAWABLE (window)))),
 	      False, SubstructureRedirectMask | SubstructureNotifyMask,
