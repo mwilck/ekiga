@@ -226,6 +226,9 @@ static void show_gm_window_cb (GtkWidget *widget,
 static void ekiga_main_window_incoming_call_dialog_show (EkigaMainWindow *mw,
                                                       boost::shared_ptr<Ekiga::Call>  call);
 
+static void ekiga_main_window_append_call_url (EkigaMainWindow *mw,
+                                               const char *url);
+
 static const std::string ekiga_main_window_get_call_url (EkigaMainWindow *mw);
 
 #ifdef HAVE_NOTIFY
@@ -340,8 +343,8 @@ static void ekiga_main_window_add_device_dialog_show (EkigaMainWindow *main_wind
  * PRE           : The main window GMObject, followed by printf syntax format.
  */
 static void ekiga_main_window_flash_message (EkigaMainWindow *main_window,
-				      const char *msg,
-				      ...) G_GNUC_PRINTF(2,3);
+                                             const char *msg,
+                                             ...) G_GNUC_PRINTF(2,3);
 
 
 /* DESCRIPTION   :  /
@@ -350,8 +353,8 @@ static void ekiga_main_window_flash_message (EkigaMainWindow *main_window,
  * PRE           : The main window GMObject, followed by printf syntax format.
  */
 static void ekiga_main_window_push_message (EkigaMainWindow *main_window,
-				     const char *msg,
-				     ...) G_GNUC_PRINTF(2,3);
+                                            const char *msg,
+                                            ...) G_GNUC_PRINTF(2,3);
 
 
 static
@@ -1124,6 +1127,8 @@ dialpad_button_clicked_cb (EkigaDialpad  * /* dialpad */,
 {
   if (mw->priv->current_call)
     mw->priv->current_call->send_dtmf (button_text[0]);
+  else
+    ekiga_main_window_append_call_url (mw, button_text);
 }
 
 
@@ -1381,6 +1386,29 @@ ekiga_main_window_incoming_call_notify (EkigaMainWindow *mw,
   g_free (body);
 }
 #endif
+
+
+static void
+ekiga_main_window_append_call_url (EkigaMainWindow *mw,
+				   const char *url)
+{
+  int pos = -1;
+  GtkEditable *entry;
+
+  g_return_if_fail (EKIGA_IS_MAIN_WINDOW (mw));
+  g_return_if_fail (url != NULL);
+
+  entry = GTK_EDITABLE (mw->priv->entry);
+
+  if (gtk_editable_get_selection_bounds (entry, NULL, NULL))
+    gtk_editable_delete_selection (entry);
+
+  pos = gtk_editable_get_position (entry);
+  gtk_editable_insert_text (entry, url, strlen (url), &pos);
+  gtk_editable_select_region (entry, -1, -1);
+  gtk_editable_set_position (entry, pos);
+}
+
 
 static const std::string
 ekiga_main_window_get_call_url (EkigaMainWindow *mw)
