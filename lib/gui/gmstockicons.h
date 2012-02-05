@@ -43,7 +43,6 @@ G_BEGIN_DECLS
 #define GM_ICON_ADD_CONTACT                "contact-new"
 #define GM_ICON_AUDIO_VOLUME_HIGH          "audio-volume-high"
 #define GM_ICON_BRIGHTNESS                 "stock_brightness"
-#define GM_ICON_CAMERA_VIDEO               "camera-video"
 #define GM_ICON_COLOURNESS                 "stock_color"
 #define GM_ICON_CONTRAST                   "stock_contrast"
 #define GM_ICON_INTERNET_GROUP_CHAT        "internet-group-chat"

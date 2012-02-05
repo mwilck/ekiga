@@ -92,7 +92,6 @@ gnomemeeting_stock_icons_init (void)
 		{ GM_ICON_ADD_CONTACT, 24, gm_add_contact_24_stock_data},
 	        { GM_ICON_AUDIO_VOLUME_HIGH, 16, gm_audio_volume_high_16_stock_data },
 		{ GM_ICON_BRIGHTNESS, 16, gm_brightness_16_stock_data},
-		{ GM_ICON_CAMERA_VIDEO, 16, gm_camera_video_16_stock_data },
 		{ GM_ICON_COLOURNESS, 16, gm_colourness_16_stock_data},
 		{ GM_ICON_CONTRAST, 16, gm_contrast_16_stock_data},
 		{ GM_ICON_INTERNET_GROUP_CHAT, 24, gm_internet_group_chat_24_stock_data },

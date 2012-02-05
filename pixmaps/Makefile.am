@@ -28,7 +28,6 @@ IMAGES_FILES= \
 	256x256/multimedia-headset.png \
 	256x256/avatar-default.png \
 	16x16/audio-volume-high.png \
-	16x16/camera-video.png \
 	16x16/media-playback-pause.png \
 	16x16/stock_brightness.png \
 	16x16/stock_channel-blue.png \
@@ -71,7 +70,6 @@ IMAGES= \
 	gm_add_contact_24_stock_data $(srcdir)/24x24/contact-new.png \
 	gm_audio_volume_high_16_stock_data $(srcdir)/16x16/audio-volume-high.png \
 	gm_brightness_16_stock_data $(srcdir)/16x16/stock_brightness.png \
-	gm_camera_video_16_stock_data $(srcdir)/16x16/camera-video.png \
 	gm_colourness_16_stock_data $(srcdir)/16x16/stock_color.png \
 	gm_contrast_16_stock_data $(srcdir)/16x16/stock_contrast.png \
 	gm_internet_group_chat_24_stock_data $(srcdir)/24x24/internet-group-chat.png \
