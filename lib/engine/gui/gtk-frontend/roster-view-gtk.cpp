@@ -61,9 +61,6 @@ struct _RosterViewGtkPrivate
   std::vector<boost::signals::connection> connections;
   GtkTreeStore *store;
   GtkTreeView *tree_view;
-  GtkWidget *vbox;
-  GtkWidget *scrolled_window;
-  GtkWidget* toolbar;
   GSList *folded_groups;
   gboolean show_offline_contacts;
 };
@@ -1346,6 +1343,8 @@ roster_view_gtk_finalize (GObject *obj)
 static void
 roster_view_gtk_init (G_GNUC_UNUSED RosterViewGtk* self)
 {
+  GtkWidget *scrolled_window;
+  GtkWidget *vbox = NULL;
   GtkTreeModel *filtered = NULL;
   GtkTreeSelection *selection = NULL;
   GtkTreeViewColumn *col = NULL;
@@ -1355,14 +1354,12 @@ roster_view_gtk_init (G_GNUC_UNUSED RosterViewGtk* self)
 
   self->priv->folded_groups = gm_conf_get_string_list ("/apps/" PACKAGE_NAME "/contacts/roster_folded_groups");
   self->priv->show_offline_contacts = gm_conf_get_bool ("/apps/" PACKAGE_NAME "/contacts/show_offline_contacts");
-  self->priv->vbox = gtk_vbox_new (FALSE, 0);
-  self->priv->scrolled_window = gtk_scrolled_window_new (NULL, NULL);
-  self->priv->toolbar = gtk_toolbar_new ();
-  gtk_toolbar_set_style (GTK_TOOLBAR (self->priv->toolbar), GTK_TOOLBAR_BOTH);
-  gtk_container_set_border_width (GTK_CONTAINER (self->priv->vbox), 0);
-  gtk_container_set_border_width (GTK_CONTAINER (self->priv->scrolled_window), 0);
+  vbox = gtk_vbox_new (FALSE, 0);
+  scrolled_window = gtk_scrolled_window_new (NULL, NULL);
+  gtk_container_set_border_width (GTK_CONTAINER (vbox), 0);
+  gtk_container_set_border_width (GTK_CONTAINER (scrolled_window), 0);
   gtk_frame_set_shadow_type (GTK_FRAME (self), GTK_SHADOW_NONE);
-  gtk_scrolled_window_set_policy (GTK_SCROLLED_WINDOW (self->priv->scrolled_window),
+  gtk_scrolled_window_set_policy (GTK_SCROLLED_WINDOW (scrolled_window),
 				  GTK_POLICY_AUTOMATIC, GTK_POLICY_AUTOMATIC);
 
   self->priv->store = gtk_tree_store_new (COLUMN_NUMBER,
@@ -1390,12 +1387,10 @@ roster_view_gtk_init (G_GNUC_UNUSED RosterViewGtk* self)
 
   gtk_tree_view_set_headers_visible (self->priv->tree_view, FALSE);
 
-  gtk_container_add (GTK_CONTAINER (self), GTK_WIDGET (self->priv->vbox));
-  gtk_box_pack_start (GTK_BOX (self->priv->vbox),
-		      GTK_WIDGET (self->priv->scrolled_window), TRUE, TRUE, 2);
-  gtk_box_pack_start (GTK_BOX (self->priv->vbox),
-		      self->priv->toolbar, FALSE, TRUE, 2);
-  gtk_container_add (GTK_CONTAINER (self->priv->scrolled_window),
+  gtk_container_add (GTK_CONTAINER (self), GTK_WIDGET (vbox));
+  gtk_box_pack_start (GTK_BOX (vbox),
+		      GTK_WIDGET (scrolled_window), TRUE, TRUE, 0);
+  gtk_container_add (GTK_CONTAINER (scrolled_window),
 		     GTK_WIDGET (self->priv->tree_view));
 
   /* Build the GtkTreeView */
