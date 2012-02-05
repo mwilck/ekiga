@@ -120,12 +120,15 @@ struct _EkigaMainWindowPrivate
   GtkAccelGroup *accel;
   GtkWidget *main_menu;
   GtkWidget *main_notebook;
-  GtkWidget *hpaned;
 
   /* Dialpad uri toolbar */
   GtkWidget *uri_toolbar;
   GtkWidget *entry;
   GtkListStore *completion;
+
+  /* Actions toolbar */
+  GtkWidget *actions_toolbar;
+  GtkWidget *preview_button;
 
   /* notebook pages
    *  (we store the numbers so we know where we are)
@@ -272,6 +275,24 @@ static void  show_widget_cb (GtkWidget * /*widget*/,
                              gpointer data);
 
 
+/* DESCRIPTION  :  This callback is called when the user clicks a button
+ *                 in the actions toolbar to change a page in the notebook.
+ * BEHAVIOR     :  Update the config key accordingly.
+ * PRE          :  A valid pointer to the main window GmObject.
+ */
+static void panel_section_action_clicked_cb (GtkWidget * /*widget*/,
+                                             gpointer data);
+
+
+/* DESCRIPTION  :  This callback is called when the user toggles the
+ *                 preview button in the actions toolbar.
+ * BEHAVIOR     :  Update the config key accordingly.
+ * PRE          :  A valid pointer to the main window GmObject.
+ */
+static void video_preview_action_toggled_cb (GtkToggleToolButton *b,
+                                             gpointer data);
+
+
 /* DESCRIPTION  :  This callback is called when the user changes the
  *                 page in the main notebook.
  * BEHAVIOR     :  Update the config key accordingly.
@@ -330,7 +351,17 @@ static gboolean statusbar_clicked_cb (GtkWidget *,
 				      GdkEventButton *,
 				      gpointer);
 
+/* DESCRIPTION  :  /
+ * BEHAVIOR     :  Creates the uri toolbar in the dialpad panel.
+ * PRE          :  The main window GMObject.
+ */
 static void ekiga_main_window_init_uri_toolbar (EkigaMainWindow *mw);
+
+/* DESCRIPTION  :  /
+ * BEHAVIOR     :  Creates the actions toolbar in the main window.
+ * PRE          :  The main window GMObject.
+ */
+static void ekiga_main_window_init_actions_toolbar (EkigaMainWindow *mw);
 
 static void ekiga_main_window_add_device_dialog_show (EkigaMainWindow *main_window,
                                                       const Ekiga::Device & device,
@@ -644,6 +675,10 @@ static void on_setup_call_cb (boost::shared_ptr<Ekiga::CallManager> manager,
 
     mw->priv->current_call = call;
   }
+
+  /* Unsensitive a few things */
+  gtk_widget_set_sensitive (GTK_WIDGET (mw->priv->uri_toolbar), false);
+  gtk_widget_set_sensitive (GTK_WIDGET (mw->priv->preview_button), false);
 }
 
 
@@ -706,6 +741,10 @@ static void on_cleared_call_cb (boost::shared_ptr<Ekiga::CallManager>  /*manager
   /* Hide call window */
   call_window = GnomeMeeting::Process ()->GetCallWindow ();
   gtk_widget_hide (call_window);
+
+  /* Sensitive a few things back */
+  gtk_widget_set_sensitive (GTK_WIDGET (mw->priv->uri_toolbar), true);
+  gtk_widget_set_sensitive (GTK_WIDGET (mw->priv->preview_button), true);
 }
 
 static void on_cleared_incoming_call_cb (std::string /*reason*/,
@@ -730,6 +769,10 @@ static void on_cleared_incoming_call_cb (std::string /*reason*/,
   /* Hide call window */
   call_window = GnomeMeeting::Process ()->GetCallWindow ();
   gtk_widget_hide (call_window);
+
+  /* Sensitive a few things back */
+  gtk_widget_set_sensitive (GTK_WIDGET (mw->priv->uri_toolbar), true);
+  gtk_widget_set_sensitive (GTK_WIDGET (mw->priv->preview_button), true);
 }
 
 
@@ -1107,6 +1150,22 @@ show_widget_cb (GtkWidget * /*widget*/,
   g_return_if_fail (data != NULL);
 
   gtk_widget_show_all (GTK_WIDGET (data));
+}
+
+
+static void
+panel_section_action_clicked_cb (GtkWidget * /*widget*/,
+                                 gpointer data)
+{
+  gm_conf_set_int (USER_INTERFACE_KEY "main_window/panel_section", GPOINTER_TO_INT (data));
+}
+
+
+static void
+video_preview_action_toggled_cb (GtkToggleToolButton *b,
+                                 G_GNUC_UNUSED gpointer data)
+{
+  gm_conf_set_bool (VIDEO_DEVICES_KEY "enable_preview", gtk_toggle_tool_button_get_active (b));
 }
 
 
@@ -1581,6 +1640,60 @@ ekiga_main_window_init_uri_toolbar (EkigaMainWindow *mw)
 }
 
 static void
+ekiga_main_window_init_actions_toolbar (EkigaMainWindow *mw)
+{
+  GtkWidget *image = NULL;
+  GtkToolItem *item = NULL;
+
+  g_return_if_fail (EKIGA_IS_MAIN_WINDOW (mw));
+
+  /* The call horizontal toolbar */
+  mw->priv->actions_toolbar = gtk_toolbar_new ();
+  gtk_toolbar_set_style (GTK_TOOLBAR (mw->priv->actions_toolbar), GTK_TOOLBAR_ICONS);
+  gtk_toolbar_set_show_arrow (GTK_TOOLBAR (mw->priv->actions_toolbar), FALSE);
+
+  /* The video preview button */
+  image = gtk_image_new_from_icon_name ("camera-video", GTK_ICON_SIZE_MENU);
+  mw->priv->preview_button = GTK_WIDGET (gtk_toggle_tool_button_new ());
+  gtk_tool_button_set_icon_widget (GTK_TOOL_BUTTON (mw->priv->preview_button), image);
+  gtk_tool_item_set_expand (GTK_TOOL_ITEM (mw->priv->preview_button), false);
+  gtk_toolbar_insert (GTK_TOOLBAR (mw->priv->actions_toolbar), GTK_TOOL_ITEM (mw->priv->preview_button), -1);
+  gtk_toggle_tool_button_set_active (GTK_TOGGLE_TOOL_BUTTON (mw->priv->preview_button),
+                                     gm_conf_get_bool (VIDEO_DEVICES_KEY "enable_preview"));
+  g_signal_connect (mw->priv->preview_button, "toggled",
+                    G_CALLBACK (video_preview_action_toggled_cb), NULL);
+
+  /* Separator */
+  item = gtk_separator_tool_item_new ();
+  gtk_toolbar_insert (GTK_TOOLBAR (mw->priv->actions_toolbar),
+		      GTK_TOOL_ITEM (item), -1);
+
+  /* The roster button */
+  image = gtk_image_new_from_icon_name ("avatar-default", GTK_ICON_SIZE_MENU);
+  item = gtk_tool_button_new (image, NULL);
+  gtk_tool_item_set_expand (GTK_TOOL_ITEM (item), false);
+  gtk_toolbar_insert (GTK_TOOLBAR (mw->priv->actions_toolbar), item, -1);
+  g_signal_connect (item, "clicked",
+                    G_CALLBACK (panel_section_action_clicked_cb), GINT_TO_POINTER (CONTACTS));
+
+  /* The dialpad button */
+  image = gtk_image_new_from_icon_name ("input-dialpad", GTK_ICON_SIZE_MENU);
+  item = gtk_tool_button_new (image, NULL);
+  gtk_tool_item_set_expand (GTK_TOOL_ITEM (item), false);
+  gtk_toolbar_insert (GTK_TOOLBAR (mw->priv->actions_toolbar), item, -1);
+  g_signal_connect (item, "clicked",
+                    G_CALLBACK (panel_section_action_clicked_cb), GINT_TO_POINTER (DIALPAD));
+
+  /* The history button */
+  image = gtk_image_new_from_icon_name ("document-open-recent", GTK_ICON_SIZE_MENU);
+  item = gtk_tool_button_new (image, NULL);
+  gtk_tool_item_set_expand (GTK_TOOL_ITEM (item), false);
+  gtk_toolbar_insert (GTK_TOOLBAR (mw->priv->actions_toolbar), item, -1);
+  g_signal_connect (item, "clicked",
+                    G_CALLBACK (panel_section_action_clicked_cb), GINT_TO_POINTER (CALL));
+}
+
+static void
 ekiga_main_window_init_menu (EkigaMainWindow *mw)
 {
   GtkWidget *addressbook_window = NULL;
@@ -1823,25 +1936,27 @@ ekiga_main_window_init_gui (EkigaMainWindow *mw)
   gtk_box_pack_start (GTK_BOX (window_vbox), mw->priv->main_menu,
                       FALSE, FALSE, 0);
 
+  /* The actions toolbar */
+  ekiga_main_window_init_actions_toolbar (mw);
+  gtk_box_pack_start (GTK_BOX (window_vbox), mw->priv->actions_toolbar,
+                      false, false, 0);
+
   /* The status toolbar */
   ekiga_main_window_init_status_toolbar (mw);
   gtk_box_pack_start (GTK_BOX (window_vbox), mw->priv->status_toolbar,
                       false, true, 0);
 
-  /* The 2 parts of the gui */
-  mw->priv->hpaned = gtk_hpaned_new ();
-  gtk_box_pack_start (GTK_BOX (window_vbox), mw->priv->hpaned,
-                      true, true, 0);
-
+  /* The notebook pages */
   mw->priv->main_notebook = gtk_notebook_new ();
   gtk_notebook_popup_enable (GTK_NOTEBOOK (mw->priv->main_notebook));
-  gtk_notebook_set_show_tabs (GTK_NOTEBOOK (mw->priv->main_notebook), true);
-  gtk_notebook_set_scrollable (GTK_NOTEBOOK (mw->priv->main_notebook), true);
+  gtk_notebook_set_show_tabs (GTK_NOTEBOOK (mw->priv->main_notebook), false);
+  gtk_notebook_set_scrollable (GTK_NOTEBOOK (mw->priv->main_notebook), false);
 
   ekiga_main_window_init_contact_list (mw);
   ekiga_main_window_init_dialpad (mw);
   ekiga_main_window_init_history (mw);
-  gtk_paned_pack1 (GTK_PANED (mw->priv->hpaned), mw->priv->main_notebook, true, false);
+  gtk_box_pack_start (GTK_BOX (window_vbox), mw->priv->main_notebook,
+                      true, true, 0);
 
   /* The statusbar */
   gtk_statusbar_set_has_resize_grip (GTK_STATUSBAR (mw->priv->statusbar), TRUE);
@@ -1858,12 +1973,10 @@ ekiga_main_window_init_gui (EkigaMainWindow *mw)
   g_signal_connect_after (mw->priv->main_notebook, "switch-page",
 			  G_CALLBACK (panel_section_changed_cb),
 			  mw);
+  gtk_widget_show_all (window_vbox);
 
   /* Show the current panel section */
-  PanelSection section = (PanelSection)
-    gm_conf_get_int (USER_INTERFACE_KEY "main_window/panel_section");
-  gtk_widget_show (mw->priv->hpaned);
-  gtk_widget_show_all (gtk_paned_get_child1 (GTK_PANED (mw->priv->hpaned)));
+  PanelSection section = (PanelSection) gm_conf_get_int (USER_INTERFACE_KEY "main_window/panel_section");
   gtk_notebook_set_current_page (GTK_NOTEBOOK (mw->priv->main_notebook), section);
 }
 
@@ -2088,6 +2201,7 @@ ekiga_main_window_connect_engine_signals (EkigaMainWindow *mw)
   mw->priv->connections.push_back (conn);
 }
 
+//FIXME the following 2 functions are weird: shouldn't they be merged?
 GtkWidget *
 ekiga_main_window_new (Ekiga::ServiceCore *core)
 {

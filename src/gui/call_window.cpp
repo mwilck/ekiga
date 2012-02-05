@@ -130,7 +130,6 @@ struct _EkigaCallWindowPrivate
 
   GtkWidget *main_menu;
   GtkWidget *call_panel_toolbar;
-  GtkWidget *preview_button;
   GtkWidget *hold_button;
   GtkWidget *audio_settings_button;
   GtkWidget *video_settings_button;
@@ -237,9 +236,6 @@ static void fullscreen_changed_cb (GtkWidget *widget,
 static void stay_on_top_changed_nt (gpointer id,
                                     GmConfEntry *entry,
                                     gpointer data);
-
-static void toolbar_toggle_button_changed_cb (GtkWidget *widget,
-                                              gpointer data);
 
 static void hangup_call_cb (GtkWidget * /*widget*/,
                             gpointer data);
@@ -590,15 +586,6 @@ fullscreen_changed_cb (G_GNUC_UNUSED GtkWidget *widget,
 }
 
 static void
-toolbar_toggle_button_changed_cb (G_GNUC_UNUSED GtkWidget *widget,
-				  gpointer data)
-{
-  bool shown = gm_conf_get_bool ((gchar *) data);
-
-  gm_conf_set_bool ((gchar *) data, !shown);
-}
-
-static void
 hangup_call_cb (GtkWidget * /*widget*/,
                 gpointer data)
 {
@@ -735,6 +722,8 @@ on_videooutput_device_opened_cb (Ekiga::VideoOutputManager & /* manager */,
   EkigaCallWindow *cw = EKIGA_CALL_WINDOW (self);
   int vv;
 
+  gtk_widget_show_all (GTK_WIDGET (cw));
+
   if (both_streams) {
     gtk_menu_section_set_sensitive (cw->priv->main_menu, "local_video", TRUE);
     gtk_menu_section_set_sensitive (cw->priv->main_menu, "fullscreen", TRUE);
@@ -768,6 +757,9 @@ on_videooutput_device_closed_cb (Ekiga::VideoOutputManager & /* manager */, gpoi
   gtk_menu_section_set_sensitive (cw->priv->main_menu, "local_video", FALSE);
   gtk_menu_section_set_sensitive (cw->priv->main_menu, "fullscreen", TRUE);
   gtk_menu_section_set_sensitive (cw->priv->main_menu, "zoom_in", FALSE);
+
+  if (cw->priv->calling_state == Standby)
+    gtk_widget_hide (GTK_WIDGET (cw));
 }
 
 //FIXME Set_stay_on_top "window_show object"
@@ -849,6 +841,8 @@ on_size_changed_cb (Ekiga::VideoOutputManager & /* manager */,
   EkigaCallWindow *cw = EKIGA_CALL_WINDOW (self);
 
   ekiga_call_window_set_video_size (EKIGA_CALL_WINDOW (cw), width, height);
+
+  gtk_widget_show_all (GTK_WIDGET (cw));
 }
 
 static void
@@ -875,6 +869,7 @@ on_videoinput_device_closed_cb (Ekiga::VideoInputManager & /* manager */,
                                 gpointer self)
 {
   EkigaCallWindow *cw = EKIGA_CALL_WINDOW (self);
+
 
   ekiga_call_window_channels_menu_update_sensitivity (cw, TRUE, FALSE, FALSE);
   ekiga_call_window_update_logo (cw);
@@ -1349,7 +1344,6 @@ ekiga_call_window_update_calling_state (EkigaCallWindow *cw,
       gtk_menu_set_sensitive (cw->priv->main_menu, "disconnect", FALSE);
       gtk_menu_section_set_sensitive (cw->priv->main_menu, "hold_call", FALSE);
       gtk_widget_set_sensitive (GTK_WIDGET (cw->priv->hold_button), FALSE);
-      gtk_widget_set_sensitive (GTK_WIDGET (cw->priv->preview_button), TRUE);
 
       /* Destroy the transfer call popup */
       if (cw->priv->transfer_call_popup)
@@ -1362,7 +1356,6 @@ ekiga_call_window_update_calling_state (EkigaCallWindow *cw,
 
       /* Update the menus and toolbar items */
       gtk_menu_set_sensitive (cw->priv->main_menu, "disconnect", TRUE);
-      gtk_widget_set_sensitive (GTK_WIDGET (cw->priv->preview_button), FALSE);
       break;
 
 
@@ -1372,7 +1365,6 @@ ekiga_call_window_update_calling_state (EkigaCallWindow *cw,
       gtk_menu_set_sensitive (cw->priv->main_menu, "disconnect", TRUE);
       gtk_menu_section_set_sensitive (cw->priv->main_menu, "hold_call", TRUE);
       gtk_widget_set_sensitive (GTK_WIDGET (cw->priv->hold_button), TRUE);
-      gtk_widget_set_sensitive (GTK_WIDGET (cw->priv->preview_button), FALSE);
       break;
 
 
@@ -2438,28 +2430,6 @@ ekiga_call_window_init_gui (EkigaCallWindow *cw)
   g_signal_connect (cw->priv->video_settings_button, "clicked",
 		    G_CALLBACK (show_window_cb),
 		    (gpointer) cw->priv->video_settings_window);
-
-  /* Video Preview Button */
-  item = gtk_tool_item_new ();
-  cw->priv->preview_button = gtk_toggle_button_new ();
-  gtk_button_set_relief (GTK_BUTTON (cw->priv->preview_button), GTK_RELIEF_NONE);
-  gtk_toggle_button_set_active (GTK_TOGGLE_BUTTON (cw->priv->preview_button),
-                                gm_conf_get_bool (VIDEO_DEVICES_KEY "enable_preview"));
-  image = gtk_image_new_from_icon_name (GM_ICON_CAMERA_VIDEO,
-                                        GTK_ICON_SIZE_MENU);
-  gtk_container_add (GTK_CONTAINER (cw->priv->preview_button), image);
-  gtk_container_add (GTK_CONTAINER (item), cw->priv->preview_button);
-  gtk_tool_item_set_expand (GTK_TOOL_ITEM (item), FALSE);
-
-  gtk_widget_show (cw->priv->preview_button);
-  gtk_toolbar_insert (GTK_TOOLBAR (cw->priv->call_panel_toolbar),
-		      GTK_TOOL_ITEM (item), -1);
-  gtk_tool_item_set_tooltip_text (GTK_TOOL_ITEM (item),
-				  _("Display images from your camera device"));
-
-  g_signal_connect (cw->priv->preview_button, "toggled",
-		    G_CALLBACK (toolbar_toggle_button_changed_cb),
-		    (gpointer) VIDEO_DEVICES_KEY "enable_preview");
 
   /* Call Pause */
   item = gtk_tool_item_new ();
