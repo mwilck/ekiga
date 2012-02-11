@@ -757,9 +757,6 @@ on_videooutput_device_closed_cb (Ekiga::VideoOutputManager & /* manager */, gpoi
   gtk_menu_section_set_sensitive (cw->priv->main_menu, "local_video", FALSE);
   gtk_menu_section_set_sensitive (cw->priv->main_menu, "fullscreen", TRUE);
   gtk_menu_section_set_sensitive (cw->priv->main_menu, "zoom_in", FALSE);
-
-  if (cw->priv->calling_state == Standby)
-    gtk_widget_hide (GTK_WIDGET (cw));
 }
 
 //FIXME Set_stay_on_top "window_show object"

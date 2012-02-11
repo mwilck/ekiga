@@ -1165,6 +1165,18 @@ static void
 video_preview_action_toggled_cb (GtkToggleToolButton *b,
                                  G_GNUC_UNUSED gpointer data)
 {
+  EkigaMainWindow *mw = EKIGA_MAIN_WINDOW (data);
+  GtkWidget *call_window = GnomeMeeting::Process ()->GetCallWindow ();
+
+  g_return_if_fail (EKIGA_IS_MAIN_WINDOW (mw));
+
+  if (mw->priv->calling_state == Standby) {
+    if (gtk_toggle_tool_button_get_active (b))
+      gtk_widget_hide (call_window);
+    else
+      gtk_widget_show_all (call_window);
+  }
+
   gm_conf_set_bool (VIDEO_DEVICES_KEY "enable_preview", gtk_toggle_tool_button_get_active (b));
 }
 
@@ -1661,7 +1673,7 @@ ekiga_main_window_init_actions_toolbar (EkigaMainWindow *mw)
   gtk_toggle_tool_button_set_active (GTK_TOGGLE_TOOL_BUTTON (mw->priv->preview_button),
                                      gm_conf_get_bool (VIDEO_DEVICES_KEY "enable_preview"));
   g_signal_connect (mw->priv->preview_button, "toggled",
-                    G_CALLBACK (video_preview_action_toggled_cb), NULL);
+                    G_CALLBACK (video_preview_action_toggled_cb), (gpointer) mw);
 
   /* Separator */
   item = gtk_separator_tool_item_new ();
