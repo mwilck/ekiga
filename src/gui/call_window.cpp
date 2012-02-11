@@ -839,18 +839,6 @@ on_size_changed_cb (Ekiga::VideoOutputManager & /* manager */,
 
   ekiga_call_window_set_video_size (EKIGA_CALL_WINDOW (cw), width, height);
 
-  // If the video is too small, enable automatic zooming
-  if (width <= GM_QCIF_WIDTH && height <= GM_QCIF_HEIGHT) {
-    Ekiga::DisplayInfo display_info;
-    display_info.zoom = gm_conf_get_int (VIDEO_DISPLAY_KEY "zoom");
-
-    if (display_info.zoom < 200)
-      display_info.zoom = display_info.zoom * 2;
-
-    gm_conf_set_int (VIDEO_DISPLAY_KEY "zoom", display_info.zoom);
-    ekiga_call_window_zooms_menu_update_sensitivity (cw, display_info.zoom);
-  }
-
   gtk_widget_show_all (GTK_WIDGET (cw));
 }
 
