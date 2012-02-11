@@ -123,10 +123,7 @@ struct _EkigaCallWindowPrivate
   GtkWidget *main_video_image;
   GtkWidget *info_text;
 
-  GtkTextTag *status_tag;
-  GtkTextTag *codecs_tag;
-  GtkTextTag *call_duration_tag;
-  GtkTextTag *bandwidth_tag;
+  GtkWidget *call_frame;
 
   GtkWidget *main_menu;
   GtkWidget *call_panel_toolbar;
@@ -411,19 +408,14 @@ static void ekiga_call_window_update_stats (EkigaCallWindow *cw,
                                             unsigned int re_width,
                                             unsigned int re_height,
                                             unsigned int tr_width,
-                                            unsigned int tr_height);
-
-static void ekiga_call_window_set_call_info (EkigaCallWindow *cw,
-                                             const char *tr_audio_codec,
-                                             const char *re_audio_codec,
-                                             const char *tr_video_codec,
-                                             const char *re_video_codec);
+                                            unsigned int tr_height,
+                                            const char *tr_audio_codec,
+                                            const char *tr_video_codec);
 
 static void ekiga_call_window_set_status (EkigaCallWindow *cw,
-                                          const char *status);
-
-static void ekiga_call_window_set_call_duration (EkigaCallWindow *cw,
-                                                 const char *duration);
+                                          const char *status,
+                                          const char *duration,
+                                          const char *who);
 
 static void ekiga_call_window_set_bandwidth (EkigaCallWindow *cw,
                                              float ta,
@@ -722,7 +714,7 @@ on_videooutput_device_opened_cb (Ekiga::VideoOutputManager & /* manager */,
   EkigaCallWindow *cw = EKIGA_CALL_WINDOW (self);
   int vv;
 
-  gtk_widget_show_all (GTK_WIDGET (cw));
+  gtk_widget_show (GTK_WIDGET (cw));
 
   if (both_streams) {
     gtk_menu_section_set_sensitive (cw->priv->main_menu, "local_video", TRUE);
@@ -839,7 +831,7 @@ on_size_changed_cb (Ekiga::VideoOutputManager & /* manager */,
 
   ekiga_call_window_set_video_size (EKIGA_CALL_WINDOW (cw), width, height);
 
-  gtk_widget_show_all (GTK_WIDGET (cw));
+  gtk_widget_show (GTK_WIDGET (cw));
 }
 
 static void
@@ -1093,12 +1085,11 @@ on_established_call_cb (boost::shared_ptr<Ekiga::CallManager>  /*manager*/,
 
   /* %s is the SIP/H.323 address of the remote user, this text is shown
      below video during a call */
-  info = g_strdup_printf (_("Connected with %s"),
-			  call->get_remote_party_name ().c_str ());
+  info = g_strdup (_("Connected"));
 
   if (gm_conf_get_bool (VIDEO_DISPLAY_KEY "stay_on_top"))
     ekiga_call_window_set_stay_on_top (cw, TRUE);
-  ekiga_call_window_set_status (cw, info);
+  ekiga_call_window_set_status (cw, info, NULL, call->get_remote_party_name ().c_str ());
   ekiga_call_window_update_calling_state (cw, Connected);
 
   cw->priv->current_call = call;
@@ -1122,10 +1113,8 @@ on_cleared_call_cb (G_GNUC_UNUSED boost::shared_ptr<Ekiga::CallManager> manager,
   if (gm_conf_get_bool (VIDEO_DISPLAY_KEY "stay_on_top"))
     ekiga_call_window_set_stay_on_top (cw, FALSE);
   ekiga_call_window_update_calling_state (cw, Standby);
-  ekiga_call_window_set_status (cw, _("Standby"));
-  ekiga_call_window_set_call_duration (cw, NULL);
+  ekiga_call_window_set_status (cw, _("Standby"), NULL, NULL);
   ekiga_call_window_set_bandwidth (cw, 0.0, 0.0, 0.0, 0.0, 0, 0);
-  ekiga_call_window_set_call_info (cw, NULL, NULL, NULL, NULL);
   ekiga_call_window_clear_stats (cw);
   ekiga_call_window_update_logo (cw);
 
@@ -1281,7 +1270,7 @@ on_stats_refresh_cb (gpointer self)
     boost::shared_ptr<Ekiga::VideoOutputCore> videooutput_core = cw->priv->core->get<Ekiga::VideoOutputCore> ("videooutput-core");
     videooutput_core->get_videooutput_stats(videooutput_stats);
 
-    ekiga_call_window_set_call_duration (cw, cw->priv->current_call->get_duration ().c_str ());
+    ekiga_call_window_set_status (cw, NULL, cw->priv->current_call->get_duration ().c_str (), NULL);
     ekiga_call_window_set_bandwidth (cw,
                                      cw->priv->current_call->get_transmitted_audio_bandwidth (),
                                      cw->priv->current_call->get_received_audio_bandwidth (),
@@ -1299,7 +1288,9 @@ on_stats_refresh_cb (gpointer self)
                                     videooutput_stats.rx_width,
                                     videooutput_stats.rx_height,
                                     videooutput_stats.tx_width,
-                                    videooutput_stats.tx_height);
+                                    videooutput_stats.tx_height,
+                                    cw->priv->transmitted_audio_codec.c_str (),
+                                    cw->priv->transmitted_video_codec.c_str ());
   }
 
   return true;
@@ -1333,6 +1324,9 @@ ekiga_call_window_update_calling_state (EkigaCallWindow *cw,
     {
     case Standby:
 
+      /* Show/hide call frame */
+      gtk_widget_hide (cw->priv->call_frame);
+
       /* Update the hold state */
       ekiga_call_window_set_call_hold (cw, FALSE);
 
@@ -1354,12 +1348,18 @@ ekiga_call_window_update_calling_state (EkigaCallWindow *cw,
 
     case Calling:
 
+      /* Show/hide call frame */
+      gtk_widget_show (cw->priv->call_frame);
+
       /* Update the menus and toolbar items */
       gtk_menu_set_sensitive (cw->priv->main_menu, "disconnect", TRUE);
       break;
 
 
     case Connected:
+
+      /* Show/hide call frame */
+      gtk_widget_show (cw->priv->call_frame);
 
       /* Update the menus and toolbar items */
       gtk_menu_set_sensitive (cw->priv->main_menu, "disconnect", TRUE);
@@ -1369,6 +1369,9 @@ ekiga_call_window_update_calling_state (EkigaCallWindow *cw,
 
 
     case Called:
+
+      /* Show/hide call frame */
+      gtk_widget_show (cw->priv->call_frame);
 
       /* Update the menus and toolbar items */
       gtk_menu_set_sensitive (cw->priv->main_menu, "disconnect", TRUE);
@@ -1403,7 +1406,7 @@ ekiga_call_window_clear_stats (EkigaCallWindow *cw)
 {
   g_return_if_fail (EKIGA_IS_CALL_WINDOW (cw));
 
-  ekiga_call_window_update_stats (cw, 0, 0, 0, 0, 0, 0, 0, 0);
+  ekiga_call_window_update_stats (cw, 0, 0, 0, 0, 0, 0, 0, 0, NULL, NULL);
   if (cw->priv->qualitymeter)
     gm_powermeter_set_level (GM_POWERMETER (cw->priv->qualitymeter), 0.0);
 }
@@ -1418,11 +1421,14 @@ ekiga_call_window_update_stats (EkigaCallWindow *cw,
 				unsigned int re_width,
 				unsigned int re_height,
 				unsigned int tr_width,
-				unsigned int tr_height)
+				unsigned int tr_height,
+                                const char *tr_audio_codec,
+                                const char *tr_video_codec)
 {
   gchar *stats_msg = NULL;
   gchar *stats_msg_tr = NULL;
   gchar *stats_msg_re = NULL;
+  gchar *stats_msg_codecs = NULL;
 
   int jitter_quality = 0;
   gfloat quality_level = 0.0;
@@ -1432,24 +1438,36 @@ ekiga_call_window_update_stats (EkigaCallWindow *cw,
   if ((tr_width > 0) && (tr_height > 0))
     /* Translators: TX is a common abbreviation for "transmit".  As it
      * is shown in a tooltip, there is no space constraint */
-    stats_msg_tr = g_strdup_printf (_("TX: %dx%d "), tr_width, tr_height);
+    stats_msg_tr = g_strdup_printf (_("TX: %dx%d"), tr_width, tr_height);
+  else
+    stats_msg_tr = g_strdup (_("TX: / "));
 
   if ((re_width > 0) && (re_height > 0))
     /* Translators: RX is a common abbreviation for "receive".  As it
      * is shown in a tooltip, there is no space constraint */
-    stats_msg_re = g_strdup_printf (_("RX: %dx%d "), re_width, re_height);
+    stats_msg_re = g_strdup_printf (_("RX: %dx%d"), re_width, re_height);
+  else
+    stats_msg_re = g_strdup (_("RX: / "));
 
-  stats_msg = g_strdup_printf (_("Lost packets: %.1f %%\nLate packets: %.1f %%\nOut of order packets: %.1f %%\nJitter buffer: %d ms%s%s%s"),
+  if (!tr_audio_codec && !tr_video_codec)
+    stats_msg_codecs = g_strdup (" ");
+  else
+    stats_msg_codecs = g_strdup_printf ("%s - %s",
+                                        tr_audio_codec?tr_audio_codec:"",
+                                        tr_video_codec?tr_video_codec:"");
+
+  stats_msg = g_strdup_printf (_("Lost packets: %.1f %%\nLate packets: %.1f %%\nOut of order packets: %.1f %%\nJitter buffer: %d ms\nCodecs: %s\nResolution: %s %s"),
                                   lost,
                                   late,
                                   out_of_order,
                                   jitter,
-                                  (stats_msg_tr || stats_msg_re) ? "\nResolution: " : "",
-                                  (stats_msg_tr) ? stats_msg_tr : "",
-                                  (stats_msg_re) ? stats_msg_re : "");
+                                  stats_msg_codecs,
+                                  stats_msg_tr,
+                                  stats_msg_re);
 
   g_free(stats_msg_tr);
   g_free(stats_msg_re);
+  g_free(stats_msg_codecs);
 
   if (cw->priv->statusbar_ebox) {
     gtk_widget_set_tooltip_text (GTK_WIDGET (cw), stats_msg);
@@ -1492,95 +1510,64 @@ ekiga_call_window_update_stats (EkigaCallWindow *cw,
 			     quality_level);
 }
 
-static void
-ekiga_call_window_set_call_info (EkigaCallWindow *cw,
-				const char *tr_audio_codec,
-				G_GNUC_UNUSED const char *re_audio_codec,
-				const char *tr_video_codec,
-				G_GNUC_UNUSED const char *re_video_codec)
-{
-  GtkTextIter iter;
-  GtkTextIter *end_iter = NULL;
-  GtkTextBuffer *buffer = NULL;
-
-  gchar *info = NULL;
-
-  g_return_if_fail (EKIGA_IS_CALL_WINDOW (cw));
-
-  if (!tr_audio_codec && !tr_video_codec)
-    info = g_strdup (" \n");
-  else
-    info = g_strdup_printf ("%s - %s\n",
-                            tr_audio_codec?tr_audio_codec:"",
-                            tr_video_codec?tr_video_codec:"");
-
-  buffer = gtk_text_view_get_buffer (GTK_TEXT_VIEW (cw->priv->info_text));
-  gtk_text_buffer_get_start_iter (buffer, &iter);
-  gtk_text_iter_forward_lines (&iter, 3);
-  end_iter = gtk_text_iter_copy (&iter);
-  gtk_text_iter_forward_line (end_iter);
-  gtk_text_buffer_delete (buffer, &iter, end_iter);
-  gtk_text_iter_free (end_iter);
-  gtk_text_buffer_insert_with_tags_by_name (buffer, &iter, info,
-                                            -1, "codecs", NULL);
-  g_free (info);
-}
-
 
 static void
 ekiga_call_window_set_status (EkigaCallWindow *cw,
-			      const char *status)
+			      const char *status,
+                              const char *duration,
+                              const char *who)
 {
   GtkTextIter iter;
-  GtkTextIter* end_iter = NULL;
+  GtkTextIter mark_iter;
   GtkTextBuffer *buffer = NULL;
+  GtkTextMark *status_mark = NULL;
+  GtkTextMark *mark = NULL;
 
   gchar *info = NULL;
 
   g_return_if_fail (EKIGA_IS_CALL_WINDOW (cw));
-
-  info = g_strdup_printf ("%s\n", status);
 
   buffer = gtk_text_view_get_buffer (GTK_TEXT_VIEW (cw->priv->info_text));
   gtk_text_buffer_get_start_iter (buffer, &iter);
-  end_iter = gtk_text_iter_copy (&iter);
-  gtk_text_iter_forward_line (end_iter);
-  gtk_text_buffer_delete (buffer, &iter, end_iter);
-  gtk_text_iter_free (end_iter);
-  gtk_text_buffer_insert_with_tags_by_name (buffer, &iter, info,
-                                            -1, "status", NULL);
-  g_free (info);
-}
 
+  if (who) {
 
-static void
-ekiga_call_window_set_call_duration (EkigaCallWindow *cw,
-                                     const char *duration)
-{
-  GtkTextIter iter;
-  GtkTextIter* end_iter = NULL;
-  GtkTextBuffer *buffer = NULL;
-
-  gchar *info = NULL;
-
-  g_return_if_fail (EKIGA_IS_CALL_WINDOW (cw));
-
-  if (duration)
-    info = g_strdup_printf (_("%s\n"), duration);
+    info = g_strdup_printf ("%s\n", who);
+    gtk_text_buffer_insert_with_tags_by_name (buffer, &iter, info,
+                                              -1, "who", NULL);
+    g_free (info);
+  }
   else
-    info = g_strdup ("\n");
+    gtk_text_iter_forward_line (&iter);
 
-  buffer = gtk_text_view_get_buffer (GTK_TEXT_VIEW (cw->priv->info_text));
-  gtk_text_buffer_get_start_iter (buffer, &iter);
-  gtk_text_iter_forward_line (&iter);
-  end_iter = gtk_text_iter_copy (&iter);
-  gtk_text_iter_forward_line (end_iter);
-  gtk_text_buffer_delete (buffer, &iter, end_iter);
-  gtk_text_iter_free (end_iter);
-  gtk_text_buffer_insert_with_tags_by_name (buffer, &iter, info,
-                                            -1, "call-duration", NULL);
+  if (status) {
+    mark = gtk_text_buffer_get_mark (buffer, "status");
+    if (mark) {
+      gtk_text_buffer_get_iter_at_mark (buffer, &mark_iter, mark);
+      gtk_text_buffer_delete (buffer, &iter, &mark_iter);
+    }
 
-  g_free (info);
+    info = g_strdup_printf ("%s", status);
+    gtk_text_buffer_insert_with_tags_by_name (buffer, &iter, info,
+                                              -1, "status", NULL);
+    gtk_text_buffer_create_mark (buffer, "status", &iter, true);
+    g_free (info);
+  }
+
+  status_mark = gtk_text_buffer_get_mark (buffer, "status");
+  if (status_mark && duration) {
+    mark = gtk_text_buffer_get_mark (buffer, "duration");
+    gtk_text_buffer_get_iter_at_mark (buffer, &iter, status_mark);
+    if (mark) {
+      gtk_text_buffer_get_iter_at_mark (buffer, &mark_iter, mark);
+      gtk_text_buffer_delete (buffer, &iter, &mark_iter);
+    }
+    info = g_strdup_printf (" (%s)", duration);
+    gtk_text_buffer_insert_with_tags_by_name (buffer, &iter, info,
+                                              -1, "status", NULL);
+    gtk_text_buffer_create_mark (buffer, "duration", &iter, true);
+    g_free (info);
+  }
 }
 
 
@@ -1593,10 +1580,6 @@ ekiga_call_window_set_bandwidth (EkigaCallWindow *cw,
                                  int tfps,
                                  int rfps)
 {
-  GtkTextIter iter;
-  GtkTextIter* end_iter = NULL;
-  GtkTextBuffer *buffer = NULL;
-
   gchar *msg = NULL;
 
   g_return_if_fail (EKIGA_IS_CALL_WINDOW (cw));
@@ -1604,18 +1587,8 @@ ekiga_call_window_set_bandwidth (EkigaCallWindow *cw,
   if (ta > 0.0 || ra > 0.0 || tv > 0.0 || rv > 0.0 || tfps > 0 || rfps > 0)
     msg = g_strdup_printf (_("A:%.1f/%.1f   V:%.1f/%.1f   FPS:%d/%d\n"),
                            ta, ra, tv, rv, tfps, rfps);
-  else
-    msg = g_strdup (" \n");
-  buffer = gtk_text_view_get_buffer (GTK_TEXT_VIEW (cw->priv->info_text));
-  gtk_text_buffer_get_start_iter (buffer, &iter);
-  gtk_text_iter_forward_lines (&iter, 2);
-  end_iter = gtk_text_iter_copy (&iter);
-  gtk_text_iter_forward_line (end_iter);
-  gtk_text_buffer_delete (buffer, &iter, end_iter);
-  gtk_text_iter_free (end_iter);
-  gtk_text_buffer_insert_with_tags_by_name (buffer, &iter, msg,
-                                            -1, "bandwidth", NULL);
 
+  gm_statusbar_push_message (GM_STATUSBAR (cw->priv->statusbar), msg);
   g_free (msg);
 }
 
@@ -2272,10 +2245,13 @@ ekiga_call_window_init_gui (EkigaCallWindow *cw)
 {
   GtkWidget *event_box = NULL;
   GtkWidget *vbox = NULL;
+  GtkWidget *hbox = NULL;
   GtkWidget *button = NULL;
   GtkWidget *frame = NULL;
 
   GtkToolItem *item = NULL;
+
+  GtkTextBuffer *buffer = NULL;
 
   GtkWidget *image = NULL;
   GtkWidget *alignment = NULL;
@@ -2317,52 +2293,36 @@ ekiga_call_window_init_gui (EkigaCallWindow *cw)
   gtk_box_pack_start (GTK_BOX (vbox), GTK_WIDGET (alignment), TRUE, TRUE, 0);
 
   /* The frame that contains information about the call */
-  /* Text buffer */
-  GtkTextBuffer *buffer = NULL;
+  cw->priv->call_frame = gtk_frame_new (NULL);
+  gtk_frame_set_shadow_type (GTK_FRAME (cw->priv->call_frame), GTK_SHADOW_ETCHED_IN);
+  hbox = gtk_hbox_new (FALSE, 2);
+
+  image = gtk_image_new_from_stock (GM_STOCK_STATUS_UNKNOWN, GTK_ICON_SIZE_MENU);
+  gtk_box_pack_start (GTK_BOX (hbox), image, false, false, 2);
 
   cw->priv->info_text = gtk_text_view_new ();
   gtk_text_view_set_editable (GTK_TEXT_VIEW (cw->priv->info_text), FALSE);
   gtk_widget_set_sensitive (GTK_WIDGET (cw->priv->info_text), FALSE);
   gtk_text_view_set_wrap_mode (GTK_TEXT_VIEW (cw->priv->info_text),
-			       GTK_WRAP_WORD);
+			       GTK_WRAP_NONE);
 
   buffer = gtk_text_view_get_buffer (GTK_TEXT_VIEW (cw->priv->info_text));
   gtk_text_view_set_cursor_visible  (GTK_TEXT_VIEW (cw->priv->info_text), FALSE);
 
-  cw->priv->status_tag =
-    gtk_text_buffer_create_tag (buffer, "status",
-                                "justification", GTK_JUSTIFY_CENTER,
-                                "weight", PANGO_WEIGHT_BOLD,
-                                "scale", 1.2,
-                                NULL);
-  cw->priv->codecs_tag =
-    gtk_text_buffer_create_tag (buffer, "codecs",
-                                "justification", GTK_JUSTIFY_RIGHT,
-                                "stretch", PANGO_STRETCH_CONDENSED,
-                                "scale", 0.8,
-                                NULL);
-
-  cw->priv->call_duration_tag =
-    gtk_text_buffer_create_tag (buffer, "call-duration",
-                                "justification", GTK_JUSTIFY_CENTER,
-                                "weight", PANGO_WEIGHT_BOLD,
-                                NULL);
-
-  cw->priv->bandwidth_tag =
-    gtk_text_buffer_create_tag (buffer, "bandwidth",
-                                "justification", GTK_JUSTIFY_LEFT,
-                                "weight", PANGO_STRETCH_CONDENSED,
-                                "scale", 0.8,
-                                NULL);
-
-  ekiga_call_window_set_status (cw, _("Standby"));
-  ekiga_call_window_set_call_duration (cw, NULL);
-  ekiga_call_window_set_bandwidth (cw, 0.0, 0.0, 0.0, 0.0, 0, 0);
-  ekiga_call_window_set_call_info (cw, NULL, NULL, NULL, NULL);
+  gtk_text_buffer_create_tag (buffer, "who",
+                              "weight", PANGO_WEIGHT_BOLD,
+                              "justification", GTK_JUSTIFY_LEFT,
+                              NULL);
+  gtk_text_buffer_create_tag (buffer, "status",
+                              "justification", GTK_JUSTIFY_LEFT,
+                              "scale", 0.8,
+                              NULL);
 
   alignment = gtk_alignment_new (0.0, 0.0, 1.0, 0.0);
   gtk_container_add (GTK_CONTAINER (alignment), cw->priv->info_text);
-  gtk_box_pack_start (GTK_BOX (vbox), GTK_WIDGET (alignment), FALSE, FALSE, 0);
+  gtk_box_pack_start (GTK_BOX (hbox), alignment, false, false, 2);
+  gtk_container_add (GTK_CONTAINER (cw->priv->call_frame), hbox);
+  gtk_box_pack_start (GTK_BOX (vbox), GTK_WIDGET (cw->priv->call_frame), true, true, 2);
 
   /* Hangup */
   item = gtk_tool_item_new ();
@@ -2450,10 +2410,11 @@ ekiga_call_window_init_gui (EkigaCallWindow *cw)
 
   g_signal_connect (cw->priv->hold_button, "clicked",
 		    G_CALLBACK (hold_current_call_cb), cw);
+  gtk_widget_show_all (frame);
 
   /* The statusbar */
   cw->priv->statusbar = gm_statusbar_new ();
-  gtk_statusbar_set_has_resize_grip (GTK_STATUSBAR (cw->priv->statusbar), TRUE);
+  gtk_statusbar_set_has_resize_grip (GTK_STATUSBAR (cw->priv->statusbar), false);
   gtk_widget_style_get (cw->priv->statusbar, "shadow-type", &shadow_type, NULL);
 
   frame = gtk_frame_new (NULL);
@@ -2467,12 +2428,18 @@ ekiga_call_window_init_gui (EkigaCallWindow *cw)
   cw->priv->statusbar_ebox = gtk_event_box_new ();
   gtk_container_add (GTK_CONTAINER (cw->priv->statusbar_ebox), cw->priv->statusbar);
   gtk_box_pack_start (GTK_BOX (vbox), GTK_WIDGET (cw->priv->statusbar_ebox), FALSE, FALSE, 0);
-  gtk_widget_show_all (frame);
+  gtk_widget_show_all (vbox);
 
   /* Logo */
   gtk_widget_realize (cw->priv->main_video_image);
   gtk_window_set_resizable (GTK_WINDOW (cw), FALSE);
   ekiga_call_window_update_logo (cw);
+
+  /* Init */
+  ekiga_call_window_set_status (cw, _("Standby"), NULL, NULL);
+  ekiga_call_window_set_bandwidth (cw, 0.0, 0.0, 0.0, 0.0, 0, 0);
+
+  gtk_widget_hide (cw->priv->call_frame);
 }
 
 static void

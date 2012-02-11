@@ -679,7 +679,7 @@ static void on_setup_call_cb (boost::shared_ptr<Ekiga::CallManager> manager,
 
     /* Show call window */
     call_window = GnomeMeeting::Process ()->GetCallWindow ();
-    gtk_widget_show_all (call_window);
+    gtk_widget_show (call_window);
 
     mw->priv->current_call = call;
   }
@@ -729,7 +729,7 @@ static void on_established_call_cb (boost::shared_ptr<Ekiga::CallManager>  /*man
 
   /* Show call window */
   call_window = GnomeMeeting::Process ()->GetCallWindow ();
-  gtk_widget_show_all (call_window);
+  gtk_widget_show (call_window);
 }
 
 
@@ -1163,7 +1163,7 @@ video_preview_changed_nt (G_GNUC_UNUSED gpointer id,
           gtk_widget_hide (call_window);
         }
         else {
-          gtk_widget_show_all (call_window);
+          gtk_widget_show (call_window);
         }
         g_signal_handlers_block_by_func (mw->priv->preview_button,
                                          (gpointer) video_preview_action_toggled_cb, mw);
