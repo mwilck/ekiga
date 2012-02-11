@@ -1314,8 +1314,11 @@ ekiga_call_window_delete_event_cb (GtkWidget *widget,
   cw = EKIGA_CALL_WINDOW (widget);
   g_return_val_if_fail (EKIGA_IS_CALL_WINDOW (cw), FALSE);
 
+  /* Hangup or disable preview */
   if (cw->priv->current_call)
     cw->priv->current_call->hangup ();
+  else
+    gm_conf_set_bool (VIDEO_DEVICES_KEY "enable_preview", false);
 
   return true;
 }
@@ -2480,7 +2483,7 @@ ekiga_call_window_init (EkigaCallWindow *cw)
   cw->priv->accel = gtk_accel_group_new ();
   gtk_window_add_accel_group (GTK_WINDOW (cw), cw->priv->accel);
   gtk_accel_group_connect (cw->priv->accel, GDK_Escape, (GdkModifierType) 0, GTK_ACCEL_LOCKED,
-                           g_cclosure_new (G_CALLBACK (hangup_call_cb), (gpointer) cw, NULL));
+                           g_cclosure_new_swap (G_CALLBACK (ekiga_call_window_delete_event_cb), (gpointer) cw, NULL));
   g_object_unref (cw->priv->accel);
 
   cw->priv->changing_back_to_local_after_a_call = false;
