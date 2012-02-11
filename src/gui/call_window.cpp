@@ -1598,7 +1598,8 @@ ekiga_call_window_set_bandwidth (EkigaCallWindow *cw,
   g_return_if_fail (EKIGA_IS_CALL_WINDOW (cw));
 
   if (ta > 0.0 || ra > 0.0 || tv > 0.0 || rv > 0.0 || tfps > 0 || rfps > 0)
-    msg = g_strdup_printf (_("A:%.1f/%.1f   V:%.1f/%.1f   FPS:%d/%d\n"),
+    /* Translators: A = Audio, V = Video, FPS = Frames per second */
+    msg = g_strdup_printf (_("A:%.1f/%.1f V:%.1f/%.1f FPS:%d/%d"),
                            ta, ra, tv, rv, tfps, rfps);
 
   gm_statusbar_push_message (GM_STATUSBAR (cw->priv->statusbar), msg);
