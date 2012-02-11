@@ -339,6 +339,10 @@ static void on_audiooutput_device_error_cb (Ekiga::AudioOutputManager & /*manage
                                             Ekiga::AudioOutputErrorCodes error_code,
                                             gpointer self);
 
+static void on_setup_call_cb (boost::shared_ptr<Ekiga::CallManager> manager,
+                              boost::shared_ptr<Ekiga::Call>  call,
+                              gpointer self);
+
 static void on_established_call_cb (boost::shared_ptr<Ekiga::CallManager>  /*manager*/,
                                     boost::shared_ptr<Ekiga::Call>  call,
                                     gpointer self);
@@ -1074,28 +1078,37 @@ on_audiooutput_device_error_cb (Ekiga::AudioOutputManager & /*manager */,
 }
 
 static void
+on_setup_call_cb (G_GNUC_UNUSED boost::shared_ptr<Ekiga::CallManager> manager,
+                  boost::shared_ptr<Ekiga::Call>  call,
+                  gpointer self)
+{
+  EkigaCallWindow *cw = EKIGA_CALL_WINDOW (self);
+
+  gtk_window_set_title (GTK_WINDOW (cw), call->get_remote_party_name ().c_str ());
+
+  if (call->is_outgoing ())
+    ekiga_call_window_set_status (cw, _("Calling..."), NULL, call->get_remote_party_name ().c_str ());
+
+  ekiga_call_window_update_calling_state (cw, Calling);
+}
+
+static void
 on_established_call_cb (boost::shared_ptr<Ekiga::CallManager>  /*manager*/,
                         boost::shared_ptr<Ekiga::Call>  call,
                         gpointer self)
 {
   EkigaCallWindow *cw = EKIGA_CALL_WINDOW (self);
-  gchar* info = NULL;
 
   gtk_window_set_title (GTK_WINDOW (cw), call->get_remote_party_name ().c_str ());
 
-  /* %s is the SIP/H.323 address of the remote user, this text is shown
-     below video during a call */
-  info = g_strdup (_("Connected"));
-
   if (gm_conf_get_bool (VIDEO_DISPLAY_KEY "stay_on_top"))
     ekiga_call_window_set_stay_on_top (cw, TRUE);
-  ekiga_call_window_set_status (cw, info, NULL, call->get_remote_party_name ().c_str ());
+  ekiga_call_window_set_status (cw, _("Connected"), NULL, call->get_remote_party_name ().c_str ());
   ekiga_call_window_update_calling_state (cw, Connected);
 
   cw->priv->current_call = call;
 
   cw->priv->timeout_id = g_timeout_add_seconds (1, on_stats_refresh_cb, self);
-  g_free (info);
 }
 
 static void
@@ -2206,15 +2219,9 @@ ekiga_call_window_connect_engine_signals (EkigaCallWindow *cw)
   boost::shared_ptr<Ekiga::AccountCore> account_core = cw->priv->core->get<Ekiga::AccountCore> ("account-core");
 
   /* Engine Signals callbacks */
-/*
-  conn = account_core->account_updated.connect (boost::bind (&on_account_updated, _1, _2, (gpointer) cw));
-  cw->priv->connections.push_back (conn);
   conn = call_core->setup_call.connect (boost::bind (&on_setup_call_cb, _1, _2, (gpointer) cw));
   cw->priv->connections.push_back (conn);
 
-  conn = call_core->ringing_call.connect (boost::bind (&on_ringing_call_cb, _1, _2, (gpointer) cw));
-  cw->priv->connections.push_back (conn);
-*/
   conn = call_core->established_call.connect (boost::bind (&on_established_call_cb, _1, _2, (gpointer) cw));
   cw->priv->connections.push_back (conn);
 
