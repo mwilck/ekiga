@@ -259,6 +259,14 @@ static void panel_section_changed_nt (gpointer id,
                                       gpointer data);
 
 
+/* DESCRIPTION  :  This callback is called when the preview is changed.
+ * BEHAVIOR     :  Show / hide the call window.
+ * PRE          :  /
+ */
+static void video_preview_changed_nt (gpointer id,
+                                      GmConfEntry *entry,
+                                      gpointer data);
+
 /** Pull a trigger from a Ekiga::Service
  *
  * @param data is a pointer to the Ekiga::Trigger
@@ -1132,6 +1140,38 @@ panel_section_changed_nt (G_GNUC_UNUSED gpointer id,
 
 
 static void
+video_preview_changed_nt (G_GNUC_UNUSED gpointer id,
+                          GmConfEntry *entry,
+                          gpointer data)
+{
+  g_return_if_fail (EKIGA_IS_MAIN_WINDOW (data));
+
+  if (gm_conf_entry_get_type (entry) == GM_CONF_BOOL) {
+
+    EkigaMainWindow* mw = EKIGA_MAIN_WINDOW (data);
+    GtkWidget *call_window = GnomeMeeting::Process ()->GetCallWindow ();
+
+    if (gm_conf_entry_get_type (entry) == GM_CONF_BOOL) {
+      if (mw->priv->calling_state == Standby) {
+        if (!gm_conf_entry_get_bool (entry)) {
+          gtk_widget_hide (call_window);
+        }
+        else {
+          gtk_widget_show_all (call_window);
+        }
+        g_signal_handlers_block_by_func (mw->priv->preview_button,
+                                         (gpointer) video_preview_action_toggled_cb, mw);
+        gtk_toggle_tool_button_set_active (GTK_TOGGLE_TOOL_BUTTON (mw->priv->preview_button),
+                                           gm_conf_entry_get_bool (entry));
+        g_signal_handlers_unblock_by_func (mw->priv->preview_button,
+                                           (gpointer) video_preview_action_toggled_cb, mw);
+      }
+    }
+  }
+}
+
+
+static void
 pull_trigger_cb (GtkWidget * /*widget*/,
                  gpointer data)
 {
@@ -1165,18 +1205,6 @@ static void
 video_preview_action_toggled_cb (GtkToggleToolButton *b,
                                  G_GNUC_UNUSED gpointer data)
 {
-  EkigaMainWindow *mw = EKIGA_MAIN_WINDOW (data);
-  GtkWidget *call_window = GnomeMeeting::Process ()->GetCallWindow ();
-
-  g_return_if_fail (EKIGA_IS_MAIN_WINDOW (mw));
-
-  if (mw->priv->calling_state == Standby) {
-    if (gtk_toggle_tool_button_get_active (b))
-      gtk_widget_hide (call_window);
-    else
-      gtk_widget_show_all (call_window);
-  }
-
   gm_conf_set_bool (VIDEO_DEVICES_KEY "enable_preview", gtk_toggle_tool_button_get_active (b));
 }
 
@@ -2021,6 +2049,8 @@ ekiga_main_window_constructor (GType the_type,
   /* GConf Notifiers */
   gm_conf_notifier_add (USER_INTERFACE_KEY "main_window/panel_section",
                         panel_section_changed_nt, object);
+  gm_conf_notifier_add (VIDEO_DEVICES_KEY "enable_preview",
+                        video_preview_changed_nt, object);
 
   return object;
 }
