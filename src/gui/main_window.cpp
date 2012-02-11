@@ -711,6 +711,9 @@ static void on_established_call_cb (boost::shared_ptr<Ekiga::CallManager>  /*man
   GtkWidget *call_window = NULL;
   gchar* info = NULL;
 
+  /* Update calling state */
+  mw->priv->calling_state = Connected;
+
   /* %s is the SIP/H.323 address of the remote user, this text is shown
      below video during a call */
   info = g_strdup_printf (_("Connected with %s"),
@@ -737,6 +740,9 @@ static void on_cleared_call_cb (boost::shared_ptr<Ekiga::CallManager>  /*manager
 {
   EkigaMainWindow *mw = EKIGA_MAIN_WINDOW (self);
   GtkWidget *call_window = NULL;
+
+  /* Update calling state */
+  mw->priv->calling_state = Standby;
 
   /* Info message */
   ekiga_main_window_flash_message (mw, "%s", reason.c_str ());
