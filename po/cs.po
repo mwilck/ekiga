@@ -17,8 +17,8 @@ msgstr ""
 "Project-Id-Version: ekiga\n"
 "Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?"
 "product=ekiga&keywords=I18N+L10N&component=general\n"
-"POT-Creation-Date: 2012-01-29 17:14+0000\n"
-"PO-Revision-Date: 2012-02-02 09:58+0100\n"
+"POT-Creation-Date: 2012-02-11 16:35+0000\n"
+"PO-Revision-Date: 2012-02-16 12:59+0100\n"
 "Last-Translator: Marek Černocký <marek@manet.cz>\n"
 "Language-Team: Czech <gnome-cs-list@gnome.org>\n"
 "MIME-Version: 1.0\n"
@@ -29,8 +29,8 @@ msgstr ""
 "X-Generator: KBabel 1.11.4\n"
 
 #. Application name
-#: ../ekiga.desktop.in.in.h:1 ../src/gui/main_window.cpp:2183
-#: ../src/gui/main_window.cpp:2185
+#: ../ekiga.desktop.in.in.h:1 ../src/gui/main_window.cpp:2376
+#: ../src/gui/main_window.cpp:2378
 msgid "Ekiga Softphone"
 msgstr "Telefon Ekiga"
 
@@ -43,364 +43,26 @@ msgid "Talk to and see people over the Internet"
 msgstr "Setkávat se a hovořit s lidmi přes Internet"
 
 #: ../ekiga.schemas.in.in.h:1
-msgid "0: 56kbps, 1: ISDN, 2: DSL128, 3: DSL512, 4: LAN, 5: Custom"
-msgstr "0: 56 kb/s, 1: ISDN, 2:DSL128, 3: DSL512, 4: LAN, 5: Vlastní"
-
-#: ../ekiga.schemas.in.in.h:2
-msgid ""
-"Allow Ekiga to fall back to software scaling the picture-in-picture if "
-"hardware support is not available. If this is set to false, Ekiga will not "
-"try to open the PIP if hardware support is not available."
-msgstr ""
-"Povolit programu Ekiga, aby použil softwarové škálování obrazu v obraze "
-"(PIP), pokud není dostupná hardwarová podpora. Pokud není nastaveno, Ekiga "
-"se nepokusí otevřít PIP v případě, že není dostupná hardwarová podpora."
-
-#: ../ekiga.schemas.in.in.h:3
-msgid "Allow picture-in-picture software scaling"
-msgstr "Povolit softwarové škálování obrazu v obraze"
-
-#: ../ekiga.schemas.in.in.h:4
-msgid "Alternative audio output device"
-msgstr "Alternativní zařízení výstupu zvuku"
-
-#: ../ekiga.schemas.in.in.h:5
-msgid "Always forward calls to the given host"
-msgstr "Vždy předávat hovory na daný počítač"
-
-#: ../ekiga.schemas.in.in.h:6
-msgid "Audio input device"
-msgstr "Zařízení vstupu zvuku"
-
-#: ../ekiga.schemas.in.in.h:7
 msgid "Audio output device"
 msgstr "Zařízení výstupu zvuku"
 
-#: ../ekiga.schemas.in.in.h:8
-msgid "Automatic answer"
-msgstr "Automatická odpověď"
-
-#: ../ekiga.schemas.in.in.h:9 ../src/gui/preferences.cpp:499
-msgid ""
-"Automatically reject or forward incoming calls if no answer is given after "
-"the specified amount of time (in seconds)"
-msgstr ""
-"Automaticky odmítat nebo předávat příchozí hovory, pokud nejsou zodpovězeny "
-"v určené době (v sekundách)"
-
-#: ../ekiga.schemas.in.in.h:10
-msgid "Calls history"
-msgstr "Historie hovorů"
-
-#: ../ekiga.schemas.in.in.h:11
-msgid "Change the panel section of the main window"
-msgstr "Změna části hlavního okna s panelem"
-
-#: ../ekiga.schemas.in.in.h:12
-msgid ""
-"Change the panel section of the main window (0=Contacts, 1=Dialpad, 2=Call "
-"history)"
-msgstr ""
-"Změna části hlavního okna s panelem (0=Seznam kontaktů, 1=Číselník, "
-"2=Historie volání)"
-
-#: ../ekiga.schemas.in.in.h:13
-msgid ""
-"Connection will be established in Fast Start mode. Fast Start is a new way "
-"to start calls faster that was introduced in H.323v2. It is not supported by "
-"Netmeeting and using both Fast Start and H.245 Tunneling can crash some "
-"versions of Netmeeting"
-msgstr ""
-"Spojení bude navázáno v režimu rychlého startu. Rychlý start je nový způsob "
-"rychlejšího navazování spojení zavedený v H.323v2. Není podporován aplikací "
-"Netmeeting a spolu s tunelováním H.245 může způsobit pád některých verzí "
-"aplikace Netmeeting"
-
-#: ../ekiga.schemas.in.in.h:14
-msgid "Contact long status"
-msgstr "Dlouze o stavu kontaktu"
-
-#: ../ekiga.schemas.in.in.h:15
-msgid "Contact short status"
-msgstr "Zkráceně o stavu kontaktu"
-
-#: ../ekiga.schemas.in.in.h:16
-msgid "DTMF sending"
-msgstr "Odesílání DTMF"
-
-#: ../ekiga.schemas.in.in.h:17
-msgid "Disable video hardware acceleration"
-msgstr "Zakázat hardwarovou akceleraci videa"
-
-#: ../ekiga.schemas.in.in.h:18 ../src/gui/call_window.cpp:2437
-msgid "Display images from your camera device"
-msgstr "Zobrazovat obraz z vaší kamery"
-
-#: ../ekiga.schemas.in.in.h:19
-msgid "Enable 'Fast Start'"
-msgstr "Povolit „Rychlý start“"
-
-#: ../ekiga.schemas.in.in.h:20
-msgid "Enable H.245 tunneling"
-msgstr "Povolit tunelování H.245"
-
-#: ../ekiga.schemas.in.in.h:21
-msgid "Enable STUN network detection"
-msgstr "Povolit detekci sítě STUN"
-
-#: ../ekiga.schemas.in.in.h:22
-msgid "Enable early H.245"
-msgstr "Povolit brzké H.245"
-
-#: ../ekiga.schemas.in.in.h:23
-msgid "Enable echo cancellation"
-msgstr "Povolit potlačení ozvěny"
-
-#: ../ekiga.schemas.in.in.h:24
-msgid "Enable silence detection"
-msgstr "Povolit detekci ticha"
-
-#: ../ekiga.schemas.in.in.h:25 ../src/gui/preferences.cpp:476
-msgid "Enable the automatic network setup resulting from the STUN test"
-msgstr "Povolit automatické nastavení sítě podle výsledků testu STUN"
-
-#: ../ekiga.schemas.in.in.h:26
-msgid ""
-"Enter the number of seconds after which Ekiga should try refreshing the NAT "
-"binding when STUN is being used"
-msgstr ""
-"Zadejte počet sekund, po kterých má Ekiga zkusit obnovit vazbu NAT, když se "
-"používá STUN"
-
-#: ../ekiga.schemas.in.in.h:27 ../src/gui/preferences.cpp:445
-msgid "Enter your full name"
-msgstr "Zadejte své celé jméno"
-
-#: ../ekiga.schemas.in.in.h:28
-msgid "Forward calls to host"
-msgstr "Předat hovory na počítač"
-
-#: ../ekiga.schemas.in.in.h:29
-msgid "Forward calls to the given host if busy"
-msgstr "Předat hovory na daný počítač v případě, že jste zaneprázdněni"
-
-#: ../ekiga.schemas.in.in.h:30
-msgid "Forward calls to the given host if no answer"
-msgstr "Předat hovory na daný počítač v případě, že není žádná odpověď"
-
-#: ../ekiga.schemas.in.in.h:31 ../src/gui/preferences.cpp:961
-msgid "Frame Rate"
-msgstr "Snímková rychlost"
-
-#: ../ekiga.schemas.in.in.h:32
-msgid "Full name"
-msgstr "Celé jméno"
-
-#: ../ekiga.schemas.in.in.h:33 ../src/gui/preferences.cpp:462
-msgid ""
-"If enabled, Ekiga will start hidden provided that the notification area is "
-"present in the GNOME panel"
-msgstr ""
-"Je-li povoleno, Ekiga bude startovat skrytě, pokud je v panelu GNOME "
-"oznamovací oblast"
-
-#: ../ekiga.schemas.in.in.h:34
-msgid ""
-"If enabled, all incoming calls will be forwarded to the host that is "
-"specified in the field below"
-msgstr ""
-"Je-li povoleno, všechny příchozí hovory budou předány na počítač uvedený v "
-"následující položce"
-
-#: ../ekiga.schemas.in.in.h:35
-msgid ""
-"If enabled, all incoming calls will be forwarded to the host that is "
-"specified in the field below if you already are in a call or if you are in "
-"Do Not Disturb mode"
-msgstr ""
-"Je-li povoleno, všechny příchozí hovory budou předány na počítač uvedený v "
-"následující položce v případě, že již s někým hovoříte nebo jste v režimu "
-"Nerušit"
-
-#: ../ekiga.schemas.in.in.h:36
-msgid ""
-"If enabled, all incoming calls will be forwarded to the host that is "
-"specified in the field below if you do not answer the call"
-msgstr ""
-"Je-li povoleno, všechny příchozí hovory budou předány na počítač uvedený v "
-"následující položce v případě, že na ně neodpovíte"
-
-#: ../ekiga.schemas.in.in.h:37 ../src/gui/preferences.cpp:500
-msgid "If enabled, automatically answer incoming calls"
-msgstr "Pokud je povoleno, bude se automaticky odpovídat na příchozí volání"
-
-#: ../ekiga.schemas.in.in.h:38 ../src/gui/preferences.cpp:464
-msgid "If enabled, offline contacts will be shown in the roster"
-msgstr "Je-li povoleno, budou se odpojené kontakty zobrazovat v seznamu"
-
-#: ../ekiga.schemas.in.in.h:39 ../src/gui/preferences.cpp:931
-msgid "If enabled, use echo cancellation"
-msgstr "Je-li povoleno, bude se používat potlačení ozvěny"
-
-#: ../ekiga.schemas.in.in.h:40 ../src/gui/preferences.cpp:929
-msgid "If enabled, use silence detection with the codecs supporting it"
-msgstr ""
-"Je-li povoleno, bude se používat detekce ticha u kodeků, které ji podporují"
-
-#: ../ekiga.schemas.in.in.h:41
-msgid "Kind of network selected in the assistant"
-msgstr "Druh sítě vybraný v průvodci"
-
-#: ../ekiga.schemas.in.in.h:42
-msgid "LDAP servers"
-msgstr "Servery LDAP"
-
-#: ../ekiga.schemas.in.in.h:43
-msgid "List of configured LDAP servers"
-msgstr "Seznam nastavených serverů LDAP"
-
-#: ../ekiga.schemas.in.in.h:44
-msgid "List of folded groups in the roster"
-msgstr "Přehled složených skupin v seznamu"
-
-#: ../ekiga.schemas.in.in.h:45
-msgid "Listen port"
-msgstr "Přijímací port"
-
-#: ../ekiga.schemas.in.in.h:46
-msgid "Maximum RX video bitrate"
-msgstr "Maximální datový tok přijímaného videa"
-
-#: ../ekiga.schemas.in.in.h:47
-msgid "Maximum TX video bitrate"
-msgstr "Maximální datový tok odesílaného videa"
-
-#: ../ekiga.schemas.in.in.h:48
-msgid "Maximum jitter buffer"
-msgstr "Maximální vyrovnávací paměť výpadků (jitter buffer)"
-
-#: ../ekiga.schemas.in.in.h:49
-msgid "NAT Binding Timeout"
-msgstr "Časový limit vazby NAT"
-
-#: ../ekiga.schemas.in.in.h:50
-msgid "No answer timeout"
-msgstr "Časový limit pro žádnou odpověď"
-
-#: ../ekiga.schemas.in.in.h:51
-msgid "Outbound Proxy"
-msgstr "Odchozí proxy"
-
-#: ../ekiga.schemas.in.in.h:52 ../src/gui/preferences.cpp:470
-msgid "Place windows displaying video above other windows during calls"
-msgstr "Během hovorů umísťovat okna zobrazující video nad jiná okna"
-
-#: ../ekiga.schemas.in.in.h:53 ../src/gui/preferences.cpp:366
-msgid "Play busy tone"
-msgstr "Přehrávat obsazovací tón"
-
-#: ../ekiga.schemas.in.in.h:54 ../src/gui/preferences.cpp:356
-msgid "Play ring tone"
-msgstr "Přehrávat zvuk zvonění"
-
-#: ../ekiga.schemas.in.in.h:55 ../src/gui/preferences.cpp:346
-msgid "Play sound on incoming calls"
-msgstr "Přehrávat zvuk při příchozích hovorech"
-
-#: ../ekiga.schemas.in.in.h:56
-msgid "Play sound on new message"
-msgstr "Přehrávat zvuk při nové zprávě"
-
-#: ../ekiga.schemas.in.in.h:57
-msgid "Play sound on new voice mail"
-msgstr "Přehrávat zvuk při nové hlasové poště"
-
-#: ../ekiga.schemas.in.in.h:58
-msgid "Position on the screen of the address book window"
-msgstr "Umístění okna adresáře na obrazovce"
-
-#: ../ekiga.schemas.in.in.h:59
-msgid "Position on the screen of the audio settings window"
-msgstr "Umístění okna nastavení zvuku na obrazovce"
-
-#: ../ekiga.schemas.in.in.h:60
-msgid "Position on the screen of the call window"
-msgstr "Umístění okna volání na obrazovce"
-
-#: ../ekiga.schemas.in.in.h:61
-msgid "Position on the screen of the chat window"
-msgstr "Umístění okna diskuze na obrazovce"
-
-#: ../ekiga.schemas.in.in.h:62
-msgid "Position on the screen of the druid window"
-msgstr "Umístění okna průvodce na obrazovce"
-
-#: ../ekiga.schemas.in.in.h:63
-msgid "Position on the screen of the main window"
-msgstr "Umístění hlavního okna na obrazovce"
-
-#: ../ekiga.schemas.in.in.h:64
-msgid "Position on the screen of the preferences window"
-msgstr "Umístění okna předvoleb na obrazovce"
-
-#: ../ekiga.schemas.in.in.h:65
-msgid "Position on the screen of the video settings window"
-msgstr "Umístění okna nastavení obrazu na obrazovce"
-
-#: ../ekiga.schemas.in.in.h:66
-msgid "Remote video window position"
-msgstr "Umístění okna vzdáleného videa"
-
-#: ../ekiga.schemas.in.in.h:67
-msgid "Remote video window size"
-msgstr "Velikost okna vzdáleného videa"
-
-#: ../ekiga.schemas.in.in.h:68
-msgid "Select an alternative audio output device to use for sound events."
-msgstr ""
-"Vyberte alternativní zařízení výstupu zvuku, které se má používat pro "
-"zvukové události."
-
-#: ../ekiga.schemas.in.in.h:69 ../src/gui/preferences.cpp:744
-msgid "Select the audio input device to use"
-msgstr "Vyberte zařízení vstupu zvuku, které se má používat"
-
-#: ../ekiga.schemas.in.in.h:70 ../src/gui/preferences.cpp:737
+#: ../ekiga.schemas.in.in.h:2 ../src/gui/preferences.cpp:737
 msgid "Select the audio output device to use"
 msgstr "Vyberte zařízení výstupu zvuku, které se má používat"
 
-#: ../ekiga.schemas.in.in.h:71 ../src/gui/preferences.cpp:894
-msgid ""
-"Select the format for video cameras (does not apply to most USB cameras)"
-msgstr "Vyberte formát pro videokamery (netýká se většiny kamer USB)"
+#: ../ekiga.schemas.in.in.h:3
+msgid "Audio input device"
+msgstr "Zařízení vstupu zvuku"
 
-#: ../ekiga.schemas.in.in.h:72
-msgid ""
-"Select the mode for sending DTMFs. The values can be 0 (for \"RFC2833\") and "
-"1 (for \"INFO\")"
-msgstr ""
-"Výběr režimu odesílání DTMF. Hodnoty mohou být 0 (pro „RFC2833“) a 1 (pro "
-"„INFO“)"
+#: ../ekiga.schemas.in.in.h:4 ../src/gui/preferences.cpp:744
+msgid "Select the audio input device to use"
+msgstr "Vyberte zařízení vstupu zvuku, které se má používat"
 
-#: ../ekiga.schemas.in.in.h:73
-msgid ""
-"Select the mode for sending DTMFs. The values can be 0 (for \"String\"), 1 "
-"(for \"Tone\"), 2 (for \"RFC2833\"), or 3 (for \"Q.931\") (default is "
-"\"String\"). Choosing other values than \"String\" disables the Text Chat."
-msgstr ""
-"Výběr režimu pro odesílání DTMF. Hodnoty mohou být 0 (pro „String“), 1 (pro "
-"„Tone“), 2 (pro „RFC2833“) nebo 3 (pro „Q.931“) (výchozí je „String“). "
-"Zvolení jiné hodnoty než „String“ znemožní textovou diskuzi."
+#: ../ekiga.schemas.in.in.h:5
+msgid "Video input device"
+msgstr "Zařízení vstupu videa"
 
-#: ../ekiga.schemas.in.in.h:74
-msgid ""
-"Select the transmitted video size: Small (QCIF 176x144) or Large (CIF "
-"352x288)"
-msgstr ""
-"Vyberte velikost přenášeného videa: Malá (QCIF 176×144) nebo Velká (CIF "
-"352×288)"
-
-#: ../ekiga.schemas.in.in.h:75 ../src/gui/preferences.cpp:886
+#: ../ekiga.schemas.in.in.h:6 ../src/gui/preferences.cpp:886
 msgid ""
 "Select the video input device to use. If an error occurs when using this "
 "device a test picture will be transmitted."
@@ -408,86 +70,233 @@ msgstr ""
 "Vyberte zařízení vstupu videa, které se má používat. Pokud při používání "
 "tohoto zařízení dojde k chybě, bude přenášen testovací obrázek."
 
-#: ../ekiga.schemas.in.in.h:76
-msgid "Show offline contacts"
-msgstr "Zobrazovat odpojené kontakty"
+#: ../ekiga.schemas.in.in.h:7
+msgid "Video size"
+msgstr "Velikost videa"
 
-#: ../ekiga.schemas.in.in.h:77
-msgid "Size of the address book window"
-msgstr "Velikost okna adresáře"
-
-#: ../ekiga.schemas.in.in.h:78
-msgid "Size of the audio settings window"
-msgstr "Velikost okna nastavení zvuku"
-
-#: ../ekiga.schemas.in.in.h:79
-msgid "Size of the call window"
-msgstr "Velikost okna volání"
-
-#: ../ekiga.schemas.in.in.h:80
-msgid "Size of the chat window"
-msgstr "Velikost okna diskuze"
-
-#: ../ekiga.schemas.in.in.h:81
-msgid "Size of the druid window"
-msgstr "Velikost okna průvodce"
-
-#: ../ekiga.schemas.in.in.h:82
-msgid "Size of the preferences window"
-msgstr "Velikost okna předvoleb"
-
-#: ../ekiga.schemas.in.in.h:83
-msgid "Size of the video settings window"
-msgstr "Velikost okna nastavení obrazu"
-
-#: ../ekiga.schemas.in.in.h:84
-msgid "Specify the software scaling algorithm"
-msgstr "Určuje algoritmus softwarového škálování"
-
-#: ../ekiga.schemas.in.in.h:85
+#: ../ekiga.schemas.in.in.h:8
 msgid ""
-"Specify the software scaling algorithm: 0: nearest neighbor, 1: nearest "
-"neighbor with box filter, 2: bilinear filtering, 3: hyperbolic filtering. "
-"Does not apply on windows systems."
+"Select the transmitted video size: Small (QCIF 176x144) or Large (CIF "
+"352x288)"
 msgstr ""
-"Určuje algoritmus softwarového škálování: 0: nejbližší soused, 1: nejbližší "
-"soused s filtrem ohraničené oblasti, 2: bilineární filtr, 3: hyperbolický "
-"filtr. Nepoužívá se v systémech Windows."
+"Vyberte velikost přenášeného videa: Malá (QCIF 176×144) nebo Velká (CIF "
+"352×288)"
 
-#: ../ekiga.schemas.in.in.h:86
-msgid "Start hidden"
-msgstr "Spustit skrytě"
+#: ../ekiga.schemas.in.in.h:9
+msgid "Video channel"
+msgstr "Video kanál"
 
-#: ../ekiga.schemas.in.in.h:87
-msgid "TCP port range"
-msgstr "Rozsah portů TCP"
+#: ../ekiga.schemas.in.in.h:10 ../src/gui/preferences.cpp:890
+msgid "The video channel number to use (to select camera, tv or other sources)"
+msgstr ""
+"Číslo video kanálu, který se má používat (pro výběr kamery, tv nebo jiné "
+"zdroje)"
 
-# I don't understand the meaning :(
-#: ../ekiga.schemas.in.in.h:88
-msgid "Temporal Spatial Trade Off"
-msgstr "Dočasná prostorová výměna (TSTO)"
+#: ../ekiga.schemas.in.in.h:11
+msgid "Video format"
+msgstr "Formát videa"
 
-#: ../ekiga.schemas.in.in.h:89
+#: ../ekiga.schemas.in.in.h:12 ../src/gui/preferences.cpp:894
+msgid ""
+"Select the format for video cameras (does not apply to most USB cameras)"
+msgstr "Vyberte formát pro videokamery (netýká se většiny kamer USB)"
+
+#: ../ekiga.schemas.in.in.h:13
+msgid "Video preview"
+msgstr "Náhled videa"
+
+#: ../ekiga.schemas.in.in.h:14
+msgid "Display images from your camera device"
+msgstr "Zobrazovat obraz z vaší kamery"
+
+#: ../ekiga.schemas.in.in.h:15 ../src/gui/preferences.cpp:961
+msgid "Frame Rate"
+msgstr "Snímková rychlost"
+
+#: ../ekiga.schemas.in.in.h:16
+msgid ""
+"The maximum transmitted frame rate in frames/s. This rate may not be reached "
+"in case a minimum quality was configure via a TSTO value smaller than 31 and "
+"the bitrate selected is not sufficient to support this minimum quality"
+msgstr ""
+"Maximální rychlost odesílání snímků ve snímcích za sekundu. Tento počet "
+"nemusí být dosažen v případě, že byla nastavena minimální kvalita přes "
+"hodnotu TSTO menší než 31 a zvolený datový tok nepostačuje k podpoře této "
+"minimální kvality"
+
+#: ../ekiga.schemas.in.in.h:17
+msgid "Full name"
+msgstr "Celé jméno"
+
+#: ../ekiga.schemas.in.in.h:18 ../src/gui/preferences.cpp:445
+msgid "Enter your full name"
+msgstr "Zadejte své celé jméno"
+
+#: ../ekiga.schemas.in.in.h:19
+msgid "Contact short status"
+msgstr "Zkráceně o stavu kontaktu"
+
+#: ../ekiga.schemas.in.in.h:20
+msgid "The short status information"
+msgstr "Krátky text s informací o stavu"
+
+#: ../ekiga.schemas.in.in.h:21
+msgid "Contact long status"
+msgstr "Dlouze o stavu kontaktu"
+
+#: ../ekiga.schemas.in.in.h:22
+msgid "The long status information"
+msgstr "Dlouhý text s informací o stavu"
+
+#: ../ekiga.schemas.in.in.h:23
 msgid "The Audio Codecs List"
 msgstr "Seznam zvukových kodeků"
 
-#: ../ekiga.schemas.in.in.h:90 ../src/gui/preferences.cpp:699
-msgid "The SIP Outbound Proxy to use for outgoing calls"
-msgstr "Odchozí proxy SIP, která se má používat pro odchozí hovory"
+# mistake in original: "lodecs"
+#: ../ekiga.schemas.in.in.h:24
+msgid "The audio codecs list"
+msgstr "Seznam zvukových kodeků"
 
-#: ../ekiga.schemas.in.in.h:91
-msgid "The STUN Server"
-msgstr "Server STUN"
+#: ../ekiga.schemas.in.in.h:25
+msgid "Enable silence detection"
+msgstr "Povolit detekci ticha"
 
-#: ../ekiga.schemas.in.in.h:92
-msgid ""
-"The STUN server to use for STUN Support. STUN is a technology that permits "
-"passage through some types of NAT gateway"
+#: ../ekiga.schemas.in.in.h:26 ../src/gui/preferences.cpp:929
+msgid "If enabled, use silence detection with the codecs supporting it"
 msgstr ""
-"Server STUN, který se má používat pro podporu STUN. STUN je technologie, "
-"která umožňuje průchod některými typy bran s NAT"
+"Je-li povoleno, bude se používat detekce ticha u kodeků, které ji podporují"
 
-#: ../ekiga.schemas.in.in.h:93
+#: ../ekiga.schemas.in.in.h:27
+msgid "Enable echo cancellation"
+msgstr "Povolit potlačení ozvěny"
+
+#: ../ekiga.schemas.in.in.h:28 ../src/gui/preferences.cpp:931
+msgid "If enabled, use echo cancellation"
+msgstr "Je-li povoleno, bude se používat potlačení ozvěny"
+
+#: ../ekiga.schemas.in.in.h:29
+msgid "Alternative audio output device"
+msgstr "Alternativní zařízení výstupu zvuku"
+
+#: ../ekiga.schemas.in.in.h:30
+msgid "Select an alternative audio output device to use for sound events."
+msgstr ""
+"Vyberte alternativní zařízení výstupu zvuku, které se má používat pro "
+"zvukové události."
+
+#: ../ekiga.schemas.in.in.h:31
+msgid "The incoming call sound"
+msgstr "Zvuk při příchozím hovoru"
+
+#: ../ekiga.schemas.in.in.h:32
+msgid "The sound that will be played on incoming calls, if enabled"
+msgstr ""
+"Zvuk, který bude přehráván při příchozích hovorech, pokud je to povoleno"
+
+#: ../ekiga.schemas.in.in.h:33 ../src/gui/preferences.cpp:346
+msgid "Play sound on incoming calls"
+msgstr "Přehrávat zvuk při příchozích hovorech"
+
+#: ../ekiga.schemas.in.in.h:34
+msgid "The chosen sound will be played on incoming calls, if enabled"
+msgstr "Je-li povoleno, bude zvolený zvuk přehráván při příchozích hovorech"
+
+#: ../ekiga.schemas.in.in.h:35
+msgid "The new instant message sound"
+msgstr "Zvuk nové rychlé zprávy"
+
+#: ../ekiga.schemas.in.in.h:36
+msgid ""
+"The sound that will be played when there is a new instant message, if enabled"
+msgstr ""
+"Zvuk, který bude přehráván, když přijde nová rychlá zpráva, pokud je to "
+"povoleno"
+
+#: ../ekiga.schemas.in.in.h:37
+msgid "Play sound on new message"
+msgstr "Přehrávat zvuk při nové zprávě"
+
+#: ../ekiga.schemas.in.in.h:38
+msgid ""
+"The chosen sound will be played when a new instant message is received, if "
+"enabled"
+msgstr "Je-li povoleno, bude přehrán zvolený zvuk, když je přijata nová zpráva"
+
+#: ../ekiga.schemas.in.in.h:39
+msgid "The new voice mail sound"
+msgstr "Zvuk nové hlasové pošty"
+
+#: ../ekiga.schemas.in.in.h:40
+msgid ""
+"The sound that will be played when there is a new voice mail, if enabled"
+msgstr ""
+"Zvuk, který bude přehráván, když přijde nová hlasová pošta, pokud je to "
+"povoleno"
+
+#: ../ekiga.schemas.in.in.h:41
+msgid "Play sound on new voice mail"
+msgstr "Přehrávat zvuk při nové hlasové poště"
+
+#: ../ekiga.schemas.in.in.h:42
+msgid ""
+"The chosen sound will be played when a new voice mail is received, if enabled"
+msgstr ""
+"Je-li povoleno, bude zvolený zvuk přehráván, když je přijata nová hlasová "
+"pošta"
+
+#: ../ekiga.schemas.in.in.h:43 ../src/gui/preferences.cpp:356
+msgid "Play ring tone"
+msgstr "Přehrávat zvuk zvonění"
+
+#: ../ekiga.schemas.in.in.h:44
+msgid "The chosen sound will be played when calling somebody, if enabled"
+msgstr "Je-li povoleno, bude zvolený zvuk přehráván při volání ostatním"
+
+#: ../ekiga.schemas.in.in.h:45
+msgid "The dial tone sound"
+msgstr "Zvuk oznamovacího tónu"
+
+#: ../ekiga.schemas.in.in.h:46
+msgid "The sound that will be played when calling somebody, if enabled"
+msgstr "Zvuk, který bude přehráván při volání, pokud je to povoleno"
+
+#: ../ekiga.schemas.in.in.h:47 ../src/gui/preferences.cpp:366
+msgid "Play busy tone"
+msgstr "Přehrávat obsazovací tón"
+
+#: ../ekiga.schemas.in.in.h:48
+msgid ""
+"The chosen sound will be played at the end of calls or calling somebody who "
+"is busy, if enabled"
+msgstr ""
+"Je-li povoleno, bude zvolený zvuk přehráván na konci hovorů nebo při volání "
+"někoho, kdo je zaneprázdněn"
+
+#: ../ekiga.schemas.in.in.h:49
+msgid "The busy tone sound"
+msgstr "Zvuk obsazovacího tónu"
+
+#: ../ekiga.schemas.in.in.h:50
+msgid ""
+"The sound that will be played at the end of calls or when calling somebody "
+"who is busy, if enabled"
+msgstr ""
+"Zvuk, který bude přehráván na konci hovorů nebo při volání někoho, kdo je "
+"zaneprázdněn, pokud je to povoleno"
+
+#: ../ekiga.schemas.in.in.h:51
+msgid "The accounts list"
+msgstr "Seznam účtů"
+
+#: ../ekiga.schemas.in.in.h:52
+msgid "The list of accounts to which Ekiga should register"
+msgstr "Seznam účtů, ke kterým se má Ekiga registrovat"
+
+#: ../ekiga.schemas.in.in.h:53
+msgid "Type of Service (TOS) byte on outgoing RTP IP packets"
+msgstr "Bajt TOS (Type Of Service – typ služby) v odchozím paketu RTP IP"
+
+#: ../ekiga.schemas.in.in.h:54
 msgid ""
 "The Type of Service (TOS) byte on outgoing RTP IP packets. This byte is used "
 "by the network to provide some level of Quality of Service (QoS). Default "
@@ -499,134 +308,11 @@ msgstr ""
 "Service). Výchozí hodnota 184 (0xB8) odpovídá Expedited Forwarding (EF – "
 "přednostnímu předávání) PHB, jak je definováno RFC 3246."
 
-#: ../ekiga.schemas.in.in.h:94
-msgid "The accounts list"
-msgstr "Seznam účtů"
+#: ../ekiga.schemas.in.in.h:55
+msgid "Listen port"
+msgstr "Přijímací port"
 
-# mistake in original: "lodecs"
-#: ../ekiga.schemas.in.in.h:95
-msgid "The audio codecs list"
-msgstr "Seznam zvukových kodeků"
-
-#: ../ekiga.schemas.in.in.h:96
-msgid "The busy tone sound"
-msgstr "Zvuk obsazovacího tónu"
-
-#: ../ekiga.schemas.in.in.h:97
-msgid ""
-"The chosen sound will be played at the end of calls or calling somebody who "
-"is busy, if enabled"
-msgstr ""
-"Je-li povoleno, bude zvolený zvuk přehráván na konci hovorů nebo při volání "
-"někoho, kdo je zaneprázdněn"
-
-#: ../ekiga.schemas.in.in.h:98
-msgid "The chosen sound will be played on incoming calls, if enabled"
-msgstr "Je-li povoleno, bude zvolený zvuk přehráván při příchozích hovorech"
-
-#: ../ekiga.schemas.in.in.h:99
-msgid ""
-"The chosen sound will be played when a new instant message is received, if "
-"enabled"
-msgstr "Je-li povoleno, bude přehrán zvolený zvuk, když je přijata nová zpráva"
-
-#: ../ekiga.schemas.in.in.h:100
-msgid ""
-"The chosen sound will be played when a new voice mail is received, if enabled"
-msgstr ""
-"Je-li povoleno, bude zvolený zvuk přehráván, když je přijata nová hlasová "
-"pošta"
-
-#: ../ekiga.schemas.in.in.h:101
-msgid "The chosen sound will be played when calling somebody, if enabled"
-msgstr "Je-li povoleno, bude zvolený zvuk přehráván při volání ostatním"
-
-#: ../ekiga.schemas.in.in.h:102
-msgid "The default video view"
-msgstr "Výchozí zobrazení videa"
-
-#: ../ekiga.schemas.in.in.h:103
-msgid ""
-"The default video view (0: Local, 1: Remote, 2: Both, 3: Both in a separate "
-"window)"
-msgstr ""
-"Výchozí zobrazení videa (0: místní, 1: vzdálené, 2: oboje vrstvené, 3: obojí "
-"v samostatném okně)"
-
-#: ../ekiga.schemas.in.in.h:104
-msgid "The dial tone sound"
-msgstr "Zvuk oznamovacího tónu"
-
-#: ../ekiga.schemas.in.in.h:105
-msgid "The history of the 100 last calls"
-msgstr "Historie posledních 100 hovorů"
-
-#: ../ekiga.schemas.in.in.h:106 ../src/gui/preferences.cpp:658
-#: ../src/gui/preferences.cpp:702
-msgid "The host where calls should be forwarded if call forwarding is enabled"
-msgstr ""
-"Počítač, na který mají být předávany hovory, je-li povoleno předávání hovorů"
-
-#: ../ekiga.schemas.in.in.h:107
-msgid "The incoming call sound"
-msgstr "Zvuk při příchozím hovoru"
-
-#: ../ekiga.schemas.in.in.h:108
-msgid "The list of accounts to which Ekiga should register"
-msgstr "Seznam účtů, ke kterým se má Ekiga registrovat"
-
-#: ../ekiga.schemas.in.in.h:109
-msgid "The long status information"
-msgstr "Dlouhý text s informací o stavu"
-
-#: ../ekiga.schemas.in.in.h:110
-msgid ""
-"The maximum RX video bitrate in kbit/s. This value will be signaled to the "
-"peer endpoint that can adjust (if it supports it) its TX bitrate if it is "
-"above the signaled value"
-msgstr ""
-"Maximální datový tok přijímaného videa v kbit/s. Tato hodnota bude vyslána "
-"koncovému bodu partnera, který může upravit (pokud to podporuje) svoji šířku "
-"pásma vysílaného videa, pokud přesahuje tuto vyslanou hodnotu."
-
-#: ../ekiga.schemas.in.in.h:111
-msgid ""
-"The maximum TX video bitrate in kbit/s. The video quality and the number of "
-"transmitted frames per second (depends on selected codec) will be "
-"dynamically adjusted above their minimum during calls to try to minimize the "
-"bandwidth to the given value"
-msgstr ""
-"Maximální datový tok odesílaného videa v kbit/s. Kvalita videa a počet "
-"přenesených snímků za sekundu (závisí na vybraném kodeku) budou dynamicky "
-"upraveny nad svou minimální hodnotu během hovorů tak, aby se snížil datový "
-"tok na zadanou hodnotu"
-
-#: ../ekiga.schemas.in.in.h:112 ../src/gui/preferences.cpp:933
-msgid "The maximum jitter buffer size for audio reception (in ms)"
-msgstr ""
-"Maximální velikost vyrovnávací paměti výpadků (jitter buffer) pro příjem "
-"zvuku (v ms)"
-
-#: ../ekiga.schemas.in.in.h:113
-msgid ""
-"The maximum transmitted frame rate in frames/s. This rate may not be reached "
-"in case a minimum quality was configure via a TSTO value smaller than 31 and "
-"the bitrate selected is not sufficient to support this minimum quality"
-msgstr ""
-"Maximální rychlost odesílání snímků ve snímcích za sekundu. Tento počet "
-"nemusí být dosažen v případě, že byla nastavena minimální kvalita přes "
-"hodnotu TSTO menší než 31 a zvolený datový tok nepostačuje k podpoře této "
-"minimální kvality"
-
-#: ../ekiga.schemas.in.in.h:114
-msgid "The new instant message sound"
-msgstr "Zvuk nové rychlé zprávy"
-
-#: ../ekiga.schemas.in.in.h:115
-msgid "The new voice mail sound"
-msgstr "Zvuk nové hlasové pošty"
-
-#: ../ekiga.schemas.in.in.h:116
+#: ../ekiga.schemas.in.in.h:56
 msgid ""
 "The port to listen to for incoming connections. Ekiga needs to be restarted "
 "for the new value to take effect"
@@ -634,7 +320,37 @@ msgstr ""
 "Port, na němž se má čekat na příchozí spojení. Aby měla nová hodnota vliv, "
 "je potřeba aplikaci Ekiga restartovat"
 
-#: ../ekiga.schemas.in.in.h:117
+#: ../ekiga.schemas.in.in.h:57
+msgid "Outbound Proxy"
+msgstr "Odchozí proxy"
+
+#: ../ekiga.schemas.in.in.h:58 ../src/gui/preferences.cpp:699
+msgid "The SIP Outbound Proxy to use for outgoing calls"
+msgstr "Odchozí proxy SIP, která se má používat pro odchozí hovory"
+
+#: ../ekiga.schemas.in.in.h:59
+msgid "Forward calls to host"
+msgstr "Předat hovory na počítač"
+
+#: ../ekiga.schemas.in.in.h:60 ../src/gui/preferences.cpp:658
+#: ../src/gui/preferences.cpp:702
+msgid "The host where calls should be forwarded if call forwarding is enabled"
+msgstr ""
+"Počítač, na který mají být předávany hovory, je-li povoleno předávání hovorů"
+
+#: ../ekiga.schemas.in.in.h:61
+msgid "DTMF sending"
+msgstr "Odesílání DTMF"
+
+#: ../ekiga.schemas.in.in.h:62
+msgid ""
+"Select the mode for sending DTMFs. The values can be 0 (for \"RFC2833\") and "
+"1 (for \"INFO\")"
+msgstr ""
+"Výběr režimu odesílání DTMF. Hodnoty mohou být 0 (pro „RFC2833“) a 1 (pro "
+"„INFO“)"
+
+#: ../ekiga.schemas.in.in.h:63
 msgid ""
 "The port to listen to for incoming connections. Ekiga needs to be restarted "
 "for the new value to take effect."
@@ -642,11 +358,11 @@ msgstr ""
 "Port, na němž se má čekat na příchozí spojení. Aby měla nová hodnota vliv, "
 "je potřeba aplikaci Ekiga restartovat."
 
-#: ../ekiga.schemas.in.in.h:118
-msgid "The position of the remote video window"
-msgstr "Umístění okna vzdáleného videa"
+#: ../ekiga.schemas.in.in.h:64
+msgid "TCP port range"
+msgstr "Rozsah portů TCP"
 
-#: ../ekiga.schemas.in.in.h:119
+#: ../ekiga.schemas.in.in.h:65
 msgid ""
 "The range of TCP ports that Ekiga will use for the H.323 H.245 channel. This "
 "port range has no effect if both participants to the conference are using "
@@ -656,84 +372,19 @@ msgstr ""
 "rozsah portů nemá vliv, pokud oba účastníci konference používají tunelování "
 "H.245."
 
-#: ../ekiga.schemas.in.in.h:120
+#: ../ekiga.schemas.in.in.h:66
+msgid "UDP port range"
+msgstr "Rozsah portů UDP"
+
+#: ../ekiga.schemas.in.in.h:67
 msgid "The range of UDP ports that Ekiga will use."
 msgstr "Rozsah portů UDP, které bude aplikace Ekiga používat."
 
-#: ../ekiga.schemas.in.in.h:121
-msgid "The short status information"
-msgstr "Krátky text s informací o stavu"
+#: ../ekiga.schemas.in.in.h:68
+msgid "Enable H.245 tunneling"
+msgstr "Povolit tunelování H.245"
 
-#: ../ekiga.schemas.in.in.h:122
-msgid "The size of the remote video window"
-msgstr "Velikost okna vzdáleného videa"
-
-#: ../ekiga.schemas.in.in.h:123
-msgid ""
-"The sound that will be played at the end of calls or when calling somebody "
-"who is busy, if enabled"
-msgstr ""
-"Zvuk, který bude přehráván na konci hovorů nebo při volání někoho, kdo je "
-"zaneprázdněn, pokud je to povoleno"
-
-#: ../ekiga.schemas.in.in.h:124
-msgid "The sound that will be played on incoming calls, if enabled"
-msgstr ""
-"Zvuk, který bude přehráván při příchozích hovorech, pokud je to povoleno"
-
-#: ../ekiga.schemas.in.in.h:125
-msgid "The sound that will be played when calling somebody, if enabled"
-msgstr "Zvuk, který bude přehráván při volání, pokud je to povoleno"
-
-#: ../ekiga.schemas.in.in.h:126
-msgid ""
-"The sound that will be played when there is a new instant message, if enabled"
-msgstr ""
-"Zvuk, který bude přehráván, když přijde nová rychlá zpráva, pokud je to "
-"povoleno"
-
-#: ../ekiga.schemas.in.in.h:127
-msgid ""
-"The sound that will be played when there is a new voice mail, if enabled"
-msgstr ""
-"Zvuk, který bude přehráván, když přijde nová hlasová pošta, pokud je to "
-"povoleno"
-
-#: ../ekiga.schemas.in.in.h:128 ../src/gui/preferences.cpp:890
-msgid "The video channel number to use (to select camera, tv or other sources)"
-msgstr ""
-"Číslo video kanálu, který se má používat (pro výběr kamery, tv nebo jiné "
-"zdroje)"
-
-#: ../ekiga.schemas.in.in.h:129
-msgid "The video codecs list"
-msgstr "Seznam video kodeků"
-
-#: ../ekiga.schemas.in.in.h:130
-msgid "The video view before having switched to fullscreen"
-msgstr "Zobrazení videa před přepnutím do režimu celé obrazovky"
-
-#: ../ekiga.schemas.in.in.h:131
-msgid ""
-"The video view before having switched to fullscreen (same values as "
-"video_view)"
-msgstr ""
-"Zobrazení videa před přepnutím do režimu celé obrazovky (stejné hodnoty jako "
-"video_view)"
-
-#: ../ekiga.schemas.in.in.h:132
-msgid "The zoom value"
-msgstr "Hodnota zvětšení"
-
-#: ../ekiga.schemas.in.in.h:133
-msgid ""
-"The zoom value in percent to apply to images displayed in the main GUI (can "
-"be 50, 100, or 200)"
-msgstr ""
-"Hodnota zvětšení v procentech, která se má používat pro obrázky zobrazované "
-"v hlavním uživatelském rozhraní (může být 50, 100 nebo 200)"
-
-#: ../ekiga.schemas.in.in.h:134 ../src/gui/preferences.cpp:667
+#: ../ekiga.schemas.in.in.h:69 ../src/gui/preferences.cpp:667
 msgid ""
 "This enables H.245 Tunneling mode. In H.245 Tunneling mode H.245 messages "
 "are encapsulated into the H.225 channel (port 1720). This saves one TCP "
@@ -747,11 +398,199 @@ msgstr ""
 "nepodporuje. Používání rychlého startu a tunelování H.245 zároveň může "
 "způsobit pád některých verzí aplikace Netmeeting."
 
-#: ../ekiga.schemas.in.in.h:135 ../src/gui/preferences.cpp:669
+#: ../ekiga.schemas.in.in.h:70
+msgid "Enable early H.245"
+msgstr "Povolit brzké H.245"
+
+#: ../ekiga.schemas.in.in.h:71 ../src/gui/preferences.cpp:669
 msgid "This enables H.245 early in the setup"
 msgstr "Povoluje brzké H.245 v nastavení"
 
-#: ../ekiga.schemas.in.in.h:136
+#: ../ekiga.schemas.in.in.h:72
+msgid "Enable 'Fast Start'"
+msgstr "Povolit „Rychlý start“"
+
+#: ../ekiga.schemas.in.in.h:73
+msgid ""
+"Connection will be established in Fast Start mode. Fast Start is a new way "
+"to start calls faster that was introduced in H.323v2. It is not supported by "
+"Netmeeting and using both Fast Start and H.245 Tunneling can crash some "
+"versions of Netmeeting"
+msgstr ""
+"Spojení bude navázáno v režimu rychlého startu. Rychlý start je nový způsob "
+"rychlejšího navazování spojení zavedený v H.323v2. Není podporován aplikací "
+"Netmeeting a spolu s tunelováním H.245 může způsobit pád některých verzí "
+"aplikace Netmeeting"
+
+#: ../ekiga.schemas.in.in.h:74
+msgid ""
+"Select the mode for sending DTMFs. The values can be 0 (for \"String\"), 1 "
+"(for \"Tone\"), 2 (for \"RFC2833\"), or 3 (for \"Q.931\") (default is "
+"\"String\"). Choosing other values than \"String\" disables the Text Chat."
+msgstr ""
+"Výběr režimu pro odesílání DTMF. Hodnoty mohou být 0 (pro „String“), 1 (pro "
+"„Tone“), 2 (pro „RFC2833“) nebo 3 (pro „Q.931“) (výchozí je „String“). "
+"Zvolení jiné hodnoty než „String“ znemožní textovou diskuzi."
+
+#: ../ekiga.schemas.in.in.h:75
+msgid "Always forward calls to the given host"
+msgstr "Vždy předávat hovory na daný počítač"
+
+#: ../ekiga.schemas.in.in.h:76
+msgid ""
+"If enabled, all incoming calls will be forwarded to the host that is "
+"specified in the field below"
+msgstr ""
+"Je-li povoleno, všechny příchozí hovory budou předány na počítač uvedený v "
+"následující položce"
+
+#: ../ekiga.schemas.in.in.h:77
+msgid "Forward calls to the given host if busy"
+msgstr "Předat hovory na daný počítač v případě, že jste zaneprázdněni"
+
+#: ../ekiga.schemas.in.in.h:78
+msgid ""
+"If enabled, all incoming calls will be forwarded to the host that is "
+"specified in the field below if you already are in a call or if you are in "
+"Do Not Disturb mode"
+msgstr ""
+"Je-li povoleno, všechny příchozí hovory budou předány na počítač uvedený v "
+"následující položce v případě, že již s někým hovoříte nebo jste v režimu "
+"Nerušit"
+
+#: ../ekiga.schemas.in.in.h:79
+msgid "Forward calls to the given host if no answer"
+msgstr "Předat hovory na daný počítač v případě, že není žádná odpověď"
+
+#: ../ekiga.schemas.in.in.h:80
+msgid ""
+"If enabled, all incoming calls will be forwarded to the host that is "
+"specified in the field below if you do not answer the call"
+msgstr ""
+"Je-li povoleno, všechny příchozí hovory budou předány na počítač uvedený v "
+"následující položce v případě, že na ně neodpovíte"
+
+#: ../ekiga.schemas.in.in.h:81
+msgid "The STUN Server"
+msgstr "Server STUN"
+
+#: ../ekiga.schemas.in.in.h:82
+msgid ""
+"The STUN server to use for STUN Support. STUN is a technology that permits "
+"passage through some types of NAT gateway"
+msgstr ""
+"Server STUN, který se má používat pro podporu STUN. STUN je technologie, "
+"která umožňuje průchod některými typy bran s NAT"
+
+#: ../ekiga.schemas.in.in.h:83
+msgid "Enable STUN network detection"
+msgstr "Povolit detekci sítě STUN"
+
+#: ../ekiga.schemas.in.in.h:84 ../src/gui/preferences.cpp:476
+msgid "Enable the automatic network setup resulting from the STUN test"
+msgstr "Povolit automatické nastavení sítě podle výsledků testu STUN"
+
+#: ../ekiga.schemas.in.in.h:85
+msgid "NAT Binding Timeout"
+msgstr "Časový limit vazby NAT"
+
+#: ../ekiga.schemas.in.in.h:86
+msgid ""
+"Enter the number of seconds after which Ekiga should try refreshing the NAT "
+"binding when STUN is being used"
+msgstr ""
+"Zadejte počet sekund, po kterých má Ekiga zkusit obnovit vazbu NAT, když se "
+"používá STUN"
+
+#: ../ekiga.schemas.in.in.h:87
+msgid "Start hidden"
+msgstr "Spustit skrytě"
+
+#: ../ekiga.schemas.in.in.h:88 ../src/gui/preferences.cpp:462
+msgid ""
+"If enabled, Ekiga will start hidden provided that the notification area is "
+"present in the GNOME panel"
+msgstr ""
+"Je-li povoleno, Ekiga bude startovat skrytě, pokud je v panelu GNOME "
+"oznamovací oblast"
+
+#: ../ekiga.schemas.in.in.h:89
+msgid "Position on the screen of the call window"
+msgstr "Umístění okna volání na obrazovce"
+
+#: ../ekiga.schemas.in.in.h:90
+msgid "Size of the call window"
+msgstr "Velikost okna volání"
+
+#: ../ekiga.schemas.in.in.h:91
+msgid "Position on the screen of the main window"
+msgstr "Umístění hlavního okna na obrazovce"
+
+#: ../ekiga.schemas.in.in.h:92
+msgid "Change the panel section of the main window"
+msgstr "Změna části hlavního okna s panelem"
+
+#: ../ekiga.schemas.in.in.h:93
+msgid ""
+"Change the panel section of the main window (0=Contacts, 1=Dialpad, 2=Call "
+"history)"
+msgstr ""
+"Změna části hlavního okna s panelem (0=Seznam kontaktů, 1=Číselník, "
+"2=Historie volání)"
+
+#: ../ekiga.schemas.in.in.h:94
+msgid "Size of the chat window"
+msgstr "Velikost okna diskuze"
+
+#: ../ekiga.schemas.in.in.h:95
+msgid "Position on the screen of the chat window"
+msgstr "Umístění okna diskuze na obrazovce"
+
+#: ../ekiga.schemas.in.in.h:96
+msgid "Size of the druid window"
+msgstr "Velikost okna průvodce"
+
+#: ../ekiga.schemas.in.in.h:97
+msgid "Position on the screen of the druid window"
+msgstr "Umístění okna průvodce na obrazovce"
+
+#: ../ekiga.schemas.in.in.h:98
+msgid "Position on the screen of the address book window"
+msgstr "Umístění okna adresáře na obrazovce"
+
+#: ../ekiga.schemas.in.in.h:99
+msgid "Size of the address book window"
+msgstr "Velikost okna adresáře"
+
+#: ../ekiga.schemas.in.in.h:100
+msgid "Position on the screen of the audio settings window"
+msgstr "Umístění okna nastavení zvuku na obrazovce"
+
+#: ../ekiga.schemas.in.in.h:101
+msgid "Size of the audio settings window"
+msgstr "Velikost okna nastavení zvuku"
+
+#: ../ekiga.schemas.in.in.h:102
+msgid "Position on the screen of the video settings window"
+msgstr "Umístění okna nastavení obrazu na obrazovce"
+
+#: ../ekiga.schemas.in.in.h:103
+msgid "Size of the video settings window"
+msgstr "Velikost okna nastavení obrazu"
+
+#: ../ekiga.schemas.in.in.h:104
+msgid "Position on the screen of the preferences window"
+msgstr "Umístění okna předvoleb na obrazovce"
+
+#: ../ekiga.schemas.in.in.h:105
+msgid "Size of the preferences window"
+msgstr "Velikost okna předvoleb"
+
+#: ../ekiga.schemas.in.in.h:106
+msgid "Disable video hardware acceleration"
+msgstr "Zakázat hardwarovou akceleraci videa"
+
+#: ../ekiga.schemas.in.in.h:107
 msgid ""
 "This key disables DirectX (on win32) and XVideo (on Linux) video hardware "
 "acceleration"
@@ -759,35 +598,140 @@ msgstr ""
 "Tento klíč zakazuje hardwarovou akceleraci videa DirectX (na win32) a XVideo "
 "(na Linuxu)"
 
-#: ../ekiga.schemas.in.in.h:137
-msgid "Type of Service (TOS) byte on outgoing RTP IP packets"
-msgstr "Bajt TOS (Type Of Service – typ služby) v odchozím paketu RTP IP"
+#: ../ekiga.schemas.in.in.h:108
+msgid "Allow picture-in-picture software scaling"
+msgstr "Povolit softwarové škálování obrazu v obraze"
 
-#: ../ekiga.schemas.in.in.h:138
-msgid "UDP port range"
-msgstr "Rozsah portů UDP"
+#: ../ekiga.schemas.in.in.h:109
+msgid ""
+"Allow Ekiga to fall back to software scaling the picture-in-picture if "
+"hardware support is not available. If this is set to false, Ekiga will not "
+"try to open the PIP if hardware support is not available."
+msgstr ""
+"Povolit programu Ekiga, aby použil softwarové škálování obrazu v obraze "
+"(PIP), pokud není dostupná hardwarová podpora. Pokud není nastaveno, Ekiga "
+"se nepokusí otevřít PIP v případě, že není dostupná hardwarová podpora."
 
-#: ../ekiga.schemas.in.in.h:139
-msgid "Video channel"
-msgstr "Video kanál"
+#: ../ekiga.schemas.in.in.h:110
+msgid "Specify the software scaling algorithm"
+msgstr "Určuje algoritmus softwarového škálování"
 
-#: ../ekiga.schemas.in.in.h:140
-msgid "Video format"
-msgstr "Formát videa"
+#: ../ekiga.schemas.in.in.h:111
+msgid ""
+"Specify the software scaling algorithm: 0: nearest neighbor, 1: nearest "
+"neighbor with box filter, 2: bilinear filtering, 3: hyperbolic filtering. "
+"Does not apply on windows systems."
+msgstr ""
+"Určuje algoritmus softwarového škálování: 0: nejbližší soused, 1: nejbližší "
+"soused s filtrem ohraničené oblasti, 2: bilineární filtr, 3: hyperbolický "
+"filtr. Nepoužívá se v systémech Windows."
 
-#: ../ekiga.schemas.in.in.h:141
-msgid "Video input device"
-msgstr "Zařízení vstupu videa"
+#: ../ekiga.schemas.in.in.h:112
+msgid "The zoom value"
+msgstr "Hodnota zvětšení"
 
-#: ../ekiga.schemas.in.in.h:142
-msgid "Video preview"
-msgstr "Náhled videa"
+#: ../ekiga.schemas.in.in.h:113
+msgid ""
+"The zoom value in percent to apply to images displayed in the main GUI (can "
+"be 50, 100, or 200)"
+msgstr ""
+"Hodnota zvětšení v procentech, která se má používat pro obrázky zobrazované "
+"v hlavním uživatelském rozhraní (může být 50, 100 nebo 200)"
 
-#: ../ekiga.schemas.in.in.h:143
-msgid "Video size"
-msgstr "Velikost videa"
+#: ../ekiga.schemas.in.in.h:114 ../src/gui/preferences.cpp:470
+msgid "Place windows displaying video above other windows during calls"
+msgstr "Během hovorů umísťovat okna zobrazující video nad jiná okna"
 
-#: ../ekiga.schemas.in.in.h:144
+#: ../ekiga.schemas.in.in.h:115
+msgid "The default video view"
+msgstr "Výchozí zobrazení videa"
+
+#: ../ekiga.schemas.in.in.h:116
+msgid ""
+"The default video view (0: Local, 1: Remote, 2: Both, 3: Both in a separate "
+"window)"
+msgstr ""
+"Výchozí zobrazení videa (0: místní, 1: vzdálené, 2: oboje vrstvené, 3: obojí "
+"v samostatném okně)"
+
+#: ../ekiga.schemas.in.in.h:117
+msgid "The video view before having switched to fullscreen"
+msgstr "Zobrazení videa před přepnutím do režimu celé obrazovky"
+
+#: ../ekiga.schemas.in.in.h:118
+msgid ""
+"The video view before having switched to fullscreen (same values as "
+"video_view)"
+msgstr ""
+"Zobrazení videa před přepnutím do režimu celé obrazovky (stejné hodnoty jako "
+"video_view)"
+
+#: ../ekiga.schemas.in.in.h:119
+msgid "Remote video window size"
+msgstr "Velikost okna vzdáleného videa"
+
+#: ../ekiga.schemas.in.in.h:120
+msgid "The size of the remote video window"
+msgstr "Velikost okna vzdáleného videa"
+
+#: ../ekiga.schemas.in.in.h:121
+msgid "Remote video window position"
+msgstr "Umístění okna vzdáleného videa"
+
+#: ../ekiga.schemas.in.in.h:122
+msgid "The position of the remote video window"
+msgstr "Umístění okna vzdáleného videa"
+
+#: ../ekiga.schemas.in.in.h:123
+msgid "Maximum jitter buffer"
+msgstr "Maximální vyrovnávací paměť výpadků (jitter buffer)"
+
+#: ../ekiga.schemas.in.in.h:124 ../src/gui/preferences.cpp:933
+msgid "The maximum jitter buffer size for audio reception (in ms)"
+msgstr ""
+"Maximální velikost vyrovnávací paměti výpadků (jitter buffer) pro příjem "
+"zvuku (v ms)"
+
+#: ../ekiga.schemas.in.in.h:125
+msgid "The video codecs list"
+msgstr "Seznam video kodeků"
+
+#: ../ekiga.schemas.in.in.h:126
+msgid "Maximum TX video bitrate"
+msgstr "Maximální datový tok odesílaného videa"
+
+#: ../ekiga.schemas.in.in.h:127
+msgid ""
+"The maximum TX video bitrate in kbit/s. The video quality and the number of "
+"transmitted frames per second (depends on selected codec) will be "
+"dynamically adjusted above their minimum during calls to try to minimize the "
+"bandwidth to the given value"
+msgstr ""
+"Maximální datový tok odesílaného videa v kbit/s. Kvalita videa a počet "
+"přenesených snímků za sekundu (závisí na vybraném kodeku) budou dynamicky "
+"upraveny nad svou minimální hodnotu během hovorů tak, aby se snížil datový "
+"tok na zadanou hodnotu"
+
+#: ../ekiga.schemas.in.in.h:128
+msgid "Maximum RX video bitrate"
+msgstr "Maximální datový tok přijímaného videa"
+
+#: ../ekiga.schemas.in.in.h:129
+msgid ""
+"The maximum RX video bitrate in kbit/s. This value will be signaled to the "
+"peer endpoint that can adjust (if it supports it) its TX bitrate if it is "
+"above the signaled value"
+msgstr ""
+"Maximální datový tok přijímaného videa v kbit/s. Tato hodnota bude vyslána "
+"koncovému bodu partnera, který může upravit (pokud to podporuje) svoji šířku "
+"pásma vysílaného videa, pokud přesahuje tuto vyslanou hodnotu."
+
+# I don't understand the meaning :(
+#: ../ekiga.schemas.in.in.h:130
+msgid "Temporal Spatial Trade Off"
+msgstr "Dočasná prostorová výměna (TSTO)"
+
+#: ../ekiga.schemas.in.in.h:131
 msgid ""
 "Whether to prefer to sustain the max. frame rate or lower it possibly in "
 "order to keep a minimum level of (spatial) quality for all frames. 0: "
@@ -796,6 +740,62 @@ msgstr ""
 "Zvolte, zda dáváte přednost udržení maximálního počtu snímků nebo jeho "
 "snížení, aby se udržela minimální míra kvality pro všechny snímky. 0: "
 "nejvyšší minimální kvalita, 31: nejnižší minimální kvalita"
+
+#: ../ekiga.schemas.in.in.h:132
+msgid "List of folded groups in the roster"
+msgstr "Přehled složených skupin v seznamu"
+
+#: ../ekiga.schemas.in.in.h:133
+msgid "Show offline contacts"
+msgstr "Zobrazovat odpojené kontakty"
+
+#: ../ekiga.schemas.in.in.h:134 ../src/gui/preferences.cpp:464
+msgid "If enabled, offline contacts will be shown in the roster"
+msgstr "Je-li povoleno, budou se odpojené kontakty zobrazovat v seznamu"
+
+#: ../ekiga.schemas.in.in.h:135
+msgid "LDAP servers"
+msgstr "Servery LDAP"
+
+#: ../ekiga.schemas.in.in.h:136
+msgid "List of configured LDAP servers"
+msgstr "Seznam nastavených serverů LDAP"
+
+#: ../ekiga.schemas.in.in.h:137
+msgid "Calls history"
+msgstr "Historie hovorů"
+
+#: ../ekiga.schemas.in.in.h:138
+msgid "The history of the 100 last calls"
+msgstr "Historie posledních 100 hovorů"
+
+#: ../ekiga.schemas.in.in.h:139
+msgid "Kind of network selected in the assistant"
+msgstr "Druh sítě vybraný v průvodci"
+
+#: ../ekiga.schemas.in.in.h:140
+msgid "0: 56kbps, 1: ISDN, 2: DSL128, 3: DSL512, 4: LAN, 5: Custom"
+msgstr "0: 56 kb/s, 1: ISDN, 2:DSL128, 3: DSL512, 4: LAN, 5: Vlastní"
+
+#: ../ekiga.schemas.in.in.h:141
+msgid "No answer timeout"
+msgstr "Časový limit pro žádnou odpověď"
+
+#: ../ekiga.schemas.in.in.h:142 ../src/gui/preferences.cpp:499
+msgid ""
+"Automatically reject or forward incoming calls if no answer is given after "
+"the specified amount of time (in seconds)"
+msgstr ""
+"Automaticky odmítat nebo předávat příchozí hovory, pokud nejsou zodpovězeny "
+"v určené době (v sekundách)"
+
+#: ../ekiga.schemas.in.in.h:143
+msgid "Automatic answer"
+msgstr "Automatická odpověď"
+
+#: ../ekiga.schemas.in.in.h:144 ../src/gui/preferences.cpp:500
+msgid "If enabled, automatically answer incoming calls"
+msgstr "Pokud je povoleno, bude se automaticky odpovídat na příchozí volání"
 
 #: ../lib/engine/addressbook/contact-core.cpp:60
 msgid "_Find"
@@ -972,7 +972,7 @@ msgstr "Nepojmenovaný"
 #: ../plugins/evolution/evolution-contact.cpp:228
 #: ../plugins/loudmouth/loudmouth-presentity.cpp:160
 #: ../plugins/resource-list/rl-presentity.cpp:212
-#: ../src/gui/main_window.cpp:1626
+#: ../src/gui/main_window.cpp:1816
 msgid "_Edit"
 msgstr "_Upravit"
 
@@ -1379,7 +1379,7 @@ msgid "Abnormal call termination"
 msgstr "Neočekávané přerušení hovoru"
 
 #: ../lib/engine/components/opal/opal-call.cpp:424
-#: ../src/gui/main_window.cpp:553
+#: ../src/gui/main_window.cpp:594
 msgid "Could not connect to remote host"
 msgstr "Nelze se připojit ke vzdálenému počítači"
 
@@ -1658,7 +1658,7 @@ msgid "user offline"
 msgstr "uživatel je odpojen"
 
 #: ../lib/engine/components/opal/sip-endpoint.cpp:974
-#: ../src/gui/main_window.cpp:1340
+#: ../src/gui/main_window.cpp:1443
 #, c-format
 msgid "Incoming call from %s"
 msgstr "Příchozí hovor od %s"
@@ -1695,7 +1695,7 @@ msgid "Address Book"
 msgstr "Adresář"
 
 #: ../lib/engine/gui/gtk-frontend/addressbook-window.cpp:651
-#: ../src/gui/main_window.cpp:1597
+#: ../src/gui/main_window.cpp:1787
 msgid "Address _Book"
 msgstr "_Adresář"
 
@@ -1740,8 +1740,8 @@ msgstr "Okno diskuze"
 
 #: ../lib/engine/gui/gtk-frontend/heap-view.cpp:238
 #: ../lib/engine/gui/gtk-frontend/heap-view.cpp:277
-#: ../lib/engine/gui/gtk-frontend/roster-view-gtk.cpp:987
-#: ../lib/engine/gui/gtk-frontend/roster-view-gtk.cpp:1040
+#: ../lib/engine/gui/gtk-frontend/roster-view-gtk.cpp:984
+#: ../lib/engine/gui/gtk-frontend/roster-view-gtk.cpp:1037
 msgid "Unsorted"
 msgstr "Neseřazený"
 
@@ -1833,25 +1833,25 @@ msgstr "Odstranit kontakt"
 msgid "Are you sure you want to remove %s from the addressbook?"
 msgstr "Jste si jisti, že chcete odstranit %s ze seznamu kontaktů?"
 
-#: ../plugins/gstreamer/gst-audioinput.cpp:276
+#: ../plugins/gstreamer/gst-audioinput.cpp:196
 msgid "Audio test"
 msgstr "Test zvuku"
 
-#: ../plugins/gstreamer/gst-audiooutput.cpp:328
+#: ../plugins/gstreamer/gst-audiooutput.cpp:223
 msgid "Silent"
 msgstr "Tichý"
 
-#: ../plugins/gstreamer/gst-videoinput.cpp:234
+#: ../plugins/gstreamer/gst-videoinput.cpp:185
 msgid "Video test"
 msgstr "Test videa"
 
 #. Translators: "Screencast" means the video input device will be your screen -- the other end will see your desktop
-#: ../plugins/gstreamer/gst-videoinput.cpp:386
-#: ../plugins/gstreamer/gst-videoinput.cpp:391
+#: ../plugins/gstreamer/gst-videoinput.cpp:337
+#: ../plugins/gstreamer/gst-videoinput.cpp:342
 msgid "Crazy"
 msgstr "Zblázněný"
 
-#: ../plugins/gstreamer/gst-videoinput.cpp:391
+#: ../plugins/gstreamer/gst-videoinput.cpp:342
 msgid "Screencast"
 msgstr "Obrazovkové vysílání"
 
@@ -2343,11 +2343,11 @@ msgstr "Stav"
 msgid "Accounts"
 msgstr "Účty"
 
-#: ../src/gui/accounts.cpp:590 ../src/gui/main_window.cpp:1636
+#: ../src/gui/accounts.cpp:590 ../src/gui/main_window.cpp:1826
 msgid "_Accounts"
 msgstr "Úč_ty"
 
-#: ../src/gui/accounts.cpp:594 ../src/gui/main_window.cpp:1666
+#: ../src/gui/accounts.cpp:594 ../src/gui/main_window.cpp:1856
 msgid "_Help"
 msgstr "_Nápověda"
 
@@ -2529,8 +2529,8 @@ msgstr ""
 "používat během hovorů. Později můžete nastavení jednotlivě změnit v okně "
 "předvoleb."
 
-#: ../src/gui/assistant.cpp:997 ../src/gui/main_window.cpp:1419
-#: ../src/gui/main_window.cpp:1423 ../src/gui/main_window.cpp:1427
+#: ../src/gui/assistant.cpp:997 ../src/gui/main_window.cpp:1558
+#: ../src/gui/main_window.cpp:1562 ../src/gui/main_window.cpp:1566
 #: ../src/gui/preferences.cpp:727
 msgid "Audio Devices"
 msgstr "Zvuková zařízení"
@@ -2718,15 +2718,15 @@ msgstr ""
 msgid "Unable to open help file."
 msgstr "Nelze otevřít soubor nápovědy."
 
-#: ../src/gui/call_window.cpp:776
+#: ../src/gui/call_window.cpp:765
 msgid "Error while initializing video output"
 msgstr "Chyba při inicializaci výstupu videa"
 
-#: ../src/gui/call_window.cpp:777
+#: ../src/gui/call_window.cpp:766
 msgid "No video will be displayed on your machine during this call"
 msgstr "Na vašem počítači nebude během tohoto volání zobrazováno žádné video"
 
-#: ../src/gui/call_window.cpp:787
+#: ../src/gui/call_window.cpp:776
 msgid ""
 "There was an error opening or initializing the video output. Please verify "
 "that no other application is using the accelerated video output."
@@ -2734,7 +2734,7 @@ msgstr ""
 "Nastala chyba při otevírání nebo inicializaci video výstupu. Zkontrolujte "
 "prosím, zda žádná jiná aplikace nepoužívá akcelerovaný video výstup."
 
-#: ../src/gui/call_window.cpp:789
+#: ../src/gui/call_window.cpp:778
 msgid ""
 "There was an error opening or initializing the video output. Please verify "
 "that you are using a color depth of 24 or 32 bits per pixel."
@@ -2742,16 +2742,16 @@ msgstr ""
 "Nastala chyba při otevírání nebo inicializaci video výstupu. Zkontrolujte "
 "prosím, že používáte barevnou hloubku 24 nebo 32 bitů na pixel."
 
-#: ../src/gui/call_window.cpp:892
+#: ../src/gui/call_window.cpp:884
 #, c-format
 msgid "Error while accessing video device %s"
 msgstr "Chyba při přístupu k zařízení videa %s"
 
-#: ../src/gui/call_window.cpp:895
+#: ../src/gui/call_window.cpp:887
 msgid "A moving logo will be transmitted during calls."
 msgstr "Během volání bude vysíláno pohybující se logo."
 
-#: ../src/gui/call_window.cpp:899
+#: ../src/gui/call_window.cpp:891
 msgid ""
 "There was an error while opening the device. In case it is a pluggable "
 "device it may be sufficient to reconnect it. If not, or if it still is not "
@@ -2763,15 +2763,15 @@ msgstr ""
 "nedostupné, zkontrolujte prosím svá oprávnění a přesvědčte se, že je načten "
 "správný ovladač."
 
-#: ../src/gui/call_window.cpp:903
+#: ../src/gui/call_window.cpp:895
 msgid "Your video driver doesn't support the requested video format."
 msgstr "Váš ovladač videa nepodporuje požadovaný formát videa."
 
-#: ../src/gui/call_window.cpp:907
+#: ../src/gui/call_window.cpp:899
 msgid "Could not open the chosen channel."
 msgstr "Nelze otevřít vybraný kanál."
 
-#: ../src/gui/call_window.cpp:911
+#: ../src/gui/call_window.cpp:903
 msgid ""
 "Your driver doesn't seem to support any of the color formats supported by "
 "Ekiga.\n"
@@ -2783,31 +2783,31 @@ msgstr ""
 "Zkontrolujte prosím dokumentaci svého modulu jádra, abyste zjistili, která "
 "paleta je podporována."
 
-#: ../src/gui/call_window.cpp:915
+#: ../src/gui/call_window.cpp:907
 msgid "Error while setting the frame rate."
 msgstr "Chyba při nastavování rychlosti snímků."
 
-#: ../src/gui/call_window.cpp:919
+#: ../src/gui/call_window.cpp:911
 msgid "Error while setting the frame size."
 msgstr "Chyba při nastavování velikosti snímků."
 
-#: ../src/gui/call_window.cpp:924 ../src/gui/call_window.cpp:994
-#: ../src/gui/call_window.cpp:1075
+#: ../src/gui/call_window.cpp:916 ../src/gui/call_window.cpp:986
+#: ../src/gui/call_window.cpp:1067
 msgid "Unknown error."
 msgstr "Neznámá chyba."
 
-#: ../src/gui/call_window.cpp:976
+#: ../src/gui/call_window.cpp:968
 #, c-format
 msgid "Error while opening audio input device %s"
 msgstr "Chyba při otevírání zařízení vstupu zvuku %s"
 
 #. Translators: This happens when there is an error with audio input:
 #. * Nothing ("silence") will be transmitted
-#: ../src/gui/call_window.cpp:981
+#: ../src/gui/call_window.cpp:973
 msgid "Only silence will be transmitted."
 msgstr "Bude přeneseno pouze ticho."
 
-#: ../src/gui/call_window.cpp:985
+#: ../src/gui/call_window.cpp:977
 msgid ""
 "Unable to open the selected audio device for recording. In case it is a "
 "pluggable device it may be sufficient to reconnect it. If not, or if it "
@@ -2819,7 +2819,7 @@ msgstr ""
 "je stále nedostupné, zkontrolujte prosím své nastavení zvuku, oprávnění a že "
 "se zařízení nepoužívá."
 
-#: ../src/gui/call_window.cpp:989
+#: ../src/gui/call_window.cpp:981
 msgid ""
 "The selected audio device was successfully opened but it is impossible to "
 "read data from this device. In case it is a pluggable device it may be "
@@ -2830,16 +2830,16 @@ msgstr ""
 "zařízení číst data. Pokud je to odpojitelné zařízení, může být postačující "
 "jej znovu připojit. Pokud ne, zkontrolujte prosím své nastavení zvuku."
 
-#: ../src/gui/call_window.cpp:1059
+#: ../src/gui/call_window.cpp:1051
 #, c-format
 msgid "Error while opening audio output device %s"
 msgstr "Chyba při otevírání zařízení výstupu videa %s"
 
-#: ../src/gui/call_window.cpp:1062
+#: ../src/gui/call_window.cpp:1054
 msgid "No incoming sound will be played."
 msgstr "Nebude přehráván žádný vyzváněcí tón."
 
-#: ../src/gui/call_window.cpp:1066
+#: ../src/gui/call_window.cpp:1058
 msgid ""
 "Unable to open the selected audio device for playing. In case it is a "
 "pluggable device it may be sufficient to reconnect it. If not, or if it "
@@ -2851,7 +2851,7 @@ msgstr ""
 "je stále nedostupné, zkontrolujte prosím své nastavení zvuku, oprávnění a že "
 "se zařízení nepoužívá."
 
-#: ../src/gui/call_window.cpp:1070
+#: ../src/gui/call_window.cpp:1062
 msgid ""
 "The selected audio device was successfully opened but it is impossible to "
 "write data to this device. In case it is a pluggable device it may be "
@@ -2863,14 +2863,16 @@ msgstr ""
 "postačující jej znovu připojit. Pokud ne nebo je stále nedostupné, "
 "zkontrolujte prosím své zvukové nastavení."
 
-#. %s is the SIP/H.323 address of the remote user, this text is shown
-#. below video during a call
-#: ../src/gui/call_window.cpp:1098 ../src/gui/main_window.cpp:664
-#, c-format
-msgid "Connected with %s"
-msgstr "Spojeno s %s"
+#: ../src/gui/call_window.cpp:1090
+msgid "Calling..."
+msgstr "Volá se…"
 
-#: ../src/gui/call_window.cpp:1127 ../src/gui/call_window.cpp:2345
+#: ../src/gui/call_window.cpp:1106
+msgid "Connected"
+msgstr "Spojeno"
+
+#. Init
+#: ../src/gui/call_window.cpp:1129 ../src/gui/call_window.cpp:2447
 msgid "Standby"
 msgstr "Pohotovost"
 
@@ -2884,40 +2886,48 @@ msgstr "Hovor přijat"
 
 #. Translators: TX is a common abbreviation for "transmit".  As it
 #. * is shown in a tooltip, there is no space constraint
-#: ../src/gui/call_window.cpp:1422
+#: ../src/gui/call_window.cpp:1454
 #, c-format
-msgid "TX: %dx%d "
+msgid "TX: %dx%d"
 msgstr "TX: %d×%d "
+
+#: ../src/gui/call_window.cpp:1456
+msgid "TX: / "
+msgstr "TX: / "
 
 #. Translators: RX is a common abbreviation for "receive".  As it
 #. * is shown in a tooltip, there is no space constraint
-#: ../src/gui/call_window.cpp:1427
+#: ../src/gui/call_window.cpp:1461
 #, c-format
-msgid "RX: %dx%d "
+msgid "RX: %dx%d"
 msgstr "RX: %d×%d "
 
-#: ../src/gui/call_window.cpp:1429
+#: ../src/gui/call_window.cpp:1463
+msgid "RX: / "
+msgstr "RX: / "
+
+#: ../src/gui/call_window.cpp:1472
 #, c-format
 msgid ""
 "Lost packets: %.1f %%\n"
 "Late packets: %.1f %%\n"
 "Out of order packets: %.1f %%\n"
-"Jitter buffer: %d ms%s%s%s"
+"Jitter buffer: %d ms\n"
+"Codecs: %s\n"
+"Resolution: %s %s"
 msgstr ""
 "Ztracené pakety: %.1f %%\n"
 "Zpožděné pakety: %.1f %%\n"
 "Pakety mimo pořadí: %.1f %%\n"
-"Vyrovnávací paměť výpadků: %d ms%s%s%s"
+"Vyrovnávací paměť výpadků: %d ms\n"
+"Kodeky: %s\n"
+"Rozlišení: %s %s"
 
-#: ../src/gui/call_window.cpp:1556
+#. Translators: A = Audio, V = Video, FPS = Frames per second
+#: ../src/gui/call_window.cpp:1602
 #, c-format
-msgid "%s\n"
-msgstr "%s\n"
-
-#: ../src/gui/call_window.cpp:1592
-#, c-format
-msgid "A:%.1f/%.1f   V:%.1f/%.1f   FPS:%d/%d\n"
-msgstr "A:%.1f/%.1f   V:%.1f/%.1f   FPS:%d/%d\n"
+msgid "A:%.1f/%.1f V:%.1f/%.1f FPS:%d/%d"
+msgstr "A:%.1f/%.1f V:%.1f/%.1f FPS:%d/%d"
 
 #: ../src/gui/call_window.cpp:1623
 msgid "_Retrieve Call"
@@ -2968,7 +2978,6 @@ msgid "Audio Settings"
 msgstr "Nastavení zvuku"
 
 #: ../src/gui/call_window.cpp:1934
-#| msgid "Call"
 msgid "_Call"
 msgstr "_Volat"
 
@@ -2980,7 +2989,7 @@ msgstr "Zavěsi_t"
 msgid "Hangup the current call"
 msgstr "Zavěsit aktuální hovor"
 
-#: ../src/gui/call_window.cpp:1942 ../src/gui/call_window.cpp:2457
+#: ../src/gui/call_window.cpp:1942 ../src/gui/call_window.cpp:2416
 msgid "Hold the current call"
 msgstr "Přidržet aktuální hovor"
 
@@ -3000,7 +3009,7 @@ msgstr "Pozastavit nebo obnovit přenos zvuku"
 msgid "Suspend or resume the video transmission"
 msgstr "Pozastavit nebo obnovit přenos videa"
 
-#: ../src/gui/call_window.cpp:1965 ../src/gui/main_window.cpp:1648
+#: ../src/gui/call_window.cpp:1965 ../src/gui/main_window.cpp:1838
 msgid "_View"
 msgstr "_Zobrazit"
 
@@ -3056,257 +3065,262 @@ msgstr "Přepnout do režimu celé obrazovky"
 msgid "Transfer call to:"
 msgstr "Přesměrovávat hovor na:"
 
-#: ../src/gui/call_window.cpp:2365
-#| msgid "Hangup the current call"
+#: ../src/gui/call_window.cpp:2346
 msgid "Hang up the current call"
 msgstr "Zavěsit současný hovor"
 
-#: ../src/gui/call_window.cpp:2394
+#: ../src/gui/call_window.cpp:2375
 msgid "Change the volume of your soundcard"
 msgstr "Změnit hlasitost vaší zvukové karty"
 
-#: ../src/gui/call_window.cpp:2415
+#: ../src/gui/call_window.cpp:2396
 msgid "Change the color settings of your video device"
 msgstr "Změnit nastavení barev vašeho obrazového zařízení"
 
-#: ../src/gui/main_window.cpp:372
+#: ../src/gui/main_window.cpp:414
 msgid "Presence"
 msgstr "Přítomnost"
 
-#: ../src/gui/main_window.cpp:379
+#: ../src/gui/main_window.cpp:421
 msgid "Addressbook"
 msgstr "Adresář"
 
-#: ../src/gui/main_window.cpp:433
+#: ../src/gui/main_window.cpp:475
 msgid "Unknown"
 msgstr "Neznámo"
 
-#: ../src/gui/main_window.cpp:751
+#. %s is the SIP/H.323 address of the remote user, this text is shown
+#. below video during a call
+#: ../src/gui/main_window.cpp:719
+#, c-format
+msgid "Connected with %s"
+msgstr "Spojeno s %s"
+
+#: ../src/gui/main_window.cpp:817
 #, c-format
 msgid "Missed call from %s"
 msgstr "Zmeškaný hovor od %s"
 
-#: ../src/gui/main_window.cpp:768
+#: ../src/gui/main_window.cpp:834
 msgid "Error"
 msgstr "Chyba"
 
 #. Translators: This is a hotplug status
-#: ../src/gui/main_window.cpp:791
+#: ../src/gui/main_window.cpp:857
 #, c-format
 msgid "Added video input device %s"
 msgstr "Přidáno zařízení vstupu videa %s"
 
 #. Translators: This is a hotplug status
-#: ../src/gui/main_window.cpp:803
+#: ../src/gui/main_window.cpp:869
 #, c-format
 msgid "Removed video input device %s"
 msgstr "Odebráno zařízení vstupu videa %s"
 
 #. Translators: This is a hotplug status
-#: ../src/gui/main_window.cpp:818
+#: ../src/gui/main_window.cpp:884
 #, c-format
 msgid "Added audio input device %s"
 msgstr "Přidáno zařízení vstupu zvuku %s"
 
 #. Translators: This is a hotplug status
-#: ../src/gui/main_window.cpp:834
+#: ../src/gui/main_window.cpp:900
 #, c-format
 msgid "Removed audio input device %s"
 msgstr "Odebráno zařízení vstupu zvuku %s"
 
-#: ../src/gui/main_window.cpp:852
+#: ../src/gui/main_window.cpp:918
 #, c-format
 msgid "Added audio output device %s"
 msgstr "Přidáno zařízení výstupu zvuku %s"
 
-#: ../src/gui/main_window.cpp:870
+#: ../src/gui/main_window.cpp:936
 #, c-format
 msgid "Removed audio output device %s"
 msgstr "Odebráno zařízení výstupu zvuku %s"
 
-#: ../src/gui/main_window.cpp:1205 ../src/gui/main_window.cpp:1359
+#: ../src/gui/main_window.cpp:1321 ../src/gui/main_window.cpp:1462
 msgid "Reject"
 msgstr "Odmítnout"
 
-#: ../src/gui/main_window.cpp:1207 ../src/gui/main_window.cpp:1360
+#: ../src/gui/main_window.cpp:1323 ../src/gui/main_window.cpp:1463
 msgid "Accept"
 msgstr "Přijmout"
 
-#: ../src/gui/main_window.cpp:1213
+#: ../src/gui/main_window.cpp:1329
 msgid "Incoming call from"
 msgstr "Příchozí hovor od"
 
-#: ../src/gui/main_window.cpp:1231 ../src/gui/main_window.cpp:1343
+#: ../src/gui/main_window.cpp:1347 ../src/gui/main_window.cpp:1446
 msgid "Remote URI:"
 msgstr "Vzdálená adresa URI:"
 
-#: ../src/gui/main_window.cpp:1243 ../src/gui/main_window.cpp:1345
+#: ../src/gui/main_window.cpp:1359 ../src/gui/main_window.cpp:1448
 msgid "Remote Application:"
 msgstr "Vzdálená aplikace:"
 
-#: ../src/gui/main_window.cpp:1251
+#: ../src/gui/main_window.cpp:1367
 #, c-format
 msgid "Call from %s"
 msgstr "Volání od %s"
 
-#: ../src/gui/main_window.cpp:1405
+#: ../src/gui/main_window.cpp:1544
 msgid "No"
 msgstr "Ne"
 
-#: ../src/gui/main_window.cpp:1407
+#: ../src/gui/main_window.cpp:1546
 msgid "Yes"
 msgstr "Ano"
 
-#: ../src/gui/main_window.cpp:1418
+#: ../src/gui/main_window.cpp:1557
 msgid "Detected new audio input device:"
 msgstr "Detekováno nové zařízení vstupu zvuku:"
 
-#: ../src/gui/main_window.cpp:1422
+#: ../src/gui/main_window.cpp:1561
 msgid "Detected new audio output device:"
 msgstr "Detekováno nové zařízení výstupu zvuku:"
 
-#: ../src/gui/main_window.cpp:1426
+#: ../src/gui/main_window.cpp:1565
 msgid "Detected new ringer device:"
 msgstr "Detekováno nové vyzváněcí zařízení:"
 
-#: ../src/gui/main_window.cpp:1430
+#: ../src/gui/main_window.cpp:1569
 msgid "Detected new video input device:"
 msgstr "Detekováno nové zařízení vstupu videa:"
 
-#: ../src/gui/main_window.cpp:1431 ../src/gui/preferences.cpp:880
+#: ../src/gui/main_window.cpp:1570 ../src/gui/preferences.cpp:880
 msgid "Video Devices"
 msgstr "Video zařízení"
 
-#: ../src/gui/main_window.cpp:1449
+#: ../src/gui/main_window.cpp:1588
 msgid "Do you want to use it as default device?"
 msgstr "Chcete ho použít jako výchozí zařízení?"
 
-#: ../src/gui/main_window.cpp:1540
+#: ../src/gui/main_window.cpp:1679
 msgid ""
 "Enter a URI on the left, and click this button to place a call or to hangup"
 msgstr ""
 "Vlevo zadejte adresu URI a stiskněte toto tlačítko k vytočení hovoru nebo "
 "jeho položení"
 
-#: ../src/gui/main_window.cpp:1577
+#: ../src/gui/main_window.cpp:1768
 msgid "_Chat"
 msgstr "_Diskuze"
 
-#. FIXME
-#: ../src/gui/main_window.cpp:1580
+#: ../src/gui/main_window.cpp:1770
 msgid "Ca_ll"
 msgstr "_Volat"
 
-#: ../src/gui/main_window.cpp:1580
+#: ../src/gui/main_window.cpp:1770
 msgid "Place a new call"
 msgstr "Vytvořit nový hovor"
 
-#: ../src/gui/main_window.cpp:1586
+#: ../src/gui/main_window.cpp:1776
 msgid "Co_ntact"
 msgstr "Ko_ntakt"
 
-#: ../src/gui/main_window.cpp:1587
+#: ../src/gui/main_window.cpp:1777
 msgid "Act on selected contact"
 msgstr "Učinit na vybraný kontakt"
 
-#: ../src/gui/main_window.cpp:1593
+#: ../src/gui/main_window.cpp:1783
 msgid "A_dd Contact"
 msgstr "Při_dat kontakt"
 
-#: ../src/gui/main_window.cpp:1593
+#: ../src/gui/main_window.cpp:1783
 msgid "Add a contact to the roster"
 msgstr "Přidat kontakt do seznamu"
 
-#: ../src/gui/main_window.cpp:1598
+#: ../src/gui/main_window.cpp:1788
 msgid "Find contacts"
 msgstr "Najít kontakty"
 
 #. FIXME: that isn't a very good way to do things
-#: ../src/gui/main_window.cpp:1607
+#: ../src/gui/main_window.cpp:1797
 msgid "Other"
 msgstr "Další"
 
-#: ../src/gui/main_window.cpp:1608
+#: ../src/gui/main_window.cpp:1798
 msgid "Other possible actions"
 msgstr "Další možné akce"
 
-#: ../src/gui/main_window.cpp:1615
+#: ../src/gui/main_window.cpp:1805
 msgid "Close the Ekiga window"
 msgstr "Zavřít okno aplikace Ekiga"
 
-#: ../src/gui/main_window.cpp:1622 ../src/gui/statusicon.cpp:465
+#: ../src/gui/main_window.cpp:1812 ../src/gui/statusicon.cpp:465
 msgid "Quit"
 msgstr "Ukončit"
 
-#: ../src/gui/main_window.cpp:1628
+#: ../src/gui/main_window.cpp:1818
 msgid "_Configuration Assistant"
 msgstr "Průvod_ce nastavením"
 
-#: ../src/gui/main_window.cpp:1629
+#: ../src/gui/main_window.cpp:1819
 msgid "Run the configuration assistant"
 msgstr "Spustit průvodce nastavením"
 
-#: ../src/gui/main_window.cpp:1637
+#: ../src/gui/main_window.cpp:1827
 msgid "Edit your accounts"
 msgstr "Upravit své účty"
 
-#: ../src/gui/main_window.cpp:1643
+#: ../src/gui/main_window.cpp:1833
 msgid "Change your preferences"
 msgstr "Změnit své předvolby"
 
-#: ../src/gui/main_window.cpp:1650
+#: ../src/gui/main_window.cpp:1840
 msgid "Con_tacts"
 msgstr "Kon_takty"
 
-#: ../src/gui/main_window.cpp:1650
+#: ../src/gui/main_window.cpp:1840
 msgid "View the contacts list"
 msgstr "Zobrazit seznam kontaktů"
 
-#: ../src/gui/main_window.cpp:1655
+#: ../src/gui/main_window.cpp:1845
 msgid "_Dialpad"
 msgstr "Čí_selník"
 
-#: ../src/gui/main_window.cpp:1655
+#: ../src/gui/main_window.cpp:1845
 msgid "View the dialpad"
 msgstr "Zobrazit číselník"
 
-#: ../src/gui/main_window.cpp:1660
+#: ../src/gui/main_window.cpp:1850
 msgid "_Call History"
 msgstr "_Historie hovorů"
 
-#: ../src/gui/main_window.cpp:1660
+#: ../src/gui/main_window.cpp:1850
 msgid "View the call history"
 msgstr "Zobrazit historii volání"
 
-#: ../src/gui/main_window.cpp:1669 ../src/gui/statusicon.cpp:453
+#: ../src/gui/main_window.cpp:1859 ../src/gui/statusicon.cpp:453
 msgid "Get help by reading the Ekiga manual"
 msgstr "Získat nápovědu čtením příručky aplikace Ekiga"
 
-#: ../src/gui/main_window.cpp:1674 ../src/gui/statusicon.cpp:458
+#: ../src/gui/main_window.cpp:1864 ../src/gui/statusicon.cpp:458
 msgid "View information about Ekiga"
 msgstr "Zobrazit informace o aplikaci Ekiga"
 
-#: ../src/gui/main_window.cpp:1724
+#: ../src/gui/main_window.cpp:1914
 msgid "Contacts"
 msgstr "Kontakty"
 
-#: ../src/gui/main_window.cpp:1753
+#: ../src/gui/main_window.cpp:1943
 msgid "Dialpad"
 msgstr "Číselník"
 
-#: ../src/gui/main_window.cpp:1771
+#: ../src/gui/main_window.cpp:1961
 msgid "Call history"
 msgstr "Historie volání"
 
-#: ../src/gui/main_window.cpp:1782
+#: ../src/gui/main_window.cpp:1972
 msgid "Ekiga"
 msgstr "Ekiga"
 
-#: ../src/gui/main_window.cpp:2206
+#: ../src/gui/main_window.cpp:2399
 msgid "Prints debug messages in the console (level between 1 and 8)"
 msgstr "Vypíše ladicí zprávy na konzole (úroveň 1 až 8)"
 
-#: ../src/gui/main_window.cpp:2211
+#: ../src/gui/main_window.cpp:2404
 msgid "Makes Ekiga call the given URI"
 msgstr "Nechá aplikaci Ekiga zavolat na zadanou adresu URI"
 
