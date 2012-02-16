@@ -56,7 +56,7 @@ export LDD:=$(BUILDROOT)/$(HOST_TOOL_PREFIX)-ldd.sh
 
 export CFLAGS:=-I$(INCLUDEDIR) -march=pentium-mmx
 export CXXFLAGS:=-I$(INCLUDEDIR) -march=pentium-mmx
-export LDFLAGS:=-L$(LIBDIR) $(MACH_FLAGS)
+export LDFLAGS:=-L$(LIBDIR)
 export PKG_CONFIG_PATH:=$(LIBDIR)/pkgconfig
 export PKG_CONFIG_LIBDIR:=$(LIBDIR)
 export PATH:=$(BINDIR):$(PATH)
