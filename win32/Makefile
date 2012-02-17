@@ -119,8 +119,7 @@ endif
 PTLIB_LIB := libpt.$(PTLIB_VER).dll
 
 ##############   ekiga/ptlib/opal library and headers dependencies
-# 2.4.24 added mandatory MozNSS support, do not use it for the moment
-OPENLDAP_VER := 2.4.23
+OPENLDAP_VER := 2.4.29
 OPENLDAP_DIR := $(BUILDROOT)/openldap-$(OPENLDAP_VER)
 OPENLDAP_ARCHIVE := openldap-$(OPENLDAP_VER).tgz
 OPENLDAP_URL := http://www.openldap.org/software/download/OpenLDAP/openldap-release
@@ -130,9 +129,9 @@ LIBSASL2_DIR := $(BUILDROOT)/cyrus-sasl-$(LIBSASL2_VER)
 LIBSASL2_ARCHIVE := cyrus-sasl-$(LIBSASL2_VER).zip
 LIBSASL2_URL := http://developer.pidgin.im/static/win32
 
-OGG_VER := 1.2.2
+OGG_VER := 1.3.0
 OGG_DIR := $(BUILDROOT)/libogg-$(OGG_VER)
-OGG_ARCHIVE := libogg-$(OGG_VER).tar.gz
+OGG_ARCHIVE := libogg-$(OGG_VER).tar.xz
 OGG_URL := http://downloads.xiph.org/releases/ogg
 
 SPEEX_VER := 1.2rc1
@@ -156,7 +155,7 @@ REGEX_REV := 203e34
 REGEX_DIR := $(BUILDROOT)/regex
 REGEX_ARCHIVE := regex
 
-BOOST_VER := 1.47.0
+BOOST_VER := 1.48.0
 BOOST_URL := http://downloads.sourceforge.net/project/boost/boost/$(BOOST_VER)
 BOOST_ARCHIVE := boost_$(shell echo $(BOOST_VER)|tr . _).tar.gz
 BOOST_DIR := $(BUILDROOT)/boost_$(shell echo $(BOOST_VER)|tr . _)
@@ -193,7 +192,7 @@ CELT_ARCHIVE := celt-$(CELT_VER).tar.gz
 THEORA_VER := 1.1.1
 THEORA_URL := http://downloads.xiph.org/releases/theora
 THEORA_DIR := $(BUILDROOT)/libtheora-$(THEORA_VER)
-THEORA_ARCHIVE := libtheora-$(THEORA_VER).tar.gz
+THEORA_ARCHIVE := libtheora-$(THEORA_VER).tar.xz
 
 NSIS_VER := 2.46
 NSIS_URL := http://downloads.sourceforge.net/nsis
@@ -202,8 +201,8 @@ NSISSYTEM_DIR := /usr/share/nsis/Contrib/Modern\ UI
 NSISPLUGIN_DIR := $(BUILDROOT)/nsisplugins
 
 # gtk headers
-GTK_VER := 2.22.0-2
-GTK_URL := http://ftp.gnome.org/pub/gnome/binaries/win32/gtk+/2.22
+GTK_VER := 2.24.8-1
+GTK_URL := http://ftp.gnome.org/pub/gnome/binaries/win32/gtk+/2.24
 GTK_ARCHIVE := gtk+-dev_$(GTK_VER)_win32.zip
 
 # gtk library
@@ -211,11 +210,11 @@ GTK_ARCHIVE := gtk+-dev_$(GTK_VER)_win32.zip
 # see http://gtk-win.sourceforge.net for more information
 GTK_BIN_VER := 2.22
 GTK_INSTALLER_URL := http://downloads.sourceforge.net/gtk-win
-GTK_BIN_EXE := gtk2-runtime-2.22.0-2010-10-21-ash.exe
+GTK_BIN_EXE := gtk2-runtime-2.24.8-2011-12-03-ash.exe
 
 ##############   gtk headers dependencies
 # during building, ekiga uses gtk.h, which needs headers of various libraries
-GLIB_VER := 2.28.1-1
+GLIB_VER := 2.28.8-1
 GLIB_URL := http://ftp.gnome.org/pub/gnome/binaries/win32/glib/2.28
 GLIB_ARCHIVE := glib-dev_$(GLIB_VER)_win32.zip
 
@@ -223,12 +222,12 @@ ATK_VER := 1.32.0-1
 ATK_URL := http://ftp.gnome.org/pub/gnome/binaries/win32/atk/1.32
 ATK_ARCHIVE := atk-dev_$(ATK_VER)_win32.zip
 
-CAIRO_VER := 1.10.2-1
+CAIRO_VER := 1.10.2-2
 CAIRO_URL := http://ftp.gnome.org/pub/gnome/binaries/win32/dependencies
 CAIRO_ARCHIVE := cairo-dev_$(CAIRO_VER)_win32.zip
 
-PANGO_VER := 1.28.3-1
-PANGO_URL := http://ftp.gnome.org/pub/gnome/binaries/win32/pango/1.28
+PANGO_VER := 1.29.4-1
+PANGO_URL := http://ftp.gnome.org/pub/gnome/binaries/win32/pango/1.29
 PANGO_ARCHIVE := pango-dev_$(PANGO_VER)_win32.zip
 
 FREETYPE_VER := 2.4.4-1
@@ -239,8 +238,8 @@ FONTCONFIG_VER := 2.8.0-2
 FONTCONFIG_URL := http://ftp.gnome.org/pub/gnome/binaries/win32/dependencies/
 FONTCONFIG_ARCHIVE := fontconfig-dev_$(FONTCONFIG_VER)_win32.zip
 
-GDKPIXBUF_VER := 2.22.1-1
-GDKPIXBUF_URL := http://ftp.gnome.org/pub/gnome/binaries/win32/gdk-pixbuf/2.22
+GDKPIXBUF_VER := 2.24.0-1
+GDKPIXBUF_URL := http://ftp.gnome.org/pub/gnome/binaries/win32/gdk-pixbuf/2.24
 GDKPIXBUF_ARCHIVE := gdk-pixbuf-dev_$(GDKPIXBUF_VER)_win32.zip
 
 PNG_VER := 1.4.3-1
@@ -291,8 +290,6 @@ conflibav := --cross-prefix=$(HOST_TOOL_PREFIX)- --enable-shared --enable-memali
 
 confx264 := $(confflags) --enable-static --disable-cli --enable-win32thread --disable-avs
 
-confcelt := $(confflags) --disable-oggtest
-
 conftheora := $(confflags) --disable-vorbistest --disable-sdltest --disable-examples --disable-spec
 
 # only signals is needed
@@ -309,7 +306,7 @@ update: update-sources
 binaries:
 	@echo Checking prerequisites...
 	hash $(REALCC) $(REALCXX) $(LD) $(NM) $(AR) $(RANLIB) $(DLLTOOL) $(DLLWRAP) $(OBJDUMP) $(RC) $(AS)||(echo You need to install mingw-w64 or mingw32; exit 1)
-	hash tar unzip zip wget aclocal autoheader libtoolize automake autoconf pkg-config gnome-autogen.sh bison gdk-pixbuf-csource || (echo we need more binaries ; exit 1)
+	hash tar unzip zip xz wget aclocal autoheader libtoolize automake autoconf pkg-config gnome-autogen.sh bison gdk-pixbuf-csource || (echo we need more binaries ; exit 1)
 	[ -f /usr/share/gnome-doc-utils/gnome-doc-utils.make ] || (echo gnome-doc-tools not installed; exit 1)
 	[ -f /usr/lib/pkgconfig/gconf-2.0.pc ] || (echo libgconf2-dev not installed; exit 1)
 	hash makensis || (echo nsis not installed; exit 1)
@@ -402,7 +399,7 @@ $(OPENLDAP_DIR)/config.status: binaries $(OPENLDAP_DIR)/configure
 	#-$(MAKE) -C $(OPENLDAP_DIR) clean
 	rm -f $(LIBDIR)/libldap.dll
 	$(LN) -sf $(INCLUDEDIR)/regex.h $(OPENLDAP_DIR)/include/
-	cd $(OPENLDAP_DIR); ./configure --with-cyrus-sasl=no --enable-bdb=no --enable-hdb=no $(confflags)
+	cd $(OPENLDAP_DIR); ./configure --with-cyrus-sasl=no --enable-bdb=no --enable-hdb=no --with-tls=no $(confflags)
 	$(MAKE) $(MAKEOPTS) -C $(OPENLDAP_DIR) depend
 	touch $@
 
@@ -465,7 +462,7 @@ update-sources::
 
 $(OGG_DIR)/config.status: binaries $(SRCDIR)/$(OGG_ARCHIVE)
 	rm -f $(LIBDIR)/libogg.a
-	tar xfz $(SRCDIR)/$(OGG_ARCHIVE) -C $(BUILDROOT)
+	tar xfJ $(SRCDIR)/$(OGG_ARCHIVE) -C $(BUILDROOT)
 	cd $(OGG_DIR); ./configure $(confflags)
 
 $(LIBDIR)/libogg.a: binaries $(OGG_DIR)/config.status
@@ -547,7 +544,7 @@ update-sources::
 $(CELT_DIR)/config.status: $(SRCDIR)/$(CELT_ARCHIVE) $(LIBDIR)/libogg.a
 	rm -rf $(CELT_DIR) $(INCLUDEDIR)/celt
 	tar xfz $(SRCDIR)/$(CELT_ARCHIVE) -C $(BUILDROOT)
-	cd $(CELT_DIR); ./configure $(confcelt)
+	cd $(CELT_DIR); ./configure $(confflags) --disable-oggtest
 
 $(LIBDIR)/libcelt0.a: $(CELT_DIR)/config.status
 	$(MAKE) $(MAKE_LIB_OPTS) -C $(CELT_DIR)
@@ -560,7 +557,7 @@ update-sources::
 
 $(THEORA_DIR)/config.status: $(SRCDIR)/$(THEORA_ARCHIVE) $(LIBDIR)/libogg.a
 	rm -rf $(THEORA_DIR)
-	tar xfz $(SRCDIR)/$(THEORA_ARCHIVE) -C $(BUILDROOT)
+	tar xfJ $(SRCDIR)/$(THEORA_ARCHIVE) -C $(BUILDROOT)
 	cd $(THEORA_DIR); ./autogen.sh $(conftheora)
 
 $(LIBDIR)/libtheora.a: $(THEORA_DIR)/config.status
