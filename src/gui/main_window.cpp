@@ -734,14 +734,20 @@ static void on_established_call_cb (boost::shared_ptr<Ekiga::CallManager>  /*man
 
 
 static void on_cleared_call_cb (boost::shared_ptr<Ekiga::CallManager>  /*manager*/,
-                                boost::shared_ptr<Ekiga::Call> /*call*/,
+                                boost::shared_ptr<Ekiga::Call> call,
                                 std::string reason,
                                 gpointer self)
 {
   EkigaMainWindow *mw = EKIGA_MAIN_WINDOW (self);
   GtkWidget *call_window = NULL;
 
+  if (mw->priv->current_call && mw->priv->current_call->get_id () != call->get_id ()) {
+    return; // Trying to clear another call than the current active one
+  }
+
   /* Update calling state */
+  if (mw->priv->current_call)
+    mw->priv->current_call = boost::shared_ptr<Ekiga::Call>();
   mw->priv->calling_state = Standby;
 
   /* Info message */
@@ -766,6 +772,11 @@ static void on_cleared_incoming_call_cb (std::string /*reason*/,
 {
   EkigaMainWindow *mw = EKIGA_MAIN_WINDOW (GnomeMeeting::Process ()->GetMainWindow ());
   GtkWidget *call_window = NULL;
+
+  /* Update calling state */
+  if (mw->priv->current_call)
+    mw->priv->current_call = boost::shared_ptr<Ekiga::Call>();
+  mw->priv->calling_state = Standby;
 
   boost::shared_ptr<Ekiga::AudioOutputCore> audiooutput_core = mw->priv->core->get<Ekiga::AudioOutputCore> ("audiooutput-core");
   audiooutput_core->stop_play_event("incoming_call_sound");
@@ -1258,8 +1269,7 @@ key_press_event_cb (EkigaMainWindow *mw,
 }
 
 
-
-static gint 
+static gint
 window_closed_cb (G_GNUC_UNUSED GtkWidget *widget,
 		  G_GNUC_UNUSED GdkEvent *event,
 		  gpointer data)
