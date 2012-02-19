@@ -2522,6 +2522,8 @@ ekiga_call_window_show (GtkWidget *widget)
   if (gm_conf_get_bool (VIDEO_DISPLAY_KEY "stay_on_top") && cw->priv->current_call)
     gm_window_set_always_on_top (widget->window, TRUE);
   GTK_WIDGET_CLASS (ekiga_call_window_parent_class)->show (widget);
+
+  gtk_widget_queue_draw (GTK_WIDGET (cw));
 }
 
 static gboolean
