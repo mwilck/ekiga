@@ -1482,9 +1482,7 @@ ekiga_call_window_update_stats (EkigaCallWindow *cw,
   g_free(stats_msg_re);
   g_free(stats_msg_codecs);
 
-  if (cw->priv->statusbar_ebox) {
-    gtk_widget_set_tooltip_text (GTK_WIDGET (cw), stats_msg);
-  }
+  gtk_widget_set_tooltip_text (GTK_WIDGET (cw->priv->main_video_image), stats_msg);
   g_free (stats_msg);
 
   /* "arithmetics" for the quality level */
