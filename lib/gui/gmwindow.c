@@ -259,7 +259,7 @@ gm_window_delete_event_cb (GtkWidget *w,
   self = GM_WINDOW (w);
 
   if (self->priv->hide_on_delete)
-    gm_window_hide (w);
+    gtk_widget_hide (w);
 
 
   return FALSE;
