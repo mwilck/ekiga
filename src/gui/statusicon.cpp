@@ -442,10 +442,7 @@ on_account_updated (Ekiga::BankPtr /*bank*/,
 static GtkWidget *
 statusicon_build_menu (Ekiga::ServiceCore& services)
 {
-  GtkWidget *main_window = NULL;
-
   boost::shared_ptr<GtkFrontend> gtk_frontend = services.get<GtkFrontend> ("gtk-frontend");
-  main_window = GnomeMeeting::Process ()->GetMainWindow ();
 
   static MenuEntry menu [] =
     {
@@ -457,15 +454,15 @@ statusicon_build_menu (Ekiga::ServiceCore& services)
       GTK_MENU_ENTRY("about", NULL,
 		     _("View information about Ekiga"),
 		     GTK_STOCK_ABOUT, 0,
-		     G_CALLBACK (about_callback), (gpointer) main_window,
+		     G_CALLBACK (about_callback), NULL,
 		     TRUE),
 
       GTK_MENU_SEPARATOR,
 
       GTK_MENU_ENTRY("quit", NULL, _("Quit"),
 		     GTK_STOCK_QUIT, 'Q',
-		     G_CALLBACK (quit_callback),
-		     main_window, TRUE),
+		     G_CALLBACK (quit_callback), NULL,
+		     TRUE),
 
       GTK_MENU_END
     };
