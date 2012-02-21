@@ -36,6 +36,8 @@
  */
 
 #include <glib.h>
+#include <glib/gstdio.h>
+#include <gio/gio.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
@@ -1073,9 +1075,25 @@ database_notify_on_namespace (DataBase *db,
 static gchar *
 gm_conf_get_user_conf_filename ()
 {
-  return g_build_filename (g_get_user_config_dir (),
-			   "ekiga.conf",
-			   NULL);
+  static gchar *old_filename;  // init to NULL
+  gchar *new_filename;
+
+  new_filename = g_build_filename (g_get_user_config_dir (), "ekiga.conf", NULL);
+  // glib 2.28, introduced with ekiga 4.0, changed the directory of
+  //   the config file, so we must migrate it
+  //   http://git.gnome.org/browse/glib/commit/glib/gutils.c?id=9d80c361
+  if (! old_filename) {  // check at startup if need migration
+    old_filename = g_build_filename (g_getenv ("APPDATA"), "ekiga.conf", NULL);
+    if (! g_file_test (new_filename, G_FILE_TEST_EXISTS)  // new does not exist
+        && g_file_test (old_filename, G_FILE_TEST_EXISTS))  // and old exists
+      // move the config file, or if unsuccessful copy it
+      if (g_rename (old_filename, new_filename))
+        g_file_copy (g_file_new_for_path (old_filename),
+                     g_file_new_for_path (new_filename),
+                     0, NULL, NULL, NULL, NULL);
+    g_free (old_filename);  // dangling pointer, but no problem
+  }
+  return new_filename;
 }
 
 
