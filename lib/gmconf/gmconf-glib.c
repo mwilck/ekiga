@@ -1108,12 +1108,9 @@ gm_conf_load_user_conf (DataBase *db)
   filename = gm_conf_get_user_conf_filename ();
   result = database_load_file (db, filename);
 
-  if (G_LIKELY (result))
-    {}
-  else
+  if (! result)
     g_log (G_LOG_DOMAIN, G_LOG_LEVEL_WARNING,
 	   "couldn't read the user configuration in %s", filename);
-
   g_free (filename);
 
   return result;
@@ -1132,9 +1129,7 @@ gm_conf_load_sys_conf (DataBase *db)
 			       "ekiga.schemas", NULL);
   result = database_load_file (db, filename);
 
-  if (G_LIKELY (result))
-    {}
-  else
+  if (! result)
     g_log (G_LOG_DOMAIN, G_LOG_LEVEL_WARNING,
 	   "couldn't read the system configuration in %s", filename);
   g_free (filename);
