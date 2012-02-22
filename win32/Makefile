@@ -164,11 +164,6 @@ GETTEXT_VER := 0.17-1
 GETTEXT_URL := http://ftp.gnome.org/pub/gnome/binaries/win32/dependencies
 GETTEXT_ARCHIVE := gettext-runtime-dev-$(GETTEXT_VER).zip
 
-# what is iconv useful for?
-ICONV_VER := 1.9.2-1
-ICONV_URL := http://downloads.sourceforge.net/project/gnuwin32/libiconv/$(ICONV_VER)
-ICONV_ARCHIVE := libiconv-$(ICONV_VER)-bin.zip
-
 LIBAV_VER := 0.8
 LIBAV_URL := http://www.libav.org/releases
 LIBAV_DIR := $(BUILDROOT)/libav-$(LIBAV_VER)
@@ -647,16 +642,6 @@ $(LIBDIR)/libintl.a: $(SRCDIR)/$(GETTEXT_ARCHIVE)
 	unzip -u $(SRCDIR)/$(GETTEXT_ARCHIVE) -d $(BUILDROOT)
 	touch $@
 
-### libiconv
-update-sources::
-	@echo --- Getting Iconv ...
-	$(WGET) -P $(SRCDIR) $(ICONV_URL)/$(ICONV_ARCHIVE)
-
-$(LIBDIR)/libiconv.a: $(SRCDIR)/$(ICONV_ARCHIVE)
-	unzip -u $(SRCDIR)/$(ICONV_ARCHIVE) -d $(BUILDROOT)
-	$(RM) -f README.libiconv
-	touch $@
-
 ### pango
 update-sources::
 	@echo --- Getting Pango ...
@@ -757,7 +742,7 @@ $(EKIGA_DIR)/config.status: binaries $(EKIGA_DIR)/configure $(LIBDIR)/$(PTLIB_LI
 	$(LIBDIR)/pkgconfig/gtk+-2.0.pc $(LIBDIR)/pkgconfig/atk-2.0.pc $(LIBDIR)/pkgconfig/glib-2.0.pc \
 	$(LIBDIR)/pkgconfig/libpng.pc $(LIBDIR)/pkgconfig/pango32.pc $(LIBDIR)/pkgconfig/cairo.pc $(LIBDIR)/libxml2.a \
 	$(LIBDIR)/pkgconfig/freetype2.pc $(LIBDIR)/pkgconfig/fontconfig.pc $(LIBDIR)/pkgconfig/gdk-pixbuf-2.0.pc \
-	$(LIBDIR)/libintl.a $(LIBDIR)/libiconv.a $(LIBDIR)/libboost_signals.dll $(LIBDIR)/libsasl2.a
+	$(LIBDIR)/libintl.a $(LIBDIR)/libboost_signals.dll $(LIBDIR)/libsasl2.a
 	rm -f $(EKIGA_DIR)/src/ekiga.exe
 	cd $(EKIGA_DIR); ACLOCAL_FLAGS="-I $(BUILDROOT)/share/aclocal" LDFLAGS="$(LDFLAGS) -Wl,-subsystem,windows" ./configure $(confekiga)
 
