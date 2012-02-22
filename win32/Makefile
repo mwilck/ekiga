@@ -281,7 +281,7 @@ confx264 := $(confflags) --enable-static --disable-cli --disable-avs
 conftheora := $(confflags) --disable-vorbistest --disable-sdltest --disable-examples --disable-spec
 
 # only signals is needed
-confboost := --user-config=user-config.jam --layout=system variant=release threading=multi link=shared runtime-link=shared target-os=windows threadapi=win32 --with-signals -q stage
+confboost := --user-config=user-config.jam --layout=system variant=release threading=multi link=shared runtime-link=shared target-os=windows threadapi=win32 --with-signals -q
 
 all: binaries $(TARGETDIR)/$(EKIGA_INSTALLER)
 	@echo "Built on $(shell date)"
