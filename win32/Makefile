@@ -94,7 +94,7 @@ ifeq ($(RELEASE),1)
 	OPAL_ARCHIVE := opal-$(OPAL_VER).tar.xz
 	OPAL_DIR := $(BUILDROOT)/opal-$(OPAL_VER)
 else
-	OPAL_VER := 3.10-beta4
+	OPAL_VER := 3.10-beta5
 	# OPAL_REV: HEAD or revision number
 	OPAL_REV := HEAD
 	OPAL_URL := https://opalvoip.svn.sourceforge.net/svnroot/opalvoip/opal/branches/v3_10
@@ -109,7 +109,7 @@ ifeq ($(RELEASE),1)
 	PTLIB_ARCHIVE := ptlib-$(PTLIB_VER).tar.xz
 	PTLIB_DIR := $(BUILDROOT)/ptlib-$(PTLIB_VER)
 else
-	PTLIB_VER := 2.10-beta4
+	PTLIB_VER := 2.10-beta5
 	# PTLIB_REV: HEAD or revision number
 	PTLIB_REV := HEAD
 	PTLIB_URL := https://opalvoip.svn.sourceforge.net/svnroot/opalvoip/ptlib/branches/v2_10
@@ -169,16 +169,12 @@ ICONV_VER := 1.9.2-1
 ICONV_URL := http://downloads.sourceforge.net/project/gnuwin32/libiconv/$(ICONV_VER)
 ICONV_ARCHIVE := libiconv-$(ICONV_VER)-bin.zip
 
-# they provide also Windows libs+include, is it better to use them?
-# this is the one used in debian unstable as of 2011-08-07 and is known to work
-LIBAV_VER := 0.6.2
+LIBAV_VER := 0.8
 LIBAV_URL := http://www.libav.org/releases
 LIBAV_DIR := $(BUILDROOT)/libav-$(LIBAV_VER)
-LIBAV_ARCHIVE := libav-$(LIBAV_VER).tar.gz
+LIBAV_ARCHIVE := libav-$(LIBAV_VER).tar.xz
 
-# this is the one used in debian unstable as of 2011-08-07 and is known to work
-#old: d2e1e1c35c43ea9c90c9211be
-X264_VER := f8ebd4a
+X264_VER := a3f4407
 X264_URL := git://git.videolan.org/x264.git
 X264_DIR := $(BUILDROOT)/x264
 X264_ARCHIVE := x264
@@ -265,30 +261,27 @@ confptlib := $(confflags) \
 	--disable-qos --disable-alsa --disable-esd --disable-oss --disable-sunaudio --disable-shmaudio \
 	--disable-v4l --disable-v4l2 --disable-bsdvideo --disable-avc --disable-dc
 
-	# disable ilbc and silk non-free codecs
-confopal := $(confflags) --with-ffmpeg-dir=$(LIBAV_DIR) --disable-t38 --disable-fax --disable-iLBC --disable-silk
+# disable ilbc and silk non-free codecs
+confopal := $(confflags) --disable-t38 --disable-fax --disable-iLBC --disable-silk
 
 confekiga:= $(confflags) \
 	--with-directx-dir=$(EKIGA_DIR)/win32/directx --prefix=$(EKIGA_PREFIX) \
 	--bindir=$(EKIGA_PREFIX) --datadir=$(EKIGA_PREFIX) \
 	--sysconfdir=$(EKIGA_PREFIX) --libdir=$(EKIGA_PREFIX) \
-	--disable-dbus --disable-avahi --disable-xv \
 	--with-ldap-dir=$(OPENLDAP_DIR) --with-libsasl2-dir=$(LIBSASL2_DIR) --with-boost=$(BUILDROOT) # --enable-static-libs
 
-#TODO http://ac3filter.net/wiki/How_to_build_ffmpeg tells that
-# --extra-cflags='-Dstrtod=__strtod'
-#should also be used, check if it is needed
 conflibav := --cross-prefix=$(HOST_TOOL_PREFIX)- --enable-shared --enable-memalign-hack \
-	--enable-cross-compile --enable-w32threads --arch=`echo $(HOST_TOOL_PREFIX)|cut -d- -f1` --target-os=mingw32 \
-	--disable-ffserver --disable-ffmpeg --disable-ffplay \
+	--enable-cross-compile --arch=`echo $(HOST_TOOL_PREFIX)|cut -d- -f1` --target-os=mingw32 \
+	--disable-avserver --disable-ffmpeg --disable-avplay --disable-avconv --disable-avprobe \
+	--disable-swscale --disable-avfilter --disable-avformat --disable-avdevice \
 	--disable-parsers --enable-parser=h264 --enable-parser=mpeg4video --enable-parser=h263 \
 	--disable-decoders --enable-decoder=h264 --enable-decoder=mpeg4 --enable-decoder=h263 \
 	--disable-muxers --enable-muxer=h264 --enable-muxer=mpeg4 --enable-muxer=h263 \
 	--disable-encoders --enable-encoder=mpeg4 --enable-encoder=h263 \
 	--disable-protocols --disable-bsfs --prefix=$(BUILDROOT) \
-	--libdir=$(LIBDIR) --extra-ldflags=-Wl,-static --disable-network
+	--libdir=$(LIBDIR) --disable-network
 
-confx264 := $(confflags) --enable-static --disable-cli --enable-win32thread --disable-avs
+confx264 := $(confflags) --enable-static --disable-cli --disable-avs
 
 conftheora := $(confflags) --disable-vorbistest --disable-sdltest --disable-examples --disable-spec
 
@@ -493,7 +486,7 @@ update-sources::
 
 $(LIBAV_DIR)/config.status: $(SRCDIR)/$(LIBAV_ARCHIVE)
 	rm -rf $(LIBAV_DIR)
-	tar xfz $(SRCDIR)/$(LIBAV_ARCHIVE) -C $(BUILDROOT)
+	tar Jxf $(SRCDIR)/$(LIBAV_ARCHIVE) -C $(BUILDROOT)
 ifeq ($(MINGW32), 0)
 	#avoid unnecessary configuration error
 	# see also http://ac3filter.net/wiki/How_to_build_ffmpeg
@@ -509,10 +502,6 @@ endif
 	touch $@
 
 $(BINDIR)/avcodec.dll: $(LIBAV_DIR)/config.status
-	$(MAKE) V=1 $(MAKE_LIB_OPTS) -C $(LIBAV_DIR)/libavutil
-	$(MAKE) V=1 $(MAKE_LIB_OPTS) -C $(LIBAV_DIR)/libavcodec
-	$(MAKE) V=1 $(MAKE_LIB_OPTS) -C $(LIBAV_DIR)/libavformat
-	$(MAKE) V=1 $(MAKE_LIB_OPTS) -C $(LIBAV_DIR)/libavdevice
 	$(MAKE) V=1 $(MAKE_LIB_OPTS) -C $(LIBAV_DIR)
 	$(MAKE) -C $(LIBAV_DIR) install
 	touch $@
@@ -796,7 +785,7 @@ $(TARGETDIR)/zips: binaries $(EKIGA_DIR)/src/ekiga.exe
 	for lib in $(PTLIB_LIB) $(OPAL_LIB) libboost_signals.dll; do \
 		install -m 755 $(LIBDIR)/$$lib $(EKIGA_PREFIX) ;\
 	done
-	for lib in liblber.dll libldap.dll libxml2-2.dll libspeex-1.dll libspeexdsp-1.dll libtheora-0.dll avcodec-52.dll avutil-50.dll libogg-0.dll; do \
+	for lib in liblber.dll libldap.dll libxml2-2.dll libspeex-1.dll libspeexdsp-1.dll libtheora-0.dll avcodec-53.dll avutil-51.dll libogg-0.dll; do \
 		install -m 755 $(BINDIR)/$$lib $(EKIGA_PREFIX) ;\
 	done
 ifeq ($(MINGW32), 1)
