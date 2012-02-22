@@ -403,7 +403,7 @@ AC_ARG_ENABLE(xv, AS_HELP_STRING([--disable-xv],[enable XVideo hardware accelera
 [if test "x$enableval" = "xyes"; then
   enable_xv=yes
 fi],enable_xv=yes)
-if test "x${gm_platform}" != "mingw" -a "x$enable_xv" = "xyes"; then
+if test "x${gm_platform}" != "xmingw" -a "x$enable_xv" = "xyes"; then
   PKG_CHECK_MODULES([XV], [xv],
                     [AC_DEFINE(HAVE_XV,1,[XVideo support])
                      XV="enabled"
