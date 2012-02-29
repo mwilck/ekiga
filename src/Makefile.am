@@ -142,7 +142,7 @@ GIT_REVISION=\"$$(cd ../.git; git describe )\"
 CACHED_REVISION=$$(cat revision.h 2>/dev/null | cut -c24-)
 
 src/revision.h:
-	if test -d "../.git" -a -n "$$(which git)"; then \
+	@if test -d "../.git" -a -n "$$(which git)"; then \
           if test "x$(GIT_REVISION)" != "x$(CACHED_REVISION)"; then \
             echo "#define EKIGA_REVISION $(GIT_REVISION)" > revision.h; \
           fi \
