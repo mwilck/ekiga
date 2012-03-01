@@ -283,11 +283,11 @@ static void sound_events_list_changed_nt (gpointer id,
 static void audioev_filename_browse_play_cb (GtkWidget *playbutton,
                                              gpointer data);
 
-int 
+static void
 gm_prefs_window_get_audiooutput_devices_list (Ekiga::ServiceCore *core,
                                         std::vector<std::string> & device_list);
 
-int 
+static void
 gm_prefs_window_get_audioinput_devices_list (Ekiga::ServiceCore *core,
                                              std::vector<std::string> & device_list);
 
@@ -749,7 +749,7 @@ gm_pw_init_audio_devices_page (GtkWidget *prefs_window,
 }
 
 
-int
+static void
 gm_prefs_window_get_videoinput_devices_list (Ekiga::ServiceCore *core,
                                              std::vector<std::string> & device_list)
 {
@@ -766,12 +766,10 @@ gm_prefs_window_get_videoinput_devices_list (Ekiga::ServiceCore *core,
 
   if (device_list.size() == 0)
     device_list.push_back(_("No device found"));
-
-  return device_list.size ();
 }
 
 
-int
+void
 gm_prefs_window_get_audiooutput_devices_list (Ekiga::ServiceCore *core,
                                               std::vector<std::string> & device_list)
 {
@@ -790,12 +788,10 @@ gm_prefs_window_get_audiooutput_devices_list (Ekiga::ServiceCore *core,
 
   if (device_list.size() == 0)
     device_list.push_back(_("No device found"));
-
-  return device_list.size ();
 }
 
 
-int
+void
 gm_prefs_window_get_audioinput_devices_list (Ekiga::ServiceCore *core,
                                              std::vector<std::string> & device_list)
 {
@@ -812,8 +808,6 @@ gm_prefs_window_get_audioinput_devices_list (Ekiga::ServiceCore *core,
 
   if (device_list.size() == 0)
     device_list.push_back(_("No device found"));
-
-  return device_list.size ();
 }
 
 
@@ -1243,7 +1237,7 @@ gm_prefs_window_update_devices_list (GtkWidget *prefs_window)
 
 
   /* The Video player */
-  gm_prefs_window_get_videoinput_devices_list (pw->core,  device_list);
+  gm_prefs_window_get_videoinput_devices_list (pw->core, device_list);
   array = gm_prefs_window_convert_string_list(device_list);
   gnome_prefs_string_option_menu_update (pw->video_device,
 					 (const gchar **)array,
@@ -1320,23 +1314,20 @@ gm_prefs_window_new (Ekiga::ServiceCore *core)
 
   /* The player */
   gnome_prefs_window_section_new (window, _("Audio"));
-  if (gm_prefs_window_get_audiooutput_devices_list (core, device_list) > 1
-      || gm_prefs_window_get_audioinput_devices_list (core, device_list) > 1) {
-    container = gnome_prefs_window_subsection_new (window, _("Devices"));
-    gm_pw_init_audio_devices_page (window, container);
-    gtk_widget_show_all (GTK_WIDGET (container));
-  }
+  container = gnome_prefs_window_subsection_new (window, _("Devices"));
+  gm_pw_init_audio_devices_page (window, container);
+  gtk_widget_show_all (GTK_WIDGET (container));
+
   container = gnome_prefs_window_subsection_new (window, _("Codecs"));
   gm_pw_init_audio_codecs_page (window, container);
   gtk_widget_show_all (GTK_WIDGET (container));
 
 
   gnome_prefs_window_section_new (window, _("Video"));
-  if (gm_prefs_window_get_videoinput_devices_list (core, device_list) > 1) {
-    container = gnome_prefs_window_subsection_new (window, _("Devices"));
-    gm_pw_init_video_devices_page (window, container);
-    gtk_widget_show_all (GTK_WIDGET (container));
-  }
+  container = gnome_prefs_window_subsection_new (window, _("Devices"));
+  gm_pw_init_video_devices_page (window, container);
+  gtk_widget_show_all (GTK_WIDGET (container));
+
   container = gnome_prefs_window_subsection_new (window, _("Codecs"));
   gm_pw_init_video_codecs_page (window, container);
   gtk_widget_show_all (GTK_WIDGET (container));
