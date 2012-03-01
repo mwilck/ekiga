@@ -5,9 +5,9 @@ RELEASE   := 0
 # DEBUG: 0=release, 1=debug version
 DEBUG     := 0
 # MINGW32: 1=use old mingw32, 0=use new mingw-w64
-MINGW32   := 1
+MINGW32   := 0
 # BIT32 (used only for mingw-w64): 1=generate 32bit, 0=generate 64bit
-BIT32     := 0
+BIT32     := 1
 
 # flags used by make for each of the libraries and ekiga
 # using $(MAKEFLAGS) here might lead to interferences between variables in this
