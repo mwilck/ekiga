@@ -507,32 +507,17 @@ static void
 statusicon_set_status (StatusIcon *statusicon,
                        const std::string & presence)
 {
-  GtkWidget *chat_window = NULL;
-  GdkPixbuf *pixbuf = NULL;
-
   g_return_if_fail (statusicon != NULL);
-
-  boost::shared_ptr<GtkFrontend> frontend = statusicon->priv->core.get<GtkFrontend> ("gtk-frontend");
-  // FIXME use main_window here
-  chat_window = GTK_WIDGET (frontend->get_chat_window ());
 
   /* Update the status icon */
   if (presence == "away")
-    pixbuf = gtk_widget_render_icon (chat_window, GM_STOCK_STATUS_AWAY, 
-                                     GTK_ICON_SIZE_MENU, NULL); 
-
+    gtk_status_icon_set_from_icon_name (GTK_STATUS_ICON (statusicon), "user-available");
   else if (presence == "dnd")
-    pixbuf = gtk_widget_render_icon (chat_window, GM_STOCK_STATUS_DND, 
-                                     GTK_ICON_SIZE_MENU, NULL); 
+    gtk_status_icon_set_from_icon_name (GTK_STATUS_ICON (statusicon), "user-busy");
   else if (presence == "offline")
-    pixbuf = gtk_widget_render_icon (chat_window, GM_STOCK_STATUS_OFFLINE, 
-                                     GTK_ICON_SIZE_MENU, NULL); 
+    gtk_status_icon_set_from_icon_name (GTK_STATUS_ICON (statusicon), "user-offline");
   else
-    pixbuf = gtk_widget_render_icon (chat_window, GM_STOCK_STATUS_ONLINE, 
-                                     GTK_ICON_SIZE_MENU, NULL); 
-
-  gtk_status_icon_set_from_pixbuf (GTK_STATUS_ICON (statusicon), pixbuf);
-  g_object_unref (pixbuf);
+    gtk_status_icon_set_from_icon_name (GTK_STATUS_ICON (statusicon), "user-online");
 
   statusicon->priv->status = presence;
 }

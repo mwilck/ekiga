@@ -127,6 +127,7 @@ struct _EkigaCallWindowPrivate
 
   GtkWidget *main_menu;
   GtkWidget *call_panel_toolbar;
+  GtkWidget *hangup_button;
   GtkWidget *hold_button;
   GtkWidget *audio_settings_button;
   GtkWidget *video_settings_button;
@@ -721,14 +722,14 @@ on_videooutput_device_opened_cb (Ekiga::VideoOutputManager & /* manager */,
   gtk_widget_show (GTK_WIDGET (cw));
 
   if (both_streams) {
-    gtk_menu_section_set_sensitive (cw->priv->main_menu, "local_video", TRUE);
-    gtk_menu_section_set_sensitive (cw->priv->main_menu, "fullscreen", TRUE);
+    gtk_menu_section_set_sensitive (cw->priv->main_menu, "local_video", true);
+    gtk_menu_section_set_sensitive (cw->priv->main_menu, "fullscreen", true);
   }
   else {
     if (mode == Ekiga::VO_MODE_LOCAL)
-      gtk_menu_set_sensitive (cw->priv->main_menu, "local_video", TRUE);
+      gtk_menu_set_sensitive (cw->priv->main_menu, "local_video", true);
     else if (mode == Ekiga::VO_MODE_REMOTE)
-      gtk_menu_set_sensitive (cw->priv->main_menu, "remote_video", TRUE);
+      gtk_menu_set_sensitive (cw->priv->main_menu, "remote_video", true);
   }
 
   // when ending a call and going back to local video, the video_view
@@ -750,9 +751,9 @@ on_videooutput_device_closed_cb (Ekiga::VideoOutputManager & /* manager */, gpoi
 {
   EkigaCallWindow *cw = EKIGA_CALL_WINDOW (self);
 
-  gtk_menu_section_set_sensitive (cw->priv->main_menu, "local_video", FALSE);
-  gtk_menu_section_set_sensitive (cw->priv->main_menu, "fullscreen", TRUE);
-  gtk_menu_section_set_sensitive (cw->priv->main_menu, "zoom_in", FALSE);
+  gtk_menu_section_set_sensitive (cw->priv->main_menu, "local_video", false);
+  gtk_menu_section_set_sensitive (cw->priv->main_menu, "fullscreen", true);
+  gtk_menu_section_set_sensitive (cw->priv->main_menu, "zoom_in", false);
 }
 
 //FIXME Set_stay_on_top "window_show object"
@@ -822,7 +823,7 @@ ekiga_call_window_set_video_size (EkigaCallWindow *cw,
 
   gtk_widget_set_size_request (cw->priv->main_video_image, width, height);
 
-  gdk_window_invalidate_rect (GTK_WIDGET (cw)->window, &(GTK_WIDGET (cw)->allocation), TRUE);
+  gdk_window_invalidate_rect (GTK_WIDGET (cw)->window, &(GTK_WIDGET (cw)->allocation), true);
 }
 
 static void
@@ -846,8 +847,8 @@ on_videoinput_device_opened_cb (Ekiga::VideoInputManager & /* manager */,
 {
   EkigaCallWindow *cw = EKIGA_CALL_WINDOW (self);
 
-  gtk_widget_set_sensitive (cw->priv->video_settings_frame,  settings.modifyable ? TRUE : FALSE);
-  gtk_widget_set_sensitive (cw->priv->video_settings_button,  settings.modifyable ? TRUE : FALSE);
+  gtk_widget_set_sensitive (cw->priv->video_settings_frame,  settings.modifyable ? true : false);
+  gtk_widget_set_sensitive (cw->priv->video_settings_button,  settings.modifyable ? true : false);
   GTK_ADJUSTMENT (cw->priv->adj_whiteness)->value = settings.whiteness;
   GTK_ADJUSTMENT (cw->priv->adj_brightness)->value = settings.brightness;
   GTK_ADJUSTMENT (cw->priv->adj_colour)->value = settings.colour;
@@ -864,10 +865,10 @@ on_videoinput_device_closed_cb (Ekiga::VideoInputManager & /* manager */,
   EkigaCallWindow *cw = EKIGA_CALL_WINDOW (self);
 
 
-  ekiga_call_window_channels_menu_update_sensitivity (cw, TRUE, FALSE, FALSE);
+  ekiga_call_window_channels_menu_update_sensitivity (cw, true, false, false);
   ekiga_call_window_update_logo (cw);
 
-  gtk_widget_set_sensitive (cw->priv->video_settings_button,  FALSE);
+  gtk_widget_set_sensitive (cw->priv->video_settings_button,  false);
 }
 
 static void
@@ -950,8 +951,8 @@ on_audioinput_device_closed_cb (Ekiga::AudioInputManager & /* manager */,
   EkigaCallWindow *cw = EKIGA_CALL_WINDOW (self);
 
   if (cw->priv->audio_settings_button)
-    gtk_widget_set_sensitive (cw->priv->audio_settings_button, FALSE);
-  gtk_widget_set_sensitive (cw->priv->audio_input_volume_frame, FALSE);
+    gtk_widget_set_sensitive (cw->priv->audio_settings_button, false);
+  gtk_widget_set_sensitive (cw->priv->audio_input_volume_frame, false);
 }
 
 static void
@@ -1029,8 +1030,8 @@ on_audiooutput_device_closed_cb (Ekiga::AudioOutputManager & /*manager*/,
     return;
 
   if (cw->priv->audio_settings_button)
-    gtk_widget_set_sensitive (cw->priv->audio_settings_button, FALSE);
-  gtk_widget_set_sensitive (cw->priv->audio_output_volume_frame, FALSE);
+    gtk_widget_set_sensitive (cw->priv->audio_settings_button, false);
+  gtk_widget_set_sensitive (cw->priv->audio_output_volume_frame, false);
 }
 
 static void
@@ -1102,7 +1103,7 @@ on_established_call_cb (boost::shared_ptr<Ekiga::CallManager>  /*manager*/,
   gtk_window_set_title (GTK_WINDOW (cw), call->get_remote_party_name ().c_str ());
 
   if (gm_conf_get_bool (VIDEO_DISPLAY_KEY "stay_on_top"))
-    ekiga_call_window_set_stay_on_top (cw, TRUE);
+    ekiga_call_window_set_stay_on_top (cw, true);
   ekiga_call_window_set_status (cw, _("Connected"), NULL, call->get_remote_party_name ().c_str ());
   ekiga_call_window_update_calling_state (cw, Connected);
 
@@ -1124,7 +1125,7 @@ on_cleared_call_cb (G_GNUC_UNUSED boost::shared_ptr<Ekiga::CallManager> manager,
   }
 
   if (gm_conf_get_bool (VIDEO_DISPLAY_KEY "stay_on_top"))
-    ekiga_call_window_set_stay_on_top (cw, FALSE);
+    ekiga_call_window_set_stay_on_top (cw, false);
   ekiga_call_window_update_calling_state (cw, Standby);
   ekiga_call_window_set_status (cw, _("Standby"), NULL, NULL);
   ekiga_call_window_set_bandwidth (cw, 0.0, 0.0, 0.0, 0.0, 0, 0);
@@ -1316,7 +1317,7 @@ ekiga_call_window_delete_event_cb (GtkWidget *widget,
   EkigaCallWindow *cw = NULL;
 
   cw = EKIGA_CALL_WINDOW (widget);
-  g_return_val_if_fail (EKIGA_IS_CALL_WINDOW (cw), FALSE);
+  g_return_val_if_fail (EKIGA_IS_CALL_WINDOW (cw), false);
 
   /* Hangup or disable preview */
   if (cw->priv->current_call)
@@ -1341,16 +1342,17 @@ ekiga_call_window_update_calling_state (EkigaCallWindow *cw,
       gtk_widget_hide (cw->priv->call_frame);
 
       /* Update the hold state */
-      ekiga_call_window_set_call_hold (cw, FALSE);
+      ekiga_call_window_set_call_hold (cw, false);
 
       /* Update the sensitivity, all channels are closed */
-      ekiga_call_window_channels_menu_update_sensitivity (cw, TRUE, FALSE, FALSE);
-      ekiga_call_window_channels_menu_update_sensitivity (cw, FALSE, FALSE, FALSE);
+      ekiga_call_window_channels_menu_update_sensitivity (cw, true, false, false);
+      ekiga_call_window_channels_menu_update_sensitivity (cw, false, false, false);
 
       /* Update the menus and toolbar items */
-      gtk_menu_set_sensitive (cw->priv->main_menu, "disconnect", FALSE);
-      gtk_menu_section_set_sensitive (cw->priv->main_menu, "hold_call", FALSE);
-      gtk_widget_set_sensitive (GTK_WIDGET (cw->priv->hold_button), FALSE);
+      gtk_menu_set_sensitive (cw->priv->main_menu, "disconnect", false);
+      gtk_menu_section_set_sensitive (cw->priv->main_menu, "hold_call", false);
+      gtk_widget_set_sensitive (GTK_WIDGET (cw->priv->hangup_button), false);
+      gtk_widget_set_sensitive (GTK_WIDGET (cw->priv->hold_button), false);
 
       /* Destroy the transfer call popup */
       if (cw->priv->transfer_call_popup)
@@ -1365,7 +1367,8 @@ ekiga_call_window_update_calling_state (EkigaCallWindow *cw,
       gtk_widget_show (cw->priv->call_frame);
 
       /* Update the menus and toolbar items */
-      gtk_menu_set_sensitive (cw->priv->main_menu, "disconnect", TRUE);
+      gtk_widget_set_sensitive (GTK_WIDGET (cw->priv->hangup_button), true);
+      gtk_menu_set_sensitive (cw->priv->main_menu, "disconnect", true);
       break;
 
 
@@ -1375,9 +1378,10 @@ ekiga_call_window_update_calling_state (EkigaCallWindow *cw,
       gtk_widget_show (cw->priv->call_frame);
 
       /* Update the menus and toolbar items */
-      gtk_menu_set_sensitive (cw->priv->main_menu, "disconnect", TRUE);
-      gtk_menu_section_set_sensitive (cw->priv->main_menu, "hold_call", TRUE);
-      gtk_widget_set_sensitive (GTK_WIDGET (cw->priv->hold_button), TRUE);
+      gtk_menu_set_sensitive (cw->priv->main_menu, "disconnect", true);
+      gtk_menu_section_set_sensitive (cw->priv->main_menu, "hold_call", true);
+      gtk_widget_set_sensitive (GTK_WIDGET (cw->priv->hangup_button), true);
+      gtk_widget_set_sensitive (GTK_WIDGET (cw->priv->hold_button), true);
       break;
 
 
@@ -1387,7 +1391,8 @@ ekiga_call_window_update_calling_state (EkigaCallWindow *cw,
       gtk_widget_show (cw->priv->call_frame);
 
       /* Update the menus and toolbar items */
-      gtk_menu_set_sensitive (cw->priv->main_menu, "disconnect", TRUE);
+      gtk_widget_set_sensitive (GTK_WIDGET (cw->priv->hangup_button), true);
+      gtk_menu_set_sensitive (cw->priv->main_menu, "disconnect", true);
       break;
 
     default:
@@ -1621,11 +1626,11 @@ ekiga_call_window_set_call_hold (EkigaCallWindow *cw,
 					_("_Retrieve Call"));
 
     /* Set the audio and video menu to unsensitive */
-    gtk_menu_set_sensitive (cw->priv->main_menu, "suspend_audio", FALSE);
-    gtk_menu_set_sensitive (cw->priv->main_menu, "suspend_video", FALSE);
+    gtk_menu_set_sensitive (cw->priv->main_menu, "suspend_audio", false);
+    gtk_menu_set_sensitive (cw->priv->main_menu, "suspend_video", false);
 
-    ekiga_call_window_set_channel_pause (cw, TRUE, FALSE);
-    ekiga_call_window_set_channel_pause (cw, TRUE, TRUE);
+    ekiga_call_window_set_channel_pause (cw, true, false);
+    ekiga_call_window_set_channel_pause (cw, true, true);
   }
   else {
 
@@ -1633,11 +1638,11 @@ ekiga_call_window_set_call_hold (EkigaCallWindow *cw,
       gtk_label_set_text_with_mnemonic (GTK_LABEL (child),
 					_("H_old Call"));
 
-    gtk_menu_set_sensitive (cw->priv->main_menu, "suspend_audio", TRUE);
-    gtk_menu_set_sensitive (cw->priv->main_menu, "suspend_video", TRUE);
+    gtk_menu_set_sensitive (cw->priv->main_menu, "suspend_audio", true);
+    gtk_menu_set_sensitive (cw->priv->main_menu, "suspend_video", true);
 
-    ekiga_call_window_set_channel_pause (cw, FALSE, FALSE);
-    ekiga_call_window_set_channel_pause (cw, FALSE, TRUE);
+    ekiga_call_window_set_channel_pause (cw, false, false);
+    ekiga_call_window_set_channel_pause (cw, false, true);
   }
 
   g_signal_handlers_block_by_func (cw->priv->hold_button,
@@ -1711,21 +1716,21 @@ gm_cw_video_settings_window_new (EkigaCallWindow *cw)
   gtk_container_set_border_width (GTK_CONTAINER (cw->priv->video_settings_frame), 5);
 
   /* Category */
-  vbox = gtk_vbox_new (FALSE, 0);
+  vbox = gtk_vbox_new (false, 0);
   gtk_container_add (GTK_CONTAINER (cw->priv->video_settings_frame), vbox);
 
   /* Brightness */
-  hbox = gtk_hbox_new (FALSE, 0);
+  hbox = gtk_hbox_new (false, 0);
   image = gtk_image_new_from_icon_name (GM_ICON_BRIGHTNESS, GTK_ICON_SIZE_MENU);
-  gtk_box_pack_start (GTK_BOX (hbox), image, FALSE, FALSE, 0);
+  gtk_box_pack_start (GTK_BOX (hbox), image, false, false, 0);
 
   cw->priv->adj_brightness = gtk_adjustment_new (brightness, 0.0,
                                                  255.0, 1.0, 5.0, 1.0);
   hscale_brightness = gtk_hscale_new (GTK_ADJUSTMENT (cw->priv->adj_brightness));
-  gtk_scale_set_draw_value (GTK_SCALE (hscale_brightness), FALSE);
+  gtk_scale_set_draw_value (GTK_SCALE (hscale_brightness), false);
   gtk_scale_set_value_pos (GTK_SCALE (hscale_brightness), GTK_POS_RIGHT);
-  gtk_box_pack_start (GTK_BOX (hbox), hscale_brightness, TRUE, TRUE, 2);
-  gtk_box_pack_start (GTK_BOX (vbox), hbox, FALSE, FALSE, 3);
+  gtk_box_pack_start (GTK_BOX (hbox), hscale_brightness, true, true, 2);
+  gtk_box_pack_start (GTK_BOX (vbox), hbox, false, false, 3);
 
   gtk_widget_set_tooltip_text (hscale_brightness, _("Adjust brightness"));
 
@@ -1734,17 +1739,17 @@ gm_cw_video_settings_window_new (EkigaCallWindow *cw)
 		    (gpointer) cw);
 
   /* Whiteness */
-  hbox = gtk_hbox_new (FALSE, 0);
+  hbox = gtk_hbox_new (false, 0);
   image = gtk_image_new_from_icon_name (GM_ICON_WHITENESS, GTK_ICON_SIZE_MENU);
-  gtk_box_pack_start (GTK_BOX (hbox), image, FALSE, FALSE, 0);
+  gtk_box_pack_start (GTK_BOX (hbox), image, false, false, 0);
 
   cw->priv->adj_whiteness = gtk_adjustment_new (whiteness, 0.0,
 						255.0, 1.0, 5.0, 1.0);
   hscale_whiteness = gtk_hscale_new (GTK_ADJUSTMENT (cw->priv->adj_whiteness));
-  gtk_scale_set_draw_value (GTK_SCALE (hscale_whiteness), FALSE);
+  gtk_scale_set_draw_value (GTK_SCALE (hscale_whiteness), false);
   gtk_scale_set_value_pos (GTK_SCALE (hscale_whiteness), GTK_POS_RIGHT);
-  gtk_box_pack_start (GTK_BOX (hbox), hscale_whiteness, TRUE, TRUE, 2);
-  gtk_box_pack_start (GTK_BOX (vbox), hbox, FALSE, FALSE, 3);
+  gtk_box_pack_start (GTK_BOX (hbox), hscale_whiteness, true, true, 2);
+  gtk_box_pack_start (GTK_BOX (vbox), hbox, false, false, 3);
 
   gtk_widget_set_tooltip_text (hscale_whiteness, _("Adjust whiteness"));
 
@@ -1753,17 +1758,17 @@ gm_cw_video_settings_window_new (EkigaCallWindow *cw)
 		    (gpointer) cw);
 
   /* Colour */
-  hbox = gtk_hbox_new (FALSE, 0);
+  hbox = gtk_hbox_new (false, 0);
   image = gtk_image_new_from_icon_name (GM_ICON_COLOURNESS, GTK_ICON_SIZE_MENU);
-  gtk_box_pack_start (GTK_BOX (hbox), image, FALSE, FALSE, 0);
+  gtk_box_pack_start (GTK_BOX (hbox), image, false, false, 0);
 
   cw->priv->adj_colour = gtk_adjustment_new (colour, 0.0,
 					     255.0, 1.0, 5.0, 1.0);
   hscale_colour = gtk_hscale_new (GTK_ADJUSTMENT (cw->priv->adj_colour));
-  gtk_scale_set_draw_value (GTK_SCALE (hscale_colour), FALSE);
+  gtk_scale_set_draw_value (GTK_SCALE (hscale_colour), false);
   gtk_scale_set_value_pos (GTK_SCALE (hscale_colour), GTK_POS_RIGHT);
-  gtk_box_pack_start (GTK_BOX (hbox), hscale_colour, TRUE, TRUE, 2);
-  gtk_box_pack_start (GTK_BOX (vbox), hbox, FALSE, FALSE, 3);
+  gtk_box_pack_start (GTK_BOX (hbox), hscale_colour, true, true, 2);
+  gtk_box_pack_start (GTK_BOX (vbox), hbox, false, false, 3);
 
   gtk_widget_set_tooltip_text (hscale_colour, _("Adjust color"));
 
@@ -1772,17 +1777,17 @@ gm_cw_video_settings_window_new (EkigaCallWindow *cw)
 		    (gpointer) cw);
 
   /* Contrast */
-  hbox = gtk_hbox_new (FALSE, 0);
+  hbox = gtk_hbox_new (false, 0);
   image = gtk_image_new_from_icon_name (GM_ICON_CONTRAST, GTK_ICON_SIZE_MENU);
-  gtk_box_pack_start (GTK_BOX (hbox), image, FALSE, FALSE, 0);
+  gtk_box_pack_start (GTK_BOX (hbox), image, false, false, 0);
 
   cw->priv->adj_contrast = gtk_adjustment_new (contrast, 0.0,
 					       255.0, 1.0, 5.0, 1.0);
   hscale_contrast = gtk_hscale_new (GTK_ADJUSTMENT (cw->priv->adj_contrast));
-  gtk_scale_set_draw_value (GTK_SCALE (hscale_contrast), FALSE);
+  gtk_scale_set_draw_value (GTK_SCALE (hscale_contrast), false);
   gtk_scale_set_value_pos (GTK_SCALE (hscale_contrast), GTK_POS_RIGHT);
-  gtk_box_pack_start (GTK_BOX (hbox), hscale_contrast, TRUE, TRUE, 2);
-  gtk_box_pack_start (GTK_BOX (vbox), hbox, FALSE, FALSE, 3);
+  gtk_box_pack_start (GTK_BOX (hbox), hscale_contrast, true, true, 2);
+  gtk_box_pack_start (GTK_BOX (vbox), hbox, false, false, 3);
 
   gtk_widget_set_tooltip_text (hscale_contrast, _("Adjust contrast"));
 
@@ -1794,7 +1799,7 @@ gm_cw_video_settings_window_new (EkigaCallWindow *cw)
                      cw->priv->video_settings_frame);
   gtk_widget_show_all (cw->priv->video_settings_frame);
 
-  gtk_widget_set_sensitive (GTK_WIDGET (cw->priv->video_settings_frame), FALSE);
+  gtk_widget_set_sensitive (GTK_WIDGET (cw->priv->video_settings_frame), false);
 
   /* That's an usual GtkWindow, connect it to the signals */
   g_signal_connect_swapped (window,
@@ -1836,32 +1841,32 @@ gm_cw_audio_settings_window_new (EkigaCallWindow *cw)
 
 
   /* The vbox */
-  vbox = gtk_vbox_new (FALSE, 0);
+  vbox = gtk_vbox_new (false, 0);
   gtk_container_add (GTK_CONTAINER (cw->priv->audio_output_volume_frame), vbox);
 
   /* Output volume */
-  hbox = gtk_hbox_new (FALSE, 0);
+  hbox = gtk_hbox_new (false, 0);
   gtk_box_pack_start (GTK_BOX (hbox),
 		      gtk_image_new_from_icon_name (GM_ICON_AUDIO_VOLUME_HIGH,
 						    GTK_ICON_SIZE_SMALL_TOOLBAR),
-		      FALSE, FALSE, 0);
+		      false, false, 0);
 
-  small_vbox = gtk_vbox_new (FALSE, 0);
+  small_vbox = gtk_vbox_new (false, 0);
   cw->priv->adj_output_volume = gtk_adjustment_new (0, 0.0, 101.0, 1.0, 5.0, 1.0);
   hscale_play = gtk_hscale_new (GTK_ADJUSTMENT (cw->priv->adj_output_volume));
   gtk_scale_set_value_pos (GTK_SCALE (hscale_play), GTK_POS_RIGHT);
-  gtk_scale_set_draw_value (GTK_SCALE (hscale_play), FALSE);
-  gtk_box_pack_start (GTK_BOX (small_vbox), hscale_play, TRUE, TRUE, 0);
+  gtk_scale_set_draw_value (GTK_SCALE (hscale_play), false);
+  gtk_box_pack_start (GTK_BOX (small_vbox), hscale_play, true, true, 0);
 
   cw->priv->output_signal = gm_level_meter_new ();
-  gtk_box_pack_start (GTK_BOX (small_vbox), cw->priv->output_signal, TRUE, TRUE, 0);
-  gtk_box_pack_start (GTK_BOX (hbox), small_vbox, TRUE, TRUE, 2);
-  gtk_box_pack_start (GTK_BOX (vbox), hbox, FALSE, FALSE, 3);
+  gtk_box_pack_start (GTK_BOX (small_vbox), cw->priv->output_signal, true, true, 0);
+  gtk_box_pack_start (GTK_BOX (hbox), small_vbox, true, true, 2);
+  gtk_box_pack_start (GTK_BOX (vbox), hbox, false, false, 3);
 
   gtk_container_add (GTK_CONTAINER (GTK_DIALOG (window)->vbox),
                      cw->priv->audio_output_volume_frame);
   gtk_widget_show_all (cw->priv->audio_output_volume_frame);
-  gtk_widget_set_sensitive (GTK_WIDGET (cw->priv->audio_output_volume_frame),  FALSE);
+  gtk_widget_set_sensitive (GTK_WIDGET (cw->priv->audio_output_volume_frame),  false);
 
   /* Audio control frame, we need it to disable controls */
   cw->priv->audio_input_volume_frame = gtk_frame_new (NULL);
@@ -1870,32 +1875,32 @@ gm_cw_audio_settings_window_new (EkigaCallWindow *cw)
   gtk_container_set_border_width (GTK_CONTAINER (cw->priv->audio_input_volume_frame), 5);
 
   /* The vbox */
-  vbox = gtk_vbox_new (FALSE, 0);
+  vbox = gtk_vbox_new (false, 0);
   gtk_container_add (GTK_CONTAINER (cw->priv->audio_input_volume_frame), vbox);
 
   /* Input volume */
-  hbox = gtk_hbox_new (FALSE, 0);
+  hbox = gtk_hbox_new (false, 0);
   gtk_box_pack_start (GTK_BOX (hbox),
 		      gtk_image_new_from_icon_name (GM_ICON_MICROPHONE,
 						    GTK_ICON_SIZE_SMALL_TOOLBAR),
-		      FALSE, FALSE, 0);
+		      false, false, 0);
 
-  small_vbox = gtk_vbox_new (FALSE, 0);
+  small_vbox = gtk_vbox_new (false, 0);
   cw->priv->adj_input_volume = gtk_adjustment_new (0, 0.0, 101.0, 1.0, 5.0, 1.0);
   hscale_rec = gtk_hscale_new (GTK_ADJUSTMENT (cw->priv->adj_input_volume));
   gtk_scale_set_value_pos (GTK_SCALE (hscale_rec), GTK_POS_RIGHT);
-  gtk_scale_set_draw_value (GTK_SCALE (hscale_rec), FALSE);
-  gtk_box_pack_start (GTK_BOX (small_vbox), hscale_rec, TRUE, TRUE, 0);
+  gtk_scale_set_draw_value (GTK_SCALE (hscale_rec), false);
+  gtk_box_pack_start (GTK_BOX (small_vbox), hscale_rec, true, true, 0);
 
   cw->priv->input_signal = gm_level_meter_new ();
-  gtk_box_pack_start (GTK_BOX (small_vbox), cw->priv->input_signal, TRUE, TRUE, 0);
-  gtk_box_pack_start (GTK_BOX (hbox), small_vbox, TRUE, TRUE, 2);
-  gtk_box_pack_start (GTK_BOX (vbox), hbox, FALSE, FALSE, 3);
+  gtk_box_pack_start (GTK_BOX (small_vbox), cw->priv->input_signal, true, true, 0);
+  gtk_box_pack_start (GTK_BOX (hbox), small_vbox, true, true, 2);
+  gtk_box_pack_start (GTK_BOX (vbox), hbox, false, false, 3);
 
   gtk_container_add (GTK_CONTAINER (GTK_DIALOG (window)->vbox),
                      cw->priv->audio_input_volume_frame);
   gtk_widget_show_all (cw->priv->audio_input_volume_frame);
-  gtk_widget_set_sensitive (GTK_WIDGET (cw->priv->audio_input_volume_frame),  FALSE);
+  gtk_widget_set_sensitive (GTK_WIDGET (cw->priv->audio_input_volume_frame),  false);
 
   g_signal_connect (cw->priv->adj_output_volume, "value-changed",
 		    G_CALLBACK (audio_volume_changed_cb), cw);
@@ -1933,19 +1938,19 @@ ekiga_call_window_init_menu (EkigaCallWindow *cw)
 
       GTK_MENU_ENTRY("disconnect", _("_Hangup"), _("Hangup the current call"),
 		     GM_STOCK_PHONE_HANG_UP_16, 'd',
-		     G_CALLBACK (hangup_call_cb), cw, FALSE),
+		     G_CALLBACK (hangup_call_cb), cw, false),
 
       GTK_MENU_SEPARATOR,
 
       GTK_MENU_ENTRY("hold_call", _("H_old Call"), _("Hold the current call"),
 		     NULL, GDK_h,
 		     G_CALLBACK (hold_current_call_cb), cw,
-		     FALSE),
+		     false),
       GTK_MENU_ENTRY("transfer_call", _("_Transfer Call"),
 		     _("Transfer the current call"),
  		     NULL, GDK_t,
 		     G_CALLBACK (transfer_current_call_cb), cw,
-		     FALSE),
+		     false),
 
       GTK_MENU_SEPARATOR,
 
@@ -1953,12 +1958,12 @@ ekiga_call_window_init_menu (EkigaCallWindow *cw)
 		     _("Suspend or resume the audio transmission"),
 		     NULL, GDK_m,
 		     G_CALLBACK (toggle_audio_stream_pause_cb),
-		     cw, FALSE),
+		     cw, false),
       GTK_MENU_ENTRY("suspend_video", _("Suspend _Video"),
 		     _("Suspend or resume the video transmission"),
 		     NULL, GDK_p,
 		     G_CALLBACK (toggle_video_stream_pause_cb),
-		     cw, FALSE),
+		     cw, false),
 
       GTK_MENU_NEW(_("_View")),
 
@@ -1967,43 +1972,43 @@ ekiga_call_window_init_menu (EkigaCallWindow *cw)
 			   NULL, '1',
 			   G_CALLBACK (display_changed_cb),
 			   (gpointer) VIDEO_DISPLAY_KEY "video_view",
-			   TRUE, FALSE),
+			   true, false),
       GTK_MENU_RADIO_ENTRY("remote_video", _("_Remote Video"),
 			   _("Remote video image"),
 			   NULL, '2',
 			   G_CALLBACK (display_changed_cb),
 			   (gpointer) VIDEO_DISPLAY_KEY "video_view",
-			   FALSE, FALSE),
+			   false, false),
       GTK_MENU_RADIO_ENTRY("both_incrusted", _("_Picture-in-Picture"),
 			   _("Both video images"),
 			   NULL, '3',
 			   G_CALLBACK (display_changed_cb),
 			   (gpointer) VIDEO_DISPLAY_KEY "video_view",
-			   FALSE, FALSE),
+			   false, false),
       GTK_MENU_RADIO_ENTRY("both_incrusted_window", _("Picture-in-Picture in Separate _Window"),
 			   _("Both video images"),
 			   NULL, '4',
 			   G_CALLBACK (display_changed_cb),
 			   (gpointer) VIDEO_DISPLAY_KEY "video_view",
-			   FALSE, FALSE),
+			   false, false),
       GTK_MENU_SEPARATOR,
 
       GTK_MENU_ENTRY("zoom_in", NULL, _("Zoom in"),
 		     GTK_STOCK_ZOOM_IN, '+',
 		     G_CALLBACK (zoom_in_changed_cb),
-		     (gpointer) VIDEO_DISPLAY_KEY "zoom", FALSE),
+		     (gpointer) VIDEO_DISPLAY_KEY "zoom", false),
       GTK_MENU_ENTRY("zoom_out", NULL, _("Zoom out"),
 		     GTK_STOCK_ZOOM_OUT, '-',
 		     G_CALLBACK (zoom_out_changed_cb),
-		     (gpointer) VIDEO_DISPLAY_KEY "zoom", FALSE),
+		     (gpointer) VIDEO_DISPLAY_KEY "zoom", false),
       GTK_MENU_ENTRY("normal_size", NULL, _("Normal size"),
 		     GTK_STOCK_ZOOM_100, '0',
 		     G_CALLBACK (zoom_normal_changed_cb),
-		     (gpointer) VIDEO_DISPLAY_KEY "zoom", FALSE),
+		     (gpointer) VIDEO_DISPLAY_KEY "zoom", false),
       GTK_MENU_ENTRY("fullscreen", _("_Fullscreen"), _("Switch to fullscreen"),
 		     GTK_STOCK_ZOOM_IN, GDK_F11,
 		     G_CALLBACK (fullscreen_changed_cb),
-		     (gpointer) cw, FALSE),
+		     (gpointer) cw, false),
 
       GTK_MENU_END
     };
@@ -2091,15 +2096,15 @@ ekiga_call_window_channels_menu_update_sensitivity (EkigaCallWindow *cw,
 
   if (is_transmitting) {
     if (!is_video)
-      gtk_menu_set_sensitive (cw->priv->main_menu, "suspend_audio", TRUE);
+      gtk_menu_set_sensitive (cw->priv->main_menu, "suspend_audio", true);
     else
-      gtk_menu_set_sensitive (cw->priv->main_menu, "suspend_video", TRUE);
+      gtk_menu_set_sensitive (cw->priv->main_menu, "suspend_video", true);
   }
   else {
     if (!is_video)
-      gtk_menu_set_sensitive (cw->priv->main_menu, "suspend_audio", FALSE);
+      gtk_menu_set_sensitive (cw->priv->main_menu, "suspend_audio", false);
     else
-      gtk_menu_set_sensitive (cw->priv->main_menu, "suspend_video", FALSE);
+      gtk_menu_set_sensitive (cw->priv->main_menu, "suspend_video", false);
   }
 }
 
@@ -2112,8 +2117,8 @@ ekiga_call_window_transfer_dialog_run (EkigaCallWindow *cw,
 
   const char *forward_url = NULL;
 
-  g_return_val_if_fail (EKIGA_IS_CALL_WINDOW (cw), FALSE);
-  g_return_val_if_fail (GTK_IS_WINDOW (parent_window), FALSE);
+  g_return_val_if_fail (EKIGA_IS_CALL_WINDOW (cw), false);
+  g_return_val_if_fail (GTK_IS_WINDOW (parent_window), false);
 
   cw->priv->transfer_call_popup =
     gm_entry_dialog_new (_("Transfer call to:"),
@@ -2252,7 +2257,6 @@ ekiga_call_window_init_gui (EkigaCallWindow *cw)
   GtkWidget *event_box = NULL;
   GtkWidget *vbox = NULL;
   GtkWidget *hbox = NULL;
-  GtkWidget *button = NULL;
   GtkWidget *frame = NULL;
 
   GtkToolItem *item = NULL;
@@ -2270,7 +2274,7 @@ ekiga_call_window_init_gui (EkigaCallWindow *cw)
 
   /* The main table */
   event_box = gtk_event_box_new ();
-  vbox = gtk_vbox_new (FALSE, 0);
+  vbox = gtk_vbox_new (false, 0);
   frame = gtk_frame_new (NULL);
   gtk_frame_set_shadow_type (GTK_FRAME (frame), GTK_SHADOW_NONE);
   event_box = gtk_event_box_new ();
@@ -2281,39 +2285,39 @@ ekiga_call_window_init_gui (EkigaCallWindow *cw)
 
   /* Menu */
   ekiga_call_window_init_menu (cw);
-  gtk_box_pack_start (GTK_BOX (vbox), GTK_WIDGET (cw->priv->main_menu), FALSE, FALSE, 0);
+  gtk_box_pack_start (GTK_BOX (vbox), GTK_WIDGET (cw->priv->main_menu), false, false, 0);
 
   /* The widgets toolbar */
   cw->priv->call_panel_toolbar = gtk_toolbar_new ();
   gtk_toolbar_set_style (GTK_TOOLBAR (cw->priv->call_panel_toolbar), GTK_TOOLBAR_ICONS);
-  gtk_toolbar_set_show_arrow (GTK_TOOLBAR (cw->priv->call_panel_toolbar), FALSE);
+  gtk_toolbar_set_show_arrow (GTK_TOOLBAR (cw->priv->call_panel_toolbar), false);
 
   alignment = gtk_alignment_new (0.0, 0.0, 1.0, 0.0);
   gtk_container_add (GTK_CONTAINER (alignment), cw->priv->call_panel_toolbar);
-  gtk_box_pack_start (GTK_BOX (vbox), GTK_WIDGET (alignment), FALSE, FALSE, 0);
+  gtk_box_pack_start (GTK_BOX (vbox), GTK_WIDGET (alignment), false, false, 0);
 
   /* The frame that contains the video */
   cw->priv->main_video_image = gtk_image_new ();
   alignment = gtk_alignment_new (0.5, 0.0, 1.0, 0.0);
   gtk_container_add (GTK_CONTAINER (alignment), cw->priv->main_video_image);
-  gtk_box_pack_start (GTK_BOX (vbox), GTK_WIDGET (alignment), TRUE, TRUE, 0);
+  gtk_box_pack_start (GTK_BOX (vbox), GTK_WIDGET (alignment), true, true, 0);
 
   /* The frame that contains information about the call */
   cw->priv->call_frame = gtk_frame_new (NULL);
   gtk_frame_set_shadow_type (GTK_FRAME (cw->priv->call_frame), GTK_SHADOW_ETCHED_IN);
-  hbox = gtk_hbox_new (FALSE, 2);
+  hbox = gtk_hbox_new (false, 2);
 
   image = gtk_image_new_from_stock (GM_STOCK_STATUS_UNKNOWN, GTK_ICON_SIZE_MENU);
   gtk_box_pack_start (GTK_BOX (hbox), image, false, false, 2);
 
   cw->priv->info_text = gtk_text_view_new ();
-  gtk_text_view_set_editable (GTK_TEXT_VIEW (cw->priv->info_text), FALSE);
-  gtk_widget_set_sensitive (GTK_WIDGET (cw->priv->info_text), FALSE);
+  gtk_text_view_set_editable (GTK_TEXT_VIEW (cw->priv->info_text), false);
+  gtk_widget_set_sensitive (GTK_WIDGET (cw->priv->info_text), false);
   gtk_text_view_set_wrap_mode (GTK_TEXT_VIEW (cw->priv->info_text),
 			       GTK_WRAP_NONE);
 
   buffer = gtk_text_view_get_buffer (GTK_TEXT_VIEW (cw->priv->info_text));
-  gtk_text_view_set_cursor_visible  (GTK_TEXT_VIEW (cw->priv->info_text), FALSE);
+  gtk_text_view_set_cursor_visible  (GTK_TEXT_VIEW (cw->priv->info_text), false);
 
   gtk_text_buffer_create_tag (buffer, "who",
                               "weight", PANGO_WEIGHT_BOLD,
@@ -2332,17 +2336,18 @@ ekiga_call_window_init_gui (EkigaCallWindow *cw)
 
   /* Hangup */
   item = gtk_tool_item_new ();
-  button = gtk_button_new ();
+  cw->priv->hangup_button = gtk_button_new ();
   image = gtk_image_new_from_stock (GM_STOCK_PHONE_HANG_UP_24, GTK_ICON_SIZE_LARGE_TOOLBAR);
-  gtk_container_add (GTK_CONTAINER (button), image);
-  gtk_container_add (GTK_CONTAINER (item), button);
-  gtk_button_set_relief (GTK_BUTTON (button), GTK_RELIEF_NONE);
-  gtk_widget_show (button);
+  gtk_container_add (GTK_CONTAINER (cw->priv->hangup_button), image);
+  gtk_container_add (GTK_CONTAINER (item), cw->priv->hangup_button);
+  gtk_button_set_relief (GTK_BUTTON (cw->priv->hangup_button), GTK_RELIEF_NONE);
+  gtk_widget_show (cw->priv->hangup_button);
   gtk_toolbar_insert (GTK_TOOLBAR (cw->priv->call_panel_toolbar),
 		      GTK_TOOL_ITEM (item), -1);
+  gtk_widget_set_sensitive (GTK_WIDGET (cw->priv->hangup_button), false);
   gtk_tool_item_set_tooltip_text (GTK_TOOL_ITEM (item),
 				  _("Hang up the current call"));
-  g_signal_connect (button, "clicked",
+  g_signal_connect (cw->priv->hangup_button, "clicked",
 		    G_CALLBACK (hangup_call_cb), cw);
 
   /* Separator */
@@ -2363,10 +2368,10 @@ ekiga_call_window_init_gui (EkigaCallWindow *cw)
                                           GTK_ICON_SIZE_MENU);
     gtk_container_add (GTK_CONTAINER (cw->priv->audio_settings_button), image);
     gtk_container_add (GTK_CONTAINER (item), cw->priv->audio_settings_button);
-    gtk_tool_item_set_expand (GTK_TOOL_ITEM (item), FALSE);
+    gtk_tool_item_set_expand (GTK_TOOL_ITEM (item), false);
 
     gtk_widget_show (cw->priv->audio_settings_button);
-    gtk_widget_set_sensitive (cw->priv->audio_settings_button, FALSE);
+    gtk_widget_set_sensitive (cw->priv->audio_settings_button, false);
     gtk_toolbar_insert (GTK_TOOLBAR (cw->priv->call_panel_toolbar),
                         GTK_TOOL_ITEM (item), -1);
     gtk_tool_item_set_tooltip_text (GTK_TOOL_ITEM (item),
@@ -2384,10 +2389,10 @@ ekiga_call_window_init_gui (EkigaCallWindow *cw)
                                     GTK_ICON_SIZE_MENU);
   gtk_container_add (GTK_CONTAINER (cw->priv->video_settings_button), image);
   gtk_container_add (GTK_CONTAINER (item), cw->priv->video_settings_button);
-  gtk_tool_item_set_expand (GTK_TOOL_ITEM (item), FALSE);
+  gtk_tool_item_set_expand (GTK_TOOL_ITEM (item), false);
 
   gtk_widget_show (cw->priv->video_settings_button);
-  gtk_widget_set_sensitive (cw->priv->video_settings_button, FALSE);
+  gtk_widget_set_sensitive (cw->priv->video_settings_button, false);
   gtk_toolbar_insert (GTK_TOOLBAR (cw->priv->call_panel_toolbar),
 		      GTK_TOOL_ITEM (item), -1);
   gtk_tool_item_set_tooltip_text (GTK_TOOL_ITEM (item),
@@ -2405,14 +2410,14 @@ ekiga_call_window_init_gui (EkigaCallWindow *cw)
   gtk_button_set_relief (GTK_BUTTON (cw->priv->hold_button), GTK_RELIEF_NONE);
   gtk_container_add (GTK_CONTAINER (cw->priv->hold_button), image);
   gtk_container_add (GTK_CONTAINER (item), cw->priv->hold_button);
-  gtk_tool_item_set_expand (GTK_TOOL_ITEM (item), FALSE);
+  gtk_tool_item_set_expand (GTK_TOOL_ITEM (item), false);
 
   gtk_widget_show (cw->priv->hold_button);
   gtk_toolbar_insert (GTK_TOOLBAR (cw->priv->call_panel_toolbar),
 		      GTK_TOOL_ITEM (item), -1);
   gtk_tool_item_set_tooltip_text (GTK_TOOL_ITEM (item),
 				  _("Hold the current call"));
-  gtk_widget_set_sensitive (GTK_WIDGET (cw->priv->hold_button), FALSE);
+  gtk_widget_set_sensitive (GTK_WIDGET (cw->priv->hold_button), false);
 
   g_signal_connect (cw->priv->hold_button, "clicked",
 		    G_CALLBACK (hold_current_call_cb), cw);
@@ -2425,7 +2430,7 @@ ekiga_call_window_init_gui (EkigaCallWindow *cw)
 
   frame = gtk_frame_new (NULL);
   gtk_frame_set_shadow_type (GTK_FRAME (frame), shadow_type);
-  gtk_box_pack_start (GTK_BOX (cw->priv->statusbar), frame, FALSE, FALSE, 0);
+  gtk_box_pack_start (GTK_BOX (cw->priv->statusbar), frame, false, false, 0);
   gtk_box_reorder_child (GTK_BOX (cw->priv->statusbar), frame, 0);
 
   cw->priv->qualitymeter = gm_powermeter_new ();
@@ -2433,12 +2438,12 @@ ekiga_call_window_init_gui (EkigaCallWindow *cw)
 
   cw->priv->statusbar_ebox = gtk_event_box_new ();
   gtk_container_add (GTK_CONTAINER (cw->priv->statusbar_ebox), cw->priv->statusbar);
-  gtk_box_pack_start (GTK_BOX (vbox), GTK_WIDGET (cw->priv->statusbar_ebox), FALSE, FALSE, 0);
+  gtk_box_pack_start (GTK_BOX (vbox), GTK_WIDGET (cw->priv->statusbar_ebox), false, false, 0);
   gtk_widget_show_all (vbox);
 
   /* Logo */
   gtk_widget_realize (cw->priv->main_video_image);
-  gtk_window_set_resizable (GTK_WINDOW (cw), FALSE);
+  gtk_window_set_resizable (GTK_WINDOW (cw), false);
   ekiga_call_window_update_logo (cw);
 
   /* Init */
@@ -2520,7 +2525,7 @@ ekiga_call_window_show (GtkWidget *widget)
 {
   EkigaCallWindow *cw = EKIGA_CALL_WINDOW (widget);
   if (gm_conf_get_bool (VIDEO_DISPLAY_KEY "stay_on_top") && cw->priv->current_call)
-    gm_window_set_always_on_top (widget->window, TRUE);
+    gm_window_set_always_on_top (widget->window, true);
   GTK_WIDGET_CLASS (ekiga_call_window_parent_class)->show (widget);
 
   gtk_widget_queue_draw (GTK_WIDGET (cw));
@@ -2533,7 +2538,7 @@ ekiga_call_window_expose_event (GtkWidget *widget,
   EkigaCallWindow *cw = EKIGA_CALL_WINDOW (widget);
   GtkWidget* video_widget = cw->priv->main_video_image;
   Ekiga::DisplayInfo display_info;
-  gboolean handled = FALSE;
+  gboolean handled = false;
 
   handled = GTK_WIDGET_CLASS (ekiga_call_window_parent_class)->expose_event (widget, event);
 
@@ -2557,7 +2562,7 @@ ekiga_call_window_expose_event (GtkWidget *widget,
   gdk_flush();
 #endif
 
-  display_info.widget_info_set = TRUE;
+  display_info.widget_info_set = true;
 
   boost::shared_ptr<Ekiga::VideoOutputCore> videooutput_core = cw->priv->core->get<Ekiga::VideoOutputCore> ("videooutput-core");
   videooutput_core->set_display_info (display_info);
@@ -2570,7 +2575,7 @@ ekiga_call_window_focus_in_event (GtkWidget     *widget,
                                   GdkEventFocus *event)
 {
   if (gtk_window_get_urgency_hint (GTK_WINDOW (widget)))
-    gtk_window_set_urgency_hint (GTK_WINDOW (widget), FALSE);
+    gtk_window_set_urgency_hint (GTK_WINDOW (widget), false);
 
   return GTK_WIDGET_CLASS (ekiga_call_window_parent_class)->focus_in_event (widget, event);
 }
