@@ -128,6 +128,7 @@ struct _EkigaMainWindowPrivate
 
   /* Actions toolbar */
   GtkWidget *actions_toolbar;
+  GtkToolItem *toggle_buttons[NUM_SECTIONS];
   GtkWidget *preview_button;
 
   /* notebook pages
@@ -299,17 +300,6 @@ static void panel_section_action_clicked_cb (GtkWidget * /*widget*/,
  */
 static void video_preview_action_toggled_cb (GtkToggleToolButton *b,
                                              gpointer data);
-
-
-/* DESCRIPTION  :  This callback is called when the user changes the
- *                 page in the main notebook.
- * BEHAVIOR     :  Update the config key accordingly.
- * PRE          :  A valid pointer to the main window GmObject.
- */
-static void panel_section_changed_cb (GtkNotebook *,
-                                      gpointer,
-                                      gint,
-                                      gpointer);
 
 
 /* DESCRIPTION  :  This callback is called when the user
@@ -1155,10 +1145,30 @@ panel_section_changed_nt (G_GNUC_UNUSED gpointer id,
     EkigaMainWindow* mw = EKIGA_MAIN_WINDOW (data);
     GtkWidget* menu = NULL;
     section = gm_conf_entry_get_int (entry);
+
+    /* Update notebook section */
     gtk_notebook_set_current_page (GTK_NOTEBOOK (mw->priv->main_notebook), section);
 
+    /* Update menu section */
+    g_signal_handlers_block_by_func (mw->priv->main_menu,
+                                     (gpointer) radio_menu_changed_cb,
+                                     (gpointer) USER_INTERFACE_KEY "main_window/panel_section");
     menu = gtk_menu_get_widget (mw->priv->main_menu, "dialpad");
     gtk_radio_menu_select_with_widget (menu, section);
+    g_signal_handlers_unblock_by_func (mw->priv->main_menu,
+                                       (gpointer) radio_menu_changed_cb,
+                                       (gpointer) USER_INTERFACE_KEY "main_window/panel_section");
+
+    /* Update toggle button toolbar */
+    for (int i = 0 ; i < NUM_SECTIONS ; i++)
+      g_signal_handlers_block_by_func (mw->priv->toggle_buttons[i],
+                                       (gpointer) panel_section_action_clicked_cb,
+                                       GINT_TO_POINTER (i));
+    gtk_toggle_tool_button_set_active (GTK_TOGGLE_TOOL_BUTTON (mw->priv->toggle_buttons[section]), true);
+    for (int i = 0 ; i < NUM_SECTIONS ; i++)
+      g_signal_handlers_unblock_by_func (mw->priv->toggle_buttons[i],
+                                         (gpointer) panel_section_action_clicked_cb,
+                                         GINT_TO_POINTER (i));
 
     if (section == mw->priv->roster_view_page_number)
       on_roster_selection_changed (mw->priv->roster_view, data);
@@ -1241,16 +1251,6 @@ video_preview_action_toggled_cb (GtkToggleToolButton *b,
                                  G_GNUC_UNUSED gpointer data)
 {
   gm_conf_set_bool (VIDEO_DEVICES_KEY "enable_preview", gtk_toggle_tool_button_get_active (b));
-}
-
-
-static void
-panel_section_changed_cb (G_GNUC_UNUSED GtkNotebook *notebook,
-                          G_GNUC_UNUSED gpointer page,
-                          gint page_num,
-                          G_GNUC_UNUSED gpointer data)
-{
-  gm_conf_set_int (USER_INTERFACE_KEY "main_window/panel_section", page_num);
 }
 
 
@@ -1747,33 +1747,34 @@ ekiga_main_window_init_actions_toolbar (EkigaMainWindow *mw)
   cps = (PanelSection) gm_conf_get_int (USER_INTERFACE_KEY "main_window/panel_section");
 
   image = gtk_image_new_from_icon_name ("avatar-default", GTK_ICON_SIZE_MENU);
-  item = gtk_radio_tool_button_new (NULL);
-  gtk_tool_button_set_icon_widget (GTK_TOOL_BUTTON (item), image);
-  gtk_tool_item_set_expand (GTK_TOOL_ITEM (item), false);
-  gtk_toolbar_insert (GTK_TOOLBAR (mw->priv->actions_toolbar), item, -1);
-  gtk_toggle_tool_button_set_active (GTK_TOGGLE_TOOL_BUTTON (item), (cps == CONTACTS));
-  g_signal_connect (item, "clicked",
-                    G_CALLBACK (panel_section_action_clicked_cb), GINT_TO_POINTER (CONTACTS));
+  mw->priv->toggle_buttons[CONTACTS] = gtk_radio_tool_button_new (NULL);
+  gtk_tool_button_set_icon_widget (GTK_TOOL_BUTTON (mw->priv->toggle_buttons[CONTACTS]), image);
+  gtk_tool_item_set_expand (GTK_TOOL_ITEM (mw->priv->toggle_buttons[CONTACTS]), false);
+  gtk_toolbar_insert (GTK_TOOLBAR (mw->priv->actions_toolbar), mw->priv->toggle_buttons[CONTACTS], -1);
+  gtk_toggle_tool_button_set_active (GTK_TOGGLE_TOOL_BUTTON (mw->priv->toggle_buttons[CONTACTS]), (cps == CONTACTS));
 
   /* The dialpad button */
   image = gtk_image_new_from_icon_name ("input-dialpad", GTK_ICON_SIZE_MENU);
-  item = gtk_radio_tool_button_new (gtk_radio_tool_button_get_group (GTK_RADIO_TOOL_BUTTON (item)));
-  gtk_tool_button_set_icon_widget (GTK_TOOL_BUTTON (item), image);
-  gtk_tool_item_set_expand (GTK_TOOL_ITEM (item), false);
-  gtk_toolbar_insert (GTK_TOOLBAR (mw->priv->actions_toolbar), item, -1);
-  gtk_toggle_tool_button_set_active (GTK_TOGGLE_TOOL_BUTTON (item), (cps == DIALPAD));
-  g_signal_connect (item, "clicked",
-                    G_CALLBACK (panel_section_action_clicked_cb), GINT_TO_POINTER (DIALPAD));
+  mw->priv->toggle_buttons[DIALPAD] =
+    gtk_radio_tool_button_new (gtk_radio_tool_button_get_group (GTK_RADIO_TOOL_BUTTON (mw->priv->toggle_buttons[CONTACTS])));
+  gtk_tool_button_set_icon_widget (GTK_TOOL_BUTTON (mw->priv->toggle_buttons[DIALPAD]), image);
+  gtk_tool_item_set_expand (GTK_TOOL_ITEM (mw->priv->toggle_buttons[DIALPAD]), false);
+  gtk_toolbar_insert (GTK_TOOLBAR (mw->priv->actions_toolbar), mw->priv->toggle_buttons[DIALPAD], -1);
+  gtk_toggle_tool_button_set_active (GTK_TOGGLE_TOOL_BUTTON (mw->priv->toggle_buttons[DIALPAD]), (cps == DIALPAD));
 
   /* The history button */
   image = gtk_image_new_from_icon_name ("document-open-recent", GTK_ICON_SIZE_MENU);
-  item = gtk_radio_tool_button_new (gtk_radio_tool_button_get_group (GTK_RADIO_TOOL_BUTTON (item)));
-  gtk_tool_button_set_icon_widget (GTK_TOOL_BUTTON (item), image);
-  gtk_tool_item_set_expand (GTK_TOOL_ITEM (item), false);
-  gtk_toolbar_insert (GTK_TOOLBAR (mw->priv->actions_toolbar), item, -1);
-  gtk_toggle_tool_button_set_active (GTK_TOGGLE_TOOL_BUTTON (item), (cps == CALL));
-  g_signal_connect (item, "clicked",
-                    G_CALLBACK (panel_section_action_clicked_cb), GINT_TO_POINTER (CALL));
+  mw->priv->toggle_buttons[CALL] =
+    gtk_radio_tool_button_new (gtk_radio_tool_button_get_group (GTK_RADIO_TOOL_BUTTON (mw->priv->toggle_buttons[CONTACTS])));
+  gtk_tool_button_set_icon_widget (GTK_TOOL_BUTTON (mw->priv->toggle_buttons[CALL]), image);
+  gtk_tool_item_set_expand (GTK_TOOL_ITEM (mw->priv->toggle_buttons[CALL]), false);
+  gtk_toolbar_insert (GTK_TOOLBAR (mw->priv->actions_toolbar), mw->priv->toggle_buttons[CALL], -1);
+  gtk_toggle_tool_button_set_active (GTK_TOGGLE_TOOL_BUTTON (mw->priv->toggle_buttons[CALL]), (cps == CALL));
+
+  gtk_toggle_tool_button_set_active (GTK_TOGGLE_TOOL_BUTTON (mw->priv->toggle_buttons[cps]), true);
+  for (int i = 0 ; i < NUM_SECTIONS ; i++)
+    g_signal_connect (mw->priv->toggle_buttons[i], "clicked",
+                      G_CALLBACK (panel_section_action_clicked_cb), GINT_TO_POINTER (i));
 }
 
 static void
@@ -1996,7 +1997,8 @@ ekiga_main_window_init_history (EkigaMainWindow *mw)
   mw->priv->call_history_view = call_history_view_gtk_new (history_book);
 
   label = gtk_label_new (_("Call history"));
-  mw->priv->call_history_page_number = gtk_notebook_append_page (GTK_NOTEBOOK (mw->priv->main_notebook), mw->priv->call_history_view, label);
+  mw->priv->call_history_page_number =
+    gtk_notebook_append_page (GTK_NOTEBOOK (mw->priv->main_notebook), mw->priv->call_history_view, label);
   g_signal_connect (mw->priv->call_history_view, "selection-changed",
 		    G_CALLBACK (on_history_selection_changed), mw);
 }
@@ -2052,10 +2054,8 @@ ekiga_main_window_init_gui (EkigaMainWindow *mw)
   g_signal_connect (mw->priv->statusbar_ebox, "button-press-event",
 		    G_CALLBACK (statusbar_clicked_cb), mw);
 
+  /* Realize */
   gtk_widget_realize (GTK_WIDGET (mw));
-  g_signal_connect_after (mw->priv->main_notebook, "switch-page",
-			  G_CALLBACK (panel_section_changed_cb),
-			  mw);
   gtk_widget_show_all (window_vbox);
 
   /* Show the current panel section */
@@ -2075,6 +2075,9 @@ ekiga_main_window_init (EkigaMainWindow *mw)
 
   mw->priv->current_call = boost::shared_ptr<Ekiga::Call>();
   mw->priv->calling_state = Standby;
+
+  for (int i = 0 ; i < NUM_SECTIONS ; i++)
+    mw->priv->toggle_buttons[i] = NULL;
 }
 
 static GObject *
