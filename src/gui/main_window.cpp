@@ -1716,6 +1716,7 @@ ekiga_main_window_init_uri_toolbar (EkigaMainWindow *mw)
 static void
 ekiga_main_window_init_actions_toolbar (EkigaMainWindow *mw)
 {
+  int cps = 0;
   GtkWidget *image = NULL;
   GtkToolItem *item = NULL;
 
@@ -1743,26 +1744,34 @@ ekiga_main_window_init_actions_toolbar (EkigaMainWindow *mw)
 		      GTK_TOOL_ITEM (item), -1);
 
   /* The roster button */
+  cps = (PanelSection) gm_conf_get_int (USER_INTERFACE_KEY "main_window/panel_section");
+
   image = gtk_image_new_from_icon_name ("avatar-default", GTK_ICON_SIZE_MENU);
-  item = gtk_tool_button_new (image, NULL);
+  item = gtk_radio_tool_button_new (NULL);
+  gtk_tool_button_set_icon_widget (GTK_TOOL_BUTTON (item), image);
   gtk_tool_item_set_expand (GTK_TOOL_ITEM (item), false);
   gtk_toolbar_insert (GTK_TOOLBAR (mw->priv->actions_toolbar), item, -1);
+  gtk_toggle_tool_button_set_active (GTK_TOGGLE_TOOL_BUTTON (item), (cps == CONTACTS));
   g_signal_connect (item, "clicked",
                     G_CALLBACK (panel_section_action_clicked_cb), GINT_TO_POINTER (CONTACTS));
 
   /* The dialpad button */
   image = gtk_image_new_from_icon_name ("input-dialpad", GTK_ICON_SIZE_MENU);
-  item = gtk_tool_button_new (image, NULL);
+  item = gtk_radio_tool_button_new (gtk_radio_tool_button_get_group (GTK_RADIO_TOOL_BUTTON (item)));
+  gtk_tool_button_set_icon_widget (GTK_TOOL_BUTTON (item), image);
   gtk_tool_item_set_expand (GTK_TOOL_ITEM (item), false);
   gtk_toolbar_insert (GTK_TOOLBAR (mw->priv->actions_toolbar), item, -1);
+  gtk_toggle_tool_button_set_active (GTK_TOGGLE_TOOL_BUTTON (item), (cps == DIALPAD));
   g_signal_connect (item, "clicked",
                     G_CALLBACK (panel_section_action_clicked_cb), GINT_TO_POINTER (DIALPAD));
 
   /* The history button */
   image = gtk_image_new_from_icon_name ("document-open-recent", GTK_ICON_SIZE_MENU);
-  item = gtk_tool_button_new (image, NULL);
+  item = gtk_radio_tool_button_new (gtk_radio_tool_button_get_group (GTK_RADIO_TOOL_BUTTON (item)));
+  gtk_tool_button_set_icon_widget (GTK_TOOL_BUTTON (item), image);
   gtk_tool_item_set_expand (GTK_TOOL_ITEM (item), false);
   gtk_toolbar_insert (GTK_TOOLBAR (mw->priv->actions_toolbar), item, -1);
+  gtk_toggle_tool_button_set_active (GTK_TOGGLE_TOOL_BUTTON (item), (cps == CALL));
   g_signal_connect (item, "clicked",
                     G_CALLBACK (panel_section_action_clicked_cb), GINT_TO_POINTER (CALL));
 }
