@@ -226,6 +226,7 @@ static void show_dialpad_cb (GtkWidget *widget,
 static void show_gm_window_cb (GtkWidget *widget,
                                gpointer data);
 
+static gboolean on_delayed_hide_call_window_cb (gpointer data);
 
 static void ekiga_main_window_incoming_call_dialog_show (EkigaMainWindow *mw,
                                                       boost::shared_ptr<Ekiga::Call>  call);
@@ -755,7 +756,7 @@ static void on_cleared_call_cb (boost::shared_ptr<Ekiga::CallManager>  /*manager
 
   /* Hide call window */
   call_window = GnomeMeeting::Process ()->GetCallWindow ();
-  gtk_widget_hide (call_window);
+  g_timeout_add_seconds (2, on_delayed_hide_call_window_cb, call_window);
 
   /* Sensitive a few things back */
   gtk_widget_set_sensitive (GTK_WIDGET (mw->priv->uri_toolbar), true);
@@ -788,7 +789,7 @@ static void on_cleared_incoming_call_cb (std::string /*reason*/,
 
   /* Hide call window */
   call_window = GnomeMeeting::Process ()->GetCallWindow ();
-  gtk_widget_hide (call_window);
+  g_timeout_add_seconds (2, on_delayed_hide_call_window_cb, call_window);
 
   /* Sensitive a few things back */
   gtk_widget_set_sensitive (GTK_WIDGET (mw->priv->uri_toolbar), true);
@@ -1043,6 +1044,17 @@ gnomemeeting_tray_hack_cb (G_GNUC_UNUSED gpointer data)
   // show the main window if the icon has not appeared in tray
   if (!gtk_status_icon_is_embedded (GTK_STATUS_ICON (statusicon)))
     gtk_widget_show (main_window);
+
+  return FALSE;
+}
+
+static gboolean
+on_delayed_hide_call_window_cb (gpointer data)
+{
+  g_return_val_if_fail (data != NULL, FALSE);
+  g_return_val_if_fail (GTK_IS_WIDGET (data), FALSE);
+
+  gtk_widget_hide (GTK_WIDGET (data));
 
   return FALSE;
 }
