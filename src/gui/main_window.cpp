@@ -664,6 +664,9 @@ static void on_setup_call_cb (boost::shared_ptr<Ekiga::CallManager> manager,
   boost::shared_ptr<Ekiga::AudioOutputCore> audiooutput_core = mw->priv->core->get<Ekiga::AudioOutputCore> ("audiooutput-core");
 
   if (!call->is_outgoing () && !manager->get_auto_answer ()) {
+    if (mw->priv->current_call)
+      return; // No call setup needed if already in a call
+
     audiooutput_core->start_play_event ("incoming_call_sound", 4000, 256);
 #ifdef HAVE_NOTIFY
     if (hasActionsCap ())
@@ -674,6 +677,7 @@ static void on_setup_call_cb (boost::shared_ptr<Ekiga::CallManager> manager,
     ekiga_main_window_incoming_call_dialog_show (mw, call);
 #endif
     mw->priv->current_call = call;
+    mw->priv->calling_state = Called;
   }
   else {
 
@@ -682,6 +686,7 @@ static void on_setup_call_cb (boost::shared_ptr<Ekiga::CallManager> manager,
     gtk_widget_show (call_window);
 
     mw->priv->current_call = call;
+    mw->priv->calling_state = Calling;
   }
 
   /* Unsensitive a few things */
@@ -819,16 +824,29 @@ static void on_missed_call_cb (boost::shared_ptr<Ekiga::CallManager>  /*manager*
                                gpointer self)
 {
   EkigaMainWindow *mw = EKIGA_MAIN_WINDOW (self);
-  boost::shared_ptr<Ekiga::AudioOutputCore> audiooutput_core = mw->priv->core->get<Ekiga::AudioOutputCore> ("audiooutput-core");
 
-  audiooutput_core->stop_play_event ("incoming_call_sound");
-  audiooutput_core->stop_play_event ("ring_tone_sound");
-
+  /* Display info first */
   gchar* info = NULL;
   info = g_strdup_printf (_("Missed call from %s"),
 			  call->get_remote_party_name ().c_str ());
   ekiga_main_window_push_message (mw, "%s", info);
   g_free (info);
+
+  /* If the cleared call is the current one, switch back to standby, otherwise return
+   * as long as the information has been displayed */
+  if (mw->priv->current_call && mw->priv->current_call->get_id () == call->get_id ()) {
+    mw->priv->current_call = boost::shared_ptr<Ekiga::Call>();
+    mw->priv->calling_state = Standby;
+
+    /* Sensitive a few things back */
+    gtk_widget_set_sensitive (GTK_WIDGET (mw->priv->uri_toolbar), true);
+    gtk_widget_set_sensitive (GTK_WIDGET (mw->priv->preview_button), true);
+
+    /* Clear sounds */
+    boost::shared_ptr<Ekiga::AudioOutputCore> audiooutput_core = mw->priv->core->get<Ekiga::AudioOutputCore> ("audiooutput-core");
+    audiooutput_core->stop_play_event ("incoming_call_sound");
+    audiooutput_core->stop_play_event ("ring_tone_sound");
+  }
 }
 
 
@@ -1241,7 +1259,7 @@ dialpad_button_clicked_cb (EkigaDialpad  * /* dialpad */,
 			   const gchar *button_text,
 			   EkigaMainWindow *mw)
 {
-  if (mw->priv->current_call)
+  if (mw->priv->current_call && mw->priv->calling_state == Connected)
     mw->priv->current_call->send_dtmf (button_text[0]);
   else
     ekiga_main_window_append_call_url (mw, button_text);
