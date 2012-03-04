@@ -419,8 +419,7 @@ static void ekiga_call_window_update_stats (EkigaCallWindow *cw,
 
 static void ekiga_call_window_set_status (EkigaCallWindow *cw,
                                           const char *status,
-                                          const char *duration,
-                                          const char *who);
+                                          ...);
 
 static void ekiga_call_window_set_bandwidth (EkigaCallWindow *cw,
                                              float ta,
@@ -1088,7 +1087,7 @@ on_setup_call_cb (G_GNUC_UNUSED boost::shared_ptr<Ekiga::CallManager> manager,
   gtk_window_set_title (GTK_WINDOW (cw), call->get_remote_party_name ().c_str ());
 
   if (call->is_outgoing ())
-    ekiga_call_window_set_status (cw, _("Calling..."), NULL, call->get_remote_party_name ().c_str ());
+    ekiga_call_window_set_status (cw, _("Calling %s..."), call->get_remote_party_name ().c_str ());
 
   ekiga_call_window_update_calling_state (cw, Calling);
 }
@@ -1104,7 +1103,7 @@ on_established_call_cb (boost::shared_ptr<Ekiga::CallManager>  /*manager*/,
 
   if (gm_conf_get_bool (VIDEO_DISPLAY_KEY "stay_on_top"))
     ekiga_call_window_set_stay_on_top (cw, true);
-  ekiga_call_window_set_status (cw, _("Connected"), NULL, call->get_remote_party_name ().c_str ());
+  ekiga_call_window_set_status (cw, _("Connected with %s"), call->get_remote_party_name ().c_str ());
   ekiga_call_window_update_calling_state (cw, Connected);
 
   cw->priv->current_call = call;
@@ -1127,7 +1126,7 @@ on_cleared_call_cb (G_GNUC_UNUSED boost::shared_ptr<Ekiga::CallManager> manager,
   if (gm_conf_get_bool (VIDEO_DISPLAY_KEY "stay_on_top"))
     ekiga_call_window_set_stay_on_top (cw, false);
   ekiga_call_window_update_calling_state (cw, Standby);
-  ekiga_call_window_set_status (cw, _("Standby"), NULL, NULL);
+  ekiga_call_window_set_status (cw, _("Standby"));
   ekiga_call_window_set_bandwidth (cw, 0.0, 0.0, 0.0, 0.0, 0, 0);
   ekiga_call_window_clear_stats (cw);
   ekiga_call_window_update_logo (cw);
@@ -1284,7 +1283,8 @@ on_stats_refresh_cb (gpointer self)
     boost::shared_ptr<Ekiga::VideoOutputCore> videooutput_core = cw->priv->core->get<Ekiga::VideoOutputCore> ("videooutput-core");
     videooutput_core->get_videooutput_stats(videooutput_stats);
 
-    ekiga_call_window_set_status (cw, NULL, cw->priv->current_call->get_duration ().c_str (), NULL);
+    ekiga_call_window_set_status (cw, _("Connected with %s\n%s"), cw->priv->current_call->get_remote_party_name ().c_str (),
+                                  cw->priv->current_call->get_duration ().c_str ());
     ekiga_call_window_set_bandwidth (cw,
                                      cw->priv->current_call->get_transmitted_audio_bandwidth (),
                                      cw->priv->current_call->get_received_audio_bandwidth (),
@@ -1529,61 +1529,27 @@ ekiga_call_window_update_stats (EkigaCallWindow *cw,
 
 static void
 ekiga_call_window_set_status (EkigaCallWindow *cw,
-			      const char *status,
-                              const char *duration,
-                              const char *who)
+			      const char *msg,
+                              ...)
 {
-  GtkTextIter iter;
-  GtkTextIter mark_iter;
-  GtkTextBuffer *buffer = NULL;
-  GtkTextMark *status_mark = NULL;
-  GtkTextMark *mark = NULL;
+  GtkTextBuffer *text_buffer = NULL;
 
-  gchar *info = NULL;
+  char buffer [1025];
+  va_list args;
 
   g_return_if_fail (EKIGA_IS_CALL_WINDOW (cw));
 
-  buffer = gtk_text_view_get_buffer (GTK_TEXT_VIEW (cw->priv->info_text));
-  gtk_text_buffer_get_start_iter (buffer, &iter);
+  text_buffer = gtk_text_view_get_buffer (GTK_TEXT_VIEW (cw->priv->info_text));
 
-  if (who) {
+  va_start (args, msg);
 
-    info = g_strdup_printf ("%s\n", who);
-    gtk_text_buffer_insert_with_tags_by_name (buffer, &iter, info,
-                                              -1, "who", NULL);
-    g_free (info);
-  }
+  if (msg == NULL)
+    buffer[0] = 0;
   else
-    gtk_text_iter_forward_line (&iter);
+    vsnprintf (buffer, 1024, msg, args);
 
-  if (status) {
-    mark = gtk_text_buffer_get_mark (buffer, "status");
-    if (mark) {
-      gtk_text_buffer_get_iter_at_mark (buffer, &mark_iter, mark);
-      gtk_text_buffer_delete (buffer, &iter, &mark_iter);
-    }
-
-    info = g_strdup_printf ("%s", status);
-    gtk_text_buffer_insert_with_tags_by_name (buffer, &iter, info,
-                                              -1, "status", NULL);
-    gtk_text_buffer_create_mark (buffer, "status", &iter, true);
-    g_free (info);
-  }
-
-  status_mark = gtk_text_buffer_get_mark (buffer, "status");
-  if (status_mark && duration) {
-    mark = gtk_text_buffer_get_mark (buffer, "duration");
-    gtk_text_buffer_get_iter_at_mark (buffer, &iter, status_mark);
-    if (mark) {
-      gtk_text_buffer_get_iter_at_mark (buffer, &mark_iter, mark);
-      gtk_text_buffer_delete (buffer, &iter, &mark_iter);
-    }
-    info = g_strdup_printf (" (%s)", duration);
-    gtk_text_buffer_insert_with_tags_by_name (buffer, &iter, info,
-                                              -1, "status", NULL);
-    gtk_text_buffer_create_mark (buffer, "duration", &iter, true);
-    g_free (info);
-  }
+  gtk_text_buffer_set_text (text_buffer, buffer, -1);
+  va_end (args);
 }
 
 
@@ -2261,8 +2227,6 @@ ekiga_call_window_init_gui (EkigaCallWindow *cw)
 
   GtkToolItem *item = NULL;
 
-  GtkTextBuffer *buffer = NULL;
-
   GtkWidget *image = NULL;
   GtkWidget *alignment = NULL;
 
@@ -2315,18 +2279,7 @@ ekiga_call_window_init_gui (EkigaCallWindow *cw)
   gtk_widget_set_sensitive (GTK_WIDGET (cw->priv->info_text), false);
   gtk_text_view_set_wrap_mode (GTK_TEXT_VIEW (cw->priv->info_text),
 			       GTK_WRAP_NONE);
-
-  buffer = gtk_text_view_get_buffer (GTK_TEXT_VIEW (cw->priv->info_text));
   gtk_text_view_set_cursor_visible  (GTK_TEXT_VIEW (cw->priv->info_text), false);
-
-  gtk_text_buffer_create_tag (buffer, "who",
-                              "weight", PANGO_WEIGHT_BOLD,
-                              "justification", GTK_JUSTIFY_LEFT,
-                              NULL);
-  gtk_text_buffer_create_tag (buffer, "status",
-                              "justification", GTK_JUSTIFY_LEFT,
-                              "scale", 0.8,
-                              NULL);
 
   alignment = gtk_alignment_new (0.0, 0.0, 1.0, 0.0);
   gtk_container_add (GTK_CONTAINER (alignment), cw->priv->info_text);
@@ -2447,7 +2400,7 @@ ekiga_call_window_init_gui (EkigaCallWindow *cw)
   ekiga_call_window_update_logo (cw);
 
   /* Init */
-  ekiga_call_window_set_status (cw, _("Standby"), NULL, NULL);
+  ekiga_call_window_set_status (cw, _("Standby"));
   ekiga_call_window_set_bandwidth (cw, 0.0, 0.0, 0.0, 0.0, 0, 0);
 
   gtk_widget_hide (cw->priv->call_frame);
