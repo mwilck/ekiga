@@ -245,9 +245,9 @@ static gboolean
 old_style_gm_window_delete_event_cb (GtkWidget* window,
                                      G_GNUC_UNUSED gpointer data)
 {
-    gm_window_hide (window);
-    return TRUE;
- }
+  gm_window_hide (window);
+  return TRUE;
+}
 
 
 static gboolean
@@ -261,8 +261,7 @@ gm_window_delete_event_cb (GtkWidget *w,
   if (self->priv->hide_on_delete)
     gtk_widget_hide (w);
 
-
-  return FALSE;
+  return TRUE;
 }
 
 
