@@ -265,16 +265,13 @@ confekiga:= $(confflags) \
 	--sysconfdir=$(EKIGA_PREFIX) --libdir=$(EKIGA_PREFIX) \
 	--with-ldap-dir=$(OPENLDAP_DIR) --with-libsasl2-dir=$(LIBSASL2_DIR) --with-boost=$(BUILDROOT) # --enable-static-libs
 
-conflibav := --cross-prefix=$(HOST_TOOL_PREFIX)- --enable-shared --enable-memalign-hack \
+# h264 decoding is provided by libav, while encoding by x264 lib
+conflibav := --cross-prefix=$(HOST_TOOL_PREFIX)- --enable-shared --disable-static \
 	--enable-cross-compile --arch=`echo $(HOST_TOOL_PREFIX)|cut -d- -f1` --target-os=mingw32 \
-	--disable-avserver --disable-ffmpeg --disable-avplay --disable-avconv --disable-avprobe \
+	--prefix=$(BUILDROOT) --libdir=$(LIBDIR) \
+	--disable-avserver --disable-ffmpeg --disable-avplay --disable-avconv --disable-avprobe --disable-network \
 	--disable-swscale --disable-avfilter --disable-avformat --disable-avdevice \
-	--disable-parsers --enable-parser=h264 --enable-parser=mpeg4video --enable-parser=h263 \
-	--disable-decoders --enable-decoder=h264 --enable-decoder=mpeg4 --enable-decoder=h263 \
-	--disable-muxers --enable-muxer=h264 --enable-muxer=mpeg4 --enable-muxer=h263 \
-	--disable-encoders --enable-encoder=mpeg4 --enable-encoder=h263 \
-	--disable-protocols --disable-bsfs --prefix=$(BUILDROOT) \
-	--libdir=$(LIBDIR) --disable-network
+	--disable-everything --enable-decoder=mpeg4 --enable-decoder=h263 --enable-encoder=mpeg4 --enable-encoder=h263 --enable-encoder=h263p --enable-decoder=h264 --enable-hwaccel=h264_dxva2
 
 confx264 := $(confflags) --enable-static --disable-cli --disable-avs
 
