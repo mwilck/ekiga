@@ -1099,7 +1099,7 @@ on_roster_selection_changed (G_GNUC_UNUSED GtkWidget* view,
   gint section;
   GtkWidget* menu = gtk_menu_get_widget (mw->priv->main_menu, "contact");
 
-  if (GTK_IS_MENU (menu)) {
+  if (GTK_IS_MENU_ITEM (menu)) {
 
     section = gtk_notebook_get_current_page (GTK_NOTEBOOK (mw->priv->main_notebook));
 
