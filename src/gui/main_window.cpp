@@ -608,11 +608,9 @@ url_changed_cb (GtkEditable *e,
 
 static void
 show_dialpad_cb (G_GNUC_UNUSED GtkWidget *widget,
-                 gpointer data)
+                 G_GNUC_UNUSED gpointer data)
 {
-  EkigaMainWindow *mw = EKIGA_MAIN_WINDOW (data);
-
-  gtk_notebook_set_current_page (GTK_NOTEBOOK (mw->priv->main_notebook), 1);
+  gm_conf_set_int (USER_INTERFACE_KEY "main_window/panel_section", DIALPAD);
 }
 
 static void
@@ -1817,16 +1815,14 @@ ekiga_main_window_init_menu (EkigaMainWindow *mw)
     {
       GTK_MENU_NEW (_("_Chat")),
 
-      GTK_MENU_ENTRY("connect", _("Ca_ll"), _("Place a new call"),
-		     GM_STOCK_PHONE_PICK_UP_16, 'o',
-		     G_CALLBACK (show_dialpad_cb), mw, TRUE),
-
-      GTK_MENU_SEPARATOR,
-
       GTK_MENU_ENTRY ("contact", _("Co_ntact"),
 		      _("Act on selected contact"),
 		      GTK_STOCK_EXECUTE, 0,
 		      NULL, NULL, FALSE),
+
+      GTK_MENU_ENTRY("connect", _("Ca_ll"), _("Place a new call"),
+		     GM_STOCK_PHONE_PICK_UP_16, 'o',
+		     G_CALLBACK (show_dialpad_cb), mw, TRUE),
 
       GTK_MENU_SEPARATOR,
 
