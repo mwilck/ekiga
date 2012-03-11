@@ -718,8 +718,6 @@ on_videooutput_device_opened_cb (Ekiga::VideoOutputManager & /* manager */,
   EkigaCallWindow *cw = EKIGA_CALL_WINDOW (self);
   int vv;
 
-  gtk_widget_show (GTK_WIDGET (cw));
-
   if (both_streams) {
     gtk_menu_section_set_sensitive (cw->priv->main_menu, "local_video", true);
     gtk_menu_section_set_sensitive (cw->priv->main_menu, "fullscreen", true);
@@ -862,7 +860,6 @@ on_videoinput_device_closed_cb (Ekiga::VideoInputManager & /* manager */,
                                 gpointer self)
 {
   EkigaCallWindow *cw = EKIGA_CALL_WINDOW (self);
-
 
   ekiga_call_window_channels_menu_update_sensitivity (cw, true, false, false);
   ekiga_call_window_update_logo (cw);
@@ -1129,7 +1126,6 @@ on_cleared_call_cb (G_GNUC_UNUSED boost::shared_ptr<Ekiga::CallManager> manager,
   ekiga_call_window_set_status (cw, _("Standby"));
   ekiga_call_window_set_bandwidth (cw, 0.0, 0.0, 0.0, 0.0, 0, 0);
   ekiga_call_window_clear_stats (cw);
-  ekiga_call_window_update_logo (cw);
 
   if (cw->priv->current_call) {
     cw->priv->current_call = boost::shared_ptr<Ekiga::Call>();
@@ -1320,12 +1316,14 @@ ekiga_call_window_delete_event_cb (GtkWidget *widget,
   g_return_val_if_fail (EKIGA_IS_CALL_WINDOW (cw), false);
 
   /* Hangup or disable preview */
-  if (cw->priv->current_call)
+  if (cw->priv->calling_state != Standby && cw->priv->current_call) {
     cw->priv->current_call->hangup ();
-  else
+  }
+  else {
     gm_conf_set_bool (VIDEO_DEVICES_KEY "enable_preview", false);
+  }
 
-  return true;
+  return true; // Do not relay the event anymore
 }
 
 static void
@@ -1337,9 +1335,6 @@ ekiga_call_window_update_calling_state (EkigaCallWindow *cw,
   switch (calling_state)
     {
     case Standby:
-
-      /* Show/hide call frame */
-      gtk_widget_hide (cw->priv->call_frame);
 
       /* Update the hold state */
       ekiga_call_window_set_call_hold (cw, false);
@@ -1999,7 +1994,7 @@ ekiga_call_window_update_logo (EkigaCallWindow *cw)
                 "pixel-size", 128,
                 NULL);
 
-  ekiga_call_window_set_video_size (cw, GM_QCIF_WIDTH, GM_QCIF_HEIGHT);
+  ekiga_call_window_set_video_size (cw, GM_CIF_WIDTH, GM_CIF_HEIGHT);
 }
 
 static void
@@ -2432,7 +2427,7 @@ ekiga_call_window_init (EkigaCallWindow *cw)
   cw->priv->video_widget_gc = NULL;
 #endif
 
-  g_signal_connect (cw, "delete-event",
+  g_signal_connect (cw, "delete_event",
 		    G_CALLBACK (ekiga_call_window_delete_event_cb), NULL);
 }
 

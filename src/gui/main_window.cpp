@@ -753,8 +753,10 @@ static void on_cleared_call_cb (boost::shared_ptr<Ekiga::CallManager>  /*manager
   audiooutput_core->stop_play_event("ring_tone_sound");
 
   /* Hide call window */
-  call_window = GnomeMeeting::Process ()->GetCallWindow ();
-  g_timeout_add_seconds (2, on_delayed_hide_call_window_cb, call_window);
+  if (!gm_conf_get_bool (VIDEO_DEVICES_KEY "enable_preview")) {
+    call_window = GnomeMeeting::Process ()->GetCallWindow ();
+    g_timeout_add_seconds (2, on_delayed_hide_call_window_cb, call_window);
+  }
 
   /* Sensitive a few things back */
   gtk_widget_set_sensitive (GTK_WIDGET (mw->priv->uri_toolbar), true);
@@ -786,8 +788,10 @@ static void on_cleared_incoming_call_cb (std::string /*reason*/,
 #endif
 
   /* Hide call window */
-  call_window = GnomeMeeting::Process ()->GetCallWindow ();
-  g_timeout_add_seconds (2, on_delayed_hide_call_window_cb, call_window);
+  if (!gm_conf_get_bool (VIDEO_DEVICES_KEY "enable_preview")) {
+    call_window = GnomeMeeting::Process ()->GetCallWindow ();
+    g_timeout_add_seconds (2, on_delayed_hide_call_window_cb, call_window);
+  }
 
   /* Sensitive a few things back */
   gtk_widget_set_sensitive (GTK_WIDGET (mw->priv->uri_toolbar), true);
