@@ -393,6 +393,8 @@ static gboolean on_stats_refresh_cb (gpointer self);
 static gboolean ekiga_call_window_delete_event_cb (GtkWidget *widget,
                                                    G_GNUC_UNUSED GdkEventAny *event);
 
+static void window_closed_from_menu_cb (G_GNUC_UNUSED GtkWidget *,
+                                        gpointer);
 
 /**/
 static void ekiga_call_window_update_calling_state (EkigaCallWindow *cw,
@@ -1327,6 +1329,18 @@ ekiga_call_window_delete_event_cb (GtkWidget *widget,
 }
 
 static void
+window_closed_from_menu_cb (G_GNUC_UNUSED GtkWidget *w,
+                            gpointer data)
+{
+  EkigaCallWindow *cw = NULL;
+
+  cw = EKIGA_CALL_WINDOW (data);
+  g_return_if_fail (EKIGA_IS_CALL_WINDOW (cw));
+
+  ekiga_call_window_delete_event_cb (GTK_WIDGET (cw), NULL);
+}
+
+static void
 ekiga_call_window_update_calling_state (EkigaCallWindow *cw,
 					unsigned calling_state)
 {
@@ -1925,6 +1939,13 @@ ekiga_call_window_init_menu (EkigaCallWindow *cw)
 		     NULL, GDK_p,
 		     G_CALLBACK (toggle_video_stream_pause_cb),
 		     cw, false),
+
+      GTK_MENU_SEPARATOR,
+
+      GTK_MENU_ENTRY("close", NULL, _("Close the Ekiga window"),
+		     GTK_STOCK_CLOSE, 'W',
+		     G_CALLBACK (window_closed_from_menu_cb),
+		     cw, TRUE),
 
       GTK_MENU_NEW(_("_View")),
 
