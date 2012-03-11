@@ -157,7 +157,7 @@ Opal::Account::Account (Ekiga::ServiceCore & _core,
   endpoint = core.get<Sip::EndPoint> ("opal-sip-endpoint");
   dead = false;
   state = Unregistered;
-  status = _("Unregistered");
+  status = "";
   message_waiting_number = 0;
   enabled = _enabled;
   aid = (const char *) PGloballyUniqueID ().AsString ();
@@ -301,6 +301,7 @@ void Opal::Account::enable ()
 {
   enabled = true;
 
+  status = _("Processing...");
   endpoint->subscribe (*this);
   if (presentity) {
 
