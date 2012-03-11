@@ -1946,12 +1946,6 @@ ekiga_call_window_init_menu (EkigaCallWindow *cw)
 			   G_CALLBACK (display_changed_cb),
 			   (gpointer) VIDEO_DISPLAY_KEY "video_view",
 			   false, false),
-      GTK_MENU_RADIO_ENTRY("both_incrusted_window", _("Picture-in-Picture in Separate _Window"),
-			   _("Both video images"),
-			   NULL, '4',
-			   G_CALLBACK (display_changed_cb),
-			   (gpointer) VIDEO_DISPLAY_KEY "video_view",
-			   false, false),
       GTK_MENU_SEPARATOR,
 
       GTK_MENU_ENTRY("zoom_in", NULL, _("Zoom in"),
