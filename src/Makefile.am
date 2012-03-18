@@ -76,6 +76,12 @@ ekiga_SOURCES +=			\
 	gui/statusmenu.h		\
 	gui/statusmenu.cpp
 
+if HAVE_NOTIFY
+ekiga_SOURCES +=               		\
+	gui/notify.h		        \
+	gui/notify.cpp
+endif
+
 # Endpoints
 ekiga_SOURCES +=			\
 	ekiga.h			        \

@@ -236,10 +236,6 @@ static void ekiga_main_window_append_call_url (EkigaMainWindow *mw,
 
 static const std::string ekiga_main_window_get_call_url (EkigaMainWindow *mw);
 
-#ifdef HAVE_NOTIFY
-static void ekiga_main_window_incoming_call_notify (EkigaMainWindow *mw,
-                                                    boost::shared_ptr<Ekiga::Call>  call);
-#endif
 
 /* DESCRIPTION  :  This callback is called when the chat window alerts about
  *                 unread messages
@@ -658,9 +654,7 @@ static void on_setup_call_cb (boost::shared_ptr<Ekiga::CallManager> manager,
 
     audiooutput_core->start_play_event ("incoming_call_sound", 4000, 256);
 #ifdef HAVE_NOTIFY
-    if (hasActionsCap ())
-      ekiga_main_window_incoming_call_notify (mw, call);
-    else
+    if (!hasActionsCap ())
       ekiga_main_window_incoming_call_dialog_show (mw, call);
 #else
     ekiga_main_window_incoming_call_dialog_show (mw, call);
@@ -1431,108 +1425,6 @@ ekiga_main_window_incoming_call_dialog_show (EkigaMainWindow *mw,
   call->missed.connect (boost::bind (&on_incoming_call_gone_cb, 
                                    (gpointer) incoming_call_popup));
 }
-
-
-#ifdef HAVE_NOTIFY
-static void
-notify_action_cb (NotifyNotification *notification,
-                  gchar *action,
-                  gpointer main_window)
-{
-  EkigaMainWindow *mw = EKIGA_MAIN_WINDOW (main_window);
-
-  notify_notification_close (notification, NULL);
-
-  if (mw->priv->current_call) {
-
-    if (!strcmp (action, "accept"))
-      mw->priv->current_call->answer ();
-    else
-      mw->priv->current_call->hangup ();
-  }
-}
-
-static void
-closed_cb (NotifyNotification* /*notify*/,
-           gpointer main_window)
-{
-  EkigaMainWindow *mw;
-
-  g_return_if_fail (main_window != NULL);
-
-  mw = EKIGA_MAIN_WINDOW (main_window);
-
-  boost::shared_ptr<Ekiga::AudioOutputCore> audiooutput_core = mw->priv->core->get<Ekiga::AudioOutputCore> ("audiooutput-core");
-  if (audiooutput_core)
-    audiooutput_core->stop_play_event ("incoming_call_sound");
-}
-
-static void
-ekiga_main_window_incoming_call_notify (EkigaMainWindow *mw,
-                                        boost::shared_ptr<Ekiga::Call>  call)
-{
-  NotifyNotification *notify = NULL;
-
-  gchar *uri = NULL;
-  gchar *app = NULL;
-  gchar *body = NULL;
-  gchar *title = NULL;
-
-  const char *utf8_name = call->get_remote_party_name ().c_str ();
-  const char *utf8_app = call->get_remote_application ().c_str ();
-  const char *utf8_url = call->get_remote_uri ().c_str ();
-
-  title = g_strdup_printf (_("Incoming call from %s"), (const char*) utf8_name);
-
-  if (utf8_url)
-    uri = g_strdup_printf ("<b>%s</b> %s", _("Remote URI:"), utf8_url);
-  if (utf8_app)
-    app = g_strdup_printf ("<b>%s</b> %s", _("Remote Application:"), utf8_app);
-
-  body = g_strdup_printf ("%s\n%s", uri, app);
-
-  notify = notify_notification_new (title, body, NULL
-// NOTIFY_CHECK_VERSION appeared in 0.5.2 only
-#ifndef NOTIFY_CHECK_VERSION
-                                    , NULL
-#else
-#if !NOTIFY_CHECK_VERSION(0,7,0)
-                                    , NULL
-#endif
-#endif
-                                    );
-  notify_notification_add_action (notify, "reject", _("Reject"), notify_action_cb, mw, NULL);
-  notify_notification_add_action (notify, "accept", _("Accept"), notify_action_cb, mw, NULL);
-  notify_notification_set_timeout (notify, NOTIFY_EXPIRES_NEVER);
-  notify_notification_set_urgency (notify, NOTIFY_URGENCY_CRITICAL);
-// NOTIFY_CHECK_VERSION appeared in 0.5.2 only
-#ifndef NOTIFY_CHECK_VERSION
-    notify_notification_attach_to_status_icon (notify, statusicon);
-#else
-#if !NOTIFY_CHECK_VERSION(0,7,0)
-    notify_notification_attach_to_status_icon (notify, statusicon);
-#endif
-#endif
-  if (!notify_notification_show (notify, NULL)) {
-    ekiga_main_window_incoming_call_dialog_show (mw, call);
-  }
-  else {
-    call->established.connect (boost::bind (&on_incoming_call_gone_cb,
-                                           (gpointer) notify));
-    call->cleared.connect (boost::bind (&on_cleared_incoming_call_cb, _1,
-                                      (gpointer) notify));
-    call->missed.connect (boost::bind (&on_incoming_call_gone_cb,
-                                     (gpointer) notify));
-  }
-
-  g_signal_connect (notify, "closed", G_CALLBACK (closed_cb), mw);
-
-  g_free (uri);
-  g_free (app);
-  g_free (title);
-  g_free (body);
-}
-#endif
 
 
 static void

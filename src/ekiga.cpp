@@ -44,6 +44,7 @@
 #include "accounts.h"
 #include "call_window.h"
 #include "main_window.h"
+#include "notify.h"
 #include "gmstockicons.h"
 
 #ifdef HAVE_DBUS
@@ -189,6 +190,8 @@ void GnomeMeeting::BuildGUI (Ekiga::ServiceCorePtr services)
   gtk_window_set_transient_for (GTK_WINDOW (assistant_window), GTK_WINDOW (main_window));
   // FIXME should be moved in call window
   gtk_window_set_transient_for (GTK_WINDOW (call_window), GTK_WINDOW (main_window));
+
+  notify_start (*services);
 
   /* GM is started */
   PTRACE (1, "Ekiga version "
