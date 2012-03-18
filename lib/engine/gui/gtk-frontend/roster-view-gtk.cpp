@@ -582,7 +582,6 @@ update_offline_count (RosterViewGtk* self,
                       COLUMN_GROUP_SIZE, size,
                       -1);
   g_free (size);
-
 }
 
 static void
@@ -908,6 +907,7 @@ on_heap_updated (RosterViewGtk* self,
 		 G_GNUC_UNUSED Ekiga::ClusterPtr cluster,
 		 Ekiga::HeapPtr heap)
 {
+  GtkTreeIter heap_iter;
   GtkTreeIter iter;
   GtkTreeIter filtered_iter;
   GtkTreeSelection* selection = NULL;
@@ -927,7 +927,6 @@ on_heap_updated (RosterViewGtk* self,
 		      COLUMN_HEAP, heap.get (),
 		      COLUMN_NAME, heap->get_name ().c_str (),
 		      -1);
-  gtk_tree_view_expand_all (self->priv->tree_view);
 
   if (should_emit)
     g_signal_emit (self, signals[SELECTION_CHANGED_SIGNAL], 0);
@@ -991,7 +990,6 @@ on_presentity_added (RosterViewGtk* self,
 					 *group, &group_iter);
     roster_view_gtk_find_iter_for_presentity (self, &group_iter, presentity, &iter);
 
-
     if (gtk_tree_model_filter_convert_child_iter_to_iter (filtered_model, &filtered_iter, &iter))
       if (gtk_tree_selection_iter_is_selected (selection, &filtered_iter))
 	should_emit = TRUE;
@@ -1008,10 +1006,10 @@ on_presentity_added (RosterViewGtk* self,
 			-1);
   }
 
-  roster_view_gtk_update_groups (self, &heap_iter);
-
   GtkTreeModel* model = gtk_tree_view_get_model (self->priv->tree_view);
   gtk_tree_model_filter_refilter (GTK_TREE_MODEL_FILTER (model));
+
+  roster_view_gtk_update_groups (self, &heap_iter);
 
   if (should_emit)
     g_signal_emit (self, signals[SELECTION_CHANGED_SIGNAL], 0);
@@ -1061,10 +1059,10 @@ on_presentity_updated (RosterViewGtk* self,
     } while (gtk_tree_model_iter_next (model, &group_iter));
   }
 
-  roster_view_gtk_update_groups (self, &heap_iter);
-
   model = gtk_tree_view_get_model (self->priv->tree_view);
   gtk_tree_model_filter_refilter (GTK_TREE_MODEL_FILTER (model));
+
+  roster_view_gtk_update_groups (self, &heap_iter);
 }
 
 
@@ -1223,7 +1221,6 @@ roster_view_gtk_update_groups (RosterViewGtk *view,
       // folded or unfolded
       if (gtk_tree_model_iter_has_child (model, &iter)) {
 
-
         update_offline_count (view, &iter);
         gtk_tree_model_get (model, &iter,
                             COLUMN_NAME, &name, -1);
@@ -1234,7 +1231,6 @@ roster_view_gtk_update_groups (RosterViewGtk *view,
                                                   name,
                                                   (GCompareFunc) g_ascii_strcasecmp);
 
-
           path = gtk_tree_model_get_path (model, heap_iter);
           gtk_tree_view_expand_row (view->priv->tree_view, path, FALSE);
           gtk_tree_path_free (path);
@@ -1242,10 +1238,12 @@ roster_view_gtk_update_groups (RosterViewGtk *view,
           path = gtk_tree_model_get_path (model, &iter);
           if (path) {
 
-            if (existing_group == NULL)
+            if (existing_group == NULL) {
               gtk_tree_view_expand_row (view->priv->tree_view, path, FALSE);
-            else
+            }
+            else {
               gtk_tree_view_collapse_row (view->priv->tree_view, path);
+            }
 
             gtk_tree_path_free (path);
           }
