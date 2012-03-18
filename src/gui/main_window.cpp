@@ -1692,6 +1692,7 @@ ekiga_main_window_init_menu (EkigaMainWindow *mw)
   GtkWidget *assistant_window = NULL;
 
   PanelSection cps = DIALPAD;
+  bool show_offline_contacts = false;
 
   g_return_if_fail (mw != NULL);
 
@@ -1706,6 +1707,7 @@ ekiga_main_window_init_menu (EkigaMainWindow *mw)
 
   /* Default values */
   cps = (PanelSection) gm_conf_get_int (USER_INTERFACE_KEY "main_window/panel_section");
+  show_offline_contacts = gm_conf_get_bool (CONTACTS_KEY "show_offline_contacts");
 
   static MenuEntry gnomemeeting_menu [] =
     {
@@ -1794,6 +1796,14 @@ ekiga_main_window_init_menu (EkigaMainWindow *mw)
 			   G_CALLBACK (radio_menu_changed_cb),
 			   (gpointer) USER_INTERFACE_KEY "main_window/panel_section",
 			   (cps == CALL), TRUE),
+
+      GTK_MENU_SEPARATOR,
+
+      GTK_MENU_TOGGLE_ENTRY ("showofflinecontacts", _("Show offline _contacts"), _("Show offline contacts"),
+                             NULL, 0,
+                             G_CALLBACK (toggle_menu_changed_cb),
+                             (gpointer) CONTACTS_KEY "show_offline_contacts",
+                             show_offline_contacts, TRUE),
 
       GTK_MENU_NEW(_("_Help")),
 
