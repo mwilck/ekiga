@@ -1718,7 +1718,7 @@ ekiga_main_window_init_menu (EkigaMainWindow *mw)
 		      GTK_STOCK_EXECUTE, 0,
 		      NULL, NULL, FALSE),
 
-      GTK_MENU_ENTRY("connect", _("Ca_ll"), _("Place a new call"),
+      GTK_MENU_ENTRY("connect", _("Ca_ll a number"), _("Place a new call"),
 		     GM_STOCK_PHONE_PICK_UP_16, 'o',
 		     G_CALLBACK (show_dialpad_cb), mw, TRUE),
 
