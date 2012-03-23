@@ -324,6 +324,13 @@ void Opal::Account::disable ()
 {
   enabled = false;
 
+  // Translators: this is a state, not an action, i.e. it should be read as
+  // "(you are) unregistered", and not as "(you have been) unregistered"
+  status = _("Unregistered");
+
+  // the above change is needed because if we are already not
+  // registered (because a registration failed, for example), then the
+  // next action won't change the status.
   endpoint->unsubscribe (*this);
 
   if (presentity) {
