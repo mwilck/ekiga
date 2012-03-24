@@ -63,8 +63,6 @@ GnomeMeeting::GnomeMeeting ()
 {
   GM = this;
 
-  call_number = 0;
-
   assistant_window = NULL;
   prefs_window = NULL;
 #ifdef HAVE_DBUS

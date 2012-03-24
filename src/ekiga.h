@@ -145,7 +145,6 @@ class GnomeMeeting : public PProcess
 
   PMutex ep_var_mutex;
   PMutex dev_access_mutex;
-  int call_number;
 
 
   /* The different components of the GUI */
