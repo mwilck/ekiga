@@ -206,7 +206,7 @@ template<typename BookType>
 void
 Ekiga::SourceImpl<BookType>::add_book (boost::shared_ptr<BookType> book)
 {
-  add_object (book);
+  this->add_object (book);
 
   add_connection (book, book->contact_added.connect (boost::bind (boost::ref (contact_added), book, _1)));
 

@@ -204,7 +204,7 @@ void
 Ekiga::BookImpl<ContactType>::add_contact (boost::shared_ptr<ContactType> contact)
 {
   contact->questions.connect (boost::ref (questions));
-  add_object (contact);
+  this->add_object (contact);
 }
 
 
@@ -212,7 +212,7 @@ template<typename ContactType>
 void
 Ekiga::BookImpl<ContactType>::remove_contact (boost::shared_ptr<ContactType> contact)
 {
-  remove_object (contact);
+  this->remove_object (contact);
 }
 
 #endif

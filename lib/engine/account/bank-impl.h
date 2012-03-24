@@ -203,7 +203,7 @@ template<typename AccountType>
 void
 Ekiga::BankImpl<AccountType>::add_account (boost::shared_ptr<AccountType> account)
 {
-  add_object (account);
+  this->add_object (account);
 
   account->questions.connect (boost::ref (questions));
 }
@@ -213,7 +213,7 @@ template<typename AccountType>
 void
 Ekiga::BankImpl<AccountType>::remove_account (boost::shared_ptr<AccountType> account)
 {
-  remove_object (account);
+  this->remove_object (account);
 }
 
 #endif

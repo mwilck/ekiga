@@ -160,14 +160,14 @@ Ekiga::HeapImpl<PresentityType>::add_presentity (boost::shared_ptr<PresentityTyp
 {
   presentity->questions.connect (boost::ref (questions));
 
-  add_object (presentity);
+  this->add_object (presentity);
 }
 
 template<typename PresentityType>
 void
 Ekiga::HeapImpl<PresentityType>::remove_presentity (boost::shared_ptr<PresentityType> presentity)
 {
-  remove_object (presentity);
+  this->remove_object (presentity);
 }
 
 #endif
