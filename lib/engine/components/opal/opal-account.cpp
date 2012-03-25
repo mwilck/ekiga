@@ -184,7 +184,7 @@ Opal::Account::Account (Ekiga::ServiceCore & _core,
 Opal::Account::~Account ()
 {
   if (state == Registered)
-    endpoint->unsubscribe (*this);
+    endpoint->unsubscribe (*this, presentity);
 }
 
 
@@ -302,10 +302,9 @@ void Opal::Account::enable ()
   enabled = true;
 
   status = _("Processing...");
-  endpoint->subscribe (*this);
+  endpoint->subscribe (*this, presentity);
   if (presentity) {
 
-    presentity->Open ();
     // FIXME : the following actions should probably be done by opal itself,
     // remembering what ekiga asked...
     for (std::set<std::string>::iterator iter = watched_uris.begin ();
@@ -331,11 +330,11 @@ void Opal::Account::disable ()
   // the above change is needed because if we are already not
   // registered (because a registration failed, for example), then the
   // next action won't change the status.
-  endpoint->unsubscribe (*this);
+  endpoint->unsubscribe (*this, presentity);
+    presentity->Close ();
 
   if (presentity) {
 
-    presentity->Close ();
     // FIXME : the following actions should probably be done by opal itself,
     // remembering what ekiga asked...
     for (std::set<std::string>::iterator iter = watched_uris.begin ();
@@ -376,7 +375,7 @@ void Opal::Account::remove ()
   enabled = false;
   dead = true;
 
-  endpoint->unsubscribe (*this);
+  endpoint->unsubscribe (*this, presentity);
 
   trigger_saving ();
   removed ();
@@ -636,13 +635,13 @@ Opal::Account::handle_registration_event (RegistrationState state_,
       // FullyCompliant did not work, try next compat mode
       compat_mode = SIPRegister::e_CannotRegisterMultipleContacts;
       PTRACE (4, "Register failed in FullyCompliant mode, retrying in CannotRegisterMultipleContacts mode");
-      endpoint->subscribe (*this);
+      endpoint->subscribe (*this, presentity);
       break;
     case SIPRegister::e_CannotRegisterMultipleContacts:
       // CannotRegMC did not work, try next compat mode
       compat_mode = SIPRegister::e_CannotRegisterPrivateContacts;
       PTRACE (4, "Register failed in CannotRegisterMultipleContacts mode, retrying in CannotRegisterPrivateContacts mode");
-      endpoint->subscribe (*this);
+      endpoint->subscribe (*this, presentity);
       break;
     case SIPRegister::e_CannotRegisterPrivateContacts:
       // CannotRegPC did not work, stop registration with error

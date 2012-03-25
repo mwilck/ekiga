@@ -126,8 +126,8 @@ namespace Opal {
 
 
       /* AccountSubscriber */
-      bool subscribe (const Opal::Account & account);
-      bool unsubscribe (const Opal::Account & account);
+      bool subscribe (const Opal::Account & account, const PSafePtr<OpalPresentity> & presentity);
+      bool unsubscribe (const Opal::Account & account, const PSafePtr<OpalPresentity> & presentity);
 
 
       /* Helper */

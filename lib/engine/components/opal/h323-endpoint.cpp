@@ -53,22 +53,27 @@ namespace Opal {
   public:
 
       subscriber (const Opal::Account & _account,
-                  Opal::H323::EndPoint& _manager)
+                  Opal::H323::EndPoint& _manager,
+                  const PSafePtr<OpalPresentity> & _presentity)
         : PThread (1000, AutoDeleteThread),
         account (_account),
-        manager (_manager)
+        manager (_manager),
+        presentity (_presentity)
       {
         this->Resume ();
       };
 
       void Main ()
         {
+          if (presentity && !presentity->IsOpen ())
+            presentity->Open ();
           manager.Register (account);
         };
 
   private:
       const Opal::Account & account;
       Opal::H323::EndPoint& manager;
+      const PSafePtr<OpalPresentity> & presentity;
     };
   };
 };
@@ -249,24 +254,26 @@ Opal::H323::EndPoint::get_forward_uri () const
 
 
 bool
-Opal::H323::EndPoint::subscribe (const Opal::Account & account)
+Opal::H323::EndPoint::subscribe (const Opal::Account & account,
+                                 const PSafePtr<OpalPresentity> & presentity)
 {
   if (account.get_protocol_name () != "H323" || account.is_enabled ())
     return false;
 
-  new subscriber (account, *this);
+  new subscriber (account, *this, presentity);
 
   return true;
 }
 
 
 bool
-Opal::H323::EndPoint::unsubscribe (const Opal::Account & account)
+Opal::H323::EndPoint::unsubscribe (const Opal::Account & account,
+                                   const PSafePtr<OpalPresentity> & presentity)
 {
   if (account.get_protocol_name () != "H323" || !account.is_enabled ())
     return false;
 
-  new subscriber (account, *this);
+  new subscriber (account, *this, presentity);
 
   return true;
 }

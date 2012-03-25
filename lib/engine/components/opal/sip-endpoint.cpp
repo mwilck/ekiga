@@ -71,7 +71,8 @@ namespace Opal {
 		  unsigned _timeout,
 		  std::string _aor,
                   Opal::Sip::EndPoint & _manager,
-		  bool _registering)
+		  bool _registering,
+                  const PSafePtr<OpalPresentity> & _presentity)
         : PThread (1000, AutoDeleteThread),
 	  username(_username),
 	  host(_host),
@@ -82,7 +83,8 @@ namespace Opal {
 	  timeout(_timeout),
 	  aor(_aor),
 	  manager (_manager),
-	  registering (_registering)
+	  registering (_registering),
+	  presentity (_presentity)
       {
         this->Resume ();
       };
@@ -91,10 +93,15 @@ namespace Opal {
       {
 	if (registering) {
 
+          if (presentity && !presentity->IsOpen ())
+            presentity->Open ();
 	  manager.Register (username, host, authentication_username, password, is_enabled, compat_mode, timeout);
-	} else {
-
+	}
+        else {
 	  manager.Unregister (aor);
+
+          if (presentity && presentity->IsOpen ())
+            presentity->Close ();
 	}
       };
 
@@ -109,6 +116,7 @@ namespace Opal {
       std::string aor;
       Opal::Sip::EndPoint & manager;
       bool registering;
+      const PSafePtr<OpalPresentity> & presentity;
     };
   };
 };
@@ -469,7 +477,8 @@ Opal::Sip::EndPoint::get_aor_domain (const std::string & aor)
 
 
 bool
-Opal::Sip::EndPoint::subscribe (const Opal::Account & account)
+Opal::Sip::EndPoint::subscribe (const Opal::Account & account,
+                                const PSafePtr<OpalPresentity> & presentity)
 {
   if (account.get_protocol_name () != "SIP")
     return false;
@@ -482,13 +491,16 @@ Opal::Sip::EndPoint::subscribe (const Opal::Account & account)
 		  account.get_compat_mode (),
 		  account.get_timeout (),
 		  account.get_aor (),
-		  *this, true);
+		  *this,
+                  true,
+                  presentity);
   return true;
 }
 
 
 bool
-Opal::Sip::EndPoint::unsubscribe (const Opal::Account & account)
+Opal::Sip::EndPoint::unsubscribe (const Opal::Account & account,
+                                  const PSafePtr<OpalPresentity> & presentity)
 {
   if (account.get_protocol_name () != "SIP")
     return false;
@@ -501,7 +513,9 @@ Opal::Sip::EndPoint::unsubscribe (const Opal::Account & account)
 		  account.get_compat_mode (),
 		  account.get_timeout (),
 		  account.get_aor (),
-		  *this, false);
+		  *this,
+                  false,
+                  presentity);
   return true;
 }
 
