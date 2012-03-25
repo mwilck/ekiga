@@ -17,8 +17,8 @@ msgstr ""
 "Project-Id-Version: ekiga\n"
 "Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?"
 "product=ekiga&keywords=I18N+L10N&component=general\n"
-"POT-Creation-Date: 2012-02-11 16:35+0000\n"
-"PO-Revision-Date: 2012-02-16 12:59+0100\n"
+"POT-Creation-Date: 2012-03-25 12:23+0000\n"
+"PO-Revision-Date: 2012-03-25 22:51+0200\n"
 "Last-Translator: Marek Černocký <marek@manet.cz>\n"
 "Language-Team: Czech <gnome-cs-list@gnome.org>\n"
 "MIME-Version: 1.0\n"
@@ -29,8 +29,8 @@ msgstr ""
 "X-Generator: KBabel 1.11.4\n"
 
 #. Application name
-#: ../ekiga.desktop.in.in.h:1 ../src/gui/main_window.cpp:2376
-#: ../src/gui/main_window.cpp:2378
+#: ../ekiga.desktop.in.in.h:1 ../src/gui/main_window.cpp:2326
+#: ../src/gui/main_window.cpp:2328
 msgid "Ekiga Softphone"
 msgstr "Telefon Ekiga"
 
@@ -46,7 +46,7 @@ msgstr "Setkávat se a hovořit s lidmi přes Internet"
 msgid "Audio output device"
 msgstr "Zařízení výstupu zvuku"
 
-#: ../ekiga.schemas.in.in.h:2 ../src/gui/preferences.cpp:737
+#: ../ekiga.schemas.in.in.h:2 ../src/gui/preferences.cpp:735
 msgid "Select the audio output device to use"
 msgstr "Vyberte zařízení výstupu zvuku, které se má používat"
 
@@ -54,7 +54,7 @@ msgstr "Vyberte zařízení výstupu zvuku, které se má používat"
 msgid "Audio input device"
 msgstr "Zařízení vstupu zvuku"
 
-#: ../ekiga.schemas.in.in.h:4 ../src/gui/preferences.cpp:744
+#: ../ekiga.schemas.in.in.h:4 ../src/gui/preferences.cpp:742
 msgid "Select the audio input device to use"
 msgstr "Vyberte zařízení vstupu zvuku, které se má používat"
 
@@ -62,7 +62,7 @@ msgstr "Vyberte zařízení vstupu zvuku, které se má používat"
 msgid "Video input device"
 msgstr "Zařízení vstupu videa"
 
-#: ../ekiga.schemas.in.in.h:6 ../src/gui/preferences.cpp:886
+#: ../ekiga.schemas.in.in.h:6 ../src/gui/preferences.cpp:878
 msgid ""
 "Select the video input device to use. If an error occurs when using this "
 "device a test picture will be transmitted."
@@ -86,7 +86,7 @@ msgstr ""
 msgid "Video channel"
 msgstr "Video kanál"
 
-#: ../ekiga.schemas.in.in.h:10 ../src/gui/preferences.cpp:890
+#: ../ekiga.schemas.in.in.h:10 ../src/gui/preferences.cpp:882
 msgid "The video channel number to use (to select camera, tv or other sources)"
 msgstr ""
 "Číslo video kanálu, který se má používat (pro výběr kamery, tv nebo jiné "
@@ -96,7 +96,7 @@ msgstr ""
 msgid "Video format"
 msgstr "Formát videa"
 
-#: ../ekiga.schemas.in.in.h:12 ../src/gui/preferences.cpp:894
+#: ../ekiga.schemas.in.in.h:12 ../src/gui/preferences.cpp:886
 msgid ""
 "Select the format for video cameras (does not apply to most USB cameras)"
 msgstr "Vyberte formát pro videokamery (netýká se většiny kamer USB)"
@@ -109,7 +109,7 @@ msgstr "Náhled videa"
 msgid "Display images from your camera device"
 msgstr "Zobrazovat obraz z vaší kamery"
 
-#: ../ekiga.schemas.in.in.h:15 ../src/gui/preferences.cpp:961
+#: ../ekiga.schemas.in.in.h:15 ../src/gui/preferences.cpp:953
 msgid "Frame Rate"
 msgstr "Snímková rychlost"
 
@@ -161,7 +161,7 @@ msgstr "Seznam zvukových kodeků"
 msgid "Enable silence detection"
 msgstr "Povolit detekci ticha"
 
-#: ../ekiga.schemas.in.in.h:26 ../src/gui/preferences.cpp:929
+#: ../ekiga.schemas.in.in.h:26 ../src/gui/preferences.cpp:921
 msgid "If enabled, use silence detection with the codecs supporting it"
 msgstr ""
 "Je-li povoleno, bude se používat detekce ticha u kodeků, které ji podporují"
@@ -170,7 +170,7 @@ msgstr ""
 msgid "Enable echo cancellation"
 msgstr "Povolit potlačení ozvěny"
 
-#: ../ekiga.schemas.in.in.h:28 ../src/gui/preferences.cpp:931
+#: ../ekiga.schemas.in.in.h:28 ../src/gui/preferences.cpp:923
 msgid "If enabled, use echo cancellation"
 msgstr "Je-li povoleno, bude se používat potlačení ozvěny"
 
@@ -324,7 +324,7 @@ msgstr ""
 msgid "Outbound Proxy"
 msgstr "Odchozí proxy"
 
-#: ../ekiga.schemas.in.in.h:58 ../src/gui/preferences.cpp:699
+#: ../ekiga.schemas.in.in.h:58 ../src/gui/preferences.cpp:697
 msgid "The SIP Outbound Proxy to use for outgoing calls"
 msgstr "Odchozí proxy SIP, která se má používat pro odchozí hovory"
 
@@ -332,8 +332,8 @@ msgstr "Odchozí proxy SIP, která se má používat pro odchozí hovory"
 msgid "Forward calls to host"
 msgstr "Předat hovory na počítač"
 
-#: ../ekiga.schemas.in.in.h:60 ../src/gui/preferences.cpp:658
-#: ../src/gui/preferences.cpp:702
+#: ../ekiga.schemas.in.in.h:60 ../src/gui/preferences.cpp:656
+#: ../src/gui/preferences.cpp:700
 msgid "The host where calls should be forwarded if call forwarding is enabled"
 msgstr ""
 "Počítač, na který mají být předávany hovory, je-li povoleno předávání hovorů"
@@ -384,7 +384,7 @@ msgstr "Rozsah portů UDP, které bude aplikace Ekiga používat."
 msgid "Enable H.245 tunneling"
 msgstr "Povolit tunelování H.245"
 
-#: ../ekiga.schemas.in.in.h:69 ../src/gui/preferences.cpp:667
+#: ../ekiga.schemas.in.in.h:69 ../src/gui/preferences.cpp:665
 msgid ""
 "This enables H.245 Tunneling mode. In H.245 Tunneling mode H.245 messages "
 "are encapsulated into the H.225 channel (port 1720). This saves one TCP "
@@ -402,7 +402,7 @@ msgstr ""
 msgid "Enable early H.245"
 msgstr "Povolit brzké H.245"
 
-#: ../ekiga.schemas.in.in.h:71 ../src/gui/preferences.cpp:669
+#: ../ekiga.schemas.in.in.h:71 ../src/gui/preferences.cpp:667
 msgid "This enables H.245 early in the setup"
 msgstr "Povoluje brzké H.245 v nastavení"
 
@@ -486,7 +486,7 @@ msgstr ""
 msgid "Enable STUN network detection"
 msgstr "Povolit detekci sítě STUN"
 
-#: ../ekiga.schemas.in.in.h:84 ../src/gui/preferences.cpp:476
+#: ../ekiga.schemas.in.in.h:84 ../src/gui/preferences.cpp:474
 msgid "Enable the automatic network setup resulting from the STUN test"
 msgstr "Povolit automatické nastavení sítě podle výsledků testu STUN"
 
@@ -638,7 +638,7 @@ msgstr ""
 "Hodnota zvětšení v procentech, která se má používat pro obrázky zobrazované "
 "v hlavním uživatelském rozhraní (může být 50, 100 nebo 200)"
 
-#: ../ekiga.schemas.in.in.h:114 ../src/gui/preferences.cpp:470
+#: ../ekiga.schemas.in.in.h:114 ../src/gui/preferences.cpp:468
 msgid "Place windows displaying video above other windows during calls"
 msgstr "Během hovorů umísťovat okna zobrazující video nad jiná okna"
 
@@ -686,7 +686,7 @@ msgstr "Umístění okna vzdáleného videa"
 msgid "Maximum jitter buffer"
 msgstr "Maximální vyrovnávací paměť výpadků (jitter buffer)"
 
-#: ../ekiga.schemas.in.in.h:124 ../src/gui/preferences.cpp:933
+#: ../ekiga.schemas.in.in.h:124 ../src/gui/preferences.cpp:925
 msgid "The maximum jitter buffer size for audio reception (in ms)"
 msgstr ""
 "Maximální velikost vyrovnávací paměti výpadků (jitter buffer) pro příjem "
@@ -745,11 +745,11 @@ msgstr ""
 msgid "List of folded groups in the roster"
 msgstr "Přehled složených skupin v seznamu"
 
-#: ../ekiga.schemas.in.in.h:133
+#: ../ekiga.schemas.in.in.h:133 ../src/gui/main_window.cpp:1798
 msgid "Show offline contacts"
 msgstr "Zobrazovat odpojené kontakty"
 
-#: ../ekiga.schemas.in.in.h:134 ../src/gui/preferences.cpp:464
+#: ../ekiga.schemas.in.in.h:134
 msgid "If enabled, offline contacts will be shown in the roster"
 msgstr "Je-li povoleno, budou se odpojené kontakty zobrazovat v seznamu"
 
@@ -781,7 +781,7 @@ msgstr "0: 56 kb/s, 1: ISDN, 2:DSL128, 3: DSL512, 4: LAN, 5: Vlastní"
 msgid "No answer timeout"
 msgstr "Časový limit pro žádnou odpověď"
 
-#: ../ekiga.schemas.in.in.h:142 ../src/gui/preferences.cpp:499
+#: ../ekiga.schemas.in.in.h:142 ../src/gui/preferences.cpp:497
 msgid ""
 "Automatically reject or forward incoming calls if no answer is given after "
 "the specified amount of time (in seconds)"
@@ -793,7 +793,7 @@ msgstr ""
 msgid "Automatic answer"
 msgstr "Automatická odpověď"
 
-#: ../ekiga.schemas.in.in.h:144 ../src/gui/preferences.cpp:500
+#: ../ekiga.schemas.in.in.h:144 ../src/gui/preferences.cpp:498
 msgid "If enabled, automatically answer incoming calls"
 msgstr "Pokud je povoleno, bude se automaticky odpovídat na příchozí volání"
 
@@ -907,7 +907,7 @@ msgstr ""
 #: ../lib/engine/components/local-roster/local-heap.cpp:236
 #: ../lib/engine/components/local-roster/local-heap.cpp:427
 #: ../lib/engine/components/local-roster/local-presentity.cpp:270
-#: ../lib/engine/components/opal/opal-account.cpp:434
+#: ../lib/engine/components/opal/opal-account.cpp:441
 #: ../plugins/evolution/evolution-contact.cpp:324
 #: ../plugins/loudmouth/loudmouth-account.cpp:338
 #: ../plugins/loudmouth/loudmouth-bank.cpp:125
@@ -968,16 +968,16 @@ msgid "Unnamed"
 msgstr "Nepojmenovaný"
 
 #: ../lib/engine/components/local-roster/local-presentity.cpp:240
-#: ../lib/engine/components/opal/opal-account.cpp:389
+#: ../lib/engine/components/opal/opal-account.cpp:396
 #: ../plugins/evolution/evolution-contact.cpp:228
 #: ../plugins/loudmouth/loudmouth-presentity.cpp:160
 #: ../plugins/resource-list/rl-presentity.cpp:212
-#: ../src/gui/main_window.cpp:1816
+#: ../src/gui/main_window.cpp:1756
 msgid "_Edit"
 msgstr "_Upravit"
 
 #: ../lib/engine/components/local-roster/local-presentity.cpp:242
-#: ../lib/engine/components/opal/opal-account.cpp:391
+#: ../lib/engine/components/opal/opal-account.cpp:398
 #: ../plugins/evolution/evolution-contact.cpp:230
 #: ../plugins/loudmouth/loudmouth-account.cpp:435
 #: ../plugins/loudmouth/loudmouth-presentity.cpp:193
@@ -1009,44 +1009,44 @@ msgstr "Je upřednostňovaný kontakt"
 msgid "Choose groups:"
 msgstr "Vybrat skupiny:"
 
-#: ../lib/engine/components/opal/h323-endpoint.cpp:130
-#: ../lib/engine/components/opal/sip-endpoint.cpp:243
-#: ../lib/engine/components/opal/sip-endpoint.cpp:247
+#: ../lib/engine/components/opal/h323-endpoint.cpp:135
+#: ../lib/engine/components/opal/sip-endpoint.cpp:251
+#: ../lib/engine/components/opal/sip-endpoint.cpp:255
 msgid "Call"
 msgstr "Hovor"
 
-#: ../lib/engine/components/opal/h323-endpoint.cpp:133
-#: ../lib/engine/components/opal/sip-endpoint.cpp:244
-#: ../lib/engine/components/opal/sip-endpoint.cpp:248
-#: ../src/gui/call_window.cpp:2122
+#: ../lib/engine/components/opal/h323-endpoint.cpp:138
+#: ../lib/engine/components/opal/sip-endpoint.cpp:252
+#: ../lib/engine/components/opal/sip-endpoint.cpp:256
+#: ../src/gui/call_window.cpp:2110
 msgid "Transfer"
 msgstr "Přesměrovat"
 
 #. Translators : The alias we are registering already exists : failure
-#: ../lib/engine/components/opal/h323-endpoint.cpp:308
+#: ../lib/engine/components/opal/h323-endpoint.cpp:315
 msgid "Duplicate alias"
 msgstr "Duplicitní přezdívka"
 
-#: ../lib/engine/components/opal/h323-endpoint.cpp:311
+#: ../lib/engine/components/opal/h323-endpoint.cpp:318
 msgid "Bad username/password"
 msgstr "Špatné jméno/heslo"
 
-#: ../lib/engine/components/opal/h323-endpoint.cpp:314
-#: ../lib/engine/components/opal/sip-endpoint.cpp:590
+#: ../lib/engine/components/opal/h323-endpoint.cpp:321
+#: ../lib/engine/components/opal/sip-endpoint.cpp:604
 msgid "Transport error"
 msgstr "Chyba přenosu"
 
-#: ../lib/engine/components/opal/h323-endpoint.cpp:325
-#: ../lib/engine/components/opal/h323-endpoint.cpp:330
-#: ../lib/engine/components/opal/sip-endpoint.cpp:799
+#: ../lib/engine/components/opal/h323-endpoint.cpp:332
+#: ../lib/engine/components/opal/h323-endpoint.cpp:337
+#: ../lib/engine/components/opal/sip-endpoint.cpp:813
 msgid "Failed"
 msgstr "Selhalo"
 
 #. Translators: this is a state, not an action, i.e. it should be read as
 #. "(you are) unregistered", and not as "(you have been) unregistered"
 #: ../lib/engine/components/opal/opal-account.cpp:69
-#: ../lib/engine/components/opal/opal-account.cpp:160
-#: ../lib/engine/components/opal/opal-account.cpp:604
+#: ../lib/engine/components/opal/opal-account.cpp:328
+#: ../lib/engine/components/opal/opal-account.cpp:611
 msgid "Unregistered"
 msgstr "Odregistrován"
 
@@ -1061,39 +1061,44 @@ msgstr[0] "%s (s %d hlasovou zprávou)"
 msgstr[1] "%s (se %d hlasovými zprávami)"
 msgstr[2] "%s (s %d hlasovými zprávami)"
 
-#: ../lib/engine/components/opal/opal-account.cpp:381
+#: ../lib/engine/components/opal/opal-account.cpp:304
+#: ../lib/engine/components/opal/opal-account.cpp:664
+msgid "Processing..."
+msgstr "Zpracovává se…"
+
+#: ../lib/engine/components/opal/opal-account.cpp:388
 #: ../plugins/loudmouth/loudmouth-account.cpp:423 ../src/gui/accounts.cpp:686
 msgid "_Disable"
 msgstr "_Zakázat"
 
-#: ../lib/engine/components/opal/opal-account.cpp:384
+#: ../lib/engine/components/opal/opal-account.cpp:391
 #: ../plugins/loudmouth/loudmouth-account.cpp:427 ../src/gui/accounts.cpp:683
 msgid "_Enable"
 msgstr "_Povolit"
 
-#: ../lib/engine/components/opal/opal-account.cpp:405
+#: ../lib/engine/components/opal/opal-account.cpp:412
 #: ../src/gui/assistant.cpp:762
 msgid "Recharge the account"
 msgstr "Dobít účet"
 
-#: ../lib/engine/components/opal/opal-account.cpp:410
+#: ../lib/engine/components/opal/opal-account.cpp:417
 #: ../src/gui/assistant.cpp:774
 msgid "Consult the balance history"
 msgstr "Zobrazit historii zůstatku"
 
-#: ../lib/engine/components/opal/opal-account.cpp:415
+#: ../lib/engine/components/opal/opal-account.cpp:422
 #: ../src/gui/assistant.cpp:786
 msgid "Consult the call history"
 msgstr "Zobrazit historii hovorů"
 
-#: ../lib/engine/components/opal/opal-account.cpp:430
+#: ../lib/engine/components/opal/opal-account.cpp:437
 #: ../lib/engine/components/opal/opal-bank.cpp:96
 #: ../plugins/loudmouth/loudmouth-account.cpp:333
 #: ../plugins/loudmouth/loudmouth-bank.cpp:121
 msgid "Edit account"
 msgstr "Upravit účty"
 
-#: ../lib/engine/components/opal/opal-account.cpp:432
+#: ../lib/engine/components/opal/opal-account.cpp:439
 #: ../lib/engine/components/opal/opal-bank.cpp:97
 #: ../plugins/evolution/evolution-book.cpp:341
 #: ../plugins/evolution/evolution-contact.cpp:322
@@ -1101,38 +1106,38 @@ msgstr "Upravit účty"
 msgid "Please update the following fields:"
 msgstr "Změňte prosím následující pole:"
 
-#: ../lib/engine/components/opal/opal-account.cpp:434
+#: ../lib/engine/components/opal/opal-account.cpp:441
 #: ../lib/engine/components/opal/opal-bank.cpp:123
 #: ../lib/engine/components/opal/opal-bank.cpp:133
 msgid "Account name, e.g. MyAccount"
 msgstr "Název účtu, např. MujUcet"
 
-#: ../lib/engine/components/opal/opal-account.cpp:436
+#: ../lib/engine/components/opal/opal-account.cpp:443
 msgid "Registrar:"
 msgstr "Registrátor:"
 
-#: ../lib/engine/components/opal/opal-account.cpp:436
+#: ../lib/engine/components/opal/opal-account.cpp:443
 #: ../lib/engine/components/opal/opal-bank.cpp:134
 msgid "The registrar, e.g. ekiga.net"
 msgstr "Registrátor, např. ekiga.net"
 
-#: ../lib/engine/components/opal/opal-account.cpp:438
+#: ../lib/engine/components/opal/opal-account.cpp:445
 msgid "Gatekeeper:"
 msgstr "Gatekeeper:"
 
-#: ../lib/engine/components/opal/opal-account.cpp:438
+#: ../lib/engine/components/opal/opal-account.cpp:445
 #: ../lib/engine/components/opal/opal-bank.cpp:124
 msgid "The gatekeeper, e.g. ekiga.net"
 msgstr "Gatekeeper, např. ekiga.net"
 
-#: ../lib/engine/components/opal/opal-account.cpp:439
+#: ../lib/engine/components/opal/opal-account.cpp:446
 #: ../plugins/loudmouth/loudmouth-account.cpp:342
 #: ../plugins/loudmouth/loudmouth-bank.cpp:126
 #: ../plugins/resource-list/rl-cluster.cpp:174
 msgid "User:"
 msgstr "Uživatel:"
 
-#: ../lib/engine/components/opal/opal-account.cpp:439
+#: ../lib/engine/components/opal/opal-account.cpp:446
 #: ../lib/engine/components/opal/opal-bank.cpp:105
 #: ../lib/engine/components/opal/opal-bank.cpp:116
 #: ../lib/engine/components/opal/opal-bank.cpp:125
@@ -1143,11 +1148,11 @@ msgstr "Jméno uživatele, např. Kuba"
 #. Translators:
 #. * SIP knows two usernames: The name for the client ("User") and the name
 #. * for the authentication procedure ("Authentication User")
-#: ../lib/engine/components/opal/opal-account.cpp:444
+#: ../lib/engine/components/opal/opal-account.cpp:451
 msgid "Authentication User:"
 msgstr "Autentizovaný uživatel:"
 
-#: ../lib/engine/components/opal/opal-account.cpp:444
+#: ../lib/engine/components/opal/opal-account.cpp:451
 #: ../lib/engine/components/opal/opal-bank.cpp:136
 msgid ""
 "The user name used during authentication, if different than the user name; "
@@ -1156,14 +1161,14 @@ msgstr ""
 "Uživatelské jméno použité během ověřování identity v případě, že je jiné než "
 "uživatelovo jméno. Pokud jej nemáte, ponechte prázdné."
 
-#: ../lib/engine/components/opal/opal-account.cpp:445
+#: ../lib/engine/components/opal/opal-account.cpp:452
 #: ../plugins/loudmouth/loudmouth-account.cpp:354
 #: ../plugins/loudmouth/loudmouth-bank.cpp:129
 #: ../plugins/resource-list/rl-cluster.cpp:173
 msgid "Password:"
 msgstr "Heslo:"
 
-#: ../lib/engine/components/opal/opal-account.cpp:445
+#: ../lib/engine/components/opal/opal-account.cpp:452
 #: ../lib/engine/components/opal/opal-bank.cpp:107
 #: ../lib/engine/components/opal/opal-bank.cpp:118
 #: ../lib/engine/components/opal/opal-bank.cpp:127
@@ -1171,115 +1176,111 @@ msgstr "Heslo:"
 msgid "Password associated to the user"
 msgstr "Heslo patřící uživateli"
 
-#: ../lib/engine/components/opal/opal-account.cpp:446
+#: ../lib/engine/components/opal/opal-account.cpp:453
 msgid "Timeout:"
 msgstr "Časový limit:"
 
-#: ../lib/engine/components/opal/opal-account.cpp:446
+#: ../lib/engine/components/opal/opal-account.cpp:453
 #: ../lib/engine/components/opal/opal-bank.cpp:128
 #: ../lib/engine/components/opal/opal-bank.cpp:138
 msgid ""
 "Time in seconds after which the account registration is automatically retried"
 msgstr "Čas v sekundách, po kterém je registrace účtu automaticky zopakována"
 
-#: ../lib/engine/components/opal/opal-account.cpp:447
+#: ../lib/engine/components/opal/opal-account.cpp:454
 #: ../lib/engine/components/opal/opal-bank.cpp:141
 #: ../plugins/loudmouth/loudmouth-account.cpp:368
 #: ../plugins/loudmouth/loudmouth-bank.cpp:130
 msgid "Enable Account"
 msgstr "Povolit účet"
 
-#: ../lib/engine/components/opal/opal-account.cpp:473
+#: ../lib/engine/components/opal/opal-account.cpp:480
 #: ../lib/engine/components/opal/opal-bank.cpp:175
 msgid "You did not supply a name for that account."
 msgstr "Nevyplnili jste název pro tento účet."
 
-#: ../lib/engine/components/opal/opal-account.cpp:475
+#: ../lib/engine/components/opal/opal-account.cpp:482
 #: ../lib/engine/components/opal/opal-bank.cpp:177
 msgid "You did not supply a host to register to."
 msgstr "Nevyplnili jste poskytovatele, u kterého se má registrovat."
 
-#: ../lib/engine/components/opal/opal-account.cpp:477
+#: ../lib/engine/components/opal/opal-account.cpp:484
 #: ../lib/engine/components/opal/opal-bank.cpp:179
 msgid "You did not supply a user name for that account."
 msgstr "Nevyplnili jste uživatelské jméno pro tento účet."
 
-#: ../lib/engine/components/opal/opal-account.cpp:479
+#: ../lib/engine/components/opal/opal-account.cpp:486
 #: ../lib/engine/components/opal/opal-bank.cpp:181
 msgid "The timeout should be at least 10 seconds."
 msgstr "Časový limit by měl být nejméně 10 sekund."
 
 #. Translators: this is a state, not an action, i.e. it should be read as
 #. "(you are) registered", and not as "(you have been) registered"
-#: ../lib/engine/components/opal/opal-account.cpp:589
+#: ../lib/engine/components/opal/opal-account.cpp:596
 msgid "Registered"
 msgstr "Registrován"
 
-#: ../lib/engine/components/opal/opal-account.cpp:616
+#: ../lib/engine/components/opal/opal-account.cpp:623
 msgid "Could not unregister"
 msgstr "Nelze se odregistrovat"
 
-#: ../lib/engine/components/opal/opal-account.cpp:643
+#: ../lib/engine/components/opal/opal-account.cpp:650
 msgid "Could not register"
 msgstr "Nelze se zaregistrovat"
 
-#: ../lib/engine/components/opal/opal-account.cpp:657
-msgid "Processing..."
-msgstr "Zpracovává se…"
-
-#: ../lib/engine/components/opal/opal-account.cpp:776
+#: ../lib/engine/components/opal/opal-account.cpp:783
 msgid "Appointment"
 msgstr "Mám jednání"
 
-#: ../lib/engine/components/opal/opal-account.cpp:781
+#: ../lib/engine/components/opal/opal-account.cpp:788
 msgid "Breakfast"
 msgstr "Snídám"
 
-#: ../lib/engine/components/opal/opal-account.cpp:786
+#: ../lib/engine/components/opal/opal-account.cpp:793
 msgid "Dinner"
 msgstr "Večeřím"
 
-#: ../lib/engine/components/opal/opal-account.cpp:792
+#: ../lib/engine/components/opal/opal-account.cpp:799
 msgid "Holiday"
 msgstr "Mám dovolenou"
 
-#: ../lib/engine/components/opal/opal-account.cpp:797
+#: ../lib/engine/components/opal/opal-account.cpp:804
 msgid "In transit"
 msgstr "Jsem na cestě"
 
-#: ../lib/engine/components/opal/opal-account.cpp:802
+#: ../lib/engine/components/opal/opal-account.cpp:809
 msgid "Looking for work"
 msgstr "Hledám práci"
 
-#: ../lib/engine/components/opal/opal-account.cpp:807
+#: ../lib/engine/components/opal/opal-account.cpp:814
 msgid "Lunch"
 msgstr "Obědvám"
 
-#: ../lib/engine/components/opal/opal-account.cpp:812
+#: ../lib/engine/components/opal/opal-account.cpp:819
 msgid "Meal"
 msgstr "Stravuji se"
 
-#: ../lib/engine/components/opal/opal-account.cpp:817
+#: ../lib/engine/components/opal/opal-account.cpp:824
 msgid "Meeting"
 msgstr "Mám schůzku"
 
-#: ../lib/engine/components/opal/opal-account.cpp:822
+#: ../lib/engine/components/opal/opal-account.cpp:829
 msgid "On the phone"
 msgstr "Na telefonu"
 
-#: ../lib/engine/components/opal/opal-account.cpp:827
+#: ../lib/engine/components/opal/opal-account.cpp:834
 msgid "Playing"
 msgstr "Hraji si"
 
-#: ../lib/engine/components/opal/opal-account.cpp:832
+#: ../lib/engine/components/opal/opal-account.cpp:839
 msgid "Shopping"
 msgstr "Nakupuji"
 
-#: ../lib/engine/components/opal/opal-account.cpp:837
+#: ../lib/engine/components/opal/opal-account.cpp:844
 msgid "Sleeping"
 msgstr "Spím"
 
-#: ../lib/engine/components/opal/opal-account.cpp:842
+#: ../lib/engine/components/opal/opal-account.cpp:849
 msgid "Working"
 msgstr "Pracuji"
 
@@ -1379,7 +1380,7 @@ msgid "Abnormal call termination"
 msgstr "Neočekávané přerušení hovoru"
 
 #: ../lib/engine/components/opal/opal-call.cpp:424
-#: ../src/gui/main_window.cpp:594
+#: ../src/gui/main_window.cpp:577
 msgid "Could not connect to remote host"
 msgstr "Nelze se připojit ke vzdálenému počítači"
 
@@ -1429,7 +1430,7 @@ msgid "User is not available"
 msgstr "Uživatel není dostupný"
 
 #: ../lib/engine/components/opal/opal-call.cpp:467
-#: ../lib/engine/components/opal/sip-endpoint.cpp:764
+#: ../lib/engine/components/opal/sip-endpoint.cpp:778
 msgid "Service unavailable"
 msgstr "Služba nedostupná"
 
@@ -1451,101 +1452,101 @@ msgstr ""
 "Instrukce najdete na http://wiki.ekiga.org/index.php/"
 "Enable_port_forwarding_manually (informace jsou v angličtině)"
 
-#: ../lib/engine/components/opal/sip-endpoint.cpp:268
-#: ../lib/engine/components/opal/sip-endpoint.cpp:270
+#: ../lib/engine/components/opal/sip-endpoint.cpp:276
+#: ../lib/engine/components/opal/sip-endpoint.cpp:278
 msgid "Message"
 msgstr "Zpráva"
 
-#: ../lib/engine/components/opal/sip-endpoint.cpp:585
+#: ../lib/engine/components/opal/sip-endpoint.cpp:599
 msgid "Illegal status code"
 msgstr "Nepovolený stavový kód"
 
 #. Translators: Host of the remote party is offline, this should
 #. * appear when the remote host does not reply in an acceptable time
-#: ../lib/engine/components/opal/sip-endpoint.cpp:596
+#: ../lib/engine/components/opal/sip-endpoint.cpp:610
 msgid "Remote party host is offline"
 msgstr "Počítač vzdálené strany je odpojený"
 
 #. Translators: the following strings are answers from the SIP server
 #. * when the packet it receives has an error, see
 #. * http://www.ietf.org/rfc/rfc3261.txt, chapter 21 for more information
-#: ../lib/engine/components/opal/sip-endpoint.cpp:612
+#: ../lib/engine/components/opal/sip-endpoint.cpp:626
 msgid "Multiple choices"
 msgstr "Více možností"
 
-#: ../lib/engine/components/opal/sip-endpoint.cpp:616
+#: ../lib/engine/components/opal/sip-endpoint.cpp:630
 msgid "Moved permanently"
 msgstr "Trvale přesunuto"
 
-#: ../lib/engine/components/opal/sip-endpoint.cpp:620
+#: ../lib/engine/components/opal/sip-endpoint.cpp:634
 msgid "Moved temporarily"
 msgstr "Dočasně přesunuto"
 
-#: ../lib/engine/components/opal/sip-endpoint.cpp:624
+#: ../lib/engine/components/opal/sip-endpoint.cpp:638
 msgid "Use proxy"
 msgstr "Použít proxy"
 
-#: ../lib/engine/components/opal/sip-endpoint.cpp:628
+#: ../lib/engine/components/opal/sip-endpoint.cpp:642
 msgid "Alternative service"
 msgstr "Alternativní služba"
 
-#: ../lib/engine/components/opal/sip-endpoint.cpp:632
+#: ../lib/engine/components/opal/sip-endpoint.cpp:646
 msgid "Bad request"
 msgstr "Špatný požadavek"
 
-#: ../lib/engine/components/opal/sip-endpoint.cpp:636
+#: ../lib/engine/components/opal/sip-endpoint.cpp:650
 msgid "Unauthorized"
 msgstr "Neautorizovaný"
 
-#: ../lib/engine/components/opal/sip-endpoint.cpp:640
+#: ../lib/engine/components/opal/sip-endpoint.cpp:654
 msgid "Payment required"
 msgstr "Vyžadována platba"
 
-#: ../lib/engine/components/opal/sip-endpoint.cpp:644
+#: ../lib/engine/components/opal/sip-endpoint.cpp:658
 msgid "Forbidden, please check that username and password are correct"
 msgstr "Nepovoleno, zkontrolujte prosím správnost uživatelského jména a hesla"
 
-#: ../lib/engine/components/opal/sip-endpoint.cpp:648
+#: ../lib/engine/components/opal/sip-endpoint.cpp:662
 msgid "Not found"
 msgstr "Nenalezeno"
 
-#: ../lib/engine/components/opal/sip-endpoint.cpp:652
+#: ../lib/engine/components/opal/sip-endpoint.cpp:666
 msgid "Method not allowed"
 msgstr "Činnost nepovolena"
 
-#: ../lib/engine/components/opal/sip-endpoint.cpp:656
+#: ../lib/engine/components/opal/sip-endpoint.cpp:670
 msgid "Not acceptable"
 msgstr "Nepřijatelný"
 
-#: ../lib/engine/components/opal/sip-endpoint.cpp:660
+#: ../lib/engine/components/opal/sip-endpoint.cpp:674
 msgid "Proxy authentication required"
 msgstr "Proxy vyžaduje ověření"
 
-#: ../lib/engine/components/opal/sip-endpoint.cpp:664
+#: ../lib/engine/components/opal/sip-endpoint.cpp:678
 msgid "Timeout"
 msgstr "Čas vypršel"
 
-#: ../lib/engine/components/opal/sip-endpoint.cpp:668
+#: ../lib/engine/components/opal/sip-endpoint.cpp:682
 msgid "Conflict"
 msgstr "Konflikt"
 
-#: ../lib/engine/components/opal/sip-endpoint.cpp:672
+#: ../lib/engine/components/opal/sip-endpoint.cpp:686
 msgid "Length required"
 msgstr "Požadovaná délka"
 
-#: ../lib/engine/components/opal/sip-endpoint.cpp:676
+#: ../lib/engine/components/opal/sip-endpoint.cpp:690
 msgid "Request entity too big"
 msgstr "Požadovaná entita příliš velká"
 
-#: ../lib/engine/components/opal/sip-endpoint.cpp:680
+#: ../lib/engine/components/opal/sip-endpoint.cpp:694
 msgid "Request URI too long"
 msgstr "Požadovaná adresa URI příliš dlouhá"
 
-#: ../lib/engine/components/opal/sip-endpoint.cpp:684
+#: ../lib/engine/components/opal/sip-endpoint.cpp:698
 msgid "Unsupported media type"
 msgstr "Nepodporovaný typ média"
 
-#: ../lib/engine/components/opal/sip-endpoint.cpp:688
+#: ../lib/engine/components/opal/sip-endpoint.cpp:702
 msgid "Unsupported URI scheme"
 msgstr "Nepodporované schéma URI"
 
@@ -1553,127 +1554,127 @@ msgstr "Nepodporované schéma URI"
 #. * Here extension is a specific "phone number", see
 #. * http://en.wikipedia.org/wiki/Extension_(telephone)
 #. * for more information
-#: ../lib/engine/components/opal/sip-endpoint.cpp:696
+#: ../lib/engine/components/opal/sip-endpoint.cpp:710
 msgid "Bad extension"
 msgstr "Špatné rozšíření"
 
-#: ../lib/engine/components/opal/sip-endpoint.cpp:700
+#: ../lib/engine/components/opal/sip-endpoint.cpp:714
 msgid "Extension required"
 msgstr "Požadované rozšíření"
 
-#: ../lib/engine/components/opal/sip-endpoint.cpp:704
+#: ../lib/engine/components/opal/sip-endpoint.cpp:718
 msgid "Interval too brief"
 msgstr "Interval příliš krátký"
 
-#: ../lib/engine/components/opal/sip-endpoint.cpp:708
+#: ../lib/engine/components/opal/sip-endpoint.cpp:722
 msgid "Temporarily unavailable"
 msgstr "Dočasně není k dispozici"
 
-#: ../lib/engine/components/opal/sip-endpoint.cpp:712
+#: ../lib/engine/components/opal/sip-endpoint.cpp:726
 msgid "Loop detected"
 msgstr "Detekována smyčka"
 
-#: ../lib/engine/components/opal/sip-endpoint.cpp:716
+#: ../lib/engine/components/opal/sip-endpoint.cpp:730
 msgid "Too many hops"
 msgstr "Příliš mnoho skoků"
 
-#: ../lib/engine/components/opal/sip-endpoint.cpp:720
+#: ../lib/engine/components/opal/sip-endpoint.cpp:734
 msgid "Address incomplete"
 msgstr "Nekompletní adresa"
 
-#: ../lib/engine/components/opal/sip-endpoint.cpp:724
+#: ../lib/engine/components/opal/sip-endpoint.cpp:738
 msgid "Ambiguous"
 msgstr "Nejednoznačný"
 
-#: ../lib/engine/components/opal/sip-endpoint.cpp:728
+#: ../lib/engine/components/opal/sip-endpoint.cpp:742
 msgid "Busy Here"
 msgstr "Zaneprázdněn"
 
-#: ../lib/engine/components/opal/sip-endpoint.cpp:732
+#: ../lib/engine/components/opal/sip-endpoint.cpp:746
 msgid "Request terminated"
 msgstr "Požadavek ukončen"
 
-#: ../lib/engine/components/opal/sip-endpoint.cpp:736
+#: ../lib/engine/components/opal/sip-endpoint.cpp:750
 msgid "Not acceptable here"
 msgstr "Není zde přijatelné"
 
-#: ../lib/engine/components/opal/sip-endpoint.cpp:740
+#: ../lib/engine/components/opal/sip-endpoint.cpp:754
 msgid "Bad event"
 msgstr "Chybná událost"
 
-#: ../lib/engine/components/opal/sip-endpoint.cpp:744
+#: ../lib/engine/components/opal/sip-endpoint.cpp:758
 msgid "Request pending"
 msgstr "Požadavek očekáván"
 
-#: ../lib/engine/components/opal/sip-endpoint.cpp:748
+#: ../lib/engine/components/opal/sip-endpoint.cpp:762
 msgid "Undecipherable"
 msgstr "Nerozluštitelný"
 
-#: ../lib/engine/components/opal/sip-endpoint.cpp:752
+#: ../lib/engine/components/opal/sip-endpoint.cpp:766
 msgid "Internal server error"
 msgstr "Interní chyba serveru"
 
-#: ../lib/engine/components/opal/sip-endpoint.cpp:756
+#: ../lib/engine/components/opal/sip-endpoint.cpp:770
 msgid "Not implemented"
 msgstr "Nezavedený"
 
-#: ../lib/engine/components/opal/sip-endpoint.cpp:760
+#: ../lib/engine/components/opal/sip-endpoint.cpp:774
 msgid "Bad gateway"
 msgstr "Špatná brána"
 
-#: ../lib/engine/components/opal/sip-endpoint.cpp:768
+#: ../lib/engine/components/opal/sip-endpoint.cpp:782
 msgid "Server timeout"
 msgstr "Časový limit serveru"
 
-#: ../lib/engine/components/opal/sip-endpoint.cpp:772
+#: ../lib/engine/components/opal/sip-endpoint.cpp:786
 msgid "SIP version not supported"
 msgstr "Verze SIP není podporována"
 
-#: ../lib/engine/components/opal/sip-endpoint.cpp:776
+#: ../lib/engine/components/opal/sip-endpoint.cpp:790
 msgid "Message too large"
 msgstr "Zpráva příliš dlouhá"
 
-#: ../lib/engine/components/opal/sip-endpoint.cpp:780
+#: ../lib/engine/components/opal/sip-endpoint.cpp:794
 msgid "Busy everywhere"
 msgstr "Zaneprázdněn všude"
 
-#: ../lib/engine/components/opal/sip-endpoint.cpp:784
+#: ../lib/engine/components/opal/sip-endpoint.cpp:798
 msgid "Decline"
 msgstr "Pokles"
 
-#: ../lib/engine/components/opal/sip-endpoint.cpp:788
+#: ../lib/engine/components/opal/sip-endpoint.cpp:802
 msgid "Does not exist anymore"
 msgstr "Už neexistuje"
 
-#: ../lib/engine/components/opal/sip-endpoint.cpp:792
+#: ../lib/engine/components/opal/sip-endpoint.cpp:806
 msgid "Globally not acceptable"
 msgstr "Obecně nepřijatelné"
 
-#: ../lib/engine/components/opal/sip-endpoint.cpp:933
+#: ../lib/engine/components/opal/sip-endpoint.cpp:947
 msgid "Could not send message: "
 msgstr "Nelze odeslat zprávu: "
 
-#: ../lib/engine/components/opal/sip-endpoint.cpp:935
+#: ../lib/engine/components/opal/sip-endpoint.cpp:949
 msgid "user offline"
 msgstr "uživatel je odpojen"
 
-#: ../lib/engine/components/opal/sip-endpoint.cpp:974
-#: ../src/gui/main_window.cpp:1443
+#: ../lib/engine/components/opal/sip-endpoint.cpp:988
+#: ../src/gui/notify.cpp:147
 #, c-format
 msgid "Incoming call from %s"
 msgstr "Příchozí hovor od %s"
 
-#: ../lib/engine/components/opal/sip-endpoint.cpp:976
+#: ../lib/engine/components/opal/sip-endpoint.cpp:990
 #, c-format
 msgid "Incoming call"
 msgstr "Příchozí hovor"
 
-#: ../lib/engine/components/opal/sip-endpoint.cpp:982
+#: ../lib/engine/components/opal/sip-endpoint.cpp:996
 #, c-format
 msgid "In a call with %s"
 msgstr "Voláte s %s"
 
-#: ../lib/engine/components/opal/sip-endpoint.cpp:984
+#: ../lib/engine/components/opal/sip-endpoint.cpp:998
 #, c-format
 msgid "In a call"
 msgstr "Voláte"
@@ -1695,7 +1696,7 @@ msgid "Address Book"
 msgstr "Adresář"
 
 #: ../lib/engine/gui/gtk-frontend/addressbook-window.cpp:651
-#: ../src/gui/main_window.cpp:1787
+#: ../src/gui/main_window.cpp:1727
 msgid "Address _Book"
 msgstr "_Adresář"
 
@@ -1740,8 +1741,8 @@ msgstr "Okno diskuze"
 
 #: ../lib/engine/gui/gtk-frontend/heap-view.cpp:238
 #: ../lib/engine/gui/gtk-frontend/heap-view.cpp:277
-#: ../lib/engine/gui/gtk-frontend/roster-view-gtk.cpp:984
-#: ../lib/engine/gui/gtk-frontend/roster-view-gtk.cpp:1037
+#: ../lib/engine/gui/gtk-frontend/roster-view-gtk.cpp:983
+#: ../lib/engine/gui/gtk-frontend/roster-view-gtk.cpp:1035
 msgid "Unsorted"
 msgstr "Neseřazený"
 
@@ -2343,11 +2344,11 @@ msgstr "Stav"
 msgid "Accounts"
 msgstr "Účty"
 
-#: ../src/gui/accounts.cpp:590 ../src/gui/main_window.cpp:1826
+#: ../src/gui/accounts.cpp:590 ../src/gui/main_window.cpp:1766
 msgid "_Accounts"
 msgstr "Úč_ty"
 
-#: ../src/gui/accounts.cpp:594 ../src/gui/main_window.cpp:1856
+#: ../src/gui/accounts.cpp:594 ../src/gui/main_window.cpp:1804
 msgid "_Help"
 msgstr "_Nápověda"
 
@@ -2529,9 +2530,9 @@ msgstr ""
 "používat během hovorů. Později můžete nastavení jednotlivě změnit v okně "
 "předvoleb."
 
-#: ../src/gui/assistant.cpp:997 ../src/gui/main_window.cpp:1558
-#: ../src/gui/main_window.cpp:1562 ../src/gui/main_window.cpp:1566
-#: ../src/gui/preferences.cpp:727
+#: ../src/gui/assistant.cpp:997 ../src/gui/main_window.cpp:1488
+#: ../src/gui/main_window.cpp:1492 ../src/gui/main_window.cpp:1496
+#: ../src/gui/preferences.cpp:725
 msgid "Audio Devices"
 msgstr "Zvuková zařízení"
 
@@ -2590,8 +2591,8 @@ msgstr ""
 "během hovoru."
 
 #: ../src/gui/assistant.cpp:1263 ../src/gui/assistant.cpp:1285
-#: ../src/gui/assistant.cpp:1307 ../src/gui/preferences.cpp:768
-#: ../src/gui/preferences.cpp:792 ../src/gui/preferences.cpp:814
+#: ../src/gui/assistant.cpp:1307 ../src/gui/preferences.cpp:766
+#: ../src/gui/preferences.cpp:788 ../src/gui/preferences.cpp:808
 msgid "No device found"
 msgstr "Žádné zařízení nenalezeno"
 
@@ -2718,15 +2719,15 @@ msgstr ""
 msgid "Unable to open help file."
 msgstr "Nelze otevřít soubor nápovědy."
 
-#: ../src/gui/call_window.cpp:765
+#: ../src/gui/call_window.cpp:761
 msgid "Error while initializing video output"
 msgstr "Chyba při inicializaci výstupu videa"
 
-#: ../src/gui/call_window.cpp:766
+#: ../src/gui/call_window.cpp:762
 msgid "No video will be displayed on your machine during this call"
 msgstr "Na vašem počítači nebude během tohoto volání zobrazováno žádné video"
 
-#: ../src/gui/call_window.cpp:776
+#: ../src/gui/call_window.cpp:772
 msgid ""
 "There was an error opening or initializing the video output. Please verify "
 "that no other application is using the accelerated video output."
@@ -2734,7 +2735,7 @@ msgstr ""
 "Nastala chyba při otevírání nebo inicializaci video výstupu. Zkontrolujte "
 "prosím, zda žádná jiná aplikace nepoužívá akcelerovaný video výstup."
 
-#: ../src/gui/call_window.cpp:778
+#: ../src/gui/call_window.cpp:774
 msgid ""
 "There was an error opening or initializing the video output. Please verify "
 "that you are using a color depth of 24 or 32 bits per pixel."
@@ -2742,16 +2743,16 @@ msgstr ""
 "Nastala chyba při otevírání nebo inicializaci video výstupu. Zkontrolujte "
 "prosím, že používáte barevnou hloubku 24 nebo 32 bitů na pixel."
 
-#: ../src/gui/call_window.cpp:884
+#: ../src/gui/call_window.cpp:879
 #, c-format
 msgid "Error while accessing video device %s"
 msgstr "Chyba při přístupu k zařízení videa %s"
 
-#: ../src/gui/call_window.cpp:887
+#: ../src/gui/call_window.cpp:882
 msgid "A moving logo will be transmitted during calls."
 msgstr "Během volání bude vysíláno pohybující se logo."
 
-#: ../src/gui/call_window.cpp:891
+#: ../src/gui/call_window.cpp:886
 msgid ""
 "There was an error while opening the device. In case it is a pluggable "
 "device it may be sufficient to reconnect it. If not, or if it still is not "
@@ -2763,15 +2764,15 @@ msgstr ""
 "nedostupné, zkontrolujte prosím svá oprávnění a přesvědčte se, že je načten "
 "správný ovladač."
 
-#: ../src/gui/call_window.cpp:895
+#: ../src/gui/call_window.cpp:890
 msgid "Your video driver doesn't support the requested video format."
 msgstr "Váš ovladač videa nepodporuje požadovaný formát videa."
 
-#: ../src/gui/call_window.cpp:899
+#: ../src/gui/call_window.cpp:894
 msgid "Could not open the chosen channel."
 msgstr "Nelze otevřít vybraný kanál."
 
-#: ../src/gui/call_window.cpp:903
+#: ../src/gui/call_window.cpp:898
 msgid ""
 "Your driver doesn't seem to support any of the color formats supported by "
 "Ekiga.\n"
@@ -2783,31 +2784,31 @@ msgstr ""
 "Zkontrolujte prosím dokumentaci svého modulu jádra, abyste zjistili, která "
 "paleta je podporována."
 
-#: ../src/gui/call_window.cpp:907
+#: ../src/gui/call_window.cpp:902
 msgid "Error while setting the frame rate."
 msgstr "Chyba při nastavování rychlosti snímků."
 
-#: ../src/gui/call_window.cpp:911
+#: ../src/gui/call_window.cpp:906
 msgid "Error while setting the frame size."
 msgstr "Chyba při nastavování velikosti snímků."
 
-#: ../src/gui/call_window.cpp:916 ../src/gui/call_window.cpp:986
-#: ../src/gui/call_window.cpp:1067
+#: ../src/gui/call_window.cpp:911 ../src/gui/call_window.cpp:981
+#: ../src/gui/call_window.cpp:1062
 msgid "Unknown error."
 msgstr "Neznámá chyba."
 
-#: ../src/gui/call_window.cpp:968
+#: ../src/gui/call_window.cpp:963
 #, c-format
 msgid "Error while opening audio input device %s"
 msgstr "Chyba při otevírání zařízení vstupu zvuku %s"
 
 #. Translators: This happens when there is an error with audio input:
 #. * Nothing ("silence") will be transmitted
-#: ../src/gui/call_window.cpp:973
+#: ../src/gui/call_window.cpp:968
 msgid "Only silence will be transmitted."
 msgstr "Bude přeneseno pouze ticho."
 
-#: ../src/gui/call_window.cpp:977
+#: ../src/gui/call_window.cpp:972
 msgid ""
 "Unable to open the selected audio device for recording. In case it is a "
 "pluggable device it may be sufficient to reconnect it. If not, or if it "
@@ -2819,7 +2820,7 @@ msgstr ""
 "je stále nedostupné, zkontrolujte prosím své nastavení zvuku, oprávnění a že "
 "se zařízení nepoužívá."
 
-#: ../src/gui/call_window.cpp:981
+#: ../src/gui/call_window.cpp:976
 msgid ""
 "The selected audio device was successfully opened but it is impossible to "
 "read data from this device. In case it is a pluggable device it may be "
@@ -2830,16 +2831,16 @@ msgstr ""
 "zařízení číst data. Pokud je to odpojitelné zařízení, může být postačující "
 "jej znovu připojit. Pokud ne, zkontrolujte prosím své nastavení zvuku."
 
-#: ../src/gui/call_window.cpp:1051
+#: ../src/gui/call_window.cpp:1046
 #, c-format
 msgid "Error while opening audio output device %s"
 msgstr "Chyba při otevírání zařízení výstupu videa %s"
 
-#: ../src/gui/call_window.cpp:1054
+#: ../src/gui/call_window.cpp:1049
 msgid "No incoming sound will be played."
 msgstr "Nebude přehráván žádný vyzváněcí tón."
 
-#: ../src/gui/call_window.cpp:1058
+#: ../src/gui/call_window.cpp:1053
 msgid ""
 "Unable to open the selected audio device for playing. In case it is a "
 "pluggable device it may be sufficient to reconnect it. If not, or if it "
@@ -2851,7 +2852,7 @@ msgstr ""
 "je stále nedostupné, zkontrolujte prosím své nastavení zvuku, oprávnění a že "
 "se zařízení nepoužívá."
 
-#: ../src/gui/call_window.cpp:1062
+#: ../src/gui/call_window.cpp:1057
 msgid ""
 "The selected audio device was successfully opened but it is impossible to "
 "write data to this device. In case it is a pluggable device it may be "
@@ -2863,50 +2864,63 @@ msgstr ""
 "postačující jej znovu připojit. Pokud ne nebo je stále nedostupné, "
 "zkontrolujte prosím své zvukové nastavení."
 
-#: ../src/gui/call_window.cpp:1090
-msgid "Calling..."
-msgstr "Volá se…"
+#: ../src/gui/call_window.cpp:1098
+#, c-format
+msgid "Calling %s..."
+msgstr "Volá se %s…"
 
-#: ../src/gui/call_window.cpp:1106
-msgid "Connected"
-msgstr "Spojeno"
+#. %s is the SIP/H.323 address of the remote user, this text is shown
+#. below video during a call
+#: ../src/gui/call_window.cpp:1114 ../src/gui/main_window.cpp:703
+#, c-format
+msgid "Connected with %s"
+msgstr "Spojeno s %s"
 
 #. Init
-#: ../src/gui/call_window.cpp:1129 ../src/gui/call_window.cpp:2447
+#: ../src/gui/call_window.cpp:1137 ../src/gui/call_window.cpp:2422
 msgid "Standby"
 msgstr "Pohotovost"
 
-#: ../src/gui/call_window.cpp:1150
+#: ../src/gui/call_window.cpp:1157
 msgid "Call on hold"
 msgstr "Hovor přidržen"
 
-#: ../src/gui/call_window.cpp:1161
+#: ../src/gui/call_window.cpp:1168
 msgid "Call retrieved"
 msgstr "Hovor přijat"
 
+#: ../src/gui/call_window.cpp:1293
+#, c-format
+msgid ""
+"Connected with %s\n"
+"%s"
+msgstr ""
+"Spojeno s %s\n"
+"%s"
+
 #. Translators: TX is a common abbreviation for "transmit".  As it
 #. * is shown in a tooltip, there is no space constraint
-#: ../src/gui/call_window.cpp:1454
+#: ../src/gui/call_window.cpp:1477
 #, c-format
 msgid "TX: %dx%d"
 msgstr "TX: %d×%d "
 
-#: ../src/gui/call_window.cpp:1456
+#: ../src/gui/call_window.cpp:1479
 msgid "TX: / "
 msgstr "TX: / "
 
 #. Translators: RX is a common abbreviation for "receive".  As it
 #. * is shown in a tooltip, there is no space constraint
-#: ../src/gui/call_window.cpp:1461
+#: ../src/gui/call_window.cpp:1484
 #, c-format
 msgid "RX: %dx%d"
 msgstr "RX: %d×%d "
 
-#: ../src/gui/call_window.cpp:1463
+#: ../src/gui/call_window.cpp:1486
 msgid "RX: / "
 msgstr "RX: / "
 
-#: ../src/gui/call_window.cpp:1472
+#: ../src/gui/call_window.cpp:1495
 #, c-format
 msgid ""
 "Lost packets: %.1f %%\n"
@@ -2924,405 +2938,411 @@ msgstr ""
 "Rozlišení: %s %s"
 
 #. Translators: A = Audio, V = Video, FPS = Frames per second
-#: ../src/gui/call_window.cpp:1602
+#: ../src/gui/call_window.cpp:1589
 #, c-format
 msgid "A:%.1f/%.1f V:%.1f/%.1f FPS:%d/%d"
 msgstr "A:%.1f/%.1f V:%.1f/%.1f FPS:%d/%d"
 
-#: ../src/gui/call_window.cpp:1623
+#: ../src/gui/call_window.cpp:1610
 msgid "_Retrieve Call"
 msgstr "_Přijmout hovor"
 
-#: ../src/gui/call_window.cpp:1636 ../src/gui/call_window.cpp:1942
+#: ../src/gui/call_window.cpp:1623 ../src/gui/call_window.cpp:1929
 msgid "H_old Call"
 msgstr "Přidržet h_ovor"
 
-#: ../src/gui/call_window.cpp:1667 ../src/gui/call_window.cpp:1954
+#: ../src/gui/call_window.cpp:1654 ../src/gui/call_window.cpp:1941
 msgid "Suspend _Audio"
 msgstr "Pozastavit zv_uk"
 
-#: ../src/gui/call_window.cpp:1669 ../src/gui/call_window.cpp:1959
+#: ../src/gui/call_window.cpp:1656 ../src/gui/call_window.cpp:1946
 msgid "Suspend _Video"
 msgstr "Pozastavit vi_deo"
 
-#: ../src/gui/call_window.cpp:1671
+#: ../src/gui/call_window.cpp:1658
 msgid "Resume _Audio"
 msgstr "Obnovit _zvuk"
 
-#: ../src/gui/call_window.cpp:1673
+#: ../src/gui/call_window.cpp:1660
 msgid "Resume _Video"
 msgstr "Obnovit _video"
 
-#: ../src/gui/call_window.cpp:1707
+#: ../src/gui/call_window.cpp:1694
 msgid "Video Settings"
 msgstr "Nastavení videa"
 
-#: ../src/gui/call_window.cpp:1732
+#: ../src/gui/call_window.cpp:1719
 msgid "Adjust brightness"
 msgstr "Nastavení jasu"
 
-#: ../src/gui/call_window.cpp:1751
+#: ../src/gui/call_window.cpp:1738
 msgid "Adjust whiteness"
 msgstr "Nastavení světlosti"
 
-#: ../src/gui/call_window.cpp:1770
+#: ../src/gui/call_window.cpp:1757
 msgid "Adjust color"
 msgstr "Nastavení barev"
 
-#: ../src/gui/call_window.cpp:1789
+#: ../src/gui/call_window.cpp:1776
 msgid "Adjust contrast"
 msgstr "Nastavení kontrastu"
 
-#: ../src/gui/call_window.cpp:1831
+#: ../src/gui/call_window.cpp:1818
 msgid "Audio Settings"
 msgstr "Nastavení zvuku"
 
-#: ../src/gui/call_window.cpp:1934
+#: ../src/gui/call_window.cpp:1921
 msgid "_Call"
 msgstr "_Volat"
 
-#: ../src/gui/call_window.cpp:1936
+#: ../src/gui/call_window.cpp:1923
 msgid "_Hangup"
 msgstr "Zavěsi_t"
 
-#: ../src/gui/call_window.cpp:1936
+#: ../src/gui/call_window.cpp:1923
 msgid "Hangup the current call"
 msgstr "Zavěsit aktuální hovor"
 
-#: ../src/gui/call_window.cpp:1942 ../src/gui/call_window.cpp:2416
+#: ../src/gui/call_window.cpp:1929 ../src/gui/call_window.cpp:2391
 msgid "Hold the current call"
 msgstr "Přidržet aktuální hovor"
 
-#: ../src/gui/call_window.cpp:1946
+#: ../src/gui/call_window.cpp:1933
 msgid "_Transfer Call"
 msgstr "Přesměrova_t hovor"
 
-#: ../src/gui/call_window.cpp:1947
+#: ../src/gui/call_window.cpp:1934
 msgid "Transfer the current call"
 msgstr "Přesměrovat aktuální hovor"
 
-#: ../src/gui/call_window.cpp:1955
+#: ../src/gui/call_window.cpp:1942
 msgid "Suspend or resume the audio transmission"
 msgstr "Pozastavit nebo obnovit přenos zvuku"
 
-#: ../src/gui/call_window.cpp:1960
+#: ../src/gui/call_window.cpp:1947
 msgid "Suspend or resume the video transmission"
 msgstr "Pozastavit nebo obnovit přenos videa"
 
-#: ../src/gui/call_window.cpp:1965 ../src/gui/main_window.cpp:1838
+#: ../src/gui/call_window.cpp:1954 ../src/gui/main_window.cpp:1745
+msgid "Close the Ekiga window"
+msgstr "Zavřít okno aplikace Ekiga"
+
+#: ../src/gui/call_window.cpp:1959 ../src/gui/main_window.cpp:1778
 msgid "_View"
 msgstr "_Zobrazit"
 
-#: ../src/gui/call_window.cpp:1967
+#: ../src/gui/call_window.cpp:1961
 msgid "_Local Video"
 msgstr "_Místní video"
 
-#: ../src/gui/call_window.cpp:1968
+#: ../src/gui/call_window.cpp:1962
 msgid "Local video image"
 msgstr "Místní obraz videa"
 
-#: ../src/gui/call_window.cpp:1973
+#: ../src/gui/call_window.cpp:1967
 msgid "_Remote Video"
 msgstr "Vz_dálené video"
 
-#: ../src/gui/call_window.cpp:1974
+#: ../src/gui/call_window.cpp:1968
 msgid "Remote video image"
 msgstr "Vzdálený obraz videa"
 
-#: ../src/gui/call_window.cpp:1979
+#: ../src/gui/call_window.cpp:1973
 msgid "_Picture-in-Picture"
 msgstr "_Obraz v obraze"
 
-#: ../src/gui/call_window.cpp:1980 ../src/gui/call_window.cpp:1986
+#: ../src/gui/call_window.cpp:1974
 msgid "Both video images"
 msgstr "Oba obrazy videa"
 
-#: ../src/gui/call_window.cpp:1985
-msgid "Picture-in-Picture in Separate _Window"
-msgstr "O_braz v obraze v samostatném okně"
-
-#: ../src/gui/call_window.cpp:1993
+#: ../src/gui/call_window.cpp:1981
 msgid "Zoom in"
 msgstr "Přiblížit"
 
-#: ../src/gui/call_window.cpp:1997
+#: ../src/gui/call_window.cpp:1985
 msgid "Zoom out"
 msgstr "Oddálit"
 
-#: ../src/gui/call_window.cpp:2001
+#: ../src/gui/call_window.cpp:1989
 msgid "Normal size"
 msgstr "Normální velikost"
 
-#: ../src/gui/call_window.cpp:2005
+#: ../src/gui/call_window.cpp:1993
 msgid "_Fullscreen"
 msgstr "_Celá obrazovka"
 
-#: ../src/gui/call_window.cpp:2005
+#: ../src/gui/call_window.cpp:1993
 msgid "Switch to fullscreen"
 msgstr "Přepnout do režimu celé obrazovky"
 
-#: ../src/gui/call_window.cpp:2121
+#: ../src/gui/call_window.cpp:2109
 msgid "Transfer call to:"
 msgstr "Přesměrovávat hovor na:"
 
-#: ../src/gui/call_window.cpp:2346
+#: ../src/gui/call_window.cpp:2321
 msgid "Hang up the current call"
 msgstr "Zavěsit současný hovor"
 
-#: ../src/gui/call_window.cpp:2375
+#: ../src/gui/call_window.cpp:2350
 msgid "Change the volume of your soundcard"
 msgstr "Změnit hlasitost vaší zvukové karty"
 
-#: ../src/gui/call_window.cpp:2396
+#: ../src/gui/call_window.cpp:2371
 msgid "Change the color settings of your video device"
 msgstr "Změnit nastavení barev vašeho obrazového zařízení"
 
-#: ../src/gui/main_window.cpp:414
+#: ../src/gui/main_window.cpp:397
 msgid "Presence"
 msgstr "Přítomnost"
 
-#: ../src/gui/main_window.cpp:421
+#: ../src/gui/main_window.cpp:404
 msgid "Addressbook"
 msgstr "Adresář"
 
-#: ../src/gui/main_window.cpp:475
+#: ../src/gui/main_window.cpp:458
 msgid "Unknown"
 msgstr "Neznámo"
 
-#. %s is the SIP/H.323 address of the remote user, this text is shown
-#. below video during a call
-#: ../src/gui/main_window.cpp:719
-#, c-format
-msgid "Connected with %s"
-msgstr "Spojeno s %s"
-
-#: ../src/gui/main_window.cpp:817
+#: ../src/gui/main_window.cpp:813 ../src/gui/notify.cpp:114
 #, c-format
 msgid "Missed call from %s"
 msgstr "Zmeškaný hovor od %s"
 
-#: ../src/gui/main_window.cpp:834
+#: ../src/gui/main_window.cpp:846
 msgid "Error"
 msgstr "Chyba"
 
 #. Translators: This is a hotplug status
-#: ../src/gui/main_window.cpp:857
+#: ../src/gui/main_window.cpp:869
 #, c-format
 msgid "Added video input device %s"
 msgstr "Přidáno zařízení vstupu videa %s"
 
 #. Translators: This is a hotplug status
-#: ../src/gui/main_window.cpp:869
+#: ../src/gui/main_window.cpp:881
 #, c-format
 msgid "Removed video input device %s"
 msgstr "Odebráno zařízení vstupu videa %s"
 
 #. Translators: This is a hotplug status
-#: ../src/gui/main_window.cpp:884
+#: ../src/gui/main_window.cpp:896
 #, c-format
 msgid "Added audio input device %s"
 msgstr "Přidáno zařízení vstupu zvuku %s"
 
 #. Translators: This is a hotplug status
-#: ../src/gui/main_window.cpp:900
+#: ../src/gui/main_window.cpp:912
 #, c-format
 msgid "Removed audio input device %s"
 msgstr "Odebráno zařízení vstupu zvuku %s"
 
-#: ../src/gui/main_window.cpp:918
+#: ../src/gui/main_window.cpp:930
 #, c-format
 msgid "Added audio output device %s"
 msgstr "Přidáno zařízení výstupu zvuku %s"
 
-#: ../src/gui/main_window.cpp:936
+#: ../src/gui/main_window.cpp:948
 #, c-format
 msgid "Removed audio output device %s"
 msgstr "Odebráno zařízení výstupu zvuku %s"
 
-#: ../src/gui/main_window.cpp:1321 ../src/gui/main_window.cpp:1462
+#: ../src/gui/main_window.cpp:1353 ../src/gui/notify.cpp:168
 msgid "Reject"
 msgstr "Odmítnout"
 
-#: ../src/gui/main_window.cpp:1323 ../src/gui/main_window.cpp:1463
+#: ../src/gui/main_window.cpp:1355 ../src/gui/notify.cpp:169
 msgid "Accept"
 msgstr "Přijmout"
 
-#: ../src/gui/main_window.cpp:1329
+#: ../src/gui/main_window.cpp:1361
 msgid "Incoming call from"
 msgstr "Příchozí hovor od"
 
-#: ../src/gui/main_window.cpp:1347 ../src/gui/main_window.cpp:1446
+#: ../src/gui/main_window.cpp:1379 ../src/gui/notify.cpp:150
 msgid "Remote URI:"
 msgstr "Vzdálená adresa URI:"
 
-#: ../src/gui/main_window.cpp:1359 ../src/gui/main_window.cpp:1448
+#: ../src/gui/main_window.cpp:1391
 msgid "Remote Application:"
 msgstr "Vzdálená aplikace:"
 
-#: ../src/gui/main_window.cpp:1367
+#: ../src/gui/main_window.cpp:1399
 #, c-format
 msgid "Call from %s"
 msgstr "Volání od %s"
 
-#: ../src/gui/main_window.cpp:1544
+#: ../src/gui/main_window.cpp:1474
 msgid "No"
 msgstr "Ne"
 
-#: ../src/gui/main_window.cpp:1546
+#: ../src/gui/main_window.cpp:1476
 msgid "Yes"
 msgstr "Ano"
 
-#: ../src/gui/main_window.cpp:1557
+#: ../src/gui/main_window.cpp:1487
 msgid "Detected new audio input device:"
 msgstr "Detekováno nové zařízení vstupu zvuku:"
 
-#: ../src/gui/main_window.cpp:1561
+#: ../src/gui/main_window.cpp:1491
 msgid "Detected new audio output device:"
 msgstr "Detekováno nové zařízení výstupu zvuku:"
 
-#: ../src/gui/main_window.cpp:1565
+#: ../src/gui/main_window.cpp:1495
 msgid "Detected new ringer device:"
 msgstr "Detekováno nové vyzváněcí zařízení:"
 
-#: ../src/gui/main_window.cpp:1569
+#: ../src/gui/main_window.cpp:1499
 msgid "Detected new video input device:"
 msgstr "Detekováno nové zařízení vstupu videa:"
 
-#: ../src/gui/main_window.cpp:1570 ../src/gui/preferences.cpp:880
+#: ../src/gui/main_window.cpp:1500 ../src/gui/preferences.cpp:872
 msgid "Video Devices"
 msgstr "Video zařízení"
 
-#: ../src/gui/main_window.cpp:1588
+#: ../src/gui/main_window.cpp:1518
 msgid "Do you want to use it as default device?"
 msgstr "Chcete ho použít jako výchozí zařízení?"
 
-#: ../src/gui/main_window.cpp:1679
+#: ../src/gui/main_window.cpp:1609
 msgid ""
 "Enter a URI on the left, and click this button to place a call or to hangup"
 msgstr ""
 "Vlevo zadejte adresu URI a stiskněte toto tlačítko k vytočení hovoru nebo "
 "jeho položení"
 
-#: ../src/gui/main_window.cpp:1768
+#: ../src/gui/main_window.cpp:1710
 msgid "_Chat"
 msgstr "_Diskuze"
 
-#: ../src/gui/main_window.cpp:1770
-msgid "Ca_ll"
-msgstr "_Volat"
-
-#: ../src/gui/main_window.cpp:1770
-msgid "Place a new call"
-msgstr "Vytvořit nový hovor"
-
-#: ../src/gui/main_window.cpp:1776
+#: ../src/gui/main_window.cpp:1712
 msgid "Co_ntact"
 msgstr "Ko_ntakt"
 
-#: ../src/gui/main_window.cpp:1777
+#: ../src/gui/main_window.cpp:1713
 msgid "Act on selected contact"
 msgstr "Učinit na vybraný kontakt"
 
-#: ../src/gui/main_window.cpp:1783
+#: ../src/gui/main_window.cpp:1717
+msgid "Ca_ll a number"
+msgstr "Vo_lat číslo"
+
+#: ../src/gui/main_window.cpp:1717
+msgid "Place a new call"
+msgstr "Vytvořit nový hovor"
+
+#: ../src/gui/main_window.cpp:1723
 msgid "A_dd Contact"
 msgstr "Při_dat kontakt"
 
-#: ../src/gui/main_window.cpp:1783
+#: ../src/gui/main_window.cpp:1723
 msgid "Add a contact to the roster"
 msgstr "Přidat kontakt do seznamu"
 
-#: ../src/gui/main_window.cpp:1788
+#: ../src/gui/main_window.cpp:1728
 msgid "Find contacts"
 msgstr "Najít kontakty"
 
 #. FIXME: that isn't a very good way to do things
-#: ../src/gui/main_window.cpp:1797
+#: ../src/gui/main_window.cpp:1737
 msgid "Other"
 msgstr "Další"
 
-#: ../src/gui/main_window.cpp:1798
+#: ../src/gui/main_window.cpp:1738
 msgid "Other possible actions"
 msgstr "Další možné akce"
 
-#: ../src/gui/main_window.cpp:1805
-msgid "Close the Ekiga window"
-msgstr "Zavřít okno aplikace Ekiga"
-
-#: ../src/gui/main_window.cpp:1812 ../src/gui/statusicon.cpp:465
+#: ../src/gui/main_window.cpp:1752 ../src/gui/statusicon.cpp:462
 msgid "Quit"
 msgstr "Ukončit"
 
-#: ../src/gui/main_window.cpp:1818
+#: ../src/gui/main_window.cpp:1758
 msgid "_Configuration Assistant"
 msgstr "Průvod_ce nastavením"
 
-#: ../src/gui/main_window.cpp:1819
+#: ../src/gui/main_window.cpp:1759
 msgid "Run the configuration assistant"
 msgstr "Spustit průvodce nastavením"
 
-#: ../src/gui/main_window.cpp:1827
+#: ../src/gui/main_window.cpp:1767
 msgid "Edit your accounts"
 msgstr "Upravit své účty"
 
-#: ../src/gui/main_window.cpp:1833
+#: ../src/gui/main_window.cpp:1773
 msgid "Change your preferences"
 msgstr "Změnit své předvolby"
 
-#: ../src/gui/main_window.cpp:1840
+#: ../src/gui/main_window.cpp:1780
 msgid "Con_tacts"
 msgstr "Kon_takty"
 
-#: ../src/gui/main_window.cpp:1840
+#: ../src/gui/main_window.cpp:1780
 msgid "View the contacts list"
 msgstr "Zobrazit seznam kontaktů"
 
-#: ../src/gui/main_window.cpp:1845
+#: ../src/gui/main_window.cpp:1785
 msgid "_Dialpad"
 msgstr "Čí_selník"
 
-#: ../src/gui/main_window.cpp:1845
+#: ../src/gui/main_window.cpp:1785
 msgid "View the dialpad"
 msgstr "Zobrazit číselník"
 
-#: ../src/gui/main_window.cpp:1850
+#: ../src/gui/main_window.cpp:1790
 msgid "_Call History"
 msgstr "_Historie hovorů"
 
-#: ../src/gui/main_window.cpp:1850
+#: ../src/gui/main_window.cpp:1790
 msgid "View the call history"
 msgstr "Zobrazit historii volání"
 
-#: ../src/gui/main_window.cpp:1859 ../src/gui/statusicon.cpp:453
+#: ../src/gui/main_window.cpp:1798
+msgid "Show offline _contacts"
+msgstr "Zobrazovat odpojené _kontakty"
+
+#: ../src/gui/main_window.cpp:1807 ../src/gui/statusicon.cpp:450
 msgid "Get help by reading the Ekiga manual"
 msgstr "Získat nápovědu čtením příručky aplikace Ekiga"
 
-#: ../src/gui/main_window.cpp:1864 ../src/gui/statusicon.cpp:458
+#: ../src/gui/main_window.cpp:1812 ../src/gui/statusicon.cpp:455
 msgid "View information about Ekiga"
 msgstr "Zobrazit informace o aplikaci Ekiga"
 
-#: ../src/gui/main_window.cpp:1914
+#: ../src/gui/main_window.cpp:1862
 msgid "Contacts"
 msgstr "Kontakty"
 
-#: ../src/gui/main_window.cpp:1943
+#: ../src/gui/main_window.cpp:1891
 msgid "Dialpad"
 msgstr "Číselník"
 
-#: ../src/gui/main_window.cpp:1961
+#: ../src/gui/main_window.cpp:1909
 msgid "Call history"
 msgstr "Historie volání"
 
-#: ../src/gui/main_window.cpp:1972
+#: ../src/gui/main_window.cpp:1921
 msgid "Ekiga"
 msgstr "Ekiga"
 
-#: ../src/gui/main_window.cpp:2399
+#: ../src/gui/main_window.cpp:2349
 msgid "Prints debug messages in the console (level between 1 and 8)"
 msgstr "Vypíše ladicí zprávy na konzole (úroveň 1 až 8)"
 
-#: ../src/gui/main_window.cpp:2404
+#: ../src/gui/main_window.cpp:2354
 msgid "Makes Ekiga call the given URI"
 msgstr "Nechá aplikaci Ekiga zavolat na zadanou adresu URI"
+
+#: ../src/gui/notify.cpp:116
+msgid "Missed call"
+msgstr "Zmeškaný hovor"
+
+#: ../src/gui/notify.cpp:200
+#, c-format
+msgid "%s account"
+msgstr "Účet %s"
+
+#: ../src/gui/notify.cpp:202
+msgid "Failure to register"
+msgstr "Selhala registrace"
 
 #: ../src/gui/preferences.cpp:376
 msgid "Play sound for new voice mails"
@@ -3344,35 +3364,31 @@ msgstr "Uživatelské rozhraní"
 msgid "Start _hidden"
 msgstr "Spustit _skrytě"
 
-#: ../src/gui/preferences.cpp:464
-msgid "Show offline _contacts"
-msgstr "Zobrazovat odpojené _kontakty"
-
-#: ../src/gui/preferences.cpp:468
+#: ../src/gui/preferences.cpp:466
 msgid "Video Display"
 msgstr "Video zobrazení"
 
-#: ../src/gui/preferences.cpp:470
+#: ../src/gui/preferences.cpp:468
 msgid "Place windows displaying video _above other windows"
 msgstr "Umísťovat okna zobrazující video _nad jiná okna"
 
-#: ../src/gui/preferences.cpp:474
+#: ../src/gui/preferences.cpp:472
 msgid "Network Settings"
 msgstr "Nastavení sítě"
 
-#: ../src/gui/preferences.cpp:476
+#: ../src/gui/preferences.cpp:474
 msgid "Enable network _detection"
 msgstr "Povolit _detekci sítě"
 
-#: ../src/gui/preferences.cpp:486
+#: ../src/gui/preferences.cpp:484
 msgid "Call Forwarding"
 msgstr "Předávání hovorů"
 
-#: ../src/gui/preferences.cpp:488
+#: ../src/gui/preferences.cpp:486
 msgid "_Always forward calls to the given host"
 msgstr "_Vždy předávat hovory na daný počítač"
 
-#: ../src/gui/preferences.cpp:488
+#: ../src/gui/preferences.cpp:486
 msgid ""
 "If enabled, all incoming calls will be forwarded to the host that is "
 "specified in the protocol settings"
@@ -3380,11 +3396,11 @@ msgstr ""
 "Je-li povoleno, všechny příchozí hovory budou předány na počítač uvedený v "
 "nastavení protokolu"
 
-#: ../src/gui/preferences.cpp:490
+#: ../src/gui/preferences.cpp:488
 msgid "Forward calls to the given host if _no answer"
 msgstr "Předávat hovory na daný počítač, když není žád_ná odpověď"
 
-#: ../src/gui/preferences.cpp:490
+#: ../src/gui/preferences.cpp:488
 msgid ""
 "If enabled, all incoming calls will be forwarded to the host that is "
 "specified in the protocol settings if you do not answer the call"
@@ -3392,11 +3408,11 @@ msgstr ""
 "Je-li povoleno, všechny příchozí hovory budou předávány na počítač uvedený v "
 "nastavení protokolu v případě, že na ně neodpovíte"
 
-#: ../src/gui/preferences.cpp:492
+#: ../src/gui/preferences.cpp:490
 msgid "Forward calls to the given host if _busy"
 msgstr "Předávat hovory na daný počítač, když jste zane_prázdněni"
 
-#: ../src/gui/preferences.cpp:492
+#: ../src/gui/preferences.cpp:490
 msgid ""
 "If enabled, all incoming calls will be forwarded to the host that is "
 "specified in the protocol settings if you already are in a call or if you "
@@ -3406,87 +3422,87 @@ msgstr ""
 "nastavení protokolu v případě, že již s někým hovoříte nebo jste v režimu "
 "Nerušit"
 
-#: ../src/gui/preferences.cpp:496 ../src/gui/preferences.cpp:1300
+#: ../src/gui/preferences.cpp:494 ../src/gui/preferences.cpp:1292
 msgid "Call Options"
 msgstr "Možnosti hovoru"
 
 #. Add all the fields
-#: ../src/gui/preferences.cpp:499
+#: ../src/gui/preferences.cpp:497
 msgid "Timeout to reject or forward unanswered incoming calls (in seconds):"
 msgstr ""
 "Časový limit pro odmítnutí nebo předání nezvednutých příchozí hovorů (v "
 "sekundách):"
 
-#: ../src/gui/preferences.cpp:500
+#: ../src/gui/preferences.cpp:498
 msgid "_Automatically answer incoming calls"
 msgstr "_Automaticky odpovídat na příchozí volání"
 
-#: ../src/gui/preferences.cpp:531
+#: ../src/gui/preferences.cpp:529
 msgid "Ekiga Sound Events"
 msgstr "Zvukové události Ekigy"
 
-#: ../src/gui/preferences.cpp:569
+#: ../src/gui/preferences.cpp:567
 msgid "A"
 msgstr "A"
 
-#: ../src/gui/preferences.cpp:581
+#: ../src/gui/preferences.cpp:579
 msgid "Event"
 msgstr "Událost"
 
-#: ../src/gui/preferences.cpp:593
+#: ../src/gui/preferences.cpp:591
 msgid "Choose a sound"
 msgstr "Zvolte zvuk"
 
-#: ../src/gui/preferences.cpp:598
+#: ../src/gui/preferences.cpp:596
 msgid "Wavefiles"
 msgstr "Zvukové soubory"
 
-#: ../src/gui/preferences.cpp:607 ../src/gui/preferences.cpp:626
+#: ../src/gui/preferences.cpp:605 ../src/gui/preferences.cpp:624
 msgid "Play"
 msgstr "Přehrát"
 
-#: ../src/gui/preferences.cpp:647
+#: ../src/gui/preferences.cpp:645
 msgid "String"
 msgstr "Řetězec"
 
-#: ../src/gui/preferences.cpp:648
+#: ../src/gui/preferences.cpp:646
 msgid "Tone"
 msgstr "Tón"
 
-#: ../src/gui/preferences.cpp:649 ../src/gui/preferences.cpp:690
+#: ../src/gui/preferences.cpp:647 ../src/gui/preferences.cpp:688
 msgid "RFC2833"
 msgstr "RFC2833"
 
-#: ../src/gui/preferences.cpp:650
+#: ../src/gui/preferences.cpp:648
 msgid "Q.931"
 msgstr "Q.931"
 
-#: ../src/gui/preferences.cpp:655 ../src/gui/preferences.cpp:697
+#: ../src/gui/preferences.cpp:653 ../src/gui/preferences.cpp:695
 msgid "Misc Settings"
 msgstr "Různá nastavení"
 
-#: ../src/gui/preferences.cpp:658 ../src/gui/preferences.cpp:702
+#: ../src/gui/preferences.cpp:656 ../src/gui/preferences.cpp:700
 msgid "Forward _URI:"
 msgstr "Adresa _URI pro předávání:"
 
-#: ../src/gui/preferences.cpp:664
+#: ../src/gui/preferences.cpp:662
 msgid "Advanced Settings"
 msgstr "Pokročilá nastavení"
 
 #. The toggles
-#: ../src/gui/preferences.cpp:667
+#: ../src/gui/preferences.cpp:665
 msgid "Enable H.245 _tunneling"
 msgstr "Povolit _tunelování H.245"
 
-#: ../src/gui/preferences.cpp:669
+#: ../src/gui/preferences.cpp:667
 msgid "Enable _early H.245"
 msgstr "Povolit _brzké H.245"
 
-#: ../src/gui/preferences.cpp:671
+#: ../src/gui/preferences.cpp:669
 msgid "Enable fast _start procedure"
 msgstr "Povolit proceduru rychlého _startu"
 
-#: ../src/gui/preferences.cpp:671
+#: ../src/gui/preferences.cpp:669
 msgid ""
 "Connection will be established in Fast Start mode. Fast Start is a new way "
 "to start calls faster that was introduced in H.323v2. It is not supported by "
@@ -3498,113 +3514,113 @@ msgstr ""
 "podporován aplikací Netmeeting a spolu s tunelováním H.245 může způsobit pád "
 "některé verze aplikace Netmeeting."
 
-#: ../src/gui/preferences.cpp:675 ../src/gui/preferences.cpp:708
+#: ../src/gui/preferences.cpp:673 ../src/gui/preferences.cpp:706
 msgid "DTMF Mode"
 msgstr "Režim DTMF"
 
-#: ../src/gui/preferences.cpp:677 ../src/gui/preferences.cpp:710
+#: ../src/gui/preferences.cpp:675 ../src/gui/preferences.cpp:708
 msgid "_Send DTMF as:"
 msgstr "_Odeslat DTMF jako:"
 
-#: ../src/gui/preferences.cpp:677 ../src/gui/preferences.cpp:710
+#: ../src/gui/preferences.cpp:675 ../src/gui/preferences.cpp:708
 msgid "Select the mode for DTMFs sending"
 msgstr "Výběr režimu pro odesílání DTMF"
 
-#: ../src/gui/preferences.cpp:691
+#: ../src/gui/preferences.cpp:689
 msgid "INFO"
 msgstr "INFO"
 
-#: ../src/gui/preferences.cpp:699
+#: ../src/gui/preferences.cpp:697
 msgid "_Outbound Proxy:"
 msgstr "_Odchozí proxy:"
 
-#: ../src/gui/preferences.cpp:735
+#: ../src/gui/preferences.cpp:733
 msgid "Ringing Device"
 msgstr "Vyzváněcí zařízení"
 
-#: ../src/gui/preferences.cpp:735
+#: ../src/gui/preferences.cpp:733
 msgid "Select the ringing audio device to use"
 msgstr "Vyberte vyzváněcí zařízení, které chcete používat"
 
-#: ../src/gui/preferences.cpp:737
+#: ../src/gui/preferences.cpp:735
 msgid "Output device:"
 msgstr "Výstupní zařízení:"
 
-#: ../src/gui/preferences.cpp:744 ../src/gui/preferences.cpp:886
+#: ../src/gui/preferences.cpp:742 ../src/gui/preferences.cpp:878
 msgid "Input device:"
 msgstr "Vstupní zařízení:"
 
 #. That button will refresh the device list
-#: ../src/gui/preferences.cpp:748 ../src/gui/preferences.cpp:897
+#: ../src/gui/preferences.cpp:746 ../src/gui/preferences.cpp:889
 msgid "_Detect devices"
 msgstr "_Detekovat zařízení"
 
-#: ../src/gui/preferences.cpp:748 ../src/gui/preferences.cpp:897
+#: ../src/gui/preferences.cpp:746 ../src/gui/preferences.cpp:889
 msgid "Click here to refresh the device list"
 msgstr "Klikněte sem pro obnovení seznamu zařízení"
 
-#: ../src/gui/preferences.cpp:865
+#: ../src/gui/preferences.cpp:857
 msgid "PAL (Europe)"
 msgstr "PAL (Evropa)"
 
-#: ../src/gui/preferences.cpp:866
+#: ../src/gui/preferences.cpp:858
 msgid "NTSC (America)"
 msgstr "NTSC (Amerika)"
 
-#: ../src/gui/preferences.cpp:867
+#: ../src/gui/preferences.cpp:859
 msgid "SECAM (France)"
 msgstr "SECAM (Francie)"
 
-#: ../src/gui/preferences.cpp:868
+#: ../src/gui/preferences.cpp:860
 msgid "Auto"
 msgstr "Automaticky"
 
 #. Video Channel
-#: ../src/gui/preferences.cpp:890
+#: ../src/gui/preferences.cpp:882
 msgid "Channel:"
 msgstr "Kanál:"
 
-#: ../src/gui/preferences.cpp:892
+#: ../src/gui/preferences.cpp:884
 msgid "Size:"
 msgstr "Velikost:"
 
-#: ../src/gui/preferences.cpp:892
+#: ../src/gui/preferences.cpp:884
 msgid "Select the transmitted video size"
 msgstr "Vyberte přenášenou velikost videa"
 
-#: ../src/gui/preferences.cpp:894
+#: ../src/gui/preferences.cpp:886
 msgid "Format:"
 msgstr "Formát:"
 
-#: ../src/gui/preferences.cpp:913 ../src/gui/preferences.cpp:946
-#: ../src/gui/preferences.cpp:1329 ../src/gui/preferences.cpp:1340
+#: ../src/gui/preferences.cpp:905 ../src/gui/preferences.cpp:938
+#: ../src/gui/preferences.cpp:1319 ../src/gui/preferences.cpp:1329
 msgid "Codecs"
 msgstr "Kodeky"
 
-#: ../src/gui/preferences.cpp:925 ../src/gui/preferences.cpp:958
+#: ../src/gui/preferences.cpp:917 ../src/gui/preferences.cpp:950
 msgid "Settings"
 msgstr "Nastavení"
 
 #. Translators: the full sentence is Automatically adjust jitter buffer
 #. between X and Y ms
-#: ../src/gui/preferences.cpp:929
+#: ../src/gui/preferences.cpp:921
 msgid "Enable silence _detection"
 msgstr "Povolit _detekci ticha"
 
-#: ../src/gui/preferences.cpp:931
+#: ../src/gui/preferences.cpp:923
 msgid "Enable echo can_celation"
 msgstr "Povolit _potlačení ozvěny"
 
-#: ../src/gui/preferences.cpp:933
+#: ../src/gui/preferences.cpp:925
 msgid "Maximum _jitter buffer (in ms):"
 msgstr "Maximální vyrovnávací paměť výpadků (_jitter buffer) (v ms):"
 
 #. Translators: the full sentence is Keep a minimum video quality of X %
-#: ../src/gui/preferences.cpp:961
+#: ../src/gui/preferences.cpp:953
 msgid "Picture Quality"
 msgstr "Kvalita obrázku"
 
-#: ../src/gui/preferences.cpp:961
+#: ../src/gui/preferences.cpp:953
 msgid ""
 "Choose if you want to guarantee a minimum image quality (possibly leading to "
 "dropped frames in order not to surpass the bitrate limit) or if you prefer "
@@ -3614,11 +3630,11 @@ msgstr ""
 "zahození snímků, aby nedošlo k přetečení limitu datového toku), nebo zda "
 "chcete udržovat rychlost snímků."
 
-#: ../src/gui/preferences.cpp:963
+#: ../src/gui/preferences.cpp:955
 msgid "Maximum video _bitrate (in kbits/s):"
 msgstr "Maximální _datový tok videa (v kbit/s):"
 
-#: ../src/gui/preferences.cpp:963
+#: ../src/gui/preferences.cpp:955
 msgid ""
 "The maximum video bitrate in kbits/s. The video quality and the effective "
 "frame rate will be dynamically adjusted to keep the bitrate at the given "
@@ -3628,48 +3644,48 @@ msgstr ""
 "snímků za sekundu budou dynamicky upravovány tak, aby se udržel datový tok "
 "na zadané hodnotě."
 
-#: ../src/gui/preferences.cpp:1272
+#: ../src/gui/preferences.cpp:1264
 msgid "Ekiga Preferences"
 msgstr "Předvolby Ekiga"
 
-#: ../src/gui/preferences.cpp:1290
+#: ../src/gui/preferences.cpp:1282
 msgid "General"
 msgstr "Obecné"
 
-#: ../src/gui/preferences.cpp:1291
+#: ../src/gui/preferences.cpp:1283
 msgid "Personal Data"
 msgstr "Osobní data"
 
-#: ../src/gui/preferences.cpp:1296
+#: ../src/gui/preferences.cpp:1288
 msgid "General Settings"
 msgstr "Obecná nastavení"
 
-#: ../src/gui/preferences.cpp:1305
+#: ../src/gui/preferences.cpp:1297
 msgid "Sound Events"
 msgstr "Zvukové události"
 
-#: ../src/gui/preferences.cpp:1309
+#: ../src/gui/preferences.cpp:1301
 msgid "Protocols"
 msgstr "Protokoly"
 
-#: ../src/gui/preferences.cpp:1311
+#: ../src/gui/preferences.cpp:1303
 msgid "SIP Settings"
 msgstr "Nastavení SIP"
 
-#: ../src/gui/preferences.cpp:1316
+#: ../src/gui/preferences.cpp:1308
 msgid "H.323 Settings"
 msgstr "Nastavení H.323"
 
 #. The player
-#: ../src/gui/preferences.cpp:1322
+#: ../src/gui/preferences.cpp:1314
 msgid "Audio"
 msgstr "Zvuk"
 
-#: ../src/gui/preferences.cpp:1325 ../src/gui/preferences.cpp:1336
+#: ../src/gui/preferences.cpp:1315 ../src/gui/preferences.cpp:1325
 msgid "Devices"
 msgstr "Zařízení"
 
-#: ../src/gui/preferences.cpp:1334
+#: ../src/gui/preferences.cpp:1324
 msgid "Video"
 msgstr "Video"
 
