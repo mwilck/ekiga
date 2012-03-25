@@ -335,8 +335,6 @@ void Opal::Account::disable ()
   // registered (because a registration failed, for example), then the
   // next action won't change the status.
   endpoint->unsubscribe (*this, presentity);
-    presentity->Close ();
-
   if (presentity) {
 
     // FIXME : the following actions should probably be done by opal itself,
