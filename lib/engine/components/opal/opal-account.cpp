@@ -303,6 +303,10 @@ void Opal::Account::enable ()
 
   status = _("Processing...");
   endpoint->subscribe (*this, presentity);
+
+  updated ();
+  trigger_saving ();
+
   if (presentity) {
 
     // FIXME : the following actions should probably be done by opal itself,
@@ -313,9 +317,6 @@ void Opal::Account::enable ()
     }
     presentity->SetLocalPresence (personal_state, presence_status);
   }
-
-  updated ();
-  trigger_saving ();
 }
 
 
@@ -326,6 +327,9 @@ void Opal::Account::disable ()
   // Translators: this is a state, not an action, i.e. it should be read as
   // "(you are) unregistered", and not as "(you have been) unregistered"
   status = _("Unregistered");
+
+  updated ();
+  trigger_saving ();
 
   // the above change is needed because if we are already not
   // registered (because a registration failed, for example), then the
@@ -343,9 +347,6 @@ void Opal::Account::disable ()
       Ekiga::Runtime::run_in_main (boost::bind (&Opal::Account::presence_status_in_main, this, (*iter), "unknown", ""));
     }
   }
-
-  updated ();
-  trigger_saving ();
 }
 
 
