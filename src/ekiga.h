@@ -157,10 +157,6 @@ class GnomeMeeting : public PProcess
   StatusIcon *statusicon;
 
   /* other things */
-#ifdef HAVE_DBUS
-  GObject *dbus_component;
-#endif
-
   static GnomeMeeting *GM;
 };
 

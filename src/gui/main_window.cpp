@@ -63,10 +63,6 @@
 #include <glib/gi18n.h>
 #include <gdk/gdkkeysyms.h>
 
-#ifdef HAVE_DBUS
-#include "dbus-helper/dbus.h"
-#endif
-
 #ifndef WIN32
 #include <signal.h>
 #include <gdk/gdkx.h>
@@ -2408,15 +2404,6 @@ main (int argc,
   // should come *after* ptrace initialisation, to track codec loading for ex.
   GnomeMeeting instance;
 
-#ifdef HAVE_DBUS
-  if (!ekiga_dbus_claim_ownership ()) {
-    ekiga_dbus_client_show ();
-    if (url != NULL)
-      ekiga_dbus_client_connect (url);
-    exit (0);
-  }
-#endif
-
   Ekiga::Runtime::init ();
   engine_init (service_core, argc, argv);
 
@@ -2452,18 +2439,8 @@ main (int argc,
   if (url)
     call_core->dial (url);
 
-#ifdef HAVE_DBUS
-  /* Create the dbus server instance */
-  EkigaMainWindow *mw = EKIGA_MAIN_WINDOW (main_window);
-  EkigaDBusComponent *dbus_component = ekiga_dbus_component_new (mw->priv->core);
-#endif
-
   /* The GTK loop */
   gtk_main ();
-
-#ifdef HAVE_DBUS
-  g_object_unref (dbus_component);
-#endif
 
   /* Exit Ekiga */
   GnomeMeeting::Process ()->Exit ();

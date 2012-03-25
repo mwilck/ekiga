@@ -94,36 +94,6 @@ ekiga_SOURCES +=                   		\
 	$(top_srcdir)/win32/ekiga-rc.rc
 endif
 
-if HAVE_DBUS
-ekiga_SOURCES +=		\
-	dbus-helper/dbus.h	\
-	dbus-helper/dbus.cpp
-
-# find gmmarshallers.h
-INCLUDES += \
-	-I$(top_builddir)/lib
-
-nodist_ekiga_SOURCES +=		\
-	dbus-helper/dbus-stub.h
-
-bin_PROGRAMS += ekiga-helper
-
-ekiga_helper_SOURCES = 		\
-	dbus-helper/dbus-helper.cpp
-
-nodist_ekiga_helper_SOURCES = 	\
-	dbus-helper/dbus-helper-stub.h
-
-ekiga_helper_LDADD = $(DBUS_LIBS)
-
-BUILT_SOURCES += dbus-helper/dbus-helper-stub.h dbus-helper/dbus-stub.h
-
-dbus-helper/dbus-helper-stub.h: dbus-helper/dbus-helper-stub.xml build-subdir-stamp
-	$(LIBTOOL) --mode=execute dbus-binding-tool --prefix=helper --mode=glib-server --output=$@ $<
-
-dbus-helper/dbus-stub.h: dbus-helper/dbus-stub.xml build-subdir-stamp
-	$(LIBTOOL) --mode=execute dbus-binding-tool --prefix=ekiga_dbus_component --mode=glib-server --output=$@ $<
-endif
 
 build-subdir-stamp:
 	test -d dbus-helper || mkdir dbus-helper
