@@ -1083,10 +1083,23 @@ on_setup_call_cb (G_GNUC_UNUSED boost::shared_ptr<Ekiga::CallManager> manager,
 {
   EkigaCallWindow *cw = EKIGA_CALL_WINDOW (self);
 
-  gtk_window_set_title (GTK_WINDOW (cw), call->get_remote_party_name ().c_str ());
+  if (!call->is_outgoing () && !manager->get_auto_answer ()) {
+    if (cw->priv->current_call)
+      return; // No call setup needed if already in a call
+
+    cw->priv->current_call = call;
+    cw->priv->calling_state = Called;
+  }
+  else {
+
+    cw->priv->current_call = call;
+    cw->priv->calling_state = Calling;
+  }
+
+  gtk_window_set_title (GTK_WINDOW (cw), call->get_remote_uri ().c_str ());
 
   if (call->is_outgoing ())
-    ekiga_call_window_set_status (cw, _("Calling %s..."), call->get_remote_party_name ().c_str ());
+    ekiga_call_window_set_status (cw, _("Calling %s..."), call->get_remote_uri ().c_str ());
 
   ekiga_call_window_update_calling_state (cw, Calling);
 }
