@@ -43,6 +43,7 @@
 #include "notify.h"
 
 #include "services.h"
+#include "account-core.h"
 #include "call-core.h"
 
 struct CallNotificationInfo
@@ -106,6 +107,32 @@ on_incoming_call_gone_cb (gpointer self)
 }
 
 static void
+on_missed_call_cb (boost::shared_ptr<Ekiga::CallManager>  /*manager*/,
+                   boost::shared_ptr<Ekiga::Call> call)
+{
+  NotifyNotification *notify = NULL;
+  gchar *body = g_strdup_printf (_("Missed call from %s"), (const char*) call->get_remote_party_name ().c_str ());
+
+  notify = notify_notification_new (_("Missed call"), body, NULL
+// NOTIFY_CHECK_VERSION appeared in 0.5.2 only
+#ifndef NOTIFY_CHECK_VERSION
+                                    , NULL
+#else
+#if !NOTIFY_CHECK_VERSION(0,7,0)
+                                    , NULL
+#endif
+#endif
+                                    );
+
+  notify_notification_set_app_name (notify, "ekiga");
+  notify_notification_set_category (notify, "calls");
+  notify_notification_set_urgency (notify, NOTIFY_URGENCY_NORMAL);
+  notify_notification_show (notify, NULL);
+
+  g_free (body);
+}
+
+static void
 ekiga_incoming_call_notify (boost::shared_ptr<Ekiga::Call> call)
 {
   NotifyNotification *notify = NULL;
@@ -146,12 +173,9 @@ ekiga_incoming_call_notify (boost::shared_ptr<Ekiga::Call> call)
 
   notify_notification_show (notify, NULL);
 
-  call->established.connect (boost::bind (&on_incoming_call_gone_cb,
-                                          (gpointer) notify));
-  call->cleared.connect (boost::bind (&on_incoming_call_gone_cb,
-                                      (gpointer) notify));
-  call->missed.connect (boost::bind (&on_incoming_call_gone_cb,
-                                     (gpointer) notify));
+  call->established.connect (boost::bind (&on_incoming_call_gone_cb, (gpointer) notify));
+  call->missed.connect (boost::bind (&on_incoming_call_gone_cb, (gpointer) notify));
+  call->cleared.connect (boost::bind (&on_incoming_call_gone_cb, (gpointer) notify));
 
   g_free (uri);
   g_free (title);
@@ -165,6 +189,34 @@ static void on_setup_call_cb (boost::shared_ptr<Ekiga::CallManager> manager,
     ekiga_incoming_call_notify (call);
 }
 
+static void on_account_updated (Ekiga::BankPtr /*bank*/,
+                                Ekiga::AccountPtr account)
+{
+  NotifyNotification *notify = NULL;
+  gchar *title = NULL;
+
+  if (account->is_enabled () && !account->is_active ()) {
+
+    title = g_strdup_printf (_("%s account"), (const char*) account->get_name ().c_str ());
+
+    notify = notify_notification_new (title, _("Failure to register"), NULL
+                                      // NOTIFY_CHECK_VERSION appeared in 0.5.2 only
+#ifndef NOTIFY_CHECK_VERSION
+                                      , NULL
+#else
+#if !NOTIFY_CHECK_VERSION(0,7,0)
+                                      , NULL
+#endif
+#endif
+                                     );
+    notify_notification_set_app_name (notify, "ekiga");
+    notify_notification_set_category (notify, "accounts");
+    notify_notification_set_urgency (notify, NOTIFY_URGENCY_CRITICAL);
+
+    notify_notification_show (notify, NULL);
+  }
+}
+
 
 /*
  * Public API
@@ -173,6 +225,10 @@ void
 notify_start (Ekiga::ServiceCore & core)
 {
   boost::shared_ptr<Ekiga::CallCore> call_core = core.get<Ekiga::CallCore> ("call-core");
+  boost::shared_ptr<Ekiga::AccountCore> account_core = core.get<Ekiga::AccountCore> ("account-core");
 
   call_core->setup_call.connect (boost::bind (&on_setup_call_cb, _1, _2));
+  call_core->missed_call.connect (boost::bind (&on_missed_call_cb, _1, _2));
+
+  account_core->account_updated.connect (boost::bind (&on_account_updated, _1, _2));
 }
