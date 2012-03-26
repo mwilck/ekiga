@@ -17,7 +17,6 @@ INCLUDES = \
 	-I$(top_srcdir)/lib \
 	-I$(top_srcdir)/lib/gmconf \
 	-I$(top_srcdir)/lib/gui \
-	-I$(top_srcdir)/lib/toolbox \
 	-I$(top_srcdir)/lib/engine \
 	-I$(top_srcdir)/lib/engine/account \
 	-I$(top_srcdir)/lib/engine/addressbook \
@@ -79,20 +78,9 @@ gmmarshallers.h: gmmarshallers.list
 gmmarshallers.c: gmmarshallers.list
 	$(LIBTOOL) --mode=execute glib-genmarshal --prefix=gm_marshal $^ --body > $@.tmp && mv $@.tmp $@
 
-##
-# Sources out of the toolbox directory
-##
 libekiga_la_SOURCES += \
-	$(top_srcdir)/lib/toolbox/toolbox.h \
-	$(top_srcdir)/lib/toolbox/toolbox-common.c \
-	$(top_srcdir)/lib/toolbox/toolbox-internal.h \
-	$(top_srcdir)/lib/toolbox/toolbox-internal.c
-
-if WIN32
-libekiga_la_SOURCES += $(top_srcdir)/lib/toolbox/toolbox-win32.c
-else
-libekiga_la_SOURCES += $(top_srcdir)/lib/toolbox/toolbox-gtk.c
-endif
+	$(top_srcdir)/lib/toolbox.h \
+	$(top_srcdir)/lib/toolbox.c
 
 ##
 # Sources out of the platform directory

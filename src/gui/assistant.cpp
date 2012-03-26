@@ -44,7 +44,7 @@
 
 #include "ekiga.h"
 #include "gmconf.h"
-#include "toolbox/toolbox.h"
+#include "toolbox.h"
 #include "assistant.h"
 #include "default_devices.h"
 
