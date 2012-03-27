@@ -120,12 +120,9 @@ ekiga_LDFLAGS = -lX11
 endif
 
 EXTRA_DIST = \
-	$(service_in_files)		\
 	ekiga-debug-analyser
 
 CLEANFILES = \
-	$(service_DATA)		\
-	build-subdir-stamp	\
 	$(BUILT_SOURCES)
 
 DISTCLEANFILES = revision.h
