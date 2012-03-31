@@ -511,13 +511,13 @@ statusicon_set_status (StatusIcon *statusicon,
 
   /* Update the status icon */
   if (presence == "away")
-    gtk_status_icon_set_from_icon_name (GTK_STATUS_ICON (statusicon), "user-available");
+    gtk_status_icon_set_from_icon_name (GTK_STATUS_ICON (statusicon), "user-away");
   else if (presence == "dnd")
     gtk_status_icon_set_from_icon_name (GTK_STATUS_ICON (statusicon), "user-busy");
   else if (presence == "offline")
     gtk_status_icon_set_from_icon_name (GTK_STATUS_ICON (statusicon), "user-offline");
   else
-    gtk_status_icon_set_from_icon_name (GTK_STATUS_ICON (statusicon), "user-online");
+    gtk_status_icon_set_from_icon_name (GTK_STATUS_ICON (statusicon), "user-available");
 
   statusicon->priv->status = presence;
 }
