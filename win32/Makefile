@@ -430,6 +430,11 @@ endif
 	cd $(PTLIB_DIR); for i in $(EKIGA_DIR)/win32/diff/ptlib_*; do \
 		test "`basename $$i`" != 'ptlib_*' && (patch -p1 <$$i || exit 1) ;\
 	done; true
+ifeq ($(MINGW32), 1)
+	# mingw32 wrongly defines DnsSectionAdditional
+	sed -i -e 's#\#include <ntverp.h># #g' $(PTLIB_DIR)/include/ptclib/pdns.h
+	sed -i -e 's#enum { DnsSectionAdditional = DnsSectionAddtional };# #g' $(PTLIB_DIR)/include/ptclib/pdns.h
+endif
 	touch $@
 
 $(PTLIB_DIR)/config.status: binaries $(PTLIB_DIR)/configure
