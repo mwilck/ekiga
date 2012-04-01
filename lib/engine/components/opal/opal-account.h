@@ -137,6 +137,8 @@ public:
 
     bool is_active () const;
 
+    bool is_failed () const;
+
     SIPRegister::CompatibilityModes get_compat_mode () const;
 
     void remove ();
@@ -180,6 +182,7 @@ private:
     mutable RegistrationState state;
     bool dead;
     bool enabled;
+    bool failed;
     mutable SIPRegister::CompatibilityModes compat_mode;
     unsigned timeout;
     std::string aid;

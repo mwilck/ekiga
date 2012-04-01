@@ -301,6 +301,7 @@ void Opal::Account::enable ()
 {
   enabled = true;
 
+  state = Processing;
   status = _("Processing...");
   endpoint->subscribe (*this, presentity);
 
@@ -360,6 +361,14 @@ bool Opal::Account::is_active () const
     return false;
 
   return (state == Registered);
+}
+
+bool Opal::Account::is_failed () const
+{
+  if (!enabled)
+    return false;
+
+  return (is_enabled () && state == RegistrationFailed);
 }
 
 
