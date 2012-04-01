@@ -36,15 +36,23 @@
 
 
 #include <libnotify/notify.h>
+#include <gtk/gtk.h>
 #include <glib/gi18n.h>
 
 #include "config.h"
 
 #include "notify.h"
 
+#include "common.h"
+#include "gmconf.h"
+
+#include "ekiga.h" //FIXME Can get rid of this
+
+#include "gmstockicons.h"
 #include "services.h"
 #include "account-core.h"
 #include "call-core.h"
+#include "gtk-frontend.h"
 
 struct CallNotificationInfo
 {
@@ -97,6 +105,35 @@ notify_action_cb (NotifyNotification *notification,
 }
 
 static void
+notify_missed_call_action_cb (NotifyNotification *notification,
+                              G_GNUC_UNUSED gchar *action,
+                              gpointer data)
+{
+  GtkWidget *window = GTK_WIDGET (data);
+
+  gm_conf_set_int (USER_INTERFACE_KEY "main_window/panel_section", CALL);
+  if (!gtk_widget_get_visible (window)
+      || (gdk_window_get_state (GDK_WINDOW (window->window)) & GDK_WINDOW_STATE_ICONIFIED))
+    gtk_widget_show (window);
+
+  notify_notification_close (notification, NULL);
+}
+
+static void
+notify_show_window_action_cb (NotifyNotification *notification,
+                              G_GNUC_UNUSED gchar *action,
+                              gpointer data)
+{
+  GtkWidget *window = GTK_WIDGET (data);
+
+  if (!gtk_widget_get_visible (window)
+      || (gdk_window_get_state (GDK_WINDOW (window->window)) & GDK_WINDOW_STATE_ICONIFIED))
+    gtk_widget_show (window);
+
+  notify_notification_close (notification, NULL);
+}
+
+static void
 on_incoming_call_gone_cb (gpointer self)
 {
   CallNotificationInfo *priv = (CallNotificationInfo *) (g_object_get_data (G_OBJECT (self), "priv"));
@@ -108,12 +145,13 @@ on_incoming_call_gone_cb (gpointer self)
 
 static void
 on_missed_call_cb (boost::shared_ptr<Ekiga::CallManager>  /*manager*/,
-                   boost::shared_ptr<Ekiga::Call> call)
+                   boost::shared_ptr<Ekiga::Call> call,
+                   gpointer data)
 {
   NotifyNotification *notify = NULL;
   gchar *body = g_strdup_printf (_("Missed call from %s"), (const char*) call->get_remote_party_name ().c_str ());
 
-  notify = notify_notification_new (_("Missed call"), body, NULL
+  notify = notify_notification_new (_("Missed call"), body, GM_ICON_LOGO
 // NOTIFY_CHECK_VERSION appeared in 0.5.2 only
 #ifndef NOTIFY_CHECK_VERSION
                                     , NULL
@@ -124,12 +162,44 @@ on_missed_call_cb (boost::shared_ptr<Ekiga::CallManager>  /*manager*/,
 #endif
                                     );
 
-  notify_notification_set_app_name (notify, "ekiga");
-  notify_notification_set_category (notify, "calls");
   notify_notification_set_urgency (notify, NOTIFY_URGENCY_NORMAL);
+  notify_notification_set_timeout (notify, NOTIFY_EXPIRES_NEVER);
+  notify_notification_add_action (notify, "default", _("Show"), notify_missed_call_action_cb, data, NULL);
   notify_notification_show (notify, NULL);
 
   g_free (body);
+}
+
+static void
+on_unread_count_cb (G_GNUC_UNUSED GtkWidget *widget,
+                    guint messages,
+                    gpointer data)
+{
+  NotifyNotification *notify = NULL;
+
+  gchar *body = NULL;
+
+  if (messages > 0) {
+    body = g_strdup_printf (ngettext ("You have %d message",
+                                      "You have %d messages",
+                                      messages), messages);
+
+    notify = notify_notification_new (_("Unread message"), body, GM_ICON_LOGO
+                                      // NOTIFY_CHECK_VERSION appeared in 0.5.2 only
+#ifndef NOTIFY_CHECK_VERSION
+                                      , NULL
+#else
+#if !NOTIFY_CHECK_VERSION(0,7,0)
+                                      , NULL
+#endif
+#endif
+                                     );
+
+    notify_notification_set_urgency (notify, NOTIFY_URGENCY_NORMAL);
+    notify_notification_set_timeout (notify, NOTIFY_EXPIRES_NEVER);
+    notify_notification_add_action (notify, "default", _("Show"), notify_show_window_action_cb, data, NULL);
+    notify_notification_show (notify, NULL);
+  }
 }
 
 static void
@@ -190,16 +260,17 @@ static void on_setup_call_cb (boost::shared_ptr<Ekiga::CallManager> manager,
 }
 
 static void on_account_updated (Ekiga::BankPtr /*bank*/,
-                                Ekiga::AccountPtr account)
+                                Ekiga::AccountPtr account,
+                                gpointer data)
 {
   NotifyNotification *notify = NULL;
   gchar *title = NULL;
 
-  if (account->is_enabled () && !account->is_active ()) {
+  if (account->is_failed ()) {
 
     title = g_strdup_printf (_("%s account"), (const char*) account->get_name ().c_str ());
 
-    notify = notify_notification_new (title, _("Failure to register"), NULL
+    notify = notify_notification_new (title, _("Failure to register"), GM_ICON_LOGO
                                       // NOTIFY_CHECK_VERSION appeared in 0.5.2 only
 #ifndef NOTIFY_CHECK_VERSION
                                       , NULL
@@ -209,9 +280,9 @@ static void on_account_updated (Ekiga::BankPtr /*bank*/,
 #endif
 #endif
                                      );
-    notify_notification_set_app_name (notify, "ekiga");
-    notify_notification_set_category (notify, "accounts");
+    notify_notification_set_timeout (notify, NOTIFY_EXPIRES_DEFAULT);
     notify_notification_set_urgency (notify, NOTIFY_URGENCY_CRITICAL);
+    notify_notification_add_action (notify, "default", _("Show"), notify_show_window_action_cb, data, NULL);
 
     notify_notification_show (notify, NULL);
   }
@@ -224,11 +295,18 @@ static void on_account_updated (Ekiga::BankPtr /*bank*/,
 void
 notify_start (Ekiga::ServiceCore & core)
 {
+  boost::shared_ptr<GtkFrontend> frontend = core.get<GtkFrontend> ("gtk-frontend");
   boost::shared_ptr<Ekiga::CallCore> call_core = core.get<Ekiga::CallCore> ("call-core");
   boost::shared_ptr<Ekiga::AccountCore> account_core = core.get<Ekiga::AccountCore> ("account-core");
 
-  call_core->setup_call.connect (boost::bind (&on_setup_call_cb, _1, _2));
-  call_core->missed_call.connect (boost::bind (&on_missed_call_cb, _1, _2));
+  GtkWidget *main_window = GnomeMeeting::Process ()->GetMainWindow (); //FIXME when GOBJECT
+  GtkWidget *accounts_window = GnomeMeeting::Process ()->GetAccountsWindow (); //FIXME when GOBJECT
+  GtkWidget *chat_window = GTK_WIDGET (frontend->get_chat_window ());
 
-  account_core->account_updated.connect (boost::bind (&on_account_updated, _1, _2));
+  call_core->setup_call.connect (boost::bind (&on_setup_call_cb, _1, _2));
+  call_core->missed_call.connect (boost::bind (&on_missed_call_cb, _1, _2, (gpointer) main_window));
+
+  account_core->account_updated.connect (boost::bind (&on_account_updated, _1, _2, (gpointer) accounts_window));
+
+  g_signal_connect (chat_window, "unread-count", G_CALLBACK (on_unread_count_cb), chat_window);
 }
