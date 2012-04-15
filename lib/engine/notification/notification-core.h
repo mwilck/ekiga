@@ -36,6 +36,8 @@
 #ifndef __NOTIFICATION_CORE_H__
 #define __NOTIFICATION_CORE_H__
 
+#include "services.h"
+
 #include <boost/smart_ptr.hpp>
 
 namespace Ekiga
