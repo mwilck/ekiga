@@ -64,6 +64,7 @@ Opal::Account::Account (Ekiga::ServiceCore & _core,
   : core (_core)
 {
   endpoint = core.get<Sip::EndPoint> ("opal-sip-endpoint");
+  notification_core = core.get<Ekiga::NotificationCore> ("notification-core");
   dead = false;
   state = Unregistered;
   status = _("Unregistered");
@@ -155,6 +156,8 @@ Opal::Account::Account (Ekiga::ServiceCore & _core,
   : core (_core)
 {
   endpoint = core.get<Sip::EndPoint> ("opal-sip-endpoint");
+  notification_core = core.get<Ekiga::NotificationCore> ("notification-core");
+
   dead = false;
   state = Unregistered;
   status = "";
@@ -658,8 +661,12 @@ Opal::Account::handle_registration_event (RegistrationState state_,
       status = _("Could not register");
       if (!info.empty ())
         status = status + " (" + info + ")";
-      if ( !failed_registration_already_notified)
+      if (!failed_registration_already_notified) {
 	updated ();
+        boost::shared_ptr<Ekiga::Notification> notif (new Ekiga::Notification (Ekiga::Notification::Error, get_name (), status));
+        notification_core->push_notification (notif);
+
+      }
       failed_registration_already_notified = true;
       break;
     default:

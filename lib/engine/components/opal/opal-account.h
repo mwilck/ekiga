@@ -40,6 +40,7 @@
 
 #include <opal/pres_ent.h>
 
+#include "notification-core.h"
 #include "presence-core.h"
 #include "personal-details.h"
 #include "bank-impl.h"
@@ -212,6 +213,7 @@ private:
 
     Ekiga::ServiceCore & core;
     boost::shared_ptr<Sip::EndPoint> endpoint;
+    boost::shared_ptr<Ekiga::NotificationCore> notification_core;
   };
 
   typedef boost::shared_ptr<Account> AccountPtr;
