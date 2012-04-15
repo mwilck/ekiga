@@ -134,31 +134,9 @@ void
 LibNotify::on_notification_added (boost::shared_ptr<Ekiga::Notification> notification)
 {
   NotifyNotification* notif = NULL;
-  const gchar* urgency = NULL;
-
-  switch (notification->get_level ()) {
-
-  case Ekiga::Notification::Info:
-
-    urgency = "gtk-info";
-    break;
-
-  case Ekiga::Notification::Warning:
-
-    urgency = "gtk-warning";
-    break;
-
-  case Ekiga::Notification::Error:
-
-    urgency = "gtk-warning";
-    break;
-  default:
-    urgency = "gtk-info";
-  }
-
   notif = notify_notification_new (notification->get_title ().c_str (),
 				   notification->get_body ().c_str (),
-				   urgency
+				   "ekiga"
 // NOTIFY_CHECK_VERSION appeared in 0.5.2 only
 #ifdef NOTIFY_CHECK_VERSION
 #if !NOTIFY_CHECK_VERSION(0,7,0)
@@ -168,6 +146,18 @@ LibNotify::on_notification_added (boost::shared_ptr<Ekiga::Notification> notific
 				     , NULL
 #endif
 				   );
+
+  switch (notification->get_level ()) {
+
+  case Ekiga::Notification::Info:
+  case Ekiga::Notification::Warning:
+    break;
+
+  case Ekiga::Notification::Error:
+
+    notify_notification_set_urgency (notif, NOTIFY_URGENCY_CRITICAL);
+    break;
+  }
 
   g_signal_connect (notif, "closed",
 		    G_CALLBACK (on_notif_closed), notification.get ());
