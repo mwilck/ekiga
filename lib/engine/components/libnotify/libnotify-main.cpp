@@ -133,39 +133,39 @@ on_notif_closed (NotifyNotification* /*notif*/,
 void
 LibNotify::on_notification_added (boost::shared_ptr<Ekiga::Notification> notification)
 {
-  NotifyNotification* notif = NULL;
-  notif = notify_notification_new (notification->get_title ().c_str (),
-				   notification->get_body ().c_str (),
-				   "ekiga"
-// NOTIFY_CHECK_VERSION appeared in 0.5.2 only
+  NotifyNotification* notif = notify_notification_new (notification->get_title ().c_str (),
+                                                       notification->get_body ().c_str (),
+                                                       "ekiga"
+                                                       // NOTIFY_CHECK_VERSION appeared in 0.5.2 only
 #ifdef NOTIFY_CHECK_VERSION
 #if !NOTIFY_CHECK_VERSION(0,7,0)
-				     , NULL
+                                                       , NULL
 #endif
 #else
-				     , NULL
+                                                       , NULL
 #endif
-				   );
+                                                      );
 
   switch (notification->get_level ()) {
 
-  case Ekiga::Notification::Info:
-  case Ekiga::Notification::Warning:
+  case Ekiga::Notification::Error:
+    notify_notification_set_urgency (notif, NOTIFY_URGENCY_CRITICAL);
     break;
 
-  case Ekiga::Notification::Error:
-
-    notify_notification_set_urgency (notif, NOTIFY_URGENCY_CRITICAL);
+  case Ekiga::Notification::Info:
+  case Ekiga::Notification::Warning:
+  default:
     break;
   }
 
   g_signal_connect (notif, "closed",
 		    G_CALLBACK (on_notif_closed), notification.get ());
-  boost::signals::connection conn = notification->removed.connect (boost::bind (&LibNotify::on_notification_removed, this, notification));
+  boost::signals::connection conn =
+    notification->removed.connect (boost::bind (&LibNotify::on_notification_removed, this, notification));
 
   live[notification] = std::pair<boost::signals::connection, boost::shared_ptr<NotifyNotification> > (conn, boost::shared_ptr<NotifyNotification> (notif, g_object_unref));
 
-  (void)notify_notification_show (notif, NULL);
+  notify_notification_show (notif, NULL);
 }
 
 void
@@ -174,7 +174,6 @@ LibNotify::on_notification_removed (boost::shared_ptr<Ekiga::Notification> notif
   container_type::iterator iter = live.find (notification);
 
   if (iter != live.end ()) {
-
     iter->second.first.disconnect ();
     live.erase (iter);
   }
