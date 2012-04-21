@@ -59,36 +59,6 @@ struct CallNotificationInfo
   boost::shared_ptr<Ekiga::Call> call;
 };
 
-struct _Notify
-{
-  NotifyNotification *missed_call_notification;
-  gchar *missed_call_body;
-
-};
-
-// return if the notify server accepts actions (i.e. buttons)
-// taken from https://wiki.ubuntu.com/NotificationDevelopmentGuidelines#Avoiding%20actions
-static int
-hasActionsCap (void)
-{
-  static int accepts_actions = -1;
-  if (accepts_actions == -1) {  // initialise accepts_actions at the first call
-    accepts_actions = 0;
-    GList *capabilities = notify_get_server_caps ();
-    if (capabilities != NULL) {
-      for (GList *c = capabilities ; c != NULL ; c = c->next) {
-        if (strcmp ((char*)c->data, "actions") == 0 ) {
-          accepts_actions = 1;
-          break;
-        }
-      }
-      g_list_foreach (capabilities, (GFunc)g_free, NULL);
-      g_list_free (capabilities);
-    }
-  }
-  return accepts_actions;
-}
-
 static void
 notify_action_cb (NotifyNotification *notification,
                   gchar *action,
@@ -111,30 +81,6 @@ notify_action_cb (NotifyNotification *notification,
     delete priv;
 }
 
-static void
-notify_missed_call_action_cb (G_GNUC_UNUSED NotifyNotification *notification,
-                              gchar *action,
-                              gpointer data)
-{
-  GtkWidget *window = GnomeMeeting::Process ()->GetMainWindow (); //FIXME when GOBJECT
-  _Notify *notifications = (_Notify*) (data);
-
-  if (!strcmp (action, "show")) {
-    gm_conf_set_int (USER_INTERFACE_KEY "main_window/panel_section", CALL);
-
-    if (!gtk_widget_get_visible (window)
-        || (gdk_window_get_state (GDK_WINDOW (window->window)) & GDK_WINDOW_STATE_ICONIFIED))
-      gtk_widget_show (window);
-
-    g_free (notifications->missed_call_body);
-    notifications->missed_call_body = NULL;
-
-    notify_notification_close (notifications->missed_call_notification, NULL);
-    notifications->missed_call_notification = NULL;
-  }
-  else
-    notify_notification_close (notifications->missed_call_notification, NULL);
-}
 
 static void
 notify_show_window_action_cb (NotifyNotification *notification,
@@ -160,35 +106,6 @@ on_incoming_call_gone_cb (gpointer self)
     delete priv;
 }
 
-static void
-on_missed_call_cb (boost::shared_ptr<Ekiga::CallManager>  /*manager*/,
-                   boost::shared_ptr<Ekiga::Call> call,
-                   gpointer data)
-{
-  _Notify *notifications = (_Notify *) (data);
-
-  if (notifications->missed_call_body == NULL)
-    notifications->missed_call_body = g_strdup_printf (_("Missed call from %s"),
-                                                       (const char*) call->get_remote_party_name ().c_str ());
-  else
-    notifications->missed_call_body = g_strdup_printf (_("Missed call from %s\n%s"),
-                                                       (const char*) call->get_remote_party_name ().c_str (),
-                                                       (const char*) notifications->missed_call_body);
-
-  if (notifications->missed_call_notification == NULL) {
-    notifications->missed_call_notification = notify_notification_new (_("Missed Call"),
-                                                                       notifications->missed_call_body,
-                                                                       GM_ICON_LOGO);
-    notify_notification_add_action (notifications->missed_call_notification, "default", _("Show"),
-                                    notify_missed_call_action_cb, data, NULL);
-  }
-  else
-    notify_notification_update (notifications->missed_call_notification, _("Missed Calls"),
-                                notifications->missed_call_body, GM_ICON_LOGO);
-
-  notify_notification_set_timeout (notifications->missed_call_notification, 0);
-  notify_notification_show (notifications->missed_call_notification, NULL);
-}
 
 static void
 on_unread_count_cb (G_GNUC_UNUSED GtkWidget *widget,
@@ -276,7 +193,7 @@ ekiga_incoming_call_notify (boost::shared_ptr<Ekiga::Call> call)
 static void on_setup_call_cb (boost::shared_ptr<Ekiga::CallManager> manager,
                               boost::shared_ptr<Ekiga::Call>  call)
 {
-  if (!call->is_outgoing () && !manager->get_auto_answer () && hasActionsCap ())
+  if (!call->is_outgoing () && !manager->get_auto_answer () && notify_has_actions ())
     ekiga_incoming_call_notify (call);
 }
 
@@ -287,19 +204,56 @@ static void on_setup_call_cb (boost::shared_ptr<Ekiga::CallManager> manager,
 void
 notify_start (Ekiga::ServiceCore & core)
 {
-  _Notify *notifications = new _Notify ();
-  notifications->missed_call_notification = NULL;
-  notifications->missed_call_body = NULL;
-
   boost::shared_ptr<GtkFrontend> frontend = core.get<GtkFrontend> ("gtk-frontend");
   boost::shared_ptr<Ekiga::CallCore> call_core = core.get<Ekiga::CallCore> ("call-core");
   boost::shared_ptr<Ekiga::AccountCore> account_core = core.get<Ekiga::AccountCore> ("account-core");
 
-  GtkWidget *accounts_window = GnomeMeeting::Process ()->GetAccountsWindow (); //FIXME when GOBJECT
   GtkWidget *chat_window = GTK_WIDGET (frontend->get_chat_window ());
 
   call_core->setup_call.connect (boost::bind (&on_setup_call_cb, _1, _2));
-  call_core->missed_call.connect (boost::bind (&on_missed_call_cb, _1, _2, (gpointer) notifications));
 
   g_signal_connect (chat_window, "unread-count", G_CALLBACK (on_unread_count_cb), chat_window);
+}
+
+gboolean
+notify_has_actions (void)
+{
+  static int accepts_actions = -1;
+  if (accepts_actions == -1) {  // initialise accepts_actions at the first call
+    accepts_actions = 0;
+    GList *capabilities = notify_get_server_caps ();
+    if (capabilities != NULL) {
+      for (GList *c = capabilities ; c != NULL ; c = c->next) {
+        if (strcmp ((char*)c->data, "actions") == 0 ) {
+          accepts_actions = 1;
+          break;
+        }
+      }
+      g_list_foreach (capabilities, (GFunc)g_free, NULL);
+      g_list_free (capabilities);
+    }
+  }
+  return accepts_actions;
+}
+
+gboolean
+notify_has_persistence (void)
+{
+  gboolean has;
+  GList   *caps;
+  GList   *l;
+
+  caps = notify_get_server_caps ();
+  if (caps == NULL) {
+    fprintf (stderr, "Failed to receive server caps.\n");
+    return FALSE;
+  }
+
+  l = g_list_find_custom (caps, "persistence", (GCompareFunc)strcmp);
+  has = l != NULL;
+
+  g_list_foreach (caps, (GFunc) g_free, NULL);
+  g_list_free (caps);
+
+  return has;
 }

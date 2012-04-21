@@ -1006,40 +1006,8 @@ add_device_response_cb (GtkDialog *add_device_popup,
   }
 }
 
-static void
-on_status_icon_embedding_change (G_GNUC_UNUSED GObject obj,
-				 G_GNUC_UNUSED GParamSpec param,
-				 G_GNUC_UNUSED gpointer data)
-{
-  GtkWidget *main_window = NULL;
-  GtkStatusIcon *status_icon = NULL;
-
-  status_icon = GTK_STATUS_ICON (GnomeMeeting::Process ()->GetStatusicon ());
-  main_window = GnomeMeeting::Process ()->GetMainWindow ();
-
-  /* force the main window to show if no status icon for the user */
-  if (!gtk_status_icon_is_embedded (GTK_STATUS_ICON (status_icon)))
-    gtk_widget_show (main_window);
-}
-
 
 /* GTK callbacks */
-static gboolean
-gnomemeeting_tray_hack_cb (G_GNUC_UNUSED gpointer data)
-{
-  GtkWidget *main_window = NULL;
-  GtkStatusIcon *statusicon = NULL;
-
-  statusicon = GTK_STATUS_ICON (GnomeMeeting::Process ()->GetStatusicon ());
-  main_window = GnomeMeeting::Process ()->GetMainWindow ();
-
-  // show the main window if the icon has not appeared in tray
-  if (!gtk_status_icon_is_embedded (GTK_STATUS_ICON (statusicon)))
-    gtk_widget_show (main_window);
-
-  return FALSE;
-}
-
 static gboolean
 on_delayed_hide_call_window_cb (gpointer data)
 {
@@ -1296,15 +1264,7 @@ window_closed_cb (G_GNUC_UNUSED GtkWidget *widget,
 		  G_GNUC_UNUSED GdkEvent *event,
 		  gpointer data)
 {
-  GtkStatusIcon *statusicon = NULL;
-
-  statusicon = GTK_STATUS_ICON (GnomeMeeting::Process ()->GetStatusicon ());
-
-  if (!gtk_status_icon_is_embedded (GTK_STATUS_ICON (statusicon)))
-    quit_callback (NULL, data);
-  else
-    gtk_widget_hide (GTK_WIDGET (data));
-
+  gtk_widget_hide (GTK_WIDGET (data));
   return (TRUE);
 }
 
@@ -2220,7 +2180,6 @@ GtkWidget *
 gm_main_window_new (Ekiga::ServiceCore & core)
 {
   GtkWidget *window = NULL;
-  GtkStatusIcon *status_icon = NULL;
   GtkWidget *chat_window = NULL;
 
   /* initialize the callback to play IM message sound */
@@ -2234,11 +2193,6 @@ gm_main_window_new (Ekiga::ServiceCore & core)
   /* The Top-level window */
   window = ekiga_main_window_new (&core);
 
-  /* Track status icon embed changes */
-  /* FIXME: move this to the status icon code */
-  status_icon = GTK_STATUS_ICON (GnomeMeeting::Process ()->GetStatusicon ());
-  g_signal_connect (status_icon, "notify::embedded",
-		    G_CALLBACK (on_status_icon_embedding_change), NULL);
 
   return window;
 }
@@ -2431,8 +2385,6 @@ main (int argc,
   if (crt_version > 0) {
     if (!gm_conf_get_bool (USER_INTERFACE_KEY "start_hidden"))
       gtk_widget_show (main_window);
-    else
-      g_timeout_add_seconds (15, gnomemeeting_tray_hack_cb, NULL);
   }
 
   /* Call the given host if needed */

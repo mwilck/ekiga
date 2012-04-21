@@ -165,7 +165,8 @@ void GnomeMeeting::BuildGUI (Ekiga::ServiceCorePtr services)
   prefs_window = gm_prefs_window_new (services.get ());
   assistant_window = ekiga_assistant_new (services.get ());
   call_window = gm_call_window_new (*services);
-  statusicon = statusicon_new (*services);
+  if (!notify_has_persistence ())
+    statusicon = statusicon_new (*services);
   main_window = gm_main_window_new (*services);
   // FIXME should be moved inside the gm_accounts_window_new code
   gtk_window_set_transient_for (GTK_WINDOW (accounts_window), GTK_WINDOW (main_window));

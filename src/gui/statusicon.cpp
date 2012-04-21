@@ -105,6 +105,11 @@ unread_count_cb (GtkWidget *widget,
 static gboolean
 statusicon_blink_cb (gpointer data);
 
+static void
+status_icon_embedding_change_cb (G_GNUC_UNUSED GObject obj,
+				 G_GNUC_UNUSED GParamSpec param,
+				 G_GNUC_UNUSED gpointer data);
+
 
 /*
  * Declaration of local functions
@@ -350,6 +355,23 @@ statusicon_blink_cb (gpointer data)
   statusicon->priv->blinking = !statusicon->priv->blinking;
 
   return true;
+}
+
+
+static void
+status_icon_embedding_change_cb (G_GNUC_UNUSED GObject obj,
+                                 G_GNUC_UNUSED GParamSpec param,
+                                 gpointer data)
+{
+  GtkWidget *main_window = NULL;
+  GtkStatusIcon *status_icon = NULL;
+
+  status_icon = GTK_STATUS_ICON (data);
+  main_window = GnomeMeeting::Process ()->GetMainWindow ();
+
+  /* force the main window to show if no status icon for the user */
+  if (!gtk_status_icon_is_embedded (GTK_STATUS_ICON (status_icon)))
+    gtk_widget_show (main_window);
 }
 
 
@@ -600,6 +622,10 @@ statusicon_new (Ekiga::ServiceCore & core)
 
   g_signal_connect (self, "activate",
                     G_CALLBACK (statusicon_activated_cb), self);
+
+  g_signal_connect (self, "notify::embedded",
+		    G_CALLBACK (status_icon_embedding_change_cb), self);
+
 
   g_signal_connect (chat_window, "unread-count",
                     G_CALLBACK (unread_count_cb), self);
