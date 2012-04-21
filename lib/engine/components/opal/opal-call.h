@@ -42,6 +42,8 @@
 #include "services.h"
 #include "call.h"
 
+#include "notification-core.h"
+
 #ifndef __OPAL_CALL_H__
 #define __OPAL_CALL_H__
 
@@ -57,7 +59,7 @@ namespace Opal {
 
 public:
 
-    Call (OpalManager &_manager, const Ekiga::ServiceCore& _core, const std::string & uri);
+    Call (OpalManager &_manager, Ekiga::ServiceCore& _core, const std::string & uri);
 
     ~Call ();
 
@@ -94,7 +96,7 @@ public:
 
     /** Forward an incoming call after the given delay
      * @param delay the delay after which we forward
-     * @param uri is the uri to forward to 
+     * @param uri is the uri to forward to
      */
     void set_no_answer_forward (unsigned delay, const std::string & uri);
 
@@ -218,7 +220,8 @@ private:
     /*
      * Variables
      */
-    const Ekiga::ServiceCore& core;
+    Ekiga::ServiceCore& core;
+    boost::shared_ptr<Ekiga::NotificationCore> notification_core;
 
     std::string local_party_name;
     std::string remote_party_name;

@@ -92,11 +92,12 @@ private:
 
 
 Opal::Call::Call (OpalManager& _manager,
-		  const Ekiga::ServiceCore& _core,
+		  Ekiga::ServiceCore& _core,
 		  const std::string& uri)
   : OpalCall (_manager), Ekiga::Call (), core (_core), remote_uri (uri),
     call_setup(false), jitter(0), outgoing(false)
 {
+  notification_core = core.get<Ekiga::NotificationCore> ("notification-core");
   re_a_bytes = tr_a_bytes = re_v_bytes = tr_v_bytes = 0.0;
   last_v_tick = last_a_tick = PTime ();
   total_a =
@@ -632,7 +633,7 @@ Opal::Call::DoSetUp (OpalConnection & connection)
 
 void
 Opal::Call::OnNoAnswerTimeout (PTimer &,
-                               INT) 
+                               INT)
 {
   if (!is_outgoing ()) {
 
@@ -670,7 +671,13 @@ Opal::Call::emit_established_in_main ()
 void
 Opal::Call::emit_missed_in_main ()
 {
+  std::stringstream msg;
+
   missed ();
+  msg << _("Missed call from") << " " << get_remote_party_name ();
+  boost::shared_ptr<Ekiga::Notification> notif (new Ekiga::Notification (Ekiga::Notification::Warning,
+                                                                         _("Missed call"), msg.str ()));
+  notification_core->push_notification (notif);
 }
 
 void
