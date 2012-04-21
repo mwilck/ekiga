@@ -663,7 +663,7 @@ Opal::Account::handle_registration_event (RegistrationState state_,
         status = status + " (" + info + ")";
       if (!failed_registration_already_notified) {
 	updated ();
-        boost::shared_ptr<Ekiga::Notification> notif (new Ekiga::Notification (Ekiga::Notification::Error, get_name (), status));
+        boost::shared_ptr<Ekiga::Notification> notif (new Ekiga::Notification (Ekiga::Notification::Warning, get_name (), status));
         notification_core->push_notification (notif);
 
       }
