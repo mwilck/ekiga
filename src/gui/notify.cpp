@@ -233,7 +233,7 @@ notify_has_actions (void)
       g_list_free (capabilities);
     }
   }
-  return accepts_actions;
+  return (accepts_actions > 0);
 }
 
 gboolean
