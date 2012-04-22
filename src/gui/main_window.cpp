@@ -1221,7 +1221,18 @@ window_closed_cb (G_GNUC_UNUSED GtkWidget *widget,
 		  G_GNUC_UNUSED GdkEvent *event,
 		  gpointer data)
 {
+  StatusIcon *statusicon = GnomeMeeting::Process ()->GetStatusicon ();
+  // If we have persistent notifications:
+  //  - we can hide the window
+  //  - clicking on a notification should show the window back
+  //  - launching the application again should show the window back
+  // If we do not have persistent notifications:
+  //  - If the status icon is enabled, it allows showing the window back
+  //  - If not, we quit
   gtk_widget_hide (GTK_WIDGET (data));
+  if (!notify_has_persistence () && statusicon && !gtk_status_icon_is_embedded (GTK_STATUS_ICON (statusicon)))
+    quit_callback (NULL, widget);
+
   return (TRUE);
 }
 
@@ -1976,14 +1987,7 @@ static gboolean
 ekiga_main_window_delete_event (GtkWidget   *widget,
 				G_GNUC_UNUSED GdkEventAny *event)
 {
-  GtkStatusIcon *statusicon = NULL;
-
-  statusicon = GTK_STATUS_ICON (GnomeMeeting::Process ()->GetStatusicon ());
-
-  if (!gtk_status_icon_is_embedded (statusicon))
-    quit_callback (NULL, widget);
-  else
-    gtk_widget_hide (widget);
+  window_closed_cb (widget, NULL, NULL);
 
   return TRUE;
 }
