@@ -133,9 +133,24 @@ on_notif_closed (NotifyNotification* /*notif*/,
 void
 LibNotify::on_notification_added (boost::shared_ptr<Ekiga::Notification> notification)
 {
+  switch (notification->get_level ()) {
+
+  case Ekiga::Notification::Error:
+    notify_notification_set_urgency (notif, NOTIFY_URGENCY_CRITICAL);
+    break;
+
+  case Ekiga::Notification::Info:
+    return;
+    break;
+
+  case Ekiga::Notification::Warning:
+  default:
+    break;
+  }
+
   NotifyNotification* notif = notify_notification_new (notification->get_title ().c_str (),
                                                        notification->get_body ().c_str (),
-                                                       "ekiga"
+                                                       "Ekiga"
                                                        // NOTIFY_CHECK_VERSION appeared in 0.5.2 only
 #ifdef NOTIFY_CHECK_VERSION
 #if !NOTIFY_CHECK_VERSION(0,7,0)
@@ -145,18 +160,6 @@ LibNotify::on_notification_added (boost::shared_ptr<Ekiga::Notification> notific
                                                        , NULL
 #endif
                                                       );
-
-  switch (notification->get_level ()) {
-
-  case Ekiga::Notification::Error:
-    notify_notification_set_urgency (notif, NOTIFY_URGENCY_CRITICAL);
-    break;
-
-  case Ekiga::Notification::Info:
-  case Ekiga::Notification::Warning:
-  default:
-    break;
-  }
 
   g_signal_connect (notif, "closed",
 		    G_CALLBACK (on_notif_closed), notification.get ());
