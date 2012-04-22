@@ -2370,7 +2370,7 @@ main (int argc,
   /* Ekiga initialisation */
   // should come *after* ptrace initialisation, to track codec loading for ex.
   GnomeMeeting instance;
-
+  GnomeMeeting::Process ()->Exit ();
   Ekiga::Runtime::init ();
   engine_init (service_core, argc, argv);
 
@@ -2418,7 +2418,6 @@ main (int argc,
 #endif
 
   /* Exit Ekiga */
-  GnomeMeeting::Process ()->Exit ();
   service_core.reset ();
   Ekiga::Runtime::quit ();
 

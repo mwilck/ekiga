@@ -69,12 +69,6 @@ GnomeMeeting::GnomeMeeting ()
 }
 
 
-GnomeMeeting::~GnomeMeeting()
-{
-  Exit ();
-}
-
-
 void
 GnomeMeeting::Exit ()
 {

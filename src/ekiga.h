@@ -69,13 +69,6 @@ class GnomeMeeting : public PProcess
   GnomeMeeting ();
 
 
-  /* DESCRIPTION  :  Destructor.
-   * BEHAVIOR     :
-   * PRE          :  /
-   */
-  ~GnomeMeeting ();
-
-
   /* DESCRIPTION  :  /
    * BEHAVIOR     :  Prepare the endpoint to exit by removing all
    * 		     associated threads and components.
