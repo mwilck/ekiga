@@ -47,10 +47,6 @@
 #include "notify.h"
 #include "gmstockicons.h"
 
-#ifdef HAVE_DBUS
-#include "dbus.h"
-#endif
-
 #define new PNEW
 
 
@@ -65,9 +61,11 @@ GnomeMeeting::GnomeMeeting ()
 
   assistant_window = NULL;
   prefs_window = NULL;
-#ifdef HAVE_DBUS
-  dbus_component = NULL;
-#endif
+  main_window = NULL;
+  call_window = NULL;
+  assistant_window = NULL;
+  accounts_window = NULL;
+  statusicon = NULL;
 }
 
 
@@ -105,12 +103,6 @@ GnomeMeeting::Exit ()
   if (statusicon)
     g_object_unref (statusicon);
   statusicon = NULL;
-
-#ifdef HAVE_DBUS
-  if (dbus_component)
-    g_object_unref (dbus_component);
-  dbus_component = NULL;
-#endif
 }
 
 

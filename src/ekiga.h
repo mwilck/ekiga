@@ -156,11 +156,6 @@ class GnomeMeeting : public PProcess
   GtkWidget *accounts_window;
   StatusIcon *statusicon;
 
-  /* other things */
-#ifdef HAVE_DBUS
-  GObject *dbus_component;
-#endif
-
   static GnomeMeeting *GM;
 };
 

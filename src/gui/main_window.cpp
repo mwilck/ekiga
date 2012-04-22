@@ -2358,10 +2358,6 @@ main (int argc,
 #endif
   PTRACE(1, "Debug level: " << debug_level);
 
-  /* Ekiga initialisation */
-  // should come *after* ptrace initialisation, to track codec loading for ex.
-  GnomeMeeting instance;
-
 #ifdef HAVE_DBUS
   if (!ekiga_dbus_claim_ownership ()) {
     ekiga_dbus_client_show ();
@@ -2370,6 +2366,10 @@ main (int argc,
     exit (0);
   }
 #endif
+
+  /* Ekiga initialisation */
+  // should come *after* ptrace initialisation, to track codec loading for ex.
+  GnomeMeeting instance;
 
   Ekiga::Runtime::init ();
   engine_init (service_core, argc, argv);
