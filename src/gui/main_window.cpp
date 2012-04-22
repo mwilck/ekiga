@@ -1554,6 +1554,8 @@ ekiga_main_window_init_actions_toolbar (EkigaMainWindow *mw)
   gtk_toolbar_insert (GTK_TOOLBAR (mw->priv->actions_toolbar), GTK_TOOL_ITEM (mw->priv->preview_button), -1);
   gtk_toggle_tool_button_set_active (GTK_TOGGLE_TOOL_BUTTON (mw->priv->preview_button),
                                      gm_conf_get_bool (VIDEO_DEVICES_KEY "enable_preview"));
+  gtk_widget_set_tooltip_text (GTK_WIDGET (mw->priv->preview_button),
+                               _("Display images from your camera device"));
   g_signal_connect (mw->priv->preview_button, "toggled",
                     G_CALLBACK (video_preview_action_toggled_cb), (gpointer) mw);
 
@@ -1571,6 +1573,8 @@ ekiga_main_window_init_actions_toolbar (EkigaMainWindow *mw)
   gtk_tool_item_set_expand (GTK_TOOL_ITEM (mw->priv->toggle_buttons[CONTACTS]), false);
   gtk_toolbar_insert (GTK_TOOLBAR (mw->priv->actions_toolbar), mw->priv->toggle_buttons[CONTACTS], -1);
   gtk_toggle_tool_button_set_active (GTK_TOGGLE_TOOL_BUTTON (mw->priv->toggle_buttons[CONTACTS]), (cps == CONTACTS));
+  gtk_widget_set_tooltip_text (GTK_WIDGET (mw->priv->toggle_buttons[CONTACTS]),
+                               _("View the contacts list"));
 
   /* The dialpad button */
   image = gtk_image_new_from_icon_name ("input-dialpad", GTK_ICON_SIZE_MENU);
@@ -1580,6 +1584,8 @@ ekiga_main_window_init_actions_toolbar (EkigaMainWindow *mw)
   gtk_tool_item_set_expand (GTK_TOOL_ITEM (mw->priv->toggle_buttons[DIALPAD]), false);
   gtk_toolbar_insert (GTK_TOOLBAR (mw->priv->actions_toolbar), mw->priv->toggle_buttons[DIALPAD], -1);
   gtk_toggle_tool_button_set_active (GTK_TOGGLE_TOOL_BUTTON (mw->priv->toggle_buttons[DIALPAD]), (cps == DIALPAD));
+  gtk_widget_set_tooltip_text (GTK_WIDGET (mw->priv->toggle_buttons[DIALPAD]),
+                               _("View the dialpad"));
 
   /* The history button */
   image = gtk_image_new_from_icon_name ("document-open-recent", GTK_ICON_SIZE_MENU);
@@ -1589,6 +1595,8 @@ ekiga_main_window_init_actions_toolbar (EkigaMainWindow *mw)
   gtk_tool_item_set_expand (GTK_TOOL_ITEM (mw->priv->toggle_buttons[CALL]), false);
   gtk_toolbar_insert (GTK_TOOLBAR (mw->priv->actions_toolbar), mw->priv->toggle_buttons[CALL], -1);
   gtk_toggle_tool_button_set_active (GTK_TOGGLE_TOOL_BUTTON (mw->priv->toggle_buttons[CALL]), (cps == CALL));
+  gtk_widget_set_tooltip_text (GTK_WIDGET (mw->priv->toggle_buttons[CALL]),
+                               _("View the call history"));
 
   gtk_toggle_tool_button_set_active (GTK_TOGGLE_TOOL_BUTTON (mw->priv->toggle_buttons[cps]), true);
   for (int i = 0 ; i < NUM_SECTIONS ; i++)
