@@ -47,6 +47,10 @@
 #include "notify.h"
 #include "gmstockicons.h"
 
+#ifdef HAVE_DBUS
+#include "dbus.h"
+#endif
+
 #define new PNEW
 
 
@@ -61,6 +65,9 @@ GnomeMeeting::GnomeMeeting ()
 
   assistant_window = NULL;
   prefs_window = NULL;
+#ifdef HAVE_DBUS
+  dbus_component = NULL;
+#endif
 }
 
 
@@ -98,6 +105,12 @@ GnomeMeeting::Exit ()
   if (statusicon)
     g_object_unref (statusicon);
   statusicon = NULL;
+
+#ifdef HAVE_DBUS
+  if (dbus_component)
+    g_object_unref (dbus_component);
+  dbus_component = NULL;
+#endif
 }
 
 
@@ -188,6 +201,11 @@ void GnomeMeeting::BuildGUI (Ekiga::ServiceCorePtr services)
   PTRACE (1, "Accelerated rendering support enabled");
 #else
   PTRACE (1, "Accelerated rendering support disabled");
+#endif
+#ifdef HAVE_DBUS
+  PTRACE (1, "DBUS support enabled");
+#else
+  PTRACE (1, "DBUS support disabled");
 #endif
 #ifdef HAVE_GCONF
   PTRACE (1, "GConf support enabled");

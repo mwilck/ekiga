@@ -65,6 +65,10 @@
 #include <glib/gi18n.h>
 #include <gdk/gdkkeysyms.h>
 
+#ifdef HAVE_DBUS
+#include "dbus-helper/dbus.h"
+#endif
+
 #ifndef WIN32
 #include <signal.h>
 #include <gdk/gdkx.h>
