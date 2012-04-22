@@ -46,6 +46,7 @@
 #include "callbacks.h"
 #include "dialpad.h"
 #include "statusmenu.h"
+#include "notify.h"
 
 #include "gmdialog.h"
 #include "gmentrydialog.h"
@@ -74,10 +75,6 @@
 #include "platform/winpaths.h"
 #include <gdk/gdkwin32.h>
 #include <cstdio>
-#endif
-
-#ifdef HAVE_NOTIFY
-#include <libnotify/notify.h>
 #endif
 
 #if defined(P_FREEBSD) || defined (P_MACOSX)
@@ -422,31 +419,6 @@ void on_some_core_updated (EkigaMainWindow* self)
   }
 }
 
-#ifdef HAVE_NOTIFY
-// return if the notify server accepts actions (i.e. buttons)
-// taken from https://wiki.ubuntu.com/NotificationDevelopmentGuidelines#Avoiding%20actions
-int hasActionsCap (void)
-{
-  static int accepts_actions = -1;
-  if (accepts_actions == -1) {  // initialise accepts_actions at the first call
-    accepts_actions = 0;
-    GList *capabilities = notify_get_server_caps ();
-    if (capabilities != NULL) {
-      for (GList *c = capabilities ; c != NULL ; c = c->next) {
-        if (strcmp ((char*)c->data, "actions") == 0 ) {
-          accepts_actions = 1;
-          break;
-        }
-      }
-      g_list_foreach (capabilities, (GFunc)g_free, NULL);
-      g_list_free (capabilities);
-    }
-  }
-  return accepts_actions;
-}
-#endif
-
-
 /* implementation of the name_from_uri_helper */
 const std::string
 name_from_uri_helper::search_name_for_uri (const std::string uri)
@@ -653,12 +625,9 @@ static void on_setup_call_cb (boost::shared_ptr<Ekiga::CallManager> manager,
       return; // No call setup needed if already in a call
 
     audiooutput_core->start_play_event ("incoming_call_sound", 4000, 256);
-#ifdef HAVE_NOTIFY
-    if (!hasActionsCap ())
+    if (!notify_has_actions ())
       ekiga_main_window_incoming_call_dialog_show (mw, call);
-#else
-    ekiga_main_window_incoming_call_dialog_show (mw, call);
-#endif
+
     mw->priv->current_call = call;
     mw->priv->calling_state = Called;
   }
@@ -758,7 +727,7 @@ static void on_cleared_call_cb (boost::shared_ptr<Ekiga::CallManager>  /*manager
 }
 
 static void on_cleared_incoming_call_cb (std::string /*reason*/,
-                                         gpointer self)
+                                         gpointer /*self*/)
 {
   EkigaMainWindow *mw = EKIGA_MAIN_WINDOW (GnomeMeeting::Process ()->GetMainWindow ());
   GtkWidget *call_window = NULL;
@@ -771,15 +740,6 @@ static void on_cleared_incoming_call_cb (std::string /*reason*/,
   boost::shared_ptr<Ekiga::AudioOutputCore> audiooutput_core = mw->priv->core->get<Ekiga::AudioOutputCore> ("audiooutput-core");
   audiooutput_core->stop_play_event("incoming_call_sound");
   audiooutput_core->stop_play_event("ring_tone_sound");
-
-#ifdef HAVE_NOTIFY
-  if (hasActionsCap ())
-    notify_notification_close (NOTIFY_NOTIFICATION (self), NULL);
-  else
-    gtk_widget_destroy (GTK_WIDGET (self));
-#else
-  gtk_widget_destroy (GTK_WIDGET (self));
-#endif
 
   /* Hide call window */
   if (!gm_conf_get_bool (VIDEO_DEVICES_KEY "enable_preview")) {
@@ -795,14 +755,7 @@ static void on_cleared_incoming_call_cb (std::string /*reason*/,
 
 static void on_incoming_call_gone_cb (gpointer self)
 {
-#ifdef HAVE_NOTIFY
-  if (hasActionsCap ())
-    notify_notification_close (NOTIFY_NOTIFICATION (self), NULL);
-  else
-    gtk_widget_destroy (GTK_WIDGET (self));
-#else
   gtk_widget_destroy (GTK_WIDGET (self));
-#endif
 }
 
 
@@ -2326,10 +2279,6 @@ main (int argc,
   g_option_context_parse (context, &argc, &argv, NULL);
   g_option_context_free (context);
 
-#ifdef HAVE_NOTIFY
-  notify_init (PACKAGE_NAME);
-#endif
-
 #ifndef WIN32
   char* text_label =  g_strdup_printf ("%d", debug_level);
   setenv ("PTLIB_TRACE_CODECS", text_label, TRUE);
@@ -2427,10 +2376,6 @@ main (int argc,
 
   /* deinitialize platform-specific code */
   gm_platform_shutdown ();
-
-#ifdef HAVE_NOTIFY
-  notify_uninit ();
-#endif
 
   return 0;
 }

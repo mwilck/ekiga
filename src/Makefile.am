@@ -69,18 +69,14 @@ ekiga_SOURCES +=			\
 	gui/call_window.cpp		\
 	gui/main_window.h		\
 	gui/main_window.cpp		\
+	gui/notify.h		        \
+	gui/notify.cpp                  \
 	gui/preferences.h		\
 	gui/preferences.cpp		\
 	gui/statusicon.h		\
 	gui/statusicon.cpp		\
 	gui/statusmenu.h		\
 	gui/statusmenu.cpp
-
-if HAVE_NOTIFY
-ekiga_SOURCES +=               		\
-	gui/notify.h		        \
-	gui/notify.cpp
-endif
 
 # Endpoints
 ekiga_SOURCES +=			\

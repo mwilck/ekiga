@@ -78,10 +78,6 @@
 #include <cstdio>
 #endif
 
-#ifdef HAVE_NOTIFY
-#include <libnotify/notify.h>
-#endif
-
 #if defined(P_FREEBSD) || defined (P_MACOSX)
 #include <libintl.h>
 #endif

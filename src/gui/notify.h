@@ -49,18 +49,18 @@ G_BEGIN_DECLS
 /* DESCRIPTION  : /
  * BEHAVIOR     : Start the notifications monitoring
  */
-void notify_start (Ekiga::ServiceCore & core);
+bool notify_start (Ekiga::ServiceCore & core);
 
 /* DESCRIPTION  : /
  * BEHAVIOR     : Returns true if notification server supports actions.
  */
-gboolean notify_has_actions (void);
+bool notify_has_actions (void);
 
 /* DESCRIPTION  : /
  * BEHAVIOR     : Returns true if notification server supports persistent
  *                notifications.
  */
-gboolean notify_has_persistence (void);
+bool notify_has_persistence (void);
 
 G_END_DECLS
 

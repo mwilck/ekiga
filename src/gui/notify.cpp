@@ -35,7 +35,6 @@
  */
 
 
-#include <libnotify/notify.h>
 #include <gtk/gtk.h>
 #include <glib/gi18n.h>
 
@@ -53,6 +52,9 @@
 #include "account-core.h"
 #include "call-core.h"
 #include "gtk-frontend.h"
+
+#ifdef HAVE_NOTIFY
+#include <libnotify/notify.h>
 
 struct CallNotificationInfo
 {
@@ -196,14 +198,15 @@ static void on_setup_call_cb (boost::shared_ptr<Ekiga::CallManager> manager,
   if (!call->is_outgoing () && !manager->get_auto_answer () && notify_has_actions ())
     ekiga_incoming_call_notify (call);
 }
-
+#endif
 
 /*
  * Public API
  */
-void
+bool
 notify_start (Ekiga::ServiceCore & core)
 {
+#ifdef HAVE_NOTIFY
   boost::shared_ptr<GtkFrontend> frontend = core.get<GtkFrontend> ("gtk-frontend");
   boost::shared_ptr<Ekiga::CallCore> call_core = core.get<Ekiga::CallCore> ("call-core");
   boost::shared_ptr<Ekiga::AccountCore> account_core = core.get<Ekiga::AccountCore> ("account-core");
@@ -213,12 +216,17 @@ notify_start (Ekiga::ServiceCore & core)
   call_core->setup_call.connect (boost::bind (&on_setup_call_cb, _1, _2));
 
   g_signal_connect (chat_window, "unread-count", G_CALLBACK (on_unread_count_cb), chat_window);
+  return true;
+#else
+  return false;
+#endif
 }
 
-gboolean
+bool
 notify_has_actions (void)
 {
   static int accepts_actions = -1;
+#ifdef HAVE_NOTIFY
   if (accepts_actions == -1) {  // initialise accepts_actions at the first call
     accepts_actions = 0;
     GList *capabilities = notify_get_server_caps ();
@@ -233,13 +241,15 @@ notify_has_actions (void)
       g_list_free (capabilities);
     }
   }
+#endif
   return (accepts_actions > 0);
 }
 
-gboolean
+bool
 notify_has_persistence (void)
 {
-  gboolean has;
+  gboolean has = false;
+#ifdef HAVE_NOTIFY
   GList   *caps;
   GList   *l;
 
@@ -254,6 +264,7 @@ notify_has_persistence (void)
 
   g_list_foreach (caps, (GFunc) g_free, NULL);
   g_list_free (caps);
+#endif
 
   return has;
 }
