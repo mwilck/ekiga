@@ -22,7 +22,9 @@ INCLUDES = \
 	-I$(top_srcdir)/lib/engine/gui/gtk-core		\
 	-I$(top_srcdir)/lib/engine/components/opal	\
 	-I$(top_srcdir)/src				\
-	-I$(top_srcdir)/src/gui
+	-I$(top_srcdir)/src/dbus-helper/		\
+	-I$(top_srcdir)/src/gui/			\
+	-I$(top_builddir)/src/dbus-helper/
 
 BUILT_SOURCES = src/revision.h
 
@@ -93,6 +95,22 @@ ekiga_SOURCES +=                   		\
 endif
 
 
+build-subdir-stamp:
+	test -d dbus-helper || mkdir dbus-helper
+	touch build-subdir-stamp
+
+if INSTALL_DBUS_SERVICE
+
+%.service: %.service.in
+	$(mkdir_p) dbus-helper # this is ugly...
+	sed -e "s#\@bindir\@#@bindir@#" $< > $@
+
+servicedir = $(datadir)/dbus-1/services
+service_DATA = dbus-helper/org.ekiga.Ekiga.service dbus-helper/org.ekiga.Helper.service
+service_in_files = $(service_DATA:.service=.service.in)
+
+endif
+
 .rc.o:
 	$(RC) $< -o $@ -I $(top_srcdir)
 
@@ -122,6 +140,8 @@ endif
 
 EXTRA_DIST = \
 	$(service_in_files)		\
+	dbus-helper/dbus-stub.xml	\
+	dbus-helper/dbus-helper-stub.xml \
 	ekiga-debug-analyser
 
 CLEANFILES = \

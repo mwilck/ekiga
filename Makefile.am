@@ -54,6 +54,7 @@ WIN32_DIST = \
 ### Extra dist
 EXTRA_DIST = \
 	$(DESKTOP_FILE)					        \
+        doc/using_dbus.html                                     \
 	gnome-doc-utils.make					\
 	FAQ							\
 	README							\

@@ -195,7 +195,7 @@ if test "x${gm_platform}" != "xmingw" ; then
 fi],enable_gconf=yes)
 
   if test "x$enable_gconf" = "xyes"; then
-    PKG_CHECK_MODULES([GCONF], [gconf-2.0], [found_gconf=yes])
+    PKG_CHECK_MODULES([GCONF], [gconf-2.0 >= 2.6.0], [found_gconf=yes])
     AM_GCONF_SOURCE_2
     AC_SUBST(GCONF_CFLAGS)
     AC_SUBST(GCONF_LIBS)
@@ -445,23 +445,33 @@ dnl ###############################
 dnl   DBUS Support
 dnl ###############################
 DBUS="disabled"
+DBUS_SERVICE="disabled"
 
 if test "x${gm_platform}" != "xmingw" ; then
   AC_ARG_ENABLE(dbus, AS_HELP_STRING([--enable-dbus],[enable DBUS support (default is enabled)]),
 [if test "x$enableval" = "xyes"; then
   enable_dbus=yes
 fi],enable_dbus=yes)
+  AC_ARG_ENABLE(dbus-service, AS_HELP_STRING([--enable-dbus-service],[enable DBUS service installation (default is enabled)]),
+[if test "x$enableval" = "xyes"; then
+  enable_dbus_service=yes
+fi],enable_dbus_service=yes)
 
   if test "x$enable_dbus" = "xyes"; then
-    PKG_CHECK_MODULES([DBUS], [dbus-1 dbus-glib-1], [found_dbus=yes])
+    PKG_CHECK_MODULES([DBUS], [dbus-1 >= 0.36 dbus-glib-1 >= 0.36], [found_dbus=yes])
     AC_SUBST(DBUS_CFLAGS)
     AC_SUBST(DBUS_LIBS)
     DBUS="enabled"
     AC_DEFINE(HAVE_DBUS,1,[DBUS support])
+
+    if test "x$found_dbus" = "xyes" -a "x$enable_dbus_service" = "xyes"; then
+      DBUS_SERVICE="enabled"
+    fi
   fi
 fi
 
 AM_CONDITIONAL(HAVE_DBUS, test "x$found_dbus" = "xyes")
+AM_CONDITIONAL(INSTALL_DBUS_SERVICE, test "x$DBUS_SERVICE" = "xenabled")
 
 
 dnl ###############################
@@ -491,7 +501,7 @@ if test "x${gm_platform}" != "xmingw" ; then
 fi],enable_avahi=yes)
 
   if test "x$enable_avahi" = "xyes"; then
-    PKG_CHECK_MODULES([AVAHI], [avahi-client avahi-glib], [found_avahi=yes])
+    PKG_CHECK_MODULES([AVAHI], [avahi-client >= 0.6 avahi-glib >= 0.6], [found_avahi=yes])
     AC_SUBST(AVAHI_CFLAGS)
     AC_SUBST(AVAHI_LIBS)
     AVAHI="enabled"
@@ -882,6 +892,7 @@ echo "                   H.323 support  :  $H323"
 echo ""
 if test "x${gm_platform}" != "xmingw" ; then
 echo "                    DBUS support  :  $DBUS"
+echo "            DBUS service support  :  $DBUS_SERVICE"
 echo "             mDNS/DNS-SD support  :  $AVAHI"
 fi
 echo ""
