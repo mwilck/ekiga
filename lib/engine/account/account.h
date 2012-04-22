@@ -93,13 +93,6 @@ namespace Ekiga
      * @return Whether the account is active
      */
     virtual bool is_active () const = 0;
-
-
-    /** Returns a boolean indicating whether the account is in a failure state.
-     *
-     * @return Whether the account is in a failure state
-     */
-    virtual bool is_failed () const = 0;
   };
 
   typedef boost::shared_ptr<Account> AccountPtr;

@@ -138,8 +138,6 @@ public:
 
     bool is_active () const;
 
-    bool is_failed () const;
-
     SIPRegister::CompatibilityModes get_compat_mode () const;
 
     void remove ();

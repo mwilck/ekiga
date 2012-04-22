@@ -366,14 +366,6 @@ bool Opal::Account::is_active () const
   return (state == Registered);
 }
 
-bool Opal::Account::is_failed () const
-{
-  if (!enabled)
-    return false;
-
-  return (is_enabled () && state == RegistrationFailed);
-}
-
 
 SIPRegister::CompatibilityModes Opal::Account::get_compat_mode () const
 {
