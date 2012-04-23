@@ -633,7 +633,6 @@ Opal::Account::handle_registration_event (RegistrationState state_,
   case RegistrationFailed:
 
     switch (compat_mode) {
-    case SIPRegister::e_HasApplicationLayerGateway:
     case SIPRegister::e_FullyCompliant:
       // FullyCompliant did not work, try next compat mode
       compat_mode = SIPRegister::e_CannotRegisterMultipleContacts;
@@ -647,14 +646,20 @@ Opal::Account::handle_registration_event (RegistrationState state_,
       endpoint->subscribe (*this, presentity);
       break;
     case SIPRegister::e_CannotRegisterPrivateContacts:
-      // CannotRegPC did not work, stop registration with error
+      // CannotRegMC did not work, try next compat mode
+      compat_mode = SIPRegister::e_HasApplicationLayerGateway;
+      PTRACE (4, "Register failed in CannotRegisterMultipleContacts mode, retrying in HasApplicationLayerGateway mode");
+      endpoint->subscribe (*this, presentity);
+      break;
+    case SIPRegister::e_HasApplicationLayerGateway:
+      // HasAppLG did not work, stop registration with error
       compat_mode = SIPRegister::e_FullyCompliant;
-      PTRACE (4, "Register failed in CannotRegisterPrivateContacts mode, aborting registration");
+      PTRACE (4, "Register failed in HasApplicationLayerGateway mode, aborting registration");
       status = _("Could not register");
       if (!info.empty ())
         status = status + " (" + info + ")";
       if (!failed_registration_already_notified) {
-	updated ();
+        updated ();
         std::stringstream msg;
         msg << _("Could not register to ") << get_name ();
         boost::shared_ptr<Ekiga::Notification> notif (new Ekiga::Notification (Ekiga::Notification::Warning, msg.str (), info));
