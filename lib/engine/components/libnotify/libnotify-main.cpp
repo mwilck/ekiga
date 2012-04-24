@@ -133,9 +133,6 @@ on_notif_closed (NotifyNotification* /*notif*/,
 void
 LibNotify::on_notification_added (boost::shared_ptr<Ekiga::Notification> notification)
 {
-  if (notification->get_level () == Ekiga::Notification::Info)
-    return;
-
   NotifyNotification* notif = notify_notification_new (notification->get_title ().c_str (),
                                                        notification->get_body ().c_str (),
                                                        "Ekiga"
