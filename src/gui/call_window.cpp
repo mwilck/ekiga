@@ -94,9 +94,6 @@
 
 #include <algorithm>
 
-// this is a bad way to do things,but still
-#undef CORE_ACTIONS_MENU
-
 enum CallingState {Standby, Calling, Connected, Called};
 
 enum DeviceType {AudioInput, AudioOutput, Ringer, VideoInput};
