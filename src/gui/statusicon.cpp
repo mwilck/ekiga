@@ -55,6 +55,7 @@
 
 #include "services.h"
 #include "gtk-frontend.h"
+#include "notification-core.h"
 #include "personal-details.h"
 
 
@@ -69,7 +70,6 @@ struct _StatusIconPrivate
   gboolean has_message;
 
   std::vector<boost::signals::connection> connections;
-  std::list<std::string> failed_accounts;
 
   int blink_id;
   std::string status;
@@ -142,11 +142,6 @@ cleared_call_cb (boost::shared_ptr<Ekiga::CallManager>  manager,
                  boost::shared_ptr<Ekiga::Call>  call,
                  std::string reason,
                  gpointer self);
-
-static void
-on_account_updated (Ekiga::BankPtr bank,
-		    Ekiga::AccountPtr account,
-                    gpointer data);
 
 
 /*
@@ -296,6 +291,10 @@ statusicon_activated_cb (G_GNUC_UNUSED GtkStatusIcon *icon,
     gtk_widget_show (w);
     gtk_window_present (GTK_WINDOW (w));
   }
+
+  // Remove warnings
+  statusicon_set_status (STATUSICON (data), STATUSICON (data)->priv->status);
+  gtk_status_icon_set_tooltip_text (GTK_STATUS_ICON (self), NULL);
 }
 
 
@@ -399,62 +398,6 @@ cleared_call_cb (boost::shared_ptr<Ekiga::CallManager>  /*manager*/,
                  gpointer self)
 {
   statusicon_set_inacall (STATUSICON (self), false);
-}
-
-
-static bool
-on_visit_accounts (Ekiga::AccountPtr account,
-                   gpointer data)
-{
-  if (account->is_enabled () && !account->is_active ())
-    STATUSICON (data)->priv->failed_accounts.push_back (account->get_name ());
-
-  return true;
-}
-
-
-static bool
-on_visit_banks (Ekiga::BankPtr bank,
-		gpointer data)
-{
-  bank->visit_accounts (boost::bind (&on_visit_accounts, _1, data));
-
-  return true;
-}
-
-
-static void
-on_account_updated (Ekiga::BankPtr /*bank*/,
-		    Ekiga::AccountPtr /*account*/,
-                    gpointer data)
-{
-  std::string message = _("The following accounts are inactive:");
-  boost::shared_ptr<Ekiga::AccountCore> account_core = STATUSICON (data)->priv->core.get<Ekiga::AccountCore> ("account-core");
-  STATUSICON (data)->priv->failed_accounts.clear ();
-
-  account_core->visit_banks (boost::bind (&on_visit_banks, _1, data));
-
-  for (std::list<std::string>::iterator it = STATUSICON (data)->priv->failed_accounts.begin ();
-       it != STATUSICON (data)->priv->failed_accounts.end ();
-       it++) {
-    message += "\n";
-    message += (*it);
-  }
-
-  if (STATUSICON (data)->priv->failed_accounts.size () > 0) { 
-    boost::shared_ptr<GtkFrontend> frontend = STATUSICON (data)->priv->core.get<GtkFrontend> ("gtk-frontend");
-    // FIXME use main_window here
-    GtkWidget* chat_window = GTK_WIDGET (frontend->get_chat_window ());
-    GdkPixbuf* pixbuf = gtk_widget_render_icon (chat_window, GTK_STOCK_DIALOG_WARNING, GTK_ICON_SIZE_MENU, NULL); 
-    gtk_status_icon_set_from_pixbuf (GTK_STATUS_ICON (data), pixbuf);
-    g_object_unref (pixbuf);
-  }
-  else {
-    statusicon_set_status (STATUSICON (data), STATUSICON (data)->priv->status);
-    message = "";
-  }
-
-  gtk_status_icon_set_tooltip_text (GTK_STATUS_ICON (data), message.c_str ());
 }
 
 
@@ -574,6 +517,28 @@ statusicon_set_inacall (StatusIcon *statusicon,
   }
 }
 
+static void
+statusicon_on_notification_added (boost::shared_ptr<Ekiga::Notification> notification,
+                                  gpointer self)
+{
+  boost::shared_ptr<GtkFrontend> frontend = STATUSICON (self)->priv->core.get<GtkFrontend> ("gtk-frontend");
+  GtkWidget* chat_window = GTK_WIDGET (frontend->get_chat_window ());
+  GdkPixbuf* pixbuf = gtk_widget_render_icon (chat_window, GTK_STOCK_DIALOG_WARNING, GTK_ICON_SIZE_MENU, NULL);
+
+  gchar *current_tooltip = gtk_status_icon_get_tooltip_text (GTK_STATUS_ICON (self));
+  gchar *tooltip = NULL;
+  if (current_tooltip != NULL)
+    tooltip = g_strdup_printf ("%s\n%s", current_tooltip, notification->get_title ().c_str ());
+  else
+    tooltip = g_strdup (notification->get_title ().c_str ());
+
+  gtk_status_icon_set_from_pixbuf (GTK_STATUS_ICON (self), pixbuf);
+  gtk_status_icon_set_tooltip_text (GTK_STATUS_ICON (self), tooltip);
+  g_object_unref (pixbuf);
+
+  g_free (current_tooltip);
+  g_free (tooltip);
+}
 
 /*
  * Public API
@@ -599,22 +564,21 @@ statusicon_new (Ekiga::ServiceCore & core)
   boost::shared_ptr<GtkFrontend> frontend = core.get<GtkFrontend> ("gtk-frontend");
   boost::shared_ptr<Ekiga::PersonalDetails> details = core.get<Ekiga::PersonalDetails> ("personal-details");
   boost::shared_ptr<Ekiga::CallCore> call_core = core.get<Ekiga::CallCore> ("call-core");
-  boost::shared_ptr<Ekiga::AccountCore> account_core = core.get<Ekiga::AccountCore> ("account-core");
+  boost::shared_ptr<Ekiga::NotificationCore> notification_core = core.get<Ekiga::NotificationCore> ("notification-core");
   GtkWidget *chat_window = GTK_WIDGET (frontend->get_chat_window ());
 
   statusicon_set_status (self, details->get_presence ());
+  notification_core->notification_added.connect (boost::bind (statusicon_on_notification_added, _1, (gpointer) self));
+
   conn = details->updated.connect (boost::bind (&personal_details_updated_cb, self, details));
   self->priv->connections.push_back (conn);
 
-  conn = call_core->established_call.connect (boost::bind (&established_call_cb, _1, _2, 
+  conn = call_core->established_call.connect (boost::bind (&established_call_cb, _1, _2,
                                                           (gpointer) self));
   self->priv->connections.push_back (conn);
 
   conn = call_core->cleared_call.connect (boost::bind (&cleared_call_cb, _1, _2, _3,
                                                       (gpointer) self));
-  self->priv->connections.push_back (conn);
-
-  conn = account_core->account_updated.connect (boost::bind (&on_account_updated, _1, _2, (gpointer) self));
   self->priv->connections.push_back (conn);
 
   g_signal_connect (self, "popup-menu",
