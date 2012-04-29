@@ -132,12 +132,12 @@ static void
 statusicon_set_inacall (StatusIcon *widget,
                         bool inacall);
 
-static void 
+static void
 established_call_cb (boost::shared_ptr<Ekiga::CallManager>  manager,
                      boost::shared_ptr<Ekiga::Call>  call,
                      gpointer self);
 
-static void 
+static void
 cleared_call_cb (boost::shared_ptr<Ekiga::CallManager>  manager,
                  boost::shared_ptr<Ekiga::Call>  call,
                  std::string reason,
@@ -165,7 +165,7 @@ statusicon_dispose (GObject *obj)
     g_free (icon->priv->blink_image);
     icon->priv->blink_image = NULL;
   }
-  
+
   parent_class->dispose (obj);
 }
 
@@ -266,6 +266,7 @@ statusicon_activated_cb (G_GNUC_UNUSED GtkStatusIcon *icon,
 
   GtkWidget *window = NULL;
 
+  // No unread messages => show ekiga
   if (!self->priv->unread_messages) {
 
     window = GnomeMeeting::Process ()->GetMainWindow (); //FIXME
@@ -285,6 +286,7 @@ statusicon_activated_cb (G_GNUC_UNUSED GtkStatusIcon *icon,
   }
   else {
 
+    // Unread messages => show chat window
     boost::shared_ptr<GtkFrontend> frontend = self->priv->core.get<GtkFrontend> ("gtk-frontend");
     GtkWidget *w = GTK_WIDGET (frontend->get_chat_window ());
 
@@ -292,7 +294,7 @@ statusicon_activated_cb (G_GNUC_UNUSED GtkStatusIcon *icon,
     gtk_window_present (GTK_WINDOW (w));
   }
 
-  // Remove warnings
+  // Remove warnings from statusicon
   statusicon_set_status (STATUSICON (data), STATUSICON (data)->priv->status);
   gtk_status_icon_set_tooltip_text (GTK_STATUS_ICON (self), NULL);
 }
@@ -317,9 +319,7 @@ unread_count_cb (G_GNUC_UNUSED GtkWidget *widget,
     message = g_strdup_printf (ngettext ("You have %d message",
 					 "You have %d messages",
 					 messages), messages);
-
     gtk_status_icon_set_tooltip_text (GTK_STATUS_ICON (self), message);
-
     g_free (message);
   }
   else
@@ -382,7 +382,7 @@ personal_details_updated_cb (StatusIcon* self,
 }
 
 
-static void 
+static void
 established_call_cb (boost::shared_ptr<Ekiga::CallManager>  /*manager*/,
                      boost::shared_ptr<Ekiga::Call>  /*call*/,
                      gpointer self)
@@ -391,7 +391,7 @@ established_call_cb (boost::shared_ptr<Ekiga::CallManager>  /*manager*/,
 }
 
 
-static void 
+static void
 cleared_call_cb (boost::shared_ptr<Ekiga::CallManager>  /*manager*/,
                  boost::shared_ptr<Ekiga::Call>  /*call*/,
                  std::string /*reason*/,
@@ -573,12 +573,10 @@ statusicon_new (Ekiga::ServiceCore & core)
   conn = details->updated.connect (boost::bind (&personal_details_updated_cb, self, details));
   self->priv->connections.push_back (conn);
 
-  conn = call_core->established_call.connect (boost::bind (&established_call_cb, _1, _2,
-                                                          (gpointer) self));
+  conn = call_core->established_call.connect (boost::bind (&established_call_cb, _1, _2, (gpointer) self));
   self->priv->connections.push_back (conn);
 
-  conn = call_core->cleared_call.connect (boost::bind (&cleared_call_cb, _1, _2, _3,
-                                                      (gpointer) self));
+  conn = call_core->cleared_call.connect (boost::bind (&cleared_call_cb, _1, _2, _3, (gpointer) self));
   self->priv->connections.push_back (conn);
 
   g_signal_connect (self, "popup-menu",
