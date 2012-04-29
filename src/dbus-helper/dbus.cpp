@@ -60,7 +60,7 @@ G_DEFINE_TYPE(EkigaDBusComponent, ekiga_dbus_component, G_TYPE_OBJECT);
 
 struct _EkigaDBusComponentPrivate
 {
-  Ekiga::ServiceCore *core;
+  Ekiga::ServiceCorePtr core;
 };
 
 /**************************
@@ -233,7 +233,7 @@ ekiga_dbus_claim_ownership ()
  *       the manager and other key components are running.
  */
 EkigaDBusComponent *
-ekiga_dbus_component_new (Ekiga::ServiceCore *core)
+ekiga_dbus_component_new (Ekiga::ServiceCorePtr core)
 {
   DBusGConnection *bus;
   GError *error = NULL;
