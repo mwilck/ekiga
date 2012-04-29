@@ -39,9 +39,8 @@
 
 #include "config.h"
 
-#include "callbacks.h"
+#include "gmcallbacks.h"
 
-#include "ekiga.h"
 #include "gmwindow.h"
 #include "gmstockicons.h"
 
@@ -199,8 +198,8 @@ help_callback (G_GNUC_UNUSED GtkWidget *widget,
 
   if (!success) {
     GtkWidget *d;
-    d = gtk_message_dialog_new (GTK_WINDOW (GnomeMeeting::Process ()->GetMainWindow ()),
-                                (GtkDialogFlags) (GTK_DIALOG_MODAL | GTK_DIALOG_DESTROY_WITH_PARENT),
+    d = gtk_message_dialog_new (NULL,
+                                (GtkDialogFlags) (GTK_DIALOG_MODAL),
                                 GTK_MESSAGE_ERROR, GTK_BUTTONS_CLOSE,
                                 "%s", _("Unable to open help file."));
     gtk_message_dialog_format_secondary_text (GTK_MESSAGE_DIALOG (d),
@@ -217,25 +216,6 @@ void
 quit_callback (G_GNUC_UNUSED GtkWidget *widget,
 	       G_GNUC_UNUSED gpointer data)
 {
-  GtkWidget *main_window = NULL;
-  GtkWidget *assistant_window = NULL;
-  GtkWidget *prefs_window = NULL;
-  GtkWidget *accounts_window = NULL;
-
-  main_window = GnomeMeeting::Process ()->GetMainWindow ();
-  assistant_window = GnomeMeeting::Process ()->GetAssistantWindow ();
-  prefs_window = GnomeMeeting::Process ()->GetPrefsWindow ();
-  accounts_window = GnomeMeeting::Process ()->GetAccountsWindow ();
-
-  if (main_window)
-    gtk_widget_hide (main_window);
-  if (assistant_window)
-    gm_window_hide (assistant_window);
-  if (prefs_window)
-    gm_window_hide (prefs_window);
-  if (accounts_window)
-    gm_window_hide (accounts_window);
-
   while (gtk_events_pending ())
     gtk_main_iteration ();
 

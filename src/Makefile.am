@@ -59,8 +59,6 @@ ekiga_SOURCES +=			\
 	gui/accounts.cpp		\
 	gui/assistant.h			\
 	gui/assistant.cpp		\
-	gui/callbacks.h			\
-	gui/callbacks.cpp		\
 	gui/conf.h			\
 	gui/conf.cpp			\
 	gui/default_devices.cpp	        \
@@ -73,8 +71,6 @@ ekiga_SOURCES +=			\
 	gui/notify.cpp                  \
 	gui/preferences.h		\
 	gui/preferences.cpp		\
-	gui/statusicon.h		\
-	gui/statusicon.cpp		\
 	gui/statusmenu.h		\
 	gui/statusmenu.cpp
 

@@ -42,7 +42,7 @@
 #include "opal-bank.h"
 #include "account-core.h"
 
-#include "callbacks.h"
+#include "gmcallbacks.h"
 
 #include "gmconf.h"
 #include "gmwindow.h"
@@ -667,8 +667,7 @@ gm_accounts_window_new (Ekiga::ServiceCore &core)
 
   frame = gtk_frame_new (NULL);
   gtk_widget_set_size_request (GTK_WIDGET (frame), 250, 150);
-  gtk_container_set_border_width (GTK_CONTAINER (frame),
-				  2 * GNOMEMEETING_PAD_SMALL);
+  gtk_container_set_border_width (GTK_CONTAINER (frame), 4);
   gtk_frame_set_shadow_type (GTK_FRAME (frame), GTK_SHADOW_IN);
   gtk_container_add (GTK_CONTAINER (frame), scroll_window);
   gtk_container_add (GTK_CONTAINER (scroll_window), aw->accounts_list);

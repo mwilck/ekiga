@@ -42,21 +42,21 @@
 
 #include "gmstockicons.h"
 #include "gmmenuaddon.h"
-
-#include "callbacks.h" // FIXME SHOULD GET RID OF THIS
-#include "ekiga.h"
+#include "gmcallbacks.h"
 
 #include "gtk-frontend.h"
 #include "call-core.h"
 
-#include <boost/signals.hpp>
-#include <boost/bind.hpp>
 #include <vector>
 
 #include "services.h"
 #include "gtk-frontend.h"
 #include "notification-core.h"
 #include "personal-details.h"
+
+#ifdef HAVE_NOTIFY
+#include <libnotify/notify.h>
+#endif
 
 
 /*
@@ -82,7 +82,7 @@ struct _StatusIconPrivate
 };
 
 static GObjectClass *parent_class = NULL;
-
+static guint signals = { 0 };
 
 /*
  * Declaration of Callbacks
@@ -104,11 +104,6 @@ unread_count_cb (GtkWidget *widget,
 
 static gboolean
 statusicon_blink_cb (gpointer data);
-
-static void
-status_icon_embedding_change_cb (G_GNUC_UNUSED GObject obj,
-				 G_GNUC_UNUSED GParamSpec param,
-				 G_GNUC_UNUSED gpointer data);
 
 
 /*
@@ -202,6 +197,15 @@ statusicon_class_init (gpointer g_class,
   gobject_class = (GObjectClass *) g_class;
   gobject_class->dispose = statusicon_dispose;
   gobject_class->finalize = statusicon_finalize;
+
+  signals =
+    g_signal_new ("clicked",
+		  G_OBJECT_CLASS_TYPE (gobject_class),
+		  G_SIGNAL_RUN_LAST,
+		  G_STRUCT_OFFSET (StatusIconClass, clicked),
+		  NULL, NULL,
+		  g_cclosure_marshal_VOID__VOID,
+		  G_TYPE_NONE, 0);
 }
 
 
@@ -252,7 +256,7 @@ show_popup_menu_cb (GtkStatusIcon *icon,
   popup = GTK_WIDGET (data);
 
   gtk_menu_popup (GTK_MENU (popup),
-                  NULL, NULL, 
+                  NULL, NULL,
                   (GtkMenuPositionFunc)gtk_status_icon_position_menu, icon,
                   button, activate_time);
 }
@@ -269,20 +273,9 @@ statusicon_activated_cb (G_GNUC_UNUSED GtkStatusIcon *icon,
   // No unread messages => show ekiga
   if (!self->priv->unread_messages) {
 
-    window = GnomeMeeting::Process ()->GetMainWindow (); //FIXME
-
-    // FIXME when the main window becomes a gobject
-    if (!gtk_widget_get_visible (window)
-        || (gdk_window_get_state (GDK_WINDOW (window->window)) & GDK_WINDOW_STATE_ICONIFIED)) {
-      gtk_widget_show (window);
-    }
-    else {
-
-      if (gtk_window_has_toplevel_focus (GTK_WINDOW (window)))
-        gtk_widget_hide (window);
-      else
-        gtk_window_present (GTK_WINDOW (window));
-    }
+    // FIXME: When the main_window will be a GtkFrontend component,
+    // this signal will be useless
+    g_signal_emit (self, signals, 0, NULL);
   }
   else {
 
@@ -340,11 +333,10 @@ statusicon_blink_cb (gpointer data)
   g_return_val_if_fail (data != NULL, false);
 
   boost::shared_ptr<GtkFrontend> frontend = statusicon->priv->core.get<GtkFrontend> ("gtk-frontend");
-  // FIXME use main_window here
   chat_window = GTK_WIDGET (frontend->get_chat_window ());
 
   pixbuf = gtk_widget_render_icon (chat_window, STATUSICON (data)->priv->blink_image,
-                                   GTK_ICON_SIZE_MENU, NULL); 
+                                   GTK_ICON_SIZE_MENU, NULL);
 
   if (statusicon->priv->blinking)
     gtk_status_icon_set_from_pixbuf (GTK_STATUS_ICON (statusicon), pixbuf);
@@ -354,23 +346,6 @@ statusicon_blink_cb (gpointer data)
   statusicon->priv->blinking = !statusicon->priv->blinking;
 
   return true;
-}
-
-
-static void
-status_icon_embedding_change_cb (G_GNUC_UNUSED GObject obj,
-                                 G_GNUC_UNUSED GParamSpec param,
-                                 gpointer data)
-{
-  GtkWidget *main_window = NULL;
-  GtkStatusIcon *status_icon = NULL;
-
-  status_icon = GTK_STATUS_ICON (data);
-  main_window = GnomeMeeting::Process ()->GetMainWindow ();
-
-  /* force the main window to show if no status icon for the user */
-  if (!gtk_status_icon_is_embedded (GTK_STATUS_ICON (status_icon)))
-    gtk_widget_show (main_window);
 }
 
 
@@ -498,21 +473,20 @@ statusicon_set_inacall (StatusIcon *statusicon,
   g_return_if_fail (statusicon != NULL);
 
   boost::shared_ptr<GtkFrontend> frontend = statusicon->priv->core.get<GtkFrontend> ("gtk-frontend");
-  // FIXME use main_window here
   chat_window = GTK_WIDGET (frontend->get_chat_window ());
 
-  /* Update the status icon */ 
+  /* Update the status icon */
   if (inacall) {
 
-    pixbuf = gtk_widget_render_icon (chat_window, 
-                                     GM_STOCK_STATUS_INACALL, 
-                                     GTK_ICON_SIZE_MENU, 
-                                     NULL); 
+    pixbuf = gtk_widget_render_icon (chat_window,
+                                     GM_STOCK_STATUS_INACALL,
+                                     GTK_ICON_SIZE_MENU,
+                                     NULL);
     gtk_status_icon_set_from_pixbuf (GTK_STATUS_ICON (statusicon), pixbuf);
     g_object_unref (pixbuf);
   }
   else {
-    
+
     statusicon_set_status (statusicon, statusicon->priv->status);
   }
 }
@@ -540,13 +514,42 @@ statusicon_on_notification_added (boost::shared_ptr<Ekiga::Notification> notific
   g_free (tooltip);
 }
 
+
+static bool
+notify_has_persistence (void)
+{
+  gboolean has = false;
+#ifdef HAVE_NOTIFY
+  GList   *caps;
+  GList   *l;
+
+  caps = notify_get_server_caps ();
+  if (caps == NULL) {
+    fprintf (stderr, "Failed to receive server caps.\n");
+    return FALSE;
+  }
+
+  l = g_list_find_custom (caps, "persistence", (GCompareFunc)strcmp);
+  has = l != NULL;
+
+  g_list_foreach (caps, (GFunc) g_free, NULL);
+  g_list_free (caps);
+#endif
+
+  return has;
+}
+
+
 /*
  * Public API
  */
 StatusIcon *
-statusicon_new (Ekiga::ServiceCore & core)
+status_icon_new (Ekiga::ServiceCore & core)
 {
   StatusIcon *self = NULL;
+
+  if (notify_has_persistence ())
+    return NULL;
 
   boost::signals::connection conn;
 
@@ -561,10 +564,10 @@ statusicon_new (Ekiga::ServiceCore & core)
   self->priv->blink_image = NULL;
   self->priv->unread_messages = false;
 
-  boost::shared_ptr<GtkFrontend> frontend = core.get<GtkFrontend> ("gtk-frontend");
   boost::shared_ptr<Ekiga::PersonalDetails> details = core.get<Ekiga::PersonalDetails> ("personal-details");
   boost::shared_ptr<Ekiga::CallCore> call_core = core.get<Ekiga::CallCore> ("call-core");
   boost::shared_ptr<Ekiga::NotificationCore> notification_core = core.get<Ekiga::NotificationCore> ("notification-core");
+  boost::shared_ptr<GtkFrontend> frontend = core.get<GtkFrontend> ("gtk-frontend");
   GtkWidget *chat_window = GTK_WIDGET (frontend->get_chat_window ());
 
   statusicon_set_status (self, details->get_presence ());
@@ -584,10 +587,6 @@ statusicon_new (Ekiga::ServiceCore & core)
 
   g_signal_connect (self, "activate",
                     G_CALLBACK (statusicon_activated_cb), self);
-
-  g_signal_connect (self, "notify::embedded",
-		    G_CALLBACK (status_icon_embedding_change_cb), self);
-
 
   g_signal_connect (chat_window, "unread-count",
                     G_CALLBACK (unread_count_cb), self);

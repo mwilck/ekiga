@@ -49,6 +49,7 @@
 #include "presence-core.h"
 #include "addressbook-window.h"
 #include "chat-window.h"
+#include "statusicon.h"
 #include "roster-view-gtk.h"
 #include "history-source.h"
 #include "book-view-gtk.h"
@@ -72,22 +73,15 @@ gtk_frontend_init (Ekiga::ServiceCore &core,
 
     boost::shared_ptr<GtkFrontend> gtk_frontend (new GtkFrontend (core));
     core.add (gtk_frontend);
+    gtk_frontend->build ();
     result = true;
   }
   return result;
 }
 
 
-GtkFrontend::GtkFrontend (Ekiga::ServiceCore &core)
+GtkFrontend::GtkFrontend (Ekiga::ServiceCore & _core) : core(_core)
 {
-  boost::shared_ptr<Ekiga::ContactCore> contact_core = core.get<Ekiga::ContactCore> ("contact-core");
-  boost::shared_ptr<Ekiga::ChatCore> chat_core = core.get<Ekiga::ChatCore> ("chat-core");
-
-  addressbook_window =
-    addressbook_window_new_with_key (*contact_core, "/apps/" PACKAGE_NAME "/general/user_interface/addressbook_window");
-  chat_window =
-    chat_window_new (*chat_core,
-		     "/apps/" PACKAGE_NAME "/general/user_interface/chat_window");
 }
 
 
@@ -95,6 +89,19 @@ GtkFrontend::~GtkFrontend ()
 {
   gtk_widget_destroy (addressbook_window);
   gtk_widget_destroy (chat_window);
+  if (status_icon)
+    g_object_unref (status_icon);
+}
+
+
+void GtkFrontend::build ()
+{
+  boost::shared_ptr<Ekiga::ContactCore> contact_core = core.get<Ekiga::ContactCore> ("contact-core");
+  boost::shared_ptr<Ekiga::ChatCore> chat_core = core.get<Ekiga::ChatCore> ("chat-core");
+
+  addressbook_window = addressbook_window_new_with_key (*contact_core, "/apps/" PACKAGE_NAME "/general/user_interface/addressbook_window");
+  chat_window = chat_window_new (*chat_core, "/apps/" PACKAGE_NAME "/general/user_interface/chat_window");
+  status_icon = status_icon_new (core);
 }
 
 
@@ -119,4 +126,10 @@ const GtkWidget *GtkFrontend::get_addressbook_window () const
 const GtkWidget *GtkFrontend::get_chat_window () const
 {
   return chat_window;
+}
+
+
+const StatusIcon *GtkFrontend::get_status_icon () const
+{
+  return status_icon;
 }

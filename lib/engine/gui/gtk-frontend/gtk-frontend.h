@@ -42,6 +42,8 @@
 #include <gtk/gtk.h>
 #include <vector>
 
+#include "statusicon.h"
+
 #include "services.h"
 #include "contact-core.h"
 #include "presence-core.h"
@@ -55,6 +57,8 @@ public:
 
   ~GtkFrontend ();
 
+  void build ();
+
   const std::string get_name () const;
 
   const std::string get_description () const;
@@ -63,10 +67,15 @@ public:
 
   const GtkWidget *get_chat_window () const;
 
+  const StatusIcon *get_status_icon () const;
+
 private :
 
   GtkWidget *addressbook_window;
   GtkWidget *chat_window;
+  StatusIcon *status_icon;
+
+  Ekiga::ServiceCore & core;
 };
 
 

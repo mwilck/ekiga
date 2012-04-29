@@ -56,12 +56,6 @@ bool notify_start (Ekiga::ServiceCore & core);
  */
 bool notify_has_actions (void);
 
-/* DESCRIPTION  : /
- * BEHAVIOR     : Returns true if notification server supports persistent
- *                notifications.
- */
-bool notify_has_persistence (void);
-
 G_END_DECLS
 
 #endif

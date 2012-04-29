@@ -46,8 +46,6 @@
 #include "services.h"
 #include "runtime.h"
 
-#include "statusicon.h"
-
 #include <ptlib/ipsock.h>
 
 
@@ -113,13 +111,6 @@ class GnomeMeeting : public PProcess
   GtkWidget *GetAccountsWindow ();
 
 
-  /* DESCRIPTION  :  /
-   * BEHAVIOR     :  Returns a pointer to the tray.
-   * PRE          :  /
-   */
-  StatusIcon *GetStatusicon ();
-
-
   /* Needed for PProcess */
   void Main();
   static GnomeMeeting *Process ();
@@ -147,7 +138,6 @@ class GnomeMeeting : public PProcess
   GtkWidget *assistant_window;
   GtkWidget *prefs_window;
   GtkWidget *accounts_window;
-  StatusIcon *statusicon;
 
   static GnomeMeeting *GM;
 };

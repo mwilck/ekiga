@@ -42,12 +42,14 @@
 
 #include <gtk/gtk.h>
 
+#include <boost/signals.hpp>
+#include <boost/bind.hpp>
+
 G_BEGIN_DECLS
 
 typedef struct _StatusIcon StatusIcon;
 typedef struct _StatusIconPrivate StatusIconPrivate;
 typedef struct _StatusIconClass StatusIconClass;
-
 
 /* GObject thingies */
 struct _StatusIcon
@@ -59,6 +61,8 @@ struct _StatusIcon
 struct _StatusIconClass
 {
   GtkStatusIconClass parent;
+
+  void (*clicked) (StatusIcon* self);
 };
 
 #define STATUSICON_TYPE (statusicon_get_type ())
@@ -75,14 +79,12 @@ struct _StatusIconClass
 
 GType statusicon_get_type ();
 
-
-
 /* Public API */
 
 /* DESCRIPTION  : /
  * BEHAVIOR     : Returns a new statusicon, with the default icon and menu
  */
-StatusIcon *statusicon_new (Ekiga::ServiceCore & core);
+StatusIcon *status_icon_new (Ekiga::ServiceCore & core);
 
 G_END_DECLS
 

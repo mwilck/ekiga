@@ -43,7 +43,6 @@
 
 #include "ekiga.h"
 #include "conf.h"
-#include "callbacks.h"
 #include "dialpad.h"
 #include "statusmenu.h"
 

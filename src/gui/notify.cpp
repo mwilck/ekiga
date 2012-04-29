@@ -244,27 +244,3 @@ notify_has_actions (void)
 #endif
   return (accepts_actions > 0);
 }
-
-bool
-notify_has_persistence (void)
-{
-  gboolean has = false;
-#ifdef HAVE_NOTIFY
-  GList   *caps;
-  GList   *l;
-
-  caps = notify_get_server_caps ();
-  if (caps == NULL) {
-    fprintf (stderr, "Failed to receive server caps.\n");
-    return FALSE;
-  }
-
-  l = g_list_find_custom (caps, "persistence", (GCompareFunc)strcmp);
-  has = l != NULL;
-
-  g_list_foreach (caps, (GFunc) g_free, NULL);
-  g_list_free (caps);
-#endif
-
-  return has;
-}

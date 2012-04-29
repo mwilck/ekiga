@@ -46,7 +46,7 @@
 #include "ekiga.h"
 #include "gmmarshallers.h"
 #include "gmconf.h"
-#include "callbacks.h"
+#include "gmcallbacks.h"
 #include "accounts.h"
 
 #include "call-core.h"

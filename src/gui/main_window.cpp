@@ -43,11 +43,11 @@
 
 #include "ekiga.h"
 #include "conf.h"
-#include "callbacks.h"
 #include "dialpad.h"
 #include "statusmenu.h"
 #include "notify.h"
 
+#include "gmcallbacks.h"
 #include "gmdialog.h"
 #include "gmentrydialog.h"
 #include "gmstatusbar.h"
@@ -241,6 +241,12 @@ static const std::string ekiga_main_window_get_call_url (EkigaMainWindow *mw);
  */
 static void on_chat_unread_alert (GtkWidget*,
 				  gpointer);
+
+/* DESCRIPTION  :  This callback is called when the status icon is cliked
+ * PRE          :  /
+ */
+static void status_icon_clicked_cb (GtkWidget*,
+                                    gpointer);
 
 /* DESCRIPTION  :  This callback is called when the control panel
  *                 section key changes (which can be when the radio
@@ -1043,6 +1049,7 @@ on_roster_selection_changed (G_GNUC_UNUSED GtkWidget* view,
   }
 }
 
+
 static void
 on_chat_unread_alert (G_GNUC_UNUSED GtkWidget* widget,
 		      gpointer data)
@@ -1057,6 +1064,26 @@ on_chat_unread_alert (G_GNUC_UNUSED GtkWidget* widget,
 
   if (!file_name_string.empty ())
     audiooutput_core->play_file(file_name_string);
+}
+
+
+static void
+status_icon_clicked_cb (G_GNUC_UNUSED GtkWidget* widget,
+                        gpointer data)
+{
+  GtkWidget *window = GTK_WIDGET (data);
+
+  if (!gtk_widget_get_visible (window)
+      || (gdk_window_get_state (GDK_WINDOW (window->window)) & GDK_WINDOW_STATE_ICONIFIED)) {
+    gtk_widget_show (window);
+  }
+  else {
+
+    if (gtk_window_has_toplevel_focus (GTK_WINDOW (window)))
+      gtk_widget_hide (window);
+    else
+      gtk_window_present (GTK_WINDOW (window));
+  }
 }
 
 
@@ -1221,6 +1248,8 @@ window_closed_cb (G_GNUC_UNUSED GtkWidget *widget,
 		  G_GNUC_UNUSED GdkEvent *event,
 		  gpointer data)
 {
+  std::cout << "FIXME" << std::endl << std::flush;
+  /*
   StatusIcon *statusicon = GnomeMeeting::Process ()->GetStatusicon ();
   // If we have persistent notifications:
   //  - we can hide the window
@@ -1232,7 +1261,7 @@ window_closed_cb (G_GNUC_UNUSED GtkWidget *widget,
   gtk_widget_hide (GTK_WIDGET (data));
   if (!notify_has_persistence () && statusicon && !gtk_status_icon_is_embedded (GTK_STATUS_ICON (statusicon)))
     quit_callback (NULL, widget);
-
+*/
   return (TRUE);
 }
 
@@ -2150,11 +2179,12 @@ gm_main_window_new (Ekiga::ServiceCore & core)
 {
   GtkWidget *window = NULL;
   GtkWidget *chat_window = NULL;
+  StatusIcon *status_icon = NULL;
 
   /* initialize the callback to play IM message sound */
-  /* FIXME: move this to the chat window code */
   boost::shared_ptr<GtkFrontend> gtk_frontend = core.get<GtkFrontend> ("gtk-frontend");
   chat_window = GTK_WIDGET (gtk_frontend->get_chat_window ());
+  status_icon = STATUSICON (gtk_frontend->get_status_icon ());
 
   g_signal_connect (chat_window, "unread-alert",
 		    G_CALLBACK (on_chat_unread_alert), &core);
@@ -2162,6 +2192,9 @@ gm_main_window_new (Ekiga::ServiceCore & core)
   /* The Top-level window */
   window = ekiga_main_window_new (&core);
 
+  if (status_icon)
+    g_signal_connect (status_icon, "clicked",
+                      G_CALLBACK (status_icon_clicked_cb), (gpointer) window);
 
   return window;
 }

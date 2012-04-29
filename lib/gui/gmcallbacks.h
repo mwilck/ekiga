@@ -40,7 +40,9 @@
 #ifndef _CALLBACKS_H
 #define _CALLBACKS_H
 
-#include "common.h"
+#include <gtk/gtk.h>
+
+G_BEGIN_DECLS
 
 /* DESCRIPTION  :  This callback is called when the user chooses to open
  *                 the about window.
@@ -66,5 +68,7 @@ void help_callback (GtkWidget *widget,
  */
 void quit_callback (GtkWidget *widget,
 		    gpointer data);
+
+G_END_DECLS
 
 #endif

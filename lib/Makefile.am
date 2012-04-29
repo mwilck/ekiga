@@ -48,11 +48,11 @@ INCLUDES = \
 	-I$(top_srcdir)/lib/engine/components/ptlib
 
 AM_CFLAGS = \
-	$(GLIB_CFLAGS) $(GTK_CFLAGS) $(GCONF_CFLAGS) $(DBUS_CFLAGS)
+	$(GLIB_CFLAGS) $(GTK_CFLAGS) $(GCONF_CFLAGS) $(DBUS_CFLAGS) $(NOTIFY_CFLAGS)
 
 AM_CPPFLAGS = \
 	$(BOOST_CPPFLAGS) $(GLIB_CFLAGS) $(XML_CFLAGS) $(GTK_CFLAGS) \
-	$(DBUS_CFLAGS) $(PTLIB_CFLAGS) $(OPAL_CFLAGS)
+	$(DBUS_CFLAGS) $(PTLIB_CFLAGS) $(OPAL_CFLAGS) $(NOTIFY_LIBS)
 AM_LIBS = \
 	$(BOOST_LIBS) $(GLIB_LIBS) $(XML_LIBS) $(GTK_LIBS)
 
@@ -142,6 +142,8 @@ libekiga_la_SOURCES += \
 	$(top_srcdir)/lib/gui/gm-smileys.c \
 	$(top_srcdir)/lib/gui/gmwindow.c \
 	$(top_srcdir)/lib/gui/gmwindow.h \
+	$(top_srcdir)/lib/gui/gmcallbacks.c \
+	$(top_srcdir)/lib/gui/gmcallbacks.h \
 	$(top_srcdir)/lib/gui/gmconfwidgets.c \
 	$(top_srcdir)/lib/gui/gmconfwidgets.h \
 	$(top_srcdir)/lib/gui/gmdialog.c \
@@ -443,6 +445,8 @@ libekiga_la_SOURCES += \
 	$(engine_dir)/gui/gtk-frontend/simple-chat-page.cpp \
 	$(engine_dir)/gui/gtk-frontend/multiple-chat-page.h \
 	$(engine_dir)/gui/gtk-frontend/multiple-chat-page.cpp \
+	$(engine_dir)/gui/gtk-frontend/statusicon.cpp \
+	$(engine_dir)/gui/gtk-frontend/statusicon.h \
 	$(engine_dir)/gui/gtk-frontend/chat-window.h \
 	$(engine_dir)/gui/gtk-frontend/chat-window.cpp \
 	$(engine_dir)/gui/gtk-frontend/gtk-frontend.h \
