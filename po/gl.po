@@ -11,8 +11,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: ekiga-master-po-gl-24088\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2012-04-19 20:15+0200\n"
-"PO-Revision-Date: 2012-04-19 20:15+0200\n"
+"POT-Creation-Date: 2012-04-30 16:48+0200\n"
+"PO-Revision-Date: 2012-04-30 16:49+0200\n"
 "Last-Translator: Fran Dieguez <frandieguez@gnome.org>\n"
 "Language-Team: Galician <gnome-l10n-gl@gnome.org>\n"
 "Language: gl\n"
@@ -23,8 +23,7 @@ msgstr ""
 "X-Generator: KBabel 1.11.4\n"
 
 #. Application name
-#: ../ekiga.desktop.in.in.h:1 ../src/gui/main_window.cpp:2326
-#: ../src/gui/main_window.cpp:2328
+#: ../ekiga.desktop.in.in.h:1 ../src/gui/main.cpp:103 ../src/gui/main.cpp:105
 msgid "Ekiga Softphone"
 msgstr "Softphone do Ekiga"
 
@@ -101,7 +100,7 @@ msgstr ""
 msgid "Video preview"
 msgstr "Previsualización de vídeo"
 
-#: ../ekiga.schemas.in.in.h:14
+#: ../ekiga.schemas.in.in.h:14 ../src/gui/main_window.cpp:1568
 msgid "Display images from your camera device"
 msgstr "Mostra as imaxes da cámara de vídeo"
 
@@ -752,7 +751,7 @@ msgstr ""
 msgid "List of folded groups in the roster"
 msgstr "Lista dos grupos agrupados na lista de contactos"
 
-#: ../ekiga.schemas.in.in.h:133 ../src/gui/main_window.cpp:1798
+#: ../ekiga.schemas.in.in.h:133 ../src/gui/main_window.cpp:1733
 msgid "Show offline contacts"
 msgstr "Mostrar os contactos desconectados"
 
@@ -915,7 +914,7 @@ msgstr ""
 #: ../lib/engine/components/local-roster/local-heap.cpp:236
 #: ../lib/engine/components/local-roster/local-heap.cpp:427
 #: ../lib/engine/components/local-roster/local-presentity.cpp:270
-#: ../lib/engine/components/opal/opal-account.cpp:452
+#: ../lib/engine/components/opal/opal-account.cpp:444
 #: ../plugins/evolution/evolution-contact.cpp:324
 #: ../plugins/loudmouth/loudmouth-account.cpp:338
 #: ../plugins/loudmouth/loudmouth-bank.cpp:125
@@ -976,20 +975,20 @@ msgid "Unnamed"
 msgstr "Sen nome"
 
 #: ../lib/engine/components/local-roster/local-presentity.cpp:240
-#: ../lib/engine/components/opal/opal-account.cpp:407
+#: ../lib/engine/components/opal/opal-account.cpp:399
 #: ../plugins/evolution/evolution-contact.cpp:228
 #: ../plugins/loudmouth/loudmouth-presentity.cpp:160
 #: ../plugins/resource-list/rl-presentity.cpp:212
-#: ../src/gui/main_window.cpp:1756
+#: ../src/gui/main_window.cpp:1691
 msgid "_Edit"
 msgstr "_Editar"
 
 #: ../lib/engine/components/local-roster/local-presentity.cpp:242
-#: ../lib/engine/components/opal/opal-account.cpp:409
+#: ../lib/engine/components/opal/opal-account.cpp:401
 #: ../plugins/evolution/evolution-contact.cpp:230
 #: ../plugins/loudmouth/loudmouth-account.cpp:435
 #: ../plugins/loudmouth/loudmouth-presentity.cpp:193
-#: ../plugins/resource-list/rl-presentity.cpp:214 ../src/gui/accounts.cpp:692
+#: ../plugins/resource-list/rl-presentity.cpp:214 ../src/gui/accounts.cpp:691
 msgid "_Remove"
 msgstr "E_liminar"
 
@@ -1026,7 +1025,7 @@ msgstr "Chamada"
 #: ../lib/engine/components/opal/h323-endpoint.cpp:138
 #: ../lib/engine/components/opal/sip-endpoint.cpp:252
 #: ../lib/engine/components/opal/sip-endpoint.cpp:256
-#: ../src/gui/call_window.cpp:2110
+#: ../src/gui/call_window.cpp:2106
 msgid "Transfer"
 msgstr "Transferir"
 
@@ -1054,7 +1053,7 @@ msgstr "Fallou"
 #. "(you are) unregistered", and not as "(you have been) unregistered"
 #: ../lib/engine/components/opal/opal-account.cpp:70
 #: ../lib/engine/components/opal/opal-account.cpp:333
-#: ../lib/engine/components/opal/opal-account.cpp:622
+#: ../lib/engine/components/opal/opal-account.cpp:614
 msgid "Unregistered"
 msgstr "Rexistro anulado"
 
@@ -1069,43 +1068,43 @@ msgstr[0] "%s (con %d mensaxe de correo de voz)"
 msgstr[1] "%s (con %d mensaxes de correo de voz)"
 
 #: ../lib/engine/components/opal/opal-account.cpp:308
-#: ../lib/engine/components/opal/opal-account.cpp:679
+#: ../lib/engine/components/opal/opal-account.cpp:678
 msgid "Processing..."
 msgstr "Procesando…"
 
-#: ../lib/engine/components/opal/opal-account.cpp:399
-#: ../plugins/loudmouth/loudmouth-account.cpp:423 ../src/gui/accounts.cpp:686
+#: ../lib/engine/components/opal/opal-account.cpp:391
+#: ../plugins/loudmouth/loudmouth-account.cpp:423 ../src/gui/accounts.cpp:685
 msgid "_Disable"
 msgstr "_Desactivar"
 
-#: ../lib/engine/components/opal/opal-account.cpp:402
-#: ../plugins/loudmouth/loudmouth-account.cpp:427 ../src/gui/accounts.cpp:683
+#: ../lib/engine/components/opal/opal-account.cpp:394
+#: ../plugins/loudmouth/loudmouth-account.cpp:427 ../src/gui/accounts.cpp:682
 msgid "_Enable"
 msgstr "_Activar"
 
-#: ../lib/engine/components/opal/opal-account.cpp:423
+#: ../lib/engine/components/opal/opal-account.cpp:415
 #: ../src/gui/assistant.cpp:762
 msgid "Recharge the account"
 msgstr "Recargar a conta"
 
-#: ../lib/engine/components/opal/opal-account.cpp:428
+#: ../lib/engine/components/opal/opal-account.cpp:420
 #: ../src/gui/assistant.cpp:774
 msgid "Consult the balance history"
 msgstr "Consultar o historial de balance"
 
-#: ../lib/engine/components/opal/opal-account.cpp:433
+#: ../lib/engine/components/opal/opal-account.cpp:425
 #: ../src/gui/assistant.cpp:786
 msgid "Consult the call history"
 msgstr "Consultar o historial de chamadas"
 
-#: ../lib/engine/components/opal/opal-account.cpp:448
+#: ../lib/engine/components/opal/opal-account.cpp:440
 #: ../lib/engine/components/opal/opal-bank.cpp:96
 #: ../plugins/loudmouth/loudmouth-account.cpp:333
 #: ../plugins/loudmouth/loudmouth-bank.cpp:121
 msgid "Edit account"
 msgstr "Editar conta"
 
-#: ../lib/engine/components/opal/opal-account.cpp:450
+#: ../lib/engine/components/opal/opal-account.cpp:442
 #: ../lib/engine/components/opal/opal-bank.cpp:97
 #: ../plugins/evolution/evolution-book.cpp:341
 #: ../plugins/evolution/evolution-contact.cpp:322
@@ -1113,38 +1112,38 @@ msgstr "Editar conta"
 msgid "Please update the following fields:"
 msgstr "Actualice os seguintes campos:"
 
-#: ../lib/engine/components/opal/opal-account.cpp:452
+#: ../lib/engine/components/opal/opal-account.cpp:444
 #: ../lib/engine/components/opal/opal-bank.cpp:123
 #: ../lib/engine/components/opal/opal-bank.cpp:133
 msgid "Account name, e.g. MyAccount"
 msgstr "Nome da conta, p.ex. AmiñaConta"
 
-#: ../lib/engine/components/opal/opal-account.cpp:454
+#: ../lib/engine/components/opal/opal-account.cpp:446
 msgid "Registrar:"
 msgstr "Servidor de rexistro:"
 
-#: ../lib/engine/components/opal/opal-account.cpp:454
+#: ../lib/engine/components/opal/opal-account.cpp:446
 #: ../lib/engine/components/opal/opal-bank.cpp:134
 msgid "The registrar, e.g. ekiga.net"
 msgstr "O servidor de rexistro, p.ex. ekiga.net"
 
-#: ../lib/engine/components/opal/opal-account.cpp:456
+#: ../lib/engine/components/opal/opal-account.cpp:448
 msgid "Gatekeeper:"
 msgstr "Gatekeeper:"
 
-#: ../lib/engine/components/opal/opal-account.cpp:456
+#: ../lib/engine/components/opal/opal-account.cpp:448
 #: ../lib/engine/components/opal/opal-bank.cpp:124
 msgid "The gatekeeper, e.g. ekiga.net"
 msgstr "O gatekeeper, p.ex. ekiga.net"
 
-#: ../lib/engine/components/opal/opal-account.cpp:457
+#: ../lib/engine/components/opal/opal-account.cpp:449
 #: ../plugins/loudmouth/loudmouth-account.cpp:342
 #: ../plugins/loudmouth/loudmouth-bank.cpp:126
 #: ../plugins/resource-list/rl-cluster.cpp:174
 msgid "User:"
 msgstr "Usuario:"
 
-#: ../lib/engine/components/opal/opal-account.cpp:457
+#: ../lib/engine/components/opal/opal-account.cpp:449
 #: ../lib/engine/components/opal/opal-bank.cpp:105
 #: ../lib/engine/components/opal/opal-bank.cpp:116
 #: ../lib/engine/components/opal/opal-bank.cpp:125
@@ -1155,11 +1154,11 @@ msgstr "O nome de usuario, p.ex. xurxo"
 #. Translators:
 #. * SIP knows two usernames: The name for the client ("User") and the name
 #. * for the authentication procedure ("Authentication User")
-#: ../lib/engine/components/opal/opal-account.cpp:462
+#: ../lib/engine/components/opal/opal-account.cpp:454
 msgid "Authentication User:"
 msgstr "Usuario de autenticación:"
 
-#: ../lib/engine/components/opal/opal-account.cpp:462
+#: ../lib/engine/components/opal/opal-account.cpp:454
 #: ../lib/engine/components/opal/opal-bank.cpp:136
 msgid ""
 "The user name used during authentication, if different than the user name; "
@@ -1168,14 +1167,14 @@ msgstr ""
 "O nome de usuario usado para a autenticación, se é diferente do nome de "
 "usuario. Déixeo en branco se non ten ningún."
 
-#: ../lib/engine/components/opal/opal-account.cpp:463
+#: ../lib/engine/components/opal/opal-account.cpp:455
 #: ../plugins/loudmouth/loudmouth-account.cpp:354
 #: ../plugins/loudmouth/loudmouth-bank.cpp:129
 #: ../plugins/resource-list/rl-cluster.cpp:173
 msgid "Password:"
 msgstr "Contrasinal:"
 
-#: ../lib/engine/components/opal/opal-account.cpp:463
+#: ../lib/engine/components/opal/opal-account.cpp:455
 #: ../lib/engine/components/opal/opal-bank.cpp:107
 #: ../lib/engine/components/opal/opal-bank.cpp:118
 #: ../lib/engine/components/opal/opal-bank.cpp:127
@@ -1183,11 +1182,11 @@ msgstr "Contrasinal:"
 msgid "Password associated to the user"
 msgstr "O contrasinal asociado ao usuario"
 
-#: ../lib/engine/components/opal/opal-account.cpp:464
+#: ../lib/engine/components/opal/opal-account.cpp:456
 msgid "Timeout:"
 msgstr "Tempo de espera:"
 
-#: ../lib/engine/components/opal/opal-account.cpp:464
+#: ../lib/engine/components/opal/opal-account.cpp:456
 #: ../lib/engine/components/opal/opal-bank.cpp:128
 #: ../lib/engine/components/opal/opal-bank.cpp:138
 msgid ""
@@ -1196,100 +1195,104 @@ msgstr ""
 "Tempo en segundos despois de que o rexistro de conta se volva a tentar "
 "automaticamente"
 
-#: ../lib/engine/components/opal/opal-account.cpp:465
+#: ../lib/engine/components/opal/opal-account.cpp:457
 #: ../lib/engine/components/opal/opal-bank.cpp:141
 #: ../plugins/loudmouth/loudmouth-account.cpp:368
 #: ../plugins/loudmouth/loudmouth-bank.cpp:130
 msgid "Enable Account"
 msgstr "Activar a conta"
 
-#: ../lib/engine/components/opal/opal-account.cpp:491
+#: ../lib/engine/components/opal/opal-account.cpp:483
 #: ../lib/engine/components/opal/opal-bank.cpp:175
 msgid "You did not supply a name for that account."
 msgstr "Non proporcionou un nome para esa conta."
 
-#: ../lib/engine/components/opal/opal-account.cpp:493
+#: ../lib/engine/components/opal/opal-account.cpp:485
 #: ../lib/engine/components/opal/opal-bank.cpp:177
 msgid "You did not supply a host to register to."
 msgstr "Non proporcionou un servidor en que rexistrarse."
 
-#: ../lib/engine/components/opal/opal-account.cpp:495
+#: ../lib/engine/components/opal/opal-account.cpp:487
 #: ../lib/engine/components/opal/opal-bank.cpp:179
 msgid "You did not supply a user name for that account."
 msgstr "Non proporcionou un nome de usuario para esa conta."
 
-#: ../lib/engine/components/opal/opal-account.cpp:497
+#: ../lib/engine/components/opal/opal-account.cpp:489
 #: ../lib/engine/components/opal/opal-bank.cpp:181
 msgid "The timeout should be at least 10 seconds."
 msgstr "O tempo de espera debe ter ser cando menos 10 segundos."
 
 #. Translators: this is a state, not an action, i.e. it should be read as
 #. "(you are) registered", and not as "(you have been) registered"
-#: ../lib/engine/components/opal/opal-account.cpp:607
+#: ../lib/engine/components/opal/opal-account.cpp:599
 msgid "Registered"
 msgstr "Rexistrado"
 
-#: ../lib/engine/components/opal/opal-account.cpp:634
+#: ../lib/engine/components/opal/opal-account.cpp:626
 msgid "Could not unregister"
 msgstr "Non foi posíbel anular o rexistro"
 
-#: ../lib/engine/components/opal/opal-account.cpp:661
+#: ../lib/engine/components/opal/opal-account.cpp:658
 msgid "Could not register"
 msgstr "Non foi posíbel o rexistro"
 
-#: ../lib/engine/components/opal/opal-account.cpp:798
+#: ../lib/engine/components/opal/opal-account.cpp:664
+msgid "Could not register to "
+msgstr "Non foi posíbel o rexistro en"
+
+#: ../lib/engine/components/opal/opal-account.cpp:797
 msgid "Appointment"
 msgstr "Cita"
 
-#: ../lib/engine/components/opal/opal-account.cpp:803
+#: ../lib/engine/components/opal/opal-account.cpp:802
 msgid "Breakfast"
 msgstr "Almorzando"
 
-#: ../lib/engine/components/opal/opal-account.cpp:808
+#: ../lib/engine/components/opal/opal-account.cpp:807
 msgid "Dinner"
 msgstr "Ceando"
 
-#: ../lib/engine/components/opal/opal-account.cpp:814
+#: ../lib/engine/components/opal/opal-account.cpp:813
 msgid "Holiday"
 msgstr "Festivo"
 
-#: ../lib/engine/components/opal/opal-account.cpp:819
+#: ../lib/engine/components/opal/opal-account.cpp:818
 msgid "In transit"
 msgstr "En tránsito"
 
-#: ../lib/engine/components/opal/opal-account.cpp:824
+#: ../lib/engine/components/opal/opal-account.cpp:823
 msgid "Looking for work"
 msgstr "Buscando traballo"
 
-#: ../lib/engine/components/opal/opal-account.cpp:829
+#: ../lib/engine/components/opal/opal-account.cpp:828
 msgid "Lunch"
 msgstr "Almorzando"
 
-#: ../lib/engine/components/opal/opal-account.cpp:834
+#: ../lib/engine/components/opal/opal-account.cpp:833
 msgid "Meal"
 msgstr "Comendo"
 
-#: ../lib/engine/components/opal/opal-account.cpp:839
+#: ../lib/engine/components/opal/opal-account.cpp:838
 msgid "Meeting"
 msgstr "Nunha reunión"
 
-#: ../lib/engine/components/opal/opal-account.cpp:844
+#: ../lib/engine/components/opal/opal-account.cpp:843
 msgid "On the phone"
 msgstr "Ao teléfono"
 
-#: ../lib/engine/components/opal/opal-account.cpp:849
+#: ../lib/engine/components/opal/opal-account.cpp:848
 msgid "Playing"
 msgstr "Xogando"
 
-#: ../lib/engine/components/opal/opal-account.cpp:854
+#: ../lib/engine/components/opal/opal-account.cpp:853
 msgid "Shopping"
 msgstr "Mercando"
 
-#: ../lib/engine/components/opal/opal-account.cpp:859
+#: ../lib/engine/components/opal/opal-account.cpp:858
 msgid "Sleeping"
 msgstr "Durmindo"
 
-#: ../lib/engine/components/opal/opal-account.cpp:864
+#: ../lib/engine/components/opal/opal-account.cpp:863
 msgid "Working"
 msgstr "Traballando"
 
@@ -1363,89 +1366,97 @@ msgstr "Servidor de _rexistro:"
 msgid "_Authentication User:"
 msgstr "Usuario de _autenticación:"
 
-#: ../lib/engine/components/opal/opal-call.cpp:403
+#: ../lib/engine/components/opal/opal-call.cpp:404
 msgid "Local user cleared the call"
 msgstr "O usuario local eliminou a chamada"
 
-#: ../lib/engine/components/opal/opal-call.cpp:406
-#: ../lib/engine/components/opal/opal-call.cpp:409
+#: ../lib/engine/components/opal/opal-call.cpp:407
+#: ../lib/engine/components/opal/opal-call.cpp:410
 msgid "Local user rejected the call"
 msgstr "O usuario rexeitou a chamada"
 
-#: ../lib/engine/components/opal/opal-call.cpp:412
+#: ../lib/engine/components/opal/opal-call.cpp:413
 msgid "Remote user cleared the call"
 msgstr "O usuario remoto eliminou a chamada"
 
-#: ../lib/engine/components/opal/opal-call.cpp:415
+#: ../lib/engine/components/opal/opal-call.cpp:416
 msgid "Remote user rejected the call"
 msgstr "O usuario remoto rexeitou a chamada"
 
-#: ../lib/engine/components/opal/opal-call.cpp:418
+#: ../lib/engine/components/opal/opal-call.cpp:419
 msgid "Remote user has stopped calling"
 msgstr "O usuario remoto deixou de chamar"
 
-#: ../lib/engine/components/opal/opal-call.cpp:421
+#: ../lib/engine/components/opal/opal-call.cpp:422
 msgid "Abnormal call termination"
 msgstr "A chamada non finalizou normalmente"
 
-#: ../lib/engine/components/opal/opal-call.cpp:424
-#: ../src/gui/main_window.cpp:577
+#: ../lib/engine/components/opal/opal-call.cpp:425
+#: ../src/gui/main_window.cpp:535
 msgid "Could not connect to remote host"
 msgstr "Non foi posíbel conectar co servidor remoto"
 
-#: ../lib/engine/components/opal/opal-call.cpp:428
+#: ../lib/engine/components/opal/opal-call.cpp:429
 msgid "The Gatekeeper cleared the call"
 msgstr "O gatekeeper eliminou a chamada"
 
-#: ../lib/engine/components/opal/opal-call.cpp:431
+#: ../lib/engine/components/opal/opal-call.cpp:432
 msgid "User not found"
 msgstr "Non se atopou o usuario"
 
-#: ../lib/engine/components/opal/opal-call.cpp:434
+#: ../lib/engine/components/opal/opal-call.cpp:435
 msgid "Insufficient bandwidth"
 msgstr "Largo de banda insuficiente"
 
-#: ../lib/engine/components/opal/opal-call.cpp:437
+#: ../lib/engine/components/opal/opal-call.cpp:438
 msgid "No common codec"
 msgstr "Ningún códec común"
 
-#: ../lib/engine/components/opal/opal-call.cpp:440
+#: ../lib/engine/components/opal/opal-call.cpp:441
 msgid "Call forwarded"
 msgstr "Chamada reenviada"
 
-#: ../lib/engine/components/opal/opal-call.cpp:443
+#: ../lib/engine/components/opal/opal-call.cpp:444
 msgid "Security check failed"
 msgstr "Fallou a verificación de seguranza"
 
-#: ../lib/engine/components/opal/opal-call.cpp:446
+#: ../lib/engine/components/opal/opal-call.cpp:447
 msgid "Local user is busy"
 msgstr "O usuario local está ocupado"
 
-#: ../lib/engine/components/opal/opal-call.cpp:449
-#: ../lib/engine/components/opal/opal-call.cpp:455
+#: ../lib/engine/components/opal/opal-call.cpp:450
+#: ../lib/engine/components/opal/opal-call.cpp:456
 msgid "Congested link to remote party"
 msgstr "A ligazón co usuario remoto está conxestionada"
 
-#: ../lib/engine/components/opal/opal-call.cpp:452
+#: ../lib/engine/components/opal/opal-call.cpp:453
 msgid "Remote user is busy"
 msgstr "O usuario remoto está ocupado"
 
-#: ../lib/engine/components/opal/opal-call.cpp:458
+#: ../lib/engine/components/opal/opal-call.cpp:459
 msgid "Remote host is offline"
 msgstr "O servidor remoto non está conectado"
 
-#: ../lib/engine/components/opal/opal-call.cpp:464
+#: ../lib/engine/components/opal/opal-call.cpp:465
 msgid "User is not available"
 msgstr "O usuario non está dispoñíbel"
 
-#: ../lib/engine/components/opal/opal-call.cpp:467
+#: ../lib/engine/components/opal/opal-call.cpp:468
 #: ../lib/engine/components/opal/sip-endpoint.cpp:778
 msgid "Service unavailable"
 msgstr "Servizo non dispoñíbel"
 
-#: ../lib/engine/components/opal/opal-call.cpp:477
+#: ../lib/engine/components/opal/opal-call.cpp:478
 msgid "Call completed"
 msgstr "Chamada terminada"
+
+#: ../lib/engine/components/opal/opal-call.cpp:677
+msgid "Missed call from"
+msgstr "Chamada perdida de"
+
+#: ../lib/engine/components/opal/opal-call.cpp:679
+msgid "Missed call"
+msgstr "Chamada perdida"
 
 #: ../lib/engine/components/opal/opal-call-manager.cpp:798
 msgid ""
@@ -1670,7 +1681,7 @@ msgid "user offline"
 msgstr "usuario desconectado"
 
 #: ../lib/engine/components/opal/sip-endpoint.cpp:988
-#: ../src/gui/notify.cpp:238
+#: ../src/gui/notify.cpp:157
 #, c-format
 msgid "Incoming call from %s"
 msgstr "Chamada entrante de %s"
@@ -1707,7 +1718,7 @@ msgid "Address Book"
 msgstr "Axenda de enderezos"
 
 #: ../lib/engine/gui/gtk-frontend/addressbook-window.cpp:651
-#: ../src/gui/main_window.cpp:1727
+#: ../src/gui/main_window.cpp:1662
 msgid "Address _Book"
 msgstr "_Axenda de enderezos"
 
@@ -1757,6 +1768,28 @@ msgstr "Xanela de conversa"
 msgid "Unsorted"
 msgstr "Sen ordenar"
 
+#: ../lib/engine/gui/gtk-frontend/statusicon.cpp:312 ../src/gui/notify.cpp:122
+#, c-format
+msgid "You have %d message"
+msgid_plural "You have %d messages"
+msgstr[0] "Ten %d mensaxe"
+msgstr[1] "Ten %d mensaxes"
+
+#: ../lib/engine/gui/gtk-frontend/statusicon.cpp:390
+#: ../src/gui/main_window.cpp:1742
+msgid "Get help by reading the Ekiga manual"
+msgstr "Obteña axuda lendo o manual do Ekiga"
+
+#: ../lib/engine/gui/gtk-frontend/statusicon.cpp:395
+#: ../src/gui/main_window.cpp:1747
+msgid "View information about Ekiga"
+msgstr "Ver información sobre o Ekiga"
+
+#: ../lib/engine/gui/gtk-frontend/statusicon.cpp:402
+#: ../src/gui/main_window.cpp:1687
+msgid "Quit"
+msgstr "Saír"
+
 #: ../lib/gui/dialpad.c:52
 msgid "abc"
 msgstr "abc"
@@ -1788,6 +1821,91 @@ msgstr "tuv"
 #: ../lib/gui/dialpad.c:59
 msgid "wxyz"
 msgstr "wxyz"
+
+#: ../lib/gui/gmcallbacks.c:66
+msgid "Contributors:"
+msgstr "Colaboradores:"
+
+#: ../lib/gui/gmcallbacks.c:79
+msgid "Artwork:"
+msgstr "Material gráfico:"
+
+#: ../lib/gui/gmcallbacks.c:87
+msgid "See AUTHORS file for full credits"
+msgstr "Consulte o ficheiro AUTHORS para ver todos os créditos"
+
+#: ../lib/gui/gmcallbacks.c:103
+msgid ""
+"This program is free software; you can redistribute it and/or modify it "
+"under the terms of the GNU General Public License as published by the Free "
+"Software Foundation; either version 2 of the License, or (at your option) "
+"any later version. "
+msgstr ""
+"Este programa é software libre; pode redistribuílo ou modificalo baixo as "
+"condicións da Licenza pública xeral GNU tal como a publica a Free Software "
+"Foundation; tanto na versión 2 da licenza como (segundo o seu criterio) en "
+"calquera versión posterior. "
+
+#: ../lib/gui/gmcallbacks.c:107
+msgid ""
+"This program is distributed in the hope that it will be useful, but WITHOUT "
+"ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or "
+"FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for "
+"more details. You should have received a copy of the GNU General Public "
+"License along with this program; if not, write to the Free Software "
+"Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301, USA."
+msgstr ""
+"Este programa distribúese co fin de que sexa útil, mais sen NINGUNHA "
+"GARANTÍA; nin sequera a garantía implícita de VALOR COMERCIAL ou IDONEIDADE "
+"PARA UN FIN ESPECÍFICO. Para máis detalles vexa a Licenza pública xeral de "
+"GNU. Vostede xa debería ter recibido unha copia desta licenza xunto co "
+"programa; de non ser o caso, escriba á Free Software Foundation, Inc., 51 "
+"Franklin St, Fifth Floor, Boston, MA 02110-1301, USA."
+
+#: ../lib/gui/gmcallbacks.c:114
+msgid ""
+"Ekiga is licensed under the GPL license and as a special exception, you have "
+"permission to link or otherwise combine this program with the programs OPAL, "
+"OpenH323 and PWLIB, and distribute the combination, without applying the "
+"requirements of the GNU GPL to the OPAL, OpenH323 and PWLIB programs, as "
+"long as you do follow the requirements of the GNU GPL for all the rest of "
+"the software thus combined."
+msgstr ""
+"Ekiga está autorizado pola licenza GPL e como excepción especial, vostede "
+"ten permiso para vincular este programa ou combinalo de calquera outra forma "
+"cos programas OPAL, OpenH323 e PWLIB, e distribuír a combinación sen que se "
+"apliquen os requirimentos da Licenza pública xeral de GNU aos programas "
+"OPAL, OpenH323 ou PWLIB, sempre que vostede siga os requirimentos da licenza "
+"para o resto do software que combine."
+
+#. Translators: Please write translator credits here, and
+#. * separate names with \n
+#: ../lib/gui/gmcallbacks.c:126
+msgid "translator-credits"
+msgstr ""
+"Fran Diéguez <frandieguez@ubuntu.com>, 2009, 2010, 2011.\n"
+"Antón Méixome <meixome@certima.net>, 2009.\n"
+"Antón Méixome <meixome@mancomun.org>, 2009.\n"
+"Mancomún - Centro de Referencia e Servizos de Software Libre <g11n@mancomun."
+"org>, 2009.\n"
+"Ignacio Casal Quinteiro <icq@cvs.gnome.org>, 2007, 2008.\n"
+"Ignacio Casal Quinteiro <nacho.resa@gmail.com>, 2005, 2006.\n"
+"Jacobo Tarrio <jtarrio@trasno.net>, 2001, 2002."
+
+#: ../lib/gui/gmcallbacks.c:131
+msgid ""
+"Ekiga is full-featured SIP and H.323 compatible VoIP, IP-Telephony and "
+"Videoconferencing application that allows you to make audio and video calls "
+"to remote users with SIP and H.323 hardware or software."
+msgstr ""
+"O Ekiga é unha aplicativo para VoIP, telefonía IP e videoconferencia, rica "
+"en funcionalidades e compatíbel con SIP e H.323, que lle permite realizar "
+"chamadas de audio e vídeo a usuarios remotos con hardware ou software SIP e "
+"H.323."
+
+#: ../lib/gui/gmcallbacks.c:204
+msgid "Unable to open help file."
+msgstr "Non é posíbel abrir o ficheiro de axuda."
 
 #: ../lib/gui/gmdialog.c:327
 msgid "Do not show this dialog again"
@@ -2352,11 +2470,11 @@ msgstr "Estado"
 msgid "Accounts"
 msgstr "Contas"
 
-#: ../src/gui/accounts.cpp:590 ../src/gui/main_window.cpp:1766
+#: ../src/gui/accounts.cpp:590 ../src/gui/main_window.cpp:1701
 msgid "_Accounts"
 msgstr "_Contas"
 
-#: ../src/gui/accounts.cpp:594 ../src/gui/main_window.cpp:1804
+#: ../src/gui/accounts.cpp:594 ../src/gui/main_window.cpp:1739
 msgid "_Help"
 msgstr "_Axuda"
 
@@ -2364,7 +2482,7 @@ msgstr "_Axuda"
 msgid "Active"
 msgstr "Activo"
 
-#: ../src/gui/accounts.cpp:689
+#: ../src/gui/accounts.cpp:688
 msgid "Edi_t"
 msgstr "Edi_tar"
 
@@ -2537,8 +2655,8 @@ msgstr ""
 "calidade que o Ekiga usará durante as chamadas. Pode cambialos máis adiante "
 "individualmente na xanela de preferencias."
 
-#: ../src/gui/assistant.cpp:997 ../src/gui/main_window.cpp:1488
-#: ../src/gui/main_window.cpp:1492 ../src/gui/main_window.cpp:1496
+#: ../src/gui/assistant.cpp:997 ../src/gui/main_window.cpp:1415
+#: ../src/gui/main_window.cpp:1419 ../src/gui/main_window.cpp:1423
 #: ../src/gui/preferences.cpp:725
 msgid "Audio Devices"
 msgstr "Dispositivos de audio"
@@ -2644,100 +2762,15 @@ msgstr "Call Out do Ekiga"
 msgid "Ekiga Configuration Assistant (%d of %d)"
 msgstr "Asistente de configuración do Ekiga (%d de %d)"
 
-#: ../src/gui/callbacks.cpp:67
-msgid "Contributors:"
-msgstr "Colaboradores:"
-
-#: ../src/gui/callbacks.cpp:80
-msgid "Artwork:"
-msgstr "Material gráfico:"
-
-#: ../src/gui/callbacks.cpp:88
-msgid "See AUTHORS file for full credits"
-msgstr "Consulte o ficheiro AUTHORS para ver todos os créditos"
-
-#: ../src/gui/callbacks.cpp:104
-msgid ""
-"This program is free software; you can redistribute it and/or modify it "
-"under the terms of the GNU General Public License as published by the Free "
-"Software Foundation; either version 2 of the License, or (at your option) "
-"any later version. "
-msgstr ""
-"Este programa é software libre; pode redistribuílo ou modificalo baixo as "
-"condicións da Licenza pública xeral GNU tal como a publica a Free Software "
-"Foundation; tanto na versión 2 da licenza como (segundo o seu criterio) en "
-"calquera versión posterior. "
-
-#: ../src/gui/callbacks.cpp:108
-msgid ""
-"This program is distributed in the hope that it will be useful, but WITHOUT "
-"ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or "
-"FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for "
-"more details. You should have received a copy of the GNU General Public "
-"License along with this program; if not, write to the Free Software "
-"Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301, USA."
-msgstr ""
-"Este programa distribúese co fin de que sexa útil, mais sen NINGUNHA "
-"GARANTÍA; nin sequera a garantía implícita de VALOR COMERCIAL ou IDONEIDADE "
-"PARA UN FIN ESPECÍFICO. Para máis detalles vexa a Licenza pública xeral de "
-"GNU. Vostede xa debería ter recibido unha copia desta licenza xunto co "
-"programa; de non ser o caso, escriba á Free Software Foundation, Inc., 51 "
-"Franklin St, Fifth Floor, Boston, MA 02110-1301, USA."
-
-#: ../src/gui/callbacks.cpp:115
-msgid ""
-"Ekiga is licensed under the GPL license and as a special exception, you have "
-"permission to link or otherwise combine this program with the programs OPAL, "
-"OpenH323 and PWLIB, and distribute the combination, without applying the "
-"requirements of the GNU GPL to the OPAL, OpenH323 and PWLIB programs, as "
-"long as you do follow the requirements of the GNU GPL for all the rest of "
-"the software thus combined."
-msgstr ""
-"Ekiga está autorizado pola licenza GPL e como excepción especial, vostede "
-"ten permiso para vincular este programa ou combinalo de calquera outra forma "
-"cos programas OPAL, OpenH323 e PWLIB, e distribuír a combinación sen que se "
-"apliquen os requirimentos da Licenza pública xeral de GNU aos programas "
-"OPAL, OpenH323 ou PWLIB, sempre que vostede siga os requirimentos da licenza "
-"para o resto do software que combine."
-
-#. Translators: Please write translator credits here, and
-#. * separate names with \n
-#: ../src/gui/callbacks.cpp:127
-msgid "translator-credits"
-msgstr ""
-"Fran Diéguez <frandieguez@ubuntu.com>, 2009, 2010, 2011.\n"
-"Antón Méixome <meixome@certima.net>, 2009.\n"
-"Antón Méixome <meixome@mancomun.org>, 2009.\n"
-"Mancomún - Centro de Referencia e Servizos de Software Libre <g11n@mancomun."
-"org>, 2009.\n"
-"Ignacio Casal Quinteiro <icq@cvs.gnome.org>, 2007, 2008.\n"
-"Ignacio Casal Quinteiro <nacho.resa@gmail.com>, 2005, 2006.\n"
-"Jacobo Tarrio <jtarrio@trasno.net>, 2001, 2002."
-
-#: ../src/gui/callbacks.cpp:132
-msgid ""
-"Ekiga is full-featured SIP and H.323 compatible VoIP, IP-Telephony and "
-"Videoconferencing application that allows you to make audio and video calls "
-"to remote users with SIP and H.323 hardware or software."
-msgstr ""
-"O Ekiga é unha aplicativo para VoIP, telefonía IP e videoconferencia, rica "
-"en funcionalidades e compatíbel con SIP e H.323, que lle permite realizar "
-"chamadas de audio e vídeo a usuarios remotos con hardware ou software SIP e "
-"H.323."
-
-#: ../src/gui/callbacks.cpp:205
-msgid "Unable to open help file."
-msgstr "Non é posíbel abrir o ficheiro de axuda."
-
-#: ../src/gui/call_window.cpp:761
+#: ../src/gui/call_window.cpp:757
 msgid "Error while initializing video output"
 msgstr "Produciuse un erro ao inicializar a saída de vídeo"
 
-#: ../src/gui/call_window.cpp:762
+#: ../src/gui/call_window.cpp:758
 msgid "No video will be displayed on your machine during this call"
 msgstr "Non se mostrará o vídeo no seu equipo durante esta chamada"
 
-#: ../src/gui/call_window.cpp:772
+#: ../src/gui/call_window.cpp:768
 msgid ""
 "There was an error opening or initializing the video output. Please verify "
 "that no other application is using the accelerated video output."
@@ -2745,7 +2778,7 @@ msgstr ""
 "Produciuse un erro ao abrir ou inicializar a saída de vídeo. Verifique que "
 "non hai ningún outro aplicativo que estea usando a saída de vídeo acelerada."
 
-#: ../src/gui/call_window.cpp:774
+#: ../src/gui/call_window.cpp:770
 msgid ""
 "There was an error opening or initializing the video output. Please verify "
 "that you are using a color depth of 24 or 32 bits per pixel."
@@ -2753,16 +2786,16 @@ msgstr ""
 "Produciuse un erro ao abrir ou inicializar a saída de vídeo. Verifique que "
 "está a usar unha profundidade de cor de 24 ou 32 bits por píxel."
 
-#: ../src/gui/call_window.cpp:879
+#: ../src/gui/call_window.cpp:875
 #, c-format
 msgid "Error while accessing video device %s"
 msgstr "Produciuse un erro ao acceder ao dispositivo de vídeo %s"
 
-#: ../src/gui/call_window.cpp:882
+#: ../src/gui/call_window.cpp:878
 msgid "A moving logo will be transmitted during calls."
 msgstr "Un logo móbil transmitirase durante as chamadas."
 
-#: ../src/gui/call_window.cpp:886
+#: ../src/gui/call_window.cpp:882
 msgid ""
 "There was an error while opening the device. In case it is a pluggable "
 "device it may be sufficient to reconnect it. If not, or if it still is not "
@@ -2774,16 +2807,16 @@ msgstr ""
 "así ou se aínda non está accesíbel, verifique os seus permisos e asegúrese "
 "de que está cargado o controlador apropiado."
 
-#: ../src/gui/call_window.cpp:890
+#: ../src/gui/call_window.cpp:886
 msgid "Your video driver doesn't support the requested video format."
 msgstr ""
 "O controlador de vídeo non é compatíbel co formato de vídeo solicitado."
 
-#: ../src/gui/call_window.cpp:894
+#: ../src/gui/call_window.cpp:890
 msgid "Could not open the chosen channel."
 msgstr "Non foi posíbel abrir o canal seleccionado."
 
-#: ../src/gui/call_window.cpp:898
+#: ../src/gui/call_window.cpp:894
 msgid ""
 "Your driver doesn't seem to support any of the color formats supported by "
 "Ekiga.\n"
@@ -2795,31 +2828,31 @@ msgstr ""
 " Verifique a documentación do seu controlador do núcleo para determinar que "
 "paleta é compatíbel."
 
-#: ../src/gui/call_window.cpp:902
+#: ../src/gui/call_window.cpp:898
 msgid "Error while setting the frame rate."
 msgstr "Produciuse un erro ao configurar a taxa de fotogramas."
 
-#: ../src/gui/call_window.cpp:906
+#: ../src/gui/call_window.cpp:902
 msgid "Error while setting the frame size."
 msgstr "Produciuse un erro ao configurar o tamaño de fotograma."
 
-#: ../src/gui/call_window.cpp:911 ../src/gui/call_window.cpp:981
-#: ../src/gui/call_window.cpp:1062
+#: ../src/gui/call_window.cpp:907 ../src/gui/call_window.cpp:977
+#: ../src/gui/call_window.cpp:1058
 msgid "Unknown error."
 msgstr "Erro descoñecido."
 
-#: ../src/gui/call_window.cpp:963
+#: ../src/gui/call_window.cpp:959
 #, c-format
 msgid "Error while opening audio input device %s"
 msgstr "Produciuse un erro ao abrir o dispositivo de audio %s"
 
 #. Translators: This happens when there is an error with audio input:
 #. * Nothing ("silence") will be transmitted
-#: ../src/gui/call_window.cpp:968
+#: ../src/gui/call_window.cpp:964
 msgid "Only silence will be transmitted."
 msgstr "Só se transmitirá silencio."
 
-#: ../src/gui/call_window.cpp:972
+#: ../src/gui/call_window.cpp:968
 msgid ""
 "Unable to open the selected audio device for recording. In case it is a "
 "pluggable device it may be sufficient to reconnect it. If not, or if it "
@@ -2832,7 +2865,7 @@ msgstr ""
 "súa configuración de audio, os permisos e que o dispositivo non estea "
 "ocupado."
 
-#: ../src/gui/call_window.cpp:976
+#: ../src/gui/call_window.cpp:972
 msgid ""
 "The selected audio device was successfully opened but it is impossible to "
 "read data from this device. In case it is a pluggable device it may be "
@@ -2844,16 +2877,16 @@ msgstr ""
 "conectábel pode ser suficiente con conectalo de novo. Se non é así ou se "
 "aínda non está accesíbel, verifique a súa configuración de audio."
 
-#: ../src/gui/call_window.cpp:1046
+#: ../src/gui/call_window.cpp:1042
 #, c-format
 msgid "Error while opening audio output device %s"
 msgstr "Produciuse un erro ao abrir o dispositivo de saída de audio %s"
 
-#: ../src/gui/call_window.cpp:1049
+#: ../src/gui/call_window.cpp:1045
 msgid "No incoming sound will be played."
 msgstr "Non se reproducirá ningún son entrante."
 
-#: ../src/gui/call_window.cpp:1053
+#: ../src/gui/call_window.cpp:1049
 msgid ""
 "Unable to open the selected audio device for playing. In case it is a "
 "pluggable device it may be sufficient to reconnect it. If not, or if it "
@@ -2866,7 +2899,7 @@ msgstr ""
 "súa configuración de audio, os permisos e que o dispositivo non estea "
 "ocupado."
 
-#: ../src/gui/call_window.cpp:1057
+#: ../src/gui/call_window.cpp:1053
 msgid ""
 "The selected audio device was successfully opened but it is impossible to "
 "write data to this device. In case it is a pluggable device it may be "
@@ -2878,32 +2911,32 @@ msgstr ""
 "suficiente con conectalo de novo. Se non é así ou se aínda non está "
 "accesíbel, verifique a súa configuración de audio."
 
-#: ../src/gui/call_window.cpp:1098
+#: ../src/gui/call_window.cpp:1094
 #, c-format
 msgid "Calling %s..."
 msgstr "Chamando a %s…"
 
 #. %s is the SIP/H.323 address of the remote user, this text is shown
 #. below video during a call
-#: ../src/gui/call_window.cpp:1114 ../src/gui/main_window.cpp:703
+#: ../src/gui/call_window.cpp:1110 ../src/gui/main_window.cpp:658
 #, c-format
 msgid "Connected with %s"
 msgstr "Conectado con %s"
 
 #. Init
-#: ../src/gui/call_window.cpp:1137 ../src/gui/call_window.cpp:2422
+#: ../src/gui/call_window.cpp:1133 ../src/gui/call_window.cpp:2418
 msgid "Standby"
 msgstr "En espera"
 
-#: ../src/gui/call_window.cpp:1157
+#: ../src/gui/call_window.cpp:1153
 msgid "Call on hold"
 msgstr "Chamada en espera"
 
-#: ../src/gui/call_window.cpp:1168
+#: ../src/gui/call_window.cpp:1164
 msgid "Call retrieved"
 msgstr "Chamada recuperada"
 
-#: ../src/gui/call_window.cpp:1293
+#: ../src/gui/call_window.cpp:1289
 #, c-format
 msgid ""
 "Connected with %s\n"
@@ -2914,27 +2947,27 @@ msgstr ""
 
 #. Translators: TX is a common abbreviation for "transmit".  As it
 #. * is shown in a tooltip, there is no space constraint
-#: ../src/gui/call_window.cpp:1477
+#: ../src/gui/call_window.cpp:1473
 #, c-format
 msgid "TX: %dx%d"
 msgstr "TX: %dx%d"
 
-#: ../src/gui/call_window.cpp:1479
+#: ../src/gui/call_window.cpp:1475
 msgid "TX: / "
 msgstr "TX: / "
 
 #. Translators: RX is a common abbreviation for "receive".  As it
 #. * is shown in a tooltip, there is no space constraint
-#: ../src/gui/call_window.cpp:1484
+#: ../src/gui/call_window.cpp:1480
 #, c-format
 msgid "RX: %dx%d"
 msgstr "RX: %dx%d"
 
-#: ../src/gui/call_window.cpp:1486
+#: ../src/gui/call_window.cpp:1482
 msgid "RX: / "
 msgstr "RX: / "
 
-#: ../src/gui/call_window.cpp:1495
+#: ../src/gui/call_window.cpp:1491
 #, c-format
 msgid ""
 "Lost packets: %.1f %%\n"
@@ -2952,434 +2985,398 @@ msgstr ""
 "Resolución: %s %s"
 
 #. Translators: A = Audio, V = Video, FPS = Frames per second
-#: ../src/gui/call_window.cpp:1589
+#: ../src/gui/call_window.cpp:1585
 #, c-format
 msgid "A:%.1f/%.1f V:%.1f/%.1f FPS:%d/%d"
 msgstr "A:%.1f/%.1f V:%.1f/%.1f FPS:%d/%d"
 
-#: ../src/gui/call_window.cpp:1610
+#: ../src/gui/call_window.cpp:1606
 msgid "_Retrieve Call"
 msgstr "_Recuperar a chamada"
 
-#: ../src/gui/call_window.cpp:1623 ../src/gui/call_window.cpp:1929
+#: ../src/gui/call_window.cpp:1619 ../src/gui/call_window.cpp:1925
 msgid "H_old Call"
 msgstr "Pór a chamada en _espera"
 
-#: ../src/gui/call_window.cpp:1654 ../src/gui/call_window.cpp:1941
+#: ../src/gui/call_window.cpp:1650 ../src/gui/call_window.cpp:1937
 msgid "Suspend _Audio"
 msgstr "Suspender o _Audio"
 
-#: ../src/gui/call_window.cpp:1656 ../src/gui/call_window.cpp:1946
+#: ../src/gui/call_window.cpp:1652 ../src/gui/call_window.cpp:1942
 msgid "Suspend _Video"
 msgstr "Suspender o _Vídeo"
 
-#: ../src/gui/call_window.cpp:1658
+#: ../src/gui/call_window.cpp:1654
 msgid "Resume _Audio"
 msgstr "Retomar o _Audio"
 
-#: ../src/gui/call_window.cpp:1660
+#: ../src/gui/call_window.cpp:1656
 msgid "Resume _Video"
 msgstr "Retomar o _Vídeo"
 
-#: ../src/gui/call_window.cpp:1694
+#: ../src/gui/call_window.cpp:1690
 msgid "Video Settings"
 msgstr "Configuración de vídeo"
 
-#: ../src/gui/call_window.cpp:1719
+#: ../src/gui/call_window.cpp:1715
 msgid "Adjust brightness"
 msgstr "Axustar o brillo"
 
-#: ../src/gui/call_window.cpp:1738
+#: ../src/gui/call_window.cpp:1734
 msgid "Adjust whiteness"
 msgstr "Axustar os brancos"
 
-#: ../src/gui/call_window.cpp:1757
+#: ../src/gui/call_window.cpp:1753
 msgid "Adjust color"
 msgstr "Axustar a cor"
 
-#: ../src/gui/call_window.cpp:1776
+#: ../src/gui/call_window.cpp:1772
 msgid "Adjust contrast"
 msgstr "Axustar o contraste"
 
-#: ../src/gui/call_window.cpp:1818
+#: ../src/gui/call_window.cpp:1814
 msgid "Audio Settings"
 msgstr "Configuración de audio"
 
-#: ../src/gui/call_window.cpp:1921
+#: ../src/gui/call_window.cpp:1917
 msgid "_Call"
 msgstr "_Chamar"
 
-#: ../src/gui/call_window.cpp:1923
+#: ../src/gui/call_window.cpp:1919
 msgid "_Hangup"
 msgstr "_Colgar"
 
-#: ../src/gui/call_window.cpp:1923
+#: ../src/gui/call_window.cpp:1919
 msgid "Hangup the current call"
 msgstr "Colgar a chamada actual"
 
-#: ../src/gui/call_window.cpp:1929 ../src/gui/call_window.cpp:2391
+#: ../src/gui/call_window.cpp:1925 ../src/gui/call_window.cpp:2387
 msgid "Hold the current call"
 msgstr "Pór a chamada actual en espera"
 
-#: ../src/gui/call_window.cpp:1933
+#: ../src/gui/call_window.cpp:1929
 msgid "_Transfer Call"
 msgstr "_Transferir chamada"
 
-#: ../src/gui/call_window.cpp:1934
+#: ../src/gui/call_window.cpp:1930
 msgid "Transfer the current call"
 msgstr "Transferir a chamada actual"
 
-#: ../src/gui/call_window.cpp:1942
+#: ../src/gui/call_window.cpp:1938
 msgid "Suspend or resume the audio transmission"
 msgstr "Suspender ou continuar a transmisión de audio"
 
-#: ../src/gui/call_window.cpp:1947
+#: ../src/gui/call_window.cpp:1943
 msgid "Suspend or resume the video transmission"
 msgstr "Suspender ou continuar a transmisión de vídeo"
 
-#: ../src/gui/call_window.cpp:1954 ../src/gui/main_window.cpp:1745
+#: ../src/gui/call_window.cpp:1950 ../src/gui/main_window.cpp:1680
 msgid "Close the Ekiga window"
 msgstr "Pechar a xanela do Ekiga"
 
-#: ../src/gui/call_window.cpp:1959 ../src/gui/main_window.cpp:1778
+#: ../src/gui/call_window.cpp:1955 ../src/gui/main_window.cpp:1713
 msgid "_View"
 msgstr "_Ver"
 
-#: ../src/gui/call_window.cpp:1961
+#: ../src/gui/call_window.cpp:1957
 msgid "_Local Video"
 msgstr "Vídeo _local"
 
-#: ../src/gui/call_window.cpp:1962
+#: ../src/gui/call_window.cpp:1958
 msgid "Local video image"
 msgstr "Imaxe de vídeo local"
 
-#: ../src/gui/call_window.cpp:1967
+#: ../src/gui/call_window.cpp:1963
 msgid "_Remote Video"
 msgstr "Vídeo _remoto"
 
-#: ../src/gui/call_window.cpp:1968
+#: ../src/gui/call_window.cpp:1964
 msgid "Remote video image"
 msgstr "Imaxe de vídeo remoto"
 
-#: ../src/gui/call_window.cpp:1973
+#: ../src/gui/call_window.cpp:1969
 msgid "_Picture-in-Picture"
 msgstr "Ima_xe dentro da imaxe"
 
-#: ../src/gui/call_window.cpp:1974
+#: ../src/gui/call_window.cpp:1970
 msgid "Both video images"
 msgstr "Ambas as imaxes de vídeo"
 
-#: ../src/gui/call_window.cpp:1981
+#: ../src/gui/call_window.cpp:1977
 msgid "Zoom in"
 msgstr "Ampliar"
 
-#: ../src/gui/call_window.cpp:1985
+#: ../src/gui/call_window.cpp:1981
 msgid "Zoom out"
 msgstr "Reducir"
 
-#: ../src/gui/call_window.cpp:1989
+#: ../src/gui/call_window.cpp:1985
 msgid "Normal size"
 msgstr "Tamaño normal"
 
-#: ../src/gui/call_window.cpp:1993
+#: ../src/gui/call_window.cpp:1989
 msgid "_Fullscreen"
 msgstr "_Pantalla completa"
 
-#: ../src/gui/call_window.cpp:1993
+#: ../src/gui/call_window.cpp:1989
 msgid "Switch to fullscreen"
 msgstr "Cambiar ao modo de pantalla completa"
 
-#: ../src/gui/call_window.cpp:2109
+#: ../src/gui/call_window.cpp:2105
 msgid "Transfer call to:"
 msgstr "Transferir a chamada a:"
 
-#: ../src/gui/call_window.cpp:2321
+#: ../src/gui/call_window.cpp:2317
 msgid "Hang up the current call"
 msgstr "Colgar a chamada actual"
 
-#: ../src/gui/call_window.cpp:2350
+#: ../src/gui/call_window.cpp:2346
 msgid "Change the volume of your soundcard"
 msgstr "Cambiar o volume da súa tarxeta de son"
 
-#: ../src/gui/call_window.cpp:2371
+#: ../src/gui/call_window.cpp:2367
 msgid "Change the color settings of your video device"
 msgstr "Cambiar as configuracións de cor do dispositivo de vídeo"
 
-#: ../src/gui/main_window.cpp:397
+#: ../src/gui/main.cpp:126
+msgid "Prints debug messages in the console (level between 1 and 8)"
+msgstr "Imprime mensaxes de depuración na consola (nivel entre 1 e 8)"
+
+#: ../src/gui/main.cpp:131
+msgid "Makes Ekiga call the given URI"
+msgstr "Fai que o Ekiga chame ao URI indicado"
+
+#: ../src/gui/main_window.cpp:380
 msgid "Presence"
 msgstr "Presencia"
 
-#: ../src/gui/main_window.cpp:404
+#: ../src/gui/main_window.cpp:387
 msgid "Addressbook"
 msgstr "Axenda de enderezos"
 
-#: ../src/gui/main_window.cpp:458
+#: ../src/gui/main_window.cpp:416
 msgid "Unknown"
 msgstr "Descoñecido"
 
-#: ../src/gui/main_window.cpp:813 ../src/gui/notify.cpp:171
+#: ../src/gui/main_window.cpp:752
 #, c-format
 msgid "Missed call from %s"
 msgstr "Chamada perdida de %s"
 
-#: ../src/gui/main_window.cpp:846
+#: ../src/gui/main_window.cpp:785
 msgid "Error"
 msgstr "Erro"
 
 #. Translators: This is a hotplug status
-#: ../src/gui/main_window.cpp:869
+#: ../src/gui/main_window.cpp:808
 #, c-format
 msgid "Added video input device %s"
 msgstr "Engadiuse o dispositivo de entrada de vídeo %s"
 
 #. Translators: This is a hotplug status
-#: ../src/gui/main_window.cpp:881
+#: ../src/gui/main_window.cpp:820
 #, c-format
 msgid "Removed video input device %s"
 msgstr "Eliminouse o dispositivo de entrada de vídeo %s"
 
 #. Translators: This is a hotplug status
-#: ../src/gui/main_window.cpp:896
+#: ../src/gui/main_window.cpp:835
 #, c-format
 msgid "Added audio input device %s"
 msgstr "Engadiuse o dispositivo de audio %s"
 
 #. Translators: This is a hotplug status
-#: ../src/gui/main_window.cpp:912
+#: ../src/gui/main_window.cpp:851
 #, c-format
 msgid "Removed audio input device %s"
 msgstr "Eliminouse o dispositivo de audio %s"
 
-#: ../src/gui/main_window.cpp:930
+#: ../src/gui/main_window.cpp:869
 #, c-format
 msgid "Added audio output device %s"
 msgstr "Engadiuse o dispositivo de saída de audio %s"
 
-#: ../src/gui/main_window.cpp:948
+#: ../src/gui/main_window.cpp:887
 #, c-format
 msgid "Removed audio output device %s"
 msgstr "Eliminouse o dispositivo de saída de audio %s"
 
-#: ../src/gui/main_window.cpp:1353 ../src/gui/notify.cpp:259
+#: ../src/gui/main_window.cpp:1280 ../src/gui/notify.cpp:178
 msgid "Reject"
 msgstr "Rexeitar"
 
-#: ../src/gui/main_window.cpp:1355 ../src/gui/notify.cpp:260
+#: ../src/gui/main_window.cpp:1282 ../src/gui/notify.cpp:179
 msgid "Accept"
 msgstr "Aceptar"
 
-#: ../src/gui/main_window.cpp:1361
+#: ../src/gui/main_window.cpp:1288
 msgid "Incoming call from"
 msgstr "Chamada entrante de"
 
-#: ../src/gui/main_window.cpp:1379 ../src/gui/notify.cpp:241
+#: ../src/gui/main_window.cpp:1306 ../src/gui/notify.cpp:160
 msgid "Remote URI:"
 msgstr "URI remoto:"
 
-#: ../src/gui/main_window.cpp:1391
+#: ../src/gui/main_window.cpp:1318
 msgid "Remote Application:"
 msgstr "Aplicativo remoto:"
 
-#: ../src/gui/main_window.cpp:1399
+#: ../src/gui/main_window.cpp:1326
 #, c-format
 msgid "Call from %s"
 msgstr "Chamada de %s"
 
-#: ../src/gui/main_window.cpp:1474
+#: ../src/gui/main_window.cpp:1401
 msgid "No"
 msgstr "Non"
 
-#: ../src/gui/main_window.cpp:1476
+#: ../src/gui/main_window.cpp:1403
 msgid "Yes"
 msgstr "Si"
 
-#: ../src/gui/main_window.cpp:1487
+#: ../src/gui/main_window.cpp:1414
 msgid "Detected new audio input device:"
 msgstr "Detectouse un dispositivo novo de entrada de audio:"
 
-#: ../src/gui/main_window.cpp:1491
+#: ../src/gui/main_window.cpp:1418
 msgid "Detected new audio output device:"
 msgstr "Detectouse un dispositivo novo de saída de audio:"
 
-#: ../src/gui/main_window.cpp:1495
+#: ../src/gui/main_window.cpp:1422
 msgid "Detected new ringer device:"
 msgstr "Detectouse un novo dispositivo de timbre:"
 
-#: ../src/gui/main_window.cpp:1499
+#: ../src/gui/main_window.cpp:1426
 msgid "Detected new video input device:"
 msgstr "Detectouse un dispositivo novo de entrada de vídeo:"
 
-#: ../src/gui/main_window.cpp:1500 ../src/gui/preferences.cpp:872
+#: ../src/gui/main_window.cpp:1427 ../src/gui/preferences.cpp:872
 msgid "Video Devices"
 msgstr "Dispositivos de vídeo"
 
-#: ../src/gui/main_window.cpp:1518
+#: ../src/gui/main_window.cpp:1445
 msgid "Do you want to use it as default device?"
 msgstr "Quere usalo como o dispositivo predeterminado?"
 
-#: ../src/gui/main_window.cpp:1609
+#: ../src/gui/main_window.cpp:1536
 msgid ""
 "Enter a URI on the left, and click this button to place a call or to hangup"
 msgstr ""
 "Introduza un URI na esquerda e prema neste botón para efectuar unha chamada "
 "ou colgala"
 
-#: ../src/gui/main_window.cpp:1710
+#: ../src/gui/main_window.cpp:1587 ../src/gui/main_window.cpp:1715
+msgid "View the contacts list"
+msgstr "Ver a lista de contactos"
+
+#: ../src/gui/main_window.cpp:1598 ../src/gui/main_window.cpp:1720
+msgid "View the dialpad"
+msgstr "Mostrar o marcador"
+
+#: ../src/gui/main_window.cpp:1609 ../src/gui/main_window.cpp:1725
+msgid "View the call history"
+msgstr "Ver o historial de chamadas"
+
+#: ../src/gui/main_window.cpp:1645
 msgid "_Chat"
 msgstr "_Conversa"
 
-#: ../src/gui/main_window.cpp:1712
+#: ../src/gui/main_window.cpp:1647
 msgid "Co_ntact"
 msgstr "_Contacto"
 
-#: ../src/gui/main_window.cpp:1713
+#: ../src/gui/main_window.cpp:1648
 msgid "Act on selected contact"
 msgstr "Actuar sobre o contacto seleccionado"
 
-#: ../src/gui/main_window.cpp:1717
+#: ../src/gui/main_window.cpp:1652
 msgid "Ca_ll a number"
 msgstr "_Chamar a un número"
 
-#: ../src/gui/main_window.cpp:1717
+#: ../src/gui/main_window.cpp:1652
 msgid "Place a new call"
 msgstr "Realizar unha nova chamada"
 
-#: ../src/gui/main_window.cpp:1723
+#: ../src/gui/main_window.cpp:1658
 msgid "A_dd Contact"
 msgstr "Enga_dir un contacto"
 
-#: ../src/gui/main_window.cpp:1723
+#: ../src/gui/main_window.cpp:1658
 msgid "Add a contact to the roster"
 msgstr "Engadir un contacto á lista de contactos"
 
-#: ../src/gui/main_window.cpp:1728
+#: ../src/gui/main_window.cpp:1663
 msgid "Find contacts"
 msgstr "Buscar contactos"
 
 #. FIXME: that isn't a very good way to do things
-#: ../src/gui/main_window.cpp:1737
+#: ../src/gui/main_window.cpp:1672
 msgid "Other"
 msgstr "Outras"
 
-#: ../src/gui/main_window.cpp:1738
+#: ../src/gui/main_window.cpp:1673
 msgid "Other possible actions"
 msgstr "Outras accións posíbeis"
 
-#: ../src/gui/main_window.cpp:1752 ../src/gui/statusicon.cpp:462
-msgid "Quit"
-msgstr "Saír"
-
-#: ../src/gui/main_window.cpp:1758
+#: ../src/gui/main_window.cpp:1693
 msgid "_Configuration Assistant"
 msgstr "Asistente de _configuración"
 
-#: ../src/gui/main_window.cpp:1759
+#: ../src/gui/main_window.cpp:1694
 msgid "Run the configuration assistant"
 msgstr "Executar o asistente de configuración"
 
-#: ../src/gui/main_window.cpp:1767
+#: ../src/gui/main_window.cpp:1702
 msgid "Edit your accounts"
 msgstr "Editar as contas"
 
-#: ../src/gui/main_window.cpp:1773
+#: ../src/gui/main_window.cpp:1708
 msgid "Change your preferences"
 msgstr "Cambiar as preferencias"
 
-#: ../src/gui/main_window.cpp:1780
+#: ../src/gui/main_window.cpp:1715
 msgid "Con_tacts"
 msgstr "Con_tactos"
 
-#: ../src/gui/main_window.cpp:1780
-msgid "View the contacts list"
-msgstr "Ver a lista de contactos"
-
-#: ../src/gui/main_window.cpp:1785
+#: ../src/gui/main_window.cpp:1720
 msgid "_Dialpad"
 msgstr "_Marcador"
 
-#: ../src/gui/main_window.cpp:1785
-msgid "View the dialpad"
-msgstr "Mostrar o marcador"
-
-#: ../src/gui/main_window.cpp:1790
+#: ../src/gui/main_window.cpp:1725
 msgid "_Call History"
 msgstr "Historial de _chamadas"
 
-#: ../src/gui/main_window.cpp:1790
-msgid "View the call history"
-msgstr "Ver o historial de chamadas"
-
-#: ../src/gui/main_window.cpp:1798
+#: ../src/gui/main_window.cpp:1733
 msgid "Show offline _contacts"
 msgstr "Mostrar os _contactos desconectados"
 
-#: ../src/gui/main_window.cpp:1807 ../src/gui/statusicon.cpp:450
-msgid "Get help by reading the Ekiga manual"
-msgstr "Obteña axuda lendo o manual do Ekiga"
-
-#: ../src/gui/main_window.cpp:1812 ../src/gui/statusicon.cpp:455
-msgid "View information about Ekiga"
-msgstr "Ver información sobre o Ekiga"
-
-#: ../src/gui/main_window.cpp:1862
+#: ../src/gui/main_window.cpp:1797
 msgid "Contacts"
 msgstr "Contactos"
 
-#: ../src/gui/main_window.cpp:1891
+#: ../src/gui/main_window.cpp:1826
 msgid "Dialpad"
 msgstr "Marcador"
 
-#: ../src/gui/main_window.cpp:1909
+#: ../src/gui/main_window.cpp:1844
 msgid "Call history"
 msgstr "Historial de chamadas"
 
-#: ../src/gui/main_window.cpp:1921
+#: ../src/gui/main_window.cpp:1856
 msgid "Ekiga"
 msgstr "Ekiga"
 
-#: ../src/gui/main_window.cpp:2349
-msgid "Prints debug messages in the console (level between 1 and 8)"
-msgstr "Imprime mensaxes de depuración na consola (nivel entre 1 e 8)"
-
-#: ../src/gui/main_window.cpp:2354
-msgid "Makes Ekiga call the given URI"
-msgstr "Fai que o Ekiga chame ao URI indicado"
-
-#: ../src/gui/notify.cpp:174
-#, c-format
-msgid ""
-"Missed call from %s\n"
-"%s"
-msgstr ""
-"Chamada perdida de %s\n"
-"%s"
-
-#: ../src/gui/notify.cpp:179
-msgid "Missed Call"
-msgstr "Chamada perdida"
-
-#: ../src/gui/notify.cpp:182 ../src/gui/notify.cpp:221
-msgid "Show"
-msgstr "Mostrar"
-
-#: ../src/gui/notify.cpp:186
-msgid "Missed Calls"
-msgstr "Chamadas perdidas"
-
-#: ../src/gui/notify.cpp:203 ../src/gui/statusicon.cpp:313
-#, c-format
-msgid "You have %d message"
-msgid_plural "You have %d messages"
-msgstr[0] "Ten %d mensaxe"
-msgstr[1] "Ten %d mensaxes"
-
-#: ../src/gui/notify.cpp:207
+#: ../src/gui/notify.cpp:126
 msgid "Unread message"
 msgstr "Mensaxe non lida"
 
-#: ../src/gui/notify.cpp:220
+#: ../src/gui/notify.cpp:139
 msgid "Ignore"
 msgstr "Ignorar"
+
+#: ../src/gui/notify.cpp:140
+msgid "Show"
+msgstr "Mostrar"
 
 #: ../src/gui/preferences.cpp:376
 msgid "Play sound for new voice mails"
@@ -3726,10 +3723,6 @@ msgstr "Dispositivos"
 msgid "Video"
 msgstr "Vídeo"
 
-#: ../src/gui/statusicon.cpp:409
-msgid "The following accounts are inactive:"
-msgstr "Os seguintes contactos están inactivos:"
-
 #: ../src/gui/statusmenu.cpp:87
 msgid "Online"
 msgstr "Conectado"
@@ -3762,6 +3755,19 @@ msgstr "Eliminar as mensaxes personalizadas:"
 #: ../src/gui/statusmenu.cpp:690
 msgid "Define a custom message:"
 msgstr "Definir unha mensaxe personalizada:"
+
+#~ msgid ""
+#~ "Missed call from %s\n"
+#~ "%s"
+#~ msgstr ""
+#~ "Chamada perdida de %s\n"
+#~ "%s"
+
+#~ msgid "Missed Calls"
+#~ msgstr "Chamadas perdidas"
+
+#~ msgid "The following accounts are inactive:"
+#~ msgstr "Os seguintes contactos están inactivos:"
 
 #~ msgid "%s account"
 #~ msgstr "Conta %s"
