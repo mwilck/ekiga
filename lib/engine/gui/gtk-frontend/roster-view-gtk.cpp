@@ -908,7 +908,6 @@ on_heap_updated (RosterViewGtk* self,
 		 G_GNUC_UNUSED Ekiga::ClusterPtr cluster,
 		 Ekiga::HeapPtr heap)
 {
-  GtkTreeIter heap_iter;
   GtkTreeIter iter;
   GtkTreeIter filtered_iter;
   GtkTreeSelection* selection = NULL;
