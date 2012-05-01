@@ -41,10 +41,11 @@
 #include <glib/gi18n.h>
 #include <gdk/gdkkeysyms.h>
 
+#include "config.h"
+
 #include "gmmarshallers.h"
 #include "gm-cell-renderer-bitext.h"
 #include "gmcellrendererexpander.h"
-#include "gmstockicons.h"
 #include "gmconf.h"
 #include "menu-builder-tools.h"
 #include "roster-view-gtk.h"
@@ -994,6 +995,9 @@ on_presentity_added (RosterViewGtk* self,
       if (gtk_tree_selection_iter_is_selected (selection, &filtered_iter))
 	should_emit = TRUE;
 
+    std::string icon = "user-offline";
+    if (presentity->get_presence () != "unknown")
+      icon = "user-" + presentity->get_presence ();
     gtk_tree_store_set (self->priv->store, &iter,
 			COLUMN_TYPE, TYPE_PRESENTITY,
 			COLUMN_OFFLINE, active,
@@ -1001,7 +1005,7 @@ on_presentity_added (RosterViewGtk* self,
 			COLUMN_PRESENTITY, presentity.get (),
 			COLUMN_NAME, presentity->get_name ().c_str (),
 			COLUMN_STATUS, presentity->get_status ().c_str (),
-			COLUMN_PRESENCE, presentity->get_presence ().c_str (),
+			COLUMN_PRESENCE, icon.c_str (),
 			COLUMN_ACTIVE, (!active || away) ? "gray" : "black",
 			-1);
   }
@@ -1436,7 +1440,7 @@ roster_view_gtk_init (G_GNUC_UNUSED RosterViewGtk* self)
   g_object_set (renderer, "yalign", 0.5, "xpad", 5, NULL);
   gtk_tree_view_column_pack_start (col, renderer, FALSE);
   gtk_tree_view_column_add_attribute (col, renderer,
-				      "stock-id",
+				      "icon-name",
 				      COLUMN_PRESENCE);
   gtk_tree_view_column_set_cell_data_func (col, renderer,
                                            show_cell_data_func, GINT_TO_POINTER (TYPE_PRESENTITY), NULL);
