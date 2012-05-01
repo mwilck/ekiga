@@ -30,12 +30,13 @@
  *                         statusmenu.h  -  description
  *                         -------------------------------
  *   begin                : Mon Jan 28 2008
- *   copyright            : (C) 2000-2008 by Damien Sandras 
+ *   copyright            : (C) 2000-2008 by Damien Sandras
  *   description          : Contains a StatusMenu
  *
  */
 
 
+#include "config.h"
 
 #include "statusmenu.h"
 
@@ -43,7 +44,6 @@
 #include "personal-details.h"
 
 #include "gmconf.h"
-#include "gmstockicons.h"
 
 #include <glib/gi18n.h>
 #include <vector>
@@ -82,32 +82,33 @@ enum MessageType
   TYPE_CLEAR               // Clear custom message(s)
 };
 
-const gchar *statuses [] = 
-{ 
-  N_("Online"), 
-  N_("Away"), 
-  N_("Do Not Disturb") 
+const gchar *statuses [] =
+{
+  N_("Online"),
+  N_("Away"),
+  N_("Do Not Disturb")
 };
 
-const char* status_types_names[] = 
-{ 
+const char* status_types_names[] =
+{
   "online",
   "away",
   "dnd"
 };
 
-const char* status_types_keys[] = 
-{ 
+const char* status_types_keys[] =
+{
   PERSONAL_DATA_KEY "online_custom_status",
   PERSONAL_DATA_KEY "away_custom_status",
   PERSONAL_DATA_KEY "dnd_custom_status"
 };
 
-const char* stock_status[] = 
-{ 
-  GM_STOCK_STATUS_ONLINE,
-  GM_STOCK_STATUS_AWAY,
-  GM_STOCK_STATUS_DND
+
+const char* status_icon_name[] =
+{
+  "user-available",
+  "user-away",
+  "user-busy"
 };
 
 
@@ -129,13 +130,13 @@ status_menu_row_is_separator (GtkTreeModel *model,
 
 /** Trigger the appropriate action when a choice is made in the StatusMenu.
  *
- * It will update the GmConf key with the chosen value or display a popup 
+ * It will update the GmConf key with the chosen value or display a popup
  * allowing to add or remove status messages.
  *
  * @param box is a pointer to the GtkComboBox
  * @param data is a pointer to the StatusMenu
  */
-static void 
+static void
 status_menu_option_changed (GtkComboBox *box,
                             gpointer data);
 
@@ -144,7 +145,7 @@ status_menu_option_changed (GtkComboBox *box,
  * GmConf notifiers
  */
 
-/** This notifier is triggered when one of the custom messages list is updated. 
+/** This notifier is triggered when one of the custom messages list is updated.
  *
  * It updates the StatusMenu content with the new values.
  *
@@ -172,7 +173,7 @@ on_details_updated (StatusMenu *self);
  * Static methods
  */
 
-/** This function populates the StatusMenu with its initial content. Content is 
+/** This function populates the StatusMenu with its initial content. Content is
  * taken from the GmConf keys used by the StatusMenu.
  *
  * @param self is the StatusMenu
@@ -208,7 +209,7 @@ status_menu_clear_status_message_dialog_run (StatusMenu *self);
  * messages that he will be able to publish.
  *
  * @param self is the StatusMenu
- * @param option is the defined message type (TYPE_CUSTOM_ONLINE, 
+ * @param option is the defined message type (TYPE_CUSTOM_ONLINE,
  * TYPE_CUSTOM_AWAY, TYPE_CUSTOM_DND)
  */
 static void
@@ -216,8 +217,8 @@ status_menu_new_status_message_dialog_run (StatusMenu *self,
                                            int option);
 
 
-/* 
- * GObject stuff 
+/*
+ * GObject stuff
  */
 static GObjectClass *parent_class = NULL;
 
@@ -229,7 +230,7 @@ static void status_menu_dispose (GObject *obj);
 static void status_menu_finalize (GObject *obj);
 
 
-/* 
+/*
  * Callbacks
  */
 static gboolean
@@ -245,7 +246,7 @@ status_menu_row_is_separator (GtkTreeModel *model,
 }
 
 
-static void 
+static void
 status_menu_option_changed (GtkComboBox *box,
                             gpointer data)
 {
@@ -262,7 +263,7 @@ status_menu_option_changed (GtkComboBox *box,
   if (gtk_combo_box_get_active_iter (GTK_COMBO_BOX (box), &iter)) {
 
     model = gtk_combo_box_get_model (GTK_COMBO_BOX (box));
-    gtk_tree_model_get (GTK_TREE_MODEL (model), &iter, COL_MESSAGE_TYPE, &i, 
+    gtk_tree_model_get (GTK_TREE_MODEL (model), &iter, COL_MESSAGE_TYPE, &i,
                         COL_MESSAGE, &status, -1);
 
     switch (i)
@@ -358,8 +359,8 @@ status_menu_populate (StatusMenu *self,
   gboolean has_custom_messages = false;
   GSList *custom_status = NULL;
   GSList *liter = NULL;
+  GdkPixbuf *pixbuf = NULL;
   GtkTreeIter iter;
-  GdkPixbuf* icon = NULL;
 
   gtk_list_store_clear (GTK_LIST_STORE (self->priv->list_store));
 
@@ -368,36 +369,35 @@ status_menu_populate (StatusMenu *self,
     statuses [i] = gettext (statuses [i]);
     custom_status = custom_status_array [i];
     liter = custom_status;
-
-    icon = gtk_widget_render_icon (GTK_WIDGET (self),
-                                   stock_status [i],
-                                   GTK_ICON_SIZE_MENU, NULL);
+    pixbuf = gtk_icon_theme_load_icon (gtk_icon_theme_get_default (),
+                                       status_icon_name[i],
+                                       GTK_ICON_SIZE_MENU, (GtkIconLookupFlags) 0, NULL);
 
     gtk_list_store_append (GTK_LIST_STORE (self->priv->list_store), &iter);
     gtk_list_store_set (GTK_LIST_STORE (self->priv->list_store), &iter,
-                        COL_ICON, icon, 
-                        COL_MESSAGE, statuses[i], 
+                        COL_ICON, pixbuf,
+                        COL_MESSAGE, statuses[i],
                         COL_MESSAGE_TYPE, i,
-                        COL_SEPARATOR, false, 
-                        -1); 
+                        COL_SEPARATOR, false,
+                        -1);
 
     gtk_list_store_append (GTK_LIST_STORE (self->priv->list_store), &iter);
     gtk_list_store_set (GTK_LIST_STORE (self->priv->list_store), &iter,
-                        COL_ICON, icon, 
-                        COL_MESSAGE, _("Custom message..."), 
+                        COL_ICON, pixbuf,
+                        COL_MESSAGE, _("Custom message..."),
                         COL_MESSAGE_TYPE, NUM_STATUS_CUSTOM_TYPES + (i + 1),
-                        COL_SEPARATOR, false, 
-                        -1); 
+                        COL_SEPARATOR, false,
+                        -1);
 
     while (liter) {
 
       gtk_list_store_append (GTK_LIST_STORE (self->priv->list_store), &iter);
       gtk_list_store_set (GTK_LIST_STORE (self->priv->list_store), &iter,
-                          COL_ICON, icon, 
-                          COL_MESSAGE, (char*) (liter->data), 
+                          COL_ICON, pixbuf,
+                          COL_MESSAGE, (char*) (liter->data),
                           COL_MESSAGE_TYPE, NUM_STATUS_TYPES + (i + 1),
-                          COL_SEPARATOR, false, 
-                          -1); 
+                          COL_SEPARATOR, false,
+                          -1);
 
       liter = g_slist_next (liter);
       has_custom_messages = true;
@@ -406,32 +406,33 @@ status_menu_populate (StatusMenu *self,
     if (i < NUM_STATUS_TYPES - 1) {
       gtk_list_store_append (GTK_LIST_STORE (self->priv->list_store), &iter);
       gtk_list_store_set (GTK_LIST_STORE (self->priv->list_store), &iter,
-                          COL_SEPARATOR, true, 
-                          -1); 
+                          COL_SEPARATOR, true,
+                          -1);
     }
 
-    g_object_unref (icon);
+    if (pixbuf)
+      gdk_pixbuf_unref (pixbuf);
   }
 
   /* Clear message */
   if (has_custom_messages) {
 
-    gtk_list_store_append (GTK_LIST_STORE (self->priv->list_store), &iter);
-    gtk_list_store_set (GTK_LIST_STORE (self->priv->list_store), &iter,
-                        COL_SEPARATOR, true, 
-                        -1); 
+    pixbuf = gtk_icon_theme_load_icon (gtk_icon_theme_get_default (),
+                                       "gtk-clear",
+                                       GTK_ICON_SIZE_MENU, (GtkIconLookupFlags) 0, NULL);
 
-    icon = gtk_widget_render_icon (GTK_WIDGET (self),
-                                   GTK_STOCK_CLEAR,
-                                   GTK_ICON_SIZE_MENU, NULL);
     gtk_list_store_append (GTK_LIST_STORE (self->priv->list_store), &iter);
     gtk_list_store_set (GTK_LIST_STORE (self->priv->list_store), &iter,
-                        COL_ICON, icon,
-                        COL_MESSAGE, _("Clear"), 
+                        COL_SEPARATOR, true,
+                        -1);
+
+    gtk_list_store_append (GTK_LIST_STORE (self->priv->list_store), &iter);
+    gtk_list_store_set (GTK_LIST_STORE (self->priv->list_store), &iter,
+                        COL_ICON, pixbuf,
+                        COL_MESSAGE, _("Clear"),
                         COL_MESSAGE_TYPE, TYPE_CLEAR,
-                        COL_SEPARATOR, false, 
-                        -1); 
-    g_object_unref (icon);
+                        COL_SEPARATOR, false,
+                        -1);
   }
 
   status_menu_set_option (self, self->priv->personal_details->get_presence (), self->priv->personal_details->get_status ());
@@ -456,9 +457,9 @@ status_menu_set_option (StatusMenu *self,
   valid = gtk_tree_model_get_iter_first (GTK_TREE_MODEL (self->priv->list_store), &iter);
   while (valid) {
 
-    gtk_tree_model_get (GTK_TREE_MODEL (self->priv->list_store), &iter, 
+    gtk_tree_model_get (GTK_TREE_MODEL (self->priv->list_store), &iter,
                         COL_MESSAGE_TYPE, &i,
-                        COL_MESSAGE, &sstatus, -1); 
+                        COL_MESSAGE, &sstatus, -1);
 
     // Check if it is a custom status message and if it is in the list
     if (i == TYPE_CUSTOM_ONLINE || i == TYPE_CUSTOM_AWAY || i == TYPE_CUSTOM_DND) {
@@ -468,7 +469,7 @@ status_menu_set_option (StatusMenu *self,
 
     // Long status empty, the user did not set a custom message
     if (i == TYPE_ONLINE || i == TYPE_AWAY || i == TYPE_DND) {
-      if (status.empty () && presence == status_types_names[i]) 
+      if (status.empty () && presence == status_types_names[i])
         break;
     }
 
@@ -572,12 +573,12 @@ status_menu_clear_status_message_dialog_run (StatusMenu *self)
       if (i == TYPE_CUSTOM_ONLINE || i == TYPE_CUSTOM_AWAY || i == TYPE_CUSTOM_DND) {
 
         gtk_tree_model_get (GTK_TREE_MODEL (self->priv->list_store), &iter,
-                            COL_ICON, &pixbuf, 
+                            COL_ICON, &pixbuf,
                             COL_MESSAGE, &message,
                             -1);
         gtk_list_store_append (GTK_LIST_STORE (list_store), &liter);
-        gtk_list_store_set (GTK_LIST_STORE (list_store), &liter, 
-                            COL_ICON, pixbuf, 
+        gtk_list_store_set (GTK_LIST_STORE (list_store), &liter,
+                            COL_ICON, pixbuf,
                             COL_MESSAGE, message,
                             COL_MESSAGE_TYPE, i,
                             -1);
@@ -590,7 +591,7 @@ status_menu_clear_status_message_dialog_run (StatusMenu *self)
 
   // Select the first iter
   selection = gtk_tree_view_get_selection (GTK_TREE_VIEW (tree_view));
-  if (gtk_tree_model_get_iter_first (GTK_TREE_MODEL (list_store), &iter)) 
+  if (gtk_tree_model_get_iter_first (GTK_TREE_MODEL (list_store), &iter))
     gtk_tree_selection_select_iter (selection, &iter);
 
   gtk_widget_show_all (dialog);
@@ -600,9 +601,9 @@ status_menu_clear_status_message_dialog_run (StatusMenu *self)
     switch (response)
       {
       case GTK_RESPONSE_APPLY:
-        if (gtk_tree_selection_get_selected (selection, NULL, &iter)) 
+        if (gtk_tree_selection_get_selected (selection, NULL, &iter))
           gtk_list_store_remove (GTK_LIST_STORE (list_store), &iter);
-        if (gtk_tree_model_get_iter_first (GTK_TREE_MODEL (list_store), &iter)) 
+        if (gtk_tree_model_get_iter_first (GTK_TREE_MODEL (list_store), &iter))
           gtk_tree_selection_select_iter (selection, &iter);
         else
           close = true;
@@ -659,8 +660,6 @@ status_menu_new_status_message_dialog_run (StatusMenu *self,
   GtkWidget *hbox = NULL;
   GtkWidget *image = NULL;
 
-  GdkPixbuf* icon = NULL;
-
   const char *message = NULL;
 
   presence = gm_conf_get_string (PERSONAL_DATA_KEY "short_status");
@@ -679,12 +678,8 @@ status_menu_new_status_message_dialog_run (StatusMenu *self,
   gtk_box_pack_start (GTK_BOX (GTK_DIALOG (dialog)->vbox), vbox, false, false, 2);
 
   hbox = gtk_hbox_new (false, 2);
-  icon = gtk_widget_render_icon (GTK_WIDGET (self),
-                                 stock_status [option - NUM_STATUS_TYPES - 1],
-                                 GTK_ICON_SIZE_MENU, NULL);
-  gtk_window_set_icon (GTK_WINDOW (dialog), icon);
-  image = gtk_image_new_from_pixbuf (icon);
-  g_object_unref (icon);
+  gtk_window_set_icon_name (GTK_WINDOW (dialog), status_icon_name[option - NUM_STATUS_TYPES - 1]);
+  image = gtk_image_new_from_icon_name (status_icon_name[option - NUM_STATUS_TYPES - 1], GTK_ICON_SIZE_MENU);
   gtk_box_pack_start (GTK_BOX (hbox), image, false, false, 2);
 
   label = gtk_label_new (_("Define a custom message:"));
@@ -702,7 +697,7 @@ status_menu_new_status_message_dialog_run (StatusMenu *self,
   case GTK_RESPONSE_ACCEPT:
     message = gtk_entry_get_text (GTK_ENTRY (entry));
     clist = gm_conf_get_string_list (status_types_keys[option - NUM_STATUS_TYPES - 1]);
-    if (message && strcmp (message, "")) { 
+    if (message && strcmp (message, "")) {
       clist = g_slist_append (clist, g_strdup (message));
       gm_conf_set_string_list (status_types_keys[option - NUM_STATUS_TYPES - 1], clist);
       self->priv->personal_details->set_presence_info (status_types_names[option - NUM_STATUS_TYPES - 1], message);
@@ -822,14 +817,13 @@ status_menu_new (Ekiga::ServiceCore & core)
 
   renderer = gtk_cell_renderer_pixbuf_new ();
   gtk_cell_layout_pack_start (GTK_CELL_LAYOUT (self), renderer, FALSE);
-  gtk_cell_layout_set_attributes (GTK_CELL_LAYOUT (self), renderer,
-                                  "pixbuf", COL_ICON, NULL);
+  gtk_cell_layout_set_attributes (GTK_CELL_LAYOUT (self), renderer, "pixbuf", COL_ICON, NULL);
 
   renderer = gtk_cell_renderer_text_new ();
   gtk_cell_layout_pack_start (GTK_CELL_LAYOUT (self), renderer, FALSE);
   gtk_cell_layout_set_attributes (GTK_CELL_LAYOUT (self), renderer, "text", COL_MESSAGE, NULL);
-  g_object_set (renderer, "width", 130, 
-                "ellipsize-set", true, 
+  g_object_set (renderer, "width", 130,
+                "ellipsize-set", true,
                 "ellipsize", PANGO_ELLIPSIZE_END, NULL);
 
   for (int i = 0 ; i < NUM_STATUS_TYPES ; i++)
@@ -853,14 +847,14 @@ status_menu_new (Ekiga::ServiceCore & core)
   g_signal_connect (self, "changed",
                     G_CALLBACK (status_menu_option_changed), self);
 
-  gm_conf_notifier_add (PERSONAL_DATA_KEY "online_custom_status", 
+  gm_conf_notifier_add (PERSONAL_DATA_KEY "online_custom_status",
                         status_menu_custom_messages_changed, self);
-  gm_conf_notifier_add (PERSONAL_DATA_KEY "away_custom_status", 
+  gm_conf_notifier_add (PERSONAL_DATA_KEY "away_custom_status",
                         status_menu_custom_messages_changed, self);
-  gm_conf_notifier_add (PERSONAL_DATA_KEY "dnd_custom_status", 
+  gm_conf_notifier_add (PERSONAL_DATA_KEY "dnd_custom_status",
                         status_menu_custom_messages_changed, self);
 
-  conn = self->priv->personal_details->updated.connect (boost::bind (&on_details_updated, self)); 
+  conn = self->priv->personal_details->updated.connect (boost::bind (&on_details_updated, self));
   self->priv->connections.push_back (conn);
 
   return GTK_WIDGET (self);
