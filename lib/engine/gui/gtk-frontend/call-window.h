@@ -61,13 +61,12 @@ struct _EkigaCallWindow {
 typedef GmWindowClass EkigaCallWindowClass;
 
 GType        ekiga_call_window_get_type   ();
-GtkWidget   *ekiga_call_window_new        (Ekiga::ServiceCore *core);
-
-G_END_DECLS
 
 /* DESCRIPTION  :  /
  * BEHAVIOR     :  Builds the call window and adds the popup to the image.
  * PRE          :  Accels.
  */
 GtkWidget *call_window_new (Ekiga::ServiceCore & core);
+
+G_END_DECLS
 #endif
