@@ -65,6 +65,8 @@ public:
 
   const GtkWidget *get_addressbook_window () const;
 
+  const GtkWidget *get_call_window () const;
+
   const GtkWidget *get_chat_window () const;
 
   const StatusIcon *get_status_icon () const;
@@ -72,6 +74,7 @@ public:
 private :
 
   GtkWidget *addressbook_window;
+  GtkWidget *call_window;
   GtkWidget *chat_window;
   StatusIcon *status_icon;
 

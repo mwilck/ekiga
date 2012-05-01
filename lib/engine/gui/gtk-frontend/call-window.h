@@ -69,5 +69,5 @@ G_END_DECLS
  * BEHAVIOR     :  Builds the call window and adds the popup to the image.
  * PRE          :  Accels.
  */
-GtkWidget *gm_call_window_new (Ekiga::ServiceCore & core);
+GtkWidget *call_window_new (Ekiga::ServiceCore & core);
 #endif

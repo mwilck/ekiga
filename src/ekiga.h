@@ -84,13 +84,6 @@ class GnomeMeeting : public PProcess
 
 
   /* DESCRIPTION  :  /
-   * BEHAVIOR     :  Returns a pointer to the call window GObject.
-   * PRE          :  /
-   */
-  GtkWidget *GetCallWindow ();
-
-
-  /* DESCRIPTION  :  /
    * BEHAVIOR     :  Returns a pointer to the preferences window GMObject.
    * PRE          :  /
    */
@@ -133,7 +126,6 @@ class GnomeMeeting : public PProcess
 
   /* The different components of the GUI */
   GtkWidget *main_window;
-  GtkWidget *call_window;
   GtkWidget *history_window;
   GtkWidget *assistant_window;
   GtkWidget *prefs_window;

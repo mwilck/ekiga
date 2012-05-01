@@ -598,6 +598,7 @@ static void on_setup_call_cb (boost::shared_ptr<Ekiga::CallManager> manager,
   EkigaMainWindow *mw = EKIGA_MAIN_WINDOW (self);
   GtkWidget *call_window = NULL;
   boost::shared_ptr<Ekiga::AudioOutputCore> audiooutput_core = mw->priv->core->get<Ekiga::AudioOutputCore> ("audiooutput-core");
+  boost::shared_ptr<GtkFrontend> gtk_frontend = mw->priv->core->get<GtkFrontend> ("gtk-frontend");
 
   if (!call->is_outgoing () && !manager->get_auto_answer ()) {
     if (mw->priv->current_call)
@@ -611,7 +612,7 @@ static void on_setup_call_cb (boost::shared_ptr<Ekiga::CallManager> manager,
   else {
 
     /* Show call window */
-    call_window = GnomeMeeting::Process ()->GetCallWindow ();
+    call_window = GTK_WIDGET (gtk_frontend->get_call_window ());
     gtk_widget_show (call_window);
 
     mw->priv->current_call = call;
@@ -662,7 +663,8 @@ static void on_established_call_cb (boost::shared_ptr<Ekiga::CallManager>  /*man
   audiooutput_core->stop_play_event("ring_tone_sound");
 
   /* Show call window */
-  call_window = GnomeMeeting::Process ()->GetCallWindow ();
+  boost::shared_ptr<GtkFrontend> gtk_frontend = mw->priv->core->get<GtkFrontend> ("gtk-frontend");
+  call_window = GTK_WIDGET (gtk_frontend->get_call_window ());
   gtk_widget_show (call_window);
 }
 
@@ -694,7 +696,8 @@ static void on_cleared_call_cb (boost::shared_ptr<Ekiga::CallManager>  /*manager
 
   /* Hide call window */
   if (!gm_conf_get_bool (VIDEO_DEVICES_KEY "enable_preview")) {
-    call_window = GnomeMeeting::Process ()->GetCallWindow ();
+    boost::shared_ptr<GtkFrontend> gtk_frontend = mw->priv->core->get<GtkFrontend> ("gtk-frontend");
+    call_window = GTK_WIDGET (gtk_frontend->get_call_window ());
     g_timeout_add_seconds (2, on_delayed_hide_call_window_cb, call_window);
   }
 
@@ -1067,7 +1070,8 @@ video_preview_changed_nt (G_GNUC_UNUSED gpointer id,
   if (gm_conf_entry_get_type (entry) == GM_CONF_BOOL) {
 
     EkigaMainWindow* mw = EKIGA_MAIN_WINDOW (data);
-    GtkWidget *call_window = GnomeMeeting::Process ()->GetCallWindow ();
+    boost::shared_ptr<GtkFrontend> gtk_frontend = mw->priv->core->get<GtkFrontend> ("gtk-frontend");
+    GtkWidget *call_window = GTK_WIDGET (gtk_frontend->get_call_window ());
 
     if (gm_conf_entry_get_type (entry) == GM_CONF_BOOL) {
       if (mw->priv->calling_state == Standby) {

@@ -35,19 +35,14 @@
  *                          build the call window.
  */
 
-#include "revision.h"
-
 #include <glib/gi18n.h>
 #include <gdk/gdkkeysyms.h>
 
 #include "config.h"
 
-#include "call_window.h"
+#include "call-window.h"
 
-#include "ekiga.h"
-#include "conf.h"
 #include "dialpad.h"
-#include "statusmenu.h"
 
 #include "gmdialog.h"
 #include "gmentrydialog.h"
@@ -99,6 +94,9 @@ struct deviceStruct {
 
 G_DEFINE_TYPE (EkigaCallWindow, ekiga_call_window, GM_TYPE_WINDOW);
 
+#define USER_INTERFACE_KEY "/apps/" PACKAGE_NAME "/general/user_interface/"
+#define VIDEO_DISPLAY_KEY USER_INTERFACE_KEY "video_display/"
+#define VIDEO_DEVICES_KEY "/apps/" PACKAGE_NAME "/devices/video/"
 
 struct _EkigaCallWindowPrivate
 {
@@ -501,68 +499,57 @@ static void
 zoom_in_changed_cb (G_GNUC_UNUSED GtkWidget *widget,
 		    gpointer data)
 {
-  GtkWidget *call_window = GnomeMeeting::Process ()->GetCallWindow ();
-  g_return_if_fail (call_window != NULL);
-
   g_return_if_fail (data != NULL);
 
   Ekiga::DisplayInfo display_info;
-  ekiga_call_window_set_video_size (EKIGA_CALL_WINDOW (call_window), GM_QCIF_WIDTH, GM_QCIF_HEIGHT);
+  ekiga_call_window_set_video_size (EKIGA_CALL_WINDOW (data), GM_QCIF_WIDTH, GM_QCIF_HEIGHT);
 
-  display_info.zoom = gm_conf_get_int ((char *) data);
+  display_info.zoom = gm_conf_get_int (VIDEO_DISPLAY_KEY "zoom");
 
   if (display_info.zoom < 200)
     display_info.zoom = display_info.zoom * 2;
 
   gm_conf_set_int ((char *) data, display_info.zoom);
-  ekiga_call_window_zooms_menu_update_sensitivity (EKIGA_CALL_WINDOW (call_window), display_info.zoom);
+  ekiga_call_window_zooms_menu_update_sensitivity (EKIGA_CALL_WINDOW (data), display_info.zoom);
 }
 
 static void
 zoom_out_changed_cb (G_GNUC_UNUSED GtkWidget *widget,
 		     gpointer data)
 {
-  GtkWidget *call_window = GnomeMeeting::Process ()->GetCallWindow ();
-  g_return_if_fail (call_window != NULL);
-
   g_return_if_fail (data != NULL);
 
   Ekiga::DisplayInfo display_info;
-  ekiga_call_window_set_video_size (EKIGA_CALL_WINDOW (call_window), GM_QCIF_WIDTH, GM_QCIF_HEIGHT);
+  ekiga_call_window_set_video_size (EKIGA_CALL_WINDOW (data), GM_QCIF_WIDTH, GM_QCIF_HEIGHT);
 
   display_info.zoom = gm_conf_get_int ((char *) data);
 
   if (display_info.zoom  > 50)
     display_info.zoom  = (unsigned int) (display_info.zoom  / 2);
 
-  gm_conf_set_int ((char *) data, display_info.zoom);
-  ekiga_call_window_zooms_menu_update_sensitivity (EKIGA_CALL_WINDOW (call_window), display_info.zoom);
+  gm_conf_set_int (VIDEO_DISPLAY_KEY "zoom", display_info.zoom);
+  ekiga_call_window_zooms_menu_update_sensitivity (EKIGA_CALL_WINDOW (data), display_info.zoom);
 }
 
 static void
 zoom_normal_changed_cb (G_GNUC_UNUSED GtkWidget *widget,
 			gpointer data)
 {
-  GtkWidget *call_window = GnomeMeeting::Process ()->GetCallWindow ();
-  g_return_if_fail (call_window != NULL);
-
   g_return_if_fail (data != NULL);
 
   Ekiga::DisplayInfo display_info;
-  ekiga_call_window_set_video_size (EKIGA_CALL_WINDOW (call_window), GM_QCIF_WIDTH, GM_QCIF_HEIGHT);
+  ekiga_call_window_set_video_size (EKIGA_CALL_WINDOW (data), GM_QCIF_WIDTH, GM_QCIF_HEIGHT);
 
   display_info.zoom  = 100;
 
-  gm_conf_set_int ((char *) data, display_info.zoom);
-  ekiga_call_window_zooms_menu_update_sensitivity (EKIGA_CALL_WINDOW (call_window), display_info.zoom);
+  gm_conf_set_int (VIDEO_DISPLAY_KEY "zoom", display_info.zoom);
+  ekiga_call_window_zooms_menu_update_sensitivity (EKIGA_CALL_WINDOW (data), display_info.zoom);
 }
 
 static void
 display_changed_cb (GtkWidget *widget,
 		    gpointer data)
 {
-  GtkWidget *call_window = GnomeMeeting::Process ()->GetCallWindow ();
-  g_return_if_fail (call_window != NULL);
   g_return_if_fail (data != NULL);
 
   GSList *group = NULL;
@@ -584,8 +571,8 @@ display_changed_cb (GtkWidget *widget,
       group = g_slist_next (group);
     }
 
-    if (!EKIGA_CALL_WINDOW(call_window)->priv->changing_back_to_local_after_a_call)
-      gm_conf_set_int ((gchar *) data, group_last_pos - active);
+    if (!EKIGA_CALL_WINDOW (data)->priv->changing_back_to_local_after_a_call)
+      gm_conf_set_int (VIDEO_DISPLAY_KEY "video_view", group_last_pos - active);
   }
 }
 
@@ -593,8 +580,6 @@ static void
 fullscreen_changed_cb (G_GNUC_UNUSED GtkWidget *widget,
 		       G_GNUC_UNUSED gpointer data)
 {
-  GtkWidget* call_window = GnomeMeeting::Process()->GetCallWindow ();
-  g_return_if_fail (call_window != NULL);
   ekiga_call_window_toggle_fullscreen (Ekiga::VO_FS_TOGGLE);
 }
 
@@ -2006,35 +1991,32 @@ ekiga_call_window_init_menu (EkigaCallWindow *cw)
       GTK_MENU_RADIO_ENTRY("local_video", _("_Local Video"),
 			   _("Local video image"),
 			   NULL, '1',
-			   G_CALLBACK (display_changed_cb),
-			   (gpointer) VIDEO_DISPLAY_KEY "video_view",
+			   G_CALLBACK (display_changed_cb), cw,
 			   true, false),
       GTK_MENU_RADIO_ENTRY("remote_video", _("_Remote Video"),
 			   _("Remote video image"),
 			   NULL, '2',
-			   G_CALLBACK (display_changed_cb),
-			   (gpointer) VIDEO_DISPLAY_KEY "video_view",
+			   G_CALLBACK (display_changed_cb), cw,
 			   false, false),
       GTK_MENU_RADIO_ENTRY("both_incrusted", _("_Picture-in-Picture"),
 			   _("Both video images"),
 			   NULL, '3',
-			   G_CALLBACK (display_changed_cb),
-			   (gpointer) VIDEO_DISPLAY_KEY "video_view",
+			   G_CALLBACK (display_changed_cb), cw,
 			   false, false),
       GTK_MENU_SEPARATOR,
 
       GTK_MENU_ENTRY("zoom_in", NULL, _("Zoom in"),
 		     GTK_STOCK_ZOOM_IN, '+',
 		     G_CALLBACK (zoom_in_changed_cb),
-		     (gpointer) VIDEO_DISPLAY_KEY "zoom", false),
+		     (gpointer) cw, false),
       GTK_MENU_ENTRY("zoom_out", NULL, _("Zoom out"),
 		     GTK_STOCK_ZOOM_OUT, '-',
 		     G_CALLBACK (zoom_out_changed_cb),
-		     (gpointer) VIDEO_DISPLAY_KEY "zoom", false),
+		     (gpointer) cw, false),
       GTK_MENU_ENTRY("normal_size", NULL, _("Normal size"),
 		     GTK_STOCK_ZOOM_100, '0',
 		     G_CALLBACK (zoom_normal_changed_cb),
-		     (gpointer) VIDEO_DISPLAY_KEY "zoom", false),
+		     (gpointer) cw, false),
       GTK_MENU_ENTRY("fullscreen", _("_Fullscreen"), _("Switch to fullscreen"),
 		     GTK_STOCK_ZOOM_IN, GDK_F11,
 		     G_CALLBACK (fullscreen_changed_cb),
@@ -2682,7 +2664,7 @@ ekiga_call_window_class_init (EkigaCallWindowClass *klass)
 }
 
 GtkWidget *
-gm_call_window_new (Ekiga::ServiceCore & core)
+call_window_new (Ekiga::ServiceCore & core)
 {
   EkigaCallWindow *cw;
 

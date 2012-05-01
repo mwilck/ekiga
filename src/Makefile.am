@@ -63,8 +63,6 @@ ekiga_SOURCES +=			\
 	gui/conf.cpp			\
 	gui/default_devices.cpp	        \
 	gui/default_devices.h	        \
-	gui/call_window.h		\
-	gui/call_window.cpp		\
 	gui/main.cpp		        \
 	gui/main_window.h		\
 	gui/main_window.cpp		\
