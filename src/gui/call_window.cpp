@@ -68,6 +68,10 @@
 #include "dbus-helper/dbus.h"
 #endif
 
+#ifdef HAVE_NOTIFY
+#include <libnotify/notify.h>
+#endif
+
 #ifndef WIN32
 #include <signal.h>
 #include <gdk/gdkx.h>
@@ -119,6 +123,7 @@ struct _EkigaCallWindowPrivate
 
   GtkWidget *main_menu;
   GtkWidget *call_panel_toolbar;
+  GtkWidget *pickup_button;
   GtkWidget *hangup_button;
   GtkWidget *hold_button;
   GtkWidget *audio_settings_button;
@@ -207,6 +212,7 @@ enum {
   CHANNEL_LAST
 };
 
+static bool notify_has_actions (void);
 
 static void zoom_in_changed_cb (GtkWidget *widget,
                                 gpointer data);
@@ -226,6 +232,9 @@ static void fullscreen_changed_cb (GtkWidget *widget,
 static void stay_on_top_changed_nt (gpointer id,
                                     GmConfEntry *entry,
                                     gpointer data);
+
+static void pickup_call_cb (GtkWidget * /*widget*/,
+                            gpointer data);
 
 static void hangup_call_cb (GtkWidget * /*widget*/,
                             gpointer data);
@@ -456,6 +465,28 @@ static void ekiga_call_window_connect_engine_signals (EkigaCallWindow *cw);
 
 static void ekiga_call_window_init_gui (EkigaCallWindow *cw);
 
+static bool
+notify_has_actions (void)
+{
+  static int accepts_actions = -1;
+#ifdef HAVE_NOTIFY
+  if (accepts_actions == -1) {  // initialise accepts_actions at the first call
+    accepts_actions = 0;
+    GList *capabilities = notify_get_server_caps ();
+    if (capabilities != NULL) {
+      for (GList *c = capabilities ; c != NULL ; c = c->next) {
+        if (strcmp ((char*)c->data, "actions") == 0 ) {
+          accepts_actions = 1;
+          break;
+        }
+      }
+      g_list_foreach (capabilities, (GFunc)g_free, NULL);
+      g_list_free (capabilities);
+    }
+  }
+#endif
+  return (accepts_actions > 0);
+}
 
 static void
 stay_on_top_changed_nt (G_GNUC_UNUSED gpointer id,
@@ -573,6 +604,16 @@ fullscreen_changed_cb (G_GNUC_UNUSED GtkWidget *widget,
   GtkWidget* call_window = GnomeMeeting::Process()->GetCallWindow ();
   g_return_if_fail (call_window != NULL);
   ekiga_call_window_toggle_fullscreen (Ekiga::VO_FS_TOGGLE);
+}
+
+static void
+pickup_call_cb (GtkWidget * /*widget*/,
+                gpointer data)
+{
+  EkigaCallWindow *cw = EKIGA_CALL_WINDOW (data);
+
+  if (cw->priv->current_call)
+    cw->priv->current_call->answer ();
 }
 
 static void
@@ -1093,7 +1134,7 @@ on_setup_call_cb (G_GNUC_UNUSED boost::shared_ptr<Ekiga::CallManager> manager,
   if (call->is_outgoing ())
     ekiga_call_window_set_status (cw, _("Calling %s..."), call->get_remote_uri ().c_str ());
 
-  ekiga_call_window_update_calling_state (cw, Calling);
+  ekiga_call_window_update_calling_state (cw, cw->priv->calling_state);
 }
 
 static void
@@ -1363,8 +1404,10 @@ ekiga_call_window_update_calling_state (EkigaCallWindow *cw,
       ekiga_call_window_channels_menu_update_sensitivity (cw, false, false, false);
 
       /* Update the menus and toolbar items */
+      gtk_menu_set_sensitive (cw->priv->main_menu, "connect", false);
       gtk_menu_set_sensitive (cw->priv->main_menu, "disconnect", false);
       gtk_menu_section_set_sensitive (cw->priv->main_menu, "hold_call", false);
+      gtk_widget_set_sensitive (GTK_WIDGET (cw->priv->pickup_button), false);
       gtk_widget_set_sensitive (GTK_WIDGET (cw->priv->hangup_button), false);
       gtk_widget_set_sensitive (GTK_WIDGET (cw->priv->hold_button), false);
 
@@ -1381,7 +1424,9 @@ ekiga_call_window_update_calling_state (EkigaCallWindow *cw,
       gtk_widget_show (cw->priv->call_frame);
 
       /* Update the menus and toolbar items */
+      gtk_widget_set_sensitive (GTK_WIDGET (cw->priv->pickup_button), false);
       gtk_widget_set_sensitive (GTK_WIDGET (cw->priv->hangup_button), true);
+      gtk_menu_set_sensitive (cw->priv->main_menu, "connect", false);
       gtk_menu_set_sensitive (cw->priv->main_menu, "disconnect", true);
       break;
 
@@ -1392,8 +1437,10 @@ ekiga_call_window_update_calling_state (EkigaCallWindow *cw,
       gtk_widget_show (cw->priv->call_frame);
 
       /* Update the menus and toolbar items */
+      gtk_menu_set_sensitive (cw->priv->main_menu, "connect", false);
       gtk_menu_set_sensitive (cw->priv->main_menu, "disconnect", true);
       gtk_menu_section_set_sensitive (cw->priv->main_menu, "hold_call", true);
+      gtk_widget_set_sensitive (GTK_WIDGET (cw->priv->pickup_button), false);
       gtk_widget_set_sensitive (GTK_WIDGET (cw->priv->hangup_button), true);
       gtk_widget_set_sensitive (GTK_WIDGET (cw->priv->hold_button), true);
       break;
@@ -1401,12 +1448,18 @@ ekiga_call_window_update_calling_state (EkigaCallWindow *cw,
 
     case Called:
 
-      /* Show/hide call frame */
-      gtk_widget_show (cw->priv->call_frame);
-
       /* Update the menus and toolbar items */
+      gtk_widget_set_sensitive (GTK_WIDGET (cw->priv->pickup_button), true);
       gtk_widget_set_sensitive (GTK_WIDGET (cw->priv->hangup_button), true);
+      gtk_menu_set_sensitive (cw->priv->main_menu, "connect", true);
       gtk_menu_set_sensitive (cw->priv->main_menu, "disconnect", true);
+
+      /* Show/hide call frame and call window (if no notifications */
+      gtk_widget_show (cw->priv->call_frame);
+      if (!notify_has_actions ()) {
+        gtk_window_present (GTK_WINDOW (cw));
+        gtk_widget_show (GTK_WIDGET (cw));
+      }
       break;
 
     default:
@@ -1916,6 +1969,10 @@ ekiga_call_window_init_menu (EkigaCallWindow *cw)
     {
       GTK_MENU_NEW (_("_Call")),
 
+      GTK_MENU_ENTRY("connect", _("_Pick up"), _("Pick up the current call"),
+		     GM_STOCK_PHONE_PICK_UP_16, 'd',
+		     G_CALLBACK (pickup_call_cb), cw, false),
+
       GTK_MENU_ENTRY("disconnect", _("_Hangup"), _("Hangup the current call"),
 		     GM_STOCK_PHONE_HANG_UP_16, 'd',
 		     G_CALLBACK (hangup_call_cb), cw, false),
@@ -2302,7 +2359,22 @@ ekiga_call_window_init_gui (EkigaCallWindow *cw)
   gtk_container_add (GTK_CONTAINER (cw->priv->call_frame), hbox);
   gtk_box_pack_start (GTK_BOX (vbox), GTK_WIDGET (cw->priv->call_frame), true, true, 2);
 
-  /* Hangup */
+  /* Pick-up */
+  item = gtk_tool_item_new ();
+  cw->priv->pickup_button = gtk_button_new ();
+  image = gtk_image_new_from_stock (GM_STOCK_PHONE_PICK_UP_24, GTK_ICON_SIZE_LARGE_TOOLBAR);
+  gtk_container_add (GTK_CONTAINER (cw->priv->pickup_button), image);
+  gtk_container_add (GTK_CONTAINER (item), cw->priv->pickup_button);
+  gtk_button_set_relief (GTK_BUTTON (cw->priv->pickup_button), GTK_RELIEF_NONE);
+  gtk_widget_show (cw->priv->pickup_button);
+  gtk_toolbar_insert (GTK_TOOLBAR (cw->priv->call_panel_toolbar),
+		      GTK_TOOL_ITEM (item), -1);
+  gtk_widget_set_sensitive (GTK_WIDGET (cw->priv->pickup_button), false);
+  gtk_tool_item_set_tooltip_text (GTK_TOOL_ITEM (item),
+				  _("Hang up the current call"));
+  g_signal_connect (cw->priv->pickup_button, "clicked",
+		    G_CALLBACK (pickup_call_cb), cw);
+
   item = gtk_tool_item_new ();
   cw->priv->hangup_button = gtk_button_new ();
   image = gtk_image_new_from_stock (GM_STOCK_PHONE_HANG_UP_24, GTK_ICON_SIZE_LARGE_TOOLBAR);

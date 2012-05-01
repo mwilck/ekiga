@@ -201,9 +201,6 @@ static void show_gm_window_cb (GtkWidget *widget,
 
 static gboolean on_delayed_hide_call_window_cb (gpointer data);
 
-static void ekiga_main_window_incoming_call_dialog_show (EkigaMainWindow *mw,
-                                                      boost::shared_ptr<Ekiga::Call>  call);
-
 static void ekiga_main_window_append_call_url (EkigaMainWindow *mw,
                                                const char *url);
 
@@ -607,8 +604,6 @@ static void on_setup_call_cb (boost::shared_ptr<Ekiga::CallManager> manager,
       return; // No call setup needed if already in a call
 
     audiooutput_core->start_play_event ("incoming_call_sound", 4000, 256);
-    if (!notify_has_actions ())
-      ekiga_main_window_incoming_call_dialog_show (mw, call);
 
     mw->priv->current_call = call;
     mw->priv->calling_state = Called;
@@ -708,39 +703,8 @@ static void on_cleared_call_cb (boost::shared_ptr<Ekiga::CallManager>  /*manager
   gtk_widget_set_sensitive (GTK_WIDGET (mw->priv->preview_button), true);
 }
 
-static void on_cleared_incoming_call_cb (std::string /*reason*/,
-                                         gpointer /*self*/)
-{
-  EkigaMainWindow *mw = EKIGA_MAIN_WINDOW (GnomeMeeting::Process ()->GetMainWindow ());
-  GtkWidget *call_window = NULL;
 
-  /* Update calling state */
-  if (mw->priv->current_call)
-    mw->priv->current_call = boost::shared_ptr<Ekiga::Call>();
-  mw->priv->calling_state = Standby;
-
-  boost::shared_ptr<Ekiga::AudioOutputCore> audiooutput_core = mw->priv->core->get<Ekiga::AudioOutputCore> ("audiooutput-core");
-  audiooutput_core->stop_play_event("incoming_call_sound");
-  audiooutput_core->stop_play_event("ring_tone_sound");
-
-  /* Hide call window */
-  if (!gm_conf_get_bool (VIDEO_DEVICES_KEY "enable_preview")) {
-    call_window = GnomeMeeting::Process ()->GetCallWindow ();
-    g_timeout_add_seconds (2, on_delayed_hide_call_window_cb, call_window);
-  }
-
-  /* Sensitive a few things back */
-  gtk_widget_set_sensitive (GTK_WIDGET (mw->priv->uri_toolbar), true);
-  gtk_widget_set_sensitive (GTK_WIDGET (mw->priv->preview_button), true);
-}
-
-
-static void on_incoming_call_gone_cb (gpointer self)
-{
-  gtk_widget_destroy (GTK_WIDGET (self));
-}
-
-
+// FIXME: this should be done through a notification
 static void on_missed_call_cb (boost::shared_ptr<Ekiga::CallManager>  /*manager*/,
                                boost::shared_ptr<Ekiga::Call>  call,
                                gpointer self)
@@ -754,6 +718,7 @@ static void on_missed_call_cb (boost::shared_ptr<Ekiga::CallManager>  /*manager*
   ekiga_main_window_push_message (mw, "%s", info);
   g_free (info);
 
+  // FIXME: the engine should take care of this
   /* If the cleared call is the current one, switch back to standby, otherwise return
    * as long as the information has been displayed */
   if (mw->priv->current_call && mw->priv->current_call->get_id () == call->get_id ()) {
@@ -891,30 +856,6 @@ on_audiooutput_device_removed_cb (const Ekiga::AudioOutputDevice & device,
 }
 
 /* Implementation */
-static void
-incoming_call_response_cb (GtkDialog *incoming_call_popup,
-                           gint response,
-                           gpointer main_window)
-{
-  EkigaMainWindow *mw = EKIGA_MAIN_WINDOW (main_window);
-
-  gtk_widget_hide (GTK_WIDGET (incoming_call_popup));
-
-  if (mw->priv->current_call) {
-
-    switch (response) {
-    case 2:
-      mw->priv->current_call->answer ();
-      break;
-
-    default:
-    case 0:
-      mw->priv->current_call->hangup ();
-      break;
-    }
-  }
-}
-
 static void
 add_device_response_cb (GtkDialog *add_device_popup,
                            gint response,
@@ -1253,100 +1194,6 @@ statusbar_clicked_cb (G_GNUC_UNUSED GtkWidget *widget,
   ekiga_main_window_push_message (EKIGA_MAIN_WINDOW (data), NULL);
 
   return FALSE;
-}
-
-
-static void
-ekiga_main_window_incoming_call_dialog_show (EkigaMainWindow *mw,
-                                             boost::shared_ptr<Ekiga::Call>  call)
-{
-  GdkPixbuf *pixbuf = NULL;
-
-  GtkWidget *label = NULL;
-  GtkWidget *vbox = NULL;
-  GtkWidget *incoming_call_popup = NULL;
-
-  gchar *msg = NULL;
-
-  // FIXME could the call become invalid ?
-  const char *utf8_name = call->get_remote_party_name ().c_str ();
-  const char *utf8_app = call->get_remote_application ().c_str ();
-  const char *utf8_url = call->get_remote_uri ().c_str ();
-
-  g_return_if_fail (EKIGA_IS_MAIN_WINDOW (mw));
-
-  incoming_call_popup = gtk_dialog_new ();
-  gtk_dialog_add_button (GTK_DIALOG (incoming_call_popup),
-			 _("Reject"), 0);
-  gtk_dialog_add_button (GTK_DIALOG (incoming_call_popup),
-			 _("Accept"), 2);
-
-  gtk_dialog_set_default_response (GTK_DIALOG (incoming_call_popup), 2);
-
-  vbox = GTK_DIALOG (incoming_call_popup)->vbox;
-
-  msg = g_strdup_printf ("%s <i>%s</i>", _("Incoming call from"), (const char*) utf8_name);
-  label = gtk_label_new (NULL);
-  gtk_label_set_markup (GTK_LABEL (label), msg);
-  gtk_box_pack_start (GTK_BOX (vbox), label, FALSE, FALSE, 10);
-  gtk_misc_set_alignment (GTK_MISC (label), 0.5, 0.0);
-  gtk_label_set_line_wrap (GTK_LABEL (label), TRUE);
-  g_free (msg);
-
-  pixbuf = gtk_widget_render_icon (GTK_WIDGET (incoming_call_popup),
-				   GM_STOCK_PHONE_PICK_UP_16,
-				   GTK_ICON_SIZE_MENU, NULL);
-  gtk_window_set_icon (GTK_WINDOW (incoming_call_popup), pixbuf);
-  g_object_unref (pixbuf);
-
-  if (utf8_url) {
-
-    label = gtk_label_new (NULL);
-    msg = g_strdup_printf ("<b>%s</b> <span foreground=\"blue\"><u>%s</u></span>",
-                           _("Remote URI:"), utf8_url);
-    gtk_label_set_markup (GTK_LABEL (label), msg);
-    gtk_label_set_line_wrap (GTK_LABEL (label), TRUE);
-    gtk_box_pack_start (GTK_BOX (vbox), label, FALSE, FALSE, 2);
-    gtk_misc_set_alignment (GTK_MISC (label), 0.0, 0.0);
-    g_free (msg);
-  }
-
-  if (utf8_app) {
-
-    label = gtk_label_new (NULL);
-    msg = g_strdup_printf ("<b>%s</b> %s",
-			   _("Remote Application:"), utf8_app);
-    gtk_label_set_markup (GTK_LABEL (label), msg);
-    gtk_label_set_line_wrap (GTK_LABEL (label), TRUE);
-    gtk_box_pack_start (GTK_BOX (vbox), label, FALSE, FALSE, 2);
-    gtk_misc_set_alignment (GTK_MISC (label), 0.0, 0.0);
-    g_free (msg);
-  }
-
-  msg = g_strdup_printf (_("Call from %s"), (const char*) utf8_name);
-  gtk_window_set_title (GTK_WINDOW (incoming_call_popup), msg);
-  g_free (msg);
-  gtk_window_set_modal (GTK_WINDOW (incoming_call_popup), TRUE);
-  gtk_window_set_keep_above (GTK_WINDOW (incoming_call_popup), TRUE);
-  gtk_window_set_urgency_hint (GTK_WINDOW (mw), TRUE);
-  gtk_window_set_transient_for (GTK_WINDOW (incoming_call_popup),
-				GTK_WINDOW (mw));
-  // do not steal the focus, to avoid that user take the call by inadvertently pressing enter in another application
-  gtk_window_set_focus_on_map (GTK_WINDOW (incoming_call_popup), FALSE);
-
-  gtk_widget_show_all (incoming_call_popup);
-
-  g_signal_connect (incoming_call_popup, "delete_event",
-                    G_CALLBACK (gtk_widget_hide_on_delete), NULL);
-  g_signal_connect (incoming_call_popup, "response",
-                    G_CALLBACK (incoming_call_response_cb), mw);
-
-  call->established.connect (boost::bind (&on_incoming_call_gone_cb,
-                                         (gpointer) incoming_call_popup));
-  call->cleared.connect (boost::bind (&on_cleared_incoming_call_cb, _1,
-                                    (gpointer) incoming_call_popup));
-  call->missed.connect (boost::bind (&on_incoming_call_gone_cb, 
-                                   (gpointer) incoming_call_popup));
 }
 
 
