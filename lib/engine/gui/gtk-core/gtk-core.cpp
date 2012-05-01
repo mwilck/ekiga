@@ -64,7 +64,7 @@ Gtk::Core::Core ()
   gtk_icon_set_unref (icon_set);
 
   icon_set = gtk_icon_factory_lookup_default (GM_STOCK_STATUS_DND);
-  gtk_icon_factory_add (factory, "dnd", icon_set);
+  gtk_icon_factory_add (factory, "busy", icon_set);
   gtk_icon_set_unref (icon_set);
 
   icon_set = gtk_icon_factory_lookup_default (GM_STOCK_STATUS_INACALL);

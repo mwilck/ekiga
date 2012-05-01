@@ -546,7 +546,7 @@ Opal::Account::publish (const Ekiga::PersonalDetails& details)
     personal_state = OpalPresenceInfo::Available;
   else if (presence == "away")
     personal_state = OpalPresenceInfo::Away;
-  else if (presence == "dnd")
+  else if (presence == "busy")
     personal_state = OpalPresenceInfo::Busy;
   else {  // ekiga knows only these three presence types
     std::string s = "Warning: Unknown presence type ";
@@ -761,7 +761,7 @@ Opal::Account::OnPresenceChange (OpalPresentity& /*presentity*/,
           || note.Find ("meeting") != P_MAX_INDEX
           || note.Find ("do not disturb") != P_MAX_INDEX
           || note.Find ("busy") != P_MAX_INDEX) {
-        new_presence = "dnd";
+        new_presence = "busy";
       }
       else if (note.Find ("away") != P_MAX_INDEX
                || note.Find ("out") != P_MAX_INDEX
@@ -788,7 +788,7 @@ Opal::Account::OnPresenceChange (OpalPresentity& /*presentity*/,
     new_presence = "away";
     break;
   case OpalPresenceInfo::Busy:
-    new_presence = "dnd";
+    new_presence = "busy";
     break;
   case OpalPresenceInfo::Appointment:
     new_presence = "busy";

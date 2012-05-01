@@ -70,15 +70,15 @@ enum MessageType
 {
   TYPE_ONLINE,             // Generic online message
   TYPE_AWAY,               // Generic away message
-  TYPE_DND,                // Generic Do Not Disturb message
+  TYPE_BUSY,                // Generic Do Not Disturb message
   NUM_STATUS_TYPES,
   TYPE_CUSTOM_ONLINE,      // Custom online message
   TYPE_CUSTOM_AWAY,        // Custom away message
-  TYPE_CUSTOM_DND,         // Custom DND message
+  TYPE_CUSTOM_BUSY,         // Custom BUSY message
   NUM_STATUS_CUSTOM_TYPES,
   TYPE_CUSTOM_ONLINE_NEW,  // Add new custom online message
   TYPE_CUSTOM_AWAY_NEW,    // Add new custom away message
-  TYPE_CUSTOM_DND_NEW,     // Add new custom dnd message
+  TYPE_CUSTOM_BUSY_NEW,     // Add new custom busy message
   TYPE_CLEAR               // Clear custom message(s)
 };
 
@@ -93,14 +93,14 @@ const char* status_types_names[] =
 {
   "online",
   "away",
-  "dnd"
+  "busy"
 };
 
 const char* status_types_keys[] =
 {
   PERSONAL_DATA_KEY "online_custom_status",
   PERSONAL_DATA_KEY "away_custom_status",
-  PERSONAL_DATA_KEY "dnd_custom_status"
+  PERSONAL_DATA_KEY "busy_custom_status"
 };
 
 
@@ -210,7 +210,7 @@ status_menu_clear_status_message_dialog_run (StatusMenu *self);
  *
  * @param self is the StatusMenu
  * @param option is the defined message type (TYPE_CUSTOM_ONLINE,
- * TYPE_CUSTOM_AWAY, TYPE_CUSTOM_DND)
+ * TYPE_CUSTOM_AWAY, TYPE_CUSTOM_BUSY)
  */
 static void
 status_menu_new_status_message_dialog_run (StatusMenu *self,
@@ -276,8 +276,8 @@ status_menu_option_changed (GtkComboBox *box,
         self->priv->personal_details->set_presence_info ("away", "");
         break;
 
-      case TYPE_DND:
-        self->priv->personal_details->set_presence_info ("dnd", "");
+      case TYPE_BUSY:
+        self->priv->personal_details->set_presence_info ("busy", "");
         break;
 
       case TYPE_CUSTOM_ONLINE:
@@ -288,8 +288,8 @@ status_menu_option_changed (GtkComboBox *box,
         self->priv->personal_details->set_presence_info ("away", status);
         break;
 
-      case TYPE_CUSTOM_DND:
-        self->priv->personal_details->set_presence_info ("dnd", status);
+      case TYPE_CUSTOM_BUSY:
+        self->priv->personal_details->set_presence_info ("busy", status);
         break;
 
       case TYPE_CUSTOM_ONLINE_NEW:
@@ -300,8 +300,8 @@ status_menu_option_changed (GtkComboBox *box,
         status_menu_new_status_message_dialog_run (self, TYPE_CUSTOM_AWAY);
         break;
 
-      case TYPE_CUSTOM_DND_NEW:
-        status_menu_new_status_message_dialog_run (self, TYPE_CUSTOM_DND);
+      case TYPE_CUSTOM_BUSY_NEW:
+        status_menu_new_status_message_dialog_run (self, TYPE_CUSTOM_BUSY);
         break;
 
       case TYPE_CLEAR:
@@ -462,13 +462,13 @@ status_menu_set_option (StatusMenu *self,
                         COL_MESSAGE, &sstatus, -1);
 
     // Check if it is a custom status message and if it is in the list
-    if (i == TYPE_CUSTOM_ONLINE || i == TYPE_CUSTOM_AWAY || i == TYPE_CUSTOM_DND) {
+    if (i == TYPE_CUSTOM_ONLINE || i == TYPE_CUSTOM_AWAY || i == TYPE_CUSTOM_BUSY) {
       if (presence == status_types_names[i - NUM_STATUS_TYPES - 1] && status == sstatus)
         break;
     }
 
     // Long status empty, the user did not set a custom message
-    if (i == TYPE_ONLINE || i == TYPE_AWAY || i == TYPE_DND) {
+    if (i == TYPE_ONLINE || i == TYPE_AWAY || i == TYPE_BUSY) {
       if (status.empty () && presence == status_types_names[i])
         break;
     }
@@ -570,7 +570,7 @@ status_menu_clear_status_message_dialog_run (StatusMenu *self)
       gtk_tree_model_get (GTK_TREE_MODEL (self->priv->list_store), &iter,
                           COL_MESSAGE_TYPE, &i, -1);
 
-      if (i == TYPE_CUSTOM_ONLINE || i == TYPE_CUSTOM_AWAY || i == TYPE_CUSTOM_DND) {
+      if (i == TYPE_CUSTOM_ONLINE || i == TYPE_CUSTOM_AWAY || i == TYPE_CUSTOM_BUSY) {
 
         gtk_tree_model_get (GTK_TREE_MODEL (self->priv->list_store), &iter,
                             COL_ICON, &pixbuf,
@@ -851,7 +851,7 @@ status_menu_new (Ekiga::ServiceCore & core)
                         status_menu_custom_messages_changed, self);
   gm_conf_notifier_add (PERSONAL_DATA_KEY "away_custom_status",
                         status_menu_custom_messages_changed, self);
-  gm_conf_notifier_add (PERSONAL_DATA_KEY "dnd_custom_status",
+  gm_conf_notifier_add (PERSONAL_DATA_KEY "busy_custom_status",
                         status_menu_custom_messages_changed, self);
 
   conn = self->priv->personal_details->updated.connect (boost::bind (&on_details_updated, self));
