@@ -40,8 +40,13 @@
 
 #include <libnotify/notify.h>
 
+#include <glib/gi18n.h>
+
+#include "config.h"
+
 #include "services.h"
 #include "notification-core.h"
+#include "call-core.h"
 
 #include "libnotify-main.h"
 
@@ -52,7 +57,7 @@ class LibNotify:
 {
 public:
 
-  LibNotify (boost::shared_ptr<Ekiga::NotificationCore> core);
+  LibNotify (Ekiga::ServiceCore& core);
 
   ~LibNotify ();
 
@@ -66,10 +71,27 @@ private:
 
   void on_notification_added (boost::shared_ptr<Ekiga::Notification> notif);
   void on_notification_removed (boost::shared_ptr<Ekiga::Notification> notif);
+  void on_call_notification (boost::shared_ptr<Ekiga::CallManager> manager,
+                             boost::shared_ptr<Ekiga::Call>  call);
+  void on_call_notification_closed (gpointer self);
 
   typedef std::map<boost::shared_ptr<Ekiga::Notification>, std::pair<boost::signals::connection, boost::shared_ptr<NotifyNotification> > > container_type;
   container_type live;
 };
+
+static void
+notify_action_cb (NotifyNotification *notification,
+                  gchar *action,
+                  gpointer data)
+{
+  Ekiga::Call *call = (Ekiga::Call *) data;
+
+  notify_notification_close (notification, NULL);
+  if (!strcmp (action, "accept"))
+    call->answer ();
+  else
+    call->hangup ();
+}
 
 
 struct LIBNOTIFYSpark: public Ekiga::Spark
@@ -81,12 +103,11 @@ struct LIBNOTIFYSpark: public Ekiga::Spark
 			    int* /*argc*/,
 			    char** /*argv*/[])
   {
-    boost::shared_ptr<Ekiga::NotificationCore> notification = core.get<Ekiga::NotificationCore> ("notification-core");
     Ekiga::ServicePtr service = core.get ("libnotify");
 
-    if (notification && !service) {
+    if (!service) {
 
-      core.add (Ekiga::ServicePtr (new LibNotify (notification)));
+      core.add (Ekiga::ServicePtr (new LibNotify (core)));
       result = true;
     }
 
@@ -110,10 +131,19 @@ libnotify_init (Ekiga::KickStart& kickstart)
   kickstart.add_spark (spark);
 }
 
-LibNotify::LibNotify (boost::shared_ptr<Ekiga::NotificationCore> core)
+
+LibNotify::LibNotify (Ekiga::ServiceCore& core)
 {
+  boost::shared_ptr<Ekiga::NotificationCore> notification_core = core.get<Ekiga::NotificationCore> ("notification-core");
+  boost::shared_ptr<Ekiga::CallCore> call_core = core.get<Ekiga::CallCore> ("call-core");
+
   notify_init ("Ekiga");
-  core->notification_added.connect (boost::bind (&LibNotify::on_notification_added, this, _1));
+
+  /* Notifications coming from various components */
+  notification_core->notification_added.connect (boost::bind (&LibNotify::on_notification_added, this, _1));
+
+  /* Specific notifications */
+  call_core->setup_call.connect (boost::bind (&LibNotify::on_call_notification, this, _1, _2));
 }
 
 LibNotify::~LibNotify ()
@@ -149,10 +179,9 @@ LibNotify::on_notification_added (boost::shared_ptr<Ekiga::Notification> notific
   if (notification->get_level () == Ekiga::Notification::Error)
     notify_notification_set_urgency (notif, NOTIFY_URGENCY_CRITICAL);
 
-  g_signal_connect (notif, "closed",
-		    G_CALLBACK (on_notif_closed), notification.get ());
-  boost::signals::connection conn =
-    notification->removed.connect (boost::bind (&LibNotify::on_notification_removed, this, notification));
+  g_signal_connect (notif, "closed", G_CALLBACK (on_notif_closed), notification.get ());
+  boost::signals::connection conn = notification->removed.connect (boost::bind (&LibNotify::on_notification_removed,
+                                                                                this, notification));
 
   live[notification] = std::pair<boost::signals::connection, boost::shared_ptr<NotifyNotification> > (conn, boost::shared_ptr<NotifyNotification> (notif, g_object_unref));
 
@@ -168,4 +197,49 @@ LibNotify::on_notification_removed (boost::shared_ptr<Ekiga::Notification> notif
     iter->second.first.disconnect ();
     live.erase (iter);
   }
+}
+
+void
+LibNotify::on_call_notification_closed (gpointer self)
+{
+  notify_notification_close (NOTIFY_NOTIFICATION (self), NULL);
+}
+
+void
+LibNotify::on_call_notification (boost::shared_ptr<Ekiga::CallManager> manager,
+                                 boost::shared_ptr<Ekiga::Call> call)
+{
+  NotifyNotification *notify = NULL;
+
+  if (call->is_outgoing () || manager->get_auto_answer ())
+    return; // Ignore
+
+  gchar *title = g_strdup_printf (_("Incoming call from %s"), call->get_remote_party_name ().c_str ());
+  gchar *body = g_strdup_printf ("<b>%s</b> %s", _("Remote URI:"), call->get_remote_uri ().c_str ());
+
+  notify = notify_notification_new (title, body, NULL
+// NOTIFY_CHECK_VERSION appeared in 0.5.2 only
+#ifndef NOTIFY_CHECK_VERSION
+                                    , NULL
+#else
+#if !NOTIFY_CHECK_VERSION(0,7,0)
+                                    , NULL
+#endif
+#endif
+                                    );
+  notify_notification_add_action (notify, "reject", _("Reject"), notify_action_cb, call.get (), NULL);
+  notify_notification_add_action (notify, "accept", _("Accept"), notify_action_cb, call.get (), NULL);
+  notify_notification_set_app_name (notify, "Ekiga");
+  notify_notification_set_hint (notify, "transient", g_variant_new_boolean (TRUE));
+  notify_notification_set_timeout (notify, NOTIFY_EXPIRES_NEVER);
+  notify_notification_set_urgency (notify, NOTIFY_URGENCY_CRITICAL);
+
+  call->established.connect (boost::bind (&LibNotify::on_call_notification_closed, this, (gpointer) notify));
+  call->missed.connect (boost::bind (&LibNotify::on_call_notification_closed, this, (gpointer) notify));
+  call->cleared.connect (boost::bind (&LibNotify::on_call_notification_closed, this, (gpointer) notify));
+
+  notify_notification_show (notify, NULL);
+
+  g_free (title);
+  g_free (body);
 }

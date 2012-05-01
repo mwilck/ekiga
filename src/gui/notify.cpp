@@ -56,33 +56,6 @@
 #ifdef HAVE_NOTIFY
 #include <libnotify/notify.h>
 
-struct CallNotificationInfo
-{
-  boost::shared_ptr<Ekiga::Call> call;
-};
-
-static void
-notify_action_cb (NotifyNotification *notification,
-                  gchar *action,
-                  gpointer data)
-{
-  CallNotificationInfo *priv = (CallNotificationInfo *) (data);
-  boost::shared_ptr<Ekiga::Call> call = priv->call;
-
-  notify_notification_close (notification, NULL);
-
-  if (call) {
-
-    if (!strcmp (action, "accept"))
-      call->answer ();
-    else
-      call->hangup ();
-  }
-  g_object_set_data (G_OBJECT (notification), "priv", NULL);
-  if (priv)
-    delete priv;
-}
-
 
 static void
 notify_show_window_action_cb (NotifyNotification *notification,
@@ -97,17 +70,6 @@ notify_show_window_action_cb (NotifyNotification *notification,
 
   notify_notification_close (notification, NULL);
 }
-
-static void
-on_incoming_call_gone_cb (gpointer self)
-{
-  CallNotificationInfo *priv = (CallNotificationInfo *) (g_object_get_data (G_OBJECT (self), "priv"));
-  notify_notification_close (NOTIFY_NOTIFICATION (self), NULL);
-  g_object_set_data (G_OBJECT (self), "priv", NULL);
-  if (priv)
-    delete priv;
-}
-
 
 static void
 on_unread_count_cb (G_GNUC_UNUSED GtkWidget *widget,
@@ -141,63 +103,6 @@ on_unread_count_cb (G_GNUC_UNUSED GtkWidget *widget,
     notify_notification_show (notify, NULL);
   }
 }
-
-static void
-ekiga_incoming_call_notify (boost::shared_ptr<Ekiga::Call> call)
-{
-  NotifyNotification *notify = NULL;
-
-  gchar *uri = NULL;
-  gchar *body = NULL;
-  gchar *title = NULL;
-
-  const char *utf8_name = call->get_remote_party_name ().c_str ();
-  const char *utf8_url = call->get_remote_uri ().c_str ();
-
-  title = g_strdup_printf (_("Incoming call from %s"), (const char*) utf8_name);
-
-  if (utf8_url)
-    uri = g_strdup_printf ("<b>%s</b> %s", _("Remote URI:"), utf8_url);
-
-  body = g_strdup_printf ("%s", uri);
-
-  CallNotificationInfo *priv = new CallNotificationInfo ();
-  priv->call = call;
-
-  notify = notify_notification_new (title, body, NULL
-// NOTIFY_CHECK_VERSION appeared in 0.5.2 only
-#ifndef NOTIFY_CHECK_VERSION
-                                    , NULL
-#else
-#if !NOTIFY_CHECK_VERSION(0,7,0)
-                                    , NULL
-#endif
-#endif
-                                    );
-  g_object_set_data (G_OBJECT (notify), "priv", priv);
-  notify_notification_add_action (notify, "reject", _("Reject"), notify_action_cb, priv, NULL);
-  notify_notification_add_action (notify, "accept", _("Accept"), notify_action_cb, priv, NULL);
-  notify_notification_set_app_name (notify, "ekiga");
-  notify_notification_set_timeout (notify, NOTIFY_EXPIRES_NEVER);
-  notify_notification_set_urgency (notify, NOTIFY_URGENCY_CRITICAL);
-
-  notify_notification_show (notify, NULL);
-
-  call->established.connect (boost::bind (&on_incoming_call_gone_cb, (gpointer) notify));
-  call->missed.connect (boost::bind (&on_incoming_call_gone_cb, (gpointer) notify));
-  call->cleared.connect (boost::bind (&on_incoming_call_gone_cb, (gpointer) notify));
-
-  g_free (uri);
-  g_free (title);
-  g_free (body);
-}
-
-static void on_setup_call_cb (boost::shared_ptr<Ekiga::CallManager> manager,
-                              boost::shared_ptr<Ekiga::Call>  call)
-{
-  if (!call->is_outgoing () && !manager->get_auto_answer () && notify_has_actions ())
-    ekiga_incoming_call_notify (call);
-}
 #endif
 
 /*
@@ -208,12 +113,9 @@ notify_start (Ekiga::ServiceCore & core)
 {
 #ifdef HAVE_NOTIFY
   boost::shared_ptr<GtkFrontend> frontend = core.get<GtkFrontend> ("gtk-frontend");
-  boost::shared_ptr<Ekiga::CallCore> call_core = core.get<Ekiga::CallCore> ("call-core");
   boost::shared_ptr<Ekiga::AccountCore> account_core = core.get<Ekiga::AccountCore> ("account-core");
 
   GtkWidget *chat_window = GTK_WIDGET (frontend->get_chat_window ());
-
-  call_core->setup_call.connect (boost::bind (&on_setup_call_cb, _1, _2));
 
   g_signal_connect (chat_window, "unread-count", G_CALLBACK (on_unread_count_cb), chat_window);
   return true;
