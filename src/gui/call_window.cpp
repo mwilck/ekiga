@@ -37,6 +37,9 @@
 
 #include "revision.h"
 
+#include <glib/gi18n.h>
+#include <gdk/gdkkeysyms.h>
+
 #include "config.h"
 
 #include "call_window.h"
@@ -58,15 +61,6 @@
 #include "trigger.h"
 #include "menu-builder-tools.h"
 #include "menu-builder-gtk.h"
-
-#include "platform/gm-platform.h"
-
-#include <glib/gi18n.h>
-#include <gdk/gdkkeysyms.h>
-
-#ifdef HAVE_DBUS
-#include "dbus-helper/dbus.h"
-#endif
 
 #ifdef HAVE_NOTIFY
 #include <libnotify/notify.h>
@@ -92,8 +86,6 @@
 #include "audiooutput-core.h"
 
 #include "gtk-frontend.h"
-
-#include "opal-bank.h"
 
 #include <algorithm>
 
@@ -2258,7 +2250,6 @@ ekiga_call_window_connect_engine_signals (EkigaCallWindow *cw)
 
   /* New Call Engine signals */
   boost::shared_ptr<Ekiga::CallCore> call_core = cw->priv->core->get<Ekiga::CallCore> ("call-core");
-  boost::shared_ptr<Ekiga::AccountCore> account_core = cw->priv->core->get<Ekiga::AccountCore> ("account-core");
 
   /* Engine Signals callbacks */
   conn = call_core->setup_call.connect (boost::bind (&on_setup_call_cb, _1, _2, (gpointer) cw));
