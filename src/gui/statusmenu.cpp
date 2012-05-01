@@ -816,6 +816,7 @@ status_menu_new (Ekiga::ServiceCore & core)
   g_object_unref (self->priv->list_store);
 
   renderer = gtk_cell_renderer_pixbuf_new ();
+  g_object_set (renderer, "yalign", 0.5, "xpad", 5, NULL);
   gtk_cell_layout_pack_start (GTK_CELL_LAYOUT (self), renderer, FALSE);
   gtk_cell_layout_set_attributes (GTK_CELL_LAYOUT (self), renderer, "pixbuf", COL_ICON, NULL);
 
