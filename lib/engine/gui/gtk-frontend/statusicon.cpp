@@ -268,8 +268,6 @@ statusicon_activated_cb (G_GNUC_UNUSED GtkStatusIcon *icon,
 {
   StatusIcon *self = STATUSICON (data);
 
-  GtkWidget *window = NULL;
-
   // No unread messages => show ekiga
   if (!self->priv->unread_messages) {
 
