@@ -137,7 +137,7 @@ LibNotify::LibNotify (Ekiga::ServiceCore& core)
   boost::shared_ptr<Ekiga::NotificationCore> notification_core = core.get<Ekiga::NotificationCore> ("notification-core");
   boost::shared_ptr<Ekiga::CallCore> call_core = core.get<Ekiga::CallCore> ("call-core");
 
-  notify_init ("Ekiga");
+  notify_init ("ekiga");
 
   /* Notifications coming from various components */
   notification_core->notification_added.connect (boost::bind (&LibNotify::on_notification_added, this, _1));
@@ -165,8 +165,7 @@ LibNotify::on_notification_added (boost::shared_ptr<Ekiga::Notification> notific
 {
   NotifyNotification* notif = notify_notification_new (notification->get_title ().c_str (),
                                                        notification->get_body ().c_str (),
-                                                       "Ekiga"
-                                                       // NOTIFY_CHECK_VERSION appeared in 0.5.2 only
+                                                       "ekiga"
 #ifdef NOTIFY_CHECK_VERSION
 #if !NOTIFY_CHECK_VERSION(0,7,0)
                                                        , NULL
