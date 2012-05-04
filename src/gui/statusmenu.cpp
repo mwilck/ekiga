@@ -411,7 +411,7 @@ status_menu_populate (StatusMenu *self,
     }
 
     if (pixbuf)
-      gdk_pixbuf_unref (pixbuf);
+      g_object_unref (pixbuf);
   }
 
   /* Clear message */
