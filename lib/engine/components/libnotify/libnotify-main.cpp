@@ -80,9 +80,9 @@ private:
 };
 
 static void
-notify_action_cb (NotifyNotification *notification,
-                  gchar *action,
-                  gpointer data)
+call_notification_action_cb (NotifyNotification *notification,
+                             gchar *action,
+                             gpointer data)
 {
   Ekiga::Call *call = (Ekiga::Call *) data;
 
@@ -93,6 +93,16 @@ notify_action_cb (NotifyNotification *notification,
     call->hangup ();
 }
 
+static void
+notify_action_cb (NotifyNotification *notification,
+                  gchar * /*action*/,
+                  gpointer data)
+{
+  Ekiga::Notification *notif = (Ekiga::Notification *) data;
+  notify_notification_close (notification, NULL);
+
+  notif->action_trigger ();
+}
 
 struct LIBNOTIFYSpark: public Ekiga::Spark
 {
@@ -177,6 +187,9 @@ LibNotify::on_notification_added (boost::shared_ptr<Ekiga::Notification> notific
 
   if (notification->get_level () == Ekiga::Notification::Error)
     notify_notification_set_urgency (notif, NOTIFY_URGENCY_CRITICAL);
+  if (!notification->get_action_name ().empty ())
+    notify_notification_add_action (notif, "action", notification->get_action_name ().c_str (),
+                                    notify_action_cb, notification.get (), NULL);
 
   g_signal_connect (notif, "closed", G_CALLBACK (on_notif_closed), notification.get ());
   boost::signals::connection conn = notification->removed.connect (boost::bind (&LibNotify::on_notification_removed,
@@ -226,8 +239,8 @@ LibNotify::on_call_notification (boost::shared_ptr<Ekiga::CallManager> manager,
 #endif
 #endif
                                     );
-  notify_notification_add_action (notify, "reject", _("Reject"), notify_action_cb, call.get (), NULL);
-  notify_notification_add_action (notify, "accept", _("Accept"), notify_action_cb, call.get (), NULL);
+  notify_notification_add_action (notify, "reject", _("Reject"), call_notification_action_cb, call.get (), NULL);
+  notify_notification_add_action (notify, "accept", _("Accept"), call_notification_action_cb, call.get (), NULL);
   notify_notification_set_app_name (notify, "Ekiga");
   notify_notification_set_hint (notify, "transient", g_variant_new_boolean (TRUE));
   notify_notification_set_timeout (notify, NOTIFY_EXPIRES_NEVER);

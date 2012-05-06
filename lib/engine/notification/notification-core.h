@@ -54,8 +54,10 @@ namespace Ekiga
 
     Notification (NotificationLevel level_,
 		  const std::string title_,
-		  const std::string body_)
-      : level(level_), title(title_), body(body_)
+		  const std::string body_,
+                  const std::string action_name_ = "",
+                  boost::function0<void> action_callback_ = NULL)
+      : level(level_), title(title_), body(body_), action_name(action_name_), action_callback(action_callback_)
     {}
 
     ~Notification () {}
@@ -69,6 +71,12 @@ namespace Ekiga
     const std::string get_body () const
     { return body; }
 
+    const std::string get_action_name () const
+    { return action_name; }
+
+    void action_trigger ()
+    { if (action_callback) action_callback (); }
+
     boost::signal0<void> removed;
 
   private:
@@ -76,6 +84,8 @@ namespace Ekiga
     NotificationLevel level;
     std::string title;
     std::string body;
+    std::string action_name;
+    boost::function0<void> action_callback;
   };
 
   class NotificationCore: public Service
