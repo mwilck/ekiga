@@ -66,8 +66,6 @@ ekiga_SOURCES +=			\
 	gui/main.cpp		        \
 	gui/main_window.h		\
 	gui/main_window.cpp		\
-	gui/notify.h		        \
-	gui/notify.cpp                  \
 	gui/preferences.h		\
 	gui/preferences.cpp		\
 	gui/statusmenu.h		\

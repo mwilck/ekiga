@@ -38,6 +38,9 @@
 #include <gdk/gdkkeysyms.h>
 #include <glib/gi18n.h>
 
+#include "chat-core.h"
+#include "notification-core.h"
+
 #include "menu-builder-gtk.h"
 #include "form-dialog-gtk.h"
 
@@ -47,10 +50,10 @@
 
 struct _ChatWindowPrivate
 {
-  _ChatWindowPrivate (Ekiga::ChatCore& core_): core(core_)
+  _ChatWindowPrivate (Ekiga::ServiceCore& core_): core(core_)
   {}
 
-  Ekiga::ChatCore& core;
+  Ekiga::ServiceCore& core;
   std::list<boost::signals::connection> connections;
 
   GtkWidget* notebook;
@@ -102,6 +105,8 @@ static bool on_multiple_chat_added (ChatWindow* self,
 static void on_some_chat_user_requested (ChatWindow* self,
 					 GtkWidget* page);
 
+static void show_chat_window_cb (ChatWindow *self);
+
 /* helper (implementation) */
 
 static void
@@ -111,6 +116,7 @@ update_unread (ChatWindow* self)
   GtkWidget* page = NULL;
   GtkWidget* hbox = NULL;
   GtkWidget* label = NULL;
+  gchar *info = NULL;
 
   for (gint ii = 0;
        ii < gtk_notebook_get_n_pages (GTK_NOTEBOOK (self->priv->notebook)) ;
@@ -128,6 +134,15 @@ update_unread (ChatWindow* self)
   }
 
   g_signal_emit (self, signals[UNREAD_COUNT], 0, unread_count);
+
+  if (unread_count > 0) {
+    info = g_strdup_printf (_("You have %d unread text messages"), unread_count);
+    boost::shared_ptr<Ekiga::NotificationCore> notification_core =
+      self->priv->core.get<Ekiga::NotificationCore> ("notification-core");
+    boost::shared_ptr<Ekiga::Notification> notif (new Ekiga::Notification (Ekiga::Notification::Warning, info, "", _("Read"), boost::bind (show_chat_window_cb, self)));
+    notification_core->push_notification (notif);
+    g_free (info);
+  }
 }
 
 /* signal callbacks (implementations) */
@@ -310,7 +325,7 @@ on_simple_chat_added (ChatWindow* self,
   g_object_set_data_full (G_OBJECT (label), "base-title",
 			  g_strdup (chat->get_title ().c_str ()),
 			  g_free);
-  
+
   close_button = gtk_button_new ();
   gtk_button_set_relief (GTK_BUTTON (close_button), GTK_RELIEF_NONE);
   gtk_button_set_focus_on_click (GTK_BUTTON (close_button), FALSE);
@@ -371,6 +386,14 @@ on_some_chat_user_requested (ChatWindow* self,
   gtk_window_present (GTK_WINDOW (self));
 }
 
+static void
+show_chat_window_cb (ChatWindow *self)
+{
+  gtk_widget_show (GTK_WIDGET (self));
+  gtk_window_present (GTK_WINDOW (self));
+}
+
+
 /* GObject code */
 
 static void
@@ -429,37 +452,39 @@ chat_window_init (ChatWindow* self)
 /* public api */
 
 GtkWidget*
-chat_window_new (Ekiga::ChatCore& core,
+chat_window_new (Ekiga::ServiceCore& core,
 		 const std::string key)
 {
-  ChatWindow* result = NULL;
+  ChatWindow* self = NULL;
   GtkAccelGroup *accel = NULL;
 
-  result = (ChatWindow*)g_object_new (CHAT_WINDOW_TYPE,
-                                      "key", key.c_str (), 
-                                      "hide_on_esc", FALSE, 
+  self = (ChatWindow*)g_object_new (CHAT_WINDOW_TYPE,
+                                    "key", key.c_str (),
+                                    "hide_on_esc", FALSE,
                                       NULL);
 
-  result->priv = new ChatWindowPrivate (core);
+  self->priv = new ChatWindowPrivate (core);
 
-  result->priv->notebook = gtk_notebook_new ();
-  gtk_container_add (GTK_CONTAINER (result), result->priv->notebook);
-  gtk_widget_show (result->priv->notebook);
+  self->priv->notebook = gtk_notebook_new ();
+  gtk_container_add (GTK_CONTAINER (self), self->priv->notebook);
+  gtk_widget_show (self->priv->notebook);
 
   accel = gtk_accel_group_new ();
-  gtk_window_add_accel_group (GTK_WINDOW (result), accel);
+  gtk_window_add_accel_group (GTK_WINDOW (self), accel);
   gtk_accel_group_connect (accel, GDK_Escape, (GdkModifierType) 0, GTK_ACCEL_LOCKED,
-                           g_cclosure_new_swap (G_CALLBACK (on_escaped), (gpointer) result, NULL));
+                           g_cclosure_new_swap (G_CALLBACK (on_escaped), (gpointer) self, NULL));
   g_object_unref (accel);
 
-  g_signal_connect (result, "focus-in-event",
-		    G_CALLBACK (on_focus_in_event), result);
-  g_signal_connect (result->priv->notebook, "switch-page",
-		    G_CALLBACK (on_switch_page), result);
+  g_signal_connect (self, "focus-in-event",
+		    G_CALLBACK (on_focus_in_event), self);
+  g_signal_connect (self->priv->notebook, "switch-page",
+		    G_CALLBACK (on_switch_page), self);
 
-  result->priv->connections.push_front (core.dialect_added.connect (boost::bind (&on_dialect_added, result, _1)));
-  result->priv->connections.push_front (core.questions.connect (boost::bind (&on_handle_questions, result, _1)));
-  core.visit_dialects (boost::bind (&on_dialect_added, result, _1));
+  boost::shared_ptr<Ekiga::ChatCore> chat_core =
+    self->priv->core.get<Ekiga::ChatCore> ("chat-core");
+  self->priv->connections.push_front (chat_core->dialect_added.connect (boost::bind (&on_dialect_added, self, _1)));
+  self->priv->connections.push_front (chat_core->questions.connect (boost::bind (&on_handle_questions, self, _1)));
+  chat_core->visit_dialects (boost::bind (&on_dialect_added, self, _1));
 
-  return (GtkWidget*)result;
+  return (GtkWidget*)self;
 }

@@ -40,7 +40,7 @@
 #define __CHAT_WINDOW_H__
 
 #include "gmwindow.h"
-#include "chat-core.h"
+#include "services.h"
 
 G_BEGIN_DECLS
 
@@ -69,7 +69,7 @@ struct _ChatWindowClass
 
 /* Public API */
 
-GtkWidget* chat_window_new (Ekiga::ChatCore& core,
+GtkWidget* chat_window_new (Ekiga::ServiceCore& core,
 			    const std::string key);
 
 /* GObject's boilerplate */

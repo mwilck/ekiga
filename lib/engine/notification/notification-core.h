@@ -50,7 +50,7 @@ namespace Ekiga
   {
   public:
 
-    typedef enum { Warning, Error } NotificationLevel;
+    typedef enum { Info, Warning, Error } NotificationLevel;
 
     Notification (NotificationLevel level_,
 		  const std::string title_,

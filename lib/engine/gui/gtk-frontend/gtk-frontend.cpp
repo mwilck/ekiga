@@ -102,7 +102,7 @@ void GtkFrontend::build ()
 
   addressbook_window = addressbook_window_new_with_key (*contact_core, "/apps/" PACKAGE_NAME "/general/user_interface/addressbook_window");
   call_window = call_window_new (core);
-  chat_window = chat_window_new (*chat_core, "/apps/" PACKAGE_NAME "/general/user_interface/chat_window");
+  chat_window = chat_window_new (core, "/apps/" PACKAGE_NAME "/general/user_interface/chat_window");
   status_icon = status_icon_new (core);
 }
 

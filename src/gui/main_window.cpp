@@ -42,7 +42,6 @@
 #include "ekiga.h"
 #include "dialpad.h"
 #include "statusmenu.h"
-#include "notify.h"
 
 #include "gmcallbacks.h"
 #include "gmdialog.h"
