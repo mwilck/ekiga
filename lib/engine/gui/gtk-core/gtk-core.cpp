@@ -47,10 +47,6 @@ Gtk::Core::Core ()
 
   gnomemeeting_stock_icons_init ();
 
-  icon_set = gtk_icon_factory_lookup_default (GM_STOCK_STATUS_UNKNOWN);
-  gtk_icon_factory_add (factory, "unknown", icon_set);
-  gtk_icon_set_unref (icon_set);
-
   icon_set = gtk_icon_factory_lookup_default (GM_STOCK_STATUS_INACALL);
   gtk_icon_factory_add (factory, "inacall", icon_set);
   gtk_icon_set_unref (icon_set);

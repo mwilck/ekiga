@@ -58,7 +58,6 @@ gnomemeeting_stock_icons_init (void)
 	{
 	        { GM_STOCK_COLOR_BRIGHTNESS_CONTRAST, gm_color_brightness_contrast_stock_data },
 
-		{ GM_STOCK_STATUS_UNKNOWN, gm_status_unknown_stock_data },
 		{ GM_STOCK_STATUS_INACALL, gm_status_inacall_stock_data_16 },
 		{ GM_STOCK_STATUS_RINGING, gm_status_ringing_stock_data_16 },
 

@@ -994,7 +994,7 @@ on_presentity_added (RosterViewGtk* self,
       if (gtk_tree_selection_iter_is_selected (selection, &filtered_iter))
 	should_emit = TRUE;
 
-    std::string icon = "user-offline";
+    std::string icon = "avatar-default";
     if (presentity->get_presence () != "unknown")
       icon = "user-" + presentity->get_presence ();
     gtk_tree_store_set (self->priv->store, &iter,

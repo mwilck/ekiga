@@ -64,7 +64,6 @@ G_BEGIN_DECLS
 #define GM_STOCK_CALL_RECEIVED    "gm_call_received_stock"
 #define GM_STOCK_CALL_TRANSFER    "gm_call_transfer_stock"
 
-#define GM_STOCK_STATUS_UNKNOWN "gm_status_unknown_stock"
 #define GM_STOCK_STATUS_INACALL "gm_status_inacall_stock_16"
 #define GM_STOCK_STATUS_RINGING "gm_status_ringing_stock_16"
 
