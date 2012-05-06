@@ -2316,7 +2316,7 @@ ekiga_call_window_init_gui (EkigaCallWindow *cw)
   gtk_frame_set_shadow_type (GTK_FRAME (cw->priv->call_frame), GTK_SHADOW_ETCHED_IN);
   hbox = gtk_hbox_new (false, 2);
 
-  image = gtk_image_new_from_stock (GM_STOCK_STATUS_UNKNOWN, GTK_ICON_SIZE_MENU);
+  image = gtk_image_new_from_icon_name ("avatar-default", GTK_ICON_SIZE_LARGE_TOOLBAR);
   gtk_box_pack_start (GTK_BOX (hbox), image, false, false, 2);
 
   cw->priv->info_text = gtk_text_view_new ();

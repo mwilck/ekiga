@@ -387,18 +387,13 @@ book_view_gtk_update_contact (BookViewGtk *self,
 			      Ekiga::ContactPtr contact,
 			      GtkTreeIter *iter)
 {
-  GdkPixbuf *icon = NULL;
   GtkListStore *store = NULL;
 
   store = GTK_LIST_STORE (gtk_tree_view_get_model (self->priv->tree_view));
-  icon = gtk_widget_render_icon (GTK_WIDGET (self->priv->tree_view),
-                                 GM_STOCK_STATUS_UNKNOWN, GTK_ICON_SIZE_MENU, NULL);
-
   gtk_list_store_set (store, iter,
-                      COLUMN_PIXBUF, icon,
+                      COLUMN_PIXBUF, "avatar-default",
 		      COLUMN_NAME, contact->get_name ().c_str (),
 		      -1);
-  g_object_unref (icon);
 
   if (GDK_IS_WINDOW (GTK_WIDGET (self)->window))
     gdk_window_set_cursor (GTK_WIDGET (self)->window, NULL);
@@ -572,10 +567,9 @@ book_view_gtk_new (Ekiga::BookPtr book)
   column = gtk_tree_view_column_new ();
   renderer = gtk_cell_renderer_pixbuf_new ();
   gtk_tree_view_column_pack_start (column, renderer, FALSE);
-  gtk_tree_view_column_set_attributes (column, renderer,
-                                       "pixbuf", COLUMN_PIXBUF,
-                                       NULL);
-
+  gtk_tree_view_column_add_attribute (column, renderer,
+				      "icon-name",
+				      COLUMN_PIXBUF);
 
   renderer = gtk_cell_renderer_text_new ();
   gtk_tree_view_column_pack_start (column, renderer, FALSE);
