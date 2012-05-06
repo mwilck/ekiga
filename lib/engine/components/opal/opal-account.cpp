@@ -662,9 +662,8 @@ Opal::Account::handle_registration_event (RegistrationState state_,
         updated ();
         std::stringstream msg;
         msg << _("Could not register to ") << get_name ();
-        boost::shared_ptr<Ekiga::Notification> notif (new Ekiga::Notification (Ekiga::Notification::Warning, msg.str (), info));
+        boost::shared_ptr<Ekiga::Notification> notif (new Ekiga::Notification (Ekiga::Notification::Warning, msg.str (), info, _("Edit"), boost::bind (&Opal::Account::edit, (Opal::Account*) this)));
         notification_core->push_notification (notif);
-
       }
       failed_registration_already_notified = true;
       break;
