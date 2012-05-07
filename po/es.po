@@ -19,8 +19,8 @@ msgstr ""
 "Project-Id-Version: ekiga.master\n"
 "Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?"
 "product=ekiga&keywords=I18N+L10N&component=general\n"
-"POT-Creation-Date: 2012-05-01 12:36+0000\n"
-"PO-Revision-Date: 2012-05-02 13:03+0200\n"
+"POT-Creation-Date: 2012-05-06 17:05+0000\n"
+"PO-Revision-Date: 2012-05-07 12:56+0200\n"
 "Last-Translator: Daniel Mustieles <daniel.mustieles@gmail.com>\n"
 "Language-Team: Español <gnome-es-list@gnome.org>\n"
 "MIME-Version: 1.0\n"
@@ -105,7 +105,7 @@ msgstr ""
 msgid "Video preview"
 msgstr "Vista preliminar de vídeo"
 
-#: ../ekiga.schemas.in.in.h:14 ../src/gui/main_window.cpp:1415
+#: ../ekiga.schemas.in.in.h:14 ../src/gui/main_window.cpp:1418
 msgid "Display images from your camera device"
 msgstr "Muestra las imágenes desde su dispositivo de cámara"
 
@@ -423,8 +423,8 @@ msgid ""
 "Netmeeting and using both Fast Start and H.245 Tunneling can crash some "
 "versions of Netmeeting"
 msgstr ""
-"La conexión se establecerá en modo «Inicio rápido». «Inicio rápido» es un "
-"modo nuevo de iniciar llamadas más rápido y se introdujo en H.323v2. No está "
+"La conexión se establecerá en modo «Inicio rápido». «Inicio rápido» es un modo "
+"nuevo de iniciar llamadas más rápido y se introdujo en H.323v2. No está "
 "soportado por Netmeeting, y usarlo conjuntamente con túneles H.245 puede "
 "causar cuelgues en diferentes versiones de Netmeeting"
 
@@ -753,7 +753,7 @@ msgstr ""
 msgid "List of folded groups in the roster"
 msgstr "Lista de los grupos agrupados en la lista"
 
-#: ../ekiga.schemas.in.in.h:133 ../src/gui/main_window.cpp:1580
+#: ../ekiga.schemas.in.in.h:133 ../src/gui/main_window.cpp:1583
 msgid "Show offline contacts"
 msgstr "Mostrar contactos desconectados"
 
@@ -833,21 +833,21 @@ msgid "Missed"
 msgstr "Perdidas"
 
 #. Ignore
-#: ../lib/engine/components/libnotify/libnotify-main.cpp:217
+#: ../lib/engine/components/libnotify/libnotify-main.cpp:229
 #: ../lib/engine/components/opal/sip-endpoint.cpp:988
 #, c-format
 msgid "Incoming call from %s"
 msgstr "Llamada entrante de %s"
 
-#: ../lib/engine/components/libnotify/libnotify-main.cpp:218
+#: ../lib/engine/components/libnotify/libnotify-main.cpp:230
 msgid "Remote URI:"
 msgstr "URI remota:"
 
-#: ../lib/engine/components/libnotify/libnotify-main.cpp:230
+#: ../lib/engine/components/libnotify/libnotify-main.cpp:242
 msgid "Reject"
 msgstr "Rechazar"
 
-#: ../lib/engine/components/libnotify/libnotify-main.cpp:231
+#: ../lib/engine/components/libnotify/libnotify-main.cpp:243
 msgid "Accept"
 msgstr "Aceptar"
 
@@ -1000,7 +1000,7 @@ msgstr "Sin nombre"
 #: ../plugins/evolution/evolution-contact.cpp:228
 #: ../plugins/loudmouth/loudmouth-presentity.cpp:160
 #: ../plugins/resource-list/rl-presentity.cpp:212
-#: ../src/gui/main_window.cpp:1538
+#: ../src/gui/main_window.cpp:1541
 msgid "_Edit"
 msgstr "_Editar"
 
@@ -1047,7 +1047,7 @@ msgstr "Llamada"
 #: ../lib/engine/components/opal/h323-endpoint.cpp:138
 #: ../lib/engine/components/opal/sip-endpoint.cpp:252
 #: ../lib/engine/components/opal/sip-endpoint.cpp:256
-#: ../src/gui/call_window.cpp:2163
+#: ../lib/engine/gui/gtk-frontend/call-window.cpp:2137
 msgid "Transfer"
 msgstr "Desviar"
 
@@ -1090,7 +1090,7 @@ msgstr[0] "%s (con %d mensaje de voz)"
 msgstr[1] "%s (con %d mensajes de voz)"
 
 #: ../lib/engine/components/opal/opal-account.cpp:308
-#: ../lib/engine/components/opal/opal-account.cpp:678
+#: ../lib/engine/components/opal/opal-account.cpp:677
 msgid "Processing..."
 msgstr "Procesando…"
 
@@ -1261,59 +1261,64 @@ msgstr "No se pudo registrar"
 msgid "Could not register to "
 msgstr "No se pudo registrar con "
 
-#: ../lib/engine/components/opal/opal-account.cpp:797
+#: ../lib/engine/components/opal/opal-account.cpp:665
+#: ../plugins/loudmouth/loudmouth-account.cpp:433
+msgid "Edit"
+msgstr "Editar"
+
+#: ../lib/engine/components/opal/opal-account.cpp:796
 msgid "Appointment"
 msgstr "Cita"
 
-#: ../lib/engine/components/opal/opal-account.cpp:802
+#: ../lib/engine/components/opal/opal-account.cpp:801
 msgid "Breakfast"
 msgstr "Desayunando"
 
-#: ../lib/engine/components/opal/opal-account.cpp:807
+#: ../lib/engine/components/opal/opal-account.cpp:806
 msgid "Dinner"
 msgstr "Cenando"
 
-#: ../lib/engine/components/opal/opal-account.cpp:813
+#: ../lib/engine/components/opal/opal-account.cpp:812
 msgid "Holiday"
 msgstr "Festivo"
 
-#: ../lib/engine/components/opal/opal-account.cpp:818
+#: ../lib/engine/components/opal/opal-account.cpp:817
 msgid "In transit"
 msgstr "En tránsito"
 
-#: ../lib/engine/components/opal/opal-account.cpp:823
+#: ../lib/engine/components/opal/opal-account.cpp:822
 msgid "Looking for work"
 msgstr "Buscando trabajo"
 
-#: ../lib/engine/components/opal/opal-account.cpp:828
+#: ../lib/engine/components/opal/opal-account.cpp:827
 msgid "Lunch"
 msgstr "Almorzando"
 
-#: ../lib/engine/components/opal/opal-account.cpp:833
+#: ../lib/engine/components/opal/opal-account.cpp:832
 msgid "Meal"
 msgstr "Comiendo"
 
-#: ../lib/engine/components/opal/opal-account.cpp:838
+#: ../lib/engine/components/opal/opal-account.cpp:837
 msgid "Meeting"
 msgstr "Reunión"
 
-#: ../lib/engine/components/opal/opal-account.cpp:843
+#: ../lib/engine/components/opal/opal-account.cpp:842
 msgid "On the phone"
 msgstr "Al teléfono"
 
-#: ../lib/engine/components/opal/opal-account.cpp:848
+#: ../lib/engine/components/opal/opal-account.cpp:847
 msgid "Playing"
 msgstr "Jugando"
 
-#: ../lib/engine/components/opal/opal-account.cpp:853
+#: ../lib/engine/components/opal/opal-account.cpp:852
 msgid "Shopping"
 msgstr "Comprando"
 
-#: ../lib/engine/components/opal/opal-account.cpp:858
+#: ../lib/engine/components/opal/opal-account.cpp:857
 msgid "Sleeping"
 msgstr "Durmiendo"
 
-#: ../lib/engine/components/opal/opal-account.cpp:863
+#: ../lib/engine/components/opal/opal-account.cpp:862
 msgid "Working"
 msgstr "Trabajando"
 
@@ -1413,7 +1418,7 @@ msgid "Abnormal call termination"
 msgstr "Terminación anormal de la llamada"
 
 #: ../lib/engine/components/opal/opal-call.cpp:425
-#: ../src/gui/main_window.cpp:532
+#: ../src/gui/main_window.cpp:531
 msgid "Could not connect to remote host"
 msgstr "No se pudo conectar con el equipo remoto"
 
@@ -1732,7 +1737,7 @@ msgid "Address Book"
 msgstr "Libreta de direcciones"
 
 #: ../lib/engine/gui/gtk-frontend/addressbook-window.cpp:651
-#: ../src/gui/main_window.cpp:1509
+#: ../src/gui/main_window.cpp:1512
 msgid "Address _Book"
 msgstr "Li_breta de direcciones"
 
@@ -1745,14 +1750,405 @@ msgstr "_Acción"
 msgid "Category"
 msgstr "Categoría"
 
-#: ../lib/engine/gui/gtk-frontend/book-view-gtk.cpp:586
+#: ../lib/engine/gui/gtk-frontend/book-view-gtk.cpp:585
 #: ../src/gui/assistant.cpp:1396
 msgid "Full Name"
 msgstr "Nombre completo"
 
-#: ../lib/engine/gui/gtk-frontend/book-view-gtk.cpp:601
+#: ../lib/engine/gui/gtk-frontend/book-view-gtk.cpp:600
 msgid "_Search Filter:"
 msgstr "Filtro de _búsqueda:"
+
+#: ../lib/engine/gui/gtk-frontend/call-window.cpp:775
+msgid "Error while initializing video output"
+msgstr "Error al inicializar la salida de vídeo"
+
+#: ../lib/engine/gui/gtk-frontend/call-window.cpp:776
+msgid "No video will be displayed on your machine during this call"
+msgstr "Durante esta llamada no se mostrará el vídeo en su equipo"
+
+#: ../lib/engine/gui/gtk-frontend/call-window.cpp:786
+msgid ""
+"There was an error opening or initializing the video output. Please verify "
+"that no other application is using the accelerated video output."
+msgstr ""
+"Hubo un error al abrir o inicializar la salida de vídeo. Compruebe que "
+"ninguna otra aplicación está usando la salida acelerada de vídeo."
+
+#: ../lib/engine/gui/gtk-frontend/call-window.cpp:788
+msgid ""
+"There was an error opening or initializing the video output. Please verify "
+"that you are using a color depth of 24 or 32 bits per pixel."
+msgstr ""
+"Hubo un error al abrir o inicializar la salida de vídeo. Compruebe que está "
+"usando una profundidad de color de 24 ó 32 bits por píxel."
+
+#: ../lib/engine/gui/gtk-frontend/call-window.cpp:893
+#, c-format
+msgid "Error while accessing video device %s"
+msgstr "Error al acceder el dispositivo de vídeo %s"
+
+#: ../lib/engine/gui/gtk-frontend/call-window.cpp:896
+msgid "A moving logo will be transmitted during calls."
+msgstr "Se transmitirá un logotipo en movimiento durante las llamadas."
+
+#: ../lib/engine/gui/gtk-frontend/call-window.cpp:900
+msgid ""
+"There was an error while opening the device. In case it is a pluggable "
+"device it may be sufficient to reconnect it. If not, or if it still is not "
+"accessible, please check your permissions and make sure that the appropriate "
+"driver is loaded."
+msgstr ""
+"Se presentó un error mientras se abría el archivo. En caso de que sea un "
+"dispositivo conectable puede que sea suficiente con reconectarlo. De lo "
+"contrario, o si aún no es accesible, compruebe los permisos y asegúrese de "
+"que el controlador adecuado está cargado."
+
+#: ../lib/engine/gui/gtk-frontend/call-window.cpp:904
+msgid "Your video driver doesn't support the requested video format."
+msgstr "Su controlador de vídeo no soporta el formato de vídeo solicitado."
+
+#: ../lib/engine/gui/gtk-frontend/call-window.cpp:908
+msgid "Could not open the chosen channel."
+msgstr "Imposible abrir el canal elegido."
+
+#: ../lib/engine/gui/gtk-frontend/call-window.cpp:912
+msgid ""
+"Your driver doesn't seem to support any of the color formats supported by "
+"Ekiga.\n"
+" Please check your kernel driver documentation in order to determine which "
+"Palette is supported."
+msgstr ""
+"Su controlador no soporta ninguno de los formatos de colores compatibles con "
+"Ekiga.\n"
+" Revise la documentación de su controlador del núcleo para determinar qué "
+"paleta está soportada."
+
+#: ../lib/engine/gui/gtk-frontend/call-window.cpp:916
+msgid "Error while setting the frame rate."
+msgstr "Error al configurar la tasa de fotogramas."
+
+#: ../lib/engine/gui/gtk-frontend/call-window.cpp:920
+msgid "Error while setting the frame size."
+msgstr "Error al configurar el tamaño de fotograma."
+
+#: ../lib/engine/gui/gtk-frontend/call-window.cpp:925
+#: ../lib/engine/gui/gtk-frontend/call-window.cpp:995
+#: ../lib/engine/gui/gtk-frontend/call-window.cpp:1076
+msgid "Unknown error."
+msgstr "Error desconocido."
+
+#: ../lib/engine/gui/gtk-frontend/call-window.cpp:977
+#, c-format
+msgid "Error while opening audio input device %s"
+msgstr "Error al abrir el dispositivo de entrada de sonido %s"
+
+#. Translators: This happens when there is an error with audio input:
+#. * Nothing ("silence") will be transmitted
+#: ../lib/engine/gui/gtk-frontend/call-window.cpp:982
+msgid "Only silence will be transmitted."
+msgstr "Sólo se transmitirá silencio."
+
+#: ../lib/engine/gui/gtk-frontend/call-window.cpp:986
+msgid ""
+"Unable to open the selected audio device for recording. In case it is a "
+"pluggable device it may be sufficient to reconnect it. If not, or if it "
+"still is not accessible, please check your audio setup, the permissions and "
+"that the device is not busy."
+msgstr ""
+"No es posible acceder al dispositivo de sonido seleccionado para grabar. En "
+"caso de que sea un dispositivo conectable puede que sea suficiente con "
+"reconectarlo. De lo contrario, o si aún no es accesible, compruebe su "
+"configuración de sonido, los permisos y que el dispositivo no esté ocupado."
+
+#: ../lib/engine/gui/gtk-frontend/call-window.cpp:990
+msgid ""
+"The selected audio device was successfully opened but it is impossible to "
+"read data from this device. In case it is a pluggable device it may be "
+"sufficient to reconnect it. If not, or if it still is not accessible, please "
+"check your audio setup."
+msgstr ""
+"El dispositivo de sonido seleccionado se ha abierto correctamente, pero es "
+"imposible leer datos desde él. En caso de que sea un dispositivo conectable "
+"puede que sea suficiente con reconectarlo. De lo contrario, o si aún no es "
+"accesible, compruebe su configuración de sonido."
+
+#: ../lib/engine/gui/gtk-frontend/call-window.cpp:1060
+#, c-format
+msgid "Error while opening audio output device %s"
+msgstr "Error al abrir el dispositivo de salida de sonido %s"
+
+#: ../lib/engine/gui/gtk-frontend/call-window.cpp:1063
+msgid "No incoming sound will be played."
+msgstr "No se reproducirá ningún sonido de llegada."
+
+#: ../lib/engine/gui/gtk-frontend/call-window.cpp:1067
+msgid ""
+"Unable to open the selected audio device for playing. In case it is a "
+"pluggable device it may be sufficient to reconnect it. If not, or if it "
+"still is not accessible, please check your audio setup, the permissions and "
+"that the device is not busy."
+msgstr ""
+"Es imposible abrir el dispositivo de sonido seleccionado para reproducir. En "
+"caso de que sea un dispositivo conectacble puede que sea suficiente con "
+"reconectarlo. De lo contrario, o si aún no es accesible, compruebe su "
+"configuración de sonido, los permisos y que el dispositivo no esté ocupado."
+
+#: ../lib/engine/gui/gtk-frontend/call-window.cpp:1071
+msgid ""
+"The selected audio device was successfully opened but it is impossible to "
+"write data to this device. In case it is a pluggable device it may be "
+"sufficient to reconnect it. If not, or if it still is not accessible, please "
+"check your audio setup."
+msgstr ""
+"El dispositivo de sonido seleccionado se ha abierto correctamente, pero es "
+"imposible escribir datos en él. En caso de que sea un dispositivo conectable "
+"puede que sea suficiente con reconectarlo. De lo contrario, o si aún no es "
+"accesible, compruebe su configuración de sonido."
+
+#: ../lib/engine/gui/gtk-frontend/call-window.cpp:1112
+#, c-format
+msgid "Calling %s..."
+msgstr "Llamando a %s…"
+
+#. %s is the SIP/H.323 address of the remote user, this text is shown
+#. below video during a call
+#: ../lib/engine/gui/gtk-frontend/call-window.cpp:1128
+#: ../src/gui/main_window.cpp:653
+#, c-format
+msgid "Connected with %s"
+msgstr "Conectado con %s"
+
+#. Init
+#: ../lib/engine/gui/gtk-frontend/call-window.cpp:1151
+#: ../lib/engine/gui/gtk-frontend/call-window.cpp:2463
+msgid "Standby"
+msgstr "En espera"
+
+#: ../lib/engine/gui/gtk-frontend/call-window.cpp:1171
+msgid "Call on hold"
+msgstr "Llamada retenida"
+
+#: ../lib/engine/gui/gtk-frontend/call-window.cpp:1182
+msgid "Call retrieved"
+msgstr "Llamada recuperada"
+
+#: ../lib/engine/gui/gtk-frontend/call-window.cpp:1307
+#, c-format
+msgid ""
+"Connected with %s\n"
+"%s"
+msgstr ""
+"Conectado con %s\n"
+"%s"
+
+#. Translators: TX is a common abbreviation for "transmit".  As it
+#. * is shown in a tooltip, there is no space constraint
+#: ../lib/engine/gui/gtk-frontend/call-window.cpp:1503
+#, c-format
+msgid "TX: %dx%d"
+msgstr "TX: %dx%d"
+
+#: ../lib/engine/gui/gtk-frontend/call-window.cpp:1505
+msgid "TX: / "
+msgstr "TX: / "
+
+#. Translators: RX is a common abbreviation for "receive".  As it
+#. * is shown in a tooltip, there is no space constraint
+#: ../lib/engine/gui/gtk-frontend/call-window.cpp:1510
+#, c-format
+msgid "RX: %dx%d"
+msgstr "RX: %dx%d"
+
+#: ../lib/engine/gui/gtk-frontend/call-window.cpp:1512
+msgid "RX: / "
+msgstr "RX: / "
+
+#: ../lib/engine/gui/gtk-frontend/call-window.cpp:1521
+#, c-format
+msgid ""
+"Lost packets: %.1f %%\n"
+"Late packets: %.1f %%\n"
+"Out of order packets: %.1f %%\n"
+"Jitter buffer: %d ms\n"
+"Codecs: %s\n"
+"Resolution: %s %s"
+msgstr ""
+"Paquetes perdidos: %.1f %%\n"
+"Paquetes retrasados:%.1f %%\n"
+"Paquetes desordenados: %.1f %%\n"
+"Búfer de jitter: %d ms\n"
+"Códecs: %s\n"
+"Resolución: %s %s"
+
+#. Translators: A = Audio, V = Video, FPS = Frames per second
+#: ../lib/engine/gui/gtk-frontend/call-window.cpp:1615
+#, c-format
+msgid "A:%.1f/%.1f V:%.1f/%.1f FPS:%d/%d"
+msgstr "A:%.1f/%.1f V:%.1f/%.1f CPS:%d/%d"
+
+#: ../lib/engine/gui/gtk-frontend/call-window.cpp:1636
+msgid "_Retrieve Call"
+msgstr "_Recuperar llamada"
+
+#: ../lib/engine/gui/gtk-frontend/call-window.cpp:1649
+#: ../lib/engine/gui/gtk-frontend/call-window.cpp:1959
+msgid "H_old Call"
+msgstr "Poner llamada en _espera"
+
+#: ../lib/engine/gui/gtk-frontend/call-window.cpp:1680
+#: ../lib/engine/gui/gtk-frontend/call-window.cpp:1971
+msgid "Suspend _Audio"
+msgstr "Suspender _sonido"
+
+#: ../lib/engine/gui/gtk-frontend/call-window.cpp:1682
+#: ../lib/engine/gui/gtk-frontend/call-window.cpp:1976
+msgid "Suspend _Video"
+msgstr "Suspender _vídeo"
+
+#: ../lib/engine/gui/gtk-frontend/call-window.cpp:1684
+msgid "Resume _Audio"
+msgstr "Reanudar _sonido"
+
+#: ../lib/engine/gui/gtk-frontend/call-window.cpp:1686
+msgid "Resume _Video"
+msgstr "Reanudar _vídeo"
+
+#: ../lib/engine/gui/gtk-frontend/call-window.cpp:1720
+msgid "Video Settings"
+msgstr "Configuración de vídeo"
+
+#: ../lib/engine/gui/gtk-frontend/call-window.cpp:1745
+msgid "Adjust brightness"
+msgstr "Ajuste del brillo"
+
+#: ../lib/engine/gui/gtk-frontend/call-window.cpp:1764
+msgid "Adjust whiteness"
+msgstr "Ajuste de blancos"
+
+#: ../lib/engine/gui/gtk-frontend/call-window.cpp:1783
+msgid "Adjust color"
+msgstr "Ajuste del color"
+
+#: ../lib/engine/gui/gtk-frontend/call-window.cpp:1802
+msgid "Adjust contrast"
+msgstr "Ajuste del contraste"
+
+#: ../lib/engine/gui/gtk-frontend/call-window.cpp:1844
+msgid "Audio Settings"
+msgstr "Configuración de sonido"
+
+#: ../lib/engine/gui/gtk-frontend/call-window.cpp:1947
+msgid "_Call"
+msgstr "_Llamar"
+
+#: ../lib/engine/gui/gtk-frontend/call-window.cpp:1949
+msgid "_Pick up"
+msgstr "_Coger"
+
+#: ../lib/engine/gui/gtk-frontend/call-window.cpp:1949
+msgid "Pick up the current call"
+msgstr "Coger la llamada actual"
+
+#: ../lib/engine/gui/gtk-frontend/call-window.cpp:1953
+msgid "_Hangup"
+msgstr "_Colgar"
+
+#: ../lib/engine/gui/gtk-frontend/call-window.cpp:1953
+msgid "Hangup the current call"
+msgstr "Colgar la llamada actual"
+
+#: ../lib/engine/gui/gtk-frontend/call-window.cpp:1959
+#: ../lib/engine/gui/gtk-frontend/call-window.cpp:2432
+msgid "Hold the current call"
+msgstr "Poner en espera la llamada actual"
+
+#: ../lib/engine/gui/gtk-frontend/call-window.cpp:1963
+msgid "_Transfer Call"
+msgstr "_Desviar llamada"
+
+#: ../lib/engine/gui/gtk-frontend/call-window.cpp:1964
+msgid "Transfer the current call"
+msgstr "Desviar la llamada actual"
+
+#: ../lib/engine/gui/gtk-frontend/call-window.cpp:1972
+msgid "Suspend or resume the audio transmission"
+msgstr "Suspender o reanudar la transmisión de sonido"
+
+#: ../lib/engine/gui/gtk-frontend/call-window.cpp:1977
+msgid "Suspend or resume the video transmission"
+msgstr "Suspender o reanudar la transmisión de vídeo"
+
+#: ../lib/engine/gui/gtk-frontend/call-window.cpp:1984
+#: ../src/gui/main_window.cpp:1530
+msgid "Close the Ekiga window"
+msgstr "Cerrar la ventana de Ekiga"
+
+#: ../lib/engine/gui/gtk-frontend/call-window.cpp:1989
+#: ../src/gui/main_window.cpp:1563
+msgid "_View"
+msgstr "_Ver"
+
+#: ../lib/engine/gui/gtk-frontend/call-window.cpp:1991
+msgid "_Local Video"
+msgstr "Vídeo _local"
+
+#: ../lib/engine/gui/gtk-frontend/call-window.cpp:1992
+msgid "Local video image"
+msgstr "Imagen de vídeo local"
+
+#: ../lib/engine/gui/gtk-frontend/call-window.cpp:1996
+msgid "_Remote Video"
+msgstr "Vídeo _remoto"
+
+#: ../lib/engine/gui/gtk-frontend/call-window.cpp:1997
+msgid "Remote video image"
+msgstr "Imagen de vídeo remoto"
+
+#: ../lib/engine/gui/gtk-frontend/call-window.cpp:2001
+msgid "_Picture-in-Picture"
+msgstr "_Imagen en imagen"
+
+#: ../lib/engine/gui/gtk-frontend/call-window.cpp:2002
+msgid "Both video images"
+msgstr "Ambas imágenes de vídeo"
+
+#: ../lib/engine/gui/gtk-frontend/call-window.cpp:2008
+msgid "Zoom in"
+msgstr "Ampliar"
+
+#: ../lib/engine/gui/gtk-frontend/call-window.cpp:2012
+msgid "Zoom out"
+msgstr "Reducir"
+
+#: ../lib/engine/gui/gtk-frontend/call-window.cpp:2016
+msgid "Normal size"
+msgstr "Tamaño normal"
+
+#: ../lib/engine/gui/gtk-frontend/call-window.cpp:2020
+msgid "_Fullscreen"
+msgstr "_Pantalla completa"
+
+#: ../lib/engine/gui/gtk-frontend/call-window.cpp:2020
+msgid "Switch to fullscreen"
+msgstr "Pasar a pantalla completa"
+
+#: ../lib/engine/gui/gtk-frontend/call-window.cpp:2136
+msgid "Transfer call to:"
+msgstr "Desviar la llamada a:"
+
+#: ../lib/engine/gui/gtk-frontend/call-window.cpp:2347
+#: ../lib/engine/gui/gtk-frontend/call-window.cpp:2362
+msgid "Hang up the current call"
+msgstr "Colgar la llamada actual"
+
+#: ../lib/engine/gui/gtk-frontend/call-window.cpp:2391
+msgid "Change the volume of your soundcard"
+msgstr "Cambiar el volumen de su tarjeta de sonido"
+
+#: ../lib/engine/gui/gtk-frontend/call-window.cpp:2412
+msgid "Change the color settings of your video device"
+msgstr "Cambiar los ajustes de color de su dispositivo de vídeo"
 
 #: ../lib/engine/gui/gtk-frontend/chat-area.cpp:247
 msgid "says:"
@@ -1770,37 +2166,49 @@ msgstr "Copiar el enlace"
 msgid "_Smile..."
 msgstr "E_moticono..."
 
+#: ../lib/engine/gui/gtk-frontend/chat-window.cpp:139
+#, c-format
+#| msgid "You have %d message"
+#| msgid_plural "You have %d messages"
+msgid "You have %d unread text messages"
+msgstr "Tiene %d mensajes de texto sin leer"
+
+#: ../lib/engine/gui/gtk-frontend/chat-window.cpp:142
+#| msgid "Rename"
+msgid "Read"
+msgstr "Leer"
+
 #. we can't do much here since we get the Chat as reference...
-#: ../lib/engine/gui/gtk-frontend/chat-window.cpp:426
+#: ../lib/engine/gui/gtk-frontend/chat-window.cpp:449
 msgid "Chat Window"
 msgstr "Ventana de charla"
 
 #: ../lib/engine/gui/gtk-frontend/heap-view.cpp:238
 #: ../lib/engine/gui/gtk-frontend/heap-view.cpp:277
 #: ../lib/engine/gui/gtk-frontend/roster-view-gtk.cpp:983
-#: ../lib/engine/gui/gtk-frontend/roster-view-gtk.cpp:1035
+#: ../lib/engine/gui/gtk-frontend/roster-view-gtk.cpp:1038
 msgid "Unsorted"
 msgstr "Sin ordenar"
 
-#: ../lib/engine/gui/gtk-frontend/statusicon.cpp:312 ../src/gui/notify.cpp:84
+#: ../lib/engine/gui/gtk-frontend/statusicon.cpp:310
 #, c-format
 msgid "You have %d message"
 msgid_plural "You have %d messages"
 msgstr[0] "Tiene %d mensaje"
 msgstr[1] "Tiene %d mensajes"
 
-#: ../lib/engine/gui/gtk-frontend/statusicon.cpp:390
-#: ../src/gui/main_window.cpp:1589
+#: ../lib/engine/gui/gtk-frontend/statusicon.cpp:388
+#: ../src/gui/main_window.cpp:1592
 msgid "Get help by reading the Ekiga manual"
 msgstr "Obtenga ayuda leyendo el manual de Ekiga"
 
-#: ../lib/engine/gui/gtk-frontend/statusicon.cpp:395
-#: ../src/gui/main_window.cpp:1594
+#: ../lib/engine/gui/gtk-frontend/statusicon.cpp:393
+#: ../src/gui/main_window.cpp:1597
 msgid "View information about Ekiga"
 msgstr "Ver información acerca de Ekiga"
 
-#: ../lib/engine/gui/gtk-frontend/statusicon.cpp:402
-#: ../src/gui/main_window.cpp:1534
+#: ../lib/engine/gui/gtk-frontend/statusicon.cpp:400
+#: ../src/gui/main_window.cpp:1537
 msgid "Quit"
 msgstr "Salir"
 
@@ -1874,8 +2282,8 @@ msgstr ""
 "IDONEIDAD PARA UN PROPÓSITO PARTICULAR. Vea la Licencia Pública General GNU "
 "para más detalles. Debería haber recibido una copia de la Licencia Pública "
 "General de GNU junto con este programa, si no es así, escriba a la Free "
-"Software Foundation, Inc, 51 Franklin Street, Fifth Floor, Boston, MA "
-"02110-1301 EE. UU."
+"Software Foundation, Inc, 51 Franklin Street, Fifth Floor, Boston, MA 02110-"
+"1301 EE. UU."
 
 #: ../lib/gui/gmcallbacks.c:114
 msgid ""
@@ -2239,10 +2647,6 @@ msgstr "Servidor:"
 msgid "Resource:"
 msgstr "Recurso:"
 
-#: ../plugins/loudmouth/loudmouth-account.cpp:433
-msgid "Edit"
-msgstr "Editar"
-
 #: ../plugins/loudmouth/loudmouth-bank.cpp:111
 msgid "_Add a jabber/XMPP account"
 msgstr "_Añadir una cuenta Jabber/XMPP"
@@ -2480,11 +2884,11 @@ msgstr "Estado"
 msgid "Accounts"
 msgstr "Cuentas"
 
-#: ../src/gui/accounts.cpp:590 ../src/gui/main_window.cpp:1548
+#: ../src/gui/accounts.cpp:590 ../src/gui/main_window.cpp:1551
 msgid "_Accounts"
 msgstr "_Cuentas"
 
-#: ../src/gui/accounts.cpp:594 ../src/gui/main_window.cpp:1586
+#: ../src/gui/accounts.cpp:594 ../src/gui/main_window.cpp:1589
 msgid "_Help"
 msgstr "Ay_uda"
 
@@ -2666,8 +3070,8 @@ msgstr ""
 "Ekiga usará durante las llamadas. Puede cambiarlos más tarde individualmente "
 "en la ventana de preferencias."
 
-#: ../src/gui/assistant.cpp:997 ../src/gui/main_window.cpp:1262
-#: ../src/gui/main_window.cpp:1266 ../src/gui/main_window.cpp:1270
+#: ../src/gui/assistant.cpp:997 ../src/gui/main_window.cpp:1265
+#: ../src/gui/main_window.cpp:1269 ../src/gui/main_window.cpp:1273
 #: ../src/gui/preferences.cpp:725
 msgid "Audio Devices"
 msgstr "Dispositivos de sonido"
@@ -2773,388 +3177,6 @@ msgstr "Ekiga Call out"
 msgid "Ekiga Configuration Assistant (%d of %d)"
 msgstr "Asistente de configuración de Ekiga (%d de %d)"
 
-#: ../src/gui/call_window.cpp:798
-msgid "Error while initializing video output"
-msgstr "Error al inicializar la salida de vídeo"
-
-#: ../src/gui/call_window.cpp:799
-msgid "No video will be displayed on your machine during this call"
-msgstr "Durante esta llamada no se mostrará el vídeo en su equipo"
-
-#: ../src/gui/call_window.cpp:809
-msgid ""
-"There was an error opening or initializing the video output. Please verify "
-"that no other application is using the accelerated video output."
-msgstr ""
-"Hubo un error al abrir o inicializar la salida de vídeo. Compruebe que "
-"ninguna otra aplicación está usando la salida acelerada de vídeo."
-
-#: ../src/gui/call_window.cpp:811
-msgid ""
-"There was an error opening or initializing the video output. Please verify "
-"that you are using a color depth of 24 or 32 bits per pixel."
-msgstr ""
-"Hubo un error al abrir o inicializar la salida de vídeo. Compruebe que está "
-"usando una profundidad de color de 24 ó 32 bits por píxel."
-
-#: ../src/gui/call_window.cpp:916
-#, c-format
-msgid "Error while accessing video device %s"
-msgstr "Error al acceder el dispositivo de vídeo %s"
-
-#: ../src/gui/call_window.cpp:919
-msgid "A moving logo will be transmitted during calls."
-msgstr "Se transmitirá un logotipo en movimiento durante las llamadas."
-
-#: ../src/gui/call_window.cpp:923
-msgid ""
-"There was an error while opening the device. In case it is a pluggable "
-"device it may be sufficient to reconnect it. If not, or if it still is not "
-"accessible, please check your permissions and make sure that the appropriate "
-"driver is loaded."
-msgstr ""
-"Se presentó un error mientras se abría el archivo. En caso de que sea un "
-"dispositivo conectable puede que sea suficiente con reconectarlo. De lo "
-"contrario, o si aún no es accesible, compruebe los permisos y asegúrese de "
-"que el controlador adecuado está cargado."
-
-#: ../src/gui/call_window.cpp:927
-msgid "Your video driver doesn't support the requested video format."
-msgstr "Su controlador de vídeo no soporta el formato de vídeo solicitado."
-
-#: ../src/gui/call_window.cpp:931
-msgid "Could not open the chosen channel."
-msgstr "Imposible abrir el canal elegido."
-
-#: ../src/gui/call_window.cpp:935
-msgid ""
-"Your driver doesn't seem to support any of the color formats supported by "
-"Ekiga.\n"
-" Please check your kernel driver documentation in order to determine which "
-"Palette is supported."
-msgstr ""
-"Su controlador no soporta ninguno de los formatos de colores compatibles con "
-"Ekiga.\n"
-" Revise la documentación de su controlador del núcleo para determinar qué "
-"paleta está soportada."
-
-#: ../src/gui/call_window.cpp:939
-msgid "Error while setting the frame rate."
-msgstr "Error al configurar la tasa de fotogramas."
-
-#: ../src/gui/call_window.cpp:943
-msgid "Error while setting the frame size."
-msgstr "Error al configurar el tamaño de fotograma."
-
-#: ../src/gui/call_window.cpp:948 ../src/gui/call_window.cpp:1018
-#: ../src/gui/call_window.cpp:1099
-msgid "Unknown error."
-msgstr "Error desconocido."
-
-#: ../src/gui/call_window.cpp:1000
-#, c-format
-msgid "Error while opening audio input device %s"
-msgstr "Error al abrir el dispositivo de entrada de sonido %s"
-
-#. Translators: This happens when there is an error with audio input:
-#. * Nothing ("silence") will be transmitted
-#: ../src/gui/call_window.cpp:1005
-msgid "Only silence will be transmitted."
-msgstr "Sólo se transmitirá silencio."
-
-#: ../src/gui/call_window.cpp:1009
-msgid ""
-"Unable to open the selected audio device for recording. In case it is a "
-"pluggable device it may be sufficient to reconnect it. If not, or if it "
-"still is not accessible, please check your audio setup, the permissions and "
-"that the device is not busy."
-msgstr ""
-"No es posible acceder al dispositivo de sonido seleccionado para grabar. En "
-"caso de que sea un dispositivo conectable puede que sea suficiente con "
-"reconectarlo. De lo contrario, o si aún no es accesible, compruebe su "
-"configuración de sonido, los permisos y que el dispositivo no esté ocupado."
-
-#: ../src/gui/call_window.cpp:1013
-msgid ""
-"The selected audio device was successfully opened but it is impossible to "
-"read data from this device. In case it is a pluggable device it may be "
-"sufficient to reconnect it. If not, or if it still is not accessible, please "
-"check your audio setup."
-msgstr ""
-"El dispositivo de sonido seleccionado se ha abierto correctamente, pero es "
-"imposible leer datos desde él. En caso de que sea un dispositivo conectable "
-"puede que sea suficiente con reconectarlo. De lo contrario, o si aún no es "
-"accesible, compruebe su configuración de sonido."
-
-#: ../src/gui/call_window.cpp:1083
-#, c-format
-msgid "Error while opening audio output device %s"
-msgstr "Error al abrir el dispositivo de salida de sonido %s"
-
-#: ../src/gui/call_window.cpp:1086
-msgid "No incoming sound will be played."
-msgstr "No se reproducirá ningún sonido de llegada."
-
-#: ../src/gui/call_window.cpp:1090
-msgid ""
-"Unable to open the selected audio device for playing. In case it is a "
-"pluggable device it may be sufficient to reconnect it. If not, or if it "
-"still is not accessible, please check your audio setup, the permissions and "
-"that the device is not busy."
-msgstr ""
-"Es imposible abrir el dispositivo de sonido seleccionado para reproducir. En "
-"caso de que sea un dispositivo conectacble puede que sea suficiente con "
-"reconectarlo. De lo contrario, o si aún no es accesible, compruebe su "
-"configuración de sonido, los permisos y que el dispositivo no esté ocupado."
-
-#: ../src/gui/call_window.cpp:1094
-msgid ""
-"The selected audio device was successfully opened but it is impossible to "
-"write data to this device. In case it is a pluggable device it may be "
-"sufficient to reconnect it. If not, or if it still is not accessible, please "
-"check your audio setup."
-msgstr ""
-"El dispositivo de sonido seleccionado se ha abierto correctamente, pero es "
-"imposible escribir datos en él. En caso de que sea un dispositivo conectable "
-"puede que sea suficiente con reconectarlo. De lo contrario, o si aún no es "
-"accesible, compruebe su configuración de sonido."
-
-#: ../src/gui/call_window.cpp:1135
-#, c-format
-msgid "Calling %s..."
-msgstr "Llamando a %s…"
-
-#. %s is the SIP/H.323 address of the remote user, this text is shown
-#. below video during a call
-#: ../src/gui/call_window.cpp:1151 ../src/gui/main_window.cpp:653
-#, c-format
-msgid "Connected with %s"
-msgstr "Conectado con %s"
-
-#. Init
-#: ../src/gui/call_window.cpp:1174 ../src/gui/call_window.cpp:2490
-msgid "Standby"
-msgstr "En espera"
-
-#: ../src/gui/call_window.cpp:1194
-msgid "Call on hold"
-msgstr "Llamada retenida"
-
-#: ../src/gui/call_window.cpp:1205
-msgid "Call retrieved"
-msgstr "Llamada recuperada"
-
-#: ../src/gui/call_window.cpp:1330
-#, c-format
-msgid ""
-"Connected with %s\n"
-"%s"
-msgstr ""
-"Conectado con %s\n"
-"%s"
-
-#. Translators: TX is a common abbreviation for "transmit".  As it
-#. * is shown in a tooltip, there is no space constraint
-#: ../src/gui/call_window.cpp:1526
-#, c-format
-msgid "TX: %dx%d"
-msgstr "TX: %dx%d"
-
-#: ../src/gui/call_window.cpp:1528
-msgid "TX: / "
-msgstr "TX: / "
-
-#. Translators: RX is a common abbreviation for "receive".  As it
-#. * is shown in a tooltip, there is no space constraint
-#: ../src/gui/call_window.cpp:1533
-#, c-format
-msgid "RX: %dx%d"
-msgstr "RX: %dx%d"
-
-#: ../src/gui/call_window.cpp:1535
-msgid "RX: / "
-msgstr "RX: / "
-
-#: ../src/gui/call_window.cpp:1544
-#, c-format
-msgid ""
-"Lost packets: %.1f %%\n"
-"Late packets: %.1f %%\n"
-"Out of order packets: %.1f %%\n"
-"Jitter buffer: %d ms\n"
-"Codecs: %s\n"
-"Resolution: %s %s"
-msgstr ""
-"Paquetes perdidos: %.1f %%\n"
-"Paquetes retrasados:%.1f %%\n"
-"Paquetes desordenados: %.1f %%\n"
-"Búfer de jitter: %d ms\n"
-"Códecs: %s\n"
-"Resolución: %s %s"
-
-#. Translators: A = Audio, V = Video, FPS = Frames per second
-#: ../src/gui/call_window.cpp:1638
-#, c-format
-msgid "A:%.1f/%.1f V:%.1f/%.1f FPS:%d/%d"
-msgstr "A:%.1f/%.1f V:%.1f/%.1f CPS:%d/%d"
-
-#: ../src/gui/call_window.cpp:1659
-msgid "_Retrieve Call"
-msgstr "_Recuperar llamada"
-
-#: ../src/gui/call_window.cpp:1672 ../src/gui/call_window.cpp:1982
-msgid "H_old Call"
-msgstr "Poner llamada en _espera"
-
-#: ../src/gui/call_window.cpp:1703 ../src/gui/call_window.cpp:1994
-msgid "Suspend _Audio"
-msgstr "Suspender _sonido"
-
-#: ../src/gui/call_window.cpp:1705 ../src/gui/call_window.cpp:1999
-msgid "Suspend _Video"
-msgstr "Suspender _vídeo"
-
-#: ../src/gui/call_window.cpp:1707
-msgid "Resume _Audio"
-msgstr "Reanudar _sonido"
-
-#: ../src/gui/call_window.cpp:1709
-msgid "Resume _Video"
-msgstr "Reanudar _vídeo"
-
-#: ../src/gui/call_window.cpp:1743
-msgid "Video Settings"
-msgstr "Configuración de vídeo"
-
-#: ../src/gui/call_window.cpp:1768
-msgid "Adjust brightness"
-msgstr "Ajuste del brillo"
-
-#: ../src/gui/call_window.cpp:1787
-msgid "Adjust whiteness"
-msgstr "Ajuste de blancos"
-
-#: ../src/gui/call_window.cpp:1806
-msgid "Adjust color"
-msgstr "Ajuste del color"
-
-#: ../src/gui/call_window.cpp:1825
-msgid "Adjust contrast"
-msgstr "Ajuste del contraste"
-
-#: ../src/gui/call_window.cpp:1867
-msgid "Audio Settings"
-msgstr "Configuración de sonido"
-
-#: ../src/gui/call_window.cpp:1970
-msgid "_Call"
-msgstr "_Llamar"
-
-#: ../src/gui/call_window.cpp:1972
-msgid "_Pick up"
-msgstr "_Coger"
-
-#: ../src/gui/call_window.cpp:1972
-#| msgid "Hang up the current call"
-msgid "Pick up the current call"
-msgstr "Coger la llamada actual"
-
-#: ../src/gui/call_window.cpp:1976
-msgid "_Hangup"
-msgstr "_Colgar"
-
-#: ../src/gui/call_window.cpp:1976
-msgid "Hangup the current call"
-msgstr "Colgar la llamada actual"
-
-#: ../src/gui/call_window.cpp:1982 ../src/gui/call_window.cpp:2459
-msgid "Hold the current call"
-msgstr "Poner en espera la llamada actual"
-
-#: ../src/gui/call_window.cpp:1986
-msgid "_Transfer Call"
-msgstr "_Desviar llamada"
-
-#: ../src/gui/call_window.cpp:1987
-msgid "Transfer the current call"
-msgstr "Desviar la llamada actual"
-
-#: ../src/gui/call_window.cpp:1995
-msgid "Suspend or resume the audio transmission"
-msgstr "Suspender o reanudar la transmisión de sonido"
-
-#: ../src/gui/call_window.cpp:2000
-msgid "Suspend or resume the video transmission"
-msgstr "Suspender o reanudar la transmisión de vídeo"
-
-#: ../src/gui/call_window.cpp:2007 ../src/gui/main_window.cpp:1527
-msgid "Close the Ekiga window"
-msgstr "Cerrar la ventana de Ekiga"
-
-#: ../src/gui/call_window.cpp:2012 ../src/gui/main_window.cpp:1560
-msgid "_View"
-msgstr "_Ver"
-
-#: ../src/gui/call_window.cpp:2014
-msgid "_Local Video"
-msgstr "Vídeo _local"
-
-#: ../src/gui/call_window.cpp:2015
-msgid "Local video image"
-msgstr "Imagen de vídeo local"
-
-#: ../src/gui/call_window.cpp:2020
-msgid "_Remote Video"
-msgstr "Vídeo _remoto"
-
-#: ../src/gui/call_window.cpp:2021
-msgid "Remote video image"
-msgstr "Imagen de vídeo remoto"
-
-#: ../src/gui/call_window.cpp:2026
-msgid "_Picture-in-Picture"
-msgstr "_Imagen en imagen"
-
-#: ../src/gui/call_window.cpp:2027
-msgid "Both video images"
-msgstr "Ambas imágenes de vídeo"
-
-#: ../src/gui/call_window.cpp:2034
-msgid "Zoom in"
-msgstr "Ampliar"
-
-#: ../src/gui/call_window.cpp:2038
-msgid "Zoom out"
-msgstr "Reducir"
-
-#: ../src/gui/call_window.cpp:2042
-msgid "Normal size"
-msgstr "Tamaño normal"
-
-#: ../src/gui/call_window.cpp:2046
-msgid "_Fullscreen"
-msgstr "_Pantalla completa"
-
-#: ../src/gui/call_window.cpp:2046
-msgid "Switch to fullscreen"
-msgstr "Pasar a pantalla completa"
-
-#: ../src/gui/call_window.cpp:2162
-msgid "Transfer call to:"
-msgstr "Desviar la llamada a:"
-
-#: ../src/gui/call_window.cpp:2374 ../src/gui/call_window.cpp:2389
-msgid "Hang up the current call"
-msgstr "Colgar la llamada actual"
-
-#: ../src/gui/call_window.cpp:2418
-msgid "Change the volume of your soundcard"
-msgstr "Cambiar el volumen de su tarjeta de sonido"
-
-#: ../src/gui/call_window.cpp:2439
-msgid "Change the color settings of your video device"
-msgstr "Cambiar los ajustes de color de su dispositivo de vídeo"
-
 #: ../src/gui/main.cpp:126
 msgid "Prints debug messages in the console (level between 1 and 8)"
 msgstr "Imprime mensajes de depuración en la consola (nivel entre 1 y 8)"
@@ -3163,212 +3185,200 @@ msgstr "Imprime mensajes de depuración en la consola (nivel entre 1 y 8)"
 msgid "Makes Ekiga call the given URI"
 msgstr "Hace que Ekiga llame al URI dado"
 
-#: ../src/gui/main_window.cpp:377
+#: ../src/gui/main_window.cpp:376
 msgid "Presence"
 msgstr "Presencia"
 
-#: ../src/gui/main_window.cpp:384
+#: ../src/gui/main_window.cpp:383
 msgid "Addressbook"
 msgstr "Libreta de direcciones"
 
-#: ../src/gui/main_window.cpp:413
+#: ../src/gui/main_window.cpp:412
 msgid "Unknown"
 msgstr "Desconocido"
 
-#: ../src/gui/main_window.cpp:716
+#: ../src/gui/main_window.cpp:718
 #, c-format
 msgid "Missed call from %s"
 msgstr "Llamada perdida de %s"
 
-#: ../src/gui/main_window.cpp:750
+#: ../src/gui/main_window.cpp:752
 msgid "Error"
 msgstr "Error"
 
 #. Translators: This is a hotplug status
-#: ../src/gui/main_window.cpp:773
+#: ../src/gui/main_window.cpp:775
 #, c-format
 msgid "Added video input device %s"
 msgstr "Dispositivo de entrada de vídeo %s añadido"
 
 #. Translators: This is a hotplug status
-#: ../src/gui/main_window.cpp:785
+#: ../src/gui/main_window.cpp:787
 #, c-format
 msgid "Removed video input device %s"
 msgstr "Dispositivo de entrada de vídeo %s eliminado"
 
 #. Translators: This is a hotplug status
-#: ../src/gui/main_window.cpp:800
+#: ../src/gui/main_window.cpp:802
 #, c-format
 msgid "Added audio input device %s"
 msgstr "Dispositivo de entrada de sonido %s añadido"
 
 #. Translators: This is a hotplug status
-#: ../src/gui/main_window.cpp:816
+#: ../src/gui/main_window.cpp:818
 #, c-format
 msgid "Removed audio input device %s"
 msgstr "Dispositivo de entrada de sonido %s eliminado"
 
-#: ../src/gui/main_window.cpp:834
+#: ../src/gui/main_window.cpp:836
 #, c-format
 msgid "Added audio output device %s"
 msgstr "Dispositivo de salida de sonido %s añadido"
 
-#: ../src/gui/main_window.cpp:852
+#: ../src/gui/main_window.cpp:854
 #, c-format
 msgid "Removed audio output device %s"
 msgstr "Dispositivo de salida de sonido %s eliminado"
 
-#: ../src/gui/main_window.cpp:1248
+#: ../src/gui/main_window.cpp:1251
 msgid "No"
 msgstr "No"
 
-#: ../src/gui/main_window.cpp:1250
+#: ../src/gui/main_window.cpp:1253
 msgid "Yes"
 msgstr "Sí"
 
-#: ../src/gui/main_window.cpp:1261
+#: ../src/gui/main_window.cpp:1264
 msgid "Detected new audio input device:"
 msgstr "Se detectó un nuevo dispositivo de entrada de sonido:"
 
-#: ../src/gui/main_window.cpp:1265
+#: ../src/gui/main_window.cpp:1268
 msgid "Detected new audio output device:"
 msgstr "Se detectó un nuevo dispositivo de salida de sonido:"
 
-#: ../src/gui/main_window.cpp:1269
+#: ../src/gui/main_window.cpp:1272
 msgid "Detected new ringer device:"
 msgstr "Se detectó un nuevo dispositivo de timbre:"
 
-#: ../src/gui/main_window.cpp:1273
+#: ../src/gui/main_window.cpp:1276
 msgid "Detected new video input device:"
 msgstr "Se detectó un nuevo dispositivo de entrada de vídeo:"
 
-#: ../src/gui/main_window.cpp:1274 ../src/gui/preferences.cpp:872
+#: ../src/gui/main_window.cpp:1277 ../src/gui/preferences.cpp:872
 msgid "Video Devices"
 msgstr "Dispositivos de vídeo"
 
-#: ../src/gui/main_window.cpp:1292
+#: ../src/gui/main_window.cpp:1295
 msgid "Do you want to use it as default device?"
 msgstr "¿Quiere usarlo como el dispositivo predeterminado?"
 
-#: ../src/gui/main_window.cpp:1383
+#: ../src/gui/main_window.cpp:1386
 msgid ""
 "Enter a URI on the left, and click this button to place a call or to hangup"
 msgstr ""
 "Introduzca un URI a la izquierda, y pulse este botón para hacer una llamada "
 "o colgar"
 
-#: ../src/gui/main_window.cpp:1434 ../src/gui/main_window.cpp:1562
+#: ../src/gui/main_window.cpp:1437 ../src/gui/main_window.cpp:1565
 msgid "View the contacts list"
 msgstr "Ver la lista de contactos"
 
-#: ../src/gui/main_window.cpp:1445 ../src/gui/main_window.cpp:1567
+#: ../src/gui/main_window.cpp:1448 ../src/gui/main_window.cpp:1570
 msgid "View the dialpad"
 msgstr "Mostrar el teclado"
 
-#: ../src/gui/main_window.cpp:1456 ../src/gui/main_window.cpp:1572
+#: ../src/gui/main_window.cpp:1459 ../src/gui/main_window.cpp:1575
 msgid "View the call history"
 msgstr "Ver el histórico de llamadas"
 
-#: ../src/gui/main_window.cpp:1492
+#: ../src/gui/main_window.cpp:1495
 msgid "_Chat"
 msgstr "_Charla"
 
-#: ../src/gui/main_window.cpp:1494
+#: ../src/gui/main_window.cpp:1497
 msgid "Co_ntact"
 msgstr "Co_ntacto"
 
-#: ../src/gui/main_window.cpp:1495
+#: ../src/gui/main_window.cpp:1498
 msgid "Act on selected contact"
 msgstr "Actuar sobre el contacto seleccionado"
 
-#: ../src/gui/main_window.cpp:1499
+#: ../src/gui/main_window.cpp:1502
 msgid "Ca_ll a number"
 msgstr "_Llamar a un número"
 
-#: ../src/gui/main_window.cpp:1499
+#: ../src/gui/main_window.cpp:1502
 msgid "Place a new call"
 msgstr "Realizar una llamada nueva"
 
-#: ../src/gui/main_window.cpp:1505
+#: ../src/gui/main_window.cpp:1508
 msgid "A_dd Contact"
 msgstr "Aña_dir contacto"
 
-#: ../src/gui/main_window.cpp:1505
+#: ../src/gui/main_window.cpp:1508
 msgid "Add a contact to the roster"
 msgstr "Añadir contacto a la lista"
 
-#: ../src/gui/main_window.cpp:1510
+#: ../src/gui/main_window.cpp:1513
 msgid "Find contacts"
 msgstr "Buscar contactos"
 
 #. FIXME: that isn't a very good way to do things
-#: ../src/gui/main_window.cpp:1519
+#: ../src/gui/main_window.cpp:1522
 msgid "Other"
 msgstr "Otra"
 
-#: ../src/gui/main_window.cpp:1520
+#: ../src/gui/main_window.cpp:1523
 msgid "Other possible actions"
 msgstr "Otra acción posible"
 
-#: ../src/gui/main_window.cpp:1540
+#: ../src/gui/main_window.cpp:1543
 msgid "_Configuration Assistant"
 msgstr "Asistente de _configuración"
 
-#: ../src/gui/main_window.cpp:1541
+#: ../src/gui/main_window.cpp:1544
 msgid "Run the configuration assistant"
 msgstr "Ejecutar el asistente de configuración"
 
-#: ../src/gui/main_window.cpp:1549
+#: ../src/gui/main_window.cpp:1552
 msgid "Edit your accounts"
 msgstr "Edite sus cuentas"
 
-#: ../src/gui/main_window.cpp:1555
+#: ../src/gui/main_window.cpp:1558
 msgid "Change your preferences"
 msgstr "Cambiar sus preferencias"
 
-#: ../src/gui/main_window.cpp:1562
+#: ../src/gui/main_window.cpp:1565
 msgid "Con_tacts"
 msgstr "C_ontactos"
 
-#: ../src/gui/main_window.cpp:1567
+#: ../src/gui/main_window.cpp:1570
 msgid "_Dialpad"
 msgstr "_Teclado"
 
-#: ../src/gui/main_window.cpp:1572
+#: ../src/gui/main_window.cpp:1575
 msgid "_Call History"
 msgstr "Histórico de _llamadas"
 
-#: ../src/gui/main_window.cpp:1580
+#: ../src/gui/main_window.cpp:1583
 msgid "Show offline _contacts"
 msgstr "Mostrar _contactos desconectados"
 
-#: ../src/gui/main_window.cpp:1644
+#: ../src/gui/main_window.cpp:1647
 msgid "Contacts"
 msgstr "Contactos"
 
-#: ../src/gui/main_window.cpp:1673
+#: ../src/gui/main_window.cpp:1676
 msgid "Dialpad"
 msgstr "Teclado"
 
-#: ../src/gui/main_window.cpp:1691
+#: ../src/gui/main_window.cpp:1694
 msgid "Call history"
 msgstr "Histórico de llamadas"
 
-#: ../src/gui/main_window.cpp:1703
+#: ../src/gui/main_window.cpp:1706
 msgid "Ekiga"
 msgstr "Ekiga"
-
-#: ../src/gui/notify.cpp:88
-msgid "Unread message"
-msgstr "Mensaje no leído"
-
-#: ../src/gui/notify.cpp:101
-msgid "Ignore"
-msgstr "Ignorar"
-
-#: ../src/gui/notify.cpp:102
-msgid "Show"
-msgstr "Mostrar"
 
 #: ../src/gui/preferences.cpp:376
 msgid "Play sound for new voice mails"
@@ -3733,22 +3743,31 @@ msgstr "No molestar"
 msgid "Custom message..."
 msgstr "Mensaje personalizado..."
 
-#: ../src/gui/statusmenu.cpp:430
+#: ../src/gui/statusmenu.cpp:432
 msgid "Clear"
 msgstr "Limpiar"
 
 #. Build the dialog
-#: ../src/gui/statusmenu.cpp:519 ../src/gui/statusmenu.cpp:669
+#: ../src/gui/statusmenu.cpp:520 ../src/gui/statusmenu.cpp:668
 msgid "Custom Message"
 msgstr "Mensaje personalizado"
 
-#: ../src/gui/statusmenu.cpp:535
+#: ../src/gui/statusmenu.cpp:536
 msgid "Delete custom messages:"
 msgstr "Borrar mensajes personalizados:"
 
-#: ../src/gui/statusmenu.cpp:690
+#: ../src/gui/statusmenu.cpp:685
 msgid "Define a custom message:"
 msgstr "Definir un mensaje personalizado:"
+
+#~ msgid "Unread message"
+#~ msgstr "Mensaje no leído"
+
+#~ msgid "Ignore"
+#~ msgstr "Ignorar"
+
+#~ msgid "Show"
+#~ msgstr "Mostrar"
 
 #~ msgid "Incoming call from"
 #~ msgstr "Llamada entrante de"
@@ -3934,8 +3953,8 @@ msgstr "Definir un mensaje personalizado:"
 #~ msgstr ""
 #~ "Se transmitirá una animación del logotipo durante las llamadas. Tenga en "
 #~ "cuenta que siempre puede transmitir una imagen dada o el logotipo animado "
-#~ "escogiendo «Imagen» como complemento de vídeo y «Logotipo animado» o "
-#~ "«Imagen estática» como dispositivo."
+#~ "escogiendo «Imagen» como complemento de vídeo y «Logotipo animado» o «Imagen "
+#~ "estática» como dispositivo."
 
 #~ msgid "Roster view saving group status"
 #~ msgstr "Vista de la lista guardando el estado del grupo"
@@ -3985,9 +4004,9 @@ msgstr "Definir un mensaje personalizado:"
 #~ "the opening of the device fails. Leave blank to use the default Ekiga "
 #~ "logo."
 #~ msgstr ""
-#~ "La imagen a transmitir si se selecciona «Imagen» como complemento de "
-#~ "vídeo o si la apertura del dispositivo falla. Déjelo vacío para mostrar "
-#~ "el logotipo predeterminado de Ekiga."
+#~ "La imagen a transmitir si se selecciona «Imagen» como complemento de vídeo "
+#~ "o si la apertura del dispositivo falla. Déjelo vacío para mostrar el "
+#~ "logotipo predeterminado de Ekiga."
 
 #~ msgid ""
 #~ "The output device type is the type of device connected to your Quicknet "
