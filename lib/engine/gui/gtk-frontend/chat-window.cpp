@@ -136,7 +136,9 @@ update_unread (ChatWindow* self)
   g_signal_emit (self, signals[UNREAD_COUNT], 0, unread_count);
 
   if (unread_count > 0) {
-    info = g_strdup_printf (_("You have %d unread text messages"), unread_count);
+    info = g_strdup_printf (ngettext ("You have %d unread text message",
+                                      "You have %d unread text messages",
+                                      unread_count), unread_count);
     boost::shared_ptr<Ekiga::NotificationCore> notification_core =
       self->priv->core.get<Ekiga::NotificationCore> ("notification-core");
     boost::shared_ptr<Ekiga::Notification> notif (new Ekiga::Notification (Ekiga::Notification::Warning, info, "", _("Read"), boost::bind (show_chat_window_cb, self)));
