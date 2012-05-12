@@ -437,6 +437,8 @@ libekiga_la_SOURCES += \
 	$(engine_dir)/gui/gtk-frontend/roster-view-gtk.cpp \
 	$(engine_dir)/gui/gtk-frontend/call-history-view-gtk.h \
 	$(engine_dir)/gui/gtk-frontend/call-history-view-gtk.cpp \
+	$(engine_dir)/gui/gtk-frontend/default_devices.cpp \
+	$(engine_dir)/gui/gtk-frontend/default_devices.h \
 	$(engine_dir)/gui/gtk-frontend/presentity-view.h \
 	$(engine_dir)/gui/gtk-frontend/presentity-view.cpp \
 	$(engine_dir)/gui/gtk-frontend/heap-view.h \
@@ -447,6 +449,8 @@ libekiga_la_SOURCES += \
 	$(engine_dir)/gui/gtk-frontend/simple-chat-page.cpp \
 	$(engine_dir)/gui/gtk-frontend/multiple-chat-page.h \
 	$(engine_dir)/gui/gtk-frontend/multiple-chat-page.cpp \
+	$(engine_dir)/gui/gtk-frontend/preferences-window.cpp \
+	$(engine_dir)/gui/gtk-frontend/preferences-window.h \
 	$(engine_dir)/gui/gtk-frontend/statusicon.cpp \
 	$(engine_dir)/gui/gtk-frontend/statusicon.h \
 	$(engine_dir)/gui/gtk-frontend/chat-window.h \

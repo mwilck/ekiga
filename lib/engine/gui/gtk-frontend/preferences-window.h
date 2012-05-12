@@ -40,7 +40,8 @@
 #ifndef _PREFERENCES_H_
 #define _PREFERENCES_H_
 
-#include "common.h"
+#include <gtk/gtk.h>
+
 #include "framework/services.h"
 
 /* DESCRIPTION  :  /
@@ -49,7 +50,7 @@
  *                 to appropriate callbacks, then returns it.
  * PRE          :  /
  */
-GtkWidget *gm_prefs_window_new (Ekiga::ServiceCore *core);
+GtkWidget *preferences_window_new (Ekiga::ServiceCore & core);
 
 
 #endif

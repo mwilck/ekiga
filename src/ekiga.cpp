@@ -39,7 +39,6 @@
 #include "config.h"
 
 #include "ekiga.h"
-#include "preferences.h"
 #include "assistant.h"
 #include "accounts.h"
 #include "main_window.h"
@@ -58,7 +57,6 @@ GnomeMeeting::GnomeMeeting ()
   GM = this;
 
   assistant_window = NULL;
-  prefs_window = NULL;
   main_window = NULL;
   assistant_window = NULL;
   accounts_window = NULL;
@@ -69,10 +67,6 @@ void
 GnomeMeeting::Exit ()
 {
   PWaitAndSignal m(ep_var_mutex);
-
-  if (prefs_window)
-    gtk_widget_destroy (prefs_window);
-  prefs_window = NULL;
 
   if (main_window)
     gtk_widget_destroy (main_window);
@@ -103,13 +97,6 @@ GnomeMeeting::GetMainWindow ()
 
 
 GtkWidget *
-GnomeMeeting::GetPrefsWindow ()
-{
-  return prefs_window;
-}
-
-
-GtkWidget *
 GnomeMeeting::GetAssistantWindow ()
 {
   return assistant_window;
@@ -136,13 +123,10 @@ void GnomeMeeting::BuildGUI (Ekiga::ServiceCorePtr services)
   /* Build the GUI */
   gtk_window_set_default_icon_name (GM_ICON_LOGO);
   accounts_window = gm_accounts_window_new (*services);
-  prefs_window = gm_prefs_window_new (services.get ());
   assistant_window = ekiga_assistant_new (services.get ());
   main_window = gm_main_window_new (*services);
   // FIXME should be moved inside the gm_accounts_window_new code
   gtk_window_set_transient_for (GTK_WINDOW (accounts_window), GTK_WINDOW (main_window));
-  // FIXME should be moved in ekiga_assistant_new
-  gtk_window_set_transient_for (GTK_WINDOW (prefs_window), GTK_WINDOW (main_window));
   // FIXME should be moved in ekiga_assistant_new
   gtk_window_set_transient_for (GTK_WINDOW (assistant_window), GTK_WINDOW (main_window));
 

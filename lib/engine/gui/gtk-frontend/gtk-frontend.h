@@ -63,6 +63,8 @@ public:
 
   const std::string get_description () const;
 
+  const GtkWidget *get_preferences_window () const;
+
   const GtkWidget *get_addressbook_window () const;
 
   const GtkWidget *get_call_window () const;
@@ -73,6 +75,7 @@ public:
 
 private :
 
+  GtkWidget *preferences_window;
   GtkWidget *addressbook_window;
   GtkWidget *call_window;
   GtkWidget *chat_window;

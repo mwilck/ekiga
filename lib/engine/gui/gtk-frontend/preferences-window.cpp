@@ -39,12 +39,13 @@
 
 #include "config.h"
 
-#include "preferences.h"
+#include <gmpreferences.h>
+#include <gmconf.h>
+
+#include "preferences-window.h"
 #include "default_devices.h"
 
 #include "gmwindow.h"
-#include <gmpreferences.h>
-#include <gmconf.h>
 #include "codecsbox.h"
 
 #include "videoinput-core.h"
@@ -54,6 +55,26 @@
 #ifdef WIN32
 #include "platform/winpaths.h"
 #endif
+
+#define GENERAL_KEY         "/apps/" PACKAGE_NAME "/general/"
+#define USER_INTERFACE_KEY "/apps/" PACKAGE_NAME "/general/user_interface/"
+#define CONTACTS_KEY "/apps/" PACKAGE_NAME "/contacts/"
+#define VIDEO_DISPLAY_KEY USER_INTERFACE_KEY "video_display/"
+#define SOUND_EVENTS_KEY  "/apps/" PACKAGE_NAME "/general/sound_events/"
+#define AUDIO_DEVICES_KEY "/apps/" PACKAGE_NAME "/devices/audio/"
+#define VIDEO_DEVICES_KEY "/apps/" PACKAGE_NAME "/devices/video/"
+#define PERSONAL_DATA_KEY "/apps/" PACKAGE_NAME "/general/personal_data/"
+#define CALL_OPTIONS_KEY "/apps/" PACKAGE_NAME "/general/call_options/"
+#define NAT_KEY "/apps/" PACKAGE_NAME "/general/nat/"
+#define PROTOCOLS_KEY "/apps/" PACKAGE_NAME "/protocols/"
+#define H323_KEY "/apps/" PACKAGE_NAME "/protocols/h323/"
+#define SIP_KEY "/apps/" PACKAGE_NAME "/protocols/sip/"
+#define PORTS_KEY "/apps/" PACKAGE_NAME "/protocols/ports/"
+#define CALL_FORWARDING_KEY "/apps/" PACKAGE_NAME "/protocols/call_forwarding/"
+#define LDAP_KEY "/apps/" PACKAGE_NAME "/protocols/ldap/"
+#define CODECS_KEY "/apps/" PACKAGE_NAME "/codecs/"
+#define AUDIO_CODECS_KEY "/apps/" PACKAGE_NAME "/codecs/audio/"
+#define VIDEO_CODECS_KEY  "/apps/" PACKAGE_NAME "/codecs/video/"
 
 
 typedef struct _GmPreferencesWindow
@@ -554,8 +575,7 @@ gm_pw_init_sound_events_page (GtkWidget *prefs_window,
     gtk_tree_view_get_selection (GTK_TREE_VIEW (pw->sound_events_list));
 
   frame = gtk_frame_new (NULL);
-  gtk_container_set_border_width (GTK_CONTAINER (frame), 
-                                  2 * GNOMEMEETING_PAD_SMALL);
+  gtk_container_set_border_width (GTK_CONTAINER (frame), 4);
   gtk_frame_set_shadow_type (GTK_FRAME (frame), GTK_SHADOW_IN);
   gtk_container_add (GTK_CONTAINER (frame), pw->sound_events_list);
   gtk_container_set_border_width (GTK_CONTAINER (pw->sound_events_list), 0);
@@ -1246,7 +1266,7 @@ gm_prefs_window_update_devices_list (GtkWidget *prefs_window)
 
 
 GtkWidget *
-gm_prefs_window_new (Ekiga::ServiceCore *core)
+preferences_window_new (Ekiga::ServiceCore & core)
 {
   GmPreferencesWindow *pw = NULL;
 
@@ -1273,7 +1293,7 @@ gm_prefs_window_new (Ekiga::ServiceCore *core)
   /* The GMObject data */
   pw = new GmPreferencesWindow ();
 
-  pw->core = core;
+  pw->core = &core;
 
   g_object_set_data_full (G_OBJECT (window), "GMObject",
 			  pw, (GDestroyNotify) gm_pw_destroy);
@@ -1339,9 +1359,9 @@ gm_prefs_window_new (Ekiga::ServiceCore *core)
   gm_window_hide_on_delete (window);
 
   boost::signals::connection conn;
-  boost::shared_ptr<Ekiga::VideoInputCore> videoinput_core = core->get<Ekiga::VideoInputCore> ("videoinput-core");
-  boost::shared_ptr<Ekiga::AudioInputCore> audioinput_core = core->get<Ekiga::AudioInputCore> ("audioinput-core");
-  boost::shared_ptr<Ekiga::AudioOutputCore> audiooutput_core = core->get<Ekiga::AudioOutputCore> ("audiooutput-core");
+  boost::shared_ptr<Ekiga::VideoInputCore> videoinput_core = core.get<Ekiga::VideoInputCore> ("videoinput-core");
+  boost::shared_ptr<Ekiga::AudioInputCore> audioinput_core = core.get<Ekiga::AudioInputCore> ("audioinput-core");
+  boost::shared_ptr<Ekiga::AudioOutputCore> audiooutput_core = core.get<Ekiga::AudioOutputCore> ("audiooutput-core");
 
   conn = videoinput_core->device_added.connect (boost::bind (&on_videoinput_device_added_cb, _1, _2, window));
   pw->connections.push_back (conn);

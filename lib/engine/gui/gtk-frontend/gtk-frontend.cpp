@@ -51,6 +51,7 @@
 #include "call-window.h"
 #include "chat-window.h"
 #include "statusicon.h"
+#include "preferences-window.h"
 #include "roster-view-gtk.h"
 #include "history-source.h"
 #include "book-view-gtk.h"
@@ -103,6 +104,7 @@ void GtkFrontend::build ()
   addressbook_window = addressbook_window_new_with_key (*contact_core, "/apps/" PACKAGE_NAME "/general/user_interface/addressbook_window");
   call_window = call_window_new (core);
   chat_window = chat_window_new (core, "/apps/" PACKAGE_NAME "/general/user_interface/chat_window");
+  preferences_window = preferences_window_new (core);
   status_icon = status_icon_new (core);
 }
 
@@ -122,6 +124,12 @@ const std::string GtkFrontend::get_description () const
 const GtkWidget *GtkFrontend::get_addressbook_window () const
 {
   return addressbook_window;
+}
+
+
+const GtkWidget *GtkFrontend::get_preferences_window () const
+{
+  return preferences_window;
 }
 
 

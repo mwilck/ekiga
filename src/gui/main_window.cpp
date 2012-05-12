@@ -1260,7 +1260,7 @@ ekiga_main_window_init_menu (EkigaMainWindow *mw)
   boost::shared_ptr<GtkFrontend> gtk_frontend = mw->priv->core->get<GtkFrontend> ("gtk-frontend");
   addressbook_window = GTK_WIDGET (gtk_frontend->get_addressbook_window ());
   accounts_window = GnomeMeeting::Process ()->GetAccountsWindow ();
-  prefs_window = GnomeMeeting::Process ()->GetPrefsWindow ();
+  prefs_window = GTK_WIDGET (gtk_frontend->get_preferences_window ());
   assistant_window = GnomeMeeting::Process ()->GetAssistantWindow ();
 
   mw->priv->main_menu = gtk_menu_bar_new ();
