@@ -31,31 +31,37 @@
  *                         ------------------------------------------
  *   begin                : written in 2008 by Matthias Schneider
  *   copyright            : (c) 2008 by Matthias Schneider
- *   description          : Used to detect the names and supported V4L 
- *                          interfaces of a new video4linux device (this 
+ *   description          : Used to detect the names and supported V4L
+ *                          interfaces of a new video4linux device (this
  *                          should really be in HALd itself.
  *
  */
 
-#include <fcntl.h>	// for open() 
-#include <unistd.h>	// for read(), write(), close() 
+#include <fcntl.h>	// for open()
+#include <unistd.h>	// for read(), write(), close()
 #include <sys/ioctl.h>	// for ioctl()
 #include <stdlib.h>     // for free(), malloc()
 #include <string.h>     // for strlen()
 #include <stdio.h>
+
+#ifdef HAVE_OLD_V4L
 #include <linux/videodev.h>
+#else
+#include <linux/videodev2.h>
+#include <libv4l1-videodev.h>
+#endif
 
 int v4l_get_device_names (const char* device, char** v4l1_name, char** v4l2_name) {
   int fp;
   unsigned ret = 0; // Device not valid
-  
+
   *v4l1_name = NULL;
   *v4l2_name = NULL;
 
   if((fp = open(device, O_RDONLY)) == 0) {
     return -1;  // Unable to open device
   }
- 
+
   struct video_capability  v4l1_caps;
   if (ioctl(fp, VIDIOCGCAP, &v4l1_caps) >= 0 && (v4l1_caps.type & VID_TYPE_CAPTURE) != 0) {
     ret |= 1;
@@ -84,4 +90,3 @@ void v4l_free_device_name (char** name)
 
   *name = NULL;
 }
-
