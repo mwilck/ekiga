@@ -41,6 +41,7 @@
 #include "runtime.h"
 #include "videooutput-core.h"
 #include "hal-core.h"
+#include "notification-core.h"
 #include "videoinput-manager.h"
 #include "videoinput-gmconf-bridge.h"
 
@@ -105,7 +106,8 @@ namespace Ekiga
        * @param _runtime reference to Ekiga runtime.
        * @param _videooutput_core reference ot the video output core.
        */
-      VideoInputCore (boost::shared_ptr<VideoOutputCore> _videooutput_core);
+      VideoInputCore (Ekiga::ServiceCore & core,
+                      boost::shared_ptr<VideoOutputCore> _videooutput_core);
 
       /** The destructor
        */
@@ -294,6 +296,7 @@ namespace Ekiga
       boost::signal2<void, VideoInputDevice, bool> device_removed;
 
   private:
+      void on_set_device (const VideoInputDevice & device);
       void on_device_opened (VideoInputDevice device,  
                              VideoInputSettings settings, 
                              VideoInputManager *manager);
@@ -434,8 +437,10 @@ private:
       PMutex core_mutex;
       PMutex settings_mutex;
 
+      Ekiga::ServiceCore & core;
       VideoPreviewManager preview_manager;
       VideoInputCoreConfBridge* videoinput_core_conf_bridge;
+      boost::shared_ptr<Ekiga::NotificationCore> notification_core;
     };
 /**
  * @}

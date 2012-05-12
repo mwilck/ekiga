@@ -113,7 +113,7 @@ engine_init (Ekiga::ServiceCorePtr service_core,
   boost::shared_ptr<Ekiga::CallCore> call_core (new Ekiga::CallCore);
   boost::shared_ptr<Ekiga::ChatCore> chat_core (new Ekiga::ChatCore);
   boost::shared_ptr<Ekiga::VideoOutputCore> videooutput_core (new Ekiga::VideoOutputCore);
-  boost::shared_ptr<Ekiga::VideoInputCore> videoinput_core (new Ekiga::VideoInputCore (videooutput_core));
+  boost::shared_ptr<Ekiga::VideoInputCore> videoinput_core (new Ekiga::VideoInputCore ((*service_core.get ()), videooutput_core));
   boost::shared_ptr<Ekiga::AudioOutputCore> audiooutput_core (new Ekiga::AudioOutputCore);
   boost::shared_ptr<Ekiga::AudioInputCore> audioinput_core (new Ekiga::AudioInputCore);
   boost::shared_ptr<Ekiga::HalCore> hal_core (new Ekiga::HalCore);

@@ -37,10 +37,14 @@
 #include <iostream>
 #include <sstream>
 
+#include <glib/gi18n.h>
+
 #include "config.h"
 
 #include "videoinput-core.h"
 #include "videoinput-manager.h"
+
+#define VIDEO_DEVICES_KEY "/apps/" PACKAGE_NAME "/devices/video/"
 
 using namespace Ekiga;
 
@@ -119,8 +123,9 @@ void VideoInputCore::VideoPreviewManager::Main ()
   }
 }
 
-VideoInputCore::VideoInputCore (boost::shared_ptr<VideoOutputCore> _videooutput_core)
-:  preview_manager(*this, _videooutput_core)
+VideoInputCore::VideoInputCore (Ekiga::ServiceCore & _core,
+                                boost::shared_ptr<VideoOutputCore> _videooutput_core)
+: core(_core), preview_manager(*this, _videooutput_core)
 {
   PWaitAndSignal m_var(core_mutex);
   PWaitAndSignal m_set(settings_mutex);
@@ -147,6 +152,7 @@ VideoInputCore::VideoInputCore (boost::shared_ptr<VideoOutputCore> _videooutput_
 
   current_manager = NULL;
   videoinput_core_conf_bridge = NULL;
+  notification_core = core.get<Ekiga::NotificationCore> ("notification-core");
 }
 
 VideoInputCore::~VideoInputCore ()
@@ -231,8 +237,16 @@ void VideoInputCore::add_device (const std::string & source, const std::string &
        iter++) {
     if ((*iter)->has_device (source, device_name, capabilities, device)) {
 
-      if ( desired_device == device )
+      if ( desired_device == device ) {
         internal_set_device(device, current_channel, current_format);
+        boost::shared_ptr<Ekiga::Notification> notif (new Ekiga::Notification (Ekiga::Notification::Info, _("New device detected"), device.GetString ()));
+        notification_core->push_notification (notif);
+      }
+      else {
+
+        boost::shared_ptr<Ekiga::Notification> notif (new Ekiga::Notification (Ekiga::Notification::Info, _("New device detected"), device.GetString (), _("Use it"), boost::bind (&VideoInputCore::on_set_device, (VideoInputCore*) this, device)));
+        notification_core->push_notification (notif);
+      }
 
       device_added(device, desired_device == device);
     }
@@ -259,6 +273,9 @@ void VideoInputCore::remove_device (const std::string & source, const std::strin
        }
 
        device_removed(device, current_device == device);
+
+       boost::shared_ptr<Ekiga::Notification> notif (new Ekiga::Notification (Ekiga::Notification::Info, _("Device removed"), device.GetString ()));
+       notification_core->push_notification (notif);
      }
   }
 }
@@ -421,8 +438,13 @@ void VideoInputCore::set_contrast   (unsigned contrast)
   desired_settings.contrast = contrast;
 }
 
+void VideoInputCore::on_set_device (const VideoInputDevice & device)
+{
+  gm_conf_set_string (VIDEO_DEVICES_KEY "input_device", device.GetString ().c_str ());
+}
+
 void VideoInputCore::on_device_opened (VideoInputDevice device,
-                                     VideoInputSettings settings, 
+                                     VideoInputSettings settings,
                                      VideoInputManager *manager)
 {
   device_opened (*manager, device, settings);

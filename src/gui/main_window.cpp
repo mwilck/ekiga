@@ -766,31 +766,6 @@ static bool on_handle_errors (std::string error,
  * Display Engine Callbacks
  */
 void
-on_videoinput_device_added_cb (const Ekiga::VideoInputDevice & device, bool is_desired, gpointer self)
-{
-  EkigaMainWindow *mw = EKIGA_MAIN_WINDOW (self);
-  gchar *message;
-
-  /* Translators: This is a hotplug status */
-  message = g_strdup_printf (_("Added video input device %s"),
-			       device.GetString().c_str ());
-  ekiga_main_window_flash_message (mw, "%s", message);
-  g_free (message);
-  if (!is_desired && mw->priv->calling_state == Standby && !mw->priv->current_call)
-    ekiga_main_window_add_device_dialog_show (mw, device, VideoInput);
-}
-
-void
-on_videoinput_device_removed_cb (const Ekiga::VideoInputDevice & device, bool, gpointer self)
-{
-  /* Translators: This is a hotplug status */
-  gchar *message = g_strdup_printf (_("Removed video input device %s"),
-				    device.GetString().c_str ());
-  ekiga_main_window_flash_message (EKIGA_MAIN_WINDOW (self), "%s", message);
-  g_free (message);
-}
-
-void
 on_audioinput_device_added_cb (const Ekiga::AudioInputDevice & device,
                                bool is_desired,
                                gpointer self)
@@ -1919,14 +1894,6 @@ ekiga_main_window_connect_engine_signals (EkigaMainWindow *mw)
   boost::signals::connection conn;
 
   g_return_if_fail (EKIGA_IS_MAIN_WINDOW (mw));
-
-  /* New VideoInput Engine signals */
-  boost::shared_ptr<Ekiga::VideoInputCore> videoinput_core = mw->priv->core->get<Ekiga::VideoInputCore> ("videoinput-core");
-  conn = videoinput_core->device_added.connect (boost::bind (&on_videoinput_device_added_cb, _1, _2, (gpointer) mw));
-  mw->priv->connections.push_back (conn);
-
-  conn = videoinput_core->device_removed.connect (boost::bind (&on_videoinput_device_removed_cb, _1, _2, (gpointer) mw));
-  mw->priv->connections.push_back (conn);
 
   /* New AudioInput Engine signals */
   boost::shared_ptr<Ekiga::AudioInputCore> audioinput_core = mw->priv->core->get<Ekiga::AudioInputCore> ("audioinput-core");
