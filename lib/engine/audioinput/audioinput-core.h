@@ -41,6 +41,7 @@
 #include "runtime.h"
 
 #include "audioinput-manager.h"
+#include "notification-core.h"
 #include "hal-core.h"
 #include "audioinput-gmconf-bridge.h"
 
@@ -94,9 +95,8 @@ namespace Ekiga
   public:
 
       /** The constructor
-       * @param _videooutput_core reference ot the audio output core.
        */
-      AudioInputCore ();
+      AudioInputCore (Ekiga::ServiceCore & core);
 
       /** The destructor
       */
@@ -273,6 +273,7 @@ namespace Ekiga
       boost::signal2<void, AudioInputDevice, bool> device_removed;
 
   private:
+      void on_set_device (const AudioInputDevice & device);
       void on_device_opened (AudioInputDevice device,
                              AudioInputSettings settings,
                              AudioInputManager *manager);
@@ -320,6 +321,9 @@ namespace Ekiga
       float average_level;
       bool calculate_average;
       bool yield;
+
+      Ekiga::ServiceCore & core;
+      boost::shared_ptr<Ekiga::NotificationCore> notification_core;
     };
 /**
  * @}

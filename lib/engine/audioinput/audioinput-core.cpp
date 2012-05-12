@@ -38,11 +38,17 @@
 #include <sstream>
 #include <math.h>
 
+#include <glib/gi18n.h>
+
+#include "config.h"
+
 #include "audioinput-core.h"
 
 using namespace Ekiga;
 
-AudioInputCore::AudioInputCore ()
+#define AUDIO_DEVICES_KEY "/apps/" PACKAGE_NAME "/devices/audio/"
+
+AudioInputCore::AudioInputCore (Ekiga::ServiceCore & _core) : core(_core)
 {
   PWaitAndSignal m_var(core_mutex);
   PWaitAndSignal m_vol(volume_mutex);
@@ -69,6 +75,8 @@ AudioInputCore::AudioInputCore ()
   average_level = 0;
   calculate_average = false;
   yield = false;
+
+  notification_core = core.get<Ekiga::NotificationCore> ("notification-core");
 }
 
 AudioInputCore::~AudioInputCore ()
@@ -186,13 +194,21 @@ void AudioInputCore::add_device (const std::string & source, const std::string &
   for (std::set<AudioInputManager *>::iterator iter = managers.begin ();
        iter != managers.end ();
        iter++) {
-     if ((*iter)->has_device (source, device_name, device)) {
+    if ((*iter)->has_device (source, device_name, device)) {
 
-       if ( desired_device == device)
-         internal_set_device(desired_device);
+      if ( desired_device == device) {
+        internal_set_device(desired_device);
+        boost::shared_ptr<Ekiga::Notification> notif (new Ekiga::Notification (Ekiga::Notification::Info, _("New device detected"), device.GetString ()));
+        notification_core->push_notification (notif);
+      }
+      else {
 
-       device_added (device, desired_device == device);
-     }
+        boost::shared_ptr<Ekiga::Notification> notif (new Ekiga::Notification (Ekiga::Notification::Info, _("New device detected"), device.GetString (), _("Use it"), boost::bind (&AudioInputCore::on_set_device, (AudioInputCore*) this, device)));
+        notification_core->push_notification (notif);
+      }
+
+      device_added(device, desired_device == device);
+    }
   }
 }
 
@@ -216,6 +232,10 @@ void AudioInputCore::remove_device (const std::string & source, const std::strin
             new_device.name = AUDIO_INPUT_FALLBACK_DEVICE_NAME;
             internal_set_device( new_device);
        }
+
+       boost::shared_ptr<Ekiga::Notification> notif (new Ekiga::Notification (Ekiga::Notification::Info, _("Device removed"), device.GetString ()));
+       notification_core->push_notification (notif);
+
        device_removed (device,  current_device == device);
      }
   }
@@ -355,6 +375,11 @@ void AudioInputCore::set_volume (unsigned volume)
   PWaitAndSignal m(volume_mutex);
 
   desired_volume = volume;
+}
+
+void AudioInputCore::on_set_device (const AudioInputDevice & device)
+{
+  gm_conf_set_string (AUDIO_DEVICES_KEY "input_device", device.GetString ().c_str ());
 }
 
 void AudioInputCore::on_device_opened (AudioInputDevice device,

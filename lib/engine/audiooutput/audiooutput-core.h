@@ -39,6 +39,7 @@
 #include "services.h"
 #include "runtime.h"
 #include "hal-core.h"
+#include "notification-core.h"
 
 #include "audiooutput-manager.h"
 #include "audiooutput-gmconf-bridge.h"
@@ -89,7 +90,7 @@ namespace Ekiga
 
       /** The constructor
        */
-      AudioOutputCore ();
+      AudioOutputCore (Ekiga::ServiceCore & core);
 
       /** The destructor
       */
@@ -317,9 +318,10 @@ namespace Ekiga
       boost::signal2<void, AudioOutputDevice, bool> device_removed;
 
   private:
-      void on_device_opened (AudioOutputPS ps, 
+      void on_set_device (const AudioOutputDevice & device);
+      void on_device_opened (AudioOutputPS ps,
                              AudioOutputDevice device,
-                             AudioOutputSettings settings, 
+                             AudioOutputSettings settings,
                              AudioOutputManager *manager);
       void on_device_closed (AudioOutputPS ps, AudioOutputDevice device, AudioOutputManager *manager);
       void on_device_error  (AudioOutputPS ps, AudioOutputDevice device, AudioOutputErrorCodes error_code, AudioOutputManager *manager);
@@ -363,6 +365,9 @@ namespace Ekiga
       float average_level;
       bool calculate_average;
       bool yield;
+
+      Ekiga::ServiceCore & core;
+      boost::shared_ptr<Ekiga::NotificationCore> notification_core;
     };
 /**
  * @}

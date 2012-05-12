@@ -333,10 +333,6 @@ static void ekiga_main_window_init_uri_toolbar (EkigaMainWindow *mw);
  */
 static void ekiga_main_window_init_actions_toolbar (EkigaMainWindow *mw);
 
-static void ekiga_main_window_add_device_dialog_show (EkigaMainWindow *main_window,
-                                                      const Ekiga::Device & device,
-                                                      DeviceType device_type);
-
 
 /* DESCRIPTION   :  /
  * BEHAVIOR      : Flashes a message on the statusbar during a few seconds.
@@ -762,108 +758,6 @@ static bool on_handle_errors (std::string error,
 }
 
 
-/*
- * Display Engine Callbacks
- */
-void
-on_audioinput_device_added_cb (const Ekiga::AudioInputDevice & device,
-                               bool is_desired,
-                               gpointer self)
-{
-  EkigaMainWindow *mw = EKIGA_MAIN_WINDOW (self);
-  gchar* message = NULL;
-
-  /* Translators: This is a hotplug status */
-  message = g_strdup_printf (_("Added audio input device %s"),
-			     device.GetString().c_str ());
-  ekiga_main_window_flash_message (mw, "%s", message);
-  g_free (message);
-  if (!is_desired  && mw->priv->calling_state == Standby)
-    ekiga_main_window_add_device_dialog_show (mw, device, AudioInput);
-}
-
-void
-on_audioinput_device_removed_cb (const Ekiga::AudioInputDevice & device,
-                                 bool,
-                                 gpointer self)
-{
-  gchar* message = NULL;
-
-  /* Translators: This is a hotplug status */
-  message = g_strdup_printf (_("Removed audio input device %s"),
-			     device.GetString().c_str ());
-  ekiga_main_window_flash_message (EKIGA_MAIN_WINDOW (self), "%s", message);
-  g_free (message);
-}
-
-void
-on_audiooutput_device_added_cb (const Ekiga::AudioOutputDevice & device,
-                                bool is_desired,
-                                gpointer self)
-{
-  EkigaMainWindow *mw;
-  gchar *message;
-
-  g_return_if_fail (EKIGA_IS_MAIN_WINDOW (self));
-
-  mw = EKIGA_MAIN_WINDOW (self);
-
-  message = g_strdup_printf (_("Added audio output device %s"), device.GetString().c_str ());
-  ekiga_main_window_flash_message (mw, "%s", message);
-  g_free (message);
-  if (!is_desired && mw->priv->calling_state == Standby && !mw->priv->current_call) {
-    ekiga_main_window_add_device_dialog_show (mw, device, AudioOutput);
-    ekiga_main_window_add_device_dialog_show (mw, device, Ringer);
-  }
-}
-
-void
-on_audiooutput_device_removed_cb (const Ekiga::AudioOutputDevice & device,
-                                  bool,
-                                  gpointer self)
-{
-  gchar *message;
-
-  g_return_if_fail (EKIGA_IS_MAIN_WINDOW (self));
-
-  message = g_strdup_printf (_("Removed audio output device %s"),
-			     device.GetString().c_str ());
-  ekiga_main_window_flash_message (EKIGA_MAIN_WINDOW (self), "%s", message);
-  g_free (message);
-}
-
-/* Implementation */
-static void
-add_device_response_cb (GtkDialog *add_device_popup,
-                           gint response,
-                           gpointer data)
-{
-  deviceStruct *device_struct = (deviceStruct*) data;
-
-  gtk_widget_hide (GTK_WIDGET (add_device_popup));
-
-  if (response == 2) {
-
-    switch (device_struct->deviceType)
-    {
-     case AudioInput:
-       gm_conf_set_string (AUDIO_DEVICES_KEY "input_device", device_struct->name);
-       break;
-     case AudioOutput:
-       gm_conf_set_string (AUDIO_DEVICES_KEY "output_device", device_struct->name);
-       break;
-     case Ringer:
-       gm_conf_set_string (SOUND_EVENTS_KEY "output_device", device_struct->name);
-       break;
-     case VideoInput:
-       gm_conf_set_string (VIDEO_DEVICES_KEY "input_device", device_struct->name);
-       break;
-     default:;
-    }
-  }
-}
-
-
 /* GTK callbacks */
 static gboolean
 on_delayed_hide_call_window_cb (gpointer data)
@@ -1208,96 +1102,6 @@ ekiga_main_window_get_call_url (EkigaMainWindow *mw)
     return entry_text;
   else
     return "";
-}
-
-static void
-ekiga_main_window_add_device_dialog_show (EkigaMainWindow *mw,
-                                          const Ekiga::Device & device,
-                                          DeviceType device_type)
-{
-  GtkWidget *label = NULL;
-  GtkWidget *vbox = NULL;
-  GtkWidget *add_device_popup = NULL;
-
-  g_return_if_fail (EKIGA_IS_MAIN_WINDOW (mw));
-
-  add_device_popup = gtk_dialog_new ();
-  gtk_dialog_add_button (GTK_DIALOG (add_device_popup),
-			 _("No"), 0);
-  gtk_dialog_add_button (GTK_DIALOG (add_device_popup),
-			 _("Yes"), 2);
-
-  gtk_dialog_set_default_response (GTK_DIALOG (add_device_popup), 2);
-
-  vbox = GTK_DIALOG (add_device_popup)->vbox;
-
-  std::string msg;
-  std::string title;
-
-  switch (device_type) {
-    case AudioInput:
-      msg = _("Detected new audio input device:");
-      title = _("Audio Devices");
-      break;
-    case AudioOutput:
-      msg = _("Detected new audio output device:");
-      title = _("Audio Devices");
-      break;
-    case Ringer:
-      msg = _("Detected new ringer device:");
-      title = _("Audio Devices");
-      break;
-    case VideoInput:
-      msg = _("Detected new video input device:");
-      title = _("Video Devices");
-      break;
-    default:
-      break;
-  }
-  label = gtk_label_new (NULL);
-  gtk_label_set_markup (GTK_LABEL (label), msg.c_str());
-  gtk_box_pack_start (GTK_BOX (vbox), label, FALSE, FALSE, 2);
-  gtk_misc_set_alignment (GTK_MISC (label), 0.0, 0.0);
-  gtk_label_set_line_wrap (GTK_LABEL (label), TRUE);
-
-  msg  = "<b>" + device.GetString() + "</b>";
-  label = gtk_label_new (NULL);
-  gtk_label_set_markup (GTK_LABEL (label), msg.c_str());
-  gtk_box_pack_start (GTK_BOX (vbox), label, FALSE, FALSE, 2);
-  gtk_misc_set_alignment (GTK_MISC (label), 0.0, 0.0);
-  gtk_label_set_line_wrap (GTK_LABEL (label), TRUE);
-
-  msg  = _("Do you want to use it as default device?");
-  label = gtk_label_new (NULL);
-  gtk_label_set_markup (GTK_LABEL (label), msg.c_str());
-  gtk_box_pack_start (GTK_BOX (vbox), label, FALSE, FALSE, 2);
-  gtk_misc_set_alignment (GTK_MISC (label), 0.0, 0.0);
-  gtk_label_set_line_wrap (GTK_LABEL (label), TRUE);
-
-  gtk_window_set_title (GTK_WINDOW (add_device_popup), title.c_str ());
-  gtk_window_set_modal (GTK_WINDOW (add_device_popup), TRUE);
-  gtk_window_set_keep_above (GTK_WINDOW (add_device_popup), TRUE);
-  gtk_window_set_urgency_hint (GTK_WINDOW (mw), TRUE);
-  gtk_window_set_transient_for (GTK_WINDOW (add_device_popup),
-				GTK_WINDOW (mw));
-
-  gtk_widget_show_all (add_device_popup);
-
-  deviceStruct* device_struct = g_new(deviceStruct, 1);
-  snprintf (device_struct->name, sizeof (device_struct->name), "%s", (device.GetString()).c_str());
-  device_struct->deviceType = device_type;
-
-  g_signal_connect_data (add_device_popup, "delete_event",
-                         G_CALLBACK (gtk_widget_hide_on_delete),
-                         (gpointer) device_struct,
-                         (GClosureNotify) g_free,
-                         (GConnectFlags) 0);
-
-  g_signal_connect_data (add_device_popup, "response",
-                         G_CALLBACK (add_device_response_cb),
-                         (gpointer) device_struct,
-                         (GClosureNotify) g_free,
-                         (GConnectFlags) 0);
 }
 
 static void
@@ -1894,22 +1698,6 @@ ekiga_main_window_connect_engine_signals (EkigaMainWindow *mw)
   boost::signals::connection conn;
 
   g_return_if_fail (EKIGA_IS_MAIN_WINDOW (mw));
-
-  /* New AudioInput Engine signals */
-  boost::shared_ptr<Ekiga::AudioInputCore> audioinput_core = mw->priv->core->get<Ekiga::AudioInputCore> ("audioinput-core");
-  conn = audioinput_core->device_added.connect (boost::bind (&on_audioinput_device_added_cb, _1, _2, (gpointer) mw));
-  mw->priv->connections.push_back (conn);
-
-  conn = audioinput_core->device_removed.connect (boost::bind (&on_audioinput_device_removed_cb, _1, _2, (gpointer) mw));
-  mw->priv->connections.push_back (conn);
-
-  /* New AudioOutput Engine signals */
-  boost::shared_ptr<Ekiga::AudioOutputCore> audiooutput_core = mw->priv->core->get<Ekiga::AudioOutputCore> ("audiooutput-core");
-  conn = audiooutput_core->device_added.connect (boost::bind (&on_audiooutput_device_added_cb, _1, _2, (gpointer) mw));
-  mw->priv->connections.push_back (conn);
-
-  conn = audiooutput_core->device_removed.connect (boost::bind (&on_audiooutput_device_removed_cb, _1, _2, (gpointer) mw));
-  mw->priv->connections.push_back (conn);
 
   /* New Call Engine signals */
   boost::shared_ptr<Ekiga::CallCore> call_core = mw->priv->core->get<Ekiga::CallCore> ("call-core");
