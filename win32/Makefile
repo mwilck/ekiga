@@ -251,8 +251,11 @@ DOC_LINGUAS :=
 
 confflags := --prefix=$(BUILDROOT) --build=$(DEB_BUILD_GNU_TYPE) --host=$(DEB_HOST_GNU_TYPE)
 
-confptlib := $(confflags) \
-	--enable-vfw --with-directx-includedir=$(EKIGA_DIR)/win32/directx \
+confptlib := $(confflags) --enable-vfw \
+ifeq ($(MINGW32), 1)
+	# directx dir can be removed for mingw-w64
+	--with-directx-includedir=$(EKIGA_DIR)/win32/directx \
+endif
 	--disable-qos --disable-alsa --disable-esd --disable-oss --disable-sunaudio --disable-shmaudio \
 	--disable-v4l --disable-v4l2 --disable-bsdvideo --disable-avc --disable-dc
 
@@ -260,8 +263,11 @@ confptlib := $(confflags) \
 confopal := $(confflags) --disable-t38 --disable-fax --disable-iLBC --disable-silk
 
 confekiga:= $(confflags) \
-	--with-directx-dir=$(EKIGA_DIR)/win32/directx --prefix=$(EKIGA_PREFIX) \
-	--bindir=$(EKIGA_PREFIX) --datadir=$(EKIGA_PREFIX) \
+ifeq ($(MINGW32), 1)
+	# directx dir can be removed for mingw-w64
+	--with-directx-dir=$(EKIGA_DIR)/win32/directx \
+endif
+	--prefix=$(EKIGA_PREFIX) --bindir=$(EKIGA_PREFIX) --datadir=$(EKIGA_PREFIX) \
 	--sysconfdir=$(EKIGA_PREFIX) --libdir=$(EKIGA_PREFIX) \
 	--with-ldap-dir=$(OPENLDAP_DIR) --with-libsasl2-dir=$(LIBSASL2_DIR) --with-boost=$(BUILDROOT) # --enable-static-libs
 
