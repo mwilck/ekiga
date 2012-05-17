@@ -1891,7 +1891,7 @@ gm_cw_audio_settings_window_new (EkigaCallWindow *cw)
   /* Input volume */
   hbox = gtk_hbox_new (false, 0);
   gtk_box_pack_start (GTK_BOX (hbox),
-		      gtk_image_new_from_icon_name (GM_ICON_MICROPHONE,
+		      gtk_image_new_from_icon_name ("audio-input-microphone",
 						    GTK_ICON_SIZE_SMALL_TOOLBAR),
 		      false, false, 0);
 
@@ -2418,8 +2418,7 @@ ekiga_call_window_init_gui (EkigaCallWindow *cw)
   /* Call Pause */
   item = gtk_tool_item_new ();
   cw->priv->hold_button = gtk_toggle_button_new ();
-  image = gtk_image_new_from_icon_name (GM_ICON_MEDIA_PLAYBACK_PAUSE,
-                                        GTK_ICON_SIZE_MENU);
+  image = gtk_image_new_from_icon_name ("media-playback-pause", GTK_ICON_SIZE_MENU);
   gtk_button_set_relief (GTK_BUTTON (cw->priv->hold_button), GTK_RELIEF_NONE);
   gtk_container_add (GTK_CONTAINER (cw->priv->hold_button), image);
   gtk_container_add (GTK_CONTAINER (item), cw->priv->hold_button);

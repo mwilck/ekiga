@@ -84,7 +84,6 @@ gnomemeeting_stock_icons_init (void)
 
 	static const GmThemeIcon theme_builtins[] =
 	{
-		{ GM_ICON_ADD_CONTACT, 24, gm_add_contact_24_stock_data},
 	        { GM_ICON_AUDIO_VOLUME_HIGH, 16, gm_audio_volume_high_16_stock_data },
 		{ GM_ICON_BRIGHTNESS, 16, gm_brightness_16_stock_data},
 		{ GM_ICON_COLOURNESS, 16, gm_colourness_16_stock_data},
@@ -96,9 +95,6 @@ gnomemeeting_stock_icons_init (void)
 	        { GM_ICON_LOGO, 48, gm_logo_48_stock_data },
 	        { GM_ICON_LOGO, 72, gm_logo_72_stock_data },
 		{ GM_ICON_AVATAR, 256, gm_avatar_256_stock_data},
-		{ GM_ICON_MEDIA_PLAYBACK_PAUSE, 16, gm_media_playback_pause_16_stock_data },
-		{ GM_ICON_MICROPHONE, 24, gm_microphone_24_stock_data },
-		{ GM_ICON_SYSTEM_SEARCH, 16, gm_system_search_16_stock_data},
 		{ GM_ICON_WHITENESS, 16, gm_whiteness_16_stock_data},
 	};
 

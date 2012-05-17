@@ -40,16 +40,12 @@
 G_BEGIN_DECLS
 
 /* Icon theme builtins */
-#define GM_ICON_ADD_CONTACT                "contact-new"
 #define GM_ICON_AUDIO_VOLUME_HIGH          "audio-volume-high"
 #define GM_ICON_BRIGHTNESS                 "stock_brightness"
 #define GM_ICON_COLOURNESS                 "stock_color"
 #define GM_ICON_CONTRAST                   "stock_contrast"
 #define GM_ICON_INTERNET_GROUP_CHAT        "internet-group-chat"
 #define GM_ICON_LOGO                       PACKAGE_NAME
-#define GM_ICON_MEDIA_PLAYBACK_PAUSE       "media-playback-pause"
-#define GM_ICON_MICROPHONE                 "audio-input-microphone"
-#define GM_ICON_SYSTEM_SEARCH              "system-search"
 #define GM_ICON_WHITENESS                  "stock_channel-blue"
 #define GM_ICON_ADDRESSBOOK                "stock_addressbook"
 #define GM_ICON_AVATAR                     "avatar"

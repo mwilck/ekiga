@@ -28,13 +28,10 @@ IMAGES_FILES= \
 	256x256/multimedia-headset.png \
 	256x256/avatar-default.png \
 	16x16/audio-volume-high.png \
-	16x16/media-playback-pause.png \
 	16x16/stock_brightness.png \
 	16x16/stock_channel-blue.png \
 	16x16/stock_color.png \
 	16x16/stock_contrast.png \
-	16x16/system-search.png \
-	24x24/audio-input-microphone.png \
 	24x24/contact-new.png \
 	24x24/internet-group-chat.png \
 	color-brightness-contrast.png \
@@ -61,7 +58,6 @@ IMAGES_FILES= \
 
 
 IMAGES= \
-	gm_add_contact_24_stock_data $(srcdir)/24x24/contact-new.png \
 	gm_audio_volume_high_16_stock_data $(srcdir)/16x16/audio-volume-high.png \
 	gm_brightness_16_stock_data $(srcdir)/16x16/stock_brightness.png \
 	gm_colourness_16_stock_data $(srcdir)/16x16/stock_color.png \
@@ -74,9 +70,6 @@ IMAGES= \
 	gm_logo_48_stock_data $(srcdir)/48x48/apps/@PACKAGE_NAME@.png \
 	gm_logo_72_stock_data $(srcdir)/72x72/apps/@PACKAGE_NAME@.png \
         gm_avatar_256_stock_data $(srcdir)/256x256/avatar-default.png \
-	gm_media_playback_pause_16_stock_data $(srcdir)/16x16/media-playback-pause.png \
-	gm_microphone_24_stock_data $(srcdir)/24x24/audio-input-microphone.png \
-	gm_system_search_16_stock_data $(srcdir)/16x16/system-search.png \
 	gm_whiteness_16_stock_data $(srcdir)/16x16/stock_channel-blue.png \
 	gm_color_brightness_contrast_stock_data $(srcdir)/color-brightness-contrast.png \
 	gm_remote_contact_stock_data $(srcdir)/remote_contact.png \
