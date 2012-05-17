@@ -33,7 +33,6 @@ IMAGES_FILES= \
 	16x16/stock_color.png \
 	16x16/stock_contrast.png \
 	24x24/contact-new.png \
-	24x24/internet-group-chat.png \
 	color-brightness-contrast.png \
 	local_contact.png \
 	remote_contact.png \
@@ -62,7 +61,6 @@ IMAGES= \
 	gm_brightness_16_stock_data $(srcdir)/16x16/stock_brightness.png \
 	gm_colourness_16_stock_data $(srcdir)/16x16/stock_color.png \
 	gm_contrast_16_stock_data $(srcdir)/16x16/stock_contrast.png \
-	gm_internet_group_chat_24_stock_data $(srcdir)/24x24/internet-group-chat.png \
 	gm_logo_16_stock_data $(srcdir)/16x16/apps/@PACKAGE_NAME@.png \
 	gm_logo_22_stock_data $(srcdir)/22x22/apps/@PACKAGE_NAME@.png \
 	gm_logo_24_stock_data $(srcdir)/24x24/apps/@PACKAGE_NAME@.png \
