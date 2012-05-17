@@ -68,7 +68,7 @@ namespace KAB
     { return "---"; }
 
     const std::string get_icon () const
-    { return "local-object"; }
+    { return "computer"; }
 
   private:
 

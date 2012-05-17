@@ -74,10 +74,10 @@ namespace Ekiga {
      */
     virtual const std::string get_status () const = 0;
 
-    
+
     /** Get the icon for the Book.
-     * The icon is a string and could be something like "local-object"
-     * or "remote-object"
+     * The icon is a string and could be something like "computer"
+     * or "network_server"
      *
      * This function is purely virtual and should be implemented by
      * the descendant of the Ekiga::Book, ie BookImpl or one

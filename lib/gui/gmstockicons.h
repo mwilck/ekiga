@@ -52,8 +52,6 @@ G_BEGIN_DECLS
 
 /* True stock icons */
 #define GM_STOCK_COLOR_BRIGHTNESS_CONTRAST   "gm_color_brightness_contrast_stock"
-#define GM_STOCK_LOCAL_OBJECT    "local-object"
-#define GM_STOCK_REMOTE_OBJECT   "remote-object"
 #define GM_STOCK_MESSAGE          "gm_message_stock"
 #define GM_STOCK_CALL_PLACED      "gm_call_placed_stock"
 #define GM_STOCK_CALL_MISSED      "gm_call_missed_stock"

@@ -116,7 +116,7 @@ namespace OPENLDAP
     const std::string get_status () const;
 
     const std::string get_icon () const
-    { return "remote-object"; }
+    { return "network-server"; }
 
     void refresh ();
 

@@ -72,7 +72,7 @@ namespace History
     const std::string get_status () const;
 
     const std::string get_icon () const
-    { return "local-object"; }
+    { return "computer"; }
 
     /* more specific api */
 

@@ -438,7 +438,6 @@ addressbook_window_add_book (AddressBookWindow *self,
   GtkTreeIter iter;
   GtkTreeModel *store = NULL;
   GtkWidget *view = NULL;
-  GdkPixbuf *icon = NULL;
 
   view = book_view_gtk_new (book);
 
@@ -450,21 +449,17 @@ addressbook_window_add_book (AddressBookWindow *self,
 
   g_signal_connect (view, "updated", G_CALLBACK (on_view_updated), self);
 
-  icon = gtk_widget_render_icon (GTK_WIDGET (self->priv->tree_view),
-				 book->get_icon ().c_str (),
-				 GTK_ICON_SIZE_MENU, NULL); 
-
   store = gtk_tree_view_get_model (GTK_TREE_VIEW (self->priv->tree_view));
   gtk_tree_store_append (GTK_TREE_STORE (store), &iter, NULL);
   gtk_tree_store_set (GTK_TREE_STORE (store), &iter,
-                      COLUMN_PIXBUF, icon, 
                       COLUMN_NAME, book->get_name ().c_str (),
-                      COLUMN_BOOK_POINTER, book.get (), 
+                      COLUMN_BOOK_POINTER, book.get (),
                       COLUMN_VIEW, view,
+                      COLUMN_PIXBUF, book->get_icon ().c_str (),
                       -1);
 
   if (!gtk_tree_selection_get_selected (self->priv->selection, &store, &iter)) {
-   
+
     gtk_tree_model_get_iter_first (store, &iter);
     gtk_tree_selection_select_iter (self->priv->selection, &iter);
   }
@@ -678,7 +673,7 @@ addressbook_window_new (Ekiga::ContactCore &core)
   frame = gtk_frame_new (NULL);
   gtk_frame_set_shadow_type (GTK_FRAME (frame), GTK_SHADOW_IN);
   store = gtk_tree_store_new (NUM_COLUMNS,
-                              GDK_TYPE_PIXBUF,
+                              G_TYPE_STRING,
                               G_TYPE_STRING,
                               G_TYPE_POINTER,
                               G_TYPE_OBJECT);
@@ -692,9 +687,8 @@ addressbook_window_new (Ekiga::ContactCore &core)
   column = gtk_tree_view_column_new ();
   cell = gtk_cell_renderer_pixbuf_new ();
   gtk_tree_view_column_pack_start (column, cell, FALSE);
-  gtk_tree_view_column_set_attributes (column, cell,
-                                       "pixbuf", COLUMN_PIXBUF,
-                                       NULL);
+  gtk_tree_view_column_add_attribute (column, cell,
+                                      "icon-name", COLUMN_PIXBUF);
 
   cell = gtk_cell_renderer_text_new ();
   gtk_tree_view_column_pack_start (column, cell, FALSE);
