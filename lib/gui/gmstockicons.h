@@ -41,7 +41,6 @@ G_BEGIN_DECLS
 
 /* Icon theme builtins */
 #define GM_ICON_LOGO                       PACKAGE_NAME
-#define GM_ICON_ADDRESSBOOK                "stock_addressbook"
 
 void gnomemeeting_stock_icons_init (void);
 

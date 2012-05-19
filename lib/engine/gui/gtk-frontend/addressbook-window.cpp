@@ -630,7 +630,7 @@ addressbook_window_new (Ekiga::ContactCore &core)
   gtk_window_set_title (GTK_WINDOW (self), _("Address Book"));
   gtk_window_set_position (GTK_WINDOW (self), GTK_WIN_POS_CENTER);
 
-  gtk_window_set_icon_name (GTK_WINDOW (self), GM_ICON_ADDRESSBOOK);
+  gtk_window_set_icon_name (GTK_WINDOW (self), "x-office-address-book");
 
   /* Start building the window */
   vbox = gtk_vbox_new (FALSE, 2);

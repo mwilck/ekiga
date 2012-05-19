@@ -1290,7 +1290,7 @@ ekiga_main_window_init_menu (EkigaMainWindow *mw)
 
       GTK_MENU_THEME_ENTRY("address_book", _("Address _Book"),
 			   _("Find contacts"),
- 			   GM_ICON_ADDRESSBOOK, 'b',
+ 			   "x-office-address-book", 'b',
 			   G_CALLBACK (show_widget_cb),
 			   (gpointer) addressbook_window, TRUE),
 
