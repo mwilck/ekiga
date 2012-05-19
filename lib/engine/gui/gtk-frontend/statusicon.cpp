@@ -466,7 +466,6 @@ statusicon_set_inacall (StatusIcon *statusicon,
                         bool inacall)
 {
   GtkWidget *chat_window = NULL;
-  GdkPixbuf *pixbuf = NULL;
 
   g_return_if_fail (statusicon != NULL);
 
@@ -474,19 +473,10 @@ statusicon_set_inacall (StatusIcon *statusicon,
   chat_window = GTK_WIDGET (frontend->get_chat_window ());
 
   /* Update the status icon */
-  if (inacall) {
-
-    pixbuf = gtk_widget_render_icon (chat_window,
-                                     GM_STOCK_STATUS_INACALL,
-                                     GTK_ICON_SIZE_MENU,
-                                     NULL);
-    gtk_status_icon_set_from_pixbuf (GTK_STATUS_ICON (statusicon), pixbuf);
-    g_object_unref (pixbuf);
-  }
-  else {
-
+  if (inacall)
+    gtk_status_icon_set_from_icon_name (GTK_STATUS_ICON (statusicon), "user-inacall");
+  else
     statusicon_set_status (statusicon, statusicon->priv->status);
-  }
 }
 
 static void

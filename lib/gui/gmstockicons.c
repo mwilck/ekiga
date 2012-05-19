@@ -58,9 +58,6 @@ gnomemeeting_stock_icons_init (void)
 	{
 	        { GM_STOCK_COLOR_BRIGHTNESS_CONTRAST, gm_color_brightness_contrast_stock_data },
 
-		{ GM_STOCK_STATUS_INACALL, gm_status_inacall_stock_data_16 },
-		{ GM_STOCK_STATUS_RINGING, gm_status_ringing_stock_data_16 },
-
 		{ GM_STOCK_MESSAGE, gm_message_stock_data},
 		{ GM_STOCK_CALL_PLACED, gm_call_placed_stock_data},
 		{ GM_STOCK_CALL_MISSED, gm_call_missed_stock_data},
@@ -86,14 +83,15 @@ gnomemeeting_stock_icons_init (void)
 		{ GM_ICON_BRIGHTNESS, 16, gm_brightness_16_stock_data},
 		{ GM_ICON_COLOURNESS, 16, gm_colourness_16_stock_data},
 		{ GM_ICON_CONTRAST, 16, gm_contrast_16_stock_data},
-		{ GM_ICON_INTERNET_GROUP_CHAT, 24, gm_internet_group_chat_24_stock_data },
 	        { GM_ICON_LOGO, 16, gm_logo_16_stock_data },
 	        { GM_ICON_LOGO, 22, gm_logo_22_stock_data },
 	        { GM_ICON_LOGO, 32, gm_logo_32_stock_data },
 	        { GM_ICON_LOGO, 48, gm_logo_48_stock_data },
 	        { GM_ICON_LOGO, 72, gm_logo_72_stock_data },
-		{ GM_ICON_AVATAR, 256, gm_avatar_256_stock_data},
 		{ GM_ICON_WHITENESS, 16, gm_whiteness_16_stock_data},
+		{ "user-inacall", 16, gm_user_inacall_16 },
+		{ "user-ringing", 16, gm_user_ringing_16 },
+
 	};
 
 	/* First, register honest-to-goodness custom stock icons */

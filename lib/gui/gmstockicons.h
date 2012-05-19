@@ -47,7 +47,6 @@ G_BEGIN_DECLS
 #define GM_ICON_LOGO                       PACKAGE_NAME
 #define GM_ICON_WHITENESS                  "stock_channel-blue"
 #define GM_ICON_ADDRESSBOOK                "stock_addressbook"
-#define GM_ICON_AVATAR                     "avatar"
 
 /* True stock icons */
 #define GM_STOCK_COLOR_BRIGHTNESS_CONTRAST   "gm_color_brightness_contrast_stock"
@@ -56,9 +55,6 @@ G_BEGIN_DECLS
 #define GM_STOCK_CALL_MISSED      "gm_call_missed_stock"
 #define GM_STOCK_CALL_RECEIVED    "gm_call_received_stock"
 #define GM_STOCK_CALL_TRANSFER    "gm_call_transfer_stock"
-
-#define GM_STOCK_STATUS_INACALL "gm_status_inacall_stock_16"
-#define GM_STOCK_STATUS_RINGING "gm_status_ringing_stock_16"
 
 #define GM_STOCK_PHONE_HANG_UP_16    "gm_phone_hang_up_stock_16"
 #define GM_STOCK_PHONE_PICK_UP_16    "gm_phone_pick_up_stock_16"

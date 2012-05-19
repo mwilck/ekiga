@@ -80,7 +80,7 @@
 /* Contact state */
 typedef enum {
 
-  CONTACT_ONLINE,
+  CONTACT_AVAILABLE,
   CONTACT_AWAY,
   CONTACT_DND,
   CONTACT_INVISIBLE,

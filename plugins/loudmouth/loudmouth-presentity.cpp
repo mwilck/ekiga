@@ -98,7 +98,7 @@ LM::Presentity::get_presence () const
     }
     if (best.presence == "") {
 
-      result = "online";
+      result = "available";
     } else {
 
       result = best.presence;
@@ -247,7 +247,7 @@ LM::Presentity::push_presence (const std::string resource,
     info.presence = lm_message_node_get_value (away);
   } else {
 
-    info.presence = "online";
+    info.presence = "available";
   }
 
   // FIXME: this code works but is ugly -- there has to be a better way

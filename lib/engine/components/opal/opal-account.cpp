@@ -542,7 +542,7 @@ Opal::Account::publish (const Ekiga::PersonalDetails& details)
 {
   std::string presence = details.get_presence ();
 
-  if (presence == "online")
+  if (presence == "available")
     personal_state = OpalPresenceInfo::Available;
   else if (presence == "away")
     personal_state = OpalPresenceInfo::Away;
@@ -754,7 +754,7 @@ Opal::Account::OnPresenceChange (OpalPresentity& /*presentity*/,
     // do not change presence
     break;
   case OpalPresenceInfo::Available:
-    new_presence = "online";
+    new_presence = "available";
     if (!note.IsEmpty ()) {
       if (note.Find ("dnd") != P_MAX_INDEX
           || note.Find ("meeting") != P_MAX_INDEX

@@ -2041,7 +2041,7 @@ ekiga_call_window_update_logo (EkigaCallWindow *cw)
 
   gtk_widget_realize (GTK_WIDGET (cw));
   g_object_set (G_OBJECT (cw->priv->main_video_image),
-                "icon-name", GM_ICON_AVATAR,
+                "icon-name", "avatar-default",
                 "pixel-size", 128,
                 NULL);
 

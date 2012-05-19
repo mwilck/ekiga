@@ -104,7 +104,7 @@
       <applyto>/apps/@PACKAGE_NAME@/general/personal_data/short_status</applyto>
       <owner>Ekiga</owner>
       <type>string</type>
-      <default>online</default>
+      <default>available</default>
       <locale name="C">
 	<short>Contact short status</short>
 	<long>The short status information</long>
@@ -115,7 +115,7 @@
       <applyto>/apps/@PACKAGE_NAME@/general/personal_data/long_status</applyto>
       <owner>Ekiga</owner>
       <type>string</type>
-      <default>I'm online using Ekiga</default>
+      <default>I'm available using Ekiga</default>
       <locale name="C">
 	<short>Contact long status</short>
 	<long>The long status information</long>
@@ -144,8 +144,8 @@
       </locale>
     </schema>
     <schema>
-      <key>/schemas/apps/@PACKAGE_NAME@/general/personal_data/online_custom_status</key>
-      <applyto>/apps/@PACKAGE_NAME@/general/personal_data/online_custom_status</applyto>
+      <key>/schemas/apps/@PACKAGE_NAME@/general/personal_data/available_custom_status</key>
+      <applyto>/apps/@PACKAGE_NAME@/general/personal_data/available_custom_status</applyto>
       <type>list</type>
       <list_type>string</list_type>
       <default>[]</default>

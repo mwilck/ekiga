@@ -57,7 +57,7 @@ Echo::Presentity::get_name () const
 const std::string
 Echo::Presentity::get_presence () const
 {
-  return "online"; // FIXME
+  return "available"; // FIXME
 }
 
 const std::string
