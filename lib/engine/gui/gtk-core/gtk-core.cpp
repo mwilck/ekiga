@@ -87,10 +87,6 @@ Gtk::Core::Core ()
   gtk_icon_factory_add (factory, "clear", icon_set);
   gtk_icon_set_unref (icon_set);
 
-  icon_set = gtk_icon_factory_lookup_default (GM_STOCK_CALL_TRANSFER);
-  gtk_icon_factory_add (factory, "transfer", icon_set);
-  gtk_icon_set_unref (icon_set);
-
   gtk_icon_factory_add_default (factory);
   g_object_unref (factory);
 }

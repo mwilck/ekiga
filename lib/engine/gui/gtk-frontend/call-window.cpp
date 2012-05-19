@@ -1731,7 +1731,7 @@ gm_cw_video_settings_window_new (EkigaCallWindow *cw)
 
   /* Brightness */
   hbox = gtk_hbox_new (false, 0);
-  image = gtk_image_new_from_icon_name (GM_ICON_BRIGHTNESS, GTK_ICON_SIZE_MENU);
+  image = gtk_image_new_from_icon_name ("brightness", GTK_ICON_SIZE_MENU);
   gtk_box_pack_start (GTK_BOX (hbox), image, false, false, 0);
 
   cw->priv->adj_brightness = gtk_adjustment_new (brightness, 0.0,
@@ -1750,7 +1750,7 @@ gm_cw_video_settings_window_new (EkigaCallWindow *cw)
 
   /* Whiteness */
   hbox = gtk_hbox_new (false, 0);
-  image = gtk_image_new_from_icon_name (GM_ICON_WHITENESS, GTK_ICON_SIZE_MENU);
+  image = gtk_image_new_from_icon_name ("whiteness", GTK_ICON_SIZE_MENU);
   gtk_box_pack_start (GTK_BOX (hbox), image, false, false, 0);
 
   cw->priv->adj_whiteness = gtk_adjustment_new (whiteness, 0.0,
@@ -1769,7 +1769,7 @@ gm_cw_video_settings_window_new (EkigaCallWindow *cw)
 
   /* Colour */
   hbox = gtk_hbox_new (false, 0);
-  image = gtk_image_new_from_icon_name (GM_ICON_COLOURNESS, GTK_ICON_SIZE_MENU);
+  image = gtk_image_new_from_icon_name ("color", GTK_ICON_SIZE_MENU);
   gtk_box_pack_start (GTK_BOX (hbox), image, false, false, 0);
 
   cw->priv->adj_colour = gtk_adjustment_new (colour, 0.0,
@@ -1788,7 +1788,7 @@ gm_cw_video_settings_window_new (EkigaCallWindow *cw)
 
   /* Contrast */
   hbox = gtk_hbox_new (false, 0);
-  image = gtk_image_new_from_icon_name (GM_ICON_CONTRAST, GTK_ICON_SIZE_MENU);
+  image = gtk_image_new_from_icon_name ("contrast", GTK_ICON_SIZE_MENU);
   gtk_box_pack_start (GTK_BOX (hbox), image, false, false, 0);
 
   cw->priv->adj_contrast = gtk_adjustment_new (contrast, 0.0,
@@ -2398,8 +2398,7 @@ ekiga_call_window_init_gui (EkigaCallWindow *cw)
   item = gtk_tool_item_new ();
   cw->priv->video_settings_button = gtk_button_new ();
   gtk_button_set_relief (GTK_BUTTON (cw->priv->video_settings_button), GTK_RELIEF_NONE);
-  image = gtk_image_new_from_stock (GM_STOCK_COLOR_BRIGHTNESS_CONTRAST,
-                                    GTK_ICON_SIZE_MENU);
+  image = gtk_image_new_from_icon_name ("video-settings", GTK_ICON_SIZE_MENU);
   gtk_container_add (GTK_CONTAINER (cw->priv->video_settings_button), image);
   gtk_container_add (GTK_CONTAINER (item), cw->priv->video_settings_button);
   gtk_tool_item_set_expand (GTK_TOOL_ITEM (item), false);

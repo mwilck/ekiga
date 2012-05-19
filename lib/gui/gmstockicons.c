@@ -56,14 +56,8 @@ gnomemeeting_stock_icons_init (void)
 
 	static const GmStockIcon items[] =
 	{
-	        { GM_STOCK_COLOR_BRIGHTNESS_CONTRAST, gm_color_brightness_contrast_stock_data },
 
 		{ GM_STOCK_MESSAGE, gm_message_stock_data},
-		{ GM_STOCK_CALL_PLACED, gm_call_placed_stock_data},
-		{ GM_STOCK_CALL_MISSED, gm_call_missed_stock_data},
-		{ GM_STOCK_CALL_RECEIVED, gm_call_received_stock_data},
-		{ GM_STOCK_CALL_TRANSFER, gm_call_transfer_stock_data},
-
 		{ GM_STOCK_PHONE_HANG_UP_16, gm_phone_hang_up_stock_data_16},
 		{ GM_STOCK_PHONE_PICK_UP_16, gm_phone_pick_up_stock_data_16},
 		{ GM_STOCK_PHONE_HANG_UP_24, gm_phone_hang_up_stock_data_24},
@@ -80,15 +74,20 @@ gnomemeeting_stock_icons_init (void)
 	static const GmThemeIcon theme_builtins[] =
 	{
 	        { GM_ICON_AUDIO_VOLUME_HIGH, 16, gm_audio_volume_high_16_stock_data },
-		{ GM_ICON_BRIGHTNESS, 16, gm_brightness_16_stock_data},
-		{ GM_ICON_COLOURNESS, 16, gm_colourness_16_stock_data},
-		{ GM_ICON_CONTRAST, 16, gm_contrast_16_stock_data},
+		{ "brightness", 16, gm_brightness_16},
+		{ "call-placed", 16, gm_call_placed_16},
+		{ "call-missed", 16, gm_call_missed_16},
+		{ "call-received", 16, gm_call_received_16},
+		{ "call-transfer", 16, gm_call_transfer_16},
+		{ "color", 16, gm_color_16},
+		{ "contrast", 16, gm_contrast_16},
+		{ "whiteness", 16, gm_whiteness_16},
+	        { "video-settings", 16, gm_video_settings_16 },
 	        { GM_ICON_LOGO, 16, gm_logo_16_stock_data },
 	        { GM_ICON_LOGO, 22, gm_logo_22_stock_data },
 	        { GM_ICON_LOGO, 32, gm_logo_32_stock_data },
 	        { GM_ICON_LOGO, 48, gm_logo_48_stock_data },
 	        { GM_ICON_LOGO, 72, gm_logo_72_stock_data },
-		{ GM_ICON_WHITENESS, 16, gm_whiteness_16_stock_data},
 		{ "user-inacall", 16, gm_user_inacall_16 },
 		{ "user-ringing", 16, gm_user_ringing_16 },
 

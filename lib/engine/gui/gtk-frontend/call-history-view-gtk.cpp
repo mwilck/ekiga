@@ -98,21 +98,21 @@ on_contact_added (Ekiga::ContactPtr contact,
 
     case History::RECEIVED:
 
-      id = GM_STOCK_CALL_RECEIVED;
+      id = "call-received";
       break;
 
     case History::PLACED:
 
-      id = GM_STOCK_CALL_PLACED;
+      id = "call-placed";
       break;
 
     case History::MISSED:
 
-      id = GM_STOCK_CALL_MISSED;
+      id = "call-missed";
       break;
 
     default:
-      id = GTK_STOCK_MISSING_IMAGE;
+      break;
     }
   }
 
@@ -332,7 +332,7 @@ call_history_view_gtk_new (boost::shared_ptr<History::Book> book)
   renderer = gtk_cell_renderer_pixbuf_new ();
   gtk_tree_view_column_pack_start (column, renderer, FALSE);
   gtk_tree_view_column_add_attribute (column, renderer,
-				      "stock-id", COLUMN_PIXBUF);
+				      "icon_name", COLUMN_PIXBUF);
 
   /* show name and text */
   renderer = gm_cell_renderer_bitext_new ();

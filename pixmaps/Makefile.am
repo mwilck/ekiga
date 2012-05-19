@@ -27,21 +27,21 @@ IMAGES_FILES= \
 	32x32/multimedia-headset.svg \
 	256x256/multimedia-headset.png \
 	16x16/audio-volume-high.png \
+	16x16/brightness.png \
+	16x16/call-placed.png \
+	16x16/call-missed.png \
+	16x16/call-received.png \
+	16x16/call-transfer.png \
+	16x16/color.png \
+	16x16/contrast.png \
 	16x16/user-inacall.png \
 	16x16/user-ringing.png \
-	16x16/stock_brightness.png \
-	16x16/stock_channel-blue.png \
-	16x16/stock_color.png \
-	16x16/stock_contrast.png \
+	16x16/video-settings.png \
+	16x16/whiteness.png \
 	24x24/contact-new.png \
-	color-brightness-contrast.png \
 	local_contact.png \
 	remote_contact.png \
 	message.png \
-	call-placed.png \
-	call-missed.png \
-	call-received.png \
-	call-transfer.png \
 	ekiga-logo.png \
 	24x24/phone-hang-up.png \
 	24x24/phone-pick-up.png \
@@ -57,24 +57,22 @@ IMAGES_FILES= \
 
 IMAGES= \
 	gm_audio_volume_high_16_stock_data $(srcdir)/16x16/audio-volume-high.png \
-	gm_brightness_16_stock_data $(srcdir)/16x16/stock_brightness.png \
-	gm_colourness_16_stock_data $(srcdir)/16x16/stock_color.png \
-	gm_contrast_16_stock_data $(srcdir)/16x16/stock_contrast.png \
+	gm_brightness_16 $(srcdir)/16x16/brightness.png \
+	gm_call_placed_16 $(srcdir)/16x16/call-placed.png \
+	gm_call_missed_16 $(srcdir)/16x16/call-missed.png \
+	gm_call_received_16 $(srcdir)/16x16/call-received.png \
+	gm_call_transfer_16 $(srcdir)/16x16/call-transfer.png \
+	gm_color_16 $(srcdir)/16x16/color.png \
+	gm_contrast_16 $(srcdir)/16x16/contrast.png \
+	gm_video_settings_16 $(srcdir)/16x16/video-settings.png \
+	gm_whiteness_16 $(srcdir)/16x16/whiteness.png \
 	gm_logo_16_stock_data $(srcdir)/16x16/apps/@PACKAGE_NAME@.png \
 	gm_logo_22_stock_data $(srcdir)/22x22/apps/@PACKAGE_NAME@.png \
 	gm_logo_24_stock_data $(srcdir)/24x24/apps/@PACKAGE_NAME@.png \
 	gm_logo_32_stock_data $(srcdir)/32x32/apps/@PACKAGE_NAME@.png \
 	gm_logo_48_stock_data $(srcdir)/48x48/apps/@PACKAGE_NAME@.png \
 	gm_logo_72_stock_data $(srcdir)/72x72/apps/@PACKAGE_NAME@.png \
-	gm_whiteness_16_stock_data $(srcdir)/16x16/stock_channel-blue.png \
-	gm_color_brightness_contrast_stock_data $(srcdir)/color-brightness-contrast.png \
-	gm_remote_contact_stock_data $(srcdir)/remote_contact.png \
-	gm_local_contact_stock_data $(srcdir)/local_contact.png \
 	gm_message_stock_data $(srcdir)/message.png \
-	gm_call_placed_stock_data $(srcdir)/call-placed.png \
-	gm_call_received_stock_data $(srcdir)/call-received.png \
-	gm_call_missed_stock_data $(srcdir)/call-missed.png \
-	gm_call_transfer_stock_data $(srcdir)/call-transfer.png \
 	gm_user_inacall_16 $(srcdir)/16x16/user-inacall.png \
 	gm_user_ringing_16 $(srcdir)/16x16/user-ringing.png \
 	gm_phone_hang_up_stock_data_24 $(srcdir)/24x24/phone-hang-up.png \

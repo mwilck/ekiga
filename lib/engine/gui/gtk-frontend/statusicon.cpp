@@ -465,12 +465,9 @@ static void
 statusicon_set_inacall (StatusIcon *statusicon,
                         bool inacall)
 {
-  GtkWidget *chat_window = NULL;
-
   g_return_if_fail (statusicon != NULL);
 
   boost::shared_ptr<GtkFrontend> frontend = statusicon->priv->core.get<GtkFrontend> ("gtk-frontend");
-  chat_window = GTK_WIDGET (frontend->get_chat_window ());
 
   /* Update the status icon */
   if (inacall)
