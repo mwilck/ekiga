@@ -4,13 +4,14 @@ gstreamer_dir = $(top_srcdir)/plugins/gstreamer/
 
 AM_CXXFLAGS = $(BOOST_CPPFLAGS) $(GSTREAMER_CFLAGS) $(PTLIB_CFLAGS)
 
-INCLUDES = 						\
-	-I$(top_srcdir)/lib/gmconf			\
-	-I$(top_srcdir)/lib/engine/framework		\
-	-I$(top_srcdir)/lib/engine/videoinput	\
-	-I$(top_srcdir)/lib/engine/videooutput	\
-	-I$(top_srcdir)/lib/engine/audioinput	\
-	-I$(top_srcdir)/lib/engine/audiooutput	\
+INCLUDES = \
+	-I$(top_srcdir)/lib/gmconf \
+	-I$(top_srcdir)/lib/engine/framework \
+	-I$(top_srcdir)/lib/engine/notification	\
+	-I$(top_srcdir)/lib/engine/videoinput \
+	-I$(top_srcdir)/lib/engine/videooutput \
+	-I$(top_srcdir)/lib/engine/audioinput \
+	-I$(top_srcdir)/lib/engine/audiooutput \
 	-I$(top_srcdir)/lib/engine/hal
 
 libgmgstreamer_la_SOURCES = \
