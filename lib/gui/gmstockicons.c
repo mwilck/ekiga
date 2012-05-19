@@ -39,30 +39,13 @@
 /**
  * gnomemeeting_stock_icons_init:
  *
- * Initializes the GnomeMeeting stock icons 
+ * Initializes the GnomeMeeting stock icons
  *
  **/
 void
 gnomemeeting_stock_icons_init (void)
 {
-	GtkIconFactory *factory;
 	int i;
-
-        typedef struct
-        {
-                char *id;
-                const guint8 *data;
-        } GmStockIcon;
-
-	static const GmStockIcon items[] =
-	{
-
-		{ GM_STOCK_MESSAGE, gm_message_stock_data},
-		{ GM_STOCK_PHONE_HANG_UP_16, gm_phone_hang_up_stock_data_16},
-		{ GM_STOCK_PHONE_PICK_UP_16, gm_phone_pick_up_stock_data_16},
-		{ GM_STOCK_PHONE_HANG_UP_24, gm_phone_hang_up_stock_data_24},
-		{ GM_STOCK_PHONE_PICK_UP_24, gm_phone_pick_up_stock_data_24},
-	};
 
         typedef struct
         {
@@ -73,7 +56,7 @@ gnomemeeting_stock_icons_init (void)
 
 	static const GmThemeIcon theme_builtins[] =
 	{
-	        { GM_ICON_AUDIO_VOLUME_HIGH, 16, gm_audio_volume_high_16_stock_data },
+	        { "audio-volume", 16, gm_audio_volume_16 },
 		{ "brightness", 16, gm_brightness_16},
 		{ "call-placed", 16, gm_call_placed_16},
 		{ "call-missed", 16, gm_call_missed_16},
@@ -81,6 +64,8 @@ gnomemeeting_stock_icons_init (void)
 		{ "call-transfer", 16, gm_call_transfer_16},
 		{ "color", 16, gm_color_16},
 		{ "contrast", 16, gm_contrast_16},
+		{ "im-message", 16, gm_im_message_16},
+		{ "im-message-new", 16, gm_im_message_new_16},
 		{ "whiteness", 16, gm_whiteness_16},
 	        { "video-settings", 16, gm_video_settings_16 },
 	        { GM_ICON_LOGO, 16, gm_logo_16_stock_data },
@@ -88,30 +73,14 @@ gnomemeeting_stock_icons_init (void)
 	        { GM_ICON_LOGO, 32, gm_logo_32_stock_data },
 	        { GM_ICON_LOGO, 48, gm_logo_48_stock_data },
 	        { GM_ICON_LOGO, 72, gm_logo_72_stock_data },
+		{ "phone-hang-up", 16, gm_phone_hang_up_16 },
+		{ "phone-pick-up", 16, gm_phone_pick_up_16 },
+		{ "phone-hang-up", 24, gm_phone_hang_up_24 },
+		{ "phone-pick-up", 24, gm_phone_pick_up_24 },
 		{ "user-inacall", 16, gm_user_inacall_16 },
 		{ "user-ringing", 16, gm_user_ringing_16 },
 
 	};
-
-	/* First, register honest-to-goodness custom stock icons */
-	factory = gtk_icon_factory_new ();
-	gtk_icon_factory_add_default (factory);
-
-	for (i = 0; i < (int) G_N_ELEMENTS (items); i++)
-	{
-		GtkIconSet *icon_set;
-		GdkPixbuf *pixbuf;
-
-                pixbuf = gdk_pixbuf_new_from_inline (-1, items[i].data, FALSE, NULL);
-
-		icon_set = gtk_icon_set_new_from_pixbuf (pixbuf);
-
-		gtk_icon_factory_add (factory, items[i].id, icon_set);
-		gtk_icon_set_unref (icon_set);
-
-		g_object_unref (G_OBJECT (pixbuf));
-	}
-	g_object_unref (G_OBJECT (factory));
 
 	/* Now install theme builtins */
 	for (i = 0; i < (int) G_N_ELEMENTS (theme_builtins); i++)

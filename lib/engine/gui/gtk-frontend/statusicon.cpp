@@ -301,7 +301,7 @@ unread_count_cb (G_GNUC_UNUSED GtkWidget *widget,
   gchar *message = NULL;
 
   if (messages > 0)
-    statusicon_start_blinking (self, GM_STOCK_MESSAGE);
+    statusicon_start_blinking (self, "im-message");
   else
     statusicon_stop_blinking (self);
 
@@ -325,19 +325,10 @@ statusicon_blink_cb (gpointer data)
 {
   StatusIcon *statusicon = STATUSICON (data);
 
-  GtkWidget *chat_window = NULL;
-  GdkPixbuf *pixbuf = NULL;
-
   g_return_val_if_fail (data != NULL, false);
 
-  boost::shared_ptr<GtkFrontend> frontend = statusicon->priv->core.get<GtkFrontend> ("gtk-frontend");
-  chat_window = GTK_WIDGET (frontend->get_chat_window ());
-
-  pixbuf = gtk_widget_render_icon (chat_window, STATUSICON (data)->priv->blink_image,
-                                   GTK_ICON_SIZE_MENU, NULL);
-
   if (statusicon->priv->blinking)
-    gtk_status_icon_set_from_pixbuf (GTK_STATUS_ICON (statusicon), pixbuf);
+    gtk_status_icon_set_from_icon_name (GTK_STATUS_ICON (statusicon), "im-message");
   else
     statusicon_set_status (statusicon, statusicon->priv->status);
 
@@ -411,11 +402,11 @@ statusicon_build_menu (Ekiga::ServiceCore& services)
 
 static void
 statusicon_start_blinking (StatusIcon *icon,
-                           const char *stock_id)
+                           const char *icon_name)
 {
   g_return_if_fail (icon != NULL);
 
-  icon->priv->blink_image = g_strdup (stock_id);
+  icon->priv->blink_image = g_strdup (icon_name);
   if (icon->priv->blink_id == -1)
     icon->priv->blink_id = g_timeout_add_seconds (1, statusicon_blink_cb, icon);
 }

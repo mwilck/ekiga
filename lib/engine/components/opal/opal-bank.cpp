@@ -73,13 +73,13 @@ Opal::Bank::Bank (Ekiga::ServiceCore &_core): core(_core)
 bool
 Opal::Bank::populate_menu (Ekiga::MenuBuilder & builder)
 {
-  builder.add_action ("add", _("_Add an Ekiga.net Account"),
+  builder.add_action ("gtk-add", _("_Add an Ekiga.net Account"),
 		      boost::bind (&Opal::Bank::new_account, this, Opal::Account::Ekiga, "", ""));
-  builder.add_action ("add", _("_Add an Ekiga Call Out Account"),
+  builder.add_action ("gtk-add", _("_Add an Ekiga Call Out Account"),
 		      boost::bind (&Opal::Bank::new_account, this, Opal::Account::DiamondCard, "", ""));
-  builder.add_action ("add", _("_Add a SIP Account"),
+  builder.add_action ("gtk-add", _("_Add a SIP Account"),
 		      boost::bind (&Opal::Bank::new_account, this, Opal::Account::SIP, "", ""));
-  builder.add_action ("add", _("_Add an H.323 Account"),
+  builder.add_action ("gtk-add", _("_Add an H.323 Account"),
 		      boost::bind (&Opal::Bank::new_account, this, Opal::Account::H323, "", ""));
 
   return true;

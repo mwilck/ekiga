@@ -225,9 +225,9 @@ Evolution::Contact::populate_menu (Ekiga::MenuBuilder &builder)
   if (populated)
     builder.add_separator ();
 
-  builder.add_action ("edit", _("_Edit"),
+  builder.add_action ("gtk-edit", _("_Edit"),
 		      boost::bind (&Evolution::Contact::edit_action, this));
-  builder.add_action ("remove", _("_Remove"),
+  builder.add_action ("gtk-remove", _("_Remove"),
 		      boost::bind (&Evolution::Contact::remove_action, this));
   populated = true;
 

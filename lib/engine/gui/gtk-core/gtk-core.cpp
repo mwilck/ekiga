@@ -41,52 +41,5 @@
 
 Gtk::Core::Core ()
 {
-  // set the basic known icons
-  GtkIconFactory *factory = gtk_icon_factory_new ();
-  GtkIconSet *icon_set = NULL;
-
   gnomemeeting_stock_icons_init ();
-
-  icon_set = gtk_icon_factory_lookup_default (GTK_STOCK_ADD);
-  gtk_icon_factory_add (factory, "add", icon_set);
-  gtk_icon_set_unref (icon_set);
-
-  icon_set = gtk_icon_factory_lookup_default (GTK_STOCK_NEW);
-  gtk_icon_factory_add (factory, "new", icon_set);
-  gtk_icon_set_unref (icon_set);
-
-  icon_set = gtk_icon_factory_lookup_default (GTK_STOCK_EDIT);
-  gtk_icon_factory_add (factory, "edit", icon_set);
-  gtk_icon_set_unref (icon_set);
-
-  icon_set = gtk_icon_factory_lookup_default (GTK_STOCK_REMOVE);
-  gtk_icon_factory_add (factory, "remove", icon_set);
-  gtk_icon_set_unref (icon_set);
-
-  icon_set = gtk_icon_factory_lookup_default (GM_STOCK_MESSAGE);
-  gtk_icon_factory_add (factory, "message", icon_set);
-  gtk_icon_set_unref (icon_set);
-
-  icon_set = gtk_icon_factory_lookup_default (GM_STOCK_PHONE_PICK_UP_16);
-  gtk_icon_factory_add (factory, "call", icon_set);
-  gtk_icon_set_unref (icon_set);
-
-  icon_set = gtk_icon_factory_lookup_default (GTK_STOCK_FIND);
-  gtk_icon_factory_add (factory, "search", icon_set);
-  gtk_icon_set_unref (icon_set);
-
-  icon_set = gtk_icon_factory_lookup_default (GTK_STOCK_REFRESH);
-  gtk_icon_factory_add (factory, "refresh", icon_set);
-  gtk_icon_set_unref (icon_set);
-
-  icon_set = gtk_icon_factory_lookup_default (GTK_STOCK_PROPERTIES);
-  gtk_icon_factory_add (factory, "properties", icon_set);
-  gtk_icon_set_unref (icon_set);
-
-  icon_set = gtk_icon_factory_lookup_default (GTK_STOCK_CLEAR);
-  gtk_icon_factory_add (factory, "clear", icon_set);
-  gtk_icon_set_unref (icon_set);
-
-  gtk_icon_factory_add_default (factory);
-  g_object_unref (factory);
 }

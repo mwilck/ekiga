@@ -133,7 +133,7 @@ History::Book::add (const std::string & name,
 bool
 History::Book::populate_menu (Ekiga::MenuBuilder &builder)
 {
-  builder.add_action ("clear",
+  builder.add_action ("gtk-clear",
 		      _("Clear List"), boost::bind (&History::Book::clear, this));
   return true;
 }

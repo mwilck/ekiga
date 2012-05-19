@@ -90,7 +90,7 @@ Local::ContactDecorator::populate_menu (Ekiga::ContactPtr contact,
 
     if (!heap->has_presentity_with_uri (uri)) {
 
-      builder.add_action ("add", _("Add to local roster"),
+      builder.add_action ("gtk-add", _("Add to local roster"),
 			  boost::bind (&Local::Heap::new_presentity, heap.get (),
 			  contact->get_name (), uri));
       populated = true;

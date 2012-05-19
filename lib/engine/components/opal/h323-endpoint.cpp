@@ -132,7 +132,7 @@ Opal::H323::EndPoint::menu_builder_add_actions (const std::string & /*fullname*/
   if (uri.find ("h323:") == 0) {
 
     if (0 == GetConnectionCount ())
-      builder.add_action ("call", _("Call"),
+      builder.add_action ("phone-pick-up", _("Call"),
                           boost::bind (&Opal::H323::EndPoint::on_dial, this, uri));
     else
       builder.add_action ("call-transfer", _("Transfer"),

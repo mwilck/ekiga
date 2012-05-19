@@ -84,7 +84,7 @@ MenuBuilderGtk::add_action (const std::string icon,
   last_was_separator = false;
 
   item = gtk_image_menu_item_new_with_mnemonic (label.c_str ());
-  image = gtk_image_new_from_stock (icon.c_str (), GTK_ICON_SIZE_MENU);
+  image = gtk_image_new_from_icon_name (icon.c_str (), GTK_ICON_SIZE_MENU);
   if (image)
     gtk_image_menu_item_set_image (GTK_IMAGE_MENU_ITEM (item), image);
 

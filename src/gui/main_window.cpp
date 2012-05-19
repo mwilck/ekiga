@@ -1154,7 +1154,7 @@ ekiga_main_window_init_uri_toolbar (EkigaMainWindow *mw)
   /* The call button */
   item = gtk_tool_item_new ();
   call_button = gtk_button_new ();
-  image = gtk_image_new_from_stock (GM_STOCK_PHONE_PICK_UP_24, GTK_ICON_SIZE_LARGE_TOOLBAR);
+  image = gtk_image_new_from_icon_name ("phone-pick-up", GTK_ICON_SIZE_LARGE_TOOLBAR);
   gtk_button_set_image (GTK_BUTTON (call_button), image);
   gtk_button_set_relief (GTK_BUTTON (call_button), GTK_RELIEF_NONE);
   gtk_container_add (GTK_CONTAINER (item), call_button);
@@ -1278,9 +1278,9 @@ ekiga_main_window_init_menu (EkigaMainWindow *mw)
 		      GTK_STOCK_EXECUTE, 0,
 		      NULL, NULL, FALSE),
 
-      GTK_MENU_ENTRY("connect", _("Ca_ll a number"), _("Place a new call"),
-		     GM_STOCK_PHONE_PICK_UP_16, 'o',
-		     G_CALLBACK (show_dialpad_cb), mw, TRUE),
+      GTK_MENU_THEME_ENTRY("connect", _("Ca_ll a number"), _("Place a new call"),
+                           "phone-pick-up", 'o',
+                           G_CALLBACK (show_dialpad_cb), mw, TRUE),
 
       GTK_MENU_SEPARATOR,
 

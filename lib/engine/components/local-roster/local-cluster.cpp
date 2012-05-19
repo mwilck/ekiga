@@ -79,7 +79,7 @@ Local::Cluster::existing_groups () const
 bool
 Local::Cluster::populate_menu (Ekiga::MenuBuilder& builder)
 {
-  builder.add_action ("new", _("New contact"),
+  builder.add_action ("gtk-new", _("New contact"),
 		      boost::bind (&Local::Cluster::on_new_presentity, this));
 
   return true;

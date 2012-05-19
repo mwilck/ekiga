@@ -1857,8 +1857,7 @@ gm_cw_audio_settings_window_new (EkigaCallWindow *cw)
   /* Output volume */
   hbox = gtk_hbox_new (false, 0);
   gtk_box_pack_start (GTK_BOX (hbox),
-		      gtk_image_new_from_icon_name (GM_ICON_AUDIO_VOLUME_HIGH,
-						    GTK_ICON_SIZE_SMALL_TOOLBAR),
+		      gtk_image_new_from_icon_name ("audio-volume", GTK_ICON_SIZE_SMALL_TOOLBAR),
 		      false, false, 0);
 
   small_vbox = gtk_vbox_new (false, 0);
@@ -1946,13 +1945,13 @@ ekiga_call_window_init_menu (EkigaCallWindow *cw)
     {
       GTK_MENU_NEW (_("_Call")),
 
-      GTK_MENU_ENTRY("connect", _("_Pick up"), _("Pick up the current call"),
-		     GM_STOCK_PHONE_PICK_UP_16, 'd',
-		     G_CALLBACK (pickup_call_cb), cw, false),
+      GTK_MENU_THEME_ENTRY("connect", _("_Pick up"), _("Pick up the current call"),
+                           "phone-pick-up", 'd',
+                           G_CALLBACK (pickup_call_cb), cw, false),
 
-      GTK_MENU_ENTRY("disconnect", _("_Hangup"), _("Hangup the current call"),
-		     GM_STOCK_PHONE_HANG_UP_16, 'd',
-		     G_CALLBACK (hangup_call_cb), cw, false),
+      GTK_MENU_THEME_ENTRY("disconnect", _("_Hangup"), _("Hangup the current call"),
+                           "phone-hang-up", 'd',
+                           G_CALLBACK (hangup_call_cb), cw, false),
 
       GTK_MENU_SEPARATOR,
 
@@ -2335,7 +2334,7 @@ ekiga_call_window_init_gui (EkigaCallWindow *cw)
   /* Pick-up */
   item = gtk_tool_item_new ();
   cw->priv->pickup_button = gtk_button_new ();
-  image = gtk_image_new_from_stock (GM_STOCK_PHONE_PICK_UP_24, GTK_ICON_SIZE_LARGE_TOOLBAR);
+  image = gtk_image_new_from_icon_name ("phone-pick-up", GTK_ICON_SIZE_LARGE_TOOLBAR);
   gtk_container_add (GTK_CONTAINER (cw->priv->pickup_button), image);
   gtk_container_add (GTK_CONTAINER (item), cw->priv->pickup_button);
   gtk_button_set_relief (GTK_BUTTON (cw->priv->pickup_button), GTK_RELIEF_NONE);
@@ -2350,7 +2349,7 @@ ekiga_call_window_init_gui (EkigaCallWindow *cw)
 
   item = gtk_tool_item_new ();
   cw->priv->hangup_button = gtk_button_new ();
-  image = gtk_image_new_from_stock (GM_STOCK_PHONE_HANG_UP_24, GTK_ICON_SIZE_LARGE_TOOLBAR);
+  image = gtk_image_new_from_icon_name ("phone-hang-up", GTK_ICON_SIZE_LARGE_TOOLBAR);
   gtk_container_add (GTK_CONTAINER (cw->priv->hangup_button), image);
   gtk_container_add (GTK_CONTAINER (item), cw->priv->hangup_button);
   gtk_button_set_relief (GTK_BUTTON (cw->priv->hangup_button), GTK_RELIEF_NONE);
@@ -2377,8 +2376,7 @@ ekiga_call_window_init_gui (EkigaCallWindow *cw)
     item = gtk_tool_item_new ();
     cw->priv->audio_settings_button = gtk_button_new ();
     gtk_button_set_relief (GTK_BUTTON (cw->priv->audio_settings_button), GTK_RELIEF_NONE);
-    image = gtk_image_new_from_icon_name (GM_ICON_AUDIO_VOLUME_HIGH,
-                                          GTK_ICON_SIZE_MENU);
+    image = gtk_image_new_from_icon_name ("audio-volume", GTK_ICON_SIZE_MENU);
     gtk_container_add (GTK_CONTAINER (cw->priv->audio_settings_button), image);
     gtk_container_add (GTK_CONTAINER (item), cw->priv->audio_settings_button);
     gtk_tool_item_set_expand (GTK_TOOL_ITEM (item), false);

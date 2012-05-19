@@ -40,17 +40,8 @@
 G_BEGIN_DECLS
 
 /* Icon theme builtins */
-#define GM_ICON_AUDIO_VOLUME_HIGH          "audio-volume-high"
 #define GM_ICON_LOGO                       PACKAGE_NAME
 #define GM_ICON_ADDRESSBOOK                "stock_addressbook"
-
-/* True stock icons */
-#define GM_STOCK_MESSAGE          "gm_message_stock"
-
-#define GM_STOCK_PHONE_HANG_UP_16    "gm_phone_hang_up_stock_16"
-#define GM_STOCK_PHONE_PICK_UP_16    "gm_phone_pick_up_stock_16"
-#define GM_STOCK_PHONE_HANG_UP_24    "gm_phone_up_stock_24"
-#define GM_STOCK_PHONE_PICK_UP_24    "gm_phone_pick_up_stock_24"
 
 void gnomemeeting_stock_icons_init (void);
 
