@@ -19,8 +19,8 @@ msgstr ""
 "Project-Id-Version: ekiga.master\n"
 "Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?"
 "product=ekiga&keywords=I18N+L10N&component=general\n"
-"POT-Creation-Date: 2012-05-12 16:53+0000\n"
-"PO-Revision-Date: 2012-05-12 19:13+0200\n"
+"POT-Creation-Date: 2012-05-19 11:58+0000\n"
+"PO-Revision-Date: 2012-05-21 10:58+0200\n"
 "Last-Translator: Daniel Mustieles <daniel.mustieles@gmail.com>\n"
 "Language-Team: Español <gnome-es-list@gnome.org>\n"
 "MIME-Version: 1.0\n"
@@ -439,8 +439,8 @@ msgid ""
 "Netmeeting and using both Fast Start and H.245 Tunneling can crash some "
 "versions of Netmeeting"
 msgstr ""
-"La conexión se establecerá en modo «Inicio rápido». «Inicio rápido» es un "
-"modo nuevo de iniciar llamadas más rápido y se introdujo en H.323v2. No está "
+"La conexión se establecerá en modo «Inicio rápido». «Inicio rápido» es un modo "
+"nuevo de iniciar llamadas más rápido y se introdujo en H.323v2. No está "
 "soportado por Netmeeting, y usarlo conjuntamente con túneles H.245 puede "
 "causar cuelgues en diferentes versiones de Netmeeting"
 
@@ -838,14 +838,12 @@ msgstr "_Buscar"
 #: ../lib/engine/audiooutput/audiooutput-core.cpp:223
 #: ../lib/engine/videoinput/videoinput-core.cpp:242
 #: ../lib/engine/videoinput/videoinput-core.cpp:247
-#| msgid "No usable audio codecs detected"
 msgid "New device detected"
 msgstr "Nuevo dispositivo detectado"
 
 #: ../lib/engine/audioinput/audioinput-core.cpp:206
 #: ../lib/engine/audiooutput/audiooutput-core.cpp:223
 #: ../lib/engine/videoinput/videoinput-core.cpp:247
-#| msgid "Use TLS"
 msgid "Use it"
 msgstr "Usarlo"
 
@@ -1778,21 +1776,21 @@ msgstr "Mover abajo la prioridad del códec seleccionado"
 msgid "Advanced"
 msgstr "Avanzada"
 
-#: ../lib/engine/gui/gtk-frontend/addressbook-window.cpp:635
+#: ../lib/engine/gui/gtk-frontend/addressbook-window.cpp:630
 msgid "Address Book"
 msgstr "Libreta de direcciones"
 
-#: ../lib/engine/gui/gtk-frontend/addressbook-window.cpp:651
+#: ../lib/engine/gui/gtk-frontend/addressbook-window.cpp:646
 #: ../src/gui/main_window.cpp:1291
 msgid "Address _Book"
 msgstr "Li_breta de direcciones"
 
 #. This will add static and dynamic actions
-#: ../lib/engine/gui/gtk-frontend/addressbook-window.cpp:660
+#: ../lib/engine/gui/gtk-frontend/addressbook-window.cpp:655
 msgid "_Action"
 msgstr "_Acción"
 
-#: ../lib/engine/gui/gtk-frontend/addressbook-window.cpp:705
+#: ../lib/engine/gui/gtk-frontend/addressbook-window.cpp:699
 msgid "Category"
 msgstr "Categoría"
 
@@ -1967,7 +1965,7 @@ msgstr "Conectado con %s"
 
 #. Init
 #: ../lib/engine/gui/gtk-frontend/call-window.cpp:1151
-#: ../lib/engine/gui/gtk-frontend/call-window.cpp:2463
+#: ../lib/engine/gui/gtk-frontend/call-window.cpp:2462
 msgid "Standby"
 msgstr "En espera"
 
@@ -2105,7 +2103,7 @@ msgid "Hangup the current call"
 msgstr "Colgar la llamada actual"
 
 #: ../lib/engine/gui/gtk-frontend/call-window.cpp:1959
-#: ../lib/engine/gui/gtk-frontend/call-window.cpp:2432
+#: ../lib/engine/gui/gtk-frontend/call-window.cpp:2431
 msgid "Hold the current call"
 msgstr "Poner en espera la llamada actual"
 
@@ -2711,8 +2709,8 @@ msgstr ""
 "IDONEIDAD PARA UN PROPÓSITO PARTICULAR. Vea la Licencia Pública General GNU "
 "para más detalles. Debería haber recibido una copia de la Licencia Pública "
 "General de GNU junto con este programa, si no es así, escriba a la Free "
-"Software Foundation, Inc, 51 Franklin Street, Fifth Floor, Boston, MA "
-"02110-1301 EE. UU."
+"Software Foundation, Inc, 51 Franklin Street, Fifth Floor, Boston, MA 02110-"
+"1301 EE. UU."
 
 #: ../lib/gui/gmcallbacks.c:114
 msgid ""
@@ -3728,8 +3726,9 @@ msgid "Ekiga"
 msgstr "Ekiga"
 
 #: ../src/gui/statusmenu.cpp:87
-msgid "Online"
-msgstr "Conectado"
+#| msgid "Disable"
+msgid "Available"
+msgstr "Disponible"
 
 #: ../src/gui/statusmenu.cpp:88
 msgid "Away"
@@ -3759,6 +3758,9 @@ msgstr "Borrar mensajes personalizados:"
 #: ../src/gui/statusmenu.cpp:685
 msgid "Define a custom message:"
 msgstr "Definir un mensaje personalizado:"
+
+#~ msgid "Online"
+#~ msgstr "Conectado"
 
 #~ msgid "Added video input device %s"
 #~ msgstr "Dispositivo de entrada de vídeo %s añadido"
@@ -3876,9 +3878,6 @@ msgstr "Definir un mensaje personalizado:"
 #~ msgid "Enable"
 #~ msgstr "Activar"
 
-#~ msgid "Disable"
-#~ msgstr "Desactivar"
-
 #~ msgid "Remove"
 #~ msgstr "Quitar"
 
@@ -3989,8 +3988,8 @@ msgstr "Definir un mensaje personalizado:"
 #~ msgstr ""
 #~ "Se transmitirá una animación del logotipo durante las llamadas. Tenga en "
 #~ "cuenta que siempre puede transmitir una imagen dada o el logotipo animado "
-#~ "escogiendo «Imagen» como complemento de vídeo y «Logotipo animado» o "
-#~ "«Imagen estática» como dispositivo."
+#~ "escogiendo «Imagen» como complemento de vídeo y «Logotipo animado» o «Imagen "
+#~ "estática» como dispositivo."
 
 #~ msgid "Roster view saving group status"
 #~ msgstr "Vista de la lista guardando el estado del grupo"
@@ -4040,9 +4039,9 @@ msgstr "Definir un mensaje personalizado:"
 #~ "the opening of the device fails. Leave blank to use the default Ekiga "
 #~ "logo."
 #~ msgstr ""
-#~ "La imagen a transmitir si se selecciona «Imagen» como complemento de "
-#~ "vídeo o si la apertura del dispositivo falla. Déjelo vacío para mostrar "
-#~ "el logotipo predeterminado de Ekiga."
+#~ "La imagen a transmitir si se selecciona «Imagen» como complemento de vídeo "
+#~ "o si la apertura del dispositivo falla. Déjelo vacío para mostrar el "
+#~ "logotipo predeterminado de Ekiga."
 
 #~ msgid ""
 #~ "The output device type is the type of device connected to your Quicknet "
