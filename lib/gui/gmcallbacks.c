@@ -46,6 +46,7 @@
 
 #ifdef WIN32
 #include "platform/winpaths.h"
+#include <windows.h>
 #include <shellapi.h>
 #define WIN32_HELP_DIR "help"
 #define WIN32_HELP_FILE "index.html"
