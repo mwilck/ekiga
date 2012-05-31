@@ -70,11 +70,11 @@ enum MessageType
 {
   TYPE_AVAILABLE,             // Generic available message
   TYPE_AWAY,               // Generic away message
-  TYPE_BUSY,                // Generic Do Not Disturb message
+  TYPE_BUSY,                // Generic busy message
   NUM_STATUS_TYPES,
   TYPE_CUSTOM_AVAILABLE,      // Custom available message
   TYPE_CUSTOM_AWAY,        // Custom away message
-  TYPE_CUSTOM_BUSY,         // Custom BUSY message
+  TYPE_CUSTOM_BUSY,         // Custom busy message
   NUM_STATUS_CUSTOM_TYPES,
   TYPE_CUSTOM_AVAILABLE_NEW,  // Add new custom available message
   TYPE_CUSTOM_AWAY_NEW,    // Add new custom away message
@@ -86,7 +86,7 @@ const gchar *statuses [] =
 {
   N_("Available"),
   N_("Away"),
-  N_("Do Not Disturb")
+  N_("Busy")
 };
 
 const char* status_types_names[] =
