@@ -181,4 +181,12 @@ gnomemeeting_conf_upgrade ()
   if (version <= 3031)
     gm_conf_set_bool (AUDIO_CODECS_KEY "enable_echo_cancellation",
                       gm_conf_get_bool (AUDIO_CODECS_KEY "enable_echo_cancelation"));
+
+  // migrate custom statuses from online to available, and from dnd to busy
+  if (version <= 3032) {
+    gm_conf_set_string_list (PERSONAL_DATA_KEY "available_custom_status",
+                             gm_conf_get_string_list (PERSONAL_DATA_KEY "online_custom_status"));
+    gm_conf_set_string_list (PERSONAL_DATA_KEY "busy_custom_status",
+                             gm_conf_get_string_list (PERSONAL_DATA_KEY "dnd_custom_status"));
+  }
 }
