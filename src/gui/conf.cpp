@@ -182,8 +182,14 @@ gnomemeeting_conf_upgrade ()
     gm_conf_set_bool (AUDIO_CODECS_KEY "enable_echo_cancellation",
                       gm_conf_get_bool (AUDIO_CODECS_KEY "enable_echo_cancelation"));
 
+  // a migration could be checked like this:
+  // version >= first version where the old option appeared
+  // && version <= last version where the new option still does not exist
+  // this allows to read the old option only when it exists
+  //   and also not to be used during the very first execution of ekiga
+
   // migrate custom statuses from online to available, and from dnd to busy
-  if (version <= 3032) {
+  if (version >= 3000 && version <= 3032) {
     gm_conf_set_string_list (PERSONAL_DATA_KEY "available_custom_status",
                              gm_conf_get_string_list (PERSONAL_DATA_KEY "online_custom_status"));
     gm_conf_set_string_list (PERSONAL_DATA_KEY "busy_custom_status",
