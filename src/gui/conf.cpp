@@ -44,6 +44,7 @@
 #include "config.h"
 
 #include "conf.h"
+#include "common.h"
 
 #include "gmconf.h"
 

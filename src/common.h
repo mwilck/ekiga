@@ -39,18 +39,9 @@
 #ifndef GM_COMMON_H_
 #define GM_COMMON_H_
 
-#include <opal/buildopts.h>
-#include <ptbuildopts.h>
-
-#include <ptlib.h>
-
-#include <opal/manager.h>
-#include <opal/pcss.h>
-
 #include <h323/h323.h>
 #include <sip/sip.h>
 
-#include <glib.h>
 #include <gtk/gtk.h>
 
 #define GENERAL_KEY         "/apps/" PACKAGE_NAME "/general/"
@@ -72,33 +63,6 @@
 #define CODECS_KEY "/apps/" PACKAGE_NAME "/codecs/"
 #define AUDIO_CODECS_KEY "/apps/" PACKAGE_NAME "/codecs/audio/"
 #define VIDEO_CODECS_KEY  "/apps/" PACKAGE_NAME "/codecs/video/"
-
-#define GM_FRAME_SIZE  10
-
-#define GNOMEMEETING_PAD_SMALL 1
-
-/* Contact state */
-typedef enum {
-
-  CONTACT_AVAILABLE,
-  CONTACT_AWAY,
-  CONTACT_DND,
-  CONTACT_INVISIBLE,
-  CONTACT_OFFLINE,
-  CONTACT_UNKNOWN,
-  CONTACT_LAST_STATE
-} ContactState;
-
-/* Incoming Call Mode */
-typedef enum {
-
-  AVAILABLE,
-  AUTO_ANSWER,
-  DO_NOT_DISTURB,
-  FORWARD,
-  NUM_MODES
-} IncomingCallMode;
-
 
 /* Control Panel Section */
 typedef enum {

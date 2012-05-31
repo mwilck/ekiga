@@ -30,10 +30,10 @@
  *                         conf.h  -  description
  *                         ------------------------
  *   begin                : Wed Feb 14 2001
- *   copyright            : (C) 2000-2006 by Damien Sandras 
+ *   copyright            : (C) 2000-2006 by Damien Sandras
  *   description          : This file contains most of config stuff.
  *                          All notifiers are here.
- *                          Callbacks that updates the config cache 
+ *                          Callbacks that updates the config cache
  *                          are in their file, except some generic one that
  *                          are in this file.
  *   Additional code      : Miguel Rodríguez Pérez  <migrax@terra.es>
@@ -43,9 +43,6 @@
 
 #ifndef _CONFIG_H
 #define _CONFIG_H
-
-#include "common.h"
-
 
 /* The functions */
 
