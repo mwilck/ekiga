@@ -10,14 +10,14 @@ msgid ""
 msgstr ""
 "Project-Id-Version: ekiga master\n"
 "Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?product=ekiga&keywords=I18N+L10N&component=general\n"
-"POT-Creation-Date: 2012-05-19 11:58+0000\n"
-"PO-Revision-Date: 2012-05-20 11:13+0100\n"
-"Last-Translator: filmsi\n"
+"POT-Creation-Date: 2012-06-01 18:00+0000\n"
+"PO-Revision-Date: 2012-06-01 21:46+0100\n"
+"Last-Translator: Matej Urbančič <mateju@svn.gnome.org>\n"
 "Language-Team: Slovenščina <gnome-si@googlegroups.com>\n"
+"Language: \n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Language: \n"
 "Plural-Forms: nplurals=4; plural=(n%100==1 ? 1 : n%100==2 ? 2 : n%100==3 || n%100==4 ? 3 : 0)\n"
 "X-Poedit-Language: Slovenian\n"
 "X-Poedit-Country: Slovenia\n"
@@ -365,8 +365,8 @@ msgid "Forward calls to the given host if busy"
 msgstr "Posreduj klice danemu gostitelju, če je zaposlen"
 
 #: ../ekiga.schemas.in.in.h:78
-msgid "If enabled, all incoming calls will be forwarded to the host that is specified in the field below if you already are in a call or if you are in Do Not Disturb mode"
-msgstr "Možnost omogoča posredovanje dohodnih klicev gostitelju, ki je naveden v spodnjem polju, kadar ste v načinu Ne moti ali pa ste med pogovorom"
+msgid "If enabled, all incoming calls will be forwarded to the host that is specified in the field below if you already are in a call or if you are in busy mode"
+msgstr "Možnost omogoča posredovanje dohodnih klicev gostitelju, ki je naveden v spodnjem polju, če klic že teče ali pa če je stanje klica zasedeno"
 
 #: ../ekiga.schemas.in.in.h:79
 msgid "Forward calls to the given host if no answer"
@@ -650,12 +650,11 @@ msgstr "_Poišči"
 #: ../lib/engine/videoinput/videoinput-core.cpp:242
 #: ../lib/engine/videoinput/videoinput-core.cpp:247
 msgid "New device detected"
-msgstr "Zaznana nova naprava"
+msgstr "Zaznana je nova naprava"
 
 #: ../lib/engine/audioinput/audioinput-core.cpp:206
 #: ../lib/engine/audiooutput/audiooutput-core.cpp:223
 #: ../lib/engine/videoinput/videoinput-core.cpp:247
-#| msgid "Use TLS"
 msgid "Use it"
 msgstr "Uporabi"
 
@@ -663,7 +662,7 @@ msgstr "Uporabi"
 #: ../lib/engine/audiooutput/audiooutput-core.cpp:252
 #: ../lib/engine/videoinput/videoinput-core.cpp:277
 msgid "Device removed"
-msgstr "Naprava odstranjena"
+msgstr "Naprava je odstranjena"
 
 #: ../lib/engine/components/avahi/avahi-heap.cpp:129
 #: ../lib/engine/components/avahi/avahi-heap.cpp:375
@@ -696,7 +695,7 @@ msgstr "Dohodni klic od %s"
 
 #: ../lib/engine/components/libnotify/libnotify-main.cpp:230
 msgid "Remote URI:"
-msgstr "Oddaljen URI:"
+msgstr "Oddaljen naslov URI:"
 
 #: ../lib/engine/components/libnotify/libnotify-main.cpp:242
 msgid "Reject"
@@ -896,7 +895,7 @@ msgstr "Kliči"
 #: ../lib/engine/components/opal/h323-endpoint.cpp:138
 #: ../lib/engine/components/opal/sip-endpoint.cpp:252
 #: ../lib/engine/components/opal/sip-endpoint.cpp:256
-#: ../lib/engine/gui/gtk-frontend/call-window.cpp:2137
+#: ../lib/engine/gui/gtk-frontend/call-window.cpp:2136
 msgid "Transfer"
 msgstr "Prenos"
 
@@ -1105,7 +1104,6 @@ msgid "Could not register"
 msgstr "Ni se mogoče vpisati"
 
 #: ../lib/engine/components/opal/opal-account.cpp:664
-#| msgid "Could not register"
 msgid "Could not register to "
 msgstr "Ni se mogoče vpisati v "
 
@@ -1325,12 +1323,10 @@ msgid "Call completed"
 msgstr "Klic je končan"
 
 #: ../lib/engine/components/opal/opal-call.cpp:679
-#| msgid "Missed call from %s"
 msgid "Missed call from"
 msgstr "Zgrešen klic od"
 
 #: ../lib/engine/components/opal/opal-call.cpp:681
-#| msgid "Missed Call"
 msgid "Missed call"
 msgstr "Zgrešen klic"
 
@@ -1714,7 +1710,7 @@ msgstr "Povezan z %s"
 
 #. Init
 #: ../lib/engine/gui/gtk-frontend/call-window.cpp:1151
-#: ../lib/engine/gui/gtk-frontend/call-window.cpp:2462
+#: ../lib/engine/gui/gtk-frontend/call-window.cpp:2459
 msgid "Standby"
 msgstr "V pripravljenosti"
 
@@ -1785,17 +1781,17 @@ msgid "_Retrieve Call"
 msgstr "P_ridobi klic"
 
 #: ../lib/engine/gui/gtk-frontend/call-window.cpp:1649
-#: ../lib/engine/gui/gtk-frontend/call-window.cpp:1959
+#: ../lib/engine/gui/gtk-frontend/call-window.cpp:1958
 msgid "H_old Call"
 msgstr "_Zadrži klic"
 
 #: ../lib/engine/gui/gtk-frontend/call-window.cpp:1680
-#: ../lib/engine/gui/gtk-frontend/call-window.cpp:1971
+#: ../lib/engine/gui/gtk-frontend/call-window.cpp:1970
 msgid "Suspend _Audio"
 msgstr "Z_austavi zvok"
 
 #: ../lib/engine/gui/gtk-frontend/call-window.cpp:1682
-#: ../lib/engine/gui/gtk-frontend/call-window.cpp:1976
+#: ../lib/engine/gui/gtk-frontend/call-window.cpp:1975
 msgid "Suspend _Video"
 msgstr "Zaustavi _video"
 
@@ -1831,116 +1827,115 @@ msgstr "Prilagodi kontrast"
 msgid "Audio Settings"
 msgstr "Nastavitve zvoka"
 
-#: ../lib/engine/gui/gtk-frontend/call-window.cpp:1947
+#: ../lib/engine/gui/gtk-frontend/call-window.cpp:1946
 msgid "_Call"
 msgstr "Po_kliči"
 
-#: ../lib/engine/gui/gtk-frontend/call-window.cpp:1949
+#: ../lib/engine/gui/gtk-frontend/call-window.cpp:1948
 msgid "_Pick up"
 msgstr "_Dvigni"
 
-#: ../lib/engine/gui/gtk-frontend/call-window.cpp:1949
-#| msgid "Hang up the current call"
+#: ../lib/engine/gui/gtk-frontend/call-window.cpp:1948
 msgid "Pick up the current call"
 msgstr "Prevzami trenutni klic"
 
-#: ../lib/engine/gui/gtk-frontend/call-window.cpp:1953
+#: ../lib/engine/gui/gtk-frontend/call-window.cpp:1952
 msgid "_Hangup"
 msgstr "_Končaj"
 
-#: ../lib/engine/gui/gtk-frontend/call-window.cpp:1953
+#: ../lib/engine/gui/gtk-frontend/call-window.cpp:1952
 msgid "Hangup the current call"
 msgstr "Končaj trenutni klic"
 
-#: ../lib/engine/gui/gtk-frontend/call-window.cpp:1959
-#: ../lib/engine/gui/gtk-frontend/call-window.cpp:2431
+#: ../lib/engine/gui/gtk-frontend/call-window.cpp:1958
+#: ../lib/engine/gui/gtk-frontend/call-window.cpp:2428
 msgid "Hold the current call"
 msgstr "Zadrži trenutni klic"
 
-#: ../lib/engine/gui/gtk-frontend/call-window.cpp:1963
+#: ../lib/engine/gui/gtk-frontend/call-window.cpp:1962
 msgid "_Transfer Call"
 msgstr "_Prenesi klic"
 
-#: ../lib/engine/gui/gtk-frontend/call-window.cpp:1964
+#: ../lib/engine/gui/gtk-frontend/call-window.cpp:1963
 msgid "Transfer the current call"
 msgstr "Prenese trenutni klic"
 
-#: ../lib/engine/gui/gtk-frontend/call-window.cpp:1972
+#: ../lib/engine/gui/gtk-frontend/call-window.cpp:1971
 msgid "Suspend or resume the audio transmission"
 msgstr "Zaustavi ali nadaljuje prenos zvoka"
 
-#: ../lib/engine/gui/gtk-frontend/call-window.cpp:1977
+#: ../lib/engine/gui/gtk-frontend/call-window.cpp:1976
 msgid "Suspend or resume the video transmission"
 msgstr "Zaustavi ali nadaljuje prenos videa"
 
-#: ../lib/engine/gui/gtk-frontend/call-window.cpp:1984
+#: ../lib/engine/gui/gtk-frontend/call-window.cpp:1983
 #: ../src/gui/main_window.cpp:1309
 msgid "Close the Ekiga window"
 msgstr "Zapre okno programa"
 
-#: ../lib/engine/gui/gtk-frontend/call-window.cpp:1989
+#: ../lib/engine/gui/gtk-frontend/call-window.cpp:1988
 #: ../src/gui/main_window.cpp:1342
 msgid "_View"
 msgstr "_Pogled"
 
-#: ../lib/engine/gui/gtk-frontend/call-window.cpp:1991
+#: ../lib/engine/gui/gtk-frontend/call-window.cpp:1990
 msgid "_Local Video"
 msgstr "_Krajevni video"
 
-#: ../lib/engine/gui/gtk-frontend/call-window.cpp:1992
+#: ../lib/engine/gui/gtk-frontend/call-window.cpp:1991
 msgid "Local video image"
 msgstr "Slika krajevnega videa"
 
-#: ../lib/engine/gui/gtk-frontend/call-window.cpp:1996
+#: ../lib/engine/gui/gtk-frontend/call-window.cpp:1995
 msgid "_Remote Video"
 msgstr "_Oddaljeni video"
 
-#: ../lib/engine/gui/gtk-frontend/call-window.cpp:1997
+#: ../lib/engine/gui/gtk-frontend/call-window.cpp:1996
 msgid "Remote video image"
 msgstr "Slika oddaljenega videa"
 
-#: ../lib/engine/gui/gtk-frontend/call-window.cpp:2001
+#: ../lib/engine/gui/gtk-frontend/call-window.cpp:2000
 msgid "_Picture-in-Picture"
 msgstr "_Slika v sliki"
 
-#: ../lib/engine/gui/gtk-frontend/call-window.cpp:2002
+#: ../lib/engine/gui/gtk-frontend/call-window.cpp:2001
 msgid "Both video images"
 msgstr "Obe sliki videa"
 
-#: ../lib/engine/gui/gtk-frontend/call-window.cpp:2008
+#: ../lib/engine/gui/gtk-frontend/call-window.cpp:2007
 msgid "Zoom in"
 msgstr "Približaj"
 
-#: ../lib/engine/gui/gtk-frontend/call-window.cpp:2012
+#: ../lib/engine/gui/gtk-frontend/call-window.cpp:2011
 msgid "Zoom out"
 msgstr "Oddalji"
 
-#: ../lib/engine/gui/gtk-frontend/call-window.cpp:2016
+#: ../lib/engine/gui/gtk-frontend/call-window.cpp:2015
 msgid "Normal size"
 msgstr "Običajna velikost"
 
-#: ../lib/engine/gui/gtk-frontend/call-window.cpp:2020
+#: ../lib/engine/gui/gtk-frontend/call-window.cpp:2019
 msgid "_Fullscreen"
 msgstr "_Celozaslonski način"
 
-#: ../lib/engine/gui/gtk-frontend/call-window.cpp:2020
+#: ../lib/engine/gui/gtk-frontend/call-window.cpp:2019
 msgid "Switch to fullscreen"
 msgstr "Preklopi na celozaslonski način"
 
-#: ../lib/engine/gui/gtk-frontend/call-window.cpp:2136
+#: ../lib/engine/gui/gtk-frontend/call-window.cpp:2135
 msgid "Transfer call to:"
 msgstr "Prenesi klic na:"
 
-#: ../lib/engine/gui/gtk-frontend/call-window.cpp:2347
-#: ../lib/engine/gui/gtk-frontend/call-window.cpp:2362
+#: ../lib/engine/gui/gtk-frontend/call-window.cpp:2346
+#: ../lib/engine/gui/gtk-frontend/call-window.cpp:2361
 msgid "Hang up the current call"
 msgstr "Končaj trenutni klic"
 
-#: ../lib/engine/gui/gtk-frontend/call-window.cpp:2391
+#: ../lib/engine/gui/gtk-frontend/call-window.cpp:2389
 msgid "Change the volume of your soundcard"
 msgstr "Spreminjanje glasnosti zvočne kartice"
 
-#: ../lib/engine/gui/gtk-frontend/call-window.cpp:2412
+#: ../lib/engine/gui/gtk-frontend/call-window.cpp:2409
 msgid "Change the color settings of your video device"
 msgstr "Spreminjanje nastavitev barv na video napravi"
 
@@ -1962,8 +1957,6 @@ msgstr "_Nasmeh ..."
 
 #: ../lib/engine/gui/gtk-frontend/chat-window.cpp:139
 #, c-format
-#| msgid "You have %d message"
-#| msgid_plural "You have %d messages"
 msgid "You have %d unread text message"
 msgid_plural "You have %d unread text messages"
 msgstr[0] "Imate %d neprebranih sporočil"
@@ -1972,7 +1965,6 @@ msgstr[2] "Imate %d neprebrani sporočili"
 msgstr[3] "Imate %d neprebrana sporočila"
 
 #: ../lib/engine/gui/gtk-frontend/chat-window.cpp:144
-#| msgid "Rename"
 msgid "Read"
 msgstr "Preberi"
 
@@ -2054,8 +2046,8 @@ msgid "Forward calls to the given host if _busy"
 msgstr "_Posreduj klice danemu gostitelju, če sem zaposlen/a"
 
 #: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:511
-msgid "If enabled, all incoming calls will be forwarded to the host that is specified in the protocol settings if you already are in a call or if you are in Do Not Disturb mode"
-msgstr "Izbrana možnost določi, da bodo v primeru da že kličete ali pa je vaše stanje Ne moti, vsi dohodni klici posredovani gostitelju, ki je naveden v nastavitvah protokola"
+msgid "If enabled, all incoming calls will be forwarded to the host that is specified in the protocol settings if you already are in a call or if you are in busy mode"
+msgstr "Izbrana možnost določi, da bodo prihajajoči klici posredovani na gostitelja, ki je določen med nastavitvami protokola, če klic že teče ali pa če je stanje klica zasedeno"
 
 #: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:515
 #: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:1312
@@ -2344,17 +2336,17 @@ msgstr[1] "Prispelo je %d sporočilo"
 msgstr[2] "Prispeli sta %d sporočili"
 msgstr[3] "Prispela so %d sporočila"
 
-#: ../lib/engine/gui/gtk-frontend/statusicon.cpp:388
+#: ../lib/engine/gui/gtk-frontend/statusicon.cpp:379
 #: ../src/gui/main_window.cpp:1371
 msgid "Get help by reading the Ekiga manual"
 msgstr "Dobite pomoč z branjem priročnika Ekige"
 
-#: ../lib/engine/gui/gtk-frontend/statusicon.cpp:393
+#: ../lib/engine/gui/gtk-frontend/statusicon.cpp:384
 #: ../src/gui/main_window.cpp:1376
 msgid "View information about Ekiga"
 msgstr "Ogled podatkov o programu"
 
-#: ../lib/engine/gui/gtk-frontend/statusicon.cpp:400
+#: ../lib/engine/gui/gtk-frontend/statusicon.cpp:391
 #: ../src/gui/main_window.cpp:1316
 msgid "Quit"
 msgstr "Končaj"
@@ -2391,43 +2383,43 @@ msgstr "tuv"
 msgid "wxyz"
 msgstr "wxyzž"
 
-#: ../lib/gui/gmcallbacks.c:66
+#: ../lib/gui/gmcallbacks.c:67
 msgid "Contributors:"
 msgstr "Sodelavci:"
 
-#: ../lib/gui/gmcallbacks.c:79
+#: ../lib/gui/gmcallbacks.c:80
 msgid "Artwork:"
 msgstr "Grafična podoba:"
 
-#: ../lib/gui/gmcallbacks.c:87
+#: ../lib/gui/gmcallbacks.c:88
 msgid "See AUTHORS file for full credits"
 msgstr "Oglejte si datoteko AUTHORS za celotne zasluge"
 
-#: ../lib/gui/gmcallbacks.c:103
+#: ../lib/gui/gmcallbacks.c:104
 msgid "This program is free software; you can redistribute it and/or modify it under the terms of the GNU General Public License as published by the Free Software Foundation; either version 2 of the License, or (at your option) any later version. "
 msgstr "Ta program spada med prosto programsko opremo; lahko ga širite in/ali spreminjate pod pogoji Splošnega javnega dovoljenja GNU (GNU General Public License), kot ga je objavila ustanova Free Software Foundation; bodisi različice 2 ali (po vaši izbiri) katirekoli poznejši različici."
 
-#: ../lib/gui/gmcallbacks.c:107
+#: ../lib/gui/gmcallbacks.c:108
 msgid "This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for more details. You should have received a copy of the GNU General Public License along with this program; if not, write to the Free Software Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301, USA."
 msgstr "Ta program se razširja v upanju, da bo uporaben, vendar BREZ VSAKRŠNEGA JAMSTVA; tudi brez posredne zagotovitve CENOVNE VREDNOSTI ali PRIMERNOSTI ZA DOLOČENO UPORABO. Za podrobnosti glejte besedilo GNU Splošne Javne Licence. Skupaj s tem programom bi morali prejeti izvod Splošnega dovoljenja GNU (GNU General Public License); če ga niste, pišite na Free Software Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA."
 
-#: ../lib/gui/gmcallbacks.c:114
+#: ../lib/gui/gmcallbacks.c:115
 msgid "Ekiga is licensed under the GPL license and as a special exception, you have permission to link or otherwise combine this program with the programs OPAL, OpenH323 and PWLIB, and distribute the combination, without applying the requirements of the GNU GPL to the OPAL, OpenH323 and PWLIB programs, as long as you do follow the requirements of the GNU GPL for all the rest of the software thus combined."
 msgstr "Program Ekiga je avtorsko zaščiten s Splošnim Javnim Dovoljenjem GPL. Izjemoma je dovoljeno povezovanje programa s programi OPAL, OpenH323 in PWLIB ter širjenje vseh možnosti brez zahtevanih omejitev dovoljenja za OPAL, OpenH323 in PWLIB, dokler so zahteve skladne z GNU GPL."
 
 #. Translators: Please write translator credits here, and
 #. * separate names with \n
-#: ../lib/gui/gmcallbacks.c:126
+#: ../lib/gui/gmcallbacks.c:127
 msgid "translator-credits"
 msgstr ""
 "Matjaž Horvat <m@owca.info>\n"
 "Matej Urbančič <mateju@svn.gnome.org>"
 
-#: ../lib/gui/gmcallbacks.c:131
+#: ../lib/gui/gmcallbacks.c:132
 msgid "Ekiga is full-featured SIP and H.323 compatible VoIP, IP-Telephony and Videoconferencing application that allows you to make audio and video calls to remote users with SIP and H.323 hardware or software."
 msgstr "Ekiga je s SIP in H.323 združljiv program za VoIP, IP-telefonijo in videokonference, ki omogoča opravljanje zvočnih in video pogovorov z oddaljenimi uporabniki preko strojne ali programske opreme SIP in H.323."
 
-#: ../lib/gui/gmcallbacks.c:204
+#: ../lib/gui/gmcallbacks.c:205
 msgid "Unable to open help file."
 msgstr "Ni mogoče odpreti datoteke pomoči."
 
@@ -3356,8 +3348,8 @@ msgid "Away"
 msgstr "Odsoten"
 
 #: ../src/gui/statusmenu.cpp:89
-msgid "Do Not Disturb"
-msgstr "Ne moti"
+msgid "Busy"
+msgstr "Zaposleno"
 
 #: ../src/gui/statusmenu.cpp:387
 msgid "Custom message..."
@@ -3381,3 +3373,5 @@ msgstr "Izbriši sporočila po meri:"
 msgid "Define a custom message:"
 msgstr "Določi sporočilo po meri:"
 
+#~ msgid "Do Not Disturb"
+#~ msgstr "Ne moti"
