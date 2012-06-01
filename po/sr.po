@@ -11,8 +11,8 @@ msgstr ""
 "Project-Id-Version: ekiga\n"
 "Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?product=ekiga&"
 "keywords=I18N+L10N&component=general\n"
-"POT-Creation-Date: 2012-05-19 11:58+0000\n"
-"PO-Revision-Date: 2012-05-20 10:35+0200\n"
+"POT-Creation-Date: 2012-05-31 09:16+0000\n"
+"PO-Revision-Date: 2012-06-01 19:57+0200\n"
 "Last-Translator: Мирослав Николић <miroslavnikolic@rocketmail.com>\n"
 "Language-Team: Serbian <gnom@prevod.org>\n"
 "Language: sr\n"
@@ -454,13 +454,17 @@ msgid "Forward calls to the given host if busy"
 msgstr "Преусмерава позив на дати рачунар ако је заузето"
 
 #: ../ekiga.schemas.in.in.h:78
+#| msgid ""
+#| "If enabled, all incoming calls will be forwarded to the host that is "
+#| "specified in the field below if you already are in a call or if you are "
+#| "in Do Not Disturb mode"
 msgid ""
 "If enabled, all incoming calls will be forwarded to the host that is "
 "specified in the field below if you already are in a call or if you are in "
-"Do Not Disturb mode"
+"busy mode"
 msgstr ""
 "Ако је укључено, сви долазни позиви ће бити преусмерени на рачунар који је "
-"назначен у наредном пољу ако имате позив или ако сте у режиму Не узнемиравај"
+"назначен у наредном пољу ако имате позив или ако сте у режиму заузетости"
 
 #: ../ekiga.schemas.in.in.h:79
 msgid "Forward calls to the given host if no answer"
@@ -746,7 +750,7 @@ msgid ""
 msgstr ""
 "Да ли да се одржава највећа брзина кадрова или да се смањује због одржавања "
 "најмањег нивоа (просторног) квалитета свих кадрова. 0: Највиши најмањи "
-"квалитет, 32: најнижи најмањи квалитет"
+"квалитет, 31: најнижи најмањи квалитет"
 
 #: ../ekiga.schemas.in.in.h:132
 msgid "List of folded groups in the roster"
@@ -822,14 +826,12 @@ msgstr "_Нађи"
 #: ../lib/engine/audiooutput/audiooutput-core.cpp:223
 #: ../lib/engine/videoinput/videoinput-core.cpp:242
 #: ../lib/engine/videoinput/videoinput-core.cpp:247
-#| msgid "No usable audio codecs detected"
 msgid "New device detected"
 msgstr "Откривен је нови уређај"
 
 #: ../lib/engine/audioinput/audioinput-core.cpp:206
 #: ../lib/engine/audiooutput/audiooutput-core.cpp:223
 #: ../lib/engine/videoinput/videoinput-core.cpp:247
-#| msgid "Use TLS"
 msgid "Use it"
 msgstr "Користи га"
 
@@ -1076,7 +1078,7 @@ msgstr "Позив"
 #: ../lib/engine/components/opal/h323-endpoint.cpp:138
 #: ../lib/engine/components/opal/sip-endpoint.cpp:252
 #: ../lib/engine/components/opal/sip-endpoint.cpp:256
-#: ../lib/engine/gui/gtk-frontend/call-window.cpp:2137
+#: ../lib/engine/gui/gtk-frontend/call-window.cpp:2136
 msgid "Transfer"
 msgstr "Пребаци"
 
@@ -1288,7 +1290,6 @@ msgid "Could not register"
 msgstr "Не могу да региструјем налог"
 
 #: ../lib/engine/components/opal/opal-account.cpp:664
-#| msgid "Could not register"
 msgid "Could not register to "
 msgstr "Не могу да се упишем на "
 
@@ -1508,7 +1509,6 @@ msgid "Call completed"
 msgstr "Позив је завршен"
 
 #: ../lib/engine/components/opal/opal-call.cpp:679
-#| msgid "Missed call from %s"
 msgid "Missed call from"
 msgstr "Пропуштени позив од"
 
@@ -1953,7 +1953,7 @@ msgstr "Повезан са %s"
 
 #. Init
 #: ../lib/engine/gui/gtk-frontend/call-window.cpp:1151
-#: ../lib/engine/gui/gtk-frontend/call-window.cpp:2462
+#: ../lib/engine/gui/gtk-frontend/call-window.cpp:2459
 msgid "Standby"
 msgstr "Приправан"
 
@@ -2024,17 +2024,17 @@ msgid "_Retrieve Call"
 msgstr "Пов_рати позив"
 
 #: ../lib/engine/gui/gtk-frontend/call-window.cpp:1649
-#: ../lib/engine/gui/gtk-frontend/call-window.cpp:1959
+#: ../lib/engine/gui/gtk-frontend/call-window.cpp:1958
 msgid "H_old Call"
 msgstr "Задржи п_озив"
 
 #: ../lib/engine/gui/gtk-frontend/call-window.cpp:1680
-#: ../lib/engine/gui/gtk-frontend/call-window.cpp:1971
+#: ../lib/engine/gui/gtk-frontend/call-window.cpp:1970
 msgid "Suspend _Audio"
 msgstr "Заустави _звук"
 
 #: ../lib/engine/gui/gtk-frontend/call-window.cpp:1682
-#: ../lib/engine/gui/gtk-frontend/call-window.cpp:1976
+#: ../lib/engine/gui/gtk-frontend/call-window.cpp:1975
 msgid "Suspend _Video"
 msgstr "Заустави _слику"
 
@@ -2070,116 +2070,115 @@ msgstr "Подесити контраст"
 msgid "Audio Settings"
 msgstr "Подешавања звука"
 
-#: ../lib/engine/gui/gtk-frontend/call-window.cpp:1947
+#: ../lib/engine/gui/gtk-frontend/call-window.cpp:1946
 msgid "_Call"
 msgstr "_Позови"
 
-#: ../lib/engine/gui/gtk-frontend/call-window.cpp:1949
+#: ../lib/engine/gui/gtk-frontend/call-window.cpp:1948
 msgid "_Pick up"
 msgstr "_Изабери"
 
-#: ../lib/engine/gui/gtk-frontend/call-window.cpp:1949
-#| msgid "Hang up the current call"
+#: ../lib/engine/gui/gtk-frontend/call-window.cpp:1948
 msgid "Pick up the current call"
 msgstr "Изаберите тренутни позив"
 
-#: ../lib/engine/gui/gtk-frontend/call-window.cpp:1953
+#: ../lib/engine/gui/gtk-frontend/call-window.cpp:1952
 msgid "_Hangup"
 msgstr "Пре_кини"
 
-#: ../lib/engine/gui/gtk-frontend/call-window.cpp:1953
+#: ../lib/engine/gui/gtk-frontend/call-window.cpp:1952
 msgid "Hangup the current call"
 msgstr "Прекини тренутни позив"
 
-#: ../lib/engine/gui/gtk-frontend/call-window.cpp:1959
-#: ../lib/engine/gui/gtk-frontend/call-window.cpp:2431
+#: ../lib/engine/gui/gtk-frontend/call-window.cpp:1958
+#: ../lib/engine/gui/gtk-frontend/call-window.cpp:2428
 msgid "Hold the current call"
 msgstr "Задржите тренутни позив"
 
-#: ../lib/engine/gui/gtk-frontend/call-window.cpp:1963
+#: ../lib/engine/gui/gtk-frontend/call-window.cpp:1962
 msgid "_Transfer Call"
 msgstr "_Пребаци позив"
 
-#: ../lib/engine/gui/gtk-frontend/call-window.cpp:1964
+#: ../lib/engine/gui/gtk-frontend/call-window.cpp:1963
 msgid "Transfer the current call"
 msgstr "Пребацује тренутни позив"
 
-#: ../lib/engine/gui/gtk-frontend/call-window.cpp:1972
+#: ../lib/engine/gui/gtk-frontend/call-window.cpp:1971
 msgid "Suspend or resume the audio transmission"
 msgstr "Зауставља или наставља звучни пренос"
 
-#: ../lib/engine/gui/gtk-frontend/call-window.cpp:1977
+#: ../lib/engine/gui/gtk-frontend/call-window.cpp:1976
 msgid "Suspend or resume the video transmission"
 msgstr "Зауставља или наставља пренос слике"
 
-#: ../lib/engine/gui/gtk-frontend/call-window.cpp:1984
+#: ../lib/engine/gui/gtk-frontend/call-window.cpp:1983
 #: ../src/gui/main_window.cpp:1309
 msgid "Close the Ekiga window"
 msgstr "Затвара прозор програма Екига"
 
-#: ../lib/engine/gui/gtk-frontend/call-window.cpp:1989
+#: ../lib/engine/gui/gtk-frontend/call-window.cpp:1988
 #: ../src/gui/main_window.cpp:1342
 msgid "_View"
 msgstr "П_реглед"
 
-#: ../lib/engine/gui/gtk-frontend/call-window.cpp:1991
+#: ../lib/engine/gui/gtk-frontend/call-window.cpp:1990
 msgid "_Local Video"
 msgstr "_Локални видео"
 
-#: ../lib/engine/gui/gtk-frontend/call-window.cpp:1992
+#: ../lib/engine/gui/gtk-frontend/call-window.cpp:1991
 msgid "Local video image"
 msgstr "Локална видео слика"
 
-#: ../lib/engine/gui/gtk-frontend/call-window.cpp:1996
+#: ../lib/engine/gui/gtk-frontend/call-window.cpp:1995
 msgid "_Remote Video"
 msgstr "_Удаљени видео"
 
-#: ../lib/engine/gui/gtk-frontend/call-window.cpp:1997
+#: ../lib/engine/gui/gtk-frontend/call-window.cpp:1996
 msgid "Remote video image"
 msgstr "Удаљена слика"
 
-#: ../lib/engine/gui/gtk-frontend/call-window.cpp:2001
+#: ../lib/engine/gui/gtk-frontend/call-window.cpp:2000
 msgid "_Picture-in-Picture"
 msgstr "_Слика у слици"
 
-#: ../lib/engine/gui/gtk-frontend/call-window.cpp:2002
+#: ../lib/engine/gui/gtk-frontend/call-window.cpp:2001
 msgid "Both video images"
 msgstr "Оба видео снимка"
 
-#: ../lib/engine/gui/gtk-frontend/call-window.cpp:2008
+#: ../lib/engine/gui/gtk-frontend/call-window.cpp:2007
 msgid "Zoom in"
 msgstr "Увећај"
 
-#: ../lib/engine/gui/gtk-frontend/call-window.cpp:2012
+#: ../lib/engine/gui/gtk-frontend/call-window.cpp:2011
 msgid "Zoom out"
 msgstr "Умањи"
 
-#: ../lib/engine/gui/gtk-frontend/call-window.cpp:2016
+#: ../lib/engine/gui/gtk-frontend/call-window.cpp:2015
 msgid "Normal size"
 msgstr "Нормална величина"
 
-#: ../lib/engine/gui/gtk-frontend/call-window.cpp:2020
+#: ../lib/engine/gui/gtk-frontend/call-window.cpp:2019
 msgid "_Fullscreen"
 msgstr "_Цео екран"
 
-#: ../lib/engine/gui/gtk-frontend/call-window.cpp:2020
+#: ../lib/engine/gui/gtk-frontend/call-window.cpp:2019
 msgid "Switch to fullscreen"
 msgstr "Пребаци у цео екран"
 
-#: ../lib/engine/gui/gtk-frontend/call-window.cpp:2136
+#: ../lib/engine/gui/gtk-frontend/call-window.cpp:2135
 msgid "Transfer call to:"
 msgstr "Пребаци позив:"
 
-#: ../lib/engine/gui/gtk-frontend/call-window.cpp:2347
-#: ../lib/engine/gui/gtk-frontend/call-window.cpp:2362
+#: ../lib/engine/gui/gtk-frontend/call-window.cpp:2346
+#: ../lib/engine/gui/gtk-frontend/call-window.cpp:2361
 msgid "Hang up the current call"
 msgstr "Прекините тренутни позив"
 
-#: ../lib/engine/gui/gtk-frontend/call-window.cpp:2391
+#: ../lib/engine/gui/gtk-frontend/call-window.cpp:2389
 msgid "Change the volume of your soundcard"
 msgstr "Измените звук звучне карте"
 
-#: ../lib/engine/gui/gtk-frontend/call-window.cpp:2412
+#: ../lib/engine/gui/gtk-frontend/call-window.cpp:2409
 msgid "Change the color settings of your video device"
 msgstr "Измените подешавања боје видео уређаја"
 
@@ -2201,8 +2200,6 @@ msgstr "_Смешак..."
 
 #: ../lib/engine/gui/gtk-frontend/chat-window.cpp:139
 #, c-format
-#| msgid "You have %d message"
-#| msgid_plural "You have %d messages"
 msgid "You have %d unread text message"
 msgid_plural "You have %d unread text messages"
 msgstr[0] "Имате %d непрочитану текстуалну поруку"
@@ -2211,7 +2208,6 @@ msgstr[2] "Имате %d непрочитаних текстуалних пор�
 msgstr[3] "Имате једну поруку"
 
 #: ../lib/engine/gui/gtk-frontend/chat-window.cpp:144
-#| msgid "Rename"
 msgid "Read"
 msgstr "Читај"
 
@@ -2301,14 +2297,18 @@ msgid "Forward calls to the given host if _busy"
 msgstr "Преусмери позив до датог домаћина ако је _заузето"
 
 #: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:511
+#| msgid ""
+#| "If enabled, all incoming calls will be forwarded to the host that is "
+#| "specified in the protocol settings if you already are in a call or if you "
+#| "are in Do Not Disturb mode"
 msgid ""
 "If enabled, all incoming calls will be forwarded to the host that is "
 "specified in the protocol settings if you already are in a call or if you "
-"are in Do Not Disturb mode"
+"are in busy mode"
 msgstr ""
 "Ако је укључено, сви долазни позиви ће бити преусмерени на рачунар који је "
-"назначен у подешавањима протокола ако имате позив или ако не желите да "
-"будете узнемиравани"
+"назначен у подешавањима протокола ако имате позив или ако сте у режиму "
+"заузетости"
 
 #: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:515
 #: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:1312
@@ -2620,17 +2620,17 @@ msgstr[1] "Имате %d поруке"
 msgstr[2] "Имате %d порука"
 msgstr[3] "Имате једну поруку"
 
-#: ../lib/engine/gui/gtk-frontend/statusicon.cpp:388
+#: ../lib/engine/gui/gtk-frontend/statusicon.cpp:379
 #: ../src/gui/main_window.cpp:1371
 msgid "Get help by reading the Ekiga manual"
 msgstr "Потражите помоћ у упутству за Екигу"
 
-#: ../lib/engine/gui/gtk-frontend/statusicon.cpp:393
+#: ../lib/engine/gui/gtk-frontend/statusicon.cpp:384
 #: ../src/gui/main_window.cpp:1376
 msgid "View information about Ekiga"
 msgstr "Погледај податке о Екиги"
 
-#: ../lib/engine/gui/gtk-frontend/statusicon.cpp:400
+#: ../lib/engine/gui/gtk-frontend/statusicon.cpp:391
 #: ../src/gui/main_window.cpp:1316
 msgid "Quit"
 msgstr "Изађи"
@@ -2667,31 +2667,31 @@ msgstr "tuv"
 msgid "wxyz"
 msgstr "wxyz"
 
-#: ../lib/gui/gmcallbacks.c:66
+#: ../lib/gui/gmcallbacks.c:67
 msgid "Contributors:"
 msgstr "Сарадници:"
 
-#: ../lib/gui/gmcallbacks.c:79
+#: ../lib/gui/gmcallbacks.c:80
 msgid "Artwork:"
 msgstr "Уметнички рад:"
 
-#: ../lib/gui/gmcallbacks.c:87
+#: ../lib/gui/gmcallbacks.c:88
 msgid "See AUTHORS file for full credits"
 msgstr "Прочитајте датотеку „AUTHORS“ са списком свих учесника"
 
-#: ../lib/gui/gmcallbacks.c:103
+#: ../lib/gui/gmcallbacks.c:104
 msgid ""
 "This program is free software; you can redistribute it and/or modify it "
 "under the terms of the GNU General Public License as published by the Free "
 "Software Foundation; either version 2 of the License, or (at your option) "
 "any later version. "
 msgstr ""
-"Екига је слободан софтвер; можете га расподељивати и/или га мењати под "
-"условима ГНУ Опште Јавне Лиценце (GNU GPL) како је објављује Задужбина за "
-"Слободни Софтвер (FSF); било верзије 2 те Лиценце, било (по вашем нахођењу) "
-"било које новије верзије. "
+"Екига је слободан софтвер; можете је расподељивати и/или мењати под условима "
+"Гнуове опште јавне лиценце како је објављује Задужбина Слободног Софтвера; "
+"било верзије 2 те Лиценце, или (по вашем нахођењу) било које новије верзије. "
+""
 
-#: ../lib/gui/gmcallbacks.c:107
+#: ../lib/gui/gmcallbacks.c:108
 msgid ""
 "This program is distributed in the hope that it will be useful, but WITHOUT "
 "ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or "
@@ -2702,12 +2702,12 @@ msgid ""
 msgstr ""
 "Екига се расподељује у нади да ће бити од користи, али БЕЗ ИКАКВИХ "
 "ГАРАНЦИЈА; чак и без подразумеване гаранције КОРИСНОСТИ или ПРИЛАГОЂЕНОСТИ "
-"ОДРЕЂЕНОЈ НАМЕНИ.  Видите ГНУ Општу Јавну Лиценцу за више детаља. Требали "
-"сте да примите примерак ГНУ Опште Јавне Лиценце уз Екигу; ако нисте, пишите "
-"Задужбини за Слободни Софтвер на адресу: „Free Software Foundation, Inc.), "
-"51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA“."
+"ОДРЕЂЕНОЈ НАМЕНИ.  Видите Гнуову општу јавну лиценцу за више детаља. Требали "
+"сте да примите примерак Гнуове опште јавне лиценце уз Екигу; ако нисте, "
+"пишите Задужбини Слободног Софтвера на адресу: „Free Software Foundation, "
+"Inc.), 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA“."
 
-#: ../lib/gui/gmcallbacks.c:114
+#: ../lib/gui/gmcallbacks.c:115
 msgid ""
 "Ekiga is licensed under the GPL license and as a special exception, you have "
 "permission to link or otherwise combine this program with the programs OPAL, "
@@ -2716,16 +2716,16 @@ msgid ""
 "long as you do follow the requirements of the GNU GPL for all the rest of "
 "the software thus combined."
 msgstr ""
-"Екига је лиценцирана под ГНУ Општом Јавном Лиценцом (GNU GPL), а као "
-"специјални изузетак, имате овлашћење да повезујете или на други начин "
-"комбинујете овај програм са програмима OPAL, OpenH323 and PWLIB и "
-"расподељујете овакву комбинацију без примене ГНУ Опште Јавне Лиценце на "
-"OPAL, OpenH323 and PWLIB програме, док год пратите захтеве ГНУ Опште Јавне "
-"Лиценце за остале искомбиноване програме."
+"Екига је лиценцирана под Гнуовом општом јавном лиценцом, а као специјални "
+"изузетак, имате овлашћење да повезујете или на други начин комбинујете овај "
+"програм са програмима OPAL, OpenH323 and PWLIB и расподељујете овакву "
+"комбинацију без примене Гнуове опште јавне лиценце на OPAL, OpenH323 and "
+"PWLIB програме, док год пратите захтеве Гнуове опште јавне лиценце за остале "
+"искомбиноване програме."
 
 #. Translators: Please write translator credits here, and
 #. * separate names with \n
-#: ../lib/gui/gmcallbacks.c:126
+#: ../lib/gui/gmcallbacks.c:127
 msgid "translator-credits"
 msgstr ""
 "Дејан Матијевић <dejan@ns.sympatico.ca>\n"
@@ -2734,7 +2734,7 @@ msgstr ""
 "Бранко Кокановић <branko.kokanovic@gmail.com>\n"
 "http://prevod.org — превод на српски језик."
 
-#: ../lib/gui/gmcallbacks.c:131
+#: ../lib/gui/gmcallbacks.c:132
 msgid ""
 "Ekiga is full-featured SIP and H.323 compatible VoIP, IP-Telephony and "
 "Videoconferencing application that allows you to make audio and video calls "
@@ -2745,7 +2745,7 @@ msgstr ""
 "аудио и видео позиве удаљеним корисницима са СИП и Х.323 компонентама или "
 "софтвером."
 
-#: ../lib/gui/gmcallbacks.c:204
+#: ../lib/gui/gmcallbacks.c:205
 msgid "Unable to open help file."
 msgstr "Не могу да отворим датотеку помоћи."
 
@@ -3728,7 +3728,6 @@ msgid "Ekiga"
 msgstr "Екига"
 
 #: ../src/gui/statusmenu.cpp:87
-#| msgid "Disable"
 msgid "Available"
 msgstr "Доступан"
 
@@ -3737,8 +3736,9 @@ msgid "Away"
 msgstr "Одсутан"
 
 #: ../src/gui/statusmenu.cpp:89
-msgid "Do Not Disturb"
-msgstr "Не узнемиравај"
+#| msgid "Busy Here"
+msgid "Busy"
+msgstr "Заузето"
 
 #: ../src/gui/statusmenu.cpp:387
 msgid "Custom message..."
@@ -3760,6 +3760,9 @@ msgstr "Избриши произвољне поруке:"
 #: ../src/gui/statusmenu.cpp:685
 msgid "Define a custom message:"
 msgstr "Одреди произвољну поруку:"
+
+#~ msgid "Do Not Disturb"
+#~ msgstr "Не узнемиравај"
 
 #~ msgid "Added video input device %s"
 #~ msgstr "Додат је улазни видео уређај %s"
