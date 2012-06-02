@@ -188,11 +188,23 @@ gnomemeeting_conf_upgrade ()
   // this allows to read the old option only when it exists
   //   and also not to be used during the very first execution of ekiga
 
+  // Dams: This is wrong, look below
+
   // migrate custom statuses from online to available, and from dnd to busy
-  if (version >= 3000 && version <= 3032) {
-    gm_conf_set_string_list (PERSONAL_DATA_KEY "available_custom_status",
-                             gm_conf_get_string_list (PERSONAL_DATA_KEY "online_custom_status"));
-    gm_conf_set_string_list (PERSONAL_DATA_KEY "busy_custom_status",
-                             gm_conf_get_string_list (PERSONAL_DATA_KEY "dnd_custom_status"));
+  GSList *old_values = NULL;
+  old_values = gm_conf_get_string_list (PERSONAL_DATA_KEY "online_custom_status");
+  if (old_values) {
+    gm_conf_set_string_list (PERSONAL_DATA_KEY "available_custom_status", old_values);
+    g_slist_foreach (old_values, (GFunc) g_free, NULL);
+    g_slist_free (old_values);
+    gm_conf_set_string_list (PERSONAL_DATA_KEY "online_custom_status", NULL);
+  }
+
+  old_values = gm_conf_get_string_list (PERSONAL_DATA_KEY "dnd_custom_status");
+  if (old_values) {
+    gm_conf_set_string_list (PERSONAL_DATA_KEY "busy_custom_status", old_values);
+    g_slist_foreach (old_values, (GFunc) g_free, NULL);
+    g_slist_free (old_values);
+    gm_conf_set_string_list (PERSONAL_DATA_KEY "dnd_custom_status", NULL);
   }
 }
