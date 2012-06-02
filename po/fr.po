@@ -20,7 +20,7 @@ msgstr ""
 "Project-Id-Version: Ekiga HEAD\n"
 "Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?"
 "product=ekiga&keywords=I18N+L10N&component=general\n"
-"POT-Creation-Date: 2012-05-19 11:58+0000\n"
+"POT-Creation-Date: 2012-06-01 19:48+0000\n"
 "PO-Revision-Date: 2012-05-19 20:24+0200\n"
 "Last-Translator: Bruno Brouard <annoa.b@gmail.com>\n"
 "Language-Team: GNOME French Team <gnomefr@traduc.org>\n"
@@ -477,11 +477,11 @@ msgstr "Rediriger les appels vers l'hôte donné si occupé"
 msgid ""
 "If enabled, all incoming calls will be forwarded to the host that is "
 "specified in the field below if you already are in a call or if you are in "
-"Do Not Disturb mode"
+"busy mode"
 msgstr ""
 "Si activé, tous les appels entrant seront redirigés vers l'hôte indiqué dans "
-"le champs ci-dessous si vous êtes déjà en ligne ou si vous avez activé le "
-"mode « Ne pas déranger »"
+"le champs ci-dessous si vous êtes déjà en ligne ou si vous êtes en mode "
+"occupé"
 
 #: ../ekiga.schemas.in.in.h:79
 msgid "Forward calls to the given host if no answer"
@@ -1094,7 +1094,7 @@ msgstr "Appeler"
 #: ../lib/engine/components/opal/h323-endpoint.cpp:138
 #: ../lib/engine/components/opal/sip-endpoint.cpp:252
 #: ../lib/engine/components/opal/sip-endpoint.cpp:256
-#: ../lib/engine/gui/gtk-frontend/call-window.cpp:2137
+#: ../lib/engine/gui/gtk-frontend/call-window.cpp:2136
 msgid "Transfer"
 msgstr "Transférer"
 
@@ -1976,7 +1976,7 @@ msgstr "Connecté à %s"
 
 #. Init
 #: ../lib/engine/gui/gtk-frontend/call-window.cpp:1151
-#: ../lib/engine/gui/gtk-frontend/call-window.cpp:2462
+#: ../lib/engine/gui/gtk-frontend/call-window.cpp:2459
 msgid "Standby"
 msgstr "En attente"
 
@@ -2047,17 +2047,17 @@ msgid "_Retrieve Call"
 msgstr "_Reprendre l'appel"
 
 #: ../lib/engine/gui/gtk-frontend/call-window.cpp:1649
-#: ../lib/engine/gui/gtk-frontend/call-window.cpp:1959
+#: ../lib/engine/gui/gtk-frontend/call-window.cpp:1958
 msgid "H_old Call"
 msgstr "Sus_pendre l'appel"
 
 #: ../lib/engine/gui/gtk-frontend/call-window.cpp:1680
-#: ../lib/engine/gui/gtk-frontend/call-window.cpp:1971
+#: ../lib/engine/gui/gtk-frontend/call-window.cpp:1970
 msgid "Suspend _Audio"
 msgstr "Pause _audio"
 
 #: ../lib/engine/gui/gtk-frontend/call-window.cpp:1682
-#: ../lib/engine/gui/gtk-frontend/call-window.cpp:1976
+#: ../lib/engine/gui/gtk-frontend/call-window.cpp:1975
 msgid "Suspend _Video"
 msgstr "Pause _vidéo"
 
@@ -2093,115 +2093,115 @@ msgstr "Ajuster le contraste"
 msgid "Audio Settings"
 msgstr "Paramètres Audio"
 
-#: ../lib/engine/gui/gtk-frontend/call-window.cpp:1947
+#: ../lib/engine/gui/gtk-frontend/call-window.cpp:1946
 msgid "_Call"
 msgstr "_Appeler"
 
-#: ../lib/engine/gui/gtk-frontend/call-window.cpp:1949
+#: ../lib/engine/gui/gtk-frontend/call-window.cpp:1948
 msgid "_Pick up"
 msgstr "_Décrocher"
 
-#: ../lib/engine/gui/gtk-frontend/call-window.cpp:1949
+#: ../lib/engine/gui/gtk-frontend/call-window.cpp:1948
 msgid "Pick up the current call"
 msgstr "Prendre l'appel en cours"
 
-#: ../lib/engine/gui/gtk-frontend/call-window.cpp:1953
+#: ../lib/engine/gui/gtk-frontend/call-window.cpp:1952
 msgid "_Hangup"
 msgstr "_Raccrocher"
 
-#: ../lib/engine/gui/gtk-frontend/call-window.cpp:1953
+#: ../lib/engine/gui/gtk-frontend/call-window.cpp:1952
 msgid "Hangup the current call"
 msgstr "Interrompre l'appel en cours"
 
-#: ../lib/engine/gui/gtk-frontend/call-window.cpp:1959
-#: ../lib/engine/gui/gtk-frontend/call-window.cpp:2431
+#: ../lib/engine/gui/gtk-frontend/call-window.cpp:1958
+#: ../lib/engine/gui/gtk-frontend/call-window.cpp:2428
 msgid "Hold the current call"
 msgstr "Suspendre l'appel en cours"
 
-#: ../lib/engine/gui/gtk-frontend/call-window.cpp:1963
+#: ../lib/engine/gui/gtk-frontend/call-window.cpp:1962
 msgid "_Transfer Call"
 msgstr "_Transférer l'appel"
 
-#: ../lib/engine/gui/gtk-frontend/call-window.cpp:1964
+#: ../lib/engine/gui/gtk-frontend/call-window.cpp:1963
 msgid "Transfer the current call"
 msgstr "Transfère l'appel en cours"
 
-#: ../lib/engine/gui/gtk-frontend/call-window.cpp:1972
+#: ../lib/engine/gui/gtk-frontend/call-window.cpp:1971
 msgid "Suspend or resume the audio transmission"
 msgstr "Suspendre ou reprendre la transmission audio"
 
-#: ../lib/engine/gui/gtk-frontend/call-window.cpp:1977
+#: ../lib/engine/gui/gtk-frontend/call-window.cpp:1976
 msgid "Suspend or resume the video transmission"
 msgstr "Suspendre ou reprendre la transmission vidéo"
 
-#: ../lib/engine/gui/gtk-frontend/call-window.cpp:1984
+#: ../lib/engine/gui/gtk-frontend/call-window.cpp:1983
 #: ../src/gui/main_window.cpp:1309
 msgid "Close the Ekiga window"
 msgstr "Fermer la fenêtre Ekiga"
 
-#: ../lib/engine/gui/gtk-frontend/call-window.cpp:1989
+#: ../lib/engine/gui/gtk-frontend/call-window.cpp:1988
 #: ../src/gui/main_window.cpp:1342
 msgid "_View"
 msgstr "Afficha_ge"
 
-#: ../lib/engine/gui/gtk-frontend/call-window.cpp:1991
+#: ../lib/engine/gui/gtk-frontend/call-window.cpp:1990
 msgid "_Local Video"
 msgstr "Vidéo _locale"
 
-#: ../lib/engine/gui/gtk-frontend/call-window.cpp:1992
+#: ../lib/engine/gui/gtk-frontend/call-window.cpp:1991
 msgid "Local video image"
 msgstr "Image vidéo locale"
 
-#: ../lib/engine/gui/gtk-frontend/call-window.cpp:1996
+#: ../lib/engine/gui/gtk-frontend/call-window.cpp:1995
 msgid "_Remote Video"
 msgstr "Vidéo _distante"
 
-#: ../lib/engine/gui/gtk-frontend/call-window.cpp:1997
+#: ../lib/engine/gui/gtk-frontend/call-window.cpp:1996
 msgid "Remote video image"
 msgstr "Image vidéo distante"
 
-#: ../lib/engine/gui/gtk-frontend/call-window.cpp:2001
+#: ../lib/engine/gui/gtk-frontend/call-window.cpp:2000
 msgid "_Picture-in-Picture"
 msgstr "_Incrustation d'image"
 
-#: ../lib/engine/gui/gtk-frontend/call-window.cpp:2002
+#: ../lib/engine/gui/gtk-frontend/call-window.cpp:2001
 msgid "Both video images"
 msgstr "Les deux images vidéo"
 
-#: ../lib/engine/gui/gtk-frontend/call-window.cpp:2008
+#: ../lib/engine/gui/gtk-frontend/call-window.cpp:2007
 msgid "Zoom in"
 msgstr "Zoom avant"
 
-#: ../lib/engine/gui/gtk-frontend/call-window.cpp:2012
+#: ../lib/engine/gui/gtk-frontend/call-window.cpp:2011
 msgid "Zoom out"
 msgstr "Zoom arrière"
 
-#: ../lib/engine/gui/gtk-frontend/call-window.cpp:2016
+#: ../lib/engine/gui/gtk-frontend/call-window.cpp:2015
 msgid "Normal size"
 msgstr "Taille normale"
 
-#: ../lib/engine/gui/gtk-frontend/call-window.cpp:2020
+#: ../lib/engine/gui/gtk-frontend/call-window.cpp:2019
 msgid "_Fullscreen"
 msgstr "_Plein écran"
 
-#: ../lib/engine/gui/gtk-frontend/call-window.cpp:2020
+#: ../lib/engine/gui/gtk-frontend/call-window.cpp:2019
 msgid "Switch to fullscreen"
 msgstr "Basculer l'image en plein écran"
 
-#: ../lib/engine/gui/gtk-frontend/call-window.cpp:2136
+#: ../lib/engine/gui/gtk-frontend/call-window.cpp:2135
 msgid "Transfer call to:"
 msgstr "Transférer l'appel vers :"
 
-#: ../lib/engine/gui/gtk-frontend/call-window.cpp:2347
-#: ../lib/engine/gui/gtk-frontend/call-window.cpp:2362
+#: ../lib/engine/gui/gtk-frontend/call-window.cpp:2346
+#: ../lib/engine/gui/gtk-frontend/call-window.cpp:2361
 msgid "Hang up the current call"
 msgstr "Interrompre l'appel en cours"
 
-#: ../lib/engine/gui/gtk-frontend/call-window.cpp:2391
+#: ../lib/engine/gui/gtk-frontend/call-window.cpp:2389
 msgid "Change the volume of your soundcard"
 msgstr "Modifier le volume de la carte son"
 
-#: ../lib/engine/gui/gtk-frontend/call-window.cpp:2412
+#: ../lib/engine/gui/gtk-frontend/call-window.cpp:2409
 msgid "Change the color settings of your video device"
 msgstr "Modifier les réglages couleur du périphérique vidéo"
 
@@ -2321,11 +2321,11 @@ msgstr "Rediriger les appels vers l'hôte donné si _occupé"
 msgid ""
 "If enabled, all incoming calls will be forwarded to the host that is "
 "specified in the protocol settings if you already are in a call or if you "
-"are in Do Not Disturb mode"
+"are in busy mode"
 msgstr ""
 "Si activé, tous les appels entrant seront redirigés vers l'hôte indiqué dans "
-"les préférences de protocole si vous êtes déjà en appel ou si vous avez "
-"activé le mode « Ne pas déranger »"
+"les préférences de protocole si vous êtes déjà en appel ou si vous êtes en "
+"mode occupé"
 
 #: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:515
 #: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:1312
@@ -2633,17 +2633,17 @@ msgid_plural "You have %d messages"
 msgstr[0] "Vous avez %d message"
 msgstr[1] "Vous avez %d messages"
 
-#: ../lib/engine/gui/gtk-frontend/statusicon.cpp:388
+#: ../lib/engine/gui/gtk-frontend/statusicon.cpp:379
 #: ../src/gui/main_window.cpp:1371
 msgid "Get help by reading the Ekiga manual"
 msgstr "Obtenez de l'aide en lisant le manuel de Ekiga"
 
-#: ../lib/engine/gui/gtk-frontend/statusicon.cpp:393
+#: ../lib/engine/gui/gtk-frontend/statusicon.cpp:384
 #: ../src/gui/main_window.cpp:1376
 msgid "View information about Ekiga"
 msgstr "Afficher les informations concernant Ekiga"
 
-#: ../lib/engine/gui/gtk-frontend/statusicon.cpp:400
+#: ../lib/engine/gui/gtk-frontend/statusicon.cpp:391
 #: ../src/gui/main_window.cpp:1316
 msgid "Quit"
 msgstr "Quitter"
@@ -2680,19 +2680,19 @@ msgstr "tuv"
 msgid "wxyz"
 msgstr "wxyz"
 
-#: ../lib/gui/gmcallbacks.c:66
+#: ../lib/gui/gmcallbacks.c:67
 msgid "Contributors:"
 msgstr "Contributeurs :"
 
-#: ../lib/gui/gmcallbacks.c:79
+#: ../lib/gui/gmcallbacks.c:80
 msgid "Artwork:"
 msgstr "Graphisme :"
 
-#: ../lib/gui/gmcallbacks.c:87
+#: ../lib/gui/gmcallbacks.c:88
 msgid "See AUTHORS file for full credits"
 msgstr "Voir le fichier AUTHORS pour la totalité des crédits"
 
-#: ../lib/gui/gmcallbacks.c:103
+#: ../lib/gui/gmcallbacks.c:104
 msgid ""
 "This program is free software; you can redistribute it and/or modify it "
 "under the terms of the GNU General Public License as published by the Free "
@@ -2704,7 +2704,7 @@ msgstr ""
 "que publiée par la Fondation pour le Logiciel Libre, version 2 ou (à votre "
 "convenance) toute version postérieure."
 
-#: ../lib/gui/gmcallbacks.c:107
+#: ../lib/gui/gmcallbacks.c:108
 msgid ""
 "This program is distributed in the hope that it will be useful, but WITHOUT "
 "ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or "
@@ -2721,7 +2721,7 @@ msgstr ""
 "avec ce logiciel ; si ce n'est pas le cas, adressez-vous à la Free Software "
 "Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301, USA."
 
-#: ../lib/gui/gmcallbacks.c:114
+#: ../lib/gui/gmcallbacks.c:115
 msgid ""
 "Ekiga is licensed under the GPL license and as a special exception, you have "
 "permission to link or otherwise combine this program with the programs OPAL, "
@@ -2739,7 +2739,7 @@ msgstr ""
 
 #. Translators: Please write translator credits here, and
 #. * separate names with \n
-#: ../lib/gui/gmcallbacks.c:126
+#: ../lib/gui/gmcallbacks.c:127
 msgid "translator-credits"
 msgstr ""
 "Mainteneur : \n"
@@ -2756,7 +2756,7 @@ msgstr ""
 "Etienne Malandain <etienne.malandain@free.fr>\n"
 "Pierre Lemaire <pierre.lemaire@kamick.org>"
 
-#: ../lib/gui/gmcallbacks.c:131
+#: ../lib/gui/gmcallbacks.c:132
 msgid ""
 "Ekiga is full-featured SIP and H.323 compatible VoIP, IP-Telephony and "
 "Videoconferencing application that allows you to make audio and video calls "
@@ -2767,7 +2767,7 @@ msgstr ""
 "vocaux et vidéos vers des utilisateurs distants utilisant du matériel ou des "
 "logiciels SIP ou H.323."
 
-#: ../lib/gui/gmcallbacks.c:204
+#: ../lib/gui/gmcallbacks.c:205
 msgid "Unable to open help file."
 msgstr "Impossible d'ouvrir le fichier d'aide."
 
@@ -3758,8 +3758,8 @@ msgid "Away"
 msgstr "Absent"
 
 #: ../src/gui/statusmenu.cpp:89
-msgid "Do Not Disturb"
-msgstr "Ne pas déranger"
+msgid "Busy"
+msgstr "Occupé"
 
 #: ../src/gui/statusmenu.cpp:387
 msgid "Custom message..."
@@ -3782,3 +3782,5 @@ msgstr "Effacer les messages personnalisés :"
 msgid "Define a custom message:"
 msgstr "Définir un message personnalisé :"
 
+#~ msgid "Do Not Disturb"
+#~ msgstr "Ne pas déranger"
