@@ -299,12 +299,12 @@ void account_toggled_cb (G_GNUC_UNUSED GtkCellRendererToggle* renderer,
 
     if (is_enabled) {
 
-      Ekiga::Activator builder ("disable");
+      Ekiga::Activator builder ("user-offline");
       account->populate_menu (builder);
     } else {
 
 
-      Ekiga::Activator builder ("enable");
+      Ekiga::Activator builder ("user-available");
       account->populate_menu (builder);
     }
   }
@@ -681,16 +681,16 @@ gm_accounts_window_new (Ekiga::ServiceCore &core)
   gtk_button_box_set_layout (GTK_BUTTON_BOX (button_box), GTK_BUTTONBOX_CENTER);
   button = gtk_button_new_with_mnemonic (_("_Enable"));
   gtk_box_pack_start (GTK_BOX (button_box), button, FALSE, FALSE, 3);
-  aw->toolbar.add_button ("enable", GTK_BUTTON (button));
+  aw->toolbar.add_button ("user-available", GTK_BUTTON (button));
   button = gtk_button_new_with_mnemonic (_("_Disable"));
   gtk_box_pack_start (GTK_BOX (button_box), button, FALSE, FALSE, 3);
-  aw->toolbar.add_button ("disable", GTK_BUTTON (button));
+  aw->toolbar.add_button ("user-offline", GTK_BUTTON (button));
   button = gtk_button_new_with_mnemonic (_("Edi_t"));
   gtk_box_pack_start (GTK_BOX (button_box), button, FALSE, FALSE, 3);
-  aw->toolbar.add_button ("edit", GTK_BUTTON (button));
+  aw->toolbar.add_button ("gtk-edit", GTK_BUTTON (button));
   button = gtk_button_new_with_mnemonic (_("_Remove"));
   gtk_box_pack_start (GTK_BOX (button_box), button, FALSE, FALSE, 3);
-  aw->toolbar.add_button ("remove", GTK_BUTTON (button));
+  aw->toolbar.add_button ("gtk-remove", GTK_BUTTON (button));
   gtk_box_pack_start (GTK_BOX (hbox), button_box, FALSE, FALSE, 10);
 
   populate_menu (window); // This will add static and dynamic actions

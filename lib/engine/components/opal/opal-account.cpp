@@ -388,10 +388,10 @@ void Opal::Account::remove ()
 bool Opal::Account::populate_menu (Ekiga::MenuBuilder &builder)
 {
   if (enabled)
-    builder.add_action ("disable", _("_Disable"),
+    builder.add_action ("user-offline", _("_Disable"),
                         boost::bind (&Opal::Account::disable, this));
   else
-    builder.add_action ("gtk-apply", _("_Enable"),
+    builder.add_action ("user-available", _("_Enable"),
                         boost::bind (&Opal::Account::enable, this));
 
   builder.add_separator ();
