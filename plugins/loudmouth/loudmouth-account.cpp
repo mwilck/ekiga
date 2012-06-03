@@ -420,19 +420,19 @@ LM::Account::populate_menu (Ekiga::MenuBuilder& builder)
 {
   if (lm_connection_is_open (connection)) {
 
-    builder.add_action ("disable", _("_Disable"),
+    builder.add_action ("user-offline", _("_Disable"),
 			boost::bind (&LM::Account::disable, this));
   } else {
 
-    builder.add_action ("enable", _("_Enable"),
+    builder.add_action ("user-available", _("_Enable"),
 			boost::bind (&LM::Account::enable, this));
   }
 
   builder.add_separator ();
 
-  builder.add_action ("edit", _("Edit"),
+  builder.add_action ("gtk-edit", _("Edit"),
 		      boost::bind (&LM::Account::edit, this));
-  builder.add_action ("remove", _("_Remove"),
+  builder.add_action ("gtk-remove", _("_Remove"),
 		      boost::bind (&LM::Account::remove, this));
 
   return true;
