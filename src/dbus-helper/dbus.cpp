@@ -47,7 +47,6 @@
 #include "gmmarshallers.h"
 #include "gmconf.h"
 #include "gmcallbacks.h"
-#include "accounts.h"
 
 #include "call-core.h"
 

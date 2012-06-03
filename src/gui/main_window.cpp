@@ -1259,7 +1259,7 @@ ekiga_main_window_init_menu (EkigaMainWindow *mw)
   boost::shared_ptr<Ekiga::Trigger> local_cluster_trigger = mw->priv->core->get<Ekiga::Trigger> ("local-cluster");
   boost::shared_ptr<GtkFrontend> gtk_frontend = mw->priv->core->get<GtkFrontend> ("gtk-frontend");
   addressbook_window = GTK_WIDGET (gtk_frontend->get_addressbook_window ());
-  accounts_window = GnomeMeeting::Process ()->GetAccountsWindow ();
+  accounts_window = GTK_WIDGET (gtk_frontend->get_accounts_window ());
   prefs_window = GTK_WIDGET (gtk_frontend->get_preferences_window ());
   assistant_window = GnomeMeeting::Process ()->GetAssistantWindow ();
 
@@ -1330,7 +1330,7 @@ ekiga_main_window_init_menu (EkigaMainWindow *mw)
       GTK_MENU_ENTRY("accounts", _("_Accounts"),
 		     _("Edit your accounts"),
 		     NULL, 'E',
-		     G_CALLBACK (show_gm_window_cb),
+		     G_CALLBACK (show_widget_cb),
 		     (gpointer) accounts_window, TRUE),
 
       GTK_MENU_ENTRY("preferences", NULL,

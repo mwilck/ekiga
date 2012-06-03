@@ -48,6 +48,7 @@
 #include "contact-core.h"
 #include "presence-core.h"
 #include "addressbook-window.h"
+#include "accounts-window.h"
 #include "call-window.h"
 #include "chat-window.h"
 #include "statusicon.h"
@@ -90,6 +91,7 @@ GtkFrontend::GtkFrontend (Ekiga::ServiceCore & _core) : core(_core)
 GtkFrontend::~GtkFrontend ()
 {
   gtk_widget_destroy (addressbook_window);
+  gtk_widget_destroy (accounts_window);
   gtk_widget_destroy (chat_window);
   if (status_icon)
     g_object_unref (status_icon);
@@ -101,7 +103,9 @@ void GtkFrontend::build ()
   boost::shared_ptr<Ekiga::ContactCore> contact_core = core.get<Ekiga::ContactCore> ("contact-core");
   boost::shared_ptr<Ekiga::ChatCore> chat_core = core.get<Ekiga::ChatCore> ("chat-core");
 
-  addressbook_window = addressbook_window_new_with_key (*contact_core, "/apps/" PACKAGE_NAME "/general/user_interface/addressbook_window");
+  addressbook_window =
+    addressbook_window_new_with_key (*contact_core, "/apps/" PACKAGE_NAME "/general/user_interface/addressbook_window");
+  accounts_window = accounts_window_new_with_key (core, "/apps/" PACKAGE_NAME "/general/user_interface/accounts_window");
   call_window = call_window_new (core);
   chat_window = chat_window_new (core, "/apps/" PACKAGE_NAME "/general/user_interface/chat_window");
   preferences_window = preferences_window_new (core);
@@ -124,6 +128,12 @@ const std::string GtkFrontend::get_description () const
 const GtkWidget *GtkFrontend::get_addressbook_window () const
 {
   return addressbook_window;
+}
+
+
+const GtkWidget *GtkFrontend::get_accounts_window () const
+{
+  return accounts_window;
 }
 
 

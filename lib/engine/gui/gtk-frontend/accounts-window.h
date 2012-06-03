@@ -44,14 +44,52 @@
 #include <gtk/gtk.h>
 
 #include "services.h"
-#include "account.h"
+
+#include "gmwindow.h"
+
+
+typedef struct _AccountsWindow AccountsWindow;
+typedef struct _AccountsWindowPrivate AccountsWindowPrivate;
+typedef struct _AccountsWindowClass AccountsWindowClass;
+
+/* GObject thingies */
+struct _AccountsWindow
+{
+  GmWindow parent;
+
+  AccountsWindowPrivate *priv;
+};
+
+struct _AccountsWindowClass
+{
+  GmWindowClass parent;
+};
+
+
+#define ACCOUNTS_WINDOW_TYPE (accounts_window_get_type ())
+
+#define ACCOUNTS_WINDOW(obj) (G_TYPE_CHECK_INSTANCE_CAST ((obj), ACCOUNTS_WINDOW_TYPE, AccountsWindow))
+
+#define IS_ACCOUNTS_WINDOW(obj) (G_TYPE_CHECK_INSTANCE_TYPE ((obj), ACCOUNTS_WINDOW_TYPE))
+
+#define ACCOUNTS_WINDOW_CLASS(klass) (G_TYPE_CHECK_CLASS_CAST ((klass), ACCOUNTS_WINDOW_TYPE, AccountsWindowClass))
+
+#define IS_ACCOUNTS_WINDOW_CLASS(klass) (G_TYPE_CHECK_CLASS_TYPE ((klass), ACCOUNTS_WINDOW_TYPE))
+
+#define ACCOUNTS_WINDOW_GET_CLASS(obj) (G_TYPE_INSTANCE_GET_CLASS ((obj), ACCOUNTS_WINDOW_TYPE, AccountsWindowClass))
+
+GType accounts_window_get_type ();
+
 
 /* The API */
 
 /* DESCRIPTION  : /
- * BEHAVIOR     : Builds the GMAccounts window GMObject.
+ * BEHAVIOR     : Builds the GMAccounts window GObject.
  * PRE          : /
  */
-GtkWidget *gm_accounts_window_new (Ekiga::ServiceCore &core);
+GtkWidget *accounts_window_new (Ekiga::ServiceCore &core);
+
+GtkWidget *accounts_window_new_with_key (Ekiga::ServiceCore &core,
+                                         const std::string _key);
 
 #endif

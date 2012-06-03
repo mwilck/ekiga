@@ -90,13 +90,6 @@ class GnomeMeeting : public PProcess
   GtkWidget* GetAssistantWindow ();
 
 
-  /* DESCRIPTION  :  /
-   * BEHAVIOR     :  Returns a pointer to the accounts window.
-   * PRE          :  /
-   */
-  GtkWidget *GetAccountsWindow ();
-
-
   /* Needed for PProcess */
   void Main();
   static GnomeMeeting *Process ();

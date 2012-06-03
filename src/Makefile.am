@@ -55,8 +55,6 @@ nodist_ekiga_SOURCES =
 
 # Graphical User Interface
 ekiga_SOURCES +=			\
-	gui/accounts.h    		\
-	gui/accounts.cpp		\
 	gui/assistant.h			\
 	gui/assistant.cpp		\
 	gui/conf.h			\
