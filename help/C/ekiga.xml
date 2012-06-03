@@ -2,8 +2,8 @@
 <!DOCTYPE article PUBLIC "-//OASIS//DTD DocBook XML V4.1.2//EN"
 "http://www.oasis-open.org/docbook/xml/4.1.2/docbookx.dtd" [
 <!ENTITY app "Ekiga">
-<!ENTITY appversion "3.00">
-<!ENTITY manrevision "3.00">
+<!ENTITY appversion "4.0">
+<!ENTITY manrevision "4.0">
 ]>
 <!-- Begin -->
 
@@ -11,7 +11,7 @@
 <articleinfo>
 <title><application>&app;</application> Manual &manrevision; </title>
 
-<copyright><year>2003-2008</year><holder>Damien Sandras</holder></copyright>
+<copyright><year>2003-2012</year><holder>Damien Sandras</holder></copyright>
 <copyright><year>2003-2004</year><holder>Matthias Redlich</holder></copyright>
 <copyright><year>2003-2004</year><holder>Christopher Warner</holder></copyright>
 <!-- translators: uncomment this:
@@ -24,16 +24,23 @@
 -->
 
 <revhistory>
-<revision> 
-<revnumber>&app; Manual 3.0</revnumber> 
-<date>2008-08-31</date> 
-<revdescription> 
-<para role="author">Damien Sandras</para> 
-</revdescription> 
+<revision>
+<revnumber>&app; Manual 4.0</revnumber>
+<date>2008-08-31</date>
+<revdescription>
+<para role="author">Damien Sandras</para>
+</revdescription>
 </revision>
 <revision>
-<revnumber>&app; Manual 2.0</revnumber> 
-<date>2006-01-22</date> 
+<revnumber>&app; Manual 3.0</revnumber>
+<date>2008-08-31</date>
+<revdescription>
+<para role="author">Damien Sandras</para>
+</revdescription>
+</revision>
+<revision>
+<revnumber>&app; Manual 2.0</revnumber>
+<date>2006-01-22</date>
 </revision>
 </revhistory>
 
@@ -134,12 +141,12 @@ You may run the Configuration Assistant at any time from the Edit menu.
 </figure>
 
 <para>
-Throughout the entire configuration process navigation is available at the bottom of the window. You will be able to navigate through the questions using Back, Forward and Cancel. 
+Throughout the entire configuration process navigation is available at the bottom of the window. You will be able to navigate through the questions using Back, Forward and Cancel.
 If you hit Cancel during the setup <application>&app;</application> will not be affected by your changes and all entered information will be discarded.
 </para>
 
 <para>
-This page welcomes you to the Configuration Assistant. There is nothing to change or edit here. 
+This page welcomes you to the Configuration Assistant. There is nothing to change or edit here.
 Press the 'Forward' button towards the bottom of the window to start the configuration.
 </para>
 </section>
@@ -153,8 +160,20 @@ Press the 'Forward' button towards the bottom of the window to start the configu
 
 <para>
 The Personal Information window requires you to supply personal information
-to use <application>&app;</application>. 
+to use <application>&app;</application>.
 This information is displayed when connecting to other audio/video applications.
+</para>
+</section>
+
+
+<section><title>Accounts</title>
+<figure>
+<title/>
+<graphic fileref="figures/config_d3.png"></graphic>
+</figure>
+
+<para>
+The Accounts window gives you a clear explanation of what accounts are for. You may simply skip it if you already know what an account is and what to use it for.
 </para>
 </section>
 
@@ -162,12 +181,12 @@ This information is displayed when connecting to other audio/video applications.
 <section><title>Ekiga.net Account</title>
 <figure>
 <title/>
-<graphic fileref="figures/config_d3.png"></graphic>
+<graphic fileref="figures/config_d4.png"></graphic>
 </figure>
 
 <para>
 Ekiga.net is a free SIP services platform provided to <application>&app;</application> users.
-If you want to call other users and to be callable, you need a SIP address. You can get one from <ulink url="http://www.ekiga.net" type="http">http://www.ekiga.net</ulink>. 
+If you want to call other users and to be callable, you need a SIP address. You can get one from <ulink url="http://www.ekiga.net" type="http">http://www.ekiga.net</ulink>.
 Ekiga.net also offers additional services like conference rooms, voice mail or online white pages. Please see <ulink url="http://www.ekiga.net" type="http">http://www.ekiga.net</ulink> for more information.
 </para>
 
@@ -181,12 +200,12 @@ Please press 'Forward' after having entered all required information to continue
 <section><title>Ekiga Call Out Account</title>
 <figure>
 <title/>
-<graphic fileref="figures/config_d4.png"></graphic>
+<graphic fileref="figures/config_d5.png"></graphic>
 </figure>
 
 <para><application>&app;</application> can be used with several Internet Telephony Service Providers. Those providers will allow calling real phones from your computer using <application>&app;</application> at interesting rates. We recommend you use the default <application>&app;</application> provider.</para>
 
-<para>If you want to create an account and use it to call your friends and family using regular phones at interesting rates, simply create an account using the "Get an Ekiga Call Out account" link. Once the account has been created, you will receive a login and a password by e-mail. Simply enter them in the dialog, and you are ready to call regular phones using <application>&app;</application></para> 
+<para>If you want to create an account and use it to call your friends and family using regular phones at interesting rates, simply create an account using the "Get an Ekiga Call Out account" link. Once the account has been created, you will receive a login and a password by e-mail. Simply enter them in the dialog, and you are ready to call regular phones using <application>&app;</application></para>
 
 <para>With the default setup, you can simply use sip:3210444555 and choose sip.diamondcard.us to call the real phone number +3210444555, 32 is the country code, 10444555 is the number to call. We encourage you to put your favorite phone numbers in the address book.</para>
 
@@ -200,13 +219,13 @@ Please press 'Forward' after entering all required information to continue.
 <section><title>Connection Type</title>
 <figure>
 <title/>
-<graphic fileref="figures/config_d5.png"></graphic>
+<graphic fileref="figures/config_d6.png"></graphic>
 </figure>
 
 <para>
 <application>&app;</application> supports several audio and video codecs. It includes codecs with excellent quality as well as codecs with medium to good quality. The higher the quality of a codec, the more bandwidth it requires. Moreover, video codecs can adapt their quality to the available bandwidth. This option is necessary in the initial configuration of <application>&app;</application> so that it chooses the optimal codec suited to your network connection and so that it adjusts the video quality settings.
 If your connection type is not mentioned in the list you should select the one closest to your network connection and adjust <application>&app;</application> manually with the preferences window (codecs section) later on.
-</para>	
+</para>
 
 <para>
 When done, continue on with the Configuration.
@@ -217,12 +236,12 @@ When done, continue on with the Configuration.
 <section><title>Audio Devices</title>
 <figure>
 <title/>
-<graphic fileref="figures/config_d6.png"></graphic>
+<graphic fileref="figures/config_d7.png"></graphic>
 </figure>
 
 <para>
 <application>&app;</application> requires audio devices to play and record sound. The audio output device ouputs the incoming sound stream during a call. Please select the device that your headset or speakers are connected to. The audio input device is what your microphone is connected to. These settings might be the same as the settings for the audio player if you have only one soundcard. But please note that it is also possible to record sound via another device (e.g. internal microphone in a webcam) too.
-This section also allows you to choose the ringing device. This device can be different from the audio output device. It allows you to hear the incoming call ringing sound event in your speakers, while having your headset connected for calls. 
+This section also allows you to choose the ringing device. This device can be different from the audio output device. It allows you to hear the incoming call ringing sound event in your speakers, while having your headset connected for calls.
 </para>
 
 <para>
@@ -234,11 +253,11 @@ When done, continue on with the Configuration.
 <section><title>Video Devices</title>
 <figure>
 <title/>
-<graphic fileref="figures/config_d7.png"></graphic>
+<graphic fileref="figures/config_d8.png"></graphic>
 </figure>
 
 <para>
-This step is optional and concerns users with video devices (e.g. webcams) only. If you do not have any video devices you may skip this page. 
+This step is optional and concerns users with video devices (e.g. webcams) only. If you do not have any video devices you may skip this page.
 </para>
 
 <para>If you have a webcam or video device in the list you may select it here.</para>
@@ -252,7 +271,7 @@ When done, continue on with the Configuration.
 <section><title>Configuration Complete</title>
 <figure>
 <title/>
-<graphic fileref="figures/config_d8.png"></graphic>
+<graphic fileref="figures/config_d9.png"></graphic>
 </figure>
 
 <para>
@@ -261,7 +280,7 @@ The configuration of <application>&app;</application> is now completed. The last
 
 <para>
 If everything is correct please press the 'Apply' button to save the configuration. The assistant will be closed and the main Window of <application>&app;</application> will now appear. Remember, all settings can be changed via the preferences window at anytime.
-</para>   
+</para>
 </section>
 
 </section>
