@@ -346,6 +346,10 @@ LM::Account::edit ()
   request->text ("server", _("Server:"), (const char*)xml_str, std::string ());
   xmlFree (xml_str);
 
+  xml_str = xmlGetProp (node, BAD_CAST "port");
+  request->text ("port", _("Port:"), (const char*)xml_str, std::string ());
+  xmlFree (xml_str);
+
   xml_str = xmlGetProp (node, BAD_CAST "resource");
   request->text ("resource", _("Resource:"), (const char*)xml_str, std::string ());
   xmlFree (xml_str);
@@ -382,6 +386,7 @@ LM::Account::on_edit_form_submitted (bool submitted,
   std::string name = result.text ("name");
   std::string user = result.text ("user");
   std::string server = result.text ("server");
+  std::string port = result.text ("port");
   std::string resource = result.text ("resource");
   std::string password = result.private_text ("password");
   bool enable_on_startup = result.boolean ("enabled");
@@ -389,6 +394,7 @@ LM::Account::on_edit_form_submitted (bool submitted,
   xmlSetProp (node, BAD_CAST "name", BAD_CAST name.c_str ());
   xmlSetProp (node, BAD_CAST "user", BAD_CAST user.c_str ());
   xmlSetProp (node, BAD_CAST "server", BAD_CAST server.c_str ());
+  xmlSetProp (node, BAD_CAST "port", BAD_CAST port.c_str ());
   xmlSetProp (node, BAD_CAST "resource", BAD_CAST resource.c_str ());
   xmlSetProp (node, BAD_CAST "password", BAD_CAST password.c_str ());
 
