@@ -189,7 +189,8 @@ LM::Account::enable ()
 {
   GError *error = NULL;
   xmlChar* server =  NULL;
-  unsigned port = 5222;
+  unsigned port = LM_CONNECTION_DEFAULT_PORT;
+  LmSSL* ssl = NULL;
 
   server = xmlGetProp (node, BAD_CAST "server");
   {

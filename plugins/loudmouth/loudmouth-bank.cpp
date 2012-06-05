@@ -147,7 +147,7 @@ LM::Bank::on_new_account_form_submitted (bool submitted,
   bool enable_on_startup = result.boolean ("enabled");
 
   boost::shared_ptr<Account> account (new Account (details, dialect, cluster,
-						   name, user, server, 5222,
+						   name, user, server, LM_CONNECTION_DEFAULT_PORT,
 						   resource, password,
 						   enable_on_startup));
   xmlNodePtr root = xmlDocGetRootElement (doc);
