@@ -214,6 +214,12 @@ LM::Account::enable ()
   }
   lm_connection_set_server (connection, (const char*)server);
   lm_connection_set_port (connection, port);
+
+  ssl = lm_ssl_new (NULL, NULL, NULL, NULL);
+  lm_ssl_use_starttls (ssl, TRUE, TRUE);
+  lm_connection_set_ssl(connection, ssl);
+  lm_ssl_unref (ssl);
+
   if ( !lm_connection_open (connection,
 			    (LmResultFunction)on_connection_opened_c,
 			    this, NULL, &error)) {
