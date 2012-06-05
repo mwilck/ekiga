@@ -212,7 +212,13 @@ LM::Account::enable ()
     xmlFree (user);
     xmlFree (resource);
   }
-  lm_connection_set_server (connection, (const char*)server);
+
+  /* FIXME: this is an ugly workaround */
+  if (g_strcmp0 ("gmail.com", (const char*)server) == 0)
+    lm_connection_set_server (connection, "xmpp.l.google.com");
+  else
+    lm_connection_set_server (connection, (const char*)server);
+
   lm_connection_set_port (connection, port);
 
   ssl = lm_ssl_new (NULL, NULL, NULL, NULL);
