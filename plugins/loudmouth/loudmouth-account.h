@@ -101,10 +101,6 @@ namespace LM
 
   private:
 
-    LmMessageHandler* iq_lm_handler;
-    LmMessageHandler* presence_lm_handler;
-    LmMessageHandler* message_lm_handler;
-
     void edit ();
     void on_edit_form_submitted (bool submitted,
 				 Ekiga::Form &result);

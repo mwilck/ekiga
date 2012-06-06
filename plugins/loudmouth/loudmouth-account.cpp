@@ -127,14 +127,17 @@ LM::Account::Account (boost::shared_ptr<Ekiga::PersonalDetails> details_,
 
   connection = lm_connection_new (NULL);
 
-  iq_lm_handler = lm_message_handler_new ((LmHandleMessageFunction)iq_handler_c, this, NULL);
+  LmMessageHandler* iq_lm_handler = lm_message_handler_new ((LmHandleMessageFunction)iq_handler_c, this, NULL);
   lm_connection_register_message_handler (connection, iq_lm_handler, LM_MESSAGE_TYPE_IQ, LM_HANDLER_PRIORITY_NORMAL);
+  lm_message_handler_unref (iq_lm_handler);
 
-  presence_lm_handler = lm_message_handler_new ((LmHandleMessageFunction)presence_handler_c, this, NULL);
+  LmMessageHandler* presence_lm_handler = lm_message_handler_new ((LmHandleMessageFunction)presence_handler_c, this, NULL);
   lm_connection_register_message_handler (connection, presence_lm_handler, LM_MESSAGE_TYPE_PRESENCE, LM_HANDLER_PRIORITY_NORMAL);
+  lm_message_handler_unref (presence_lm_handler);
 
-  message_lm_handler = lm_message_handler_new ((LmHandleMessageFunction)message_handler_c, this, NULL);
+  LmMessageHandler* message_lm_handler = lm_message_handler_new ((LmHandleMessageFunction)message_handler_c, this, NULL);
   lm_connection_register_message_handler (connection, message_lm_handler, LM_MESSAGE_TYPE_MESSAGE, LM_HANDLER_PRIORITY_NORMAL);
+  lm_message_handler_unref (message_lm_handler);
 
   lm_connection_set_disconnect_function (connection, (LmDisconnectFunction)on_disconnected_c,
 					 this, NULL);
@@ -265,18 +268,6 @@ LM::Account::~Account ()
     handle_down ();
     lm_connection_close (connection, NULL);
   }
-
-  lm_connection_unregister_message_handler (connection, iq_lm_handler, LM_MESSAGE_TYPE_IQ);
-  lm_message_handler_unref (iq_lm_handler);
-  iq_lm_handler = 0;
-
-  lm_connection_unregister_message_handler (connection, presence_lm_handler, LM_MESSAGE_TYPE_PRESENCE);
-  lm_message_handler_unref (presence_lm_handler);
-  presence_lm_handler = 0;
-
-  lm_connection_unregister_message_handler (connection, message_lm_handler, LM_MESSAGE_TYPE_MESSAGE);
-  lm_message_handler_unref (message_lm_handler);
-  message_lm_handler = 0;
 
   lm_connection_unref (connection);
   connection = 0;
