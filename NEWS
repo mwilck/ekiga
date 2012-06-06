@@ -1,4 +1,39 @@
                           -*- mode: outline -*-
+* Major changes between ekiga 3.4.0 and 3.2.7, details are below
+
+* Changes in ekiga 4.0 (2012-06-06)
+** Major user-visible fixes
+- Major overhaul of the main window
+- Auto-answering to calls (in 3.3.0 in fact)
+- Add a new page in assistant with an introduction to accounts
+- Unregister accounts when quitting
+- Speed up registration when packets get lost
+- Use optimised flags for H.264 video decoder
+- Improvements to the still experimental loudmouth plugin
+- Fix chat messages are received several times if several network interfaces
+- Set presence to offline upon quitting
+- Blacklist NSE, fixing registration with some registrars, such as Eutelia
+- Canonise address introduced when adding/editing a contact in roster
+** Protocol fixes
+- Fixes for Contact field during registration:
+  - Use two additional compatibility mode for some bogus registrars
+  - Fix order of items in Contact field
+- Fix presence with asterisk
+- Fixes on INVITE packets in some corner cases
+- Fix own presence stopping to be sent after some time
+- Fix loading of codecs without an encoding name, e.g. MS-IMA-ADPCM
+- Numerous other fixes, especially on H264 support
+** Windows port fixes
+- Fix crash when using gdb
+- Support mingw-w64 and its own headers for building
+- Reduce startup time (explicitly precise plugin directory)
+- Other miscellaneous improvements on building
+** Build fixes
+- Add arm-linux-gnueabihf (armhf) support
+- Support current libav/ffmpeg libraries
+- Fix compile errors with gcc 4.7
+** Translation updates
+
 * Changes in ekiga 3.3.2 (2011-08-23)
 ** User-visible fixes
 - Re-add back H264 and H263+ video plugins
