@@ -238,7 +238,9 @@ LM::Presentity::push_presence (const std::string resource,
   LmMessageNode* status = lm_message_node_find_child (presence, "status");
   if (status != NULL) {
 
-    info.status = lm_message_node_get_value (status);
+    const gchar* status_str = lm_message_node_get_value (status);
+    if (status_str != NULL)
+      info.status = status_str;
   }
 
   LmMessageNode* away = lm_message_node_find_child (presence, "show");
