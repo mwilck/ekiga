@@ -3,13 +3,13 @@
 # it is not integrated in ekiga because this bug will probably be fixed
 #   by future GTK+ releases
 
-diff -ur ekiga.orig/src/gui/statusicon.cpp ekiga/src/gui/statusicon.cpp
---- ekiga.orig/src/gui/statusicon.cpp	2009-08-31 14:04:57.000000000 +0200
-+++ ekiga/src/gui/statusicon.cpp	2009-08-31 14:05:17.000000000 +0200
-@@ -246,7 +246,11 @@
+diff -ur ekiga.orig/lib/engine/gui/gtk-frontend/statusicon.cpp ekiga/lib/engine/gui/gtk-frontend/statusicon.cpp
+--- ekiga.orig/lib/engine/gui/gtk-frontend/statusicon.cpp	2009-08-31 14:04:57.000000000 +0200
++++ ekiga/lib/engine/gui/gtk-frontend/statusicon.cpp	2009-08-31 14:05:17.000000000 +0200
+@@ -257,7 +257,11 @@
  
    gtk_menu_popup (GTK_MENU (popup),
-                   NULL, NULL, 
+                   NULL, NULL,
 +#ifdef WIN32
 +                  NULL, NULL,
 +#else
