@@ -36,8 +36,6 @@ WIN32_DIST = \
         win32/diff/README                                       \
         win32/diff/ekiga_sticonmenu1.patch                      \
         win32/diff/ekiga_sticonmenu2.patch                      \
-        win32/diff/ekiga_sticonmenu3.patch                      \
-        win32/diff/ptlib_private.patch                          \
 	win32/ekiga-rc.rc					\
 	win32/Makefile						\
 	win32/nsisinstaller/ekiga.nsi				\
