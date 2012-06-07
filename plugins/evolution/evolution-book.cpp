@@ -280,7 +280,11 @@ Evolution::Book::get_name () const
 
   source = e_book_get_source (book);
   if (source && E_IS_SOURCE (source))
+#if EDS_CHECK_VERSION(3,5,3)
+    result = e_source_get_display_name (source);
+#else
     result = e_source_peek_name (source);
+#endif
 
   return result;
 }

@@ -38,7 +38,12 @@
 #ifndef __EVOLUTION_SOURCE_H__
 #define __EVOLUTION_SOURCE_H__
 
+#include <libedataserver/eds-version.h>
+#if EDS_CHECK_VERSION(3,5,3)
+#include <libebook/libebook.h>
+#else
 #include <libebook/e-book.h>
+#endif
 
 #include "contact-core.h"
 #include "source-impl.h"
@@ -75,14 +80,22 @@ namespace Evolution
 
     /* those should be private, but need to be called from C */
 
+#if EDS_CHECK_VERSION(3,5,3)
+    void add_source (ESource *source);
+    void remove_source (ESource *source);
+#else
     void add_group (ESourceGroup *group);
-
     void remove_group (ESourceGroup *group);
+#endif
 
   private:
 
     Ekiga::ServiceCore &services;
+#if EDS_CHECK_VERSION(3,5,3)
+    ESourceRegistry *registry;
+#else
     ESourceList *source_list;
+#endif
   };
 
 /**

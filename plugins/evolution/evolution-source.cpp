@@ -39,8 +39,25 @@
 
 #include "evolution-source.h"
 
+#if EDS_CHECK_VERSION(3,5,3)
+#else
 #define GCONF_PATH "/apps/evolution/addressbook/sources"
+#endif
 
+#if EDS_CHECK_VERSION(3,5,3)
+static void
+on_registry_source_added_c (ESourceRegistry */*registry*/,
+                            ESource *source,
+                            gpointer data)
+{
+  Evolution::Source *self = NULL;
+
+  self = (Evolution::Source *)data;
+
+  if (e_source_has_extension (source, E_SOURCE_EXTENSION_ADDRESS_BOOK))
+    self->add_source (source);
+}
+#else
 static void
 on_source_list_group_added_c (ESourceList */*source_list*/,
 			      ESourceGroup *group,
@@ -52,7 +69,19 @@ on_source_list_group_added_c (ESourceList */*source_list*/,
 
   self->add_group (group);
 }
+#endif
 
+#if EDS_CHECK_VERSION(3,5,3)
+void
+Evolution::Source::add_source (ESource *source)
+{
+  EBook *ebook = NULL;
+  ebook = e_book_new (source, NULL);
+  BookPtr book (new Evolution::Book (services, ebook));
+  g_object_unref (ebook);
+  add_book (book);
+}
+#else
 void
 Evolution::Source::add_group (ESourceGroup *group)
 {
@@ -87,7 +116,19 @@ Evolution::Source::add_group (ESourceGroup *group)
     add_book (book);
   }
 }
+#endif
 
+#if EDS_CHECK_VERSION(3,5,3)
+static void
+on_registry_source_removed_c (ESourceRegistry */*registry*/,
+                              ESource *source,
+                              gpointer data)
+{
+  Evolution::Source *self = (Evolution::Source *)data;
+  if (e_source_has_extension (source, E_SOURCE_EXTENSION_ADDRESS_BOOK))
+    self->remove_source (source);
+}
+#else
 static void
 on_source_list_group_removed_c (ESourceList */*source_list*/,
 				ESourceGroup *group,
@@ -99,12 +140,17 @@ on_source_list_group_removed_c (ESourceList */*source_list*/,
 
   self->remove_group (group);
 }
+#endif
 
 class remove_helper
 {
 public :
 
+#if EDS_CHECK_VERSION(3,5,3)
+  remove_helper (ESource* source_): source(source_)
+#else
   remove_helper (ESourceGroup* group_): group(group_)
+#endif
   { ready (); }
 
   inline void ready ()
@@ -117,12 +163,15 @@ public :
 
       EBook *book_ebook = book->get_ebook ();
       ESource *book_source = e_book_get_source (book_ebook);
+#if EDS_CHECK_VERSION(3,5,3)
+      if (e_source_equal (source, book_source)) {
+#else
       ESourceGroup *book_group = e_source_peek_group (book_source);
 
       if (book_group == group) {
-
-	book->removed ();
-	found = true;
+#endif
+        book->removed ();
+        found = true;
       }
     }
 
@@ -133,14 +182,24 @@ public :
   { return found; }
 
 private:
+#if EDS_CHECK_VERSION(3,5,3)
+  ESource* source;
+#else
   ESourceGroup* group;
+#endif
   bool found;
 };
 
 void
+#if EDS_CHECK_VERSION(3,5,3)
+Evolution::Source::remove_source (ESource *source)
+{
+  remove_helper helper (source);
+#else
 Evolution::Source::remove_group (ESourceGroup *group)
 {
   remove_helper helper (group);
+#endif
 
   do {
 
@@ -153,6 +212,36 @@ Evolution::Source::remove_group (ESourceGroup *group)
 Evolution::Source::Source (Ekiga::ServiceCore &_services)
   : services(_services)
 {
+#if EDS_CHECK_VERSION(3,5,3)
+  GList *list, *link;
+  const gchar *extension_name;
+  GError *error = NULL;
+
+  /* XXX This blocks.  Should it be created asynchronously? */
+  registry = e_source_registry_new_sync (NULL, &error);
+
+  if (error != NULL) {
+    g_warning ("%s", error->message);
+    g_error_free (error);
+    return;
+  }
+
+  extension_name = E_SOURCE_EXTENSION_ADDRESS_BOOK;
+  list = e_source_registry_list_sources (registry, extension_name);
+
+  for (link = list; link != NULL; link = g_list_next (link)) {
+    ESource *source = E_SOURCE (link->data);
+    add_source (source);
+  }
+
+  g_list_foreach (list, (GFunc) g_object_unref, NULL);
+  g_list_free (list);
+
+  g_signal_connect (registry, "source-added",
+                    G_CALLBACK (on_registry_source_added_c), this);
+  g_signal_connect (registry, "source-removed",
+		    G_CALLBACK (on_registry_source_removed_c), this);
+#else
   GSList *groups = NULL;
   ESourceGroup *group = NULL;
 
@@ -170,11 +259,16 @@ Evolution::Source::Source (Ekiga::ServiceCore &_services)
 		    G_CALLBACK (on_source_list_group_added_c), this);
   g_signal_connect (source_list, "group-removed",
 		    G_CALLBACK (on_source_list_group_removed_c), this);
+#endif
 }
 
 Evolution::Source::~Source ()
 {
+#if EDS_CHECK_VERSION(3,5,3)
+  g_object_unref (registry);
+#else
   g_object_unref (source_list);
+#endif
 }
 
 bool

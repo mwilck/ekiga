@@ -38,7 +38,12 @@
 #ifndef __EVOLUTION_BOOK_H__
 #define __EVOLUTION_BOOK_H__
 
+#include <libedataserver/eds-version.h>
+#if EDS_CHECK_VERSION(3,5,3)
+#include <libebook/libebook.h>
+#else
 #include <libebook/e-book.h>
+#endif
 
 #include "filterable.h"
 #include "form.h"
