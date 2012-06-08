@@ -191,7 +191,6 @@ main (int argc,
 
   GnomeMeeting::Process ()->BuildGUI (service_core);
   main_window = GnomeMeeting::Process ()->GetMainWindow ();
-  boost::shared_ptr<Ekiga::CallCore> call_core = service_core->get<Ekiga::CallCore> ("call-core");
 
   const int schema_version = MAJOR_VERSION * 1000
                              + MINOR_VERSION * 10
@@ -216,8 +215,11 @@ main (int argc,
   }
 
   /* Call the given host if needed */
-  if (url)
+  if (url) {
+
+    boost::shared_ptr<Ekiga::CallCore> call_core = service_core->get<Ekiga::CallCore> ("call-core");
     call_core->dial (url);
+  }
 
 #ifdef HAVE_DBUS
   EkigaDBusComponent *dbus_component = ekiga_dbus_component_new (service_core);
