@@ -59,7 +59,7 @@ G_DEFINE_TYPE(EkigaDBusComponent, ekiga_dbus_component, G_TYPE_OBJECT);
 
 struct _EkigaDBusComponentPrivate
 {
-  Ekiga::ServiceCorePtr core;
+  Ekiga::ServiceCore* service_core;
 };
 
 /**************************
@@ -134,7 +134,7 @@ ekiga_dbus_component_call (EkigaDBusComponent *self,
                            const gchar *uri,
                            G_GNUC_UNUSED GError **error)
 {
-  boost::shared_ptr<Ekiga::CallCore> call_core = self->priv->core->get<Ekiga::CallCore> ("call-core");
+  boost::shared_ptr<Ekiga::CallCore> call_core = self->priv->service_core->get<Ekiga::CallCore> ("call-core");
   call_core->dial (uri);
 
   return TRUE;
@@ -232,7 +232,7 @@ ekiga_dbus_claim_ownership ()
  *       the manager and other key components are running.
  */
 EkigaDBusComponent *
-ekiga_dbus_component_new (Ekiga::ServiceCorePtr core)
+ekiga_dbus_component_new (Ekiga::ServiceCore& service_core)
 {
   DBusGConnection *bus;
   GError *error = NULL;
@@ -246,7 +246,7 @@ ekiga_dbus_component_new (Ekiga::ServiceCorePtr core)
   }
 
   obj = EKIGA_DBUS_COMPONENT (g_object_new (EKIGA_TYPE_DBUS_COMPONENT, NULL));
-  obj->priv->core = core;
+  obj->priv->service_core = &service_core;
   dbus_g_connection_register_g_object (bus, EKIGA_DBUS_PATH, G_OBJECT (obj));
 
   return obj;

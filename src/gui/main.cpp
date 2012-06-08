@@ -190,6 +190,7 @@ main (int argc,
   engine_init (service_core, argc, argv);
 
   GnomeMeeting::Process ()->BuildGUI (*service_core);
+
   main_window = GnomeMeeting::Process ()->GetMainWindow ();
 
   const int schema_version = MAJOR_VERSION * 1000
@@ -222,7 +223,7 @@ main (int argc,
   }
 
 #ifdef HAVE_DBUS
-  EkigaDBusComponent *dbus_component = ekiga_dbus_component_new (service_core);
+  EkigaDBusComponent *dbus_component = ekiga_dbus_component_new (*service_core);
 #endif
 
   /* The GTK loop */
