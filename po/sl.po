@@ -10,8 +10,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: ekiga master\n"
 "Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?product=ekiga&keywords=I18N+L10N&component=general\n"
-"POT-Creation-Date: 2012-06-01 18:00+0000\n"
-"PO-Revision-Date: 2012-06-01 21:46+0100\n"
+"POT-Creation-Date: 2012-06-08 18:48+0000\n"
+"PO-Revision-Date: 2012-06-08 20:59+0100\n"
 "Last-Translator: Matej Urbančič <mateju@svn.gnome.org>\n"
 "Language-Team: Slovenščina <gnome-si@googlegroups.com>\n"
 "Language: \n"
@@ -707,7 +707,7 @@ msgstr "Sprejmi"
 
 #: ../lib/engine/components/local-roster/local-cluster.cpp:82
 #: ../lib/engine/components/local-roster/local-heap.cpp:118
-#: ../plugins/evolution/evolution-book.cpp:339
+#: ../plugins/evolution/evolution-book.cpp:343
 msgid "New contact"
 msgstr "Nov stik"
 
@@ -788,9 +788,9 @@ msgstr "Izpolnite obrazec za dodajanje novega stika v notranji seznam stikov pro
 #: ../lib/engine/components/local-roster/local-presentity.cpp:270
 #: ../lib/engine/components/opal/opal-account.cpp:444
 #: ../plugins/evolution/evolution-contact.cpp:324
-#: ../plugins/loudmouth/loudmouth-account.cpp:338
+#: ../plugins/loudmouth/loudmouth-account.cpp:342
 #: ../plugins/loudmouth/loudmouth-bank.cpp:125
-#: ../plugins/loudmouth/loudmouth-presentity.cpp:281
+#: ../plugins/loudmouth/loudmouth-presentity.cpp:283
 #: ../plugins/resource-list/rl-cluster.cpp:169
 #: ../plugins/resource-list/rl-heap.cpp:526
 #: ../plugins/resource-list/rl-presentity.cpp:233
@@ -857,16 +857,16 @@ msgstr "_Uredi"
 
 #: ../lib/engine/components/local-roster/local-presentity.cpp:242
 #: ../lib/engine/components/opal/opal-account.cpp:401
+#: ../lib/engine/gui/gtk-frontend/accounts-window.cpp:679
 #: ../plugins/evolution/evolution-contact.cpp:230
-#: ../plugins/loudmouth/loudmouth-account.cpp:435
+#: ../plugins/loudmouth/loudmouth-account.cpp:445
 #: ../plugins/loudmouth/loudmouth-presentity.cpp:193
 #: ../plugins/resource-list/rl-presentity.cpp:214
-#: ../src/gui/accounts.cpp:691
 msgid "_Remove"
 msgstr "_Odstrani"
 
 #: ../lib/engine/components/local-roster/local-presentity.cpp:267
-#: ../plugins/loudmouth/loudmouth-presentity.cpp:278
+#: ../plugins/loudmouth/loudmouth-presentity.cpp:280
 msgid "Edit roster element"
 msgstr "Uredi predmet seznama stikov"
 
@@ -879,7 +879,7 @@ msgid "Is a preferred contact"
 msgstr "Je prednostni stik"
 
 #: ../lib/engine/components/local-roster/local-presentity.cpp:274
-#: ../plugins/loudmouth/loudmouth-presentity.cpp:283
+#: ../plugins/loudmouth/loudmouth-presentity.cpp:285
 #: ../plugins/resource-list/rl-heap.cpp:528
 #: ../plugins/resource-list/rl-presentity.cpp:236
 msgid "Choose groups:"
@@ -945,44 +945,44 @@ msgid "Processing..."
 msgstr "Obdelovanje ..."
 
 #: ../lib/engine/components/opal/opal-account.cpp:391
-#: ../plugins/loudmouth/loudmouth-account.cpp:423
-#: ../src/gui/accounts.cpp:685
+#: ../lib/engine/gui/gtk-frontend/accounts-window.cpp:673
+#: ../plugins/loudmouth/loudmouth-account.cpp:433
 msgid "_Disable"
 msgstr "O_nemogoči"
 
 #: ../lib/engine/components/opal/opal-account.cpp:394
-#: ../plugins/loudmouth/loudmouth-account.cpp:427
-#: ../src/gui/accounts.cpp:682
+#: ../lib/engine/gui/gtk-frontend/accounts-window.cpp:670
+#: ../plugins/loudmouth/loudmouth-account.cpp:437
 msgid "_Enable"
 msgstr "_Omogoči"
 
 #: ../lib/engine/components/opal/opal-account.cpp:415
-#: ../src/gui/assistant.cpp:762
+#: ../src/gui/assistant.cpp:761
 msgid "Recharge the account"
 msgstr "Ponovno napolni račun"
 
 #: ../lib/engine/components/opal/opal-account.cpp:420
-#: ../src/gui/assistant.cpp:774
+#: ../src/gui/assistant.cpp:773
 msgid "Consult the balance history"
 msgstr "Pregled zgodovine ravnotežja"
 
 #: ../lib/engine/components/opal/opal-account.cpp:425
-#: ../src/gui/assistant.cpp:786
+#: ../src/gui/assistant.cpp:785
 msgid "Consult the call history"
 msgstr "Pregled zgodovine klicev"
 
 #: ../lib/engine/components/opal/opal-account.cpp:440
 #: ../lib/engine/components/opal/opal-bank.cpp:96
-#: ../plugins/loudmouth/loudmouth-account.cpp:333
+#: ../plugins/loudmouth/loudmouth-account.cpp:337
 #: ../plugins/loudmouth/loudmouth-bank.cpp:121
 msgid "Edit account"
 msgstr "Uredi račun"
 
 #: ../lib/engine/components/opal/opal-account.cpp:442
 #: ../lib/engine/components/opal/opal-bank.cpp:97
-#: ../plugins/evolution/evolution-book.cpp:341
+#: ../plugins/evolution/evolution-book.cpp:345
 #: ../plugins/evolution/evolution-contact.cpp:322
-#: ../plugins/loudmouth/loudmouth-account.cpp:335
+#: ../plugins/loudmouth/loudmouth-account.cpp:339
 msgid "Please update the following fields:"
 msgstr "Posodobite naslednja polja:"
 
@@ -1011,7 +1011,7 @@ msgid "The gatekeeper, e.g. ekiga.net"
 msgstr "Vratar, npr.: ekiga.net"
 
 #: ../lib/engine/components/opal/opal-account.cpp:449
-#: ../plugins/loudmouth/loudmouth-account.cpp:342
+#: ../plugins/loudmouth/loudmouth-account.cpp:346
 #: ../plugins/loudmouth/loudmouth-bank.cpp:126
 #: ../plugins/resource-list/rl-cluster.cpp:174
 msgid "User:"
@@ -1038,7 +1038,7 @@ msgid "The user name used during authentication, if different than the user name
 msgstr "Uporabniško ime, ki se uporablja med overitvijo, če je drugačno kot uporabniško ime. Pustite prazno, če ga nimate"
 
 #: ../lib/engine/components/opal/opal-account.cpp:455
-#: ../plugins/loudmouth/loudmouth-account.cpp:354
+#: ../plugins/loudmouth/loudmouth-account.cpp:362
 #: ../plugins/loudmouth/loudmouth-bank.cpp:129
 #: ../plugins/resource-list/rl-cluster.cpp:173
 msgid "Password:"
@@ -1064,7 +1064,7 @@ msgstr "Čas v sekundah po katerem se vpis računa samodejno znova preizkusi"
 
 #: ../lib/engine/components/opal/opal-account.cpp:457
 #: ../lib/engine/components/opal/opal-bank.cpp:141
-#: ../plugins/loudmouth/loudmouth-account.cpp:368
+#: ../plugins/loudmouth/loudmouth-account.cpp:376
 #: ../plugins/loudmouth/loudmouth-bank.cpp:130
 msgid "Enable Account"
 msgstr "Omogoči račun"
@@ -1108,7 +1108,7 @@ msgid "Could not register to "
 msgstr "Ni se mogoče vpisati v "
 
 #: ../lib/engine/components/opal/opal-account.cpp:665
-#: ../plugins/loudmouth/loudmouth-account.cpp:433
+#: ../plugins/loudmouth/loudmouth-account.cpp:443
 msgid "Edit"
 msgstr "Uredi"
 
@@ -1185,7 +1185,7 @@ msgid "_Add an H.323 Account"
 msgstr "_Dodaj račun H.323"
 
 #: ../lib/engine/components/opal/opal-bank.cpp:102
-#: ../src/gui/assistant.cpp:646
+#: ../src/gui/assistant.cpp:645
 msgid "Get an Ekiga.net SIP account"
 msgstr "Prijavi se na SIP račun ekiga.net"
 
@@ -1203,7 +1203,7 @@ msgid "_Password:"
 msgstr "_Geslo:"
 
 #: ../lib/engine/components/opal/opal-bank.cpp:112
-#: ../src/gui/assistant.cpp:750
+#: ../src/gui/assistant.cpp:749
 msgid "Get an Ekiga Call Out account"
 msgstr "Prijavi se na klicni račun ekiga.net"
 
@@ -1217,7 +1217,7 @@ msgstr "_Koda PIN:"
 
 #: ../lib/engine/components/opal/opal-bank.cpp:123
 #: ../lib/engine/components/opal/opal-bank.cpp:133
-#: ../plugins/evolution/evolution-book.cpp:343
+#: ../plugins/evolution/evolution-book.cpp:347
 msgid "_Name:"
 msgstr "_Ime:"
 
@@ -1573,6 +1573,36 @@ msgstr "Premakni prednost kodeka navzdol"
 msgid "Advanced"
 msgstr "Napredno"
 
+#: ../lib/engine/gui/gtk-frontend/accounts-window.cpp:562
+msgid "Account Name"
+msgstr "Ime računa"
+
+#: ../lib/engine/gui/gtk-frontend/accounts-window.cpp:563
+msgid "Status"
+msgstr "Stanje"
+
+#: ../lib/engine/gui/gtk-frontend/accounts-window.cpp:578
+#: ../src/gui/main_window.cpp:1330
+msgid "_Accounts"
+msgstr "R_ačuni"
+
+#: ../lib/engine/gui/gtk-frontend/accounts-window.cpp:582
+#: ../src/gui/main_window.cpp:1368
+msgid "_Help"
+msgstr "Pomo_č"
+
+#: ../lib/engine/gui/gtk-frontend/accounts-window.cpp:606
+msgid "Accounts"
+msgstr "Računi"
+
+#: ../lib/engine/gui/gtk-frontend/accounts-window.cpp:609
+msgid "Active"
+msgstr "Dejavno"
+
+#: ../lib/engine/gui/gtk-frontend/accounts-window.cpp:676
+msgid "Edi_t"
+msgstr "_Uredi"
+
 #: ../lib/engine/gui/gtk-frontend/addressbook-window.cpp:630
 msgid "Address Book"
 msgstr "Imenik"
@@ -1592,7 +1622,7 @@ msgid "Category"
 msgstr "Kategorija"
 
 #: ../lib/engine/gui/gtk-frontend/book-view-gtk.cpp:585
-#: ../src/gui/assistant.cpp:1396
+#: ../src/gui/assistant.cpp:1395
 msgid "Full Name"
 msgstr "Polno ime"
 
@@ -1989,7 +2019,7 @@ msgid "Play sound for new instant messages"
 msgstr "Predvajaj zvok ob novih hipnih sporočilih"
 
 #: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:462
-#: ../src/gui/assistant.cpp:374
+#: ../src/gui/assistant.cpp:373
 msgid "Personal Information"
 msgstr "Osebni podatki"
 
@@ -2160,7 +2190,7 @@ msgid "_Outbound Proxy:"
 msgstr "_Zunanji posredniški strežnik:"
 
 #: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:745
-#: ../src/gui/assistant.cpp:997
+#: ../src/gui/assistant.cpp:996
 msgid "Audio Devices"
 msgstr "Zvočne naprave"
 
@@ -2195,9 +2225,9 @@ msgstr "Kliknite za osvežitev seznama naprav."
 #: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:786
 #: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:808
 #: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:828
-#: ../src/gui/assistant.cpp:1263
-#: ../src/gui/assistant.cpp:1285
-#: ../src/gui/assistant.cpp:1307
+#: ../src/gui/assistant.cpp:1262
+#: ../src/gui/assistant.cpp:1284
+#: ../src/gui/assistant.cpp:1306
 msgid "No device found"
 msgstr "Naprava ni bila najdena"
 
@@ -2437,32 +2467,32 @@ msgstr[1] "%d najden uporabnik"
 msgstr[2] "%d najdena uporabnika"
 msgstr[3] "%d najdeni uporabniki"
 
-#: ../plugins/evolution/evolution-book.cpp:297
+#: ../plugins/evolution/evolution-book.cpp:301
 #: ../plugins/loudmouth/loudmouth-heap-roster.cpp:71
 msgid "New _Contact"
 msgstr "Nov _stik"
 
-#: ../plugins/evolution/evolution-book.cpp:344
+#: ../plugins/evolution/evolution-book.cpp:348
 #: ../plugins/evolution/evolution-contact.cpp:333
 msgid "VoIP _URI:"
 msgstr "URI za VoIP:"
 
-#: ../plugins/evolution/evolution-book.cpp:345
+#: ../plugins/evolution/evolution-book.cpp:349
 #: ../plugins/evolution/evolution-contact.cpp:334
 msgid "_Home phone:"
 msgstr "_Domači telefon:"
 
-#: ../plugins/evolution/evolution-book.cpp:346
+#: ../plugins/evolution/evolution-book.cpp:350
 #: ../plugins/evolution/evolution-contact.cpp:335
 msgid "_Office phone:"
 msgstr "_Službeni telefon:"
 
-#: ../plugins/evolution/evolution-book.cpp:347
+#: ../plugins/evolution/evolution-book.cpp:351
 #: ../plugins/evolution/evolution-contact.cpp:336
 msgid "_Cell phone:"
 msgstr "_Mobilni telefon:"
 
-#: ../plugins/evolution/evolution-book.cpp:348
+#: ../plugins/evolution/evolution-book.cpp:352
 #: ../plugins/evolution/evolution-contact.cpp:337
 msgid "_Pager:"
 msgstr "_Pozivnik:"
@@ -2707,47 +2737,51 @@ msgid "Ekiga.net Directory"
 msgstr "Imenik ekiga.net"
 
 #: ../plugins/loudmouth/loudmouth-account.cpp:112
-#: ../plugins/loudmouth/loudmouth-account.cpp:156
+#: ../plugins/loudmouth/loudmouth-account.cpp:159
 msgid "inactive"
 msgstr "nedejavno"
 
-#: ../plugins/loudmouth/loudmouth-account.cpp:222
+#: ../plugins/loudmouth/loudmouth-account.cpp:238
 #, c-format
 msgid "error connecting (%s)"
 msgstr "napaka med povezovanjem (%s)"
 
-#: ../plugins/loudmouth/loudmouth-account.cpp:228
+#: ../plugins/loudmouth/loudmouth-account.cpp:244
 msgid "connecting"
 msgstr "povezovanje"
 
-#: ../plugins/loudmouth/loudmouth-account.cpp:280
+#: ../plugins/loudmouth/loudmouth-account.cpp:284
 msgid "authenticating"
 msgstr "overjanje"
 
 #. FIXME: can't we report better?
-#: ../plugins/loudmouth/loudmouth-account.cpp:290
+#: ../plugins/loudmouth/loudmouth-account.cpp:294
 msgid "error connecting"
 msgstr "napaka med povezovanjem"
 
-#: ../plugins/loudmouth/loudmouth-account.cpp:300
+#: ../plugins/loudmouth/loudmouth-account.cpp:304
 msgid "disconnected"
 msgstr "prekinjena povezava"
 
-#: ../plugins/loudmouth/loudmouth-account.cpp:310
+#: ../plugins/loudmouth/loudmouth-account.cpp:314
 msgid "connected"
 msgstr "povezano"
 
 #. FIXME: can't we report something better?
-#: ../plugins/loudmouth/loudmouth-account.cpp:316
+#: ../plugins/loudmouth/loudmouth-account.cpp:320
 msgid "error authenticating loudmouth account"
 msgstr "napaka med overjanjem računa loudmouth"
 
-#: ../plugins/loudmouth/loudmouth-account.cpp:346
+#: ../plugins/loudmouth/loudmouth-account.cpp:350
 #: ../plugins/loudmouth/loudmouth-bank.cpp:127
 msgid "Server:"
 msgstr "Strežnik:"
 
-#: ../plugins/loudmouth/loudmouth-account.cpp:350
+#: ../plugins/loudmouth/loudmouth-account.cpp:354
+msgid "Port:"
+msgstr "Vrata:"
+
+#: ../plugins/loudmouth/loudmouth-account.cpp:358
 #: ../plugins/loudmouth/loudmouth-bank.cpp:128
 msgid "Resource:"
 msgstr "Vir:"
@@ -2863,7 +2897,7 @@ msgstr "Začni klepet"
 msgid "Continue chat"
 msgstr "Nadaljuj klepet"
 
-#: ../plugins/loudmouth/loudmouth-presentity.cpp:279
+#: ../plugins/loudmouth/loudmouth-presentity.cpp:281
 msgid "Please fill in this form to change an existing element of the remote roster"
 msgstr "Izpolnite obrazec za spreminjanje obstoječega predmeta v oddaljenem seznamu stikov"
 
@@ -2965,38 +2999,7 @@ msgstr "Uredi oddaljeni stik"
 msgid "Please fill in this form to change an existing contact on a remote server"
 msgstr "Izpolnite obrazec za spremembo obstoječega stika na oddaljenem strežniku"
 
-#: ../src/gui/accounts.cpp:565
-msgid "Account Name"
-msgstr "Ime računa"
-
-#: ../src/gui/accounts.cpp:566
-msgid "Status"
-msgstr "Stanje"
-
-#: ../src/gui/accounts.cpp:576
-#: ../src/gui/accounts.cpp:618
-msgid "Accounts"
-msgstr "Računi"
-
-#: ../src/gui/accounts.cpp:590
-#: ../src/gui/main_window.cpp:1330
-msgid "_Accounts"
-msgstr "R_ačuni"
-
-#: ../src/gui/accounts.cpp:594
-#: ../src/gui/main_window.cpp:1368
-msgid "_Help"
-msgstr "Pomo_č"
-
-#: ../src/gui/accounts.cpp:621
-msgid "Active"
-msgstr "Dejavno"
-
-#: ../src/gui/accounts.cpp:688
-msgid "Edi_t"
-msgstr "_Uredi"
-
-#: ../src/gui/assistant.cpp:342
+#: ../src/gui/assistant.cpp:341
 msgid ""
 "This is the Ekiga general configuration assistant. The following steps will set up Ekiga by asking a few simple questions.\n"
 "\n"
@@ -3006,20 +3009,20 @@ msgstr ""
 "\n"
 "Ko dokončate te korake, boste nastavitve lahko še vedno spreminjali z izbiro Možnosti v meniju Uredi."
 
-#: ../src/gui/assistant.cpp:350
+#: ../src/gui/assistant.cpp:349
 msgid "Welcome to Ekiga"
 msgstr "Dobrodošli v program Ekiga"
 
 #. The user fields
-#: ../src/gui/assistant.cpp:377
+#: ../src/gui/assistant.cpp:376
 msgid "Please enter your first name and your surname:"
 msgstr "Vnesite svoje ime in priimek:"
 
-#: ../src/gui/assistant.cpp:386
+#: ../src/gui/assistant.cpp:385
 msgid "Your first name and surname will be used when connecting to other VoIP and videoconferencing software."
 msgstr "Vaše ime in priimek bosta uporabljena pri povezovanju v drugo programsko opremo za VoIP in videokonference."
 
-#: ../src/gui/assistant.cpp:436
+#: ../src/gui/assistant.cpp:435
 msgid ""
 "If you do not have a SIP or H323 account, ekiga can only be used on your local internal network (inside your company, for example).  You will require an account if you want to be accessible to people on the Internet.  Many web sites allow you to create an account.  We suggest that you use a free ekiga.net account, which allows you to be joined by any person with a SIP account.  If you want to call regular phone lines too, we suggest that you purchase an inexpensive call out account.\n"
 "\n"
@@ -3029,23 +3032,23 @@ msgstr ""
 "\n"
 "Naslednje strani omogočajo ustvarjanje tovrstnih računov."
 
-#: ../src/gui/assistant.cpp:451
+#: ../src/gui/assistant.cpp:450
 msgid "Introduction to Accounts"
 msgstr "Uvod v račune"
 
-#: ../src/gui/assistant.cpp:609
+#: ../src/gui/assistant.cpp:608
 msgid "Ekiga.net Account"
 msgstr "Račun Ekiga.net "
 
-#: ../src/gui/assistant.cpp:611
+#: ../src/gui/assistant.cpp:610
 msgid "Please enter your username:"
 msgstr "Vnesite svoje uporabniško ime:"
 
-#: ../src/gui/assistant.cpp:619
+#: ../src/gui/assistant.cpp:618
 msgid "Please enter your password:"
 msgstr "Vnesite svoje geslo:"
 
-#: ../src/gui/assistant.cpp:629
+#: ../src/gui/assistant.cpp:628
 msgid ""
 "The username and password are used to login to your existing account at the ekiga.net free SIP service. If you do not have an ekiga.net SIP address yet, you may first create an account below. This will provide a SIP address that allows people to call you.\n"
 "\n"
@@ -3055,23 +3058,23 @@ msgstr ""
 "\n"
 "Ta korak lahko preskočite, če uporabljate drugo storitev SIP ali če želite podrobnosti o prijavi navesti pozneje."
 
-#: ../src/gui/assistant.cpp:655
+#: ../src/gui/assistant.cpp:654
 msgid "I do not want to sign up for the ekiga.net free service"
 msgstr "Ne želim se prijaviti na brezplačno storitev ekiga.net"
 
-#: ../src/gui/assistant.cpp:715
+#: ../src/gui/assistant.cpp:714
 msgid "Ekiga Call Out Account"
 msgstr "Ekiga klicni račun"
 
-#: ../src/gui/assistant.cpp:717
+#: ../src/gui/assistant.cpp:716
 msgid "Please enter your account ID:"
 msgstr "Vnesite ID svojega računa:"
 
-#: ../src/gui/assistant.cpp:725
+#: ../src/gui/assistant.cpp:724
 msgid "Please enter your PIN code:"
 msgstr "Vnesite svojo kodo PIN:"
 
-#: ../src/gui/assistant.cpp:736
+#: ../src/gui/assistant.cpp:735
 msgid ""
 "You can make calls to regular phones and cell numbers worldwide using Ekiga. To enable this, you need to do two things:\n"
 "- First buy an account at the URL below.\n"
@@ -3084,120 +3087,120 @@ msgstr ""
 "- nato je treba vnesite podatke o vašem računu in kodo PIN.\n"
 "Storitev bo delovala le, če račun ustvarite z uporabo povezave do naslova URL v tem oknu.\n"
 
-#: ../src/gui/assistant.cpp:795
+#: ../src/gui/assistant.cpp:794
 msgid "I do not want to sign up for the Ekiga Call Out service"
 msgstr "Ne želim se prijaviti na storitev klici ekiga.net."
 
-#: ../src/gui/assistant.cpp:858
-#: ../src/gui/assistant.cpp:1407
+#: ../src/gui/assistant.cpp:857
+#: ../src/gui/assistant.cpp:1406
 msgid "Connection Type"
 msgstr "Vrsta povezave"
 
 #. The connection type
-#: ../src/gui/assistant.cpp:861
+#: ../src/gui/assistant.cpp:860
 msgid "Please choose your connection type:"
 msgstr "Izberite vrsto svoje povezave:"
 
-#: ../src/gui/assistant.cpp:878
+#: ../src/gui/assistant.cpp:877
 msgid "56k Modem"
 msgstr "56k Modem"
 
-#: ../src/gui/assistant.cpp:883
+#: ../src/gui/assistant.cpp:882
 msgid "ISDN"
 msgstr "ISDN"
 
-#: ../src/gui/assistant.cpp:888
+#: ../src/gui/assistant.cpp:887
 msgid "DSL/Cable (128 kbit/s uplink)"
 msgstr "DSL/Kabel (128 kbit/s pošiljanje)"
 
-#: ../src/gui/assistant.cpp:893
+#: ../src/gui/assistant.cpp:892
 msgid "DSL/Cable (512 kbit/s uplink)"
 msgstr "DSL/Kabel (512 kbit/s pošiljanje)"
 
-#: ../src/gui/assistant.cpp:898
+#: ../src/gui/assistant.cpp:897
 msgid "LAN"
 msgstr "LAN"
 
-#: ../src/gui/assistant.cpp:903
+#: ../src/gui/assistant.cpp:902
 msgid "Keep current settings"
 msgstr "Obdrži trenutne nastavitve"
 
-#: ../src/gui/assistant.cpp:908
+#: ../src/gui/assistant.cpp:907
 msgid "The connection type will permit determining the best quality settings that Ekiga will use during calls. You can later change the settings individually in the preferences window."
 msgstr "Vrsta povezave bo omogočila ugotavljanje nastavitev za najboljšo kakovost, ki jih bo program uporabljal med klici. Pozneje lahko spremenite nastavitve v oknu možnosti."
 
-#: ../src/gui/assistant.cpp:999
+#: ../src/gui/assistant.cpp:998
 msgid "Please choose the audio ringing device:"
 msgstr "Izberite zvočno napravo za zvonjenje:"
 
-#: ../src/gui/assistant.cpp:1019
+#: ../src/gui/assistant.cpp:1018
 msgid "The audio ringing device is the device that will be used to play the ringing sound on incoming calls."
 msgstr "Zvočna naprava za zvonjenje je naprava, ki se uporablja za predvajanje zvonjenja prihajajočih klicev."
 
 #. ---
-#: ../src/gui/assistant.cpp:1030
+#: ../src/gui/assistant.cpp:1029
 msgid "Please choose the audio output device:"
 msgstr "Izberite izhodno napravo zvoka:"
 
-#: ../src/gui/assistant.cpp:1050
+#: ../src/gui/assistant.cpp:1049
 msgid "The audio output device is the device that will be used to play audio during calls."
 msgstr "Izhodna naprava zvoka je naprava, ki se uporablja za predvajanje zvoka med klici."
 
 #. ---
-#: ../src/gui/assistant.cpp:1061
+#: ../src/gui/assistant.cpp:1060
 msgid "Please choose the audio input device:"
 msgstr "Izberite vhodno napravo zvoka:"
 
-#: ../src/gui/assistant.cpp:1081
+#: ../src/gui/assistant.cpp:1080
 msgid "The audio input device is the device that will be used to record your voice during calls."
 msgstr "Vhodna naprava zvoka je naprava, ki se uporablja za snemanje vašega glasu med klici"
 
-#: ../src/gui/assistant.cpp:1177
-#: ../src/gui/assistant.cpp:1452
+#: ../src/gui/assistant.cpp:1176
+#: ../src/gui/assistant.cpp:1451
 msgid "Video Input Device"
 msgstr "Vhodna naprava videa"
 
-#: ../src/gui/assistant.cpp:1179
+#: ../src/gui/assistant.cpp:1178
 msgid "Please choose your video input device:"
 msgstr "Izberite vhodno napravo videa:"
 
-#: ../src/gui/assistant.cpp:1199
+#: ../src/gui/assistant.cpp:1198
 msgid "The video input device is the device that will be used to capture video during calls."
 msgstr "Vhodna naprava zvoka je naprava, ki se uporablja za zajemanje videa med klici."
 
-#: ../src/gui/assistant.cpp:1338
+#: ../src/gui/assistant.cpp:1337
 msgid "Configuration Complete"
 msgstr "Nastavitev je končana"
 
-#: ../src/gui/assistant.cpp:1340
+#: ../src/gui/assistant.cpp:1339
 msgid "You have now finished the Ekiga configuration. All the settings can be changed in the Ekiga preferences. Enjoy!"
 msgstr "Končali ste z nastavitvijo programa Ekiga. Vse nastavitve lahko spremenite med možnostmi programa. Uživajte!"
 
-#: ../src/gui/assistant.cpp:1347
+#: ../src/gui/assistant.cpp:1346
 msgid "Configuration summary:"
 msgstr "Povzetek nastavitev:"
 
-#: ../src/gui/assistant.cpp:1419
+#: ../src/gui/assistant.cpp:1418
 msgid "Audio Ringing Device"
 msgstr "Zvočna naprava za zvonjenje"
 
-#: ../src/gui/assistant.cpp:1430
+#: ../src/gui/assistant.cpp:1429
 msgid "Audio Output Device"
 msgstr "Izhodna naprava zvoka"
 
-#: ../src/gui/assistant.cpp:1441
+#: ../src/gui/assistant.cpp:1440
 msgid "Audio Input Device"
 msgstr "Vhodna naprava zvoka"
 
-#: ../src/gui/assistant.cpp:1465
+#: ../src/gui/assistant.cpp:1464
 msgid "SIP URI"
 msgstr "SIP URI"
 
-#: ../src/gui/assistant.cpp:1477
+#: ../src/gui/assistant.cpp:1476
 msgid "Ekiga Call Out"
 msgstr "Ekigi klici"
 
-#: ../src/gui/assistant.cpp:1521
+#: ../src/gui/assistant.cpp:1520
 #, c-format
 msgid "Ekiga Configuration Assistant (%d of %d)"
 msgstr "Pomočnik za nastavitve Ekige (%d od %d)"
