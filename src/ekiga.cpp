@@ -109,7 +109,7 @@ void GnomeMeeting::BuildGUI (Ekiga::ServiceCorePtr services)
 
   /* Build the GUI */
   gtk_window_set_default_icon_name (GM_ICON_LOGO);
-  assistant_window = ekiga_assistant_new (services.get ());
+  assistant_window = ekiga_assistant_new (*services);
   main_window = gm_main_window_new (*services);
   // FIXME should be moved in ekiga_assistant_new
   gtk_window_set_transient_for (GTK_WINDOW (assistant_window), GTK_WINDOW (main_window));

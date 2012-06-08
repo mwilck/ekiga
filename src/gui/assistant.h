@@ -70,7 +70,7 @@ struct _EkigaAssistant {
 typedef GtkAssistantClass EkigaAssistantClass;
 
 GType        ekiga_assistant_get_type   ();
-GtkWidget   *ekiga_assistant_new        (Ekiga::ServiceCore *core);
+GtkWidget   *ekiga_assistant_new        (Ekiga::ServiceCore& core);
 
 G_END_DECLS
 

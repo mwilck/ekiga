@@ -58,7 +58,6 @@ G_DEFINE_TYPE (EkigaAssistant, ekiga_assistant, GTK_TYPE_ASSISTANT);
 
 struct _EkigaAssistantPrivate
 {
-  Ekiga::ServiceCore *core;
   boost::shared_ptr<Ekiga::VideoInputCore> videoinput_core;
   boost::shared_ptr<Ekiga::AudioInputCore> audioinput_core;
   boost::shared_ptr<Ekiga::AudioOutputCore> audiooutput_core;
@@ -1640,22 +1639,21 @@ ekiga_assistant_key_press_cb (GtkWidget *widget,
 
 
 GtkWidget *
-ekiga_assistant_new (Ekiga::ServiceCore *core)
+ekiga_assistant_new (Ekiga::ServiceCore& service_core)
 {
   EkigaAssistant *assistant;
 
   assistant = EKIGA_ASSISTANT (g_object_new (EKIGA_TYPE_ASSISTANT, NULL));
-  assistant->priv->core = core;
 
   /* FIXME: move this into the caller */
   g_signal_connect (assistant, "key-press-event",
                     G_CALLBACK (ekiga_assistant_key_press_cb), NULL);
 
   boost::signals::connection conn;
-  assistant->priv->videoinput_core = core->get<Ekiga::VideoInputCore> ("videoinput-core");
-  assistant->priv->audioinput_core = core->get<Ekiga::AudioInputCore> ("audioinput-core");
-  assistant->priv->audiooutput_core = core->get<Ekiga::AudioOutputCore> ("audiooutput-core");
-  assistant->priv->bank = core->get<Opal::Bank> ("opal-account-store");
+  assistant->priv->videoinput_core = service_core.get<Ekiga::VideoInputCore> ("videoinput-core");
+  assistant->priv->audioinput_core = service_core.get<Ekiga::AudioInputCore> ("audioinput-core");
+  assistant->priv->audiooutput_core = service_core.get<Ekiga::AudioOutputCore> ("audiooutput-core");
+  assistant->priv->bank = service_core.get<Opal::Bank> ("opal-account-store");
 
   conn = assistant->priv->videoinput_core->device_added.connect (boost::bind (&on_videoinput_device_added_cb, _1, _2, assistant));
   assistant->priv->connections.push_back (conn);
