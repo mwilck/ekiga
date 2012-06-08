@@ -102,7 +102,7 @@ class GnomeMeeting : public PProcess
    *                 stored in config.
    * PRE          :  /
    */
-  void BuildGUI (Ekiga::ServiceCorePtr services);
+  void BuildGUI (Ekiga::ServiceCore& services);
 
  private:
 

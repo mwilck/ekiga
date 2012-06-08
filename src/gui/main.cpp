@@ -189,7 +189,7 @@ main (int argc,
   Ekiga::Runtime::init ();
   engine_init (service_core, argc, argv);
 
-  GnomeMeeting::Process ()->BuildGUI (service_core);
+  GnomeMeeting::Process ()->BuildGUI (*service_core);
   main_window = GnomeMeeting::Process ()->GetMainWindow ();
 
   const int schema_version = MAJOR_VERSION * 1000
