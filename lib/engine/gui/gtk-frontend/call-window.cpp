@@ -502,7 +502,7 @@ zoom_in_changed_cb (G_GNUC_UNUSED GtkWidget *widget,
   g_return_if_fail (data != NULL);
 
   Ekiga::DisplayInfo display_info;
-  ekiga_call_window_set_video_size (EKIGA_CALL_WINDOW (data), GM_QCIF_WIDTH, GM_QCIF_HEIGHT);
+  ekiga_call_window_set_video_size (EKIGA_CALL_WINDOW (data), GM_CIF_WIDTH, GM_CIF_HEIGHT);
 
   display_info.zoom = gm_conf_get_int (VIDEO_DISPLAY_KEY "zoom");
 
@@ -520,7 +520,7 @@ zoom_out_changed_cb (G_GNUC_UNUSED GtkWidget *widget,
   g_return_if_fail (data != NULL);
 
   Ekiga::DisplayInfo display_info;
-  ekiga_call_window_set_video_size (EKIGA_CALL_WINDOW (data), GM_QCIF_WIDTH, GM_QCIF_HEIGHT);
+  ekiga_call_window_set_video_size (EKIGA_CALL_WINDOW (data), GM_CIF_WIDTH, GM_CIF_HEIGHT);
 
   display_info.zoom = gm_conf_get_int ((char *) data);
 
@@ -538,7 +538,7 @@ zoom_normal_changed_cb (G_GNUC_UNUSED GtkWidget *widget,
   g_return_if_fail (data != NULL);
 
   Ekiga::DisplayInfo display_info;
-  ekiga_call_window_set_video_size (EKIGA_CALL_WINDOW (data), GM_QCIF_WIDTH, GM_QCIF_HEIGHT);
+  ekiga_call_window_set_video_size (EKIGA_CALL_WINDOW (data), GM_CIF_WIDTH, GM_CIF_HEIGHT);
 
   display_info.zoom  = 100;
 
@@ -2297,6 +2297,7 @@ ekiga_call_window_init_gui (EkigaCallWindow *cw)
 
   /* The widgets toolbar */
   cw->priv->call_panel_toolbar = gtk_toolbar_new ();
+  gtk_toolbar_set_show_arrow (GTK_TOOLBAR (cw->priv->call_panel_toolbar), true);
   gtk_toolbar_set_style (GTK_TOOLBAR (cw->priv->call_panel_toolbar), GTK_TOOLBAR_ICONS);
   gtk_toolbar_set_show_arrow (GTK_TOOLBAR (cw->priv->call_panel_toolbar), false);
 
@@ -2306,9 +2307,7 @@ ekiga_call_window_init_gui (EkigaCallWindow *cw)
 
   /* The frame that contains the video */
   cw->priv->main_video_image = gtk_image_new ();
-  alignment = gtk_alignment_new (0.5, 0.0, 1.0, 0.0);
-  gtk_container_add (GTK_CONTAINER (alignment), cw->priv->main_video_image);
-  gtk_box_pack_start (GTK_BOX (vbox), GTK_WIDGET (alignment), true, true, 0);
+  gtk_box_pack_start (GTK_BOX (vbox), GTK_WIDGET (cw->priv->main_video_image), true, true, 0);
 
   /* The frame that contains information about the call */
   cw->priv->call_frame = gtk_frame_new (NULL);
