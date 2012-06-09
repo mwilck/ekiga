@@ -58,6 +58,9 @@
 #include <libnotify/notify.h>
 #endif
 
+#ifdef HAVE_DBUS
+#include <dbus/dbus-glib.h>
+#endif
 
 /*
  * The StatusIcon
@@ -492,27 +495,49 @@ statusicon_on_notification_added (boost::shared_ptr<Ekiga::Notification> notific
 
 
 static bool
-notify_has_persistence (void)
+statusicon_should_run (void)
 {
-  gboolean has = false;
-#ifdef HAVE_NOTIFY
-  GList   *caps;
-  GList   *l;
+  bool shell_running = false;
 
-  caps = notify_get_server_caps ();
-  if (caps == NULL) {
-    fprintf (stderr, "Failed to receive server caps.\n");
-    return FALSE;
+#ifdef HAVE_DBUS
+  DBusGConnection *connection = NULL;
+  GError *error = NULL;
+  DBusGProxy *proxy = NULL;
+  char **name_list = NULL;
+  char **name_list_ptr = NULL;
+
+  connection = dbus_g_bus_get (DBUS_BUS_SESSION, &error);
+  if (connection == NULL) {
+    g_error_free (error);
+    return true;
   }
 
-  l = g_list_find_custom (caps, "persistence", (GCompareFunc)strcmp);
-  has = l != NULL;
+  /* Create a proxy object for the "bus driver" (name "org.freedesktop.DBus") */
+  proxy = dbus_g_proxy_new_for_name (connection,
+                                     DBUS_SERVICE_DBUS,
+                                     DBUS_PATH_DBUS,
+                                     DBUS_INTERFACE_DBUS);
 
-  g_list_foreach (caps, (GFunc) g_free, NULL);
-  g_list_free (caps);
+  /* Call ListNames method, wait for reply */
+  error = NULL;
+  if (!dbus_g_proxy_call (proxy, "ListNames", &error, G_TYPE_INVALID,
+                          G_TYPE_STRV, &name_list, G_TYPE_INVALID)) {
+      g_error_free (error);
+      return true;
+  }
+
+  /* Print the results */
+  for (name_list_ptr = name_list; *name_list_ptr; name_list_ptr++) {
+    if (!strcmp (*name_list_ptr, "org.gnome.Shell")) {
+      shell_running = true;
+      break;
+    }
+  }
+  g_strfreev (name_list);
+  g_object_unref (proxy);
 #endif
 
-  return has;
+  return !shell_running;
 }
 
 
@@ -524,8 +549,8 @@ status_icon_new (Ekiga::ServiceCore & core)
 {
   StatusIcon *self = NULL;
 
-  if (notify_has_persistence ())
-    return NULL;
+  if (!statusicon_should_run ())
+    return self;
 
   boost::signals::connection conn;
 
