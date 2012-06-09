@@ -158,6 +158,7 @@ CallManager::CallManager (Ekiga::ServiceCore & _core)
 CallManager::~CallManager ()
 {
   ClearAllCalls (OpalConnection::EndedByLocalUser, true);
+  ShutDownEndpoints ();
 
   g_async_queue_unref (queue);
 }

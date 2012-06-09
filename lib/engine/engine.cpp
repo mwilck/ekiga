@@ -124,7 +124,6 @@ engine_init (Ekiga::ServiceCorePtr service_core,
    * - VideoInputCore must be destroyed before VideoOutputCore since its  *
    *   PreviewManager may call functions of VideoOutputCore.            */
 
-  service_core->add (account_core);
   service_core->add (contact_core);
   service_core->add (chat_core);
   service_core->add (friend_or_foe);
@@ -134,6 +133,7 @@ engine_init (Ekiga::ServiceCorePtr service_core,
   service_core->add (audiooutput_core);
   service_core->add (hal_core);
   service_core->add (call_core);
+  service_core->add (account_core);
 
   if (!gmconf_personal_details_init (*service_core, &argc, &argv)) {
 
