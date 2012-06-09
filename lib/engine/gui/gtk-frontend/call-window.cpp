@@ -509,7 +509,7 @@ zoom_in_changed_cb (G_GNUC_UNUSED GtkWidget *widget,
   if (display_info.zoom < 200)
     display_info.zoom = display_info.zoom * 2;
 
-  gm_conf_set_int ((char *) data, display_info.zoom);
+  gm_conf_set_int (VIDEO_DISPLAY_KEY "zoom", display_info.zoom);
   ekiga_call_window_zooms_menu_update_sensitivity (EKIGA_CALL_WINDOW (data), display_info.zoom);
 }
 
