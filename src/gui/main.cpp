@@ -209,11 +209,8 @@ main (int argc,
     gm_conf_set_int (GENERAL_KEY "version", schema_version);
   }
 
-  /* Show the main window if there was a config file */
-  if (crt_version > 0) {
-    if (!gm_conf_get_bool (USER_INTERFACE_KEY "start_hidden"))
-      gtk_widget_show (main_window);
-  }
+  /* Show the main window */
+  gtk_widget_show (main_window);
 
   /* Call the given host if needed */
   if (url) {
