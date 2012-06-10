@@ -71,6 +71,7 @@ public:
       manager (_manager),
       queue (_queue)
   {
+    PTRACE (3, "Ekiga\tStarted STUN detector");
     g_async_queue_ref (queue);
     this->Resume ();
   };
@@ -78,6 +79,7 @@ public:
   ~StunDetector ()
   {
     g_async_queue_unref (queue);
+    PTRACE (3, "Ekiga\tStopped STUN detector");
   }
 
   void Main ()
