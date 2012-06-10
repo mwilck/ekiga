@@ -160,7 +160,7 @@ Opal::Sip::EndPoint::EndPoint (Opal::CallManager & _manager,
   manager.AddRouteEntry("pc:.* = sip:<da>");
 
   /* NAT Binding */
-  SetNATBindingRefreshMethod (SIPEndPoint::EmptyRequest);
+  SetNATBindingRefreshMethod (SIPEndPoint::Options);
 }
 
 
@@ -450,6 +450,7 @@ Opal::Sip::EndPoint::get_outbound_proxy () const
 void
 Opal::Sip::EndPoint::set_nat_binding_delay (unsigned delay)
 {
+  PTRACE (3, "Ekiga\tNat binding delay set to " << delay);
   if (delay > 0)
     SetNATBindingTimeout (PTimeInterval (0, delay));
 }
