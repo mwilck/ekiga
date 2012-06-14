@@ -65,7 +65,7 @@ convert_icon_to_gtk (const std::string icon)
   if (icon == "search")
     result = "gtk-search";
 
-  return icon;
+  return result;
 }
 
 static void
