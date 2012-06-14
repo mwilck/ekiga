@@ -184,10 +184,10 @@ LM::Presentity::populate_menu (Ekiga::MenuBuilder& builder)
 
   if ( !has_chat) {
 
-    builder.add_action ("chat", _("Start chat"), boost::ref (chat_requested));
+    builder.add_action ("im-message-new", _("Start chat"), boost::ref (chat_requested));
   } else {
 
-    builder.add_action ("chat", _("Continue chat"), boost::ref (chat_requested));
+    builder.add_action ("im-message-new", _("Continue chat"), boost::ref (chat_requested));
   }
 
   builder.add_action ("remove", _("_Remove"),
