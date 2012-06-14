@@ -166,7 +166,7 @@ LM::Presentity::populate_menu (Ekiga::MenuBuilder& builder)
   }
   if (strcmp (subscription, "from") == 0) {
 
-    builder.add_action ("revoke", _("Forbid him/her to see my status"), boost::bind (&LM::Presentity::revoke_from, this));
+    builder.add_action ("stop", _("Forbid him/her to see my status"), boost::bind (&LM::Presentity::revoke_from, this));
     if (ask == NULL)
       builder.add_action ("ask", _("Ask him/her to see his/her status"), boost::bind (&LM::Presentity::ask_to, this));
     else
@@ -178,7 +178,7 @@ LM::Presentity::populate_menu (Ekiga::MenuBuilder& builder)
   }
   if (strcmp (subscription, "both") == 0) {
 
-    builder.add_action ("revoke", _("Forbid him/her to see my status"), boost::bind (&LM::Presentity::revoke_from, this));
+    builder.add_action ("stop", _("Forbid him/her to see my status"), boost::bind (&LM::Presentity::revoke_from, this));
     builder.add_action ("stop", _("Stop getting his/her status"), boost::bind (&LM::Presentity::stop_to, this));
   }
 
