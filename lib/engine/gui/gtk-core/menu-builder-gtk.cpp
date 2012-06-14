@@ -47,6 +47,27 @@ struct Action
   boost::function0<void> callback;
 };
 
+static const std::string
+convert_icon_to_gtk (const std::string icon)
+{
+  std::string result = icon;
+
+  if (icon == "new")
+    result = "gtk-new";
+  if (icon == "add")
+    result = "gtk-add";
+  if (icon == "edit")
+    result = "gtk-edit";
+  if (icon == "clear")
+    result = "gtk-clear";
+  if (icon == "remove")
+    result = "gtk-remove";
+  if (icon == "search")
+    result = "gtk-search";
+
+  return icon;
+}
+
 static void
 delete_action_with_item (gpointer data)
 {
@@ -77,6 +98,7 @@ MenuBuilderGtk::add_action (const std::string icon,
 {
   GtkWidget *item = NULL;
   GtkWidget *image = NULL;
+  const std::string gtk_icon = convert_icon_to_gtk (icon);
 
   Action *action = new Action (callback);
 
@@ -84,7 +106,7 @@ MenuBuilderGtk::add_action (const std::string icon,
   last_was_separator = false;
 
   item = gtk_image_menu_item_new_with_mnemonic (label.c_str ());
-  image = gtk_image_new_from_icon_name (icon.c_str (), GTK_ICON_SIZE_MENU);
+  image = gtk_image_new_from_icon_name (gtk_icon.c_str (), GTK_ICON_SIZE_MENU);
   if (image)
     gtk_image_menu_item_set_image (GTK_IMAGE_MENU_ITEM (item), image);
 
