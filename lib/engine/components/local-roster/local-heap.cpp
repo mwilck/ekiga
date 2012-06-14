@@ -115,7 +115,7 @@ Local::Heap::get_name () const
 bool
 Local::Heap::populate_menu (Ekiga::MenuBuilder &builder)
 {
-  builder.add_action ("gtk-new", _("New contact"),
+  builder.add_action ("new", _("New contact"),
 		      boost::bind (&Local::Heap::new_presentity, this, "", ""));
   return true;
 }
@@ -125,7 +125,7 @@ bool
 Local::Heap::populate_menu_for_group (const std::string name,
 				      Ekiga::MenuBuilder& builder)
 {
-  builder.add_action ("gtk-edit", _("Rename"),
+  builder.add_action ("edit", _("Rename"),
 		      boost::bind (&Local::Heap::on_rename_group, this, name));
   return true;
 }

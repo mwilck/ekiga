@@ -237,9 +237,9 @@ Local::Presentity::populate_menu (Ekiga::MenuBuilder &builder)
   if (populated)
     builder.add_separator ();
 
-  builder.add_action ("gtk-edit", _("_Edit"),
+  builder.add_action ("edit", _("_Edit"),
 		      boost::bind (&Local::Presentity::edit_presentity, this));
-  builder.add_action ("gtk-remove", _("_Remove"),
+  builder.add_action ("remove", _("_Remove"),
 		      boost::bind (&Local::Presentity::remove, this));
 
   return true;
