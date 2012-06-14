@@ -223,9 +223,9 @@ LM::HeapRoster::handle_message (LmConnection* /*connection*/,
 
   PresentityPtr item = find_item (base_jid);
 
-  if (type_attr == NULL
-      || (type_attr != NULL && strcmp (type_attr, "normal") == 0)
-      || (type_attr != NULL && strcmp (type_attr, "chat") == 0)) {
+  if (item && (type_attr == NULL
+	       || (type_attr != NULL && strcmp (type_attr, "normal") == 0)
+	       || (type_attr != NULL && strcmp (type_attr, "chat") == 0))) {
 
     // let's imagine it's a basic chat message
     LmMessageNode* body = lm_message_node_find_child (node, "body");
