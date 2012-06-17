@@ -178,9 +178,6 @@ static gboolean presentity_hide_show_offline (RosterViewGtk* self,
 static gboolean group_hide_show_offline (RosterViewGtk* self,
 					 GtkTreeModel* model,
 					 GtkTreeIter* iter);
-static gboolean heap_hide_show_offline (RosterViewGtk* self,
-					GtkTreeModel* model,
-					GtkTreeIter* iter);
 
 /* DESCRIPTION : Called to decide whether to show a line ; used to hide/show
  *               offline contacts on demand.
@@ -758,29 +755,6 @@ group_hide_show_offline (RosterViewGtk* self,
   return result;
 }
 
-static gboolean
-heap_hide_show_offline (RosterViewGtk* self,
-			GtkTreeModel* model,
-			GtkTreeIter* iter)
-{
-  gboolean result = false;
-
-  if (self->priv->show_offline_contacts)
-    result = TRUE;
-  else {
-
-    GtkTreeIter child_iter;
-    if (gtk_tree_model_iter_nth_child (model, &child_iter, iter, 0)) {
-
-      do {
-
-        result = group_hide_show_offline (self, model, &child_iter);
-      } while (!result && gtk_tree_model_iter_next (model, &child_iter));
-    }
-  }
-
-  return result;
-}
 
 static gboolean
 tree_model_filter_hide_show_offline (GtkTreeModel *model,
@@ -810,10 +784,6 @@ tree_model_filter_hide_show_offline (GtkTreeModel *model,
     break;
 
   case TYPE_HEAP:
-
-    result = heap_hide_show_offline (self, model, iter);
-    break;
-
   default:
     result = TRUE;
   }
@@ -927,6 +897,8 @@ on_heap_updated (RosterViewGtk* self,
 		      COLUMN_HEAP, heap.get (),
 		      COLUMN_NAME, heap->get_name ().c_str (),
 		      -1);
+
+  gtk_tree_view_expand_all (self->priv->tree_view);
 
   if (should_emit)
     g_signal_emit (self, signals[SELECTION_CHANGED_SIGNAL], 0);
@@ -1242,10 +1214,14 @@ roster_view_gtk_update_groups (RosterViewGtk *view,
           if (path) {
 
             if (existing_group == NULL) {
-              gtk_tree_view_expand_row (view->priv->tree_view, path, FALSE);
+              if (!gtk_tree_view_row_expanded (view->priv->tree_view, path)) {
+                gtk_tree_view_expand_row (view->priv->tree_view, path, TRUE);
+              }
             }
             else {
-              gtk_tree_view_collapse_row (view->priv->tree_view, path);
+              if (gtk_tree_view_row_expanded (view->priv->tree_view, path)) {
+                gtk_tree_view_collapse_row (view->priv->tree_view, path);
+              }
             }
 
             gtk_tree_path_free (path);
