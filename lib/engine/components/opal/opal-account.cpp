@@ -310,17 +310,6 @@ void Opal::Account::enable ()
 
   updated ();
   trigger_saving ();
-
-  if (presentity) {
-
-    // FIXME : the following actions should probably be done by opal itself,
-    // remembering what ekiga asked...
-    for (std::set<std::string>::iterator iter = watched_uris.begin ();
-         iter != watched_uris.end (); ++iter) {
-      presentity->SubscribeToPresence (PString (*iter));
-    }
-    presentity->SetLocalPresence (personal_state, presence_status);
-  }
 }
 
 
@@ -566,12 +555,19 @@ Opal::Account::publish (const Ekiga::PersonalDetails& details)
 void
 Opal::Account::fetch (const std::string uri)
 {
+  // Check if this is a presentity we watch
+  if (!is_myself (uri))
+    return;
+  watched_uris.insert (uri);
+
+  // Account is disabled, bye
   if (!is_enabled ())
     return;
 
-  if (is_myself (uri) && presentity) {
+  // Subscribe now
+  if (state == Registered) {
+    PTRACE(4, "Ekiga\tSubscribeToPresence for " << uri.c_str () << " (fetch)");
     presentity->SubscribeToPresence (PString (uri));
-    watched_uris.insert (uri);
   }
 }
 
@@ -599,6 +595,14 @@ Opal::Account::handle_registration_event (RegistrationState state_,
       status = _("Registered");
       boost::shared_ptr<Ekiga::PresenceCore> presence_core = core.get<Ekiga::PresenceCore> ("presence-core");
       boost::shared_ptr<Ekiga::PersonalDetails> personal_details = core.get<Ekiga::PersonalDetails> ("personal-details");
+      if (presentity) {
+        for (std::set<std::string>::iterator iter = watched_uris.begin ();
+             iter != watched_uris.end (); ++iter) {
+          PTRACE(4, "Ekiga\tSubscribeToPresence for " << iter->c_str () << " (Account Registered)");
+          presentity->SubscribeToPresence (PString (*iter));
+        }
+        presentity->SetLocalPresence (personal_state, presence_status);
+      }
       if (presence_core && personal_details)
 	presence_core->publish (personal_details);
       state = state_;
