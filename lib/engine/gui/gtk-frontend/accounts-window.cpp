@@ -64,6 +64,8 @@ struct _AccountsWindowPrivate
   Ekiga::ServiceCore &core;
   std::vector<boost::signals::connection> connections;
 
+  std::string presence;
+
   OptionalButtonsGtk toolbar;
 };
 
@@ -83,15 +85,6 @@ static gint account_clicked_cb (GtkWidget *w,
 				gpointer data);
 
 /* DESCRIPTION  :  This callback is called when the user clicks
- *                 on a "active" toggle in the accounts window.
- * BEHAVIOR     :  It tries to enable/disable the account
- * PRE          :  data is a valid pointer to the GmAccountsWindow.
- */
-static void account_toggled_cb (G_GNUC_UNUSED GtkCellRendererToggle* renderer,
-				gchar* path_string,
-				gpointer data);
-
-/* DESCRIPTION  :  This callback is called when the user clicks
  *                 on an account in the accounts window.
  * BEHAVIOR     :  It updates the toolbar actions to point to the right account,
  *                 and to be active/inactive depending if the action is
@@ -105,11 +98,11 @@ static void on_selection_changed (GtkTreeSelection* /*selection*/,
 enum {
 
   COLUMN_ACCOUNT,
+  COLUMN_ACCOUNT_ICON,
   COLUMN_ACCOUNT_IS_ENABLED,
   COLUMN_ACCOUNT_WEIGHT,
   COLUMN_ACCOUNT_ACCOUNT_NAME,
   COLUMN_ACCOUNT_STATUS,
-  COLUMN_ACCOUNT_STATE,
   COLUMN_ACCOUNT_NUMBER
 };
 
@@ -229,43 +222,6 @@ account_clicked_cb (G_GNUC_UNUSED GtkWidget *w,
   return TRUE;
 }
 
-static
-void account_toggled_cb (G_GNUC_UNUSED GtkCellRendererToggle* renderer,
-			 gchar* path_string,
-			 gpointer data)
-{
-  AccountsWindow *self = ACCOUNTS_WINDOW (data);
-
-  GtkTreeModel* model = NULL;
-  GtkTreePath* path = NULL;
-  GtkTreeIter iter;
-  Ekiga::Account* account = NULL;
-  gboolean is_enabled;
-
-  model = gtk_tree_view_get_model (GTK_TREE_VIEW (self->priv->accounts_list));
-  path = gtk_tree_path_new_from_string (path_string);
-
-  if (gtk_tree_model_get_iter (model, &iter, path)) {
-
-    gtk_tree_model_get (model, &iter,
-			COLUMN_ACCOUNT, &account,
-			COLUMN_ACCOUNT_IS_ENABLED, &is_enabled,
-			-1);
-
-    if (is_enabled) {
-
-      Ekiga::Activator builder ("user-offline");
-      account->populate_menu (builder);
-    } else {
-
-
-      Ekiga::Activator builder ("user-available");
-      account->populate_menu (builder);
-    }
-  }
-
-  gtk_tree_path_free (path);
-}
 
 static void
 on_selection_changed (GtkTreeSelection* /*selection*/,
@@ -305,6 +261,7 @@ static void
 gm_accounts_window_add_account (GtkWidget *window,
                                 Ekiga::AccountPtr account)
 {
+  std::string presence_icon;
   GtkTreeModel *model = NULL;
 
   GtkTreeIter iter;
@@ -314,11 +271,13 @@ gm_accounts_window_add_account (GtkWidget *window,
 
   model = gtk_tree_view_get_model (GTK_TREE_VIEW (self->priv->accounts_list));
 
+  presence_icon =  account->is_enabled () ? ("user-" + self->priv->presence) : "user-offline";
   gtk_list_store_append (GTK_LIST_STORE (model), &iter);
   gtk_list_store_set (GTK_LIST_STORE (model), &iter,
                       COLUMN_ACCOUNT, account.get (),
+		      COLUMN_ACCOUNT_ICON, presence_icon.c_str (),
 		      COLUMN_ACCOUNT_IS_ENABLED, account->is_enabled (),
-                      COLUMN_ACCOUNT_WEIGHT, PANGO_WEIGHT_NORMAL,
+                      COLUMN_ACCOUNT_WEIGHT, account->is_enabled () ? PANGO_WEIGHT_BOLD : PANGO_WEIGHT_NORMAL,
                       COLUMN_ACCOUNT_ACCOUNT_NAME, account->get_name ().c_str (),
                       -1);
 }
@@ -328,6 +287,7 @@ void
 gm_accounts_window_update_account (GtkWidget *accounts_window,
                                    Ekiga::AccountPtr account)
 {
+  std::string presence_icon;
   GtkTreeModel *model = NULL;
   GtkTreeSelection *selection = NULL;
 
@@ -349,10 +309,12 @@ gm_accounts_window_update_account (GtkWidget *accounts_window,
 
       if (caccount == account.get ()) {
 
+        presence_icon =  account->is_enabled () ? ("user-" + self->priv->presence) : "user-offline";
         gtk_list_store_set (GTK_LIST_STORE (model), &iter,
                             COLUMN_ACCOUNT, account.get (),
+                            COLUMN_ACCOUNT_ICON, presence_icon.c_str (),
 			    COLUMN_ACCOUNT_IS_ENABLED, account->is_enabled (),
-                            COLUMN_ACCOUNT_WEIGHT, PANGO_WEIGHT_NORMAL,
+                            COLUMN_ACCOUNT_WEIGHT, account->is_enabled () ? PANGO_WEIGHT_BOLD : PANGO_WEIGHT_NORMAL,
                             COLUMN_ACCOUNT_ACCOUNT_NAME, account->get_name ().c_str (),
 			    COLUMN_ACCOUNT_STATUS, account->get_status ().c_str (),
                             -1);
@@ -409,6 +371,47 @@ gm_accounts_window_remove_account (GtkWidget *accounts_window,
       }
     } while (gtk_tree_model_iter_next (GTK_TREE_MODEL (model), &iter));
   }
+}
+
+
+void
+gm_accounts_window_set_presence (GtkWidget *accounts_window,
+                                 const std::string & presence)
+{
+  std::string presence_icon;
+
+  Ekiga::Account *account = NULL;
+  GtkTreeModel *model = NULL;
+
+  GtkTreeIter iter;
+
+  g_return_if_fail (accounts_window != NULL);
+  AccountsWindow *self = ACCOUNTS_WINDOW (accounts_window);
+
+  /* on the one end we update the view */
+  model = gtk_tree_view_get_model (GTK_TREE_VIEW (self->priv->accounts_list));
+
+  if (gtk_tree_model_get_iter_first (GTK_TREE_MODEL (model), &iter)){
+
+    do {
+      gtk_tree_model_get (GTK_TREE_MODEL (model), &iter,
+			  COLUMN_ACCOUNT, &account, -1);
+
+      presence_icon =  account->is_enabled () ? ("user-" + presence) : "user-offline";
+      gtk_list_store_set (GTK_LIST_STORE (model), &iter,
+                          COLUMN_ACCOUNT_ICON, presence_icon.c_str (),
+                          -1);
+    } while (gtk_tree_model_iter_next (GTK_TREE_MODEL (model), &iter));
+  }
+}
+
+
+static void
+on_personal_details_updated (AccountsWindow* self,
+                             boost::shared_ptr<Ekiga::PersonalDetails> details)
+{
+  self->priv->presence = details->get_presence ();
+  gm_accounts_window_set_presence (GTK_WIDGET (self), details->get_presence ());
 }
 
 
@@ -559,6 +562,7 @@ accounts_window_new (Ekiga::ServiceCore &core)
     "",
     "",
     "",
+    "",
     _("Account Name"),
     _("Status")
   };
@@ -591,6 +595,7 @@ accounts_window_new (Ekiga::ServiceCore &core)
   /* The accounts list store */
   list_store = gtk_list_store_new (COLUMN_ACCOUNT_NUMBER,
                                    G_TYPE_POINTER,
+                                   G_TYPE_STRING,  /* Icon */
 				   G_TYPE_BOOLEAN, /* Is account active? */
 				   G_TYPE_INT,
 				   G_TYPE_STRING,  /* Account Name */
@@ -605,19 +610,16 @@ accounts_window_new (Ekiga::ServiceCore &core)
   aobj = gtk_widget_get_accessible (GTK_WIDGET (self->priv->accounts_list));
   atk_object_set_name (aobj, _("Accounts"));
 
-  renderer = gtk_cell_renderer_toggle_new ();
-  column = gtk_tree_view_column_new_with_attributes (_("Active"),
-						     renderer,
-						     "active",
-						     COLUMN_ACCOUNT_IS_ENABLED,
-						     NULL);
+  renderer = gtk_cell_renderer_pixbuf_new ();
+  column = gtk_tree_view_column_new ();
+  g_object_set (renderer, "yalign", 0.5, "xpad", 5, NULL);
+  gtk_tree_view_column_pack_start (column, renderer, FALSE);
+  gtk_tree_view_column_add_attribute (column, renderer,
+				      "icon-name", COLUMN_ACCOUNT_ICON);
   gtk_tree_view_append_column (GTK_TREE_VIEW (self->priv->accounts_list), column);
-  g_signal_connect (renderer, "toggled",
-		    G_CALLBACK (account_toggled_cb),
-		    (gpointer)self);
 
   /* Add all text renderers */
-  for (int i = COLUMN_ACCOUNT_ACCOUNT_NAME ; i < COLUMN_ACCOUNT_NUMBER - 1 ; i++) {
+  for (int i = COLUMN_ACCOUNT_ACCOUNT_NAME ; i < COLUMN_ACCOUNT_NUMBER ; i++) {
 
     renderer = gtk_cell_renderer_text_new ();
     column = gtk_tree_view_column_new_with_attributes (column_names [i],
@@ -698,6 +700,11 @@ accounts_window_new (Ekiga::ServiceCore &core)
   conn = account_core->account_removed.connect (boost::bind (&on_account_removed, _1, _2, self));
   self->priv->connections.push_back (conn);
   conn = account_core->questions.connect (boost::bind (&on_handle_questions, _1, (gpointer) self));
+  self->priv->connections.push_back (conn);
+
+  boost::shared_ptr<Ekiga::PersonalDetails> details = core.get<Ekiga::PersonalDetails> ("personal-details");
+  self->priv->presence = details->get_presence ();
+  conn = details->updated.connect (boost::bind (&on_personal_details_updated, self, details));
   self->priv->connections.push_back (conn);
 
   account_core->visit_banks (boost::bind (&on_visit_banks, _1, self));
