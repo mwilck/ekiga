@@ -677,10 +677,10 @@ accounts_window_new (Ekiga::ServiceCore &core)
   self->priv->toolbar.add_button ("user-offline", GTK_BUTTON (button));
   button = gtk_button_new_with_mnemonic (_("Edi_t"));
   gtk_box_pack_start (GTK_BOX (button_box), button, FALSE, FALSE, 3);
-  self->priv->toolbar.add_button ("gtk-edit", GTK_BUTTON (button));
+  self->priv->toolbar.add_button ("edit", GTK_BUTTON (button));
   button = gtk_button_new_with_mnemonic (_("_Remove"));
   gtk_box_pack_start (GTK_BOX (button_box), button, FALSE, FALSE, 3);
-  self->priv->toolbar.add_button ("gtk-remove", GTK_BUTTON (button));
+  self->priv->toolbar.add_button ("remove", GTK_BUTTON (button));
   gtk_box_pack_start (GTK_BOX (hbox), button_box, FALSE, FALSE, 10);
 
   populate_menu (GTK_WIDGET (self)); // This will add static and dynamic actions
