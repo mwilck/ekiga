@@ -300,7 +300,7 @@ void ConfBridge::on_property_changed (std::string key, GmConfEntry *entry)
   // H.323 keys
   //
 #ifdef HAVE_H323
-  else if (key.find (SIP_KEY) != string::npos) {
+  else if (key.find (H323_KEY) != string::npos) {
 
     boost::shared_ptr<Opal::H323::EndPoint> h323_manager = boost::dynamic_pointer_cast<Opal::H323::EndPoint> (manager.get_protocol_manager ("h323"));
     if (h323_manager) {
