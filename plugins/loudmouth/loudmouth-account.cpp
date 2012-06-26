@@ -440,9 +440,9 @@ LM::Account::populate_menu (Ekiga::MenuBuilder& builder)
 
   builder.add_separator ();
 
-  builder.add_action ("gtk-edit", _("Edit"),
+  builder.add_action ("edit", _("Edit"),
 		      boost::bind (&LM::Account::edit, this));
-  builder.add_action ("gtk-remove", _("_Remove"),
+  builder.add_action ("remove", _("_Remove"),
 		      boost::bind (&LM::Account::remove, this));
 
   return true;

@@ -127,11 +127,11 @@ OPENLDAP::Source::common_add (BookPtr book)
 bool
 OPENLDAP::Source::populate_menu (Ekiga::MenuBuilder &builder)
 {
-  builder.add_action ("gtk-add", _("Add an LDAP Address Book"),
+  builder.add_action ("add", _("Add an LDAP Address Book"),
 		      boost::bind (&OPENLDAP::Source::new_book, this));
   if (!has_ekiga_net_book ()) {
 
-    builder.add_action ("gtk-add", _("Add the Ekiga.net Directory"),
+    builder.add_action ("add", _("Add the Ekiga.net Directory"),
 			boost::bind (&OPENLDAP::Source::new_ekiga_net_book, this));
   }
   return true;
