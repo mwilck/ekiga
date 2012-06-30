@@ -522,7 +522,7 @@ zoom_out_changed_cb (G_GNUC_UNUSED GtkWidget *widget,
   Ekiga::DisplayInfo display_info;
   ekiga_call_window_set_video_size (EKIGA_CALL_WINDOW (data), GM_CIF_WIDTH, GM_CIF_HEIGHT);
 
-  display_info.zoom = gm_conf_get_int ((char *) data);
+  display_info.zoom = gm_conf_get_int (VIDEO_DISPLAY_KEY "zoom");
 
   if (display_info.zoom  > 50)
     display_info.zoom  = (unsigned int) (display_info.zoom  / 2);
