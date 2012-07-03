@@ -104,7 +104,7 @@ History::Book::get_name () const
 void
 History::Book::add (xmlNodePtr node)
 {
-  add_contact (ContactPtr (new Contact (core, doc, node)));
+  common_add (ContactPtr (new Contact (core, doc, node)));
 }
 
 void
@@ -126,7 +126,9 @@ History::Book::add (const std::string & name,
 
     save ();
 
-    add_contact (contact);
+    common_add (contact);
+
+    enforce_size_limit();
   }
 }
 
@@ -200,4 +202,34 @@ History::Book::on_cleared_call (boost::shared_ptr<Ekiga::CallManager> /*manager*
        call->get_start_time (),
        call->get_duration (),
        (call->is_outgoing ()?PLACED:RECEIVED));
+}
+
+void
+History::Book::common_add (ContactPtr contact)
+{
+  add_contact (contact);
+  ordered_contacts.push_back (contact);
+}
+
+void
+History::Book::enforce_size_limit()
+{
+  bool flag = false;
+
+  while (ordered_contacts.size() > 100) {
+
+    ContactPtr contact = ordered_contacts.front ();
+    ordered_contacts.pop_front();
+    xmlNodePtr node = contact->get_node ();
+    contact->removed();
+    xmlUnlinkNode(node);
+    xmlFreeNode(node);
+    flag = true;
+  }
+
+  if (flag) {
+
+    save();
+    updated();
+  }
 }

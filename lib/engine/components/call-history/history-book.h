@@ -101,8 +101,13 @@ namespace History
 			  boost::shared_ptr<Ekiga::Call> call,
 			  std::string message);
 
+    void common_add (ContactPtr contact);
+
+    void enforce_size_limit();
+
     Ekiga::ServiceCore &core;
     boost::shared_ptr<xmlDoc> doc;
+    std::list<ContactPtr> ordered_contacts;
   };
 
   typedef boost::shared_ptr<Book> BookPtr;
