@@ -40,11 +40,13 @@
 
 #include "contact-core.h"
 
+/*
 static void
 on_search ()
 {
   std::cout << "Search not implemented yet" << std::endl;
 }
+*/
 
 Ekiga::ContactCore::~ContactCore ()
 {
@@ -57,8 +59,8 @@ Ekiga::ContactCore::populate_menu (MenuBuilder &builder)
 {
   bool populated = false;
 
-  builder.add_action ("search", _("_Find"), &on_search);
-  populated = true;
+  //builder.add_action ("search", _("_Find"), &on_search);
+  //populated = true;
 
   for (std::list<SourcePtr >::const_iterator iter = sources.begin ();
        iter != sources.end ();
