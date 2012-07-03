@@ -89,6 +89,8 @@ History::Book::Book (Ekiga::ServiceCore &_core) :
 
   call_core->missed_call.connect (boost::bind (&History::Book::on_missed_call, this, _1, _2));
   call_core->cleared_call.connect (boost::bind (&History::Book::on_cleared_call, this, _1, _2, _3));
+
+  enforce_size_limit ();
 }
 
 History::Book::~Book ()
