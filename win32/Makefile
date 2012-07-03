@@ -298,6 +298,7 @@ binaries:
 	hash tar unzip zip xz wget aclocal autoheader libtoolize automake autoconf pkg-config gnome-autogen.sh bison gdk-pixbuf-csource || (echo we need more binaries ; exit 1)
 	[ -f /usr/share/gnome-doc-utils/gnome-doc-utils.make ] || (echo gnome-doc-tools not installed; exit 1)
 	[ -f /usr/lib/`dpkg-architecture -qDEB_HOST_MULTIARCH`/pkgconfig/gconf-2.0.pc -o /usr/lib/pkgconfig/gconf-2.0.pc ] || (echo libgconf2-dev not installed; exit 1)
+	[ -f /usr/share/icons/gnome/index.theme ] || (echo gnome-icon-theme not installed; exit 1)
 	hash makensis || (echo nsis not installed; exit 1)
 	hash xmlto || (echo xmlto not installed; exit 1)
 	hash yasm || (echo yasm not installed, mandatory for x264; exit 1)
@@ -807,6 +808,20 @@ endif
 			install -m 644 $(EKIGA_DIR)/help/$$lc/figures/*.png $(EKIGA_PREFIX)/help/$$lc/figures; \
 		fi \
 	done
+
+	# install icons not found in GTK Windows file
+# some icons are found inside (e.g. document-open-recent), others are found
+#   in ekiga code (e.g. phone-pick-up); the others must be installed manually
+# I still do not understand why document-open-recent is found and avatar-default is not (both are used similarly in ekiga code)
+	for i in camera-video avatar-default input-dialpad user-away user-busy user-available x-office-address-book gtk-clear gtk-add computer network-server; do \
+		for j in `echo /usr/share/icons/gnome/*/*/$${i}.png`; do \
+			[ $$j != '/usr/share/icons/gnome/*/*/'$$i.png ] || (echo ERROR: icon $$i not found, exiting; exit 1); \
+			dir=`echo $$j|cut -d/ -f6-7`; \
+			mkdir -p $(EKIGA_PREFIX)/share/icons/hicolor/$$dir; \
+			cp $$j $(EKIGA_PREFIX)/share/icons/hicolor/$$dir; \
+		done; \
+	done
+	cp /usr/share/icons/gnome/index.theme $(EKIGA_PREFIX)/share/icons/hicolor
 
 	#cd $(TARGETDIR); zip -9r ekiga-$(EKIGA_VER).zip Ekiga
 	#zip -9r $(TARGETDIR)/ekiga_build-$(EKIGA_VER).zip Makefile #$(EKIGA_WIN32_DIFF_DIR)
