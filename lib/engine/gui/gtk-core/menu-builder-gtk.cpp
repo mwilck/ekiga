@@ -62,8 +62,6 @@ convert_icon_to_gtk (const std::string icon)
     result = "gtk-clear";
   if (icon == "remove")
     result = "gtk-remove";
-  if (icon == "search")
-    result = "gtk-search";
   if (icon == "refresh")
     result = "gtk-refresh";
 
