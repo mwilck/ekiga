@@ -55,6 +55,7 @@ struct _CallHistoryViewGtkPrivate
   {}
 
   boost::shared_ptr<History::Book> book;
+  GtkListStore* store;
   GtkTreeView* tree;
   std::vector<boost::signals::connection> connections;
 };
@@ -144,6 +145,13 @@ on_visit_contacts (Ekiga::ContactPtr contact,
   return true;
 }
 
+static void
+on_book_updated (CallHistoryViewGtk* self)
+{
+  gtk_list_store_clear (self->priv->store);
+  self->priv->book->visit_contacts (boost::bind (&on_visit_contacts, _1, self->priv->store));
+}
+
 /* react to user clicks */
 static gint
 on_clicked (GtkWidget *tree,
@@ -228,6 +236,12 @@ call_history_view_gtk_dispose (GObject* obj)
        iter++)
     iter->disconnect ();
 
+  if (view->priv->store) {
+
+    g_object_unref (view->priv->store);
+    view->priv->store = NULL;
+  }
+
   if (view->priv->tree) {
 
     GtkTreeSelection* selection = NULL;
@@ -297,7 +311,6 @@ call_history_view_gtk_new (boost::shared_ptr<History::Book> book)
 {
   CallHistoryViewGtk* self = NULL;
 
-  GtkListStore *store = NULL;
   GtkTreeViewColumn *column = NULL;
   GtkCellRenderer *renderer = NULL;
   GtkTreeSelection *selection = NULL;
@@ -314,14 +327,13 @@ call_history_view_gtk_new (boost::shared_ptr<History::Book> book)
 				  GTK_POLICY_AUTOMATIC, GTK_POLICY_AUTOMATIC);
 
   /* build the store then the tree */
-  store = gtk_list_store_new (COLUMN_NUMBER,
-			      G_TYPE_POINTER,
-			      G_TYPE_STRING,
-			      G_TYPE_STRING,
-			      G_TYPE_STRING);
+  self->priv->store = gtk_list_store_new (COLUMN_NUMBER,
+					  G_TYPE_POINTER,
+					  G_TYPE_STRING,
+					  G_TYPE_STRING,
+					  G_TYPE_STRING);
 
-  self->priv->tree = (GtkTreeView*)gtk_tree_view_new_with_model (GTK_TREE_MODEL (store));
-  g_object_unref (store);
+  self->priv->tree = (GtkTreeView*)gtk_tree_view_new_with_model (GTK_TREE_MODEL (self->priv->store));
   gtk_tree_view_set_headers_visible (GTK_TREE_VIEW (self->priv->tree), FALSE);
   gtk_container_add (GTK_CONTAINER (self), GTK_WIDGET (self->priv->tree));
 
@@ -351,14 +363,12 @@ call_history_view_gtk_new (boost::shared_ptr<History::Book> book)
   g_signal_connect (self->priv->tree, "event-after",
 		    G_CALLBACK (on_clicked), &(*book));
 
-  /* connect to the signals */
-  conn = book->cleared.connect (boost::bind (&gtk_list_store_clear, store));
-  self->priv->connections.push_back (conn);
-  conn = book->contact_added.connect (boost::bind (&on_contact_added, _1, store));
+  /* connect to the signal */
+  conn = book->updated.connect (boost::bind (&on_book_updated, self));
   self->priv->connections.push_back (conn);
 
-  /* populate */
-  book->visit_contacts (boost::bind (&on_visit_contacts, _1, store));
+  /* initial populate */
+  on_book_updated(self);
 
   return (GtkWidget*)self;
 }
