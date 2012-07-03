@@ -94,8 +94,6 @@ namespace History
 
     void add (xmlNodePtr node);
 
-    void common_add (Contact &contact);
-
     void on_missed_call (boost::shared_ptr<Ekiga::CallManager> manager,
 			 boost::shared_ptr<Ekiga::Call> call);
 
