@@ -186,7 +186,7 @@ Opal::Account::Account (Ekiga::ServiceCore & _core,
 
 Opal::Account::~Account ()
 {
-  if (state == Registered)
+  if (!dead && state == Registered)
     endpoint->unsubscribe (*this, presentity);
 }
 
