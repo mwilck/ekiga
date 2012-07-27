@@ -192,20 +192,20 @@ NSISSYTEM_DIR := /usr/share/nsis/Contrib/Modern\ UI
 NSISPLUGIN_DIR := $(BUILDROOT)/nsisplugins
 
 # gtk headers
-GTK_VER := 2.24.8-1
-GTK_URL := http://ftp.gnome.org/pub/gnome/binaries/win32/gtk+/2.24
+GTK_VER := 2.22.0-2
+GTK_URL := http://ftp.gnome.org/pub/gnome/binaries/win32/gtk+/2.22
 GTK_ARCHIVE := gtk+-dev_$(GTK_VER)_win32.zip
 
 # gtk library
 # this is an installer, not a zip of files to be manually installed
 # see http://gtk-win.sourceforge.net for more information
-GTK_BIN_VER := 2.24
+GTK_BIN_VER := 2.22
 GTK_INSTALLER_URL := http://downloads.sourceforge.net/gtk-win
-GTK_BIN_EXE := gtk2-runtime-2.24.8-2011-12-03-ash.exe
+GTK_BIN_EXE := gtk2-runtime-2.22.0-2010-10-21-ash.exe
 
 ##############   gtk headers dependencies
 # during building, ekiga uses gtk.h, which needs headers of various libraries
-GLIB_VER := 2.28.8-1
+GLIB_VER := 2.28.1-1
 GLIB_URL := http://ftp.gnome.org/pub/gnome/binaries/win32/glib/2.28
 GLIB_ARCHIVE := glib-dev_$(GLIB_VER)_win32.zip
 
@@ -213,12 +213,12 @@ ATK_VER := 1.32.0-1
 ATK_URL := http://ftp.gnome.org/pub/gnome/binaries/win32/atk/1.32
 ATK_ARCHIVE := atk-dev_$(ATK_VER)_win32.zip
 
-CAIRO_VER := 1.10.2-2
+CAIRO_VER := 1.10.2-1
 CAIRO_URL := http://ftp.gnome.org/pub/gnome/binaries/win32/dependencies
 CAIRO_ARCHIVE := cairo-dev_$(CAIRO_VER)_win32.zip
 
-PANGO_VER := 1.29.4-1
-PANGO_URL := http://ftp.gnome.org/pub/gnome/binaries/win32/pango/1.29
+PANGO_VER := 1.28.3-1
+PANGO_URL := http://ftp.gnome.org/pub/gnome/binaries/win32/pango/1.28
 PANGO_ARCHIVE := pango-dev_$(PANGO_VER)_win32.zip
 
 FREETYPE_VER := 2.4.4-1
@@ -229,8 +229,8 @@ FONTCONFIG_VER := 2.8.0-2
 FONTCONFIG_URL := http://ftp.gnome.org/pub/gnome/binaries/win32/dependencies/
 FONTCONFIG_ARCHIVE := fontconfig-dev_$(FONTCONFIG_VER)_win32.zip
 
-GDKPIXBUF_VER := 2.24.0-1
-GDKPIXBUF_URL := http://ftp.gnome.org/pub/gnome/binaries/win32/gdk-pixbuf/2.24
+GDKPIXBUF_VER := 2.22.1-1
+GDKPIXBUF_URL := http://ftp.gnome.org/pub/gnome/binaries/win32/gdk-pixbuf/2.22
 GDKPIXBUF_ARCHIVE := gdk-pixbuf-dev_$(GDKPIXBUF_VER)_win32.zip
 
 PNG_VER := 1.4.3-1
