@@ -599,6 +599,25 @@ void CallManager::set_video_options (const CallManager::VideoOptions & options)
                                        300);
       }
 
+      switch (options.extended_video_roles) {
+      case 0 :
+        media_format.SetOptionInteger(OpalVideoFormat::ContentRoleMaskOption(), 0);
+        break;
+
+      case 2 : // Force Presentation (slides)
+        media_format.SetOptionInteger(OpalVideoFormat::ContentRoleMaskOption(),
+                                      OpalVideoFormat::ContentRoleBit(OpalVideoFormat::ePresentation));
+        break;
+
+      case 3 : // Force Live (main)
+        media_format.SetOptionInteger(OpalVideoFormat::ContentRoleMaskOption(),
+                                      OpalVideoFormat::ContentRoleBit(OpalVideoFormat::eMainRole));
+        break;
+
+        default :
+          break;
+      }
+
       OpalMediaFormat::SetRegisteredMediaFormat(media_format);
     }
   }
@@ -661,6 +680,22 @@ void CallManager::get_video_options (CallManager::VideoOptions & options) const
         (int) (media_format.GetOptionInteger (OpalVideoFormat::TargetBitRateOption ()) / 1000);
       options.temporal_spatial_tradeoff =
         media_format.GetOptionInteger (OpalVideoFormat::TemporalSpatialTradeOffOption ());
+
+      int evr = media_format.GetOptionInteger (OpalVideoFormat::OpalVideoFormat::ContentRoleMaskOption ());
+      switch (evr) {
+      case 0: // eNoRole
+        options.extended_video_roles = 0;
+        break;
+      case 1: // ePresentation
+        options.extended_video_roles = 2;
+        break;
+      case 2: // eMainRole
+        options.extended_video_roles = 3;
+        break;
+      default:
+        options.extended_video_roles = 1;
+        break;
+      }
 
       break;
     }

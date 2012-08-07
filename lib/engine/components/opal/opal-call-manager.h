@@ -139,13 +139,15 @@ public:
           maximum_frame_rate (0), 
           temporal_spatial_tradeoff (0), 
           maximum_received_bitrate (0), 
-          maximum_transmitted_bitrate (0) {};
+          maximum_transmitted_bitrate (0),
+          extended_video_roles (0) {};
 
         unsigned size;
         unsigned maximum_frame_rate;
         unsigned temporal_spatial_tradeoff;
         unsigned maximum_received_bitrate;
         unsigned maximum_transmitted_bitrate;
+        unsigned extended_video_roles;
       };
 
     void set_video_options (const VideoOptions & options);

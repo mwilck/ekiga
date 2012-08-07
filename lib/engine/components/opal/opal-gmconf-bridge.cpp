@@ -110,6 +110,8 @@ ConfBridge::ConfBridge (Ekiga::Service & _service)
   keys.push_back (H323_KEY "enable_fast_start");
   keys.push_back (H323_KEY "dtmf_mode");
   keys.push_back (H323_KEY "forward_host");
+  keys.push_back (H323_KEY "enable_h239");
+  keys.push_back (H323_KEY "video_role");
 
   keys.push_back (NAT_KEY "stun_server");
   keys.push_back (NAT_KEY "enable_stun");
@@ -327,6 +329,15 @@ void ConfBridge::on_property_changed (std::string key, GmConfEntry *entry)
         if (str != NULL)
           h323_manager->set_forward_uri (str);
         g_free (str);
+      }
+      else if (key == H323_KEY "video_role") {
+        CallManager::VideoOptions options;
+        manager.get_video_options (options);
+        options.extended_video_roles = gm_conf_entry_get_int (entry);
+        manager.set_video_options (options);
+      }
+      else if (key == H323_KEY "enable_h239") {
+        h323_manager->SetDefaultH239Control(gm_conf_entry_get_bool (entry));
       }
     }
   }

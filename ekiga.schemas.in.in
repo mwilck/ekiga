@@ -453,6 +453,28 @@
       </locale>
     </schema>
     <schema>
+      <key>/schemas/apps/@PACKAGE_NAME@/protocols/h323/enable_h239</key>
+      <applyto>/apps/@PACKAGE_NAME@/protocols/h323/enable_h239</applyto>
+      <owner>Ekiga</owner>
+      <type>bool</type>
+      <default>false</default>
+      <locale name="C">
+	<short>Enable H.239</short>
+	<long>This enables H.239 capability for additional video roles</long>
+      </locale>
+    </schema>
+    <schema>
+      <key>/schemas/apps/@PACKAGE_NAME@/protocols/h323/video_role</key>
+      <applyto>/apps/@PACKAGE_NAME@/protocols/h323/video_role</applyto>
+      <owner>Ekiga</owner>
+      <type>int</type>
+      <default>0</default>
+      <locale name="C">
+	<short>Extented Video Roles</short>
+	<long>Select the H.239 Video Role. The values can be 0 (for "disable extended video"), 1 (for "allow per content role mask"), 2 (for "force presentation"), or 3 (for "force live role")</long>
+      </locale>
+    </schema>
+    <schema>
       <key>/schemas/apps/@PACKAGE_NAME@/protocols/h323/dtmf_mode</key>
       <applyto>/apps/@PACKAGE_NAME@/protocols/h323/dtmf_mode</applyto>
       <owner>Ekiga</owner>
