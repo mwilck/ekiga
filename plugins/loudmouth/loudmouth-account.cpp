@@ -339,27 +339,27 @@ LM::Account::edit ()
   request->instructions (_("Please update the following fields:"));
 
   xml_str = xmlGetProp (node, BAD_CAST "name");
-  request->text ("name", _("Name:"), (const char*)xml_str, std::string ());
+  request->text ("name", _("Name:"), (const char*)xml_str, _("Account name, e.g. MyAccount"));
   xmlFree (xml_str);
 
   xml_str = xmlGetProp (node, BAD_CAST "user");
-  request->text ("user", _("User:"), (const char*)xml_str, std::string ());
+  request->text ("user", _("User:"), (const char*)xml_str, _("The user name, e.g. jim"));
   xmlFree (xml_str);
 
   xml_str = xmlGetProp (node, BAD_CAST "server");
-  request->text ("server", _("Server:"), (const char*)xml_str, std::string ());
+  request->text ("server", _("Server:"), (const char*)xml_str, _("The server, e.g. jabber.org"));
   xmlFree (xml_str);
 
   xml_str = xmlGetProp (node, BAD_CAST "port");
-  request->text ("port", _("Port:"), (const char*)xml_str, std::string ());
+  request->text ("port", _("Port:"), (const char*)xml_str, _("The transport protocol port, if different than the default"));
   xmlFree (xml_str);
 
   xml_str = xmlGetProp (node, BAD_CAST "resource");
-  request->text ("resource", _("Resource:"), (const char*)xml_str, std::string ());
+  request->text ("resource", _("Resource:"), (const char*)xml_str, _("The resource, such as home or work, allowing to distinguish among several terminals registered to the same account; leave empty if you do not know what it is"));
   xmlFree (xml_str);
 
   xml_str = xmlGetProp (node, BAD_CAST "password");
-  request->private_text ("password", _("Password:"), (const char*)xml_str, std::string ());
+  request->private_text ("password", _("Password:"), (const char*)xml_str, _("Password associated to the user"));
   xmlFree (xml_str);
 
   xml_str = xmlGetProp (node, BAD_CAST "startup");
