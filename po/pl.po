@@ -8,8 +8,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: ekiga\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2012-08-08 00:14+0200\n"
-"PO-Revision-Date: 2012-08-08 00:15+0200\n"
+"POT-Creation-Date: 2012-08-08 23:01+0200\n"
+"PO-Revision-Date: 2012-08-08 23:03+0200\n"
 "Last-Translator: Piotr Drąg <piotrdrag@gmail.com>\n"
 "Language-Team: Polish <gnomepl@aviary.pl>\n"
 "Language: pl\n"
@@ -1172,6 +1172,7 @@ msgstr "Proszę zaktualizować następujące pola:"
 #: ../lib/engine/components/opal/opal-account.cpp:433
 #: ../lib/engine/components/opal/opal-bank.cpp:123
 #: ../lib/engine/components/opal/opal-bank.cpp:133
+#: ../plugins/loudmouth/loudmouth-account.cpp:342
 msgid "Account name, e.g. MyAccount"
 msgstr "Nazwa konta, np. MojeKonto"
 
@@ -1205,6 +1206,7 @@ msgstr "Użytkownik:"
 #: ../lib/engine/components/opal/opal-bank.cpp:116
 #: ../lib/engine/components/opal/opal-bank.cpp:125
 #: ../lib/engine/components/opal/opal-bank.cpp:135
+#: ../plugins/loudmouth/loudmouth-account.cpp:346
 msgid "The user name, e.g. jim"
 msgstr "Nazwa użytkownika, np. jan"
 
@@ -1236,6 +1238,7 @@ msgstr "Hasło:"
 #: ../lib/engine/components/opal/opal-bank.cpp:118
 #: ../lib/engine/components/opal/opal-bank.cpp:127
 #: ../lib/engine/components/opal/opal-bank.cpp:137
+#: ../plugins/loudmouth/loudmouth-account.cpp:362
 msgid "Password associated to the user"
 msgstr "Hasło powiązane z użytkownikiem"
 
@@ -3114,14 +3117,32 @@ msgstr "błąd podczas uwierzytelniania konta biblioteki loudmouth"
 msgid "Server:"
 msgstr "Serwer:"
 
+#: ../plugins/loudmouth/loudmouth-account.cpp:350
+msgid "The server, e.g. jabber.org"
+msgstr "Serwer, np. jabber.org"
+
 #: ../plugins/loudmouth/loudmouth-account.cpp:354
 msgid "Port:"
 msgstr "Port:"
+
+#: ../plugins/loudmouth/loudmouth-account.cpp:354
+msgid "The transport protocol port, if different than the default"
+msgstr "Port protokołu przesyłania, jeśli jest inny niż domyślny"
 
 #: ../plugins/loudmouth/loudmouth-account.cpp:358
 #: ../plugins/loudmouth/loudmouth-bank.cpp:128
 msgid "Resource:"
 msgstr "Zasób:"
+
+#: ../plugins/loudmouth/loudmouth-account.cpp:358
+msgid ""
+"The resource, such as home or work, allowing to distinguish among several "
+"terminals registered to the same account; leave empty if you do not know "
+"what it is"
+msgstr ""
+"Zasób, taki jak dom lub praca, umożliwiający rozróżnienie między kilkoma "
+"terminalami zarejestrowanymi na tym samym koncie; należy pozostawić puste, "
+"jeśli użytkownik nie wie, co to jest"
 
 #: ../plugins/loudmouth/loudmouth-bank.cpp:111
 msgid "_Add a jabber/XMPP account"
