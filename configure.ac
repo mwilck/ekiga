@@ -814,10 +814,14 @@ gnomeconfdir=`eval "echo ${sysconfdir}"`
 AC_SUBST(gnomedatadir)
 AC_SUBST(gnomeconfdir)
 
-if test "x${prefix}" = "xNONE"; then
-  AC_DEFINE_UNQUOTED(DATA_DIR, "${ac_default_prefix}/${DATADIRNAME}",[fix])
-else
-  AC_DEFINE_UNQUOTED(DATA_DIR, "${prefix}/${DATADIRNAME}",[fix])
+# on Windows, data_dir is obtained at run-time, since it depends on
+#   the installation directory, so do not define it (to avoids bugs)
+if test "x${gm_platform}" != "xmingw" ; then
+   if test "x${prefix}" = "xNONE"; then
+      AC_DEFINE_UNQUOTED(DATA_DIR, "${ac_default_prefix}/${DATADIRNAME}",[fix])
+   else
+      AC_DEFINE_UNQUOTED(DATA_DIR, "${prefix}/${DATADIRNAME}",[fix])
+   fi
 fi
 
 dnl ###########################################################################
