@@ -1397,6 +1397,7 @@ prepare_summary_page (EkigaAssistant *assistant)
 
   /* The connection type */
   if (gtk_combo_box_get_active_iter (GTK_COMBO_BOX (assistant->priv->connection_type), &citer)) {
+
     gchar *value = NULL;
     GtkTreeModel *cmodel = gtk_combo_box_get_model (GTK_COMBO_BOX (assistant->priv->connection_type));
     gtk_tree_model_get (cmodel, &citer, CNX_LABEL_COLUMN, &value, -1);
@@ -1428,61 +1429,84 @@ prepare_summary_page (EkigaAssistant *assistant)
 
   /* The audio playing device */
   gtk_list_store_append (model, &iter);
-  if (!gtk_combo_box_get_active_iter (GTK_COMBO_BOX (assistant->priv->audio_player), &citer))
+  if (!gtk_combo_box_get_active_iter (GTK_COMBO_BOX (assistant->priv->audio_player), &citer)) {
+
     g_warn_if_reached ();
-  gtk_tree_model_get (gtk_combo_box_get_model (GTK_COMBO_BOX (assistant->priv->audio_player)), &citer, 0, &value, -1);
-  gtk_list_store_set (model, &iter,
-                      SUMMARY_KEY_COLUMN, _("Audio Output Device"),
-                      SUMMARY_VALUE_COLUMN, value,
-                      -1);
-  g_free (value);
+
+  } else {
+
+    gchar* value = NULL;
+    gtk_tree_model_get (gtk_combo_box_get_model (GTK_COMBO_BOX (assistant->priv->audio_player)), &citer, 0, &value, -1);
+    gtk_list_store_set (model, &iter,
+			SUMMARY_KEY_COLUMN, _("Audio Output Device"),
+			SUMMARY_VALUE_COLUMN, value,
+			-1);
+    g_free (value);
+  }
 
   /* The audio recording device */
   gtk_list_store_append (model, &iter);
-  if (!gtk_combo_box_get_active_iter (GTK_COMBO_BOX (assistant->priv->audio_recorder), &citer))
+  if (!gtk_combo_box_get_active_iter (GTK_COMBO_BOX (assistant->priv->audio_recorder), &citer)) {
+
     g_warn_if_reached ();
-  gtk_tree_model_get (gtk_combo_box_get_model (GTK_COMBO_BOX (assistant->priv->audio_recorder)), &citer, 0, &value, -1);
-  gtk_list_store_set (model, &iter,
-                      SUMMARY_KEY_COLUMN, _("Audio Input Device"),
-                      SUMMARY_VALUE_COLUMN, value,
-                      -1);
-  g_free (value);
+
+  } else {
+
+    gchar* value = NULL;
+    gtk_tree_model_get (gtk_combo_box_get_model (GTK_COMBO_BOX (assistant->priv->audio_recorder)), &citer, 0, &value, -1);
+    gtk_list_store_set (model, &iter,
+			SUMMARY_KEY_COLUMN, _("Audio Input Device"),
+			SUMMARY_VALUE_COLUMN, value,
+			-1);
+    g_free (value);
+  }
 
   /* The video manager */
   gtk_list_store_append (model, &iter);
-  if (!gtk_combo_box_get_active_iter (GTK_COMBO_BOX (assistant->priv->video_device), &citer))
+  if (!gtk_combo_box_get_active_iter (GTK_COMBO_BOX (assistant->priv->video_device), &citer)) {
+
     g_warn_if_reached ();
-  gtk_tree_model_get (gtk_combo_box_get_model (GTK_COMBO_BOX (assistant->priv->video_device)), &citer, 0, &value, -1);
-  gtk_list_store_set (model, &iter,
-                      SUMMARY_KEY_COLUMN, _("Video Input Device"),
-                      SUMMARY_VALUE_COLUMN, value,
-                      -1);
-  g_free (value);
+  } else {
+
+    gchar* value = NULL;
+    gtk_tree_model_get (gtk_combo_box_get_model (GTK_COMBO_BOX (assistant->priv->video_device)), &citer, 0, &value, -1);
+    gtk_list_store_set (model, &iter,
+			SUMMARY_KEY_COLUMN, _("Video Input Device"),
+			SUMMARY_VALUE_COLUMN, value,
+			-1);
+    g_free (value);
+  }
 
   /* The ekiga.net account */
-  gtk_list_store_append (model, &iter);
-  if (!gtk_toggle_button_get_active (GTK_TOGGLE_BUTTON (assistant->priv->skip_ekiga_net)))
-    value = g_strdup_printf ("sip:%s@ekiga.net",
-                             gtk_entry_get_text (GTK_ENTRY (assistant->priv->username)));
-  else
-	value = g_strdup ("None");
-  gtk_list_store_set (model, &iter,
-					  SUMMARY_KEY_COLUMN, _("SIP URI"),
-					  SUMMARY_VALUE_COLUMN, value,
-					  -1);
-  g_free (value);
+  {
+    gchar* value = NULL;
+    gtk_list_store_append (model, &iter);
+    if (!gtk_toggle_button_get_active (GTK_TOGGLE_BUTTON (assistant->priv->skip_ekiga_net)))
+      value = g_strdup_printf ("sip:%s@ekiga.net",
+			       gtk_entry_get_text (GTK_ENTRY (assistant->priv->username)));
+    else
+      value = g_strdup ("None");
+    gtk_list_store_set (model, &iter,
+			SUMMARY_KEY_COLUMN, _("SIP URI"),
+			SUMMARY_VALUE_COLUMN, value,
+			-1);
+    g_free (value);
+  }
 
   /* Ekiga Call Out */
-  gtk_list_store_append (model, &iter);
-  if (!gtk_toggle_button_get_active (GTK_TOGGLE_BUTTON (assistant->priv->skip_ekiga_out)))
-    value = g_strdup (gtk_entry_get_text (GTK_ENTRY (assistant->priv->dusername)));
-  else
-	value = g_strdup ("None");
-  gtk_list_store_set (model, &iter,
-                      SUMMARY_KEY_COLUMN, _("Ekiga Call Out"),
-                      SUMMARY_VALUE_COLUMN, value,
-                      -1);
-  g_free (value);
+  {
+    gchar *value = NULL;
+    gtk_list_store_append (model, &iter);
+    if (!gtk_toggle_button_get_active (GTK_TOGGLE_BUTTON (assistant->priv->skip_ekiga_out)))
+      value = g_strdup (gtk_entry_get_text (GTK_ENTRY (assistant->priv->dusername)));
+    else
+      value = g_strdup ("None");
+    gtk_list_store_set (model, &iter,
+			SUMMARY_KEY_COLUMN, _("Ekiga Call Out"),
+			SUMMARY_VALUE_COLUMN, value,
+			-1);
+    g_free (value);
+  }
 }
 
 
