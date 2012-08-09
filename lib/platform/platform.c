@@ -27,14 +27,16 @@
 
 
 /*
- *                         platform-win32.c  -  description
+ *                         platform.c  -  description
  *                         ------------------------------------------
  *   begin                : Nov 2006
  *   copyright            : (C) 2006-2007 by Julien Puydt
  *   description          : Implementation of platform-specific workarounds
  */
 
-#include "gm-platform.h"
+#include "platform.h"
+
+#ifdef WIN32
 #include "winpaths.h"
 
 /* Yes, static variables should be avoided -- but we will need those paths
@@ -44,22 +46,28 @@
 static gchar *basedir = NULL;
 static gchar *sysconfdir = NULL;
 static gchar *datadir = NULL;
+#endif
 
 void
 gm_platform_init ()
 {
+#ifdef WIN32
   basedir = g_strdup (g_win32_get_package_installation_directory_of_module (NULL));
   sysconfdir = g_strdup (basedir);
   datadir = g_strdup (basedir);
+#endif
 }
 
 void gm_platform_shutdown ()
 {
+#ifdef WIN32
   g_free (basedir);
   g_free (sysconfdir);
   g_free (datadir);
+#endif
 }
 
+#ifdef WIN32
 const gchar *
 win32_sysconfdir ()
 {
@@ -71,3 +79,4 @@ win32_datadir ()
 {
   return datadir;
 }
+#endif

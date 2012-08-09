@@ -27,23 +27,25 @@
 
 
 /*
- *                         platform-generic.c  -  description 
+ *                         platform.h  -  description
  *                         ------------------------------------------
- *   begin                : Nov 2006
- *   copyright            : (C) 2006-2007 by Julien Puydt
- *   description          : Implementation of platform-specific workarounds
+ *   begin                : written in 2006 by Julien Puydt
+ *   copyright            : (c) 2006-2007 by Julien Puydt
+ *   description          : interface for the annoying platforms workarounds
+ *
  */
 
-#include "gm-platform.h"
+#ifndef __GM_PLATFORM_H__
+#define __GM_PLATFORM_H__
 
-void
-gm_platform_init ()
-{
-  /* nothing */
-}
+#include <glib.h>
 
-void
-gm_platform_shutdown ()
-{
-  /* nothing */
-}
+G_BEGIN_DECLS
+
+void gm_platform_init ();
+
+void gm_platform_shutdown ();
+
+G_END_DECLS
+
+#endif

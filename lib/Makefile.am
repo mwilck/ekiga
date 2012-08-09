@@ -86,14 +86,12 @@ libekiga_la_SOURCES += \
 # Sources out of the platform directory
 ##
 
-libekiga_la_SOURCES += $(top_srcdir)/lib/platform/gm-platform.h
+libekiga_la_SOURCES += \
+	$(top_srcdir)/lib/platform/platform.h \
+	$(top_srcdir)/lib/platform/platform.c
 
 if WIN32
-libekiga_la_SOURCES += \
-	$(top_srcdir)/lib/platform/platform-win32.c \
-	$(top_srcdir)/lib/platform/winpaths.h
-else
-libekiga_la_SOURCES += $(top_srcdir)/lib/platform/platform-generic.c
+libekiga_la_SOURCES += $(top_srcdir)/lib/platform/winpaths.h
 endif
 
 ##

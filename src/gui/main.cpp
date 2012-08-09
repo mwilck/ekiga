@@ -38,7 +38,7 @@
 #include "config.h"
 #include "common.h"
 
-#include "platform/gm-platform.h"
+#include "platform/platform.h"
 
 #include <glib/gi18n.h>
 
