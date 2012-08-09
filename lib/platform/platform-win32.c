@@ -44,7 +44,6 @@
 static gchar *basedir = NULL;
 static gchar *sysconfdir = NULL;
 static gchar *datadir = NULL;
-static gchar *plugindir = NULL;
 
 void
 gm_platform_init ()
@@ -52,7 +51,6 @@ gm_platform_init ()
   basedir = g_strdup (g_win32_get_package_installation_directory_of_module (NULL));
   sysconfdir = g_strdup (basedir);
   datadir = g_strdup (basedir);
-  plugindir = g_strdup_printf ("%s/lib/contacts", basedir);
 }
 
 void gm_platform_shutdown ()
@@ -60,7 +58,6 @@ void gm_platform_shutdown ()
   g_free (basedir);
   g_free (sysconfdir);
   g_free (datadir);
-  g_free (plugindir);
 }
 
 const gchar *
@@ -73,10 +70,4 @@ const gchar *
 win32_datadir ()
 {
   return datadir;
-}
-
-const gchar *
-win32_plugindir ()
-{
-  return plugindir;
 }

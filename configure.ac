@@ -796,16 +796,6 @@ AC_DEFINE_UNQUOTED(GETTEXT_PACKAGE, "$GETTEXT_PACKAGE",[fix])
 AM_GLIB_GNU_GETTEXT
 
 
-dnl #########################################################################
-dnl Set PACKAGE_LOCALE_DIR in config.h.
-dnl #########################################################################
-if test "x${prefix}" = "xNONE"; then
-  AC_DEFINE_UNQUOTED(PACKAGE_LOCALE_DIR, "${ac_default_prefix}/${DATADIRNAME}/locale",[fix])
-else
-  AC_DEFINE_UNQUOTED(PACKAGE_LOCALE_DIR, "${prefix}/${DATADIRNAME}/locale",[fix])
-fi
-
-
 dnl ###########################################################################
 dnl  Data and configuration directories for the system
 dnl ###########################################################################
