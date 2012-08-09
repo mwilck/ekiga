@@ -114,11 +114,14 @@ void GnomeMeeting::BuildGUI (Ekiga::ServiceCore& services)
   // FIXME should be moved in ekiga_assistant_new
   gtk_window_set_transient_for (GTK_WINDOW (assistant_window), GTK_WINDOW (main_window));
 
-  /* GM is started */
   PTRACE (1, "Ekiga version "
-	  << MAJOR_VERSION << "." << MINOR_VERSION << "." << BUILD_NUMBER);
-  PTRACE (1, "OPAL version " << OPAL_VERSION);
+          << MAJOR_VERSION << "." << MINOR_VERSION << "." << BUILD_NUMBER);
+#ifdef EKIGA_REVISION
+  PTRACE (1, "Ekiga git revision: " << EKIGA_REVISION);
+#endif
+  PTRACE (1, "Debug level: " << debug_level);
   PTRACE (1, "PTLIB version " << PTLIB_VERSION);
+  PTRACE (1, "OPAL version " << OPAL_VERSION);
 #if defined HAVE_XV || defined HAVE_DX
   PTRACE (1, "Accelerated rendering support enabled");
 #else

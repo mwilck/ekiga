@@ -167,12 +167,6 @@ main (int argc,
 			| PTrace::Blocks | PTrace::DateAndTime);
 #endif
 
-  PTRACE(1, "Ekiga version " << MAJOR_VERSION << "." << MINOR_VERSION << "." << BUILD_NUMBER);
-#ifdef EKIGA_REVISION
-  PTRACE(1, "Ekiga git revision: " << EKIGA_REVISION);
-#endif
-  PTRACE(1, "Debug level: " << debug_level);
-
 #ifdef HAVE_DBUS
   if (!ekiga_dbus_claim_ownership ()) {
     ekiga_dbus_client_show ();
