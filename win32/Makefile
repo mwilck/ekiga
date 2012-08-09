@@ -813,7 +813,7 @@ endif
 # some icons are found inside (e.g. document-open-recent), others are found
 #   in ekiga code (e.g. phone-pick-up); the others must be installed manually
 # I still do not understand why document-open-recent is found and avatar-default is not (both are used similarly in ekiga code)
-	for i in camera-video avatar-default input-dialpad user-away user-busy user-available user-offline x-office-address-book gtk-clear gtk-add computer network-server; do \
+	for i in camera-video avatar-default input-dialpad user-away user-busy user-available user-offline x-office-address-book gtk-clear gtk-add gtk-remove computer network-server; do \
 		for j in `echo /usr/share/icons/gnome/*/*/$${i}.png`; do \
 			[ $$j != '/usr/share/icons/gnome/*/*/'$$i.png ] || (echo ERROR: icon $$i not found, exiting; exit 1); \
 			dir=`echo $$j|cut -d/ -f6-7`; \
