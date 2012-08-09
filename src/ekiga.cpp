@@ -119,7 +119,6 @@ void GnomeMeeting::BuildGUI (Ekiga::ServiceCore& services)
 #ifdef EKIGA_REVISION
   PTRACE (1, "Ekiga git revision: " << EKIGA_REVISION);
 #endif
-  PTRACE (1, "Debug level: " << debug_level);
   PTRACE (1, "PTLIB version " << PTLIB_VERSION);
   PTRACE (1, "OPAL version " << OPAL_VERSION);
 #if defined HAVE_XV || defined HAVE_DX
