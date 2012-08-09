@@ -1385,7 +1385,6 @@ prepare_summary_page (EkigaAssistant *assistant)
   GtkListStore *model = assistant->priv->summary_model;
   GtkTreeIter iter;
   GtkTreeIter citer;
-  gchar *value;
 
   gtk_list_store_clear (model);
 
@@ -1398,6 +1397,7 @@ prepare_summary_page (EkigaAssistant *assistant)
 
   /* The connection type */
   if (gtk_combo_box_get_active_iter (GTK_COMBO_BOX (assistant->priv->connection_type), &citer)) {
+    gchar *value = NULL;
     GtkTreeModel *cmodel = gtk_combo_box_get_model (GTK_COMBO_BOX (assistant->priv->connection_type));
     gtk_tree_model_get (cmodel, &citer, CNX_LABEL_COLUMN, &value, -1);
 
@@ -1411,14 +1411,20 @@ prepare_summary_page (EkigaAssistant *assistant)
 
   /* The audio ringing device */
   gtk_list_store_append (model, &iter);
-  if (!gtk_combo_box_get_active_iter (GTK_COMBO_BOX (assistant->priv->audio_ringer), &citer))
+  if (!gtk_combo_box_get_active_iter (GTK_COMBO_BOX (assistant->priv->audio_ringer), &citer)) {
+
     g_warn_if_reached ();
-  gtk_tree_model_get (gtk_combo_box_get_model (GTK_COMBO_BOX (assistant->priv->audio_ringer)), &citer, 0, &value, -1);
-  gtk_list_store_set (model, &iter,
-                      SUMMARY_KEY_COLUMN, _("Audio Ringing Device"),
-                      SUMMARY_VALUE_COLUMN, value,
-                      -1);
-  g_free (value);
+
+  } else {
+
+    gchar *value = NULL;
+    gtk_tree_model_get (gtk_combo_box_get_model (GTK_COMBO_BOX (assistant->priv->audio_ringer)), &citer, 0, &value, -1);
+    gtk_list_store_set (model, &iter,
+			SUMMARY_KEY_COLUMN, _("Audio Ringing Device"),
+			SUMMARY_VALUE_COLUMN, value,
+			-1);
+    g_free (value);
+  }
 
   /* The audio playing device */
   gtk_list_store_append (model, &iter);
