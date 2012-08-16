@@ -65,7 +65,7 @@ namespace Opal {
       PCLASSINFO(EndPoint, H323EndPoint);
 
   public:
-      EndPoint (CallManager &_manager, Ekiga::ServiceCore & core, unsigned listen_port);
+      EndPoint (CallManager &_manager, Ekiga::ServiceCore & core, unsigned listen_port, unsigned kind_of_net);
 
       ~EndPoint ();
 
@@ -101,6 +101,7 @@ namespace Opal {
       bool set_listen_port (unsigned port);
       const Ekiga::CallProtocolManager::Interface & get_listen_interface () const;
 
+      void set_initial_bandwidth (unsigned kind_of_net);
 
       /* H.323 CallProtocolManager */
       void set_forward_uri (const std::string & uri);

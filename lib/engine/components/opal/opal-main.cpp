@@ -56,6 +56,8 @@
 #define H323_KEY "/apps/" PACKAGE_NAME "/protocols/h323/"
 #endif
 
+#define GENERAL_KEY "/apps/" PACKAGE_NAME "/general/"
+
 // opal manages its endpoints itself, so we must be wary
 struct null_deleter
 {
@@ -136,7 +138,8 @@ struct OPALSpark: public Ekiga::Spark
 
 #ifdef HAVE_H323
       unsigned h323_port = gm_conf_get_int (H323_KEY "listen_port");
-      boost::shared_ptr<H323::EndPoint> h323_manager (new H323::EndPoint (*call_manager, core, h323_port), null_deleter ());
+      unsigned kind_of_net = gm_conf_get_int (GENERAL_KEY "kind_of_net");
+      boost::shared_ptr<H323::EndPoint> h323_manager (new H323::EndPoint (*call_manager, core, h323_port, kind_of_net), null_deleter ());
       call_manager->add_protocol_manager (h323_manager);
       contact_core->add_contact_decorator (h323_manager);
       presence_core->add_presentity_decorator (h323_manager);

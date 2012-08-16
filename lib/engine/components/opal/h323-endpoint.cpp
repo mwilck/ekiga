@@ -80,7 +80,7 @@ namespace Opal {
 
 
 /* The class */
-Opal::H323::EndPoint::EndPoint (Opal::CallManager & _manager, Ekiga::ServiceCore & _core, unsigned _listen_port)
+Opal::H323::EndPoint::EndPoint (Opal::CallManager & _manager, Ekiga::ServiceCore & _core, unsigned _listen_port, unsigned _kind_of_net)
 : H323EndPoint (_manager),
     manager (_manager),
     core (_core)
@@ -90,7 +90,7 @@ Opal::H323::EndPoint::EndPoint (Opal::CallManager & _manager, Ekiga::ServiceCore
   listen_port = (_listen_port > 0 ? _listen_port : 1720);
 
   /* Initial requested bandwidth */
-  SetInitialBandwidth (40000);
+  set_initial_bandwidth (_kind_of_net);
 
   /* Start listener */
   set_listen_port (listen_port);
@@ -229,6 +229,31 @@ Opal::H323::EndPoint::set_listen_port (unsigned port)
   }
 
   return false;
+}
+
+void
+Opal::H323::EndPoint::set_initial_bandwidth (unsigned kind_of_net)
+{
+  unsigned bandwidth = GetInitialBandwidth ();
+
+  switch (kind_of_net) {
+  case 0: // PSTN
+  case 1: // ISDN
+    bandwidth = 1280;
+    break;
+  case 2: // DSL128
+  case 3: // DSL512
+    bandwidth = 40000;
+    break;
+  case 4:
+    bandwidth = 100000;
+    break;
+  default:
+    break;
+  }
+
+  /* Initial requested bandwidth */
+  SetInitialBandwidth (bandwidth);
 }
 
 
