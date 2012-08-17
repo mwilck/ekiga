@@ -94,6 +94,10 @@ case $target_os in
     gm_platform="linux"
     ;;
 
+  gnu* )
+    gm_platform="gnu"
+    ;;
+
   FreeBSD* | freebsd* | kfreebsd* | NetBSD* | netbsd* )
     gm_platform="freebsd"
     ;;
@@ -110,7 +114,7 @@ case $target_os in
     ;;
 
   *)
-    AC_MSG_ERROR([Only Linux, FreeBSD, NetBSD, Solaris and Mac OS X are supported. Please contact the author to know how you can add more OS types.])
+    AC_MSG_ERROR([Only Linux, Hurd, FreeBSD, NetBSD, Solaris and Mac OS X are supported. Please contact the author to know how you can add more OS types.])
     ;;
 esac
 AC_MSG_RESULT([yes])
