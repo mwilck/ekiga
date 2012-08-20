@@ -1,19 +1,26 @@
                           -*- mode: outline -*-
 * Major changes between ekiga 3.4.0 and 3.2.7, details are below
 
-* Changes in ekiga 4.0 (2012-06-06)
+* Changes in ekiga 3.9.90 (2012-08-20)
 ** Major user-visible fixes
 - Major overhaul of the main window
 - Auto-answering to calls (in 3.3.0 in fact)
 - Add a new page in assistant with an introduction to accounts
 - Unregister accounts when quitting
+- Speed up startup by not getting canonical name of servers
+- Partial support of H.239
 - Speed up registration when packets get lost
 - Use optimised flags for H.264 video decoder
+- Limit history book to 100 entries, fixing some crashes
 - Improvements to the still experimental loudmouth plugin
 - Fix chat messages are received several times if several network interfaces
 - Set presence to offline upon quitting
 - Blacklist NSE, fixing registration with some registrars, such as Eutelia
 - Canonise address introduced when adding/editing a contact in roster
+- Use gnome icons instead of ekiga's own
+- Some fixes on online/offline presence
+- Disable IPv6 by default, which caused some problems (will be enabled later)
+- Fix a race condition in PulseAudio plugin
 ** Protocol fixes
 - Fixes for Contact field during registration:
   - Use two additional compatibility mode for some bogus registrars
@@ -22,6 +29,7 @@
 - Fixes on INVITE packets in some corner cases
 - Fix own presence stopping to be sent after some time
 - Fix loading of codecs without an encoding name, e.g. MS-IMA-ADPCM
+- Use SIP OPTIONS to refresh NAT bindings
 - Numerous other fixes, especially on H264 support
 ** Windows port fixes
 - Fix crash when using gdb
@@ -29,9 +37,12 @@
 - Reduce startup time (explicitly precise plugin directory)
 - Other miscellaneous improvements on building
 ** Build fixes
-- Add arm-linux-gnueabihf (armhf) support
+- Add arm-linux-gnueabihf (armhf) and GNU/Hurd support
 - Support current libav/ffmpeg libraries
 - Fix compile errors with gcc 4.7
+- Fix boost detection on some 64 bit machines
+- Support new API of Evolution-Data-Server 3.5.3 too
+- Fix error when linking with -Wl,--as-needed
 ** Translation updates
 
 * Changes in ekiga 3.3.2 (2011-08-23)
