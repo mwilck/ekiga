@@ -898,8 +898,6 @@ on_heap_updated (RosterViewGtk* self,
 		      COLUMN_NAME, heap->get_name ().c_str (),
 		      -1);
 
-  gtk_tree_view_expand_all (self->priv->tree_view);
-
   if (should_emit)
     g_signal_emit (self, signals[SELECTION_CHANGED_SIGNAL], 0);
 }
