@@ -152,10 +152,6 @@ struct _EkigaCallWindowPrivate
   GtkObject *adj_contrast;
 #endif
 
-  bool audio_transmission_active;
-  bool audio_reception_active;
-  bool video_transmission_active;
-  bool video_reception_active;
   std::string transmitted_video_codec;
   std::string transmitted_audio_codec;
   std::string received_video_codec;
@@ -361,7 +357,7 @@ static void on_stream_opened_cb (boost::shared_ptr<Ekiga::CallManager>  /*manage
 
 static void on_stream_closed_cb (boost::shared_ptr<Ekiga::CallManager>  /*manager*/,
                                  boost::shared_ptr<Ekiga::Call>  /* call */,
-                                 std::string name,
+                                 G_GNUC_UNUSED std::string name,
                                  Ekiga::Call::StreamType type,
                                  bool is_transmitting,
                                  gpointer self);
@@ -444,7 +440,6 @@ static void ekiga_call_window_zooms_menu_update_sensitivity (EkigaCallWindow *cw
 
 static void ekiga_call_window_channels_menu_update_sensitivity (EkigaCallWindow *cw,
                                                                 bool is_video,
-                                                                G_GNUC_UNUSED bool is_receiving,
                                                                 bool is_transmitting);
 
 static gboolean ekiga_call_window_transfer_dialog_run (EkigaCallWindow *cw,
@@ -873,7 +868,7 @@ on_videoinput_device_closed_cb (Ekiga::VideoInputManager & /* manager */,
 {
   EkigaCallWindow *cw = EKIGA_CALL_WINDOW (self);
 
-  ekiga_call_window_channels_menu_update_sensitivity (cw, true, false, false);
+  ekiga_call_window_channels_menu_update_sensitivity (cw, true, false);
   ekiga_call_window_update_logo (cw);
 
   gtk_widget_set_sensitive (cw->priv->video_settings_button,  false);
@@ -1183,6 +1178,25 @@ on_retrieved_call_cb (boost::shared_ptr<Ekiga::CallManager>  /*manager*/,
 }
 
 static void
+set_codec (EkigaCallWindowPrivate *priv,
+           std::string name,
+           bool is_video,
+           bool is_transmitting)
+{
+  if (is_video) {
+    if (is_transmitting)
+      priv->transmitted_video_codec = name;
+    else
+      priv->received_video_codec = name;
+  } else {
+    if (is_transmitting)
+      priv->transmitted_audio_codec = name;
+    else
+      priv->received_audio_codec = name;
+  }
+}
+
+static void
 on_stream_opened_cb (boost::shared_ptr<Ekiga::CallManager>  /*manager*/,
                      boost::shared_ptr<Ekiga::Call>  /* call */,
                      std::string name,
@@ -1191,82 +1205,26 @@ on_stream_opened_cb (boost::shared_ptr<Ekiga::CallManager>  /*manager*/,
                      gpointer self)
 {
   EkigaCallWindow *cw = EKIGA_CALL_WINDOW (self);
-
-  bool is_closing = false;
-  bool is_encoding = is_transmitting;
   bool is_video = (type == Ekiga::Call::Video);
 
-  /* FIXME: This should not be needed anymore */
-  if (type == Ekiga::Call::Video) {
-
-    is_closing ?
-      (is_encoding ? cw->priv->video_transmission_active = false : cw->priv->video_reception_active = false)
-      :(is_encoding ? cw->priv->video_transmission_active = true : cw->priv->video_reception_active = true);
-
-    if (is_encoding)
-      is_closing ? cw->priv->transmitted_video_codec = "" : cw->priv->transmitted_video_codec = name;
-    else
-      is_closing ? cw->priv->received_video_codec = "" : cw->priv->received_video_codec = name;
-  }
-  else {
-
-    is_closing ?
-      (is_encoding ? cw->priv->audio_transmission_active = false : cw->priv->audio_reception_active = false)
-      :(is_encoding ? cw->priv->audio_transmission_active = true : cw->priv->audio_reception_active = true);
-
-    if (is_encoding)
-      is_closing ? cw->priv->transmitted_audio_codec = "" : cw->priv->transmitted_audio_codec = name;
-    else
-      is_closing ? cw->priv->received_audio_codec = "" : cw->priv->received_audio_codec = name;
-  }
-
-  ekiga_call_window_channels_menu_update_sensitivity (cw, is_video,
-                                                      is_video ? cw->priv->video_reception_active : cw->priv->audio_reception_active,
-                                                      is_video ? cw->priv->video_transmission_active : cw->priv->audio_transmission_active);
+  set_codec (cw->priv, name, is_video, is_transmitting);
+  ekiga_call_window_channels_menu_update_sensitivity (cw, is_video, true);
 }
 
 
 static void
 on_stream_closed_cb (boost::shared_ptr<Ekiga::CallManager>  /*manager*/,
                                  boost::shared_ptr<Ekiga::Call>  /* call */,
-                                 std::string name,
+                                 G_GNUC_UNUSED std::string name,
                                  Ekiga::Call::StreamType type,
                                  bool is_transmitting,
                                  gpointer self)
 {
   EkigaCallWindow *cw = EKIGA_CALL_WINDOW (self);
-
-  bool is_closing = true;
-  bool is_encoding = is_transmitting;
   bool is_video = (type == Ekiga::Call::Video);
 
-  /* FIXME: This should not be needed anymore */
-  if (type == Ekiga::Call::Video) {
-
-    is_closing ?
-      (is_encoding ? cw->priv->video_transmission_active = false : cw->priv->video_reception_active = false)
-      :(is_encoding ? cw->priv->video_transmission_active = true : cw->priv->video_reception_active = true);
-
-    if (is_encoding)
-      is_closing ? cw->priv->transmitted_video_codec = "" : cw->priv->transmitted_video_codec = name;
-    else
-      is_closing ? cw->priv->received_video_codec = "" : cw->priv->received_video_codec = name;
-  }
-  else {
-
-    is_closing ?
-      (is_encoding ? cw->priv->audio_transmission_active = false : cw->priv->audio_reception_active = false)
-      :(is_encoding ? cw->priv->audio_transmission_active = true : cw->priv->audio_reception_active = true);
-
-    if (is_encoding)
-      is_closing ? cw->priv->transmitted_audio_codec = "" : cw->priv->transmitted_audio_codec = name;
-    else
-      is_closing ? cw->priv->received_audio_codec = "" : cw->priv->received_audio_codec = name;
-  }
-
-  ekiga_call_window_channels_menu_update_sensitivity (cw, is_video,
-                                                      is_video ? cw->priv->video_reception_active : cw->priv->audio_reception_active,
-                                                      is_video ? cw->priv->video_transmission_active : cw->priv->audio_transmission_active);
+  set_codec (cw->priv, "", is_video, is_transmitting);
+  ekiga_call_window_channels_menu_update_sensitivity (cw, is_video, false);
 }
 
 static void
@@ -1377,8 +1335,8 @@ ekiga_call_window_update_calling_state (EkigaCallWindow *cw,
       ekiga_call_window_set_call_hold (cw, false);
 
       /* Update the sensitivity, all channels are closed */
-      ekiga_call_window_channels_menu_update_sensitivity (cw, true, false, false);
-      ekiga_call_window_channels_menu_update_sensitivity (cw, false, false, false);
+      ekiga_call_window_channels_menu_update_sensitivity (cw, true, false);
+      ekiga_call_window_channels_menu_update_sensitivity (cw, false, false);
 
       /* Update the menus and toolbar items */
       gtk_menu_set_sensitive (cw->priv->main_menu, "connect", false);
@@ -2100,7 +2058,6 @@ ekiga_call_window_zooms_menu_update_sensitivity (EkigaCallWindow *cw,
 static void
 ekiga_call_window_channels_menu_update_sensitivity (EkigaCallWindow *cw,
                                                     bool is_video,
-                                                    G_GNUC_UNUSED bool is_receiving,
                                                     bool is_transmitting)
 {
   g_return_if_fail (EKIGA_IS_CALL_WINDOW (cw));
@@ -2479,10 +2436,6 @@ ekiga_call_window_init (EkigaCallWindow *cw)
   cw->priv->timeout_id = -1;
   cw->priv->levelmeter_timeout_id = -1;
   cw->priv->calling_state = Standby;
-  cw->priv->audio_transmission_active = false;
-  cw->priv->audio_reception_active = false;
-  cw->priv->video_transmission_active = false;
-  cw->priv->video_reception_active = false;
 #ifndef WIN32
   cw->priv->video_widget_gc = NULL;
 #endif
