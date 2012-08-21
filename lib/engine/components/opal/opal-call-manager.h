@@ -157,12 +157,12 @@ private:
     void create_call_in_main (Opal::Call* call);
     OpalCall *CreateCall (void *uri);
     void emit_removed_in_main (Ekiga::Call* call);
-    void DestroyCall (OpalCall *);
+    virtual void DestroyCall (OpalCall *);
 
-    bool OnOpenMediaStream (OpalConnection &,
-                            OpalMediaStream &);
+    virtual bool OnOpenMediaStream (OpalConnection &,
+                                    OpalMediaStream &);
 
-    void OnClosedMediaStream (const OpalMediaStream &);
+    virtual void OnClosedMediaStream (const OpalMediaStream &);
 
     void GetAllowedFormats (OpalMediaFormatList & full_list);
 
