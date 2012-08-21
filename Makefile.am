@@ -85,7 +85,7 @@ schemas_DATA = $(SCHEMAS_FILE)
 endif
 
 install-schemas: @PACKAGE_NAME@.schemas
-	GCONF_CONFIG_SOURCE=$(GCONF_SCHEMA_CONFIG_SOURCE) gconftool-2 --makefile-install-rule $(SCHEMAS_FILE) 2>&1 > /dev/null
+	GCONF_CONFIG_SOURCE=$(GCONF_SCHEMA_CONFIG_SOURCE) gconftool-2 --makefile-install-rule $(SCHEMAS_FILE) >/dev/null 2>&1
 	gconftool-2 --shutdown
 
 if GCONF_SCHEMAS_INSTALL
