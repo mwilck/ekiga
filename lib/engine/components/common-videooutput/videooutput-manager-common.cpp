@@ -123,12 +123,14 @@ GMVideoOutputManager::Main ()
 void GMVideoOutputManager::set_frame_data (const char* data,
 					   unsigned width,
 					   unsigned height,
-					   bool local,
+					   unsigned type,
 					   int devices_nbr)
-{ 
+{
   Ekiga::DisplayInfo local_display_info;
 
   get_display_info(local_display_info);
+
+  bool local = (type == 0);
 
   var_mutex.Wait();
 
@@ -141,7 +143,7 @@ void GMVideoOutputManager::set_frame_data (const char* data,
     memcpy (lframeStore.GetPointer(), data, (width * height * 3) >> 1);
     local_frame_received = true;
   }
-  else {
+  else if (type == 1) { // REMOTE 1
 
     /* memcpy the frame */
     rframeStore.SetSize (width * height * 3);
@@ -149,9 +151,13 @@ void GMVideoOutputManager::set_frame_data (const char* data,
     current_frame.remote_height= height;
     memcpy (rframeStore.GetPointer(), data, (width * height * 3) >> 1);
     remote_frame_received = true;
+  } else {
+    var_mutex.Signal();
+    run_thread.Signal();
+    return; // nothing happened
   }
 
-  /* If there is only one device open, ignore the setting, and 
+  /* If there is only one device open, ignore the setting, and
    * display what we can actually display.
    */
   if (devices_nbr <= 1) {
@@ -164,19 +170,19 @@ void GMVideoOutputManager::set_frame_data (const char* data,
       local_frame_received = false;
     }
 
-    current_frame.both_streams_active = false;;
+    current_frame.both_streams_active = false;
   } else {
-  
+
     if (local_frame_received && !remote_frame_received)
         local_display_info.mode = Ekiga::VO_MODE_LOCAL;
-  
+
     if (!local_frame_received && remote_frame_received)
         local_display_info.mode = Ekiga::VO_MODE_REMOTE;
 
     current_frame.both_streams_active = local_frame_received & remote_frame_received;
   }
   current_frame.mode = local_display_info.mode;
-  current_frame.zoom = local_display_info.zoom; 
+  current_frame.zoom = local_display_info.zoom;
 
   if (local) {
 

@@ -48,7 +48,7 @@ PMutex PVideoOutputDevice_EKIGA::videoDisplay_mutex;
 /* The Methods */
 PVideoOutputDevice_EKIGA::PVideoOutputDevice_EKIGA (Ekiga::ServiceCore & _core)
 : core (_core)
-{ 
+{
   PWaitAndSignal m(videoDisplay_mutex); /* FIXME: if it's really needed
 					 * then we may crash : it's wrong to
 					 * use 'core' from a thread -- mutex
@@ -58,9 +58,9 @@ PVideoOutputDevice_EKIGA::PVideoOutputDevice_EKIGA (Ekiga::ServiceCore & _core)
   videooutput_core = core.get<Ekiga::VideoOutputCore> ("videooutput-core");
 
   is_active = FALSE;
-  
+
   /* Used to distinguish between input and output device. */
-  device_id = 0; 
+  device_id = LOCAL;
 }
 
 
@@ -73,22 +73,26 @@ PVideoOutputDevice_EKIGA::~PVideoOutputDevice_EKIGA()
 
   if (is_active) {
     devices_nbr--;
-    if (devices_nbr==0)
+    if (devices_nbr == 0)
       videooutput_core->stop();
     is_active = false;
   }
 }
 
 
-bool 
+bool
 PVideoOutputDevice_EKIGA::Open (const PString &name,
 				G_GNUC_UNUSED bool unused)
-{ 
-  if (name == "EKIGAIN") 
-    device_id = 1; 
+{
+  if (name == "EKIGAIN") {
+    device_id = LOCAL;
+  } else { // EKIGAOUT
+    PString devname = name;
+    PINDEX id = devname.Find("ID=");
+    device_id = REMOTE + atoi(&devname[id + 3]);
+  }
 
-  return TRUE; 
-
+  return TRUE;
 }
 
 PStringArray PVideoOutputDevice_EKIGA::GetDeviceNames() const
@@ -113,15 +117,15 @@ bool PVideoOutputDevice_EKIGA::SetFrameData (unsigned x,
 					   const BYTE * data,
 					   bool endFrame)
 {
- PWaitAndSignal m(videoDisplay_mutex);
+  PWaitAndSignal m(videoDisplay_mutex);
 
   if (x > 0 || y > 0)
     return FALSE;
 
-  if (width < 160 || width > 2048) 
+  if (width < 160 || width > 2048)
     return FALSE;
-  
-  if (height <120 || height > 2048) 
+
+  if (height <120 || height > 2048)
     return FALSE;
 
   if (!endFrame)
@@ -135,7 +139,7 @@ bool PVideoOutputDevice_EKIGA::SetFrameData (unsigned x,
     devices_nbr++;
   }
 
-  videooutput_core->set_frame_data((const char*) data, width, height, (device_id == LOCAL), devices_nbr);
+  videooutput_core->set_frame_data((const char*) data, width, height, device_id, devices_nbr);
 
   return TRUE;
 }
@@ -146,5 +150,5 @@ bool PVideoOutputDevice_EKIGA::SetColourFormat (const PString & colour_format)
     return PVideoOutputDevice::SetColourFormat (colour_format);
   }
 
-  return FALSE;  
+  return FALSE;
 }

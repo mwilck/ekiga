@@ -114,7 +114,7 @@
     virtual void set_frame_data (const char* data,
                                   unsigned width,
                                   unsigned height,
-                                  bool local,
+                                  unsigned type,
                                   int devices_nbr);
 
     virtual void set_display_info (const Ekiga::DisplayInfo & _display_info)

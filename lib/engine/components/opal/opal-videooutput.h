@@ -137,7 +137,10 @@ class PVideoOutputDevice_EKIGA : public PVideoOutputDevice
 
   bool is_active;
 
-  enum {REMOTE, LOCAL};
+  enum {
+    LOCAL,
+    REMOTE,
+  };
 
   Ekiga::ServiceCore & core;
   boost::shared_ptr<Ekiga::VideoOutputCore> videooutput_core;

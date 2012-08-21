@@ -151,17 +151,17 @@ void VideoOutputCore::stop ()
 void VideoOutputCore::set_frame_data (const char *data,
                                   unsigned width,
                                   unsigned height,
-                                  bool local,
+                                  unsigned type,
                                   int devices_nbr)
 {
   core_mutex.Wait ();
 
-  if (local) {
+  if (type == 0) { // LOCAL
     videooutput_stats.tx_frames++;
     videooutput_stats.tx_width = width;
     videooutput_stats.tx_height = height;
   }
-  else {
+  else if (type == 1) { // REMOTE 1
     videooutput_stats.rx_frames++;
     videooutput_stats.rx_width = width;
     videooutput_stats.rx_height = height;
@@ -170,7 +170,7 @@ void VideoOutputCore::set_frame_data (const char *data,
   GTimeVal current_time;
   g_get_current_time (&current_time);
 
-  long unsigned milliseconds = ((current_time.tv_sec - last_stats.tv_sec) * 1000) 
+  long unsigned milliseconds = ((current_time.tv_sec - last_stats.tv_sec) * 1000)
                              + ((current_time.tv_usec - last_stats.tv_usec) / 1000);
 
   if (milliseconds > 2000) {
@@ -182,11 +182,11 @@ void VideoOutputCore::set_frame_data (const char *data,
   }
 
   core_mutex.Signal ();
-  
+
   for (std::set<VideoOutputManager *>::iterator iter = managers.begin ();
        iter != managers.end ();
        iter++) {
-    (*iter)->set_frame_data (data,width, height, local, devices_nbr);
+    (*iter)->set_frame_data (data, width, height, type, devices_nbr);
   }
 }
 

@@ -852,3 +852,34 @@ CallManager::ReportSTUNError (const std::string error)
 				 10);
   }
 }
+
+PBoolean
+CallManager::CreateVideoOutputDevice(const OpalConnection & connection,
+                                     const OpalMediaFormat & media_fmt,
+                                     PBoolean preview,
+                                     PVideoOutputDevice * & device,
+                                     PBoolean & auto_delete)
+{
+  PVideoDevice::OpenArgs videoArgs;
+  PString title;
+
+  videoArgs = preview ?
+    GetVideoPreviewDevice() : GetVideoOutputDevice();
+
+  if (!preview) {
+    unsigned openChannelCount = 0;
+    OpalMediaStreamPtr mediaStream;
+
+    while ((mediaStream = connection.GetMediaStream(OpalMediaType::Video(),
+                                                    preview, mediaStream)) != NULL)
+      ++openChannelCount;
+
+    videoArgs.deviceName += psprintf(" ID=%u", openChannelCount);
+  }
+
+  media_fmt.AdjustVideoArgs(videoArgs);
+
+  auto_delete = true;
+  device = PVideoOutputDevice::CreateOpenedDevice(videoArgs, false);
+  return device != NULL;
+}

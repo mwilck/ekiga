@@ -86,13 +86,13 @@ namespace Ekiga
        * @param data a pointer to the buffer with the data to be written. It will not be freed.
        * @param width the width in pixels of the frame to be written.
        * @param height the height in pixels of the frame to be written.
-       * @param local true if the frame is a frame of the local video source, false if it is from the remote end.
+       * @param type the type of the frame: 0 - local video source or >0 from the remote end.
        * @param devices_nbr 1 if only local or remote device has been opened, 2 if both have been opened.
        */
       virtual void set_frame_data (const char *data,
                                    unsigned width,
                                    unsigned height,
-                                   bool local,
+                                   unsigned type,
                                    int devices_nbr) = 0;
 
       virtual void set_display_info (const DisplayInfo &) { };

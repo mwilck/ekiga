@@ -170,6 +170,12 @@ private:
 
     void ReportSTUNError (const std::string error);
 
+    virtual PBoolean CreateVideoOutputDevice(const OpalConnection & connection,
+                                             const OpalMediaFormat & media_fmt,
+                                             PBoolean preview,
+                                             PVideoOutputDevice * & device,
+                                             PBoolean & auto_delete);
+
     /* The various related endpoints */
     GMPCSSEndpoint *pcssEP;
 

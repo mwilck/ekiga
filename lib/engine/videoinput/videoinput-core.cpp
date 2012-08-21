@@ -112,7 +112,7 @@ void VideoInputCore::VideoPreviewManager::Main ()
     while (!pause_thread) {
       if (frame) {
         videoinput_core.get_frame_data(frame);
-        videooutput_core->set_frame_data(frame, width, height, true, 1);
+        videooutput_core->set_frame_data(frame, width, height, 0, 1);
       }
       // We have to sleep some time outside the mutex lock
       // to give other threads time to get the mutex
