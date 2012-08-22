@@ -144,10 +144,10 @@ XML2_DIR := libxml2-$(XML2_VER)
 XML2_URL := ftp://xmlsoft.org/libxml2
 XML2_ARCHIVE := libxml2-$(XML2_VER).tar.gz
 
-EXPAT_VER = 2.0.1
+EXPAT_VER = 2.1.0
 EXPAT_DIR = $(BUILDROOT)/expat-$(EXPAT_VER)
 EXPAT_ARCHIVE := expat-$(EXPAT_VER).tar.gz
-EXPAT_URL := http://kent.dl.sourceforge.net/sourceforge/expat
+EXPAT_URL := https://downloads.sourceforge.net/project/expat/expat/$(EXPAT_VER)
 
 # choose commit 203e34 (2007-09-30), since since then a few modifications
 # have been done and the compilation needs to be updated
