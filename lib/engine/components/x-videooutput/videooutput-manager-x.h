@@ -101,6 +101,23 @@ private:
   void device_error_in_main (Ekiga::VideoOutputErrorCodes code);
 
   void fullscreen_mode_changed_in_main (Ekiga::VideoOutputFSToggle val);
+
+  struct WinitContinuation {
+    Display *display;
+    Window window;
+    GC gc;
+    int x;
+    int y;
+    int wWidth;
+    int wHeight;
+    int iWidth;
+    int iHeight;
+  };
+
+  XWindow * create_window (Ekiga::DisplayInfo &info,
+                           const struct WinitContinuation &contXV,
+                           const struct WinitContinuation &contX,
+                           bool pip = false);
 };
 
 /**

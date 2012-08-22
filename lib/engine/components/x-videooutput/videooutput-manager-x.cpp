@@ -102,6 +102,89 @@ GMVideoOutputManager_x::frame_display_change_needed ()
 
 }
 
+XWindow *
+GMVideoOutputManager_x::create_window (Ekiga::DisplayInfo &info,
+                                       const struct WinitContinuation &contXV,
+                                       const struct WinitContinuation &contX,
+                                       bool pip)
+{
+  Ekiga::VideoOutputAccel accel = Ekiga::VO_ACCEL_NONE;
+  XWindow *win = NULL;
+  struct WinitContinuation cont = contXV;
+  Ekiga::VideoOutputMode mode = current_frame.mode;
+
+#ifdef HAVE_XV
+  if (!info.disable_hw_accel) {
+    win = new XVWindow ();
+    accel = Ekiga::VO_ACCEL_ALL;
+    cont = contXV;
+  }
+#endif
+
+  do { // let's test the xvwindow; if it fails, try xwindow
+    if (!win) {
+      if (pip && !info.allow_pip_sw_scaling) {
+        pip_window_available = false;
+        current_frame.accel = Ekiga::VO_ACCEL_ALL;
+        return NULL;
+      }
+
+      win = new XWindow ();
+      accel = Ekiga::VO_ACCEL_NONE;
+      cont = contX;
+    }
+
+    if (win->Init (cont.display, cont.window, cont.gc,
+                   cont.x, cont.y,
+                   cont.wWidth, cont.wHeight,
+                   cont.iWidth, cont.iHeight)) {
+
+      current_frame.accel = accel;
+
+      if (accel == Ekiga::VO_ACCEL_NONE)
+        win->SetSwScalingAlgo(info.sw_scaling_algorithm);
+
+      if (pip)
+        pip_window_available = true;
+
+      break;
+    }
+    else { // Couldn't init window
+
+      delete win;
+      win = NULL;
+
+      PString strmode = "PIP";
+      if (mode == Ekiga::VO_MODE_LOCAL)
+        strmode = "LOCAL";
+      else if (mode == Ekiga::VO_MODE_REMOTE)
+        strmode = "REMOTE";
+
+      if (accel == Ekiga::VO_ACCEL_NONE) { // bailout
+        PTRACE(1, "GMVideoOutputManager_X\t:"<< strmode
+               << ": Could not open X Window - no video");
+
+        if (!pip) {
+          current_frame.accel = Ekiga::VO_ACCEL_NO_VIDEO;
+          video_disabled = true;
+        }
+        else {
+          pip_window_available = false;
+        }
+
+        return NULL;
+
+      }
+      else { // 2nd try
+        PTRACE(1, "GMVideoOutputManager_X\t:" << strmode
+               << ": Could not open XV Window");
+      }
+    }
+  } while (!win);
+
+  return win;
+}
+
 void
 GMVideoOutputManager_x::setup_frame_display ()
 {
@@ -146,58 +229,25 @@ GMVideoOutputManager_x::setup_frame_display ()
   current_frame.accel = Ekiga::VO_ACCEL_NONE;
 
   switch (current_frame.mode) {
-// VO_MODE_LOCAL ------------------------------------------------------------------
-  case Ekiga::VO_MODE_LOCAL:
-    PTRACE(4, "GMVideoOutputManager_X\tOpening VO_MODE_LOCAL display with image of " << current_frame.local_width << "x" << current_frame.local_height);
-#ifdef HAVE_XV
-    if (!local_display_info.disable_hw_accel) {
-      lxWindow = new XVWindow ();
-      if (lxWindow->Init (lDisplay, 
-                            local_display_info.window, 
-                            local_display_info.gc,
-                            local_display_info.x,
-                            local_display_info.y,
-                            (int) (current_frame.local_width * current_frame.zoom / 100), 
-                            (int) (current_frame.local_height * current_frame.zoom / 100),
-                            current_frame.local_width, 
-                            current_frame.local_height)) {
-	current_frame.accel = Ekiga::VO_ACCEL_ALL;
-        PTRACE(4, "GMVideoOutputManager_X\tVO_MODE_LOCAL: Successfully opened XV Window");
-      }
-      else {
-	delete lxWindow;
-	lxWindow = NULL;
-	current_frame.accel = Ekiga::VO_ACCEL_NONE;
-        PTRACE(4, "GMVideoOutputManager_X\tVO_MODE_LOCAL: Could not open XV Window");
-      }
-    }
-#endif			   
-    if (current_frame.accel == Ekiga::VO_ACCEL_NONE) {
-      PTRACE(3, "GMVideoOutputManager_X\tFalling back to SW" << ((local_display_info.disable_hw_accel) 
-                                      ? " since HW acceleration was deactivated by configuration" 
-                                      : " since HW acceleration failed to initialize"));
-      lxWindow = new XWindow ();
-      if (lxWindow->Init (lDisplay, 
-                            local_display_info.window, 
-                            local_display_info.gc,
-                            local_display_info.x,
-                            local_display_info.y,
-                           (int) (current_frame.local_width * current_frame.zoom / 100), 
-                           (int) (current_frame.local_height * current_frame.zoom / 100),
-                           current_frame.local_width, 
-                           current_frame.local_height)) {
-       lxWindow->SetSwScalingAlgo(local_display_info.sw_scaling_algorithm);
-       PTRACE(4, "GMVideoOutputManager_X\tVO_MODE_LOCAL: Successfully opened X Window");
-      }
-      else {
-        delete lxWindow;
-        lxWindow = NULL;
-        video_disabled = true;
-        current_frame.accel = Ekiga::VO_ACCEL_NO_VIDEO;
-        PTRACE(1, "GMVideoOutputManager_X\tVO_MODE_LOCAL: Could not open X Window - no video");
-      }
-    }
-    
+  // VO_MODE_LOCAL ------------------------------------------------------------------
+  case Ekiga::VO_MODE_LOCAL: {
+    PTRACE(4, "GMVideoOutputManager_X\tOpening VO_MODE_LOCAL display with image of " <<
+           current_frame.local_width << "x" << current_frame.local_height);
+
+    struct WinitContinuation cont = {
+      lDisplay,
+      local_display_info.window,
+      local_display_info.gc,
+      local_display_info.x,
+      local_display_info.y,
+      (int) (current_frame.local_width * current_frame.zoom / 100),
+      (int) (current_frame.local_height * current_frame.zoom / 100),
+      (int) current_frame.local_width,
+      (int) current_frame.local_height,
+    };
+
+    lxWindow = create_window (local_display_info, cont, cont);
+
     last_frame.embedded_x = local_display_info.x;
     last_frame.embedded_y = local_display_info.y;
 
@@ -206,59 +256,26 @@ GMVideoOutputManager_x::setup_frame_display ()
     last_frame.local_height = current_frame.local_height;
     last_frame.zoom = current_frame.zoom;
     break;
+  }
 
-// VO_MODE_REMOTE ----------------------------------------------------------------
-  case Ekiga::VO_MODE_REMOTE:
-    PTRACE(4, "GMVideoOutputManager_X\tOpening VO_MODE_REMOTE display with image of " << current_frame.remote_width << "x" << current_frame.remote_height);
-#ifdef HAVE_XV
-    if (!local_display_info.disable_hw_accel) {
-      rxWindow = new XVWindow ();
-      if (rxWindow->Init (rDisplay, 
-                          local_display_info.window, 
-                          local_display_info.gc,
-                          local_display_info.x,
-                          local_display_info.y,
-                          (int) (current_frame.remote_width * current_frame.zoom / 100), 
-                          (int) (current_frame.remote_height * current_frame.zoom / 100),
-                          current_frame.remote_width, 
-                          current_frame.remote_height)) {
-       current_frame.accel = Ekiga::VO_ACCEL_ALL;
-       PTRACE(4, "GMVideoOutputManager_X\tVO_MODE_REMOTE: Successfully opened XV Window");
-     }
-     else {
-       delete rxWindow;
-       rxWindow = NULL;
-       current_frame.accel = Ekiga::VO_ACCEL_NONE;
-       PTRACE(1, "GMVideoOutputManager_X\tVO_MODE_LOCAL: Could not open XV Window");
+  // VO_MODE_REMOTE ----------------------------------------------------------------
+  case Ekiga::VO_MODE_REMOTE: {
+    PTRACE(4, "GMVideoOutputManager_X\tOpening VO_MODE_REMOTE display with image of "
+           << current_frame.remote_width << "x" << current_frame.remote_height);
 
-     }
-    }
-#endif			   
-    if (current_frame.accel == Ekiga::VO_ACCEL_NONE) {
-      PTRACE(3, "GMVideoOutputManager_X\tFalling back to SW" << ((local_display_info.disable_hw_accel) 
-                                      ? " since HW acceleration was deactivated by configuration" 
-                                      : " since HW acceleration failed to initialize"));
-      rxWindow = new XWindow ();
-      if ( rxWindow->Init (rDisplay, 
-                             local_display_info.window, 
-                             local_display_info.gc,
-                             local_display_info.x,
-                             local_display_info.y,
-                             (int) (current_frame.remote_width * current_frame.zoom / 100), 
-                             (int) (current_frame.remote_height * current_frame.zoom / 100),
-                             current_frame.remote_width, 
-                             current_frame.remote_height)) {
-        rxWindow->SetSwScalingAlgo(local_display_info.sw_scaling_algorithm);
-        PTRACE(4, "GMVideoOutputManager_X\tVO_MODE_REMOTE: Successfully opened X Window");
-      }
-      else {
-        delete rxWindow;
-        rxWindow = NULL;
-        video_disabled = true;
-        current_frame.accel = Ekiga::VO_ACCEL_NO_VIDEO;
-        PTRACE(1, "GMVideoOutputManager_X\tVO_MODE_REMOTE: Could not open X Window - no video");
-      }
-    }
+    struct WinitContinuation cont = {
+      rDisplay,
+      local_display_info.window,
+      local_display_info.gc,
+      local_display_info.x,
+      local_display_info.y,
+      (int) (current_frame.remote_width * current_frame.zoom / 100),
+      (int) (current_frame.remote_height * current_frame.zoom / 100),
+      (int) current_frame.remote_width,
+      (int) current_frame.remote_height,
+    };
+
+    rxWindow = create_window (local_display_info, cont, cont);
 
     last_frame.embedded_x = local_display_info.x;
     last_frame.embedded_y = local_display_info.y;
@@ -268,130 +285,70 @@ GMVideoOutputManager_x::setup_frame_display ()
     last_frame.remote_height = current_frame.remote_height;
     last_frame.zoom = current_frame.zoom;
     break;
+  }
 
-// PIP_VIDEO ------------------------------------------------------------------
+  // PIP_VIDEO ------------------------------------------------------------------
   case Ekiga::VO_MODE_FULLSCREEN:
   case Ekiga::VO_MODE_PIP:
-  case Ekiga::VO_MODE_PIP_WINDOW:
-    PTRACE(4, "GMVideoOutputManager_X\tOpening display " << current_frame.mode << " with images of " 
-            << current_frame.local_width << "x" << current_frame.local_height << "(local) and " 
+  case Ekiga::VO_MODE_PIP_WINDOW: {
+    PTRACE(4, "GMVideoOutputManager_X\tOpening display " << current_frame.mode << " with images of "
+            << current_frame.local_width << "x" << current_frame.local_height << "(local) and "
 	    << current_frame.remote_width << "x" << current_frame.remote_height << "(remote)");
-#ifdef HAVE_XV
-    if (!local_display_info.disable_hw_accel) {
-      rxWindow = new XVWindow ();
-      if (rxWindow->Init ( rDisplay, 
-                             (current_frame.mode == Ekiga::VO_MODE_PIP) ? local_display_info.window : DefaultRootWindow (rDisplay), 
-                             (current_frame.mode == Ekiga::VO_MODE_PIP) ? local_display_info.gc : NULL,
-                             (current_frame.mode == Ekiga::VO_MODE_PIP) ? local_display_info.x : 0,
-                             (current_frame.mode == Ekiga::VO_MODE_PIP) ? local_display_info.y : 0,
-                             (int) (current_frame.remote_width * current_frame.zoom / 100), 
-                             (int) (current_frame.remote_height * current_frame.zoom / 100),
-                             current_frame.remote_width, 
-                             current_frame.remote_height)) {
-        current_frame.accel = Ekiga::VO_ACCEL_REMOTE_ONLY;
-        PTRACE(4, "GMVideoOutputManager_X\tPIP: Successfully opened remote XV Window");
-      }
-      else 
-      {
-        delete rxWindow;
-	rxWindow = NULL;
-	current_frame.accel = Ekiga::VO_ACCEL_NONE;
-        PTRACE(1, "GMVideoOutputManager_X\tPIP: Could not open remote XV Window");
-      }
-    }
-#endif			   
-    if (current_frame.accel == Ekiga::VO_ACCEL_NONE) {
-      PTRACE(3, "GMVideoOutputManager_X\tFalling back to SW" << ((local_display_info.disable_hw_accel) 
-                                      ? " since HW acceleration was deactivated by configuration" 
-                                      : " since HW acceleration failed to initialize"));
-      rxWindow = new XWindow ();
-      if (rxWindow->Init ( rDisplay, 
-                             (current_frame.mode == Ekiga::VO_MODE_PIP) ? local_display_info.window : DefaultRootWindow (rDisplay), 
-                             (current_frame.mode == Ekiga::VO_MODE_PIP) ? local_display_info.gc : NULL,
-                             (current_frame.mode == Ekiga::VO_MODE_PIP) ? local_display_info.x : 0,
-                             (current_frame.mode == Ekiga::VO_MODE_PIP) ? local_display_info.y : 0,
-                             (int) (current_frame.remote_width * current_frame.zoom / 100), 
-                             (int) (current_frame.remote_height * current_frame.zoom / 100),
-                             current_frame.remote_width, 
-                             current_frame.remote_height)) {
-        rxWindow->SetSwScalingAlgo(local_display_info.sw_scaling_algorithm);
-        PTRACE(4, "GMVideoOutputManager_X\tPIP: Successfully opened remote X Window");
-      }
-      else {
-        delete rxWindow;
-        rxWindow = NULL;
-        video_disabled = true;
-        current_frame.accel = Ekiga::VO_ACCEL_NO_VIDEO;
-        PTRACE(1, "GMVideoOutputManager_X\tPIP: Could not open remote X Window - no video");
-      }
-    }
 
+    struct WinitContinuation rcont = {
+      rDisplay,
+      (current_frame.mode == Ekiga::VO_MODE_PIP) ?
+      local_display_info.window : DefaultRootWindow (rDisplay),
+      (current_frame.mode == Ekiga::VO_MODE_PIP) ?
+      local_display_info.gc : NULL,
+      (current_frame.mode == Ekiga::VO_MODE_PIP) ?
+      local_display_info.x : 0,
+      (current_frame.mode == Ekiga::VO_MODE_PIP) ?
+      local_display_info.y : 0,
+      (int) (current_frame.remote_width * current_frame.zoom / 100),
+      (int) (current_frame.remote_height * current_frame.zoom / 100),
+      (int) current_frame.remote_width,
+      (int) current_frame.remote_height,
+    };
 
-#ifdef HAVE_XV
-    if (current_frame.accel == Ekiga::VO_ACCEL_REMOTE_ONLY) {
-      lxWindow = new XVWindow();
-      if (lxWindow->Init (   rxWindow->GetDisplay (), 
-                             rxWindow->GetWindowHandle (),
-                             rxWindow->GetGC (),
-                             (int) (current_frame.remote_width * current_frame.zoom  / 100 * 2 / 3), 
-                             (int) (current_frame.remote_height * current_frame.zoom  / 100 * 2 / 3), 
-                             (int) (current_frame.remote_width * current_frame.zoom  / 100 / 3), 
-                             (int) (current_frame.remote_height * current_frame.zoom  / 100 / 3),
-                             current_frame.local_width, 
-                             current_frame.local_height)) {
-        current_frame.accel = Ekiga::VO_ACCEL_ALL;
-        pip_window_available = true;
-        PTRACE(4, "GMVideoOutputManager_X\tPIP: Successfully opened local XV Window");
-      }
-      else {
-        delete lxWindow;
-	lxWindow = NULL;
-        pip_window_available = false;
-        PTRACE(1, "GMVideoOutputManager_X\tPIP: Could not open local XV Window");
-      }
-    }
-#endif
-    if ((current_frame.accel != Ekiga::VO_ACCEL_ALL) && (local_display_info.allow_pip_sw_scaling)) {
-      PTRACE(3, "GMVideoOutputManager_X\tFalling back to SW" << ((local_display_info.disable_hw_accel) 
-                                      ? " since HW acceleration was deactivated by configuration" 
-                                      : " since HW acceleration failed to initialize"));
-      lxWindow = new XWindow ();
-      if (lxWindow->Init ( lDisplay, 
-                             rxWindow->GetWindowHandle (),
-                             (current_frame.mode == Ekiga::VO_MODE_PIP) ? local_display_info.gc : NULL,
-                             (int) (current_frame.remote_width * current_frame.zoom  / 100 * 2 / 3), 
-                             (int) (current_frame.remote_height * current_frame.zoom  / 100 * 2 / 3), 
-                             (int) (current_frame.remote_width * current_frame.zoom  / 100 / 3), 
-                             (int) (current_frame.remote_height * current_frame.zoom  / 100 / 3),
-                             current_frame.local_width, 
-                             current_frame.local_height)) {
-       lxWindow->SetSwScalingAlgo(local_display_info.sw_scaling_algorithm);
-       pip_window_available = true;
-       PTRACE(4, "GMVideoOutputManager_X\tPIP: Successfully opened local X Window");
-     }
-     else {
-       delete lxWindow;
-       lxWindow = NULL;
-       pip_window_available = false;
-       PTRACE(4, "GMVideoOutputManager_X\tPIP: Could not open local X Window - picture-in-picture disabled");
-      }
-    }
+    rxWindow = create_window (local_display_info, rcont, rcont);
 
-    if ((current_frame.accel != Ekiga::VO_ACCEL_ALL) && (!local_display_info.allow_pip_sw_scaling)) {
-      PTRACE(3, "GMVideoOutputManager_X\tNot opening PIP window since HW acceleration is not available and SW fallback is disabled by configuration");
-      current_frame.accel = Ekiga::VO_ACCEL_ALL;
-    }
+    struct WinitContinuation lcontxv = {
+      rxWindow->GetDisplay (),
+      rxWindow->GetWindowHandle (),
+      rxWindow->GetGC (),
+      (int) (current_frame.remote_width * current_frame.zoom  / 100 * 2 / 3),
+      (int) (current_frame.remote_height * current_frame.zoom  / 100 * 2 / 3),
+      (int) (current_frame.remote_width * current_frame.zoom  / 100 / 3),
+      (int) (current_frame.remote_height * current_frame.zoom  / 100 / 3),
+      (int) current_frame.local_width,
+      (int) current_frame.local_height,
+    };
+
+    struct WinitContinuation lcontx = {
+       lDisplay,
+       rxWindow->GetWindowHandle (),
+       (current_frame.mode == Ekiga::VO_MODE_PIP) ? local_display_info.gc : NULL,
+       (int) (current_frame.remote_width * current_frame.zoom  / 100 * 2 / 3),
+       (int) (current_frame.remote_height * current_frame.zoom  / 100 * 2 / 3),
+       (int) (current_frame.remote_width * current_frame.zoom  / 100 / 3),
+       (int) (current_frame.remote_height * current_frame.zoom  / 100 / 3),
+       (int) current_frame.local_width,
+       (int) current_frame.local_height,
+    };
+
+    lxWindow = create_window (local_display_info, lcontxv, lcontx, true);
 
     if (rxWindow && lxWindow) {
-
       rxWindow->RegisterSlave (lxWindow);
       lxWindow->RegisterMaster (rxWindow);
-    }	  
+    }
 
-    if (rxWindow && current_frame.mode == Ekiga::VO_MODE_FULLSCREEN) 
+    if (rxWindow && current_frame.mode == Ekiga::VO_MODE_FULLSCREEN)
       rxWindow->ToggleFullscreen ();
-    
-    if ((current_frame.mode != Ekiga::VO_MODE_PIP_WINDOW) && (current_frame.mode != Ekiga::VO_MODE_FULLSCREEN)) {
+
+    if ((current_frame.mode != Ekiga::VO_MODE_PIP_WINDOW) &&
+        (current_frame.mode != Ekiga::VO_MODE_FULLSCREEN)) {
       last_frame.embedded_x = local_display_info.x;
       last_frame.embedded_y = local_display_info.y;
     }
@@ -403,6 +360,7 @@ GMVideoOutputManager_x::setup_frame_display ()
     last_frame.remote_height = current_frame.remote_height;
     last_frame.zoom = current_frame.zoom;
     break;
+  }
 
   case Ekiga::VO_MODE_UNSET:
   default:

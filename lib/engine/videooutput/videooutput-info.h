@@ -79,7 +79,6 @@ namespace Ekiga {
   typedef enum {
 
     VO_ACCEL_NONE,
-    VO_ACCEL_REMOTE_ONLY,
     VO_ACCEL_ALL,
     VO_ACCEL_NO_VIDEO
   } VideoOutputAccel;
