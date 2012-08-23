@@ -1,4 +1,4 @@
-AC_INIT([ekiga],[3.3.3],[http://bugzilla.gnome.org/enter_bug.cgi?product=ekiga])
+AC_INIT([ekiga],[3.9.90],[http://bugzilla.gnome.org/enter_bug.cgi?product=ekiga])
 
 AC_CANONICAL_TARGET
 AC_PREREQ([2.53])
@@ -19,12 +19,12 @@ dnl   Definitions
 dnl ###########################################################################
 
 MAJOR_VERSION=3
-MINOR_VERSION=3
+MINOR_VERSION=9
 BUILD_TYPE=ReleaseCode
-BUILD_NUMBER=3
+BUILD_NUMBER=90
 
-PTLIB_REC_VERSION="2.10.6"
-OPAL_REC_VERSION="3.10.6"
+PTLIB_REC_VERSION="2.10.7"
+OPAL_REC_VERSION="3.10.7"
 
 AC_DEFINE_UNQUOTED(MAJOR_VERSION, $MAJOR_VERSION,[fix])
 AC_DEFINE_UNQUOTED(MINOR_VERSION, $MINOR_VERSION,[fix])
