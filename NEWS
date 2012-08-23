@@ -1,13 +1,11 @@
                           -*- mode: outline -*-
-* Major changes between ekiga 3.4.0 and 3.2.7, details are below
-
-* Changes in ekiga 3.9.90 (2012-08-20)
+* Changes in ekiga 3.9.90 (2012-08-23)
 ** Major user-visible fixes
 - Major overhaul of the main window
-- Auto-answering to calls (in 3.3.0 in fact)
 - Add a new page in assistant with an introduction to accounts
 - Unregister accounts when quitting
-- Speed up startup by not getting canonical name of servers
+- Auto-answering to calls (in 3.3.0 in fact)
+- Faster startup by not getting canonical name of servers
 - Partial support of H.239
 - Speed up registration when packets get lost
 - Use optimised flags for H.264 video decoder
@@ -21,6 +19,7 @@
 - Some fixes on online/offline presence
 - Disable IPv6 by default, which caused some problems (will be enabled later)
 - Fix a race condition in PulseAudio plugin
+- Initial support for handling multiple video streams (H.239)
 ** Protocol fixes
 - Fixes for Contact field during registration:
   - Use two additional compatibility mode for some bogus registrars
@@ -31,6 +30,8 @@
 - Fix loading of codecs without an encoding name, e.g. MS-IMA-ADPCM
 - Use SIP OPTIONS to refresh NAT bindings
 - Numerous other fixes, especially on H264 support
+** Distributor-visible changes
+- Disable IPv6 by default, which caused some problems (will be enabled later)
 ** Windows port fixes
 - Fix crash when using gdb
 - Support mingw-w64 and its own headers for building
@@ -44,6 +45,9 @@
 - Support new API of Evolution-Data-Server 3.5.3 too
 - Fix error when linking with -Wl,--as-needed
 ** Translation updates
+- Updated translations: cs, de, el, eo, es, fr, gl, gu, he, hu, id,
+  ja, lt, lv, pl, sl, sr, sr@latin, vi
+- Updated help translations: es
 
 * Changes in ekiga 3.3.2 (2011-08-23)
 ** User-visible fixes
