@@ -662,7 +662,7 @@ gm_pw_init_h323_page (GtkWidget *prefs_window,
       NULL};
 
   const gchar *roles [] =
-    { _("Disable H.239 Extendend Video"),
+    { _("Disable H.239 Extended Video"),
       _("Allow H.239 per Content Role Mask"),
       _("Force H.239 Presentation Role"),
       _("Force H.239 Live Role"),
