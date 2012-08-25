@@ -1,12 +1,16 @@
                           -*- mode: outline -*-
+* Major changes between ekiga 4.0.0 and 3.2.7, details are below
+TBD
+
+* Changes in ekiga 4.0.0 (2012-09-xy)
+
 * Changes in ekiga 3.9.90 (2012-08-23)
 ** Major user-visible fixes
 - Major overhaul of the main window
 - Add a new page in assistant with an introduction to accounts
 - Unregister accounts when quitting
-- Auto-answering to calls (in 3.3.0 in fact)
 - Faster startup by not getting canonical name of servers
-- Partial support of H.239
+- Initial support for handling multiple video streams (H.239)
 - Speed up registration when packets get lost
 - Use optimised flags for H.264 video decoder
 - Limit history book to 100 entries, fixing some crashes
@@ -19,7 +23,6 @@
 - Some fixes on online/offline presence
 - Disable IPv6 by default, which caused some problems (will be enabled later)
 - Fix a race condition in PulseAudio plugin
-- Initial support for handling multiple video streams (H.239)
 ** Protocol fixes
 - Fixes for Contact field during registration:
   - Use two additional compatibility mode for some bogus registrars
@@ -150,6 +153,7 @@
   for ekiga
 ** User-visible changes
 - New pulse audio plugin (in ptlib)
+- Auto-answering to calls
 - Various SIP/H.323 fixes
 - When a registrar refuses several Contact-s during registration,
   automatically retry registration with only one Contact (previous
