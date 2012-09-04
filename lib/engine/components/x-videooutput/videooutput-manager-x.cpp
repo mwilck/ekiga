@@ -94,6 +94,7 @@ GMVideoOutputManager_x::frame_display_change_needed ()
           if (!rxWindow || (pip_window_available && (!lxWindow)) )
               return true;
           break;
+     case Ekiga::VO_MODE_REMOTE_EXT: // no need to handle this
      case Ekiga::VO_MODE_UNSET:
      default:
           break;
@@ -209,6 +210,9 @@ GMVideoOutputManager_x::setup_frame_display ()
   case Ekiga::VO_MODE_PIP_WINDOW:
     Ekiga::Runtime::run_in_main (boost::bind (&GMVideoOutputManager_x::size_changed_in_main, this, 176, 144));
     break;
+  case Ekiga::VO_MODE_REMOTE_EXT: // no need to handle this
+    PTRACE (1, "GMVideoOutputManager_X\tNo remote extended widget yet");
+    return;
   case Ekiga::VO_MODE_UNSET:
   default:
     PTRACE (1, "GMVideoOutputManager_X\tDisplay variable not set");
@@ -362,6 +366,7 @@ GMVideoOutputManager_x::setup_frame_display ()
     break;
   }
 
+  case Ekiga::VO_MODE_REMOTE_EXT: // no need to handle this
   case Ekiga::VO_MODE_UNSET:
   default:
     return;

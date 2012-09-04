@@ -58,15 +58,16 @@ namespace Ekiga {
 
   /* Video modes */
   typedef enum {
-  
-    VO_MODE_LOCAL, 
-    VO_MODE_REMOTE, 
+
+    VO_MODE_LOCAL,
+    VO_MODE_REMOTE,
     VO_MODE_PIP,
     VO_MODE_PIP_WINDOW,
     VO_MODE_FULLSCREEN,
+    VO_MODE_REMOTE_EXT,
     VO_MODE_UNSET
   } VideoOutputMode;
-  
+
   /* Toggle operations for Fullscreen */
   typedef enum {
   
