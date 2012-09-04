@@ -127,6 +127,7 @@
     typedef struct {
       bool local;
       bool remote;
+      bool extended;
     } UpdateRequired;
 
     /** The main video thread loop

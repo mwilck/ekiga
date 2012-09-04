@@ -199,12 +199,19 @@ void GMVideoOutputManager::set_frame_data (const char* data,
     }
     update_required.local = true;
   }
-  else {
+  else if (type == 1) {
 
     if (update_required.remote) {
       PTRACE(3, "GMVideoOutputManager\tSkipped earlier remote frame");
     }
     update_required.remote = true;
+  }
+  else if (type == 2) {
+
+    if (update_required.extended) {
+      PTRACE(3, "GMVideoOutputManager\tSkipped earlier extended frame");
+    }
+    update_required.extended = true;
   }
 
   var_mutex.Signal();
@@ -256,6 +263,7 @@ void GMVideoOutputManager::init()
   ext_frame_received = false;
   update_required.local = false;
   update_required.remote = false;
+  update_required.extended = false;
 
 }
 
@@ -365,6 +373,7 @@ GMVideoOutputManager::redraw ()
 
   update_required.local = false;
   update_required.remote = false;
+  update_required.extended = false;
 
   return sync_required;
 }
