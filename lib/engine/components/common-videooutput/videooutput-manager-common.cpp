@@ -262,47 +262,54 @@ void GMVideoOutputManager::update_gui_device ()
 }
 
 
-bool 
+bool
 GMVideoOutputManager::frame_display_change_needed ()
 {
   Ekiga::DisplayInfo local_display_info;
 
   get_display_info(local_display_info);
 
-  if ((!local_display_info.widget_info_set) || (!local_display_info.config_info_set) ||
-      (local_display_info.mode == Ekiga::VO_MODE_UNSET) || (local_display_info.zoom == 0)) {
+  if ((!local_display_info.widget_info_set) ||
+      (!local_display_info.config_info_set) ||
+      (local_display_info.mode == Ekiga::VO_MODE_UNSET) ||
+      (local_display_info.zoom == 0)) {
     PTRACE(4, "GMVideoOutputManager\tWidget not yet realized or gconf info not yet set, not opening display");
     return false;
   }
 
-  if ( last_frame.mode != current_frame.mode || last_frame.zoom != current_frame.zoom )
+  if ( last_frame.mode != current_frame.mode ||
+       last_frame.zoom != current_frame.zoom )
     return true;
 
+  bool local_changed = (last_frame.local_width  != current_frame.local_width ||
+                        last_frame.local_height != current_frame.local_height);
+  bool remote_changed = (last_frame.remote_width  != current_frame.remote_width ||
+                         last_frame.remote_height != current_frame.remote_height);
+  bool window_changed = (local_display_info.x != last_frame.embedded_x ||
+                        local_display_info.y != last_frame.embedded_y);
   switch (current_frame.mode) {
   case Ekiga::VO_MODE_LOCAL:
-    return (   last_frame.local_width  != current_frame.local_width   || last_frame.local_height != current_frame.local_height 
-            || local_display_info.x    != last_frame.embedded_x       || local_display_info.y    != last_frame.embedded_y );
+    return ( local_changed || window_changed );
     break;
 
   case Ekiga::VO_MODE_REMOTE:
-    return (   last_frame.remote_width != current_frame.remote_width || last_frame.remote_height != current_frame.remote_height
-            || local_display_info.x    != last_frame.embedded_x      || local_display_info.y     != last_frame.embedded_y);
+    return ( remote_changed || window_changed );
     break;
 
   case Ekiga::VO_MODE_PIP:
-    return (   last_frame.remote_width != current_frame.remote_width || last_frame.remote_height != current_frame.remote_height
-            || last_frame.local_width  != current_frame.local_width  || last_frame.local_height  != current_frame.local_height
-            || local_display_info.x    != last_frame.embedded_x      || local_display_info.y     != last_frame.embedded_y);
+    return ( remote_changed || local_changed || window_changed );
     break;
+
   case Ekiga::VO_MODE_PIP_WINDOW:
   case Ekiga::VO_MODE_FULLSCREEN:
-    return (   last_frame.remote_width != current_frame.remote_width || last_frame.remote_height != current_frame.remote_height
-            || last_frame.local_width  != current_frame.local_width  || last_frame.local_height  != current_frame.local_height);
+    return ( remote_changed || local_changed );
     break;
+
   case Ekiga::VO_MODE_UNSET:
   default:
     break;
   }
+
   return false;
 }
 
