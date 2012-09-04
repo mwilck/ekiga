@@ -213,10 +213,11 @@
     /* This variable has to be protected by display_info_mutex */
     Ekiga::DisplayInfo display_info;
     PMutex display_info_mutex; /* To protect the DisplayInfo object */
-  
+
     PBYTEArray lframeStore;
     PBYTEArray rframeStore;
-  
+    PBYTEArray eframeStore;
+
     typedef struct {
       Ekiga::VideoOutputMode mode;
       Ekiga::VideoOutputAccel accel;
@@ -224,21 +225,25 @@
 
       unsigned int remote_width;
       unsigned int remote_height;
-    
+
+      unsigned int ext_width; // 2nd remote (extended video)
+      unsigned int ext_height;
+
       unsigned int local_width;
       unsigned int local_height;
-      
+
       unsigned int zoom;
-    
+
       int embedded_x;
       int embedded_y;
     } FrameInfo;
 
     FrameInfo last_frame;
     FrameInfo current_frame;
-    
+
     bool local_frame_received;
     bool remote_frame_received;
+    bool ext_frame_received;
     bool video_disabled;
 
     UpdateRequired update_required;

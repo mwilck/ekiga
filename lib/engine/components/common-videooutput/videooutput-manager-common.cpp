@@ -96,7 +96,7 @@ GMVideoOutputManager::Main ()
 
     if (initialised_thread) {
       var_mutex.Wait ();
-        do_sync = local_frame_received | remote_frame_received;
+        do_sync = local_frame_received | remote_frame_received | ext_frame_received;
         if (do_sync)
           sync_required = redraw();
       var_mutex.Signal ();
@@ -151,6 +151,14 @@ void GMVideoOutputManager::set_frame_data (const char* data,
     current_frame.remote_height= height;
     memcpy (rframeStore.GetPointer(), data, (width * height * 3) >> 1);
     remote_frame_received = true;
+  }
+  else if (type == 2) { // REMOTE 2 (extended video)
+    /* memcpy the frame */
+    eframeStore.SetSize (width * height * 3);
+    current_frame.ext_width = width;
+    current_frame.ext_height= height;
+    memcpy (eframeStore.GetPointer(), data, (width * height * 3) >> 1);
+    ext_frame_received = true;
   } else {
     var_mutex.Signal();
     run_thread.Signal();
@@ -226,21 +234,26 @@ void GMVideoOutputManager::init()
   last_frame.local_width = 0;
   last_frame.local_height = 0;
   last_frame.remote_width = 0;
-  last_frame.remote_height = 0;  
+  last_frame.remote_height = 0;
+  last_frame.ext_width = 0;
+  last_frame.ext_height = 0;
   last_frame.zoom = 0;
   last_frame.embedded_x = 0;
-  last_frame.embedded_y = 0;  
+  last_frame.embedded_y = 0;
 
   current_frame.both_streams_active = false;
   current_frame.local_width = 0;
   current_frame.local_height = 0;
   current_frame.remote_width = 0;
   current_frame.remote_height = 0;
+  current_frame.ext_width = 0;
+  current_frame.ext_height = 0;
 
   /* Initialisation */
   video_disabled = false;
   local_frame_received = false;
   remote_frame_received = false;
+  ext_frame_received = false;
   update_required.local = false;
   update_required.remote = false;
 
@@ -251,6 +264,7 @@ void GMVideoOutputManager::uninit ()
   /* This is common to all output classes */
   lframeStore.SetSize (0);
   rframeStore.SetSize (0);
+  eframeStore.SetSize (0);
 }
 
 void GMVideoOutputManager::update_gui_device ()
