@@ -88,7 +88,7 @@
   void device_opened_in_main (Ekiga::VideoOutputAccel accel,
 			      Ekiga::VideoOutputMode mode,
 			      unsigned zoom,
-			      bool both);
+			      bool both, bool ext);
 
   void device_closed_in_main ();
 

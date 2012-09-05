@@ -201,7 +201,7 @@ GMVideoOutputManager_dx::setup_frame_display ()
   }
   else {
     current_frame.accel = Ekiga::VO_ACCEL_ALL; 
-    Ekiga::Runtime::run_in_main (boost::bind (&GMVideoOutputManager_dx::device_opened_in_main, this, current_frame.accel, current_frame.mode, current_frame.zoom, current_frame.both_streams_active));
+    Ekiga::Runtime::run_in_main (boost::bind (&GMVideoOutputManager_dx::device_opened_in_main, this, current_frame.accel, current_frame.mode, current_frame.zoom, current_frame.both_streams_active, current_frame.ext_stream_active));
   }
 }
 
@@ -271,9 +271,9 @@ void
 GMVideoOutputManager_dx::device_opened_in_main (Ekiga::VideoOutputAccel accel,
 		       Ekiga::VideoOutputMode mode,
 		       unsigned zoom,
-		       bool both)
+		       bool both, bool ext)
 {
-  device_opened (accel, mode, zoom, both);
+  device_opened (accel, mode, zoom, both, ext);
 }
 
 void

@@ -263,6 +263,7 @@ static void on_videooutput_device_opened_cb (Ekiga::VideoOutputManager & /* mana
                                              Ekiga::VideoOutputMode mode,
                                              unsigned zoom,
                                              bool both_streams,
+                                             G_GNUC_UNUSED bool ext_stream,
                                              gpointer self);
 
 static void on_videooutput_device_closed_cb (Ekiga::VideoOutputManager & /* manager */,
@@ -732,6 +733,7 @@ on_videooutput_device_opened_cb (Ekiga::VideoOutputManager & /* manager */,
                                  Ekiga::VideoOutputMode mode,
                                  unsigned zoom,
                                  bool both_streams,
+                                 G_GNUC_UNUSED bool ext_stream,
                                  gpointer self)
 {
   EkigaCallWindow *cw = EKIGA_CALL_WINDOW (self);
@@ -2211,7 +2213,7 @@ ekiga_call_window_connect_engine_signals (EkigaCallWindow *cw)
   /* New Display Engine signals */
   boost::shared_ptr<Ekiga::VideoOutputCore> videooutput_core = cw->priv->core->get<Ekiga::VideoOutputCore> ("videooutput-core");
 
-  conn = videooutput_core->device_opened.connect (boost::bind (&on_videooutput_device_opened_cb, _1, _2, _3, _4, _5, (gpointer) cw));
+  conn = videooutput_core->device_opened.connect (boost::bind (&on_videooutput_device_opened_cb, _1, _2, _3, _4, _5, _6, (gpointer) cw));
   cw->priv->connections.push_back (conn);
 
   conn = videooutput_core->device_closed.connect (boost::bind (&on_videooutput_device_closed_cb, _1, (gpointer) cw));

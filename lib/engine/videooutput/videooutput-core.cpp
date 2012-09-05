@@ -87,7 +87,7 @@ void VideoOutputCore::add_manager (VideoOutputManager &manager)
   managers.insert (&manager);
   manager_added (manager);
 
-  manager.device_opened.connect (boost::bind (&VideoOutputCore::on_device_opened, this, _1, _2, _3, _4, &manager));
+  manager.device_opened.connect (boost::bind (&VideoOutputCore::on_device_opened, this, _1, _2, _3, _4, _5, &manager));
   manager.device_closed.connect (boost::bind (&VideoOutputCore::on_device_closed, this, &manager));
   manager.device_error.connect (boost::bind (&VideoOutputCore::on_device_error, this, _1, &manager));
   manager.fullscreen_mode_changed.connect (boost::bind (&VideoOutputCore::on_fullscreen_mode_changed, this, _1, &manager));
@@ -202,9 +202,14 @@ void VideoOutputCore::set_display_info (const DisplayInfo & _display_info)
 }
 
 
-void VideoOutputCore::on_device_opened (VideoOutputAccel videooutput_accel, VideoOutputMode mode, unsigned zoom, bool both_streams, VideoOutputManager *manager)
+void VideoOutputCore::on_device_opened (VideoOutputAccel videooutput_accel,
+                                        VideoOutputMode mode,
+                                        unsigned zoom,
+                                        bool both_streams,
+                                        bool ext_stream,
+                                        VideoOutputManager *manager)
 {
-  device_opened (*manager, videooutput_accel, mode, zoom, both_streams);
+  device_opened (*manager, videooutput_accel, mode, zoom, both_streams, ext_stream);
 }
 
 void VideoOutputCore::on_device_closed ( VideoOutputManager *manager)

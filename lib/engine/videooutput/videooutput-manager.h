@@ -105,8 +105,9 @@ namespace Ekiga
        * @param mode the mode in which the device was initially opened.
        * @param zoom the initial zoom level when de device was opened.
        * @param both_streams if a frame from both local and remote stream has been received.
+       * @param ext_stream if a frame from an extended video stream has been received.
        */
-      boost::signal4<void, VideoOutputAccel, VideoOutputMode, unsigned, bool> device_opened;
+      boost::signal5<void, VideoOutputAccel, VideoOutputMode, unsigned, bool, bool> device_opened;
 
       /** This signal is emitted when a video output device is closed.
        */

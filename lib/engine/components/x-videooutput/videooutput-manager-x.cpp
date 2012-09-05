@@ -425,7 +425,11 @@ GMVideoOutputManager_x::setup_frame_display ()
     Ekiga::Runtime::run_in_main (boost::bind (&GMVideoOutputManager_x::device_error_in_main, this, Ekiga::VO_ERROR));
   }
   else {
-    Ekiga::Runtime::run_in_main (boost::bind (&GMVideoOutputManager_x::device_opened_in_main, this, current_frame.accel, current_frame.mode, current_frame.zoom, current_frame.both_streams_active));
+    Ekiga::Runtime::run_in_main
+      (boost::bind (&GMVideoOutputManager_x::device_opened_in_main, this,
+                    current_frame.accel, current_frame.mode, current_frame.zoom,
+                    current_frame.both_streams_active,
+                    current_frame.ext_stream_active));
   }
 }
 
@@ -536,9 +540,9 @@ void
 GMVideoOutputManager_x::device_opened_in_main (Ekiga::VideoOutputAccel accel,
 					       Ekiga::VideoOutputMode mode,
 					       unsigned zoom,
-					       bool both)
+					       bool both, bool ext)
 {
-  device_opened (accel, mode, zoom, both);
+  device_opened (accel, mode, zoom, both, ext);
 }
 
 void

@@ -165,7 +165,7 @@ namespace Ekiga
 
       /** See videooutput-manager.h for the API
        */
-      boost::signal5<void, VideoOutputManager &, VideoOutputAccel, VideoOutputMode, unsigned, bool> device_opened;
+      boost::signal6<void, VideoOutputManager &, VideoOutputAccel, VideoOutputMode, unsigned, bool, bool> device_opened;
       boost::signal1<void, VideoOutputManager &> device_closed;
       boost::signal2<void, VideoOutputManager &, VideoOutputErrorCodes> device_error;
       boost::signal2<void, VideoOutputManager &, VideoOutputFSToggle> fullscreen_mode_changed;
@@ -173,7 +173,12 @@ namespace Ekiga
 
 
   private:
-      void on_device_opened (VideoOutputAccel videooutput_accel, VideoOutputMode mode, unsigned zoom, bool both_streams, VideoOutputManager *manager);
+      void on_device_opened (VideoOutputAccel videooutput_accel,
+                             VideoOutputMode mode,
+                             unsigned zoom,
+                             bool both_streams,
+                             bool ext_stream,
+                             VideoOutputManager *manager);
       void on_device_closed (VideoOutputManager *manager);
       void on_device_error (VideoOutputErrorCodes error_code, VideoOutputManager *manager);
       void on_size_changed ( unsigned width, unsigned height, VideoOutputManager *manager);
