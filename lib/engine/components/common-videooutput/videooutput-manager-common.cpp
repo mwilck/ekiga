@@ -321,6 +321,8 @@ GMVideoOutputManager::frame_display_change_needed ()
                          last_frame.remote_height != current_frame.remote_height);
   bool window_changed = (local_display_info.x != last_frame.embedded_x ||
                         local_display_info.y != last_frame.embedded_y);
+  bool ext_changed = (last_frame.ext_width  != current_frame.ext_width ||
+                      last_frame.ext_height != current_frame.ext_height);
 
   switch (current_frame.mode) {
   case Ekiga::VO_MODE_LOCAL:
@@ -340,7 +342,10 @@ GMVideoOutputManager::frame_display_change_needed ()
     return ( remote_changed || local_changed );
     break;
 
-  case Ekiga::VO_MODE_REMOTE_EXT: // no need to handle this
+  case Ekiga::VO_MODE_REMOTE_EXT:
+    return ( ext_changed || window_changed );
+    break;
+
   case Ekiga::VO_MODE_UNSET:
   default:
     break;
@@ -354,33 +359,43 @@ GMVideoOutputManager::redraw ()
 {
   UpdateRequired sync_required;
   sync_required = update_required;
-  
-    if (frame_display_change_needed ()) 
-      setup_frame_display (); 
+
+    if (frame_display_change_needed ())
+      setup_frame_display ();
      else
-      if (last_frame.both_streams_active != current_frame.both_streams_active)
+      if (last_frame.both_streams_active != current_frame.both_streams_active ||
+          last_frame.ext_stream_active != current_frame.ext_stream_active)
         update_gui_device();
 
-    switch (current_frame.mode) 
-      {
-      case Ekiga::VO_MODE_LOCAL:
-          if (lframeStore.GetSize() > 0)
-            display_frame ((char*)lframeStore.GetPointer (), current_frame.local_width, current_frame.local_height);
+    switch (current_frame.mode) {
+    case Ekiga::VO_MODE_LOCAL:
+      if (lframeStore.GetSize() > 0)
+        display_frame ((char *) lframeStore.GetPointer (),
+                       current_frame.local_width, current_frame.local_height);
         break;
 
-      case Ekiga::VO_MODE_REMOTE:
-          if (rframeStore.GetSize() > 0)
-            display_frame ((char*)rframeStore.GetPointer (), current_frame.remote_width, current_frame.remote_height);
-        break;
+    case Ekiga::VO_MODE_REMOTE:
+      if (rframeStore.GetSize() > 0)
+        display_frame ((char *) rframeStore.GetPointer (),
+                       current_frame.remote_width, current_frame.remote_height);
+      break;
 
-     case Ekiga::VO_MODE_FULLSCREEN:
-     case Ekiga::VO_MODE_PIP:
-     case Ekiga::VO_MODE_PIP_WINDOW:
-          if ((lframeStore.GetSize() > 0) &&  (rframeStore.GetSize() > 0))
-            display_pip_frames ((char*)lframeStore.GetPointer (), current_frame.local_width, current_frame.local_height,
-                              (char*)rframeStore.GetPointer (), current_frame.remote_width, current_frame.remote_height);
+    case Ekiga::VO_MODE_FULLSCREEN:
+    case Ekiga::VO_MODE_PIP:
+    case Ekiga::VO_MODE_PIP_WINDOW:
+      if ((lframeStore.GetSize() > 0) &&  (rframeStore.GetSize() > 0))
+        display_pip_frames ((char *) lframeStore.GetPointer (),
+                            current_frame.local_width, current_frame.local_height,
+                            (char *) rframeStore.GetPointer (),
+                            current_frame.remote_width, current_frame.remote_height);
        break;
-    case Ekiga::VO_MODE_REMOTE_EXT: // no need to handle this
+
+    case Ekiga::VO_MODE_REMOTE_EXT:
+      if (eframeStore.GetSize() > 0)
+        display_frame ((char *) eframeStore.GetPointer (),
+                       current_frame.ext_width, current_frame.ext_height);
+      break;
+
     case Ekiga::VO_MODE_UNSET:
     default:
        break;
