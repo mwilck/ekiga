@@ -68,8 +68,9 @@ void VideoOutputCoreConfBridge::on_property_changed (std::string key, GmConfEntr
     DisplayInfo display_info;
     PTRACE(4, "VideoOutputCoreConfBridge\tUpdating video view");
 
-    if (( gm_conf_get_int (VIDEO_DISPLAY_KEY "video_view") < 0) || ( gm_conf_get_int (VIDEO_DISPLAY_KEY "video_view") > 4))
-      gm_conf_set_int (VIDEO_DISPLAY_KEY "video_view", 0);
+    if ((gm_conf_get_int (VIDEO_DISPLAY_KEY "video_view") < Ekiga::VO_MODE_LOCAL) ||
+	(gm_conf_get_int (VIDEO_DISPLAY_KEY "video_view") >= Ekiga::VO_MODE_UNSET))
+      gm_conf_set_int (VIDEO_DISPLAY_KEY "video_view", Ekiga::VO_MODE_LOCAL);
 
     display_info.mode = (VideoOutputMode) gm_conf_get_int (VIDEO_DISPLAY_KEY "video_view");
     display_core.set_display_info(display_info);
@@ -78,9 +79,11 @@ void VideoOutputCoreConfBridge::on_property_changed (std::string key, GmConfEntr
 
     DisplayInfo display_info;
     PTRACE(4, "VideoOutputCoreConfBridge\tUpdating zoom");
-      
+
     display_info.zoom = gm_conf_get_int (VIDEO_DISPLAY_KEY "zoom");
-    if ((display_info.zoom != 100) && (display_info.zoom != 50) && (display_info.zoom != 200)) {
+    if ((display_info.zoom != 100) &&
+	(display_info.zoom != 50) &&
+	(display_info.zoom != 200)) {
       display_info.zoom = 100;
       gm_conf_set_int (VIDEO_DISPLAY_KEY "zoom", 100);
     }

@@ -263,7 +263,7 @@ static void on_videooutput_device_opened_cb (Ekiga::VideoOutputManager & /* mana
                                              Ekiga::VideoOutputMode mode,
                                              unsigned zoom,
                                              bool both_streams,
-                                             G_GNUC_UNUSED bool ext_stream,
+                                             bool ext_stream,
                                              gpointer self);
 
 static void on_videooutput_device_closed_cb (Ekiga::VideoOutputManager & /* manager */,
@@ -579,8 +579,12 @@ display_changed_cb (GtkWidget *widget,
       group = g_slist_next (group);
     }
 
-    if (!EKIGA_CALL_WINDOW (data)->priv->changing_back_to_local_after_a_call)
-      gm_conf_set_int (VIDEO_DISPLAY_KEY "video_view", group_last_pos - active);
+    if (!EKIGA_CALL_WINDOW (data)->priv->changing_back_to_local_after_a_call) {
+      int view = group_last_pos - active;
+      if (view > 2) // let's jump VO_MODE_PIP_WINDOW & VO_MODE_FULLSCREEN modes
+        view += 2;
+      gm_conf_set_int (VIDEO_DISPLAY_KEY "video_view", view);
+    }
   }
 }
 
@@ -733,7 +737,7 @@ on_videooutput_device_opened_cb (Ekiga::VideoOutputManager & /* manager */,
                                  Ekiga::VideoOutputMode mode,
                                  unsigned zoom,
                                  bool both_streams,
-                                 G_GNUC_UNUSED bool ext_stream,
+                                 bool ext_stream,
                                  gpointer self)
 {
   EkigaCallWindow *cw = EKIGA_CALL_WINDOW (self);
@@ -750,16 +754,22 @@ on_videooutput_device_opened_cb (Ekiga::VideoOutputManager & /* manager */,
       gtk_menu_set_sensitive (cw->priv->main_menu, "remote_video", true);
   }
 
+  gtk_menu_set_sensitive (cw->priv->main_menu, "extended_video", ext_stream);
+
   // when ending a call and going back to local video, the video_view
   // setting should not be updated, so memorise the setting and
   // restore it afterwards
-  if (!both_streams && mode == Ekiga::VO_MODE_LOCAL)
-    vv = gm_conf_get_int (VIDEO_DISPLAY_KEY "video_view");
+  vv = gm_conf_get_int (VIDEO_DISPLAY_KEY "video_view");
   cw->priv->changing_back_to_local_after_a_call = true;
   gtk_radio_menu_select_with_id (cw->priv->main_menu, "local_video", mode);
   cw->priv->changing_back_to_local_after_a_call = false;
   if (!both_streams && mode == Ekiga::VO_MODE_LOCAL)
     gm_conf_set_int (VIDEO_DISPLAY_KEY "video_view", vv);
+
+  // if in a past video we left in the extended video stream, but the new
+  // one doesn't have it, we reset the view to the local one
+  if (vv == Ekiga::VO_MODE_REMOTE_EXT && !ext_stream)
+    gm_conf_set_int (VIDEO_DISPLAY_KEY "video_view", Ekiga::VO_MODE_LOCAL);
 
   ekiga_call_window_zooms_menu_update_sensitivity (cw, zoom);
 }
@@ -2036,6 +2046,11 @@ ekiga_call_window_init_menu (EkigaCallWindow *cw)
       GTK_MENU_RADIO_ENTRY("both_incrusted", _("_Picture-in-Picture"),
 			   _("Both video images"),
 			   NULL, '3',
+			   G_CALLBACK (display_changed_cb), cw,
+			   false, false),
+      GTK_MENU_RADIO_ENTRY("extended_video", ("_Extended Video"),
+			   ("Extended video images"),
+			   NULL, '4',
 			   G_CALLBACK (display_changed_cb), cw,
 			   false, false),
       GTK_MENU_SEPARATOR,
