@@ -457,11 +457,15 @@ GMVideoOutputManager_x::display_pip_frames (const char *local_frame,
 void
 GMVideoOutputManager_x::sync (UpdateRequired sync_required)
 {
-  if (rxWindow && (sync_required.remote || (!sync_required.remote && !sync_required.local))) {
+  bool none_required = ( !sync_required.remote &&
+                         !sync_required.local &&
+                         !sync_required.extended );
+
+  if (rxWindow && (sync_required.remote || none_required)) {
     rxWindow->Sync();
   }
 
-  if (lxWindow && (sync_required.local  || (!sync_required.remote && !sync_required.local))) {
+  if (lxWindow && (sync_required.local || none_required)) {
     lxWindow->Sync();
   }
 }
