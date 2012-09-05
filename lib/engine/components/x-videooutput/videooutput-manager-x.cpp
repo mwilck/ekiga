@@ -419,6 +419,7 @@ GMVideoOutputManager_x::setup_frame_display ()
   }
 
   last_frame.both_streams_active = current_frame.both_streams_active;
+  last_frame.ext_stream_active = current_frame.ext_stream_active;
 
   if (video_disabled) {
     Ekiga::Runtime::run_in_main (boost::bind (&GMVideoOutputManager_x::device_error_in_main, this, Ekiga::VO_ERROR));

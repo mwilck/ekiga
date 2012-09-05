@@ -223,6 +223,7 @@
       Ekiga::VideoOutputMode mode;
       Ekiga::VideoOutputAccel accel;
       bool both_streams_active;
+      bool ext_stream_active;
 
       unsigned int remote_width;
       unsigned int remote_height;

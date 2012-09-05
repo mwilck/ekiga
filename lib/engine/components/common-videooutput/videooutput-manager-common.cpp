@@ -179,6 +179,7 @@ void GMVideoOutputManager::set_frame_data (const char* data,
     }
 
     current_frame.both_streams_active = false;
+    current_frame.ext_stream_active = false;
   } else {
 
     if (local_frame_received && !remote_frame_received)
@@ -188,6 +189,7 @@ void GMVideoOutputManager::set_frame_data (const char* data,
         local_display_info.mode = Ekiga::VO_MODE_REMOTE;
 
     current_frame.both_streams_active = local_frame_received & remote_frame_received;
+    current_frame.ext_stream_active = ext_frame_received;
   }
   current_frame.mode = local_display_info.mode;
   current_frame.zoom = local_display_info.zoom;
@@ -240,6 +242,7 @@ void GMVideoOutputManager::init()
   last_frame.mode = Ekiga::VO_MODE_UNSET;
   last_frame.accel = Ekiga::VO_ACCEL_NO_VIDEO;
   last_frame.both_streams_active = false;
+  last_frame.ext_stream_active = false;
 
   last_frame.local_width = 0;
   last_frame.local_height = 0;
@@ -251,6 +254,7 @@ void GMVideoOutputManager::init()
   last_frame.embedded_x = 0;
   last_frame.embedded_y = 0;
 
+  current_frame.ext_stream_active = false;
   current_frame.both_streams_active = false;
   current_frame.local_width = 0;
   current_frame.local_height = 0;
@@ -281,6 +285,8 @@ void GMVideoOutputManager::uninit ()
 void GMVideoOutputManager::update_gui_device ()
 {
   last_frame.both_streams_active = current_frame.both_streams_active;
+  last_frame.ext_stream_active = current_frame.ext_stream_active;
+
   Ekiga::Runtime::run_in_main (boost::bind (&GMVideoOutputManager::device_closed_in_main, this));
   Ekiga::Runtime::run_in_main (boost::bind (&GMVideoOutputManager::device_opened_in_main, this, current_frame.accel, current_frame.mode, current_frame.zoom, current_frame.both_streams_active));
 
