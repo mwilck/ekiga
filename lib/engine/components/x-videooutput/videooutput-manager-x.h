@@ -80,9 +80,11 @@ protected:
 
   XWindow *lxWindow;
   XWindow *rxWindow;
+  XWindow *exWindow;
 
   Display *lDisplay;
   Display *rDisplay;
+  Display *eDisplay;
 
   bool pip_window_available;
 

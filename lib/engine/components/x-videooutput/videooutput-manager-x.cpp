@@ -49,9 +49,11 @@ GMVideoOutputManager_x::GMVideoOutputManager_x (Ekiga::ServiceCore & _core)
   /* Internal stuff */
   lxWindow = NULL;
   rxWindow = NULL;
+  exWindow = NULL;
 
   rDisplay = XOpenDisplay (NULL);
   lDisplay = XOpenDisplay (NULL);
+  eDisplay = XOpenDisplay (NULL);
 
   pip_window_available = true;
 
@@ -69,23 +71,25 @@ GMVideoOutputManager_x::~GMVideoOutputManager_x ()
   run_thread.Signal();
   thread_ended.Wait();
 
-  if (lDisplay) 
+  if (lDisplay)
     XCloseDisplay (lDisplay);
   if (rDisplay)
     XCloseDisplay (rDisplay);
+  if (eDisplay)
+    XCloseDisplay (eDisplay);
 }
 
 bool
 GMVideoOutputManager_x::frame_display_change_needed ()
 {
-    switch (current_frame.mode) 
+    switch (current_frame.mode)
     {
       case Ekiga::VO_MODE_LOCAL:
-          if (!lxWindow) 
+          if (!lxWindow)
             return true;
           break;
       case Ekiga::VO_MODE_REMOTE:
-          if (!rxWindow) 
+          if (!rxWindow)
             return true;
           break;
       case Ekiga::VO_MODE_FULLSCREEN:
@@ -94,7 +98,10 @@ GMVideoOutputManager_x::frame_display_change_needed ()
           if (!rxWindow || (pip_window_available && (!lxWindow)) )
               return true;
           break;
-     case Ekiga::VO_MODE_REMOTE_EXT: // no need to handle this
+      case Ekiga::VO_MODE_REMOTE_EXT:
+          if (!exWindow)
+            return true;
+          break;
      case Ekiga::VO_MODE_UNSET:
      default:
           break;
@@ -210,9 +217,9 @@ GMVideoOutputManager_x::setup_frame_display ()
   case Ekiga::VO_MODE_PIP_WINDOW:
     Ekiga::Runtime::run_in_main (boost::bind (&GMVideoOutputManager_x::size_changed_in_main, this, 176, 144));
     break;
-  case Ekiga::VO_MODE_REMOTE_EXT: // no need to handle this
-    PTRACE (1, "GMVideoOutputManager_X\tNo remote extended widget yet");
-    return;
+  case Ekiga::VO_MODE_REMOTE_EXT:
+    Ekiga::Runtime::run_in_main (boost::bind (&GMVideoOutputManager_x::size_changed_in_main, this, (unsigned) (current_frame.ext_width * current_frame.zoom / 100), (unsigned) (current_frame.ext_height * current_frame.zoom / 100)));
+    break;
   case Ekiga::VO_MODE_UNSET:
   default:
     PTRACE (1, "GMVideoOutputManager_X\tDisplay variable not set");
@@ -287,6 +294,35 @@ GMVideoOutputManager_x::setup_frame_display ()
     last_frame.mode = Ekiga::VO_MODE_REMOTE;
     last_frame.remote_width = current_frame.remote_width;
     last_frame.remote_height = current_frame.remote_height;
+    last_frame.zoom = current_frame.zoom;
+    break;
+  }
+
+  // VO_MODE_REMOTE ----------------------------------------------------------------
+  case Ekiga::VO_MODE_REMOTE_EXT: {
+    PTRACE(4, "GMVideoOutputManager_X\tOpening VO_MODE_REMOTE_EXT display with image of "
+           << current_frame.ext_width << "x" << current_frame.ext_height);
+
+    struct WinitContinuation cont = {
+      eDisplay,
+      local_display_info.window,
+      local_display_info.gc,
+      local_display_info.x,
+      local_display_info.y,
+      (int) (current_frame.ext_width * current_frame.zoom / 100),
+      (int) (current_frame.ext_height * current_frame.zoom / 100),
+      (int) current_frame.ext_width,
+      (int) current_frame.ext_height,
+    };
+
+    exWindow = create_window (local_display_info, cont, cont);
+
+    last_frame.embedded_x = local_display_info.x;
+    last_frame.embedded_y = local_display_info.y;
+
+    last_frame.mode = Ekiga::VO_MODE_REMOTE_EXT;
+    last_frame.ext_width = current_frame.ext_width;
+    last_frame.ext_height = current_frame.ext_height;
     last_frame.zoom = current_frame.zoom;
     break;
   }
@@ -366,7 +402,6 @@ GMVideoOutputManager_x::setup_frame_display ()
     break;
   }
 
-  case Ekiga::VO_MODE_REMOTE_EXT: // no need to handle this
   case Ekiga::VO_MODE_UNSET:
   default:
     return;
@@ -379,6 +414,8 @@ GMVideoOutputManager_x::setup_frame_display ()
       lxWindow->ToggleOntop ();
     if (rxWindow)
       rxWindow->ToggleOntop ();
+    if (exWindow)
+      exWindow->ToggleOntop ();
   }
 
   last_frame.both_streams_active = current_frame.both_streams_active;
@@ -396,9 +433,11 @@ GMVideoOutputManager_x::close_frame_display ()
 {
   Ekiga::Runtime::run_in_main (boost::bind (&GMVideoOutputManager_x::device_closed_in_main, this));
 
-  if (rxWindow) 
+  if (rxWindow)
     rxWindow->RegisterSlave (NULL);
-  if (lxWindow) 
+  if (exWindow)
+    exWindow->RegisterSlave (NULL);
+  if (lxWindow)
     lxWindow->RegisterMaster (NULL);
 
   if (lxWindow) {
@@ -409,6 +448,11 @@ GMVideoOutputManager_x::close_frame_display ()
   if (rxWindow) {
     delete rxWindow;
     rxWindow = NULL;
+  }
+
+  if (exWindow) {
+    delete exWindow;
+    exWindow = NULL;
   }
 }
 
@@ -423,11 +467,17 @@ GMVideoOutputManager_x::display_frame (const char *frame,
   if (lxWindow)
     lxWindow->ProcessEvents();
 
+  if (exWindow)
+    exWindow->ProcessEvents();
+
   if  ((current_frame.mode == Ekiga::VO_MODE_LOCAL) && (lxWindow))
     lxWindow->PutFrame ((uint8_t *) frame, width, height);
 
   if  ((current_frame.mode == Ekiga::VO_MODE_REMOTE) && (rxWindow))
     rxWindow->PutFrame ((uint8_t *) frame, width, height);
+
+  if  ((current_frame.mode == Ekiga::VO_MODE_REMOTE_EXT) && (exWindow))
+    exWindow->PutFrame ((uint8_t *) frame, width, height);
 }
 
 void
@@ -467,6 +517,10 @@ GMVideoOutputManager_x::sync (UpdateRequired sync_required)
 
   if (lxWindow && (sync_required.local || none_required)) {
     lxWindow->Sync();
+  }
+
+  if (exWindow && (sync_required.extended || none_required)) {
+    exWindow->Sync();
   }
 }
 
