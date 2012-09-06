@@ -279,6 +279,7 @@ static void ekiga_call_window_set_video_size (EkigaCallWindow *cw,
 static void on_size_changed_cb (Ekiga::VideoOutputManager & /* manager */,
                                 unsigned width,
                                 unsigned height,
+                                G_GNUC_UNUSED Ekiga::VideoOutputMode mode,
                                 gpointer self);
 
 static void on_videoinput_device_opened_cb (Ekiga::VideoInputManager & /* manager */,
@@ -850,6 +851,7 @@ static void
 on_size_changed_cb (Ekiga::VideoOutputManager & /* manager */,
                     unsigned width,
                     unsigned height,
+                    G_GNUC_UNUSED Ekiga::VideoOutputMode mode,
                     gpointer self)
 {
   EkigaCallWindow *cw = EKIGA_CALL_WINDOW (self);
@@ -2218,7 +2220,7 @@ ekiga_call_window_connect_engine_signals (EkigaCallWindow *cw)
   conn = videooutput_core->device_error.connect (boost::bind (&on_videooutput_device_error_cb, _1, _2, (gpointer) cw));
   cw->priv->connections.push_back (conn);
 
-  conn = videooutput_core->size_changed.connect (boost::bind (&on_size_changed_cb, _1, _2, _3, (gpointer) cw));
+  conn = videooutput_core->size_changed.connect (boost::bind (&on_size_changed_cb, _1, _2, _3, _4, (gpointer) cw));
   cw->priv->connections.push_back (conn);
 
   conn = videooutput_core->fullscreen_mode_changed.connect (boost::bind (&on_fullscreen_mode_changed_cb, _1, _2, (gpointer) cw));

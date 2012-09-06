@@ -209,20 +209,36 @@ GMVideoOutputManager_x::setup_frame_display ()
 
   switch (current_frame.mode) {
   case Ekiga::VO_MODE_LOCAL:
-    Ekiga::Runtime::run_in_main (boost::bind (&GMVideoOutputManager_x::size_changed_in_main, this, (unsigned) (current_frame.local_width * current_frame.zoom / 100), (unsigned) (current_frame.local_height * current_frame.zoom / 100)));
+    Ekiga::Runtime::run_in_main
+      (boost::bind (&GMVideoOutputManager_x::size_changed_in_main, this,
+                    (unsigned) (current_frame.local_width * current_frame.zoom / 100),
+                    (unsigned) (current_frame.local_height * current_frame.zoom / 100),
+                    current_frame.mode));
     break;
   case Ekiga::VO_MODE_REMOTE:
   case Ekiga::VO_MODE_PIP:
-    Ekiga::Runtime::run_in_main (boost::bind (&GMVideoOutputManager_x::size_changed_in_main, this, (unsigned) (current_frame.remote_width * current_frame.zoom / 100), (unsigned) (current_frame.remote_height * current_frame.zoom / 100)));
+    Ekiga::Runtime::run_in_main
+      (boost::bind (&GMVideoOutputManager_x::size_changed_in_main, this,
+                    (unsigned) (current_frame.remote_width * current_frame.zoom / 100),
+                    (unsigned) (current_frame.remote_height * current_frame.zoom / 100),
+                    current_frame.mode));
     break;
   case Ekiga::VO_MODE_FULLSCREEN:
-    Ekiga::Runtime::run_in_main (boost::bind (&GMVideoOutputManager_x::size_changed_in_main, this, 176, 144));
+    Ekiga::Runtime::run_in_main
+      (boost::bind (&GMVideoOutputManager_x::size_changed_in_main, this,
+                    176, 144, current_frame.mode));
     break;
   case Ekiga::VO_MODE_PIP_WINDOW:
-    Ekiga::Runtime::run_in_main (boost::bind (&GMVideoOutputManager_x::size_changed_in_main, this, 176, 144));
+    Ekiga::Runtime::run_in_main
+      (boost::bind (&GMVideoOutputManager_x::size_changed_in_main, this,
+                    176, 144, current_frame.mode));
     break;
   case Ekiga::VO_MODE_REMOTE_EXT:
-    Ekiga::Runtime::run_in_main (boost::bind (&GMVideoOutputManager_x::size_changed_in_main, this, (unsigned) (current_frame.ext_width * current_frame.zoom / 100), (unsigned) (current_frame.ext_height * current_frame.zoom / 100)));
+    Ekiga::Runtime::run_in_main
+      (boost::bind (&GMVideoOutputManager_x::size_changed_in_main, this,
+                    (unsigned) (current_frame.ext_width * current_frame.zoom / 100),
+                    (unsigned) (current_frame.ext_height * current_frame.zoom / 100),
+                    current_frame.mode));
     break;
   case Ekiga::VO_MODE_UNSET:
   default:
@@ -535,9 +551,10 @@ GMVideoOutputManager_x::sync (UpdateRequired sync_required)
 
 void
 GMVideoOutputManager_x::size_changed_in_main (unsigned width,
-					      unsigned height)
+					      unsigned height,
+					      Ekiga::VideoOutputMode mode)
 {
-  size_changed (width, height);
+  size_changed (width, height, mode);
 }
 
 void

@@ -95,7 +95,8 @@ protected:
 private:
 
   void size_changed_in_main (unsigned width,
-			     unsigned height);
+			     unsigned height,
+			     Ekiga::VideoOutputMode mode);
 
   void device_opened_in_main (Ekiga::VideoOutputAccel accel,
 			      Ekiga::VideoOutputMode mode,
