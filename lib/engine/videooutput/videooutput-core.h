@@ -169,7 +169,7 @@ namespace Ekiga
       boost::signal1<void, VideoOutputManager &> device_closed;
       boost::signal2<void, VideoOutputManager &, VideoOutputErrorCodes> device_error;
       boost::signal2<void, VideoOutputManager &, VideoOutputFSToggle> fullscreen_mode_changed;
-      boost::signal3<void, VideoOutputManager &, unsigned, unsigned> size_changed;
+      boost::signal4<void, VideoOutputManager &, unsigned, unsigned, VideoOutputMode> size_changed;
 
 
   private:
@@ -181,7 +181,10 @@ namespace Ekiga
                              VideoOutputManager *manager);
       void on_device_closed (VideoOutputManager *manager);
       void on_device_error (VideoOutputErrorCodes error_code, VideoOutputManager *manager);
-      void on_size_changed ( unsigned width, unsigned height, VideoOutputManager *manager);
+      void on_size_changed (unsigned width,
+                            unsigned height,
+                            VideoOutputMode mode,
+                            VideoOutputManager *manager);
       void on_fullscreen_mode_changed (VideoOutputFSToggle toggle, VideoOutputManager *manager);
 
       std::set<VideoOutputManager *> managers;

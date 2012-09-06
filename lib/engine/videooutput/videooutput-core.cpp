@@ -91,7 +91,7 @@ void VideoOutputCore::add_manager (VideoOutputManager &manager)
   manager.device_closed.connect (boost::bind (&VideoOutputCore::on_device_closed, this, &manager));
   manager.device_error.connect (boost::bind (&VideoOutputCore::on_device_error, this, _1, &manager));
   manager.fullscreen_mode_changed.connect (boost::bind (&VideoOutputCore::on_fullscreen_mode_changed, this, _1, &manager));
-  manager.size_changed.connect (boost::bind (&VideoOutputCore::on_size_changed, this, _1, _2, &manager));
+  manager.size_changed.connect (boost::bind (&VideoOutputCore::on_size_changed, this, _1, _2, _3, &manager));
 }
 
 
@@ -227,8 +227,11 @@ void VideoOutputCore::on_fullscreen_mode_changed ( VideoOutputFSToggle toggle, V
   fullscreen_mode_changed (*manager, toggle);
 }
 
-void VideoOutputCore::on_size_changed ( unsigned width, unsigned height, VideoOutputManager *manager)
+void VideoOutputCore::on_size_changed (unsigned width,
+                                       unsigned height,
+                                       VideoOutputMode mode,
+                                       VideoOutputManager *manager)
 {
-  size_changed (*manager, width, height);
+  size_changed (*manager, width, height, mode);
 }
 
