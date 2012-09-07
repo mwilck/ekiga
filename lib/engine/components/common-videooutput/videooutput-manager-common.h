@@ -117,11 +117,16 @@
                                   unsigned type,
                                   int devices_nbr);
 
-    virtual void set_display_info (const Ekiga::DisplayInfo & _display_info)
-    {
+    virtual void set_display_info (const Ekiga::DisplayInfo & _display_info) {
       PWaitAndSignal m(display_info_mutex);
       display_info = _display_info;
     };
+
+    virtual void set_ext_display_info (const Ekiga::DisplayInfo & _display_info) {
+      PWaitAndSignal m(ext_display_info_mutex);
+      ext_display_info = _display_info;
+    };
+
 
   protected:
     typedef struct {
@@ -210,10 +215,17 @@
           PWaitAndSignal m(display_info_mutex);
           _display_info = display_info;
     }
-  
+
+    virtual void get_ext_display_info (Ekiga::DisplayInfo & _display_info) {
+          PWaitAndSignal m(ext_display_info_mutex);
+          _display_info = ext_display_info;
+    }
+
     /* This variable has to be protected by display_info_mutex */
     Ekiga::DisplayInfo display_info;
+    Ekiga::DisplayInfo ext_display_info;
     PMutex display_info_mutex; /* To protect the DisplayInfo object */
+    PMutex ext_display_info_mutex; /* To protect the 2nd DisplayInfo object */
 
     PBYTEArray lframeStore;
     PBYTEArray rframeStore;
