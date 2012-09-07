@@ -56,6 +56,7 @@
 #include "trigger.h"
 #include "menu-builder-tools.h"
 #include "menu-builder-gtk.h"
+#include "ext-window.h"
 
 #ifndef WIN32
 #include <signal.h>
@@ -102,6 +103,7 @@ struct _EkigaCallWindowPrivate
   boost::shared_ptr<Ekiga::Call> current_call;
   unsigned calling_state;
 
+  GtkWidget *ext_video_win;
   GtkWidget *main_video_image;
   GtkWidget *spinner;
   GtkWidget *info_text;
@@ -279,7 +281,7 @@ static void ekiga_call_window_set_video_size (EkigaCallWindow *cw,
 static void on_size_changed_cb (Ekiga::VideoOutputManager & /* manager */,
                                 unsigned width,
                                 unsigned height,
-                                G_GNUC_UNUSED Ekiga::VideoOutputMode mode,
+                                Ekiga::VideoOutputMode mode,
                                 gpointer self);
 
 static void on_videoinput_device_opened_cb (Ekiga::VideoInputManager & /* manager */,
@@ -601,6 +603,10 @@ hang_up_call_cb (GtkWidget * /*widget*/,
 
   if (cw->priv->current_call)
     cw->priv->current_call->hang_up ();
+
+  if (cw->priv->ext_video_win) {
+    ekiga_ext_window_destroy (EKIGA_EXT_WINDOW (cw->priv->ext_video_win));
+  }
 }
 
 
@@ -742,7 +748,9 @@ on_videooutput_device_opened_cb (Ekiga::VideoOutputManager & /* manager */,
       gtk_menu_set_sensitive (cw->priv->main_menu, "remote_video", true);
   }
 
-  gtk_menu_set_sensitive (cw->priv->main_menu, "extended_video", ext_stream);
+  if (cw->priv->ext_video_win && ext_stream) {
+    gtk_widget_show_now (cw->priv->ext_video_win);
+  }
 
   // when ending a call and going back to local video, the video_view
   // setting should not be updated, so memorise the setting and
@@ -851,13 +859,19 @@ static void
 on_size_changed_cb (Ekiga::VideoOutputManager & /* manager */,
                     unsigned width,
                     unsigned height,
-                    G_GNUC_UNUSED Ekiga::VideoOutputMode mode,
+                    Ekiga::VideoOutputMode mode,
                     gpointer self)
 {
   EkigaCallWindow *cw = EKIGA_CALL_WINDOW (self);
 
-  ekiga_call_window_set_video_size (EKIGA_CALL_WINDOW (cw), width, height);
+  if (mode == Ekiga::VO_MODE_REMOTE_EXT && cw->priv->ext_video_win) {
+    ekiga_ext_window_set_size (EKIGA_EXT_WINDOW (cw->priv->ext_video_win),
+                               width, height);
+    gtk_widget_show (cw->priv->ext_video_win);
+    return;
+  }
 
+  ekiga_call_window_set_video_size (EKIGA_CALL_WINDOW (cw), width, height);
   gtk_widget_show (GTK_WIDGET (cw));
 }
 
@@ -1182,6 +1196,10 @@ on_cleared_call_cb (G_GNUC_UNUSED boost::shared_ptr<Ekiga::CallManager> manager,
   ekiga_call_window_set_status (cw, _("Standby"));
   ekiga_call_window_set_bandwidth (cw, 0.0, 0.0, 0.0, 0.0, 0, 0);
   ekiga_call_window_clear_stats (cw);
+
+  if (cw->priv->ext_video_win) {
+    ekiga_ext_window_destroy (EKIGA_EXT_WINDOW (cw->priv->ext_video_win));
+  }
 
   if (cw->priv->current_call) {
     cw->priv->current_call = boost::shared_ptr<Ekiga::Call>();
@@ -2031,11 +2049,6 @@ ekiga_call_window_init_menu (EkigaCallWindow *cw)
 			   NULL, '3',
 			   G_CALLBACK (display_changed_cb), cw,
 			   false, false),
-      GTK_MENU_RADIO_ENTRY("extended_video", _("_Extended Video"),
-			   _("Extended Video Images"),
-			   NULL, '4',
-			   G_CALLBACK (display_changed_cb), cw,
-			   false, false),
       GTK_MENU_SEPARATOR,
 
       GTK_MENU_ENTRY("zoom_in", NULL, _("Zoom in"),
@@ -2319,6 +2332,11 @@ ekiga_call_window_init_gui (EkigaCallWindow *cw)
   cw->priv->audio_settings_window = gm_cw_audio_settings_window_new (cw);
   cw->priv->video_settings_window = gm_cw_video_settings_window_new (cw);
 
+  /* The extended video stream window */
+  boost::shared_ptr<Ekiga::VideoOutputCore> videooutput_core =
+    cw->priv->core->get<Ekiga::VideoOutputCore> ("videooutput-core");
+  cw->priv->ext_video_win = ext_window_new (videooutput_core);
+
   /* The main table */
   event_box = gtk_event_box_new ();
   vbox = gtk_vbox_new (false, 0);
@@ -2569,6 +2587,7 @@ ekiga_call_window_finalize (GObject *gobject)
 
   gtk_widget_destroy (cw->priv->audio_settings_window);
   gtk_widget_destroy (cw->priv->video_settings_window);
+  gtk_widget_destroy (cw->priv->ext_video_win);
 
   delete cw->priv;
 
