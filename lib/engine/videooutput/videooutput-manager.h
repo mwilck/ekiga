@@ -96,6 +96,7 @@ namespace Ekiga
                                    int devices_nbr) = 0;
 
       virtual void set_display_info (const DisplayInfo &) { };
+      virtual void set_ext_display_info (const DisplayInfo &) { };
 
 
       /*** API to act on VideoOutputDevice events ***/
@@ -138,8 +139,9 @@ namespace Ekiga
        */
       boost::signal3<void, unsigned, unsigned, VideoOutputMode> size_changed;
 
-  protected:  
+  protected:
       virtual void get_display_info (DisplayInfo &) { };
+      virtual void get_ext_display_info (DisplayInfo &) { };
     };
 
 /**

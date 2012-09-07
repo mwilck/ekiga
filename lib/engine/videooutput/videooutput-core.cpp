@@ -201,6 +201,17 @@ void VideoOutputCore::set_display_info (const DisplayInfo & _display_info)
   }
 }
 
+void VideoOutputCore::set_ext_display_info (const DisplayInfo & _display_info)
+{
+  PWaitAndSignal m(core_mutex);
+
+  for (std::set<VideoOutputManager *>::iterator iter = managers.begin ();
+       iter != managers.end ();
+       iter++) {
+    (*iter)->set_ext_display_info (_display_info);
+  }
+}
+
 
 void VideoOutputCore::on_device_opened (VideoOutputAccel videooutput_accel,
                                         VideoOutputMode mode,
