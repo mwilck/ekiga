@@ -3,15 +3,17 @@
 # This file is distributed under the same license as the Ekiga package.
 # Josep Puigdemont i Casamajó <josep.puigdemont@gmail.com>, 2002-2006.
 # David Planella Molas <david.planella@gmail.com>, 2008, 2009, 2010.
+# Pere Orga Esteve <pere@orga.cat>, 2012.
 #
 msgid ""
 msgstr ""
 "Project-Id-Version: ekiga\n"
-"Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2011-03-11 00:14+0100\n"
+"Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?"
+"product=ekiga&keywords=I18N+L10N&component=general\n"
+"POT-Creation-Date: 2012-09-05 15:00+0000\n"
 "PO-Revision-Date: 2011-03-11 00:15+0100\n"
-"Last-Translator: David Planella <david.planella@gmail.com>\n"
-"Language-Team: Catalan <gnome@softcatala.net>\n"
+"Last-Translator: Pere Orga <pere@orga.cat>\n"
+"Language-Team: Catalan <tradgnome@softcatala.org>\n"
 "Language: ca\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -19,8 +21,7 @@ msgstr ""
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
 
 #. Application name
-#: ../ekiga.desktop.in.in.h:1 ../src/gui/main_window.cpp:4722
-#: ../src/gui/main_window.cpp:4724
+#: ../ekiga.desktop.in.in.h:1 ../src/gui/main.cpp:103 ../src/gui/main.cpp:105
 msgid "Ekiga Softphone"
 msgstr "Telèfon per programari Ekiga"
 
@@ -33,368 +34,29 @@ msgid "Talk to and see people over the Internet"
 msgstr "Parleu amb gent arreu d'Internet i veieu-la"
 
 #: ../ekiga.schemas.in.in.h:1
-msgid "0: 56kbps, 1: ISDN, 2: DSL128, 3: DSL512, 4: LAN, 5: Custom"
-msgstr "0: 56 Kbps, 1: ISDN, 2: DSL128, 3: DSL512, 4: LAN, 5: Personalitzat"
-
-#: ../ekiga.schemas.in.in.h:2
-msgid ""
-"Allow Ekiga to fall back to software scaling the picture-in-picture if "
-"hardware support is not available. If this is set to false, Ekiga will not "
-"try to open the PIP if hardware support is not available."
-msgstr ""
-"Permet que l'Ekiga utilitzi l'escalat per programari per a la imatge-en-"
-"imatge com a última alternativa en cas que no estigui implementat per "
-"maquinari. Si ho establiu com a fals, l'Ekiga no intentarà obrir la PIP "
-"(imatge-en-imatge) si no està implementat per maquinari."
-
-#: ../ekiga.schemas.in.in.h:3
-msgid "Allow picture-in-picture software scaling"
-msgstr "Permet l'escalat per programari de la imatge-en-imatge"
-
-#: ../ekiga.schemas.in.in.h:4
-msgid "Alternative audio output device"
-msgstr "Dispositiu d'àudio de sortida alternatiu"
-
-#: ../ekiga.schemas.in.in.h:5
-msgid "Always forward calls to the given host"
-msgstr "Desvia sempre les trucades a un ordinador en concret"
-
-#: ../ekiga.schemas.in.in.h:6
-msgid "Audio input device"
-msgstr "Dispositiu d'àudio d'entrada"
-
-#: ../ekiga.schemas.in.in.h:7
 msgid "Audio output device"
 msgstr "Dispositiu d'àudio de sortida"
 
-#: ../ekiga.schemas.in.in.h:8
-msgid "Automatic answer"
-msgstr "Resposta automàtica"
-
-#: ../ekiga.schemas.in.in.h:9 ../src/gui/preferences.cpp:503
-msgid ""
-"Automatically reject or forward incoming calls if no answer is given after "
-"the specified amount of time (in seconds)"
-msgstr ""
-"Rebutja o desvia automàticament les trucades entrants si no es contesta dins "
-"el marge de temps especificat (en segons)"
-
-#: ../ekiga.schemas.in.in.h:10
-msgid "Calls history"
-msgstr "Historial de trucades"
-
-#: ../ekiga.schemas.in.in.h:11
-msgid "Change the panel section of the main window"
-msgstr "Canvia la secció del quadre de la finestra principal"
-
-#: ../ekiga.schemas.in.in.h:12
-msgid ""
-"Change the panel section of the main window (0=Contacts, 1=Dialpad, 2=Call "
-"history)"
-msgstr ""
-"Canvia la secció del quadre de la finestra principal (0 = contactes, 1 = "
-"marcador, 2 = historial de trucades)"
-
-#: ../ekiga.schemas.in.in.h:13
-msgid ""
-"Connection will be established in Fast Start mode. Fast Start is a new way "
-"to start calls faster that was introduced in H.323v2. It is not supported by "
-"Netmeeting and using both Fast Start and H.245 Tunneling can crash some "
-"versions of Netmeeting"
-msgstr ""
-"La connexió s'establirà en el mode d'Arrencada Ràpida. Aquesta és una nova "
-"manera d'iniciar les trucades que va introduir-se en l'H.323v2. El "
-"Netmeeting no ho implementa, de manera que si utilitzeu l'arrencada ràpida i "
-"la tunelització H.245 al mateix temps, us podeu trobar que algunes versions "
-"del Netmeeting es pengin"
-
-#: ../ekiga.schemas.in.in.h:14
-msgid "Contact long status"
-msgstr "Estat detallat del contacte"
-
-#: ../ekiga.schemas.in.in.h:15
-msgid "Contact short status"
-msgstr "Estat resumit del contacte"
-
-#: ../ekiga.schemas.in.in.h:16
-msgid "DTMF sending"
-msgstr "S'està enviant DTMF"
-
-#: ../ekiga.schemas.in.in.h:17
-msgid "Disable video hardware acceleration"
-msgstr "Inhabilita l'acceleració del vídeo per maquinari"
-
-#: ../ekiga.schemas.in.in.h:18 ../src/gui/main_window.cpp:3974
-msgid "Display images from your camera device"
-msgstr "Mostra imatges de la càmera"
-
-#: ../ekiga.schemas.in.in.h:19
-msgid "Enable 'Fast Start'"
-msgstr "Habilita l'arrencada ràpida"
-
-#: ../ekiga.schemas.in.in.h:20
-msgid "Enable H.245 tunneling"
-msgstr "Habilita la tunelització H.245"
-
-#: ../ekiga.schemas.in.in.h:21
-msgid "Enable STUN network detection"
-msgstr "Habilita la detecció de xarxa STUN"
-
-#: ../ekiga.schemas.in.in.h:22
-msgid "Enable early H.245"
-msgstr "Habilita H.245 a l'inici"
-
-#: ../ekiga.schemas.in.in.h:23
-msgid "Enable echo cancelation"
-msgstr "Habilita la cancel·lació automàtica de l'eco"
-
-#: ../ekiga.schemas.in.in.h:24
-msgid "Enable silence detection"
-msgstr "Habilita la detecció de silenci"
-
-#: ../ekiga.schemas.in.in.h:25 ../src/gui/preferences.cpp:480
-msgid "Enable the automatic network setup resulting from the STUN test"
-msgstr ""
-"Habilita la configuració automàtica de la xarxa resultant de la comprovació "
-"de l'STUN"
-
-#: ../ekiga.schemas.in.in.h:26
-msgid ""
-"Enter the number of seconds after which Ekiga should try refreshing the NAT "
-"binding when STUN is being used"
-msgstr ""
-"Entreu el nombre de segons que l'Ekiga ha d'esperar abans d'intentar "
-"actualitzar la vinculació NAT quan es faci servir STUN"
-
-#: ../ekiga.schemas.in.in.h:27 ../src/gui/preferences.cpp:449
-msgid "Enter your full name"
-msgstr "Introduïu el vostre nom i cognoms"
-
-#: ../ekiga.schemas.in.in.h:28
-msgid "Forward calls to host"
-msgstr "Desvia trucades a l'ordinador"
-
-#: ../ekiga.schemas.in.in.h:29
-msgid "Forward calls to the given host if busy"
-msgstr "Desvia les trucades a un ordinador en concret quan estigui ocupat"
-
-#: ../ekiga.schemas.in.in.h:30
-msgid "Forward calls to the given host if no answer"
-msgstr "Desvia les trucades a un ordinador en concret si no contesto"
-
-#: ../ekiga.schemas.in.in.h:31 ../src/gui/preferences.cpp:980
-msgid "Frame Rate"
-msgstr "Velocitat dels quadres"
-
-#: ../ekiga.schemas.in.in.h:32
-msgid "Full name"
-msgstr "Nom complet"
-
-#: ../ekiga.schemas.in.in.h:33 ../src/gui/preferences.cpp:466
-msgid ""
-"If enabled, Ekiga will start hidden provided that the notification area is "
-"present in the GNOME panel"
-msgstr ""
-"Si s'habilita, l'Ekiga s'iniciarà amagat, suposant que l'àrea de notificació "
-"estigui habilitada"
-
-#: ../ekiga.schemas.in.in.h:34
-msgid ""
-"If enabled, all incoming calls will be forwarded to the host that is "
-"specified in the field below"
-msgstr ""
-"Si s'habilita, totes les trucades entrants es desviaran a l'ordinador indicat"
-
-#: ../ekiga.schemas.in.in.h:35
-msgid ""
-"If enabled, all incoming calls will be forwarded to the host that is "
-"specified in the field below if you already are in a call or if you are in "
-"Do Not Disturb mode"
-msgstr ""
-"Si s'activa, totes les trucades entrants que rebeu mentre estigueu en una "
-"trucada, o en mode «no molesteu», es desviaran a l'ordinador indicat"
-
-#: ../ekiga.schemas.in.in.h:36
-msgid ""
-"If enabled, all incoming calls will be forwarded to the host that is "
-"specified in the field below if you do not answer the call"
-msgstr ""
-"Si s'habilita, les trucades entrants que no contesteu es desviaran cap a "
-"l'ordinador indicat"
-
-#: ../ekiga.schemas.in.in.h:37 ../src/gui/preferences.cpp:504
-msgid "If enabled, automatically answer incoming calls"
-msgstr "Si s'habilita, s'acceptaran automàticament les trucades entrants"
-
-#: ../ekiga.schemas.in.in.h:38 ../src/gui/preferences.cpp:468
-msgid "If enabled, offline contacts will be shown in the roster"
-msgstr "Si s'activa, els contactes fora de línia es mostraran a la llista"
-
-#: ../ekiga.schemas.in.in.h:39 ../src/gui/preferences.cpp:946
-msgid "If enabled, use echo cancelation"
-msgstr "Si s'habilita, utilitza la cancel·lació de l'eco"
-
-#: ../ekiga.schemas.in.in.h:40 ../src/gui/preferences.cpp:944
-msgid "If enabled, use silence detection with the codecs supporting it"
-msgstr ""
-"Si s'habilita, es farà servir la detecció de silenci per als còdecs que ho "
-"permetin"
-
-#: ../ekiga.schemas.in.in.h:41
-msgid "Kind of network selected in the assistant"
-msgstr "Tipus de xarxa seleccionada a l'auxiliar"
-
-#: ../ekiga.schemas.in.in.h:42
-msgid "LDAP servers"
-msgstr "Servidors LDAP"
-
-#: ../ekiga.schemas.in.in.h:43
-msgid "List of configured LDAP servers"
-msgstr "Llista de servidors LDAP configurats"
-
-#: ../ekiga.schemas.in.in.h:44
-msgid "List of folded groups in the roster"
-msgstr "Llista dels grups plegats a la llista"
-
-#: ../ekiga.schemas.in.in.h:45
-msgid "Listen port"
-msgstr "Port on escoltar"
-
-#: ../ekiga.schemas.in.in.h:46
-msgid "Maximum RX video bitrate"
-msgstr "Taxa de bits màxima per a la recepció del vídeo"
-
-#: ../ekiga.schemas.in.in.h:47
-msgid "Maximum TX video bitrate"
-msgstr "Taxa de bits màxima per a la transmissió del vídeo"
-
-#: ../ekiga.schemas.in.in.h:48
-msgid "Maximum jitter buffer"
-msgstr "Memòria intermèdia màxima per al jitter"
-
-#: ../ekiga.schemas.in.in.h:49
-msgid "NAT Binding Timeout"
-msgstr "S'ha excedit el temps d'espera de la vinculació NAT"
-
-#: ../ekiga.schemas.in.in.h:50
-msgid "No answer timeout"
-msgstr "S'ha excedit el temps d'espera"
-
-#: ../ekiga.schemas.in.in.h:51
-msgid "Outbound Proxy"
-msgstr "Servidor intermediari de sortida"
-
-#: ../ekiga.schemas.in.in.h:52 ../src/gui/preferences.cpp:474
-msgid "Place windows displaying video above other windows during calls"
-msgstr ""
-"Disposa les finestres que mostrin vídeo per sobre de les altres finestres "
-"durant una trucada"
-
-#: ../ekiga.schemas.in.in.h:53 ../src/gui/preferences.cpp:366
-msgid "Play busy tone"
-msgstr "Reprodueix el so d'ocupat"
-
-#: ../ekiga.schemas.in.in.h:54 ../src/gui/preferences.cpp:356
-msgid "Play ring tone"
-msgstr "Reprodueix el so del marcat"
-
-#: ../ekiga.schemas.in.in.h:55 ../src/gui/preferences.cpp:346
-msgid "Play sound on incoming calls"
-msgstr "Reprodueix un so per a trucades entrants"
-
-#: ../ekiga.schemas.in.in.h:56
-msgid "Play sound on new message"
-msgstr "Reprodueix un so quan hi hagi nous missatges"
-
-#: ../ekiga.schemas.in.in.h:57
-msgid "Play sound on new voice mail"
-msgstr "Reprodueix un so quan hi hagi nous correus de veu"
-
-#: ../ekiga.schemas.in.in.h:58
-msgid "Position on the screen of the address book window"
-msgstr "Posició en pantalla de la finestra de la llibreta d'adreces"
-
-#: ../ekiga.schemas.in.in.h:59
-msgid "Position on the screen of the audio settings window"
-msgstr "Posició en pantalla de la finestra de paràmetres d'àudio"
-
-#: ../ekiga.schemas.in.in.h:60
-msgid "Position on the screen of the chat window"
-msgstr "Posició en pantalla de la finestra de xat"
-
-#: ../ekiga.schemas.in.in.h:61
-msgid "Position on the screen of the druid window"
-msgstr "Posició en pantalla de la finestra de l'auxiliar de configuració"
-
-#: ../ekiga.schemas.in.in.h:62
-msgid "Position on the screen of the main window"
-msgstr "Posició en pantalla de la finestra principal"
-
-#: ../ekiga.schemas.in.in.h:63
-msgid "Position on the screen of the preferences window"
-msgstr "Posició en pantalla de la finestra de preferències"
-
-#: ../ekiga.schemas.in.in.h:64
-msgid "Position on the screen of the video settings window"
-msgstr "Posició en pantalla de la finestra de paràmetres de vídeo"
-
-#: ../ekiga.schemas.in.in.h:65
-msgid "Remote video window position"
-msgstr "Posició de la finestra del vídeo remot"
-
-#: ../ekiga.schemas.in.in.h:66
-msgid "Remote video window size"
-msgstr "Mida de la finestra del vídeo remot"
-
-#: ../ekiga.schemas.in.in.h:67
-msgid "Select an alternative audio output device to use for sound events."
-msgstr ""
-"Seleccioneu el dispositiu d'àudio de sortida alternatiu per al so de les "
-"incidències."
-
-#: ../ekiga.schemas.in.in.h:68 ../src/gui/preferences.cpp:755
-msgid "Select the audio input device to use"
-msgstr "Seleccioneu el dispositiu d'àudio d'entrada que vulgueu utilitzar"
-
-#: ../ekiga.schemas.in.in.h:69 ../src/gui/preferences.cpp:748
+#: ../ekiga.schemas.in.in.h:2
+#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:759
 msgid "Select the audio output device to use"
 msgstr "Seleccioneu el dispositiu d'àudio de sortida que vulgueu utilitzar"
 
-#: ../ekiga.schemas.in.in.h:70 ../src/gui/preferences.cpp:905
-msgid ""
-"Select the format for video cameras (does not apply to most USB cameras)"
-msgstr ""
-"Seleccioneu el format per a càmeres de vídeo. (No té rellevància en la "
-"majoria de càmeres USB)"
+#: ../ekiga.schemas.in.in.h:3
+msgid "Audio input device"
+msgstr "Dispositiu d'àudio d'entrada"
 
-#: ../ekiga.schemas.in.in.h:71
-msgid ""
-"Select the mode for sending DTMFs. The values can be 0 (for \"RFC2833\") and "
-"1 (for \"INFO\")"
-msgstr ""
-"Seleccioneu el mode d'enviament de DTMF. Els valors poden ser 0 (per "
-"«RFC2833») o bé 1 (per «INFO»)"
+#: ../ekiga.schemas.in.in.h:4
+#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:766
+msgid "Select the audio input device to use"
+msgstr "Seleccioneu el dispositiu d'àudio d'entrada que vulgueu utilitzar"
 
-#: ../ekiga.schemas.in.in.h:72
-msgid ""
-"Select the mode for sending DTMFs. The values can be 0 (for \"String\"), 1 "
-"(for \"Tone\"), 2 (for \"RFC2833\"), or 3 (for \"Q.931\") (default is "
-"\"String\"). Choosing other values than \"String\" disables the Text Chat."
-msgstr ""
-"Seleccioneu el mode d'enviament de DTMF. Els valors poden ser 0 (per "
-"«String»), 1 ( per «To»), 2 (per «RFC2833»), o bé 3 (per «Q.931»). El valor "
-"predeterminat és «String». Si escolliu un valor que no sigui «String», "
-"s'inhabilitarà el xat de text"
+#: ../ekiga.schemas.in.in.h:5
+msgid "Video input device"
+msgstr "Dispositiu de vídeo d'entrada"
 
-#: ../ekiga.schemas.in.in.h:73
-msgid ""
-"Select the transmitted video size: Small (QCIF 176x144) or Large (CIF "
-"352x288)"
-msgstr ""
-"Escolliu la mida del vídeo transmès: Petita (QCIF 176x144) o Gran (CIF "
-"352x288)"
-
-#: ../ekiga.schemas.in.in.h:74 ../src/gui/preferences.cpp:897
+#: ../ekiga.schemas.in.in.h:6
+#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:902
 msgid ""
 "Select the video input device to use. If an error occurs when using this "
 "device a test picture will be transmitted."
@@ -402,86 +64,242 @@ msgstr ""
 "Seleccioneu el dispositiu de vídeo d'entrada que vulgueu fer servir. Si es "
 "produeix algun error, es transmetrà una imatge de prova."
 
-#: ../ekiga.schemas.in.in.h:75
-msgid "Show offline contacts"
-msgstr "Mostra els contactes fora de línia"
+#: ../ekiga.schemas.in.in.h:7
+msgid "Video size"
+msgstr "Mida del vídeo"
 
-#: ../ekiga.schemas.in.in.h:76 ../src/gui/main_window.cpp:3607
-msgid "Show the call panel"
-msgstr "Mostra el quadre de trucada"
-
-#: ../ekiga.schemas.in.in.h:77
-msgid "Size of the address book window"
-msgstr "Mida de la finestra de la llibreta d'adreces"
-
-#: ../ekiga.schemas.in.in.h:78
-msgid "Size of the audio settings window"
-msgstr "Mida de la finestra de paràmetres d'àudio"
-
-#: ../ekiga.schemas.in.in.h:79
-msgid "Size of the chat window"
-msgstr "Mida de la finestra del xat"
-
-#: ../ekiga.schemas.in.in.h:80
-msgid "Size of the druid window"
-msgstr "Mida de la finestra de l'auxiliar"
-
-#: ../ekiga.schemas.in.in.h:81
-msgid "Size of the preferences window"
-msgstr "Mida de la finestra de preferències"
-
-#: ../ekiga.schemas.in.in.h:82
-msgid "Size of the video settings window"
-msgstr "Mida de la finestra de paràmetres de vídeo"
-
-#: ../ekiga.schemas.in.in.h:83
-msgid "Specify the software scaling algorithm"
-msgstr "Especifiqueu l'algorisme d'escalat per programari"
-
-#: ../ekiga.schemas.in.in.h:84
+#: ../ekiga.schemas.in.in.h:8
 msgid ""
-"Specify the software scaling algorithm: 0: nearest neighbor, 1: nearest "
-"neighbor with box filter, 2: bilinear filtering, 3: hyperbolic filtering. "
-"Does not apply on windows systems."
+"Select the transmitted video size: Small (QCIF 176x144) or Large (CIF "
+"352x288)"
 msgstr ""
-"Especifiqueu l'algorisme d'escalat per programari: 0: veí més proper, 1: veí "
-"més proper amb un filtre de caixa, 2: filtrat bilineal, 3: filtrat "
-"hiperbòlic. No és aplicable als sistemes Windows."
+"Escolliu la mida del vídeo transmès: Petita (QCIF 176x144) o Gran (CIF "
+"352x288)"
 
-#: ../ekiga.schemas.in.in.h:85
-msgid "Start hidden"
-msgstr "Arrenca amagat"
+#: ../ekiga.schemas.in.in.h:9
+msgid "Video channel"
+msgstr "Canal de vídeo"
 
-#: ../ekiga.schemas.in.in.h:86
-msgid "TCP port range"
-msgstr "Rang de ports TCP"
+#: ../ekiga.schemas.in.in.h:10
+#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:906
+msgid "The video channel number to use (to select camera, tv or other sources)"
+msgstr ""
+"El canal de vídeo que es farà servir (seleccioneu càmera, tv, o altres "
+"fonts...)"
 
-#: ../ekiga.schemas.in.in.h:87
-msgid "Temporal Spatial Trade Off"
-msgstr "Balanç temporal/espacial"
+#: ../ekiga.schemas.in.in.h:11
+msgid "Video format"
+msgstr "Format de vídeo"
 
-#: ../ekiga.schemas.in.in.h:88
+#: ../ekiga.schemas.in.in.h:12
+#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:910
+msgid ""
+"Select the format for video cameras (does not apply to most USB cameras)"
+msgstr ""
+"Seleccioneu el format per a càmeres de vídeo. (No té rellevància en la "
+"majoria de càmeres USB)"
+
+#: ../ekiga.schemas.in.in.h:13
+msgid "Video preview"
+msgstr "Visualització prèvia del vídeo"
+
+#: ../ekiga.schemas.in.in.h:14 ../src/gui/main_window.cpp:1197
+msgid "Display images from your camera device"
+msgstr "Mostra imatges de la càmera"
+
+#: ../ekiga.schemas.in.in.h:15
+#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:977
+msgid "Frame Rate"
+msgstr "Velocitat dels quadres"
+
+#: ../ekiga.schemas.in.in.h:16
+msgid ""
+"The maximum transmitted frame rate in frames/s. This rate may not be reached "
+"in case a minimum quality was configure via a TSTO value smaller than 31 and "
+"the bitrate selected is not sufficient to support this minimum quality"
+msgstr ""
+"El nombre màxim de quadres per segon transmesos. Pot ser que aquesta taxa no "
+"s'assoleixi en cas que s'hagi configurat una qualitat mínima a través d'un "
+"valor de balanç temporal/espacial menor de 31, i que la taxa de bits "
+"seleccionada no sigui suficient per funcionar amb aquesta qualitat mínima"
+
+#: ../ekiga.schemas.in.in.h:17
+msgid "Full name"
+msgstr "Nom complet"
+
+#: ../ekiga.schemas.in.in.h:18
+#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:466
+msgid "Enter your full name"
+msgstr "Introduïu el vostre nom i cognoms"
+
+#: ../ekiga.schemas.in.in.h:19
+msgid "Contact short status"
+msgstr "Estat resumit del contacte"
+
+#: ../ekiga.schemas.in.in.h:20
+msgid "The short status information"
+msgstr "La informació resumida sobre l'estat"
+
+#: ../ekiga.schemas.in.in.h:21
+msgid "Contact long status"
+msgstr "Estat detallat del contacte"
+
+#: ../ekiga.schemas.in.in.h:22
+msgid "The long status information"
+msgstr "La informació detallada sobre l'estat"
+
+#: ../ekiga.schemas.in.in.h:23
 msgid "The Audio Codecs List"
 msgstr "Llista de còdecs d'àudio"
 
-#: ../ekiga.schemas.in.in.h:89 ../src/gui/preferences.cpp:707
-msgid "The SIP Outbound Proxy to use for outgoing calls"
+#: ../ekiga.schemas.in.in.h:24
+msgid "The audio codecs list"
+msgstr "La llista de còdecs d'àudio"
+
+#: ../ekiga.schemas.in.in.h:25
+msgid "Enable silence detection"
+msgstr "Habilita la detecció de silenci"
+
+#: ../ekiga.schemas.in.in.h:26
+#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:945
+msgid "If enabled, use silence detection with the codecs supporting it"
 msgstr ""
-"El servidor intermediari de sortida SIP per utilitzar en trucades sortints"
+"Si s'habilita, es farà servir la detecció de silenci per als còdecs que ho "
+"permetin"
 
-#: ../ekiga.schemas.in.in.h:90
-msgid "The STUN Server"
-msgstr "El servidor STUN"
+#: ../ekiga.schemas.in.in.h:27
+msgid "Enable echo cancellation"
+msgstr "Habilita la cancel·lació automàtica de l'eco"
 
-#: ../ekiga.schemas.in.in.h:91
+#: ../ekiga.schemas.in.in.h:28
+#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:947
+msgid "If enabled, use echo cancellation"
+msgstr "Si s'habilita, utilitza la cancel·lació de l'eco"
+
+#: ../ekiga.schemas.in.in.h:29
+msgid "Alternative audio output device"
+msgstr "Dispositiu d'àudio de sortida alternatiu"
+
+#: ../ekiga.schemas.in.in.h:30
+msgid "Select an alternative audio output device to use for sound events."
+msgstr ""
+"Seleccioneu el dispositiu d'àudio de sortida alternatiu per al so de les "
+"incidències."
+
+#: ../ekiga.schemas.in.in.h:31
+msgid "The incoming call sound"
+msgstr "El so per a trucades que rebeu"
+
+#: ../ekiga.schemas.in.in.h:32
+msgid "The sound that will be played on incoming calls, if enabled"
+msgstr "Si s'habilita, el so que es reproduirà per a trucades entrants"
+
+#: ../ekiga.schemas.in.in.h:33
+#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:367
+msgid "Play sound on incoming calls"
+msgstr "Reprodueix un so per a trucades entrants"
+
+#: ../ekiga.schemas.in.in.h:34
+msgid "The chosen sound will be played on incoming calls, if enabled"
+msgstr "Si s'habilita, el so que escolliu es reproduirà quan us truquin"
+
+#: ../ekiga.schemas.in.in.h:35
+msgid "The new instant message sound"
+msgstr "El so per a missatges instantanis nous"
+
+#: ../ekiga.schemas.in.in.h:36
 msgid ""
-"The STUN server to use for STUN Support. STUN is a technology that permits "
-"passage through some types of NAT gateway"
+"The sound that will be played when there is a new instant message, if enabled"
 msgstr ""
-"El servidor STUN a utilitzar per a les funcions d'STUN. L'STUN és una "
-"tecnologia que permet travessar certs tipus d'encaminadors NAT"
+"Si s'habilita, el so que es reproduirà quan es rebi un missatge instantani"
 
-#: ../ekiga.schemas.in.in.h:92
+#: ../ekiga.schemas.in.in.h:37
+msgid "Play sound on new message"
+msgstr "Reprodueix un so quan hi hagi nous missatges"
+
+#: ../ekiga.schemas.in.in.h:38
+msgid ""
+"The chosen sound will be played when a new instant message is received, if "
+"enabled"
+msgstr ""
+"Si s'habilita, el so que escolliu es reproduirà quan rebeu algun missatge "
+"instantani"
+
+#: ../ekiga.schemas.in.in.h:39
+msgid "The new voice mail sound"
+msgstr "El so per a correus de veu nous"
+
+#: ../ekiga.schemas.in.in.h:40
+msgid ""
+"The sound that will be played when there is a new voice mail, if enabled"
+msgstr "Si s'habilita, el so que es reproduirà quan es rebi un correu de veu"
+
+#: ../ekiga.schemas.in.in.h:41
+msgid "Play sound on new voice mail"
+msgstr "Reprodueix un so quan hi hagi nous correus de veu"
+
+#: ../ekiga.schemas.in.in.h:42
+msgid ""
+"The chosen sound will be played when a new voice mail is received, if enabled"
+msgstr ""
+"Si s'habilita, el so que escolliu es reproduirà quan rebeu algun correu de "
+"veu"
+
+#: ../ekiga.schemas.in.in.h:43
+#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:377
+msgid "Play ring tone"
+msgstr "Reprodueix el so del marcat"
+
+#: ../ekiga.schemas.in.in.h:44
+msgid "The chosen sound will be played when calling somebody, if enabled"
+msgstr "Si s'habilita, el so que escolliu es reproduirà quan truqueu a algú"
+
+#: ../ekiga.schemas.in.in.h:45
+msgid "The dial tone sound"
+msgstr "El so del to del marcatge"
+
+#: ../ekiga.schemas.in.in.h:46
+msgid "The sound that will be played when calling somebody, if enabled"
+msgstr "Si s'habilita, el so que es reproduirà quan es truqui algú"
+
+#: ../ekiga.schemas.in.in.h:47
+#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:387
+msgid "Play busy tone"
+msgstr "Reprodueix el so d'ocupat"
+
+#: ../ekiga.schemas.in.in.h:48
+msgid ""
+"The chosen sound will be played at the end of calls or calling somebody who "
+"is busy, if enabled"
+msgstr ""
+"Si s'habilita, el so que escolliu es reproduirà al final de cada trucada o "
+"si truqueu algú que estigui ocupat"
+
+#: ../ekiga.schemas.in.in.h:49
+msgid "The busy tone sound"
+msgstr "El so d'ocupat"
+
+#: ../ekiga.schemas.in.in.h:50
+msgid ""
+"The sound that will be played at the end of calls or when calling somebody "
+"who is busy, if enabled"
+msgstr ""
+"Si s'habilita, el so que es reproduirà al final de les trucades o quan "
+"truqueu algú que estigui ocupat"
+
+#: ../ekiga.schemas.in.in.h:51
+msgid "The accounts list"
+msgstr "La llista de comptes"
+
+#: ../ekiga.schemas.in.in.h:52
+msgid "The list of accounts to which Ekiga should register"
+msgstr "La llista de comptes als que l'Ekiga s'hauria de registrar"
+
+#: ../ekiga.schemas.in.in.h:53
+msgid "Type of Service (TOS) byte on outgoing RTP IP packets"
+msgstr "Byte del tipus de servei (TOS) dels paquets IP RTP de sortida"
+
+#: ../ekiga.schemas.in.in.h:54
 msgid ""
 "The Type of Service (TOS) byte on outgoing RTP IP packets. This byte is used "
 "by the network to provide some level of Quality of Service (QoS). Default "
@@ -493,55 +311,371 @@ msgstr ""
 "(QoS). El valor predeterminat és 184 (0xB8), que correspon a «Expedited "
 "Forwarding (EF) PHB», tal com el defineix l'RFC 3246."
 
+#: ../ekiga.schemas.in.in.h:55
+msgid "Listen port"
+msgstr "Port on escoltar"
+
+#: ../ekiga.schemas.in.in.h:56
+msgid ""
+"The port to listen to for incoming connections. Ekiga needs to be restarted "
+"for the new value to take effect"
+msgstr ""
+"El port on escoltar per a la recepció de connexions entrants. Caldrà que "
+"reinicieu l'Ekiga per tal que el nou valor tingui efecte"
+
+#: ../ekiga.schemas.in.in.h:57
+msgid "Outbound Proxy"
+msgstr "Servidor intermediari de sortida"
+
+#: ../ekiga.schemas.in.in.h:58
+#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:721
+msgid "The SIP Outbound Proxy to use for outgoing calls"
+msgstr ""
+"El servidor intermediari de sortida SIP per utilitzar en trucades sortints"
+
+#: ../ekiga.schemas.in.in.h:59
+msgid "Forward calls to host"
+msgstr "Desvia trucades a l'ordinador"
+
+#: ../ekiga.schemas.in.in.h:60
+#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:676
+#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:724
+msgid "The host where calls should be forwarded if call forwarding is enabled"
+msgstr ""
+"El nom de l'ordinador on es desviaran les trucades si el desviament de "
+"trucades està activat"
+
+#: ../ekiga.schemas.in.in.h:61
+msgid "DTMF sending"
+msgstr "S'està enviant DTMF"
+
+#: ../ekiga.schemas.in.in.h:62
+msgid ""
+"Select the mode for sending DTMFs. The values can be 0 (for \"RFC2833\") and "
+"1 (for \"INFO\")"
+msgstr ""
+"Seleccioneu el mode d'enviament de DTMF. Els valors poden ser 0 (per "
+"«RFC2833») o bé 1 (per «INFO»)"
+
+#: ../ekiga.schemas.in.in.h:63
+msgid ""
+"The port to listen to for incoming connections. Ekiga needs to be restarted "
+"for the new value to take effect."
+msgstr ""
+"El port on escoltar per a la recepció de connexions entrants. Caldrà que "
+"reinicieu l'Ekiga per tal que el nou valor tingui efecte."
+
+#: ../ekiga.schemas.in.in.h:64
+msgid "TCP port range"
+msgstr "Rang de ports TCP"
+
+#: ../ekiga.schemas.in.in.h:65
+msgid ""
+"The range of TCP ports that Ekiga will use for the H.323 H.245 channel. This "
+"port range has no effect if both participants to the conference are using "
+"H.245 Tunneling."
+msgstr ""
+"L'interval de ports TCP que l'Ekiga farà servir per al canal H.323 H.245. "
+"Aquest rang de ports no té cap efecte si els dos participants a la "
+"conferència fan servir la tunelització H.245."
+
+#: ../ekiga.schemas.in.in.h:66
+msgid "UDP port range"
+msgstr "Rang de ports UDP"
+
+#: ../ekiga.schemas.in.in.h:67
+msgid "The range of UDP ports that Ekiga will use."
+msgstr "L'interval de ports UDP que utilitzarà l'Ekiga."
+
+#: ../ekiga.schemas.in.in.h:68
+msgid "Enable H.245 tunneling"
+msgstr "Habilita la tunelització H.245"
+
+#: ../ekiga.schemas.in.in.h:69
+#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:685
+msgid ""
+"This enables H.245 Tunneling mode. In H.245 Tunneling mode H.245 messages "
+"are encapsulated into the H.225 channel (port 1720). This saves one TCP "
+"connection during calls. H.245 Tunneling was introduced in H.323v2 and "
+"Netmeeting does not support it. Using both Fast Start and H.245 Tunneling "
+"can crash some versions of Netmeeting."
+msgstr ""
+"Això habilitarà la tunelització H.245. En aquest mode, els missatges estaran "
+"encapsulats en el canal H.225 (port 1720), cosa que permet estalviar un port "
+"TCP durant les trucades. La tunelització H.245 es va introduir a la versió 2 "
+"del protocol H.323v2, i el Netmeeting no ho implementa. Si s'utilitza "
+"l'arrencada ràpida juntament amb la tunelització H.245 al mateix temps, és "
+"possible que algunes versions del Netmeeting fallin."
+
+#: ../ekiga.schemas.in.in.h:70
+msgid "Enable early H.245"
+msgstr "Habilita H.245 a l'inici"
+
+#: ../ekiga.schemas.in.in.h:71
+#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:687
+msgid "This enables H.245 early in the setup"
+msgstr "Això habilita H.245 al principi de la configuració"
+
+#: ../ekiga.schemas.in.in.h:72
+msgid "Enable 'Fast Start'"
+msgstr "Habilita l'arrencada ràpida"
+
+#: ../ekiga.schemas.in.in.h:73
+msgid ""
+"Connection will be established in Fast Start mode. Fast Start is a new way "
+"to start calls faster that was introduced in H.323v2. It is not supported by "
+"Netmeeting and using both Fast Start and H.245 Tunneling can crash some "
+"versions of Netmeeting"
+msgstr ""
+"La connexió s'establirà en el mode d'arrencada ràpida. Aquesta és una nova "
+"manera d'iniciar les trucades que va introduir-se en l'H.323v2. El "
+"Netmeeting no ho implementa, de manera que si utilitzeu l'arrencada ràpida i "
+"la tunelització H.245 al mateix temps, us podeu trobar que algunes versions "
+"del Netmeeting es pengin"
+
+#: ../ekiga.schemas.in.in.h:74
+msgid "Enable H.239"
+msgstr "Habilita l'H.239"
+
+#: ../ekiga.schemas.in.in.h:75
+msgid "This enables H.239 capability for additional video roles"
+msgstr "Això habilitarà l'ús de l'H.239 per a rols de vídeo addicionals"
+
+#: ../ekiga.schemas.in.in.h:76
+msgid "Extended Video Roles"
+msgstr "Rols de vídeo estesos:"
+
+#: ../ekiga.schemas.in.in.h:77
+msgid ""
+"Select the H.239 Video Role. The values can be 0 (for \"disable extended "
+"video\"), 1 (for \"allow per content role mask\"), 2 (for \"force "
+"presentation\"), or 3 (for \"force live role\")"
+msgstr ""
+"Seleccioneu el rol de vídeo de l'H.239. Els valors poden ser 0 (per "
+"«desactivar el vídeo estès»), 1 (per «permet màscara de rol segons "
+"contingut»), 2 (per «força la presentació») o bé 3 (per «força el rol en "
+"viu»)"
+
+#: ../ekiga.schemas.in.in.h:78
+msgid ""
+"Select the mode for sending DTMFs. The values can be 0 (for \"String\"), 1 "
+"(for \"Tone\"), 2 (for \"RFC2833\"), or 3 (for \"Q.931\") (default is "
+"\"String\"). Choosing other values than \"String\" disables the Text Chat."
+msgstr ""
+"Seleccioneu el mode d'enviament de DTMF. Els valors poden ser 0 (per "
+"«String»), 1 ( per «To»), 2 (per «RFC2833»), o bé 3 (per «Q.931»). El valor "
+"predeterminat és «String». Si escolliu un valor que no sigui «String», "
+"s'inhabilitarà el xat de text."
+
+#: ../ekiga.schemas.in.in.h:79
+msgid "Always forward calls to the given host"
+msgstr "Desvia sempre les trucades a un ordinador en concret"
+
+#: ../ekiga.schemas.in.in.h:80
+msgid ""
+"If enabled, all incoming calls will be forwarded to the host that is "
+"specified in the field below"
+msgstr ""
+"Si s'habilita, totes les trucades entrants es desviaran a l'ordinador indicat"
+
+#: ../ekiga.schemas.in.in.h:81
+msgid "Forward calls to the given host if busy"
+msgstr "Desvia les trucades a un ordinador en concret quan estigui ocupat"
+
+#: ../ekiga.schemas.in.in.h:82
+msgid ""
+"If enabled, all incoming calls will be forwarded to the host that is "
+"specified in the field below if you already are in a call or if you are in "
+"busy mode"
+msgstr ""
+"Si s'activa, totes les trucades entrants que rebeu mentre estigueu en una "
+"trucada, o en mode «ocupat», es desviaran a l'ordinador indicat"
+
+#: ../ekiga.schemas.in.in.h:83
+msgid "Forward calls to the given host if no answer"
+msgstr "Desvia les trucades a un ordinador en concret si no contesto"
+
+#: ../ekiga.schemas.in.in.h:84
+msgid ""
+"If enabled, all incoming calls will be forwarded to the host that is "
+"specified in the field below if you do not answer the call"
+msgstr ""
+"Si s'habilita, les trucades entrants que no contesteu es desviaran cap a "
+"l'ordinador indicat"
+
+#: ../ekiga.schemas.in.in.h:85
+msgid "The STUN Server"
+msgstr "El servidor STUN"
+
+#: ../ekiga.schemas.in.in.h:86
+msgid ""
+"The STUN server to use for STUN Support. STUN is a technology that permits "
+"passage through some types of NAT gateway"
+msgstr ""
+"El servidor STUN a utilitzar per a les funcions d'STUN. L'STUN és una "
+"tecnologia que permet travessar certs tipus d'encaminadors NAT"
+
+#: ../ekiga.schemas.in.in.h:87
+msgid "Enable STUN network detection"
+msgstr "Habilita la detecció de xarxa STUN"
+
+#: ../ekiga.schemas.in.in.h:88
+#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:488
+msgid "Enable the automatic network setup resulting from the STUN test"
+msgstr ""
+"Habilita la configuració automàtica de la xarxa resultant de la comprovació "
+"de l'STUN"
+
+#: ../ekiga.schemas.in.in.h:89
+msgid "NAT Binding Timeout"
+msgstr "S'ha excedit el temps d'espera de la vinculació NAT"
+
+#: ../ekiga.schemas.in.in.h:90
+msgid ""
+"Enter the number of seconds after which Ekiga should try refreshing the NAT "
+"binding when STUN is being used"
+msgstr ""
+"Entreu el nombre de segons que l'Ekiga ha d'esperar abans d'intentar "
+"actualitzar la vinculació NAT quan es faci servir STUN"
+
+#: ../ekiga.schemas.in.in.h:91
+msgid "Position on the screen of the call window"
+msgstr "Posició a la pantalla de la finestra de trucada"
+
+#: ../ekiga.schemas.in.in.h:92
+msgid "Size of the call window"
+msgstr "Mida de la finestra de trucada"
+
 #: ../ekiga.schemas.in.in.h:93
-msgid "The accounts list"
-msgstr "La llista de comptes"
+msgid "Position on the screen of the main window"
+msgstr "Posició a la pantalla de la finestra principal"
 
 #: ../ekiga.schemas.in.in.h:94
-msgid "The audio codecs list"
-msgstr "La llista de còdecs d'àudio"
+msgid "Change the panel section of the main window"
+msgstr "Canvia la secció del quadre de la finestra principal"
 
 #: ../ekiga.schemas.in.in.h:95
-msgid "The busy tone sound"
-msgstr "El so d'ocupat"
+msgid ""
+"Change the panel section of the main window (0=Contacts, 1=Dialpad, 2=Call "
+"history)"
+msgstr ""
+"Canvia la secció del quadre de la finestra principal (0 = contactes, 1 = "
+"marcador, 2 = historial de trucades)"
 
 #: ../ekiga.schemas.in.in.h:96
-msgid ""
-"The chosen sound will be played at the end of calls or calling somebody who "
-"is busy, if enabled"
-msgstr ""
-"Si s'habilita, el so que escolliu es reproduirà al final de cada trucada o "
-"si truqueu algú que estigui ocupat"
+msgid "Size of the chat window"
+msgstr "Mida de la finestra del xat"
 
 #: ../ekiga.schemas.in.in.h:97
-msgid "The chosen sound will be played on incoming calls, if enabled"
-msgstr "Si s'habilita, el so que escolliu es reproduirà quan us truquin"
+msgid "Position on the screen of the chat window"
+msgstr "Posició a la pantalla de la finestra de xat"
 
 #: ../ekiga.schemas.in.in.h:98
-msgid ""
-"The chosen sound will be played when a new instant message is received, if "
-"enabled"
-msgstr ""
-"Si s'habilita, el so que escolliu es reproduirà quan rebeu algun missatge "
-"instantani"
+msgid "Size of the druid window"
+msgstr "Mida de la finestra de l'auxiliar"
 
 #: ../ekiga.schemas.in.in.h:99
-msgid ""
-"The chosen sound will be played when a new voice mail is received, if enabled"
-msgstr ""
-"Si s'habilita, el so que escolliu es reproduirà quan rebeu algun correu de "
-"veu"
+msgid "Position on the screen of the druid window"
+msgstr "Posició a la pantalla de la finestra de l'auxiliar de configuració"
 
 #: ../ekiga.schemas.in.in.h:100
-msgid "The chosen sound will be played when calling somebody, if enabled"
-msgstr "Si s'habilita, el so que escolliu es reproduirà quan truqueu a algú"
+msgid "Position on the screen of the address book window"
+msgstr "Posició a la pantalla de la finestra de la llibreta d'adreces"
 
 #: ../ekiga.schemas.in.in.h:101
+msgid "Size of the address book window"
+msgstr "Mida de la finestra de la llibreta d'adreces"
+
+#: ../ekiga.schemas.in.in.h:102
+msgid "Position on the screen of the audio settings window"
+msgstr "Posició a la pantalla de la finestra de paràmetres d'àudio"
+
+#: ../ekiga.schemas.in.in.h:103
+msgid "Size of the audio settings window"
+msgstr "Mida de la finestra de paràmetres d'àudio"
+
+#: ../ekiga.schemas.in.in.h:104
+msgid "Position on the screen of the video settings window"
+msgstr "Posició a la pantalla de la finestra de paràmetres de vídeo"
+
+#: ../ekiga.schemas.in.in.h:105
+msgid "Size of the video settings window"
+msgstr "Mida de la finestra de paràmetres de vídeo"
+
+#: ../ekiga.schemas.in.in.h:106
+msgid "Position on the screen of the preferences window"
+msgstr "Posició a la pantalla de la finestra de preferències"
+
+#: ../ekiga.schemas.in.in.h:107
+msgid "Size of the preferences window"
+msgstr "Mida de la finestra de preferències"
+
+#: ../ekiga.schemas.in.in.h:108
+msgid "Disable video hardware acceleration"
+msgstr "Inhabilita l'acceleració del vídeo per maquinari"
+
+#: ../ekiga.schemas.in.in.h:109
+msgid ""
+"This key disables DirectX (on win32) and XVideo (on Linux) video hardware "
+"acceleration"
+msgstr ""
+"Aquesta clau inhabilita l'acceleració per maquinari del DirectX (al win32) i "
+"de l'XVideo (al Linux)"
+
+#: ../ekiga.schemas.in.in.h:110
+msgid "Allow picture-in-picture software scaling"
+msgstr "Permet l'escalat per programari de la imatge-en-imatge"
+
+#: ../ekiga.schemas.in.in.h:111
+msgid ""
+"Allow Ekiga to fall back to software scaling the picture-in-picture if "
+"hardware support is not available. If this is set to false, Ekiga will not "
+"try to open the PIP if hardware support is not available."
+msgstr ""
+"Permet que l'Ekiga utilitzi l'escalat per programari per a la imatge-en-"
+"imatge com a última alternativa en cas que no estigui implementat per "
+"maquinari. Si ho establiu com a fals, l'Ekiga no intentarà obrir la PIP "
+"(imatge-en-imatge) si no està implementat per maquinari."
+
+#: ../ekiga.schemas.in.in.h:112
+msgid "Specify the software scaling algorithm"
+msgstr "Especifiqueu l'algorisme d'escalat per programari"
+
+#: ../ekiga.schemas.in.in.h:113
+msgid ""
+"Specify the software scaling algorithm: 0: nearest neighbor, 1: nearest "
+"neighbor with box filter, 2: bilinear filtering, 3: hyperbolic filtering. "
+"Does not apply on windows systems."
+msgstr ""
+"Especifiqueu l'algorisme d'escalat per programari: 0: veí més proper, 1: veí "
+"més proper amb un filtre de caixa, 2: filtrat bilineal, 3: filtrat "
+"hiperbòlic. No és aplicable als sistemes Windows."
+
+#: ../ekiga.schemas.in.in.h:114
+msgid "The zoom value"
+msgstr "El valor del zoom"
+
+#: ../ekiga.schemas.in.in.h:115
+msgid ""
+"The zoom value in percent to apply to images displayed in the main GUI (can "
+"be 50, 100, or 200)"
+msgstr ""
+"El percentatge d'augment que s'aplicarà per a les imatges mostrades a la "
+"interfície principal (pot ser 50, 100 o 200)"
+
+#: ../ekiga.schemas.in.in.h:116
+#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:482
+msgid "Place windows displaying video above other windows during calls"
+msgstr ""
+"Disposa les finestres que mostrin vídeo per sobre de les altres finestres "
+"durant una trucada"
+
+#: ../ekiga.schemas.in.in.h:117
 msgid "The default video view"
 msgstr "La visualització de vídeo predeterminada"
 
 # FIXME
-#: ../ekiga.schemas.in.in.h:102
+#: ../ekiga.schemas.in.in.h:118
 msgid ""
 "The default video view (0: Local, 1: Remote, 2: Both, 3: Both in a separate "
 "window)"
@@ -549,44 +683,54 @@ msgstr ""
 "La visualització de vídeo predeterminada (0: local, 1: remota, 2: ambdues, "
 "3: ambdues en finestres separades)"
 
-#: ../ekiga.schemas.in.in.h:103
-msgid "The dial tone sound"
-msgstr "El so del to del marcatge"
+#: ../ekiga.schemas.in.in.h:119
+msgid "The video view before having switched to fullscreen"
+msgstr "La vista del vídeo abans d'haver commutat a pantalla completa"
 
-#: ../ekiga.schemas.in.in.h:104
-msgid "The history of the 100 last calls"
-msgstr "L'historial de les darreres 100 trucades"
-
-#: ../ekiga.schemas.in.in.h:105 ../src/gui/preferences.cpp:662
-#: ../src/gui/preferences.cpp:710
-msgid "The host where calls should be forwarded if call forwarding is enabled"
-msgstr ""
-"El nom de l'ordinador on es desviaran les trucades si el desviament de "
-"trucades està activat"
-
-#: ../ekiga.schemas.in.in.h:106
-msgid "The incoming call sound"
-msgstr "El so per a trucades que rebeu"
-
-#: ../ekiga.schemas.in.in.h:107
-msgid "The list of accounts to which Ekiga should register"
-msgstr "La llista de comptes als que l'Ekiga s'hauria de registrar"
-
-#: ../ekiga.schemas.in.in.h:108
-msgid "The long status information"
-msgstr "La informació detallada sobre l'estat"
-
-#: ../ekiga.schemas.in.in.h:109
+#: ../ekiga.schemas.in.in.h:120
 msgid ""
-"The maximum RX video bitrate in kbit/s. This value will be signaled to the "
-"peer endpoint that can adjust (if it supports it) its TX bitrate if it is "
-"above the signaled value"
+"The video view before having switched to fullscreen (same values as "
+"video_view)"
 msgstr ""
-"La taxa de bits màxima per a la recepció del vídeo, en kbit/s. Aquest valor "
-"s'indicarà a l'extrem de l'interlocutor que pugui (si ho implementa) ajustar "
-"la seva taxa de bits de transmissió en cas que sobrepassi el valor indicat"
+"La vista de vídeo abans d'haver commutat a la visualització de pantalla "
+"completa (s'hi permeten els mateixos valors que a video_view)"
 
-#: ../ekiga.schemas.in.in.h:110
+#: ../ekiga.schemas.in.in.h:121
+msgid "Remote video window size"
+msgstr "Mida de la finestra del vídeo remot"
+
+#: ../ekiga.schemas.in.in.h:122
+msgid "The size of the remote video window"
+msgstr "La mida de la finestra del vídeo remot"
+
+#: ../ekiga.schemas.in.in.h:123
+msgid "Remote video window position"
+msgstr "Posició de la finestra del vídeo remot"
+
+#: ../ekiga.schemas.in.in.h:124
+msgid "The position of the remote video window"
+msgstr "La posició de la finestra del vídeo remot"
+
+#: ../ekiga.schemas.in.in.h:125
+msgid "Maximum jitter buffer"
+msgstr "Memòria intermèdia màxima per al jitter"
+
+#: ../ekiga.schemas.in.in.h:126
+#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:949
+msgid "The maximum jitter buffer size for audio reception (in ms)"
+msgstr ""
+"El valor màxim de la memòria intermèdia per al jitter en la recepció d'àudio "
+"(en ms)"
+
+#: ../ekiga.schemas.in.in.h:127
+msgid "The video codecs list"
+msgstr "La llista de còdecs de vídeo"
+
+#: ../ekiga.schemas.in.in.h:128
+msgid "Maximum TX video bitrate"
+msgstr "Taxa de bits màxima per a la transmissió del vídeo"
+
+#: ../ekiga.schemas.in.in.h:129
 msgid ""
 "The maximum TX video bitrate in kbit/s. The video quality and the number of "
 "transmitted frames per second (depends on selected codec) will be "
@@ -599,190 +743,25 @@ msgstr ""
 "trucades. D'aquesta manera, s'intentarà minimitzar l'amplada de banda al "
 "valor que indiqueu aquí"
 
-#: ../ekiga.schemas.in.in.h:111 ../src/gui/preferences.cpp:948
-msgid "The maximum jitter buffer size for audio reception (in ms)"
-msgstr ""
-"El valor màxim de la memòria intermèdia per al jitter en la recepció d'àudio "
-"(en ms)"
-
-#: ../ekiga.schemas.in.in.h:112
-msgid ""
-"The maximum transmitted frame rate in frames/s. This rate may not be reached "
-"in case a minimum quality was configure via a TSTO value smaller than 31 and "
-"the bitrate selected is not sufficient to support this minimum quality"
-msgstr ""
-"El nombre màxim de quadres per segon transmesos. Pot ser que aquesta taxa no "
-"s'assoleixi en cas que s'hagi configurat una qualitat mínima a través d'un "
-"valor de balanç temporal/espacial menor de 31, i que la taxa de bits "
-"seleccionada no sigui suficient per funcionar amb aquesta qualitat mínima"
-
-#: ../ekiga.schemas.in.in.h:113
-msgid "The new instant message sound"
-msgstr "El so per a missatges instantanis nous"
-
-#: ../ekiga.schemas.in.in.h:114
-msgid "The new voice mail sound"
-msgstr "El so per a correus de veu nous"
-
-#: ../ekiga.schemas.in.in.h:115
-msgid ""
-"The port to listen to for incoming connections. Ekiga needs to be restarted "
-"for the new value to take effect"
-msgstr ""
-"El port on escoltar per a la recepció de connexions entrants. Caldrà que "
-"reinicieu l'Ekiga per tal que el nou valor tingui efecte"
-
-#: ../ekiga.schemas.in.in.h:116
-msgid ""
-"The port to listen to for incoming connections. Ekiga needs to be restarted "
-"for the new value to take effect."
-msgstr ""
-"El port on escoltar per a la recepció de connexions entrants. Caldrà que "
-"reinicieu l'Ekiga per tal que el nou valor tingui efecte."
-
-#: ../ekiga.schemas.in.in.h:117
-msgid "The position of the remote video window"
-msgstr "La posició de la finestra del vídeo remot"
-
-#: ../ekiga.schemas.in.in.h:118
-msgid ""
-"The range of TCP ports that Ekiga will use for the H.323 H.245 channel. This "
-"port range has no effect if both participants to the conference are using "
-"H.245 Tunneling."
-msgstr ""
-"L'interval de ports TCP que l'Ekiga farà servir per al canal H.323 H.245. "
-"Aquest rang de ports no té cap efecte si els dos participants a la "
-"conferència fan servir la tunelització H.245."
-
-#: ../ekiga.schemas.in.in.h:119
-msgid "The range of UDP ports that Ekiga will use."
-msgstr "L'interval de ports UDP que utilitzarà l'Ekiga."
-
-#: ../ekiga.schemas.in.in.h:120
-msgid "The short status information"
-msgstr "La informació resumida sobre l'estat"
-
-#: ../ekiga.schemas.in.in.h:121
-msgid "The size of the remote video window"
-msgstr "La mida de la finestra del vídeo remot"
-
-#: ../ekiga.schemas.in.in.h:122
-msgid ""
-"The sound that will be played at the end of calls or when calling somebody "
-"who is busy, if enabled"
-msgstr ""
-"Si s'habilita, el so que es reproduirà al final de les trucades o quan "
-"truqueu algú que estigui ocupat"
-
-#: ../ekiga.schemas.in.in.h:123
-msgid "The sound that will be played on incoming calls, if enabled"
-msgstr "Si s'habilita, el so que es reproduirà per a trucades entrants"
-
-#: ../ekiga.schemas.in.in.h:124
-msgid "The sound that will be played when calling somebody, if enabled"
-msgstr "Si s'habilita, el so que es reproduirà quan es truqui algú"
-
-#: ../ekiga.schemas.in.in.h:125
-msgid ""
-"The sound that will be played when there is a new instant message, if enabled"
-msgstr ""
-"Si s'habilita, el so que es reproduirà quan es rebi un missatge instantani"
-
-#: ../ekiga.schemas.in.in.h:126
-msgid ""
-"The sound that will be played when there is a new voice mail, if enabled"
-msgstr "Si s'habilita, el so que es reproduirà quan es rebi un correu de veu"
-
-#: ../ekiga.schemas.in.in.h:127 ../src/gui/preferences.cpp:901
-msgid "The video channel number to use (to select camera, tv or other sources)"
-msgstr ""
-"El canal de vídeo que es farà servir (seleccioneu càmera, tv, o altres "
-"fonts...)"
-
-#: ../ekiga.schemas.in.in.h:128
-msgid "The video codecs list"
-msgstr "La llista de còdecs de vídeo"
-
-#: ../ekiga.schemas.in.in.h:129
-msgid "The video view before having switched to fullscreen"
-msgstr "La vista del vídeo abans d'haver commutat a pantalla completa"
-
 #: ../ekiga.schemas.in.in.h:130
-msgid ""
-"The video view before having switched to fullscreen (same values as "
-"video_view)"
-msgstr ""
-"La vista de vídeo abans d'haver commutat a la visualització de pantalla "
-"completa (s'hi permeten els mateixos valors que a video_view)"
+msgid "Maximum RX video bitrate"
+msgstr "Taxa de bits màxima per a la recepció del vídeo"
 
 #: ../ekiga.schemas.in.in.h:131
-msgid "The zoom value"
-msgstr "El valor del zoom"
+msgid ""
+"The maximum RX video bitrate in kbit/s. This value will be signaled to the "
+"peer endpoint that can adjust (if it supports it) its TX bitrate if it is "
+"above the signaled value"
+msgstr ""
+"La taxa de bits màxima per a la recepció del vídeo, en kbit/s. Aquest valor "
+"s'indicarà a l'extrem de l'interlocutor que pugui (si ho implementa) ajustar "
+"la seva taxa de bits de transmissió en cas que sobrepassi el valor indicat"
 
 #: ../ekiga.schemas.in.in.h:132
-msgid ""
-"The zoom value in percent to apply to images displayed in the main GUI (can "
-"be 50, 100, or 200)"
-msgstr ""
-"El percentatge d'augment que s'aplicarà per a les imatges mostrades a la "
-"interfície principal (pot ser 50, 100 o 200)"
+msgid "Temporal Spatial Trade Off"
+msgstr "Balanç temporal/espacial"
 
-#: ../ekiga.schemas.in.in.h:133 ../src/gui/preferences.cpp:671
-msgid ""
-"This enables H.245 Tunneling mode. In H.245 Tunneling mode H.245 messages "
-"are encapsulated into the H.225 channel (port 1720). This saves one TCP "
-"connection during calls. H.245 Tunneling was introduced in H.323v2 and "
-"Netmeeting does not support it. Using both Fast Start and H.245 Tunneling "
-"can crash some versions of Netmeeting."
-msgstr ""
-"Això habilitarà la tunelització H.245. En aquest mode, els missatges estaran "
-"encapsulats en el canal H.225 (port 1720), cosa que permet estalviar un port "
-"TCP durant les trucades. La tunelització H.245 es va introduir a la versió 2 "
-"del protocol H.323v2, i el Netmeeting no ho implementa. Si s'utilitza "
-"l'Arrencada ràpida juntament amb la Tunelització H.245 al mateix temps, és "
-"possible que algunes versions del Netmeeting fallin."
-
-#: ../ekiga.schemas.in.in.h:134 ../src/gui/preferences.cpp:673
-msgid "This enables H.245 early in the setup"
-msgstr "Això habilita H.245 al principi de la configuració"
-
-#: ../ekiga.schemas.in.in.h:135
-msgid ""
-"This key disables DirectX (on win32) and XVideo (on Linux) video hardware "
-"acceleration"
-msgstr ""
-"Aquesta clau inhabilita l'acceleració per maquinari del DirectX (al win32) i "
-"de l'XVideo (al Linux)"
-
-#: ../ekiga.schemas.in.in.h:136
-msgid "Type of Service (TOS) byte on outgoing RTP IP packets"
-msgstr "Byte del tipus de servei (TOS) dels paquets IP RTP de sortida"
-
-#: ../ekiga.schemas.in.in.h:137
-msgid "UDP port range"
-msgstr "Rang de ports UDP"
-
-#: ../ekiga.schemas.in.in.h:138
-msgid "Video channel"
-msgstr "Canal de vídeo"
-
-#: ../ekiga.schemas.in.in.h:139
-msgid "Video format"
-msgstr "Format de vídeo"
-
-#: ../ekiga.schemas.in.in.h:140
-msgid "Video input device"
-msgstr "Dispositiu de vídeo d'entrada"
-
-#: ../ekiga.schemas.in.in.h:141
-msgid "Video preview"
-msgstr "Visualització prèvia del vídeo"
-
-#: ../ekiga.schemas.in.in.h:142
-msgid "Video size"
-msgstr "Mida del vídeo"
-
-#: ../ekiga.schemas.in.in.h:143
+#: ../ekiga.schemas.in.in.h:133
 msgid ""
 "Whether to prefer to sustain the max. frame rate or lower it possibly in "
 "order to keep a minimum level of (spatial) quality for all frames. 0: "
@@ -793,17 +772,92 @@ msgstr ""
 "els quadres. S'hi permet l'interval de valors següents: 0: qualitat mínima "
 "màxima, 31: qualitat mínima mínima"
 
-#: ../lib/engine/addressbook/contact-core.cpp:60
-msgid "_Find"
-msgstr "_Cerca"
+#: ../ekiga.schemas.in.in.h:134
+msgid "List of folded groups in the roster"
+msgstr "Llista dels grups plegats a la llista"
+
+#: ../ekiga.schemas.in.in.h:135 ../src/gui/main_window.cpp:1362
+msgid "Show offline contacts"
+msgstr "Mostra els contactes fora de línia"
+
+#: ../ekiga.schemas.in.in.h:136
+msgid "If enabled, offline contacts will be shown in the roster"
+msgstr "Si s'activa, els contactes fora de línia es mostraran a la llista"
+
+#: ../ekiga.schemas.in.in.h:137
+msgid "LDAP servers"
+msgstr "Servidors LDAP"
+
+#: ../ekiga.schemas.in.in.h:138
+msgid "List of configured LDAP servers"
+msgstr "Llista de servidors LDAP configurats"
+
+#: ../ekiga.schemas.in.in.h:139
+msgid "Calls history"
+msgstr "Historial de trucades"
+
+#: ../ekiga.schemas.in.in.h:140
+msgid "The history of the 100 last calls"
+msgstr "L'historial de les darreres 100 trucades"
+
+#: ../ekiga.schemas.in.in.h:141
+msgid "Kind of network selected in the assistant"
+msgstr "Tipus de xarxa seleccionada a l'auxiliar"
+
+#: ../ekiga.schemas.in.in.h:142
+msgid "0: 56kbps, 1: ISDN, 2: DSL128, 3: DSL512, 4: LAN, 5: Custom"
+msgstr "0: 56 Kbps, 1: ISDN, 2: DSL128, 3: DSL512, 4: LAN, 5: Personalitzat"
+
+#: ../ekiga.schemas.in.in.h:143
+msgid "No answer timeout"
+msgstr "S'ha excedit el temps d'espera"
+
+#: ../ekiga.schemas.in.in.h:144
+#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:511
+msgid ""
+"Automatically reject or forward incoming calls if no answer is given after "
+"the specified amount of time (in seconds)"
+msgstr ""
+"Rebutja o desvia automàticament les trucades entrants si no es contesta dins "
+"el marge de temps especificat (en segons)"
+
+#: ../ekiga.schemas.in.in.h:145
+msgid "Automatic answer"
+msgstr "Resposta automàtica"
+
+#: ../ekiga.schemas.in.in.h:146
+#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:512
+msgid "If enabled, automatically answer incoming calls"
+msgstr "Si s'habilita, s'acceptaran automàticament les trucades entrants"
+
+#: ../lib/engine/audioinput/audioinput-core.cpp:201
+#: ../lib/engine/audioinput/audioinput-core.cpp:206
+#: ../lib/engine/audiooutput/audiooutput-core.cpp:218
+#: ../lib/engine/audiooutput/audiooutput-core.cpp:223
+#: ../lib/engine/videoinput/videoinput-core.cpp:242
+#: ../lib/engine/videoinput/videoinput-core.cpp:247
+msgid "New device detected"
+msgstr "S'ha detectat un dispositiu nou"
+
+#: ../lib/engine/audioinput/audioinput-core.cpp:206
+#: ../lib/engine/audiooutput/audiooutput-core.cpp:223
+#: ../lib/engine/videoinput/videoinput-core.cpp:247
+msgid "Use it"
+msgstr "Utilitza'l"
+
+#: ../lib/engine/audioinput/audioinput-core.cpp:236
+#: ../lib/engine/audiooutput/audiooutput-core.cpp:252
+#: ../lib/engine/videoinput/videoinput-core.cpp:277
+msgid "Device removed"
+msgstr "S'ha extret el dispositiu"
 
 #: ../lib/engine/components/avahi/avahi-heap.cpp:129
-#: ../lib/engine/components/avahi/avahi-heap.cpp:377
+#: ../lib/engine/components/avahi/avahi-heap.cpp:375
 msgid "Neighbours"
 msgstr "Veïns"
 
-#: ../lib/engine/components/call-history/history-book.cpp:137
-#: ../lib/engine/gui/gtk-frontend/call-history-view-gtk.cpp:181
+#: ../lib/engine/components/call-history/history-book.cpp:141
+#: ../lib/engine/gui/gtk-frontend/call-history-view-gtk.cpp:189
 msgid "Clear List"
 msgstr "Neteja la llista"
 
@@ -819,120 +873,60 @@ msgstr "Trucades fetes"
 msgid "Missed"
 msgstr "Trucades perdudes"
 
+#. Ignore
+#: ../lib/engine/components/libnotify/libnotify-main.cpp:229
+#: ../lib/engine/components/opal/sip-endpoint.cpp:988
+#, c-format
+msgid "Incoming call from %s"
+msgstr "Trucada entrant de %s"
+
+#: ../lib/engine/components/libnotify/libnotify-main.cpp:230
+msgid "Remote URI:"
+msgstr "URI remot:"
+
+#: ../lib/engine/components/libnotify/libnotify-main.cpp:242
+msgid "Reject"
+msgstr "Rebutja"
+
+#: ../lib/engine/components/libnotify/libnotify-main.cpp:243
+msgid "Accept"
+msgstr "Accepta"
+
 #: ../lib/engine/components/local-roster/local-cluster.cpp:82
-#: ../lib/engine/components/local-roster/local-heap.cpp:117
-#: ../plugins/evolution/evolution-book.cpp:339
+#: ../lib/engine/components/local-roster/local-heap.cpp:118
+#: ../plugins/evolution/evolution-book.cpp:343
 msgid "New contact"
 msgstr "Afegeixi contacte"
 
-#: ../lib/engine/components/local-roster/local-presentity.cpp:118
-#: ../plugins/resource-list/rl-entry.cpp:141
-#: ../plugins/resource-list/rl-heap.cpp:102
-#: ../plugins/resource-list/rl-heap.cpp:144
-#: ../plugins/resource-list/rl-heap.cpp:176
-#: ../plugins/resource-list/rl-presentity.cpp:143
-msgid "Unnamed"
-msgstr "Sense nom"
-
-#: ../lib/engine/components/local-roster/local-presentity.cpp:220
-#: ../lib/engine/components/opal/opal-account.cpp:373
-#: ../plugins/evolution/evolution-contact.cpp:228
-#: ../plugins/loudmouth/loudmouth-presentity.cpp:157
-#: ../plugins/resource-list/rl-presentity.cpp:212
-#: ../src/gui/main_window.cpp:3565
-msgid "_Edit"
-msgstr "_Edita"
-
-#: ../lib/engine/components/local-roster/local-presentity.cpp:222
-#: ../lib/engine/components/opal/opal-account.cpp:375
-#: ../plugins/evolution/evolution-contact.cpp:230
-#: ../plugins/loudmouth/loudmouth-account.cpp:393
-#: ../plugins/loudmouth/loudmouth-presentity.cpp:190
-#: ../plugins/resource-list/rl-presentity.cpp:214
-msgid "_Remove"
-msgstr "_Suprimeix"
-
-#: ../lib/engine/components/local-roster/local-presentity.cpp:247
-#: ../plugins/loudmouth/loudmouth-presentity.cpp:275
-msgid "Edit roster element"
-msgstr "Edita l'element de la llista"
-
-#: ../lib/engine/components/local-roster/local-presentity.cpp:248
-msgid ""
-"Please fill in this form to change an existing element of ekiga's internal "
-"roster"
-msgstr ""
-"Ompliu aquest formulari per canviar un element existent de la llista interna "
-"de l'Ekiga"
-
-#: ../lib/engine/components/local-roster/local-presentity.cpp:250
-#: ../lib/engine/components/local-roster/local-heap.cpp:235
-#: ../lib/engine/components/local-roster/local-heap.cpp:427
-#: ../lib/engine/components/opal/opal-account.cpp:418
-#: ../plugins/evolution/evolution-contact.cpp:324
-#: ../plugins/loudmouth/loudmouth-account.cpp:296
-#: ../plugins/loudmouth/loudmouth-bank.cpp:125
-#: ../plugins/loudmouth/loudmouth-presentity.cpp:278
-#: ../plugins/resource-list/rl-cluster.cpp:169
-#: ../plugins/resource-list/rl-heap.cpp:526
-#: ../plugins/resource-list/rl-presentity.cpp:233
-msgid "Name:"
-msgstr "Nom:"
-
-#: ../lib/engine/components/local-roster/local-presentity.cpp:251
-#: ../lib/engine/components/local-roster/local-heap.cpp:244
-#: ../lib/engine/components/local-roster/local-heap.cpp:246
-#: ../plugins/resource-list/rl-cluster.cpp:170
-#: ../plugins/resource-list/rl-heap.cpp:527
-#: ../plugins/resource-list/rl-presentity.cpp:234
-msgid "Address:"
-msgstr "Adreça:"
-
-#: ../lib/engine/components/local-roster/local-presentity.cpp:252
-msgid "Is a preferred contact"
-msgstr "És un contacte preferit"
-
-#: ../lib/engine/components/local-roster/local-presentity.cpp:254
-#: ../plugins/loudmouth/loudmouth-presentity.cpp:280
-#: ../plugins/resource-list/rl-heap.cpp:528
-#: ../plugins/resource-list/rl-presentity.cpp:236
-msgid "Choose groups:"
-msgstr "Escolliu els grups:"
-
-#: ../lib/engine/components/local-roster/local-roster-bridge.cpp:93
-#: ../lib/engine/components/local-roster/local-heap.cpp:232
-msgid "Add to local roster"
-msgstr "Afegeix a la llista local"
-
-#: ../lib/engine/components/local-roster/local-heap.cpp:93
+#: ../lib/engine/components/local-roster/local-heap.cpp:94
 msgid "Services"
 msgstr "Serveis"
 
-#: ../lib/engine/components/local-roster/local-heap.cpp:94
+#: ../lib/engine/components/local-roster/local-heap.cpp:95
 msgid "Echo test"
 msgstr "Test d'eco"
 
-#: ../lib/engine/components/local-roster/local-heap.cpp:95
+#: ../lib/engine/components/local-roster/local-heap.cpp:96
 msgid "Conference room"
 msgstr "Sala de conferències"
 
-#: ../lib/engine/components/local-roster/local-heap.cpp:96
+#: ../lib/engine/components/local-roster/local-heap.cpp:97
 msgid "Call back test"
 msgstr "Comprovació de retorn de trucada"
 
-#: ../lib/engine/components/local-roster/local-heap.cpp:110
+#: ../lib/engine/components/local-roster/local-heap.cpp:111
 msgid "Local roster"
 msgstr "Llista local"
 
-#: ../lib/engine/components/local-roster/local-heap.cpp:127
+#: ../lib/engine/components/local-roster/local-heap.cpp:128
 msgid "Rename"
 msgstr "Canvia el nom"
 
-#: ../lib/engine/components/local-roster/local-heap.cpp:196
+#: ../lib/engine/components/local-roster/local-heap.cpp:197
 msgid "Family"
 msgstr "Família"
 
-#: ../lib/engine/components/local-roster/local-heap.cpp:197
+#: ../lib/engine/components/local-roster/local-heap.cpp:198
 msgid "Friend"
 msgstr "Amic"
 
@@ -940,7 +934,7 @@ msgstr "Amic"
 #. relationships between you and your contact; associate means
 #. someone who is at the same "level" than you.
 #.
-#: ../lib/engine/components/local-roster/local-heap.cpp:202
+#: ../lib/engine/components/local-roster/local-heap.cpp:203
 msgid "Associate"
 msgstr "Soci"
 
@@ -948,7 +942,7 @@ msgstr "Soci"
 #. relationships between you and your contact; assistant means
 #. someone who is at a lower "level" than you.
 #.
-#: ../lib/engine/components/local-roster/local-heap.cpp:207
+#: ../lib/engine/components/local-roster/local-heap.cpp:208
 msgid "Assistant"
 msgstr "Assistent"
 
@@ -956,34 +950,64 @@ msgstr "Assistent"
 #. relationships between you and your contact; supervisor means
 #. someone who is at a higher "level" than you.
 #.
-#: ../lib/engine/components/local-roster/local-heap.cpp:212
+#: ../lib/engine/components/local-roster/local-heap.cpp:213
 msgid "Supervisor"
 msgstr "Supervisor"
 
 #. Translator: http://www.ietf.org/rfc/rfc4480.txt proposes several
 #. relationships between you and your contact; self means yourself.
 #.
-#: ../lib/engine/components/local-roster/local-heap.cpp:216
+#: ../lib/engine/components/local-roster/local-heap.cpp:217
 msgid "Self"
 msgstr "Jo mateix/a"
 
 #: ../lib/engine/components/local-roster/local-heap.cpp:233
+#: ../lib/engine/components/local-roster/local-roster-bridge.cpp:93
+msgid "Add to local roster"
+msgstr "Afegeix a la llista local"
+
+#: ../lib/engine/components/local-roster/local-heap.cpp:234
 msgid ""
 "Please fill in this form to add a new contact to ekiga's internal roster"
 msgstr ""
 "Ompliu aquest formulari per afegir un contacte nou a la llista interna de "
 "l'Ekiga"
 
-#: ../lib/engine/components/local-roster/local-heap.cpp:235
+#: ../lib/engine/components/local-roster/local-heap.cpp:236
+#: ../lib/engine/components/local-roster/local-heap.cpp:427
+#: ../lib/engine/components/local-roster/local-presentity.cpp:270
+#: ../lib/engine/components/opal/opal-account.cpp:433
+#: ../plugins/evolution/evolution-contact.cpp:324
+#: ../plugins/loudmouth/loudmouth-account.cpp:342
+#: ../plugins/loudmouth/loudmouth-bank.cpp:125
+#: ../plugins/loudmouth/loudmouth-presentity.cpp:283
+#: ../plugins/resource-list/rl-cluster.cpp:169
+#: ../plugins/resource-list/rl-heap.cpp:526
+#: ../plugins/resource-list/rl-presentity.cpp:233
+msgid "Name:"
+msgstr "Nom:"
+
+#: ../lib/engine/components/local-roster/local-heap.cpp:236
+#: ../lib/engine/components/local-roster/local-presentity.cpp:270
 msgid "Name of the contact, as shown in your roster"
 msgstr "Nom del contacte, tal com es mostrarà a la llista de contactes"
 
-#: ../lib/engine/components/local-roster/local-heap.cpp:244
-#: ../lib/engine/components/local-roster/local-heap.cpp:246
+#: ../lib/engine/components/local-roster/local-heap.cpp:245
+#: ../lib/engine/components/local-roster/local-heap.cpp:247
+#: ../lib/engine/components/local-roster/local-presentity.cpp:271
+#: ../plugins/resource-list/rl-cluster.cpp:170
+#: ../plugins/resource-list/rl-heap.cpp:527
+#: ../plugins/resource-list/rl-presentity.cpp:234
+msgid "Address:"
+msgstr "Adreça:"
+
+#: ../lib/engine/components/local-roster/local-heap.cpp:245
+#: ../lib/engine/components/local-roster/local-heap.cpp:247
+#: ../lib/engine/components/local-roster/local-presentity.cpp:271
 msgid "Address, e.g. sip:xyz@ekiga.net"
 msgstr "Adreça, per exemple sip:usuari@ekiga.net"
 
-#: ../lib/engine/components/local-roster/local-heap.cpp:250
+#: ../lib/engine/components/local-roster/local-heap.cpp:251
 msgid "Put contact in groups:"
 msgstr "Posa el contacte en els grups:"
 
@@ -1003,137 +1027,207 @@ msgstr "Canvia el nom del grup"
 msgid "Please edit this group name"
 msgstr "Editeu el nom d'aquest grup"
 
-#: ../lib/engine/components/opal/h323-endpoint.cpp:131
-#: ../lib/engine/components/opal/sip-endpoint.cpp:231
-#: ../lib/engine/components/opal/sip-endpoint.cpp:235
+#: ../lib/engine/components/local-roster/local-presentity.cpp:138
+#: ../plugins/resource-list/rl-entry.cpp:141
+#: ../plugins/resource-list/rl-heap.cpp:102
+#: ../plugins/resource-list/rl-heap.cpp:144
+#: ../plugins/resource-list/rl-heap.cpp:176
+#: ../plugins/resource-list/rl-presentity.cpp:143
+msgid "Unnamed"
+msgstr "Sense nom"
+
+#: ../lib/engine/components/local-roster/local-presentity.cpp:240
+#: ../lib/engine/components/opal/opal-account.cpp:388
+#: ../plugins/evolution/evolution-contact.cpp:228
+#: ../plugins/loudmouth/loudmouth-presentity.cpp:160
+#: ../plugins/resource-list/rl-presentity.cpp:212
+#: ../src/gui/main_window.cpp:1320
+msgid "_Edit"
+msgstr "_Edita"
+
+#: ../lib/engine/components/local-roster/local-presentity.cpp:242
+#: ../lib/engine/components/opal/opal-account.cpp:390
+#: ../lib/engine/gui/gtk-frontend/accounts-window.cpp:681
+#: ../plugins/evolution/evolution-contact.cpp:230
+#: ../plugins/loudmouth/loudmouth-account.cpp:445
+#: ../plugins/loudmouth/loudmouth-presentity.cpp:193
+#: ../plugins/resource-list/rl-presentity.cpp:214
+msgid "_Remove"
+msgstr "_Suprimeix"
+
+#: ../lib/engine/components/local-roster/local-presentity.cpp:267
+#: ../plugins/loudmouth/loudmouth-presentity.cpp:280
+msgid "Edit roster element"
+msgstr "Edita l'element de la llista"
+
+#: ../lib/engine/components/local-roster/local-presentity.cpp:268
+msgid ""
+"Please fill in this form to change an existing element of ekiga's internal "
+"roster"
+msgstr ""
+"Ompliu aquest formulari per canviar un element existent de la llista interna "
+"de l'Ekiga"
+
+#: ../lib/engine/components/local-roster/local-presentity.cpp:272
+msgid "Is a preferred contact"
+msgstr "És un contacte preferit"
+
+#: ../lib/engine/components/local-roster/local-presentity.cpp:274
+#: ../plugins/loudmouth/loudmouth-presentity.cpp:285
+#: ../plugins/resource-list/rl-heap.cpp:528
+#: ../plugins/resource-list/rl-presentity.cpp:236
+msgid "Choose groups:"
+msgstr "Escolliu els grups:"
+
+#: ../lib/engine/components/opal/h323-endpoint.cpp:135
+#: ../lib/engine/components/opal/opal-call.cpp:682
+#: ../lib/engine/components/opal/sip-endpoint.cpp:250
+#: ../lib/engine/components/opal/sip-endpoint.cpp:254
 msgid "Call"
 msgstr "Trucada"
 
-#: ../lib/engine/components/opal/h323-endpoint.cpp:134
-#: ../lib/engine/components/opal/sip-endpoint.cpp:232
-#: ../lib/engine/components/opal/sip-endpoint.cpp:236
-#: ../src/gui/main_window.cpp:3325
+#: ../lib/engine/components/opal/h323-endpoint.cpp:138
+#: ../lib/engine/components/opal/sip-endpoint.cpp:251
+#: ../lib/engine/components/opal/sip-endpoint.cpp:255
+#: ../lib/engine/gui/gtk-frontend/call-window.cpp:2093
 msgid "Transfer"
 msgstr "Transfereix"
 
 #. Translators : The alias we are registering already exists : failure
-#: ../lib/engine/components/opal/h323-endpoint.cpp:309
+#: ../lib/engine/components/opal/h323-endpoint.cpp:340
 msgid "Duplicate alias"
 msgstr "Sobrenom duplicat"
 
-#: ../lib/engine/components/opal/h323-endpoint.cpp:312
+#: ../lib/engine/components/opal/h323-endpoint.cpp:343
 msgid "Bad username/password"
 msgstr "Nom d'usuari o contrasenya incorrectes"
 
-#: ../lib/engine/components/opal/h323-endpoint.cpp:315
-#: ../lib/engine/components/opal/sip-endpoint.cpp:562
+#: ../lib/engine/components/opal/h323-endpoint.cpp:346
+#: ../lib/engine/components/opal/sip-endpoint.cpp:604
 msgid "Transport error"
 msgstr "S'ha produït un error en el transport"
 
-#: ../lib/engine/components/opal/h323-endpoint.cpp:326
-#: ../lib/engine/components/opal/h323-endpoint.cpp:331
-#: ../lib/engine/components/opal/sip-endpoint.cpp:771
+#: ../lib/engine/components/opal/h323-endpoint.cpp:357
+#: ../lib/engine/components/opal/h323-endpoint.cpp:362
+#: ../lib/engine/components/opal/sip-endpoint.cpp:813
 msgid "Failed"
 msgstr "Ha fallat"
+
+#. Translators: this is a state, not an action, i.e. it should be read as
+#. "(you are) unregistered", and not as "(you have been) unregistered"
+#: ../lib/engine/components/opal/opal-account.cpp:70
+#: ../lib/engine/components/opal/opal-account.cpp:322
+#: ../lib/engine/components/opal/opal-account.cpp:618
+msgid "Unregistered"
+msgstr "Desregistrat"
 
 #. translators : the result will look like :
 #. * "registered (with 2 voice mail messages)"
 #.
-#: ../lib/engine/components/opal/opal-account.cpp:218
+#: ../lib/engine/components/opal/opal-account.cpp:230
 #, c-format
 msgid "%s (with %d voice mail message)"
 msgid_plural "%s (with %d voice mail messages)"
 msgstr[0] "%s (amb %d missatge a la bústia de veu)"
 msgstr[1] "%s (amb %d missatges a la bústia de veu)"
 
-#: ../lib/engine/components/opal/opal-account.cpp:365
-#: ../plugins/loudmouth/loudmouth-account.cpp:381
+#: ../lib/engine/components/opal/opal-account.cpp:308
+#: ../lib/engine/components/opal/opal-account.cpp:681
+msgid "Processing..."
+msgstr "S'està processant..."
+
+#: ../lib/engine/components/opal/opal-account.cpp:380
+#: ../lib/engine/gui/gtk-frontend/accounts-window.cpp:675
+#: ../plugins/loudmouth/loudmouth-account.cpp:433
 msgid "_Disable"
 msgstr "_Inhabilita"
 
-#: ../lib/engine/components/opal/opal-account.cpp:368
-#: ../plugins/loudmouth/loudmouth-account.cpp:385
+#: ../lib/engine/components/opal/opal-account.cpp:383
+#: ../lib/engine/gui/gtk-frontend/accounts-window.cpp:672
+#: ../plugins/loudmouth/loudmouth-account.cpp:437
 msgid "_Enable"
 msgstr "_Habilita"
 
-#: ../lib/engine/components/opal/opal-account.cpp:389
-#: ../src/gui/assistant.cpp:732
+#: ../lib/engine/components/opal/opal-account.cpp:404
+#: ../src/gui/assistant.cpp:761
 msgid "Recharge the account"
 msgstr "Recarrega el compte"
 
-#: ../lib/engine/components/opal/opal-account.cpp:394
-#: ../src/gui/assistant.cpp:744
+#: ../lib/engine/components/opal/opal-account.cpp:409
+#: ../src/gui/assistant.cpp:773
 msgid "Consult the balance history"
 msgstr "Consulta l'historial del balanç"
 
-#: ../lib/engine/components/opal/opal-account.cpp:399
-#: ../src/gui/assistant.cpp:756
+#: ../lib/engine/components/opal/opal-account.cpp:414
+#: ../src/gui/assistant.cpp:785
 msgid "Consult the call history"
 msgstr "Consulta l'historial de trucades"
 
-#: ../lib/engine/components/opal/opal-account.cpp:414
-#: ../lib/engine/components/opal/opal-bank.cpp:98
-#: ../plugins/loudmouth/loudmouth-account.cpp:291
+#: ../lib/engine/components/opal/opal-account.cpp:429
+#: ../lib/engine/components/opal/opal-bank.cpp:96
+#: ../plugins/loudmouth/loudmouth-account.cpp:337
 #: ../plugins/loudmouth/loudmouth-bank.cpp:121
 msgid "Edit account"
 msgstr "Edita el compte"
 
-#: ../lib/engine/components/opal/opal-account.cpp:416
-#: ../lib/engine/components/opal/opal-bank.cpp:99
-#: ../plugins/evolution/evolution-book.cpp:341
+#: ../lib/engine/components/opal/opal-account.cpp:431
+#: ../lib/engine/components/opal/opal-bank.cpp:97
+#: ../plugins/evolution/evolution-book.cpp:345
 #: ../plugins/evolution/evolution-contact.cpp:322
-#: ../plugins/loudmouth/loudmouth-account.cpp:293
+#: ../plugins/loudmouth/loudmouth-account.cpp:339
 msgid "Please update the following fields:"
 msgstr "Actualitzeu els camps següents:"
 
-#: ../lib/engine/components/opal/opal-account.cpp:418
-#: ../lib/engine/components/opal/opal-bank.cpp:125
-#: ../lib/engine/components/opal/opal-bank.cpp:135
+#: ../lib/engine/components/opal/opal-account.cpp:433
+#: ../lib/engine/components/opal/opal-bank.cpp:123
+#: ../lib/engine/components/opal/opal-bank.cpp:133
+#: ../plugins/loudmouth/loudmouth-account.cpp:342
 msgid "Account name, e.g. MyAccount"
 msgstr "Nom del compte, p. ex.ElMeuCompte"
 
-#: ../lib/engine/components/opal/opal-account.cpp:420
+#: ../lib/engine/components/opal/opal-account.cpp:435
 msgid "Registrar:"
 msgstr "Registrador:"
 
-#: ../lib/engine/components/opal/opal-account.cpp:420
-#: ../lib/engine/components/opal/opal-bank.cpp:136
+#: ../lib/engine/components/opal/opal-account.cpp:435
+#: ../lib/engine/components/opal/opal-bank.cpp:134
 msgid "The registrar, e.g. ekiga.net"
 msgstr "El registrador, p. ex. ekiga.net"
 
-#: ../lib/engine/components/opal/opal-account.cpp:422
+#: ../lib/engine/components/opal/opal-account.cpp:437
 msgid "Gatekeeper:"
 msgstr "Gatekeeper:"
 
-#: ../lib/engine/components/opal/opal-account.cpp:422
-#: ../lib/engine/components/opal/opal-bank.cpp:126
+#: ../lib/engine/components/opal/opal-account.cpp:437
+#: ../lib/engine/components/opal/opal-bank.cpp:124
 msgid "The gatekeeper, e.g. ekiga.net"
 msgstr "El gatekeeper, p. ex. ekiga.net"
 
-#: ../lib/engine/components/opal/opal-account.cpp:423
-#: ../plugins/loudmouth/loudmouth-account.cpp:300
+#: ../lib/engine/components/opal/opal-account.cpp:438
+#: ../plugins/loudmouth/loudmouth-account.cpp:346
 #: ../plugins/loudmouth/loudmouth-bank.cpp:126
 #: ../plugins/resource-list/rl-cluster.cpp:174
 msgid "User:"
 msgstr "Nom d'usuari:"
 
-#: ../lib/engine/components/opal/opal-account.cpp:423
-#: ../lib/engine/components/opal/opal-bank.cpp:107
-#: ../lib/engine/components/opal/opal-bank.cpp:118
-#: ../lib/engine/components/opal/opal-bank.cpp:127
-#: ../lib/engine/components/opal/opal-bank.cpp:137
+#: ../lib/engine/components/opal/opal-account.cpp:438
+#: ../lib/engine/components/opal/opal-bank.cpp:105
+#: ../lib/engine/components/opal/opal-bank.cpp:116
+#: ../lib/engine/components/opal/opal-bank.cpp:125
+#: ../lib/engine/components/opal/opal-bank.cpp:135
+#: ../plugins/loudmouth/loudmouth-account.cpp:346
 msgid "The user name, e.g. jim"
 msgstr "El nom d'usuari, p.ex. jordiroure"
 
 #. Translators:
 #. * SIP knows two usernames: The name for the client ("User") and the name
 #. * for the authentication procedure ("Authentication User")
-#: ../lib/engine/components/opal/opal-account.cpp:428
+#: ../lib/engine/components/opal/opal-account.cpp:443
 msgid "Authentication User:"
 msgstr "Usuari per a l'autenticació:"
 
-#: ../lib/engine/components/opal/opal-account.cpp:428
-#: ../lib/engine/components/opal/opal-bank.cpp:138
+#: ../lib/engine/components/opal/opal-account.cpp:443
+#: ../lib/engine/components/opal/opal-bank.cpp:136
 msgid ""
 "The user name used during authentication, if different than the user name; "
 "leave empty if you do not have one"
@@ -1141,231 +1235,304 @@ msgstr ""
 "El nom d'usuari que s'utilitzarà durant l'autenticació, en cas que sigui "
 "diferent del nom d'usuari principal. Deixeu-lo en blanc si no en teniu cap"
 
-#: ../lib/engine/components/opal/opal-account.cpp:429
-#: ../plugins/loudmouth/loudmouth-account.cpp:312
+#: ../lib/engine/components/opal/opal-account.cpp:444
+#: ../plugins/loudmouth/loudmouth-account.cpp:362
 #: ../plugins/loudmouth/loudmouth-bank.cpp:129
 #: ../plugins/resource-list/rl-cluster.cpp:173
 msgid "Password:"
 msgstr "Contrasenya:"
 
-#: ../lib/engine/components/opal/opal-account.cpp:429
-#: ../lib/engine/components/opal/opal-bank.cpp:109
-#: ../lib/engine/components/opal/opal-bank.cpp:120
-#: ../lib/engine/components/opal/opal-bank.cpp:129
-#: ../lib/engine/components/opal/opal-bank.cpp:139
+#: ../lib/engine/components/opal/opal-account.cpp:444
+#: ../lib/engine/components/opal/opal-bank.cpp:107
+#: ../lib/engine/components/opal/opal-bank.cpp:118
+#: ../lib/engine/components/opal/opal-bank.cpp:127
+#: ../lib/engine/components/opal/opal-bank.cpp:137
+#: ../plugins/loudmouth/loudmouth-account.cpp:362
 msgid "Password associated to the user"
 msgstr "Contrasenya associada a l'usuari"
 
-#: ../lib/engine/components/opal/opal-account.cpp:430
+#: ../lib/engine/components/opal/opal-account.cpp:445
 msgid "Timeout:"
 msgstr "Temps d'espera:"
 
-#: ../lib/engine/components/opal/opal-account.cpp:430
-#: ../lib/engine/components/opal/opal-bank.cpp:130
-#: ../lib/engine/components/opal/opal-bank.cpp:140
+#: ../lib/engine/components/opal/opal-account.cpp:445
+#: ../lib/engine/components/opal/opal-bank.cpp:128
+#: ../lib/engine/components/opal/opal-bank.cpp:138
 msgid ""
 "Time in seconds after which the account registration is automatically retried"
 msgstr ""
 "Temps, en segons, després del qual es tornarà a intentar el registre del "
 "compte"
 
-#: ../lib/engine/components/opal/opal-account.cpp:431
-#: ../lib/engine/components/opal/opal-bank.cpp:143
-#: ../plugins/loudmouth/loudmouth-account.cpp:326
+#: ../lib/engine/components/opal/opal-account.cpp:446
+#: ../lib/engine/components/opal/opal-bank.cpp:141
+#: ../plugins/loudmouth/loudmouth-account.cpp:376
 #: ../plugins/loudmouth/loudmouth-bank.cpp:130
 msgid "Enable Account"
 msgstr "Habilita el compte"
 
-#: ../lib/engine/components/opal/opal-account.cpp:457
-#: ../lib/engine/components/opal/opal-bank.cpp:177
+#: ../lib/engine/components/opal/opal-account.cpp:472
+#: ../lib/engine/components/opal/opal-bank.cpp:175
 msgid "You did not supply a name for that account."
 msgstr "No heu introduït cap nom per al compte."
 
-#: ../lib/engine/components/opal/opal-account.cpp:459
-#: ../lib/engine/components/opal/opal-bank.cpp:179
+#: ../lib/engine/components/opal/opal-account.cpp:474
+#: ../lib/engine/components/opal/opal-bank.cpp:177
 msgid "You did not supply a host to register to."
 msgstr "No heu indicat cap ordinador on efectuar el registre."
 
-#: ../lib/engine/components/opal/opal-account.cpp:461
-#: ../lib/engine/components/opal/opal-bank.cpp:181
+#: ../lib/engine/components/opal/opal-account.cpp:476
+#: ../lib/engine/components/opal/opal-bank.cpp:179
 msgid "You did not supply a user name for that account."
 msgstr "No heu introduït cap nom d'usuari per al compte."
 
-#: ../lib/engine/components/opal/opal-account.cpp:463
-#: ../lib/engine/components/opal/opal-bank.cpp:183
+#: ../lib/engine/components/opal/opal-account.cpp:478
+#: ../lib/engine/components/opal/opal-bank.cpp:181
 msgid "The timeout should be at least 10 seconds."
 msgstr "El temps d'espera hauria de ser d'almenys 10 segons."
 
-#: ../lib/engine/components/opal/opal-account.cpp:546
+#. Translators: this is a state, not an action, i.e. it should be read as
+#. "(you are) registered", and not as "(you have been) registered"
+#: ../lib/engine/components/opal/opal-account.cpp:595
 msgid "Registered"
 msgstr "Registrat"
 
-#: ../lib/engine/components/opal/opal-account.cpp:558
-msgid "Unregistered"
-msgstr "Desregistrat"
-
-#: ../lib/engine/components/opal/opal-account.cpp:568
+#: ../lib/engine/components/opal/opal-account.cpp:630
 msgid "Could not unregister"
 msgstr "No s'ha pogut cancel·lar el registre"
 
-#: ../lib/engine/components/opal/opal-account.cpp:581
+#: ../lib/engine/components/opal/opal-account.cpp:662
 msgid "Could not register"
 msgstr "No s'ha pogut registrar"
 
-#: ../lib/engine/components/opal/opal-account.cpp:590
-msgid "Processing..."
-msgstr "S'està processant..."
+#: ../lib/engine/components/opal/opal-account.cpp:668
+msgid "Could not register to "
+msgstr "No s'ha pogut registrar a "
 
-#: ../lib/engine/components/opal/opal-bank.cpp:78
+#: ../lib/engine/components/opal/opal-account.cpp:669
+#: ../plugins/loudmouth/loudmouth-account.cpp:443
+msgid "Edit"
+msgstr "Edita"
+
+#: ../lib/engine/components/opal/opal-account.cpp:800
+msgid "Appointment"
+msgstr "Cita"
+
+#: ../lib/engine/components/opal/opal-account.cpp:805
+msgid "Breakfast"
+msgstr "Esmorzar"
+
+#: ../lib/engine/components/opal/opal-account.cpp:810
+msgid "Dinner"
+msgstr "Sopar"
+
+#: ../lib/engine/components/opal/opal-account.cpp:816
+msgid "Holiday"
+msgstr "Vacances"
+
+#: ../lib/engine/components/opal/opal-account.cpp:821
+msgid "In transit"
+msgstr "En trànsit"
+
+#: ../lib/engine/components/opal/opal-account.cpp:826
+msgid "Looking for work"
+msgstr "Buscant feina"
+
+#: ../lib/engine/components/opal/opal-account.cpp:831
+msgid "Lunch"
+msgstr "Dinar"
+
+#: ../lib/engine/components/opal/opal-account.cpp:836
+msgid "Meal"
+msgstr "Àpat"
+
+#: ../lib/engine/components/opal/opal-account.cpp:841
+msgid "Meeting"
+msgstr "Trobada"
+
+#: ../lib/engine/components/opal/opal-account.cpp:846
+msgid "On the phone"
+msgstr "Al telèfon"
+
+#: ../lib/engine/components/opal/opal-account.cpp:851
+msgid "Playing"
+msgstr "Reproduïnt"
+
+#: ../lib/engine/components/opal/opal-account.cpp:856
+msgid "Shopping"
+msgstr "Comprant"
+
+#: ../lib/engine/components/opal/opal-account.cpp:861
+msgid "Sleeping"
+msgstr "Dormint"
+
+#: ../lib/engine/components/opal/opal-account.cpp:866
+msgid "Working"
+msgstr "Treballant"
+
+#: ../lib/engine/components/opal/opal-bank.cpp:76
 msgid "_Add an Ekiga.net Account"
 msgstr "_Afegeix un compte d'ekiga.net"
 
-#: ../lib/engine/components/opal/opal-bank.cpp:80
+#: ../lib/engine/components/opal/opal-bank.cpp:78
 msgid "_Add an Ekiga Call Out Account"
 msgstr "_Afegeix un PC-a-telèfon de l'Ekiga"
 
-#: ../lib/engine/components/opal/opal-bank.cpp:82
+#: ../lib/engine/components/opal/opal-bank.cpp:80
 msgid "_Add a SIP Account"
 msgstr "_Afegeix un compte SIP"
 
-#: ../lib/engine/components/opal/opal-bank.cpp:84
+#: ../lib/engine/components/opal/opal-bank.cpp:82
 msgid "_Add an H.323 Account"
 msgstr "_Afegeix un compte H.323"
 
-#: ../lib/engine/components/opal/opal-bank.cpp:104
-#: ../src/gui/assistant.cpp:616
+#: ../lib/engine/components/opal/opal-bank.cpp:102
+#: ../src/gui/assistant.cpp:645
 msgid "Get an Ekiga.net SIP account"
 msgstr "Obteniu un compte SIP a ekiga.net"
+
+#: ../lib/engine/components/opal/opal-bank.cpp:105
+#: ../lib/engine/components/opal/opal-bank.cpp:125
+#: ../lib/engine/components/opal/opal-bank.cpp:135
+msgid "_User:"
+msgstr "_Usuari:"
 
 #: ../lib/engine/components/opal/opal-bank.cpp:107
 #: ../lib/engine/components/opal/opal-bank.cpp:127
 #: ../lib/engine/components/opal/opal-bank.cpp:137
-msgid "_User:"
-msgstr "_Usuari:"
-
-#: ../lib/engine/components/opal/opal-bank.cpp:109
-#: ../lib/engine/components/opal/opal-bank.cpp:129
-#: ../lib/engine/components/opal/opal-bank.cpp:139
 #: ../plugins/ldap/ldap-book.cpp:986
 msgid "_Password:"
 msgstr "_Contrasenya:"
 
-#: ../lib/engine/components/opal/opal-bank.cpp:114
-#: ../src/gui/assistant.cpp:720
+#: ../lib/engine/components/opal/opal-bank.cpp:112
+#: ../src/gui/assistant.cpp:749
 msgid "Get an Ekiga Call Out account"
 msgstr "Obteniu un compte PC-a-telèfon de l'Ekiga"
 
-#: ../lib/engine/components/opal/opal-bank.cpp:118
+#: ../lib/engine/components/opal/opal-bank.cpp:116
 msgid "_Account ID:"
 msgstr "Identificador del c_ompte:"
 
-#: ../lib/engine/components/opal/opal-bank.cpp:120
+#: ../lib/engine/components/opal/opal-bank.cpp:118
 msgid "_PIN Code:"
 msgstr "Codi _PIN:"
 
-#: ../lib/engine/components/opal/opal-bank.cpp:125
-#: ../lib/engine/components/opal/opal-bank.cpp:135
-#: ../plugins/evolution/evolution-book.cpp:343
+#: ../lib/engine/components/opal/opal-bank.cpp:123
+#: ../lib/engine/components/opal/opal-bank.cpp:133
+#: ../plugins/evolution/evolution-book.cpp:347
 msgid "_Name:"
 msgstr "_Nom:"
 
-#: ../lib/engine/components/opal/opal-bank.cpp:126
+#: ../lib/engine/components/opal/opal-bank.cpp:124
 msgid "_Gatekeeper:"
 msgstr "_Gatekeeper:"
 
-#: ../lib/engine/components/opal/opal-bank.cpp:130
-#: ../lib/engine/components/opal/opal-bank.cpp:140
+#: ../lib/engine/components/opal/opal-bank.cpp:128
+#: ../lib/engine/components/opal/opal-bank.cpp:138
 msgid "_Timeout:"
 msgstr "Temps d'e_spera:"
 
-#: ../lib/engine/components/opal/opal-bank.cpp:136
+#: ../lib/engine/components/opal/opal-bank.cpp:134
 msgid "_Registrar:"
 msgstr "_Registrador:"
 
-#: ../lib/engine/components/opal/opal-bank.cpp:138
+#: ../lib/engine/components/opal/opal-bank.cpp:136
 msgid "_Authentication User:"
 msgstr "Usuari per a l'_autenticació:"
 
-#: ../lib/engine/components/opal/opal-call.cpp:403
+#: ../lib/engine/components/opal/opal-call.cpp:405
 msgid "Local user cleared the call"
 msgstr "L'usuari local ha tallat la trucada"
 
-#: ../lib/engine/components/opal/opal-call.cpp:406
-#: ../lib/engine/components/opal/opal-call.cpp:409
+#: ../lib/engine/components/opal/opal-call.cpp:408
+#: ../lib/engine/components/opal/opal-call.cpp:411
 msgid "Local user rejected the call"
 msgstr "L'usuari local ha rebutjat la trucada"
 
-#: ../lib/engine/components/opal/opal-call.cpp:412
+#: ../lib/engine/components/opal/opal-call.cpp:414
 msgid "Remote user cleared the call"
 msgstr "L'usuari remot ha tallat la trucada"
 
-#: ../lib/engine/components/opal/opal-call.cpp:415
+#: ../lib/engine/components/opal/opal-call.cpp:417
 msgid "Remote user rejected the call"
 msgstr "L'usuari remot ha rebutjat la trucada"
 
-#: ../lib/engine/components/opal/opal-call.cpp:418
+#: ../lib/engine/components/opal/opal-call.cpp:420
 msgid "Remote user has stopped calling"
 msgstr "L'usuari remot ha deixat de trucar"
 
-#: ../lib/engine/components/opal/opal-call.cpp:421
+#: ../lib/engine/components/opal/opal-call.cpp:423
 msgid "Abnormal call termination"
 msgstr "La trucada ha acabat anormalment"
 
-#: ../lib/engine/components/opal/opal-call.cpp:424
-#: ../src/gui/main_window.cpp:1853
+#: ../lib/engine/components/opal/opal-call.cpp:426
+#: ../src/gui/main_window.cpp:527
 msgid "Could not connect to remote host"
 msgstr "No s'ha pogut connectar a l'ordinador remot"
 
-#: ../lib/engine/components/opal/opal-call.cpp:428
+#: ../lib/engine/components/opal/opal-call.cpp:430
 msgid "The Gatekeeper cleared the call"
 msgstr "El gatekeeper ha tallat la trucada"
 
-#: ../lib/engine/components/opal/opal-call.cpp:431
+#: ../lib/engine/components/opal/opal-call.cpp:433
 msgid "User not found"
 msgstr "No s'ha trobat aquest usuari"
 
-#: ../lib/engine/components/opal/opal-call.cpp:434
+#: ../lib/engine/components/opal/opal-call.cpp:436
 msgid "Insufficient bandwidth"
 msgstr "No hi ha prou amplada de banda"
 
-#: ../lib/engine/components/opal/opal-call.cpp:437
+#: ../lib/engine/components/opal/opal-call.cpp:439
 msgid "No common codec"
 msgstr "No hi ha cap còdec en comú"
 
-#: ../lib/engine/components/opal/opal-call.cpp:440
+#: ../lib/engine/components/opal/opal-call.cpp:442
 msgid "Call forwarded"
 msgstr "S'ha desviat la trucada"
 
-#: ../lib/engine/components/opal/opal-call.cpp:443
+#: ../lib/engine/components/opal/opal-call.cpp:445
 msgid "Security check failed"
 msgstr "Ha fallat la verificació de seguretat"
 
-#: ../lib/engine/components/opal/opal-call.cpp:446
+#: ../lib/engine/components/opal/opal-call.cpp:448
 msgid "Local user is busy"
 msgstr "L'usuari local està ocupat"
 
-#: ../lib/engine/components/opal/opal-call.cpp:449
-#: ../lib/engine/components/opal/opal-call.cpp:455
+#: ../lib/engine/components/opal/opal-call.cpp:451
+#: ../lib/engine/components/opal/opal-call.cpp:457
 msgid "Congested link to remote party"
 msgstr "L'enllaç cap al vostre interlocutor està saturat"
 
-#: ../lib/engine/components/opal/opal-call.cpp:452
+#: ../lib/engine/components/opal/opal-call.cpp:454
 msgid "Remote user is busy"
 msgstr "L'usuari remot està ocupat"
 
-#: ../lib/engine/components/opal/opal-call.cpp:458
+#: ../lib/engine/components/opal/opal-call.cpp:460
 msgid "Remote host is offline"
 msgstr "L'usuari remot no està en línia"
 
-#: ../lib/engine/components/opal/opal-call.cpp:464
+#: ../lib/engine/components/opal/opal-call.cpp:466
 msgid "User is not available"
 msgstr "L'usuari no està disponible"
 
-#: ../lib/engine/components/opal/opal-call.cpp:475
+#: ../lib/engine/components/opal/opal-call.cpp:469
+#: ../lib/engine/components/opal/sip-endpoint.cpp:778
+msgid "Service unavailable"
+msgstr "Servei no disponible"
+
+#: ../lib/engine/components/opal/opal-call.cpp:479
 msgid "Call completed"
 msgstr "S'ha finalitzat la trucada"
 
-#: ../lib/engine/components/opal/opal-call-manager.cpp:781
+#: ../lib/engine/components/opal/opal-call.cpp:679
+msgid "Missed call from"
+msgstr "Trucada perduda de"
+
+#: ../lib/engine/components/opal/opal-call.cpp:681
+msgid "Missed call"
+msgstr "Trucada perduda"
+
+#: ../lib/engine/components/opal/opal-call-manager.cpp:830
 msgid ""
 "Ekiga did not manage to configure your network settings automatically. You "
 "can still use it, but you need to configure your network settings manually.\n"
@@ -1380,102 +1547,102 @@ msgstr ""
 "Consulteu la pàgina http://wiki.ekiga.org/index.php/"
 "Enable_port_forwarding_manually per obtenir-ne instruccions"
 
-#: ../lib/engine/components/opal/sip-endpoint.cpp:256
-#: ../lib/engine/components/opal/sip-endpoint.cpp:258
+#: ../lib/engine/components/opal/sip-endpoint.cpp:275
+#: ../lib/engine/components/opal/sip-endpoint.cpp:277
 msgid "Message"
 msgstr "Missatge"
 
-#: ../lib/engine/components/opal/sip-endpoint.cpp:557
+#: ../lib/engine/components/opal/sip-endpoint.cpp:599
 msgid "Illegal status code"
 msgstr "Codi d'estat il·legal"
 
 #. Translators: Host of the remote party is offline, this should
 #. * appear when the remote host does not reply in an acceptable time
-#: ../lib/engine/components/opal/sip-endpoint.cpp:568
+#: ../lib/engine/components/opal/sip-endpoint.cpp:610
 msgid "Remote party host is offline"
 msgstr "El servidor de l'interlocutor està fora de línia"
 
 #. Translators: the following strings are answers from the SIP server
 #. * when the packet it receives has an error, see
 #. * http://www.ietf.org/rfc/rfc3261.txt, chapter 21 for more information
-#: ../lib/engine/components/opal/sip-endpoint.cpp:584
+#: ../lib/engine/components/opal/sip-endpoint.cpp:626
 msgid "Multiple choices"
 msgstr "Opcions múltiples"
 
-#: ../lib/engine/components/opal/sip-endpoint.cpp:588
+#: ../lib/engine/components/opal/sip-endpoint.cpp:630
 msgid "Moved permanently"
 msgstr "S'ha traslladat de manera permanent"
 
-#: ../lib/engine/components/opal/sip-endpoint.cpp:592
+#: ../lib/engine/components/opal/sip-endpoint.cpp:634
 msgid "Moved temporarily"
 msgstr "S'ha traslladat de manera temporal"
 
-#: ../lib/engine/components/opal/sip-endpoint.cpp:596
+#: ../lib/engine/components/opal/sip-endpoint.cpp:638
 msgid "Use proxy"
 msgstr "Fes servir un servidor intermediari"
 
-#: ../lib/engine/components/opal/sip-endpoint.cpp:600
+#: ../lib/engine/components/opal/sip-endpoint.cpp:642
 msgid "Alternative service"
 msgstr "Servei alternatiu"
 
-#: ../lib/engine/components/opal/sip-endpoint.cpp:604
+#: ../lib/engine/components/opal/sip-endpoint.cpp:646
 msgid "Bad request"
 msgstr "Petició incorrecta"
 
-#: ../lib/engine/components/opal/sip-endpoint.cpp:608
+#: ../lib/engine/components/opal/sip-endpoint.cpp:650
 msgid "Unauthorized"
 msgstr "No autoritzat"
 
-#: ../lib/engine/components/opal/sip-endpoint.cpp:612
+#: ../lib/engine/components/opal/sip-endpoint.cpp:654
 msgid "Payment required"
 msgstr "Requereix pagament"
 
-#: ../lib/engine/components/opal/sip-endpoint.cpp:616
+#: ../lib/engine/components/opal/sip-endpoint.cpp:658
 msgid "Forbidden, please check that username and password are correct"
 msgstr ""
 "Prohibit; comproveu que el nom d'usuari i la contrasenya siguin correctes"
 
-#: ../lib/engine/components/opal/sip-endpoint.cpp:620
+#: ../lib/engine/components/opal/sip-endpoint.cpp:662
 msgid "Not found"
 msgstr "No s'ha trobat"
 
-#: ../lib/engine/components/opal/sip-endpoint.cpp:624
+#: ../lib/engine/components/opal/sip-endpoint.cpp:666
 msgid "Method not allowed"
 msgstr "No es permet el mètode"
 
-#: ../lib/engine/components/opal/sip-endpoint.cpp:628
+#: ../lib/engine/components/opal/sip-endpoint.cpp:670
 msgid "Not acceptable"
 msgstr "No és acceptable"
 
-#: ../lib/engine/components/opal/sip-endpoint.cpp:632
+#: ../lib/engine/components/opal/sip-endpoint.cpp:674
 msgid "Proxy authentication required"
 msgstr "Cal autenticació per al servidor intermediari"
 
-#: ../lib/engine/components/opal/sip-endpoint.cpp:636
+#: ../lib/engine/components/opal/sip-endpoint.cpp:678
 msgid "Timeout"
 msgstr "Temporització"
 
-#: ../lib/engine/components/opal/sip-endpoint.cpp:640
+#: ../lib/engine/components/opal/sip-endpoint.cpp:682
 msgid "Conflict"
 msgstr "Conflicte"
 
-#: ../lib/engine/components/opal/sip-endpoint.cpp:644
+#: ../lib/engine/components/opal/sip-endpoint.cpp:686
 msgid "Length required"
 msgstr "Cal especificar la llargada"
 
-#: ../lib/engine/components/opal/sip-endpoint.cpp:648
+#: ../lib/engine/components/opal/sip-endpoint.cpp:690
 msgid "Request entity too big"
 msgstr "L'entitat de la sol·licitud és massa grossa"
 
-#: ../lib/engine/components/opal/sip-endpoint.cpp:652
+#: ../lib/engine/components/opal/sip-endpoint.cpp:694
 msgid "Request URI too long"
 msgstr "L'URI de la sol·licitud és massa llarg"
 
-#: ../lib/engine/components/opal/sip-endpoint.cpp:656
+#: ../lib/engine/components/opal/sip-endpoint.cpp:698
 msgid "Unsupported media type"
 msgstr "No s'implementa aquest tipus de medi"
 
-#: ../lib/engine/components/opal/sip-endpoint.cpp:660
+#: ../lib/engine/components/opal/sip-endpoint.cpp:702
 msgid "Unsupported URI scheme"
 msgstr "No s'implementa aquest esquema d'URI"
 
@@ -1483,130 +1650,124 @@ msgstr "No s'implementa aquest esquema d'URI"
 #. * Here extension is a specific "phone number", see
 #. * http://en.wikipedia.org/wiki/Extension_(telephone)
 #. * for more information
-#: ../lib/engine/components/opal/sip-endpoint.cpp:668
+#: ../lib/engine/components/opal/sip-endpoint.cpp:710
 msgid "Bad extension"
 msgstr "L'extensió és incorrecta"
 
-#: ../lib/engine/components/opal/sip-endpoint.cpp:672
+#: ../lib/engine/components/opal/sip-endpoint.cpp:714
 msgid "Extension required"
 msgstr "Cal una extensió"
 
-#: ../lib/engine/components/opal/sip-endpoint.cpp:676
+#: ../lib/engine/components/opal/sip-endpoint.cpp:718
 msgid "Interval too brief"
 msgstr "L'interval és massa breu"
 
-#: ../lib/engine/components/opal/sip-endpoint.cpp:680
+#: ../lib/engine/components/opal/sip-endpoint.cpp:722
 msgid "Temporarily unavailable"
 msgstr "Temporalment no disponible"
 
-#: ../lib/engine/components/opal/sip-endpoint.cpp:684
+#: ../lib/engine/components/opal/sip-endpoint.cpp:726
 msgid "Loop detected"
 msgstr "S'ha detectat un bucle"
 
-#: ../lib/engine/components/opal/sip-endpoint.cpp:688
+#: ../lib/engine/components/opal/sip-endpoint.cpp:730
 msgid "Too many hops"
 msgstr "Hi ha massa salts"
 
-#: ../lib/engine/components/opal/sip-endpoint.cpp:692
+#: ../lib/engine/components/opal/sip-endpoint.cpp:734
 msgid "Address incomplete"
 msgstr "L'adreça és incompleta"
 
-#: ../lib/engine/components/opal/sip-endpoint.cpp:696
+#: ../lib/engine/components/opal/sip-endpoint.cpp:738
 msgid "Ambiguous"
 msgstr "Ambigu"
 
-#: ../lib/engine/components/opal/sip-endpoint.cpp:700
+#: ../lib/engine/components/opal/sip-endpoint.cpp:742
 msgid "Busy Here"
 msgstr "Ocupat aquí"
 
-#: ../lib/engine/components/opal/sip-endpoint.cpp:704
+#: ../lib/engine/components/opal/sip-endpoint.cpp:746
 msgid "Request terminated"
 msgstr "Sol·licitud terminada"
 
-#: ../lib/engine/components/opal/sip-endpoint.cpp:708
+#: ../lib/engine/components/opal/sip-endpoint.cpp:750
 msgid "Not acceptable here"
 msgstr "No és acceptable aquí"
 
-#: ../lib/engine/components/opal/sip-endpoint.cpp:712
+#: ../lib/engine/components/opal/sip-endpoint.cpp:754
 msgid "Bad event"
 msgstr "Esdeveniment incorrecte"
 
-#: ../lib/engine/components/opal/sip-endpoint.cpp:716
+#: ../lib/engine/components/opal/sip-endpoint.cpp:758
 msgid "Request pending"
 msgstr "Sol·licitud pendent"
 
-#: ../lib/engine/components/opal/sip-endpoint.cpp:720
+#: ../lib/engine/components/opal/sip-endpoint.cpp:762
 msgid "Undecipherable"
 msgstr "No desxifrable"
 
-#: ../lib/engine/components/opal/sip-endpoint.cpp:724
+#: ../lib/engine/components/opal/sip-endpoint.cpp:766
 msgid "Internal server error"
 msgstr "Error intern del servidor"
 
-#: ../lib/engine/components/opal/sip-endpoint.cpp:728
+#: ../lib/engine/components/opal/sip-endpoint.cpp:770
 msgid "Not implemented"
 msgstr "No implementat"
 
-#: ../lib/engine/components/opal/sip-endpoint.cpp:732
+#: ../lib/engine/components/opal/sip-endpoint.cpp:774
 msgid "Bad gateway"
 msgstr "Passarel·la incorrecta"
 
-#: ../lib/engine/components/opal/sip-endpoint.cpp:736
-msgid "Service unavailable"
-msgstr "Servei no disponible"
-
-#: ../lib/engine/components/opal/sip-endpoint.cpp:740
+#: ../lib/engine/components/opal/sip-endpoint.cpp:782
 msgid "Server timeout"
 msgstr "S'ha excedit el temps d'espera del servidor"
 
-#: ../lib/engine/components/opal/sip-endpoint.cpp:744
+#: ../lib/engine/components/opal/sip-endpoint.cpp:786
 msgid "SIP version not supported"
 msgstr "La versió del SIP no és compatible"
 
-#: ../lib/engine/components/opal/sip-endpoint.cpp:748
+#: ../lib/engine/components/opal/sip-endpoint.cpp:790
 msgid "Message too large"
 msgstr "El missatge és massa llarg"
 
-#: ../lib/engine/components/opal/sip-endpoint.cpp:752
+#: ../lib/engine/components/opal/sip-endpoint.cpp:794
 msgid "Busy everywhere"
 msgstr "Ocupat a tot arreu"
 
-#: ../lib/engine/components/opal/sip-endpoint.cpp:756
+#: ../lib/engine/components/opal/sip-endpoint.cpp:798
 msgid "Decline"
 msgstr "Rebutja"
 
-#: ../lib/engine/components/opal/sip-endpoint.cpp:760
+#: ../lib/engine/components/opal/sip-endpoint.cpp:802
 msgid "Does not exist anymore"
 msgstr "Ja no existeix"
 
-#: ../lib/engine/components/opal/sip-endpoint.cpp:764
+#: ../lib/engine/components/opal/sip-endpoint.cpp:806
 msgid "Globally not acceptable"
 msgstr "No és globalment acceptable"
 
-#: ../lib/engine/components/opal/sip-endpoint.cpp:933
-#: ../src/gui/main_window.cpp:3162
-#, c-format
-msgid "Incoming call from %s"
-msgstr "Trucada entrant de %s"
+#: ../lib/engine/components/opal/sip-endpoint.cpp:947
+msgid "Could not send message: "
+msgstr "No s'ha pogut enviar el missatge: "
 
-#: ../lib/engine/components/opal/sip-endpoint.cpp:935
+#: ../lib/engine/components/opal/sip-endpoint.cpp:949
+msgid "user offline"
+msgstr "usuari està fora de línia"
+
+#: ../lib/engine/components/opal/sip-endpoint.cpp:990
 #, c-format
 msgid "Incoming call"
 msgstr "Trucada entrant"
 
-#: ../lib/engine/components/opal/sip-endpoint.cpp:941
+#: ../lib/engine/components/opal/sip-endpoint.cpp:996
 #, c-format
 msgid "In a call with %s"
 msgstr "S'està trucant a %s"
 
-#: ../lib/engine/components/opal/sip-endpoint.cpp:943
+#: ../lib/engine/components/opal/sip-endpoint.cpp:998
 #, c-format
 msgid "In a call"
 msgstr "S'està trucant"
-
-#: ../lib/engine/gui/gtk-core/form-dialog-gtk.cpp:664
-msgid "Advanced"
-msgstr "Paràmetres avançats"
 
 #: ../lib/engine/gui/gtk-core/codecsbox.cpp:452
 msgid "Move selected codec priority upwards"
@@ -1616,32 +1777,460 @@ msgstr "Moveu la prioritat del còdec seleccionat cap amunt"
 msgid "Move selected codec priority downwards"
 msgstr "Moveu la prioritat del còdec seleccionat cap avall"
 
-#: ../lib/engine/gui/gtk-frontend/addressbook-window.cpp:636
+#: ../lib/engine/gui/gtk-core/form-dialog-gtk.cpp:664
+msgid "Advanced"
+msgstr "Paràmetres avançats"
+
+#: ../lib/engine/gui/gtk-frontend/accounts-window.cpp:566
+msgid "Account Name"
+msgstr "Nom del compte"
+
+#: ../lib/engine/gui/gtk-frontend/accounts-window.cpp:567
+msgid "Status"
+msgstr "Estat"
+
+#: ../lib/engine/gui/gtk-frontend/accounts-window.cpp:582
+#: ../src/gui/main_window.cpp:1330
+msgid "_Accounts"
+msgstr "_Comptes"
+
+#: ../lib/engine/gui/gtk-frontend/accounts-window.cpp:586
+#: ../src/gui/main_window.cpp:1368
+msgid "_Help"
+msgstr "A_juda"
+
+#: ../lib/engine/gui/gtk-frontend/accounts-window.cpp:611
+msgid "Accounts"
+msgstr "Comptes"
+
+#: ../lib/engine/gui/gtk-frontend/accounts-window.cpp:678
+msgid "Edi_t"
+msgstr "Edi_ta"
+
+#: ../lib/engine/gui/gtk-frontend/addressbook-window.cpp:630
 msgid "Address Book"
 msgstr "Llibreta d'adreces"
 
-#: ../lib/engine/gui/gtk-frontend/addressbook-window.cpp:652
-#: ../src/gui/main_window.cpp:3511
+#: ../lib/engine/gui/gtk-frontend/addressbook-window.cpp:646
+#: ../src/gui/main_window.cpp:1291
 msgid "Address _Book"
 msgstr "Lli_breta d'adreces"
 
 #. This will add static and dynamic actions
-#: ../lib/engine/gui/gtk-frontend/addressbook-window.cpp:661
+#: ../lib/engine/gui/gtk-frontend/addressbook-window.cpp:655
 msgid "_Action"
 msgstr "_Acció"
 
-#: ../lib/engine/gui/gtk-frontend/addressbook-window.cpp:706
+#: ../lib/engine/gui/gtk-frontend/addressbook-window.cpp:699
 msgid "Category"
 msgstr "Categoria"
 
-#: ../lib/engine/gui/gtk-frontend/book-view-gtk.cpp:586
-#: ../src/gui/assistant.cpp:1373
+#: ../lib/engine/gui/gtk-frontend/book-view-gtk.cpp:585
+#: ../src/gui/assistant.cpp:1394
 msgid "Full Name"
 msgstr "Nom complet"
 
-#: ../lib/engine/gui/gtk-frontend/book-view-gtk.cpp:601
+#: ../lib/engine/gui/gtk-frontend/book-view-gtk.cpp:600
 msgid "_Search Filter:"
 msgstr "Filtre de _cerca:"
+
+#: ../lib/engine/gui/gtk-frontend/call-window.cpp:770
+msgid "Error while initializing video output"
+msgstr "S'ha produït un error en inicialitzar la sortida de vídeo"
+
+#: ../lib/engine/gui/gtk-frontend/call-window.cpp:771
+msgid "No video will be displayed on your machine during this call"
+msgstr "No es mostrarà el vídeo al vostre ordinador durant aquesta trucada"
+
+#: ../lib/engine/gui/gtk-frontend/call-window.cpp:781
+msgid ""
+"There was an error opening or initializing the video output. Please verify "
+"that no other application is using the accelerated video output."
+msgstr ""
+"S'ha produït un error en obrir o inicialitzar la sortida de vídeo. Assegureu-"
+"vos que no hi hagi cap altra aplicació que estigui utilitzant la sortida "
+"d'acceleració de vídeo."
+
+#: ../lib/engine/gui/gtk-frontend/call-window.cpp:783
+msgid ""
+"There was an error opening or initializing the video output. Please verify "
+"that you are using a color depth of 24 or 32 bits per pixel."
+msgstr ""
+"S'ha produït un error en obrir o inicialitzar la sortida de vídeo. Assegureu-"
+"vos que estigueu utilitzant una profunditat de color de 24 o 32 bits per "
+"píxel."
+
+#: ../lib/engine/gui/gtk-frontend/call-window.cpp:888
+#, c-format
+msgid "Error while accessing video device %s"
+msgstr "S'ha produït un error en accedir al dispositiu de vídeo %s"
+
+#: ../lib/engine/gui/gtk-frontend/call-window.cpp:891
+msgid "A moving logo will be transmitted during calls."
+msgstr "Es transmetrà un logotip animat durant les trucades."
+
+#: ../lib/engine/gui/gtk-frontend/call-window.cpp:895
+msgid ""
+"There was an error while opening the device. In case it is a pluggable "
+"device it may be sufficient to reconnect it. If not, or if it still is not "
+"accessible, please check your permissions and make sure that the appropriate "
+"driver is loaded."
+msgstr ""
+"S'ha produït un error en obrir el dispositiu. En cas que sigui un dispositiu "
+"endollable, pot ser que només calgui tornar-lo a connectar. En cas contrari, "
+"o bé si encara no és accessible, comproveu els permisos i assegureu-vos que "
+"el controlador adequat estigui carregat."
+
+#: ../lib/engine/gui/gtk-frontend/call-window.cpp:899
+msgid "Your video driver doesn't support the requested video format."
+msgstr ""
+"El programa de control que feu servir no implementa el format de vídeo "
+"requerit."
+
+#: ../lib/engine/gui/gtk-frontend/call-window.cpp:903
+msgid "Could not open the chosen channel."
+msgstr "No s'ha pogut obrir el canal escollit."
+
+#: ../lib/engine/gui/gtk-frontend/call-window.cpp:907
+msgid ""
+"Your driver doesn't seem to support any of the color formats supported by "
+"Ekiga.\n"
+" Please check your kernel driver documentation in order to determine which "
+"Palette is supported."
+msgstr ""
+"El controlador que feu servir no implementa cap dels formats de color que "
+"utilitza l'Ekiga.\n"
+" Comproveu la documentació sobre controladors del vostre nucli per tal de "
+"determinar quines paletes implementa."
+
+#: ../lib/engine/gui/gtk-frontend/call-window.cpp:911
+msgid "Error while setting the frame rate."
+msgstr "S'ha produït un error en especificar el ràtio de quadres."
+
+#: ../lib/engine/gui/gtk-frontend/call-window.cpp:915
+msgid "Error while setting the frame size."
+msgstr "S'ha produït un error en especificar la mida del quadre."
+
+#: ../lib/engine/gui/gtk-frontend/call-window.cpp:920
+#: ../lib/engine/gui/gtk-frontend/call-window.cpp:990
+#: ../lib/engine/gui/gtk-frontend/call-window.cpp:1071
+msgid "Unknown error."
+msgstr "Error desconegut."
+
+#: ../lib/engine/gui/gtk-frontend/call-window.cpp:972
+#, c-format
+msgid "Error while opening audio input device %s"
+msgstr "S'ha produït un error en accedir al dispositiu d'àudio %s"
+
+#. Translators: This happens when there is an error with audio input:
+#. * Nothing ("silence") will be transmitted
+#: ../lib/engine/gui/gtk-frontend/call-window.cpp:977
+msgid "Only silence will be transmitted."
+msgstr "Només es transmetrà silenci."
+
+#: ../lib/engine/gui/gtk-frontend/call-window.cpp:981
+msgid ""
+"Unable to open the selected audio device for recording. In case it is a "
+"pluggable device it may be sufficient to reconnect it. If not, or if it "
+"still is not accessible, please check your audio setup, the permissions and "
+"that the device is not busy."
+msgstr ""
+"No s'ha pogut obrir el dispositiu d'àudio seleccionat per enregistrar. En "
+"cas que sigui un dispositiu endollable, pot ser que només calgui tornar-lo a "
+"connectar. En cas contrari, o bé si encara no és accessible, comproveu la "
+"configuració de l'àudio, els permisos, i que el dispositiu no estigui ocupat."
+
+#: ../lib/engine/gui/gtk-frontend/call-window.cpp:985
+msgid ""
+"The selected audio device was successfully opened but it is impossible to "
+"read data from this device. In case it is a pluggable device it may be "
+"sufficient to reconnect it. If not, or if it still is not accessible, please "
+"check your audio setup."
+msgstr ""
+"S'ha obert correctament el dispositiu d'àudio seleccionat, però sembla que "
+"no és possible llegir-ne dades. En cas que sigui un dispositiu endollable, "
+"pot ser que només calgui tornar-lo a connectar. En cas contrari, o bé si "
+"encara no és accessible, comproveu la configuració de l'àudio."
+
+#: ../lib/engine/gui/gtk-frontend/call-window.cpp:1055
+#, c-format
+msgid "Error while opening audio output device %s"
+msgstr "S'ha produït un error en obrir el dispositiu de vídeo %s"
+
+#: ../lib/engine/gui/gtk-frontend/call-window.cpp:1058
+msgid "No incoming sound will be played."
+msgstr "No es reproduirà cap so d'entrada."
+
+#: ../lib/engine/gui/gtk-frontend/call-window.cpp:1062
+msgid ""
+"Unable to open the selected audio device for playing. In case it is a "
+"pluggable device it may be sufficient to reconnect it. If not, or if it "
+"still is not accessible, please check your audio setup, the permissions and "
+"that the device is not busy."
+msgstr ""
+"No s'ha pogut obrir el dispositiu d'àudio seleccionat per a la reproducció. "
+"En cas que sigui un dispositiu endollable, pot ser que només calgui tornar-"
+"lo a connectar. En cas contrari, o bé si encara no és accessible, comproveu "
+"la configuració de l'àudio, els permisos, i que el dispositiu no estigui "
+"ocupat."
+
+#: ../lib/engine/gui/gtk-frontend/call-window.cpp:1066
+msgid ""
+"The selected audio device was successfully opened but it is impossible to "
+"write data to this device. In case it is a pluggable device it may be "
+"sufficient to reconnect it. If not, or if it still is not accessible, please "
+"check your audio setup."
+msgstr ""
+"S'ha obert correctament el dispositiu d'àudio seleccionat, però sembla que "
+"no és possible enregistrar-hi dades. En cas que sigui un dispositiu "
+"endollable, pot ser que només calgui tornar-lo a connectar. En cas contrari, "
+"o bé si encara no és accessible, comproveu la configuració de l'àudio."
+
+#: ../lib/engine/gui/gtk-frontend/call-window.cpp:1107
+#, c-format
+msgid "Calling %s..."
+msgstr "Trucant %s..."
+
+# FIXME?
+#. %s is the SIP/H.323 address of the remote user, this text is shown
+#. below video during a call
+#: ../lib/engine/gui/gtk-frontend/call-window.cpp:1123
+#: ../src/gui/main_window.cpp:649
+#, c-format
+msgid "Connected with %s"
+msgstr "Esteu connectat amb %s"
+
+#. Init
+#: ../lib/engine/gui/gtk-frontend/call-window.cpp:1146
+#: ../lib/engine/gui/gtk-frontend/call-window.cpp:2415
+msgid "Standby"
+msgstr "En espera"
+
+#: ../lib/engine/gui/gtk-frontend/call-window.cpp:1166
+msgid "Call on hold"
+msgstr "Trucada en espera"
+
+#: ../lib/engine/gui/gtk-frontend/call-window.cpp:1177
+msgid "Call retrieved"
+msgstr "Trucada acceptada"
+
+# FIXME?
+#: ../lib/engine/gui/gtk-frontend/call-window.cpp:1265
+#, c-format
+msgid ""
+"Connected with %s\n"
+"%s"
+msgstr ""
+"Esteu connectat amb %s\n"
+"%s"
+
+#. Translators: TX is a common abbreviation for "transmit".  As it
+#. * is shown in a tooltip, there is no space constraint
+#: ../lib/engine/gui/gtk-frontend/call-window.cpp:1461
+#, c-format
+msgid "TX: %dx%d"
+msgstr "Transmès: %dx%d"
+
+#: ../lib/engine/gui/gtk-frontend/call-window.cpp:1463
+msgid "TX: / "
+msgstr "Transmès: / "
+
+#. Translators: RX is a common abbreviation for "receive".  As it
+#. * is shown in a tooltip, there is no space constraint
+#: ../lib/engine/gui/gtk-frontend/call-window.cpp:1468
+#, c-format
+msgid "RX: %dx%d"
+msgstr "Rebut: %dx%d"
+
+#: ../lib/engine/gui/gtk-frontend/call-window.cpp:1470
+msgid "RX: / "
+msgstr "Rebut: / "
+
+#: ../lib/engine/gui/gtk-frontend/call-window.cpp:1479
+#, c-format
+msgid ""
+"Lost packets: %.1f %%\n"
+"Late packets: %.1f %%\n"
+"Out of order packets: %.1f %%\n"
+"Jitter buffer: %d ms\n"
+"Codecs: %s\n"
+"Resolution: %s %s"
+msgstr ""
+"Paquets perduts: %.1f %%\n"
+"Paquets endarrerits: %.1f %%\n"
+"Paquets desordenats: %.1f %%\n"
+"Mem. int. del jitter: %d ms\n"
+"Còdecs: %s\n"
+"Resolució: %s %s"
+
+#. Translators: A = Audio, V = Video, FPS = Frames per second
+#: ../lib/engine/gui/gtk-frontend/call-window.cpp:1573
+#, c-format
+msgid "A:%.1f/%.1f V:%.1f/%.1f FPS:%d/%d"
+msgstr "A:%.1f/%.1f V:%.1f/%.1f FPS:%d/%d"
+
+#: ../lib/engine/gui/gtk-frontend/call-window.cpp:1594
+msgid "_Retrieve Call"
+msgstr "_Recupera la trucada"
+
+#: ../lib/engine/gui/gtk-frontend/call-window.cpp:1607
+#: ../lib/engine/gui/gtk-frontend/call-window.cpp:1916
+msgid "H_old Call"
+msgstr "Posa la t_rucada en espera"
+
+#: ../lib/engine/gui/gtk-frontend/call-window.cpp:1638
+#: ../lib/engine/gui/gtk-frontend/call-window.cpp:1928
+msgid "Suspend _Audio"
+msgstr "_Atura l'àudio"
+
+#: ../lib/engine/gui/gtk-frontend/call-window.cpp:1640
+#: ../lib/engine/gui/gtk-frontend/call-window.cpp:1933
+msgid "Suspend _Video"
+msgstr "Atura el _vídeo"
+
+#: ../lib/engine/gui/gtk-frontend/call-window.cpp:1642
+msgid "Resume _Audio"
+msgstr "Reprèn l'à_udio"
+
+#: ../lib/engine/gui/gtk-frontend/call-window.cpp:1644
+msgid "Resume _Video"
+msgstr "Reprèn el _vídeo"
+
+#: ../lib/engine/gui/gtk-frontend/call-window.cpp:1678
+msgid "Video Settings"
+msgstr "Preferències de vídeo"
+
+#: ../lib/engine/gui/gtk-frontend/call-window.cpp:1703
+msgid "Adjust brightness"
+msgstr "Ajusta la lluminositat"
+
+#: ../lib/engine/gui/gtk-frontend/call-window.cpp:1722
+msgid "Adjust whiteness"
+msgstr "Ajusta la blancor"
+
+#: ../lib/engine/gui/gtk-frontend/call-window.cpp:1741
+msgid "Adjust color"
+msgstr "Ajusta el color"
+
+#: ../lib/engine/gui/gtk-frontend/call-window.cpp:1760
+msgid "Adjust contrast"
+msgstr "Ajusta el contrast"
+
+#: ../lib/engine/gui/gtk-frontend/call-window.cpp:1802
+msgid "Audio Settings"
+msgstr "Paràmetres d'àudio"
+
+#: ../lib/engine/gui/gtk-frontend/call-window.cpp:1904
+msgid "_Call"
+msgstr "_Trucada"
+
+#: ../lib/engine/gui/gtk-frontend/call-window.cpp:1906
+msgid "_Pick up"
+msgstr "_Despenja"
+
+#: ../lib/engine/gui/gtk-frontend/call-window.cpp:1906
+msgid "Pick up the current call"
+msgstr "Despenja la trucada en curs"
+
+#: ../lib/engine/gui/gtk-frontend/call-window.cpp:1910
+msgid "_Hangup"
+msgstr "_Penja"
+
+#: ../lib/engine/gui/gtk-frontend/call-window.cpp:1910
+msgid "Hangup the current call"
+msgstr "Penja la trucada en curs"
+
+#: ../lib/engine/gui/gtk-frontend/call-window.cpp:1916
+#: ../lib/engine/gui/gtk-frontend/call-window.cpp:2384
+msgid "Hold the current call"
+msgstr "Mantén la trucada en curs"
+
+#: ../lib/engine/gui/gtk-frontend/call-window.cpp:1920
+msgid "_Transfer Call"
+msgstr "_Transfereix la trucada"
+
+#: ../lib/engine/gui/gtk-frontend/call-window.cpp:1921
+msgid "Transfer the current call"
+msgstr "Transfereix la trucada actual"
+
+#: ../lib/engine/gui/gtk-frontend/call-window.cpp:1929
+msgid "Suspend or resume the audio transmission"
+msgstr "Atura o reprèn la transmissió d'àudio"
+
+#: ../lib/engine/gui/gtk-frontend/call-window.cpp:1934
+msgid "Suspend or resume the video transmission"
+msgstr "Atura o reprèn la transmissió de vídeo"
+
+#: ../lib/engine/gui/gtk-frontend/call-window.cpp:1941
+#: ../src/gui/main_window.cpp:1309
+msgid "Close the Ekiga window"
+msgstr "Tanca la finestra de l'Ekiga"
+
+#: ../lib/engine/gui/gtk-frontend/call-window.cpp:1946
+#: ../src/gui/main_window.cpp:1342
+msgid "_View"
+msgstr "_Visualitza"
+
+#: ../lib/engine/gui/gtk-frontend/call-window.cpp:1948
+msgid "_Local Video"
+msgstr "Vídeo _local"
+
+#: ../lib/engine/gui/gtk-frontend/call-window.cpp:1949
+msgid "Local video image"
+msgstr "Imatge del vídeo local"
+
+#: ../lib/engine/gui/gtk-frontend/call-window.cpp:1953
+msgid "_Remote Video"
+msgstr "Vídeo _remot"
+
+#: ../lib/engine/gui/gtk-frontend/call-window.cpp:1954
+msgid "Remote video image"
+msgstr "Imatge del vídeo remota"
+
+#: ../lib/engine/gui/gtk-frontend/call-window.cpp:1958
+msgid "_Picture-in-Picture"
+msgstr "_Imatge-en-imatge"
+
+#: ../lib/engine/gui/gtk-frontend/call-window.cpp:1959
+msgid "Both video images"
+msgstr "Ambdues imatges de vídeo"
+
+#: ../lib/engine/gui/gtk-frontend/call-window.cpp:1965
+msgid "Zoom in"
+msgstr "Apropa"
+
+#: ../lib/engine/gui/gtk-frontend/call-window.cpp:1969
+msgid "Zoom out"
+msgstr "Allunya"
+
+#: ../lib/engine/gui/gtk-frontend/call-window.cpp:1973
+msgid "Normal size"
+msgstr "Mida normal"
+
+#: ../lib/engine/gui/gtk-frontend/call-window.cpp:1977
+msgid "_Fullscreen"
+msgstr "Pantalla _completa"
+
+#: ../lib/engine/gui/gtk-frontend/call-window.cpp:1977
+msgid "Switch to fullscreen"
+msgstr "Commuta a pantalla completa"
+
+#: ../lib/engine/gui/gtk-frontend/call-window.cpp:2092
+msgid "Transfer call to:"
+msgstr "S'està transferint la trucada a:"
+
+#: ../lib/engine/gui/gtk-frontend/call-window.cpp:2302
+#: ../lib/engine/gui/gtk-frontend/call-window.cpp:2317
+msgid "Hang up the current call"
+msgstr "Penja la trucada en curs"
+
+#: ../lib/engine/gui/gtk-frontend/call-window.cpp:2345
+msgid "Change the volume of your soundcard"
+msgstr "Canvia el volum de la vostra targeta de so"
+
+#: ../lib/engine/gui/gtk-frontend/call-window.cpp:2365
+msgid "Change the color settings of your video device"
+msgstr "Canvia els paràmetres del color del dispositiu de vídeo"
 
 #: ../lib/engine/gui/gtk-frontend/chat-area.cpp:247
 msgid "says:"
@@ -1655,21 +2244,462 @@ msgstr "Obre l'enllaç en el navegador"
 msgid "Copy link"
 msgstr "Copia l'adreça de l'enllaç"
 
-#: ../lib/engine/gui/gtk-frontend/chat-area.cpp:895
+#: ../lib/engine/gui/gtk-frontend/chat-area.cpp:899
 msgid "_Smile..."
 msgstr "_Emoticona..."
 
+#: ../lib/engine/gui/gtk-frontend/chat-window.cpp:139
+#, c-format
+msgid "You have %d unread text message"
+msgid_plural "You have %d unread text messages"
+msgstr[0] "Teniu %d missatge sense llegir"
+msgstr[1] "Teniu %d missatges sense llegir"
+
+#: ../lib/engine/gui/gtk-frontend/chat-window.cpp:144
+msgid "Read"
+msgstr "Llegiu"
+
 #. we can't do much here since we get the Chat as reference...
-#: ../lib/engine/gui/gtk-frontend/chat-window.cpp:411
+#: ../lib/engine/gui/gtk-frontend/chat-window.cpp:451
 msgid "Chat Window"
 msgstr "Finestra de xat"
 
 #: ../lib/engine/gui/gtk-frontend/heap-view.cpp:238
 #: ../lib/engine/gui/gtk-frontend/heap-view.cpp:277
-#: ../lib/engine/gui/gtk-frontend/roster-view-gtk.cpp:976
-#: ../lib/engine/gui/gtk-frontend/roster-view-gtk.cpp:1029
+#: ../lib/engine/gui/gtk-frontend/roster-view-gtk.cpp:953
+#: ../lib/engine/gui/gtk-frontend/roster-view-gtk.cpp:1008
 msgid "Unsorted"
 msgstr "Sense ordenar"
+
+#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:397
+msgid "Play sound for new voice mails"
+msgstr "Reprodueix un so per a correus de veu nous"
+
+#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:407
+msgid "Play sound for new instant messages"
+msgstr "Reprodueix un so per a missatges instantanis nous"
+
+#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:462
+#: ../src/gui/assistant.cpp:373
+msgid "Personal Information"
+msgstr "Informació personal"
+
+#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:464
+msgid "_Full name:"
+msgstr "_Nom complet:"
+
+#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:480
+msgid "Video Display"
+msgstr "Pantalla"
+
+# Revisant l'aplicació, "_P" és la millor opció
+#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:482
+msgid "Place windows displaying video _above other windows"
+msgstr "_Posa les finestres que mostrin vídeo per sobre de les altres"
+
+#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:486
+msgid "Network Settings"
+msgstr "Paràmetres de la xarxa"
+
+#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:488
+msgid "Enable network _detection"
+msgstr "Habilita la _detecció de xarxa"
+
+#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:498
+msgid "Call Forwarding"
+msgstr "Desviació de trucades"
+
+#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:500
+msgid "_Always forward calls to the given host"
+msgstr "Desvia _sempre les trucades a un ordinador en concret"
+
+#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:500
+msgid ""
+"If enabled, all incoming calls will be forwarded to the host that is "
+"specified in the protocol settings"
+msgstr ""
+"Si s'habilita, totes les trucades entrants es desviaran a l'ordinador "
+"indicat en els paràmetres del protocol"
+
+#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:502
+msgid "Forward calls to the given host if _no answer"
+msgstr "Desvia les trucades a un ordinador en concret si no _contesto"
+
+#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:502
+msgid ""
+"If enabled, all incoming calls will be forwarded to the host that is "
+"specified in the protocol settings if you do not answer the call"
+msgstr ""
+"Si s'habilita, totes les trucades que rebeu i no contesteu, es desviaran cap "
+"a l'ordinador indicat en els paràmetres del protocol"
+
+#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:504
+msgid "Forward calls to the given host if _busy"
+msgstr "Desvia les trucades a un ordinador en concret quan estigui _ocupat"
+
+#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:504
+msgid ""
+"If enabled, all incoming calls will be forwarded to the host that is "
+"specified in the protocol settings if you already are in a call or if you "
+"are in busy mode"
+msgstr ""
+"Si s'habilita, totes les trucades entrants que rebeu mentre estigueu en una "
+"trucada o en mode «ocupat», es desviaran a l'ordinador indicat en els "
+"paràmetres del protocol"
+
+#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:508
+#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:1316
+msgid "Call Options"
+msgstr "Opcions de trucada"
+
+#. Add all the fields
+#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:511
+msgid "Timeout to reject or forward unanswered incoming calls (in seconds):"
+msgstr ""
+"Temps d'espera abans de rebutjar o desviar trucades entrants (en segons):"
+
+#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:512
+msgid "_Automatically answer incoming calls"
+msgstr "_Accepta automàticament les trucades entrants"
+
+# FIXME: incidència? (josep)
+#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:543
+msgid "Ekiga Sound Events"
+msgstr "Esdeveniments de so de l'Ekiga"
+
+#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:580
+msgid "A"
+msgstr "A"
+
+#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:592
+msgid "Event"
+msgstr "Incidència"
+
+#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:604
+msgid "Choose a sound"
+msgstr "Escolliu un so"
+
+#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:609
+msgid "Wavefiles"
+msgstr "Fitxers WAV"
+
+#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:618
+#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:637
+msgid "Play"
+msgstr "Reprodueix"
+
+#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:658
+msgid "String"
+msgstr "Cadena"
+
+#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:659
+msgid "Tone"
+msgstr "To"
+
+#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:660
+#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:712
+msgid "RFC2833"
+msgstr "RFC2833"
+
+#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:661
+msgid "Q.931"
+msgstr "Q.931"
+
+#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:665
+msgid "Disable H.239 Extended Video"
+msgstr "Desactiva el vídeo estès de l'H.239"
+
+#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:666
+msgid "Allow H.239 per Content Role Mask"
+msgstr "Habilita l'H.239 per màscara de rol per contingut"
+
+#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:667
+msgid "Force H.239 Presentation Role"
+msgstr "Força el rol de presentació de l'H.239"
+
+#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:668
+msgid "Force H.239 Live Role"
+msgstr "Força el rol en viu de l'H.239"
+
+#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:673
+#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:719
+msgid "Misc Settings"
+msgstr "Altres paràmetres"
+
+#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:676
+#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:724
+msgid "Forward _URI:"
+msgstr "_URI de Desviament:"
+
+#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:682
+msgid "Advanced Settings"
+msgstr "Paràmetres avançats"
+
+#. The toggles
+#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:685
+msgid "Enable H.245 _tunneling"
+msgstr "Habilita la tunelització _H.245"
+
+#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:687
+msgid "Enable _early H.245"
+msgstr "Habilita H.245 a l'_inici"
+
+#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:689
+msgid "Enable fast _start procedure"
+msgstr "Habilita l'arrencada _ràpida"
+
+#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:689
+msgid ""
+"Connection will be established in Fast Start mode. Fast Start is a new way "
+"to start calls faster that was introduced in H.323v2. It is not supported by "
+"Netmeeting and using both Fast Start and H.245 Tunneling can crash some "
+"versions of Netmeeting."
+msgstr ""
+"La connexió s'establirà en el mode d'arrencada ràpida. Aquesta és una nova "
+"manera d'iniciar les trucades que va introduir-se a H323v2. El Netmeeting no "
+"ho implementa, de manera que utilitzant l'arrencada ràpida i la tunelització "
+"H.245 al mateix temps, pot fer penjar algunes versions del Netmeeting."
+
+#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:691
+msgid "Enable H.239 control"
+msgstr "Habilita el control de l'H.239"
+
+#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:691
+msgid "This enables H.239 capability for additional video roles."
+msgstr "Això permet la capacitat per rols de vídeo addicionals de l'H.239."
+
+#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:693
+msgid "Extended Video Roles:"
+msgstr "Rols de vídeo estesos:"
+
+#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:693
+msgid "Select the H.239 Video Role"
+msgstr "Seleccioneu el rol de vídeo de l'H.239"
+
+#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:697
+#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:730
+msgid "DTMF Mode"
+msgstr "Mode DTMF"
+
+#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:699
+#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:732
+msgid "_Send DTMF as:"
+msgstr "_Envia DTMF com a:"
+
+#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:699
+#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:732
+msgid "Select the mode for DTMFs sending"
+msgstr "Seleccioneu el mode d'enviament de DTMF."
+
+#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:713
+msgid "INFO"
+msgstr "INFO"
+
+#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:721
+msgid "_Outbound Proxy:"
+msgstr "_Servidor intermediari de sortida:"
+
+#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:749
+#: ../src/gui/assistant.cpp:996
+msgid "Audio Devices"
+msgstr "Dispositius d'àudio"
+
+#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:757
+msgid "Ringing Device"
+msgstr "Dispositiu del so del timbre"
+
+#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:757
+msgid "Select the ringing audio device to use"
+msgstr ""
+"Seleccioneu el dispositiu d'àudio del so del timbre que vulgueu utilitzar"
+
+#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:759
+msgid "Output device:"
+msgstr "Dispositiu de sortida:"
+
+#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:766
+#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:902
+msgid "Input device:"
+msgstr "Dispositiu d'entrada:"
+
+#. That button will refresh the device list
+#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:770
+#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:913
+msgid "_Detect devices"
+msgstr "_Detecta dispositius"
+
+#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:770
+#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:913
+msgid "Click here to refresh the device list"
+msgstr "Feu clic aquí per actualitzar la llista de dispositius"
+
+#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:790
+#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:812
+#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:832
+#: ../src/gui/assistant.cpp:1262 ../src/gui/assistant.cpp:1284
+#: ../src/gui/assistant.cpp:1306
+msgid "No device found"
+msgstr "No s'ha trobat cap dispositiu"
+
+#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:881
+msgid "PAL (Europe)"
+msgstr "PAL (Europa)"
+
+#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:882
+msgid "NTSC (America)"
+msgstr "NTSC (Amèrica)"
+
+#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:883
+msgid "SECAM (France)"
+msgstr "SECAM (França)"
+
+#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:884
+msgid "Auto"
+msgstr "Auto"
+
+#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:896
+msgid "Video Devices"
+msgstr "Dispositius de vídeo"
+
+#. Video Channel
+#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:906
+msgid "Channel:"
+msgstr "Canal:"
+
+#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:908
+msgid "Size:"
+msgstr "Mida:"
+
+#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:908
+msgid "Select the transmitted video size"
+msgstr "Seleccioneu la mida del vídeo a transmetre"
+
+#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:910
+msgid "Format:"
+msgstr "Format:"
+
+#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:929
+#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:962
+#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:1343
+#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:1353
+msgid "Codecs"
+msgstr "Còdecs"
+
+#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:941
+#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:974
+msgid "Settings"
+msgstr "Paràmetres"
+
+#. Translators: the full sentence is Automatically adjust jitter buffer
+#. between X and Y ms
+#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:945
+msgid "Enable silence _detection"
+msgstr "Habilita la _detecció de silenci"
+
+#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:947
+msgid "Enable echo can_celation"
+msgstr "Habilita la _cancel·lació de l'eco"
+
+#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:949
+msgid "Maximum _jitter buffer (in ms):"
+msgstr "Memòria intermèdia màxima per al _jitter (en ms):"
+
+#. Translators: the full sentence is Keep a minimum video quality of X %
+#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:977
+msgid "Picture Quality"
+msgstr "Qualitat de la imatge"
+
+#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:977
+msgid ""
+"Choose if you want to guarantee a minimum image quality (possibly leading to "
+"dropped frames in order not to surpass the bitrate limit) or if you prefer "
+"to keep the frame rate"
+msgstr ""
+"Escolliu si voleu garantir una qualitat mínima de la imatge (cosa que pot "
+"ocasionar que es perdin quadres en l'intent de no sobrepassar el límit de la "
+"taxa de bits) o bé si preferiu mantenir els quadres per segon"
+
+#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:979
+msgid "Maximum video _bitrate (in kbits/s):"
+msgstr "Taxa de _bits màxima per al vídeo (en kbits/s):"
+
+#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:979
+msgid ""
+"The maximum video bitrate in kbits/s. The video quality and the effective "
+"frame rate will be dynamically adjusted to keep the bitrate at the given "
+"value."
+msgstr ""
+"La taxa de bits màxima per al vídeo en kbits/s. La qualitat del vídeo i el "
+"nombre de quadres per segon transmesos s'ajustaran dinàmicament al valor que "
+"indiqueu aquí."
+
+#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:1288
+msgid "Ekiga Preferences"
+msgstr "Preferències de l'Ekiga"
+
+#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:1306
+msgid "General"
+msgstr "General"
+
+#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:1307
+msgid "Personal Data"
+msgstr "Dades personals"
+
+#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:1312
+msgid "General Settings"
+msgstr "Paràmetres generals"
+
+#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:1321
+msgid "Sound Events"
+msgstr "Esdeveniments de so"
+
+#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:1325
+msgid "Protocols"
+msgstr "Protocols"
+
+#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:1327
+msgid "SIP Settings"
+msgstr "Paràmetres SIP"
+
+#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:1332
+msgid "H.323 Settings"
+msgstr "Paràmetres H.323"
+
+#. The player
+#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:1338
+msgid "Audio"
+msgstr "Àudio"
+
+#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:1339
+#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:1349
+msgid "Devices"
+msgstr "Dispositius"
+
+#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:1348
+msgid "Video"
+msgstr "Vídeo"
+
+#: ../lib/engine/gui/gtk-frontend/statusicon.cpp:313
+#, c-format
+msgid "You have %d message"
+msgid_plural "You have %d messages"
+msgstr[0] "Teniu %d missatge"
+msgstr[1] "Teniu %d missatges"
+
+#: ../lib/engine/gui/gtk-frontend/statusicon.cpp:382
+#: ../src/gui/main_window.cpp:1371
+msgid "Get help by reading the Ekiga manual"
+msgstr "Obtingueu ajuda llegint el manual de l'Ekiga"
+
+#: ../lib/engine/gui/gtk-frontend/statusicon.cpp:387
+#: ../src/gui/main_window.cpp:1376
+msgid "View information about Ekiga"
+msgstr "Mostra informació quant a l'Ekiga"
+
+#: ../lib/engine/gui/gtk-frontend/statusicon.cpp:394
+#: ../src/gui/main_window.cpp:1316
+msgid "Quit"
+msgstr "Surt"
 
 #: ../lib/gui/dialpad.c:52
 msgid "abc"
@@ -1703,6 +2733,89 @@ msgstr "tuv"
 msgid "wxyz"
 msgstr "wxyz"
 
+#: ../lib/gui/gmcallbacks.c:67
+msgid "Contributors:"
+msgstr "Col·laboradors:"
+
+#: ../lib/gui/gmcallbacks.c:80
+msgid "Artwork:"
+msgstr "Art:"
+
+#: ../lib/gui/gmcallbacks.c:88
+msgid "See AUTHORS file for full credits"
+msgstr "Vegeu el fitxer AUTHORS per veure tots els crèdits"
+
+#: ../lib/gui/gmcallbacks.c:104
+msgid ""
+"This program is free software; you can redistribute it and/or modify it "
+"under the terms of the GNU General Public License as published by the Free "
+"Software Foundation; either version 2 of the License, or (at your option) "
+"any later version. "
+msgstr ""
+"Aquest programa és programari lliure; podeu redistribuir-lo i/o modificar-lo "
+"d'acord amb els termes de la llicència pública general de GNU tal com la "
+"publica la Free Software Foundation, ja sigui la versió 2 de la llicència, o "
+"bé, si així ho voleu, qualsevol altra versió posterior."
+
+#: ../lib/gui/gmcallbacks.c:108
+msgid ""
+"This program is distributed in the hope that it will be useful, but WITHOUT "
+"ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or "
+"FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for "
+"more details. You should have received a copy of the GNU General Public "
+"License along with this program; if not, write to the Free Software "
+"Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301, USA."
+msgstr ""
+"Aquest programa es distribueix amb l'esperança que sigui útil, però SENSE "
+"CAP TIPUS DE GARANTIA, NI EXPLÍCITA NI IMPLÍCITA; AIXÒ INCLOU, SENSE LIMITAR-"
+"S'HI, LES GARANTIES IMPLÍCITES DE COMERCIALITZACIÓ I ADEQUACIÓ A UN ÚS "
+"CONCRET. Vegeu la llicència pública general de GNU per obtenir-ne més "
+"detalls. Juntament amb aquest programa, hauríeu d'haver rebut una còpia de "
+"la llicència pública general de GNU. En cas contrari, escriviu a la Free "
+"Software Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA "
+"02110-1301, USA."
+
+#: ../lib/gui/gmcallbacks.c:115
+msgid ""
+"Ekiga is licensed under the GPL license and as a special exception, you have "
+"permission to link or otherwise combine this program with the programs OPAL, "
+"OpenH323 and PWLIB, and distribute the combination, without applying the "
+"requirements of the GNU GPL to the OPAL, OpenH323 and PWLIB programs, as "
+"long as you do follow the requirements of the GNU GPL for all the rest of "
+"the software thus combined."
+msgstr ""
+"L'Ekiga es distribueix sota els termes de la llicència pública general de "
+"GNU (GPL), i com a excepció especial, teniu permís per enllaçar o combinar "
+"aquest programa amb els programes OPAL, OpenH323 i PWLIB, i distribuir-ne la "
+"combinació sense haver d'aplicar els requeriments de la GPL als programes "
+"OPAL, OpenH323 i PWLIB, sempre que satisfeu els requeriments de la GPL de "
+"GNU per la resta de programes combinats d'aquesta manera."
+
+#. Translators: Please write translator credits here, and
+#. * separate names with \n
+#: ../lib/gui/gmcallbacks.c:127
+msgid "translator-credits"
+msgstr ""
+"Josep Puigdemont i Casamajó <josep.puigdemont@gmail.com>\n"
+"David Planella Molas <david.planella@gmail.com>\n"
+"Pere Orga Esteve <pere@orga.cat>"
+
+# FIXME
+#: ../lib/gui/gmcallbacks.c:132
+msgid ""
+"Ekiga is full-featured SIP and H.323 compatible VoIP, IP-Telephony and "
+"Videoconferencing application that allows you to make audio and video calls "
+"to remote users with SIP and H.323 hardware or software."
+msgstr ""
+"L'Ekiga és un programa de videoconferència i telefonia IP totalment "
+"compatible amb qualsevol aplicació que implementi els protocols SIP o H.323 "
+"de VoIP. Us permet fer trucades d'àudio i vídeo a usuaris remots que "
+"utilitzin maquinari o programari SIP i H.323."
+
+#: ../lib/gui/gmcallbacks.c:205
+msgid "Unable to open help file."
+msgstr "No s'ha pogut obrir el fitxer de l'ajuda."
+
 #: ../lib/gui/gmdialog.c:327
 msgid "Do not show this dialog again"
 msgstr "No tornis a mostrar aquest quadre de diàleg"
@@ -1715,32 +2828,32 @@ msgid_plural "%d users found"
 msgstr[0] "S'ha trobat %d usuari"
 msgstr[1] "S'han trobat %d usuaris"
 
-#: ../plugins/evolution/evolution-book.cpp:297
-#: ../plugins/loudmouth/loudmouth-heap.cpp:138
+#: ../plugins/evolution/evolution-book.cpp:301
+#: ../plugins/loudmouth/loudmouth-heap-roster.cpp:71
 msgid "New _Contact"
 msgstr "Afegeix un _contacte"
 
-#: ../plugins/evolution/evolution-book.cpp:344
+#: ../plugins/evolution/evolution-book.cpp:348
 #: ../plugins/evolution/evolution-contact.cpp:333
 msgid "VoIP _URI:"
 msgstr "_URI de VoIP:"
 
-#: ../plugins/evolution/evolution-book.cpp:345
+#: ../plugins/evolution/evolution-book.cpp:349
 #: ../plugins/evolution/evolution-contact.cpp:334
 msgid "_Home phone:"
 msgstr "Telèfon _particular:"
 
-#: ../plugins/evolution/evolution-book.cpp:346
+#: ../plugins/evolution/evolution-book.cpp:350
 #: ../plugins/evolution/evolution-contact.cpp:335
 msgid "_Office phone:"
 msgstr "Telèfon de la _feina:"
 
-#: ../plugins/evolution/evolution-book.cpp:347
+#: ../plugins/evolution/evolution-book.cpp:351
 #: ../plugins/evolution/evolution-contact.cpp:336
 msgid "_Cell phone:"
 msgstr "Telèfon _mòbil:"
 
-#: ../plugins/evolution/evolution-book.cpp:348
+#: ../plugins/evolution/evolution-book.cpp:352
 #: ../plugins/evolution/evolution-contact.cpp:337
 msgid "_Pager:"
 msgstr "_Cercapersones:"
@@ -1758,32 +2871,31 @@ msgstr "Suprimeix el contacte"
 msgid "Are you sure you want to remove %s from the addressbook?"
 msgstr "Esteu segur que voleu suprimir %s de la llibreta d'adreces?"
 
-#: ../plugins/gstreamer/gst-audioinput.cpp:276
+#: ../plugins/gstreamer/gst-audioinput.cpp:196
 msgid "Audio test"
 msgstr "Comprovació de l'àudio"
 
-#: ../plugins/gstreamer/gst-audiooutput.cpp:328
+#: ../plugins/gstreamer/gst-audiooutput.cpp:223
 msgid "Silent"
 msgstr "En silenci"
 
-#: ../plugins/gstreamer/gst-videoinput.cpp:234
+#: ../plugins/gstreamer/gst-videoinput.cpp:185
 msgid "Video test"
 msgstr "Comprovació del vídeo"
 
 #. Translators: "Screencast" means the video input device will be your screen -- the other end will see your desktop
-#: ../plugins/gstreamer/gst-videoinput.cpp:386
-#: ../plugins/gstreamer/gst-videoinput.cpp:391
+#: ../plugins/gstreamer/gst-videoinput.cpp:337
+#: ../plugins/gstreamer/gst-videoinput.cpp:342
 msgid "Crazy"
 msgstr "Boig"
 
 # FIXME (dpm)
-#: ../plugins/gstreamer/gst-videoinput.cpp:391
+#: ../plugins/gstreamer/gst-videoinput.cpp:342
 msgid "Screencast"
 msgstr "Screencast"
 
-#: ../plugins/ldap/ldap-book.cpp:427
+#: ../plugins/ldap/ldap-book.cpp:427 ../plugins/resource-list/rl-entry.cpp:160
 #: ../plugins/resource-list/rl-entry-ref.cpp:138
-#: ../plugins/resource-list/rl-entry.cpp:160
 msgid "_Refresh"
 msgstr "_Refresca"
 
@@ -1981,56 +3093,74 @@ msgstr "Crea el directori LDAP"
 msgid "Ekiga.net Directory"
 msgstr "Directori d'usuaris d'ekiga.net"
 
-#: ../plugins/loudmouth/loudmouth-account.cpp:79
-#: ../plugins/loudmouth/loudmouth-account.cpp:113
+#: ../plugins/loudmouth/loudmouth-account.cpp:112
+#: ../plugins/loudmouth/loudmouth-account.cpp:159
 msgid "inactive"
 msgstr "inactiu"
 
-#: ../plugins/loudmouth/loudmouth-account.cpp:179
+#: ../plugins/loudmouth/loudmouth-account.cpp:238
 #, c-format
 msgid "error connecting (%s)"
 msgstr "error en connectar (%s)"
 
-#: ../plugins/loudmouth/loudmouth-account.cpp:185
+#: ../plugins/loudmouth/loudmouth-account.cpp:244
 msgid "connecting"
 msgstr "connexió"
 
-#: ../plugins/loudmouth/loudmouth-account.cpp:229
+#: ../plugins/loudmouth/loudmouth-account.cpp:284
 msgid "authenticating"
 msgstr "autenticació"
 
 #. FIXME: can't we report better?
-#: ../plugins/loudmouth/loudmouth-account.cpp:239
+#: ../plugins/loudmouth/loudmouth-account.cpp:294
 msgid "error connecting"
 msgstr "error en connectar"
 
-#: ../plugins/loudmouth/loudmouth-account.cpp:251
+#: ../plugins/loudmouth/loudmouth-account.cpp:304
 msgid "disconnected"
 msgstr "desconnectat"
 
 # FIXME?
-#: ../plugins/loudmouth/loudmouth-account.cpp:268
+#: ../plugins/loudmouth/loudmouth-account.cpp:314
 msgid "connected"
 msgstr "connectat"
 
 #. FIXME: can't we report something better?
-#: ../plugins/loudmouth/loudmouth-account.cpp:274
+#: ../plugins/loudmouth/loudmouth-account.cpp:320
 msgid "error authenticating loudmouth account"
 msgstr "error en autenticar el compte de la Loudmouth"
 
-#: ../plugins/loudmouth/loudmouth-account.cpp:304
+#: ../plugins/loudmouth/loudmouth-account.cpp:350
 #: ../plugins/loudmouth/loudmouth-bank.cpp:127
 msgid "Server:"
 msgstr "Servidor:"
 
-#: ../plugins/loudmouth/loudmouth-account.cpp:308
+#: ../plugins/loudmouth/loudmouth-account.cpp:350
+msgid "The server, e.g. jabber.org"
+msgstr "El servidor, p.ex. jabber.org"
+
+#: ../plugins/loudmouth/loudmouth-account.cpp:354
+msgid "Port:"
+msgstr "Port:"
+
+#: ../plugins/loudmouth/loudmouth-account.cpp:354
+msgid "The transport protocol port, if different than the default"
+msgstr "El port del protocol de transport, si no és el per defecte"
+
+#: ../plugins/loudmouth/loudmouth-account.cpp:358
 #: ../plugins/loudmouth/loudmouth-bank.cpp:128
 msgid "Resource:"
 msgstr "Recurs:"
 
-#: ../plugins/loudmouth/loudmouth-account.cpp:391 ../src/gui/accounts.cpp:689
-msgid "Edit"
-msgstr "Edita"
+#: ../plugins/loudmouth/loudmouth-account.cpp:358
+msgid ""
+"The resource, such as home or work, allowing to distinguish among several "
+"terminals registered to the same account; leave empty if you do not know "
+"what it is"
+msgstr ""
+"El recurs, que per exemple pot ser «casa» o «feina», us permet distingir "
+"entre varis terminals registrats al mateix compte. Deixeu-ho en blanc si no "
+"sabeu què és"
 
 #: ../plugins/loudmouth/loudmouth-bank.cpp:111
 msgid "_Add a jabber/XMPP account"
@@ -2040,88 +3170,113 @@ msgstr "_Afegeix un compte de Jabber/XMPP"
 msgid "Please fill in the following fields:"
 msgstr "Ompliu els camps següents:"
 
-#: ../plugins/loudmouth/loudmouth-dialect.cpp:118
+#. FIXME: this is here until the feature is ready
+#: ../plugins/loudmouth/loudmouth-dialect.cpp:121
 msgid "Join a discussion group"
 msgstr "Uneix-te a un grup de discussió"
 
-#: ../plugins/loudmouth/loudmouth-heap.cpp:210
+#: ../plugins/loudmouth/loudmouth-dialect.cpp:132
+msgid "Open a group chat room"
+msgstr "Obre una sala de xat en grup"
+
+#: ../plugins/loudmouth/loudmouth-dialect.cpp:134
+msgid "Please provide a room name"
+msgstr "Heu de proporcionar el nom de la sala"
+
+#: ../plugins/loudmouth/loudmouth-dialect.cpp:136
+msgid "Room name"
+msgstr "Nom de la sala"
+
+#: ../plugins/loudmouth/loudmouth-dialect.cpp:136
+msgid "The name of the room you want to enter"
+msgstr "El nom de la sala a la que voleu entrar"
+
+#: ../plugins/loudmouth/loudmouth-dialect.cpp:138
+msgid "Pseudonym"
+msgstr "Pseudònim"
+
+#: ../plugins/loudmouth/loudmouth-dialect.cpp:138
+msgid "The pseudonym you'll have in the room"
+msgstr "El pseudònim que tindreu a la sala"
+
+#: ../plugins/loudmouth/loudmouth-heap-roster.cpp:172
 msgid "Authorization to see your presence"
 msgstr "Autorització per veure la vostra presència"
 
-#: ../plugins/loudmouth/loudmouth-heap.cpp:214
+#: ../plugins/loudmouth/loudmouth-heap-roster.cpp:176
 #, c-format
 msgid "%s asks the permission to see your presence, saying: \"%s\"."
 msgstr "en/na %s us demana permís per veure la vostra presència. Diu: «%s»."
 
-#: ../plugins/loudmouth/loudmouth-heap.cpp:218
+#: ../plugins/loudmouth/loudmouth-heap-roster.cpp:180
 #, c-format
 msgid "%s asks the permission to see your presence."
 msgstr "en/na %s us demana permís per veure la vostra presència."
 
-#: ../plugins/loudmouth/loudmouth-heap.cpp:225
+#: ../plugins/loudmouth/loudmouth-heap-roster.cpp:187
 msgid "grant him/her the permission to see your presence"
 msgstr "permet-li veure la meva presència"
 
-#: ../plugins/loudmouth/loudmouth-heap.cpp:226
+#: ../plugins/loudmouth/loudmouth-heap-roster.cpp:188
 msgid "refuse him/her the permission to see your presence"
 msgstr "no li permetis veure la meva presència"
 
-#: ../plugins/loudmouth/loudmouth-heap.cpp:227
+#: ../plugins/loudmouth/loudmouth-heap-roster.cpp:189
 msgid "decide later (also close or cancel this dialog)"
 msgstr ""
 "ho decidireu més endavant (podeu també tancar o cancel·lar aquest diàleg)"
 
-#: ../plugins/loudmouth/loudmouth-heap.cpp:228
+#: ../plugins/loudmouth/loudmouth-heap-roster.cpp:190
 msgid "Your answer is: "
 msgstr "La vostra resposta és: "
 
-#: ../plugins/loudmouth/loudmouth-heap.cpp:315
+#: ../plugins/loudmouth/loudmouth-heap-roster.cpp:306
 msgid "Add a roster element"
 msgstr "Afegeix un element a la llista de contactes"
 
-#: ../plugins/loudmouth/loudmouth-heap.cpp:316
+#: ../plugins/loudmouth/loudmouth-heap-roster.cpp:307
 msgid "Please fill in this form to add a new element to the remote roster"
 msgstr ""
 "Empleneu aquest formulari per afegir un element nou a la llista de contactes "
 "remota"
 
-#: ../plugins/loudmouth/loudmouth-heap.cpp:318
+#: ../plugins/loudmouth/loudmouth-heap-roster.cpp:309
 #: ../plugins/resource-list/rl-heap.cpp:470
 msgid "Identifier:"
 msgstr "Identificador:"
 
-#: ../plugins/loudmouth/loudmouth-heap.cpp:318
+#: ../plugins/loudmouth/loudmouth-heap-roster.cpp:309
 msgid "identifier@server"
 msgstr "identificador@servidor"
 
-#: ../plugins/loudmouth/loudmouth-presentity.cpp:162
-#: ../plugins/loudmouth/loudmouth-presentity.cpp:168
+#: ../plugins/loudmouth/loudmouth-presentity.cpp:165
+#: ../plugins/loudmouth/loudmouth-presentity.cpp:171
 msgid "Ask him/her to see his/her status"
 msgstr "Demana-li si puc veure el seu estat"
 
-#: ../plugins/loudmouth/loudmouth-presentity.cpp:166
-#: ../plugins/loudmouth/loudmouth-presentity.cpp:178
+#: ../plugins/loudmouth/loudmouth-presentity.cpp:169
+#: ../plugins/loudmouth/loudmouth-presentity.cpp:181
 msgid "Forbid him/her to see my status"
 msgstr "No li permetis que vegi el meu estat"
 
-#: ../plugins/loudmouth/loudmouth-presentity.cpp:170
+#: ../plugins/loudmouth/loudmouth-presentity.cpp:173
 msgid "Ask him/her to see his/her status (pending)"
 msgstr "Demana-li si puc veure el seu estat (pendent)"
 
-#: ../plugins/loudmouth/loudmouth-presentity.cpp:174
-#: ../plugins/loudmouth/loudmouth-presentity.cpp:179
+#: ../plugins/loudmouth/loudmouth-presentity.cpp:177
+#: ../plugins/loudmouth/loudmouth-presentity.cpp:182
 msgid "Stop getting his/her status"
 msgstr "Deixa de fer un seguiment del seu estat"
 
-#: ../plugins/loudmouth/loudmouth-presentity.cpp:184
+#: ../plugins/loudmouth/loudmouth-presentity.cpp:187
 msgid "Start chat"
 msgstr "Inicia el xat"
 
-#: ../plugins/loudmouth/loudmouth-presentity.cpp:187
+#: ../plugins/loudmouth/loudmouth-presentity.cpp:190
 msgid "Continue chat"
 msgstr "Continua el xat"
 
-#: ../plugins/loudmouth/loudmouth-presentity.cpp:276
+#: ../plugins/loudmouth/loudmouth-presentity.cpp:281
 msgid ""
 "Please fill in this form to change an existing element of the remote roster"
 msgstr ""
@@ -2152,6 +3307,10 @@ msgstr "Es pot escriure:"
 msgid "Username:"
 msgstr "Nom d'usuari:"
 
+#: ../plugins/resource-list/rl-entry.cpp:202
+msgid "Invalid server data"
+msgstr "Les dades del servidor no són vàlides"
+
 #: ../plugins/resource-list/rl-entry-ref.cpp:53
 msgid "Click to fetch"
 msgstr "Feu clic per recollir"
@@ -2159,10 +3318,6 @@ msgstr "Feu clic per recollir"
 #: ../plugins/resource-list/rl-entry-ref.cpp:120
 msgid "Distant contact"
 msgstr "Contacte distant"
-
-#: ../plugins/resource-list/rl-entry.cpp:203
-msgid "Invalid server data"
-msgstr "Les dades del servidor no són vàlides"
 
 #: ../plugins/resource-list/rl-heap.cpp:198
 msgid "_Add a new contact"
@@ -2234,42 +3389,6 @@ msgstr ""
 "Empleneu aquest formulari per canviar un element existent en un servidor "
 "remot"
 
-#: ../src/gui/accounts.cpp:565
-msgid "Account Name"
-msgstr "Nom del compte"
-
-#: ../src/gui/accounts.cpp:566
-msgid "Status"
-msgstr "Estat"
-
-#: ../src/gui/accounts.cpp:576 ../src/gui/accounts.cpp:618
-msgid "Accounts"
-msgstr "Comptes"
-
-#: ../src/gui/accounts.cpp:590 ../src/gui/main_window.cpp:3575
-msgid "_Accounts"
-msgstr "_Comptes"
-
-#: ../src/gui/accounts.cpp:594 ../src/gui/main_window.cpp:3658
-msgid "_Help"
-msgstr "A_juda"
-
-#: ../src/gui/accounts.cpp:621
-msgid "Active"
-msgstr "Actiu"
-
-#: ../src/gui/accounts.cpp:683
-msgid "Enable"
-msgstr "Habilita"
-
-#: ../src/gui/accounts.cpp:686
-msgid "Disable"
-msgstr "Inhabilita"
-
-#: ../src/gui/accounts.cpp:692
-msgid "Remove"
-msgstr "Suprimeix"
-
 #: ../src/gui/assistant.cpp:341
 msgid ""
 "This is the Ekiga general configuration assistant. The following steps will "
@@ -2288,10 +3407,6 @@ msgstr ""
 msgid "Welcome to Ekiga"
 msgstr "Us donem la benvinguda a l'Ekiga"
 
-#: ../src/gui/assistant.cpp:373 ../src/gui/preferences.cpp:445
-msgid "Personal Information"
-msgstr "Informació personal"
-
 #. The user fields
 #: ../src/gui/assistant.cpp:376
 msgid "Please enter your first name and your surname:"
@@ -2305,19 +3420,45 @@ msgstr ""
 "El vostre nom i cognoms es faran servir quan us connecteu amb un altre "
 "programa de videoconferència o de veu sobre IP."
 
-#: ../src/gui/assistant.cpp:579
+#: ../src/gui/assistant.cpp:435
+msgid ""
+"If you do not have a SIP or H323 account, ekiga can only be used on your "
+"local internal network (inside your company, for example).  You will require "
+"an account if you want to be accessible to people on the Internet.  Many web "
+"sites allow you to create an account.  We suggest that you use a free ekiga."
+"net account, which allows you to be joined by any person with a SIP "
+"account.  If you want to call regular phone lines too, we suggest that you "
+"purchase an inexpensive call out account.\n"
+"\n"
+"The following two pages allow you to create such accounts."
+msgstr ""
+"Si no disposeu d'un compte SIP o H323 només podreu fer servir l'ekiga a la "
+"vostra xarxa local interna (dins la vostra empresa, per exemple).  Per poder "
+"ser accessible a Internet hauríeu de crear un compte.  Podeu crear un compte "
+"a molts llocs web. Us recomanem que creeu un compte a ekiga.net, que permet "
+"estar en contacte amb qualsevol persona que disposi d'un compte SIP.  Si a "
+"més també voleu trucar a línies telefòniques convencionals, us suggerim que "
+"adquiriu un compte PC-a-telèfon barat.\n"
+"\n"
+"En les dues pàgines següents podreu crear comptes d'aquest tipus."
+
+#: ../src/gui/assistant.cpp:450
+msgid "Introduction to Accounts"
+msgstr "Introduducció als comptes"
+
+#: ../src/gui/assistant.cpp:608
 msgid "Ekiga.net Account"
 msgstr "Compte d'ekiga.net"
 
-#: ../src/gui/assistant.cpp:581
+#: ../src/gui/assistant.cpp:610
 msgid "Please enter your username:"
 msgstr "Entreu el vostre nom d'usuari:"
 
-#: ../src/gui/assistant.cpp:589
+#: ../src/gui/assistant.cpp:618
 msgid "Please enter your password:"
 msgstr "Entreu la vostra contrasenya:"
 
-#: ../src/gui/assistant.cpp:599
+#: ../src/gui/assistant.cpp:628
 msgid ""
 "The username and password are used to login to your existing account at the "
 "ekiga.net free SIP service. If you do not have an ekiga.net SIP address yet, "
@@ -2335,23 +3476,23 @@ msgstr ""
 "Podeu saltar-vos aquest pas si utilitzeu un servei SIP alternatiu, o si "
 "voleu especificar els detalls d'entrada més tard."
 
-#: ../src/gui/assistant.cpp:625
+#: ../src/gui/assistant.cpp:654
 msgid "I do not want to sign up for the ekiga.net free service"
 msgstr "No vull que em registris al servei gratuït ekiga.net"
 
-#: ../src/gui/assistant.cpp:685
+#: ../src/gui/assistant.cpp:714
 msgid "Ekiga Call Out Account"
 msgstr "Compte PC-a-telèfon de l'Ekiga"
 
-#: ../src/gui/assistant.cpp:687
+#: ../src/gui/assistant.cpp:716
 msgid "Please enter your account ID:"
 msgstr "Entreu el vostre identificador de compte:"
 
-#: ../src/gui/assistant.cpp:695
+#: ../src/gui/assistant.cpp:724
 msgid "Please enter your PIN code:"
 msgstr "Introduïu el vostre codi PIN:"
 
-#: ../src/gui/assistant.cpp:706
+#: ../src/gui/assistant.cpp:735
 msgid ""
 "You can make calls to regular phones and cell numbers worldwide using Ekiga. "
 "To enable this, you need to do two things:\n"
@@ -2367,44 +3508,44 @@ msgstr ""
 "El servei només funcionarà si creeu el compte fent servir l'URL d'aquest "
 "quadre de diàleg.\n"
 
-#: ../src/gui/assistant.cpp:765
+#: ../src/gui/assistant.cpp:794
 msgid "I do not want to sign up for the Ekiga Call Out service"
 msgstr "No vull que em registris al servei de PC-a-telèfon per a l'Ekiga"
 
-#: ../src/gui/assistant.cpp:828 ../src/gui/assistant.cpp:1384
+#: ../src/gui/assistant.cpp:857 ../src/gui/assistant.cpp:1407
 msgid "Connection Type"
 msgstr "Tipus de connexió"
 
 #. The connection type
-#: ../src/gui/assistant.cpp:831
+#: ../src/gui/assistant.cpp:860
 msgid "Please choose your connection type:"
 msgstr "Escolliu el vostre tipus de connexió:"
 
-#: ../src/gui/assistant.cpp:848
+#: ../src/gui/assistant.cpp:877
 msgid "56k Modem"
 msgstr "Mòdem de 56k"
 
-#: ../src/gui/assistant.cpp:853
+#: ../src/gui/assistant.cpp:882
 msgid "ISDN"
 msgstr "XDSI"
 
-#: ../src/gui/assistant.cpp:858
+#: ../src/gui/assistant.cpp:887
 msgid "DSL/Cable (128 kbit/s uplink)"
 msgstr "DSL/cable (128 kbit/s de pujada)"
 
-#: ../src/gui/assistant.cpp:863
+#: ../src/gui/assistant.cpp:892
 msgid "DSL/Cable (512 kbit/s uplink)"
 msgstr "DSL/cable (512 kbit/s de pujada)"
 
-#: ../src/gui/assistant.cpp:868
+#: ../src/gui/assistant.cpp:897
 msgid "LAN"
 msgstr "LAN"
 
-#: ../src/gui/assistant.cpp:873
+#: ../src/gui/assistant.cpp:902
 msgid "Keep current settings"
 msgstr "Mantén les preferències actuals"
 
-#: ../src/gui/assistant.cpp:878
+#: ../src/gui/assistant.cpp:907
 msgid ""
 "The connection type will permit determining the best quality settings that "
 "Ekiga will use during calls. You can later change the settings individually "
@@ -2414,17 +3555,11 @@ msgstr ""
 "per assegurar la millor qualitat durant les trucades amb l'Ekiga. Més "
 "endavant podeu canviar aquests paràmetres a la finestra de preferències."
 
-#: ../src/gui/assistant.cpp:967 ../src/gui/main_window.cpp:3390
-#: ../src/gui/main_window.cpp:3394 ../src/gui/main_window.cpp:3398
-#: ../src/gui/preferences.cpp:738
-msgid "Audio Devices"
-msgstr "Dispositius d'àudio"
-
-#: ../src/gui/assistant.cpp:969
+#: ../src/gui/assistant.cpp:998
 msgid "Please choose the audio ringing device:"
 msgstr "Escolliu el dispositiu d'àudio de so del timbre:"
 
-#: ../src/gui/assistant.cpp:989
+#: ../src/gui/assistant.cpp:1018
 msgid ""
 "The audio ringing device is the device that will be used to play the ringing "
 "sound on incoming calls."
@@ -2433,11 +3568,11 @@ msgstr ""
 "a reproduir el so de timbre per a les trucades que rebeu."
 
 #. ---
-#: ../src/gui/assistant.cpp:1000
+#: ../src/gui/assistant.cpp:1029
 msgid "Please choose the audio output device:"
 msgstr "Escolliu el dispositiu d'àudio de sortida:"
 
-#: ../src/gui/assistant.cpp:1020
+#: ../src/gui/assistant.cpp:1049
 msgid ""
 "The audio output device is the device that will be used to play audio during "
 "calls."
@@ -2446,11 +3581,11 @@ msgstr ""
 "reproducció del so durant les trucades."
 
 #. ---
-#: ../src/gui/assistant.cpp:1031
+#: ../src/gui/assistant.cpp:1060
 msgid "Please choose the audio input device:"
 msgstr "Escolliu el dispositiu d'àudio d'entrada:"
 
-#: ../src/gui/assistant.cpp:1051
+#: ../src/gui/assistant.cpp:1080
 msgid ""
 "The audio input device is the device that will be used to record your voice "
 "during calls."
@@ -2458,15 +3593,15 @@ msgstr ""
 "El dispositiu d'àudio d'entrada és el dispositiu que enregistra la vostra "
 "veu durant les trucades."
 
-#: ../src/gui/assistant.cpp:1151 ../src/gui/assistant.cpp:1421
+#: ../src/gui/assistant.cpp:1176 ../src/gui/assistant.cpp:1474
 msgid "Video Input Device"
 msgstr "Dispositiu de vídeo d'entrada"
 
-#: ../src/gui/assistant.cpp:1153
+#: ../src/gui/assistant.cpp:1178
 msgid "Please choose your video input device:"
 msgstr "Escolliu el dispositiu de vídeo d'entrada:"
 
-#: ../src/gui/assistant.cpp:1173
+#: ../src/gui/assistant.cpp:1198
 msgid ""
 "The video input device is the device that will be used to capture video "
 "during calls."
@@ -2474,17 +3609,11 @@ msgstr ""
 "El dispositiu de vídeo d'entrada és el dispositiu des d'on es capturarà el "
 "vídeo que es transmetrà durant les trucades."
 
-#: ../src/gui/assistant.cpp:1240 ../src/gui/assistant.cpp:1262
-#: ../src/gui/assistant.cpp:1284 ../src/gui/preferences.cpp:779
-#: ../src/gui/preferences.cpp:803 ../src/gui/preferences.cpp:825
-msgid "No device found"
-msgstr "No s'ha trobat cap dispositiu"
-
-#: ../src/gui/assistant.cpp:1315
+#: ../src/gui/assistant.cpp:1337
 msgid "Configuration Complete"
 msgstr "S'ha finalitzat la configuració"
 
-#: ../src/gui/assistant.cpp:1317
+#: ../src/gui/assistant.cpp:1339
 msgid ""
 "You have now finished the Ekiga configuration. All the settings can be "
 "changed in the Ekiga preferences. Enjoy!"
@@ -2493,1114 +3622,320 @@ msgstr ""
 "es poden canviar a les preferències de l'Ekiga. Esperem que gaudiu el "
 "programa!"
 
-#: ../src/gui/assistant.cpp:1324
+#: ../src/gui/assistant.cpp:1346
 msgid "Configuration summary:"
 msgstr "Resum de la configuració:"
 
-#: ../src/gui/assistant.cpp:1394
+#: ../src/gui/assistant.cpp:1424
 msgid "Audio Ringing Device"
 msgstr "Dispositiu d'àudio de so del timbre"
 
-#: ../src/gui/assistant.cpp:1403
+#: ../src/gui/assistant.cpp:1441
 msgid "Audio Output Device"
 msgstr "Dispositiu d'àudio de sortida"
 
-#: ../src/gui/assistant.cpp:1412
+#: ../src/gui/assistant.cpp:1458
 msgid "Audio Input Device"
 msgstr "Dispositiu d'àudio d'entrada"
 
-#: ../src/gui/assistant.cpp:1434
+#: ../src/gui/assistant.cpp:1490
 msgid "SIP URI"
 msgstr "URI de SIP"
 
-#: ../src/gui/assistant.cpp:1446
+#: ../src/gui/assistant.cpp:1505
 msgid "Ekiga Call Out"
 msgstr "PC-a-telèfon de l'Ekiga"
 
-#: ../src/gui/assistant.cpp:1490
+#: ../src/gui/assistant.cpp:1550
 #, c-format
 msgid "Ekiga Configuration Assistant (%d of %d)"
 msgstr "Auxiliar de configuració de l'Ekiga - (%d de %d)"
 
-#: ../src/gui/callbacks.cpp:67
-msgid "Contributors:"
-msgstr "Col·laboradors:"
+#: ../src/gui/main.cpp:126
+msgid "Prints debug messages in the console (level between 1 and 8)"
+msgstr "Mostra missatges de depuració a la consola (nivell entre l'1 i el 8)"
 
-#: ../src/gui/callbacks.cpp:80
-msgid "Artwork:"
-msgstr "Art:"
+#: ../src/gui/main.cpp:131
+msgid "Makes Ekiga call the given URI"
+msgstr "Fa que l'Ekiga truqui l'URI indicat"
 
-#: ../src/gui/callbacks.cpp:88
-msgid "See AUTHORS file for full credits"
-msgstr "Vegeu el fitxer AUTHORS per veure tots els crèdits"
-
-#: ../src/gui/callbacks.cpp:104
-msgid ""
-"This program is free software; you can redistribute it and/or modify it "
-"under the terms of the GNU General Public License as published by the Free "
-"Software Foundation; either version 2 of the License, or (at your option) "
-"any later version. "
-msgstr ""
-"Aquest programa és programari lliure; podeu redistribuir-lo i/o modificar-lo "
-"d'acord amb els termes de la llicència pública general de GNU tal com la "
-"publica la Free Software Foundation, ja sigui la versió 2 de la llicència, o "
-"bé, si així ho voleu, qualsevol altra versió posterior."
-
-#: ../src/gui/callbacks.cpp:108
-msgid ""
-"This program is distributed in the hope that it will be useful, but WITHOUT "
-"ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or "
-"FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for "
-"more details. You should have received a copy of the GNU General Public "
-"License along with this program; if not, write to the Free Software "
-"Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301, USA."
-msgstr ""
-"Aquest programa es distribueix amb l'esperança que sigui útil, però SENSE "
-"CAP TIPUS DE GARANTIA, NI EXPLÍCITA NI IMPLÍCITA; AIXÒ INCLOU, SENSE LIMITAR-"
-"S'HI, LES GARANTIES IMPLÍCITES DE COMERCIALITZACIÓ I ADEQUACIÓ A UN ÚS "
-"CONCRET. Vegeu la llicència pública general de GNU per obtenir-ne més "
-"detalls. Juntament amb aquest programa, hauríeu d'haver rebut una còpia de "
-"la llicència pública general de GNU. En cas contrari, escriviu a la Free "
-"Software Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA "
-"02110-1301, USA."
-
-#: ../src/gui/callbacks.cpp:115
-msgid ""
-"Ekiga is licensed under the GPL license and as a special exception, you have "
-"permission to link or otherwise combine this program with the programs OPAL, "
-"OpenH323 and PWLIB, and distribute the combination, without applying the "
-"requirements of the GNU GPL to the OPAL, OpenH323 and PWLIB programs, as "
-"long as you do follow the requirements of the GNU GPL for all the rest of "
-"the software thus combined."
-msgstr ""
-"L'Ekiga es distribueix sota els termes de la llicència pública general de "
-"GNU (GPL), i com a excepció especial, teniu permís per enllaçar o combinar "
-"aquest programa amb els programes OPAL, OpenH323 i PWLIB, i distribuir-ne la "
-"combinació sense haver d'aplicar els requeriments de la GPL als programes "
-"OPAL, OpenH323 i PWLIB, sempre que satisfeu els requeriments de la GPL de "
-"GNU per la resta de programes combinats d'aquesta manera."
-
-#. Translators: Please write translator credits here, and
-#. * separate names with \n
-#: ../src/gui/callbacks.cpp:127
-msgid "translator-credits"
-msgstr ""
-"Josep Puigdemont i Casamajó <josep.puigdemont@gmail.com>\n"
-"David Planella Molas <david.planella@gmail.com>"
-
-# FIXME
-#: ../src/gui/callbacks.cpp:132
-msgid ""
-"Ekiga is full-featured SIP and H.323 compatible VoIP, IP-Telephony and "
-"Videoconferencing application that allows you to make audio and video calls "
-"to remote users with SIP and H.323 hardware or software."
-msgstr ""
-"L'Ekiga és un programa de videoconferència i telefonia IP totalment "
-"compatible amb qualsevol aplicació que implementi els protocols SIP o H.323 "
-"de VoIP. Us permet fer trucades d'àudio i vídeo a usuaris remots que "
-"utilitzin maquinari o programari SIP i H.323."
-
-#: ../src/gui/callbacks.cpp:205
-msgid "Unable to open help file."
-msgstr "No s'ha pogut obrir el fitxer de l'ajuda."
-
-#: ../src/gui/main_window.cpp:739
+#: ../src/gui/main_window.cpp:372
 msgid "Presence"
 msgstr "Presència"
 
-#: ../src/gui/main_window.cpp:746
+#: ../src/gui/main_window.cpp:379
 msgid "Addressbook"
 msgstr "Llibreta d'adreces"
 
-#: ../src/gui/main_window.cpp:810
+#: ../src/gui/main_window.cpp:408
 msgid "Unknown"
 msgstr "Desconegut"
 
-#: ../src/gui/main_window.cpp:961
-#, c-format
-msgid "A:%.1f/%.1f   V:%.1f/%.1f   FPS:%d/%d"
-msgstr "A:%.1f/%.1f   V:%.1f/%.1f   FPS:%d/%d"
-
-# FIXME?
-#. %s is the SIP/H.323 address of the remote user, this text is shown
-#. below video during a call
-#: ../src/gui/main_window.cpp:1007
-#, c-format
-msgid "Connected with %s"
-msgstr "Esteu connectat amb %s"
-
-#: ../src/gui/main_window.cpp:1043 ../src/gui/main_window.cpp:3894
-msgid "Standby"
-msgstr "En espera"
-
-#: ../src/gui/main_window.cpp:1102
-msgid "Call on hold"
-msgstr "Trucada en espera"
-
-#: ../src/gui/main_window.cpp:1113
-msgid "Call retrieved"
-msgstr "Trucada acceptada"
-
-#: ../src/gui/main_window.cpp:1128
+#: ../src/gui/main_window.cpp:714
 #, c-format
 msgid "Missed call from %s"
 msgstr "Trucada perduda de %s"
 
-#: ../src/gui/main_window.cpp:1265
+#: ../src/gui/main_window.cpp:748
 msgid "Error"
 msgstr "Error"
 
-#: ../src/gui/main_window.cpp:1338
-msgid "Error while initializing video output"
-msgstr "S'ha produït un error en inicialitzar la sortida de vídeo"
-
-#: ../src/gui/main_window.cpp:1339
-msgid "No video will be displayed on your machine during this call"
-msgstr "No es mostrarà el vídeo al vostre ordinador durant aquesta trucada"
-
-#: ../src/gui/main_window.cpp:1349
-msgid ""
-"There was an error opening or initializing the video output. Please verify "
-"that no other application is using the accelerated video output."
-msgstr ""
-"S'ha produït un error en obrir o inicialitzar la sortida de vídeo. Assegureu-"
-"vos que no hi hagi cap altra aplicació que estigui utilitzant la sortida "
-"d'acceleració de vídeo."
-
-#: ../src/gui/main_window.cpp:1351
-msgid ""
-"There was an error opening or initializing the video output. Please verify "
-"that you are using a color depth of 24 or 32 bits per pixel."
-msgstr ""
-"S'ha produït un error en obrir o inicialitzar la sortida de vídeo. Assegureu-"
-"vos que estigueu utilitzant una profunditat de color de 24 o 32 bits per "
-"píxel."
-
-#. Translators: This is a hotplug status
-#: ../src/gui/main_window.cpp:1464
-#, c-format
-msgid "Added video input device %s"
-msgstr "S'ha afegit el dispositiu de vídeo d'entrada %s"
-
-#. Translators: This is a hotplug status
-#: ../src/gui/main_window.cpp:1476
-#, c-format
-msgid "Removed video input device %s"
-msgstr "S'ha suprimit el dispositiu de vídeo d'entrada %s"
-
-#: ../src/gui/main_window.cpp:1493
-#, c-format
-msgid "Error while accessing video device %s"
-msgstr "S'ha produït un error en accedir al dispositiu de vídeo %s"
-
-#: ../src/gui/main_window.cpp:1496
-msgid "A moving logo will be transmitted during calls."
-msgstr "Es transmetrà un logotip animat durant les trucades."
-
-#: ../src/gui/main_window.cpp:1500
-msgid ""
-"There was an error while opening the device. In case it is a pluggable "
-"device it may be sufficient to reconnect it. If not, or if it still is not "
-"accessible, please check your permissions and make sure that the appropriate "
-"driver is loaded."
-msgstr ""
-"S'ha produït un error en obrir el dispositiu. En cas que sigui un dispositiu "
-"endollable, pot ser que només calgui tornar-lo a connectar. En cas contrari, "
-"o bé si encara no és accessible, comproveu els permisos i assegureu-vos que "
-"el controlador adequat estigui carregat."
-
-#: ../src/gui/main_window.cpp:1504
-msgid "Your video driver doesn't support the requested video format."
-msgstr ""
-"El programa de control que feu servir no implementa el format de vídeo "
-"requerit."
-
-#: ../src/gui/main_window.cpp:1508
-msgid "Could not open the chosen channel."
-msgstr "No s'ha pogut obrir el canal escollit."
-
-#: ../src/gui/main_window.cpp:1512
-msgid ""
-"Your driver doesn't seem to support any of the color formats supported by "
-"Ekiga.\n"
-" Please check your kernel driver documentation in order to determine which "
-"Palette is supported."
-msgstr ""
-"El controlador que feu servir no implementa cap dels formats de color que "
-"utilitza l'Ekiga.\n"
-" Comproveu la documentació sobre controladors del vostre nucli per tal de "
-"determinar quines paletes implementa."
-
-#: ../src/gui/main_window.cpp:1516
-msgid "Error while setting the frame rate."
-msgstr "S'ha produït un error en especificar el ràtio de quadres."
-
-#: ../src/gui/main_window.cpp:1520
-msgid "Error while setting the frame size."
-msgstr "S'ha produït un error en especificar la mida del quadre."
-
-#: ../src/gui/main_window.cpp:1525 ../src/gui/main_window.cpp:1628
-#: ../src/gui/main_window.cpp:1747
-msgid "Unknown error."
-msgstr "Error desconegut."
-
-#. Translators: This is a hotplug status
-#: ../src/gui/main_window.cpp:1577
-#, c-format
-msgid "Added audio input device %s"
-msgstr "S'ha afegit el dispositiu d'àudio d'entrada %s"
-
-#. Translators: This is a hotplug status
-#: ../src/gui/main_window.cpp:1593
-#, c-format
-msgid "Removed audio input device %s"
-msgstr "S'ha suprimit el dispositiu d'àudio d'entrada %s"
-
-#: ../src/gui/main_window.cpp:1610
-#, c-format
-msgid "Error while opening audio input device %s"
-msgstr "S'ha produït un error en accedir al dispositiu d'àudio %s"
-
-#. Translators: This happens when there is an error with audio input:
-#. * Nothing ("silence") will be transmitted
-#: ../src/gui/main_window.cpp:1615
-msgid "Only silence will be transmitted."
-msgstr "Només es transmetrà silenci."
-
-#: ../src/gui/main_window.cpp:1619
-msgid ""
-"Unable to open the selected audio device for recording. In case it is a "
-"pluggable device it may be sufficient to reconnect it. If not, or if it "
-"still is not accessible, please check your audio setup, the permissions and "
-"that the device is not busy."
-msgstr ""
-"No s'ha pogut obrir el dispositiu d'àudio seleccionat per enregistrar. En "
-"cas que sigui un dispositiu endollable, pot ser que només calgui tornar-lo a "
-"connectar. En cas contrari, o bé si encara no és accessible, comproveu la "
-"configuració de l'àudio, els permisos, i que el dispositiu no estigui ocupat."
-
-#: ../src/gui/main_window.cpp:1623
-msgid ""
-"The selected audio device was successfully opened but it is impossible to "
-"read data from this device. In case it is a pluggable device it may be "
-"sufficient to reconnect it. If not, or if it still is not accessible, please "
-"check your audio setup."
-msgstr ""
-"S'ha obert correctament el dispositiu d'àudio seleccionat, però sembla que "
-"no és possible llegir-ne dades. En cas que sigui un dispositiu endollable, "
-"pot ser que només calgui tornar-lo a connectar. En cas contrari, o bé si "
-"encara no és accessible, comproveu la configuració de l'àudio."
-
-#: ../src/gui/main_window.cpp:1692
-#, c-format
-msgid "Added audio output device %s"
-msgstr "S'ha afegit el dispositiu d'àudio de sortida %s"
-
-#: ../src/gui/main_window.cpp:1710
-#, c-format
-msgid "Removed audio output device %s"
-msgstr "S'ha suprimit el dispositiu d'àudio de sortida %s"
-
-#: ../src/gui/main_window.cpp:1731
-#, c-format
-msgid "Error while opening audio output device %s"
-msgstr "S'ha produït un error en obrir el dispositiu de vídeo %s"
-
-#: ../src/gui/main_window.cpp:1734
-msgid "No incoming sound will be played."
-msgstr "No es reproduirà cap so d'entrada."
-
-#: ../src/gui/main_window.cpp:1738
-msgid ""
-"Unable to open the selected audio device for playing. In case it is a "
-"pluggable device it may be sufficient to reconnect it. If not, or if it "
-"still is not accessible, please check your audio setup, the permissions and "
-"that the device is not busy."
-msgstr ""
-"No s'ha pogut obrir el dispositiu d'àudio seleccionat per a la reproducció. "
-"En cas que sigui un dispositiu endollable, pot ser que només calgui tornar-"
-"lo a connectar. En cas contrari, o bé si encara no és accessible, comproveu "
-"la configuració de l'àudio, els permisos, i que el dispositiu no estigui "
-"ocupat."
-
-#: ../src/gui/main_window.cpp:1742
-msgid ""
-"The selected audio device was successfully opened but it is impossible to "
-"write data to this device. In case it is a pluggable device it may be "
-"sufficient to reconnect it. If not, or if it still is not accessible, please "
-"check your audio setup."
-msgstr ""
-"S'ha obert correctament el dispositiu d'àudio seleccionat, però sembla que "
-"no és possible enregistrar-hi dades. En cas que sigui un dispositiu "
-"endollable, pot ser que només calgui tornar-lo a connectar. En cas contrari, "
-"o bé si encara no és accessible, comproveu la configuració de l'àudio."
-
-#: ../src/gui/main_window.cpp:1931
-msgid "Video Settings"
-msgstr "Preferències de vídeo"
-
-#: ../src/gui/main_window.cpp:1958
-msgid "Adjust brightness"
-msgstr "Ajusta la lluminositat"
-
-#: ../src/gui/main_window.cpp:1979
-msgid "Adjust whiteness"
-msgstr "Ajusta la blancor"
-
-#: ../src/gui/main_window.cpp:2000
-msgid "Adjust color"
-msgstr "Ajusta el color"
-
-#: ../src/gui/main_window.cpp:2021
-msgid "Adjust contrast"
-msgstr "Ajusta el contrast"
-
-#: ../src/gui/main_window.cpp:2065
-msgid "Audio Settings"
-msgstr "Paràmetres d'àudio"
-
-#: ../src/gui/main_window.cpp:2745
-msgid "_Retrieve Call"
-msgstr "_Recupera la trucada"
-
-#: ../src/gui/main_window.cpp:2758 ../src/gui/main_window.cpp:3519
-msgid "H_old Call"
-msgstr "Posa la t_rucada en espera"
-
-#: ../src/gui/main_window.cpp:2790 ../src/gui/main_window.cpp:3531
-msgid "Suspend _Audio"
-msgstr "_Atura l'àudio"
-
-#: ../src/gui/main_window.cpp:2792 ../src/gui/main_window.cpp:3536
-msgid "Suspend _Video"
-msgstr "Atura el _vídeo"
-
-#: ../src/gui/main_window.cpp:2794
-msgid "Resume _Audio"
-msgstr "Reprèn l'à_udio"
-
-#: ../src/gui/main_window.cpp:2796
-msgid "Resume _Video"
-msgstr "Reprèn el _vídeo"
-
-#: ../src/gui/main_window.cpp:3022 ../src/gui/main_window.cpp:3185
-msgid "Reject"
-msgstr "Rebutja"
-
-#: ../src/gui/main_window.cpp:3024 ../src/gui/main_window.cpp:3184
-msgid "Accept"
-msgstr "Accepta"
-
-#: ../src/gui/main_window.cpp:3030
-msgid "Incoming call from"
-msgstr "Trucada entrant de"
-
-#: ../src/gui/main_window.cpp:3048 ../src/gui/main_window.cpp:3165
-msgid "Remote URI:"
-msgstr "URI remota:"
-
-#: ../src/gui/main_window.cpp:3060 ../src/gui/main_window.cpp:3167
-msgid "Remote Application:"
-msgstr "Aplicació remota:"
-
-#: ../src/gui/main_window.cpp:3073 ../src/gui/main_window.cpp:3169
-msgid "Account ID:"
-msgstr "Identificador del compte:"
-
-#: ../src/gui/main_window.cpp:3081
-#, c-format
-msgid "Call from %s"
-msgstr "Trucada de %s"
-
-#: ../src/gui/main_window.cpp:3293
-#, c-format
-msgid "Call Duration: %s\n"
-msgstr "Durada de la trucada: %s\n"
-
-#: ../src/gui/main_window.cpp:3324
-msgid "Transfer call to:"
-msgstr "S'està transferint la trucada a:"
-
-#: ../src/gui/main_window.cpp:3376
-msgid "No"
-msgstr "No"
-
-#: ../src/gui/main_window.cpp:3378
-msgid "Yes"
-msgstr "Sí"
-
-#: ../src/gui/main_window.cpp:3389
-msgid "Detected new audio input device:"
-msgstr "S'ha detectat un dispositiu d'àudio d'entrada nou:"
-
-#: ../src/gui/main_window.cpp:3393
-msgid "Detected new audio output device:"
-msgstr "S'ha detectat un dispositiu d'àudio de sortida nou:"
-
-#: ../src/gui/main_window.cpp:3397
-msgid "Detected new ringer device:"
-msgstr "S'ha detectat un dispositiu de trucada nou:"
-
-#: ../src/gui/main_window.cpp:3401
-msgid "Detected new video input device:"
-msgstr "S'ha detectat un dispositiu de vídeo d'entrada nou:"
-
-#: ../src/gui/main_window.cpp:3402 ../src/gui/preferences.cpp:891
-msgid "Video Devices"
-msgstr "Dispositius de vídeo"
-
-#: ../src/gui/main_window.cpp:3420
-msgid "Do you want to use it as default device?"
-msgstr "Voleu utilitzar-lo com a dispositiu predeterminat?"
-
-#: ../src/gui/main_window.cpp:3488
-msgid "_Chat"
-msgstr "_Xat"
-
-#: ../src/gui/main_window.cpp:3490
-msgid "Ca_ll"
-msgstr "_Trucada"
-
-#: ../src/gui/main_window.cpp:3490
-msgid "Place a new call"
-msgstr "Fes una nova trucada"
-
-#: ../src/gui/main_window.cpp:3493
-msgid "_Hang up"
-msgstr "_Penja"
-
-#: ../src/gui/main_window.cpp:3494
-msgid "Terminate the current call"
-msgstr "Acaba la trucada actual"
-
-#: ../src/gui/main_window.cpp:3500
-msgid "Co_ntact"
-msgstr "C_ontacte"
-
-#: ../src/gui/main_window.cpp:3501
-msgid "Act on selected contact"
-msgstr "Actua sobre el contacte seleccionat"
-
-#: ../src/gui/main_window.cpp:3507
-msgid "A_dd Contact"
-msgstr "_Afegeix un contacte"
-
-#: ../src/gui/main_window.cpp:3507
-msgid "Add a contact to the roster"
-msgstr "Afegeix un contacte a la llista"
-
-#: ../src/gui/main_window.cpp:3512
-msgid "Find contacts"
-msgstr "Cerca contactes"
-
-#: ../src/gui/main_window.cpp:3519 ../src/gui/main_window.cpp:3994
-msgid "Hold the current call"
-msgstr "Mantén la trucada en curs"
-
-#: ../src/gui/main_window.cpp:3523
-msgid "_Transfer Call"
-msgstr "_Transfereix trucada"
-
-#: ../src/gui/main_window.cpp:3524
-msgid "Transfer the current call"
-msgstr "Transfereix la trucada actual"
-
-#: ../src/gui/main_window.cpp:3532
-msgid "Suspend or resume the audio transmission"
-msgstr "Atura o reprèn la transmissió d'àudio"
-
-#: ../src/gui/main_window.cpp:3537
-msgid "Suspend or resume the video transmission"
-msgstr "Atura o reprèn la transmissió de vídeo"
-
-#. FIXME: that isn't a very good way to do things
-#: ../src/gui/main_window.cpp:3546
-msgid "Other"
-msgstr "Altres"
-
-#: ../src/gui/main_window.cpp:3547
-msgid "Other possible actions"
-msgstr "Altres possibles accions"
-
-#: ../src/gui/main_window.cpp:3554
-msgid "Close the Ekiga window"
-msgstr "Tanca la finestra de l'Ekiga"
-
-#: ../src/gui/main_window.cpp:3561 ../src/gui/statusicon.cpp:465
-msgid "Quit"
-msgstr "Surt"
-
-#: ../src/gui/main_window.cpp:3567
-msgid "_Configuration Assistant"
-msgstr "Au_xiliar de configuració"
-
-#: ../src/gui/main_window.cpp:3568
-msgid "Run the configuration assistant"
-msgstr "Inicia l'auxiliar de configuració"
-
-#: ../src/gui/main_window.cpp:3576
-msgid "Edit your accounts"
-msgstr "Editeu els vostres comptes"
-
-#: ../src/gui/main_window.cpp:3582
-msgid "Change your preferences"
-msgstr "Canvia les preferències"
-
-#: ../src/gui/main_window.cpp:3587
-msgid "_View"
-msgstr "_Visualitza"
-
-#: ../src/gui/main_window.cpp:3589
-msgid "Con_tacts"
-msgstr "C_ontactes"
-
-#: ../src/gui/main_window.cpp:3589
-msgid "View the contacts list"
-msgstr "Mostra la llista de contactes"
-
-#: ../src/gui/main_window.cpp:3594
-msgid "_Dialpad"
-msgstr "_Marcador"
-
-#: ../src/gui/main_window.cpp:3594
-msgid "View the dialpad"
-msgstr "Visualitza el marcador"
-
-#: ../src/gui/main_window.cpp:3599
-msgid "_Call History"
-msgstr "_Historial de trucades"
-
-#: ../src/gui/main_window.cpp:3599
-msgid "View the call history"
-msgstr "Mostra l'historial de trucades"
-
-#: ../src/gui/main_window.cpp:3607
-msgid "_Show Call Panel"
-msgstr "_Mostra el quadre de trucada"
-
-#: ../src/gui/main_window.cpp:3615
-msgid "_Local Video"
-msgstr "Vídeo _local"
-
-#: ../src/gui/main_window.cpp:3616
-msgid "Local video image"
-msgstr "Imatge del vídeo local"
-
-#: ../src/gui/main_window.cpp:3621
-msgid "_Remote Video"
-msgstr "Vídeo _remot"
-
-#: ../src/gui/main_window.cpp:3622
-msgid "Remote video image"
-msgstr "Imatge del vídeo remota"
-
-#: ../src/gui/main_window.cpp:3627
-msgid "_Picture-in-Picture"
-msgstr "_Imatge-en-imatge"
-
-#: ../src/gui/main_window.cpp:3628 ../src/gui/main_window.cpp:3634
-msgid "Both video images"
-msgstr "Ambdues imatges de vídeo"
-
-#: ../src/gui/main_window.cpp:3633
-msgid "Picture-in-Picture in Separate _Window"
-msgstr "Imatge-en-imatge en una _finestra separada"
-
-#: ../src/gui/main_window.cpp:3641
-msgid "Zoom in"
-msgstr "Apropa"
-
-#: ../src/gui/main_window.cpp:3645
-msgid "Zoom out"
-msgstr "Allunya"
-
-#: ../src/gui/main_window.cpp:3649
-msgid "Normal size"
-msgstr "Mida normal"
-
-#: ../src/gui/main_window.cpp:3653
-msgid "_Fullscreen"
-msgstr "Pantalla _completa"
-
-#: ../src/gui/main_window.cpp:3653
-msgid "Switch to fullscreen"
-msgstr "Commuta a pantalla completa"
-
-#: ../src/gui/main_window.cpp:3661 ../src/gui/statusicon.cpp:453
-msgid "Get help by reading the Ekiga manual"
-msgstr "Obtingueu ajuda llegint el manual de l'Ekiga"
-
-#: ../src/gui/main_window.cpp:3666 ../src/gui/statusicon.cpp:458
-msgid "View information about Ekiga"
-msgstr "Mostra informació quant a l'Ekiga"
-
-#: ../src/gui/main_window.cpp:3738
+#: ../src/gui/main_window.cpp:1165
 msgid ""
 "Enter a URI on the left, and click this button to place a call or to hangup"
 msgstr ""
-"Introduïu un URI a l'esquerra, i feu clic en aquest botó per trucar-hi o "
+"Introduïu un URI a l'esquerra, i feu clic a aquest botó per trucar-hi o "
 "penjar la trucada"
 
-#: ../src/gui/main_window.cpp:3783
-msgid "Contacts"
-msgstr "Contactes"
+#: ../src/gui/main_window.cpp:1216 ../src/gui/main_window.cpp:1344
+msgid "View the contacts list"
+msgstr "Mostra la llista de contactes"
 
-#: ../src/gui/main_window.cpp:3805
-msgid "Dialpad"
-msgstr "Marcador"
+#: ../src/gui/main_window.cpp:1227 ../src/gui/main_window.cpp:1349
+msgid "View the dialpad"
+msgstr "Visualitza el marcador"
 
-#: ../src/gui/main_window.cpp:3823
-msgid "Call history"
-msgstr "Historial de trucades"
+#: ../src/gui/main_window.cpp:1238 ../src/gui/main_window.cpp:1354
+msgid "View the call history"
+msgstr "Mostra l'historial de trucades"
 
-#: ../src/gui/main_window.cpp:3931
-msgid "Change the volume of your soundcard"
-msgstr "Canvia el volum de la vostra targeta de so"
+#: ../src/gui/main_window.cpp:1274
+msgid "_Chat"
+msgstr "_Xat"
 
-#: ../src/gui/main_window.cpp:3952
-msgid "Change the color settings of your video device"
-msgstr "Canvia els paràmetres del color del dispositiu de vídeo"
+#: ../src/gui/main_window.cpp:1276
+msgid "Co_ntact"
+msgstr "C_ontacte"
 
-#: ../src/gui/main_window.cpp:4020
-msgid "Ekiga"
-msgstr "Ekiga"
+#: ../src/gui/main_window.cpp:1277
+msgid "Act on selected contact"
+msgstr "Actua sobre el contacte seleccionat"
 
-#. Translators: TX is a common abbreviation for "transmit".  As it
-#. * is shown in a tooltip, there is no space constraint
-#: ../src/gui/main_window.cpp:4623
-#, c-format
-msgid "TX: %dx%d "
-msgstr "Transmès: %dx%d "
+#: ../src/gui/main_window.cpp:1281
+msgid "Ca_ll a number"
+msgstr "_Truca a un número"
 
-#. Translators: RX is a common abbreviation for "receive".  As it
-#. * is shown in a tooltip, there is no space constraint
-#: ../src/gui/main_window.cpp:4628
-#, c-format
-msgid "RX: %dx%d "
-msgstr "Rebut: %dx%d "
+#: ../src/gui/main_window.cpp:1281
+msgid "Place a new call"
+msgstr "Fes una nova trucada"
 
-#: ../src/gui/main_window.cpp:4630
-#, c-format
-msgid ""
-"Lost packets: %.1f %%\n"
-"Late packets: %.1f %%\n"
-"Out of order packets: %.1f %%\n"
-"Jitter buffer: %d ms%s%s%s"
-msgstr ""
-"Paquets perduts: %.1f %%\n"
-"Paquets endarrerits: %.1f %%\n"
-"Paquets incorrectes: %.1f %%\n"
-"Mem. int. del jitter: %d ms%s%s%s"
+#: ../src/gui/main_window.cpp:1287
+msgid "A_dd Contact"
+msgstr "_Afegeix un contacte"
 
-#: ../src/gui/main_window.cpp:4745
-msgid "Prints debug messages in the console (level between 1 and 5)"
-msgstr "Mostra missatges de depuració a la consola (nivell entre 1 i 5)"
+#: ../src/gui/main_window.cpp:1287
+msgid "Add a contact to the roster"
+msgstr "Afegeix un contacte a la llista"
 
-#: ../src/gui/main_window.cpp:4750
-msgid "Prints user plane debug messages in the console (level between 1 and 4)"
-msgstr ""
-"Mostra missatges de depuració del pla de l'usuari a la consola (nivell entre "
-"1 i 4)"
+#: ../src/gui/main_window.cpp:1292
+msgid "Find contacts"
+msgstr "Cerca contactes"
 
-#: ../src/gui/main_window.cpp:4755
-msgid "Makes Ekiga call the given URI"
-msgstr "Fa que l'Ekiga truqui l'URI indicat"
+#. FIXME: that isn't a very good way to do things
+#: ../src/gui/main_window.cpp:1301
+msgid "Other"
+msgstr "Altres"
 
-#: ../src/gui/preferences.cpp:376
-msgid "Play sound for new voice mails"
-msgstr "Reprodueix un so per a correus de veu nous"
+#: ../src/gui/main_window.cpp:1302
+msgid "Other possible actions"
+msgstr "Altres possibles accions"
 
-#: ../src/gui/preferences.cpp:386
-msgid "Play sound for new instant messages"
-msgstr "Reprodueix un so per a missatges instantanis nous"
+#: ../src/gui/main_window.cpp:1322
+msgid "_Configuration Assistant"
+msgstr "Au_xiliar de configuració"
 
-#: ../src/gui/preferences.cpp:447
-msgid "_Full name:"
-msgstr "_Nom complet:"
+#: ../src/gui/main_window.cpp:1323
+msgid "Run the configuration assistant"
+msgstr "Inicia l'auxiliar de configuració"
 
-#: ../src/gui/preferences.cpp:464
-msgid "User Interface"
-msgstr "Interfície d'usuari"
+#: ../src/gui/main_window.cpp:1331
+msgid "Edit your accounts"
+msgstr "Editeu els vostres comptes"
 
-# Revisant l'aplicació, "_A" és la millor opció
-#: ../src/gui/preferences.cpp:466
-msgid "Start _hidden"
-msgstr "_Arrenca amagat"
+#: ../src/gui/main_window.cpp:1337
+msgid "Change your preferences"
+msgstr "Canvia les preferències"
 
-#: ../src/gui/preferences.cpp:468
+#: ../src/gui/main_window.cpp:1344
+msgid "Con_tacts"
+msgstr "C_ontactes"
+
+#: ../src/gui/main_window.cpp:1349
+msgid "_Dialpad"
+msgstr "_Marcador"
+
+#: ../src/gui/main_window.cpp:1354
+msgid "_Call History"
+msgstr "_Historial de trucades"
+
+#: ../src/gui/main_window.cpp:1362
 msgid "Show offline _contacts"
 msgstr "Mostra els _contactes fora de línia"
 
-#: ../src/gui/preferences.cpp:472
-msgid "Video Display"
-msgstr "Pantalla"
-
-# Revisant l'aplicació, "_P" és la millor opció
-#: ../src/gui/preferences.cpp:474
-msgid "Place windows displaying video _above other windows"
-msgstr "_Posa les finestres que mostrin vídeo per sobre de les altres"
-
-#: ../src/gui/preferences.cpp:478
-msgid "Network Settings"
-msgstr "Paràmetres de la xarxa"
-
-#: ../src/gui/preferences.cpp:480
-msgid "Enable network _detection"
-msgstr "Habilita la _detecció de xarxa"
-
-#: ../src/gui/preferences.cpp:490
-msgid "Call Forwarding"
-msgstr "Desviació de trucades"
-
-#: ../src/gui/preferences.cpp:492
-msgid "_Always forward calls to the given host"
-msgstr "Desvia _sempre les trucades a un ordinador en concret"
-
-#: ../src/gui/preferences.cpp:492
-msgid ""
-"If enabled, all incoming calls will be forwarded to the host that is "
-"specified in the protocol settings"
-msgstr ""
-"Si s'habilita, totes les trucades entrants es desviaran a l'ordinador "
-"indicat en els paràmetres del protocol"
-
-#: ../src/gui/preferences.cpp:494
-msgid "Forward calls to the given host if _no answer"
-msgstr "Desvia les trucades a un ordinador en concret si no _contesto"
-
-#: ../src/gui/preferences.cpp:494
-msgid ""
-"If enabled, all incoming calls will be forwarded to the host that is "
-"specified in the protocol settings if you do not answer the call"
-msgstr ""
-"Si s'habilita, totes les trucades que rebeu i no contesteu, es desviaran cap "
-"a l'ordinador indicat en els paràmetres del protocol"
-
-#: ../src/gui/preferences.cpp:496
-msgid "Forward calls to the given host if _busy"
-msgstr "Desvia les trucades a un ordinador en concret quan estigui _ocupat"
-
-#: ../src/gui/preferences.cpp:496
-msgid ""
-"If enabled, all incoming calls will be forwarded to the host that is "
-"specified in the protocol settings if you already are in a call or if you "
-"are in Do Not Disturb mode"
-msgstr ""
-"Si s'habilita, totes les trucades entrants que rebeu mentre estigueu en una "
-"trucada o en mode «no molesteu», es desviaran a l'ordinador indicat en els "
-"paràmetres del protocol"
-
-#: ../src/gui/preferences.cpp:500 ../src/gui/preferences.cpp:1319
-msgid "Call Options"
-msgstr "Opcions de trucada"
-
-#. Add all the fields
-#: ../src/gui/preferences.cpp:503
-msgid "Timeout to reject or forward unanswered incoming calls (in seconds):"
-msgstr ""
-"Temps d'espera abans de rebutjar o desviar trucades entrants (en segons):"
-
-#: ../src/gui/preferences.cpp:504
-msgid "_Automatically answer incoming calls"
-msgstr "_Accepta automàticament les trucades entrants"
-
-# FIXME: incidència? (josep)
-#: ../src/gui/preferences.cpp:535
-msgid "Ekiga Sound Events"
-msgstr "Esdeveniments de so de l'Ekiga"
-
-#: ../src/gui/preferences.cpp:573
-msgid "A"
-msgstr "A"
-
-#: ../src/gui/preferences.cpp:585
-msgid "Event"
-msgstr "Incidència"
-
-#: ../src/gui/preferences.cpp:597
-msgid "Choose a sound"
-msgstr "Escolliu un so"
-
-#: ../src/gui/preferences.cpp:602
-msgid "Wavefiles"
-msgstr "Fitxers d'ona"
-
-#: ../src/gui/preferences.cpp:611 ../src/gui/preferences.cpp:630
-msgid "Play"
-msgstr "Reprodueix"
-
-#: ../src/gui/preferences.cpp:651
-msgid "String"
-msgstr "Cadena"
-
-#: ../src/gui/preferences.cpp:652
-msgid "Tone"
-msgstr "To"
-
-#: ../src/gui/preferences.cpp:653 ../src/gui/preferences.cpp:696
-msgid "RFC2833"
-msgstr "RFC2833"
-
-#: ../src/gui/preferences.cpp:654
-msgid "Q.931"
-msgstr "Q.931"
-
-#: ../src/gui/preferences.cpp:659 ../src/gui/preferences.cpp:705
-msgid "Misc Settings"
-msgstr "Altres paràmetres"
-
-#: ../src/gui/preferences.cpp:662 ../src/gui/preferences.cpp:710
-msgid "Forward _URI:"
-msgstr "_URI de Desviament:"
-
-#: ../src/gui/preferences.cpp:668
-msgid "Advanced Settings"
-msgstr "Paràmetres avançats"
-
-#. The toggles
-#: ../src/gui/preferences.cpp:671
-msgid "Enable H.245 _tunneling"
-msgstr "Habilita la tunelització _H.245"
-
-#: ../src/gui/preferences.cpp:673
-msgid "Enable _early H.245"
-msgstr "Habilita H.245 a l'_inici"
-
-#: ../src/gui/preferences.cpp:675
-msgid "Enable fast _start procedure"
-msgstr "Habilita l'arrencada _ràpida"
-
-#: ../src/gui/preferences.cpp:675
-msgid ""
-"Connection will be established in Fast Start mode. Fast Start is a new way "
-"to start calls faster that was introduced in H.323v2. It is not supported by "
-"Netmeeting and using both Fast Start and H.245 Tunneling can crash some "
-"versions of Netmeeting."
-msgstr ""
-"La connexió s'establirà en el mode d'Arrencada ràpida. Aquesta és una nova "
-"manera d'iniciar les trucades que va introduir-se a H323v2. El Netmeeting no "
-"ho implementa, de manera que utilitzant l'arrencada ràpida i la tunelització "
-"H.245 al mateix temps, pot fer penjar algunes versions del Netmeeting."
-
-#: ../src/gui/preferences.cpp:679 ../src/gui/preferences.cpp:716
-msgid "DTMF Mode"
-msgstr "Mode DTMF"
-
-#: ../src/gui/preferences.cpp:681 ../src/gui/preferences.cpp:718
-msgid "_Send DTMF as:"
-msgstr "_Envia DTMF com a:"
-
-#: ../src/gui/preferences.cpp:681 ../src/gui/preferences.cpp:718
-msgid "Select the mode for DTMFs sending"
-msgstr "Seleccioneu el mode d'enviament de DTMF."
-
-#: ../src/gui/preferences.cpp:697
-msgid "INFO"
-msgstr "INFO"
-
-#: ../src/gui/preferences.cpp:707
-msgid "_Outbound Proxy:"
-msgstr "_Servidor intermediari de sortida:"
-
-#: ../src/gui/preferences.cpp:746
-msgid "Ringing Device"
-msgstr "Dispositiu del so del timbre"
-
-#: ../src/gui/preferences.cpp:746
-msgid "Select the ringing audio device to use"
-msgstr ""
-"Seleccioneu el dispositiu d'àudio del so del timbre que vulgueu utilitzar"
-
-#: ../src/gui/preferences.cpp:748
-msgid "Output device:"
-msgstr "Dispositiu de sortida:"
-
-#: ../src/gui/preferences.cpp:755 ../src/gui/preferences.cpp:897
-msgid "Input device:"
-msgstr "Dispositiu d'entrada:"
-
-#. That button will refresh the device list
-#: ../src/gui/preferences.cpp:759 ../src/gui/preferences.cpp:908
-msgid "_Detect devices"
-msgstr "_Detecta dispositius"
-
-#: ../src/gui/preferences.cpp:759 ../src/gui/preferences.cpp:908
-msgid "Click here to refresh the device list"
-msgstr "Feu clic aquí per actualitzar la llista de dispositius"
-
-#: ../src/gui/preferences.cpp:876
-msgid "PAL (Europe)"
-msgstr "PAL (Europa)"
-
-#: ../src/gui/preferences.cpp:877
-msgid "NTSC (America)"
-msgstr "NTSC (Amèrica)"
-
-#: ../src/gui/preferences.cpp:878
-msgid "SECAM (France)"
-msgstr "SECAM (França)"
-
-#: ../src/gui/preferences.cpp:879
-msgid "Auto"
-msgstr "Auto"
-
-#. Video Channel
-#: ../src/gui/preferences.cpp:901
-msgid "Channel:"
-msgstr "Canal:"
-
-#: ../src/gui/preferences.cpp:903
-msgid "Size:"
-msgstr "Mida:"
-
-#: ../src/gui/preferences.cpp:903
-msgid "Select the transmitted video size"
-msgstr "Seleccioneu la mida del vídeo a transmetre"
-
-#: ../src/gui/preferences.cpp:905
-msgid "Format:"
-msgstr "Format:"
-
-#: ../src/gui/preferences.cpp:928 ../src/gui/preferences.cpp:965
-#: ../src/gui/preferences.cpp:1348 ../src/gui/preferences.cpp:1359
-msgid "Codecs"
-msgstr "Còdecs"
-
-#: ../src/gui/preferences.cpp:940 ../src/gui/preferences.cpp:977
-msgid "Settings"
-msgstr "Paràmetres"
-
-#. Translators: the full sentence is Automatically adjust jitter buffer
-#. between X and Y ms
-#: ../src/gui/preferences.cpp:944
-msgid "Enable silence _detection"
-msgstr "Habilita la _detecció de silenci"
-
-#: ../src/gui/preferences.cpp:946
-msgid "Enable echo can_celation"
-msgstr "Habilita la _cancel·lació de l'eco"
-
-#: ../src/gui/preferences.cpp:948
-msgid "Maximum _jitter buffer (in ms):"
-msgstr "Memòria intermèdia màxima per al _jitter (en ms):"
-
-#. Translators: the full sentence is Keep a minimum video quality of X %
-#: ../src/gui/preferences.cpp:980
-msgid "Picture Quality"
-msgstr "Qualitat de la imatge"
-
-#: ../src/gui/preferences.cpp:980
-msgid ""
-"Choose if you want to guarantee a minimum image quality (possibly leading to "
-"dropped frames in order not to surpass the bitrate limit) or if you prefer "
-"to keep the frame rate"
-msgstr ""
-"Escolliu si voleu garantir una qualitat mínima de la imatge (cosa que pot "
-"ocasionar que es perdin quadres en l'intent de no sobrepassar el límit de la "
-"taxa de bits) o bé si preferiu mantenir els quadres per segon"
-
-#: ../src/gui/preferences.cpp:982
-msgid "Maximum video _bitrate (in kbits/s):"
-msgstr "Taxa de _bits màxima per al vídeo (en kbits/s):"
-
-#: ../src/gui/preferences.cpp:982
-msgid ""
-"The maximum video bitrate in kbits/s. The video quality and the effective "
-"frame rate will be dynamically adjusted to keep the bitrate at the given "
-"value."
-msgstr ""
-"La taxa de bits màxima per al vídeo en kbits/s. La qualitat del vídeo i el "
-"nombre de quadres per segon transmesos s'ajustaran dinàmicament al valor que "
-"indiqueu aquí."
-
-#: ../src/gui/preferences.cpp:1291
-msgid "Ekiga Preferences"
-msgstr "Preferències de l'Ekiga"
-
-#: ../src/gui/preferences.cpp:1309
-msgid "General"
-msgstr "General"
-
-#: ../src/gui/preferences.cpp:1310
-msgid "Personal Data"
-msgstr "Dades personals"
-
-#: ../src/gui/preferences.cpp:1315
-msgid "General Settings"
-msgstr "Paràmetres generals"
-
-#: ../src/gui/preferences.cpp:1324
-msgid "Sound Events"
-msgstr "Esdeveniments de so"
-
-#: ../src/gui/preferences.cpp:1328
-msgid "Protocols"
-msgstr "Protocols"
-
-#: ../src/gui/preferences.cpp:1330
-msgid "SIP Settings"
-msgstr "Paràmetres SIP"
-
-#: ../src/gui/preferences.cpp:1335
-msgid "H.323 Settings"
-msgstr "Paràmetres H.323"
-
-#. The player
-#: ../src/gui/preferences.cpp:1341
-msgid "Audio"
-msgstr "Àudio"
-
-#: ../src/gui/preferences.cpp:1344 ../src/gui/preferences.cpp:1355
-msgid "Devices"
-msgstr "Dispositius"
-
-#: ../src/gui/preferences.cpp:1353
-msgid "Video"
-msgstr "Vídeo"
-
-#: ../src/gui/statusicon.cpp:313
-#, c-format
-msgid "You have %d message"
-msgid_plural "You have %d messages"
-msgstr[0] "Teniu %d missatge"
-msgstr[1] "Teniu %d missatges"
-
-#: ../src/gui/statusicon.cpp:409
-msgid "The following accounts are inactive:"
-msgstr "Els comptes següents són inactius:"
+#: ../src/gui/main_window.cpp:1426
+msgid "Contacts"
+msgstr "Contactes"
+
+#: ../src/gui/main_window.cpp:1455
+msgid "Dialpad"
+msgstr "Marcador"
+
+#: ../src/gui/main_window.cpp:1473
+msgid "Call history"
+msgstr "Historial de trucades"
+
+#: ../src/gui/main_window.cpp:1485
+msgid "Ekiga"
+msgstr "Ekiga"
 
 #: ../src/gui/statusmenu.cpp:87
-msgid "Online"
-msgstr "En línia"
+msgid "Available"
+msgstr "Disponible"
 
 #: ../src/gui/statusmenu.cpp:88
 msgid "Away"
 msgstr "Absent"
 
 #: ../src/gui/statusmenu.cpp:89
-msgid "Do Not Disturb"
-msgstr "No em molesteu"
+msgid "Busy"
+msgstr "Ocupat"
 
 #: ../src/gui/statusmenu.cpp:387
 msgid "Custom message..."
 msgstr "Missatge personalitzat..."
 
-#: ../src/gui/statusmenu.cpp:430
+#: ../src/gui/statusmenu.cpp:432
 msgid "Clear"
 msgstr "Neteja"
 
 #. Build the dialog
-#: ../src/gui/statusmenu.cpp:521 ../src/gui/statusmenu.cpp:671
+#: ../src/gui/statusmenu.cpp:520 ../src/gui/statusmenu.cpp:668
 msgid "Custom Message"
 msgstr "Missatge personalitzat"
 
-#: ../src/gui/statusmenu.cpp:537
+#: ../src/gui/statusmenu.cpp:536
 msgid "Delete custom messages:"
 msgstr "Suprimiu els missatges personalitzats:"
 
-#: ../src/gui/statusmenu.cpp:692
+#: ../src/gui/statusmenu.cpp:685
 msgid "Define a custom message:"
 msgstr "Definiu un missatge personalitzat:"
+
+#~ msgid "Extented Video Roles"
+#~ msgstr "Rols de vídeo estesos"
+
+#~ msgid ""
+#~ "If enabled, Ekiga will start hidden provided that the notification area "
+#~ "is present in the GNOME panel"
+#~ msgstr ""
+#~ "Si s'habilita, l'Ekiga s'iniciarà amagat, suposant que l'àrea de "
+#~ "notificació estigui habilitada"
+
+#~ msgid "Show the call panel"
+#~ msgstr "Mostra el quadre de trucada"
+
+#~ msgid "Start hidden"
+#~ msgstr "Arrenca amagat"
+
+#~ msgid "_Find"
+#~ msgstr "_Cerca"
+
+#~ msgid "Active"
+#~ msgstr "Actiu"
+
+#~ msgid "Enable"
+#~ msgstr "Habilita"
+
+#~ msgid "Remove"
+#~ msgstr "Suprimeix"
+
+#~ msgid "Added video input device %s"
+#~ msgstr "S'ha afegit el dispositiu de vídeo d'entrada %s"
+
+#~ msgid "Removed video input device %s"
+#~ msgstr "S'ha suprimit el dispositiu de vídeo d'entrada %s"
+
+#~ msgid "Added audio input device %s"
+#~ msgstr "S'ha afegit el dispositiu d'àudio d'entrada %s"
+
+#~ msgid "Removed audio input device %s"
+#~ msgstr "S'ha suprimit el dispositiu d'àudio d'entrada %s"
+
+#~ msgid "Added audio output device %s"
+#~ msgstr "S'ha afegit el dispositiu d'àudio de sortida %s"
+
+#~ msgid "Removed audio output device %s"
+#~ msgstr "S'ha suprimit el dispositiu d'àudio de sortida %s"
+
+#~ msgid "Incoming call from"
+#~ msgstr "Trucada entrant de"
+
+#~ msgid "Remote Application:"
+#~ msgstr "Aplicació remota:"
+
+#~ msgid "Account ID:"
+#~ msgstr "Identificador del compte:"
+
+#~ msgid "Call from %s"
+#~ msgstr "Trucada de %s"
+
+#~ msgid "Call Duration: %s\n"
+#~ msgstr "Durada de la trucada: %s\n"
+
+#~ msgid "No"
+#~ msgstr "No"
+
+#~ msgid "Yes"
+#~ msgstr "Sí"
+
+#~ msgid "Detected new audio input device:"
+#~ msgstr "S'ha detectat un dispositiu d'àudio d'entrada nou:"
+
+#~ msgid "Detected new audio output device:"
+#~ msgstr "S'ha detectat un dispositiu d'àudio de sortida nou:"
+
+#~ msgid "Detected new ringer device:"
+#~ msgstr "S'ha detectat un dispositiu de trucada nou:"
+
+#~ msgid "Detected new video input device:"
+#~ msgstr "S'ha detectat un dispositiu de vídeo d'entrada nou:"
+
+#~ msgid "Do you want to use it as default device?"
+#~ msgstr "Voleu utilitzar-lo com a dispositiu predeterminat?"
+
+#~ msgid "Ca_ll"
+#~ msgstr "_Trucada"
+
+#~ msgid "Terminate the current call"
+#~ msgstr "Acaba la trucada actual"
+
+#~ msgid "_Show Call Panel"
+#~ msgstr "_Mostra el quadre de trucada"
+
+#~ msgid "Picture-in-Picture in Separate _Window"
+#~ msgstr "Imatge-en-imatge en una _finestra separada"
+
+#~ msgid ""
+#~ "Prints user plane debug messages in the console (level between 1 and 4)"
+#~ msgstr ""
+#~ "Mostra missatges de depuració del pla de l'usuari a la consola (nivell "
+#~ "entre 1 i 4)"
+
+#~ msgid "User Interface"
+#~ msgstr "Interfície d'usuari"
+
+# Revisant l'aplicació, "_A" és la millor opció
+#~ msgid "Start _hidden"
+#~ msgstr "_Arrenca amagat"
+
+#~ msgid "The following accounts are inactive:"
+#~ msgstr "Els comptes següents són inactius:"
+
+#~ msgid "Online"
+#~ msgstr "En línia"
+
+#~ msgid "Do Not Disturb"
+#~ msgstr "No em molesteu"
 
 #~ msgid "Local video window size"
 #~ msgstr "Mida de la finestra del vídeo local"
@@ -3613,9 +3948,6 @@ msgstr "Definiu un missatge personalitzat:"
 
 #~ msgid "The size of the local video window"
 #~ msgstr "La mida de la finestra del vídeo local"
-
-#~ msgid "Could not send message"
-#~ msgstr "No s'ha pogut enviar el missatge"
 
 #~ msgid "Change the main window panel section"
 #~ msgstr "Canvia la secció del quadre de la finestra principal"
@@ -3678,9 +4010,6 @@ msgstr "Definiu un missatge personalitzat:"
 #~ msgstr ""
 #~ "No s'ha pogut trobar cap gestor d'àudio que es pugui fer servir. "
 #~ "Assegureu-vos que la instal·lació és correcta."
-
-#~ msgid "No usable audio codecs detected"
-#~ msgstr "No s'ha pogut detectar cap còdec d'àudio que es pugui fer servir"
 
 #~ msgid ""
 #~ "Ekiga didn't find any usable audio codec. Make sure that your "
@@ -3801,9 +4130,6 @@ msgstr "Definiu un missatge personalitzat:"
 
 #~ msgid "_Hostname:"
 #~ msgstr "_Ordinador:"
-
-#~ msgid "_Port:"
-#~ msgstr "_Port:"
 
 #~ msgid "_Subtree"
 #~ msgstr "_Subàrbre"
