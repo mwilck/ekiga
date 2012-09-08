@@ -205,7 +205,10 @@ GMVideoOutputManager_x::setup_frame_display ()
   if (video_disabled)
     return;
 
-  get_display_info(local_display_info);
+  if (current_frame.mode == Ekiga::VO_MODE_REMOTE_EXT)
+    get_ext_display_info (local_display_info);
+  else
+    get_display_info (local_display_info);
 
   switch (current_frame.mode) {
   case Ekiga::VO_MODE_LOCAL:
@@ -247,8 +250,11 @@ GMVideoOutputManager_x::setup_frame_display ()
     break;
   }
 
-  if ((!local_display_info.widget_info_set) || (!local_display_info.config_info_set) ||
-      (local_display_info.mode == Ekiga::VO_MODE_UNSET) || (local_display_info.zoom == 0) || (current_frame.zoom == 0)) {
+  if (!local_display_info.widget_info_set ||
+      !local_display_info.config_info_set ||
+      local_display_info.mode == Ekiga::VO_MODE_UNSET ||
+      local_display_info.zoom == 0 ||
+      current_frame.zoom == 0) {
     PTRACE(4, "GMVideoOutputManager_X\tWidget not yet realized or gconf info not yet set, not opening display");
     return;
   }

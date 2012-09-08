@@ -132,7 +132,10 @@ void GMVideoOutputManager::set_frame_data (const char* data,
 {
   Ekiga::DisplayInfo local_display_info;
 
-  get_display_info(local_display_info);
+  if (type < 2)
+    get_display_info (local_display_info);
+  else
+    get_ext_display_info (local_display_info);
 
   bool local = (type == 0);
 
@@ -305,7 +308,10 @@ GMVideoOutputManager::frame_display_change_needed ()
 {
   Ekiga::DisplayInfo local_display_info;
 
-  get_display_info(local_display_info);
+  if (current_frame.mode != Ekiga::VO_MODE_REMOTE_EXT)
+    get_display_info (local_display_info);
+  else
+    get_ext_display_info (local_display_info);
 
   if ((!local_display_info.widget_info_set) ||
       (!local_display_info.config_info_set) ||
