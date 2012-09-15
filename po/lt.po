@@ -7,8 +7,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: ekiga master\n"
 "Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?product=ekiga&keywords=I18N+L10N&component=general\n"
-"POT-Creation-Date: 2012-08-08 19:25+0000\n"
-"PO-Revision-Date: 2012-08-20 22:06+0300\n"
+"POT-Creation-Date: 2012-09-15 13:26+0000\n"
+"PO-Revision-Date: 2012-09-15 16:35+0300\n"
 "Last-Translator: Aurimas Černius <aurisc4@gmail.com>\n"
 "Language-Team: Lithuanian <gnome-lt@lists.akl.lt>\n"
 "Language: lt\n"
@@ -147,13 +147,11 @@ msgid "If enabled, use silence detection with the codecs supporting it"
 msgstr "Jei įjungta, naudoti tylos atpažinimą su kodekais, kurie tai palaiko"
 
 #: ../ekiga.schemas.in.in.h:27
-#| msgid "Enable echo cancelation"
 msgid "Enable echo cancellation"
 msgstr "Įjungti aido panaikinimą"
 
 #: ../ekiga.schemas.in.in.h:28
 #: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:947
-#| msgid "If enabled, use echo cancelation"
 msgid "If enabled, use echo cancellation"
 msgstr "Jeigu įjungta, naudoti aido panaikinimą"
 
@@ -296,9 +294,6 @@ msgid "DTMF sending"
 msgstr "Siunčiamas DTMF"
 
 #: ../ekiga.schemas.in.in.h:62
-#| msgid ""
-#| "This allows you to set the mode for sending DTMFs. The values can be "
-#| "\"RFC2833\" (0), \"INFO\" (1)"
 msgid "Select the mode for sending DTMFs. The values can be 0 (for \"RFC2833\") and 1 (for \"INFO\")"
 msgstr "Čia leidžiama nustatyti DTMF siuntimo veikseną. Reikšmė gali būti tik 0 („RFC2833“) arba 1 („INFO“)"
 
@@ -349,7 +344,6 @@ msgid "Connection will be established in Fast Start mode. Fast Start is a new wa
 msgstr "Prisijungimas bus sukurtas Greitojo starto režime. Greitasis startas yra naujas būdas pradėti pokalbius greičiau, atsiradęs H.323v2. Šis darbo režimas nėra palaikomas Netmeeting programos, o naudojant Greitąjį startą bei H.245 tuneliavimą gali nulūžti kai kurios Netmeeting versijos"
 
 #: ../ekiga.schemas.in.in.h:74
-#| msgid "Enable early H.245"
 msgid "Enable H.239"
 msgstr "Įjungti H.239"
 
@@ -366,10 +360,6 @@ msgid "Select the H.239 Video Role. The values can be 0 (for \"disable extended 
 msgstr "Pasirinkite H.239 vaizdo rolę. Reikšmės gali būti 0 („isjungti išplėstinį vaizdą“), 1 („leisti turinio rolės kaukę“), 2 („priverstinis pristatymas“) arba 3 („priverstinė tiesioginė rolė“)"
 
 #: ../ekiga.schemas.in.in.h:78
-#| msgid ""
-#| "This allows you to set the mode for sending DTMFs. The values can be "
-#| "\"String\" (0), \"Tone\" (1), \"RFC2833\" (2), \"Q.931\" (3) (default is "
-#| "\"String\"). Choosing other values than \"String\" disables the Text Chat"
 msgid "Select the mode for sending DTMFs. The values can be 0 (for \"String\"), 1 (for \"Tone\"), 2 (for \"RFC2833\"), or 3 (for \"Q.931\") (default is \"String\"). Choosing other values than \"String\" disables the Text Chat."
 msgstr "Pasirinkite DTMF siuntimo veikseną. Galimos reikšmės yra 0 („Eilutė“), 1 („Tonas“), 2 („RFC2833“) ir 3 („Q.931“), numatytoji – „Eilutė“. Pasirinkus kitas reikšmes nei „Eilutė“ bus išjungtas tekstinis pokalbis"
 
@@ -386,10 +376,6 @@ msgid "Forward calls to the given host if busy"
 msgstr "Nukreipti skambučius į nurodytą kompiuterį, jei esamas kompiuteris užimtas"
 
 #: ../ekiga.schemas.in.in.h:82
-#| msgid ""
-#| "If enabled, all incoming calls will be forwarded to the host that is "
-#| "specified in the field below if you already are in a call or if you are "
-#| "in Do Not Disturb mode"
 msgid "If enabled, all incoming calls will be forwarded to the host that is specified in the field below if you already are in a call or if you are in busy mode"
 msgstr "Įjungus visi priimami skambučiai bus nukreipti į žemiau esančiame lauke nurodytą kompiuterį, jei Jūs jau kalbate arba esate „Netrukdyti“ režime"
 
@@ -427,12 +413,10 @@ msgid "Enter the number of seconds after which Ekiga should try refreshing the N
 msgstr "Įveskite laiko tarpą sekundėmis po kurio Ekiga turėtų bandyti atnaujinti NAT susiejimą, kai naudojamas STUN"
 
 #: ../ekiga.schemas.in.in.h:91
-#| msgid "Position on the screen of the chat window"
 msgid "Position on the screen of the call window"
 msgstr "Pokalbio lango lango padėtis ekrane"
 
 #: ../ekiga.schemas.in.in.h:92
-#| msgid "Size of the chat window"
 msgid "Size of the call window"
 msgstr "Pokalbio lango dydis"
 
@@ -441,7 +425,6 @@ msgid "Position on the screen of the main window"
 msgstr "Pagrindinio lango padėtis ekrane"
 
 #: ../ekiga.schemas.in.in.h:94
-#| msgid "Position on the screen of the main window"
 msgid "Change the panel section of the main window"
 msgstr "Keisti pagrindinio lango skydelio skiltį"
 
@@ -539,9 +522,6 @@ msgid "The default video view"
 msgstr "Numatytasis vaizdo rodinys"
 
 #: ../ekiga.schemas.in.in.h:118
-#| msgid ""
-#| "The default video view (0: Local, 1: Remote, 2: Both layered, 3: Both "
-#| "with local video in a separate window, 4: Both)"
 msgid "The default video view (0: Local, 1: Remote, 2: Both, 3: Both in a separate window)"
 msgstr "Numatytasis vaizdo rodinys (0: vietinis, 1: nutolęs, 2: abu, 3: abu su atskirais langais)"
 
@@ -673,7 +653,6 @@ msgstr "Aptiktas naujas įrenginys"
 #: ../lib/engine/audioinput/audioinput-core.cpp:206
 #: ../lib/engine/audiooutput/audiooutput-core.cpp:223
 #: ../lib/engine/videoinput/videoinput-core.cpp:247
-#| msgid "Use TLS"
 msgid "Use it"
 msgstr "Naudoti"
 
@@ -805,7 +784,7 @@ msgstr "Užpildykite šią formą norėdami įtraukti naują adrestą į Ekiga v
 #: ../lib/engine/components/local-roster/local-heap.cpp:236
 #: ../lib/engine/components/local-roster/local-heap.cpp:427
 #: ../lib/engine/components/local-roster/local-presentity.cpp:270
-#: ../lib/engine/components/opal/opal-account.cpp:433
+#: ../lib/engine/components/opal/opal-account.cpp:420
 #: ../plugins/evolution/evolution-contact.cpp:324
 #: ../plugins/loudmouth/loudmouth-account.cpp:342
 #: ../plugins/loudmouth/loudmouth-bank.cpp:125
@@ -818,7 +797,6 @@ msgstr "Vardas:"
 
 #: ../lib/engine/components/local-roster/local-heap.cpp:236
 #: ../lib/engine/components/local-roster/local-presentity.cpp:270
-#| msgid "If enabled, offline contacts will be shown in the roster"
 msgid "Name of the contact, as shown in your roster"
 msgstr "Kontakto pavadinimas, kaip rodomas sąraše"
 
@@ -867,7 +845,7 @@ msgid "Unnamed"
 msgstr "Nepavadinta"
 
 #: ../lib/engine/components/local-roster/local-presentity.cpp:240
-#: ../lib/engine/components/opal/opal-account.cpp:388
+#: ../lib/engine/components/opal/opal-account.cpp:375
 #: ../plugins/evolution/evolution-contact.cpp:228
 #: ../plugins/loudmouth/loudmouth-presentity.cpp:160
 #: ../plugins/resource-list/rl-presentity.cpp:212
@@ -876,8 +854,8 @@ msgid "_Edit"
 msgstr "_Keisti"
 
 #: ../lib/engine/components/local-roster/local-presentity.cpp:242
-#: ../lib/engine/components/opal/opal-account.cpp:390
-#: ../lib/engine/gui/gtk-frontend/accounts-window.cpp:681
+#: ../lib/engine/components/opal/opal-account.cpp:377
+#: ../lib/engine/gui/gtk-frontend/accounts-window.cpp:682
 #: ../plugins/evolution/evolution-contact.cpp:230
 #: ../plugins/loudmouth/loudmouth-account.cpp:445
 #: ../plugins/loudmouth/loudmouth-presentity.cpp:193
@@ -915,42 +893,42 @@ msgstr "Skambinti"
 #: ../lib/engine/components/opal/h323-endpoint.cpp:138
 #: ../lib/engine/components/opal/sip-endpoint.cpp:251
 #: ../lib/engine/components/opal/sip-endpoint.cpp:255
-#: ../lib/engine/gui/gtk-frontend/call-window.cpp:2136
+#: ../lib/engine/gui/gtk-frontend/call-window.cpp:2093
 msgid "Transfer"
 msgstr "Nukreipti"
 
 #. Translators : The alias we are registering already exists : failure
-#: ../lib/engine/components/opal/h323-endpoint.cpp:315
+#: ../lib/engine/components/opal/h323-endpoint.cpp:340
 msgid "Duplicate alias"
 msgstr "Dvigubas alternatyvusis vardas"
 
-#: ../lib/engine/components/opal/h323-endpoint.cpp:318
+#: ../lib/engine/components/opal/h323-endpoint.cpp:343
 msgid "Bad username/password"
 msgstr "Netinkamas naudotojo vardas / slaptažodis"
 
-#: ../lib/engine/components/opal/h323-endpoint.cpp:321
-#: ../lib/engine/components/opal/sip-endpoint.cpp:604
+#: ../lib/engine/components/opal/h323-endpoint.cpp:346
+#: ../lib/engine/components/opal/sip-endpoint.cpp:603
 msgid "Transport error"
 msgstr "Transportavimo klaida"
 
-#: ../lib/engine/components/opal/h323-endpoint.cpp:332
-#: ../lib/engine/components/opal/h323-endpoint.cpp:337
-#: ../lib/engine/components/opal/sip-endpoint.cpp:813
+#: ../lib/engine/components/opal/h323-endpoint.cpp:357
+#: ../lib/engine/components/opal/h323-endpoint.cpp:362
+#: ../lib/engine/components/opal/sip-endpoint.cpp:816
 msgid "Failed"
 msgstr "Nepavyko"
 
 #. Translators: this is a state, not an action, i.e. it should be read as
 #. "(you are) unregistered", and not as "(you have been) unregistered"
-#: ../lib/engine/components/opal/opal-account.cpp:70
-#: ../lib/engine/components/opal/opal-account.cpp:322
-#: ../lib/engine/components/opal/opal-account.cpp:618
+#: ../lib/engine/components/opal/opal-account.cpp:69
+#: ../lib/engine/components/opal/opal-account.cpp:310
+#: ../lib/engine/components/opal/opal-account.cpp:605
 msgid "Unregistered"
 msgstr "Išsiregistruota"
 
 #. translators : the result will look like :
 #. * "registered (with 2 voice mail messages)"
 #.
-#: ../lib/engine/components/opal/opal-account.cpp:230
+#: ../lib/engine/components/opal/opal-account.cpp:218
 #, c-format
 msgid "%s (with %d voice mail message)"
 msgid_plural "%s (with %d voice mail messages)"
@@ -958,46 +936,46 @@ msgstr[0] "%s (su %d balso pašto pranešimu)"
 msgstr[1] "%s (su %d balso pašto pranešimais)"
 msgstr[2] "%s (su %d balso pašto pranešimų)"
 
-#: ../lib/engine/components/opal/opal-account.cpp:308
-#: ../lib/engine/components/opal/opal-account.cpp:681
+#: ../lib/engine/components/opal/opal-account.cpp:296
+#: ../lib/engine/components/opal/opal-account.cpp:667
 msgid "Processing..."
 msgstr "Apdorojama..."
 
-#: ../lib/engine/components/opal/opal-account.cpp:380
-#: ../lib/engine/gui/gtk-frontend/accounts-window.cpp:675
+#: ../lib/engine/components/opal/opal-account.cpp:367
+#: ../lib/engine/gui/gtk-frontend/accounts-window.cpp:676
 #: ../plugins/loudmouth/loudmouth-account.cpp:433
 msgid "_Disable"
 msgstr "_Išjungti"
 
-#: ../lib/engine/components/opal/opal-account.cpp:383
-#: ../lib/engine/gui/gtk-frontend/accounts-window.cpp:672
+#: ../lib/engine/components/opal/opal-account.cpp:370
+#: ../lib/engine/gui/gtk-frontend/accounts-window.cpp:673
 #: ../plugins/loudmouth/loudmouth-account.cpp:437
 msgid "_Enable"
 msgstr "Į_jungti"
 
-#: ../lib/engine/components/opal/opal-account.cpp:404
+#: ../lib/engine/components/opal/opal-account.cpp:391
 #: ../src/gui/assistant.cpp:761
 msgid "Recharge the account"
 msgstr "Papildyti sąskaitą"
 
-#: ../lib/engine/components/opal/opal-account.cpp:409
+#: ../lib/engine/components/opal/opal-account.cpp:396
 #: ../src/gui/assistant.cpp:773
 msgid "Consult the balance history"
 msgstr "Žiūrėti balanso retrospektyvą"
 
-#: ../lib/engine/components/opal/opal-account.cpp:414
+#: ../lib/engine/components/opal/opal-account.cpp:401
 #: ../src/gui/assistant.cpp:785
 msgid "Consult the call history"
 msgstr "Žiūrėti skambučių retrospektyvą"
 
-#: ../lib/engine/components/opal/opal-account.cpp:429
+#: ../lib/engine/components/opal/opal-account.cpp:416
 #: ../lib/engine/components/opal/opal-bank.cpp:96
 #: ../plugins/loudmouth/loudmouth-account.cpp:337
 #: ../plugins/loudmouth/loudmouth-bank.cpp:121
 msgid "Edit account"
 msgstr "Keisti sąskaitą"
 
-#: ../lib/engine/components/opal/opal-account.cpp:431
+#: ../lib/engine/components/opal/opal-account.cpp:418
 #: ../lib/engine/components/opal/opal-bank.cpp:97
 #: ../plugins/evolution/evolution-book.cpp:345
 #: ../plugins/evolution/evolution-contact.cpp:322
@@ -1005,39 +983,39 @@ msgstr "Keisti sąskaitą"
 msgid "Please update the following fields:"
 msgstr "Atnaujinkite šiuos laukelius:"
 
-#: ../lib/engine/components/opal/opal-account.cpp:433
+#: ../lib/engine/components/opal/opal-account.cpp:420
 #: ../lib/engine/components/opal/opal-bank.cpp:123
 #: ../lib/engine/components/opal/opal-bank.cpp:133
 #: ../plugins/loudmouth/loudmouth-account.cpp:342
 msgid "Account name, e.g. MyAccount"
 msgstr "Paskyros pavadinimas, pvz. ManoPaskyra"
 
-#: ../lib/engine/components/opal/opal-account.cpp:435
+#: ../lib/engine/components/opal/opal-account.cpp:422
 msgid "Registrar:"
 msgstr "Registratorius:"
 
-#: ../lib/engine/components/opal/opal-account.cpp:435
+#: ../lib/engine/components/opal/opal-account.cpp:422
 #: ../lib/engine/components/opal/opal-bank.cpp:134
 msgid "The registrar, e.g. ekiga.net"
 msgstr "Registruotojas, pvz. ekiga.net"
 
-#: ../lib/engine/components/opal/opal-account.cpp:437
+#: ../lib/engine/components/opal/opal-account.cpp:424
 msgid "Gatekeeper:"
 msgstr "Vartų sargas:"
 
-#: ../lib/engine/components/opal/opal-account.cpp:437
+#: ../lib/engine/components/opal/opal-account.cpp:424
 #: ../lib/engine/components/opal/opal-bank.cpp:124
 msgid "The gatekeeper, e.g. ekiga.net"
 msgstr "Vartų saugotojas, pvz. ekiga.net"
 
-#: ../lib/engine/components/opal/opal-account.cpp:438
+#: ../lib/engine/components/opal/opal-account.cpp:425
 #: ../plugins/loudmouth/loudmouth-account.cpp:346
 #: ../plugins/loudmouth/loudmouth-bank.cpp:126
 #: ../plugins/resource-list/rl-cluster.cpp:174
 msgid "User:"
 msgstr "Naudotojas:"
 
-#: ../lib/engine/components/opal/opal-account.cpp:438
+#: ../lib/engine/components/opal/opal-account.cpp:425
 #: ../lib/engine/components/opal/opal-bank.cpp:105
 #: ../lib/engine/components/opal/opal-bank.cpp:116
 #: ../lib/engine/components/opal/opal-bank.cpp:125
@@ -1049,23 +1027,23 @@ msgstr "Naudotojo vardas, pvz. vardenis"
 #. Translators:
 #. * SIP knows two usernames: The name for the client ("User") and the name
 #. * for the authentication procedure ("Authentication User")
-#: ../lib/engine/components/opal/opal-account.cpp:443
+#: ../lib/engine/components/opal/opal-account.cpp:430
 msgid "Authentication User:"
 msgstr "Tapatybės nustatymo naudotojas:"
 
-#: ../lib/engine/components/opal/opal-account.cpp:443
+#: ../lib/engine/components/opal/opal-account.cpp:430
 #: ../lib/engine/components/opal/opal-bank.cpp:136
 msgid "The user name used during authentication, if different than the user name; leave empty if you do not have one"
 msgstr "Naudotojo vardas, naudojamas patvirtinant tapatybę, jei skiriasi nuo naudotojo vardo; palikite tuščią, jei tokio neturite"
 
-#: ../lib/engine/components/opal/opal-account.cpp:444
+#: ../lib/engine/components/opal/opal-account.cpp:431
 #: ../plugins/loudmouth/loudmouth-account.cpp:362
 #: ../plugins/loudmouth/loudmouth-bank.cpp:129
 #: ../plugins/resource-list/rl-cluster.cpp:173
 msgid "Password:"
 msgstr "Slaptažodis:"
 
-#: ../lib/engine/components/opal/opal-account.cpp:444
+#: ../lib/engine/components/opal/opal-account.cpp:431
 #: ../lib/engine/components/opal/opal-bank.cpp:107
 #: ../lib/engine/components/opal/opal-bank.cpp:118
 #: ../lib/engine/components/opal/opal-bank.cpp:127
@@ -1074,124 +1052,119 @@ msgstr "Slaptažodis:"
 msgid "Password associated to the user"
 msgstr "Su naudotoju susietas slaptažodis"
 
-#: ../lib/engine/components/opal/opal-account.cpp:445
+#: ../lib/engine/components/opal/opal-account.cpp:432
 msgid "Timeout:"
 msgstr "Laukimo laikas:"
 
-#: ../lib/engine/components/opal/opal-account.cpp:445
+#: ../lib/engine/components/opal/opal-account.cpp:432
 #: ../lib/engine/components/opal/opal-bank.cpp:128
 #: ../lib/engine/components/opal/opal-bank.cpp:138
 msgid "Time in seconds after which the account registration is automatically retried"
 msgstr "Laikas sekundėmis, kuriam praėjus registravimas automatiškai bandomas dar kartą"
 
-#: ../lib/engine/components/opal/opal-account.cpp:446
+#: ../lib/engine/components/opal/opal-account.cpp:433
 #: ../lib/engine/components/opal/opal-bank.cpp:141
 #: ../plugins/loudmouth/loudmouth-account.cpp:376
 #: ../plugins/loudmouth/loudmouth-bank.cpp:130
 msgid "Enable Account"
 msgstr "Įjungti paskyrą"
 
-#: ../lib/engine/components/opal/opal-account.cpp:472
+#: ../lib/engine/components/opal/opal-account.cpp:459
 #: ../lib/engine/components/opal/opal-bank.cpp:175
 msgid "You did not supply a name for that account."
 msgstr "Nenurodėte šios paskyros vardo."
 
-#: ../lib/engine/components/opal/opal-account.cpp:474
+#: ../lib/engine/components/opal/opal-account.cpp:461
 #: ../lib/engine/components/opal/opal-bank.cpp:177
 msgid "You did not supply a host to register to."
 msgstr "Nenurodėte serverio, kuriame reikėtų registruotis."
 
-#: ../lib/engine/components/opal/opal-account.cpp:476
+#: ../lib/engine/components/opal/opal-account.cpp:463
 #: ../lib/engine/components/opal/opal-bank.cpp:179
 msgid "You did not supply a user name for that account."
 msgstr "Nenurodėte šios paskyros abonento vardo."
 
-#: ../lib/engine/components/opal/opal-account.cpp:478
+#: ../lib/engine/components/opal/opal-account.cpp:465
 #: ../lib/engine/components/opal/opal-bank.cpp:181
-#| msgid "The timeout should have a bigger value."
 msgid "The timeout should be at least 10 seconds."
 msgstr "Laukimo delsa turi būti bent 10 sekundžių."
 
 #. Translators: this is a state, not an action, i.e. it should be read as
 #. "(you are) registered", and not as "(you have been) registered"
-#: ../lib/engine/components/opal/opal-account.cpp:595
+#: ../lib/engine/components/opal/opal-account.cpp:582
 msgid "Registered"
 msgstr "Prisiregistruota"
 
-#: ../lib/engine/components/opal/opal-account.cpp:630
+#: ../lib/engine/components/opal/opal-account.cpp:616
 msgid "Could not unregister"
 msgstr "Nepavyko išsiregistruoti"
 
-#: ../lib/engine/components/opal/opal-account.cpp:662
+#: ../lib/engine/components/opal/opal-account.cpp:648
 msgid "Could not register"
 msgstr "Nepavyko užsiregistruoti"
 
-#: ../lib/engine/components/opal/opal-account.cpp:668
-#| msgid "Could not register"
+#: ../lib/engine/components/opal/opal-account.cpp:654
 msgid "Could not register to "
 msgstr "Nepavyko užsiregistruoti"
 
-#: ../lib/engine/components/opal/opal-account.cpp:669
+#: ../lib/engine/components/opal/opal-account.cpp:655
 #: ../plugins/loudmouth/loudmouth-account.cpp:443
 msgid "Edit"
 msgstr "Taisyti"
 
-#: ../lib/engine/components/opal/opal-account.cpp:800
+#: ../lib/engine/components/opal/opal-account.cpp:786
 msgid "Appointment"
 msgstr "Susitikimas"
 
-#: ../lib/engine/components/opal/opal-account.cpp:805
+#: ../lib/engine/components/opal/opal-account.cpp:791
 msgid "Breakfast"
 msgstr "Pusryčiai"
 
-#: ../lib/engine/components/opal/opal-account.cpp:810
+#: ../lib/engine/components/opal/opal-account.cpp:796
 msgid "Dinner"
 msgstr "Vakarienė"
 
-#: ../lib/engine/components/opal/opal-account.cpp:816
+#: ../lib/engine/components/opal/opal-account.cpp:802
 msgid "Holiday"
 msgstr "Atostogos"
 
-#: ../lib/engine/components/opal/opal-account.cpp:821
+#: ../lib/engine/components/opal/opal-account.cpp:807
 msgid "In transit"
 msgstr "Perėjime"
 
-#: ../lib/engine/components/opal/opal-account.cpp:826
+#: ../lib/engine/components/opal/opal-account.cpp:812
 msgid "Looking for work"
 msgstr "Ieškau darbo"
 
-#: ../lib/engine/components/opal/opal-account.cpp:831
+#: ../lib/engine/components/opal/opal-account.cpp:817
 msgid "Lunch"
 msgstr "Pietūs"
 
-#: ../lib/engine/components/opal/opal-account.cpp:836
+#: ../lib/engine/components/opal/opal-account.cpp:822
 msgid "Meal"
 msgstr "Maistas"
 
-#: ../lib/engine/components/opal/opal-account.cpp:841
-#| msgid "Settings"
+#: ../lib/engine/components/opal/opal-account.cpp:827
 msgid "Meeting"
 msgstr "Susitikimas"
 
-#: ../lib/engine/components/opal/opal-account.cpp:846
-#| msgid "_Office phone:"
+#: ../lib/engine/components/opal/opal-account.cpp:832
 msgid "On the phone"
 msgstr "Kalbu telefonu"
 
-#: ../lib/engine/components/opal/opal-account.cpp:851
-#| msgid "Play"
+#: ../lib/engine/components/opal/opal-account.cpp:837
 msgid "Playing"
 msgstr "Groja"
 
-#: ../lib/engine/components/opal/opal-account.cpp:856
+#: ../lib/engine/components/opal/opal-account.cpp:842
 msgid "Shopping"
 msgstr "Apsipirkimas"
 
-#: ../lib/engine/components/opal/opal-account.cpp:861
+#: ../lib/engine/components/opal/opal-account.cpp:847
 msgid "Sleeping"
 msgstr "Miegas"
 
-#: ../lib/engine/components/opal/opal-account.cpp:866
+#: ../lib/engine/components/opal/opal-account.cpp:852
 msgid "Working"
 msgstr "Dirbu"
 
@@ -1341,7 +1314,7 @@ msgid "User is not available"
 msgstr "Naudotojas neprieinamas"
 
 #: ../lib/engine/components/opal/opal-call.cpp:469
-#: ../lib/engine/components/opal/sip-endpoint.cpp:778
+#: ../lib/engine/components/opal/sip-endpoint.cpp:781
 msgid "Service unavailable"
 msgstr "Tarnyba nepalaikoma"
 
@@ -1350,12 +1323,10 @@ msgid "Call completed"
 msgstr "Skambutis baigtas"
 
 #: ../lib/engine/components/opal/opal-call.cpp:679
-#| msgid "Missed call from %s"
 msgid "Missed call from"
 msgstr "Praleistas skambutis"
 
 #: ../lib/engine/components/opal/opal-call.cpp:681
-#| msgid "Missed call from %s"
 msgid "Missed call"
 msgstr "Praleistas skambutis"
 
@@ -1378,92 +1349,96 @@ msgstr "Žinutė"
 msgid "Illegal status code"
 msgstr "Netinkamas būsenos kodas"
 
+#: ../lib/engine/components/opal/sip-endpoint.cpp:607
+msgid "Invalid address"
+msgstr "Netinkamas adresas"
+
 #. Translators: Host of the remote party is offline, this should
 #. * appear when the remote host does not reply in an acceptable time
-#: ../lib/engine/components/opal/sip-endpoint.cpp:610
+#: ../lib/engine/components/opal/sip-endpoint.cpp:613
 msgid "Remote party host is offline"
 msgstr "Nutolusio adresato kompiuteris atsijungęs"
 
 #. Translators: the following strings are answers from the SIP server
 #. * when the packet it receives has an error, see
 #. * http://www.ietf.org/rfc/rfc3261.txt, chapter 21 for more information
-#: ../lib/engine/components/opal/sip-endpoint.cpp:626
+#: ../lib/engine/components/opal/sip-endpoint.cpp:629
 msgid "Multiple choices"
 msgstr "Keletas pasirinkimų"
 
-#: ../lib/engine/components/opal/sip-endpoint.cpp:630
+#: ../lib/engine/components/opal/sip-endpoint.cpp:633
 msgid "Moved permanently"
 msgstr "Perkelta visam laikui"
 
-#: ../lib/engine/components/opal/sip-endpoint.cpp:634
+#: ../lib/engine/components/opal/sip-endpoint.cpp:637
 msgid "Moved temporarily"
 msgstr "Laikinai perkelta"
 
-#: ../lib/engine/components/opal/sip-endpoint.cpp:638
+#: ../lib/engine/components/opal/sip-endpoint.cpp:641
 msgid "Use proxy"
 msgstr "Naudoti įgaliotąjį serverį"
 
-#: ../lib/engine/components/opal/sip-endpoint.cpp:642
+#: ../lib/engine/components/opal/sip-endpoint.cpp:645
 msgid "Alternative service"
 msgstr "Alternatyvi tarnyba."
 
-#: ../lib/engine/components/opal/sip-endpoint.cpp:646
+#: ../lib/engine/components/opal/sip-endpoint.cpp:649
 msgid "Bad request"
 msgstr "Bloga užklausa"
 
-#: ../lib/engine/components/opal/sip-endpoint.cpp:650
+#: ../lib/engine/components/opal/sip-endpoint.cpp:653
 msgid "Unauthorized"
 msgstr "Nenustatyta tapatybė"
 
-#: ../lib/engine/components/opal/sip-endpoint.cpp:654
+#: ../lib/engine/components/opal/sip-endpoint.cpp:657
 msgid "Payment required"
 msgstr "Būtinas apmokėjimas"
 
-#: ../lib/engine/components/opal/sip-endpoint.cpp:658
+#: ../lib/engine/components/opal/sip-endpoint.cpp:661
 msgid "Forbidden, please check that username and password are correct"
 msgstr "Uždrausta, patikrinkite, ar teisingas naudotojo vardas ir slaptažodis"
 
-#: ../lib/engine/components/opal/sip-endpoint.cpp:662
+#: ../lib/engine/components/opal/sip-endpoint.cpp:665
 msgid "Not found"
 msgstr "Nerasta"
 
-#: ../lib/engine/components/opal/sip-endpoint.cpp:666
+#: ../lib/engine/components/opal/sip-endpoint.cpp:669
 msgid "Method not allowed"
 msgstr "Neleistinas metodas"
 
-#: ../lib/engine/components/opal/sip-endpoint.cpp:670
+#: ../lib/engine/components/opal/sip-endpoint.cpp:673
 msgid "Not acceptable"
 msgstr "Nepriimtina"
 
-#: ../lib/engine/components/opal/sip-endpoint.cpp:674
+#: ../lib/engine/components/opal/sip-endpoint.cpp:677
 msgid "Proxy authentication required"
 msgstr "Reikia nustatyti tapatybę tarpiniame serveryje"
 
-#: ../lib/engine/components/opal/sip-endpoint.cpp:678
+#: ../lib/engine/components/opal/sip-endpoint.cpp:681
 msgid "Timeout"
 msgstr "Baigėsi skirtas laikas"
 
-#: ../lib/engine/components/opal/sip-endpoint.cpp:682
+#: ../lib/engine/components/opal/sip-endpoint.cpp:685
 msgid "Conflict"
 msgstr "Konfliktas"
 
-#: ../lib/engine/components/opal/sip-endpoint.cpp:686
+#: ../lib/engine/components/opal/sip-endpoint.cpp:689
 msgid "Length required"
 msgstr "Reikia ilgio"
 
-#: ../lib/engine/components/opal/sip-endpoint.cpp:690
+#: ../lib/engine/components/opal/sip-endpoint.cpp:693
 msgid "Request entity too big"
 msgstr "Užklausos esybė per didelė"
 
-#: ../lib/engine/components/opal/sip-endpoint.cpp:694
+#: ../lib/engine/components/opal/sip-endpoint.cpp:697
 msgid "Request URI too long"
 msgstr "Užklausos URI per ilgas"
 
-#: ../lib/engine/components/opal/sip-endpoint.cpp:698
+#: ../lib/engine/components/opal/sip-endpoint.cpp:701
 msgid "Unsupported media type"
 msgstr "Netinkamas medijos tipas"
 
-#: ../lib/engine/components/opal/sip-endpoint.cpp:702
+#: ../lib/engine/components/opal/sip-endpoint.cpp:705
 msgid "Unsupported URI scheme"
 msgstr "Netinkama URI schema"
 
@@ -1471,104 +1446,103 @@ msgstr "Netinkama URI schema"
 #. * Here extension is a specific "phone number", see
 #. * http://en.wikipedia.org/wiki/Extension_(telephone)
 #. * for more information
-#: ../lib/engine/components/opal/sip-endpoint.cpp:710
+#: ../lib/engine/components/opal/sip-endpoint.cpp:713
 msgid "Bad extension"
 msgstr "Netinkamas plėtinys"
 
-#: ../lib/engine/components/opal/sip-endpoint.cpp:714
+#: ../lib/engine/components/opal/sip-endpoint.cpp:717
 msgid "Extension required"
 msgstr "Reikia plėtinio"
 
-#: ../lib/engine/components/opal/sip-endpoint.cpp:718
+#: ../lib/engine/components/opal/sip-endpoint.cpp:721
 msgid "Interval too brief"
 msgstr "Intervalas per mažas"
 
-#: ../lib/engine/components/opal/sip-endpoint.cpp:722
+#: ../lib/engine/components/opal/sip-endpoint.cpp:725
 msgid "Temporarily unavailable"
 msgstr "Laikinai neprieinama"
 
-#: ../lib/engine/components/opal/sip-endpoint.cpp:726
+#: ../lib/engine/components/opal/sip-endpoint.cpp:729
 msgid "Loop detected"
 msgstr "Aptikta kilpa"
 
-#: ../lib/engine/components/opal/sip-endpoint.cpp:730
+#: ../lib/engine/components/opal/sip-endpoint.cpp:733
 msgid "Too many hops"
 msgstr "Per daug tarpinių punktų"
 
-#: ../lib/engine/components/opal/sip-endpoint.cpp:734
+#: ../lib/engine/components/opal/sip-endpoint.cpp:737
 msgid "Address incomplete"
 msgstr "Nevisas adresas"
 
-#: ../lib/engine/components/opal/sip-endpoint.cpp:738
+#: ../lib/engine/components/opal/sip-endpoint.cpp:741
 msgid "Ambiguous"
 msgstr "Daugiaprasmis"
 
-#: ../lib/engine/components/opal/sip-endpoint.cpp:742
+#: ../lib/engine/components/opal/sip-endpoint.cpp:745
 msgid "Busy Here"
 msgstr "Čia užimtas"
 
-#: ../lib/engine/components/opal/sip-endpoint.cpp:746
+#: ../lib/engine/components/opal/sip-endpoint.cpp:749
 msgid "Request terminated"
 msgstr "Užklausa nutraukta"
 
-#: ../lib/engine/components/opal/sip-endpoint.cpp:750
+#: ../lib/engine/components/opal/sip-endpoint.cpp:753
 msgid "Not acceptable here"
 msgstr "Čia nepriimtina"
 
-#: ../lib/engine/components/opal/sip-endpoint.cpp:754
+#: ../lib/engine/components/opal/sip-endpoint.cpp:757
 msgid "Bad event"
 msgstr "Netinkamas įvykis"
 
-#: ../lib/engine/components/opal/sip-endpoint.cpp:758
+#: ../lib/engine/components/opal/sip-endpoint.cpp:761
 msgid "Request pending"
 msgstr "Laukiama užklausos"
 
-#: ../lib/engine/components/opal/sip-endpoint.cpp:762
+#: ../lib/engine/components/opal/sip-endpoint.cpp:765
 msgid "Undecipherable"
 msgstr "Neiššifruojama"
 
-#: ../lib/engine/components/opal/sip-endpoint.cpp:766
+#: ../lib/engine/components/opal/sip-endpoint.cpp:769
 msgid "Internal server error"
 msgstr "Vidinį serverio klaida"
 
-#: ../lib/engine/components/opal/sip-endpoint.cpp:770
+#: ../lib/engine/components/opal/sip-endpoint.cpp:773
 msgid "Not implemented"
 msgstr "Neįgyvendinta"
 
-#: ../lib/engine/components/opal/sip-endpoint.cpp:774
+#: ../lib/engine/components/opal/sip-endpoint.cpp:777
 msgid "Bad gateway"
 msgstr "Netinkamas šliuzas"
 
-#: ../lib/engine/components/opal/sip-endpoint.cpp:782
+#: ../lib/engine/components/opal/sip-endpoint.cpp:785
 msgid "Server timeout"
 msgstr "Serverio laukimo laikas"
 
-#: ../lib/engine/components/opal/sip-endpoint.cpp:786
+#: ../lib/engine/components/opal/sip-endpoint.cpp:789
 msgid "SIP version not supported"
 msgstr "SIP versija nepalaikoma"
 
-#: ../lib/engine/components/opal/sip-endpoint.cpp:790
+#: ../lib/engine/components/opal/sip-endpoint.cpp:793
 msgid "Message too large"
 msgstr "Pranešimas per didelis"
 
-#: ../lib/engine/components/opal/sip-endpoint.cpp:794
+#: ../lib/engine/components/opal/sip-endpoint.cpp:797
 msgid "Busy everywhere"
 msgstr "Visur užimta"
 
-#: ../lib/engine/components/opal/sip-endpoint.cpp:798
+#: ../lib/engine/components/opal/sip-endpoint.cpp:801
 msgid "Decline"
 msgstr "Atsisakyti"
 
-#: ../lib/engine/components/opal/sip-endpoint.cpp:802
+#: ../lib/engine/components/opal/sip-endpoint.cpp:805
 msgid "Does not exist anymore"
 msgstr "Nebeegzistuoja"
 
-#: ../lib/engine/components/opal/sip-endpoint.cpp:806
+#: ../lib/engine/components/opal/sip-endpoint.cpp:809
 msgid "Globally not acceptable"
 msgstr "Visuotinai nepriimtina"
 
 #: ../lib/engine/components/opal/sip-endpoint.cpp:947
-#| msgid "Could not send message"
 msgid "Could not send message: "
 msgstr "Nepavyko išsiųsti žinutės:"
 
@@ -1603,29 +1577,29 @@ msgstr "Nuleisti pažymėto kodeko prioritetą"
 msgid "Advanced"
 msgstr "Sudėtingesni"
 
-#: ../lib/engine/gui/gtk-frontend/accounts-window.cpp:566
+#: ../lib/engine/gui/gtk-frontend/accounts-window.cpp:567
 msgid "Account Name"
 msgstr "Paskyros vardas"
 
-#: ../lib/engine/gui/gtk-frontend/accounts-window.cpp:567
+#: ../lib/engine/gui/gtk-frontend/accounts-window.cpp:568
 msgid "Status"
 msgstr "Būsena"
 
-#: ../lib/engine/gui/gtk-frontend/accounts-window.cpp:582
+#: ../lib/engine/gui/gtk-frontend/accounts-window.cpp:583
 #: ../src/gui/main_window.cpp:1330
 msgid "_Accounts"
 msgstr "_Paskyros"
 
-#: ../lib/engine/gui/gtk-frontend/accounts-window.cpp:586
+#: ../lib/engine/gui/gtk-frontend/accounts-window.cpp:587
 #: ../src/gui/main_window.cpp:1368
 msgid "_Help"
 msgstr "_Žinynas"
 
-#: ../lib/engine/gui/gtk-frontend/accounts-window.cpp:611
+#: ../lib/engine/gui/gtk-frontend/accounts-window.cpp:612
 msgid "Accounts"
 msgstr "Paskyros"
 
-#: ../lib/engine/gui/gtk-frontend/accounts-window.cpp:678
+#: ../lib/engine/gui/gtk-frontend/accounts-window.cpp:679
 msgid "Edi_t"
 msgstr "Keis_ti"
 
@@ -1648,7 +1622,7 @@ msgid "Category"
 msgstr "Kategorija"
 
 #: ../lib/engine/gui/gtk-frontend/book-view-gtk.cpp:585
-#: ../src/gui/assistant.cpp:1395
+#: ../src/gui/assistant.cpp:1394
 msgid "Full Name"
 msgstr "Vardas ir pavardė"
 
@@ -1656,44 +1630,44 @@ msgstr "Vardas ir pavardė"
 msgid "_Search Filter:"
 msgstr "_Paieškos filtras:"
 
-#: ../lib/engine/gui/gtk-frontend/call-window.cpp:775
+#: ../lib/engine/gui/gtk-frontend/call-window.cpp:770
 msgid "Error while initializing video output"
 msgstr "Klaida inicijuojant vaizdo išvestį"
 
-#: ../lib/engine/gui/gtk-frontend/call-window.cpp:776
+#: ../lib/engine/gui/gtk-frontend/call-window.cpp:771
 msgid "No video will be displayed on your machine during this call"
 msgstr "Šio skambučio metu jūsų kompiuteryje vaizdas nebus rodomas"
 
-#: ../lib/engine/gui/gtk-frontend/call-window.cpp:786
+#: ../lib/engine/gui/gtk-frontend/call-window.cpp:781
 msgid "There was an error opening or initializing the video output. Please verify that no other application is using the accelerated video output."
 msgstr "Įvyko klaida, bandant atverti ar inicijuoti vaizdo išvestį. Įsitikinkite, jog paspartintos vaizdo išvesties įrenginio nenaudoja jokia kita programa."
 
-#: ../lib/engine/gui/gtk-frontend/call-window.cpp:788
+#: ../lib/engine/gui/gtk-frontend/call-window.cpp:783
 msgid "There was an error opening or initializing the video output. Please verify that you are using a color depth of 24 or 32 bits per pixel."
 msgstr "Įvyko klaida, bandant atverti ar inicijuoti vaizdo išvestį. Įsitikinkite, jog naudojate 24 arba 32 bitų gylio spalvų paletę."
 
-#: ../lib/engine/gui/gtk-frontend/call-window.cpp:893
+#: ../lib/engine/gui/gtk-frontend/call-window.cpp:888
 #, c-format
 msgid "Error while accessing video device %s"
 msgstr "Klaida gaunant prieigą prie vaizdo įrenginio %s"
 
-#: ../lib/engine/gui/gtk-frontend/call-window.cpp:896
+#: ../lib/engine/gui/gtk-frontend/call-window.cpp:891
 msgid "A moving logo will be transmitted during calls."
 msgstr "Skambučių metu bus rodomas judantis logotipas."
 
-#: ../lib/engine/gui/gtk-frontend/call-window.cpp:900
+#: ../lib/engine/gui/gtk-frontend/call-window.cpp:895
 msgid "There was an error while opening the device. In case it is a pluggable device it may be sufficient to reconnect it. If not, or if it still is not accessible, please check your permissions and make sure that the appropriate driver is loaded."
 msgstr "Įvyko klaida atidarant įrenginį. Jei tai išimamas įrenginys, galbūt užteks tiesiog jį atjungti ir prijungti vėl. Jei ne, arba jei tai nepadeda, patikrinkite įrenginio priėjimo teises ir įsitikinkite, kad naudojama atitinkama tvarkyklė."
 
-#: ../lib/engine/gui/gtk-frontend/call-window.cpp:904
+#: ../lib/engine/gui/gtk-frontend/call-window.cpp:899
 msgid "Your video driver doesn't support the requested video format."
 msgstr "Jūsų vaizdo tvarkyklė nepalaiko pasirinko vaizdo formato."
 
-#: ../lib/engine/gui/gtk-frontend/call-window.cpp:908
+#: ../lib/engine/gui/gtk-frontend/call-window.cpp:903
 msgid "Could not open the chosen channel."
 msgstr "Nepavyko atverti pasirinkto kanalo."
 
-#: ../lib/engine/gui/gtk-frontend/call-window.cpp:912
+#: ../lib/engine/gui/gtk-frontend/call-window.cpp:907
 msgid ""
 "Your driver doesn't seem to support any of the color formats supported by Ekiga.\n"
 " Please check your kernel driver documentation in order to determine which Palette is supported."
@@ -1701,86 +1675,85 @@ msgstr ""
 "Jūsų tvarkyklė nepalaiko nei vieno Ekiga palaikomo spalvų formato.\n"
 "Pasižiūrėkite savo branduolio tvarkyklės dokumentacijoje, kaip nustatyti palaikomą spalvų paletę."
 
-#: ../lib/engine/gui/gtk-frontend/call-window.cpp:916
+#: ../lib/engine/gui/gtk-frontend/call-window.cpp:911
 msgid "Error while setting the frame rate."
 msgstr "Nepavyko nustatyti kadrų skaičiaus."
 
-#: ../lib/engine/gui/gtk-frontend/call-window.cpp:920
+#: ../lib/engine/gui/gtk-frontend/call-window.cpp:915
 msgid "Error while setting the frame size."
 msgstr "Nepavyko nustatyti kadrų dydžio."
 
-#: ../lib/engine/gui/gtk-frontend/call-window.cpp:925
-#: ../lib/engine/gui/gtk-frontend/call-window.cpp:995
-#: ../lib/engine/gui/gtk-frontend/call-window.cpp:1076
+#: ../lib/engine/gui/gtk-frontend/call-window.cpp:920
+#: ../lib/engine/gui/gtk-frontend/call-window.cpp:990
+#: ../lib/engine/gui/gtk-frontend/call-window.cpp:1071
 msgid "Unknown error."
 msgstr "Nežinoma klaida."
 
-#: ../lib/engine/gui/gtk-frontend/call-window.cpp:977
+#: ../lib/engine/gui/gtk-frontend/call-window.cpp:972
 #, c-format
 msgid "Error while opening audio input device %s"
 msgstr "Klaida atveriant garso įvesties įrenginį %s"
 
 #. Translators: This happens when there is an error with audio input:
 #. * Nothing ("silence") will be transmitted
-#: ../lib/engine/gui/gtk-frontend/call-window.cpp:982
+#: ../lib/engine/gui/gtk-frontend/call-window.cpp:977
 msgid "Only silence will be transmitted."
 msgstr "Bus perduodama tik tyla."
 
-#: ../lib/engine/gui/gtk-frontend/call-window.cpp:986
+#: ../lib/engine/gui/gtk-frontend/call-window.cpp:981
 msgid "Unable to open the selected audio device for recording. In case it is a pluggable device it may be sufficient to reconnect it. If not, or if it still is not accessible, please check your audio setup, the permissions and that the device is not busy."
 msgstr "Nepavyko įrašyti garso iš pasirinkto garso įrenginio. Jei tai išimamas įrenginys, galbūt užteks tiesiog jį atjungti ir prijungti vėl. Jei ne, arba jei tai nepadeda, patikrinkite parinktus garso nustatymus, priėjimo prie įrenginio teises ir ar įrenginys nėra užimtas."
 
-#: ../lib/engine/gui/gtk-frontend/call-window.cpp:990
+#: ../lib/engine/gui/gtk-frontend/call-window.cpp:985
 msgid "The selected audio device was successfully opened but it is impossible to read data from this device. In case it is a pluggable device it may be sufficient to reconnect it. If not, or if it still is not accessible, please check your audio setup."
 msgstr "Pasirinktas garso įrenginys (%s) buvo sėkmingai atidarytas, tačiau iš įrenginio nepavyko gauti jokių duomenų. Jei tai išimamas įrenginys, galbūt užteks tiesiog jį atjungti ir prijungti vėl. Jei ne, arba jei tai nepadeda, patikrinkite parinktus garso nustatymus."
 
-#: ../lib/engine/gui/gtk-frontend/call-window.cpp:1060
+#: ../lib/engine/gui/gtk-frontend/call-window.cpp:1055
 #, c-format
 msgid "Error while opening audio output device %s"
 msgstr "Klaida atveriant garso išvesties įrenginį %s"
 
-#: ../lib/engine/gui/gtk-frontend/call-window.cpp:1063
+#: ../lib/engine/gui/gtk-frontend/call-window.cpp:1058
 msgid "No incoming sound will be played."
 msgstr "Nebus grojama jokių gaunamų garsų."
 
-#: ../lib/engine/gui/gtk-frontend/call-window.cpp:1067
+#: ../lib/engine/gui/gtk-frontend/call-window.cpp:1062
 msgid "Unable to open the selected audio device for playing. In case it is a pluggable device it may be sufficient to reconnect it. If not, or if it still is not accessible, please check your audio setup, the permissions and that the device is not busy."
 msgstr "Nepavyko išvesti garso į pasirinktą garso įrenginį. Patikrinkite programos garso nustatymus, priėjimo teises ir ar įrenginys nėra užimtas."
 
-#: ../lib/engine/gui/gtk-frontend/call-window.cpp:1071
+#: ../lib/engine/gui/gtk-frontend/call-window.cpp:1066
 msgid "The selected audio device was successfully opened but it is impossible to write data to this device. In case it is a pluggable device it may be sufficient to reconnect it. If not, or if it still is not accessible, please check your audio setup."
 msgstr "Pasirinktas garso įrenginys buvo sėkmingai atvertas, tačiau į jį nepavyko įrašyti jokių duomenų. Jei tai išimamas įrenginys, galbūt užteks tiesiog jį atjungti ir prijungti vėl. Jei ne, arba jei tai nepadeda, patikrinkite parinktus garso nustatymus."
 
-#: ../lib/engine/gui/gtk-frontend/call-window.cpp:1112
+#: ../lib/engine/gui/gtk-frontend/call-window.cpp:1107
 #, c-format
 msgid "Calling %s..."
 msgstr "Skambinama %s..."
 
 #. %s is the SIP/H.323 address of the remote user, this text is shown
 #. below video during a call
-#: ../lib/engine/gui/gtk-frontend/call-window.cpp:1128
+#: ../lib/engine/gui/gtk-frontend/call-window.cpp:1123
 #: ../src/gui/main_window.cpp:649
 #, c-format
 msgid "Connected with %s"
 msgstr "Prisijungti prie %s"
 
 #. Init
-#: ../lib/engine/gui/gtk-frontend/call-window.cpp:1151
-#: ../lib/engine/gui/gtk-frontend/call-window.cpp:2458
+#: ../lib/engine/gui/gtk-frontend/call-window.cpp:1146
+#: ../lib/engine/gui/gtk-frontend/call-window.cpp:2415
 msgid "Standby"
 msgstr "Užmigdyti"
 
-#: ../lib/engine/gui/gtk-frontend/call-window.cpp:1171
+#: ../lib/engine/gui/gtk-frontend/call-window.cpp:1166
 msgid "Call on hold"
 msgstr "Skambutis sulaikytas"
 
-#: ../lib/engine/gui/gtk-frontend/call-window.cpp:1182
+#: ../lib/engine/gui/gtk-frontend/call-window.cpp:1177
 msgid "Call retrieved"
 msgstr "Skambutis priimtas"
 
-#: ../lib/engine/gui/gtk-frontend/call-window.cpp:1307
+#: ../lib/engine/gui/gtk-frontend/call-window.cpp:1265
 #, c-format
-#| msgid "Connected with %s"
 msgid ""
 "Connected with %s\n"
 "%s"
@@ -1790,37 +1763,28 @@ msgstr ""
 
 #. Translators: TX is a common abbreviation for "transmit".  As it
 #. * is shown in a tooltip, there is no space constraint
-#: ../lib/engine/gui/gtk-frontend/call-window.cpp:1503
+#: ../lib/engine/gui/gtk-frontend/call-window.cpp:1461
 #, c-format
-#| msgid "TX: %dx%d "
 msgid "TX: %dx%d"
 msgstr "TX: %dx%d "
 
-#: ../lib/engine/gui/gtk-frontend/call-window.cpp:1505
-#| msgid "TX: %dx%d "
+#: ../lib/engine/gui/gtk-frontend/call-window.cpp:1463
 msgid "TX: / "
 msgstr "TX: /"
 
 #. Translators: RX is a common abbreviation for "receive".  As it
 #. * is shown in a tooltip, there is no space constraint
-#: ../lib/engine/gui/gtk-frontend/call-window.cpp:1510
+#: ../lib/engine/gui/gtk-frontend/call-window.cpp:1468
 #, c-format
-#| msgid "RX: %dx%d "
 msgid "RX: %dx%d"
 msgstr "RX: %dx%d "
 
-#: ../lib/engine/gui/gtk-frontend/call-window.cpp:1512
-#| msgid "RX: %dx%d "
+#: ../lib/engine/gui/gtk-frontend/call-window.cpp:1470
 msgid "RX: / "
 msgstr "RX: /"
 
-#: ../lib/engine/gui/gtk-frontend/call-window.cpp:1521
+#: ../lib/engine/gui/gtk-frontend/call-window.cpp:1479
 #, c-format
-#| msgid ""
-#| "Lost packets: %.1f %%\n"
-#| "Late packets: %.1f %%\n"
-#| "Out of order packets: %.1f %%\n"
-#| "Jitter buffer: %d ms%s%s%s"
 msgid ""
 "Lost packets: %.1f %%\n"
 "Late packets: %.1f %%\n"
@@ -1837,177 +1801,171 @@ msgstr ""
 "Raiška: %s %s"
 
 #. Translators: A = Audio, V = Video, FPS = Frames per second
-#: ../lib/engine/gui/gtk-frontend/call-window.cpp:1615
+#: ../lib/engine/gui/gtk-frontend/call-window.cpp:1573
 #, c-format
-#| msgid "A:%.1f/%.1f   V:%.1f/%.1f   FPS:%d/%d"
 msgid "A:%.1f/%.1f V:%.1f/%.1f FPS:%d/%d"
 msgstr "G:%.1f/%.1f V:%.1f/%.1f KPS:%d/%d"
 
-#: ../lib/engine/gui/gtk-frontend/call-window.cpp:1636
+#: ../lib/engine/gui/gtk-frontend/call-window.cpp:1594
 msgid "_Retrieve Call"
 msgstr "P_riimti skambutį"
 
-#: ../lib/engine/gui/gtk-frontend/call-window.cpp:1649
-#: ../lib/engine/gui/gtk-frontend/call-window.cpp:1958
+#: ../lib/engine/gui/gtk-frontend/call-window.cpp:1607
+#: ../lib/engine/gui/gtk-frontend/call-window.cpp:1916
 msgid "H_old Call"
 msgstr "_Sulaikyti skambutį"
 
-#: ../lib/engine/gui/gtk-frontend/call-window.cpp:1680
-#: ../lib/engine/gui/gtk-frontend/call-window.cpp:1970
+#: ../lib/engine/gui/gtk-frontend/call-window.cpp:1638
+#: ../lib/engine/gui/gtk-frontend/call-window.cpp:1928
 msgid "Suspend _Audio"
 msgstr "Sustabdyti g_arsą"
 
-#: ../lib/engine/gui/gtk-frontend/call-window.cpp:1682
-#: ../lib/engine/gui/gtk-frontend/call-window.cpp:1975
+#: ../lib/engine/gui/gtk-frontend/call-window.cpp:1640
+#: ../lib/engine/gui/gtk-frontend/call-window.cpp:1933
 msgid "Suspend _Video"
 msgstr "Sustabdyti _vaizdą"
 
-#: ../lib/engine/gui/gtk-frontend/call-window.cpp:1684
+#: ../lib/engine/gui/gtk-frontend/call-window.cpp:1642
 msgid "Resume _Audio"
 msgstr "Atstatyti g_arsą"
 
-#: ../lib/engine/gui/gtk-frontend/call-window.cpp:1686
+#: ../lib/engine/gui/gtk-frontend/call-window.cpp:1644
 msgid "Resume _Video"
 msgstr "Atstatyti _vaizdą"
 
-#: ../lib/engine/gui/gtk-frontend/call-window.cpp:1720
+#: ../lib/engine/gui/gtk-frontend/call-window.cpp:1678
 msgid "Video Settings"
 msgstr "Vaizdo parametrai"
 
-#: ../lib/engine/gui/gtk-frontend/call-window.cpp:1745
+#: ../lib/engine/gui/gtk-frontend/call-window.cpp:1703
 msgid "Adjust brightness"
 msgstr "Keisti ryškumą"
 
-#: ../lib/engine/gui/gtk-frontend/call-window.cpp:1764
+#: ../lib/engine/gui/gtk-frontend/call-window.cpp:1722
 msgid "Adjust whiteness"
 msgstr "Keisti baltumą"
 
-#: ../lib/engine/gui/gtk-frontend/call-window.cpp:1783
+#: ../lib/engine/gui/gtk-frontend/call-window.cpp:1741
 msgid "Adjust color"
 msgstr "Keisti spalvas"
 
-#: ../lib/engine/gui/gtk-frontend/call-window.cpp:1802
+#: ../lib/engine/gui/gtk-frontend/call-window.cpp:1760
 msgid "Adjust contrast"
 msgstr "Keisti kontrastą"
 
-#: ../lib/engine/gui/gtk-frontend/call-window.cpp:1844
+#: ../lib/engine/gui/gtk-frontend/call-window.cpp:1802
 msgid "Audio Settings"
 msgstr "Garso parametrai"
 
-#: ../lib/engine/gui/gtk-frontend/call-window.cpp:1946
-#| msgid "Call"
+#: ../lib/engine/gui/gtk-frontend/call-window.cpp:1904
 msgid "_Call"
 msgstr "_Skambinti"
 
-#: ../lib/engine/gui/gtk-frontend/call-window.cpp:1948
+#: ../lib/engine/gui/gtk-frontend/call-window.cpp:1906
 msgid "_Pick up"
 msgstr "Atsilie_pti"
 
-#: ../lib/engine/gui/gtk-frontend/call-window.cpp:1948
-#| msgid "Hold the current call"
+#: ../lib/engine/gui/gtk-frontend/call-window.cpp:1906
 msgid "Pick up the current call"
 msgstr "Atsiliepti į dabartinį skambutį"
 
-#: ../lib/engine/gui/gtk-frontend/call-window.cpp:1952
-#| msgid "_Hang up"
+#: ../lib/engine/gui/gtk-frontend/call-window.cpp:1910
 msgid "_Hangup"
 msgstr "_Padėti ragelį"
 
-#: ../lib/engine/gui/gtk-frontend/call-window.cpp:1952
-#| msgid "Hold the current call"
+#: ../lib/engine/gui/gtk-frontend/call-window.cpp:1910
 msgid "Hangup the current call"
 msgstr "Sustabdyti dabartinį skambutį"
 
-#: ../lib/engine/gui/gtk-frontend/call-window.cpp:1958
-#: ../lib/engine/gui/gtk-frontend/call-window.cpp:2427
+#: ../lib/engine/gui/gtk-frontend/call-window.cpp:1916
+#: ../lib/engine/gui/gtk-frontend/call-window.cpp:2384
 msgid "Hold the current call"
 msgstr "Sustabdyti dabartinį skambutį"
 
-#: ../lib/engine/gui/gtk-frontend/call-window.cpp:1962
+#: ../lib/engine/gui/gtk-frontend/call-window.cpp:1920
 msgid "_Transfer Call"
 msgstr "Persiųs_ti skambutį"
 
-#: ../lib/engine/gui/gtk-frontend/call-window.cpp:1963
+#: ../lib/engine/gui/gtk-frontend/call-window.cpp:1921
 msgid "Transfer the current call"
 msgstr "Nukreipti esamą skambutį"
 
-#: ../lib/engine/gui/gtk-frontend/call-window.cpp:1971
+#: ../lib/engine/gui/gtk-frontend/call-window.cpp:1929
 msgid "Suspend or resume the audio transmission"
 msgstr "Sulaikyti / tęsti garso perdavimą"
 
-#: ../lib/engine/gui/gtk-frontend/call-window.cpp:1976
+#: ../lib/engine/gui/gtk-frontend/call-window.cpp:1934
 msgid "Suspend or resume the video transmission"
 msgstr "Sulaikyti / tęsti vaizdo perdavimą"
 
-#: ../lib/engine/gui/gtk-frontend/call-window.cpp:1983
+#: ../lib/engine/gui/gtk-frontend/call-window.cpp:1941
 #: ../src/gui/main_window.cpp:1309
 msgid "Close the Ekiga window"
 msgstr "Užverti Ekiga langą"
 
-#: ../lib/engine/gui/gtk-frontend/call-window.cpp:1988
+#: ../lib/engine/gui/gtk-frontend/call-window.cpp:1946
 #: ../src/gui/main_window.cpp:1342
 msgid "_View"
 msgstr "R_odymas"
 
-#: ../lib/engine/gui/gtk-frontend/call-window.cpp:1990
+#: ../lib/engine/gui/gtk-frontend/call-window.cpp:1948
 msgid "_Local Video"
 msgstr "_Vietinis vaizdas"
 
-#: ../lib/engine/gui/gtk-frontend/call-window.cpp:1991
+#: ../lib/engine/gui/gtk-frontend/call-window.cpp:1949
 msgid "Local video image"
 msgstr "Vietinio vaizdo paveikslėlis"
 
-#: ../lib/engine/gui/gtk-frontend/call-window.cpp:1995
+#: ../lib/engine/gui/gtk-frontend/call-window.cpp:1953
 msgid "_Remote Video"
 msgstr "_Nutolęs vaizdas"
 
-#: ../lib/engine/gui/gtk-frontend/call-window.cpp:1996
+#: ../lib/engine/gui/gtk-frontend/call-window.cpp:1954
 msgid "Remote video image"
 msgstr "Nutolusio vaizdo paveikslėlis"
 
-#: ../lib/engine/gui/gtk-frontend/call-window.cpp:2000
+#: ../lib/engine/gui/gtk-frontend/call-window.cpp:1958
 msgid "_Picture-in-Picture"
 msgstr "_Paveikslėlis paveikslėlyje"
 
-#: ../lib/engine/gui/gtk-frontend/call-window.cpp:2001
+#: ../lib/engine/gui/gtk-frontend/call-window.cpp:1959
 msgid "Both video images"
 msgstr "Abu vaizdo paveikslėliai"
 
-#: ../lib/engine/gui/gtk-frontend/call-window.cpp:2007
+#: ../lib/engine/gui/gtk-frontend/call-window.cpp:1965
 msgid "Zoom in"
 msgstr "Didinti"
 
-#: ../lib/engine/gui/gtk-frontend/call-window.cpp:2011
+#: ../lib/engine/gui/gtk-frontend/call-window.cpp:1969
 msgid "Zoom out"
 msgstr "Mažinti"
 
-#: ../lib/engine/gui/gtk-frontend/call-window.cpp:2015
+#: ../lib/engine/gui/gtk-frontend/call-window.cpp:1973
 msgid "Normal size"
 msgstr "Normalus dydis"
 
-#: ../lib/engine/gui/gtk-frontend/call-window.cpp:2019
+#: ../lib/engine/gui/gtk-frontend/call-window.cpp:1977
 msgid "_Fullscreen"
 msgstr "_Visame ekrane"
 
-#: ../lib/engine/gui/gtk-frontend/call-window.cpp:2019
+#: ../lib/engine/gui/gtk-frontend/call-window.cpp:1977
 msgid "Switch to fullscreen"
 msgstr "Rodyti visame ekrane"
 
-#: ../lib/engine/gui/gtk-frontend/call-window.cpp:2135
+#: ../lib/engine/gui/gtk-frontend/call-window.cpp:2092
 msgid "Transfer call to:"
 msgstr "Nukreipti skambutį į:"
 
-#: ../lib/engine/gui/gtk-frontend/call-window.cpp:2345
-#: ../lib/engine/gui/gtk-frontend/call-window.cpp:2360
-#| msgid "Hold the current call"
+#: ../lib/engine/gui/gtk-frontend/call-window.cpp:2302
+#: ../lib/engine/gui/gtk-frontend/call-window.cpp:2317
 msgid "Hang up the current call"
 msgstr "Sustabdyti dabartinį skambutį"
 
-#: ../lib/engine/gui/gtk-frontend/call-window.cpp:2388
+#: ../lib/engine/gui/gtk-frontend/call-window.cpp:2345
 msgid "Change the volume of your soundcard"
 msgstr "Pakeisti garso kortos garsumą"
 
-#: ../lib/engine/gui/gtk-frontend/call-window.cpp:2408
+#: ../lib/engine/gui/gtk-frontend/call-window.cpp:2365
 msgid "Change the color settings of your video device"
 msgstr "Pakeisti vaizdo įrenginio spalvų parametrus"
 
@@ -2029,8 +1987,6 @@ msgstr "_Šypsotis..."
 
 #: ../lib/engine/gui/gtk-frontend/chat-window.cpp:139
 #, c-format
-#| msgid "You have %d message"
-#| msgid_plural "You have %d messages"
 msgid "You have %d unread text message"
 msgid_plural "You have %d unread text messages"
 msgstr[0] "Turite %d neskaitytą žinutę"
@@ -2048,8 +2004,8 @@ msgstr "Pokalbio langas"
 
 #: ../lib/engine/gui/gtk-frontend/heap-view.cpp:238
 #: ../lib/engine/gui/gtk-frontend/heap-view.cpp:277
-#: ../lib/engine/gui/gtk-frontend/roster-view-gtk.cpp:955
-#: ../lib/engine/gui/gtk-frontend/roster-view-gtk.cpp:1010
+#: ../lib/engine/gui/gtk-frontend/roster-view-gtk.cpp:953
+#: ../lib/engine/gui/gtk-frontend/roster-view-gtk.cpp:1008
 msgid "Unsorted"
 msgstr "Nerikiuota"
 
@@ -2111,10 +2067,6 @@ msgid "Forward calls to the given host if _busy"
 msgstr "Nukreipti skambučius į nurodytą kompiuterį, jei _užimta"
 
 #: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:504
-#| msgid ""
-#| "If enabled, all incoming calls will be forwarded to the host that is "
-#| "specified in the protocol settings if you already are in a call or if you "
-#| "are in Do Not Disturb mode"
 msgid "If enabled, all incoming calls will be forwarded to the host that is specified in the protocol settings if you already are in a call or if you are in busy mode"
 msgstr "Jeigu įjungta, visi gaunami skambučiai bus persiųsti į protokolo nustatymuose nurodytą kompiuterį, jei jau esate prisiskambinę arba įjungę veikseną „Netrukdyti“"
 
@@ -2222,7 +2174,6 @@ msgid "Connection will be established in Fast Start mode. Fast Start is a new wa
 msgstr "Bus prisijungiama Greito Starto veiksenoje. Greitas Startas – tai naujas būdas greičiau pradėti skambučius, pasirodęs H.323v2. Jo nepalaiko Netmeeting, o Greito Starto ir H.245 tunelių naudojimas vienu metu gali sutrikdyti kai kurių NetMeeting versijų darbą."
 
 #: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:691
-#| msgid "Enable Account"
 msgid "Enable H.239 control"
 msgstr "Įjungti H.239 valdymą"
 
@@ -2235,7 +2186,6 @@ msgid "Extended Video Roles:"
 msgstr "Išplėstinės vaizdo rolės:"
 
 #: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:693
-#| msgid "Select the transmitted video size"
 msgid "Select the H.239 Video Role"
 msgstr "Pasirinkite H.239 vaizdo rolę"
 
@@ -2251,7 +2201,6 @@ msgstr "_Siųsti DTMF kaip:"
 
 #: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:699
 #: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:732
-#| msgid "This allows you to set the mode for DTMFs sending."
 msgid "Select the mode for DTMFs sending"
 msgstr "Pasirinkite DTMF siuntimo veikseną."
 
@@ -2293,7 +2242,6 @@ msgstr "_Aptikti įrenginius"
 
 #: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:770
 #: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:913
-#| msgid "Click here to refresh the device list."
 msgid "Click here to refresh the device list"
 msgstr "Spustelėkite čia norėdami atnaujinti įrenginių sąrašą"
 
@@ -2375,10 +2323,6 @@ msgid "Picture Quality"
 msgstr "Paveikslėlio kokybė"
 
 #: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:977
-#| msgid ""
-#| "Choose if you want to guarantee a minimum image quality (possibly leading "
-#| "to dropped frames in order not to surpass the bitrate limit) or if you "
-#| "prefer to keep the frame rate."
 msgid "Choose if you want to guarantee a minimum image quality (possibly leading to dropped frames in order not to surpass the bitrate limit) or if you prefer to keep the frame rate"
 msgstr "Pasirinkite, ar norite užtikrinti bent minimalią vaizdo kokybę (galbūt praleidžiamų kadrų, siekiant neviršyti srauto dydžio, sąskaita), ar norite palaikyti pastovų kadrų skaičių"
 
@@ -2683,7 +2627,6 @@ msgid "Please edit the following fields"
 msgstr "Pakeiskite šiuos laukelius"
 
 #: ../plugins/ldap/ldap-book.cpp:944
-#| msgid "Book _Name"
 msgid "Book _Name:"
 msgstr "Knygos _pavadinimas:"
 
@@ -2692,7 +2635,6 @@ msgid "Book name, as shown in your dialog box"
 msgstr "Knygos pavadinimas, kaip rodomas dialogo kortelėje"
 
 #: ../plugins/ldap/ldap-book.cpp:945
-#| msgid "Server _URI"
 msgid "Server _URI:"
 msgstr "Serverio _URI:"
 
@@ -2701,7 +2643,6 @@ msgid "Name of LDAP server, prefixed by ldap://"
 msgstr "LDAP serverio pavadinimas su priešdėliu ldap://"
 
 #: ../plugins/ldap/ldap-book.cpp:946
-#| msgid "_Base DN"
 msgid "_Base DN:"
 msgstr "_Pagrindinis DN:"
 
@@ -2724,12 +2665,10 @@ msgstr "_Paieškos gylis"
 #. * most LDAP servers it's "CommonName".
 #.
 #: ../plugins/ldap/ldap-book.cpp:969
-#| msgid "_DisplayName Attribute"
 msgid "_DisplayName Attribute:"
 msgstr "„_DisplayName“ atributas:"
 
 #: ../plugins/ldap/ldap-book.cpp:970
-#| msgid "Call _Attributes"
 msgid "Call _Attributes:"
 msgstr "Skambučio _atributai:"
 
@@ -2739,7 +2678,6 @@ msgstr "Jūsų ieškomas laukas"
 
 #: ../plugins/ldap/ldap-book.cpp:972
 #: ../plugins/ldap/ldap-book.cpp:974
-#| msgid "_Filter Template"
 msgid "_Filter Template:"
 msgstr "_Filtro šablonas:"
 
@@ -2758,7 +2696,6 @@ msgstr "Čia „$“ yra pakeičiamas paieškos eilute"
 #. * is anonymous / unauthenticated.)
 #.
 #: ../plugins/ldap/ldap-book.cpp:985
-#| msgid "Bind _ID"
 msgid "Bind _ID:"
 msgstr "Susiejimo _ID:"
 
@@ -2889,7 +2826,6 @@ msgid "_Add a jabber/XMPP account"
 msgstr "_Pridėti jabber/XMPP paskyrą"
 
 #: ../plugins/loudmouth/loudmouth-bank.cpp:123
-#| msgid "Please edit the following fields"
 msgid "Please fill in the following fields:"
 msgstr "Pakeiskite šiuos laukelius:"
 
@@ -2903,12 +2839,10 @@ msgid "Open a group chat room"
 msgstr "Atverti grupės pokalbių kambarį"
 
 #: ../plugins/loudmouth/loudmouth-dialect.cpp:134
-#| msgid "Please provide a Server URI\n"
 msgid "Please provide a room name"
 msgstr "Prašom nurodyti kambario pavadinimą"
 
 #: ../plugins/loudmouth/loudmouth-dialect.cpp:136
-#| msgid "Rename"
 msgid "Room name"
 msgstr "Kambario pavadinimas"
 
@@ -3056,23 +2990,19 @@ msgid "Please edit the following fields (no identifier means global)"
 msgstr "Užpildykite šiuos laukelius (idendifikatoriaus nebuvimas reiškia visuotinį)"
 
 #: ../plugins/resource-list/rl-heap.cpp:467
-#| msgid "Contact list's name"
 msgid "Contact list's name:"
 msgstr "Kontaktų sąrašo pavadinimas:"
 
 #. "Document" used as a name -- uri point to the root of a document tree
 #: ../plugins/resource-list/rl-heap.cpp:469
-#| msgid "Document root"
 msgid "Document root:"
 msgstr "Dokumentų šaknis:"
 
 #: ../plugins/resource-list/rl-heap.cpp:472
-#| msgid "Server username"
 msgid "Server username:"
 msgstr "Naudotojo vardas serveryje:"
 
 #: ../plugins/resource-list/rl-heap.cpp:473
-#| msgid "Server password"
 msgid "Server password:"
 msgstr "Slaptažodis serveryje:"
 
@@ -3180,15 +3110,6 @@ msgid "Please enter your PIN code:"
 msgstr "Įveskite savo PIN kodą:"
 
 #: ../src/gui/assistant.cpp:735
-#| msgid ""
-#| "You can make calls to regular phones and cell numbers worldwide using "
-#| "Ekiga.\n"
-#| "\n"
-#| "To enable this, you need to do two things:\n"
-#| "- First buy an account at the URL below.\n"
-#| "- Then enter your account ID and PIN code.\n"
-#| "The service will work only if your account is created using the URL in "
-#| "this dialog.\n"
 msgid ""
 "You can make calls to regular phones and cell numbers worldwide using Ekiga. To enable this, you need to do two things:\n"
 "- First buy an account at the URL below.\n"
@@ -3205,7 +3126,7 @@ msgid "I do not want to sign up for the Ekiga Call Out service"
 msgstr "Aš nenoriu užsisakyti Ekiga.net skambinimo paslaugos"
 
 #: ../src/gui/assistant.cpp:857
-#: ../src/gui/assistant.cpp:1406
+#: ../src/gui/assistant.cpp:1407
 msgid "Connection Type"
 msgstr "Prisijungimo tipas"
 
@@ -3269,7 +3190,7 @@ msgid "The audio input device is the device that will be used to record your voi
 msgstr "Garso įvesties įrenginys skambučio metu bus naudojamas Jūsų balsui įrašyti."
 
 #: ../src/gui/assistant.cpp:1176
-#: ../src/gui/assistant.cpp:1451
+#: ../src/gui/assistant.cpp:1474
 msgid "Video Input Device"
 msgstr "Vaizdo įvesties įrenginys"
 
@@ -3293,33 +3214,32 @@ msgstr "Ekiga konfigūravimas baigtas. Visi parametrai gali būti pakeisti Ekiga
 msgid "Configuration summary:"
 msgstr "Konfigūracijos santrauka:"
 
-#: ../src/gui/assistant.cpp:1418
+#: ../src/gui/assistant.cpp:1424
 msgid "Audio Ringing Device"
 msgstr "Garso skambinimo įrenginys"
 
-#: ../src/gui/assistant.cpp:1429
+#: ../src/gui/assistant.cpp:1441
 msgid "Audio Output Device"
 msgstr "Garso išvesties įrenginys"
 
-#: ../src/gui/assistant.cpp:1440
+#: ../src/gui/assistant.cpp:1458
 msgid "Audio Input Device"
 msgstr "Garso įvesties įrenginys"
 
-#: ../src/gui/assistant.cpp:1464
+#: ../src/gui/assistant.cpp:1490
 msgid "SIP URI"
 msgstr "SIP URI"
 
-#: ../src/gui/assistant.cpp:1476
+#: ../src/gui/assistant.cpp:1505
 msgid "Ekiga Call Out"
 msgstr "Ekiga skambinimas"
 
-#: ../src/gui/assistant.cpp:1520
+#: ../src/gui/assistant.cpp:1550
 #, c-format
 msgid "Ekiga Configuration Assistant (%d of %d)"
 msgstr "Konfigūravimo pagelbiklis (%d iš %d)"
 
 #: ../src/gui/main.cpp:126
-#| msgid "Prints debug messages in the console (level between 1 and 5)"
 msgid "Prints debug messages in the console (level between 1 and 8)"
 msgstr "Išveda derinimo pranešimus terminale (lygis nuo 1 iki 8)"
 
@@ -3332,12 +3252,10 @@ msgid "Presence"
 msgstr "Būsena"
 
 #: ../src/gui/main_window.cpp:379
-#| msgid "Address Book"
 msgid "Addressbook"
 msgstr "Adresų knyga"
 
 #: ../src/gui/main_window.cpp:408
-#| msgid "Unknown error."
 msgid "Unknown"
 msgstr "Nežinoma"
 
@@ -3459,7 +3377,6 @@ msgid "Ekiga"
 msgstr "Ekiga"
 
 #: ../src/gui/statusmenu.cpp:87
-#| msgid "Disable"
 msgid "Available"
 msgstr "Pasiekiamas"
 
@@ -3468,7 +3385,6 @@ msgid "Away"
 msgstr "Manęs nėra"
 
 #: ../src/gui/statusmenu.cpp:89
-#| msgid "Busy Here"
 msgid "Busy"
 msgstr "Užimtas"
 
