@@ -552,276 +552,276 @@ Opal::Sip::EndPoint::Register (const std::string username,
   params.m_maxRetryTime = PMaxTimeInterval;  // use default value
 
   // Register the given aor to the give registrar
-  if (!SIPEndPoint::Register (params, _aor))
-    OnRegistrationFailed (aor.str (), SIP_PDU::MaxStatusCode, is_enabled);
-}
+  if (!SIPEndPoint::Register (params, _aor)) {
+    SIPEndPoint::RegistrationStatus status;
+    status.m_wasRegistering = true;
+    status.m_reRegistering = false;
+    status.m_userData = NULL;
+    status.m_reason = SIP_PDU::Local_TransportError;
+    status.m_addressofRecord = PString (aor.str ());
 
-
-void
-Opal::Sip::EndPoint::OnRegistered (const PString & _aor,
-				   bool was_registering)
-{
-  std::string aor = (const char *) _aor;
-  std::stringstream strm;
-
-  if (aor.find (uri_prefix) == std::string::npos)
-    strm << uri_prefix << aor;
-  else
-    strm << aor;
-
-  /* Subscribe for MWI */
-  if (!IsSubscribed (SIPSubscribe::MessageSummary, aor))
-    Subscribe (SIPSubscribe::MessageSummary, 3600, aor);
-
-  /* Signal */
-  Ekiga::Runtime::run_in_main (boost::bind (&Opal::Sip::EndPoint::registration_event_in_main, this, strm.str (), was_registering ? Account::Registered : Account::Unregistered, std::string ()));
-}
-
-
-void
-Opal::Sip::EndPoint::OnRegistrationFailed (const PString & _aor,
-					   SIP_PDU::StatusCodes r,
-					   bool wasRegistering)
-{
-  std::stringstream strm;
-  std::string info;
-  std::string aor = (const char *) _aor;
-
-  if (aor.find (uri_prefix) == std::string::npos)
-    strm << uri_prefix << aor;
-  else
-    strm << aor;
-
-  switch (r) {
-
-    // all these codes are defined in opal, file include/sip/sippdu.h
-  case SIP_PDU::IllegalStatusCode:
-    info = _("Illegal status code");
-    break;
-
-  case SIP_PDU::Local_TransportError:
-  case SIP_PDU::Local_BadTransportAddress:
-    info = _("Transport error");
-    break;
-
-  case SIP_PDU::Local_Timeout:
-    /* Translators: Host of the remote party is offline, this should
-     * appear when the remote host does not reply in an acceptable time */
-    info = _("Remote party host is offline");
-    break;
-
-  case SIP_PDU::Information_Trying:
-  case SIP_PDU::Information_Ringing:
-  case SIP_PDU::Information_CallForwarded:
-  case SIP_PDU::Information_Queued:
-  case SIP_PDU::Information_Session_Progress:
-  case SIP_PDU::Successful_OK:
-  case SIP_PDU::Successful_Accepted:
-    break;
-
-  case SIP_PDU::Redirection_MultipleChoices:
-    /* Translators: the following strings are answers from the SIP server
-     * when the packet it receives has an error, see
-     * http://www.ietf.org/rfc/rfc3261.txt, chapter 21 for more information */
-    info = _("Multiple choices");
-    break;
-
-  case SIP_PDU::Redirection_MovedPermanently:
-    info = _("Moved permanently");
-    break;
-
-  case SIP_PDU::Redirection_MovedTemporarily:
-    info = _("Moved temporarily");
-    break;
-
-  case SIP_PDU::Redirection_UseProxy:
-    info = _("Use proxy");
-    break;
-
-  case SIP_PDU::Redirection_AlternativeService:
-    info = _("Alternative service");
-    break;
-
-  case SIP_PDU::Failure_BadRequest:
-    info = _("Bad request");
-    break;
-
-  case SIP_PDU::Failure_UnAuthorised:
-    info = _("Unauthorized");
-    break;
-
-  case SIP_PDU::Failure_PaymentRequired:
-    info = _("Payment required");
-    break;
-
-  case SIP_PDU::Failure_Forbidden:
-    info = _("Forbidden, please check that username and password are correct");
-    break;
-
-  case SIP_PDU::Failure_NotFound:
-    info = _("Not found");
-    break;
-
-  case SIP_PDU::Failure_MethodNotAllowed:
-    info = _("Method not allowed");
-    break;
-
-  case SIP_PDU::Failure_NotAcceptable:
-    info = _("Not acceptable");
-    break;
-
-  case SIP_PDU::Failure_ProxyAuthenticationRequired:
-    info = _("Proxy authentication required");
-    break;
-
-  case SIP_PDU::Failure_RequestTimeout:
-    info = _("Timeout");
-    break;
-
-  case SIP_PDU::Failure_Conflict:
-    info = _("Conflict");
-    break;
-
-  case SIP_PDU::Failure_LengthRequired:
-    info = _("Length required");
-    break;
-
-  case SIP_PDU::Failure_RequestEntityTooLarge:
-    info = _("Request entity too big");
-    break;
-
-  case SIP_PDU::Failure_RequestURITooLong:
-    info = _("Request URI too long");
-    break;
-
-  case SIP_PDU::Failure_UnsupportedMediaType:
-    info = _("Unsupported media type");
-    break;
-
-  case SIP_PDU::Failure_UnsupportedURIScheme:
-    info = _("Unsupported URI scheme");
-    break;
-
-  case SIP_PDU::Failure_BadExtension:
-    /* Translators:  The extension we are trying to register does not exist.
-     * Here extension is a specific "phone number", see
-     * http://en.wikipedia.org/wiki/Extension_(telephone)
-     * for more information */
-    info = _("Bad extension");
-    break;
-
-  case SIP_PDU::Failure_ExtensionRequired:
-    info = _("Extension required");
-    break;
-
-  case SIP_PDU::Failure_IntervalTooBrief:
-    info = _("Interval too brief");
-    break;
-
-  case SIP_PDU::Failure_TemporarilyUnavailable:
-    info = _("Temporarily unavailable");
-    break;
-
-  case SIP_PDU::Failure_LoopDetected:
-    info = _("Loop detected");
-    break;
-
-  case SIP_PDU::Failure_TooManyHops:
-    info = _("Too many hops");
-    break;
-
-  case SIP_PDU::Failure_AddressIncomplete:
-    info = _("Address incomplete");
-    break;
-
-  case SIP_PDU::Failure_Ambiguous:
-    info = _("Ambiguous");
-    break;
-
-  case SIP_PDU::Failure_BusyHere:
-    info = _("Busy Here");
-    break;
-
-  case SIP_PDU::Failure_RequestTerminated:
-    info = _("Request terminated");
-    break;
-
-  case SIP_PDU::Failure_NotAcceptableHere:
-    info = _("Not acceptable here");
-    break;
-
-  case SIP_PDU::Failure_BadEvent:
-    info = _("Bad event");
-    break;
-
-  case SIP_PDU::Failure_RequestPending:
-    info = _("Request pending");
-    break;
-
-  case SIP_PDU::Failure_Undecipherable:
-    info = _("Undecipherable");
-    break;
-
-  case SIP_PDU::Failure_InternalServerError:
-    info = _("Internal server error");
-    break;
-
-  case SIP_PDU::Failure_NotImplemented:
-    info = _("Not implemented");
-    break;
-
-  case SIP_PDU::Failure_BadGateway:
-    info = _("Bad gateway");
-    break;
-
-  case SIP_PDU::Failure_ServiceUnavailable:
-    info = _("Service unavailable");
-    break;
-
-  case SIP_PDU::Failure_ServerTimeout:
-    info = _("Server timeout");
-    break;
-
-  case SIP_PDU::Failure_SIPVersionNotSupported:
-    info = _("SIP version not supported");
-    break;
-
-  case SIP_PDU::Failure_MessageTooLarge:
-    info = _("Message too large");
-    break;
-
-  case SIP_PDU::GlobalFailure_BusyEverywhere:
-    info = _("Busy everywhere");
-    break;
-
-  case SIP_PDU::GlobalFailure_Decline:
-    info = _("Decline");
-    break;
-
-  case SIP_PDU::GlobalFailure_DoesNotExistAnywhere:
-    info = _("Does not exist anymore");
-    break;
-
-  case SIP_PDU::GlobalFailure_NotAcceptable:
-    info = _("Globally not acceptable");
-    break;
-
-  case SIP_PDU::Failure_TransactionDoesNotExist:
-  case SIP_PDU::Failure_Gone:
-  case SIP_PDU::MaxStatusCode:
-  default:
-    info = _("Failed");
+    OnRegistrationStatus (status);
   }
+}
 
-  /* Signal the SIP Endpoint */
-  SIPEndPoint::OnRegistrationFailed (strm.str ().c_str (), r, wasRegistering);
+void
+Opal::Sip::EndPoint::OnRegistrationStatus (const RegistrationStatus & status)
+{
+  std::string aor = (const char *) status.m_addressofRecord;
+  std::string info;
+  std::stringstream strm;
 
-  /* opal adds a RequestTerminated, and this should not be shown to user,
-   * as a sip code has already been scheduled to be shown
-   */
-  if (r != SIP_PDU::Failure_RequestTerminated) {
-    /* Signal */
-    Ekiga::Runtime::run_in_main (boost::bind (&Opal::Sip::EndPoint::registration_event_in_main, this, strm.str (), wasRegistering ?Account::RegistrationFailed : Account::UnregistrationFailed, info));
+  if (status.m_reason == SIP_PDU::Information_Trying)
+    return;
+
+  if (aor.find (uri_prefix) == std::string::npos)
+    strm << uri_prefix << aor;
+  else
+    strm << aor;
+
+  SIPEndPoint::OnRegistrationStatus (status);
+
+  /* Successful registration or unregistration */
+  if (status.m_reason == SIP_PDU::Successful_OK) {
+
+    /* Subscribe for MWI */
+    if (status.m_wasRegistering &&!IsSubscribed (SIPSubscribe::MessageSummary, aor))
+      Subscribe (SIPSubscribe::MessageSummary, 3600, aor);
+
+    Ekiga::Runtime::run_in_main (boost::bind (&Opal::Sip::EndPoint::registration_event_in_main, this, strm.str (), status.m_wasRegistering ? Account::Registered : Account::Unregistered, std::string ()));
+  }
+  /* Registration or unregistration failure */
+  else {
+
+    /* all these codes are defined in opal, file include/sip/sippdu.h */
+    switch (status.m_reason) {
+    case SIP_PDU::IllegalStatusCode:
+      info = _("Illegal status code");
+      break;
+
+    case SIP_PDU::Local_TransportError:
+      info = _("Transport error");
+      break;
+
+    case SIP_PDU::Local_BadTransportAddress:
+      info = _("Invalid address");
+      break;
+
+    case SIP_PDU::Local_Timeout:
+      /* Translators: Host of the remote party is offline, this should
+       * appear when the remote host does not reply in an acceptable time */
+      info = _("Remote party host is offline");
+      break;
+
+    case SIP_PDU::Information_Trying:
+    case SIP_PDU::Information_Ringing:
+    case SIP_PDU::Information_CallForwarded:
+    case SIP_PDU::Information_Queued:
+    case SIP_PDU::Information_Session_Progress:
+    case SIP_PDU::Successful_OK:
+    case SIP_PDU::Successful_Accepted:
+      break;
+
+    case SIP_PDU::Redirection_MultipleChoices:
+      /* Translators: the following strings are answers from the SIP server
+       * when the packet it receives has an error, see
+       * http://www.ietf.org/rfc/rfc3261.txt, chapter 21 for more information */
+      info = _("Multiple choices");
+      break;
+
+    case SIP_PDU::Redirection_MovedPermanently:
+      info = _("Moved permanently");
+      break;
+
+    case SIP_PDU::Redirection_MovedTemporarily:
+      info = _("Moved temporarily");
+      break;
+
+    case SIP_PDU::Redirection_UseProxy:
+      info = _("Use proxy");
+      break;
+
+    case SIP_PDU::Redirection_AlternativeService:
+      info = _("Alternative service");
+      break;
+
+    case SIP_PDU::Failure_BadRequest:
+      info = _("Bad request");
+      break;
+
+    case SIP_PDU::Failure_UnAuthorised:
+      info = _("Unauthorized");
+      break;
+
+    case SIP_PDU::Failure_PaymentRequired:
+      info = _("Payment required");
+      break;
+
+    case SIP_PDU::Failure_Forbidden:
+      info = _("Forbidden, please check that username and password are correct");
+      break;
+
+    case SIP_PDU::Failure_NotFound:
+      info = _("Not found");
+      break;
+
+    case SIP_PDU::Failure_MethodNotAllowed:
+      info = _("Method not allowed");
+      break;
+
+    case SIP_PDU::Failure_NotAcceptable:
+      info = _("Not acceptable");
+      break;
+
+    case SIP_PDU::Failure_ProxyAuthenticationRequired:
+      info = _("Proxy authentication required");
+      break;
+
+    case SIP_PDU::Failure_RequestTimeout:
+      info = _("Timeout");
+      break;
+
+    case SIP_PDU::Failure_Conflict:
+      info = _("Conflict");
+      break;
+
+    case SIP_PDU::Failure_LengthRequired:
+      info = _("Length required");
+      break;
+
+    case SIP_PDU::Failure_RequestEntityTooLarge:
+      info = _("Request entity too big");
+      break;
+
+    case SIP_PDU::Failure_RequestURITooLong:
+      info = _("Request URI too long");
+      break;
+
+    case SIP_PDU::Failure_UnsupportedMediaType:
+      info = _("Unsupported media type");
+      break;
+
+    case SIP_PDU::Failure_UnsupportedURIScheme:
+      info = _("Unsupported URI scheme");
+      break;
+
+    case SIP_PDU::Failure_BadExtension:
+      /* Translators:  The extension we are trying to register does not exist.
+       * Here extension is a specific "phone number", see
+       * http://en.wikipedia.org/wiki/Extension_(telephone)
+       * for more information */
+      info = _("Bad extension");
+      break;
+
+    case SIP_PDU::Failure_ExtensionRequired:
+      info = _("Extension required");
+      break;
+
+    case SIP_PDU::Failure_IntervalTooBrief:
+      info = _("Interval too brief");
+      break;
+
+    case SIP_PDU::Failure_TemporarilyUnavailable:
+      info = _("Temporarily unavailable");
+      break;
+
+    case SIP_PDU::Failure_LoopDetected:
+      info = _("Loop detected");
+      break;
+
+    case SIP_PDU::Failure_TooManyHops:
+      info = _("Too many hops");
+      break;
+
+    case SIP_PDU::Failure_AddressIncomplete:
+      info = _("Address incomplete");
+      break;
+
+    case SIP_PDU::Failure_Ambiguous:
+      info = _("Ambiguous");
+      break;
+
+    case SIP_PDU::Failure_BusyHere:
+      info = _("Busy Here");
+      break;
+
+    case SIP_PDU::Failure_RequestTerminated:
+      info = _("Request terminated");
+      break;
+
+    case SIP_PDU::Failure_NotAcceptableHere:
+      info = _("Not acceptable here");
+      break;
+
+    case SIP_PDU::Failure_BadEvent:
+      info = _("Bad event");
+      break;
+
+    case SIP_PDU::Failure_RequestPending:
+      info = _("Request pending");
+      break;
+
+    case SIP_PDU::Failure_Undecipherable:
+      info = _("Undecipherable");
+      break;
+
+    case SIP_PDU::Failure_InternalServerError:
+      info = _("Internal server error");
+      break;
+
+    case SIP_PDU::Failure_NotImplemented:
+      info = _("Not implemented");
+      break;
+
+    case SIP_PDU::Failure_BadGateway:
+      info = _("Bad gateway");
+      break;
+
+    case SIP_PDU::Failure_ServiceUnavailable:
+      info = _("Service unavailable");
+      break;
+
+    case SIP_PDU::Failure_ServerTimeout:
+      info = _("Server timeout");
+      break;
+
+    case SIP_PDU::Failure_SIPVersionNotSupported:
+      info = _("SIP version not supported");
+      break;
+
+    case SIP_PDU::Failure_MessageTooLarge:
+      info = _("Message too large");
+      break;
+
+    case SIP_PDU::GlobalFailure_BusyEverywhere:
+      info = _("Busy everywhere");
+      break;
+
+    case SIP_PDU::GlobalFailure_Decline:
+      info = _("Decline");
+      break;
+
+    case SIP_PDU::GlobalFailure_DoesNotExistAnywhere:
+      info = _("Does not exist anymore");
+      break;
+
+    case SIP_PDU::GlobalFailure_NotAcceptable:
+      info = _("Globally not acceptable");
+      break;
+
+    case SIP_PDU::Failure_TransactionDoesNotExist:
+    case SIP_PDU::Failure_Gone:
+    case SIP_PDU::MaxStatusCode:
+    default:
+      info = _("Failed");
+    }
+
+    /* Opal adds a RequestTerminated, and this should not be shown to user,
+     * as a sip code has already been scheduled to be shown
+     */
+    if (status.m_reason != SIP_PDU::Failure_RequestTerminated) {
+      Ekiga::Runtime::run_in_main (boost::bind (&Opal::Sip::EndPoint::registration_event_in_main, this, strm.str (), status.m_wasRegistering ? Account::RegistrationFailed : Account::UnregistrationFailed, info));
+    }
   }
 }
 

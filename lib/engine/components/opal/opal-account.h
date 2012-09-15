@@ -80,8 +80,6 @@ public:
              bool enabled,
              unsigned timeout);
 
-    virtual ~Account ();
-
     const std::string get_name () const;
 
     const std::string get_status () const;

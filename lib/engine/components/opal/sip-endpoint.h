@@ -145,12 +145,7 @@ namespace Opal {
 		     SIPRegister::CompatibilityModes compat_mode,
 		     unsigned timeout);
 
-      void OnRegistered (const PString & aor,
-                         bool wasRegistering);
-
-      void OnRegistrationFailed (const PString & aor,
-                                 SIP_PDU::StatusCodes reason,
-                                 bool wasRegistering);
+      void OnRegistrationStatus (const RegistrationStatus & status);
 
       void OnMWIReceived (const PString & party,
                           OpalManager::MessageWaitingType type,

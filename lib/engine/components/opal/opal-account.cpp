@@ -65,7 +65,6 @@ Opal::Account::Account (Ekiga::ServiceCore & _core,
 {
   endpoint = core.get<Sip::EndPoint> ("opal-sip-endpoint");
   notification_core = core.get<Ekiga::NotificationCore> ("notification-core");
-  dead = false;
   state = Unregistered;
   status = _("Unregistered");
   message_waiting_number = 0;
@@ -158,7 +157,6 @@ Opal::Account::Account (Ekiga::ServiceCore & _core,
   endpoint = core.get<Sip::EndPoint> ("opal-sip-endpoint");
   notification_core = core.get<Ekiga::NotificationCore> ("notification-core");
 
-  dead = false;
   state = Unregistered;
   status = "";
   message_waiting_number = 0;
@@ -184,18 +182,8 @@ Opal::Account::Account (Ekiga::ServiceCore & _core,
 }
 
 
-Opal::Account::~Account ()
-{
-  if (!dead && state == Registered)
-    endpoint->unsubscribe (*this, presentity);
-}
-
-
 const std::string Opal::Account::as_string () const
 {
-  if (dead)
-    return "";
-
   std::stringstream str;
 
   str << enabled << "|1|"
@@ -365,7 +353,6 @@ SIPRegister::CompatibilityModes Opal::Account::get_compat_mode () const
 void Opal::Account::remove ()
 {
   enabled = false;
-  dead = true;
 
   endpoint->unsubscribe (*this, presentity);
 
@@ -621,8 +608,7 @@ Opal::Account::handle_registration_event (RegistrationState state_,
     updated ();
     /* delay destruction of this account until the
        unsubscriber thread has called back */
-    if (dead)
-      removed ();
+    removed ();
     break;
 
   case UnregistrationFailed:
