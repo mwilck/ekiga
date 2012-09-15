@@ -337,6 +337,7 @@ gm_accounts_window_update_account (GtkWidget *accounts_window,
 
       self->priv->toolbar.reset ();
       account->populate_menu (self->priv->toolbar);
+      populate_menu (accounts_window);
     }
   }
 }
