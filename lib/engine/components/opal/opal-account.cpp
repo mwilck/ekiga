@@ -604,6 +604,7 @@ Opal::Account::handle_registration_event (RegistrationState state_,
     // "(you are) unregistered", and not as "(you have been) unregistered"
     status = _("Unregistered");
     failed_registration_already_notified = false;
+    state = state_;
 
     updated ();
     /* delay destruction of this account until the
@@ -613,6 +614,7 @@ Opal::Account::handle_registration_event (RegistrationState state_,
 
   case UnregistrationFailed:
 
+    state = state_;
     status = _("Could not unregister");
     failed_registration_already_notified = false;
     if (!info.empty ())
@@ -622,6 +624,7 @@ Opal::Account::handle_registration_event (RegistrationState state_,
 
   case RegistrationFailed:
 
+    state = state_;
     switch (compat_mode) {
     case SIPRegister::e_FullyCompliant:
       // FullyCompliant did not work, try next compat mode
@@ -649,28 +652,33 @@ Opal::Account::handle_registration_event (RegistrationState state_,
       if (!info.empty ())
         status = status + " (" + info + ")";
       if (!failed_registration_already_notified) {
-        updated ();
         std::stringstream msg;
         msg << _("Could not register to ") << get_name ();
         boost::shared_ptr<Ekiga::Notification> notif (new Ekiga::Notification (Ekiga::Notification::Warning, msg.str (), info, _("Edit"), boost::bind (&Opal::Account::edit, (Opal::Account*) this)));
         notification_core->push_notification (notif);
       }
+      updated ();
       failed_registration_already_notified = true;
       break;
     default:
+
+      state = state_;
+      updated();
       break;
     }
     break;
 
   case Processing:
 
+    state = state_;
     status = _("Processing...");
     updated ();
   default:
+
+    state = state_;
+    updated();
     break;
   }
-
-  state = state_;
 }
 
 void
