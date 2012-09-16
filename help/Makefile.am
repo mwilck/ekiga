@@ -11,6 +11,7 @@ DOC_MODULE = @PACKAGE_NAME@
 DOC_ENTITIES =
 DOC_INCLUDES =
 DOC_FIGURES = figures/lumi.png \
+              figures/call_window.png \
               figures/config_d1.png \
               figures/config_d2.png \
               figures/config_d3.png \
@@ -24,6 +25,7 @@ DOC_FIGURES = figures/lumi.png \
               figures/roster.png \
               figures/addressbook_d1.png \
               figures/addressbook_d2.png \
+              figures/addressbook_d3.png \
               figures/chat_d1.png \
               figures/status.png \
               figures/call_history.png \

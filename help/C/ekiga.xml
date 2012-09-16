@@ -303,7 +303,7 @@ If everything is correct please press the 'Apply' button to save the configurati
 
 <para>You can use the online address book of <application>&app;</application> to find the SIP addresses of other <application>&app;</application> users. It is of course possible to call users who are using another provider than ekiga.net. You can actually call any user using SIP software or hardware, and registered to any public SIP provider</para>
 
-<para>If you know the URI address of the party that you wish to call, you may choose the Call a number menu and enter that URI into the sip: input box at the bottom of the window and press the Connect button; eg: sip:foo@ekiga.net and pressing the Connect button would call the user at that address.</para>
+<para>If you know the URI address of the party that you wish to call, you may choose the Chat -> Call a number action, enter that URI into the sip: input box at the bottom of the window and press the Connect button; eg: sip:foo@ekiga.net and clicking on the Connect button would call the user at that address.</para>
 
 <para>It is also possible to call contacts using the address book, the call history or the roster. You can add contacts you call frequently to your roster, and watch their presence information in order to know when they are available. Please refer to the appropriate section of the manual for full explanations.</para>
 
@@ -313,7 +313,7 @@ If everything is correct please press the 'Apply' button to save the configurati
 <section><title>From computer to real phones (PC-To-Phone)</title>
 <para><application>&app;</application> can be used with several Internet Telephony Service Providers. Those providers will allow calling real phones from your computer using <application>&app;</application> at interesting rates. We recommend you use the default <application>&app;</application> provider. You can get an account using the links in the configuration assistant as described above.</para>
 
-<para>With the default setup, you can simply use sip:3210444555 and select sip.diamondcard.us in the list to call the real phone number +3210444555, 32 is the country code, 10444555 is the number to call.</para>
+<para>With the default setup, you can simply use sip:3210444555 and select sip.diamondcard.us in the list to call the real phone number +3210444555, 32 being the country code and 10444555 being the number you wish to call.</para>
 
 <para>You can also dial real phone numbers from the address book. If the phone number of the contact you want to call is stored in the address book, simply select Action -> Call [Ekiga Call Out] when the contact is highlighted. It will dial the phone number of the contact using the Ekiga Call Out account.</para>
 
@@ -331,13 +331,12 @@ If everything is correct please press the 'Apply' button to save the configurati
 
 <section id="ekiga-manage-contacts">
 <title>Managing Contacts</title>
-<section><title>Adding contacts to the roster</title>
 
+<section><title>Adding contacts to the roster</title>
 <graphic fileref="figures/roster.png"></graphic>
 
 <para>
-<application>&app;</application> allows you to add the contacts you dial the most in the roster. It allows to call them or start a chat conversation with your friends without having to remember their URI.
-If supported by the service, <application>&app;</application> will display <emphasis>extended presence information</emphasis> about your friends.
+<application>&app;</application> allows you to add the contacts you dial the most in the roster. It allows calling or start a chat conversation with your friends without having to remember their URI. If supported by the service you are connecting to, <application>&app;</application> will display <emphasis>extended presence information</emphasis> about your friends.
 Ekiga.net supports publishing presence information for its users. Software PBX systems like <ulink url="http://www.asterisk.org" type="http">Asterisk</ulink> can report if a user is on the phone or not, and <application>&app;</application> will display that information in its roster.
 </para>
 
@@ -350,30 +349,32 @@ You can thus use <application>&app;</application> to monitor lines on your PBX.
 </para>
 
 <para>
-To add a contact to the roster, select Chat->Add Contact, and fill in the required fields. If the service managing the URI you entered for the contact is able to publish presence status, Ekiga will automatically display it.
+To add a contact to the roster, select Chat -> Add Contact, and fill in the required fields. If the service managing the URI you entered for the contact is able to publish presence status, Ekiga will automatically display it.
 </para>
 
 <para>
-If you do not know the VoIP URI of a contact, you might try searching for him using the Ekiga.net online directory. To do so, select Chat -> Address Book, and start searching using the 'Search Filter' feature.
+If you do not know the VoIP URI of a contact, you might try searching for him/her using the Ekiga.net online directory. To do so, select Chat -> Address Book, and start searching using the 'Search Filter' feature.
 </para>
 
 <tip><title>Tip</title><para>You can organise your contacts in groups in the roster.</para></tip>
+</section>
 
 <section><title>Managing contacts</title>
-
 <graphic fileref="figures/addressbook_d1.png"></graphic>
 
 <para>
-<application>&app;</application> allows you to look for contacts using various sources like the <ulink url="http://www.novell.com/products/evolution" type="http">Novell Evolution</ulink> address book, an LDAP directory or the Ekiga.net contact directory. You can use the result of your search to start a chat, call the contact, or simply add him to your roster if you have frequent calls with him. To start looking for contacts, select Chat -> Address Book in the menu.
-To your left there will be a list dialog showing the LDAP directories as well as a list of local Address Books. The defaults are the <application>&app;</application> white pages, and the personal address book from <ulink url="http://www.novell.com/products/evolution" type="http">Novell Evolution</ulink>. Support for more contact sources is possible.
+<application>&app;</application> allows you to look for contacts using various sources like the <ulink url="https://www.suse.com/products/desktop/features/evolution.html" type="http">Novell Evolution Email and Calendaring</ulink> address book, any LDAP directory or the Ekiga.net contact directory. You can use the result of your search to start a chat, call the contact, or simply add him to your roster if you have frequent calls with him. To start looking for contacts, select Chat -> Address Book in the menu.
+To your left there will be a list dialog showing the LDAP directories as well as a list of local Address Books. The defaults are the <application>&app;</application> white pages, and the personal address book from <ulink url="https://www.suse.com/products/desktop/features/evolution.html" type="http">Novell Evolution</ulink>. Support for more contact sources is possible.
 </para>
 
 <para>
 <application>&app;</application> is able to browse any LDAP directory and use any attribute as the calling URI. For example, you could have an LDAP directory in your company, with a specific attribute containing the local extensions of all your colleagues. <application>&app;</application> is able to use such an LDAP directory. Simply select in Address Book -> Add an LDAP Address Book, and fill in the required details. You can then right-click on the contact and call him using the call attribute as VoIP URI.
 </para>
 
+<graphic fileref="figures/addressbook_d2.png"></graphic>
+
 <para>
-The LDAP Address Book supports a range of settings to allow it to work with any LDAPv3 directory. It allows you to choose the attribute to use for displaying a contact's name in the address book as well as a list of attributes for callng info. E.g., if the directory uses the LDAP inetOrgPerson schema you can configure the Address Book to retrieve the homePhone, mobile, and pager attributes make those values available for calling or messaging. You can also customize a Filter Template for the default LDAP search filter, and override the default filter at any time if you need to perform a more specialized search. The browser also supports all security options for LDAP including ldaps:// (LDAP over SSL), StartTLS, and SASL authentication.
+The LDAP Address Book supports a range of settings to allow it to work with any LDAPv3 directory. It allows you to choose the attribute to use for displaying a contact's name in the address book as well as a list of attributes for calling info. E.g., if the directory uses the LDAP inetOrgPerson schema you can configure the Address Book to retrieve the homePhone, mobile, and pager attributes make those values available for calling or messaging. You can also customize a Filter Template for the default LDAP search filter, and override the default filter at any time if you need to perform a more specialized search. The browser also supports all security options for LDAP including ldaps:// (LDAP over SSL), StartTLS, and SASL authentication.
 </para>
 
 <para>
@@ -384,28 +385,24 @@ To refresh the list of users for a specific address book, simply click the Find 
 In certain cases you will want to search specifically for a person name, or his or her call URI in the <application>&app;</application> white pages. The address book window allows you to apply filters when searching for contacts. When searching an LDAP directory, entering a simple name in the Search Filter field will perform an LDAP Substring search using the configured Filter Template. If you need to perform a more specialized search you can enter a complete LDAP Filter string, and it will be used instead of the configured Filter Template.
 </para>
 
-<tip><title>Tip</title><para>The <application>&app;</application> white pages will allow you to look for users in your region. It returns a limited number of results corresponding to your search. You can then add them to your personal roster to call them later.</para></tip>
+<tip><title>Tip</title><para>The <application>&app;</application> white pages return a limited number of results corresponding to your search. You can then add them to your personal roster to call them later.</para></tip>
 </section>
 
 <section><title>Editing contacts</title>
-
-<graphic fileref="figures/addressbook_d2.png"></graphic>
+<graphic fileref="figures/addressbook_d3.png"></graphic>
 
 <para>
-Local address books provided by Novell Evolution allow you to add new contacts, or to edit existing contacts. Each different address book allows a different set of features depending on what makes sense for the address book in question. To discover what features are possible, simply select the address book and consult the Action menu.
+Local address books provided by Novell Evolution allow you to add new contacts, or to edit existing contacts. Each different address book allows a different set of features depending on what makes sense for that specific address book. To discover what features are possible, simply select the address book and consult the Action menu, or right-click on the address book name.
 </para>
 
 <para>
-To add a contact to one of your local address books, simply select the address book you wish to add the contact to and select Action -> New Contact. The option of adding a New Contact will appear and you may now enter his name and VoIP URI as well as other settings. After complete select 'OK' and now your contact has been added. You can only add contacts to local address books. The contact parameters can be changed at any time by selecting Action -> Properties when the contact is highlighted. He can also be deleted by selecting Action -> Remove.
+To add a contact to one of your local address books, simply select the address book you wish to add the contact to and select Action -> New Contact. The option of adding a New Contact will appear and you may now enter his name and VoIP URI as well as other settings. When finished, select 'OK' and your contact has been added. You can only add contacts to local address books. The contact parameters can be changed at any time by selecting Action -> Edit when the contact is highlighted. He can also be deleted by selecting Action -> Remove.
 </para>
 
 <para>
-You can also add a contact from the white pages (or any other local or remote address book) to the roster by selecting Action -> Add to local roster when the contact is highlighted.
+You can also add a contact from the white pages (or any other local or remote address book) to the roster by selecting Action -> Add to local roster.
 </para>
 
-<para>
-Finally, you can edit the groups your users belong to using the Action -> Properties dialog when the contact is highlighted.
-</para>
 </section>
 
 </section>
@@ -420,7 +417,7 @@ Finally, you can edit the groups your users belong to using the Action -> Proper
 </para>
 
 <para>
-You can send instant messages from the roster, from the call history or from the address book. From the roster or from the call history, simply select Contact -> Message in the main window when a contact is highlighted. From the address book window, simply select Action -> Message when the contact is highlighted. A window pops up, enter your text message, and hit the Enter key.
+You can send instant messages from the roster, from the call history or from the address book. From the roster or from the call history, simply select Chat -> Contact -> Message in the main window when a contact is highlighted. From the address book window, simply select Action -> Message when the contact is highlighted. A window pops up, enter your text message, and hit the Enter key.
 </para>
 
 <tip><title>Tip</title><para>You can not exchange text messages with all protocols. <application>&app;</application> will only display the Message menu item when the protocol associated with the user permits it.</para></tip>
@@ -437,7 +434,7 @@ You can send instant messages from the roster, from the call history or from the
 </para>
 
 <para>
-There are three categories of status messages : online, away and do not disturb. Each of them allows you to specify a more complete status information. Simply select Custom message in the status menu at the bottom of the main window. You can then define your extended status message that will be published using all available protocols supporting it.
+There are three categories of status messages : online, away and busy. Each of them allows you to specify a more complete status information. Simply select Custom message in the status menu at the bottom of the main window. You can then define your extended status message that will be published using all available protocols supporting it.
 </para>
 
 <tip><title>Tip</title><para>Many servers will not support relaying your extended presence information. To make sure that this feature is available with the server you are using or with the PBX you are connected to, please ask your administrator. Please note that Ekiga.net will publish your presence information.</para></tip>
@@ -458,7 +455,9 @@ Notice that you need to specify an URI where to forward calls in the preferences
 </section>
 
 <section><title>Controlling the call</title>
-<para><application>&app;</application> supports several actions which can be performed when in a call. These actions enable you to control active sessions.</para>
+<para><application>&app;</application> supports several actions which can be performed when being in a call. These actions enable you to control active sessions. It can be done using the menu and toolbar icons from the call window that appears as soon as a call is setup.</para>
+
+<graphic fileref="figures/call_window.png"></graphic>
 
 <itemizedlist>
 <listitem>
@@ -470,11 +469,11 @@ Notice that you need to specify an URI where to forward calls in the preferences
 </listitem>
 
 <listitem>
-<para>Suspend Audio: This effectively prevents all Audio communication to your respective party when selecting Call -> Mute Audio.</para>
+<para>Suspending Audio: This effectively prevents all Audio communication to your respective party when selecting Call -> Mute Audio.</para>
 </listitem>
 
 <listitem>
-<para>Suspend Video: This effectively prevents all Video transmission to your respective party when selecting Call -> Suspend Video.</para>
+<para>Suspending Video: This effectively prevents all Video transmission to your respective party when selecting Call -> Suspend Video.</para>
 </listitem>
 
 <listitem>
@@ -487,7 +486,7 @@ Notice that you need to specify an URI where to forward calls in the preferences
 
 <section><title>Adjusting the audio and video settings</title>
 <para>
-Your audio and video settings can be adjusted through the call panel while you are in a call. The audio volume, but also the brightness, whiteness, color and contrast of your video input device can be changed to achieve the best quality.
+Your audio and video settings can be adjusted through the call window while you are in a call. The audio volume, but also the brightness, whiteness, color and contrast of your video input device can be changed to achieve the best quality.
 </para>
 
 <para>
@@ -499,32 +498,11 @@ You can also change your audio and video devices during a call. Simply go in the
 
 <graphic fileref="figures/call_history.png"></graphic>
 
-<para>The Call History stores information (date, duration, URI, Remote user) about all outgoing and incoming calls. They are divided into three groups - received calls, placed calls and missed calls. You can consult the call history by selecting View -> Call History in the menu.
-<itemizedlist>
-<listitem>
-<para>
-Received calls contains all incoming calls which were accepted by <application>&app;</application>
-</para>
-</listitem>
-
-<listitem>
-<para>
-Placed calls keeps track of all attempts - successful or not - to call another user.
-</para>
-</listitem>
-
-<listitem>
-<para>
-Missed calls shows incoming calls which timed out.
-</para>
-</listitem>
-</itemizedlist>
-</para>
+<para>The Call History stores information (date, duration, URI, Remote user) about all outgoing and incoming calls. They are divided into three groups - received calls, placed calls and missed calls. You can consult the call history by selecting View -> Call History in the menu or by clicking on the appropriate icon in the toolbar.</para>
 
 <tip><title>Tip</title><para>Double-clicking on a row in the Calls History will call back the selected user or transfer any active call to that user. Notice that you can also add the contact to your roster by selecting Chat -> Contact -> Add to local roster in the main menu when the call is highlighted.</para></tip>
 </section>
 
-</section>
 </section>
 </section>
 
@@ -539,7 +517,7 @@ Missed calls shows incoming calls which timed out.
 <graphic fileref="figures/accounts_d1.png"></graphic>
 
 <para>
-You can open the accounts window by selecting Edit -> Accounts. This will open the Accounts Window. The Accounts Window will allow you to add Ekiga.net, Ekiga Call Out, SIP and H.323 accounts and to register to them.
+You can open the accounts window by selecting Edit -> Accounts. This will open the accounts window. The accounts window will allow you to add Ekiga.net, Ekiga Call Out, SIP and H.323 accounts and to register to them.
 An account describes the user login and password parameters to register to SIP and H.323 services. Those <emphasis>services</emphasis> can be an Internet Telephony Service provider (like ekiga.net), or an IPBX (like CISCO, Nortel, or Asterisk).
 </para>
 </section>
@@ -775,7 +753,7 @@ The main port used to listen for incoming connections in <application>&app;</app
 
 <section id="ekiga-about">
 <title>About <application>&app;</application></title>
-<para><application>&app;</application> is written by Damien Sandras (<email>dsandras@seconix.com</email>) with the help of Eugen Dedu (<email>Eugen.Dedu@pu-pm.univ-fcomte.fr</email>) and Julien Puydt (<email>jpuydt@free.fr</email>) help currently.
+<para><application>&app;</application> is written by Damien Sandras (<email>dsandras@seconix.com</email>) with the help of many volunteers. Active maintainers are Damien Sandras (<email>dsandras@seconix.com</email>), Eugen Dedu (<email>Eugen.Dedu@pu-pm.univ-fcomte.fr</email>) and Julien Puydt (<email>jpuydt@free.fr</email>).
 To find more information about <application>&app;</application>, please visit the <ulink url="http://www.ekiga.org" type="http"><application>&app;</application> Home Page</ulink>.
 </para>
 
