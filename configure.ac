@@ -151,7 +151,12 @@ IT_PROG_INTLTOOL([0.35.0])
 dnl ###############################
 dnl   Mandatory GTK+ support
 dnl ###############################
-PKG_CHECK_MODULES([GTK], [gtk+-2.0 >= 2.20.0 gnome-icon-theme >= 3.0.0])
+# on Windows the icons are manually copied in the installer
+if test "x${gm_platform}" = "xmingw" ; then
+   PKG_CHECK_MODULES([GTK], [gtk+-2.0 >= 2.20.0])
+else
+   PKG_CHECK_MODULES([GTK], [gtk+-2.0 >= 2.20.0 gnome-icon-theme >= 3.0.0])
+fi
 PKG_CHECK_MODULES([GLIB], [glib-2.0 >= 2.24.0 gmodule-2.0 gobject-2.0 gthread-2.0])
 AC_ARG_ENABLE([gtk-debug],
               [AS_HELP_STRING([--enable-gtk-debug],[enable GTK+ debug flags (default is disabled)])],
