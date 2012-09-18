@@ -108,7 +108,7 @@ LM::Bank::~Bank ()
 bool
 LM::Bank::populate_menu (Ekiga::MenuBuilder& builder)
 {
-  builder.add_action ("add", _("_Add a jabber/XMPP account"),
+  builder.add_action ("add", _("_Add a Jabber/XMPP Account"),
 		      boost::bind (&LM::Bank::new_account, this));
   return true;
 }
@@ -127,7 +127,7 @@ LM::Bank::new_account ()
   request->text ("server", _("Server:"), "", "");
   request->text ("resource", _("Resource:"), "", "");
   request->private_text ("password", _("Password:"), "", "");
-  request->boolean ("enabled", _("Enable Account"), true);
+  request->boolean ("enabled", _("Enable account"), true);
 
   questions (request);
 }

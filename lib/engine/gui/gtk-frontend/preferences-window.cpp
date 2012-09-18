@@ -718,7 +718,7 @@ gm_pw_init_sip_page (GtkWidget *prefs_window,
   subsection = gnome_prefs_subsection_new (prefs_window, container,
                                            _("Misc Settings"), 2, 2);
 
-  gnome_prefs_entry_new (subsection, _("_Outbound Proxy:"), SIP_KEY "outbound_proxy_host", _("The SIP Outbound Proxy to use for outgoing calls"), 0, false);
+  gnome_prefs_entry_new (subsection, _("_Outbound proxy:"), SIP_KEY "outbound_proxy_host", _("The SIP Outbound Proxy to use for outgoing calls"), 0, false);
 
   entry =
     gnome_prefs_entry_new (subsection, _("Forward _URI:"), SIP_KEY "forward_host", _("The host where calls should be forwarded if call forwarding is enabled"), 1, false);
@@ -754,7 +754,7 @@ gm_pw_init_audio_devices_page (GtkWidget *prefs_window,
   gm_prefs_window_get_audiooutput_devices_list (pw->core, device_list);
   array = gm_prefs_window_convert_string_list(device_list);
   pw->sound_events_output =
-    gnome_prefs_string_option_menu_new (subsection, _("Ringing Device"), (const gchar **)array, SOUND_EVENTS_KEY "output_device", _("Select the ringing audio device to use"), 0, DEFAULT_AUDIO_DEVICE_NAME);
+    gnome_prefs_string_option_menu_new (subsection, _("Ringing device:"), (const gchar **)array, SOUND_EVENTS_KEY "output_device", _("Select the ringing audio device to use"), 0, DEFAULT_AUDIO_DEVICE_NAME);
   pw->audio_player =
     gnome_prefs_string_option_menu_new (subsection, _("Output device:"), (const gchar **)array, AUDIO_DEVICES_KEY "output_device", _("Select the audio output device to use"), 1, DEFAULT_AUDIO_DEVICE_NAME);
   g_free (array);
@@ -974,7 +974,7 @@ gm_pw_init_video_codecs_page (GtkWidget *prefs_window,
 				_("Settings"), 3, 1);
 
   /* Translators: the full sentence is Keep a minimum video quality of X % */
-  gnome_prefs_scale_new (subsection, _("Picture Quality"), _("Frame Rate"), VIDEO_CODECS_KEY "temporal_spatial_tradeoff", _("Choose if you want to guarantee a minimum image quality (possibly leading to dropped frames in order not to surpass the bitrate limit) or if you prefer to keep the frame rate"), 0.0, 32.0, 1.0, 2);
+  gnome_prefs_scale_new (subsection, _("Picture quality"), _("Frame rate"), VIDEO_CODECS_KEY "temporal_spatial_tradeoff", _("Choose if you want to guarantee a minimum image quality (possibly leading to dropped frames in order not to surpass the bitrate limit) or if you prefer to keep the frame rate"), 0.0, 32.0, 1.0, 2);
 
   gnome_prefs_spin_new (subsection, _("Maximum video _bitrate (in kbits/s):"), VIDEO_CODECS_KEY "maximum_video_tx_bitrate", _("The maximum video bitrate in kbits/s. The video quality and the effective frame rate will be dynamically adjusted to keep the bitrate at the given value."), 16.0, 10240.0, 1.0, 1, NULL, true);
 }

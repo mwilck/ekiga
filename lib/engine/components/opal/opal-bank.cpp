@@ -115,7 +115,7 @@ Opal::Bank::new_account (Account::Type acc_type,
     request->hidden ("host", "sip.diamondcard.us");
     request->text ("user", _("_Account ID:"), username, _("The user name, e.g. jim"));
     request->hidden ("authentication_user", username);
-    request->private_text ("password", _("_PIN Code:"), password, _("Password associated to the user"));
+    request->private_text ("password", _("_PIN code:"), password, _("Password associated to the user"));
     request->hidden ("timeout", "3600");
     break;
 
@@ -133,12 +133,12 @@ Opal::Bank::new_account (Account::Type acc_type,
     request->text ("name", _("_Name:"), std::string (), _("Account name, e.g. MyAccount"));
     request->text ("host", _("_Registrar:"), std::string (), _("The registrar, e.g. ekiga.net"));
     request->text ("user", _("_User:"), username, _("The user name, e.g. jim"));
-    request->text ("authentication_user", _("_Authentication User:"), std::string (), _("The user name used during authentication, if different than the user name; leave empty if you do not have one"));
+    request->text ("authentication_user", _("_Authentication user:"), std::string (), _("The user name used during authentication, if different than the user name; leave empty if you do not have one"));
     request->private_text ("password", _("_Password:"), password, _("Password associated to the user"));
     request->text ("timeout", _("_Timeout:"), "3600", _("Time in seconds after which the account registration is automatically retried"));
     break;
   }
-  request->boolean ("enabled", _("Enable Account"), true);
+  request->boolean ("enabled", _("Enable account"), true);
 
   if (!username.empty () && !password.empty ())
     request->submit (*request);

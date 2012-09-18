@@ -1278,7 +1278,7 @@ ekiga_main_window_init_menu (EkigaMainWindow *mw)
 		      GTK_STOCK_EXECUTE, 0,
 		      NULL, NULL, FALSE),
 
-      GTK_MENU_THEME_ENTRY("connect", _("Ca_ll a number"), _("Place a new call"),
+      GTK_MENU_THEME_ENTRY("connect", _("Ca_ll a Number"), _("Place a new call"),
                            "phone-pick-up", 'o',
                            G_CALLBACK (show_dialpad_cb), mw, TRUE),
 
@@ -1359,7 +1359,7 @@ ekiga_main_window_init_menu (EkigaMainWindow *mw)
 
       GTK_MENU_SEPARATOR,
 
-      GTK_MENU_TOGGLE_ENTRY ("showofflinecontacts", _("Show offline _contacts"), _("Show offline contacts"),
+      GTK_MENU_TOGGLE_ENTRY ("showofflinecontacts", _("Show Offline _Contacts"), _("Show offline contacts"),
                              NULL, 0,
                              G_CALLBACK (toggle_menu_changed_cb),
                              (gpointer) CONTACTS_KEY "show_offline_contacts",

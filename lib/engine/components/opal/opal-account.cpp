@@ -426,11 +426,11 @@ void Opal::Account::edit ()
   if (get_protocol_name () == "SIP")
     /* Translators:
      * SIP knows two usernames: The name for the client ("User") and the name
-     * for the authentication procedure ("Authentication User") */
-    request->text ("authentication_user", _("Authentication User:"), get_authentication_username (), _("The user name used during authentication, if different than the user name; leave empty if you do not have one"));
+     * for the authentication procedure ("Authentication user") */
+    request->text ("authentication_user", _("Authentication user:"), get_authentication_username (), _("The user name used during authentication, if different than the user name; leave empty if you do not have one"));
   request->private_text ("password", _("Password:"), get_password (), _("Password associated to the user"));
   request->text ("timeout", _("Timeout:"), str.str (), _("Time in seconds after which the account registration is automatically retried"));
-  request->boolean ("enabled", _("Enable Account"), enabled);
+  request->boolean ("enabled", _("Enable account"), enabled);
 
   questions (request);
 }

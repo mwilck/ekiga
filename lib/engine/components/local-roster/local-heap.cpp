@@ -115,7 +115,7 @@ Local::Heap::get_name () const
 bool
 Local::Heap::populate_menu (Ekiga::MenuBuilder &builder)
 {
-  builder.add_action ("new", _("New contact"),
+  builder.add_action ("new", _("_New Contact"),
 		      boost::bind (&Local::Heap::new_presentity, this, "", ""));
   return true;
 }
