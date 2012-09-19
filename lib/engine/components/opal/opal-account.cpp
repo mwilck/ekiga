@@ -69,6 +69,7 @@ Opal::Account::Account (Ekiga::ServiceCore & _core,
   status = _("Unregistered");
   message_waiting_number = 0;
   failed_registration_already_notified = false;
+  dead = false;
 
   int i = 0;
   char *pch = strtok ((char *) account.c_str (), "|");
@@ -174,6 +175,7 @@ Opal::Account::Account (Ekiga::ServiceCore & _core,
   timeout = _timeout;
   type = t;
   failed_registration_already_notified = false;
+  dead = false;
 
   setup_presentity ();
 
@@ -185,6 +187,9 @@ Opal::Account::Account (Ekiga::ServiceCore & _core,
 const std::string Opal::Account::as_string () const
 {
   std::stringstream str;
+
+  if (dead)
+    return "";
 
   str << enabled << "|1|"
       << aid << "|"
@@ -352,12 +357,14 @@ SIPRegister::CompatibilityModes Opal::Account::get_compat_mode () const
 
 void Opal::Account::remove ()
 {
-  enabled = false;
+  dead = true;
 
   endpoint->unsubscribe (*this, presentity);
 
+  if (!enabled)
+    removed ();
   trigger_saving ();
-  removed ();
+  enabled = false;
 }
 
 
@@ -609,7 +616,8 @@ Opal::Account::handle_registration_event (RegistrationState state_,
     updated ();
     /* delay destruction of this account until the
        unsubscriber thread has called back */
-    removed ();
+    if (dead)
+      removed ();
     break;
 
   case UnregistrationFailed:
