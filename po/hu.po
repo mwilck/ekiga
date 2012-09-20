@@ -9,10 +9,9 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: ekiga master\n"
-"Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?"
-"product=ekiga&keywords=I18N+L10N&component=general\n"
-"POT-Creation-Date: 2012-08-23 20:44+0000\n"
-"PO-Revision-Date: 2012-09-03 11:01+0200\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2012-09-20 16:21+0200\n"
+"PO-Revision-Date: 2012-09-20 16:21+0200\n"
 "Last-Translator: Gabor Kelemen <kelemeng at gnome dot hu>\n"
 "Language-Team: Hungarian <gnome-hu-list at gnome dot org>\n"
 "Language: hu\n"
@@ -110,7 +109,6 @@ msgid "Display images from your camera device"
 msgstr "Képek megjelenítése a kamerából"
 
 #: ../ekiga.schemas.in.in.h:15
-#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:977
 msgid "Frame Rate"
 msgstr "Sebesség"
 
@@ -440,7 +438,6 @@ msgstr ""
 "összeomlaszthatja a Netmeeting egyes verzióit"
 
 #: ../ekiga.schemas.in.in.h:74
-#| msgid "Enable early H.245"
 msgid "Enable H.239"
 msgstr "H.239 engedélyezése"
 
@@ -894,8 +891,8 @@ msgstr "Elfogadás"
 #: ../lib/engine/components/local-roster/local-cluster.cpp:82
 #: ../lib/engine/components/local-roster/local-heap.cpp:118
 #: ../plugins/evolution/evolution-book.cpp:343
-msgid "New contact"
-msgstr "Új partner"
+msgid "_New Contact"
+msgstr "Ú_j névjegy"
 
 #: ../lib/engine/components/local-roster/local-heap.cpp:94
 msgid "Services"
@@ -975,7 +972,7 @@ msgstr ""
 #: ../lib/engine/components/local-roster/local-heap.cpp:236
 #: ../lib/engine/components/local-roster/local-heap.cpp:427
 #: ../lib/engine/components/local-roster/local-presentity.cpp:270
-#: ../lib/engine/components/opal/opal-account.cpp:433
+#: ../lib/engine/components/opal/opal-account.cpp:427
 #: ../plugins/evolution/evolution-contact.cpp:324
 #: ../plugins/loudmouth/loudmouth-account.cpp:342
 #: ../plugins/loudmouth/loudmouth-bank.cpp:125
@@ -1036,7 +1033,7 @@ msgid "Unnamed"
 msgstr "Névtelen"
 
 #: ../lib/engine/components/local-roster/local-presentity.cpp:240
-#: ../lib/engine/components/opal/opal-account.cpp:388
+#: ../lib/engine/components/opal/opal-account.cpp:382
 #: ../plugins/evolution/evolution-contact.cpp:228
 #: ../plugins/loudmouth/loudmouth-presentity.cpp:160
 #: ../plugins/resource-list/rl-presentity.cpp:212
@@ -1045,8 +1042,8 @@ msgid "_Edit"
 msgstr "S_zerkesztés"
 
 #: ../lib/engine/components/local-roster/local-presentity.cpp:242
-#: ../lib/engine/components/opal/opal-account.cpp:390
-#: ../lib/engine/gui/gtk-frontend/accounts-window.cpp:681
+#: ../lib/engine/components/opal/opal-account.cpp:384
+#: ../lib/engine/gui/gtk-frontend/accounts-window.cpp:682
 #: ../plugins/evolution/evolution-contact.cpp:230
 #: ../plugins/loudmouth/loudmouth-account.cpp:445
 #: ../plugins/loudmouth/loudmouth-presentity.cpp:193
@@ -1102,74 +1099,74 @@ msgid "Bad username/password"
 msgstr "Hibás felhasználónév/jelszó"
 
 #: ../lib/engine/components/opal/h323-endpoint.cpp:346
-#: ../lib/engine/components/opal/sip-endpoint.cpp:604
+#: ../lib/engine/components/opal/sip-endpoint.cpp:603
 msgid "Transport error"
 msgstr "Átviteli hiba"
 
 #: ../lib/engine/components/opal/h323-endpoint.cpp:357
 #: ../lib/engine/components/opal/h323-endpoint.cpp:362
-#: ../lib/engine/components/opal/sip-endpoint.cpp:813
+#: ../lib/engine/components/opal/sip-endpoint.cpp:816
 msgid "Failed"
 msgstr "Sikertelen"
 
 #. Translators: this is a state, not an action, i.e. it should be read as
 #. "(you are) unregistered", and not as "(you have been) unregistered"
-#: ../lib/engine/components/opal/opal-account.cpp:70
-#: ../lib/engine/components/opal/opal-account.cpp:322
-#: ../lib/engine/components/opal/opal-account.cpp:618
+#: ../lib/engine/components/opal/opal-account.cpp:69
+#: ../lib/engine/components/opal/opal-account.cpp:315
+#: ../lib/engine/components/opal/opal-account.cpp:612
 msgid "Unregistered"
 msgstr "Regisztráció törölve"
 
 #. translators : the result will look like :
 #. * "registered (with 2 voice mail messages)"
 #.
-#: ../lib/engine/components/opal/opal-account.cpp:230
+#: ../lib/engine/components/opal/opal-account.cpp:223
 #, c-format
 msgid "%s (with %d voice mail message)"
 msgid_plural "%s (with %d voice mail messages)"
 msgstr[0] "%s (%d hangpostaüzenettel)"
 msgstr[1] "%s (%d hangpostaüzenettel)"
 
-#: ../lib/engine/components/opal/opal-account.cpp:308
-#: ../lib/engine/components/opal/opal-account.cpp:681
+#: ../lib/engine/components/opal/opal-account.cpp:301
+#: ../lib/engine/components/opal/opal-account.cpp:682
 msgid "Processing..."
 msgstr "Feldolgozás…"
 
-#: ../lib/engine/components/opal/opal-account.cpp:380
-#: ../lib/engine/gui/gtk-frontend/accounts-window.cpp:675
+#: ../lib/engine/components/opal/opal-account.cpp:374
+#: ../lib/engine/gui/gtk-frontend/accounts-window.cpp:676
 #: ../plugins/loudmouth/loudmouth-account.cpp:433
 msgid "_Disable"
 msgstr "_Tiltás"
 
-#: ../lib/engine/components/opal/opal-account.cpp:383
-#: ../lib/engine/gui/gtk-frontend/accounts-window.cpp:672
+#: ../lib/engine/components/opal/opal-account.cpp:377
+#: ../lib/engine/gui/gtk-frontend/accounts-window.cpp:673
 #: ../plugins/loudmouth/loudmouth-account.cpp:437
 msgid "_Enable"
 msgstr "_Engedélyezés"
 
-#: ../lib/engine/components/opal/opal-account.cpp:404
+#: ../lib/engine/components/opal/opal-account.cpp:398
 #: ../src/gui/assistant.cpp:761
 msgid "Recharge the account"
 msgstr "A fiók feltöltése"
 
-#: ../lib/engine/components/opal/opal-account.cpp:409
+#: ../lib/engine/components/opal/opal-account.cpp:403
 #: ../src/gui/assistant.cpp:773
 msgid "Consult the balance history"
 msgstr "Egyenlegnapló megtekintése"
 
-#: ../lib/engine/components/opal/opal-account.cpp:414
+#: ../lib/engine/components/opal/opal-account.cpp:408
 #: ../src/gui/assistant.cpp:785
 msgid "Consult the call history"
 msgstr "Hívásnapló megtekintése"
 
-#: ../lib/engine/components/opal/opal-account.cpp:429
+#: ../lib/engine/components/opal/opal-account.cpp:423
 #: ../lib/engine/components/opal/opal-bank.cpp:96
 #: ../plugins/loudmouth/loudmouth-account.cpp:337
 #: ../plugins/loudmouth/loudmouth-bank.cpp:121
 msgid "Edit account"
 msgstr "Felhasználói fiók szerkesztése"
 
-#: ../lib/engine/components/opal/opal-account.cpp:431
+#: ../lib/engine/components/opal/opal-account.cpp:425
 #: ../lib/engine/components/opal/opal-bank.cpp:97
 #: ../plugins/evolution/evolution-book.cpp:345
 #: ../plugins/evolution/evolution-contact.cpp:322
@@ -1177,39 +1174,39 @@ msgstr "Felhasználói fiók szerkesztése"
 msgid "Please update the following fields:"
 msgstr "Frissítse a következő mezőket:"
 
-#: ../lib/engine/components/opal/opal-account.cpp:433
+#: ../lib/engine/components/opal/opal-account.cpp:427
 #: ../lib/engine/components/opal/opal-bank.cpp:123
 #: ../lib/engine/components/opal/opal-bank.cpp:133
 #: ../plugins/loudmouth/loudmouth-account.cpp:342
 msgid "Account name, e.g. MyAccount"
 msgstr "Fiók neve, például: Saját fiók"
 
-#: ../lib/engine/components/opal/opal-account.cpp:435
+#: ../lib/engine/components/opal/opal-account.cpp:429
 msgid "Registrar:"
 msgstr "Regisztrátor:"
 
-#: ../lib/engine/components/opal/opal-account.cpp:435
+#: ../lib/engine/components/opal/opal-account.cpp:429
 #: ../lib/engine/components/opal/opal-bank.cpp:134
 msgid "The registrar, e.g. ekiga.net"
 msgstr "Regisztrátor, például ekiga.net"
 
-#: ../lib/engine/components/opal/opal-account.cpp:437
+#: ../lib/engine/components/opal/opal-account.cpp:431
 msgid "Gatekeeper:"
 msgstr "Forgalomirányító:"
 
-#: ../lib/engine/components/opal/opal-account.cpp:437
+#: ../lib/engine/components/opal/opal-account.cpp:431
 #: ../lib/engine/components/opal/opal-bank.cpp:124
 msgid "The gatekeeper, e.g. ekiga.net"
 msgstr "A forgalomirányító, például ekiga.net"
 
-#: ../lib/engine/components/opal/opal-account.cpp:438
+#: ../lib/engine/components/opal/opal-account.cpp:432
 #: ../plugins/loudmouth/loudmouth-account.cpp:346
 #: ../plugins/loudmouth/loudmouth-bank.cpp:126
 #: ../plugins/resource-list/rl-cluster.cpp:174
 msgid "User:"
 msgstr "Felhasználó:"
 
-#: ../lib/engine/components/opal/opal-account.cpp:438
+#: ../lib/engine/components/opal/opal-account.cpp:432
 #: ../lib/engine/components/opal/opal-bank.cpp:105
 #: ../lib/engine/components/opal/opal-bank.cpp:116
 #: ../lib/engine/components/opal/opal-bank.cpp:125
@@ -1220,12 +1217,12 @@ msgstr "A felhasználónév, például: János"
 
 #. Translators:
 #. * SIP knows two usernames: The name for the client ("User") and the name
-#. * for the authentication procedure ("Authentication User")
-#: ../lib/engine/components/opal/opal-account.cpp:443
-msgid "Authentication User:"
+#. * for the authentication procedure ("Authentication user")
+#: ../lib/engine/components/opal/opal-account.cpp:437
+msgid "Authentication user:"
 msgstr "Felhasználó hitelesítése:"
 
-#: ../lib/engine/components/opal/opal-account.cpp:443
+#: ../lib/engine/components/opal/opal-account.cpp:437
 #: ../lib/engine/components/opal/opal-bank.cpp:136
 msgid ""
 "The user name used during authentication, if different than the user name; "
@@ -1234,14 +1231,14 @@ msgstr ""
 "A hitelesítéskor használt felhasználónév, ha eltér a felhasználónévtől; "
 "hagyja üresen, ha nem rendelkezik ilyennel"
 
-#: ../lib/engine/components/opal/opal-account.cpp:444
+#: ../lib/engine/components/opal/opal-account.cpp:438
 #: ../plugins/loudmouth/loudmouth-account.cpp:362
 #: ../plugins/loudmouth/loudmouth-bank.cpp:129
 #: ../plugins/resource-list/rl-cluster.cpp:173
 msgid "Password:"
 msgstr "Jelszó:"
 
-#: ../lib/engine/components/opal/opal-account.cpp:444
+#: ../lib/engine/components/opal/opal-account.cpp:438
 #: ../lib/engine/components/opal/opal-bank.cpp:107
 #: ../lib/engine/components/opal/opal-bank.cpp:118
 #: ../lib/engine/components/opal/opal-bank.cpp:127
@@ -1250,11 +1247,11 @@ msgstr "Jelszó:"
 msgid "Password associated to the user"
 msgstr "A felhasználó jelszava"
 
-#: ../lib/engine/components/opal/opal-account.cpp:445
+#: ../lib/engine/components/opal/opal-account.cpp:439
 msgid "Timeout:"
 msgstr "Időtúllépés:"
 
-#: ../lib/engine/components/opal/opal-account.cpp:445
+#: ../lib/engine/components/opal/opal-account.cpp:439
 #: ../lib/engine/components/opal/opal-bank.cpp:128
 #: ../lib/engine/components/opal/opal-bank.cpp:138
 msgid ""
@@ -1263,109 +1260,109 @@ msgstr ""
 "Időkorlát másodpercben, amely letelte után a regisztráció automatikusan újra "
 "lesz próbálva"
 
-#: ../lib/engine/components/opal/opal-account.cpp:446
+#: ../lib/engine/components/opal/opal-account.cpp:440
 #: ../lib/engine/components/opal/opal-bank.cpp:141
 #: ../plugins/loudmouth/loudmouth-account.cpp:376
 #: ../plugins/loudmouth/loudmouth-bank.cpp:130
-msgid "Enable Account"
+msgid "Enable account"
 msgstr "Fiók engedélyezése"
 
-#: ../lib/engine/components/opal/opal-account.cpp:472
+#: ../lib/engine/components/opal/opal-account.cpp:466
 #: ../lib/engine/components/opal/opal-bank.cpp:175
 msgid "You did not supply a name for that account."
 msgstr "Nem adott meg nevet a fiókhoz."
 
-#: ../lib/engine/components/opal/opal-account.cpp:474
+#: ../lib/engine/components/opal/opal-account.cpp:468
 #: ../lib/engine/components/opal/opal-bank.cpp:177
 msgid "You did not supply a host to register to."
 msgstr "Nem adta meg a gépet, amelyen regisztrálni kíván."
 
-#: ../lib/engine/components/opal/opal-account.cpp:476
+#: ../lib/engine/components/opal/opal-account.cpp:470
 #: ../lib/engine/components/opal/opal-bank.cpp:179
 msgid "You did not supply a user name for that account."
 msgstr "Nem adott meg felhasználói nevet a fiókhoz."
 
-#: ../lib/engine/components/opal/opal-account.cpp:478
+#: ../lib/engine/components/opal/opal-account.cpp:472
 #: ../lib/engine/components/opal/opal-bank.cpp:181
 msgid "The timeout should be at least 10 seconds."
 msgstr "Az időkorlátnak legalább 10 másodpercnek kell lennie."
 
 #. Translators: this is a state, not an action, i.e. it should be read as
 #. "(you are) registered", and not as "(you have been) registered"
-#: ../lib/engine/components/opal/opal-account.cpp:595
+#: ../lib/engine/components/opal/opal-account.cpp:589
 msgid "Registered"
 msgstr "Regisztrálva"
 
-#: ../lib/engine/components/opal/opal-account.cpp:630
+#: ../lib/engine/components/opal/opal-account.cpp:626
 msgid "Could not unregister"
 msgstr "A regisztráció nem törölhető"
 
-#: ../lib/engine/components/opal/opal-account.cpp:662
+#: ../lib/engine/components/opal/opal-account.cpp:659
 msgid "Could not register"
 msgstr "Nem lehet regisztrálni"
 
-#: ../lib/engine/components/opal/opal-account.cpp:668
+#: ../lib/engine/components/opal/opal-account.cpp:664
 msgid "Could not register to "
 msgstr "Nem lehet regisztrálni "
 
-#: ../lib/engine/components/opal/opal-account.cpp:669
+#: ../lib/engine/components/opal/opal-account.cpp:665
 #: ../plugins/loudmouth/loudmouth-account.cpp:443
 msgid "Edit"
 msgstr "Szerkesztés"
 
-#: ../lib/engine/components/opal/opal-account.cpp:800
+#: ../lib/engine/components/opal/opal-account.cpp:802
 msgid "Appointment"
 msgstr "Értekezlet"
 
-#: ../lib/engine/components/opal/opal-account.cpp:805
+#: ../lib/engine/components/opal/opal-account.cpp:807
 msgid "Breakfast"
 msgstr "Reggelizek"
 
-#: ../lib/engine/components/opal/opal-account.cpp:810
+#: ../lib/engine/components/opal/opal-account.cpp:812
 msgid "Dinner"
 msgstr "Vacsorázok"
 
-#: ../lib/engine/components/opal/opal-account.cpp:816
+#: ../lib/engine/components/opal/opal-account.cpp:818
 msgid "Holiday"
 msgstr "Szabadságon"
 
-#: ../lib/engine/components/opal/opal-account.cpp:821
+#: ../lib/engine/components/opal/opal-account.cpp:823
 msgid "In transit"
 msgstr "Úton"
 
-#: ../lib/engine/components/opal/opal-account.cpp:826
+#: ../lib/engine/components/opal/opal-account.cpp:828
 msgid "Looking for work"
 msgstr "Munkát keresek"
 
-#: ../lib/engine/components/opal/opal-account.cpp:831
+#: ../lib/engine/components/opal/opal-account.cpp:833
 msgid "Lunch"
 msgstr "Ebédelek"
 
-#: ../lib/engine/components/opal/opal-account.cpp:836
+#: ../lib/engine/components/opal/opal-account.cpp:838
 msgid "Meal"
 msgstr "Eszek"
 
-#: ../lib/engine/components/opal/opal-account.cpp:841
+#: ../lib/engine/components/opal/opal-account.cpp:843
 msgid "Meeting"
 msgstr "Találkozó"
 
-#: ../lib/engine/components/opal/opal-account.cpp:846
+#: ../lib/engine/components/opal/opal-account.cpp:848
 msgid "On the phone"
 msgstr "Telefonálok"
 
-#: ../lib/engine/components/opal/opal-account.cpp:851
+#: ../lib/engine/components/opal/opal-account.cpp:853
 msgid "Playing"
 msgstr "Játszok"
 
-#: ../lib/engine/components/opal/opal-account.cpp:856
+#: ../lib/engine/components/opal/opal-account.cpp:858
 msgid "Shopping"
 msgstr "Vásárlok"
 
-#: ../lib/engine/components/opal/opal-account.cpp:861
+#: ../lib/engine/components/opal/opal-account.cpp:863
 msgid "Sleeping"
 msgstr "Alszok"
 
-#: ../lib/engine/components/opal/opal-account.cpp:866
+#: ../lib/engine/components/opal/opal-account.cpp:868
 msgid "Working"
 msgstr "Dolgozok"
 
@@ -1413,7 +1410,7 @@ msgid "_Account ID:"
 msgstr "_Felhasználói fiók azonosítója:"
 
 #: ../lib/engine/components/opal/opal-bank.cpp:118
-msgid "_PIN Code:"
+msgid "_PIN code:"
 msgstr "_PIN kód:"
 
 #: ../lib/engine/components/opal/opal-bank.cpp:123
@@ -1436,7 +1433,7 @@ msgid "_Registrar:"
 msgstr "_Regisztrátor:"
 
 #: ../lib/engine/components/opal/opal-bank.cpp:136
-msgid "_Authentication User:"
+msgid "_Authentication user:"
 msgstr "_Hitelesítési felhasználó:"
 
 #: ../lib/engine/components/opal/opal-call.cpp:405
@@ -1515,7 +1512,7 @@ msgid "User is not available"
 msgstr "A felhasználó nem érhető el"
 
 #: ../lib/engine/components/opal/opal-call.cpp:469
-#: ../lib/engine/components/opal/sip-endpoint.cpp:778
+#: ../lib/engine/components/opal/sip-endpoint.cpp:781
 msgid "Service unavailable"
 msgstr "A szolgáltatás nem érhető el"
 
@@ -1554,92 +1551,96 @@ msgstr "Üzenet"
 msgid "Illegal status code"
 msgstr "Érvénytelen állapotkód"
 
+#: ../lib/engine/components/opal/sip-endpoint.cpp:607
+msgid "Invalid address"
+msgstr "Érvénytelen cím"
+
 #. Translators: Host of the remote party is offline, this should
 #. * appear when the remote host does not reply in an acceptable time
-#: ../lib/engine/components/opal/sip-endpoint.cpp:610
+#: ../lib/engine/components/opal/sip-endpoint.cpp:613
 msgid "Remote party host is offline"
 msgstr "A túloldali partner gépe offline"
 
 #. Translators: the following strings are answers from the SIP server
 #. * when the packet it receives has an error, see
 #. * http://www.ietf.org/rfc/rfc3261.txt, chapter 21 for more information
-#: ../lib/engine/components/opal/sip-endpoint.cpp:626
+#: ../lib/engine/components/opal/sip-endpoint.cpp:629
 msgid "Multiple choices"
 msgstr "Több lehetőség"
 
-#: ../lib/engine/components/opal/sip-endpoint.cpp:630
+#: ../lib/engine/components/opal/sip-endpoint.cpp:633
 msgid "Moved permanently"
 msgstr "Tartósan áthelyezve"
 
-#: ../lib/engine/components/opal/sip-endpoint.cpp:634
+#: ../lib/engine/components/opal/sip-endpoint.cpp:637
 msgid "Moved temporarily"
 msgstr "Ideiglenesen áthelyezve"
 
-#: ../lib/engine/components/opal/sip-endpoint.cpp:638
+#: ../lib/engine/components/opal/sip-endpoint.cpp:641
 msgid "Use proxy"
 msgstr "Proxy használata"
 
-#: ../lib/engine/components/opal/sip-endpoint.cpp:642
+#: ../lib/engine/components/opal/sip-endpoint.cpp:645
 msgid "Alternative service"
 msgstr "Alternatív szolgáltatás"
 
-#: ../lib/engine/components/opal/sip-endpoint.cpp:646
+#: ../lib/engine/components/opal/sip-endpoint.cpp:649
 msgid "Bad request"
 msgstr "Hibás kérés"
 
-#: ../lib/engine/components/opal/sip-endpoint.cpp:650
+#: ../lib/engine/components/opal/sip-endpoint.cpp:653
 msgid "Unauthorized"
 msgstr "Jogosulatlan"
 
-#: ../lib/engine/components/opal/sip-endpoint.cpp:654
+#: ../lib/engine/components/opal/sip-endpoint.cpp:657
 msgid "Payment required"
 msgstr "Fizetés szükséges"
 
-#: ../lib/engine/components/opal/sip-endpoint.cpp:658
+#: ../lib/engine/components/opal/sip-endpoint.cpp:661
 msgid "Forbidden, please check that username and password are correct"
 msgstr "Letiltva, ellenőrizze a felhasználónév és jelszó helyességét"
 
-#: ../lib/engine/components/opal/sip-endpoint.cpp:662
+#: ../lib/engine/components/opal/sip-endpoint.cpp:665
 msgid "Not found"
 msgstr "Nem található"
 
-#: ../lib/engine/components/opal/sip-endpoint.cpp:666
+#: ../lib/engine/components/opal/sip-endpoint.cpp:669
 msgid "Method not allowed"
 msgstr "A módszer nem engedélyezett"
 
-#: ../lib/engine/components/opal/sip-endpoint.cpp:670
+#: ../lib/engine/components/opal/sip-endpoint.cpp:673
 msgid "Not acceptable"
 msgstr "Nem fogadható el"
 
-#: ../lib/engine/components/opal/sip-endpoint.cpp:674
+#: ../lib/engine/components/opal/sip-endpoint.cpp:677
 msgid "Proxy authentication required"
 msgstr "Proxyhitelesítés szükséges"
 
-#: ../lib/engine/components/opal/sip-endpoint.cpp:678
+#: ../lib/engine/components/opal/sip-endpoint.cpp:681
 msgid "Timeout"
 msgstr "Időtúllépés"
 
-#: ../lib/engine/components/opal/sip-endpoint.cpp:682
+#: ../lib/engine/components/opal/sip-endpoint.cpp:685
 msgid "Conflict"
 msgstr "Ütközés"
 
-#: ../lib/engine/components/opal/sip-endpoint.cpp:686
+#: ../lib/engine/components/opal/sip-endpoint.cpp:689
 msgid "Length required"
 msgstr "Hossz szükséges"
 
-#: ../lib/engine/components/opal/sip-endpoint.cpp:690
+#: ../lib/engine/components/opal/sip-endpoint.cpp:693
 msgid "Request entity too big"
 msgstr "A kért entitás túl nagy"
 
-#: ../lib/engine/components/opal/sip-endpoint.cpp:694
+#: ../lib/engine/components/opal/sip-endpoint.cpp:697
 msgid "Request URI too long"
 msgstr "A kért URI túl hosszú"
 
-#: ../lib/engine/components/opal/sip-endpoint.cpp:698
+#: ../lib/engine/components/opal/sip-endpoint.cpp:701
 msgid "Unsupported media type"
 msgstr "Nem támogatott médiatípus"
 
-#: ../lib/engine/components/opal/sip-endpoint.cpp:702
+#: ../lib/engine/components/opal/sip-endpoint.cpp:705
 msgid "Unsupported URI scheme"
 msgstr "Nem támogatott URI séma"
 
@@ -1647,99 +1648,99 @@ msgstr "Nem támogatott URI séma"
 #. * Here extension is a specific "phone number", see
 #. * http://en.wikipedia.org/wiki/Extension_(telephone)
 #. * for more information
-#: ../lib/engine/components/opal/sip-endpoint.cpp:710
+#: ../lib/engine/components/opal/sip-endpoint.cpp:713
 msgid "Bad extension"
 msgstr "Hibás kiterjesztés"
 
-#: ../lib/engine/components/opal/sip-endpoint.cpp:714
+#: ../lib/engine/components/opal/sip-endpoint.cpp:717
 msgid "Extension required"
 msgstr "Kiterjesztés szükséges"
 
-#: ../lib/engine/components/opal/sip-endpoint.cpp:718
+#: ../lib/engine/components/opal/sip-endpoint.cpp:721
 msgid "Interval too brief"
 msgstr "Az időköz túl rövid"
 
-#: ../lib/engine/components/opal/sip-endpoint.cpp:722
+#: ../lib/engine/components/opal/sip-endpoint.cpp:725
 msgid "Temporarily unavailable"
 msgstr "Átmenetileg nem érhető el"
 
-#: ../lib/engine/components/opal/sip-endpoint.cpp:726
+#: ../lib/engine/components/opal/sip-endpoint.cpp:729
 msgid "Loop detected"
 msgstr "Ciklus észlelve"
 
-#: ../lib/engine/components/opal/sip-endpoint.cpp:730
+#: ../lib/engine/components/opal/sip-endpoint.cpp:733
 msgid "Too many hops"
 msgstr "Túl sok ugrás"
 
-#: ../lib/engine/components/opal/sip-endpoint.cpp:734
+#: ../lib/engine/components/opal/sip-endpoint.cpp:737
 msgid "Address incomplete"
 msgstr "A cím befejezetlen"
 
-#: ../lib/engine/components/opal/sip-endpoint.cpp:738
+#: ../lib/engine/components/opal/sip-endpoint.cpp:741
 msgid "Ambiguous"
 msgstr "Kétértelmű"
 
-#: ../lib/engine/components/opal/sip-endpoint.cpp:742
+#: ../lib/engine/components/opal/sip-endpoint.cpp:745
 msgid "Busy Here"
 msgstr "Foglalt itt"
 
-#: ../lib/engine/components/opal/sip-endpoint.cpp:746
+#: ../lib/engine/components/opal/sip-endpoint.cpp:749
 msgid "Request terminated"
 msgstr "Kérés megszakítva"
 
-#: ../lib/engine/components/opal/sip-endpoint.cpp:750
+#: ../lib/engine/components/opal/sip-endpoint.cpp:753
 msgid "Not acceptable here"
 msgstr "Itt nem fogadható el"
 
-#: ../lib/engine/components/opal/sip-endpoint.cpp:754
+#: ../lib/engine/components/opal/sip-endpoint.cpp:757
 msgid "Bad event"
 msgstr "Hibás esemény"
 
-#: ../lib/engine/components/opal/sip-endpoint.cpp:758
+#: ../lib/engine/components/opal/sip-endpoint.cpp:761
 msgid "Request pending"
 msgstr "Kérés függőben"
 
-#: ../lib/engine/components/opal/sip-endpoint.cpp:762
+#: ../lib/engine/components/opal/sip-endpoint.cpp:765
 msgid "Undecipherable"
 msgstr "Visszafejthetetlen"
 
-#: ../lib/engine/components/opal/sip-endpoint.cpp:766
+#: ../lib/engine/components/opal/sip-endpoint.cpp:769
 msgid "Internal server error"
 msgstr "Belső kiszolgálóhiba"
 
-#: ../lib/engine/components/opal/sip-endpoint.cpp:770
+#: ../lib/engine/components/opal/sip-endpoint.cpp:773
 msgid "Not implemented"
 msgstr "Nincs megvalósítva"
 
-#: ../lib/engine/components/opal/sip-endpoint.cpp:774
+#: ../lib/engine/components/opal/sip-endpoint.cpp:777
 msgid "Bad gateway"
 msgstr "Hibás átjáró"
 
-#: ../lib/engine/components/opal/sip-endpoint.cpp:782
+#: ../lib/engine/components/opal/sip-endpoint.cpp:785
 msgid "Server timeout"
 msgstr "Kiszolgálói időtúllépés"
 
-#: ../lib/engine/components/opal/sip-endpoint.cpp:786
+#: ../lib/engine/components/opal/sip-endpoint.cpp:789
 msgid "SIP version not supported"
 msgstr "A SIP verzió nem támogatott"
 
-#: ../lib/engine/components/opal/sip-endpoint.cpp:790
+#: ../lib/engine/components/opal/sip-endpoint.cpp:793
 msgid "Message too large"
 msgstr "Az üzenet túl nagy"
 
-#: ../lib/engine/components/opal/sip-endpoint.cpp:794
+#: ../lib/engine/components/opal/sip-endpoint.cpp:797
 msgid "Busy everywhere"
 msgstr "Foglalt mindenütt"
 
-#: ../lib/engine/components/opal/sip-endpoint.cpp:798
+#: ../lib/engine/components/opal/sip-endpoint.cpp:801
 msgid "Decline"
 msgstr "Visszautasítás"
 
-#: ../lib/engine/components/opal/sip-endpoint.cpp:802
+#: ../lib/engine/components/opal/sip-endpoint.cpp:805
 msgid "Does not exist anymore"
 msgstr "Már nem létezik"
 
-#: ../lib/engine/components/opal/sip-endpoint.cpp:806
+#: ../lib/engine/components/opal/sip-endpoint.cpp:809
 msgid "Globally not acceptable"
 msgstr "Globálisan nem fogadható el"
 
@@ -1778,29 +1779,29 @@ msgstr "Kiválasztott kodek prioritásának csökkentése"
 msgid "Advanced"
 msgstr "Speciális"
 
-#: ../lib/engine/gui/gtk-frontend/accounts-window.cpp:566
+#: ../lib/engine/gui/gtk-frontend/accounts-window.cpp:567
 msgid "Account Name"
 msgstr "Felhasználói fiók neve"
 
-#: ../lib/engine/gui/gtk-frontend/accounts-window.cpp:567
+#: ../lib/engine/gui/gtk-frontend/accounts-window.cpp:568
 msgid "Status"
 msgstr "Állapot"
 
-#: ../lib/engine/gui/gtk-frontend/accounts-window.cpp:582
+#: ../lib/engine/gui/gtk-frontend/accounts-window.cpp:583
 #: ../src/gui/main_window.cpp:1330
 msgid "_Accounts"
 msgstr "_Felhasználói fiókok"
 
-#: ../lib/engine/gui/gtk-frontend/accounts-window.cpp:586
+#: ../lib/engine/gui/gtk-frontend/accounts-window.cpp:587
 #: ../src/gui/main_window.cpp:1368
 msgid "_Help"
 msgstr "_Súgó"
 
-#: ../lib/engine/gui/gtk-frontend/accounts-window.cpp:611
+#: ../lib/engine/gui/gtk-frontend/accounts-window.cpp:612
 msgid "Accounts"
 msgstr "Felhasználói fiókok"
 
-#: ../lib/engine/gui/gtk-frontend/accounts-window.cpp:678
+#: ../lib/engine/gui/gtk-frontend/accounts-window.cpp:679
 msgid "Edi_t"
 msgstr "S_zerkesztés"
 
@@ -2448,7 +2449,6 @@ msgstr ""
 "összeomlaszthatja a Netmeeting egyes verzióit."
 
 #: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:691
-#| msgid "Enable Account"
 msgid "Enable H.239 control"
 msgstr "H.239 vezérlés engedélyezése"
 
@@ -2461,7 +2461,6 @@ msgid "Extended Video Roles:"
 msgstr "Bővített videoszerepek:"
 
 #: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:693
-#| msgid "Select the transmitted video size"
 msgid "Select the H.239 Video Role"
 msgstr "Válassza ki a H.239 videoszerepet"
 
@@ -2485,7 +2484,7 @@ msgid "INFO"
 msgstr "INFORMÁCIÓK"
 
 #: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:721
-msgid "_Outbound Proxy:"
+msgid "_Outbound proxy:"
 msgstr "_Kimenő proxy:"
 
 #: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:749
@@ -2494,7 +2493,7 @@ msgid "Audio Devices"
 msgstr "Hangeszközök"
 
 #: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:757
-msgid "Ringing Device"
+msgid "Ringing device:"
 msgstr "Csengési eszköz"
 
 #: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:757
@@ -2594,8 +2593,12 @@ msgstr "_Maximális jitter puffer (ezredmásodpercben):"
 
 #. Translators: the full sentence is Keep a minimum video quality of X %
 #: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:977
-msgid "Picture Quality"
-msgstr "Minőség"
+msgid "Picture quality"
+msgstr "Képminőség"
+
+#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:977
+msgid "Frame rate"
+msgstr "Képkockasebesség"
 
 #: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:977
 msgid ""
@@ -3121,7 +3124,6 @@ msgid "Server:"
 msgstr "Kiszolgáló:"
 
 #: ../plugins/loudmouth/loudmouth-account.cpp:350
-#| msgid "The user name, e.g. jim"
 msgid "The server, e.g. jabber.org"
 msgstr "A kiszolgáló, például: jabber.org"
 
@@ -3144,12 +3146,12 @@ msgid ""
 "terminals registered to the same account; leave empty if you do not know "
 "what it is"
 msgstr ""
-"Az erőforrás (például otthon vagy munka), lehetővé teszi az ugyanazon fiókhoz "
-"regisztrált több terminál megkülönböztetését. Hagyja üresen, ha nem tudja mi "
-"ez."
+"Az erőforrás (például otthon vagy munka), lehetővé teszi az ugyanazon "
+"fiókhoz regisztrált több terminál megkülönböztetését. Hagyja üresen, ha nem "
+"tudja mi ez."
 
 #: ../plugins/loudmouth/loudmouth-bank.cpp:111
-msgid "_Add a jabber/XMPP account"
+msgid "_Add a Jabber/XMPP Account"
 msgstr "_Jabber/XMPP fiók hozzáadása"
 
 #: ../plugins/loudmouth/loudmouth-bank.cpp:123
@@ -3690,7 +3692,7 @@ msgid "Act on selected contact"
 msgstr "Művelet a kiválasztott partneren"
 
 #: ../src/gui/main_window.cpp:1281
-msgid "Ca_ll a number"
+msgid "Ca_ll a Number"
 msgstr "Szám hí_vása"
 
 #: ../src/gui/main_window.cpp:1281
@@ -3747,7 +3749,7 @@ msgid "_Call History"
 msgstr "_Hívástörténet"
 
 #: ../src/gui/main_window.cpp:1362
-msgid "Show offline _contacts"
+msgid "Show Offline _Contacts"
 msgstr "_Offline partnerek megjelenítése"
 
 #: ../src/gui/main_window.cpp:1426
@@ -3798,6 +3800,9 @@ msgstr "Egyéni üzenetek törlése:"
 #: ../src/gui/statusmenu.cpp:685
 msgid "Define a custom message:"
 msgstr "Adja meg az egyéni üzenetet:"
+
+#~ msgid "New contact"
+#~ msgstr "Új partner"
 
 #~ msgid "_Find"
 #~ msgstr "_Keresés"
