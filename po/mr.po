@@ -10,8 +10,8 @@ msgstr ""
 "Project-Id-Version: mr\n"
 "Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?"
 "product=ekiga&keywords=I18N+L10N&component=general\n"
-"POT-Creation-Date: 2012-09-07 09:17+0000\n"
-"PO-Revision-Date: 2012-09-07 14:49+0530\n"
+"POT-Creation-Date: 2012-09-18 15:37+0000\n"
+"PO-Revision-Date: 2012-09-21 12:31+0530\n"
 "Last-Translator: Sandeep Shedmake <sshedmak@redhat.com>\n"
 "Language-Team: Marathi <maajhe-sanganak@freelists.org>\n"
 "Language: mr\n"
@@ -107,7 +107,6 @@ msgid "Display images from your camera device"
 msgstr "कॅमेरा साधन पासून प्रतिमा दर्शवा"
 
 #: ../ekiga.schemas.in.in.h:15
-#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:977
 msgid "Frame Rate"
 msgstr "फ्रेम दर"
 
@@ -445,7 +444,6 @@ msgid "This enables H.239 capability for additional video roles"
 msgstr "ह्यामुळे अगाऊ व्हिडिओ रुल्सकरीता H.239 क्षमता सुरू होते"
 
 #: ../ekiga.schemas.in.in.h:76
-#| msgid "Extended Video Roles:"
 msgid "Extended Video Roles"
 msgstr "विस्तारित व्हिडिओ रोल्स्"
 
@@ -901,8 +899,9 @@ msgstr "स्वीकारा"
 #: ../lib/engine/components/local-roster/local-cluster.cpp:82
 #: ../lib/engine/components/local-roster/local-heap.cpp:118
 #: ../plugins/evolution/evolution-book.cpp:343
-msgid "New contact"
-msgstr "नवीन संपर्क"
+#| msgid "New _Contact"
+msgid "_New Contact"
+msgstr "नवीन संपर्क (_N)"
 
 #: ../lib/engine/components/local-roster/local-heap.cpp:94
 msgid "Services"
@@ -980,7 +979,7 @@ msgstr "ekiga चे आंतरीक नामवलीत नवीन स�
 #: ../lib/engine/components/local-roster/local-heap.cpp:236
 #: ../lib/engine/components/local-roster/local-heap.cpp:427
 #: ../lib/engine/components/local-roster/local-presentity.cpp:270
-#: ../lib/engine/components/opal/opal-account.cpp:433
+#: ../lib/engine/components/opal/opal-account.cpp:420
 #: ../plugins/evolution/evolution-contact.cpp:324
 #: ../plugins/loudmouth/loudmouth-account.cpp:342
 #: ../plugins/loudmouth/loudmouth-bank.cpp:125
@@ -1041,7 +1040,7 @@ msgid "Unnamed"
 msgstr "निनावी"
 
 #: ../lib/engine/components/local-roster/local-presentity.cpp:240
-#: ../lib/engine/components/opal/opal-account.cpp:388
+#: ../lib/engine/components/opal/opal-account.cpp:375
 #: ../plugins/evolution/evolution-contact.cpp:228
 #: ../plugins/loudmouth/loudmouth-presentity.cpp:160
 #: ../plugins/resource-list/rl-presentity.cpp:212
@@ -1050,8 +1049,8 @@ msgid "_Edit"
 msgstr "संपादन (_E)"
 
 #: ../lib/engine/components/local-roster/local-presentity.cpp:242
-#: ../lib/engine/components/opal/opal-account.cpp:390
-#: ../lib/engine/gui/gtk-frontend/accounts-window.cpp:681
+#: ../lib/engine/components/opal/opal-account.cpp:377
+#: ../lib/engine/gui/gtk-frontend/accounts-window.cpp:682
 #: ../plugins/evolution/evolution-contact.cpp:230
 #: ../plugins/loudmouth/loudmouth-account.cpp:445
 #: ../plugins/loudmouth/loudmouth-presentity.cpp:193
@@ -1106,74 +1105,74 @@ msgid "Bad username/password"
 msgstr "अयोग्य वापरकर्ता/पासवर्ड"
 
 #: ../lib/engine/components/opal/h323-endpoint.cpp:346
-#: ../lib/engine/components/opal/sip-endpoint.cpp:604
+#: ../lib/engine/components/opal/sip-endpoint.cpp:603
 msgid "Transport error"
 msgstr "स्थानांतरन त्रुटी"
 
 #: ../lib/engine/components/opal/h323-endpoint.cpp:357
 #: ../lib/engine/components/opal/h323-endpoint.cpp:362
-#: ../lib/engine/components/opal/sip-endpoint.cpp:813
+#: ../lib/engine/components/opal/sip-endpoint.cpp:816
 msgid "Failed"
 msgstr "अपयशी"
 
 #. Translators: this is a state, not an action, i.e. it should be read as
 #. "(you are) unregistered", and not as "(you have been) unregistered"
-#: ../lib/engine/components/opal/opal-account.cpp:70
-#: ../lib/engine/components/opal/opal-account.cpp:322
-#: ../lib/engine/components/opal/opal-account.cpp:618
+#: ../lib/engine/components/opal/opal-account.cpp:69
+#: ../lib/engine/components/opal/opal-account.cpp:310
+#: ../lib/engine/components/opal/opal-account.cpp:605
 msgid "Unregistered"
 msgstr "अपंजीकृत"
 
 #. translators : the result will look like :
 #. * "registered (with 2 voice mail messages)"
 #.
-#: ../lib/engine/components/opal/opal-account.cpp:230
+#: ../lib/engine/components/opal/opal-account.cpp:218
 #, c-format
 msgid "%s (with %d voice mail message)"
 msgid_plural "%s (with %d voice mail messages)"
 msgstr[0] "%s (%d वॉईस मेल संदेशसह)"
 msgstr[1] "%s (%d वॉईस मेल संदेशांसह)"
 
-#: ../lib/engine/components/opal/opal-account.cpp:308
-#: ../lib/engine/components/opal/opal-account.cpp:681
+#: ../lib/engine/components/opal/opal-account.cpp:296
+#: ../lib/engine/components/opal/opal-account.cpp:674
 msgid "Processing..."
 msgstr "विश्लेषण चालू आहे..."
 
-#: ../lib/engine/components/opal/opal-account.cpp:380
-#: ../lib/engine/gui/gtk-frontend/accounts-window.cpp:675
+#: ../lib/engine/components/opal/opal-account.cpp:367
+#: ../lib/engine/gui/gtk-frontend/accounts-window.cpp:676
 #: ../plugins/loudmouth/loudmouth-account.cpp:433
 msgid "_Disable"
 msgstr "बंद करा (_D)"
 
-#: ../lib/engine/components/opal/opal-account.cpp:383
-#: ../lib/engine/gui/gtk-frontend/accounts-window.cpp:672
+#: ../lib/engine/components/opal/opal-account.cpp:370
+#: ../lib/engine/gui/gtk-frontend/accounts-window.cpp:673
 #: ../plugins/loudmouth/loudmouth-account.cpp:437
 msgid "_Enable"
 msgstr "कार्यान्वीत करा (_E)"
 
-#: ../lib/engine/components/opal/opal-account.cpp:404
+#: ../lib/engine/components/opal/opal-account.cpp:391
 #: ../src/gui/assistant.cpp:761
 msgid "Recharge the account"
 msgstr "खाते पुन्हा कार्यक्षम करा"
 
-#: ../lib/engine/components/opal/opal-account.cpp:409
+#: ../lib/engine/components/opal/opal-account.cpp:396
 #: ../src/gui/assistant.cpp:773
 msgid "Consult the balance history"
 msgstr "उर्वरीत इतिहास पहा"
 
-#: ../lib/engine/components/opal/opal-account.cpp:414
+#: ../lib/engine/components/opal/opal-account.cpp:401
 #: ../src/gui/assistant.cpp:785
 msgid "Consult the call history"
 msgstr "कॉल इतिहासशी संपर्क करा"
 
-#: ../lib/engine/components/opal/opal-account.cpp:429
+#: ../lib/engine/components/opal/opal-account.cpp:416
 #: ../lib/engine/components/opal/opal-bank.cpp:96
 #: ../plugins/loudmouth/loudmouth-account.cpp:337
 #: ../plugins/loudmouth/loudmouth-bank.cpp:121
 msgid "Edit account"
 msgstr "खाते संपादीत करा"
 
-#: ../lib/engine/components/opal/opal-account.cpp:431
+#: ../lib/engine/components/opal/opal-account.cpp:418
 #: ../lib/engine/components/opal/opal-bank.cpp:97
 #: ../plugins/evolution/evolution-book.cpp:345
 #: ../plugins/evolution/evolution-contact.cpp:322
@@ -1181,39 +1180,39 @@ msgstr "खाते संपादीत करा"
 msgid "Please update the following fields:"
 msgstr "कृपया खालिल गुणधर्म अद्ययावतीत करा:"
 
-#: ../lib/engine/components/opal/opal-account.cpp:433
+#: ../lib/engine/components/opal/opal-account.cpp:420
 #: ../lib/engine/components/opal/opal-bank.cpp:123
 #: ../lib/engine/components/opal/opal-bank.cpp:133
 #: ../plugins/loudmouth/loudmouth-account.cpp:342
 msgid "Account name, e.g. MyAccount"
 msgstr "खाते नाव, उ.दा. MyAccount"
 
-#: ../lib/engine/components/opal/opal-account.cpp:435
+#: ../lib/engine/components/opal/opal-account.cpp:422
 msgid "Registrar:"
 msgstr "रेजिस्ट्रार:"
 
-#: ../lib/engine/components/opal/opal-account.cpp:435
+#: ../lib/engine/components/opal/opal-account.cpp:422
 #: ../lib/engine/components/opal/opal-bank.cpp:134
 msgid "The registrar, e.g. ekiga.net"
 msgstr "रेजिस्ट्रार, उ.दा. ekiga.net"
 
-#: ../lib/engine/components/opal/opal-account.cpp:437
+#: ../lib/engine/components/opal/opal-account.cpp:424
 msgid "Gatekeeper:"
 msgstr "गेटकीपर:"
 
-#: ../lib/engine/components/opal/opal-account.cpp:437
+#: ../lib/engine/components/opal/opal-account.cpp:424
 #: ../lib/engine/components/opal/opal-bank.cpp:124
 msgid "The gatekeeper, e.g. ekiga.net"
 msgstr "गेटकिपर, उ.दा. ekiga.net"
 
-#: ../lib/engine/components/opal/opal-account.cpp:438
+#: ../lib/engine/components/opal/opal-account.cpp:425
 #: ../plugins/loudmouth/loudmouth-account.cpp:346
 #: ../plugins/loudmouth/loudmouth-bank.cpp:126
 #: ../plugins/resource-list/rl-cluster.cpp:174
 msgid "User:"
 msgstr "वापरकर्ता:"
 
-#: ../lib/engine/components/opal/opal-account.cpp:438
+#: ../lib/engine/components/opal/opal-account.cpp:425
 #: ../lib/engine/components/opal/opal-bank.cpp:105
 #: ../lib/engine/components/opal/opal-bank.cpp:116
 #: ../lib/engine/components/opal/opal-bank.cpp:125
@@ -1224,12 +1223,13 @@ msgstr "वापरकर्तानाव, उ.दा. jim"
 
 #. Translators:
 #. * SIP knows two usernames: The name for the client ("User") and the name
-#. * for the authentication procedure ("Authentication User")
-#: ../lib/engine/components/opal/opal-account.cpp:443
-msgid "Authentication User:"
-msgstr "अधिप्रमाणन वापरकर्ता:"
+#. * for the authentication procedure ("Authentication user")
+#: ../lib/engine/components/opal/opal-account.cpp:430
+#| msgid "Authentication User:"
+msgid "Authentication user:"
+msgstr "वापरकर्त्याची ओळख पटवा:"
 
-#: ../lib/engine/components/opal/opal-account.cpp:443
+#: ../lib/engine/components/opal/opal-account.cpp:430
 #: ../lib/engine/components/opal/opal-bank.cpp:136
 msgid ""
 "The user name used during authentication, if different than the user name; "
@@ -1238,14 +1238,14 @@ msgstr ""
 "ओळख पटवतेवेळी वापरलेले वापरकर्तानाव, वापरकर्तानावपेक्षा वेगळे असल्यावस; "
 "रिकामे सोडा"
 
-#: ../lib/engine/components/opal/opal-account.cpp:444
+#: ../lib/engine/components/opal/opal-account.cpp:431
 #: ../plugins/loudmouth/loudmouth-account.cpp:362
 #: ../plugins/loudmouth/loudmouth-bank.cpp:129
 #: ../plugins/resource-list/rl-cluster.cpp:173
 msgid "Password:"
 msgstr "पासवर्ड:"
 
-#: ../lib/engine/components/opal/opal-account.cpp:444
+#: ../lib/engine/components/opal/opal-account.cpp:431
 #: ../lib/engine/components/opal/opal-bank.cpp:107
 #: ../lib/engine/components/opal/opal-bank.cpp:118
 #: ../lib/engine/components/opal/opal-bank.cpp:127
@@ -1254,120 +1254,121 @@ msgstr "पासवर्ड:"
 msgid "Password associated to the user"
 msgstr "वापरकर्त्याशी संबंधित पासवर्ड"
 
-#: ../lib/engine/components/opal/opal-account.cpp:445
+#: ../lib/engine/components/opal/opal-account.cpp:432
 msgid "Timeout:"
 msgstr "वेळसमाप्ति:"
 
-#: ../lib/engine/components/opal/opal-account.cpp:445
+#: ../lib/engine/components/opal/opal-account.cpp:432
 #: ../lib/engine/components/opal/opal-bank.cpp:128
 #: ../lib/engine/components/opal/opal-bank.cpp:138
 msgid ""
 "Time in seconds after which the account registration is automatically retried"
 msgstr "सेकंदामध्ये वेळ ज्यानंतर खाते नोंदणी स्वयंरित्या वेळसमाप्ति होते"
 
-#: ../lib/engine/components/opal/opal-account.cpp:446
+#: ../lib/engine/components/opal/opal-account.cpp:433
 #: ../lib/engine/components/opal/opal-bank.cpp:141
 #: ../plugins/loudmouth/loudmouth-account.cpp:376
 #: ../plugins/loudmouth/loudmouth-bank.cpp:130
-msgid "Enable Account"
-msgstr "खाते कार्यान्वीत करा"
+#| msgid "Enable Account"
+msgid "Enable account"
+msgstr "खाते सुरू करा"
 
-#: ../lib/engine/components/opal/opal-account.cpp:472
+#: ../lib/engine/components/opal/opal-account.cpp:459
 #: ../lib/engine/components/opal/opal-bank.cpp:175
 msgid "You did not supply a name for that account."
 msgstr "खाते करीता नाव पुरविले गेले नाही."
 
-#: ../lib/engine/components/opal/opal-account.cpp:474
+#: ../lib/engine/components/opal/opal-account.cpp:461
 #: ../lib/engine/components/opal/opal-bank.cpp:177
 msgid "You did not supply a host to register to."
 msgstr "पंजीकरण करीता यजमान पुरविले नाही."
 
-#: ../lib/engine/components/opal/opal-account.cpp:476
+#: ../lib/engine/components/opal/opal-account.cpp:463
 #: ../lib/engine/components/opal/opal-bank.cpp:179
 msgid "You did not supply a user name for that account."
 msgstr "खाते करीता वापरकर्ता नाव पुरविले गेले नाही."
 
-#: ../lib/engine/components/opal/opal-account.cpp:478
+#: ../lib/engine/components/opal/opal-account.cpp:465
 #: ../lib/engine/components/opal/opal-bank.cpp:181
 msgid "The timeout should be at least 10 seconds."
 msgstr "वेळसमाप्ति किमान 10 सेकंदाचे असायला हवे."
 
 #. Translators: this is a state, not an action, i.e. it should be read as
 #. "(you are) registered", and not as "(you have been) registered"
-#: ../lib/engine/components/opal/opal-account.cpp:595
+#: ../lib/engine/components/opal/opal-account.cpp:582
 msgid "Registered"
 msgstr "पंजीकृत"
 
-#: ../lib/engine/components/opal/opal-account.cpp:630
+#: ../lib/engine/components/opal/opal-account.cpp:618
 msgid "Could not unregister"
 msgstr "अपंजीकृत होऊ शकत नाही"
 
-#: ../lib/engine/components/opal/opal-account.cpp:662
+#: ../lib/engine/components/opal/opal-account.cpp:651
 msgid "Could not register"
 msgstr "पंजीकृत होऊ शकत नाही"
 
-#: ../lib/engine/components/opal/opal-account.cpp:668
+#: ../lib/engine/components/opal/opal-account.cpp:656
 msgid "Could not register to "
 msgstr "सह नोंदणी करणे अशक्य "
 
-#: ../lib/engine/components/opal/opal-account.cpp:669
+#: ../lib/engine/components/opal/opal-account.cpp:657
 #: ../plugins/loudmouth/loudmouth-account.cpp:443
 msgid "Edit"
 msgstr "संपादित करा"
 
-#: ../lib/engine/components/opal/opal-account.cpp:800
+#: ../lib/engine/components/opal/opal-account.cpp:794
 msgid "Appointment"
 msgstr "नियुक्ती"
 
-#: ../lib/engine/components/opal/opal-account.cpp:805
+#: ../lib/engine/components/opal/opal-account.cpp:799
 msgid "Breakfast"
 msgstr "ब्रेकफास्ट"
 
-#: ../lib/engine/components/opal/opal-account.cpp:810
+#: ../lib/engine/components/opal/opal-account.cpp:804
 msgid "Dinner"
 msgstr "मेजवानी"
 
-#: ../lib/engine/components/opal/opal-account.cpp:816
+#: ../lib/engine/components/opal/opal-account.cpp:810
 msgid "Holiday"
 msgstr "सुट्टी"
 
-#: ../lib/engine/components/opal/opal-account.cpp:821
+#: ../lib/engine/components/opal/opal-account.cpp:815
 msgid "In transit"
 msgstr "ट्रांजिटमध्ये आहे"
 
-#: ../lib/engine/components/opal/opal-account.cpp:826
+#: ../lib/engine/components/opal/opal-account.cpp:820
 msgid "Looking for work"
 msgstr "काम शोधत आहात"
 
-#: ../lib/engine/components/opal/opal-account.cpp:831
+#: ../lib/engine/components/opal/opal-account.cpp:825
 msgid "Lunch"
 msgstr "अल्पोपहार"
 
-#: ../lib/engine/components/opal/opal-account.cpp:836
+#: ../lib/engine/components/opal/opal-account.cpp:830
 msgid "Meal"
 msgstr "जेवण"
 
-#: ../lib/engine/components/opal/opal-account.cpp:841
+#: ../lib/engine/components/opal/opal-account.cpp:835
 msgid "Meeting"
 msgstr "सभा"
 
-#: ../lib/engine/components/opal/opal-account.cpp:846
+#: ../lib/engine/components/opal/opal-account.cpp:840
 msgid "On the phone"
 msgstr "फोनवर"
 
-#: ../lib/engine/components/opal/opal-account.cpp:851
+#: ../lib/engine/components/opal/opal-account.cpp:845
 msgid "Playing"
 msgstr "चालवत आहे"
 
-#: ../lib/engine/components/opal/opal-account.cpp:856
+#: ../lib/engine/components/opal/opal-account.cpp:850
 msgid "Shopping"
 msgstr "खरेदी"
 
-#: ../lib/engine/components/opal/opal-account.cpp:861
+#: ../lib/engine/components/opal/opal-account.cpp:855
 msgid "Sleeping"
 msgstr "निद्रित"
 
-#: ../lib/engine/components/opal/opal-account.cpp:866
+#: ../lib/engine/components/opal/opal-account.cpp:860
 msgid "Working"
 msgstr "क्रियाशील"
 
@@ -1415,7 +1416,8 @@ msgid "_Account ID:"
 msgstr "खाते ID (_A):"
 
 #: ../lib/engine/components/opal/opal-bank.cpp:118
-msgid "_PIN Code:"
+#| msgid "_PIN Code:"
+msgid "_PIN code:"
 msgstr "PIN कोड (_P):"
 
 #: ../lib/engine/components/opal/opal-bank.cpp:123
@@ -1438,7 +1440,8 @@ msgid "_Registrar:"
 msgstr "रेजिस्ट्रार (_R):"
 
 #: ../lib/engine/components/opal/opal-bank.cpp:136
-msgid "_Authentication User:"
+#| msgid "_Authentication User:"
+msgid "_Authentication user:"
 msgstr "वापरकर्त्याची ओळख पटवा (_A):"
 
 #: ../lib/engine/components/opal/opal-call.cpp:405
@@ -1517,7 +1520,7 @@ msgid "User is not available"
 msgstr "वापरकर्ता उपलब्ध नाही"
 
 #: ../lib/engine/components/opal/opal-call.cpp:469
-#: ../lib/engine/components/opal/sip-endpoint.cpp:778
+#: ../lib/engine/components/opal/sip-endpoint.cpp:781
 msgid "Service unavailable"
 msgstr "सेवा अनुपलब्ध"
 
@@ -1557,92 +1560,96 @@ msgstr "संदेश"
 msgid "Illegal status code"
 msgstr "अवैध स्थिती कोड"
 
+#: ../lib/engine/components/opal/sip-endpoint.cpp:607
+msgid "Invalid address"
+msgstr "अवैध पत्ता"
+
 #. Translators: Host of the remote party is offline, this should
 #. * appear when the remote host does not reply in an acceptable time
-#: ../lib/engine/components/opal/sip-endpoint.cpp:610
+#: ../lib/engine/components/opal/sip-endpoint.cpp:613
 msgid "Remote party host is offline"
 msgstr "दूरस्त यजमान ऑफलाइन आहे"
 
 #. Translators: the following strings are answers from the SIP server
 #. * when the packet it receives has an error, see
 #. * http://www.ietf.org/rfc/rfc3261.txt, chapter 21 for more information
-#: ../lib/engine/components/opal/sip-endpoint.cpp:626
+#: ../lib/engine/components/opal/sip-endpoint.cpp:629
 msgid "Multiple choices"
 msgstr "बहु पर्याय"
 
-#: ../lib/engine/components/opal/sip-endpoint.cpp:630
+#: ../lib/engine/components/opal/sip-endpoint.cpp:633
 msgid "Moved permanently"
 msgstr "नेहमीकरीता हलविले"
 
-#: ../lib/engine/components/opal/sip-endpoint.cpp:634
+#: ../lib/engine/components/opal/sip-endpoint.cpp:637
 msgid "Moved temporarily"
 msgstr "तात्पुरर्ते हलविले"
 
-#: ../lib/engine/components/opal/sip-endpoint.cpp:638
+#: ../lib/engine/components/opal/sip-endpoint.cpp:641
 msgid "Use proxy"
 msgstr "प्रॉक्सी वापरा"
 
-#: ../lib/engine/components/opal/sip-endpoint.cpp:642
+#: ../lib/engine/components/opal/sip-endpoint.cpp:645
 msgid "Alternative service"
 msgstr "वैक्लपिक सेवा"
 
-#: ../lib/engine/components/opal/sip-endpoint.cpp:646
+#: ../lib/engine/components/opal/sip-endpoint.cpp:649
 msgid "Bad request"
 msgstr "अयोग्य विनंती"
 
-#: ../lib/engine/components/opal/sip-endpoint.cpp:650
+#: ../lib/engine/components/opal/sip-endpoint.cpp:653
 msgid "Unauthorized"
 msgstr "अनाधिकृत"
 
-#: ../lib/engine/components/opal/sip-endpoint.cpp:654
+#: ../lib/engine/components/opal/sip-endpoint.cpp:657
 msgid "Payment required"
 msgstr "रक्कम आवश्यक"
 
-#: ../lib/engine/components/opal/sip-endpoint.cpp:658
+#: ../lib/engine/components/opal/sip-endpoint.cpp:661
 msgid "Forbidden, please check that username and password are correct"
 msgstr "निषिध्द, कृपया वापरकर्तानाव व पासवर्ड योग्य आहे याची तपासणी करा"
 
-#: ../lib/engine/components/opal/sip-endpoint.cpp:662
+#: ../lib/engine/components/opal/sip-endpoint.cpp:665
 msgid "Not found"
 msgstr "आढळले नाही"
 
-#: ../lib/engine/components/opal/sip-endpoint.cpp:666
+#: ../lib/engine/components/opal/sip-endpoint.cpp:669
 msgid "Method not allowed"
 msgstr "पद्धती करीता परवानगी नाही"
 
-#: ../lib/engine/components/opal/sip-endpoint.cpp:670
+#: ../lib/engine/components/opal/sip-endpoint.cpp:673
 msgid "Not acceptable"
 msgstr "स्वीकारण्याजोगी नाही"
 
-#: ../lib/engine/components/opal/sip-endpoint.cpp:674
+#: ../lib/engine/components/opal/sip-endpoint.cpp:677
 msgid "Proxy authentication required"
 msgstr "प्रॉक्सी ओळख आवश्यक आहे"
 
-#: ../lib/engine/components/opal/sip-endpoint.cpp:678
+#: ../lib/engine/components/opal/sip-endpoint.cpp:681
 msgid "Timeout"
 msgstr "कालबाह्य"
 
-#: ../lib/engine/components/opal/sip-endpoint.cpp:682
+#: ../lib/engine/components/opal/sip-endpoint.cpp:685
 msgid "Conflict"
 msgstr "मतभेद"
 
-#: ../lib/engine/components/opal/sip-endpoint.cpp:686
+#: ../lib/engine/components/opal/sip-endpoint.cpp:689
 msgid "Length required"
 msgstr "लांबी आवश्यक"
 
-#: ../lib/engine/components/opal/sip-endpoint.cpp:690
+#: ../lib/engine/components/opal/sip-endpoint.cpp:693
 msgid "Request entity too big"
 msgstr "विनंतीकृत घटक खूप मोठे आहे"
 
-#: ../lib/engine/components/opal/sip-endpoint.cpp:694
+#: ../lib/engine/components/opal/sip-endpoint.cpp:697
 msgid "Request URI too long"
 msgstr "विनंतीकृत URI खूप लांब आहे"
 
-#: ../lib/engine/components/opal/sip-endpoint.cpp:698
+#: ../lib/engine/components/opal/sip-endpoint.cpp:701
 msgid "Unsupported media type"
 msgstr "असमर्थीत माध्यम प्रकार"
 
-#: ../lib/engine/components/opal/sip-endpoint.cpp:702
+#: ../lib/engine/components/opal/sip-endpoint.cpp:705
 msgid "Unsupported URI scheme"
 msgstr "असमर्थीत URI पद्धती"
 
@@ -1650,99 +1657,99 @@ msgstr "असमर्थीत URI पद्धती"
 #. * Here extension is a specific "phone number", see
 #. * http://en.wikipedia.org/wiki/Extension_(telephone)
 #. * for more information
-#: ../lib/engine/components/opal/sip-endpoint.cpp:710
+#: ../lib/engine/components/opal/sip-endpoint.cpp:713
 msgid "Bad extension"
 msgstr "चुकीचे विस्तार"
 
-#: ../lib/engine/components/opal/sip-endpoint.cpp:714
+#: ../lib/engine/components/opal/sip-endpoint.cpp:717
 msgid "Extension required"
 msgstr "विस्तार आवश्यक"
 
-#: ../lib/engine/components/opal/sip-endpoint.cpp:718
+#: ../lib/engine/components/opal/sip-endpoint.cpp:721
 msgid "Interval too brief"
 msgstr "अवधी खूप मोठे आहे"
 
-#: ../lib/engine/components/opal/sip-endpoint.cpp:722
+#: ../lib/engine/components/opal/sip-endpoint.cpp:725
 msgid "Temporarily unavailable"
 msgstr "तात्पुरते अनुपलब्ध"
 
-#: ../lib/engine/components/opal/sip-endpoint.cpp:726
+#: ../lib/engine/components/opal/sip-endpoint.cpp:729
 msgid "Loop detected"
 msgstr "चक्र आढळले"
 
-#: ../lib/engine/components/opal/sip-endpoint.cpp:730
+#: ../lib/engine/components/opal/sip-endpoint.cpp:733
 msgid "Too many hops"
 msgstr "खूपच जास्त हॉप"
 
-#: ../lib/engine/components/opal/sip-endpoint.cpp:734
+#: ../lib/engine/components/opal/sip-endpoint.cpp:737
 msgid "Address incomplete"
 msgstr "पत्ता अपूर्ण"
 
-#: ../lib/engine/components/opal/sip-endpoint.cpp:738
+#: ../lib/engine/components/opal/sip-endpoint.cpp:741
 msgid "Ambiguous"
 msgstr "गोंधळस्वरूपी"
 
-#: ../lib/engine/components/opal/sip-endpoint.cpp:742
+#: ../lib/engine/components/opal/sip-endpoint.cpp:745
 msgid "Busy Here"
 msgstr "येथे व्यस्त आहे"
 
-#: ../lib/engine/components/opal/sip-endpoint.cpp:746
+#: ../lib/engine/components/opal/sip-endpoint.cpp:749
 msgid "Request terminated"
 msgstr "विनंती समाप्त"
 
-#: ../lib/engine/components/opal/sip-endpoint.cpp:750
+#: ../lib/engine/components/opal/sip-endpoint.cpp:753
 msgid "Not acceptable here"
 msgstr "येथे स्वीकारले जात नाही"
 
-#: ../lib/engine/components/opal/sip-endpoint.cpp:754
+#: ../lib/engine/components/opal/sip-endpoint.cpp:757
 msgid "Bad event"
 msgstr "अयोग्य घटना"
 
-#: ../lib/engine/components/opal/sip-endpoint.cpp:758
+#: ../lib/engine/components/opal/sip-endpoint.cpp:761
 msgid "Request pending"
 msgstr "विनंती शिल्लक"
 
-#: ../lib/engine/components/opal/sip-endpoint.cpp:762
+#: ../lib/engine/components/opal/sip-endpoint.cpp:765
 msgid "Undecipherable"
 msgstr "क्लिष्ठ"
 
-#: ../lib/engine/components/opal/sip-endpoint.cpp:766
+#: ../lib/engine/components/opal/sip-endpoint.cpp:769
 msgid "Internal server error"
 msgstr "आंतरीक सर्व्हर त्रुटी"
 
-#: ../lib/engine/components/opal/sip-endpoint.cpp:770
+#: ../lib/engine/components/opal/sip-endpoint.cpp:773
 msgid "Not implemented"
 msgstr "लागू केले नाही"
 
-#: ../lib/engine/components/opal/sip-endpoint.cpp:774
+#: ../lib/engine/components/opal/sip-endpoint.cpp:777
 msgid "Bad gateway"
 msgstr "अयोग्य गेटवे"
 
-#: ../lib/engine/components/opal/sip-endpoint.cpp:782
+#: ../lib/engine/components/opal/sip-endpoint.cpp:785
 msgid "Server timeout"
 msgstr "सर्व्हर वेळसमाप्ति"
 
-#: ../lib/engine/components/opal/sip-endpoint.cpp:786
+#: ../lib/engine/components/opal/sip-endpoint.cpp:789
 msgid "SIP version not supported"
 msgstr "SIP आवृत्ती समर्थीत नाही"
 
-#: ../lib/engine/components/opal/sip-endpoint.cpp:790
+#: ../lib/engine/components/opal/sip-endpoint.cpp:793
 msgid "Message too large"
 msgstr "संदेश खूपच मोठे आहे"
 
-#: ../lib/engine/components/opal/sip-endpoint.cpp:794
+#: ../lib/engine/components/opal/sip-endpoint.cpp:797
 msgid "Busy everywhere"
 msgstr "सगळीकडे व्यस्त"
 
-#: ../lib/engine/components/opal/sip-endpoint.cpp:798
+#: ../lib/engine/components/opal/sip-endpoint.cpp:801
 msgid "Decline"
 msgstr "फेटाळले"
 
-#: ../lib/engine/components/opal/sip-endpoint.cpp:802
+#: ../lib/engine/components/opal/sip-endpoint.cpp:805
 msgid "Does not exist anymore"
 msgstr "यापुढे अस्तित्वात नाही"
 
-#: ../lib/engine/components/opal/sip-endpoint.cpp:806
+#: ../lib/engine/components/opal/sip-endpoint.cpp:809
 msgid "Globally not acceptable"
 msgstr "जागतिकरित्या मान्य नाही"
 
@@ -1781,29 +1788,29 @@ msgstr "निवडलेले प्राधान्यकृत कोड�
 msgid "Advanced"
 msgstr "प्रगत"
 
-#: ../lib/engine/gui/gtk-frontend/accounts-window.cpp:566
+#: ../lib/engine/gui/gtk-frontend/accounts-window.cpp:567
 msgid "Account Name"
 msgstr "खाते नाव"
 
-#: ../lib/engine/gui/gtk-frontend/accounts-window.cpp:567
+#: ../lib/engine/gui/gtk-frontend/accounts-window.cpp:568
 msgid "Status"
 msgstr "स्थिती"
 
-#: ../lib/engine/gui/gtk-frontend/accounts-window.cpp:582
+#: ../lib/engine/gui/gtk-frontend/accounts-window.cpp:583
 #: ../src/gui/main_window.cpp:1330
 msgid "_Accounts"
 msgstr "खाते (_A)"
 
-#: ../lib/engine/gui/gtk-frontend/accounts-window.cpp:586
+#: ../lib/engine/gui/gtk-frontend/accounts-window.cpp:587
 #: ../src/gui/main_window.cpp:1368
 msgid "_Help"
 msgstr "मदत (_H)"
 
-#: ../lib/engine/gui/gtk-frontend/accounts-window.cpp:611
+#: ../lib/engine/gui/gtk-frontend/accounts-window.cpp:612
 msgid "Accounts"
 msgstr "खाते"
 
-#: ../lib/engine/gui/gtk-frontend/accounts-window.cpp:678
+#: ../lib/engine/gui/gtk-frontend/accounts-window.cpp:679
 msgid "Edi_t"
 msgstr "संपादित करा (_t)"
 
@@ -2404,7 +2411,6 @@ msgid "Q.931"
 msgstr "Q.931"
 
 #: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:665
-#| msgid "Disable H.239 Extendend Video"
 msgid "Disable H.239 Extended Video"
 msgstr "H.239 एक्सटेंडेड व्हिडिओ बंद करा"
 
@@ -2495,7 +2501,8 @@ msgid "INFO"
 msgstr "INFO"
 
 #: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:721
-msgid "_Outbound Proxy:"
+#| msgid "_Outbound Proxy:"
+msgid "_Outbound proxy:"
 msgstr "बाह्य प्रॉक्सी (_O):"
 
 #: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:749
@@ -2504,8 +2511,9 @@ msgid "Audio Devices"
 msgstr "ऑडिओ साधन"
 
 #: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:757
-msgid "Ringing Device"
-msgstr "रिंग होणारे साधन"
+#| msgid "Ringing Device"
+msgid "Ringing device:"
+msgstr "रिंगिंग साधन:"
 
 #: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:757
 msgid "Select the ringing audio device to use"
@@ -2604,8 +2612,14 @@ msgstr "कमाल जीटर बफर (ms मध्ये) (_j):"
 
 #. Translators: the full sentence is Keep a minimum video quality of X %
 #: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:977
-msgid "Picture Quality"
-msgstr "चित्र दर्जा"
+#| msgid "Picture Quality"
+msgid "Picture quality"
+msgstr "चित्राचा दर्जा"
+
+#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:977
+#| msgid "Frame Rate"
+msgid "Frame rate"
+msgstr "फ्रेम दर"
 
 #: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:977
 msgid ""
@@ -3153,7 +3167,8 @@ msgstr ""
 "परवानगी देते; माहिती नसल्यास रिकामे सोडा"
 
 #: ../plugins/loudmouth/loudmouth-bank.cpp:111
-msgid "_Add a jabber/XMPP account"
+#| msgid "_Add a jabber/XMPP account"
+msgid "_Add a Jabber/XMPP Account"
 msgstr "जॅबर/XMPP खाते समाविष्ट करा (_A)"
 
 #: ../plugins/loudmouth/loudmouth-bank.cpp:123
@@ -3705,7 +3720,8 @@ msgid "Act on selected contact"
 msgstr "निवडलेले संपर्कवर कार्यबद्ध रहा"
 
 #: ../src/gui/main_window.cpp:1281
-msgid "Ca_ll a number"
+#| msgid "Ca_ll a number"
+msgid "Ca_ll a Number"
 msgstr "नंबर कॉल करा (_l)"
 
 #: ../src/gui/main_window.cpp:1281
@@ -3762,8 +3778,9 @@ msgid "_Call History"
 msgstr "कॉल इतिहास (_C)"
 
 #: ../src/gui/main_window.cpp:1362
-msgid "Show offline _contacts"
-msgstr "ऑफलाइन संपर्क दर्शवा (_c)"
+#| msgid "Show offline _contacts"
+msgid "Show Offline _Contacts"
+msgstr "ऑफलाइन संपर्क दर्शवा (_C)"
 
 #: ../src/gui/main_window.cpp:1426
 msgid "Contacts"
@@ -3813,6 +3830,9 @@ msgstr "इच्छिक संदेश काढून टाका:"
 #: ../src/gui/statusmenu.cpp:685
 msgid "Define a custom message:"
 msgstr "इच्छिक संदेशचे वर्णन द्या:"
+
+#~ msgid "New contact"
+#~ msgstr "नवीन संपर्क"
 
 #~ msgid "Extented Video Roles"
 #~ msgstr "विस्तारित व्हिडिओ रोल्स्"
