@@ -941,7 +941,7 @@ OPENLDAP::BookForm (boost::shared_ptr<Ekiga::FormRequestSimple> request,
 
   request->instructions (_("Please edit the following fields"));
 
-  request->text ("name", _("Book _Name:"), info.name, _("Book name, as shown in your dialog box"));
+  request->text ("name", _("Book _name:"), info.name, _("Book name, as shown in your dialog box"));
   request->text ("uri", _("Server _URI:"), info.uri_host, _("Name of LDAP server, prefixed by ldap://"));
   request->text ("base", _("_Base DN:"), info.urld->lud_dn, std::string ());
 
@@ -950,8 +950,8 @@ OPENLDAP::BookForm (boost::shared_ptr<Ekiga::FormRequestSimple> request,
     std::string scopes[]= {"base","one","sub"};
 
     choices["sub"] = _("Subtree");
-    choices["onelevel"] = _("Single Level");
-    request->single_choice ("scope", _("_Search Scope"),
+    choices["onelevel"] = _("Single level");
+    request->single_choice ("scope", _("_Search scope"),
 			    scopes[info.urld->lud_scope], choices);
   }
 
@@ -966,12 +966,12 @@ OPENLDAP::BookForm (boost::shared_ptr<Ekiga::FormRequestSimple> request,
    * "DisplayName" (i.e., "the name that will be displayed") but on
    * most LDAP servers it's "CommonName".
    */
-  request->text ("nameAttr", _("_DisplayName Attribute:"), info.urld->lud_attrs[0], std::string ());
-  request->text ("callAttr", _("Call _Attributes:"), callAttr, _("The field you are searching for"));
+  request->text ("nameAttr", _("_DisplayName attribute:"), info.urld->lud_attrs[0], std::string ());
+  request->text ("callAttr", _("Call _attributes:"), callAttr, _("The field you are searching for"));
   if (info.urld->lud_filter != NULL)
-    request->text ("filter", _("_Filter Template:"), info.urld->lud_filter, _("Here, a \"$\" is replaced by the search string"));
+    request->text ("filter", _("_Filter template:"), info.urld->lud_filter, _("Here, a \"$\" is replaced by the search string"));
   else
-    request->text ("filter", _("_Filter Template:"), "", _("Here, a \"$\" is replaced by the search string"));
+    request->text ("filter", _("_Filter template:"), "", _("Here, a \"$\" is replaced by the search string"));
 
   /* Translators: Bind ID - In LDAP, the operation that begins an LDAP
    * session and authenticates the user to the directory is called a
@@ -999,7 +999,7 @@ OPENLDAP::BookForm (boost::shared_ptr<Ekiga::FormRequestSimple> request,
         mechs[mech] = mech;
       }
     }
-    request->single_choice ("saslMech", _("SASL _Mechanism"),
+    request->single_choice ("saslMech", _("SASL _mechanism"),
 			    info.saslMech, mechs);
   }
 }
@@ -1037,10 +1037,10 @@ OPENLDAP::BookFormInfo (Ekiga::Form &result,
     errmsg += _("Please provide a Server URI\n");
 
   if (nameAttr.empty())
-    errmsg += _("Please provide a DisplayName Attribute\n");
+    errmsg += _("Please provide a DisplayName attribute\n");
 
   if (callAttr.empty())
-    errmsg += _("Please provide a Call Attribute\n");
+    errmsg += _("Please provide a Call attribute\n");
 
   if (ldap_url_parse (uri.c_str(), &url_host))
     errmsg += _("Invalid Server URI\n");
