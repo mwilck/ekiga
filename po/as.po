@@ -11,8 +11,8 @@ msgstr ""
 "Project-Id-Version: as\n"
 "Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug."
 "cgi?product=ekiga&keywords=I18N+L10N&component=general\n"
-"POT-Creation-Date: 2012-09-15 13:26+0000\n"
-"PO-Revision-Date: 2012-09-17 20:03+0530\n"
+"POT-Creation-Date: 2012-09-21 08:58+0000\n"
+"PO-Revision-Date: 2012-09-22 15:30+0530\n"
 "Last-Translator: Nilamdyuti Goswami <ngoswami@redhat.com>\n"
 "Language-Team: as_IN <kde-i18n-doc@kde.org>\n"
 "Language: as\n"
@@ -103,7 +103,6 @@ msgid "Display images from your camera device"
 msgstr "আপোনাৰ ক্যামেৰাৰ ছবি সহ দেখুৱা হ'ব"
 
 #: ../ekiga.schemas.in.in.h:15
-#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:977
 msgid "Frame Rate"
 msgstr "ফ্ৰেমৰ মাত্ৰা"
 
@@ -854,8 +853,9 @@ msgstr "গৃহিত"
 #: ../lib/engine/components/local-roster/local-cluster.cpp:82
 #: ../lib/engine/components/local-roster/local-heap.cpp:118
 #: ../plugins/evolution/evolution-book.cpp:343
-msgid "New contact"
-msgstr "নতুন পৰিচিতি"
+#| msgid "New _Contact"
+msgid "_New Contact"
+msgstr "নতুন পৰিচয় (_N)"
 
 #: ../lib/engine/components/local-roster/local-heap.cpp:94
 msgid "Services"
@@ -933,7 +933,7 @@ msgstr "Please fill in this form to add a new contact to ekiga's internal roster
 #: ../lib/engine/components/local-roster/local-heap.cpp:236
 #: ../lib/engine/components/local-roster/local-heap.cpp:427
 #: ../lib/engine/components/local-roster/local-presentity.cpp:270
-#: ../lib/engine/components/opal/opal-account.cpp:420
+#: ../lib/engine/components/opal/opal-account.cpp:427
 #: ../plugins/evolution/evolution-contact.cpp:324
 #: ../plugins/loudmouth/loudmouth-account.cpp:342
 #: ../plugins/loudmouth/loudmouth-bank.cpp:125
@@ -994,7 +994,7 @@ msgid "Unnamed"
 msgstr "নামহীন"
 
 #: ../lib/engine/components/local-roster/local-presentity.cpp:240
-#: ../lib/engine/components/opal/opal-account.cpp:375
+#: ../lib/engine/components/opal/opal-account.cpp:382
 #: ../plugins/evolution/evolution-contact.cpp:228
 #: ../plugins/loudmouth/loudmouth-presentity.cpp:160
 #: ../plugins/resource-list/rl-presentity.cpp:212
@@ -1003,7 +1003,7 @@ msgid "_Edit"
 msgstr "সম্পাদন (_ম)"
 
 #: ../lib/engine/components/local-roster/local-presentity.cpp:242
-#: ../lib/engine/components/opal/opal-account.cpp:377
+#: ../lib/engine/components/opal/opal-account.cpp:384
 #: ../lib/engine/gui/gtk-frontend/accounts-window.cpp:682
 #: ../plugins/evolution/evolution-contact.cpp:230
 #: ../plugins/loudmouth/loudmouth-account.cpp:445
@@ -1073,61 +1073,61 @@ msgstr "ফাইল (_ফ)"
 #. Translators: this is a state, not an action, i.e. it should be read as
 #. "(you are) unregistered", and not as "(you have been) unregistered"
 #: ../lib/engine/components/opal/opal-account.cpp:69
-#: ../lib/engine/components/opal/opal-account.cpp:310
-#: ../lib/engine/components/opal/opal-account.cpp:605
+#: ../lib/engine/components/opal/opal-account.cpp:315
+#: ../lib/engine/components/opal/opal-account.cpp:612
 msgid "Unregistered"
 msgstr "নথিভুক্ত কৰ না"
 
 #. translators : the result will look like :
 #. * "registered (with 2 voice mail messages)"
 #.
-#: ../lib/engine/components/opal/opal-account.cpp:218
+#: ../lib/engine/components/opal/opal-account.cpp:223
 #, c-format
 msgid "%s (with %d voice mail message)"
 msgid_plural "%s (with %d voice mail messages)"
 msgstr[0] "%s (%d শব্দ মেইল বাৰ্তাৰ সৈতে)"
 msgstr[1] "%s (%d শব্দ মেইল বাৰ্তাসমূহৰ সৈতে)"
 
-#: ../lib/engine/components/opal/opal-account.cpp:296
-#: ../lib/engine/components/opal/opal-account.cpp:667
+#: ../lib/engine/components/opal/opal-account.cpp:301
+#: ../lib/engine/components/opal/opal-account.cpp:682
 msgid "Processing..."
 msgstr "প্ৰসেস কৰা হচ্ছে..."
 
-#: ../lib/engine/components/opal/opal-account.cpp:367
+#: ../lib/engine/components/opal/opal-account.cpp:374
 #: ../lib/engine/gui/gtk-frontend/accounts-window.cpp:676
 #: ../plugins/loudmouth/loudmouth-account.cpp:433
 msgid "_Disable"
 msgstr "নিস্ক্ৰিয়"
 
-#: ../lib/engine/components/opal/opal-account.cpp:370
+#: ../lib/engine/components/opal/opal-account.cpp:377
 #: ../lib/engine/gui/gtk-frontend/accounts-window.cpp:673
 #: ../plugins/loudmouth/loudmouth-account.cpp:437
 msgid "_Enable"
 msgstr "সক্ৰিয়"
 
-#: ../lib/engine/components/opal/opal-account.cpp:391
+#: ../lib/engine/components/opal/opal-account.cpp:398
 #: ../src/gui/assistant.cpp:761
 msgid "Recharge the account"
 msgstr "একাউন্ট ৰি-চাৰ্জ কৰক"
 
-#: ../lib/engine/components/opal/opal-account.cpp:396
+#: ../lib/engine/components/opal/opal-account.cpp:403
 #: ../src/gui/assistant.cpp:773
 msgid "Consult the balance history"
 msgstr "কলেৰ ইতিহাস দেখুৱা হ'ব"
 
-#: ../lib/engine/components/opal/opal-account.cpp:401
+#: ../lib/engine/components/opal/opal-account.cpp:408
 #: ../src/gui/assistant.cpp:785
 msgid "Consult the call history"
 msgstr "কলেৰ ইতিহাস দেখুৱা হ'ব"
 
-#: ../lib/engine/components/opal/opal-account.cpp:416
+#: ../lib/engine/components/opal/opal-account.cpp:423
 #: ../lib/engine/components/opal/opal-bank.cpp:96
 #: ../plugins/loudmouth/loudmouth-account.cpp:337
 #: ../plugins/loudmouth/loudmouth-bank.cpp:121
 msgid "Edit account"
 msgstr "নতুন একাউন্ট তৈৰী কৰক"
 
-#: ../lib/engine/components/opal/opal-account.cpp:418
+#: ../lib/engine/components/opal/opal-account.cpp:425
 #: ../lib/engine/components/opal/opal-bank.cpp:97
 #: ../plugins/evolution/evolution-book.cpp:345
 #: ../plugins/evolution/evolution-contact.cpp:322
@@ -1135,40 +1135,40 @@ msgstr "নতুন একাউন্ট তৈৰী কৰক"
 msgid "Please update the following fields:"
 msgstr "অনুগ্ৰহ কৰে নিম্নলিখিত ক্ষেত্ৰগুলি আপডেট কৰক:"
 
-#: ../lib/engine/components/opal/opal-account.cpp:420
+#: ../lib/engine/components/opal/opal-account.cpp:427
 #: ../lib/engine/components/opal/opal-bank.cpp:123
 #: ../lib/engine/components/opal/opal-bank.cpp:133
 #: ../plugins/loudmouth/loudmouth-account.cpp:342
 msgid "Account name, e.g. MyAccount"
 msgstr "একাওন্টৰ নাম, উদাহৰণস্বৰুপে MyAccount"
 
-#: ../lib/engine/components/opal/opal-account.cpp:422
+#: ../lib/engine/components/opal/opal-account.cpp:429
 msgid "Registrar:"
 msgstr "নিবন্ধনকাৰী:"
 
-#: ../lib/engine/components/opal/opal-account.cpp:422
+#: ../lib/engine/components/opal/opal-account.cpp:429
 #: ../lib/engine/components/opal/opal-bank.cpp:134
 msgid "The registrar, e.g. ekiga.net"
 msgstr "নিবন্ধকজন, উদাহৰণস্বৰুপে ekiga.net"
 
-#: ../lib/engine/components/opal/opal-account.cpp:424
+#: ../lib/engine/components/opal/opal-account.cpp:431
 msgid "Gatekeeper:"
 msgstr "গেটকিপাৰ"
 
-#: ../lib/engine/components/opal/opal-account.cpp:424
+#: ../lib/engine/components/opal/opal-account.cpp:431
 #: ../lib/engine/components/opal/opal-bank.cpp:124
 msgid "The gatekeeper, e.g. ekiga.net"
 msgstr "দ্বাৰপালজন, উদাহৰণস্বৰুপে ekiga.net"
 
 #
-#: ../lib/engine/components/opal/opal-account.cpp:425
+#: ../lib/engine/components/opal/opal-account.cpp:432
 #: ../plugins/loudmouth/loudmouth-account.cpp:346
 #: ../plugins/loudmouth/loudmouth-bank.cpp:126
 #: ../plugins/resource-list/rl-cluster.cpp:174
 msgid "User:"
 msgstr "ব্যৱহাৰকৰ্তা"
 
-#: ../lib/engine/components/opal/opal-account.cpp:425
+#: ../lib/engine/components/opal/opal-account.cpp:432
 #: ../lib/engine/components/opal/opal-bank.cpp:105
 #: ../lib/engine/components/opal/opal-bank.cpp:116
 #: ../lib/engine/components/opal/opal-bank.cpp:125
@@ -1179,12 +1179,13 @@ msgstr "ব্যৱহাৰকাৰীৰ নাম, উদাহৰণস্
 
 #. Translators:
 #. * SIP knows two usernames: The name for the client ("User") and the name
-#. * for the authentication procedure ("Authentication User")
-#: ../lib/engine/components/opal/opal-account.cpp:430
-msgid "Authentication User:"
-msgstr "অনুমোদনৰ নাম:"
+#. * for the authentication procedure ("Authentication user")
+#: ../lib/engine/components/opal/opal-account.cpp:437
+#| msgid "Authentication User:"
+msgid "Authentication user:"
+msgstr "প্ৰমাণীকৰণ ব্যৱহাৰকাৰী:"
 
-#: ../lib/engine/components/opal/opal-account.cpp:430
+#: ../lib/engine/components/opal/opal-account.cpp:437
 #: ../lib/engine/components/opal/opal-bank.cpp:136
 msgid ""
 "The user name used during authentication, if different than the user name; "
@@ -1193,14 +1194,14 @@ msgstr ""
 "প্ৰমানীকৰণৰ সময়ত ব্যৱহাৰ হোৱা ব্যৱহাৰকাৰীৰ নাম, যদি ব্যৱহাৰকাৰীৰ নামতকে ভিন্ন; "
 "যদি আপোনাৰ নাই খালি ৰাখক"
 
-#: ../lib/engine/components/opal/opal-account.cpp:431
+#: ../lib/engine/components/opal/opal-account.cpp:438
 #: ../plugins/loudmouth/loudmouth-account.cpp:362
 #: ../plugins/loudmouth/loudmouth-bank.cpp:129
 #: ../plugins/resource-list/rl-cluster.cpp:173
 msgid "Password:"
 msgstr "পাসওয়াৰ্ড:"
 
-#: ../lib/engine/components/opal/opal-account.cpp:431
+#: ../lib/engine/components/opal/opal-account.cpp:438
 #: ../lib/engine/components/opal/opal-bank.cpp:107
 #: ../lib/engine/components/opal/opal-bank.cpp:118
 #: ../lib/engine/components/opal/opal-bank.cpp:127
@@ -1209,119 +1210,120 @@ msgstr "পাসওয়াৰ্ড:"
 msgid "Password associated to the user"
 msgstr "ব্যৱহাৰকাৰীৰ লগত সংযুক্ত পাছওৱাৰ্ড"
 
-#: ../lib/engine/components/opal/opal-account.cpp:432
+#: ../lib/engine/components/opal/opal-account.cpp:439
 msgid "Timeout:"
 msgstr "সময়সীমা:"
 
-#: ../lib/engine/components/opal/opal-account.cpp:432
+#: ../lib/engine/components/opal/opal-account.cpp:439
 #: ../lib/engine/components/opal/opal-bank.cpp:128
 #: ../lib/engine/components/opal/opal-bank.cpp:138
 msgid "Time in seconds after which the account registration is automatically retried"
 msgstr "ছেকেন্ডত সময় যাৰ পাছত একাওন্ট ৰেজিস্ট্ৰেষণ স্বচালিতভাৱে পুনৰ চেষ্টা কৰা হ'ব"
 
-#: ../lib/engine/components/opal/opal-account.cpp:433
+#: ../lib/engine/components/opal/opal-account.cpp:440
 #: ../lib/engine/components/opal/opal-bank.cpp:141
 #: ../plugins/loudmouth/loudmouth-account.cpp:376
 #: ../plugins/loudmouth/loudmouth-bank.cpp:130
-msgid "Enable Account"
-msgstr "একাউন্ট নম্বৰ:"
+#| msgid "Enable Account"
+msgid "Enable account"
+msgstr "একাউন্ট সামৰ্থবান কৰক"
 
-#: ../lib/engine/components/opal/opal-account.cpp:459
+#: ../lib/engine/components/opal/opal-account.cpp:466
 #: ../lib/engine/components/opal/opal-bank.cpp:175
 msgid "You did not supply a name for that account."
 msgstr "চিহ্নিত একাউন্টেৰ নাম উল্লেখ কৰা হয়নি।"
 
-#: ../lib/engine/components/opal/opal-account.cpp:461
+#: ../lib/engine/components/opal/opal-account.cpp:468
 #: ../lib/engine/components/opal/opal-bank.cpp:177
 msgid "You did not supply a host to register to."
 msgstr "নিবন্ধনৰ বাবে কোনো হোস্ট উল্লেখ কৰা হয়নি।"
 
-#: ../lib/engine/components/opal/opal-account.cpp:463
+#: ../lib/engine/components/opal/opal-account.cpp:470
 #: ../lib/engine/components/opal/opal-bank.cpp:179
 msgid "You did not supply a user name for that account."
 msgstr "চিহ্নিত একাউন্টেৰ বাবে কোনো ব্যবহাৰকাৰীৰ নাম উল্লেখ কৰা হয়নি।"
 
-#: ../lib/engine/components/opal/opal-account.cpp:465
+#: ../lib/engine/components/opal/opal-account.cpp:472
 #: ../lib/engine/components/opal/opal-bank.cpp:181
 msgid "The timeout should be at least 10 seconds."
 msgstr "সময়সীমা কমপক্ষেও ১০ ছেকেন্ড হোৱা উচিত।"
 
 #. Translators: this is a state, not an action, i.e. it should be read as
 #. "(you are) registered", and not as "(you have been) registered"
-#: ../lib/engine/components/opal/opal-account.cpp:582
+#: ../lib/engine/components/opal/opal-account.cpp:589
 msgid "Registered"
 msgstr "নথিভুক্তিকৰণেৰ পদ্ধতি"
 
-#: ../lib/engine/components/opal/opal-account.cpp:616
+#: ../lib/engine/components/opal/opal-account.cpp:626
 msgid "Could not unregister"
 msgstr "নিবন্ধন বাতিল কৰতে ব্যৰ্থ"
 
-#: ../lib/engine/components/opal/opal-account.cpp:648
+#: ../lib/engine/components/opal/opal-account.cpp:659
 msgid "Could not register"
 msgstr "বিৰক্ত নকৰিব"
 
-#: ../lib/engine/components/opal/opal-account.cpp:654
+#: ../lib/engine/components/opal/opal-account.cpp:664
 msgid "Could not register to "
 msgstr "ৰেজিস্টাৰ কৰিব পৰা নগল "
 
-#: ../lib/engine/components/opal/opal-account.cpp:655
+#: ../lib/engine/components/opal/opal-account.cpp:665
 #: ../plugins/loudmouth/loudmouth-account.cpp:443
 msgid "Edit"
 msgstr "সম্পাদন"
 
-#: ../lib/engine/components/opal/opal-account.cpp:786
+#: ../lib/engine/components/opal/opal-account.cpp:802
 msgid "Appointment"
 msgstr "সাক্ষাৎকাৰ"
 
-#: ../lib/engine/components/opal/opal-account.cpp:791
+#: ../lib/engine/components/opal/opal-account.cpp:807
 msgid "Breakfast"
 msgstr "প্ৰাতঃভোজন"
 
-#: ../lib/engine/components/opal/opal-account.cpp:796
+#: ../lib/engine/components/opal/opal-account.cpp:812
 msgid "Dinner"
 msgstr "নৈশভোজন"
 
-#: ../lib/engine/components/opal/opal-account.cpp:802
+#: ../lib/engine/components/opal/opal-account.cpp:818
 msgid "Holiday"
 msgstr "ছুটি"
 
-#: ../lib/engine/components/opal/opal-account.cpp:807
+#: ../lib/engine/components/opal/opal-account.cpp:823
 msgid "In transit"
 msgstr "স্থানান্তৰ অৱস্থাত"
 
-#: ../lib/engine/components/opal/opal-account.cpp:812
+#: ../lib/engine/components/opal/opal-account.cpp:828
 msgid "Looking for work"
 msgstr "কাম বিচাৰি আছে"
 
-#: ../lib/engine/components/opal/opal-account.cpp:817
+#: ../lib/engine/components/opal/opal-account.cpp:833
 msgid "Lunch"
 msgstr "মধ্যাহ্নভোজন"
 
-#: ../lib/engine/components/opal/opal-account.cpp:822
+#: ../lib/engine/components/opal/opal-account.cpp:838
 msgid "Meal"
 msgstr "সাজ"
 
-#: ../lib/engine/components/opal/opal-account.cpp:827
+#: ../lib/engine/components/opal/opal-account.cpp:843
 msgid "Meeting"
 msgstr "সভা"
 
-#: ../lib/engine/components/opal/opal-account.cpp:832
+#: ../lib/engine/components/opal/opal-account.cpp:848
 msgid "On the phone"
 msgstr "ফোনত"
 
-#: ../lib/engine/components/opal/opal-account.cpp:837
+#: ../lib/engine/components/opal/opal-account.cpp:853
 msgid "Playing"
 msgstr "খেলা হৈছে"
 
-#: ../lib/engine/components/opal/opal-account.cpp:842
+#: ../lib/engine/components/opal/opal-account.cpp:858
 msgid "Shopping"
 msgstr "কিনা"
 
-#: ../lib/engine/components/opal/opal-account.cpp:847
+#: ../lib/engine/components/opal/opal-account.cpp:863
 msgid "Sleeping"
 msgstr "নিদ্ৰিত"
 
-#: ../lib/engine/components/opal/opal-account.cpp:852
+#: ../lib/engine/components/opal/opal-account.cpp:868
 msgid "Working"
 msgstr "কৰ্মৰত"
 
@@ -1372,8 +1374,9 @@ msgid "_Account ID:"
 msgstr "একাউন্টৰ ID (_A):"
 
 #: ../lib/engine/components/opal/opal-bank.cpp:118
-msgid "_PIN Code:"
-msgstr "PIN কোড (_P):"
+#| msgid "_PIN Code:"
+msgid "_PIN code:"
+msgstr "PIN ক'ড (_P):"
 
 #: ../lib/engine/components/opal/opal-bank.cpp:123
 #: ../lib/engine/components/opal/opal-bank.cpp:133
@@ -1395,7 +1398,8 @@ msgid "_Registrar:"
 msgstr "নিবন্ধক (_R):"
 
 #: ../lib/engine/components/opal/opal-bank.cpp:136
-msgid "_Authentication User:"
+#| msgid "_Authentication User:"
+msgid "_Authentication user:"
 msgstr "প্ৰমাণীকৰণ ব্যৱহাৰকাৰী (_A):"
 
 #: ../lib/engine/components/opal/opal-call.cpp:405
@@ -2443,8 +2447,9 @@ msgid "INFO"
 msgstr "INFO"
 
 #: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:721
-msgid "_Outbound Proxy:"
-msgstr "বাহিৰমূখী প্ৰক্সি: (_O)"
+#| msgid "_Outbound Proxy:"
+msgid "_Outbound proxy:"
+msgstr "বাহিৰমূখী প্ৰক্সি (_O):"
 
 #: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:749
 #: ../src/gui/assistant.cpp:996
@@ -2452,8 +2457,9 @@ msgid "Audio Devices"
 msgstr "অডিঅ' ডিভাইচ"
 
 #: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:757
-msgid "Ringing Device"
-msgstr "ৰিংয়েৰ বাবে ব্যবহৃত ডিভাইচ"
+#| msgid "Ringing Device"
+msgid "Ringing device:"
+msgstr "ৰিংগিং ডিভাইচ:"
 
 #: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:757
 msgid "Select the ringing audio device to use"
@@ -2553,8 +2559,14 @@ msgstr "সৰ্বাধিক জিট্টাৰ বাফাৰ"
 
 #. Translators: the full sentence is Keep a minimum video quality of X %
 #: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:977
-msgid "Picture Quality"
-msgstr "ছবি"
+#| msgid "Picture Quality"
+msgid "Picture quality"
+msgstr "ছবিৰ গুণ"
+
+#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:977
+#| msgid "Frame Rate"
+msgid "Frame rate"
+msgstr "ফ্ৰেমৰ হাৰ"
 
 #: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:977
 msgid ""
@@ -2903,8 +2915,9 @@ msgid "Please edit the following fields"
 msgstr "অনুগ্ৰহ কৰে নিম্নলিখিত ক্ষেত্ৰগুলি সম্পাদনা কৰক"
 
 #: ../plugins/ldap/ldap-book.cpp:944
-msgid "Book _Name:"
-msgstr "কিতাপৰ নাম (_N):"
+#| msgid "Book _Name:"
+msgid "Book _name:"
+msgstr "কিতাপৰ নাম (_n):"
 
 #: ../plugins/ldap/ldap-book.cpp:944
 msgid "Book name, as shown in your dialog box"
@@ -2927,13 +2940,14 @@ msgid "Subtree"
 msgstr "সাবট্ৰি"
 
 #: ../plugins/ldap/ldap-book.cpp:953
-msgid "Single Level"
+#| msgid "Single Level"
+msgid "Single level"
 msgstr "এটা স্তৰ"
 
-#
 #: ../plugins/ldap/ldap-book.cpp:954
-msgid "_Search Scope"
-msgstr "অনুসন্ধানৰ পৰিধি (_S)"
+#| msgid "_Search Scope"
+msgid "_Search scope"
+msgstr "সন্ধানৰ পৰিধি (_S)"
 
 #. Translators: DisplayName Attribute is the name of the LDAP
 #. * attribute whose value will be used to name an addressbook entry.
@@ -2942,19 +2956,22 @@ msgstr "অনুসন্ধানৰ পৰিধি (_S)"
 #. * most LDAP servers it's "CommonName".
 #.
 #: ../plugins/ldap/ldap-book.cpp:969
-msgid "_DisplayName Attribute:"
+#| msgid "_DisplayName Attribute:"
+msgid "_DisplayName attribute:"
 msgstr "DisplayName বৈশিষ্ট (_D):"
 
 #: ../plugins/ldap/ldap-book.cpp:970
-msgid "Call _Attributes:"
-msgstr "বৈশিষ্টসমূহ মাতক (_A):"
+#| msgid "Call _Attributes:"
+msgid "Call _attributes:"
+msgstr "বৈশিষ্টসমূহ কল কৰক (_a):"
 
 #: ../plugins/ldap/ldap-book.cpp:970
 msgid "The field you are searching for"
 msgstr "আপুনি বিচাৰি থকা ক্ষেত্ৰটো"
 
 #: ../plugins/ldap/ldap-book.cpp:972 ../plugins/ldap/ldap-book.cpp:974
-msgid "_Filter Template:"
+#| msgid "_Filter Template:"
+msgid "_Filter template:"
 msgstr "ফিল্টাৰ টেমপ্লেট (_F):"
 
 #: ../plugins/ldap/ldap-book.cpp:972 ../plugins/ldap/ldap-book.cpp:974
@@ -2990,10 +3007,10 @@ msgstr "TLS ব্যবহাৰ কৰা হ'ব"
 msgid "Use SASL"
 msgstr "SASL ব্যবহাৰ কৰা হ'ব"
 
-#
 #: ../plugins/ldap/ldap-book.cpp:1002
-msgid "SASL _Mechanism"
-msgstr "SASL পদ্ধতি (_M)"
+#| msgid "SASL _Mechanism"
+msgid "SASL _mechanism"
+msgstr "SASL পদ্ধতি (_m)"
 
 #: ../plugins/ldap/ldap-book.cpp:1012
 msgid "Edit LDAP directory"
@@ -3008,12 +3025,14 @@ msgid "Please provide a Server URI\n"
 msgstr "অনুগ্ৰহ কৰে এটা সাৰ্ভাৰেৰ URI নিৰ্ধাৰণ কৰক\n"
 
 #: ../plugins/ldap/ldap-book.cpp:1040
-msgid "Please provide a DisplayName Attribute\n"
-msgstr "অনুগ্ৰহ কৰে DisplayName এট্ৰিবিউট নিৰ্ধাৰণ কৰক\n"
+#| msgid "Please provide a DisplayName Attribute\n"
+msgid "Please provide a DisplayName attribute\n"
+msgstr "অনুগ্ৰহ কৰি এটা DisplayName বৈশিষ্ট প্ৰদান কৰক\n"
 
 #: ../plugins/ldap/ldap-book.cpp:1043
-msgid "Please provide a Call Attribute\n"
-msgstr "অনুগ্ৰহ কৰে এটা Call এট্ৰিবিউট নিৰ্ধাৰণ কৰক\n"
+#| msgid "Please provide a Call Attribute\n"
+msgid "Please provide a Call attribute\n"
+msgstr "অনুগ্ৰহ কৰি এটা Call বৈশিষ্ট প্ৰদান কৰক\n"
 
 #: ../plugins/ldap/ldap-book.cpp:1046
 msgid "Invalid Server URI\n"
@@ -3103,8 +3122,9 @@ msgstr ""
 "পাৰ্থক্য কৰা অনুমতি দিয়াকৈ; ৰিক্ত এৰক যদি আপুনি নাজানে ই প্ৰকৃততে কি"
 
 #: ../plugins/loudmouth/loudmouth-bank.cpp:111
-msgid "_Add a jabber/XMPP account"
-msgstr "এটা jabber/XMPP একাউন্ট যোগ কৰক (_A)"
+#| msgid "_Add a jabber/XMPP account"
+msgid "_Add a Jabber/XMPP Account"
+msgstr "এটা Jabber/XMPP একাউন্ট যোগ কৰক (_A)"
 
 #: ../plugins/loudmouth/loudmouth-bank.cpp:123
 msgid "Please fill in the following fields:"
@@ -3627,8 +3647,9 @@ msgid "Act on selected contact"
 msgstr "নিৰ্বাচিত পৰিচয়ত কাম কৰক"
 
 #: ../src/gui/main_window.cpp:1281
-msgid "Ca_ll a number"
-msgstr "এটা নম্বৰ কল কৰক (_a)"
+#| msgid "Ca_ll a number"
+msgid "Ca_ll a Number"
+msgstr "এটা নম্বৰ কল কৰক (_l)"
 
 #: ../src/gui/main_window.cpp:1281
 msgid "Place a new call"
@@ -3684,8 +3705,9 @@ msgid "_Call History"
 msgstr "কলেৰ ইতিহাস"
 
 #: ../src/gui/main_window.cpp:1362
-msgid "Show offline _contacts"
-msgstr "অফ-লাইন পৰিচিতদেৰ তথ্য প্ৰদৰ্শন কৰা হ'ব (_c)"
+#| msgid "Show offline _contacts"
+msgid "Show Offline _Contacts"
+msgstr "অফলাইন পৰিচয়সমূহ দেখুৱাওক (_C)"
 
 #: ../src/gui/main_window.cpp:1426
 msgid "Contacts"
@@ -3737,6 +3759,9 @@ msgstr "স্বনিৰ্ধাৰিত বাৰ্তা মুছে ফ
 #: ../src/gui/statusmenu.cpp:685
 msgid "Define a custom message:"
 msgstr "এটা স্বনিৰ্ধাৰিত বাৰ্তা নিৰ্ধাৰণ কৰক:"
+
+#~ msgid "New contact"
+#~ msgstr "নতুন পৰিচিতি"
 
 #~ msgid ""
 #~ "If enabled, Ekiga will start hidden provided that the notification area "
