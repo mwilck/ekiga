@@ -7,8 +7,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: ekiga master\n"
 "Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?product=ekiga&keywords=I18N+L10N&component=general\n"
-"POT-Creation-Date: 2012-09-15 13:26+0000\n"
-"PO-Revision-Date: 2012-09-15 16:35+0300\n"
+"POT-Creation-Date: 2012-09-21 08:58+0000\n"
+"PO-Revision-Date: 2012-09-22 13:15+0300\n"
 "Last-Translator: Aurimas Černius <aurisc4@gmail.com>\n"
 "Language-Team: Lithuanian <gnome-lt@lists.akl.lt>\n"
 "Language: lt\n"
@@ -96,7 +96,6 @@ msgid "Display images from your camera device"
 msgstr "Rodyti vaizdus iš jūsų kameros įrenginio"
 
 #: ../ekiga.schemas.in.in.h:15
-#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:977
 msgid "Frame Rate"
 msgstr "Kadrų dažnis"
 
@@ -115,7 +114,7 @@ msgstr "Įveskite savo vardą ir pavardę"
 
 #: ../ekiga.schemas.in.in.h:19
 msgid "Contact short status"
-msgstr "Adresatų trumpoji būsena"
+msgstr "Kontaktų trumpoji būsena"
 
 #: ../ekiga.schemas.in.in.h:20
 msgid "The short status information"
@@ -123,7 +122,7 @@ msgstr "Trumposios būsenos informacija"
 
 #: ../ekiga.schemas.in.in.h:21
 msgid "Contact long status"
-msgstr "Adresatų ilgoji būsena"
+msgstr "Kontaktų ilgoji būsena"
 
 #: ../ekiga.schemas.in.in.h:22
 msgid "The long status information"
@@ -593,11 +592,11 @@ msgstr "Sąraše sutrauktų grupių sąrašas"
 #: ../ekiga.schemas.in.in.h:135
 #: ../src/gui/main_window.cpp:1362
 msgid "Show offline contacts"
-msgstr "Rodyti atsijungusius adresatus"
+msgstr "Rodyti atsijungusius kontaktus"
 
 #: ../ekiga.schemas.in.in.h:136
 msgid "If enabled, offline contacts will be shown in the roster"
-msgstr "Jei įjungta, atsijungę adresatai bus rodomi sąraše"
+msgstr "Jei įjungta, atsijungę kontaktai bus rodomi sąraše"
 
 #: ../ekiga.schemas.in.in.h:137
 msgid "LDAP servers"
@@ -706,8 +705,9 @@ msgstr "Priimti"
 #: ../lib/engine/components/local-roster/local-cluster.cpp:82
 #: ../lib/engine/components/local-roster/local-heap.cpp:118
 #: ../plugins/evolution/evolution-book.cpp:343
-msgid "New contact"
-msgstr "Naujas adresatas"
+#| msgid "New _Contact"
+msgid "_New Contact"
+msgstr "_Naujas kontaktas"
 
 #: ../lib/engine/components/local-roster/local-heap.cpp:94
 msgid "Services"
@@ -779,12 +779,12 @@ msgstr "Įtraukti į vietinį sąrašą"
 
 #: ../lib/engine/components/local-roster/local-heap.cpp:234
 msgid "Please fill in this form to add a new contact to ekiga's internal roster"
-msgstr "Užpildykite šią formą norėdami įtraukti naują adrestą į Ekiga vidinį sąrašą"
+msgstr "Užpildykite šią formą norėdami įtraukti naują kontaktą į Ekiga vidinį sąrašą"
 
 #: ../lib/engine/components/local-roster/local-heap.cpp:236
 #: ../lib/engine/components/local-roster/local-heap.cpp:427
 #: ../lib/engine/components/local-roster/local-presentity.cpp:270
-#: ../lib/engine/components/opal/opal-account.cpp:420
+#: ../lib/engine/components/opal/opal-account.cpp:427
 #: ../plugins/evolution/evolution-contact.cpp:324
 #: ../plugins/loudmouth/loudmouth-account.cpp:342
 #: ../plugins/loudmouth/loudmouth-bank.cpp:125
@@ -817,7 +817,7 @@ msgstr "Adresas, pvz. sip:xyz@ekiga.net"
 
 #: ../lib/engine/components/local-roster/local-heap.cpp:251
 msgid "Put contact in groups:"
-msgstr "Sugrupuoti adresatus:"
+msgstr "Sugrupuoti kontaktus:"
 
 #: ../lib/engine/components/local-roster/local-heap.cpp:412
 msgid "You supplied an unsupported address"
@@ -825,7 +825,7 @@ msgstr "Nurodėte nepalaikomą adresą"
 
 #: ../lib/engine/components/local-roster/local-heap.cpp:414
 msgid "You already have a contact with this address!"
-msgstr "Jau turite adresatą su šiuo adresu!"
+msgstr "Jau turite kontaktą su šiuo adresu!"
 
 #: ../lib/engine/components/local-roster/local-heap.cpp:425
 msgid "Rename group"
@@ -845,7 +845,7 @@ msgid "Unnamed"
 msgstr "Nepavadinta"
 
 #: ../lib/engine/components/local-roster/local-presentity.cpp:240
-#: ../lib/engine/components/opal/opal-account.cpp:375
+#: ../lib/engine/components/opal/opal-account.cpp:382
 #: ../plugins/evolution/evolution-contact.cpp:228
 #: ../plugins/loudmouth/loudmouth-presentity.cpp:160
 #: ../plugins/resource-list/rl-presentity.cpp:212
@@ -854,7 +854,7 @@ msgid "_Edit"
 msgstr "_Keisti"
 
 #: ../lib/engine/components/local-roster/local-presentity.cpp:242
-#: ../lib/engine/components/opal/opal-account.cpp:377
+#: ../lib/engine/components/opal/opal-account.cpp:384
 #: ../lib/engine/gui/gtk-frontend/accounts-window.cpp:682
 #: ../plugins/evolution/evolution-contact.cpp:230
 #: ../plugins/loudmouth/loudmouth-account.cpp:445
@@ -874,7 +874,7 @@ msgstr "Užpildykite šią formą, kad būtų pakeistas sąraše jau esantis obj
 
 #: ../lib/engine/components/local-roster/local-presentity.cpp:272
 msgid "Is a preferred contact"
-msgstr "Yra pageidaujamas adresatas"
+msgstr "Yra pageidaujamas kontaktas"
 
 #: ../lib/engine/components/local-roster/local-presentity.cpp:274
 #: ../plugins/loudmouth/loudmouth-presentity.cpp:285
@@ -920,15 +920,15 @@ msgstr "Nepavyko"
 #. Translators: this is a state, not an action, i.e. it should be read as
 #. "(you are) unregistered", and not as "(you have been) unregistered"
 #: ../lib/engine/components/opal/opal-account.cpp:69
-#: ../lib/engine/components/opal/opal-account.cpp:310
-#: ../lib/engine/components/opal/opal-account.cpp:605
+#: ../lib/engine/components/opal/opal-account.cpp:315
+#: ../lib/engine/components/opal/opal-account.cpp:612
 msgid "Unregistered"
 msgstr "Išsiregistruota"
 
 #. translators : the result will look like :
 #. * "registered (with 2 voice mail messages)"
 #.
-#: ../lib/engine/components/opal/opal-account.cpp:218
+#: ../lib/engine/components/opal/opal-account.cpp:223
 #, c-format
 msgid "%s (with %d voice mail message)"
 msgid_plural "%s (with %d voice mail messages)"
@@ -936,46 +936,46 @@ msgstr[0] "%s (su %d balso pašto pranešimu)"
 msgstr[1] "%s (su %d balso pašto pranešimais)"
 msgstr[2] "%s (su %d balso pašto pranešimų)"
 
-#: ../lib/engine/components/opal/opal-account.cpp:296
-#: ../lib/engine/components/opal/opal-account.cpp:667
+#: ../lib/engine/components/opal/opal-account.cpp:301
+#: ../lib/engine/components/opal/opal-account.cpp:682
 msgid "Processing..."
 msgstr "Apdorojama..."
 
-#: ../lib/engine/components/opal/opal-account.cpp:367
+#: ../lib/engine/components/opal/opal-account.cpp:374
 #: ../lib/engine/gui/gtk-frontend/accounts-window.cpp:676
 #: ../plugins/loudmouth/loudmouth-account.cpp:433
 msgid "_Disable"
 msgstr "_Išjungti"
 
-#: ../lib/engine/components/opal/opal-account.cpp:370
+#: ../lib/engine/components/opal/opal-account.cpp:377
 #: ../lib/engine/gui/gtk-frontend/accounts-window.cpp:673
 #: ../plugins/loudmouth/loudmouth-account.cpp:437
 msgid "_Enable"
 msgstr "Į_jungti"
 
-#: ../lib/engine/components/opal/opal-account.cpp:391
+#: ../lib/engine/components/opal/opal-account.cpp:398
 #: ../src/gui/assistant.cpp:761
 msgid "Recharge the account"
 msgstr "Papildyti sąskaitą"
 
-#: ../lib/engine/components/opal/opal-account.cpp:396
+#: ../lib/engine/components/opal/opal-account.cpp:403
 #: ../src/gui/assistant.cpp:773
 msgid "Consult the balance history"
 msgstr "Žiūrėti balanso retrospektyvą"
 
-#: ../lib/engine/components/opal/opal-account.cpp:401
+#: ../lib/engine/components/opal/opal-account.cpp:408
 #: ../src/gui/assistant.cpp:785
 msgid "Consult the call history"
 msgstr "Žiūrėti skambučių retrospektyvą"
 
-#: ../lib/engine/components/opal/opal-account.cpp:416
+#: ../lib/engine/components/opal/opal-account.cpp:423
 #: ../lib/engine/components/opal/opal-bank.cpp:96
 #: ../plugins/loudmouth/loudmouth-account.cpp:337
 #: ../plugins/loudmouth/loudmouth-bank.cpp:121
 msgid "Edit account"
 msgstr "Keisti sąskaitą"
 
-#: ../lib/engine/components/opal/opal-account.cpp:418
+#: ../lib/engine/components/opal/opal-account.cpp:425
 #: ../lib/engine/components/opal/opal-bank.cpp:97
 #: ../plugins/evolution/evolution-book.cpp:345
 #: ../plugins/evolution/evolution-contact.cpp:322
@@ -983,39 +983,39 @@ msgstr "Keisti sąskaitą"
 msgid "Please update the following fields:"
 msgstr "Atnaujinkite šiuos laukelius:"
 
-#: ../lib/engine/components/opal/opal-account.cpp:420
+#: ../lib/engine/components/opal/opal-account.cpp:427
 #: ../lib/engine/components/opal/opal-bank.cpp:123
 #: ../lib/engine/components/opal/opal-bank.cpp:133
 #: ../plugins/loudmouth/loudmouth-account.cpp:342
 msgid "Account name, e.g. MyAccount"
 msgstr "Paskyros pavadinimas, pvz. ManoPaskyra"
 
-#: ../lib/engine/components/opal/opal-account.cpp:422
+#: ../lib/engine/components/opal/opal-account.cpp:429
 msgid "Registrar:"
 msgstr "Registratorius:"
 
-#: ../lib/engine/components/opal/opal-account.cpp:422
+#: ../lib/engine/components/opal/opal-account.cpp:429
 #: ../lib/engine/components/opal/opal-bank.cpp:134
 msgid "The registrar, e.g. ekiga.net"
 msgstr "Registruotojas, pvz. ekiga.net"
 
-#: ../lib/engine/components/opal/opal-account.cpp:424
+#: ../lib/engine/components/opal/opal-account.cpp:431
 msgid "Gatekeeper:"
 msgstr "Vartų sargas:"
 
-#: ../lib/engine/components/opal/opal-account.cpp:424
+#: ../lib/engine/components/opal/opal-account.cpp:431
 #: ../lib/engine/components/opal/opal-bank.cpp:124
 msgid "The gatekeeper, e.g. ekiga.net"
 msgstr "Vartų saugotojas, pvz. ekiga.net"
 
-#: ../lib/engine/components/opal/opal-account.cpp:425
+#: ../lib/engine/components/opal/opal-account.cpp:432
 #: ../plugins/loudmouth/loudmouth-account.cpp:346
 #: ../plugins/loudmouth/loudmouth-bank.cpp:126
 #: ../plugins/resource-list/rl-cluster.cpp:174
 msgid "User:"
 msgstr "Naudotojas:"
 
-#: ../lib/engine/components/opal/opal-account.cpp:425
+#: ../lib/engine/components/opal/opal-account.cpp:432
 #: ../lib/engine/components/opal/opal-bank.cpp:105
 #: ../lib/engine/components/opal/opal-bank.cpp:116
 #: ../lib/engine/components/opal/opal-bank.cpp:125
@@ -1026,24 +1026,25 @@ msgstr "Naudotojo vardas, pvz. vardenis"
 
 #. Translators:
 #. * SIP knows two usernames: The name for the client ("User") and the name
-#. * for the authentication procedure ("Authentication User")
-#: ../lib/engine/components/opal/opal-account.cpp:430
-msgid "Authentication User:"
-msgstr "Tapatybės nustatymo naudotojas:"
+#. * for the authentication procedure ("Authentication user")
+#: ../lib/engine/components/opal/opal-account.cpp:437
+#| msgid "Authentication User:"
+msgid "Authentication user:"
+msgstr "Tapatybės patvirtinimo naudotojas:"
 
-#: ../lib/engine/components/opal/opal-account.cpp:430
+#: ../lib/engine/components/opal/opal-account.cpp:437
 #: ../lib/engine/components/opal/opal-bank.cpp:136
 msgid "The user name used during authentication, if different than the user name; leave empty if you do not have one"
 msgstr "Naudotojo vardas, naudojamas patvirtinant tapatybę, jei skiriasi nuo naudotojo vardo; palikite tuščią, jei tokio neturite"
 
-#: ../lib/engine/components/opal/opal-account.cpp:431
+#: ../lib/engine/components/opal/opal-account.cpp:438
 #: ../plugins/loudmouth/loudmouth-account.cpp:362
 #: ../plugins/loudmouth/loudmouth-bank.cpp:129
 #: ../plugins/resource-list/rl-cluster.cpp:173
 msgid "Password:"
 msgstr "Slaptažodis:"
 
-#: ../lib/engine/components/opal/opal-account.cpp:431
+#: ../lib/engine/components/opal/opal-account.cpp:438
 #: ../lib/engine/components/opal/opal-bank.cpp:107
 #: ../lib/engine/components/opal/opal-bank.cpp:118
 #: ../lib/engine/components/opal/opal-bank.cpp:127
@@ -1052,119 +1053,120 @@ msgstr "Slaptažodis:"
 msgid "Password associated to the user"
 msgstr "Su naudotoju susietas slaptažodis"
 
-#: ../lib/engine/components/opal/opal-account.cpp:432
+#: ../lib/engine/components/opal/opal-account.cpp:439
 msgid "Timeout:"
 msgstr "Laukimo laikas:"
 
-#: ../lib/engine/components/opal/opal-account.cpp:432
+#: ../lib/engine/components/opal/opal-account.cpp:439
 #: ../lib/engine/components/opal/opal-bank.cpp:128
 #: ../lib/engine/components/opal/opal-bank.cpp:138
 msgid "Time in seconds after which the account registration is automatically retried"
 msgstr "Laikas sekundėmis, kuriam praėjus registravimas automatiškai bandomas dar kartą"
 
-#: ../lib/engine/components/opal/opal-account.cpp:433
+#: ../lib/engine/components/opal/opal-account.cpp:440
 #: ../lib/engine/components/opal/opal-bank.cpp:141
 #: ../plugins/loudmouth/loudmouth-account.cpp:376
 #: ../plugins/loudmouth/loudmouth-bank.cpp:130
-msgid "Enable Account"
+#| msgid "Enable Account"
+msgid "Enable account"
 msgstr "Įjungti paskyrą"
 
-#: ../lib/engine/components/opal/opal-account.cpp:459
+#: ../lib/engine/components/opal/opal-account.cpp:466
 #: ../lib/engine/components/opal/opal-bank.cpp:175
 msgid "You did not supply a name for that account."
 msgstr "Nenurodėte šios paskyros vardo."
 
-#: ../lib/engine/components/opal/opal-account.cpp:461
+#: ../lib/engine/components/opal/opal-account.cpp:468
 #: ../lib/engine/components/opal/opal-bank.cpp:177
 msgid "You did not supply a host to register to."
 msgstr "Nenurodėte serverio, kuriame reikėtų registruotis."
 
-#: ../lib/engine/components/opal/opal-account.cpp:463
+#: ../lib/engine/components/opal/opal-account.cpp:470
 #: ../lib/engine/components/opal/opal-bank.cpp:179
 msgid "You did not supply a user name for that account."
 msgstr "Nenurodėte šios paskyros abonento vardo."
 
-#: ../lib/engine/components/opal/opal-account.cpp:465
+#: ../lib/engine/components/opal/opal-account.cpp:472
 #: ../lib/engine/components/opal/opal-bank.cpp:181
 msgid "The timeout should be at least 10 seconds."
 msgstr "Laukimo delsa turi būti bent 10 sekundžių."
 
 #. Translators: this is a state, not an action, i.e. it should be read as
 #. "(you are) registered", and not as "(you have been) registered"
-#: ../lib/engine/components/opal/opal-account.cpp:582
+#: ../lib/engine/components/opal/opal-account.cpp:589
 msgid "Registered"
 msgstr "Prisiregistruota"
 
-#: ../lib/engine/components/opal/opal-account.cpp:616
+#: ../lib/engine/components/opal/opal-account.cpp:626
 msgid "Could not unregister"
 msgstr "Nepavyko išsiregistruoti"
 
-#: ../lib/engine/components/opal/opal-account.cpp:648
+#: ../lib/engine/components/opal/opal-account.cpp:659
 msgid "Could not register"
 msgstr "Nepavyko užsiregistruoti"
 
-#: ../lib/engine/components/opal/opal-account.cpp:654
+#: ../lib/engine/components/opal/opal-account.cpp:664
 msgid "Could not register to "
 msgstr "Nepavyko užsiregistruoti"
 
-#: ../lib/engine/components/opal/opal-account.cpp:655
+#: ../lib/engine/components/opal/opal-account.cpp:665
 #: ../plugins/loudmouth/loudmouth-account.cpp:443
 msgid "Edit"
 msgstr "Taisyti"
 
-#: ../lib/engine/components/opal/opal-account.cpp:786
+#: ../lib/engine/components/opal/opal-account.cpp:802
 msgid "Appointment"
 msgstr "Susitikimas"
 
-#: ../lib/engine/components/opal/opal-account.cpp:791
+#: ../lib/engine/components/opal/opal-account.cpp:807
 msgid "Breakfast"
 msgstr "Pusryčiai"
 
-#: ../lib/engine/components/opal/opal-account.cpp:796
+#: ../lib/engine/components/opal/opal-account.cpp:812
 msgid "Dinner"
 msgstr "Vakarienė"
 
-#: ../lib/engine/components/opal/opal-account.cpp:802
+#: ../lib/engine/components/opal/opal-account.cpp:818
 msgid "Holiday"
 msgstr "Atostogos"
 
-#: ../lib/engine/components/opal/opal-account.cpp:807
+#: ../lib/engine/components/opal/opal-account.cpp:823
 msgid "In transit"
 msgstr "Perėjime"
 
-#: ../lib/engine/components/opal/opal-account.cpp:812
+#: ../lib/engine/components/opal/opal-account.cpp:828
 msgid "Looking for work"
 msgstr "Ieškau darbo"
 
-#: ../lib/engine/components/opal/opal-account.cpp:817
+#: ../lib/engine/components/opal/opal-account.cpp:833
 msgid "Lunch"
 msgstr "Pietūs"
 
-#: ../lib/engine/components/opal/opal-account.cpp:822
+#: ../lib/engine/components/opal/opal-account.cpp:838
 msgid "Meal"
 msgstr "Maistas"
 
-#: ../lib/engine/components/opal/opal-account.cpp:827
+#: ../lib/engine/components/opal/opal-account.cpp:843
 msgid "Meeting"
 msgstr "Susitikimas"
 
-#: ../lib/engine/components/opal/opal-account.cpp:832
+#: ../lib/engine/components/opal/opal-account.cpp:848
 msgid "On the phone"
 msgstr "Kalbu telefonu"
 
-#: ../lib/engine/components/opal/opal-account.cpp:837
+#: ../lib/engine/components/opal/opal-account.cpp:853
 msgid "Playing"
 msgstr "Groja"
 
-#: ../lib/engine/components/opal/opal-account.cpp:842
+#: ../lib/engine/components/opal/opal-account.cpp:858
 msgid "Shopping"
 msgstr "Apsipirkimas"
 
-#: ../lib/engine/components/opal/opal-account.cpp:847
+#: ../lib/engine/components/opal/opal-account.cpp:863
 msgid "Sleeping"
 msgstr "Miegas"
 
-#: ../lib/engine/components/opal/opal-account.cpp:852
+#: ../lib/engine/components/opal/opal-account.cpp:868
 msgid "Working"
 msgstr "Dirbu"
 
@@ -1212,7 +1214,8 @@ msgid "_Account ID:"
 msgstr "_Paskyros ID:"
 
 #: ../lib/engine/components/opal/opal-bank.cpp:118
-msgid "_PIN Code:"
+#| msgid "_PIN Code:"
+msgid "_PIN code:"
 msgstr "_PIN kodas:"
 
 #: ../lib/engine/components/opal/opal-bank.cpp:123
@@ -1235,8 +1238,9 @@ msgid "_Registrar:"
 msgstr "_Registratorius:"
 
 #: ../lib/engine/components/opal/opal-bank.cpp:136
-msgid "_Authentication User:"
-msgstr "_Tapatybės nustatymo naudotojas:"
+#| msgid "_Authentication User:"
+msgid "_Authentication user:"
+msgstr "_Tapatybės patvirtinimo naudotojas:"
 
 #: ../lib/engine/components/opal/opal-call.cpp:405
 msgid "Local user cleared the call"
@@ -2209,7 +2213,8 @@ msgid "INFO"
 msgstr "INFO"
 
 #: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:721
-msgid "_Outbound Proxy:"
+#| msgid "_Outbound Proxy:"
+msgid "_Outbound proxy:"
 msgstr "_Tarpinis išsiuntimo serveris:"
 
 #: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:749
@@ -2218,8 +2223,9 @@ msgid "Audio Devices"
 msgstr "Garso įrenginiai"
 
 #: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:757
-msgid "Ringing Device"
-msgstr "Skambinimo įrenginys"
+#| msgid "Ringing Device"
+msgid "Ringing device:"
+msgstr "Skambinimo įrenginys:"
 
 #: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:757
 msgid "Select the ringing audio device to use"
@@ -2319,8 +2325,14 @@ msgstr "Maksimalus _drebėjimo buferis (milisekundėmis)"
 
 #. Translators: the full sentence is Keep a minimum video quality of X %
 #: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:977
-msgid "Picture Quality"
+#| msgid "Picture Quality"
+msgid "Picture quality"
 msgstr "Paveikslėlio kokybė"
+
+#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:977
+#| msgid "Frame Rate"
+msgid "Frame rate"
+msgstr "Kadrų dažnis"
 
 #: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:977
 msgid "Choose if you want to guarantee a minimum image quality (possibly leading to dropped frames in order not to surpass the bitrate limit) or if you prefer to keep the frame rate"
@@ -2493,7 +2505,7 @@ msgstr[2] "Rasta %d naudotojų"
 #: ../plugins/evolution/evolution-book.cpp:301
 #: ../plugins/loudmouth/loudmouth-heap-roster.cpp:71
 msgid "New _Contact"
-msgstr "Naujas _adresatas"
+msgstr "Naujas _kontaktas"
 
 #: ../plugins/evolution/evolution-book.cpp:348
 #: ../plugins/evolution/evolution-contact.cpp:333
@@ -2522,11 +2534,11 @@ msgstr "_Pranešimų gaviklis:"
 
 #: ../plugins/evolution/evolution-contact.cpp:320
 msgid "Edit contact"
-msgstr "Keisti adresatą"
+msgstr "Keisti kontaktą"
 
 #: ../plugins/evolution/evolution-contact.cpp:374
 msgid "Remove contact"
-msgstr "Pašalinti adresatą"
+msgstr "Pašalinti kontaktą"
 
 #: ../plugins/evolution/evolution-contact.cpp:376
 #, c-format
@@ -2627,7 +2639,8 @@ msgid "Please edit the following fields"
 msgstr "Pakeiskite šiuos laukelius"
 
 #: ../plugins/ldap/ldap-book.cpp:944
-msgid "Book _Name:"
+#| msgid "Book _Name:"
+msgid "Book _name:"
 msgstr "Knygos _pavadinimas:"
 
 #: ../plugins/ldap/ldap-book.cpp:944
@@ -2651,12 +2664,14 @@ msgid "Subtree"
 msgstr "Medžio atšaka"
 
 #: ../plugins/ldap/ldap-book.cpp:953
-msgid "Single Level"
+#| msgid "Single Level"
+msgid "Single level"
 msgstr "Vienas lygis"
 
 #: ../plugins/ldap/ldap-book.cpp:954
-msgid "_Search Scope"
-msgstr "_Paieškos gylis"
+#| msgid "_Search Scope"
+msgid "_Search scope"
+msgstr "_Paieškos sritis"
 
 #. Translators: DisplayName Attribute is the name of the LDAP
 #. * attribute whose value will be used to name an addressbook entry.
@@ -2665,11 +2680,13 @@ msgstr "_Paieškos gylis"
 #. * most LDAP servers it's "CommonName".
 #.
 #: ../plugins/ldap/ldap-book.cpp:969
-msgid "_DisplayName Attribute:"
+#| msgid "_DisplayName Attribute:"
+msgid "_DisplayName attribute:"
 msgstr "„_DisplayName“ atributas:"
 
 #: ../plugins/ldap/ldap-book.cpp:970
-msgid "Call _Attributes:"
+#| msgid "Call _Attributes:"
+msgid "Call _attributes:"
 msgstr "Skambučio _atributai:"
 
 #: ../plugins/ldap/ldap-book.cpp:970
@@ -2678,7 +2695,8 @@ msgstr "Jūsų ieškomas laukas"
 
 #: ../plugins/ldap/ldap-book.cpp:972
 #: ../plugins/ldap/ldap-book.cpp:974
-msgid "_Filter Template:"
+#| msgid "_Filter Template:"
+msgid "_Filter template:"
 msgstr "_Filtro šablonas:"
 
 #: ../plugins/ldap/ldap-book.cpp:972
@@ -2716,7 +2734,8 @@ msgid "Use SASL"
 msgstr "Naudoti SASL"
 
 #: ../plugins/ldap/ldap-book.cpp:1002
-msgid "SASL _Mechanism"
+#| msgid "SASL _Mechanism"
+msgid "SASL _mechanism"
 msgstr "SASL _mechanizmas"
 
 #: ../plugins/ldap/ldap-book.cpp:1012
@@ -2732,11 +2751,13 @@ msgid "Please provide a Server URI\n"
 msgstr "Prašom nurodyti serverio URI\n"
 
 #: ../plugins/ldap/ldap-book.cpp:1040
-msgid "Please provide a DisplayName Attribute\n"
+#| msgid "Please provide a DisplayName Attribute\n"
+msgid "Please provide a DisplayName attribute\n"
 msgstr "Prašom nurodyti „DisplayName“ atributą\n"
 
 #: ../plugins/ldap/ldap-book.cpp:1043
-msgid "Please provide a Call Attribute\n"
+#| msgid "Please provide a Call Attribute\n"
+msgid "Please provide a Call attribute\n"
 msgstr "Prašom nurodyti „Call“ atributą\n"
 
 #: ../plugins/ldap/ldap-book.cpp:1046
@@ -2822,8 +2843,9 @@ msgid "The resource, such as home or work, allowing to distinguish among several
 msgstr "Resursas, pvz. namai ar darbas, leidžiantis atskirti kelis tos pačios paskyros terminalus; palikite tuščią, jei nežinote, kas tai"
 
 #: ../plugins/loudmouth/loudmouth-bank.cpp:111
-msgid "_Add a jabber/XMPP account"
-msgstr "_Pridėti jabber/XMPP paskyrą"
+#| msgid "_Add a jabber/XMPP account"
+msgid "_Add a Jabber/XMPP Account"
+msgstr "_Pridėti Jabber/XMPP paskyrą"
 
 #: ../plugins/loudmouth/loudmouth-bank.cpp:123
 msgid "Please fill in the following fields:"
@@ -2946,7 +2968,7 @@ msgstr "Pridėti naują išteklių sąrašą"
 
 #: ../plugins/resource-list/rl-cluster.cpp:167
 msgid "Please fill in this form to add a new contact list to ekiga's remote roster"
-msgstr "Užpildykite šią formą norėdami pridėti naują adresatų sąrašą Ekiga nuotoliniame sąraše"
+msgstr "Užpildykite šią formą norėdami pridėti naują kontaktų sąrašą Ekiga nuotoliniame sąraše"
 
 #: ../plugins/resource-list/rl-cluster.cpp:171
 #: ../plugins/resource-list/rl-heap.cpp:471
@@ -2967,23 +2989,23 @@ msgstr "Spustelėkite norėdami gauti"
 
 #: ../plugins/resource-list/rl-entry-ref.cpp:120
 msgid "Distant contact"
-msgstr "Nutolęs adresatas"
+msgstr "Nutolęs kontaktas"
 
 #: ../plugins/resource-list/rl-heap.cpp:198
 msgid "_Add a new contact"
-msgstr "_Pridėti naują adresatą"
+msgstr "_Pridėti naują kontaktą"
 
 #: ../plugins/resource-list/rl-heap.cpp:200
 msgid "_Refresh contact list"
-msgstr "_Atnaujinti adresatų sąrašą"
+msgstr "_Atnaujinti kontaktų sąrašą"
 
 #: ../plugins/resource-list/rl-heap.cpp:202
 msgid "Contact list _properties"
-msgstr "Adresatų sąrašo _savybės"
+msgstr "Kontaktų sąrašo _savybės"
 
 #: ../plugins/resource-list/rl-heap.cpp:462
 msgid "Edit contact list properties"
-msgstr "Keisti adresatų sąrašo savybes"
+msgstr "Keisti kontaktų sąrašo savybes"
 
 #: ../plugins/resource-list/rl-heap.cpp:464
 msgid "Please edit the following fields (no identifier means global)"
@@ -3008,11 +3030,11 @@ msgstr "Slaptažodis serveryje:"
 
 #: ../plugins/resource-list/rl-heap.cpp:512
 msgid "Add a remote contact"
-msgstr "Pridėti nuotolinį adresatą"
+msgstr "Pridėti nuotolinį kontaktą"
 
 #: ../plugins/resource-list/rl-heap.cpp:513
 msgid "Please fill in this form to create a new contact on a remote server"
-msgstr "Užpildykite šią formą norėdami sukurti naują adresatą nuotoliniame serveryje"
+msgstr "Užpildykite šią formą norėdami sukurti naują kontaktą nuotoliniame serveryje"
 
 #. Translators: #%d - ordinal number
 #: ../plugins/resource-list/rl-list.cpp:183
@@ -3028,11 +3050,11 @@ msgstr "Sąrašas Nr. %d"
 
 #: ../plugins/resource-list/rl-presentity.cpp:230
 msgid "Edit remote contact"
-msgstr "Keisti nuotolinį adresatą"
+msgstr "Keisti nuotolinį kontaktą"
 
 #: ../plugins/resource-list/rl-presentity.cpp:231
 msgid "Please fill in this form to change an existing contact on a remote server"
-msgstr "Užpildykite šią formą norėdami pakeisti esantį adresatą nuotoliniame serveryje"
+msgstr "Užpildykite šią formą norėdami pakeisti esantį kontaktą nuotoliniame serveryje"
 
 #: ../src/gui/assistant.cpp:341
 msgid ""
@@ -3275,7 +3297,7 @@ msgstr "Kairėje įveskite URL ir spustelkite šį mygtuką norėdami paskambint
 #: ../src/gui/main_window.cpp:1216
 #: ../src/gui/main_window.cpp:1344
 msgid "View the contacts list"
-msgstr "Rodyti adresatų sąrašą"
+msgstr "Rodyti kontaktų sąrašą"
 
 #: ../src/gui/main_window.cpp:1227
 #: ../src/gui/main_window.cpp:1349
@@ -3293,15 +3315,16 @@ msgstr "_Plepėti"
 
 #: ../src/gui/main_window.cpp:1276
 msgid "Co_ntact"
-msgstr "_Adresatas"
+msgstr "Ko_ntaktas"
 
 #: ../src/gui/main_window.cpp:1277
 msgid "Act on selected contact"
-msgstr "Veikti pasirinktą adresatą"
+msgstr "Veikti pasirinktą kontaktą"
 
 #: ../src/gui/main_window.cpp:1281
-msgid "Ca_ll a number"
-msgstr "Skambučio _numeris"
+#| msgid "Ca_ll a number"
+msgid "Ca_ll a Number"
+msgstr "Skambinti _numeriu"
 
 #: ../src/gui/main_window.cpp:1281
 msgid "Place a new call"
@@ -3309,15 +3332,15 @@ msgstr "Skambinti"
 
 #: ../src/gui/main_window.cpp:1287
 msgid "A_dd Contact"
-msgstr "_Pridėti adresatą"
+msgstr "_Pridėti kontaktą"
 
 #: ../src/gui/main_window.cpp:1287
 msgid "Add a contact to the roster"
-msgstr "Įtraukti adresatą į sąrašą"
+msgstr "Įtraukti kontaktą į sąrašą"
 
 #: ../src/gui/main_window.cpp:1292
 msgid "Find contacts"
-msgstr "Rasti adresatą"
+msgstr "Rasti kontaktus"
 
 #. FIXME: that isn't a very good way to do things
 #: ../src/gui/main_window.cpp:1301
@@ -3346,7 +3369,7 @@ msgstr "Taisyti savo nustatymus"
 
 #: ../src/gui/main_window.cpp:1344
 msgid "Con_tacts"
-msgstr "_Adresatai"
+msgstr "Kon_taktai"
 
 #: ../src/gui/main_window.cpp:1349
 msgid "_Dialpad"
@@ -3357,12 +3380,13 @@ msgid "_Call History"
 msgstr "_Skambučių retrospektyva"
 
 #: ../src/gui/main_window.cpp:1362
-msgid "Show offline _contacts"
-msgstr "Rodyti atsijungusius _adresatus"
+#| msgid "Show offline _contacts"
+msgid "Show Offline _Contacts"
+msgstr "Rodyti atsijungusius _kontaktus"
 
 #: ../src/gui/main_window.cpp:1426
 msgid "Contacts"
-msgstr "Adresatai"
+msgstr "Kontaktai"
 
 #: ../src/gui/main_window.cpp:1455
 msgid "Dialpad"
