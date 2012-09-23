@@ -1153,6 +1153,8 @@ on_cleared_call_cb (G_GNUC_UNUSED boost::shared_ptr<Ekiga::CallManager> manager,
     cw->priv->timeout_id = -1;
   }
   ekiga_call_window_clear_signal_levels (cw);
+
+  gtk_window_set_title (GTK_WINDOW (cw), _("Call Window"));
 }
 
 static void
@@ -2622,6 +2624,8 @@ call_window_new (Ekiga::ServiceCore & core)
   gm_window_set_hide_on_delete (GM_WINDOW (cw), false);
   gm_window_set_hide_on_escape (GM_WINDOW (cw), false);
   ekiga_call_window_connect_engine_signals (cw);
+
+  gtk_window_set_title (GTK_WINDOW (cw), _("Call Window"));
 
   return GTK_WIDGET (cw);
 }
