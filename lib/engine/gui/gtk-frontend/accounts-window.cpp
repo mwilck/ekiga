@@ -572,6 +572,7 @@ accounts_window_new (Ekiga::ServiceCore &core)
   self = (AccountsWindow *) g_object_new (ACCOUNTS_WINDOW_TYPE, NULL);
   self->priv = new AccountsWindowPrivate (core);
   vbox = gtk_vbox_new (FALSE, 2);
+  gtk_window_set_title (GTK_WINDOW (self), _("Accounts"));
 
   /* The menu */
   menu_bar = gtk_menu_bar_new ();
