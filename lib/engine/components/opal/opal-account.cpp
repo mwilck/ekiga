@@ -310,27 +310,25 @@ void Opal::Account::disable ()
 {
   enabled = false;
 
+  // the above change is needed because if we are already not
+  // registered (because a registration failed, for example), then the
+  // next action won't change the status.
+  if (presentity) {
+
+    for (std::set<std::string>::iterator iter = watched_uris.begin ();
+         iter != watched_uris.end (); ++iter) {
+      presentity->UnsubscribeFromPresence (PString (*iter));
+      Ekiga::Runtime::run_in_main (boost::bind (&Opal::Account::presence_status_in_main, this, *iter, "unknown", ""));
+    }
+  }
+  endpoint->unsubscribe (*this, presentity);
+
   // Translators: this is a state, not an action, i.e. it should be read as
   // "(you are) unregistered", and not as "(you have been) unregistered"
   status = _("Unregistered");
 
   updated ();
   trigger_saving ();
-
-  // the above change is needed because if we are already not
-  // registered (because a registration failed, for example), then the
-  // next action won't change the status.
-  endpoint->unsubscribe (*this, presentity);
-  if (presentity) {
-
-    // FIXME : the following actions should probably be done by opal itself,
-    // remembering what ekiga asked...
-    for (std::set<std::string>::iterator iter = watched_uris.begin ();
-         iter != watched_uris.end (); ++iter) {
-      presentity->UnsubscribeFromPresence (PString (*iter));
-      Ekiga::Runtime::run_in_main (boost::bind (&Opal::Account::presence_status_in_main, this, (*iter), "unknown", ""));
-    }
-  }
 }
 
 
@@ -357,14 +355,10 @@ SIPRegister::CompatibilityModes Opal::Account::get_compat_mode () const
 
 void Opal::Account::remove ()
 {
+  disable();
   dead = true;
 
-  endpoint->unsubscribe (*this, presentity);
-
-  if (!enabled)
-    removed ();
   trigger_saving ();
-  enabled = false;
 }
 
 
@@ -571,6 +565,7 @@ Opal::Account::unfetch (const std::string uri)
   if (is_myself (uri) && presentity) {
     presentity->UnsubscribeFromPresence (PString (uri));
     watched_uris.erase (uri);
+    Ekiga::Runtime::run_in_main (boost::bind (&Opal::Account::presence_status_in_main, this, uri, "unknown", ""));
   }
 }
 
@@ -782,9 +777,11 @@ Opal::Account::OnPresenceChange (OpalPresentity& /*presentity*/,
       }
     }
     break;
+  case OpalPresenceInfo::NoPresence:
+    new_presence = "unknown";
+    break;
   case OpalPresenceInfo::InternalError:
   case OpalPresenceInfo::Forbidden:
-  case OpalPresenceInfo::NoPresence:
   case OpalPresenceInfo::Unavailable:
   case OpalPresenceInfo::UnknownExtended:
     new_presence = "offline";
