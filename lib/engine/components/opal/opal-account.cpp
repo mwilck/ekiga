@@ -355,10 +355,15 @@ SIPRegister::CompatibilityModes Opal::Account::get_compat_mode () const
 
 void Opal::Account::remove ()
 {
-  disable();
   dead = true;
+  if (state == Registered) {
+    std::cout << "ici " << std::endl << std::flush;
+    disable();
+    return;
+  }
 
   trigger_saving ();
+  removed ();
 }
 
 
