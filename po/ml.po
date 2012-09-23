@@ -10,8 +10,8 @@ msgstr ""
 "Project-Id-Version: ekiga.gnome-2-26.ml\n"
 "Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug."
 "cgi?product=ekiga&keywords=I18N+L10N&component=general\n"
-"POT-Creation-Date: 2012-09-18 15:37+0000\n"
-"PO-Revision-Date: 2012-09-20 18:26+0000\n"
+"POT-Creation-Date: 2012-09-23 13:38+0000\n"
+"PO-Revision-Date: 2012-09-23 19:49+0000\n"
 "Last-Translator: Ani Peter <apeter@redhat.com>\n"
 "Language-Team: Malayalam <discuss@lists.smc.org.in>\n"
 "Language: \n"
@@ -32,7 +32,6 @@ msgid "IP Telephony, VoIP and Video Conferencing"
 msgstr "ഐപി ടെലിഫോണി, VoIP, വീഡിയോ കോണ്‍ഫറന്‍സിങ്"
 
 #: ../ekiga.desktop.in.in.h:3
-#| msgid "Talk to people over the Internet"
 msgid "Talk to and see people over the Internet"
 msgstr "ഇന്റര്‍നെറ്റിലൂടെ ആളുകളെ കണ്ടു് സംസാരിക്കുക"
 
@@ -41,7 +40,7 @@ msgid "Audio output device"
 msgstr "ശബ്ദ ഔട്ട്പുട്ട് ഉപകരണം"
 
 #: ../ekiga.schemas.in.in.h:2
-#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:759
+#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:754
 msgid "Select the audio output device to use"
 msgstr "ഉപയോഗിക്കുന്നതിനുള്ള ശബ്ദ ഔട്ട്പുട്ട് ഉപകരണം തിരഞ്ഞെടുക്കുക"
 
@@ -50,7 +49,7 @@ msgid "Audio input device"
 msgstr "ശബ്ദ ഇന്‍പുട്ട് ഉപകരണം"
 
 #: ../ekiga.schemas.in.in.h:4
-#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:766
+#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:761
 msgid "Select the audio input device to use"
 msgstr "ഉപയോഗിക്കുന്നതിനുള്ള ഓഡിയോ ഇന്‍പുട്ട് ഉപകരണം തിരഞ്ഞെടുക്കുക"
 
@@ -59,7 +58,7 @@ msgid "Video input device"
 msgstr "വീഡിയോ ഇന്‍പുട്ട് ഉപകരണം"
 
 #: ../ekiga.schemas.in.in.h:6
-#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:902
+#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:897
 msgid ""
 "Select the video input device to use. If an error occurs when using this "
 "device a test picture will be transmitted."
@@ -84,7 +83,7 @@ msgid "Video channel"
 msgstr "വീഡിയോ ചാനല്‍"
 
 #: ../ekiga.schemas.in.in.h:10
-#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:906
+#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:901
 msgid "The video channel number to use (to select camera, tv or other sources)"
 msgstr "ഉപയോഗിക്കണ്ട വീഡിയോ ചാനലിന്റെ നംബറ്‍(ക്യമാറ, ടിവി, മറ്റുള്ളവ തിരഞ്ഞെടുക്കേണ്ടതിന്)"
 
@@ -93,7 +92,7 @@ msgid "Video format"
 msgstr "വീഡിയോ രീതി"
 
 #: ../ekiga.schemas.in.in.h:12
-#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:910
+#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:905
 msgid "Select the format for video cameras (does not apply to most USB cameras)"
 msgstr "വീഡിയോ ക്യാമറയ്ക്കുള്ള രീതി തിരഞ്ഞെടുക്കുക (മിക്ക USB ക്യമാറകള്‍ക്കും ബാധകമല്ല)"
 
@@ -101,7 +100,8 @@ msgstr "വീഡിയോ ക്യാമറയ്ക്കുള്ള രീ�
 msgid "Video preview"
 msgstr "വീഡിയോ സ്ക്രീനില്‍ കാണുക"
 
-#: ../ekiga.schemas.in.in.h:14 ../src/gui/main_window.cpp:1197
+#: ../ekiga.schemas.in.in.h:14 ../src/gui/main_window.cpp:1200
+#: ../src/gui/main_window.cpp:1350
 msgid "Display images from your camera device"
 msgstr "നിങ്ങളുടെ ക്യാമറയില്‍ നിന്നും ചിത്രങ്ങള്‍ കാണിയ്ക്കുക"
 
@@ -121,7 +121,7 @@ msgid "Full name"
 msgstr "മുഴുവന്‍ പേരു്"
 
 #: ../ekiga.schemas.in.in.h:18
-#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:466
+#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:461
 msgid "Enter your full name"
 msgstr "നിങ്ങളുടെ മുഴുവന്‍ പേരു് നല്‍കുക"
 
@@ -154,18 +154,16 @@ msgid "Enable silence detection"
 msgstr "നിശബ്ദത തിരിച്ചറിയുന്നതു് പ്രാവര്‍ത്തികമാക്കുക"
 
 #: ../ekiga.schemas.in.in.h:26
-#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:945
+#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:940
 msgid "If enabled, use silence detection with the codecs supporting it"
 msgstr "പ്രാവര്‍ത്തികമെങ്കില്‍, പിന്തുണയ്ക്കുന്ന കോഡക്കുകള്‍ക്കൊപ്പം സൈലന്‍സ് ഡിറ്റക്ഷന്‍ ഉപയോഗിക്കുക"
 
 #: ../ekiga.schemas.in.in.h:27
-#| msgid "Enable echo cancelation"
 msgid "Enable echo cancellation"
 msgstr "ഇക്കോ റദ്ദാക്കല്‍ പ്രാവര്‍ത്തികമാക്കുക"
 
 #: ../ekiga.schemas.in.in.h:28
-#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:947
-#| msgid "If enabled, use echo cancelation"
+#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:942
 msgid "If enabled, use echo cancellation"
 msgstr "പ്രാവര്‍ത്തികമെങ്കില്‍, ഇക്കോ റദ്ദാക്കല്‍ ഉപയോഗിക്കുക"
 
@@ -186,7 +184,7 @@ msgid "The sound that will be played on incoming calls, if enabled"
 msgstr "പ്രാവര്‍ത്തികമെങ്കില്‍, വിളികള്‍ വരുമ്പോള്‍ കേള്‍ക്കുന്ന ശബ്ദം"
 
 #: ../ekiga.schemas.in.in.h:33
-#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:367
+#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:366
 msgid "Play sound on incoming calls"
 msgstr "നിങ്ങള്‍ക്ക് വിളി ലഭിക്കുമ്പോള്‍ ശബ്ദം കേള്‍പ്പിയ്ക്കുക"
 
@@ -229,7 +227,7 @@ msgid "The chosen sound will be played when a new voice mail is received, if ena
 msgstr "സജ്ജമാണ് എങ്കില്‍, ഒരു പുതിയ ശബ്ദ സന്ദേശം ലഭ്യമാകുമ്പോള്‍ തിരഞ്ഞെടുത്ത ശബ്ദം പ്രവര്‍ത്തിപ്പിക്കുന്നു"
 
 #: ../ekiga.schemas.in.in.h:43
-#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:377
+#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:376
 msgid "Play ring tone"
 msgstr "റിങ് ടോണ്‍ പ്രവര്‍ത്തിപ്പിക്കുക"
 
@@ -246,7 +244,7 @@ msgid "The sound that will be played when calling somebody, if enabled"
 msgstr "പ്രാവര്‍ത്തികമെങ്കില്‍, ആരേയെങ്കിലും വിളിക്കുമ്പോള്‍ കേള്‍ക്കുന്ന ശബ്ദം"
 
 #: ../ekiga.schemas.in.in.h:47
-#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:387
+#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:386
 msgid "Play busy tone"
 msgstr "തിരക്കാണെന്ന് അറിയിക്കുന്നതിനുള്ള ശബ്ദം കേള്‍പ്പിയ്ക്കുക"
 
@@ -307,7 +305,7 @@ msgid "Outbound Proxy"
 msgstr "ഔട്ട്ബൌണ്ട് പ്രോക്സി"
 
 #: ../ekiga.schemas.in.in.h:58
-#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:721
+#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:716
 msgid "The SIP Outbound Proxy to use for outgoing calls"
 msgstr "പുറത്തേക്ക് പോകുന്ന കോളുകള്‍ക്ക് ഉപയോഗിക്കുന്ന SIP ഔട്ട്ബൌണ്ട് പ്റോക്സി"
 
@@ -316,8 +314,8 @@ msgid "Forward calls to host"
 msgstr "ഹോസ്റ്റിലേക്ക് വിളികള്‍ കൈമാറുക"
 
 #: ../ekiga.schemas.in.in.h:60
-#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:676
-#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:724
+#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:671
+#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:719
 msgid "The host where calls should be forwarded if call forwarding is enabled"
 msgstr "വിളി ഫോര്‍വേഡിങ് പ്രാവര്‍ത്തികമെങ്കില്‍, വിളികള്‍ ഫോര്‍വേഡ് ചെയ്യേണ്ട ഹോസ്റ്റ്"
 
@@ -326,9 +324,6 @@ msgid "DTMF sending"
 msgstr "DTMF അയയ്ക്കുന്നു"
 
 #: ../ekiga.schemas.in.in.h:62
-#| msgid ""
-#| "This allows you to set the mode for sending DTMFs. The values can be "
-#| "\"RFC2833\" (0), \"INFO\" (1)"
 msgid ""
 "Select the mode for sending DTMFs. The values can be 0 (for \"RFC2833\") and "
 "1 (for \"INFO\")"
@@ -368,7 +363,7 @@ msgid "Enable H.245 tunneling"
 msgstr "H.245 ടണലിങ് പ്രാവര്‍ത്തികമാക്കുക"
 
 #: ../ekiga.schemas.in.in.h:69
-#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:685
+#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:680
 msgid ""
 "This enables H.245 Tunneling mode. In H.245 Tunneling mode H.245 messages "
 "are encapsulated into the H.225 channel (port 1720). This saves one TCP "
@@ -382,7 +377,7 @@ msgid "Enable early H.245"
 msgstr "early H.245 പ്രാവര്‍ത്തികമാക്കുക"
 
 #: ../ekiga.schemas.in.in.h:71
-#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:687
+#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:682
 msgid "This enables H.245 early in the setup"
 msgstr "ക്രമീകരണത്തില്‍ മുമ്പുള്ള H.245 ഇത് സജ്ജമാക്കുന്നു"
 
@@ -403,7 +398,6 @@ msgstr ""
 "പതിപ്പുകളുടെ തകര്‍ച്ചയ്ക്കു് കാരണമാകുന്നു."
 
 #: ../ekiga.schemas.in.in.h:74
-#| msgid "Enable early H.245"
 msgid "Enable H.239"
 msgstr "H.239 പ്രാവര്‍ത്തികമാക്കുക"
 
@@ -421,23 +415,19 @@ msgid ""
 "video\"), 1 (for \"allow per content role mask\"), 2 (for \"force "
 "presentation\"), or 3 (for \"force live role\")"
 msgstr ""
-"H.239 വീഡിയോ റോള്‍ തെരഞ്ഞെടുക്കുക. 0 (\"എക്സ്റ്റെന്‍ഡഡ് വീഡിയോ പ്രവര്‍ത്തന രഹിതമാക്കുക\"), 1 (\"ഓരോന്നിനുള്ള "
-"റോള്‍ മാസ്ക് അനുവദിയ്ക്കുക\"), 2 (\"നിര്‍ബന്ധിച്ചുള്ള പ്രസന്റേഷന്‍\"), അല്ലെങ്കില്‍ 3 (\"നിര്‍ബന്ധ ലൈവ് "
-"റോള്‍\") എന്നിവയാകാം മൂല്ല്യങ്ങള്‍"
+"H.239 വീഡിയോ റോള്‍ തെരഞ്ഞെടുക്കുക. 0 (\"എക്സ്റ്റെന്‍ഡഡ് വീഡിയോ പ്രവര്‍ത്തന രഹിതമാക്കുക\"), 1 "
+"(\"ഓരോന്നിനുള്ള റോള്‍ മാസ്ക് അനുവദിയ്ക്കുക\"), 2 (\"നിര്‍ബന്ധിച്ചുള്ള പ്രസന്റേഷന്‍\"), അല്ലെങ്കില്‍ 3 "
+"(\"നിര്‍ബന്ധ ലൈവ് റോള്‍\") എന്നിവയാകാം മൂല്ല്യങ്ങള്‍"
 
 #: ../ekiga.schemas.in.in.h:78
-#| msgid ""
-#| "This allows you to set the mode for sending DTMFs. The values can be "
-#| "\"String\" (0), \"Tone\" (1), \"RFC2833\" (2), \"Q.931\" (3) (default is "
-#| "\"String\"). Choosing other values than \"String\" disables the Text Chat"
 msgid ""
 "Select the mode for sending DTMFs. The values can be 0 (for \"String\"), 1 "
 "(for \"Tone\"), 2 (for \"RFC2833\"), or 3 (for \"Q.931\") (default is "
 "\"String\"). Choosing other values than \"String\" disables the Text Chat."
 msgstr ""
-"DTMF അയയ്ക്കുന്നതിനുള്ള മോഡ് സജ്ജമാക്കുന്നതിനായി ഇതു് അനുവദിക്കുന്നു. സാധ്യമായ മൂല്ല്യങ്ങള്‍: (\"String\") 0, "
-"(\"Tone\") 1, (\"RFC2833\") 2, (\"Q.931\") 3 (സ്വതവേയുള്ളതു് \"String"
-"\"). \"String\" അല്ലാതെ ഏതു് തെരഞ്ഞെടുത്താലും ടെക്സ്റ്റ് ചാറ്റ് പ്രവര്‍ത്തന രഹിതമാകുന്നു."
+"DTMF അയയ്ക്കുന്നതിനുള്ള മോഡ് സജ്ജമാക്കുന്നതിനായി ഇതു് അനുവദിക്കുന്നു. സാധ്യമായ മൂല്ല്യങ്ങള്‍: "
+"(\"String\") 0, (\"Tone\") 1, (\"RFC2833\") 2, (\"Q.931\") 3 (സ്വതവേയുള്ളതു് "
+"\"String\"). \"String\" അല്ലാതെ ഏതു് തെരഞ്ഞെടുത്താലും ടെക്സ്റ്റ് ചാറ്റ് പ്രവര്‍ത്തന രഹിതമാകുന്നു."
 
 #: ../ekiga.schemas.in.in.h:79
 msgid "Always forward calls to the given host"
@@ -454,10 +444,6 @@ msgid "Forward calls to the given host if busy"
 msgstr "തിരക്കാണെങ്കില്‍ നല്‍കിയിരിക്കുന്ന ഹോസ്റ്റിലേക്ക് വിളികള്‍ കൈമാറുക"
 
 #: ../ekiga.schemas.in.in.h:82
-#| msgid ""
-#| "If enabled, all incoming calls will be forwarded to the host that is "
-#| "specified in the field below if you already are in a call or if you are "
-#| "in Do Not Disturb mode"
 msgid ""
 "If enabled, all incoming calls will be forwarded to the host that is "
 "specified in the field below if you already are in a call or if you are in "
@@ -491,13 +477,11 @@ msgstr ""
 "സംവിധാനമാണു് STUN."
 
 #: ../ekiga.schemas.in.in.h:87
-#| msgid "Disable STUN network detection"
 msgid "Enable STUN network detection"
 msgstr "STUN നെറ്റ്‌വര്‍ക്ക് തിരിച്ചറിയുന്നത് പ്രവര്‍ത്തന സജ്ജമാക്കുക"
 
 #: ../ekiga.schemas.in.in.h:88
-#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:488
-#| msgid "Disable the automatic network setup resulting from the STUN test"
+#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:483
 msgid "Enable the automatic network setup resulting from the STUN test"
 msgstr "STUN പരീക്ഷണത്തിന്റെ ഫലമായ സ്വയമുള്ള ശൃംഖലാ ക്രമീകരണം പ്രവര്‍ത്തന സജ്ജമാക്കുക"
 
@@ -512,12 +496,10 @@ msgid ""
 msgstr "STUN ഉപയോഗിക്കുമ്പോള്‍ NAT ബൈന്‍ഡിങ് എകീഗാ എപ്പോള്‍ പുതുക്കണമെന്നു് സെക്കന്‍ഡുകളില്‍ നല്‍കുക"
 
 #: ../ekiga.schemas.in.in.h:91
-#| msgid "Position on the screen of the chat window"
 msgid "Position on the screen of the call window"
 msgstr "കോള്‍ ജാലകത്തിനുള്ള സ്ക്രീനിലെ സ്ഥാനം"
 
 #: ../ekiga.schemas.in.in.h:92
-#| msgid "Size of the chat window"
 msgid "Size of the call window"
 msgstr "കോള്‍ ജാലകത്തിന്റെ വ്യാപ്തി"
 
@@ -526,7 +508,6 @@ msgid "Position on the screen of the main window"
 msgstr "പ്രധാന ജാലകത്തിനുള്ള സ്ക്രീനിലെ സ്ഥാനം"
 
 #: ../ekiga.schemas.in.in.h:94
-#| msgid "Position on the screen of the main window"
 msgid "Change the panel section of the main window"
 msgstr "പ്രധാന ജാലകത്തിനുള്ള പാനലിന്റെ ഭാഗം മാറ്റുക"
 
@@ -635,7 +616,7 @@ msgid ""
 msgstr "പ്രധാന ജിയുഐയില്‍ ചിത്രങ്ങള്‍ക്കുള്ള സൂം മൂല്ല്യം ശതമാനത്തില്‍ (50, 100 അല്ലെങ്കില്‍ 200 ആവാം)"
 
 #: ../ekiga.schemas.in.in.h:116
-#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:482
+#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:477
 msgid "Place windows displaying video above other windows during calls"
 msgstr "കോളുകള്‍ക്കിടയില്‍ മറ്റു് ജാലകങ്ങളില്‍ വീഡിയോ പ്രദര്‍ശിപ്പിക്കുന്ന ജാലകങ്ങള്‍ സ്ഥാപിക്കുക"
 
@@ -644,13 +625,12 @@ msgid "The default video view"
 msgstr "ഡീഫോള്‍ട്ടായ വീഡിയോ കാഴ്ച"
 
 #: ../ekiga.schemas.in.in.h:118
-#| msgid ""
-#| "The default video view (0: Local, 1: Remote, 2: Both layered, 3: Both "
-#| "with local video in a separate window, 4: Both)"
 msgid ""
 "The default video view (0: Local, 1: Remote, 2: Both, 3: Both in a separate "
 "window)"
-msgstr "സ്വതവേയുള്ള വീഡിയോ കാഴ്ച (0: പ്രാദേശികം 1: റിമോട്ട്, 2: രണ്ടും, 3:രണ്ടും വെവ്വേറെ ജാലകത്തില്‍)"
+msgstr ""
+"സ്വതവേയുള്ള വീഡിയോ കാഴ്ച (0: പ്രാദേശികം 1: റിമോട്ട്, 2: രണ്ടും, 3:രണ്ടും വെവ്വേറെ "
+"ജാലകത്തില്‍)"
 
 #: ../ekiga.schemas.in.in.h:119
 msgid "The video view before having switched to fullscreen"
@@ -683,7 +663,7 @@ msgid "Maximum jitter buffer"
 msgstr "ഏറ്റവും കൂടിയ ജിറ്റര്‍ ബഫര്‍"
 
 #: ../ekiga.schemas.in.in.h:126
-#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:949
+#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:944
 msgid "The maximum jitter buffer size for audio reception (in ms)"
 msgstr "ശബ്ദ റിസപ്ഷനുള്ള ഏറ്റവും കൂടിയ ജിറ്റര്‍ ബഫര്‍ വലിപ്പം (ms-ല്‍)"
 
@@ -736,7 +716,7 @@ msgstr ""
 msgid "List of folded groups in the roster"
 msgstr "റൂസ്റ്ററിലുള്ള ഫോള്‍ഡഡ് ഗ്രൂപ്പുകളുടെ പട്ടിക"
 
-#: ../ekiga.schemas.in.in.h:135 ../src/gui/main_window.cpp:1362
+#: ../ekiga.schemas.in.in.h:135 ../src/gui/main_window.cpp:1375
 msgid "Show offline contacts"
 msgstr "ഓഫ്‌ലൈന്‍ വിലാസങ്ങള്‍ കാണിക്കുക"
 
@@ -761,12 +741,10 @@ msgid "The history of the 100 last calls"
 msgstr "അവസാന 100 വിളികളുടെ പട്ടിക"
 
 #: ../ekiga.schemas.in.in.h:141
-#| msgid "Kind of network selected in the druid"
 msgid "Kind of network selected in the assistant"
 msgstr "സഹായിയില്‍ തിരഞ്ഞെടുത്തിരിക്കുന്ന തരത്തിലുള്ള ശൃംഖല"
 
 #: ../ekiga.schemas.in.in.h:142
-#| msgid "0: 56Kbps, 1: ISDN, 2:DSL, 3: LAN, 4: Custom"
 msgid "0: 56kbps, 1: ISDN, 2: DSL128, 3: DSL512, 4: LAN, 5: Custom"
 msgstr "0: 56kbps, 1: ISDN, 2: DSL128, 3: DSL512, 4: LAN, 5: Custom"
 
@@ -775,7 +753,7 @@ msgid "No answer timeout"
 msgstr "വിളിയെക്കുന്നതിനുള്ള സമയപരിധി ലഭ്യമല്ല"
 
 #: ../ekiga.schemas.in.in.h:144
-#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:511
+#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:506
 msgid ""
 "Automatically reject or forward incoming calls if no answer is given after "
 "the specified amount of time (in seconds)"
@@ -788,7 +766,7 @@ msgid "Automatic answer"
 msgstr "ഓട്ടോമാറ്റിക് ഉത്തരം"
 
 #: ../ekiga.schemas.in.in.h:146
-#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:512
+#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:507
 msgid "If enabled, automatically answer incoming calls"
 msgstr "പ്രവര്‍ത്തന സജ്ജമെങ്കില്‍, ഓട്ടോമാറ്റിയ്ക്കായി കോളുകള്‍ എടുക്കുക"
 
@@ -798,14 +776,12 @@ msgstr "പ്രവര്‍ത്തന സജ്ജമെങ്കില്�
 #: ../lib/engine/audiooutput/audiooutput-core.cpp:223
 #: ../lib/engine/videoinput/videoinput-core.cpp:242
 #: ../lib/engine/videoinput/videoinput-core.cpp:247
-#| msgid "No usable audio codecs detected"
 msgid "New device detected"
 msgstr "പുതിയ ഡിവൈസ് കണ്ടുപിടിച്ചിരിയ്ക്കുന്നു"
 
 #: ../lib/engine/audioinput/audioinput-core.cpp:206
 #: ../lib/engine/audiooutput/audiooutput-core.cpp:223
 #: ../lib/engine/videoinput/videoinput-core.cpp:247
-#| msgid "Use TLS"
 msgid "Use it"
 msgstr "ഇതുപയോഗിയ്ക്കുക"
 
@@ -859,7 +835,6 @@ msgstr "സ്വീകരിക്കുക"
 #: ../lib/engine/components/local-roster/local-cluster.cpp:82
 #: ../lib/engine/components/local-roster/local-heap.cpp:118
 #: ../plugins/evolution/evolution-book.cpp:343
-#| msgid "New _Contact"
 msgid "_New Contact"
 msgstr "പുതി_യ വിലാസം"
 
@@ -876,7 +851,6 @@ msgid "Conference room"
 msgstr "കോണ്‍ഫറന്‍സിനുള്ള മുറി"
 
 #: ../lib/engine/components/local-roster/local-heap.cpp:97
-#| msgid "Call _Attributes"
 msgid "Call back test"
 msgstr "കോള്‍ബാക്ക് പരീക്ഷ"
 
@@ -941,7 +915,7 @@ msgstr ""
 #: ../lib/engine/components/local-roster/local-heap.cpp:236
 #: ../lib/engine/components/local-roster/local-heap.cpp:427
 #: ../lib/engine/components/local-roster/local-presentity.cpp:270
-#: ../lib/engine/components/opal/opal-account.cpp:420
+#: ../lib/engine/components/opal/opal-account.cpp:426
 #: ../plugins/evolution/evolution-contact.cpp:324
 #: ../plugins/loudmouth/loudmouth-account.cpp:342
 #: ../plugins/loudmouth/loudmouth-bank.cpp:125
@@ -954,7 +928,6 @@ msgstr "നാമം:"
 
 #: ../lib/engine/components/local-roster/local-heap.cpp:236
 #: ../lib/engine/components/local-roster/local-presentity.cpp:270
-#| msgid "If enabled, offline contacts will be shown in the roster"
 msgid "Name of the contact, as shown in your roster"
 msgstr "വിലാസത്തിന്റെ പേരു്, റോസ്റ്ററനുസരിച്ചു്"
 
@@ -1003,17 +976,17 @@ msgid "Unnamed"
 msgstr "പേരില്ലാത്ത"
 
 #: ../lib/engine/components/local-roster/local-presentity.cpp:240
-#: ../lib/engine/components/opal/opal-account.cpp:375
+#: ../lib/engine/components/opal/opal-account.cpp:381
 #: ../plugins/evolution/evolution-contact.cpp:228
 #: ../plugins/loudmouth/loudmouth-presentity.cpp:160
 #: ../plugins/resource-list/rl-presentity.cpp:212
-#: ../src/gui/main_window.cpp:1320
+#: ../src/gui/main_window.cpp:1325
 msgid "_Edit"
 msgstr "മാറ്റം വരുത്തുക (_E)"
 
 #: ../lib/engine/components/local-roster/local-presentity.cpp:242
-#: ../lib/engine/components/opal/opal-account.cpp:377
-#: ../lib/engine/gui/gtk-frontend/accounts-window.cpp:682
+#: ../lib/engine/components/opal/opal-account.cpp:383
+#: ../lib/engine/gui/gtk-frontend/accounts-window.cpp:683
 #: ../plugins/evolution/evolution-contact.cpp:230
 #: ../plugins/loudmouth/loudmouth-account.cpp:445
 #: ../plugins/loudmouth/loudmouth-presentity.cpp:193
@@ -1035,7 +1008,6 @@ msgstr ""
 "പൂരിപ്പിക്കുക."
 
 #: ../lib/engine/components/local-roster/local-presentity.cpp:272
-#| msgid "Add a remote contact"
 msgid "Is a preferred contact"
 msgstr "ഇഷ്ടമുള്ള വിലാസം"
 
@@ -1056,7 +1028,7 @@ msgstr "വിളിക്കുക"
 #: ../lib/engine/components/opal/h323-endpoint.cpp:138
 #: ../lib/engine/components/opal/sip-endpoint.cpp:251
 #: ../lib/engine/components/opal/sip-endpoint.cpp:255
-#: ../lib/engine/gui/gtk-frontend/call-window.cpp:2093
+#: ../lib/engine/gui/gtk-frontend/call-window.cpp:2108
 msgid "Transfer"
 msgstr "മറ്റൊരിടത്തേക്ക് നീക്കുക"
 
@@ -1083,61 +1055,61 @@ msgstr "പരാജയപ്പെട്ടു"
 #. Translators: this is a state, not an action, i.e. it should be read as
 #. "(you are) unregistered", and not as "(you have been) unregistered"
 #: ../lib/engine/components/opal/opal-account.cpp:69
-#: ../lib/engine/components/opal/opal-account.cpp:310
-#: ../lib/engine/components/opal/opal-account.cpp:605
+#: ../lib/engine/components/opal/opal-account.cpp:328
+#: ../lib/engine/components/opal/opal-account.cpp:612
 msgid "Unregistered"
 msgstr "രജിസ്ടര്‍ ചെയ്തിട്ടില്ലാത്ത"
 
 #. translators : the result will look like :
 #. * "registered (with 2 voice mail messages)"
 #.
-#: ../lib/engine/components/opal/opal-account.cpp:218
+#: ../lib/engine/components/opal/opal-account.cpp:223
 #, c-format
 msgid "%s (with %d voice mail message)"
 msgid_plural "%s (with %d voice mail messages)"
 msgstr[0] "%s (%d വോയിസ് മെയില്‍ സന്ദേശത്തിനൊപ്പം)"
 msgstr[1] "%s (%d വോയിസ് മെയില്‍ സന്ദേശങ്ങള്‍ക്കൊപ്പം)"
 
-#: ../lib/engine/components/opal/opal-account.cpp:296
-#: ../lib/engine/components/opal/opal-account.cpp:674
+#: ../lib/engine/components/opal/opal-account.cpp:301
+#: ../lib/engine/components/opal/opal-account.cpp:682
 msgid "Processing..."
 msgstr "പ്രവര്‍ത്തനത്തില്‍...."
 
-#: ../lib/engine/components/opal/opal-account.cpp:367
-#: ../lib/engine/gui/gtk-frontend/accounts-window.cpp:676
+#: ../lib/engine/components/opal/opal-account.cpp:373
+#: ../lib/engine/gui/gtk-frontend/accounts-window.cpp:677
 #: ../plugins/loudmouth/loudmouth-account.cpp:433
 msgid "_Disable"
 msgstr "_പ്രവര്‍ത്തന രഹിതമാക്കുക"
 
-#: ../lib/engine/components/opal/opal-account.cpp:370
-#: ../lib/engine/gui/gtk-frontend/accounts-window.cpp:673
+#: ../lib/engine/components/opal/opal-account.cpp:376
+#: ../lib/engine/gui/gtk-frontend/accounts-window.cpp:674
 #: ../plugins/loudmouth/loudmouth-account.cpp:437
 msgid "_Enable"
 msgstr "_പ്രാവര്‍ത്തികമാക്കുക"
 
-#: ../lib/engine/components/opal/opal-account.cpp:391
+#: ../lib/engine/components/opal/opal-account.cpp:397
 #: ../src/gui/assistant.cpp:761
 msgid "Recharge the account"
 msgstr "അക്കൌണ്ട് വീണ്ടും പുതുക്കുക"
 
-#: ../lib/engine/components/opal/opal-account.cpp:396
+#: ../lib/engine/components/opal/opal-account.cpp:402
 #: ../src/gui/assistant.cpp:773
 msgid "Consult the balance history"
 msgstr "ബാക്കിയുള്ള വിവരണങ്ങള്‍ പരിശോധിക്കുക"
 
-#: ../lib/engine/components/opal/opal-account.cpp:401
+#: ../lib/engine/components/opal/opal-account.cpp:407
 #: ../src/gui/assistant.cpp:785
 msgid "Consult the call history"
 msgstr "മുമ്പുള്ള വിളികളുടെ വിവരണം പരിശോധിക്കുക"
 
-#: ../lib/engine/components/opal/opal-account.cpp:416
+#: ../lib/engine/components/opal/opal-account.cpp:422
 #: ../lib/engine/components/opal/opal-bank.cpp:96
 #: ../plugins/loudmouth/loudmouth-account.cpp:337
 #: ../plugins/loudmouth/loudmouth-bank.cpp:121
 msgid "Edit account"
 msgstr "അക്കൌണ്ടു് ചിട്ടപ്പെടുത്തുക"
 
-#: ../lib/engine/components/opal/opal-account.cpp:418
+#: ../lib/engine/components/opal/opal-account.cpp:424
 #: ../lib/engine/components/opal/opal-bank.cpp:97
 #: ../plugins/evolution/evolution-book.cpp:345
 #: ../plugins/evolution/evolution-contact.cpp:322
@@ -1145,39 +1117,39 @@ msgstr "അക്കൌണ്ടു് ചിട്ടപ്പെടുത്�
 msgid "Please update the following fields:"
 msgstr "താഴെ പറയുന്നവ പുതിയ വിവരങ്ങള്‍ നല്‍കുക:"
 
-#: ../lib/engine/components/opal/opal-account.cpp:420
+#: ../lib/engine/components/opal/opal-account.cpp:426
 #: ../lib/engine/components/opal/opal-bank.cpp:123
 #: ../lib/engine/components/opal/opal-bank.cpp:133
 #: ../plugins/loudmouth/loudmouth-account.cpp:342
 msgid "Account name, e.g. MyAccount"
 msgstr "അക്കൌണ്ട് നാമം, ഉദാ. എന്റെ അക്കൌണ്ട്"
 
-#: ../lib/engine/components/opal/opal-account.cpp:422
+#: ../lib/engine/components/opal/opal-account.cpp:428
 msgid "Registrar:"
 msgstr "രജിസ്ട്രാറ്‍:"
 
-#: ../lib/engine/components/opal/opal-account.cpp:422
+#: ../lib/engine/components/opal/opal-account.cpp:428
 #: ../lib/engine/components/opal/opal-bank.cpp:134
 msgid "The registrar, e.g. ekiga.net"
 msgstr "രജിസ്ട്രാര്‍, ekiga.net"
 
-#: ../lib/engine/components/opal/opal-account.cpp:424
+#: ../lib/engine/components/opal/opal-account.cpp:430
 msgid "Gatekeeper:"
 msgstr "ഗേറ്റ്കീപ്പറ്‍:"
 
-#: ../lib/engine/components/opal/opal-account.cpp:424
+#: ../lib/engine/components/opal/opal-account.cpp:430
 #: ../lib/engine/components/opal/opal-bank.cpp:124
 msgid "The gatekeeper, e.g. ekiga.net"
 msgstr "ഗേറ്റ്കീപ്പര്‍, ഉദാ. ekiga.net "
 
-#: ../lib/engine/components/opal/opal-account.cpp:425
+#: ../lib/engine/components/opal/opal-account.cpp:431
 #: ../plugins/loudmouth/loudmouth-account.cpp:346
 #: ../plugins/loudmouth/loudmouth-bank.cpp:126
 #: ../plugins/resource-list/rl-cluster.cpp:174
 msgid "User:"
 msgstr "ഉപയോക്താവ്:"
 
-#: ../lib/engine/components/opal/opal-account.cpp:425
+#: ../lib/engine/components/opal/opal-account.cpp:431
 #: ../lib/engine/components/opal/opal-bank.cpp:105
 #: ../lib/engine/components/opal/opal-bank.cpp:116
 #: ../lib/engine/components/opal/opal-bank.cpp:125
@@ -1189,26 +1161,27 @@ msgstr "ഉപയോക്തൃനാമം, ഉദാ. jim"
 #. Translators:
 #. * SIP knows two usernames: The name for the client ("User") and the name
 #. * for the authentication procedure ("Authentication user")
-#: ../lib/engine/components/opal/opal-account.cpp:430
-#| msgid "Authentication User:"
+#: ../lib/engine/components/opal/opal-account.cpp:436
 msgid "Authentication user:"
 msgstr "ആധികാരികത ഉറപ്പാക്കുന്ന ഉപയോക്താവു്:"
 
-#: ../lib/engine/components/opal/opal-account.cpp:430
+#: ../lib/engine/components/opal/opal-account.cpp:436
 #: ../lib/engine/components/opal/opal-bank.cpp:136
 msgid ""
 "The user name used during authentication, if different than the user name; "
 "leave empty if you do not have one"
-msgstr "മറ്റൊരു ഉപയോക്തൃനാമമാണെങ്കില്‍, ആധികാരികത ഉറപ്പാക്കുന്നതിനുള്ള ഉപയോക്തൃനാമം; ഇല്ലെങ്കില്‍ കാലിയായിടുക"
+msgstr ""
+"മറ്റൊരു ഉപയോക്തൃനാമമാണെങ്കില്‍, ആധികാരികത ഉറപ്പാക്കുന്നതിനുള്ള ഉപയോക്തൃനാമം; ഇല്ലെങ്കില്‍ "
+"കാലിയായിടുക"
 
-#: ../lib/engine/components/opal/opal-account.cpp:431
+#: ../lib/engine/components/opal/opal-account.cpp:437
 #: ../plugins/loudmouth/loudmouth-account.cpp:362
 #: ../plugins/loudmouth/loudmouth-bank.cpp:129
 #: ../plugins/resource-list/rl-cluster.cpp:173
 msgid "Password:"
 msgstr "അടയാളവാക്ക്:"
 
-#: ../lib/engine/components/opal/opal-account.cpp:431
+#: ../lib/engine/components/opal/opal-account.cpp:437
 #: ../lib/engine/components/opal/opal-bank.cpp:107
 #: ../lib/engine/components/opal/opal-bank.cpp:118
 #: ../lib/engine/components/opal/opal-bank.cpp:127
@@ -1217,126 +1190,119 @@ msgstr "അടയാളവാക്ക്:"
 msgid "Password associated to the user"
 msgstr "ഉപയോക്താവിനുള്ള രഹസ്യവാക്ക്"
 
-#: ../lib/engine/components/opal/opal-account.cpp:432
+#: ../lib/engine/components/opal/opal-account.cpp:438
 msgid "Timeout:"
 msgstr "സമയം കഴിഞ്ഞിരിക്കുന്നു:"
 
-#: ../lib/engine/components/opal/opal-account.cpp:432
+#: ../lib/engine/components/opal/opal-account.cpp:438
 #: ../lib/engine/components/opal/opal-bank.cpp:128
 #: ../lib/engine/components/opal/opal-bank.cpp:138
 msgid "Time in seconds after which the account registration is automatically retried"
 msgstr ""
 
-#: ../lib/engine/components/opal/opal-account.cpp:433
+#: ../lib/engine/components/opal/opal-account.cpp:439
 #: ../lib/engine/components/opal/opal-bank.cpp:141
 #: ../plugins/loudmouth/loudmouth-account.cpp:376
 #: ../plugins/loudmouth/loudmouth-bank.cpp:130
-#| msgid "Enable Account"
 msgid "Enable account"
 msgstr "അക്കൌണ്ട് പ്രാവര്‍ത്തികമാക്കുക"
 
-#: ../lib/engine/components/opal/opal-account.cpp:459
+#: ../lib/engine/components/opal/opal-account.cpp:465
 #: ../lib/engine/components/opal/opal-bank.cpp:175
 msgid "You did not supply a name for that account."
 msgstr "ഈ അക്കൌണ്ടിനു് നിങ്ങള്‍ ഒരു നാമം നല്‍കിയിട്ടില്ല."
 
-#: ../lib/engine/components/opal/opal-account.cpp:461
+#: ../lib/engine/components/opal/opal-account.cpp:467
 #: ../lib/engine/components/opal/opal-bank.cpp:177
 msgid "You did not supply a host to register to."
 msgstr "രജിസ്ടര്‍ ചെയ്യുന്നതിനുള്ള ഒരു ഹോസ്റ്റ് നിങ്ങള്‍ ലഭ്യമാക്കിയിട്ടില്ല."
 
-#: ../lib/engine/components/opal/opal-account.cpp:463
+#: ../lib/engine/components/opal/opal-account.cpp:469
 #: ../lib/engine/components/opal/opal-bank.cpp:179
 msgid "You did not supply a user name for that account."
 msgstr "ഈ അക്കൌണ്ടിനു് നിങ്ങള്‍ ഒരു ഉപയോക്തൃനാമം നല്‍കിയിട്ടില്ല."
 
-#: ../lib/engine/components/opal/opal-account.cpp:465
+#: ../lib/engine/components/opal/opal-account.cpp:471
 #: ../lib/engine/components/opal/opal-bank.cpp:181
-#| msgid "The timeout should have a bigger value."
 msgid "The timeout should be at least 10 seconds."
 msgstr "സമയപരിധി 10 സെക്കന്‍ഡെങ്കിലുമുണ്ടായിരിയ്ക്കണം."
 
 #. Translators: this is a state, not an action, i.e. it should be read as
 #. "(you are) registered", and not as "(you have been) registered"
-#: ../lib/engine/components/opal/opal-account.cpp:582
+#: ../lib/engine/components/opal/opal-account.cpp:589
 msgid "Registered"
 msgstr "രജിസ്ടര്‍ ചെയ്തിരിക്കുന്നു"
 
-#: ../lib/engine/components/opal/opal-account.cpp:618
+#: ../lib/engine/components/opal/opal-account.cpp:626
 msgid "Could not unregister"
 msgstr "അണ്‍രജിസ്ടര്‍ ചെയ്യുവാന്‍ സാധ്യമായില്ല"
 
-#: ../lib/engine/components/opal/opal-account.cpp:651
+#: ../lib/engine/components/opal/opal-account.cpp:659
 msgid "Could not register"
 msgstr "രജിസ്ടര്‍ ചെയ്യുവാന്‍ സാധ്യമായില്ല"
 
-#: ../lib/engine/components/opal/opal-account.cpp:656
-#| msgid "Could not register"
+#: ../lib/engine/components/opal/opal-account.cpp:664
 msgid "Could not register to "
 msgstr "രജിസ്ടര്‍ ചെയ്യുവാന്‍ സാധ്യമായില്ല"
 
-#: ../lib/engine/components/opal/opal-account.cpp:657
+#: ../lib/engine/components/opal/opal-account.cpp:665
 #: ../plugins/loudmouth/loudmouth-account.cpp:443
-#| msgid "_Edit"
 msgid "Edit"
 msgstr "മാറ്റം വരുത്തുക"
 
-#: ../lib/engine/components/opal/opal-account.cpp:794
+#: ../lib/engine/components/opal/opal-account.cpp:804
 msgid "Appointment"
 msgstr "അപ്പോയിന്റ്മെന്റ്"
 
-#: ../lib/engine/components/opal/opal-account.cpp:799
+#: ../lib/engine/components/opal/opal-account.cpp:809
 msgid "Breakfast"
 msgstr "പ്രാതല്‍"
 
-#: ../lib/engine/components/opal/opal-account.cpp:804
+#: ../lib/engine/components/opal/opal-account.cpp:814
 msgid "Dinner"
 msgstr "അത്താഴം"
 
-#: ../lib/engine/components/opal/opal-account.cpp:810
+#: ../lib/engine/components/opal/opal-account.cpp:820
 msgid "Holiday"
 msgstr "അവധി"
 
-#: ../lib/engine/components/opal/opal-account.cpp:815
+#: ../lib/engine/components/opal/opal-account.cpp:825
 msgid "In transit"
 msgstr ""
 
-#: ../lib/engine/components/opal/opal-account.cpp:820
+#: ../lib/engine/components/opal/opal-account.cpp:830
 msgid "Looking for work"
 msgstr "ജോലിയ്ക്കായി തെരയുന്നു"
 
-#: ../lib/engine/components/opal/opal-account.cpp:825
+#: ../lib/engine/components/opal/opal-account.cpp:835
 msgid "Lunch"
 msgstr "ഉച്ചഭക്ഷണം"
 
-#: ../lib/engine/components/opal/opal-account.cpp:830
+#: ../lib/engine/components/opal/opal-account.cpp:840
 msgid "Meal"
 msgstr "ഭക്ഷണം"
 
-#: ../lib/engine/components/opal/opal-account.cpp:835
-#| msgid "Settings"
+#: ../lib/engine/components/opal/opal-account.cpp:845
 msgid "Meeting"
 msgstr "മീറ്റിങില്‍"
 
-#: ../lib/engine/components/opal/opal-account.cpp:840
-#| msgid "_Office phone:"
+#: ../lib/engine/components/opal/opal-account.cpp:850
 msgid "On the phone"
 msgstr "ഫോണ്‍ ചെയ്യുന്നു"
 
-#: ../lib/engine/components/opal/opal-account.cpp:845
-#| msgid "Play"
+#: ../lib/engine/components/opal/opal-account.cpp:855
 msgid "Playing"
 msgstr "പ്രവര്‍ത്തിയ്ക്കുന്നു"
 
-#: ../lib/engine/components/opal/opal-account.cpp:850
+#: ../lib/engine/components/opal/opal-account.cpp:860
 msgid "Shopping"
 msgstr "ഷോപ്പിങ്"
 
-#: ../lib/engine/components/opal/opal-account.cpp:855
+#: ../lib/engine/components/opal/opal-account.cpp:865
 msgid "Sleeping"
 msgstr "ഉറങ്ങുന്നു"
 
-#: ../lib/engine/components/opal/opal-account.cpp:860
+#: ../lib/engine/components/opal/opal-account.cpp:870
 msgid "Working"
 msgstr "ജോലിചെയ്യുന്നു"
 
@@ -1364,7 +1330,6 @@ msgstr "ekiga.net SIP-നുള്ള അക്കൌണ്ട് ലഭ്യ�
 #: ../lib/engine/components/opal/opal-bank.cpp:105
 #: ../lib/engine/components/opal/opal-bank.cpp:125
 #: ../lib/engine/components/opal/opal-bank.cpp:135
-#| msgid "User:"
 msgid "_User:"
 msgstr "_ഉപയോക്താവ്:"
 
@@ -1372,7 +1337,6 @@ msgstr "_ഉപയോക്താവ്:"
 #: ../lib/engine/components/opal/opal-bank.cpp:127
 #: ../lib/engine/components/opal/opal-bank.cpp:137
 #: ../plugins/ldap/ldap-book.cpp:986
-#| msgid "_Password"
 msgid "_Password:"
 msgstr "_രഹസ്യവാക്ക്:"
 
@@ -1382,12 +1346,10 @@ msgid "Get an Ekiga Call Out account"
 msgstr "Ekiga വിളി ഔട്ട് അക്കൌണ്ട് ലഭ്യമാക്കുക"
 
 #: ../lib/engine/components/opal/opal-bank.cpp:116
-#| msgid "Account ID:"
 msgid "_Account ID:"
 msgstr "_അക്കൌണ്ടിന്റെ ID:"
 
 #: ../lib/engine/components/opal/opal-bank.cpp:118
-#| msgid "PIN Code:"
 msgid "_PIN code:"
 msgstr "_പിന്‍കോഡ്:"
 
@@ -1398,23 +1360,19 @@ msgid "_Name:"
 msgstr "പേര് (_N):"
 
 #: ../lib/engine/components/opal/opal-bank.cpp:124
-#| msgid "Gatekeeper:"
 msgid "_Gatekeeper:"
 msgstr "_ഗേറ്റ്കീപ്പര്‍:"
 
 #: ../lib/engine/components/opal/opal-bank.cpp:128
 #: ../lib/engine/components/opal/opal-bank.cpp:138
-#| msgid "Timeout:"
 msgid "_Timeout:"
 msgstr "_സമയം കഴിഞ്ഞിരിക്കുന്നു:"
 
 #: ../lib/engine/components/opal/opal-bank.cpp:134
-#| msgid "Registrar:"
 msgid "_Registrar:"
 msgstr "_രജിസ്ട്രാര്‍:"
 
 #: ../lib/engine/components/opal/opal-bank.cpp:136
-#| msgid "Authentication User:"
 msgid "_Authentication user:"
 msgstr "_ആധികാരികത ഉറപ്പാക്കുന്ന ഉപയോക്താവു്:"
 
@@ -1503,12 +1461,10 @@ msgid "Call completed"
 msgstr "വിളി പൂറ്‍ത്തിയാക്കിയിരിക്കുന്നു"
 
 #: ../lib/engine/components/opal/opal-call.cpp:679
-#| msgid "Missed call from %s"
 msgid "Missed call from"
 msgstr "ഇവിടെ നിന്നും മിസ്സ്ഡ് വിളി"
 
 #: ../lib/engine/components/opal/opal-call.cpp:681
-#| msgid "Missed call from %s"
 msgid "Missed call"
 msgstr "മിസ്സ്ഡ് വിളി"
 
@@ -1537,7 +1493,6 @@ msgstr "തെറ്റായ വിലാസം"
 #. Translators: Host of the remote party is offline, this should
 #. * appear when the remote host does not reply in an acceptable time
 #: ../lib/engine/components/opal/sip-endpoint.cpp:613
-#| msgid "Remote host is offline"
 msgid "Remote party host is offline"
 msgstr "റിമോട്ട് പാര്‍ട്ടി ഹോസ്റ്റ് ഓഫ്ലൈന്‍ ആണു്"
 
@@ -1725,7 +1680,6 @@ msgid "Globally not acceptable"
 msgstr "ഗ്ലോബലായി സ്വീകരിക്കാന്‍ സാധ്യമല്ല"
 
 #: ../lib/engine/components/opal/sip-endpoint.cpp:947
-#| msgid "Could not send message"
 msgid "Could not send message: "
 msgstr "സന്ദേശം അയയ്ക്കുവാന്‍ സാധ്യമായില്ല:"
 
@@ -1760,6 +1714,10 @@ msgstr "തെരഞ്ഞെടുത്ത കോഡക്കിന്റെ �
 msgid "Advanced"
 msgstr "അധികമായ"
 
+#: ../lib/engine/gui/gtk-core/form-dialog-gtk.cpp:1306
+msgid "Add Group"
+msgstr "ഗ്രൂപ്പ് ചേര്‍ക്കുക"
+
 #: ../lib/engine/gui/gtk-frontend/accounts-window.cpp:567
 msgid "Account Name"
 msgstr "അക്കൌണ്ടിലെ പേര്"
@@ -1768,21 +1726,22 @@ msgstr "അക്കൌണ്ടിലെ പേര്"
 msgid "Status"
 msgstr "നിലവാരം"
 
-#: ../lib/engine/gui/gtk-frontend/accounts-window.cpp:583
-#: ../src/gui/main_window.cpp:1330
-msgid "_Accounts"
-msgstr "അക്കൌണ്ടുകള്‍ (_A)"
-
-#: ../lib/engine/gui/gtk-frontend/accounts-window.cpp:587
-#: ../src/gui/main_window.cpp:1368
-msgid "_Help"
-msgstr "സഹായം (_H)"
-
-#: ../lib/engine/gui/gtk-frontend/accounts-window.cpp:612
+#: ../lib/engine/gui/gtk-frontend/accounts-window.cpp:575
+#: ../lib/engine/gui/gtk-frontend/accounts-window.cpp:613
 msgid "Accounts"
 msgstr "അക്കൌണ്ടുകള്‍"
 
-#: ../lib/engine/gui/gtk-frontend/accounts-window.cpp:679
+#: ../lib/engine/gui/gtk-frontend/accounts-window.cpp:584
+#: ../src/gui/main_window.cpp:1335
+msgid "_Accounts"
+msgstr "അക്കൌണ്ടുകള്‍ (_A)"
+
+#: ../lib/engine/gui/gtk-frontend/accounts-window.cpp:588
+#: ../src/gui/main_window.cpp:1381
+msgid "_Help"
+msgstr "സഹായം (_H)"
+
+#: ../lib/engine/gui/gtk-frontend/accounts-window.cpp:680
 msgid "Edi_t"
 msgstr "ചിട്ടപ്പെടുത്തുക_ക"
 
@@ -1791,7 +1750,7 @@ msgid "Address Book"
 msgstr "വിലാസ പുസ്തകം "
 
 #: ../lib/engine/gui/gtk-frontend/addressbook-window.cpp:646
-#: ../src/gui/main_window.cpp:1291
+#: ../src/gui/main_window.cpp:1296
 msgid "Address _Book"
 msgstr "വിലാസ പുസ്തകം (_B)"
 
@@ -1813,16 +1772,15 @@ msgstr "പൂര്‍ണ്ണ നാമം"
 msgid "_Search Filter:"
 msgstr "ഫില്‍‌റ്ററ്‍ തിരയുക (_S):"
 
-#: ../lib/engine/gui/gtk-frontend/call-window.cpp:770
+#: ../lib/engine/gui/gtk-frontend/call-window.cpp:772
 msgid "Error while initializing video output"
 msgstr "വീഡിയോ ഔട്ട്പുട്ട് ആരംഭിക്കുന്നതില്‍ പിശക്"
 
-#: ../lib/engine/gui/gtk-frontend/call-window.cpp:771
-#| msgid "No video will be displayed during this call->"
+#: ../lib/engine/gui/gtk-frontend/call-window.cpp:773
 msgid "No video will be displayed on your machine during this call"
 msgstr "ഈ കോളിന്റെ സമയത്തു് വീഡിയോ പ്രദര്‍ശിപ്പിക്കുന്നതല്ല"
 
-#: ../lib/engine/gui/gtk-frontend/call-window.cpp:781
+#: ../lib/engine/gui/gtk-frontend/call-window.cpp:783
 msgid ""
 "There was an error opening or initializing the video output. Please verify "
 "that no other application is using the accelerated video output."
@@ -1830,44 +1788,43 @@ msgstr ""
 "വീഡിയോ ഔട്ട്പുട്ട് ആരംഭിയ്ക്കുന്നതിനു് അല്ലെങ്കില്‍ തുറക്കുന്നതില്‍ പിശക്. ആക്സിലറേറ്റ് ചെയ്ത വീഡിയോ "
 "ഔട്ട്പുട്ട് ഉപയോഗിയ്ക്കുന്നതിനു് മറ്റൊരു പ്രയോഗമില്ലെന്നു് ദയവായി ഉറപ്പാക്കുക."
 
-#: ../lib/engine/gui/gtk-frontend/call-window.cpp:783
+#: ../lib/engine/gui/gtk-frontend/call-window.cpp:785
 msgid ""
 "There was an error opening or initializing the video output. Please verify "
 "that you are using a color depth of 24 or 32 bits per pixel."
 msgstr ""
-"വീഡിയോ ഔട്ട്പുട്ട് ആരംഭിയ്ക്കുന്നതിനു് അല്ലെങ്കില്‍ തുറക്കുന്നതില്‍ പിശക്. ഒരു പിക്സലില്‍ 24 അല്ലെങ്കില്‍ 32 "
-"ബിറ്റുകളുള്ള ഒരു നിറമാണുപയോഗിയ്ക്കുന്നതെന്നു്  ദയവായി ഉറപ്പാക്കുക."
+"വീഡിയോ ഔട്ട്പുട്ട് ആരംഭിയ്ക്കുന്നതിനു് അല്ലെങ്കില്‍ തുറക്കുന്നതില്‍ പിശക്. ഒരു പിക്സലില്‍ 24 അല്ലെങ്കില്‍ "
+"32 ബിറ്റുകളുള്ള ഒരു നിറമാണുപയോഗിയ്ക്കുന്നതെന്നു്  ദയവായി ഉറപ്പാക്കുക."
 
-#: ../lib/engine/gui/gtk-frontend/call-window.cpp:888
+#: ../lib/engine/gui/gtk-frontend/call-window.cpp:895
 #, c-format
 msgid "Error while accessing video device %s"
 msgstr "വീഡിയോ ഉപകരണം %s ലഭ്യമാക്കുന്നതില്‍ പിശക്"
 
-#: ../lib/engine/gui/gtk-frontend/call-window.cpp:891
-#| msgid "No video will be displayed during this call->"
+#: ../lib/engine/gui/gtk-frontend/call-window.cpp:898
 msgid "A moving logo will be transmitted during calls."
 msgstr "കോളിന്റെ സമയത്തു് നീങ്ങുന്നൊരു ചിഹ്നം ട്രാന്‍സ്മിറ്റ് ചെയ്യുന്നു."
 
-#: ../lib/engine/gui/gtk-frontend/call-window.cpp:895
+#: ../lib/engine/gui/gtk-frontend/call-window.cpp:902
 msgid ""
 "There was an error while opening the device. In case it is a pluggable "
 "device it may be sufficient to reconnect it. If not, or if it still is not "
 "accessible, please check your permissions and make sure that the appropriate "
 "driver is loaded."
 msgstr ""
-"ഡിവൈസ് തുറക്കുന്നതില്‍ പിശക്. ഇതൊരു പ്ലഗ് ചെയ്യുന്ന ഡിവൈസാണെങ്കില്‍ വീണ്ടും കണക്ട് ചെയ്യുന്നതിനായി ഇതു് "
-"മതിയാകുന്നു. അല്ലെങ്കില്‍, ഇതു് ഇപ്പോഴും ലഭ്യമല്ലെങ്കില്‍, ദയവായി നിങ്ങളുടെ അനുമതികള്‍ പരിശോധിച്ചു്, ഉചിതമായ "
-"ഡ്രൈവറാണു് ലഭ്യമാക്കിയതെന്നുറപ്പാക്കുക."
+"ഡിവൈസ് തുറക്കുന്നതില്‍ പിശക്. ഇതൊരു പ്ലഗ് ചെയ്യുന്ന ഡിവൈസാണെങ്കില്‍ വീണ്ടും കണക്ട് ചെയ്യുന്നതിനായി "
+"ഇതു് മതിയാകുന്നു. അല്ലെങ്കില്‍, ഇതു് ഇപ്പോഴും ലഭ്യമല്ലെങ്കില്‍, ദയവായി നിങ്ങളുടെ അനുമതികള്‍ "
+"പരിശോധിച്ചു്, ഉചിതമായ ഡ്രൈവറാണു് ലഭ്യമാക്കിയതെന്നുറപ്പാക്കുക."
 
-#: ../lib/engine/gui/gtk-frontend/call-window.cpp:899
+#: ../lib/engine/gui/gtk-frontend/call-window.cpp:906
 msgid "Your video driver doesn't support the requested video format."
 msgstr "നിങ്ങളുടെ വീഡിയോ ഡ്റൈവറ്‍ ആവശ്യപ്പെട്ട വീഡിയോ മാതൃകയ്ക്കുള്ള പിന്തുണ ലഭ്യമാക്കുന്നില്ല."
 
-#: ../lib/engine/gui/gtk-frontend/call-window.cpp:903
+#: ../lib/engine/gui/gtk-frontend/call-window.cpp:910
 msgid "Could not open the chosen channel."
 msgstr "തിരഞ്ഞെടുത്ത ചാനല്‍ ലഭ്യമാക്കുവാന്‍ സാധ്യമായില്ല."
 
-#: ../lib/engine/gui/gtk-frontend/call-window.cpp:907
+#: ../lib/engine/gui/gtk-frontend/call-window.cpp:914
 msgid ""
 "Your driver doesn't seem to support any of the color formats supported by "
 "Ekiga.\n"
@@ -1875,40 +1832,44 @@ msgid ""
 "Palette is supported."
 msgstr ""
 
-#: ../lib/engine/gui/gtk-frontend/call-window.cpp:911
+#: ../lib/engine/gui/gtk-frontend/call-window.cpp:918
 msgid "Error while setting the frame rate."
 msgstr "ഫ്റെയിം നിരക്കു് സജ്ജീകരിക്കുന്നതില്‍ പിശക്."
 
-#: ../lib/engine/gui/gtk-frontend/call-window.cpp:915
+#: ../lib/engine/gui/gtk-frontend/call-window.cpp:922
 msgid "Error while setting the frame size."
 msgstr "ഫ്റെയിം വലിപ്പം സജ്ജീകരിക്കുന്നതില്‍ പിശക്."
 
-#: ../lib/engine/gui/gtk-frontend/call-window.cpp:920
-#: ../lib/engine/gui/gtk-frontend/call-window.cpp:990
-#: ../lib/engine/gui/gtk-frontend/call-window.cpp:1071
+#: ../lib/engine/gui/gtk-frontend/call-window.cpp:927
+#: ../lib/engine/gui/gtk-frontend/call-window.cpp:997
+#: ../lib/engine/gui/gtk-frontend/call-window.cpp:1078
 msgid "Unknown error."
 msgstr "അപരിചിതമായ പിശക്."
 
-#: ../lib/engine/gui/gtk-frontend/call-window.cpp:972
+#: ../lib/engine/gui/gtk-frontend/call-window.cpp:979
 #, c-format
 msgid "Error while opening audio input device %s"
 msgstr "ശബ്ദ ഇന്‍പുട്ട് ഉപകരണം %s ലഭ്യമാക്കുന്നതില്‍ പിശക്"
 
 #. Translators: This happens when there is an error with audio input:
 #. * Nothing ("silence") will be transmitted
-#: ../lib/engine/gui/gtk-frontend/call-window.cpp:977
+#: ../lib/engine/gui/gtk-frontend/call-window.cpp:984
 msgid "Only silence will be transmitted."
 msgstr "ശബ്ദ ഇന്‍പുട്ടില്‍ പിശക്, നിശബ്ദമായിരിക്കും ഫലം."
 
-#: ../lib/engine/gui/gtk-frontend/call-window.cpp:981
+#: ../lib/engine/gui/gtk-frontend/call-window.cpp:988
 msgid ""
 "Unable to open the selected audio device for recording. In case it is a "
 "pluggable device it may be sufficient to reconnect it. If not, or if it "
 "still is not accessible, please check your audio setup, the permissions and "
 "that the device is not busy."
 msgstr ""
+"തെരഞ്ഞെടുത്ത ഓഡിയോ ഡിവൈസ് പ്രവര്‍ത്തിയ്ക്കുവാന്‍ സാധ്യമല്ല. ഇതു് "
+"പ്ലഗ് ചെയ്യാവുന്നതാണെങ്കില്‍, വീണ്ടും കണക്ട് ചെയ്യുന്നതിനു് ഇതു മതിയാകും. "
+"അല്ലെങ്കില്‍ ദയവായി നിങ്ങളുടെ ഓഡിയോ സജ്ജീകരണം, അനുമതികള്‍, "
+"ഡിവൈസിന്റെ അവസ്ഥ എന്നിവ പരിശോധിയ്ക്കുക."
 
-#: ../lib/engine/gui/gtk-frontend/call-window.cpp:985
+#: ../lib/engine/gui/gtk-frontend/call-window.cpp:992
 msgid ""
 "The selected audio device was successfully opened but it is impossible to "
 "read data from this device. In case it is a pluggable device it may be "
@@ -1919,24 +1880,28 @@ msgstr ""
 "സാധ്യമാകുന്നില്ല. ഘടിപ്പിക്കുന്ന ഉപകരണം ആണെങ്കില്‍, ഒരിക്കല്‍ കൂടി കണക്ട് ചെയ്യുക. അല്ലായെങ്കില്‍ "
 "ദയവായി നിങ്ങളുടെ ശബ്ദ ക്രമീകരണം പരിശോധിക്കുക."
 
-#: ../lib/engine/gui/gtk-frontend/call-window.cpp:1055
+#: ../lib/engine/gui/gtk-frontend/call-window.cpp:1062
 #, c-format
 msgid "Error while opening audio output device %s"
 msgstr "ശബ്ദ ഔട്ട്പുട്ട് ഉപകരണം %s ലഭ്യമാക്കുന്നതില്‍ പിശക്"
 
-#: ../lib/engine/gui/gtk-frontend/call-window.cpp:1058
+#: ../lib/engine/gui/gtk-frontend/call-window.cpp:1065
 msgid "No incoming sound will be played."
 msgstr "ഇന്‍കമിങ് ശബ്ദം ലഭ്യമല്ല."
 
-#: ../lib/engine/gui/gtk-frontend/call-window.cpp:1062
+#: ../lib/engine/gui/gtk-frontend/call-window.cpp:1069
 msgid ""
 "Unable to open the selected audio device for playing. In case it is a "
 "pluggable device it may be sufficient to reconnect it. If not, or if it "
 "still is not accessible, please check your audio setup, the permissions and "
 "that the device is not busy."
 msgstr ""
+"തെരഞ്ഞെടുത്ത ഓഡിയോ ഡിവൈസ് പ്രവര്‍ത്തിയ്ക്കുവാന്‍ സാധ്യമല്ല. ഇതു് "
+"പ്ലഗ് ചെയ്യാവുന്നതാണെങ്കില്‍, വീണ്ടും കണക്ട് ചെയ്യുന്നതിനു് ഇതു മതിയാകും. "
+"അല്ലെങ്കില്‍ ദയവായി നിങ്ങളുടെ ഓഡിയോ സജ്ജീകരണം, അനുമതികള്‍, "
+"ഡിവൈസിന്റെ അവസ്ഥ എന്നിവ പരിശോധിയ്ക്കുക."
 
-#: ../lib/engine/gui/gtk-frontend/call-window.cpp:1066
+#: ../lib/engine/gui/gtk-frontend/call-window.cpp:1073
 msgid ""
 "The selected audio device was successfully opened but it is impossible to "
 "write data to this device. In case it is a pluggable device it may be "
@@ -1947,36 +1912,41 @@ msgstr ""
 "സാധ്യമാകുന്നില്ല. ഘടിപ്പിക്കുന്ന ഉപകരണം ആണെങ്കില്‍, ഒരിക്കല്‍ കൂടി കണക്ട് ചെയ്യുക. അല്ലായെങ്കില്‍ "
 "ദയവായി നിങ്ങളുടെ ശബ്ദ ക്രമീകരണം പരിശോധിക്കുക."
 
-#: ../lib/engine/gui/gtk-frontend/call-window.cpp:1107
+#: ../lib/engine/gui/gtk-frontend/call-window.cpp:1114
 #, c-format
 msgid "Calling %s..."
 msgstr "%s വിളിയ്ക്കുന്നു..."
 
 #. %s is the SIP/H.323 address of the remote user, this text is shown
 #. below video during a call
-#: ../lib/engine/gui/gtk-frontend/call-window.cpp:1123
+#: ../lib/engine/gui/gtk-frontend/call-window.cpp:1130
 #: ../src/gui/main_window.cpp:649
 #, c-format
 msgid "Connected with %s"
 msgstr "%s-മായി കണക്ട് ചെയ്തിരിക്കുന്നു"
 
 #. Init
-#: ../lib/engine/gui/gtk-frontend/call-window.cpp:1146
-#: ../lib/engine/gui/gtk-frontend/call-window.cpp:2415
+#: ../lib/engine/gui/gtk-frontend/call-window.cpp:1153
+#: ../lib/engine/gui/gtk-frontend/call-window.cpp:2430
 msgid "Standby"
 msgstr "തയ്യാറായി നില്‍ക്കുക"
 
-#: ../lib/engine/gui/gtk-frontend/call-window.cpp:1166
+#: ../lib/engine/gui/gtk-frontend/call-window.cpp:1170
+#: ../lib/engine/gui/gtk-frontend/call-window.cpp:2642
+#| msgid "Chat Window"
+msgid "Call Window"
+msgstr "ചാറ്റ് ജാലകം"
+
+#: ../lib/engine/gui/gtk-frontend/call-window.cpp:1181
 msgid "Call on hold"
 msgstr "വിളി ഹോള്‍ഡ് ചെയ്തിരിക്കുന്നു"
 
-#: ../lib/engine/gui/gtk-frontend/call-window.cpp:1177
+#: ../lib/engine/gui/gtk-frontend/call-window.cpp:1192
 msgid "Call retrieved"
 msgstr "വിളി ലഭ്യമാക്കിയിരിക്കുന്നു"
 
-#: ../lib/engine/gui/gtk-frontend/call-window.cpp:1265
+#: ../lib/engine/gui/gtk-frontend/call-window.cpp:1280
 #, c-format
-#| msgid "Connected with %s"
 msgid ""
 "Connected with %s\n"
 "%s"
@@ -1986,37 +1956,28 @@ msgstr ""
 
 #. Translators: TX is a common abbreviation for "transmit".  As it
 #. * is shown in a tooltip, there is no space constraint
-#: ../lib/engine/gui/gtk-frontend/call-window.cpp:1461
+#: ../lib/engine/gui/gtk-frontend/call-window.cpp:1476
 #, c-format
-#| msgid "TX: %dx%d "
 msgid "TX: %dx%d"
 msgstr "TX: %dx%d"
 
-#: ../lib/engine/gui/gtk-frontend/call-window.cpp:1463
-#| msgid "TX: %dx%d "
+#: ../lib/engine/gui/gtk-frontend/call-window.cpp:1478
 msgid "TX: / "
 msgstr "TX: / "
 
 #. Translators: RX is a common abbreviation for "receive".  As it
 #. * is shown in a tooltip, there is no space constraint
-#: ../lib/engine/gui/gtk-frontend/call-window.cpp:1468
+#: ../lib/engine/gui/gtk-frontend/call-window.cpp:1483
 #, c-format
-#| msgid "RX: %dx%d "
 msgid "RX: %dx%d"
 msgstr "RX: %dx%d"
 
-#: ../lib/engine/gui/gtk-frontend/call-window.cpp:1470
-#| msgid "RX: %dx%d "
+#: ../lib/engine/gui/gtk-frontend/call-window.cpp:1485
 msgid "RX: / "
 msgstr "RX: / "
 
-#: ../lib/engine/gui/gtk-frontend/call-window.cpp:1479
+#: ../lib/engine/gui/gtk-frontend/call-window.cpp:1494
 #, c-format
-#| msgid ""
-#| "Lost packets: %.1f %%\n"
-#| "Late packets: %.1f %%\n"
-#| "Out of order packets: %.1f %%\n"
-#| "Jitter buffer: %d ms%s%s%s"
 msgid ""
 "Lost packets: %.1f %%\n"
 "Late packets: %.1f %%\n"
@@ -2028,182 +1989,176 @@ msgstr ""
 "നഷ്ടപ്പെട്ട പാക്കേജുകള്‍: %.1f %%\n"
 "താമസിച്ച പാക്കേജുകള്‍: %.1f %%\n"
 "തകരാറുള്ള പാക്കേജുകള്‍: %.1f %%\n"
-"ജിറ്റര്‍ ബഫര്‍: %d ms\n "
-"കോഡുകള്‍: %s\n"
+"ജിറ്റര്‍ ബഫര്‍: %d ms\n"
+" കോഡുകള്‍: %s\n"
 "റിസല്യൂഷന്‍: %s %s"
 
 #. Translators: A = Audio, V = Video, FPS = Frames per second
-#: ../lib/engine/gui/gtk-frontend/call-window.cpp:1573
+#: ../lib/engine/gui/gtk-frontend/call-window.cpp:1588
 #, c-format
-#| msgid "A:%.1f/%.1f   V:%.1f/%.1f   FPS:%d/%d"
 msgid "A:%.1f/%.1f V:%.1f/%.1f FPS:%d/%d"
 msgstr "A:%.1f/%.1f V:%.1f/%.1f FPS:%d/%d"
 
-#: ../lib/engine/gui/gtk-frontend/call-window.cpp:1594
+#: ../lib/engine/gui/gtk-frontend/call-window.cpp:1609
 msgid "_Retrieve Call"
 msgstr "വിളി _ലഭ്യമാക്കുക"
 
-#: ../lib/engine/gui/gtk-frontend/call-window.cpp:1607
-#: ../lib/engine/gui/gtk-frontend/call-window.cpp:1916
+#: ../lib/engine/gui/gtk-frontend/call-window.cpp:1622
+#: ../lib/engine/gui/gtk-frontend/call-window.cpp:1931
 msgid "H_old Call"
 msgstr "വിളി _ഹോള്‍ഡ് ചെയ്യുക"
 
-#: ../lib/engine/gui/gtk-frontend/call-window.cpp:1638
-#: ../lib/engine/gui/gtk-frontend/call-window.cpp:1928
+#: ../lib/engine/gui/gtk-frontend/call-window.cpp:1653
+#: ../lib/engine/gui/gtk-frontend/call-window.cpp:1943
 msgid "Suspend _Audio"
 msgstr "_FSF-India <locale@gnu.org.in>ശബ്ദം തല്‍ക്കാലത്തേക്ക് നിര്‍ത്തുക"
 
-#: ../lib/engine/gui/gtk-frontend/call-window.cpp:1640
-#: ../lib/engine/gui/gtk-frontend/call-window.cpp:1933
+#: ../lib/engine/gui/gtk-frontend/call-window.cpp:1655
+#: ../lib/engine/gui/gtk-frontend/call-window.cpp:1948
 msgid "Suspend _Video"
 msgstr "_വീഡിയോ തല്‍ക്കാലത്തേക്ക് നിര്‍ത്തുക"
 
-#: ../lib/engine/gui/gtk-frontend/call-window.cpp:1642
+#: ../lib/engine/gui/gtk-frontend/call-window.cpp:1657
 msgid "Resume _Audio"
 msgstr "_ശബ്ദം വീണ്ടും ആരംഭിക്കുക"
 
-#: ../lib/engine/gui/gtk-frontend/call-window.cpp:1644
+#: ../lib/engine/gui/gtk-frontend/call-window.cpp:1659
 msgid "Resume _Video"
 msgstr "_വീഡിയോ വീണ്ടും ആരംഭിക്കുക"
 
-#: ../lib/engine/gui/gtk-frontend/call-window.cpp:1678
+#: ../lib/engine/gui/gtk-frontend/call-window.cpp:1693
 msgid "Video Settings"
 msgstr "വീഡിയോ സജ്ജീകരണങ്ങള്‍"
 
-#: ../lib/engine/gui/gtk-frontend/call-window.cpp:1703
+#: ../lib/engine/gui/gtk-frontend/call-window.cpp:1718
 msgid "Adjust brightness"
 msgstr "തെളിച്ചം ശരിയാക്കുക"
 
-#: ../lib/engine/gui/gtk-frontend/call-window.cpp:1722
+#: ../lib/engine/gui/gtk-frontend/call-window.cpp:1737
 msgid "Adjust whiteness"
 msgstr "വെള്ളനിറം ശരിയാക്കുക"
 
-#: ../lib/engine/gui/gtk-frontend/call-window.cpp:1741
+#: ../lib/engine/gui/gtk-frontend/call-window.cpp:1756
 msgid "Adjust color"
 msgstr "നിറം ശരിയാക്കുക"
 
-#: ../lib/engine/gui/gtk-frontend/call-window.cpp:1760
+#: ../lib/engine/gui/gtk-frontend/call-window.cpp:1775
 msgid "Adjust contrast"
 msgstr "കോണ്‍ട്രാസ്റ്റ് ശരിയാക്കുക"
 
-#: ../lib/engine/gui/gtk-frontend/call-window.cpp:1802
+#: ../lib/engine/gui/gtk-frontend/call-window.cpp:1817
 msgid "Audio Settings"
 msgstr "ശബ്ദ സജ്ജീകരണങ്ങള്‍"
 
-#: ../lib/engine/gui/gtk-frontend/call-window.cpp:1904
-#| msgid "Call"
+#: ../lib/engine/gui/gtk-frontend/call-window.cpp:1919
 msgid "_Call"
 msgstr "വിളിക്കു_ക"
 
-#: ../lib/engine/gui/gtk-frontend/call-window.cpp:1906
+#: ../lib/engine/gui/gtk-frontend/call-window.cpp:1921
 msgid "_Pick up"
 msgstr "_എടുക്കുക"
 
-#: ../lib/engine/gui/gtk-frontend/call-window.cpp:1906
-#| msgid "Hold the current call"
+#: ../lib/engine/gui/gtk-frontend/call-window.cpp:1921
 msgid "Pick up the current call"
 msgstr "നിലവിലുള്ള കോള്‍ എടുക്കുക"
 
-#: ../lib/engine/gui/gtk-frontend/call-window.cpp:1910
-#| msgid "_Hang up"
+#: ../lib/engine/gui/gtk-frontend/call-window.cpp:1925
 msgid "_Hangup"
 msgstr "_അവസാനിപ്പിക്കുക"
 
-#: ../lib/engine/gui/gtk-frontend/call-window.cpp:1910
-#| msgid "Hold the current call"
+#: ../lib/engine/gui/gtk-frontend/call-window.cpp:1925
 msgid "Hangup the current call"
 msgstr "നിലവിലുള്ള കോള്‍ നിര്‍ത്തുക"
 
-#: ../lib/engine/gui/gtk-frontend/call-window.cpp:1916
-#: ../lib/engine/gui/gtk-frontend/call-window.cpp:2384
+#: ../lib/engine/gui/gtk-frontend/call-window.cpp:1931
+#: ../lib/engine/gui/gtk-frontend/call-window.cpp:2399
 msgid "Hold the current call"
 msgstr "നിലവിലുള്ള വിളി ഹോള്‍ഡ് ചെയ്യുക"
 
-#: ../lib/engine/gui/gtk-frontend/call-window.cpp:1920
+#: ../lib/engine/gui/gtk-frontend/call-window.cpp:1935
 msgid "_Transfer Call"
 msgstr "വിളി മറ്റൊരിടത്തേക്ക് _നീക്കുക"
 
-#: ../lib/engine/gui/gtk-frontend/call-window.cpp:1921
+#: ../lib/engine/gui/gtk-frontend/call-window.cpp:1936
 msgid "Transfer the current call"
 msgstr "ഇപ്പോഴുള്ള വിളി മറ്റൊരിടത്തേക്ക് നീക്കുക"
 
-#: ../lib/engine/gui/gtk-frontend/call-window.cpp:1929
+#: ../lib/engine/gui/gtk-frontend/call-window.cpp:1944
 msgid "Suspend or resume the audio transmission"
 msgstr "ഓഡിയോ ട്രാന്‍സ്മിഷന്‍ താല്‍ക്കാലികമായി നിര്‍ത്തുക അല്ലെങ്കില്‍ വീണ്ടും ആരംഭിക്കുക"
 
-#: ../lib/engine/gui/gtk-frontend/call-window.cpp:1934
+#: ../lib/engine/gui/gtk-frontend/call-window.cpp:1949
 msgid "Suspend or resume the video transmission"
 msgstr "വീഡിയോ ട്രാന്‍സ്മിഷന്‍ താല്‍ക്കാലികമായി നിര്‍ത്തുക അല്ലെങ്കില്‍ വീണ്ടും ആരംഭിക്കുക"
 
-#: ../lib/engine/gui/gtk-frontend/call-window.cpp:1941
-#: ../src/gui/main_window.cpp:1309
+#: ../lib/engine/gui/gtk-frontend/call-window.cpp:1956
+#: ../src/gui/main_window.cpp:1314
 msgid "Close the Ekiga window"
 msgstr "എകീഗായുടെ ജാലകം അടയ്ക്കുക"
 
-#: ../lib/engine/gui/gtk-frontend/call-window.cpp:1946
-#: ../src/gui/main_window.cpp:1342
+#: ../lib/engine/gui/gtk-frontend/call-window.cpp:1961
+#: ../src/gui/main_window.cpp:1347
 msgid "_View"
 msgstr "_കാഴ്ച"
 
-#: ../lib/engine/gui/gtk-frontend/call-window.cpp:1948
+#: ../lib/engine/gui/gtk-frontend/call-window.cpp:1963
 msgid "_Local Video"
 msgstr "_സ്വന്തം വീഡിയോ"
 
-#: ../lib/engine/gui/gtk-frontend/call-window.cpp:1949
+#: ../lib/engine/gui/gtk-frontend/call-window.cpp:1964
 msgid "Local video image"
 msgstr "സ്വന്തം വീഡിയോ ഇമേജ്"
 
-#: ../lib/engine/gui/gtk-frontend/call-window.cpp:1953
+#: ../lib/engine/gui/gtk-frontend/call-window.cpp:1968
 msgid "_Remote Video"
 msgstr "_റിമോട്ട് വീഡിയോ"
 
-#: ../lib/engine/gui/gtk-frontend/call-window.cpp:1954
+#: ../lib/engine/gui/gtk-frontend/call-window.cpp:1969
 msgid "Remote video image"
 msgstr "റിമോട്ട് വീഡിയോ ഇമേജ്"
 
-#: ../lib/engine/gui/gtk-frontend/call-window.cpp:1958
+#: ../lib/engine/gui/gtk-frontend/call-window.cpp:1973
 msgid "_Picture-in-Picture"
 msgstr "_Picture-in-Picture"
 
-#: ../lib/engine/gui/gtk-frontend/call-window.cpp:1959
+#: ../lib/engine/gui/gtk-frontend/call-window.cpp:1974
 msgid "Both video images"
 msgstr "രണ്ട് വീഡിയോ ഇമേജുകളും"
 
-#: ../lib/engine/gui/gtk-frontend/call-window.cpp:1965
+#: ../lib/engine/gui/gtk-frontend/call-window.cpp:1980
 msgid "Zoom in"
 msgstr "വലുതാക്കുക"
 
-#: ../lib/engine/gui/gtk-frontend/call-window.cpp:1969
+#: ../lib/engine/gui/gtk-frontend/call-window.cpp:1984
 msgid "Zoom out"
 msgstr "ചെറുതാക്കുക"
 
-#: ../lib/engine/gui/gtk-frontend/call-window.cpp:1973
+#: ../lib/engine/gui/gtk-frontend/call-window.cpp:1988
 msgid "Normal size"
 msgstr "സാധാരണ വലിപ്പം"
 
-#: ../lib/engine/gui/gtk-frontend/call-window.cpp:1977
+#: ../lib/engine/gui/gtk-frontend/call-window.cpp:1992
 msgid "_Fullscreen"
 msgstr "_സ്ക്രീന്‍ പൂര്‍ണ്ണവലിപ്പത്തില്‍"
 
-#: ../lib/engine/gui/gtk-frontend/call-window.cpp:1977
+#: ../lib/engine/gui/gtk-frontend/call-window.cpp:1992
 msgid "Switch to fullscreen"
 msgstr "സ്ക്രീനിന്റെ പൂര്‍ണ്ണ വലുപ്പത്തിലാക്കുക"
 
-#: ../lib/engine/gui/gtk-frontend/call-window.cpp:2092
+#: ../lib/engine/gui/gtk-frontend/call-window.cpp:2107
 msgid "Transfer call to:"
 msgstr "വിളി മറ്റൊരിടത്തേക്ക് നീക്കുക:"
 
-#: ../lib/engine/gui/gtk-frontend/call-window.cpp:2302
 #: ../lib/engine/gui/gtk-frontend/call-window.cpp:2317
-#| msgid "Hold the current call"
+#: ../lib/engine/gui/gtk-frontend/call-window.cpp:2332
 msgid "Hang up the current call"
 msgstr "നിലവിലുള്ള കോള്‍ നിര്‍ത്തുക"
 
-#: ../lib/engine/gui/gtk-frontend/call-window.cpp:2345
+#: ../lib/engine/gui/gtk-frontend/call-window.cpp:2360
 msgid "Change the volume of your soundcard"
 msgstr "നിങ്ങളുടെ സൌണ്ട് കാര്‍ഡിന്റെ ഒച്ച മാറ്റുക"
 
-#: ../lib/engine/gui/gtk-frontend/call-window.cpp:2365
+#: ../lib/engine/gui/gtk-frontend/call-window.cpp:2380
 msgid "Change the color settings of your video device"
 msgstr "നിങ്ങളുടെ വീഡിയോ ഡിവൈസിന്റെ നിറത്തിനുള്ള സജ്ജീകരണങ്ങള്‍ മാറ്റുക"
 
@@ -2225,8 +2180,6 @@ msgstr "_ചിരി..."
 
 #: ../lib/engine/gui/gtk-frontend/chat-window.cpp:139
 #, c-format
-#| msgid "You have %d message"
-#| msgid_plural "You have %d messages"
 msgid "You have %d unread text message"
 msgid_plural "You have %d unread text messages"
 msgstr[0] "നിങ്ങള്‍ക്കു് വായിയ്ക്കാത്ത %d സന്ദേശമുണ്ടു്"
@@ -2248,49 +2201,48 @@ msgstr "ചാറ്റ് ജാലകം"
 msgid "Unsorted"
 msgstr "ക്റമത്തിലല്ലാത്ത"
 
-#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:397
+#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:396
 msgid "Play sound for new voice mails"
 msgstr "പുതിയ വോയിസ് മെയിലുകള്‍ക്കായി ശബ്ദം പ്രവര്‍ത്തിപ്പിക്കുക"
 
-#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:407
+#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:406
 msgid "Play sound for new instant messages"
 msgstr "പുതിയ സന്ദേശങ്ങള്‍ക്കായി ശബ്ദം പ്രവര്‍ത്തിപ്പിക്കുക"
 
-#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:462
+#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:457
 #: ../src/gui/assistant.cpp:373
 msgid "Personal Information"
 msgstr "സ്വകാര്യം വിവരങ്ങള്‍"
 
-#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:464
+#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:459
 msgid "_Full name:"
 msgstr "_മുഴുവന്‍ പേരു്:"
 
-#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:480
+#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:475
 msgid "Video Display"
 msgstr "വീഡിയോ ഡിസ്പ്ലെ"
 
-#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:482
+#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:477
 msgid "Place windows displaying video _above other windows"
 msgstr "മറ്റു് ജാലകങ്ങള്‍ക്കു് മുകളില്‍ വീഡിയോയുള്ള ജാലകങ്ങള്‍ സ്ഥാപിക്കുക"
 
-#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:486
+#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:481
 msgid "Network Settings"
 msgstr "ശൃംഖലാ സജ്ജീകരണങ്ങള്‍"
 
-#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:488
-#| msgid "Disable network _detection"
+#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:483
 msgid "Enable network _detection"
 msgstr "നെറ്റ്‌വര്‍ക്ക് _തിരിച്ചറിയുന്നത് പ്രവര്‍ത്തന സജ്ജമാക്കുക"
 
-#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:498
+#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:493
 msgid "Call Forwarding"
 msgstr "വിളി കൈമാറുന്നു"
 
-#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:500
+#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:495
 msgid "_Always forward calls to the given host"
 msgstr "നല്‍കിയിരിക്കുന്ന ഹോസ്റ്റിലേക്ക് _എല്ലായ്പോഴും വിളികള്‍ കൈമാറുക"
 
-#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:500
+#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:495
 msgid ""
 "If enabled, all incoming calls will be forwarded to the host that is "
 "specified in the protocol settings"
@@ -2298,11 +2250,11 @@ msgstr ""
 "പ്രാവര്‍ത്തികമെങ്കില്‍, സമ്പ്രദായ ക്രമീകരണങ്ങളില്‍ വ്യക്തമാക്കിയിരിക്കുന്ന ഹോസ്റ്റിലേക്കു് വരുന്ന എല്ലാ "
 "കോളുകളും കൈമാറുന്നു"
 
-#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:502
+#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:497
 msgid "Forward calls to the given host if _no answer"
 msgstr "ആരും വിളി എടുക്കുന്നില്ല എങ്കില്‍ നല്‍കിയിരിക്കുന്ന ഹോസ്റ്റിലേക്ക് വിളികള്‍ മാറ്റുക (_n)"
 
-#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:502
+#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:497
 msgid ""
 "If enabled, all incoming calls will be forwarded to the host that is "
 "specified in the protocol settings if you do not answer the call"
@@ -2310,15 +2262,11 @@ msgstr ""
 "പ്രാവര്‍ത്തികമെങ്കില്‍, വിളി എടുക്കാത്തപ്പോള്‍ സമ്പ്രദായ ക്രമീകരണങ്ങളില്‍ വ്യക്തമാക്കിയിരിക്കുന്ന "
 "ഹോസ്റ്റിലേക്കു് വരുന്ന എല്ലാ കോളുകളും കൈമാറുന്നു"
 
-#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:504
+#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:499
 msgid "Forward calls to the given host if _busy"
 msgstr "_തിരക്കാണെങ്കില്‍ നല്‍കിയിരിക്കുന്ന ഹോസ്റ്റിലേക്ക് വിളികള്‍ കൈമാറുക"
 
-#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:504
-#| msgid ""
-#| "If enabled, all incoming calls will be forwarded to the host that is "
-#| "specified in the field below if you already are in a call or if you are "
-#| "in Do Not Disturb mode"
+#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:499
 msgid ""
 "If enabled, all incoming calls will be forwarded to the host that is "
 "specified in the protocol settings if you already are in a call or if you "
@@ -2327,106 +2275,106 @@ msgstr ""
 "പ്രാവര്‍ത്തികമെങ്കില്‍, നിങ്ങള്‍ മറ്റൊരു കോളിലാണു് അല്ലെങ്കില്‍ ശല്യപ്പെടുത്തരുതു് എന്ന മോഡിലാണെങ്കില്‍, "
 "സമ്പ്രദായത്തിന്റെ സജ്ജീകരണത്തില്‍ പറഞ്ഞിരിക്കുന്ന ഹോസ്റ്റിലേക്ക് എല്ലാ കോളുകളും കൈമാറുന്നു."
 
-#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:508
-#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:1316
+#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:503
+#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:1311
 msgid "Call Options"
 msgstr "വിളി ഐച്ഛികങ്ങള്‍"
 
 #. Add all the fields
-#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:511
+#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:506
 msgid "Timeout to reject or forward unanswered incoming calls (in seconds):"
 msgstr ""
 
-#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:512
+#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:507
 msgid "_Automatically answer incoming calls"
 msgstr "വരുന്ന കോളുകള്‍ _ഓട്ടോമാറ്റിയ്ക്കായി എടുക്കുക"
 
-#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:543
+#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:538
 msgid "Ekiga Sound Events"
 msgstr "എകീഗാ സൌണ്ട് ഇവന്റുകള്‍"
 
-#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:580
+#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:575
 msgid "A"
 msgstr "A"
 
-#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:592
+#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:587
 msgid "Event"
 msgstr "ഇവന്റ്"
 
-#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:604
+#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:599
 msgid "Choose a sound"
 msgstr "ഒരു ശബ്ദം തിരഞ്ഞെടുക്കുക"
 
-#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:609
+#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:604
 msgid "Wavefiles"
 msgstr "വേവ് ഫയലുകള്‍"
 
-#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:618
-#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:637
+#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:613
+#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:632
 msgid "Play"
 msgstr "കേള്‍പ്പിയ്ക്കുക"
 
-#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:658
+#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:653
 msgid "String"
 msgstr "വാക്യം"
 
-#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:659
+#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:654
 msgid "Tone"
 msgstr "ശബ്ദം"
 
-#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:660
-#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:712
+#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:655
+#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:707
 msgid "RFC2833"
 msgstr "RFC2833"
 
-#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:661
+#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:656
 msgid "Q.931"
 msgstr "Q.931"
 
-#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:665
+#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:660
 msgid "Disable H.239 Extended Video"
 msgstr "H.239 എക്സ്റ്റെന്‍ഡഡ് വീഡിയോ പ്രവര്‍ത്തന രഹിതമാക്കുക"
 
-#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:666
+#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:661
 msgid "Allow H.239 per Content Role Mask"
 msgstr "ഓരോ കണ്ടന്റ് റോള്‍ മാസ്കിനും H.239 അനുവദിയ്ക്കുക"
 
-#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:667
+#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:662
 msgid "Force H.239 Presentation Role"
 msgstr "H.239 പ്രസന്റേഷന്‍ റോള്‍ നിര്‍ബന്ധിയ്ക്കുക"
 
-#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:668
+#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:663
 msgid "Force H.239 Live Role"
 msgstr "H.239 ലൈവ് റോള്‍ നിര്‍ബന്ധിയ്ക്കുക"
 
-#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:673
-#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:719
+#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:668
+#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:714
 msgid "Misc Settings"
 msgstr "പലവക സജ്ജീകരണങ്ങള്‍"
 
-#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:676
-#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:724
+#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:671
+#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:719
 msgid "Forward _URI:"
 msgstr "URI നല്‍കുക (_U):"
 
-#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:682
+#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:677
 msgid "Advanced Settings"
 msgstr "ഉന്നതതല സജ്ജീകരണങ്ങള്‍"
 
 #. The toggles
-#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:685
+#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:680
 msgid "Enable H.245 _tunneling"
 msgstr "H.245 ടണലിങ് പ്രാവര്‍ത്തികമാക്കുക (_t)"
 
-#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:687
+#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:682
 msgid "Enable _early H.245"
 msgstr "മുമ്പുള്ള H.245 പ്രാവര്‍ത്തികമാക്കുക (_e)"
 
-#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:689
+#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:684
 msgid "Enable fast _start procedure"
 msgstr "_പെട്ടെന്നു് ആരംഭിക്കുന്നതിനുള്ള പ്രക്രിയകള്‍ പ്രാവര്‍ത്തികമാക്കുക"
 
-#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:689
+#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:684
 msgid ""
 "Connection will be established in Fast Start mode. Fast Start is a new way "
 "to start calls faster that was introduced in H.323v2. It is not supported by "
@@ -2434,178 +2382,170 @@ msgid ""
 "versions of Netmeeting."
 msgstr ""
 
-#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:691
-#| msgid "Enable Account"
+#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:686
 msgid "Enable H.239 control"
 msgstr "H.239 നിയന്ത്രണം പ്രവര്‍ത്തന സജ്ജമാക്കുക"
 
-#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:691
+#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:686
 msgid "This enables H.239 capability for additional video roles."
 msgstr "അധികമായ വീഡിയോ റോളുകള്‍ക്കു് H.239 വിശേഷത ഇതു് സജ്ജമാക്കുന്നു."
 
-#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:693
+#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:688
 msgid "Extended Video Roles:"
 msgstr "എക്സ്റ്റെന്‍ഡഡ് വീഡിയോ റോളുകള്‍:"
 
-#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:693
-#| msgid "Select the transmitted video size"
+#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:688
 msgid "Select the H.239 Video Role"
 msgstr "H.239 വീഡിയോ റോള്‍ തെരഞ്ഞെടുക്കുക"
 
-#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:697
-#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:730
+#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:692
+#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:725
 msgid "DTMF Mode"
 msgstr "DTMF മോഡ്"
 
-#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:699
-#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:732
+#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:694
+#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:727
 msgid "_Send DTMF as:"
 msgstr "DTMF അയയ്ക്കേണ്ടത് (_S):"
 
-#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:699
-#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:732
-#| msgid "This allows you to set the mode for DTMFs sending."
+#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:694
+#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:727
 msgid "Select the mode for DTMFs sending"
 msgstr "DTMF അയയ്ക്കുന്നതിനുള്ള മോഡ് സജ്ജമാക്കുക"
 
-#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:713
+#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:708
 msgid "INFO"
 msgstr "വിവരം"
 
-#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:721
-#| msgid "_Outbound Proxy:"
+#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:716
 msgid "_Outbound proxy:"
 msgstr "_പുറത്തേക്കുള്ള പ്രോക്സി:"
 
-#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:749
+#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:744
 #: ../src/gui/assistant.cpp:996
 msgid "Audio Devices"
 msgstr "ശബ്ദ ഉപകരണങ്ങള്‍"
 
-#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:757
-#| msgid "Ringing Device"
+#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:752
 msgid "Ringing device:"
 msgstr "റിങ് ചെയ്യുന്ന ഉപകരണം:"
 
-#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:757
+#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:752
 msgid "Select the ringing audio device to use"
 msgstr "ഉപയോഗിക്കുന്നതിനുള്ള പ്രവര്‍ത്തിക്കുന്ന ഓഡിയോ ഉപകരണം തെരഞ്ഞെടുക്കുക"
 
-#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:759
+#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:754
 msgid "Output device:"
 msgstr "ഔട്ട്പുട്ട് ഉപകരണം:"
 
-#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:766
-#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:902
+#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:761
+#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:897
 msgid "Input device:"
 msgstr "ഇന്‍പുട്ട് ഉപകരണം:"
 
 #. That button will refresh the device list
-#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:770
-#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:913
+#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:765
+#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:908
 msgid "_Detect devices"
 msgstr "ഉപകരണങ്ങള്‍ ലഭ്യമാക്കുക (_D)"
 
-#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:770
-#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:913
-#| msgid "Click here to refresh the device list."
+#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:765
+#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:908
 msgid "Click here to refresh the device list"
 msgstr "ഡിവൈസുകളുടെ പട്ടിക പുതുക്കുന്നതിനായി ഇവിടെ ക്ലിക്ക് ചെയ്യുക."
 
-#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:790
-#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:812
-#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:832
+#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:785
+#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:807
+#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:827
 #: ../src/gui/assistant.cpp:1262 ../src/gui/assistant.cpp:1284
 #: ../src/gui/assistant.cpp:1306
 msgid "No device found"
 msgstr "ഉപകരണം ലഭ്യമായില്ല"
 
-#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:881
+#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:876
 msgid "PAL (Europe)"
 msgstr "PAL (യൂറോപ്പ്)"
 
-#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:882
+#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:877
 msgid "NTSC (America)"
 msgstr "NTSC (അമേരിക്കാ)"
 
-#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:883
+#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:878
 msgid "SECAM (France)"
 msgstr "SECAM (ഫ്റാന്‍സ്)"
 
-#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:884
+#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:879
 msgid "Auto"
 msgstr "സ്വതേ"
 
-#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:896
+#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:891
 msgid "Video Devices"
 msgstr "വീഡിയോ ഉപകരണങ്ങള്‍"
 
 #. Video Channel
-#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:906
+#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:901
 msgid "Channel:"
 msgstr "ചാനല്‍:"
 
-#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:908
+#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:903
 msgid "Size:"
 msgstr "വലിപ്പം:"
 
-#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:908
+#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:903
 msgid "Select the transmitted video size"
 msgstr "അയച്ച വീഡിയോയുടെ വലിപ്പം തിരഞ്ഞെടുക്കുക"
 
-#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:910
+#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:905
 msgid "Format:"
 msgstr "രീതി:"
 
-#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:929
-#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:962
-#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:1343
-#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:1353
+#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:924
+#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:957
+#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:1338
+#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:1348
 msgid "Codecs"
 msgstr "കോഡകുകള്‍"
 
-#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:941
-#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:974
+#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:936
+#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:969
 msgid "Settings"
 msgstr "സജ്ജീകരണങ്ങള്‍"
 
 #. Translators: the full sentence is Automatically adjust jitter buffer
 #. between X and Y ms
-#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:945
+#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:940
 msgid "Enable silence _detection"
 msgstr "സൈലന്‍സ് _ഡിറ്റക്ഷന്‍ സജ്ജമാക്കുക"
 
-#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:947
+#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:942
 msgid "Enable echo can_celation"
 msgstr "ഇക്കോ റദ്ദാക്കല്‍ പ്രാവര്‍ത്തികമാക്കുക (_c)"
 
-#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:949
+#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:944
 msgid "Maximum _jitter buffer (in ms):"
 msgstr "ഏറ്റവും കൂടിയ _ജിറ്റര്‍ ബഫര്‍ (ms-ല്‍):"
 
 #. Translators: the full sentence is Keep a minimum video quality of X %
-#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:977
-#| msgid "Picture Quality"
+#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:972
 msgid "Picture quality"
 msgstr "പടത്തിന്റെ നിലവാരം"
 
-#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:977
-#| msgid "Frame Rate"
+#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:972
 msgid "Frame rate"
 msgstr "ഫ്രെയിം നിരക്കു്"
 
-#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:977
+#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:972
 msgid ""
 "Choose if you want to guarantee a minimum image quality (possibly leading to "
 "dropped frames in order not to surpass the bitrate limit) or if you prefer "
 "to keep the frame rate"
 msgstr ""
 
-#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:979
+#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:974
 msgid "Maximum video _bitrate (in kbits/s):"
 msgstr "ഏറ്റവും കൂടിയ _ബിറ്റ്നിരക്കു് (kbits/s-ല്‍):"
 
-#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:979
+#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:974
 msgid ""
 "The maximum video bitrate in kbits/s. The video quality and the effective "
 "frame rate will be dynamically adjusted to keep the bitrate at the given "
@@ -2614,49 +2554,49 @@ msgstr ""
 "ഏറ്റവും കൂടിയ വീഡിയോ ബിറ്റ്നിരക്കു് kbits/s-ല്‍. വീഡിയോയുടെ ഗുണവും ഫ്രെയിം റേറ്റും "
 "തന്നിരിക്കുന്ന മൂല്ലയമായി ബിറ്റ്നിരക്കു് സൂക്ഷിക്കുന്നതിനായി ഡൈനമിക്കായി മാറ്റം വരുത്തുന്നു."
 
-#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:1288
+#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:1283
 msgid "Ekiga Preferences"
 msgstr "എകിഗാ മുന്‍ഗണനകള്‍"
 
-#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:1306
+#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:1301
 msgid "General"
 msgstr "സാര്‍വത്രികമായ"
 
-#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:1307
+#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:1302
 msgid "Personal Data"
 msgstr "സ്വകാര്യ ഡേറ്റാ"
 
-#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:1312
+#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:1307
 msgid "General Settings"
 msgstr "സാധാരണയുള്ള സജ്ജീകരണങ്ങള്‍"
 
-#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:1321
+#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:1316
 msgid "Sound Events"
 msgstr "ശബ്ദ ഇവന്റുകള്‍"
 
-#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:1325
+#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:1320
 msgid "Protocols"
 msgstr "സംമ്പ്രദായങ്ങള്‍"
 
-#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:1327
+#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:1322
 msgid "SIP Settings"
 msgstr "SIP സജ്ജീകരണങ്ങള്‍"
 
-#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:1332
+#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:1327
 msgid "H.323 Settings"
 msgstr "H.323 സജ്ജീകരണങ്ങള്‍"
 
 #. The player
-#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:1338
+#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:1333
 msgid "Audio"
 msgstr "ഓഡിയോ"
 
-#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:1339
-#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:1349
+#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:1334
+#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:1344
 msgid "Devices"
 msgstr "ഉപകരണങ്ങള്‍"
 
-#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:1348
+#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:1343
 msgid "Video"
 msgstr "വീഡിയോ"
 
@@ -2668,17 +2608,17 @@ msgstr[0] "നിങ്ങള്‍ക്കു് %d സന്ദേശമു�
 msgstr[1] "നിങ്ങള്‍ക്കു് %d സന്ദേശങ്ങളുണ്ടു്"
 
 #: ../lib/engine/gui/gtk-frontend/statusicon.cpp:382
-#: ../src/gui/main_window.cpp:1371
+#: ../src/gui/main_window.cpp:1384
 msgid "Get help by reading the Ekiga manual"
 msgstr "എകീഗായുടെ മാനുവല്‍ വായിച്ച് സഹായം ലഭ്യമാക്കുക"
 
 #: ../lib/engine/gui/gtk-frontend/statusicon.cpp:387
-#: ../src/gui/main_window.cpp:1376
+#: ../src/gui/main_window.cpp:1389
 msgid "View information about Ekiga"
 msgstr "എകീഗാ സംബന്ധിച്ചുള്ള വിവരങ്ങള്‍ കാണുക"
 
 #: ../lib/engine/gui/gtk-frontend/statusicon.cpp:394
-#: ../src/gui/main_window.cpp:1316
+#: ../src/gui/main_window.cpp:1321
 msgid "Quit"
 msgstr "പുറത്ത് കടക്കുക"
 
@@ -2929,8 +2869,8 @@ msgid "Please edit the following fields"
 msgstr "താഴെ പറയുന്നവയില്‍ മാറ്റം വരുത്തുക"
 
 #: ../plugins/ldap/ldap-book.cpp:944
-#| msgid "Book _Name"
-msgid "Book _Name:"
+#| msgid "Book _Name:"
+msgid "Book _name:"
 msgstr "പുസ്തകത്തിന്റെ _പേര്:"
 
 #: ../plugins/ldap/ldap-book.cpp:944
@@ -2938,7 +2878,6 @@ msgid "Book name, as shown in your dialog box"
 msgstr "പുസതകത്തിന്റെ പേരു്, നിങ്ങളുടെ ഡയലോഗ് ബോക്സില്‍ കാണിച്ചിരിയ്ക്കുന്നതു് പോലെ"
 
 #: ../plugins/ldap/ldap-book.cpp:945
-#| msgid "Server _URI"
 msgid "Server _URI:"
 msgstr "സര്‍വര്‍ _URI:"
 
@@ -2947,7 +2886,6 @@ msgid "Name of LDAP server, prefixed by ldap://"
 msgstr "LDAP സര്‍വറിന്റെ പേരു്, ldap:// എന്നു് ആരംഭിയ്ക്കുന്നു"
 
 #: ../plugins/ldap/ldap-book.cpp:946
-#| msgid "_Base DN"
 msgid "_Base DN:"
 msgstr "_ബേയിസ് DN:"
 
@@ -2956,12 +2894,14 @@ msgid "Subtree"
 msgstr "സബ്ട്റീ"
 
 #: ../plugins/ldap/ldap-book.cpp:953
-msgid "Single Level"
+#| msgid "Single Level"
+msgid "Single level"
 msgstr "സിംഗിള്‍ ലവല്‍ "
 
 #: ../plugins/ldap/ldap-book.cpp:954
-msgid "_Search Scope"
-msgstr "ഫില്‍‌റ്റര്‍ _തെരയുക"
+#| msgid "_Search Scope"
+msgid "_Search scope"
+msgstr "തെ_രച്ചില്‍ പരിധി"
 
 #. Translators: DisplayName Attribute is the name of the LDAP
 #. * attribute whose value will be used to name an addressbook entry.
@@ -2970,22 +2910,22 @@ msgstr "ഫില്‍‌റ്റര്‍ _തെരയുക"
 #. * most LDAP servers it's "CommonName".
 #.
 #: ../plugins/ldap/ldap-book.cpp:969
-#| msgid "_DisplayName Attribute"
-msgid "_DisplayName Attribute:"
+#| msgid "_DisplayName Attribute:"
+msgid "_DisplayName attribute:"
 msgstr "_DisplayName വിശേഷത:"
 
 #: ../plugins/ldap/ldap-book.cpp:970
-#| msgid "Call _Attributes"
-msgid "Call _Attributes:"
-msgstr "കോള്‍ _ആട്രിബ്യൂട്ടുകള്‍:"
+#| msgid "Call _Attributes:"
+msgid "Call _attributes:"
+msgstr "കോള്‍ _വിശേഷതകള്‍:"
 
 #: ../plugins/ldap/ldap-book.cpp:970
 msgid "The field you are searching for"
 msgstr "നിങ്ങള്‍ തെരയുന്ന ഫീള്‍ഡ്"
 
 #: ../plugins/ldap/ldap-book.cpp:972 ../plugins/ldap/ldap-book.cpp:974
-#| msgid "_Filter Template"
-msgid "_Filter Template:"
+#| msgid "_Filter Template:"
+msgid "_Filter template:"
 msgstr "_ഫില്‍‌റ്റര്‍ മാതൃക:"
 
 #: ../plugins/ldap/ldap-book.cpp:972 ../plugins/ldap/ldap-book.cpp:974
@@ -3002,7 +2942,6 @@ msgstr "ഇവിടെ, തെരച്ചില്‍ സ്ട്രിങി
 #. * is anonymous / unauthenticated.)
 #.
 #: ../plugins/ldap/ldap-book.cpp:985
-#| msgid "Bind _ID"
 msgid "Bind _ID:"
 msgstr "Bind _ID:"
 
@@ -3023,7 +2962,8 @@ msgid "Use SASL"
 msgstr "SASL ഉപയോഗിക്കുക"
 
 #: ../plugins/ldap/ldap-book.cpp:1002
-msgid "SASL _Mechanism"
+#| msgid "SASL _Mechanism"
+msgid "SASL _mechanism"
 msgstr "SASL _സംവിധാനം"
 
 #: ../plugins/ldap/ldap-book.cpp:1012
@@ -3039,11 +2979,13 @@ msgid "Please provide a Server URI\n"
 msgstr "ദയവായി ഒരു സര്‍വര്‍ URI നല്‍കുക\n"
 
 #: ../plugins/ldap/ldap-book.cpp:1040
-msgid "Please provide a DisplayName Attribute\n"
+#| msgid "Please provide a DisplayName Attribute\n"
+msgid "Please provide a DisplayName attribute\n"
 msgstr "ദയവായി ഒരു DisplayName വിശേഷത നല്‍കുക\n"
 
 #: ../plugins/ldap/ldap-book.cpp:1043
-msgid "Please provide a Call Attribute\n"
+#| msgid "Please provide a Call Attribute\n"
+msgid "Please provide a Call attribute\n"
 msgstr "കോളിനുള്ള ഒരു വിശേഷത ദയവായി നല്‍കുക\n"
 
 #: ../plugins/ldap/ldap-book.cpp:1046
@@ -3077,12 +3019,10 @@ msgid "error connecting (%s)"
 msgstr "കണക്ട് ചെയ്യുന്നതില്‍ പിശക് (%s)"
 
 #: ../plugins/loudmouth/loudmouth-account.cpp:244
-#| msgid "Connection Type"
 msgid "connecting"
 msgstr "കണക്ട് ചെയ്യുന്നു"
 
 #: ../plugins/loudmouth/loudmouth-account.cpp:284
-#| msgid "Authentication User:"
 msgid "authenticating"
 msgstr "ആധികാരികത ഉറപ്പാക്കുന്നു"
 
@@ -3096,7 +3036,6 @@ msgid "disconnected"
 msgstr "വിഛേദിച്ചിരിയ്ക്കുന്നു"
 
 #: ../plugins/loudmouth/loudmouth-account.cpp:314
-#| msgid "Connected with %s"
 msgid "connected"
 msgstr "കണക്ട് ചെയ്തിരിക്കുന്നു"
 
@@ -3107,7 +3046,6 @@ msgstr "ലോഡ്‌മൌത്ത് അക്കൌണിന്റെ ആ�
 
 #: ../plugins/loudmouth/loudmouth-account.cpp:350
 #: ../plugins/loudmouth/loudmouth-bank.cpp:127
-#| msgid "Server _URI"
 msgid "Server:"
 msgstr "സര്‍വര്‍:"
 
@@ -3134,14 +3072,15 @@ msgid ""
 "terminals registered to the same account; leave empty if you do not know "
 "what it is"
 msgstr ""
+"വീടു് അല്ലെങ്കില്‍ ജോലി പോലുള്ളവ ഒരേ അക്കൌണ്ടിലേക്കു് രജിസ്ടര്‍ ചെയ്തിരിയ്ക്കുന്ന "
+"അനവധി ടെര്‍മിനലുകള്‍ തമ്മില്‍ വേര്‍തിരിയ്ക്കവാന്‍ അനുവദിയ്ക്കുന്നു. ഇതു് എന്തെന്നു് "
+"അറിയില്ലങ്കില്‍ കാലിയായി ഉപേക്ഷിയ്ക്കുക."
 
 #: ../plugins/loudmouth/loudmouth-bank.cpp:111
-#| msgid "_Add a SIP Account"
 msgid "_Add a Jabber/XMPP Account"
 msgstr "ഒരു ജാബ്ലര്‍/XMPP അക്കൌണ്ട് _ചേര്‍ക്കുക"
 
 #: ../plugins/loudmouth/loudmouth-bank.cpp:123
-#| msgid "Please edit the following fields"
 msgid "Please fill in the following fields:"
 msgstr "താഴെ പറയുന്ന ഫീള്‍ഡുകള്‍ ദയവായി പൂരിപ്പിയ്ക്കു:"
 
@@ -3155,12 +3094,10 @@ msgid "Open a group chat room"
 msgstr "ഒരു ഗ്രൂപ്പ് ചാറ്റ് റൂം തുറക്കുക"
 
 #: ../plugins/loudmouth/loudmouth-dialect.cpp:134
-#| msgid "Please provide a Server URI\n"
 msgid "Please provide a room name"
 msgstr "ഒരു റൂമിന്റെ പേരു് ദയവായി നല്‍കുക"
 
 #: ../plugins/loudmouth/loudmouth-dialect.cpp:136
-#| msgid "Rename"
 msgid "Room name"
 msgstr "റൂമിന്റെ പേരു്"
 
@@ -3203,32 +3140,23 @@ msgid "decide later (also close or cancel this dialog)"
 msgstr "പിന്നീടു് തീരുമാനിയ്ക്കാം"
 
 #: ../plugins/loudmouth/loudmouth-heap-roster.cpp:190
-#| msgid "No answer timeout"
 msgid "Your answer is: "
 msgstr "നിങ്ങളുടെ ഉത്തരം:"
 
 #: ../plugins/loudmouth/loudmouth-heap-roster.cpp:306
-#| msgid "Edit roster element"
 msgid "Add a roster element"
 msgstr "ഒരു റോസ്റ്റര്‍ എലമെന്റ് ചേര്‍ക്കുക"
 
 #: ../plugins/loudmouth/loudmouth-heap-roster.cpp:307
-#| msgid ""
-#| "Please fill in this form to add a new contact list to ekiga's remote "
-#| "roster"
 msgid "Please fill in this form to add a new element to the remote roster"
-msgstr ""
-"റിമോട്ട് റൂസ്റ്ററില്‍ പുതിയൊരു എലമെന്റ് ചേര്‍ക്കുന്നതിനായി ദയവായി ഈ ഫോറം "
-"പൂരിപ്പിക്കുക."
+msgstr "റിമോട്ട് റൂസ്റ്ററില്‍ പുതിയൊരു എലമെന്റ് ചേര്‍ക്കുന്നതിനായി ദയവായി ഈ ഫോറം പൂരിപ്പിക്കുക."
 
 #: ../plugins/loudmouth/loudmouth-heap-roster.cpp:309
 #: ../plugins/resource-list/rl-heap.cpp:470
-#| msgid "Identifier"
 msgid "Identifier:"
 msgstr "ഐഡന്റിഫയര്‍:"
 
 #: ../plugins/loudmouth/loudmouth-heap-roster.cpp:309
-#| msgid "Identifier"
 msgid "identifier@server"
 msgstr "identifier@server"
 
@@ -3252,7 +3180,6 @@ msgid "Stop getting his/her status"
 msgstr "ആരുടേയും അവസ്ഥ അറിയേണ്ട"
 
 #: ../plugins/loudmouth/loudmouth-presentity.cpp:187
-#| msgid "Start hidden"
 msgid "Start chat"
 msgstr "ചാറ്റ് തുടങ്ങുക"
 
@@ -3261,13 +3188,8 @@ msgid "Continue chat"
 msgstr "ചാറ്റ് തുടരുക"
 
 #: ../plugins/loudmouth/loudmouth-presentity.cpp:281
-#| msgid ""
-#| "Please fill in this form to change an existing element of ekiga's "
-#| "internal roster"
 msgid "Please fill in this form to change an existing element of the remote roster"
-msgstr ""
-"റിമോട്ട് റൂസ്റ്ററില്‍ നിലവിലുള്ള ഒരു എലമെന്റ് മാറ്റുന്നതിനായി ദയവായി ഈ ഫോറം "
-"പൂരിപ്പിക്കുക."
+msgstr "റിമോട്ട് റൂസ്റ്ററില്‍ നിലവിലുള്ള ഒരു എലമെന്റ് മാറ്റുന്നതിനായി ദയവായി ഈ ഫോറം പൂരിപ്പിക്കുക."
 
 #: ../plugins/resource-list/rl-cluster.cpp:102
 msgid "New resource list"
@@ -3325,23 +3247,19 @@ msgid "Please edit the following fields (no identifier means global)"
 msgstr "താഴെ പറയുന്നവയില്‍ മാറ്റം വരുത്തുക (ഐഡന്റിഫയര്‍ ഇല്ലായെങ്കില്‍ ഗ്ലോബല്‍)"
 
 #: ../plugins/resource-list/rl-heap.cpp:467
-#| msgid "Contact list's name"
 msgid "Contact list's name:"
 msgstr "വിലാസപ്പട്ടികയുടെ പേരു്:"
 
 #. "Document" used as a name -- uri point to the root of a document tree
 #: ../plugins/resource-list/rl-heap.cpp:469
-#| msgid "Document root"
 msgid "Document root:"
 msgstr "ഡോക്യുമെന്റ് റൂട്ട്:"
 
 #: ../plugins/resource-list/rl-heap.cpp:472
-#| msgid "Server username"
 msgid "Server username:"
 msgstr "സര്‍വറിന്റെ ഉപയോക്തൃനാമം: "
 
 #: ../plugins/resource-list/rl-heap.cpp:473
-#| msgid "Server password"
 msgid "Server password:"
 msgstr "സര്‍വറിനുള്ള രഹസ്യവാക്ക്:"
 
@@ -3381,8 +3299,8 @@ msgid ""
 "Once you have completed these steps, you can always change them later by "
 "selecting Preferences in the Edit menu."
 msgstr ""
-"ഇതു് എക്കീഗയുടെ സാധാരണ ക്രമീകരണ സഹായിയാകുന്നു. ചില ലളിതമായ ചോദ്യങ്ങള്‍ക്കുള്ള ഉത്തരം നല്‍കി ഈ നടപടികള്‍ "
-"എക്കീഗാ സജ്ജമാക്കുവാന്‍ സഹായിയ്ക്കന്നു.\n"
+"ഇതു് എക്കീഗയുടെ സാധാരണ ക്രമീകരണ സഹായിയാകുന്നു. ചില ലളിതമായ ചോദ്യങ്ങള്‍ക്കുള്ള ഉത്തരം നല്‍കി ഈ "
+"നടപടികള്‍ എക്കീഗാ സജ്ജമാക്കുവാന്‍ സഹായിയ്ക്കന്നു.\n"
 "\n"
 "ഈ നടപടികള്‍ പൂര്‍ത്തിയായാലും, നിങ്ങള്‍ക്കിവ പിന്നീടു് ചിട്ടപ്പെടുത്തുവാനുള്ള മെനുവില്‍ മുന്‍ഗണനകള്‍ "
 "തെരഞ്ഞെടുത്തു് മാറ്റങ്ങള്‍ വരുത്താം."
@@ -3416,6 +3334,14 @@ msgid ""
 "\n"
 "The following two pages allow you to create such accounts."
 msgstr ""
+"നിങ്ങള്‍ക്കൊരു എസ്ഐപി അല്ലെങ്കില്‍ H323 അക്കൌണ്ടില്ലെങ്കില്‍, നിങ്ങളുടെ ലോക്കല്‍ ഇന്റര്‍നെറ്റിനു് "
+"മാത്രമേ എക്കീഗാ ഉപയോഗിയ്ക്കുവാന്‍ സാധിയ്ക്കൂ.  ഇന്റര്‍നെറ്റിലൂടെ ആളുകളുമായി ബന്ധപ്പെടുന്നതിനു് "
+"നിങ്ങള്‍ക്കൊരു അക്കൌണ്ട് ആവശ്യമുണ്ടു്. നിങ്ങള്‍ക്കു് പല വെബ്സൈറ്റുകളിലൂടെയും "
+"അക്കൌണ്ട് തയ്യാറാക്കാം. പക്ഷേ ഏറ്റവും ഉചിതമായതു് സൌജന്യമായ ekiga.net അക്കൌണ്ടാണു്. "
+"എസ്ഐപി അക്കൌണ്ടിലൂടെ ചേരുവാന്‍ ഇതു് അനുവദിയ്ക്കുന്നു സാധാരണ ഫോണിലേക്കു വിളിയ്ക്കുന്നതിനും "
+"നിങ്ങള്‍ക്കു് ഈ അക്കൌണ്ട് ഉപയോഗിയ്ക്കാം.\n"
+"\n"
+"The following two pages allow you to create such accounts."
 
 #: ../src/gui/assistant.cpp:450
 msgid "Introduction to Accounts"
@@ -3443,6 +3369,13 @@ msgid ""
 "You may skip this step if you use an alternative SIP service, or if you "
 "would prefer to specify the login details later."
 msgstr ""
+"ekiga.net-ലുള്ള സൌജന്യ എസ്ഐപി സര്‍വീസിലേക്കു് പ്രവേശിയ്ക്കുന്നതിനു് ഉപയോക്തൃനാമവും "
+"രഹസ്യവാക്കും ഉപയോഗിയ്ക്കുന്നു. ekiga.net എസ്ഐപി വിലാസമില്ലായെങ്കില്‍, താഴെ ഒരു "
+"അക്കൌണ്ട് തയ്യാറാക്കുക. ഇങ്ങനെ നിങ്ങള്‍ക്കു് കോളുകള്‍ ചെയ്യുവാനുള്ളൊരു എസ്ഐപി "
+"വിലാസം ലഭ്യമാകുന്നു.\n"
+"\n"
+"മറ്റൊരു എസ്ഐപി സര്‍വീസുണ്ടെങ്കില്‍, അഥവ പിന്നീടു് പ്രവേശന വിവരങ്ങള്‍ നല്‍കണമെങ്കില്‍, "
+"അതു് ഇപ്പോള്‍ ചെയ്യേണ്ടതില്ല."
 
 #: ../src/gui/assistant.cpp:654
 msgid "I do not want to sign up for the ekiga.net free service"
@@ -3519,8 +3452,8 @@ msgid ""
 "Ekiga will use during calls. You can later change the settings individually "
 "in the preferences window."
 msgstr ""
-"കോളുകള്‍ക്കായി എക്കീഗാ ഉപയോഗിയ്ക്കുന്ന ഏറ്റവും ഉചിതമായ സജ്ജീകരണങ്ങള്‍ അനുവദിയ്ക്കുന്നതിനുള്ള കണക്ഷന്‍ രീതി. "
-"മുന്‍ഗണനകള്‍ക്കുള്ള ജാലകത്തില്‍ നിങ്ങള്‍ക്കു് പിന്നീടു് ഓരോന്നായി സജ്ജീകരണങ്ങള്‍ മാറ്റാം."
+"കോളുകള്‍ക്കായി എക്കീഗാ ഉപയോഗിയ്ക്കുന്ന ഏറ്റവും ഉചിതമായ സജ്ജീകരണങ്ങള്‍ അനുവദിയ്ക്കുന്നതിനുള്ള കണക്ഷന്‍ "
+"രീതി. മുന്‍ഗണനകള്‍ക്കുള്ള ജാലകത്തില്‍ നിങ്ങള്‍ക്കു് പിന്നീടു് ഓരോന്നായി സജ്ജീകരണങ്ങള്‍ മാറ്റാം."
 
 #: ../src/gui/assistant.cpp:998
 msgid "Please choose the audio ringing device:"
@@ -3612,7 +3545,6 @@ msgid "Ekiga Configuration Assistant (%d of %d)"
 msgstr "Ekiga ക്രമീകരണ സഹായി (%d, മൊത്തം %d)"
 
 #: ../src/gui/main.cpp:126
-#| msgid "Prints debug messages in the console (level between 1 and 5)"
 msgid "Prints debug messages in the console (level between 1 and 8)"
 msgstr "കണ്‍സോളില്‍ ഡീബഗ് സന്ദേശങ്ങള്‍ പ്രിന്റ് ചെയ്യുന്നു (ലവല്‍ 1-നും 8-നും ഇടയില്‍)"
 
@@ -3625,12 +3557,10 @@ msgid "Presence"
 msgstr "സാന്നിദ്ധ്യം"
 
 #: ../src/gui/main_window.cpp:379
-#| msgid "Address Book"
 msgid "Addressbook"
 msgstr "വിലാസപുസ്തകം "
 
 #: ../src/gui/main_window.cpp:408
-#| msgid "Unknown error."
 msgid "Unknown"
 msgstr "അപരിചിതം"
 
@@ -3643,112 +3573,115 @@ msgstr "%s-ല്‍ നിന്നും മിസ്സ്ഡ് വിളി
 msgid "Error"
 msgstr "തകരാറ്"
 
-#: ../src/gui/main_window.cpp:1165
+#: ../src/gui/main_window.cpp:1168
 msgid "Enter a URI on the left, and click this button to place a call or to hangup"
 msgstr ""
 "ഇടത് വശത്ത് ഒരു URI നല്‍കി, വിളി ചെയ്യുന്നതിനായി അല്ലെങ്കില്‍ അവസാനിപ്പിക്കുന്നതിനായി ഈ ബട്ടണ്‍ "
 "ക്ലിക്ക് ചെയ്യുക"
 
-#: ../src/gui/main_window.cpp:1216 ../src/gui/main_window.cpp:1344
+#: ../src/gui/main_window.cpp:1219 ../src/gui/main_window.cpp:1357
 msgid "View the contacts list"
 msgstr "വിലാസങ്ങളുടെ പട്ടിക കാണുക"
 
-#: ../src/gui/main_window.cpp:1227 ../src/gui/main_window.cpp:1349
+#: ../src/gui/main_window.cpp:1230 ../src/gui/main_window.cpp:1362
 msgid "View the dialpad"
 msgstr "ഡയല്‍ പാഡ് കാണുക"
 
-#: ../src/gui/main_window.cpp:1238 ../src/gui/main_window.cpp:1354
+#: ../src/gui/main_window.cpp:1241 ../src/gui/main_window.cpp:1367
 msgid "View the call history"
 msgstr "വിളികളുടെ വിവരണം കാണുക"
 
-#: ../src/gui/main_window.cpp:1274
+#: ../src/gui/main_window.cpp:1279
 msgid "_Chat"
 msgstr "_ചാറ്റ് ചെയ്യുക"
 
-#: ../src/gui/main_window.cpp:1276
-#| msgid "_Contact"
+#: ../src/gui/main_window.cpp:1281
 msgid "Co_ntact"
 msgstr "_വിലാസം"
 
-#: ../src/gui/main_window.cpp:1277
+#: ../src/gui/main_window.cpp:1282
 msgid "Act on selected contact"
 msgstr "തെരഞ്ഞെടുത്ത വിലാസത്തില്‍ പ്രവര്‍ത്തിക്കുക"
 
-#: ../src/gui/main_window.cpp:1281
+#: ../src/gui/main_window.cpp:1286
 msgid "Ca_ll a Number"
 msgstr "ഒരു നംബര്‍ വിളിയ്ക്കു_ക"
 
-#: ../src/gui/main_window.cpp:1281
+#: ../src/gui/main_window.cpp:1286
 msgid "Place a new call"
 msgstr "ഒരു പുതിയ വിളി വിളിക്കുക"
 
-#: ../src/gui/main_window.cpp:1287
+#: ../src/gui/main_window.cpp:1292
 msgid "A_dd Contact"
 msgstr "വിലാസം _ചേര്‍ക്കുക"
 
-#: ../src/gui/main_window.cpp:1287
+#: ../src/gui/main_window.cpp:1292
 msgid "Add a contact to the roster"
 msgstr "റൂസ്റ്ററിലേക്കു് ഒരു വിലാസം ചേര്‍ക്കുക"
 
-#: ../src/gui/main_window.cpp:1292
+#: ../src/gui/main_window.cpp:1297
 msgid "Find contacts"
 msgstr "വിലാസങ്ങള്‍ കണ്ടുപിടിക്കുക"
 
 #. FIXME: that isn't a very good way to do things
-#: ../src/gui/main_window.cpp:1301
+#: ../src/gui/main_window.cpp:1306
 msgid "Other"
 msgstr "മറ്റുള്ളവ"
 
-#: ../src/gui/main_window.cpp:1302
+#: ../src/gui/main_window.cpp:1307
 msgid "Other possible actions"
 msgstr "സാധ്യതയുള്ള മറ്റു് പ്രവര്‍ത്തികള്‍"
 
-#: ../src/gui/main_window.cpp:1322
+#: ../src/gui/main_window.cpp:1327
 msgid "_Configuration Assistant"
 msgstr "_ക്രമീകരണ സഹായി"
 
-#: ../src/gui/main_window.cpp:1323
+#: ../src/gui/main_window.cpp:1328
 msgid "Run the configuration assistant"
 msgstr "ക്രമീകരണ സഹായി പ്രവര്‍ത്തിപ്പിക്കുക"
 
-#: ../src/gui/main_window.cpp:1331
+#: ../src/gui/main_window.cpp:1336
 msgid "Edit your accounts"
 msgstr "നിങ്ങളുടെ അക്കൌണ്ടുകളില്‍ മാറ്റം വരുത്തുക"
 
-#: ../src/gui/main_window.cpp:1337
+#: ../src/gui/main_window.cpp:1342
 msgid "Change your preferences"
 msgstr "നിങ്ങളുടെ മുന്‍ഗണനകള്‍ മാറ്റുക"
 
-#: ../src/gui/main_window.cpp:1344
+#: ../src/gui/main_window.cpp:1349
+#| msgid "Video preview"
+msgid "_Video Preview"
+msgstr "_വീഡിയോ സ്ക്രീനില്‍ കാണുക"
+
+#: ../src/gui/main_window.cpp:1357
 msgid "Con_tacts"
 msgstr "_വിലാസങ്ങള്‍"
 
-#: ../src/gui/main_window.cpp:1349
+#: ../src/gui/main_window.cpp:1362
 msgid "_Dialpad"
 msgstr "_ഡയല്‍ പാഡ്"
 
-#: ../src/gui/main_window.cpp:1354
+#: ../src/gui/main_window.cpp:1367
 msgid "_Call History"
 msgstr "_വിളികളുടെ നാള്‍വഴി"
 
-#: ../src/gui/main_window.cpp:1362
-#| msgid "Show offline _contacts"
+#: ../src/gui/main_window.cpp:1375
 msgid "Show Offline _Contacts"
 msgstr "ഓഫ്‌ലൈന്‍ _വിലാസങ്ങള്‍ കാണിക്കുക"
 
-#: ../src/gui/main_window.cpp:1426
+#: ../src/gui/main_window.cpp:1439
 msgid "Contacts"
 msgstr "വിലാസങ്ങള്‍"
 
-#: ../src/gui/main_window.cpp:1455
+#: ../src/gui/main_window.cpp:1468
 msgid "Dialpad"
 msgstr "ഡയല്‍ പാഡ്"
 
-#: ../src/gui/main_window.cpp:1473
+#: ../src/gui/main_window.cpp:1486
 msgid "Call history"
 msgstr "വിളികളുടെ വിവരണം"
 
-#: ../src/gui/main_window.cpp:1485
+#: ../src/gui/main_window.cpp:1498
 msgid "Ekiga"
 msgstr "എകീഗാ"
 
@@ -3761,7 +3694,6 @@ msgid "Away"
 msgstr "ലഭ്യമല്ല"
 
 #: ../src/gui/statusmenu.cpp:89
-#| msgid "Busy Here"
 msgid "Busy"
 msgstr "തിരക്കാണു്"
 
