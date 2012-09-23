@@ -446,7 +446,7 @@ codecs_box_init (CodecsBox *self)
 
   gtk_container_add (GTK_CONTAINER (alignment), buttons_vbox);
 
-  image = gtk_image_new_from_stock (GTK_STOCK_GO_UP, GTK_ICON_SIZE_MENU);
+  image = gtk_image_new_from_icon_name ("go-up", GTK_ICON_SIZE_MENU);
   button = gtk_button_new ();
   gtk_container_add (GTK_CONTAINER (button), image);
   gtk_widget_set_tooltip_text (button, _("Move selected codec priority upwards"));
@@ -456,7 +456,7 @@ codecs_box_init (CodecsBox *self)
                     G_CALLBACK (codec_moved_cb), 
                     (gpointer) self);
 
-  image = gtk_image_new_from_stock (GTK_STOCK_GO_DOWN, GTK_ICON_SIZE_MENU);
+  image = gtk_image_new_from_icon_name ("go-down", GTK_ICON_SIZE_MENU);
   button = gtk_button_new ();
   gtk_container_add (GTK_CONTAINER (button), image);
   gtk_widget_set_tooltip_text (button, _("Move selected codec priority downwards"));

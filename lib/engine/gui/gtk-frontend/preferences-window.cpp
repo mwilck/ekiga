@@ -126,16 +126,15 @@ static void gm_prefs_window_sound_events_list_build (GtkWidget *prefs_window);
  * BEHAVIOR     : Adds an update button connected to the given callback to
  * 		  the given GtkBox.
  * PRE          : A valid pointer to the container widget where to attach
- *        the button, followed by a stock ID, a label, the callback, a
- *        tooltip and the alignment.
+ *                the button, followed by a label, the callback, a
+ *                tooltip and the alignment.
  */
 static void gm_pw_add_update_button (GtkWidget *box,
-					   const char *stock_id,
-					   const char *label,
-					   GCallback func,
-					   const gchar *tooltip,
-					   gfloat valign,
-					   gpointer data);
+                                     const char *label,
+                                     GCallback func,
+                                     const gchar *tooltip,
+                                     gfloat valign,
+                                     gpointer data);
 
 
 /* DESCRIPTION  : /
@@ -421,7 +420,6 @@ gm_prefs_window_sound_events_list_build (GtkWidget *prefs_window)
 
 static void
 gm_pw_add_update_button (GtkWidget *box,
-                         const char *stock_id,
                          const char *label,
                          GCallback func,
                          const gchar *tooltip,
@@ -429,13 +427,10 @@ gm_pw_add_update_button (GtkWidget *box,
                          gpointer data)
 {
   GtkWidget* alignment = NULL;
-  GtkWidget* image = NULL;
   GtkWidget* button = NULL;
 
   /* Update Button */
   button = gtk_button_new_with_mnemonic (label);
-  image = gtk_image_new_from_stock (stock_id, GTK_ICON_SIZE_BUTTON);
-  gtk_button_set_image (GTK_BUTTON (button), image);
   gtk_widget_set_tooltip_text (button, tooltip);
 
   alignment = gtk_alignment_new (1, valign, 0, 0);
@@ -767,7 +762,7 @@ gm_pw_init_audio_devices_page (GtkWidget *prefs_window,
   g_free (array);
 
   /* That button will refresh the device list */
-  gm_pw_add_update_button (container, GTK_STOCK_REFRESH, _("_Detect devices"), G_CALLBACK (refresh_devices_list_cb), _("Click here to refresh the device list"), 1, prefs_window);
+  gm_pw_add_update_button (container, _("_Detect devices"), G_CALLBACK (refresh_devices_list_cb), _("Click here to refresh the device list"), 1, prefs_window);
 }
 
 
@@ -910,7 +905,7 @@ gm_pw_init_video_devices_page (GtkWidget *prefs_window,
   gnome_prefs_int_option_menu_new (subsection, _("Format:"), video_format, VIDEO_DEVICES_KEY "format", _("Select the format for video cameras (does not apply to most USB cameras)"), 2);
 
   /* That button will refresh the device list */
-  gm_pw_add_update_button (container, GTK_STOCK_REFRESH, _("_Detect devices"), G_CALLBACK (refresh_devices_list_cb), _("Click here to refresh the device list"), 1, prefs_window);
+  gm_pw_add_update_button (container, _("_Detect devices"), G_CALLBACK (refresh_devices_list_cb), _("Click here to refresh the device list"), 1, prefs_window);
 
   for (i=0; i< NB_VIDEO_SIZES; i++)
     g_free (video_size[i]);
