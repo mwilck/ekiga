@@ -179,6 +179,8 @@ struct _EkigaCallWindowPrivate
    */
   bool changing_back_to_local_after_a_call;
 
+  bool automatic_zoom_in;
+
   GtkWidget *transfer_call_popup;
 
   std::vector<boost::signals::connection> connections;
@@ -809,6 +811,11 @@ ekiga_call_window_set_video_size (EkigaCallWindow *cw,
 
   g_return_if_fail (width > 0 && height > 0);
 
+  if (width < GM_CIF_WIDTH && height < GM_CIF_HEIGHT && !cw->priv->automatic_zoom_in) {
+    cw->priv->automatic_zoom_in = true;
+    zoom_in_changed_cb (NULL, (gpointer) cw);
+  }
+
   gtk_widget_get_size_request (cw->priv->main_video_image, &pw, &ph);
 
   /* No size requisition yet
@@ -1152,6 +1159,12 @@ on_cleared_call_cb (G_GNUC_UNUSED boost::shared_ptr<Ekiga::CallManager> manager,
     g_source_remove (cw->priv->timeout_id);
     cw->priv->timeout_id = -1;
   }
+
+  if (cw->priv->automatic_zoom_in) {
+    cw->priv->automatic_zoom_in = false;
+    zoom_out_changed_cb (NULL, (gpointer) cw);
+  }
+
   ekiga_call_window_clear_signal_levels (cw);
 
   gtk_window_set_title (GTK_WINDOW (cw), _("Call Window"));
@@ -2432,6 +2445,7 @@ ekiga_call_window_init (EkigaCallWindow *cw)
   g_object_unref (cw->priv->accel);
 
   cw->priv->changing_back_to_local_after_a_call = false;
+  cw->priv->automatic_zoom_in = false;
 
   cw->priv->transfer_call_popup = NULL;
   cw->priv->current_call = boost::shared_ptr<Ekiga::Call>();
