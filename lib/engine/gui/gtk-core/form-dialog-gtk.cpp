@@ -1303,7 +1303,7 @@ FormDialog::editable_set (const std::string name,
 
   hbox = gtk_hbox_new (FALSE, 2);
   entry = gtk_entry_new ();
-  button = gtk_button_new_from_stock (GTK_STOCK_ADD);
+  button = gtk_button_new_with_label (_("Add Group"));
   gtk_box_pack_start (GTK_BOX (hbox), entry, TRUE, TRUE, 2);
   gtk_box_pack_start (GTK_BOX (hbox), button, FALSE, FALSE, 2);
 
