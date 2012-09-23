@@ -940,6 +940,7 @@ video_preview_changed_nt (G_GNUC_UNUSED gpointer id,
     EkigaMainWindow* mw = EKIGA_MAIN_WINDOW (data);
     boost::shared_ptr<GtkFrontend> gtk_frontend = mw->priv->core->get<GtkFrontend> ("gtk-frontend");
     GtkWidget *call_window = GTK_WIDGET (gtk_frontend->get_call_window ());
+    GtkWidget *menu_item = NULL;
 
     if (gm_conf_entry_get_type (entry) == GM_CONF_BOOL) {
       if (mw->priv->calling_state == Standby) {
@@ -951,6 +952,8 @@ video_preview_changed_nt (G_GNUC_UNUSED gpointer id,
         }
         g_signal_handlers_block_by_func (mw->priv->preview_button,
                                          (gpointer) video_preview_action_toggled_cb, mw);
+        menu_item = gtk_menu_get_widget (mw->priv->main_menu, "preview");
+        gtk_check_menu_item_set_active (GTK_CHECK_MENU_ITEM (menu_item), gm_conf_entry_get_bool (entry));
         gtk_toggle_tool_button_set_active (GTK_TOGGLE_TOOL_BUTTON (mw->priv->preview_button),
                                            gm_conf_entry_get_bool (entry));
         g_signal_handlers_unblock_by_func (mw->priv->preview_button,
@@ -1253,6 +1256,7 @@ ekiga_main_window_init_menu (EkigaMainWindow *mw)
 
   PanelSection cps = DIALPAD;
   bool show_offline_contacts = false;
+  bool enable_preview = false;
 
   g_return_if_fail (mw != NULL);
 
@@ -1268,6 +1272,7 @@ ekiga_main_window_init_menu (EkigaMainWindow *mw)
   /* Default values */
   cps = (PanelSection) gm_conf_get_int (USER_INTERFACE_KEY "main_window/panel_section");
   show_offline_contacts = gm_conf_get_bool (CONTACTS_KEY "show_offline_contacts");
+  enable_preview = gm_conf_get_bool (VIDEO_DEVICES_KEY "enable_preview");
 
   static MenuEntry gnomemeeting_menu [] =
     {
@@ -1340,6 +1345,14 @@ ekiga_main_window_init_menu (EkigaMainWindow *mw)
 		     (gpointer) prefs_window, TRUE),
 
       GTK_MENU_NEW(_("_View")),
+
+      GTK_MENU_TOGGLE_ENTRY("preview", _("_Video Preview"),
+                            _("Display images from your camera device"),
+                            NULL, 0,
+                            G_CALLBACK (toggle_menu_changed_cb),
+                            (gpointer) VIDEO_DEVICES_KEY "enable_preview", enable_preview, TRUE),
+
+      GTK_MENU_SEPARATOR,
 
       GTK_MENU_RADIO_ENTRY("contacts", _("Con_tacts"), _("View the contacts list"),
 			   NULL, 0,
