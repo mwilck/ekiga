@@ -241,7 +241,6 @@ LibNotify::on_call_notification (boost::shared_ptr<Ekiga::CallManager> manager,
                                     );
   notify_notification_add_action (notify, "reject", _("Reject"), call_notification_action_cb, call.get (), NULL);
   notify_notification_add_action (notify, "accept", _("Accept"), call_notification_action_cb, call.get (), NULL);
-  notify_notification_set_app_name (notify, "Ekiga");
   notify_notification_set_hint (notify, "transient", g_variant_new_boolean (TRUE));
   notify_notification_set_timeout (notify, NOTIFY_EXPIRES_NEVER);
   notify_notification_set_urgency (notify, NOTIFY_URGENCY_CRITICAL);
