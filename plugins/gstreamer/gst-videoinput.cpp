@@ -123,6 +123,11 @@ GST::VideoInputManager::open (unsigned width,
 
   Ekiga::VideoInputSettings settings;
   settings.modifyable = false;
+  current_state.opened = true;
+  current_state.width  = width;
+  current_state.height = height;
+  current_state.fps    = fps;
+
   Ekiga::Runtime::run_in_main (boost::bind (boost::ref (device_opened), current_state.device, settings));
 
   return true;
