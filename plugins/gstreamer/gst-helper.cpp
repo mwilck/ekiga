@@ -94,23 +94,17 @@ gst_helper_get_frame_data (gst_helper* self,
 {
   bool result = false;
   GstBuffer* buffer = NULL;
-  unsigned cpy_size;
 
   read = 0;
 
-  while (read < size) {
+  buffer = gst_app_sink_pull_buffer (GST_APP_SINK (self->active));
 
-    buffer = gst_app_sink_pull_buffer (GST_APP_SINK (self->active));
+  if (buffer != NULL) {
 
-    if (buffer != NULL) {
-
-      cpy_size = MIN(GST_BUFFER_SIZE (buffer), size-read);
-      memcpy (data+read, GST_BUFFER_DATA (buffer), cpy_size);
-      read += cpy_size;
-      gst_buffer_unref (buffer);
-      result = true;
-    } else
-      break;
+    read = MIN(GST_BUFFER_SIZE (buffer), size);
+    memcpy (data, GST_BUFFER_DATA (buffer), read);
+    gst_buffer_unref (buffer);
+    result = true;
   }
 
   return result;
