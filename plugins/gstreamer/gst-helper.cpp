@@ -38,6 +38,7 @@
 #include "gst-helper.h"
 #include "runtime.h"
 
+#include <gst/base/gstadapter.h>
 #include <gst/app/gstappsrc.h>
 #include <gst/app/gstappsink.h>
 #include <gst/app/gstappbuffer.h>
@@ -47,6 +48,7 @@ struct gst_helper
   GstElement* pipeline;
   GstElement* active;
   GstElement* volume;
+  GstAdapter* adapter;
 };
 
 
@@ -55,6 +57,7 @@ gst_helper_new (const gchar* command)
 {
   g_message ("%s\t%s\n", __PRETTY_FUNCTION__, command);
   gst_helper* self = g_new0 (gst_helper, 1);
+  self->adapter = gst_adapter_new ();
   self->pipeline = gst_parse_launch (command, NULL);
   (void)gst_element_set_state (self->pipeline, GST_STATE_PLAYING);
   self->volume = gst_bin_get_by_name (GST_BIN (self->pipeline), "ekiga_volume");
@@ -69,6 +72,8 @@ static void
 gst_helper_destroy (gst_helper* self)
 {
   gst_element_set_state (self->pipeline, GST_STATE_NULL);
+  gst_object_unref (self->adapter);
+  self->adapter = NULL;
   g_object_unref (self->active);
   self->active = NULL;
   if (self->volume)
@@ -92,22 +97,17 @@ gst_helper_get_frame_data (gst_helper* self,
 			   unsigned size,
 			   unsigned& read)
 {
-  bool result = false;
   GstBuffer* buffer = NULL;
 
-  read = 0;
-
   buffer = gst_app_sink_pull_buffer (GST_APP_SINK (self->active));
+  if (buffer != NULL)
+    gst_adapter_push (self->adapter, buffer);
 
-  if (buffer != NULL) {
+  read = MIN(size, gst_adapter_available (self->adapter));
+  gst_adapter_copy (self->adapter, (guint8*)data, 0, read);
+  gst_adapter_flush (self->adapter, read);
 
-    read = MIN(GST_BUFFER_SIZE (buffer), size);
-    memcpy (data, GST_BUFFER_DATA (buffer), read);
-    gst_buffer_unref (buffer);
-    result = true;
-  }
-
-  return result;
+  return true;
 }
 
 void
