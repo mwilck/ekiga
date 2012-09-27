@@ -154,7 +154,6 @@ void
 gst_helper_set_buffer_size (gst_helper* self,
 			    unsigned size)
 {
-  g_message ("%s\t%d\n", __PRETTY_FUNCTION__, size);
   if (self->active)
     g_object_set (G_OBJECT (self->active),
 		  "blocksize", size,
