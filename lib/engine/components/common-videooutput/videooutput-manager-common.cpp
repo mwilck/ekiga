@@ -370,12 +370,11 @@ GMVideoOutputManager::redraw ()
   UpdateRequired sync_required;
   sync_required = update_required;
 
-    if (frame_display_change_needed ())
-      setup_frame_display ();
-     else
-      if (last_frame.both_streams_active != current_frame.both_streams_active ||
-          last_frame.ext_stream_active != current_frame.ext_stream_active)
-        update_gui_device();
+  if (last_frame.both_streams_active != current_frame.both_streams_active ||
+      last_frame.ext_stream_active != current_frame.ext_stream_active)
+    update_gui_device ();
+  else if (frame_display_change_needed ())
+    setup_frame_display ();
 
     switch (current_frame.mode) {
     case Ekiga::VO_MODE_LOCAL:
