@@ -1588,7 +1588,10 @@ ekiga_call_window_set_bandwidth (EkigaCallWindow *cw,
     msg = g_strdup_printf (_("A:%.1f/%.1f V:%.1f/%.1f FPS:%d/%d"),
                            ta, ra, tv, rv, tfps, rfps);
 
-  gm_statusbar_push_message (GM_STATUSBAR (cw->priv->statusbar), msg);
+  if (msg)
+    gm_statusbar_push_message (GM_STATUSBAR (cw->priv->statusbar), "%s", msg);
+  else
+    gm_statusbar_push_message (GM_STATUSBAR (cw->priv->statusbar), NULL);
   g_free (msg);
 }
 
