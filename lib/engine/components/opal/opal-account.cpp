@@ -357,7 +357,6 @@ void Opal::Account::remove ()
 {
   dead = true;
   if (state == Registered) {
-    std::cout << "ici " << std::endl << std::flush;
     disable();
     return;
   }
