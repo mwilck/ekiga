@@ -45,7 +45,6 @@
 #include "menu-builder-tools.h"
 #include "menu-builder-gtk.h"
 #include "gm-cell-renderer-bitext.h"
-#include "gmstockicons.h"
 
 
 struct _CallHistoryViewGtkPrivate
@@ -99,17 +98,17 @@ on_contact_added (Ekiga::ContactPtr contact,
 
     case History::RECEIVED:
 
-      id = "call-received";
+      id = "back";
       break;
 
     case History::PLACED:
 
-      id = "call-placed";
+      id = "forward";
       break;
 
     case History::MISSED:
 
-      id = "call-missed";
+      id = "gtk-close";
       break;
 
     default:
@@ -344,7 +343,7 @@ call_history_view_gtk_new (boost::shared_ptr<History::Book> book)
   renderer = gtk_cell_renderer_pixbuf_new ();
   gtk_tree_view_column_pack_start (column, renderer, FALSE);
   gtk_tree_view_column_add_attribute (column, renderer,
-				      "icon_name", COLUMN_PIXBUF);
+				      "icon-name", COLUMN_PIXBUF);
 
   /* show name and text */
   renderer = gm_cell_renderer_bitext_new ();

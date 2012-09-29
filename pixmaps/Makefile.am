@@ -28,9 +28,6 @@ IMAGES_FILES= \
 	256x256/multimedia-headset.png \
 	16x16/audio-volume.png \
 	16x16/brightness.png \
-	16x16/call-placed.png \
-	16x16/call-missed.png \
-	16x16/call-received.png \
 	16x16/call-transfer.png \
 	16x16/color.png \
 	16x16/contrast.png \
@@ -56,9 +53,6 @@ IMAGES_FILES= \
 IMAGES= \
 	gm_audio_volume_16 $(srcdir)/16x16/audio-volume.png \
 	gm_brightness_16 $(srcdir)/16x16/brightness.png \
-	gm_call_placed_16 $(srcdir)/16x16/call-placed.png \
-	gm_call_missed_16 $(srcdir)/16x16/call-missed.png \
-	gm_call_received_16 $(srcdir)/16x16/call-received.png \
 	gm_call_transfer_16 $(srcdir)/16x16/call-transfer.png \
 	gm_color_16 $(srcdir)/16x16/color.png \
 	gm_contrast_16 $(srcdir)/16x16/contrast.png \

@@ -58,9 +58,6 @@ gnomemeeting_stock_icons_init (void)
 	{
 	        { "audio-volume", 16, gm_audio_volume_16 },
 		{ "brightness", 16, gm_brightness_16},
-		{ "call-placed", 16, gm_call_placed_16},
-		{ "call-missed", 16, gm_call_missed_16},
-		{ "call-received", 16, gm_call_received_16},
 		{ "call-transfer", 16, gm_call_transfer_16},
 		{ "color", 16, gm_color_16},
 		{ "contrast", 16, gm_contrast_16},
