@@ -670,7 +670,6 @@ static void on_cleared_call_cb (boost::shared_ptr<Ekiga::CallManager>  /*manager
                                 gpointer self)
 {
   EkigaMainWindow *mw = EKIGA_MAIN_WINDOW (self);
-  GtkWidget *call_window = NULL;
 
   if (mw->priv->current_call && mw->priv->current_call->get_id () != call->get_id ()) {
     return; // Trying to clear another call than the current active one
@@ -690,11 +689,7 @@ static void on_cleared_call_cb (boost::shared_ptr<Ekiga::CallManager>  /*manager
   audiooutput_core->stop_play_event("ring_tone_sound");
 
   /* Hide call window */
-  if (!gm_conf_get_bool (VIDEO_DEVICES_KEY "enable_preview")) {
-    boost::shared_ptr<GtkFrontend> gtk_frontend = mw->priv->core->get<GtkFrontend> ("gtk-frontend");
-    call_window = GTK_WIDGET (gtk_frontend->get_call_window ());
-    g_timeout_add_seconds (2, on_delayed_hide_call_window_cb, call_window);
-  }
+  g_timeout_add_seconds (2, on_delayed_hide_call_window_cb, mw);
 
   /* Sensitive a few things back */
   gtk_widget_set_sensitive (GTK_WIDGET (mw->priv->uri_toolbar), true);
@@ -759,13 +754,22 @@ static bool on_handle_errors (std::string error,
 
 
 /* GTK callbacks */
+// FIXME: I should probably be moved to CallWindow code
 static gboolean
 on_delayed_hide_call_window_cb (gpointer data)
 {
+  GtkWidget* call_window = NULL;
+
   g_return_val_if_fail (data != NULL, FALSE);
   g_return_val_if_fail (GTK_IS_WIDGET (data), FALSE);
 
-  gtk_widget_hide (GTK_WIDGET (data));
+  EkigaMainWindow *mw = EKIGA_MAIN_WINDOW (data);
+
+  boost::shared_ptr<GtkFrontend> gtk_frontend = mw->priv->core->get<GtkFrontend> ("gtk-frontend");
+  call_window = GTK_WIDGET (gtk_frontend->get_call_window ());
+
+  if (!mw->priv->current_call && !gm_conf_get_bool (VIDEO_DEVICES_KEY "enable_preview"))
+    gtk_widget_hide (GTK_WIDGET (call_window));
 
   return FALSE;
 }
