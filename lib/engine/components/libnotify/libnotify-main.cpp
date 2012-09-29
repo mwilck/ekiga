@@ -250,7 +250,11 @@ LibNotify::on_call_notification (boost::shared_ptr<Ekiga::CallManager> manager,
 
   notify_notification_show (notify, NULL);
 
+#ifdef NOTIFY_CHECK_VERSION
+#if !NOTIFY_CHECK_VERSION(0,7,0)
   notify_notification_set_hint (notify, "transient", g_variant_new_boolean (TRUE));
+#endif
+#endif
 
   g_free (title);
   g_free (body);
