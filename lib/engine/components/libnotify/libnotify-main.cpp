@@ -241,7 +241,6 @@ LibNotify::on_call_notification (boost::shared_ptr<Ekiga::CallManager> manager,
                                     );
   notify_notification_add_action (notify, "reject", _("Reject"), call_notification_action_cb, call.get (), NULL);
   notify_notification_add_action (notify, "accept", _("Accept"), call_notification_action_cb, call.get (), NULL);
-  notify_notification_set_hint (notify, "transient", g_variant_new_boolean (TRUE));
   notify_notification_set_timeout (notify, NOTIFY_EXPIRES_NEVER);
   notify_notification_set_urgency (notify, NOTIFY_URGENCY_CRITICAL);
 
@@ -250,6 +249,8 @@ LibNotify::on_call_notification (boost::shared_ptr<Ekiga::CallManager> manager,
   call->cleared.connect (boost::bind (&LibNotify::on_call_notification_closed, this, (gpointer) notify));
 
   notify_notification_show (notify, NULL);
+
+  notify_notification_set_hint (notify, "transient", g_variant_new_boolean (TRUE));
 
   g_free (title);
   g_free (body);
