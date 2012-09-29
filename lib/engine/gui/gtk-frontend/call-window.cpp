@@ -342,6 +342,10 @@ static void on_cleared_call_cb (boost::shared_ptr<Ekiga::CallManager>  /*manager
                                 std::string reason,
                                 gpointer self);
 
+static void on_missed_call_cb (boost::shared_ptr<Ekiga::CallManager>  /*manager*/,
+                               boost::shared_ptr<Ekiga::Call> /*call*/,
+                               gpointer self);
+
 static void on_held_call_cb (boost::shared_ptr<Ekiga::CallManager>  /*manager*/,
                              boost::shared_ptr<Ekiga::Call>  /*call*/,
                              gpointer self);
@@ -1166,6 +1170,15 @@ on_cleared_call_cb (G_GNUC_UNUSED boost::shared_ptr<Ekiga::CallManager> manager,
   }
 
   ekiga_call_window_clear_signal_levels (cw);
+
+  gtk_window_set_title (GTK_WINDOW (cw), _("Call Window"));
+}
+
+static void on_missed_call_cb (boost::shared_ptr<Ekiga::CallManager>  /*manager*/,
+                               boost::shared_ptr<Ekiga::Call> /*call*/,
+                               gpointer self)
+{
+  EkigaCallWindow *cw = EKIGA_CALL_WINDOW (self);
 
   gtk_window_set_title (GTK_WINDOW (cw), _("Call Window"));
 }
@@ -2215,6 +2228,9 @@ ekiga_call_window_connect_engine_signals (EkigaCallWindow *cw)
   cw->priv->connections.push_back (conn);
 
   conn = call_core->cleared_call.connect (boost::bind (&on_cleared_call_cb, _1, _2, _3, (gpointer) cw));
+  cw->priv->connections.push_back (conn);
+
+  conn = call_core->missed_call.connect (boost::bind (&on_missed_call_cb, _1, _2, (gpointer) cw));
   cw->priv->connections.push_back (conn);
 
   conn = call_core->held_call.connect (boost::bind (&on_held_call_cb, _1, _2, (gpointer) cw));
