@@ -106,14 +106,17 @@ GST::AudioOutputManager::open (Ekiga::AudioOutputPS ps,
   if ( !already_detected_devices)
     detect_devices ();
 
-  command = g_strdup_printf ("appsrc is-live=true name=ekiga_src"
-			     " ! audio/x-raw-int"
+  command = g_strdup_printf ("appsrc"
+			     " is-live=true format=time do-timestamp=true"
+			     " min-latency=1 max-latency=5000000"
+			     " name=ekiga_src"
+			     " caps=audio/x-raw-int"
 			     ",rate=%d"
 			     ",channels=%d"
 			     ",width=%d"
 			     ",depth=%d"
 			     ",signed=true,endianness=1234"
-			     " ! audiorate ! %s",
+			     " ! %s",
 			     samplerate, channels, bits_per_sample, bits_per_sample,
 			     devices_by_name[std::pair<std::string,std::string>(current_state[ii].device.source, current_state[ii].device.name)].c_str ());
   worker[ii] = gst_helper_new (command);
