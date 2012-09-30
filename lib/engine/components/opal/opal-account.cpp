@@ -479,19 +479,40 @@ void Opal::Account::on_edit_form_submitted (bool submitted,
   }
   else {
 
-    disable ();
-    name = new_name;
-    host = new_host;
-    username = new_user;
-    auth_username = new_authentication_user;
-    password = new_password;
-    timeout = new_timeout;
-    enabled = new_enabled;
-    if (enabled)
-      enable ();
+    // Account was enabled and is now disabled
+    if (enabled != new_enabled && !new_enabled) {
+      enabled = new_enabled;
 
-    updated ();
-    trigger_saving ();
+      disable ();
+    }
+    // Account was disabled and is now enabled
+    // or account was already enabled
+    else if (new_enabled) {
+      // Some critical setting just changed
+      if (host != new_host || username != new_user
+          || auth_username != new_authentication_user
+          || password != new_password
+          || timeout != new_timeout
+          || enabled != new_enabled) {
+
+        name = new_name;
+        host = new_host;
+        username = new_user;
+        auth_username = new_authentication_user;
+        password = new_password;
+        timeout = new_timeout;
+        enabled = new_enabled;
+
+        enable ();
+      }
+      else {
+        name = new_name;
+        enabled = new_enabled;
+
+        updated ();
+        trigger_saving ();
+      }
+    }
   }
 }
 
