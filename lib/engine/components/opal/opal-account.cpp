@@ -797,7 +797,7 @@ Opal::Account::OnPresenceChange (OpalPresentity& /*presentity*/,
     new_presence = "busy";
     break;
   case OpalPresenceInfo::Appointment:
-    new_presence = "busy";
+    new_presence = "away";
     // Translators: see RFC 4480 for more information about activities
     if (new_status.empty ())
       new_status = _("Appointment");
@@ -849,7 +849,7 @@ Opal::Account::OnPresenceChange (OpalPresentity& /*presentity*/,
       new_status = _("On the phone");
     break;
   case OpalPresenceInfo::Playing:
-    new_presence = "busy";
+    new_presence = "away";
     if (new_status.empty ())
       new_status = _("Playing");
     break;
