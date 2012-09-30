@@ -58,7 +58,6 @@ gnomemeeting_stock_icons_init (void)
 	{
 	        { "audio-volume", 16, gm_audio_volume_16 },
 		{ "brightness", 16, gm_brightness_16},
-		{ "call-transfer", 16, gm_call_transfer_16},
 		{ "color", 16, gm_color_16},
 		{ "contrast", 16, gm_contrast_16},
 		{ "im-message", 16, gm_im_message_16},
@@ -75,7 +74,6 @@ gnomemeeting_stock_icons_init (void)
 		{ "phone-hang-up", 24, gm_phone_hang_up_24 },
 		{ "phone-pick-up", 24, gm_phone_pick_up_24 },
 		{ "user-inacall", 16, gm_user_inacall_16 },
-		{ "user-ringing", 16, gm_user_ringing_16 },
 
 	};
 

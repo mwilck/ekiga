@@ -135,7 +135,7 @@ Opal::H323::EndPoint::menu_builder_add_actions (const std::string & /*fullname*/
       builder.add_action ("phone-pick-up", _("Call"),
                           boost::bind (&Opal::H323::EndPoint::on_dial, this, uri));
     else
-      builder.add_action ("call-transfer", _("Transfer"),
+      builder.add_action ("mail-forward", _("Transfer"),
                           boost::bind (&Opal::H323::EndPoint::on_transfer, this, uri));
     populated = true;
   }

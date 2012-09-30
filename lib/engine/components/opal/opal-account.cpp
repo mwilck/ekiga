@@ -560,7 +560,7 @@ Opal::Account::publish (const Ekiga::PersonalDetails& details)
 
   if (presentity) {
     presentity->SetLocalPresence (personal_state, presence_status);
-    PTRACE (4, "Ekiga sent its own presence (publish) for " << get_aor() << ": " << presence << ", note " << presence_status);
+    PTRACE (4, "Ekiga\tSent its own presence (publish) for " << get_aor() << ": " << presence << ", note " << presence_status);
   }
 }
 
@@ -765,7 +765,7 @@ Opal::Account::OnPresenceChange (OpalPresentity& /*presentity*/,
   std::string uri = sip_uri.AsString ();
   PCaselessString note = info.m_note;
 
-  PTRACE (4, "Ekiga received a presence change (notify) for " << info.m_entity << ": state " << info.m_state << ", note " << info.m_note);
+  PTRACE (4, "Ekiga\tReceived a presence change (notify) for " << info.m_entity << ": state " << info.m_state << ", note " << info.m_note);
 
   if (info.m_state == OpalPresenceInfo::Unchanged)
     return;

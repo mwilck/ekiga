@@ -259,7 +259,7 @@ Opal::Sip::EndPoint::menu_builder_add_actions (const std::string& fullname,
       builder.add_action ("phone-pick-up", call_action.str (),
                           boost::bind (&Opal::Sip::EndPoint::on_dial, this, (*it)));
     else
-      builder.add_action ("call-transfer", transfer_action.str (),
+      builder.add_action ("mail-forward", transfer_action.str (),
                           boost::bind (&Opal::Sip::EndPoint::on_transfer, this, (*it)));
 
     ita++;
