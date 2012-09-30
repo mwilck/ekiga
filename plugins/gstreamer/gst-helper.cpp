@@ -131,6 +131,13 @@ gst_helper_set_frame_data (gst_helper* self,
 {
   gchar* tmp = NULL;
   GstBuffer* buffer = NULL;
+  static bool done = false;
+
+  if (!done) {
+
+    done = true;
+    GST_DEBUG_BIN_TO_DOT_FILE(GST_BIN(self->pipeline), GST_DEBUG_GRAPH_SHOW_ALL, "pipeline");
+  }
 
   if (self->active) {
 
