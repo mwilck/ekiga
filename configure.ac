@@ -519,7 +519,7 @@ if test "x${gm_platform}" != "xmingw" ; then
   AC_ARG_ENABLE(avahi, AS_HELP_STRING([--enable-avahi],[enable mDNS support (default is enabled)]),
 [if test "x$enableval" = "xyes"; then
   enable_avahi=yes
-fi],enable_avahi=yes)
+fi],)
 
   if test "x$enable_avahi" = "xyes"; then
     PKG_CHECK_MODULES([AVAHI], [avahi-client >= 0.6 avahi-glib >= 0.6], [found_avahi=yes])

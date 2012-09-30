@@ -766,6 +766,7 @@ Opal::Account::OnPresenceChange (OpalPresentity& /*presentity*/,
   PCaselessString note = info.m_note;
 
   PTRACE (4, "Ekiga\tReceived a presence change (notify) for " << info.m_entity << ": state " << info.m_state << ", note " << info.m_note);
+  std::cout << info.m_entity << " is " << info.m_state << std::endl << std::flush;
 
   if (info.m_state == OpalPresenceInfo::Unchanged)
     return;
