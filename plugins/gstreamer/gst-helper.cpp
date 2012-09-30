@@ -36,7 +36,6 @@
  */
 
 #include "gst-helper.h"
-#include "runtime.h"
 
 #include <gst/base/gstadapter.h>
 #include <gst/app/gstappsrc.h>
@@ -51,26 +50,12 @@ struct gst_helper
   GstAdapter* adapter;
 };
 
-
-gst_helper*
-gst_helper_new (const gchar* command)
-{
-  g_message ("%s\t%s\n", __PRETTY_FUNCTION__, command);
-  gst_helper* self = g_new0 (gst_helper, 1);
-  self->adapter = gst_adapter_new ();
-  self->pipeline = gst_parse_launch (command, NULL);
-  (void)gst_element_set_state (self->pipeline, GST_STATE_PLAYING);
-  self->volume = gst_bin_get_by_name (GST_BIN (self->pipeline), "ekiga_volume");
-  self->active = gst_bin_get_by_name (GST_BIN (self->pipeline), "ekiga_sink");
-  if (self->active == NULL)
-    self->active = gst_bin_get_by_name (GST_BIN (self->pipeline), "ekiga_src");
-
-  return self;
-}
-
 static void
-gst_helper_destroy (gst_helper* self)
+message_eos_received (G_GNUC_UNUSED GstBus* bus,
+		      G_GNUC_UNUSED GstMessage* message,
+		      gst_helper* self)
 {
+  g_message ("%s\n", __PRETTY_FUNCTION__);
   gst_element_set_state (self->pipeline, GST_STATE_NULL);
   gst_object_unref (self->adapter);
   self->adapter = NULL;
@@ -84,11 +69,40 @@ gst_helper_destroy (gst_helper* self)
   g_free (self);
 }
 
+gst_helper*
+gst_helper_new (const gchar* command)
+{
+  g_message ("pipeline: %s\n", command);
+  gst_helper* self = g_new0 (gst_helper, 1);
+  self->adapter = gst_adapter_new ();
+  self->pipeline = gst_parse_launch (command, NULL);
+  self->volume = gst_bin_get_by_name (GST_BIN (self->pipeline), "ekiga_volume");
+  self->active = gst_bin_get_by_name (GST_BIN (self->pipeline), "ekiga_sink");
+  if (self->active == NULL) {
+
+    self->active = gst_bin_get_by_name (GST_BIN (self->pipeline), "ekiga_src");
+  }
+  (void)gst_element_set_state (self->pipeline, GST_STATE_PLAYING);
+
+  return self;
+}
+
 void
 gst_helper_close (gst_helper* self)
 {
   g_message ("%s\n", __PRETTY_FUNCTION__);
-  Ekiga::Runtime::run_in_main (boost::bind(&gst_helper_destroy, self), 2);
+
+  GstBus* bus = gst_pipeline_get_bus (GST_PIPELINE (self->pipeline));
+  gst_bus_add_signal_watch_full (bus, G_PRIORITY_HIGH);
+  g_signal_connect (bus, "message::eos",
+		    (GCallback)message_eos_received,
+		    self);
+
+  if (GST_IS_APP_SRC (self->active)) {
+
+    g_message ("EOS!");
+    gst_app_src_end_of_stream (GST_APP_SRC (self->active));
+  }
 }
 
 bool
