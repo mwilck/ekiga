@@ -303,7 +303,7 @@ GST::AudioOutputManager::detect_pulsesink_devices ()
 	device = g_value_array_get_nth (array, index);
 	g_object_set_property (G_OBJECT (elt), "device", device);
 	g_object_get (G_OBJECT (elt), "device-name", &name, NULL);
-	descr = g_strdup_printf ("volume name=ekiga_volume ! pulsesink device=%s",
+	descr = g_strdup_printf ("pulsesink sync=false name=ekiga_volume device=%s",
 				 g_value_get_string (device));
 
 	if (name != 0) {
