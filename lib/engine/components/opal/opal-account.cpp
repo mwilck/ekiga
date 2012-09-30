@@ -803,13 +803,13 @@ Opal::Account::OnPresenceChange (OpalPresentity& /*presentity*/,
     }
     break;
   case OpalPresenceInfo::NoPresence:
-    new_presence = "unknown";
+    new_presence = "offline";
     break;
   case OpalPresenceInfo::InternalError:
   case OpalPresenceInfo::Forbidden:
   case OpalPresenceInfo::Unavailable:
   case OpalPresenceInfo::UnknownExtended:
-    new_presence = "offline";
+    new_presence = "unknown";
     break;
   case OpalPresenceInfo::Away:
     new_presence = "away";
