@@ -883,6 +883,10 @@ on_videoinput_device_closed_cb (Ekiga::VideoInputManager & /* manager */,
   ekiga_call_window_update_logo (cw);
 
   gtk_widget_set_sensitive (cw->priv->video_settings_button,  false);
+  if (cw->priv->automatic_zoom_in) {
+    cw->priv->automatic_zoom_in = false;
+    zoom_out_changed_cb (NULL, (gpointer) cw);
+  }
 }
 
 static void
@@ -1162,11 +1166,6 @@ on_cleared_call_cb (G_GNUC_UNUSED boost::shared_ptr<Ekiga::CallManager> manager,
     cw->priv->current_call = boost::shared_ptr<Ekiga::Call>();
     g_source_remove (cw->priv->timeout_id);
     cw->priv->timeout_id = -1;
-  }
-
-  if (cw->priv->automatic_zoom_in) {
-    cw->priv->automatic_zoom_in = false;
-    zoom_out_changed_cb (NULL, (gpointer) cw);
   }
 
   ekiga_call_window_clear_signal_levels (cw);
