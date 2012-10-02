@@ -310,9 +310,6 @@ void Opal::Account::disable ()
 {
   enabled = false;
 
-  // the above change is needed because if we are already not
-  // registered (because a registration failed, for example), then the
-  // next action won't change the status.
   if (presentity) {
 
     for (std::set<std::string>::iterator iter = watched_uris.begin ();
