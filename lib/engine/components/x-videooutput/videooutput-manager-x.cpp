@@ -86,32 +86,30 @@ GMVideoOutputManager_x::~GMVideoOutputManager_x ()
 bool
 GMVideoOutputManager_x::frame_display_change_needed ()
 {
-    switch (current_frame.mode)
-    {
-      case Ekiga::VO_MODE_LOCAL:
-          if (!lxWindow)
-            return true;
-          break;
-      case Ekiga::VO_MODE_REMOTE:
-          if (!rxWindow)
-            return true;
-          break;
-      case Ekiga::VO_MODE_FULLSCREEN:
-      case Ekiga::VO_MODE_PIP:
-      case Ekiga::VO_MODE_PIP_WINDOW:
-          if (!rxWindow || (pip_window_available && (!lxWindow)) )
-              return true;
-          break;
-      case Ekiga::VO_MODE_REMOTE_EXT:
-          if (!exWindow)
-            return true;
-          break;
-     case Ekiga::VO_MODE_UNSET:
-     default:
-          break;
-    }
+  switch (current_frame.mode) {
+  case Ekiga::VO_MODE_LOCAL:
+    if (!lxWindow)
+      return true;
+    break;
+  case Ekiga::VO_MODE_REMOTE:
+    if (!rxWindow)
+      return true;
+    break;
+  case Ekiga::VO_MODE_FULLSCREEN:
+  case Ekiga::VO_MODE_PIP:
+  case Ekiga::VO_MODE_PIP_WINDOW:
+    if (!rxWindow || (pip_window_available && (!lxWindow)) )
+      return true;
+    break;
+  case Ekiga::VO_MODE_REMOTE_EXT:
+    if (!exWindow)
+      return true;
+    break;
+  case Ekiga::VO_MODE_UNSET:
+  default:
+    break;
+  }
   return GMVideoOutputManager::frame_display_change_needed ();
-
 }
 
 XWindow *
