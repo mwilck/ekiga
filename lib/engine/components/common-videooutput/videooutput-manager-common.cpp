@@ -225,7 +225,9 @@ void GMVideoOutputManager::set_frame_data (const char* data,
 
   var_mutex.Signal();
 
-  if ((local_display_info.mode == Ekiga::VO_MODE_UNSET) || (local_display_info.zoom == 0) || (!local_display_info.config_info_set)) {
+  if ((local_display_info.mode == Ekiga::VO_MODE_UNSET) ||
+      (local_display_info.zoom == 0) ||
+      (!local_display_info.config_info_set)) {
     PTRACE(4, "GMVideoOutputManager\tDisplay and zoom variable not set yet, not opening display");
      return;
   }
@@ -376,39 +378,39 @@ GMVideoOutputManager::redraw ()
   else if (frame_display_change_needed ())
     setup_frame_display ();
 
-    switch (current_frame.mode) {
-    case Ekiga::VO_MODE_LOCAL:
-      if (lframeStore.GetSize() > 0)
-        display_frame ((char *) lframeStore.GetPointer (),
-                       current_frame.local_width, current_frame.local_height);
-        break;
+  switch (current_frame.mode) {
+  case Ekiga::VO_MODE_LOCAL:
+    if (lframeStore.GetSize() > 0)
+      display_frame ((char *) lframeStore.GetPointer (),
+                     current_frame.local_width, current_frame.local_height);
+    break;
 
-    case Ekiga::VO_MODE_REMOTE:
-      if (rframeStore.GetSize() > 0)
-        display_frame ((char *) rframeStore.GetPointer (),
-                       current_frame.remote_width, current_frame.remote_height);
-      break;
+  case Ekiga::VO_MODE_REMOTE:
+    if (rframeStore.GetSize() > 0)
+      display_frame ((char *) rframeStore.GetPointer (),
+                     current_frame.remote_width, current_frame.remote_height);
+    break;
 
-    case Ekiga::VO_MODE_FULLSCREEN:
-    case Ekiga::VO_MODE_PIP:
-    case Ekiga::VO_MODE_PIP_WINDOW:
-      if ((lframeStore.GetSize() > 0) &&  (rframeStore.GetSize() > 0))
-        display_pip_frames ((char *) lframeStore.GetPointer (),
-                            current_frame.local_width, current_frame.local_height,
-                            (char *) rframeStore.GetPointer (),
-                            current_frame.remote_width, current_frame.remote_height);
-       break;
+  case Ekiga::VO_MODE_FULLSCREEN:
+  case Ekiga::VO_MODE_PIP:
+  case Ekiga::VO_MODE_PIP_WINDOW:
+    if ((lframeStore.GetSize() > 0) &&  (rframeStore.GetSize() > 0))
+      display_pip_frames ((char *) lframeStore.GetPointer (),
+                          current_frame.local_width, current_frame.local_height,
+                          (char *) rframeStore.GetPointer (),
+                          current_frame.remote_width, current_frame.remote_height);
+    break;
 
-    case Ekiga::VO_MODE_REMOTE_EXT:
-      if (eframeStore.GetSize() > 0)
-        display_frame ((char *) eframeStore.GetPointer (),
-                       current_frame.ext_width, current_frame.ext_height);
-      break;
+  case Ekiga::VO_MODE_REMOTE_EXT:
+    if (eframeStore.GetSize() > 0)
+      display_frame ((char *) eframeStore.GetPointer (),
+                     current_frame.ext_width, current_frame.ext_height);
+    break;
 
-    case Ekiga::VO_MODE_UNSET:
-    default:
-       break;
-    }
+  case Ekiga::VO_MODE_UNSET:
+  default:
+    break;
+  }
 
   update_required.local = false;
   update_required.remote = false;
