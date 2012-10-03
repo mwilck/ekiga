@@ -125,6 +125,8 @@ private:
                            const struct WinitContinuation &contXV,
                            const struct WinitContinuation &contX,
                            bool pip = false);
+
+  void close_display (Ekiga::VideoOutputMode mode);
 };
 
 /**

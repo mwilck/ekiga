@@ -257,7 +257,7 @@ GMVideoOutputManager_x::setup_frame_display ()
     return;
   }
 
-  close_frame_display ();
+  close_display (current_frame.mode);
 
   pip_window_available = false;
 
@@ -454,6 +454,41 @@ GMVideoOutputManager_x::setup_frame_display ()
                     current_frame.accel, current_frame.mode, current_frame.zoom,
                     current_frame.both_streams_active,
                     current_frame.ext_stream_active));
+  }
+}
+
+void
+GMVideoOutputManager_x::close_display (Ekiga::VideoOutputMode mode)
+{
+  Ekiga::Runtime::run_in_main (
+    boost::bind (&GMVideoOutputManager_x::device_closed_in_main, this)
+    );
+
+  if (mode != Ekiga::VO_MODE_REMOTE_EXT) {
+    if (rxWindow)
+      rxWindow->RegisterSlave (NULL);
+    if (lxWindow)
+      lxWindow->RegisterMaster (NULL);
+
+    if (lxWindow) {
+      delete lxWindow;
+      lxWindow = NULL;
+    }
+
+    if (rxWindow) {
+      delete rxWindow;
+      rxWindow = NULL;
+    }
+  }
+
+  if (mode == Ekiga::VO_MODE_LOCAL) {
+    if (exWindow)
+      exWindow->RegisterSlave (NULL);
+
+    if (exWindow) {
+      delete exWindow;
+      exWindow = NULL;
+    }
   }
 }
 
