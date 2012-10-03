@@ -263,6 +263,21 @@ void GMVideoOutputManager::init()
   last_frame.embedded_x = 0;
   last_frame.embedded_y = 0;
 
+  last_ext_frame.mode = Ekiga::VO_MODE_UNSET;
+  last_ext_frame.accel = Ekiga::VO_ACCEL_NO_VIDEO;
+  last_ext_frame.both_streams_active = false;
+  last_ext_frame.ext_stream_active = false;
+
+  last_ext_frame.local_width = 0;
+  last_ext_frame.local_height = 0;
+  last_ext_frame.remote_width = 0;
+  last_ext_frame.remote_height = 0;
+  last_ext_frame.ext_width = 0;
+  last_ext_frame.ext_height = 0;
+  last_ext_frame.zoom = 0;
+  last_ext_frame.embedded_x = 0;
+  last_ext_frame.embedded_y = 0;
+
   current_frame.ext_stream_active = false;
   current_frame.both_streams_active = false;
   current_frame.local_width = 0;
@@ -296,6 +311,9 @@ void GMVideoOutputManager::update_gui_device ()
   last_frame.both_streams_active = current_frame.both_streams_active;
   last_frame.ext_stream_active = current_frame.ext_stream_active;
 
+  last_ext_frame.both_streams_active = current_frame.both_streams_active;
+  last_ext_frame.ext_stream_active = current_frame.ext_stream_active;
+
   Ekiga::Runtime::run_in_main (boost::bind (&GMVideoOutputManager::device_closed_in_main, this));
 
   Ekiga::Runtime::run_in_main
@@ -309,6 +327,16 @@ bool
 GMVideoOutputManager::frame_display_change_needed ()
 {
   Ekiga::DisplayInfo local_display_info;
+  FrameInfo l_frame;
+
+  l_frame = last_frame;
+  if (current_frame.mode == Ekiga::VO_MODE_REMOTE_EXT)
+    l_frame = last_ext_frame;
+
+  if (l_frame.mode != current_frame.mode ||
+      l_frame.zoom != current_frame.zoom) {
+    return true;
+  }
 
   if (current_frame.mode != Ekiga::VO_MODE_REMOTE_EXT)
     get_display_info (local_display_info);
@@ -323,18 +351,14 @@ GMVideoOutputManager::frame_display_change_needed ()
     return false;
   }
 
-  if ( last_frame.mode != current_frame.mode ||
-       last_frame.zoom != current_frame.zoom )
-    return true;
-
-  bool local_changed = (last_frame.local_width  != current_frame.local_width ||
-                        last_frame.local_height != current_frame.local_height);
-  bool remote_changed = (last_frame.remote_width  != current_frame.remote_width ||
-                         last_frame.remote_height != current_frame.remote_height);
-  bool window_changed = (local_display_info.x != last_frame.embedded_x ||
-                        local_display_info.y != last_frame.embedded_y);
-  bool ext_changed = (last_frame.ext_width  != current_frame.ext_width ||
-                      last_frame.ext_height != current_frame.ext_height);
+  bool local_changed = (l_frame.local_width  != current_frame.local_width ||
+                        l_frame.local_height != current_frame.local_height);
+  bool remote_changed = (l_frame.remote_width  != current_frame.remote_width ||
+                         l_frame.remote_height != current_frame.remote_height);
+  bool window_changed = (local_display_info.x != l_frame.embedded_x ||
+                        local_display_info.y != l_frame.embedded_y);
+  bool ext_changed = (l_frame.ext_width  != current_frame.ext_width ||
+                      l_frame.ext_height != current_frame.ext_height);
 
   switch (current_frame.mode) {
   case Ekiga::VO_MODE_LOCAL:
@@ -373,7 +397,9 @@ GMVideoOutputManager::redraw ()
   sync_required = update_required;
 
   if (last_frame.both_streams_active != current_frame.both_streams_active ||
-      last_frame.ext_stream_active != current_frame.ext_stream_active)
+      last_frame.ext_stream_active != current_frame.ext_stream_active ||
+      last_ext_frame.both_streams_active != current_frame.both_streams_active ||
+      last_ext_frame.ext_stream_active != current_frame.ext_stream_active)
     update_gui_device ();
   else if (frame_display_change_needed ())
     setup_frame_display ();

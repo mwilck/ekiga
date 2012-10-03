@@ -164,13 +164,13 @@ GMVideoOutputManager_dx::setup_frame_display ()
                                       current_frame.remote_width, 
                                       current_frame.remote_height); 
 
-    last_frame.embedded_x = local_display_info.x;
-    last_frame.embedded_y = local_display_info.y;
+    last_ext_frame.embedded_x = local_display_info.x;
+    last_ext_frame.embedded_y = local_display_info.y;
 
-    last_frame.mode = Ekiga::VO_MODE_REMOTE;
-    last_frame.remote_width = current_frame.remote_width;
-    last_frame.remote_height = current_frame.remote_height;
-    last_frame.zoom = current_frame.zoom;
+    last_ext_frame.mode = Ekiga::VO_MODE_REMOTE;
+    last_ext_frame.remote_width = current_frame.remote_width;
+    last_ext_frame.remote_height = current_frame.remote_height;
+    last_ext_frame.zoom = current_frame.zoom;
     break;
 
   case Ekiga::VO_MODE_REMOTE_EXT: {

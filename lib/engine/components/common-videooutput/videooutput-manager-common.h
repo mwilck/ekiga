@@ -252,7 +252,7 @@
       int embedded_y;
     } FrameInfo;
 
-    FrameInfo last_frame;
+    FrameInfo last_frame, last_ext_frame;
     FrameInfo current_frame;
 
     bool local_frame_received;

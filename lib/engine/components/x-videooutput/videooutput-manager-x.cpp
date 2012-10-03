@@ -341,13 +341,13 @@ GMVideoOutputManager_x::setup_frame_display ()
 
     exWindow = create_window (local_display_info, cont, cont);
 
-    last_frame.embedded_x = local_display_info.x;
-    last_frame.embedded_y = local_display_info.y;
+    last_ext_frame.embedded_x = local_display_info.x;
+    last_ext_frame.embedded_y = local_display_info.y;
 
-    last_frame.mode = Ekiga::VO_MODE_REMOTE_EXT;
-    last_frame.ext_width = current_frame.ext_width;
-    last_frame.ext_height = current_frame.ext_height;
-    last_frame.zoom = current_frame.zoom;
+    last_ext_frame.mode = Ekiga::VO_MODE_REMOTE_EXT;
+    last_ext_frame.ext_width = current_frame.ext_width;
+    last_ext_frame.ext_height = current_frame.ext_height;
+    last_ext_frame.zoom = current_frame.zoom;
     break;
   }
 
