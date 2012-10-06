@@ -454,6 +454,8 @@ void Opal::Account::on_edit_form_submitted (bool submitted,
     new_authentication_user = new_user;
   std::string new_password = result.private_text ("password");
   bool new_enabled = result.boolean ("enabled");
+  bool should_enable = false;
+  bool should_disable = false;
   unsigned new_timeout = atoi (result.text ("timeout").c_str ());
   std::string error;
 
@@ -477,10 +479,9 @@ void Opal::Account::on_edit_form_submitted (bool submitted,
   else {
 
     // Account was enabled and is now disabled
+    // Disable it
     if (enabled != new_enabled && !new_enabled) {
-      enabled = new_enabled;
-
-      disable ();
+      should_disable = true;
     }
     // Account was disabled and is now enabled
     // or account was already enabled
@@ -492,24 +493,26 @@ void Opal::Account::on_edit_form_submitted (bool submitted,
           || timeout != new_timeout
           || enabled != new_enabled) {
 
-        name = new_name;
-        host = new_host;
-        username = new_user;
-        auth_username = new_authentication_user;
-        password = new_password;
-        timeout = new_timeout;
-        enabled = new_enabled;
-
-        enable ();
-      }
-      else {
-        name = new_name;
-        enabled = new_enabled;
-
-        updated ();
-        trigger_saving ();
+        should_enable = true;
       }
     }
+
+    enabled = new_enabled;
+    name = new_name;
+    host = new_host;
+    username = new_user;
+    auth_username = new_authentication_user;
+    password = new_password;
+    timeout = new_timeout;
+    enabled = new_enabled;
+
+    if (should_enable)
+      enable ();
+    else if (should_disable)
+      disable ();
+
+    updated ();
+    trigger_saving ();
   }
 }
 
