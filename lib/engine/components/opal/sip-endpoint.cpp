@@ -584,10 +584,6 @@ Opal::Sip::EndPoint::OnRegistrationStatus (const RegistrationStatus & status)
   /* Successful registration or unregistration */
   if (status.m_reason == SIP_PDU::Successful_OK) {
 
-    /* Subscribe for MWI */
-    if (status.m_wasRegistering &&!IsSubscribed (SIPSubscribe::MessageSummary, aor))
-      Subscribe (SIPSubscribe::MessageSummary, 3600, aor);
-
     Ekiga::Runtime::run_in_main (boost::bind (&Opal::Sip::EndPoint::registration_event_in_main, this, strm.str (), status.m_wasRegistering ? Account::Registered : Account::Unregistered, std::string ()));
   }
   /* Registration or unregistration failure */
@@ -1034,6 +1030,10 @@ Opal::Sip::EndPoint::registration_event_in_main (const std::string aor,
 						 Opal::Account::RegistrationState state,
 						 const std::string msg)
 {
+  /* Subscribe for MWI */
+  if (state == Opal::Account::Registered &&!IsSubscribed (SIPSubscribe::MessageSummary, aor))
+    Subscribe (SIPSubscribe::MessageSummary, 3600, aor);
+
   if (boost::shared_ptr<Opal::Bank> bk = bank.lock ()) {
 
     AccountPtr account = bk->find_account (aor);
