@@ -106,7 +106,7 @@ enum {
   COLUMN_STATUS,
   COLUMN_PRESENCE,
   COLUMN_ACTIVE,
-  COLUMN_GROUP_SIZE,
+  COLUMN_GROUP_NAME,
   COLUMN_OFFLINE,
   COLUMN_NUMBER
 };
@@ -555,7 +555,8 @@ update_offline_count (RosterViewGtk* self,
   gint offline_count = 0;
   gint column_type;
   Ekiga::Presentity* presentity = NULL;
-  gchar *size = NULL;
+  gchar *name = NULL;
+  gchar *name_with_count = NULL;
 
   model = GTK_TREE_MODEL (self->priv->store);
 
@@ -575,11 +576,12 @@ update_offline_count (RosterViewGtk* self,
   }
 
   total = gtk_tree_model_iter_n_children (model, iter);
-  size = g_strdup_printf ("(%d/%d)", total - offline_count, total);
+  gtk_tree_model_get (model, iter, COLUMN_GROUP_NAME, &name, -1);
+  name_with_count = g_strdup_printf ("%s (%d/%d)", name, total - offline_count, total);
   gtk_tree_store_set (GTK_TREE_STORE (model), iter,
-                      COLUMN_GROUP_SIZE, size,
-                      -1);
-  g_free (size);
+                      COLUMN_NAME, name_with_count, -1);
+  g_free (name);
+  g_free (name_with_count);
 }
 
 static void
@@ -1018,7 +1020,7 @@ on_presentity_updated (RosterViewGtk* self,
     do {
 
       gtk_tree_model_get (model, &group_iter,
-                          COLUMN_NAME, &group_name,
+                          COLUMN_GROUP_NAME, &group_name,
                           -1);
       if (group_name != NULL) {
 
@@ -1124,7 +1126,7 @@ roster_view_gtk_find_iter_for_group (RosterViewGtk *view,
 
     do {
 
-      gtk_tree_model_get (model, iter, COLUMN_NAME, &group_name, -1);
+      gtk_tree_model_get (model, iter, COLUMN_GROUP_NAME, &group_name, -1);
       if (group_name != NULL && name == group_name)
         found = TRUE;
       if (group_name != NULL)
@@ -1138,7 +1140,7 @@ roster_view_gtk_find_iter_for_group (RosterViewGtk *view,
     gtk_tree_store_set (view->priv->store, iter,
                         COLUMN_TYPE, TYPE_GROUP,
                         COLUMN_HEAP, heap.get (),
-                        COLUMN_NAME, name.c_str (),
+                        COLUMN_GROUP_NAME, name.c_str (),
                         -1);
   }
 }
@@ -1196,7 +1198,7 @@ roster_view_gtk_update_groups (RosterViewGtk *view,
 
         update_offline_count (view, &iter);
         gtk_tree_model_get (model, &iter,
-                            COLUMN_NAME, &name, -1);
+                            COLUMN_GROUP_NAME, &name, -1);
         if (name) {
 
           if (view->priv->folded_groups)
@@ -1345,7 +1347,7 @@ roster_view_gtk_init (G_GNUC_UNUSED RosterViewGtk* self)
                                           G_TYPE_STRING,      // status
                                           G_TYPE_STRING,      // presence
                                           G_TYPE_STRING,      // color if active
-					  G_TYPE_STRING,      // group size
+                                          G_TYPE_STRING,      // group name (invisible)
 					  G_TYPE_BOOLEAN);    // offline
 
   gtk_tree_sortable_set_sort_column_id (GTK_TREE_SORTABLE (self->priv->store),
@@ -1425,15 +1427,6 @@ roster_view_gtk_init (G_GNUC_UNUSED RosterViewGtk* self)
   gtk_tree_view_column_add_attribute (col, renderer, "foreground", COLUMN_ACTIVE);
   gtk_tree_view_column_set_cell_data_func (col, renderer,
                                            show_cell_data_func, GINT_TO_POINTER (TYPE_PRESENTITY), NULL);
-
-  renderer = gtk_cell_renderer_text_new ();
-  gtk_tree_view_column_set_spacing (col, 0);
-  gtk_tree_view_column_pack_start (col, renderer, TRUE);
-  gtk_tree_view_column_add_attribute (col, renderer, "text", COLUMN_GROUP_SIZE);
-  gtk_tree_view_column_set_alignment (col, 0.0);
-  gtk_tree_view_column_set_cell_data_func (col, renderer,
-					   show_cell_data_func,
-					   GINT_TO_POINTER (TYPE_GROUP), NULL);
 
   /* Callback when the selection has been changed */
   selection = gtk_tree_view_get_selection (self->priv->tree_view);
