@@ -38,6 +38,8 @@
  *
  */
 
+#include <string.h>
+
 #include "gm-cell-renderer-bitext.h"
 
 struct _GmCellRendererBitextPrivate
@@ -70,7 +72,6 @@ gm_cell_renderer_bitext_update_text (GmCellRendererBitext *renderer,
   PangoAttrList *attr_list = NULL;
   GdkColor color;
   PangoAttribute *attr_color = NULL;
-  PangoAttribute *attr_style = NULL;
   PangoAttribute *attr_size = NULL;
   gchar *str = NULL;
 
@@ -80,26 +81,19 @@ gm_cell_renderer_bitext_update_text (GmCellRendererBitext *renderer,
   style = gtk_widget_get_style (widget);
 
   attr_list = pango_attr_list_new ();
-
-  /* secondary text will be in italic */
-  attr_style = pango_attr_style_new (PANGO_STYLE_NORMAL);
-  attr_style->start_index = g_utf8_strlen (renderer->priv->primary_text, -1) + 1;
-  attr_style->end_index = (guint) - 1;
-  pango_attr_list_insert (attr_list, attr_style);
-
   if (!is_selected) {
 
     color = style->text_aa[GTK_STATE_NORMAL];
 
-    attr_color = pango_attr_foreground_new (color.red,
-					    color.green, color.blue);
-    attr_color->start_index = attr_style->start_index;
+    attr_color = pango_attr_foreground_new (color.red, color.green, color.blue);
+    attr_color->start_index = strlen (renderer->priv->primary_text) + 1;
     attr_color->end_index = (guint) - 1;
     pango_attr_list_insert (attr_list, attr_color);
   }
 
-  attr_size = pango_attr_size_new ((int) (pango_font_description_get_size (style->font_desc) * 0.8));	/* we want the secondary text smaller */
-  attr_size->start_index = attr_style->start_index;
+  /* we want the secondary text smaller */
+  attr_size = pango_attr_size_new ((int) (pango_font_description_get_size (style->font_desc) * 0.8));
+  attr_size->start_index = attr_color->start_index;
   attr_size->end_index = (guint) - 1;
   pango_attr_list_insert (attr_list, attr_size);
 
