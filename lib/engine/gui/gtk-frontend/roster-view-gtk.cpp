@@ -967,7 +967,6 @@ on_presentity_added (RosterViewGtk* self,
     std::string icon = "avatar-default";
     if (presentity->get_presence () != "unknown")
       icon = "user-" + presentity->get_presence ();
-    std::cout << presentity->get_name () << "  " << icon << std::endl << std::flush;
     gtk_tree_store_set (self->priv->store, &iter,
 			COLUMN_TYPE, TYPE_PRESENTITY,
 			COLUMN_OFFLINE, active,
