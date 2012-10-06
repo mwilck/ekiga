@@ -1421,6 +1421,7 @@ roster_view_gtk_init (G_GNUC_UNUSED RosterViewGtk* self)
                                            show_cell_data_func, GINT_TO_POINTER (TYPE_PRESENTITY), NULL);
 
   renderer = gm_cell_renderer_bitext_new ();
+  g_object_set (renderer, "ellipsize", PANGO_ELLIPSIZE_END, "width-chars", 30, NULL);
   gtk_tree_view_column_pack_start (col, renderer, FALSE);
   gtk_tree_view_column_add_attribute (col, renderer, "primary-text", COLUMN_NAME);
   gtk_tree_view_column_add_attribute (col, renderer, "secondary-text", COLUMN_STATUS);
