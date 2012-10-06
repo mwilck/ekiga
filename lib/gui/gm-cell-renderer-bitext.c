@@ -93,7 +93,7 @@ gm_cell_renderer_bitext_update_text (GmCellRendererBitext *renderer,
 
   /* we want the secondary text smaller */
   attr_size = pango_attr_size_new ((int) (pango_font_description_get_size (style->font_desc) * 0.8));
-  attr_size->start_index = attr_color->start_index;
+  attr_size->start_index = strlen (renderer->priv->primary_text) + 1;
   attr_size->end_index = (guint) - 1;
   pango_attr_list_insert (attr_list, attr_size);
 
