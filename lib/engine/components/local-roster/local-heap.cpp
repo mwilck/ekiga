@@ -108,7 +108,7 @@ Local::Heap::~Heap ()
 const std::string
 Local::Heap::get_name () const
 {
-  return _("Local roster");
+  return _("Contacts");
 }
 
 
