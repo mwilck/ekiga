@@ -38,6 +38,7 @@
 #include <algorithm>
 #include <iostream>
 #include <vector>
+#include <ctime>
 #include <glib/gi18n.h>
 #include <gdk/gdkkeysyms.h>
 
@@ -65,6 +66,15 @@ struct _RosterViewGtkPrivate
   GSList *folded_groups;
   gboolean show_offline_contacts;
 };
+
+typedef struct _StatusIconInfo {
+
+  GtkTreeModel *model;
+  GtkTreeIter *iter;
+  std::string new_presence;
+  int cpt;
+
+} StatusIconInfo;
 
 /* the different type of things which will appear in the view */
 enum {
@@ -104,9 +114,10 @@ enum {
   COLUMN_PRESENTITY,
   COLUMN_NAME,
   COLUMN_STATUS,
-  COLUMN_PRESENCE,
+  COLUMN_PRESENCE_ICON,
   COLUMN_ACTIVE,
   COLUMN_GROUP_NAME,
+  COLUMN_PRESENCE,
   COLUMN_OFFLINE,
   COLUMN_NUMBER
 };
@@ -115,6 +126,14 @@ enum {
  * Debug helpers
  */
 //static void dump_model_content (GtkTreeModel* model);
+
+/*
+ * Time out callbacks
+ */
+static int roster_view_gtk_icon_blink_cb (gpointer data);
+
+static void status_icon_info_delete (gpointer info);
+
 
 /*
  * Helpers
@@ -439,8 +458,47 @@ static void roster_view_gtk_set_core (RosterViewGtk* self,
 //     g_print ("(empty model)\n");
 // }
 
-/* Implementation of the helpers */
 
+/* Implementation of the timer callbacks */
+static int
+roster_view_gtk_icon_blink_cb (gpointer data)
+{
+  g_return_val_if_fail (data != NULL, FALSE);
+
+  StatusIconInfo *info = (StatusIconInfo*) data;
+  time_t now = time (0);
+  tm *ltm = localtime (&now);
+
+  std::string icon = "avatar-default";
+  if (info->cpt == 0) {
+    gtk_tree_store_set (GTK_TREE_STORE (info->model), info->iter,
+                        COLUMN_PRESENCE_ICON, "exit",
+                        -1);
+  }
+  else if (ltm->tm_sec % 5 == 0 && info->cpt > 3) {
+    if (info->new_presence != "unknown")
+      icon = "user-" + info->new_presence;
+    gtk_tree_store_set (GTK_TREE_STORE (info->model), info->iter,
+                        COLUMN_PRESENCE_ICON, icon.c_str (),
+                        -1);
+    return FALSE;
+  }
+
+  info->cpt++;
+  return TRUE;
+}
+
+static void status_icon_info_delete (gpointer data)
+{
+  g_return_if_fail (data != NULL);
+  StatusIconInfo *info = (StatusIconInfo*) data;
+
+  gtk_tree_iter_free (info->iter);
+
+  delete info;
+}
+
+/* Implementation of the helpers */
 static void
 on_clicked_show_heap_menu (Ekiga::Heap* heap,
 			   GdkEventButton* event)
@@ -944,6 +1002,7 @@ on_presentity_added (RosterViewGtk* self,
   GtkTreeIter filtered_iter;
   bool active = false;
   bool away = false;
+  gchar *old_presence = NULL;
   gboolean should_emit = FALSE;
 
   roster_view_gtk_find_iter_for_heap (self, heap, &heap_iter);
@@ -966,19 +1025,45 @@ on_presentity_added (RosterViewGtk* self,
       if (gtk_tree_selection_iter_is_selected (selection, &filtered_iter))
 	should_emit = TRUE;
 
-    std::string icon = "avatar-default";
-    if (presentity->get_presence () != "unknown")
-      icon = "user-" + presentity->get_presence ();
+    // Find out what our presence was
+    gtk_tree_model_get (GTK_TREE_MODEL (self->priv->store), &iter,
+                        COLUMN_PRESENCE, &old_presence,
+                        -1);
+    if (old_presence && presentity->get_presence () != old_presence
+        && presentity->get_presence () != "unknown" && presentity->get_presence () != "offline"
+        && (!strcmp (old_presence, "unknown") || !strcmp (old_presence, "offline"))) {
+
+      StatusIconInfo *info = new StatusIconInfo ();
+      info->model = GTK_TREE_MODEL (self->priv->store);
+      info->iter = gtk_tree_iter_copy (&iter);
+      info->new_presence = presentity->get_presence ();
+      info->cpt = 0;
+
+      g_timeout_add_seconds_full (G_PRIORITY_DEFAULT, 1, roster_view_gtk_icon_blink_cb,
+                                  (gpointer) info, (GDestroyNotify) status_icon_info_delete);
+    }
+    else {
+
+      if (!old_presence || old_presence != presentity->get_presence ()) {
+        std::string icon = "avatar-default";
+        if (presentity->get_presence () != "unknown")
+          icon = "user-" + presentity->get_presence ();
+        gtk_tree_store_set (self->priv->store, &iter,
+                            COLUMN_PRESENCE_ICON, icon.c_str (),
+                            -1);
+      }
+    }
     gtk_tree_store_set (self->priv->store, &iter,
-			COLUMN_TYPE, TYPE_PRESENTITY,
-			COLUMN_OFFLINE, active,
-			COLUMN_HEAP, heap.get (),
-			COLUMN_PRESENTITY, presentity.get (),
-			COLUMN_NAME, presentity->get_name ().c_str (),
-			COLUMN_STATUS, presentity->get_status ().c_str (),
-			COLUMN_PRESENCE, icon.c_str (),
-			COLUMN_ACTIVE, (!active || away) ? "gray" : "black",
-			-1);
+                        COLUMN_TYPE, TYPE_PRESENTITY,
+                        COLUMN_OFFLINE, active,
+                        COLUMN_HEAP, heap.get (),
+                        COLUMN_PRESENTITY, presentity.get (),
+                        COLUMN_NAME, presentity->get_name ().c_str (),
+                        COLUMN_STATUS, presentity->get_status ().c_str (),
+                        COLUMN_PRESENCE, presentity->get_presence ().c_str (),
+                        COLUMN_ACTIVE, (!active || away) ? "gray" : "black",
+                        -1);
+    g_free (old_presence);
   }
 
   GtkTreeModel* model = gtk_tree_view_get_model (self->priv->tree_view);
@@ -1348,6 +1433,7 @@ roster_view_gtk_init (G_GNUC_UNUSED RosterViewGtk* self)
                                           G_TYPE_STRING,      // presence
                                           G_TYPE_STRING,      // color if active
                                           G_TYPE_STRING,      // group name (invisible)
+                                          G_TYPE_STRING,      // presence
 					  G_TYPE_BOOLEAN);    // offline
 
   gtk_tree_sortable_set_sort_column_id (GTK_TREE_SORTABLE (self->priv->store),
@@ -1416,7 +1502,7 @@ roster_view_gtk_init (G_GNUC_UNUSED RosterViewGtk* self)
   gtk_tree_view_column_pack_start (col, renderer, FALSE);
   gtk_tree_view_column_add_attribute (col, renderer,
 				      "icon-name",
-				      COLUMN_PRESENCE);
+				      COLUMN_PRESENCE_ICON);
   gtk_tree_view_column_set_cell_data_func (col, renderer,
                                            show_cell_data_func, GINT_TO_POINTER (TYPE_PRESENTITY), NULL);
 
