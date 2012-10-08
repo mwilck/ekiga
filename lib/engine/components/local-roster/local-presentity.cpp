@@ -46,7 +46,7 @@
 // remove leading and trailing spaces and tabs (useful for copy/paste)
 // also, if no protocol specified, add leading "sip:"
 std::string
-canonise_uri (std::string uri)
+canonize_uri (std::string uri)
 {
   const size_t begin_str = uri.find_first_not_of (" \t");
   if (begin_str == std::string::npos)  // there is no content
@@ -55,9 +55,12 @@ canonise_uri (std::string uri)
   const size_t end_str = uri.find_last_not_of (" \t");
   const size_t range = end_str - begin_str + 1;
   uri = uri.substr (begin_str, range);
-  const size_t pos = uri.find (":");
+  size_t pos = uri.find (":");
   if (pos == std::string::npos)
     uri = uri.insert (0, "sip:");
+  pos = uri.find ("@");
+  if (pos == std::string::npos)
+    uri = uri + "@ekiga.net";
   return uri;
 }
 
@@ -293,7 +296,7 @@ Local::Presentity::edit_presentity_form_submitted (bool submitted,
   bool preferred = result.boolean ("preferred");
   std::set<xmlNodePtr> nodes_to_remove;
 
-  new_uri = canonise_uri (new_uri);
+  new_uri = canonize_uri (new_uri);
 
   for (xmlNodePtr child = node->children ;
        child != NULL ;

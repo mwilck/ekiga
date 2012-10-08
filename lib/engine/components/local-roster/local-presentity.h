@@ -49,8 +49,8 @@
 
 // remove leading and trailing spaces (useful for copy/paste)
 // also, if no protocol specified, add leading "sip:"
-std::string
-canonise_uri (std::string uri);
+// and if no server specified, append "@ekiga.net"
+std::string canonize_uri (std::string uri);
 
 namespace Local
 {

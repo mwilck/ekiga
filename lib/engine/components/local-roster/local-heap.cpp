@@ -396,7 +396,7 @@ Local::Heap::new_presentity_form_submitted (bool submitted,
   else
     uri = result.text ("uri");
 
-  uri = canonise_uri (uri);
+  uri = canonize_uri (uri);
 
   if (presence_core->is_supported_uri (uri)
       && !has_presentity_with_uri (uri)) {
