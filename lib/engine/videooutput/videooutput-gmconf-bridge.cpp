@@ -52,6 +52,7 @@ VideoOutputCoreConfBridge::VideoOutputCoreConfBridge (Ekiga::Service & _service)
 
   keys.push_back (VIDEO_DISPLAY_KEY "video_view"); 
   keys.push_back (VIDEO_DISPLAY_KEY "zoom"); 
+  keys.push_back (VIDEO_DISPLAY_KEY "ext_zoom");
   keys.push_back (VIDEO_DISPLAY_KEY "stay_on_top"); 
   keys.push_back (VIDEO_DISPLAY_KEY "disable_hw_accel"); 
   keys.push_back (VIDEO_DISPLAY_KEY "allow_pip_sw_scaling"); 
@@ -90,6 +91,20 @@ void VideoOutputCoreConfBridge::on_property_changed (std::string key, GmConfEntr
 
     display_core.set_display_info(display_info);
 
+  }
+  else if ( (key == VIDEO_DISPLAY_KEY "ext_zoom") ) {
+
+    DisplayInfo display_info;
+
+    display_info.zoom = gm_conf_get_int (VIDEO_DISPLAY_KEY "ext_zoom");
+    if ((display_info.zoom != 100) &&
+	(display_info.zoom != 50) &&
+	(display_info.zoom != 200)) {
+      display_info.zoom = 100;
+      gm_conf_set_int (VIDEO_DISPLAY_KEY "ext_zoom", 100);
+    }
+
+    display_core.set_ext_display_info(display_info);
   }
   else {
 
