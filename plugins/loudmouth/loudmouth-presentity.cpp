@@ -157,6 +157,14 @@ LM::Presentity::populate_menu (Ekiga::MenuBuilder& builder)
   const gchar* subscription = lm_message_node_get_attribute (item, "subscription");
   const gchar* ask = lm_message_node_get_attribute (item, "ask");
 
+  if ( !has_chat) {
+
+    builder.add_action ("im-message-new", _("Start chat"), boost::ref (chat_requested));
+  } else {
+
+    builder.add_action ("im-message-new", _("Continue chat"), boost::ref (chat_requested));
+  }
+
   builder.add_action ("edit", _("_Edit"),
 		      boost::bind (&LM::Presentity::edit_presentity, this));
 
@@ -180,14 +188,6 @@ LM::Presentity::populate_menu (Ekiga::MenuBuilder& builder)
 
     builder.add_action ("stop", _("Forbid him/her to see my status"), boost::bind (&LM::Presentity::revoke_from, this));
     builder.add_action ("stop", _("Stop getting his/her status"), boost::bind (&LM::Presentity::stop_to, this));
-  }
-
-  if ( !has_chat) {
-
-    builder.add_action ("im-message-new", _("Start chat"), boost::ref (chat_requested));
-  } else {
-
-    builder.add_action ("im-message-new", _("Continue chat"), boost::ref (chat_requested));
   }
 
   builder.add_action ("remove", _("_Remove"),
