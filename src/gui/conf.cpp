@@ -172,6 +172,12 @@ gnomemeeting_conf_upgrade ()
   }
   g_free (plugin);
 
+  // a migration could be checked like this:
+  // version >= first version where the old option appeared
+  // && version <= last version where the new option still does not exist
+  // this allows to read the old option only when it exists
+  //   and also not to be used during the very first execution of ekiga
+
   // migrate from Disable to Enable network detection
   if (version >= 3020 && version < 3030)
     gm_conf_set_bool (NAT_KEY "enable_stun",
@@ -182,13 +188,13 @@ gnomemeeting_conf_upgrade ()
     gm_conf_set_bool (AUDIO_CODECS_KEY "enable_echo_cancellation",
                       gm_conf_get_bool (AUDIO_CODECS_KEY "enable_echo_cancelation"));
 
-  // a migration could be checked like this:
-  // version >= first version where the old option appeared
-  // && version <= last version where the new option still does not exist
-  // this allows to read the old option only when it exists
-  //   and also not to be used during the very first execution of ekiga
-
-  // Dams: This is wrong, look below
+  // migrate short_status
+  gchar *ss = gm_conf_get_string (PERSONAL_DATA_KEY "short_status");
+  if (ss && !strcmp (ss, "online"))
+    gm_conf_set_string (PERSONAL_DATA_KEY "short_status", "available");
+  else if (ss && !strcmp (ss, "dnd"))
+    gm_conf_set_string (PERSONAL_DATA_KEY "short_status", "busy");
+  g_free (ss);
 
   // migrate custom statuses from online to available, and from dnd to busy
   GSList *old_values = NULL;
