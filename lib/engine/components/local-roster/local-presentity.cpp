@@ -383,6 +383,7 @@ void
 Local::Presentity::rename_group (const std::string old_name,
 				 const std::string new_name)
 {
+  bool old_name_present = false;
   bool already_in_new_name = false;
   std::set<xmlNodePtr> nodes_to_remove;
 
@@ -402,13 +403,12 @@ Local::Presentity::rename_group (const std::string old_name,
 
 	if (xml_str != NULL) {
 
-	  if (old_name == (const char*)xml_str) {
-
+	  if (!xmlStrcasecmp ((const xmlChar*)old_name.c_str (), xml_str)) {
 	    nodes_to_remove.insert (child); // don't free what we loop on!
+            old_name_present = true;
 	  }
 
-	  if (new_name == (const char*)xml_str) {
-
+	  if (!xmlStrcasecmp ((const xmlChar*)new_name.c_str (), xml_str)) {
 	    already_in_new_name = true;
 	  }
 
@@ -427,7 +427,7 @@ Local::Presentity::rename_group (const std::string old_name,
     xmlFreeNode (*iter);
   }
 
-  if ( !already_in_new_name) {
+  if (old_name_present && !already_in_new_name) {
 
     xmlNewChild (node, NULL,
 		 BAD_CAST "group",
