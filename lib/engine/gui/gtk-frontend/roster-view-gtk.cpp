@@ -1227,6 +1227,7 @@ roster_view_gtk_find_iter_for_group (RosterViewGtk *view,
     gtk_tree_store_set (view->priv->store, iter,
                         COLUMN_TYPE, TYPE_GROUP,
                         COLUMN_HEAP, heap.get (),
+                        COLUMN_NAME, name.c_str (),
                         COLUMN_GROUP_NAME, name.c_str (),
                         -1);
   }
