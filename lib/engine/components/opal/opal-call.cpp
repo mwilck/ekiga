@@ -260,7 +260,7 @@ const std::string
 Opal::Call::get_duration () const
 {
   std::stringstream duration;
-  
+
   if (start_time.IsValid () && IsEstablished ()) {
 
     PTimeInterval t = PTime () - start_time;
@@ -274,17 +274,30 @@ Opal::Call::get_duration () const
 }
 
 
-time_t 
+time_t
 Opal::Call::get_start_time () const
 {
   return start_time.GetTimeInSeconds ();
 }
 
 
-bool 
+bool
 Opal::Call::is_outgoing () const
 {
   return outgoing;
+}
+
+
+// if the parameter is not valid utf8, remove from it all the chars
+//   after the first invalid utf8 char, so that it becomes valid utf8
+static void
+make_valid_utf8 (string & str)
+{
+  const char *pos;
+  if (!g_utf8_validate (str.c_str(), -1, &pos)) {
+    PTRACE (4, "Ekiga\tTrimming invalid UTF-8 string: " << str.c_str());
+    str = str.substr (0, pos - str.c_str()).append ("...");
+  }
 }
 
 
@@ -293,7 +306,7 @@ Opal::Call::parse_info (OpalConnection & connection)
 {
   char start_special_chars [] = "$";
   char end_special_chars [] = "([;=";
-  
+
   std::string l_party_name;
   std::string r_party_name;
   std::string app;
@@ -315,7 +328,11 @@ Opal::Call::parse_info (OpalConnection & connection)
       remote_party_name = r_party_name;
     if (!app.empty ())
       remote_application = app;
-    
+
+    make_valid_utf8 (remote_party_name);
+    make_valid_utf8 (remote_application);
+    make_valid_utf8 (remote_uri);
+
     strip_special_chars (remote_party_name, end_special_chars, false);
     strip_special_chars (remote_application, end_special_chars, false);
     strip_special_chars (remote_uri, end_special_chars, false);
@@ -329,7 +346,7 @@ Opal::Call::parse_info (OpalConnection & connection)
 PBoolean
 Opal::Call::OnEstablished (OpalConnection & connection)
 {
-  RTP_Session *session = NULL; 
+  RTP_Session *session = NULL;
   OpalMediaStreamPtr stream;
 
   NoAnswerTimer.Stop (false);
@@ -347,7 +364,7 @@ Opal::Call::OnEstablished (OpalConnection & connection)
 
       session = PDownCast (OpalRTPConnection, &connection)->GetSession (stream->GetSessionID ());
       if (session) {
-      
+
         session->SetIgnorePayloadTypeChanges (TRUE);
         session->SetRxStatisticsInterval(50);
         session->SetTxStatisticsInterval(50);
@@ -355,7 +372,7 @@ Opal::Call::OnEstablished (OpalConnection & connection)
     }
 
     stream = connection.GetMediaStream (OpalMediaType::Video (), false);
-    if (stream != NULL) { 
+    if (stream != NULL) {
 
       session = PDownCast (OpalRTPConnection, &connection)->GetSession (stream->GetSessionID ());
       if (session) {
@@ -366,12 +383,12 @@ Opal::Call::OnEstablished (OpalConnection & connection)
       }
     }
   }
-  
+
   return OpalCall::OnEstablished (connection);
 }
 
 
-void 
+void
 Opal::Call::OnReleased (OpalConnection & connection)
 {
   parse_info (connection);
@@ -510,7 +527,7 @@ Opal::Call::OnSetUp (OpalConnection & connection)
 
   new CallSetup (*this, connection);
 
-  return true; 
+  return true;
 }
 
 
@@ -524,9 +541,9 @@ Opal::Call::OnAlerting (OpalConnection & connection)
 }
 
 
-void 
-Opal::Call::OnHold (OpalConnection & /*connection*/, 
-                    bool /*from_remote*/, 
+void
+Opal::Call::OnHold (OpalConnection & /*connection*/,
+                    bool /*from_remote*/,
                     bool on_hold)
 {
   if (on_hold)
