@@ -635,7 +635,7 @@ update_offline_count (RosterViewGtk* self,
 
   total = gtk_tree_model_iter_n_children (model, iter);
   gtk_tree_model_get (model, iter, COLUMN_GROUP_NAME, &name, -1);
-  name_with_count = g_strdup_printf ("%s (%d/%d)", name, total - offline_count, total);
+  name_with_count = g_strdup_printf ("%s - (%d/%d)", name, total - offline_count, total);
   gtk_tree_store_set (GTK_TREE_STORE (model), iter,
                       COLUMN_NAME, name_with_count, -1);
   g_free (name);
@@ -730,10 +730,12 @@ on_view_event_after (GtkWidget *tree_view,
 
     gint column_type;
     gchar *name = NULL;
+    gchar *group_name = NULL;
     Ekiga::Heap *heap = NULL;
     Ekiga::Presentity *presentity = NULL;
     gtk_tree_model_get (model, &iter,
                         COLUMN_NAME, &name,
+                        COLUMN_GROUP_NAME, &group_name,
                         COLUMN_TYPE, &column_type,
                         COLUMN_HEAP, &heap,
                         COLUMN_PRESENTITY, &presentity,
@@ -750,10 +752,10 @@ on_view_event_after (GtkWidget *tree_view,
       break;
     case TYPE_GROUP:
 
-      if (event->type == GDK_BUTTON_PRESS && event->button == 1 && name)
-        on_clicked_fold (self, path, name);
+      if (event->type == GDK_BUTTON_PRESS && event->button == 1 && group_name)
+        on_clicked_fold (self, path, group_name);
       if (event->type == GDK_BUTTON_PRESS && event->button == 3)
-        on_clicked_show_heap_group_menu (heap, name, event);
+        on_clicked_show_heap_group_menu (heap, group_name, event);
       break;
     case TYPE_PRESENTITY:
 
@@ -1580,7 +1582,7 @@ roster_view_gtk_populate_menu_for_selected (RosterViewGtk* self,
     Ekiga::Heap* heap = NULL;
     Ekiga::Presentity *presentity = NULL;
     gtk_tree_model_get (model, &iter,
-			COLUMN_NAME, &name,
+			COLUMN_GROUP_NAME, &name,
 			COLUMN_TYPE, &column_type,
 			COLUMN_HEAP, &heap,
 			COLUMN_PRESENTITY, &presentity,
