@@ -133,7 +133,6 @@ Opal::Sip::EndPoint::EndPoint (Opal::CallManager & _manager,
 {
   boost::shared_ptr<Ekiga::ChatCore> chat_core = core.get<Ekiga::ChatCore> ("chat-core");
 
-  auto_answer_call = false;
   protocol_name = "sip";
   uri_prefix = "sip:";
   listen_port = (_listen_port > 0 ? _listen_port : 5060);
@@ -864,40 +863,12 @@ Opal::Sip::EndPoint::OnIncomingConnection (OpalConnection &connection,
 
       if (!forward_uri.empty () && manager.get_forward_on_no_answer ())
         call->set_no_answer_forward (manager.get_reject_delay (), forward_uri);
-      else if (auto_answer_call || manager.get_auto_answer ()) {
-        auto_answer_call = false;
-        PTRACE (3, "Opal::Sip::EndPoint\tAuto-Answering incoming connection");
-        call->answer ();
-      }
       else // Pending
         call->set_reject_delay (manager.get_reject_delay ());
     }
   }
 
   return true;
-}
-
-
-PBoolean
-Opal::Sip::EndPoint::OnReceivedINVITE (OpalTransport& transport,
-                                       SIP_PDU* pdu)
-{
-  if (pdu == NULL)
-    return SIPEndPoint::OnReceivedINVITE (transport, pdu);
-
-  PString str;
-  int appearance;
-
-  pdu->GetMIME ().GetAlertInfo (str, appearance);
-  static const char ringanswer[] = "Ring Answer";
-  PINDEX pos = str.Find (ringanswer);
-
-  if (pos != P_MAX_INDEX) {
-    PTRACE (3, "Opal::Sip::EndPoint\tRing Answer in AlertInfo header, will Auto-Answer incoming connection");
-    auto_answer_call = true;
-  }
-
-  return SIPEndPoint::OnReceivedINVITE (transport, pdu);
 }
 
 

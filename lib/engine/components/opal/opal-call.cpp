@@ -43,8 +43,9 @@
 #include <opal/pcss.h>
 #include <sip/sippdu.h>
 
-#include "opal-call.h"
 #include "call.h"
+#include "opal-call.h"
+#include "opal-call-manager.h"
 #include "call-core.h"
 
 using namespace Opal;
@@ -92,10 +93,10 @@ private:
 };
 
 
-Opal::Call::Call (OpalManager& _manager,
+Opal::Call::Call (Opal::CallManager& _manager,
 		  Ekiga::ServiceCore& _core,
 		  const std::string& uri)
-  : OpalCall (_manager), Ekiga::Call (), core (_core), remote_uri (uri),
+  : OpalCall (_manager), Ekiga::Call (), core (_core), manager(_manager), remote_uri (uri),
     call_setup(false), jitter(0), outgoing(false)
 {
   notification_core = core.get<Ekiga::NotificationCore> ("notification-core");
@@ -137,7 +138,7 @@ Opal::Call::answer ()
   if (!is_outgoing () && !IsEstablished ()) {
     PSafePtr<OpalPCSSConnection> connection = GetConnectionAs<OpalPCSSConnection>();
     if (connection != NULL) {
-      connection->AcceptIncoming();
+      connection->AcceptIncoming ();
     }
   }
 }
@@ -508,6 +509,9 @@ Opal::Call::OnAnswerCall (OpalConnection & connection,
   remote_party_name = (const char *) caller;
 
   parse_info (connection);
+
+  if (manager.get_auto_answer ())
+    return OpalConnection::AnswerCallNow;
 
   return OpalCall::OnAnswerCall (connection, caller);
 }

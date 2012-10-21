@@ -51,6 +51,7 @@ class GMManager;
 
 namespace Opal {
 
+  class CallManager;
   class Call
     : public OpalCall,
       public Ekiga::Call,
@@ -59,7 +60,9 @@ namespace Opal {
 
 public:
 
-    Call (OpalManager &_manager, Ekiga::ServiceCore& _core, const std::string & uri);
+    Call (CallManager &_manager,
+          Ekiga::ServiceCore& _core,
+          const std::string & uri);
 
     ~Call ();
 
@@ -221,6 +224,7 @@ private:
      * Variables
      */
     Ekiga::ServiceCore& core;
+    CallManager & manager;
     boost::shared_ptr<Ekiga::NotificationCore> notification_core;
 
     std::string local_party_name;
