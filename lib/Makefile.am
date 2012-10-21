@@ -73,10 +73,10 @@ EXTRA_DIST = gmmarshallers.list
 BUILT_SOURCES = gmmarshallers.h gmmarshallers.c
 
 gmmarshallers.h: gmmarshallers.list
-	$(LIBTOOL) --mode=execute glib-genmarshal --prefix=gm_marshal $^ --header > $@.tmp && mv $@.tmp $@
+	$(AM_V_GEN)$(LIBTOOL) --mode=execute glib-genmarshal --prefix=gm_marshal $^ --header > $@.tmp && mv $@.tmp $@
 
 gmmarshallers.c: gmmarshallers.list
-	$(LIBTOOL) --mode=execute glib-genmarshal --prefix=gm_marshal $^ --body > $@.tmp && mv $@.tmp $@
+	$(AM_V_GEN)$(LIBTOOL) --mode=execute glib-genmarshal --prefix=gm_marshal $^ --body > $@.tmp && mv $@.tmp $@
 
 libekiga_la_SOURCES += \
 	$(top_srcdir)/lib/toolbox.h \
@@ -639,10 +639,10 @@ CLEANFILES += $(builddir)/hal-marshal.h $(builddir)/hal-marshal.c
 EXTRA_DIST += $(components_dir)/hal-dbus/hal-marshal.list
 
 $(builddir)/hal-marshal.h: $(components_dir)/hal-dbus/hal-marshal.list
-	$(LIBTOOL) --mode=execute glib-genmarshal --prefix=gm_hal_dbus_marshal $^ --header > $@.tmp && mv $@.tmp $@
+	$(AM_V_GEN)$(LIBTOOL) --mode=execute glib-genmarshal --prefix=gm_hal_dbus_marshal $^ --header > $@.tmp && mv $@.tmp $@
 
 $(builddir)/hal-marshal.c: $(components_dir)/hal-dbus/hal-marshal.list
-	$(LIBTOOL) --mode=execute glib-genmarshal --prefix=gm_hal_dbus_marshal $^ --body > $@.tmp && mv $@.tmp $@
+	$(AM_V_GEN)$(LIBTOOL) --mode=execute glib-genmarshal --prefix=gm_hal_dbus_marshal $^ --body > $@.tmp && mv $@.tmp $@
 
 endif
 
