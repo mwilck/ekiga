@@ -104,6 +104,15 @@ History::Book::get_name () const
 }
 
 void
+History::Book::visit_contacts (boost::function1<bool, Ekiga::ContactPtr> visitor) const
+{
+  for (std::list<ContactPtr>::const_iterator iter = ordered_contacts.begin ();
+       iter != ordered_contacts.end();
+       ++iter)
+    visitor (*iter);
+}
+
+void
 History::Book::add (xmlNodePtr node)
 {
   common_add (ContactPtr (new Contact (core, doc, node)));
@@ -173,7 +182,12 @@ History::Book::clear ()
 {
   xmlNodePtr root = NULL;
 
-  remove_all_objects ();
+  std::list<ContactPtr> old_contacts = ordered_contacts;
+  ordered_contacts.clear ();
+  for (std::list<ContactPtr>::iterator iter = old_contacts.begin ();
+       iter != old_contacts.end();
+       ++iter)
+    contact_removed (*iter);
 
   doc = boost::shared_ptr<xmlDoc> (xmlNewDoc (BAD_CAST "1.0"), xmlFreeDoc);
   root = xmlNewDocNode (doc.get (), NULL, BAD_CAST "list", NULL);
@@ -209,8 +223,14 @@ History::Book::on_cleared_call (boost::shared_ptr<Ekiga::CallManager> /*manager*
 void
 History::Book::common_add (ContactPtr contact)
 {
-  add_contact (contact);
+  contact->questions.connect (boost::ref (questions));
+  /* nothing to do when the contact is updated or removed:
+   * they don't get updated and only get removed all at the same time
+   */
+
   ordered_contacts.push_back (contact);
+  contact_added (contact);
+  updated ();
 }
 
 void

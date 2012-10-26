@@ -52,7 +52,7 @@ namespace History
  */
 
   class Book:
-    public Ekiga::BookImpl<Contact>,
+    public Ekiga::Book,
     public boost::signals::trackable
   {
   public:
@@ -62,6 +62,8 @@ namespace History
     Book (Ekiga::ServiceCore &_core);
 
     ~Book ();
+
+    void visit_contacts (boost::function1<bool, Ekiga::ContactPtr>) const;
 
     const std::string get_name () const;
 
