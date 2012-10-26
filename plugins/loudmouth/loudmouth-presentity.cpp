@@ -164,6 +164,7 @@ LM::Presentity::populate_menu (Ekiga::MenuBuilder& builder)
 
     builder.add_action ("im-message-new", _("Continue chat"), boost::ref (chat_requested));
   }
+  builder.add_separator ();
 
   builder.add_action ("edit", _("_Edit"),
 		      boost::bind (&LM::Presentity::edit_presentity, this));
