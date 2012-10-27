@@ -457,7 +457,7 @@ LM::HeapRoster::on_chat_requested (PresentityPtr presentity)
   dialect->open_chat (presentity);
 }
 
-struct existing_groups_helper
+struct lm_existing_groups_helper
 {
   std::set<std::string> groups;
 
@@ -478,7 +478,7 @@ LM::HeapRoster::existing_groups () const
   std::set<std::string> result;
 
   {
-    existing_groups_helper helper;
+    lm_existing_groups_helper helper;
     visit_presentities (boost::ref (helper));
     result = helper.groups;
   }
