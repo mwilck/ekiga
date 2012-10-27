@@ -35,8 +35,7 @@
  *
  */
 
-#include "loudmouth-main.h"
-
+#include "kickstart.h"
 #include "presence-core.h"
 #include "account-core.h"
 #include "chat-core.h"
