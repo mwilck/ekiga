@@ -656,33 +656,6 @@ libekiga_la_LDFLAGS += $(SHM_LIBS)
 endif
 
 ##
-# Support for avahi
-##
-if HAVE_AVAHI
-
-INCLUDES += \
-	-I$(top_srcdir)/lib/engine/components/avahi \
-	-I$(top_srcdir)/lib/engine/components/avahi-publisher
-
-libekiga_la_SOURCES += \
-	$(components_dir)/avahi-publisher/avahi-publisher-main.cpp \
-	$(components_dir)/avahi-publisher/avahi-publisher-main.h \
-	$(components_dir)/avahi-publisher/avahi-publisher.cpp \
-	$(components_dir)/avahi-publisher/avahi-publisher.h
-
-libekiga_la_SOURCES += \
-	$(components_dir)/avahi/avahi-heap.h \
-	$(components_dir)/avahi/avahi-heap.cpp \
-	$(components_dir)/avahi/avahi-cluster.h \
-	$(components_dir)/avahi/avahi-cluster.cpp \
-	$(components_dir)/avahi/avahi-main.h \
-	$(components_dir)/avahi/avahi-main.cpp
-
-libekiga_la_LDFLAGS += $(AVAHI_LIBS)
-
-endif
-
-##
 # Sources of the libnotify component
 ##
 if HAVE_NOTIFY

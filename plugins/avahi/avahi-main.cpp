@@ -1,6 +1,6 @@
 
 /* Ekiga -- A VoIP and Video-Conferencing application
- * Copyright (C) 2000-2009 Damien Sandras <dsandras@seconix.com>
+ * Copyright (C) 2000-2012 Damien Sandras <dsandras@seconix.com>
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -29,14 +29,14 @@
 /*
  *                         avahi-main.cpp  -  description
  *                         ------------------------------------------
- *   begin                : written in 2007 by Julien Puydt
- *   copyright            : (c) 2007 by Julien Puydt
- *   description          : code to hook avahi into the main program
+ *   begin                : written in 2012 by Julien Puydt
+ *   copyright            : (c) 2012 Julien Puydt
+ *   description          : declare the avahi code as a plugin
  *
  */
 
-#include "avahi-main.h"
-#include "presence-core.h"
+#include "kickstart.h"
+#include "avahi-publisher.h"
 #include "avahi-cluster.h"
 
 struct AVAHISpark: public Ekiga::Spark
@@ -49,8 +49,17 @@ struct AVAHISpark: public Ekiga::Spark
 			    char** /*argv*/[])
   {
     boost::shared_ptr<Ekiga::PresenceCore> presence_core = core.get<Ekiga::PresenceCore> ("presence-core");
+    boost::shared_ptr<Ekiga::CallCore> call_core = core.get<Ekiga::CallCore> ("call-core");
+    boost::shared_ptr<Ekiga::PersonalDetails> details = core.get<Ekiga::PersonalDetails> ("personal-details");
 
-    if (presence_core) {
+    if (presence_core && call_core && details) {
+
+      boost::shared_ptr<Avahi::PresencePublisher> publisher (new Avahi::PresencePublisher (core, *details, *call_core));
+      if (core.add (publisher)) {
+
+	presence_core->add_presence_publisher (publisher);
+	result = true;
+      }
 
       boost::shared_ptr<Avahi::Cluster> cluster (new Avahi::Cluster (core));
       if (core.add (cluster)) {
@@ -72,8 +81,8 @@ struct AVAHISpark: public Ekiga::Spark
   bool result;
 };
 
-void
-avahi_init (Ekiga::KickStart& kickstart)
+extern "C" void
+ekiga_plugin_init (Ekiga::KickStart& kickstart)
 {
   boost::shared_ptr<Ekiga::Spark> spark(new AVAHISpark);
   kickstart.add_spark (spark);

@@ -1,3 +1,7 @@
+if HAVE_AVAHI
+AVAHI_DIR = avahi
+endif
+
 if HAVE_EDS
 EVOLUTION_DIR = evolution
 endif
@@ -27,6 +31,7 @@ XCAP_DIRS = xcap resource-list
 endif
 
 SUBDIRS = \
+	$(AVAHI_DIR) \
 	$(EVOLUTION_DIR) \
 	$(GSTREAMER_DIR) \
 	$(KAB_DIR) \

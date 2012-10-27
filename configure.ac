@@ -870,6 +870,7 @@ pixmaps/Makefile
 sounds/Makefile
 help/Makefile
 plugins/Makefile
+plugins/avahi/Makefile
 plugins/evolution/Makefile
 plugins/gstreamer/Makefile
 plugins/kab/Makefile

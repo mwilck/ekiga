@@ -84,11 +84,6 @@
 
 #include "opal-main.h"
 
-#ifdef HAVE_AVAHI
-#include "avahi-main.h"
-#include "avahi-publisher-main.h"
-#endif
-
 #ifdef HAVE_NOTIFY
 #include "libnotify-main.h"
 #endif
@@ -178,11 +173,6 @@ engine_init (Ekiga::ServiceCorePtr service_core,
 #endif
 
   opal_init (kickstart);
-
-#ifdef HAVE_AVAHI
-  avahi_init (kickstart);
-  avahi_publisher_init (kickstart);
-#endif
 
   history_init (kickstart);
 
