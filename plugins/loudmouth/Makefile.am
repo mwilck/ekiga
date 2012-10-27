@@ -12,7 +12,6 @@ INCLUDES = \
 	-I$(top_srcdir)/lib/engine/chat
 
 libgmloudmouth_la_SOURCES = \
-	$(loudmouth_dir)/loudmouth-main.h \
 	$(loudmouth_dir)/loudmouth-main.cpp \
 	$(loudmouth_dir)/loudmouth-handler.h \
 	$(loudmouth_dir)/loudmouth-helpers.h \
