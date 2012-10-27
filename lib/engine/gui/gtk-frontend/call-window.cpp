@@ -84,7 +84,7 @@
 
 #include <algorithm>
 
-enum CallingState {Standby, Calling, Connected, Called};
+enum CallingState {Standby, Calling, Ringing, Connected, Called};
 
 enum DeviceType {AudioInput, AudioOutput, Ringer, VideoInput};
 struct deviceStruct {
@@ -107,9 +107,11 @@ struct _EkigaCallWindowPrivate
   unsigned calling_state;
 
   GtkWidget *main_video_image;
+  GtkWidget *spinner;
   GtkWidget *info_text;
 
   GtkWidget *call_frame;
+  GtkWidget *avatar_image;
 
   GtkWidget *main_menu;
   GtkWidget *call_panel_toolbar;
@@ -332,6 +334,10 @@ static void on_audiooutput_device_error_cb (Ekiga::AudioOutputManager & /*manage
 static void on_setup_call_cb (boost::shared_ptr<Ekiga::CallManager> manager,
                               boost::shared_ptr<Ekiga::Call>  call,
                               gpointer self);
+
+static void on_ringing_call_cb (boost::shared_ptr<Ekiga::CallManager> manager,
+                                boost::shared_ptr<Ekiga::Call>  call,
+                                gpointer self);
 
 static void on_established_call_cb (boost::shared_ptr<Ekiga::CallManager>  /*manager*/,
                                     boost::shared_ptr<Ekiga::Call>  call,
@@ -1125,6 +1131,20 @@ on_setup_call_cb (G_GNUC_UNUSED boost::shared_ptr<Ekiga::CallManager> manager,
 }
 
 static void
+on_ringing_call_cb (G_GNUC_UNUSED boost::shared_ptr<Ekiga::CallManager> manager,
+                    G_GNUC_UNUSED boost::shared_ptr<Ekiga::Call>  call,
+                    gpointer self)
+{
+  EkigaCallWindow *cw = EKIGA_CALL_WINDOW (self);
+
+  g_return_if_fail (cw);
+
+  cw->priv->calling_state = Ringing;
+
+  ekiga_call_window_update_calling_state (cw, cw->priv->calling_state);
+}
+
+static void
 on_established_call_cb (boost::shared_ptr<Ekiga::CallManager>  /*manager*/,
                         boost::shared_ptr<Ekiga::Call>  call,
                         gpointer self)
@@ -1373,6 +1393,11 @@ ekiga_call_window_update_calling_state (EkigaCallWindow *cw,
       gtk_widget_set_sensitive (GTK_WIDGET (cw->priv->hangup_button), false);
       gtk_widget_set_sensitive (GTK_WIDGET (cw->priv->hold_button), false);
 
+      /* Spinner updates */
+      gtk_widget_show (cw->priv->avatar_image);
+      gtk_widget_hide (cw->priv->spinner);
+      gtk_spinner_stop (GTK_SPINNER (cw->priv->spinner));
+
       /* Destroy the transfer call popup */
       if (cw->priv->transfer_call_popup)
         gtk_dialog_response (GTK_DIALOG (cw->priv->transfer_call_popup),
@@ -1392,11 +1417,23 @@ ekiga_call_window_update_calling_state (EkigaCallWindow *cw,
       gtk_menu_set_sensitive (cw->priv->main_menu, "disconnect", true);
       break;
 
+    case Ringing:
+
+      /* Spinner updates */
+      gtk_widget_hide (cw->priv->avatar_image);
+      gtk_widget_show (cw->priv->spinner);
+      gtk_spinner_start (GTK_SPINNER (cw->priv->spinner));
+      break;
 
     case Connected:
 
       /* Show/hide call frame */
       gtk_widget_show (cw->priv->call_frame);
+
+      /* Spinner updates */
+      gtk_widget_show (cw->priv->avatar_image);
+      gtk_widget_hide (cw->priv->spinner);
+      gtk_spinner_start (GTK_SPINNER (cw->priv->spinner));
 
       /* Update the menus and toolbar items */
       gtk_menu_set_sensitive (cw->priv->main_menu, "connect", false);
@@ -2223,6 +2260,9 @@ ekiga_call_window_connect_engine_signals (EkigaCallWindow *cw)
   conn = call_core->setup_call.connect (boost::bind (&on_setup_call_cb, _1, _2, (gpointer) cw));
   cw->priv->connections.push_back (conn);
 
+  conn = call_core->ringing_call.connect (boost::bind (&on_ringing_call_cb, _1, _2, (gpointer) cw));
+  cw->priv->connections.push_back (conn);
+
   conn = call_core->established_call.connect (boost::bind (&on_established_call_cb, _1, _2, (gpointer) cw));
   cw->priv->connections.push_back (conn);
 
@@ -2280,10 +2320,12 @@ ekiga_call_window_init_gui (EkigaCallWindow *cw)
   gtk_container_add (GTK_CONTAINER (event_box), vbox);
   gtk_container_add (GTK_CONTAINER (frame), event_box);
   gtk_container_add (GTK_CONTAINER (cw), frame);
+  gtk_widget_show_all (frame);
 
   /* Menu */
   ekiga_call_window_init_menu (cw);
   gtk_box_pack_start (GTK_BOX (vbox), GTK_WIDGET (cw->priv->main_menu), false, false, 0);
+  gtk_widget_show_all (cw->priv->main_menu);
 
   /* The widgets toolbar */
   cw->priv->call_panel_toolbar = gtk_toolbar_new ();
@@ -2294,18 +2336,27 @@ ekiga_call_window_init_gui (EkigaCallWindow *cw)
   alignment = gtk_alignment_new (0.0, 0.0, 1.0, 0.0);
   gtk_container_add (GTK_CONTAINER (alignment), cw->priv->call_panel_toolbar);
   gtk_box_pack_start (GTK_BOX (vbox), GTK_WIDGET (alignment), false, false, 0);
+  gtk_widget_show_all (alignment);
 
   /* The frame that contains the video */
   cw->priv->main_video_image = gtk_image_new ();
   gtk_box_pack_start (GTK_BOX (vbox), GTK_WIDGET (cw->priv->main_video_image), true, true, 0);
+  gtk_widget_show (cw->priv->main_video_image);
 
   /* The frame that contains information about the call */
   cw->priv->call_frame = gtk_frame_new (NULL);
-  gtk_frame_set_shadow_type (GTK_FRAME (cw->priv->call_frame), GTK_SHADOW_ETCHED_IN);
-  hbox = gtk_hbox_new (false, 2);
+  gtk_frame_set_shadow_type (GTK_FRAME (cw->priv->call_frame), GTK_SHADOW_NONE);
+  hbox = gtk_hbox_new (false, 0);
+  gtk_widget_show (cw->priv->call_frame);
+  gtk_widget_show (hbox);
 
-  image = gtk_image_new_from_icon_name ("avatar-default", GTK_ICON_SIZE_LARGE_TOOLBAR);
-  gtk_box_pack_start (GTK_BOX (hbox), image, false, false, 2);
+  cw->priv->avatar_image = gtk_image_new_from_icon_name ("avatar-default", GTK_ICON_SIZE_LARGE_TOOLBAR);
+  gtk_box_pack_start (GTK_BOX (hbox), cw->priv->avatar_image, false, false, 12);
+  gtk_widget_show (cw->priv->avatar_image);
+
+  cw->priv->spinner = gtk_spinner_new ();
+  gtk_widget_set_size_request (GTK_WIDGET (cw->priv->spinner), 24, 24);
+  gtk_box_pack_start (GTK_BOX (hbox), cw->priv->spinner, false, false, 12);
 
   cw->priv->info_text = gtk_text_view_new ();
   gtk_text_view_set_editable (GTK_TEXT_VIEW (cw->priv->info_text), false);
@@ -2319,6 +2370,7 @@ ekiga_call_window_init_gui (EkigaCallWindow *cw)
   gtk_box_pack_start (GTK_BOX (hbox), alignment, false, false, 2);
   gtk_container_add (GTK_CONTAINER (cw->priv->call_frame), hbox);
   gtk_box_pack_start (GTK_BOX (vbox), GTK_WIDGET (cw->priv->call_frame), true, true, 2);
+  gtk_widget_show_all (alignment);
 
   /* Pick-up */
   item = gtk_tool_item_new ();
@@ -2419,7 +2471,7 @@ ekiga_call_window_init_gui (EkigaCallWindow *cw)
 
   g_signal_connect (cw->priv->hold_button, "clicked",
 		    G_CALLBACK (hold_current_call_cb), cw);
-  gtk_widget_show_all (frame);
+  gtk_widget_show_all (cw->priv->call_panel_toolbar);
 
   /* The statusbar */
   cw->priv->statusbar = gm_statusbar_new ();
@@ -2437,7 +2489,7 @@ ekiga_call_window_init_gui (EkigaCallWindow *cw)
   cw->priv->statusbar_ebox = gtk_event_box_new ();
   gtk_container_add (GTK_CONTAINER (cw->priv->statusbar_ebox), cw->priv->statusbar);
   gtk_box_pack_start (GTK_BOX (vbox), GTK_WIDGET (cw->priv->statusbar_ebox), false, false, 0);
-  gtk_widget_show_all (vbox);
+  gtk_widget_show_all (cw->priv->statusbar_ebox);
 
   /* Logo */
   gtk_widget_realize (cw->priv->main_video_image);
