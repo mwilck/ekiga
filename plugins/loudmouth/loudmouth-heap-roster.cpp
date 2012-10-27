@@ -294,6 +294,34 @@ LM::HeapRoster::parse_roster (LmMessageNode* query)
       PresentityPtr presentity(new Presentity (connection, node));
       presentity->chat_requested.connect (boost::bind (&LM::HeapRoster::on_chat_requested, this, presentity));
       add_presentity (presentity);
+      const gchar* subscription = lm_message_node_get_attribute (node, "subscription");
+      if (subscription != NULL && strcmp (subscription, "none") == 0) {
+
+	const gchar* ask = lm_message_node_get_attribute (node, "ask");
+	if (ask == NULL || (ask != NULL && strcmp (ask, "subscribe") != 0)) {
+
+	  std::set<std::string>::iterator iter = items_added_by_me.find (presentity->get_jid ());
+	  if (iter != items_added_by_me.end ()) {
+
+	    /* if we're here then this is a new contact, we are not subscribed to it,
+	     * and we did not ask to be subscribed to it and we added it recently:
+	     * let's ask for subscription!
+	     *
+	     * Beware that the first three actions could have been done from another client,
+	     * so that last condition is important so we don't start doing things
+	     * in the back of the user!
+	     */
+	    items_added_by_me.erase (iter);
+	    LmMessage* subscribe = lm_message_new (NULL, LM_MESSAGE_TYPE_PRESENCE);
+	    lm_message_node_set_attributes (lm_message_get_node (subscribe),
+					    "to", presentity->get_jid ().c_str (),
+					    "type", "subscribe",
+					    NULL);
+	    lm_connection_send (connection, subscribe, NULL);
+	    lm_message_unref (subscribe);
+	  }
+	}
+      }
     }
   }
 }
@@ -350,6 +378,7 @@ LM::HeapRoster::add_item_form_submitted (bool submitted,
       g_free (escaped);
     }
 
+    items_added_by_me.insert (jid);
     lm_connection_send (connection, message, NULL);
     lm_message_unref (message);
   }

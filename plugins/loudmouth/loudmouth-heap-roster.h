@@ -121,6 +121,15 @@ namespace LM
     LmHandlerResult message_handler_muc (LmMessage* message);
 
     const std::set<std::string> existing_groups () const;
+
+    /* when adding an item, we first ask to add it to the roster,
+     * then get notified that it was really added,
+     * and then we could ask to subscribe to it,
+     * *but* we don't want to do that if that was done from another client
+     * so when we ask to add it, we note it in that set, so when we get
+     * notified it was added, we can know we did that and act accordingly.
+     */
+    std::set<std::string> items_added_by_me;
   };
 
   typedef boost::shared_ptr<HeapRoster> HeapRosterPtr;
