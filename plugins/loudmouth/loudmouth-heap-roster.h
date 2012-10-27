@@ -119,6 +119,8 @@ namespace LM
 
     LmHandlerResult message_handler_roster (LmMessage* message);
     LmHandlerResult message_handler_muc (LmMessage* message);
+
+    const std::set<std::string> existing_groups () const;
   };
 
   typedef boost::shared_ptr<HeapRoster> HeapRosterPtr;
