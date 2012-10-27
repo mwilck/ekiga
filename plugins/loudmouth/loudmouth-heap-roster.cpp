@@ -307,6 +307,10 @@ LM::HeapRoster::add_item ()
   request->instructions (_("Please fill in this form to add a new"
 			   " element to the remote roster"));
   request->text ("jid", _("Identifier:"), _("identifier@server"), std::string ());
+  request->text ("name", _("Name:"), "", _("Name of the contact, as shown in your roster"));
+  request->editable_set ("groups",
+			 _("Put contact in groups:"),
+			 std::set<std::string>(), existing_groups ());
 
   questions (request);
 }
@@ -319,15 +323,35 @@ LM::HeapRoster::add_item_form_submitted (bool submitted,
     return;
 
   const std::string jid = result.text ("jid");
+  const std::string contact_name = result.text ("name");
+  const std::set<std::string> groups = result.editable_set ("groups");
+
   if ( !jid.empty ()) {
 
-    LmMessage* subscribe = lm_message_new (NULL, LM_MESSAGE_TYPE_PRESENCE);
-    lm_message_node_set_attributes (lm_message_get_node (subscribe),
-				    "to", jid.c_str (),
-				    "type", "subscribe",
+    LmMessage* message = lm_message_new_with_sub_type (NULL, LM_MESSAGE_TYPE_IQ, LM_MESSAGE_SUB_TYPE_SET);
+    LmMessageNode* query = lm_message_node_add_child (lm_message_get_node (message), "query", NULL);
+    lm_message_node_set_attribute (query, "xmlns", "jabber:iq:roster");
+    LmMessageNode* node = lm_message_node_add_child (query, "item", NULL);
+    lm_message_node_set_attributes (node,
+				    "jid", jid.c_str (),
 				    NULL);
-    lm_connection_send (connection, subscribe, NULL);
-    lm_message_unref (subscribe);
+    if ( !contact_name.empty ()) {
+
+      gchar* escaped = g_markup_escape_text (contact_name.c_str (), -1);
+      lm_message_node_set_attributes (node,
+				      "name", escaped,
+				      NULL);
+    }
+
+    for (std::set<std::string>::const_iterator iter = groups.begin (); iter != groups.end (); ++iter) {
+
+      gchar* escaped = g_markup_escape_text (iter->c_str (), -1);
+      lm_message_node_add_child (node, "group", escaped);
+      g_free (escaped);
+    }
+
+    lm_connection_send (connection, message, NULL);
+    lm_message_unref (message);
   }
 }
 
