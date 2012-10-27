@@ -2356,7 +2356,7 @@ ekiga_call_window_init_gui (EkigaCallWindow *cw)
   gtk_widget_show (cw->priv->call_frame);
   gtk_widget_show (hbox);
 
-  cw->priv->avatar_image = gtk_image_new_from_icon_name ("avatar-default", GTK_ICON_SIZE_LARGE_TOOLBAR);
+  cw->priv->avatar_image = gtk_image_new_from_icon_name ("camera-web", GTK_ICON_SIZE_LARGE_TOOLBAR);
   gtk_box_pack_start (GTK_BOX (hbox), cw->priv->avatar_image, false, false, 12);
   gtk_widget_show (cw->priv->avatar_image);
 
