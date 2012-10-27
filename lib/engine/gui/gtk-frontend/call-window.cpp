@@ -1398,6 +1398,9 @@ ekiga_call_window_update_calling_state (EkigaCallWindow *cw,
       gtk_widget_hide (cw->priv->spinner);
       gtk_spinner_stop (GTK_SPINNER (cw->priv->spinner));
 
+      /* Show/hide call frame */
+      gtk_widget_hide (cw->priv->call_frame);
+
       /* Destroy the transfer call popup */
       if (cw->priv->transfer_call_popup)
         gtk_dialog_response (GTK_DIALOG (cw->priv->transfer_call_popup),
@@ -2353,12 +2356,9 @@ ekiga_call_window_init_gui (EkigaCallWindow *cw)
   cw->priv->call_frame = gtk_frame_new (NULL);
   gtk_frame_set_shadow_type (GTK_FRAME (cw->priv->call_frame), GTK_SHADOW_NONE);
   hbox = gtk_hbox_new (false, 0);
-  gtk_widget_show (cw->priv->call_frame);
-  gtk_widget_show (hbox);
 
   cw->priv->avatar_image = gtk_image_new_from_icon_name ("camera-web", GTK_ICON_SIZE_LARGE_TOOLBAR);
   gtk_box_pack_start (GTK_BOX (hbox), cw->priv->avatar_image, false, false, 12);
-  gtk_widget_show (cw->priv->avatar_image);
 
   cw->priv->spinner = gtk_spinner_new ();
   gtk_widget_set_size_request (GTK_WIDGET (cw->priv->spinner), 24, 24);
@@ -2376,7 +2376,8 @@ ekiga_call_window_init_gui (EkigaCallWindow *cw)
   gtk_box_pack_start (GTK_BOX (hbox), alignment, false, false, 2);
   gtk_container_add (GTK_CONTAINER (cw->priv->call_frame), hbox);
   gtk_box_pack_start (GTK_BOX (vbox), GTK_WIDGET (cw->priv->call_frame), true, true, 2);
-  gtk_widget_show_all (alignment);
+  gtk_widget_show_all (cw->priv->call_frame);
+  gtk_widget_hide (cw->priv->spinner);
 
   /* Pick-up */
   item = gtk_tool_item_new ();
