@@ -1078,7 +1078,13 @@ OPENLDAP::BookFormInfo (Ekiga::Form &result,
     }
   }
 
-  ldap_url_parse (new_bits.c_str(), &url_base);
+  if (ldap_url_parse (new_bits.c_str(), &url_base))
+    errmsg += _("Invalid Server URI\n");
+
+  if (!errmsg.empty()) {
+    return -1;
+  }
+
   url_host->lud_dn = ldap_strdup (base.c_str());
   url_host->lud_attrs = url_base->lud_attrs;
   url_host->lud_scope = url_base->lud_scope;
