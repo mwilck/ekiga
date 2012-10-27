@@ -1598,6 +1598,7 @@ ekiga_call_window_set_status (EkigaCallWindow *cw,
 			      const char *msg,
                               ...)
 {
+  GtkTextIter iter;
   GtkTextBuffer *text_buffer = NULL;
 
   char buffer [1025];
@@ -1615,6 +1616,11 @@ ekiga_call_window_set_status (EkigaCallWindow *cw,
     vsnprintf (buffer, 1024, msg, args);
 
   gtk_text_buffer_set_text (text_buffer, buffer, -1);
+  if (!g_strrstr (buffer, "\n")) {
+    gtk_text_buffer_get_end_iter (text_buffer, &iter);
+    gtk_text_buffer_insert (text_buffer, &iter, "\n", -1);
+  }
+
   va_end (args);
 }
 
