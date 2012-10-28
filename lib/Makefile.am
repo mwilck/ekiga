@@ -48,11 +48,11 @@ INCLUDES = \
 	-I$(top_srcdir)/lib/engine/components/ptlib
 
 AM_CFLAGS = \
-	$(GLIB_CFLAGS) $(GTK_CFLAGS) $(GCONF_CFLAGS) $(DBUS_CFLAGS) $(NOTIFY_CFLAGS)
+	$(GLIB_CFLAGS) $(GTK_CFLAGS) $(GCONF_CFLAGS) $(DBUS_CFLAGS)
 
 AM_CPPFLAGS = \
 	$(BOOST_CPPFLAGS) $(GLIB_CFLAGS) $(XML_CFLAGS) $(GTK_CFLAGS) \
-	$(DBUS_CFLAGS) $(PTLIB_CFLAGS) $(OPAL_CFLAGS) $(NOTIFY_LIBS)
+	$(DBUS_CFLAGS) $(PTLIB_CFLAGS) $(OPAL_CFLAGS)
 AM_LIBS = \
 	$(BOOST_LIBS) $(GLIB_LIBS) $(XML_LIBS) $(GTK_LIBS)
 
@@ -652,22 +652,6 @@ endif
 if HAVE_SHM
 
 libekiga_la_LDFLAGS += $(SHM_LIBS)
-
-endif
-
-##
-# Sources of the libnotify component
-##
-if HAVE_NOTIFY
-
-INCLUDES += \
-	-I$(top_srcdir)/lib/engine/components/libnotify
-
-libekiga_la_SOURCES += \
-	$(components_dir)/libnotify/libnotify-main.h \
-	$(components_dir)/libnotify/libnotify-main.cpp
-
-libekiga_la_LDFLAGS += $(NOTIFY_LIBS)
 
 endif
 

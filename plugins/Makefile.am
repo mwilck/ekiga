@@ -26,6 +26,10 @@ if HAVE_LOUDMOUTH
 LOUDMOUTH_DIR = loudmouth
 endif
 
+if HAVE_NOTIFY
+LIBNOTIFY_DIR = libnotify
+endif
+
 if HAVE_XCAP
 XCAP_DIRS = xcap resource-list
 endif
@@ -38,4 +42,5 @@ SUBDIRS = \
 	$(KDE_DIR) \
 	$(LDAP_DIR) \
 	$(LOUDMOUTH_DIR) \
+	$(LIBNOTIFY_DIR) \
 	$(XCAP_DIRS)

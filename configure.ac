@@ -876,6 +876,7 @@ plugins/gstreamer/Makefile
 plugins/kab/Makefile
 plugins/kde/Makefile
 plugins/ldap/Makefile
+plugins/libnotify/Makefile
 plugins/loudmouth/Makefile
 plugins/resource-list/Makefile
 plugins/xcap/Makefile

@@ -84,10 +84,6 @@
 
 #include "opal-main.h"
 
-#ifdef HAVE_NOTIFY
-#include "libnotify-main.h"
-#endif
-
 #define DEBUG_STARTUP 0
 
 #if DEBUG_STARTUP
@@ -155,10 +151,6 @@ engine_init (Ekiga::ServiceCorePtr service_core,
 
     return;
   }
-
-#ifdef HAVE_NOTIFY
-  libnotify_init (kickstart);
-#endif
 
   audioinput_null_init (kickstart);
   audiooutput_null_init (kickstart);

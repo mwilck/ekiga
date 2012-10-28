@@ -44,11 +44,9 @@
 
 #include "config.h"
 
-#include "services.h"
+#include "kickstart.h"
 #include "notification-core.h"
 #include "call-core.h"
-
-#include "libnotify-main.h"
 
 
 class LibNotify:
@@ -134,8 +132,8 @@ struct LIBNOTIFYSpark: public Ekiga::Spark
 
 };
 
-void
-libnotify_init (Ekiga::KickStart& kickstart)
+extern "C" void
+ekiga_plugin_init (Ekiga::KickStart& kickstart)
 {
   boost::shared_ptr<Ekiga::Spark> spark(new LIBNOTIFYSpark);
   kickstart.add_spark (spark);
