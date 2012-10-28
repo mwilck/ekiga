@@ -885,7 +885,7 @@ expand_cell_data_func (GtkTreeViewColumn *column,
   gboolean row_expanded = FALSE;
 
   path = gtk_tree_model_get_path (model, iter);
-  row_expanded = gtk_tree_view_row_expanded (GTK_TREE_VIEW (column->tree_view), path);
+  row_expanded = gtk_tree_view_row_expanded (GTK_TREE_VIEW (gtk_tree_view_column_get_tree_view (column)), path);
   gtk_tree_path_free (path);
 
   gtk_tree_model_get (model, iter, COLUMN_TYPE, &column_type, -1);
