@@ -1193,7 +1193,7 @@ ekiga_main_window_init_actions_toolbar (EkigaMainWindow *mw)
   gtk_toolbar_set_show_arrow (GTK_TOOLBAR (mw->priv->actions_toolbar), FALSE);
 
   /* The video preview button */
-  image = gtk_image_new_from_icon_name ("camera-video", GTK_ICON_SIZE_MENU);
+  image = gtk_image_new_from_icon_name ("camera-web", GTK_ICON_SIZE_MENU);
   mw->priv->preview_button = GTK_WIDGET (gtk_toggle_tool_button_new ());
   gtk_tool_button_set_icon_widget (GTK_TOOL_BUTTON (mw->priv->preview_button), image);
   gtk_tool_item_set_expand (GTK_TOOL_ITEM (mw->priv->preview_button), false);
