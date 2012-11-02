@@ -107,6 +107,10 @@ main (int argc,
 
   /* initialize platform-specific code */
   gm_platform_init ();
+#ifdef WIN32
+  // plugins (i.e. the audio/video ptlib/opal codecs) are searched in ./plugins
+  chdir (win32_datadir ());
+#endif
 
   /* Configuration backend initialization */
   gm_conf_init ();
