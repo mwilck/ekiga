@@ -404,7 +404,8 @@ $(LIBDIR)/libldap.dll: binaries $(OPENLDAP_DIR)/config.status
 ### libsasl2
 update-sources::
 	@echo --- Getting libsasl2 ...
-	$(WGET) -P $(SRCDIR) $(LIBSASL2_URL)/$(LIBSASL2_ARCHIVE)
+# without --no-check-certificate an error (certificate not trusted) is received
+	$(WGET) --no-check-certificate -P $(SRCDIR) $(LIBSASL2_URL)/$(LIBSASL2_ARCHIVE)
 
 $(LIBDIR)/libsasl2.a: $(SRCDIR)/$(LIBSASL2_ARCHIVE)
 	rm -f $(LIBDIR)/libsasl2.a
