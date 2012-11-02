@@ -1,8 +1,79 @@
                           -*- mode: outline -*-
-* Major changes between ekiga 4.0.0 and 3.2.7, details are below
-TBD
+* Major user-visible changes between ekiga 4.0.0 and 3.2.7, details are below
+- Major overhaul of the main window
+- Use gnome icons instead of ekiga's own
+- Re-add back H264 and H263+ video plugins
+- New pulse audio plugin (in ptlib)
+- New audio codecs: SILK (used by skype), G.722.1 (aka Siren 7),
+  G.722.2 (aka GSM-AMR Wide band)
+- Call auto-answer
+- Use spinner effect during ringing on the other party
+- Unregister accounts when quitting
+- Set presence to offline upon quitting
+- Faster startup by not getting canonical name of servers
+- Fixes for Contact field during registration:
+  - Use two additional compatibility mode for some bogus registrars
+  - Fix order of items in Contact field
+- Add tooltips to various windows and dialog boxes
+- Adjust defaults (show offline users, use picture-in-picture)
+- Jabber/XMPP and GStreamer fixes
+- [windows] Support mingw-w64 and its own headers for building
 
-* Changes in ekiga 4.0.0 (2012-09-xy)
+* Changes in ekiga 4.0.0 (2012-11-02)
+** User-visible fixes
+- Fix call auto-answer
+- Fix group renaming in roster
+- Fix migration of echo cancellation setting
+- Migrate short_status setting
+- Fix crashes on account editing/enabling/disabling/removing
+- Fix freeze when changing fast account status
+- Fix crash when the other party's names are not UTF-8 valid
+- Fix possible crash on invalid fields during LDAP edit dialog box
+- Fix a bug where notification disappears too fast
+- Use spinner effect during ringing on the other party
+- Use more icons from theme instead of Ekiga's own
+- Show call info frame only during call
+- Prevent some ugly window resizing due to countdown displaying
+- Make sure call history is correctly ordered
+- Use intermediate icon when changing status in roster
+- Fix non-ASCII names shown in roster
+- Ellipsize long user names in roster
+- Some UI improvements to roster
+- Consider more statuses as away, increasing interoperability
+- Reset call window title in case of missed call too
+- Fix hiding call window
+- Add show preview menu entry in the main window
+- Automatic zoom for small resolutions
+- Use saner names for windows/dialogs
+- Fix string capitalization in GUI according to HIG
+- Update menu accordingly when (dis)enabling accounts in Account window
+- Update built-in manual
+- Jabber/XMPP fixes
+- GStreamer fixes
+** Protocol fixes
+** Distributor-visible changes
+- libnotify and avahi are now plugins
+- libavcodec5x and gnome-icon-theme must be manually put as
+  dependencies, since they are loaded during runtime
+- avahi is disabled by default
+- new dependency: libv4l-dev (for HAL video hotplugging)
+- new dependency: gnome-icon-theme (in fact in ekiga 3.9.90)
+** Windows port fixes
+- Allow execution from Start->Execute menu
+** Build fixes
+- Fix compile error with ffmpeg
+- Fix compile error on kFreeBSD
+- Fix compile errors on older libnotify
+- Fix compile error with -Wformat-security
+- Add gnome-icon-theme dependency
+- Replace some GTK3 deprecated functions
+- Replace deprecated opal registration code
+** Translation updates
+- Updated translations: as, ca, ca@valencia, cs, de, en@GB, es, fi,
+  fr, gl, gu, hi, hu, id, it, kn, lt, lv, ml, mr, pa, pl, ru, sl, sr,
+  sr@latin, zh_HK, zh_TW
+- Removed obsolete translations: be
+- Updated help translations: de, es
 
 * Changes in ekiga 3.9.90 (2012-08-23)
 ** Major user-visible fixes
