@@ -1,5 +1,9 @@
 /* Ekiga -- A VoIP and Video-Conferencing application
  * Copyright (C) 2000-2009 Damien Sandras <dsandras@seconix.com>
+ * Copyright (C) 2012, Xunta de Galicia <ocfloss@xunta.es>
+ *
+ * Authors: Matthias Schneider
+ *          Victor Jaquez, Igalia S.L., AGASOL. <vjaquez@igalia.com>
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
