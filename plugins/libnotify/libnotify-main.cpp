@@ -65,6 +65,8 @@ public:
   const std::string get_description () const
   { return "\tService pushing user notifications to the desktop"; }
 
+  boost::optional<bool> get_bool_property (const std::string name) const;
+
 private:
 
   bool has_actions;
@@ -172,6 +174,19 @@ LibNotify::LibNotify (Ekiga::ServiceCore& core)
 LibNotify::~LibNotify ()
 {
   notify_uninit ();
+}
+
+boost::optional<bool>
+LibNotify::get_bool_property (const std::string name) const
+{
+  boost::optional<bool> result;
+
+  if (name == "actions") {
+
+    result.reset (has_actions);
+  }
+
+  return result;
 }
 
 static void
