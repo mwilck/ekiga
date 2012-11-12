@@ -54,10 +54,6 @@
 #include "notification-core.h"
 #include "personal-details.h"
 
-#ifdef HAVE_NOTIFY
-#include <libnotify/notify.h>
-#endif
-
 #ifdef HAVE_DBUS
 #include <dbus/dbus-glib.h>
 #endif
