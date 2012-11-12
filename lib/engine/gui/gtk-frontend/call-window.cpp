@@ -575,7 +575,8 @@ display_changed_cb (GtkWidget *widget,
 
     if (!EKIGA_CALL_WINDOW (data)->priv->changing_back_to_local_after_a_call) {
       int view = group_last_pos - active;
-      if (view > 2) // let's jump VO_MODE_PIP_WINDOW & VO_MODE_FULLSCREEN modes
+      if (view > 2) /* let's skip VO_MODE_PIP_WINDOW & VO_MODE_FULLSCREEN modes
+                       which are not found in the View menu */
         view += 2;
       gm_conf_set_int (VIDEO_DISPLAY_KEY "video_view", view);
     }
