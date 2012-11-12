@@ -57,10 +57,6 @@
 #include "menu-builder-tools.h"
 #include "menu-builder-gtk.h"
 
-#ifdef HAVE_NOTIFY
-#include <libnotify/notify.h>
-#endif
-
 #ifndef WIN32
 #include <signal.h>
 #include <gdk/gdkx.h>
