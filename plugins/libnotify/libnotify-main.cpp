@@ -67,6 +67,8 @@ public:
 
 private:
 
+  bool has_actions;
+
   void on_notification_added (boost::shared_ptr<Ekiga::Notification> notif);
   void on_notification_removed (boost::shared_ptr<Ekiga::Notification> notif);
   void on_call_notification (boost::shared_ptr<Ekiga::CallManager> manager,
@@ -147,6 +149,19 @@ LibNotify::LibNotify (Ekiga::ServiceCore& core)
 
   notify_init ("ekiga");
 
+  has_actions = false;
+  GList *capabilities = notify_get_server_caps ();
+  if (capabilities != NULL) {
+    for (GList *c = capabilities ; c != NULL ; c = c->next) {
+      if (strcmp ((char*)c->data, "actions") == 0 ) {
+
+	has_actions=true;
+	break;
+      }
+    }
+    g_list_foreach (capabilities, (GFunc)g_free, NULL);
+    g_list_free (capabilities);
+  }
   /* Notifications coming from various components */
   notification_core->notification_added.connect (boost::bind (&LibNotify::on_notification_added, this, _1));
 
