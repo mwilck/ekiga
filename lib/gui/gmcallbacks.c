@@ -81,8 +81,8 @@ about_callback (G_GNUC_UNUSED GtkWidget *widget,
   };
 
   authors [2] = gettext (authors [2]);
-  authors [12] = gettext (authors [12]);
-  authors [20] = gettext (authors [20]);
+  authors [7] = gettext (authors [7]);
+  authors [14] = gettext (authors [14]);
 
   const gchar *documenters [] = {
     "Damien Sandras <dsandras@seconix.com>",
