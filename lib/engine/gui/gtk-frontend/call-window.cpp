@@ -202,7 +202,7 @@ enum {
   CHANNEL_LAST
 };
 
-static bool notify_has_actions (void);
+static bool notify_has_actions (EkigaCallWindow* cw);
 
 static void zoom_in_changed_cb (GtkWidget *widget,
                                 gpointer data);
@@ -464,26 +464,20 @@ static void ekiga_call_window_connect_engine_signals (EkigaCallWindow *cw);
 static void ekiga_call_window_init_gui (EkigaCallWindow *cw);
 
 static bool
-notify_has_actions (void)
+notify_has_actions (EkigaCallWindow *cw)
 {
-  static int accepts_actions = -1;
-#ifdef HAVE_NOTIFY
-  if (accepts_actions == -1) {  // initialise accepts_actions at the first call
-    accepts_actions = 0;
-    GList *capabilities = notify_get_server_caps ();
-    if (capabilities != NULL) {
-      for (GList *c = capabilities ; c != NULL ; c = c->next) {
-        if (strcmp ((char*)c->data, "actions") == 0 ) {
-          accepts_actions = 1;
-          break;
-        }
-      }
-      g_list_foreach (capabilities, (GFunc)g_free, NULL);
-      g_list_free (capabilities);
+  bool result = false;
+  Ekiga::ServicePtr libnotify = cw->priv->core->get ("libnotify");
+
+  if (libnotify) {
+
+    boost::optional<bool> val = libnotify->get_bool_property ("actions");
+    if (val) {
+
+      result = *val;
     }
   }
-#endif
-  return (accepts_actions > 0);
+  return result;
 }
 
 static void
@@ -1470,7 +1464,7 @@ ekiga_call_window_update_calling_state (EkigaCallWindow *cw,
 
       /* Show/hide call frame and call window (if no notifications */
       gtk_widget_show (cw->priv->call_frame);
-      if (!notify_has_actions ()) {
+      if (!notify_has_actions (cw)) {
         gtk_window_present (GTK_WINDOW (cw));
         gtk_widget_show (GTK_WIDGET (cw));
       }
