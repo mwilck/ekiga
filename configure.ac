@@ -516,7 +516,7 @@ dnl ###############################
 AVAHI="disabled"
 
 if test "x${gm_platform}" != "xmingw" ; then
-  AC_ARG_ENABLE(avahi, AS_HELP_STRING([--enable-avahi],[enable mDNS support (default is enabled)]),
+  AC_ARG_ENABLE(avahi, AS_HELP_STRING([--enable-avahi],[enable mDNS support (default is disabled)]),
 [if test "x$enableval" = "xyes"; then
   enable_avahi=yes
 fi],)
@@ -788,7 +788,7 @@ dnl DEBUG support
 dnl ###############################
 has_debug=
 AC_ARG_ENABLE([debug],
-              [AS_HELP_STRING([--enable-debug],[Compile with debug support (default is disabled)])],
+              [AS_HELP_STRING([--enable-debug],[compile with debug support (default is disabled)])],
               [if test "x$enableval" = "xyes"; then
                 CPPFLAGS="-DDEBUG $CPPFLAGS"
                 has_debug="yes"
