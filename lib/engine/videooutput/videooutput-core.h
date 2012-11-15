@@ -148,7 +148,6 @@ namespace Ekiga
                            int devices_nbr);
 
       void set_display_info (const DisplayInfo & _display_info);
-      void set_ext_display_info (const DisplayInfo & _display_info);
 
 
       /*** Statistics ***/
