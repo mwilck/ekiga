@@ -134,9 +134,8 @@ namespace Ekiga
        * or when it is being zoomed in or out.
        * @param width the new width of the widget.
        * @param height the new height of the widget.
-       * @param mode the current frame mode.
        */
-      boost::signal3<void, unsigned, unsigned, VideoOutputMode> size_changed;
+      boost::signal2<void, unsigned, unsigned> size_changed;
 
   protected:  
       virtual void get_display_info (DisplayInfo &) { };
