@@ -107,7 +107,7 @@ struct _EkigaCallWindowPrivate
   GtkWidget *info_text;
 
   GtkWidget *call_frame;
-  GtkWidget *avatar_image;
+  GtkWidget *camera_image;
 
   GtkWidget *main_menu;
   GtkWidget *call_panel_toolbar;
@@ -1399,7 +1399,7 @@ ekiga_call_window_update_calling_state (EkigaCallWindow *cw,
       gtk_widget_set_sensitive (GTK_WIDGET (cw->priv->hold_button), false);
 
       /* Spinner updates */
-      gtk_widget_show (cw->priv->avatar_image);
+      gtk_widget_show (cw->priv->camera_image);
       gtk_widget_hide (cw->priv->spinner);
       gtk_spinner_stop (GTK_SPINNER (cw->priv->spinner));
 
@@ -1428,7 +1428,7 @@ ekiga_call_window_update_calling_state (EkigaCallWindow *cw,
     case Ringing:
 
       /* Spinner updates */
-      gtk_widget_hide (cw->priv->avatar_image);
+      gtk_widget_hide (cw->priv->camera_image);
       gtk_widget_show (cw->priv->spinner);
       gtk_spinner_start (GTK_SPINNER (cw->priv->spinner));
       break;
@@ -1439,7 +1439,7 @@ ekiga_call_window_update_calling_state (EkigaCallWindow *cw,
       gtk_widget_show (cw->priv->call_frame);
 
       /* Spinner updates */
-      gtk_widget_show (cw->priv->avatar_image);
+      gtk_widget_show (cw->priv->camera_image);
       gtk_widget_hide (cw->priv->spinner);
       gtk_spinner_start (GTK_SPINNER (cw->priv->spinner));
 
@@ -2367,8 +2367,8 @@ ekiga_call_window_init_gui (EkigaCallWindow *cw)
   gtk_frame_set_shadow_type (GTK_FRAME (cw->priv->call_frame), GTK_SHADOW_NONE);
   hbox = gtk_hbox_new (false, 0);
 
-  cw->priv->avatar_image = gtk_image_new_from_icon_name ("camera-web", GTK_ICON_SIZE_LARGE_TOOLBAR);
-  gtk_box_pack_start (GTK_BOX (hbox), cw->priv->avatar_image, false, false, 12);
+  cw->priv->camera_image = gtk_image_new_from_icon_name ("camera-web", GTK_ICON_SIZE_LARGE_TOOLBAR);
+  gtk_box_pack_start (GTK_BOX (hbox), cw->priv->camera_image, false, false, 12);
 
   cw->priv->spinner = gtk_spinner_new ();
   gtk_widget_set_size_request (GTK_WIDGET (cw->priv->spinner), 24, 24);
