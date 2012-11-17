@@ -1203,6 +1203,8 @@ static void on_missed_call_cb (boost::shared_ptr<Ekiga::CallManager>  /*manager*
   EkigaCallWindow *cw = EKIGA_CALL_WINDOW (self);
 
   gtk_window_set_title (GTK_WINDOW (cw), _("Call Window"));
+  ekiga_call_window_update_calling_state (cw, Standby);
+  ekiga_call_window_set_status (cw, _("Standby"));
 }
 
 static void
