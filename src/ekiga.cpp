@@ -64,8 +64,6 @@ GnomeMeeting::GnomeMeeting ()
 void
 GnomeMeeting::Exit ()
 {
-  PWaitAndSignal m(ep_var_mutex);
-
   if (main_window)
     gtk_widget_destroy (main_window);
   main_window = NULL;

@@ -40,13 +40,8 @@
 #define _GNOMEMEETING_H_
 
 #include "config.h"
-
 #include "common.h"
-
-#include "services.h"
 #include "runtime.h"
-
-#include <ptlib/ipsock.h>
 
 
 /**
@@ -105,10 +100,6 @@ class GnomeMeeting : public PProcess
   void BuildGUI (Ekiga::ServiceCore& services);
 
  private:
-
-  PMutex ep_var_mutex;
-  PMutex dev_access_mutex;
-
 
   /* The different components of the GUI */
   GtkWidget *main_window;
