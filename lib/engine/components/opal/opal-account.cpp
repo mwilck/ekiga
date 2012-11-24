@@ -35,6 +35,8 @@
  *
  */
 
+#include "config.h"
+
 #include <string.h>
 #include <stdlib.h>
 #include <algorithm>
@@ -58,12 +60,14 @@
 #include "audiooutput-core.h"
 
 #include "sip-endpoint.h"
+#ifdef HAVE_H323
+#include "h323-endpoint.h"
+#endif
 
 Opal::Account::Account (Ekiga::ServiceCore & _core,
                         const std::string & account)
   : core (_core)
 {
-  endpoint = core.get<Sip::EndPoint> ("opal-sip-endpoint");
   notification_core = core.get<Ekiga::NotificationCore> ("notification-core");
   state = Unregistered;
   status = _("Unregistered");
@@ -135,10 +139,20 @@ Opal::Account::Account (Ekiga::ServiceCore & _core,
   else
     type = Account::H323;
 
-  if (name.find ("%limit") != std::string::npos)
-    compat_mode = SIPRegister::e_CannotRegisterMultipleContacts;  // start registration in this compat mode
-  else
-    compat_mode = SIPRegister::e_FullyCompliant;
+#ifdef HAVE_H323
+  if (type == Account::H323)
+    h323_endpoint = core.get<H323::EndPoint> ("opal-h323-endpoint");
+  else {
+#endif
+    sip_endpoint = core.get<Sip::EndPoint> ("opal-sip-endpoint");
+
+    if (name.find ("%limit") != std::string::npos)
+      compat_mode = SIPRegister::e_CannotRegisterMultipleContacts;  // start registration in this compat mode
+    else
+      compat_mode = SIPRegister::e_FullyCompliant;
+#ifdef HAVE_H323
+  }
+#endif
 
   setup_presentity ();
 }
@@ -155,7 +169,6 @@ Opal::Account::Account (Ekiga::ServiceCore & _core,
                         unsigned _timeout)
   : core (_core)
 {
-  endpoint = core.get<Sip::EndPoint> ("opal-sip-endpoint");
   notification_core = core.get<Ekiga::NotificationCore> ("notification-core");
 
   state = Unregistered;
@@ -176,6 +189,13 @@ Opal::Account::Account (Ekiga::ServiceCore & _core,
   type = t;
   failed_registration_already_notified = false;
   dead = false;
+
+#ifdef HAVE_H323
+  if (type == Account::H323)
+    h323_endpoint = core.get<H323::EndPoint> ("opal-h323-endpoint");
+  else
+#endif
+    sip_endpoint = core.get<Sip::EndPoint> ("opal-sip-endpoint");
 
   setup_presentity ();
 
@@ -299,7 +319,12 @@ void Opal::Account::enable ()
 
   state = Processing;
   status = _("Processing...");
-  endpoint->subscribe (*this, presentity);
+#ifdef HAVE_H323
+  if (type == Account::H323)
+    h323_endpoint->subscribe (*this, presentity);
+  else
+#endif
+    sip_endpoint->subscribe (*this, presentity);
 
   updated ();
   trigger_saving ();
@@ -318,7 +343,12 @@ void Opal::Account::disable ()
       Ekiga::Runtime::run_in_main (boost::bind (&Opal::Account::presence_status_in_main, this, *iter, "unknown", ""));
     }
   }
-  endpoint->unsubscribe (*this, presentity);
+#ifdef HAVE_H323
+  if (type == Account::H323)
+    h323_endpoint->unsubscribe (*this, presentity);
+  else
+#endif
+    sip_endpoint->unsubscribe (*this, presentity);
 
   // Translators: this is a state, not an action, i.e. it should be read as
   // "(you are) unregistered", and not as "(you have been) unregistered"
@@ -653,47 +683,59 @@ Opal::Account::handle_registration_event (RegistrationState state_,
   case RegistrationFailed:
 
     state = state_;
-    switch (compat_mode) {
-    case SIPRegister::e_FullyCompliant:
-      // FullyCompliant did not work, try next compat mode
-      compat_mode = SIPRegister::e_CannotRegisterMultipleContacts;
-      PTRACE (4, "Register failed in FullyCompliant mode, retrying in CannotRegisterMultipleContacts mode");
-      endpoint->subscribe (*this, presentity);
-      break;
-    case SIPRegister::e_CannotRegisterMultipleContacts:
-      // CannotRegMC did not work, try next compat mode
-      compat_mode = SIPRegister::e_CannotRegisterPrivateContacts;
-      PTRACE (4, "Register failed in CannotRegisterMultipleContacts mode, retrying in CannotRegisterPrivateContacts mode");
-      endpoint->subscribe (*this, presentity);
-      break;
-    case SIPRegister::e_CannotRegisterPrivateContacts:
-      // CannotRegMC did not work, try next compat mode
-      compat_mode = SIPRegister::e_HasApplicationLayerGateway;
-      PTRACE (4, "Register failed in CannotRegisterMultipleContacts mode, retrying in HasApplicationLayerGateway mode");
-      endpoint->subscribe (*this, presentity);
-      break;
-    case SIPRegister::e_HasApplicationLayerGateway:
-      // HasAppLG did not work, stop registration with error
-      compat_mode = SIPRegister::e_FullyCompliant;
-      PTRACE (4, "Register failed in HasApplicationLayerGateway mode, aborting registration");
-      status = _("Could not register");
-      if (!info.empty ())
-        status = status + " (" + info + ")";
-      if (!failed_registration_already_notified) {
+#ifdef HAVE_H323
+    if (type == Account::H323) {
         std::stringstream msg;
         msg << _("Could not register to ") << get_name ();
         boost::shared_ptr<Ekiga::Notification> notif (new Ekiga::Notification (Ekiga::Notification::Warning, msg.str (), info, _("Edit"), boost::bind (&Opal::Account::edit, (Opal::Account*) this)));
         notification_core->push_notification (notif);
-      }
-      updated ();
-      failed_registration_already_notified = true;
-      break;
-    default:
-
-      state = state_;
-      updated();
-      break;
     }
+    else {
+#endif
+      switch (compat_mode) {
+      case SIPRegister::e_FullyCompliant:
+        // FullyCompliant did not work, try next compat mode
+        compat_mode = SIPRegister::e_CannotRegisterMultipleContacts;
+        PTRACE (4, "Register failed in FullyCompliant mode, retrying in CannotRegisterMultipleContacts mode");
+        sip_endpoint->subscribe (*this, presentity);
+        break;
+      case SIPRegister::e_CannotRegisterMultipleContacts:
+        // CannotRegMC did not work, try next compat mode
+        compat_mode = SIPRegister::e_CannotRegisterPrivateContacts;
+        PTRACE (4, "Register failed in CannotRegisterMultipleContacts mode, retrying in CannotRegisterPrivateContacts mode");
+        sip_endpoint->subscribe (*this, presentity);
+        break;
+      case SIPRegister::e_CannotRegisterPrivateContacts:
+        // CannotRegMC did not work, try next compat mode
+        compat_mode = SIPRegister::e_HasApplicationLayerGateway;
+        PTRACE (4, "Register failed in CannotRegisterMultipleContacts mode, retrying in HasApplicationLayerGateway mode");
+        sip_endpoint->subscribe (*this, presentity);
+        break;
+      case SIPRegister::e_HasApplicationLayerGateway:
+        // HasAppLG did not work, stop registration with error
+        compat_mode = SIPRegister::e_FullyCompliant;
+        PTRACE (4, "Register failed in HasApplicationLayerGateway mode, aborting registration");
+        status = _("Could not register");
+        if (!info.empty ())
+          status = status + " (" + info + ")";
+        if (!failed_registration_already_notified) {
+          std::stringstream msg;
+          msg << _("Could not register to ") << get_name ();
+          boost::shared_ptr<Ekiga::Notification> notif (new Ekiga::Notification (Ekiga::Notification::Warning, msg.str (), info, _("Edit"), boost::bind (&Opal::Account::edit, (Opal::Account*) this)));
+          notification_core->push_notification (notif);
+        }
+        updated ();
+        failed_registration_already_notified = true;
+        break;
+      default:
+
+        state = state_;
+        updated();
+        break;
+      }
+#ifdef HAVE_H323
+    }
+#endif
     break;
 
   case Processing:

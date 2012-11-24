@@ -282,7 +282,7 @@ bool
 Opal::H323::EndPoint::subscribe (const Opal::Account & account,
                                  const PSafePtr<OpalPresentity> & presentity)
 {
-  if (account.get_protocol_name () != "H323" || account.is_enabled ())
+  if (account.get_protocol_name () != "H323")
     return false;
 
   new subscriber (account, *this, presentity);
@@ -295,7 +295,7 @@ bool
 Opal::H323::EndPoint::unsubscribe (const Opal::Account & account,
                                    const PSafePtr<OpalPresentity> & presentity)
 {
-  if (account.get_protocol_name () != "H323" || !account.is_enabled ())
+  if (account.get_protocol_name () != "H323")
     return false;
 
   new subscriber (account, *this, presentity);

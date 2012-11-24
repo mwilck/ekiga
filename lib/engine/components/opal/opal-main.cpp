@@ -106,11 +106,12 @@ struct OPALSpark: public Ekiga::Spark
     boost::shared_ptr<Ekiga::PersonalDetails> personal_details = core.get<Ekiga::PersonalDetails> ("personal-details");
     boost::shared_ptr<Bank> account_store = core.get<Bank> ("opal-account-store");
     Ekiga::ServicePtr sip_endpoint = core.get ("opal-sip-endpoint");
+    Ekiga::ServicePtr h323_endpoint = core.get ("opal-h323-endpoint");
 
     if (contact_core && presence_core && call_core && chat_core
 	&& account_core && audioinput_core && videoinput_core
 	&& audiooutput_core && videooutput_core && personal_details
-	&& !account_store && !sip_endpoint) {
+	&& !account_store && !sip_endpoint && !h323_endpoint) {
 
       PIPSocket::SetSuppressCanonicalName (true);  // avoid long delays
 
@@ -123,6 +124,16 @@ struct OPALSpark: public Ekiga::Spark
       boost::shared_ptr<Sip::EndPoint> sip_manager (new Sip::EndPoint (*call_manager, core, sip_port), null_deleter ());
       core.add (sip_manager);
 
+#ifdef HAVE_H323
+      unsigned h323_port = gm_conf_get_int (H323_KEY "listen_port");
+      unsigned kind_of_net = gm_conf_get_int (GENERAL_KEY "kind_of_net");
+      boost::shared_ptr<H323::EndPoint> h323_manager (new H323::EndPoint (*call_manager, core, h323_port, kind_of_net), null_deleter ());
+      call_manager->add_protocol_manager (h323_manager);
+      contact_core->add_contact_decorator (h323_manager);
+      presence_core->add_presentity_decorator (h323_manager);
+      core.add (h323_manager);
+#endif
+
       call_manager->add_protocol_manager (sip_manager);
       contact_core->add_contact_decorator (sip_manager);
       presence_core->add_presentity_decorator (sip_manager);
@@ -134,17 +145,6 @@ struct OPALSpark: public Ekiga::Spark
       call_manager->ready.connect (boost::bind (&Opal::Bank::call_manager_ready, &*bank));
       presence_core->add_presence_publisher (bank);
       presence_core->add_presence_fetcher (bank);
-
-
-#ifdef HAVE_H323
-      unsigned h323_port = gm_conf_get_int (H323_KEY "listen_port");
-      unsigned kind_of_net = gm_conf_get_int (GENERAL_KEY "kind_of_net");
-      boost::shared_ptr<H323::EndPoint> h323_manager (new H323::EndPoint (*call_manager, core, h323_port, kind_of_net), null_deleter ());
-      call_manager->add_protocol_manager (h323_manager);
-      contact_core->add_contact_decorator (h323_manager);
-      presence_core->add_presentity_decorator (h323_manager);
-      core.add (h323_manager);
-#endif
 
       call_core->add_manager (call_manager);
 

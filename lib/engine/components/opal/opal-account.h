@@ -38,6 +38,8 @@
 #ifndef __OPAL_ACCOUNT_H__
 #define __OPAL_ACCOUNT_H__
 
+#include "config.h"
+
 #include <opal/pres_ent.h>
 
 #include "notification-core.h"
@@ -50,6 +52,9 @@ namespace Opal
 {
   // forward declaration:
   namespace Sip { class EndPoint; };
+#ifdef HAVE_H323
+  namespace H323 { class EndPoint; };
+#endif
 
   /**
    * @addtogroup accounts
@@ -208,7 +213,10 @@ private:
 				  std::string status);
 
     Ekiga::ServiceCore & core;
-    boost::shared_ptr<Sip::EndPoint> endpoint;
+    boost::shared_ptr<Opal::Sip::EndPoint> sip_endpoint;
+#ifdef HAVE_H323
+    boost::shared_ptr<Opal::H323::EndPoint> h323_endpoint;
+#endif
     boost::shared_ptr<Ekiga::NotificationCore> notification_core;
   };
 
