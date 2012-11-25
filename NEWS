@@ -6,6 +6,7 @@
 - New pulse audio plugin (in ptlib)
 - New audio codecs: SILK (used by skype), G.722.1 (aka Siren 7),
   G.722.2 (aka GSM-AMR Wide band)
+- Fix H.323 gatekeeper support
 - Call auto-answer
 - Support for handling multiple video streams (H.239)
 - Use spinner effect during ringing on the other party
@@ -20,7 +21,7 @@
 - Jabber/XMPP and GStreamer fixes
 - [windows] Support mingw-w64 and its own headers for building
 
-* Changes in ekiga 4.0.0 (2012-11-12)
+* Changes in ekiga 4.0.0 (2012-11-25)
 ** User-visible fixes
 - Fix call auto-answer
 - Fix group renaming in roster
@@ -31,6 +32,7 @@
 - Fix crash when the other party's names are not UTF-8 valid
 - Fix possible crash on invalid fields during LDAP edit dialog box
 - Fix a bug where notification disappears too fast
+- Fix H.323 gatekeeper support
 - Improve support for handling multiple video streams (H.239)
 - Use spinner effect during ringing on the other party
 - Use more icons from theme instead of Ekiga's own
@@ -51,6 +53,7 @@
 - Update menu accordingly when (dis)enabling accounts in Account window
 - Remove useless Start hidden option from Preferences
 - Update built-in manual
+- Fixes in call window on missed call
 - Jabber/XMPP fixes
 - GStreamer fixes
 ** Protocol fixes
@@ -76,7 +79,7 @@
 ** Translation updates
 - Updated translations: as, bn_IN, ca, ca@valencia, cs, de, en@GB, es,
   fi, fr, gl, gu, hi, hu, id, it, kn, lt, lv, ml, mr, nb, pa, pl, ru,
-  sl, sr, sr@latin, zh_HK, zh_TW
+  sl, sr, sr@latin, te, zh_HK, zh_TW
 - Removed obsolete translations: be
 - Updated help translations: de, es
 
