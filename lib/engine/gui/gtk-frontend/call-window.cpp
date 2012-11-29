@@ -162,12 +162,11 @@ struct _EkigaCallWindowPrivate
   GtkWidget *qualitymeter;
 
   /* The problem is the following :
-   * without that boolean, changing the ui will trigger
-   * a callback, which will store in the settings that
-   * the user wants only local video... in fact the
-   * problem is that we use a single ui+settings to mean
-   * both "what the user wants during a call"
-   * and "what we are doing right now".
+   * without that boolean, changing the ui will trigger a callback,
+   * which will store in the settings that the user wants only local
+   * video... in fact the problem is that we use a single ui+settings
+   * to mean both "what the user wants during a call" and "what we are
+   * doing right now".
    *
    * So we set that boolean to true,
    * ask the ui to change,
@@ -2041,8 +2040,8 @@ ekiga_call_window_init_menu (EkigaCallWindow *cw)
 			   NULL, '3',
 			   G_CALLBACK (display_changed_cb), cw,
 			   false, false),
-      GTK_MENU_RADIO_ENTRY("extended_video", _("Extended Video Roles"),
-			   _("Extended Video Roles"),
+      GTK_MENU_RADIO_ENTRY("extended_video", _("_Extended Video"),
+			   _("Extended Video Images"),
 			   NULL, '4',
 			   G_CALLBACK (display_changed_cb), cw,
 			   false, false),
@@ -2389,7 +2388,7 @@ ekiga_call_window_init_gui (EkigaCallWindow *cw)
   gtk_widget_show_all (cw->priv->call_frame);
   gtk_widget_hide (cw->priv->spinner);
 
-  /* Pick-up */
+  /* Pick up */
   item = gtk_tool_item_new ();
   cw->priv->pickup_button = gtk_button_new ();
   image = gtk_image_new_from_icon_name ("phone-pick-up", GTK_ICON_SIZE_LARGE_TOOLBAR);
@@ -2401,10 +2400,11 @@ ekiga_call_window_init_gui (EkigaCallWindow *cw)
 		      GTK_TOOL_ITEM (item), -1);
   gtk_widget_set_sensitive (GTK_WIDGET (cw->priv->pickup_button), false);
   gtk_tool_item_set_tooltip_text (GTK_TOOL_ITEM (item),
-				  _("Hang up the current call"));
+				  _("Pick up the current call"));
   g_signal_connect (cw->priv->pickup_button, "clicked",
 		    G_CALLBACK (pickup_call_cb), cw);
 
+  /* Hang up */
   item = gtk_tool_item_new ();
   cw->priv->hangup_button = gtk_button_new ();
   image = gtk_image_new_from_icon_name ("phone-hang-up", GTK_ICON_SIZE_LARGE_TOOLBAR);

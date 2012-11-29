@@ -109,7 +109,7 @@ LM::Account::Account (boost::shared_ptr<Ekiga::PersonalDetails> details_,
 {
   if (node == NULL) throw std::logic_error ("NULL node pointer received");
 
-  status = _("inactive");
+  status = _("Inactive");
 
   xmlChar* xml_str = xmlGetProp (node, BAD_CAST "startup");
   bool enable_on_startup = false;
@@ -156,7 +156,7 @@ LM::Account::Account (boost::shared_ptr<Ekiga::PersonalDetails> details_,
 		      bool enable_on_startup):
   details(details_), dialect(dialect_), cluster(cluster_)
 {
-  status = _("inactive");
+  status = _("Inactive");
 
   node = xmlNewNode (NULL, BAD_CAST "entry");
   xmlSetProp (node, BAD_CAST "name", BAD_CAST name.c_str ());
@@ -235,13 +235,13 @@ LM::Account::enable ()
 
     gchar* message = NULL;
 
-    message = g_strdup_printf (_("error connecting (%s)"), error->message);
+    message = g_strdup_printf (_("Could not connect (%s)"), error->message);
     status = message;
     g_free (message);
     g_error_free (error);
   } else {
 
-    status = _("connecting");
+    status = _("Connecting...");
   }
 
   xmlFree (server);
@@ -281,7 +281,7 @@ LM::Account::on_connection_opened (bool result)
     xmlChar* user = xmlGetProp (node, BAD_CAST "user");
     xmlChar* password = xmlGetProp (node, BAD_CAST "password");
     xmlChar* resource = xmlGetProp (node, BAD_CAST "resource");
-    status = _("authenticating");
+    status = _("Authenticating...");
     lm_connection_authenticate (connection, (const char*)user,
 				(const char*)password, (const char*)resource,
 				(LmResultFunction)on_authenticate_c, this, NULL, NULL);
@@ -291,7 +291,7 @@ LM::Account::on_connection_opened (bool result)
   } else {
 
     /* FIXME: can't we report better? */
-    status = _("error connecting");
+    status = _("Could not connect");
     updated ();
   }
 }
@@ -301,7 +301,7 @@ LM::Account::on_disconnected (LmDisconnectReason /*reason*/)
 {
   handle_down ();
 
-  status = _("disconnected");
+  status = _("Disconnected");
   updated ();
 }
 
@@ -311,13 +311,13 @@ LM::Account::on_authenticate (bool result)
   if (result) {
 
     handle_up ();
-    status = _("connected");
+    status = _("Connected");
     updated ();
   } else {
 
     lm_connection_close (connection, NULL);
     // FIXME: can't we report something better?
-    status = _("error authenticating loudmouth account");
+    status = _("Could not authenticate");
     updated ();
   }
 }
