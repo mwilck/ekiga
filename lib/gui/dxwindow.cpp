@@ -37,8 +37,7 @@
 
 #include "dxwindow.h"
 #include <iostream>
-
-#include "../../src/common.h"
+#include "ptlib.h"
 
 #define PIP_RATIO_WIN  3
 #define PIP_RATIO_FS   5
@@ -1036,13 +1035,9 @@ DXWindow::ErrorMessage()
                              NULL);
   if (dwMsgLen) {
     buffer [ strlen(buffer) - 2 ] = 0;
-    g_snprintf (result, sizeof (result), "%s (%u)",
-		buffer, (int) GetLastError ());
-  }
-  else {
-    g_snprintf (result, sizeof (result), "%u",
-		(int) GetLastError ());
-  }
+    snprintf (result, sizeof (result), "%s (%u)", buffer, (int) GetLastError ());
+  } else
+    snprintf (result, sizeof (result), "%u", (int) GetLastError ());
 
   return result;
 }
