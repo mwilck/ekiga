@@ -73,6 +73,13 @@
 
 enum CallingState {Standby, Calling, Connected, Called};
 
+typedef enum {
+  CONTACTS,
+  DIALPAD,
+  CALL,
+  NUM_SECTIONS
+} PanelSection;
+
 enum DeviceType {AudioInput, AudioOutput, Ringer, VideoInput};
 struct deviceStruct {
   char name[256];
