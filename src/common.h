@@ -64,14 +64,4 @@
 #define AUDIO_CODECS_KEY "/apps/" PACKAGE_NAME "/codecs/audio/"
 #define VIDEO_CODECS_KEY  "/apps/" PACKAGE_NAME "/codecs/video/"
 
-/* Control Panel Section */
-typedef enum {
-
-  CONTACTS,
-  DIALPAD,
-  CALL,
-  NUM_SECTIONS
-} PanelSection;
-
-
 #endif /* GM_COMMON_H */
