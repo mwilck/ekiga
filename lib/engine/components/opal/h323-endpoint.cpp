@@ -307,7 +307,6 @@ Opal::H323::EndPoint::unsubscribe (const Opal::Account & account,
 void
 Opal::H323::EndPoint::Register (const Opal::Account& account)
 {
-  PString gatekeeperID;
   std::string info;
   std::string aor = account.get_aor ();
 
@@ -324,7 +323,7 @@ Opal::H323::EndPoint::Register (const Opal::Account& account)
 
     SetGatekeeperPassword (account.get_password ());
     SetGatekeeperTimeToLive (account.get_timeout () * 1000);
-    bool result = UseGatekeeper (account.get_host (), gatekeeperID);
+    bool result = UseGatekeeper (account.get_host ());
 
     // There was an error (missing parameter or registration failed)
     // or the user chose to not register
