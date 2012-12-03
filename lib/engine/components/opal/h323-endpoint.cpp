@@ -319,7 +319,7 @@ Opal::H323::EndPoint::Register (const Opal::Account& account)
       AddAliasName (manager.GetDefaultDisplayName ());
     }
 
-    SetGatekeeperPassword (account.get_password ());
+    SetGatekeeperPassword (account.get_password (), account.get_username ());
     SetGatekeeperTimeToLive (account.get_timeout () * 1000);
     bool result = UseGatekeeper (account.get_host ());
 
