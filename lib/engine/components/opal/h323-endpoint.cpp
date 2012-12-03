@@ -308,8 +308,6 @@ void
 Opal::H323::EndPoint::Register (const Opal::Account& account)
 {
   std::string info;
-  std::string aor = account.get_aor ();
-
   bool unregister = !account.is_enabled ();
 
   if (!unregister && !IsRegisteredWithGatekeeper (account.get_host ())) {
@@ -367,16 +365,6 @@ Opal::H323::EndPoint::Register (const Opal::Account& account)
 
       Ekiga::Runtime::run_in_main (boost::bind (&Opal::H323::EndPoint::registration_event_in_main, this, boost::cref (account), Account::Registered, std::string ()));
     }
-  }
-  else if (unregister && IsRegisteredWithGatekeeper (account.get_host ())) {
-    /*
-
-       H323EndPoint::RemoveGatekeeper (0);
-       RemoveAliasName (account.get_username ());
-
-    // Signal 
-    Ekiga::Runtime::run_in_main (boost::bind (&Opal::H323::EndPoint::registration_event_in_main, this, boost::cref (account), Ekiga::Account::Unregistered, std::string ()));
-     */
   }
 }
 
