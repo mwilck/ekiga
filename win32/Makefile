@@ -119,7 +119,7 @@ endif
 PTLIB_LIB := libpt.$(PTLIB_VER).dll
 
 ##############   ekiga/ptlib/opal library and headers dependencies
-OPENLDAP_VER := 2.4.29
+OPENLDAP_VER := 2.4.31
 OPENLDAP_DIR := $(BUILDROOT)/openldap-$(OPENLDAP_VER)
 OPENLDAP_ARCHIVE := openldap-$(OPENLDAP_VER).tgz
 OPENLDAP_URL := http://www.openldap.org/software/download/OpenLDAP/openldap-release
@@ -139,7 +139,7 @@ SPEEX_DIR := $(BUILDROOT)/speex-$(SPEEX_VER)
 SPEEX_ARCHIVE := speex-$(SPEEX_VER).tar.gz
 SPEEX_URL := http://downloads.xiph.org/releases/speex
 
-XML2_VER := 2.7.8
+XML2_VER := 2.9.0
 XML2_DIR := libxml2-$(XML2_VER)
 XML2_URL := ftp://xmlsoft.org/libxml2
 XML2_ARCHIVE := libxml2-$(XML2_VER).tar.gz
@@ -155,21 +155,21 @@ REGEX_REV := 203e34
 REGEX_DIR := $(BUILDROOT)/regex
 REGEX_ARCHIVE := regex
 
-BOOST_VER := 1.48.0
+BOOST_VER := 1.52.0
 BOOST_URL := http://downloads.sourceforge.net/project/boost/boost/$(BOOST_VER)
 BOOST_ARCHIVE := boost_$(shell echo $(BOOST_VER)|tr . _).tar.gz
 BOOST_DIR := $(BUILDROOT)/boost_$(shell echo $(BOOST_VER)|tr . _)
 
-GETTEXT_VER := 0.17-1
+GETTEXT_VER := 0.18.1.1-2
 GETTEXT_URL := http://ftp.gnome.org/pub/gnome/binaries/win32/dependencies
-GETTEXT_ARCHIVE := gettext-runtime-dev-$(GETTEXT_VER).zip
+GETTEXT_ARCHIVE := gettext-runtime-dev_$(GETTEXT_VER)_win32.zip
 
-LIBAV_VER := 0.8
+LIBAV_VER := 0.8.4
 LIBAV_URL := http://www.libav.org/releases
 LIBAV_DIR := $(BUILDROOT)/libav-$(LIBAV_VER)
 LIBAV_ARCHIVE := libav-$(LIBAV_VER).tar.xz
 
-X264_VER := a3f4407
+X264_VER := 35cf912
 X264_URL := git://git.videolan.org/x264.git
 X264_DIR := $(BUILDROOT)/x264
 X264_ARCHIVE := x264
