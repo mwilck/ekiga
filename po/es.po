@@ -19,8 +19,8 @@ msgstr ""
 "Project-Id-Version: ekiga.master\n"
 "Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?"
 "product=ekiga&keywords=I18N+L10N&component=general\n"
-"POT-Creation-Date: 2012-11-29 22:50+0000\n"
-"PO-Revision-Date: 2012-12-02 19:24+0100\n"
+"POT-Creation-Date: 2012-12-04 09:54+0000\n"
+"PO-Revision-Date: 2012-12-04 11:26+0100\n"
 "Last-Translator: Daniel Mustieles <daniel.mustieles@gmail.com>\n"
 "Language-Team: Español; Castellano <gnome-es-list@gnome.org>\n"
 "Language: \n"
@@ -111,8 +111,8 @@ msgstr ""
 msgid "Video preview"
 msgstr "Vista preliminar de vídeo"
 
-#: ../ekiga.schemas.in.in.h:14 ../src/gui/main_window.cpp:1201
-#: ../src/gui/main_window.cpp:1341
+#: ../ekiga.schemas.in.in.h:14 ../src/gui/main_window.cpp:1208
+#: ../src/gui/main_window.cpp:1348
 msgid "Display images from your camera device"
 msgstr "Muestra las imágenes desde su dispositivo de cámara"
 
@@ -783,7 +783,7 @@ msgstr ""
 msgid "List of folded groups in the roster"
 msgstr "Lista de los grupos agrupados en la lista"
 
-#: ../ekiga.schemas.in.in.h:135 ../src/gui/main_window.cpp:1366
+#: ../ekiga.schemas.in.in.h:135 ../src/gui/main_window.cpp:1373
 msgid "Show offline contacts"
 msgstr "Mostrar contactos desconectados"
 
@@ -899,7 +899,7 @@ msgid "Call back test"
 msgstr "Prueba de llamada"
 
 #: ../lib/engine/components/local-roster/local-heap.cpp:111
-#: ../src/gui/main_window.cpp:1430
+#: ../src/gui/main_window.cpp:1437
 msgid "Contacts"
 msgstr "Contactos"
 
@@ -1035,7 +1035,7 @@ msgstr "Sin nombre"
 #: ../plugins/evolution/evolution-contact.cpp:228
 #: ../plugins/loudmouth/loudmouth-presentity.cpp:169
 #: ../plugins/resource-list/rl-presentity.cpp:212
-#: ../src/gui/main_window.cpp:1316
+#: ../src/gui/main_window.cpp:1323
 msgid "_Edit"
 msgstr "_Editar"
 
@@ -1465,7 +1465,7 @@ msgid "Abnormal call termination"
 msgstr "Terminación anormal de la llamada"
 
 #: ../lib/engine/components/opal/opal-call.cpp:444
-#: ../src/gui/main_window.cpp:524
+#: ../src/gui/main_window.cpp:531
 msgid "Could not connect to remote host"
 msgstr "No se pudo conectar con el equipo remoto"
 
@@ -1808,12 +1808,12 @@ msgid "Accounts"
 msgstr "Cuentas"
 
 #: ../lib/engine/gui/gtk-frontend/accounts-window.cpp:584
-#: ../src/gui/main_window.cpp:1326
+#: ../src/gui/main_window.cpp:1333
 msgid "_Accounts"
 msgstr "_Cuentas"
 
 #: ../lib/engine/gui/gtk-frontend/accounts-window.cpp:588
-#: ../src/gui/main_window.cpp:1372
+#: ../src/gui/main_window.cpp:1379
 msgid "_Help"
 msgstr "Ay_uda"
 
@@ -1826,7 +1826,7 @@ msgid "Address Book"
 msgstr "Libreta de direcciones"
 
 #: ../lib/engine/gui/gtk-frontend/addressbook-window.cpp:646
-#: ../src/gui/main_window.cpp:1297
+#: ../src/gui/main_window.cpp:1304
 msgid "Address _Book"
 msgstr "Li_breta de direcciones"
 
@@ -2003,7 +2003,7 @@ msgstr "Llamando a %s…"
 #. %s is the SIP/H.323 address of the remote user, this text is shown
 #. below video during a call
 #: ../lib/engine/gui/gtk-frontend/call-window.cpp:1160
-#: ../src/gui/main_window.cpp:646
+#: ../src/gui/main_window.cpp:653
 #, c-format
 msgid "Connected with %s"
 msgstr "Conectado con %s"
@@ -2148,11 +2148,13 @@ msgid "Pick up the current call"
 msgstr "Coger la llamada actual"
 
 #: ../lib/engine/gui/gtk-frontend/call-window.cpp:1990
-msgid "_Hangup"
+#| msgid "_Hangup"
+msgid "_Hang up"
 msgstr "_Colgar"
 
 #: ../lib/engine/gui/gtk-frontend/call-window.cpp:1990
-msgid "Hangup the current call"
+#: ../lib/engine/gui/gtk-frontend/call-window.cpp:2419
+msgid "Hang up the current call"
 msgstr "Colgar la llamada actual"
 
 #: ../lib/engine/gui/gtk-frontend/call-window.cpp:1996
@@ -2177,12 +2179,12 @@ msgid "Suspend or resume the video transmission"
 msgstr "Suspender o reanudar la transmisión de vídeo"
 
 #: ../lib/engine/gui/gtk-frontend/call-window.cpp:2021
-#: ../src/gui/main_window.cpp:1305
+#: ../src/gui/main_window.cpp:1312
 msgid "Close the Ekiga window"
 msgstr "Cerrar la ventana de Ekiga"
 
 #: ../lib/engine/gui/gtk-frontend/call-window.cpp:2026
-#: ../src/gui/main_window.cpp:1338
+#: ../src/gui/main_window.cpp:1345
 msgid "_View"
 msgstr "_Ver"
 
@@ -2211,12 +2213,10 @@ msgid "Both video images"
 msgstr "Ambas imágenes de vídeo"
 
 #: ../lib/engine/gui/gtk-frontend/call-window.cpp:2043
-#| msgid "Extended Video Roles"
 msgid "_Extended Video"
 msgstr "Vídeo _extendido"
 
 #: ../lib/engine/gui/gtk-frontend/call-window.cpp:2044
-#| msgid "Extended Video Roles"
 msgid "Extended Video Images"
 msgstr "Imágenes de vídeos extendidos"
 
@@ -2243,10 +2243,6 @@ msgstr "Pasar a pantalla completa"
 #: ../lib/engine/gui/gtk-frontend/call-window.cpp:2177
 msgid "Transfer call to:"
 msgstr "Desviar la llamada a:"
-
-#: ../lib/engine/gui/gtk-frontend/call-window.cpp:2419
-msgid "Hang up the current call"
-msgstr "Colgar la llamada actual"
 
 #: ../lib/engine/gui/gtk-frontend/call-window.cpp:2447
 msgid "Change the volume of your soundcard"
@@ -2715,17 +2711,17 @@ msgstr[0] "Tiene %d mensaje"
 msgstr[1] "Tiene %d mensajes"
 
 #: ../lib/engine/gui/gtk-frontend/statusicon.cpp:378
-#: ../src/gui/main_window.cpp:1375
+#: ../src/gui/main_window.cpp:1382
 msgid "Get help by reading the Ekiga manual"
 msgstr "Obtenga ayuda leyendo el manual de Ekiga"
 
 #: ../lib/engine/gui/gtk-frontend/statusicon.cpp:383
-#: ../src/gui/main_window.cpp:1380
+#: ../src/gui/main_window.cpp:1387
 msgid "View information about Ekiga"
 msgstr "Ver información acerca de Ekiga"
 
 #: ../lib/engine/gui/gtk-frontend/statusicon.cpp:390
-#: ../src/gui/main_window.cpp:1312
+#: ../src/gui/main_window.cpp:1319
 msgid "Quit"
 msgstr "Salir"
 
@@ -3136,34 +3132,28 @@ msgstr "Aceptar"
 
 #: ../plugins/loudmouth/loudmouth-account.cpp:112
 #: ../plugins/loudmouth/loudmouth-account.cpp:159
-#| msgid "inactive"
 msgid "Inactive"
 msgstr "Inactivo"
 
 #: ../plugins/loudmouth/loudmouth-account.cpp:238
 #, c-format
-#| msgid "Could not connect to server"
 msgid "Could not connect (%s)"
 msgstr "No se pudo contactar (%s)"
 
 #: ../plugins/loudmouth/loudmouth-account.cpp:244
-#| msgid "connecting"
 msgid "Connecting..."
 msgstr "Conectando…"
 
 #: ../plugins/loudmouth/loudmouth-account.cpp:284
-#| msgid "authenticating"
 msgid "Authenticating..."
 msgstr "Autenticando…"
 
 #. FIXME: can't we report better?
 #: ../plugins/loudmouth/loudmouth-account.cpp:294
-#| msgid "Could not connect to server"
 msgid "Could not connect"
 msgstr "No se pudo conectar"
 
 #: ../plugins/loudmouth/loudmouth-account.cpp:304
-#| msgid "disconnected"
 msgid "Disconnected"
 msgstr "Desconectado"
 
@@ -3173,7 +3163,6 @@ msgstr "Conectado"
 
 #. FIXME: can't we report something better?
 #: ../plugins/loudmouth/loudmouth-account.cpp:320
-#| msgid "Could not unregister"
 msgid "Could not authenticate"
 msgstr "No se pudo autenticar"
 
@@ -3706,123 +3695,126 @@ msgstr "Imprime mensajes de depuración en la consola (nivel entre 1 y 8)"
 msgid "Makes Ekiga call the given URI"
 msgstr "Hace que Ekiga llame al URI dado"
 
-#: ../src/gui/main_window.cpp:369
+#: ../src/gui/main_window.cpp:376
 msgid "Presence"
 msgstr "Presencia"
 
-#: ../src/gui/main_window.cpp:376
+#: ../src/gui/main_window.cpp:383
 msgid "Addressbook"
 msgstr "Libreta de direcciones"
 
-#: ../src/gui/main_window.cpp:405
+#: ../src/gui/main_window.cpp:412
 msgid "Unknown"
 msgstr "Desconocido"
 
-#: ../src/gui/main_window.cpp:706
+#: ../src/gui/main_window.cpp:713
 #, c-format
 msgid "Missed call from %s"
 msgstr "Llamada perdida de %s"
 
-#: ../src/gui/main_window.cpp:740
+#: ../src/gui/main_window.cpp:747
 msgid "Error"
 msgstr "Error"
 
-#: ../src/gui/main_window.cpp:1169
+#: ../src/gui/main_window.cpp:1176
+#| msgid ""
+#| "Enter a URI on the left, and click this button to place a call or to "
+#| "hangup"
 msgid ""
-"Enter a URI on the left, and click this button to place a call or to hangup"
+"Enter a URI on the left, and click this button to place a call or to hang up"
 msgstr ""
 "Introduzca un URI a la izquierda, y pulse este botón para hacer una llamada "
 "o colgar"
 
-#: ../src/gui/main_window.cpp:1220 ../src/gui/main_window.cpp:1348
+#: ../src/gui/main_window.cpp:1227 ../src/gui/main_window.cpp:1355
 msgid "View the contacts list"
 msgstr "Ver la lista de contactos"
 
-#: ../src/gui/main_window.cpp:1231 ../src/gui/main_window.cpp:1353
+#: ../src/gui/main_window.cpp:1238 ../src/gui/main_window.cpp:1360
 msgid "View the dialpad"
 msgstr "Mostrar el teclado"
 
-#: ../src/gui/main_window.cpp:1242 ../src/gui/main_window.cpp:1358
+#: ../src/gui/main_window.cpp:1249 ../src/gui/main_window.cpp:1365
 msgid "View the call history"
 msgstr "Ver el histórico de llamadas"
 
-#: ../src/gui/main_window.cpp:1280
+#: ../src/gui/main_window.cpp:1287
 msgid "_Chat"
 msgstr "_Charla"
 
-#: ../src/gui/main_window.cpp:1282
+#: ../src/gui/main_window.cpp:1289
 msgid "Co_ntact"
 msgstr "Co_ntacto"
 
-#: ../src/gui/main_window.cpp:1283
+#: ../src/gui/main_window.cpp:1290
 msgid "Act on selected contact"
 msgstr "Actuar sobre el contacto seleccionado"
 
-#: ../src/gui/main_window.cpp:1287
+#: ../src/gui/main_window.cpp:1294
 msgid "Ca_ll a Number"
 msgstr "_Llamar a un número"
 
-#: ../src/gui/main_window.cpp:1287
+#: ../src/gui/main_window.cpp:1294
 msgid "Place a new call"
 msgstr "Realizar una llamada nueva"
 
-#: ../src/gui/main_window.cpp:1293
+#: ../src/gui/main_window.cpp:1300
 msgid "A_dd Contact"
 msgstr "Aña_dir contacto"
 
-#: ../src/gui/main_window.cpp:1293
+#: ../src/gui/main_window.cpp:1300
 msgid "Add a contact to the roster"
 msgstr "Añadir contacto a la lista"
 
-#: ../src/gui/main_window.cpp:1298
+#: ../src/gui/main_window.cpp:1305
 msgid "Find contacts"
 msgstr "Buscar contactos"
 
-#: ../src/gui/main_window.cpp:1318
+#: ../src/gui/main_window.cpp:1325
 msgid "_Configuration Assistant"
 msgstr "Asistente de _configuración"
 
-#: ../src/gui/main_window.cpp:1319
+#: ../src/gui/main_window.cpp:1326
 msgid "Run the configuration assistant"
 msgstr "Ejecutar el asistente de configuración"
 
-#: ../src/gui/main_window.cpp:1327
+#: ../src/gui/main_window.cpp:1334
 msgid "Edit your accounts"
 msgstr "Edite sus cuentas"
 
-#: ../src/gui/main_window.cpp:1333
+#: ../src/gui/main_window.cpp:1340
 msgid "Change your preferences"
 msgstr "Cambiar sus preferencias"
 
-#: ../src/gui/main_window.cpp:1340
+#: ../src/gui/main_window.cpp:1347
 msgid "_Video Preview"
 msgstr "_Vista previa de vídeo"
 
-#: ../src/gui/main_window.cpp:1348
+#: ../src/gui/main_window.cpp:1355
 msgid "Con_tacts"
 msgstr "C_ontactos"
 
-#: ../src/gui/main_window.cpp:1353
+#: ../src/gui/main_window.cpp:1360
 msgid "_Dialpad"
 msgstr "_Teclado"
 
-#: ../src/gui/main_window.cpp:1358
+#: ../src/gui/main_window.cpp:1365
 msgid "_Call History"
 msgstr "Histórico de _llamadas"
 
-#: ../src/gui/main_window.cpp:1366
+#: ../src/gui/main_window.cpp:1373
 msgid "Show Offline _Contacts"
 msgstr "Mostrar _contactos desconectados"
 
-#: ../src/gui/main_window.cpp:1459
+#: ../src/gui/main_window.cpp:1466
 msgid "Dialpad"
 msgstr "Teclado"
 
-#: ../src/gui/main_window.cpp:1477
+#: ../src/gui/main_window.cpp:1484
 msgid "Call history"
 msgstr "Histórico de llamadas"
 
-#: ../src/gui/main_window.cpp:1489
+#: ../src/gui/main_window.cpp:1496
 msgid "Ekiga"
 msgstr "Ekiga"
 
@@ -3858,6 +3850,9 @@ msgstr "Borrar mensajes personalizados:"
 #: ../src/gui/statusmenu.cpp:685
 msgid "Define a custom message:"
 msgstr "Definir un mensaje personalizado:"
+
+#~ msgid "Hangup the current call"
+#~ msgstr "Colgar la llamada actual"
 
 #~ msgid "Local roster"
 #~ msgstr "Lista local"
