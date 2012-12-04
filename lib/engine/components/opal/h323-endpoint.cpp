@@ -96,7 +96,7 @@ Opal::H323::EndPoint::EndPoint (Opal::CallManager & _manager, Ekiga::ServiceCore
   set_listen_port (listen_port);
 
   /* Ready to take calls */
-  manager.AddRouteEntry("h323:.* = pc:<db>");
+  manager.AddRouteEntry("h323:.* = pc:*");
   manager.AddRouteEntry("pc:.* = h323:<da>");
 }
 
