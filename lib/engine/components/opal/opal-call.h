@@ -70,9 +70,9 @@ public:
      * Call Management
      */
 
-    /** Hangup the call
+    /** Hang up the call
     */
-    void hangup ();
+    void hang_up ();
 
     /** Answer an incoming call
     */

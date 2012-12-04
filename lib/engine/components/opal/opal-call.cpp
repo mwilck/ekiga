@@ -123,7 +123,7 @@ Opal::Call::~Call ()
 
 
 void
-Opal::Call::hangup ()
+Opal::Call::hang_up ()
 {
   if (!is_outgoing () && !IsEstablished ())
     Clear (OpalConnection::EndedByAnswerDenied);

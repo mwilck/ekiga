@@ -73,9 +73,9 @@ namespace Ekiga
        * Call Management
        */
 
-      /** Hangup the call
+      /** Hang up the call
       */
-      virtual void hangup () = 0;
+      virtual void hang_up () = 0;
 
       /** Answer an incoming call
       */

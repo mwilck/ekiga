@@ -1173,7 +1173,7 @@ ekiga_main_window_init_uri_toolbar (EkigaMainWindow *mw)
   gtk_tool_item_set_expand (GTK_TOOL_ITEM (item), FALSE);
 
   gtk_widget_set_tooltip_text (GTK_WIDGET (call_button),
-			       _("Enter a URI on the left, and click this button to place a call or to hangup"));
+			       _("Enter a URI on the left, and click this button to place a call or to hang up"));
 
   gtk_toolbar_insert (GTK_TOOLBAR (mw->priv->uri_toolbar), item, -1);
 

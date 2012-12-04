@@ -92,7 +92,7 @@ call_notification_action_cb (NotifyNotification *notification,
   if (!strcmp (action, "accept"))
     call->answer ();
   else
-    call->hangup ();
+    call->hang_up ();
 }
 
 static void

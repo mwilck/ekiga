@@ -111,8 +111,8 @@ struct _EkigaCallWindowPrivate
 
   GtkWidget *main_menu;
   GtkWidget *call_panel_toolbar;
-  GtkWidget *pickup_button;
-  GtkWidget *hangup_button;
+  GtkWidget *pick_up_button;
+  GtkWidget *hang_up_button;
   GtkWidget *hold_button;
   GtkWidget *audio_settings_button;
   GtkWidget *video_settings_button;
@@ -218,10 +218,10 @@ static void stay_on_top_changed_nt (gpointer id,
                                     GmConfEntry *entry,
                                     gpointer data);
 
-static void pickup_call_cb (GtkWidget * /*widget*/,
+static void pick_up_call_cb (GtkWidget * /*widget*/,
                             gpointer data);
 
-static void hangup_call_cb (GtkWidget * /*widget*/,
+static void hang_up_call_cb (GtkWidget * /*widget*/,
                             gpointer data);
 
 static void show_window_cb (GtkWidget *widget,
@@ -586,7 +586,7 @@ fullscreen_changed_cb (G_GNUC_UNUSED GtkWidget *widget,
 }
 
 static void
-pickup_call_cb (GtkWidget * /*widget*/,
+pick_up_call_cb (GtkWidget * /*widget*/,
                 gpointer data)
 {
   EkigaCallWindow *cw = EKIGA_CALL_WINDOW (data);
@@ -596,13 +596,13 @@ pickup_call_cb (GtkWidget * /*widget*/,
 }
 
 static void
-hangup_call_cb (GtkWidget * /*widget*/,
+hang_up_call_cb (GtkWidget * /*widget*/,
                 gpointer data)
 {
   EkigaCallWindow *cw = EKIGA_CALL_WINDOW (data);
 
   if (cw->priv->current_call)
-    cw->priv->current_call->hangup ();
+    cw->priv->current_call->hang_up ();
 }
 
 
@@ -1349,9 +1349,9 @@ ekiga_call_window_delete_event_cb (GtkWidget *widget,
   cw = EKIGA_CALL_WINDOW (widget);
   g_return_val_if_fail (EKIGA_IS_CALL_WINDOW (cw), false);
 
-  /* Hangup or disable preview */
+  /* Hang up or disable preview */
   if (cw->priv->calling_state != Standby && cw->priv->current_call) {
-    cw->priv->current_call->hangup ();
+    cw->priv->current_call->hang_up ();
   }
   else {
     gm_conf_set_bool (VIDEO_DEVICES_KEY "enable_preview", false);
@@ -1393,8 +1393,8 @@ ekiga_call_window_update_calling_state (EkigaCallWindow *cw,
       gtk_menu_set_sensitive (cw->priv->main_menu, "connect", false);
       gtk_menu_set_sensitive (cw->priv->main_menu, "disconnect", false);
       gtk_menu_section_set_sensitive (cw->priv->main_menu, "hold_call", false);
-      gtk_widget_set_sensitive (GTK_WIDGET (cw->priv->pickup_button), false);
-      gtk_widget_set_sensitive (GTK_WIDGET (cw->priv->hangup_button), false);
+      gtk_widget_set_sensitive (GTK_WIDGET (cw->priv->pick_up_button), false);
+      gtk_widget_set_sensitive (GTK_WIDGET (cw->priv->hang_up_button), false);
       gtk_widget_set_sensitive (GTK_WIDGET (cw->priv->hold_button), false);
 
       /* Spinner updates */
@@ -1418,8 +1418,8 @@ ekiga_call_window_update_calling_state (EkigaCallWindow *cw,
       gtk_widget_show (cw->priv->call_frame);
 
       /* Update the menus and toolbar items */
-      gtk_widget_set_sensitive (GTK_WIDGET (cw->priv->pickup_button), false);
-      gtk_widget_set_sensitive (GTK_WIDGET (cw->priv->hangup_button), true);
+      gtk_widget_set_sensitive (GTK_WIDGET (cw->priv->pick_up_button), false);
+      gtk_widget_set_sensitive (GTK_WIDGET (cw->priv->hang_up_button), true);
       gtk_menu_set_sensitive (cw->priv->main_menu, "connect", false);
       gtk_menu_set_sensitive (cw->priv->main_menu, "disconnect", true);
       break;
@@ -1446,8 +1446,8 @@ ekiga_call_window_update_calling_state (EkigaCallWindow *cw,
       gtk_menu_set_sensitive (cw->priv->main_menu, "connect", false);
       gtk_menu_set_sensitive (cw->priv->main_menu, "disconnect", true);
       gtk_menu_section_set_sensitive (cw->priv->main_menu, "hold_call", true);
-      gtk_widget_set_sensitive (GTK_WIDGET (cw->priv->pickup_button), false);
-      gtk_widget_set_sensitive (GTK_WIDGET (cw->priv->hangup_button), true);
+      gtk_widget_set_sensitive (GTK_WIDGET (cw->priv->pick_up_button), false);
+      gtk_widget_set_sensitive (GTK_WIDGET (cw->priv->hang_up_button), true);
       gtk_widget_set_sensitive (GTK_WIDGET (cw->priv->hold_button), true);
       break;
 
@@ -1455,8 +1455,8 @@ ekiga_call_window_update_calling_state (EkigaCallWindow *cw,
     case Called:
 
       /* Update the menus and toolbar items */
-      gtk_widget_set_sensitive (GTK_WIDGET (cw->priv->pickup_button), true);
-      gtk_widget_set_sensitive (GTK_WIDGET (cw->priv->hangup_button), true);
+      gtk_widget_set_sensitive (GTK_WIDGET (cw->priv->pick_up_button), true);
+      gtk_widget_set_sensitive (GTK_WIDGET (cw->priv->hang_up_button), true);
       gtk_menu_set_sensitive (cw->priv->main_menu, "connect", true);
       gtk_menu_set_sensitive (cw->priv->main_menu, "disconnect", true);
 
@@ -1985,11 +1985,11 @@ ekiga_call_window_init_menu (EkigaCallWindow *cw)
 
       GTK_MENU_THEME_ENTRY("connect", _("_Pick up"), _("Pick up the current call"),
                            "phone-pick-up", 'd',
-                           G_CALLBACK (pickup_call_cb), cw, false),
+                           G_CALLBACK (pick_up_call_cb), cw, false),
 
-      GTK_MENU_THEME_ENTRY("disconnect", _("_Hangup"), _("Hangup the current call"),
+      GTK_MENU_THEME_ENTRY("disconnect", _("_Hang up"), _("Hang up the current call"),
                            "phone-hang-up", 'd',
-                           G_CALLBACK (hangup_call_cb), cw, false),
+                           G_CALLBACK (hang_up_call_cb), cw, false),
 
       GTK_MENU_SEPARATOR,
 
@@ -2390,35 +2390,35 @@ ekiga_call_window_init_gui (EkigaCallWindow *cw)
 
   /* Pick up */
   item = gtk_tool_item_new ();
-  cw->priv->pickup_button = gtk_button_new ();
+  cw->priv->pick_up_button = gtk_button_new ();
   image = gtk_image_new_from_icon_name ("phone-pick-up", GTK_ICON_SIZE_LARGE_TOOLBAR);
-  gtk_container_add (GTK_CONTAINER (cw->priv->pickup_button), image);
-  gtk_container_add (GTK_CONTAINER (item), cw->priv->pickup_button);
-  gtk_button_set_relief (GTK_BUTTON (cw->priv->pickup_button), GTK_RELIEF_NONE);
-  gtk_widget_show (cw->priv->pickup_button);
+  gtk_container_add (GTK_CONTAINER (cw->priv->pick_up_button), image);
+  gtk_container_add (GTK_CONTAINER (item), cw->priv->pick_up_button);
+  gtk_button_set_relief (GTK_BUTTON (cw->priv->pick_up_button), GTK_RELIEF_NONE);
+  gtk_widget_show (cw->priv->pick_up_button);
   gtk_toolbar_insert (GTK_TOOLBAR (cw->priv->call_panel_toolbar),
 		      GTK_TOOL_ITEM (item), -1);
-  gtk_widget_set_sensitive (GTK_WIDGET (cw->priv->pickup_button), false);
+  gtk_widget_set_sensitive (GTK_WIDGET (cw->priv->pick_up_button), false);
   gtk_tool_item_set_tooltip_text (GTK_TOOL_ITEM (item),
 				  _("Pick up the current call"));
-  g_signal_connect (cw->priv->pickup_button, "clicked",
-		    G_CALLBACK (pickup_call_cb), cw);
+  g_signal_connect (cw->priv->pick_up_button, "clicked",
+		    G_CALLBACK (pick_up_call_cb), cw);
 
   /* Hang up */
   item = gtk_tool_item_new ();
-  cw->priv->hangup_button = gtk_button_new ();
+  cw->priv->hang_up_button = gtk_button_new ();
   image = gtk_image_new_from_icon_name ("phone-hang-up", GTK_ICON_SIZE_LARGE_TOOLBAR);
-  gtk_container_add (GTK_CONTAINER (cw->priv->hangup_button), image);
-  gtk_container_add (GTK_CONTAINER (item), cw->priv->hangup_button);
-  gtk_button_set_relief (GTK_BUTTON (cw->priv->hangup_button), GTK_RELIEF_NONE);
-  gtk_widget_show (cw->priv->hangup_button);
+  gtk_container_add (GTK_CONTAINER (cw->priv->hang_up_button), image);
+  gtk_container_add (GTK_CONTAINER (item), cw->priv->hang_up_button);
+  gtk_button_set_relief (GTK_BUTTON (cw->priv->hang_up_button), GTK_RELIEF_NONE);
+  gtk_widget_show (cw->priv->hang_up_button);
   gtk_toolbar_insert (GTK_TOOLBAR (cw->priv->call_panel_toolbar),
 		      GTK_TOOL_ITEM (item), -1);
-  gtk_widget_set_sensitive (GTK_WIDGET (cw->priv->hangup_button), false);
+  gtk_widget_set_sensitive (GTK_WIDGET (cw->priv->hang_up_button), false);
   gtk_tool_item_set_tooltip_text (GTK_TOOL_ITEM (item),
 				  _("Hang up the current call"));
-  g_signal_connect (cw->priv->hangup_button, "clicked",
-		    G_CALLBACK (hangup_call_cb), cw);
+  g_signal_connect (cw->priv->hang_up_button, "clicked",
+		    G_CALLBACK (hang_up_call_cb), cw);
 
   /* Separator */
   item = gtk_separator_tool_item_new ();
