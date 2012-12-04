@@ -39,7 +39,6 @@
 #ifndef GM_COMMON_H_
 #define GM_COMMON_H_
 
-#include <h323/h323.h>
 #include <sip/sip.h>
 
 #include <gtk/gtk.h>
