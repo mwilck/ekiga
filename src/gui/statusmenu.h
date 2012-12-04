@@ -42,7 +42,6 @@
 
 #include <gtk/gtk.h>
 
-#include "call.h"
 #include "services.h"
 
 /** This implements a StatusMenu.

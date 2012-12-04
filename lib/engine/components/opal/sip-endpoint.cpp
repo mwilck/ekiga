@@ -36,22 +36,10 @@
  */
 
 
-#include <algorithm>
-#include <sstream>
-
 #include <glib/gi18n.h>
-
 #include "config.h"
-
 #include "sip-endpoint.h"
-
-#include "opal-bank.h"
-#include "opal-call.h"
-
-#include "account-core.h"
 #include "chat-core.h"
-#include "personal-details.h"
-#include "opal-account.h"
 
 namespace Opal {
 
