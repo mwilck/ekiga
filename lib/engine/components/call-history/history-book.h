@@ -58,7 +58,7 @@ namespace History
   public:
 
     /* generic api */
-    
+
     Book (Ekiga::ServiceCore &_core);
 
     ~Book ();
@@ -74,7 +74,7 @@ namespace History
     const std::string get_status () const;
 
     const std::string get_icon () const
-    { return "computer"; }
+    { return "document-open-recent"; }
 
     /* more specific api */
 
