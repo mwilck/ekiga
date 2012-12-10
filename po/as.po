@@ -11,10 +11,10 @@ msgstr ""
 "Project-Id-Version: as\n"
 "Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?"
 "product=ekiga&keywords=I18N+L10N&component=general\n"
-"POT-Creation-Date: 2012-11-29 22:50+0000\n"
-"PO-Revision-Date: 2012-11-30 16:31+0530\n"
+"POT-Creation-Date: 2012-12-07 12:34+0000\n"
+"PO-Revision-Date: 2012-12-10 15:35+0530\n"
 "Last-Translator: Nilamdyuti Goswami <ngoswami@redhat.com>\n"
-"Language-Team: as_IN <kde-i18n-doc@kde.org>\n"
+"Language-Team: Assamese <kde-i18n-doc@kde.org>\n"
 "Language: as\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -99,8 +99,8 @@ msgstr "ভিডিঅ' কেমেৰাৰ ধৰণ বাছক (অধি
 msgid "Video preview"
 msgstr "ভিডিঅ' পূৰ্বদৰ্শন"
 
-#: ../ekiga.schemas.in.in.h:14 ../src/gui/main_window.cpp:1201
-#: ../src/gui/main_window.cpp:1341
+#: ../ekiga.schemas.in.in.h:14 ../src/gui/main_window.cpp:1208
+#: ../src/gui/main_window.cpp:1348
 msgid "Display images from your camera device"
 msgstr "আপোনাৰ কেমেৰাৰ ছবি সহ দেখুৱা হ'ব"
 
@@ -768,7 +768,7 @@ msgstr ""
 msgid "List of folded groups in the roster"
 msgstr "ৰ'স্টাৰৰ ফ'ল্ডেড সমষ্টিৰ তালিকা"
 
-#: ../ekiga.schemas.in.in.h:135 ../src/gui/main_window.cpp:1366
+#: ../ekiga.schemas.in.in.h:135 ../src/gui/main_window.cpp:1373
 msgid "Show offline contacts"
 msgstr "অফ-লাইন চিনাকি দেখুৱাওক"
 
@@ -864,9 +864,12 @@ msgstr "Missed"
 
 #: ../lib/engine/components/local-roster/local-cluster.cpp:82
 #: ../lib/engine/components/local-roster/local-heap.cpp:118
+#: ../plugins/evolution/evolution-book.cpp:301
 #: ../plugins/evolution/evolution-book.cpp:343
-msgid "_New Contact"
-msgstr "নতুন পৰিচয় (_N)"
+#: ../plugins/loudmouth/loudmouth-heap-roster.cpp:71
+#: ../src/gui/main_window.cpp:1300
+msgid "A_dd Contact"
+msgstr "সকলো পৰিচিতিত খোঁজ কৰা"
 
 #: ../lib/engine/components/local-roster/local-heap.cpp:94
 msgid "Services"
@@ -885,7 +888,7 @@ msgid "Call back test"
 msgstr "পৰিক্ষা আকৌ লওক"
 
 #: ../lib/engine/components/local-roster/local-heap.cpp:111
-#: ../src/gui/main_window.cpp:1430
+#: ../src/gui/main_window.cpp:1437
 msgid "Contacts"
 msgstr "পৰিচিতি (_ৰ)"
 
@@ -1021,7 +1024,7 @@ msgstr "নামহীন"
 #: ../plugins/evolution/evolution-contact.cpp:228
 #: ../plugins/loudmouth/loudmouth-presentity.cpp:169
 #: ../plugins/resource-list/rl-presentity.cpp:212
-#: ../src/gui/main_window.cpp:1316
+#: ../src/gui/main_window.cpp:1323
 msgid "_Edit"
 msgstr "সম্পাদন (_ম)"
 
@@ -1061,14 +1064,14 @@ msgstr "কোন এটা ছবি বাছক"
 
 #: ../lib/engine/components/opal/h323-endpoint.cpp:135
 #: ../lib/engine/components/opal/opal-call.cpp:703
-#: ../lib/engine/components/opal/sip-endpoint.cpp:249
-#: ../lib/engine/components/opal/sip-endpoint.cpp:253
+#: ../lib/engine/components/opal/sip-endpoint.cpp:237
+#: ../lib/engine/components/opal/sip-endpoint.cpp:241
 msgid "Call"
 msgstr "কল (_ল)"
 
 #: ../lib/engine/components/opal/h323-endpoint.cpp:138
-#: ../lib/engine/components/opal/sip-endpoint.cpp:250
-#: ../lib/engine/components/opal/sip-endpoint.cpp:254
+#: ../lib/engine/components/opal/sip-endpoint.cpp:238
+#: ../lib/engine/components/opal/sip-endpoint.cpp:242
 #: ../lib/engine/gui/gtk-frontend/call-window.cpp:2178
 msgid "Transfer"
 msgstr "কল স্থানান্তৰ (_স)"
@@ -1083,13 +1086,13 @@ msgid "Bad username/password"
 msgstr "ব্যবহাৰকাৰী নাম/পাসওয়াৰ্ড সঠিক নয়"
 
 #: ../lib/engine/components/opal/h323-endpoint.cpp:346
-#: ../lib/engine/components/opal/sip-endpoint.cpp:598
+#: ../lib/engine/components/opal/sip-endpoint.cpp:586
 msgid "Transport error"
 msgstr "এটা ট্ৰান্সপোৰ্ট ত্ৰুটি ঘটেছে"
 
 #: ../lib/engine/components/opal/h323-endpoint.cpp:357
 #: ../lib/engine/components/opal/h323-endpoint.cpp:362
-#: ../lib/engine/components/opal/sip-endpoint.cpp:811
+#: ../lib/engine/components/opal/sip-endpoint.cpp:799
 msgid "Failed"
 msgstr "ফাইল (_ফ)"
 
@@ -1455,7 +1458,7 @@ msgid "Abnormal call termination"
 msgstr "অস্বাভাবিক ভাবে কলৰ সমাপ্তি"
 
 #: ../lib/engine/components/opal/opal-call.cpp:444
-#: ../src/gui/main_window.cpp:524
+#: ../src/gui/main_window.cpp:531
 msgid "Could not connect to remote host"
 msgstr "দূৰবৰ্তী হস্টতৰ লগতে সংযোগৰ চেষ্ঠা ব্যৰ্থ"
 
@@ -1505,7 +1508,7 @@ msgid "User is not available"
 msgstr "সাময়িক ত্ৰুটি"
 
 #: ../lib/engine/components/opal/opal-call.cpp:487
-#: ../lib/engine/components/opal/sip-endpoint.cpp:776
+#: ../lib/engine/components/opal/sip-endpoint.cpp:764
 msgid "Service unavailable"
 msgstr "সাময়িক ত্ৰুটি"
 
@@ -1536,108 +1539,108 @@ msgstr ""
 "নিৰ্দেশৰ বাবে http://wiki.ekiga.org/index.php/Enable_port_forwarding_manually "
 "চাওক।"
 
-#: ../lib/engine/components/opal/sip-endpoint.cpp:274
-#: ../lib/engine/components/opal/sip-endpoint.cpp:276
+#: ../lib/engine/components/opal/sip-endpoint.cpp:262
+#: ../lib/engine/components/opal/sip-endpoint.cpp:264
 msgid "Message"
 msgstr "বাৰ্তা পঠিওৱা:"
 
-#: ../lib/engine/components/opal/sip-endpoint.cpp:594
+#: ../lib/engine/components/opal/sip-endpoint.cpp:582
 msgid "Illegal status code"
 msgstr "অবস্থাসূচক কোড বৈধ নয়"
 
-#: ../lib/engine/components/opal/sip-endpoint.cpp:602
+#: ../lib/engine/components/opal/sip-endpoint.cpp:590
 msgid "Invalid address"
 msgstr "অবৈধ ঠিকনা"
 
 #. Translators: Host of the remote party is offline, this should
 #. * appear when the remote host does not reply in an acceptable time
-#: ../lib/engine/components/opal/sip-endpoint.cpp:608
+#: ../lib/engine/components/opal/sip-endpoint.cpp:596
 msgid "Remote party host is offline"
 msgstr "দূৰবৰ্তী পাৰ্টি হোস্ট অফলাইন"
 
 #. Translators: the following strings are answers from the SIP server
 #. * when the packet it receives has an error, see
 #. * http://www.ietf.org/rfc/rfc3261.txt, chapter 21 for more information
-#: ../lib/engine/components/opal/sip-endpoint.cpp:624
+#: ../lib/engine/components/opal/sip-endpoint.cpp:612
 msgid "Multiple choices"
 msgstr "একাধিক নিৰ্বাচিত মান"
 
-#: ../lib/engine/components/opal/sip-endpoint.cpp:628
+#: ../lib/engine/components/opal/sip-endpoint.cpp:616
 msgid "Moved permanently"
 msgstr "স্থায়ীৰূপে স্থানান্তৰ কৰা হয়েছে"
 
-#: ../lib/engine/components/opal/sip-endpoint.cpp:632
+#: ../lib/engine/components/opal/sip-endpoint.cpp:620
 msgid "Moved temporarily"
 msgstr "সাময়িকভাবে স্থানান্তৰ কৰা হয়েছে"
 
-#: ../lib/engine/components/opal/sip-endpoint.cpp:636
+#: ../lib/engine/components/opal/sip-endpoint.cpp:624
 msgid "Use proxy"
 msgstr "ইউজাৰ ডিৰেক্টৰি"
 
-#: ../lib/engine/components/opal/sip-endpoint.cpp:640
+#: ../lib/engine/components/opal/sip-endpoint.cpp:628
 msgid "Alternative service"
 msgstr "অডিঅ' আউটপুট ডিভাইচ"
 
-#: ../lib/engine/components/opal/sip-endpoint.cpp:644
+#: ../lib/engine/components/opal/sip-endpoint.cpp:632
 msgid "Bad request"
 msgstr "অনুৰোধ সঠিক নয়"
 
-#: ../lib/engine/components/opal/sip-endpoint.cpp:648
+#: ../lib/engine/components/opal/sip-endpoint.cpp:636
 msgid "Unauthorized"
 msgstr "অনুমোদিত নয়"
 
-#: ../lib/engine/components/opal/sip-endpoint.cpp:652
+#: ../lib/engine/components/opal/sip-endpoint.cpp:640
 msgid "Payment required"
 msgstr "প্ৰযোজনীয দৰমহা"
 
-#: ../lib/engine/components/opal/sip-endpoint.cpp:656
+#: ../lib/engine/components/opal/sip-endpoint.cpp:644
 msgid "Forbidden, please check that username and password are correct"
 msgstr ""
 "নিষিদ্ধ, অনুগ্ৰহ কৰি ব্যৱহাৰকাৰী নাম আৰু পাছওৱাৰ্ড সঠিক হয় নে নিৰিক্ষণ ন কৰি "
 "চাওক "
 
-#: ../lib/engine/components/opal/sip-endpoint.cpp:660
+#: ../lib/engine/components/opal/sip-endpoint.cpp:648
 msgid "Not found"
 msgstr "ব্যৱহাৰকাৰীকে খুঁজে পোৱা নাযায়"
 
-#: ../lib/engine/components/opal/sip-endpoint.cpp:664
+#: ../lib/engine/components/opal/sip-endpoint.cpp:652
 msgid "Method not allowed"
 msgstr "পদ্ধতিৰ ব্যবহাৰ অনুমোদিত নয়"
 
-#: ../lib/engine/components/opal/sip-endpoint.cpp:668
+#: ../lib/engine/components/opal/sip-endpoint.cpp:656
 msgid "Not acceptable"
 msgstr "গৃহিত"
 
-#: ../lib/engine/components/opal/sip-endpoint.cpp:672
+#: ../lib/engine/components/opal/sip-endpoint.cpp:660
 msgid "Proxy authentication required"
 msgstr "প্ৰক্সি অনুমোদন প্ৰয়োজন"
 
 #
-#: ../lib/engine/components/opal/sip-endpoint.cpp:676
+#: ../lib/engine/components/opal/sip-endpoint.cpp:664
 msgid "Timeout"
 msgstr "সময়সীমা"
 
-#: ../lib/engine/components/opal/sip-endpoint.cpp:680
+#: ../lib/engine/components/opal/sip-endpoint.cpp:668
 msgid "Conflict"
 msgstr "বিৰোধিতা "
 
-#: ../lib/engine/components/opal/sip-endpoint.cpp:684
+#: ../lib/engine/components/opal/sip-endpoint.cpp:672
 msgid "Length required"
 msgstr "দৈৰ্ঘ্য আবশ্যক"
 
-#: ../lib/engine/components/opal/sip-endpoint.cpp:688
+#: ../lib/engine/components/opal/sip-endpoint.cpp:676
 msgid "Request entity too big"
 msgstr "অনুৰোধ কৰা বস্তু বৰ ডাঙৰ"
 
-#: ../lib/engine/components/opal/sip-endpoint.cpp:692
+#: ../lib/engine/components/opal/sip-endpoint.cpp:680
 msgid "Request URI too long"
 msgstr "অনুৰোধ ঠিক আছে"
 
-#: ../lib/engine/components/opal/sip-endpoint.cpp:696
+#: ../lib/engine/components/opal/sip-endpoint.cpp:684
 msgid "Unsupported media type"
 msgstr "মিডিয়াৰ ধৰন সমৰ্থিত নয়"
 
-#: ../lib/engine/components/opal/sip-endpoint.cpp:700
+#: ../lib/engine/components/opal/sip-endpoint.cpp:688
 msgid "Unsupported URI scheme"
 msgstr "অসমৰ্থিত URI স্কিম"
 
@@ -1645,128 +1648,128 @@ msgstr "অসমৰ্থিত URI স্কিম"
 #. * Here extension is a specific "phone number", see
 #. * http://en.wikipedia.org/wiki/Extension_(telephone)
 #. * for more information
-#: ../lib/engine/components/opal/sip-endpoint.cpp:708
+#: ../lib/engine/components/opal/sip-endpoint.cpp:696
 msgid "Bad extension"
 msgstr "ত্ৰুটিপূৰ্ণ এক্সটেনশন"
 
-#: ../lib/engine/components/opal/sip-endpoint.cpp:712
+#: ../lib/engine/components/opal/sip-endpoint.cpp:700
 msgid "Extension required"
 msgstr "এক্সটেনশন আবশ্যক"
 
-#: ../lib/engine/components/opal/sip-endpoint.cpp:716
+#: ../lib/engine/components/opal/sip-endpoint.cpp:704
 msgid "Interval too brief"
 msgstr "অত্যন্ত স্বল্প বিৰতিকাল"
 
-#: ../lib/engine/components/opal/sip-endpoint.cpp:720
+#: ../lib/engine/components/opal/sip-endpoint.cpp:708
 msgid "Temporarily unavailable"
 msgstr "সাময়িক ত্ৰুটি"
 
-#: ../lib/engine/components/opal/sip-endpoint.cpp:724
+#: ../lib/engine/components/opal/sip-endpoint.cpp:712
 msgid "Loop detected"
 msgstr "স্বয়ংক্ৰিয় ভাবে বাতিল কৰা হৈছে"
 
-#: ../lib/engine/components/opal/sip-endpoint.cpp:728
+#: ../lib/engine/components/opal/sip-endpoint.cpp:716
 msgid "Too many hops"
 msgstr "অত্যাধিক সংখ্যক হপ"
 
-#: ../lib/engine/components/opal/sip-endpoint.cpp:732
+#: ../lib/engine/components/opal/sip-endpoint.cpp:720
 msgid "Address incomplete"
 msgstr "ঠিকনাৰ খাতা (_খ)"
 
-#: ../lib/engine/components/opal/sip-endpoint.cpp:736
+#: ../lib/engine/components/opal/sip-endpoint.cpp:724
 msgid "Ambiguous"
 msgstr "দ্ব্যৰ্থক"
 
-#: ../lib/engine/components/opal/sip-endpoint.cpp:740
+#: ../lib/engine/components/opal/sip-endpoint.cpp:728
 msgid "Busy Here"
 msgstr "এখানে ব্যস্ত"
 
-#: ../lib/engine/components/opal/sip-endpoint.cpp:744
+#: ../lib/engine/components/opal/sip-endpoint.cpp:732
 msgid "Request terminated"
 msgstr "অনুৰোধ সমাপ্ত হয়েছে"
 
-#: ../lib/engine/components/opal/sip-endpoint.cpp:748
+#: ../lib/engine/components/opal/sip-endpoint.cpp:736
 msgid "Not acceptable here"
 msgstr "গৃহিত"
 
-#: ../lib/engine/components/opal/sip-endpoint.cpp:752
+#: ../lib/engine/components/opal/sip-endpoint.cpp:740
 msgid "Bad event"
 msgstr "ঘটনা সঠিক নয়"
 
-#: ../lib/engine/components/opal/sip-endpoint.cpp:756
+#: ../lib/engine/components/opal/sip-endpoint.cpp:744
 msgid "Request pending"
 msgstr "অনুৰোধ ঠিক আছে"
 
-#: ../lib/engine/components/opal/sip-endpoint.cpp:760
+#: ../lib/engine/components/opal/sip-endpoint.cpp:748
 msgid "Undecipherable"
 msgstr "Undecipherable"
 
-#: ../lib/engine/components/opal/sip-endpoint.cpp:764
+#: ../lib/engine/components/opal/sip-endpoint.cpp:752
 msgid "Internal server error"
 msgstr "বেঠিক চাৰ্ভাৰ বা গোষ্ঠীৰ নাম"
 
-#: ../lib/engine/components/opal/sip-endpoint.cpp:768
+#: ../lib/engine/components/opal/sip-endpoint.cpp:756
 msgid "Not implemented"
 msgstr "বাস্তবায়িত হয়নি"
 
-#: ../lib/engine/components/opal/sip-endpoint.cpp:772
+#: ../lib/engine/components/opal/sip-endpoint.cpp:760
 msgid "Bad gateway"
 msgstr "গেটওয়ে সঠিক নয়"
 
-#: ../lib/engine/components/opal/sip-endpoint.cpp:780
+#: ../lib/engine/components/opal/sip-endpoint.cpp:768
 msgid "Server timeout"
 msgstr "সাৰ্ভাৰেৰ সময়সীমা"
 
-#: ../lib/engine/components/opal/sip-endpoint.cpp:784
+#: ../lib/engine/components/opal/sip-endpoint.cpp:772
 msgid "SIP version not supported"
 msgstr "SIPৰ সংস্কৰণ সমৰ্থিত"
 
-#: ../lib/engine/components/opal/sip-endpoint.cpp:788
+#: ../lib/engine/components/opal/sip-endpoint.cpp:776
 msgid "Message too large"
 msgstr "বাৰ্তা অত্যাধিক বড়"
 
-#: ../lib/engine/components/opal/sip-endpoint.cpp:792
+#: ../lib/engine/components/opal/sip-endpoint.cpp:780
 msgid "Busy everywhere"
 msgstr "সৰ্বত্ৰ ব্যস্ত"
 
-#: ../lib/engine/components/opal/sip-endpoint.cpp:796
+#: ../lib/engine/components/opal/sip-endpoint.cpp:784
 msgid "Decline"
 msgstr "প্ৰত্যাখ্যান কৰক"
 
-#: ../lib/engine/components/opal/sip-endpoint.cpp:800
+#: ../lib/engine/components/opal/sip-endpoint.cpp:788
 msgid "Does not exist anymore"
 msgstr "এতিয়া আৰু নাই"
 
-#: ../lib/engine/components/opal/sip-endpoint.cpp:804
+#: ../lib/engine/components/opal/sip-endpoint.cpp:792
 msgid "Globally not acceptable"
 msgstr "গৃহিত"
 
-#: ../lib/engine/components/opal/sip-endpoint.cpp:914
+#: ../lib/engine/components/opal/sip-endpoint.cpp:902
 msgid "Could not send message: "
 msgstr "বাৰ্তা পঠাব পৰা নগল: "
 
-#: ../lib/engine/components/opal/sip-endpoint.cpp:916
+#: ../lib/engine/components/opal/sip-endpoint.cpp:904
 msgid "user offline"
 msgstr "ব্যৱহাৰকাৰী অফলাইন"
 
 #. Ignore
-#: ../lib/engine/components/opal/sip-endpoint.cpp:955
+#: ../lib/engine/components/opal/sip-endpoint.cpp:943
 #: ../plugins/libnotify/libnotify-main.cpp:257
 #, c-format
 msgid "Incoming call from %s"
 msgstr "%s ৰ পৰা অহা কল"
 
-#: ../lib/engine/components/opal/sip-endpoint.cpp:957
+#: ../lib/engine/components/opal/sip-endpoint.cpp:945
 #, c-format
 msgid "Incoming call"
 msgstr "অহা কল"
 
-#: ../lib/engine/components/opal/sip-endpoint.cpp:963
+#: ../lib/engine/components/opal/sip-endpoint.cpp:951
 #, c-format
 msgid "In a call with %s"
 msgstr "%sৰ সৈতে কল চলমান"
 
-#: ../lib/engine/components/opal/sip-endpoint.cpp:965
+#: ../lib/engine/components/opal/sip-endpoint.cpp:953
 #, c-format
 msgid "In a call"
 msgstr "কল চলমান"
@@ -1802,12 +1805,12 @@ msgstr "একাউন্ট নম্বৰ:"
 
 #
 #: ../lib/engine/gui/gtk-frontend/accounts-window.cpp:584
-#: ../src/gui/main_window.cpp:1326
+#: ../src/gui/main_window.cpp:1333
 msgid "_Accounts"
 msgstr "একাউন্ট তালিকা (_A)"
 
 #: ../lib/engine/gui/gtk-frontend/accounts-window.cpp:588
-#: ../src/gui/main_window.cpp:1372
+#: ../src/gui/main_window.cpp:1379
 msgid "_Help"
 msgstr "সাহায্য (_স)"
 
@@ -1820,7 +1823,7 @@ msgid "Address Book"
 msgstr "ঠিকনাৰ খাতা (_খ)"
 
 #: ../lib/engine/gui/gtk-frontend/addressbook-window.cpp:646
-#: ../src/gui/main_window.cpp:1297
+#: ../src/gui/main_window.cpp:1304
 msgid "Address _Book"
 msgstr "ঠিকনাৰ খাতা (_খ)"
 
@@ -1999,7 +2002,7 @@ msgstr "%s ক কল কৰা হৈছে..."
 #. %s is the SIP/H.323 address of the remote user, this text is shown
 #. below video during a call
 #: ../lib/engine/gui/gtk-frontend/call-window.cpp:1160
-#: ../src/gui/main_window.cpp:646
+#: ../src/gui/main_window.cpp:653
 #, c-format
 msgid "Connected with %s"
 msgstr "Connected with %s"
@@ -2144,11 +2147,13 @@ msgid "Pick up the current call"
 msgstr "বৰ্তমান কল ধৰক"
 
 #: ../lib/engine/gui/gtk-frontend/call-window.cpp:1990
-msgid "_Hangup"
+#| msgid "_Hangup"
+msgid "_Hang up"
 msgstr "কল কাটক (_H)"
 
 #: ../lib/engine/gui/gtk-frontend/call-window.cpp:1990
-msgid "Hangup the current call"
+#: ../lib/engine/gui/gtk-frontend/call-window.cpp:2419
+msgid "Hang up the current call"
 msgstr "বৰ্তমান কল কাটক"
 
 #: ../lib/engine/gui/gtk-frontend/call-window.cpp:1996
@@ -2173,12 +2178,12 @@ msgid "Suspend or resume the video transmission"
 msgstr "ভিডিঅ' প্ৰেৰণ সাময়িক ভাবে স্থগিত ৰাখা বা পুনৰায় চালু কৰা"
 
 #: ../lib/engine/gui/gtk-frontend/call-window.cpp:2021
-#: ../src/gui/main_window.cpp:1305
+#: ../src/gui/main_window.cpp:1312
 msgid "Close the Ekiga window"
 msgstr "Ekiga সম্বন্ধে (_স)"
 
 #: ../lib/engine/gui/gtk-frontend/call-window.cpp:2026
-#: ../src/gui/main_window.cpp:1338
+#: ../src/gui/main_window.cpp:1345
 msgid "_View"
 msgstr "দৃশ্য (_দ)"
 
@@ -2207,12 +2212,10 @@ msgid "Both video images"
 msgstr "দুটি ভিডিঅ'ৰ ক্ষেত্ৰতই"
 
 #: ../lib/engine/gui/gtk-frontend/call-window.cpp:2043
-#| msgid "Extended Video Roles"
 msgid "_Extended Video"
 msgstr "সম্প্ৰসাৰিত ভিডিঅ' (_E)"
 
 #: ../lib/engine/gui/gtk-frontend/call-window.cpp:2044
-#| msgid "Extended Video Roles"
 msgid "Extended Video Images"
 msgstr "সম্প্ৰসাৰিত ভিডিঅ' ছবিসমূহ"
 
@@ -2239,10 +2242,6 @@ msgstr "পুৰো স্ক্ৰীন জুড়ে দেখাওক"
 #: ../lib/engine/gui/gtk-frontend/call-window.cpp:2177
 msgid "Transfer call to:"
 msgstr "Transfer call to:"
-
-#: ../lib/engine/gui/gtk-frontend/call-window.cpp:2419
-msgid "Hang up the current call"
-msgstr "বৰ্তমান কল কাটক"
 
 #: ../lib/engine/gui/gtk-frontend/call-window.cpp:2447
 msgid "Change the volume of your soundcard"
@@ -2714,17 +2713,17 @@ msgstr[0] "You have %d message"
 msgstr[1] "You have %d messages"
 
 #: ../lib/engine/gui/gtk-frontend/statusicon.cpp:378
-#: ../src/gui/main_window.cpp:1375
+#: ../src/gui/main_window.cpp:1382
 msgid "Get help by reading the Ekiga manual"
 msgstr "Ekigaৰ সহায়ক নথিপত্ৰ পড়ে সাহায্যে প্ৰাপ্ত কৰক"
 
 #: ../lib/engine/gui/gtk-frontend/statusicon.cpp:383
-#: ../src/gui/main_window.cpp:1380
+#: ../src/gui/main_window.cpp:1387
 msgid "View information about Ekiga"
 msgstr "Ekiga সম্বন্ধে আৰু খোঁজখবৰ"
 
 #: ../lib/engine/gui/gtk-frontend/statusicon.cpp:390
-#: ../src/gui/main_window.cpp:1312
+#: ../src/gui/main_window.cpp:1319
 msgid "Quit"
 msgstr "প্ৰস্থান (_প)"
 
@@ -2852,11 +2851,6 @@ msgid "%d user found"
 msgid_plural "%d users found"
 msgstr[0] "%d user found"
 msgstr[1] "%d users found"
-
-#: ../plugins/evolution/evolution-book.cpp:301
-#: ../plugins/loudmouth/loudmouth-heap-roster.cpp:71
-msgid "New _Contact"
-msgstr "নতুন পৰিচিতি (_প)"
 
 #: ../plugins/evolution/evolution-book.cpp:348
 #: ../plugins/evolution/evolution-contact.cpp:333
@@ -3132,45 +3126,37 @@ msgstr "গৃহিত"
 
 #: ../plugins/loudmouth/loudmouth-account.cpp:112
 #: ../plugins/loudmouth/loudmouth-account.cpp:159
-#| msgid "inactive"
 msgid "Inactive"
 msgstr "নিষ্ক্ৰিয়"
 
 #: ../plugins/loudmouth/loudmouth-account.cpp:238
 #, c-format
-#| msgid "Could not connect to server"
 msgid "Could not connect (%s)"
 msgstr "সংযোগ কৰিব পৰা নগল (%s)"
 
 #: ../plugins/loudmouth/loudmouth-account.cpp:244
-#| msgid "connecting"
 msgid "Connecting..."
 msgstr "সংযোগ কৰা হৈছে..."
 
 #: ../plugins/loudmouth/loudmouth-account.cpp:284
-#| msgid "authenticating"
 msgid "Authenticating..."
 msgstr "প্ৰমাণীকৰণ কৰা হৈছে..."
 
 #. FIXME: can't we report better?
 #: ../plugins/loudmouth/loudmouth-account.cpp:294
-#| msgid "Could not connect to server"
 msgid "Could not connect"
 msgstr "সংযোগ কৰিব পৰা নগল"
 
 #: ../plugins/loudmouth/loudmouth-account.cpp:304
-#| msgid "disconnected"
 msgid "Disconnected"
 msgstr "বিচ্ছিন্ন কৰা হল"
 
 #: ../plugins/loudmouth/loudmouth-account.cpp:314
-#| msgid "connected"
 msgid "Connected"
 msgstr "সংযুক্ত"
 
 #. FIXME: can't we report something better?
 #: ../plugins/loudmouth/loudmouth-account.cpp:320
-#| msgid "Could not unregister"
 msgid "Could not authenticate"
 msgstr "প্ৰমাণীত কৰিব পৰা নগল"
 
@@ -3708,123 +3694,121 @@ msgstr "কনচৌলত ডিবাগ বাৰ্তাসমূহ প্
 msgid "Makes Ekiga call the given URI"
 msgstr "নিৰ্দিষ্ট ইউ-আৰএলটি Ekiga কল কৰবে"
 
-#: ../src/gui/main_window.cpp:369
+#: ../src/gui/main_window.cpp:376
 msgid "Presence"
 msgstr "উপস্থিতি"
 
-#: ../src/gui/main_window.cpp:376
+#: ../src/gui/main_window.cpp:383
 msgid "Addressbook"
 msgstr "ঠিকনাৰ খাতা"
 
-#: ../src/gui/main_window.cpp:405
+#: ../src/gui/main_window.cpp:412
 msgid "Unknown"
 msgstr "অজ্ঞাত"
 
-#: ../src/gui/main_window.cpp:706
+#: ../src/gui/main_window.cpp:713
 #, c-format
 msgid "Missed call from %s"
 msgstr "Missed call from %s"
 
-#: ../src/gui/main_window.cpp:740
+#: ../src/gui/main_window.cpp:747
 msgid "Error"
 msgstr "ত্ৰুটি"
 
-#: ../src/gui/main_window.cpp:1169
+#: ../src/gui/main_window.cpp:1176
+#| msgid ""
+#| "Enter a URI on the left, and click this button to place a call or to "
+#| "hangup"
 msgid ""
-"Enter a URI on the left, and click this button to place a call or to hangup"
+"Enter a URI on the left, and click this button to place a call or to hang up"
 msgstr ""
-"বাওঁফালে এটা URI দিয়ক, আৰু এই বুটাম টিপক এটা কল কৰিবলৈ বা সংযোগ বিচ্ছিন্ন "
-"কৰিবলৈ"
+"বাওঁফালে এটা URI সুমুৱাওক, আৰু এটা কল কৰিবলৈ বা কল কাটিবলৈ এই বুটাম ক্লিক কৰক"
 
-#: ../src/gui/main_window.cpp:1220 ../src/gui/main_window.cpp:1348
+#: ../src/gui/main_window.cpp:1227 ../src/gui/main_window.cpp:1355
 msgid "View the contacts list"
 msgstr "কলৰ ইতিহাস দেখুৱা হ'ব"
 
-#: ../src/gui/main_window.cpp:1231 ../src/gui/main_window.cpp:1353
+#: ../src/gui/main_window.cpp:1238 ../src/gui/main_window.cpp:1360
 msgid "View the dialpad"
 msgstr "ডায়েল প্যাড দেখুৱা হ'ব"
 
-#: ../src/gui/main_window.cpp:1242 ../src/gui/main_window.cpp:1358
+#: ../src/gui/main_window.cpp:1249 ../src/gui/main_window.cpp:1365
 msgid "View the call history"
 msgstr "কলৰ ইতিহাস দেখুৱা হ'ব"
 
-#: ../src/gui/main_window.cpp:1280
+#: ../src/gui/main_window.cpp:1287
 msgid "_Chat"
 msgstr "কল (_ল)"
 
-#: ../src/gui/main_window.cpp:1282
+#: ../src/gui/main_window.cpp:1289
 msgid "Co_ntact"
 msgstr "পৰিচয় (_n)"
 
-#: ../src/gui/main_window.cpp:1283
+#: ../src/gui/main_window.cpp:1290
 msgid "Act on selected contact"
 msgstr "নিৰ্বাচিত পৰিচয়ত কাম কৰক"
 
-#: ../src/gui/main_window.cpp:1287
+#: ../src/gui/main_window.cpp:1294
 msgid "Ca_ll a Number"
 msgstr "এটা নম্বৰ কল কৰক (_l)"
 
-#: ../src/gui/main_window.cpp:1287
+#: ../src/gui/main_window.cpp:1294
 msgid "Place a new call"
 msgstr "নতুন কল কৰক"
 
-#: ../src/gui/main_window.cpp:1293
-msgid "A_dd Contact"
-msgstr "সকলো পৰিচিতিত খোঁজ কৰা"
-
-#: ../src/gui/main_window.cpp:1293
+#: ../src/gui/main_window.cpp:1300
 msgid "Add a contact to the roster"
 msgstr "পৰিচিতিটি ঠিকনাৰ খাতায়ে যোগ (_ঠ)"
 
-#: ../src/gui/main_window.cpp:1298
+#: ../src/gui/main_window.cpp:1305
 msgid "Find contacts"
 msgstr "সকলো পৰিচিতিত খোঁজ কৰা"
 
-#: ../src/gui/main_window.cpp:1318
+#: ../src/gui/main_window.cpp:1325
 msgid "_Configuration Assistant"
 msgstr "প্ৰাথমিক কনফিগাৰেশন ড্ৰুইড"
 
-#: ../src/gui/main_window.cpp:1319
+#: ../src/gui/main_window.cpp:1326
 msgid "Run the configuration assistant"
 msgstr "কনফিগাৰেশন ড্ৰুইড চালানো হ'ব"
 
-#: ../src/gui/main_window.cpp:1327
+#: ../src/gui/main_window.cpp:1334
 msgid "Edit your accounts"
 msgstr "নতুন একাউন্ট তৈৰী কৰক"
 
-#: ../src/gui/main_window.cpp:1333
+#: ../src/gui/main_window.cpp:1340
 msgid "Change your preferences"
 msgstr "আপোনাৰ পচ্ছন্দসমূহেৰ অদলবদল"
 
-#: ../src/gui/main_window.cpp:1340
+#: ../src/gui/main_window.cpp:1347
 msgid "_Video Preview"
 msgstr "ভিডিঅ' পূৰ্বদৰ্শন (_V)"
 
-#: ../src/gui/main_window.cpp:1348
+#: ../src/gui/main_window.cpp:1355
 msgid "Con_tacts"
 msgstr "পৰিচিতি (_ৰ)"
 
-#: ../src/gui/main_window.cpp:1353
+#: ../src/gui/main_window.cpp:1360
 msgid "_Dialpad"
 msgstr "ডায়েল প্যাড (_ড)"
 
-#: ../src/gui/main_window.cpp:1358
+#: ../src/gui/main_window.cpp:1365
 msgid "_Call History"
 msgstr "কলৰ ইতিহাস"
 
-#: ../src/gui/main_window.cpp:1366
+#: ../src/gui/main_window.cpp:1373
 msgid "Show Offline _Contacts"
 msgstr "অফলাইন পৰিচয়সমূহ দেখুৱাওক (_C)"
 
-#: ../src/gui/main_window.cpp:1459
+#: ../src/gui/main_window.cpp:1466
 msgid "Dialpad"
 msgstr "ডায়েল প্যাড"
 
-#: ../src/gui/main_window.cpp:1477
+#: ../src/gui/main_window.cpp:1484
 msgid "Call history"
 msgstr "কলৰ ইতিহাস"
 
-#: ../src/gui/main_window.cpp:1489
+#: ../src/gui/main_window.cpp:1496
 msgid "Ekiga"
 msgstr "Ekiga"
 
@@ -3862,6 +3846,15 @@ msgstr "স্বনিৰ্ধাৰিত বাৰ্তা মুছে ফ
 #: ../src/gui/statusmenu.cpp:685
 msgid "Define a custom message:"
 msgstr "এটা স্বনিৰ্ধাৰিত বাৰ্তা নিৰ্ধাৰণ কৰক:"
+
+#~ msgid "_New Contact"
+#~ msgstr "নতুন পৰিচয় (_N)"
+
+#~ msgid "Hangup the current call"
+#~ msgstr "বৰ্তমান কল কাটক"
+
+#~ msgid "New _Contact"
+#~ msgstr "নতুন পৰিচিতি (_প)"
 
 #~ msgid "error connecting (%s)"
 #~ msgstr "(%s) সংযোগ কৰোতে ত্ৰুটি"
