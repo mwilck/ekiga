@@ -340,7 +340,7 @@ Evolution::Book::new_contact_action ()
 {
   boost::shared_ptr<Ekiga::FormRequestSimple> request = boost::shared_ptr<Ekiga::FormRequestSimple> (new Ekiga::FormRequestSimple (boost::bind (&Evolution::Book::on_new_contact_form_submitted, this, _1, _2)));
 
-  request->title (_("A_dd Contact"));
+  request->title (_("Add Contact"));
 
   request->instructions (_("Please update the following fields:"));
 
