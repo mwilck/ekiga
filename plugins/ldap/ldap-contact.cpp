@@ -100,7 +100,7 @@ OPENLDAP::Contact::populate_menu (Ekiga::MenuBuilder &builder)
        iter++) {
     if (contact_core->populate_contact_menu (ContactPtr(this, null_deleter ()),
 					     iter->second, tmp_builder)) {
-      builder.add_ghost ("", iter->first);
+      builder.add_ghost ("", iter->second);
       tmp_builder.populate_menu (builder);
       result = true;
     }
