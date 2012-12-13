@@ -99,7 +99,7 @@ RL::Cluster::~Cluster ()
 bool
 RL::Cluster::populate_menu (Ekiga::MenuBuilder& builder)
 {
-  builder.add_action ("new", _("New resource list"),
+  builder.add_action ("add", _("Add resource list"),
 		      boost::bind (&RL::Cluster::new_heap, this,
 				   "", "", "", "", "", false));
   return true;

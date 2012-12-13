@@ -298,7 +298,7 @@ Evolution::Book::get_ebook () const
 bool
 Evolution::Book::populate_menu (Ekiga::MenuBuilder &builder)
 {
-  builder.add_action ("new", _("A_dd Contact"),
+  builder.add_action ("add", _("A_dd Contact"),
 		      boost::bind (&Evolution::Book::new_contact_action, this));
   return true;
 }

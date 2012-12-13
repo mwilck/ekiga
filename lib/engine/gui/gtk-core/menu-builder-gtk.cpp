@@ -52,8 +52,6 @@ convert_icon_to_gtk (const std::string icon)
 {
   std::string result = icon;
 
-  if (icon == "new")
-    result = "gtk-new";
   if (icon == "add")
     result = "gtk-add";
   if (icon == "edit")

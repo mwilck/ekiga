@@ -68,7 +68,7 @@ LM::HeapRoster::get_connection () const
 bool
 LM::HeapRoster::populate_menu (Ekiga::MenuBuilder& builder)
 {
-  builder.add_action ("new", _("A_dd Contact"), boost::bind (&LM::HeapRoster::add_item, this));
+  builder.add_action ("add", _("A_dd Contact"), boost::bind (&LM::HeapRoster::add_item, this));
   dialect->populate_menu (builder);
   return true;
 }
