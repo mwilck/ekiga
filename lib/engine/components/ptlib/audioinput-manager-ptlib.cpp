@@ -71,7 +71,8 @@ void GMAudioInputManager_ptlib::get_devices(std::vector <Ekiga::AudioInputDevice
     device.source = sources_array[i];
 
     if ((device.source != "EKIGA") &&
-        (device.source != "WAVFile")) {
+        (device.source != "WAVFile") &&
+        (device.source != "NullAudio")) {
       audio_devices = PSoundChannel::GetDeviceNames (device.source, PSoundChannel::Recorder);
       devices_array = audio_devices.ToCharArray ();
 
