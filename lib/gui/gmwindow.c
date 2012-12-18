@@ -46,11 +46,6 @@
 #include <string.h>
 #include <stdlib.h>
 
-#ifndef WIN32
-#include <gdk/gdkx.h>
-#include <X11/Xlib.h>
-#endif
-
 #define USER_INTERFACE_KEY "/apps/" PACKAGE_NAME "/general/user_interface/"
 
 /*
@@ -479,23 +474,11 @@ gm_window_get_hide_on_escape (GmWindow *window)
 }
 
 
-#ifndef WIN32
-// helper copied from gdk
-static void
-gdk_wmspec_change_state (gboolean add,
-			 GdkWindow *window,
-			 GdkAtom state1,
-			 GdkAtom state2);
-#endif
-
 void
 gm_window_set_always_on_top (GdkWindow *window,
 			     gboolean enable)
 {
-#ifndef WIN32
-  gdk_wmspec_change_state (enable, window,
-			   gdk_atom_intern ("_NET_WM_STATE_ABOVE", FALSE), 0);
-#endif
+  gdk_window_set_keep_above (window, enable);
 }
 
 
@@ -637,39 +620,3 @@ gm_window_hide_on_delete (GtkWidget* window)
   g_signal_connect (window, "delete-event",
                     G_CALLBACK (old_style_gm_window_delete_event_cb), NULL);
 }
-
-
-
-/* Stolen from GDK */
-#ifndef WIN32
-static void
-gdk_wmspec_change_state (gboolean add,
-			 GdkWindow *window,
-			 GdkAtom state1,
-			 GdkAtom state2)
-{
-  GdkDisplay *display =
-    gdk_screen_get_display (gdk_drawable_get_screen (GDK_DRAWABLE (window)));
-  XEvent xev;
-
-#define _NET_WM_STATE_REMOVE        0    /* remove/unset property */
-#define _NET_WM_STATE_ADD           1    /* add/set property */
-#define _NET_WM_STATE_TOGGLE        2    /* toggle property  */
-
-  xev.xclient.type = ClientMessage;
-  xev.xclient.serial = 0;
-  xev.xclient.send_event = True;
-  xev.xclient.window = GDK_WINDOW_XID (window);
-  xev.xclient.message_type =
-    gdk_x11_get_xatom_by_name_for_display (display, "_NET_WM_STATE");
-  xev.xclient.format = 32;
-  xev.xclient.data.l[0] = add ? _NET_WM_STATE_ADD : _NET_WM_STATE_REMOVE;
-  xev.xclient.data.l[1] = gdk_x11_atom_to_xatom_for_display (display, state1);
-  xev.xclient.data.l[2] = gdk_x11_atom_to_xatom_for_display (display, state2);
-
-  XSendEvent (GDK_WINDOW_XDISPLAY (window),
-	      GDK_WINDOW_XWINDOW (gdk_screen_get_root_window (gdk_drawable_get_screen (GDK_DRAWABLE (window)))),
-	      False, SubstructureRedirectMask | SubstructureNotifyMask,
-	      &xev);
-}
-#endif
