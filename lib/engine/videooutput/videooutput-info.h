@@ -27,7 +27,7 @@
 /*
  *                         videooutput-info.h  -  description
  *                         ------------------------------------------
- *   begin                : written in 2007 by Matthias Schneider 
+ *   begin                : written in 2007 by Matthias Schneider
  *   copyright            : (c) 2007 by Matthias Schneider
  *   description          : Declaration of structs and classes used for communication
  *                          with the VideoOutputManagers
@@ -70,12 +70,12 @@ namespace Ekiga {
 
   /* Toggle operations for Fullscreen */
   typedef enum {
-  
+
     VO_FS_ON,
     VO_FS_OFF,
     VO_FS_TOGGLE
   } VideoOutputFSToggle;
-  
+
   /* Video Acceleration Status */
   typedef enum {
 
@@ -113,21 +113,20 @@ namespace Ekiga {
   #else
       gc = 0;
       window = 0;
-      xdisplay = NULL;
   #endif
-  
+
       config_info_set = false;
       on_top = false;
       disable_hw_accel = false;
       allow_pip_sw_scaling = true;
       sw_scaling_algorithm = 0;
-  
+
       mode = VO_MODE_UNSET;
       zoom = 0;
     };
-    
+
     void operator= ( const DisplayInfo& rhs) {
-  
+
     if (rhs.widget_info_set) {
         widget_info_set = rhs.widget_info_set;
         x = rhs.x;
@@ -137,39 +136,37 @@ namespace Ekiga {
   #else
         gc = rhs.gc;
         window = rhs.window;
-        xdisplay = rhs.xdisplay;
   #endif
       }
-  
+
       if (rhs.config_info_set) {
         config_info_set = rhs.config_info_set;
         on_top = rhs.on_top;
         disable_hw_accel = rhs.disable_hw_accel;
         allow_pip_sw_scaling = rhs.allow_pip_sw_scaling;
-        sw_scaling_algorithm =  rhs.sw_scaling_algorithm;
+        sw_scaling_algorithm = rhs.sw_scaling_algorithm;
       }
       if (rhs.mode != VO_MODE_UNSET) mode = rhs.mode;
       if (rhs.zoom != 0) zoom = rhs.zoom;
     };
-  
+
     bool widget_info_set;
     int x;
     int y;
-              
+
   #ifdef WIN32
     HWND hwnd;
   #else
     GC gc;
     Window window;
-    Display* xdisplay;
   #endif
-  
+
     bool config_info_set;
     bool on_top;
     bool disable_hw_accel;
     bool allow_pip_sw_scaling;
     unsigned int sw_scaling_algorithm;
-  
+
     VideoOutputMode mode;
     unsigned int zoom;
   };

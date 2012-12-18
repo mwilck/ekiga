@@ -2607,7 +2607,6 @@ ekiga_call_window_expose_event (GtkWidget *widget,
   }
 
   display_info.gc = GDK_GC_XGC (cw->priv->video_widget_gc);
-  display_info.xdisplay = GDK_GC_XDISPLAY (cw->priv->video_widget_gc);
   display_info.window = GDK_WINDOW_XWINDOW (video_widget->window);
 
   g_return_val_if_fail (display_info.window != 0, handled);
