@@ -474,14 +474,6 @@ gm_window_get_hide_on_escape (GmWindow *window)
 }
 
 
-void
-gm_window_set_always_on_top (GdkWindow *window,
-			     gboolean enable)
-{
-  gdk_window_set_keep_above (window, enable);
-}
-
-
 gboolean
 gm_window_is_visible (GtkWidget* w)
 {

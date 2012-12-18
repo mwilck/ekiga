@@ -395,9 +395,6 @@ static void window_closed_from_menu_cb (G_GNUC_UNUSED GtkWidget *,
 static void ekiga_call_window_update_calling_state (EkigaCallWindow *cw,
                                                     unsigned calling_state);
 
-static void ekiga_call_window_set_stay_on_top (EkigaCallWindow *cw,
-                                               gboolean stay_on_top);
-
 static void ekiga_call_window_clear_signal_levels (EkigaCallWindow *cw);
 
 static void ekiga_call_window_clear_stats (EkigaCallWindow *cw);
@@ -487,7 +484,7 @@ stay_on_top_changed_nt (G_GNUC_UNUSED gpointer id,
   if (gm_conf_entry_get_type (entry) == GM_CONF_BOOL) {
 
     val = gm_conf_entry_get_bool (entry);
-    ekiga_call_window_set_stay_on_top (EKIGA_CALL_WINDOW (data), val);
+    gdk_window_set_keep_above (GTK_WIDGET (data)->window, val);
   }
 }
 
@@ -1156,7 +1153,7 @@ on_established_call_cb (boost::shared_ptr<Ekiga::CallManager>  /*manager*/,
   gtk_window_set_title (GTK_WINDOW (cw), call->get_remote_party_name ().c_str ());
 
   if (gm_conf_get_bool (VIDEO_DISPLAY_KEY "stay_on_top"))
-    ekiga_call_window_set_stay_on_top (cw, true);
+    gdk_window_set_keep_above (GTK_WIDGET (cw)->window, true);
   ekiga_call_window_set_status (cw, _("Connected with %s"), call->get_remote_party_name ().c_str ());
   ekiga_call_window_update_calling_state (cw, Connected);
 
@@ -1178,7 +1175,7 @@ on_cleared_call_cb (G_GNUC_UNUSED boost::shared_ptr<Ekiga::CallManager> manager,
   }
 
   if (gm_conf_get_bool (VIDEO_DISPLAY_KEY "stay_on_top"))
-    ekiga_call_window_set_stay_on_top (cw, false);
+    gdk_window_set_keep_above (GTK_WIDGET (cw)->window, false);
   ekiga_call_window_update_calling_state (cw, Standby);
   ekiga_call_window_set_status (cw, _("Standby"));
   ekiga_call_window_set_bandwidth (cw, 0.0, 0.0, 0.0, 0.0, 0, 0);
@@ -1473,14 +1470,6 @@ ekiga_call_window_update_calling_state (EkigaCallWindow *cw,
     }
 
   cw->priv->calling_state = calling_state;
-}
-
-static void
-ekiga_call_window_set_stay_on_top (EkigaCallWindow *cw,
-				   gboolean stay_on_top)
-{
-  g_return_if_fail (EKIGA_IS_CALL_WINDOW (cw));
-  gm_window_set_always_on_top (GTK_WIDGET (cw)->window, stay_on_top);
 }
 
 static void
@@ -2589,7 +2578,7 @@ ekiga_call_window_show (GtkWidget *widget)
 {
   EkigaCallWindow *cw = EKIGA_CALL_WINDOW (widget);
   if (gm_conf_get_bool (VIDEO_DISPLAY_KEY "stay_on_top") && cw->priv->current_call)
-    gm_window_set_always_on_top (widget->window, true);
+    gdk_window_set_keep_above (widget->window, true);
   GTK_WIDGET_CLASS (ekiga_call_window_parent_class)->show (widget);
 
   gtk_widget_queue_draw (GTK_WIDGET (cw));

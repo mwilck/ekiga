@@ -121,13 +121,6 @@ void gm_window_set_hide_on_escape (GmWindow *window,
  */
 gboolean gm_window_get_hide_on_escape (GmWindow *window);
 
-/** Makes sure the given window is always on top
- * @param window is a GdkWindow
- * @param enable whether to set or unset the always on top state
- */
-void gm_window_set_always_on_top (GdkWindow* window,
-				  gboolean enable);
-
 /** Check whether a window is visible or not
  * @param window is a GtkWidget
  */
