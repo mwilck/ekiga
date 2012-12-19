@@ -308,9 +308,8 @@ void
 Opal::H323::EndPoint::Register (const Opal::Account& account)
 {
   std::string info;
-  bool unregister = !account.is_enabled ();
 
-  if (!unregister && !IsRegisteredWithGatekeeper (account.get_host ())) {
+  if (account.is_enabled () && !IsRegisteredWithGatekeeper (account.get_host ())) {
 
     H323EndPoint::RemoveGatekeeper (0);
 
