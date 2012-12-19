@@ -13,8 +13,8 @@ msgstr ""
 "Project-Id-Version: ekiga trunk\n"
 "Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?"
 "product=ekiga&keywords=I18N+L10N&component=general\n"
-"POT-Creation-Date: 2012-09-23 13:38+0000\n"
-"PO-Revision-Date: 2012-09-29 14:02+0400\n"
+"POT-Creation-Date: 2012-12-13 11:31+0000\n"
+"PO-Revision-Date: 2012-12-19 14:05+0400\n"
 "Last-Translator: Yuri Myasoedov <omerta13@yandex.ru>\n"
 "Language-Team: русский <gnome-cyr@gnome.org>\n"
 "Language: ru\n"
@@ -105,8 +105,8 @@ msgstr ""
 msgid "Video preview"
 msgstr "Образец видео"
 
-#: ../ekiga.schemas.in.in.h:14 ../src/gui/main_window.cpp:1200
-#: ../src/gui/main_window.cpp:1350
+#: ../ekiga.schemas.in.in.h:14 ../src/gui/main_window.cpp:1208
+#: ../src/gui/main_window.cpp:1348
 msgid "Display images from your camera device"
 msgstr "Показывать изображение с вашей камеры"
 
@@ -429,7 +429,6 @@ msgstr ""
 "и туннелирования H.245 может привести к сбою некоторых версий Netmeeting"
 
 #: ../ekiga.schemas.in.in.h:74
-#| msgid "Enable early H.245"
 msgid "Enable H.239"
 msgstr "Включить H.239"
 
@@ -478,10 +477,6 @@ msgid "Forward calls to the given host if busy"
 msgstr "Перенаправлять вызовы на указанный узел, если линия занята"
 
 #: ../ekiga.schemas.in.in.h:82
-#| msgid ""
-#| "If enabled, all incoming calls will be forwarded to the host that is "
-#| "specified in the field below if you already are in a call or if you are "
-#| "in Do Not Disturb mode"
 msgid ""
 "If enabled, all incoming calls will be forwarded to the host that is "
 "specified in the field below if you already are in a call or if you are in "
@@ -538,12 +533,10 @@ msgstr ""
 "NAT при использовании STUN"
 
 #: ../ekiga.schemas.in.in.h:91
-#| msgid "Position on the screen of the chat window"
 msgid "Position on the screen of the call window"
 msgstr "Положение на экране окна вызова"
 
 #: ../ekiga.schemas.in.in.h:92
-#| msgid "Size of the chat window"
 msgid "Size of the call window"
 msgstr "Размер окна вызова"
 
@@ -772,7 +765,7 @@ msgstr ""
 msgid "List of folded groups in the roster"
 msgstr "Список свёрнутых групп в контактах"
 
-#: ../ekiga.schemas.in.in.h:135 ../src/gui/main_window.cpp:1375
+#: ../ekiga.schemas.in.in.h:135 ../src/gui/main_window.cpp:1373
 msgid "Show offline contacts"
 msgstr "Показывать контакты не в сети"
 
@@ -839,7 +832,6 @@ msgstr "Найдено новое устройство"
 #: ../lib/engine/audioinput/audioinput-core.cpp:206
 #: ../lib/engine/audiooutput/audiooutput-core.cpp:223
 #: ../lib/engine/videoinput/videoinput-core.cpp:247
-#| msgid "Use TLS"
 msgid "Use it"
 msgstr "Использовать"
 
@@ -849,13 +841,8 @@ msgstr "Использовать"
 msgid "Device removed"
 msgstr "Устройство удалено"
 
-#: ../lib/engine/components/avahi/avahi-heap.cpp:129
-#: ../lib/engine/components/avahi/avahi-heap.cpp:375
-msgid "Neighbours"
-msgstr "Соседи"
-
-#: ../lib/engine/components/call-history/history-book.cpp:141
-#: ../lib/engine/gui/gtk-frontend/call-history-view-gtk.cpp:189
+#: ../lib/engine/components/call-history/history-book.cpp:150
+#: ../lib/engine/gui/gtk-frontend/call-history-view-gtk.cpp:188
 msgid "Clear List"
 msgstr "Очистить список"
 
@@ -871,31 +858,13 @@ msgstr "Набранные"
 msgid "Missed"
 msgstr "Пропущенные"
 
-#. Ignore
-#: ../lib/engine/components/libnotify/libnotify-main.cpp:229
-#: ../lib/engine/components/opal/sip-endpoint.cpp:988
-#, c-format
-msgid "Incoming call from %s"
-msgstr "Входящий вызов от %s"
-
-#: ../lib/engine/components/libnotify/libnotify-main.cpp:230
-msgid "Remote URI:"
-msgstr "Удалённый URI:"
-
-#: ../lib/engine/components/libnotify/libnotify-main.cpp:242
-msgid "Reject"
-msgstr "Отклонить"
-
-#: ../lib/engine/components/libnotify/libnotify-main.cpp:243
-msgid "Accept"
-msgstr "Принять"
-
 #: ../lib/engine/components/local-roster/local-cluster.cpp:82
 #: ../lib/engine/components/local-roster/local-heap.cpp:118
-#: ../plugins/evolution/evolution-book.cpp:343
-#| msgid "New _Contact"
-msgid "_New Contact"
-msgstr "_Создать контакт"
+#: ../plugins/evolution/evolution-book.cpp:301
+#: ../plugins/loudmouth/loudmouth-heap-roster.cpp:71
+#: ../src/gui/main_window.cpp:1300
+msgid "A_dd Contact"
+msgstr "До_бавить контакт"
 
 #: ../lib/engine/components/local-roster/local-heap.cpp:94
 msgid "Services"
@@ -914,18 +883,21 @@ msgid "Call back test"
 msgstr "Тест обратного вызова"
 
 #: ../lib/engine/components/local-roster/local-heap.cpp:111
-msgid "Local roster"
-msgstr "Локальные контакты"
+#: ../src/gui/main_window.cpp:1437
+msgid "Contacts"
+msgstr "Контакты"
 
 #: ../lib/engine/components/local-roster/local-heap.cpp:128
 msgid "Rename"
 msgstr "Переименовать"
 
 #: ../lib/engine/components/local-roster/local-heap.cpp:197
+#: ../plugins/loudmouth/loudmouth-heap-roster.cpp:485
 msgid "Family"
 msgstr "Семья"
 
 #: ../lib/engine/components/local-roster/local-heap.cpp:198
+#: ../plugins/loudmouth/loudmouth-heap-roster.cpp:486
 msgid "Friend"
 msgstr "Друзья"
 
@@ -934,6 +906,7 @@ msgstr "Друзья"
 #. someone who is at the same "level" than you.
 #.
 #: ../lib/engine/components/local-roster/local-heap.cpp:203
+#: ../plugins/loudmouth/loudmouth-heap-roster.cpp:491
 msgid "Associate"
 msgstr "Коллеги"
 
@@ -942,6 +915,7 @@ msgstr "Коллеги"
 #. someone who is at a lower "level" than you.
 #.
 #: ../lib/engine/components/local-roster/local-heap.cpp:208
+#: ../plugins/loudmouth/loudmouth-heap-roster.cpp:496
 msgid "Assistant"
 msgstr "Помощники"
 
@@ -950,6 +924,7 @@ msgstr "Помощники"
 #. someone who is at a higher "level" than you.
 #.
 #: ../lib/engine/components/local-roster/local-heap.cpp:213
+#: ../plugins/loudmouth/loudmouth-heap-roster.cpp:501
 msgid "Supervisor"
 msgstr "Начальники"
 
@@ -957,6 +932,7 @@ msgstr "Начальники"
 #. relationships between you and your contact; self means yourself.
 #.
 #: ../lib/engine/components/local-roster/local-heap.cpp:217
+#: ../plugins/loudmouth/loudmouth-heap-roster.cpp:505
 msgid "Self"
 msgstr "Свои"
 
@@ -972,12 +948,13 @@ msgstr "Заполните эту форму, чтобы добавить нов
 
 #: ../lib/engine/components/local-roster/local-heap.cpp:236
 #: ../lib/engine/components/local-roster/local-heap.cpp:427
-#: ../lib/engine/components/local-roster/local-presentity.cpp:270
-#: ../lib/engine/components/opal/opal-account.cpp:426
+#: ../lib/engine/components/local-roster/local-presentity.cpp:273
+#: ../lib/engine/components/opal/opal-account.cpp:452
 #: ../plugins/evolution/evolution-contact.cpp:324
 #: ../plugins/loudmouth/loudmouth-account.cpp:342
 #: ../plugins/loudmouth/loudmouth-bank.cpp:125
-#: ../plugins/loudmouth/loudmouth-presentity.cpp:283
+#: ../plugins/loudmouth/loudmouth-heap-roster.cpp:338
+#: ../plugins/loudmouth/loudmouth-presentity.cpp:284
 #: ../plugins/resource-list/rl-cluster.cpp:169
 #: ../plugins/resource-list/rl-heap.cpp:526
 #: ../plugins/resource-list/rl-presentity.cpp:233
@@ -985,13 +962,14 @@ msgid "Name:"
 msgstr "Имя:"
 
 #: ../lib/engine/components/local-roster/local-heap.cpp:236
-#: ../lib/engine/components/local-roster/local-presentity.cpp:270
+#: ../lib/engine/components/local-roster/local-presentity.cpp:273
+#: ../plugins/loudmouth/loudmouth-heap-roster.cpp:338
 msgid "Name of the contact, as shown in your roster"
 msgstr "Имя контакта, указанное в вашем списке"
 
 #: ../lib/engine/components/local-roster/local-heap.cpp:245
 #: ../lib/engine/components/local-roster/local-heap.cpp:247
-#: ../lib/engine/components/local-roster/local-presentity.cpp:271
+#: ../lib/engine/components/local-roster/local-presentity.cpp:274
 #: ../plugins/resource-list/rl-cluster.cpp:170
 #: ../plugins/resource-list/rl-heap.cpp:527
 #: ../plugins/resource-list/rl-presentity.cpp:234
@@ -1000,11 +978,12 @@ msgstr "Адрес:"
 
 #: ../lib/engine/components/local-roster/local-heap.cpp:245
 #: ../lib/engine/components/local-roster/local-heap.cpp:247
-#: ../lib/engine/components/local-roster/local-presentity.cpp:271
+#: ../lib/engine/components/local-roster/local-presentity.cpp:274
 msgid "Address, e.g. sip:xyz@ekiga.net"
 msgstr "Адрес, например sip:xyz@ekiga.net"
 
 #: ../lib/engine/components/local-roster/local-heap.cpp:251
+#: ../plugins/loudmouth/loudmouth-heap-roster.cpp:340
 msgid "Put contact in groups:"
 msgstr "Поместить контакт в группы:"
 
@@ -1024,7 +1003,7 @@ msgstr "Переименовать группу"
 msgid "Please edit this group name"
 msgstr "Задайте имя группы"
 
-#: ../lib/engine/components/local-roster/local-presentity.cpp:138
+#: ../lib/engine/components/local-roster/local-presentity.cpp:141
 #: ../plugins/resource-list/rl-entry.cpp:141
 #: ../plugins/resource-list/rl-heap.cpp:102
 #: ../plugins/resource-list/rl-heap.cpp:144
@@ -1033,31 +1012,31 @@ msgstr "Задайте имя группы"
 msgid "Unnamed"
 msgstr "Неизвестный"
 
-#: ../lib/engine/components/local-roster/local-presentity.cpp:240
-#: ../lib/engine/components/opal/opal-account.cpp:381
+#: ../lib/engine/components/local-roster/local-presentity.cpp:243
+#: ../lib/engine/components/opal/opal-account.cpp:407
 #: ../plugins/evolution/evolution-contact.cpp:228
-#: ../plugins/loudmouth/loudmouth-presentity.cpp:160
+#: ../plugins/loudmouth/loudmouth-presentity.cpp:169
 #: ../plugins/resource-list/rl-presentity.cpp:212
-#: ../src/gui/main_window.cpp:1325
+#: ../src/gui/main_window.cpp:1323
 msgid "_Edit"
 msgstr "_Правка"
 
-#: ../lib/engine/components/local-roster/local-presentity.cpp:242
-#: ../lib/engine/components/opal/opal-account.cpp:383
+#: ../lib/engine/components/local-roster/local-presentity.cpp:245
+#: ../lib/engine/components/opal/opal-account.cpp:409
 #: ../lib/engine/gui/gtk-frontend/accounts-window.cpp:683
 #: ../plugins/evolution/evolution-contact.cpp:230
 #: ../plugins/loudmouth/loudmouth-account.cpp:445
-#: ../plugins/loudmouth/loudmouth-presentity.cpp:193
+#: ../plugins/loudmouth/loudmouth-presentity.cpp:194
 #: ../plugins/resource-list/rl-presentity.cpp:214
 msgid "_Remove"
 msgstr "_Удалить"
 
-#: ../lib/engine/components/local-roster/local-presentity.cpp:267
-#: ../plugins/loudmouth/loudmouth-presentity.cpp:280
+#: ../lib/engine/components/local-roster/local-presentity.cpp:270
+#: ../plugins/loudmouth/loudmouth-presentity.cpp:281
 msgid "Edit roster element"
 msgstr "Правка элемента списка"
 
-#: ../lib/engine/components/local-roster/local-presentity.cpp:268
+#: ../lib/engine/components/local-roster/local-presentity.cpp:271
 msgid ""
 "Please fill in this form to change an existing element of ekiga's internal "
 "roster"
@@ -1065,28 +1044,28 @@ msgstr ""
 "Заполните эту форму для того, чтобы изменить существующий контакт локального "
 "списка"
 
-#: ../lib/engine/components/local-roster/local-presentity.cpp:272
+#: ../lib/engine/components/local-roster/local-presentity.cpp:275
 msgid "Is a preferred contact"
 msgstr "Это предпочитаемый контакт"
 
-#: ../lib/engine/components/local-roster/local-presentity.cpp:274
-#: ../plugins/loudmouth/loudmouth-presentity.cpp:285
+#: ../lib/engine/components/local-roster/local-presentity.cpp:277
+#: ../plugins/loudmouth/loudmouth-presentity.cpp:286
 #: ../plugins/resource-list/rl-heap.cpp:528
 #: ../plugins/resource-list/rl-presentity.cpp:236
 msgid "Choose groups:"
 msgstr "Выберите группы:"
 
 #: ../lib/engine/components/opal/h323-endpoint.cpp:135
-#: ../lib/engine/components/opal/opal-call.cpp:682
-#: ../lib/engine/components/opal/sip-endpoint.cpp:250
-#: ../lib/engine/components/opal/sip-endpoint.cpp:254
+#: ../lib/engine/components/opal/opal-call.cpp:703
+#: ../lib/engine/components/opal/sip-endpoint.cpp:237
+#: ../lib/engine/components/opal/sip-endpoint.cpp:241
 msgid "Call"
 msgstr "Вызов"
 
 #: ../lib/engine/components/opal/h323-endpoint.cpp:138
-#: ../lib/engine/components/opal/sip-endpoint.cpp:251
-#: ../lib/engine/components/opal/sip-endpoint.cpp:255
-#: ../lib/engine/gui/gtk-frontend/call-window.cpp:2108
+#: ../lib/engine/components/opal/sip-endpoint.cpp:238
+#: ../lib/engine/components/opal/sip-endpoint.cpp:242
+#: ../lib/engine/gui/gtk-frontend/call-window.cpp:2178
 msgid "Transfer"
 msgstr "Передача"
 
@@ -1100,28 +1079,28 @@ msgid "Bad username/password"
 msgstr "Некорректное имя пользователя/пароль"
 
 #: ../lib/engine/components/opal/h323-endpoint.cpp:346
-#: ../lib/engine/components/opal/sip-endpoint.cpp:603
+#: ../lib/engine/components/opal/sip-endpoint.cpp:586
 msgid "Transport error"
 msgstr "Ошибка связи"
 
 #: ../lib/engine/components/opal/h323-endpoint.cpp:357
 #: ../lib/engine/components/opal/h323-endpoint.cpp:362
-#: ../lib/engine/components/opal/sip-endpoint.cpp:816
+#: ../lib/engine/components/opal/sip-endpoint.cpp:799
 msgid "Failed"
 msgstr "Сбой"
 
 #. Translators: this is a state, not an action, i.e. it should be read as
 #. "(you are) unregistered", and not as "(you have been) unregistered"
-#: ../lib/engine/components/opal/opal-account.cpp:69
-#: ../lib/engine/components/opal/opal-account.cpp:328
-#: ../lib/engine/components/opal/opal-account.cpp:612
+#: ../lib/engine/components/opal/opal-account.cpp:73
+#: ../lib/engine/components/opal/opal-account.cpp:355
+#: ../lib/engine/components/opal/opal-account.cpp:662
 msgid "Unregistered"
 msgstr "Отключён"
 
 #. translators : the result will look like :
 #. * "registered (with 2 voice mail messages)"
 #.
-#: ../lib/engine/components/opal/opal-account.cpp:223
+#: ../lib/engine/components/opal/opal-account.cpp:243
 #, c-format
 msgid "%s (with %d voice mail message)"
 msgid_plural "%s (with %d voice mail messages)"
@@ -1129,46 +1108,46 @@ msgstr[0] "%s (с %d голосовым сообщением)"
 msgstr[1] "%s (с %d голосовыми сообщениями)"
 msgstr[2] "%s (с %d голосовыми сообщениями)"
 
-#: ../lib/engine/components/opal/opal-account.cpp:301
-#: ../lib/engine/components/opal/opal-account.cpp:682
+#: ../lib/engine/components/opal/opal-account.cpp:321
+#: ../lib/engine/components/opal/opal-account.cpp:744
 msgid "Processing..."
 msgstr "Обработка…"
 
-#: ../lib/engine/components/opal/opal-account.cpp:373
+#: ../lib/engine/components/opal/opal-account.cpp:399
 #: ../lib/engine/gui/gtk-frontend/accounts-window.cpp:677
 #: ../plugins/loudmouth/loudmouth-account.cpp:433
 msgid "_Disable"
 msgstr "В_ыключить"
 
-#: ../lib/engine/components/opal/opal-account.cpp:376
+#: ../lib/engine/components/opal/opal-account.cpp:402
 #: ../lib/engine/gui/gtk-frontend/accounts-window.cpp:674
 #: ../plugins/loudmouth/loudmouth-account.cpp:437
 msgid "_Enable"
 msgstr "Вкл_ючить"
 
-#: ../lib/engine/components/opal/opal-account.cpp:397
+#: ../lib/engine/components/opal/opal-account.cpp:423
 #: ../src/gui/assistant.cpp:761
 msgid "Recharge the account"
 msgstr "Оплатить услугу"
 
-#: ../lib/engine/components/opal/opal-account.cpp:402
+#: ../lib/engine/components/opal/opal-account.cpp:428
 #: ../src/gui/assistant.cpp:773
 msgid "Consult the balance history"
 msgstr "Просмотреть изменение баланса"
 
-#: ../lib/engine/components/opal/opal-account.cpp:407
+#: ../lib/engine/components/opal/opal-account.cpp:433
 #: ../src/gui/assistant.cpp:785
 msgid "Consult the call history"
 msgstr "Просмотреть журнал вызовов"
 
-#: ../lib/engine/components/opal/opal-account.cpp:422
+#: ../lib/engine/components/opal/opal-account.cpp:448
 #: ../lib/engine/components/opal/opal-bank.cpp:96
 #: ../plugins/loudmouth/loudmouth-account.cpp:337
 #: ../plugins/loudmouth/loudmouth-bank.cpp:121
 msgid "Edit account"
 msgstr "Правка учётной записи"
 
-#: ../lib/engine/components/opal/opal-account.cpp:424
+#: ../lib/engine/components/opal/opal-account.cpp:450
 #: ../lib/engine/components/opal/opal-bank.cpp:97
 #: ../plugins/evolution/evolution-book.cpp:345
 #: ../plugins/evolution/evolution-contact.cpp:322
@@ -1176,56 +1155,57 @@ msgstr "Правка учётной записи"
 msgid "Please update the following fields:"
 msgstr "Заполните следующие поля:"
 
-#: ../lib/engine/components/opal/opal-account.cpp:426
+#: ../lib/engine/components/opal/opal-account.cpp:452
 #: ../lib/engine/components/opal/opal-bank.cpp:123
 #: ../lib/engine/components/opal/opal-bank.cpp:133
 #: ../plugins/loudmouth/loudmouth-account.cpp:342
+#: ../plugins/loudmouth/loudmouth-bank.cpp:125
 msgid "Account name, e.g. MyAccount"
 msgstr "Имя учётной записи, например МояУчётнаяЗапись"
 
-#: ../lib/engine/components/opal/opal-account.cpp:428
+#: ../lib/engine/components/opal/opal-account.cpp:454
 msgid "Registrar:"
 msgstr "Регистратор:"
 
-#: ../lib/engine/components/opal/opal-account.cpp:428
+#: ../lib/engine/components/opal/opal-account.cpp:454
 #: ../lib/engine/components/opal/opal-bank.cpp:134
 msgid "The registrar, e.g. ekiga.net"
 msgstr "Регистратор, например ekiga.net"
 
-#: ../lib/engine/components/opal/opal-account.cpp:430
+#: ../lib/engine/components/opal/opal-account.cpp:456
 msgid "Gatekeeper:"
 msgstr "Узел gatekeeper:"
 
-#: ../lib/engine/components/opal/opal-account.cpp:430
+#: ../lib/engine/components/opal/opal-account.cpp:456
 #: ../lib/engine/components/opal/opal-bank.cpp:124
 msgid "The gatekeeper, e.g. ekiga.net"
 msgstr "Привратник, например ekiga.net"
 
-#: ../lib/engine/components/opal/opal-account.cpp:431
+#: ../lib/engine/components/opal/opal-account.cpp:457
 #: ../plugins/loudmouth/loudmouth-account.cpp:346
 #: ../plugins/loudmouth/loudmouth-bank.cpp:126
 #: ../plugins/resource-list/rl-cluster.cpp:174
 msgid "User:"
 msgstr "Пользователь:"
 
-#: ../lib/engine/components/opal/opal-account.cpp:431
+#: ../lib/engine/components/opal/opal-account.cpp:457
 #: ../lib/engine/components/opal/opal-bank.cpp:105
 #: ../lib/engine/components/opal/opal-bank.cpp:116
 #: ../lib/engine/components/opal/opal-bank.cpp:125
 #: ../lib/engine/components/opal/opal-bank.cpp:135
 #: ../plugins/loudmouth/loudmouth-account.cpp:346
+#: ../plugins/loudmouth/loudmouth-bank.cpp:126
 msgid "The user name, e.g. jim"
 msgstr "Имя пользователя, например jim"
 
 #. Translators:
 #. * SIP knows two usernames: The name for the client ("User") and the name
 #. * for the authentication procedure ("Authentication user")
-#: ../lib/engine/components/opal/opal-account.cpp:436
-#| msgid "Authentication User:"
+#: ../lib/engine/components/opal/opal-account.cpp:462
 msgid "Authentication user:"
 msgstr "Пользователь аутентификации:"
 
-#: ../lib/engine/components/opal/opal-account.cpp:436
+#: ../lib/engine/components/opal/opal-account.cpp:462
 #: ../lib/engine/components/opal/opal-bank.cpp:136
 msgid ""
 "The user name used during authentication, if different than the user name; "
@@ -1234,27 +1214,28 @@ msgstr ""
 "Имя пользователя, использующееся во время аутентификации (если отличается от "
 "обычного имени пользователя, в противном случае оставьте пустым). "
 
-#: ../lib/engine/components/opal/opal-account.cpp:437
+#: ../lib/engine/components/opal/opal-account.cpp:463
 #: ../plugins/loudmouth/loudmouth-account.cpp:362
 #: ../plugins/loudmouth/loudmouth-bank.cpp:129
 #: ../plugins/resource-list/rl-cluster.cpp:173
 msgid "Password:"
 msgstr "Пароль:"
 
-#: ../lib/engine/components/opal/opal-account.cpp:437
+#: ../lib/engine/components/opal/opal-account.cpp:463
 #: ../lib/engine/components/opal/opal-bank.cpp:107
 #: ../lib/engine/components/opal/opal-bank.cpp:118
 #: ../lib/engine/components/opal/opal-bank.cpp:127
 #: ../lib/engine/components/opal/opal-bank.cpp:137
 #: ../plugins/loudmouth/loudmouth-account.cpp:362
+#: ../plugins/loudmouth/loudmouth-bank.cpp:129
 msgid "Password associated to the user"
 msgstr "Пароль пользователя"
 
-#: ../lib/engine/components/opal/opal-account.cpp:438
+#: ../lib/engine/components/opal/opal-account.cpp:464
 msgid "Timeout:"
 msgstr "Задержка:"
 
-#: ../lib/engine/components/opal/opal-account.cpp:438
+#: ../lib/engine/components/opal/opal-account.cpp:464
 #: ../lib/engine/components/opal/opal-bank.cpp:128
 #: ../lib/engine/components/opal/opal-bank.cpp:138
 msgid ""
@@ -1263,111 +1244,111 @@ msgstr ""
 "Время в секундах, по истечении которого повторяется попытка регистрация уч. "
 "записи"
 
-#: ../lib/engine/components/opal/opal-account.cpp:439
+#: ../lib/engine/components/opal/opal-account.cpp:465
 #: ../lib/engine/components/opal/opal-bank.cpp:141
 #: ../plugins/loudmouth/loudmouth-account.cpp:376
 #: ../plugins/loudmouth/loudmouth-bank.cpp:130
-#| msgid "Enable Account"
 msgid "Enable account"
 msgstr "Включить учётную запись"
 
-#: ../lib/engine/components/opal/opal-account.cpp:465
+#: ../lib/engine/components/opal/opal-account.cpp:493
 #: ../lib/engine/components/opal/opal-bank.cpp:175
 msgid "You did not supply a name for that account."
 msgstr "Не задано название учётной записи."
 
-#: ../lib/engine/components/opal/opal-account.cpp:467
+#: ../lib/engine/components/opal/opal-account.cpp:495
 #: ../lib/engine/components/opal/opal-bank.cpp:177
 msgid "You did not supply a host to register to."
 msgstr "Не задано имя сервера для регистрации."
 
-#: ../lib/engine/components/opal/opal-account.cpp:469
+#: ../lib/engine/components/opal/opal-account.cpp:497
 #: ../lib/engine/components/opal/opal-bank.cpp:179
 msgid "You did not supply a user name for that account."
 msgstr "Не задано имя пользователя в этой учётной записи."
 
-#: ../lib/engine/components/opal/opal-account.cpp:471
+#: ../lib/engine/components/opal/opal-account.cpp:499
 #: ../lib/engine/components/opal/opal-bank.cpp:181
 msgid "The timeout should be at least 10 seconds."
 msgstr "Задержка должна быть не менее 10 секунд."
 
 #. Translators: this is a state, not an action, i.e. it should be read as
 #. "(you are) registered", and not as "(you have been) registered"
-#: ../lib/engine/components/opal/opal-account.cpp:589
+#: ../lib/engine/components/opal/opal-account.cpp:639
 msgid "Registered"
 msgstr "Зарегистрирован"
 
-#: ../lib/engine/components/opal/opal-account.cpp:626
+#: ../lib/engine/components/opal/opal-account.cpp:676
 msgid "Could not unregister"
 msgstr "Не удалось отменить регистрацию"
 
-#: ../lib/engine/components/opal/opal-account.cpp:659
-msgid "Could not register"
-msgstr "Не удалось зарегистрироваться"
-
-#: ../lib/engine/components/opal/opal-account.cpp:664
-#| msgid "Could not register"
+#: ../lib/engine/components/opal/opal-account.cpp:689
+#: ../lib/engine/components/opal/opal-account.cpp:723
 msgid "Could not register to "
 msgstr "Не удалось зарегистрироваться"
 
-#: ../lib/engine/components/opal/opal-account.cpp:665
+#: ../lib/engine/components/opal/opal-account.cpp:690
+#: ../lib/engine/components/opal/opal-account.cpp:724
 #: ../plugins/loudmouth/loudmouth-account.cpp:443
 msgid "Edit"
 msgstr "Правка"
 
-#: ../lib/engine/components/opal/opal-account.cpp:804
+#: ../lib/engine/components/opal/opal-account.cpp:718
+msgid "Could not register"
+msgstr "Не удалось зарегистрироваться"
+
+#: ../lib/engine/components/opal/opal-account.cpp:866
 msgid "Appointment"
 msgstr "Условленная встреча"
 
-#: ../lib/engine/components/opal/opal-account.cpp:809
+#: ../lib/engine/components/opal/opal-account.cpp:871
 msgid "Breakfast"
 msgstr "Завтрак"
 
-#: ../lib/engine/components/opal/opal-account.cpp:814
+#: ../lib/engine/components/opal/opal-account.cpp:876
 msgid "Dinner"
 msgstr "Обед"
 
-#: ../lib/engine/components/opal/opal-account.cpp:820
+#: ../lib/engine/components/opal/opal-account.cpp:882
 msgid "Holiday"
 msgstr "Выходные"
 
-#: ../lib/engine/components/opal/opal-account.cpp:825
+#: ../lib/engine/components/opal/opal-account.cpp:887
 msgid "In transit"
 msgstr "В пути"
 
-#: ../lib/engine/components/opal/opal-account.cpp:830
+#: ../lib/engine/components/opal/opal-account.cpp:892
 msgid "Looking for work"
 msgstr "Ищет работу"
 
-#: ../lib/engine/components/opal/opal-account.cpp:835
+#: ../lib/engine/components/opal/opal-account.cpp:897
 msgid "Lunch"
 msgstr "Ланч"
 
-#: ../lib/engine/components/opal/opal-account.cpp:840
+#: ../lib/engine/components/opal/opal-account.cpp:902
 msgid "Meal"
 msgstr "Еда"
 
-#: ../lib/engine/components/opal/opal-account.cpp:845
+#: ../lib/engine/components/opal/opal-account.cpp:907
 msgid "Meeting"
 msgstr "Встреча"
 
-#: ../lib/engine/components/opal/opal-account.cpp:850
+#: ../lib/engine/components/opal/opal-account.cpp:912
 msgid "On the phone"
 msgstr "С телефона"
 
-#: ../lib/engine/components/opal/opal-account.cpp:855
+#: ../lib/engine/components/opal/opal-account.cpp:917
 msgid "Playing"
 msgstr "Играет"
 
-#: ../lib/engine/components/opal/opal-account.cpp:860
+#: ../lib/engine/components/opal/opal-account.cpp:922
 msgid "Shopping"
 msgstr "Покупки"
 
-#: ../lib/engine/components/opal/opal-account.cpp:865
+#: ../lib/engine/components/opal/opal-account.cpp:927
 msgid "Sleeping"
 msgstr "Спит"
 
-#: ../lib/engine/components/opal/opal-account.cpp:870
+#: ../lib/engine/components/opal/opal-account.cpp:932
 msgid "Working"
 msgstr "За работой"
 
@@ -1415,7 +1396,6 @@ msgid "_Account ID:"
 msgstr "Иденти_фикатор:"
 
 #: ../lib/engine/components/opal/opal-bank.cpp:118
-#| msgid "_PIN Code:"
 msgid "_PIN code:"
 msgstr "Код _PIN:"
 
@@ -1439,101 +1419,98 @@ msgid "_Registrar:"
 msgstr "_Регистратор:"
 
 #: ../lib/engine/components/opal/opal-bank.cpp:136
-#| msgid "_Authentication User:"
 msgid "_Authentication user:"
 msgstr "Пользователь _аутентификации:"
 
-#: ../lib/engine/components/opal/opal-call.cpp:405
+#: ../lib/engine/components/opal/opal-call.cpp:423
 msgid "Local user cleared the call"
 msgstr "Локальный пользователь прервал вызов"
 
-#: ../lib/engine/components/opal/opal-call.cpp:408
-#: ../lib/engine/components/opal/opal-call.cpp:411
+#: ../lib/engine/components/opal/opal-call.cpp:426
+#: ../lib/engine/components/opal/opal-call.cpp:429
 msgid "Local user rejected the call"
 msgstr "Локальный пользователь отказался от вызова"
 
-#: ../lib/engine/components/opal/opal-call.cpp:414
+#: ../lib/engine/components/opal/opal-call.cpp:432
 msgid "Remote user cleared the call"
 msgstr "Удаленный пользователь прервал вызов"
 
-#: ../lib/engine/components/opal/opal-call.cpp:417
+#: ../lib/engine/components/opal/opal-call.cpp:435
 msgid "Remote user rejected the call"
 msgstr "Удаленный пользователь отказался от вызова"
 
-#: ../lib/engine/components/opal/opal-call.cpp:420
+#: ../lib/engine/components/opal/opal-call.cpp:438
 msgid "Remote user has stopped calling"
 msgstr "Удаленный пользователь прекратил вызывать"
 
-#: ../lib/engine/components/opal/opal-call.cpp:423
+#: ../lib/engine/components/opal/opal-call.cpp:441
 msgid "Abnormal call termination"
 msgstr "Ненормальное завершение вызова"
 
-#: ../lib/engine/components/opal/opal-call.cpp:426
-#: ../src/gui/main_window.cpp:527
+#: ../lib/engine/components/opal/opal-call.cpp:444
+#: ../src/gui/main_window.cpp:531
 msgid "Could not connect to remote host"
 msgstr "Не удалось подключиться к удаленному узлу"
 
-#: ../lib/engine/components/opal/opal-call.cpp:430
+#: ../lib/engine/components/opal/opal-call.cpp:448
 msgid "The Gatekeeper cleared the call"
 msgstr "Узел gatekeeper прервал вызов"
 
-#: ../lib/engine/components/opal/opal-call.cpp:433
+#: ../lib/engine/components/opal/opal-call.cpp:451
 msgid "User not found"
 msgstr "Пользователь не найден"
 
-#: ../lib/engine/components/opal/opal-call.cpp:436
+#: ../lib/engine/components/opal/opal-call.cpp:454
 msgid "Insufficient bandwidth"
 msgstr "Недостаточная полоса пропускания"
 
-#: ../lib/engine/components/opal/opal-call.cpp:439
+#: ../lib/engine/components/opal/opal-call.cpp:457
 msgid "No common codec"
 msgstr "Нет общего кодека"
 
-#: ../lib/engine/components/opal/opal-call.cpp:442
+#: ../lib/engine/components/opal/opal-call.cpp:460
 msgid "Call forwarded"
 msgstr "Вызов перенаправлен"
 
-#: ../lib/engine/components/opal/opal-call.cpp:445
+#: ../lib/engine/components/opal/opal-call.cpp:463
 msgid "Security check failed"
 msgstr "Сбой проверки безопасности"
 
-#: ../lib/engine/components/opal/opal-call.cpp:448
+#: ../lib/engine/components/opal/opal-call.cpp:466
 msgid "Local user is busy"
 msgstr "Локальный пользователь занят"
 
-#: ../lib/engine/components/opal/opal-call.cpp:451
-#: ../lib/engine/components/opal/opal-call.cpp:457
+#: ../lib/engine/components/opal/opal-call.cpp:469
+#: ../lib/engine/components/opal/opal-call.cpp:475
 msgid "Congested link to remote party"
 msgstr "Загруженный канал к удалённому абоненту"
 
-#: ../lib/engine/components/opal/opal-call.cpp:454
+#: ../lib/engine/components/opal/opal-call.cpp:472
 msgid "Remote user is busy"
 msgstr "Удалённый пользователь занят"
 
-#: ../lib/engine/components/opal/opal-call.cpp:460
+#: ../lib/engine/components/opal/opal-call.cpp:478
 msgid "Remote host is offline"
 msgstr "Удалённый узел отключён"
 
-#: ../lib/engine/components/opal/opal-call.cpp:466
+#: ../lib/engine/components/opal/opal-call.cpp:484
 msgid "User is not available"
 msgstr "Пользователь недоступен"
 
-#: ../lib/engine/components/opal/opal-call.cpp:469
-#: ../lib/engine/components/opal/sip-endpoint.cpp:781
+#: ../lib/engine/components/opal/opal-call.cpp:487
+#: ../lib/engine/components/opal/sip-endpoint.cpp:764
 msgid "Service unavailable"
 msgstr "Служба недоступна"
 
-#: ../lib/engine/components/opal/opal-call.cpp:479
+#: ../lib/engine/components/opal/opal-call.cpp:497
 msgid "Call completed"
 msgstr "Вызов завершён"
 
-#: ../lib/engine/components/opal/opal-call.cpp:679
-#| msgid "Missed call from %s"
+#: ../lib/engine/components/opal/opal-call.cpp:700
 msgid "Missed call from"
 msgstr "Пропущенный вызов от"
 
-#: ../lib/engine/components/opal/opal-call.cpp:681
-#| msgid "Missed call from %s"
+#: ../lib/engine/components/opal/opal-call.cpp:702
 msgid "Missed call"
 msgstr "Пропущенный вызов"
 
@@ -1551,105 +1528,105 @@ msgstr ""
 "Для получения подробных инструкций прочитайте страницу http://wiki.ekiga.org/"
 "index.php/Enable_port_forwarding_manually"
 
-#: ../lib/engine/components/opal/sip-endpoint.cpp:275
-#: ../lib/engine/components/opal/sip-endpoint.cpp:277
+#: ../lib/engine/components/opal/sip-endpoint.cpp:262
+#: ../lib/engine/components/opal/sip-endpoint.cpp:264
 msgid "Message"
 msgstr "Сообщение"
 
-#: ../lib/engine/components/opal/sip-endpoint.cpp:599
+#: ../lib/engine/components/opal/sip-endpoint.cpp:582
 msgid "Illegal status code"
 msgstr "Некорректный код состояния"
 
-#: ../lib/engine/components/opal/sip-endpoint.cpp:607
+#: ../lib/engine/components/opal/sip-endpoint.cpp:590
 msgid "Invalid address"
 msgstr "Неверный адрес"
 
 #. Translators: Host of the remote party is offline, this should
 #. * appear when the remote host does not reply in an acceptable time
-#: ../lib/engine/components/opal/sip-endpoint.cpp:613
+#: ../lib/engine/components/opal/sip-endpoint.cpp:596
 msgid "Remote party host is offline"
 msgstr "Удалённый узел выключен"
 
 #. Translators: the following strings are answers from the SIP server
 #. * when the packet it receives has an error, see
 #. * http://www.ietf.org/rfc/rfc3261.txt, chapter 21 for more information
-#: ../lib/engine/components/opal/sip-endpoint.cpp:629
+#: ../lib/engine/components/opal/sip-endpoint.cpp:612
 msgid "Multiple choices"
 msgstr "Возможные варианты"
 
-#: ../lib/engine/components/opal/sip-endpoint.cpp:633
+#: ../lib/engine/components/opal/sip-endpoint.cpp:616
 msgid "Moved permanently"
 msgstr "Перемещён"
 
-#: ../lib/engine/components/opal/sip-endpoint.cpp:637
+#: ../lib/engine/components/opal/sip-endpoint.cpp:620
 msgid "Moved temporarily"
 msgstr "Временно перемещён"
 
-#: ../lib/engine/components/opal/sip-endpoint.cpp:641
+#: ../lib/engine/components/opal/sip-endpoint.cpp:624
 msgid "Use proxy"
 msgstr "Использовать прокси"
 
-#: ../lib/engine/components/opal/sip-endpoint.cpp:645
+#: ../lib/engine/components/opal/sip-endpoint.cpp:628
 msgid "Alternative service"
 msgstr "Альтернативная служба"
 
-#: ../lib/engine/components/opal/sip-endpoint.cpp:649
+#: ../lib/engine/components/opal/sip-endpoint.cpp:632
 msgid "Bad request"
 msgstr "Неправильный запрос"
 
-#: ../lib/engine/components/opal/sip-endpoint.cpp:653
+#: ../lib/engine/components/opal/sip-endpoint.cpp:636
 msgid "Unauthorized"
 msgstr "Не разрешено"
 
-#: ../lib/engine/components/opal/sip-endpoint.cpp:657
+#: ../lib/engine/components/opal/sip-endpoint.cpp:640
 msgid "Payment required"
 msgstr "Требуется оплата"
 
-#: ../lib/engine/components/opal/sip-endpoint.cpp:661
+#: ../lib/engine/components/opal/sip-endpoint.cpp:644
 msgid "Forbidden, please check that username and password are correct"
 msgstr "Запрещено, проверьте правильность ввода имени и пароля"
 
-#: ../lib/engine/components/opal/sip-endpoint.cpp:665
+#: ../lib/engine/components/opal/sip-endpoint.cpp:648
 msgid "Not found"
 msgstr "Не найден"
 
-#: ../lib/engine/components/opal/sip-endpoint.cpp:669
+#: ../lib/engine/components/opal/sip-endpoint.cpp:652
 msgid "Method not allowed"
 msgstr "Метод запрещён"
 
-#: ../lib/engine/components/opal/sip-endpoint.cpp:673
+#: ../lib/engine/components/opal/sip-endpoint.cpp:656
 msgid "Not acceptable"
 msgstr "Недопустимо"
 
-#: ../lib/engine/components/opal/sip-endpoint.cpp:677
+#: ../lib/engine/components/opal/sip-endpoint.cpp:660
 msgid "Proxy authentication required"
 msgstr "Требуется проверка подлинности на прокси-сервере"
 
-#: ../lib/engine/components/opal/sip-endpoint.cpp:681
+#: ../lib/engine/components/opal/sip-endpoint.cpp:664
 msgid "Timeout"
 msgstr "Время истекло"
 
-#: ../lib/engine/components/opal/sip-endpoint.cpp:685
+#: ../lib/engine/components/opal/sip-endpoint.cpp:668
 msgid "Conflict"
 msgstr "Конфликт"
 
-#: ../lib/engine/components/opal/sip-endpoint.cpp:689
+#: ../lib/engine/components/opal/sip-endpoint.cpp:672
 msgid "Length required"
 msgstr "Требуется длина"
 
-#: ../lib/engine/components/opal/sip-endpoint.cpp:693
+#: ../lib/engine/components/opal/sip-endpoint.cpp:676
 msgid "Request entity too big"
 msgstr "Запрос слишком велик"
 
-#: ../lib/engine/components/opal/sip-endpoint.cpp:697
+#: ../lib/engine/components/opal/sip-endpoint.cpp:680
 msgid "Request URI too long"
 msgstr "URI запроса слишком длинное"
 
-#: ../lib/engine/components/opal/sip-endpoint.cpp:701
+#: ../lib/engine/components/opal/sip-endpoint.cpp:684
 msgid "Unsupported media type"
 msgstr "Способ передачи не поддерживается"
 
-#: ../lib/engine/components/opal/sip-endpoint.cpp:705
+#: ../lib/engine/components/opal/sip-endpoint.cpp:688
 msgid "Unsupported URI scheme"
 msgstr "Схема URI не поддерживается"
 
@@ -1657,121 +1634,128 @@ msgstr "Схема URI не поддерживается"
 #. * Here extension is a specific "phone number", see
 #. * http://en.wikipedia.org/wiki/Extension_(telephone)
 #. * for more information
-#: ../lib/engine/components/opal/sip-endpoint.cpp:713
+#: ../lib/engine/components/opal/sip-endpoint.cpp:696
 msgid "Bad extension"
 msgstr "Расширение не поддерживается"
 
-#: ../lib/engine/components/opal/sip-endpoint.cpp:717
+#: ../lib/engine/components/opal/sip-endpoint.cpp:700
 msgid "Extension required"
 msgstr "Требуется дополнение URI"
 
-#: ../lib/engine/components/opal/sip-endpoint.cpp:721
+#: ../lib/engine/components/opal/sip-endpoint.cpp:704
 msgid "Interval too brief"
 msgstr "Интервал слишком мал"
 
-#: ../lib/engine/components/opal/sip-endpoint.cpp:725
+#: ../lib/engine/components/opal/sip-endpoint.cpp:708
 msgid "Temporarily unavailable"
 msgstr "Временно недоступно"
 
-#: ../lib/engine/components/opal/sip-endpoint.cpp:729
+#: ../lib/engine/components/opal/sip-endpoint.cpp:712
 msgid "Loop detected"
 msgstr "Обнаружен цикл"
 
-#: ../lib/engine/components/opal/sip-endpoint.cpp:733
+#: ../lib/engine/components/opal/sip-endpoint.cpp:716
 msgid "Too many hops"
 msgstr "Слишком много узлов коммутации"
 
-#: ../lib/engine/components/opal/sip-endpoint.cpp:737
+#: ../lib/engine/components/opal/sip-endpoint.cpp:720
 msgid "Address incomplete"
 msgstr "Адрес неточен"
 
-#: ../lib/engine/components/opal/sip-endpoint.cpp:741
+#: ../lib/engine/components/opal/sip-endpoint.cpp:724
 msgid "Ambiguous"
 msgstr "Избыточен"
 
-#: ../lib/engine/components/opal/sip-endpoint.cpp:745
+#: ../lib/engine/components/opal/sip-endpoint.cpp:728
 msgid "Busy Here"
 msgstr "Занято"
 
-#: ../lib/engine/components/opal/sip-endpoint.cpp:749
+#: ../lib/engine/components/opal/sip-endpoint.cpp:732
 msgid "Request terminated"
 msgstr "Запрос отклонён"
 
-#: ../lib/engine/components/opal/sip-endpoint.cpp:753
+#: ../lib/engine/components/opal/sip-endpoint.cpp:736
 msgid "Not acceptable here"
 msgstr "Недопустим"
 
-#: ../lib/engine/components/opal/sip-endpoint.cpp:757
+#: ../lib/engine/components/opal/sip-endpoint.cpp:740
 msgid "Bad event"
 msgstr "Некорректное событие"
 
-#: ../lib/engine/components/opal/sip-endpoint.cpp:761
+#: ../lib/engine/components/opal/sip-endpoint.cpp:744
 msgid "Request pending"
 msgstr "Запрос обработан"
 
-#: ../lib/engine/components/opal/sip-endpoint.cpp:765
+#: ../lib/engine/components/opal/sip-endpoint.cpp:748
 msgid "Undecipherable"
 msgstr "Не поддаётся анализу"
 
-#: ../lib/engine/components/opal/sip-endpoint.cpp:769
+#: ../lib/engine/components/opal/sip-endpoint.cpp:752
 msgid "Internal server error"
 msgstr "Внутренняя ошибка сервера"
 
-#: ../lib/engine/components/opal/sip-endpoint.cpp:773
+#: ../lib/engine/components/opal/sip-endpoint.cpp:756
 msgid "Not implemented"
 msgstr "Не поддерживается"
 
-#: ../lib/engine/components/opal/sip-endpoint.cpp:777
+#: ../lib/engine/components/opal/sip-endpoint.cpp:760
 msgid "Bad gateway"
 msgstr "Некорректный шлюз"
 
-#: ../lib/engine/components/opal/sip-endpoint.cpp:785
+#: ../lib/engine/components/opal/sip-endpoint.cpp:768
 msgid "Server timeout"
 msgstr "Превышено время ожидания"
 
-#: ../lib/engine/components/opal/sip-endpoint.cpp:789
+#: ../lib/engine/components/opal/sip-endpoint.cpp:772
 msgid "SIP version not supported"
 msgstr "Версия SIP не поддерживается"
 
-#: ../lib/engine/components/opal/sip-endpoint.cpp:793
+#: ../lib/engine/components/opal/sip-endpoint.cpp:776
 msgid "Message too large"
 msgstr "Сообщение слишком велико"
 
-#: ../lib/engine/components/opal/sip-endpoint.cpp:797
+#: ../lib/engine/components/opal/sip-endpoint.cpp:780
 msgid "Busy everywhere"
 msgstr "Везде занято"
 
-#: ../lib/engine/components/opal/sip-endpoint.cpp:801
+#: ../lib/engine/components/opal/sip-endpoint.cpp:784
 msgid "Decline"
 msgstr "Отклонён"
 
-#: ../lib/engine/components/opal/sip-endpoint.cpp:805
+#: ../lib/engine/components/opal/sip-endpoint.cpp:788
 msgid "Does not exist anymore"
 msgstr "Больше не существует"
 
-#: ../lib/engine/components/opal/sip-endpoint.cpp:809
+#: ../lib/engine/components/opal/sip-endpoint.cpp:792
 msgid "Globally not acceptable"
 msgstr "Недоступно везде"
 
-#: ../lib/engine/components/opal/sip-endpoint.cpp:947
+#: ../lib/engine/components/opal/sip-endpoint.cpp:902
 msgid "Could not send message: "
 msgstr "Не удалось отправить сообщение:"
 
-#: ../lib/engine/components/opal/sip-endpoint.cpp:949
+#: ../lib/engine/components/opal/sip-endpoint.cpp:904
 msgid "user offline"
 msgstr "пользователь не в сети"
 
-#: ../lib/engine/components/opal/sip-endpoint.cpp:990
+#. Ignore
+#: ../lib/engine/components/opal/sip-endpoint.cpp:943
+#: ../plugins/libnotify/libnotify-main.cpp:257
+#, c-format
+msgid "Incoming call from %s"
+msgstr "Входящий вызов от %s"
+
+#: ../lib/engine/components/opal/sip-endpoint.cpp:945
 #, c-format
 msgid "Incoming call"
 msgstr "Входящий вызов"
 
-#: ../lib/engine/components/opal/sip-endpoint.cpp:996
+#: ../lib/engine/components/opal/sip-endpoint.cpp:951
 #, c-format
 msgid "In a call with %s"
 msgstr "Разговор с %s"
 
-#: ../lib/engine/components/opal/sip-endpoint.cpp:998
+#: ../lib/engine/components/opal/sip-endpoint.cpp:953
 #, c-format
 msgid "In a call"
 msgstr "Разговор"
@@ -1806,12 +1790,12 @@ msgid "Accounts"
 msgstr "Учётные записи"
 
 #: ../lib/engine/gui/gtk-frontend/accounts-window.cpp:584
-#: ../src/gui/main_window.cpp:1335
+#: ../src/gui/main_window.cpp:1333
 msgid "_Accounts"
 msgstr "Учётные записи"
 
 #: ../lib/engine/gui/gtk-frontend/accounts-window.cpp:588
-#: ../src/gui/main_window.cpp:1381
+#: ../src/gui/main_window.cpp:1379
 msgid "_Help"
 msgstr "_Справка"
 
@@ -1824,7 +1808,7 @@ msgid "Address Book"
 msgstr "Адресная книга"
 
 #: ../lib/engine/gui/gtk-frontend/addressbook-window.cpp:646
-#: ../src/gui/main_window.cpp:1296
+#: ../src/gui/main_window.cpp:1304
 msgid "Address _Book"
 msgstr "Адресная _книга"
 
@@ -1837,24 +1821,24 @@ msgstr "_Действие"
 msgid "Category"
 msgstr "Категория"
 
-#: ../lib/engine/gui/gtk-frontend/book-view-gtk.cpp:585
+#: ../lib/engine/gui/gtk-frontend/book-view-gtk.cpp:571
 #: ../src/gui/assistant.cpp:1394
 msgid "Full Name"
 msgstr "Полное имя"
 
-#: ../lib/engine/gui/gtk-frontend/book-view-gtk.cpp:600
+#: ../lib/engine/gui/gtk-frontend/book-view-gtk.cpp:586
 msgid "_Search Filter:"
 msgstr "Фильтр _поиска:"
 
-#: ../lib/engine/gui/gtk-frontend/call-window.cpp:772
+#: ../lib/engine/gui/gtk-frontend/call-window.cpp:784
 msgid "Error while initializing video output"
 msgstr "Ошибка инициализации системы вывода видео"
 
-#: ../lib/engine/gui/gtk-frontend/call-window.cpp:773
+#: ../lib/engine/gui/gtk-frontend/call-window.cpp:785
 msgid "No video will be displayed on your machine during this call"
 msgstr "При звонке не будет использовано видео на этой машине"
 
-#: ../lib/engine/gui/gtk-frontend/call-window.cpp:783
+#: ../lib/engine/gui/gtk-frontend/call-window.cpp:795
 msgid ""
 "There was an error opening or initializing the video output. Please verify "
 "that no other application is using the accelerated video output."
@@ -1862,7 +1846,7 @@ msgstr ""
 "Во время инициализации системы вывода видео возникла ошибка. Проверьте, что "
 "другое приложение не использует аппаратное ускорение вывода видео."
 
-#: ../lib/engine/gui/gtk-frontend/call-window.cpp:785
+#: ../lib/engine/gui/gtk-frontend/call-window.cpp:797
 msgid ""
 "There was an error opening or initializing the video output. Please verify "
 "that you are using a color depth of 24 or 32 bits per pixel."
@@ -1870,16 +1854,16 @@ msgstr ""
 "Во время инициализации системы вывода видео возникла ошибка. Проверьте, что "
 "используется глубина цвета 24 или 32 бита."
 
-#: ../lib/engine/gui/gtk-frontend/call-window.cpp:895
+#: ../lib/engine/gui/gtk-frontend/call-window.cpp:911
 #, c-format
 msgid "Error while accessing video device %s"
 msgstr "Не удалось получить доступ к устройство захвата видео %s"
 
-#: ../lib/engine/gui/gtk-frontend/call-window.cpp:898
+#: ../lib/engine/gui/gtk-frontend/call-window.cpp:914
 msgid "A moving logo will be transmitted during calls."
 msgstr "На время звонка будет передаваться видео с логотипом"
 
-#: ../lib/engine/gui/gtk-frontend/call-window.cpp:902
+#: ../lib/engine/gui/gtk-frontend/call-window.cpp:918
 msgid ""
 "There was an error while opening the device. In case it is a pluggable "
 "device it may be sufficient to reconnect it. If not, or if it still is not "
@@ -1890,15 +1874,15 @@ msgstr ""
 "повторное подключение может помочь решить проблему. В противном случае "
 "проверьте права доступа к устройству и работу драйвера."
 
-#: ../lib/engine/gui/gtk-frontend/call-window.cpp:906
+#: ../lib/engine/gui/gtk-frontend/call-window.cpp:922
 msgid "Your video driver doesn't support the requested video format."
 msgstr "Ваш видеодрайвер не поддерживает требуемый формат видео."
 
-#: ../lib/engine/gui/gtk-frontend/call-window.cpp:910
+#: ../lib/engine/gui/gtk-frontend/call-window.cpp:926
 msgid "Could not open the chosen channel."
 msgstr "Не удалось открыть выбранный канал."
 
-#: ../lib/engine/gui/gtk-frontend/call-window.cpp:914
+#: ../lib/engine/gui/gtk-frontend/call-window.cpp:930
 msgid ""
 "Your driver doesn't seem to support any of the color formats supported by "
 "Ekiga.\n"
@@ -1909,32 +1893,32 @@ msgstr ""
 "Ekiga.\n"
 " Проверьте по документации вашего ядра, какая именно палитра поддерживается."
 
-#: ../lib/engine/gui/gtk-frontend/call-window.cpp:918
+#: ../lib/engine/gui/gtk-frontend/call-window.cpp:934
 msgid "Error while setting the frame rate."
 msgstr "Ошибка установки частоты кадров."
 
-#: ../lib/engine/gui/gtk-frontend/call-window.cpp:922
+#: ../lib/engine/gui/gtk-frontend/call-window.cpp:938
 msgid "Error while setting the frame size."
 msgstr "Ошибка установки размера кадра."
 
-#: ../lib/engine/gui/gtk-frontend/call-window.cpp:927
-#: ../lib/engine/gui/gtk-frontend/call-window.cpp:997
-#: ../lib/engine/gui/gtk-frontend/call-window.cpp:1078
+#: ../lib/engine/gui/gtk-frontend/call-window.cpp:943
+#: ../lib/engine/gui/gtk-frontend/call-window.cpp:1013
+#: ../lib/engine/gui/gtk-frontend/call-window.cpp:1094
 msgid "Unknown error."
 msgstr "Неизвестная ошибка."
 
-#: ../lib/engine/gui/gtk-frontend/call-window.cpp:979
+#: ../lib/engine/gui/gtk-frontend/call-window.cpp:995
 #, c-format
 msgid "Error while opening audio input device %s"
 msgstr "Не удалось открыть устройство ввода звука %s"
 
 #. Translators: This happens when there is an error with audio input:
 #. * Nothing ("silence") will be transmitted
-#: ../lib/engine/gui/gtk-frontend/call-window.cpp:984
+#: ../lib/engine/gui/gtk-frontend/call-window.cpp:1000
 msgid "Only silence will be transmitted."
 msgstr "Собеседники ничего не услышат."
 
-#: ../lib/engine/gui/gtk-frontend/call-window.cpp:988
+#: ../lib/engine/gui/gtk-frontend/call-window.cpp:1004
 msgid ""
 "Unable to open the selected audio device for recording. In case it is a "
 "pluggable device it may be sufficient to reconnect it. If not, or if it "
@@ -1946,7 +1930,7 @@ msgstr ""
 "проблему. В противном случае проверьте настройки звука, права доступа к "
 "устройству и убедитесь, что другие приложения не занимают устройство."
 
-#: ../lib/engine/gui/gtk-frontend/call-window.cpp:992
+#: ../lib/engine/gui/gtk-frontend/call-window.cpp:1008
 msgid ""
 "The selected audio device was successfully opened but it is impossible to "
 "read data from this device. In case it is a pluggable device it may be "
@@ -1957,16 +1941,16 @@ msgstr ""
 "устройство подключаемое, его повторное подключение может помочь решить "
 "проблему. В противном случае проверьте настройки звука."
 
-#: ../lib/engine/gui/gtk-frontend/call-window.cpp:1062
+#: ../lib/engine/gui/gtk-frontend/call-window.cpp:1078
 #, c-format
 msgid "Error while opening audio output device %s"
 msgstr "Ошибка открытия устройства вывода звука %s"
 
-#: ../lib/engine/gui/gtk-frontend/call-window.cpp:1065
+#: ../lib/engine/gui/gtk-frontend/call-window.cpp:1081
 msgid "No incoming sound will be played."
 msgstr "Входящий звонок не будет слышен."
 
-#: ../lib/engine/gui/gtk-frontend/call-window.cpp:1069
+#: ../lib/engine/gui/gtk-frontend/call-window.cpp:1085
 msgid ""
 "Unable to open the selected audio device for playing. In case it is a "
 "pluggable device it may be sufficient to reconnect it. If not, or if it "
@@ -1978,7 +1962,7 @@ msgstr ""
 "проблему. В противном случае проверьте настройки звука, права доступа к "
 "устройству и убедитесь, что другие приложения не занимают устройство."
 
-#: ../lib/engine/gui/gtk-frontend/call-window.cpp:1073
+#: ../lib/engine/gui/gtk-frontend/call-window.cpp:1089
 msgid ""
 "The selected audio device was successfully opened but it is impossible to "
 "write data to this device. In case it is a pluggable device it may be "
@@ -1989,42 +1973,42 @@ msgstr ""
 "удалось. Если устройство подключаемое, его повторное подключение может "
 "помочь решить проблему. В противном случае проверьте настройки звука."
 
-#: ../lib/engine/gui/gtk-frontend/call-window.cpp:1114
+#: ../lib/engine/gui/gtk-frontend/call-window.cpp:1130
 #, c-format
 msgid "Calling %s..."
 msgstr "Вызов %s…"
 
 #. %s is the SIP/H.323 address of the remote user, this text is shown
 #. below video during a call
-#: ../lib/engine/gui/gtk-frontend/call-window.cpp:1130
-#: ../src/gui/main_window.cpp:649
+#: ../lib/engine/gui/gtk-frontend/call-window.cpp:1160
+#: ../src/gui/main_window.cpp:653
 #, c-format
 msgid "Connected with %s"
 msgstr "Подключён к %s"
 
 #. Init
-#: ../lib/engine/gui/gtk-frontend/call-window.cpp:1153
-#: ../lib/engine/gui/gtk-frontend/call-window.cpp:2430
+#: ../lib/engine/gui/gtk-frontend/call-window.cpp:1183
+#: ../lib/engine/gui/gtk-frontend/call-window.cpp:1206
+#: ../lib/engine/gui/gtk-frontend/call-window.cpp:2517
 msgid "Standby"
 msgstr "Ожидание"
 
-#: ../lib/engine/gui/gtk-frontend/call-window.cpp:1170
-#: ../lib/engine/gui/gtk-frontend/call-window.cpp:2642
-#| msgid "Chat Window"
+#: ../lib/engine/gui/gtk-frontend/call-window.cpp:1195
+#: ../lib/engine/gui/gtk-frontend/call-window.cpp:1204
+#: ../lib/engine/gui/gtk-frontend/call-window.cpp:2729
 msgid "Call Window"
 msgstr "Окно вызова"
 
-#: ../lib/engine/gui/gtk-frontend/call-window.cpp:1181
+#: ../lib/engine/gui/gtk-frontend/call-window.cpp:1217
 msgid "Call on hold"
 msgstr "Вызов удерживается"
 
-#: ../lib/engine/gui/gtk-frontend/call-window.cpp:1192
+#: ../lib/engine/gui/gtk-frontend/call-window.cpp:1228
 msgid "Call retrieved"
 msgstr "Вызов принят"
 
-#: ../lib/engine/gui/gtk-frontend/call-window.cpp:1280
+#: ../lib/engine/gui/gtk-frontend/call-window.cpp:1316
 #, c-format
-#| msgid "Connected with %s"
 msgid ""
 "Connected with %s\n"
 "%s"
@@ -2034,37 +2018,28 @@ msgstr ""
 
 #. Translators: TX is a common abbreviation for "transmit".  As it
 #. * is shown in a tooltip, there is no space constraint
-#: ../lib/engine/gui/gtk-frontend/call-window.cpp:1476
+#: ../lib/engine/gui/gtk-frontend/call-window.cpp:1532
 #, c-format
-#| msgid "TX: %dx%d "
 msgid "TX: %dx%d"
 msgstr "Передача: %dx%d"
 
-#: ../lib/engine/gui/gtk-frontend/call-window.cpp:1478
-#| msgid "TX: %dx%d "
+#: ../lib/engine/gui/gtk-frontend/call-window.cpp:1534
 msgid "TX: / "
 msgstr "Передача: / "
 
 #. Translators: RX is a common abbreviation for "receive".  As it
 #. * is shown in a tooltip, there is no space constraint
-#: ../lib/engine/gui/gtk-frontend/call-window.cpp:1483
+#: ../lib/engine/gui/gtk-frontend/call-window.cpp:1539
 #, c-format
-#| msgid "RX: %dx%d "
 msgid "RX: %dx%d"
 msgstr "Приём: %dx%d"
 
-#: ../lib/engine/gui/gtk-frontend/call-window.cpp:1485
-#| msgid "RX: %dx%d "
+#: ../lib/engine/gui/gtk-frontend/call-window.cpp:1541
 msgid "RX: / "
 msgstr "Приём: / "
 
-#: ../lib/engine/gui/gtk-frontend/call-window.cpp:1494
+#: ../lib/engine/gui/gtk-frontend/call-window.cpp:1550
 #, c-format
-#| msgid ""
-#| "Lost packets: %.1f %%\n"
-#| "Late packets: %.1f %%\n"
-#| "Out of order packets: %.1f %%\n"
-#| "Jitter buffer: %d ms%s%s%s"
 msgid ""
 "Lost packets: %.1f %%\n"
 "Late packets: %.1f %%\n"
@@ -2081,177 +2056,179 @@ msgstr ""
 "Разрешение: %s %s"
 
 #. Translators: A = Audio, V = Video, FPS = Frames per second
-#: ../lib/engine/gui/gtk-frontend/call-window.cpp:1588
+#: ../lib/engine/gui/gtk-frontend/call-window.cpp:1650
 #, c-format
-#| msgid "A:%.1f/%.1f   V:%.1f/%.1f   FPS:%d/%d"
 msgid "A:%.1f/%.1f V:%.1f/%.1f FPS:%d/%d"
 msgstr "Звук:%.1f/%.1f Видео:%.1f/%.1f  Кадры:%d/%d"
 
-#: ../lib/engine/gui/gtk-frontend/call-window.cpp:1609
+#: ../lib/engine/gui/gtk-frontend/call-window.cpp:1674
 msgid "_Retrieve Call"
 msgstr "_Принять вызов"
 
-#: ../lib/engine/gui/gtk-frontend/call-window.cpp:1622
-#: ../lib/engine/gui/gtk-frontend/call-window.cpp:1931
+#: ../lib/engine/gui/gtk-frontend/call-window.cpp:1687
+#: ../lib/engine/gui/gtk-frontend/call-window.cpp:1996
 msgid "H_old Call"
 msgstr "Уд_ерживать вызов"
 
-#: ../lib/engine/gui/gtk-frontend/call-window.cpp:1653
-#: ../lib/engine/gui/gtk-frontend/call-window.cpp:1943
+#: ../lib/engine/gui/gtk-frontend/call-window.cpp:1718
+#: ../lib/engine/gui/gtk-frontend/call-window.cpp:2008
 msgid "Suspend _Audio"
 msgstr "Приостановить передачу _звука"
 
-#: ../lib/engine/gui/gtk-frontend/call-window.cpp:1655
-#: ../lib/engine/gui/gtk-frontend/call-window.cpp:1948
+#: ../lib/engine/gui/gtk-frontend/call-window.cpp:1720
+#: ../lib/engine/gui/gtk-frontend/call-window.cpp:2013
 msgid "Suspend _Video"
 msgstr "Приостановить передачу _видео"
 
-#: ../lib/engine/gui/gtk-frontend/call-window.cpp:1657
+#: ../lib/engine/gui/gtk-frontend/call-window.cpp:1722
 msgid "Resume _Audio"
 msgstr "Возобновить передачу _звука"
 
-#: ../lib/engine/gui/gtk-frontend/call-window.cpp:1659
+#: ../lib/engine/gui/gtk-frontend/call-window.cpp:1724
 msgid "Resume _Video"
 msgstr "Возобновить передачу _видео"
 
-#: ../lib/engine/gui/gtk-frontend/call-window.cpp:1693
+#: ../lib/engine/gui/gtk-frontend/call-window.cpp:1758
 msgid "Video Settings"
 msgstr "Параметры _видео"
 
-#: ../lib/engine/gui/gtk-frontend/call-window.cpp:1718
+#: ../lib/engine/gui/gtk-frontend/call-window.cpp:1783
 msgid "Adjust brightness"
 msgstr "Подстройка яркости"
 
-#: ../lib/engine/gui/gtk-frontend/call-window.cpp:1737
+#: ../lib/engine/gui/gtk-frontend/call-window.cpp:1802
 msgid "Adjust whiteness"
 msgstr "Подстройка уровня белого"
 
-#: ../lib/engine/gui/gtk-frontend/call-window.cpp:1756
+#: ../lib/engine/gui/gtk-frontend/call-window.cpp:1821
 msgid "Adjust color"
 msgstr "Подстройка цвета"
 
-#: ../lib/engine/gui/gtk-frontend/call-window.cpp:1775
+#: ../lib/engine/gui/gtk-frontend/call-window.cpp:1840
 msgid "Adjust contrast"
 msgstr "Подстройка контрастности"
 
-#: ../lib/engine/gui/gtk-frontend/call-window.cpp:1817
+#: ../lib/engine/gui/gtk-frontend/call-window.cpp:1882
 msgid "Audio Settings"
 msgstr "Параметры _звука"
 
-#: ../lib/engine/gui/gtk-frontend/call-window.cpp:1919
-#| msgid "Call"
+#: ../lib/engine/gui/gtk-frontend/call-window.cpp:1984
 msgid "_Call"
 msgstr "_Вызвать"
 
-#: ../lib/engine/gui/gtk-frontend/call-window.cpp:1921
+#: ../lib/engine/gui/gtk-frontend/call-window.cpp:1986
 msgid "_Pick up"
 msgstr "_Ответить"
 
-#: ../lib/engine/gui/gtk-frontend/call-window.cpp:1921
-#| msgid "Hold the current call"
+#: ../lib/engine/gui/gtk-frontend/call-window.cpp:1986
+#: ../lib/engine/gui/gtk-frontend/call-window.cpp:2403
 msgid "Pick up the current call"
 msgstr "Ответить на текущий вызов"
 
-#: ../lib/engine/gui/gtk-frontend/call-window.cpp:1925
-#| msgid "_Hang up"
-msgid "_Hangup"
+#: ../lib/engine/gui/gtk-frontend/call-window.cpp:1990
+#| msgid "_Hangup"
+msgid "_Hang up"
 msgstr "_Завершить вызов"
 
-#: ../lib/engine/gui/gtk-frontend/call-window.cpp:1925
-#| msgid "Hold the current call"
-msgid "Hangup the current call"
-msgstr "Завершить текущий вызов"
-
-#: ../lib/engine/gui/gtk-frontend/call-window.cpp:1931
-#: ../lib/engine/gui/gtk-frontend/call-window.cpp:2399
-msgid "Hold the current call"
-msgstr "Удерживать текущий вызов"
-
-#: ../lib/engine/gui/gtk-frontend/call-window.cpp:1935
-msgid "_Transfer Call"
-msgstr "П_ереадресовать вызов"
-
-#: ../lib/engine/gui/gtk-frontend/call-window.cpp:1936
-msgid "Transfer the current call"
-msgstr "Переадресовать текущий вызов"
-
-#: ../lib/engine/gui/gtk-frontend/call-window.cpp:1944
-msgid "Suspend or resume the audio transmission"
-msgstr "Приостановить или возобновить передачу звука"
-
-#: ../lib/engine/gui/gtk-frontend/call-window.cpp:1949
-msgid "Suspend or resume the video transmission"
-msgstr "Приостановить или возобновить передачу изображения"
-
-#: ../lib/engine/gui/gtk-frontend/call-window.cpp:1956
-#: ../src/gui/main_window.cpp:1314
-msgid "Close the Ekiga window"
-msgstr "Закрыть окно Ekiga"
-
-#: ../lib/engine/gui/gtk-frontend/call-window.cpp:1961
-#: ../src/gui/main_window.cpp:1347
-msgid "_View"
-msgstr "_Вид"
-
-#: ../lib/engine/gui/gtk-frontend/call-window.cpp:1963
-msgid "_Local Video"
-msgstr "_Локальное видео"
-
-#: ../lib/engine/gui/gtk-frontend/call-window.cpp:1964
-msgid "Local video image"
-msgstr "Локальное видеоизображение"
-
-#: ../lib/engine/gui/gtk-frontend/call-window.cpp:1968
-msgid "_Remote Video"
-msgstr "_Удаленное видео"
-
-#: ../lib/engine/gui/gtk-frontend/call-window.cpp:1969
-msgid "Remote video image"
-msgstr "Удалённое видеоизображение"
-
-#: ../lib/engine/gui/gtk-frontend/call-window.cpp:1973
-msgid "_Picture-in-Picture"
-msgstr "_Картинка-в-картинке"
-
-#: ../lib/engine/gui/gtk-frontend/call-window.cpp:1974
-msgid "Both video images"
-msgstr "Оба видеоизображения"
-
-#: ../lib/engine/gui/gtk-frontend/call-window.cpp:1980
-msgid "Zoom in"
-msgstr "Увеличить масштаб"
-
-#: ../lib/engine/gui/gtk-frontend/call-window.cpp:1984
-msgid "Zoom out"
-msgstr "Уменьшить масштаб"
-
-#: ../lib/engine/gui/gtk-frontend/call-window.cpp:1988
-msgid "Normal size"
-msgstr "Нормальный размер"
-
-#: ../lib/engine/gui/gtk-frontend/call-window.cpp:1992
-msgid "_Fullscreen"
-msgstr "Во весь _экран"
-
-#: ../lib/engine/gui/gtk-frontend/call-window.cpp:1992
-msgid "Switch to fullscreen"
-msgstr "Переключиться в полный экран"
-
-#: ../lib/engine/gui/gtk-frontend/call-window.cpp:2107
-msgid "Transfer call to:"
-msgstr "Переадресовать вызов на:"
-
-#: ../lib/engine/gui/gtk-frontend/call-window.cpp:2317
-#: ../lib/engine/gui/gtk-frontend/call-window.cpp:2332
-#| msgid "Hold the current call"
+#: ../lib/engine/gui/gtk-frontend/call-window.cpp:1990
+#: ../lib/engine/gui/gtk-frontend/call-window.cpp:2419
 msgid "Hang up the current call"
 msgstr "Завершить текущий вызов"
 
-#: ../lib/engine/gui/gtk-frontend/call-window.cpp:2360
+#: ../lib/engine/gui/gtk-frontend/call-window.cpp:1996
+#: ../lib/engine/gui/gtk-frontend/call-window.cpp:2486
+msgid "Hold the current call"
+msgstr "Удерживать текущий вызов"
+
+#: ../lib/engine/gui/gtk-frontend/call-window.cpp:2000
+msgid "_Transfer Call"
+msgstr "П_ереадресовать вызов"
+
+#: ../lib/engine/gui/gtk-frontend/call-window.cpp:2001
+msgid "Transfer the current call"
+msgstr "Переадресовать текущий вызов"
+
+#: ../lib/engine/gui/gtk-frontend/call-window.cpp:2009
+msgid "Suspend or resume the audio transmission"
+msgstr "Приостановить или возобновить передачу звука"
+
+#: ../lib/engine/gui/gtk-frontend/call-window.cpp:2014
+msgid "Suspend or resume the video transmission"
+msgstr "Приостановить или возобновить передачу изображения"
+
+#: ../lib/engine/gui/gtk-frontend/call-window.cpp:2021
+#: ../src/gui/main_window.cpp:1312
+msgid "Close the Ekiga window"
+msgstr "Закрыть окно Ekiga"
+
+#: ../lib/engine/gui/gtk-frontend/call-window.cpp:2026
+#: ../src/gui/main_window.cpp:1345
+msgid "_View"
+msgstr "_Вид"
+
+#: ../lib/engine/gui/gtk-frontend/call-window.cpp:2028
+msgid "_Local Video"
+msgstr "_Локальное видео"
+
+#: ../lib/engine/gui/gtk-frontend/call-window.cpp:2029
+msgid "Local video image"
+msgstr "Локальное видеоизображение"
+
+#: ../lib/engine/gui/gtk-frontend/call-window.cpp:2033
+msgid "_Remote Video"
+msgstr "_Удаленное видео"
+
+#: ../lib/engine/gui/gtk-frontend/call-window.cpp:2034
+msgid "Remote video image"
+msgstr "Удалённое видеоизображение"
+
+#: ../lib/engine/gui/gtk-frontend/call-window.cpp:2038
+msgid "_Picture-in-Picture"
+msgstr "_Картинка-в-картинке"
+
+#: ../lib/engine/gui/gtk-frontend/call-window.cpp:2039
+msgid "Both video images"
+msgstr "Оба видеоизображения"
+
+#: ../lib/engine/gui/gtk-frontend/call-window.cpp:2043
+#| msgid "Extended Video Roles"
+msgid "_Extended Video"
+msgstr "_Расширенное видео"
+
+#: ../lib/engine/gui/gtk-frontend/call-window.cpp:2044
+#| msgid "Extended Video Roles"
+msgid "Extended Video Images"
+msgstr "Расширенные видеоизображения"
+
+#: ../lib/engine/gui/gtk-frontend/call-window.cpp:2050
+msgid "Zoom in"
+msgstr "Увеличить масштаб"
+
+#: ../lib/engine/gui/gtk-frontend/call-window.cpp:2054
+msgid "Zoom out"
+msgstr "Уменьшить масштаб"
+
+#: ../lib/engine/gui/gtk-frontend/call-window.cpp:2058
+msgid "Normal size"
+msgstr "Нормальный размер"
+
+#: ../lib/engine/gui/gtk-frontend/call-window.cpp:2062
+msgid "_Fullscreen"
+msgstr "Во весь _экран"
+
+#: ../lib/engine/gui/gtk-frontend/call-window.cpp:2062
+msgid "Switch to fullscreen"
+msgstr "Переключиться в полный экран"
+
+#: ../lib/engine/gui/gtk-frontend/call-window.cpp:2177
+msgid "Transfer call to:"
+msgstr "Переадресовать вызов на:"
+
+#: ../lib/engine/gui/gtk-frontend/call-window.cpp:2447
 msgid "Change the volume of your soundcard"
 msgstr "Изменять громкость воспроизведения"
 
-#: ../lib/engine/gui/gtk-frontend/call-window.cpp:2380
+#: ../lib/engine/gui/gtk-frontend/call-window.cpp:2467
 msgid "Change the color settings of your video device"
 msgstr "Изменять настройки цвета видео"
 
@@ -2273,8 +2250,6 @@ msgstr "_Смайл…"
 
 #: ../lib/engine/gui/gtk-frontend/chat-window.cpp:139
 #, c-format
-#| msgid "You have %d message"
-#| msgid_plural "You have %d messages"
 msgid "You have %d unread text message"
 msgid_plural "You have %d unread text messages"
 msgstr[0] "У вас %d непрочитанное сообщение"
@@ -2292,8 +2267,8 @@ msgstr "Окно разговора"
 
 #: ../lib/engine/gui/gtk-frontend/heap-view.cpp:238
 #: ../lib/engine/gui/gtk-frontend/heap-view.cpp:277
-#: ../lib/engine/gui/gtk-frontend/roster-view-gtk.cpp:953
-#: ../lib/engine/gui/gtk-frontend/roster-view-gtk.cpp:1008
+#: ../lib/engine/gui/gtk-frontend/roster-view-gtk.cpp:1016
+#: ../lib/engine/gui/gtk-frontend/roster-view-gtk.cpp:1097
 msgid "Unsorted"
 msgstr "Неупорядоченный"
 
@@ -2363,10 +2338,6 @@ msgid "Forward calls to the given host if _busy"
 msgstr "Перенапралять вызовы на указанный узел, если _занято"
 
 #: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:499
-#| msgid ""
-#| "If enabled, all incoming calls will be forwarded to the host that is "
-#| "specified in the protocol settings if you already are in a call or if you "
-#| "are in Do Not Disturb mode"
 msgid ""
 "If enabled, all incoming calls will be forwarded to the host that is "
 "specified in the protocol settings if you already are in a call or if you "
@@ -2489,7 +2460,6 @@ msgstr ""
 "и туннелирования H.245 может привести к сбою некоторых версий Netmeeting."
 
 #: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:686
-#| msgid "Enable Account"
 msgid "Enable H.239 control"
 msgstr "Включить контроль H.239"
 
@@ -2502,7 +2472,6 @@ msgid "Extended Video Roles:"
 msgstr "Расширенные роли видео:"
 
 #: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:688
-#| msgid "Select the transmitted video size"
 msgid "Select the H.239 Video Role"
 msgstr "Выберите роль видео H.239"
 
@@ -2526,7 +2495,6 @@ msgid "INFO"
 msgstr "INFO"
 
 #: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:716
-#| msgid "_Outbound Proxy:"
 msgid "_Outbound proxy:"
 msgstr "_Исходящий прокси-сервер:"
 
@@ -2536,7 +2504,6 @@ msgid "Audio Devices"
 msgstr "Аудиоустройства"
 
 #: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:752
-#| msgid "Ringing Device"
 msgid "Ringing device:"
 msgstr "Устройство звонка:"
 
@@ -2637,12 +2604,10 @@ msgstr "Максимальная зад_ержка (в мс):"
 
 #. Translators: the full sentence is Keep a minimum video quality of X %
 #: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:972
-#| msgid "Picture Quality"
 msgid "Picture quality"
 msgstr "Качество изображения"
 
 #: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:972
-#| msgid "Frame Rate"
 msgid "Frame rate"
 msgstr "Частота кадров"
 
@@ -2717,7 +2682,7 @@ msgstr "Устройства"
 msgid "Video"
 msgstr "Видео"
 
-#: ../lib/engine/gui/gtk-frontend/statusicon.cpp:313
+#: ../lib/engine/gui/gtk-frontend/statusicon.cpp:309
 #, c-format
 msgid "You have %d message"
 msgid_plural "You have %d messages"
@@ -2725,18 +2690,18 @@ msgstr[0] "Получено %d сообщение"
 msgstr[1] "Получено %d сообщения"
 msgstr[2] "Получено %d сообщений"
 
-#: ../lib/engine/gui/gtk-frontend/statusicon.cpp:382
-#: ../src/gui/main_window.cpp:1384
+#: ../lib/engine/gui/gtk-frontend/statusicon.cpp:378
+#: ../src/gui/main_window.cpp:1382
 msgid "Get help by reading the Ekiga manual"
 msgstr "Получить справку из руководства программы Ekiga"
 
-#: ../lib/engine/gui/gtk-frontend/statusicon.cpp:387
-#: ../src/gui/main_window.cpp:1389
+#: ../lib/engine/gui/gtk-frontend/statusicon.cpp:383
+#: ../src/gui/main_window.cpp:1387
 msgid "View information about Ekiga"
 msgstr "Показать информацию о программе Ekiga"
 
-#: ../lib/engine/gui/gtk-frontend/statusicon.cpp:394
-#: ../src/gui/main_window.cpp:1321
+#: ../lib/engine/gui/gtk-frontend/statusicon.cpp:390
+#: ../src/gui/main_window.cpp:1319
 msgid "Quit"
 msgstr "Выход"
 
@@ -2776,15 +2741,15 @@ msgstr "wxyz"
 msgid "Contributors:"
 msgstr "Разработчики:"
 
-#: ../lib/gui/gmcallbacks.c:80
+#: ../lib/gui/gmcallbacks.c:72
 msgid "Artwork:"
 msgstr "Дизайн:"
 
-#: ../lib/gui/gmcallbacks.c:88
+#: ../lib/gui/gmcallbacks.c:79
 msgid "See AUTHORS file for full credits"
 msgstr "Полный список авторов находится в файле AUTHORS"
 
-#: ../lib/gui/gmcallbacks.c:104
+#: ../lib/gui/gmcallbacks.c:95
 msgid ""
 "This program is free software; you can redistribute it and/or modify it "
 "under the terms of the GNU General Public License as published by the Free "
@@ -2796,7 +2761,7 @@ msgstr ""
 "опубликованной Free Software Foundation; либо версии 2 лицензии, либо (на "
 "ваше усмотрение) любой более поздней версии."
 
-#: ../lib/gui/gmcallbacks.c:108
+#: ../lib/gui/gmcallbacks.c:99
 msgid ""
 "This program is distributed in the hope that it will be useful, but WITHOUT "
 "ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or "
@@ -2813,7 +2778,7 @@ msgstr ""
 "напишите to the Free Software Foundation, Inc., 51 Franklin St, Fifth Floor, "
 "Boston, MA 02111-1307, USA."
 
-#: ../lib/gui/gmcallbacks.c:115
+#: ../lib/gui/gmcallbacks.c:106
 msgid ""
 "Ekiga is licensed under the GPL license and as a special exception, you have "
 "permission to link or otherwise combine this program with the programs OPAL, "
@@ -2830,7 +2795,7 @@ msgstr ""
 
 #. Translators: Please write translator credits here, and
 #. * separate names with \n
-#: ../lib/gui/gmcallbacks.c:127
+#: ../lib/gui/gmcallbacks.c:118
 msgid "translator-credits"
 msgstr ""
 "Валек Филиппов <frob@df.ru>\n"
@@ -2839,7 +2804,7 @@ msgstr ""
 "Василий Фаронов <qvvx@yandex.ru>\n"
 "Юрий Козлов <yuray@komyakino.ru>"
 
-#: ../lib/gui/gmcallbacks.c:132
+#: ../lib/gui/gmcallbacks.c:123
 msgid ""
 "Ekiga is full-featured SIP and H.323 compatible VoIP, IP-Telephony and "
 "Videoconferencing application that allows you to make audio and video calls "
@@ -2850,13 +2815,17 @@ msgstr ""
 "пользователями, использующими программное или аппаратное обеспечение SIP или "
 "H.323."
 
-#: ../lib/gui/gmcallbacks.c:205
+#: ../lib/gui/gmcallbacks.c:196
 msgid "Unable to open help file."
 msgstr "Не удалось открыть файл справки."
 
 #: ../lib/gui/gmdialog.c:327
 msgid "Do not show this dialog again"
 msgstr "Больше не показывать этот диалог"
+
+#: ../plugins/avahi/avahi-heap.cpp:129 ../plugins/avahi/avahi-heap.cpp:375
+msgid "Neighbours"
+msgstr "Соседи"
 
 #: ../plugins/evolution/evolution-book.cpp:75
 #: ../plugins/ldap/ldap-book.cpp:920
@@ -2867,10 +2836,10 @@ msgstr[0] "Найден %d пользователь"
 msgstr[1] "Найдено %d пользователя"
 msgstr[2] "Найдено %d пользователей"
 
-#: ../plugins/evolution/evolution-book.cpp:301
-#: ../plugins/loudmouth/loudmouth-heap-roster.cpp:71
-msgid "New _Contact"
-msgstr "Новый _контакт"
+#: ../plugins/evolution/evolution-book.cpp:343
+#| msgid "A_dd Contact"
+msgid "Add Contact"
+msgstr "Добавить контакт"
 
 #: ../plugins/evolution/evolution-book.cpp:348
 #: ../plugins/evolution/evolution-contact.cpp:333
@@ -2914,21 +2883,21 @@ msgstr "Вы действительно хотите удалить %s из ад
 msgid "Audio test"
 msgstr "Проверка звука"
 
-#: ../plugins/gstreamer/gst-audiooutput.cpp:223
+#: ../plugins/gstreamer/gst-audiooutput.cpp:226
 msgid "Silent"
 msgstr "Тишина"
 
-#: ../plugins/gstreamer/gst-videoinput.cpp:185
+#: ../plugins/gstreamer/gst-videoinput.cpp:190
 msgid "Video test"
 msgstr "Проверка видео"
 
 #. Translators: "Screencast" means the video input device will be your screen -- the other end will see your desktop
-#: ../plugins/gstreamer/gst-videoinput.cpp:337
 #: ../plugins/gstreamer/gst-videoinput.cpp:342
+#: ../plugins/gstreamer/gst-videoinput.cpp:347
 msgid "Crazy"
 msgstr "Случайные данные"
 
-#: ../plugins/gstreamer/gst-videoinput.cpp:342
+#: ../plugins/gstreamer/gst-videoinput.cpp:347
 msgid "Screencast"
 msgstr "Трансляция экрана"
 
@@ -3001,7 +2970,6 @@ msgid "Please edit the following fields"
 msgstr "Заполните следующие поля"
 
 #: ../plugins/ldap/ldap-book.cpp:944
-#| msgid "Book _Name:"
 msgid "Book _name:"
 msgstr "_Название книги:"
 
@@ -3026,12 +2994,10 @@ msgid "Subtree"
 msgstr "Поддерево"
 
 #: ../plugins/ldap/ldap-book.cpp:953
-#| msgid "Single Level"
 msgid "Single level"
 msgstr "Один уровень"
 
 #: ../plugins/ldap/ldap-book.cpp:954
-#| msgid "_Search Scope"
 msgid "_Search scope"
 msgstr "_Область поиска"
 
@@ -3042,12 +3008,10 @@ msgstr "_Область поиска"
 #. * most LDAP servers it's "CommonName".
 #.
 #: ../plugins/ldap/ldap-book.cpp:969
-#| msgid "_DisplayName Attribute:"
 msgid "_DisplayName attribute:"
 msgstr "Атрибут _DisplayName:"
 
 #: ../plugins/ldap/ldap-book.cpp:970
-#| msgid "Call _Attributes:"
 msgid "Call _attributes:"
 msgstr "Атрибуты _вызова:"
 
@@ -3056,7 +3020,6 @@ msgid "The field you are searching for"
 msgstr "Поле, которое вы ищете"
 
 #: ../plugins/ldap/ldap-book.cpp:972 ../plugins/ldap/ldap-book.cpp:974
-#| msgid "_Filter Template:"
 msgid "_Filter template:"
 msgstr "_Шаблон фильтрации:"
 
@@ -3095,7 +3058,6 @@ msgid "Use SASL"
 msgstr "Использовать SASL"
 
 #: ../plugins/ldap/ldap-book.cpp:1002
-#| msgid "SASL _Mechanism"
 msgid "SASL _mechanism"
 msgstr "_Механизм SASL"
 
@@ -3112,16 +3074,14 @@ msgid "Please provide a Server URI\n"
 msgstr "Укажите адрес сервера\n"
 
 #: ../plugins/ldap/ldap-book.cpp:1040
-#| msgid "Please provide a DisplayName Attribute\n"
 msgid "Please provide a DisplayName attribute\n"
 msgstr "Укажите атрибут DisplayName\n"
 
 #: ../plugins/ldap/ldap-book.cpp:1043
-#| msgid "Please provide a Call Attribute\n"
 msgid "Please provide a Call attribute\n"
 msgstr "Укажите атрибут вызова\n"
 
-#: ../plugins/ldap/ldap-book.cpp:1046
+#: ../plugins/ldap/ldap-book.cpp:1046 ../plugins/ldap/ldap-book.cpp:1082
 msgid "Invalid Server URI\n"
 msgstr "Неверный адрес сервера\n"
 
@@ -3141,41 +3101,61 @@ msgstr "Создать каталог LDAP"
 msgid "Ekiga.net Directory"
 msgstr "Каталог пользователей Ekiga.net"
 
+#: ../plugins/libnotify/libnotify-main.cpp:258
+msgid "Remote URI:"
+msgstr "Удалённый URI:"
+
+#: ../plugins/libnotify/libnotify-main.cpp:270
+msgid "Reject"
+msgstr "Отклонить"
+
+#: ../plugins/libnotify/libnotify-main.cpp:271
+msgid "Accept"
+msgstr "Принять"
+
 #: ../plugins/loudmouth/loudmouth-account.cpp:112
 #: ../plugins/loudmouth/loudmouth-account.cpp:159
-msgid "inactive"
-msgstr "неактивна"
+#| msgid "inactive"
+msgid "Inactive"
+msgstr "Неактивен"
 
 #: ../plugins/loudmouth/loudmouth-account.cpp:238
 #, c-format
-msgid "error connecting (%s)"
-msgstr "ошибка подключения (%s)"
+#| msgid "Could not connect to server"
+msgid "Could not connect (%s)"
+msgstr "Не удалось подключиться (%s)"
 
 #: ../plugins/loudmouth/loudmouth-account.cpp:244
-msgid "connecting"
-msgstr "выполняется подключение"
+#| msgid "connecting"
+msgid "Connecting..."
+msgstr "Подключение…"
 
 #: ../plugins/loudmouth/loudmouth-account.cpp:284
-msgid "authenticating"
-msgstr "выполняется аутентификация"
+#| msgid "authenticating"
+msgid "Authenticating..."
+msgstr "Проверка подлинности…"
 
 #. FIXME: can't we report better?
 #: ../plugins/loudmouth/loudmouth-account.cpp:294
-msgid "error connecting"
-msgstr "ошибка подключения"
+#| msgid "Could not connect to server"
+msgid "Could not connect"
+msgstr "Не удалось подключиться"
 
 #: ../plugins/loudmouth/loudmouth-account.cpp:304
-msgid "disconnected"
-msgstr "отключён"
+#| msgid "disconnected"
+msgid "Disconnected"
+msgstr "Отключён"
 
 #: ../plugins/loudmouth/loudmouth-account.cpp:314
-msgid "connected"
-msgstr "подключён"
+#| msgid "connected"
+msgid "Connected"
+msgstr "Подключён"
 
 #. FIXME: can't we report something better?
 #: ../plugins/loudmouth/loudmouth-account.cpp:320
-msgid "error authenticating loudmouth account"
-msgstr "ошибка аутентификации учётной записи loudmouth"
+#| msgid "Could not unregister"
+msgid "Could not authenticate"
+msgstr "Не удалось пройти проверку подлинности"
 
 #: ../plugins/loudmouth/loudmouth-account.cpp:350
 #: ../plugins/loudmouth/loudmouth-bank.cpp:127
@@ -3183,7 +3163,7 @@ msgid "Server:"
 msgstr "Сервер:"
 
 #: ../plugins/loudmouth/loudmouth-account.cpp:350
-#| msgid "The user name, e.g. jim"
+#: ../plugins/loudmouth/loudmouth-bank.cpp:127
 msgid "The server, e.g. jabber.org"
 msgstr "Сервер, например, jabber.org"
 
@@ -3202,6 +3182,7 @@ msgid "Resource:"
 msgstr "Ресурс:"
 
 #: ../plugins/loudmouth/loudmouth-account.cpp:358
+#: ../plugins/loudmouth/loudmouth-bank.cpp:128
 msgid ""
 "The resource, such as home or work, allowing to distinguish among several "
 "terminals registered to the same account; leave empty if you do not know "
@@ -3212,7 +3193,6 @@ msgstr ""
 "оставьте это поле пустым."
 
 #: ../plugins/loudmouth/loudmouth-bank.cpp:111
-#| msgid "_Add a jabber/XMPP account"
 msgid "_Add a Jabber/XMPP Account"
 msgstr "_Добавить учётную запись _Jabber/XMPP"
 
@@ -3230,12 +3210,10 @@ msgid "Open a group chat room"
 msgstr "Открыть комнату для группового чата"
 
 #: ../plugins/loudmouth/loudmouth-dialect.cpp:134
-#| msgid "Please provide a Server URI\n"
 msgid "Please provide a room name"
 msgstr "Укажите название комнаты"
 
 #: ../plugins/loudmouth/loudmouth-dialect.cpp:136
-#| msgid "Rename"
 msgid "Room name"
 msgstr "Название комнаты"
 
@@ -3281,53 +3259,53 @@ msgstr "решить позднее (также закрывает или отм
 msgid "Your answer is: "
 msgstr "Ваш ответ: "
 
-#: ../plugins/loudmouth/loudmouth-heap-roster.cpp:306
+#: ../plugins/loudmouth/loudmouth-heap-roster.cpp:334
 msgid "Add a roster element"
 msgstr "Добавить элемент в контакты"
 
-#: ../plugins/loudmouth/loudmouth-heap-roster.cpp:307
+#: ../plugins/loudmouth/loudmouth-heap-roster.cpp:335
 msgid "Please fill in this form to add a new element to the remote roster"
 msgstr ""
 "Заполните эту форму, чтобы создать новый элемент в контактах, расположенных "
 "удалённо"
 
-#: ../plugins/loudmouth/loudmouth-heap-roster.cpp:309
+#: ../plugins/loudmouth/loudmouth-heap-roster.cpp:337
 #: ../plugins/resource-list/rl-heap.cpp:470
 msgid "Identifier:"
 msgstr "Идентификатор:"
 
-#: ../plugins/loudmouth/loudmouth-heap-roster.cpp:309
+#: ../plugins/loudmouth/loudmouth-heap-roster.cpp:337
 msgid "identifier@server"
 msgstr "идентификатор@сервер"
 
-#: ../plugins/loudmouth/loudmouth-presentity.cpp:165
-#: ../plugins/loudmouth/loudmouth-presentity.cpp:171
-msgid "Ask him/her to see his/her status"
-msgstr "Попросить разрешения видеть его/её статус"
-
-#: ../plugins/loudmouth/loudmouth-presentity.cpp:169
-#: ../plugins/loudmouth/loudmouth-presentity.cpp:181
-msgid "Forbid him/her to see my status"
-msgstr "Запретить ему/ей видеть свой статус"
-
-#: ../plugins/loudmouth/loudmouth-presentity.cpp:173
-msgid "Ask him/her to see his/her status (pending)"
-msgstr "Попросить разрешения видеть его/её статус (ожидание ответа)"
-
-#: ../plugins/loudmouth/loudmouth-presentity.cpp:177
-#: ../plugins/loudmouth/loudmouth-presentity.cpp:182
-msgid "Stop getting his/her status"
-msgstr "Остановить получение его/её статуса"
-
-#: ../plugins/loudmouth/loudmouth-presentity.cpp:187
+#: ../plugins/loudmouth/loudmouth-presentity.cpp:162
 msgid "Start chat"
 msgstr "Начать беседу"
 
-#: ../plugins/loudmouth/loudmouth-presentity.cpp:190
+#: ../plugins/loudmouth/loudmouth-presentity.cpp:165
 msgid "Continue chat"
 msgstr "Продолжить беседу"
 
-#: ../plugins/loudmouth/loudmouth-presentity.cpp:281
+#: ../plugins/loudmouth/loudmouth-presentity.cpp:174
+#: ../plugins/loudmouth/loudmouth-presentity.cpp:180
+msgid "Ask him/her to see his/her status"
+msgstr "Попросить разрешения видеть его/её статус"
+
+#: ../plugins/loudmouth/loudmouth-presentity.cpp:178
+#: ../plugins/loudmouth/loudmouth-presentity.cpp:190
+msgid "Forbid him/her to see my status"
+msgstr "Запретить ему/ей видеть свой статус"
+
+#: ../plugins/loudmouth/loudmouth-presentity.cpp:182
+msgid "Ask him/her to see his/her status (pending)"
+msgstr "Попросить разрешения видеть его/её статус (ожидание ответа)"
+
+#: ../plugins/loudmouth/loudmouth-presentity.cpp:186
+#: ../plugins/loudmouth/loudmouth-presentity.cpp:191
+msgid "Stop getting his/her status"
+msgstr "Остановить получение его/её статуса"
+
+#: ../plugins/loudmouth/loudmouth-presentity.cpp:282
 msgid ""
 "Please fill in this form to change an existing element of the remote roster"
 msgstr ""
@@ -3335,12 +3313,13 @@ msgstr ""
 "расположенного удалённо"
 
 #: ../plugins/resource-list/rl-cluster.cpp:102
-msgid "New resource list"
-msgstr "Новый список адресатов"
+#| msgid "Add new resource-list"
+msgid "Add resource list"
+msgstr "Добавить список ресурсов"
 
 #: ../plugins/resource-list/rl-cluster.cpp:166
 msgid "Add new resource-list"
-msgstr "Создать новый список"
+msgstr "Добавить новый список ресурсов"
 
 #: ../plugins/resource-list/rl-cluster.cpp:167
 msgid ""
@@ -3699,146 +3678,128 @@ msgstr "Ekiga Call Out"
 msgid "Ekiga Configuration Assistant (%d of %d)"
 msgstr "Мастер первоначальной настройки (страница %d из %d)"
 
-#: ../src/gui/main.cpp:126
+#: ../src/gui/main.cpp:130
 msgid "Prints debug messages in the console (level between 1 and 8)"
 msgstr "Выводить отладочные сообщения на консоль (уровень между 1 и 8)"
 
-#: ../src/gui/main.cpp:131
+#: ../src/gui/main.cpp:135
 msgid "Makes Ekiga call the given URI"
 msgstr "Вызывать указанный URI с помощью Ekiga"
 
-#: ../src/gui/main_window.cpp:372
+#: ../src/gui/main_window.cpp:376
 msgid "Presence"
 msgstr "Присутствие"
 
-#: ../src/gui/main_window.cpp:379
+#: ../src/gui/main_window.cpp:383
 msgid "Addressbook"
 msgstr "Адресная книга"
 
-#: ../src/gui/main_window.cpp:408
+#: ../src/gui/main_window.cpp:412
 msgid "Unknown"
 msgstr "Неизвестный"
 
-#: ../src/gui/main_window.cpp:714
+#: ../src/gui/main_window.cpp:713
 #, c-format
 msgid "Missed call from %s"
 msgstr "Пропущенный вызов от %s"
 
-#: ../src/gui/main_window.cpp:748
+#: ../src/gui/main_window.cpp:747
 msgid "Error"
 msgstr "Ошибка"
 
-#: ../src/gui/main_window.cpp:1168
+#: ../src/gui/main_window.cpp:1176
+#| msgid ""
+#| "Enter a URI on the left, and click this button to place a call or to "
+#| "hangup"
 msgid ""
-"Enter a URI on the left, and click this button to place a call or to hangup"
-msgstr ""
-"Чтобы начать или завершить вызов, введите слева URI слева и нажмите эту "
-"кнопку"
+"Enter a URI on the left, and click this button to place a call or to hang up"
+msgstr "Введите URI и нажмите эту кнопку, чтобы совершить или отменить вызов"
 
-#: ../src/gui/main_window.cpp:1219 ../src/gui/main_window.cpp:1357
+#: ../src/gui/main_window.cpp:1227 ../src/gui/main_window.cpp:1355
 msgid "View the contacts list"
 msgstr "Показать список контактов"
 
-#: ../src/gui/main_window.cpp:1230 ../src/gui/main_window.cpp:1362
+#: ../src/gui/main_window.cpp:1238 ../src/gui/main_window.cpp:1360
 msgid "View the dialpad"
 msgstr "Показать номеронабиратель"
 
-#: ../src/gui/main_window.cpp:1241 ../src/gui/main_window.cpp:1367
+#: ../src/gui/main_window.cpp:1249 ../src/gui/main_window.cpp:1365
 msgid "View the call history"
 msgstr "Показать журнал вызовов"
 
-#: ../src/gui/main_window.cpp:1279
+#: ../src/gui/main_window.cpp:1287
 msgid "_Chat"
 msgstr "_Беседа"
 
-#: ../src/gui/main_window.cpp:1281
+#: ../src/gui/main_window.cpp:1289
 msgid "Co_ntact"
 msgstr "_Контакт"
 
-#: ../src/gui/main_window.cpp:1282
+#: ../src/gui/main_window.cpp:1290
 msgid "Act on selected contact"
 msgstr "Действия для выделенного контакта"
 
-#: ../src/gui/main_window.cpp:1286
+#: ../src/gui/main_window.cpp:1294
 msgid "Ca_ll a Number"
 msgstr "Вызвать _номер"
 
-#: ../src/gui/main_window.cpp:1286
+#: ../src/gui/main_window.cpp:1294
 msgid "Place a new call"
 msgstr "Сделать новый вызов"
 
-#: ../src/gui/main_window.cpp:1292
-msgid "A_dd Contact"
-msgstr "До_бавить контакт"
-
-#: ../src/gui/main_window.cpp:1292
+#: ../src/gui/main_window.cpp:1300
 msgid "Add a contact to the roster"
 msgstr "Добавить контакт в список"
 
-#: ../src/gui/main_window.cpp:1297
+#: ../src/gui/main_window.cpp:1305
 msgid "Find contacts"
 msgstr "Найти контакты"
 
-#. FIXME: that isn't a very good way to do things
-#: ../src/gui/main_window.cpp:1306
-msgid "Other"
-msgstr "Другое"
-
-#: ../src/gui/main_window.cpp:1307
-msgid "Other possible actions"
-msgstr "Другие возможные действия"
-
-#: ../src/gui/main_window.cpp:1327
+#: ../src/gui/main_window.cpp:1325
 msgid "_Configuration Assistant"
 msgstr "Мастер настр_ойки"
 
-#: ../src/gui/main_window.cpp:1328
+#: ../src/gui/main_window.cpp:1326
 msgid "Run the configuration assistant"
 msgstr "Запустить мастер первоначальной настройки"
 
-#: ../src/gui/main_window.cpp:1336
+#: ../src/gui/main_window.cpp:1334
 msgid "Edit your accounts"
 msgstr "Правка вашей учётной записи"
 
-#: ../src/gui/main_window.cpp:1342
+#: ../src/gui/main_window.cpp:1340
 msgid "Change your preferences"
 msgstr "Изменить параметры пользователя"
 
-#: ../src/gui/main_window.cpp:1349
-#| msgid "Video preview"
+#: ../src/gui/main_window.cpp:1347
 msgid "_Video Preview"
 msgstr "_Образец видео"
 
-#: ../src/gui/main_window.cpp:1357
+#: ../src/gui/main_window.cpp:1355
 msgid "Con_tacts"
 msgstr "_Контакты"
 
-#: ../src/gui/main_window.cpp:1362
+#: ../src/gui/main_window.cpp:1360
 msgid "_Dialpad"
 msgstr "_Номеронабиратель"
 
-#: ../src/gui/main_window.cpp:1367
+#: ../src/gui/main_window.cpp:1365
 msgid "_Call History"
 msgstr "История в_ызовов"
 
-#: ../src/gui/main_window.cpp:1375
-#| msgid "Show offline _contacts"
+#: ../src/gui/main_window.cpp:1373
 msgid "Show Offline _Contacts"
 msgstr "Показывать контакты _вне сети"
 
-#: ../src/gui/main_window.cpp:1439
-msgid "Contacts"
-msgstr "Контакты"
-
-#: ../src/gui/main_window.cpp:1468
+#: ../src/gui/main_window.cpp:1466
 msgid "Dialpad"
 msgstr "Номеронабиратель"
 
-#: ../src/gui/main_window.cpp:1486
+#: ../src/gui/main_window.cpp:1484
 msgid "Call history"
 msgstr "История вызовов"
 
-#: ../src/gui/main_window.cpp:1498
+#: ../src/gui/main_window.cpp:1496
 msgid "Ekiga"
 msgstr "Ekiga"
 
@@ -3851,7 +3812,6 @@ msgid "Away"
 msgstr "Отошёл"
 
 #: ../src/gui/statusmenu.cpp:89
-#| msgid "Busy Here"
 msgid "Busy"
 msgstr "Занят"
 
@@ -3875,6 +3835,38 @@ msgstr "Удалить собственное сообщение:"
 #: ../src/gui/statusmenu.cpp:685
 msgid "Define a custom message:"
 msgstr "Определить собственное соощение:"
+
+#~| msgid "New _Contact"
+#~ msgid "_New Contact"
+#~ msgstr "_Создать контакт"
+
+#~ msgid "Local roster"
+#~ msgstr "Локальные контакты"
+
+#~| msgid "Hold the current call"
+#~ msgid "Hangup the current call"
+#~ msgstr "Завершить текущий вызов"
+
+#~ msgid "New _Contact"
+#~ msgstr "Новый _контакт"
+
+#~ msgid "error connecting (%s)"
+#~ msgstr "ошибка подключения (%s)"
+
+#~ msgid "error connecting"
+#~ msgstr "ошибка подключения"
+
+#~ msgid "error authenticating loudmouth account"
+#~ msgstr "ошибка аутентификации учётной записи loudmouth"
+
+#~ msgid "New resource list"
+#~ msgstr "Новый список адресатов"
+
+#~ msgid "Other"
+#~ msgstr "Другое"
+
+#~ msgid "Other possible actions"
+#~ msgstr "Другие возможные действия"
 
 #~ msgid ""
 #~ "If enabled, Ekiga will start hidden provided that the notification area "
