@@ -7,8 +7,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: ekiga master\n"
 "Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?product=ekiga&keywords=I18N+L10N&component=general\n"
-"POT-Creation-Date: 2012-11-29 22:50+0000\n"
-"PO-Revision-Date: 2012-11-30 21:59+0300\n"
+"POT-Creation-Date: 2012-12-13 11:31+0000\n"
+"PO-Revision-Date: 2012-12-20 22:35+0300\n"
 "Last-Translator: Aurimas Černius <aurisc4@gmail.com>\n"
 "Language-Team: Lithuanian <gnome-lt@lists.akl.lt>\n"
 "Language: lt\n"
@@ -91,8 +91,8 @@ msgid "Video preview"
 msgstr "Vaizdo peržiūra"
 
 #: ../ekiga.schemas.in.in.h:14
-#: ../src/gui/main_window.cpp:1201
-#: ../src/gui/main_window.cpp:1341
+#: ../src/gui/main_window.cpp:1208
+#: ../src/gui/main_window.cpp:1348
 msgid "Display images from your camera device"
 msgstr "Rodyti vaizdus iš jūsų kameros įrenginio"
 
@@ -591,7 +591,7 @@ msgid "List of folded groups in the roster"
 msgstr "Sąraše sutrauktų grupių sąrašas"
 
 #: ../ekiga.schemas.in.in.h:135
-#: ../src/gui/main_window.cpp:1366
+#: ../src/gui/main_window.cpp:1373
 msgid "Show offline contacts"
 msgstr "Rodyti atsijungusius kontaktus"
 
@@ -681,9 +681,11 @@ msgstr "Praleisti"
 
 #: ../lib/engine/components/local-roster/local-cluster.cpp:82
 #: ../lib/engine/components/local-roster/local-heap.cpp:118
-#: ../plugins/evolution/evolution-book.cpp:343
-msgid "_New Contact"
-msgstr "_Naujas kontaktas"
+#: ../plugins/evolution/evolution-book.cpp:301
+#: ../plugins/loudmouth/loudmouth-heap-roster.cpp:71
+#: ../src/gui/main_window.cpp:1300
+msgid "A_dd Contact"
+msgstr "_Pridėti kontaktą"
 
 #: ../lib/engine/components/local-roster/local-heap.cpp:94
 msgid "Services"
@@ -702,7 +704,7 @@ msgid "Call back test"
 msgstr "Perskambinimo bandymas"
 
 #: ../lib/engine/components/local-roster/local-heap.cpp:111
-#: ../src/gui/main_window.cpp:1430
+#: ../src/gui/main_window.cpp:1437
 msgid "Contacts"
 msgstr "Kontaktai"
 
@@ -835,7 +837,7 @@ msgstr "Nepavadinta"
 #: ../plugins/evolution/evolution-contact.cpp:228
 #: ../plugins/loudmouth/loudmouth-presentity.cpp:169
 #: ../plugins/resource-list/rl-presentity.cpp:212
-#: ../src/gui/main_window.cpp:1316
+#: ../src/gui/main_window.cpp:1323
 msgid "_Edit"
 msgstr "_Keisti"
 
@@ -871,14 +873,14 @@ msgstr "Pasirinkite grupes:"
 
 #: ../lib/engine/components/opal/h323-endpoint.cpp:135
 #: ../lib/engine/components/opal/opal-call.cpp:703
-#: ../lib/engine/components/opal/sip-endpoint.cpp:249
-#: ../lib/engine/components/opal/sip-endpoint.cpp:253
+#: ../lib/engine/components/opal/sip-endpoint.cpp:237
+#: ../lib/engine/components/opal/sip-endpoint.cpp:241
 msgid "Call"
 msgstr "Skambinti"
 
 #: ../lib/engine/components/opal/h323-endpoint.cpp:138
-#: ../lib/engine/components/opal/sip-endpoint.cpp:250
-#: ../lib/engine/components/opal/sip-endpoint.cpp:254
+#: ../lib/engine/components/opal/sip-endpoint.cpp:238
+#: ../lib/engine/components/opal/sip-endpoint.cpp:242
 #: ../lib/engine/gui/gtk-frontend/call-window.cpp:2178
 msgid "Transfer"
 msgstr "Nukreipti"
@@ -893,13 +895,13 @@ msgid "Bad username/password"
 msgstr "Netinkamas naudotojo vardas / slaptažodis"
 
 #: ../lib/engine/components/opal/h323-endpoint.cpp:346
-#: ../lib/engine/components/opal/sip-endpoint.cpp:598
+#: ../lib/engine/components/opal/sip-endpoint.cpp:586
 msgid "Transport error"
 msgstr "Transportavimo klaida"
 
 #: ../lib/engine/components/opal/h323-endpoint.cpp:357
 #: ../lib/engine/components/opal/h323-endpoint.cpp:362
-#: ../lib/engine/components/opal/sip-endpoint.cpp:811
+#: ../lib/engine/components/opal/sip-endpoint.cpp:799
 msgid "Failed"
 msgstr "Nepavyko"
 
@@ -1255,7 +1257,7 @@ msgid "Abnormal call termination"
 msgstr "Nenormalus skambučio nutraukimas"
 
 #: ../lib/engine/components/opal/opal-call.cpp:444
-#: ../src/gui/main_window.cpp:524
+#: ../src/gui/main_window.cpp:531
 msgid "Could not connect to remote host"
 msgstr "Nepavyko prisijungti prie nutolusio kompiuterio"
 
@@ -1305,7 +1307,7 @@ msgid "User is not available"
 msgstr "Naudotojas neprieinamas"
 
 #: ../lib/engine/components/opal/opal-call.cpp:487
-#: ../lib/engine/components/opal/sip-endpoint.cpp:776
+#: ../lib/engine/components/opal/sip-endpoint.cpp:764
 msgid "Service unavailable"
 msgstr "Tarnyba nepalaikoma"
 
@@ -1331,105 +1333,105 @@ msgstr ""
 "\n"
 "Instrukcijas rasite adresu http://wiki.ekiga.org/index.php/Enable_port_forwarding_manually"
 
-#: ../lib/engine/components/opal/sip-endpoint.cpp:274
-#: ../lib/engine/components/opal/sip-endpoint.cpp:276
+#: ../lib/engine/components/opal/sip-endpoint.cpp:262
+#: ../lib/engine/components/opal/sip-endpoint.cpp:264
 msgid "Message"
 msgstr "Žinutė"
 
-#: ../lib/engine/components/opal/sip-endpoint.cpp:594
+#: ../lib/engine/components/opal/sip-endpoint.cpp:582
 msgid "Illegal status code"
 msgstr "Netinkamas būsenos kodas"
 
-#: ../lib/engine/components/opal/sip-endpoint.cpp:602
+#: ../lib/engine/components/opal/sip-endpoint.cpp:590
 msgid "Invalid address"
 msgstr "Netinkamas adresas"
 
 #. Translators: Host of the remote party is offline, this should
 #. * appear when the remote host does not reply in an acceptable time
-#: ../lib/engine/components/opal/sip-endpoint.cpp:608
+#: ../lib/engine/components/opal/sip-endpoint.cpp:596
 msgid "Remote party host is offline"
 msgstr "Nutolusio adresato kompiuteris atsijungęs"
 
 #. Translators: the following strings are answers from the SIP server
 #. * when the packet it receives has an error, see
 #. * http://www.ietf.org/rfc/rfc3261.txt, chapter 21 for more information
-#: ../lib/engine/components/opal/sip-endpoint.cpp:624
+#: ../lib/engine/components/opal/sip-endpoint.cpp:612
 msgid "Multiple choices"
 msgstr "Keletas pasirinkimų"
 
-#: ../lib/engine/components/opal/sip-endpoint.cpp:628
+#: ../lib/engine/components/opal/sip-endpoint.cpp:616
 msgid "Moved permanently"
 msgstr "Perkelta visam laikui"
 
-#: ../lib/engine/components/opal/sip-endpoint.cpp:632
+#: ../lib/engine/components/opal/sip-endpoint.cpp:620
 msgid "Moved temporarily"
 msgstr "Laikinai perkelta"
 
-#: ../lib/engine/components/opal/sip-endpoint.cpp:636
+#: ../lib/engine/components/opal/sip-endpoint.cpp:624
 msgid "Use proxy"
 msgstr "Naudoti įgaliotąjį serverį"
 
-#: ../lib/engine/components/opal/sip-endpoint.cpp:640
+#: ../lib/engine/components/opal/sip-endpoint.cpp:628
 msgid "Alternative service"
 msgstr "Alternatyvi tarnyba."
 
-#: ../lib/engine/components/opal/sip-endpoint.cpp:644
+#: ../lib/engine/components/opal/sip-endpoint.cpp:632
 msgid "Bad request"
 msgstr "Bloga užklausa"
 
-#: ../lib/engine/components/opal/sip-endpoint.cpp:648
+#: ../lib/engine/components/opal/sip-endpoint.cpp:636
 msgid "Unauthorized"
 msgstr "Nenustatyta tapatybė"
 
-#: ../lib/engine/components/opal/sip-endpoint.cpp:652
+#: ../lib/engine/components/opal/sip-endpoint.cpp:640
 msgid "Payment required"
 msgstr "Būtinas apmokėjimas"
 
-#: ../lib/engine/components/opal/sip-endpoint.cpp:656
+#: ../lib/engine/components/opal/sip-endpoint.cpp:644
 msgid "Forbidden, please check that username and password are correct"
 msgstr "Uždrausta, patikrinkite, ar teisingas naudotojo vardas ir slaptažodis"
 
-#: ../lib/engine/components/opal/sip-endpoint.cpp:660
+#: ../lib/engine/components/opal/sip-endpoint.cpp:648
 msgid "Not found"
 msgstr "Nerasta"
 
-#: ../lib/engine/components/opal/sip-endpoint.cpp:664
+#: ../lib/engine/components/opal/sip-endpoint.cpp:652
 msgid "Method not allowed"
 msgstr "Neleistinas metodas"
 
-#: ../lib/engine/components/opal/sip-endpoint.cpp:668
+#: ../lib/engine/components/opal/sip-endpoint.cpp:656
 msgid "Not acceptable"
 msgstr "Nepriimtina"
 
-#: ../lib/engine/components/opal/sip-endpoint.cpp:672
+#: ../lib/engine/components/opal/sip-endpoint.cpp:660
 msgid "Proxy authentication required"
 msgstr "Reikia nustatyti tapatybę tarpiniame serveryje"
 
-#: ../lib/engine/components/opal/sip-endpoint.cpp:676
+#: ../lib/engine/components/opal/sip-endpoint.cpp:664
 msgid "Timeout"
 msgstr "Baigėsi skirtas laikas"
 
-#: ../lib/engine/components/opal/sip-endpoint.cpp:680
+#: ../lib/engine/components/opal/sip-endpoint.cpp:668
 msgid "Conflict"
 msgstr "Konfliktas"
 
-#: ../lib/engine/components/opal/sip-endpoint.cpp:684
+#: ../lib/engine/components/opal/sip-endpoint.cpp:672
 msgid "Length required"
 msgstr "Reikia ilgio"
 
-#: ../lib/engine/components/opal/sip-endpoint.cpp:688
+#: ../lib/engine/components/opal/sip-endpoint.cpp:676
 msgid "Request entity too big"
 msgstr "Užklausos esybė per didelė"
 
-#: ../lib/engine/components/opal/sip-endpoint.cpp:692
+#: ../lib/engine/components/opal/sip-endpoint.cpp:680
 msgid "Request URI too long"
 msgstr "Užklausos URI per ilgas"
 
-#: ../lib/engine/components/opal/sip-endpoint.cpp:696
+#: ../lib/engine/components/opal/sip-endpoint.cpp:684
 msgid "Unsupported media type"
 msgstr "Netinkamas medijos tipas"
 
-#: ../lib/engine/components/opal/sip-endpoint.cpp:700
+#: ../lib/engine/components/opal/sip-endpoint.cpp:688
 msgid "Unsupported URI scheme"
 msgstr "Netinkama URI schema"
 
@@ -1437,128 +1439,128 @@ msgstr "Netinkama URI schema"
 #. * Here extension is a specific "phone number", see
 #. * http://en.wikipedia.org/wiki/Extension_(telephone)
 #. * for more information
-#: ../lib/engine/components/opal/sip-endpoint.cpp:708
+#: ../lib/engine/components/opal/sip-endpoint.cpp:696
 msgid "Bad extension"
 msgstr "Netinkamas plėtinys"
 
-#: ../lib/engine/components/opal/sip-endpoint.cpp:712
+#: ../lib/engine/components/opal/sip-endpoint.cpp:700
 msgid "Extension required"
 msgstr "Reikia plėtinio"
 
-#: ../lib/engine/components/opal/sip-endpoint.cpp:716
+#: ../lib/engine/components/opal/sip-endpoint.cpp:704
 msgid "Interval too brief"
 msgstr "Intervalas per mažas"
 
-#: ../lib/engine/components/opal/sip-endpoint.cpp:720
+#: ../lib/engine/components/opal/sip-endpoint.cpp:708
 msgid "Temporarily unavailable"
 msgstr "Laikinai neprieinama"
 
-#: ../lib/engine/components/opal/sip-endpoint.cpp:724
+#: ../lib/engine/components/opal/sip-endpoint.cpp:712
 msgid "Loop detected"
 msgstr "Aptikta kilpa"
 
-#: ../lib/engine/components/opal/sip-endpoint.cpp:728
+#: ../lib/engine/components/opal/sip-endpoint.cpp:716
 msgid "Too many hops"
 msgstr "Per daug tarpinių punktų"
 
-#: ../lib/engine/components/opal/sip-endpoint.cpp:732
+#: ../lib/engine/components/opal/sip-endpoint.cpp:720
 msgid "Address incomplete"
 msgstr "Nevisas adresas"
 
-#: ../lib/engine/components/opal/sip-endpoint.cpp:736
+#: ../lib/engine/components/opal/sip-endpoint.cpp:724
 msgid "Ambiguous"
 msgstr "Daugiaprasmis"
 
-#: ../lib/engine/components/opal/sip-endpoint.cpp:740
+#: ../lib/engine/components/opal/sip-endpoint.cpp:728
 msgid "Busy Here"
 msgstr "Čia užimtas"
 
-#: ../lib/engine/components/opal/sip-endpoint.cpp:744
+#: ../lib/engine/components/opal/sip-endpoint.cpp:732
 msgid "Request terminated"
 msgstr "Užklausa nutraukta"
 
-#: ../lib/engine/components/opal/sip-endpoint.cpp:748
+#: ../lib/engine/components/opal/sip-endpoint.cpp:736
 msgid "Not acceptable here"
 msgstr "Čia nepriimtina"
 
-#: ../lib/engine/components/opal/sip-endpoint.cpp:752
+#: ../lib/engine/components/opal/sip-endpoint.cpp:740
 msgid "Bad event"
 msgstr "Netinkamas įvykis"
 
-#: ../lib/engine/components/opal/sip-endpoint.cpp:756
+#: ../lib/engine/components/opal/sip-endpoint.cpp:744
 msgid "Request pending"
 msgstr "Laukiama užklausos"
 
-#: ../lib/engine/components/opal/sip-endpoint.cpp:760
+#: ../lib/engine/components/opal/sip-endpoint.cpp:748
 msgid "Undecipherable"
 msgstr "Neiššifruojama"
 
-#: ../lib/engine/components/opal/sip-endpoint.cpp:764
+#: ../lib/engine/components/opal/sip-endpoint.cpp:752
 msgid "Internal server error"
 msgstr "Vidinį serverio klaida"
 
-#: ../lib/engine/components/opal/sip-endpoint.cpp:768
+#: ../lib/engine/components/opal/sip-endpoint.cpp:756
 msgid "Not implemented"
 msgstr "Neįgyvendinta"
 
-#: ../lib/engine/components/opal/sip-endpoint.cpp:772
+#: ../lib/engine/components/opal/sip-endpoint.cpp:760
 msgid "Bad gateway"
 msgstr "Netinkamas šliuzas"
 
-#: ../lib/engine/components/opal/sip-endpoint.cpp:780
+#: ../lib/engine/components/opal/sip-endpoint.cpp:768
 msgid "Server timeout"
 msgstr "Serverio laukimo laikas"
 
-#: ../lib/engine/components/opal/sip-endpoint.cpp:784
+#: ../lib/engine/components/opal/sip-endpoint.cpp:772
 msgid "SIP version not supported"
 msgstr "SIP versija nepalaikoma"
 
-#: ../lib/engine/components/opal/sip-endpoint.cpp:788
+#: ../lib/engine/components/opal/sip-endpoint.cpp:776
 msgid "Message too large"
 msgstr "Pranešimas per didelis"
 
-#: ../lib/engine/components/opal/sip-endpoint.cpp:792
+#: ../lib/engine/components/opal/sip-endpoint.cpp:780
 msgid "Busy everywhere"
 msgstr "Visur užimta"
 
-#: ../lib/engine/components/opal/sip-endpoint.cpp:796
+#: ../lib/engine/components/opal/sip-endpoint.cpp:784
 msgid "Decline"
 msgstr "Atsisakyti"
 
-#: ../lib/engine/components/opal/sip-endpoint.cpp:800
+#: ../lib/engine/components/opal/sip-endpoint.cpp:788
 msgid "Does not exist anymore"
 msgstr "Nebeegzistuoja"
 
-#: ../lib/engine/components/opal/sip-endpoint.cpp:804
+#: ../lib/engine/components/opal/sip-endpoint.cpp:792
 msgid "Globally not acceptable"
 msgstr "Visuotinai nepriimtina"
 
-#: ../lib/engine/components/opal/sip-endpoint.cpp:914
+#: ../lib/engine/components/opal/sip-endpoint.cpp:902
 msgid "Could not send message: "
 msgstr "Nepavyko išsiųsti žinutės:"
 
-#: ../lib/engine/components/opal/sip-endpoint.cpp:916
+#: ../lib/engine/components/opal/sip-endpoint.cpp:904
 msgid "user offline"
 msgstr "naudotojas atsijungęs"
 
 #. Ignore
-#: ../lib/engine/components/opal/sip-endpoint.cpp:955
+#: ../lib/engine/components/opal/sip-endpoint.cpp:943
 #: ../plugins/libnotify/libnotify-main.cpp:257
 #, c-format
 msgid "Incoming call from %s"
 msgstr "Gaunamas skambutis iš %s"
 
-#: ../lib/engine/components/opal/sip-endpoint.cpp:957
+#: ../lib/engine/components/opal/sip-endpoint.cpp:945
 #, c-format
 msgid "Incoming call"
 msgstr "Gaunamas skambutis"
 
-#: ../lib/engine/components/opal/sip-endpoint.cpp:963
+#: ../lib/engine/components/opal/sip-endpoint.cpp:951
 #, c-format
 msgid "In a call with %s"
 msgstr "Skambutyje su %s"
 
-#: ../lib/engine/components/opal/sip-endpoint.cpp:965
+#: ../lib/engine/components/opal/sip-endpoint.cpp:953
 #, c-format
 msgid "In a call"
 msgstr "Skambutyje"
@@ -1593,12 +1595,12 @@ msgid "Accounts"
 msgstr "Paskyros"
 
 #: ../lib/engine/gui/gtk-frontend/accounts-window.cpp:584
-#: ../src/gui/main_window.cpp:1326
+#: ../src/gui/main_window.cpp:1333
 msgid "_Accounts"
 msgstr "_Paskyros"
 
 #: ../lib/engine/gui/gtk-frontend/accounts-window.cpp:588
-#: ../src/gui/main_window.cpp:1372
+#: ../src/gui/main_window.cpp:1379
 msgid "_Help"
 msgstr "_Žinynas"
 
@@ -1611,7 +1613,7 @@ msgid "Address Book"
 msgstr "Adresų knyga"
 
 #: ../lib/engine/gui/gtk-frontend/addressbook-window.cpp:646
-#: ../src/gui/main_window.cpp:1297
+#: ../src/gui/main_window.cpp:1304
 msgid "Address _Book"
 msgstr "Adresų _knyga"
 
@@ -1736,7 +1738,7 @@ msgstr "Skambinama %s..."
 #. %s is the SIP/H.323 address of the remote user, this text is shown
 #. below video during a call
 #: ../lib/engine/gui/gtk-frontend/call-window.cpp:1160
-#: ../src/gui/main_window.cpp:646
+#: ../src/gui/main_window.cpp:653
 #, c-format
 msgid "Connected with %s"
 msgstr "Prisijungti prie %s"
@@ -1881,11 +1883,13 @@ msgid "Pick up the current call"
 msgstr "Atsiliepti į dabartinį skambutį"
 
 #: ../lib/engine/gui/gtk-frontend/call-window.cpp:1990
-msgid "_Hangup"
+#| msgid "_Hangup"
+msgid "_Hang up"
 msgstr "_Padėti ragelį"
 
 #: ../lib/engine/gui/gtk-frontend/call-window.cpp:1990
-msgid "Hangup the current call"
+#: ../lib/engine/gui/gtk-frontend/call-window.cpp:2419
+msgid "Hang up the current call"
 msgstr "Sustabdyti dabartinį skambutį"
 
 #: ../lib/engine/gui/gtk-frontend/call-window.cpp:1996
@@ -1910,12 +1914,12 @@ msgid "Suspend or resume the video transmission"
 msgstr "Sulaikyti / tęsti vaizdo perdavimą"
 
 #: ../lib/engine/gui/gtk-frontend/call-window.cpp:2021
-#: ../src/gui/main_window.cpp:1305
+#: ../src/gui/main_window.cpp:1312
 msgid "Close the Ekiga window"
 msgstr "Užverti Ekiga langą"
 
 #: ../lib/engine/gui/gtk-frontend/call-window.cpp:2026
-#: ../src/gui/main_window.cpp:1338
+#: ../src/gui/main_window.cpp:1345
 msgid "_View"
 msgstr "R_odymas"
 
@@ -1944,12 +1948,10 @@ msgid "Both video images"
 msgstr "Abu vaizdo paveikslėliai"
 
 #: ../lib/engine/gui/gtk-frontend/call-window.cpp:2043
-#| msgid "Extended Video Roles"
 msgid "_Extended Video"
 msgstr "_Išplėstinis vaizdas"
 
 #: ../lib/engine/gui/gtk-frontend/call-window.cpp:2044
-#| msgid "Extended Video Roles"
 msgid "Extended Video Images"
 msgstr "Išplėstiniai vaizdo paveikslėliai"
 
@@ -1976,10 +1978,6 @@ msgstr "Rodyti visame ekrane"
 #: ../lib/engine/gui/gtk-frontend/call-window.cpp:2177
 msgid "Transfer call to:"
 msgstr "Nukreipti skambutį į:"
-
-#: ../lib/engine/gui/gtk-frontend/call-window.cpp:2419
-msgid "Hang up the current call"
-msgstr "Sustabdyti dabartinį skambutį"
 
 #: ../lib/engine/gui/gtk-frontend/call-window.cpp:2447
 msgid "Change the volume of your soundcard"
@@ -2413,17 +2411,17 @@ msgstr[1] "Turite %d žinutes"
 msgstr[2] "Turite %d žinučių"
 
 #: ../lib/engine/gui/gtk-frontend/statusicon.cpp:378
-#: ../src/gui/main_window.cpp:1375
+#: ../src/gui/main_window.cpp:1382
 msgid "Get help by reading the Ekiga manual"
 msgstr "Gaukite pagalbą skaitydami Ekiga žinyną"
 
 #: ../lib/engine/gui/gtk-frontend/statusicon.cpp:383
-#: ../src/gui/main_window.cpp:1380
+#: ../src/gui/main_window.cpp:1387
 msgid "View information about Ekiga"
 msgstr "Parodyti informaciją apie Ekiga"
 
 #: ../lib/engine/gui/gtk-frontend/statusicon.cpp:390
-#: ../src/gui/main_window.cpp:1312
+#: ../src/gui/main_window.cpp:1319
 msgid "Quit"
 msgstr "Išeiti"
 
@@ -2519,10 +2517,10 @@ msgstr[0] "Rastas %d naudotojas"
 msgstr[1] "Rasti %d naudotojai"
 msgstr[2] "Rasta %d naudotojų"
 
-#: ../plugins/evolution/evolution-book.cpp:301
-#: ../plugins/loudmouth/loudmouth-heap-roster.cpp:71
-msgid "New _Contact"
-msgstr "Naujas _kontaktas"
+#: ../plugins/evolution/evolution-book.cpp:343
+#| msgid "A_dd Contact"
+msgid "Add Contact"
+msgstr "Pridėti kontaktą"
 
 #: ../plugins/evolution/evolution-book.cpp:348
 #: ../plugins/evolution/evolution-contact.cpp:333
@@ -2803,45 +2801,37 @@ msgstr "Priimti"
 
 #: ../plugins/loudmouth/loudmouth-account.cpp:112
 #: ../plugins/loudmouth/loudmouth-account.cpp:159
-#| msgid "inactive"
 msgid "Inactive"
 msgstr "Neaktyvus"
 
 #: ../plugins/loudmouth/loudmouth-account.cpp:238
 #, c-format
-#| msgid "Could not connect to server"
 msgid "Could not connect (%s)"
 msgstr "Nepavyko prisijungti (%s)"
 
 #: ../plugins/loudmouth/loudmouth-account.cpp:244
-#| msgid "connecting"
 msgid "Connecting..."
 msgstr "Jungiamasi..."
 
 #: ../plugins/loudmouth/loudmouth-account.cpp:284
-#| msgid "authenticating"
 msgid "Authenticating..."
 msgstr "Patvirtinama tapatybė..."
 
 #. FIXME: can't we report better?
 #: ../plugins/loudmouth/loudmouth-account.cpp:294
-#| msgid "Could not connect to server"
 msgid "Could not connect"
 msgstr "Nepavyko prisijungti"
 
 #: ../plugins/loudmouth/loudmouth-account.cpp:304
-#| msgid "disconnected"
 msgid "Disconnected"
 msgstr "Atsijungta"
 
 #: ../plugins/loudmouth/loudmouth-account.cpp:314
-#| msgid "connected"
 msgid "Connected"
 msgstr "Prisijungta"
 
 #. FIXME: can't we report something better?
 #: ../plugins/loudmouth/loudmouth-account.cpp:320
-#| msgid "Could not unregister"
 msgid "Could not authenticate"
 msgstr "Nepavyko patvirtinti tapatybės"
 
@@ -2989,8 +2979,9 @@ msgid "Please fill in this form to change an existing element of the remote rost
 msgstr "Užpildykite šią formą norėdami pakeisti nuotoliniame sąraše esantį elementą"
 
 #: ../plugins/resource-list/rl-cluster.cpp:102
-msgid "New resource list"
-msgstr "Naujas išteklių sąrašas"
+#| msgid "Add new resource-list"
+msgid "Add resource list"
+msgstr "Pridėti išteklių sąrašą"
 
 #: ../plugins/resource-list/rl-cluster.cpp:166
 msgid "Add new resource-list"
@@ -3299,123 +3290,122 @@ msgstr "Išveda derinimo pranešimus terminale (lygis nuo 1 iki 8)"
 msgid "Makes Ekiga call the given URI"
 msgstr "Ekiga skambina nurodytu URL"
 
-#: ../src/gui/main_window.cpp:369
+#: ../src/gui/main_window.cpp:376
 msgid "Presence"
 msgstr "Būsena"
 
-#: ../src/gui/main_window.cpp:376
+#: ../src/gui/main_window.cpp:383
 msgid "Addressbook"
 msgstr "Adresų knyga"
 
-#: ../src/gui/main_window.cpp:405
+#: ../src/gui/main_window.cpp:412
 msgid "Unknown"
 msgstr "Nežinoma"
 
-#: ../src/gui/main_window.cpp:706
+#: ../src/gui/main_window.cpp:713
 #, c-format
 msgid "Missed call from %s"
 msgstr "Praleistas %s skambutis"
 
-#: ../src/gui/main_window.cpp:740
+#: ../src/gui/main_window.cpp:747
 msgid "Error"
 msgstr "Klaida"
 
-#: ../src/gui/main_window.cpp:1169
-msgid "Enter a URI on the left, and click this button to place a call or to hangup"
+#: ../src/gui/main_window.cpp:1176
+#| msgid ""
+#| "Enter a URI on the left, and click this button to place a call or to "
+#| "hangup"
+msgid "Enter a URI on the left, and click this button to place a call or to hang up"
 msgstr "Kairėje įveskite URL ir spustelkite šį mygtuką norėdami paskambinti ar nutraukti pokalbį"
 
-#: ../src/gui/main_window.cpp:1220
-#: ../src/gui/main_window.cpp:1348
+#: ../src/gui/main_window.cpp:1227
+#: ../src/gui/main_window.cpp:1355
 msgid "View the contacts list"
 msgstr "Rodyti kontaktų sąrašą"
 
-#: ../src/gui/main_window.cpp:1231
-#: ../src/gui/main_window.cpp:1353
+#: ../src/gui/main_window.cpp:1238
+#: ../src/gui/main_window.cpp:1360
 msgid "View the dialpad"
 msgstr "Rodyti numerių rinkiklį"
 
-#: ../src/gui/main_window.cpp:1242
-#: ../src/gui/main_window.cpp:1358
+#: ../src/gui/main_window.cpp:1249
+#: ../src/gui/main_window.cpp:1365
 msgid "View the call history"
 msgstr "Rodyti skambučių restrospektyvą"
 
-#: ../src/gui/main_window.cpp:1280
+#: ../src/gui/main_window.cpp:1287
 msgid "_Chat"
 msgstr "_Plepėti"
 
-#: ../src/gui/main_window.cpp:1282
+#: ../src/gui/main_window.cpp:1289
 msgid "Co_ntact"
 msgstr "Ko_ntaktas"
 
-#: ../src/gui/main_window.cpp:1283
+#: ../src/gui/main_window.cpp:1290
 msgid "Act on selected contact"
 msgstr "Veikti pasirinktą kontaktą"
 
-#: ../src/gui/main_window.cpp:1287
+#: ../src/gui/main_window.cpp:1294
 msgid "Ca_ll a Number"
 msgstr "Skambinti _numeriu"
 
-#: ../src/gui/main_window.cpp:1287
+#: ../src/gui/main_window.cpp:1294
 msgid "Place a new call"
 msgstr "Skambinti"
 
-#: ../src/gui/main_window.cpp:1293
-msgid "A_dd Contact"
-msgstr "_Pridėti kontaktą"
-
-#: ../src/gui/main_window.cpp:1293
+#: ../src/gui/main_window.cpp:1300
 msgid "Add a contact to the roster"
 msgstr "Įtraukti kontaktą į sąrašą"
 
-#: ../src/gui/main_window.cpp:1298
+#: ../src/gui/main_window.cpp:1305
 msgid "Find contacts"
 msgstr "Rasti kontaktus"
 
-#: ../src/gui/main_window.cpp:1318
+#: ../src/gui/main_window.cpp:1325
 msgid "_Configuration Assistant"
 msgstr "_Konfigūravimo pagelbiklis"
 
-#: ../src/gui/main_window.cpp:1319
+#: ../src/gui/main_window.cpp:1326
 msgid "Run the configuration assistant"
 msgstr "Paleisti konfigūravimo pagelbiklį"
 
-#: ../src/gui/main_window.cpp:1327
+#: ../src/gui/main_window.cpp:1334
 msgid "Edit your accounts"
 msgstr "Keisti savo paskyras"
 
-#: ../src/gui/main_window.cpp:1333
+#: ../src/gui/main_window.cpp:1340
 msgid "Change your preferences"
 msgstr "Taisyti savo nustatymus"
 
-#: ../src/gui/main_window.cpp:1340
+#: ../src/gui/main_window.cpp:1347
 msgid "_Video Preview"
 msgstr "_Vaizdo peržiūra"
 
-#: ../src/gui/main_window.cpp:1348
+#: ../src/gui/main_window.cpp:1355
 msgid "Con_tacts"
 msgstr "Kon_taktai"
 
-#: ../src/gui/main_window.cpp:1353
+#: ../src/gui/main_window.cpp:1360
 msgid "_Dialpad"
 msgstr "_Rinkiklis"
 
-#: ../src/gui/main_window.cpp:1358
+#: ../src/gui/main_window.cpp:1365
 msgid "_Call History"
 msgstr "_Skambučių retrospektyva"
 
-#: ../src/gui/main_window.cpp:1366
+#: ../src/gui/main_window.cpp:1373
 msgid "Show Offline _Contacts"
 msgstr "Rodyti atsijungusius _kontaktus"
 
-#: ../src/gui/main_window.cpp:1459
+#: ../src/gui/main_window.cpp:1466
 msgid "Dialpad"
 msgstr "Rinkiklis"
 
-#: ../src/gui/main_window.cpp:1477
+#: ../src/gui/main_window.cpp:1484
 msgid "Call history"
 msgstr "Skambučių retrospektyva"
 
-#: ../src/gui/main_window.cpp:1489
+#: ../src/gui/main_window.cpp:1496
 msgid "Ekiga"
 msgstr "Ekiga"
 
