@@ -90,6 +90,9 @@ GMVideoOutputManager_dx::setup_frame_display ()
   case Ekiga::VO_MODE_PIP_WINDOW:
     Ekiga::Runtime::run_in_main (boost::bind (&GMVideoOutputManager_dx::size_changed_in_main, this, 176, 144));
     break;
+  case Ekiga::VO_MODE_REMOTE_EXT:
+    Ekiga::Runtime::run_in_main (boost::bind (&GMVideoOutputManager_dx::size_changed_in_main, this, (unsigned) (current_frame.ext_width * current_frame.zoom / 100), (unsigned) (current_frame.ext_height * current_frame.zoom / 100)));
+    break;
   case Ekiga::VO_MODE_UNSET:
   default:
     PTRACE (1, "GMVideoOutputManager_dx\tDisplay variable not set");
@@ -148,6 +151,28 @@ GMVideoOutputManager_dx::setup_frame_display ()
     last_frame.zoom = current_frame.zoom;
     break;
 
+  case Ekiga::VO_MODE_REMOTE_EXT: {
+    PTRACE(4, "GMVideoOutputManager_X\tOpening VO_MODE_REMOTE_EXT display with image of "
+           << current_frame.ext_width << "x" << current_frame.ext_height);
+    dxWindow = new DXWindow();
+    video_disabled = !dxWindow->Init (local_display_info.hwnd,
+                                      local_display_info.x,
+                                      local_display_info.y,
+                                      (int) (current_frame.ext_width * current_frame.zoom / 100),
+                                      (int) (current_frame.ext_height * current_frame.zoom / 100),
+                                      current_frame.ext_width,
+                                      current_frame.ext_height);
+
+    last_frame.embedded_x = local_display_info.x;
+    last_frame.embedded_y = local_display_info.y;
+
+    last_frame.mode = Ekiga::VO_MODE_REMOTE_EXT;
+    last_frame.ext_width = current_frame.ext_width;
+    last_frame.ext_height = current_frame.ext_height;
+    last_frame.zoom = current_frame.zoom;
+    break;
+  }
+
   case Ekiga::VO_MODE_FULLSCREEN:
   case Ekiga::VO_MODE_PIP:
   case Ekiga::VO_MODE_PIP_WINDOW:
@@ -189,10 +214,8 @@ GMVideoOutputManager_dx::setup_frame_display ()
   if (local_display_info.on_top && dxWindow)
       dxWindow->ToggleOntop ();
 
-//   if (!status)
-//     close_frame_display ();
-
   last_frame.both_streams_active = current_frame.both_streams_active;
+  last_frame.ext_stream_active = current_frame.ext_stream_active;
 
   if (video_disabled) {
     delete dxWindow;
@@ -200,8 +223,12 @@ GMVideoOutputManager_dx::setup_frame_display ()
     Ekiga::Runtime::run_in_main (boost::bind (&GMVideoOutputManager_dx::device_error_in_main, this, Ekiga::VO_ERROR));
   }
   else {
-    current_frame.accel = Ekiga::VO_ACCEL_ALL; 
-    Ekiga::Runtime::run_in_main (boost::bind (&GMVideoOutputManager_dx::device_opened_in_main, this, current_frame.accel, current_frame.mode, current_frame.zoom, current_frame.both_streams_active, current_frame.ext_stream_active));
+    current_frame.accel = Ekiga::VO_ACCEL_ALL;
+    Ekiga::Runtime::run_in_main
+      (boost::bind (&GMVideoOutputManager_dx::device_opened_in_main, this,
+                    current_frame.accel, current_frame.mode, current_frame.zoom,
+                    current_frame.both_streams_active,
+                    current_frame.ext_stream_active));
   }
 }
 
