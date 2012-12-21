@@ -373,12 +373,16 @@ Opal::H323::EndPoint::UseGatekeeper (const PString & address,
                                      const PString & domain,
                                      const PString & iface)
 {
-  bool result =
-    H323EndPoint::UseGatekeeper (address, domain, iface);
+  bool result = false;
 
-  PWaitAndSignal m(gk_name_mutex);
+  if (!IsRegisteredWithGatekeeper (address)) {
+    result = H323EndPoint::UseGatekeeper (address, domain, iface);
 
-  gk_name = address;
+    if (result) {
+      PWaitAndSignal m(gk_name_mutex);
+      gk_name = address;
+    }
+  }
 
   return result;
 }
