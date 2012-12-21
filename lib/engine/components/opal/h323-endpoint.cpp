@@ -54,10 +54,12 @@ namespace Opal {
 
       subscriber (const Opal::Account & _account,
                   Opal::H323::EndPoint& _manager,
+                  bool _registering,
                   const PSafePtr<OpalPresentity> & _presentity)
         : PThread (1000, AutoDeleteThread),
         account (_account),
         manager (_manager),
+        registering (_registering),
         presentity (_presentity)
       {
         this->Resume ();
@@ -65,14 +67,23 @@ namespace Opal {
 
       void Main ()
         {
-          if (presentity && !presentity->IsOpen ())
-            presentity->Open ();
-          manager.Register (account);
+          if (registering) {
+            if (presentity && !presentity->IsOpen ())
+              presentity->Open ();
+            manager.Register (account);
+          } else {
+            manager.Unregister (account);
+
+            if (presentity && presentity->IsOpen ())
+              presentity->Close ();
+
+          }
         };
 
   private:
       const Opal::Account & account;
       Opal::H323::EndPoint& manager;
+      bool registering;
       const PSafePtr<OpalPresentity> & presentity;
     };
   };
@@ -285,7 +296,7 @@ Opal::H323::EndPoint::subscribe (const Opal::Account & account,
   if (account.get_protocol_name () != "H323")
     return false;
 
-  new subscriber (account, *this, presentity);
+  new subscriber (account, *this, true, presentity);
 
   return true;
 }
@@ -298,7 +309,7 @@ Opal::H323::EndPoint::unsubscribe (const Opal::Account & account,
   if (account.get_protocol_name () != "H323")
     return false;
 
-  new subscriber (account, *this, presentity);
+  new subscriber (account, *this, false, presentity);
 
   return true;
 }
@@ -365,6 +376,13 @@ Opal::H323::EndPoint::Register (const Opal::Account& account)
       Ekiga::Runtime::run_in_main (boost::bind (&Opal::H323::EndPoint::registration_event_in_main, this, boost::cref (account), Account::Registered, std::string ()));
     }
   }
+}
+
+
+void
+Opal::H323::EndPoint::Unregister (const Opal::Account& account)
+{
+  RemoveGatekeeper (account.get_host ());
 }
 
 
