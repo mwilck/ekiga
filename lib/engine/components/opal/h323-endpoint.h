@@ -115,6 +115,7 @@ namespace Opal {
 
       /* OPAL methods */
       void Register (const Opal::Account & account);
+      void Unregister (const Opal::Account & account);
 
   private:
       bool UseGatekeeper (const PString & address = PString::Empty (),
