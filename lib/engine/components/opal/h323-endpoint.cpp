@@ -327,7 +327,7 @@ Opal::H323::EndPoint::Register (const Opal::Account& account)
     if (!result) {
 
       // Registering failed
-      if (gatekeeper) {
+      if (GetGatekeeper () != NULL) {
 
         switch (gatekeeper->GetRegistrationFailReason ()) {
 
