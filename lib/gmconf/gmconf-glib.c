@@ -1107,10 +1107,6 @@ gm_conf_load_user_conf (DataBase *db)
 
   filename = gm_conf_get_user_conf_filename ();
   result = database_load_file (db, filename);
-
-  if (! result)
-    g_log (G_LOG_DOMAIN, G_LOG_LEVEL_WARNING,
-	   "couldn't read the user configuration in %s", filename);
   g_free (filename);
 
   return result;
@@ -1125,13 +1121,11 @@ gm_conf_load_sys_conf (DataBase *db)
 
   g_return_val_if_fail (db != NULL, FALSE);
 
-  filename = g_build_filename (SYSCONFDIR, "ekiga",
-			       "ekiga.schemas", NULL);
+  filename = g_build_filename (SYSCONFDIR, "ekiga", "ekiga.schemas", NULL);
   result = database_load_file (db, filename);
 
   if (! result)
-    g_log (G_LOG_DOMAIN, G_LOG_LEVEL_WARNING,
-	   "couldn't read the system configuration in %s", filename);
+    g_error ("couldn't read the system configuration (ekiga.schemas) from %s", filename);
   g_free (filename);
 
   return result;
@@ -1156,13 +1150,10 @@ saveconf_timer_callback (G_GNUC_UNUSED gpointer unused)
 void
 gm_conf_init ()
 {
-  gboolean result = FALSE;
   DataBase *db = database_get_default ();
 
-  result = gm_conf_load_sys_conf (db);
-  result = (gm_conf_load_user_conf (db) || result);
-  if (!result)
-    g_warning ("Couldn't load system configuration");
+  gm_conf_load_sys_conf (db);
+  gm_conf_load_user_conf (db);
 
   /* those keys aren't found in gnomemeeting's schema */
   gm_conf_set_bool ("/desktop/gnome/interface/menus_have_icons", TRUE);
