@@ -11,8 +11,8 @@ msgstr ""
 "Project-Id-Version: as\n"
 "Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?"
 "product=ekiga&keywords=I18N+L10N&component=general\n"
-"POT-Creation-Date: 2012-12-13 11:31+0000\n"
-"PO-Revision-Date: 2012-12-14 18:06+0530\n"
+"POT-Creation-Date: 2012-12-26 19:11+0000\n"
+"PO-Revision-Date: 2012-12-27 20:50+0530\n"
 "Last-Translator: Nilamdyuti Goswami <ngoswami@redhat.com>\n"
 "Language-Team: Assamese <kde-i18n-doc@kde.org>\n"
 "Language: as\n"
@@ -607,10 +607,20 @@ msgid "Size of the preferences window"
 msgstr "দূৰবৰ্তী ভিডিঅ' উইন্ডোৰ প্ৰস্ত"
 
 #: ../ekiga.schemas.in.in.h:108
+#| msgid "Position on the screen of the main window"
+msgid "Position on the screen of the accounts window"
+msgstr "একাওন্টসমূহ উইন্ডোৰ পৰ্দাত অৱস্থান"
+
+#: ../ekiga.schemas.in.in.h:109
+#| msgid "Size of the chat window"
+msgid "Size of the accounts window"
+msgstr "একাওন্টসমূহ উইন্ডোৰ আকাৰ"
+
+#: ../ekiga.schemas.in.in.h:110
 msgid "Disable video hardware acceleration"
 msgstr "স্বয়ংক্ৰিয় প্ৰতিধ্বনি বাতিল ব্যৱস্থা"
 
-#: ../ekiga.schemas.in.in.h:109
+#: ../ekiga.schemas.in.in.h:111
 msgid ""
 "This key disables DirectX (on win32) and XVideo (on Linux) video hardware "
 "acceleration"
@@ -618,11 +628,11 @@ msgstr ""
 "এই কিৰ ফলে, DirectX (win32ৰ ক্ষেত্ৰত) ও XVideo (Linuxৰ ক্ষেত্ৰত) ভিডিঅ' "
 "হাৰ্ডওয়্যাৰ গতিবৰ্ধন ব্যবস্থা নিষ্ক্ৰিয় কৰা হ'ব"
 
-#: ../ekiga.schemas.in.in.h:110
+#: ../ekiga.schemas.in.in.h:112
 msgid "Allow picture-in-picture software scaling"
 msgstr "picture-in-picture software scaling ৰ অনুমতি দিয়ক"
 
-#: ../ekiga.schemas.in.in.h:111
+#: ../ekiga.schemas.in.in.h:113
 msgid ""
 "Allow Ekiga to fall back to software scaling the picture-in-picture if "
 "hardware support is not available. If this is set to false, Ekiga will not "
@@ -634,11 +644,11 @@ msgstr ""
 "ই "
 "PIP খুলিবলৈ চেষ্টা নকৰিব।"
 
-#: ../ekiga.schemas.in.in.h:112
+#: ../ekiga.schemas.in.in.h:114
 msgid "Specify the software scaling algorithm"
 msgstr "software scaling algorithm নিৰ্ধাৰণ কৰক"
 
-#: ../ekiga.schemas.in.in.h:113
+#: ../ekiga.schemas.in.in.h:115
 msgid ""
 "Specify the software scaling algorithm: 0: nearest neighbor, 1: nearest "
 "neighbor with box filter, 2: bilinear filtering, 3: hyperbolic filtering. "
@@ -648,11 +658,11 @@ msgstr ""
 "neighbor with box filter, 2: bilinear filtering, 3: hyperbolic filtering. "
 "windows প্ৰণালীত প্ৰযোজ্য নহয়।"
 
-#: ../ekiga.schemas.in.in.h:114
+#: ../ekiga.schemas.in.in.h:116
 msgid "The zoom value"
 msgstr "ছোট/বড় কৰে দেখুৱাৰ মাত্ৰা"
 
-#: ../ekiga.schemas.in.in.h:115
+#: ../ekiga.schemas.in.in.h:117
 msgid ""
 "The zoom value in percent to apply to images displayed in the main GUI (can "
 "be 50, 100, or 200)"
@@ -660,16 +670,27 @@ msgstr ""
 "মূল জি-ইউ-আইএ প্ৰদৰ্শিত ছবিৰ ছোট/বড় কৰে দেখুৱাৰ মাত্ৰা (যেমন ০.৫০, ১.০০, বা "
 "২.০০)"
 
-#: ../ekiga.schemas.in.in.h:116
+#: ../ekiga.schemas.in.in.h:118
+#| msgid ""
+#| "The zoom value in percent to apply to images displayed in the main GUI "
+#| "(can be 50, 100, or 200)"
+msgid ""
+"The zoom value in percent to apply to images displayed in the extended GUI "
+"(can be 50, 100, or 200)"
+msgstr ""
+"প্ৰসাৰিত GUI ত প্ৰদৰ্শিত ছবিসমূহত প্ৰয়োগ কৰিবলে শতাংশত জুমৰ মান "
+"(৫০, ১০০ অথবা ২০০ হব পাৰে)"
+
+#: ../ekiga.schemas.in.in.h:119
 #: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:477
 msgid "Place windows displaying video above other windows during calls"
 msgstr "ভিডিঅ' দেখুৱা সংযোগক্ষেত্ৰক কলৰ সময়ত অন্য সংযোগক্ষেত্ৰৰ ওপৰত দেখুৱাব"
 
-#: ../ekiga.schemas.in.in.h:117
+#: ../ekiga.schemas.in.in.h:120
 msgid "The default video view"
 msgstr "ডিফল্ট ভিডিঅ' দৰ্শনৰ ধৰণ"
 
-#: ../ekiga.schemas.in.in.h:118
+#: ../ekiga.schemas.in.in.h:121
 msgid ""
 "The default video view (0: Local, 1: Remote, 2: Both, 3: Both in a separate "
 "window)"
@@ -677,11 +698,11 @@ msgstr ""
 "অবিকল্পিত ভিডিঅ' দৰ্শন (0: স্থানীয়, 1: দূৰবৰ্তী, 2: দুয়ো, 3: দুয়োটায় বেলেগ "
 "উইন্ডোত)"
 
-#: ../ekiga.schemas.in.in.h:119
+#: ../ekiga.schemas.in.in.h:122
 msgid "The video view before having switched to fullscreen"
 msgstr "পুৰো স্ক্ৰীনৰ ক্ষেত্ৰত ছবিৰ প্ৰস্ত"
 
-#: ../ekiga.schemas.in.in.h:120
+#: ../ekiga.schemas.in.in.h:123
 msgid ""
 "The video view before having switched to fullscreen (same values as "
 "video_view)"
@@ -689,40 +710,40 @@ msgstr ""
 "পূৰ্ণ পৰ্দা জুড়ে প্ৰদৰ্শনৰ পূৰ্বে ভিডিঅ' প্ৰদৰ্শনৰ ক্ষেত্ৰ (video_viewৰ সমান "
 "মাপ)"
 
-#: ../ekiga.schemas.in.in.h:121
+#: ../ekiga.schemas.in.in.h:124
 msgid "Remote video window size"
 msgstr "দূৰবৰ্তী ভিডিঅ' উইন্ডোৰ প্ৰস্ত"
 
-#: ../ekiga.schemas.in.in.h:122
+#: ../ekiga.schemas.in.in.h:125
 msgid "The size of the remote video window"
 msgstr "দূৰবৰ্তী ভিডিঅ' উইন্ডোৰ প্ৰস্ত"
 
-#: ../ekiga.schemas.in.in.h:123
+#: ../ekiga.schemas.in.in.h:126
 msgid "Remote video window position"
 msgstr "দূৰবৰ্তী ভিডিঅ' উইন্ডোৰ প্ৰস্ত"
 
-#: ../ekiga.schemas.in.in.h:124
+#: ../ekiga.schemas.in.in.h:127
 msgid "The position of the remote video window"
 msgstr "দূৰবৰ্তী ভিডিঅ' উইন্ডোৰ প্ৰস্ত"
 
-#: ../ekiga.schemas.in.in.h:125
+#: ../ekiga.schemas.in.in.h:128
 msgid "Maximum jitter buffer"
 msgstr "সৰ্বাধিক জিট্টাৰ বাফাৰ"
 
-#: ../ekiga.schemas.in.in.h:126
+#: ../ekiga.schemas.in.in.h:129
 #: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:944
 msgid "The maximum jitter buffer size for audio reception (in ms)"
 msgstr "অডিঅ' গ্ৰহণৰ উদ্দেশ্যে jitter buffer ৰ সৰ্বাধিক আয়তন (ms ত)"
 
-#: ../ekiga.schemas.in.in.h:127
+#: ../ekiga.schemas.in.in.h:130
 msgid "The video codecs list"
 msgstr "অডিঅ' ক'ডেকৰ তালিকা"
 
-#: ../ekiga.schemas.in.in.h:128
+#: ../ekiga.schemas.in.in.h:131
 msgid "Maximum TX video bitrate"
 msgstr "সৰ্বাধিক ভিডিঅ' ব্যান্ডহুইত্‌"
 
-#: ../ekiga.schemas.in.in.h:129
+#: ../ekiga.schemas.in.in.h:132
 msgid ""
 "The maximum TX video bitrate in kbit/s. The video quality and the number of "
 "transmitted frames per second (depends on selected codec) will be "
@@ -735,11 +756,11 @@ msgstr ""
 "নিয়ন্ত্ৰণ "
 "কৰা হ'ব নিৰ্দিষ্ট মানৰ অনুসাৰে"
 
-#: ../ekiga.schemas.in.in.h:130
+#: ../ekiga.schemas.in.in.h:133
 msgid "Maximum RX video bitrate"
 msgstr "সৰ্বাধিক ভিডিঅ' ব্যান্ডহুইত্‌"
 
-#: ../ekiga.schemas.in.in.h:131
+#: ../ekiga.schemas.in.in.h:134
 msgid ""
 "The maximum RX video bitrate in kbit/s. This value will be signaled to the "
 "peer endpoint that can adjust (if it supports it) its TX bitrate if it is "
@@ -750,11 +771,11 @@ msgstr ""
 "নিজৰ (যদি তাৰ সমৰ্থন কৰে) TX bitrate সলনি কৰিব পাৰিব যদি তাৰ মান ইঙ্গিত দিয়া "
 "মানতকে ডাঙৰ হয়"
 
-#: ../ekiga.schemas.in.in.h:132
+#: ../ekiga.schemas.in.in.h:135
 msgid "Temporal Spatial Trade Off"
 msgstr "Temporal Spatial Trade Off"
 
-#: ../ekiga.schemas.in.in.h:133
+#: ../ekiga.schemas.in.in.h:136
 msgid ""
 "Whether to prefer to sustain the max. frame rate or lower it possibly in "
 "order to keep a minimum level of (spatial) quality for all frames. 0: "
@@ -764,47 +785,47 @@ msgstr ""
 "order to keep a minimum level of (spatial) quality for all frames. 0: "
 "Highest minimal quality, 31: lowest minimal quality"
 
-#: ../ekiga.schemas.in.in.h:134
+#: ../ekiga.schemas.in.in.h:137
 msgid "List of folded groups in the roster"
 msgstr "ৰ'স্টাৰৰ ফ'ল্ডেড সমষ্টিৰ তালিকা"
 
-#: ../ekiga.schemas.in.in.h:135 ../src/gui/main_window.cpp:1373
+#: ../ekiga.schemas.in.in.h:138 ../src/gui/main_window.cpp:1373
 msgid "Show offline contacts"
 msgstr "অফ-লাইন চিনাকি দেখুৱাওক"
 
-#: ../ekiga.schemas.in.in.h:136
+#: ../ekiga.schemas.in.in.h:139
 msgid "If enabled, offline contacts will be shown in the roster"
 msgstr "এইটো সক্ৰিয় হলে, অহা সকলো কলই স্বয়ংক্ৰিয় ভাবে অগ্ৰাহ্য কৰা হ'ব"
 
-#: ../ekiga.schemas.in.in.h:137
+#: ../ekiga.schemas.in.in.h:140
 msgid "LDAP servers"
 msgstr "LDAP চাৰ্ভাৰসমূহ"
 
-#: ../ekiga.schemas.in.in.h:138
+#: ../ekiga.schemas.in.in.h:141
 msgid "List of configured LDAP servers"
 msgstr "বিন্যাসিত LDAP চাৰ্ভাৰৰ তালিকা"
 
-#: ../ekiga.schemas.in.in.h:139
+#: ../ekiga.schemas.in.in.h:142
 msgid "Calls history"
 msgstr "কলৰ ইতিহাস"
 
-#: ../ekiga.schemas.in.in.h:140
+#: ../ekiga.schemas.in.in.h:143
 msgid "The history of the 100 last calls"
 msgstr "যোৱা ১০০ টা কলৰ ইতিহাস"
 
-#: ../ekiga.schemas.in.in.h:141
+#: ../ekiga.schemas.in.in.h:144
 msgid "Kind of network selected in the assistant"
 msgstr "সহযোগিত বাচি নেওয়া নেটৱাৰ্কৰ ধৰণ"
 
-#: ../ekiga.schemas.in.in.h:142
+#: ../ekiga.schemas.in.in.h:145
 msgid "0: 56kbps, 1: ISDN, 2: DSL128, 3: DSL512, 4: LAN, 5: Custom"
 msgstr "0: 56kbps, 1: ISDN, 2: DSL128, 3: DSL512, 4: LAN, 5: স্বনিৰ্বাচিত"
 
-#: ../ekiga.schemas.in.in.h:143
+#: ../ekiga.schemas.in.in.h:146
 msgid "No answer timeout"
 msgstr "কোনো উত্তৰ নোপোৱাৰ সময় বিৰতিস"
 
-#: ../ekiga.schemas.in.in.h:144
+#: ../ekiga.schemas.in.in.h:147
 #: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:506
 msgid ""
 "Automatically reject or forward incoming calls if no answer is given after "
@@ -814,11 +835,11 @@ msgstr ""
 "অগ্ৰাহ্য "
 "কৰিব বা আগবঢ়াই দিব"
 
-#: ../ekiga.schemas.in.in.h:145
+#: ../ekiga.schemas.in.in.h:148
 msgid "Automatic answer"
 msgstr "স্বচালিত উত্তৰ"
 
-#: ../ekiga.schemas.in.in.h:146
+#: ../ekiga.schemas.in.in.h:149
 #: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:507
 msgid "If enabled, automatically answer incoming calls"
 msgstr ""
@@ -1061,36 +1082,36 @@ msgstr "এটা পছন্দৰ পৰিচয় হয়"
 msgid "Choose groups:"
 msgstr "কোন এটা ছবি বাছক"
 
-#: ../lib/engine/components/opal/h323-endpoint.cpp:135
+#: ../lib/engine/components/opal/h323-endpoint.cpp:146
 #: ../lib/engine/components/opal/opal-call.cpp:703
 #: ../lib/engine/components/opal/sip-endpoint.cpp:237
 #: ../lib/engine/components/opal/sip-endpoint.cpp:241
 msgid "Call"
 msgstr "কল (_ল)"
 
-#: ../lib/engine/components/opal/h323-endpoint.cpp:138
+#: ../lib/engine/components/opal/h323-endpoint.cpp:149
 #: ../lib/engine/components/opal/sip-endpoint.cpp:238
 #: ../lib/engine/components/opal/sip-endpoint.cpp:242
-#: ../lib/engine/gui/gtk-frontend/call-window.cpp:2178
+#: ../lib/engine/gui/gtk-frontend/call-window.cpp:2182
 msgid "Transfer"
 msgstr "কল স্থানান্তৰ (_স)"
 
 #. Translators : The alias we are registering already exists : failure
-#: ../lib/engine/components/opal/h323-endpoint.cpp:340
+#: ../lib/engine/components/opal/h323-endpoint.cpp:347
 msgid "Duplicate alias"
 msgstr "এলায়েসেৰ প্ৰতিলিপি"
 
-#: ../lib/engine/components/opal/h323-endpoint.cpp:343
+#: ../lib/engine/components/opal/h323-endpoint.cpp:350
 msgid "Bad username/password"
 msgstr "ব্যবহাৰকাৰী নাম/পাসওয়াৰ্ড সঠিক নয়"
 
-#: ../lib/engine/components/opal/h323-endpoint.cpp:346
+#: ../lib/engine/components/opal/h323-endpoint.cpp:353
 #: ../lib/engine/components/opal/sip-endpoint.cpp:586
 msgid "Transport error"
 msgstr "এটা ট্ৰান্সপোৰ্ট ত্ৰুটি ঘটেছে"
 
-#: ../lib/engine/components/opal/h323-endpoint.cpp:357
-#: ../lib/engine/components/opal/h323-endpoint.cpp:362
+#: ../lib/engine/components/opal/h323-endpoint.cpp:364
+#: ../lib/engine/components/opal/h323-endpoint.cpp:369
 #: ../lib/engine/components/opal/sip-endpoint.cpp:799
 msgid "Failed"
 msgstr "ফাইল (_ফ)"
@@ -1845,15 +1866,15 @@ msgstr "নাম"
 msgid "_Search Filter:"
 msgstr "অনুসন্ধানৰ ফিল্টাৰ: (_S)"
 
-#: ../lib/engine/gui/gtk-frontend/call-window.cpp:784
+#: ../lib/engine/gui/gtk-frontend/call-window.cpp:790
 msgid "Error while initializing video output"
 msgstr "ভিডিঅ'ৰ আউটপুট আৰম্ভ কৰোঁতে ভুল"
 
-#: ../lib/engine/gui/gtk-frontend/call-window.cpp:785
+#: ../lib/engine/gui/gtk-frontend/call-window.cpp:791
 msgid "No video will be displayed on your machine during this call"
 msgstr "এই কল চলি থকা সময়ত আপোনাৰ মেচিনত কোনো ভিডিঅ' দেখুৱা নহব"
 
-#: ../lib/engine/gui/gtk-frontend/call-window.cpp:795
+#: ../lib/engine/gui/gtk-frontend/call-window.cpp:801
 msgid ""
 "There was an error opening or initializing the video output. Please verify "
 "that no other application is using the accelerated video output."
@@ -1862,7 +1883,7 @@ msgstr ""
 "এক্সিলেৰাটেড "
 "ভিডিঅ' আউটপুট ব্যৱহাৰ নকৰা পৰীক্ষা কৰক।"
 
-#: ../lib/engine/gui/gtk-frontend/call-window.cpp:797
+#: ../lib/engine/gui/gtk-frontend/call-window.cpp:803
 msgid ""
 "There was an error opening or initializing the video output. Please verify "
 "that you are using a color depth of 24 or 32 bits per pixel."
@@ -1871,16 +1892,16 @@ msgstr ""
 "আপুনি ২৪ "
 "বা ৩২ বিট প্ৰতি পিক্সেলৰ ৰঙৰ গভীৰতা ব্যৱহাৰ কৰিছে।"
 
-#: ../lib/engine/gui/gtk-frontend/call-window.cpp:911
+#: ../lib/engine/gui/gtk-frontend/call-window.cpp:924
 #, c-format
 msgid "Error while accessing video device %s"
 msgstr "ভিডিঅ' ডিভাইচ %s খোলাৰ সময়ে ত্ৰুটি"
 
-#: ../lib/engine/gui/gtk-frontend/call-window.cpp:914
+#: ../lib/engine/gui/gtk-frontend/call-window.cpp:927
 msgid "A moving logo will be transmitted during calls."
 msgstr "কলসমূহ চলি থকা সময়ত এটা গতিশীল ল'গ প্ৰসাৰণ কৰা হব।"
 
-#: ../lib/engine/gui/gtk-frontend/call-window.cpp:918
+#: ../lib/engine/gui/gtk-frontend/call-window.cpp:931
 msgid ""
 "There was an error while opening the device. In case it is a pluggable "
 "device it may be sufficient to reconnect it. If not, or if it still is not "
@@ -1891,15 +1912,15 @@ msgstr ""
 "ড্ৰাইভাৰ ব্যৱহৃত "
 "হৈছে কিনা তা পৰীক্ষা কৰে দেখক"
 
-#: ../lib/engine/gui/gtk-frontend/call-window.cpp:922
+#: ../lib/engine/gui/gtk-frontend/call-window.cpp:935
 msgid "Your video driver doesn't support the requested video format."
 msgstr "আপোনাৰ ভিডিঅ' ড্ৰাইভাৰটি প্ৰয়োজনীয় ভিডিঅ' ধৰণটিকে সমৰ্থন কৰে না"
 
-#: ../lib/engine/gui/gtk-frontend/call-window.cpp:926
+#: ../lib/engine/gui/gtk-frontend/call-window.cpp:939
 msgid "Could not open the chosen channel."
 msgstr "নিৰ্বাচিত ভিডিঅ'ৰ ধৰণ সহকাৰে নিৰ্বাচিত চেনেলটিৰ ব্যৱহাৰ সম্ভব হয়েনি"
 
-#: ../lib/engine/gui/gtk-frontend/call-window.cpp:930
+#: ../lib/engine/gui/gtk-frontend/call-window.cpp:943
 msgid ""
 "Your driver doesn't seem to support any of the color formats supported by "
 "Ekiga.\n"
@@ -1914,33 +1935,33 @@ msgstr ""
 " gconftool --set \"/apps/gnomemeeting/devices/color_format\" YOURPALETTE --"
 "type string"
 
-#: ../lib/engine/gui/gtk-frontend/call-window.cpp:934
+#: ../lib/engine/gui/gtk-frontend/call-window.cpp:947
 msgid "Error while setting the frame rate."
 msgstr "ফ্ৰেমেৰ মাত্ৰা (ৰেট) নিৰ্ধাৰণেৰ ক্ষেত্ৰত ত্ৰুটি"
 
-#: ../lib/engine/gui/gtk-frontend/call-window.cpp:938
+#: ../lib/engine/gui/gtk-frontend/call-window.cpp:951
 msgid "Error while setting the frame size."
 msgstr "ফ্ৰেমেৰ আয়তন নিৰ্ধাৰণেৰ ক্ষেত্ৰত ত্ৰুটি"
 
 #
-#: ../lib/engine/gui/gtk-frontend/call-window.cpp:943
-#: ../lib/engine/gui/gtk-frontend/call-window.cpp:1013
-#: ../lib/engine/gui/gtk-frontend/call-window.cpp:1094
+#: ../lib/engine/gui/gtk-frontend/call-window.cpp:956
+#: ../lib/engine/gui/gtk-frontend/call-window.cpp:1026
+#: ../lib/engine/gui/gtk-frontend/call-window.cpp:1107
 msgid "Unknown error."
 msgstr "অজানা সমস্যা।"
 
-#: ../lib/engine/gui/gtk-frontend/call-window.cpp:995
+#: ../lib/engine/gui/gtk-frontend/call-window.cpp:1008
 #, c-format
 msgid "Error while opening audio input device %s"
 msgstr "ভিডিঅ' ডিভাইচ %s খোলাৰ সময়ে ত্ৰুটি"
 
 #. Translators: This happens when there is an error with audio input:
 #. * Nothing ("silence") will be transmitted
-#: ../lib/engine/gui/gtk-frontend/call-window.cpp:1000
+#: ../lib/engine/gui/gtk-frontend/call-window.cpp:1013
 msgid "Only silence will be transmitted."
 msgstr "অকল মৌনতা পঠিওৱা হ'ব।"
 
-#: ../lib/engine/gui/gtk-frontend/call-window.cpp:1004
+#: ../lib/engine/gui/gtk-frontend/call-window.cpp:1017
 msgid ""
 "Unable to open the selected audio device for recording. In case it is a "
 "pluggable device it may be sufficient to reconnect it. If not, or if it "
@@ -1951,7 +1972,7 @@ msgstr ""
 "কৰে "
 "আপোনাৰ অডিঅ' সেটআপ, আনুসাঙ্গিক অনুমতি আৰু ডিভাইচটি ব্যস্ত কিনা পৰীক্ষা কৰক"
 
-#: ../lib/engine/gui/gtk-frontend/call-window.cpp:1008
+#: ../lib/engine/gui/gtk-frontend/call-window.cpp:1021
 msgid ""
 "The selected audio device was successfully opened but it is impossible to "
 "read data from this device. In case it is a pluggable device it may be "
@@ -1961,16 +1982,16 @@ msgstr ""
 "নিৰ্বাচিত অডিঅ' ডিভাইচটি (%s) খোলাৰ চেষ্টা সফল হৈছে, তবে তাৰ থেকে ডাটা পড়া "
 "অসম্ভব ।  অনুগ্ৰহ কৰে আপোনাৰ অডিঅ' সেটআপ পৰীক্ষা কৰক"
 
-#: ../lib/engine/gui/gtk-frontend/call-window.cpp:1078
+#: ../lib/engine/gui/gtk-frontend/call-window.cpp:1091
 #, c-format
 msgid "Error while opening audio output device %s"
 msgstr "ভিডিঅ' ডিভাইচ %s খোলাৰ সময়ে ত্ৰুটি"
 
-#: ../lib/engine/gui/gtk-frontend/call-window.cpp:1081
+#: ../lib/engine/gui/gtk-frontend/call-window.cpp:1094
 msgid "No incoming sound will be played."
 msgstr "অহাৰ কোনো শব্দ বজোৱা ন'হ'ব।"
 
-#: ../lib/engine/gui/gtk-frontend/call-window.cpp:1085
+#: ../lib/engine/gui/gtk-frontend/call-window.cpp:1098
 msgid ""
 "Unable to open the selected audio device for playing. In case it is a "
 "pluggable device it may be sufficient to reconnect it. If not, or if it "
@@ -1981,7 +2002,7 @@ msgstr ""
 "আপোনাৰ "
 "অডিঅ' সেটআপ, আনুসাঙ্গিক অনুমতি আৰু ডিভাইচটি ব্যস্ত কিনা পৰীক্ষা কৰক"
 
-#: ../lib/engine/gui/gtk-frontend/call-window.cpp:1089
+#: ../lib/engine/gui/gtk-frontend/call-window.cpp:1102
 msgid ""
 "The selected audio device was successfully opened but it is impossible to "
 "write data to this device. In case it is a pluggable device it may be "
@@ -1993,41 +2014,41 @@ msgstr ""
 "কৰিব "
 "নোৱাৰিলে, আপোনাৰ অ'ডিঅ'ৰ প্ৰতিষ্ঠা পৰীক্ষা কৰক।"
 
-#: ../lib/engine/gui/gtk-frontend/call-window.cpp:1130
+#: ../lib/engine/gui/gtk-frontend/call-window.cpp:1143
 #, c-format
 msgid "Calling %s..."
 msgstr "%s ক কল কৰা হৈছে..."
 
 #. %s is the SIP/H.323 address of the remote user, this text is shown
 #. below video during a call
-#: ../lib/engine/gui/gtk-frontend/call-window.cpp:1160
+#: ../lib/engine/gui/gtk-frontend/call-window.cpp:1173
 #: ../src/gui/main_window.cpp:653
 #, c-format
 msgid "Connected with %s"
 msgstr "Connected with %s"
 
 #. Init
-#: ../lib/engine/gui/gtk-frontend/call-window.cpp:1183
-#: ../lib/engine/gui/gtk-frontend/call-window.cpp:1206
-#: ../lib/engine/gui/gtk-frontend/call-window.cpp:2517
+#: ../lib/engine/gui/gtk-frontend/call-window.cpp:1196
+#: ../lib/engine/gui/gtk-frontend/call-window.cpp:1223
+#: ../lib/engine/gui/gtk-frontend/call-window.cpp:2526
 msgid "Standby"
 msgstr "আৰু"
 
-#: ../lib/engine/gui/gtk-frontend/call-window.cpp:1195
-#: ../lib/engine/gui/gtk-frontend/call-window.cpp:1204
-#: ../lib/engine/gui/gtk-frontend/call-window.cpp:2729
+#: ../lib/engine/gui/gtk-frontend/call-window.cpp:1212
+#: ../lib/engine/gui/gtk-frontend/call-window.cpp:1221
+#: ../lib/engine/gui/gtk-frontend/call-window.cpp:2738
 msgid "Call Window"
 msgstr "কল উইন্ডো"
 
-#: ../lib/engine/gui/gtk-frontend/call-window.cpp:1217
+#: ../lib/engine/gui/gtk-frontend/call-window.cpp:1234
 msgid "Call on hold"
 msgstr "কল সমাপ্তি"
 
-#: ../lib/engine/gui/gtk-frontend/call-window.cpp:1228
+#: ../lib/engine/gui/gtk-frontend/call-window.cpp:1245
 msgid "Call retrieved"
 msgstr "কল সমাপ্তি"
 
-#: ../lib/engine/gui/gtk-frontend/call-window.cpp:1316
+#: ../lib/engine/gui/gtk-frontend/call-window.cpp:1333
 #, c-format
 msgid ""
 "Connected with %s\n"
@@ -2038,27 +2059,27 @@ msgstr ""
 
 #. Translators: TX is a common abbreviation for "transmit".  As it
 #. * is shown in a tooltip, there is no space constraint
-#: ../lib/engine/gui/gtk-frontend/call-window.cpp:1532
+#: ../lib/engine/gui/gtk-frontend/call-window.cpp:1541
 #, c-format
 msgid "TX: %dx%d"
 msgstr "TX: %dx%d"
 
-#: ../lib/engine/gui/gtk-frontend/call-window.cpp:1534
+#: ../lib/engine/gui/gtk-frontend/call-window.cpp:1543
 msgid "TX: / "
 msgstr "TX: / "
 
 #. Translators: RX is a common abbreviation for "receive".  As it
 #. * is shown in a tooltip, there is no space constraint
-#: ../lib/engine/gui/gtk-frontend/call-window.cpp:1539
+#: ../lib/engine/gui/gtk-frontend/call-window.cpp:1548
 #, c-format
 msgid "RX: %dx%d"
 msgstr "RX: %dx%d"
 
-#: ../lib/engine/gui/gtk-frontend/call-window.cpp:1541
+#: ../lib/engine/gui/gtk-frontend/call-window.cpp:1550
 msgid "RX: / "
 msgstr "RX: / "
 
-#: ../lib/engine/gui/gtk-frontend/call-window.cpp:1550
+#: ../lib/engine/gui/gtk-frontend/call-window.cpp:1559
 #, c-format
 msgid ""
 "Lost packets: %.1f %%\n"
@@ -2076,176 +2097,168 @@ msgstr ""
 "Resolution: %s %s"
 
 #. Translators: A = Audio, V = Video, FPS = Frames per second
-#: ../lib/engine/gui/gtk-frontend/call-window.cpp:1650
+#: ../lib/engine/gui/gtk-frontend/call-window.cpp:1659
 #, c-format
 msgid "A:%.1f/%.1f V:%.1f/%.1f FPS:%d/%d"
 msgstr "A:%.1f/%.1f V:%.1f/%.1f FPS:%d/%d"
 
-#: ../lib/engine/gui/gtk-frontend/call-window.cpp:1674
+#: ../lib/engine/gui/gtk-frontend/call-window.cpp:1683
 msgid "_Retrieve Call"
 msgstr "কল বাজিয়ে শোনা (_শ)"
 
-#: ../lib/engine/gui/gtk-frontend/call-window.cpp:1687
-#: ../lib/engine/gui/gtk-frontend/call-window.cpp:1996
+#: ../lib/engine/gui/gtk-frontend/call-window.cpp:1696
+#: ../lib/engine/gui/gtk-frontend/call-window.cpp:2005
 msgid "H_old Call"
 msgstr "কল হোল্ড (_হ)"
 
-#: ../lib/engine/gui/gtk-frontend/call-window.cpp:1718
-#: ../lib/engine/gui/gtk-frontend/call-window.cpp:2008
+#: ../lib/engine/gui/gtk-frontend/call-window.cpp:1727
+#: ../lib/engine/gui/gtk-frontend/call-window.cpp:2017
 msgid "Suspend _Audio"
 msgstr "অডিঅ' সাময়িক বন্ধ (_অ)"
 
-#: ../lib/engine/gui/gtk-frontend/call-window.cpp:1720
-#: ../lib/engine/gui/gtk-frontend/call-window.cpp:2013
+#: ../lib/engine/gui/gtk-frontend/call-window.cpp:1729
+#: ../lib/engine/gui/gtk-frontend/call-window.cpp:2022
 msgid "Suspend _Video"
 msgstr "ভিডিঅ' সাময়িক বন্ধ (_ভ)"
 
-#: ../lib/engine/gui/gtk-frontend/call-window.cpp:1722
+#: ../lib/engine/gui/gtk-frontend/call-window.cpp:1731
 msgid "Resume _Audio"
 msgstr "অডিঅ' পুনৰায় চালু (_অ)"
 
-#: ../lib/engine/gui/gtk-frontend/call-window.cpp:1724
+#: ../lib/engine/gui/gtk-frontend/call-window.cpp:1733
 msgid "Resume _Video"
 msgstr "ভিডিঅ' পুনৰায় চালু (_ভ)"
 
-#: ../lib/engine/gui/gtk-frontend/call-window.cpp:1758
+#: ../lib/engine/gui/gtk-frontend/call-window.cpp:1767
 msgid "Video Settings"
 msgstr "ভিডিঅ' মানসমূহ (_ভ)"
 
-#: ../lib/engine/gui/gtk-frontend/call-window.cpp:1783
+#: ../lib/engine/gui/gtk-frontend/call-window.cpp:1792
 msgid "Adjust brightness"
 msgstr "ঔজ্জ্বল্যে মাত্ৰা নিয়ন্ত্ৰণ"
 
-#: ../lib/engine/gui/gtk-frontend/call-window.cpp:1802
+#: ../lib/engine/gui/gtk-frontend/call-window.cpp:1811
 msgid "Adjust whiteness"
 msgstr "শ্বত মাত্ৰা নিয়ন্ত্ৰণ"
 
-#: ../lib/engine/gui/gtk-frontend/call-window.cpp:1821
+#: ../lib/engine/gui/gtk-frontend/call-window.cpp:1830
 msgid "Adjust color"
 msgstr "ৰংয়েৰ মাত্ৰা নিয়ন্ত্ৰণ"
 
-#: ../lib/engine/gui/gtk-frontend/call-window.cpp:1840
+#: ../lib/engine/gui/gtk-frontend/call-window.cpp:1849
 msgid "Adjust contrast"
 msgstr "ৰংয়েৰ অসামন্জস্যতা নিয়ন্ত্ৰণ"
 
-#: ../lib/engine/gui/gtk-frontend/call-window.cpp:1882
+#: ../lib/engine/gui/gtk-frontend/call-window.cpp:1891
 msgid "Audio Settings"
 msgstr "অডিঅ' মানসমূহ (_অ)"
 
-#: ../lib/engine/gui/gtk-frontend/call-window.cpp:1984
+#: ../lib/engine/gui/gtk-frontend/call-window.cpp:1993
 msgid "_Call"
 msgstr "কল (_C)"
 
-#: ../lib/engine/gui/gtk-frontend/call-window.cpp:1986
+#: ../lib/engine/gui/gtk-frontend/call-window.cpp:1995
 msgid "_Pick up"
 msgstr "পিক আপ (_P)"
 
-#: ../lib/engine/gui/gtk-frontend/call-window.cpp:1986
-#: ../lib/engine/gui/gtk-frontend/call-window.cpp:2403
+#: ../lib/engine/gui/gtk-frontend/call-window.cpp:1995
+#: ../lib/engine/gui/gtk-frontend/call-window.cpp:2412
 msgid "Pick up the current call"
 msgstr "বৰ্তমান কল ধৰক"
 
-#: ../lib/engine/gui/gtk-frontend/call-window.cpp:1990
+#: ../lib/engine/gui/gtk-frontend/call-window.cpp:1999
 msgid "_Hang up"
 msgstr "কল কাটক (_H)"
 
-#: ../lib/engine/gui/gtk-frontend/call-window.cpp:1990
-#: ../lib/engine/gui/gtk-frontend/call-window.cpp:2419
+#: ../lib/engine/gui/gtk-frontend/call-window.cpp:1999
+#: ../lib/engine/gui/gtk-frontend/call-window.cpp:2428
 msgid "Hang up the current call"
 msgstr "বৰ্তমান কল কাটক"
 
-#: ../lib/engine/gui/gtk-frontend/call-window.cpp:1996
-#: ../lib/engine/gui/gtk-frontend/call-window.cpp:2486
+#: ../lib/engine/gui/gtk-frontend/call-window.cpp:2005
+#: ../lib/engine/gui/gtk-frontend/call-window.cpp:2495
 msgid "Hold the current call"
 msgstr "বৰ্তমান কলটিকে না কেটে সাময়িক ভাবে স্থগিত ৰাখা"
 
-#: ../lib/engine/gui/gtk-frontend/call-window.cpp:2000
+#: ../lib/engine/gui/gtk-frontend/call-window.cpp:2009
 msgid "_Transfer Call"
 msgstr "কল স্থানান্তৰ (_স)"
 
-#: ../lib/engine/gui/gtk-frontend/call-window.cpp:2001
+#: ../lib/engine/gui/gtk-frontend/call-window.cpp:2010
 msgid "Transfer the current call"
 msgstr "বৰ্তমান কলটিকে স্থানান্তৰ কৰা"
 
-#: ../lib/engine/gui/gtk-frontend/call-window.cpp:2009
+#: ../lib/engine/gui/gtk-frontend/call-window.cpp:2018
 msgid "Suspend or resume the audio transmission"
 msgstr "অডিঅ' প্ৰেৰণ সাময়িক ভাবে স্থগিত ৰাখা বা পুনৰায় চালু কৰা"
 
-#: ../lib/engine/gui/gtk-frontend/call-window.cpp:2014
+#: ../lib/engine/gui/gtk-frontend/call-window.cpp:2023
 msgid "Suspend or resume the video transmission"
 msgstr "ভিডিঅ' প্ৰেৰণ সাময়িক ভাবে স্থগিত ৰাখা বা পুনৰায় চালু কৰা"
 
-#: ../lib/engine/gui/gtk-frontend/call-window.cpp:2021
+#: ../lib/engine/gui/gtk-frontend/call-window.cpp:2030
 #: ../src/gui/main_window.cpp:1312
 msgid "Close the Ekiga window"
 msgstr "Ekiga সম্বন্ধে (_স)"
 
-#: ../lib/engine/gui/gtk-frontend/call-window.cpp:2026
+#: ../lib/engine/gui/gtk-frontend/call-window.cpp:2035
 #: ../src/gui/main_window.cpp:1345
 msgid "_View"
 msgstr "দৃশ্য (_দ)"
 
-#: ../lib/engine/gui/gtk-frontend/call-window.cpp:2028
+#: ../lib/engine/gui/gtk-frontend/call-window.cpp:2037
 msgid "_Local Video"
 msgstr "স্থানীয় ভিডিঅ'"
 
-#: ../lib/engine/gui/gtk-frontend/call-window.cpp:2029
+#: ../lib/engine/gui/gtk-frontend/call-window.cpp:2038
 msgid "Local video image"
 msgstr "স্থানীয় ভিডিঅ' ছবি"
 
-#: ../lib/engine/gui/gtk-frontend/call-window.cpp:2033
+#: ../lib/engine/gui/gtk-frontend/call-window.cpp:2042
 msgid "_Remote Video"
 msgstr "দূৰবৰ্তী ভিডিঅ'"
 
-#: ../lib/engine/gui/gtk-frontend/call-window.cpp:2034
+#: ../lib/engine/gui/gtk-frontend/call-window.cpp:2043
 msgid "Remote video image"
 msgstr "দূৰবৰ্তী ভিডিঅ' ছবি"
 
-#: ../lib/engine/gui/gtk-frontend/call-window.cpp:2038
+#: ../lib/engine/gui/gtk-frontend/call-window.cpp:2047
 msgid "_Picture-in-Picture"
 msgstr "বৰ্তমান ছবি সংৰক্ষন (_স)"
 
-#: ../lib/engine/gui/gtk-frontend/call-window.cpp:2039
+#: ../lib/engine/gui/gtk-frontend/call-window.cpp:2048
 msgid "Both video images"
 msgstr "দুটি ভিডিঅ'ৰ ক্ষেত্ৰতই"
 
-#: ../lib/engine/gui/gtk-frontend/call-window.cpp:2043
-msgid "_Extended Video"
-msgstr "সম্প্ৰসাৰিত ভিডিঅ' (_E)"
-
-#: ../lib/engine/gui/gtk-frontend/call-window.cpp:2044
-msgid "Extended Video Images"
-msgstr "সম্প্ৰসাৰিত ভিডিঅ' ছবিসমূহ"
-
-#: ../lib/engine/gui/gtk-frontend/call-window.cpp:2050
+#: ../lib/engine/gui/gtk-frontend/call-window.cpp:2054
 msgid "Zoom in"
 msgstr "বড় কৰে দেখুৱা হ'ব"
 
-#: ../lib/engine/gui/gtk-frontend/call-window.cpp:2054
+#: ../lib/engine/gui/gtk-frontend/call-window.cpp:2058
 msgid "Zoom out"
 msgstr "ছোট কৰে দেখুৱা হ'ব"
 
-#: ../lib/engine/gui/gtk-frontend/call-window.cpp:2058
+#: ../lib/engine/gui/gtk-frontend/call-window.cpp:2062
 msgid "Normal size"
 msgstr "সাধাৰণ আকাৰে দেখুৱা হ'ব"
 
-#: ../lib/engine/gui/gtk-frontend/call-window.cpp:2062
+#: ../lib/engine/gui/gtk-frontend/call-window.cpp:2066
 msgid "_Fullscreen"
 msgstr "পুৰো স্ক্ৰীন জুড়ে"
 
-#: ../lib/engine/gui/gtk-frontend/call-window.cpp:2062
+#: ../lib/engine/gui/gtk-frontend/call-window.cpp:2066
 msgid "Switch to fullscreen"
 msgstr "পুৰো স্ক্ৰীন জুড়ে দেখাওক"
 
-#: ../lib/engine/gui/gtk-frontend/call-window.cpp:2177
+#: ../lib/engine/gui/gtk-frontend/call-window.cpp:2181
 msgid "Transfer call to:"
 msgstr "Transfer call to:"
 
-#: ../lib/engine/gui/gtk-frontend/call-window.cpp:2447
+#: ../lib/engine/gui/gtk-frontend/call-window.cpp:2456
 msgid "Change the volume of your soundcard"
 msgstr "সাউন্ডকাৰ্ডেৰ শব্দেৰ মাত্ৰা পৰিবৰ্তন কৰক"
 
-#: ../lib/engine/gui/gtk-frontend/call-window.cpp:2467
+#: ../lib/engine/gui/gtk-frontend/call-window.cpp:2476
 msgid "Change the color settings of your video device"
 msgstr "ভিডিঅ' যন্ত্ৰেৰ ৰঙেৰ বৈশিষ্ট্য পৰিবৰ্তন কৰক"
 
@@ -3316,7 +3329,6 @@ msgstr ""
 "কৰক"
 
 #: ../plugins/resource-list/rl-cluster.cpp:102
-#| msgid "Add new resource-list"
 msgid "Add resource list"
 msgstr "সম্পদ তালিকা যোগ কৰক"
 
@@ -3846,6 +3858,12 @@ msgstr "স্বনিৰ্ধাৰিত বাৰ্তা মুছে ফ
 #: ../src/gui/statusmenu.cpp:685
 msgid "Define a custom message:"
 msgstr "এটা স্বনিৰ্ধাৰিত বাৰ্তা নিৰ্ধাৰণ কৰক:"
+
+#~ msgid "_Extended Video"
+#~ msgstr "সম্প্ৰসাৰিত ভিডিঅ' (_E)"
+
+#~ msgid "Extended Video Images"
+#~ msgstr "সম্প্ৰসাৰিত ভিডিঅ' ছবিসমূহ"
 
 #~ msgid "New resource list"
 #~ msgstr "নতুন সম্পদৰ তালিকা"
