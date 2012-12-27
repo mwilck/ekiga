@@ -213,4 +213,14 @@ gnomemeeting_conf_upgrade ()
     g_slist_free (old_values);
     gm_conf_set_string_list (PERSONAL_DATA_KEY "dnd_custom_status", NULL);
   }
+
+  // migrate first port in UDP port ranges from 5060 to 5061, see bug #690621
+  if (version >= 0 && version <= 4000) {
+    gchar *ports = gm_conf_get_string (PORTS_KEY "udp_port_range");
+    if (ports && !strncmp (ports, "5060", 4)) {
+      ports[3] = '1';
+      gm_conf_set_string (PORTS_KEY "udp_port_range", ports);
+    }
+    g_free (ports);
+  }
 }
