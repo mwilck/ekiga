@@ -151,6 +151,9 @@ ekiga_dialpad_init (EkigaDialpad *dialpad)
   gtk_table_set_row_spacings (GTK_TABLE (dialpad), 2);
   gtk_table_set_homogeneous (GTK_TABLE (dialpad), TRUE);
 
+  // the dialpad is LTR even for RTL languages
+  gtk_widget_set_direction (dialpad, GTK_TEXT_DIR_LTR);
+
   /* Create the buttons */
   for (i = 0; i < G_N_ELEMENTS (keys_info); i++) {
     GtkWidget *box;
