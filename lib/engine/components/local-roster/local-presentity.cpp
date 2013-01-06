@@ -55,12 +55,9 @@ canonize_uri (std::string uri)
   const size_t end_str = uri.find_last_not_of (" \t");
   const size_t range = end_str - begin_str + 1;
   uri = uri.substr (begin_str, range);
-  size_t pos = uri.find (":");
+  const size_t pos = uri.find (":");
   if (pos == std::string::npos)
     uri = uri.insert (0, "sip:");
-  pos = uri.find ("@");
-  if (pos == std::string::npos)
-    uri = uri + "@ekiga.net";
   return uri;
 }
 
