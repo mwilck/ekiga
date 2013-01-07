@@ -242,9 +242,9 @@ Local::Heap::new_presentity (const std::string name,
 
       request->hidden ("good-uri", "no");
       if ( !uri.empty ())
-        request->text ("uri", _("Address:"), uri, _("Address, e.g. sip:xyz@ekiga.net; if you do not precise the host part, e.g. sip:xyz, then you can choose it by right-clicking on the contact in roster"));
+        request->text ("uri", _("Address:"), uri, _("Address, e.g. sip:xyz@ekiga.net; if you do not specify the host part, e.g. sip:xyz, then you can choose it by right-clicking on the contact in roster"));
       else
-        request->text ("uri", _("Address:"), "sip:", _("Address, e.g. sip:xyz@ekiga.net; if you do not precise the host part, e.g. sip:xyz, then you can choose it by right-clicking on the contact in roster")); // let's put a default
+        request->text ("uri", _("Address:"), "sip:", _("Address, e.g. sip:xyz@ekiga.net; if you do not specify the host part, e.g. sip:xyz, then you can choose it by right-clicking on the contact in roster")); // let's put a default
     }
 
     request->editable_set ("groups",
