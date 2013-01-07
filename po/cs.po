@@ -17,8 +17,8 @@ msgstr ""
 "Project-Id-Version: ekiga\n"
 "Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?"
 "product=ekiga&keywords=I18N+L10N&component=general\n"
-"POT-Creation-Date: 2012-12-26 19:11+0000\n"
-"PO-Revision-Date: 2013-01-05 11:07+0100\n"
+"POT-Creation-Date: 2013-01-07 22:26+0000\n"
+"PO-Revision-Date: 2013-01-07 23:29+0100\n"
 "Last-Translator: Marek Černocký <marek@manet.cz>\n"
 "Language-Team: čeština <gnome-cs-list@gnome.org>\n"
 "Language: cs\n"
@@ -831,8 +831,8 @@ msgid ""
 "Automatically reject or forward incoming calls if no answer is given after "
 "the specified amount of time (in seconds)"
 msgstr ""
-"Automaticky odmítat nebo přesměrovat příchozí hovory, pokud nejsou zodpovězeny "
-"v určené době (v sekundách)"
+"Automaticky odmítat nebo přesměrovat příchozí hovory, pokud nejsou "
+"zodpovězeny v určené době (v sekundách)"
 
 #: ../ekiga.schemas.in.in.h:148
 msgid "Automatic answer"
@@ -973,7 +973,7 @@ msgstr ""
 
 #: ../lib/engine/components/local-roster/local-heap.cpp:236
 #: ../lib/engine/components/local-roster/local-heap.cpp:427
-#: ../lib/engine/components/local-roster/local-presentity.cpp:273
+#: ../lib/engine/components/local-roster/local-presentity.cpp:270
 #: ../lib/engine/components/opal/opal-account.cpp:452
 #: ../plugins/evolution/evolution-contact.cpp:324
 #: ../plugins/loudmouth/loudmouth-account.cpp:342
@@ -987,14 +987,14 @@ msgid "Name:"
 msgstr "Jméno:"
 
 #: ../lib/engine/components/local-roster/local-heap.cpp:236
-#: ../lib/engine/components/local-roster/local-presentity.cpp:273
+#: ../lib/engine/components/local-roster/local-presentity.cpp:270
 #: ../plugins/loudmouth/loudmouth-heap-roster.cpp:338
 msgid "Name of the contact, as shown in your roster"
 msgstr "Jméno kontaktu, jak je zobrazeno ve vašem seznamu"
 
 #: ../lib/engine/components/local-roster/local-heap.cpp:245
 #: ../lib/engine/components/local-roster/local-heap.cpp:247
-#: ../lib/engine/components/local-roster/local-presentity.cpp:274
+#: ../lib/engine/components/local-roster/local-presentity.cpp:271
 #: ../plugins/resource-list/rl-cluster.cpp:170
 #: ../plugins/resource-list/rl-heap.cpp:527
 #: ../plugins/resource-list/rl-presentity.cpp:234
@@ -1003,9 +1003,14 @@ msgstr "Adresa:"
 
 #: ../lib/engine/components/local-roster/local-heap.cpp:245
 #: ../lib/engine/components/local-roster/local-heap.cpp:247
-#: ../lib/engine/components/local-roster/local-presentity.cpp:274
-msgid "Address, e.g. sip:xyz@ekiga.net"
-msgstr "Adresa, např. sip:xyz@ekiga.net"
+#: ../lib/engine/components/local-roster/local-presentity.cpp:271
+msgid ""
+"Address, e.g. sip:xyz@ekiga.net; if you do not specify the host part, e.g. "
+"sip:xyz, then you can choose it by right-clicking on the contact in roster"
+msgstr ""
+"Adresa, např. sip:xyz@ekiga.net; pokud nezadáte část s názvem počítače, "
+"např. sip:xyz, můžete ji pak zvolit kliknutím pravým tlačítkem na kontaktu v "
+"seznamu."
 
 #: ../lib/engine/components/local-roster/local-heap.cpp:251
 #: ../plugins/loudmouth/loudmouth-heap-roster.cpp:340
@@ -1028,7 +1033,7 @@ msgstr "Přejmenovat skupinu"
 msgid "Please edit this group name"
 msgstr "Upravte prosím název této skupiny"
 
-#: ../lib/engine/components/local-roster/local-presentity.cpp:141
+#: ../lib/engine/components/local-roster/local-presentity.cpp:138
 #: ../plugins/resource-list/rl-entry.cpp:141
 #: ../plugins/resource-list/rl-heap.cpp:102
 #: ../plugins/resource-list/rl-heap.cpp:144
@@ -1037,7 +1042,7 @@ msgstr "Upravte prosím název této skupiny"
 msgid "Unnamed"
 msgstr "Nepojmenovaný"
 
-#: ../lib/engine/components/local-roster/local-presentity.cpp:243
+#: ../lib/engine/components/local-roster/local-presentity.cpp:240
 #: ../lib/engine/components/opal/opal-account.cpp:407
 #: ../plugins/evolution/evolution-contact.cpp:228
 #: ../plugins/loudmouth/loudmouth-presentity.cpp:169
@@ -1046,7 +1051,7 @@ msgstr "Nepojmenovaný"
 msgid "_Edit"
 msgstr "_Upravit"
 
-#: ../lib/engine/components/local-roster/local-presentity.cpp:245
+#: ../lib/engine/components/local-roster/local-presentity.cpp:242
 #: ../lib/engine/components/opal/opal-account.cpp:409
 #: ../lib/engine/gui/gtk-frontend/accounts-window.cpp:683
 #: ../plugins/evolution/evolution-contact.cpp:230
@@ -1056,12 +1061,12 @@ msgstr "_Upravit"
 msgid "_Remove"
 msgstr "_Odstranit"
 
-#: ../lib/engine/components/local-roster/local-presentity.cpp:270
+#: ../lib/engine/components/local-roster/local-presentity.cpp:267
 #: ../plugins/loudmouth/loudmouth-presentity.cpp:281
 msgid "Edit roster element"
 msgstr "Změnit prvek seznamu"
 
-#: ../lib/engine/components/local-roster/local-presentity.cpp:271
+#: ../lib/engine/components/local-roster/local-presentity.cpp:268
 msgid ""
 "Please fill in this form to change an existing element of ekiga's internal "
 "roster"
@@ -1069,11 +1074,11 @@ msgstr ""
 "Vyplňte prosím tento formulář pro změnu existujícího prvku interního seznamu "
 "Ekiga"
 
-#: ../lib/engine/components/local-roster/local-presentity.cpp:275
+#: ../lib/engine/components/local-roster/local-presentity.cpp:272
 msgid "Is a preferred contact"
 msgstr "Je upřednostňovaný kontakt"
 
-#: ../lib/engine/components/local-roster/local-presentity.cpp:277
+#: ../lib/engine/components/local-roster/local-presentity.cpp:274
 #: ../plugins/loudmouth/loudmouth-presentity.cpp:286
 #: ../plugins/resource-list/rl-heap.cpp:528
 #: ../plugins/resource-list/rl-presentity.cpp:236
