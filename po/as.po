@@ -5,14 +5,14 @@
 # Amitakhya Phukan <aphukan@redhat.com>, 2008.
 # Amitakhya Phukan <amitakhya@svn.gnome.org>, 2008.
 # Amitakhya Phukan <aphukan@fedoraproject.org>, 2009.
-# Nilamdyuti Goswami <ngoswami@redhat.com>, 2011, 2012.
+# Nilamdyuti Goswami <ngoswami@redhat.com>, 2011, 2012, 2013.
 msgid ""
 msgstr ""
 "Project-Id-Version: as\n"
 "Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?"
 "product=ekiga&keywords=I18N+L10N&component=general\n"
-"POT-Creation-Date: 2012-12-26 19:11+0000\n"
-"PO-Revision-Date: 2012-12-27 20:50+0530\n"
+"POT-Creation-Date: 2013-01-07 08:35+0000\n"
+"PO-Revision-Date: 2013-01-07 17:48+0530\n"
 "Last-Translator: Nilamdyuti Goswami <ngoswami@redhat.com>\n"
 "Language-Team: Assamese <kde-i18n-doc@kde.org>\n"
 "Language: as\n"
@@ -607,12 +607,10 @@ msgid "Size of the preferences window"
 msgstr "দূৰবৰ্তী ভিডিঅ' উইন্ডোৰ প্ৰস্ত"
 
 #: ../ekiga.schemas.in.in.h:108
-#| msgid "Position on the screen of the main window"
 msgid "Position on the screen of the accounts window"
 msgstr "একাওন্টসমূহ উইন্ডোৰ পৰ্দাত অৱস্থান"
 
 #: ../ekiga.schemas.in.in.h:109
-#| msgid "Size of the chat window"
 msgid "Size of the accounts window"
 msgstr "একাওন্টসমূহ উইন্ডোৰ আকাৰ"
 
@@ -671,15 +669,13 @@ msgstr ""
 "২.০০)"
 
 #: ../ekiga.schemas.in.in.h:118
-#| msgid ""
-#| "The zoom value in percent to apply to images displayed in the main GUI "
-#| "(can be 50, 100, or 200)"
 msgid ""
 "The zoom value in percent to apply to images displayed in the extended GUI "
 "(can be 50, 100, or 200)"
 msgstr ""
-"প্ৰসাৰিত GUI ত প্ৰদৰ্শিত ছবিসমূহত প্ৰয়োগ কৰিবলে শতাংশত জুমৰ মান "
-"(৫০, ১০০ অথবা ২০০ হব পাৰে)"
+"প্ৰসাৰিত GUI ত প্ৰদৰ্শিত ছবিসমূহত প্ৰয়োগ কৰিবলে শতাংশত জুমৰ মান (৫০, ১০০ অথবা "
+"২০০ "
+"হব পাৰে)"
 
 #: ../ekiga.schemas.in.in.h:119
 #: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:477
@@ -975,7 +971,7 @@ msgstr ""
 
 #: ../lib/engine/components/local-roster/local-heap.cpp:236
 #: ../lib/engine/components/local-roster/local-heap.cpp:427
-#: ../lib/engine/components/local-roster/local-presentity.cpp:273
+#: ../lib/engine/components/local-roster/local-presentity.cpp:270
 #: ../lib/engine/components/opal/opal-account.cpp:452
 #: ../plugins/evolution/evolution-contact.cpp:324
 #: ../plugins/loudmouth/loudmouth-account.cpp:342
@@ -989,14 +985,14 @@ msgid "Name:"
 msgstr "নাম:"
 
 #: ../lib/engine/components/local-roster/local-heap.cpp:236
-#: ../lib/engine/components/local-roster/local-presentity.cpp:273
+#: ../lib/engine/components/local-roster/local-presentity.cpp:270
 #: ../plugins/loudmouth/loudmouth-heap-roster.cpp:338
 msgid "Name of the contact, as shown in your roster"
 msgstr "ৰস্টাৰত দেখুৱা ধৰণে পৰিচয়ৰ নাম"
 
 #: ../lib/engine/components/local-roster/local-heap.cpp:245
 #: ../lib/engine/components/local-roster/local-heap.cpp:247
-#: ../lib/engine/components/local-roster/local-presentity.cpp:274
+#: ../lib/engine/components/local-roster/local-presentity.cpp:271
 #: ../plugins/resource-list/rl-cluster.cpp:170
 #: ../plugins/resource-list/rl-heap.cpp:527
 #: ../plugins/resource-list/rl-presentity.cpp:234
@@ -1005,9 +1001,14 @@ msgstr "ঠিকনাৰ খাতা (_খ)"
 
 #: ../lib/engine/components/local-roster/local-heap.cpp:245
 #: ../lib/engine/components/local-roster/local-heap.cpp:247
-#: ../lib/engine/components/local-roster/local-presentity.cpp:274
-msgid "Address, e.g. sip:xyz@ekiga.net"
-msgstr "ঠিকনা, উদাহৰণস্বৰুপে sip:xyz@ekiga.net"
+#: ../lib/engine/components/local-roster/local-presentity.cpp:271
+msgid ""
+"Address, e.g. sip:xyz@ekiga.net; if you do not specify the host part, e.g. "
+"sip:xyz, then you can choose it by right-clicking on the contact in roster"
+msgstr ""
+"ঠিকনা, উদাহৰণস্বৰূপ sip:xyz@ekiga.net; যদি আপুনি হস্ট অংশ ধাৰ্য্য নকৰে, "
+"উদাহৰণস্বৰূপ "
+"sip:xyz, তেন্তে আপুনি ইয়াক ৰচটাৰত পৰিচয়ত ৰাইট-ক্লিক কৰি বাছিব পাৰিব"
 
 #: ../lib/engine/components/local-roster/local-heap.cpp:251
 #: ../plugins/loudmouth/loudmouth-heap-roster.cpp:340
@@ -1030,7 +1031,7 @@ msgstr "নতুন গোষ্ঠী"
 msgid "Please edit this group name"
 msgstr "আপোনাৰ এ-মেইল ঠিকনা লিখক"
 
-#: ../lib/engine/components/local-roster/local-presentity.cpp:141
+#: ../lib/engine/components/local-roster/local-presentity.cpp:138
 #: ../plugins/resource-list/rl-entry.cpp:141
 #: ../plugins/resource-list/rl-heap.cpp:102
 #: ../plugins/resource-list/rl-heap.cpp:144
@@ -1039,7 +1040,7 @@ msgstr "আপোনাৰ এ-মেইল ঠিকনা লিখক"
 msgid "Unnamed"
 msgstr "নামহীন"
 
-#: ../lib/engine/components/local-roster/local-presentity.cpp:243
+#: ../lib/engine/components/local-roster/local-presentity.cpp:240
 #: ../lib/engine/components/opal/opal-account.cpp:407
 #: ../plugins/evolution/evolution-contact.cpp:228
 #: ../plugins/loudmouth/loudmouth-presentity.cpp:169
@@ -1048,7 +1049,7 @@ msgstr "নামহীন"
 msgid "_Edit"
 msgstr "সম্পাদন (_ম)"
 
-#: ../lib/engine/components/local-roster/local-presentity.cpp:245
+#: ../lib/engine/components/local-roster/local-presentity.cpp:242
 #: ../lib/engine/components/opal/opal-account.cpp:409
 #: ../lib/engine/gui/gtk-frontend/accounts-window.cpp:683
 #: ../plugins/evolution/evolution-contact.cpp:230
@@ -1058,12 +1059,12 @@ msgstr "সম্পাদন (_ম)"
 msgid "_Remove"
 msgstr "পদবী (_প):"
 
-#: ../lib/engine/components/local-roster/local-presentity.cpp:270
+#: ../lib/engine/components/local-roster/local-presentity.cpp:267
 #: ../plugins/loudmouth/loudmouth-presentity.cpp:281
 msgid "Edit roster element"
 msgstr "ৰস্টাৰেৰ বস্তু সম্পাদন কৰক"
 
-#: ../lib/engine/components/local-roster/local-presentity.cpp:271
+#: ../lib/engine/components/local-roster/local-presentity.cpp:268
 msgid ""
 "Please fill in this form to change an existing element of ekiga's internal "
 "roster"
@@ -1071,11 +1072,11 @@ msgstr ""
 "Please fill in this form to change an existing element of ekiga's internal "
 "roster"
 
-#: ../lib/engine/components/local-roster/local-presentity.cpp:275
+#: ../lib/engine/components/local-roster/local-presentity.cpp:272
 msgid "Is a preferred contact"
 msgstr "এটা পছন্দৰ পৰিচয় হয়"
 
-#: ../lib/engine/components/local-roster/local-presentity.cpp:277
+#: ../lib/engine/components/local-roster/local-presentity.cpp:274
 #: ../plugins/loudmouth/loudmouth-presentity.cpp:286
 #: ../plugins/resource-list/rl-heap.cpp:528
 #: ../plugins/resource-list/rl-presentity.cpp:236
@@ -3858,6 +3859,9 @@ msgstr "স্বনিৰ্ধাৰিত বাৰ্তা মুছে ফ
 #: ../src/gui/statusmenu.cpp:685
 msgid "Define a custom message:"
 msgstr "এটা স্বনিৰ্ধাৰিত বাৰ্তা নিৰ্ধাৰণ কৰক:"
+
+#~ msgid "Address, e.g. sip:xyz@ekiga.net"
+#~ msgstr "ঠিকনা, উদাহৰণস্বৰুপে sip:xyz@ekiga.net"
 
 #~ msgid "_Extended Video"
 #~ msgstr "সম্প্ৰসাৰিত ভিডিঅ' (_E)"
