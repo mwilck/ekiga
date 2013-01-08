@@ -11,8 +11,8 @@ msgstr ""
 "Project-Id-Version: ekiga\n"
 "Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?product=ekiga&"
 "keywords=I18N+L10N&component=general\n"
-"POT-Creation-Date: 2012-12-26 19:11+0000\n"
-"PO-Revision-Date: 2013-01-04 22:17+0200\n"
+"POT-Creation-Date: 2013-01-07 08:35+0000\n"
+"PO-Revision-Date: 2013-01-08 19:48+0200\n"
 "Last-Translator: Miroslav Nikolić <miroslavnikolic@rocketmail.com>\n"
 "Language-Team: Serbian <gnom@prevod.org>\n"
 "Language: sr\n"
@@ -603,12 +603,10 @@ msgid "Size of the preferences window"
 msgstr "Veličina prozora postavki"
 
 #: ../ekiga.schemas.in.in.h:108
-#| msgid "Position on the screen of the main window"
 msgid "Position on the screen of the accounts window"
 msgstr "Položaj prozora za naloge na ekranu"
 
 #: ../ekiga.schemas.in.in.h:109
-#| msgid "Size of the chat window"
 msgid "Size of the accounts window"
 msgstr "Veličina prozora za naloge"
 
@@ -665,9 +663,6 @@ msgstr ""
 "100 ili 200)"
 
 #: ../ekiga.schemas.in.in.h:118
-#| msgid ""
-#| "The zoom value in percent to apply to images displayed in the main GUI "
-#| "(can be 50, 100, or 200)"
 msgid ""
 "The zoom value in percent to apply to images displayed in the extended GUI "
 "(can be 50, 100, or 200)"
@@ -972,7 +967,7 @@ msgstr ""
 
 #: ../lib/engine/components/local-roster/local-heap.cpp:236
 #: ../lib/engine/components/local-roster/local-heap.cpp:427
-#: ../lib/engine/components/local-roster/local-presentity.cpp:273
+#: ../lib/engine/components/local-roster/local-presentity.cpp:270
 #: ../lib/engine/components/opal/opal-account.cpp:452
 #: ../plugins/evolution/evolution-contact.cpp:324
 #: ../plugins/loudmouth/loudmouth-account.cpp:342
@@ -986,14 +981,14 @@ msgid "Name:"
 msgstr "Ime:"
 
 #: ../lib/engine/components/local-roster/local-heap.cpp:236
-#: ../lib/engine/components/local-roster/local-presentity.cpp:273
+#: ../lib/engine/components/local-roster/local-presentity.cpp:270
 #: ../plugins/loudmouth/loudmouth-heap-roster.cpp:338
 msgid "Name of the contact, as shown in your roster"
 msgstr "Ime kontakta, kako će biti prikazan na spisku"
 
 #: ../lib/engine/components/local-roster/local-heap.cpp:245
 #: ../lib/engine/components/local-roster/local-heap.cpp:247
-#: ../lib/engine/components/local-roster/local-presentity.cpp:274
+#: ../lib/engine/components/local-roster/local-presentity.cpp:271
 #: ../plugins/resource-list/rl-cluster.cpp:170
 #: ../plugins/resource-list/rl-heap.cpp:527
 #: ../plugins/resource-list/rl-presentity.cpp:234
@@ -1002,9 +997,13 @@ msgstr "Adresa:"
 
 #: ../lib/engine/components/local-roster/local-heap.cpp:245
 #: ../lib/engine/components/local-roster/local-heap.cpp:247
-#: ../lib/engine/components/local-roster/local-presentity.cpp:274
-msgid "Address, e.g. sip:xyz@ekiga.net"
-msgstr "Adresa, npr. sip:xyz@ekiga.net"
+#: ../lib/engine/components/local-roster/local-presentity.cpp:271
+msgid ""
+"Address, e.g. sip:xyz@ekiga.net; if you do not specify the host part, e.g. "
+"sip:xyz, then you can choose it by right-clicking on the contact in roster"
+msgstr ""
+"Adresa, npr. „sip:xyz@ekiga.net“; ako ne navedete domaćina, npr. „sip:xyz“, "
+"onda ga možete izabrati desnim klikom na kontakt u rednom spisku"
 
 #: ../lib/engine/components/local-roster/local-heap.cpp:251
 #: ../plugins/loudmouth/loudmouth-heap-roster.cpp:340
@@ -1027,7 +1026,7 @@ msgstr "Preimenuj grupu"
 msgid "Please edit this group name"
 msgstr "Izmenite naziv ove grupe"
 
-#: ../lib/engine/components/local-roster/local-presentity.cpp:141
+#: ../lib/engine/components/local-roster/local-presentity.cpp:138
 #: ../plugins/resource-list/rl-entry.cpp:141
 #: ../plugins/resource-list/rl-heap.cpp:102
 #: ../plugins/resource-list/rl-heap.cpp:144
@@ -1036,7 +1035,7 @@ msgstr "Izmenite naziv ove grupe"
 msgid "Unnamed"
 msgstr "Neimenovano"
 
-#: ../lib/engine/components/local-roster/local-presentity.cpp:243
+#: ../lib/engine/components/local-roster/local-presentity.cpp:240
 #: ../lib/engine/components/opal/opal-account.cpp:407
 #: ../plugins/evolution/evolution-contact.cpp:228
 #: ../plugins/loudmouth/loudmouth-presentity.cpp:169
@@ -1045,7 +1044,7 @@ msgstr "Neimenovano"
 msgid "_Edit"
 msgstr "_Uređivanje"
 
-#: ../lib/engine/components/local-roster/local-presentity.cpp:245
+#: ../lib/engine/components/local-roster/local-presentity.cpp:242
 #: ../lib/engine/components/opal/opal-account.cpp:409
 #: ../lib/engine/gui/gtk-frontend/accounts-window.cpp:683
 #: ../plugins/evolution/evolution-contact.cpp:230
@@ -1055,12 +1054,12 @@ msgstr "_Uređivanje"
 msgid "_Remove"
 msgstr "_Ukloni"
 
-#: ../lib/engine/components/local-roster/local-presentity.cpp:270
+#: ../lib/engine/components/local-roster/local-presentity.cpp:267
 #: ../plugins/loudmouth/loudmouth-presentity.cpp:281
 msgid "Edit roster element"
 msgstr "Izmeni elemente liste kontakata"
 
-#: ../lib/engine/components/local-roster/local-presentity.cpp:271
+#: ../lib/engine/components/local-roster/local-presentity.cpp:268
 msgid ""
 "Please fill in this form to change an existing element of ekiga's internal "
 "roster"
@@ -1068,11 +1067,11 @@ msgstr ""
 "Popunite ovaj formular da izmenite postojeći element Ekiginog unutrašnjeg "
 "spiska"
 
-#: ../lib/engine/components/local-roster/local-presentity.cpp:275
+#: ../lib/engine/components/local-roster/local-presentity.cpp:272
 msgid "Is a preferred contact"
 msgstr "Je omiljeni kontakt"
 
-#: ../lib/engine/components/local-roster/local-presentity.cpp:277
+#: ../lib/engine/components/local-roster/local-presentity.cpp:274
 #: ../plugins/loudmouth/loudmouth-presentity.cpp:286
 #: ../plugins/resource-list/rl-heap.cpp:528
 #: ../plugins/resource-list/rl-presentity.cpp:236
@@ -2154,7 +2153,6 @@ msgid "Pick up the current call"
 msgstr "Izaberite trenutni poziv"
 
 #: ../lib/engine/gui/gtk-frontend/call-window.cpp:1999
-#| msgid "_Hangup"
 msgid "_Hang up"
 msgstr "_Prekini"
 
@@ -2859,7 +2857,6 @@ msgstr[2] "%d korisnika je pronađeno"
 msgstr[3] "Jedan korisnik je pronađen"
 
 #: ../plugins/evolution/evolution-book.cpp:343
-#| msgid "A_dd Contact"
 msgid "Add Contact"
 msgstr "Dodaj kontakt"
 
@@ -3136,46 +3133,38 @@ msgstr "Prihvati"
 
 #: ../plugins/loudmouth/loudmouth-account.cpp:112
 #: ../plugins/loudmouth/loudmouth-account.cpp:159
-#| msgid "inactive"
 msgid "Inactive"
 msgstr "Neaktivan"
 
 #: ../plugins/loudmouth/loudmouth-account.cpp:238
 #, c-format
-#| msgid "Could not connect to server"
 msgid "Could not connect (%s)"
 msgstr "Ne mogu da se povežem (%s)"
 
 #  Connection type
 #: ../plugins/loudmouth/loudmouth-account.cpp:244
-#| msgid "connecting"
 msgid "Connecting..."
 msgstr "Povezujem se..."
 
 #: ../plugins/loudmouth/loudmouth-account.cpp:284
-#| msgid "authenticating"
 msgid "Authenticating..."
 msgstr "Potvrđujem identitet..."
 
 #. FIXME: can't we report better?
 #: ../plugins/loudmouth/loudmouth-account.cpp:294
-#| msgid "Could not connect to server"
 msgid "Could not connect"
 msgstr "Ne mogu da se povežem"
 
 #: ../plugins/loudmouth/loudmouth-account.cpp:304
-#| msgid "disconnected"
 msgid "Disconnected"
 msgstr "Veza je prekinuta"
 
 #: ../plugins/loudmouth/loudmouth-account.cpp:314
-#| msgid "connected"
 msgid "Connected"
 msgstr "Povezani ste"
 
 #. FIXME: can't we report something better?
 #: ../plugins/loudmouth/loudmouth-account.cpp:320
-#| msgid "Could not unregister"
 msgid "Could not authenticate"
 msgstr "Ne mogu da potvrdim identitet"
 
@@ -3334,7 +3323,6 @@ msgstr ""
 "kontakata"
 
 #: ../plugins/resource-list/rl-cluster.cpp:102
-#| msgid "Add new resource-list"
 msgid "Add resource list"
 msgstr "Dodaj spisak izvorišta"
 
@@ -3730,9 +3718,6 @@ msgid "Error"
 msgstr "Greška"
 
 #: ../src/gui/main_window.cpp:1176
-#| msgid ""
-#| "Enter a URI on the left, and click this button to place a call or to "
-#| "hangup"
 msgid ""
 "Enter a URI on the left, and click this button to place a call or to hang up"
 msgstr ""
@@ -3860,6 +3845,9 @@ msgstr "Izbriši proizvoljne poruke:"
 #: ../src/gui/statusmenu.cpp:685
 msgid "Define a custom message:"
 msgstr "Odredi proizvoljnu poruku:"
+
+#~ msgid "Address, e.g. sip:xyz@ekiga.net"
+#~ msgstr "Adresa, npr. sip:xyz@ekiga.net"
 
 #~| msgid "New _Contact"
 #~ msgid "_New Contact"
