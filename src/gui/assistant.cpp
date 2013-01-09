@@ -1010,7 +1010,7 @@ create_audio_devices_page (EkigaAssistant *assistant)
   g_object_set (G_OBJECT (renderer),
                 "ellipsize-set", TRUE,
                 "ellipsize", PANGO_ELLIPSIZE_END, 
-                "width-chars", 45, NULL);
+                "width-chars", 65, NULL);
   gtk_label_set_mnemonic_widget (GTK_LABEL (label), assistant->priv->audio_ringer);
   gtk_box_pack_start (GTK_BOX (vbox), assistant->priv->audio_ringer, FALSE, FALSE, 0);
 
@@ -1041,7 +1041,7 @@ create_audio_devices_page (EkigaAssistant *assistant)
   g_object_set (G_OBJECT (renderer),
                 "ellipsize-set", TRUE,
                 "ellipsize", PANGO_ELLIPSIZE_END,
-                "width-chars", 45, NULL);
+                "width-chars", 65, NULL);
   gtk_label_set_mnemonic_widget (GTK_LABEL (label), assistant->priv->audio_player);
   gtk_box_pack_start (GTK_BOX (vbox), assistant->priv->audio_player, FALSE, FALSE, 0);
 
@@ -1072,7 +1072,7 @@ create_audio_devices_page (EkigaAssistant *assistant)
   g_object_set (G_OBJECT (renderer),
                 "ellipsize-set", TRUE,
                 "ellipsize", PANGO_ELLIPSIZE_END,
-                "width-chars", 45, NULL);
+                "width-chars", 65, NULL);
   gtk_label_set_mnemonic_widget (GTK_LABEL (label), assistant->priv->audio_recorder);
   gtk_box_pack_start (GTK_BOX (vbox), assistant->priv->audio_recorder, FALSE, FALSE, 0);
 
@@ -1190,7 +1190,7 @@ create_video_devices_page (EkigaAssistant *assistant)
   g_object_set (G_OBJECT (renderer),
                 "ellipsize-set", TRUE,
                 "ellipsize", PANGO_ELLIPSIZE_END,
-                "width-chars", 45, NULL);
+                "width-chars", 65, NULL);
   gtk_label_set_mnemonic_widget (GTK_LABEL (label), assistant->priv->video_device);
   gtk_box_pack_start (GTK_BOX (vbox), assistant->priv->video_device, FALSE, FALSE, 0);
 
