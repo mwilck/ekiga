@@ -7,14 +7,14 @@
 # Zbigniew Chyla <chyla@alice.ci.pwr.wroc.pl>, 2002-2003.
 # Artur Flinta <aflinta@at.kernel.pl>, 2003-2006.
 # Tomasz Dominikowski <dominikowski@gmail.com>, 2007-2009.
-# Piotr Drąg <piotrdrag@gmail.com>, 2010-2012.
-# Aviary.pl <gnomepl@aviary.pl>, 2007-2012.
+# Piotr Drąg <piotrdrag@gmail.com>, 2010-2013.
+# Aviary.pl <gnomepl@aviary.pl>, 2007-2013.
 msgid ""
 msgstr ""
 "Project-Id-Version: ekiga\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2012-12-26 20:00+0100\n"
-"PO-Revision-Date: 2012-12-26 20:01+0100\n"
+"POT-Creation-Date: 2013-01-09 21:16+0100\n"
+"PO-Revision-Date: 2013-01-09 21:17+0100\n"
 "Last-Translator: Piotr Drąg <piotrdrag@gmail.com>\n"
 "Language-Team: Polish <gnomepl@aviary.pl>\n"
 "Language: pl\n"
@@ -971,7 +971,7 @@ msgstr ""
 
 #: ../lib/engine/components/local-roster/local-heap.cpp:236
 #: ../lib/engine/components/local-roster/local-heap.cpp:427
-#: ../lib/engine/components/local-roster/local-presentity.cpp:273
+#: ../lib/engine/components/local-roster/local-presentity.cpp:270
 #: ../lib/engine/components/opal/opal-account.cpp:452
 #: ../plugins/evolution/evolution-contact.cpp:324
 #: ../plugins/loudmouth/loudmouth-account.cpp:342
@@ -985,14 +985,14 @@ msgid "Name:"
 msgstr "Nazwa:"
 
 #: ../lib/engine/components/local-roster/local-heap.cpp:236
-#: ../lib/engine/components/local-roster/local-presentity.cpp:273
+#: ../lib/engine/components/local-roster/local-presentity.cpp:270
 #: ../plugins/loudmouth/loudmouth-heap-roster.cpp:338
 msgid "Name of the contact, as shown in your roster"
 msgstr "Nazwa kontaktu, tak jak wyświetlana na liście kontaktów"
 
 #: ../lib/engine/components/local-roster/local-heap.cpp:245
 #: ../lib/engine/components/local-roster/local-heap.cpp:247
-#: ../lib/engine/components/local-roster/local-presentity.cpp:274
+#: ../lib/engine/components/local-roster/local-presentity.cpp:271
 #: ../plugins/resource-list/rl-cluster.cpp:170
 #: ../plugins/resource-list/rl-heap.cpp:527
 #: ../plugins/resource-list/rl-presentity.cpp:234
@@ -1001,9 +1001,14 @@ msgstr "Adres:"
 
 #: ../lib/engine/components/local-roster/local-heap.cpp:245
 #: ../lib/engine/components/local-roster/local-heap.cpp:247
-#: ../lib/engine/components/local-roster/local-presentity.cpp:274
-msgid "Address, e.g. sip:xyz@ekiga.net"
-msgstr "Adres, np. sip:xyz@ekiga.net"
+#: ../lib/engine/components/local-roster/local-presentity.cpp:271
+msgid ""
+"Address, e.g. sip:xyz@ekiga.net; if you do not specify the host part, e.g. "
+"sip:xyz, then you can choose it by right-clicking on the contact in roster"
+msgstr ""
+"Adres, np. sip:xyz@ekiga.net; jeśli nie zostanie podana część określająca "
+"komputer, np. sip:xyz, to można ją wybrać klikając prawym przyciskiem myszy "
+"kontakt na liście kontaktów"
 
 #: ../lib/engine/components/local-roster/local-heap.cpp:251
 #: ../plugins/loudmouth/loudmouth-heap-roster.cpp:340
@@ -1026,7 +1031,7 @@ msgstr "Zmień nazwę grupy"
 msgid "Please edit this group name"
 msgstr "Proszę zmodyfikować nazwę grupy"
 
-#: ../lib/engine/components/local-roster/local-presentity.cpp:141
+#: ../lib/engine/components/local-roster/local-presentity.cpp:138
 #: ../plugins/resource-list/rl-entry.cpp:141
 #: ../plugins/resource-list/rl-heap.cpp:102
 #: ../plugins/resource-list/rl-heap.cpp:144
@@ -1035,7 +1040,7 @@ msgstr "Proszę zmodyfikować nazwę grupy"
 msgid "Unnamed"
 msgstr "Bez nazwy"
 
-#: ../lib/engine/components/local-roster/local-presentity.cpp:243
+#: ../lib/engine/components/local-roster/local-presentity.cpp:240
 #: ../lib/engine/components/opal/opal-account.cpp:407
 #: ../plugins/evolution/evolution-contact.cpp:228
 #: ../plugins/loudmouth/loudmouth-presentity.cpp:169
@@ -1044,7 +1049,7 @@ msgstr "Bez nazwy"
 msgid "_Edit"
 msgstr "_Edycja"
 
-#: ../lib/engine/components/local-roster/local-presentity.cpp:245
+#: ../lib/engine/components/local-roster/local-presentity.cpp:242
 #: ../lib/engine/components/opal/opal-account.cpp:409
 #: ../lib/engine/gui/gtk-frontend/accounts-window.cpp:683
 #: ../plugins/evolution/evolution-contact.cpp:230
@@ -1054,12 +1059,12 @@ msgstr "_Edycja"
 msgid "_Remove"
 msgstr "_Usuń"
 
-#: ../lib/engine/components/local-roster/local-presentity.cpp:270
+#: ../lib/engine/components/local-roster/local-presentity.cpp:267
 #: ../plugins/loudmouth/loudmouth-presentity.cpp:281
 msgid "Edit roster element"
 msgstr "Modyfikowanie elementu listy kontaktów"
 
-#: ../lib/engine/components/local-roster/local-presentity.cpp:271
+#: ../lib/engine/components/local-roster/local-presentity.cpp:268
 msgid ""
 "Please fill in this form to change an existing element of ekiga's internal "
 "roster"
@@ -1067,11 +1072,11 @@ msgstr ""
 "Proszę wypełnić formularz, aby zmienić istniejący element wewnętrznej listy "
 "kontaktów programu Ekiga"
 
-#: ../lib/engine/components/local-roster/local-presentity.cpp:275
+#: ../lib/engine/components/local-roster/local-presentity.cpp:272
 msgid "Is a preferred contact"
 msgstr "Jest preferowanym kontaktem"
 
-#: ../lib/engine/components/local-roster/local-presentity.cpp:277
+#: ../lib/engine/components/local-roster/local-presentity.cpp:274
 #: ../plugins/loudmouth/loudmouth-presentity.cpp:286
 #: ../plugins/resource-list/rl-heap.cpp:528
 #: ../plugins/resource-list/rl-presentity.cpp:236
@@ -1088,7 +1093,7 @@ msgstr "Połącz"
 #: ../lib/engine/components/opal/h323-endpoint.cpp:149
 #: ../lib/engine/components/opal/sip-endpoint.cpp:238
 #: ../lib/engine/components/opal/sip-endpoint.cpp:242
-#: ../lib/engine/gui/gtk-frontend/call-window.cpp:2169
+#: ../lib/engine/gui/gtk-frontend/call-window.cpp:2182
 msgid "Transfer"
 msgstr "Przeniesienie"
 
@@ -1854,15 +1859,15 @@ msgstr "Imię i nazwisko"
 msgid "_Search Filter:"
 msgstr "_Filtr wyszukiwania:"
 
-#: ../lib/engine/gui/gtk-frontend/call-window.cpp:782
+#: ../lib/engine/gui/gtk-frontend/call-window.cpp:790
 msgid "Error while initializing video output"
 msgstr "Błąd podczas inicjowania wyjścia obrazu"
 
-#: ../lib/engine/gui/gtk-frontend/call-window.cpp:783
+#: ../lib/engine/gui/gtk-frontend/call-window.cpp:791
 msgid "No video will be displayed on your machine during this call"
 msgstr "Podczas tego połączenia obraz na tym komputerze nie będzie wyświetlany"
 
-#: ../lib/engine/gui/gtk-frontend/call-window.cpp:793
+#: ../lib/engine/gui/gtk-frontend/call-window.cpp:801
 msgid ""
 "There was an error opening or initializing the video output. Please verify "
 "that no other application is using the accelerated video output."
@@ -1870,7 +1875,7 @@ msgstr ""
 "Wystąpił błąd podczas otwierania lub inicjowania wyjścia obrazu. Proszę "
 "sprawdzić, czy inny program nie korzysta z przyspieszanego wyjścia obrazu."
 
-#: ../lib/engine/gui/gtk-frontend/call-window.cpp:795
+#: ../lib/engine/gui/gtk-frontend/call-window.cpp:803
 msgid ""
 "There was an error opening or initializing the video output. Please verify "
 "that you are using a color depth of 24 or 32 bits per pixel."
@@ -1878,16 +1883,16 @@ msgstr ""
 "Wystąpił błąd podczas otwierania lub inicjowania wyjścia obrazu. Proszę "
 "sprawdzić, czy głębia kolorów wynosi 24 lub 32 bity na piksel."
 
-#: ../lib/engine/gui/gtk-frontend/call-window.cpp:910
+#: ../lib/engine/gui/gtk-frontend/call-window.cpp:924
 #, c-format
 msgid "Error while accessing video device %s"
 msgstr "Błąd podczas uzyskiwania dostępu do urządzenia wideo %s"
 
-#: ../lib/engine/gui/gtk-frontend/call-window.cpp:913
+#: ../lib/engine/gui/gtk-frontend/call-window.cpp:927
 msgid "A moving logo will be transmitted during calls."
 msgstr "Podczas tego połączenia wysyłany będzie obraz logo."
 
-#: ../lib/engine/gui/gtk-frontend/call-window.cpp:917
+#: ../lib/engine/gui/gtk-frontend/call-window.cpp:931
 msgid ""
 "There was an error while opening the device. In case it is a pluggable "
 "device it may be sufficient to reconnect it. If not, or if it still is not "
@@ -1899,15 +1904,15 @@ msgstr ""
 "nie jest lub nadal jest niedostępne, to proszę sprawdzić uprawnienia oraz "
 "czy wczytany jest odpowiedni sterownik."
 
-#: ../lib/engine/gui/gtk-frontend/call-window.cpp:921
+#: ../lib/engine/gui/gtk-frontend/call-window.cpp:935
 msgid "Your video driver doesn't support the requested video format."
 msgstr "Sterownik karty graficznej nie obsługuje żądanego formatu obrazu."
 
-#: ../lib/engine/gui/gtk-frontend/call-window.cpp:925
+#: ../lib/engine/gui/gtk-frontend/call-window.cpp:939
 msgid "Could not open the chosen channel."
 msgstr "Nie można otworzyć wybranego kanału."
 
-#: ../lib/engine/gui/gtk-frontend/call-window.cpp:929
+#: ../lib/engine/gui/gtk-frontend/call-window.cpp:943
 msgid ""
 "Your driver doesn't seem to support any of the color formats supported by "
 "Ekiga.\n"
@@ -1919,32 +1924,32 @@ msgstr ""
 " Aby ustalić, jakie palety są obsługiwane, proszę sprawdzić dokumentację "
 "sterownika jądra."
 
-#: ../lib/engine/gui/gtk-frontend/call-window.cpp:933
+#: ../lib/engine/gui/gtk-frontend/call-window.cpp:947
 msgid "Error while setting the frame rate."
 msgstr "Błąd podczas ustawiania liczby klatek na sekundę."
 
-#: ../lib/engine/gui/gtk-frontend/call-window.cpp:937
+#: ../lib/engine/gui/gtk-frontend/call-window.cpp:951
 msgid "Error while setting the frame size."
 msgstr "Błąd podczas ustawiania rozmiaru ramki."
 
-#: ../lib/engine/gui/gtk-frontend/call-window.cpp:942
-#: ../lib/engine/gui/gtk-frontend/call-window.cpp:1012
-#: ../lib/engine/gui/gtk-frontend/call-window.cpp:1093
+#: ../lib/engine/gui/gtk-frontend/call-window.cpp:956
+#: ../lib/engine/gui/gtk-frontend/call-window.cpp:1026
+#: ../lib/engine/gui/gtk-frontend/call-window.cpp:1107
 msgid "Unknown error."
 msgstr "Nieznany błąd."
 
-#: ../lib/engine/gui/gtk-frontend/call-window.cpp:994
+#: ../lib/engine/gui/gtk-frontend/call-window.cpp:1008
 #, c-format
 msgid "Error while opening audio input device %s"
 msgstr "Błąd podczas otwierania wejściowego urządzenia dźwiękowego %s"
 
 #. Translators: This happens when there is an error with audio input:
 #. * Nothing ("silence") will be transmitted
-#: ../lib/engine/gui/gtk-frontend/call-window.cpp:999
+#: ../lib/engine/gui/gtk-frontend/call-window.cpp:1013
 msgid "Only silence will be transmitted."
 msgstr "Zostanie przesłana tylko cisza."
 
-#: ../lib/engine/gui/gtk-frontend/call-window.cpp:1003
+#: ../lib/engine/gui/gtk-frontend/call-window.cpp:1017
 msgid ""
 "Unable to open the selected audio device for recording. In case it is a "
 "pluggable device it may be sufficient to reconnect it. If not, or if it "
@@ -1957,7 +1962,7 @@ msgstr ""
 "to proszę sprawdzić ustawienia dźwięku, uprawnienia oraz czy urządzenie nie "
 "jest zajęte."
 
-#: ../lib/engine/gui/gtk-frontend/call-window.cpp:1007
+#: ../lib/engine/gui/gtk-frontend/call-window.cpp:1021
 msgid ""
 "The selected audio device was successfully opened but it is impossible to "
 "read data from this device. In case it is a pluggable device it may be "
@@ -1967,16 +1972,16 @@ msgstr ""
 "Wybrane urządzenie dźwiękowe zostało otwarte, ale nie można odczytać z niego "
 "danych. Proszę sprawdzić ustawienia dźwięku."
 
-#: ../lib/engine/gui/gtk-frontend/call-window.cpp:1077
+#: ../lib/engine/gui/gtk-frontend/call-window.cpp:1091
 #, c-format
 msgid "Error while opening audio output device %s"
 msgstr "Błąd podczas otwierania urządzenia dźwiękowego %s"
 
-#: ../lib/engine/gui/gtk-frontend/call-window.cpp:1080
+#: ../lib/engine/gui/gtk-frontend/call-window.cpp:1094
 msgid "No incoming sound will be played."
 msgstr "Nie zostanie odtworzony dźwięk przychodzący."
 
-#: ../lib/engine/gui/gtk-frontend/call-window.cpp:1084
+#: ../lib/engine/gui/gtk-frontend/call-window.cpp:1098
 msgid ""
 "Unable to open the selected audio device for playing. In case it is a "
 "pluggable device it may be sufficient to reconnect it. If not, or if it "
@@ -1989,7 +1994,7 @@ msgstr ""
 "jest niedostępne, to proszę sprawdzić ustawienia dźwięku, uprawnienia oraz "
 "czy urządzenie nie jest zajęte."
 
-#: ../lib/engine/gui/gtk-frontend/call-window.cpp:1088
+#: ../lib/engine/gui/gtk-frontend/call-window.cpp:1102
 msgid ""
 "The selected audio device was successfully opened but it is impossible to "
 "write data to this device. In case it is a pluggable device it may be "
@@ -2002,41 +2007,41 @@ msgstr ""
 "zewnętrzne lub nadal jest niedostępne, to proszę sprawdzić ustawienia "
 "dźwięku."
 
-#: ../lib/engine/gui/gtk-frontend/call-window.cpp:1129
+#: ../lib/engine/gui/gtk-frontend/call-window.cpp:1143
 #, c-format
 msgid "Calling %s..."
 msgstr "Dzwonienie do %s..."
 
 #. %s is the SIP/H.323 address of the remote user, this text is shown
 #. below video during a call
-#: ../lib/engine/gui/gtk-frontend/call-window.cpp:1159
+#: ../lib/engine/gui/gtk-frontend/call-window.cpp:1173
 #: ../src/gui/main_window.cpp:653
 #, c-format
 msgid "Connected with %s"
 msgstr "Połączono z %s"
 
 #. Init
-#: ../lib/engine/gui/gtk-frontend/call-window.cpp:1182
-#: ../lib/engine/gui/gtk-frontend/call-window.cpp:1205
-#: ../lib/engine/gui/gtk-frontend/call-window.cpp:2508
+#: ../lib/engine/gui/gtk-frontend/call-window.cpp:1196
+#: ../lib/engine/gui/gtk-frontend/call-window.cpp:1223
+#: ../lib/engine/gui/gtk-frontend/call-window.cpp:2526
 msgid "Standby"
 msgstr "Oczekiwanie"
 
-#: ../lib/engine/gui/gtk-frontend/call-window.cpp:1194
-#: ../lib/engine/gui/gtk-frontend/call-window.cpp:1203
-#: ../lib/engine/gui/gtk-frontend/call-window.cpp:2719
+#: ../lib/engine/gui/gtk-frontend/call-window.cpp:1212
+#: ../lib/engine/gui/gtk-frontend/call-window.cpp:1221
+#: ../lib/engine/gui/gtk-frontend/call-window.cpp:2738
 msgid "Call Window"
 msgstr "Okno połączenia"
 
-#: ../lib/engine/gui/gtk-frontend/call-window.cpp:1216
+#: ../lib/engine/gui/gtk-frontend/call-window.cpp:1234
 msgid "Call on hold"
 msgstr "Połączenie wstrzymane"
 
-#: ../lib/engine/gui/gtk-frontend/call-window.cpp:1227
+#: ../lib/engine/gui/gtk-frontend/call-window.cpp:1245
 msgid "Call retrieved"
 msgstr "Połączenie odebrane"
 
-#: ../lib/engine/gui/gtk-frontend/call-window.cpp:1315
+#: ../lib/engine/gui/gtk-frontend/call-window.cpp:1333
 #, c-format
 msgid ""
 "Connected with %s\n"
@@ -2047,27 +2052,27 @@ msgstr ""
 
 #. Translators: TX is a common abbreviation for "transmit".  As it
 #. * is shown in a tooltip, there is no space constraint
-#: ../lib/engine/gui/gtk-frontend/call-window.cpp:1523
+#: ../lib/engine/gui/gtk-frontend/call-window.cpp:1541
 #, c-format
 msgid "TX: %dx%d"
 msgstr "Wysyłanie: %dx%d"
 
-#: ../lib/engine/gui/gtk-frontend/call-window.cpp:1525
+#: ../lib/engine/gui/gtk-frontend/call-window.cpp:1543
 msgid "TX: / "
 msgstr "Wysyłanie: / "
 
 #. Translators: RX is a common abbreviation for "receive".  As it
 #. * is shown in a tooltip, there is no space constraint
-#: ../lib/engine/gui/gtk-frontend/call-window.cpp:1530
+#: ../lib/engine/gui/gtk-frontend/call-window.cpp:1548
 #, c-format
 msgid "RX: %dx%d"
 msgstr "Odbieranie: %dx%d"
 
-#: ../lib/engine/gui/gtk-frontend/call-window.cpp:1532
+#: ../lib/engine/gui/gtk-frontend/call-window.cpp:1550
 msgid "RX: / "
 msgstr "Odbieranie: / "
 
-#: ../lib/engine/gui/gtk-frontend/call-window.cpp:1541
+#: ../lib/engine/gui/gtk-frontend/call-window.cpp:1559
 #, c-format
 msgid ""
 "Lost packets: %.1f %%\n"
@@ -2085,176 +2090,168 @@ msgstr ""
 "Rozdzielczość: %s %s"
 
 #. Translators: A = Audio, V = Video, FPS = Frames per second
-#: ../lib/engine/gui/gtk-frontend/call-window.cpp:1641
+#: ../lib/engine/gui/gtk-frontend/call-window.cpp:1659
 #, c-format
 msgid "A:%.1f/%.1f V:%.1f/%.1f FPS:%d/%d"
 msgstr "D:%.1f/%.1f O:%.1f/%.1f FPS:%d/%d"
 
-#: ../lib/engine/gui/gtk-frontend/call-window.cpp:1665
+#: ../lib/engine/gui/gtk-frontend/call-window.cpp:1683
 msgid "_Retrieve Call"
 msgstr "Przy_wrócenie połączenia"
 
-#: ../lib/engine/gui/gtk-frontend/call-window.cpp:1678
-#: ../lib/engine/gui/gtk-frontend/call-window.cpp:1987
+#: ../lib/engine/gui/gtk-frontend/call-window.cpp:1696
+#: ../lib/engine/gui/gtk-frontend/call-window.cpp:2005
 msgid "H_old Call"
 msgstr "Za_wieś połączenie"
 
-#: ../lib/engine/gui/gtk-frontend/call-window.cpp:1709
-#: ../lib/engine/gui/gtk-frontend/call-window.cpp:1999
+#: ../lib/engine/gui/gtk-frontend/call-window.cpp:1727
+#: ../lib/engine/gui/gtk-frontend/call-window.cpp:2017
 msgid "Suspend _Audio"
 msgstr "Wstrzymaj przesył dźwięk_u"
 
-#: ../lib/engine/gui/gtk-frontend/call-window.cpp:1711
-#: ../lib/engine/gui/gtk-frontend/call-window.cpp:2004
+#: ../lib/engine/gui/gtk-frontend/call-window.cpp:1729
+#: ../lib/engine/gui/gtk-frontend/call-window.cpp:2022
 msgid "Suspend _Video"
 msgstr "Wstrzymaj przesył _obrazu"
 
-#: ../lib/engine/gui/gtk-frontend/call-window.cpp:1713
+#: ../lib/engine/gui/gtk-frontend/call-window.cpp:1731
 msgid "Resume _Audio"
 msgstr "Wznów _dźwięk"
 
-#: ../lib/engine/gui/gtk-frontend/call-window.cpp:1715
+#: ../lib/engine/gui/gtk-frontend/call-window.cpp:1733
 msgid "Resume _Video"
 msgstr "Wznów _wideo"
 
-#: ../lib/engine/gui/gtk-frontend/call-window.cpp:1749
+#: ../lib/engine/gui/gtk-frontend/call-window.cpp:1767
 msgid "Video Settings"
 msgstr "Ustawienia wideo"
 
-#: ../lib/engine/gui/gtk-frontend/call-window.cpp:1774
+#: ../lib/engine/gui/gtk-frontend/call-window.cpp:1792
 msgid "Adjust brightness"
 msgstr "Regulacja jasności"
 
-#: ../lib/engine/gui/gtk-frontend/call-window.cpp:1793
+#: ../lib/engine/gui/gtk-frontend/call-window.cpp:1811
 msgid "Adjust whiteness"
 msgstr "Regulacja bieli"
 
-#: ../lib/engine/gui/gtk-frontend/call-window.cpp:1812
+#: ../lib/engine/gui/gtk-frontend/call-window.cpp:1830
 msgid "Adjust color"
 msgstr "Regulacja koloru"
 
-#: ../lib/engine/gui/gtk-frontend/call-window.cpp:1831
+#: ../lib/engine/gui/gtk-frontend/call-window.cpp:1849
 msgid "Adjust contrast"
 msgstr "Regulacja kontrastu"
 
-#: ../lib/engine/gui/gtk-frontend/call-window.cpp:1873
+#: ../lib/engine/gui/gtk-frontend/call-window.cpp:1891
 msgid "Audio Settings"
 msgstr "Ustawienia dźwięku"
 
-#: ../lib/engine/gui/gtk-frontend/call-window.cpp:1975
+#: ../lib/engine/gui/gtk-frontend/call-window.cpp:1993
 msgid "_Call"
 msgstr "_Zadzwoń"
 
-#: ../lib/engine/gui/gtk-frontend/call-window.cpp:1977
+#: ../lib/engine/gui/gtk-frontend/call-window.cpp:1995
 msgid "_Pick up"
 msgstr "_Odbierz"
 
-#: ../lib/engine/gui/gtk-frontend/call-window.cpp:1977
-#: ../lib/engine/gui/gtk-frontend/call-window.cpp:2394
+#: ../lib/engine/gui/gtk-frontend/call-window.cpp:1995
+#: ../lib/engine/gui/gtk-frontend/call-window.cpp:2412
 msgid "Pick up the current call"
 msgstr "Odbiera bieżącą rozmowę"
 
-#: ../lib/engine/gui/gtk-frontend/call-window.cpp:1981
+#: ../lib/engine/gui/gtk-frontend/call-window.cpp:1999
 msgid "_Hang up"
 msgstr "_Rozłącz"
 
-#: ../lib/engine/gui/gtk-frontend/call-window.cpp:1981
-#: ../lib/engine/gui/gtk-frontend/call-window.cpp:2410
+#: ../lib/engine/gui/gtk-frontend/call-window.cpp:1999
+#: ../lib/engine/gui/gtk-frontend/call-window.cpp:2428
 msgid "Hang up the current call"
 msgstr "Rozłącza bieżącą rozmowę"
 
-#: ../lib/engine/gui/gtk-frontend/call-window.cpp:1987
-#: ../lib/engine/gui/gtk-frontend/call-window.cpp:2477
+#: ../lib/engine/gui/gtk-frontend/call-window.cpp:2005
+#: ../lib/engine/gui/gtk-frontend/call-window.cpp:2495
 msgid "Hold the current call"
 msgstr "Wstrzymanie bieżącego połączenia"
 
-#: ../lib/engine/gui/gtk-frontend/call-window.cpp:1991
+#: ../lib/engine/gui/gtk-frontend/call-window.cpp:2009
 msgid "_Transfer Call"
 msgstr "Przekaż połą_czenie"
 
-#: ../lib/engine/gui/gtk-frontend/call-window.cpp:1992
+#: ../lib/engine/gui/gtk-frontend/call-window.cpp:2010
 msgid "Transfer the current call"
 msgstr "Przeniesienie bieżącego połączenia"
 
-#: ../lib/engine/gui/gtk-frontend/call-window.cpp:2000
+#: ../lib/engine/gui/gtk-frontend/call-window.cpp:2018
 msgid "Suspend or resume the audio transmission"
 msgstr "Wyłącza lub wznawia przesyłanie dźwięku"
 
-#: ../lib/engine/gui/gtk-frontend/call-window.cpp:2005
+#: ../lib/engine/gui/gtk-frontend/call-window.cpp:2023
 msgid "Suspend or resume the video transmission"
 msgstr "Wyłącza lub wznawia przesyłanie obrazu"
 
-#: ../lib/engine/gui/gtk-frontend/call-window.cpp:2012
+#: ../lib/engine/gui/gtk-frontend/call-window.cpp:2030
 #: ../src/gui/main_window.cpp:1312
 msgid "Close the Ekiga window"
 msgstr "Zamyka okno programu Ekiga"
 
-#: ../lib/engine/gui/gtk-frontend/call-window.cpp:2017
+#: ../lib/engine/gui/gtk-frontend/call-window.cpp:2035
 #: ../src/gui/main_window.cpp:1345
 msgid "_View"
 msgstr "_Widok"
 
-#: ../lib/engine/gui/gtk-frontend/call-window.cpp:2019
+#: ../lib/engine/gui/gtk-frontend/call-window.cpp:2037
 msgid "_Local Video"
 msgstr "Wideo _lokalne"
 
-#: ../lib/engine/gui/gtk-frontend/call-window.cpp:2020
+#: ../lib/engine/gui/gtk-frontend/call-window.cpp:2038
 msgid "Local video image"
 msgstr "Lokalny obraz wideo"
 
-#: ../lib/engine/gui/gtk-frontend/call-window.cpp:2024
+#: ../lib/engine/gui/gtk-frontend/call-window.cpp:2042
 msgid "_Remote Video"
 msgstr "Wideo zd_alne"
 
-#: ../lib/engine/gui/gtk-frontend/call-window.cpp:2025
+#: ../lib/engine/gui/gtk-frontend/call-window.cpp:2043
 msgid "Remote video image"
 msgstr "Zdalny obraz wideo"
 
-#: ../lib/engine/gui/gtk-frontend/call-window.cpp:2029
+#: ../lib/engine/gui/gtk-frontend/call-window.cpp:2047
 msgid "_Picture-in-Picture"
 msgstr "_Obraz-w-obrazie"
 
-#: ../lib/engine/gui/gtk-frontend/call-window.cpp:2030
+#: ../lib/engine/gui/gtk-frontend/call-window.cpp:2048
 msgid "Both video images"
 msgstr "Obydwa obrazy wideo"
 
-#: ../lib/engine/gui/gtk-frontend/call-window.cpp:2034
-msgid "_Extended Video"
-msgstr "_Rozszerzony obraz"
-
-#: ../lib/engine/gui/gtk-frontend/call-window.cpp:2035
-msgid "Extended Video Images"
-msgstr "Rozszerzone obrazy wideo"
-
-#: ../lib/engine/gui/gtk-frontend/call-window.cpp:2041
+#: ../lib/engine/gui/gtk-frontend/call-window.cpp:2054
 msgid "Zoom in"
 msgstr "Powiększenie"
 
-#: ../lib/engine/gui/gtk-frontend/call-window.cpp:2045
+#: ../lib/engine/gui/gtk-frontend/call-window.cpp:2058
 msgid "Zoom out"
 msgstr "Pomniejszenie"
 
-#: ../lib/engine/gui/gtk-frontend/call-window.cpp:2049
+#: ../lib/engine/gui/gtk-frontend/call-window.cpp:2062
 msgid "Normal size"
 msgstr "Zwykły rozmiar"
 
-#: ../lib/engine/gui/gtk-frontend/call-window.cpp:2053
+#: ../lib/engine/gui/gtk-frontend/call-window.cpp:2066
 msgid "_Fullscreen"
 msgstr "_Pełny ekran"
 
-#: ../lib/engine/gui/gtk-frontend/call-window.cpp:2053
+#: ../lib/engine/gui/gtk-frontend/call-window.cpp:2066
 msgid "Switch to fullscreen"
 msgstr "Tryb pełnoekranowy"
 
-#: ../lib/engine/gui/gtk-frontend/call-window.cpp:2168
+#: ../lib/engine/gui/gtk-frontend/call-window.cpp:2181
 msgid "Transfer call to:"
 msgstr "Przeniesienie połączenia do:"
 
-#: ../lib/engine/gui/gtk-frontend/call-window.cpp:2438
+#: ../lib/engine/gui/gtk-frontend/call-window.cpp:2456
 msgid "Change the volume of your soundcard"
 msgstr "Zmiana głośności karty dźwiękowej"
 
-#: ../lib/engine/gui/gtk-frontend/call-window.cpp:2458
+#: ../lib/engine/gui/gtk-frontend/call-window.cpp:2476
 msgid "Change the color settings of your video device"
 msgstr "Zmiana ustawień kolorów urządzenia generującego obraz"
 
@@ -2830,8 +2827,8 @@ msgstr ""
 "Zbigniew Chyla <chyla@alice.ci.pwr.wroc.pl>, 2002-2003\n"
 "Artur Flinta <aflinta@at.kernel.pl>, 2003-2006\n"
 "Tomasz Dominikowski <dominikowski@gmail.com>, 2007-2009\n"
-"Piotr Drąg <piotrdrag@gmail.com>, 2010-2012\n"
-"Aviary.pl <gnomepl@aviary.pl>, 2007-2012"
+"Piotr Drąg <piotrdrag@gmail.com>, 2010-2013\n"
+"Aviary.pl <gnomepl@aviary.pl>, 2007-2013"
 
 #: ../lib/gui/gmcallbacks.c:123
 msgid ""
