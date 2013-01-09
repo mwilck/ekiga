@@ -568,7 +568,7 @@ gnome_prefs_int_option_menu_new (GtkWidget *table,
   g_object_set (G_OBJECT (renderer), 
                 "ellipsize-set", TRUE, 
                 "ellipsize", PANGO_ELLIPSIZE_END, 
-                "width-chars", 45, NULL);
+                "width-chars", 65, NULL);
   gtk_label_set_mnemonic_widget (GTK_LABEL (label), option_menu);
 
   history = gm_conf_get_int (conf_key);
@@ -658,7 +658,7 @@ gnome_prefs_string_option_menu_new (GtkWidget *table,
   g_object_set (G_OBJECT (renderer), 
                 "ellipsize-set", TRUE, 
                 "ellipsize", PANGO_ELLIPSIZE_END, 
-                "width-chars", 45, NULL);
+                "width-chars", 65, NULL);
   gtk_label_set_mnemonic_widget (GTK_LABEL (label), option_menu);
 
   conf_string = gm_conf_get_string (conf_key);
