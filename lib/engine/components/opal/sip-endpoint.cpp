@@ -829,14 +829,20 @@ Opal::Sip::EndPoint::OnIncomingConnection (OpalConnection &connection,
 					   unsigned options,
 					   OpalConnection::StringOptions * stroptions)
 {
+  bool busy = false;
   PTRACE (3, "Opal::Sip::EndPoint\tIncoming connection");
 
   if (!SIPEndPoint::OnIncomingConnection (connection, options, stroptions))
     return false;
 
+  for (PSafePtr<OpalConnection> conn(connectionsActive, PSafeReference); conn != NULL; ++conn) {
+    if (!conn->IsReleased ())
+      busy = true;
+  }
+
   if (!forward_uri.empty () && manager.get_unconditional_forward ())
     connection.ForwardCall (forward_uri);
-  else if (manager.GetCallCount () > 1) {
+  else if (busy) {
 
     if (!forward_uri.empty () && manager.get_forward_on_busy ())
       connection.ForwardCall (forward_uri);
