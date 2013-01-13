@@ -51,7 +51,7 @@ void gm_platform_shutdown ();
  * 		  in a system-agnostic way
  * PRE		: Requires a non-NULL uri.
  */
-void gm_open_uri (const gchar* uri);
+void gm_platform_open_uri (const gchar* uri);
 
 G_END_DECLS
 

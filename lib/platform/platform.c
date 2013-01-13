@@ -89,7 +89,7 @@ win32_datadir ()
 
 #ifndef WIN32
 static void
-gm_open_uri_fallback (const gchar *uri)
+gm_platform_open_uri_fallback (const gchar *uri)
 {
   gchar *commandline = NULL;
   gboolean success = FALSE;
@@ -124,7 +124,7 @@ gm_open_uri_fallback (const gchar *uri)
 }
 
 void
-gm_open_uri (const gchar *uri)
+gm_platform_open_uri (const gchar *uri)
 {
   GError *error = NULL;
 
@@ -132,14 +132,14 @@ gm_open_uri (const gchar *uri)
 
   if (!gtk_show_uri (NULL, uri, GDK_CURRENT_TIME, &error)) {
     g_error_free (error);
-    gm_open_uri_fallback (uri);
+    gm_platform_open_uri_fallback (uri);
   }
 }
 
 #else
 
 void
-gm_open_uri (const gchar *uri)
+gm_platform_open_uri (const gchar *uri)
 {
   SHELLEXECUTEINFO sinfo;
 

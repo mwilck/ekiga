@@ -550,7 +550,7 @@ void Opal::Account::on_edit_form_submitted (bool submitted,
 void
 Opal::Account::on_consult (const std::string url)
 {
-  gm_open_uri (url.c_str ());
+  gm_platform_open_uri (url.c_str ());
 }
 
 

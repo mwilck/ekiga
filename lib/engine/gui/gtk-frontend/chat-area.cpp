@@ -312,7 +312,7 @@ on_open_link_activate (G_GNUC_UNUSED GtkMenuItem* item,
 
   link = (gchar*)g_object_get_data (G_OBJECT (data), "link");
 
-  gm_open_uri (link);
+  gm_platform_open_uri (link);
 }
 
 static void
@@ -355,7 +355,7 @@ on_extlink_tag_event (GtkTextTag* tag,
 
     case 1:
 
-      gm_open_uri (link);
+      gm_platform_open_uri (link);
       break;
 
     case 3: {

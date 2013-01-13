@@ -621,7 +621,7 @@ static void
 link_clicked_cb (GtkWidget * /*widget*/,
                  gpointer data)
 {
-  gm_open_uri ((gchar *) data);
+  gm_platform_open_uri ((gchar *) data);
 }
 
 

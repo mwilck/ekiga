@@ -460,7 +460,7 @@ static void
 ekiga_net_button_clicked_cb (G_GNUC_UNUSED GtkWidget *button,
                              G_GNUC_UNUSED gpointer data)
 {
-  gm_open_uri ("http://www.ekiga.net");
+  gm_platform_open_uri ("http://www.ekiga.net");
 }
 
 
@@ -481,7 +481,7 @@ ekiga_out_new_clicked_cb (G_GNUC_UNUSED GtkWidget *widget,
   if (account == NULL || password == NULL)
     return; /* no account configured yet */
 
-  gm_open_uri ("https://www.diamondcard.us/exec/voip-login?act=sgn&spo=ekiga");
+  gm_platform_open_uri ("https://www.diamondcard.us/exec/voip-login?act=sgn&spo=ekiga");
 }
 
 
@@ -505,7 +505,7 @@ ekiga_out_recharge_clicked_cb (G_GNUC_UNUSED GtkWidget *widget,
     return; /* no account configured yet */
 
   url = g_strdup_printf ("https://www.diamondcard.us/exec/voip-login?accId=%s&pinCode=%s&act=rch&spo=ekiga", account, password);
-  gm_open_uri (url);
+  gm_platform_open_uri (url);
   g_free (url);
 }
 
@@ -530,7 +530,7 @@ ekiga_out_history_balance_clicked_cb (G_GNUC_UNUSED GtkWidget *widget,
     return; /* no account configured yet */
 
   url = g_strdup_printf ("https://www.diamondcard.us/exec/voip-login?accId=%s&pinCode=%s&act=bh&spo=ekiga", account, password);
-  gm_open_uri (url);
+  gm_platform_open_uri (url);
   g_free (url);
 }
 
@@ -555,7 +555,7 @@ ekiga_out_history_calls_clicked_cb (G_GNUC_UNUSED GtkWidget *widget,
     return; /* no account configured yet */
 
   url = g_strdup_printf ("https://www.diamondcard.us/exec/voip-login?accId=%s&pinCode=%s&act=ch&spo=ekiga", account, password);
-  gm_open_uri (url);
+  gm_platform_open_uri (url);
   g_free (url);
 }
 
