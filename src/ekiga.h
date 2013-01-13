@@ -40,7 +40,7 @@
 #define _GNOMEMEETING_H_
 
 #include "config.h"
-#include "common.h"
+#include "gmconf.h"
 #include "runtime.h"
 
 // FIXME: remove this include when the class won't have GetMainWindow and GetAssistantWindow anymore

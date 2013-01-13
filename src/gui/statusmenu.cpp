@@ -40,7 +40,6 @@
 
 #include "statusmenu.h"
 
-#include "common.h"
 #include "personal-details.h"
 
 #include "gmconf.h"

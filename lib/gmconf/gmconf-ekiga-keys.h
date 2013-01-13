@@ -1,6 +1,6 @@
 
 /* Ekiga -- A VoIP and Video-Conferencing application
- * Copyright (C) 2000-2009 Damien Sandras <dsandras@seconix.com>
+ * Copyright (C) 2000-2013 Damien Sandras <dsandras@seconix.com>
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -27,17 +27,18 @@
 
 
 /*
- *                         common.h  -  description
+ *                         gmconf-ekiga-keys.h  -  description
  *                         ------------------------
  *   begin                : Sat Dec 23 2000
- *   copyright            : (C) 2000-2006 by Damien Sandras
- *   description          : This file contains things common to the whole soft.
+ *   copyright            : (C) 2000-2013 by Damien Sandras
+ *   description          : This file defines gmconf keys for all
+ *                          of ekiga to use
  *
  */
 
 
-#ifndef GM_COMMON_H_
-#define GM_COMMON_H_
+#ifndef GMCONF_EKIGA_KEYS_H_
+#define GMCONF_EKIGA_KEYS_H_
 
 #define GENERAL_KEY         "/apps/" PACKAGE_NAME "/general/"
 #define USER_INTERFACE_KEY "/apps/" PACKAGE_NAME "/general/user_interface/"
@@ -59,4 +60,4 @@
 #define AUDIO_CODECS_KEY "/apps/" PACKAGE_NAME "/codecs/audio/"
 #define VIDEO_CODECS_KEY  "/apps/" PACKAGE_NAME "/codecs/video/"
 
-#endif /* GM_COMMON_H */
+#endif /* GMCONF_EKIGA_KEYS_H */

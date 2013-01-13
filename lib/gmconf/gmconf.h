@@ -41,6 +41,7 @@
 
 
 #include <glib.h>
+#include "gmconf-ekiga-keys.h"
 
 G_BEGIN_DECLS
 

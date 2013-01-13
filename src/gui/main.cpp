@@ -36,7 +36,6 @@
 
 #include "revision.h"
 #include "config.h"
-#include "common.h"
 
 #include "platform/platform.h"
 

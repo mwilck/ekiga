@@ -48,13 +48,12 @@ bin_PROGRAMS = ekiga
 EXTRA_PROGRAMS =
 
 # Common stuff
-ekiga_SOURCES =			\
-	common.h
+ekiga_SOURCES =
 
 nodist_ekiga_SOURCES =
 
 # Graphical User Interface
-ekiga_SOURCES +=			\
+ekiga_SOURCES =			\
 	gui/assistant.h			\
 	gui/assistant.cpp		\
 	gui/conf.h			\

@@ -120,7 +120,9 @@ endif
 ##
 # Sources out of the gmconf directory
 ##
-libekiga_la_SOURCES += $(top_srcdir)/lib/gmconf/gmconf.h
+libekiga_la_SOURCES += \
+	$(top_srcdir)/lib/gmconf/gmconf.h \
+	$(top_srcdir)/lib/gmconf/gmconf-ekiga-keys.h
 
 if HAVE_GCONF
 libekiga_la_SOURCES += $(top_srcdir)/lib/gmconf/gmconf-gconf.c
