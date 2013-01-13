@@ -103,10 +103,7 @@ class GnomeMeeting : public PProcess
 
   /* The different components of the GUI */
   GtkWidget *main_window;
-  GtkWidget *history_window;
   GtkWidget *assistant_window;
-  GtkWidget *prefs_window;
-  GtkWidget *accounts_window;
 
   static GnomeMeeting *GM;
 };
