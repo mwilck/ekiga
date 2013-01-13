@@ -45,7 +45,7 @@
 #include "gm-smiley-chooser-button.h"
 
 #include "gm-smileys.h"
-#include "toolbox.h"
+#include "platform.h"
 
 #include <string.h>
 #include <stdarg.h>

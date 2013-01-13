@@ -53,7 +53,7 @@
 
 #include "opal-account.h"
 #include "form-request-simple.h"
-#include "toolbox.h"
+#include "platform.h"
 
 #include "presence-core.h"
 #include "personal-details.h"

@@ -2,6 +2,7 @@ INCLUDES = \
 	-I$(top_srcdir)/lib				\
 	-I$(top_srcdir)/lib/gmconf			\
 	-I$(top_srcdir)/lib/gui				\
+	-I$(top_srcdir)/lib/platform			\
 	-I$(top_srcdir)/lib/engine/			\
 	-I$(top_srcdir)/lib/engine/framework		\
 	-I$(top_srcdir)/lib/engine/gui/gtk-frontend	\
@@ -53,7 +54,7 @@ ekiga_SOURCES =
 nodist_ekiga_SOURCES =
 
 # Graphical User Interface
-ekiga_SOURCES =			\
+ekiga_SOURCES +=			\
 	gui/assistant.h			\
 	gui/assistant.cpp		\
 	gui/conf.h			\

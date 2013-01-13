@@ -1,6 +1,6 @@
 
 /* Ekiga -- A VoIP and Video-Conferencing application
- * Copyright (C) 2000-2009 Damien Sandras <dsandras@seconix.com>
+ * Copyright (C) 2000-2013 Damien Sandras <dsandras@seconix.com>
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -30,7 +30,7 @@
  *                         platform.h  -  description
  *                         ------------------------------------------
  *   begin                : written in 2006 by Julien Puydt
- *   copyright            : (c) 2006-2007 by Julien Puydt
+ *   copyright            : (c) 2006-2013 by Julien Puydt
  *   description          : interface for the annoying platforms workarounds
  *
  */
@@ -45,6 +45,13 @@ G_BEGIN_DECLS
 void gm_platform_init ();
 
 void gm_platform_shutdown ();
+
+/* DESCRIPTION  : /
+ * BEHAVIOR     : Allows to open an uri in a browser,
+ * 		  in a system-agnostic way
+ * PRE		: Requires a non-NULL uri.
+ */
+void gm_open_uri (const gchar* uri);
 
 G_END_DECLS
 

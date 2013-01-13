@@ -39,7 +39,7 @@
 #include <iostream>
 #include <glib/gi18n.h>
 
-#include "toolbox.h"
+#include "platform.h"
 #include "form-dialog-gtk.h"
 
 /*

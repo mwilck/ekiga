@@ -1,7 +1,6 @@
 stacklib_LTLIBRARIES = libekiga.la
 stacklib_dir = $(stacklibdir)
 
-libekiga_la_SOURCES =
 libekiga_la_LDFLAGS = $(STACKLIB_LDFLAGS) $(BOOST_LIBS) $(GLIB_LIBS) $(XML_LIBS) $(GTK_LIBS)
 
 if !WIN32
@@ -17,6 +16,7 @@ INCLUDES = \
 	-I$(top_srcdir)/lib \
 	-I$(top_srcdir)/lib/gmconf \
 	-I$(top_srcdir)/lib/gui \
+	-I$(top_srcdir)/lib/platform \
 	-I$(top_srcdir)/lib/engine \
 	-I$(top_srcdir)/lib/engine/account \
 	-I$(top_srcdir)/lib/engine/addressbook \
@@ -63,9 +63,7 @@ components_dir = $(top_srcdir)/lib/engine/components
 # Sources out of this directory
 ##
 
-libekiga_la_SOURCES += \
-	$(top_srcdir)/lib/toolbox.h \
-	$(top_srcdir)/lib/toolbox.c
+libekiga_la_SOURCES =
 
 EXTRA_DIST =
 

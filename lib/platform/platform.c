@@ -48,6 +48,12 @@ static gchar *sysconfdir = NULL;
 static gchar *datadir = NULL;
 #endif
 
+#ifndef WIN32
+#include <gtk/gtk.h>
+#else
+#include <windows.h>
+#endif
+
 void
 gm_platform_init ()
 {
@@ -79,4 +85,75 @@ win32_datadir ()
 {
   return datadir;
 }
+#endif
+
+#ifndef WIN32
+static void
+gm_open_uri_fallback (const gchar *uri)
+{
+  gchar *commandline = NULL;
+  gboolean success = FALSE;
+
+  if (!success && g_getenv("KDE_FULL_SESSION") != NULL) {
+
+    commandline = g_strdup_printf ("kfmclient exec %s", uri);
+    success = g_spawn_command_line_async (commandline, NULL);
+    g_free (commandline);
+  }
+
+  if (!success) {
+
+    commandline = g_strdup_printf ("sensible-browser %s", uri);
+    success = g_spawn_command_line_async (commandline, NULL);
+    g_free (commandline);
+  }
+
+  if (!success) {
+
+    commandline = g_strdup_printf ("firefox %s", uri);
+    success = g_spawn_command_line_async (commandline, NULL);
+    g_free (commandline);
+  }
+
+  if (!success) {
+
+    commandline = g_strdup_printf ("konqueror %s", uri);
+    success = g_spawn_command_line_async (commandline, NULL);
+    g_free (commandline);
+  }
+}
+
+void
+gm_open_uri (const gchar *uri)
+{
+  GError *error = NULL;
+
+  g_return_if_fail (uri != NULL);
+
+  if (!gtk_show_uri (NULL, uri, GDK_CURRENT_TIME, &error)) {
+    g_error_free (error);
+    gm_open_uri_fallback (uri);
+  }
+}
+
+#else
+
+void
+gm_open_uri (const gchar *uri)
+{
+  SHELLEXECUTEINFO sinfo;
+
+  g_return_if_fail (uri != NULL);
+
+  memset (&sinfo, 0, sizeof (sinfo));
+  sinfo.cbSize = sizeof (sinfo);
+  sinfo.fMask = SEE_MASK_CLASSNAME;
+  sinfo.lpVerb = "open";
+  sinfo.lpFile = uri;
+  sinfo.nShow = SW_SHOWNORMAL;
+  sinfo.lpClass = "http";
+
+  (void)ShellExecuteEx (&sinfo); /* leave out any error */
+}
+
 #endif

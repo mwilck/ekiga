@@ -43,7 +43,6 @@
 #include <string.h>
 #include <sys/stat.h>
 
-#include "toolbox.h"
 #include "gmconf.h"
 
 #ifdef WIN32
