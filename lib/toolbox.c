@@ -141,8 +141,8 @@ GSList
 	       seenlist_iter = g_slist_next (seenlist_iter))
 	    {
 	      if (seenlist_iter->data &&
-		  !strcmp ((const char*) origlist_iter->data,
-			   (const char*) seenlist_iter->data))
+		  !g_strcmp0 ((const char*) origlist_iter->data,
+			      (const char*) seenlist_iter->data))
 		  seen = TRUE;
 	    }
 	  if (!seen)

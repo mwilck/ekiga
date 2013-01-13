@@ -279,7 +279,7 @@ window_show_cb (GtkWidget *w,
 
   self = GM_WINDOW (w);
 
-  g_return_if_fail (strcmp (self->priv->key, ""));
+  g_return_if_fail (g_strcmp0 (self->priv->key, ""));
 
   conf_key_position =
     g_strdup_printf ("%s/position", self->priv->key);
@@ -343,7 +343,7 @@ window_hide_cb (GtkWidget *w,
 
   self = GM_WINDOW (w);
 
-  g_return_if_fail (strcmp (self->priv->key, ""));
+  g_return_if_fail (g_strcmp0 (self->priv->key, ""));
 
   conf_key_position =
     g_strdup_printf ("%s/position", self->priv->key);

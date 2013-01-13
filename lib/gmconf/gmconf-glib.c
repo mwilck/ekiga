@@ -746,13 +746,13 @@ sch_parser_start_element (G_GNUC_UNUSED GMarkupParseContext *context,
 
   parser = (SchParser *)data;
   parser->state = START; /* default */
-  if (strcmp (element_name, "schema") == 0)
+  if (g_strcmp0 (element_name, "schema") == 0)
     parser->entry = entry_new ();
-  else if (strcmp (element_name, "applyto") == 0)
+  else if (g_strcmp0 (element_name, "applyto") == 0)
     parser->state = KEY;
-  else if (strcmp (element_name, "type") == 0)
+  else if (g_strcmp0 (element_name, "type") == 0)
     parser->state = TYPE;
-  else if (strcmp (element_name, "default") == 0)
+  else if (g_strcmp0 (element_name, "default") == 0)
     parser->state = VALUE;
 }
 
@@ -768,7 +768,7 @@ sch_parser_end_element (G_GNUC_UNUSED GMarkupParseContext *context,
 
   parser = (SchParser *)data;
 
-  if (strcmp (element_name, "schema") == 0) {
+  if (g_strcmp0 (element_name, "schema") == 0) {
     database_add_entry (parser->db, parser->entry);
     parser->entry = NULL;
   }
@@ -799,13 +799,13 @@ sch_parser_characters (G_GNUC_UNUSED GMarkupParseContext *context,
     entry_set_key (parser->entry, text);
     break;
   case TYPE:
-    if (strcmp (text, "bool") == 0)
+    if (g_strcmp0 (text, "bool") == 0)
       entry_set_type (parser->entry, GM_CONF_BOOL);
-    else if (strcmp (text, "int") == 0)
+    else if (g_strcmp0 (text, "int") == 0)
       entry_set_type (parser->entry, GM_CONF_INT);
-    else if (strcmp (text, "string") == 0)
+    else if (g_strcmp0 (text, "string") == 0)
       entry_set_type (parser->entry, GM_CONF_STRING);
-    else if (strcmp (text, "list") == 0)
+    else if (g_strcmp0 (text, "list") == 0)
       entry_set_type (parser->entry, GM_CONF_LIST);
     else
       entry_set_type (parser->entry, GM_CONF_OTHER);

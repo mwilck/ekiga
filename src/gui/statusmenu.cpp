@@ -622,7 +622,7 @@ status_menu_clear_status_message_dialog_run (StatusMenu *self)
       gtk_tree_model_get (GTK_TREE_MODEL (list_store), &iter,
                           1, &message,
                           2, &i, -1);
-      if (status && message && !strcmp (status, message))
+      if (status && message && !g_strcmp0 (status, message))
         found = true;
 
       conf_list[i - NUM_STATUS_TYPES - 1] = g_slist_append (conf_list[i - NUM_STATUS_TYPES - 1], g_strdup (message));
@@ -697,7 +697,7 @@ status_menu_new_status_message_dialog_run (StatusMenu *self,
   case GTK_RESPONSE_ACCEPT:
     message = gtk_entry_get_text (GTK_ENTRY (entry));
     clist = gm_conf_get_string_list (status_types_keys[option - NUM_STATUS_TYPES - 1]);
-    if (message && strcmp (message, "")) {
+    if (message && g_strcmp0 (message, "")) {
       clist = g_slist_append (clist, g_strdup (message));
       gm_conf_set_string_list (status_types_keys[option - NUM_STATUS_TYPES - 1], clist);
       self->priv->personal_details->set_presence_info (status_types_names[option - NUM_STATUS_TYPES - 1], message);

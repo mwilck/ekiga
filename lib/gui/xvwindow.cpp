@@ -38,6 +38,7 @@
 
 #include "xvwindow.h"
 
+#include <glib.h>
 #include <ptlib/object.h>
 
 #define GUID_I420_PLANAR 0x30323449
@@ -557,7 +558,7 @@ XVWindow::GetXVAtom ( char const * name )
   
     for ( i = 0; i < numAttributes; ++i ) {
 
-      if ( strcmp(attributes[i].name, name ) == 0 ) {
+      if ( g_strcmp0(attributes[i].name, name ) == 0 ) {
 
         atom = XInternAtom( _display, name, False );
         break; 
@@ -624,7 +625,7 @@ XVWindow::checkMaxSize(unsigned int width, unsigned int height)
 
   for (i = 0 ; i < numXveinfo ; i++) {
 
-    if ( strcmp( xveinfo[i].name, "XV_IMAGE" ) == 0 ) {
+    if (g_strcmp0( xveinfo[i].name, "XV_IMAGE" ) == 0) {
 
       if ( (width <= xveinfo[i].width  ) ||
            (height <= xveinfo[i].height) )

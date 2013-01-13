@@ -58,7 +58,7 @@ gnomemeeting_conf_upgrade ()
   gchar *conf_url = gm_conf_get_string ("/desktop/gnome/url-handlers/callto/command");
 
   if (!conf_url
-      || !strcmp (conf_url, "gnomemeeting -c \"%s\"")) {
+      || !g_strcmp0 (conf_url, "gnomemeeting -c \"%s\"")) {
 
     gm_conf_set_string ("/desktop/gnome/url-handlers/callto/command",
 			"ekiga -c \"%s\"");
@@ -72,7 +72,7 @@ gnomemeeting_conf_upgrade ()
 
   conf_url = gm_conf_get_string ("/desktop/gnome/url-handlers/h323/command");
   if (!conf_url
-      || !strcmp (conf_url, "gnomemeeting -c \"%s\"")) {
+      || !g_strcmp0 (conf_url, "gnomemeeting -c \"%s\"")) {
 
     gm_conf_set_string ("/desktop/gnome/url-handlers/h323/command",
                         "ekiga -c \"%s\"");
@@ -85,7 +85,7 @@ gnomemeeting_conf_upgrade ()
 
   conf_url = gm_conf_get_string ("/desktop/gnome/url-handlers/sip/command");
   if (!conf_url
-      || !strcmp (conf_url, "gnomemeeting -c \"%s\"")) {
+      || !g_strcmp0 (conf_url, "gnomemeeting -c \"%s\"")) {
 
     gm_conf_set_string ("/desktop/gnome/url-handlers/sip/command",
                         "ekiga -c \"%s\"");
@@ -98,13 +98,13 @@ gnomemeeting_conf_upgrade ()
 
   /* New full name key */
   conf_url = gm_conf_get_string (PERSONAL_DATA_KEY "full_name");
-  if (!conf_url || (conf_url && !strcmp (conf_url, ""))) {
+  if (!conf_url || (conf_url && !g_strcmp0 (conf_url, ""))) {
 
     gchar *fullname = NULL;
     gchar *firstname = gm_conf_get_string (PERSONAL_DATA_KEY "firstname");
     gchar *lastname = gm_conf_get_string (PERSONAL_DATA_KEY "lastname");
 
-    if (firstname && lastname && strcmp (firstname, "") && strcmp (lastname, "")) {
+    if (firstname && lastname && g_strcmp0 (firstname, "") && g_strcmp0 (lastname, "")) {
       fullname = g_strdup_printf ("%s %s", firstname, lastname);
       gm_conf_set_string (PERSONAL_DATA_KEY "firstname", "");
       gm_conf_set_string (PERSONAL_DATA_KEY "lastname", "");
@@ -136,7 +136,7 @@ gnomemeeting_conf_upgrade ()
   gchar *device = NULL;
   gchar *new_device = NULL;
   plugin = gm_conf_get_string (AUDIO_DEVICES_KEY "plugin");
-  if (plugin && strcmp (plugin, "")) {
+  if (plugin && g_strcmp0 (plugin, "")) {
     device = gm_conf_get_string (AUDIO_DEVICES_KEY "input_device");
     new_device = g_strdup_printf ("%s (PTLIB/%s)", device, plugin);
     gm_conf_set_string (AUDIO_DEVICES_KEY "plugin", "");
@@ -162,7 +162,7 @@ gnomemeeting_conf_upgrade ()
 
   /* Video devices */
   plugin = gm_conf_get_string (VIDEO_DEVICES_KEY "plugin");
-  if (plugin && strcmp (plugin, "")) {
+  if (plugin && g_strcmp0 (plugin, "")) {
     device = gm_conf_get_string (VIDEO_DEVICES_KEY "input_device");
     new_device = g_strdup_printf ("%s (PTLIB/%s)", device, plugin);
     gm_conf_set_string (VIDEO_DEVICES_KEY "plugin", "");
@@ -190,9 +190,9 @@ gnomemeeting_conf_upgrade ()
 
   // migrate short_status
   gchar *ss = gm_conf_get_string (PERSONAL_DATA_KEY "short_status");
-  if (ss && !strcmp (ss, "online"))
+  if (ss && !g_strcmp0 (ss, "online"))
     gm_conf_set_string (PERSONAL_DATA_KEY "short_status", "available");
-  else if (ss && !strcmp (ss, "dnd"))
+  else if (ss && !g_strcmp0 (ss, "dnd"))
     gm_conf_set_string (PERSONAL_DATA_KEY "short_status", "busy");
   g_free (ss);
 
@@ -217,7 +217,7 @@ gnomemeeting_conf_upgrade ()
   // migrate first port in UDP port ranges from 5060 to 5061, see bug #690621
   if (version >= 0 && version <= 4000) {
     gchar *ports = gm_conf_get_string (PORTS_KEY "udp_port_range");
-    if (ports && !strncmp (ports, "5060", 4)) {
+    if (ports && !g_ascii_strncasecmp (ports, "5060", 4)) {
       ports[3] = '1';
       gm_conf_set_string (PORTS_KEY "udp_port_range", ports);
     }

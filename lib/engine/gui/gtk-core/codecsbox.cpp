@@ -238,7 +238,7 @@ codec_moved_cb (GtkWidget *widget,
   path_str = gtk_tree_model_get_string_from_iter (GTK_TREE_MODEL (model), 
                                                   &iter);
   tree_path = gtk_tree_path_new_from_string (path_str);
-  if (!strcmp ((gchar *) g_object_get_data (G_OBJECT (widget), "operation"), 
+  if (!g_strcmp0 ((gchar *) g_object_get_data (G_OBJECT (widget), "operation"), 
                "up"))
     gtk_tree_path_prev (tree_path);
   else

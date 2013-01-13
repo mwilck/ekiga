@@ -122,7 +122,7 @@ LM::HeapRoster::handle_iq (LmConnection* /*connection*/,
     if (node != NULL) {
 
       const gchar* xmlns = lm_message_node_get_attribute (node, "xmlns");
-      if (xmlns != NULL && strcmp (xmlns, "jabber:iq:roster") == 0) {
+      if (xmlns != NULL && g_strcmp0 (xmlns, "jabber:iq:roster") == 0) {
 
 	parse_roster (node);
 	result = LM_HANDLER_RESULT_REMOVE_MESSAGE;
@@ -153,7 +153,7 @@ LM::HeapRoster::handle_presence (LmConnection* /*connection*/,
 
   PresentityPtr item = find_item (base_jid);
 
-  if (type_attr != NULL && strcmp (type_attr, "subscribe") == 0) {
+  if (type_attr != NULL && g_strcmp0 (type_attr, "subscribe") == 0) {
 
     result = LM_HANDLER_RESULT_REMOVE_MESSAGE;
     boost::shared_ptr<Ekiga::FormRequestSimple> request = boost::shared_ptr<Ekiga::FormRequestSimple> (new Ekiga::FormRequestSimple (boost::bind (&LM::HeapRoster::subscribe_from_form_submitted, this, _1, _2)));
@@ -224,8 +224,8 @@ LM::HeapRoster::handle_message (LmConnection* /*connection*/,
   PresentityPtr item = find_item (base_jid);
 
   if (item && (type_attr == NULL
-	       || (type_attr != NULL && strcmp (type_attr, "normal") == 0)
-	       || (type_attr != NULL && strcmp (type_attr, "chat") == 0))) {
+	       || (type_attr != NULL && g_strcmp0 (type_attr, "normal") == 0)
+	       || (type_attr != NULL && g_strcmp0 (type_attr, "chat") == 0))) {
 
     // let's imagine it's a basic chat message
     LmMessageNode* body = lm_message_node_find_child (node, "body");
@@ -251,7 +251,7 @@ LM::HeapRoster::handle_initial_roster_reply (LmConnection* /*connection*/,
     if (node != NULL) {
 
       const gchar* xmlns = lm_message_node_get_attribute (node, "xmlns");
-      if (xmlns != NULL && strcmp (xmlns, "jabber:iq:roster") == 0) {
+      if (xmlns != NULL && g_strcmp0 (xmlns, "jabber:iq:roster") == 0) {
 
 	parse_roster (node);
 	result = LM_HANDLER_RESULT_REMOVE_MESSAGE;
@@ -267,7 +267,7 @@ LM::HeapRoster::parse_roster (LmMessageNode* query)
 {
   for (LmMessageNode* node = query->children; node != NULL; node = node->next) {
 
-    if (strcmp (node->name, "item") != 0) {
+    if (g_strcmp0 (node->name, "item") != 0) {
 
       continue;
     }
@@ -280,7 +280,7 @@ LM::HeapRoster::parse_roster (LmMessageNode* query)
 
 	found = true;
 	const gchar* subscription = lm_message_node_get_attribute (node, "subscription");
-	if (subscription != NULL && strcmp (subscription, "remove") == 0) {
+	if (subscription != NULL && g_strcmp0 (subscription, "remove") == 0) {
 
 	  (*iter)->removed ();
 	} else {
@@ -295,10 +295,10 @@ LM::HeapRoster::parse_roster (LmMessageNode* query)
       presentity->chat_requested.connect (boost::bind (&LM::HeapRoster::on_chat_requested, this, presentity));
       add_presentity (presentity);
       const gchar* subscription = lm_message_node_get_attribute (node, "subscription");
-      if (subscription != NULL && strcmp (subscription, "none") == 0) {
+      if (subscription != NULL && g_strcmp0 (subscription, "none") == 0) {
 
 	const gchar* ask = lm_message_node_get_attribute (node, "ask");
-	if (ask == NULL || (ask != NULL && strcmp (ask, "subscribe") != 0)) {
+	if (ask == NULL || (ask != NULL && g_strcmp0 (ask, "subscribe") != 0)) {
 
 	  std::set<std::string>::iterator iter = items_added_by_me.find (presentity->get_jid ());
 	  if (iter != items_added_by_me.end ()) {
