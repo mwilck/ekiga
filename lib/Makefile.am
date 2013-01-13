@@ -446,6 +446,8 @@ libekiga_la_SOURCES += \
 	$(engine_dir)/gui/gtk-frontend/preferences-window.h \
 	$(engine_dir)/gui/gtk-frontend/statusicon.cpp \
 	$(engine_dir)/gui/gtk-frontend/statusicon.h \
+	$(engine_dir)/gui/gtk-frontend/statusmenu.h \
+	$(engine_dir)/gui/gtk-frontend/statusmenu.cpp \
 	$(engine_dir)/gui/gtk-frontend/chat-window.h \
 	$(engine_dir)/gui/gtk-frontend/chat-window.cpp \
 	$(engine_dir)/gui/gtk-frontend/gtk-frontend.h \
