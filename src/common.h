@@ -41,8 +41,6 @@
 
 #include <sip/sip.h>
 
-#include <gtk/gtk.h>
-
 #define GENERAL_KEY         "/apps/" PACKAGE_NAME "/general/"
 #define USER_INTERFACE_KEY "/apps/" PACKAGE_NAME "/general/user_interface/"
 #define CONTACTS_KEY "/apps/" PACKAGE_NAME "/contacts/"
