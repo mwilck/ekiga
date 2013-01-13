@@ -44,7 +44,6 @@
 
 #include "config.h"
 
-#include "gmmarshallers.h"
 #include "gm-cell-renderer-bitext.h"
 #include "gmcellrendererexpander.h"
 #include "gmconf.h"

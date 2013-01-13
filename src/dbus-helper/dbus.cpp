@@ -44,7 +44,6 @@
 #include "dbus.h"
 
 #include "ekiga.h"
-#include "gmmarshallers.h"
 #include "gmconf.h"
 #include "gmcallbacks.h"
 

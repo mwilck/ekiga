@@ -63,24 +63,15 @@ components_dir = $(top_srcdir)/lib/engine/components
 # Sources out of this directory
 ##
 
-nodist_libekiga_la_SOURCES = \
-	gmmarshallers.c \
-	gmmarshallers.h
-CLEANFILES += gmmarshallers.c gmmarshallers.h
-EXTRA_DIST = gmmarshallers.list
-
-# forces the HAVE :
-BUILT_SOURCES = gmmarshallers.h gmmarshallers.c
-
-gmmarshallers.h: gmmarshallers.list
-	$(AM_V_GEN)$(LIBTOOL) --mode=execute glib-genmarshal --prefix=gm_marshal $^ --header > $@.tmp && mv $@.tmp $@
-
-gmmarshallers.c: gmmarshallers.list
-	$(AM_V_GEN)$(LIBTOOL) --mode=execute glib-genmarshal --prefix=gm_marshal $^ --body > $@.tmp && mv $@.tmp $@
-
 libekiga_la_SOURCES += \
 	$(top_srcdir)/lib/toolbox.h \
 	$(top_srcdir)/lib/toolbox.c
+
+EXTRA_DIST =
+
+nodist_libekiga_la_SOURCES =
+
+BUILT_SOURCES =
 
 ##
 # Sources out of the platform directory
