@@ -93,6 +93,7 @@ GtkFrontend::~GtkFrontend ()
   gtk_widget_destroy (addressbook_window);
   gtk_widget_destroy (accounts_window);
   gtk_widget_destroy (chat_window);
+  gtk_widget_destroy (call_window);
   if (status_icon)
     g_object_unref (status_icon);
 }
