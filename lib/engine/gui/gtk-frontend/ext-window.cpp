@@ -162,6 +162,9 @@ finalize (GObject* gobject)
 
   clear_display_info (ew);
 
+  delete ew->priv;
+  ew->priv = NULL;
+
   G_OBJECT_CLASS (ekiga_ext_window_parent_class)->finalize (gobject);
 }
 
@@ -240,16 +243,12 @@ ekiga_ext_window_class_init (EkigaExtWindowClass *klass)
   widget_class->show = show;
   widget_class->expose_event = expose_event;
   widget_class->focus_in_event = focus_in_event;
-
-  g_type_class_add_private (klass, sizeof (EkigaExtWindowPrivate));
-
 }
 
 static void
 ekiga_ext_window_init (EkigaExtWindow *ew)
 {
-  ew->priv = G_TYPE_INSTANCE_GET_PRIVATE (ew, EKIGA_TYPE_EXT_WINDOW,
-                                          EkigaExtWindowPrivate);
+  ew->priv = new EkigaExtWindowPrivate;
 }
 
 GtkWidget *
