@@ -46,6 +46,8 @@
 #include "dbus-helper/dbus.h"
 #endif
 
+#include <sip/sip.h>
+
 #ifndef WIN32
 #include <signal.h>
 #include <gdk/gdkx.h>

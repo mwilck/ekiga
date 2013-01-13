@@ -46,6 +46,8 @@
 // FIXME: remove this include when the class won't have GetMainWindow and GetAssistantWindow anymore
 #include <gtk/gtk.h>
 
+#include <sip/sip.h>
+
 /**
  * COMMON NOTICE: The Application must be initialized with Init after its
  * creation.
