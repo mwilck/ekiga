@@ -1033,7 +1033,7 @@ on_presentity_added (RosterViewGtk* self,
                         -1);
     if (old_presence && presentity->get_presence () != old_presence
         && presentity->get_presence () != "unknown" && presentity->get_presence () != "offline"
-        && (!strcmp (old_presence, "unknown") || !strcmp (old_presence, "offline"))) {
+        && (!g_strcmp0 (old_presence, "unknown") || !g_strcmp0 (old_presence, "offline"))) {
 
       StatusIconInfo *info = new StatusIconInfo ();
       info->model = GTK_TREE_MODEL (self->priv->store);

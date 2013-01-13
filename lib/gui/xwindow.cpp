@@ -238,23 +238,23 @@ XWindow::Init (Display* dp,
   _planes = xFormat->planes;
 
 #ifdef WORDS_BIGENDIAN
-  if (strcmp (xFormat->name, "BGRA") == 0) {
+  if (g_strcmp0 (xFormat->name, "BGRA") == 0) {
     snprintf (_colorFormat, sizeof(_colorFormat), "RGB32");
     _outOffset = 1;
     _planes = 4;
   } 
-  if (strcmp (xFormat->name, "RGBA") == 0) {
+  if (g_strcmp0 (xFormat->name, "RGBA") == 0) {
     snprintf (_colorFormat, sizeof(_colorFormat), "BGR32");
     _outOffset = 1;
     _planes = 4;
   } 
 #else
-  if (strcmp (xFormat->name, "ABGR") == 0) {
+  if (g_strcmp0 (xFormat->name, "ABGR") == 0) {
     snprintf (_colorFormat, sizeof(_colorFormat), "BGR32");
     _outOffset = -1;
     _planes = 4;
   } 
-  if (strcmp (xFormat->name, "ARGB") == 0) {
+  if (g_strcmp0 (xFormat->name, "ARGB") == 0) {
     snprintf (_colorFormat, sizeof(_colorFormat), "RGB32");
     _outOffset = -1;
     _planes = 4;

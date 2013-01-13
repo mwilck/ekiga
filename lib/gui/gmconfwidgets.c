@@ -80,7 +80,7 @@ entry_focus_changed (GtkWidget  *w,
   current_value = gm_conf_get_string (key);
 
   if (!current_value 
-      || strcmp (current_value, gtk_entry_get_text (GTK_ENTRY (w)))) {
+      || g_strcmp0 (current_value, gtk_entry_get_text (GTK_ENTRY (w)))) {
 
     gm_conf_set_string (key, (gchar *)gtk_entry_get_text (GTK_ENTRY (w)));
   }
@@ -110,7 +110,7 @@ entry_changed_nt (G_GNUC_UNUSED gpointer cid,
     current_value = gm_conf_entry_get_string (entry);
 
     if (current_value
-	&& strcmp (current_value, gtk_entry_get_text (GTK_ENTRY (e)))) {
+	&& g_strcmp0 (current_value, gtk_entry_get_text (GTK_ENTRY (e)))) {
 
       g_signal_handlers_block_matched (G_OBJECT (e),
 				       G_SIGNAL_MATCH_FUNC,
@@ -333,7 +333,7 @@ string_option_menu_changed (GtkWidget *option_menu,
     gtk_tree_model_get (GTK_TREE_MODEL (model), &iter, 0, &text, -1);
     current_value = gm_conf_get_string (key);
 
-    if (text && current_value && strcmp (text, current_value))
+    if (text && current_value && g_strcmp0 (text, current_value))
       gm_conf_set_string (key, text);
 
     g_free (text);
@@ -377,7 +377,7 @@ string_option_menu_changed_nt (G_GNUC_UNUSED gpointer cid,
 
       gtk_tree_model_get (model, &iter, 0, &text, -1);
       txt = gm_conf_entry_get_string (entry);
-      if (text && !strcmp (text, txt)) {
+      if (text && !g_strcmp0 (text, txt)) {
 
         g_free (text);
         g_free (txt);

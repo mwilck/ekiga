@@ -524,7 +524,7 @@ statusicon_should_run (void)
 
   /* Print the results */
   for (name_list_ptr = name_list; *name_list_ptr; name_list_ptr++) {
-    if (!strcmp (*name_list_ptr, "org.gnome.Shell")) {
+    if (!g_strcmp0 (*name_list_ptr, "org.gnome.Shell")) {
       shell_running = true;
       break;
     }

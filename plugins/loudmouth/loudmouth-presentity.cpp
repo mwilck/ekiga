@@ -139,7 +139,7 @@ LM::Presentity::get_groups () const
 
   for (LmMessageNode* node = item->children; node != NULL; node = node->next) {
 
-    if (strcmp (node->name, "group") == 0) {
+    if (g_strcmp0 (node->name, "group") == 0) {
 
       if (node->value) {
 
@@ -169,11 +169,11 @@ LM::Presentity::populate_menu (Ekiga::MenuBuilder& builder)
   builder.add_action ("edit", _("_Edit"),
 		      boost::bind (&LM::Presentity::edit_presentity, this));
 
-  if (strcmp (subscription, "none") == 0) {
+  if (g_strcmp0 (subscription, "none") == 0) {
 
     builder.add_action ("ask", _("Ask him/her to see his/her status"), boost::bind (&LM::Presentity::ask_to, this));
   }
-  if (strcmp (subscription, "from") == 0) {
+  if (g_strcmp0 (subscription, "from") == 0) {
 
     builder.add_action ("stop", _("Forbid him/her to see my status"), boost::bind (&LM::Presentity::revoke_from, this));
     if (ask == NULL)
@@ -181,11 +181,11 @@ LM::Presentity::populate_menu (Ekiga::MenuBuilder& builder)
     else
       builder.add_ghost ("ask", _("Ask him/her to see his/her status (pending)"));
   }
-  if (strcmp (subscription, "to") == 0) {
+  if (g_strcmp0 (subscription, "to") == 0) {
 
     builder.add_action ("stop", _("Stop getting his/her status"), boost::bind (&LM::Presentity::stop_to, this));
   }
-  if (strcmp (subscription, "both") == 0) {
+  if (g_strcmp0 (subscription, "both") == 0) {
 
     builder.add_action ("stop", _("Forbid him/her to see my status"), boost::bind (&LM::Presentity::revoke_from, this));
     builder.add_action ("stop", _("Stop getting his/her status"), boost::bind (&LM::Presentity::stop_to, this));

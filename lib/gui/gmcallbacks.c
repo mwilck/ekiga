@@ -116,7 +116,7 @@ GNU GPL for all the rest of the software thus combined.")
   /* Translators: Please write translator credits here, and
    * separate names with \n */
   const gchar *translator_credits = _("translator-credits");
-  if (strcmp (translator_credits, "translator-credits") == 0)
+  if (g_strcmp0 (translator_credits, "translator-credits") == 0)
     translator_credits = "No translators, English by\n"
         "Damien Sandras <dsandras@seconix.com>";
 

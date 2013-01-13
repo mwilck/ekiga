@@ -173,7 +173,7 @@ update_combo_box (GtkComboBox         *combo_box,
 
   selected = 0;
   for (i = 0; options[i]; i++) {
-    if (default_value && strcmp (options[i], default_value) == 0)
+    if (default_value && g_strcmp0 (options[i], default_value) == 0)
       selected = i;
 
     gtk_list_store_append (GTK_LIST_STORE (model), &iter);
@@ -571,7 +571,7 @@ ekiga_net_info_changed_cb (G_GNUC_UNUSED GtkWidget *w,
   else {
     const char *username = gtk_entry_get_text (GTK_ENTRY (assistant->priv->username));
     const char *password = gtk_entry_get_text (GTK_ENTRY (assistant->priv->password));
-    complete = strcmp(username, "") != 0 && strcmp(password, "") != 0;
+    complete = g_strcmp0(username, "") != 0 && g_strcmp0(password, "") != 0;
   }
 
   set_current_page_complete (GTK_ASSISTANT (assistant), complete);
@@ -589,7 +589,7 @@ ekiga_out_info_changed_cb (G_GNUC_UNUSED GtkWidget *w,
   else {
     const char *username = gtk_entry_get_text (GTK_ENTRY (assistant->priv->dusername));
     const char *password = gtk_entry_get_text (GTK_ENTRY (assistant->priv->dpassword));
-    complete = strcmp(username, "") != 0 && strcmp(password, "") != 0;
+    complete = g_strcmp0(username, "") != 0 && g_strcmp0(password, "") != 0;
   }
 
   set_current_page_complete (GTK_ASSISTANT (assistant), complete);

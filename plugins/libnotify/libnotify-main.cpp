@@ -89,7 +89,7 @@ call_notification_action_cb (NotifyNotification *notification,
   Ekiga::Call *call = (Ekiga::Call *) data;
 
   notify_notification_close (notification, NULL);
-  if (!strcmp (action, "accept"))
+  if (!g_strcmp0 (action, "accept"))
     call->answer ();
   else
     call->hang_up ();
@@ -155,7 +155,7 @@ LibNotify::LibNotify (Ekiga::ServiceCore& core)
   GList *capabilities = notify_get_server_caps ();
   if (capabilities != NULL) {
     for (GList *c = capabilities ; c != NULL ; c = c->next) {
-      if (strcmp ((char*)c->data, "actions") == 0 ) {
+      if (g_strcmp0 ((char*)c->data, "actions") == 0 ) {
 
 	has_actions=true;
 	break;

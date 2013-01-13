@@ -525,7 +525,7 @@ editable_set_add_value_activated_cb (GtkWidget *entry,
   model = gtk_tree_view_get_model (GTK_TREE_VIEW (data));
 
   value = gtk_entry_get_text (GTK_ENTRY (entry));
-  if (!strcmp (value, ""))
+  if (!g_strcmp0 (value, ""))
     return;
 
   if (gtk_tree_model_get_iter_first (GTK_TREE_MODEL (model), &iter)) {
@@ -535,7 +535,7 @@ editable_set_add_value_activated_cb (GtkWidget *entry,
       gtk_tree_model_get (GTK_TREE_MODEL (model), &iter,
                           EditableSetSubmitter::COLUMN_VALUE, &tree_value,
                           -1);
-      if (tree_value && !strcmp (tree_value, value)) {
+      if (tree_value && !g_strcmp0 (tree_value, value)) {
         g_free (tree_value);
         return;
       }
@@ -560,7 +560,7 @@ static void
 editable_set_add_value_clicked_cb (G_GNUC_UNUSED GtkWidget *button,
 				   gpointer data)
 {
-  if (strcmp (gtk_entry_get_text (GTK_ENTRY (data)), ""))
+  if (g_strcmp0 (gtk_entry_get_text (GTK_ENTRY (data)), ""))
     gtk_widget_activate (GTK_WIDGET (data));
 }
 

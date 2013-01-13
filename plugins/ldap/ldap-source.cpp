@@ -53,7 +53,7 @@ OPENLDAP::Source::Source (Ekiga::ServiceCore &_core):
   xmlNodePtr root;
   gchar *c_raw = gm_conf_get_string (KEY);
 
-  if (c_raw != NULL && strcmp (c_raw, "")) {
+  if (c_raw != NULL && g_strcmp0 (c_raw, "")) {
 
     const std::string raw = c_raw;
 

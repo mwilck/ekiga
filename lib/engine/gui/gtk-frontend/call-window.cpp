@@ -2187,7 +2187,7 @@ ekiga_call_window_transfer_dialog_run (EkigaCallWindow *cw,
   gtk_dialog_set_default_response (GTK_DIALOG (cw->priv->transfer_call_popup),
 				   GTK_RESPONSE_ACCEPT);
 
-  if (u && !strcmp (u, ""))
+  if (u && !g_strcmp0 (u, ""))
     gm_entry_dialog_set_text (GM_ENTRY_DIALOG (cw->priv->transfer_call_popup), u);
   else
     gm_entry_dialog_set_text (GM_ENTRY_DIALOG (cw->priv->transfer_call_popup), "sip:");
@@ -2200,7 +2200,7 @@ ekiga_call_window_transfer_dialog_run (EkigaCallWindow *cw,
   case GTK_RESPONSE_ACCEPT:
 
     forward_url = gm_entry_dialog_get_text (GM_ENTRY_DIALOG (cw->priv->transfer_call_popup));
-    if (strcmp (forward_url, "") && cw->priv->current_call)
+    if (g_strcmp0 (forward_url, "") && cw->priv->current_call)
       cw->priv->current_call->transfer (forward_url);
     break;
 

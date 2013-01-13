@@ -135,7 +135,7 @@ enhancer_helper_enhance (G_GNUC_UNUSED GmTextBufferEnhancerHelper* self,
        smileys[ii] != NULL;
        ii = ii + 2) {
 
-    if (strcmp (smiley, smileys[ii]) == 0)
+    if (g_strcmp0 (smiley, smileys[ii]) == 0)
       pixbuf_name = smileys[ii + 1];
   }
 
