@@ -119,14 +119,22 @@ gnomemeeting_conf_upgrade ()
   /* diamondcard is now set at sip.diamondcard.us */
   GSList *accounts = gm_conf_get_string_list ("/apps/" PACKAGE_NAME "/protocols/accounts_list");
   GSList *accounts_iter = accounts;
+  GRegex* regex = g_regex_new ("eugw\\.ast\\.diamondcard\\.us",
+			       (GRegexCompileFlags)0,
+			       (GRegexMatchFlags)0,
+			       NULL);
+  gchar* replaced_acct = NULL;
   while (accounts_iter) {
 
-    PString acct = (gchar *) accounts_iter->data;
-    acct.Replace ("eugw.ast.diamondcard.us", "sip.diamondcard.us", TRUE);
+    replaced_acct = g_regex_replace (regex, (gchar *) accounts_iter->data,
+				     -1, 0, "sip.diamondcard.us",
+				     (GRegexMatchFlags)0, NULL);
     g_free (accounts_iter->data);
-    accounts_iter->data = g_strdup ((const char *) acct);
+    accounts_iter->data = replaced_acct;
     accounts_iter = g_slist_next (accounts_iter);
   }
+  g_regex_unref (regex);
+
   gm_conf_set_string_list ("/apps/" PACKAGE_NAME "/protocols/accounts_list", accounts);
   g_slist_foreach (accounts, (GFunc) g_free, NULL);
   g_slist_free (accounts);
