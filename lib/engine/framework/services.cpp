@@ -71,11 +71,34 @@ Ekiga::Service::get_string_property (const std::string /*name*/) const
 
 Ekiga::ServiceCore::~ServiceCore ()
 {
+#if DEBUG
+  std::list<boost::weak_ptr<Service> > remaining_services;
+  for (std::list<boost::shared_ptr<Service> >::iterator iter = services.begin();
+       iter != services.end ();
+       ++iter)
+    remaining_services.push_front (*iter);
+#endif
   /* this frees the memory, if we're the only to hold references,
    * and frees the last first -- so there's no problem
    */
   while ( !services.empty ())
     services.pop_front ();
+
+#if DEBUG
+  for (std::list<boost::weak_ptr<Service> >::iterator iter = remaining_services.begin();
+       iter != remaining_services.end ();
+       ++iter) {
+
+    ServicePtr service = iter->lock();
+    if (service) {
+
+      std::cout << "Ekiga::ServiceCore: "
+		<< service->get_name()
+		<< " hasn't been freed correctly!"
+		<< std::endl;
+    }
+  }
+#endif
 }
 
 bool
