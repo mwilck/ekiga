@@ -51,7 +51,7 @@
 
 Opal::Bank::Bank (Ekiga::ServiceCore &_core): core(_core)
 {
-  GSList *accounts = gm_conf_get_string_list ("/apps/" PACKAGE_NAME "/protocols/accounts_list");
+  GSList *accounts = gm_conf_get_string_list (PROTOCOLS_KEY "accounts_list");
   GSList *accounts_iter = accounts;
 
   while (accounts_iter) {
@@ -255,7 +255,7 @@ Opal::Bank::save () const
       accounts = g_slist_append (accounts, g_strdup (acct_str.c_str ()));
   }
 
-  gm_conf_set_string_list ("/apps/" PACKAGE_NAME "/protocols/accounts_list", accounts);
+  gm_conf_set_string_list (PROTOCOLS_KEY "accounts_list", accounts);
 
   g_slist_foreach (accounts, (GFunc) g_free, NULL);
   g_slist_free (accounts);

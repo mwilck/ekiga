@@ -45,13 +45,13 @@
 
 #include "ldap-source.h"
 
-#define KEY "/apps/" PACKAGE_NAME "/contacts/ldap_servers"
+#define LDAP_KEY CONTACTS_KEY "ldap_servers"
 
 OPENLDAP::Source::Source (Ekiga::ServiceCore &_core):
   core(_core), doc(), should_add_ekiga_net_book(false)
 {
   xmlNodePtr root;
-  gchar *c_raw = gm_conf_get_string (KEY);
+  gchar *c_raw = gm_conf_get_string (LDAP_KEY);
 
   if (c_raw != NULL && g_strcmp0 (c_raw, "")) {
 
@@ -204,7 +204,7 @@ OPENLDAP::Source::save ()
 
   xmlDocDumpMemory (doc.get (), &buffer, &size);
 
-  gm_conf_set_string (KEY, (const char *)buffer);
+  gm_conf_set_string (LDAP_KEY, (const char *)buffer);
 
   xmlFree (buffer);
 }

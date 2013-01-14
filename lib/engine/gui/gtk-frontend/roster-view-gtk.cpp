@@ -590,7 +590,7 @@ on_clicked_fold (RosterViewGtk* self,
     }
   }
 
-  gm_conf_set_string_list ("/apps/" PACKAGE_NAME "/contacts/roster_folded_groups",
+  gm_conf_set_string_list (CONTACTS_KEY "roster_folded_groups",
 			   self->priv->folded_groups);
 }
 
@@ -1416,8 +1416,8 @@ roster_view_gtk_init (G_GNUC_UNUSED RosterViewGtk* self)
 
   self->priv = g_new0 (RosterViewGtkPrivate, 1);
 
-  self->priv->folded_groups = gm_conf_get_string_list ("/apps/" PACKAGE_NAME "/contacts/roster_folded_groups");
-  self->priv->show_offline_contacts = gm_conf_get_bool ("/apps/" PACKAGE_NAME "/contacts/show_offline_contacts");
+  self->priv->folded_groups = gm_conf_get_string_list (CONTACTS_KEY "roster_folded_groups");
+  self->priv->show_offline_contacts = gm_conf_get_bool (CONTACTS_KEY "show_offline_contacts");
   vbox = gtk_vbox_new (FALSE, 0);
   scrolled_window = gtk_scrolled_window_new (NULL, NULL);
   gtk_container_set_border_width (GTK_CONTAINER (vbox), 0);
@@ -1526,7 +1526,7 @@ roster_view_gtk_init (G_GNUC_UNUSED RosterViewGtk* self)
 		    G_CALLBACK (on_view_event_after), self);
 
   /* Notifiers */
-  gm_conf_notifier_add ("/apps/" PACKAGE_NAME "/contacts/show_offline_contacts",
+  gm_conf_notifier_add (CONTACTS_KEY "show_offline_contacts",
 			show_offline_contacts_changed_nt, self);
 }
 

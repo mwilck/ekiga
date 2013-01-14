@@ -51,44 +51,44 @@ gmconf_upgrade_version ()
   int version = gm_conf_get_int (GENERAL_KEY "version");
 
   /* Install the sip:, h323: and callto: GNOME URL Handlers */
-  gchar *conf_url = gm_conf_get_string ("/desktop/gnome/url-handlers/callto/command");
+  gchar *conf_url = gm_conf_get_string (URL_HANDLERS_KEY "callto/command");
 
   if (!conf_url
       || !g_strcmp0 (conf_url, "gnomemeeting -c \"%s\"")) {
 
-    gm_conf_set_string ("/desktop/gnome/url-handlers/callto/command",
+    gm_conf_set_string (URL_HANDLERS_KEY "callto/command",
 			"ekiga -c \"%s\"");
 
-    gm_conf_set_bool ("/desktop/gnome/url-handlers/callto/needs_terminal",
+    gm_conf_set_bool (URL_HANDLERS_KEY "callto/needs_terminal",
 		      FALSE);
 
-    gm_conf_set_bool ("/desktop/gnome/url-handlers/callto/enabled", TRUE);
+    gm_conf_set_bool (URL_HANDLERS_KEY "callto/enabled", TRUE);
   }
   g_free (conf_url);
 
-  conf_url = gm_conf_get_string ("/desktop/gnome/url-handlers/h323/command");
+  conf_url = gm_conf_get_string (URL_HANDLERS_KEY "h323/command");
   if (!conf_url
       || !g_strcmp0 (conf_url, "gnomemeeting -c \"%s\"")) {
 
-    gm_conf_set_string ("/desktop/gnome/url-handlers/h323/command",
+    gm_conf_set_string (URL_HANDLERS_KEY "h323/command",
                         "ekiga -c \"%s\"");
 
-    gm_conf_set_bool ("/desktop/gnome/url-handlers/h323/needs_terminal", FALSE);
+    gm_conf_set_bool (URL_HANDLERS_KEY "h323/needs_terminal", FALSE);
 
-    gm_conf_set_bool ("/desktop/gnome/url-handlers/h323/enabled", TRUE);
+    gm_conf_set_bool (URL_HANDLERS_KEY "h323/enabled", TRUE);
   }
   g_free (conf_url);
 
-  conf_url = gm_conf_get_string ("/desktop/gnome/url-handlers/sip/command");
+  conf_url = gm_conf_get_string (URL_HANDLERS_KEY "sip/command");
   if (!conf_url
       || !g_strcmp0 (conf_url, "gnomemeeting -c \"%s\"")) {
 
-    gm_conf_set_string ("/desktop/gnome/url-handlers/sip/command",
+    gm_conf_set_string (URL_HANDLERS_KEY "sip/command",
                         "ekiga -c \"%s\"");
 
-    gm_conf_set_bool ("/desktop/gnome/url-handlers/sip/needs_terminal", FALSE);
+    gm_conf_set_bool (URL_HANDLERS_KEY "sip/needs_terminal", FALSE);
 
-    gm_conf_set_bool ("/desktop/gnome/url-handlers/sip/enabled", TRUE);
+    gm_conf_set_bool (URL_HANDLERS_KEY "sip/enabled", TRUE);
   }
   g_free (conf_url);
 
@@ -113,7 +113,7 @@ gmconf_upgrade_version ()
   g_free (conf_url);
 
   /* diamondcard is now set at sip.diamondcard.us */
-  GSList *accounts = gm_conf_get_string_list ("/apps/" PACKAGE_NAME "/protocols/accounts_list");
+  GSList *accounts = gm_conf_get_string_list (PROTOCOLS_KEY "accounts_list");
   GSList *accounts_iter = accounts;
   GRegex* regex = g_regex_new ("eugw\\.ast\\.diamondcard\\.us",
 			       (GRegexCompileFlags)0,
@@ -131,7 +131,7 @@ gmconf_upgrade_version ()
   }
   g_regex_unref (regex);
 
-  gm_conf_set_string_list ("/apps/" PACKAGE_NAME "/protocols/accounts_list", accounts);
+  gm_conf_set_string_list (PROTOCOLS_KEY "accounts_list", accounts);
   g_slist_foreach (accounts, (GFunc) g_free, NULL);
   g_slist_free (accounts);
 

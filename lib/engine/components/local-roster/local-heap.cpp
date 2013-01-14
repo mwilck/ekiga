@@ -45,16 +45,13 @@
 #include "local-heap.h"
 #include "local-presentity.h"
 
-#define KEY "/apps/" PACKAGE_NAME "/contacts/roster"
-
-
 /*
  * Public API
  */
 Local::Heap::Heap (Ekiga::ServiceCore &_core): core (_core), doc ()
 {
   xmlNodePtr root;
-  gchar *c_raw = gm_conf_get_string (KEY);
+  gchar *c_raw = gm_conf_get_string (ROSTER_KEY);
 
   // Build the XML document representing the contacts list from the configuration
   if (c_raw != NULL) {
@@ -372,7 +369,7 @@ Local::Heap::save () const
 
   xmlDocDumpMemory (doc.get (), &buffer, &size);
 
-  gm_conf_set_string (KEY, (const char *)buffer);
+  gm_conf_set_string (ROSTER_KEY, (const char *)buffer);
 
   xmlFree (buffer);
 }

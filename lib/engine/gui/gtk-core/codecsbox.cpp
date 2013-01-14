@@ -198,9 +198,9 @@ codec_toggled_cb (G_GNUC_UNUSED GtkCellRendererToggle *cell,
   /* Update the gmconf key */
   codecs_data = codecs_box_to_gm_conf_list (self);
   if (self->priv->type == Ekiga::Call::Audio)
-    gm_conf_set_string_list ("/apps/" PACKAGE_NAME "/codecs/audio/media_list", codecs_data);
+    gm_conf_set_string_list (AUDIO_CODECS_KEY "media_list", codecs_data);
   else if (self->priv->type == Ekiga::Call::Video)
-    gm_conf_set_string_list ("/apps/" PACKAGE_NAME "/codecs/video/media_list", codecs_data);
+    gm_conf_set_string_list (VIDEO_CODECS_KEY "media_list", codecs_data);
   g_slist_foreach (codecs_data, (GFunc) g_free, NULL);
   g_slist_free (codecs_data);
 }
@@ -257,9 +257,9 @@ codec_moved_cb (GtkWidget *widget,
   /* Update the gmconf key */
   codecs_data = codecs_box_to_gm_conf_list (self);
   if (self->priv->type == Ekiga::Call::Audio)
-    gm_conf_set_string_list ("/apps/" PACKAGE_NAME "/codecs/audio/media_list", codecs_data);
+    gm_conf_set_string_list (AUDIO_CODECS_KEY "media_list", codecs_data);
   else if (self->priv->type == Ekiga::Call::Video)
-    gm_conf_set_string_list ("/apps/" PACKAGE_NAME "/codecs/video/media_list", codecs_data);
+    gm_conf_set_string_list (VIDEO_CODECS_KEY "media_list", codecs_data);
   g_slist_foreach (codecs_data, (GFunc) g_free, NULL);
   g_slist_free (codecs_data);
 }
@@ -523,9 +523,9 @@ codecs_box_set_property (GObject *obj,
   }
 
   if (self->priv->type == Ekiga::Call::Audio)
-    list = gm_conf_get_string_list ("/apps/" PACKAGE_NAME "/codecs/audio/media_list");
+    list = gm_conf_get_string_list (AUDIO_CODECS_KEY "media_list");
   else if (self->priv->type == Ekiga::Call::Video)
-    list = gm_conf_get_string_list ("/apps/" PACKAGE_NAME "/codecs/video/media_list");
+    list = gm_conf_get_string_list (VIDEO_CODECS_KEY "media_list");
 
   codecs_box_set_codecs (self, list);
 
@@ -533,9 +533,11 @@ codecs_box_set_property (GObject *obj,
   g_slist_free (list);
 
   if (self->priv->type == Ekiga::Call::Audio)
-    gm_conf_notifier_add ("/apps/" PACKAGE_NAME "/codecs/audio/media_list", codecs_list_changed_nt, GTK_WIDGET (self));
+    gm_conf_notifier_add (AUDIO_CODECS_KEY "media_list",
+			  codecs_list_changed_nt, GTK_WIDGET (self));
   else
-    gm_conf_notifier_add ("/apps/" PACKAGE_NAME "/codecs/video/media_list", codecs_list_changed_nt, GTK_WIDGET (self));
+    gm_conf_notifier_add (VIDEO_CODECS_KEY "media_list",
+			  codecs_list_changed_nt, GTK_WIDGET (self));
 }
 
 

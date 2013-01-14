@@ -45,14 +45,12 @@
 
 #include "history-book.h"
 
-#define KEY "/apps/" PACKAGE_NAME "/contacts/call_history"
-
 History::Book::Book (Ekiga::ServiceCore &_core) :
   core(_core), doc()
 {
   xmlNodePtr root = NULL;
 
-  gchar *c_raw = gm_conf_get_string (KEY);
+  gchar *c_raw = gm_conf_get_string (CALL_HISTORY_KEY);
 
   if (c_raw != NULL) {
 
@@ -172,7 +170,7 @@ History::Book::save () const
 
   xmlDocDumpMemory (doc.get (), &buffer, &size);
 
-  gm_conf_set_string (KEY, (const char *)buffer);
+  gm_conf_set_string (CALL_HISTORY_KEY, (const char *)buffer);
 
   xmlFree (buffer);
 }

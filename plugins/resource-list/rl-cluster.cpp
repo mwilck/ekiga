@@ -46,7 +46,7 @@
 
 #include <iostream>
 
-#define KEY "/apps/" PACKAGE_NAME "/contacts/resource-lists"
+#define RL_KEY CONTACTS_KEY "resource-lists"
 
 RL::Cluster::Cluster (Ekiga::ServiceCore& core_): core(core_), doc()
 {
@@ -57,7 +57,7 @@ RL::Cluster::Cluster (Ekiga::ServiceCore& core_): core(core_), doc()
   presence_core->presence_received.connect (boost::bind (&RL::Cluster::on_presence_received, this, _1, _2));
   presence_core->status_received.connect (boost::bind (&RL::Cluster::on_status_received, this, _1, _2));
 
-  c_raw = gm_conf_get_string (KEY);
+  c_raw = gm_conf_get_string (RL_KEY);
 
   if (c_raw != NULL) {
 
@@ -148,7 +148,7 @@ RL::Cluster::save () const
 
   xmlDocDumpMemory (doc.get (), &buffer, &size);
 
-  gm_conf_set_string (KEY, (const char*)buffer);
+  gm_conf_set_string (RL_KEY, (const char*)buffer);
 
   xmlFree (buffer);
 }

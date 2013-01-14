@@ -43,14 +43,14 @@
 
 #include "form-request-simple.h"
 
-#define KEY "/apps/" PACKAGE_NAME "/contacts/jabber"
+#define JABBER_KEY CONTACTS_KEY "jabber"
 
 LM::Bank::Bank (boost::shared_ptr<Ekiga::PersonalDetails> details_,
 		boost::shared_ptr<Dialect> dialect_,
 		boost::shared_ptr<Cluster> cluster_):
   details(details_), cluster(cluster_), dialect(dialect_), doc (NULL)
 {
-  gchar* c_raw = gm_conf_get_string (KEY);
+  gchar* c_raw = gm_conf_get_string (JABBER_KEY);
 
   if (c_raw != NULL) { // we already have it in store
 
@@ -96,7 +96,7 @@ LM::Bank::save () const
 
   xmlDocDumpMemory (doc, &buffer, &size);
 
-  gm_conf_set_string (KEY, (const char *)buffer);
+  gm_conf_set_string (JABBER_KEY, (const char *)buffer);
 
   xmlFree (buffer);
 }
