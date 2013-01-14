@@ -58,6 +58,8 @@
 
 typedef struct _GmPreferencesWindow
 {
+  ~_GmPreferencesWindow();
+
   GtkWidget *audio_codecs_list;
   GtkWidget *sound_events_list;
   GtkWidget *audio_player;
@@ -72,6 +74,13 @@ typedef struct _GmPreferencesWindow
 
 #define GM_PREFERENCES_WINDOW(x) (GmPreferencesWindow *) (x)
 
+_GmPreferencesWindow::~_GmPreferencesWindow()
+{
+  for (std::vector<boost::signals::connection>::iterator iter = connections.begin ();
+       iter != connections.end ();
+       ++iter)
+    iter->disconnect ();
+}
 
 /* Declarations */
 
