@@ -43,6 +43,8 @@
 #include "main_window.h"
 #include "gmstockicons.h"
 
+#include <opal/buildopts.h>
+
 #define new PNEW
 
 
