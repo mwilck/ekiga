@@ -111,7 +111,9 @@ endif
 ##
 libekiga_la_SOURCES += \
 	$(top_srcdir)/lib/gmconf/gmconf.h \
-	$(top_srcdir)/lib/gmconf/gmconf-ekiga-keys.h
+	$(top_srcdir)/lib/gmconf/gmconf-ekiga-keys.h \
+	$(top_srcdir)/lib/gmconf/gmconf-upgrade.h \
+	$(top_srcdir)/lib/gmconf/gmconf-upgrade.c
 
 if HAVE_GCONF
 libekiga_la_SOURCES += $(top_srcdir)/lib/gmconf/gmconf-gconf.c

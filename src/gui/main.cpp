@@ -57,11 +57,11 @@
 #endif
 
 #include "gmconf.h"
+#include "gmconf-upgrade.h"
+
 #include "engine.h"
 
 #include "call-core.h"
-
-#include "conf.h" // FIXME: Kill Me
 
 #include "ekiga.h"
 
@@ -198,7 +198,7 @@ main (int argc,
   int crt_version = gm_conf_get_int (GENERAL_KEY "version");
   if (crt_version < schema_version) {
 
-    gnomemeeting_conf_upgrade ();
+    gmconf_upgrade_version ();
 
     // show the assistant if there is no config file
     if (crt_version == 0)

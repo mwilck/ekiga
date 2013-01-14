@@ -1,6 +1,6 @@
 
 /* Ekiga -- A VoIP and Video-Conferencing application
- * Copyright (C) 2000-2009 Damien Sandras <dsandras@seconix.com>
+ * Copyright (C) 2000-2013 Damien Sandras <dsandras@seconix.com>
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -27,7 +27,7 @@
 
 
 /*
- *                         conf.h  -  description
+ *                         gmconf-upgrade.h  -  description
  *                         ------------------------
  *   begin                : Wed Feb 14 2001
  *   copyright            : (C) 2000-2006 by Damien Sandras
@@ -41,16 +41,20 @@
  */
 
 
-#ifndef _CONFIG_H
-#define _CONFIG_H
+#ifndef _GMCONF_UPGRADE_H
+#define _GMCONF_UPGRADE_H
 
-/* The functions */
+#include "gmconf.h"
+
+G_BEGIN_DECLS
 
 /* DESCRIPTION  :  /
  * BEHAVIOR     :  This function updates the GConf keys from version
  *                 to version.
  * PRE          :  /
  */
-void gnomemeeting_conf_upgrade ();
+void gmconf_upgrade_version ();
+
+G_END_DECLS
 
 #endif

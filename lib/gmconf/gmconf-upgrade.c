@@ -1,6 +1,6 @@
 
 /* Ekiga -- A VoIP and Video-Conferencing application
- * Copyright (C) 2000-2009 Damien Sandras <dsandras@seconix.com>
+ * Copyright (C) 2000-2013 Damien Sandras <dsandras@seconix.com>
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -27,7 +27,7 @@
 
 
 /*
- *                         config.cpp  -  description
+ *                         gmconf-upgrade.c  -  description
  *                         --------------------------
  *   begin                : Wed Feb 14 2001
  *   copyright            : (C) 2000-2006 by Damien Sandras
@@ -41,15 +41,12 @@
  */
 
 
+#include "gmconf-upgrade.h"
+
 #include "config.h"
 
-#include "conf.h"
-
-#include "gmconf.h"
-
-/* The functions */
 void
-gnomemeeting_conf_upgrade ()
+gmconf_upgrade_version ()
 {
   int version = gm_conf_get_int (GENERAL_KEY "version");
 
@@ -63,9 +60,9 @@ gnomemeeting_conf_upgrade ()
 			"ekiga -c \"%s\"");
 
     gm_conf_set_bool ("/desktop/gnome/url-handlers/callto/needs_terminal",
-		      false);
+		      FALSE);
 
-    gm_conf_set_bool ("/desktop/gnome/url-handlers/callto/enabled", true);
+    gm_conf_set_bool ("/desktop/gnome/url-handlers/callto/enabled", TRUE);
   }
   g_free (conf_url);
 
@@ -76,9 +73,9 @@ gnomemeeting_conf_upgrade ()
     gm_conf_set_string ("/desktop/gnome/url-handlers/h323/command",
                         "ekiga -c \"%s\"");
 
-    gm_conf_set_bool ("/desktop/gnome/url-handlers/h323/needs_terminal", false);
+    gm_conf_set_bool ("/desktop/gnome/url-handlers/h323/needs_terminal", FALSE);
 
-    gm_conf_set_bool ("/desktop/gnome/url-handlers/h323/enabled", true);
+    gm_conf_set_bool ("/desktop/gnome/url-handlers/h323/enabled", TRUE);
   }
   g_free (conf_url);
 
@@ -89,9 +86,9 @@ gnomemeeting_conf_upgrade ()
     gm_conf_set_string ("/desktop/gnome/url-handlers/sip/command",
                         "ekiga -c \"%s\"");
 
-    gm_conf_set_bool ("/desktop/gnome/url-handlers/sip/needs_terminal", false);
+    gm_conf_set_bool ("/desktop/gnome/url-handlers/sip/needs_terminal", FALSE);
 
-    gm_conf_set_bool ("/desktop/gnome/url-handlers/sip/enabled", true);
+    gm_conf_set_bool ("/desktop/gnome/url-handlers/sip/enabled", TRUE);
   }
   g_free (conf_url);
 
