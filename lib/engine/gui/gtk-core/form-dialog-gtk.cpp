@@ -34,9 +34,6 @@
  */
 
 
-#include <algorithm>
-#include <cstring>
-#include <iostream>
 #include <glib/gi18n.h>
 
 #include "platform.h"

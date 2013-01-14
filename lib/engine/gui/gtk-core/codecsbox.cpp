@@ -30,7 +30,7 @@
  *                         codecsbox.c  -  description
  *                         -------------------------------
  *   begin                : Sat Sep 2 2006
- *   copyright            : (C) 2000-2006 by Damien Sandras 
+ *   copyright            : (C) 2000-2006 by Damien Sandras
  *   description          : Contains a codecs box widget
  *
  */
@@ -40,15 +40,12 @@
 
 #include "gmconf.h"
 #include "codec-description.h"
-#include <cstdlib>
-#include <cstring>
-#include <sstream>
 
 /* Columns for the codecs page */
 enum {
 
   COLUMN_CODEC_ACTIVE,
-  COLUMN_CODEC_NAME, 
+  COLUMN_CODEC_NAME,
   COLUMN_CODEC_CLOCKRATE,
   COLUMN_CODEC_PROTOCOLS,
   COLUMN_CODEC_CONFIG_NAME,
@@ -77,7 +74,7 @@ static void codec_toggled_cb (GtkCellRendererToggle *cell,
                               gchar *path_str,
                               gpointer data);
 
-static void codec_moved_cb (GtkWidget *widget, 
+static void codec_moved_cb (GtkWidget *widget,
                             gpointer data);
 
 static GSList *codecs_box_to_gm_conf_list (CodecsBox *self);
@@ -98,7 +95,7 @@ static void codecs_box_set_property (GObject *obj,
                                      const GValue *value,
                                      GParamSpec *spec);
 
-static void 
+static void
 codecs_box_set_codecs (CodecsBox *self,
                        GSList *list)
 {
@@ -118,9 +115,9 @@ codecs_box_set_codecs (CodecsBox *self,
 
   selection = gtk_tree_view_get_selection (GTK_TREE_VIEW (self->priv->codecs_list));
 
-  if (gtk_tree_selection_get_selected (selection, &model, &iter)) 
+  if (gtk_tree_selection_get_selected (selection, &model, &iter))
     gtk_tree_model_get (GTK_TREE_MODEL (model), &iter,
-                        COLUMN_CODEC_NAME, &selected_codec, 
+                        COLUMN_CODEC_NAME, &selected_codec,
                         COLUMN_CODEC_CLOCKRATE, &select_rate, -1);
   gtk_list_store_clear (GTK_LIST_STORE (model));
 
