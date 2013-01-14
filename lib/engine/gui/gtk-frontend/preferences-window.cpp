@@ -58,6 +58,7 @@
 
 typedef struct _GmPreferencesWindow
 {
+  _GmPreferencesWindow(Ekiga::ServiceCore &_core);
   ~_GmPreferencesWindow();
 
   GtkWidget *audio_codecs_list;
@@ -68,11 +69,15 @@ typedef struct _GmPreferencesWindow
   GtkWidget *video_device;
   GtkWidget *iface;
   GtkWidget *fsbutton;
-  Ekiga::ServiceCore *core;
+  Ekiga::ServiceCore& core;
   std::vector<boost::signals::connection> connections;
 } GmPreferencesWindow;
 
 #define GM_PREFERENCES_WINDOW(x) (GmPreferencesWindow *) (x)
+
+_GmPreferencesWindow::_GmPreferencesWindow(Ekiga::ServiceCore &_core): core(_core)
+{
+}
 
 _GmPreferencesWindow::~_GmPreferencesWindow()
 {
@@ -292,11 +297,11 @@ static void audioev_filename_browse_play_cb (GtkWidget *playbutton,
                                              gpointer data);
 
 static void
-gm_prefs_window_get_audiooutput_devices_list (Ekiga::ServiceCore *core,
+gm_prefs_window_get_audiooutput_devices_list (Ekiga::ServiceCore& core,
                                         std::vector<std::string> & device_list);
 
 static void
-gm_prefs_window_get_audioinput_devices_list (Ekiga::ServiceCore *core,
+gm_prefs_window_get_audioinput_devices_list (Ekiga::ServiceCore& core,
                                              std::vector<std::string> & device_list);
 
 gchar**
@@ -755,10 +760,10 @@ gm_pw_init_audio_devices_page (GtkWidget *prefs_window,
 
 
 static void
-gm_prefs_window_get_videoinput_devices_list (Ekiga::ServiceCore *core,
+gm_prefs_window_get_videoinput_devices_list (Ekiga::ServiceCore& core,
                                              std::vector<std::string> & device_list)
 {
-  boost::shared_ptr<Ekiga::VideoInputCore> videoinput_core = core->get<Ekiga::VideoInputCore> ("videoinput-core");
+  boost::shared_ptr<Ekiga::VideoInputCore> videoinput_core = core.get<Ekiga::VideoInputCore> ("videoinput-core");
   std::vector <Ekiga::VideoInputDevice> devices;
 
   device_list.clear();
@@ -775,10 +780,10 @@ gm_prefs_window_get_videoinput_devices_list (Ekiga::ServiceCore *core,
 
 
 void
-gm_prefs_window_get_audiooutput_devices_list (Ekiga::ServiceCore *core,
+gm_prefs_window_get_audiooutput_devices_list (Ekiga::ServiceCore& core,
                                               std::vector<std::string> & device_list)
 {
-  boost::shared_ptr<Ekiga::AudioOutputCore> audiooutput_core = core->get<Ekiga::AudioOutputCore> ("audiooutput-core");
+  boost::shared_ptr<Ekiga::AudioOutputCore> audiooutput_core = core.get<Ekiga::AudioOutputCore> ("audiooutput-core");
   std::vector <Ekiga::AudioOutputDevice> devices;
 
   std::string device_string;
@@ -797,10 +802,10 @@ gm_prefs_window_get_audiooutput_devices_list (Ekiga::ServiceCore *core,
 
 
 void
-gm_prefs_window_get_audioinput_devices_list (Ekiga::ServiceCore *core,
+gm_prefs_window_get_audioinput_devices_list (Ekiga::ServiceCore& core,
                                              std::vector<std::string> & device_list)
 {
-  boost::shared_ptr<Ekiga::AudioInputCore> audioinput_core = core->get<Ekiga::AudioInputCore> ("audioinput-core");
+  boost::shared_ptr<Ekiga::AudioInputCore> audioinput_core = core.get<Ekiga::AudioInputCore> ("audioinput-core");
   std::vector <Ekiga::AudioInputDevice> devices;
 
   device_list.clear();
@@ -1097,7 +1102,7 @@ sound_event_play_cb (G_GNUC_UNUSED GtkWidget *widget,
 
     gtk_tree_model_get (GTK_TREE_MODEL (model), &selected_iter, 4, &sound_event, -1);
 
-    boost::shared_ptr<Ekiga::AudioOutputCore> audiooutput_core = pw->core->get<Ekiga::AudioOutputCore> ("audiooutput-core");
+    boost::shared_ptr<Ekiga::AudioOutputCore> audiooutput_core = pw->core.get<Ekiga::AudioOutputCore> ("audiooutput-core");
 
     if (sound_event) {
       audiooutput_core->play_event(sound_event);
@@ -1146,7 +1151,7 @@ audioev_filename_browse_play_cb (GtkWidget* /* playbutton */,
 
   pw = gm_pw_get_pw (GTK_WIDGET (data));
 
-  boost::shared_ptr<Ekiga::AudioOutputCore> audiooutput_core = pw->core->get<Ekiga::AudioOutputCore> ("audiooutput-core");
+  boost::shared_ptr<Ekiga::AudioOutputCore> audiooutput_core = pw->core.get<Ekiga::AudioOutputCore> ("audiooutput-core");
 
   gchar* file_name = gtk_file_chooser_get_filename (GTK_FILE_CHOOSER (pw->fsbutton));
   std::string file_name_string = file_name;
@@ -1253,7 +1258,7 @@ gm_prefs_window_update_devices_list (GtkWidget *prefs_window)
 
 
 GtkWidget *
-preferences_window_new (Ekiga::ServiceCore & core)
+preferences_window_new (Ekiga::ServiceCore& core)
 {
   GmPreferencesWindow *pw = NULL;
 
@@ -1278,9 +1283,7 @@ preferences_window_new (Ekiga::ServiceCore & core)
 
 
   /* The GMObject data */
-  pw = new GmPreferencesWindow ();
-
-  pw->core = &core;
+  pw = new GmPreferencesWindow (core);
 
   g_object_set_data_full (G_OBJECT (window), "GMObject",
 			  pw, (GDestroyNotify) gm_pw_destroy);
