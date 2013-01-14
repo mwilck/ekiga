@@ -39,10 +39,6 @@
 #include "audiooutput-gmconf-bridge.h"
 #include "audiooutput-core.h"
 
-#define AUDIO_DEVICES_KEY "/apps/" PACKAGE_NAME "/devices/audio/"
-#define AUDIO_CODECS_KEY "/apps/" PACKAGE_NAME "/codecs/audio/"
-#define SOUND_EVENTS_KEY  "/apps/" PACKAGE_NAME "/general/sound_events/"
-
 using namespace Ekiga;
 
 AudioOutputCoreConfBridge::AudioOutputCoreConfBridge (Ekiga::Service & _service)

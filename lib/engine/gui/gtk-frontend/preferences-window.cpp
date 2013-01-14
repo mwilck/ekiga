@@ -56,27 +56,6 @@
 #include "platform/winpaths.h"
 #endif
 
-#define GENERAL_KEY         "/apps/" PACKAGE_NAME "/general/"
-#define USER_INTERFACE_KEY "/apps/" PACKAGE_NAME "/general/user_interface/"
-#define CONTACTS_KEY "/apps/" PACKAGE_NAME "/contacts/"
-#define VIDEO_DISPLAY_KEY USER_INTERFACE_KEY "video_display/"
-#define SOUND_EVENTS_KEY  "/apps/" PACKAGE_NAME "/general/sound_events/"
-#define AUDIO_DEVICES_KEY "/apps/" PACKAGE_NAME "/devices/audio/"
-#define VIDEO_DEVICES_KEY "/apps/" PACKAGE_NAME "/devices/video/"
-#define PERSONAL_DATA_KEY "/apps/" PACKAGE_NAME "/general/personal_data/"
-#define CALL_OPTIONS_KEY "/apps/" PACKAGE_NAME "/general/call_options/"
-#define NAT_KEY "/apps/" PACKAGE_NAME "/general/nat/"
-#define PROTOCOLS_KEY "/apps/" PACKAGE_NAME "/protocols/"
-#define H323_KEY "/apps/" PACKAGE_NAME "/protocols/h323/"
-#define SIP_KEY "/apps/" PACKAGE_NAME "/protocols/sip/"
-#define PORTS_KEY "/apps/" PACKAGE_NAME "/protocols/ports/"
-#define CALL_FORWARDING_KEY "/apps/" PACKAGE_NAME "/protocols/call_forwarding/"
-#define LDAP_KEY "/apps/" PACKAGE_NAME "/protocols/ldap/"
-#define CODECS_KEY "/apps/" PACKAGE_NAME "/codecs/"
-#define AUDIO_CODECS_KEY "/apps/" PACKAGE_NAME "/codecs/audio/"
-#define VIDEO_CODECS_KEY  "/apps/" PACKAGE_NAME "/codecs/video/"
-
-
 typedef struct _GmPreferencesWindow
 {
   GtkWidget *audio_codecs_list;

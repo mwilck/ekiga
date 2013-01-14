@@ -39,9 +39,6 @@
 #include "audioinput-gmconf-bridge.h"
 #include "audioinput-core.h"
 
-#define AUDIO_DEVICES_KEY "/apps/" PACKAGE_NAME "/devices/audio/"
-#define AUDIO_CODECS_KEY "/apps/" PACKAGE_NAME "/codecs/audio/"
-
 using namespace Ekiga;
 
 AudioInputCoreConfBridge::AudioInputCoreConfBridge (Ekiga::Service & _service)

@@ -36,9 +36,6 @@
 #include <gdk/gdkwin32.h>
 #endif
 
-#define USER_INTERFACE_KEY "/apps/" PACKAGE_NAME "/general/user_interface/"
-#define VIDEO_DISPLAY_KEY USER_INTERFACE_KEY "video_display/"
-
 G_DEFINE_TYPE (EkigaExtWindow, ekiga_ext_window, GTK_TYPE_WINDOW);
 
 struct _EkigaExtWindowPrivate {

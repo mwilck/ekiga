@@ -44,8 +44,6 @@
 #include "videoinput-core.h"
 #include "videoinput-manager.h"
 
-#define VIDEO_DEVICES_KEY "/apps/" PACKAGE_NAME "/devices/video/"
-
 using namespace Ekiga;
 
 VideoInputCore::VideoPreviewManager::VideoPreviewManager (VideoInputCore& _videoinput_core, boost::shared_ptr<VideoOutputCore> _videooutput_core)

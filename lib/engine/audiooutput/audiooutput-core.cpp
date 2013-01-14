@@ -46,8 +46,6 @@
 
 using namespace Ekiga;
 
-#define AUDIO_DEVICES_KEY "/apps/" PACKAGE_NAME "/devices/audio/"
-
 AudioOutputCore::AudioOutputCore (Ekiga::ServiceCore & _core)
 : audio_event_scheduler(*this), core(_core)
 {

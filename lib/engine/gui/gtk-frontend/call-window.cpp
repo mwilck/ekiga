@@ -91,10 +91,6 @@ struct deviceStruct {
 
 G_DEFINE_TYPE (EkigaCallWindow, ekiga_call_window, GM_TYPE_WINDOW);
 
-#define USER_INTERFACE_KEY "/apps/" PACKAGE_NAME "/general/user_interface/"
-#define VIDEO_DISPLAY_KEY USER_INTERFACE_KEY "video_display/"
-#define VIDEO_DEVICES_KEY "/apps/" PACKAGE_NAME "/devices/video/"
-
 struct _EkigaCallWindowPrivate
 {
   Ekiga::ServiceCore *core;

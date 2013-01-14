@@ -46,8 +46,6 @@
 
 using namespace Ekiga;
 
-#define AUDIO_DEVICES_KEY "/apps/" PACKAGE_NAME "/devices/audio/"
-
 AudioInputCore::AudioInputCore (Ekiga::ServiceCore & _core) : core(_core)
 {
   PWaitAndSignal m_var(core_mutex);

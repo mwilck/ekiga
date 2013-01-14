@@ -49,14 +49,10 @@
 #include "opal-plugins-hook.h"
 
 #include "sip-endpoint.h"
-#define SIP_KEY "/apps/" PACKAGE_NAME "/protocols/sip/"
 
 #ifdef HAVE_H323
 #include "h323-endpoint.h"
-#define H323_KEY "/apps/" PACKAGE_NAME "/protocols/h323/"
 #endif
-
-#define GENERAL_KEY "/apps/" PACKAGE_NAME "/general/"
 
 // opal manages its endpoints itself, so we must be wary
 struct null_deleter

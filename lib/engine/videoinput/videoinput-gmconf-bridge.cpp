@@ -39,9 +39,6 @@
 #include "videoinput-gmconf-bridge.h"
 #include "videoinput-core.h"
 
-#define VIDEO_DEVICES_KEY "/apps/" PACKAGE_NAME "/devices/video/"
-#define VIDEO_CODECS_KEY  "/apps/" PACKAGE_NAME "/codecs/video/"
-
 using namespace Ekiga;
 
 VideoInputCoreConfBridge::VideoInputCoreConfBridge (Ekiga::Service & _service)

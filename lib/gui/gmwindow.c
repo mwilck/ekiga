@@ -46,8 +46,6 @@
 #include <string.h>
 #include <stdlib.h>
 
-#define USER_INTERFACE_KEY "/apps/" PACKAGE_NAME "/general/user_interface/"
-
 /*
  * The GmWindow
  */
