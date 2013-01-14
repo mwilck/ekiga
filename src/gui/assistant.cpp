@@ -1627,11 +1627,29 @@ ekiga_assistant_cancel (GtkAssistant *gtkassistant)
 
 
 static void
-ekiga_assistant_finalize (GObject *object)
+ekiga_assistant_dispose (GObject *object)
 {
   EkigaAssistant *assistant = EKIGA_ASSISTANT (object);
 
-  g_object_unref (assistant->priv->icon);
+  for (std::vector<boost::signals::connection>::iterator iter = assistant->priv->connections.begin ();
+       iter != assistant->priv->connections.end ();
+       ++iter)
+    iter->disconnect();
+  assistant->priv->connections.clear ();
+
+  if (assistant->priv->icon) {
+
+    g_object_unref (assistant->priv->icon);
+    assistant->priv->icon = NULL;
+  }
+
+  G_OBJECT_CLASS (ekiga_assistant_parent_class)->dispose (object);
+}
+
+static void
+ekiga_assistant_finalize (GObject *object)
+{
+  EkigaAssistant *assistant = EKIGA_ASSISTANT (object);
 
   delete assistant->priv;
   assistant->priv = NULL;
@@ -1649,6 +1667,7 @@ ekiga_assistant_class_init (EkigaAssistantClass *klass)
   assistant_class->apply = ekiga_assistant_apply;
   assistant_class->cancel = ekiga_assistant_cancel;
 
+  object_class->dispose = ekiga_assistant_dispose;
   object_class->finalize = ekiga_assistant_finalize;
 }
 
