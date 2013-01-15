@@ -81,18 +81,32 @@ private:
   container_type live;
 };
 
+struct call_reference
+{
+  call_reference(boost::shared_ptr<Ekiga::Call> _call): call(_call)
+  {}
+
+  boost::shared_ptr<Ekiga::Call> call;
+};
+
+static void
+delete_call_reference (gpointer data)
+{
+  delete (call_reference *)data;
+}
+
 static void
 call_notification_action_cb (NotifyNotification *notification,
                              gchar *action,
                              gpointer data)
 {
-  Ekiga::Call *call = (Ekiga::Call *) data;
+  call_reference* ref = (call_reference *) data;
 
   notify_notification_close (notification, NULL);
   if (!g_strcmp0 (action, "accept"))
-    call->answer ();
+    ref->call->answer ();
   else
-    call->hangup ();
+    ref->call->hangup ();
 }
 
 static void
@@ -250,6 +264,7 @@ LibNotify::on_call_notification (boost::shared_ptr<Ekiga::CallManager> manager,
                                  boost::shared_ptr<Ekiga::Call> call)
 {
   NotifyNotification *notify = NULL;
+  call_reference* ref = NULL;
 
   if (call->is_outgoing () || manager->get_auto_answer ())
     return; // Ignore
@@ -267,8 +282,10 @@ LibNotify::on_call_notification (boost::shared_ptr<Ekiga::CallManager> manager,
 #endif
 #endif
                                     );
-  notify_notification_add_action (notify, "reject", _("Reject"), call_notification_action_cb, call.get (), NULL);
-  notify_notification_add_action (notify, "accept", _("Accept"), call_notification_action_cb, call.get (), NULL);
+  ref = new call_reference (call);
+  notify_notification_add_action (notify, "reject", _("Reject"), call_notification_action_cb, ref, delete_call_reference);
+  ref = new call_reference (call);
+  notify_notification_add_action (notify, "accept", _("Accept"), call_notification_action_cb, ref, delete_call_reference);
   notify_notification_set_timeout (notify, NOTIFY_EXPIRES_NEVER);
   notify_notification_set_urgency (notify, NOTIFY_URGENCY_CRITICAL);
 
