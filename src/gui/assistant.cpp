@@ -1692,7 +1692,7 @@ ekiga_assistant_new (Ekiga::ServiceCore& service_core)
 
   conn = assistant->priv->audioinput_core->device_added.connect (boost::bind (&on_audioinput_device_added_cb, _1, _2, assistant));
   assistant->priv->connections.push_back (conn);
-  conn =assistant->priv-> audioinput_core->device_removed.connect (boost::bind (&on_audioinput_device_removed_cb, _1, _2, assistant));
+  conn = assistant->priv->audioinput_core->device_removed.connect (boost::bind (&on_audioinput_device_removed_cb, _1, _2, assistant));
   assistant->priv->connections.push_back (conn);
 
   conn = assistant->priv->audiooutput_core->device_added.connect (boost::bind (&on_audiooutput_device_added_cb, _1, _2, assistant));
