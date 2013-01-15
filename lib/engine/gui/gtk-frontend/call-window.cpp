@@ -2573,7 +2573,9 @@ ekiga_call_window_constructor (GType the_type,
 static void
 ekiga_call_window_dispose (GObject* gobject)
 {
-  for(std::vector<boost::connection>::iterator = cw->priv->connections.begin();
+  EkigaCallWindow* cw = EKIGA_CALL_WINDOW (gobject);
+
+  for(std::vector<boost::signals::connection>::iterator iter = cw->priv->connections.begin();
       iter != cw->priv->connections.end();
       ++iter)
     iter->disconnect();
