@@ -50,10 +50,7 @@
 
 struct _ChatWindowPrivate
 {
-  _ChatWindowPrivate (Ekiga::ServiceCore& core_): core(core_)
-  {}
-
-  Ekiga::ServiceCore& core;
+  boost::shared_ptr<Ekiga::NotificationCore> notification_core;
   std::list<boost::signals::connection> connections;
 
   GtkWidget* notebook;
@@ -139,10 +136,8 @@ update_unread (ChatWindow* self)
     info = g_strdup_printf (ngettext ("You have %d unread text message",
                                       "You have %d unread text messages",
                                       unread_count), unread_count);
-    boost::shared_ptr<Ekiga::NotificationCore> notification_core =
-      self->priv->core.get<Ekiga::NotificationCore> ("notification-core");
     boost::shared_ptr<Ekiga::Notification> notif (new Ekiga::Notification (Ekiga::Notification::Warning, info, "", _("Read"), boost::bind (show_chat_window_cb, self)));
-    notification_core->push_notification (notif);
+    self->priv->notification_core->push_notification (notif);
     g_free (info);
   }
 }
@@ -465,7 +460,10 @@ chat_window_new (Ekiga::ServiceCore& core,
                                     "hide_on_esc", FALSE,
                                       NULL);
 
-  self->priv = new ChatWindowPrivate (core);
+  self->priv = new ChatWindowPrivate;
+
+  self->priv->notification_core =
+    core.get<Ekiga::NotificationCore>("notification-core");
 
   self->priv->notebook = gtk_notebook_new ();
   gtk_container_add (GTK_CONTAINER (self), self->priv->notebook);
@@ -483,7 +481,7 @@ chat_window_new (Ekiga::ServiceCore& core,
 		    G_CALLBACK (on_switch_page), self);
 
   boost::shared_ptr<Ekiga::ChatCore> chat_core =
-    self->priv->core.get<Ekiga::ChatCore> ("chat-core");
+    core.get<Ekiga::ChatCore> ("chat-core");
   self->priv->connections.push_front (chat_core->dialect_added.connect (boost::bind (&on_dialect_added, self, _1)));
   self->priv->connections.push_front (chat_core->questions.connect (boost::bind (&on_handle_questions, self, _1)));
   chat_core->visit_dialects (boost::bind (&on_dialect_added, self, _1));
