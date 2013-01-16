@@ -93,7 +93,13 @@ G_DEFINE_TYPE (EkigaCallWindow, ekiga_call_window, GM_TYPE_WINDOW);
 
 struct _EkigaCallWindowPrivate
 {
-  Ekiga::ServiceCore *core;
+  Ekiga::ServicePtr libnotify;
+  boost::shared_ptr<Ekiga::VideoInputCore> videoinput_core;
+  boost::shared_ptr<Ekiga::VideoOutputCore> videooutput_core;
+  boost::shared_ptr<Ekiga::AudioInputCore> audioinput_core;
+  boost::shared_ptr<Ekiga::AudioOutputCore> audiooutput_core;
+  boost::shared_ptr<Ekiga::CallCore> call_core;
+
   GtkAccelGroup *accel;
 
   boost::shared_ptr<Ekiga::Call> current_call;
@@ -179,12 +185,6 @@ struct _EkigaCallWindowPrivate
   GtkWidget *transfer_call_popup;
 
   std::vector<boost::signals::connection> connections;
-};
-
-/* properties */
-enum {
-  PROP_0,
-  PROP_SERVICE_CORE
 };
 
 /* channel types */
@@ -458,11 +458,10 @@ static bool
 notify_has_actions (EkigaCallWindow *cw)
 {
   bool result = false;
-  Ekiga::ServicePtr libnotify = cw->priv->core->get ("libnotify");
 
-  if (libnotify) {
+  if (cw->priv->libnotify) {
 
-    boost::optional<bool> val = libnotify->get_bool_property ("actions");
+    boost::optional<bool> val = cw->priv->libnotify->get_bool_property ("actions");
     if (val) {
 
       result = *val;
@@ -659,11 +658,8 @@ audio_volume_changed_cb (GtkAdjustment * /*adjustment*/,
 {
   EkigaCallWindow *cw = EKIGA_CALL_WINDOW (data);
 
-  boost::shared_ptr<Ekiga::AudioInputCore> audioinput_core = cw->priv->core->get<Ekiga::AudioInputCore> ("audioinput-core");
-  boost::shared_ptr<Ekiga::AudioOutputCore> audiooutput_core = cw->priv->core->get<Ekiga::AudioOutputCore> ("audiooutput-core");
-
-  audiooutput_core->set_volume (Ekiga::primary, (unsigned) GTK_ADJUSTMENT (cw->priv->adj_output_volume)->value);
-  audioinput_core->set_volume ((unsigned) GTK_ADJUSTMENT (cw->priv->adj_input_volume)->value);
+  cw->priv->audiooutput_core->set_volume (Ekiga::primary, (unsigned) GTK_ADJUSTMENT (cw->priv->adj_output_volume)->value);
+  cw->priv->audioinput_core->set_volume ((unsigned) GTK_ADJUSTMENT (cw->priv->adj_input_volume)->value);
 }
 
 static void
@@ -672,11 +668,8 @@ audio_volume_window_shown_cb (GtkWidget * /*widget*/,
 {
   EkigaCallWindow *cw = EKIGA_CALL_WINDOW (data);
 
-  boost::shared_ptr<Ekiga::AudioInputCore> audioinput_core = cw->priv->core->get<Ekiga::AudioInputCore> ("audioinput-core");
-  boost::shared_ptr<Ekiga::AudioOutputCore> audiooutput_core = cw->priv->core->get<Ekiga::AudioOutputCore> ("audiooutput-core");
-
-  audioinput_core->set_average_collection (true);
-  audiooutput_core->set_average_collection (true);
+  cw->priv->audioinput_core->set_average_collection (true);
+  cw->priv->audiooutput_core->set_average_collection (true);
   cw->priv->levelmeter_timeout_id = g_timeout_add_full (G_PRIORITY_DEFAULT_IDLE, 50, on_signal_level_refresh_cb, data, NULL);
 }
 
@@ -686,12 +679,9 @@ audio_volume_window_hidden_cb (GtkWidget * /*widget*/,
 {
   EkigaCallWindow *cw = EKIGA_CALL_WINDOW (data);
 
-  boost::shared_ptr<Ekiga::AudioInputCore> audioinput_core = cw->priv->core->get<Ekiga::AudioInputCore> ("audioinput-core");
-  boost::shared_ptr<Ekiga::AudioOutputCore> audiooutput_core = cw->priv->core->get<Ekiga::AudioOutputCore> ("audiooutput-core");
-
   g_source_remove (cw->priv->levelmeter_timeout_id);
-  audioinput_core->set_average_collection (false);
-  audiooutput_core->set_average_collection (false);
+  cw->priv->audioinput_core->set_average_collection (false);
+  cw->priv->audiooutput_core->set_average_collection (false);
 }
 
 static void
@@ -700,12 +690,11 @@ video_settings_changed_cb (GtkAdjustment * /*adjustment*/,
 {
   EkigaCallWindow *cw = EKIGA_CALL_WINDOW (data);
 
-  boost::shared_ptr<Ekiga::VideoInputCore> videoinput_core = cw->priv->core->get<Ekiga::VideoInputCore> ("videoinput-core");
 
-  videoinput_core->set_whiteness ((unsigned) GTK_ADJUSTMENT (cw->priv->adj_whiteness)->value);
-  videoinput_core->set_brightness ((unsigned) GTK_ADJUSTMENT (cw->priv->adj_brightness)->value);
-  videoinput_core->set_colour ((unsigned) GTK_ADJUSTMENT (cw->priv->adj_colour)->value);
-  videoinput_core->set_contrast ((unsigned) GTK_ADJUSTMENT (cw->priv->adj_contrast)->value);
+  cw->priv->videoinput_core->set_whiteness ((unsigned) GTK_ADJUSTMENT (cw->priv->adj_whiteness)->value);
+  cw->priv->videoinput_core->set_brightness ((unsigned) GTK_ADJUSTMENT (cw->priv->adj_brightness)->value);
+  cw->priv->videoinput_core->set_colour ((unsigned) GTK_ADJUSTMENT (cw->priv->adj_colour)->value);
+  cw->priv->videoinput_core->set_contrast ((unsigned) GTK_ADJUSTMENT (cw->priv->adj_contrast)->value);
 }
 
 static gboolean
@@ -713,11 +702,8 @@ on_signal_level_refresh_cb (gpointer self)
 {
   EkigaCallWindow *cw = EKIGA_CALL_WINDOW (self);
 
-  boost::shared_ptr<Ekiga::AudioInputCore> audioinput_core = cw->priv->core->get<Ekiga::AudioInputCore> ("audioinput-core");
-  boost::shared_ptr<Ekiga::AudioOutputCore> audiooutput_core = cw->priv->core->get<Ekiga::AudioOutputCore> ("audiooutput-core");
-
-  gm_level_meter_set_level (GM_LEVEL_METER (cw->priv->output_signal), audiooutput_core->get_average_level());
-  gm_level_meter_set_level (GM_LEVEL_METER (cw->priv->input_signal), audioinput_core->get_average_level());
+  gm_level_meter_set_level (GM_LEVEL_METER (cw->priv->output_signal), cw->priv->audiooutput_core->get_average_level());
+  gm_level_meter_set_level (GM_LEVEL_METER (cw->priv->input_signal), cw->priv->audioinput_core->get_average_level());
   return true;
 }
 
@@ -1323,8 +1309,7 @@ on_stats_refresh_cb (gpointer self)
   if (cw->priv->calling_state == Connected && cw->priv->current_call) {
 
     Ekiga::VideoOutputStats videooutput_stats;
-    boost::shared_ptr<Ekiga::VideoOutputCore> videooutput_core = cw->priv->core->get<Ekiga::VideoOutputCore> ("videooutput-core");
-    videooutput_core->get_videooutput_stats(videooutput_stats);
+    cw->priv->videooutput_core->get_videooutput_stats(videooutput_stats);
 
     ekiga_call_window_set_status (cw, _("Connected with %s\n%s"), cw->priv->current_call->get_remote_party_name ().c_str (),
                                   cw->priv->current_call->get_duration ().c_str ());
@@ -2218,94 +2203,88 @@ ekiga_call_window_connect_engine_signals (EkigaCallWindow *cw)
   g_return_if_fail (EKIGA_IS_CALL_WINDOW (cw));
 
   /* New Display Engine signals */
-  boost::shared_ptr<Ekiga::VideoOutputCore> videooutput_core = cw->priv->core->get<Ekiga::VideoOutputCore> ("videooutput-core");
 
-  conn = videooutput_core->device_opened.connect (boost::bind (&on_videooutput_device_opened_cb, _1, _2, _3, _4, _5, _6, (gpointer) cw));
+  conn = cw->priv->videooutput_core->device_opened.connect (boost::bind (&on_videooutput_device_opened_cb, _1, _2, _3, _4, _5, _6, (gpointer) cw));
   cw->priv->connections.push_back (conn);
 
-  conn = videooutput_core->device_closed.connect (boost::bind (&on_videooutput_device_closed_cb, _1, (gpointer) cw));
+  conn = cw->priv->videooutput_core->device_closed.connect (boost::bind (&on_videooutput_device_closed_cb, _1, (gpointer) cw));
   cw->priv->connections.push_back (conn);
 
-  conn = videooutput_core->device_error.connect (boost::bind (&on_videooutput_device_error_cb, _1, _2, (gpointer) cw));
+  conn = cw->priv->videooutput_core->device_error.connect (boost::bind (&on_videooutput_device_error_cb, _1, _2, (gpointer) cw));
   cw->priv->connections.push_back (conn);
 
-  conn = videooutput_core->size_changed.connect (boost::bind (&on_size_changed_cb, _1, _2, _3, _4, (gpointer) cw));
+  conn = cw->priv->videooutput_core->size_changed.connect (boost::bind (&on_size_changed_cb, _1, _2, _3, _4, (gpointer) cw));
   cw->priv->connections.push_back (conn);
 
-  conn = videooutput_core->fullscreen_mode_changed.connect (boost::bind (&on_fullscreen_mode_changed_cb, _1, _2, (gpointer) cw));
+  conn = cw->priv->videooutput_core->fullscreen_mode_changed.connect (boost::bind (&on_fullscreen_mode_changed_cb, _1, _2, (gpointer) cw));
   cw->priv->connections.push_back (conn);
 
   /* New VideoInput Engine signals */
-  boost::shared_ptr<Ekiga::VideoInputCore> videoinput_core = cw->priv->core->get<Ekiga::VideoInputCore> ("videoinput-core");
 
-  conn = videoinput_core->device_opened.connect (boost::bind (&on_videoinput_device_opened_cb, _1, _2, _3, (gpointer) cw));
+  conn = cw->priv->videoinput_core->device_opened.connect (boost::bind (&on_videoinput_device_opened_cb, _1, _2, _3, (gpointer) cw));
   cw->priv->connections.push_back (conn);
 
-  conn = videoinput_core->device_closed.connect (boost::bind (&on_videoinput_device_closed_cb, _1, _2, (gpointer) cw));
+  conn = cw->priv->videoinput_core->device_closed.connect (boost::bind (&on_videoinput_device_closed_cb, _1, _2, (gpointer) cw));
   cw->priv->connections.push_back (conn);
 
-  conn = videoinput_core->device_error.connect (boost::bind (&on_videoinput_device_error_cb, _1, _2, _3, (gpointer) cw));
+  conn = cw->priv->videoinput_core->device_error.connect (boost::bind (&on_videoinput_device_error_cb, _1, _2, _3, (gpointer) cw));
   cw->priv->connections.push_back (conn);
 
   /* New AudioInput Engine signals */
-  boost::shared_ptr<Ekiga::AudioInputCore> audioinput_core = cw->priv->core->get<Ekiga::AudioInputCore> ("audioinput-core");
 
-  conn = audioinput_core->device_opened.connect (boost::bind (&on_audioinput_device_opened_cb, _1, _2, _3, (gpointer) cw));
+  conn = cw->priv->audioinput_core->device_opened.connect (boost::bind (&on_audioinput_device_opened_cb, _1, _2, _3, (gpointer) cw));
   cw->priv->connections.push_back (conn);
 
-  conn = audioinput_core->device_closed.connect (boost::bind (&on_audioinput_device_closed_cb, _1, _2, (gpointer) cw));
+  conn = cw->priv->audioinput_core->device_closed.connect (boost::bind (&on_audioinput_device_closed_cb, _1, _2, (gpointer) cw));
   cw->priv->connections.push_back (conn);
 
-  conn = audioinput_core->device_error.connect (boost::bind (&on_audioinput_device_error_cb, _1, _2, _3, (gpointer) cw));
+  conn = cw->priv->audioinput_core->device_error.connect (boost::bind (&on_audioinput_device_error_cb, _1, _2, _3, (gpointer) cw));
   cw->priv->connections.push_back (conn);
 
   /* New AudioOutput Engine signals */
-  boost::shared_ptr<Ekiga::AudioOutputCore> audiooutput_core = cw->priv->core->get<Ekiga::AudioOutputCore> ("audiooutput-core");
 
-  conn = audiooutput_core->device_opened.connect (boost::bind (&on_audiooutput_device_opened_cb, _1, _2, _3, _4, (gpointer) cw));
+  conn = cw->priv->audiooutput_core->device_opened.connect (boost::bind (&on_audiooutput_device_opened_cb, _1, _2, _3, _4, (gpointer) cw));
   cw->priv->connections.push_back (conn);
 
-  conn = audiooutput_core->device_closed.connect (boost::bind (&on_audiooutput_device_closed_cb, _1, _2, _3, (gpointer) cw));
+  conn = cw->priv->audiooutput_core->device_closed.connect (boost::bind (&on_audiooutput_device_closed_cb, _1, _2, _3, (gpointer) cw));
   cw->priv->connections.push_back (conn);
 
-  conn = audiooutput_core->device_error.connect (boost::bind (&on_audiooutput_device_error_cb, _1, _2, _3, _4, (gpointer) cw));
+  conn = cw->priv->audiooutput_core->device_error.connect (boost::bind (&on_audiooutput_device_error_cb, _1, _2, _3, _4, (gpointer) cw));
   cw->priv->connections.push_back (conn);
 
   /* New Call Engine signals */
-  boost::shared_ptr<Ekiga::CallCore> call_core = cw->priv->core->get<Ekiga::CallCore> ("call-core");
 
-  /* Engine Signals callbacks */
-  conn = call_core->setup_call.connect (boost::bind (&on_setup_call_cb, _1, _2, (gpointer) cw));
+  conn = cw->priv->call_core->setup_call.connect (boost::bind (&on_setup_call_cb, _1, _2, (gpointer) cw));
   cw->priv->connections.push_back (conn);
 
-  conn = call_core->ringing_call.connect (boost::bind (&on_ringing_call_cb, _1, _2, (gpointer) cw));
+  conn = cw->priv->call_core->ringing_call.connect (boost::bind (&on_ringing_call_cb, _1, _2, (gpointer) cw));
   cw->priv->connections.push_back (conn);
 
-  conn = call_core->established_call.connect (boost::bind (&on_established_call_cb, _1, _2, (gpointer) cw));
+  conn = cw->priv->call_core->established_call.connect (boost::bind (&on_established_call_cb, _1, _2, (gpointer) cw));
   cw->priv->connections.push_back (conn);
 
-  conn = call_core->cleared_call.connect (boost::bind (&on_cleared_call_cb, _1, _2, _3, (gpointer) cw));
+  conn = cw->priv->call_core->cleared_call.connect (boost::bind (&on_cleared_call_cb, _1, _2, _3, (gpointer) cw));
   cw->priv->connections.push_back (conn);
 
-  conn = call_core->missed_call.connect (boost::bind (&on_missed_call_cb, _1, _2, (gpointer) cw));
+  conn = cw->priv->call_core->missed_call.connect (boost::bind (&on_missed_call_cb, _1, _2, (gpointer) cw));
   cw->priv->connections.push_back (conn);
 
-  conn = call_core->held_call.connect (boost::bind (&on_held_call_cb, _1, _2, (gpointer) cw));
+  conn = cw->priv->call_core->held_call.connect (boost::bind (&on_held_call_cb, _1, _2, (gpointer) cw));
   cw->priv->connections.push_back (conn);
 
-  conn = call_core->retrieved_call.connect (boost::bind (&on_retrieved_call_cb, _1, _2, (gpointer) cw));
+  conn = cw->priv->call_core->retrieved_call.connect (boost::bind (&on_retrieved_call_cb, _1, _2, (gpointer) cw));
   cw->priv->connections.push_back (conn);
 
-  conn = call_core->stream_opened.connect (boost::bind (&on_stream_opened_cb, _1, _2, _3, _4, _5, (gpointer) cw));
+  conn = cw->priv->call_core->stream_opened.connect (boost::bind (&on_stream_opened_cb, _1, _2, _3, _4, _5, (gpointer) cw));
   cw->priv->connections.push_back (conn);
 
-  conn = call_core->stream_closed.connect (boost::bind (&on_stream_closed_cb, _1, _2, _3, _4, _5, (gpointer) cw));
+  conn = cw->priv->call_core->stream_closed.connect (boost::bind (&on_stream_closed_cb, _1, _2, _3, _4, _5, (gpointer) cw));
   cw->priv->connections.push_back (conn);
 
-  conn = call_core->stream_paused.connect (boost::bind (&on_stream_paused_cb, _1, _2, _3, _4, (gpointer) cw));
+  conn = cw->priv->call_core->stream_paused.connect (boost::bind (&on_stream_paused_cb, _1, _2, _3, _4, (gpointer) cw));
   cw->priv->connections.push_back (conn);
 
-  conn = call_core->stream_resumed.connect (boost::bind (&on_stream_resumed_cb, _1, _2, _3, _4, (gpointer) cw));
+  conn = cw->priv->call_core->stream_resumed.connect (boost::bind (&on_stream_resumed_cb, _1, _2, _3, _4, (gpointer) cw));
   cw->priv->connections.push_back (conn);
 }
 
@@ -2329,9 +2308,7 @@ ekiga_call_window_init_gui (EkigaCallWindow *cw)
   cw->priv->video_settings_window = gm_cw_video_settings_window_new (cw);
 
   /* The extended video stream window */
-  boost::shared_ptr<Ekiga::VideoOutputCore> videooutput_core =
-    cw->priv->core->get<Ekiga::VideoOutputCore> ("videooutput-core");
-  cw->priv->ext_video_win = ext_window_new (videooutput_core);
+  cw->priv->ext_video_win = ext_window_new (cw->priv->videooutput_core);
 
   /* The main table */
   event_box = gtk_event_box_new ();
@@ -2431,9 +2408,8 @@ ekiga_call_window_init_gui (EkigaCallWindow *cw)
 		      GTK_TOOL_ITEM (item), -1);
 
   /* Audio Volume */
-  boost::shared_ptr<Ekiga::AudioOutputCore> audiooutput_core = cw->priv->core->get<Ekiga::AudioOutputCore> ("audiooutput-core");
   std::vector <Ekiga::AudioOutputDevice> devices;
-  audiooutput_core->get_devices (devices);
+  cw->priv->audiooutput_core->get_devices (devices);
   if (!(devices.size () == 1 && devices[0].source == "Pulse")) {
 
     item = gtk_tool_item_new ();
@@ -2552,24 +2528,6 @@ ekiga_call_window_init (EkigaCallWindow *cw)
 		    G_CALLBACK (ekiga_call_window_delete_event_cb), NULL);
 }
 
-static GObject *
-ekiga_call_window_constructor (GType the_type,
-                               guint n_construct_properties,
-                               GObjectConstructParam *construct_params)
-{
-  GObject *object;
-
-  object = G_OBJECT_CLASS (ekiga_call_window_parent_class)->constructor
-                          (the_type, n_construct_properties, construct_params);
-
-  ekiga_call_window_init_gui (EKIGA_CALL_WINDOW (object));
-
-  gm_conf_notifier_add (VIDEO_DISPLAY_KEY "stay_on_top",
-			stay_on_top_changed_nt, object);
-
-  return object;
-}
-
 static void
 ekiga_call_window_dispose (GObject* gobject)
 {
@@ -2641,8 +2599,7 @@ ekiga_call_window_expose_event (GtkWidget *widget,
 
   display_info.widget_info_set = true;
 
-  boost::shared_ptr<Ekiga::VideoOutputCore> videooutput_core = cw->priv->core->get<Ekiga::VideoOutputCore> ("videooutput-core");
-  videooutput_core->set_display_info (display_info);
+  cw->priv->videooutput_core->set_display_info (display_info);
 
   return handled;
 }
@@ -2658,73 +2615,17 @@ ekiga_call_window_focus_in_event (GtkWidget     *widget,
 }
 
 static void
-ekiga_call_window_get_property (GObject *object,
-                                guint property_id,
-                                GValue *value,
-                                GParamSpec *pspec)
-{
-  EkigaCallWindow *cw;
-
-  g_return_if_fail (EKIGA_IS_CALL_WINDOW (object));
-
-  cw = EKIGA_CALL_WINDOW (object);
-
-  switch (property_id) {
-    case PROP_SERVICE_CORE:
-      g_value_set_pointer (value, cw->priv->core);
-      break;
-    default:
-      G_OBJECT_WARN_INVALID_PROPERTY_ID (object, property_id, pspec);
-      break;
-  }
-}
-
-static void
-ekiga_call_window_set_property (GObject *object,
-                                guint property_id,
-                                const GValue *value,
-                                GParamSpec *pspec)
-{
-  EkigaCallWindow *cw;
-
-  g_return_if_fail (EKIGA_IS_CALL_WINDOW (object));
-
-  cw = EKIGA_CALL_WINDOW (object);
-
-  switch (property_id) {
-    case PROP_SERVICE_CORE:
-      cw->priv->core = static_cast<Ekiga::ServiceCore *> (g_value_get_pointer (value));
-      break;
-    default:
-      G_OBJECT_WARN_INVALID_PROPERTY_ID (object, property_id, pspec);
-      break;
-  }
-}
-
-static void
 ekiga_call_window_class_init (EkigaCallWindowClass *klass)
 {
   GtkWidgetClass *widget_class = GTK_WIDGET_CLASS (klass);
   GObjectClass *object_class = G_OBJECT_CLASS (klass);
 
-  object_class->constructor = ekiga_call_window_constructor;
   object_class->dispose = ekiga_call_window_dispose;
   object_class->finalize = ekiga_call_window_finalize;
-  object_class->get_property = ekiga_call_window_get_property;
-  object_class->set_property = ekiga_call_window_set_property;
 
   widget_class->show = ekiga_call_window_show;
   widget_class->expose_event = ekiga_call_window_expose_event;
   widget_class->focus_in_event = ekiga_call_window_focus_in_event;
-
-  g_object_class_install_property (object_class,
-                                   PROP_SERVICE_CORE,
-                                   g_param_spec_pointer ("service-core",
-                                                         "Service Core",
-                                                         "Service Core",
-                                                         (GParamFlags)
-                                                         (G_PARAM_READWRITE |
-                                                          G_PARAM_CONSTRUCT_ONLY)));
 }
 
 GtkWidget *
@@ -2732,12 +2633,25 @@ call_window_new (Ekiga::ServiceCore & core)
 {
   EkigaCallWindow *cw;
 
-  cw = EKIGA_CALL_WINDOW (g_object_new (EKIGA_TYPE_CALL_WINDOW,
-                                        "service-core", &core, NULL));
+  cw = EKIGA_CALL_WINDOW (g_object_new (EKIGA_TYPE_CALL_WINDOW, NULL));
+
+  cw->priv->libnotify = core.get ("libnotify");
+  cw->priv->videoinput_core = core.get<Ekiga::VideoInputCore> ("videoinput-core");
+  cw->priv->videooutput_core = core.get<Ekiga::VideoOutputCore> ("videooutput-core");
+  cw->priv->audioinput_core = core.get<Ekiga::AudioInputCore> ("audioinput-core");
+  cw->priv->audiooutput_core = core.get<Ekiga::AudioOutputCore> ("audiooutput-core");
+  cw->priv->call_core = core.get<Ekiga::CallCore> ("call-core");
+
+  ekiga_call_window_connect_engine_signals (cw);
+
+  ekiga_call_window_init_gui (cw);
+
+  gm_conf_notifier_add (VIDEO_DISPLAY_KEY "stay_on_top",
+			stay_on_top_changed_nt, cw);
+
   gm_window_set_key (GM_WINDOW (cw), USER_INTERFACE_KEY "call_window");
   gm_window_set_hide_on_delete (GM_WINDOW (cw), false);
   gm_window_set_hide_on_escape (GM_WINDOW (cw), false);
-  ekiga_call_window_connect_engine_signals (cw);
 
   gtk_window_set_title (GTK_WINDOW (cw), _("Call Window"));
 
