@@ -123,10 +123,12 @@ void VideoInputCore::VideoPreviewManager::Main ()
 
 VideoInputCore::VideoInputCore (Ekiga::ServiceCore & _core,
                                 boost::shared_ptr<VideoOutputCore> _videooutput_core)
-: core(_core), preview_manager(*this, _videooutput_core)
+  : core(_core)
 {
   PWaitAndSignal m_var(core_mutex);
   PWaitAndSignal m_set(settings_mutex);
+
+  preview_manager = new VideoPreviewManager (*this, _videooutput_core);
 
   preview_config.active = false;
   preview_config.width = 176;
@@ -159,6 +161,8 @@ VideoInputCore::~VideoInputCore ()
 
   if (videoinput_core_conf_bridge)
     delete videoinput_core_conf_bridge;
+
+  delete preview_manager;
 
   for (std::set<VideoInputManager *>::iterator iter = managers.begin ();
        iter != managers.end ();
@@ -290,11 +294,11 @@ void VideoInputCore::set_preview_config (unsigned width, unsigned height, unsign
   if ( ( preview_config.active && !stream_config.active) &&
        ( preview_config        !=  new_preview_config) )
   {
-    preview_manager.stop();
+    preview_manager->stop();
     internal_close();
 
     internal_open(new_preview_config.width, new_preview_config.height, new_preview_config.fps);
-    preview_manager.start(new_preview_config.width, new_preview_config.height);
+    preview_manager->start(new_preview_config.width, new_preview_config.height);
   }
 
   preview_config = new_preview_config;
@@ -308,7 +312,7 @@ void VideoInputCore::start_preview ()
   PTRACE(4, "VidInputCore\tStarting preview " << preview_config);
   if (!preview_config.active && !stream_config.active) {
     internal_open(preview_config.width, preview_config.height, preview_config.fps);
-    preview_manager.start(preview_config.width, preview_config.height);
+    preview_manager->start(preview_config.width, preview_config.height);
   }
 
   preview_config.active = true;
@@ -320,7 +324,7 @@ void VideoInputCore::stop_preview ()
 
   PTRACE(4, "VidInputCore\tStopping Preview");
   if (preview_config.active && !stream_config.active) {
-    preview_manager.stop();
+    preview_manager->stop();
     internal_close();
     internal_set_manager(desired_device, current_channel, current_format);
   }
@@ -350,7 +354,7 @@ void VideoInputCore::start_stream ()
 
   PTRACE(4, "VidInputCore\tStarting stream " << stream_config);
   if (preview_config.active && !stream_config.active) {
-    preview_manager.stop();
+    preview_manager->stop();
     if ( preview_config != stream_config ) 
     {
       internal_close();
@@ -377,7 +381,7 @@ void VideoInputCore::stop_stream ()
       internal_set_manager(desired_device, current_channel, current_format);
       internal_open(preview_config.width, preview_config.height, preview_config.fps);
     }
-    preview_manager.start(preview_config.width, preview_config.height);
+    preview_manager->start(preview_config.width, preview_config.height);
   }
 
   if (!preview_config.active && stream_config.active) {
@@ -463,7 +467,7 @@ void VideoInputCore::internal_set_device(const VideoInputDevice & device, int ch
   PTRACE(4, "VidInputCore\tSetting device: " << device);
 
   if (preview_config.active && !stream_config.active)
-    preview_manager.stop();
+    preview_manager->stop();
 
   if (preview_config.active || stream_config.active)
     internal_close();
@@ -472,7 +476,7 @@ void VideoInputCore::internal_set_device(const VideoInputDevice & device, int ch
 
   if (preview_config.active && !stream_config.active) {
     internal_open(preview_config.width, preview_config.height, preview_config.fps);
-    preview_manager.start(preview_config.width,preview_config.height);
+    preview_manager->start(preview_config.width,preview_config.height);
   }
 
   if (stream_config.active)

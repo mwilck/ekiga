@@ -438,7 +438,7 @@ private:
       PMutex settings_mutex;
 
       Ekiga::ServiceCore & core;
-      VideoPreviewManager preview_manager;
+      VideoPreviewManager* preview_manager;
       VideoInputCoreConfBridge* videoinput_core_conf_bridge;
       boost::shared_ptr<Ekiga::NotificationCore> notification_core;
     };
