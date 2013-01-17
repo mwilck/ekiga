@@ -360,7 +360,7 @@ namespace Ekiga
       PMutex volume_mutex;
 
       AudioOutputCoreConfBridge* audiooutput_core_conf_bridge;
-      AudioEventScheduler audio_event_scheduler;
+      AudioEventScheduler* audio_event_scheduler;
 
       float average_level;
       bool calculate_average;
