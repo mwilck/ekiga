@@ -308,7 +308,7 @@ void AudioOutputCore::set_frame_data (const char *data,
 {
   if (yield) {
     yield = false;
-    PThread::Current()->Sleep(5);
+    g_usleep (5);
   }
   PWaitAndSignal m_pri(core_mutex[primary]);
 

@@ -346,7 +346,7 @@ void AudioInputCore::get_frame_data (char *data,
 {
   if (yield) {
     yield = false;
-     PThread::Current()->Sleep(5);
+    g_usleep (5);
   }
   PWaitAndSignal m_var(core_mutex);
 
