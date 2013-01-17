@@ -47,11 +47,13 @@
 using namespace Ekiga;
 
 AudioOutputCore::AudioOutputCore (Ekiga::ServiceCore & _core)
-: audio_event_scheduler(*this), core(_core)
+  : core(_core)
 {
   PWaitAndSignal m_pri(core_mutex[primary]);
   PWaitAndSignal m_sec(core_mutex[secondary]);
   PWaitAndSignal m_vol(volume_mutex);
+
+  audio_event_scheduler = new AudioEventScheduler (*this);
 
   current_primary_config.active = false;
   current_primary_config.channels = 0;
@@ -80,6 +82,8 @@ AudioOutputCore::~AudioOutputCore ()
 
   if (audiooutput_core_conf_bridge)
     delete audiooutput_core_conf_bridge;
+
+  delete audio_event_scheduler;
 
   for (std::set<AudioOutputManager *>::iterator iter = managers.begin ();
        iter != managers.end ();
@@ -121,27 +125,27 @@ void AudioOutputCore::visit_managers (boost::function1<bool, AudioOutputManager 
 
 void AudioOutputCore::map_event (const std::string & event_name, const std::string & file_name, AudioOutputPS ps,  bool enabled)
 {
-  audio_event_scheduler.set_file_name(event_name, file_name, ps, enabled);
+  audio_event_scheduler->set_file_name(event_name, file_name, ps, enabled);
 }
 
 void AudioOutputCore::play_file (const std::string & file_name)
 {
-  audio_event_scheduler.add_event_to_queue(file_name, true, 0, 0);
+  audio_event_scheduler->add_event_to_queue(file_name, true, 0, 0);
 }
 
 void AudioOutputCore::play_event (const std::string & event_name)
 {
-  audio_event_scheduler.add_event_to_queue(event_name, false, 0, 0);
+  audio_event_scheduler->add_event_to_queue(event_name, false, 0, 0);
 }
 
 void AudioOutputCore::start_play_event (const std::string & event_name, unsigned interval, unsigned repetitions)
 {
-  audio_event_scheduler.add_event_to_queue(event_name, false, interval, repetitions);
+  audio_event_scheduler->add_event_to_queue(event_name, false, interval, repetitions);
 }
 
 void AudioOutputCore::stop_play_event (const std::string & event_name)
 {
-  audio_event_scheduler.remove_event_from_queue(event_name);
+  audio_event_scheduler->remove_event_from_queue(event_name);
 }
 
 void AudioOutputCore::get_devices (std::vector <AudioOutputDevice> & devices)
