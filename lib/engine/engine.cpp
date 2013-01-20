@@ -97,6 +97,28 @@ engine_init (Ekiga::ServiceCorePtr service_core,
 {
   Ekiga::KickStart kickstart;
 
+  audioinput_null_init (kickstart);
+  audiooutput_null_init (kickstart);
+
+  videoinput_ptlib_init (kickstart);
+
+  audioinput_ptlib_init (kickstart);
+  audiooutput_ptlib_init (kickstart);
+
+#ifdef HAVE_DBUS
+  hal_dbus_init (kickstart);
+#endif
+
+  opal_init (kickstart);
+
+  history_init (kickstart);
+
+  local_roster_init (kickstart);
+
+  local_roster_bridge_init (kickstart);
+
+  plugin_init (kickstart);
+
   service_core->add (Ekiga::ServicePtr(new Ekiga::NotificationCore));
 
   boost::shared_ptr<Ekiga::AccountCore> account_core (new Ekiga::AccountCore);
@@ -152,24 +174,11 @@ engine_init (Ekiga::ServiceCorePtr service_core,
     return;
   }
 
-  audioinput_null_init (kickstart);
-  audiooutput_null_init (kickstart);
-
-  videoinput_ptlib_init (kickstart);
-
-  audioinput_ptlib_init (kickstart);
-  audiooutput_ptlib_init (kickstart);
-
-#ifdef HAVE_DBUS
-  hal_dbus_init (kickstart);
-#endif
-
-  opal_init (kickstart);
-
-  history_init (kickstart);
-
-  /* FIXME: this one should go away -- but if I don't put it here, the GUI
-   * doesn't work correctly */
+  /* FIXME: the gui needs to have many things ready to work before it
+   * starts, but this way of doing things will prevent plugins to
+   * access it ; the proper fix would be to have the gui handled
+   * through the kickstart scheme
+   */
   kickstart.kick (*service_core, &argc, &argv);
 
   if (!gtk_core_init (*service_core, &argc, &argv)) {
@@ -182,13 +191,13 @@ engine_init (Ekiga::ServiceCorePtr service_core,
     return;
   }
 
-  local_roster_init (kickstart);
-
-  local_roster_bridge_init (kickstart);
-
-  plugin_init (kickstart);
-
   kickstart.kick (*service_core, &argc, &argv);
+
+  /* FIXME: everything that follows except the debug output shouldn't
+     be there, as that means we're doing the work of initializing
+     those in the correct order here instead of having the specific
+     code in question to do it itself
+   */
 
   videooutput_core->setup_conf_bridge();
   videoinput_core->setup_conf_bridge();
