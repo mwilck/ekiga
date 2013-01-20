@@ -1195,10 +1195,14 @@ on_cleared_call_cb (G_GNUC_UNUSED boost::shared_ptr<Ekiga::CallManager> manager,
 }
 
 static void on_missed_call_cb (boost::shared_ptr<Ekiga::CallManager>  /*manager*/,
-                               boost::shared_ptr<Ekiga::Call> /*call*/,
+                               boost::shared_ptr<Ekiga::Call> call,
                                gpointer self)
 {
   EkigaCallWindow *cw = EKIGA_CALL_WINDOW (self);
+
+  if (cw->priv->current_call && cw->priv->current_call->get_id () != call->get_id ()) {
+    return; // Trying to clear another call than the current active one
+  }
 
   gtk_window_set_title (GTK_WINDOW (cw), _("Call Window"));
   ekiga_call_window_update_calling_state (cw, Standby);
