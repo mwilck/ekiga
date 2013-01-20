@@ -995,10 +995,6 @@ Opal::Sip::EndPoint::registration_event_in_main (const std::string aor,
 						 Opal::Account::RegistrationState state,
 						 const std::string msg)
 {
-  /* Subscribe for MWI */
-  if (state == Opal::Account::Registered &&!IsSubscribed (SIPSubscribe::MessageSummary, aor))
-    Subscribe (SIPSubscribe::MessageSummary, 3600, aor);
-
   if (boost::shared_ptr<Opal::Bank> bk = bank.lock ()) {
 
     AccountPtr account = bk->find_account (aor);
