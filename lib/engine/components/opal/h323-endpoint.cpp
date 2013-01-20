@@ -438,7 +438,7 @@ Opal::H323::EndPoint::OnIncomingConnection (OpalConnection & connection,
     return false;
 
   for (PSafePtr<OpalConnection> conn(connectionsActive, PSafeReference); conn != NULL; ++conn) {
-    if (!conn->IsReleased ())
+    if (conn->GetCall().GetToken() != connection.GetCall().GetToken() && !conn->IsReleased ())
       busy = true;
   }
 
