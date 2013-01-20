@@ -348,8 +348,10 @@ void Opal::Account::disable ()
     h323_endpoint->unsubscribe (*this, presentity);
   else
 #endif
-    sip_endpoint->unsubscribe (*this, presentity);
-
+    {
+      sip_endpoint->unsubscribe (*this, presentity);
+      sip_endpoint->Unsubscribe (SIPSubscribe::MessageSummary, get_aor ());
+    }
   // Translators: this is a state, not an action, i.e. it should be read as
   // "(you are) unregistered", and not as "(you have been) unregistered"
   status = _("Unregistered");
@@ -646,9 +648,13 @@ Opal::Account::handle_registration_event (RegistrationState state_,
           presentity->SubscribeToPresence (PString (*iter));
         }
         presentity->SetLocalPresence (personal_state, presence_status);
+        if (type != Account::H323) {
+          sip_endpoint->Subscribe (SIPSubscribe::MessageSummary, 3600, get_aor ());
+        }
       }
       if (presence_core && personal_details)
 	presence_core->publish (personal_details);
+
       state = state_;
       failed_registration_already_notified = false;
       updated ();
