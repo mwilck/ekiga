@@ -146,7 +146,7 @@ constructor (GType type, guint n_properties, GObjectConstructParam *params)
 }
 
 static void
-finalize (GObject* gobject)
+dispose (GObject* gobject)
 {
   EkigaExtWindow *ew = EKIGA_EXT_WINDOW (gobject);
 
@@ -158,6 +158,14 @@ finalize (GObject* gobject)
 #endif
 
   clear_display_info (ew);
+
+  G_OBJECT_CLASS (ekiga_ext_window_parent_class)->dispose (gobject);
+}
+
+static void
+finalize (GObject* gobject)
+{
+  EkigaExtWindow *ew = EKIGA_EXT_WINDOW (gobject);
 
   delete ew->priv;
   ew->priv = NULL;
@@ -235,6 +243,7 @@ ekiga_ext_window_class_init (EkigaExtWindowClass *klass)
   GObjectClass *object_class = G_OBJECT_CLASS (klass);
 
   object_class->constructor = constructor;
+  object_class->dispose = dispose;
   object_class->finalize = finalize;
 
   widget_class->show = show;
