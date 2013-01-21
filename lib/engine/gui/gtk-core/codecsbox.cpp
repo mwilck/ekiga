@@ -58,6 +58,7 @@ struct _CodecsBoxPrivate
 {
   Ekiga::Call::StreamType type;
   GtkWidget *codecs_list;
+  gpointer notifier;
 };
 
 enum { TYPE = 1 };
@@ -476,6 +477,9 @@ codecs_box_dispose (GObject *obj)
 
   self = CODECS_BOX (obj);
 
+  if (self->priv->notifier)
+    gm_conf_notifier_remove (self->priv->notifier);
+  self->priv->notifier = NULL;
   self->priv->codecs_list = NULL;
 
   G_OBJECT_CLASS (codecs_box_parent_class)->dispose (obj);
@@ -533,11 +537,13 @@ codecs_box_set_property (GObject *obj,
   g_slist_free (list);
 
   if (self->priv->type == Ekiga::Call::Audio)
-    gm_conf_notifier_add (AUDIO_CODECS_KEY "media_list",
-			  codecs_list_changed_nt, GTK_WIDGET (self));
+    self->priv->notifier =
+      gm_conf_notifier_add (AUDIO_CODECS_KEY "media_list",
+			    codecs_list_changed_nt, GTK_WIDGET (self));
   else
-    gm_conf_notifier_add (VIDEO_CODECS_KEY "media_list",
-			  codecs_list_changed_nt, GTK_WIDGET (self));
+    self->priv->notifier =
+      gm_conf_notifier_add (VIDEO_CODECS_KEY "media_list",
+			    codecs_list_changed_nt, GTK_WIDGET (self));
 }
 
 
