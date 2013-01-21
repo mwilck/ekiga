@@ -71,6 +71,7 @@ typedef struct _GmPreferencesWindow
   GtkWidget *fsbutton;
   Ekiga::ServiceCore& core;
   std::vector<boost::signals::connection> connections;
+  std::list<gpointer> notifiers;
 } GmPreferencesWindow;
 
 #define GM_PREFERENCES_WINDOW(x) (GmPreferencesWindow *) (x)
@@ -81,6 +82,10 @@ _GmPreferencesWindow::_GmPreferencesWindow(Ekiga::ServiceCore &_core): core(_cor
 
 _GmPreferencesWindow::~_GmPreferencesWindow()
 {
+  for (std::list<gpointer>::iterator iter = notifiers.begin ();
+       iter != notifiers.end ();
+       ++iter)
+    gm_conf_notifier_remove (*iter);
   for (std::vector<boost::signals::connection>::iterator iter = connections.begin ();
        iter != connections.end ();
        ++iter)
@@ -1268,6 +1273,8 @@ preferences_window_new (Ekiga::ServiceCore& core)
   gchar     *filename = NULL;
   std::vector <std::string> device_list;
 
+  gpointer notifier;
+
   filename = g_build_filename (DATA_DIR, "pixmaps", PACKAGE_NAME, PACKAGE_NAME "-logo.png", NULL);
   window = gnome_prefs_window_new (filename);
   g_free (filename);
@@ -1370,35 +1377,54 @@ preferences_window_new (Ekiga::ServiceCore& core)
 
 
   /* Connect notifiers for SOUND_EVENTS_KEY keys */
-  gm_conf_notifier_add (SOUND_EVENTS_KEY "enable_incoming_call_sound", 
-			sound_events_list_changed_nt, window);
+  notifier =
+    gm_conf_notifier_add (SOUND_EVENTS_KEY "enable_incoming_call_sound", 
+			  sound_events_list_changed_nt, window);
   
-  gm_conf_notifier_add (SOUND_EVENTS_KEY "incoming_call_sound",
-			sound_events_list_changed_nt, window);
+  notifier =
+    gm_conf_notifier_add (SOUND_EVENTS_KEY "incoming_call_sound",
+			  sound_events_list_changed_nt, window);
+  pw->notifiers.push_front (notifier);
 
-  gm_conf_notifier_add (SOUND_EVENTS_KEY "enable_ring_tone_sound", 
-			sound_events_list_changed_nt, window);
+  notifier =
+    gm_conf_notifier_add (SOUND_EVENTS_KEY "enable_ring_tone_sound", 
+			  sound_events_list_changed_nt, window);
+  pw->notifiers.push_front (notifier);
   
-  gm_conf_notifier_add (SOUND_EVENTS_KEY "ring_tone_sound", 
-			sound_events_list_changed_nt, window);
+  notifier =
+    gm_conf_notifier_add (SOUND_EVENTS_KEY "ring_tone_sound", 
+			  sound_events_list_changed_nt, window);
+  pw->notifiers.push_front (notifier);
   
-  gm_conf_notifier_add (SOUND_EVENTS_KEY "enable_busy_tone_sound", 
-			sound_events_list_changed_nt, window);
+  notifier =
+    gm_conf_notifier_add (SOUND_EVENTS_KEY "enable_busy_tone_sound", 
+			  sound_events_list_changed_nt, window);
+  pw->notifiers.push_front (notifier);
   
-  gm_conf_notifier_add (SOUND_EVENTS_KEY "busy_tone_sound",
-			sound_events_list_changed_nt, window);
+  notifier =
+    gm_conf_notifier_add (SOUND_EVENTS_KEY "busy_tone_sound",
+			  sound_events_list_changed_nt, window);
+  pw->notifiers.push_front (notifier);
   
-  gm_conf_notifier_add (SOUND_EVENTS_KEY "enable_new_voicemail_sound", 
-			sound_events_list_changed_nt, window);
+  notifier =
+    gm_conf_notifier_add (SOUND_EVENTS_KEY "enable_new_voicemail_sound", 
+			  sound_events_list_changed_nt, window);
+  pw->notifiers.push_front (notifier);
   
-  gm_conf_notifier_add (SOUND_EVENTS_KEY "new_voicemail_sound",
-			sound_events_list_changed_nt, window);
+  notifier =
+    gm_conf_notifier_add (SOUND_EVENTS_KEY "new_voicemail_sound",
+			  sound_events_list_changed_nt, window);
+  pw->notifiers.push_front (notifier);
 
-  gm_conf_notifier_add (SOUND_EVENTS_KEY "enable_new_message_sound",
-			sound_events_list_changed_nt, window);
+  notifier =
+    gm_conf_notifier_add (SOUND_EVENTS_KEY "enable_new_message_sound",
+			  sound_events_list_changed_nt, window);
+  pw->notifiers.push_front (notifier);
 
-  gm_conf_notifier_add (SOUND_EVENTS_KEY "new_message_sound",
-			sound_events_list_changed_nt, window);
+  notifier =
+    gm_conf_notifier_add (SOUND_EVENTS_KEY "new_message_sound",
+			  sound_events_list_changed_nt, window);
+  pw->notifiers.push_front (notifier);
 
   return window;
 }
