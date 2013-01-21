@@ -42,14 +42,21 @@
 
 namespace Ekiga
 {
-  class AudioInputCoreConfBridge
-    : public Ekiga::ConfBridge
+  class AudioInputCore;
+
+  class AudioInputCoreConfBridge:
+    public Ekiga::ConfBridge
   {
   public:
 
-    AudioInputCoreConfBridge (Ekiga::Service & service);
+    AudioInputCoreConfBridge (Ekiga::AudioInputCore& _core);
 
-    void on_property_changed (std::string key, GmConfEntry *value);
+    void on_property_changed (std::string key,
+			      GmConfEntry *value);
+
+  private:
+
+    Ekiga::AudioInputCore& audioinput_core;
   };
 
 };

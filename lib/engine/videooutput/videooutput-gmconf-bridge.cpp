@@ -41,8 +41,7 @@
 
 using namespace Ekiga;
 
-VideoOutputCoreConfBridge::VideoOutputCoreConfBridge (Ekiga::Service & _service)
- : Ekiga::ConfBridge (_service)
+VideoOutputCoreConfBridge::VideoOutputCoreConfBridge (Ekiga::VideoOutputCore & _core): display_core (_core)
 {
   Ekiga::ConfKeys keys;
   property_changed.connect (boost::bind (&VideoOutputCoreConfBridge::on_property_changed, this, _1, _2));
@@ -58,9 +57,10 @@ VideoOutputCoreConfBridge::VideoOutputCoreConfBridge (Ekiga::Service & _service)
   load (keys);
 }
 
-void VideoOutputCoreConfBridge::on_property_changed (std::string key, GmConfEntry */*entry*/)
+void
+VideoOutputCoreConfBridge::on_property_changed (std::string key,
+						GmConfEntry */*entry*/)
 {
-  VideoOutputCore & display_core = (VideoOutputCore &) service;
   if (key == VIDEO_DISPLAY_KEY "video_view")  {
 
     DisplayInfo display_info;

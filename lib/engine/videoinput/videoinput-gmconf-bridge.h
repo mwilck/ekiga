@@ -37,19 +37,24 @@
 #ifndef __VIDEOINPUT_GMCONF_BRIDGE_H__
 #define __VIDEOINPUT_GMCONF_BRIDGE_H__
 
-#include "services.h"
 #include "gmconf-bridge.h"
 
 namespace Ekiga
 {
-  class VideoInputCoreConfBridge
-    : public Ekiga::ConfBridge
+  class VideoInputCore;
+
+  class VideoInputCoreConfBridge:
+  public Ekiga::ConfBridge
   {
   public:
 
-    VideoInputCoreConfBridge (Ekiga::Service & service);
+    VideoInputCoreConfBridge (Ekiga::VideoInputCore& videoinput_core);
 
-    void on_property_changed (std::string key, GmConfEntry *value);
+    void on_property_changed (std::string key,
+			      GmConfEntry *value);
+
+  private:
+    Ekiga::VideoInputCore& videoinput_core;
   };
 
 };

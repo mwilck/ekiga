@@ -41,8 +41,7 @@
 
 using namespace Ekiga;
 
-AudioInputCoreConfBridge::AudioInputCoreConfBridge (Ekiga::Service & _service)
- : Ekiga::ConfBridge (_service)
+AudioInputCoreConfBridge::AudioInputCoreConfBridge (Ekiga::AudioInputCore& _core): audioinput_core(_core)
 {
   Ekiga::ConfKeys keys;
   property_changed.connect (boost::bind (&AudioInputCoreConfBridge::on_property_changed, this, _1, _2));
@@ -51,10 +50,10 @@ AudioInputCoreConfBridge::AudioInputCoreConfBridge (Ekiga::Service & _service)
   load (keys);
 }
 
-void AudioInputCoreConfBridge::on_property_changed (std::string key, GmConfEntry *entry)
+void
+AudioInputCoreConfBridge::on_property_changed (std::string key,
+					       GmConfEntry *entry)
 {
-  AudioInputCore & audioinput_core = (AudioInputCore &) service;
-
   if (key == AUDIO_DEVICES_KEY "input_device") {
 
     gchar* value = gm_conf_entry_get_string (entry);

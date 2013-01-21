@@ -53,8 +53,7 @@
 
 using namespace Opal;
 
-ConfBridge::ConfBridge (Ekiga::Service & _service)
- : Ekiga::ConfBridge (_service)
+ConfBridge::ConfBridge (Opal::CallManager& _core): manager(_core)
 {
   Ekiga::ConfKeys keys;
   property_changed.connect (boost::bind (&ConfBridge::on_property_changed, this, _1, _2));
@@ -106,10 +105,10 @@ ConfBridge::ConfBridge (Ekiga::Service & _service)
 }
 
 
-void ConfBridge::on_property_changed (std::string key, GmConfEntry *entry)
+void
+ConfBridge::on_property_changed (std::string key,
+				 GmConfEntry *entry)
 {
-  CallManager & manager = (CallManager &) service;
-
   //
   // Video options
   //

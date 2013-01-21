@@ -41,8 +41,7 @@
 
 using namespace Ekiga;
 
-VideoInputCoreConfBridge::VideoInputCoreConfBridge (Ekiga::Service & _service)
- : Ekiga::ConfBridge (_service)
+VideoInputCoreConfBridge::VideoInputCoreConfBridge (Ekiga::VideoInputCore & _core): videoinput_core (_core)
 {
   Ekiga::ConfKeys keys;
   property_changed.connect (boost::bind (&VideoInputCoreConfBridge::on_property_changed, this, _1, _2));
@@ -57,10 +56,10 @@ VideoInputCoreConfBridge::VideoInputCoreConfBridge (Ekiga::Service & _service)
   load (keys);
 }
 
-void VideoInputCoreConfBridge::on_property_changed (std::string key, GmConfEntry * /*entry*/)
+void
+VideoInputCoreConfBridge::on_property_changed (std::string key,
+					       GmConfEntry * /*entry*/)
 {
-  VideoInputCore & videoinput_core = (VideoInputCore &) service;
-
   if ( (key == VIDEO_DEVICES_KEY "size") ||
        (key == VIDEO_DEVICES_KEY "max_frame_rate") ) {
 

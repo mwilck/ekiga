@@ -79,7 +79,7 @@ namespace Ekiga
       /** The constructor
        * @param _service is the Ekiga::Service the bridge will update
        */
-      ConfBridge (Ekiga::Service & _service) : service (_service) {};
+      ConfBridge () {}
 
       ~ConfBridge ();
 
@@ -97,9 +97,8 @@ namespace Ekiga
        */
       boost::signal2<void, std::string /*key*/, GmConfEntry * /*entry*/> property_changed;
 
-  protected:
+  private:
       std::list<gpointer> notifiers;
-      Ekiga::Service & service;
     };
 };
 #endif

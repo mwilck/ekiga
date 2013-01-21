@@ -43,14 +43,20 @@ class GMManager;
 
 namespace Opal
 {
-  class ConfBridge
-    : public Ekiga::ConfBridge
+  class CallManager;
+
+  class ConfBridge: public Ekiga::ConfBridge
   {
   public:
 
-    ConfBridge (Ekiga::Service & service);
+    ConfBridge (Opal::CallManager& _core);
 
-    void on_property_changed (std::string key, GmConfEntry *value);
+    void on_property_changed (std::string key,
+			      GmConfEntry *value);
+
+  private:
+
+    Opal::CallManager& manager;
   };
 };
 #endif
