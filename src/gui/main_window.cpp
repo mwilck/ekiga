@@ -130,6 +130,8 @@ struct _EkigaMainWindowPrivate
 
   gulong roster_selection_connection_id;
   std::vector<boost::signals::connection> connections;
+
+  std::list<gpointer> notifiers;
 };
 
 /* properties */
@@ -1551,6 +1553,8 @@ ekiga_main_window_init_gui (EkigaMainWindow *mw)
 static void
 ekiga_main_window_init (EkigaMainWindow *mw)
 {
+  gpointer notifier;
+
   mw->priv = new EkigaMainWindowPrivate ();
 
   /* Accelerators */
@@ -1563,6 +1567,17 @@ ekiga_main_window_init (EkigaMainWindow *mw)
 
   for (int i = 0 ; i < NUM_SECTIONS ; i++)
     mw->priv->toggle_buttons[i] = NULL;
+
+
+  /* GConf Notifiers */
+  notifier =
+    gm_conf_notifier_add (USER_INTERFACE_KEY "main_window/panel_section",
+			  panel_section_changed_nt, mw);
+  mw->priv->notifiers.push_front (notifier);
+  notifier =
+    gm_conf_notifier_add (VIDEO_DEVICES_KEY "enable_preview",
+			  video_preview_changed_nt, mw);
+  mw->priv->notifiers.push_front (notifier);
 }
 
 static GObject *
@@ -1577,12 +1592,6 @@ ekiga_main_window_constructor (GType the_type,
 
   ekiga_main_window_init_gui (EKIGA_MAIN_WINDOW (object));
 
-  /* GConf Notifiers */
-  gm_conf_notifier_add (USER_INTERFACE_KEY "main_window/panel_section",
-                        panel_section_changed_nt, object);
-  gm_conf_notifier_add (VIDEO_DEVICES_KEY "enable_preview",
-                        video_preview_changed_nt, object);
-
   return object;
 }
 
@@ -1590,6 +1599,12 @@ static void
 ekiga_main_window_dispose (GObject* gobject)
 {
   EkigaMainWindow *mw = EKIGA_MAIN_WINDOW (gobject);
+
+  for (std::list<gpointer>::iterator iter = mw->priv->notifiers.begin ();
+       iter != mw->priv->notifiers.end ();
+       ++iter)
+    gm_conf_notifier_remove (*iter);
+  mw->priv->notifiers.clear (); // dispose might be called several times
 
   if (mw->priv->roster_view) {
 
