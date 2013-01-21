@@ -95,6 +95,9 @@ Ekiga::ServiceCore::~ServiceCore ()
       std::cout << "Ekiga::ServiceCore: "
 		<< service->get_name()
 		<< " hasn't been freed correctly!"
+		<< " (with "
+		<< service.use_count() - 1
+		<< " dangling references)"
 		<< std::endl;
     }
   }
