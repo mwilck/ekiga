@@ -40,14 +40,6 @@
 
 #include "gmconf.h"
 
-
-using namespace Ekiga;
-
-
-static void entry_changed_nt (gpointer /*id*/,
-                              GmConfEntry *entry, 
-                              gpointer data);
-
 static void 
 entry_changed_nt (gpointer /*id*/,
                   GmConfEntry *entry, 
@@ -59,14 +51,25 @@ entry_changed_nt (gpointer /*id*/,
   bridge->property_changed (key, entry);
 }
 
-
-void ConfBridge::load (ConfKeys & keys)
+Ekiga::ConfBridge::~ConfBridge()
 {
-  for (ConfKeys::iterator it = keys.begin ();
+  for (std::list<gpointer>::iterator iter = notifiers.begin ();
+       iter != notifiers.end ();
+       ++iter)
+    gm_conf_notifier_remove (*iter);
+}
+
+void
+Ekiga::ConfBridge::load (ConfKeys & keys)
+{
+  gpointer notifier = NULL;
+
+  for (Ekiga::ConfKeys::iterator it = keys.begin ();
        it != keys.end ();
        it++) {
 
-    gm_conf_notifier_add ((*it).c_str (), entry_changed_nt, this);
+    notifier = gm_conf_notifier_add ((*it).c_str (), entry_changed_nt, this);
+    notifiers.push_front (notifier);
     gm_conf_notifier_trigger ((*it).c_str ());
   }
 }

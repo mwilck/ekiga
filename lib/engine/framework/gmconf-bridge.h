@@ -81,6 +81,7 @@ namespace Ekiga
        */
       ConfBridge (Ekiga::Service & _service) : service (_service) {};
 
+      ~ConfBridge ();
 
       /** Load notifiers for the vector of keys given as argument
        * @param keys is a vector of keys for which the ConfBridge will trigger 
@@ -96,7 +97,8 @@ namespace Ekiga
        */
       boost::signal2<void, std::string /*key*/, GmConfEntry * /*entry*/> property_changed;
 
-  protected :
+  protected:
+      std::list<gpointer> notifiers;
       Ekiga::Service & service;
     };
 };
