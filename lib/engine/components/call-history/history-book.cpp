@@ -182,6 +182,10 @@ History::Book::clear ()
 
   std::list<ContactPtr> old_contacts = ordered_contacts;
   ordered_contacts.clear ();
+
+  cleared ();
+  updated ();
+
   for (std::list<ContactPtr>::iterator iter = old_contacts.begin ();
        iter != old_contacts.end();
        ++iter)
@@ -192,7 +196,6 @@ History::Book::clear ()
   xmlDocSetRootElement (doc.get (), root);
 
   save ();
-  cleared ();
 }
 
 void
