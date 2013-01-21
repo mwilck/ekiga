@@ -49,12 +49,27 @@
 
 struct _StatusMenuPrivate
 {
+  ~_StatusMenuPrivate ();
+
   boost::shared_ptr<Ekiga::PersonalDetails> personal_details;
   std::vector<boost::signals::connection> connections;
+  std::list<gpointer> notifiers;
 
   GtkListStore *list_store; // List store storing the menu
   GtkWindow    *parent;     // Parent window
 };
+
+_StatusMenuPrivate::~_StatusMenuPrivate()
+{
+  for (std::list<gpointer>::iterator iter = notifiers.begin ();
+       iter != notifiers.end ();
+       ++iter)
+    gm_conf_notifier_remove (*iter);
+  for (std::vector<boost::signals::connection>::iterator iter = connections.begin ();
+       iter != connections.end ();
+       ++iter)
+    iter->disconnect ();
+}
 
 enum Columns
 {
@@ -796,6 +811,7 @@ status_menu_new (Ekiga::ServiceCore & core)
   StatusMenu *self = NULL;
 
   boost::signals::connection conn;
+  gpointer notifier;
   GtkCellRenderer *renderer = NULL;
   GSList *custom_status_array [NUM_STATUS_TYPES];
 
@@ -847,12 +863,18 @@ status_menu_new (Ekiga::ServiceCore & core)
   g_signal_connect (self, "changed",
                     G_CALLBACK (status_menu_option_changed), self);
 
-  gm_conf_notifier_add (PERSONAL_DATA_KEY "available_custom_status",
-                        status_menu_custom_messages_changed, self);
-  gm_conf_notifier_add (PERSONAL_DATA_KEY "away_custom_status",
-                        status_menu_custom_messages_changed, self);
-  gm_conf_notifier_add (PERSONAL_DATA_KEY "busy_custom_status",
-                        status_menu_custom_messages_changed, self);
+  notifier =
+    gm_conf_notifier_add (PERSONAL_DATA_KEY "available_custom_status",
+			  status_menu_custom_messages_changed, self);
+  self->priv->notifiers.push_front (notifier);
+  notifier =
+    gm_conf_notifier_add (PERSONAL_DATA_KEY "away_custom_status",
+			  status_menu_custom_messages_changed, self);
+  self->priv->notifiers.push_front (notifier);
+  notifier =
+    gm_conf_notifier_add (PERSONAL_DATA_KEY "busy_custom_status",
+			  status_menu_custom_messages_changed, self);
+  self->priv->notifiers.push_front (notifier);
 
   conn = self->priv->personal_details->updated.connect (boost::bind (&on_details_updated, self));
   self->priv->connections.push_back (conn);
