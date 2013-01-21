@@ -64,6 +64,7 @@ struct _RosterViewGtkPrivate
   GtkTreeView *tree_view;
   GSList *folded_groups;
   gboolean show_offline_contacts;
+  gpointer notifier;
 };
 
 typedef struct _StatusIconInfo {
@@ -1396,6 +1397,8 @@ roster_view_gtk_finalize (GObject *obj)
 
   view = (RosterViewGtk *)obj;
 
+  gm_conf_notifier_remove (view->priv->notifier);
+
   g_slist_foreach (view->priv->folded_groups, (GFunc) g_free, NULL);
   g_slist_free (view->priv->folded_groups);
   view->priv->folded_groups = NULL;
@@ -1526,8 +1529,9 @@ roster_view_gtk_init (G_GNUC_UNUSED RosterViewGtk* self)
 		    G_CALLBACK (on_view_event_after), self);
 
   /* Notifiers */
-  gm_conf_notifier_add (CONTACTS_KEY "show_offline_contacts",
-			show_offline_contacts_changed_nt, self);
+  self->priv->notifier =
+    gm_conf_notifier_add (CONTACTS_KEY "show_offline_contacts",
+			  show_offline_contacts_changed_nt, self);
 }
 
 static void
