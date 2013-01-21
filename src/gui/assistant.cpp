@@ -96,6 +96,7 @@ struct _EkigaAssistantPrivate
 
   GtkListStore *summary_model;
   std::vector<boost::signals::connection> connections;
+  std::list<gpointer> notifiers;
 };
 
 /* presenting the network connection type to the user */
@@ -1631,6 +1632,12 @@ ekiga_assistant_dispose (GObject *object)
 {
   EkigaAssistant *assistant = EKIGA_ASSISTANT (object);
 
+  for (std::list<gpointer>::iterator iter = assistant->priv->notifiers.begin ();
+       iter != assistant->priv->notifiers.end ();
+       ++iter)
+    gm_conf_notifier_remove (*iter);
+  assistant->priv->notifiers.clear (); // dispose might be called several times
+
   for (std::vector<boost::signals::connection>::iterator iter = assistant->priv->connections.begin ();
        iter != assistant->priv->connections.end ();
        ++iter)
@@ -1691,6 +1698,7 @@ GtkWidget *
 ekiga_assistant_new (Ekiga::ServiceCore& service_core)
 {
   EkigaAssistant *assistant;
+  gpointer notifier;
 
   assistant = EKIGA_ASSISTANT (g_object_new (EKIGA_TYPE_ASSISTANT, NULL));
 
@@ -1720,10 +1728,14 @@ ekiga_assistant_new (Ekiga::ServiceCore& service_core)
   assistant->priv->connections.push_back (conn);
 
   /* Notifiers for the VIDEO_CODECS_KEY keys */
-  gm_conf_notifier_add (VIDEO_CODECS_KEY "maximum_video_tx_bitrate",
-			kind_of_net_changed_nt, NULL);
-  gm_conf_notifier_add (VIDEO_CODECS_KEY "temporal_spatial_tradeoff",
-			kind_of_net_changed_nt, NULL);
+  notifier =
+    gm_conf_notifier_add (VIDEO_CODECS_KEY "maximum_video_tx_bitrate",
+			  kind_of_net_changed_nt, NULL);
+  assistant->priv->notifiers.push_front (notifier);
+  notifier =
+    gm_conf_notifier_add (VIDEO_CODECS_KEY "temporal_spatial_tradeoff",
+			  kind_of_net_changed_nt, NULL);
+  assistant->priv->notifiers.push_front (notifier);
 
   return GTK_WIDGET (assistant);
 }
