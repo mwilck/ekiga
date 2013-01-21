@@ -62,6 +62,13 @@ typedef struct _GnomePrefsWindow {
   
 } GnomePrefsWindow;
 
+static void
+gobject_gm_conf_notifier_remove (gpointer notifier,
+				 G_GNUC_UNUSED GObject* object)
+{
+  gm_conf_notifier_remove (notifier);
+}
+
 
 /* GTK Callbacks */
 
@@ -120,6 +127,8 @@ gnome_prefs_entry_new (GtkWidget *table,
   
   gchar *conf_string = NULL;
   gboolean writable = FALSE;
+
+  gpointer notifier;
   
   writable = gm_conf_is_key_writable (conf_key);
   
@@ -178,7 +187,9 @@ gnome_prefs_entry_new (GtkWidget *table,
 			  G_CALLBACK (entry_activate_changed),
 			  (gpointer)conf_key);
 
-  gm_conf_notifier_add (conf_key, entry_changed_nt, (gpointer) entry);
+  notifier = gm_conf_notifier_add (conf_key, entry_changed_nt, (gpointer) entry);
+
+  g_object_weak_ref (G_OBJECT (entry), gobject_gm_conf_notifier_remove, notifier);
 
   if (box)
     gtk_table_attach (GTK_TABLE (table), hbox, 0, cols, row, row+1,
@@ -208,6 +219,7 @@ gnome_prefs_toggle_new (GtkWidget *table,
   GtkWidget *toggle = NULL;
   gboolean writable = FALSE;
   int cols = 0;
+  gpointer notifier;
   
   writable = gm_conf_is_key_writable (conf_key);
   
@@ -235,7 +247,9 @@ gnome_prefs_toggle_new (GtkWidget *table,
   g_signal_connect (toggle, "toggled",
 		    G_CALLBACK (toggle_changed), (gpointer) conf_key);
   
-  gm_conf_notifier_add (conf_key, toggle_changed_nt, (gpointer) toggle);
+  notifier = gm_conf_notifier_add (conf_key, toggle_changed_nt, (gpointer) toggle);
+
+  g_object_weak_ref (G_OBJECT (toggle), gobject_gm_conf_notifier_remove, notifier);
 
   gtk_widget_show_all (table);
   
@@ -259,7 +273,7 @@ gnome_prefs_scale_new (GtkWidget *table,
   GtkAdjustment *adj = NULL;
   GtkWidget *label = NULL;
   GtkWidget *hscale = NULL;
-
+  gpointer notifier;
   gboolean writable = FALSE;
 
   writable = gm_conf_is_key_writable (conf_key);
@@ -311,8 +325,9 @@ gnome_prefs_scale_new (GtkWidget *table,
 		    G_CALLBACK (adjustment_changed),
 		    (gpointer) conf_key);
 
-  gm_conf_notifier_add (conf_key, adjustment_changed_nt,
-			(gpointer) adj);
+  notifier = gm_conf_notifier_add (conf_key, adjustment_changed_nt,
+				   (gpointer) adj);
+  g_object_weak_ref (G_OBJECT (adj), gobject_gm_conf_notifier_remove, notifier);
 
   gtk_widget_show_all (table);
 
@@ -337,7 +352,7 @@ gnome_prefs_spin_new (GtkWidget *table,
   GtkAdjustment *adj = NULL;
   GtkWidget *label = NULL;
   GtkWidget *spin_button = NULL;
-
+  gpointer notifier;
   gboolean writable = FALSE;
   
   writable = gm_conf_is_key_writable (conf_key);
@@ -409,8 +424,9 @@ gnome_prefs_spin_new (GtkWidget *table,
 		    G_CALLBACK (adjustment_changed),
 		    (gpointer) conf_key);
 
-  gm_conf_notifier_add (conf_key, adjustment_changed_nt,
-			(gpointer) adj);
+  notifier = gm_conf_notifier_add (conf_key, adjustment_changed_nt,
+				   (gpointer) adj);
+  g_object_weak_ref (G_OBJECT (adj), gobject_gm_conf_notifier_remove, notifier);
 
   gtk_widget_show_all (table);
   
@@ -445,6 +461,7 @@ gnome_prefs_range_new (GtkWidget *table,
   GtkWidget *spin_button2 = NULL;
   GtkAdjustment *adj2 = NULL;
   GtkWidget *label = NULL;
+  gpointer notifier;
 
   writable =
     (gm_conf_is_key_writable (spin1_conf_key)
@@ -503,14 +520,16 @@ gnome_prefs_range_new (GtkWidget *table,
   g_signal_connect (adj1, "value-changed",
 		    G_CALLBACK (adjustment_changed),
 		    (gpointer) spin1_conf_key);
-  gm_conf_notifier_add (spin1_conf_key, adjustment_changed_nt,
-			(gpointer) adj1);
-  
+  notifier = gm_conf_notifier_add (spin1_conf_key, adjustment_changed_nt,
+				   (gpointer) adj1);
+  g_object_weak_ref (G_OBJECT (adj1), gobject_gm_conf_notifier_remove, notifier);
+ 
   g_signal_connect (adj2, "value-changed",
 		    G_CALLBACK (adjustment_changed),
 		    (gpointer) spin2_conf_key);
-  gm_conf_notifier_add (spin2_conf_key, adjustment_changed_nt,
-			(gpointer) adj2);
+  notifier = gm_conf_notifier_add (spin2_conf_key, adjustment_changed_nt,
+				   (gpointer) adj2);
+  g_object_weak_ref (G_OBJECT (adj2), gobject_gm_conf_notifier_remove, notifier);
 
   if (spin1)
     *spin1 = spin_button1;
@@ -541,6 +560,8 @@ gnome_prefs_int_option_menu_new (GtkWidget *table,
 
   int history = -1;
   int cpt = 0;
+
+  gpointer notifier;
 
   writable = gm_conf_is_key_writable (conf_key);
 
@@ -595,9 +616,10 @@ gnome_prefs_int_option_menu_new (GtkWidget *table,
   g_signal_connect (option_menu, "changed",
 		    G_CALLBACK (int_option_menu_changed),
   		    (gpointer) conf_key);                                   
-  gm_conf_notifier_add (conf_key, int_option_menu_changed_nt,
-			(gpointer) option_menu);
-  
+  notifier = gm_conf_notifier_add (conf_key, int_option_menu_changed_nt,
+				   (gpointer) option_menu);
+  g_object_weak_ref (G_OBJECT (option_menu), gobject_gm_conf_notifier_remove, notifier);
+
   gtk_widget_show_all (table);
   
   return option_menu;
@@ -627,6 +649,8 @@ gnome_prefs_string_option_menu_new (GtkWidget *table,
 
   int history = -1;
   int cpt = 0;
+
+  gpointer notifier;
 
   writable = gm_conf_is_key_writable (conf_key);
 
@@ -707,9 +731,10 @@ gnome_prefs_string_option_menu_new (GtkWidget *table,
   g_signal_connect (option_menu, "changed",
 		    G_CALLBACK (string_option_menu_changed),
   		    (gpointer) conf_key);                                   
-  gm_conf_notifier_add (conf_key, string_option_menu_changed_nt,
-			(gpointer) option_menu);
-  
+  notifier = gm_conf_notifier_add (conf_key, string_option_menu_changed_nt,
+				   (gpointer) option_menu);
+  g_object_weak_ref (G_OBJECT (option_menu), gobject_gm_conf_notifier_remove, notifier);
+
   g_free (conf_string); 
 
   gtk_widget_show_all (table);
