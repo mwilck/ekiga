@@ -222,6 +222,9 @@ main (int argc,
   EkigaDBusComponent *dbus_component = ekiga_dbus_component_new (*service_core);
 #endif
 
+  // from now on, things should have taken their final place
+  service_core->close ();
+
   /* The GTK loop */
   gtk_main ();
 
