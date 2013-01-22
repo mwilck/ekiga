@@ -87,7 +87,7 @@ namespace Ekiga
   {
   public:
 
-    ServiceCore () {}
+    ServiceCore ();
 
     ~ServiceCore ();
 
@@ -99,11 +99,15 @@ namespace Ekiga
     boost::shared_ptr<T> get (const std::string name)
     { return boost::dynamic_pointer_cast<T> (get (name)); }
 
+    void close ();
+
     void dump (std::ostream &stream) const;
 
     boost::signal1<void, ServicePtr> service_added;
 
   private:
+
+    bool closed;
 
     typedef std::list<ServicePtr> services_type;
     services_type services;

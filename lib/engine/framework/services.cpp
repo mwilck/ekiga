@@ -69,6 +69,10 @@ Ekiga::Service::get_string_property (const std::string /*name*/) const
   return result;
 }
 
+Ekiga::ServiceCore::ServiceCore (): closed(false)
+{
+}
+
 Ekiga::ServiceCore::~ServiceCore ()
 {
 #if DEBUG
@@ -127,6 +131,12 @@ Ekiga::ServiceCore::add (ServicePtr service)
   return result;
 }
 
+void
+Ekiga::ServiceCore::close ()
+{
+  closed = true;
+}
+
 Ekiga::ServicePtr
 Ekiga::ServiceCore::get (const std::string name)
 {
@@ -142,13 +152,25 @@ Ekiga::ServiceCore::get (const std::string name)
 
 
 #if DEBUG
+
   if (result)
-    std::cout << "Ekiga::ServiceCore returns " << name << std::endl;
+    if (closed)
+      std::cout << "Ekiga::ServiceCore refuses to return " << name << std::endl;
+    else
+      std::cout << "Ekiga::ServiceCore returns " << name << std::endl;
   else
     std::cout << "Ekiga::ServiceCore doesn't have " << name << std::endl;
-#endif
+
+  if (closed)
+    return ServicePtr();
+  else
+    return result;
+
+#else
 
   return result;
+
+#endif
 }
 
 void

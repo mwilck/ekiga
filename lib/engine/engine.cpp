@@ -212,6 +212,9 @@ engine_init (Ekiga::ServiceCorePtr service_core,
   hal_core->audioinput_device_added.connect (boost::bind (&Ekiga::AudioInputCore::add_device, boost::ref (*audioinput_core), _1, _2, _3));
   hal_core->audioinput_device_removed.connect (boost::bind (&Ekiga::AudioInputCore::remove_device, boost::ref (*audioinput_core), _1, _2, _3));
 
+  // from now on, things should have taken their final place
+  service_core->close ();
+
 #if DEBUG_STARTUP
   std::cout << "Here is what ekiga is made of for this run :" << std::endl;
   service_core->dump (std::cout);
