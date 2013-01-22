@@ -41,8 +41,7 @@
 
 #define DEVICE_TYPE "PTLIB"
 
-GMVideoInputManager_ptlib::GMVideoInputManager_ptlib (Ekiga::ServiceCore & _core)
-: core (_core)
+GMVideoInputManager_ptlib::GMVideoInputManager_ptlib ()
 {
   current_state.opened = false;
   input_device = NULL;

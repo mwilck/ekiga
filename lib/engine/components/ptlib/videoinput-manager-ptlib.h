@@ -54,7 +54,7 @@
     {
   public:
 
-      GMVideoInputManager_ptlib (Ekiga::ServiceCore & core);
+      GMVideoInputManager_ptlib ();
 
       ~GMVideoInputManager_ptlib ();
 
@@ -76,7 +76,6 @@
       virtual bool has_device     (const std::string & source, const std::string & device_name, unsigned capabilities, Ekiga::VideoInputDevice & device);
 
   protected:
-      Ekiga::ServiceCore & core;
       unsigned expectedFrameSize;
 
       PVideoInputDevice *input_device;
