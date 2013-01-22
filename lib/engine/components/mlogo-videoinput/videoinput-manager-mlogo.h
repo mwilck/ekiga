@@ -38,11 +38,10 @@
 #ifndef __VIDEOINPUT_MANAGER_MLOGO_H__
 #define __VIDEOINPUT_MANAGER_MLOGO_H__
 
-#include "videoinput-core.h"
 #include "videoinput-manager.h"
-#include "runtime.h"
 
 #include "ptbuildopts.h"
+#include "ptlib.h"
 #include <ptclib/delaychan.h>
 
 /**
@@ -55,22 +54,29 @@
     {
   public:
 
-      GMVideoInputManager_mlogo (Ekiga::ServiceCore & core);
+      GMVideoInputManager_mlogo ();
 
       ~GMVideoInputManager_mlogo ();
 
 
       virtual void get_devices(std::vector <Ekiga::VideoInputDevice> & devices);
 
-      virtual bool set_device (const Ekiga::VideoInputDevice & device, int channel, Ekiga::VideoInputFormat format);
+      virtual bool set_device (const Ekiga::VideoInputDevice & device,
+			       int channel,
+			       Ekiga::VideoInputFormat format);
 
-      virtual bool open (unsigned width, unsigned height, unsigned fps);
+      virtual bool open (unsigned width,
+			 unsigned height,
+			 unsigned fps);
 
       virtual void close();
 
       virtual bool get_frame_data (char *data);
 
-      virtual bool has_device (const std::string & source, const std::string & device_name, unsigned capabilities, Ekiga::VideoInputDevice & device);
+      virtual bool has_device (const std::string & source,
+			       const std::string & device_name,
+			       unsigned capabilities,
+			       Ekiga::VideoInputDevice & device);
 
   protected:
       void CopyYUVArea (const char* srcFrame,
@@ -85,8 +91,6 @@
       char* background_frame;
       unsigned pos;
       unsigned increment;
-
-      Ekiga::ServiceCore & core;
 
       PAdaptiveDelay adaptive_delay;
 

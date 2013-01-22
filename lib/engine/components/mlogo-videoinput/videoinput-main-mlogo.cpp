@@ -50,7 +50,7 @@ videoinput_mlogo_init (Ekiga::ServiceCore &core,
 
   if (videoinput_core) {
 
-    GMVideoInputManager_mlogo *videoinput_manager = new GMVideoInputManager_mlogo(core);
+    GMVideoInputManager_mlogo *videoinput_manager = new GMVideoInputManager_mlogo;
 
     videoinput_core->add_manager (*videoinput_manager);
     result = true;

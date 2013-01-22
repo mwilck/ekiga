@@ -35,14 +35,17 @@
  */
 
 #include "videoinput-manager-mlogo.h"
+
+#include "runtime.h"
+
+#include <glib.h>
 #include "pixmaps/icon.h"
 
 #define DEVICE_TYPE   "Moving Logo"
 #define DEVICE_SOURCE "Moving Logo"
 #define DEVICE_NAME   "Moving Logo"
 
-GMVideoInputManager_mlogo::GMVideoInputManager_mlogo (Ekiga::ServiceCore & _core)
-: core (_core)
+GMVideoInputManager_mlogo::GMVideoInputManager_mlogo ()
 {
   current_state.opened  = false;
 }
