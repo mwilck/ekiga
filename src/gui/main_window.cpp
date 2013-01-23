@@ -91,7 +91,20 @@ G_DEFINE_TYPE (EkigaMainWindow, ekiga_main_window, GM_TYPE_WINDOW);
 
 struct _EkigaMainWindowPrivate
 {
-  Ekiga::ServiceCore *core;
+  Ekiga::ServiceCore* core;
+
+  boost::shared_ptr<Ekiga::AccountCore> account_core;
+  boost::shared_ptr<Ekiga::AudioOutputCore> audiooutput_core;
+  boost::shared_ptr<Ekiga::CallCore> call_core;
+  boost::shared_ptr<Ekiga::ContactCore> contact_core;
+  boost::shared_ptr<Ekiga::PresenceCore> presence_core;
+  boost::shared_ptr<Opal::Bank> bank;
+  boost::shared_ptr<Ekiga::Trigger> local_cluster_trigger;
+  boost::shared_ptr<History::Source> history_source;
+
+  // this one is weak because otherwise we're sure to have a
+  // dependency loop
+  boost::weak_ptr<GtkFrontend> gtk_frontend;
 
   GtkAccelGroup *accel;
   GtkWidget *main_menu;
@@ -132,12 +145,6 @@ struct _EkigaMainWindowPrivate
   std::vector<boost::signals::connection> connections;
 
   std::list<gpointer> notifiers;
-};
-
-/* properties */
-enum {
-  PROP_0,
-  PROP_SERVICE_CORE
 };
 
 /* channel types */
@@ -372,15 +379,13 @@ void on_some_core_updated (EkigaMainWindow* self)
   MenuBuilderGtk builder;
   Ekiga::TemporaryMenuBuilder tmp_builder;
 
-  boost::shared_ptr<Ekiga::PresenceCore> presence_core = self->priv->core->get<Ekiga::PresenceCore> ("presence-core");
-  if (presence_core->populate_menu (tmp_builder)) {
+  if (self->priv->presence_core->populate_menu (tmp_builder)) {
 
     builder.add_ghost ("", _("Presence"));
     tmp_builder.populate_menu (builder);
   }
 
-  boost::shared_ptr<Ekiga::ContactCore> contact_core = self->priv->core->get<Ekiga::ContactCore> ("contact-core");
-  if (contact_core->populate_menu (tmp_builder)) {
+  if (self->priv->contact_core->populate_menu (tmp_builder)) {
 
     builder.add_ghost ("", _("Addressbook"));
     tmp_builder.populate_menu (builder);
@@ -521,15 +526,13 @@ place_call_cb (GtkWidget * /*widget*/,
       if (uri.substr (++pos).empty ())
         return;
 
-    boost::shared_ptr<Ekiga::CallCore> call_core = mw->priv->core->get<Ekiga::CallCore> ("call-core");
-
     // Remove appended spaces
     pos = uri.find_first_of (' ');
     if (pos != std::string::npos)
       uri = uri.substr (0, pos);
 
     // Dial
-    if (!call_core->dial (uri))
+    if (!mw->priv->call_core->dial (uri))
       gm_statusbar_flash_message (GM_STATUSBAR (mw->priv->statusbar), _("Could not connect to remote host"));
   }
 }
@@ -544,10 +547,9 @@ url_changed_cb (GtkEditable *e,
   tip_text = gtk_entry_get_text (GTK_ENTRY (e));
 
   if (g_strrstr (tip_text, "@") == NULL) {
-    boost::shared_ptr<Opal::Bank> bank = mw->priv->core->get<Opal::Bank> ("opal-account-store");
-    if (bank) {
+    if (mw->priv->bank) {
       gtk_list_store_clear (mw->priv->completion);
-      bank->visit_accounts (boost::bind (&account_completion_helper_cb, _1, tip_text, mw));
+      mw->priv->bank->visit_accounts (boost::bind (&account_completion_helper_cb, _1, tip_text, mw));
     }
   }
 
@@ -598,14 +600,12 @@ static void on_setup_call_cb (boost::shared_ptr<Ekiga::CallManager> manager,
 {
   EkigaMainWindow *mw = EKIGA_MAIN_WINDOW (self);
   GtkWidget *call_window = NULL;
-  boost::shared_ptr<Ekiga::AudioOutputCore> audiooutput_core = mw->priv->core->get<Ekiga::AudioOutputCore> ("audiooutput-core");
-  boost::shared_ptr<GtkFrontend> gtk_frontend = mw->priv->core->get<GtkFrontend> ("gtk-frontend");
 
   if (!call->is_outgoing () && !manager->get_auto_answer ()) {
     if (mw->priv->current_call)
       return; // No call setup needed if already in a call
 
-    audiooutput_core->start_play_event ("incoming_call_sound", 4000, 256);
+    mw->priv->audiooutput_core->start_play_event ("incoming_call_sound", 4000, 256);
 
     mw->priv->current_call = call;
     mw->priv->calling_state = Called;
@@ -613,8 +613,12 @@ static void on_setup_call_cb (boost::shared_ptr<Ekiga::CallManager> manager,
   else {
 
     /* Show call window */
-    call_window = GTK_WIDGET (gtk_frontend->get_call_window ());
-    gtk_widget_show (call_window);
+    boost::shared_ptr<GtkFrontend> gtk_frontend = mw->priv->gtk_frontend.lock ();
+    if (gtk_frontend) {
+
+      call_window = GTK_WIDGET (gtk_frontend->get_call_window ());
+      gtk_widget_show (call_window);
+    }
 
     mw->priv->current_call = call;
     mw->priv->calling_state = Calling;
@@ -631,10 +635,9 @@ static void on_ringing_call_cb (boost::shared_ptr<Ekiga::CallManager>  /*manager
                                 gpointer self)
 {
   EkigaMainWindow *mw = EKIGA_MAIN_WINDOW (self);
-  boost::shared_ptr<Ekiga::AudioOutputCore> audiooutput_core = mw->priv->core->get<Ekiga::AudioOutputCore> ("audiooutput-core");
 
   if (call->is_outgoing ()) {
-    audiooutput_core->start_play_event("ring_tone_sound", 3000, 256);
+    mw->priv->audiooutput_core->start_play_event("ring_tone_sound", 3000, 256);
   }
 }
 
@@ -658,15 +661,17 @@ static void on_established_call_cb (boost::shared_ptr<Ekiga::CallManager>  /*man
   g_free (info);
 
   /* Manage sound events */
-  boost::shared_ptr<Ekiga::AudioOutputCore> audiooutput_core = mw->priv->core->get<Ekiga::AudioOutputCore> ("audiooutput-core");
 
-  audiooutput_core->stop_play_event("incoming_call_sound");
-  audiooutput_core->stop_play_event("ring_tone_sound");
+  mw->priv->audiooutput_core->stop_play_event("incoming_call_sound");
+  mw->priv->audiooutput_core->stop_play_event("ring_tone_sound");
 
   /* Show call window */
-  boost::shared_ptr<GtkFrontend> gtk_frontend = mw->priv->core->get<GtkFrontend> ("gtk-frontend");
-  call_window = GTK_WIDGET (gtk_frontend->get_call_window ());
-  gtk_widget_show (call_window);
+    boost::shared_ptr<GtkFrontend> gtk_frontend = mw->priv->gtk_frontend.lock ();
+    if (gtk_frontend) {
+
+      call_window = GTK_WIDGET (gtk_frontend->get_call_window ());
+      gtk_widget_show (call_window);
+    }
 }
 
 
@@ -690,9 +695,8 @@ static void on_cleared_call_cb (boost::shared_ptr<Ekiga::CallManager>  /*manager
   ekiga_main_window_flash_message (mw, "%s", reason.c_str ());
 
   /* Sound events */
-  boost::shared_ptr<Ekiga::AudioOutputCore> audiooutput_core = mw->priv->core->get<Ekiga::AudioOutputCore> ("audiooutput-core");
-  audiooutput_core->stop_play_event("incoming_call_sound");
-  audiooutput_core->stop_play_event("ring_tone_sound");
+  mw->priv->audiooutput_core->stop_play_event("incoming_call_sound");
+  mw->priv->audiooutput_core->stop_play_event("ring_tone_sound");
 
   /* Hide call window */
   g_timeout_add_seconds (2, on_delayed_hide_call_window_cb, mw);
@@ -729,9 +733,8 @@ static void on_missed_call_cb (boost::shared_ptr<Ekiga::CallManager>  /*manager*
     gtk_widget_set_sensitive (GTK_WIDGET (mw->priv->preview_button), true);
 
     /* Clear sounds */
-    boost::shared_ptr<Ekiga::AudioOutputCore> audiooutput_core = mw->priv->core->get<Ekiga::AudioOutputCore> ("audiooutput-core");
-    audiooutput_core->stop_play_event ("incoming_call_sound");
-    audiooutput_core->stop_play_event ("ring_tone_sound");
+    mw->priv->audiooutput_core->stop_play_event ("incoming_call_sound");
+    mw->priv->audiooutput_core->stop_play_event ("ring_tone_sound");
   }
 }
 
@@ -764,18 +767,19 @@ static bool on_handle_errors (std::string error,
 static gboolean
 on_delayed_hide_call_window_cb (gpointer data)
 {
-  GtkWidget* call_window = NULL;
-
   g_return_val_if_fail (data != NULL, FALSE);
   g_return_val_if_fail (GTK_IS_WIDGET (data), FALSE);
 
   EkigaMainWindow *mw = EKIGA_MAIN_WINDOW (data);
 
-  boost::shared_ptr<GtkFrontend> gtk_frontend = mw->priv->core->get<GtkFrontend> ("gtk-frontend");
-  call_window = GTK_WIDGET (gtk_frontend->get_call_window ());
+    boost::shared_ptr<GtkFrontend> gtk_frontend = mw->priv->gtk_frontend.lock ();
+    if (gtk_frontend) {
 
-  if (!mw->priv->current_call && !gm_conf_get_bool (VIDEO_DEVICES_KEY "enable_preview"))
-    gtk_widget_hide (GTK_WIDGET (call_window));
+      GtkWidget* call_window = GTK_WIDGET (gtk_frontend->get_call_window ());
+
+      if (!mw->priv->current_call && !gm_conf_get_bool (VIDEO_DEVICES_KEY "enable_preview"))
+	gtk_widget_hide (GTK_WIDGET (call_window));
+    }
 
   return FALSE;
 }
@@ -850,18 +854,17 @@ on_roster_selection_changed (G_GNUC_UNUSED GtkWidget* view,
 
 static void
 on_chat_unread_alert (G_GNUC_UNUSED GtkWidget* widget,
-		      gpointer data)
+		      gpointer self)
 {
+  EkigaMainWindow *mw = EKIGA_MAIN_WINDOW (self);
+
   if (!gm_conf_get_bool (SOUND_EVENTS_KEY "enable_new_message_sound"))
     return;
-
-  Ekiga::ServiceCore *core = (Ekiga::ServiceCore*)data;
-  boost::shared_ptr<Ekiga::AudioOutputCore> audiooutput_core = core->get<Ekiga::AudioOutputCore> ("audiooutput-core");
 
   std::string file_name_string = gm_conf_get_string (SOUND_EVENTS_KEY "new_message_sound");
 
   if (!file_name_string.empty ())
-    audiooutput_core->play_file(file_name_string);
+    mw->priv->audiooutput_core->play_file(file_name_string);
 }
 
 
@@ -948,18 +951,20 @@ video_preview_changed_nt (G_GNUC_UNUSED gpointer id,
   if (gm_conf_entry_get_type (entry) == GM_CONF_BOOL) {
 
     EkigaMainWindow* mw = EKIGA_MAIN_WINDOW (data);
-    boost::shared_ptr<GtkFrontend> gtk_frontend = mw->priv->core->get<GtkFrontend> ("gtk-frontend");
-    GtkWidget *call_window = GTK_WIDGET (gtk_frontend->get_call_window ());
     GtkWidget *menu_item = NULL;
 
     if (gm_conf_entry_get_type (entry) == GM_CONF_BOOL) {
       if (mw->priv->calling_state == Standby) {
-        if (!gm_conf_entry_get_bool (entry)) {
-          gtk_widget_hide (call_window);
-        }
-        else {
-          gtk_widget_show (call_window);
-        }
+
+	boost::shared_ptr<GtkFrontend> gtk_frontend = mw->priv->gtk_frontend.lock ();
+	if (gtk_frontend) {
+
+	  GtkWidget *call_window = GTK_WIDGET (gtk_frontend->get_call_window ());
+	  if (!gm_conf_entry_get_bool (entry))
+	    gtk_widget_hide (call_window);
+	  else
+	    gtk_widget_show (call_window);
+	}
         g_signal_handlers_block_by_func (mw->priv->preview_button,
                                          (gpointer) video_preview_action_toggled_cb, mw);
         menu_item = gtk_menu_get_widget (mw->priv->main_menu, "preview");
@@ -1268,16 +1273,18 @@ ekiga_main_window_init_menu (EkigaMainWindow *mw)
   bool show_offline_contacts = false;
   bool enable_preview = false;
 
+  mw->priv->main_menu = gtk_menu_bar_new ();
+
   g_return_if_fail (mw != NULL);
 
-  boost::shared_ptr<Ekiga::Trigger> local_cluster_trigger = mw->priv->core->get<Ekiga::Trigger> ("local-cluster");
-  boost::shared_ptr<GtkFrontend> gtk_frontend = mw->priv->core->get<GtkFrontend> ("gtk-frontend");
+  boost::shared_ptr<GtkFrontend> gtk_frontend = mw->priv->gtk_frontend.lock ();
+
+  g_return_if_fail (gtk_frontend);
+
   addressbook_window = GTK_WIDGET (gtk_frontend->get_addressbook_window ());
   accounts_window = GTK_WIDGET (gtk_frontend->get_accounts_window ());
   prefs_window = GTK_WIDGET (gtk_frontend->get_preferences_window ());
   assistant_window = GnomeMeeting::Process ()->GetAssistantWindow ();
-
-  mw->priv->main_menu = gtk_menu_bar_new ();
 
   /* Default values */
   cps = (PanelSection) gm_conf_get_int (USER_INTERFACE_KEY "main_window/panel_section");
@@ -1301,7 +1308,8 @@ ekiga_main_window_init_menu (EkigaMainWindow *mw)
 
       GTK_MENU_ENTRY("add_contact", _("A_dd Contact"), _("Add a contact to the roster"),
 		     GTK_STOCK_ADD, 'n',
-		     G_CALLBACK (pull_trigger_cb), &*local_cluster_trigger, true),
+		     G_CALLBACK (pull_trigger_cb),
+		     &*mw->priv->local_cluster_trigger, true),
 
       GTK_MENU_THEME_ENTRY("address_book", _("Address _Book"),
 			   _("Find contacts"),
@@ -1434,10 +1442,8 @@ ekiga_main_window_init_contact_list (EkigaMainWindow *mw)
 {
   GtkWidget *label = NULL;
 
-  boost::shared_ptr<Ekiga::PresenceCore> presence_core = mw->priv->core->get<Ekiga::PresenceCore> ("presence-core");
-
   label = gtk_label_new (_("Contacts"));
-  mw->priv->roster_view = roster_view_gtk_new (presence_core);
+  mw->priv->roster_view = roster_view_gtk_new (mw->priv->presence_core);
   mw->priv->roster_view_page_number = gtk_notebook_append_page (GTK_NOTEBOOK (mw->priv->main_notebook), mw->priv->roster_view, label);
   g_object_ref (mw->priv->roster_view); // keep it alive as long as we didn't unconnect the signal :
   mw->priv->roster_selection_connection_id = g_signal_connect (mw->priv->roster_view, "selection-changed",
@@ -1478,8 +1484,8 @@ ekiga_main_window_init_history (EkigaMainWindow *mw)
 {
   GtkWidget *label = NULL;
 
-  boost::shared_ptr<History::Source> history_source = mw->priv->core->get<History::Source> ("call-history-store");
-  boost::shared_ptr<History::Book> history_book = history_source->get_book ();
+  boost::shared_ptr<History::Book> history_book
+    = mw->priv->history_source->get_book ();
 
   mw->priv->call_history_view = call_history_view_gtk_new (history_book);
 
@@ -1590,8 +1596,6 @@ ekiga_main_window_constructor (GType the_type,
   object = G_OBJECT_CLASS (ekiga_main_window_parent_class)->constructor
                           (the_type, n_construct_properties, construct_params);
 
-  ekiga_main_window_init_gui (EKIGA_MAIN_WINDOW (object));
-
   return object;
 }
 
@@ -1647,53 +1651,6 @@ ekiga_main_window_delete_event (GtkWidget   *widget,
 }
 
 static void
-ekiga_main_window_get_property (GObject *object,
-                                guint property_id,
-                                GValue *value,
-                                GParamSpec *pspec)
-{
-  EkigaMainWindow *mw;
-
-  g_return_if_fail (EKIGA_IS_MAIN_WINDOW (object));
-
-  mw = EKIGA_MAIN_WINDOW (object);
-
-  switch (property_id) {
-    case PROP_SERVICE_CORE:
-      g_value_set_pointer (value, mw->priv->core);
-      break;
-    default:
-      G_OBJECT_WARN_INVALID_PROPERTY_ID (object, property_id, pspec);
-      break;
-  }
-}
-
-
-static void
-ekiga_main_window_set_property (GObject *object,
-                                guint property_id,
-                                const GValue *value,
-                                GParamSpec *pspec)
-{
-  EkigaMainWindow *mw;
-
-  g_return_if_fail (EKIGA_IS_MAIN_WINDOW (object));
-
-  mw = EKIGA_MAIN_WINDOW (object);
-
-  switch (property_id) {
-    case PROP_SERVICE_CORE:
-      mw->priv->core = static_cast<Ekiga::ServiceCore *>
-                                                 (g_value_get_pointer (value));
-      break;
-    default:
-      G_OBJECT_WARN_INVALID_PROPERTY_ID (object, property_id, pspec);
-      break;
-  }
-}
-
-
-static void
 ekiga_main_window_class_init (EkigaMainWindowClass *klass)
 {
   GtkWidgetClass *widget_class = GTK_WIDGET_CLASS (klass);
@@ -1702,20 +1659,9 @@ ekiga_main_window_class_init (EkigaMainWindowClass *klass)
   object_class->constructor = ekiga_main_window_constructor;
   object_class->dispose = ekiga_main_window_dispose;
   object_class->finalize = ekiga_main_window_finalize;
-  object_class->get_property = ekiga_main_window_get_property;
-  object_class->set_property = ekiga_main_window_set_property;
 
   widget_class->focus_in_event = ekiga_main_window_focus_in_event;
   widget_class->delete_event = ekiga_main_window_delete_event;
-
-  g_object_class_install_property (object_class,
-                                   PROP_SERVICE_CORE,
-                                   g_param_spec_pointer ("service-core",
-                                                         "Service Core",
-                                                         "Service Core",
-                                                         (GParamFlags)
-                                                         (G_PARAM_READWRITE |
-                                                          G_PARAM_CONSTRUCT_ONLY)));
 }
 
 static void
@@ -1725,79 +1671,91 @@ ekiga_main_window_connect_engine_signals (EkigaMainWindow *mw)
 
   g_return_if_fail (EKIGA_IS_MAIN_WINDOW (mw));
 
-  /* New Call Engine signals */
-  boost::shared_ptr<Ekiga::CallCore> call_core = mw->priv->core->get<Ekiga::CallCore> ("call-core");
-  boost::shared_ptr<Ekiga::AccountCore> account_core = mw->priv->core->get<Ekiga::AccountCore> ("account-core");
-
   /* Engine Signals callbacks */
-  conn = account_core->account_updated.connect (boost::bind (&on_account_updated, _1, _2, (gpointer) mw));
+  conn = mw->priv->account_core->account_updated.connect (boost::bind (&on_account_updated, _1, _2, (gpointer) mw));
   mw->priv->connections.push_back (conn);
 
-  conn = call_core->setup_call.connect (boost::bind (&on_setup_call_cb, _1, _2, (gpointer) mw));
+  conn = mw->priv->call_core->setup_call.connect (boost::bind (&on_setup_call_cb, _1, _2, (gpointer) mw));
   mw->priv->connections.push_back (conn);
 
-  conn = call_core->ringing_call.connect (boost::bind (&on_ringing_call_cb, _1, _2, (gpointer) mw));
+  conn = mw->priv->call_core->ringing_call.connect (boost::bind (&on_ringing_call_cb, _1, _2, (gpointer) mw));
   mw->priv->connections.push_back (conn);
 
-  conn = call_core->established_call.connect (boost::bind (&on_established_call_cb, _1, _2, (gpointer) mw));
+  conn = mw->priv->call_core->established_call.connect (boost::bind (&on_established_call_cb, _1, _2, (gpointer) mw));
   mw->priv->connections.push_back (conn);
 
-  conn = call_core->cleared_call.connect (boost::bind (&on_cleared_call_cb, _1, _2, _3, (gpointer) mw));
+  conn = mw->priv->call_core->cleared_call.connect (boost::bind (&on_cleared_call_cb, _1, _2, _3, (gpointer) mw));
   mw->priv->connections.push_back (conn);
 
-  conn = call_core->missed_call.connect (boost::bind (&on_missed_call_cb, _1, _2, (gpointer) mw));
+  conn = mw->priv->call_core->missed_call.connect (boost::bind (&on_missed_call_cb, _1, _2, (gpointer) mw));
   mw->priv->connections.push_back (conn);
 
-  conn = call_core->errors.connect (boost::bind (&on_handle_errors, _1, (gpointer) mw));
+  conn = mw->priv->call_core->errors.connect (boost::bind (&on_handle_errors, _1, (gpointer) mw));
   mw->priv->connections.push_back (conn);
 
   // FIXME: here we should watch for updates of the presence core
   // and call on_some_core_updated... it it had such a signal!
-  boost::shared_ptr<Ekiga::ContactCore> contact_core = mw->priv->core->get<Ekiga::ContactCore> ("contact-core");
-  conn = contact_core->updated.connect (boost::bind (&on_some_core_updated, mw));
+  conn = mw->priv->contact_core->updated.connect (boost::bind (&on_some_core_updated, mw));
   mw->priv->connections.push_back (conn);
-}
-
-//FIXME the following 2 functions are weird: shouldn't they be merged?
-GtkWidget *
-ekiga_main_window_new (Ekiga::ServiceCore *core)
-{
-  EkigaMainWindow *mw;
-
-  mw = EKIGA_MAIN_WINDOW (g_object_new (EKIGA_TYPE_MAIN_WINDOW,
-                                        "service-core", core, NULL));
-  gm_window_set_key (GM_WINDOW (mw), USER_INTERFACE_KEY "main_window");
-  ekiga_main_window_connect_engine_signals (mw);
-
-  // initial population
-  on_some_core_updated (mw);
-
-  return GTK_WIDGET (mw);
 }
 
 GtkWidget *
 gm_main_window_new (Ekiga::ServiceCore & core)
 {
-  GtkWidget *window = NULL;
-  GtkWidget *chat_window = NULL;
-  StatusIcon *status_icon = NULL;
+  EkigaMainWindow *mw;
+
+  /* basic gtk+ setup  */
+  mw = EKIGA_MAIN_WINDOW (g_object_new (EKIGA_TYPE_MAIN_WINDOW, NULL));
+  gm_window_set_key (GM_WINDOW (mw), USER_INTERFACE_KEY "main_window");
+
+  /* fetching needed engine objects */
+
+  mw->priv->core = &core;
+
+  mw->priv->account_core
+    = core.get<Ekiga::AccountCore> ("account-core");
+  mw->priv->audiooutput_core
+    = core.get<Ekiga::AudioOutputCore>("audiooutput-core");
+  mw->priv->call_core
+    = core.get<Ekiga::CallCore> ("call-core");
+  mw->priv->contact_core
+    = core.get<Ekiga::ContactCore> ("contact-core");
+  mw->priv->presence_core
+    = core.get<Ekiga::PresenceCore> ("presence-core");
+  mw->priv->bank
+    = core.get<Opal::Bank> ("opal-account-store");
+  mw->priv->local_cluster_trigger
+    = core.get<Ekiga::Trigger> ("local-cluster");
+  mw->priv->history_source
+    = core.get<History::Source> ("call-history-store");
+
+  mw->priv->gtk_frontend
+    = core.get<GtkFrontend> ("gtk-frontend");
+
+  ekiga_main_window_connect_engine_signals (mw);
+
+  ekiga_main_window_init_gui (mw);
+
+  // initial population
+  on_some_core_updated (mw);
 
   /* initialize the callback to play IM message sound */
-  boost::shared_ptr<GtkFrontend> gtk_frontend = core.get<GtkFrontend> ("gtk-frontend");
-  chat_window = GTK_WIDGET (gtk_frontend->get_chat_window ());
-  status_icon = STATUSICON (gtk_frontend->get_status_icon ());
+  boost::shared_ptr<GtkFrontend> gtk_frontend = mw->priv->gtk_frontend.lock ();
 
-  g_signal_connect (chat_window, "unread-alert",
-		    G_CALLBACK (on_chat_unread_alert), &core);
+  if (gtk_frontend) {
 
-  /* The Top-level window */
-  window = ekiga_main_window_new (&core);
+    GtkWidget *chat_window = GTK_WIDGET (gtk_frontend->get_chat_window ());
+    StatusIcon *status_icon = STATUSICON (gtk_frontend->get_status_icon ());
 
-  if (status_icon)
-    g_signal_connect (status_icon, "clicked",
-                      G_CALLBACK (status_icon_clicked_cb), (gpointer) window);
+    g_signal_connect (chat_window, "unread-alert",
+		      G_CALLBACK (on_chat_unread_alert), mw);
 
-  return window;
+    if (status_icon)
+      g_signal_connect (status_icon, "clicked",
+			G_CALLBACK (status_icon_clicked_cb), mw);
+  }
+
+  return GTK_WIDGET(mw);
 }
 
 
