@@ -55,13 +55,12 @@
 
 struct _AccountsWindowPrivate
 {
-  _AccountsWindowPrivate (Ekiga::ServiceCore & _core):core (_core) { }
-
   GtkWidget *accounts_list;
   GtkWidget *menu_item_core;
   GtkAccelGroup *accel;
 
-  Ekiga::ServiceCore &core;
+  boost::shared_ptr<Ekiga::AccountCore> account_core;
+  boost::shared_ptr<Ekiga::PersonalDetails> details;
   std::vector<boost::signals::connection> connections;
 
   std::string presence;
@@ -124,9 +123,7 @@ populate_menu (GtkWidget *window)
   selection = gtk_tree_view_get_selection (GTK_TREE_VIEW (self->priv->accounts_list));
   model = gtk_tree_view_get_model (GTK_TREE_VIEW (self->priv->accounts_list));
 
-  boost::shared_ptr<Ekiga::AccountCore> account_core = self->priv->core.get<Ekiga::AccountCore> ("account-core");
-
-  if (account_core->populate_menu (builder)) {
+  if (self->priv->account_core->populate_menu (builder)) {
     item = gtk_separator_menu_item_new ();
     gtk_menu_shell_append (GTK_MENU_SHELL (builder.menu), item);
   }
@@ -570,7 +567,11 @@ accounts_window_new (Ekiga::ServiceCore &core)
 
   /* The window */
   self = (AccountsWindow *) g_object_new (ACCOUNTS_WINDOW_TYPE, NULL);
-  self->priv = new AccountsWindowPrivate (core);
+
+  self->priv = new AccountsWindowPrivate;
+  self->priv->details = core.get<Ekiga::PersonalDetails> ("personal-details");
+  self->priv->account_core = core.get<Ekiga::AccountCore> ("account-core");
+
   vbox = gtk_vbox_new (FALSE, 2);
   gtk_window_set_title (GTK_WINDOW (self), _("Accounts"));
 
@@ -692,24 +693,22 @@ accounts_window_new (Ekiga::ServiceCore &core)
   gtk_widget_show_all (GTK_WIDGET (vbox));
 
   /* Engine Signals callbacks */
-  boost::shared_ptr<Ekiga::AccountCore> account_core = core.get<Ekiga::AccountCore> ("account-core");
-  conn = account_core->bank_added.connect (boost::bind (&on_bank_added, _1, self));
+  conn = self->priv->account_core->bank_added.connect (boost::bind (&on_bank_added, _1, self));
   self->priv->connections.push_back (conn);
-  conn = account_core->account_added.connect (boost::bind (&on_account_added, _1, _2, self));
+  conn = self->priv->account_core->account_added.connect (boost::bind (&on_account_added, _1, _2, self));
   self->priv->connections.push_back (conn);
-  conn = account_core->account_updated.connect (boost::bind (&on_account_updated, _1, _2, self));
+  conn = self->priv->account_core->account_updated.connect (boost::bind (&on_account_updated, _1, _2, self));
   self->priv->connections.push_back (conn);
-  conn = account_core->account_removed.connect (boost::bind (&on_account_removed, _1, _2, self));
+  conn = self->priv->account_core->account_removed.connect (boost::bind (&on_account_removed, _1, _2, self));
   self->priv->connections.push_back (conn);
-  conn = account_core->questions.connect (boost::bind (&on_handle_questions, _1, (gpointer) self));
-  self->priv->connections.push_back (conn);
-
-  boost::shared_ptr<Ekiga::PersonalDetails> details = core.get<Ekiga::PersonalDetails> ("personal-details");
-  self->priv->presence = details->get_presence ();
-  conn = details->updated.connect (boost::bind (&on_personal_details_updated, self, details));
+  conn = self->priv->account_core->questions.connect (boost::bind (&on_handle_questions, _1, (gpointer) self));
   self->priv->connections.push_back (conn);
 
-  account_core->visit_banks (boost::bind (&on_visit_banks, _1, self));
+  self->priv->presence = self->priv->details->get_presence ();
+  conn = self->priv->details->updated.connect (boost::bind (&on_personal_details_updated, self, self->priv->details));
+  self->priv->connections.push_back (conn);
+
+  self->priv->account_core->visit_banks (boost::bind (&on_visit_banks, _1, self));
 
   return GTK_WIDGET (self);
 }
