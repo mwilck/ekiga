@@ -47,12 +47,21 @@ class PSoundChannel_EKIGA_PluginServiceDescriptor : public PDevicePluginServiceD
 {
 public:
 
-  PSoundChannel_EKIGA_PluginServiceDescriptor (Ekiga::ServiceCore& core_): core(core_)
-  { }
+  PSoundChannel_EKIGA_PluginServiceDescriptor (Ekiga::ServiceCore& core):
+    audioinput_core(core.get<Ekiga::AudioInputCore> ("audioinput-core")),
+    audiooutput_core(core.get<Ekiga::AudioOutputCore> ("audiooutput-core"))
+  {}
 
   virtual PObject* CreateInstance (int) const
-  { return new PSoundChannel_EKIGA (core); }
-
+  {
+    // FIXME: if that happens in a thread, that's bad...
+    boost::shared_ptr<Ekiga::AudioInputCore> input = audioinput_core.lock ();
+    boost::shared_ptr<Ekiga::AudioOutputCore> output = audiooutput_core.lock ();
+    if (input && output)
+      return new PSoundChannel_EKIGA (input, output);
+    else
+      return NULL;
+  }
 
   virtual PStringArray GetDeviceNames(int) const
   { return PStringList ("EKIGA"); }
@@ -62,9 +71,8 @@ public:
   { return deviceName.Find ("EKIGA") == 0; }
 
 private:
-
-  Ekiga::ServiceCore& core;
-
+  boost::weak_ptr<Ekiga::AudioInputCore> audioinput_core;
+  boost::weak_ptr<Ekiga::AudioOutputCore> audiooutput_core;
 };
 
 class PVideoInputDevice_EKIGA_PluginServiceDescriptor : public PDevicePluginServiceDescriptor

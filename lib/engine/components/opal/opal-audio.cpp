@@ -40,24 +40,24 @@
 
 #include "opal-audio.h"
 
-PSoundChannel_EKIGA::PSoundChannel_EKIGA (Ekiga::ServiceCore & _core):
-  core (_core),
-  audioinput_core (core.get<Ekiga::AudioInputCore> ("audioinput-core")),
-  audiooutput_core (core.get<Ekiga::AudioOutputCore> ("audiooutput-core"))
+PSoundChannel_EKIGA::PSoundChannel_EKIGA (boost::shared_ptr<Ekiga::AudioInputCore> _audioinput_core,
+					  boost::shared_ptr<Ekiga::AudioOutputCore> _audiooutput_core):
+  audioinput_core (_audioinput_core),
+  audiooutput_core (_audiooutput_core)
 {
   opened = false;
 }
 
 
 PSoundChannel_EKIGA::PSoundChannel_EKIGA (const PString & /*_device*/,
-                                          Directions dir,
+					  Directions dir,
 					  unsigned numChannels,
 					  unsigned sampleRate,
 					  unsigned bitsPerSample,
-					  Ekiga::ServiceCore & _core):
-  core (_core),
-  audioinput_core (core.get<Ekiga::AudioInputCore> ("audioinput-core")),
-  audiooutput_core (core.get<Ekiga::AudioOutputCore> ("audiooutput-core"))
+					  boost::shared_ptr<Ekiga::AudioInputCore> _audioinput_core,
+					  boost::shared_ptr<Ekiga::AudioOutputCore> _audiooutput_core):
+  audioinput_core (_audioinput_core),
+  audiooutput_core (_audiooutput_core)
 {
   opened = false;
   Open (device, dir, numChannels, sampleRate, bitsPerSample);

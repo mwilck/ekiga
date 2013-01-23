@@ -48,13 +48,15 @@
 class PSoundChannel_EKIGA : public PSoundChannel {
   PCLASSINFO(PSoundChannel_EKIGA, PSoundChannel); 
 public:
-  PSoundChannel_EKIGA(Ekiga::ServiceCore & core);
+  PSoundChannel_EKIGA(boost::shared_ptr<Ekiga::AudioInputCore> audioinput_core,
+		      boost::shared_ptr<Ekiga::AudioOutputCore> audiooutput_core);
   PSoundChannel_EKIGA(const PString &device,
-		   PSoundChannel::Directions dir,
-		   unsigned numChannels,
-		   unsigned sampleRate,
-		   unsigned bitsPerSample,
-                   Ekiga::ServiceCore & _core);
+		      PSoundChannel::Directions dir,
+		      unsigned numChannels,
+		      unsigned sampleRate,
+		      unsigned bitsPerSample,
+		      boost::shared_ptr<Ekiga::AudioInputCore> audioinput_core,
+		      boost::shared_ptr<Ekiga::AudioOutputCore> audiooutput_core);
   ~PSoundChannel_EKIGA();
   static PString GetDefaultDevice(PSoundChannel::Directions);
   bool Open(const PString & _device,
@@ -91,7 +93,6 @@ public:
 
   PINDEX storedVolume;
 
-  Ekiga::ServiceCore & core;
   boost::shared_ptr<Ekiga::AudioInputCore> audioinput_core;
   boost::shared_ptr<Ekiga::AudioOutputCore> audiooutput_core;
   bool opened;
