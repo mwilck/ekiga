@@ -46,6 +46,7 @@
 #include "call.h"
 #include "opal-call.h"
 #include "opal-call-manager.h"
+#include "notification-core.h"
 #include "call-core.h"
 
 using namespace Opal;
@@ -94,12 +95,10 @@ private:
 
 
 Opal::Call::Call (Opal::CallManager& _manager,
-		  Ekiga::ServiceCore& _core,
 		  const std::string& uri)
-  : OpalCall (_manager), Ekiga::Call (), core (_core), manager(_manager), remote_uri (uri),
+  : OpalCall (_manager), Ekiga::Call (), manager(_manager), remote_uri (uri),
     call_setup(false), jitter(0), outgoing(false)
 {
-  notification_core = core.get<Ekiga::NotificationCore> ("notification-core");
   re_a_bytes = tr_a_bytes = re_v_bytes = tr_v_bytes = 0.0;
   last_v_tick = last_a_tick = PTime ();
   total_a =
@@ -121,6 +120,13 @@ Opal::Call::~Call ()
 {
 }
 
+void
+Opal::Call::set_engine_services (boost::shared_ptr<Ekiga::NotificationCore> _notification_core,
+				 boost::shared_ptr<Ekiga::CallCore> _call_core)
+{
+  notification_core = _notification_core;
+  call_core = _call_core;
+}
 
 void
 Opal::Call::hang_up ()
@@ -693,7 +699,10 @@ Opal::Call::emit_established_in_main ()
 void
 Opal::Call::emit_missed_in_main ()
 {
-  boost::shared_ptr<Ekiga::CallCore> call_core = core.get<Ekiga::CallCore> ("call-core");
+  boost::shared_ptr<Ekiga::CallCore> ccore = call_core.lock ();
+  if (!ccore)
+    return;
+
   std::stringstream msg;
 
   missed ();
@@ -701,7 +710,7 @@ Opal::Call::emit_missed_in_main ()
   boost::shared_ptr<Ekiga::Notification> notif (new Ekiga::Notification (Ekiga::Notification::Warning,
                                                                          _("Missed call"), msg.str (),
                                                                          _("Call"),
-                                                                         boost::bind (&Ekiga::CallCore::dial, call_core,
+                                                                         boost::bind (&Ekiga::CallCore::dial, ccore,
                                                                                       get_remote_uri ())));
   notification_core->push_notification (notif);
 }

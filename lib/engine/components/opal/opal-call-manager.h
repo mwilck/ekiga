@@ -70,7 +70,7 @@ public:
 
     CallManager (Ekiga::ServiceCore & _core);
 
-    virtual ~CallManager ();
+    ~CallManager ();
 
     /**/
     const std::string get_name () const
@@ -154,6 +154,9 @@ public:
     void get_video_options (VideoOptions & options) const;
 
 private:
+    boost::weak_ptr<Ekiga::CallCore> call_core;
+    boost::shared_ptr<Ekiga::NotificationCore> notification_core;
+
     void create_call_in_main (Opal::Call* call);
     OpalCall *CreateCall (void *uri);
     void emit_removed_in_main (Ekiga::Call* call);
@@ -183,7 +186,6 @@ private:
        variables */
     PMutex manager_access_mutex;
 
-    Ekiga::ServiceCore & core;
     Ekiga::CodecList codecs; 
 
     /* used to get the STUNDetector results */

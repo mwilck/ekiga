@@ -46,6 +46,10 @@
 #ifndef __OPAL_CALL_H__
 #define __OPAL_CALL_H__
 
+namespace Ekiga {
+  class CallCore;
+};
+
 class GMManager;
 
 namespace Opal {
@@ -60,7 +64,6 @@ namespace Opal {
 public:
 
     Call (CallManager &_manager,
-          Ekiga::ServiceCore& _core,
           const std::string & uri);
 
     ~Call ();
@@ -150,6 +153,8 @@ public:
      */
     time_t get_start_time () const;
 
+    void set_engine_services (boost::shared_ptr<Ekiga::NotificationCore> _notification_core,
+			      boost::shared_ptr<Ekiga::CallCore> _call_core);
 
 public:
 
@@ -222,9 +227,10 @@ private:
     /*
      * Variables
      */
-    Ekiga::ServiceCore& core;
+
     CallManager & manager;
     boost::shared_ptr<Ekiga::NotificationCore> notification_core;
+    boost::weak_ptr<Ekiga::CallCore> call_core;
 
     std::string local_party_name;
     std::string remote_party_name;

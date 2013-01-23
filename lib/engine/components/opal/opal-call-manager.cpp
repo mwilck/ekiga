@@ -100,9 +100,11 @@ using namespace Opal;
 
 
 /* The class */
-CallManager::CallManager (Ekiga::ServiceCore & _core)
-  : core (_core)
+CallManager::CallManager (Ekiga::ServiceCore& core)
 {
+  call_core = core.get<Ekiga::CallCore> ("call-core");
+  notification_core = core.get<Ekiga::NotificationCore> ("notification-core");
+
   /* Initialise the endpoint parameters */
 #if P_HAS_IPV6
   char * ekiga_ipv6 = getenv("EKIGA_IPV6");
@@ -703,12 +705,16 @@ void CallManager::get_video_options (CallManager::VideoOptions & options) const
 }
 
 void
-CallManager::create_call_in_main (Opal::Call* call)
+CallManager::create_call_in_main (Opal::Call* _call)
 {
-  boost::shared_ptr<Ekiga::CallCore> call_core = core.get<Ekiga::CallCore> ("call-core");
+  boost::shared_ptr<Opal::Call> call(_call);
 
-  call_core->add_call (boost::shared_ptr<Opal::Call>(call),
-		       boost::dynamic_pointer_cast<CallManager>(shared_from_this ()));
+  // FIXME: we should check it worked, but what do we do if it doesn't?
+  boost::shared_ptr<Ekiga::CallCore> ccore = call_core.lock ();
+
+  call->set_engine_services (notification_core, ccore);
+
+  ccore->add_call (call, boost::dynamic_pointer_cast<CallManager>(shared_from_this ()));
 }
 
 OpalCall *CallManager::CreateCall (void *uri)
@@ -716,9 +722,9 @@ OpalCall *CallManager::CreateCall (void *uri)
   Opal::Call* call = 0;
 
   if (uri != 0)
-    call = new Opal::Call (*this, core, (const char *) uri);
+    call = new Opal::Call (*this, (const char *) uri);
   else
-    call = new Opal::Call (*this, core, "");
+    call = new Opal::Call (*this, "");
 
   Ekiga::Runtime::run_in_main (boost::bind (&CallManager::create_call_in_main, this, call));
 
@@ -843,10 +849,12 @@ CallManager::HandleSTUNResult ()
 void
 CallManager::ReportSTUNError (const std::string error)
 {
-  boost::shared_ptr<Ekiga::CallCore> call_core = core.get<Ekiga::CallCore> ("call-core");
+  boost::shared_ptr<Ekiga::CallCore> ccore = call_core.lock ();
+  if (!ccore)
+    return;
 
   // notice we're in for an infinite loop if nobody ever reports to the user!
-  if ( !call_core->errors (error)) {
+  if ( !ccore->errors (error)) {
 
     Ekiga::Runtime::run_in_main (boost::bind (&CallManager::ReportSTUNError, this, error),
 				 10);
