@@ -55,20 +55,15 @@
 #include "form-request-simple.h"
 #include "platform.h"
 
-#include "presence-core.h"
-#include "personal-details.h"
-#include "audiooutput-core.h"
-
 #include "sip-endpoint.h"
 #ifdef HAVE_H323
 #include "h323-endpoint.h"
 #endif
 
-Opal::Account::Account (Ekiga::ServiceCore & _core,
+Opal::Account::Account (Ekiga::ServiceCore& core,
                         const std::string & account)
-  : core (_core)
 {
-  notification_core = core.get<Ekiga::NotificationCore> ("notification-core");
+  fetch_services_on_startup (core);
   state = Unregistered;
   status = _("Unregistered");
   message_waiting_number = 0;
@@ -139,26 +134,19 @@ Opal::Account::Account (Ekiga::ServiceCore & _core,
   else
     type = Account::H323;
 
-#ifdef HAVE_H323
-  if (type == Account::H323)
-    h323_endpoint = core.get<H323::EndPoint> ("opal-h323-endpoint");
-  else {
-#endif
-    sip_endpoint = core.get<Sip::EndPoint> ("opal-sip-endpoint");
+  if (type == Account::SIP) {
 
     if (name.find ("%limit") != std::string::npos)
       compat_mode = SIPRegister::e_CannotRegisterMultipleContacts;  // start registration in this compat mode
     else
       compat_mode = SIPRegister::e_FullyCompliant;
-#ifdef HAVE_H323
   }
-#endif
 
   setup_presentity ();
 }
 
 
-Opal::Account::Account (Ekiga::ServiceCore & _core,
+Opal::Account::Account (Ekiga::ServiceCore& core,
                         Type t,
                         std::string _name,
                         std::string _host,
@@ -167,9 +155,8 @@ Opal::Account::Account (Ekiga::ServiceCore & _core,
                         std::string _password,
                         bool _enabled,
                         unsigned _timeout)
-  : core (_core)
 {
-  notification_core = core.get<Ekiga::NotificationCore> ("notification-core");
+  fetch_services_on_startup (core);
 
   state = Unregistered;
   status = "";
@@ -189,13 +176,6 @@ Opal::Account::Account (Ekiga::ServiceCore & _core,
   type = t;
   failed_registration_already_notified = false;
   dead = false;
-
-#ifdef HAVE_H323
-  if (type == Account::H323)
-    h323_endpoint = core.get<H323::EndPoint> ("opal-h323-endpoint");
-  else
-#endif
-    sip_endpoint = core.get<Sip::EndPoint> ("opal-sip-endpoint");
 
   setup_presentity ();
 
@@ -639,8 +619,6 @@ Opal::Account::handle_registration_event (RegistrationState state_,
       // Translators: this is a state, not an action, i.e. it should be read as
       // "(you are) registered", and not as "(you have been) registered"
       status = _("Registered");
-      boost::shared_ptr<Ekiga::PresenceCore> presence_core = core.get<Ekiga::PresenceCore> ("presence-core");
-      boost::shared_ptr<Ekiga::PersonalDetails> personal_details = core.get<Ekiga::PersonalDetails> ("personal-details");
       if (presentity) {
         for (std::set<std::string>::iterator iter = watched_uris.begin ();
              iter != watched_uris.end (); ++iter) {
@@ -764,7 +742,6 @@ Opal::Account::handle_message_waiting_information (const std::string info)
 
   if (loc != std::string::npos) {
 
-    boost::shared_ptr<Ekiga::AudioOutputCore> audiooutput_core = core.get<Ekiga::AudioOutputCore> ("audiooutput-core");
     std::stringstream new_messages;
     new_messages << info.substr (0, loc);
     new_messages >> message_waiting_number;
@@ -783,7 +760,10 @@ Opal::Account::get_type () const
 void
 Opal::Account::setup_presentity ()
 {
-  boost::shared_ptr<CallManager> manager = core.get<CallManager> ("opal-component");
+  boost::shared_ptr<CallManager> manager = opal_component.lock ();
+  if (!manager)
+    return;
+
   PURL url = PString (get_aor ());
   presentity = manager->AddPresentity (url);
 
@@ -963,4 +943,18 @@ Opal::Account::presence_status_in_main (std::string uri,
 {
   presence_received (uri, uri_presence);
   status_received (uri, uri_status);
+}
+
+void
+Opal::Account::fetch_services_on_startup (Ekiga::ServiceCore& core)
+{
+  sip_endpoint = core.get<Sip::EndPoint> ("opal-sip-endpoint");
+#ifdef HAVE_H323
+  h323_endpoint = core.get<H323::EndPoint> ("opal-h323-endpoint");
+#endif
+  notification_core = core.get<Ekiga::NotificationCore> ("notification-core");
+  presence_core = core.get<Ekiga::PresenceCore> ("presence-core");
+  personal_details = core.get<Ekiga::PersonalDetails> ("personal-details");
+  audiooutput_core = core.get<Ekiga::AudioOutputCore> ("audiooutput-core");
+  opal_component = core.get<CallManager> ("opal-component");
 }

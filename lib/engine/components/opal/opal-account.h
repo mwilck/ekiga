@@ -45,12 +45,15 @@
 #include "notification-core.h"
 #include "presence-core.h"
 #include "personal-details.h"
+#include "audiooutput-core.h"
+
 #include "bank-impl.h"
 #include <sip/sippdu.h>
 
 namespace Opal
 {
-  // forward declaration:
+  // forward declarations:
+  class CallManager;
   namespace Sip { class EndPoint; };
 #ifdef HAVE_H323
   namespace H323 { class EndPoint; };
@@ -212,12 +215,16 @@ private:
 				  std::string presence,
 				  std::string status);
 
-    Ekiga::ServiceCore & core;
+    void fetch_services_on_startup (Ekiga::ServiceCore& core);
     boost::shared_ptr<Opal::Sip::EndPoint> sip_endpoint;
 #ifdef HAVE_H323
     boost::shared_ptr<Opal::H323::EndPoint> h323_endpoint;
 #endif
+    boost::shared_ptr<Ekiga::PresenceCore> presence_core;
     boost::shared_ptr<Ekiga::NotificationCore> notification_core;
+    boost::shared_ptr<Ekiga::PersonalDetails> personal_details;
+    boost::shared_ptr<Ekiga::AudioOutputCore> audiooutput_core;
+    boost::weak_ptr<CallManager> opal_component;
   };
 
   typedef boost::shared_ptr<Account> AccountPtr;
