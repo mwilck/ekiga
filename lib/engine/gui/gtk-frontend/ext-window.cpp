@@ -255,6 +255,7 @@ static void
 ekiga_ext_window_init (EkigaExtWindow *ew)
 {
   ew->priv = new EkigaExtWindowPrivate;
+  ew->priv->gc = NULL;
 }
 
 GtkWidget *
