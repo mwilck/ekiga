@@ -65,11 +65,11 @@ namespace History
   {
   public:
 
-    Contact (Ekiga::ServiceCore &_core,
+    Contact (boost::shared_ptr<Ekiga::ContactCore> _contact_core,
 	     boost::shared_ptr<xmlDoc> _doc,
 	     xmlNodePtr _node);
 
-    Contact (Ekiga::ServiceCore &_core,
+    Contact (boost::shared_ptr<Ekiga::ContactCore> _contact_core,
 	     boost::shared_ptr<xmlDoc> _doc,
 	     const std::string _name,
 	     const std::string _uri,
@@ -101,7 +101,7 @@ namespace History
 
   private:
 
-    Ekiga::ServiceCore &core;
+    boost::weak_ptr<Ekiga::ContactCore> contact_core;
 
     boost::shared_ptr<xmlDoc> doc;
     xmlNodePtr node;

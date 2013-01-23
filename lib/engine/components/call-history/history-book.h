@@ -107,7 +107,7 @@ namespace History
 
     void enforce_size_limit();
 
-    Ekiga::ServiceCore &core;
+    boost::weak_ptr<Ekiga::ContactCore> contact_core;
     boost::shared_ptr<xmlDoc> doc;
     std::list<ContactPtr> ordered_contacts;
   };

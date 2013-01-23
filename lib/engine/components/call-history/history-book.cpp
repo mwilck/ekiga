@@ -45,8 +45,8 @@
 
 #include "history-book.h"
 
-History::Book::Book (Ekiga::ServiceCore &_core) :
-  core(_core), doc()
+History::Book::Book (Ekiga::ServiceCore& core):
+  contact_core(core.get<Ekiga::ContactCore>("contact-core")), doc()
 {
   xmlNodePtr root = NULL;
 
@@ -113,7 +113,8 @@ History::Book::visit_contacts (boost::function1<bool, Ekiga::ContactPtr> visitor
 void
 History::Book::add (xmlNodePtr node)
 {
-  common_add (ContactPtr (new Contact (core, doc, node)));
+  boost::shared_ptr<Ekiga::ContactCore> ccore = contact_core.lock ();
+  common_add (ContactPtr (new Contact (ccore, doc, node)));
 }
 
 void
@@ -123,13 +124,14 @@ History::Book::add (const std::string & name,
                     const std::string & call_duration,
 		    const call_type c_t)
 {
+  boost::shared_ptr<Ekiga::ContactCore> ccore = contact_core.lock ();
 
   if ( !uri.empty ()) {
 
     xmlNodePtr root = xmlDocGetRootElement (doc.get ());
 
-    ContactPtr contact(new Contact (core, doc, name, uri,
-					    call_start, call_duration, c_t));
+    ContactPtr contact(new Contact (ccore, doc, name, uri,
+				    call_start, call_duration, c_t));
 
     xmlAddChild (root, contact->get_node ());
 

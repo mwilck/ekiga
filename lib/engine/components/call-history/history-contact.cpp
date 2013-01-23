@@ -54,13 +54,12 @@ struct null_deleter
 };
 
 
-History::Contact::Contact (Ekiga::ServiceCore &_core,
+History::Contact::Contact (boost::shared_ptr<Ekiga::ContactCore> _contact_core,
 			   boost::shared_ptr<xmlDoc> _doc,
 			   xmlNodePtr _node):
-  core(_core), doc(_doc), node(_node)
+  contact_core(_contact_core), doc(_doc), node(_node)
 {
   xmlChar* xml_str = NULL;
-  boost::shared_ptr<Ekiga::ContactCore> contact_core = core.get<Ekiga::ContactCore> ("contact-core");
 
   xml_str = xmlGetProp (node, (const xmlChar *)"type");
   if (xml_str != NULL) {
@@ -111,18 +110,18 @@ History::Contact::Contact (Ekiga::ServiceCore &_core,
 }
 
 
-History::Contact::Contact (Ekiga::ServiceCore &_core,
+History::Contact::Contact (boost::shared_ptr<Ekiga::ContactCore> _contact_core,
 			   boost::shared_ptr<xmlDoc> _doc,
 			   const std::string _name,
 			   const std::string _uri,
                            time_t _call_start,
                            const std::string _call_duration,
 			   call_type c_t):
-  core(_core), doc(_doc), name(_name), uri(_uri), call_start(_call_start), call_duration(_call_duration), m_type(c_t)
+  contact_core(_contact_core), doc(_doc),
+  name(_name), uri(_uri), call_start(_call_start), call_duration(_call_duration), m_type(c_t)
 {
   gchar* tmp = NULL;
   std::string callp;
-  boost::shared_ptr<Ekiga::ContactCore> contact_core = core.get<Ekiga::ContactCore> ("contact-core");
 
   node = xmlNewNode (NULL, BAD_CAST "entry");
 
@@ -187,9 +186,13 @@ History::Contact::get_groups () const
 bool
 History::Contact::populate_menu (Ekiga::MenuBuilder &builder)
 {
-  boost::shared_ptr<Ekiga::ContactCore> contact_core = core.get<Ekiga::ContactCore> ("contact-core");
-  return contact_core->populate_contact_menu (ContactPtr (this, null_deleter ()),
-					      uri, builder);
+  
+  boost::shared_ptr<Ekiga::ContactCore> ccore = contact_core.lock ();
+  if (ccore)
+    return ccore->populate_contact_menu (ContactPtr (this, null_deleter ()),
+					 uri, builder);
+  else
+    return false;
 }
 
 xmlNodePtr
