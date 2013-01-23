@@ -77,11 +77,11 @@ Ekiga::ServiceCore::ServiceCore (): closed(false)
 Ekiga::ServiceCore::~ServiceCore ()
 {
 #if DEBUG
-  std::list<boost::weak_ptr<Service> > remaining_services;
+  std::map<std::string, boost::weak_ptr<Service> > remaining_services;
   for (std::list<boost::shared_ptr<Service> >::iterator iter = services.begin();
        iter != services.end ();
        ++iter)
-    remaining_services.push_front (*iter);
+    remaining_services[(*iter)->get_name ()] = *iter;
 #endif
   /* this frees the memory, if we're the only to hold references,
    * and frees the last first -- so there's no problem
@@ -90,15 +90,15 @@ Ekiga::ServiceCore::~ServiceCore ()
     services.pop_front ();
 
 #if DEBUG
-  for (std::list<boost::weak_ptr<Service> >::iterator iter = remaining_services.begin();
+  for (std::map<std::string, boost::weak_ptr<Service> >::iterator iter = remaining_services.begin();
        iter != remaining_services.end ();
        ++iter) {
 
-    ServicePtr service = iter->lock();
+    ServicePtr service = iter->second.lock();
     if (service) {
 
       std::cout << "Ekiga::ServiceCore: "
-		<< service->get_name()
+		<< iter->first
 		<< " hasn't been freed correctly!"
 		<< " (with "
 		<< service.use_count() - 1
