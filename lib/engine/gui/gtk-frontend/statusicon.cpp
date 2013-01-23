@@ -63,8 +63,6 @@
  */
 struct _StatusIconPrivate
 {
-  _StatusIconPrivate (Ekiga::ServiceCore & _core) : core (_core) { }
-
   GtkWidget *popup_menu;
   gboolean has_message;
 
@@ -77,7 +75,7 @@ struct _StatusIconPrivate
 
   gchar *blink_image;
 
-  Ekiga::ServiceCore & core;
+  boost::shared_ptr<GtkFrontend> frontend;
 };
 
 static GObjectClass *parent_class = NULL;
@@ -277,8 +275,7 @@ statusicon_activated_cb (G_GNUC_UNUSED GtkStatusIcon *icon,
   else {
 
     // Unread messages => show chat window
-    boost::shared_ptr<GtkFrontend> frontend = self->priv->core.get<GtkFrontend> ("gtk-frontend");
-    GtkWidget *w = GTK_WIDGET (frontend->get_chat_window ());
+    GtkWidget *w = GTK_WIDGET (self->priv->frontend->get_chat_window ());
 
     gtk_widget_show (w);
     gtk_window_present (GTK_WINDOW (w));
@@ -457,8 +454,6 @@ statusicon_set_inacall (StatusIcon *statusicon,
 {
   g_return_if_fail (statusicon != NULL);
 
-  boost::shared_ptr<GtkFrontend> frontend = statusicon->priv->core.get<GtkFrontend> ("gtk-frontend");
-
   /* Update the status icon */
   if (inacall)
     gtk_status_icon_set_from_icon_name (GTK_STATUS_ICON (statusicon), "user-inacall");
@@ -468,10 +463,10 @@ statusicon_set_inacall (StatusIcon *statusicon,
 
 static void
 statusicon_on_notification_added (boost::shared_ptr<Ekiga::Notification> notification,
-                                  gpointer self)
+                                  gpointer data)
 {
-  boost::shared_ptr<GtkFrontend> frontend = STATUSICON (self)->priv->core.get<GtkFrontend> ("gtk-frontend");
-  GtkWidget* chat_window = GTK_WIDGET (frontend->get_chat_window ());
+  StatusIcon *self = STATUSICON (data);
+  GtkWidget* chat_window = GTK_WIDGET (self->priv->frontend->get_chat_window ());
   GdkPixbuf* pixbuf = gtk_widget_render_icon (chat_window, GTK_STOCK_DIALOG_WARNING, GTK_ICON_SIZE_MENU, NULL);
 
   gchar *current_tooltip = gtk_status_icon_get_tooltip_text (GTK_STATUS_ICON (self));
@@ -551,7 +546,7 @@ status_icon_new (Ekiga::ServiceCore & core)
   boost::signals::connection conn;
 
   self = STATUSICON (g_object_new (STATUSICON_TYPE, NULL));
-  self->priv = new StatusIconPrivate (core);
+  self->priv = new StatusIconPrivate;
 
   self->priv->popup_menu = statusicon_build_menu (core);
   g_object_ref_sink (self->priv->popup_menu);
@@ -560,12 +555,13 @@ status_icon_new (Ekiga::ServiceCore & core)
   self->priv->blinking = false;
   self->priv->blink_image = NULL;
   self->priv->unread_messages = false;
+  self->priv->frontend = core.get<GtkFrontend> ("gtk-frontend");
 
   boost::shared_ptr<Ekiga::PersonalDetails> details = core.get<Ekiga::PersonalDetails> ("personal-details");
   boost::shared_ptr<Ekiga::CallCore> call_core = core.get<Ekiga::CallCore> ("call-core");
   boost::shared_ptr<Ekiga::NotificationCore> notification_core = core.get<Ekiga::NotificationCore> ("notification-core");
-  boost::shared_ptr<GtkFrontend> frontend = core.get<GtkFrontend> ("gtk-frontend");
-  GtkWidget *chat_window = GTK_WIDGET (frontend->get_chat_window ());
+
+  GtkWidget *chat_window = GTK_WIDGET (self->priv->frontend->get_chat_window ());
 
   statusicon_set_status (self, details->get_presence ());
   notification_core->notification_added.connect (boost::bind (statusicon_on_notification_added, _1, (gpointer) self));
