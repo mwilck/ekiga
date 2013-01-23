@@ -40,10 +40,9 @@
 
 int PVideoInputDevice_EKIGA::devices_nbr = 0;
 
-PVideoInputDevice_EKIGA::PVideoInputDevice_EKIGA (Ekiga::ServiceCore & _core):
-  core (_core)
+PVideoInputDevice_EKIGA::PVideoInputDevice_EKIGA (boost::shared_ptr<Ekiga::VideoInputCore> _videoinput_core):
+  videoinput_core(_videoinput_core)
 {
-  videoinput_core = core.get<Ekiga::VideoInputCore> ("videoinput-core");
   opened = false;
   is_active = false;
 }

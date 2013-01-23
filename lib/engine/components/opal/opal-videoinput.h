@@ -56,7 +56,7 @@ class PVideoInputDevice_EKIGA : public PVideoInputDevice
    * BEHAVIOR     :  Creates the Fake Input Device.
    * PRE          :  /
    */
-  PVideoInputDevice_EKIGA (Ekiga::ServiceCore & core);
+  PVideoInputDevice_EKIGA (boost::shared_ptr<Ekiga::VideoInputCore> _videoinput_core);
 
 
   /* DESCRIPTION  :  The destructor
@@ -183,7 +183,6 @@ class PVideoInputDevice_EKIGA : public PVideoInputDevice
   bool is_active;
   
 protected:
-  Ekiga::ServiceCore & core;
   boost::shared_ptr<Ekiga::VideoInputCore> videoinput_core;
 
   bool opened;
