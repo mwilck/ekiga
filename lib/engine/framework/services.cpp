@@ -41,6 +41,7 @@
 
 #if DEBUG
 #include <iostream>
+#include <signal.h>
 #endif
 
 #include "services.h"
@@ -162,9 +163,9 @@ Ekiga::ServiceCore::get (const std::string name)
     std::cout << "Ekiga::ServiceCore doesn't have " << name << std::endl;
 
   if (closed)
-    return ServicePtr();
-  else
-    return result;
+    raise (SIGSEGV);
+
+  return result;
 
 #else
 
