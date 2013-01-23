@@ -54,6 +54,8 @@ std::string canonize_uri (std::string uri);
 namespace Local
 {
 
+  class Cluster;
+
 /**
  * @addtogroup presence
  * @internal
@@ -76,11 +78,13 @@ namespace Local
     /**
      * Constructors (and destructor)
      */
-    Presentity (Ekiga::ServiceCore &_core,
+    Presentity (boost::weak_ptr<Local::Cluster> _local_cluster,
+		boost::weak_ptr<Ekiga::PresenceCore> _presence_core,
 		boost::shared_ptr<xmlDoc> _doc,
 		xmlNodePtr _node);
 
-    Presentity (Ekiga::ServiceCore &_core,
+    Presentity (boost::weak_ptr<Local::Cluster> _local_cluster,
+		boost::weak_ptr<Ekiga::PresenceCore> _presence_core,
 		boost::shared_ptr<xmlDoc> _doc,
 		const std::string _name,
 		const std::string _uri,
@@ -186,8 +190,9 @@ namespace Local
 					 Ekiga::Form &result);
 
 
-    Ekiga::ServiceCore &core;
-
+    boost::weak_ptr<Local::Cluster> local_cluster;
+    boost::weak_ptr<Ekiga::PresenceCore> presence_core;
+		
     boost::shared_ptr<xmlDoc> doc;
     xmlNodePtr node;
 

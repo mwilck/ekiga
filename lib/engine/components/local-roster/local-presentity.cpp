@@ -76,20 +76,22 @@ struct null_deleter
 /*
  * Public API
  */
-Local::Presentity::Presentity (Ekiga::ServiceCore &_core,
+Local::Presentity::Presentity (boost::weak_ptr<Local::Cluster> _local_cluster,
+			       boost::weak_ptr<Ekiga::PresenceCore> _presence_core,
 			       boost::shared_ptr<xmlDoc> _doc,
-			       xmlNodePtr _node) :
-  core(_core), doc(_doc), node(_node), presence("unknown")
+			       xmlNodePtr _node):
+  local_cluster(_local_cluster), presence_core(_presence_core), doc(_doc), node(_node), presence("unknown")
 {
 }
 
 
-Local::Presentity::Presentity (Ekiga::ServiceCore &_core,
+Local::Presentity::Presentity (boost::weak_ptr<Local::Cluster> _local_cluster,
+			       boost::weak_ptr<Ekiga::PresenceCore> _presence_core,
 			       boost::shared_ptr<xmlDoc> _doc,
 			       const std::string name,
 			       const std::string uri,
 			       const std::set<std::string> groups) :
-  core(_core), doc(_doc), presence("unknown")
+  local_cluster(_local_cluster), presence_core(_presence_core), doc(_doc), presence("unknown")
 {
   node = xmlNewNode (NULL, BAD_CAST "entry");
   xmlSetProp (node, BAD_CAST "uri", BAD_CAST uri.c_str ());
@@ -228,11 +230,14 @@ bool
 Local::Presentity::populate_menu (Ekiga::MenuBuilder &builder)
 {
   bool populated = false;
-  boost::shared_ptr<Ekiga::PresenceCore> presence_core = core.get<Ekiga::PresenceCore> ("presence-core");
+  boost::shared_ptr<Ekiga::PresenceCore> pcore = presence_core.lock ();
+
+  if (!pcore)
+    return false;
 
   populated
-    = presence_core->populate_presentity_menu (PresentityPtr(this, null_deleter ()),
-					       get_uri (), builder);
+    = pcore->populate_presentity_menu (PresentityPtr(this, null_deleter ()),
+				       get_uri (), builder);
 
   if (populated)
     builder.add_separator ();
@@ -256,7 +261,11 @@ Local::Presentity::get_node () const
 void
 Local::Presentity::edit_presentity ()
 {
-  ClusterPtr cluster = core.get<Local::Cluster> ("local-cluster");
+  ClusterPtr cluster = local_cluster.lock ();
+
+  if (!cluster)
+    return;
+
   boost::shared_ptr<Ekiga::FormRequestSimple> request = boost::shared_ptr<Ekiga::FormRequestSimple> (new Ekiga::FormRequestSimple (boost::bind (&Local::Presentity::edit_presentity_form_submitted, this, _1, _2)));
 
   std::string name = get_name ();
@@ -311,10 +320,12 @@ Local::Presentity::edit_presentity_form_submitted (bool submitted,
 
   if (uri != new_uri) {
 
-    boost::shared_ptr<Ekiga::PresenceCore> presence_core = core.get<Ekiga::PresenceCore> ("presence-core");
-    presence_core->unfetch_presence (uri);
+    boost::shared_ptr<Ekiga::PresenceCore> pcore = presence_core.lock ();
+    if (pcore) {
+      pcore->unfetch_presence (uri);
+      pcore->fetch_presence (new_uri);
+    }
     presence = "unknown";
-    presence_core->fetch_presence (new_uri);
     xmlSetProp (node, (const xmlChar*)"uri", (const xmlChar*)new_uri.c_str ());
   }
 
@@ -441,8 +452,9 @@ Local::Presentity::rename_group (const std::string old_name,
 void
 Local::Presentity::remove ()
 {
-  boost::shared_ptr<Ekiga::PresenceCore> presence_core = core.get<Ekiga::PresenceCore> ("presence-core");
-  presence_core->unfetch_presence (get_uri ());
+  boost::shared_ptr<Ekiga::PresenceCore> pcore = presence_core.lock ();
+  if (pcore)
+    pcore->unfetch_presence (get_uri ());
 
   xmlUnlinkNode (node);
   xmlFreeNode (node);

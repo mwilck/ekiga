@@ -54,10 +54,12 @@ struct LOCALROSTERSpark: public Ekiga::Spark
 
     if (presence_core && iff) {
 
-      boost::shared_ptr<Local::Cluster> cluster (new Local::Cluster (core));
+      boost::shared_ptr<Local::Cluster> cluster (new Local::Cluster (presence_core));
+      boost::shared_ptr<Local::Heap> heap(new Local::Heap (presence_core, cluster));
       if (core.add (cluster)) {
 
-	iff->add_helper (cluster->get_heap ());
+	iff->add_helper (heap);
+	cluster->set_heap (heap);
 	presence_core->add_cluster (cluster);
 	result = true;
       }

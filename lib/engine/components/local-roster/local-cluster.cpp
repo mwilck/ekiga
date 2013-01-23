@@ -40,16 +40,9 @@
 
 #include "local-cluster.h"
 
-Local::Cluster::Cluster (Ekiga::ServiceCore &_core): core(_core)
+Local::Cluster::Cluster (boost::shared_ptr<Ekiga::PresenceCore> pcore):
+  presence_core (pcore)
 {
-  boost::shared_ptr<Ekiga::PresenceCore> presence_core = core.get<Ekiga::PresenceCore> ("presence-core");
-
-  heap = HeapPtr (new Heap (core));
-
-  presence_core->presence_received.connect (boost::bind (&Local::Cluster::on_presence_received, this, _1, _2));
-  presence_core->status_received.connect (boost::bind (&Local::Cluster::on_status_received, this, _1, _2));
-
-  add_heap (heap);
 }
 
 Local::Cluster::~Cluster ()
@@ -59,9 +52,12 @@ Local::Cluster::~Cluster ()
 bool
 Local::Cluster::is_supported_uri (const std::string uri) const
 {
-  boost::shared_ptr<Ekiga::PresenceCore> presence_core = core.get<Ekiga::PresenceCore> ("presence-core");
+  boost::shared_ptr<Ekiga::PresenceCore> pcore = presence_core.lock ();
 
-  return presence_core->is_supported_uri (uri);
+  if (pcore)
+    return pcore->is_supported_uri (uri);
+  else
+    return false;
 }
 
 void
@@ -83,6 +79,19 @@ Local::Cluster::populate_menu (Ekiga::MenuBuilder& builder)
 		      boost::bind (&Local::Cluster::on_new_presentity, this));
 
   return true;
+}
+
+void
+Local::Cluster::set_heap (HeapPtr _heap)
+{ 
+  heap = _heap;
+  add_heap (heap);
+  boost::shared_ptr<Ekiga::PresenceCore> pcore = presence_core.lock ();
+  if (pcore) {
+
+    pcore->presence_received.connect (boost::bind (&Local::Cluster::on_presence_received, this, _1, _2));
+    pcore->status_received.connect (boost::bind (&Local::Cluster::on_status_received, this, _1, _2));
+  }
 }
 
 void

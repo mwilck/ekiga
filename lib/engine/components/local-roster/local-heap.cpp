@@ -42,13 +42,16 @@
 #include "gmconf.h"
 #include "form-request-simple.h"
 
+#include "local-cluster.h"
 #include "local-heap.h"
 #include "local-presentity.h"
 
 /*
  * Public API
  */
-Local::Heap::Heap (Ekiga::ServiceCore &_core): core (_core), doc ()
+Local::Heap::Heap (boost::shared_ptr<Ekiga::PresenceCore> _presence_core,
+		   boost::shared_ptr<Local::Cluster> _local_cluster):
+  presence_core(_presence_core), local_cluster(_local_cluster), doc ()
 {
   xmlNodePtr root;
   gchar *c_raw = gm_conf_get_string (ROSTER_KEY);
@@ -223,7 +226,10 @@ Local::Heap::new_presentity (const std::string name,
 {
   if (!has_presentity_with_uri (uri)) {
 
-    boost::shared_ptr<Ekiga::PresenceCore> presence_core = core.get<Ekiga::PresenceCore> ("presence-core");
+    boost::shared_ptr<Ekiga::PresenceCore> pcore = presence_core.lock ();
+    if (!pcore)
+      return;
+
     boost::shared_ptr<Ekiga::FormRequestSimple> request = boost::shared_ptr<Ekiga::FormRequestSimple> (new Ekiga::FormRequestSimple (boost::bind (&Local::Heap::new_presentity_form_submitted, this, _1, _2)));
     std::set<std::string> groups = existing_groups ();
 
@@ -231,7 +237,7 @@ Local::Heap::new_presentity (const std::string name,
     request->instructions (_("Please fill in this form to add a new contact "
 			    "to ekiga's internal roster"));
     request->text ("name", _("Name:"), name, _("Name of the contact, as shown in your roster"));
-    if (presence_core->is_supported_uri (uri)) {
+    if (pcore->is_supported_uri (uri)) {
 
       request->hidden ("good-uri", "yes");
       request->hidden ("uri", uri);
@@ -322,7 +328,8 @@ Local::Heap::push_status (const std::string uri,
 void
 Local::Heap::add (xmlNodePtr node)
 {
-  PresentityPtr presentity (new Presentity (core, doc, node));
+  PresentityPtr presentity (new Presentity (local_cluster, presence_core,
+					    doc, node));
 
   common_add (presentity);
 }
@@ -336,7 +343,8 @@ Local::Heap::add (const std::string name,
   xmlNodePtr root = NULL;
 
   root = xmlDocGetRootElement (doc.get ());
-  PresentityPtr presentity (new Presentity (core, doc, name, uri, groups));
+  PresentityPtr presentity (new Presentity (local_cluster, presence_core,
+					    doc, name, uri, groups));
 
   xmlAddChild (root, presentity->get_node ());
 
@@ -348,13 +356,14 @@ Local::Heap::add (const std::string name,
 void
 Local::Heap::common_add (PresentityPtr presentity)
 {
-  boost::shared_ptr<Ekiga::PresenceCore> presence_core = core.get<Ekiga::PresenceCore> ("presence-core");
+  boost::shared_ptr<Ekiga::PresenceCore> pcore = presence_core.lock ();
 
   // Add the presentity to this Heap
   add_presentity (presentity);
 
   // Fetch presence
-  presence_core->fetch_presence (presentity->get_uri ());
+  if (pcore)
+    pcore->fetch_presence (presentity->get_uri ());
 
   // Connect the Local::Presentity signals.
   add_connection (presentity, presentity->trigger_saving.connect (boost::bind (&Local::Heap::save, this)));
@@ -382,7 +391,10 @@ Local::Heap::new_presentity_form_submitted (bool submitted,
   if (!submitted)
     return;
 
-  boost::shared_ptr<Ekiga::PresenceCore> presence_core = core.get<Ekiga::PresenceCore> ("presence-core");
+  boost::shared_ptr<Ekiga::PresenceCore> pcore = presence_core.lock ();
+  if (!pcore)
+    return;
+
   const std::string name = result.text ("name");
   const std::string good_uri = result.hidden ("good-uri");
   std::string uri;
@@ -395,7 +407,7 @@ Local::Heap::new_presentity_form_submitted (bool submitted,
 
   uri = canonize_uri (uri);
 
-  if (presence_core->is_supported_uri (uri)
+  if (pcore->is_supported_uri (uri)
       && !has_presentity_with_uri (uri)) {
 
     add (name, uri, groups);
@@ -405,7 +417,7 @@ Local::Heap::new_presentity_form_submitted (bool submitted,
     boost::shared_ptr<Ekiga::FormRequestSimple> request = boost::shared_ptr<Ekiga::FormRequestSimple>(new Ekiga::FormRequestSimple (boost::bind (&Local::Heap::new_presentity_form_submitted, this, _1, _2)));
 
     result.visit (*request);
-    if (!presence_core->is_supported_uri (uri))
+    if (!pcore->is_supported_uri (uri))
       request->error (_("You supplied an unsupported address"));
     else
       request->error (_("You already have a contact with this address!"));

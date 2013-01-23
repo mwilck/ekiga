@@ -41,7 +41,6 @@
 #include "friend-or-foe.h"
 #include "local-presentity.h"
 
-
 namespace Local
 {
 /**
@@ -73,7 +72,8 @@ namespace Local
      * @param: The Ekiga::ServiceCore to use to trigger operations on other
      * components.
      */
-    Heap (Ekiga::ServiceCore &_core);
+    Heap (boost::shared_ptr<Ekiga::PresenceCore> presence_core,
+	  boost::shared_ptr<Local::Cluster> local_cluster);
 
 
     /** The destructor.
@@ -205,7 +205,8 @@ namespace Local
 				      bool submitted,
 				      Ekiga::Form& result);
 
-    Ekiga::ServiceCore &core;
+    boost::weak_ptr<Ekiga::PresenceCore> presence_core;
+    boost::weak_ptr<Local::Cluster> local_cluster;
     boost::shared_ptr<xmlDoc> doc;
   };
 

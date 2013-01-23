@@ -55,7 +55,7 @@ namespace Local
   {
   public:
 
-    Cluster (Ekiga::ServiceCore &_core);
+    Cluster (boost::shared_ptr<Ekiga::PresenceCore> _presence_core);
 
     ~Cluster ();
 
@@ -73,12 +73,15 @@ namespace Local
 
     const std::set<std::string> existing_groups () const;
 
-    HeapPtr get_heap ()
+    HeapPtr get_heap () const
     { return heap; }
+
+    // used by the local roster main code
+    void set_heap (HeapPtr _heap);
 
   private:
 
-    Ekiga::ServiceCore &core;
+    boost::weak_ptr<Ekiga::PresenceCore> presence_core;
     HeapPtr heap;
 
     void on_new_presentity ();
