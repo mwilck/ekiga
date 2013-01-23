@@ -102,11 +102,19 @@ class PVideoOutputDevice_EKIGA_PluginServiceDescriptor : public PDevicePluginSer
 {
 public:
 
-  PVideoOutputDevice_EKIGA_PluginServiceDescriptor (Ekiga::ServiceCore& core_): core(core_)
+  PVideoOutputDevice_EKIGA_PluginServiceDescriptor (Ekiga::ServiceCore& core):
+    videooutput_core(core.get<Ekiga::VideoOutputCore> ("videooutput-core"))
   {}
 
   virtual PObject *CreateInstance (int) const
-  { return new PVideoOutputDevice_EKIGA (core); }
+  {
+    // FIXME: if it happens in a thread, that's bad...
+    boost::shared_ptr<Ekiga::VideoOutputCore> output = videooutput_core.lock ();
+    if (output)
+      return new PVideoOutputDevice_EKIGA (output);
+    else
+      return NULL;
+  }
 
   virtual PStringArray GetDeviceNames (int) const
   { return PStringList("EKIGA"); }
@@ -117,7 +125,7 @@ public:
 
 private:
 
-  Ekiga::ServiceCore& core;
+  boost::weak_ptr<Ekiga::VideoOutputCore> videooutput_core;
 };
 
 // now, let's rock :

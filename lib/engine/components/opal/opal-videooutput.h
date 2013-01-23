@@ -54,7 +54,7 @@ class PVideoOutputDevice_EKIGA : public PVideoOutputDevice
    * BEHAVIOR     :  /
    * PRE          :  /
    */
-  PVideoOutputDevice_EKIGA (Ekiga::ServiceCore & core);
+  PVideoOutputDevice_EKIGA (boost::shared_ptr<Ekiga::VideoOutputCore> _videooutput_core);
 
 
   /* DESCRIPTION  :  The destructor.
@@ -142,7 +142,6 @@ class PVideoOutputDevice_EKIGA : public PVideoOutputDevice
     REMOTE,
   };
 
-  Ekiga::ServiceCore & core;
   boost::shared_ptr<Ekiga::VideoOutputCore> videooutput_core;
 };
 

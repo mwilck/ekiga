@@ -46,16 +46,14 @@ int PVideoOutputDevice_EKIGA::devices_nbr = 0;
 PMutex PVideoOutputDevice_EKIGA::videoDisplay_mutex;
 
 /* The Methods */
-PVideoOutputDevice_EKIGA::PVideoOutputDevice_EKIGA (Ekiga::ServiceCore & _core)
-: core (_core)
+PVideoOutputDevice_EKIGA::PVideoOutputDevice_EKIGA (boost::shared_ptr<Ekiga::VideoOutputCore> _videooutput_core):
+  videooutput_core(_videooutput_core)
 {
   PWaitAndSignal m(videoDisplay_mutex); /* FIXME: if it's really needed
 					 * then we may crash : it's wrong to
 					 * use 'core' from a thread -- mutex
 					 * or not mutex.
 					 */
-
-  videooutput_core = core.get<Ekiga::VideoOutputCore> ("videooutput-core");
 
   is_active = FALSE;
 
