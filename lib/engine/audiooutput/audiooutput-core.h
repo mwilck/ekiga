@@ -366,7 +366,6 @@ namespace Ekiga
       bool calculate_average;
       bool yield;
 
-      Ekiga::ServiceCore & core;
       boost::shared_ptr<Ekiga::NotificationCore> notification_core;
     };
 /**

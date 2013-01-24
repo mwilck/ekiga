@@ -46,8 +46,7 @@
 
 using namespace Ekiga;
 
-AudioOutputCore::AudioOutputCore (Ekiga::ServiceCore & _core)
-  : core(_core)
+AudioOutputCore::AudioOutputCore (Ekiga::ServiceCore& core)
 {
   PWaitAndSignal m_pri(core_mutex[primary]);
   PWaitAndSignal m_sec(core_mutex[secondary]);
