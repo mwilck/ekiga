@@ -120,6 +120,7 @@ Opal::Sip::EndPoint::EndPoint (Opal::CallManager & _manager,
 	core (_core)
 {
   boost::shared_ptr<Ekiga::ChatCore> chat_core = core.get<Ekiga::ChatCore> ("chat-core");
+  bank = core.get<Opal::Bank> ("opal-account-store");
 
   protocol_name = "sip";
   uri_prefix = "sip:";
@@ -179,6 +180,7 @@ Opal::Sip::EndPoint::menu_builder_add_actions (const std::string& fullname,
 					       const std::string& uri,
 					       Ekiga::MenuBuilder & builder)
 {
+  boost::shared_ptr<Opal::Bank> bk = bank.lock ();
   bool populated = false;
 
   std::list<std::string> uris;
@@ -187,10 +189,10 @@ Opal::Sip::EndPoint::menu_builder_add_actions (const std::string& fullname,
   if (!(uri.find ("sip:") == 0 || uri.find (":") == string::npos))
     return false;
 
-  if (uri.find ("@") == string::npos) {
+  if (uri.find ("@") == string::npos && bk) {
 
-    for (Opal::Bank::iterator it = bank->begin ();
-	 it != bank->end ();
+    for (Opal::Bank::iterator it = bk->begin ();
+	 it != bk->end ();
 	 it++) {
 
       if ((*it)->get_protocol_name () == "SIP" && (*it)->is_enabled ()) {
@@ -991,7 +993,10 @@ Opal::Sip::EndPoint::registration_event_in_main (const std::string aor,
 						 Opal::Account::RegistrationState state,
 						 const std::string msg)
 {
-  AccountPtr account = bank->find_account (aor);
+  boost::shared_ptr<Opal::Bank> bk = bank.lock ();
+  if (!bk)
+    return;
+  AccountPtr account = bk->find_account (aor);
 
   if (account)
     account->handle_registration_event (state, msg);
@@ -1017,7 +1022,10 @@ void
 Opal::Sip::EndPoint::mwi_received_in_main (const std::string aor,
 					   const std::string info)
 {
-  AccountPtr account = bank->find_account (aor);
+  boost::shared_ptr<Opal::Bank> bk = bank.lock ();
+  if (!bk)
+    return;
+  AccountPtr account = bk->find_account (aor);
 
   if (account) {
 
@@ -1028,11 +1036,14 @@ Opal::Sip::EndPoint::mwi_received_in_main (const std::string aor,
 void
 Opal::Sip::EndPoint::update_bank ()
 {
-  bank = core.get<Opal::Bank> ("opal-account-store");
-  bank->account_added.connect (boost::bind (&Opal::Sip::EndPoint::account_added, this, _1));
-  bank->account_updated.connect (boost::bind (&Opal::Sip::EndPoint::account_updated_or_removed, this, _1));
-  bank->account_removed.connect (boost::bind (&Opal::Sip::EndPoint::account_updated_or_removed, this, _1));
-  account_updated_or_removed (Ekiga::AccountPtr ()/* unused*/);
+  boost::shared_ptr<Opal::Bank> bk = bank.lock ();
+  if (bk) {
+
+    bk->account_added.connect (boost::bind (&Opal::Sip::EndPoint::account_added, this, _1));
+    bk->account_updated.connect (boost::bind (&Opal::Sip::EndPoint::account_updated_or_removed, this, _1));
+    bk->account_removed.connect (boost::bind (&Opal::Sip::EndPoint::account_updated_or_removed, this, _1));
+    account_updated_or_removed (Ekiga::AccountPtr ()/* unused*/);
+  }
 }
 
 void
@@ -1049,7 +1060,9 @@ Opal::Sip::EndPoint::account_updated_or_removed (Ekiga::AccountPtr /*account*/)
     accounts.clear ();
   }
   { // ... because here we call something which will want that very same mutex!
-    bank->visit_accounts (boost::bind (&Opal::Sip::EndPoint::visit_account, this, _1));
+    boost::shared_ptr<Opal::Bank> bk = bank.lock ();
+    if (bk)
+      bk->visit_accounts (boost::bind (&Opal::Sip::EndPoint::visit_account, this, _1));
   }
 }
 
