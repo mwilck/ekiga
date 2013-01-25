@@ -331,11 +331,16 @@ void Opal::Account::enable ()
   state = Processing;
   status = _("Processing...");
 #ifdef HAVE_H323
-  if (type == Account::H323)
-    h323_endpoint->subscribe (*this, presentity);
+  boost::shared_ptr<Opal::H323::EndPoint> h323 = h323_endpoint.lock ();
+  if (type == Account::H323 && h323)
+    h323->subscribe (*this, presentity);
   else
 #endif
-    sip_endpoint->subscribe (*this, presentity);
+    {
+      boost::shared_ptr<Opal::Sip::EndPoint> sip = sip_endpoint.lock ();
+      if (sip)
+	sip->subscribe (*this, presentity);
+    }
 
   updated ();
   trigger_saving ();
@@ -355,13 +360,18 @@ void Opal::Account::disable ()
     }
   }
 #ifdef HAVE_H323
-  if (type == Account::H323)
-    h323_endpoint->unsubscribe (*this, presentity);
+  boost::shared_ptr<Opal::H323::EndPoint> h323 = h323_endpoint.lock ();
+  if (type == Account::H323 && h323)
+    h323->unsubscribe (*this, presentity);
   else
 #endif
     {
-      sip_endpoint->unsubscribe (*this, presentity);
-      sip_endpoint->Unsubscribe (SIPSubscribe::MessageSummary, get_aor ());
+      boost::shared_ptr<Opal::Sip::EndPoint> sip = sip_endpoint.lock ();
+      if (sip) {
+
+	sip->unsubscribe (*this, presentity);
+	sip->Unsubscribe (SIPSubscribe::MessageSummary, get_aor ());
+      }
     }
   // Translators: this is a state, not an action, i.e. it should be read as
   // "(you are) unregistered", and not as "(you have been) unregistered"
@@ -651,6 +661,7 @@ Opal::Account::handle_registration_event (RegistrationState state_,
       // "(you are) registered", and not as "(you have been) registered"
       status = _("Registered");
       if (presentity) {
+	boost::shared_ptr<Opal::Sip::EndPoint> sip = sip_endpoint.lock ();
         for (std::set<std::string>::iterator iter = watched_uris.begin ();
              iter != watched_uris.end (); ++iter) {
           PTRACE(4, "Ekiga\tSubscribeToPresence for " << iter->c_str () << " (Account Registered)");
@@ -658,7 +669,7 @@ Opal::Account::handle_registration_event (RegistrationState state_,
         }
         presentity->SetLocalPresence (personal_state, presence_status);
         if (type != Account::H323) {
-          sip_endpoint->Subscribe (SIPSubscribe::MessageSummary, 3600, get_aor ());
+          sip->Subscribe (SIPSubscribe::MessageSummary, 3600, get_aor ());
         }
       }
       boost::shared_ptr<Ekiga::PresenceCore> pcore = presence_core.lock ();
@@ -711,24 +722,27 @@ Opal::Account::handle_registration_event (RegistrationState state_,
     }
     else {
 #endif
+      boost::shared_ptr<Opal::Sip::EndPoint> sip = sip_endpoint.lock ();
+      if (!sip)
+	return;
       switch (compat_mode) {
       case SIPRegister::e_FullyCompliant:
         // FullyCompliant did not work, try next compat mode
         compat_mode = SIPRegister::e_CannotRegisterMultipleContacts;
         PTRACE (4, "Register failed in FullyCompliant mode, retrying in CannotRegisterMultipleContacts mode");
-        sip_endpoint->subscribe (*this, presentity);
+        sip->subscribe (*this, presentity);
         break;
       case SIPRegister::e_CannotRegisterMultipleContacts:
         // CannotRegMC did not work, try next compat mode
         compat_mode = SIPRegister::e_CannotRegisterPrivateContacts;
         PTRACE (4, "Register failed in CannotRegisterMultipleContacts mode, retrying in CannotRegisterPrivateContacts mode");
-        sip_endpoint->subscribe (*this, presentity);
+        sip->subscribe (*this, presentity);
         break;
       case SIPRegister::e_CannotRegisterPrivateContacts:
         // CannotRegMC did not work, try next compat mode
         compat_mode = SIPRegister::e_HasApplicationLayerGateway;
         PTRACE (4, "Register failed in CannotRegisterMultipleContacts mode, retrying in HasApplicationLayerGateway mode");
-        sip_endpoint->subscribe (*this, presentity);
+        sip->subscribe (*this, presentity);
         break;
       case SIPRegister::e_HasApplicationLayerGateway:
         // HasAppLG did not work, stop registration with error

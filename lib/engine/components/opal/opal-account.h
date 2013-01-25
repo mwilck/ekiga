@@ -231,9 +231,9 @@ private:
 				  std::string presence,
 				  std::string status);
 
-    boost::shared_ptr<Opal::Sip::EndPoint> sip_endpoint;
+    boost::weak_ptr<Opal::Sip::EndPoint> sip_endpoint;
 #ifdef HAVE_H323
-    boost::shared_ptr<Opal::H323::EndPoint> h323_endpoint;
+    boost::weak_ptr<Opal::H323::EndPoint> h323_endpoint;
 #endif
     boost::weak_ptr<Ekiga::PresenceCore> presence_core;
     boost::weak_ptr<Ekiga::NotificationCore> notification_core;
