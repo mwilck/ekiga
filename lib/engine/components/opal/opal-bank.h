@@ -96,7 +96,7 @@ private:
 #ifdef HAVE_H323
     boost::shared_ptr<Opal::H323::EndPoint> h323_endpoint;
 #endif
-    boost::shared_ptr<Ekiga::PresenceCore> presence_core;
+    boost::weak_ptr<Ekiga::PresenceCore> presence_core;
     boost::shared_ptr<Ekiga::NotificationCore> notification_core;
     boost::shared_ptr<Ekiga::PersonalDetails> personal_details;
     boost::shared_ptr<Ekiga::AudioOutputCore> audiooutput_core;
