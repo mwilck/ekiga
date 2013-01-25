@@ -66,7 +66,8 @@ namespace SIP
 			  std::string name);
 
   private:
-    Ekiga::ServiceCore& core;
+    boost::weak_ptr<Ekiga::PresenceCore> presence_core;
+    boost::weak_ptr<Ekiga::PersonalDetails> personal_details;
     /* the strings are : uri then msg */
     boost::function2<bool, std::string, std::string> sender;
 

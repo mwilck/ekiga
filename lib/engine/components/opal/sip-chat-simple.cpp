@@ -39,11 +39,12 @@
 #include "uri-presentity.h"
 #include "personal-details.h"
 
-SIP::SimpleChat::SimpleChat (Ekiga::ServiceCore& core_,
+SIP::SimpleChat::SimpleChat (boost::shared_ptr<Ekiga::PresenceCore> core,
+			     boost::shared_ptr<Ekiga::PersonalDetails> details,
 			     std::string name,
 			     std::string uri_,
-			     boost::function1<bool, std::string> sender_)
-  : core(core_), sender(sender_), uri(uri_)
+			     boost::function1<bool, std::string> sender_):
+  personal_details(details), sender(sender_), uri(uri_)
 {
   presentity = boost::shared_ptr<Ekiga::URIPresentity> (new Ekiga::URIPresentity (core, name, uri,
 									  std::set<std::string>()));
@@ -85,7 +86,10 @@ bool
 SIP::SimpleChat::send_message (const std::string msg)
 {
   bool result;
-  boost::shared_ptr<Ekiga::PersonalDetails> personal = core.get<Ekiga::PersonalDetails> ("personal-details");
+  boost::shared_ptr<Ekiga::PersonalDetails> personal = personal_details.lock ();
+  if (!personal)
+    return false;
+
   result = sender (msg);
   for (std::list<boost::shared_ptr<Ekiga::ChatObserver> >::iterator iter = observers.begin ();
        iter != observers.end ();

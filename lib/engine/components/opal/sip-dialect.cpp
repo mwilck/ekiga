@@ -38,10 +38,14 @@
 #include "config.h"
 
 #include "sip-dialect.h"
+#include "presence-core.h"
+#include "personal-details.h"
 
-SIP::Dialect::Dialect (Ekiga::ServiceCore& core_,
-		       boost::function2<bool, std::string, std::string> sender_)
-  : core(core_), sender(sender_)
+SIP::Dialect::Dialect (Ekiga::ServiceCore& core,
+		       boost::function2<bool, std::string, std::string> sender_):
+  presence_core(core.get<Ekiga::PresenceCore> ("presence-core")),
+  personal_details(core.get<Ekiga::PersonalDetails> ("personal-details")),
+  sender(sender_)
 {
 }
 
@@ -58,7 +62,8 @@ SIP::Dialect::push_message (const std::string uri,
 
   chat = open_chat_with (uri, name, false);
 
-  chat->receive_message (msg);
+  if (chat)
+    chat->receive_message (msg);
 }
 
 void
@@ -101,11 +106,17 @@ SIP::Dialect::open_chat_with (std::string uri,
 
   if ( !result) {
 
-    result = SimpleChatPtr (new SimpleChat (core, name, uri, boost::bind(sender, uri, _1)));
-    add_simple_chat (result);
+    boost::shared_ptr<Ekiga::PresenceCore> pcore = presence_core.lock ();
+    boost::shared_ptr<Ekiga::PersonalDetails> details = personal_details.lock ();
+    if (pcore && details) {
+
+      result = SimpleChatPtr (new SimpleChat (pcore, details, name, uri,
+					      boost::bind(sender, uri, _1)));
+      add_simple_chat (result);
+    }
   }
 
-  if (user_request)
+  if (user_request && result)
     result->user_requested ();
 
   return result;

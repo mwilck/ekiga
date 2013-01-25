@@ -45,23 +45,22 @@ struct null_deleter
     }
 };
 
-Ekiga::URIPresentity::URIPresentity (Ekiga::ServiceCore &_core,
+Ekiga::URIPresentity::URIPresentity (boost::shared_ptr<Ekiga::PresenceCore> pcore,
 				     std::string name_,
 				     std::string uri_,
-				     std::set<std::string> groups_)
-  : core(_core), name(name_), uri(uri_), presence("unknown"), groups(groups_)
+				     std::set<std::string> groups_):
+  presence_core(pcore), name(name_), uri(uri_), presence("unknown"), groups(groups_)
 {
-  boost::shared_ptr<Ekiga::PresenceCore> presence_core = core.get<Ekiga::PresenceCore> ("presence-core");
-  presence_core->presence_received.connect (boost::bind (&Ekiga::URIPresentity::on_presence_received, this, _1, _2));
-  presence_core->status_received.connect (boost::bind (&Ekiga::URIPresentity::on_status_received, this, _1, _2));
-  presence_core->fetch_presence (uri);
+  pcore->presence_received.connect (boost::bind (&Ekiga::URIPresentity::on_presence_received, this, _1, _2));
+  pcore->status_received.connect (boost::bind (&Ekiga::URIPresentity::on_status_received, this, _1, _2));
+  pcore->fetch_presence (uri);
 }
 
 Ekiga::URIPresentity::~URIPresentity ()
 {
-  boost::shared_ptr<Ekiga::PresenceCore> presence_core = core.get<Ekiga::PresenceCore> ("presence-core");
-  if (presence_core)
-    presence_core->unfetch_presence (uri);
+  boost::shared_ptr<Ekiga::PresenceCore> pcore = presence_core.lock ();
+  if (pcore)
+    pcore->unfetch_presence (uri);
 }
 
 const std::string
@@ -103,9 +102,12 @@ Ekiga::URIPresentity::has_uri (const std::string uri_) const
 bool
 Ekiga::URIPresentity::populate_menu (Ekiga::MenuBuilder &builder)
 {
-  boost::shared_ptr<Ekiga::PresenceCore> presence_core = core.get<Ekiga::PresenceCore> ("presence-core");
-  return presence_core->populate_presentity_menu (PresentityPtr(this, null_deleter ()),
-						  uri, builder);
+  boost::shared_ptr<Ekiga::PresenceCore> pcore = presence_core.lock ();
+  if (pcore)
+    return pcore->populate_presentity_menu (PresentityPtr(this, null_deleter ()),
+					    uri, builder);
+  else
+    return false;
 }
 
 void

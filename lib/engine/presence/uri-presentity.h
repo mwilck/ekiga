@@ -67,7 +67,7 @@ namespace Ekiga
     /**
      * Constructor and destructor
      */
-    URIPresentity (Ekiga::ServiceCore& _core,
+    URIPresentity (boost::shared_ptr<Ekiga::PresenceCore> _presence_core,
 		   std::string name_,
 		   std::string uri_,
 		   std::set<std::string> groups_);
@@ -97,7 +97,7 @@ namespace Ekiga
 
   private:
 
-    Ekiga::ServiceCore &core;
+    boost::weak_ptr<Ekiga::PresenceCore> presence_core;
 
     std::string name;
     std::string uri;

@@ -41,12 +41,19 @@
 #include "chat-simple.h"
 #include "services.h"
 
+namespace Ekiga
+{
+  class PersonalDetails;
+  class PresenceCore;
+};
+
 namespace SIP
 {
   class SimpleChat: public Ekiga::SimpleChat
   {
   public:
-    SimpleChat (Ekiga::ServiceCore& core,
+    SimpleChat (boost::shared_ptr<Ekiga::PresenceCore> presence_core,
+		boost::shared_ptr<Ekiga::PersonalDetails> personal_details,
 		std::string name,
 		std::string uri,
 		boost::function1<bool, std::string> sender_);
@@ -73,7 +80,7 @@ namespace SIP
 
   private:
 
-    Ekiga::ServiceCore& core;
+    boost::weak_ptr<Ekiga::PersonalDetails> personal_details;
     boost::function1<bool, std::string> sender;
     std::list<boost::shared_ptr<Ekiga::ChatObserver> > observers;
     Ekiga::PresentityPtr presentity;
