@@ -91,10 +91,9 @@ namespace Opal {
 
 
 /* The class */
-Opal::H323::EndPoint::EndPoint (Opal::CallManager & _manager, Ekiga::ServiceCore & _core, unsigned _listen_port, unsigned _kind_of_net)
-: H323EndPoint (_manager),
-    manager (_manager),
-    core (_core)
+Opal::H323::EndPoint::EndPoint (Opal::CallManager & _manager, unsigned _listen_port, unsigned _kind_of_net):
+  H323EndPoint (_manager),
+  manager (_manager)
 {
   protocol_name = "h323";
   uri_prefix = "h323:";

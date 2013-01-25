@@ -65,7 +65,7 @@ namespace Opal {
       PCLASSINFO(EndPoint, H323EndPoint);
 
   public:
-      EndPoint (CallManager &_manager, Ekiga::ServiceCore & core, unsigned listen_port, unsigned kind_of_net);
+      EndPoint (CallManager &_manager, unsigned listen_port, unsigned kind_of_net);
 
       ~EndPoint ();
 
@@ -139,7 +139,6 @@ namespace Opal {
 				       const std::string msg);
 
       CallManager & manager;
-      Ekiga::ServiceCore & core;
 
       PMutex gk_name_mutex;
       PString gk_name;
