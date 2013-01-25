@@ -33,16 +33,9 @@
  *
  */
 
-#include <iostream>
-#include <sstream>
-#include <set>
-
 #include "config.h"
-
 #include <glib/gi18n.h>
-
 #include "gmconf.h"
-
 #include "history-book.h"
 
 #define KEY "/apps/" PACKAGE_NAME "/contacts/call_history"
