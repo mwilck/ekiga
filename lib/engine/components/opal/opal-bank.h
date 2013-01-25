@@ -92,7 +92,15 @@ public:
     void call_manager_ready ();
 
 private:
-    Ekiga::ServiceCore &core;
+    boost::shared_ptr<Opal::Sip::EndPoint> sip_endpoint;
+#ifdef HAVE_H323
+    boost::shared_ptr<Opal::H323::EndPoint> h323_endpoint;
+#endif
+    boost::shared_ptr<Ekiga::PresenceCore> presence_core;
+    boost::shared_ptr<Ekiga::NotificationCore> notification_core;
+    boost::shared_ptr<Ekiga::PersonalDetails> personal_details;
+    boost::shared_ptr<Ekiga::AudioOutputCore> audiooutput_core;
+    boost::weak_ptr<CallManager> opal_component;
 
     void on_new_account_form_submitted (bool submitted,
 					Ekiga::Form& form,

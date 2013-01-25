@@ -45,18 +45,45 @@
 
 #include "gmconf.h"
 #include "menu-builder.h"
-
-#include "opal-bank.h"
 #include "form-request-simple.h"
 
-Opal::Bank::Bank (Ekiga::ServiceCore &_core): core(_core)
+#include "opal-bank.h"
+#include "sip-endpoint.h"
+#ifdef HAVE_H323
+#include "h323-endpoint.h"
+#endif
+
+Opal::Bank::Bank (Ekiga::ServiceCore& core):
+  sip_endpoint(core.get<Opal::Sip::EndPoint> ("opal-sip-endpoint")),
+#ifdef HAVE_H323
+  h323_endpoint(core.get<Opal::H323::EndPoint> ("opal-h323-endpoint")),
+#endif
+  presence_core(core.get<Ekiga::PresenceCore> ("presence-core")),
+  notification_core(core.get<Ekiga::NotificationCore> ("notification-core")),
+  personal_details(core.get<Ekiga::PersonalDetails> ("personal-details")),
+  audiooutput_core(core.get<Ekiga::AudioOutputCore> ("audiooutput-core")),
+  opal_component(core.get<CallManager> ("opal-component"))
 {
+  boost::shared_ptr<CallManager> opal = opal_component.lock ();
+  if (!opal)
+    return;
+
   GSList *accounts = gm_conf_get_string_list (PROTOCOLS_KEY "accounts_list");
   GSList *accounts_iter = accounts;
 
   while (accounts_iter) {
 
-    boost::shared_ptr<Account> account = boost::shared_ptr<Account> (new Account (core, (char *)accounts_iter->data));
+    boost::shared_ptr<Account> account
+      = boost::shared_ptr<Account> (new Account (sip_endpoint,
+#ifdef HAVE_H323
+						 h323_endpoint,
+#endif
+						 presence_core,
+						 notification_core,
+						 personal_details,
+						 audiooutput_core,
+						 opal,
+						 (char *)accounts_iter->data));
 
     add_account (account);
     Ekiga::BankImpl<Account>::add_connection (account, account->trigger_saving.connect (boost::bind (&Opal::Bank::save, this)));
@@ -203,10 +230,22 @@ void Opal::Bank::add (Account::Type acc_type,
                       bool enabled,
                       unsigned timeout)
 {
-  AccountPtr account = AccountPtr(new Opal::Account (core, acc_type, name,
-						     host, user, auth_user,
-						     password, enabled,
-						     timeout));
+  boost::shared_ptr<CallManager> opal = opal_component.lock ();
+  if (!opal)
+    return;
+  AccountPtr account
+    = AccountPtr(new Opal::Account (sip_endpoint,
+#ifdef HAVE_H323
+				    h323_endpoint,
+#endif
+				    presence_core,
+				    notification_core,
+				    personal_details,
+				    audiooutput_core,
+				    opal, acc_type, name,
+				    host, user, auth_user,
+				    password, enabled,
+				    timeout));
   add_account (account);
   Ekiga::BankImpl<Account>::add_connection (account, account->trigger_saving.connect (boost::bind (&Opal::Bank::save, this)));
   Ekiga::BankImpl<Account>::add_connection (account, account->presence_received.connect (boost::ref (presence_received)));

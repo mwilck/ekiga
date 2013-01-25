@@ -60,10 +60,26 @@
 #include "h323-endpoint.h"
 #endif
 
-Opal::Account::Account (Ekiga::ServiceCore& core,
-                        const std::string & account)
+Opal::Account::Account (boost::shared_ptr<Opal::Sip::EndPoint> _sip_endpoint,
+#ifdef HAVE_H323
+			boost::shared_ptr<Opal::H323::EndPoint> _h323_endpoint,
+#endif
+			boost::shared_ptr<Ekiga::PresenceCore> _presence_core,
+			boost::shared_ptr<Ekiga::NotificationCore> _notification_core,
+			boost::shared_ptr<Ekiga::PersonalDetails> _personal_details,
+			boost::shared_ptr<Ekiga::AudioOutputCore> _audiooutput_core,
+			boost::shared_ptr<CallManager> _opal_component,
+			const std::string & account):
+  sip_endpoint(_sip_endpoint),
+#ifdef HAVE_H323
+  h323_endpoint(_h323_endpoint),
+#endif
+  presence_core(_presence_core),
+  notification_core(_notification_core),
+  personal_details(_personal_details),
+  audiooutput_core(_audiooutput_core),
+  opal_component(_opal_component)
 {
-  fetch_services_on_startup (core);
   state = Unregistered;
   status = _("Unregistered");
   message_waiting_number = 0;
@@ -146,18 +162,33 @@ Opal::Account::Account (Ekiga::ServiceCore& core,
 }
 
 
-Opal::Account::Account (Ekiga::ServiceCore& core,
-                        Type t,
+Opal::Account::Account (boost::shared_ptr<Opal::Sip::EndPoint> _sip_endpoint,
+#ifdef HAVE_H323
+			boost::shared_ptr<Opal::H323::EndPoint> _h323_endpoint,
+#endif
+			boost::shared_ptr<Ekiga::PresenceCore> _presence_core,
+			boost::shared_ptr<Ekiga::NotificationCore> _notification_core,
+			boost::shared_ptr<Ekiga::PersonalDetails> _personal_details,
+			boost::shared_ptr<Ekiga::AudioOutputCore> _audiooutput_core,
+			boost::shared_ptr<CallManager> _opal_component,
+			Type t,
                         std::string _name,
                         std::string _host,
                         std::string _username,
                         std::string _auth_username,
                         std::string _password,
                         bool _enabled,
-                        unsigned _timeout)
+                        unsigned _timeout):
+  sip_endpoint(_sip_endpoint),
+#ifdef HAVE_H323
+  h323_endpoint(_h323_endpoint),
+#endif
+  presence_core(_presence_core),
+  notification_core(_notification_core),
+  personal_details(_personal_details),
+  audiooutput_core(_audiooutput_core),
+  opal_component(_opal_component)
 {
-  fetch_services_on_startup (core);
-
   state = Unregistered;
   status = "";
   message_waiting_number = 0;
@@ -630,8 +661,10 @@ Opal::Account::handle_registration_event (RegistrationState state_,
           sip_endpoint->Subscribe (SIPSubscribe::MessageSummary, 3600, get_aor ());
         }
       }
-      if (presence_core && personal_details)
-	presence_core->publish (personal_details);
+      boost::shared_ptr<Ekiga::PresenceCore> pcore = presence_core.lock ();
+      boost::shared_ptr<Ekiga::PersonalDetails> details = personal_details.lock ();
+      if (pcore && details)
+	pcore->publish (details);
 
       state = state_;
       failed_registration_already_notified = false;
@@ -672,7 +705,9 @@ Opal::Account::handle_registration_event (RegistrationState state_,
         std::stringstream msg;
         msg << _("Could not register to ") << get_name ();
         boost::shared_ptr<Ekiga::Notification> notif (new Ekiga::Notification (Ekiga::Notification::Warning, msg.str (), info, _("Edit"), boost::bind (&Opal::Account::edit, (Opal::Account*) this)));
-        notification_core->push_notification (notif);
+	boost::shared_ptr<Ekiga::NotificationCore> ncore = notification_core.lock ();
+	if (ncore)
+	  ncore->push_notification (notif);
     }
     else {
 #endif
@@ -706,7 +741,9 @@ Opal::Account::handle_registration_event (RegistrationState state_,
           std::stringstream msg;
           msg << _("Could not register to ") << get_name ();
           boost::shared_ptr<Ekiga::Notification> notif (new Ekiga::Notification (Ekiga::Notification::Warning, msg.str (), info, _("Edit"), boost::bind (&Opal::Account::edit, (Opal::Account*) this)));
-          notification_core->push_notification (notif);
+	boost::shared_ptr<Ekiga::NotificationCore> ncore = notification_core.lock ();
+	if (ncore)
+          ncore->push_notification (notif);
         }
         updated ();
         failed_registration_already_notified = true;
@@ -745,8 +782,11 @@ Opal::Account::handle_message_waiting_information (const std::string info)
     std::stringstream new_messages;
     new_messages << info.substr (0, loc);
     new_messages >> message_waiting_number;
-    if (message_waiting_number > 0)
-      audiooutput_core->play_event ("new_voicemail_sound");
+    if (message_waiting_number > 0) {
+      boost::shared_ptr<Ekiga::AudioOutputCore> audiooutput = audiooutput_core.lock ();
+      if (audiooutput)
+	audiooutput->play_event ("new_voicemail_sound");
+    }
     updated ();
   }
 }
@@ -943,18 +983,4 @@ Opal::Account::presence_status_in_main (std::string uri,
 {
   presence_received (uri, uri_presence);
   status_received (uri, uri_status);
-}
-
-void
-Opal::Account::fetch_services_on_startup (Ekiga::ServiceCore& core)
-{
-  sip_endpoint = core.get<Sip::EndPoint> ("opal-sip-endpoint");
-#ifdef HAVE_H323
-  h323_endpoint = core.get<H323::EndPoint> ("opal-h323-endpoint");
-#endif
-  notification_core = core.get<Ekiga::NotificationCore> ("notification-core");
-  presence_core = core.get<Ekiga::PresenceCore> ("presence-core");
-  personal_details = core.get<Ekiga::PersonalDetails> ("personal-details");
-  audiooutput_core = core.get<Ekiga::AudioOutputCore> ("audiooutput-core");
-  opal_component = core.get<CallManager> ("opal-component");
 }
