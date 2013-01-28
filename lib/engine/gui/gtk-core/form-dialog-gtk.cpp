@@ -799,7 +799,7 @@ FormDialog::boolean (const std::string name,
 
   grow_fields (advanced);
 
-  widget = gtk_check_button_new_with_label (description.c_str ());
+  widget = gtk_check_button_new_with_mnemonic (description.c_str ());
   gtk_toggle_button_set_active (GTK_TOGGLE_BUTTON (widget), value);
   if (advanced) {
 
@@ -1018,6 +1018,7 @@ FormDialog::single_choice (const std::string name,
   model = gtk_list_store_new (SingleChoiceSubmitter::COLUMN_NUMBER,
 			      G_TYPE_STRING, G_TYPE_STRING);
   widget = gtk_combo_box_new_with_model (GTK_TREE_MODEL (model));
+  gtk_label_set_mnemonic_widget (GTK_LABEL (label), widget);
   renderer = gtk_cell_renderer_text_new ();
   gtk_cell_layout_pack_start (GTK_CELL_LAYOUT (widget), renderer, TRUE);
   gtk_cell_layout_set_attributes (GTK_CELL_LAYOUT (widget), renderer,
