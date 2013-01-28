@@ -137,7 +137,7 @@ struct OPALSpark: public Ekiga::Spark
       boost::shared_ptr<Bank> bank (new Bank (core));
       account_core->add_bank (bank);
       core.add (bank);
-      sip_manager->update_bank ();
+      sip_manager->update_bank (bank);
       call_manager->ready.connect (boost::bind (&Opal::Bank::call_manager_ready, &*bank));
       presence_core->add_presence_publisher (bank);
       presence_core->add_presence_fetcher (bank);

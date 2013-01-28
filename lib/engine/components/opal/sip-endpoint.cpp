@@ -113,11 +113,10 @@ namespace Opal {
 
 /* The class */
 Opal::Sip::EndPoint::EndPoint (Opal::CallManager & _manager,
-                               Ekiga::ServiceCore & _core,
-                               unsigned _listen_port)
-    :   SIPEndPoint (_manager),
-	manager (_manager),
-	core (_core)
+                               Ekiga::ServiceCore& core,
+                               unsigned _listen_port):
+  SIPEndPoint (_manager),
+  manager (_manager)
 {
   boost::shared_ptr<Ekiga::ChatCore> chat_core = core.get<Ekiga::ChatCore> ("chat-core");
 
@@ -1026,9 +1025,9 @@ Opal::Sip::EndPoint::mwi_received_in_main (const std::string aor,
 }
 
 void
-Opal::Sip::EndPoint::update_bank ()
+Opal::Sip::EndPoint::update_bank (boost::shared_ptr<Opal::Bank> _bank)
 {
-  bank = core.get<Opal::Bank> ("opal-account-store");
+  bank = _bank;
   bank->account_added.connect (boost::bind (&Opal::Sip::EndPoint::account_added, this, _1));
   bank->account_updated.connect (boost::bind (&Opal::Sip::EndPoint::account_updated_or_removed, this, _1));
   bank->account_removed.connect (boost::bind (&Opal::Sip::EndPoint::account_updated_or_removed, this, _1));

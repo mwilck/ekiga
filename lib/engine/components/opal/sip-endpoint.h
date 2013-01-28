@@ -134,7 +134,7 @@ namespace Opal {
       static std::string get_aor_domain (const std::string & aor);
 
       /* FIXME: doesn't look 100% right */
-      void update_bank ();
+      void update_bank (boost::shared_ptr<Opal::Bank> _bank);
 
       /* OPAL Methods */
       void Register (const std::string username,
@@ -197,7 +197,6 @@ namespace Opal {
       std::map<std::string, std::string> accounts;
 
       CallManager & manager;
-      Ekiga::ServiceCore & core;
 
       std::map<std::string, PString> publications;
 
