@@ -38,6 +38,9 @@
 #ifndef __OPAL_BANK_H__
 #define __OPAL_BANK_H__
 
+#include "contact-core.h"
+#include "presence-core.h"
+
 #include "opal-account.h"
 
 namespace Opal
@@ -51,6 +54,8 @@ namespace Opal
       public Ekiga::BankImpl<Account>,
       public Ekiga::PresencePublisher,
       public Ekiga::PresenceFetcher,
+      public Ekiga::ContactDecorator,
+      public Ekiga::PresentityDecorator,
       public Ekiga::Service
   {
 public:
@@ -79,6 +84,21 @@ public:
     void new_account (Account::Type acc_type,
                       std::string username = "",
                       std::string password = "");
+
+    /*
+     * this object is an Ekiga::ContactDecorator and an Ekiga::PresentityDecorator
+     */
+    bool populate_menu (Ekiga::ContactPtr contact,
+			const std::string uri,
+			Ekiga::MenuBuilder& builder);
+
+    bool populate_menu (Ekiga::PresentityPtr presentity,
+			const std::string uri,
+			Ekiga::MenuBuilder& builder);
+
+    bool populate_menu_helper (const std::string fullname,
+			       const std::string& uri,
+			       Ekiga::MenuBuilder& builder);
 
     /** Find the account with the given address of record in the Bank
      * @param aor is the address of record of the Account or the host to look 
