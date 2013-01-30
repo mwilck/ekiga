@@ -108,7 +108,7 @@ namespace Avahi
 
   private:
 
-    Ekiga::ServiceCore &core;
+    boost::weak_ptr<Ekiga::PresenceCore> presence_core;
     AvahiGLibPoll *poll;
     AvahiClient *client;
 
