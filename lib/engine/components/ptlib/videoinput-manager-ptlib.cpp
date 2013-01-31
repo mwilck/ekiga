@@ -72,7 +72,8 @@ void GMVideoInputManager_ptlib::get_devices(std::vector <Ekiga::VideoInputDevice
          (device.source != "Shm") &&
          (device.source != "FakeVideo") &&
          (device.source != "EKIGA") &&
-         (device.source != "FFMPEG") ) {
+         (device.source != "FFMPEG") &&
+         (device.source != "VideoForWindows") ) {
       video_devices = PVideoInputDevice::GetDriversDeviceNames (device.source);
       devices_array = video_devices.ToCharArray ();
 
