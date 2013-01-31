@@ -45,14 +45,10 @@ get_default_video_device_name (const gchar * const *options)
   int found = -1;
 
 #ifdef WIN32
-  /* look for the entry containing "PTLIB/DirectShow" or "PTLIB/VideoForWindows" */
+  // look for the entry containing "PTLIB/DirectShow"
   for (int ii = 0; options[ii]; ii++)
-    if (g_strrstr (options[ii], "PTLIB/DirectShow")
-        || g_strrstr (options[ii], "PTLIB/VideoForWindows")) {
-
-      found = ii;
-      break;
-    }
+    if (g_strrstr (options[ii], "PTLIB/DirectShow"))
+      return options[ii];
 #else
   /* look for the entry containing "PTLIB/V4L2", otherwise "PTLIB/V4L" */
   for (int ii = 0; options[ii]; ii++) {

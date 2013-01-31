@@ -12,8 +12,3 @@
 #if P_DIRECTSHOW
   PPLUGIN_STATIC_LOAD(DirectShow, PVideoInputDevice);
 #endif
-
-#if P_VFW_CAPTURE
-  PPLUGIN_STATIC_LOAD(VideoForWindows, PVideoInputDevice);
-#endif
-
