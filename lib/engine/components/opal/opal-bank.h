@@ -96,10 +96,6 @@ public:
 			const std::string uri,
 			Ekiga::MenuBuilder& builder);
 
-    bool populate_menu_helper (const std::string fullname,
-			       const std::string& uri,
-			       Ekiga::MenuBuilder& builder);
-
     /** Find the account with the given address of record in the Bank
      * @param aor is the address of record of the Account or the host to look 
      *        for
@@ -121,6 +117,10 @@ private:
     boost::shared_ptr<Ekiga::PersonalDetails> personal_details;
     boost::shared_ptr<Ekiga::AudioOutputCore> audiooutput_core;
     boost::weak_ptr<CallManager> opal_component;
+
+    bool populate_menu_helper (const std::string fullname,
+			       const std::string& uri,
+			       Ekiga::MenuBuilder& builder);
 
     void on_new_account_form_submitted (bool submitted,
 					Ekiga::Form& form,
