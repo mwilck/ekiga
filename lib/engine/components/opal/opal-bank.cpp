@@ -134,7 +134,14 @@ Opal::Bank::populate_menu_helper (const std::string fullname,
 				  const std::string& uri,
 				  Ekiga::MenuBuilder& builder)
 {
-  return false; // FIXME: to implement properly
+  bool result = false;
+
+  for (iterator iter = begin ();
+       iter != end ();
+       ++iter)
+    result = (*iter)->populate_menu (fullname, uri, builder) || result;
+
+  return result;
 }
 
 void

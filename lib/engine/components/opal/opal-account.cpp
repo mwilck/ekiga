@@ -53,6 +53,7 @@
 
 #include "opal-account.h"
 #include "form-request-simple.h"
+#include "menu-builder-tools.h"
 #include "platform.h"
 
 #include "sip-endpoint.h"
@@ -460,6 +461,27 @@ bool Opal::Account::populate_menu (Ekiga::MenuBuilder &builder)
   return true;
 }
 
+bool
+Opal::Account::populate_menu (const std::string fullname,
+			      const std::string uri,
+			      Ekiga::MenuBuilder& builder)
+{
+  bool result = false;
+  Ekiga::TemporaryMenuBuilder tmp_builder;
+
+  // FIXME: give tmp_builder to the call manager ;
+  // it will give it to one of the endpoints ;
+  // and this endpoint will add the real stuff!
+  if ( !tmp_builder.empty ()) {
+
+    builder.add_ghost ("", get_name ());
+    tmp_builder.populate_menu (builder);
+    result = true;
+  }
+
+  return result;
+ 
+}
 
 void Opal::Account::edit ()
 {
