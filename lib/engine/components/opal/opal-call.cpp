@@ -505,6 +505,8 @@ Opal::Call::OnCleared ()
 
     Ekiga::Runtime::run_in_main (boost::bind (&Opal::Call::emit_cleared_in_main, this, reason));
   }
+
+  OpalCall::OnCleared ();
 }
 
 
@@ -531,9 +533,6 @@ Opal::Call::OnSetUp (OpalConnection & connection)
 
   Ekiga::Runtime::run_in_main (boost::bind (&Opal::Call::emit_setup_in_main, this));
   call_setup = true;
-
-  cleared.connect (boost::bind (&Opal::Call::on_cleared_call, this, _1));
-  missed.connect (boost::bind (&Opal::Call::on_missed_call, this));
 
   new CallSetup (*this, connection);
 
@@ -674,20 +673,6 @@ Opal::Call::OnNoAnswerTimeout (PTimer &,
     else
       Clear (OpalConnection::EndedByNoAnswer);
   }
-}
-
-
-void
-Opal::Call::on_cleared_call (std::string /*reason*/)
-{
-  OpalCall::OnCleared ();
-}
-
-
-void
-Opal::Call::on_missed_call ()
-{
-  OpalCall::OnCleared ();
 }
 
 void
