@@ -159,8 +159,6 @@ Opal::Sip::EndPoint::populate_menu (const std::string& fullname,
 				    const std::string& uri,
 				    Ekiga::MenuBuilder& builder)
 {
-  bool populated = false;
-
   std::list<std::string> uris;
   std::list<std::string> accounts_list;
 

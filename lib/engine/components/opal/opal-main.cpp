@@ -118,21 +118,16 @@ struct OPALSpark: public Ekiga::Spark
 
       unsigned sip_port = gm_conf_get_int (SIP_KEY "listen_port");
       boost::shared_ptr<Sip::EndPoint> sip_manager (new Sip::EndPoint (*call_manager, core, sip_port), null_deleter ());
+      call_manager->set_sip_endpoint (sip_manager);
       core.add (sip_manager);
 
 #ifdef HAVE_H323
       unsigned h323_port = gm_conf_get_int (H323_KEY "listen_port");
       unsigned kind_of_net = gm_conf_get_int (GENERAL_KEY "kind_of_net");
       boost::shared_ptr<H323::EndPoint> h323_manager (new H323::EndPoint (*call_manager, h323_port, kind_of_net), null_deleter ());
-      call_manager->add_protocol_manager (h323_manager);
-      contact_core->add_contact_decorator (h323_manager);
-      presence_core->add_presentity_decorator (h323_manager);
+      call_manager->set_h323_endpoint (h323_manager);
       core.add (h323_manager);
 #endif
-
-      call_manager->add_protocol_manager (sip_manager);
-      contact_core->add_contact_decorator (sip_manager);
-      presence_core->add_presentity_decorator (sip_manager);
 
       boost::shared_ptr<Bank> bank (new Bank (core));
       account_core->add_bank (bank);

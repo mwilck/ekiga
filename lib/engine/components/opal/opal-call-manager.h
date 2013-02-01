@@ -39,6 +39,8 @@
 #ifndef _ENDPOINT_H_
 #define _ENDPOINT_H_
 
+#include "config.h"
+
 #include <opal/buildopts.h>
 #include <ptbuildopts.h>
 
@@ -59,6 +61,9 @@ class GMLid;
 class GMPCSSEndpoint;
 
 namespace Opal {
+
+  namespace Sip { class EndPoint; };
+  namespace H323 { class EndPoint; };
 
   class CallManager :
     public boost::enable_shared_from_this<CallManager>,
@@ -207,6 +212,17 @@ private:
     bool forward_on_no_answer;
     bool stun_enabled;
     bool auto_answer;
+
+
+    /* FIXME: this piece of the api is because the code is getting turned around,
+     * this should disappear at some point! */
+  public:
+    void set_sip_endpoint (boost::shared_ptr<Opal::Sip::EndPoint> _sip_endpoint);
+    boost::shared_ptr<Opal::Sip::EndPoint> sip_endpoint;
+#ifdef HAVE_H323
+    void set_h323_endpoint (boost::shared_ptr<Opal::H323::EndPoint> _h323_endpoint);
+    boost::shared_ptr<Opal::H323::EndPoint> h323_endpoint;
+#endif
   };
 };
 #endif

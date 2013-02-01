@@ -49,6 +49,11 @@
 #include "call-manager.h"
 #include "form-request-simple.h"
 
+#include "sip-endpoint.h"
+#ifdef HAVE_H323
+#include "h323-endpoint.h"
+#endif
+
 #include <stdlib.h>
 
 static  bool same_codec_desc (Ekiga::CodecDescription a, Ekiga::CodecDescription b)
@@ -172,7 +177,17 @@ CallManager::populate_menu (const std::string fullname,
 			    const std::string uri,
 			    Ekiga::MenuBuilder& builder)
 {
-  return false; // FIXME: to implement
+  bool result = false;
+
+  if (uri.find ("sip:") == 0)
+    result = sip_endpoint->populate_menu (fullname, uri, builder);
+
+#ifdef HAVE_H323
+  if (uri.find ("h323:") == 0)
+    result = h323_endpoint->populate_menu (fullname, uri, builder);
+#endif
+
+  return result;
 }
 
 void CallManager::set_display_name (const std::string & name)
@@ -898,3 +913,19 @@ CallManager::CreateVideoOutputDevice(const OpalConnection & connection,
   device = PVideoOutputDevice::CreateOpenedDevice(videoArgs, false);
   return device != NULL;
 }
+
+void
+CallManager::set_sip_endpoint (boost::shared_ptr<Opal::Sip::EndPoint> _sip_endpoint)
+{
+  sip_endpoint = _sip_endpoint;
+  add_protocol_manager (sip_endpoint);
+}
+
+#ifdef HAVE_H323
+void
+CallManager::set_h323_endpoint (boost::shared_ptr<Opal::H323::EndPoint> _h323_endpoint)
+{
+  h323_endpoint = _h323_endpoint;
+  add_protocol_manager (h323_endpoint);
+}
+#endif
