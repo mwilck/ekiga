@@ -75,9 +75,9 @@ namespace Opal {
       { return "\tObject managing H323 objects with the Opal library"; }
 
       // helper for Opal::Bank's contact/presentity decorator code
-      bool menu_builder_populate_menu (const std::string& fullname,
-				       const std::string& uri,
-				       Ekiga::MenuBuilder& builder);
+      bool populate_menu (const std::string& fullname,
+			  const std::string& uri,
+			  Ekiga::MenuBuilder& builder);
 
 
       /* CallProtocolManager */
