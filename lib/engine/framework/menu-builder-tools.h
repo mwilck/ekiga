@@ -137,7 +137,7 @@ namespace Ekiga
    * For example, you can do :
    * <pre>
    *  SomeRealMenuBuilder builder;
-   *  TemporartyMenuBuilder tmp_builder;
+   *  TemporaryMenuBuilder tmp_builder;
    *
    *  if (object1->populate_menu (tmp_builder)) {
    *
