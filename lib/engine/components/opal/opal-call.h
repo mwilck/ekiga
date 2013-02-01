@@ -275,8 +275,6 @@ private:
     bool outgoing;
 
 private:
-    void on_cleared_call (std::string);
-    void on_missed_call ();
 
     void emit_established_in_main ();
     void emit_missed_in_main ();
