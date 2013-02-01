@@ -59,9 +59,7 @@ namespace Opal {
 
     class EndPoint : public SIPEndPoint,
 		     public Ekiga::Service,
-		     public Ekiga::CallProtocolManager,
-		     public Ekiga::PresentityDecorator,
-		     public Ekiga::ContactDecorator
+		     public Ekiga::CallProtocolManager
     {
       PCLASSINFO(EndPoint, SIPEndPoint);
 
@@ -83,18 +81,10 @@ namespace Opal {
       const std::string get_description () const
       { return "\tObject managing SIP objects with the Opal library"; }
 
-      /* ContactDecorator and PresentityDecorator */
-      bool populate_menu (Ekiga::ContactPtr contact,
-			  const std::string uri,
-                          Ekiga::MenuBuilder &builder);
-
-      bool populate_menu (Ekiga::PresentityPtr presentity,
-			  const std::string uri,
-                          Ekiga::MenuBuilder & builder);
-
-      bool menu_builder_add_actions (const std::string & fullname,
-                                     const std::string& uri,
-                                     Ekiga::MenuBuilder & builder);
+      // helper for Opal::Bank's contact/presentity decorator code
+      bool populate_menu (const std::string& fullname,
+			  const std::string& uri,
+			  Ekiga::MenuBuilder& builder);
 
 
       /* Chat subsystem */

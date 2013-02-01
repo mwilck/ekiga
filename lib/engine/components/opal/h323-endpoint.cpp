@@ -115,42 +115,17 @@ Opal::H323::EndPoint::~EndPoint ()
 }
 
 bool
-Opal::H323::EndPoint::populate_menu (Ekiga::ContactPtr contact,
-                                     std::string uri,
-                                     Ekiga::MenuBuilder &builder)
+Opal::H323::EndPoint::populate_menu (const std::string& /*fullname*/,
+				     const std::string& uri,
+				     Ekiga::MenuBuilder& builder)
 {
-  return menu_builder_add_actions (contact->get_name (), uri, builder);
-}
-
-
-bool
-Opal::H323::EndPoint::populate_menu (Ekiga::PresentityPtr presentity,
-                                     const std::string uri,
-                                     Ekiga::MenuBuilder& builder)
-{
-  return menu_builder_add_actions (presentity->get_name (), uri, builder);
-}
-
-
-bool
-Opal::H323::EndPoint::menu_builder_add_actions (const std::string & /*fullname*/,
-                                                const std::string& uri,
-                                                Ekiga::MenuBuilder & builder)
-{
-  bool populated = false;
-
-  if (uri.find ("h323:") == 0) {
-
-    if (0 == GetConnectionCount ())
-      builder.add_action ("phone-pick-up", _("Call"),
-                          boost::bind (&Opal::H323::EndPoint::on_dial, this, uri));
-    else
-      builder.add_action ("mail-forward", _("Transfer"),
-                          boost::bind (&Opal::H323::EndPoint::on_transfer, this, uri));
-    populated = true;
-  }
-
-  return populated;
+  if (0 == GetConnectionCount ())
+    builder.add_action ("phone-pick-up", _("Call"),
+			boost::bind (&Opal::H323::EndPoint::on_dial, this, uri));
+  else
+    builder.add_action ("mail-forward", _("Transfer"),
+			boost::bind (&Opal::H323::EndPoint::on_transfer, this, uri));
+  return true;
 }
 
 

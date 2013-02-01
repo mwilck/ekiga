@@ -58,9 +58,7 @@ namespace Opal {
 
     class EndPoint : public H323EndPoint,
 		     public Ekiga::Service,
-		     public Ekiga::CallProtocolManager,
-		     public Ekiga::PresentityDecorator,
-		     public Ekiga::ContactDecorator
+		     public Ekiga::CallProtocolManager
     {
       PCLASSINFO(EndPoint, H323EndPoint);
 
@@ -76,18 +74,10 @@ namespace Opal {
       const std::string get_description () const
       { return "\tObject managing H323 objects with the Opal library"; }
 
-      /* ContactDecorator and PresentityDecorator */
-      bool populate_menu (Ekiga::ContactPtr contact,
-			  const std::string uri,
-                          Ekiga::MenuBuilder &builder);
-
-      bool populate_menu (Ekiga::PresentityPtr presentity,
-			  const std::string uri,
-                          Ekiga::MenuBuilder & builder);
-
-      bool menu_builder_add_actions (const std::string & fullname,
-                                     const std::string& uri,
-                                     Ekiga::MenuBuilder & builder);
+      // helper for Opal::Bank's contact/presentity decorator code
+      bool menu_builder_populate_menu (const std::string& fullname,
+				       const std::string& uri,
+				       Ekiga::MenuBuilder& builder);
 
 
       /* CallProtocolManager */

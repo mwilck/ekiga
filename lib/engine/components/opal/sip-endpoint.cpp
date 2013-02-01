@@ -154,119 +154,26 @@ Opal::Sip::EndPoint::~EndPoint ()
 {
 }
 
-
 bool
-Opal::Sip::EndPoint::populate_menu (Ekiga::ContactPtr contact,
-				    const std::string uri,
-				    Ekiga::MenuBuilder &builder)
-{
-  return menu_builder_add_actions (contact->get_name (), uri, builder);
-}
-
-
-bool
-Opal::Sip::EndPoint::populate_menu (Ekiga::PresentityPtr presentity,
-				    const std::string uri,
+Opal::Sip::EndPoint::populate_menu (const std::string& fullname,
+				    const std::string& uri,
 				    Ekiga::MenuBuilder& builder)
-{
-  return menu_builder_add_actions (presentity->get_name (), uri, builder);
-}
-
-
-bool
-Opal::Sip::EndPoint::menu_builder_add_actions (const std::string& fullname,
-					       const std::string& uri,
-					       Ekiga::MenuBuilder & builder)
 {
   bool populated = false;
 
   std::list<std::string> uris;
   std::list<std::string> accounts_list;
 
-  if (!(uri.find ("sip:") == 0 || uri.find (":") == string::npos))
-    return false;
+  if (0 == GetConnectionCount ())
+    builder.add_action ("phone-pick-up", _("Call"),
+			boost::bind (&Opal::Sip::EndPoint::on_dial, this, uri));
+  else
+    builder.add_action ("mail-forward", _("Transfer"),
+			boost::bind (&Opal::Sip::EndPoint::on_transfer, this, uri));
+  builder.add_action ("im-message-new", _("Message"),
+		      boost::bind (&Opal::Sip::EndPoint::on_message, this, uri, fullname));
 
-  if (uri.find ("@") == string::npos) {
-
-    for (Opal::Bank::iterator it = bank->begin ();
-	 it != bank->end ();
-	 it++) {
-
-      if ((*it)->get_protocol_name () == "SIP" && (*it)->is_enabled ()) {
-
-	std::stringstream uristr;
-	std::string str = uri;
-
-	for (unsigned i = 0 ; i < str.length() ; i++) {
-
-	  if (str [i] == ' ' || str [i] == '-') {
-	    str.erase (i,1);
-	    i--;
-	  }
-	}
-
-	if (str.find ("sip:") == string::npos)
-	  uristr << "sip:" << str;
-	else
-	  uristr << str;
-
-	uristr << "@" << (*it)->get_host ();
-
-	uris.push_back (uristr.str ());
-	accounts_list.push_back ((*it)->get_name ());
-      }
-    }
-  } else {
-    uris.push_back (uri);
-    accounts_list.push_back ("");
-  }
-
-  std::list<std::string>::iterator ita = accounts_list.begin ();
-  for (std::list<std::string>::iterator it = uris.begin ();
-       it != uris.end ();
-       it++) {
-
-    std::stringstream call_action;
-    std::stringstream transfer_action;
-    if (!(*ita).empty ()) {
-      call_action << _("Call") << " [" << (*ita) << "]";
-      transfer_action << _("Transfer") << " [" << (*ita) << "]";
-    }
-    else {
-      call_action << _("Call");
-      transfer_action << _("Transfer");
-    }
-
-    if (0 == GetConnectionCount ())
-      builder.add_action ("phone-pick-up", call_action.str (),
-                          boost::bind (&Opal::Sip::EndPoint::on_dial, this, (*it)));
-    else
-      builder.add_action ("mail-forward", transfer_action.str (),
-                          boost::bind (&Opal::Sip::EndPoint::on_transfer, this, (*it)));
-
-    ita++;
-  }
-
-  ita = accounts_list.begin ();
-  for (std::list<std::string>::iterator it = uris.begin ();
-       it != uris.end ();
-       it++) {
-
-    std::stringstream msg_action;
-    if (!(*ita).empty ())
-      msg_action << _("Message") << " [" << (*ita) << "]";
-    else
-      msg_action << _("Message");
-
-    builder.add_action ("im-message-new", msg_action.str (),
-                        boost::bind (&Opal::Sip::EndPoint::on_message, this, (*it), fullname));
-
-    ita++;
-  }
-
-  populated = true;
-
-  return populated;
+  return true;
 }
 
 
