@@ -47,6 +47,8 @@
 #include <h323/h323.h>
 #include <sip/sip.h>
 
+#include "menu-builder.h"
+
 #include "call-manager.h"
 #include "opal-call.h"
 
@@ -72,12 +74,17 @@ public:
 
     ~CallManager ();
 
-    /**/
+    /* Ekiga::Service implementation */
     const std::string get_name () const
       { return "opal-component"; }
 
     const std::string get_description () const
       { return "\tObject bringing in Opal support (calls, text messaging, sip, h323, ...)"; }
+
+    /* helper function for the Opal::Bank contact/presentity decorator work */
+    bool populate_menu (const std::string fullname,
+			const std::string uri,
+			Ekiga::MenuBuilder& builder);
 
     /** Call Manager **/
     bool dial (const std::string & uri); 

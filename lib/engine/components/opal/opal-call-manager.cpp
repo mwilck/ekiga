@@ -167,6 +167,13 @@ CallManager::~CallManager ()
   g_async_queue_unref (queue);
 }
 
+bool
+CallManager::populate_menu (const std::string fullname,
+			    const std::string uri,
+			    Ekiga::MenuBuilder& builder)
+{
+  return false; // FIXME: to implement
+}
 
 void CallManager::set_display_name (const std::string & name)
 {

@@ -466,12 +466,44 @@ Opal::Account::populate_menu (const std::string fullname,
 			      const std::string uri,
 			      Ekiga::MenuBuilder& builder)
 {
+  boost::shared_ptr<Opal::CallManager> call_manager = opal_component.lock ();
+
+  if (!call_manager)
+    return false;
+
   bool result = false;
   Ekiga::TemporaryMenuBuilder tmp_builder;
+  std::string protocol;
+  std::string complete_uri;
 
-  // FIXME: give tmp_builder to the call manager ;
-  // it will give it to one of the endpoints ;
-  // and this endpoint will add the real stuff!
+  // if there is no protocol, add what we are
+  if (uri.find (":") == string::npos) {
+
+    if (type == H323)
+      protocol = "h323:";
+    else
+      protocol = "sip:";
+    complete_uri = protocol + uri;
+  }
+
+  // whatever the protocol was previously, check if it fits
+  if (
+      (type == H323 && complete_uri.find ("h323:" != 0))
+      ||
+      (type != H323 && complete_uri.find ("sip:" != 0))
+      )
+    return false;
+
+  // from now on, we're sure we have an uri corresponding to the account
+
+  // but does it have a domain?
+  if (complete_uri.find ("@") == string::npos) {
+
+    complete_uri = complete_uri + "@" + get_host ();
+  }
+
+  call_manager->populate_menu (fullname, complete_uri, tmp_builder);
+
   if ( !tmp_builder.empty ()) {
 
     builder.add_ghost ("", get_name ());
