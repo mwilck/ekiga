@@ -476,6 +476,9 @@ Opal::Account::populate_menu (const std::string fullname,
   std::string protocol;
   std::string complete_uri;
 
+  if (!is_enabled ())
+    return false;
+
   // if there is no protocol, add what we are
   if (uri.find (":") == string::npos) {
 
