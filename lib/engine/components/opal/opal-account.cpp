@@ -487,14 +487,15 @@ Opal::Account::populate_menu (const std::string fullname,
     else
       protocol = "sip:";
     complete_uri = protocol + uri;
-  }
+  } else
+    complete_uri = uri;
 
   // whatever the protocol was previously, check if it fits
-  if (
+  if (not(
       (type == H323 && complete_uri.find ("h323:" != 0))
       ||
       (type != H323 && complete_uri.find ("sip:" != 0))
-      )
+	  ))
     return false;
 
   // from now on, we're sure we have an uri corresponding to the account
