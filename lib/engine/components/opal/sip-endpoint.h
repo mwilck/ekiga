@@ -196,6 +196,8 @@ namespace Opal {
       PMutex aorMutex;
       std::map<std::string, std::string> accounts;
 
+      // this object is really managed by opal,
+      // so the way it is handled here is correct
       CallManager & manager;
       Ekiga::ServiceCore & core;
 
