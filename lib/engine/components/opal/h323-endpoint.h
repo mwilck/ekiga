@@ -128,6 +128,8 @@ namespace Opal {
 				       Account::RegistrationState state,
 				       const std::string msg);
 
+      // this object is really managed by opal,
+      // so the way it is handled here is correct
       CallManager & manager;
 
       PMutex gk_name_mutex;
