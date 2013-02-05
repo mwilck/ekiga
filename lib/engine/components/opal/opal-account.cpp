@@ -151,7 +151,7 @@ Opal::Account::Account (boost::shared_ptr<Opal::Sip::EndPoint> _sip_endpoint,
   else
     type = Account::H323;
 
-  if (type == Account::SIP) {
+  if (type != Account::H323) {
 
     if (name.find ("%limit") != std::string::npos)
       compat_mode = SIPRegister::e_CannotRegisterMultipleContacts;  // start registration in this compat mode
