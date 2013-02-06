@@ -96,6 +96,14 @@ Opal::Bank::Bank (Ekiga::ServiceCore& core):
   g_slist_free (accounts);
 }
 
+Opal::Bank::~Bank ()
+{
+  // do it forcibly so we're sure the accounts are freed before our
+  // reference to the call manager. Indeed they try to unregister from
+  // presence when killed, and that gives a crash if the call manager
+  // is already gone!
+  Ekiga::RefLister<Opal::Account>::remove_all_objects ();
+}
 
 bool
 Opal::Bank::populate_menu (Ekiga::MenuBuilder & builder)

@@ -62,7 +62,7 @@ public:
 
     Bank (Ekiga::ServiceCore &_core);
 
-    virtual ~Bank () { }
+    ~Bank ();
 
     bool populate_menu (Ekiga::MenuBuilder & builder);
 
