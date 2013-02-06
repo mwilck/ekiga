@@ -116,7 +116,7 @@ private:
     boost::shared_ptr<Ekiga::NotificationCore> notification_core;
     boost::shared_ptr<Ekiga::PersonalDetails> personal_details;
     boost::shared_ptr<Ekiga::AudioOutputCore> audiooutput_core;
-    boost::weak_ptr<CallManager> opal_component;
+    boost::shared_ptr<CallManager> opal_component;
 
     bool populate_menu_helper (const std::string fullname,
 			       const std::string& uri,
