@@ -895,10 +895,14 @@ Opal::Sip::EndPoint::registration_event_in_main (const std::string aor,
 						 Opal::Account::RegistrationState state,
 						 const std::string msg)
 {
-  AccountPtr account = bank->find_account (aor);
+  boost::shared_ptr<Opal::Bank> bk = bank.lock ();
+  if (bk) {
 
-  if (account)
-    account->handle_registration_event (state, msg);
+    AccountPtr account = bk->find_account (aor);
+
+    if (account)
+      account->handle_registration_event (state, msg);
+  }
 }
 
 void
@@ -921,11 +925,13 @@ void
 Opal::Sip::EndPoint::mwi_received_in_main (const std::string aor,
 					   const std::string info)
 {
-  AccountPtr account = bank->find_account (aor);
+  boost::shared_ptr<Opal::Bank> bk = bank.lock ();
+  if (bk) {
 
-  if (account) {
+    AccountPtr account = bk->find_account (aor);
 
-    account->handle_message_waiting_information (info);
+    if (account)
+      account->handle_message_waiting_information (info);
   }
 }
 
@@ -933,9 +939,9 @@ void
 Opal::Sip::EndPoint::update_bank (boost::shared_ptr<Opal::Bank> _bank)
 {
   bank = _bank;
-  bank->account_added.connect (boost::bind (&Opal::Sip::EndPoint::account_added, this, _1));
-  bank->account_updated.connect (boost::bind (&Opal::Sip::EndPoint::account_updated_or_removed, this, _1));
-  bank->account_removed.connect (boost::bind (&Opal::Sip::EndPoint::account_updated_or_removed, this, _1));
+  _bank->account_added.connect (boost::bind (&Opal::Sip::EndPoint::account_added, this, _1));
+  _bank->account_updated.connect (boost::bind (&Opal::Sip::EndPoint::account_updated_or_removed, this, _1));
+  _bank->account_removed.connect (boost::bind (&Opal::Sip::EndPoint::account_updated_or_removed, this, _1));
   account_updated_or_removed (Ekiga::AccountPtr ()/* unused*/);
 }
 
@@ -953,7 +959,9 @@ Opal::Sip::EndPoint::account_updated_or_removed (Ekiga::AccountPtr /*account*/)
     accounts.clear ();
   }
   { // ... because here we call something which will want that very same mutex!
-    bank->visit_accounts (boost::bind (&Opal::Sip::EndPoint::visit_account, this, _1));
+    boost::shared_ptr<Opal::Bank> bk = bank.lock ();
+  if (bk)
+    bk->visit_accounts (boost::bind (&Opal::Sip::EndPoint::visit_account, this, _1));
   }
 }
 
