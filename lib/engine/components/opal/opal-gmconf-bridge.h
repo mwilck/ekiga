@@ -38,6 +38,7 @@
 #define __OPAL_GMCONF_BRIDGE_H__
 
 #include "gmconf-bridge.h"
+#include "services.h"
 
 class GMManager;
 
@@ -45,7 +46,9 @@ namespace Opal
 {
   class CallManager;
 
-  class ConfBridge: public Ekiga::ConfBridge
+  class ConfBridge:
+    public Ekiga::ConfBridge,
+    public Ekiga::Service
   {
   public:
 
@@ -53,6 +56,12 @@ namespace Opal
 
     void on_property_changed (std::string key,
 			      GmConfEntry *value);
+
+    const std::string get_name () const
+    { return "opal-gmconf-bridge"; }
+
+    const std::string get_description () const
+    { return "\tPushes configuration changes to the opal component"; }
 
   private:
 

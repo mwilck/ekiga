@@ -141,7 +141,8 @@ struct OPALSpark: public Ekiga::Spark
 
       call_core->add_manager (call_manager);
 
-      new ConfBridge (*call_manager); // FIXME: isn't that leaked!?
+      boost::shared_ptr<ConfBridge> bridge(new ConfBridge (*call_manager));
+      core.add (bridge);
 
       presence_core->add_supported_uri (&is_supported_address); //FIXME
 
