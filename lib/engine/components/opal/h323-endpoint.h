@@ -63,7 +63,7 @@ namespace Opal {
       PCLASSINFO(EndPoint, H323EndPoint);
 
   public:
-      EndPoint (CallManager &_manager, unsigned listen_port, unsigned kind_of_net);
+      EndPoint (CallManager &_manager);
 
       ~EndPoint ();
 

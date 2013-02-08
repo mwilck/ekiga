@@ -121,9 +121,7 @@ struct OPALSpark: public Ekiga::Spark
       core.add (sip_manager);
 
 #ifdef HAVE_H323
-      unsigned h323_port = gm_conf_get_int (H323_KEY "listen_port");
-      unsigned kind_of_net = gm_conf_get_int (GENERAL_KEY "kind_of_net");
-      boost::shared_ptr<H323::EndPoint> h323_manager (new H323::EndPoint (*call_manager, h323_port, kind_of_net), null_deleter ());
+      boost::shared_ptr<H323::EndPoint> h323_manager (new H323::EndPoint (*call_manager), null_deleter ());
       call_manager->set_h323_endpoint (h323_manager);
       core.add (h323_manager);
 #endif

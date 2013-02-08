@@ -91,16 +91,17 @@ namespace Opal {
 
 
 /* The class */
-Opal::H323::EndPoint::EndPoint (Opal::CallManager & _manager, unsigned _listen_port, unsigned _kind_of_net):
+Opal::H323::EndPoint::EndPoint (Opal::CallManager & _manager):
   H323EndPoint (_manager),
   manager (_manager)
 {
   protocol_name = "h323";
   uri_prefix = "h323:";
-  listen_port = (_listen_port > 0 ? _listen_port : 1720);
+  listen_port = gm_conf_get_int (H323_KEY "listen_port");
+  listen_port = (listen_port > 0 ? listen_port : 1720);
 
   /* Initial requested bandwidth */
-  set_initial_bandwidth (_kind_of_net);
+  set_initial_bandwidth (gm_conf_get_int (GENERAL_KEY "kind_of_net"));
 
   /* Start listener */
   set_listen_port (listen_port);
