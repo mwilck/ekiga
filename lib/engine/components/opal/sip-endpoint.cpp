@@ -903,46 +903,8 @@ Opal::Sip::EndPoint::push_notice_in_main (const std::string uri,
 }
 
 void
-Opal::Sip::EndPoint::update_bank (boost::shared_ptr<Opal::Bank> _bank)
+Opal::Sip::EndPoint::update_aor_map (std::map<std::string, std::string> _accounts)
 {
-  bank = _bank;
-  _bank->account_added.connect (boost::bind (&Opal::Sip::EndPoint::account_added, this, _1));
-  _bank->account_updated.connect (boost::bind (&Opal::Sip::EndPoint::account_updated_or_removed, this, _1));
-  _bank->account_removed.connect (boost::bind (&Opal::Sip::EndPoint::account_updated_or_removed, this, _1));
-  account_updated_or_removed (Ekiga::AccountPtr ()/* unused*/);
-}
-
-void
-Opal::Sip::EndPoint::account_updated_or_removed (Ekiga::AccountPtr /*account*/)
-{
-  /* we don't remember what the account information was, so we need
-   * to clear our current information everytime something changed
-   * (hopefully nobody has hundreds of opal accounts that get updated
-   * often, so performance shouldn't be an issue!
-   */
-
-  { // keep the mutex only to clear the accounts variable...
-    PWaitAndSignal m(aorMutex);
-    accounts.clear ();
-  }
-  { // ... because here we call something which will want that very same mutex!
-    boost::shared_ptr<Opal::Bank> bk = bank.lock ();
-  if (bk)
-    bk->visit_accounts (boost::bind (&Opal::Sip::EndPoint::visit_account, this, _1));
-  }
-}
-
-bool
-Opal::Sip::EndPoint::visit_account (Ekiga::AccountPtr _account)
-{
-  account_added (_account);
-  return true;
-}
-
-void
-Opal::Sip::EndPoint::account_added (Ekiga::AccountPtr _account)
-{
-  Opal::AccountPtr account = boost::dynamic_pointer_cast<Opal::Account> (_account);
   PWaitAndSignal m(aorMutex);
-  accounts[account->get_host ()] = account->get_aor ();
+  accounts = _accounts;
 }

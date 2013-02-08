@@ -97,6 +97,11 @@ Opal::Bank::Bank (Ekiga::ServiceCore& core):
 
   sip_endpoint->registration_event.connect (boost::bind(&Opal::Bank::on_registration_event, this, _1, _2, _3));
   sip_endpoint->mwi_event.connect (boost::bind(&Opal::Bank::on_mwi_event, this, _1, _2));
+
+  account_added.connect (boost::bind (&Opal::Bank::update_sip_endpoint_aor_map, this));
+  account_updated.connect (boost::bind (&Opal::Bank::update_sip_endpoint_aor_map, this));
+  account_removed.connect (boost::bind (&Opal::Bank::update_sip_endpoint_aor_map, this));
+  update_sip_endpoint_aor_map ();
 }
 
 Opal::Bank::~Bank ()
@@ -387,4 +392,17 @@ Opal::Bank::on_mwi_event (std::string aor,
 
   if (account)
     account->handle_message_waiting_information (info);
+}
+
+void
+Opal::Bank::update_sip_endpoint_aor_map ()
+{
+  std::map<std::string, std::string> result;
+
+  for (iterator iter = begin ();
+       iter != end ();
+       ++iter)
+    result[(*iter)->get_host ()] = (*iter)->get_aor ();
+
+  sip_endpoint->update_aor_map (result);
 }

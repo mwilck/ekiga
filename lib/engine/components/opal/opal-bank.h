@@ -144,6 +144,8 @@ private:
     void on_mwi_event (std::string aor,
 		       std::string info);
 
+    void update_sip_endpoint_aor_map ();
+
   };
 
   /**

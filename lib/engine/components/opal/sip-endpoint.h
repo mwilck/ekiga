@@ -127,11 +127,10 @@ namespace Opal {
       bool unsubscribe (const Opal::Account & account, const PSafePtr<OpalPresentity> & presentity);
 
 
-      /* Helper */
+      /* Helpers */
       static std::string get_aor_domain (const std::string & aor);
 
-      /* FIXME: doesn't look 100% right */
-      void update_bank (boost::shared_ptr<Opal::Bank> _bank);
+      void update_aor_map (std::map<std::string, std::string> _accounts);
 
       /* OPAL Methods */
       void Register (const std::string username,
@@ -171,10 +170,6 @@ namespace Opal {
 		       std::string name);
       void on_transfer (std::string uri);
 
-      void account_updated_or_removed (Ekiga::AccountPtr account);
-      bool visit_account (Ekiga::AccountPtr account);
-      void account_added (Ekiga::AccountPtr account);
-
       void push_message_in_main (const std::string uri,
 				 const std::string name,
 				 const std::string msg);
@@ -201,7 +196,6 @@ namespace Opal {
 
       unsigned listen_port;
 
-      boost::weak_ptr<Opal::Bank> bank;
       boost::shared_ptr<SIP::Dialect> dialect;
     };
   };
