@@ -62,6 +62,7 @@ class GMPCSSEndpoint;
 
 namespace Opal {
 
+  class Account;
   namespace Sip { class EndPoint; };
   namespace H323 { class EndPoint; };
 
@@ -115,7 +116,15 @@ public:
     void set_codecs (Ekiga::CodecList & codecs); 
     const Ekiga::CodecList & get_codecs () const;
 
+    /* presence subscription management */
+    bool subscribe (const Opal::Account& account,
+		    const PSafePtr<OpalPresentity>& presentity);
+
+    bool unsubscribe (const Opal::Account& account,
+		    const PSafePtr<OpalPresentity>& presentity);
+
     /* Extended stuff, OPAL CallManager specific */
+
     void set_forward_on_busy (bool enabled);
     bool get_forward_on_busy ();
 

@@ -49,15 +49,9 @@
 
 #include "opal-bank.h"
 #include "sip-endpoint.h"
-#ifdef HAVE_H323
-#include "h323-endpoint.h"
-#endif
 
 Opal::Bank::Bank (Ekiga::ServiceCore& core):
   sip_endpoint(core.get<Opal::Sip::EndPoint> ("opal-sip-endpoint")),
-#ifdef HAVE_H323
-  h323_endpoint(core.get<Opal::H323::EndPoint> ("opal-h323-endpoint")),
-#endif
   presence_core(core.get<Ekiga::PresenceCore> ("presence-core")),
   notification_core(core.get<Ekiga::NotificationCore> ("notification-core")),
   personal_details(core.get<Ekiga::PersonalDetails> ("personal-details")),
@@ -75,9 +69,6 @@ Opal::Bank::Bank (Ekiga::ServiceCore& core):
 
     boost::shared_ptr<Account> account
       = boost::shared_ptr<Account> (new Account (sip_endpoint,
-#ifdef HAVE_H323
-						 h323_endpoint,
-#endif
 						 pcore,
 						 notification_core,
 						 personal_details,
@@ -283,9 +274,6 @@ void Opal::Bank::add (Account::Type acc_type,
     return;
   AccountPtr account
     = AccountPtr(new Opal::Account (sip_endpoint,
-#ifdef HAVE_H323
-				    h323_endpoint,
-#endif
 				    pcore,
 				    notification_core,
 				    personal_details,

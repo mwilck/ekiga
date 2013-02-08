@@ -55,9 +55,6 @@ namespace Opal
   // forward declarations:
   class CallManager;
   namespace Sip { class EndPoint; };
-#ifdef HAVE_H323
-  namespace H323 { class EndPoint; };
-#endif
 
   /**
    * @addtogroup accounts
@@ -76,25 +73,19 @@ public:
     typedef enum { Processing, Registered, Unregistered, RegistrationFailed, UnregistrationFailed } RegistrationState;
 
     Account (boost::shared_ptr<Opal::Sip::EndPoint> _sip_endpoint,
-#ifdef HAVE_H323
-	     boost::shared_ptr<Opal::H323::EndPoint> _h323_endpoint,
-#endif
 	     boost::shared_ptr<Ekiga::PresenceCore> _presence_core,
 	     boost::shared_ptr<Ekiga::NotificationCore> _notification_core,
 	     boost::shared_ptr<Ekiga::PersonalDetails> _personal_details,
 	     boost::shared_ptr<Ekiga::AudioOutputCore> _audiooutput_core,
-	     boost::shared_ptr<CallManager> _opal_component,
+	     boost::shared_ptr<CallManager> _call_manager,
 	     const std::string & account);
 
     Account (boost::shared_ptr<Opal::Sip::EndPoint> _sip_endpoint,
-#ifdef HAVE_H323
-	     boost::shared_ptr<Opal::H323::EndPoint> _h323_endpoint,
-#endif
 	     boost::shared_ptr<Ekiga::PresenceCore> _presence_core,
 	     boost::shared_ptr<Ekiga::NotificationCore> _notification_core,
 	     boost::shared_ptr<Ekiga::PersonalDetails> _personal_details,
 	     boost::shared_ptr<Ekiga::AudioOutputCore> _audiooutput_core,
-	     boost::shared_ptr<CallManager> _opal_component,
+	     boost::shared_ptr<CallManager> _call_manager,
 	     Type t,
              std::string name,
              std::string host,
@@ -237,14 +228,11 @@ private:
 				  std::string status);
 
     boost::shared_ptr<Opal::Sip::EndPoint> sip_endpoint;
-#ifdef HAVE_H323
-    boost::shared_ptr<Opal::H323::EndPoint> h323_endpoint;
-#endif
     boost::weak_ptr<Ekiga::PresenceCore> presence_core;
     boost::weak_ptr<Ekiga::NotificationCore> notification_core;
     boost::weak_ptr<Ekiga::PersonalDetails> personal_details;
     boost::weak_ptr<Ekiga::AudioOutputCore> audiooutput_core;
-    boost::weak_ptr<CallManager> opal_component;
+    boost::shared_ptr<CallManager> call_manager;
   };
 
   typedef boost::shared_ptr<Account> AccountPtr;

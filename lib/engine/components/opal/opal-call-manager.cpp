@@ -914,6 +914,42 @@ CallManager::CreateVideoOutputDevice(const OpalConnection & connection,
   return device != NULL;
 }
 
+bool
+CallManager::subscribe (const Opal::Account& account,
+			const PSafePtr<OpalPresentity>& presentity)
+{
+  if (account.get_protocol_name () == "H323") {
+
+#ifdef HAVE_H323
+    return h323_endpoint->subscribe (account, presentity);
+#else
+    return false;
+#endif
+
+  } else {
+
+    return sip_endpoint->subscribe (account, presentity);
+  }
+}
+
+bool
+CallManager::unsubscribe (const Opal::Account& account,
+			  const PSafePtr<OpalPresentity>& presentity)
+{
+  if (account.get_protocol_name () == "H323") {
+
+#ifdef HAVE_H323
+    return h323_endpoint->unsubscribe (account, presentity);
+#else
+    return false;
+#endif
+
+  } else {
+
+    return sip_endpoint->unsubscribe (account, presentity);
+  }
+}
+
 void
 CallManager::set_sip_endpoint (boost::shared_ptr<Opal::Sip::EndPoint> _sip_endpoint)
 {

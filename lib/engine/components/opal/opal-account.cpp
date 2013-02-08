@@ -57,29 +57,20 @@
 #include "platform.h"
 
 #include "sip-endpoint.h"
-#ifdef HAVE_H323
-#include "h323-endpoint.h"
-#endif
 
 Opal::Account::Account (boost::shared_ptr<Opal::Sip::EndPoint> _sip_endpoint,
-#ifdef HAVE_H323
-			boost::shared_ptr<Opal::H323::EndPoint> _h323_endpoint,
-#endif
 			boost::shared_ptr<Ekiga::PresenceCore> _presence_core,
 			boost::shared_ptr<Ekiga::NotificationCore> _notification_core,
 			boost::shared_ptr<Ekiga::PersonalDetails> _personal_details,
 			boost::shared_ptr<Ekiga::AudioOutputCore> _audiooutput_core,
-			boost::shared_ptr<CallManager> _opal_component,
+			boost::shared_ptr<CallManager> _call_manager,
 			const std::string & account):
   sip_endpoint(_sip_endpoint),
-#ifdef HAVE_H323
-  h323_endpoint(_h323_endpoint),
-#endif
   presence_core(_presence_core),
   notification_core(_notification_core),
   personal_details(_personal_details),
   audiooutput_core(_audiooutput_core),
-  opal_component(_opal_component)
+  call_manager(_call_manager)
 {
   state = Unregistered;
   status = _("Unregistered");
@@ -164,14 +155,11 @@ Opal::Account::Account (boost::shared_ptr<Opal::Sip::EndPoint> _sip_endpoint,
 
 
 Opal::Account::Account (boost::shared_ptr<Opal::Sip::EndPoint> _sip_endpoint,
-#ifdef HAVE_H323
-			boost::shared_ptr<Opal::H323::EndPoint> _h323_endpoint,
-#endif
 			boost::shared_ptr<Ekiga::PresenceCore> _presence_core,
 			boost::shared_ptr<Ekiga::NotificationCore> _notification_core,
 			boost::shared_ptr<Ekiga::PersonalDetails> _personal_details,
 			boost::shared_ptr<Ekiga::AudioOutputCore> _audiooutput_core,
-			boost::shared_ptr<CallManager> _opal_component,
+			boost::shared_ptr<CallManager> _call_manager,
 			Type t,
                         std::string _name,
                         std::string _host,
@@ -181,14 +169,11 @@ Opal::Account::Account (boost::shared_ptr<Opal::Sip::EndPoint> _sip_endpoint,
                         bool _enabled,
                         unsigned _timeout):
   sip_endpoint(_sip_endpoint),
-#ifdef HAVE_H323
-  h323_endpoint(_h323_endpoint),
-#endif
   presence_core(_presence_core),
   notification_core(_notification_core),
   personal_details(_personal_details),
   audiooutput_core(_audiooutput_core),
-  opal_component(_opal_component)
+  call_manager(_call_manager)
 {
   state = Unregistered;
   status = "";
@@ -331,14 +316,7 @@ void Opal::Account::enable ()
 
   state = Processing;
   status = _("Processing...");
-#ifdef HAVE_H323
-  if (type == Account::H323)
-    h323_endpoint->subscribe (*this, presentity);
-  else
-#endif
-    {
-      sip_endpoint->subscribe (*this, presentity);
-    }
+  call_manager->subscribe (*this, presentity);
 
   updated ();
   trigger_saving ();
@@ -357,13 +335,12 @@ void Opal::Account::disable ()
       Ekiga::Runtime::run_in_main (boost::bind (&Opal::Account::presence_status_in_main, this, *iter, "unknown", ""));
     }
   }
-#ifdef HAVE_H323
+
   if (type == Account::H323)
-    h323_endpoint->unsubscribe (*this, presentity);
-  else
-#endif
-    {
-      sip_endpoint->unsubscribe (*this, presentity);
+    call_manager->unsubscribe (*this, presentity);
+  else {
+
+      call_manager->unsubscribe (*this, presentity);
       sip_endpoint->Unsubscribe (SIPSubscribe::MessageSummary, get_aor ());
     }
 
@@ -459,11 +436,6 @@ Opal::Account::populate_menu (const std::string fullname,
 			      const std::string uri,
 			      Ekiga::MenuBuilder& builder)
 {
-  boost::shared_ptr<Opal::CallManager> call_manager = opal_component.lock ();
-
-  if (!call_manager)
-    return false;
-
   bool result = false;
   Ekiga::TemporaryMenuBuilder tmp_builder;
   std::string protocol;
@@ -762,7 +734,6 @@ Opal::Account::handle_registration_event (RegistrationState state_,
   case RegistrationFailed:
 
     state = state_;
-#ifdef HAVE_H323
     if (type == Account::H323) {
         std::stringstream msg;
         msg << _("Could not register to ") << get_name ();
@@ -772,25 +743,24 @@ Opal::Account::handle_registration_event (RegistrationState state_,
 	  ncore->push_notification (notif);
     }
     else {
-#endif
       switch (compat_mode) {
       case SIPRegister::e_FullyCompliant:
         // FullyCompliant did not work, try next compat mode
         compat_mode = SIPRegister::e_CannotRegisterMultipleContacts;
         PTRACE (4, "Register failed in FullyCompliant mode, retrying in CannotRegisterMultipleContacts mode");
-        sip_endpoint->subscribe (*this, presentity);
+        call_manager->subscribe (*this, presentity);
         break;
       case SIPRegister::e_CannotRegisterMultipleContacts:
         // CannotRegMC did not work, try next compat mode
         compat_mode = SIPRegister::e_CannotRegisterPrivateContacts;
         PTRACE (4, "Register failed in CannotRegisterMultipleContacts mode, retrying in CannotRegisterPrivateContacts mode");
-        sip_endpoint->subscribe (*this, presentity);
+        call_manager->subscribe (*this, presentity);
         break;
       case SIPRegister::e_CannotRegisterPrivateContacts:
         // CannotRegMC did not work, try next compat mode
         compat_mode = SIPRegister::e_HasApplicationLayerGateway;
         PTRACE (4, "Register failed in CannotRegisterMultipleContacts mode, retrying in HasApplicationLayerGateway mode");
-        sip_endpoint->subscribe (*this, presentity);
+        call_manager->subscribe (*this, presentity);
         break;
       case SIPRegister::e_HasApplicationLayerGateway:
         // HasAppLG did not work, stop registration with error
@@ -816,9 +786,7 @@ Opal::Account::handle_registration_event (RegistrationState state_,
         updated();
         break;
       }
-#ifdef HAVE_H323
     }
-#endif
     break;
 
   case Processing:
@@ -862,12 +830,8 @@ Opal::Account::get_type () const
 void
 Opal::Account::setup_presentity ()
 {
-  boost::shared_ptr<CallManager> manager = opal_component.lock ();
-  if (!manager)
-    return;
-
   PURL url = PString (get_aor ());
-  presentity = manager->AddPresentity (url);
+  presentity = call_manager->AddPresentity (url);
 
   if (presentity) {
 

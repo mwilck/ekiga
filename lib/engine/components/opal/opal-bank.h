@@ -109,9 +109,6 @@ public:
 
 private:
     boost::shared_ptr<Opal::Sip::EndPoint> sip_endpoint;
-#ifdef HAVE_H323
-    boost::shared_ptr<Opal::H323::EndPoint> h323_endpoint;
-#endif
     boost::weak_ptr<Ekiga::PresenceCore> presence_core;
     boost::shared_ptr<Ekiga::NotificationCore> notification_core;
     boost::shared_ptr<Ekiga::PersonalDetails> personal_details;
