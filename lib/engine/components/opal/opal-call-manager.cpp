@@ -56,6 +56,13 @@
 
 #include <stdlib.h>
 
+// opal manages its endpoints itself, so we must be wary
+struct null_deleter
+{
+    void operator()(void const *) const
+    { }
+};
+
 static  bool same_codec_desc (Ekiga::CodecDescription a, Ekiga::CodecDescription b)
 {
   return (a.name == b.name && a.rate == b.rate);
@@ -161,6 +168,11 @@ CallManager::CallManager (Ekiga::ServiceCore& core)
   queue = g_async_queue_new ();
 
   PInterfaceMonitor::GetInstance().SetRefreshInterval (15000);
+
+#ifdef HAVE_H323
+  h323_endpoint = boost::shared_ptr<H323::EndPoint> (new H323::EndPoint (*this), null_deleter ());
+  add_protocol_manager (h323_endpoint);
+#endif
 }
 
 
@@ -956,12 +968,3 @@ CallManager::set_sip_endpoint (boost::shared_ptr<Opal::Sip::EndPoint> _sip_endpo
   sip_endpoint = _sip_endpoint;
   add_protocol_manager (sip_endpoint);
 }
-
-#ifdef HAVE_H323
-void
-CallManager::set_h323_endpoint (boost::shared_ptr<Opal::H323::EndPoint> _h323_endpoint)
-{
-  h323_endpoint = _h323_endpoint;
-  add_protocol_manager (h323_endpoint);
-}
-#endif

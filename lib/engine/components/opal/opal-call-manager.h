@@ -229,7 +229,6 @@ private:
     void set_sip_endpoint (boost::shared_ptr<Opal::Sip::EndPoint> _sip_endpoint);
     boost::shared_ptr<Opal::Sip::EndPoint> sip_endpoint;
 #ifdef HAVE_H323
-    void set_h323_endpoint (boost::shared_ptr<Opal::H323::EndPoint> _h323_endpoint);
     boost::shared_ptr<Opal::H323::EndPoint> h323_endpoint;
 #endif
   };

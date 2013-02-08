@@ -50,10 +50,6 @@
 
 #include "sip-endpoint.h"
 
-#ifdef HAVE_H323
-#include "h323-endpoint.h"
-#endif
-
 // opal manages its endpoints itself, so we must be wary
 struct null_deleter
 {
@@ -102,12 +98,11 @@ struct OPALSpark: public Ekiga::Spark
     boost::shared_ptr<Ekiga::PersonalDetails> personal_details = core.get<Ekiga::PersonalDetails> ("personal-details");
     boost::shared_ptr<Bank> account_store = core.get<Bank> ("opal-account-store");
     Ekiga::ServicePtr sip_endpoint = core.get ("opal-sip-endpoint");
-    Ekiga::ServicePtr h323_endpoint = core.get ("opal-h323-endpoint");
 
     if (contact_core && presence_core && call_core && chat_core
 	&& account_core && audioinput_core && videoinput_core
 	&& audiooutput_core && videooutput_core && personal_details
-	&& !account_store && !sip_endpoint && !h323_endpoint) {
+	&& !account_store && !sip_endpoint) {
 
       PIPSocket::SetSuppressCanonicalName (true);  // avoid long delays
 
@@ -119,12 +114,6 @@ struct OPALSpark: public Ekiga::Spark
       boost::shared_ptr<Sip::EndPoint> sip_manager (new Sip::EndPoint (*call_manager, core), null_deleter ());
       call_manager->set_sip_endpoint (sip_manager);
       core.add (sip_manager);
-
-#ifdef HAVE_H323
-      boost::shared_ptr<H323::EndPoint> h323_manager (new H323::EndPoint (*call_manager), null_deleter ());
-      call_manager->set_h323_endpoint (h323_manager);
-      core.add (h323_manager);
-#endif
 
       boost::shared_ptr<Bank> bank (new Bank (core));
       account_core->add_bank (bank);

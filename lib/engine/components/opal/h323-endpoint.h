@@ -57,7 +57,6 @@ namespace Opal {
   namespace H323 {
 
     class EndPoint : public H323EndPoint,
-		     public Ekiga::Service,
 		     public Ekiga::CallProtocolManager
     {
       PCLASSINFO(EndPoint, H323EndPoint);
@@ -66,13 +65,6 @@ namespace Opal {
       EndPoint (CallManager &_manager);
 
       ~EndPoint ();
-
-      /* Service */
-      const std::string get_name () const
-      { return "opal-h323-endpoint"; }
-
-      const std::string get_description () const
-      { return "\tObject managing H323 objects with the Opal library"; }
 
       // helper for Opal::Bank's contact/presentity decorator code
       bool populate_menu (const std::string& fullname,
