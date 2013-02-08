@@ -159,9 +159,6 @@ Opal::Sip::EndPoint::populate_menu (const std::string& fullname,
 				    const std::string& uri,
 				    Ekiga::MenuBuilder& builder)
 {
-  std::list<std::string> uris;
-  std::list<std::string> accounts_list;
-
   if (0 == GetConnectionCount ())
     builder.add_action ("phone-pick-up", _("Call"),
 			boost::bind (&Opal::Sip::EndPoint::on_dial, this, uri));
