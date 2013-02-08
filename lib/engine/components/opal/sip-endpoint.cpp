@@ -113,8 +113,7 @@ namespace Opal {
 
 /* The class */
 Opal::Sip::EndPoint::EndPoint (Opal::CallManager & _manager,
-                               Ekiga::ServiceCore& core,
-                               unsigned _listen_port):
+                               Ekiga::ServiceCore& core):
   SIPEndPoint (_manager),
   manager (_manager)
 {
@@ -122,7 +121,8 @@ Opal::Sip::EndPoint::EndPoint (Opal::CallManager & _manager,
 
   protocol_name = "sip";
   uri_prefix = "sip:";
-  listen_port = (_listen_port > 0 ? _listen_port : 5060);
+  listen_port = gm_conf_get_int (SIP_KEY "listen_port");
+  listen_port = (listen_port > 0 ? listen_port : 5060);
 
   dialect = boost::shared_ptr<SIP::Dialect>(new SIP::Dialect (core, boost::bind (&Opal::Sip::EndPoint::send_message, this, _1, _2)));
   chat_core->add_dialect (dialect);

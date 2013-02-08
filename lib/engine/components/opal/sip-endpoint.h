@@ -69,8 +69,7 @@ namespace Opal {
       typedef std::list<std::string>::iterator domain_list_iterator;
 
       EndPoint (CallManager& ep,
-		Ekiga::ServiceCore& core,
-		unsigned listen_port);
+		Ekiga::ServiceCore& core);
 
       ~EndPoint ();
 

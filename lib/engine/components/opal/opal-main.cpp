@@ -116,8 +116,7 @@ struct OPALSpark: public Ekiga::Spark
       boost::shared_ptr<CallManager> call_manager (new CallManager (core));
       core.add (call_manager);
 
-      unsigned sip_port = gm_conf_get_int (SIP_KEY "listen_port");
-      boost::shared_ptr<Sip::EndPoint> sip_manager (new Sip::EndPoint (*call_manager, core, sip_port), null_deleter ());
+      boost::shared_ptr<Sip::EndPoint> sip_manager (new Sip::EndPoint (*call_manager, core), null_deleter ());
       call_manager->set_sip_endpoint (sip_manager);
       core.add (sip_manager);
 
