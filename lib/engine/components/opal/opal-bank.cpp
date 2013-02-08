@@ -122,8 +122,10 @@ Opal::Bank::populate_menu (Ekiga::MenuBuilder & builder)
 		      boost::bind (&Opal::Bank::new_account, this, Opal::Account::DiamondCard, "", ""));
   builder.add_action ("add", _("_Add a SIP Account"),
 		      boost::bind (&Opal::Bank::new_account, this, Opal::Account::SIP, "", ""));
+#ifdef HAVE_H323
   builder.add_action ("add", _("_Add an H.323 Account"),
 		      boost::bind (&Opal::Bank::new_account, this, Opal::Account::H323, "", ""));
+#endif
 
   return true;
 }
