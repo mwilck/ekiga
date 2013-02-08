@@ -471,7 +471,7 @@ Opal::Sip::EndPoint::OnRegistrationStatus (const RegistrationStatus & status)
   /* Successful registration or unregistration */
   if (status.m_reason == SIP_PDU::Successful_OK) {
 
-    Ekiga::Runtime::run_in_main (boost::bind (&Opal::Sip::EndPoint::registration_event_in_main, this, strm.str (), status.m_wasRegistering ? Account::Registered : Account::Unregistered, std::string ()));
+    Ekiga::Runtime::run_in_main (boost::bind (boost::ref(registration_event), strm.str(), status.m_wasRegistering ? Account::Registered : Account::Unregistered, std::string ()));
   }
   /* Registration or unregistration failure */
   else {
@@ -703,7 +703,7 @@ Opal::Sip::EndPoint::OnRegistrationStatus (const RegistrationStatus & status)
      * as a sip code has already been scheduled to be shown
      */
     if (status.m_reason != SIP_PDU::Failure_RequestTerminated) {
-      Ekiga::Runtime::run_in_main (boost::bind (&Opal::Sip::EndPoint::registration_event_in_main, this, strm.str (), status.m_wasRegistering ? Account::RegistrationFailed : Account::UnregistrationFailed, info));
+      Ekiga::Runtime::run_in_main (boost::bind (boost::ref (registration_event), strm.str (), status.m_wasRegistering ? Account::RegistrationFailed : Account::UnregistrationFailed, info));
     }
   }
 }
@@ -720,7 +720,7 @@ Opal::Sip::EndPoint::OnMWIReceived (const PString & party,
     mwi = "0/0";
 
   /* Signal */
-  Ekiga::Runtime::run_in_main (boost::bind (&Opal::Sip::EndPoint::mwi_received_in_main, this, party, mwi));
+  Ekiga::Runtime::run_in_main (boost::bind (boost::ref(mwi_event), party, mwi));
 }
 
 
@@ -889,22 +889,6 @@ void Opal::Sip::EndPoint::on_transfer (std::string uri)
       connection->TransferConnection (uri);
 }
 
-
-void
-Opal::Sip::EndPoint::registration_event_in_main (const std::string aor,
-						 Opal::Account::RegistrationState state,
-						 const std::string msg)
-{
-  boost::shared_ptr<Opal::Bank> bk = bank.lock ();
-  if (bk) {
-
-    AccountPtr account = bk->find_account (aor);
-
-    if (account)
-      account->handle_registration_event (state, msg);
-  }
-}
-
 void
 Opal::Sip::EndPoint::push_message_in_main (const std::string uri,
 					   const std::string name,
@@ -919,20 +903,6 @@ Opal::Sip::EndPoint::push_notice_in_main (const std::string uri,
 					  const std::string msg)
 {
   dialect->push_notice (uri, name, msg);
-}
-
-void
-Opal::Sip::EndPoint::mwi_received_in_main (const std::string aor,
-					   const std::string info)
-{
-  boost::shared_ptr<Opal::Bank> bk = bank.lock ();
-  if (bk) {
-
-    AccountPtr account = bk->find_account (aor);
-
-    if (account)
-      account->handle_message_waiting_information (info);
-  }
 }
 
 void

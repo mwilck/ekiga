@@ -114,6 +114,14 @@ namespace Opal {
       const std::string & get_forward_uri () const;
 
 
+      // a registration event occurred
+      // the parameters are the aor, the state and the message
+      boost::signal3<void, std::string, Opal::Account::RegistrationState, std::string> registration_event;
+
+      // a message waiting information was received
+      // the parameters are the aor and the info
+      boost::signal2<void, std::string, std::string> mwi_event;
+
       /* AccountSubscriber */
       bool subscribe (const Opal::Account & account, const PSafePtr<OpalPresentity> & presentity);
       bool unsubscribe (const Opal::Account & account, const PSafePtr<OpalPresentity> & presentity);
@@ -167,10 +175,6 @@ namespace Opal {
       bool visit_account (Ekiga::AccountPtr account);
       void account_added (Ekiga::AccountPtr account);
 
-      void registration_event_in_main (const std::string aor,
-				       Account::RegistrationState state,
-				       const std::string msg);
-
       void push_message_in_main (const std::string uri,
 				 const std::string name,
 				 const std::string msg);
@@ -178,9 +182,6 @@ namespace Opal {
       void push_notice_in_main (const std::string uri,
 				const std::string name,
 				const std::string msg);
-
-      void mwi_received_in_main (const std::string aor,
-				 const std::string info);
 
       PMutex aorMutex;
       std::map<std::string, std::string> accounts;

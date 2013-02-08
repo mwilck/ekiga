@@ -94,6 +94,9 @@ Opal::Bank::Bank (Ekiga::ServiceCore& core):
 
   g_slist_foreach (accounts, (GFunc) g_free, NULL);
   g_slist_free (accounts);
+
+  sip_endpoint->registration_event.connect (boost::bind(&Opal::Bank::on_registration_event, this, _1, _2, _3));
+  sip_endpoint->mwi_event.connect (boost::bind(&Opal::Bank::on_mwi_event, this, _1, _2));
 }
 
 Opal::Bank::~Bank ()
@@ -363,4 +366,25 @@ Opal::Bank::unfetch (const std::string uri)
        iter != end ();
        iter++)
     (*iter)->unfetch (uri);
+}
+
+void
+Opal::Bank::on_registration_event (std::string aor,
+				   Opal::Account::RegistrationState state,
+				   std::string msg)
+{
+  AccountPtr account = find_account (aor);
+
+  if (account)
+    account->handle_registration_event (state, msg);
+}
+
+void
+Opal::Bank::on_mwi_event (std::string aor,
+			  std::string info)
+{
+  AccountPtr account = find_account (aor);
+
+  if (account)
+    account->handle_message_waiting_information (info);
 }
