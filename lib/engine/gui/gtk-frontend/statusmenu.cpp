@@ -52,7 +52,7 @@ struct _StatusMenuPrivate
   ~_StatusMenuPrivate ();
 
   boost::shared_ptr<Ekiga::PersonalDetails> personal_details;
-  std::vector<boost::signals::connection> connections;
+  boost::signals::connection connection;
   std::list<gpointer> notifiers;
 
   GtkListStore *list_store; // List store storing the menu
@@ -65,10 +65,6 @@ _StatusMenuPrivate::~_StatusMenuPrivate()
        iter != notifiers.end ();
        ++iter)
     gm_conf_notifier_remove (*iter);
-  for (std::vector<boost::signals::connection>::iterator iter = connections.begin ();
-       iter != connections.end ();
-       ++iter)
-    iter->disconnect ();
 }
 
 enum Columns
@@ -238,8 +234,6 @@ static GObjectClass *parent_class = NULL;
 
 static void status_menu_class_init (gpointer g_class,
                                     gpointer class_data);
-
-static void status_menu_dispose (GObject *obj);
 
 static void status_menu_finalize (GObject *obj);
 
@@ -747,29 +741,15 @@ status_menu_class_init (gpointer g_class,
   parent_class = (GObjectClass *) g_type_class_peek_parent (g_class);
 
   gobject_class = (GObjectClass *) g_class;
-  gobject_class->dispose = status_menu_dispose;
   gobject_class->finalize = status_menu_finalize;
-}
-
-
-static void
-status_menu_dispose (GObject *obj)
-{
-  StatusMenu *self = NULL;
-
-  self = STATUS_MENU (obj);
-  delete self->priv;
-
-  self->priv = NULL;
-
-  // NULLify everything
-  parent_class->dispose (obj);
 }
 
 
 static void
 status_menu_finalize (GObject *obj)
 {
+  delete STATUS_MENU (obj)->priv;
+
   parent_class->finalize (obj);
 }
 
@@ -810,7 +790,6 @@ status_menu_new (Ekiga::ServiceCore & core)
 {
   StatusMenu *self = NULL;
 
-  boost::signals::connection conn;
   gpointer notifier;
   GtkCellRenderer *renderer = NULL;
   GSList *custom_status_array [NUM_STATUS_TYPES];
@@ -876,8 +855,7 @@ status_menu_new (Ekiga::ServiceCore & core)
 			  status_menu_custom_messages_changed, self);
   self->priv->notifiers.push_front (notifier);
 
-  conn = self->priv->personal_details->updated.connect (boost::bind (&on_details_updated, self));
-  self->priv->connections.push_back (conn);
+  self->priv->connection = self->priv->personal_details->updated.connect (boost::bind (&on_details_updated, self));
 
   return GTK_WIDGET (self);
 }
