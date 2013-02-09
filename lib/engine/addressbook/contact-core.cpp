@@ -48,12 +48,6 @@ on_search ()
 }
 */
 
-Ekiga::ContactCore::~ContactCore ()
-{
-  for (std::list<boost::signals::connection>::iterator iter = conns.begin (); iter != conns.end (); ++iter)
-    iter->disconnect ();
-}
-
 bool
 Ekiga::ContactCore::populate_menu (MenuBuilder &builder)
 {
@@ -79,13 +73,13 @@ Ekiga::ContactCore::add_source (SourcePtr source)
 {
   sources.push_back (source);
   source_added (source);
-  conns.push_back (source->updated.connect (boost::ref (updated)));
-  conns.push_back (source->book_added.connect (boost::bind (boost::ref (book_added), source, _1)));
-  conns.push_back (source->book_removed.connect (boost::bind (boost::ref (book_removed), source, _1)));
-  conns.push_back (source->book_updated.connect (boost::bind (boost::ref (book_updated), source, _1)));
-  conns.push_back (source->contact_added.connect (boost::bind (boost::ref (contact_added), source, _1, _2)));
-  conns.push_back (source->contact_removed.connect (boost::bind (boost::ref (contact_removed), source, _1, _2)));
-  conns.push_back (source->contact_updated.connect (boost::bind (boost::ref (contact_updated), source, _1, _2)));
+  conns.add (source->updated.connect (boost::ref (updated)));
+  conns.add (source->book_added.connect (boost::bind (boost::ref (book_added), source, _1)));
+  conns.add (source->book_removed.connect (boost::bind (boost::ref (book_removed), source, _1)));
+  conns.add (source->book_updated.connect (boost::bind (boost::ref (book_updated), source, _1)));
+  conns.add (source->contact_added.connect (boost::bind (boost::ref (contact_added), source, _1, _2)));
+  conns.add (source->contact_removed.connect (boost::bind (boost::ref (contact_removed), source, _1, _2)));
+  conns.add (source->contact_updated.connect (boost::bind (boost::ref (contact_updated), source, _1, _2)));
   source->questions.connect (boost::ref (questions));
 
   updated ();

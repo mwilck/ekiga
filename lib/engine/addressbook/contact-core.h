@@ -38,6 +38,7 @@
 
 #include "services.h"
 #include "source.h"
+#include "scoped-connections.h"
 
 /* declaration of a few helper classes */
 namespace Ekiga
@@ -75,10 +76,6 @@ namespace Ekiga
      */
     ContactCore ()
     {}
-
-    /** The destructor.
-     */
-    ~ContactCore ();
 
 
     /*** Service Implementation ***/
@@ -174,7 +171,7 @@ namespace Ekiga
     std::list<boost::shared_ptr<ContactDecorator> > contact_decorators;
 
     /*** Misc stuff ***/
-    std::list<boost::signals::connection> conns;
+    Ekiga::scoped_connections conns;
   };
 
 /**
