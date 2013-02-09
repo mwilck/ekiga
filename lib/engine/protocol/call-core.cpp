@@ -93,20 +93,20 @@ bool CallCore::dial (const std::string uri)
 
 void CallCore::add_call (boost::shared_ptr<Call> call, boost::shared_ptr<CallManager> manager)
 {
-  std::list<boost::signals::connection> conns;
+  boost::shared_ptr<Ekiga::scoped_connections> conns(new Ekiga::scoped_connections);
 
-  conns.push_back (call->ringing.connect (boost::bind (&CallCore::on_ringing_call, this, call, manager)));
-  conns.push_back (call->setup.connect (boost::bind (&CallCore::on_setup_call, this, call, manager)));
-  conns.push_back (call->missed.connect (boost::bind (&CallCore::on_missed_call, this, call, manager)));
-  conns.push_back (call->cleared.connect (boost::bind (&CallCore::on_cleared_call, this, _1, call, manager)));
-  conns.push_back (call->established.connect (boost::bind (&CallCore::on_established_call, this, call, manager)));
-  conns.push_back (call->held.connect (boost::bind (&CallCore::on_held_call, this, call, manager)));
-  conns.push_back (call->retrieved.connect (boost::bind (&CallCore::on_retrieved_call, this, call, manager)));
-  conns.push_back (call->stream_opened.connect (boost::bind (&CallCore::on_stream_opened, this, _1, _2, _3, call, manager)));
-  conns.push_back (call->stream_closed.connect (boost::bind (&CallCore::on_stream_closed, this, _1, _2, _3, call, manager)));
-  conns.push_back (call->stream_paused.connect (boost::bind (&CallCore::on_stream_paused, this, _1, _2, call, manager)));
-  conns.push_back (call->stream_resumed.connect (boost::bind (&CallCore::on_stream_resumed, this, _1, _2, call, manager)));
-  conns.push_back (call->removed.connect (boost::bind (&CallCore::on_call_removed, this, call)));
+  conns->add (call->ringing.connect (boost::bind (&CallCore::on_ringing_call, this, call, manager)));
+  conns->add (call->setup.connect (boost::bind (&CallCore::on_setup_call, this, call, manager)));
+  conns->add (call->missed.connect (boost::bind (&CallCore::on_missed_call, this, call, manager)));
+  conns->add (call->cleared.connect (boost::bind (&CallCore::on_cleared_call, this, _1, call, manager)));
+  conns->add (call->established.connect (boost::bind (&CallCore::on_established_call, this, call, manager)));
+  conns->add (call->held.connect (boost::bind (&CallCore::on_held_call, this, call, manager)));
+  conns->add (call->retrieved.connect (boost::bind (&CallCore::on_retrieved_call, this, call, manager)));
+  conns->add (call->stream_opened.connect (boost::bind (&CallCore::on_stream_opened, this, _1, _2, _3, call, manager)));
+  conns->add (call->stream_closed.connect (boost::bind (&CallCore::on_stream_closed, this, _1, _2, _3, call, manager)));
+  conns->add (call->stream_paused.connect (boost::bind (&CallCore::on_stream_paused, this, _1, _2, call, manager)));
+  conns->add (call->stream_resumed.connect (boost::bind (&CallCore::on_stream_resumed, this, _1, _2, call, manager)));
+  conns->add (call->removed.connect (boost::bind (&CallCore::on_call_removed, this, call)));
 
   call_connections [call->get_id ()] = conns;
 }
@@ -114,11 +114,6 @@ void CallCore::add_call (boost::shared_ptr<Call> call, boost::shared_ptr<CallMan
 
 void CallCore::remove_call (boost::shared_ptr<Call> call)
 {
-  for (std::list<boost::signals::connection>::iterator iter2 = call_connections [call->get_id ()].begin ();
-       iter2 != call_connections [call->get_id ()].end ();
-       ++iter2)
-    iter2->disconnect ();
-
   call_connections.erase (call->get_id ());
 }
 

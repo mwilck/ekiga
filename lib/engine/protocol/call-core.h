@@ -40,6 +40,7 @@
 #include "form-request.h"
 #include "chain-of-responsibility.h"
 #include "services.h"
+#include "scoped-connections.h"
 #include "call.h"
 #include "call-manager.h"
 #include "call-protocol-manager.h"
@@ -184,7 +185,7 @@ namespace Ekiga
 
       
       std::set<boost::shared_ptr<CallManager> > managers;
-      std::map<std::string, std::list<boost::signals::connection> > call_connections;
+      std::map<std::string, boost::shared_ptr<Ekiga::scoped_connections> > call_connections;
       unsigned nr_ready;
     };
 
