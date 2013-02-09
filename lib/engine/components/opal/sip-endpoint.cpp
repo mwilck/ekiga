@@ -767,6 +767,9 @@ bool
 Opal::Sip::EndPoint::OnReceivedMESSAGE (OpalTransport & transport,
 					SIP_PDU & pdu)
 {
+  if (pdu.GetMIME().GetContentType(false) != "text/plain")
+    return false; // Ignore what we do not handle.
+
   PString from = pdu.GetMIME().GetFrom();
   PINDEX j = from.Find (';');
   if (j != P_MAX_INDEX)
