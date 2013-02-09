@@ -53,6 +53,7 @@
 #include "gtk-frontend.h"
 #include "notification-core.h"
 #include "personal-details.h"
+#include "scoped-connections.h"
 
 #ifdef HAVE_DBUS
 #include <dbus/dbus-glib.h>
@@ -66,7 +67,7 @@ struct _StatusIconPrivate
   GtkWidget *popup_menu;
   gboolean has_message;
 
-  std::vector<boost::signals::connection> connections;
+  Ekiga::scoped_connections connections;
 
   int blink_id;
   std::string status;
@@ -171,11 +172,6 @@ statusicon_finalize (GObject *obj)
 
   if (self->priv->blink_image)
     g_free (self->priv->blink_image);
-
-  for (std::vector<boost::signals::connection>::iterator iter = self->priv->connections.begin () ;
-       iter != self->priv->connections.end ();
-       iter++)
-    iter->disconnect ();
 
   delete self->priv;
 
@@ -573,13 +569,13 @@ status_icon_new (Ekiga::ServiceCore & core)
   notification_core->notification_added.connect (boost::bind (statusicon_on_notification_added, _1, (gpointer) self));
 
   conn = details->updated.connect (boost::bind (&personal_details_updated_cb, self, details));
-  self->priv->connections.push_back (conn);
+  self->priv->connections.add (conn);
 
   conn = call_core->established_call.connect (boost::bind (&established_call_cb, _1, _2, (gpointer) self));
-  self->priv->connections.push_back (conn);
+  self->priv->connections.add (conn);
 
   conn = call_core->cleared_call.connect (boost::bind (&cleared_call_cb, _1, _2, _3, (gpointer) self));
-  self->priv->connections.push_back (conn);
+  self->priv->connections.add (conn);
 
   g_signal_connect (self, "popup-menu",
                     G_CALLBACK (show_popup_menu_cb), self->priv->popup_menu);
