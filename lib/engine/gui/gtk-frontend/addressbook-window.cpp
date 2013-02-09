@@ -43,6 +43,7 @@
 #include "book-view-gtk.h"
 #include "menu-builder-gtk.h"
 #include "form-dialog-gtk.h"
+#include "scoped-connections.h"
 
 /* 
  * The Search Window 
@@ -52,7 +53,7 @@ struct _AddressBookWindowPrivate
   _AddressBookWindowPrivate (Ekiga::ContactCore & _core):core (_core) { }
 
   Ekiga::ContactCore & core;
-  std::vector<boost::signals::connection> connections;
+  Ekiga::scoped_connections connections;
   GtkWidget *tree_view;
   GtkWidget *notebook;
   GtkTreeSelection *selection;
@@ -579,12 +580,6 @@ addressbook_window_finalize (GObject *obj)
 {
   AddressBookWindow *self = ADDRESSBOOK_WINDOW (obj);
 
-  for (std::vector<boost::signals::connection>::iterator iter
-	 = self->priv->connections.begin ();
-       iter != self->priv->connections.end ();
-       iter++)
-    iter->disconnect ();
-
   delete self->priv;
 
   G_OBJECT_CLASS (addressbook_window_parent_class)->finalize (obj);
@@ -649,7 +644,7 @@ addressbook_window_new (Ekiga::ContactCore &core)
   g_object_ref (self->priv->menu_item_core);
   conn = core.updated.connect (boost::bind (&on_core_updated,
                                            (gpointer) self));
-  self->priv->connections.push_back (conn);
+  self->priv->connections.add (conn);
   on_core_updated (self); // This will add static and dynamic actions
 
   self->priv->menu_item_view = gtk_menu_item_new_with_mnemonic (_("_Action"));
@@ -721,21 +716,21 @@ addressbook_window_new (Ekiga::ContactCore &core)
   gtk_paned_add2 (GTK_PANED (hpaned), self->priv->notebook);
 
   conn = core.source_added.connect (boost::bind (&on_source_added, _1, (gpointer) self));
-  self->priv->connections.push_back (conn);
+  self->priv->connections.add (conn);
 
   conn = core.book_updated.connect (boost::bind (&on_book_updated, _1, _2,
                                                 (gpointer) self));
-  self->priv->connections.push_back (conn);
+  self->priv->connections.add (conn);
   conn = core.book_added.connect (boost::bind (&on_book_added, _1, _2,
                                               (gpointer) self));
-  self->priv->connections.push_back (conn);
+  self->priv->connections.add (conn);
   conn =
     core.book_removed.connect (boost::bind (&on_book_removed, _1, _2,
                                            (gpointer) self));
-  self->priv->connections.push_back (conn);
+  self->priv->connections.add (conn);
 
   conn = core.questions.connect (boost::bind (&on_handle_questions, _1, (gpointer) self));
-  self->priv->connections.push_back (conn);
+  self->priv->connections.add (conn);
 
   core.visit_sources (boost::bind (on_visit_sources, _1, (gpointer) self));
 
