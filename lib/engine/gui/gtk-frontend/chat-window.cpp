@@ -43,6 +43,7 @@
 
 #include "menu-builder-gtk.h"
 #include "form-dialog-gtk.h"
+#include "scoped-connections.h"
 
 #include "chat-window.h"
 #include "simple-chat-page.h"
@@ -51,7 +52,7 @@
 struct _ChatWindowPrivate
 {
   boost::shared_ptr<Ekiga::NotificationCore> notification_core;
-  std::list<boost::signals::connection> connections;
+  Ekiga::scoped_connections connections;
 
   GtkWidget* notebook;
 };
@@ -296,8 +297,8 @@ static bool
 on_dialect_added (ChatWindow* self,
 		  Ekiga::DialectPtr dialect)
 {
-  self->priv->connections.push_front (dialect->simple_chat_added.connect (boost::bind (&on_simple_chat_added, self, _1)));
-  self->priv->connections.push_front (dialect->multiple_chat_added.connect (boost::bind (&on_multiple_chat_added, self, _1)));
+  self->priv->connections.add (dialect->simple_chat_added.connect (boost::bind (&on_simple_chat_added, self, _1)));
+  self->priv->connections.add (dialect->multiple_chat_added.connect (boost::bind (&on_multiple_chat_added, self, _1)));
 
   dialect->visit_simple_chats (boost::bind (&on_simple_chat_added, self, _1));
   dialect->visit_multiple_chats (boost::bind (&on_multiple_chat_added, self, _1));
@@ -347,7 +348,7 @@ on_simple_chat_added (ChatWindow* self,
   g_signal_connect (page, "message-notice-event",
 		    G_CALLBACK (on_message_notice_event), self);
 
-  self->priv->connections.push_front (chat->user_requested.connect (boost::bind (&on_some_chat_user_requested, self, page)));
+  self->priv->connections.add (chat->user_requested.connect (boost::bind (&on_some_chat_user_requested, self, page)));
 
   return true;
 }
@@ -366,7 +367,7 @@ on_multiple_chat_added (ChatWindow* self,
 			    page, label);
   gtk_widget_show_all (page);
 
-  self->priv->connections.push_front (chat->user_requested.connect (boost::bind (&on_some_chat_user_requested, self, page)));
+  self->priv->connections.add (chat->user_requested.connect (boost::bind (&on_some_chat_user_requested, self, page)));
 
   return true;
 }
@@ -399,12 +400,6 @@ chat_window_finalize (GObject* obj)
   ChatWindow* self = NULL;
 
   self = CHAT_WINDOW (obj);
-
-  for (std::list<boost::signals::connection>::iterator iter
-	 = self->priv->connections.begin ();
-       iter != self->priv->connections.end ();
-       ++iter)
-    iter->disconnect ();
 
   delete self->priv;
   self->priv = NULL;
@@ -482,8 +477,8 @@ chat_window_new (Ekiga::ServiceCore& core,
 
   boost::shared_ptr<Ekiga::ChatCore> chat_core =
     core.get<Ekiga::ChatCore> ("chat-core");
-  self->priv->connections.push_front (chat_core->dialect_added.connect (boost::bind (&on_dialect_added, self, _1)));
-  self->priv->connections.push_front (chat_core->questions.connect (boost::bind (&on_handle_questions, self, _1)));
+  self->priv->connections.add (chat_core->dialect_added.connect (boost::bind (&on_dialect_added, self, _1)));
+  self->priv->connections.add (chat_core->questions.connect (boost::bind (&on_handle_questions, self, _1)));
   chat_core->visit_dialects (boost::bind (&on_dialect_added, self, _1));
 
   return (GtkWidget*)self;
