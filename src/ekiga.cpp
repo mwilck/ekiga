@@ -64,13 +64,20 @@ GnomeMeeting::GnomeMeeting ()
 void
 GnomeMeeting::Exit ()
 {
-  if (main_window)
+  if (main_window) {
+    gtk_widget_hide (main_window);
     gtk_widget_destroy (main_window);
+  }
   main_window = NULL;
 
-  if (assistant_window)
+  if (assistant_window) {
+    gtk_widget_hide (assistant_window);
     gtk_widget_destroy (assistant_window);
+  }
   assistant_window = NULL;
+
+  while (gtk_events_pending ())
+    gtk_main_iteration ();
 }
 
 
