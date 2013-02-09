@@ -45,6 +45,8 @@
 #include "preferences-window.h"
 #include "default_devices.h"
 
+#include "scoped-connections.h"
+
 #include "gmwindow.h"
 #include "codecsbox.h"
 
@@ -70,7 +72,7 @@ typedef struct _GmPreferencesWindow
   GtkWidget *iface;
   GtkWidget *fsbutton;
   Ekiga::ServiceCore& core;
-  std::vector<boost::signals::connection> connections;
+  Ekiga::scoped_connections connections;
   std::list<gpointer> notifiers;
 } GmPreferencesWindow;
 
@@ -86,10 +88,6 @@ _GmPreferencesWindow::~_GmPreferencesWindow()
        iter != notifiers.end ();
        ++iter)
     gm_conf_notifier_remove (*iter);
-  for (std::vector<boost::signals::connection>::iterator iter = connections.begin ();
-       iter != connections.end ();
-       ++iter)
-    iter->disconnect ();
 }
 
 /* Declarations */
@@ -1361,19 +1359,19 @@ preferences_window_new (Ekiga::ServiceCore& core)
   boost::shared_ptr<Ekiga::AudioOutputCore> audiooutput_core = core.get<Ekiga::AudioOutputCore> ("audiooutput-core");
 
   conn = videoinput_core->device_added.connect (boost::bind (&on_videoinput_device_added_cb, _1, _2, window));
-  pw->connections.push_back (conn);
+  pw->connections.add (conn);
   conn = videoinput_core->device_removed.connect (boost::bind (&on_videoinput_device_removed_cb, _1, _2, window));
-  pw->connections.push_back (conn);
+  pw->connections.add (conn);
 
   conn = audioinput_core->device_added.connect (boost::bind (&on_audioinput_device_added_cb, _1, _2, window));
-  pw->connections.push_back (conn);
+  pw->connections.add (conn);
   conn = audioinput_core->device_removed.connect (boost::bind (&on_audioinput_device_removed_cb, _1, _2, window));
-  pw->connections.push_back (conn);
+  pw->connections.add (conn);
 
   conn = audiooutput_core->device_added.connect (boost::bind (&on_audiooutput_device_added_cb, _1, _2, window));
-  pw->connections.push_back(conn);
+  pw->connections.add(conn);
   conn = audiooutput_core->device_removed.connect (boost::bind (&on_audiooutput_device_removed_cb, _1, _2, window));
-  pw->connections.push_back (conn);
+  pw->connections.add (conn);
 
 
   /* Connect notifiers for SOUND_EVENTS_KEY keys */
