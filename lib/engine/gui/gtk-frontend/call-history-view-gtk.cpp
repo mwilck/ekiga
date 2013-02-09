@@ -56,7 +56,7 @@ struct _CallHistoryViewGtkPrivate
   boost::shared_ptr<History::Book> book;
   GtkListStore* store;
   GtkTreeView* tree;
-  std::vector<boost::signals::connection> connections;
+  boost::signals::scoped_connection connection;
 };
 
 /* this is what we put in the view */
@@ -229,12 +229,6 @@ call_history_view_gtk_dispose (GObject* obj)
 
   view = CALL_HISTORY_VIEW_GTK (obj);
 
-  for (std::vector<boost::signals::connection>::iterator iter
-	 = view->priv->connections.begin ();
-       iter != view->priv->connections.end ();
-       iter++)
-    iter->disconnect ();
-
   if (view->priv->store) {
 
     g_object_unref (view->priv->store);
@@ -314,8 +308,6 @@ call_history_view_gtk_new (boost::shared_ptr<History::Book> book)
   GtkCellRenderer *renderer = NULL;
   GtkTreeSelection *selection = NULL;
 
-  boost::signals::connection conn;
-
   g_return_val_if_fail (book, (GtkWidget*)NULL);
 
   self = (CallHistoryViewGtk*)g_object_new (CALL_HISTORY_VIEW_GTK_TYPE, NULL);
@@ -363,8 +355,7 @@ call_history_view_gtk_new (boost::shared_ptr<History::Book> book)
 		    G_CALLBACK (on_clicked), &(*book));
 
   /* connect to the signal */
-  conn = book->updated.connect (boost::bind (&on_book_updated, self));
-  self->priv->connections.push_back (conn);
+  self->priv->connection = book->updated.connect (boost::bind (&on_book_updated, self));
 
   /* initial populate */
   on_book_updated(self);
