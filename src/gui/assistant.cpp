@@ -38,9 +38,11 @@
 
 #include <glib/gi18n.h>
 
-#include "framework/services.h"
+#include "services.h"
+#include "scoped-connections.h"
 #include "account-core.h"
 #include "account.h"
+
 
 #include "ekiga.h"
 #include "gmconf.h"
@@ -95,7 +97,7 @@ struct _EkigaAssistantPrivate
   gint last_active_page;
 
   GtkListStore *summary_model;
-  std::vector<boost::signals::connection> connections;
+  Ekiga::scoped_connections connections;
   std::list<gpointer> notifiers;
 };
 
@@ -1638,12 +1640,6 @@ ekiga_assistant_dispose (GObject *object)
     gm_conf_notifier_remove (*iter);
   assistant->priv->notifiers.clear (); // dispose might be called several times
 
-  for (std::vector<boost::signals::connection>::iterator iter = assistant->priv->connections.begin ();
-       iter != assistant->priv->connections.end ();
-       ++iter)
-    iter->disconnect();
-  assistant->priv->connections.clear ();
-
   if (assistant->priv->icon) {
 
     g_object_unref (assistant->priv->icon);
@@ -1713,19 +1709,19 @@ ekiga_assistant_new (Ekiga::ServiceCore& service_core)
   assistant->priv->bank = service_core.get<Opal::Bank> ("opal-account-store");
 
   conn = assistant->priv->videoinput_core->device_added.connect (boost::bind (&on_videoinput_device_added_cb, _1, _2, assistant));
-  assistant->priv->connections.push_back (conn);
+  assistant->priv->connections.add (conn);
   conn = assistant->priv->videoinput_core->device_removed.connect (boost::bind (&on_videoinput_device_removed_cb, _1, _2, assistant));
-  assistant->priv->connections.push_back (conn);
+  assistant->priv->connections.add (conn);
 
   conn = assistant->priv->audioinput_core->device_added.connect (boost::bind (&on_audioinput_device_added_cb, _1, _2, assistant));
-  assistant->priv->connections.push_back (conn);
+  assistant->priv->connections.add (conn);
   conn = assistant->priv->audioinput_core->device_removed.connect (boost::bind (&on_audioinput_device_removed_cb, _1, _2, assistant));
-  assistant->priv->connections.push_back (conn);
+  assistant->priv->connections.add (conn);
 
   conn = assistant->priv->audiooutput_core->device_added.connect (boost::bind (&on_audiooutput_device_added_cb, _1, _2, assistant));
-  assistant->priv->connections.push_back (conn);
+  assistant->priv->connections.add (conn);
   conn = assistant->priv->audiooutput_core->device_removed.connect (boost::bind (&on_audiooutput_device_removed_cb, _1, _2, assistant));
-  assistant->priv->connections.push_back (conn);
+  assistant->priv->connections.add (conn);
 
   /* Notifiers for the VIDEO_CODECS_KEY keys */
   notifier =
