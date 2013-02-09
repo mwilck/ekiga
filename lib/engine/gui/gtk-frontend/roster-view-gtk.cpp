@@ -51,15 +51,14 @@
 #include "roster-view-gtk.h"
 #include "menu-builder-gtk.h"
 #include "form-dialog-gtk.h"
+#include "scoped-connections.h"
 
 /*
  * The Roster
  */
 struct _RosterViewGtkPrivate
 {
-  boost::shared_ptr<Ekiga::PresenceCore> core;
-
-  std::vector<boost::signals::connection> connections;
+  Ekiga::scoped_connections connections;
   GtkTreeStore *store;
   GtkTreeView *tree_view;
   GSList *folded_groups;
@@ -385,14 +384,6 @@ static void roster_view_gtk_find_iter_for_presentity (RosterViewGtk *view,
  */
 static void roster_view_gtk_update_groups (RosterViewGtk *view,
                                            GtkTreeIter *heap_iter);
-
-
-/* DESCRIPTION  : /
- * BEHAVIOR     : Set the PresenceCore which is represented by the RosterViewGk
- * PRE          : /
- */
-static void roster_view_gtk_set_core (RosterViewGtk* self,
-				      boost::shared_ptr<Ekiga::PresenceCore> core);
 
 /* Implementation of the debuggers */
 
@@ -1329,66 +1320,9 @@ roster_view_gtk_update_groups (RosterViewGtk *view,
   }
 }
 
-static void
-roster_view_gtk_set_core (RosterViewGtk* self,
-			  boost::shared_ptr<Ekiga::PresenceCore> core)
-{
-  if (self->priv->core) {
-
-    for (std::vector<boost::signals::connection>::iterator iter
-	   = self->priv->connections.begin ();
-	 iter != self->priv->connections.end ();
-	 iter++)
-      iter->disconnect ();
-
-    self->priv->connections.clear ();
-  }
-
-  if (core) {
-
-    boost::signals::connection conn;
-
-    conn = core->cluster_added.connect (boost::bind (&on_cluster_added, self, _1));
-    self->priv->connections.push_back (conn);
-    conn = core->heap_added.connect (boost::bind (&on_heap_added, self, _1, _2));
-    self->priv->connections.push_back (conn);
-    conn = core->heap_updated.connect (boost::bind (&on_heap_updated, self, _1, _2));
-    self->priv->connections.push_back (conn);
-    conn = core->heap_removed.connect (boost::bind (&on_heap_removed, self, _1, _2));
-    self->priv->connections.push_back (conn);
-    conn = core->presentity_added.connect (boost::bind (&on_presentity_added, self, _1, _2, _3));
-    self->priv->connections.push_back (conn);
-    conn = core->presentity_updated.connect (boost::bind (&on_presentity_updated, self, _1, _2, _3));
-    self->priv->connections.push_back (conn);
-    conn = core->presentity_removed.connect (boost::bind (&on_presentity_removed, self, _1, _2, _3));
-    self->priv->connections.push_back (conn);
-    conn = core->questions.connect (boost::bind (&on_handle_questions, self, _1));
-    self->priv->connections.push_back (conn);
-  }
-
-  // FIXME: for some reason we can be called without it being the case :-/
-  if (GTK_IS_TREE_STORE (self->priv->store))
-    gtk_tree_store_clear (self->priv->store);
-
-  self->priv->core = core;
-
-  if (self->priv->core) {
-
-    core->visit_clusters (boost::bind (&on_visit_clusters, self, _1));
-  }
-}
-
 /*
  * GObject stuff
  */
-static void
-roster_view_gtk_dispose (GObject *obj)
-{
-  roster_view_gtk_set_core (ROSTER_VIEW_GTK (obj), boost::shared_ptr<Ekiga::PresenceCore> ());
-
-  G_OBJECT_CLASS (roster_view_gtk_parent_class)->dispose (obj);
-}
-
 
 static void
 roster_view_gtk_finalize (GObject *obj)
@@ -1402,7 +1336,7 @@ roster_view_gtk_finalize (GObject *obj)
   g_slist_foreach (view->priv->folded_groups, (GFunc) g_free, NULL);
   g_slist_free (view->priv->folded_groups);
   view->priv->folded_groups = NULL;
-  g_free (view->priv);
+  delete view->priv;
 
   G_OBJECT_CLASS (roster_view_gtk_parent_class)->finalize (obj);
 }
@@ -1417,7 +1351,7 @@ roster_view_gtk_init (G_GNUC_UNUSED RosterViewGtk* self)
   GtkTreeViewColumn *col = NULL;
   GtkCellRenderer *renderer = NULL;
 
-  self->priv = g_new0 (RosterViewGtkPrivate, 1);
+  self->priv = new RosterViewGtkPrivate;
 
   self->priv->folded_groups = gm_conf_get_string_list (CONTACTS_KEY "roster_folded_groups");
   self->priv->show_offline_contacts = gm_conf_get_bool (CONTACTS_KEY "show_offline_contacts");
@@ -1539,7 +1473,6 @@ roster_view_gtk_class_init (RosterViewGtkClass* klass)
 {
   GObjectClass *gobject_class = G_OBJECT_CLASS (klass);
 
-  gobject_class->dispose = roster_view_gtk_dispose;
   gobject_class->finalize = roster_view_gtk_finalize;
 
   signals[SELECTION_CHANGED_SIGNAL] =
@@ -1558,11 +1491,29 @@ roster_view_gtk_class_init (RosterViewGtkClass* klass)
 GtkWidget *
 roster_view_gtk_new (boost::shared_ptr<Ekiga::PresenceCore> core)
 {
-  RosterViewGtk *self = NULL;
+  RosterViewGtk* self = NULL;
+  boost::signals::connection conn;
 
   self = (RosterViewGtk *) g_object_new (ROSTER_VIEW_GTK_TYPE, NULL);
 
-  roster_view_gtk_set_core (self, core);
+  conn = core->cluster_added.connect (boost::bind (&on_cluster_added, self, _1));
+  self->priv->connections.add (conn);
+  conn = core->heap_added.connect (boost::bind (&on_heap_added, self, _1, _2));
+  self->priv->connections.add (conn);
+  conn = core->heap_updated.connect (boost::bind (&on_heap_updated, self, _1, _2));
+  self->priv->connections.add (conn);
+  conn = core->heap_removed.connect (boost::bind (&on_heap_removed, self, _1, _2));
+  self->priv->connections.add (conn);
+  conn = core->presentity_added.connect (boost::bind (&on_presentity_added, self, _1, _2, _3));
+  self->priv->connections.add (conn);
+  conn = core->presentity_updated.connect (boost::bind (&on_presentity_updated, self, _1, _2, _3));
+  self->priv->connections.add (conn);
+  conn = core->presentity_removed.connect (boost::bind (&on_presentity_removed, self, _1, _2, _3));
+  self->priv->connections.add (conn);
+  conn = core->questions.connect (boost::bind (&on_handle_questions, self, _1));
+  self->priv->connections.add (conn);
+
+  core->visit_clusters (boost::bind (&on_visit_clusters, self, _1));
 
   return (GtkWidget *) self;
 }
