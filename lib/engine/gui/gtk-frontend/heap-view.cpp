@@ -43,11 +43,12 @@
 #include "menu-builder-tools.h"
 #include "menu-builder-gtk.h"
 #include "form-dialog-gtk.h"
+#include "scoped-connections.h"
 
 struct _HeapViewPrivate
 {
   Ekiga::HeapPtr heap;
-  std::vector<boost::signals::connection> connections;
+  Ekiga::scoped_connections connections;
 
   GtkTreeStore* store;
   GtkTreeView* view;
@@ -452,29 +453,20 @@ static void
 heap_view_set_heap (HeapView* self,
 		    Ekiga::HeapPtr heap)
 {
-  if (self->priv->heap) {
-
-    for (std::vector<boost::signals::connection>::iterator iter
-	   = self->priv->connections.begin ();
-	 iter != self->priv->connections.end ();
-	 iter++)
-      iter->disconnect ();
-
-    self->priv->connections.clear ();
-  }
+  self->priv->connections.clear ();
 
   if (heap) {
 
     boost::signals::connection conn;
 
     conn = heap->removed.connect (boost::bind (&on_heap_removed, self));
-    self->priv->connections.push_back (conn);
+    self->priv->connections.add (conn);
     conn = heap->presentity_added.connect (boost::bind (&on_presentity_added, self, _1));
-    self->priv->connections.push_back (conn);
+    self->priv->connections.add (conn);
     conn = heap->presentity_updated.connect (boost::bind (&on_presentity_updated, self, _1));
-    self->priv->connections.push_back (conn);
+    self->priv->connections.add (conn);
     conn = heap->presentity_removed.connect (boost::bind (&on_presentity_removed, self, _1));
-    self->priv->connections.push_back (conn);
+    self->priv->connections.add (conn);
     conn = heap->questions.connect (boost::bind (&on_questions, self, _1));
   }
 
@@ -502,16 +494,9 @@ on_questions (HeapView* self,
 G_DEFINE_TYPE (HeapView, heap_view, GTK_TYPE_FRAME);
 
 static void
-heap_view_dispose (GObject* obj)
-{
-  // this will release everything we have
-  heap_view_set_heap (HEAP_VIEW (obj), Ekiga::HeapPtr());
-}
-
-static void
 heap_view_finalize (GObject* obj)
 {
-  g_free (HEAP_VIEW (obj)->priv);
+  delete HEAP_VIEW (obj)->priv;
 }
 
 static void
@@ -521,7 +506,7 @@ heap_view_init (HeapView* self)
   GtkCellRenderer* renderer = NULL;
   GtkTreeSelection* selection = NULL;
 
-  self->priv = g_new0 (HeapViewPrivate, 1);
+  self->priv = new HeapViewPrivate;
 
   /* prepare the store */
   self->priv->store = gtk_tree_store_new (COLUMN_NUMBER,
@@ -594,7 +579,6 @@ heap_view_class_init (HeapViewClass* klass)
 {
   GObjectClass* gobject_class = G_OBJECT_CLASS (klass);
 
-  gobject_class->dispose = heap_view_dispose;
   gobject_class->finalize = heap_view_finalize;
 
   signals[SELECTION_CHANGED_SIGNAL] =
