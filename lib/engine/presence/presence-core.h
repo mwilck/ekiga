@@ -39,6 +39,7 @@
 #define __PRESENCE_CORE_H__
 
 #include "services.h"
+#include "scoped-connections.h"
 #include "cluster.h"
 #include "account-core.h"
 
@@ -73,10 +74,6 @@ namespace Ekiga
   class PresenceFetcher
   {
   public:
-
-    /** The destructor.
-     */
-    virtual ~PresenceFetcher () {}
 
     /** Triggers presence fetching for the given uri
      * (notice: the PresenceFetcher should count how many times it was
@@ -143,10 +140,6 @@ namespace Ekiga
     /** The constructor.
      */
     PresenceCore (ServiceCore& core);
-
-    /** The destructor.
-     */
-    ~PresenceCore ();
 
     /*** Service Implementation ***/
   public:
@@ -321,7 +314,7 @@ namespace Ekiga
 
   private:
 
-    std::list<boost::signals::connection> conns;
+    Ekiga::scoped_connections conns;
   };
 
 /**

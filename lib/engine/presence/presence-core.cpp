@@ -44,13 +44,7 @@ Ekiga::PresenceCore::PresenceCore (Ekiga::ServiceCore& core)
   boost::shared_ptr<Ekiga::PersonalDetails> details = core.get<Ekiga::PersonalDetails> ("personal-details");
 
   if (details)
-    conns.push_back (details->updated.connect (boost::bind (boost::bind (&Ekiga::PresenceCore::publish, this, _1), details)));
-}
-
-Ekiga::PresenceCore::~PresenceCore ()
-{
-  for (std::list<boost::signals::connection>::iterator iter = conns.begin (); iter != conns.end (); ++iter)
-    iter->disconnect ();
+    conns.add (details->updated.connect (boost::bind (boost::bind (&Ekiga::PresenceCore::publish, this, _1), details)));
 }
 
 void
@@ -58,13 +52,13 @@ Ekiga::PresenceCore::add_cluster (ClusterPtr cluster)
 {
   clusters.insert (cluster);
   cluster_added (cluster);
-  conns.push_back (cluster->updated.connect (boost::ref (updated)));
-  conns.push_back (cluster->heap_added.connect (boost::bind (&Ekiga::PresenceCore::on_heap_added, this, _1, cluster)));
-  conns.push_back (cluster->heap_updated.connect (boost::bind (&Ekiga::PresenceCore::on_heap_updated, this, _1, cluster)));
-  conns.push_back (cluster->heap_removed.connect (boost::bind (&Ekiga::PresenceCore::on_heap_removed, this, _1, cluster)));
-  conns.push_back (cluster->presentity_added.connect (boost::bind (&Ekiga::PresenceCore::on_presentity_added, this, _1, _2, cluster)));
-  conns.push_back (cluster->presentity_updated.connect (boost::bind (&Ekiga::PresenceCore::on_presentity_updated, this, _1, _2, cluster)));
-  conns.push_back (cluster->presentity_removed.connect (boost::bind (&Ekiga::PresenceCore::on_presentity_removed, this, _1, _2, cluster)));
+  conns.add (cluster->updated.connect (boost::ref (updated)));
+  conns.add (cluster->heap_added.connect (boost::bind (&Ekiga::PresenceCore::on_heap_added, this, _1, cluster)));
+  conns.add (cluster->heap_updated.connect (boost::bind (&Ekiga::PresenceCore::on_heap_updated, this, _1, cluster)));
+  conns.add (cluster->heap_removed.connect (boost::bind (&Ekiga::PresenceCore::on_heap_removed, this, _1, cluster)));
+  conns.add (cluster->presentity_added.connect (boost::bind (&Ekiga::PresenceCore::on_presentity_added, this, _1, _2, cluster)));
+  conns.add (cluster->presentity_updated.connect (boost::bind (&Ekiga::PresenceCore::on_presentity_updated, this, _1, _2, cluster)));
+  conns.add (cluster->presentity_removed.connect (boost::bind (&Ekiga::PresenceCore::on_presentity_removed, this, _1, _2, cluster)));
   cluster->questions.connect (boost::ref (questions));
 
   updated ();
@@ -165,8 +159,8 @@ void
 Ekiga::PresenceCore::add_presence_fetcher (boost::shared_ptr<PresenceFetcher> fetcher)
 {
   presence_fetchers.push_back (fetcher);
-  conns.push_back (fetcher->presence_received.connect (boost::bind (&Ekiga::PresenceCore::on_presence_received, this, _1, _2)));
-  conns.push_back (fetcher->status_received.connect (boost::bind (&Ekiga::PresenceCore::on_status_received, this, _1, _2)));
+  conns.add (fetcher->presence_received.connect (boost::bind (&Ekiga::PresenceCore::on_presence_received, this, _1, _2)));
+  conns.add (fetcher->status_received.connect (boost::bind (&Ekiga::PresenceCore::on_status_received, this, _1, _2)));
   for (std::map<std::string, uri_info>::const_iterator iter
 	 = uri_infos.begin ();
        iter != uri_infos.end ();
