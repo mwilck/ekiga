@@ -54,6 +54,7 @@
 #include "gmlevelmeter.h"
 #include "gmpowermeter.h"
 #include "trigger.h"
+#include "scoped-connections.h"
 #include "menu-builder-tools.h"
 #include "menu-builder-gtk.h"
 #include "ext-window.h"
@@ -184,7 +185,7 @@ struct _EkigaCallWindowPrivate
 
   GtkWidget *transfer_call_popup;
 
-  std::vector<boost::signals::connection> connections;
+  Ekiga::scoped_connections connections;
 };
 
 /* channel types */
@@ -2209,87 +2210,87 @@ ekiga_call_window_connect_engine_signals (EkigaCallWindow *cw)
   /* New Display Engine signals */
 
   conn = cw->priv->videooutput_core->device_opened.connect (boost::bind (&on_videooutput_device_opened_cb, _1, _2, _3, _4, _5, _6, (gpointer) cw));
-  cw->priv->connections.push_back (conn);
+  cw->priv->connections.add (conn);
 
   conn = cw->priv->videooutput_core->device_closed.connect (boost::bind (&on_videooutput_device_closed_cb, _1, (gpointer) cw));
-  cw->priv->connections.push_back (conn);
+  cw->priv->connections.add (conn);
 
   conn = cw->priv->videooutput_core->device_error.connect (boost::bind (&on_videooutput_device_error_cb, _1, _2, (gpointer) cw));
-  cw->priv->connections.push_back (conn);
+  cw->priv->connections.add (conn);
 
   conn = cw->priv->videooutput_core->size_changed.connect (boost::bind (&on_size_changed_cb, _1, _2, _3, _4, (gpointer) cw));
-  cw->priv->connections.push_back (conn);
+  cw->priv->connections.add (conn);
 
   conn = cw->priv->videooutput_core->fullscreen_mode_changed.connect (boost::bind (&on_fullscreen_mode_changed_cb, _1, _2, (gpointer) cw));
-  cw->priv->connections.push_back (conn);
+  cw->priv->connections.add (conn);
 
   /* New VideoInput Engine signals */
 
   conn = cw->priv->videoinput_core->device_opened.connect (boost::bind (&on_videoinput_device_opened_cb, _1, _2, _3, (gpointer) cw));
-  cw->priv->connections.push_back (conn);
+  cw->priv->connections.add (conn);
 
   conn = cw->priv->videoinput_core->device_closed.connect (boost::bind (&on_videoinput_device_closed_cb, _1, _2, (gpointer) cw));
-  cw->priv->connections.push_back (conn);
+  cw->priv->connections.add (conn);
 
   conn = cw->priv->videoinput_core->device_error.connect (boost::bind (&on_videoinput_device_error_cb, _1, _2, _3, (gpointer) cw));
-  cw->priv->connections.push_back (conn);
+  cw->priv->connections.add (conn);
 
   /* New AudioInput Engine signals */
 
   conn = cw->priv->audioinput_core->device_opened.connect (boost::bind (&on_audioinput_device_opened_cb, _1, _2, _3, (gpointer) cw));
-  cw->priv->connections.push_back (conn);
+  cw->priv->connections.add (conn);
 
   conn = cw->priv->audioinput_core->device_closed.connect (boost::bind (&on_audioinput_device_closed_cb, _1, _2, (gpointer) cw));
-  cw->priv->connections.push_back (conn);
+  cw->priv->connections.add (conn);
 
   conn = cw->priv->audioinput_core->device_error.connect (boost::bind (&on_audioinput_device_error_cb, _1, _2, _3, (gpointer) cw));
-  cw->priv->connections.push_back (conn);
+  cw->priv->connections.add (conn);
 
   /* New AudioOutput Engine signals */
 
   conn = cw->priv->audiooutput_core->device_opened.connect (boost::bind (&on_audiooutput_device_opened_cb, _1, _2, _3, _4, (gpointer) cw));
-  cw->priv->connections.push_back (conn);
+  cw->priv->connections.add (conn);
 
   conn = cw->priv->audiooutput_core->device_closed.connect (boost::bind (&on_audiooutput_device_closed_cb, _1, _2, _3, (gpointer) cw));
-  cw->priv->connections.push_back (conn);
+  cw->priv->connections.add (conn);
 
   conn = cw->priv->audiooutput_core->device_error.connect (boost::bind (&on_audiooutput_device_error_cb, _1, _2, _3, _4, (gpointer) cw));
-  cw->priv->connections.push_back (conn);
+  cw->priv->connections.add (conn);
 
   /* New Call Engine signals */
 
   conn = cw->priv->call_core->setup_call.connect (boost::bind (&on_setup_call_cb, _1, _2, (gpointer) cw));
-  cw->priv->connections.push_back (conn);
+  cw->priv->connections.add (conn);
 
   conn = cw->priv->call_core->ringing_call.connect (boost::bind (&on_ringing_call_cb, _1, _2, (gpointer) cw));
-  cw->priv->connections.push_back (conn);
+  cw->priv->connections.add (conn);
 
   conn = cw->priv->call_core->established_call.connect (boost::bind (&on_established_call_cb, _1, _2, (gpointer) cw));
-  cw->priv->connections.push_back (conn);
+  cw->priv->connections.add (conn);
 
   conn = cw->priv->call_core->cleared_call.connect (boost::bind (&on_cleared_call_cb, _1, _2, _3, (gpointer) cw));
-  cw->priv->connections.push_back (conn);
+  cw->priv->connections.add (conn);
 
   conn = cw->priv->call_core->missed_call.connect (boost::bind (&on_missed_call_cb, _1, _2, (gpointer) cw));
-  cw->priv->connections.push_back (conn);
+  cw->priv->connections.add (conn);
 
   conn = cw->priv->call_core->held_call.connect (boost::bind (&on_held_call_cb, _1, _2, (gpointer) cw));
-  cw->priv->connections.push_back (conn);
+  cw->priv->connections.add (conn);
 
   conn = cw->priv->call_core->retrieved_call.connect (boost::bind (&on_retrieved_call_cb, _1, _2, (gpointer) cw));
-  cw->priv->connections.push_back (conn);
+  cw->priv->connections.add (conn);
 
   conn = cw->priv->call_core->stream_opened.connect (boost::bind (&on_stream_opened_cb, _1, _2, _3, _4, _5, (gpointer) cw));
-  cw->priv->connections.push_back (conn);
+  cw->priv->connections.add (conn);
 
   conn = cw->priv->call_core->stream_closed.connect (boost::bind (&on_stream_closed_cb, _1, _2, _3, _4, _5, (gpointer) cw));
-  cw->priv->connections.push_back (conn);
+  cw->priv->connections.add (conn);
 
   conn = cw->priv->call_core->stream_paused.connect (boost::bind (&on_stream_paused_cb, _1, _2, _3, _4, (gpointer) cw));
-  cw->priv->connections.push_back (conn);
+  cw->priv->connections.add (conn);
 
   conn = cw->priv->call_core->stream_resumed.connect (boost::bind (&on_stream_resumed_cb, _1, _2, _3, _4, (gpointer) cw));
-  cw->priv->connections.push_back (conn);
+  cw->priv->connections.add (conn);
 }
 
 static void
@@ -2533,20 +2534,6 @@ ekiga_call_window_init (EkigaCallWindow *cw)
 }
 
 static void
-ekiga_call_window_dispose (GObject* gobject)
-{
-  EkigaCallWindow* cw = EKIGA_CALL_WINDOW (gobject);
-
-  for(std::vector<boost::signals::connection>::iterator iter = cw->priv->connections.begin();
-      iter != cw->priv->connections.end();
-      ++iter)
-    iter->disconnect();
-  cw->priv->connections.clear ();
-
-  G_OBJECT_CLASS (ekiga_call_window_parent_class)->dispose (gobject);
-}
-
-static void
 ekiga_call_window_finalize (GObject *gobject)
 {
   EkigaCallWindow *cw = EKIGA_CALL_WINDOW (gobject);
@@ -2624,7 +2611,6 @@ ekiga_call_window_class_init (EkigaCallWindowClass *klass)
   GtkWidgetClass *widget_class = GTK_WIDGET_CLASS (klass);
   GObjectClass *object_class = G_OBJECT_CLASS (klass);
 
-  object_class->dispose = ekiga_call_window_dispose;
   object_class->finalize = ekiga_call_window_finalize;
 
   widget_class->show = ekiga_call_window_show;
