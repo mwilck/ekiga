@@ -51,6 +51,7 @@
 #include "menu-builder-gtk.h"
 #include "form-dialog-gtk.h"
 #include "optional-buttons-gtk.h"
+#include "scoped-connections.h"
 
 
 struct _AccountsWindowPrivate
@@ -61,7 +62,7 @@ struct _AccountsWindowPrivate
 
   boost::shared_ptr<Ekiga::AccountCore> account_core;
   boost::shared_ptr<Ekiga::PersonalDetails> details;
-  std::vector<boost::signals::connection> connections;
+  Ekiga::scoped_connections connections;
 
   std::string presence;
 
@@ -499,12 +500,6 @@ accounts_window_finalize (GObject *obj)
 {
   AccountsWindow *self = ACCOUNTS_WINDOW (obj);
 
-  for (std::vector<boost::signals::connection>::iterator iter
-	 = self->priv->connections.begin ();
-       iter != self->priv->connections.end ();
-       iter++)
-    iter->disconnect ();
-
   delete self->priv;
 
   G_OBJECT_CLASS (accounts_window_parent_class)->finalize (obj);
@@ -694,19 +689,19 @@ accounts_window_new (Ekiga::ServiceCore &core)
 
   /* Engine Signals callbacks */
   conn = self->priv->account_core->bank_added.connect (boost::bind (&on_bank_added, _1, self));
-  self->priv->connections.push_back (conn);
+  self->priv->connections.add (conn);
   conn = self->priv->account_core->account_added.connect (boost::bind (&on_account_added, _1, _2, self));
-  self->priv->connections.push_back (conn);
+  self->priv->connections.add (conn);
   conn = self->priv->account_core->account_updated.connect (boost::bind (&on_account_updated, _1, _2, self));
-  self->priv->connections.push_back (conn);
+  self->priv->connections.add (conn);
   conn = self->priv->account_core->account_removed.connect (boost::bind (&on_account_removed, _1, _2, self));
-  self->priv->connections.push_back (conn);
+  self->priv->connections.add (conn);
   conn = self->priv->account_core->questions.connect (boost::bind (&on_handle_questions, _1, (gpointer) self));
-  self->priv->connections.push_back (conn);
+  self->priv->connections.add (conn);
 
   self->priv->presence = self->priv->details->get_presence ();
   conn = self->priv->details->updated.connect (boost::bind (&on_personal_details_updated, self, self->priv->details));
-  self->priv->connections.push_back (conn);
+  self->priv->connections.add (conn);
 
   self->priv->account_core->visit_banks (boost::bind (&on_visit_banks, _1, self));
 
