@@ -75,10 +75,13 @@ namespace Ekiga
 
     /* More STL-like ways to access the chats within this Ekiga::DialectImpl
      */
-    typedef typename Ekiga::map_key_iterator<std::map<boost::shared_ptr<SimpleChatType>, std::list<boost::signals::connection> > > simple_iterator;
-    typedef typename Ekiga::map_key_const_iterator<std::map<boost::shared_ptr<SimpleChatType>, std::list<boost::signals::connection> > > simple_const_iterator;
-    typedef typename Ekiga::map_key_iterator<std::map<boost::shared_ptr<MultipleChatType>, std::list<boost::signals::connection> > > multiple_iterator;
-    typedef typename Ekiga::map_key_const_iterator<std::map<boost::shared_ptr<MultipleChatType>, std::list<boost::signals::connection> > > multiple_const_iterator;
+    typedef typename std::map<boost::shared_ptr<SimpleChatType>, std::list<boost::signals::connection> > simple_chats_type;
+    typedef typename std::map<boost::shared_ptr<MultipleChatType>, std::list<boost::signals::connection> > multiple_chats_type;
+
+    typedef typename Ekiga::map_key_iterator<simple_chats_type> simple_iterator;
+    typedef typename Ekiga::map_key_const_iterator<simple_chats_type> simple_const_iterator;
+    typedef typename Ekiga::map_key_iterator<multiple_chats_type> multiple_iterator;
+    typedef typename Ekiga::map_key_const_iterator<multiple_chats_type> multiple_const_iterator;
 
     simple_iterator simple_begin ();
     simple_iterator simple_end ();
@@ -116,8 +119,8 @@ namespace Ekiga
 
   private:
 
-    std::map<boost::shared_ptr<SimpleChatType>, std::list<boost::signals::connection> > simple_chats;
-    std::map<boost::shared_ptr<MultipleChatType>, std::list<boost::signals::connection> > multiple_chats;
+    simple_chats_type simple_chats;
+    multiple_chats_type multiple_chats;
 
     void on_simple_chat_removed (boost::shared_ptr<SimpleChatType> chat);
 
@@ -133,7 +136,7 @@ Ekiga::DialectImpl<SimpleChatType, MultipleChatType>::DialectImpl ()
 template<typename SimpleChatType, typename MultipleChatType>
 Ekiga::DialectImpl<SimpleChatType, MultipleChatType>::~DialectImpl ()
 {
-  for (typename std::map<boost::shared_ptr<SimpleChatType>,std::list<boost::signals::connection> >::iterator iter = simple_chats.begin ();
+  for (typename simple_chats_type::iterator iter = simple_chats.begin ();
        iter != simple_chats.end ();
        iter++) {
 
@@ -144,7 +147,7 @@ Ekiga::DialectImpl<SimpleChatType, MultipleChatType>::~DialectImpl ()
       conn_iter->disconnect ();
     }
   }
-  for (typename std::map<boost::shared_ptr<MultipleChatType>,std::list<boost::signals::connection> >::iterator iter = multiple_chats.begin ();
+  for (typename multiple_chats_type::iterator iter = multiple_chats.begin ();
        iter != multiple_chats.end ();
        iter++) {
 
@@ -163,7 +166,7 @@ Ekiga::DialectImpl<SimpleChatType, MultipleChatType>::visit_simple_chats (boost:
 {
   bool go_on = true;
 
-  for (typename std::map<boost::shared_ptr<SimpleChatType>,std::list<boost::signals::connection> >::const_iterator iter = simple_chats.begin ();
+  for (typename simple_chats_type::const_iterator iter = simple_chats.begin ();
        go_on && iter != simple_chats.end ();
        iter++) {
 
@@ -177,7 +180,7 @@ Ekiga::DialectImpl<SimpleChatType, MultipleChatType>::visit_multiple_chats (boos
 {
   bool go_on = true;
 
-  for (typename std::map<boost::shared_ptr<MultipleChatType>,std::list<boost::signals::connection> >::const_iterator iter = multiple_chats.begin ();
+  for (typename multiple_chats_type::const_iterator iter = multiple_chats.begin ();
        go_on && iter != multiple_chats.end ();
        iter++) {
 
