@@ -47,6 +47,7 @@
 #include "gmstockicons.h"
 #include "menu-builder-tools.h"
 #include "menu-builder-gtk.h"
+#include "scoped-connections.h"
 
 /*
  * The Book View
@@ -62,7 +63,7 @@ struct _BookViewGtkPrivate
   GtkWidget *scrolled_window;
 
   Ekiga::BookPtr book;
-  std::list<boost::signals::connection> connections;
+  Ekiga::scoped_connections connections;
 };
 
 
@@ -447,12 +448,6 @@ book_view_gtk_dispose (GObject *obj)
 
   view = BOOK_VIEW_GTK (obj);
 
-  for (std::list<boost::signals::connection>::iterator iter
-	 = view->priv->connections.begin ();
-       iter != view->priv->connections.end ();
-       ++iter)
-    iter->disconnect ();
-
   if (view->priv->tree_view) {
 
     g_signal_handlers_disconnect_matched (gtk_tree_view_get_selection (view->priv->tree_view),
@@ -603,10 +598,10 @@ book_view_gtk_new (Ekiga::BookPtr book)
   gtk_box_pack_start (GTK_BOX (result->priv->vbox), result->priv->statusbar, FALSE, TRUE, 0);
 
   /* connect to the signals */
-  result->priv->connections.push_back (book->contact_added.connect (boost::bind (&on_contact_added, _1, (gpointer)result)));
-  result->priv->connections.push_back (book->contact_updated.connect (boost::bind (&on_contact_updated, _1, (gpointer)result)));
-  result->priv->connections.push_back (book->contact_removed.connect (boost::bind (&on_contact_removed, _1, (gpointer)result)));
-  result->priv->connections.push_back (book->updated.connect (boost::bind (&on_updated, (gpointer)result)));
+  result->priv->connections.add (book->contact_added.connect (boost::bind (&on_contact_added, _1, (gpointer)result)));
+  result->priv->connections.add (book->contact_updated.connect (boost::bind (&on_contact_updated, _1, (gpointer)result)));
+  result->priv->connections.add (book->contact_removed.connect (boost::bind (&on_contact_removed, _1, (gpointer)result)));
+  result->priv->connections.add (book->updated.connect (boost::bind (&on_updated, (gpointer)result)));
 
 
   /* populate */
