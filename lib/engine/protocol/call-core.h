@@ -43,10 +43,11 @@
 #include "call.h"
 #include "call-manager.h"
 #include "call-protocol-manager.h"
-#include <boost/smart_ptr.hpp>
 
+#include <boost/smart_ptr.hpp>
 #include <boost/signals.hpp>
 #include <boost/bind.hpp>
+
 #include <set>
 #include <map>
 #include <iostream>
@@ -62,8 +63,9 @@ namespace Ekiga
 
   class CallManager;
 
-  class CallCore
-    : public Service
+  class CallCore:
+    public Service,
+    public boost::signals::trackable
     {
 
   public:
@@ -73,10 +75,6 @@ namespace Ekiga
       /** The constructor
        */
       CallCore () { nr_ready = 0; }
-
-      /** The destructor
-       */
-      ~CallCore ();
 
 
       /*** Service Implementation ***/
@@ -186,7 +184,6 @@ namespace Ekiga
 
       
       std::set<boost::shared_ptr<CallManager> > managers;
-      std::list<boost::signals::connection> manager_connections;
       std::map<std::string, std::list<boost::signals::connection> > call_connections;
       unsigned nr_ready;
     };

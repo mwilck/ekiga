@@ -45,22 +45,12 @@
 
 using namespace Ekiga;
 
-
-CallCore::~CallCore ()
-{
-  for (std::list<boost::signals::connection>::iterator iter = manager_connections.begin ();
-       iter != manager_connections.end ();
-       ++iter)
-    iter->disconnect ();
-}
-
-
 void CallCore::add_manager (boost::shared_ptr<CallManager> manager)
 {
   managers.insert (manager);
   manager_added (manager);
 
-  manager_connections.push_back (manager->ready.connect (boost::bind (&CallCore::on_manager_ready, this, manager)));
+  manager->ready.connect (boost::bind (&CallCore::on_manager_ready, this, manager));
 }
 
 
