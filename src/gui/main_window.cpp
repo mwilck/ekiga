@@ -52,6 +52,7 @@
 #include "trigger.h"
 #include "menu-builder-tools.h"
 #include "menu-builder-gtk.h"
+#include "scoped-connections.h"
 
 #include <glib/gi18n.h>
 #include <gdk/gdkkeysyms.h>
@@ -142,7 +143,7 @@ struct _EkigaMainWindowPrivate
   unsigned calling_state;
 
   gulong roster_selection_connection_id;
-  std::vector<boost::signals::connection> connections;
+  Ekiga::scoped_connections connections;
 
   std::list<gpointer> notifiers;
 };
@@ -1561,7 +1562,7 @@ ekiga_main_window_init (EkigaMainWindow *mw)
 {
   gpointer notifier;
 
-  mw->priv = new EkigaMainWindowPrivate ();
+  mw->priv = new EkigaMainWindowPrivate;
 
   /* Accelerators */
   mw->priv->accel = gtk_accel_group_new ();
@@ -1673,30 +1674,30 @@ ekiga_main_window_connect_engine_signals (EkigaMainWindow *mw)
 
   /* Engine Signals callbacks */
   conn = mw->priv->account_core->account_updated.connect (boost::bind (&on_account_updated, _1, _2, (gpointer) mw));
-  mw->priv->connections.push_back (conn);
+  mw->priv->connections.add (conn);
 
   conn = mw->priv->call_core->setup_call.connect (boost::bind (&on_setup_call_cb, _1, _2, (gpointer) mw));
-  mw->priv->connections.push_back (conn);
+  mw->priv->connections.add (conn);
 
   conn = mw->priv->call_core->ringing_call.connect (boost::bind (&on_ringing_call_cb, _1, _2, (gpointer) mw));
-  mw->priv->connections.push_back (conn);
+  mw->priv->connections.add (conn);
 
   conn = mw->priv->call_core->established_call.connect (boost::bind (&on_established_call_cb, _1, _2, (gpointer) mw));
-  mw->priv->connections.push_back (conn);
+  mw->priv->connections.add (conn);
 
   conn = mw->priv->call_core->cleared_call.connect (boost::bind (&on_cleared_call_cb, _1, _2, _3, (gpointer) mw));
-  mw->priv->connections.push_back (conn);
+  mw->priv->connections.add (conn);
 
   conn = mw->priv->call_core->missed_call.connect (boost::bind (&on_missed_call_cb, _1, _2, (gpointer) mw));
-  mw->priv->connections.push_back (conn);
+  mw->priv->connections.add (conn);
 
   conn = mw->priv->call_core->errors.connect (boost::bind (&on_handle_errors, _1, (gpointer) mw));
-  mw->priv->connections.push_back (conn);
+  mw->priv->connections.add (conn);
 
   // FIXME: here we should watch for updates of the presence core
   // and call on_some_core_updated... it it had such a signal!
   conn = mw->priv->contact_core->updated.connect (boost::bind (&on_some_core_updated, mw));
-  mw->priv->connections.push_back (conn);
+  mw->priv->connections.add (conn);
 }
 
 GtkWidget *
