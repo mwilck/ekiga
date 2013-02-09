@@ -242,7 +242,8 @@ libekiga_la_SOURCES += \
 	$(engine_dir)/framework/ptr_array_iterator.h \
 	$(engine_dir)/framework/ptr_array_const_iterator.h \
 	$(engine_dir)/framework/live-object.h \
-	$(engine_dir)/framework/filterable.h
+	$(engine_dir)/framework/filterable.h \
+	$(engine_dir)/framework/scoped-connections.h
 
 ##
 # Sources of the plugin loader code
