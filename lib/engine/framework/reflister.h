@@ -46,6 +46,7 @@
 #include "live-object.h"
 #include "map-key-iterator.h"
 #include "map-key-const-iterator.h"
+#include "scoped-connections.h"
 
 namespace Ekiga
 {
@@ -55,11 +56,9 @@ namespace Ekiga
   {
   protected:
 
-    typedef std::map<boost::shared_ptr<ObjectType>,std::list<boost::signals::connection> > container_type;
+    typedef std::map<boost::shared_ptr<ObjectType>, boost::shared_ptr<scoped_connections> > container_type;
     typedef Ekiga::map_key_iterator<container_type> iterator;
     typedef Ekiga::map_key_const_iterator<container_type> const_iterator;
-
-    virtual ~RefLister ();
 
     void visit_objects (boost::function1<bool, boost::shared_ptr<ObjectType> > visitor) const;
 
@@ -88,21 +87,6 @@ namespace Ekiga
 
 };
 
-template<typename ObjectType>
-Ekiga::RefLister<ObjectType>::~RefLister ()
-{
-  for (typename container_type::iterator iter = objects.begin ();
-       iter != objects.end ();
-       ++iter) {
-
-    for (std::list<boost::signals::connection>::iterator conn_iter = iter->second.begin ();
-	 conn_iter != iter->second.end ();
-	 ++conn_iter) {
-
-      conn_iter->disconnect ();
-    }
-  }
-}
 
 template<typename ObjectType>
 void
@@ -119,9 +103,12 @@ template<typename ObjectType>
 void
 Ekiga::RefLister<ObjectType>::add_object (boost::shared_ptr<ObjectType> obj)
 {
-  objects[obj].push_back (obj->updated.connect (boost::bind (boost::ref (object_updated), obj)));
-  objects[obj].push_back (obj->updated.connect (boost::ref (updated)));
-  objects[obj].push_back (obj->removed.connect (boost::bind (&Ekiga::RefLister<ObjectType>::remove_object, this, obj)));
+  typename container_type::iterator iter = objects.find (obj);
+  if (iter == objects.end ())
+    objects[obj] = boost::shared_ptr<scoped_connections> (new scoped_connections);
+  objects[obj]->add (obj->updated.connect (boost::bind (boost::ref (object_updated), obj)));
+  objects[obj]->add (obj->updated.connect (boost::ref (updated)));
+  objects[obj]->add (obj->removed.connect (boost::bind (&Ekiga::RefLister<ObjectType>::remove_object, this, obj)));
 
   object_added (obj);
   updated ();
@@ -132,18 +119,16 @@ void
 Ekiga::RefLister<ObjectType>::add_connection (boost::shared_ptr<ObjectType> obj,
 					      boost::signals::connection connection)
 {
-  objects[obj].push_back (connection);
+  typename container_type::iterator iter = objects.find (obj);
+  if (iter == objects.end ())
+    objects[obj] = boost::shared_ptr<scoped_connections> (new scoped_connections);
+  objects[obj]->add (connection);
 }
 
 template<typename ObjectType>
 void
 Ekiga::RefLister<ObjectType>::remove_object (boost::shared_ptr<ObjectType> obj)
 {
-  std::list<boost::signals::connection> connections = objects[obj];
-  for (std::list<boost::signals::connection>::iterator iter = connections.begin ();
-       iter != connections.end ();
-       ++iter)
-    iter->disconnect ();
   objects.erase (objects.find (obj));
   object_removed (obj);
   updated ();
