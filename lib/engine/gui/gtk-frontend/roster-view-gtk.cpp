@@ -119,6 +119,7 @@ enum {
   COLUMN_GROUP_NAME,
   COLUMN_PRESENCE,
   COLUMN_OFFLINE,
+  COLUMN_TIMEOUT,
   COLUMN_NUMBER
 };
 
@@ -475,7 +476,7 @@ roster_view_gtk_icon_blink_cb (gpointer data)
                         COLUMN_PRESENCE_ICON, "exit",
                         -1);
   }
-  else if (ltm->tm_sec % 5 == 0 && info->cpt > 3) {
+  else if (ltm->tm_sec % 3 == 0 && info->cpt > 2) {
     if (info->new_presence != "unknown")
       icon = "user-" + info->new_presence;
     gtk_tree_store_set (GTK_TREE_STORE (info->model), info->iter,
@@ -957,8 +958,7 @@ on_heap_updated (RosterViewGtk* self,
   gtk_tree_store_set (self->priv->store, &iter,
 		      COLUMN_TYPE, TYPE_HEAP,
 		      COLUMN_HEAP, heap.get (),
-		      COLUMN_NAME, heap->get_name ().c_str (),
-		      -1);
+		      COLUMN_NAME, heap->get_name ().c_str (), -1);
 
   if (should_emit)
     g_signal_emit (self, signals[SELECTION_CHANGED_SIGNAL], 0);
@@ -971,10 +971,30 @@ on_heap_removed (RosterViewGtk* self,
 		 Ekiga::HeapPtr heap)
 {
   GtkTreeIter iter;
+  GtkTreeIter heap_iter;
+  GtkTreeIter group_iter;
+  guint timeout = 0;
 
-  roster_view_gtk_find_iter_for_heap (self, heap, &iter);
+  roster_view_gtk_find_iter_for_heap (self, heap, &heap_iter);
 
-  gtk_tree_store_remove (self->priv->store, &iter);
+  // Remove all timeout-based effects for the heap presentities
+  if (gtk_tree_model_iter_nth_child (GTK_TREE_MODEL (self->priv->store),
+                                     &group_iter, &heap_iter, 0)) {
+    do {
+      if (gtk_tree_model_iter_nth_child (GTK_TREE_MODEL (self->priv->store),
+                                         &iter, &group_iter, 0)) {
+        do {
+          gtk_tree_model_get (GTK_TREE_MODEL (self->priv->store), &iter,
+                              COLUMN_TIMEOUT, &timeout,
+                              -1);
+          if (timeout > 0)
+            g_source_remove (timeout);
+        } while (gtk_tree_model_iter_next (GTK_TREE_MODEL (self->priv->store), &iter));
+      }
+    } while (gtk_tree_model_iter_next (GTK_TREE_MODEL (self->priv->store), &group_iter));
+  }
+
+  gtk_tree_store_remove (self->priv->store, &heap_iter);
 }
 
 
@@ -1004,6 +1024,7 @@ on_presentity_added (RosterViewGtk* self,
   GtkTreeIter filtered_iter;
   bool active = false;
   bool away = false;
+  guint timeout = 0;
   gchar *old_presence = NULL;
   gboolean should_emit = FALSE;
 
@@ -1029,8 +1050,8 @@ on_presentity_added (RosterViewGtk* self,
 
     // Find out what our presence was
     gtk_tree_model_get (GTK_TREE_MODEL (self->priv->store), &iter,
-                        COLUMN_PRESENCE, &old_presence,
-                        -1);
+                        COLUMN_PRESENCE, &old_presence, -1);
+
     if (old_presence && presentity->get_presence () != old_presence
         && presentity->get_presence () != "unknown" && presentity->get_presence () != "offline"
         && (!g_strcmp0 (old_presence, "unknown") || !g_strcmp0 (old_presence, "offline"))) {
@@ -1041,13 +1062,20 @@ on_presentity_added (RosterViewGtk* self,
       info->new_presence = presentity->get_presence ();
       info->cpt = 0;
 
-      g_timeout_add_seconds_full (G_PRIORITY_DEFAULT, 1, roster_view_gtk_icon_blink_cb,
-                                  (gpointer) info, (GDestroyNotify) status_icon_info_delete);
+      timeout = g_timeout_add_seconds_full (G_PRIORITY_DEFAULT, 1, roster_view_gtk_icon_blink_cb,
+                                            (gpointer) info, (GDestroyNotify) status_icon_info_delete);
+      gtk_tree_store_set (self->priv->store, &iter,
+                          COLUMN_TIMEOUT, timeout, -1);
     }
     else {
 
-      if (!old_presence || old_presence != presentity->get_presence ()) {
-        std::string icon = "avatar-default";
+      std::string icon = "avatar-default";
+      if (!old_presence) {
+        gtk_tree_store_set (self->priv->store, &iter,
+                            COLUMN_PRESENCE_ICON, icon.c_str (),
+                            -1);
+      }
+      else if (old_presence != presentity->get_presence ()) {
         if (presentity->get_presence () != "unknown")
           icon = "user-" + presentity->get_presence ();
         gtk_tree_store_set (self->priv->store, &iter,
@@ -1063,8 +1091,11 @@ on_presentity_added (RosterViewGtk* self,
                         COLUMN_NAME, presentity->get_name ().c_str (),
                         COLUMN_STATUS, presentity->get_status ().c_str (),
                         COLUMN_PRESENCE, presentity->get_presence ().c_str (),
-                        COLUMN_ACTIVE, (!active || away) ? "gray" : "black",
+                        COLUMN_ACTIVE, (!active || away) ? "gray" : "black", -1);
+    gtk_tree_model_get (GTK_TREE_MODEL (self->priv->store), &iter,
+                        COLUMN_TIMEOUT, &timeout,
                         -1);
+
     g_free (old_presence);
   }
 
@@ -1089,6 +1120,7 @@ on_presentity_updated (RosterViewGtk* self,
   GtkTreeIter group_iter;
   GtkTreeIter iter;
   gchar *group_name = NULL;
+  int timeout = 0;
   std::set<std::string> groups = presentity->get_groups ();
 
   model = GTK_TREE_MODEL (self->priv->store);
@@ -1114,6 +1146,11 @@ on_presentity_updated (RosterViewGtk* self,
         if (groups.find (group_name) == groups.end ()) {
 
           roster_view_gtk_find_iter_for_presentity (self, &group_iter, presentity, &iter);
+          gtk_tree_model_get (GTK_TREE_MODEL (self->priv->store), &iter,
+                              COLUMN_TIMEOUT, &timeout,
+                              -1);
+          if (timeout > 0)
+            g_source_remove (timeout);
           gtk_tree_store_remove (self->priv->store, &iter);
         }
         g_free (group_name);
@@ -1138,6 +1175,7 @@ on_presentity_removed (RosterViewGtk* self,
   GtkTreeIter heap_iter;
   GtkTreeIter group_iter;
   GtkTreeIter iter;
+  int timeout = 0;
 
   roster_view_gtk_find_iter_for_heap (self, heap, &heap_iter);
   model = GTK_TREE_MODEL (self->priv->store);
@@ -1147,6 +1185,11 @@ on_presentity_removed (RosterViewGtk* self,
     do {
 
       roster_view_gtk_find_iter_for_presentity (self, &group_iter, presentity, &iter);
+      gtk_tree_model_get (GTK_TREE_MODEL (self->priv->store), &iter,
+                          COLUMN_TIMEOUT, &timeout,
+                          -1);
+      if (timeout > 0)
+        g_source_remove (timeout);
       gtk_tree_store_remove (self->priv->store, &iter);
     } while (gtk_tree_model_iter_next (model, &group_iter));
   }
@@ -1271,6 +1314,7 @@ roster_view_gtk_update_groups (RosterViewGtk *view,
 
   GSList *existing_group = NULL;
 
+  int timeout = 0;
   gboolean go_on = FALSE;
   gchar *name = NULL;
 
@@ -1323,6 +1367,9 @@ roster_view_gtk_update_groups (RosterViewGtk *view,
       // else remove the node (no children)
       else {
 
+        gtk_tree_model_get (GTK_TREE_MODEL (view->priv->store), &iter,
+                            COLUMN_TIMEOUT, &timeout,
+                            -1);
         go_on = gtk_tree_store_remove (view->priv->store, &iter);
       }
     } while (go_on);
@@ -1437,7 +1484,8 @@ roster_view_gtk_init (G_GNUC_UNUSED RosterViewGtk* self)
                                           G_TYPE_STRING,      // color if active
                                           G_TYPE_STRING,      // group name (invisible)
                                           G_TYPE_STRING,      // presence
-					  G_TYPE_BOOLEAN);    // offline
+					  G_TYPE_BOOLEAN,     // offline
+                                          G_TYPE_INT);        // timeout source
 
   gtk_tree_sortable_set_sort_column_id (GTK_TREE_SORTABLE (self->priv->store),
                                         COLUMN_NAME, GTK_SORT_ASCENDING);
