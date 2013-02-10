@@ -470,6 +470,8 @@ roster_view_gtk_icon_blink_cb (gpointer data)
   else if (ltm->tm_sec % 3 == 0 && info->cpt > 2) {
     if (info->new_presence != "unknown")
       icon = "user-" + info->new_presence;
+    if (icon == "user-xa")
+      icon = "user-away";
     gtk_tree_store_set (GTK_TREE_STORE (info->model), info->iter,
                         COLUMN_PRESENCE_ICON, icon.c_str (),
                         -1);
@@ -1069,6 +1071,8 @@ on_presentity_added (RosterViewGtk* self,
       else if (old_presence != presentity->get_presence ()) {
         if (presentity->get_presence () != "unknown")
           icon = "user-" + presentity->get_presence ();
+        if (icon == "user-xa")
+          icon = "user-away";
         gtk_tree_store_set (self->priv->store, &iter,
                             COLUMN_PRESENCE_ICON, icon.c_str (),
                             -1);
