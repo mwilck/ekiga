@@ -97,10 +97,15 @@ LM::Presentity::get_presence () const
       ++iter;
     }
     if (best.presence == "") {
-
       result = "available";
-    } else {
-
+    }
+    else if (best.presence == "xa") {
+      result = "away";
+    }
+    else if (best.presence == "dnd") {
+      result = "busy";
+    }
+    else {
       result = best.presence;
     }
   }
