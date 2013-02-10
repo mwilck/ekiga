@@ -57,20 +57,15 @@ class ChatAreaHelper;
 
 struct _ChatAreaPrivate
 {
-  Ekiga::Chat* chat;
-  boost::signals::connection connection;
+  boost::shared_ptr<Ekiga::Chat> chat;
+  boost::signals::scoped_connection connection;
   boost::shared_ptr<ChatAreaHelper> helper;
   GmTextBufferEnhancer* enhancer;
-  GtkWidget* smiley_menu;
 
   /* we contain those, so no need to unref them */
   GtkWidget* scrolled_text_window;
   GtkWidget* text_view;
   GtkWidget* message;
-};
-
-enum {
-  CHAT_AREA_PROP_CHAT = 1
 };
 
 enum {
@@ -620,16 +615,16 @@ chat_area_dispose (GObject* obj)
 
   self = (ChatArea*)obj;
 
+  if (self->priv->helper) {
+
+    self->priv->chat->disconnect (self->priv->helper);
+    self->priv->helper.reset ();
+  }
+
   if (self->priv->enhancer != NULL) {
 
     g_object_unref (self->priv->enhancer);
     self->priv->enhancer = NULL;
-  }
-
-  if (self->priv->smiley_menu != NULL) {
-
-    g_object_unref (self->priv->smiley_menu);
-    self->priv->smiley_menu = NULL;
   }
 
   G_OBJECT_CLASS (chat_area_parent_class)->dispose (obj);
@@ -642,88 +637,18 @@ chat_area_finalize (GObject* obj)
 
   self = (ChatArea*)obj;
 
-  if (self->priv->chat) {
-
-    self->priv->connection.disconnect ();
-    if (self->priv->helper) {
-      self->priv->chat->disconnect (self->priv->helper);
-      self->priv->helper.reset ();
-    }
-    self->priv->chat = NULL;
-  }
+  delete self->priv;
 
   G_OBJECT_CLASS (chat_area_parent_class)->finalize (obj);
-}
-
-static void
-chat_area_get_property (GObject* obj,
-			guint prop_id,
-			GValue* value,
-			GParamSpec* spec)
-{
-  ChatArea* self = NULL;
-
-  self = (ChatArea*)obj;
-
-  switch (prop_id) {
-
-  case CHAT_AREA_PROP_CHAT:
-    g_value_set_pointer (value, self->priv->chat);
-    break;
-
-  default:
-    G_OBJECT_WARN_INVALID_PROPERTY_ID (obj, prop_id, spec);
-    break;
-  }
-}
-
-static void
-chat_area_set_property (GObject* obj,
-			guint prop_id,
-			const GValue* value,
-			GParamSpec* spec)
-{
-  ChatArea* self = NULL;
-  gpointer ptr = NULL;
-
-  self = (ChatArea* )obj;
-
-  switch (prop_id) {
-
-  case CHAT_AREA_PROP_CHAT:
-    ptr = g_value_get_pointer (value);
-    self->priv->chat = (Ekiga::Chat *)ptr;
-    self->priv->connection = self->priv->chat->removed.connect (boost::bind (&on_chat_removed, self));
-    self->priv->helper = boost::shared_ptr<ChatAreaHelper>(new ChatAreaHelper (self));
-    self->priv->chat->connect (self->priv->helper);
-    break;
-
-  default:
-    G_OBJECT_WARN_INVALID_PROPERTY_ID (obj, prop_id, spec);
-    break;
-  }
 }
 
 static void
 chat_area_class_init (ChatAreaClass* klass)
 {
   GObjectClass* gobject_class = G_OBJECT_CLASS (klass);
-  GParamSpec* spec = NULL;
-
-  g_type_class_add_private (klass, sizeof (ChatAreaPrivate));
 
   gobject_class->dispose = chat_area_dispose;
   gobject_class->finalize = chat_area_finalize;
-  gobject_class->get_property = chat_area_get_property;
-  gobject_class->set_property = chat_area_set_property;
-
-  spec = g_param_spec_pointer ("chat",
-			       "displayed chat",
-			       "Displayed chat",
-			       (GParamFlags)(G_PARAM_WRITABLE | G_PARAM_CONSTRUCT_ONLY));
-  g_object_class_install_property (gobject_class,
-				   CHAT_AREA_PROP_CHAT,
-				   spec);
 
   signals[MESSAGE_NOTICE_EVENT] =
     g_signal_new ("message-notice-event",
@@ -745,10 +670,7 @@ chat_area_init (ChatArea* self)
   GtkWidget *frame = NULL;
   GtkWidget *sep = NULL;
 
-  self->priv = G_TYPE_INSTANCE_GET_PRIVATE (self,
-					    TYPE_CHAT_AREA,
-					    ChatAreaPrivate);
-  self->priv->chat = NULL;
+  self->priv = new ChatAreaPrivate;
 
   /* first the area has a text view to display
      the GtkScrolledWindow is there to make
@@ -974,9 +896,15 @@ chat_area_init (ChatArea* self)
 GtkWidget*
 chat_area_new (boost::shared_ptr<Ekiga::Chat> chat)
 {
-  return (GtkWidget*)g_object_new (TYPE_CHAT_AREA,
-				   "chat", chat.get (),
-				   NULL);
+  ChatArea* self = NULL;
+
+  self = (ChatArea*)g_object_new (TYPE_CHAT_AREA, NULL);
+  self->priv->chat = chat;
+  self->priv->connection = self->priv->chat->removed.connect (boost::bind (&on_chat_removed, self));
+  self->priv->helper = boost::shared_ptr<ChatAreaHelper>(new ChatAreaHelper (self));
+  self->priv->chat->connect (self->priv->helper);
+
+  return (GtkWidget*)self;
 }
 
 const std::string
