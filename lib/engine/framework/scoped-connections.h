@@ -57,7 +57,8 @@
 
 namespace Ekiga {
 
-  class scoped_connections
+  class scoped_connections:
+    public boost::noncopyable
   {
   public:
 
