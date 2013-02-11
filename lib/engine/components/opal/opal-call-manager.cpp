@@ -117,6 +117,8 @@ CallManager::CallManager (Ekiga::ServiceCore& core)
   call_core = core.get<Ekiga::CallCore> ("call-core");
   notification_core = core.get<Ekiga::NotificationCore> ("notification-core");
 
+  stun_thread = 0;
+
   /* Initialise the endpoint parameters */
 #if P_HAS_IPV6
   char * ekiga_ipv6 = getenv("EKIGA_IPV6");
@@ -178,6 +180,8 @@ CallManager::CallManager (Ekiga::ServiceCore& core)
 
 CallManager::~CallManager ()
 {
+  if (stun_thread)
+    stun_thread->WaitForTermination ();
   ClearAllCalls (OpalConnection::EndedByLocalUser, true);
   ShutDownEndpoints ();
 
@@ -565,10 +569,10 @@ void CallManager::set_stun_server (const std::string & server)
 void CallManager::set_stun_enabled (bool enabled)
 {
   stun_enabled = enabled;
-  if (stun_enabled) {
+  if (stun_enabled && stun_thread) {
 
     // Ready
-    new StunDetector (stun_server, *this, queue);
+    stun_thread = new StunDetector (stun_server, *this, queue);
     patience = 20;
     Ekiga::Runtime::run_in_main (boost::bind (&CallManager::HandleSTUNResult, this), 1);
   } else
@@ -846,6 +850,7 @@ CallManager::HandleSTUNResult ()
     PSTUNClient::NatTypes result
       = (PSTUNClient::NatTypes)(GPOINTER_TO_UINT (g_async_queue_pop (queue))-1);
     got_answer = true;
+    stun_thread = 0;
 
     if (result == PSTUNClient::SymmetricNat
 	|| result == PSTUNClient::BlockedNat
