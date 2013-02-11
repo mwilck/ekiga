@@ -95,6 +95,8 @@ public:
              bool enabled,
              unsigned timeout);
 
+    ~Account ();
+
     const std::string get_name () const;
 
     const std::string get_status () const;

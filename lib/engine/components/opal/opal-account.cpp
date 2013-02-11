@@ -200,6 +200,11 @@ Opal::Account::Account (boost::shared_ptr<Opal::Sip::EndPoint> _sip_endpoint,
     enable ();
 }
 
+Opal::Account::~Account ()
+{
+  if (presentity)
+    presentity->SetPresenceChangeNotifier (OpalPresentity::PresenceChangeNotifier(0));
+}
 
 const std::string Opal::Account::as_string () const
 {
