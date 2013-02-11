@@ -166,6 +166,7 @@ private:
 
     void GetAllowedFormats (OpalMediaFormatList & full_list);
 
+    PThread* stun_thread;
     void HandleSTUNResult ();
 
     void ReportSTUNError (const std::string error);
