@@ -203,6 +203,11 @@ Opal::Account::Account (Ekiga::ServiceCore & _core,
     enable ();
 }
 
+Opal::Account::~Account ()
+{
+  if (presentity)
+    presentity->SetPresenceChangeNotifier (OpalPresentity::PresenceChangeNotifier(0));
+}
 
 const std::string Opal::Account::as_string () const
 {
