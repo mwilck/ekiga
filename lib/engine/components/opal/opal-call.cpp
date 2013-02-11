@@ -115,12 +115,6 @@ Opal::Call::Call (Opal::CallManager& _manager,
   NoAnswerTimer.SetNotifier (PCREATE_NOTIFIER (OnNoAnswerTimeout));
 }
 
-
-Opal::Call::~Call ()
-{
-  std::cout << __PRETTY_FUNCTION__ << std::endl;
-}
-
 void
 Opal::Call::set_engine_services (boost::shared_ptr<Ekiga::NotificationCore> _notification_core,
 				 boost::shared_ptr<Ekiga::CallCore> _call_core)

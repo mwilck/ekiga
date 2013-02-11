@@ -66,8 +66,6 @@ public:
     Call (CallManager &_manager,
           const std::string & uri);
 
-    ~Call ();
-
     /*
      * Call Management
      */
