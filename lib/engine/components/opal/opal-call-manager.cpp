@@ -533,7 +533,7 @@ void CallManager::set_stun_server (const std::string & server)
 void CallManager::set_stun_enabled (bool enabled)
 {
   stun_enabled = enabled;
-  if (stun_enabled && stun_thread) {
+  if (stun_enabled && !stun_thread) {
 
     // Ready
     stun_thread = new StunDetector (stun_server, *this, queue);
