@@ -745,7 +745,9 @@ void CallManager::get_video_options (CallManager::VideoOptions & options) const
 void
 CallManager::create_call_in_main (Opal::Call* _call)
 {
-  boost::shared_ptr<Opal::Call> call(_call);
+  // beware that opal puts calls in PSafePtr objects,
+  // and hence we must not delete them ourselves
+  boost::shared_ptr<Opal::Call> call(_call, null_deleter ());
 
   // FIXME: we should check it worked, but what do we do if it doesn't?
   boost::shared_ptr<Ekiga::CallCore> ccore = call_core.lock ();
