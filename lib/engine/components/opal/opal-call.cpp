@@ -118,6 +118,7 @@ Opal::Call::Call (Opal::CallManager& _manager,
 
 Opal::Call::~Call ()
 {
+  std::cout << __PRETTY_FUNCTION__ << std::endl;
 }
 
 void
@@ -704,6 +705,7 @@ void
 Opal::Call::emit_cleared_in_main (const std::string reason)
 {
   cleared (reason);
+  removed ();
 }
 
 void

@@ -180,7 +180,6 @@ private:
 
     void create_call_in_main (Opal::Call* call);
     OpalCall *CreateCall (void *uri);
-    void emit_removed_in_main (Ekiga::Call* call);
     virtual void DestroyCall (OpalCall *);
 
     virtual bool OnOpenMediaStream (OpalConnection &,
