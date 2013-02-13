@@ -382,7 +382,7 @@ SIPRegister::CompatibilityModes Opal::Account::get_compat_mode () const
 void Opal::Account::remove ()
 {
   dead = true;
-  if (state == Registered) {
+  if (state == Registered || state == Processing) {
     disable();
     return;
   }
