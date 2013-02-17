@@ -258,8 +258,8 @@ ifeq ($(MINGW32), 1)
 confptlib := $(confptlib) --with-directx-includedir=$(EKIGA_DIR)/win32/directx
 endif
 
-# disable ilbc and silk non-free codecs
-confopal := $(confflags) --disable-t38 --disable-fax --disable-iLBC --disable-silk
+# disable silk non-free codec
+confopal := $(confflags) --disable-t38 --disable-fax --disable-silk
 
 confekiga:= $(confflags) \
 	--prefix=$(EKIGA_PREFIX) --bindir=$(EKIGA_PREFIX) --datadir=$(EKIGA_PREFIX) \
