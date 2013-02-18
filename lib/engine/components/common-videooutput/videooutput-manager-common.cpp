@@ -51,7 +51,7 @@
 
 /* The functions */
 GMVideoOutputManager::GMVideoOutputManager(Ekiga::ServiceCore & _core)
-  : PThread (1000, NoAutoDeleteThread, HighestPriority, "GMVideoOutputManager"),
+  : PThread (1000, AutoDeleteThread, HighestPriority, "GMVideoOutputManager"),
     core (_core)
 {
 }
