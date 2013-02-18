@@ -56,7 +56,9 @@
     GMVideoOutputManager_dx (Ekiga::ServiceCore & _core);
 
     virtual ~GMVideoOutputManager_dx ();
-  
+
+    virtual void quit ();
+
     virtual bool frame_display_change_needed ();
 
     virtual void setup_frame_display ();

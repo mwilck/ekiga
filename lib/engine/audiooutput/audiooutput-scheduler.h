@@ -73,7 +73,7 @@ namespace Ekiga
 
   public:
     AudioEventScheduler(Ekiga::AudioOutputCore& _audio_output_core);
-    ~AudioEventScheduler();
+    void quit ();
     void add_event_to_queue(const std::string & name, bool is_file_name, unsigned interval, unsigned repetitions);
     void remove_event_from_queue(const std::string & name);
     void set_file_name(const std::string & event_name, const std::string & file_name, AudioOutputPS ps, bool enabled);

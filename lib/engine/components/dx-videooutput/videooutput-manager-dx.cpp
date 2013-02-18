@@ -52,6 +52,10 @@ GMVideoOutputManager_dx::GMVideoOutputManager_dx (Ekiga::ServiceCore & _core)
 
 GMVideoOutputManager_dx::~GMVideoOutputManager_dx ()
 {
+}
+
+void GMVideoOutputManager_dx::quit ()
+{
   end_thread = true;
   run_thread.Signal();
   thread_ended.Wait();

@@ -44,7 +44,7 @@
 using namespace Ekiga;
 
 AudioEventScheduler::AudioEventScheduler (AudioOutputCore& _audio_output_core)
-: PThread (1000, NoAutoDeleteThread, HighestPriority, "AudioEventScheduler"),
+: PThread (1000, AutoDeleteThread, HighestPriority, "AudioEventScheduler"),
   audio_output_core (_audio_output_core)
 {
   end_thread = false;
@@ -54,14 +54,13 @@ AudioEventScheduler::AudioEventScheduler (AudioOutputCore& _audio_output_core)
   thread_created.Wait ();
 }
 
-AudioEventScheduler::~AudioEventScheduler ()
+void AudioEventScheduler::quit ()
 {
   end_thread = true;
   run_thread.Signal ();
 
   /* Wait for the Main () method to be terminated */
   PWaitAndSignal m(thread_ended);
-
 }
 
 void AudioEventScheduler::Main ()

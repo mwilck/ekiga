@@ -47,7 +47,7 @@
 using namespace Ekiga;
 
 VideoInputCore::VideoPreviewManager::VideoPreviewManager (VideoInputCore& _videoinput_core, boost::shared_ptr<VideoOutputCore> _videooutput_core)
-: PThread (1000, NoAutoDeleteThread, HighestPriority, "VideoPreviewManager"),
+: PThread (1000, AutoDeleteThread, HighestPriority, "VideoPreviewManager"),
     videoinput_core (_videoinput_core),
   videooutput_core (_videooutput_core)
 {
@@ -62,7 +62,7 @@ VideoInputCore::VideoPreviewManager::VideoPreviewManager (VideoInputCore& _video
   thread_paused.Wait();
 }
 
-VideoInputCore::VideoPreviewManager::~VideoPreviewManager ()
+void VideoInputCore::VideoPreviewManager::quit ()
 {
   if (!pause_thread)
     stop();
@@ -162,7 +162,7 @@ VideoInputCore::~VideoInputCore ()
   if (videoinput_core_conf_bridge)
     delete videoinput_core_conf_bridge;
 
-  delete preview_manager;
+  preview_manager->quit ();
 
   for (std::set<VideoInputManager *>::iterator iter = managers.begin ();
        iter != managers.end ();
