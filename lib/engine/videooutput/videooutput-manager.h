@@ -69,6 +69,7 @@ namespace Ekiga
        */
       virtual ~VideoOutputManager () {}
 
+      virtual void quit () { };
 
       /*** API for video output ***/
 

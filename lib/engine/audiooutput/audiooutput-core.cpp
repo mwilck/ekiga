@@ -85,7 +85,7 @@ AudioOutputCore::~AudioOutputCore ()
   if (audiooutput_core_conf_bridge)
     delete audiooutput_core_conf_bridge;
 
-  delete audio_event_scheduler;
+  audio_event_scheduler->quit ();
 
   for (std::set<AudioOutputManager *>::iterator iter = managers.begin ();
        iter != managers.end ();

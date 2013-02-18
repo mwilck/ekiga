@@ -332,9 +332,7 @@ private:
         */
         VideoPreviewManager(VideoInputCore & _videoinput_core, boost::shared_ptr<VideoOutputCore> _videooutput_core);
 
-        /** The destructor
-        */
-        ~VideoPreviewManager();
+        void quit();
 
         /** Start the preview thread.
         * Start the thread represented by the Main() function. Block until the thread is running.

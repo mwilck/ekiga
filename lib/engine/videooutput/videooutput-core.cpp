@@ -68,7 +68,7 @@ VideoOutputCore::~VideoOutputCore ()
   for (std::set<VideoOutputManager *>::iterator iter = managers.begin ();
        iter != managers.end ();
        iter++)
-    delete (*iter);
+    (*iter)->quit ();
 
   managers.clear();
 }
