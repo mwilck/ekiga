@@ -51,6 +51,13 @@
 
 #include <stdlib.h>
 
+// opal manages its endpoints itself, so we must be wary
+struct null_deleter
+{
+ void operator()(void const *) const
+ { }
+};
+
 static  bool same_codec_desc (Ekiga::CodecDescription a, Ekiga::CodecDescription b)
 {
   return (a.name == b.name && a.rate == b.rate);
