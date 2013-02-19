@@ -471,10 +471,11 @@ Opal::Account::populate_menu (const std::string fullname,
   // from now on, we're sure we have an uri corresponding to the account
 
   // but does it have a domain?
-  if (complete_uri.find ("@") == string::npos) {
-
+  //
+  // (it is supposed not to, but let's still test so the function
+  // can be called from several places without problem)
+  if (complete_uri.find ("@") == string::npos)
     complete_uri = complete_uri + "@" + get_host ();
-  }
 
   call_manager->populate_menu (fullname, complete_uri, tmp_builder);
 

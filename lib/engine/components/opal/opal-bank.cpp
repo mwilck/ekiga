@@ -144,10 +144,19 @@ Opal::Bank::populate_menu_helper (const std::string fullname,
 {
   bool result = false;
 
-  for (iterator iter = begin ();
-       iter != end ();
-       ++iter)
-    result = (*iter)->populate_menu (fullname, uri, builder) || result;
+  if (uri.find ("@") == string::npos) {
+
+    // no domain: try to save the situation by trying all accounts
+
+    for (iterator iter = begin ();
+	 iter != end ();
+	 ++iter)
+      result = (*iter)->populate_menu (fullname, uri, builder) || result;
+  } else {
+
+    // there is a domain: just add the actions
+    result = opal_component->populate_menu (fullname, uri, builder);
+  }
 
   return result;
 }

@@ -193,14 +193,21 @@ CallManager::populate_menu (const std::string fullname,
 			    const std::string uri,
 			    Ekiga::MenuBuilder& builder)
 {
+  std::string complete_uri;
   bool result = false;
 
+  // by default, prefer SIP
+  if (uri.find (":") == std::string::npos)
+    complete_uri = "sip:" + uri;
+  else
+    complete_uri = uri;
+
   if (uri.find ("sip:") == 0)
-    result = sip_endpoint->populate_menu (fullname, uri, builder);
+    result = sip_endpoint->populate_menu (fullname, complete_uri, builder);
 
 #ifdef HAVE_H323
   if (uri.find ("h323:") == 0)
-    result = h323_endpoint->populate_menu (fullname, uri, builder);
+    result = h323_endpoint->populate_menu (fullname, complete_uri, builder);
 #endif
 
   return result;
