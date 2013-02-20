@@ -717,9 +717,9 @@ Opal::Account::handle_registration_event (RegistrationState state_,
         sip_endpoint->subscribe (*this, presentity);
         break;
       case SIPRegister::e_CannotRegisterPrivateContacts:
-        // CannotRegMC did not work, try next compat mode
+        // CannotRegPC did not work, try next compat mode
         compat_mode = SIPRegister::e_HasApplicationLayerGateway;
-        PTRACE (4, "Register failed in CannotRegisterMultipleContacts mode, retrying in HasApplicationLayerGateway mode");
+        PTRACE (4, "Register failed in CannotRegisterPrivateContacts mode, retrying in HasApplicationLayerGateway mode");
         sip_endpoint->subscribe (*this, presentity);
         break;
       case SIPRegister::e_HasApplicationLayerGateway:
