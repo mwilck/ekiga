@@ -1,4 +1,61 @@
                           -*- mode: outline -*-
+* Changes in ekiga 4.0.1 (2013-02-20)
+** User-visible fixes
+- Fix crash when quitting ekiga while receiving presence information
+- Fix crash when quitting ekiga right after starting it (before STUN ending)
+- Fix crash when disabling an account while icons in roster are changing
+- Fix crash when receiving call a second time
+- Fix crash in XML parsing in case of malicious code
+- Fix increasing CPU usage afer hours of usage caused by endless OPTIONS
+- Several fixes for H.323:
+  - fix H.323 parsing
+  - add the username in authentication
+  - fix unregistering the gatekeeper
+  - fix registration
+  - assign gk_name only if success
+  - do not propose adding an H.323 account if the protocol is not built-in
+- Fix registration for registrars accepting the last Contact item offered
+- Allow to change the REGISTER compatibility mode of an existing registration
+- Fix impossibility to hangup active call after a missed call
+- Fix busy or call forwarding on busy occuring when connection is released
+- Fix subscribing/unsubscribing when enabling and disabling SIP accounts
+- Do not show is-typing messages sent by other programs during chatting
+- Stop ongoing registration when remove account
+- Use meaningful names for ALSA sub-devices
+- Allow to enter contact addresses without host part, and choose the host later
+- Increase number of characters shown in device names
+- Use a better icon for call history in addressbook
+- Show the address instead of "telephoneNumber" in addressbook
+- Deactivate NullAudio ptlib's device for audio input too
+- Do not send OPTIONS messages once the account is disabled
+- Hide the main window immediately on exit
+- Handle xa status as away
+- Fix debugging message when registering
+- Fix race condition leading to duplicate entry in call history
+- Fix incoming call if two INVITE's in a fork arrive very close together
+- Use correct username in OPTIONS messages
+- Allow to have message waiting indication even if asterisk's vmexten is off
+- Send OPTION only on the right interface
+- Fix buttons direction in dialpad for RTL languages
+- Fix aborting RTP receiver with Polycom HDX8000
+- Fix possible incorrect jitter calculation for RTCP
+- Only kill REGISTER/SUBSCRIBE forks if a "try again" response is received
+- Various other fixes
+** Distributor-visible changes
+** Windows port fixes
+- Fix freeze on quit
+- Allow to dynamically switch between main and extended streams in H.239
+- Enable iLBC audio codec, as it is free now
+- Disable obsolete VideoForWindows ptlib plugin
+- Add emoticons icons used for chat
+- Remove unuseful messages when starting ekiga the first time
+** Build fixes
+- Fix building opal when java SDK installed and swig is not
+- Some code cleanup
+** Translation updates
+- Update translations: fr, ml, pt_BR
+- Update help translations: pt_BR
+
 * Some major user-visible changes between ekiga 3.2.7 and 4.0.0, details are below
 - Major overhaul of the main window
 - Use gnome icons instead of ekiga's own
