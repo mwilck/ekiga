@@ -1,4 +1,4 @@
-AC_INIT([ekiga],[4.0.1],[http://bugzilla.gnome.org/enter_bug.cgi?product=ekiga])
+AC_INIT([ekiga],[4.0.2],[http://bugzilla.gnome.org/enter_bug.cgi?product=ekiga])
 
 AC_CANONICAL_TARGET
 AC_PREREQ([2.53])
@@ -21,7 +21,7 @@ dnl ###########################################################################
 MAJOR_VERSION=4
 MINOR_VERSION=0
 BUILD_TYPE=ReleaseCode
-BUILD_NUMBER=1
+BUILD_NUMBER=2
 
 PTLIB_REC_VERSION="2.10.10"
 OPAL_REC_VERSION="3.10.10"
