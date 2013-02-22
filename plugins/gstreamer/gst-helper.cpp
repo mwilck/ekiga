@@ -51,11 +51,8 @@ struct gst_helper
 };
 
 static void
-message_eos_received (G_GNUC_UNUSED GstBus* bus,
-		      G_GNUC_UNUSED GstMessage* message,
-		      gst_helper* self)
+gst_helper_destroy (gst_helper* self)
 {
-  g_message ("%s\n", __PRETTY_FUNCTION__);
   gst_element_set_state (self->pipeline, GST_STATE_NULL);
   gst_object_unref (self->adapter);
   self->adapter = NULL;
@@ -72,7 +69,6 @@ message_eos_received (G_GNUC_UNUSED GstBus* bus,
 gst_helper*
 gst_helper_new (const gchar* command)
 {
-  g_message ("pipeline: %s\n", command);
   gst_helper* self = g_new0 (gst_helper, 1);
   self->adapter = gst_adapter_new ();
   self->pipeline = gst_parse_launch (command, NULL);
@@ -90,19 +86,7 @@ gst_helper_new (const gchar* command)
 void
 gst_helper_close (gst_helper* self)
 {
-  g_message ("%s\n", __PRETTY_FUNCTION__);
-
-  GstBus* bus = gst_pipeline_get_bus (GST_PIPELINE (self->pipeline));
-  gst_bus_add_signal_watch_full (bus, G_PRIORITY_HIGH);
-  g_signal_connect (bus, "message::eos",
-		    (GCallback)message_eos_received,
-		    self);
-
-  if (GST_IS_APP_SRC (self->active)) {
-
-    g_message ("EOS!");
-    gst_app_src_end_of_stream (GST_APP_SRC (self->active));
-  }
+  gst_helper_destroy (self);
 }
 
 bool
@@ -120,6 +104,7 @@ gst_helper_get_frame_data (gst_helper* self,
   read = MIN(size, gst_adapter_available (self->adapter));
   gst_adapter_copy (self->adapter, (guint8*)data, 0, read);
   gst_adapter_flush (self->adapter, read);
+  g_usleep (20 * G_TIME_SPAN_MILLISECOND);
 
   return true;
 }
@@ -131,13 +116,6 @@ gst_helper_set_frame_data (gst_helper* self,
 {
   gchar* tmp = NULL;
   GstBuffer* buffer = NULL;
-  static bool done = false;
-
-  if (!done) {
-
-    done = true;
-    GST_DEBUG_BIN_TO_DOT_FILE(GST_BIN(self->pipeline), GST_DEBUG_GRAPH_SHOW_ALL, "pipeline");
-  }
 
   if (self->active) {
 
@@ -146,6 +124,7 @@ gst_helper_set_frame_data (gst_helper* self,
     buffer = gst_app_buffer_new (tmp, size,
 				 (GstAppBufferFinalizeFunc)g_free, tmp);
     gst_app_src_push_buffer (GST_APP_SRC (self->active), buffer);
+    g_usleep (20 * G_TIME_SPAN_MILLISECOND);
   }
 }
 
