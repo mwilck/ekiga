@@ -70,7 +70,6 @@ typedef struct _StatusIconInfo {
 
   GtkTreeModel *model;
   GtkTreeIter *iter;
-  std::string new_presence;
   int cpt;
 
 } StatusIconInfo;
@@ -455,11 +454,15 @@ static void roster_view_gtk_update_groups (RosterViewGtk *view,
 static int
 roster_view_gtk_icon_blink_cb (gpointer data)
 {
+  gchar *presence = NULL;
   g_return_val_if_fail (data != NULL, FALSE);
 
   StatusIconInfo *info = (StatusIconInfo*) data;
   time_t now = time (0);
   tm *ltm = localtime (&now);
+
+  gtk_tree_model_get (GTK_TREE_MODEL (info->model), info->iter,
+                      COLUMN_PRESENCE, &presence, -1);
 
   std::string icon = "avatar-default";
   if (info->cpt == 0) {
@@ -468,8 +471,8 @@ roster_view_gtk_icon_blink_cb (gpointer data)
                         -1);
   }
   else if (ltm->tm_sec % 3 == 0 && info->cpt > 2) {
-    if (info->new_presence != "unknown")
-      icon = "user-" + info->new_presence;
+    if (presence && strcmp (presence, "unknown"))
+      icon = "user-" + std::string(presence);
     gtk_tree_store_set (GTK_TREE_STORE (info->model), info->iter,
                         COLUMN_PRESENCE_ICON, icon.c_str (),
                         -1);
@@ -1050,7 +1053,6 @@ on_presentity_added (RosterViewGtk* self,
       StatusIconInfo *info = new StatusIconInfo ();
       info->model = GTK_TREE_MODEL (self->priv->store);
       info->iter = gtk_tree_iter_copy (&iter);
-      info->new_presence = presentity->get_presence ();
       info->cpt = 0;
 
       timeout = g_timeout_add_seconds_full (G_PRIORITY_DEFAULT, 1, roster_view_gtk_icon_blink_cb,
