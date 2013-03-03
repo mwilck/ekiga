@@ -58,7 +58,8 @@ void GMVideoOutputManager_dx::quit ()
 {
   end_thread = true;
   run_thread.Signal();
-  thread_ended.Wait();
+
+  PWaitAndSignal m(thread_ended);
 }
 
 bool
