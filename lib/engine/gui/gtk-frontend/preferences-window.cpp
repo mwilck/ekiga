@@ -501,7 +501,7 @@ gm_pw_init_call_options_page (GtkWidget *prefs_window,
                                            _("Call Options"), 2, 3);
 
   /* Add all the fields */
-  gnome_prefs_spin_new (subsection, _("Timeout to reject or forward unanswered incoming calls (in seconds):"), CALL_OPTIONS_KEY "no_answer_timeout", _("Automatically reject or forward incoming calls if no answer is given after the specified amount of time (in seconds)"), 10.0, 299.0, 1.0, 0, NULL, true);
+  gnome_prefs_spin_new (subsection, _("Call forwarding delay (in seconds):"), CALL_OPTIONS_KEY "no_answer_timeout", _("Automatically reject or forward incoming calls if no answer is given after the specified amount of time (in seconds)"), 10.0, 299.0, 1.0, 0, NULL, true);
   gnome_prefs_toggle_new (subsection, _("_Automatically answer incoming calls"), CALL_OPTIONS_KEY "auto_answer", _("If enabled, automatically answer incoming calls"), 1);
 }
 
@@ -672,7 +672,7 @@ gm_pw_init_h323_page (GtkWidget *prefs_window,
 
   /* Packing widget */
   subsection = gnome_prefs_subsection_new (prefs_window, container,
-                                _("Advanced Settings"), 5, 1);
+                                _("Advanced Settings"), 5, 4);
 
   /* The toggles */
   gnome_prefs_toggle_new (subsection, _("Enable H.245 _tunneling"), H323_KEY "enable_h245_tunneling", _("This enables H.245 Tunneling mode. In H.245 Tunneling mode H.245 messages are encapsulated into the H.225 channel (port 1720). This saves one TCP connection during calls. H.245 Tunneling was introduced in H.323v2."), 0);
@@ -683,11 +683,11 @@ gm_pw_init_h323_page (GtkWidget *prefs_window,
 
   gnome_prefs_toggle_new (subsection, _("Enable H.239 control"), H323_KEY "enable_h239", _("This enables H.239 capability for additional video roles."), 3);
 
-  gnome_prefs_int_option_menu_new (subsection, _("Extended Video Roles:"), roles, H323_KEY "video_role", _("Select the H.239 Video Role"), 4);
+  gnome_prefs_int_option_menu_new (subsection, NULL, roles, H323_KEY "video_role", _("Select the H.239 Video Role"), 4);
 
   /* Packing widget */
   subsection = gnome_prefs_subsection_new (prefs_window, container,
-                                _("DTMF Mode"), 1, 1);
+                                _("DTMF Mode"), 1, 4);
 
   gnome_prefs_int_option_menu_new (subsection, _("_Send DTMF as:"), capabilities, H323_KEY "dtmf_mode", _("Select the mode for DTMFs sending"), 0);
 }
