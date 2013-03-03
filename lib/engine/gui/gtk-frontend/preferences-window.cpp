@@ -474,9 +474,11 @@ gm_pw_init_interface_page (GtkWidget *prefs_window,
 
   /* Network Settings */
   subsection = gnome_prefs_subsection_new (prefs_window, container,
-                                           _("Network Settings"), 1, 2);
+                                           _("Network Settings"), 2, 2);
 
-  gnome_prefs_toggle_new (subsection, _("Enable network _detection"), NAT_KEY "enable_stun", _("Enable the automatic network setup resulting from the STUN test"), 0);
+  gnome_prefs_spin_new (subsection, _("Type of Service (TOS):"), PROTOCOLS_KEY "rtp_tos_field", _("The Type of Service (TOS) byte on outgoing RTP IP packets. This byte is used by the network to provide some level of Quality of Service (QoS). Default value 184 (0xB8) correspond to Expedited Forwarding (EF) PHB as defined in RFC 3246."), 0.0, 255.0, 1.0, 0, NULL, true);
+
+  gnome_prefs_toggle_new (subsection, _("Enable network _detection"), NAT_KEY "enable_stun", _("Enable the automatic network setup resulting from the STUN test"), 1);
 }
 
 static void
