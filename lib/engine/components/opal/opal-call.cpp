@@ -479,7 +479,11 @@ Opal::Call::OnCleared ()
       reason = _("Remote host is offline");
       break;
     case OpalConnection::EndedByTemporaryFailure :
+      reason = _("User is offline");
+      break;
     case OpalConnection::EndedByUnreachable :
+      reason = _("Remote host not found");
+      break;
     case OpalConnection::EndedByNoEndPoint :
     case OpalConnection::EndedByNoAnswer :
       reason = _("User is not available");
