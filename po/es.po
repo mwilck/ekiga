@@ -19,8 +19,8 @@ msgstr ""
 "Project-Id-Version: ekiga.master\n"
 "Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?"
 "product=ekiga&keywords=I18N+L10N&component=general\n"
-"POT-Creation-Date: 2013-03-03 12:32+0000\n"
-"PO-Revision-Date: 2013-03-04 13:59+0100\n"
+"POT-Creation-Date: 2013-03-06 13:21+0000\n"
+"PO-Revision-Date: 2013-03-07 13:09+0100\n"
 "Last-Translator: Daniel Mustieles <daniel.mustieles@gmail.com>\n"
 "Language-Team: Español <gnome-es-list@gnome.org>\n"
 "Language: \n"
@@ -316,10 +316,15 @@ msgstr "Byte del tipo de servicio (TOS) en paquetes RTP IP salientes"
 
 #: ../ekiga.schemas.in.in.h:54
 #: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:479
+#| msgid ""
+#| "The Type of Service (TOS) byte on outgoing RTP IP packets. This byte is "
+#| "used by the network to provide some level of Quality of Service (QoS). "
+#| "Default value 184 (0xB8) correspond to Expedited Forwarding (EF) PHB as "
+#| "defined in RFC 3246."
 msgid ""
 "The Type of Service (TOS) byte on outgoing RTP IP packets. This byte is used "
 "by the network to provide some level of Quality of Service (QoS). Default "
-"value 184 (0xB8) correspond to Expedited Forwarding (EF) PHB as defined in "
+"value 184 (0xB8) corresponds to Expedited Forwarding (EF) PHB as defined in "
 "RFC 3246."
 msgstr ""
 "El byte del tipo de servicio (TOS) en paquetes RTP IP salientes. La red usa "
@@ -1091,7 +1096,7 @@ msgid "Choose groups:"
 msgstr "Elija los grupos:"
 
 #: ../lib/engine/components/opal/h323-endpoint.cpp:124
-#: ../lib/engine/components/opal/opal-call.cpp:692
+#: ../lib/engine/components/opal/opal-call.cpp:696
 #: ../lib/engine/components/opal/sip-endpoint.cpp:163
 msgid "Call"
 msgstr "Llamada"
@@ -1524,24 +1529,34 @@ msgstr "El usuario remoto está ocupado"
 msgid "Remote host is offline"
 msgstr "El equipo remoto no está en línea"
 
+#: ../lib/engine/components/opal/opal-call.cpp:482
+#| msgid "user offline"
+msgid "User is offline"
+msgstr "El usuario está desconectado"
+
 #: ../lib/engine/components/opal/opal-call.cpp:485
+#| msgid "Remote host is offline"
+msgid "Remote host not found"
+msgstr "Equipo remoto no encontrado"
+
+#: ../lib/engine/components/opal/opal-call.cpp:489
 msgid "User is not available"
 msgstr "El usuario no está disponible"
 
-#: ../lib/engine/components/opal/opal-call.cpp:488
+#: ../lib/engine/components/opal/opal-call.cpp:492
 #: ../lib/engine/components/opal/sip-endpoint.cpp:661
 msgid "Service unavailable"
 msgstr "Servicio no disponible"
 
-#: ../lib/engine/components/opal/opal-call.cpp:498
+#: ../lib/engine/components/opal/opal-call.cpp:502
 msgid "Call completed"
 msgstr "Llamada concluida"
 
-#: ../lib/engine/components/opal/opal-call.cpp:689
+#: ../lib/engine/components/opal/opal-call.cpp:693
 msgid "Missed call from"
 msgstr "Llamada perdida de"
 
-#: ../lib/engine/components/opal/opal-call.cpp:691
+#: ../lib/engine/components/opal/opal-call.cpp:695
 msgid "Missed call"
 msgstr "Llamada perdida"
 
