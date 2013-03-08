@@ -90,7 +90,7 @@ case $target_os in
     gm_platform="solaris"
     ;;
 
-  linux-gnulp | linux-gnu | linux-gnueabi* | linux | Linux)
+  linux-gnulp | linux-gnu | linux-gnuspe | linux-gnueabi* | linux | Linux)
     gm_platform="linux"
     ;;
 
