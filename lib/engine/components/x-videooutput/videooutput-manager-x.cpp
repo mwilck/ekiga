@@ -77,7 +77,7 @@ void GMVideoOutputManager_x::quit ()
 {
   end_thread = true;
   run_thread.Signal();
-  thread_ended.Wait();
+  PWaitAndSignal m(thread_ended);
 
   if (lDisplay)
     XCloseDisplay (lDisplay);
