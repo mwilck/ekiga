@@ -58,7 +58,7 @@ VideoInputCore::VideoPreviewManager::VideoPreviewManager (VideoInputCore& _video
   pause_thread = true;
   end_thread = false;
   frame = NULL;
-  // Since windows does not like to restart a thread that 
+  // Since windows does not like to restart a thread that
   // was never started, we do so here
   this->Resume ();
   thread_paused.Wait();
@@ -95,7 +95,7 @@ void VideoInputCore::VideoPreviewManager::stop ()
   if (frame) {
     free (frame);
     frame = NULL;
-  }  
+  }
   videooutput_core->stop();
 }
 
@@ -103,12 +103,11 @@ void VideoInputCore::VideoPreviewManager::Main ()
 {
   PWaitAndSignal m(thread_ended);
 
-    
   while (!end_thread) {
 
     thread_paused.Signal ();
     run_thread.Wait ();
-    
+
     while (!pause_thread) {
       if (frame) {
         videoinput_core.get_frame_data(frame);
