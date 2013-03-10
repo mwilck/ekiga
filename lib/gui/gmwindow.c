@@ -160,9 +160,9 @@ gm_window_set_property (GObject *obj,
   case GM_HIDE_ON_ESC:
     self->priv->hide_on_esc = g_value_get_boolean (value);
     if (!self->priv->hide_on_esc)
-      gtk_accel_group_disconnect_key (self->priv->accel, GDK_Escape, (GdkModifierType) 0);
+      gtk_accel_group_disconnect_key (self->priv->accel, GDK_KEY_Escape, (GdkModifierType) 0);
     else
-      gtk_accel_group_connect (self->priv->accel, GDK_Escape, (GdkModifierType) 0, GTK_ACCEL_LOCKED,
+      gtk_accel_group_connect (self->priv->accel, GDK_KEY_Escape, (GdkModifierType) 0, GTK_ACCEL_LOCKED,
                                g_cclosure_new_swap (G_CALLBACK (gtk_widget_hide), (gpointer) self, NULL));
     break;
 
@@ -213,7 +213,7 @@ gm_window_init (GmWindow* self)
 
   self->priv->accel = gtk_accel_group_new ();
   gtk_window_add_accel_group (GTK_WINDOW (self), self->priv->accel);
-  gtk_accel_group_connect (self->priv->accel, GDK_Escape, (GdkModifierType) 0, GTK_ACCEL_LOCKED,
+  gtk_accel_group_connect (self->priv->accel, GDK_KEY_Escape, (GdkModifierType) 0, GTK_ACCEL_LOCKED,
                            g_cclosure_new_swap (G_CALLBACK (gtk_widget_hide), (gpointer) self, NULL));
 
   g_signal_connect (self, "delete-event",
