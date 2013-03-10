@@ -148,7 +148,7 @@ GMVideoOutputManager_x::create_window (Ekiga::DisplayInfo &info,
       cont = contX;
     }
 
-    if (win->Init (cont.display, cont.window, cont.gc,
+    if (win->Init (cont.display, cont.window,
                    cont.x, cont.y,
                    cont.wWidth, cont.wHeight,
                    cont.iWidth, cont.iHeight)) {
