@@ -121,9 +121,6 @@ struct _EkigaCallWindowPrivate
   GtkWidget *hold_button;
   GtkWidget *audio_settings_button;
   GtkWidget *video_settings_button;
-#ifndef WIN32
-  GdkGC* video_widget_gc;
-#endif
 
   GtkWidget *audio_settings_window;
   GtkWidget *audio_input_volume_frame;
@@ -1989,12 +1986,12 @@ ekiga_call_window_init_menu (EkigaCallWindow *cw)
       GTK_MENU_SEPARATOR,
 
       GTK_MENU_ENTRY("hold_call", _("H_old Call"), _("Hold the current call"),
-		     NULL, GDK_h,
+		     NULL, GDK_KEY_h,
 		     G_CALLBACK (hold_current_call_cb), cw,
 		     false),
       GTK_MENU_ENTRY("transfer_call", _("_Transfer Call"),
 		     _("Transfer the current call"),
- 		     NULL, GDK_t,
+ 		     NULL, GDK_KEY_t,
 		     G_CALLBACK (transfer_current_call_cb), cw,
 		     false),
 
@@ -2002,12 +1999,12 @@ ekiga_call_window_init_menu (EkigaCallWindow *cw)
 
       GTK_MENU_ENTRY("suspend_audio", _("Suspend _Audio"),
 		     _("Suspend or resume the audio transmission"),
-		     NULL, GDK_m,
+		     NULL, GDK_KEY_m,
 		     G_CALLBACK (toggle_audio_stream_pause_cb),
 		     cw, false),
       GTK_MENU_ENTRY("suspend_video", _("Suspend _Video"),
 		     _("Suspend or resume the video transmission"),
-		     NULL, GDK_p,
+		     NULL, GDK_KEY_p,
 		     G_CALLBACK (toggle_video_stream_pause_cb),
 		     cw, false),
 
@@ -2050,7 +2047,7 @@ ekiga_call_window_init_menu (EkigaCallWindow *cw)
 		     G_CALLBACK (zoom_normal_changed_cb),
 		     (gpointer) cw, false),
       GTK_MENU_ENTRY("fullscreen", _("_Fullscreen"), _("Switch to fullscreen"),
-		     GTK_STOCK_ZOOM_IN, GDK_F11,
+		     GTK_STOCK_ZOOM_IN, GDK_KEY_F11,
 		     G_CALLBACK (fullscreen_changed_cb),
 		     (gpointer) cw, false),
 
@@ -2513,7 +2510,7 @@ ekiga_call_window_init (EkigaCallWindow *cw)
 
   cw->priv->accel = gtk_accel_group_new ();
   gtk_window_add_accel_group (GTK_WINDOW (cw), cw->priv->accel);
-  gtk_accel_group_connect (cw->priv->accel, GDK_Escape, (GdkModifierType) 0, GTK_ACCEL_LOCKED,
+  gtk_accel_group_connect (cw->priv->accel, GDK_KEY_Escape, (GdkModifierType) 0, GTK_ACCEL_LOCKED,
                            g_cclosure_new_swap (G_CALLBACK (ekiga_call_window_delete_event_cb), (gpointer) cw, NULL));
   g_object_unref (cw->priv->accel);
 
@@ -2525,9 +2522,6 @@ ekiga_call_window_init (EkigaCallWindow *cw)
   cw->priv->timeout_id = -1;
   cw->priv->levelmeter_timeout_id = -1;
   cw->priv->calling_state = Standby;
-#ifndef WIN32
-  cw->priv->video_widget_gc = NULL;
-#endif
 
   g_signal_connect (cw, "delete_event",
 		    G_CALLBACK (ekiga_call_window_delete_event_cb), NULL);
@@ -2575,11 +2569,6 @@ ekiga_call_window_expose_event (GtkWidget *widget,
 #ifdef WIN32
   display_info.hwnd = ((HWND) GDK_WINDOW_HWND (video_widget->window));
 #else
-  if (!cw->priv->video_widget_gc) {
-    cw->priv->video_widget_gc = gdk_gc_new (video_widget->window);
-    g_return_val_if_fail (cw->priv->video_widget_gc != NULL, handled);
-  }
-
   display_info.window = GDK_WINDOW_XID (gtk_widget_get_window (video_widget));
 
   g_return_val_if_fail (display_info.window != 0, handled);
