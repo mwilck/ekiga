@@ -144,13 +144,13 @@ gm_cell_renderer_bitext_get_size (GtkCellRenderer *cell,
 			  width, height);
 }
 
+
 static void
 gm_cell_renderer_bitext_render (GtkCellRenderer *cell,
-				GdkWindow *window,
+				cairo_t *cr,
 				GtkWidget *widget,
 				GdkRectangle *background_area,
 				GdkRectangle *cell_area,
-				GdkRectangle *expose_area,
 				GtkCellRendererState flags)
 {
   GmCellRendererBitext *renderer = NULL;
@@ -161,9 +161,12 @@ gm_cell_renderer_bitext_render (GtkCellRenderer *cell,
 
   gm_cell_renderer_bitext_update_text (renderer, widget,
 				       (flags & GTK_CELL_RENDERER_SELECTED));
-  parent_class->render (cell, window, widget,
-			background_area, cell_area,
-			expose_area, flags);
+  parent_class->render (cell,
+                        cr,
+                        widget,
+			background_area,
+                        cell_area,
+			flags);
 }
 
 /* GObject code */

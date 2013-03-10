@@ -1,3 +1,4 @@
+/* -*- Mode: C; tab-width: 8; indent-tabs-mode: t; c-basic-offset: 8 -*- */
 /*
  * Copyright (C) 2006-2007 Imendio AB
  *
@@ -13,9 +14,9 @@
  *
  * You should have received a copy of the GNU General Public
  * License along with this program; if not, write to the
- * Free Software Foundation, Inc., 59 Temple Place - Suite 330,
- * Boston, MA 02111-1307, USA.
- * 
+ * Free Software Foundation, Inc., 51 Franklin St, Fifth Floor,
+ * Boston, MA  02110-1301  USA
+ *
  * Authors: Kristian Rietveld <kris@imendio.com>
  */
 
@@ -27,20 +28,21 @@
 G_BEGIN_DECLS
 
 #define GM_TYPE_CELL_RENDERER_EXPANDER		(gm_cell_renderer_expander_get_type ())
-#define GM_CELL_RENDERER_EXPANDER(obj)		(G_TYPE_CHECK_INSTANCE_CAST ((obj), GM_TYPE_CELL_RENDERER_EXPANDER, GmCellRendererExpander))
-#define GM_CELL_RENDERER_EXPANDER_CLASS(klass)	(G_TYPE_CHECK_CLASS_CAST ((klass), GM_TYPE_CELL_RENDERER_EXPANDER, GmCellRendererExpanderClass))
+#define GM_CELL_RENDERER_EXPANDER(obj)		(G_TYPE_CHECK_INSTANCE_CAST ((obj), GM_TYPE_CELL_RENDERER_EXPANDER, EmpathyCellRendererExpander))
+#define GM_CELL_RENDERER_EXPANDER_CLASS(klass)	(G_TYPE_CHECK_CLASS_CAST ((klass), GM_TYPE_CELL_RENDERER_EXPANDER, EmpathyCellRendererExpanderClass))
 #define GM_IS_CELL_RENDERER_EXPANDER(obj)		(G_TYPE_CHECK_INSTANCE_TYPE ((obj), GM_TYPE_CELL_RENDERER_EXPANDER))
 #define GM_IS_CELL_RENDERER_EXPANDER_CLASS(klass)	(G_TYPE_CHECK_CLASS_TYPE ((klass), GM_TYPE_CELL_RENDERER_EXPANDER))
-#define GM_CELL_RENDERER_EXPANDER_GET_CLASS(obj)	(G_TYPE_INSTANCE_GET_CLASS ((obj), GM_TYPE_CELL_RENDERER_EXPANDER, GmCellRendererExpanderClass))
+#define GM_CELL_RENDERER_EXPANDER_GET_CLASS(obj)	(G_TYPE_INSTANCE_GET_CLASS ((obj), GM_TYPE_CELL_RENDERER_EXPANDER, EmpathyCellRendererExpanderClass))
 
-typedef struct _GmCellRendererExpander GmCellRendererExpander;
-typedef struct _GmCellRendererExpanderClass GmCellRendererExpanderClass;
+typedef struct _EmpathyCellRendererExpander EmpathyCellRendererExpander;
+typedef struct _EmpathyCellRendererExpanderClass EmpathyCellRendererExpanderClass;
 
-struct _GmCellRendererExpander {
+struct _EmpathyCellRendererExpander {
   GtkCellRenderer parent;
+  gpointer priv;
 };
 
-struct _GmCellRendererExpanderClass {
+struct _EmpathyCellRendererExpanderClass {
   GtkCellRendererClass parent_class;
 
   /* Padding for future expansion */
