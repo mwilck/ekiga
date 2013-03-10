@@ -48,18 +48,18 @@ struct const_key_info
  * keys.
  */
 static const struct const_key_info keys_info[] = {
-  { "1", "", GDK_KP_1 },
-  { "2", N_("abc"), GDK_KP_2 },
-  { "3", N_("def"), GDK_KP_3 },
-  { "4", N_("ghi"), GDK_KP_4 },
-  { "5", N_("jkl"), GDK_KP_5 },
-  { "6", N_("mno"), GDK_KP_6 },
-  { "7", N_("pqrs"), GDK_KP_7 },
-  { "8", N_("tuv"), GDK_KP_8 },
-  { "9", N_("wxyz"), GDK_KP_9 },
-  { "*", "", GDK_KP_Multiply },
-  { "0", "", GDK_KP_0 },
-  { "#", "", GDK_numbersign }
+  { "1", "", GDK_KEY_KP_1 },
+  { "2", N_("abc"), GDK_KEY_KP_2 },
+  { "3", N_("def"), GDK_KEY_KP_3 },
+  { "4", N_("ghi"), GDK_KEY_KP_4 },
+  { "5", N_("jkl"), GDK_KEY_KP_5 },
+  { "6", N_("mno"), GDK_KEY_KP_6 },
+  { "7", N_("pqrs"), GDK_KEY_KP_7 },
+  { "8", N_("tuv"), GDK_KEY_KP_8 },
+  { "9", N_("wxyz"), GDK_KEY_KP_9 },
+  { "*", "", GDK_KEY_KP_Multiply },
+  { "0", "", GDK_KEY_KP_0 },
+  { "#", "", GDK_KEY_numbersign }
 };
 
 struct _EkigaDialpadPrivate
