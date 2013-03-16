@@ -40,7 +40,7 @@ G_DEFINE_TYPE (EkigaExtWindow, ekiga_ext_window, GTK_TYPE_WINDOW);
 
 struct _EkigaExtWindowPrivate {
 #ifndef WIN32
-  GdkGC* gc;
+  GC gc;
 #endif
   GtkWidget *video, *zin, *zout;
   boost::shared_ptr<Ekiga::VideoOutputCore> vocore;
@@ -146,23 +146,6 @@ constructor (GType type, guint n_properties, GObjectConstructParam *params)
 }
 
 static void
-dispose (GObject* gobject)
-{
-  EkigaExtWindow *ew = EKIGA_EXT_WINDOW (gobject);
-
-#ifndef WIN32
-  if (ew->priv->gc) {
-    g_object_unref (ew->priv->gc);
-    ew->priv->gc = NULL;
-  }
-#endif
-
-  clear_display_info (ew);
-
-  G_OBJECT_CLASS (ekiga_ext_window_parent_class)->dispose (gobject);
-}
-
-static void
 finalize (GObject* gobject)
 {
   EkigaExtWindow *ew = EKIGA_EXT_WINDOW (gobject);
@@ -197,15 +180,15 @@ show (GtkWidget *widget)
 }
 
 static gboolean
-expose_event (GtkWidget *widget, GdkEventExpose *event)
+draw_event (GtkWidget *widget,
+            cairo_t *context)
 {
   EkigaExtWindow *ew = EKIGA_EXT_WINDOW (widget);
   Ekiga::DisplayInfo info;
   gboolean handled;
   GtkAllocation alloc;
 
-  handled = GTK_WIDGET_CLASS (ekiga_ext_window_parent_class)->expose_event (widget,
-                                                                            event);
+  handled = (*GTK_WIDGET_CLASS (ekiga_ext_window_parent_class)->draw) (widget, context);
 
   gtk_widget_get_allocation (ew->priv->video, &alloc);
   info.x = alloc.x;
@@ -214,15 +197,17 @@ expose_event (GtkWidget *widget, GdkEventExpose *event)
 #ifdef WIN32
   info.hwnd = (HWND) GDK_WINDOW_HWND (gtk_widget_get_window (ew->priv->video));
 #else
+  info.window = gdk_x11_window_get_xid (gtk_widget_get_window (ew->priv->video));
+  g_return_val_if_fail (info.window != 0, handled);
+
   if (!ew->priv->gc) {
-    ew->priv->gc = gdk_gc_new (gtk_widget_get_window (ew->priv->video));
+    Display *display;
+    display = GDK_WINDOW_XDISPLAY (gtk_widget_get_window (ew->priv->video));
+    ew->priv->gc = XCreateGC(display, info.window, 0, 0);
     g_return_val_if_fail (ew->priv->gc != NULL, handled);
   }
 
-  info.gc = GDK_GC_XGC (ew->priv->gc);
-
-  info.window = GDK_WINDOW_XWINDOW (gtk_widget_get_window (ew->priv->video));
-  g_return_val_if_fail (info.window != 0, handled);
+  info.gc = ew->priv->gc;
 
   gdk_flush ();
 #endif
@@ -243,11 +228,10 @@ ekiga_ext_window_class_init (EkigaExtWindowClass *klass)
   GObjectClass *object_class = G_OBJECT_CLASS (klass);
 
   object_class->constructor = constructor;
-  object_class->dispose = dispose;
   object_class->finalize = finalize;
 
   widget_class->show = show;
-  widget_class->expose_event = expose_event;
+  widget_class->draw = draw_event;
   widget_class->focus_in_event = focus_in_event;
 }
 

@@ -134,6 +134,9 @@ struct _EkigaCallWindowPrivate
   GtkObject *adj_input_volume;
   GtkObject *adj_output_volume;
 #endif
+#ifndef WIN32
+  GC gc;
+#endif
 
   unsigned int levelmeter_timeout_id;
   unsigned int timeout_id;
@@ -1892,8 +1895,8 @@ gm_cw_audio_settings_window_new (EkigaCallWindow *cw)
   gtk_scale_set_draw_value (GTK_SCALE (hscale_play), false);
   gtk_box_pack_start (GTK_BOX (small_vbox), hscale_play, true, true, 0);
 
-  cw->priv->output_signal = gm_level_meter_new ();
-  gtk_box_pack_start (GTK_BOX (small_vbox), cw->priv->output_signal, true, true, 0);
+  //cw->priv->output_signal = gm_level_meter_new ();
+  //gtk_box_pack_start (GTK_BOX (small_vbox), cw->priv->output_signal, true, true, 0);
   gtk_box_pack_start (GTK_BOX (hbox), small_vbox, true, true, 2);
   gtk_box_pack_start (GTK_BOX (vbox), hbox, false, false, 3);
 
@@ -1926,8 +1929,8 @@ gm_cw_audio_settings_window_new (EkigaCallWindow *cw)
   gtk_scale_set_draw_value (GTK_SCALE (hscale_rec), false);
   gtk_box_pack_start (GTK_BOX (small_vbox), hscale_rec, true, true, 0);
 
-  cw->priv->input_signal = gm_level_meter_new ();
-  gtk_box_pack_start (GTK_BOX (small_vbox), cw->priv->input_signal, true, true, 0);
+//  cw->priv->input_signal = gm_level_meter_new ();
+//  gtk_box_pack_start (GTK_BOX (small_vbox), cw->priv->input_signal, true, true, 0);
   gtk_box_pack_start (GTK_BOX (hbox), small_vbox, true, true, 2);
   gtk_box_pack_start (GTK_BOX (vbox), hbox, false, false, 3);
 
@@ -2516,6 +2519,9 @@ ekiga_call_window_init (EkigaCallWindow *cw)
   cw->priv->timeout_id = -1;
   cw->priv->levelmeter_timeout_id = -1;
   cw->priv->calling_state = Standby;
+#ifndef WIN32
+  cw->priv->gc = NULL;
+#endif
 
   g_signal_connect (cw, "delete_event",
 		    G_CALLBACK (ekiga_call_window_delete_event_cb), NULL);
@@ -2563,11 +2569,18 @@ ekiga_call_window_draw (GtkWidget *widget,
   display_info.y = a.y;
 
 #ifdef WIN32
-  display_info.hwnd = ((HWND) GDK_WINDOW_HWND (video_widget->window));
+  display_info.hwnd = ((HWND) GDK_WINDOW_HWND (gtk_widget_get_window (video_widget)));
 #else
-  display_info.window = GDK_WINDOW_XID (gtk_widget_get_window (video_widget));
-
+  display_info.window = gdk_x11_window_get_xid (gtk_widget_get_window (video_widget));
   g_return_val_if_fail (display_info.window != 0, handled);
+
+  if (!cw->priv->gc) {
+    Display *display;
+    display = GDK_WINDOW_XDISPLAY (gtk_widget_get_window (video_widget));
+    cw->priv->gc = XCreateGC(display, display_info.window, 0, 0);
+    g_return_val_if_fail (cw->priv->gc != NULL, handled);
+  }
+  display_info.gc = cw->priv->gc;
 
   gdk_flush();
 #endif
