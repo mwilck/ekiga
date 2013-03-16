@@ -1007,7 +1007,7 @@ gnome_prefs_window_new (const gchar *logo_name)
   cwhite.red   = 1.0;
   cwhite.green = 1.0;
   cwhite.blue  = 1.0;
-  cwhite.alpha = 0.0;
+  cwhite.alpha = 1.0;
   gtk_widget_override_background_color (GTK_WIDGET (event_box),
                                         GTK_STATE_NORMAL, &cwhite);
 
