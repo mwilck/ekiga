@@ -114,6 +114,7 @@ XVWindow::~XVWindow()
 int 
 XVWindow::Init (Display* dp, 
                 Window rootWindow, 
+                GC gc, 
                 int x, 
                 int y,
                 int windowWidth, 
@@ -164,9 +165,6 @@ XVWindow::Init (Display* dp,
     return 0;
   } 
   PTRACE(4, "XVideo\tUsing XVideo port: " << _XVPort);
-
-  XGCValues values;
-  GC gc = XCreateGC (dp, rootWindow, 0, &values);
 
   if (!CreateAtomsAndWindow(gc, x, y, windowWidth, windowHeight)) {
     XUnlockDisplay(_display);

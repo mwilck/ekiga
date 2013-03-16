@@ -181,6 +181,7 @@ XWindow::~XWindow()
 int 
 XWindow::Init (Display* dp, 
                 Window rootWindow, 
+                GC gc, 
                 int x, 
                 int y,
                 int windowWidth, 
@@ -199,9 +200,6 @@ XWindow::Init (Display* dp,
 #if PTRACING
   DumpVisuals();
 #endif
-
-  XGCValues values;
-  GC gc = XCreateGC (dp, rootWindow, 0, &values);
 
   if (!CreateAtomsAndWindow(gc, x, y, windowWidth, windowHeight)) {
     XUnlockDisplay(_display);

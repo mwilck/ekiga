@@ -414,7 +414,6 @@ on_extlink_tag_event (GtkTextTag* tag,
   case GDK_SELECTION_CLEAR:
   case GDK_PROXIMITY_IN:
   case GDK_PROXIMITY_OUT:
-  case GDK_NO_EXPOSE:
   case GDK_VISIBILITY_NOTIFY:
   case GDK_CLIENT_EVENT:
   case GDK_DROP_FINISHED:
@@ -553,7 +552,7 @@ message_activated_cb (G_GNUC_UNUSED GtkWidget *w,
   // if ...-shift-enter, insert newline
   // if enter, send message
   // note there are two enter: from main kbd and from keypad
-  if ((key->keyval == GDK_Return || key->keyval == GDK_KP_Enter)
+  if ((key->keyval == GDK_KEY_Return || key->keyval == GDK_KEY_KP_Enter)
       && (key->state & GDK_SHIFT_MASK) == 0) {
 
     buffer = gtk_text_view_get_buffer (GTK_TEXT_VIEW (self->priv->message));

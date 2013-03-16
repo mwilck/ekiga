@@ -1680,7 +1680,7 @@ ekiga_assistant_key_press_cb (GtkWidget *widget,
 			      GdkEventKey *event,
 			      G_GNUC_UNUSED gpointer user_data)
 {
-  if (event->keyval == GDK_Escape) {
+  if (event->keyval == GDK_KEY_Escape) {
 
     gtk_widget_hide (widget);
     return TRUE;  /* do not propagate the key to parent */

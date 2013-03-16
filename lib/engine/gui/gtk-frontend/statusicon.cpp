@@ -371,7 +371,7 @@ statusicon_build_menu ()
     {
       GTK_MENU_ENTRY("help", NULL,
                      _("Get help by reading the Ekiga manual"),
-                     GTK_STOCK_HELP, GDK_F1,
+                     GTK_STOCK_HELP, GDK_KEY_F1,
                      G_CALLBACK (help_callback), NULL, TRUE),
 
       GTK_MENU_ENTRY("about", NULL,

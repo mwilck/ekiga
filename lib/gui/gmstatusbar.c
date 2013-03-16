@@ -157,8 +157,6 @@ gm_statusbar_new ()
 
   result = g_object_new (GM_TYPE_STATUSBAR, NULL);
 
-  gtk_statusbar_set_has_resize_grip (GTK_STATUSBAR (result), FALSE);
-
   return GTK_WIDGET (result);
 }
 

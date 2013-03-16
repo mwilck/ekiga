@@ -82,6 +82,7 @@ public:
   
   virtual int Init (Display *dp, 
             Window xvWindow, 
+            GC gc, 
             int x, 
             int y, 
             int windowWidth, 

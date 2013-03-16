@@ -751,7 +751,8 @@ static bool on_handle_errors (std::string error,
                                               GTK_BUTTONS_OK, NULL);
 
   gtk_window_set_title (GTK_WINDOW (dialog), _("Error"));
-  gtk_label_set_markup (GTK_LABEL (GTK_MESSAGE_DIALOG (dialog)->label), error.c_str ());
+  gtk_label_set_markup (GTK_LABEL (gtk_message_dialog_get_message_area (GTK_MESSAGE_DIALOG (dialog))),
+                        error.c_str ());
 
   g_signal_connect_swapped (dialog, "response",
                             G_CALLBACK (gtk_widget_destroy),
@@ -876,7 +877,7 @@ status_icon_clicked_cb (G_GNUC_UNUSED GtkWidget* widget,
   GtkWidget *window = GTK_WIDGET (data);
 
   if (!gtk_widget_get_visible (window)
-      || (gdk_window_get_state (GDK_WINDOW (window->window)) & GDK_WINDOW_STATE_ICONIFIED)) {
+      || (gdk_window_get_state (GDK_WINDOW (gtk_widget_get_window (window))) & GDK_WINDOW_STATE_ICONIFIED)) {
     gtk_widget_show (window);
   }
   else {
@@ -1157,7 +1158,7 @@ ekiga_main_window_init_uri_toolbar (EkigaMainWindow *mw)
 
   // activate Ctrl-L to get the entry focus
   gtk_widget_add_accelerator (mw->priv->entry, "grab-focus",
-			      mw->priv->accel, GDK_L,
+			      mw->priv->accel, GDK_KEY_L,
 			      (GdkModifierType) GDK_CONTROL_MASK,
 			      (GtkAccelFlags) 0);
 
@@ -1391,7 +1392,7 @@ ekiga_main_window_init_menu (EkigaMainWindow *mw)
 
       GTK_MENU_ENTRY("help", NULL,
                      _("Get help by reading the Ekiga manual"),
-                     GTK_STOCK_HELP, GDK_F1,
+                     GTK_STOCK_HELP, GDK_KEY_F1,
                      G_CALLBACK (help_callback), NULL, TRUE),
 
       GTK_MENU_ENTRY("about", NULL,
@@ -1538,7 +1539,6 @@ ekiga_main_window_init_gui (EkigaMainWindow *mw)
                       true, true, 0);
 
   /* The statusbar */
-  gtk_statusbar_set_has_resize_grip (GTK_STATUSBAR (mw->priv->statusbar), TRUE);
   mw->priv->statusbar_ebox = gtk_event_box_new ();
   gtk_container_add (GTK_CONTAINER (mw->priv->statusbar_ebox), mw->priv->statusbar);
   gtk_box_pack_start (GTK_BOX (window_vbox), mw->priv->statusbar_ebox,

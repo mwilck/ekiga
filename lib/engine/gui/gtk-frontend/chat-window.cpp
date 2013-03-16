@@ -466,7 +466,7 @@ chat_window_new (Ekiga::ServiceCore& core,
 
   accel = gtk_accel_group_new ();
   gtk_window_add_accel_group (GTK_WINDOW (self), accel);
-  gtk_accel_group_connect (accel, GDK_Escape, (GdkModifierType) 0, GTK_ACCEL_LOCKED,
+  gtk_accel_group_connect (accel, GDK_KEY_Escape, (GdkModifierType) 0, GTK_ACCEL_LOCKED,
                            g_cclosure_new_swap (G_CALLBACK (on_escaped), (gpointer) self, NULL));
   g_object_unref (accel);
 

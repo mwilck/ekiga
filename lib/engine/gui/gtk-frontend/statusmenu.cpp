@@ -538,7 +538,7 @@ status_menu_clear_status_message_dialog_run (StatusMenu *self)
 
   vbox = gtk_vbox_new (false, 0);
   gtk_container_set_border_width (GTK_CONTAINER (vbox), 6);
-  gtk_box_pack_start (GTK_BOX (GTK_DIALOG (dialog)->vbox), vbox, false, false, 2);
+  gtk_box_pack_start (GTK_BOX (gtk_dialog_get_content_area (GTK_DIALOG (dialog))), vbox, false, false, 2);
 
 
   label = gtk_label_new (_("Delete custom messages:"));
@@ -683,7 +683,7 @@ status_menu_new_status_message_dialog_run (StatusMenu *self,
 
   vbox = gtk_vbox_new (false, 0);
   gtk_container_set_border_width (GTK_CONTAINER (vbox), 6);
-  gtk_box_pack_start (GTK_BOX (GTK_DIALOG (dialog)->vbox), vbox, false, false, 2);
+  gtk_box_pack_start (GTK_BOX (gtk_dialog_get_content_area (GTK_DIALOG (dialog))), vbox, false, false, 2);
 
   hbox = gtk_hbox_new (false, 2);
   gtk_window_set_icon_name (GTK_WINDOW (dialog), status_icon_name[option - NUM_STATUS_TYPES - 1]);

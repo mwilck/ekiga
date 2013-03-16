@@ -703,7 +703,7 @@ on_view_event_after (GtkWidget *tree_view,
   // take into account only clicks and Enter keys
   if (event->type != GDK_BUTTON_PRESS && event->type != GDK_2BUTTON_PRESS && event->type != GDK_KEY_PRESS)
     return FALSE;
-  if (event->type == GDK_KEY_PRESS && ((GdkEventKey*)event)->keyval != GDK_Return && ((GdkEventKey*)event)->keyval != GDK_KP_Enter)
+  if (event->type == GDK_KEY_PRESS && ((GdkEventKey*)event)->keyval != GDK_KEY_Return && ((GdkEventKey*)event)->keyval != GDK_KEY_KP_Enter)
     return FALSE;
 
   self = ROSTER_VIEW_GTK (data);

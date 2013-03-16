@@ -974,10 +974,10 @@ gnome_prefs_window_new (const gchar *logo_name)
   GtkWidget *pixmap = NULL;
   GtkWidget *hsep = NULL;
 
-  GdkColor cwhite;
+  GdkRGBA cwhite;
 
-  PangoAttrList *attrs = NULL; 
-  PangoAttribute *attr = NULL; 
+  PangoAttrList *attrs = NULL;
+  PangoAttribute *attr = NULL;
 
   /* Box inside the prefs window */
   GtkWidget *dialog_vbox = NULL;
@@ -987,12 +987,12 @@ gnome_prefs_window_new (const gchar *logo_name)
 
   gpw = (GnomePrefsWindow *) g_malloc (sizeof (GnomePrefsWindow));
   gpw->last_page = 1;
-  
+
   g_object_set_data_full (G_OBJECT (window), "gpw", (gpointer) gpw, g_free);
-  
+
   gtk_dialog_add_button (GTK_DIALOG (window), GTK_STOCK_CLOSE, GTK_RESPONSE_CANCEL);
 
-  
+
   /* The sections */
   gpw->notebook = gtk_notebook_new ();
   gtk_notebook_set_show_tabs (GTK_NOTEBOOK (gpw->notebook), FALSE);
@@ -1004,19 +1004,19 @@ gnome_prefs_window_new (const gchar *logo_name)
   gtk_container_add (GTK_CONTAINER (event_box),
 		     GTK_WIDGET (pixmap));
 
-  cwhite.red   = 0xff * 0x100;
-  cwhite.green = 0xff * 0x100;
-  cwhite.blue  = 0xff * 0x100;
-  gdk_colormap_alloc_color(gdk_colormap_get_system (), &cwhite, FALSE, TRUE);
-  gtk_widget_modify_bg (GTK_WIDGET (event_box),
-			GTK_STATE_NORMAL, &cwhite);
+  cwhite.red   = 1.0;
+  cwhite.green = 1.0;
+  cwhite.blue  = 1.0;
+  cwhite.alpha = 0.0;
+  gtk_widget_override_background_color (GTK_WIDGET (event_box),
+                                        GTK_STATE_NORMAL, &cwhite);
 
   gtk_notebook_prepend_page (GTK_NOTEBOOK (gpw->notebook), event_box, NULL);
 
 
   /* The sections */
   dialog_vbox = gtk_dialog_get_content_area (GTK_DIALOG (window));
-  
+
   hbox = gtk_hbox_new (FALSE, 6);
   gtk_container_set_border_width (GTK_CONTAINER (hbox), 6);
   gtk_container_add (GTK_CONTAINER (dialog_vbox), hbox);
