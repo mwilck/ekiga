@@ -162,7 +162,7 @@ ekiga_dialpad_init (EkigaDialpad *dialpad)
     gchar *text;
     GtkWidget *alignment;
 
-    box = gtk_hbox_new (FALSE, 2);
+    box = gtk_box_new (GTK_ORIENTATION_HORIZONTAL, 2);
 
     label = gtk_label_new (keys_info[i].number);
     gtk_misc_set_alignment (GTK_MISC (label), 1.0, 1.0);

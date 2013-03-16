@@ -517,7 +517,7 @@ book_view_gtk_new (Ekiga::BookPtr book)
   result = (BookViewGtk *) g_object_new (BOOK_VIEW_GTK_TYPE, NULL);
 
   result->priv = new _BookViewGtkPrivate (book);
-  result->priv->vbox = gtk_vbox_new (FALSE, 0);
+  result->priv->vbox = gtk_box_new (GTK_ORIENTATION_VERTICAL, 0);
   gtk_frame_set_shadow_type (GTK_FRAME (result), GTK_SHADOW_NONE);
 
   /* The List Store */
@@ -575,7 +575,7 @@ book_view_gtk_new (Ekiga::BookPtr book)
 
   if (filtered) {
 
-    hbox = gtk_hbox_new (FALSE, 0);
+    hbox = gtk_box_new (GTK_ORIENTATION_HORIZONTAL, 0);
     result->priv->entry = gtk_entry_new ();
     button = gtk_button_new_from_stock (GTK_STOCK_FIND);
     label = gtk_label_new_with_mnemonic (_("_Search Filter:"));

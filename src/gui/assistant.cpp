@@ -121,14 +121,13 @@ create_page (EkigaAssistant       *assistant,
 {
   GtkWidget *vbox;
 
-  vbox = gtk_vbox_new (FALSE, 2);
+  vbox = gtk_box_new (GTK_ORIENTATION_VERTICAL, 2);
 
   gtk_container_set_border_width (GTK_CONTAINER (vbox), 6);
 
   gtk_assistant_append_page (GTK_ASSISTANT (assistant), vbox);
   gtk_assistant_set_page_title (GTK_ASSISTANT (assistant), vbox, title);
   gtk_assistant_set_page_type (GTK_ASSISTANT (assistant), vbox, page_type);
-  gtk_assistant_set_page_header_image (GTK_ASSISTANT (assistant), vbox, assistant->priv->icon);
 
   if (page_type != GTK_ASSISTANT_PAGE_CONTENT)
     gtk_assistant_set_page_complete (GTK_ASSISTANT (assistant), vbox, TRUE);
@@ -351,7 +350,6 @@ create_welcome_page (EkigaAssistant *assistant)
   gtk_assistant_append_page (GTK_ASSISTANT (assistant), label);
   gtk_assistant_set_page_title (GTK_ASSISTANT (assistant), label, _("Welcome to Ekiga"));
   gtk_assistant_set_page_type (GTK_ASSISTANT (assistant), label, GTK_ASSISTANT_PAGE_INTRO);
-  gtk_assistant_set_page_header_image (GTK_ASSISTANT (assistant), label, assistant->priv->icon);
   gtk_assistant_set_page_complete (GTK_ASSISTANT (assistant), label, TRUE);
 
   assistant->priv->welcome_page = label;
@@ -452,7 +450,6 @@ create_info_page (EkigaAssistant *assistant)
   gtk_assistant_append_page (GTK_ASSISTANT (assistant), label);
   gtk_assistant_set_page_title (GTK_ASSISTANT (assistant), label, _("Introduction to Accounts"));
   gtk_assistant_set_page_type (GTK_ASSISTANT (assistant), label, GTK_ASSISTANT_PAGE_CONTENT);
-  gtk_assistant_set_page_header_image (GTK_ASSISTANT (assistant), label, assistant->priv->icon);
   gtk_assistant_set_page_complete (GTK_ASSISTANT (assistant), label, TRUE);
 
   assistant->priv->info_page = label;
@@ -1523,9 +1520,6 @@ ekiga_assistant_init (EkigaAssistant *assistant)
   gtk_container_set_border_width (GTK_CONTAINER (assistant), 12);
 
   assistant->priv->last_active_page = 0;
-  assistant->priv->icon = gtk_icon_theme_load_icon (gtk_icon_theme_get_default (),
-                                                    PACKAGE_NAME, 48,
-                                                    (GtkIconLookupFlags) 0, NULL);
 
   create_welcome_page (assistant);
   create_personal_data_page (assistant);
@@ -1639,12 +1633,6 @@ ekiga_assistant_dispose (GObject *object)
        ++iter)
     gm_conf_notifier_remove (*iter);
   assistant->priv->notifiers.clear (); // dispose might be called several times
-
-  if (assistant->priv->icon) {
-
-    g_object_unref (assistant->priv->icon);
-    assistant->priv->icon = NULL;
-  }
 
   G_OBJECT_CLASS (ekiga_assistant_parent_class)->dispose (object);
 }

@@ -536,7 +536,7 @@ status_menu_clear_status_message_dialog_run (StatusMenu *self)
   gtk_dialog_set_default_response (GTK_DIALOG (dialog), GTK_RESPONSE_CLOSE);
   gtk_window_set_icon_name (GTK_WINDOW (dialog), GTK_STOCK_DELETE);
 
-  vbox = gtk_vbox_new (false, 0);
+  vbox = gtk_box_new (GTK_ORIENTATION_VERTICAL, 0);
   gtk_container_set_border_width (GTK_CONTAINER (vbox), 6);
   gtk_box_pack_start (GTK_BOX (gtk_dialog_get_content_area (GTK_DIALOG (dialog))), vbox, false, false, 2);
 
@@ -681,11 +681,11 @@ status_menu_new_status_message_dialog_run (StatusMenu *self,
                                         NULL);
   gtk_dialog_set_default_response (GTK_DIALOG (dialog), GTK_RESPONSE_ACCEPT);
 
-  vbox = gtk_vbox_new (false, 0);
+  vbox = gtk_box_new (GTK_ORIENTATION_VERTICAL, 0);
   gtk_container_set_border_width (GTK_CONTAINER (vbox), 6);
   gtk_box_pack_start (GTK_BOX (gtk_dialog_get_content_area (GTK_DIALOG (dialog))), vbox, false, false, 2);
 
-  hbox = gtk_hbox_new (false, 2);
+  hbox = gtk_box_new (GTK_ORIENTATION_HORIZONTAL, 2);
   gtk_window_set_icon_name (GTK_WINDOW (dialog), status_icon_name[option - NUM_STATUS_TYPES - 1]);
   image = gtk_image_new_from_icon_name (status_icon_name[option - NUM_STATUS_TYPES - 1], GTK_ICON_SIZE_MENU);
   gtk_box_pack_start (GTK_BOX (hbox), image, false, false, 2);

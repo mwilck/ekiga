@@ -1404,7 +1404,7 @@ roster_view_gtk_init (G_GNUC_UNUSED RosterViewGtk* self)
 
   self->priv->folded_groups = gm_conf_get_string_list (CONTACTS_KEY "roster_folded_groups");
   self->priv->show_offline_contacts = gm_conf_get_bool (CONTACTS_KEY "show_offline_contacts");
-  vbox = gtk_vbox_new (FALSE, 0);
+  vbox = gtk_box_new (GTK_ORIENTATION_VERTICAL, 0);
   scrolled_window = gtk_scrolled_window_new (NULL, NULL);
   gtk_container_set_border_width (GTK_CONTAINER (vbox), 0);
   gtk_container_set_border_width (GTK_CONTAINER (scrolled_window), 0);

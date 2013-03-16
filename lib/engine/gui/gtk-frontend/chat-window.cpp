@@ -317,7 +317,7 @@ on_simple_chat_added (ChatWindow* self,
   GtkWidget* close_image = NULL;
 
   page = simple_chat_page_new (chat);
-  hbox = gtk_hbox_new (FALSE, 2);
+  hbox = gtk_box_new (GTK_ORIENTATION_HORIZONTAL, 2);
 
   label = gtk_label_new (chat->get_title ().c_str ());
   g_object_set_data_full (G_OBJECT (label), "base-title",

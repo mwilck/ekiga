@@ -75,7 +75,7 @@ gm_entry_dialog_init (GmEntryDialog* self)
 
   self->priv->label = gtk_label_new (NULL);
 
-  hbox = gtk_hbox_new (FALSE, 6);
+  hbox = gtk_box_new (GTK_ORIENTATION_HORIZONTAL, 5);
   gtk_box_pack_start (GTK_BOX (hbox), self->priv->label, FALSE, FALSE, 6);
   gtk_box_pack_start (GTK_BOX (hbox), self->priv->field_entry, FALSE, FALSE, 6);
 

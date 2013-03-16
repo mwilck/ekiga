@@ -51,7 +51,7 @@
 #include "gmconf.h"
 #include <boost/smart_ptr.hpp>
 #include "gmmenuaddon.h"
-#include "gmlevelmeter.h"
+//#include "gmlevelmeter.h"
 #include "gmpowermeter.h"
 #include "trigger.h"
 #include "scoped-connections.h"
@@ -692,12 +692,12 @@ video_settings_changed_cb (GtkAdjustment * /*adjustment*/,
 }
 
 static gboolean
-on_signal_level_refresh_cb (gpointer self)
+on_signal_level_refresh_cb (gpointer /*self*/)
 {
-  EkigaCallWindow *cw = EKIGA_CALL_WINDOW (self);
+  //EkigaCallWindow *cw = EKIGA_CALL_WINDOW (self);
 
-  gm_level_meter_set_level (GM_LEVEL_METER (cw->priv->output_signal), cw->priv->audiooutput_core->get_average_level());
-  gm_level_meter_set_level (GM_LEVEL_METER (cw->priv->input_signal), cw->priv->audioinput_core->get_average_level());
+  //gm_level_meter_set_level (GM_LEVEL_METER (cw->priv->output_signal), cw->priv->audiooutput_core->get_average_level());
+  //gm_level_meter_set_level (GM_LEVEL_METER (cw->priv->input_signal), cw->priv->audioinput_core->get_average_level());
   return true;
 }
 
@@ -1478,8 +1478,8 @@ ekiga_call_window_clear_signal_levels (EkigaCallWindow *cw)
 {
   g_return_if_fail (EKIGA_IS_CALL_WINDOW (cw));
 
-  gm_level_meter_clear (GM_LEVEL_METER (cw->priv->output_signal));
-  gm_level_meter_clear (GM_LEVEL_METER (cw->priv->input_signal));
+  //gm_level_meter_clear (GM_LEVEL_METER (cw->priv->output_signal));
+  //gm_level_meter_clear (GM_LEVEL_METER (cw->priv->input_signal));
 }
 
 static void
@@ -1754,17 +1754,18 @@ gm_cw_video_settings_window_new (EkigaCallWindow *cw)
   gtk_container_set_border_width (GTK_CONTAINER (cw->priv->video_settings_frame), 5);
 
   /* Category */
-  vbox = gtk_vbox_new (false, 0);
+  vbox = gtk_box_new (GTK_ORIENTATION_VERTICAL, 0);
   gtk_container_add (GTK_CONTAINER (cw->priv->video_settings_frame), vbox);
 
   /* Brightness */
-  hbox = gtk_hbox_new (false, 0);
+  hbox = gtk_box_new (GTK_ORIENTATION_HORIZONTAL, 0);
   image = gtk_image_new_from_icon_name ("brightness", GTK_ICON_SIZE_MENU);
   gtk_box_pack_start (GTK_BOX (hbox), image, false, false, 0);
 
   cw->priv->adj_brightness = gtk_adjustment_new (brightness, 0.0,
                                                  255.0, 1.0, 5.0, 1.0);
-  hscale_brightness = gtk_hscale_new (GTK_ADJUSTMENT (cw->priv->adj_brightness));
+  hscale_brightness = gtk_scale_new (GTK_ORIENTATION_HORIZONTAL,
+                                     GTK_ADJUSTMENT (cw->priv->adj_brightness));
   gtk_scale_set_draw_value (GTK_SCALE (hscale_brightness), false);
   gtk_scale_set_value_pos (GTK_SCALE (hscale_brightness), GTK_POS_RIGHT);
   gtk_box_pack_start (GTK_BOX (hbox), hscale_brightness, true, true, 2);
@@ -1777,13 +1778,14 @@ gm_cw_video_settings_window_new (EkigaCallWindow *cw)
 		    (gpointer) cw);
 
   /* Whiteness */
-  hbox = gtk_hbox_new (false, 0);
+  hbox = gtk_box_new (GTK_ORIENTATION_HORIZONTAL, 0);
   image = gtk_image_new_from_icon_name ("whiteness", GTK_ICON_SIZE_MENU);
   gtk_box_pack_start (GTK_BOX (hbox), image, false, false, 0);
 
   cw->priv->adj_whiteness = gtk_adjustment_new (whiteness, 0.0,
 						255.0, 1.0, 5.0, 1.0);
-  hscale_whiteness = gtk_hscale_new (GTK_ADJUSTMENT (cw->priv->adj_whiteness));
+  hscale_whiteness = gtk_scale_new (GTK_ORIENTATION_HORIZONTAL,
+                                    GTK_ADJUSTMENT (cw->priv->adj_whiteness));
   gtk_scale_set_draw_value (GTK_SCALE (hscale_whiteness), false);
   gtk_scale_set_value_pos (GTK_SCALE (hscale_whiteness), GTK_POS_RIGHT);
   gtk_box_pack_start (GTK_BOX (hbox), hscale_whiteness, true, true, 2);
@@ -1796,13 +1798,14 @@ gm_cw_video_settings_window_new (EkigaCallWindow *cw)
 		    (gpointer) cw);
 
   /* Colour */
-  hbox = gtk_hbox_new (false, 0);
+  hbox = gtk_box_new (GTK_ORIENTATION_HORIZONTAL, 0);
   image = gtk_image_new_from_icon_name ("color", GTK_ICON_SIZE_MENU);
   gtk_box_pack_start (GTK_BOX (hbox), image, false, false, 0);
 
   cw->priv->adj_colour = gtk_adjustment_new (colour, 0.0,
 					     255.0, 1.0, 5.0, 1.0);
-  hscale_colour = gtk_hscale_new (GTK_ADJUSTMENT (cw->priv->adj_colour));
+  hscale_colour = gtk_scale_new (GTK_ORIENTATION_HORIZONTAL,
+                                 GTK_ADJUSTMENT (cw->priv->adj_colour));
   gtk_scale_set_draw_value (GTK_SCALE (hscale_colour), false);
   gtk_scale_set_value_pos (GTK_SCALE (hscale_colour), GTK_POS_RIGHT);
   gtk_box_pack_start (GTK_BOX (hbox), hscale_colour, true, true, 2);
@@ -1815,13 +1818,14 @@ gm_cw_video_settings_window_new (EkigaCallWindow *cw)
 		    (gpointer) cw);
 
   /* Contrast */
-  hbox = gtk_hbox_new (false, 0);
+  hbox = gtk_box_new (GTK_ORIENTATION_HORIZONTAL, 0);
   image = gtk_image_new_from_icon_name ("contrast", GTK_ICON_SIZE_MENU);
   gtk_box_pack_start (GTK_BOX (hbox), image, false, false, 0);
 
   cw->priv->adj_contrast = gtk_adjustment_new (contrast, 0.0,
 					       255.0, 1.0, 5.0, 1.0);
-  hscale_contrast = gtk_hscale_new (GTK_ADJUSTMENT (cw->priv->adj_contrast));
+  hscale_contrast = gtk_scale_new (GTK_ORIENTATION_HORIZONTAL,
+                                   GTK_ADJUSTMENT (cw->priv->adj_contrast));
   gtk_scale_set_draw_value (GTK_SCALE (hscale_contrast), false);
   gtk_scale_set_value_pos (GTK_SCALE (hscale_contrast), GTK_POS_RIGHT);
   gtk_box_pack_start (GTK_BOX (hbox), hscale_contrast, true, true, 2);
@@ -1879,18 +1883,19 @@ gm_cw_audio_settings_window_new (EkigaCallWindow *cw)
 
 
   /* The vbox */
-  vbox = gtk_vbox_new (false, 0);
+  vbox = gtk_box_new (GTK_ORIENTATION_VERTICAL, 0);
   gtk_container_add (GTK_CONTAINER (cw->priv->audio_output_volume_frame), vbox);
 
   /* Output volume */
-  hbox = gtk_hbox_new (false, 0);
+  hbox = gtk_box_new (GTK_ORIENTATION_HORIZONTAL, 0);
   gtk_box_pack_start (GTK_BOX (hbox),
 		      gtk_image_new_from_icon_name ("audio-volume", GTK_ICON_SIZE_SMALL_TOOLBAR),
 		      false, false, 0);
 
-  small_vbox = gtk_vbox_new (false, 0);
+  small_vbox = gtk_box_new (GTK_ORIENTATION_VERTICAL, 0);
   cw->priv->adj_output_volume = gtk_adjustment_new (0, 0.0, 101.0, 1.0, 5.0, 1.0);
-  hscale_play = gtk_hscale_new (GTK_ADJUSTMENT (cw->priv->adj_output_volume));
+  hscale_play = gtk_scale_new (GTK_ORIENTATION_HORIZONTAL,
+                               GTK_ADJUSTMENT (cw->priv->adj_output_volume));
   gtk_scale_set_value_pos (GTK_SCALE (hscale_play), GTK_POS_RIGHT);
   gtk_scale_set_draw_value (GTK_SCALE (hscale_play), false);
   gtk_box_pack_start (GTK_BOX (small_vbox), hscale_play, true, true, 0);
@@ -1912,19 +1917,20 @@ gm_cw_audio_settings_window_new (EkigaCallWindow *cw)
   gtk_container_set_border_width (GTK_CONTAINER (cw->priv->audio_input_volume_frame), 5);
 
   /* The vbox */
-  vbox = gtk_vbox_new (false, 0);
+  vbox = gtk_box_new (GTK_ORIENTATION_VERTICAL, 0);
   gtk_container_add (GTK_CONTAINER (cw->priv->audio_input_volume_frame), vbox);
 
   /* Input volume */
-  hbox = gtk_hbox_new (false, 0);
+  hbox = gtk_box_new (GTK_ORIENTATION_HORIZONTAL, 0);
   gtk_box_pack_start (GTK_BOX (hbox),
 		      gtk_image_new_from_icon_name ("audio-input-microphone",
 						    GTK_ICON_SIZE_SMALL_TOOLBAR),
 		      false, false, 0);
 
-  small_vbox = gtk_vbox_new (false, 0);
+  small_vbox = gtk_box_new (GTK_ORIENTATION_VERTICAL, 0);
   cw->priv->adj_input_volume = gtk_adjustment_new (0, 0.0, 101.0, 1.0, 5.0, 1.0);
-  hscale_rec = gtk_hscale_new (GTK_ADJUSTMENT (cw->priv->adj_input_volume));
+  hscale_rec = gtk_scale_new (GTK_ORIENTATION_HORIZONTAL,
+                              GTK_ADJUSTMENT (cw->priv->adj_input_volume));
   gtk_scale_set_value_pos (GTK_SCALE (hscale_rec), GTK_POS_RIGHT);
   gtk_scale_set_draw_value (GTK_SCALE (hscale_rec), false);
   gtk_box_pack_start (GTK_BOX (small_vbox), hscale_rec, true, true, 0);
@@ -2312,7 +2318,7 @@ ekiga_call_window_init_gui (EkigaCallWindow *cw)
 
   /* The main table */
   event_box = gtk_event_box_new ();
-  vbox = gtk_vbox_new (false, 0);
+  vbox = gtk_box_new (GTK_ORIENTATION_VERTICAL, 0);
   frame = gtk_frame_new (NULL);
   gtk_frame_set_shadow_type (GTK_FRAME (frame), GTK_SHADOW_NONE);
   event_box = gtk_event_box_new ();
@@ -2346,7 +2352,7 @@ ekiga_call_window_init_gui (EkigaCallWindow *cw)
   /* The frame that contains information about the call */
   cw->priv->call_frame = gtk_frame_new (NULL);
   gtk_frame_set_shadow_type (GTK_FRAME (cw->priv->call_frame), GTK_SHADOW_NONE);
-  hbox = gtk_hbox_new (false, 0);
+  hbox = gtk_box_new (GTK_ORIENTATION_HORIZONTAL, 0);
 
   cw->priv->camera_image = gtk_image_new_from_icon_name ("camera-web", GTK_ICON_SIZE_LARGE_TOOLBAR);
   gtk_box_pack_start (GTK_BOX (hbox), cw->priv->camera_image, false, false, 12);

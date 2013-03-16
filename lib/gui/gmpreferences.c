@@ -134,7 +134,7 @@ gnome_prefs_entry_new (GtkWidget *table,
   
   if (box) {
     
-    hbox = gtk_hbox_new (FALSE, 0);
+    hbox = gtk_box_new (GTK_ORIENTATION_HORIZONTAL, 0);
     g_value_init (&value, G_TYPE_INT);
     g_object_get_property (G_OBJECT (table), "n-columns", &value);
     cols = g_value_get_int (&value);
@@ -278,7 +278,7 @@ gnome_prefs_scale_new (GtkWidget *table,
 
   writable = gm_conf_is_key_writable (conf_key);
 
-  hbox = gtk_hbox_new (FALSE, 0);
+  hbox = gtk_box_new (GTK_ORIENTATION_HORIZONTAL, 0);
 
   label = gtk_label_new_with_mnemonic (down_label_txt);
   if (!writable)
@@ -295,7 +295,7 @@ gnome_prefs_scale_new (GtkWidget *table,
 			min, max, step,
 			2.0, 1.0);
 
-  hscale = gtk_hscale_new (adj);
+  hscale = gtk_scale_new (GTK_ORIENTATION_HORIZONTAL, adj);
   gtk_scale_set_draw_value (GTK_SCALE (hscale), FALSE);
   gtk_widget_set_size_request (GTK_WIDGET (hscale), 150, -1);
   if (!writable)
@@ -359,7 +359,7 @@ gnome_prefs_spin_new (GtkWidget *table,
 
   
   if (box)
-    hbox = gtk_hbox_new (FALSE, 0);
+    hbox = gtk_box_new (GTK_ORIENTATION_HORIZONTAL, 0);
   
   label = gtk_label_new_with_mnemonic (label_txt);
   if (!writable)
@@ -468,7 +468,7 @@ gnome_prefs_range_new (GtkWidget *table,
      &&
      gm_conf_is_key_writable (spin2_conf_key));
   
-  hbox = gtk_hbox_new (FALSE, 0);
+  hbox = gtk_box_new (GTK_ORIENTATION_HORIZONTAL, 0);
   label = gtk_label_new_with_mnemonic (label1_txt);
   if (!writable)
     gtk_widget_set_sensitive (GTK_WIDGET (label), FALSE);
@@ -916,7 +916,7 @@ gnome_prefs_subsection_new (GtkWidget *window,
   if (window)
     gpw = (GnomePrefsWindow *) g_object_get_data (G_OBJECT (window), "gpw");
   
-  hbox = gtk_hbox_new (FALSE, 6);
+  hbox = gtk_box_new (GTK_ORIENTATION_HORIZONTAL, 6);
 
   frame = gtk_frame_new (frame_name);
   gtk_frame_set_shadow_type (GTK_FRAME (frame), GTK_SHADOW_NONE);
@@ -1017,7 +1017,7 @@ gnome_prefs_window_new (const gchar *logo_name)
   /* The sections */
   dialog_vbox = gtk_dialog_get_content_area (GTK_DIALOG (window));
 
-  hbox = gtk_hbox_new (FALSE, 6);
+  hbox = gtk_box_new (GTK_ORIENTATION_HORIZONTAL, 6);
   gtk_container_set_border_width (GTK_CONTAINER (hbox), 6);
   gtk_container_add (GTK_CONTAINER (dialog_vbox), hbox);
 
@@ -1052,7 +1052,7 @@ gnome_prefs_window_new (const gchar *logo_name)
   gtk_box_pack_start (GTK_BOX (hbox), frame, TRUE, TRUE, 0);
   gtk_widget_show (frame);
   
-  vbox = gtk_vbox_new (FALSE, 0);
+  vbox = gtk_box_new (GTK_ORIENTATION_VERTICAL, 0);
   gtk_container_add (GTK_CONTAINER (frame), vbox);
   gtk_widget_show (vbox);
   
@@ -1077,7 +1077,7 @@ gnome_prefs_window_new (const gchar *logo_name)
   pango_attr_list_unref (attrs);
   gtk_widget_show (gpw->section_label);
 
-  hsep = gtk_hseparator_new ();
+  hsep = gtk_separator_new (GTK_ORIENTATION_HORIZONTAL);
   gtk_box_pack_start (GTK_BOX (vbox), hsep, FALSE, FALSE, 0); 
   gtk_box_pack_start (GTK_BOX (vbox), gpw->notebook, TRUE, TRUE, 0);
 
@@ -1134,7 +1134,7 @@ gnome_prefs_window_subsection_new (GtkWidget *window,
   if (!gpw || !section_name)
     return NULL;
 
-  container = gtk_vbox_new (FALSE, 4);
+  container = gtk_box_new (GTK_ORIENTATION_VERTICAL, 4);
   model = gtk_tree_view_get_model (GTK_TREE_VIEW (gpw->sections_tree_view));
   gtk_tree_store_append (GTK_TREE_STORE (model), &child_iter, &gpw->iter);
   gtk_tree_store_set (GTK_TREE_STORE (model), &child_iter, 0, section_name,

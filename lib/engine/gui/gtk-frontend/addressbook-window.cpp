@@ -628,7 +628,7 @@ addressbook_window_new (Ekiga::ContactCore &core)
   gtk_window_set_icon_name (GTK_WINDOW (self), "x-office-address-book");
 
   /* Start building the window */
-  vbox = gtk_vbox_new (FALSE, 2);
+  vbox = gtk_box_new (GTK_ORIENTATION_VERTICAL, 2);
 
   /* The menu */
   menu_bar = gtk_menu_bar_new ();
@@ -660,7 +660,7 @@ addressbook_window_new (Ekiga::ContactCore &core)
 
 
   /* A hpaned to put the list of Books and their content */
-  hpaned = gtk_hpaned_new ();
+  hpaned = gtk_paned_new (GTK_ORIENTATION_HORIZONTAL);
   gtk_container_set_border_width (GTK_CONTAINER (hpaned), 6);
   gtk_container_add (GTK_CONTAINER (vbox), hpaned);
 

@@ -120,11 +120,10 @@ gm_cell_renderer_bitext_update_text (GmCellRendererBitext *renderer,
 
 /* overriden inherited functions, so we make sure the text is right before
  * we compute size or draw */
-
 static void
 gm_cell_renderer_bitext_get_size (GtkCellRenderer *cell,
 				  GtkWidget *widget,
-				  GdkRectangle *cell_area,
+				  const GdkRectangle *cell_area,
 				  gint *x_offset,
 				  gint *y_offset,
 				  gint *width,
@@ -149,8 +148,8 @@ static void
 gm_cell_renderer_bitext_render (GtkCellRenderer *cell,
 				cairo_t *cr,
 				GtkWidget *widget,
-				GdkRectangle *background_area,
-				GdkRectangle *cell_area,
+				const GdkRectangle *background_area,
+				const GdkRectangle *cell_area,
 				GtkCellRendererState flags)
 {
   GmCellRendererBitext *renderer = NULL;

@@ -261,7 +261,7 @@ on_motion_notify_event (GtkWidget* widget,
 			G_GNUC_UNUSED gpointer data)
 {
   gboolean result = FALSE;
-  GdkModifierType state; 
+  GdkModifierType state;
   gint xwin = 0;
   gint ywin = 0;
   gint xbuf = 0;
@@ -271,8 +271,12 @@ on_motion_notify_event (GtkWidget* widget,
   GSList* tmp_tags = NULL;
   GtkTextTag* tag = NULL;
   GdkCursor* cursor = NULL;
+  GdkDeviceManager* device_manager= NULL;
+  GdkDevice* pointer= NULL;
 
-  gdk_window_get_pointer (event->window, &xwin, &ywin, &state);
+  device_manager = gdk_display_get_device_manager (gdk_window_get_display (event->window));
+  pointer = gdk_device_manager_get_client_pointer (device_manager);
+  gdk_window_get_device_position (event->window, pointer, &xwin, &ywin, &state);
   gtk_text_view_window_to_buffer_coords (GTK_TEXT_VIEW (widget),
 					 GTK_TEXT_WINDOW_WIDGET,
 					 xwin, ywin,
@@ -429,6 +433,10 @@ on_extlink_tag_event (GtkTextTag* tag,
   case GDK_GRAB_BROKEN:
   case GDK_DAMAGE:
   case GDK_EVENT_LAST:
+  case GDK_TOUCH_BEGIN:
+  case GDK_TOUCH_UPDATE:
+  case GDK_TOUCH_END:
+  case GDK_TOUCH_CANCEL:
   default:
     result = FALSE; // nothing
     break; // nothing
@@ -724,7 +732,7 @@ chat_area_init (ChatArea* self)
   {
     GdkCursor* cursor = gdk_cursor_new (GDK_HAND2);
     g_object_set_data_full (G_OBJECT (tag), "cursor", cursor,
-			    (GDestroyNotify)gdk_cursor_unref);
+			    (GDestroyNotify) g_object_unref);
   }
   helper = gm_text_extlink_new ("\\<(http[s]?|[s]?ftp)://[^[:blank:]]+\\>", tag);
   gm_text_buffer_enhancer_add_helper (self->priv->enhancer, helper);
@@ -798,14 +806,14 @@ chat_area_init (ChatArea* self)
   GtkWidget* smiley_chooser_button = NULL;
 
   frame = gtk_frame_new (NULL);
-  vbox = gtk_vbox_new (FALSE, 2);
+  vbox = gtk_box_new (GTK_ORIENTATION_VERTICAL, 2);
   gtk_frame_set_shadow_type (GTK_FRAME (frame), GTK_SHADOW_IN);
   gtk_container_set_border_width (GTK_CONTAINER (frame), 5);
   gtk_paned_pack2 (GTK_PANED (self), frame, TRUE, TRUE);
   gtk_container_add (GTK_CONTAINER (frame), vbox);
   gtk_widget_show_all (frame);
 
-  bbox = gtk_hbutton_box_new ();
+  bbox = gtk_button_box_new (GTK_ORIENTATION_HORIZONTAL);
   /* FIXME gtk_box_set_spacing() seems to be neccesary, though we
      define a padding with the pack() methods */
   /* FIXME the box doesn't do the 2px space at the left and right edges! */
@@ -868,7 +876,7 @@ chat_area_init (ChatArea* self)
 		      FALSE, TRUE, 2);
   gtk_widget_show (button);
 
-  sep = gtk_hseparator_new ();
+  sep = gtk_separator_new (GTK_ORIENTATION_HORIZONTAL);
   gtk_box_pack_start (GTK_BOX (vbox), sep, FALSE, FALSE, 0);
 
   self->priv->message = gtk_text_view_new ();

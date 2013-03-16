@@ -440,7 +440,7 @@ codecs_box_init (CodecsBox *self)
 
   /* The buttons */
   alignment = gtk_alignment_new (1, 0.5, 0, 0);
-  buttons_vbox = gtk_vbox_new (TRUE, 6);
+  buttons_vbox = gtk_box_new (GTK_ORIENTATION_VERTICAL, 6);
 
   gtk_container_add (GTK_CONTAINER (alignment), buttons_vbox);
 

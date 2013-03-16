@@ -536,7 +536,7 @@ gm_pw_init_sound_events_page (GtkWidget *prefs_window,
                                            _("Ekiga Sound Events"), 
                                            1, 1);
 
-  vbox = gtk_vbox_new (FALSE, 0);
+  vbox = gtk_box_new (GTK_ORIENTATION_VERTICAL, 0);
   gtk_table_attach (GTK_TABLE (subsection), vbox, 0, 1, 0, 1,
                     (GtkAttachOptions) (GTK_SHRINK), 
                     (GtkAttachOptions) (GTK_SHRINK),
@@ -590,7 +590,7 @@ gm_pw_init_sound_events_page (GtkWidget *prefs_window,
   gtk_tree_view_append_column (GTK_TREE_VIEW (pw->sound_events_list), column);
   gtk_tree_view_column_set_fixed_width (GTK_TREE_VIEW_COLUMN (column), 325);
 
-  hbox = gtk_hbox_new (FALSE, 0);
+  hbox = gtk_box_new (GTK_ORIENTATION_HORIZONTAL, 0);
   gtk_box_pack_start (GTK_BOX (vbox), hbox, FALSE, FALSE, 2);
 
   pw->fsbutton =
@@ -607,7 +607,7 @@ gm_pw_init_sound_events_page (GtkWidget *prefs_window,
 #endif
   gtk_file_chooser_add_filter (GTK_FILE_CHOOSER (pw->fsbutton), filefilter);
 
-  selector_hbox = gtk_hbox_new (FALSE, 0);
+  selector_hbox = gtk_box_new (GTK_ORIENTATION_HORIZONTAL, 0);
   selector_playbutton = gtk_button_new_with_label (_("Play"));
   gtk_box_pack_end (GTK_BOX (selector_hbox),
                     selector_playbutton, FALSE, FALSE, 0);

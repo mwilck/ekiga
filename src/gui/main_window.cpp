@@ -1461,7 +1461,7 @@ ekiga_main_window_init_dialpad (EkigaMainWindow *mw)
   GtkWidget *label = NULL;
   GtkWidget *vbox = NULL;
 
-  vbox = gtk_vbox_new (false, 0);
+  vbox = gtk_box_new (GTK_ORIENTATION_VERTICAL, 0);
   dialpad = ekiga_dialpad_new (mw->priv->accel);
   g_signal_connect (dialpad, "button-clicked",
                     G_CALLBACK (dialpad_button_clicked_cb), mw);
@@ -1505,7 +1505,7 @@ ekiga_main_window_init_gui (EkigaMainWindow *mw)
 
   gtk_window_set_title (GTK_WINDOW (mw), _("Ekiga"));
 
-  window_vbox = gtk_vbox_new (false, 0);
+  window_vbox = gtk_box_new (GTK_ORIENTATION_VERTICAL, 0);
   gtk_container_add (GTK_CONTAINER (mw), window_vbox);
   gtk_widget_show_all (window_vbox);
 

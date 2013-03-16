@@ -567,7 +567,7 @@ accounts_window_new (Ekiga::ServiceCore &core)
   self->priv->details = core.get<Ekiga::PersonalDetails> ("personal-details");
   self->priv->account_core = core.get<Ekiga::AccountCore> ("account-core");
 
-  vbox = gtk_vbox_new (FALSE, 2);
+  vbox = gtk_box_new (GTK_ORIENTATION_VERTICAL, 2);
   gtk_window_set_title (GTK_WINDOW (self), _("Accounts"));
 
   /* The menu */
@@ -649,7 +649,7 @@ accounts_window_new (Ekiga::ServiceCore &core)
 				  GTK_POLICY_AUTOMATIC);
 
   event_box = gtk_event_box_new ();
-  hbox = gtk_hbox_new (FALSE, 4);
+  hbox = gtk_box_new (GTK_ORIENTATION_HORIZONTAL, 4);
   gtk_container_set_border_width (GTK_CONTAINER (hbox), 12);
   gtk_container_add (GTK_CONTAINER (event_box), hbox);
 
@@ -665,7 +665,7 @@ accounts_window_new (Ekiga::ServiceCore &core)
   /* setting up a horizontal button box
    * (each button with be dynamically disabled/enabled as needed)
    */
-  button_box = gtk_vbutton_box_new ();
+  button_box = gtk_button_box_new (GTK_ORIENTATION_VERTICAL);
   gtk_button_box_set_layout (GTK_BUTTON_BOX (button_box), GTK_BUTTONBOX_CENTER);
   button = gtk_button_new_with_mnemonic (_("_Enable"));
   gtk_box_pack_start (GTK_BOX (button_box), button, FALSE, FALSE, 3);

@@ -84,10 +84,10 @@ gui_layout (EkigaExtWindow *ew)
 {
   GtkWidget *zin, *zout, *vbox, *hbox;
 
-  vbox = gtk_vbox_new (FALSE, 0);
+  vbox = gtk_box_new (GTK_ORIENTATION_VERTICAL, 0);
   gtk_container_add (GTK_CONTAINER (ew), vbox);
 
-  hbox = gtk_hbox_new (FALSE, 0);
+  hbox = gtk_box_new (GTK_ORIENTATION_HORIZONTAL, 0);
   gtk_box_pack_start (GTK_BOX (vbox), hbox, FALSE, FALSE, 0);
 
   zin = gtk_button_new_from_stock (GTK_STOCK_ZOOM_IN);

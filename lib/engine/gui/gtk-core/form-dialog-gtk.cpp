@@ -642,12 +642,12 @@ FormDialog::FormDialog (Ekiga::FormRequestPtr _request,
                                    GTK_RESPONSE_ACCEPT);
   gtk_window_set_resizable (GTK_WINDOW (window), FALSE);
 
-  vbox = gtk_vbox_new (FALSE, 0);
+  vbox = gtk_box_new (GTK_ORIENTATION_VERTICAL, 0);
   gtk_container_set_border_width (GTK_CONTAINER (vbox), 6);
   gtk_box_pack_start (GTK_BOX (gtk_dialog_get_content_area (GTK_DIALOG (window))), vbox, FALSE, FALSE, 0);
   gtk_widget_show (vbox);
 
-  preamble = gtk_vbox_new (FALSE, 0);
+  preamble = gtk_box_new (GTK_ORIENTATION_VERTICAL, 0);
   gtk_box_pack_start (GTK_BOX (vbox), preamble, FALSE, FALSE, 0);
 
   fields = gtk_table_new (0, 2, FALSE);
@@ -1299,7 +1299,7 @@ FormDialog::editable_set (const std::string name,
 		      0, 0);
   }
 
-  hbox = gtk_hbox_new (FALSE, 2);
+  hbox = gtk_box_new (GTK_ORIENTATION_HORIZONTAL, 2);
   entry = gtk_entry_new ();
   button = gtk_button_new_with_label (_("Add Group"));
   gtk_box_pack_start (GTK_BOX (hbox), entry, TRUE, TRUE, 2);
