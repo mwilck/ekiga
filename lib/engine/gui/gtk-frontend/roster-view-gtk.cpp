@@ -501,13 +501,14 @@ on_clicked_show_heap_menu (Ekiga::Heap* heap,
   MenuBuilderGtk builder;
   heap->populate_menu (builder);
   if (!builder.empty ()) {
-
     gtk_widget_show_all (builder.menu);
     gtk_menu_popup (GTK_MENU (builder.menu), NULL, NULL,
-		    NULL, NULL, event->button, event->time);
+                    NULL, NULL, event->button, event->time);
+    g_signal_connect (builder.menu, "hide",
+                      G_CALLBACK (g_object_unref),
+                      (gpointer) builder.menu);
   }
-  g_object_ref_sink (builder.menu);
-  g_object_unref (builder.menu);
+  g_object_ref_sink (G_OBJECT (builder.menu));
 }
 
 static void
@@ -521,10 +522,12 @@ on_clicked_show_heap_group_menu (Ekiga::Heap* heap,
 
     gtk_widget_show_all (builder.menu);
     gtk_menu_popup (GTK_MENU (builder.menu), NULL, NULL,
-		    NULL, NULL, event->button, event->time);
+                    NULL, NULL, event->button, event->time);
+    g_signal_connect (builder.menu, "hide",
+                      G_CALLBACK (g_object_unref),
+                      (gpointer) builder.menu);
   }
-  g_object_ref_sink (builder.menu);
-  g_object_unref (builder.menu);
+  g_object_ref_sink (G_OBJECT (builder.menu));
 }
 
 static void
@@ -548,9 +551,11 @@ on_clicked_show_presentity_menu (Ekiga::Heap* heap,
     gtk_widget_show_all (builder.menu);
     gtk_menu_popup (GTK_MENU (builder.menu), NULL, NULL,
                     NULL, NULL, event->button, event->time);
+    g_signal_connect (builder.menu, "hide",
+                      G_CALLBACK (g_object_unref),
+                      (gpointer) builder.menu);
   }
-  g_object_ref_sink (builder.menu);
-  g_object_unref (builder.menu);
+  g_object_ref_sink (G_OBJECT (builder.menu));
 }
 
 static void
