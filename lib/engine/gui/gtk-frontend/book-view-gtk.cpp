@@ -520,6 +520,28 @@ book_view_gtk_new (Ekiga::BookPtr book)
   result->priv->vbox = gtk_box_new (GTK_ORIENTATION_VERTICAL, 0);
   gtk_frame_set_shadow_type (GTK_FRAME (result), GTK_SHADOW_NONE);
 
+  /* The Search Box */
+  boost::shared_ptr<Ekiga::Filterable> filtered = boost::dynamic_pointer_cast<Ekiga::Filterable> (book);
+
+  if (filtered) {
+
+    hbox = gtk_box_new (GTK_ORIENTATION_HORIZONTAL, 0);
+    result->priv->entry = gtk_entry_new ();
+    button = gtk_button_new_from_stock (GTK_STOCK_FIND);
+    label = gtk_label_new_with_mnemonic (_("_Search Filter:"));
+    gtk_box_pack_start (GTK_BOX (hbox), label, FALSE, FALSE, 2);
+    gtk_box_pack_start (GTK_BOX (hbox), result->priv->entry, TRUE, TRUE, 2);
+    gtk_box_pack_start (GTK_BOX (hbox), button, FALSE, FALSE, 2);
+    gtk_box_pack_start (GTK_BOX (result->priv->vbox), hbox, FALSE, FALSE, 0);
+    g_signal_connect (result->priv->entry, "activate",
+		      G_CALLBACK (on_entry_activated_cb), result);
+    g_signal_connect (button, "clicked",
+		      G_CALLBACK (on_button_clicked_cb), result);
+  } else {
+
+    result->priv->entry = NULL;
+  }
+
   /* The List Store */
   result->priv->scrolled_window = gtk_scrolled_window_new (NULL, NULL);
   gtk_scrolled_window_set_policy (GTK_SCROLLED_WINDOW
@@ -569,29 +591,6 @@ book_view_gtk_new (Ekiga::BookPtr book)
                                    GTK_TREE_VIEW_COLUMN_AUTOSIZE);
   gtk_tree_view_column_set_resizable (column, true);
   gtk_tree_view_append_column (GTK_TREE_VIEW (result->priv->tree_view), column);
-
-  /* The Search Box */
-  boost::shared_ptr<Ekiga::Filterable> filtered = boost::dynamic_pointer_cast<Ekiga::Filterable> (book);
-
-  if (filtered) {
-
-    hbox = gtk_box_new (GTK_ORIENTATION_HORIZONTAL, 0);
-    result->priv->entry = gtk_entry_new ();
-    button = gtk_button_new_from_stock (GTK_STOCK_FIND);
-    label = gtk_label_new_with_mnemonic (_("_Search Filter:"));
-    gtk_box_pack_start (GTK_BOX (hbox), label, FALSE, FALSE, 2);
-    gtk_box_pack_start (GTK_BOX (hbox), result->priv->entry, TRUE, TRUE, 2);
-    gtk_box_pack_start (GTK_BOX (hbox), button, FALSE, FALSE, 2);
-    gtk_box_pack_start (GTK_BOX (result->priv->vbox), hbox, FALSE, FALSE, 0);
-    g_signal_connect (result->priv->entry, "activate",
-		      G_CALLBACK (on_entry_activated_cb), result);
-    g_signal_connect (button, "clicked",
-		      G_CALLBACK (on_button_clicked_cb), result);
-  } else {
-
-    result->priv->entry = NULL;
-  }
-
 
   /* The status bar */
   result->priv->statusbar = gtk_statusbar_new ();
