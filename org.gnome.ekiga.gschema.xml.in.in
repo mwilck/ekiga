@@ -12,19 +12,19 @@
   </schema>
   <schema gettext-domain="@GETTEXT_PACKAGE@" id="org.gnome.ekiga.devices.audio" path="/apps/@PACKAGE_NAME@/devices/audio/">
     <key name="output-device" type="s">
-      <default>''</default>
+      <default></default>
       <_summary>Audio output device</_summary>
       <_description>Select the audio output device to use</_description>
     </key>
     <key name="input-device" type="s">
-      <default>''</default>
+      <default></default>
       <_summary>Audio input device</_summary>
       <_description>Select the audio input device to use</_description>
     </key>
   </schema>
   <schema gettext-domain="@GETTEXT_PACKAGE@" id="org.gnome.ekiga.devices.video" path="/apps/@PACKAGE_NAME@/devices/video/">
     <key name="input-device" type="s">
-      <default>''</default>
+      <default></default>
       <_summary>Video input device</_summary>
       <_description>Select the video input device to use. If an error occurs when using this device a test picture will be transmitted.</_description>
     </key>
@@ -68,7 +68,7 @@
   </schema>
   <schema gettext-domain="@GETTEXT_PACKAGE@" id="org.gnome.ekiga.general.personal-data" path="/apps/@PACKAGE_NAME@/general/personal-data/">
     <key name="full-name" type="s">
-      <default>''</default>
+      <default></default>
       <_summary>Full name</_summary>
       <_description>Enter your full name</_description>
     </key>
@@ -94,7 +94,7 @@
   </schema>
   <schema gettext-domain="@GETTEXT_PACKAGE@" id="org.gnome.ekiga.general.sound-events" path="/apps/@PACKAGE_NAME@/general/sound-events/">
     <key name="output-device" type="s">
-      <default>''</default>
+      <default></default>
       <_summary>Alternative audio output device</_summary>
       <_description>Select an alternative audio output device to use for sound events.</_description>
     </key>
@@ -408,7 +408,7 @@
       <_description>The Type of Service (TOS) byte on outgoing RTP IP packets. This byte is used by the network to provide some level of Quality of Service (QoS). Default value 184 (0xB8) corresponds to Expedited Forwarding (EF) PHB as defined in RFC 3246.</_description>
     </key>
     <key name="interface" type="s">
-      <default>''</default>
+      <default></default>
     </key>
     <child name="sip" schema="org.gnome.ekiga.protocols.sip"/>
     <child name="h323" schema="org.gnome.ekiga.protocols.h323"/>
@@ -422,7 +422,7 @@
       <_description>The port to listen to for incoming connections. Ekiga needs to be restarted for the new value to take effect</_description>
     </key>
     <key name="outbound-proxy-host" type="s">
-      <default>''</default>
+      <default></default>
       <_summary>Outbound Proxy</_summary>
       <_description>The SIP Outbound Proxy to use for outgoing calls</_description>
     </key>
@@ -524,17 +524,17 @@
       <_description>If enabled, offline contacts will be shown in the roster</_description>
     </key>
     <key name="ldap-servers" type="s">
-      <default>''</default>
+      <default></default>
       <_summary>LDAP servers</_summary>
       <_description>List of configured LDAP servers</_description>
     </key>
     <key name="call-history" type="s">
-      <default>''</default>
+      <default></default>
       <_summary>Calls history</_summary>
       <_description>The history of the 100 last calls</_description>
     </key>
     <key name="roster" type="s">
-      <default>''</default>
+      <default></default>
     </key>
   </schema>
 </schemalist>
