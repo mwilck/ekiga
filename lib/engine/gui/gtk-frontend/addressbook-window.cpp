@@ -663,6 +663,8 @@ addressbook_window_new (Ekiga::ContactCore &core)
   hpaned = gtk_paned_new (GTK_ORIENTATION_HORIZONTAL);
   gtk_container_set_border_width (GTK_CONTAINER (hpaned), 6);
   gtk_container_add (GTK_CONTAINER (vbox), hpaned);
+  gtk_box_set_child_packing (GTK_BOX (vbox), hpaned,
+                             TRUE, TRUE, 0, GTK_PACK_START);
 
   /* The store listing the Books */
   frame = gtk_frame_new (NULL);
@@ -676,7 +678,7 @@ addressbook_window_new (Ekiga::ContactCore &core)
   g_object_unref (store);
   gtk_container_add (GTK_CONTAINER (frame), self->priv->tree_view);
   gtk_widget_set_size_request (GTK_WIDGET (self->priv->tree_view), 185, -1);
-  gtk_paned_add1 (GTK_PANED (hpaned), frame);
+  gtk_paned_pack1 (GTK_PANED (hpaned), frame, TRUE, TRUE);
 
   /* Several renderers for one column */
   column = gtk_tree_view_column_new ();
@@ -713,7 +715,7 @@ addressbook_window_new (Ekiga::ContactCore &core)
   gtk_notebook_set_show_tabs (GTK_NOTEBOOK (self->priv->notebook), FALSE);
   g_signal_connect (self->priv->notebook, "realize",
                     G_CALLBACK (on_notebook_realize), self);
-  gtk_paned_add2 (GTK_PANED (hpaned), self->priv->notebook);
+  gtk_paned_pack2 (GTK_PANED (hpaned), self->priv->notebook, TRUE, TRUE);
 
   conn = core.source_added.connect (boost::bind (&on_source_added, _1, (gpointer) self));
   self->priv->connections.add (conn);
