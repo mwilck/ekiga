@@ -1,0 +1,540 @@
+<schemalist>
+  <schema gettext-domain="@GETTEXT_PACKAGE@" id="org.gnome.ekiga" path="/apps/@PACKAGE_NAME@/">
+    <child name="devices" schema="org.gnome.ekiga.devices"/>
+    <child name="general" schema="org.gnome.ekiga.general"/>
+    <child name="codecs" schema="org.gnome.ekiga.codecs"/>
+    <child name="protocols" schema="org.gnome.ekiga.protocols"/>
+    <child name="contacts" schema="org.gnome.ekiga.contacts"/>
+  </schema>
+  <schema gettext-domain="@GETTEXT_PACKAGE@" id="org.gnome.ekiga.devices" path="/apps/@PACKAGE_NAME@/devices/">
+    <child name="audio" schema="org.gnome.ekiga.devices.audio"/>
+    <child name="video" schema="org.gnome.ekiga.devices.video"/>
+  </schema>
+  <schema gettext-domain="@GETTEXT_PACKAGE@" id="org.gnome.ekiga.devices.audio" path="/apps/@PACKAGE_NAME@/devices/audio/">
+    <key name="output-device" type="s">
+      <default>''</default>
+      <_summary>Audio output device</_summary>
+      <_description>Select the audio output device to use</_description>
+    </key>
+    <key name="input-device" type="s">
+      <default>''</default>
+      <_summary>Audio input device</_summary>
+      <_description>Select the audio input device to use</_description>
+    </key>
+  </schema>
+  <schema gettext-domain="@GETTEXT_PACKAGE@" id="org.gnome.ekiga.devices.video" path="/apps/@PACKAGE_NAME@/devices/video/">
+    <key name="input-device" type="s">
+      <default>''</default>
+      <_summary>Video input device</_summary>
+      <_description>Select the video input device to use. If an error occurs when using this device a test picture will be transmitted.</_description>
+    </key>
+    <key name="size" type="i">
+      <default>0</default>
+      <_summary>Video size</_summary>
+      <_description>Select the transmitted video size: Small (QCIF 176x144) or Large (CIF 352x288)</_description>
+    </key>
+    <key name="channel" type="i">
+      <default>0</default>
+      <_summary>Video channel</_summary>
+      <_description>The video channel number to use (to select camera, tv or other sources)</_description>
+    </key>
+    <key name="format" type="i">
+      <default>0</default>
+      <_summary>Video format</_summary>
+      <_description>Select the format for video cameras (does not apply to most USB cameras)</_description>
+    </key>
+    <key name="enable-preview" type="b">
+      <default>false</default>
+      <_summary>Video preview</_summary>
+      <_description>Display images from your camera device</_description>
+    </key>
+    <key name="max-frame-rate" type="i">
+      <default>30</default>
+      <_summary>Frame Rate</_summary>
+      <_description>The maximum transmitted frame rate in frames/s. This rate may not be reached in case a minimum quality was configure via a TSTO value smaller than 31 and the bitrate selected is not sufficient to support this minimum quality</_description>
+    </key>
+  </schema>
+  <schema gettext-domain="@GETTEXT_PACKAGE@" id="org.gnome.ekiga.general" path="/apps/@PACKAGE_NAME@/general/">
+    <key name="kind-of-net" type="i">
+      <default>2</default>
+      <_summary>Kind of network selected in the assistant</_summary>
+      <_description>0: 56kbps, 1: ISDN, 2: DSL128, 3: DSL512, 4: LAN, 5: Custom</_description>
+    </key>
+    <child name="personal-data" schema="org.gnome.ekiga.general.personal-data"/>
+    <child name="sound-events" schema="org.gnome.ekiga.general.sound-events"/>
+    <child name="nat" schema="org.gnome.ekiga.general.nat"/>
+    <child name="user-interface" schema="org.gnome.ekiga.general.user-interface"/>
+    <child name="call-options" schema="org.gnome.ekiga.general.call-options"/>
+  </schema>
+  <schema gettext-domain="@GETTEXT_PACKAGE@" id="org.gnome.ekiga.general.personal-data" path="/apps/@PACKAGE_NAME@/general/personal-data/">
+    <key name="full-name" type="s">
+      <default>''</default>
+      <_summary>Full name</_summary>
+      <_description>Enter your full name</_description>
+    </key>
+    <key name="short-status" type="s">
+      <default>'available'</default>
+      <_summary>Contact short status</_summary>
+      <_description>The short status information</_description>
+    </key>
+    <key name="long-status" type="s">
+      <default>'I\'m available using Ekiga'</default>
+      <_summary>Contact long status</_summary>
+      <_description>The long status information</_description>
+    </key>
+    <key name="away-custom-status" type="as">
+      <default>[]</default>
+    </key>
+    <key name="busy-custom-status" type="as">
+      <default>[]</default>
+    </key>
+    <key name="available-custom-status" type="as">
+      <default>[]</default>
+    </key>
+  </schema>
+  <schema gettext-domain="@GETTEXT_PACKAGE@" id="org.gnome.ekiga.general.sound-events" path="/apps/@PACKAGE_NAME@/general/sound-events/">
+    <key name="output-device" type="s">
+      <default>''</default>
+      <_summary>Alternative audio output device</_summary>
+      <_description>Select an alternative audio output device to use for sound events.</_description>
+    </key>
+    <key name="incoming-call-sound" type="s">
+      <default>'ring.wav'</default>
+      <_summary>The incoming call sound</_summary>
+      <_description>The sound that will be played on incoming calls, if enabled</_description>
+    </key>
+    <key name="enable-incoming-call-sound" type="b">
+      <default>true</default>
+      <_summary>Play sound on incoming calls</_summary>
+      <_description>The chosen sound will be played on incoming calls, if enabled</_description>
+    </key>
+    <key name="new-message-sound" type="s">
+      <default>'newmessage.wav'</default>
+      <_summary>The new instant message sound</_summary>
+      <_description>The sound that will be played when there is a new instant message, if enabled</_description>
+    </key>
+    <key name="enable-new-message-sound" type="b">
+      <default>true</default>
+      <_summary>Play sound on new message</_summary>
+      <_description>The chosen sound will be played when a new instant message is received, if enabled</_description>
+    </key>
+    <key name="new-voicemail-sound" type="s">
+      <default>'voicemail.wav'</default>
+      <_summary>The new voice mail sound</_summary>
+      <_description>The sound that will be played when there is a new voice mail, if enabled</_description>
+    </key>
+    <key name="enable-new-voicemail-sound" type="b">
+      <default>true</default>
+      <_summary>Play sound on new voice mail</_summary>
+      <_description>The chosen sound will be played when a new voice mail is received, if enabled</_description>
+    </key>
+    <key name="enable-ring-tone-sound" type="b">
+      <default>true</default>
+      <_summary>Play ring tone</_summary>
+      <_description>The chosen sound will be played when calling somebody, if enabled</_description>
+    </key>
+    <key name="ring-tone-sound" type="s">
+      <default>'dialtone.wav'</default>
+      <_summary>The dial tone sound</_summary>
+      <_description>The sound that will be played when calling somebody, if enabled</_description>
+    </key>
+    <key name="enable-busy-tone-sound" type="b">
+      <default>true</default>
+      <_summary>Play busy tone</_summary>
+      <_description>The chosen sound will be played at the end of calls or calling somebody who is busy, if enabled</_description>
+    </key>
+    <key name="busy-tone-sound" type="s">
+      <default>'busytone.wav'</default>
+      <_summary>The busy tone sound</_summary>
+      <_description>The sound that will be played at the end of calls or when calling somebody who is busy, if enabled</_description>
+    </key>
+  </schema>
+  <schema gettext-domain="@GETTEXT_PACKAGE@" id="org.gnome.ekiga.general.nat" path="/apps/@PACKAGE_NAME@/general/nat/">
+    <key name="stun-server" type="s">
+      <default>'stun.ekiga.net'</default>
+      <_summary>The STUN Server</_summary>
+      <_description>The STUN server to use for STUN Support. STUN is a technology that permits passage through some types of NAT gateway</_description>
+    </key>
+    <key name="enable-stun" type="b">
+      <default>true</default>
+      <_summary>Enable STUN network detection</_summary>
+      <_description>Enable the automatic network setup resulting from the STUN test</_description>
+    </key>
+  </schema>
+  <schema gettext-domain="@GETTEXT_PACKAGE@" id="org.gnome.ekiga.general.user-interface" path="/apps/@PACKAGE_NAME@/general/user-interface/">
+    <child name="call-window" schema="org.gnome.ekiga.general.user-interface.call-window"/>
+    <child name="main-window" schema="org.gnome.ekiga.general.user-interface.main-window"/>
+    <child name="chat-window" schema="org.gnome.ekiga.general.user-interface.chat-window"/>
+    <child name="assistant" schema="org.gnome.ekiga.general.user-interface.assistant"/>
+    <child name="addressbook-window" schema="org.gnome.ekiga.general.user-interface.addressbook-window"/>
+    <child name="audio-settings-window" schema="org.gnome.ekiga.general.user-interface.audio-settings-window"/>
+    <child name="video-settings-window" schema="org.gnome.ekiga.general.user-interface.video-settings-window"/>
+    <child name="preferences-window" schema="org.gnome.ekiga.general.user-interface.preferences-window"/>
+    <child name="accounts-window" schema="org.gnome.ekiga.general.user-interface.accounts-window"/>
+    <child name="video-display" schema="org.gnome.ekiga.general.user-interface.video-display"/>
+    <child name="remote-video-window" schema="org.gnome.ekiga.general.user-interface.remote-video-window"/>
+  </schema>
+  <schema gettext-domain="@GETTEXT_PACKAGE@" id="org.gnome.ekiga.general.user-interface.call-window" path="/apps/@PACKAGE_NAME@/general/user-interface/call-window/">
+    <key name="position" type="s">
+      <default>'0,0'</default>
+      <_summary>Position on the screen of the call window</_summary>
+      <_description>Position on the screen of the call window</_description>
+    </key>
+    <key name="size" type="s">
+      <default>'270,250'</default>
+      <_summary>Size of the call window</_summary>
+      <_description>Size of the call window</_description>
+    </key>
+  </schema>
+  <schema gettext-domain="@GETTEXT_PACKAGE@" id="org.gnome.ekiga.general.user-interface.main-window" path="/apps/@PACKAGE_NAME@/general/user-interface/main-window/">
+    <key name="position" type="s">
+      <default>'0,0'</default>
+      <_summary>Position on the screen of the main window</_summary>
+      <_description>Position on the screen of the main window</_description>
+    </key>
+    <key name="panel-section" type="i">
+      <default>0</default>
+      <_summary>Change the panel section of the main window</_summary>
+      <_description>Change the panel section of the main window (0=Contacts, 1=Dialpad, 2=Call history)</_description>
+    </key>
+  </schema>
+  <schema gettext-domain="@GETTEXT_PACKAGE@" id="org.gnome.ekiga.general.user-interface.chat-window" path="/apps/@PACKAGE_NAME@/general/user-interface/chat-window/">
+    <key name="size" type="s">
+      <default>'375,400'</default>
+      <_summary>Size of the chat window</_summary>
+      <_description>Size of the chat window</_description>
+    </key>
+    <key name="position" type="s">
+      <default>'0,0'</default>
+      <_summary>Position on the screen of the chat window</_summary>
+      <_description>Position on the screen of the chat window</_description>
+    </key>
+  </schema>
+  <schema gettext-domain="@GETTEXT_PACKAGE@" id="org.gnome.ekiga.general.user-interface.assistant" path="/apps/@PACKAGE_NAME@/general/user-interface/assistant/">
+    <key name="size" type="s">
+      <default>'525,345'</default>
+      <_summary>Size of the druid window</_summary>
+      <_description>Size of the druid window</_description>
+    </key>
+    <key name="position" type="s">
+      <default>'0,0'</default>
+      <_summary>Position on the screen of the druid window</_summary>
+      <_description>Position on the screen of the druid window</_description>
+    </key>
+  </schema>
+  <schema gettext-domain="@GETTEXT_PACKAGE@" id="org.gnome.ekiga.general.user-interface.addressbook-window" path="/apps/@PACKAGE_NAME@/general/user-interface/addressbook-window/">
+    <key name="position" type="s">
+      <default>'0,0'</default>
+      <_summary>Position on the screen of the address book window</_summary>
+      <_description>Position on the screen of the address book window</_description>
+    </key>
+    <key name="size" type="s">
+      <default>'770,470'</default>
+      <_summary>Size of the address book window</_summary>
+      <_description>Size of the address book window</_description>
+    </key>
+  </schema>
+  <schema gettext-domain="@GETTEXT_PACKAGE@" id="org.gnome.ekiga.general.user-interface.audio-settings-window" path="/apps/@PACKAGE_NAME@/general/user-interface/audio-settings-window/">
+    <key name="position" type="s">
+      <default>'0,0'</default>
+      <_summary>Position on the screen of the audio settings window</_summary>
+      <_description>Position on the screen of the audio settings window</_description>
+    </key>
+    <key name="size" type="s">
+      <default>'250,125'</default>
+      <_summary>Size of the audio settings window</_summary>
+      <_description>Size of the audio settings window</_description>
+    </key>
+  </schema>
+  <schema gettext-domain="@GETTEXT_PACKAGE@" id="org.gnome.ekiga.general.user-interface.video-settings-window" path="/apps/@PACKAGE_NAME@/general/user-interface/video-settings-window/">
+    <key name="position" type="s">
+      <default>'0,0'</default>
+      <_summary>Position on the screen of the video settings window</_summary>
+      <_description>Position on the screen of the video settings window</_description>
+    </key>
+    <key name="size" type="s">
+      <default>'250,160'</default>
+      <_summary>Size of the video settings window</_summary>
+      <_description>Size of the video settings window</_description>
+    </key>
+  </schema>
+  <schema gettext-domain="@GETTEXT_PACKAGE@" id="org.gnome.ekiga.general.user-interface.preferences-window" path="/apps/@PACKAGE_NAME@/general/user-interface/preferences-window/">
+    <key name="position" type="s">
+      <default>'0,0'</default>
+      <_summary>Position on the screen of the preferences window</_summary>
+      <_description>Position on the screen of the preferences window</_description>
+    </key>
+    <key name="size" type="s">
+      <default>'-1,-1'</default>
+      <_summary>Size of the preferences window</_summary>
+      <_description>Size of the preferences window</_description>
+    </key>
+  </schema>
+  <schema gettext-domain="@GETTEXT_PACKAGE@" id="org.gnome.ekiga.general.user-interface.accounts-window" path="/apps/@PACKAGE_NAME@/general/user-interface/accounts-window/">
+    <key name="position" type="s">
+      <default>'0,0'</default>
+      <_summary>Position on the screen of the accounts window</_summary>
+      <_description>Position on the screen of the accounts window</_description>
+    </key>
+    <key name="size" type="s">
+      <default>'470,250'</default>
+      <_summary>Size of the accounts window</_summary>
+      <_description>Size of the accounts window</_description>
+    </key>
+  </schema>
+  <schema gettext-domain="@GETTEXT_PACKAGE@" id="org.gnome.ekiga.general.user-interface.video-display" path="/apps/@PACKAGE_NAME@/general/user-interface/video-display/">
+    <key name="disable-hw-accel" type="b">
+      <default>false</default>
+      <_summary>Disable video hardware acceleration</_summary>
+      <_description>This key disables DirectX (on win32) and XVideo (on Linux) video hardware acceleration</_description>
+    </key>
+    <key name="allow-pip-sw-scaling" type="b">
+      <default>true</default>
+      <_summary>Allow picture-in-picture software scaling</_summary>
+      <_description>Allow Ekiga to fall back to software scaling the picture-in-picture if hardware support is not available. If this is set to false, Ekiga will not try to open the PIP if hardware support is not available.</_description>
+    </key>
+    <key name="sw-scaling-algorithm" type="i">
+      <default>0</default>
+      <_summary>Specify the software scaling algorithm</_summary>
+      <_description>Specify the software scaling algorithm: 0: nearest neighbor, 1: nearest neighbor with box filter, 2: bilinear filtering, 3: hyperbolic filtering. Does not apply on windows systems.</_description>
+    </key>
+    <key name="zoom" type="i">
+      <default>100</default>
+      <_summary>The zoom value</_summary>
+      <_description>The zoom value in percent to apply to images displayed in the main GUI (can be 50, 100, or 200)</_description>
+    </key>
+    <key name="ext-zoom" type="i">
+      <default>100</default>
+      <_summary>The zoom value</_summary>
+      <_description>The zoom value in percent to apply to images displayed in the extended GUI (can be 50, 100, or 200)</_description>
+    </key>
+    <key name="stay-on-top" type="b">
+      <default>true</default>
+      <_summary>Place windows displaying video above other windows during calls</_summary>
+      <_description>Place windows displaying video above other windows during calls</_description>
+    </key>
+    <key name="video-view" type="i">
+      <default>2</default>
+      <_summary>The default video view</_summary>
+      <_description>The default video view (0: Local, 1: Remote, 2: Both, 3: Both in a separate window)</_description>
+    </key>
+    <key name="video-view-before-fullscreen" type="i">
+      <default>1</default>
+      <_summary>The video view before having switched to fullscreen</_summary>
+      <_description>The video view before having switched to fullscreen (same values as video_view)</_description>
+    </key>
+  </schema>
+  <schema gettext-domain="@GETTEXT_PACKAGE@" id="org.gnome.ekiga.general.user-interfac.remote-video-window" path="/apps/@PACKAGE_NAME@/general/user-interface/remote-video-window/">
+    <key name="size" type="s">
+      <default>'176,144'</default>
+      <_summary>Remote video window size</_summary>
+      <_description>The size of the remote video window</_description>
+    </key>
+    <key name="position" type="s">
+      <default>'0,0'</default>
+      <_summary>Remote video window position</_summary>
+      <_description>The position of the remote video window</_description>
+    </key>
+  </schema>
+  <schema gettext-domain="@GETTEXT_PACKAGE@" id="org.gnome.ekiga.general.call-options" path="/apps/@PACKAGE_NAME@/general/call-options/">
+    <key name="no-answer-timeout" type="i">
+      <default>45</default>
+      <_summary>No answer timeout</_summary>
+      <_description>Automatically reject or forward incoming calls if no answer is given after the specified amount of time (in seconds)</_description>
+    </key>
+    <key name="auto-answer" type="b">
+      <default>false</default>
+      <_summary>Automatic answer</_summary>
+      <_description>If enabled, automatically answer incoming calls</_description>
+    </key>
+  </schema>
+  <schema gettext-domain="@GETTEXT_PACKAGE@" id="org.gnome.ekiga.codecs" path="/apps/@PACKAGE_NAME@/codecs/">
+    <child name="audio" schema="org.gnome.ekiga.codecs.audio"/>
+    <child name="video" schema="org.gnome.ekiga.codecs.video"/>
+  </schema>
+  <schema gettext-domain="@GETTEXT_PACKAGE@" id="org.gnome.ekiga.codecs.audio" path="/apps/@PACKAGE_NAME@/codecs/audio/">
+    <key name="media-list" type="as">
+      <default>[ 'Speex*16000*1*H.323 SIP*1', 'PCMU*8000*1*H.323 SIP*1', 'PCMA*8000*1*H.323 SIP*1', 'CELT*48000*1*SIP*0', 'CELT*32000*1*SIP*0', 'iLBC*8000*1*H.323 SIP*0', 'gsm*8000*1*H.323 SIP*0', 'G722*16000*1*H.323 SIP*0', 'G7221*16000*1*H.323 SIP*0', 'AMR-WB*16000*1*H.323 SIP*0', 'Speex*8000*1*H.323 SIP*0', 'G726-16*8000*1*H.323 SIP*0', 'G726-24*8000*1*H.323 SIP*0', 'G726-32*8000*1*H.323 SIP*0', 'G726-40*8000*1*H.323 SIP*0', 'ms-gsm*8000*1*H.323*0', 'SILK*16000*1*H.323 SIP*0', 'SILK*8000*1*H.323 SIP*0', 'MS-IMA-ADPCM*8000*1*H.323*0' ]</default>
+      <_summary>The Audio Codecs List</_summary>
+      <_description>The audio codecs list</_description>
+    </key>
+    <key name="enable-silence-detection" type="b">
+      <default>false</default>
+      <_summary>Enable silence detection</_summary>
+      <_description>If enabled, use silence detection with the codecs supporting it</_description>
+    </key>
+    <key name="enable-echo-cancellation" type="b">
+      <default>false</default>
+      <_summary>Enable echo cancellation</_summary>
+      <_description>If enabled, use echo cancellation</_description>
+    </key>
+    <key name="maximum-jitter-buffer" type="i">
+      <default>500</default>
+      <_summary>Maximum jitter buffer</_summary>
+      <_description>The maximum jitter buffer size for audio reception (in ms)</_description>
+    </key>
+  </schema>
+  <schema gettext-domain="@GETTEXT_PACKAGE@" id="org.gnome.ekiga.codecs.video" path="/apps/@PACKAGE_NAME@/codecs/video/">
+    <key name="media-list" type="as">
+      <default>[ 'h264*90000*0*SIP*1', 'theora*90000*0*SIP*1', 'h261*90000*0*H.323 SIP*1' ]</default>
+      <_summary>The video codecs list</_summary>
+      <_description>The video codecs list</_description>
+    </key>
+    <key name="maximum-video-tx-bitrate" type="i">
+      <default>64</default>
+      <_summary>Maximum TX video bitrate</_summary>
+      <_description>The maximum TX video bitrate in kbit/s. The video quality and the number of transmitted frames per second (depends on selected codec) will be dynamically adjusted above their minimum during calls to try to minimize the bandwidth to the given value</_description>
+    </key>
+    <key name="maximum-video-rx-bitrate" type="i">
+      <default>4096</default>
+      <_summary>Maximum RX video bitrate</_summary>
+      <_description>The maximum RX video bitrate in kbit/s. This value will be signaled to the peer endpoint that can adjust (if it supports it) its TX bitrate if it is above the signaled value</_description>
+    </key>
+    <key name="temporal-spatial-tradeoff" type="i">
+      <default>31</default>
+      <_summary>Temporal Spatial Trade Off</_summary>
+      <_description>Whether to prefer to sustain the max. frame rate or lower it possibly in order to keep a minimum level of (spatial) quality for all frames. 0: Highest minimal quality, 31: lowest minimal quality</_description>
+    </key>
+  </schema>
+  <schema gettext-domain="@GETTEXT_PACKAGE@" id="org.gnome.ekiga.protocols" path="/apps/@PACKAGE_NAME@/protocols/">
+    <key name="accounts-list" type="as">
+      <default>[]</default>
+      <_summary>The accounts list</_summary>
+      <_description>The list of accounts to which Ekiga should register</_description>
+    </key>
+    <key name="rtp-tos-field" type="i">
+      <default>184</default>
+      <_summary>Type of Service (TOS) byte on outgoing RTP IP packets</_summary>
+      <_description>The Type of Service (TOS) byte on outgoing RTP IP packets. This byte is used by the network to provide some level of Quality of Service (QoS). Default value 184 (0xB8) corresponds to Expedited Forwarding (EF) PHB as defined in RFC 3246.</_description>
+    </key>
+    <key name="interface" type="s">
+      <default>''</default>
+    </key>
+    <child name="sip" schema="org.gnome.ekiga.protocols.sip"/>
+    <child name="h323" schema="org.gnome.ekiga.protocols.h323"/>
+    <child name="ports" schema="org.gnome.ekiga.protocols.ports"/>
+    <child name="call-forwarding" schema="org.gnome.ekiga.protocols.call-forwarding"/>
+  </schema>
+  <schema gettext-domain="@GETTEXT_PACKAGE@" id="org.gnome.ekiga.protocols.sip" path="/apps/@PACKAGE_NAME@/protocols/sip/">
+    <key name="listen-port" type="i">
+      <default>5060</default>
+      <_summary>Listen port</_summary>
+      <_description>The port to listen to for incoming connections. Ekiga needs to be restarted for the new value to take effect</_description>
+    </key>
+    <key name="outbound-proxy-host" type="s">
+      <default>''</default>
+      <_summary>Outbound Proxy</_summary>
+      <_description>The SIP Outbound Proxy to use for outgoing calls</_description>
+    </key>
+    <key name="forward-host" type="s">
+      <default>'sip:'</default>
+      <_summary>Forward calls to host</_summary>
+      <_description>The host where calls should be forwarded if call forwarding is enabled</_description>
+    </key>
+    <key name="dtmf-mode" type="i">
+      <default>1</default>
+      <_summary>DTMF sending</_summary>
+      <_description>Select the mode for sending DTMFs. The values can be 0 (for "RFC2833") and 1 (for "INFO")</_description>
+    </key>
+    <key name="binding-timeout" type="i">
+      <default>10</default>
+      <_summary>NAT Binding Timeout</_summary>
+      <_description>Enter the number of seconds after which Ekiga should try refreshing the NAT binding when STUN is being used</_description>
+    </key>
+  </schema>
+  <schema gettext-domain="@GETTEXT_PACKAGE@" id="org.gnome.ekiga.protocols.h323" path="/apps/@PACKAGE_NAME@/protocols/h323/">
+    <key name="listen-port" type="i">
+      <default>1720</default>
+      <_summary>Listen port</_summary>
+      <_description>The port to listen to for incoming connections. Ekiga needs to be restarted for the new value to take effect.</_description>
+    </key>
+    <key name="enable-h245-tunneling" type="b">
+      <default>true</default>
+      <_summary>Enable H.245 tunneling</_summary>
+      <_description>This enables H.245 Tunneling mode. In H.245 Tunneling mode H.245 messages are encapsulated into the H.225 channel (port 1720). This saves one TCP connection during calls. H.245 Tunneling was introduced in H.323v2.</_description>
+    </key>
+    <key name="enable-early-h245" type="b">
+      <default>true</default>
+      <_summary>Enable early H.245</_summary>
+      <_description>This enables H.245 early in the setup</_description>
+    </key>
+    <key name="enable-fast-start" type="b">
+      <default>true</default>
+      <_summary>Enable 'Fast Start'</_summary>
+      <_description>Connection will be established in Fast Start mode. Fast Start (Fast Connect) is a new way to start calls faster that was introduced in H.323v2.</_description>
+    </key>
+    <key name="enable-h239" type="b">
+      <default>false</default>
+      <_summary>Enable H.239</_summary>
+      <_description>This enables H.239 capability for additional video roles</_description>
+    </key>
+    <key name="video-role" type="i">
+      <default>0</default>
+      <_summary>Extended Video Roles</_summary>
+      <_description>Select the H.239 Video Role. The values can be 0 (for "disable extended video"), 1 (for "allow per content role mask"), 2 (for "force presentation"), or 3 (for "force live role")</_description>
+    </key>
+    <key name="dtmf-mode" type="i">
+      <default>0</default>
+      <_summary>DTMF sending</_summary>
+      <_description>Select the mode for sending DTMFs. The values can be 0 (for "String"), 1 (for "Tone"), 2 (for "RFC2833"), or 3 (for "Q.931") (default is "String"). Choosing other values than "String" disables the Text Chat.</_description>
+    </key>
+    <key name="forward-host" type="s">
+      <default>'h323:'</default>
+      <_summary>Forward calls to host</_summary>
+      <_description>The host where calls should be forwarded if call forwarding is enabled</_description>
+    </key>
+  </schema>
+  <schema gettext-domain="@GETTEXT_PACKAGE@" id="org.gnome.ekiga.protocols.ports" path="/apps/@PACKAGE_NAME@/protocols/ports/">
+    <key name="tcp-port-range" type="s">
+      <default>'30000:30010'</default>
+      <_summary>TCP port range</_summary>
+      <_description>The range of TCP ports that Ekiga will use for the H.323 H.245 channel. This port range has no effect if both participants to the conference are using H.245 Tunneling.</_description>
+    </key>
+    <key name="udp-port-range" type="s">
+      <default>'5061:5100'</default>
+      <_summary>UDP port range</_summary>
+      <_description>The range of UDP ports that Ekiga will use.</_description>
+    </key>
+  </schema>
+  <schema gettext-domain="@GETTEXT_PACKAGE@" id="org.gnome.ekiga.protocols.call-forwarding" path="/apps/@PACKAGE_NAME@/protocols/call-forwarding/">
+    <key name="always-forward" type="b">
+      <default>false</default>
+      <_summary>Always forward calls to the given host</_summary>
+      <_description>If enabled, all incoming calls will be forwarded to the host that is specified in the field below</_description>
+    </key>
+    <key name="forward-on-busy" type="b">
+      <default>false</default>
+      <_summary>Forward calls to the given host if busy</_summary>
+      <_description>If enabled, all incoming calls will be forwarded to the host that is specified in the field below if you already are in a call or if you are in busy mode</_description>
+    </key>
+    <key name="forward-on-no-answer" type="b">
+      <default>false</default>
+      <_summary>Forward calls to the given host if no answer</_summary>
+      <_description>If enabled, all incoming calls will be forwarded to the host that is specified in the field below if you do not answer the call</_description>
+    </key>
+  </schema>
+  <schema gettext-domain="@GETTEXT_PACKAGE@" id="org.gnome.ekiga.contacts" path="/apps/@PACKAGE_NAME@/contacts/">
+    <key name="roster-folded-groups" type="as">
+      <default>[]</default>
+      <_summary>List of folded groups in the roster</_summary>
+    </key>
+    <key name="show-offline-contacts" type="b">
+      <default>true</default>
+      <_summary>Show offline contacts</_summary>
+      <_description>If enabled, offline contacts will be shown in the roster</_description>
+    </key>
+    <key name="ldap-servers" type="s">
+      <default>''</default>
+      <_summary>LDAP servers</_summary>
+      <_description>List of configured LDAP servers</_description>
+    </key>
+    <key name="call-history" type="s">
+      <default>''</default>
+      <_summary>Calls history</_summary>
+      <_description>The history of the 100 last calls</_description>
+    </key>
+    <key name="roster" type="s">
+      <default>''</default>
+    </key>
+  </schema>
+</schemalist>
