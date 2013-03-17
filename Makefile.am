@@ -1,4 +1,4 @@
-SUBDIRS = man sounds pixmaps lib src plugins po 
+SUBDIRS = man sounds pixmaps lib src plugins po
 
 ACLOCAL_AMFLAGS = -I m4 ${ACLOCAL_FLAGS}
 
@@ -17,6 +17,11 @@ DESKTOP_FILE=@PACKAGE_NAME@.desktop
 
 SCHEMAS_IN_IN_FILE = @PACKAGE_NAME@.schemas.in.in
 SCHEMAS_FILE = @PACKAGE_NAME@.schemas
+
+gsettings_SCHEMAS = org.gnome.ekiga.gschema.xml
+@INTLTOOL_XML_NOMERGE_RULE@
+
+@GSETTINGS_RULES@
 
 
 ### Win32 files
@@ -58,6 +63,7 @@ EXTRA_DIST = \
 	README							\
         LICENSE                                                 \
         MAINTAINERS                                             \
+	$(gsettings_SCHEMAS) 					\
 	$(SCHEMAS_FILE) 					\
 	$(WIN32_DIST)
 
@@ -66,7 +72,7 @@ Applications_DATA = $(DESKTOP_FILE)
 
 
 ### Dist Clear
-DISTCLEANFILES=gnome-doc-utils.make ekiga.desktop ekiga.schemas
+DISTCLEANFILES=gnome-doc-utils.make ekiga.desktop ekiga.schemas org.gnome.ekiga.gschema
 
 MAINTAINERCLEANFILES= \
 	Makefile.in aclocal.m4 compile config.guess config.sub \
