@@ -28,21 +28,21 @@
 G_BEGIN_DECLS
 
 #define GM_TYPE_CELL_RENDERER_EXPANDER		(gm_cell_renderer_expander_get_type ())
-#define GM_CELL_RENDERER_EXPANDER(obj)		(G_TYPE_CHECK_INSTANCE_CAST ((obj), GM_TYPE_CELL_RENDERER_EXPANDER, EmpathyCellRendererExpander))
-#define GM_CELL_RENDERER_EXPANDER_CLASS(klass)	(G_TYPE_CHECK_CLASS_CAST ((klass), GM_TYPE_CELL_RENDERER_EXPANDER, EmpathyCellRendererExpanderClass))
+#define GM_CELL_RENDERER_EXPANDER(obj)		(G_TYPE_CHECK_INSTANCE_CAST ((obj), GM_TYPE_CELL_RENDERER_EXPANDER, GmCellRendererExpander))
+#define GM_CELL_RENDERER_EXPANDER_CLASS(klass)	(G_TYPE_CHECK_CLASS_CAST ((klass), GM_TYPE_CELL_RENDERER_EXPANDER, GmCellRendererExpanderClass))
 #define GM_IS_CELL_RENDERER_EXPANDER(obj)		(G_TYPE_CHECK_INSTANCE_TYPE ((obj), GM_TYPE_CELL_RENDERER_EXPANDER))
 #define GM_IS_CELL_RENDERER_EXPANDER_CLASS(klass)	(G_TYPE_CHECK_CLASS_TYPE ((klass), GM_TYPE_CELL_RENDERER_EXPANDER))
-#define GM_CELL_RENDERER_EXPANDER_GET_CLASS(obj)	(G_TYPE_INSTANCE_GET_CLASS ((obj), GM_TYPE_CELL_RENDERER_EXPANDER, EmpathyCellRendererExpanderClass))
+#define GM_CELL_RENDERER_EXPANDER_GET_CLASS(obj)	(G_TYPE_INSTANCE_GET_CLASS ((obj), GM_TYPE_CELL_RENDERER_EXPANDER, GmCellRendererExpanderClass))
 
-typedef struct _EmpathyCellRendererExpander EmpathyCellRendererExpander;
-typedef struct _EmpathyCellRendererExpanderClass EmpathyCellRendererExpanderClass;
+typedef struct _GmCellRendererExpander GmCellRendererExpander;
+typedef struct _GmCellRendererExpanderClass GmCellRendererExpanderClass;
 
-struct _EmpathyCellRendererExpander {
+struct _GmCellRendererExpander {
   GtkCellRenderer parent;
   gpointer priv;
 };
 
-struct _EmpathyCellRendererExpanderClass {
+struct _GmCellRendererExpanderClass {
   GtkCellRendererClass parent_class;
 
   /* Padding for future expansion */

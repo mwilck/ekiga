@@ -30,7 +30,7 @@ typedef struct {
 	gint                 expander_size;
 
 	guint                activatable : 1;
-} EmpathyCellRendererExpanderPriv;
+} GmCellRendererExpanderPriv;
 
 enum {
 	PROP_0,
@@ -69,13 +69,13 @@ static gboolean gm_cell_renderer_expander_activate     (GtkCellRenderer         
                                                         const GdkRectangle              *cell_area,
                                                         GtkCellRendererState             flags);
 
-G_DEFINE_TYPE (EmpathyCellRendererExpander, gm_cell_renderer_expander, GTK_TYPE_CELL_RENDERER)
+G_DEFINE_TYPE (GmCellRendererExpander, gm_cell_renderer_expander, GTK_TYPE_CELL_RENDERER)
 
 static void
-gm_cell_renderer_expander_init (EmpathyCellRendererExpander *expander)
+gm_cell_renderer_expander_init (GmCellRendererExpander *expander)
 {
-	EmpathyCellRendererExpanderPriv *priv = G_TYPE_INSTANCE_GET_PRIVATE (expander,
-		GM_TYPE_CELL_RENDERER_EXPANDER, EmpathyCellRendererExpanderPriv);
+	GmCellRendererExpanderPriv *priv = G_TYPE_INSTANCE_GET_PRIVATE (expander,
+		GM_TYPE_CELL_RENDERER_EXPANDER, GmCellRendererExpanderPriv);
 
 	expander->priv = priv;
 	priv->expander_style = GTK_EXPANDER_COLLAPSED;
@@ -90,7 +90,7 @@ gm_cell_renderer_expander_init (EmpathyCellRendererExpander *expander)
 }
 
 static void
-gm_cell_renderer_expander_class_init (EmpathyCellRendererExpanderClass *klass)
+gm_cell_renderer_expander_class_init (GmCellRendererExpanderClass *klass)
 {
 	GObjectClass         *object_class;
 	GtkCellRendererClass *cell_class;
@@ -134,7 +134,7 @@ gm_cell_renderer_expander_class_init (EmpathyCellRendererExpanderClass *klass)
 							       TRUE,
 							       G_PARAM_READWRITE));
 
-	g_type_class_add_private (object_class, sizeof (EmpathyCellRendererExpanderPriv));
+	g_type_class_add_private (object_class, sizeof (GmCellRendererExpanderPriv));
 }
 
 static void
@@ -143,8 +143,8 @@ gm_cell_renderer_expander_get_property (GObject    *object,
                                         GValue     *value,
                                         GParamSpec *pspec)
 {
-	EmpathyCellRendererExpander     *expander;
-	EmpathyCellRendererExpanderPriv *priv;
+	GmCellRendererExpander     *expander;
+	GmCellRendererExpanderPriv *priv;
 
 	expander = GM_CELL_RENDERER_EXPANDER (object);
 	priv = expander->priv;
@@ -174,8 +174,8 @@ gm_cell_renderer_expander_set_property (GObject      *object,
                                         const GValue *value,
                                         GParamSpec   *pspec)
 {
-	EmpathyCellRendererExpander     *expander;
-	EmpathyCellRendererExpanderPriv *priv;
+	GmCellRendererExpander     *expander;
+	GmCellRendererExpanderPriv *priv;
 
 	expander = GM_CELL_RENDERER_EXPANDER (object);
 	priv = expander->priv;
@@ -220,12 +220,12 @@ gm_cell_renderer_expander_get_size (GtkCellRenderer         *cell,
                                     gint                    *width,
                                     gint                    *height)
 {
-	EmpathyCellRendererExpander     *expander;
-	EmpathyCellRendererExpanderPriv *priv;
+	GmCellRendererExpander     *expander;
+	GmCellRendererExpanderPriv *priv;
 	gfloat xalign, yalign;
 	guint xpad, ypad;
 
-	expander = (EmpathyCellRendererExpander *) cell;
+	expander = (GmCellRendererExpander *) cell;
 	priv = expander->priv;
 
 	g_object_get (cell,
@@ -268,14 +268,14 @@ gm_cell_renderer_expander_render (GtkCellRenderer                    *cell,
 				  const GdkRectangle                 *cell_area,
 				  GtkCellRendererState               flags)
 {
-	EmpathyCellRendererExpander     *expander;
-	EmpathyCellRendererExpanderPriv *priv;
+	GmCellRendererExpander     *expander;
+	GmCellRendererExpanderPriv *priv;
 	gint                            x_offset, y_offset;
 	guint                           xpad, ypad;
 	GtkStyleContext                 *style;
 	GtkStateFlags                    state;
 
-	expander = (EmpathyCellRendererExpander *) cell;
+	expander = (GmCellRendererExpander *) cell;
 	priv = expander->priv;
 
 	gm_cell_renderer_expander_get_size (cell, widget,
@@ -321,22 +321,17 @@ gm_cell_renderer_expander_activate (GtkCellRenderer                    *cell,
                                     G_GNUC_UNUSED const GdkRectangle   *cell_area,
                                     G_GNUC_UNUSED GtkCellRendererState flags)
 {
-	EmpathyCellRendererExpander     *expander;
-	EmpathyCellRendererExpanderPriv *priv;
+	GmCellRendererExpander     *expander;
+	GmCellRendererExpanderPriv *priv;
 	GtkTreePath                     *path;
 
-	expander = (EmpathyCellRendererExpander *) cell;
+	expander = (GmCellRendererExpander *) cell;
 	priv = expander->priv;
 
 	if (!GTK_IS_TREE_VIEW (widget) || !priv->activatable)
 		return FALSE;
 
 	path = gtk_tree_path_new_from_string (path_string);
-
-	if (gtk_tree_path_get_depth (path) > 1) {
-		gtk_tree_path_free (path);
-		return TRUE;
-	}
 
 	if (gtk_tree_view_row_expanded (GTK_TREE_VIEW (widget), path)) {
 		gtk_tree_view_collapse_row (GTK_TREE_VIEW (widget), path);
