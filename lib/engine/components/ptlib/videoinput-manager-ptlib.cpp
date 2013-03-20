@@ -79,13 +79,8 @@ void GMVideoInputManager_ptlib::get_devices(std::vector <Ekiga::VideoInputDevice
       devices_array = video_devices.ToCharArray ();
 
       for (PINDEX j = 0; devices_array[j] != NULL; j++) {
-
-#ifdef WIN32
-        /* Windows uses codepage encoding for device name, while ekiga uses utf-8 */
-        device.name = codepage2utf (devices_array[j]);
-#else
+        // ptlib returns device name in utf-8
         device.name = devices_array[j];
-#endif
         devices.push_back(device);
       }
       free (devices_array);
@@ -122,11 +117,7 @@ bool GMVideoInputManager_ptlib::open (unsigned width, unsigned height, unsigned 
 
   pvideo_format = (PVideoDevice::VideoFormat)current_state.format;
   input_device = PVideoInputDevice::CreateOpenedDevice (current_state.device.source,
-#ifdef WIN32
-                 utf2codepage (current_state.device.name),  // reencode back to codepage
-#else
                  current_state.device.name,
-#endif
                  FALSE);
 
   Ekiga::VideoInputErrorCodes error_code = Ekiga::VI_ERROR_NONE;
