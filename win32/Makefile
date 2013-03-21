@@ -97,7 +97,7 @@ else
 	OPAL_VER := 3.10-beta11
 	# OPAL_REV: HEAD or revision number
 	OPAL_REV := HEAD
-	OPAL_URL := https://opalvoip.svn.sourceforge.net/svnroot/opalvoip/opal/branches/v3_10
+	OPAL_URL := svn://svn.code.sf.net/p/opalvoip/code/opal/branches/v3_10
 	OPAL_ARCHIVE := opal
 	OPAL_DIR := $(BUILDROOT)/opal
 endif
@@ -112,7 +112,7 @@ else
 	PTLIB_VER := 2.10-beta11
 	# PTLIB_REV: HEAD or revision number
 	PTLIB_REV := HEAD
-	PTLIB_URL := https://opalvoip.svn.sourceforge.net/svnroot/opalvoip/ptlib/branches/v2_10
+	PTLIB_URL := svn://svn.code.sf.net/p/opalvoip/code/ptlib/branches/v2_10
 	PTLIB_ARCHIVE := ptlib
 	PTLIB_DIR := $(BUILDROOT)/ptlib
 endif
@@ -164,7 +164,7 @@ GETTEXT_VER := 0.18.1.1-2
 GETTEXT_URL := http://ftp.gnome.org/pub/gnome/binaries/win32/dependencies
 GETTEXT_ARCHIVE := gettext-runtime-dev_$(GETTEXT_VER)_win32.zip
 
-LIBAV_VER := 0.8.4
+LIBAV_VER := 0.8.5
 LIBAV_URL := http://www.libav.org/releases
 LIBAV_DIR := $(BUILDROOT)/libav-$(LIBAV_VER)
 LIBAV_ARCHIVE := libav-$(LIBAV_VER).tar.xz
