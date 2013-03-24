@@ -43,41 +43,16 @@
 
 #include "gmconf.h"
 
+
 /* Notice, this implementation sets the menu item name as data of the menu
  * widget, the statusbar and also the given structure.
  */
-static void menus_have_icons_changed_nt (gpointer,
-					 GmConfEntry *,
-					 gpointer);
-
 static gint popup_menu_callback (GtkWidget *,
 				 GdkEventButton *,
 				 gpointer);
 
 static void menu_item_selected (GtkWidget *,
 				gpointer);
-
-static void menu_widget_destroyed (GtkWidget *,
-				   gpointer);
-
-
-/* DESCRIPTION  :  This notifier is called when the menu_have_icons key is
- *                 modified.
- * BEHAVIOR     :  Show/hide icons in the menu.
- * PRE          :  data = the GtkWidget for the menu.
- */
-static void
-menus_have_icons_changed_nt (G_GNUC_UNUSED gpointer cid,
-			     GmConfEntry *entry,
-			     gpointer data)
-{
-  gboolean show_icons = TRUE;
-
-  g_return_if_fail (gm_conf_entry_get_type (entry) == GM_CONF_BOOL && data);
-
-  show_icons = gm_conf_entry_get_bool (entry);
-  gtk_menu_show_icons (GTK_WIDGET (data), show_icons);
-}
 
 
 /* DESCRIPTION  :  This callback is called when the user clicks on an
@@ -156,19 +131,6 @@ menu_item_selected (GtkWidget *w,
 }
 
 
-/* DESCRIPTION  :  This callback is called when the widget associated to a menu
- *                 is destroyed.
- * BEHAVIOR     :  Removes the notifier watching the "menus_have_icons" key.
- * PRE          :  data = the notifier id.
- */
-static void
-menu_widget_destroyed (G_GNUC_UNUSED GtkWidget *w,
-		       gpointer data)
-{
-  gm_conf_notifier_remove (data);
-}
-
-
 /* The public functions */
 void
 radio_menu_changed_cb (GtkWidget *widget,
@@ -229,11 +191,7 @@ gtk_build_menu (GtkWidget *menubar,
   int i = 0;
   gchar *menu_name = NULL;
 
-  gpointer id = NULL;
   gboolean show_icons = TRUE;
-
-  show_icons =
-    gm_conf_get_bool ("/desktop/gnome/interface/menus_have_icons");
 
   while (menu [i].type != MENU_END) {
 
@@ -390,13 +348,6 @@ gtk_build_menu (GtkWidget *menubar,
   }
 
   g_object_set_data (G_OBJECT (menubar), "menu_entry", menu);
-
-  id = gm_conf_notifier_add ("/desktop/gnome/interface/menus_have_icons",
-			     menus_have_icons_changed_nt,
-			     menubar);
-
-  g_signal_connect (menubar, "destroy",
-		    G_CALLBACK (menu_widget_destroyed), id);
 }
 
 
