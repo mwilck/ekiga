@@ -49,6 +49,8 @@ void
 gmconf_upgrade_version ()
 {
   int version = gm_conf_get_int (GENERAL_KEY "version");
+  g_print ("FIXME: check our schema against this and drop it\n");
+  return;
 
   /* Install the sip:, h323: and callto: GNOME URL Handlers */
   gchar *conf_url = gm_conf_get_string (URL_HANDLERS_KEY "callto/command");
