@@ -55,6 +55,9 @@
     </key>
   </schema>
   <schema gettext-domain="@GETTEXT_PACKAGE@" id="org.gnome.@PACKAGE_NAME@.general" path="/org/gnome/@PACKAGE_NAME@/general/">
+    <key name="version" type="i">
+      <default>0</default>
+    </key>
     <key name="kind-of-net" type="i">
       <default>2</default>
       <_summary>Kind of network selected in the assistant</_summary>
@@ -187,6 +190,11 @@
     </key>
   </schema>
   <schema gettext-domain="@GETTEXT_PACKAGE@" id="org.gnome.@PACKAGE_NAME@.general.user-interface.main-window" path="/org/gnome/@PACKAGE_NAME@/general/user-interface/main-window/">
+    <key name="size" type="s">
+      <default>'275,475'</default>
+      <_summary>Size of the main window</_summary>
+      <_description>Size of the main window</_description>
+    </key>
     <key name="position" type="s">
       <default>'0,0'</default>
       <_summary>Position on the screen of the main window</_summary>
