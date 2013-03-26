@@ -8,7 +8,7 @@ msgstr ""
 "Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?"
 "product=ekiga&keywords=I18N+L10N&component=general\n"
 "POT-Creation-Date: 2013-03-06 13:21+0000\n"
-"PO-Revision-Date: 2013-03-25 19:38+0530\n"
+"PO-Revision-Date: 2013-03-26 16:26+0530\n"
 "Last-Translator: Manoj Kumar Giri <mgiri@redhat.com>\n"
 "Language-Team: Oriya <oriya-it@googlegroups.com>\n"
 "Language: or\n"
@@ -311,6 +311,11 @@ msgid ""
 "value 184 (0xB8) corresponds to Expedited Forwarding (EF) PHB as defined in "
 "RFC 3246."
 msgstr ""
+"ଯାଉଥିବା RTP IP ପ୍ୟାକେଟଗୁଡ଼ିକରେ ସର୍ଭିସ ପ୍ରକାର (TOS) ବାଇଟ୍‌। ଏହି ବାଇଟ୍‌କୁ "
+"ସର୍ଭିସ ଗୁଣବତ୍ତା (QoS) ପ୍ରଦାନ "
+"କରିବା ପାଇଁ ନେଟୱର୍କ ଦ୍ୱାରା ବ୍ୟବହାର କରାଯାଇଥାଏ। ପୂର୍ବନିର୍ଦ୍ଧାରିତ ମୂଲ୍ୟ ହେଉଛି 184 "
+"(0xB8) RFC 3246 ରେ "
+"ବ୍ୟାଖ୍ୟା ହୋଇଥିବା Expedited Forwarding (EF) PHB ଉପରେ ନିର୍ଭର କରି।"
 
 #: ../ekiga.schemas.in.in.h:55
 msgid "Listen port"
@@ -352,7 +357,6 @@ msgid "DTMF sending"
 msgstr "DTMF ପଠାଇବା"
 
 #: ../ekiga.schemas.in.in.h:62
-#, fuzzy
 #| msgid ""
 #| "This allows you to set the mode for sending DTMFs. The values can be "
 #| "\"RFC2833\" (0), \"INFO\" (1)"
@@ -361,8 +365,7 @@ msgid ""
 "1 (for \"INFO\")"
 msgstr ""
 "ଏହା DTMFsକୁ ପଠାଇବା ପାଇଁ ଧାରା ସେଟକରିବାକୁ ଅନୁମତି ଦେଇଥାଏ। ଏହି ମୂଲ୍ୟଟି\"RFC2833\" "
-"(0), "
-"\"INFO\" (1) ହୋଇପାରେ"
+"(0), \"INFO\" (1) ହୋଇପାରେ"
 
 #: ../ekiga.schemas.in.in.h:63
 msgid ""
@@ -402,7 +405,6 @@ msgstr " H.245 ଟ୍ଯୁନ କରିବା ସକ୍ଷମ କର"
 
 #: ../ekiga.schemas.in.in.h:69
 #: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:678
-#, fuzzy
 #| msgid ""
 #| "This enables H.245 Tunneling mode. In H.245 Tunneling mode H.245 messages "
 #| "are encapsulated into the H.225 channel (port 1720). This saves one TCP "
@@ -415,12 +417,10 @@ msgid ""
 "connection during calls. H.245 Tunneling was introduced in H.323v2."
 msgstr ""
 "ଏହା H.245 ଟନେଲିଙ୍ଗ ଧାରାକୁ ସକ୍ରିୟ କରିଥାଏ। H.245 ଟନେଲିଙ୍ଗ ଧାରାରେ H.245 "
-"ସନ୍ଦେଶଗୁଡ଼ିକ H.225 "
-"ଚ୍ୟାନେଲରେ (ସଂଯୋଗିକୀ 1720) ସଂଗୁପ୍ତ ହୋଇଥାଏ। ଏହା ଗୋଟିଏ TCP ସଂଯୋଗକୁ କଲ ମାଧ୍ୟମରେ "
-"ସଂରକ୍ଷଣ "
-"କରିଥାଏ। H.245 ଟନେଲିଙ୍ଗ H.323v2 ଏବଂ ନେଟ ସାକ୍ଷାତକାର ମାଧ୍ୟମରେ ସମର୍ଥନ କରିଥାଏ। "
-"ତୀବ୍ର ଆରମ୍ଭ "
-"ଏବଂ H.245 ଟନେଲିଙ୍ଗ ନେଟ ସାକ୍ଷାତକାରର କିଛି ସଂସ୍କରଣକୁ ନଷ୍ଟକରିପାରେ।"
+"ସନ୍ଦେଶଗୁଡ଼ିକ H.225 ଚ୍ୟାନେଲରେ (ସଂଯୋଗିକୀ 1720) ସଂଗୁପ୍ତ ହୋଇଥାଏ। ଏହା ଗୋଟିଏ TCP "
+"ସଂଯୋଗକୁ କଲ ମାଧ୍ୟମରେ "
+"ସଂରକ୍ଷଣ କରିଥାଏ। H.245 ଟନେଲିଙ୍ଗ H.323v2 ଏବଂ ନେଟ ସାକ୍ଷାତକାର ମାଧ୍ୟମରେ ସମର୍ଥନ "
+"କରିଥାଏ।"
 
 #: ../ekiga.schemas.in.in.h:70
 msgid "Enable early H.245"
@@ -445,6 +445,8 @@ msgid ""
 "Connection will be established in Fast Start mode. Fast Start (Fast Connect) "
 "is a new way to start calls faster that was introduced in H.323v2."
 msgstr ""
+"ସଂଯୋଗକୁ ତୀବ୍ର ଆରମ୍ଭ ଧାରାରେ ସ୍ଥାପନ କରାଯିବ। ତୀବ୍ର ଆରମ୍ଭ (ତୀବ୍ର ସଂଯୋଗ) ଟି"
+"କଲକୁ ଶିଘ୍ର ଆରମ୍ଭ କରିବାର ଏକ ନୂତନ ଉପାୟ ଯାହାକି H.323v2 ରେ ଆରମ୍ଭ ହୋଇଥାଏ।"
 
 #: ../ekiga.schemas.in.in.h:74
 #| msgid "Enable early H.245"
@@ -453,7 +455,7 @@ msgstr "H.239 କୁ ସକ୍ଷମକରନ୍ତୁ"
 
 #: ../ekiga.schemas.in.in.h:75
 msgid "This enables H.239 capability for additional video roles"
-msgstr ""
+msgstr "ଅତିରିକ୍ତ ଭିଡ଼ିଓ କଲ ପାଇଁ ଏହା H.239 କ୍ଷମତାକୁ ସକ୍ରିୟ କରିଥାଏ"
 
 #: ../ekiga.schemas.in.in.h:76
 msgid "Extended Video Roles"
@@ -465,6 +467,9 @@ msgid ""
 "video\"), 1 (for \"allow per content role mask\"), 2 (for \"force "
 "presentation\"), or 3 (for \"force live role\")"
 msgstr ""
+"H.239 ଭିଡ଼ିଓ ଭୂମିକାକୁ ବାଛନ୍ତୁ। ମୂଲ୍ୟଟି 0 ହୋଇପାରେ (\"ନିଷ୍କ୍ରିୟ ଅନୁଲମ୍ବିତ "
+"ଭିଡ଼ିଓ\" ପାଇଁ), 1 (\"allow per content role mask\" ପାଇଁ), 2 (\"force "
+"presentation\" ପାଇଁ), କିମ୍ବା 3 (\"force live role\" ପାଇଁ)"
 
 #: ../ekiga.schemas.in.in.h:78
 #| msgid ""
@@ -2169,7 +2174,7 @@ msgstr ""
 "ହଜିଯାଇଥିବା ପ୍ୟାକେଟଗୁଡ଼ିକ: %.1f %%\n"
 "ବିଳମ୍ବିତ ପ୍ୟାକେଟଗୁଡ଼ିକ: %.1f %%\n"
 "ଅସଜଡ଼ା ପ୍ୟାକେଟଗୁଡ଼ିକ: %.1f %%\n"
-"ଜିଟର ବଫର: %d ms\n"
+"ଜିଟର ବଫର: %d ms%s%s%s "
 "କଡ଼େକ୍‌: %s\n"
 "ବିଭେଦନ: %s %s"
 
@@ -3368,6 +3373,9 @@ msgid ""
 "terminals registered to the same account; leave empty if you do not know "
 "what it is"
 msgstr ""
+"ଏହି ଉତ୍ସଟି, ଯେପରିକି ଘର ଅଥବା କାର୍ଯ୍ୟସ୍ଥଳ, ଅନେକ ଟର୍ମିନାଲଗୁଡ଼ିକ ମଧ୍ଯରେ ଚିହ୍ନିବା "
+"ପାଇଁ ଅନୁମତି ଦେଇଥାଏ; "
+"ଯଦି ଆପଣ ଜାଣି ନାହାନ୍ତି ଏହା କଣ ତେବେ ଖାଲି ଛାଡ଼ନ୍ତୁ"
 
 #: ../plugins/loudmouth/loudmouth-bank.cpp:111
 #| msgid "_Add a jabber/XMPP account"
@@ -3655,6 +3663,20 @@ msgid ""
 "\n"
 "The following two pages allow you to create such accounts."
 msgstr ""
+"ଯଦି ଆପଣଙ୍କ ପାଖରେ SIP କିମ୍ବା H323 ଖାତା ନାହିଁ, ତେବେ ekiga କେବଳ ଆପଣଙ୍କର "
+"ଆଭ୍ୟନ୍ତରୀଣ "
+"ନେଟୱର୍କରେ ବ୍ୟବହାର ହୋଇପାରିବ (ଆପଣଙ୍କ କମ୍ପାନି ଭିତରେ, ଉଦାହରଣ ସ୍ୱରୂପ)। "
+"ଇଣ୍ଟରନେଟ୍‌ରେ "
+"ଲୋକମାନଙ୍କ ସହିତ ଯୋଗାଯୋଗ କରିବା ପାଇଁ ଆପଣଙ୍କ ପାଖରେ ଏକ ଖାତା ଥିବା ଉଚିତ। ଅନେକ "
+"ୱେବସାଇଟ "
+"ଆପଣଙ୍କୁ ଖାତା ନିର୍ମାଣ କରିବା ପାଇଁ ଅନୁମତି ଦେଇଥାଏ।  ଆମେ ପରାମର୍ଶ ଦେଇଥାଉ ଯେ ଆପଣ ଏକ "
+"ମାଗଣା ekiga."
+"net  ଖାତା ବ୍ୟବହାର କରନ୍ତୁ, ଯାହାକି ଆପଣଙ୍କୁ SIP ଖାତା ଦ୍ୱାରା ଯେକୌଣସି ବ୍ୟକ୍ତି "
+"ଦ୍ୱାରା ସଂଯୁକ୍ତ କରିବା ପାଇଁ ଅନୁମତି ଦେଇଥାଏ। "
+"ଯଦି ଆପଣ ନିୟମିତ ଫୋନ କରିବାକୁ ଚାହାନ୍ତି, ତେବେ ଆମେ ପରାମର୍ଶ ଦେଇଥାଉ ଯେ ଆପଣ ଏକ ଶସ୍ତା "
+"ଖାତା କ୍ରୟ କରନ୍ତୁ।\n"
+"\n"
+"ନିମ୍ନଲିଖିତ ଦୁଇଟି ପୃଷ୍ଠା ଆପଣଙ୍କୁ ସେହି ପରି ଖାତା ନିର୍ମାଣ ପାଇଁ ଅନୁମତି ଦେଇଥାଏ।"
 
 #: ../src/gui/assistant.cpp:453
 msgid "Introduction to Accounts"
