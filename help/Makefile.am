@@ -38,4 +38,4 @@ DOC_FIGURES = figures/lumi.png \
               figures/audio_codecs.png \
               figures/video_codecs.png
 
-DOC_LINGUAS = bg ca de el en_GB es eu fi fr oc pt_BR ru sl sv uk zh_CN
+DOC_LINGUAS = bg ca cs de el en_GB es eu fi fr oc pt_BR ru sl sv uk zh_CN
