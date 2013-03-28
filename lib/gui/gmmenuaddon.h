@@ -193,15 +193,6 @@ void gtk_radio_menu_select_with_id (GtkWidget *,
 void gtk_radio_menu_select_with_widget (GtkWidget *,
 					int);
 
-
-/* DESCRIPTION  :  /
- * BEHAVIOR     :  Show or hide the images in the menu following the gboolean
- *                 is true or false.
- * PRE          :  /
- */
-void gtk_menu_show_icons (GtkWidget *,
-			  gboolean);
-
 G_END_DECLS
 
 #endif
