@@ -164,7 +164,7 @@ GETTEXT_VER := 0.18.1.1-2
 GETTEXT_URL := http://ftp.gnome.org/pub/gnome/binaries/win32/dependencies
 GETTEXT_ARCHIVE := gettext-runtime-dev_$(GETTEXT_VER)_win32.zip
 
-LIBAV_VER := 0.8.5
+LIBAV_VER := 0.8.6
 LIBAV_URL := http://www.libav.org/releases
 LIBAV_DIR := $(BUILDROOT)/libav-$(LIBAV_VER)
 LIBAV_ARCHIVE := libav-$(LIBAV_VER).tar.xz
