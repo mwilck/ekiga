@@ -721,6 +721,14 @@ if test "x$PTLIB_EXPAT" != "xyes"; then
   AC_MSG_ERROR([You need ptlib expat support to compile ekiga])
 fi
 
+# video support is mandatory (too many changes in ekiga to support without video)
+AC_MSG_CHECKING(for PTLIB support for video)
+PTLIB_VIDEO=`$PKG_CONFIG ptlib --variable=PTLIB_VIDEO`
+AC_MSG_RESULT($PTLIB_VIDEO)
+if test "x$PTLIB_VIDEO" != "xyes"; then
+  AC_MSG_ERROR([You need ptlib video support to compile ekiga])
+fi
+
 SUFFIX=
 AC_ARG_ENABLE([opal-debug],
               [AS_HELP_STRING([--enable-opal-debug],[link to debug versions of opal and ptlib (opal_d and ptlib_d) (default is disabled)])],
