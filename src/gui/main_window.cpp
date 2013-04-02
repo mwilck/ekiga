@@ -859,14 +859,7 @@ on_chat_unread_alert (G_GNUC_UNUSED GtkWidget* widget,
 		      gpointer self)
 {
   EkigaMainWindow *mw = EKIGA_MAIN_WINDOW (self);
-
-  if (!gm_conf_get_bool (SOUND_EVENTS_KEY "enable_new_message_sound"))
-    return;
-
-  std::string file_name_string = gm_conf_get_string (SOUND_EVENTS_KEY "new_message_sound");
-
-  if (!file_name_string.empty ())
-    mw->priv->audiooutput_core->play_file(file_name_string);
+  mw->priv->audiooutput_core->play_event("new_message_sound");
 }
 
 
