@@ -132,8 +132,6 @@ libekiga_la_SOURCES += \
 	gui/gmcallbacks.h \
 	gui/gmconfwidgets.c \
 	gui/gmconfwidgets.h \
-	gui/gmdialog.c \
-	gui/gmdialog.h \
 	gui/gmentrydialog.c \
 	gui/gmentrydialog.h \
 	gui/gmmenuaddon.c \
