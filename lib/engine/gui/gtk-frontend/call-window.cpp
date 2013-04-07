@@ -38,6 +38,10 @@
 #include <glib/gi18n.h>
 #include <gdk/gdkkeysyms.h>
 
+#include "config.h"
+
+#include "ekiga-settings.h"
+
 #include "call-window.h"
 
 #include "dialpad.h"
@@ -208,9 +212,6 @@ static void pick_up_call_cb (GtkWidget * /*widget*/,
                             gpointer data);
 
 static void hang_up_call_cb (GtkWidget * /*widget*/,
-                            gpointer data);
-
-static void show_window_cb (GtkWidget *widget,
                             gpointer data);
 
 static void hold_current_call_cb (GtkWidget *widget,
@@ -592,13 +593,6 @@ hang_up_call_cb (GtkWidget * /*widget*/,
   }
 }
 
-
-static void
-show_window_cb (G_GNUC_UNUSED GtkWidget *widget,
-		gpointer data)
-{
-  gm_window_show (GTK_WIDGET (data));
-}
 
 static void
 hold_current_call_cb (G_GNUC_UNUSED GtkWidget *widget,
@@ -1731,15 +1725,8 @@ gm_cw_video_settings_window_new (EkigaCallWindow *cw)
   int brightness = 0, colour = 0, contrast = 0, whiteness = 0;
 
   /* Build the window */
-  window = gtk_dialog_new ();
-  g_object_set_data_full (G_OBJECT (window), "window_name",
-			  g_strdup ("video_settings_window"), g_free);
-  gtk_dialog_add_button (GTK_DIALOG (window),
-                         GTK_STOCK_CLOSE,
-                         GTK_RESPONSE_CANCEL);
-
-  gtk_window_set_title (GTK_WINDOW (window),
-                        _("Video Settings"));
+  window = gm_window_new_with_key (USER_INTERFACE ".video-settings-window");
+  gtk_window_set_title (GTK_WINDOW (window), _("Video Settings"));
 
   /* Webcam Control Frame, we need it to disable controls */
   cw->priv->video_settings_frame = gtk_frame_new (NULL);
@@ -1831,17 +1818,11 @@ gm_cw_video_settings_window_new (EkigaCallWindow *cw)
 		    G_CALLBACK (video_settings_changed_cb),
 		    (gpointer) cw);
 
-  gtk_container_add (GTK_CONTAINER (gtk_dialog_get_content_area (GTK_DIALOG (window))),
+  gtk_container_add (GTK_CONTAINER (window),
                      cw->priv->video_settings_frame);
   gtk_widget_show_all (cw->priv->video_settings_frame);
 
   gtk_widget_set_sensitive (GTK_WIDGET (cw->priv->video_settings_frame), false);
-
-  /* That's an usual GtkWindow, connect it to the signals */
-  g_signal_connect_swapped (window,
-			    "response",
-			    G_CALLBACK (gm_window_hide),
-			    (gpointer) window);
 
   gm_window_hide_on_delete (window);
 
@@ -1854,27 +1835,21 @@ gm_cw_audio_settings_window_new (EkigaCallWindow *cw)
   GtkWidget *hscale_play = NULL;
   GtkWidget *hscale_rec = NULL;
   GtkWidget *hbox = NULL;
+  GtkWidget *main_vbox = NULL;
   GtkWidget *vbox = NULL;
   GtkWidget *small_vbox = NULL;
   GtkWidget *window = NULL;
 
   /* Build the window */
-  window = gtk_dialog_new ();
-  g_object_set_data_full (G_OBJECT (window), "window_name",
-			  g_strdup ("audio_settings_window"), g_free);
-  gtk_dialog_add_button (GTK_DIALOG (window),
-                         GTK_STOCK_CLOSE,
-                         GTK_RESPONSE_CANCEL);
-
-  gtk_window_set_title (GTK_WINDOW (window),
-                        _("Audio Settings"));
+  window = gm_window_new_with_key (USER_INTERFACE ".audio-settings-window");
+  gtk_window_set_title (GTK_WINDOW (window), _("Audio Settings"));
 
   /* Audio control frame, we need it to disable controls */
   cw->priv->audio_output_volume_frame = gtk_frame_new (NULL);
   gtk_frame_set_shadow_type (GTK_FRAME (cw->priv->audio_output_volume_frame),
 			     GTK_SHADOW_NONE);
   gtk_container_set_border_width (GTK_CONTAINER (cw->priv->audio_output_volume_frame), 5);
-
+  main_vbox = gtk_box_new (GTK_ORIENTATION_VERTICAL, 0);
 
   /* The vbox */
   vbox = gtk_box_new (GTK_ORIENTATION_VERTICAL, 0);
@@ -1899,8 +1874,8 @@ gm_cw_audio_settings_window_new (EkigaCallWindow *cw)
   gtk_box_pack_start (GTK_BOX (hbox), small_vbox, true, true, 2);
   gtk_box_pack_start (GTK_BOX (vbox), hbox, false, false, 3);
 
-  gtk_container_add (GTK_CONTAINER (gtk_dialog_get_content_area (GTK_DIALOG (window))),
-                     cw->priv->audio_output_volume_frame);
+  gtk_box_pack_start (GTK_BOX (main_vbox), cw->priv->audio_output_volume_frame,
+                      false, false, 0);
   gtk_widget_show_all (cw->priv->audio_output_volume_frame);
   gtk_widget_set_sensitive (GTK_WIDGET (cw->priv->audio_output_volume_frame),  false);
 
@@ -1934,22 +1909,18 @@ gm_cw_audio_settings_window_new (EkigaCallWindow *cw)
   gtk_box_pack_start (GTK_BOX (hbox), small_vbox, true, true, 2);
   gtk_box_pack_start (GTK_BOX (vbox), hbox, false, false, 3);
 
-  gtk_container_add (GTK_CONTAINER (gtk_dialog_get_content_area (GTK_DIALOG (window))),
-                     cw->priv->audio_input_volume_frame);
+  gtk_box_pack_start (GTK_BOX (main_vbox), cw->priv->audio_input_volume_frame,
+                      false, false, 0);
   gtk_widget_show_all (cw->priv->audio_input_volume_frame);
   gtk_widget_set_sensitive (GTK_WIDGET (cw->priv->audio_input_volume_frame),  false);
+
+  gtk_container_add (GTK_CONTAINER (window), main_vbox);
 
   g_signal_connect (cw->priv->adj_output_volume, "value-changed",
 		    G_CALLBACK (audio_volume_changed_cb), cw);
 
   g_signal_connect (cw->priv->adj_input_volume, "value-changed",
 		    G_CALLBACK (audio_volume_changed_cb), cw);
-
-  /* That's an usual GtkWindow, connect it to the signals */
-  g_signal_connect_swapped (window,
-			    "response",
-			    G_CALLBACK (gm_window_hide),
-			    (gpointer) window);
 
   gm_window_hide_on_delete (window);
 
@@ -2426,9 +2397,9 @@ ekiga_call_window_init_gui (EkigaCallWindow *cw)
                         GTK_TOOL_ITEM (item), -1);
     gtk_tool_item_set_tooltip_text (GTK_TOOL_ITEM (item),
                                     _("Change the volume of your soundcard"));
-    g_signal_connect (cw->priv->audio_settings_button, "clicked",
-                      G_CALLBACK (show_window_cb),
-                      (gpointer) cw->priv->audio_settings_window);
+    g_signal_connect_swapped (cw->priv->audio_settings_button, "clicked",
+                              G_CALLBACK (gtk_widget_show),
+                              (gpointer) cw->priv->audio_settings_window);
   }
 
   /* Video Settings */
@@ -2447,9 +2418,9 @@ ekiga_call_window_init_gui (EkigaCallWindow *cw)
   gtk_tool_item_set_tooltip_text (GTK_TOOL_ITEM (item),
 				   _("Change the color settings of your video device"));
 
-  g_signal_connect (cw->priv->video_settings_button, "clicked",
-		    G_CALLBACK (show_window_cb),
-		    (gpointer) cw->priv->video_settings_window);
+  g_signal_connect_swapped (cw->priv->video_settings_button, "clicked",
+                            G_CALLBACK (gtk_widget_show),
+                            (gpointer) cw->priv->video_settings_window);
 
   /* Call Pause */
   item = gtk_tool_item_new ();
@@ -2640,7 +2611,7 @@ call_window_new (Ekiga::ServiceCore & core)
   gm_conf_notifier_add (VIDEO_DISPLAY_KEY "stay_on_top",
 			stay_on_top_changed_nt, cw);
 
-  gm_window_set_key (GM_WINDOW (cw), USER_INTERFACE_KEY "call_window");
+  gm_window_set_key (GM_WINDOW (cw), USER_INTERFACE ".call-window");
   gm_window_set_hide_on_delete (GM_WINDOW (cw), false);
   gm_window_set_hide_on_escape (GM_WINDOW (cw), false);
 

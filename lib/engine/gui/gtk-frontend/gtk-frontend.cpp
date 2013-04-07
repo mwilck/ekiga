@@ -39,6 +39,7 @@
 #include <gtk/gtk.h>
 
 #include "config.h"
+#include "ekiga-settings.h"
 
 #include "trigger.h"
 #include "gtk-frontend.h"
@@ -153,14 +154,11 @@ GtkFrontend::build ()
   gtk_window_set_default_icon_name (GM_ICON_LOGO);
 
   addressbook_window =
-    boost::shared_ptr<GtkWidget>(addressbook_window_new (contact_core), gtk_widget_destroy);
-  gm_window_set_key (GM_WINDOW (addressbook_window.get ()),
-		     "/apps/" PACKAGE_NAME "/general/user_interface/addressbook_window");
+<<<<<<< HEAD
+    boost::shared_ptr<GtkWidget>(addressbook_window_new_with_key (contact_core, USER_INTERFACE ".addressbook-window"), gtk_widget_destroy);
 
   accounts_window =
-    boost::shared_ptr<GtkWidget> (accounts_window_new (account_core, details), gtk_widget_destroy);
-  gm_window_set_key(GM_WINDOW (accounts_window.get ()),
-		    "/apps/" PACKAGE_NAME "/general/user_interface/accounts_window");
+    boost::shared_ptr<GtkWidget> (accounts_window_new_with_key (account_core, USER_INTERFACE ".accounts-window", details), gtk_widget_destroy);
 
   // BEWARE: uses the main window during runtime
   assistant_window =
@@ -170,8 +168,7 @@ GtkFrontend::build ()
     boost::shared_ptr<GtkWidget> (call_window_new (core), gtk_widget_destroy);
 
   chat_window =
-    boost::shared_ptr<GtkWidget> (chat_window_new (core), gtk_widget_destroy);
-  gm_window_set_key(GM_WINDOW(chat_window.get ()), "/apps/" PACKAGE_NAME "/general/user_interface/chat_window");
+    boost::shared_ptr<GtkWidget> (chat_window_new (core, USER_INTERFACE ".chat-window"), gtk_widget_destroy);
 
   preferences_window =
     boost::shared_ptr<GtkWidget> (preferences_window_new (core), gtk_widget_destroy);
