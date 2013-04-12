@@ -41,19 +41,11 @@
 #include "gtk-core-main.h"
 #include "gtk-core.h"
 
-bool
+void
 gtk_core_init (Ekiga::ServiceCore &core,
-	       int *argc,
-	       char **argv[])
+               int */*argc*/,
+               char **/*argv*/[])
 {
-  if (gtk_init_check (argc, argv)) {
-
-    boost::shared_ptr<Gtk::Core> gtk (new Gtk::Core);
-
-    core.add (gtk);
-
-    return true;
-
-  } else
-    return false;
+  boost::shared_ptr<Gtk::Core> gtk (new Gtk::Core);
+  core.add (gtk);
 }

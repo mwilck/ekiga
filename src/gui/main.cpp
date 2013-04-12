@@ -183,6 +183,8 @@ main (int argc,
 #endif
 
   /* Ekiga initialisation */
+  gtk_init (&argc, &argv);
+
   // should come *after* ptrace initialisation, to track codec loading for ex.
   GnomeMeeting instance;
 
