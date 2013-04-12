@@ -97,6 +97,7 @@ main (int argc,
   /* GTK+ initialization */
   g_type_init ();
   g_thread_init (NULL);
+  gtk_init (&argc, &argv);
 #ifndef WIN32
   signal (SIGPIPE, SIG_IGN);
 #endif
@@ -183,8 +184,6 @@ main (int argc,
 #endif
 
   /* Ekiga initialisation */
-  gtk_init (&argc, &argv);
-
   // should come *after* ptrace initialisation, to track codec loading for ex.
   GnomeMeeting instance;
 
