@@ -181,10 +181,7 @@ engine_init (Ekiga::ServiceCorePtr service_core,
    */
   kickstart.kick (*service_core, &argc, &argv);
 
-  if (!gtk_core_init (*service_core, &argc, &argv)) {
-
-    return;
-  }
+  gtk_core_init (*service_core, &argc, &argv);
 
   if (!gtk_frontend_init (*service_core, &argc, &argv)) {
 

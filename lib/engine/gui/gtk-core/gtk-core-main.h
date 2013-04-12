@@ -41,8 +41,8 @@
 
 #include "services.h"
 
-bool gtk_core_init (Ekiga::ServiceCore &core,
-		    int *argc,
-		    char **argv[]);
+void gtk_core_init (Ekiga::ServiceCore &core,
+                    int *argc,
+                    char **argv[]);
 
 #endif
