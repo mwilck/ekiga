@@ -126,21 +126,6 @@ gboolean gm_window_get_hide_on_escape (GmWindow *window);
  */
 gboolean gm_window_is_visible (GtkWidget* window);
 
-/** Show the given window if hidden, and present if no
- * @param window is a GtkWindow
- */
-void gm_window_show (GtkWidget* window);
-
-/** Hide the given window
- * @param window is a GtkWindow
- */
-void gm_window_hide (GtkWidget* window);
-
-/** Hide on delete the given window : only for old-style GMWindows
- * @param window is a GtkWindow
- */
-void gm_window_hide_on_delete (GtkWidget* window);
-
 
 /* GObject boilerplate */
 
