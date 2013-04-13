@@ -41,4 +41,6 @@
 
 #define USER_INTERFACE "org.gnome." PACKAGE_NAME ".general.user-interface"
 
+#define SOUND_EVENTS_SCHEMA "org.gnome." PACKAGE_NAME ".general.sound-events"
+
 #endif /* EKIGA_SETTINGS_H */

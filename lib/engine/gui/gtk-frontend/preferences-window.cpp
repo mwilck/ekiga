@@ -43,6 +43,7 @@
 
 #include "gmpreferences.h"
 #include "gmconf.h"
+#include "ekiga-settings.h"
 
 #include "preferences-window.h"
 #include "default_devices.h"
@@ -74,21 +75,30 @@ typedef struct _GmPreferencesWindow
   GtkWidget *video_device;
   GtkWidget *iface;
   GtkWidget *fsbutton;
+<<<<<<< HEAD
   boost::shared_ptr<Ekiga::VideoInputCore> videoinput_core;
   boost::shared_ptr<Ekiga::AudioInputCore> audioinput_core;
   boost::shared_ptr<Ekiga::AudioOutputCore> audiooutput_core;
+=======
+  GSettings *sound_events_settings;
+  Ekiga::ServiceCore& core;
+>>>>>>> GSettings: Ported the sound events part of the preferences window.
   Ekiga::scoped_connections connections;
-  std::list<gpointer> notifiers;
 } GmPreferencesWindow;
 
 #define GM_PREFERENCES_WINDOW(x) (GmPreferencesWindow *) (x)
 
+<<<<<<< HEAD
+=======
+_GmPreferencesWindow::_GmPreferencesWindow(Ekiga::ServiceCore &_core): core(_core)
+{
+  sound_events_settings = g_settings_new (SOUND_EVENTS_SCHEMA);
+}
+
+>>>>>>> GSettings: Ported the sound events part of the preferences window.
 _GmPreferencesWindow::~_GmPreferencesWindow()
 {
-  for (std::list<gpointer>::iterator iter = notifiers.begin ();
-       iter != notifiers.end ();
-       ++iter)
-    gm_conf_notifier_remove (*iter);
+  g_clear_object (&sound_events_settings);
 }
 
 /* Declarations */
@@ -237,8 +247,8 @@ static void refresh_devices_list_cb (GtkWidget *widget,
  *                 selected sound event.
  * PRE          :  /
  */
-static void sound_event_clicked_cb (GtkTreeSelection *selection,
-				    gpointer data);
+static void sound_event_selected_cb (GtkTreeSelection *selection,
+                                     gpointer data);
 
 
 /* DESCRIPTION  :  This callback is called when the user clicks
@@ -259,7 +269,7 @@ static void sound_event_play_cb (GtkWidget *widget,
  * PRE          :  /
  */
 static void sound_event_toggled_cb (GtkCellRendererToggle *cell,
-				    gchar *path_str, 
+				    gchar *path_str,
 				    gpointer data);
 
 
@@ -278,20 +288,21 @@ static void image_filename_browse_cb (GtkWidget *widget,
  * BEHAVIOR     :  Update of the config database.
  * PRE          :  /
  */
-static void audioev_filename_browse_cb (GtkWidget *widget,
-					gpointer data);
+static void sound_event_changed_cb (GtkWidget *widget,
+                                    gpointer data);
 
 
 /* DESCRIPTION  :  This callback is called when something changes in the sound
- *                 events list.
+ *                 event related settings.
  * BEHAVIOR     :  It updates the events list widget.
  * PRE          :  A pointer to the prefs window GMObject.
  */
-static void sound_events_list_changed_nt (gpointer id,
-					  GmConfEntry *entry,
-					  gpointer data);
+static void sound_event_setting_changed (GSettings *,
+                                         gchar *,
+                                         gpointer data);
 
 
+<<<<<<< HEAD
 /* DESCRIPTION  :  This callback is called by the preview-play button of the
  * 		   selected audio file in the audio file selector.
  * BEHAVIOR     :  GMSoundEv's the audio file.
@@ -299,6 +310,18 @@ static void sound_events_list_changed_nt (gpointer id,
  */
 static void audioev_filename_browse_play_cb (GtkWidget *playbutton,
                                              gpointer data);
+=======
+static void
+gm_prefs_window_get_audiooutput_devices_list (Ekiga::ServiceCore& core,
+                                        std::vector<std::string> & device_list);
+
+static void
+gm_prefs_window_get_audioinput_devices_list (Ekiga::ServiceCore& core,
+                                             std::vector<std::string> & device_list);
+
+gchar**
+gm_prefs_window_convert_string_list (const std::vector<std::string> & list);
+>>>>>>> GSettings: Ported the sound events part of the preferences window.
 
 void 
 gm_prefs_window_update_devices_list (GtkWidget *prefs_window);
@@ -327,80 +350,66 @@ gm_prefs_window_sound_events_list_build (GtkWidget *prefs_window)
 {
   GmPreferencesWindow *pw = NULL;
 
-  GtkTreeSelection *selection = NULL;
-  GtkTreePath *path = NULL;
   GtkTreeModel *model = NULL;
-  GtkTreeIter iter, selected_iter;
+  GtkTreeIter iter;
 
   bool enabled = FALSE;
 
   pw = gm_pw_get_pw (prefs_window);
 
-  selection =
-    gtk_tree_view_get_selection (GTK_TREE_VIEW (pw->sound_events_list));
-
-  if (gtk_tree_selection_get_selected (selection, &model, &selected_iter))
-    path = gtk_tree_model_get_path (model, &selected_iter);
-
+  model = gtk_tree_view_get_model (GTK_TREE_VIEW (pw->sound_events_list));
   gtk_list_store_clear (GTK_LIST_STORE (model));
 
   /* Sound on incoming calls */
-  enabled = gm_conf_get_bool (SOUND_EVENTS_KEY "enable_incoming_call_sound");
+  enabled = g_settings_get_boolean (pw->sound_events_settings, "enable-incoming-call-sound");
   gtk_list_store_append (GTK_LIST_STORE (model), &iter);
   gtk_list_store_set (GTK_LIST_STORE (model), &iter,
 		      0, enabled,
 		      1, _("Play sound on incoming calls"),
-		      2, SOUND_EVENTS_KEY "incoming_call_sound",
-		      3, SOUND_EVENTS_KEY "enable_incoming_call_sound",
-                      4, "incoming_call_sound",
+		      2, "incoming-call-sound",
+		      3, "enable-incoming-call-sound",
+                      4, "incoming-call-sound",
 		      -1);
 
-  enabled = gm_conf_get_bool (SOUND_EVENTS_KEY "enable_ring_tone_sound");
+  enabled = g_settings_get_boolean (pw->sound_events_settings, "enable-ring-tone-sound");
   gtk_list_store_append (GTK_LIST_STORE (model), &iter);
   gtk_list_store_set (GTK_LIST_STORE (model), &iter,
 		      0, enabled,
 		      1, _("Play ring tone"),
-		      2, SOUND_EVENTS_KEY "ring_tone_sound",
-		      3, SOUND_EVENTS_KEY "enable_ring_tone_sound",
-                      4, "ring_tone_sound",
+		      2, "ring-tone-sound",
+		      3, "enable-ring-tone-sound",
+                      4, "ring-tone-sound",
 		      -1);
 
-  enabled = gm_conf_get_bool (SOUND_EVENTS_KEY "enable_busy_tone_sound");
+  enabled = g_settings_get_boolean (pw->sound_events_settings, "enable-busy-tone-sound");
   gtk_list_store_append (GTK_LIST_STORE (model), &iter);
   gtk_list_store_set (GTK_LIST_STORE (model), &iter,
 		      0, enabled,
 		      1, _("Play busy tone"),
-		      2, SOUND_EVENTS_KEY "busy_tone_sound",
-		      3, SOUND_EVENTS_KEY "enable_busy_tone_sound",
-		      4, "busy_tone_sound",
+		      2, "busy-tone-sound",
+		      3, "enable-busy-tone-sound",
+		      4, "busy-tone-sound",
 		      -1);
 
-  enabled = gm_conf_get_bool (SOUND_EVENTS_KEY "enable_new_voicemail_sound");
+  enabled = g_settings_get_boolean (pw->sound_events_settings, "enable-new-voicemail-sound");
   gtk_list_store_append (GTK_LIST_STORE (model), &iter);
   gtk_list_store_set (GTK_LIST_STORE (model), &iter,
 		      0, enabled,
 		      1, _("Play sound for new voice mails"),
-		      2, SOUND_EVENTS_KEY "new_voicemail_sound",
-		      3, SOUND_EVENTS_KEY "enable_new_voicemail_sound",
-		      4, "new_voicemail_sound",
+		      2, "new-voicemail-sound",
+		      3, "enable-new-voicemail-sound",
+		      4, "new-voicemail-sound",
 		      -1);
 
-  enabled = gm_conf_get_bool (SOUND_EVENTS_KEY "enable_new_message_sound");
+  enabled = g_settings_get_boolean (pw->sound_events_settings, "enable-new-message-sound");
   gtk_list_store_append (GTK_LIST_STORE (model), &iter);
   gtk_list_store_set (GTK_LIST_STORE (model), &iter,
 		      0, enabled,
 		      1, _("Play sound for new instant messages"),
-		      2, SOUND_EVENTS_KEY "new_message_sound",
-		      3, SOUND_EVENTS_KEY "enable_new_message_sound",
-		      4, "new_message_sound",
+		      2, "new-message-sound",
+		      3, "enable-new-message-sound",
+		      4, "new-message-sound",
 		      -1);
-
-  if (!path)
-    path = gtk_tree_path_new_from_string ("0");
-
-  gtk_tree_view_set_cursor (GTK_TREE_VIEW (pw->sound_events_list),
-			    path, NULL, false);
-  gtk_tree_path_free (path);
 }
 
 
@@ -559,14 +568,13 @@ gm_pw_init_sound_events_page (GtkWidget *prefs_window,
   renderer = gtk_cell_renderer_toggle_new ();
   column = gtk_tree_view_column_new_with_attributes (_("A"),
                                                      renderer,
-                                                     "active", 
+                                                     "active",
                                                      0,
                                                      NULL);
   gtk_tree_view_column_set_fixed_width (GTK_TREE_VIEW_COLUMN (column), 25);
   gtk_tree_view_append_column (GTK_TREE_VIEW (pw->sound_events_list), column);
   g_signal_connect (renderer, "toggled",
-                    G_CALLBACK (sound_event_toggled_cb), 
-                    GTK_TREE_MODEL (list_store));
+                    G_CALLBACK (sound_event_toggled_cb), (gpointer) prefs_window);
 
   renderer = gtk_cell_renderer_text_new ();
   column = gtk_tree_view_column_new_with_attributes (_("Event"),
@@ -602,17 +610,13 @@ gm_pw_init_sound_events_page (GtkWidget *prefs_window,
   gtk_file_chooser_set_extra_widget (GTK_FILE_CHOOSER (pw->fsbutton),
                                      selector_hbox);
 
-  g_signal_connect (selector_playbutton, "clicked",
-                    G_CALLBACK (audioev_filename_browse_play_cb),
-                    (gpointer) prefs_window);
-
   g_signal_connect (pw->fsbutton, "selection-changed",
-                    G_CALLBACK (audioev_filename_browse_cb),
+                    G_CALLBACK (sound_event_changed_cb),
                     (gpointer) prefs_window);
 
   g_signal_connect (selection, "changed",
-                    G_CALLBACK (sound_event_clicked_cb),
-                    (gpointer) pw->fsbutton);
+                    G_CALLBACK (sound_event_selected_cb),
+                    (gpointer) prefs_window);
 
   button = gtk_button_new_with_label (_("Play"));
   gtk_box_pack_start (GTK_BOX (hbox), button, FALSE, FALSE, 2);
@@ -886,8 +890,8 @@ refresh_devices_list_cb (G_GNUC_UNUSED GtkWidget *widget,
 
 
 static void
-audioev_filename_browse_cb (GtkWidget *b,
-                            gpointer data)
+sound_event_changed_cb (GtkWidget *b,
+                        gpointer data)
 {
 
   GmPreferencesWindow *pw = NULL;
@@ -897,7 +901,7 @@ audioev_filename_browse_cb (GtkWidget *b,
   GtkTreeIter iter;
 
   gchar *filename = NULL;
-  gchar *conf_key = NULL;
+  gchar *key = NULL;
   gchar *sound_event = NULL;
 
   g_return_if_fail (data != NULL);
@@ -909,20 +913,20 @@ audioev_filename_browse_cb (GtkWidget *b,
   if (gtk_tree_selection_get_selected (selection, &model, &iter)) {
 
     gtk_tree_model_get (GTK_TREE_MODEL (model), &iter,
-      2, &conf_key, -1);
+                        2, &key, -1);
 
-    if (conf_key) {
+    if (key) {
       filename = gtk_file_chooser_get_filename (GTK_FILE_CHOOSER (b));
       if (filename) {
-        sound_event = gm_conf_get_string (conf_key);
+        sound_event = g_settings_get_string (pw->sound_events_settings, key);
 
         if (!sound_event || g_strcmp0 (filename, sound_event))
-          gm_conf_set_string (conf_key, (gchar *) filename);
+          g_settings_set_string (pw->sound_events_settings, key, (gchar *) filename);
 
         g_free (filename);
       }
 
-      g_free (conf_key);
+      g_free (key);
       g_free (sound_event);
     }
   }
@@ -930,40 +934,62 @@ audioev_filename_browse_cb (GtkWidget *b,
 
 
 static void
-sound_events_list_changed_nt (G_GNUC_UNUSED gpointer id,
-			      GmConfEntry *entry,
-			      gpointer data)
+sound_event_setting_changed (G_GNUC_UNUSED GSettings *settings,
+                             gchar *key,
+                             gpointer data)
 {
-  GtkWidget *prefs_window = (GtkWidget*)data;
+  bool valid = true;
 
-  if (gm_conf_entry_get_type (entry) == GM_CONF_STRING
-      || gm_conf_entry_get_type (entry) == GM_CONF_BOOL) {
+  GtkTreeIter iter;
 
-    if (prefs_window)
-      gm_prefs_window_sound_events_list_build (prefs_window);
+  g_return_if_fail (data != NULL);
+
+  GmPreferencesWindow *pw = gm_pw_get_pw (GTK_WIDGET (data));
+
+  GtkTreeModel *model = gtk_tree_view_get_model (GTK_TREE_VIEW (pw->sound_events_list));
+
+  /* Get the first iter in the list, check it is valid and walk
+   *  * through the list, reading each row. */
+  for (valid = gtk_tree_model_get_iter_first (model, &iter);
+       valid;
+       valid = gtk_tree_model_iter_next (model, &iter)) {
+
+    gchar *str = NULL;
+    gtk_tree_model_get (model, &iter, 3, &str, -1);
+
+    if (key && str && !g_strcmp0 (key, str)) {
+      gtk_list_store_set (GTK_LIST_STORE (model), &iter,
+                          0, g_settings_get_boolean (pw->sound_events_settings, key));
+      break;
+    }
+
+    g_free (str);
   }
 }
 
 
 static void
-sound_event_clicked_cb (GtkTreeSelection *selection,
-			gpointer data)
+sound_event_selected_cb (GtkTreeSelection *selection,
+                         gpointer data)
 {
   GtkTreeModel *model = NULL;
   GtkTreeIter iter;
 
-  gchar *conf_key = NULL;
+  GmPreferencesWindow *pw = NULL;
+  gchar *key = NULL;
   gchar *filename = NULL;
   gchar *sound_event = NULL;
 
+  g_return_if_fail (data != NULL);
+  pw = gm_pw_get_pw (GTK_WIDGET (data));
+
   if (gtk_tree_selection_get_selected (selection, &model, &iter)) {
 
-    gtk_tree_model_get (GTK_TREE_MODEL (model), &iter,
-			2, &conf_key, -1);
+    gtk_tree_model_get (GTK_TREE_MODEL (model), &iter, 2, &key, -1);
 
-    if (conf_key) {
+    if (key) {
 
-      sound_event = gm_conf_get_string (conf_key);
+      sound_event = g_settings_get_string (pw->sound_events_settings, key);
 
       if (sound_event) {
 
@@ -973,12 +999,12 @@ sound_event_clicked_cb (GtkTreeSelection *selection,
         else
           filename = g_strdup (sound_event);
 
-        gtk_file_chooser_set_filename (GTK_FILE_CHOOSER (data), filename);
+        gtk_file_chooser_set_filename (GTK_FILE_CHOOSER (pw->fsbutton), filename);
         g_free (filename);
         g_free (sound_event);
       }
 
-      g_free (conf_key);
+      g_free (key);
     }
   }
 }
@@ -992,10 +1018,11 @@ sound_event_play_cb (G_GNUC_UNUSED GtkWidget *widget,
   GtkTreeModel *model = NULL;
   GtkTreeIter selected_iter;
 
+  gchar *key = NULL;
   gchar *sound_event = NULL;
 
   GmPreferencesWindow *pw = NULL;
-  
+
   g_return_if_fail (data != NULL);
   pw = gm_pw_get_pw (GTK_WIDGET (data));
 
@@ -1005,12 +1032,21 @@ sound_event_play_cb (G_GNUC_UNUSED GtkWidget *widget,
 
   if (gtk_tree_selection_get_selected (selection, &model, &selected_iter)) {
 
-    gtk_tree_model_get (GTK_TREE_MODEL (model), &selected_iter, 4, &sound_event, -1);
+    gtk_tree_model_get (GTK_TREE_MODEL (model), &selected_iter, 2, &key, -1);
 
+<<<<<<< HEAD
+=======
+    sound_event = g_settings_get_string (pw->sound_events_settings, key);
+    boost::shared_ptr<Ekiga::AudioOutputCore> audiooutput_core =
+      pw->core.get<Ekiga::AudioOutputCore> ("audiooutput-core");
+
+>>>>>>> GSettings: Ported the sound events part of the preferences window.
     if (sound_event) {
       pw->audiooutput_core->play_event(sound_event);
       g_free (sound_event);
     }
+
+    g_free (key);
   }
 }
 
@@ -1024,26 +1060,30 @@ sound_event_toggled_cb (G_GNUC_UNUSED GtkCellRendererToggle *cell,
   GtkTreePath *path = NULL;
   GtkTreeIter iter;
 
-  gchar *conf_key = NULL;
+  GmPreferencesWindow *pw = NULL;
+  gchar *key = NULL;
 
   bool fixed = FALSE;
 
+  g_return_if_fail (data != NULL);
+  pw = gm_pw_get_pw (GTK_WIDGET (data));
 
-  model = (GtkTreeModel *) data;
+  model = gtk_tree_view_get_model (GTK_TREE_VIEW (pw->sound_events_list));
   path = gtk_tree_path_new_from_string (path_str);
 
   gtk_tree_model_get_iter (model, &iter, path);
-  gtk_tree_model_get (model, &iter, 0, &fixed, 3, &conf_key, -1);
+  gtk_tree_model_get (model, &iter, 0, &fixed, 3, &key, -1);
 
   fixed ^= 1;
 
-  gm_conf_set_bool (conf_key, fixed);
+  g_settings_set_boolean (pw->sound_events_settings, key, fixed);
 
-  g_free (conf_key);
+  g_free (key);
   gtk_tree_path_free (path);
 }
 
 
+<<<<<<< HEAD
 static void
 audioev_filename_browse_play_cb (GtkWidget* /* playbutton */,
 				 gpointer data)
@@ -1061,6 +1101,8 @@ audioev_filename_browse_play_cb (GtkWidget* /* playbutton */,
   g_free (file_name);
 }
 
+=======
+>>>>>>> GSettings: Ported the sound events part of the preferences window.
 void on_videoinput_device_added_cb (const Ekiga::VideoInputDevice & device, bool isDesired, GtkWidget *prefs_window)
 {
   GmPreferencesWindow *pw = NULL;
@@ -1169,8 +1211,6 @@ preferences_window_new (Ekiga::ServiceCore& core)
   gchar     *filename = NULL;
   std::vector <std::string> device_list;
 
-  gpointer notifier;
-
   filename = g_build_filename (DATA_DIR, "pixmaps", PACKAGE_NAME, PACKAGE_NAME "-logo.png", NULL);
   window = gnome_prefs_window_new (filename);
   g_free (filename);
@@ -1272,6 +1312,7 @@ preferences_window_new (Ekiga::ServiceCore& core)
   conn = pw->audiooutput_core->device_removed.connect (boost::bind (&on_audiooutput_device_removed_cb, _1, _2, window));
   pw->connections.add (conn);
 
+<<<<<<< HEAD
   /* Connect notifiers for SOUND_EVENTS_KEY keys */
   notifier =
     gm_conf_notifier_add (SOUND_EVENTS_KEY "enable_incoming_call_sound", 
@@ -1322,6 +1363,24 @@ preferences_window_new (Ekiga::ServiceCore& core)
     gm_conf_notifier_add (SOUND_EVENTS_KEY "new_message_sound",
 			  sound_events_list_changed_nt, window);
   pw->notifiers.push_front (notifier);
+=======
+
+  /* Connect notifiers for SOUND_EVENTS_SCHEMA settings */
+  g_signal_connect (pw->sound_events_settings, "changed::enable-incoming-call-sound",
+                    G_CALLBACK (sound_event_setting_changed), window);
+
+  g_signal_connect (pw->sound_events_settings, "changed::enable-ring-tone-sound",
+                    G_CALLBACK (sound_event_setting_changed), window);
+
+  g_signal_connect (pw->sound_events_settings, "changed::enable-busy-tone-sound",
+                    G_CALLBACK (sound_event_setting_changed), window);
+
+  g_signal_connect (pw->sound_events_settings, "changed::enable-new-voicemail-sound",
+                    G_CALLBACK (sound_event_setting_changed), window);
+
+  g_signal_connect (pw->sound_events_settings, "changed::enable-new-message-sound",
+                    G_CALLBACK (sound_event_setting_changed), window);
+>>>>>>> GSettings: Ported the sound events part of the preferences window.
 
   return window;
 }
