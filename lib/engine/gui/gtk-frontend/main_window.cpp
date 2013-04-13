@@ -455,7 +455,7 @@ static void
 show_gm_window_cb (G_GNUC_UNUSED GtkWidget *widget,
                    gpointer data)
 {
-  gm_window_show (GTK_WIDGET (data));
+  gtk_widget_show (GTK_WIDGET (data));
 }
 
 static void

@@ -751,6 +751,8 @@ on_videooutput_device_error_cb (Ekiga::VideoOutputManager & /* manager */,
                                 Ekiga::VideoOutputErrorCodes error_code,
                                 gpointer self)
 {
+  GtkWidget *dialog = NULL;
+
   const gchar *dialog_title =  _("Error while initializing video output");
   const gchar *tmp_msg = _("No video will be displayed on your machine during this call");
   gchar *dialog_msg = NULL;
@@ -769,10 +771,13 @@ on_videooutput_device_error_cb (Ekiga::VideoOutputManager & /* manager */,
       break;
   }
 
-  gnomemeeting_warning_dialog_on_widget (GTK_WINDOW (self),
-                                         "show_device_warnings",
-                                         dialog_title,
-                                         "%s", dialog_msg);
+  dialog = gtk_message_dialog_new (GTK_WINDOW (self), GTK_DIALOG_MODAL,
+                                   GTK_MESSAGE_ERROR, GTK_BUTTONS_OK,
+                                   dialog_msg);
+  gtk_window_set_title (GTK_WINDOW (dialog), dialog_title);
+  g_signal_connect_swapped (dialog, "response", G_CALLBACK (gtk_widget_destroy), dialog);
+  gtk_widget_show_all (GTK_WIDGET (dialog));
+
   g_free (dialog_msg);
 }
 
@@ -882,13 +887,14 @@ on_videoinput_device_error_cb (Ekiga::VideoInputManager & /* manager */,
                                Ekiga::VideoInputErrorCodes error_code,
                                gpointer self)
 {
+  GtkWidget *dialog = NULL;
+
   gchar *dialog_title = NULL;
   gchar *dialog_msg = NULL;
   gchar *tmp_msg = NULL;
 
-  dialog_title =
-  g_strdup_printf (_("Error while accessing video device %s"),
-                   (const char *) device.name.c_str());
+  dialog_title = g_strdup_printf (_("Error while accessing video device %s"),
+                                  (const char *) device.name.c_str());
 
   tmp_msg = g_strdup (_("A moving logo will be transmitted during calls."));
   switch (error_code) {
@@ -923,10 +929,13 @@ on_videoinput_device_error_cb (Ekiga::VideoInputManager & /* manager */,
       break;
   }
 
-  gnomemeeting_warning_dialog_on_widget (GTK_WINDOW (GTK_WIDGET (self)),
-                                         "show_device_warnings",
-                                         dialog_title,
-                                         "%s", dialog_msg);
+  dialog = gtk_message_dialog_new (GTK_WINDOW (self), GTK_DIALOG_MODAL,
+                                   GTK_MESSAGE_ERROR, GTK_BUTTONS_OK,
+                                   dialog_msg);
+  gtk_window_set_title (GTK_WINDOW (dialog), dialog_title);
+  g_signal_connect_swapped (dialog, "response", G_CALLBACK (gtk_widget_destroy), dialog);
+  gtk_widget_show_all (dialog);
+
   g_free (dialog_msg);
   g_free (dialog_title);
   g_free (tmp_msg);
@@ -966,6 +975,8 @@ on_audioinput_device_error_cb (Ekiga::AudioInputManager & /* manager */,
                                Ekiga::AudioInputErrorCodes error_code,
                                gpointer self)
 {
+  GtkWidget *dialog = NULL;
+
   gchar *dialog_title = NULL;
   gchar *dialog_msg = NULL;
   gchar *tmp_msg = NULL;
@@ -993,10 +1004,13 @@ on_audioinput_device_error_cb (Ekiga::AudioInputManager & /* manager */,
       break;
   }
 
-  gnomemeeting_warning_dialog_on_widget (GTK_WINDOW (self),
-                                         "show_device_warnings",
-                                         dialog_title,
-                                         "%s", dialog_msg);
+  dialog = gtk_message_dialog_new (GTK_WINDOW (self), GTK_DIALOG_MODAL,
+                                   GTK_MESSAGE_ERROR, GTK_BUTTONS_OK,
+                                   dialog_msg);
+  gtk_window_set_title (GTK_WINDOW (dialog), dialog_title);
+  g_signal_connect_swapped (dialog, "response", G_CALLBACK (gtk_widget_destroy), dialog);
+  gtk_widget_show_all (GTK_WIDGET (dialog));
+
   g_free (dialog_msg);
   g_free (dialog_title);
   g_free (tmp_msg);
@@ -1046,6 +1060,8 @@ on_audiooutput_device_error_cb (Ekiga::AudioOutputManager & /*manager */,
                                 Ekiga::AudioOutputErrorCodes error_code,
                                 gpointer self)
 {
+  GtkWidget *dialog = NULL;
+
   if (ps == Ekiga::secondary)
     return;
 
@@ -1074,10 +1090,13 @@ on_audiooutput_device_error_cb (Ekiga::AudioOutputManager & /*manager */,
       break;
   }
 
-  gnomemeeting_warning_dialog_on_widget (GTK_WINDOW (GTK_WIDGET (self)),
-                                         "show_device_warnings",
-                                         dialog_title,
-                                         "%s", dialog_msg);
+  dialog = gtk_message_dialog_new (GTK_WINDOW (self), GTK_DIALOG_MODAL,
+                                   GTK_MESSAGE_ERROR, GTK_BUTTONS_OK,
+                                   dialog_msg);
+  gtk_window_set_title (GTK_WINDOW (dialog), dialog_title);
+  g_signal_connect_swapped (dialog, "response", G_CALLBACK (gtk_widget_destroy), dialog);
+  gtk_widget_show_all (GTK_WIDGET (dialog));
+
   g_free (dialog_msg);
   g_free (dialog_title);
   g_free (tmp_msg);
@@ -1824,7 +1843,7 @@ gm_cw_video_settings_window_new (EkigaCallWindow *cw)
 
   gtk_widget_set_sensitive (GTK_WIDGET (cw->priv->video_settings_frame), false);
 
-  gm_window_hide_on_delete (window);
+  gtk_widget_hide_on_delete (window);
 
   return window;
 }
@@ -1876,7 +1895,6 @@ gm_cw_audio_settings_window_new (EkigaCallWindow *cw)
 
   gtk_box_pack_start (GTK_BOX (main_vbox), cw->priv->audio_output_volume_frame,
                       false, false, 0);
-  gtk_widget_show_all (cw->priv->audio_output_volume_frame);
   gtk_widget_set_sensitive (GTK_WIDGET (cw->priv->audio_output_volume_frame),  false);
 
   /* Audio control frame, we need it to disable controls */
@@ -1911,10 +1929,10 @@ gm_cw_audio_settings_window_new (EkigaCallWindow *cw)
 
   gtk_box_pack_start (GTK_BOX (main_vbox), cw->priv->audio_input_volume_frame,
                       false, false, 0);
-  gtk_widget_show_all (cw->priv->audio_input_volume_frame);
   gtk_widget_set_sensitive (GTK_WIDGET (cw->priv->audio_input_volume_frame),  false);
 
   gtk_container_add (GTK_CONTAINER (window), main_vbox);
+  gtk_widget_show_all (main_vbox);
 
   g_signal_connect (cw->priv->adj_output_volume, "value-changed",
 		    G_CALLBACK (audio_volume_changed_cb), cw);
@@ -1922,7 +1940,7 @@ gm_cw_audio_settings_window_new (EkigaCallWindow *cw)
   g_signal_connect (cw->priv->adj_input_volume, "value-changed",
 		    G_CALLBACK (audio_volume_changed_cb), cw);
 
-  gm_window_hide_on_delete (window);
+  gtk_widget_hide_on_delete (window);
 
   g_signal_connect (window, "show",
                     G_CALLBACK (audio_volume_window_shown_cb), cw);
@@ -2144,7 +2162,7 @@ ekiga_call_window_transfer_dialog_run (EkigaCallWindow *cw,
   else
     gm_entry_dialog_set_text (GM_ENTRY_DIALOG (cw->priv->transfer_call_popup), "sip:");
 
-  gm_window_show (cw->priv->transfer_call_popup);
+  gtk_widget_show_all (cw->priv->transfer_call_popup);
 
   answer = gtk_dialog_run (GTK_DIALOG (cw->priv->transfer_call_popup));
   switch (answer) {
