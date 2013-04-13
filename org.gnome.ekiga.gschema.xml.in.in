@@ -168,11 +168,9 @@
     <child name="call-window" schema="org.gnome.@PACKAGE_NAME@.general.user-interface.call-window"/>
     <child name="main-window" schema="org.gnome.@PACKAGE_NAME@.general.user-interface.main-window"/>
     <child name="chat-window" schema="org.gnome.@PACKAGE_NAME@.general.user-interface.chat-window"/>
-    <child name="assistant" schema="org.gnome.@PACKAGE_NAME@.general.user-interface.assistant"/>
     <child name="addressbook-window" schema="org.gnome.@PACKAGE_NAME@.general.user-interface.addressbook-window"/>
     <child name="audio-settings-window" schema="org.gnome.@PACKAGE_NAME@.general.user-interface.audio-settings-window"/>
     <child name="video-settings-window" schema="org.gnome.@PACKAGE_NAME@.general.user-interface.video-settings-window"/>
-    <child name="preferences-window" schema="org.gnome.@PACKAGE_NAME@.general.user-interface.preferences-window"/>
     <child name="accounts-window" schema="org.gnome.@PACKAGE_NAME@.general.user-interface.accounts-window"/>
     <child name="video-display" schema="org.gnome.@PACKAGE_NAME@.general.user-interface.video-display"/>
     <child name="remote-video-window" schema="org.gnome.@PACKAGE_NAME@.general.user-interface.remote-video-window"/>
@@ -218,18 +216,6 @@
       <_description>Position on the screen of the chat window</_description>
     </key>
   </schema>
-  <schema gettext-domain="@GETTEXT_PACKAGE@" id="org.gnome.@PACKAGE_NAME@.general.user-interface.assistant" path="/org/gnome/@PACKAGE_NAME@/general/user-interface/assistant/">
-    <key name="size" type="s">
-      <default>'525,345'</default>
-      <_summary>Size of the druid window</_summary>
-      <_description>Size of the druid window</_description>
-    </key>
-    <key name="position" type="s">
-      <default>'0,0'</default>
-      <_summary>Position on the screen of the druid window</_summary>
-      <_description>Position on the screen of the druid window</_description>
-    </key>
-  </schema>
   <schema gettext-domain="@GETTEXT_PACKAGE@" id="org.gnome.@PACKAGE_NAME@.general.user-interface.addressbook-window" path="/org/gnome/@PACKAGE_NAME@/general/user-interface/addressbook-window/">
     <key name="position" type="s">
       <default>'0,0'</default>
@@ -264,18 +250,6 @@
       <default>'250,160'</default>
       <_summary>Size of the video settings window</_summary>
       <_description>Size of the video settings window</_description>
-    </key>
-  </schema>
-  <schema gettext-domain="@GETTEXT_PACKAGE@" id="org.gnome.@PACKAGE_NAME@.general.user-interface.preferences-window" path="/org/gnome/@PACKAGE_NAME@/general/user-interface/preferences-window/">
-    <key name="position" type="s">
-      <default>'0,0'</default>
-      <_summary>Position on the screen of the preferences window</_summary>
-      <_description>Position on the screen of the preferences window</_description>
-    </key>
-    <key name="size" type="s">
-      <default>'-1,-1'</default>
-      <_summary>Size of the preferences window</_summary>
-      <_description>Size of the preferences window</_description>
     </key>
   </schema>
   <schema gettext-domain="@GETTEXT_PACKAGE@" id="org.gnome.@PACKAGE_NAME@.general.user-interface.accounts-window" path="/org/gnome/@PACKAGE_NAME@/general/user-interface/accounts-window/">
