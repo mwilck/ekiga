@@ -75,27 +75,20 @@ typedef struct _GmPreferencesWindow
   GtkWidget *video_device;
   GtkWidget *iface;
   GtkWidget *fsbutton;
-<<<<<<< HEAD
   boost::shared_ptr<Ekiga::VideoInputCore> videoinput_core;
   boost::shared_ptr<Ekiga::AudioInputCore> audioinput_core;
   boost::shared_ptr<Ekiga::AudioOutputCore> audiooutput_core;
-=======
   GSettings *sound_events_settings;
-  Ekiga::ServiceCore& core;
->>>>>>> GSettings: Ported the sound events part of the preferences window.
   Ekiga::scoped_connections connections;
 } GmPreferencesWindow;
 
 #define GM_PREFERENCES_WINDOW(x) (GmPreferencesWindow *) (x)
 
-<<<<<<< HEAD
-=======
 _GmPreferencesWindow::_GmPreferencesWindow(Ekiga::ServiceCore &_core): core(_core)
 {
   sound_events_settings = g_settings_new (SOUND_EVENTS_SCHEMA);
 }
 
->>>>>>> GSettings: Ported the sound events part of the preferences window.
 _GmPreferencesWindow::~_GmPreferencesWindow()
 {
   g_clear_object (&sound_events_settings);
@@ -1042,7 +1035,14 @@ sound_event_play_cb (G_GNUC_UNUSED GtkWidget *widget,
 
 >>>>>>> GSettings: Ported the sound events part of the preferences window.
     if (sound_event) {
+<<<<<<< HEAD
       pw->audiooutput_core->play_event(sound_event);
+=======
+      if (!g_path_is_absolute (sound_event))
+        audiooutput_core->play_event(sound_event);
+      else
+        audiooutput_core->play_file(sound_event);
+>>>>>>> GmPrefs: Fixed sound event playing if full filename is provided.
       g_free (sound_event);
     }
 
