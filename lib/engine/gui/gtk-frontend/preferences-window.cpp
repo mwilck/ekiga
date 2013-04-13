@@ -1112,7 +1112,10 @@ sound_event_play_cb (G_GNUC_UNUSED GtkWidget *widget,
     boost::shared_ptr<Ekiga::AudioOutputCore> audiooutput_core = pw->core->get<Ekiga::AudioOutputCore> ("audiooutput-core");
 
     if (sound_event) {
-      audiooutput_core->play_event(sound_event);
+      if (!g_path_is_absolute (sound_event))
+        audiooutput_core->play_event(sound_event);
+      else
+        audiooutput_core->play_file(sound_event);
       g_free (sound_event);
     }
   }
