@@ -36,8 +36,9 @@
  */
 
 
-#include "gmpreferences.h"
+#include "config.h"
 
+#include "gmpreferences.h"
 #include "gmconfwidgets.h"
 
 #include <libintl.h>
