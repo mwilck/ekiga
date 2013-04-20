@@ -46,16 +46,6 @@ AudioOutputCoreConfBridge::AudioOutputCoreConfBridge (Ekiga::AudioOutputCore& _c
 
   keys.push_back (AUDIO_DEVICES_KEY "output_device");
   keys.push_back (SOUND_EVENTS_KEY "output_device");
-  keys.push_back (SOUND_EVENTS_KEY "busy_tone_sound");
-  keys.push_back (SOUND_EVENTS_KEY "incoming_call_sound");
-  keys.push_back (SOUND_EVENTS_KEY "new_message_sound");
-  keys.push_back (SOUND_EVENTS_KEY "new_voicemail_sound");
-  keys.push_back (SOUND_EVENTS_KEY "ring_tone_sound");
-  keys.push_back (SOUND_EVENTS_KEY "enable_busy_tone_sound");
-  keys.push_back (SOUND_EVENTS_KEY "enable_incoming_call_sound");
-  keys.push_back (SOUND_EVENTS_KEY "enable_new_message_sound");
-  keys.push_back (SOUND_EVENTS_KEY "enable_new_voicemail_sound");
-  keys.push_back (SOUND_EVENTS_KEY "enable_ring_tone_sound");
 
   load (keys);
 }
@@ -132,92 +122,6 @@ AudioOutputCoreConfBridge::on_property_changed (std::string key,
       device.name   = AUDIO_OUTPUT_FALLBACK_DEVICE_NAME;
     }
     audiooutput_core.set_device (secondary, device);
-  }
-
-  if ( (key == SOUND_EVENTS_KEY "busy_tone_sound") ||
-       (key == SOUND_EVENTS_KEY "enable_busy_tone_sound") ) {
-
-    gchar *c_file_name = NULL;
-    c_file_name = gm_conf_get_string (SOUND_EVENTS_KEY "busy_tone_sound");
-    if (c_file_name == NULL) {
-      PTRACE(1, "AudioOutputCoreConfBridge\t" << SOUND_EVENTS_KEY "busy_tone_sound" << " is NULL");
-      return;
-    }
-
-    name = "busy_tone_sound";
-    file_name = c_file_name;
-    g_free (c_file_name);
-    enabled = gm_conf_get_bool (SOUND_EVENTS_KEY "enable_busy_tone_sound");
-    audiooutput_core.map_event (name, file_name, primary, enabled);
-  }
-
-  if ( (key == SOUND_EVENTS_KEY "incoming_call_sound") ||
-       (key == SOUND_EVENTS_KEY "enable_incoming_call_sound") ) {
-
-    gchar *c_file_name = NULL;
-    c_file_name = gm_conf_get_string (SOUND_EVENTS_KEY "incoming_call_sound");
-    if (c_file_name == NULL) {
-      PTRACE(1, "AudioOutputCoreConfBridge\t" <<  SOUND_EVENTS_KEY "incoming_call_sound" << " is NULL");
-      return;
-    }
-
-    name = "incoming_call_sound";
-    file_name = c_file_name;
-    g_free (c_file_name);
-    enabled = gm_conf_get_bool (SOUND_EVENTS_KEY "enable_incoming_call_sound");
-    audiooutput_core.map_event (name, file_name, secondary, enabled);
-  }
-
-  if ( (key == SOUND_EVENTS_KEY "new_message_sound") ||
-       (key == SOUND_EVENTS_KEY "enable_new_message_sound") ) {
-
-    gchar *c_file_name = NULL;
-    c_file_name = gm_conf_get_string (SOUND_EVENTS_KEY "new_message_sound");
-    if (c_file_name == NULL) {
-      PTRACE(1, "AudioOutputCoreConfBridge\t" <<  SOUND_EVENTS_KEY "new_message_sound" << " is NULL");
-      return;
-    }
-
-    name = "new_message_sound";
-    file_name = c_file_name;
-    g_free (c_file_name);
-    enabled = gm_conf_get_bool (SOUND_EVENTS_KEY "enable_new_message_sound");
-    audiooutput_core.map_event (name, file_name, secondary, enabled);
-
-  }
-
-  if ( (key == SOUND_EVENTS_KEY "new_voicemail_sound") ||
-       (key == SOUND_EVENTS_KEY "enable_new_voicemail_sound") ) {
-
-    gchar *c_file_name = NULL;
-    c_file_name = gm_conf_get_string (SOUND_EVENTS_KEY "new_voicemail_sound");
-    if (c_file_name == NULL) {
-      PTRACE(1, "AudioOutputCoreConfBridge\t" <<  SOUND_EVENTS_KEY "new_voicemail_sound" << " is NULL");
-      return;
-    }
-
-    name = "new_voicemail_sound";
-    file_name = c_file_name;
-    g_free (c_file_name);
-    enabled = gm_conf_get_bool (SOUND_EVENTS_KEY "enable_new_voicemail_sound");
-    audiooutput_core.map_event (name, file_name, secondary, enabled);
-  }
-
-  if ( (key == SOUND_EVENTS_KEY "ring_tone_sound") ||
-       (key == SOUND_EVENTS_KEY "enable_ring_tone_sound") ) {
-
-    gchar *c_file_name = NULL;
-    c_file_name = gm_conf_get_string (SOUND_EVENTS_KEY "ring_tone_sound");
-    if (c_file_name == NULL) {
-      PTRACE(1, "AudioOutputCoreConfBridge\t" <<  SOUND_EVENTS_KEY "ring_tone_sound" << " is NULL");
-      return;
-    }
-
-    name = "ring_tone_sound";
-    file_name = c_file_name;
-    g_free (c_file_name);
-    enabled = gm_conf_get_bool (SOUND_EVENTS_KEY "enable_ring_tone_sound");
-    audiooutput_core.map_event (name, file_name, primary, enabled);
   }
 }
 

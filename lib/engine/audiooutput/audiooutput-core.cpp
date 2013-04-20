@@ -38,11 +38,25 @@
 #include <math.h>
 
 #include <glib/gi18n.h>
+#include <boost/algorithm/string.hpp>
 
 #include "audiooutput-core.h"
 #include "audiooutput-manager.h"
 
+#include "ekiga-settings.h"
+
 using namespace Ekiga;
+
+static void sound_event_changed (G_GNUC_UNUSED GSettings *settings,
+                                 const gchar *key,
+                                 gpointer data)
+{
+  g_return_if_fail (data != NULL);
+  AudioOutputCore *core = (AudioOutputCore*) (data);
+
+  core->setup_sound_events (key);
+}
+
 
 AudioOutputCore::AudioOutputCore (Ekiga::ServiceCore& core)
 {
@@ -70,6 +84,9 @@ AudioOutputCore::AudioOutputCore (Ekiga::ServiceCore& core)
   yield = false;
 
   notification_core = core.get<Ekiga::NotificationCore> ("notification-core");
+  sound_events_settings = g_settings_new (SOUND_EVENTS_SCHEMA);
+
+  setup_sound_events ();
 }
 
 AudioOutputCore::~AudioOutputCore ()
@@ -96,6 +113,47 @@ void AudioOutputCore::setup_conf_bridge ()
   PWaitAndSignal m_sec(core_mutex[secondary]);
 
    audiooutput_core_conf_bridge = new AudioOutputCoreConfBridge (*this);
+}
+
+void AudioOutputCore::setup_sound_events (std::string e)
+{
+  static const char *events[] =
+    {
+      "busy-tone-sound",
+      "incoming-call-sound",
+      "new-message-sound",
+      "new-voicemail-sound",
+      "ring-tone-sound"
+    };
+
+  boost::replace_all (e, "enable-", "");
+  for (int i = 0 ; i < 5 ; i++) {
+    std::string event = events[i];
+
+    if (e.empty () || e == event) {
+      gchar *file_name = NULL;
+      bool enabled;
+
+      file_name = g_settings_get_string (sound_events_settings, event.c_str ());
+      enabled = g_settings_get_boolean (sound_events_settings, ("enable-" + event).c_str ());
+      if (file_name == NULL) {
+        PTRACE(1, "AudioOutputCoreConfBridge\t" << event << " is NULL");
+        return;
+      }
+      else
+        PTRACE(1, "AudioOutputCoreConfBridge\t" << event << " set to " << file_name);
+
+      map_event (event, file_name, primary, enabled);
+      g_free (file_name);
+    }
+
+    if (e.empty ()) {
+      g_signal_connect (sound_events_settings, ("changed::" + event).c_str (),
+                        G_CALLBACK (sound_event_changed), this);
+      g_signal_connect (sound_events_settings, ("changed::enable-" + event).c_str (),
+                        G_CALLBACK (sound_event_changed), this);
+    }
+  }
 }
 
 void AudioOutputCore::add_manager (AudioOutputManager &manager)
