@@ -57,6 +57,25 @@ static void sound_event_changed (G_GNUC_UNUSED GSettings *settings,
   core->setup_sound_events (key);
 }
 
+static void audio_device_changed (GSettings *settings,
+                                  G_GNUC_UNUSED const gchar *key,
+                                  gpointer data)
+{
+  g_return_if_fail (data != NULL);
+
+  AudioOutputCore *core = (AudioOutputCore*) (data);
+  gchar *schema_id = NULL;
+
+  g_object_get (settings, "schema-id", &schema_id, NULL);
+
+  g_return_if_fail (schema_id != NULL);
+
+  if (!g_strcmp0 (schema_id, AUDIO_DEVICES_SCHEMA))
+    core->setup_audio_device ();
+  else if (!g_strcmp0 (schema_id, SOUND_EVENTS_SCHEMA))
+    core->setup_audio_device (secondary);
+}
+
 
 AudioOutputCore::AudioOutputCore (Ekiga::ServiceCore& core)
 {
@@ -78,24 +97,21 @@ AudioOutputCore::AudioOutputCore (Ekiga::ServiceCore& core)
 
   current_manager[primary] = NULL;
   current_manager[secondary] = NULL;
-  audiooutput_core_conf_bridge = NULL;
   average_level = 0;
   calculate_average = false;
   yield = false;
 
   notification_core = core.get<Ekiga::NotificationCore> ("notification-core");
   sound_events_settings = g_settings_new (SOUND_EVENTS_SCHEMA);
-
-  setup_sound_events ();
+  audio_device_settings = g_settings_new (AUDIO_DEVICES_SCHEMA);
+  audio_device_settings_signals[primary] = 0;
+  audio_device_settings_signals[secondary] = 0;
 }
 
 AudioOutputCore::~AudioOutputCore ()
 {
   PWaitAndSignal m_pri(core_mutex[primary]);
   PWaitAndSignal m_sec(core_mutex[secondary]);
-
-  if (audiooutput_core_conf_bridge)
-    delete audiooutput_core_conf_bridge;
 
   audio_event_scheduler->quit ();
 
@@ -105,15 +121,81 @@ AudioOutputCore::~AudioOutputCore ()
     delete (*iter);
 
   managers.clear();
+
+  g_clear_object (&sound_events_settings);
+  g_clear_object (&audio_device_settings);
 }
 
-void AudioOutputCore::setup_conf_bridge ()
+
+void AudioOutputCore::setup ()
+{
+  setup_audio_device (primary);
+  setup_audio_device (secondary);
+  setup_sound_events ();
+}
+
+void AudioOutputCore::setup_audio_device (AudioOutputPS device_idx)
 {
   PWaitAndSignal m_pri(core_mutex[primary]);
   PWaitAndSignal m_sec(core_mutex[secondary]);
+  AudioOutputDevice device;
 
-   audiooutput_core_conf_bridge = new AudioOutputCoreConfBridge (*this);
+  std::vector <AudioOutputDevice> devices;
+  bool found = false;
+
+  gchar* audio_device = NULL;
+
+  audio_device = (device_idx == primary) ?
+    g_settings_get_string (audio_device_settings, "output-device")
+    :
+    g_settings_get_string (sound_events_settings, "output-device");
+
+  get_devices (devices);
+  if (audio_device != NULL) {
+    for (std::vector<AudioOutputDevice>::iterator it = devices.begin ();
+         it < devices.end ();
+         it++) {
+      if ((*it).GetString () == audio_device) {
+        found = true;
+        break;
+      }
+    }
+  }
+
+  if (found) {
+    device.SetFromString (audio_device);
+  }
+  else {
+    if (!devices.empty())
+      device.SetFromString (devices.begin ()->GetString ());
+    else {
+      // if there is no audio device / ptlib plugin, use fallback device below
+      device.type = "";
+    }
+  }
+
+  if (audio_device == NULL || !g_strcmp0 (audio_device, "")
+      || device.type.empty () || device.source.empty () || device.name.empty ()) {
+    PTRACE(1, "AudioOutputCore\tTried to set malformed audio device");
+    device.type   = AUDIO_OUTPUT_FALLBACK_DEVICE_TYPE;
+    device.source = AUDIO_OUTPUT_FALLBACK_DEVICE_SOURCE;
+    device.name   = AUDIO_OUTPUT_FALLBACK_DEVICE_NAME;
+  }
+
+  PTRACE(1, "AudioOutputCore\tSet " << (device_idx == primary ? "primary" : "secondary") << " audio device to " << device.name);
+  set_device (device_idx, device);
+
+  if (audio_device_settings_signals[device_idx] == 0 && device_idx == primary)
+    audio_device_settings_signals[device_idx] =
+      g_signal_connect (audio_device_settings, "changed::output-device",
+                        G_CALLBACK (audio_device_changed), this);
+  else if (audio_device_settings_signals[device_idx] == 0 && device_idx == secondary)
+    audio_device_settings_signals[device_idx] =
+      g_signal_connect (sound_events_settings, "changed::output-device",
+                        G_CALLBACK (audio_device_changed), this);
+  g_free (audio_device);
 }
+
 
 void AudioOutputCore::setup_sound_events (std::string e)
 {
@@ -125,6 +207,8 @@ void AudioOutputCore::setup_sound_events (std::string e)
       "new-voicemail-sound",
       "ring-tone-sound"
     };
+
+  gulong signal = 0;
 
   boost::replace_all (e, "enable-", "");
   for (int i = 0 ; i < 5 ; i++) {
@@ -146,8 +230,17 @@ void AudioOutputCore::setup_sound_events (std::string e)
       map_event (event, file_name, primary, enabled);
       g_free (file_name);
     }
+  }
 
-    if (e.empty ()) {
+  signal = g_signal_handler_find (G_OBJECT (sound_events_settings),
+                                  G_SIGNAL_MATCH_FUNC,
+                                  0, 0, NULL,
+                                  (gpointer) sound_event_changed,
+                                  NULL);
+  /* Connect all signals at once if no handler is found */
+  if (signal == 0) {
+    for (int i = 0 ; i < 5 ; i++) {
+      std::string event = events[i];
       g_signal_connect (sound_events_settings, ("changed::" + event).c_str (),
                         G_CALLBACK (sound_event_changed), this);
       g_signal_connect (sound_events_settings, ("changed::enable-" + event).c_str (),
@@ -439,7 +532,7 @@ void AudioOutputCore::play_buffer(AudioOutputPS ps, const char* buffer, unsigned
 
 void AudioOutputCore::on_set_device (const AudioOutputDevice & device)
 {
-  gm_conf_set_string (AUDIO_DEVICES_KEY "output_device", device.GetString ().c_str ());
+  g_settings_set_string (audio_device_settings, "output-device", device.GetString ().c_str ());
 }
 
 void AudioOutputCore::on_device_opened (AudioOutputPS ps,

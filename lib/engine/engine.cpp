@@ -199,8 +199,8 @@ engine_init (Ekiga::ServiceCorePtr service_core,
 
   videooutput_core->setup_conf_bridge();
   videoinput_core->setup_conf_bridge();
-  audiooutput_core->setup_conf_bridge();
-  audioinput_core->setup_conf_bridge();
+  audioinput_core->setup ();
+  audiooutput_core->setup ();
 
 
   hal_core->videoinput_device_added.connect (boost::bind (&Ekiga::VideoInputCore::add_device, boost::ref (*videoinput_core), _1, _2, _3, _4));

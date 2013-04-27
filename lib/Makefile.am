@@ -363,8 +363,6 @@ libekiga_la_SOURCES += \
 	engine/audiooutput/audiooutput-scheduler.cpp \
 	engine/audiooutput/audiooutput-core.h \
 	engine/audiooutput/audiooutput-core.cpp \
-	engine/audiooutput/audiooutput-gmconf-bridge.h \
-	engine/audiooutput/audiooutput-gmconf-bridge.cpp
 
 ##
 # Sources of the audio input stack
@@ -375,8 +373,6 @@ libekiga_la_SOURCES += \
 	engine/audioinput/audioinput-info.h	\
 	engine/audioinput/audioinput-core.h	\
 	engine/audioinput/audioinput-core.cpp       \
-	engine/audioinput/audioinput-gmconf-bridge.h \
-	engine/audioinput/audioinput-gmconf-bridge.cpp
 
 ##
 # Sources of the hardware abstraction layer (HAL) stack

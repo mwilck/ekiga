@@ -42,7 +42,6 @@
 #include "notification-core.h"
 
 #include "audiooutput-manager.h"
-#include "audiooutput-gmconf-bridge.h"
 #include "audiooutput-scheduler.h"
 
 #include <ptlib.h>
@@ -65,19 +64,19 @@ namespace Ekiga
    * in a thread safe manner. Typically, most of the functions except start(),
    * stop(), set_buffer_size() and set_frame_data() will be called from a UI thread,
    * while the three mentioned funtions will be used by an audio streaming thread.
-   * 
-   * The audio output core abstracts different audio output managers, which can 
-   * represent different backends like PTLIB, from the application and can 
+   *
+   * The audio output core abstracts different audio output managers, which can
+   * represent different backends like PTLIB, from the application and can
    * switch the output device transparently for the audio streaming thread,
    * even while audio output is in progress.
    *
    * If the removal of an audio output device is detected by a failed
-   * write or by a message from the HalCore, the audio output core will 
+   * write or by a message from the HalCore, the audio output core will
    * determine the responsible audio output manager and send a signal to the UI,
-   * which can be used to update device lists. Also, if the removed device was the 
+   * which can be used to update device lists. Also, if the removed device was the
    * currently used one, the core falls back to the backup device.
-   * 
-   * A similar procedure is performed on the addition of a device. In case we fell 
+   *
+   * A similar procedure is performed on the addition of a device. In case we fell
    * back due to a removed device, and the respective device is re-added to the system,
    * it will be automatically activated.
    *
@@ -97,14 +96,13 @@ namespace Ekiga
       */
       ~AudioOutputCore ();
 
-      /** Set up gmconf bridge
-       */
-      void setup_conf_bridge();
+      /* Setup internal devices and events */
+      void setup ();
 
-      /** Set up sound events
-       * @param The sound event to setup. Leave empty for all.
-       */
       void setup_sound_events (std::string event = "");
+
+      void setup_audio_device (AudioOutputPS device_idx = primary);
+
 
       /*** Service Implementation ***/
 
@@ -152,9 +150,9 @@ namespace Ekiga
 
       /** Inform the core of an added audiooutput device
        * This function is called by the HalCore when an audio output device is added.
-       * It determines responsible managers for that specific device and informs the 
-       * GUI about the device that was added (via device_added signal). 
-       * In case the added device was the desired device and we fell back, 
+       * It determines responsible managers for that specific device and informs the
+       * GUI about the device that was added (via device_added signal).
+       * In case the added device was the desired device and we fell back,
        * we will reactivate it. MUST be called from main thread,
        * @param sink the device sink (e.g. alsa).
        * @param device_name the name of the added device.
@@ -164,15 +162,16 @@ namespace Ekiga
 
       /** Inform the core of a removed audiooutput device
        * This function is called by the HalCore when an audio output device is removed.
-       * It determines responsible managers for that specific device and informs the 
-       * GUI about the device that was removed (via device_removed signal). 
+       * It determines responsible managers for that specific device and informs the
+       * GUI about the device that was removed (via device_removed signal).
        * In case the removed device was the current device we fall back to the
        * fallback device. MUST be called from main thread,
        * @param sink the device sink (e.g. alsa).
        * @param device_name the name of the removed device.
        * @param manager the HalManger detected the removal.
        */
-      void remove_device (const std::string & sink, const std::string & device_name, HalManager* manager);
+      void remove_device (const std::string & sink, const std::string & device_name,
+                          HalManager* manager);
 
 
       /*** Event Management ***/
@@ -184,21 +183,22 @@ namespace Ekiga
        * @param ps whether the event shall be played on the primary or secondary device preferrably.
        * @param enabled if the event is enabled.
        */
-      void map_event (const std::string & event_name, const std::string & file_name, AudioOutputPS ps, bool enabled);
+      void map_event (const std::string & event_name, const std::string & file_name,
+                      AudioOutputPS ps, bool enabled);
 
       /** Play a sound specified by a file name
        * Play a sound file once.
-       * The sound will be played in the background as soon as the Scheduler 
+       * The sound will be played in the background as soon as the Scheduler
        * schedules it.
        * This function only adds the sound to the Scheduler queue and returns immediately.
-       * The sound will be played on the primary device 
+       * The sound will be played on the primary device
        * @param file_name the name of the file.
        */
       void play_file (const std::string & file_name);
 
       /** Play a sound specified by an event name
        * Play a sound associated to the event speficied by its name once.
-       * The sound will be played in the background as soon as the Scheduler 
+       * The sound will be played in the background as soon as the Scheduler
        * schedules it.
        * This function only adds the sound to the Scheduler queue and returns immediately.
        * The sound will be played on the primary or seconday device depending on
@@ -211,7 +211,7 @@ namespace Ekiga
 
       /** Play a sound specified by an event name
        * Play a sound associated to the event specified by its name repeatingly.
-       * The sound will be played in the background as soon as the Scheduler 
+       * The sound will be played in the background as soon as the Scheduler
        * schedules it.
        * This function only adds the sound to the Scheduler queue and returns immediately.
        * The sound will be played on the primary or seconday device depending on
@@ -242,12 +242,13 @@ namespace Ekiga
        * @param sample_rate the samplerate.
        * @param bps bits per sample.
        */
-      void play_buffer(AudioOutputPS ps, const char* buffer, unsigned long len, unsigned channels, unsigned sample_rate, unsigned bps);
+      void play_buffer(AudioOutputPS ps, const char* buffer, unsigned long len,
+                       unsigned channels, unsigned sample_rate, unsigned bps);
 
 
       /*** Stream Management ***/
 
-      /** Set the number and size of buffers 
+      /** Set the number and size of buffers
        * Will be applied the next time the device is opened.
        * @param buffer_size the size of each buffer in byte.
        * @param num_buffers the number of buffers.
@@ -258,7 +259,7 @@ namespace Ekiga
        * @param channels the number of channels (1 or 2).
        * @param samplerate the samplerate.
        * @param bits_per_sample the number of bits per sample (e.g. 8, 16).
-       */ 
+       */
       void start (unsigned channels, unsigned samplerate, unsigned bits_per_sample);
 
       /** Stop the audio output of the primary device.
@@ -266,7 +267,7 @@ namespace Ekiga
       void stop ();
 
      /** Set one audio buffer in the current manager.
-       * This function will pass one buffer to the current manager. 
+       * This function will pass one buffer to the current manager.
        * Requires the audio output to be started.
        * In case the device returns an error writing the frame, set_frame_data()
        * falls back to the fallback device and writes the frame there. Thus
@@ -276,7 +277,7 @@ namespace Ekiga
        * @param size the number of bytes to be written.
        * @param bytes_written number of bytes actually written.
        */
-      void set_frame_data (const char *data, unsigned size, unsigned & bytes_written); 
+      void set_frame_data (const char *data, unsigned size, unsigned & bytes_written);
 
      /** Set the volume of the next opportunity
        * Sets the volume to the specified value the next time
@@ -329,16 +330,17 @@ namespace Ekiga
                              AudioOutputSettings settings,
                              AudioOutputManager *manager);
       void on_device_closed (AudioOutputPS ps, AudioOutputDevice device, AudioOutputManager *manager);
-      void on_device_error  (AudioOutputPS ps, AudioOutputDevice device, AudioOutputErrorCodes error_code, AudioOutputManager *manager);
+      void on_device_error  (AudioOutputPS ps, AudioOutputDevice device,
+                             AudioOutputErrorCodes error_code, AudioOutputManager *manager);
 
-      void internal_set_primary_device(const AudioOutputDevice & device);
+      void internal_set_primary_device (const AudioOutputDevice & device);
       void internal_set_manager (AudioOutputPS ps, const AudioOutputDevice & device);
-      void internal_set_primary_fallback();
-
-      bool internal_open (AudioOutputPS ps, unsigned channels, unsigned samplerate, unsigned bits_per_sample);
+      void internal_set_primary_fallback ();
+      bool internal_open (AudioOutputPS ps, unsigned channels, unsigned samplerate,
+                          unsigned bits_per_sample);
       void internal_close(AudioOutputPS ps);
-
-      void internal_play(AudioOutputPS ps, const char* buffer, unsigned long len, unsigned channels, unsigned sample_rate, unsigned bps);
+      void internal_play(AudioOutputPS ps, const char* buffer, unsigned long len,
+                         unsigned channels, unsigned sample_rate, unsigned bps);
 
       void calculate_average_level (const short *buffer, unsigned size);
 
@@ -364,7 +366,6 @@ namespace Ekiga
       PMutex core_mutex[2];
       PMutex volume_mutex;
 
-      AudioOutputCoreConfBridge* audiooutput_core_conf_bridge;
       AudioEventScheduler* audio_event_scheduler;
 
       float average_level;
@@ -374,6 +375,8 @@ namespace Ekiga
       boost::shared_ptr<Ekiga::NotificationCore> notification_core;
 
       GSettings *sound_events_settings;
+      GSettings *audio_device_settings;
+      guint audio_device_settings_signals[2];
     };
 /**
  * @}

@@ -137,36 +137,10 @@ gmconf_upgrade_version ()
   g_slist_foreach (accounts, (GFunc) g_free, NULL);
   g_slist_free (accounts);
 
-  /* Audio devices */
+  /* Video devices */
   gchar *plugin = NULL;
   gchar *device = NULL;
   gchar *new_device = NULL;
-  plugin = gm_conf_get_string (AUDIO_DEVICES_KEY "plugin");
-  if (plugin && g_strcmp0 (plugin, "")) {
-    device = gm_conf_get_string (AUDIO_DEVICES_KEY "input_device");
-    new_device = g_strdup_printf ("%s (PTLIB/%s)", device, plugin);
-    gm_conf_set_string (AUDIO_DEVICES_KEY "plugin", "");
-    gm_conf_set_string (AUDIO_DEVICES_KEY "input_device", new_device);
-    g_free (device);
-    g_free (new_device);
-
-    device = gm_conf_get_string (AUDIO_DEVICES_KEY "output_device");
-    new_device = g_strdup_printf ("%s (PTLIB/%s)", device, plugin);
-    gm_conf_set_string (AUDIO_DEVICES_KEY "plugin", "");
-    gm_conf_set_string (AUDIO_DEVICES_KEY "output_device", new_device);
-    g_free (device);
-    g_free (new_device);
-
-    device = gm_conf_get_string (SOUND_EVENTS_KEY "output_device");
-    new_device = g_strdup_printf ("%s (PTLIB/%s)", device, plugin);
-    gm_conf_set_string (SOUND_EVENTS_KEY "plugin", "");
-    gm_conf_set_string (SOUND_EVENTS_KEY "output_device", new_device);
-    g_free (device);
-    g_free (new_device);
-  }
-  g_free (plugin);
-
-  /* Video devices */
   plugin = gm_conf_get_string (VIDEO_DEVICES_KEY "plugin");
   if (plugin && g_strcmp0 (plugin, "")) {
     device = gm_conf_get_string (VIDEO_DEVICES_KEY "input_device");

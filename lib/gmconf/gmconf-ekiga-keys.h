@@ -56,7 +56,6 @@
 #define PROTOCOLS_KEY "/apps/" PACKAGE_NAME "/protocols/"
 #define ROSTER_KEY "/apps/" PACKAGE_NAME "/contacts/roster"
 #define SIP_KEY "/apps/" PACKAGE_NAME "/protocols/sip/"
-#define SOUND_EVENTS_KEY "/apps/" PACKAGE_NAME "/general/sound_events/"
 #define URL_HANDLERS_KEY "/desktop/gnome/url-handlers/"
 #define USER_INTERFACE_KEY "/apps/" PACKAGE_NAME "/general/user_interface/"
 #define VIDEO_CODECS_KEY "/apps/" PACKAGE_NAME "/codecs/video/"

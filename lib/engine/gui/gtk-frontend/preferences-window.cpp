@@ -79,6 +79,7 @@ typedef struct _GmPreferencesWindow
   boost::shared_ptr<Ekiga::AudioInputCore> audioinput_core;
   boost::shared_ptr<Ekiga::AudioOutputCore> audiooutput_core;
   GSettings *sound_events_settings;
+  GSettings *audio_devices_settings;
   Ekiga::scoped_connections connections;
 } GmPreferencesWindow;
 
@@ -87,12 +88,22 @@ typedef struct _GmPreferencesWindow
 _GmPreferencesWindow::_GmPreferencesWindow(Ekiga::ServiceCore &_core): core(_core)
 {
   sound_events_settings = g_settings_new (SOUND_EVENTS_SCHEMA);
+  audio_devices_settings = g_settings_new (AUDIO_DEVICES_SCHEMA);
 }
 
 _GmPreferencesWindow::~_GmPreferencesWindow()
 {
   g_clear_object (&sound_events_settings);
+  g_clear_object (&audio_devices_settings);
 }
+
+enum {
+  COLUMN_STRING_RAW = 0, /* must be zero because it's used in gmconfwidgets */
+  COLUMN_STRING_TRANSLATED,
+  COLUMN_SENSITIVE,
+  COLUMN_GSETTINGS,
+};
+
 
 /* Declarations */
 
@@ -221,8 +232,40 @@ static void gm_pw_init_video_codecs_page (GtkWidget *prefs_window,
                                           GtkWidget *container);
 
 
+/* DESCRIPTION  :  /
+ * BEHAVIOR     :  Creates a GtkOptionMenu associated with a string config
+ *                 key and returns the result.
+ *                 The first parameter is the section in which the GtkEntry
+ *                 should be attached. The other parameters are the text label,
+ *                 the possible values for the menu, the config key, the
+ *                 tooltip, the row where to attach it in the section.
+ * PRE          :  The array ends with NULL.
+ */
+static GtkWidget *gm_pw_string_option_menu_new (GtkWidget *,
+                                                const gchar *,
+                                                const gchar **,
+                                                GSettings *,
+                                                const gchar *,
+                                                const gchar *,
+                                                int);
 
-/* GTK Callbacks */
+
+/* DESCRIPTION  :  /
+ * BEHAVIOR     :  Updates the content of a GtkOptionMenu associated with
+ *                 a string config key. The first parameter is the menu,
+ *                 the second is the array of possible values, and the
+ *                 last one is the config key and the default value if the
+ *                 conf key is associated to a NULL value.
+ * PRE          :  The array ends with NULL.
+ */
+static void gm_pw_string_option_menu_update (GtkWidget *option_menu,
+                                             const gchar **options,
+                                             GSettings *settings,
+                                             const gchar *conf_key,
+                                             const gchar *default_value);
+
+
+/* Callbacks */
 
 /* DESCRIPTION  :  This callback is called when the user clicks
  *                 on the refresh devices list button in the prefs.
@@ -294,6 +337,12 @@ static void sound_event_setting_changed (GSettings *,
                                          gchar *,
                                          gpointer data);
 
+static void string_option_menu_changed (GtkWidget *option_menu,
+                                        gpointer data);
+
+static void string_option_setting_changed (GSettings *settings,
+                                           gchar *key,
+                                           gpointer data);
 
 <<<<<<< HEAD
 /* DESCRIPTION  :  This callback is called by the preview-play button of the
@@ -731,24 +780,123 @@ gm_pw_init_audio_devices_page (GtkWidget *prefs_window,
   get_audiooutput_devices (pw->audiooutput_core, device_list);
   array = vector_of_string_to_array (device_list);
   pw->sound_events_output =
-    gnome_prefs_string_option_menu_new (subsection, _("Ringing device:"), (const gchar **)array, SOUND_EVENTS_KEY "output_device", _("Select the ringing audio device to use"), 0, DEFAULT_AUDIO_DEVICE_NAME);
+    gm_pw_string_option_menu_new (subsection,
+                                  _("Ringing device:"),
+                                  (const gchar **) array,
+                                  pw->sound_events_settings,
+                                  "output-device",
+                                  _("Select the ringing audio device to use"), 0);
   pw->audio_player =
-    gnome_prefs_string_option_menu_new (subsection, _("Output device:"), (const gchar **)array, AUDIO_DEVICES_KEY "output_device", _("Select the audio output device to use"), 1, DEFAULT_AUDIO_DEVICE_NAME);
+    gm_pw_string_option_menu_new (subsection,
+                                  _("Output device:"),
+                                  (const gchar **) array,
+                                  pw->audio_devices_settings,
+                                  "output-device",
+                                  _("Select the audio output device to use"), 1);
   g_free (array);
 
   /* The recorder */
   get_audioinput_devices (pw->audioinput_core, device_list);
   array = vector_of_string_to_array (device_list);
   pw->audio_recorder =
-    gnome_prefs_string_option_menu_new (subsection, _("Input device:"), (const gchar **)array, AUDIO_DEVICES_KEY "input_device", _("Select the audio input device to use"), 2, DEFAULT_AUDIO_DEVICE_NAME);
+    gm_pw_string_option_menu_new (subsection,
+                                  _("Input device:"),
+                                  (const gchar **) array,
+                                  pw->audio_devices_settings,
+                                  "input-device",
+                                  _("Select the audio input device to use"), 2);
   g_free (array);
 
   /* That button will refresh the device list */
-  gm_pw_add_update_button (container, _("_Detect devices"), G_CALLBACK (refresh_devices_list_cb), _("Click here to refresh the device list"), 1, prefs_window);
+  gm_pw_add_update_button (container, _("_Detect devices"),
+                           G_CALLBACK (refresh_devices_list_cb),
+                           _("Click here to refresh the device list"), 1,
+                           prefs_window);
 }
 
 
 static void
+<<<<<<< HEAD
+=======
+gm_prefs_window_get_videoinput_devices_list (Ekiga::ServiceCore& core,
+                                             std::vector<std::string> & device_list)
+{
+  boost::shared_ptr<Ekiga::VideoInputCore> videoinput_core =
+    core.get<Ekiga::VideoInputCore> ("videoinput-core");
+  std::vector <Ekiga::VideoInputDevice> devices;
+
+  device_list.clear();
+  videoinput_core->get_devices(devices);
+
+  for (std::vector<Ekiga::VideoInputDevice>::iterator iter = devices.begin ();
+       iter != devices.end ();
+       iter++)
+    device_list.push_back(iter->GetString());
+
+  if (device_list.size() == 0)
+    device_list.push_back(_("No device found"));
+}
+
+
+void
+gm_prefs_window_get_audiooutput_devices_list (Ekiga::ServiceCore& core,
+                                              std::vector<std::string> & device_list)
+{
+  boost::shared_ptr<Ekiga::AudioOutputCore> audiooutput_core = core.get<Ekiga::AudioOutputCore> ("audiooutput-core");
+  std::vector <Ekiga::AudioOutputDevice> devices;
+
+  std::string device_string;
+  device_list.clear();
+
+  audiooutput_core->get_devices(devices);
+
+  for (std::vector<Ekiga::AudioOutputDevice>::iterator iter = devices.begin ();
+       iter != devices.end ();
+       iter++)
+    device_list.push_back(iter->GetString());
+
+  if (device_list.size() == 0)
+    device_list.push_back(_("No device found"));
+}
+
+
+void
+gm_prefs_window_get_audioinput_devices_list (Ekiga::ServiceCore& core,
+                                             std::vector<std::string> & device_list)
+{
+  boost::shared_ptr<Ekiga::AudioInputCore> audioinput_core = core.get<Ekiga::AudioInputCore> ("audioinput-core");
+  std::vector <Ekiga::AudioInputDevice> devices;
+
+  device_list.clear();
+  audioinput_core->get_devices(devices);
+
+  for (std::vector<Ekiga::AudioInputDevice>::iterator iter = devices.begin ();
+       iter != devices.end ();
+       iter++)
+    device_list.push_back(iter->GetString());
+
+  if (device_list.size() == 0)
+    device_list.push_back(_("No device found"));
+}
+
+
+gchar**
+gm_prefs_window_convert_string_list (const std::vector<std::string> & list)
+{
+  gchar **array = NULL;
+  unsigned i;
+
+  array = (gchar**) g_malloc (sizeof(gchar*) * (list.size() + 1));
+  for (i = 0; i < list.size(); i++)
+    array[i] = (gchar*) list[i].c_str();
+  array[i] = NULL;
+
+  return array;
+}
+
+
+static void
+>>>>>>> GSettings: Migrated sound events, audio output and audio input settins.
 gm_pw_init_video_devices_page (GtkWidget *prefs_window,
                                GtkWidget *container)
 {
@@ -870,7 +1018,178 @@ gm_pw_init_video_codecs_page (GtkWidget *prefs_window,
 }
 
 
-/* GTK Callbacks */
+GtkWidget *
+gm_pw_string_option_menu_new (GtkWidget *table,
+                              const gchar *label_txt,
+                              const gchar **options,
+                              GSettings *settings,
+                              const gchar *conf_key,
+                              const gchar *tooltip,
+                              int row)
+{
+  GtkWidget *label = NULL;
+  GtkWidget *option_menu = NULL;
+  GtkListStore *list_store = NULL;
+  GtkCellRenderer *renderer = NULL;
+  GtkTreeIter iter;
+
+  gchar *conf_string = NULL;
+  gchar *signal_name = NULL;
+  gboolean writable = FALSE;
+
+  int history = -1;
+  int cpt = 0;
+
+  writable = g_settings_is_writable (settings, conf_key);
+
+  label = gtk_label_new (label_txt);
+  if (!writable)
+    gtk_widget_set_sensitive (GTK_WIDGET (label), FALSE);
+
+  gtk_table_attach (GTK_TABLE (table), label, 0, 1, row, row+1,
+                    (GtkAttachOptions) (GTK_FILL),
+                    (GtkAttachOptions) (GTK_FILL),
+                    0, 0);
+
+  gtk_misc_set_alignment (GTK_MISC (label), 0.0, 0.5);
+  gtk_label_set_justify (GTK_LABEL (label), GTK_JUSTIFY_LEFT);
+
+  list_store = gtk_list_store_new (4,
+                                   G_TYPE_STRING,
+                                   G_TYPE_STRING,
+                                   G_TYPE_BOOLEAN,
+                                   G_TYPE_POINTER);
+  option_menu = gtk_combo_box_new_with_model (GTK_TREE_MODEL (list_store));
+  if (!writable)
+    gtk_widget_set_sensitive (GTK_WIDGET (option_menu), FALSE);
+  renderer = gtk_cell_renderer_text_new ();
+  gtk_cell_layout_pack_start (GTK_CELL_LAYOUT (option_menu), renderer, FALSE);
+  gtk_cell_layout_set_attributes (GTK_CELL_LAYOUT (option_menu), renderer,
+                                  "text", COLUMN_STRING_TRANSLATED,
+                                  "sensitive", COLUMN_SENSITIVE,
+                                  NULL);
+  g_object_set (G_OBJECT (renderer),
+                "ellipsize-set", TRUE,
+                "ellipsize", PANGO_ELLIPSIZE_END,
+                "width-chars", 30, NULL);
+  gtk_label_set_mnemonic_widget (GTK_LABEL (label), option_menu);
+
+  conf_string = g_settings_get_string (settings, conf_key);
+  while (options [cpt]) {
+
+    if (conf_string && !g_strcmp0 (conf_string, options [cpt]))
+      history = cpt;
+
+    gtk_list_store_append (GTK_LIST_STORE (list_store), &iter);
+    gtk_list_store_set (GTK_LIST_STORE (list_store), &iter,
+                        COLUMN_STRING_RAW, options [cpt],
+                        COLUMN_STRING_TRANSLATED, gettext (options [cpt]),
+                        COLUMN_SENSITIVE, TRUE,
+                        COLUMN_GSETTINGS, (gpointer) settings,
+                        -1);
+    cpt++;
+  }
+
+  /* Default value not found in the valid choices,
+   * select the first one
+   */
+  if (history == -1) {
+    history = 0;
+    g_settings_set_string (settings, conf_key, options [0]);
+  }
+
+  gtk_combo_box_set_active (GTK_COMBO_BOX (option_menu), history);
+  gtk_table_attach (GTK_TABLE (table), option_menu, 1, 2, row, row+1,
+                    (GtkAttachOptions) (GTK_FILL),
+                    (GtkAttachOptions) (GTK_FILL),
+                    0, 0);
+
+  gtk_widget_set_tooltip_text (option_menu, tooltip);
+
+  /* Update configuration when the user changes the selected option */
+  g_signal_connect (option_menu, "changed",
+		    G_CALLBACK (string_option_menu_changed),
+  		    (gpointer) conf_key);
+
+  /* Update the widget when the user changes the configuration */
+  signal_name = g_strdup_printf ("changed::%s", conf_key);
+  g_signal_connect (settings, signal_name,
+                    G_CALLBACK (string_option_setting_changed), option_menu);
+  g_free (signal_name);
+
+  g_free (conf_string);
+  gtk_widget_show_all (table);
+
+  return option_menu;
+}
+
+
+void
+gm_pw_string_option_menu_update (GtkWidget *option_menu,
+                                 const gchar **options,
+                                 GSettings *settings,
+                                 const gchar *conf_key,
+                                 const gchar *default_value)
+{
+  GtkTreeModel *model = NULL;
+  GtkTreeIter iter;
+
+  gchar *conf_string = NULL;
+
+  int history = -1;
+  int cpt = 0;
+
+  if (!options || !conf_key)
+    return;
+
+  conf_string = g_settings_get_string (settings, conf_key);
+  if (conf_string == NULL)
+    conf_string = g_strdup (default_value);
+
+  model = gtk_combo_box_get_model (GTK_COMBO_BOX (option_menu));
+
+  gtk_list_store_clear (GTK_LIST_STORE (model));
+
+  cpt = 0;
+  while (options [cpt]) {
+
+    if (conf_string && !g_strcmp0 (options [cpt], conf_string))
+      history = cpt;
+
+    gtk_list_store_append (GTK_LIST_STORE (model), &iter);
+    gtk_list_store_set (GTK_LIST_STORE (model), &iter,
+                        COLUMN_STRING_RAW, options [cpt],
+                        COLUMN_STRING_TRANSLATED, options [cpt],
+                        COLUMN_SENSITIVE, TRUE,
+                        COLUMN_GSETTINGS, (gpointer) settings,
+                        -1);
+    cpt++;
+  }
+
+  if (history == -1) {
+
+    if (conf_string && g_strcmp0 (conf_string, "")) {
+
+      gtk_list_store_append (GTK_LIST_STORE (model), &iter);
+      gtk_list_store_set (GTK_LIST_STORE (model), &iter,
+                          COLUMN_STRING_RAW, conf_string,
+                          COLUMN_STRING_TRANSLATED, gettext (conf_string),
+                          COLUMN_SENSITIVE, FALSE,
+                          COLUMN_GSETTINGS, (gpointer) settings,
+                          -1);
+      history = cpt;
+    }
+    else
+      history = --cpt;
+  }
+
+  gtk_combo_box_set_active (GTK_COMBO_BOX (option_menu), history);
+
+  g_free (conf_string);
+}
+
+
+/* Callbacks */
 static void
 refresh_devices_list_cb (G_GNUC_UNUSED GtkWidget *widget,
 			 gpointer data)
@@ -1154,6 +1473,88 @@ void on_audiooutput_device_removed_cb (const Ekiga::AudioOutputDevice & device, 
   gnome_prefs_string_option_menu_remove(pw->sound_events_output, (device.GetString()).c_str());
 }
 
+
+void
+string_option_menu_changed (GtkWidget *option_menu,
+			    gpointer data)
+{
+  GSettings *settings = NULL;
+
+  GtkTreeModel *model = NULL;
+  GtkTreeIter iter;
+
+  gchar *text = NULL;
+  gchar *current_value = NULL;
+  gchar *key = NULL;
+
+  key = (gchar *) data;
+
+  model = gtk_combo_box_get_model (GTK_COMBO_BOX (option_menu));
+  if (gtk_combo_box_get_active_iter (GTK_COMBO_BOX (option_menu), &iter)) {
+
+    gtk_tree_model_get (GTK_TREE_MODEL (model), &iter,
+                        COLUMN_STRING_RAW, &text,
+                        COLUMN_GSETTINGS, &settings, -1);
+    current_value = g_settings_get_string (settings, key);
+
+    if (text && current_value && g_strcmp0 (text, current_value))
+      g_settings_set_string (settings, key, text);
+
+    g_free (text);
+  }
+}
+
+
+void
+string_option_setting_changed (GSettings *settings,
+                               gchar *key,
+                               gpointer data)
+{
+  int cpt = 0;
+  int count = 0;
+
+  GtkTreeModel *model = NULL;
+  GtkTreeIter iter;
+
+  gchar *text = NULL;
+  gchar* txt = NULL;
+
+  GtkWidget *e = GTK_WIDGET (data);
+
+  model = gtk_combo_box_get_model (GTK_COMBO_BOX (e));
+  count = gtk_tree_model_iter_n_children (model, NULL);
+  gtk_tree_model_get_iter_first (model, &iter);
+
+  for (cpt = 0 ; cpt < count ; cpt++) {
+
+    gtk_tree_model_get (model, &iter, COLUMN_STRING_RAW, &text, -1);
+    txt = g_settings_get_string (settings, key);
+    if (text && !g_strcmp0 (text, txt)) {
+
+      g_free (text);
+      g_free (txt);
+      break;
+    }
+    g_free (txt);
+    gtk_tree_model_iter_next (model, &iter);
+
+    g_free (text);
+  }
+
+  g_signal_handlers_block_matched (G_OBJECT (e),
+                                   G_SIGNAL_MATCH_FUNC,
+                                   0, 0, NULL,
+                                   (gpointer) string_option_menu_changed,
+                                   NULL);
+  if (cpt != count && gtk_combo_box_get_active (GTK_COMBO_BOX (data)) != cpt)
+    gtk_combo_box_set_active (GTK_COMBO_BOX (data), cpt);
+  g_signal_handlers_unblock_matched (G_OBJECT (e),
+                                     G_SIGNAL_MATCH_FUNC,
+                                     0, 0, NULL,
+                                     (gpointer) string_option_menu_changed,
+                                     NULL);
+}
+
 /* Public functions */
 void 
 gm_prefs_window_update_devices_list (GtkWidget *prefs_window)
@@ -1167,6 +1568,7 @@ gm_prefs_window_update_devices_list (GtkWidget *prefs_window)
   std::vector <std::string> device_list;
 
   /* The player */
+<<<<<<< HEAD
   get_audiooutput_devices (pw->audiooutput_core, device_list);
   array = vector_of_string_to_array (device_list);
   gnome_prefs_string_option_menu_update (pw->audio_player,
@@ -1186,6 +1588,30 @@ gm_prefs_window_update_devices_list (GtkWidget *prefs_window)
  					 (const gchar **)array,
  					 AUDIO_DEVICES_KEY "input_device",
  					 DEFAULT_AUDIO_DEVICE_NAME);
+=======
+  gm_prefs_window_get_audiooutput_devices_list (pw->core, device_list);
+  array = gm_prefs_window_convert_string_list(device_list);
+  gm_pw_string_option_menu_update (pw->audio_player,
+                                   (const gchar **)array,
+                                   pw->audio_devices_settings,
+                                   "output-device",
+                                   DEFAULT_AUDIO_DEVICE_NAME);
+  gm_pw_string_option_menu_update (pw->sound_events_output,
+                                   (const gchar **)array,
+                                   pw->sound_events_settings,
+                                   "output-device",
+                                   DEFAULT_AUDIO_DEVICE_NAME);
+  g_free (array);
+
+  /* The recorder */
+  gm_prefs_window_get_audioinput_devices_list (pw->core, device_list);
+  array = gm_prefs_window_convert_string_list(device_list);
+  gm_pw_string_option_menu_update (pw->audio_recorder,
+                                   (const gchar **)array,
+                                   pw->audio_devices_settings,
+                                   "input-device",
+                                   DEFAULT_AUDIO_DEVICE_NAME);
+>>>>>>> GSettings: Migrated sound events, audio output and audio input settins.
   g_free (array);
 
 

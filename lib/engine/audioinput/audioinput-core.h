@@ -43,9 +43,10 @@
 #include "audioinput-manager.h"
 #include "notification-core.h"
 #include "hal-core.h"
-#include "audioinput-gmconf-bridge.h"
 
 #include <ptlib.h>
+
+#include <gio/gio.h>
 
 #define AUDIO_INPUT_FALLBACK_DEVICE_TYPE   "Ekiga"
 #define AUDIO_INPUT_FALLBACK_DEVICE_SOURCE "Ekiga"
@@ -101,9 +102,9 @@ namespace Ekiga
       */
       ~AudioInputCore ();
 
-      /** Set up gmconf bridge
+      /** Set up devices
        */
-      void setup_conf_bridge();
+      void setup ();
 
 
       /*** Service Implementation ***/
@@ -315,14 +316,15 @@ namespace Ekiga
       PMutex core_mutex;
       PMutex volume_mutex;
 
-      AudioInputCoreConfBridge* audioinput_core_conf_bridge;
-
       float average_level;
       bool calculate_average;
       bool yield;
 
       Ekiga::ServiceCore & core;
       boost::shared_ptr<Ekiga::NotificationCore> notification_core;
+
+      GSettings *audio_device_settings;
+      guint audio_device_settings_signal;
     };
 /**
  * @}

@@ -39,6 +39,7 @@
 
 #include "ekiga-settings.h"
 
+#include "gmconf.h"
 #include "main_window.h"
 
 #include "dialpad.h"
@@ -55,6 +56,7 @@
 
 #include <glib/gi18n.h>
 #include <gdk/gdkkeysyms.h>
+#include <gio/gio.h>
 
 #include "engine.h"
 
@@ -145,6 +147,8 @@ struct _EkigaMainWindowPrivate
   Ekiga::scoped_connections connections;
 
   std::list<gpointer> notifiers;
+
+  GSettings *sound_events_settings;
 };
 
 /* channel types */
@@ -745,7 +749,35 @@ on_chat_unread_alert (G_GNUC_UNUSED GtkWidget* widget,
 		      gpointer self)
 {
   EkigaMainWindow *mw = EKIGA_MAIN_WINDOW (self);
-  mw->priv->audiooutput_core->play_event("new_message_sound");
+
+  g_return_if_fail (mw != NULL);
+  if (!g_settings_get_boolean (mw->priv->sound_events_settings, "enable-new-message-sound"))
+    return;
+
+  std::string file_name_string = g_settings_get_string (mw->priv->sound_events_settings, "new-message-sound");
+
+  if (!file_name_string.empty ())
+    mw->priv->audiooutput_core->play_file(file_name_string);
+}
+
+
+static void
+status_icon_clicked_cb (G_GNUC_UNUSED GtkWidget* widget,
+                        gpointer data)
+{
+  GtkWidget *window = GTK_WIDGET (data);
+
+  if (!gtk_widget_get_visible (window)
+      || (gdk_window_get_state (GDK_WINDOW (gtk_widget_get_window (window))) & GDK_WINDOW_STATE_ICONIFIED)) {
+    gtk_widget_show (window);
+  }
+  else {
+
+    if (gtk_window_has_toplevel_focus (GTK_WINDOW (window)))
+      gtk_widget_hide (window);
+    else
+      gtk_window_present (GTK_WINDOW (window));
+  }
 }
 
 
@@ -1431,6 +1463,8 @@ ekiga_main_window_init (EkigaMainWindow *mw)
   mw->priv->current_call = boost::shared_ptr<Ekiga::Call>();
   mw->priv->calling_state = Standby;
 
+  mw->priv->sound_events_settings = g_settings_new (SOUND_EVENTS_SCHEMA);
+
   for (int i = 0 ; i < NUM_SECTIONS ; i++)
     mw->priv->toggle_buttons[i] = NULL;
 
@@ -1477,6 +1511,8 @@ ekiga_main_window_dispose (GObject* gobject)
     g_object_unref (mw->priv->roster_view);
     mw->priv->roster_view = NULL;
   }
+
+  g_clear_object (&mw->priv->sound_events_settings);
 
   G_OBJECT_CLASS (ekiga_main_window_parent_class)->dispose (gobject);
 }

@@ -39,9 +39,24 @@
 
 #include <glib/gi18n.h>
 
+#include "config.h"
+
+#include "ekiga-settings.h"
+
 #include "audioinput-core.h"
 
 using namespace Ekiga;
+
+static void audio_device_changed (G_GNUC_UNUSED GSettings *settings,
+                                  G_GNUC_UNUSED const gchar *key,
+                                  gpointer data)
+{
+  g_return_if_fail (data != NULL);
+
+  AudioInputCore *core = (AudioInputCore*) (data);
+  core->setup ();
+}
+
 
 AudioInputCore::AudioInputCore (Ekiga::ServiceCore & _core) : core(_core)
 {
@@ -66,34 +81,43 @@ AudioInputCore::AudioInputCore (Ekiga::ServiceCore & _core) : core(_core)
   current_volume = 0;
 
   current_manager = NULL;
-  audioinput_core_conf_bridge = NULL;
   average_level = 0;
   calculate_average = false;
   yield = false;
 
   notification_core = core.get<Ekiga::NotificationCore> ("notification-core");
+  audio_device_settings = g_settings_new (AUDIO_DEVICES_SCHEMA);
+  audio_device_settings_signal = 0;
 }
 
 AudioInputCore::~AudioInputCore ()
 {
   PWaitAndSignal m(core_mutex);
 
-  if (audioinput_core_conf_bridge)
-    delete audioinput_core_conf_bridge;
-
   for (std::set<AudioInputManager *>::iterator iter = managers.begin ();
        iter != managers.end ();
        iter++)
     delete (*iter);
+  g_clear_object (&audio_device_settings);
 
   managers.clear();
 }
 
-void AudioInputCore::setup_conf_bridge ()
+void AudioInputCore::setup ()
 {
   PWaitAndSignal m(core_mutex);
+  gchar* audio_device = NULL;
 
-  audioinput_core_conf_bridge = new AudioInputCoreConfBridge (*this);
+  audio_device = g_settings_get_string (audio_device_settings, "input-device");
+
+  set_device (audio_device);
+
+  if (audio_device_settings_signal == 0)
+    audio_device_settings_signal =
+      g_signal_connect (audio_device_settings, "changed::input-device",
+                        G_CALLBACK (audio_device_changed), this);
+
+  g_free (audio_device);
 }
 
 void AudioInputCore::add_manager (AudioInputManager &manager)
@@ -374,7 +398,7 @@ void AudioInputCore::set_volume (unsigned volume)
 
 void AudioInputCore::on_set_device (const AudioInputDevice & device)
 {
-  gm_conf_set_string (AUDIO_DEVICES_KEY "input_device", device.GetString ().c_str ());
+  g_settings_set_string (audio_device_settings, "input-device", device.GetString ().c_str ());
 }
 
 void AudioInputCore::on_device_opened (AudioInputDevice device,
