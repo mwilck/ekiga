@@ -1350,6 +1350,7 @@ ekiga_call_window_delete_event_cb (GtkWidget *widget,
                                    G_GNUC_UNUSED GdkEventAny *event)
 {
   EkigaCallWindow *cw = NULL;
+  GSettings *settings = NULL;
 
   cw = EKIGA_CALL_WINDOW (widget);
   g_return_val_if_fail (EKIGA_IS_CALL_WINDOW (cw), false);
@@ -1359,7 +1360,9 @@ ekiga_call_window_delete_event_cb (GtkWidget *widget,
     cw->priv->current_call->hang_up ();
   }
   else {
-    gm_conf_set_bool (VIDEO_DEVICES_KEY "enable_preview", false);
+    settings = g_settings_new (VIDEO_DEVICES_SCHEMA);
+    g_settings_set_boolean (settings, "enable-preview", false);
+    g_clear_object (&settings);
   }
 
   return true; // Do not relay the event anymore

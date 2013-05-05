@@ -149,6 +149,7 @@ struct _EkigaMainWindowPrivate
   std::list<gpointer> notifiers;
 
   GSettings *sound_events_settings;
+  GSettings *video_devices_settings;
 };
 
 /* channel types */
@@ -216,9 +217,9 @@ static void panel_section_changed_nt (gpointer id,
  * BEHAVIOR     :  Show / hide the call window.
  * PRE          :  /
  */
-static void video_preview_changed_nt (gpointer id,
-                                      GmConfEntry *entry,
-                                      gpointer data);
+static void video_preview_changed (GSettings *settings,
+                                   gchar *key,
+                                   gpointer data);
 
 /** Pull a trigger from a Ekiga::Service
  *
@@ -669,7 +670,8 @@ on_delayed_hide_call_window_cb (gpointer data)
 
       GtkWidget* call_window = GTK_WIDGET (gtk_frontend->get_call_window ());
 
-      if (!mw->priv->current_call && !gm_conf_get_bool (VIDEO_DEVICES_KEY "enable_preview"))
+      if (!mw->priv->current_call
+          && !g_settings_get_boolean (mw->priv->video_devices_settings, "enable-preview"))
 	gtk_widget_hide (GTK_WIDGET (call_window));
     }
 
@@ -835,39 +837,35 @@ panel_section_changed_nt (G_GNUC_UNUSED gpointer id,
 
 
 static void
-video_preview_changed_nt (G_GNUC_UNUSED gpointer id,
-                          GmConfEntry *entry,
-                          gpointer data)
+video_preview_changed (GSettings *settings,
+                       gchar *key,
+                       gpointer data)
 {
   g_return_if_fail (EKIGA_IS_MAIN_WINDOW (data));
 
-  if (gm_conf_entry_get_type (entry) == GM_CONF_BOOL) {
+  EkigaMainWindow* mw = EKIGA_MAIN_WINDOW (data);
+  GtkWidget *menu_item = NULL;
 
-    EkigaMainWindow* mw = EKIGA_MAIN_WINDOW (data);
-    GtkWidget *menu_item = NULL;
+  if (mw->priv->calling_state == Standby) {
 
-    if (gm_conf_entry_get_type (entry) == GM_CONF_BOOL) {
-      if (mw->priv->calling_state == Standby) {
+    bool toggled = g_settings_get_boolean (settings, key);
+    boost::shared_ptr<GtkFrontend> gtk_frontend = mw->priv->gtk_frontend.lock ();
+    if (gtk_frontend) {
 
-	boost::shared_ptr<GtkFrontend> gtk_frontend = mw->priv->gtk_frontend.lock ();
-	if (gtk_frontend) {
-
-	  GtkWidget *call_window = GTK_WIDGET (gtk_frontend->get_call_window ());
-	  if (!gm_conf_entry_get_bool (entry))
-	    gtk_widget_hide (call_window);
-	  else
-	    gtk_widget_show (call_window);
-	}
-        g_signal_handlers_block_by_func (mw->priv->preview_button,
-                                         (gpointer) video_preview_action_toggled_cb, mw);
-        menu_item = gtk_menu_get_widget (mw->priv->main_menu, "preview");
-        gtk_check_menu_item_set_active (GTK_CHECK_MENU_ITEM (menu_item), gm_conf_entry_get_bool (entry));
-        gtk_toggle_tool_button_set_active (GTK_TOGGLE_TOOL_BUTTON (mw->priv->preview_button),
-                                           gm_conf_entry_get_bool (entry));
-        g_signal_handlers_unblock_by_func (mw->priv->preview_button,
-                                           (gpointer) video_preview_action_toggled_cb, mw);
-      }
+      GtkWidget *call_window = GTK_WIDGET (gtk_frontend->get_call_window ());
+      if (!toggled)
+        gtk_widget_hide (call_window);
+      else
+        gtk_widget_show (call_window);
     }
+    g_signal_handlers_block_by_func (mw->priv->preview_button,
+                                     (gpointer) video_preview_action_toggled_cb, mw);
+    menu_item = gtk_menu_get_widget (mw->priv->main_menu, "preview");
+    gtk_check_menu_item_set_active (GTK_CHECK_MENU_ITEM (menu_item), toggled);
+    gtk_toggle_tool_button_set_active (GTK_TOGGLE_TOOL_BUTTON (mw->priv->preview_button),
+                                       toggled);
+    g_signal_handlers_unblock_by_func (mw->priv->preview_button,
+                                       (gpointer) video_preview_action_toggled_cb, mw);
   }
 }
 
@@ -904,9 +902,14 @@ panel_section_action_clicked_cb (GtkWidget * /*widget*/,
 
 static void
 video_preview_action_toggled_cb (GtkToggleToolButton *b,
-                                 G_GNUC_UNUSED gpointer data)
+                                 gpointer data)
 {
-  gm_conf_set_bool (VIDEO_DEVICES_KEY "enable_preview", gtk_toggle_tool_button_get_active (b));
+  if (g_settings_get_boolean (EKIGA_MAIN_WINDOW (data)->priv->video_devices_settings,
+                              "enable-preview")
+      != gtk_toggle_tool_button_get_active (b))
+    g_settings_set_boolean (EKIGA_MAIN_WINDOW (data)->priv->video_devices_settings,
+                            "enable-preview",
+                            gtk_toggle_tool_button_get_active (b));
 }
 
 
@@ -1182,7 +1185,8 @@ ekiga_main_window_init_menu (EkigaMainWindow *mw)
   /* Default values */
   cps = (PanelSection) gm_conf_get_int (USER_INTERFACE_KEY "main_window/panel_section");
   show_offline_contacts = gm_conf_get_bool (CONTACTS_KEY "show_offline_contacts");
-  enable_preview = gm_conf_get_bool (VIDEO_DEVICES_KEY "enable_preview");
+  enable_preview = g_settings_get_boolean (mw->priv->video_devices_settings,
+                                           "enable-preview");
 
   static MenuEntry gnomemeeting_menu [] =
     {
@@ -1247,6 +1251,7 @@ ekiga_main_window_init_menu (EkigaMainWindow *mw)
 
       GTK_MENU_NEW(_("_View")),
 
+      //FIXME GSETTINGS MENU
       GTK_MENU_TOGGLE_ENTRY("preview", _("_Video Preview"),
                             _("Display images from your camera device"),
                             NULL, 0,
@@ -1464,6 +1469,7 @@ ekiga_main_window_init (EkigaMainWindow *mw)
   mw->priv->calling_state = Standby;
 
   mw->priv->sound_events_settings = g_settings_new (SOUND_EVENTS_SCHEMA);
+  mw->priv->video_devices_settings = g_settings_new (VIDEO_DEVICES_SCHEMA);
 
   for (int i = 0 ; i < NUM_SECTIONS ; i++)
     mw->priv->toggle_buttons[i] = NULL;
@@ -1474,10 +1480,9 @@ ekiga_main_window_init (EkigaMainWindow *mw)
     gm_conf_notifier_add (USER_INTERFACE_KEY "main_window/panel_section",
 			  panel_section_changed_nt, mw);
   mw->priv->notifiers.push_front (notifier);
-  notifier =
-    gm_conf_notifier_add (VIDEO_DEVICES_KEY "enable_preview",
-			  video_preview_changed_nt, mw);
-  mw->priv->notifiers.push_front (notifier);
+
+  g_signal_connect (mw->priv->video_devices_settings, "changed::enable-preview",
+                    G_CALLBACK (video_preview_changed), mw);
 }
 
 static GObject *
@@ -1513,6 +1518,7 @@ ekiga_main_window_dispose (GObject* gobject)
   }
 
   g_clear_object (&mw->priv->sound_events_settings);
+  g_clear_object (&mw->priv->video_devices_settings);
 
   G_OBJECT_CLASS (ekiga_main_window_parent_class)->dispose (gobject);
 }

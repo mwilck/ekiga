@@ -43,6 +43,7 @@
 
 using namespace Ekiga;
 
+
 VideoInputCore::VideoPreviewManager::VideoPreviewManager (VideoInputCore& _videoinput_core, boost::shared_ptr<VideoOutputCore> _videooutput_core)
 : PThread (1000, AutoDeleteThread, HighestPriority, "VideoPreviewManager"),
     videoinput_core (_videoinput_core),
@@ -56,64 +57,89 @@ VideoInputCore::VideoPreviewManager::VideoPreviewManager (VideoInputCore& _video
   // Since windows does not like to restart a thread that
   // was never started, we do so here
   this->Resume ();
-  thread_paused.Wait();
 }
 
 void VideoInputCore::VideoPreviewManager::quit ()
 {
-  if (!pause_thread)
-    stop();
+  stop ();
+
+  PWaitAndSignal q(exit_mutex);
   end_thread = true;
-  run_thread.Signal();
-  PWaitAndSignal m(thread_ended);
+
+  PWaitAndSignal m(thread_mutex);
+  if (frame)
+    free (frame);
 }
 
 void VideoInputCore::VideoPreviewManager::start (unsigned _width, unsigned _height)
 {
   PTRACE(4, "PreviewManager\tStarting Preview");
-  width = _width;
-  height = _height;
-  end_thread = false;
-  frame = (char*) malloc (unsigned (width * height * 3 / 2));
+
+  {
+    PWaitAndSignal c(capture_mutex);
+    width = _width;
+    height = _height;
+    pause_thread = false;
+  }
 
   videooutput_core->start();
-  pause_thread = false;
-  run_thread.Signal();
 }
 
 void VideoInputCore::VideoPreviewManager::stop ()
 {
   PTRACE(4, "PreviewManager\tStopping Preview");
-  pause_thread = true;
-  thread_paused.Wait();
 
-  if (frame) {
-    free (frame);
-    frame = NULL;
+  {
+    PWaitAndSignal c(capture_mutex);
+    if (pause_thread)
+      return;
+    pause_thread = true;
   }
+
   videooutput_core->stop();
 }
 
 void VideoInputCore::VideoPreviewManager::Main ()
 {
-  PWaitAndSignal m(thread_ended);
+  PWaitAndSignal m(thread_mutex);
+  bool exit = end_thread;
+  bool capture = !pause_thread;
 
-  while (!end_thread) {
+  while (!exit) {
 
-    thread_paused.Signal ();
-    run_thread.Wait ();
+    {
+      PWaitAndSignal c(capture_mutex);
+      capture = !pause_thread;
+      if (capture) {
+        if (frame)
+          free (frame);
+        frame = (char*) malloc (unsigned (width * height * 3 / 2));
+      }
+    }
+    while (capture) {
 
-    while (!pause_thread) {
       if (frame) {
+
         videoinput_core.get_frame_data(frame);
         videooutput_core->set_frame_data(frame, width, height, 0, 1);
       }
+      {
+        PWaitAndSignal c(capture_mutex);
+        capture = !pause_thread;
+      }
+
       // We have to sleep some time outside the mutex lock
       // to give other threads time to get the mutex
       // It will be taken into account by PAdaptiveDelay
       Current()->Sleep (5);
     }
 
+    {
+      PWaitAndSignal q(exit_mutex);
+      exit = end_thread;
+    }
+
+    Current()->Sleep (5);
   }
 }
 
@@ -125,6 +151,7 @@ VideoInputCore::VideoInputCore (Ekiga::ServiceCore & _core,
   PWaitAndSignal m_set(settings_mutex);
 
   preview_manager = new VideoPreviewManager (*this, _videooutput_core);
+
 
   preview_config.active = false;
   preview_config.width = 176;
@@ -149,6 +176,9 @@ VideoInputCore::VideoInputCore (Ekiga::ServiceCore & _core,
   current_manager = NULL;
   videoinput_core_conf_bridge = NULL;
   notification_core = core.get<Ekiga::NotificationCore> ("notification-core");
+
+  device_settings = new Settings (VIDEO_DEVICES_SCHEMA);
+  device_settings->changed.connect (boost::bind (&VideoInputCore::setup, this, _1));
 }
 
 VideoInputCore::~VideoInputCore ()
@@ -166,7 +196,10 @@ VideoInputCore::~VideoInputCore ()
     delete (*iter);
 
   managers.clear();
+
+  delete device_settings;
 }
+
 
 void VideoInputCore::setup_conf_bridge ()
 {
@@ -174,6 +207,40 @@ void VideoInputCore::setup_conf_bridge ()
 
   videoinput_core_conf_bridge = new VideoInputCoreConfBridge (*this);
 }
+
+
+void VideoInputCore::setup (std::string setting)
+{
+  std::cout << "dans setup " << setting << std::endl << std::flush;
+  GSettings* settings = device_settings->get_g_settings ();
+  VideoInputDevice device;
+
+  /* Get device settings */
+  if (setting == "any" || setting == "input-device" || setting == "format" || setting == "channel") {
+    gchar *device_string = g_settings_get_string (settings, "input-device");
+    unsigned video_format = g_settings_get_int (settings, "format");
+    unsigned channel = g_settings_get_int (settings, "channel");
+    device.SetFromString (device_string);
+
+    std::cout << "dans setup set device " << setting << " " << device_string << std::endl << std::flush;
+    set_device (device, channel, (VideoInputFormat) video_format);
+    g_free (device_string);
+  }
+
+  /* Previenw */
+  if (setting == "any" || setting == "enable-preview") {
+    std::cout << "dans setup " << setting << std::endl << std::flush;
+    if (g_settings_get_boolean (settings, "enable-preview")) {
+      std::cout << "start " << std::endl << std::flush;
+      start_preview ();
+    }
+    else {
+      std::cout << "stop " << std::endl << std::flush;
+      stop_preview ();
+    }
+  }
+}
+
 
 void VideoInputCore::add_manager (VideoInputManager &manager)
 {
@@ -217,10 +284,46 @@ void VideoInputCore::get_devices (std::vector <VideoInputDevice> & devices)
 #endif
 }
 
-void VideoInputCore::set_device(const VideoInputDevice & device, int channel, VideoInputFormat format)
+void VideoInputCore::set_device(const VideoInputDevice & _device, int channel, VideoInputFormat format)
 {
   PWaitAndSignal m(core_mutex);
-  internal_set_device(device, channel, format);
+  std::cout << "dans set_device" << std::endl << std::flush;
+  VideoInputDevice device;
+
+  /* Check if device exists */
+  std::vector <VideoInputDevice> devices;
+  bool found = false;
+  get_devices (devices);
+  for (std::vector<VideoInputDevice>::iterator it = devices.begin ();
+       it < devices.end ();
+       it++) {
+    if ((*it).GetString () == _device.GetString ()) {
+      found = true;
+      break;
+    }
+  }
+  PTRACE(4, "VidInputCoreConfBridge\tUpdating device");
+
+  if (found)
+    device = _device;
+  else
+    device.SetFromString (devices.begin ()->GetString ());
+
+  if ( (device.type == "" )   ||
+       (device.source == "")  ||
+       (device.name == "" ) ) {
+    PTRACE(1, "VidinputCore\tTried to set malformed device");
+    device.type = VIDEO_INPUT_FALLBACK_DEVICE_TYPE;
+    device.source = VIDEO_INPUT_FALLBACK_DEVICE_SOURCE;
+    device.name = VIDEO_INPUT_FALLBACK_DEVICE_NAME;
+  }
+
+  if (format >= VI_FORMAT_MAX) {
+    PTRACE(1, "VidInputCoreConfBridge\t" << VIDEO_DEVICES_KEY "format" << " out of range, ajusting to 3");
+    format = (VideoInputFormat) 3;
+  }
+
+  internal_set_device (device, channel, format);
   desired_device  = device;
 }
 
@@ -396,8 +499,6 @@ void VideoInputCore::get_frame_data (char *data)
     if (!current_manager->get_frame_data(data)) {
 
       internal_close();
-
-      internal_set_fallback();
 
       if (preview_config.active && !stream_config.active)
         internal_open(preview_config.width, preview_config.height, preview_config.fps);
