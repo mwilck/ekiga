@@ -39,9 +39,56 @@
 #ifndef EKIGA_SETTINGS_H_
 #define EKIGA_SETTINGS_H_
 
+#include <boost/signals.hpp>
+#include <gio/gio.h>
+
 #define USER_INTERFACE "org.gnome." PACKAGE_NAME ".general.user-interface"
 
 #define SOUND_EVENTS_SCHEMA "org.gnome." PACKAGE_NAME ".general.sound-events"
 #define AUDIO_DEVICES_SCHEMA "org.gnome." PACKAGE_NAME ".devices.audio"
+
+namespace Ekiga {
+
+  /*
+   * This is a C++ wrapper around the GSettings signal function.
+   *
+   * Please use it in C++ code.
+   */
+  class Settings : boost::noncopyable {
+
+    static void f_callback (G_GNUC_UNUSED GSettings *settings,
+                            gchar *key,
+                            const Settings* self)
+    {
+      self->changed (std::string (key));
+    }
+
+
+public:
+
+    Settings (const std::string & _schema)
+    {
+      gsettings = g_settings_new (_schema.c_str ());
+      handler = g_signal_connect (gsettings, "changed", G_CALLBACK (&f_callback), this);
+    }
+
+    ~Settings ()
+    {
+      g_signal_handler_disconnect (gsettings, handler);
+      g_clear_object (&gsettings);
+    }
+
+    GSettings* get_g_settings ()
+    {
+      return gsettings;
+    }
+
+    boost::signal1<void, std::string> changed;
+
+private:
+    gulong handler;
+    GSettings *gsettings;
+  };
+}
 
 #endif /* EKIGA_SETTINGS_H */
