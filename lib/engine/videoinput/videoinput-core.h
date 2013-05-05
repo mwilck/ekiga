@@ -43,7 +43,6 @@
 #include "hal-core.h"
 #include "notification-core.h"
 #include "videoinput-manager.h"
-#include "videoinput-gmconf-bridge.h"
 
 #include <boost/signals2.hpp>
 #include <boost/bind.hpp>
@@ -113,10 +112,6 @@ namespace Ekiga
       /** The destructor
        */
       ~VideoInputCore ();
-
-      /** Set up gmconf bridge
-       */
-      void setup_conf_bridge();
 
       /** Set up settings
        */
@@ -444,7 +439,6 @@ private:
 
       Ekiga::ServiceCore & core;
       VideoPreviewManager* preview_manager;
-      VideoInputCoreConfBridge* videoinput_core_conf_bridge;
       boost::shared_ptr<Ekiga::NotificationCore> notification_core;
 
       Settings* device_settings;

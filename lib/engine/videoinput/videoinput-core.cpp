@@ -174,7 +174,6 @@ VideoInputCore::VideoInputCore (Ekiga::ServiceCore & _core,
   desired_settings.contrast = 0;
 
   current_manager = NULL;
-  videoinput_core_conf_bridge = NULL;
   notification_core = core.get<Ekiga::NotificationCore> ("notification-core");
 
   device_settings = new Settings (VIDEO_DEVICES_SCHEMA);
@@ -184,9 +183,6 @@ VideoInputCore::VideoInputCore (Ekiga::ServiceCore & _core,
 VideoInputCore::~VideoInputCore ()
 {
   PWaitAndSignal m(core_mutex);
-
-  if (videoinput_core_conf_bridge)
-    delete videoinput_core_conf_bridge;
 
   preview_manager->quit ();
 
@@ -201,17 +197,8 @@ VideoInputCore::~VideoInputCore ()
 }
 
 
-void VideoInputCore::setup_conf_bridge ()
-{
-  PWaitAndSignal m(core_mutex);
-
-  videoinput_core_conf_bridge = new VideoInputCoreConfBridge (*this);
-}
-
-
 void VideoInputCore::setup (std::string setting)
 {
-  std::cout << "dans setup " << setting << std::endl << std::flush;
   GSettings* settings = device_settings->get_g_settings ();
   VideoInputDevice device;
 
@@ -222,20 +209,29 @@ void VideoInputCore::setup (std::string setting)
     unsigned channel = g_settings_get_int (settings, "channel");
     device.SetFromString (device_string);
 
-    std::cout << "dans setup set device " << setting << " " << device_string << std::endl << std::flush;
     set_device (device, channel, (VideoInputFormat) video_format);
     g_free (device_string);
   }
 
+  /* Size and framerate */
+  if (setting == "any" || setting == "size" || setting == "max-frame-rate") {
+    unsigned size = g_settings_get_int (settings, "size");
+    unsigned max_frame_rate = g_settings_get_int (settings, "max-frame-rate");
+    if (size >= NB_VIDEO_SIZES) {
+      PTRACE(1, "VidInputCore\t" << "size out of range, ajusting to 0");
+      size = 0;
+    }
+    set_preview_config (VideoSizes[size].width,
+                        VideoSizes[size].height,
+                        max_frame_rate);
+  }
+
   /* Previenw */
   if (setting == "any" || setting == "enable-preview") {
-    std::cout << "dans setup " << setting << std::endl << std::flush;
     if (g_settings_get_boolean (settings, "enable-preview")) {
-      std::cout << "start " << std::endl << std::flush;
       start_preview ();
     }
     else {
-      std::cout << "stop " << std::endl << std::flush;
       stop_preview ();
     }
   }
@@ -287,7 +283,6 @@ void VideoInputCore::get_devices (std::vector <VideoInputDevice> & devices)
 void VideoInputCore::set_device(const VideoInputDevice & _device, int channel, VideoInputFormat format)
 {
   PWaitAndSignal m(core_mutex);
-  std::cout << "dans set_device" << std::endl << std::flush;
   VideoInputDevice device;
 
   /* Check if device exists */
@@ -302,7 +297,7 @@ void VideoInputCore::set_device(const VideoInputDevice & _device, int channel, V
       break;
     }
   }
-  PTRACE(4, "VidInputCoreConfBridge\tUpdating device");
+  PTRACE(4, "VidInputCoreConf\tUpdating device");
 
   if (found)
     device = _device;
@@ -319,7 +314,7 @@ void VideoInputCore::set_device(const VideoInputDevice & _device, int channel, V
   }
 
   if (format >= VI_FORMAT_MAX) {
-    PTRACE(1, "VidInputCoreConfBridge\t" << VIDEO_DEVICES_KEY "format" << " out of range, ajusting to 3");
+    PTRACE(1, "VidInputCoreConf\tformat out of range, ajusting to 3");
     format = (VideoInputFormat) 3;
   }
 
@@ -387,6 +382,10 @@ void VideoInputCore::set_preview_config (unsigned width, unsigned height, unsign
 
   VideoDeviceConfig new_preview_config(width, height, fps);
 
+  if ( fps < 1 || fps > 30 ) {
+    PTRACE(1, "VidInputCore\tmax-frame-rate out of range, ajusting to 30");
+    fps = 30;
+  }
   PTRACE(4, "VidInputCore\tSetting new preview config: " << new_preview_config);
   // There is only one state where we have to reopen the preview device:
   // we have preview enabled, no stream is active and some value has changed

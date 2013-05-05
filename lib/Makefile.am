@@ -349,8 +349,6 @@ libekiga_la_SOURCES += \
 	engine/videoinput/videoinput-info.h \
 	engine/videoinput/videoinput-core.h \
 	engine/videoinput/videoinput-core.cpp \
-	engine/videoinput/videoinput-gmconf-bridge.h \
-	engine/videoinput/videoinput-gmconf-bridge.cpp
 
 ##
 # Sources of the audio output stack

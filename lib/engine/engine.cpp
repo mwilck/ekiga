@@ -198,7 +198,6 @@ engine_init (Ekiga::ServiceCorePtr service_core,
    */
 
   videooutput_core->setup_conf_bridge();
-  videoinput_core->setup_conf_bridge ();
   videoinput_core->setup ("any");
   audioinput_core->setup ();
   audiooutput_core->setup ();
