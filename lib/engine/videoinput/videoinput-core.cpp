@@ -538,7 +538,7 @@ void VideoInputCore::set_contrast   (unsigned contrast)
 
 void VideoInputCore::on_set_device (const VideoInputDevice & device)
 {
-  gm_conf_set_string (VIDEO_DEVICES_KEY "input_device", device.GetString ().c_str ());
+  g_settings_set_string (device_settings->get_g_settings (), "input-device", device.GetString ().c_str ());
 }
 
 void VideoInputCore::on_device_opened (VideoInputDevice device,
