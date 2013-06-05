@@ -10,8 +10,8 @@ msgstr ""
 "Project-Id-Version: mr\n"
 "Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?"
 "product=ekiga&keywords=I18N+L10N&component=general\n"
-"POT-Creation-Date: 2013-03-06 13:21+0000\n"
-"PO-Revision-Date: 2013-03-18 13:56+0530\n"
+"POT-Creation-Date: 2013-04-18 12:07+0000\n"
+"PO-Revision-Date: 2013-06-05 17:28+0530\n"
 "Last-Translator: Sandeep Shedmake <sshedmak@redhat.com>\n"
 "Language-Team: Marathi <maajhe-sanganak@freelists.org>\n"
 "Language: mr\n"
@@ -22,7 +22,7 @@ msgstr ""
 "Plural-Forms: nplurals=2; plural=(n!=1);\n"
 
 #. Application name
-#: ../ekiga.desktop.in.in.h:1 ../src/gui/main.cpp:104 ../src/gui/main.cpp:106
+#: ../ekiga.desktop.in.in.h:1 ../src/gui/main.cpp:105 ../src/gui/main.cpp:107
 msgid "Ekiga Softphone"
 msgstr "एकिगा सॉफ्टफोन"
 
@@ -102,8 +102,8 @@ msgstr ""
 msgid "Video preview"
 msgstr "विडीओ पूर्वावलोकन"
 
-#: ../ekiga.schemas.in.in.h:14 ../src/gui/main_window.cpp:1216
-#: ../src/gui/main_window.cpp:1359
+#: ../ekiga.schemas.in.in.h:14 ../src/gui/main_window.cpp:1210
+#: ../src/gui/main_window.cpp:1353
 msgid "Display images from your camera device"
 msgstr "कॅमेरा साधन पासून प्रतिमा दर्शवा"
 
@@ -298,11 +298,6 @@ msgstr "बाहेर जाणाऱ्या RTP IP पॅकेट्स्
 
 #: ../ekiga.schemas.in.in.h:54
 #: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:479
-#| msgid ""
-#| "The Type of Service (TOS) byte on outgoing RTP IP packets. This byte is "
-#| "used by the network to provide some level of Quality of Service (QoS). "
-#| "Default value 184 (0xB8) correspond to Expedited Forwarding (EF) PHB as "
-#| "defined in RFC 3246."
 msgid ""
 "The Type of Service (TOS) byte on outgoing RTP IP packets. This byte is used "
 "by the network to provide some level of Quality of Service (QoS). Default "
@@ -400,12 +395,6 @@ msgstr "H.245 टनलींग कार्यान्वीत करा"
 
 #: ../ekiga.schemas.in.in.h:69
 #: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:678
-#| msgid ""
-#| "This enables H.245 Tunneling mode. In H.245 Tunneling mode H.245 messages "
-#| "are encapsulated into the H.225 channel (port 1720). This saves one TCP "
-#| "connection during calls. H.245 Tunneling was introduced in H.323v2 and "
-#| "Netmeeting does not support it. Using both Fast Start and H.245 Tunneling "
-#| "can crash some versions of Netmeeting."
 msgid ""
 "This enables H.245 Tunneling mode. In H.245 Tunneling mode H.245 messages "
 "are encapsulated into the H.225 channel (port 1720). This saves one TCP "
@@ -414,8 +403,8 @@ msgstr ""
 "यामुळे H.245 टनलींग पद्धती कार्यान्वीत होते. H.245 टनलींग पद्धतीत H.245 संकेत "
 "संक्षिप्त "
 "स्वरूपात H.225 मार्ग (पोर्ट 1720) येथे लपविले जातात. यामुळे कॉलवेळी एक TCP "
-"जुळवणी साठवली "
-"जाते. H.245 टनलींगला H.323v2 मध्ये प्रस्तुत केले गेले."
+"जुळवणी "
+"साठवली जाते. H.245 टनलींगला H.323v2 मध्ये प्रस्तुत केले गेले."
 
 #: ../ekiga.schemas.in.in.h:70
 msgid "Enable early H.245"
@@ -431,17 +420,13 @@ msgid "Enable 'Fast Start'"
 msgstr "'Fast Start' कार्यान्वीत करा"
 
 #: ../ekiga.schemas.in.in.h:73
-#| msgid ""
-#| "Connection will be established in Fast Start mode. Fast Start is a new "
-#| "way to start calls faster that was introduced in H.323v2. It is not "
-#| "supported by Netmeeting and using both Fast Start and H.245 Tunneling can "
-#| "crash some versions of Netmeeting"
 msgid ""
 "Connection will be established in Fast Start mode. Fast Start (Fast Connect) "
 "is a new way to start calls faster that was introduced in H.323v2."
 msgstr ""
 "फास्ट स्टार्ट पद्धतीत जोडणी प्रस्थापित केली जाईल. H.323v2 पेक्षा वेगाने कॉल "
-"करण्याची पद्धत म्हणजे फास्ट स्टार्ट (फास्ट कनेक्ट)."
+"करण्याची "
+"पद्धत म्हणजे फास्ट स्टार्ट (फास्ट कनेक्ट)."
 
 #: ../ekiga.schemas.in.in.h:74
 msgid "Enable H.239"
@@ -625,12 +610,10 @@ msgid "Size of the preferences window"
 msgstr "प्राधान्यक्रता चौकटचे आकार"
 
 #: ../ekiga.schemas.in.in.h:108
-#| msgid "Position on the screen of the main window"
 msgid "Position on the screen of the accounts window"
 msgstr "खाती पटलाच्या पडद्यावरील स्थळ"
 
 #: ../ekiga.schemas.in.in.h:109
-#| msgid "Size of the chat window"
 msgid "Size of the accounts window"
 msgstr "खाती पटलाचे आकार"
 
@@ -692,15 +675,13 @@ msgstr ""
 "करण्याजोगी झूम मूल्य"
 
 #: ../ekiga.schemas.in.in.h:118
-#| msgid ""
-#| "The zoom value in percent to apply to images displayed in the main GUI "
-#| "(can be 50, 100, or 200)"
 msgid ""
 "The zoom value in percent to apply to images displayed in the extended GUI "
 "(can be 50, 100, or 200)"
 msgstr ""
 "विस्तारित GUI अंतर्गत (50, 100, किंवा 200 असू शकते) प्रदर्शित प्रतिमांकरीता "
-"लागू करण्याजोगी झूम मूल्य"
+"लागू "
+"करण्याजोगी झूम मूल्य"
 
 #: ../ekiga.schemas.in.in.h:119
 #: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:473
@@ -809,7 +790,7 @@ msgstr ""
 msgid "List of folded groups in the roster"
 msgstr "नामवलीतील गटांची सूची"
 
-#: ../ekiga.schemas.in.in.h:138 ../src/gui/main_window.cpp:1384
+#: ../ekiga.schemas.in.in.h:138 ../src/gui/main_window.cpp:1378
 msgid "Show offline contacts"
 msgstr "ऑफलाइन संपर्क दर्शवा"
 
@@ -867,20 +848,20 @@ msgstr "सुरू असल्यास, स्वयं इंकमिं�
 #: ../lib/engine/audioinput/audioinput-core.cpp:204
 #: ../lib/engine/audiooutput/audiooutput-core.cpp:219
 #: ../lib/engine/audiooutput/audiooutput-core.cpp:224
-#: ../lib/engine/videoinput/videoinput-core.cpp:244
-#: ../lib/engine/videoinput/videoinput-core.cpp:249
+#: ../lib/engine/videoinput/videoinput-core.cpp:243
+#: ../lib/engine/videoinput/videoinput-core.cpp:248
 msgid "New device detected"
 msgstr "नवीन साधन आढळले"
 
 #: ../lib/engine/audioinput/audioinput-core.cpp:204
 #: ../lib/engine/audiooutput/audiooutput-core.cpp:224
-#: ../lib/engine/videoinput/videoinput-core.cpp:249
+#: ../lib/engine/videoinput/videoinput-core.cpp:248
 msgid "Use it"
 msgstr "वापर करा"
 
 #: ../lib/engine/audioinput/audioinput-core.cpp:234
 #: ../lib/engine/audiooutput/audiooutput-core.cpp:253
-#: ../lib/engine/videoinput/videoinput-core.cpp:279
+#: ../lib/engine/videoinput/videoinput-core.cpp:278
 msgid "Device removed"
 msgstr "साधन काढून टाकाले"
 
@@ -905,7 +886,7 @@ msgstr "अपुरे"
 #: ../lib/engine/components/local-roster/local-heap.cpp:118
 #: ../plugins/evolution/evolution-book.cpp:301
 #: ../plugins/loudmouth/loudmouth-heap-roster.cpp:71
-#: ../src/gui/main_window.cpp:1310
+#: ../src/gui/main_window.cpp:1304
 msgid "A_dd Contact"
 msgstr "संपर्क जोडा (_A)"
 
@@ -926,7 +907,7 @@ msgid "Call back test"
 msgstr "कॉल बॅक चाचणी"
 
 #: ../lib/engine/components/local-roster/local-heap.cpp:111
-#: ../src/gui/main_window.cpp:1446
+#: ../src/gui/main_window.cpp:1440
 msgid "Contacts"
 msgstr "संपर्क"
 
@@ -1064,7 +1045,7 @@ msgstr "निनावी"
 #: ../plugins/evolution/evolution-contact.cpp:228
 #: ../plugins/loudmouth/loudmouth-presentity.cpp:174
 #: ../plugins/resource-list/rl-presentity.cpp:212
-#: ../src/gui/main_window.cpp:1334
+#: ../src/gui/main_window.cpp:1328
 msgid "_Edit"
 msgstr "संपादन (_E)"
 
@@ -1109,7 +1090,7 @@ msgstr "कॉल"
 
 #: ../lib/engine/components/opal/h323-endpoint.cpp:127
 #: ../lib/engine/components/opal/sip-endpoint.cpp:166
-#: ../lib/engine/gui/gtk-frontend/call-window.cpp:2168
+#: ../lib/engine/gui/gtk-frontend/call-window.cpp:2169
 msgid "Transfer"
 msgstr "स्थानांतरन"
 
@@ -1169,17 +1150,17 @@ msgid "_Enable"
 msgstr "कार्यान्वीत करा (_E)"
 
 #: ../lib/engine/components/opal/opal-account.cpp:422
-#: ../src/gui/assistant.cpp:764
+#: ../src/gui/assistant.cpp:761
 msgid "Recharge the account"
 msgstr "खाते पुन्हा कार्यक्षम करा"
 
 #: ../lib/engine/components/opal/opal-account.cpp:427
-#: ../src/gui/assistant.cpp:776
+#: ../src/gui/assistant.cpp:773
 msgid "Consult the balance history"
 msgstr "उर्वरीत इतिहास पहा"
 
 #: ../lib/engine/components/opal/opal-account.cpp:432
-#: ../src/gui/assistant.cpp:788
+#: ../src/gui/assistant.cpp:785
 msgid "Consult the call history"
 msgstr "कॉल इतिहासशी संपर्क करा"
 
@@ -1410,7 +1391,7 @@ msgid "_Add an H.323 Account"
 msgstr "H.323 खाते जोडा (_A)"
 
 #: ../lib/engine/components/opal/opal-bank.cpp:177
-#: ../src/gui/assistant.cpp:648
+#: ../src/gui/assistant.cpp:645
 msgid "Get an Ekiga.net SIP account"
 msgstr "Ekiga.net SIP खाते प्राप्त करा"
 
@@ -1428,7 +1409,7 @@ msgid "_Password:"
 msgstr "पासवर्ड (_P):"
 
 #: ../lib/engine/components/opal/opal-bank.cpp:187
-#: ../src/gui/assistant.cpp:752
+#: ../src/gui/assistant.cpp:749
 msgid "Get an Ekiga Call Out account"
 msgstr "Ekiga कॉल आउट खाते प्राप्त करा"
 
@@ -1535,12 +1516,10 @@ msgid "Remote host is offline"
 msgstr "दूरस्त यजमान ऑफलाइन आहे"
 
 #: ../lib/engine/components/opal/opal-call.cpp:482
-#| msgid "user offline"
 msgid "User is offline"
 msgstr "वापरकर्ता ऑफलाइन आहे"
 
 #: ../lib/engine/components/opal/opal-call.cpp:485
-#| msgid "Remote host is offline"
 msgid "Remote host not found"
 msgstr "दूरस्त यजमान आढळले नाही"
 
@@ -1841,12 +1820,12 @@ msgid "Accounts"
 msgstr "खाते"
 
 #: ../lib/engine/gui/gtk-frontend/accounts-window.cpp:580
-#: ../src/gui/main_window.cpp:1344
+#: ../src/gui/main_window.cpp:1338
 msgid "_Accounts"
 msgstr "खाते (_A)"
 
 #: ../lib/engine/gui/gtk-frontend/accounts-window.cpp:584
-#: ../src/gui/main_window.cpp:1390
+#: ../src/gui/main_window.cpp:1384
 msgid "_Help"
 msgstr "मदत (_H)"
 
@@ -1859,7 +1838,7 @@ msgid "Address Book"
 msgstr "पत्ता पुस्तिका"
 
 #: ../lib/engine/gui/gtk-frontend/addressbook-window.cpp:641
-#: ../src/gui/main_window.cpp:1315
+#: ../src/gui/main_window.cpp:1309
 msgid "Address _Book"
 msgstr "पत्ता पुस्तिका (_B)"
 
@@ -1868,28 +1847,28 @@ msgstr "पत्ता पुस्तिका (_B)"
 msgid "_Action"
 msgstr "क्रिया (_A)"
 
-#: ../lib/engine/gui/gtk-frontend/addressbook-window.cpp:694
+#: ../lib/engine/gui/gtk-frontend/addressbook-window.cpp:696
 msgid "Category"
 msgstr "विभाग"
 
-#: ../lib/engine/gui/gtk-frontend/book-view-gtk.cpp:566
-#: ../src/gui/assistant.cpp:1397
-msgid "Full Name"
-msgstr "पूर्ण नाव"
-
-#: ../lib/engine/gui/gtk-frontend/book-view-gtk.cpp:581
+#: ../lib/engine/gui/gtk-frontend/book-view-gtk.cpp:531
 msgid "_Search Filter:"
 msgstr "फिल्टर शोधा (_S):"
 
-#: ../lib/engine/gui/gtk-frontend/call-window.cpp:773
+#: ../lib/engine/gui/gtk-frontend/book-view-gtk.cpp:588
+#: ../src/gui/assistant.cpp:1394
+msgid "Full Name"
+msgstr "पूर्ण नाव"
+
+#: ../lib/engine/gui/gtk-frontend/call-window.cpp:766
 msgid "Error while initializing video output"
 msgstr "विडीओ आउटपुट प्रारंभ करतेवेळी त्रुटी आढळली"
 
-#: ../lib/engine/gui/gtk-frontend/call-window.cpp:774
+#: ../lib/engine/gui/gtk-frontend/call-window.cpp:767
 msgid "No video will be displayed on your machine during this call"
 msgstr "या कॉलवेळी मशीनवर व्हिडीओ दाखवले जाणार नाही"
 
-#: ../lib/engine/gui/gtk-frontend/call-window.cpp:784
+#: ../lib/engine/gui/gtk-frontend/call-window.cpp:777
 msgid ""
 "There was an error opening or initializing the video output. Please verify "
 "that no other application is using the accelerated video output."
@@ -1898,7 +1877,7 @@ msgstr ""
 "अनुप्रयोग प्रवेगक "
 "विडीओ आऊटपुटचे वापर करत नाही कृपया याची खात्री करा."
 
-#: ../lib/engine/gui/gtk-frontend/call-window.cpp:786
+#: ../lib/engine/gui/gtk-frontend/call-window.cpp:779
 msgid ""
 "There was an error opening or initializing the video output. Please verify "
 "that you are using a color depth of 24 or 32 bits per pixel."
@@ -1907,16 +1886,16 @@ msgstr ""
 "color depth "
 "24 किंवा 32 bits per pixel आहे कृपया याची खात्री करा."
 
-#: ../lib/engine/gui/gtk-frontend/call-window.cpp:907
+#: ../lib/engine/gui/gtk-frontend/call-window.cpp:902
 #, c-format
 msgid "Error while accessing video device %s"
 msgstr "विडिओ साधन %s करीता प्रवेश प्राप्त करतेवेळी त्रुटी आढळली"
 
-#: ../lib/engine/gui/gtk-frontend/call-window.cpp:910
+#: ../lib/engine/gui/gtk-frontend/call-window.cpp:905
 msgid "A moving logo will be transmitted during calls."
 msgstr "कॉलवेळी हलणारे चिन्ह स्थानांतरीत केले जाईल."
 
-#: ../lib/engine/gui/gtk-frontend/call-window.cpp:914
+#: ../lib/engine/gui/gtk-frontend/call-window.cpp:909
 msgid ""
 "There was an error while opening the device. In case it is a pluggable "
 "device it may be sufficient to reconnect it. If not, or if it still is not "
@@ -1929,15 +1908,15 @@ msgstr ""
 "केले गेले आहे "
 "याची खात्री करा."
 
-#: ../lib/engine/gui/gtk-frontend/call-window.cpp:918
+#: ../lib/engine/gui/gtk-frontend/call-window.cpp:913
 msgid "Your video driver doesn't support the requested video format."
 msgstr "विडिओ ड्राइवर विनंतीकृत विडिओ प्रकारास समर्थन पुरवित नाही."
 
-#: ../lib/engine/gui/gtk-frontend/call-window.cpp:922
+#: ../lib/engine/gui/gtk-frontend/call-window.cpp:917
 msgid "Could not open the chosen channel."
 msgstr "निवडलेले मार्ग उघडू शकत नाही."
 
-#: ../lib/engine/gui/gtk-frontend/call-window.cpp:926
+#: ../lib/engine/gui/gtk-frontend/call-window.cpp:921
 msgid ""
 "Your driver doesn't seem to support any of the color formats supported by "
 "Ekiga.\n"
@@ -1948,32 +1927,32 @@ msgstr ""
 "नाही.\n"
 " कृपया कुठले पॅलेट समर्थीत आहे या करीता कर्नल ड्राइवर दस्तऐवजीकरण तपासा."
 
-#: ../lib/engine/gui/gtk-frontend/call-window.cpp:930
+#: ../lib/engine/gui/gtk-frontend/call-window.cpp:925
 msgid "Error while setting the frame rate."
 msgstr "फ्रेम दर संयोजीत करतेवेळी त्रुटी आढळली."
 
-#: ../lib/engine/gui/gtk-frontend/call-window.cpp:934
+#: ../lib/engine/gui/gtk-frontend/call-window.cpp:929
 msgid "Error while setting the frame size."
 msgstr "फ्रेम आकार संयोजीत करतेवेळी त्रुटी आढळली."
 
-#: ../lib/engine/gui/gtk-frontend/call-window.cpp:939
-#: ../lib/engine/gui/gtk-frontend/call-window.cpp:1009
-#: ../lib/engine/gui/gtk-frontend/call-window.cpp:1090
+#: ../lib/engine/gui/gtk-frontend/call-window.cpp:934
+#: ../lib/engine/gui/gtk-frontend/call-window.cpp:1004
+#: ../lib/engine/gui/gtk-frontend/call-window.cpp:1085
 msgid "Unknown error."
 msgstr "अपरिचीत त्रुटी."
 
-#: ../lib/engine/gui/gtk-frontend/call-window.cpp:991
+#: ../lib/engine/gui/gtk-frontend/call-window.cpp:986
 #, c-format
 msgid "Error while opening audio input device %s"
 msgstr "ऑडिओ इनपुट साधन %s उघडतेवेली त्रुटी आढळली"
 
 #. Translators: This happens when there is an error with audio input:
 #. * Nothing ("silence") will be transmitted
-#: ../lib/engine/gui/gtk-frontend/call-window.cpp:996
+#: ../lib/engine/gui/gtk-frontend/call-window.cpp:991
 msgid "Only silence will be transmitted."
 msgstr "फक्त विश्रांती संकेत पाठविले जाईल."
 
-#: ../lib/engine/gui/gtk-frontend/call-window.cpp:1000
+#: ../lib/engine/gui/gtk-frontend/call-window.cpp:995
 msgid ""
 "Unable to open the selected audio device for recording. In case it is a "
 "pluggable device it may be sufficient to reconnect it. If not, or if it "
@@ -1984,7 +1963,7 @@ msgstr ""
 "साधन तपासून "
 "पहा त्यास प्रवेश आहे आणि साधन कार्यव्यस्त नाही हे पहा."
 
-#: ../lib/engine/gui/gtk-frontend/call-window.cpp:1004
+#: ../lib/engine/gui/gtk-frontend/call-window.cpp:999
 msgid ""
 "The selected audio device was successfully opened but it is impossible to "
 "read data from this device. In case it is a pluggable device it may be "
@@ -1997,16 +1976,16 @@ msgstr ""
 "नसल्यास, कृपया "
 "ऑडिओ संयोजना तपासून पहा."
 
-#: ../lib/engine/gui/gtk-frontend/call-window.cpp:1074
+#: ../lib/engine/gui/gtk-frontend/call-window.cpp:1069
 #, c-format
 msgid "Error while opening audio output device %s"
 msgstr "ऑडिओ आउटपुट साधन %s उघडतेवेळी त्रुटी आढळली"
 
-#: ../lib/engine/gui/gtk-frontend/call-window.cpp:1077
+#: ../lib/engine/gui/gtk-frontend/call-window.cpp:1072
 msgid "No incoming sound will be played."
 msgstr "इनकमींग संगीत चालविले जाणार नाही."
 
-#: ../lib/engine/gui/gtk-frontend/call-window.cpp:1081
+#: ../lib/engine/gui/gtk-frontend/call-window.cpp:1076
 msgid ""
 "Unable to open the selected audio device for playing. In case it is a "
 "pluggable device it may be sufficient to reconnect it. If not, or if it "
@@ -2019,7 +1998,7 @@ msgstr ""
 "परवानगी व साधन "
 "व्यस्थ नाही याची तपासणी करा."
 
-#: ../lib/engine/gui/gtk-frontend/call-window.cpp:1085
+#: ../lib/engine/gui/gtk-frontend/call-window.cpp:1080
 msgid ""
 "The selected audio device was successfully opened but it is impossible to "
 "write data to this device. In case it is a pluggable device it may be "
@@ -2032,41 +2011,41 @@ msgstr ""
 "करतेवेळी अडचणी "
 "आढळल्यास, कृपया ऑडिओ संयोजनाची तपासणी करा."
 
-#: ../lib/engine/gui/gtk-frontend/call-window.cpp:1126
+#: ../lib/engine/gui/gtk-frontend/call-window.cpp:1121
 #, c-format
 msgid "Calling %s..."
 msgstr "%s ला कॉल करत आहे..."
 
 #. %s is the SIP/H.323 address of the remote user, this text is shown
 #. below video during a call
-#: ../lib/engine/gui/gtk-frontend/call-window.cpp:1156
+#: ../lib/engine/gui/gtk-frontend/call-window.cpp:1151
 #: ../src/gui/main_window.cpp:659
 #, c-format
 msgid "Connected with %s"
 msgstr "%s सह जुळले आहे"
 
 #. Init
-#: ../lib/engine/gui/gtk-frontend/call-window.cpp:1179
-#: ../lib/engine/gui/gtk-frontend/call-window.cpp:1210
+#: ../lib/engine/gui/gtk-frontend/call-window.cpp:1174
+#: ../lib/engine/gui/gtk-frontend/call-window.cpp:1205
 #: ../lib/engine/gui/gtk-frontend/call-window.cpp:2503
 msgid "Standby"
 msgstr "स्टन्डबाय"
 
-#: ../lib/engine/gui/gtk-frontend/call-window.cpp:1195
-#: ../lib/engine/gui/gtk-frontend/call-window.cpp:1208
-#: ../lib/engine/gui/gtk-frontend/call-window.cpp:2646
+#: ../lib/engine/gui/gtk-frontend/call-window.cpp:1190
+#: ../lib/engine/gui/gtk-frontend/call-window.cpp:1203
+#: ../lib/engine/gui/gtk-frontend/call-window.cpp:2649
 msgid "Call Window"
 msgstr "कॉल पटल"
 
-#: ../lib/engine/gui/gtk-frontend/call-window.cpp:1221
+#: ../lib/engine/gui/gtk-frontend/call-window.cpp:1216
 msgid "Call on hold"
 msgstr "कॉल विश्रांतीवर आहे"
 
-#: ../lib/engine/gui/gtk-frontend/call-window.cpp:1232
+#: ../lib/engine/gui/gtk-frontend/call-window.cpp:1227
 msgid "Call retrieved"
 msgstr "कॉल पुन्हप्राप्त झाले"
 
-#: ../lib/engine/gui/gtk-frontend/call-window.cpp:1319
+#: ../lib/engine/gui/gtk-frontend/call-window.cpp:1314
 #, c-format
 msgid ""
 "Connected with %s\n"
@@ -2077,27 +2056,27 @@ msgstr ""
 
 #. Translators: TX is a common abbreviation for "transmit".  As it
 #. * is shown in a tooltip, there is no space constraint
-#: ../lib/engine/gui/gtk-frontend/call-window.cpp:1527
+#: ../lib/engine/gui/gtk-frontend/call-window.cpp:1522
 #, c-format
 msgid "TX: %dx%d"
 msgstr "TX: %dx%d"
 
-#: ../lib/engine/gui/gtk-frontend/call-window.cpp:1529
+#: ../lib/engine/gui/gtk-frontend/call-window.cpp:1524
 msgid "TX: / "
 msgstr "TX: / "
 
 #. Translators: RX is a common abbreviation for "receive".  As it
 #. * is shown in a tooltip, there is no space constraint
-#: ../lib/engine/gui/gtk-frontend/call-window.cpp:1534
+#: ../lib/engine/gui/gtk-frontend/call-window.cpp:1529
 #, c-format
 msgid "RX: %dx%d"
 msgstr "RX: %dx%d"
 
-#: ../lib/engine/gui/gtk-frontend/call-window.cpp:1536
+#: ../lib/engine/gui/gtk-frontend/call-window.cpp:1531
 msgid "RX: / "
 msgstr "RX: / "
 
-#: ../lib/engine/gui/gtk-frontend/call-window.cpp:1545
+#: ../lib/engine/gui/gtk-frontend/call-window.cpp:1540
 #, c-format
 msgid ""
 "Lost packets: %.1f %%\n"
@@ -2115,169 +2094,168 @@ msgstr ""
 "रेजोल्युशन: %s %s"
 
 #. Translators: A = Audio, V = Video, FPS = Frames per second
-#: ../lib/engine/gui/gtk-frontend/call-window.cpp:1645
+#: ../lib/engine/gui/gtk-frontend/call-window.cpp:1640
 #, c-format
 msgid "A:%.1f/%.1f V:%.1f/%.1f FPS:%d/%d"
 msgstr "A:%.1f/%.1f V:%.1f/%.1f FPS:%d/%d"
 
-#: ../lib/engine/gui/gtk-frontend/call-window.cpp:1669
+#: ../lib/engine/gui/gtk-frontend/call-window.cpp:1664
 msgid "_Retrieve Call"
 msgstr "कॉल पुन्ह प्राप्य (_R)"
 
-#: ../lib/engine/gui/gtk-frontend/call-window.cpp:1682
-#: ../lib/engine/gui/gtk-frontend/call-window.cpp:1991
+#: ../lib/engine/gui/gtk-frontend/call-window.cpp:1677
+#: ../lib/engine/gui/gtk-frontend/call-window.cpp:1992
 msgid "H_old Call"
 msgstr "कॉल होल्ड करा (_o)"
 
-#: ../lib/engine/gui/gtk-frontend/call-window.cpp:1713
-#: ../lib/engine/gui/gtk-frontend/call-window.cpp:2003
+#: ../lib/engine/gui/gtk-frontend/call-window.cpp:1708
+#: ../lib/engine/gui/gtk-frontend/call-window.cpp:2004
 msgid "Suspend _Audio"
 msgstr "ऑडिओ खंडीत करा (_A)"
 
-#: ../lib/engine/gui/gtk-frontend/call-window.cpp:1715
-#: ../lib/engine/gui/gtk-frontend/call-window.cpp:2008
+#: ../lib/engine/gui/gtk-frontend/call-window.cpp:1710
+#: ../lib/engine/gui/gtk-frontend/call-window.cpp:2009
 msgid "Suspend _Video"
 msgstr "विडीओ माध्यम खंडीत करा (_V)"
 
-#: ../lib/engine/gui/gtk-frontend/call-window.cpp:1717
+#: ../lib/engine/gui/gtk-frontend/call-window.cpp:1712
 msgid "Resume _Audio"
 msgstr "ऑडिओ पुन्ह प्रारंभ (_A)"
 
-#: ../lib/engine/gui/gtk-frontend/call-window.cpp:1719
+#: ../lib/engine/gui/gtk-frontend/call-window.cpp:1714
 msgid "Resume _Video"
 msgstr "विडीओ पुन्ह प्रारंभ (_V)"
 
-#: ../lib/engine/gui/gtk-frontend/call-window.cpp:1753
+#: ../lib/engine/gui/gtk-frontend/call-window.cpp:1748
 msgid "Video Settings"
 msgstr "विडिओ संयोजना"
 
-#: ../lib/engine/gui/gtk-frontend/call-window.cpp:1778
+#: ../lib/engine/gui/gtk-frontend/call-window.cpp:1774
 msgid "Adjust brightness"
 msgstr "तेजपणा संतुलीत करा"
 
-#: ../lib/engine/gui/gtk-frontend/call-window.cpp:1797
+#: ../lib/engine/gui/gtk-frontend/call-window.cpp:1794
 msgid "Adjust whiteness"
 msgstr "पांढरेपणा संतुलीत करा"
 
-#: ../lib/engine/gui/gtk-frontend/call-window.cpp:1816
+#: ../lib/engine/gui/gtk-frontend/call-window.cpp:1814
 msgid "Adjust color"
 msgstr "रंग संतुलीत करा"
 
-#: ../lib/engine/gui/gtk-frontend/call-window.cpp:1835
+#: ../lib/engine/gui/gtk-frontend/call-window.cpp:1834
 msgid "Adjust contrast"
 msgstr "कॉनट्रास्ट संतुलीत करा"
 
-#: ../lib/engine/gui/gtk-frontend/call-window.cpp:1877
+#: ../lib/engine/gui/gtk-frontend/call-window.cpp:1876
 msgid "Audio Settings"
 msgstr "ऑडिओ संयोजना"
 
-#: ../lib/engine/gui/gtk-frontend/call-window.cpp:1979
+#: ../lib/engine/gui/gtk-frontend/call-window.cpp:1980
 msgid "_Call"
 msgstr "कॉल (_C)"
 
-#: ../lib/engine/gui/gtk-frontend/call-window.cpp:1981
+#: ../lib/engine/gui/gtk-frontend/call-window.cpp:1982
 msgid "_Pick up"
 msgstr "ध्वनिग्रह (_P)"
 
-#: ../lib/engine/gui/gtk-frontend/call-window.cpp:1981
-#: ../lib/engine/gui/gtk-frontend/call-window.cpp:2390
+#: ../lib/engine/gui/gtk-frontend/call-window.cpp:1982
+#: ../lib/engine/gui/gtk-frontend/call-window.cpp:2391
 msgid "Pick up the current call"
 msgstr "सध्याचे कॉल पिक अप करा"
 
-#: ../lib/engine/gui/gtk-frontend/call-window.cpp:1985
-#| msgid "_Hangup"
+#: ../lib/engine/gui/gtk-frontend/call-window.cpp:1986
 msgid "_Hang up"
 msgstr "हँग अप (_H)"
 
-#: ../lib/engine/gui/gtk-frontend/call-window.cpp:1985
-#: ../lib/engine/gui/gtk-frontend/call-window.cpp:2406
+#: ../lib/engine/gui/gtk-frontend/call-window.cpp:1986
+#: ../lib/engine/gui/gtk-frontend/call-window.cpp:2407
 msgid "Hang up the current call"
 msgstr "सध्याचे कॉल हँग अप करा"
 
-#: ../lib/engine/gui/gtk-frontend/call-window.cpp:1991
-#: ../lib/engine/gui/gtk-frontend/call-window.cpp:2472
+#: ../lib/engine/gui/gtk-frontend/call-window.cpp:1992
+#: ../lib/engine/gui/gtk-frontend/call-window.cpp:2473
 msgid "Hold the current call"
 msgstr "चालू संदेश धरून ठेवा"
 
-#: ../lib/engine/gui/gtk-frontend/call-window.cpp:1995
+#: ../lib/engine/gui/gtk-frontend/call-window.cpp:1996
 msgid "_Transfer Call"
 msgstr "कॉल स्थानांतरीत करा (_T)"
 
-#: ../lib/engine/gui/gtk-frontend/call-window.cpp:1996
+#: ../lib/engine/gui/gtk-frontend/call-window.cpp:1997
 msgid "Transfer the current call"
 msgstr "वर्तमान कॉल स्थानांतरीत करा"
 
-#: ../lib/engine/gui/gtk-frontend/call-window.cpp:2004
+#: ../lib/engine/gui/gtk-frontend/call-window.cpp:2005
 msgid "Suspend or resume the audio transmission"
 msgstr "ऑडिओ संकेत खंडीत करा किंवा पुन्हा प्रारंभ करा"
 
-#: ../lib/engine/gui/gtk-frontend/call-window.cpp:2009
+#: ../lib/engine/gui/gtk-frontend/call-window.cpp:2010
 msgid "Suspend or resume the video transmission"
 msgstr "विडीओ संकेत खंडीत करा किंवा पुन्हा प्रारंभ करा"
 
-#: ../lib/engine/gui/gtk-frontend/call-window.cpp:2016
-#: ../src/gui/main_window.cpp:1323
+#: ../lib/engine/gui/gtk-frontend/call-window.cpp:2017
+#: ../src/gui/main_window.cpp:1317
 msgid "Close the Ekiga window"
 msgstr "Ekiga चौकट बंद करा"
 
-#: ../lib/engine/gui/gtk-frontend/call-window.cpp:2021
-#: ../src/gui/main_window.cpp:1356
+#: ../lib/engine/gui/gtk-frontend/call-window.cpp:2022
+#: ../src/gui/main_window.cpp:1350
 msgid "_View"
 msgstr "दृश्य (_V)"
 
-#: ../lib/engine/gui/gtk-frontend/call-window.cpp:2023
+#: ../lib/engine/gui/gtk-frontend/call-window.cpp:2024
 msgid "_Local Video"
 msgstr "स्थानीय विडीओ (_L)"
 
-#: ../lib/engine/gui/gtk-frontend/call-window.cpp:2024
+#: ../lib/engine/gui/gtk-frontend/call-window.cpp:2025
 msgid "Local video image"
 msgstr "स्थानीय विडिओ प्रतिमा"
 
-#: ../lib/engine/gui/gtk-frontend/call-window.cpp:2028
+#: ../lib/engine/gui/gtk-frontend/call-window.cpp:2029
 msgid "_Remote Video"
 msgstr "दूरस्त विडीओ (_R)"
 
-#: ../lib/engine/gui/gtk-frontend/call-window.cpp:2029
+#: ../lib/engine/gui/gtk-frontend/call-window.cpp:2030
 msgid "Remote video image"
 msgstr "दूरस्त विडिओ प्रतिमा"
 
-#: ../lib/engine/gui/gtk-frontend/call-window.cpp:2033
+#: ../lib/engine/gui/gtk-frontend/call-window.cpp:2034
 msgid "_Picture-in-Picture"
 msgstr "चित्र अंतर्गत चित्र (_P)"
 
-#: ../lib/engine/gui/gtk-frontend/call-window.cpp:2034
+#: ../lib/engine/gui/gtk-frontend/call-window.cpp:2035
 msgid "Both video images"
 msgstr "दोन्ही विडिओ प्रतिमा"
 
-#: ../lib/engine/gui/gtk-frontend/call-window.cpp:2040
+#: ../lib/engine/gui/gtk-frontend/call-window.cpp:2041
 msgid "Zoom in"
 msgstr "मोठे करा"
 
-#: ../lib/engine/gui/gtk-frontend/call-window.cpp:2044
+#: ../lib/engine/gui/gtk-frontend/call-window.cpp:2045
 msgid "Zoom out"
 msgstr "लहान करा"
 
-#: ../lib/engine/gui/gtk-frontend/call-window.cpp:2048
+#: ../lib/engine/gui/gtk-frontend/call-window.cpp:2049
 msgid "Normal size"
 msgstr "साधारण आकार"
 
-#: ../lib/engine/gui/gtk-frontend/call-window.cpp:2052
+#: ../lib/engine/gui/gtk-frontend/call-window.cpp:2053
 msgid "_Fullscreen"
 msgstr "पूर्ण पडदा (_F)"
 
-#: ../lib/engine/gui/gtk-frontend/call-window.cpp:2052
+#: ../lib/engine/gui/gtk-frontend/call-window.cpp:2053
 msgid "Switch to fullscreen"
 msgstr "पूर्ण पडदा सुरू करा"
 
-#: ../lib/engine/gui/gtk-frontend/call-window.cpp:2167
+#: ../lib/engine/gui/gtk-frontend/call-window.cpp:2168
 msgid "Transfer call to:"
 msgstr "करीता कॉल स्थानांतरीत करा:"
 
-#: ../lib/engine/gui/gtk-frontend/call-window.cpp:2433
+#: ../lib/engine/gui/gtk-frontend/call-window.cpp:2434
 msgid "Change the volume of your soundcard"
 msgstr "साउन्डकार्डचे आवजाचे स्तर बदलवा"
 
-#: ../lib/engine/gui/gtk-frontend/call-window.cpp:2453
+#: ../lib/engine/gui/gtk-frontend/call-window.cpp:2454
 msgid "Change the color settings of your video device"
 msgstr "तुमच्या विडीओ साधनाची रंग संयोजना बदलवा"
 
@@ -2285,15 +2263,15 @@ msgstr "तुमच्या विडीओ साधनाची रंग �
 msgid "says:"
 msgstr "म्हणतो:"
 
-#: ../lib/engine/gui/gtk-frontend/chat-area.cpp:365
+#: ../lib/engine/gui/gtk-frontend/chat-area.cpp:369
 msgid "Open link in browser"
 msgstr "ब्राऊजर मध्ये लिंक उघडा"
 
-#: ../lib/engine/gui/gtk-frontend/chat-area.cpp:371
+#: ../lib/engine/gui/gtk-frontend/chat-area.cpp:375
 msgid "Copy link"
 msgstr "लिंक प्रतिकृत करा"
 
-#: ../lib/engine/gui/gtk-frontend/chat-area.cpp:821
+#: ../lib/engine/gui/gtk-frontend/chat-area.cpp:828
 msgid "_Smile..."
 msgstr "हास्य (_S)..."
 
@@ -2315,8 +2293,8 @@ msgstr "संवाद चौकट"
 
 #: ../lib/engine/gui/gtk-frontend/heap-view.cpp:239
 #: ../lib/engine/gui/gtk-frontend/heap-view.cpp:278
-#: ../lib/engine/gui/gtk-frontend/roster-view-gtk.cpp:1031
-#: ../lib/engine/gui/gtk-frontend/roster-view-gtk.cpp:1122
+#: ../lib/engine/gui/gtk-frontend/roster-view-gtk.cpp:1037
+#: ../lib/engine/gui/gtk-frontend/roster-view-gtk.cpp:1139
 msgid "Unsorted"
 msgstr "विनाक्रम"
 
@@ -2329,7 +2307,7 @@ msgid "Play sound for new instant messages"
 msgstr "नवीन जलद संदेश करीता संगीत चालवा"
 
 #: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:453
-#: ../src/gui/assistant.cpp:376
+#: ../src/gui/assistant.cpp:374
 msgid "Personal Information"
 msgstr "व्यक्तीगत माहिती"
 
@@ -2502,18 +2480,13 @@ msgid "Enable fast _start procedure"
 msgstr "फार्स्ट स्टार्ट पद्धती कार्यान्वीत करा (_s)"
 
 #: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:682
-#| msgid ""
-#| "Connection will be established in Fast Start mode. Fast Start is a new "
-#| "way to start calls faster that was introduced in H.323v2. It is not "
-#| "supported by Netmeeting and using both Fast Start and H.245 Tunneling can "
-#| "crash some versions of Netmeeting"
 msgid ""
 "Connection will be established in Fast Start (Fast Connect) mode. Fast Start "
 "is a new way to start calls faster that was introduced in H.323v2."
 msgstr ""
 "फास्ट स्टार्ट (फास्ट कनेक्ट) पद्धतीत जोडणी प्रस्थापीत केली जाईल. H.323v2 "
-"मध्ये प्रस्तुत केलेले, वेगाने कॉल करण्याची "
-"पद्धत म्हणजे फास्ट स्टार्ट."
+"मध्ये प्रस्तुत "
+"केलेले, वेगाने कॉल करण्याची पद्धत म्हणजे फास्ट स्टार्ट."
 
 #: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:684
 msgid "Enable H.239 control"
@@ -2551,7 +2524,7 @@ msgid "_Outbound proxy:"
 msgstr "बाह्य प्रॉक्सी (_O):"
 
 #: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:742
-#: ../src/gui/assistant.cpp:999
+#: ../src/gui/assistant.cpp:996
 msgid "Audio Devices"
 msgstr "ऑडिओ साधन"
 
@@ -2586,8 +2559,8 @@ msgstr "साधन सूची ताजे करण्यासाठी �
 #: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:783
 #: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:805
 #: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:825
-#: ../src/gui/assistant.cpp:1265 ../src/gui/assistant.cpp:1287
-#: ../src/gui/assistant.cpp:1309
+#: ../src/gui/assistant.cpp:1262 ../src/gui/assistant.cpp:1284
+#: ../src/gui/assistant.cpp:1306
 msgid "No device found"
 msgstr "साधन आढळले नाही"
 
@@ -2733,6 +2706,26 @@ msgstr "उपकरण"
 msgid "Video"
 msgstr "विडीओ"
 
+#: ../lib/engine/gui/gtk-frontend/roster-view-gtk.cpp:1088
+#: ../lib/engine/gui/gtk-frontend/statusmenu.cpp:98
+msgid "Away"
+msgstr "दूर"
+
+#: ../lib/engine/gui/gtk-frontend/roster-view-gtk.cpp:1090
+#: ../lib/engine/gui/gtk-frontend/statusmenu.cpp:97
+msgid "Available"
+msgstr "उपलब्ध"
+
+#: ../lib/engine/gui/gtk-frontend/roster-view-gtk.cpp:1092
+#| msgid "Online"
+msgid "Offline"
+msgstr "ऑफलाइन"
+
+#: ../lib/engine/gui/gtk-frontend/roster-view-gtk.cpp:1094
+#: ../lib/engine/gui/gtk-frontend/statusmenu.cpp:99
+msgid "Busy"
+msgstr "व्यस्त"
+
 #: ../lib/engine/gui/gtk-frontend/statusicon.cpp:306
 #, c-format
 msgid "You have %d message"
@@ -2741,31 +2734,19 @@ msgstr[0] "तुमच्याकडे %d संदेश आहे"
 msgstr[1] "तुमच्याकडे %d संदेश आहे"
 
 #: ../lib/engine/gui/gtk-frontend/statusicon.cpp:373
-#: ../src/gui/main_window.cpp:1393
+#: ../src/gui/main_window.cpp:1387
 msgid "Get help by reading the Ekiga manual"
 msgstr "Ekiga पुस्तिका वाचून मदत मिळवा"
 
 #: ../lib/engine/gui/gtk-frontend/statusicon.cpp:378
-#: ../src/gui/main_window.cpp:1398
+#: ../src/gui/main_window.cpp:1392
 msgid "View information about Ekiga"
 msgstr "Ekiga विषयी माहिती पहा"
 
 #: ../lib/engine/gui/gtk-frontend/statusicon.cpp:385
-#: ../src/gui/main_window.cpp:1330
+#: ../src/gui/main_window.cpp:1324
 msgid "Quit"
 msgstr "बाहेर पडा"
-
-#: ../lib/engine/gui/gtk-frontend/statusmenu.cpp:97
-msgid "Available"
-msgstr "उपलब्ध"
-
-#: ../lib/engine/gui/gtk-frontend/statusmenu.cpp:98
-msgid "Away"
-msgstr "दूर"
-
-#: ../lib/engine/gui/gtk-frontend/statusmenu.cpp:99
-msgid "Busy"
-msgstr "व्यस्त"
 
 #: ../lib/engine/gui/gtk-frontend/statusmenu.cpp:395
 msgid "Custom message..."
@@ -2915,7 +2896,6 @@ msgstr[0] "%d वापरकर्ता आढळला"
 msgstr[1] "%d वापरकर्ता आढळला"
 
 #: ../plugins/evolution/evolution-book.cpp:343
-#| msgid "A_dd Contact"
 msgid "Add Contact"
 msgstr "संपर्क समावेश"
 
@@ -3127,12 +3107,10 @@ msgid "The password for the user ID above, if any"
 msgstr "वरील वारकर्ता ID करीता पासवर्ड, कुठलेहि अल्यास"
 
 #: ../plugins/ldap/ldap-book.cpp:987
-#| msgid "Use TLS"
 msgid "Use _TLS"
 msgstr "TLSचा वापर करा (_T)"
 
 #: ../plugins/ldap/ldap-book.cpp:988
-#| msgid "Use SASL"
 msgid "Use SAS_L"
 msgstr "SASLचा वापर करा (_L)"
 
@@ -3194,45 +3172,37 @@ msgstr "स्वीकारा"
 
 #: ../plugins/loudmouth/loudmouth-account.cpp:112
 #: ../plugins/loudmouth/loudmouth-account.cpp:159
-#| msgid "inactive"
 msgid "Inactive"
 msgstr "निष्क्रिय"
 
 #: ../plugins/loudmouth/loudmouth-account.cpp:238
 #, c-format
-#| msgid "Could not connect to server"
 msgid "Could not connect (%s)"
 msgstr "जोडणी अशक्य (%s)"
 
 #: ../plugins/loudmouth/loudmouth-account.cpp:244
-#| msgid "connecting"
 msgid "Connecting..."
 msgstr "जोडणी करत आहे..."
 
 #: ../plugins/loudmouth/loudmouth-account.cpp:284
-#| msgid "authenticating"
 msgid "Authenticating..."
 msgstr "ओळख पटवत आहे..."
 
 #. FIXME: can't we report better?
 #: ../plugins/loudmouth/loudmouth-account.cpp:294
-#| msgid "Could not connect to server"
 msgid "Could not connect"
 msgstr "जोडणी अशक्य"
 
 #: ../plugins/loudmouth/loudmouth-account.cpp:304
-#| msgid "disconnected"
 msgid "Disconnected"
 msgstr "खंडीत झाले"
 
 #: ../plugins/loudmouth/loudmouth-account.cpp:314
-#| msgid "connected"
 msgid "Connected"
 msgstr "जोडणी केले"
 
 #. FIXME: can't we report something better?
 #: ../plugins/loudmouth/loudmouth-account.cpp:320
-#| msgid "Could not unregister"
 msgid "Could not authenticate"
 msgstr "ओळख पटवणे अशक्य"
 
@@ -3388,7 +3358,6 @@ msgid ""
 msgstr "दूरस्त रोस्टरमधील अस्तित्वातील घटक बदलवण्याकरीता कृपया हा फॉर्म भरा"
 
 #: ../plugins/resource-list/rl-cluster.cpp:102
-#| msgid "Add new resource-list"
 msgid "Add resource list"
 msgstr "स्त्रोत सूची समावेश"
 
@@ -3489,7 +3458,7 @@ msgid ""
 msgstr ""
 "दूरस्त सर्व्हर वरील अस्तित्वातील संपर्क बदलविण्याकरीता कृपया हा फॉर्म भरा"
 
-#: ../src/gui/assistant.cpp:344
+#: ../src/gui/assistant.cpp:343
 msgid ""
 "This is the Ekiga general configuration assistant. The following steps will "
 "set up Ekiga by asking a few simple questions.\n"
@@ -3505,16 +3474,16 @@ msgstr ""
 "प्राधान्यता पर्याय निवडून "
 "बदलवू शकता."
 
-#: ../src/gui/assistant.cpp:352
+#: ../src/gui/assistant.cpp:351
 msgid "Welcome to Ekiga"
 msgstr "Ekiga वर स्वागत आहे"
 
 #. The user fields
-#: ../src/gui/assistant.cpp:379
+#: ../src/gui/assistant.cpp:377
 msgid "Please enter your first name and your surname:"
 msgstr "कृपया पहिले नाव व आडनाव प्रविष्ट करा:"
 
-#: ../src/gui/assistant.cpp:388
+#: ../src/gui/assistant.cpp:386
 msgid ""
 "Your first name and surname will be used when connecting to other VoIP and "
 "videoconferencing software."
@@ -3523,7 +3492,7 @@ msgstr ""
 "वापरले "
 "जाईल."
 
-#: ../src/gui/assistant.cpp:438
+#: ../src/gui/assistant.cpp:436
 msgid ""
 "If you do not have a SIP or H323 account, ekiga can only be used on your "
 "local internal network (inside your company, for example).  You will require "
@@ -3549,23 +3518,23 @@ msgstr ""
 "\n"
 "खालिल दोन पृष्ठ तुम्हाला अशा प्रकारचे खाते निर्माण करण्यास परवानगी देते."
 
-#: ../src/gui/assistant.cpp:453
+#: ../src/gui/assistant.cpp:451
 msgid "Introduction to Accounts"
 msgstr "खातीकरीता परिचय"
 
-#: ../src/gui/assistant.cpp:611
+#: ../src/gui/assistant.cpp:608
 msgid "Ekiga.net Account"
 msgstr "Ekiga.net खाते"
 
-#: ../src/gui/assistant.cpp:613
+#: ../src/gui/assistant.cpp:610
 msgid "Please enter your username:"
 msgstr "कृपया वापरकर्तानाव प्रविष्ट करा:"
 
-#: ../src/gui/assistant.cpp:621
+#: ../src/gui/assistant.cpp:618
 msgid "Please enter your password:"
 msgstr "कृपया पासवर्ड प्रविष्ट करा:"
 
-#: ../src/gui/assistant.cpp:631
+#: ../src/gui/assistant.cpp:628
 msgid ""
 "The username and password are used to login to your existing account at the "
 "ekiga.net free SIP service. If you do not have an ekiga.net SIP address yet, "
@@ -3585,23 +3554,23 @@ msgstr ""
 "दाखलन "
 "तपशील प्रविष्ट करणे तुम्ही पसंत कराल."
 
-#: ../src/gui/assistant.cpp:657
+#: ../src/gui/assistant.cpp:654
 msgid "I do not want to sign up for the ekiga.net free service"
 msgstr "मला ekiga.net मोफत सेवा करीता अर्ज भरायचा नाही"
 
-#: ../src/gui/assistant.cpp:717
+#: ../src/gui/assistant.cpp:714
 msgid "Ekiga Call Out Account"
 msgstr "Ekiga कॉल आउट खाते"
 
-#: ../src/gui/assistant.cpp:719
+#: ../src/gui/assistant.cpp:716
 msgid "Please enter your account ID:"
 msgstr "कृपया खाते ID प्रविष्ट करा:"
 
-#: ../src/gui/assistant.cpp:727
+#: ../src/gui/assistant.cpp:724
 msgid "Please enter your PIN code:"
 msgstr "कृपया PIN कोड प्रविष्ट करा:"
 
-#: ../src/gui/assistant.cpp:738
+#: ../src/gui/assistant.cpp:735
 msgid ""
 "You can make calls to regular phones and cell numbers worldwide using Ekiga. "
 "To enable this, you need to do two things:\n"
@@ -3619,44 +3588,44 @@ msgstr ""
 "सेवा तेव्हाच कार्यरत राहेल जेव्हा तुमचे खाते वरील संवाद मध्ये प्रविष्ट URL सह "
 "बनविले जाईल.\n"
 
-#: ../src/gui/assistant.cpp:797
+#: ../src/gui/assistant.cpp:794
 msgid "I do not want to sign up for the Ekiga Call Out service"
 msgstr "मला Ekiga कॉल आउट सेवा करीता अर्ज भरायचा नाही"
 
-#: ../src/gui/assistant.cpp:860 ../src/gui/assistant.cpp:1410
+#: ../src/gui/assistant.cpp:857 ../src/gui/assistant.cpp:1407
 msgid "Connection Type"
 msgstr "जोडणी प्रकार"
 
 #. The connection type
-#: ../src/gui/assistant.cpp:863
+#: ../src/gui/assistant.cpp:860
 msgid "Please choose your connection type:"
 msgstr "कृपया जोडणी प्रकार निवडा:"
 
-#: ../src/gui/assistant.cpp:880
+#: ../src/gui/assistant.cpp:877
 msgid "56k Modem"
 msgstr "56k मॉडेम"
 
-#: ../src/gui/assistant.cpp:885
+#: ../src/gui/assistant.cpp:882
 msgid "ISDN"
 msgstr "ISDN"
 
-#: ../src/gui/assistant.cpp:890
+#: ../src/gui/assistant.cpp:887
 msgid "DSL/Cable (128 kbit/s uplink)"
 msgstr "DSL/केबल (128 kbit/s अपलिंक)"
 
-#: ../src/gui/assistant.cpp:895
+#: ../src/gui/assistant.cpp:892
 msgid "DSL/Cable (512 kbit/s uplink)"
 msgstr "DSL/केबल (512 kbit/s अफलिंक)"
 
-#: ../src/gui/assistant.cpp:900
+#: ../src/gui/assistant.cpp:897
 msgid "LAN"
 msgstr "LAN"
 
-#: ../src/gui/assistant.cpp:905
+#: ../src/gui/assistant.cpp:902
 msgid "Keep current settings"
 msgstr "वर्तमान संयोजना जपवा"
 
-#: ../src/gui/assistant.cpp:910
+#: ../src/gui/assistant.cpp:907
 msgid ""
 "The connection type will permit determining the best quality settings that "
 "Ekiga will use during calls. You can later change the settings individually "
@@ -3668,11 +3637,11 @@ msgstr ""
 "बदलवू "
 "शकता."
 
-#: ../src/gui/assistant.cpp:1001
+#: ../src/gui/assistant.cpp:998
 msgid "Please choose the audio ringing device:"
 msgstr "कृपया रिंग होणारे ऑडिओ साधन निवडा:"
 
-#: ../src/gui/assistant.cpp:1021
+#: ../src/gui/assistant.cpp:1018
 msgid ""
 "The audio ringing device is the device that will be used to play the ringing "
 "sound on incoming calls."
@@ -3682,11 +3651,11 @@ msgstr ""
 "चालविण्याकरीता केला जातो."
 
 #. ---
-#: ../src/gui/assistant.cpp:1032
+#: ../src/gui/assistant.cpp:1029
 msgid "Please choose the audio output device:"
 msgstr "कृपया ऑडिओ आउटपुट साधन निवडा:"
 
-#: ../src/gui/assistant.cpp:1052
+#: ../src/gui/assistant.cpp:1049
 msgid ""
 "The audio output device is the device that will be used to play audio during "
 "calls."
@@ -3695,26 +3664,26 @@ msgstr ""
 "जातो."
 
 #. ---
-#: ../src/gui/assistant.cpp:1063
+#: ../src/gui/assistant.cpp:1060
 msgid "Please choose the audio input device:"
 msgstr "कृपया ऑडिओ इनपुट साधन निवडा:"
 
-#: ../src/gui/assistant.cpp:1083
+#: ../src/gui/assistant.cpp:1080
 msgid ""
 "The audio input device is the device that will be used to record your voice "
 "during calls."
 msgstr ""
 "ऑडिओ इनपुट साधनाचा वापर कॉल करतेवेळी वाचा रेकॉर्ड करण्याकरीता केला जातो."
 
-#: ../src/gui/assistant.cpp:1179 ../src/gui/assistant.cpp:1477
+#: ../src/gui/assistant.cpp:1176 ../src/gui/assistant.cpp:1474
 msgid "Video Input Device"
 msgstr "विडीओ इनपुट साधन"
 
-#: ../src/gui/assistant.cpp:1181
+#: ../src/gui/assistant.cpp:1178
 msgid "Please choose your video input device:"
 msgstr "कृपया विडीओ इनपुट साधन निवडा:"
 
-#: ../src/gui/assistant.cpp:1201
+#: ../src/gui/assistant.cpp:1198
 msgid ""
 "The video input device is the device that will be used to capture video "
 "during calls."
@@ -3723,11 +3692,11 @@ msgstr ""
 "रेकॉर्ड "
 "करण्याकरीता केला जातो."
 
-#: ../src/gui/assistant.cpp:1340
+#: ../src/gui/assistant.cpp:1337
 msgid "Configuration Complete"
 msgstr "संयोजन पूर्ण झाले"
 
-#: ../src/gui/assistant.cpp:1342
+#: ../src/gui/assistant.cpp:1339
 msgid ""
 "You have now finished the Ekiga configuration. All the settings can be "
 "changed in the Ekiga preferences. Enjoy!"
@@ -3735,40 +3704,40 @@ msgstr ""
 "Ekiga संयोजना पूर्ण झाले. सर्व संयोजना Ekiga प्राधान्यता येथून बदलविता येतात. "
 "मजा घ्या!"
 
-#: ../src/gui/assistant.cpp:1349
+#: ../src/gui/assistant.cpp:1346
 msgid "Configuration summary:"
 msgstr "संयोजना सारांश:"
 
-#: ../src/gui/assistant.cpp:1427
+#: ../src/gui/assistant.cpp:1424
 msgid "Audio Ringing Device"
 msgstr "ऑडिओ रिंगींग साधन"
 
-#: ../src/gui/assistant.cpp:1444
+#: ../src/gui/assistant.cpp:1441
 msgid "Audio Output Device"
 msgstr "ऑडिओ आउटपुट साधन"
 
-#: ../src/gui/assistant.cpp:1461
+#: ../src/gui/assistant.cpp:1458
 msgid "Audio Input Device"
 msgstr "ऑडिओ इनपुट साधन"
 
-#: ../src/gui/assistant.cpp:1493
+#: ../src/gui/assistant.cpp:1490
 msgid "SIP URI"
 msgstr "SIP URI"
 
-#: ../src/gui/assistant.cpp:1508
+#: ../src/gui/assistant.cpp:1505
 msgid "Ekiga Call Out"
 msgstr "Ekiga कॉल आउट"
 
-#: ../src/gui/assistant.cpp:1553
+#: ../src/gui/assistant.cpp:1547
 #, c-format
 msgid "Ekiga Configuration Assistant (%d of %d)"
 msgstr "Ekiga संयोजना सहाय्यक (%d पैकी %d)"
 
-#: ../src/gui/main.cpp:131
+#: ../src/gui/main.cpp:132
 msgid "Prints debug messages in the console (level between 1 and 8)"
 msgstr "कंसोलमध्ये डिबग संदेशची छपाई करतो (1 ते 8 अंतर्गत स्तर)"
 
-#: ../src/gui/main.cpp:136
+#: ../src/gui/main.cpp:137
 msgid "Makes Ekiga call the given URI"
 msgstr "Ekiga ला ठराविक URI करीता सज्जा करतो"
 
@@ -3793,101 +3762,98 @@ msgstr "%s पासून मिस्ड् कॉल"
 msgid "Error"
 msgstr "त्रुटी"
 
-#: ../src/gui/main_window.cpp:1184
-#| msgid ""
-#| "Enter a URI on the left, and click this button to place a call or to "
-#| "hangup"
+#: ../src/gui/main_window.cpp:1178
 msgid ""
 "Enter a URI on the left, and click this button to place a call or to hang up"
 msgstr ""
 "डावीकडे URI द्या, व कॉल करण्याकरीता किंवा हॅन्गअप करण्याकरीता या बटणावर क्लिक "
 "करा"
 
-#: ../src/gui/main_window.cpp:1235 ../src/gui/main_window.cpp:1366
+#: ../src/gui/main_window.cpp:1229 ../src/gui/main_window.cpp:1360
 msgid "View the contacts list"
 msgstr "संपर्क यादी पहा"
 
-#: ../src/gui/main_window.cpp:1246 ../src/gui/main_window.cpp:1371
+#: ../src/gui/main_window.cpp:1240 ../src/gui/main_window.cpp:1365
 msgid "View the dialpad"
 msgstr "डायलपॅड पहा"
 
-#: ../src/gui/main_window.cpp:1257 ../src/gui/main_window.cpp:1376
+#: ../src/gui/main_window.cpp:1251 ../src/gui/main_window.cpp:1370
 msgid "View the call history"
 msgstr "कॉल इतिहास पहा"
 
-#: ../src/gui/main_window.cpp:1297
+#: ../src/gui/main_window.cpp:1291
 msgid "_Chat"
 msgstr "संवाद (_h)"
 
-#: ../src/gui/main_window.cpp:1299
+#: ../src/gui/main_window.cpp:1293
 msgid "Co_ntact"
 msgstr "संपर्क (_n)"
 
-#: ../src/gui/main_window.cpp:1300
+#: ../src/gui/main_window.cpp:1294
 msgid "Act on selected contact"
 msgstr "निवडलेले संपर्कवर कार्यबद्ध रहा"
 
-#: ../src/gui/main_window.cpp:1304
+#: ../src/gui/main_window.cpp:1298
 msgid "Ca_ll a Number"
 msgstr "नंबर कॉल करा (_l)"
 
-#: ../src/gui/main_window.cpp:1304
+#: ../src/gui/main_window.cpp:1298
 msgid "Place a new call"
 msgstr "नवीन कॉल करा"
 
-#: ../src/gui/main_window.cpp:1310
+#: ../src/gui/main_window.cpp:1304
 msgid "Add a contact to the roster"
 msgstr "नामवलीत संपर्क जोडा"
 
-#: ../src/gui/main_window.cpp:1316
+#: ../src/gui/main_window.cpp:1310
 msgid "Find contacts"
 msgstr "संपर्क शोधा"
 
-#: ../src/gui/main_window.cpp:1336
+#: ../src/gui/main_window.cpp:1330
 msgid "_Configuration Assistant"
 msgstr "संयोजना सहाय्यक (_C)"
 
-#: ../src/gui/main_window.cpp:1337
+#: ../src/gui/main_window.cpp:1331
 msgid "Run the configuration assistant"
 msgstr "संयोजना सहाय्यक चालवा"
 
-#: ../src/gui/main_window.cpp:1345
+#: ../src/gui/main_window.cpp:1339
 msgid "Edit your accounts"
 msgstr "खाते संपादीत करा"
 
-#: ../src/gui/main_window.cpp:1351
+#: ../src/gui/main_window.cpp:1345
 msgid "Change your preferences"
 msgstr "तुमचे आग्रक्रम सुधारा"
 
-#: ../src/gui/main_window.cpp:1358
+#: ../src/gui/main_window.cpp:1352
 msgid "_Video Preview"
 msgstr "विडीओ पूर्वदृश्य (_V)"
 
-#: ../src/gui/main_window.cpp:1366
+#: ../src/gui/main_window.cpp:1360
 msgid "Con_tacts"
 msgstr "संपर्क (_t)"
 
-#: ../src/gui/main_window.cpp:1371
+#: ../src/gui/main_window.cpp:1365
 msgid "_Dialpad"
 msgstr "डायलपॅड (_D)"
 
-#: ../src/gui/main_window.cpp:1376
+#: ../src/gui/main_window.cpp:1370
 msgid "_Call History"
 msgstr "कॉल इतिहास (_C)"
 
-#: ../src/gui/main_window.cpp:1384
+#: ../src/gui/main_window.cpp:1378
 msgid "Show Offline _Contacts"
 msgstr "ऑफलाइन संपर्क दर्शवा (_C)"
 
-#: ../src/gui/main_window.cpp:1475
+#: ../src/gui/main_window.cpp:1469
 msgid "Dialpad"
 msgstr "डायलपट"
 
-#: ../src/gui/main_window.cpp:1493
+#: ../src/gui/main_window.cpp:1487
 msgid "Call history"
 msgstr "कॉल इतिहास"
 
-#: ../src/gui/main_window.cpp:1505
+#: ../src/gui/main_window.cpp:1499
 msgid "Ekiga"
 msgstr "एकिगा"
 
@@ -4054,9 +4020,6 @@ msgstr "एकिगा"
 
 #~ msgid "The following accounts are inactive:"
 #~ msgstr "पुढील खाते निष्क्रिय आहेत:"
-
-#~ msgid "Online"
-#~ msgstr "ऑनलाइन"
 
 #~ msgid "Do Not Disturb"
 #~ msgstr "मला विचारू नका"
