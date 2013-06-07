@@ -474,7 +474,7 @@ Opal::Account::populate_menu (const std::string fullname,
   //
   // (it is supposed not to, but let's still test so the function
   // can be called from several places without problem)
-  if (complete_uri.find ("@") == string::npos)
+  if (complete_uri.find ("@") == string::npos && type != H323)
     complete_uri = complete_uri + "@" + get_host ();
 
   call_manager->populate_menu (fullname, complete_uri, tmp_builder);
