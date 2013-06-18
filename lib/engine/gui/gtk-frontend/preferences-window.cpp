@@ -453,8 +453,8 @@ gm_pw_init_general_page (GtkWidget *prefs_window,
                                 _("Personal Information"), 2, 2);
 
   entry = gnome_prefs_entry_new (subsection, _("_Full name:"),
-                           PERSONAL_DATA_KEY "full_name",
-                           _("Enter your full name"), 0, false);
+				 PERSONAL_DATA_KEY "full_name",
+				 _("Enter your full name"), 0, 2, false);
   gtk_widget_set_size_request (GTK_WIDGET (entry), 250, -1);
   gtk_entry_set_max_length (GTK_ENTRY (entry), 65);
 }
@@ -470,15 +470,15 @@ gm_pw_init_interface_page (GtkWidget *prefs_window,
   subsection = gnome_prefs_subsection_new (prefs_window, container,
                                 _("Video Display"), 1, 2);
 
-  gnome_prefs_toggle_new (subsection, _("Place windows displaying video _above other windows"), VIDEO_DISPLAY_KEY "stay_on_top", _("Place windows displaying video above other windows during calls"), 0);
+  gnome_prefs_toggle_new (subsection, _("Place windows displaying video _above other windows"), VIDEO_DISPLAY_KEY "stay_on_top", _("Place windows displaying video above other windows during calls"), 0, 2);
 
   /* Network Settings */
   subsection = gnome_prefs_subsection_new (prefs_window, container,
                                            _("Network Settings"), 2, 2);
 
-  gnome_prefs_spin_new (subsection, _("Type of Service (TOS):"), PROTOCOLS_KEY "rtp_tos_field", _("The Type of Service (TOS) byte on outgoing RTP IP packets. This byte is used by the network to provide some level of Quality of Service (QoS). Default value 184 (0xB8) corresponds to Expedited Forwarding (EF) PHB as defined in RFC 3246."), 0.0, 255.0, 1.0, 0, NULL, true);
+  gnome_prefs_spin_new (subsection, _("Type of Service (TOS):"), PROTOCOLS_KEY "rtp_tos_field", _("The Type of Service (TOS) byte on outgoing RTP IP packets. This byte is used by the network to provide some level of Quality of Service (QoS). Default value 184 (0xB8) corresponds to Expedited Forwarding (EF) PHB as defined in RFC 3246."), 0.0, 255.0, 1.0, 0, 2, NULL, true);
 
-  gnome_prefs_toggle_new (subsection, _("Enable network _detection"), NAT_KEY "enable_stun", _("Enable the automatic network setup resulting from the STUN test"), 1);
+  gnome_prefs_toggle_new (subsection, _("Enable network _detection"), NAT_KEY "enable_stun", _("Enable the automatic network setup resulting from the STUN test"), 1, 2);
 }
 
 static void
@@ -490,19 +490,19 @@ gm_pw_init_call_options_page (GtkWidget *prefs_window,
   subsection = gnome_prefs_subsection_new (prefs_window, container,
                                            _("Call Forwarding"), 3, 2);
 
-  gnome_prefs_toggle_new (subsection, _("_Always forward calls to the given host"), CALL_FORWARDING_KEY "always_forward", _("If enabled, all incoming calls will be forwarded to the host that is specified in the protocol settings"), 0);
+  gnome_prefs_toggle_new (subsection, _("_Always forward calls to the given host"), CALL_FORWARDING_KEY "always_forward", _("If enabled, all incoming calls will be forwarded to the host that is specified in the protocol settings"), 0, 2);
 
-  gnome_prefs_toggle_new (subsection, _("Forward calls to the given host if _no answer"), CALL_FORWARDING_KEY "forward_on_no_answer", _("If enabled, all incoming calls will be forwarded to the host that is specified in the protocol settings if you do not answer the call"), 1);
+  gnome_prefs_toggle_new (subsection, _("Forward calls to the given host if _no answer"), CALL_FORWARDING_KEY "forward_on_no_answer", _("If enabled, all incoming calls will be forwarded to the host that is specified in the protocol settings if you do not answer the call"), 1, 2);
 
-  gnome_prefs_toggle_new (subsection, _("Forward calls to the given host if _busy"), CALL_FORWARDING_KEY "forward_on_busy", _("If enabled, all incoming calls will be forwarded to the host that is specified in the protocol settings if you already are in a call or if you are in busy mode"), 2);
+  gnome_prefs_toggle_new (subsection, _("Forward calls to the given host if _busy"), CALL_FORWARDING_KEY "forward_on_busy", _("If enabled, all incoming calls will be forwarded to the host that is specified in the protocol settings if you already are in a call or if you are in busy mode"), 2, 2);
 
 
   subsection = gnome_prefs_subsection_new (prefs_window, container,
                                            _("Call Options"), 2, 3);
 
   /* Add all the fields */
-  gnome_prefs_spin_new (subsection, _("Call forwarding delay (in seconds):"), CALL_OPTIONS_KEY "no_answer_timeout", _("Automatically reject or forward incoming calls if no answer is given after the specified amount of time (in seconds)"), 10.0, 299.0, 1.0, 0, NULL, true);
-  gnome_prefs_toggle_new (subsection, _("_Automatically answer incoming calls"), CALL_OPTIONS_KEY "auto_answer", _("If enabled, automatically answer incoming calls"), 1);
+  gnome_prefs_spin_new (subsection, _("Call forwarding delay (in seconds):"), CALL_OPTIONS_KEY "no_answer_timeout", _("Automatically reject or forward incoming calls if no answer is given after the specified amount of time (in seconds)"), 10.0, 299.0, 1.0, 0, 3, NULL, true);
+  gnome_prefs_toggle_new (subsection, _("_Automatically answer incoming calls"), CALL_OPTIONS_KEY "auto_answer", _("If enabled, automatically answer incoming calls"), 1, 3);
 }
 
 
@@ -537,10 +537,7 @@ gm_pw_init_sound_events_page (GtkWidget *prefs_window,
                                            1, 1);
 
   vbox = gtk_box_new (GTK_ORIENTATION_VERTICAL, 0);
-  gtk_table_attach (GTK_TABLE (subsection), vbox, 0, 1, 0, 1,
-                    (GtkAttachOptions) (GTK_SHRINK), 
-                    (GtkAttachOptions) (GTK_SHRINK),
-                    0, 0);
+  gtk_grid_attach (GTK_GRID (subsection), vbox, 0, 0, 1, 1);
 
   /* The 3rd column will be invisible and contain the config key containing
      the file to play. The 4th one contains the key determining if the
@@ -666,7 +663,7 @@ gm_pw_init_h323_page (GtkWidget *prefs_window,
                                            _("Misc Settings"), 2, 2);
 
   entry =
-    gnome_prefs_entry_new (subsection, _("Forward _URI:"), H323_KEY "forward_host", _("The host where calls should be forwarded if call forwarding is enabled"), 1, false);
+    gnome_prefs_entry_new (subsection, _("Forward _URI:"), H323_KEY "forward_host", _("The host where calls should be forwarded if call forwarding is enabled"), 1, 2, false);
   if (!g_strcmp0 (gtk_entry_get_text (GTK_ENTRY (entry)), ""))
     gtk_entry_set_text (GTK_ENTRY (entry), "h323:");
 
@@ -675,13 +672,13 @@ gm_pw_init_h323_page (GtkWidget *prefs_window,
                                 _("Advanced Settings"), 5, 4);
 
   /* The toggles */
-  gnome_prefs_toggle_new (subsection, _("Enable H.245 _tunneling"), H323_KEY "enable_h245_tunneling", _("This enables H.245 Tunneling mode. In H.245 Tunneling mode H.245 messages are encapsulated into the H.225 channel (port 1720). This saves one TCP connection during calls. H.245 Tunneling was introduced in H.323v2."), 0);
+  gnome_prefs_toggle_new (subsection, _("Enable H.245 _tunneling"), H323_KEY "enable_h245_tunneling", _("This enables H.245 Tunneling mode. In H.245 Tunneling mode H.245 messages are encapsulated into the H.225 channel (port 1720). This saves one TCP connection during calls. H.245 Tunneling was introduced in H.323v2."), 0, 4);
 
-  gnome_prefs_toggle_new (subsection, _("Enable _early H.245"), H323_KEY "enable_early_h245", _("This enables H.245 early in the setup"), 1);
+  gnome_prefs_toggle_new (subsection, _("Enable _early H.245"), H323_KEY "enable_early_h245", _("This enables H.245 early in the setup"), 1, 4);
 
-  gnome_prefs_toggle_new (subsection, _("Enable fast _start procedure"), H323_KEY "enable_fast_start", _("Connection will be established in Fast Start (Fast Connect) mode. Fast Start is a new way to start calls faster that was introduced in H.323v2."), 2);
+  gnome_prefs_toggle_new (subsection, _("Enable fast _start procedure"), H323_KEY "enable_fast_start", _("Connection will be established in Fast Start (Fast Connect) mode. Fast Start is a new way to start calls faster that was introduced in H.323v2."), 2, 4);
 
-  gnome_prefs_toggle_new (subsection, _("Enable H.239 control"), H323_KEY "enable_h239", _("This enables H.239 capability for additional video roles."), 3);
+  gnome_prefs_toggle_new (subsection, _("Enable H.239 control"), H323_KEY "enable_h239", _("This enables H.239 capability for additional video roles."), 3, 4);
 
   gnome_prefs_int_option_menu_new (subsection, NULL, roles, H323_KEY "video_role", _("Select the H.239 Video Role"), 4);
 
@@ -711,10 +708,10 @@ gm_pw_init_sip_page (GtkWidget *prefs_window,
   subsection = gnome_prefs_subsection_new (prefs_window, container,
                                            _("Misc Settings"), 2, 2);
 
-  gnome_prefs_entry_new (subsection, _("_Outbound proxy:"), SIP_KEY "outbound_proxy_host", _("The SIP Outbound Proxy to use for outgoing calls"), 0, false);
+  gnome_prefs_entry_new (subsection, _("_Outbound proxy:"), SIP_KEY "outbound_proxy_host", _("The SIP Outbound Proxy to use for outgoing calls"), 0, 2, false);
 
   entry =
-    gnome_prefs_entry_new (subsection, _("Forward _URI:"), SIP_KEY "forward_host", _("The host where calls should be forwarded if call forwarding is enabled"), 1, false);
+    gnome_prefs_entry_new (subsection, _("Forward _URI:"), SIP_KEY "forward_host", _("The host where calls should be forwarded if call forwarding is enabled"), 1, 2, false);
   if (!g_strcmp0 (gtk_entry_get_text (GTK_ENTRY (entry)), ""))
     gtk_entry_set_text (GTK_ENTRY (entry), "sip:");
 
@@ -896,7 +893,7 @@ gm_pw_init_video_devices_page (GtkWidget *prefs_window,
   g_free (array);
 
   /* Video Channel */
-  gnome_prefs_spin_new (subsection, _("Channel:"), VIDEO_DEVICES_KEY "channel", _("The video channel number to use (to select camera, tv or other sources)"), 0.0, 10.0, 1.0, 3, NULL, false);
+  gnome_prefs_spin_new (subsection, _("Channel:"), VIDEO_DEVICES_KEY "channel", _("The video channel number to use (to select camera, tv or other sources)"), 0.0, 10.0, 1.0, 3, 3, NULL, false);
 
   gnome_prefs_int_option_menu_new (subsection, _("Size:"), (const gchar**)video_size, VIDEO_DEVICES_KEY "size", _("Select the transmitted video size"), 1);
 
@@ -922,12 +919,7 @@ gm_pw_init_audio_codecs_page (GtkWidget *prefs_window,
 				_("Codecs"), 1, 1);
 
   codecs_list = codecs_box_new_with_type (Ekiga::Call::Audio);
-  gtk_table_attach (GTK_TABLE (subsection),
-                    codecs_list,
-                    0, 1, 0, 1,
-                    (GtkAttachOptions) (GTK_SHRINK),
-                    (GtkAttachOptions) (GTK_SHRINK),
-                    0, 0);
+  gtk_grid_attach (GTK_GRID (subsection), codecs_list, 0, 0, 1, 1);
 
   /* Here we add the audio codecs options */
   subsection = gnome_prefs_subsection_new (prefs_window, container,
@@ -935,11 +927,11 @@ gm_pw_init_audio_codecs_page (GtkWidget *prefs_window,
 
   /* Translators: the full sentence is Automatically adjust jitter buffer
      between X and Y ms */
-  gnome_prefs_toggle_new (subsection, _("Enable silence _detection"), AUDIO_CODECS_KEY "enable_silence_detection", _("If enabled, use silence detection with the codecs supporting it"), 0);
+  gnome_prefs_toggle_new (subsection, _("Enable silence _detection"), AUDIO_CODECS_KEY "enable_silence_detection", _("If enabled, use silence detection with the codecs supporting it"), 0, 1);
 
-  gnome_prefs_toggle_new (subsection, _("Enable echo can_celation"), AUDIO_CODECS_KEY "enable_echo_cancellation", _("If enabled, use echo cancellation"), 1);
+  gnome_prefs_toggle_new (subsection, _("Enable echo can_celation"), AUDIO_CODECS_KEY "enable_echo_cancellation", _("If enabled, use echo cancellation"), 1, 1);
 
-  gnome_prefs_spin_new (subsection, _("Maximum _jitter buffer (in ms):"), AUDIO_CODECS_KEY "maximum_jitter_buffer", _("The maximum jitter buffer size for audio reception (in ms)"), 20.0, 2000.0, 50.0, 2, NULL, true);
+  gnome_prefs_spin_new (subsection, _("Maximum _jitter buffer (in ms):"), AUDIO_CODECS_KEY "maximum_jitter_buffer", _("The maximum jitter buffer size for audio reception (in ms)"), 20.0, 2000.0, 50.0, 2, 1, NULL, true);
 }
 
 
@@ -955,12 +947,7 @@ gm_pw_init_video_codecs_page (GtkWidget *prefs_window,
 				_("Codecs"), 1, 1);
 
   codecs_list = codecs_box_new_with_type (Ekiga::Call::Video);
-  gtk_table_attach (GTK_TABLE (subsection),
-                    codecs_list,
-                    0, 1, 0, 1,
-                    (GtkAttachOptions) (GTK_SHRINK),
-                    (GtkAttachOptions) (GTK_SHRINK),
-                    0, 0);
+  gtk_grid_attach (GTK_GRID (subsection), codecs_list, 0, 0, 1, 1);
 
   /* Here we add the video codecs options */
   subsection = gnome_prefs_subsection_new (prefs_window, container,
@@ -969,7 +956,7 @@ gm_pw_init_video_codecs_page (GtkWidget *prefs_window,
   /* Translators: the full sentence is Keep a minimum video quality of X % */
   gnome_prefs_scale_new (subsection, _("Picture quality"), _("Frame rate"), VIDEO_CODECS_KEY "temporal_spatial_tradeoff", _("Choose if you want to guarantee a minimum image quality (possibly leading to dropped frames in order not to surpass the bitrate limit) or if you prefer to keep the frame rate"), 0.0, 32.0, 1.0, 2);
 
-  gnome_prefs_spin_new (subsection, _("Maximum video _bitrate (in kbits/s):"), VIDEO_CODECS_KEY "maximum_video_tx_bitrate", _("The maximum video bitrate in kbits/s. The video quality and the effective frame rate will be dynamically adjusted to keep the bitrate at the given value."), 16.0, 10240.0, 1.0, 1, NULL, true);
+  gnome_prefs_spin_new (subsection, _("Maximum video _bitrate (in kbits/s):"), VIDEO_CODECS_KEY "maximum_video_tx_bitrate", _("The maximum video bitrate in kbits/s. The video quality and the effective frame rate will be dynamically adjusted to keep the bitrate at the given value."), 16.0, 10240.0, 1.0, 1, 1, NULL, true);
 }
 
 

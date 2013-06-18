@@ -27,7 +27,7 @@
 
 
 /*
- *                         gnome_prefs_window.c  -  description 
+ *                         gnome_prefs_window.c  -  description
  *                         ------------------------------------
  *   begin                : Mon Oct 15 2003, but based on older code
  *   copyright            : (C) 2000-2006 by Damien Sandras
@@ -40,7 +40,7 @@
 G_BEGIN_DECLS
 
 
-/* Common notice 
+/* Common notice
  *
  * The created widgets are associated to a config key. They have the value
  * of the config key as initial value and they get updated when the config
@@ -58,7 +58,7 @@ G_BEGIN_DECLS
 /* DESCRIPTION  :  /
  * BEHAVIOR     :  Creates a GtkEntry associated with a config key and returns
  *                 the result.
- *                 The first parameter is the section in which 
+ *                 The first parameter is the section in which
  *                 the GtkEntry should be attached. The other parameters are
  *                 the text label, the config key, the tooltip, the row where
  *                 to attach it in the section, and if the label and GtkEntry
@@ -66,80 +66,83 @@ G_BEGIN_DECLS
  *                 section they belong to.
  * PRE          :  /
  */
-GtkWidget *gnome_prefs_entry_new (GtkWidget *,
-				  const gchar *,
-				  const gchar *,
-				  const gchar *,
-				  int,
-				  gboolean);
+GtkWidget *gnome_prefs_entry_new (GtkWidget* grid,
+				  const gchar* label_text,
+				  const gchar* conf_key,
+				  const gchar* tooltip,
+				  int row,
+				  int width,
+				  gboolean box);
 
 
 /* DESCRIPTION  :  /
  * BEHAVIOR     :  Creates a GtkToggleButton associated with a config key and
  *                 returns the result.
- *                 The first parameter is the section in which the 
+ *                 The first parameter is the section in which the
  *                 GtkToggleButton should be attached. The other parameters are
  *                 the text label, the config key, the tooltip, the row where
  *                 to attach it in the section.
  * PRE          :  /
  */
-GtkWidget *gnome_prefs_toggle_new (GtkWidget *,
-				   const gchar *,
-				   const gchar *, 
-				   const gchar *,
-				   int);
+GtkWidget *gnome_prefs_toggle_new (GtkWidget* grid,
+				   const gchar* label_text,
+				   const gchar* conf_key,
+				   const gchar* tooltip,
+				   int row,
+				   int width);
 
 
 /* DESCRIPTION  :  /
  * BEHAVIOR     :  Creates a GtkHScale associated with a config key and
  *                 returns the result.
- *                 The first parameter is the section in which 
+ *                 The first parameter is the section in which
  *                 the GtkHScale should be attached. The other parameters
  *                 are the text labels, the config key, the tooltip, the
  *                 minimal and maximal values, the incrementation step,
  *                 the row where to attach it in the section.
  * PRE          :  /
  */
-GtkWidget *gnome_prefs_scale_new (GtkWidget *,       
-				  const gchar *,
-				  const gchar *,
-				  const gchar *,       
-				  const gchar *,
-				  double,
-				  double,
-				  double,
-				  int);
+GtkWidget *gnome_prefs_scale_new (GtkWidget* grid,
+				  const gchar* down_label_txt,
+				  const gchar* up_label_txt,
+				  const gchar* conf_key,
+				  const gchar* tooltip,
+				  double min,
+				  double max,
+				  double step,
+				  int row);
 
 
 /* DESCRIPTION  :  /
  * BEHAVIOR     :  Creates a GtkSpinButton associated with a config key and
  *                 returns the result.
- *                 The first parameter is the section in which 
+ *                 The first parameter is the section in which
  *                 the GtkSpinButton should be attached. The other parameters
  *                 are the text label, the config key, the tooltip, the
  *                 minimal and maximal values, the incrementation step,
- *                 the row where to attach it in the section, 
+ *                 the row where to attach it in the section,
  *                 the rest of the label, if any, and if the label and widget
  *                 should be packed together or aligned with others in the
- *                 section they belong to. 
+ *                 section they belong to.
  * PRE          :  The gboolean must be TRUE if the rest of the label is given.
  */
-GtkWidget *gnome_prefs_spin_new (GtkWidget *,
-				 const gchar *,
-				 const gchar *,
-				 const gchar *,
-				 double,
-				 double,
-				 double,
-				 int,
-				 const gchar *,
-				 gboolean);
+GtkWidget *gnome_prefs_spin_new (GtkWidget* grid,
+				 const gchar* label_text,
+				 const gchar* conf_key,
+				 const gchar* tooltip,
+				 double min,
+				 double max,
+				 double step,
+				 int row,
+				 int width,
+				 const gchar* label_text2,
+				 gboolean box);
 
 
 /* DESCRIPTION  :  /
  * BEHAVIOR     :  Creates a range with 2 GtkSpinButtons associated with two
  *                 config keys.
- *                 The first parameter is the section in which 
+ *                 The first parameter is the section in which
  *                 the GtkSpinButton should be attached. The other parameters
  *                 are the first part of the label, a pointer that will be
  *                 updated to point to the first GtkSpinButton, the second
@@ -171,7 +174,7 @@ void gnome_prefs_range_new (GtkWidget *,
 /* DESCRIPTION  :  /
  * BEHAVIOR     :  Creates a GtkOptionMenu associated with an integer config
  *                 key and returns the result.
- *                 The first parameter is the section in which 
+ *                 The first parameter is the section in which
  *                 the GtkEntry should be attached. The other parameters are
  *                 the text label, the possible values for the menu, the config
  *                 key, the tooltip, the row where to attach it in the section.
@@ -179,7 +182,7 @@ void gnome_prefs_range_new (GtkWidget *,
  */
 GtkWidget *gnome_prefs_int_option_menu_new (GtkWidget *,
 					    const gchar *,
-					    const gchar **, 
+					    const gchar **,
 					    const gchar *,
 					    const gchar *,
 					    int);
@@ -188,12 +191,12 @@ GtkWidget *gnome_prefs_int_option_menu_new (GtkWidget *,
 /* DESCRIPTION  :  /
  * BEHAVIOR     :  Creates a GtkOptionMenu associated with a string config
  *                 key and returns the result.
- *                 The first parameter is the section in which 
+ *                 The first parameter is the section in which
  *                 the GtkEntry should be attached. The other parameters are
  *                 the text label, the possible values for the menu, the config
  *                 key, the tooltip, the row where to attach it in the section and
  *                 the default value if the conf key is associated to a NULL value.
- * PRE          :  The array ends with NULL. 
+ * PRE          :  The array ends with NULL.
  */
 GtkWidget *gnome_prefs_string_option_menu_new (GtkWidget *,
 					       const gchar *,
@@ -209,7 +212,7 @@ GtkWidget *gnome_prefs_string_option_menu_new (GtkWidget *,
  *                 a string config key. The first parameter is the menu,
  *                 the second is the array of possible values, and the
  *                 last one is the config key and the default value if the
- *                 conf key is associated to a NULL value. 
+ *                 conf key is associated to a NULL value.
  * PRE          :  The array ends with NULL.
  */
 void gnome_prefs_string_option_menu_update (GtkWidget *,
