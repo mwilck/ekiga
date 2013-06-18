@@ -76,7 +76,7 @@ struct _GmSmileyChooserButtonPrivate {
 
   GtkWidget* popup_window;
   GtkWidget* frame;
-  GtkWidget* table;
+  GtkWidget* grid;
 };
 
 G_DEFINE_TYPE (GmSmileyChooserButton, gm_smiley_chooser_button, GTK_TYPE_TOGGLE_BUTTON);
@@ -182,7 +182,7 @@ gm_smiley_chooser_button_init (GmSmileyChooserButton* self)
   self->priv->smiley_set = NULL;
   self->priv->popup_window = NULL;
   self->priv->frame = NULL;
-  self->priv->table = NULL;
+  self->priv->grid = NULL;
 
   g_signal_connect (self, "toggled",
 		    G_CALLBACK (on_smiley_chooser_button_toggled), NULL);
@@ -515,11 +515,11 @@ gm_smiley_chooser_button_destroy_view (GmSmileyChooserButton* self)
   if (self->priv->popped_up)
     gm_smiley_chooser_button_popdown (self);
 
-  if (self->priv->table)
+  if (self->priv->grid)
     {
-      g_object_unref (G_OBJECT (self->priv->table));
-      gtk_widget_destroy (self->priv->table);
-      self->priv->table = NULL;
+      g_object_unref (G_OBJECT (self->priv->grid));
+      gtk_widget_destroy (self->priv->grid);
+      self->priv->grid = NULL;
     }
 
   if (self->priv->frame)
@@ -549,8 +549,8 @@ gm_smiley_chooser_build_view (GmSmileyChooserButton* self)
   guint smiley = 0;
   guint num_smileys = 0;
 
-  guint table_width = 0;
-  guint table_height = 0;
+  guint grid_width = 0;
+  guint grid_height = 0;
   guint iter_x = 0;
   guint iter_y = 0;
 
@@ -582,38 +582,38 @@ gm_smiley_chooser_build_view (GmSmileyChooserButton* self)
   num_smileys = smiley / 2;
 
   /* calculate the dimensions out of the number of smileys */
-  /* FIXME calc the height/width of the table */
+  /* FIXME calc the height/width of the grid */
   if (num_smileys == 1)
     /* 1 smiley - special case, or fix the calculation below
      * if possible */
-    table_width = table_height = 1;
+    grid_width = grid_height = 1;
   else {
-    table_height = round (sqrt (num_smileys / golden_ratio));
-    table_width = ceil (sqrt (num_smileys / golden_ratio) * golden_ratio);
+    grid_height = round (sqrt (num_smileys / golden_ratio));
+    grid_width = ceil (sqrt (num_smileys / golden_ratio) * golden_ratio);
     /* the following is needed to catch bordercases where the
      * rounding/ceiling fails to quantize to the wanted value.
      * No matter how you do the columns (round/ceil), you sometimes
      * have either one row too much or too less - that's why */
-    if ( (table_height * table_width) < num_smileys)
+    if ( (grid_height * grid_width) < num_smileys)
       {
-        if ( ((table_height + 1) * table_width) > (table_height * (table_width + 1)))
-          table_width++;
+        if ( ((grid_height + 1) * grid_width) > (grid_height * (grid_width + 1)))
+          grid_width++;
         else
-          table_height++;
+          grid_height++;
       }
   }
 
-  /* the table */
-  self->priv->table = gtk_table_new (table_height, table_width, TRUE);
-  g_object_ref (G_OBJECT (self->priv->table));
+  /* the grid */
+  self->priv->grid = gtk_grid_new ();
+  g_object_ref (G_OBJECT (self->priv->grid));
 
   /* populate the table with the smiley buttons */
   smiley = 0;
   for (iter_y = 0;
-       iter_y < table_height && (smiley / 2) < num_smileys;
+       iter_y < grid_height && (smiley / 2) < num_smileys;
        iter_y++) {
     for (iter_x = 0;
-         iter_x < table_width && (smiley / 2) < num_smileys;
+         iter_x < grid_width && (smiley / 2) < num_smileys;
          iter_x++) {
       button = gtk_button_new ();
       gtk_button_set_relief (GTK_BUTTON (button), GTK_RELIEF_NONE);
@@ -629,19 +629,19 @@ gm_smiley_chooser_build_view (GmSmileyChooserButton* self)
       g_signal_connect (button, "clicked",
                         G_CALLBACK (on_smiley_image_clicked), self);
 
-      gtk_table_attach_defaults (GTK_TABLE (self->priv->table),
-                                 button,
-                                 iter_x, iter_x + 1,
-                                 iter_y, iter_y + 1);
+      gtk_grid_attach (GTK_GRID (self->priv->grid),
+		       button,
+		       iter_x, iter_y,
+		       1, 1);
       smiley += 2;
     } /* for (iter_x) */
   } /* for (iter_y) */
 
   /* glue it all together */
   gtk_container_add (GTK_CONTAINER (self->priv->popup_window), self->priv->frame);
-  gtk_container_add (GTK_CONTAINER (self->priv->frame), self->priv->table);
+  gtk_container_add (GTK_CONTAINER (self->priv->frame), self->priv->grid);
   gtk_widget_show (self->priv->frame);
-  gtk_widget_show_all (self->priv->table);
+  gtk_widget_show_all (self->priv->grid);
 }
 
 
