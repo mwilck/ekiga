@@ -52,13 +52,13 @@ typedef struct _EkigaDialpadClass   EkigaDialpadClass;
 
 struct _EkigaDialpad
 {
-  GtkTable             parent;
+  GtkGrid             parent;
   EkigaDialpadPrivate *priv;
 };
 
 struct _EkigaDialpadClass
 {
-  GtkTableClass parent_class;
+  GtkGridClass parent_class;
 
   void (* button_clicked) (EkigaDialpad *dialpad, const gchar *button);
 };

@@ -82,7 +82,7 @@ enum
   PROP_ACCEL_GROUP
 };
 
-G_DEFINE_TYPE (EkigaDialpad, ekiga_dialpad, GTK_TYPE_TABLE);
+G_DEFINE_TYPE (EkigaDialpad, ekiga_dialpad, GTK_TYPE_GRID);
 
 static void
 ekiga_dialpad_get_property (GObject    *object,
@@ -147,9 +147,10 @@ ekiga_dialpad_init (EkigaDialpad *dialpad)
                                                EKIGA_TYPE_DIALPAD,
                                                EkigaDialpadPrivate);
 
-  gtk_table_set_col_spacings (GTK_TABLE (dialpad), 2);
-  gtk_table_set_row_spacings (GTK_TABLE (dialpad), 2);
-  gtk_table_set_homogeneous (GTK_TABLE (dialpad), TRUE);
+  gtk_grid_set_column_spacing (GTK_GRID (dialpad), 2);
+  gtk_grid_set_row_spacing (GTK_GRID (dialpad), 2);
+  gtk_grid_set_column_homogeneous (GTK_GRID (dialpad), TRUE);
+  gtk_grid_set_row_homogeneous (GTK_GRID (dialpad), TRUE);
 
   // the dialpad is LTR even for RTL languages
   gtk_widget_set_direction (GTK_WIDGET (dialpad), GTK_TEXT_DIR_LTR);
@@ -188,12 +189,9 @@ ekiga_dialpad_init (EkigaDialpad *dialpad)
 
     dialpad->priv->buttons[i] = button;
 
-    gtk_table_attach (GTK_TABLE (dialpad),  button,
-                      i % 3, i % 3 + 1,
-                      i / 3, i / 3 + 1,
-                      (GtkAttachOptions) (GTK_FILL | GTK_EXPAND),
-                      (GtkAttachOptions) (GTK_FILL | GTK_EXPAND),
-                      0, 0);
+    gtk_grid_attach (GTK_GRID (dialpad),  button,
+		     i % 3, i / 3,
+		     1, 1 );
 
     g_signal_connect (button, "clicked",
                       G_CALLBACK (on_dialpad_button_clicked), dialpad);
