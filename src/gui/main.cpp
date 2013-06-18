@@ -94,9 +94,7 @@ main (int argc,
 #endif
 
   /* GTK+ initialization */
-  g_type_init ();
-  g_thread_init (NULL);
-  gtk_init (&argc, &argv);
+gtk_init (&argc, &argv);
 #ifndef WIN32
   signal (SIGPIPE, SIG_IGN);
 #endif

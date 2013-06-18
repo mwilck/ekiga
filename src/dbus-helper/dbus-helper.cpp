@@ -167,8 +167,6 @@ main (G_GNUC_UNUSED int argc,
   guint request_name_result;
   GError *error = NULL;
 
-  g_type_init ();
-
   mainloop = g_main_loop_new (NULL, FALSE);
 
   bus = dbus_g_bus_get (DBUS_BUS_SESSION, &error);
