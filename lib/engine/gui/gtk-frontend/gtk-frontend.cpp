@@ -97,7 +97,6 @@ GtkFrontend::~GtkFrontend ()
 
   //if (status_icon)
   //  g_object_unref (status_icon);
-  //gtk_widget_destroy (main_window);
 }
 
 
@@ -129,8 +128,10 @@ void GtkFrontend::build ()
     boost::shared_ptr<GtkWidget> (preferences_window_new (core),
 				  gtk_widget_destroy);
   status_icon = status_icon_new (core);
-  main_window = gm_main_window_new (core);
-  gtk_window_set_transient_for (GTK_WINDOW (assistant_window.get ()), GTK_WINDOW (main_window));
+  main_window =
+    boost::shared_ptr<GtkWidget> (gm_main_window_new (core),
+				 gtk_widget_destroy);
+  gtk_window_set_transient_for (GTK_WINDOW (assistant_window.get ()), GTK_WINDOW (main_window.get ()));
 }
 
 
@@ -154,7 +155,7 @@ GtkFrontend::get_assistant_window () const
 const GtkWidget*
 GtkFrontend::get_main_window () const
 {
-  return main_window;
+  return main_window.get ();
 }
 
 
