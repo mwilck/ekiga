@@ -52,6 +52,8 @@
 #include "videoinput-core.h"
 #include "audioinput-core.h"
 #include "audiooutput-core.h"
+#include "device-lists.h"
+
 #include <gdk/gdkkeysyms.h>
 
 G_DEFINE_TYPE (EkigaAssistant, ekiga_assistant, GTK_TYPE_ASSISTANT);
@@ -145,16 +147,6 @@ set_current_page_complete (GtkAssistant *assistant,
   current_page = gtk_assistant_get_nth_page (assistant, page_number);
   gtk_assistant_set_page_complete (assistant, current_page, complete);
 }
-
-static void get_audiooutput_devices_list (boost::shared_ptr<Ekiga::AudioOutputCore> audiooutput_core,
-					  std::vector<std::string> & device_list);
-static void get_audioinput_devices_list (boost::shared_ptr<Ekiga::AudioInputCore> audioinput_core,
-					 std::vector<std::string> & device_list);
-static void get_videoinput_devices_list (boost::shared_ptr<Ekiga::VideoInputCore> videoinput_core,
-					 std::vector<std::string> & device_list);
-
-static gchar**
-convert_string_list (const std::vector<std::string> & list);
 
 static void
 update_combo_box (GtkComboBox         *combo_box,
@@ -1119,15 +1111,15 @@ prepare_audio_devices_page (EkigaAssistant *assistant)
    */
   std::vector <std::string> device_list;
 
-  get_audiooutput_devices_list (assistant->priv->audiooutput_core, device_list);
-  array = convert_string_list(device_list);
+  get_audiooutput_devices (assistant->priv->audiooutput_core, device_list);
+  array = vector_of_string_to_array (device_list);
   update_combo_box (GTK_COMBO_BOX (assistant->priv->audio_ringer), array, ringer);
   update_combo_box (GTK_COMBO_BOX (assistant->priv->audio_player), array, player);
   g_free (array);
 
 
-  get_audioinput_devices_list (assistant->priv->audioinput_core, device_list);
-  array = convert_string_list(device_list);
+  get_audioinput_devices (assistant->priv->audioinput_core, device_list);
+  array = vector_of_string_to_array (device_list);
   update_combo_box (GTK_COMBO_BOX (assistant->priv->audio_recorder), array, recorder);
   g_free (array);
 
@@ -1213,8 +1205,8 @@ prepare_video_devices_page (EkigaAssistant *assistant)
   gchar** array;
   gchar* current_plugin;
 
-  get_videoinput_devices_list (assistant->priv->videoinput_core, device_list);
-  array = convert_string_list (device_list);
+  get_videoinput_devices (assistant->priv->videoinput_core, device_list);
+  array = vector_of_string_to_array (device_list);
   current_plugin = gm_conf_get_string (VIDEO_DEVICES_KEY "input_device");
   if (current_plugin == NULL || !current_plugin[0]) {
     g_free (current_plugin);
@@ -1237,89 +1229,6 @@ apply_video_devices_page (EkigaAssistant *assistant)
   gtk_tree_model_get (gtk_combo_box_get_model (GTK_COMBO_BOX (assistant->priv->video_device)), &citer, 0, &device, -1);
   gm_conf_set_string (VIDEO_DEVICES_KEY "input_device", device);
   g_free (device);
-}
-
-
-// FIXME: duplicate to gm_prefs_window_get_video_devices_list
-static void
-get_audiooutput_devices_list (boost::shared_ptr<Ekiga::AudioOutputCore> audiooutput_core,
-                              std::vector<std::string> & device_list)
-{
-  std::vector <Ekiga::AudioOutputDevice> devices;
-
-  device_list.clear();
-  audiooutput_core->get_devices (devices);
-
-  for (std::vector<Ekiga::AudioOutputDevice>::iterator iter = devices.begin ();
-       iter != devices.end ();
-       iter++) {
-
-    device_list.push_back(iter->GetString());
-  }
-
-  if (device_list.size() == 0) {
-    device_list.push_back(_("No device found"));
-  }
-}
-
-
-static void
-get_audioinput_devices_list (boost::shared_ptr<Ekiga::AudioInputCore> audioinput_core,
-                             std::vector<std::string> & device_list)
-{
-  std::vector <Ekiga::AudioInputDevice> devices;
-
-  device_list.clear();
-  audioinput_core->get_devices (devices);
-
-  for (std::vector<Ekiga::AudioInputDevice>::iterator iter = devices.begin ();
-       iter != devices.end ();
-       iter++) {
-
-    device_list.push_back(iter->GetString());
-  }
-
-  if (device_list.size() == 0) {
-    device_list.push_back(_("No device found"));
-  }
-}
-
-
-static void
-get_videoinput_devices_list (boost::shared_ptr<Ekiga::VideoInputCore> videoinput_core,
-			     std::vector<std::string> & device_list)
-{
-  std::vector<Ekiga::VideoInputDevice> devices;
-
-  device_list.clear();
-  videoinput_core->get_devices (devices);
-
-  for (std::vector<Ekiga::VideoInputDevice>::iterator iter = devices.begin ();
-       iter != devices.end ();
-       iter++) {
-
-    device_list.push_back(iter->GetString());
-  }
-
-  if (device_list.size () == 0) {
-    device_list.push_back(_("No device found"));
-  }
-}
-
-
-// FIXME: duplicate to gm_prefs_window_convert_string_list
-static gchar**
-convert_string_list (const std::vector<std::string> & list)
-{
-  gchar **array = NULL;
-  unsigned i;
-
-  array = (gchar**) g_malloc (sizeof(gchar*) * (list.size() + 1));
-  for (i = 0; i < list.size(); i++)
-    array[i] = (gchar*) list[i].c_str();
-  array[i] = NULL;
-
-  return array;
 }
 
 
