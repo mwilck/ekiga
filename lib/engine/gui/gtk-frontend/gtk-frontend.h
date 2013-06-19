@@ -86,7 +86,7 @@ private :
   GtkWidget *preferences_window;
   boost::shared_ptr<GtkWidget> addressbook_window;
   boost::shared_ptr<GtkWidget> accounts_window;
-  GtkWidget *call_window;
+  boost::shared_ptr<GtkWidget> call_window;
   boost::shared_ptr<GtkWidget> chat_window;
   StatusIcon *status_icon;
 
