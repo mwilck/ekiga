@@ -92,6 +92,13 @@ main (int argc,
     exit (1);
 #endif
 
+#if !GLIB_CHECK_VERSION(2,36,0)
+  g_type_init ();
+#endif
+#if !GLIB_CHECK_VERSION(2,32,0)
+  g_thread_init();
+#endif
+
   /* GTK+ initialization */
   gtk_init (&argc, &argv);
 #ifndef WIN32
