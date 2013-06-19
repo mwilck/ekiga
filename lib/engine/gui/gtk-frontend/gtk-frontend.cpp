@@ -125,7 +125,9 @@ void GtkFrontend::build ()
   chat_window =
     boost::shared_ptr<GtkWidget> (chat_window_new (core, "/apps/" PACKAGE_NAME "/general/user_interface/chat_window"),
 				  gtk_widget_destroy);
-  preferences_window = preferences_window_new (core);
+  preferences_window =
+    boost::shared_ptr<GtkWidget> (preferences_window_new (core),
+				  gtk_widget_destroy);
   status_icon = status_icon_new (core);
   main_window = gm_main_window_new (core);
   gtk_window_set_transient_for (GTK_WINDOW (assistant_window.get ()), GTK_WINDOW (main_window));
@@ -170,7 +172,7 @@ const GtkWidget *GtkFrontend::get_accounts_window () const
 
 const GtkWidget *GtkFrontend::get_preferences_window () const
 {
-  return preferences_window;
+  return preferences_window.get ();
 }
 
 
