@@ -49,7 +49,7 @@
 #include "presence-core.h"
 #include "addressbook-window.h"
 #include "accounts-window.h"
-#include "assistant.h"
+#include "assistant-window.h"
 #include "call-window.h"
 #include "chat-window.h"
 #include "main_window.h"
@@ -110,7 +110,7 @@ void GtkFrontend::build ()
     boost::shared_ptr<GtkWidget> (accounts_window_new_with_key (core, "/apps/" PACKAGE_NAME "/general/user_interface/accounts_window"),
 				  gtk_widget_destroy);
   assistant_window =
-    boost::shared_ptr<GtkWidget> (ekiga_assistant_new (core),
+    boost::shared_ptr<GtkWidget> (assistant_window_new (core),
 				  gtk_widget_destroy);
   call_window =
     boost::shared_ptr<GtkWidget> (call_window_new (core),

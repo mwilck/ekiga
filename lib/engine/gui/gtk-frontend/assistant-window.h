@@ -27,7 +27,7 @@
 
 
 /*
- *                          assistant.h  -  description
+ *                          assistant-window.h  -  description
  *                          ---------------------------
  *   begin                : Mon May 1 2002
  *   copyright            : (C) 2000-2008 by Damien Sandras
@@ -37,8 +37,8 @@
  */
 
 
-#ifndef __EKIGA_ASSISTANT_H__
-#define __EKIGA_ASSISTANT_H__
+#ifndef __ASSISTANT_WINDOW_H__
+#define __ASSISTANT_WINDOW_H__
 
 #include <gtk/gtk.h>
 
@@ -53,25 +53,25 @@ enum {
   NET_CUSTOM
 };
 
-#define EKIGA_TYPE_ASSISTANT               (ekiga_assistant_get_type ())
-#define EKIGA_ASSISTANT(obj)               (G_TYPE_CHECK_INSTANCE_CAST ((obj), EKIGA_TYPE_ASSISTANT, EkigaAssistant))
-#define EKIGA_ASSISTANT_CLASS(klass)       (G_TYPE_CHECK_CLASS_CAST ((klass), EKIGA_TYPE_ASSISTANT, EkigaAssistantClass))
-#define EKIGA_IS_ASSISTANT(obj)            (G_TYPE_CHECK_INSTANCE_TYPE ((obj), EKIGA_TYPE_ASSISTANT))
-#define EKIGA_IS_ASSISTANT_CLASS(klass)    (G_TYPE_CHECK_CLASS_TYPE ((klass), EKIGA_TYPE_ASSISTANT))
+#define ASSISTANT_WINDOW_TYPE (assistant_window_get_type ())
+#define ASSISTANT_WINDOW(obj)               (G_TYPE_CHECK_INSTANCE_CAST ((obj), ASSISTANT_WINDOW_TYPE, AssistantWindow))
+#define ASSISTANT__WINDOW_CLASS(klass)       (G_TYPE_CHECK_CLASS_CAST ((klass), ASSISTANT_WINDOW_TYPE, AssistantWindowClass))
+#define IS_ASSISTANT_WINDOW(obj)            (G_TYPE_CHECK_INSTANCE_TYPE ((obj), ASSISTANT_WINDOW_TYPE))
+#define IS_ASSISTANT_WINDOW_CLASS(klass)    (G_TYPE_CHECK_CLASS_TYPE ((klass), ASSISTANT_WINDOW_TYPE))
 
-typedef struct _EkigaAssistantPrivate       EkigaAssistantPrivate;
-typedef struct _EkigaAssistant              EkigaAssistant;
+typedef struct _AssistantWindowPrivate AssistantWindowPrivate;
+typedef struct _AssistantWindow AssistantWindow;
 
-struct _EkigaAssistant {
+struct _AssistantWindow {
   GtkAssistant           parent;
-  EkigaAssistantPrivate *priv;
+  AssistantWindowPrivate* priv;
 };
 
-typedef GtkAssistantClass EkigaAssistantClass;
+typedef GtkAssistantClass AssistantWindowClass;
 
-GType        ekiga_assistant_get_type   ();
-GtkWidget   *ekiga_assistant_new        (Ekiga::ServiceCore& core);
+GType assistant_window_get_type   ();
+GtkWidget* assistant_window_new (Ekiga::ServiceCore& core);
 
 G_END_DECLS
 
-#endif /* __EKIGA_ASSISTANT_H__ */
+#endif /* __ASSISTANT_WINDOW_H__ */
