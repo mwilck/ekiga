@@ -81,7 +81,7 @@ public:
 
 private :
 
-  GtkWidget* assistant_window;
+  boost::shared_ptr<GtkWidget> assistant_window;
   GtkWidget* main_window;
   GtkWidget *preferences_window;
   boost::shared_ptr<GtkWidget> addressbook_window;

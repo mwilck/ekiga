@@ -95,7 +95,6 @@ GtkFrontend::~GtkFrontend ()
   // code should be reworked for a correct memory
   // management
 
-  //gtk_widget_destroy (assistant_window);
   //if (status_icon)
   //  g_object_unref (status_icon);
   //gtk_widget_destroy (main_window);
@@ -117,7 +116,9 @@ void GtkFrontend::build ()
   accounts_window =
     boost::shared_ptr<GtkWidget> (accounts_window_new_with_key (core, "/apps/" PACKAGE_NAME "/general/user_interface/accounts_window"),
 				  gtk_widget_destroy);
-  assistant_window = ekiga_assistant_new (core);
+  assistant_window =
+    boost::shared_ptr<GtkWidget> (ekiga_assistant_new (core),
+				  gtk_widget_destroy);
   call_window =
     boost::shared_ptr<GtkWidget> (call_window_new (core),
 				  gtk_widget_destroy);
@@ -127,7 +128,7 @@ void GtkFrontend::build ()
   preferences_window = preferences_window_new (core);
   status_icon = status_icon_new (core);
   main_window = gm_main_window_new (core);
-  gtk_window_set_transient_for (GTK_WINDOW (assistant_window), GTK_WINDOW (main_window));
+  gtk_window_set_transient_for (GTK_WINDOW (assistant_window.get ()), GTK_WINDOW (main_window));
 }
 
 
@@ -145,7 +146,7 @@ const std::string GtkFrontend::get_description () const
 const GtkWidget*
 GtkFrontend::get_assistant_window () const
 {
-  return assistant_window;
+  return assistant_window.get ();
 }
 
 const GtkWidget*
