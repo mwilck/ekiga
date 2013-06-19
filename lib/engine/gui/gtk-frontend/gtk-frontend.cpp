@@ -96,7 +96,6 @@ GtkFrontend::~GtkFrontend ()
   // management
 
   //gtk_widget_destroy (assistant_window);
-  //gtk_widget_destroy (chat_window);
   //gtk_widget_destroy (call_window);
   //if (status_icon)
   //  g_object_unref (status_icon);
@@ -121,7 +120,9 @@ void GtkFrontend::build ()
 				  gtk_widget_destroy);
   assistant_window = ekiga_assistant_new (core);
   call_window = call_window_new (core);
-  chat_window = chat_window_new (core, "/apps/" PACKAGE_NAME "/general/user_interface/chat_window");
+  chat_window =
+    boost::shared_ptr<GtkWidget> (chat_window_new (core, "/apps/" PACKAGE_NAME "/general/user_interface/chat_window"),
+				  gtk_widget_destroy);
   preferences_window = preferences_window_new (core);
   status_icon = status_icon_new (core);
   main_window = gm_main_window_new (core);
@@ -179,7 +180,7 @@ const GtkWidget *GtkFrontend::get_call_window () const
 
 const GtkWidget *GtkFrontend::get_chat_window () const
 {
-  return chat_window;
+  return chat_window.get ();
 }
 
 
