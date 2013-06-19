@@ -276,7 +276,6 @@ statusicon_activated_cb (G_GNUC_UNUSED GtkStatusIcon *icon,
     if (frontend) {
 
       GtkWidget *w = GTK_WIDGET (frontend->get_chat_window ());
-      gtk_widget_show (w);
       gtk_window_present (GTK_WINDOW (w));
     }
   }
