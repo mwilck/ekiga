@@ -88,7 +88,7 @@ private :
   boost::shared_ptr<GtkWidget> accounts_window;
   boost::shared_ptr<GtkWidget> call_window;
   boost::shared_ptr<GtkWidget> chat_window;
-  StatusIcon *status_icon;
+  boost::shared_ptr<StatusIcon> status_icon;
 
   Ekiga::ServiceCore & core;
 };

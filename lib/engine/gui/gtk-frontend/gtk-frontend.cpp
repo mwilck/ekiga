@@ -91,12 +91,6 @@ GtkFrontend::GtkFrontend (Ekiga::ServiceCore & _core) : core(_core)
 
 GtkFrontend::~GtkFrontend ()
 {
-  // FIXME: we leak everything here, but the
-  // code should be reworked for a correct memory
-  // management
-
-  //if (status_icon)
-  //  g_object_unref (status_icon);
 }
 
 
@@ -127,7 +121,9 @@ void GtkFrontend::build ()
   preferences_window =
     boost::shared_ptr<GtkWidget> (preferences_window_new (core),
 				  gtk_widget_destroy);
-  status_icon = status_icon_new (core);
+  status_icon =
+    boost::shared_ptr<StatusIcon> (status_icon_new (core),
+				   g_object_unref);
   main_window =
     boost::shared_ptr<GtkWidget> (gm_main_window_new (core),
 				 gtk_widget_destroy);
@@ -191,5 +187,5 @@ const GtkWidget *GtkFrontend::get_chat_window () const
 
 const StatusIcon *GtkFrontend::get_status_icon () const
 {
-  return status_icon;
+  return status_icon.get ();
 }
