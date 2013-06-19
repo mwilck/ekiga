@@ -1274,7 +1274,8 @@ preferences_window_new (Ekiga::ServiceCore& core)
   notifier =
     gm_conf_notifier_add (SOUND_EVENTS_KEY "enable_incoming_call_sound", 
 			  sound_events_list_changed_nt, window);
-  
+   pw->notifiers.push_front (notifier);
+
   notifier =
     gm_conf_notifier_add (SOUND_EVENTS_KEY "incoming_call_sound",
 			  sound_events_list_changed_nt, window);
