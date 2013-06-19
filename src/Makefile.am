@@ -55,11 +55,7 @@ nodist_ekiga_SOURCES =
 
 # Graphical User Interface
 ekiga_SOURCES +=			\
-	gui/assistant.h			\
-	gui/assistant.cpp		\
-	gui/main.cpp		        \
-	gui/main_window.h		\
-	gui/main_window.cpp
+	gui/main.cpp
 
 # Endpoints
 ekiga_SOURCES +=			\

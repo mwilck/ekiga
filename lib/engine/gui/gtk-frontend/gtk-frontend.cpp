@@ -43,14 +43,16 @@
 #include "config.h"
 
 #include "gtk-frontend.h"
-
+#include "gmstockicons.h"
 #include "chat-core.h"
 #include "contact-core.h"
 #include "presence-core.h"
 #include "addressbook-window.h"
 #include "accounts-window.h"
+#include "assistant.h"
 #include "call-window.h"
 #include "chat-window.h"
+#include "main_window.h"
 #include "statusicon.h"
 #include "preferences-window.h"
 #include "roster-view-gtk.h"
@@ -87,15 +89,20 @@ GtkFrontend::GtkFrontend (Ekiga::ServiceCore & _core) : core(_core)
 {
 }
 
-
 GtkFrontend::~GtkFrontend ()
 {
-  gtk_widget_destroy (addressbook_window);
-  gtk_widget_destroy (accounts_window);
-  gtk_widget_destroy (chat_window);
-  gtk_widget_destroy (call_window);
-  if (status_icon)
-    g_object_unref (status_icon);
+  // FIXME: we leak everything here, but the
+  // code should be reworked for a correct memory
+  // management
+
+  //gtk_widget_destroy (assistant_window);
+  //gtk_widget_destroy (addressbook_window);
+  //gtk_widget_destroy (accounts_window);
+  //gtk_widget_destroy (chat_window);
+  //gtk_widget_destroy (call_window);
+  //if (status_icon)
+  //  g_object_unref (status_icon);
+  //gtk_widget_destroy (main_window);
 }
 
 
@@ -104,13 +111,20 @@ void GtkFrontend::build ()
   boost::shared_ptr<Ekiga::ContactCore> contact_core = core.get<Ekiga::ContactCore> ("contact-core");
   boost::shared_ptr<Ekiga::ChatCore> chat_core = core.get<Ekiga::ChatCore> ("chat-core");
 
+  /* Init the stock icons */
+  gnomemeeting_stock_icons_init ();
+  gtk_window_set_default_icon_name (GM_ICON_LOGO);
+
   addressbook_window =
     addressbook_window_new_with_key (*contact_core, "/apps/" PACKAGE_NAME "/general/user_interface/addressbook_window");
   accounts_window = accounts_window_new_with_key (core, "/apps/" PACKAGE_NAME "/general/user_interface/accounts_window");
+  assistant_window = ekiga_assistant_new (core);
   call_window = call_window_new (core);
   chat_window = chat_window_new (core, "/apps/" PACKAGE_NAME "/general/user_interface/chat_window");
   preferences_window = preferences_window_new (core);
   status_icon = status_icon_new (core);
+  main_window = gm_main_window_new (core);
+  gtk_window_set_transient_for (GTK_WINDOW (assistant_window), GTK_WINDOW (main_window));
 }
 
 
@@ -123,6 +137,18 @@ const std::string GtkFrontend::get_name () const
 const std::string GtkFrontend::get_description () const
 {
   return "\tGtk+ frontend support";
+}
+
+const GtkWidget*
+GtkFrontend::get_assistant_window () const
+{
+  return assistant_window;
+}
+
+const GtkWidget*
+GtkFrontend::get_main_window () const
+{
+  return main_window;
 }
 
 

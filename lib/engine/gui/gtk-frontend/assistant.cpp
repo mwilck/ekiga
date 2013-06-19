@@ -43,13 +43,11 @@
 #include "account-core.h"
 #include "account.h"
 
-
-#include "ekiga.h"
 #include "gmconf.h"
 #include "platform.h"
 #include "assistant.h"
 #include "default_devices.h"
-
+#include "gtk-frontend.h"
 #include "opal-bank.h"
 #include "videoinput-core.h"
 #include "audioinput-core.h"
@@ -60,6 +58,7 @@ G_DEFINE_TYPE (EkigaAssistant, ekiga_assistant, GTK_TYPE_ASSISTANT);
 
 struct _EkigaAssistantPrivate
 {
+  Ekiga::ServiceCore* service_core; // FIXME: wrong memory management
   boost::shared_ptr<Ekiga::VideoInputCore> videoinput_core;
   boost::shared_ptr<Ekiga::AudioInputCore> audioinput_core;
   boost::shared_ptr<Ekiga::AudioOutputCore> audiooutput_core;
@@ -1610,16 +1609,22 @@ ekiga_assistant_apply (GtkAssistant *gtkassistant)
   /* Hide the assistant and show the main Ekiga window */
   gtk_widget_hide (GTK_WIDGET (assistant));
   gtk_assistant_set_current_page (gtkassistant, 0);
-  gtk_widget_show (GnomeMeeting::Process ()->GetMainWindow ());
+  boost::shared_ptr<GtkFrontend> gtk_frontend
+    = assistant->priv->service_core->get<GtkFrontend>("gtk-frontend");
+  gtk_widget_show (GTK_WIDGET (gtk_frontend->get_main_window ()));
 }
 
 
 static void
 ekiga_assistant_cancel (GtkAssistant *gtkassistant)
 {
+  EkigaAssistant *assistant = EKIGA_ASSISTANT (gtkassistant);
+
   gtk_assistant_set_current_page (gtkassistant, 0);
   gtk_widget_hide (GTK_WIDGET (gtkassistant));
-  gtk_widget_show (GnomeMeeting::Process ()->GetMainWindow ());
+  boost::shared_ptr<GtkFrontend> gtk_frontend
+    = assistant->priv->service_core->get<GtkFrontend>("gtk-frontend");
+  gtk_widget_show (GTK_WIDGET (gtk_frontend->get_main_window ()));
 }
 
 
@@ -1685,6 +1690,8 @@ ekiga_assistant_new (Ekiga::ServiceCore& service_core)
   gpointer notifier;
 
   assistant = EKIGA_ASSISTANT (g_object_new (EKIGA_TYPE_ASSISTANT, NULL));
+
+  assistant->priv->service_core = &service_core;
 
   /* FIXME: move this into the caller */
   g_signal_connect (assistant, "key-press-event",

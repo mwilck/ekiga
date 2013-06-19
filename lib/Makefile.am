@@ -421,6 +421,10 @@ libekiga_la_SOURCES += \
 	$(engine_dir)/gui/gtk-frontend/addressbook-window.cpp \
 	$(engine_dir)/gui/gtk-frontend/accounts-window.h \
 	$(engine_dir)/gui/gtk-frontend/accounts-window.cpp \
+	$(engine_dir)/gui/gtk-frontend/assistant.h \
+	$(engine_dir)/gui/gtk-frontend/assistant.cpp \
+	$(engine_dir)/gui/gtk-frontend/main_window.h \
+	$(engine_dir)/gui/gtk-frontend/main_window.cpp \
 	$(engine_dir)/gui/gtk-frontend/book-view-gtk.h \
 	$(engine_dir)/gui/gtk-frontend/book-view-gtk.cpp \
 	$(engine_dir)/gui/gtk-frontend/call-window.h \

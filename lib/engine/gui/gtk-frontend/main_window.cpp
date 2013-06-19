@@ -39,7 +39,6 @@
 
 #include "main_window.h"
 
-#include "ekiga.h"
 #include "dialpad.h"
 #include "statusmenu.h"
 
@@ -1279,7 +1278,7 @@ ekiga_main_window_init_menu (EkigaMainWindow *mw)
   addressbook_window = GTK_WIDGET (gtk_frontend->get_addressbook_window ());
   accounts_window = GTK_WIDGET (gtk_frontend->get_accounts_window ());
   prefs_window = GTK_WIDGET (gtk_frontend->get_preferences_window ());
-  assistant_window = GnomeMeeting::Process ()->GetAssistantWindow ();
+  assistant_window = GTK_WIDGET (gtk_frontend->get_assistant_window ());
 
   /* Default values */
   cps = (PanelSection) gm_conf_get_int (USER_INTERFACE_KEY "main_window/panel_section");

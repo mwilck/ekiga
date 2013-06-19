@@ -41,7 +41,6 @@
 #include "ekiga.h"
 #include "assistant.h"
 #include "main_window.h"
-#include "gmstockicons.h"
 
 #include <opal/buildopts.h>
 
@@ -56,28 +55,12 @@ GnomeMeeting::GnomeMeeting ()
 
 {
   GM = this;
-
-  assistant_window = NULL;
-  main_window = NULL;
-  assistant_window = NULL;
 }
 
 
 void
 GnomeMeeting::Exit ()
 {
-  if (main_window) {
-    gtk_widget_hide (main_window);
-    gtk_widget_destroy (main_window);
-  }
-  main_window = NULL;
-
-  if (assistant_window) {
-    gtk_widget_hide (assistant_window);
-    gtk_widget_destroy (assistant_window);
-  }
-  assistant_window = NULL;
-
   while (gtk_events_pending ())
     gtk_main_iteration ();
 }
@@ -90,57 +73,6 @@ GnomeMeeting::Process ()
 }
 
 
-GtkWidget *
-GnomeMeeting::GetMainWindow ()
-{
-  return main_window;
-}
-
-
-GtkWidget *
-GnomeMeeting::GetAssistantWindow ()
-{
-  return assistant_window;
-}
-
-
 void GnomeMeeting::Main ()
 {
-}
-
-
-void GnomeMeeting::BuildGUI (Ekiga::ServiceCore& services)
-{
-  /* Init the stock icons */
-  gnomemeeting_stock_icons_init ();
-
-  /* Build the GUI */
-  gtk_window_set_default_icon_name (GM_ICON_LOGO);
-  assistant_window = ekiga_assistant_new (services);
-  main_window = gm_main_window_new (services);
-  // FIXME should be moved in ekiga_assistant_new
-  gtk_window_set_transient_for (GTK_WINDOW (assistant_window), GTK_WINDOW (main_window));
-
-  PTRACE (1, "Ekiga version "
-          << MAJOR_VERSION << "." << MINOR_VERSION << "." << BUILD_NUMBER);
-#ifdef EKIGA_REVISION
-  PTRACE (1, "Ekiga git revision: " << EKIGA_REVISION);
-#endif
-  PTRACE (1, "PTLIB version " << PTLIB_VERSION);
-  PTRACE (1, "OPAL version " << OPAL_VERSION);
-#if defined HAVE_XV || defined HAVE_DX
-  PTRACE (1, "Accelerated rendering support enabled");
-#else
-  PTRACE (1, "Accelerated rendering support disabled");
-#endif
-#ifdef HAVE_DBUS
-  PTRACE (1, "DBUS support enabled");
-#else
-  PTRACE (1, "DBUS support disabled");
-#endif
-#ifdef HAVE_GCONF
-  PTRACE (1, "GConf support enabled");
-#else
-  PTRACE (1, "GConf support disabled");
-#endif
 }

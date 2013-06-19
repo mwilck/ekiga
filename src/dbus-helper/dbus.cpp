@@ -42,11 +42,10 @@
 #include <dbus/dbus-glib.h>
 
 #include "dbus.h"
-
 #include "ekiga.h"
 #include "gmconf.h"
 #include "gmcallbacks.h"
-
+#include "gtk-frontend.h"
 #include "call-core.h"
 
 /* Those defines the namespace and path we want to use. */
@@ -58,7 +57,8 @@ G_DEFINE_TYPE(EkigaDBusComponent, ekiga_dbus_component, G_TYPE_OBJECT);
 
 struct _EkigaDBusComponentPrivate
 {
-  Ekiga::ServiceCore* service_core;
+  boost::weak_ptr<Ekiga::CallCore> call_core;
+  boost::weak_ptr<GtkFrontend> gtk_frontend;
 };
 
 /**************************
@@ -105,12 +105,15 @@ ekiga_dbus_component_class_init (EkigaDBusComponentClass *klass)
 }
 
 static gboolean
-ekiga_dbus_component_show (G_GNUC_UNUSED EkigaDBusComponent *self,
+ekiga_dbus_component_show (EkigaDBusComponent *self,
                            G_GNUC_UNUSED GError **error)
 {
   PTRACE (1, "DBus\tShow");
+  boost::shared_ptr<GtkFrontend> gtk_frontend = self->priv->gtk_frontend.lock ();
 
-  GtkWidget *window = GnomeMeeting::Process ()->GetMainWindow ();
+  g_return_val_if_fail (gtk_frontend, FALSE);
+
+  const GtkWidget *window = gtk_frontend->get_main_window ();
   if (gtk_widget_get_visible (GTK_WIDGET (window)))
     gtk_window_set_urgency_hint (GTK_WINDOW (window), TRUE);
   else
@@ -133,7 +136,10 @@ ekiga_dbus_component_call (EkigaDBusComponent *self,
                            const gchar *uri,
                            G_GNUC_UNUSED GError **error)
 {
-  boost::shared_ptr<Ekiga::CallCore> call_core = self->priv->service_core->get<Ekiga::CallCore> ("call-core");
+  boost::shared_ptr<Ekiga::CallCore> call_core = self->priv->call_core.lock ();
+
+  g_return_val_if_fail (call_core, FALSE);
+
   call_core->dial (uri);
 
   return TRUE;
@@ -245,7 +251,8 @@ ekiga_dbus_component_new (Ekiga::ServiceCore& service_core)
   }
 
   obj = EKIGA_DBUS_COMPONENT (g_object_new (EKIGA_TYPE_DBUS_COMPONENT, NULL));
-  obj->priv->service_core = &service_core;
+  obj->priv->gtk_frontend = service_core.get<GtkFrontend> ("gtk-frontend");
+  obj->priv->call_core = service_core.get<Ekiga::CallCore> ("call-core");
   dbus_g_connection_register_g_object (bus, EKIGA_DBUS_PATH, G_OBJECT (obj));
 
   return obj;

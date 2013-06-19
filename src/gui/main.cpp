@@ -63,6 +63,7 @@
 
 #include "call-core.h"
 
+#include "gtk-frontend.h"
 #include "ekiga.h"
 
 #ifdef WIN32
@@ -80,8 +81,6 @@ main (int argc,
 
   Ekiga::ServiceCorePtr service_core(new Ekiga::ServiceCore);
 
-  GtkWidget *main_window = NULL;
-
   gchar *path = NULL;
   gchar *url = NULL;
 
@@ -94,7 +93,7 @@ main (int argc,
 #endif
 
   /* GTK+ initialization */
-gtk_init (&argc, &argv);
+  gtk_init (&argc, &argv);
 #ifndef WIN32
   signal (SIGPIPE, SIG_IGN);
 #endif
@@ -187,9 +186,33 @@ gtk_init (&argc, &argv);
   Ekiga::Runtime::init ();
   engine_init (service_core, argc, argv);
 
-  GnomeMeeting::Process ()->BuildGUI (*service_core);
+  PTRACE (1, "Ekiga version "
+          << MAJOR_VERSION << "." << MINOR_VERSION << "." << BUILD_NUMBER);
+#ifdef EKIGA_REVISION
+  PTRACE (1, "Ekiga git revision: " << EKIGA_REVISION);
+#endif
+  PTRACE (1, "PTLIB version " << PTLIB_VERSION);
+  PTRACE (1, "OPAL version " << OPAL_VERSION);
+#if defined HAVE_XV || defined HAVE_DX
+  PTRACE (1, "Accelerated rendering support enabled");
+#else
+  PTRACE (1, "Accelerated rendering support disabled");
+#endif
+#ifdef HAVE_DBUS
+  PTRACE (1, "DBUS support enabled");
+#else
+  PTRACE (1, "DBUS support disabled");
+#endif
+#ifdef HAVE_GCONF
+  PTRACE (1, "GConf support enabled");
+#else
+  PTRACE (1, "GConf support disabled");
+#endif
 
-  main_window = GnomeMeeting::Process ()->GetMainWindow ();
+  boost::shared_ptr<GtkFrontend> gtk_frontend
+    = service_core->get<GtkFrontend>("gtk-frontend");
+
+  GtkWidget *main_window = GTK_WIDGET (gtk_frontend->get_main_window ());
 
   const int schema_version = MAJOR_VERSION * 1000
                              + MINOR_VERSION * 10
@@ -201,7 +224,7 @@ gtk_init (&argc, &argv);
 
     // show the assistant if there is no config file
     if (crt_version == 0)
-      gtk_widget_show_all (GnomeMeeting::Process ()->GetAssistantWindow ());
+      gtk_widget_show_all (GTK_WIDGET (gtk_frontend->get_assistant_window ()));
 
     /* Update the version number */
     gm_conf_set_int (GENERAL_KEY "version", schema_version);

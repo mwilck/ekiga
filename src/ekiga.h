@@ -75,40 +75,11 @@ class GnomeMeeting : public PProcess
   void Exit ();
 
 
-  /* DESCRIPTION  :  /
-   * BEHAVIOR     :  Returns a pointer to the GmWindow structure
-   *                 of widgets.
-   * PRE          :  /
-   */
-  GtkWidget *GetMainWindow ();
-
-
-  /* DESCRIPTION  :  /
-   * BEHAVIOR     :  Returns a pointer to the assistant window.
-   * PRE          :  /
-   */
-  GtkWidget* GetAssistantWindow ();
-
-
   /* Needed for PProcess */
   void Main();
   static GnomeMeeting *Process ();
 
-
-  /* DESCRIPTION  :  /
-   * BEHAVIOR     :  Builds the GUI of GnomeMeeting. The config, GNOME
-   *                 and GTK need to have been initialized before.
-   *                 The GUI is built accordingly to the preferences
-   *                 stored in config.
-   * PRE          :  /
-   */
-  void BuildGUI (Ekiga::ServiceCore& services);
-
  private:
-
-  /* The different components of the GUI */
-  GtkWidget *main_window;
-  GtkWidget *assistant_window;
 
   static GnomeMeeting *GM;
 };
