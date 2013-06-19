@@ -43,9 +43,6 @@
 #include "gmconf.h"
 #include "runtime.h"
 
-// FIXME: remove this include when the class won't have GetMainWindow and GetAssistantWindow anymore
-#include <gtk/gtk.h>
-
 #include <ptlib.h>
 #include <ptlib/pprocess.h>
 
