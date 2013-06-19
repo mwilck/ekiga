@@ -179,6 +179,7 @@ struct _EkigaCallWindowPrivate
   GtkWidget *transfer_call_popup;
 
   Ekiga::scoped_connections connections;
+  std::list<gpointer> notifiers;
 };
 
 /* channel types */
@@ -2541,6 +2542,10 @@ ekiga_call_window_finalize (GObject *gobject)
   gtk_widget_destroy (cw->priv->audio_settings_window);
   gtk_widget_destroy (cw->priv->video_settings_window);
   gtk_widget_destroy (cw->priv->ext_video_win);
+  for (std::list<gpointer>::iterator iter = cw->priv->notifiers.begin ();
+       iter != cw->priv->notifiers.end ();
+       ++iter)
+    gm_conf_notifier_remove (*iter);
 
   delete cw->priv;
 
