@@ -96,7 +96,6 @@ GtkFrontend::~GtkFrontend ()
   // management
 
   //gtk_widget_destroy (assistant_window);
-  //gtk_widget_destroy (addressbook_window);
   //gtk_widget_destroy (accounts_window);
   //gtk_widget_destroy (chat_window);
   //gtk_widget_destroy (call_window);
@@ -116,7 +115,8 @@ void GtkFrontend::build ()
   gtk_window_set_default_icon_name (GM_ICON_LOGO);
 
   addressbook_window =
-    addressbook_window_new_with_key (*contact_core, "/apps/" PACKAGE_NAME "/general/user_interface/addressbook_window");
+    boost::shared_ptr<GtkWidget>(addressbook_window_new_with_key (*contact_core, "/apps/" PACKAGE_NAME "/general/user_interface/addressbook_window"),
+				 gtk_widget_destroy);
   accounts_window = accounts_window_new_with_key (core, "/apps/" PACKAGE_NAME "/general/user_interface/accounts_window");
   assistant_window = ekiga_assistant_new (core);
   call_window = call_window_new (core);
@@ -154,7 +154,7 @@ GtkFrontend::get_main_window () const
 
 const GtkWidget *GtkFrontend::get_addressbook_window () const
 {
-  return addressbook_window;
+  return addressbook_window.get ();
 }
 
 
