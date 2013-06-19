@@ -39,9 +39,8 @@
 #include "config.h"
 
 #include "ekiga.h"
-#include "assistant.h"
-#include "main_window.h"
 
+#include <gtk/gtk.h>
 #include <opal/buildopts.h>
 
 #define new PNEW
