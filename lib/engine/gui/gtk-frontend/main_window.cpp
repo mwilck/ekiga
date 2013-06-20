@@ -1555,7 +1555,8 @@ ekiga_main_window_connect_engine_signals (EkigaMainWindow *mw)
   mw->priv->connections.add (conn);
 
   // FIXME: here we should watch for updates of the presence core
-  // and call on_some_core_updated... it it had such a signal!
+  // FIXME: and call on_some_core_updated... if it had such a signal!
+  // FIXME: (that is about updating the menu of possible actions)
   conn = mw->priv->contact_core->updated.connect (boost::bind (&on_some_core_updated, mw));
   mw->priv->connections.add (conn);
 }
@@ -1599,6 +1600,9 @@ gm_main_window_new (Ekiga::ServiceCore & core)
 
   // initial population
   on_some_core_updated (mw);
+
+  // FIXME: what does it do inside the main window if it's all about
+  // FIXME: the chat window and the audio output core!?
 
   /* initialize the callback to play IM message sound */
   boost::shared_ptr<GtkFrontend> gtk_frontend = mw->priv->gtk_frontend.lock ();

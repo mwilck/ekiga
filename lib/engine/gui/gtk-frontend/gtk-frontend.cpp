@@ -179,6 +179,8 @@ GtkFrontend::build ()
     boost::shared_ptr<GtkWidget> (preferences_window_new (core), gtk_widget_destroy);
 
   // BEWARE: the status icon needs the chat window at startup
+  // FIXME: the above BEWARE is related to a FIXME in the main window code,
+  // FIXME: hence should disappear with it
   status_icon =
     boost::shared_ptr<StatusIcon> (status_icon_new (core), g_object_unref);
   g_signal_connect (status_icon.get (), "clicked",
