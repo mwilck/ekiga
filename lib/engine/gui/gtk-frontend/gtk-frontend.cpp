@@ -76,6 +76,9 @@ gtk_frontend_init (Ekiga::ServiceCore &core,
 
   if (presence_core && contact_core && chat_core && history_source) {
 
+    // BEWARE: the GtkFrontend ctor could do everything, but the status
+    // icon ctor and the main window ctor use GtkFrontend, so we must
+    // keep the ctor+build setup
     boost::shared_ptr<GtkFrontend> gtk_frontend (new GtkFrontend (core));
     core.add (gtk_frontend);
     gtk_frontend->build ();
@@ -94,7 +97,8 @@ GtkFrontend::~GtkFrontend ()
 }
 
 
-void GtkFrontend::build ()
+void
+GtkFrontend::build ()
 {
   boost::shared_ptr<Ekiga::ContactCore> contact_core = core.get<Ekiga::ContactCore> ("contact-core");
   boost::shared_ptr<Ekiga::ChatCore> chat_core = core.get<Ekiga::ChatCore> ("chat-core");
@@ -108,7 +112,10 @@ void GtkFrontend::build ()
 				 gtk_widget_destroy);
   accounts_window =
     boost::shared_ptr<GtkWidget> (accounts_window_new_with_key (core, "/apps/" PACKAGE_NAME "/general/user_interface/accounts_window"),
+
 				  gtk_widget_destroy);
+
+  // BEWARE: uses the main window during runtime
   assistant_window =
     boost::shared_ptr<GtkWidget> (assistant_window_new (core),
 				  gtk_widget_destroy);
@@ -121,23 +128,32 @@ void GtkFrontend::build ()
   preferences_window =
     boost::shared_ptr<GtkWidget> (preferences_window_new (core),
 				  gtk_widget_destroy);
+
+  // BEWARE: the status icon needs the chat window at startup
   status_icon =
     boost::shared_ptr<StatusIcon> (status_icon_new (core),
 				   g_object_unref);
+
+  // BEWARE: the main window uses the chat window and status icon at
+  // startup already, and later on needs the call window, addressbook
+  // window, preferences window and assistant window
   main_window =
     boost::shared_ptr<GtkWidget> (gm_main_window_new (core),
 				 gtk_widget_destroy);
+
   gtk_window_set_transient_for (GTK_WINDOW (assistant_window.get ()), GTK_WINDOW (main_window.get ()));
 }
 
 
-const std::string GtkFrontend::get_name () const
+const std::string
+GtkFrontend::get_name () const
 {
   return "gtk-frontend";
 }
 
 
-const std::string GtkFrontend::get_description () const
+const std::string
+GtkFrontend::get_description () const
 {
   return "\tGtk+ frontend support";
 }
@@ -155,37 +171,43 @@ GtkFrontend::get_main_window () const
 }
 
 
-const GtkWidget *GtkFrontend::get_addressbook_window () const
+const GtkWidget*
+GtkFrontend::get_addressbook_window () const
 {
   return addressbook_window.get ();
 }
 
 
-const GtkWidget *GtkFrontend::get_accounts_window () const
+const GtkWidget*
+GtkFrontend::get_accounts_window () const
 {
   return accounts_window.get ();
 }
 
 
-const GtkWidget *GtkFrontend::get_preferences_window () const
+const GtkWidget*
+GtkFrontend::get_preferences_window () const
 {
   return preferences_window.get ();
 }
 
 
-const GtkWidget *GtkFrontend::get_call_window () const
+const GtkWidget*
+GtkFrontend::get_call_window () const
 {
   return call_window.get ();
 }
 
 
-const GtkWidget *GtkFrontend::get_chat_window () const
+const GtkWidget*
+GtkFrontend::get_chat_window () const
 {
   return chat_window.get ();
 }
 
 
-const StatusIcon *GtkFrontend::get_status_icon () const
+const StatusIcon*
+GtkFrontend::get_status_icon () const
 {
   return status_icon.get ();
 }

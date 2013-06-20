@@ -38,19 +38,17 @@
 #include <glib/gi18n.h>
 #include <gdk/gdkkeysyms.h>
 
+#include <vector>
+
 #include "statusicon.h"
 
 #include "gmstockicons.h"
 #include "gmmenuaddon.h"
 #include "gmcallbacks.h"
 
-#include "gtk-frontend.h"
-#include "call-core.h"
-
-#include <vector>
-
 #include "services.h"
 #include "gtk-frontend.h"
+#include "call-core.h"
 #include "notification-core.h"
 #include "personal-details.h"
 #include "scoped-connections.h"

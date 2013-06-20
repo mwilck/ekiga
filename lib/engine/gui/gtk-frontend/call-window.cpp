@@ -78,8 +78,6 @@
 #include "audioinput-core.h"
 #include "audiooutput-core.h"
 
-#include "gtk-frontend.h"
-
 #include <algorithm>
 
 enum CallingState {Standby, Calling, Ringing, Connected, Called};
