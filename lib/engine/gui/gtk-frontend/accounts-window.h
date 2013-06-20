@@ -89,7 +89,4 @@ GType accounts_window_get_type ();
  */
 GtkWidget *accounts_window_new (Ekiga::ServiceCore &core);
 
-GtkWidget *accounts_window_new_with_key (Ekiga::ServiceCore &core,
-                                         const std::string _key);
-
 #endif

@@ -707,13 +707,3 @@ accounts_window_new (Ekiga::ServiceCore &core)
 
   return GTK_WIDGET (self);
 }
-
-GtkWidget *
-accounts_window_new_with_key (Ekiga::ServiceCore &_core,
-                              const std::string _key)
-{
-  AccountsWindow *self = ACCOUNTS_WINDOW (accounts_window_new (_core));
-  gm_window_set_key (GM_WINDOW (self), _key.c_str ());
-
-  return GTK_WIDGET (self);
-}
