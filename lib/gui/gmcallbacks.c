@@ -208,8 +208,5 @@ void
 quit_callback (G_GNUC_UNUSED GtkWidget *widget,
 	       G_GNUC_UNUSED gpointer data)
 {
-  while (gtk_events_pending ())
-    gtk_main_iteration ();
-
   gtk_main_quit ();
 }
