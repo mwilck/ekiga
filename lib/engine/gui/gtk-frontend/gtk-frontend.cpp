@@ -42,6 +42,7 @@
 
 #include "config.h"
 
+#include "trigger.h"
 #include "gtk-frontend.h"
 #include "gmstockicons.h"
 #include "account-core.h"
@@ -58,9 +59,15 @@
 #include "preferences-window.h"
 #include "roster-view-gtk.h"
 #include "history-source.h"
+#include "opal-bank.h"
 #include "book-view-gtk.h"
 #include "notification-core.h"
 #include "personal-details.h"
+#include "audioinput-core.h"
+#include "audiooutput-core.h"
+#include "videoinput-core.h"
+#include "videooutput-core.h"
+#include "call-core.h"
 
 #include "gmwindow.h"
 
@@ -99,11 +106,20 @@ gtk_frontend_init (Ekiga::ServiceCore &core,
   boost::shared_ptr<Ekiga::ContactCore> contact_core = core.get<Ekiga::ContactCore> ("contact-core");
   boost::shared_ptr<Ekiga::ChatCore> chat_core = core.get<Ekiga::ChatCore> ("chat-core");
   boost::shared_ptr<History::Source> history_source = core.get<History::Source> ("call-history-store");
+  boost::shared_ptr<Opal::Bank> opal_bank = core.get<Opal::Bank> ("opal-account-store");
+  boost::shared_ptr<Ekiga::Trigger> local_cluster_trigger = core.get<Ekiga::Trigger> ("local-cluster");
   boost::shared_ptr<Ekiga::PersonalDetails> details = core.get<Ekiga::PersonalDetails> ("personal-details");
   boost::shared_ptr<Ekiga::NotificationCore> notification_core = core.get<Ekiga::NotificationCore> ("notification-core");
   boost::shared_ptr<Ekiga::AccountCore> account_core = core.get<Ekiga::AccountCore> ("account-core");
+  boost::shared_ptr<Ekiga::VideoInputCore> videoinput_core = core.get<Ekiga::VideoInputCore> ("videoinput-core");
+  boost::shared_ptr<Ekiga::VideoOutputCore> videooutput_core = core.get<Ekiga::VideoOutputCore> ("videooutput-core");
+  boost::shared_ptr<Ekiga::AudioInputCore> audioinput_core = core.get<Ekiga::AudioInputCore> ("audioinput-core");
+  boost::shared_ptr<Ekiga::AudioOutputCore> audioooutput_core = core.get<Ekiga::AudioOutputCore> ("audiooutput-core");
+  boost::shared_ptr<Ekiga::CallCore> call_core = core.get<Ekiga::CallCore> ("call-core");
 
-  if (presence_core && contact_core && chat_core && history_source && notification_core && account_core) {
+  if (presence_core && contact_core && chat_core && history_source && opal_bank && local_cluster_trigger
+      && notification_core && details && account_core && audioooutput_core && audioinput_core
+      && videooutput_core && videoinput_core && call_core) {
 
     // BEWARE: the GtkFrontend ctor could do everything, but the status
     // icon ctor and the main window ctor use GtkFrontend, so we must
