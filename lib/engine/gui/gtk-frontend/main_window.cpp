@@ -196,12 +196,6 @@ static const std::string ekiga_main_window_get_call_url (EkigaMainWindow *mw);
 static void on_chat_unread_alert (GtkWidget*,
 				  gpointer);
 
-/* DESCRIPTION  :  This callback is called when the status icon is cliked
- * PRE          :  /
- */
-static void status_icon_clicked_cb (GtkWidget*,
-                                    gpointer);
-
 /* DESCRIPTION  :  This callback is called when the control panel
  *                 section key changes (which can be when the radio
  *                 menu is changed!)
@@ -753,26 +747,6 @@ on_chat_unread_alert (G_GNUC_UNUSED GtkWidget* widget,
 {
   EkigaMainWindow *mw = EKIGA_MAIN_WINDOW (self);
   mw->priv->audiooutput_core->play_event("new_message_sound");
-}
-
-
-static void
-status_icon_clicked_cb (G_GNUC_UNUSED GtkWidget* widget,
-                        gpointer data)
-{
-  GtkWidget *window = GTK_WIDGET (data);
-
-  if (!gtk_widget_get_visible (window)
-      || (gdk_window_get_state (GDK_WINDOW (gtk_widget_get_window (window))) & GDK_WINDOW_STATE_ICONIFIED)) {
-    gtk_widget_show (window);
-  }
-  else {
-
-    if (gtk_window_has_toplevel_focus (GTK_WINDOW (window)))
-      gtk_widget_hide (window);
-    else
-      gtk_window_present (GTK_WINDOW (window));
-  }
 }
 
 
@@ -1632,14 +1606,9 @@ gm_main_window_new (Ekiga::ServiceCore & core)
   if (gtk_frontend) {
 
     GtkWidget *chat_window = GTK_WIDGET (gtk_frontend->get_chat_window ());
-    StatusIcon *status_icon = STATUSICON (gtk_frontend->get_status_icon ());
 
     g_signal_connect (chat_window, "unread-alert",
 		      G_CALLBACK (on_chat_unread_alert), mw);
-
-    if (status_icon)
-      g_signal_connect (status_icon, "clicked",
-			G_CALLBACK (status_icon_clicked_cb), mw);
   }
 
   return GTK_WIDGET(mw);

@@ -62,6 +62,30 @@
 
 #include "gmwindow.h"
 
+/* Private helpers */
+
+// when the status icon is clicked, we want to either show or hide the main window
+static void
+on_status_icon_clicked (G_GNUC_UNUSED GtkWidget* widget,
+                        gpointer data)
+{
+  GtkWidget *window = GTK_WIDGET (((GtkFrontend*)data)->get_main_window ());
+
+  if (!gtk_widget_get_visible (window)
+      || (gdk_window_get_state (GDK_WINDOW (gtk_widget_get_window (window))) & GDK_WINDOW_STATE_ICONIFIED)) {
+    gtk_widget_show (window);
+  }
+  else {
+
+    if (gtk_window_has_toplevel_focus (GTK_WINDOW (window)))
+      gtk_widget_hide (window);
+    else
+      gtk_window_present (GTK_WINDOW (window));
+  }
+}
+
+/* Public api */
+
 bool
 gtk_frontend_init (Ekiga::ServiceCore &core,
 		   int * /*argc*/,
@@ -133,10 +157,12 @@ GtkFrontend::build ()
   status_icon =
     boost::shared_ptr<StatusIcon> (status_icon_new (core),
 				   g_object_unref);
+  g_signal_connect (status_icon.get (), "clicked",
+		    G_CALLBACK (on_status_icon_clicked), this);
 
-  // BEWARE: the main window uses the chat window and status icon at
-  // startup already, and later on needs the call window, addressbook
-  // window, preferences window and assistant window
+  // BEWARE: the main window uses the chat window at startup already,
+  // and later on needs the call window, addressbook window,
+  // preferences window and assistant window
   main_window =
     boost::shared_ptr<GtkWidget> (gm_main_window_new (core),
 				 gtk_widget_destroy);

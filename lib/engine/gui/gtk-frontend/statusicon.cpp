@@ -259,11 +259,10 @@ statusicon_activated_cb (G_GNUC_UNUSED GtkStatusIcon *icon,
 {
   StatusIcon *self = STATUSICON (data);
 
-  // No unread messages => show ekiga
+  // No unread messages => signal the gtk+ frontend
+  // (should hide/present the main window)
   if (!self->priv->unread_messages) {
 
-    // FIXME: When the main_window will be a GtkFrontend component,
-    // this signal will be useless
     g_signal_emit (self, signals, 0, NULL);
   }
   else {
