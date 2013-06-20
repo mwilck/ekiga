@@ -78,9 +78,9 @@ GType addressbook_window_get_type ();
 
 
 /* public api */
-GtkWidget *addressbook_window_new (Ekiga::ContactCore & core);
+GtkWidget* addressbook_window_new (boost::shared_ptr<Ekiga::ContactCore> core);
 
-GtkWidget *addressbook_window_new_with_key (Ekiga::ContactCore & _core,
+GtkWidget* addressbook_window_new_with_key (boost::shared_ptr<Ekiga::ContactCore> core,
                                             const std::string _key);
 
 #endif

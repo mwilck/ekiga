@@ -50,9 +50,10 @@
  */
 struct _AddressBookWindowPrivate
 {
-  _AddressBookWindowPrivate (Ekiga::ContactCore & _core):core (_core) { }
+  _AddressBookWindowPrivate (boost::shared_ptr<Ekiga::ContactCore> _core): core(_core)
+  { }
 
-  Ekiga::ContactCore & core;
+  boost::shared_ptr<Ekiga::ContactCore> core;
   Ekiga::scoped_connections connections;
   GtkWidget *tree_view;
   GtkWidget *notebook;
@@ -237,7 +238,7 @@ on_core_updated (gpointer data)
 
   self = (AddressBookWindow *) data;
 
-  if (self->priv->core.populate_menu (menu_builder)) {
+  if (self->priv->core->populate_menu (menu_builder)) {
 
     item = gtk_separator_menu_item_new ();
     gtk_menu_shell_append (GTK_MENU_SHELL (menu_builder.menu), item);
@@ -604,7 +605,7 @@ addressbook_window_class_init (AddressBookWindowClass *klass)
  * Public API 
  */
 GtkWidget *
-addressbook_window_new (Ekiga::ContactCore &core)
+addressbook_window_new (boost::shared_ptr<Ekiga::ContactCore> core)
 {
   AddressBookWindow *self = NULL;
 
@@ -642,7 +643,7 @@ addressbook_window_new (Ekiga::ContactCore &core)
   gtk_menu_shell_append (GTK_MENU_SHELL (menu_bar),
                          self->priv->menu_item_core);
   g_object_ref (self->priv->menu_item_core);
-  conn = core.updated.connect (boost::bind (&on_core_updated,
+  conn = core->updated.connect (boost::bind (&on_core_updated,
                                            (gpointer) self));
   self->priv->connections.add (conn);
   on_core_updated (self); // This will add static and dynamic actions
@@ -717,34 +718,34 @@ addressbook_window_new (Ekiga::ContactCore &core)
                     G_CALLBACK (on_notebook_realize), self);
   gtk_paned_pack2 (GTK_PANED (hpaned), self->priv->notebook, TRUE, TRUE);
 
-  conn = core.source_added.connect (boost::bind (&on_source_added, _1, (gpointer) self));
+  conn = core->source_added.connect (boost::bind (&on_source_added, _1, (gpointer) self));
   self->priv->connections.add (conn);
 
-  conn = core.book_updated.connect (boost::bind (&on_book_updated, _1, _2,
+  conn = core->book_updated.connect (boost::bind (&on_book_updated, _1, _2,
                                                 (gpointer) self));
   self->priv->connections.add (conn);
-  conn = core.book_added.connect (boost::bind (&on_book_added, _1, _2,
+  conn = core->book_added.connect (boost::bind (&on_book_added, _1, _2,
                                               (gpointer) self));
   self->priv->connections.add (conn);
   conn =
-    core.book_removed.connect (boost::bind (&on_book_removed, _1, _2,
+    core->book_removed.connect (boost::bind (&on_book_removed, _1, _2,
                                            (gpointer) self));
   self->priv->connections.add (conn);
 
-  conn = core.questions.connect (boost::bind (&on_handle_questions, _1, (gpointer) self));
+  conn = core->questions.connect (boost::bind (&on_handle_questions, _1, (gpointer) self));
   self->priv->connections.add (conn);
 
-  core.visit_sources (boost::bind (on_visit_sources, _1, (gpointer) self));
+  core->visit_sources (boost::bind (on_visit_sources, _1, (gpointer) self));
 
   return GTK_WIDGET (self);
 }
 
 
 GtkWidget *
-addressbook_window_new_with_key (Ekiga::ContactCore &_core,
+addressbook_window_new_with_key (boost::shared_ptr<Ekiga::ContactCore> core,
                                  const std::string _key)
 {
-  AddressBookWindow *self = ADDRESSBOOK_WINDOW (addressbook_window_new (_core));
+  AddressBookWindow *self = ADDRESSBOOK_WINDOW (addressbook_window_new (core));
   g_object_set (self, "key", _key.c_str (), NULL);
 
   return GTK_WIDGET (self);
