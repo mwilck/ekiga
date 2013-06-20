@@ -69,8 +69,7 @@ struct _ChatWindowClass
 
 /* Public API */
 
-GtkWidget* chat_window_new (Ekiga::ServiceCore& core,
-			    const std::string key);
+GtkWidget* chat_window_new (Ekiga::ServiceCore& core);
 
 /* GObject's boilerplate */
 

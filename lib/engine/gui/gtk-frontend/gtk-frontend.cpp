@@ -146,22 +146,21 @@ GtkFrontend::build ()
 
   // BEWARE: uses the main window during runtime
   assistant_window =
-    boost::shared_ptr<GtkWidget> (assistant_window_new (core),
-				  gtk_widget_destroy);
+    boost::shared_ptr<GtkWidget> (assistant_window_new (core), gtk_widget_destroy);
+
   call_window =
-    boost::shared_ptr<GtkWidget> (call_window_new (core),
-				  gtk_widget_destroy);
+    boost::shared_ptr<GtkWidget> (call_window_new (core), gtk_widget_destroy);
+
   chat_window =
-    boost::shared_ptr<GtkWidget> (chat_window_new (core, "/apps/" PACKAGE_NAME "/general/user_interface/chat_window"),
-				  gtk_widget_destroy);
+    boost::shared_ptr<GtkWidget> (chat_window_new (core), gtk_widget_destroy);
+  gm_window_set_key(GM_WINDOW(chat_window.get ()), "/apps/" PACKAGE_NAME "/general/user_interface/chat_window");
+
   preferences_window =
-    boost::shared_ptr<GtkWidget> (preferences_window_new (core),
-				  gtk_widget_destroy);
+    boost::shared_ptr<GtkWidget> (preferences_window_new (core), gtk_widget_destroy);
 
   // BEWARE: the status icon needs the chat window at startup
   status_icon =
-    boost::shared_ptr<StatusIcon> (status_icon_new (core),
-				   g_object_unref);
+    boost::shared_ptr<StatusIcon> (status_icon_new (core), g_object_unref);
   g_signal_connect (status_icon.get (), "clicked",
 		    G_CALLBACK (on_status_icon_clicked), this);
 

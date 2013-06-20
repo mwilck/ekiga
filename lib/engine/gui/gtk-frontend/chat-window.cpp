@@ -444,16 +444,14 @@ chat_window_init (ChatWindow* self)
 /* public api */
 
 GtkWidget*
-chat_window_new (Ekiga::ServiceCore& core,
-		 const std::string key)
+chat_window_new (Ekiga::ServiceCore& core)
 {
   ChatWindow* self = NULL;
   GtkAccelGroup *accel = NULL;
 
   self = (ChatWindow*)g_object_new (CHAT_WINDOW_TYPE,
-                                    "key", key.c_str (),
                                     "hide_on_esc", FALSE,
-                                      NULL);
+				    NULL);
 
   self->priv = new ChatWindowPrivate;
 
