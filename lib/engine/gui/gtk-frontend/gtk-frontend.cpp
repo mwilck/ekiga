@@ -44,6 +44,7 @@
 
 #include "gtk-frontend.h"
 #include "gmstockicons.h"
+#include "account-core.h"
 #include "chat-core.h"
 #include "contact-core.h"
 #include "presence-core.h"
@@ -100,8 +101,9 @@ gtk_frontend_init (Ekiga::ServiceCore &core,
   boost::shared_ptr<History::Source> history_source = core.get<History::Source> ("call-history-store");
   boost::shared_ptr<Ekiga::PersonalDetails> details = core.get<Ekiga::PersonalDetails> ("personal-details");
   boost::shared_ptr<Ekiga::NotificationCore> notification_core = core.get<Ekiga::NotificationCore> ("notification-core");
+  boost::shared_ptr<Ekiga::AccountCore> account_core = core.get<Ekiga::AccountCore> ("account-core");
 
-  if (presence_core && contact_core && chat_core && history_source && notification_core) {
+  if (presence_core && contact_core && chat_core && history_source && notification_core && account_core) {
 
     // BEWARE: the GtkFrontend ctor could do everything, but the status
     // icon ctor and the main window ctor use GtkFrontend, so we must
@@ -128,7 +130,9 @@ void
 GtkFrontend::build ()
 {
   boost::shared_ptr<Ekiga::ContactCore> contact_core = core.get<Ekiga::ContactCore> ("contact-core");
+  boost::shared_ptr<Ekiga::PersonalDetails> details = core.get<Ekiga::PersonalDetails> ("personal-details");
   boost::shared_ptr<Ekiga::ChatCore> chat_core = core.get<Ekiga::ChatCore> ("chat-core");
+  boost::shared_ptr<Ekiga::AccountCore> account_core = core.get<Ekiga::AccountCore> ("account-core");
 
   /* Init the stock icons */
   gnomemeeting_stock_icons_init ();
@@ -140,7 +144,7 @@ GtkFrontend::build ()
 		     "/apps/" PACKAGE_NAME "/general/user_interface/addressbook_window");
 
   accounts_window =
-    boost::shared_ptr<GtkWidget> (accounts_window_new (core), gtk_widget_destroy);
+    boost::shared_ptr<GtkWidget> (accounts_window_new (account_core, details), gtk_widget_destroy);
   gm_window_set_key(GM_WINDOW (accounts_window.get ()),
 		    "/apps/" PACKAGE_NAME "/general/user_interface/accounts_window");
 

@@ -46,7 +46,8 @@
 #include "services.h"
 
 #include "gmwindow.h"
-
+#include "account-core.h"
+#include "personal-details.h"
 
 typedef struct _AccountsWindow AccountsWindow;
 typedef struct _AccountsWindowPrivate AccountsWindowPrivate;
@@ -87,6 +88,7 @@ GType accounts_window_get_type ();
  * BEHAVIOR     : Builds the GMAccounts window GObject.
  * PRE          : /
  */
-GtkWidget *accounts_window_new (Ekiga::ServiceCore &core);
+GtkWidget* accounts_window_new (boost::shared_ptr<Ekiga::AccountCore> account_core,
+				boost::shared_ptr<Ekiga::PersonalDetails> details);
 
 #endif

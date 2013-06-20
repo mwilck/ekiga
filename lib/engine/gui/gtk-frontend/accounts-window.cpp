@@ -40,7 +40,6 @@
 #include "account.h"
 #include "bank.h"
 #include "opal-bank.h"
-#include "account-core.h"
 
 #include "gmcallbacks.h"
 
@@ -523,7 +522,8 @@ accounts_window_class_init (AccountsWindowClass *klass)
 
 /* Public API */
 GtkWidget *
-accounts_window_new (Ekiga::ServiceCore &core)
+accounts_window_new (boost::shared_ptr<Ekiga::AccountCore> account_core,
+		     boost::shared_ptr<Ekiga::PersonalDetails> details)
 {
   AccountsWindow *self = NULL;
 
@@ -564,8 +564,8 @@ accounts_window_new (Ekiga::ServiceCore &core)
   self = (AccountsWindow *) g_object_new (ACCOUNTS_WINDOW_TYPE, NULL);
 
   self->priv = new AccountsWindowPrivate;
-  self->priv->details = core.get<Ekiga::PersonalDetails> ("personal-details");
-  self->priv->account_core = core.get<Ekiga::AccountCore> ("account-core");
+  self->priv->details = details;
+  self->priv->account_core = account_core;
 
   vbox = gtk_box_new (GTK_ORIENTATION_VERTICAL, 2);
   gtk_window_set_title (GTK_WINDOW (self), _("Accounts"));
