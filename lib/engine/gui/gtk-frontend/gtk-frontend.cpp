@@ -135,8 +135,10 @@ GtkFrontend::build ()
   gtk_window_set_default_icon_name (GM_ICON_LOGO);
 
   addressbook_window =
-    boost::shared_ptr<GtkWidget>(addressbook_window_new_with_key (contact_core, "/apps/" PACKAGE_NAME "/general/user_interface/addressbook_window"),
-				 gtk_widget_destroy);
+    boost::shared_ptr<GtkWidget>(addressbook_window_new (contact_core), gtk_widget_destroy);
+  gm_window_set_key (GM_WINDOW (addressbook_window.get ()),
+		     "/apps/" PACKAGE_NAME "/general/user_interface/addressbook_window");
+
   accounts_window =
     boost::shared_ptr<GtkWidget> (accounts_window_new_with_key (core, "/apps/" PACKAGE_NAME "/general/user_interface/accounts_window"),
 

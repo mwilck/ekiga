@@ -739,15 +739,3 @@ addressbook_window_new (boost::shared_ptr<Ekiga::ContactCore> core)
 
   return GTK_WIDGET (self);
 }
-
-
-GtkWidget *
-addressbook_window_new_with_key (boost::shared_ptr<Ekiga::ContactCore> core,
-                                 const std::string _key)
-{
-  AddressBookWindow *self = ADDRESSBOOK_WINDOW (addressbook_window_new (core));
-  g_object_set (self, "key", _key.c_str (), NULL);
-
-  return GTK_WIDGET (self);
-}
-
