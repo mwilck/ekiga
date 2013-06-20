@@ -74,7 +74,7 @@ struct _StatusIconPrivate
 
   gchar *blink_image;
 
-  boost::weak_ptr<GtkFrontend> frontend;
+  GtkWidget* chat_window;
 };
 
 static GObjectClass *parent_class = NULL;
@@ -268,13 +268,7 @@ statusicon_activated_cb (G_GNUC_UNUSED GtkStatusIcon *icon,
   else {
 
     // Unread messages => show chat window
-    boost::shared_ptr<GtkFrontend> frontend = self->priv->frontend.lock();
-
-    if (frontend) {
-
-      GtkWidget *w = GTK_WIDGET (frontend->get_chat_window ());
-      gtk_window_present (GTK_WINDOW (w));
-    }
+    gtk_window_present (GTK_WINDOW (self->priv->chat_window));
   }
 
   // Remove warnings from statusicon
@@ -460,10 +454,9 @@ statusicon_on_notification_added (boost::shared_ptr<Ekiga::Notification> notific
                                   gpointer data)
 {
   StatusIcon *self = STATUSICON (data);
-  boost::shared_ptr<GtkFrontend> frontend = self->priv->frontend.lock ();
-  g_return_if_fail (frontend);
-  GtkWidget* chat_window = GTK_WIDGET (frontend->get_chat_window ());
-  GdkPixbuf* pixbuf = gtk_widget_render_icon (chat_window, GTK_STOCK_DIALOG_WARNING, GTK_ICON_SIZE_MENU, NULL);
+  GdkPixbuf* pixbuf = gtk_widget_render_icon (self->priv->chat_window,
+					      GTK_STOCK_DIALOG_WARNING,
+					      GTK_ICON_SIZE_MENU, NULL);
 
   gchar *current_tooltip = gtk_status_icon_get_tooltip_text (GTK_STATUS_ICON (self));
   gchar *tooltip = NULL;
@@ -557,9 +550,8 @@ status_icon_new (Ekiga::ServiceCore & core)
   boost::shared_ptr<Ekiga::NotificationCore> notification_core = core.get<Ekiga::NotificationCore> ("notification-core");
   boost::shared_ptr<GtkFrontend> frontend = core.get<GtkFrontend> ("gtk-frontend");
 
-  self->priv->frontend = frontend;
 
-  GtkWidget *chat_window = GTK_WIDGET (frontend->get_chat_window ());
+  self->priv->chat_window = GTK_WIDGET (frontend->get_chat_window ());
 
   statusicon_set_status (self, details->get_presence ());
   notification_core->notification_added.connect (boost::bind (statusicon_on_notification_added, _1, (gpointer) self));
@@ -579,7 +571,7 @@ status_icon_new (Ekiga::ServiceCore & core)
   g_signal_connect (self, "activate",
                     G_CALLBACK (statusicon_activated_cb), self);
 
-  g_signal_connect (chat_window, "unread-count",
+  g_signal_connect (self->priv->chat_window, "unread-count",
                     G_CALLBACK (unread_count_cb), self);
 
   return self;
