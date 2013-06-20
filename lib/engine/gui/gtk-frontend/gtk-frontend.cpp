@@ -58,7 +58,8 @@
 #include "roster-view-gtk.h"
 #include "history-source.h"
 #include "book-view-gtk.h"
-#include "call-history-view-gtk.h"
+#include "notification-core.h"
+#include "personal-details.h"
 
 #include "gmwindow.h"
 
@@ -97,8 +98,10 @@ gtk_frontend_init (Ekiga::ServiceCore &core,
   boost::shared_ptr<Ekiga::ContactCore> contact_core = core.get<Ekiga::ContactCore> ("contact-core");
   boost::shared_ptr<Ekiga::ChatCore> chat_core = core.get<Ekiga::ChatCore> ("chat-core");
   boost::shared_ptr<History::Source> history_source = core.get<History::Source> ("call-history-store");
+  boost::shared_ptr<Ekiga::PersonalDetails> details = core.get<Ekiga::PersonalDetails> ("personal-details");
+  boost::shared_ptr<Ekiga::NotificationCore> notification_core = core.get<Ekiga::NotificationCore> ("notification-core");
 
-  if (presence_core && contact_core && chat_core && history_source) {
+  if (presence_core && contact_core && chat_core && history_source && notification_core) {
 
     // BEWARE: the GtkFrontend ctor could do everything, but the status
     // icon ctor and the main window ctor use GtkFrontend, so we must
