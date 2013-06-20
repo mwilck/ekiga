@@ -38,6 +38,7 @@
 #include <glib.h>
 
 static GAsyncQueue* queue;
+static GMainLoop* loop;
 
 /* implementation of the helper functions
  *
@@ -142,11 +143,14 @@ Ekiga::Runtime::init ()
   source->queue = queue;
   g_async_queue_ref (queue); // give a ref to the source
   g_source_attach ((GSource *)source, g_main_context_default ());
+
+  loop = g_main_loop_new (NULL, FALSE);
 }
 
 void
 Ekiga::Runtime::run ()
 {
+  g_main_loop_run (loop);
 }
 
 void
@@ -154,6 +158,9 @@ Ekiga::Runtime::quit ()
 {
   g_async_queue_unref (queue);
   queue = NULL;
+  g_main_loop_quit (loop);
+  g_main_loop_unref (loop);
+  loop = NULL;
 }
 
 void
