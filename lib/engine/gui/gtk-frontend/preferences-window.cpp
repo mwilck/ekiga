@@ -1175,9 +1175,9 @@ preferences_window_new (Ekiga::ServiceCore& core)
   g_object_set_data_full (G_OBJECT (window), "window_name",
 			  g_strdup ("preferences_window"), g_free);
   gtk_window_set_title (GTK_WINDOW (window), _("Ekiga Preferences"));
-  pixbuf = gtk_widget_render_icon (GTK_WIDGET (window),
-				   GTK_STOCK_PREFERENCES,
-				   GTK_ICON_SIZE_MENU, NULL);
+  pixbuf = gtk_widget_render_icon_pixbuf (GTK_WIDGET (window),
+					  GTK_STOCK_PREFERENCES,
+					  GTK_ICON_SIZE_MENU);
   gtk_window_set_icon (GTK_WINDOW (window), pixbuf);
   gtk_widget_realize (GTK_WIDGET (window));
   g_object_unref (pixbuf);

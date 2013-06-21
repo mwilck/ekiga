@@ -52,7 +52,7 @@ enum {
   PRESENTITY_VIEW_PROP_PRESENTITY = 1
 };
 
-G_DEFINE_TYPE (PresentityView, presentity_view, GTK_TYPE_HBOX);
+G_DEFINE_TYPE (PresentityView, presentity_view, GTK_TYPE_BOX);
 
 /* declaration of callbacks */
 

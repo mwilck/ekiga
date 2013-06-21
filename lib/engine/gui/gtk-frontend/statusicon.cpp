@@ -454,9 +454,9 @@ statusicon_on_notification_added (boost::shared_ptr<Ekiga::Notification> notific
                                   gpointer data)
 {
   StatusIcon *self = STATUSICON (data);
-  GdkPixbuf* pixbuf = gtk_widget_render_icon (self->priv->chat_window,
-					      GTK_STOCK_DIALOG_WARNING,
-					      GTK_ICON_SIZE_MENU, NULL);
+  GdkPixbuf* pixbuf = gtk_widget_render_icon_pixbuf (self->priv->chat_window,
+						     GTK_STOCK_DIALOG_WARNING,
+						     GTK_ICON_SIZE_MENU);
 
   gchar *current_tooltip = gtk_status_icon_get_tooltip_text (GTK_STATUS_ICON (self));
   gchar *tooltip = NULL;

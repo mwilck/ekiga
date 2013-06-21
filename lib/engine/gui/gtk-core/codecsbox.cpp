@@ -63,7 +63,7 @@ struct _CodecsBoxPrivate
 
 enum { TYPE = 1 };
 
-G_DEFINE_TYPE (CodecsBox, codecs_box, GTK_TYPE_HBOX);
+G_DEFINE_TYPE (CodecsBox, codecs_box, GTK_TYPE_BOX);
 
 /* Static functions */
 static void codecs_box_set_codecs (CodecsBox *self,

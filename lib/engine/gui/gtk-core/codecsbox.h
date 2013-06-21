@@ -62,7 +62,7 @@ typedef struct _CodecsBoxClass CodecsBoxClass;
 
 struct _CodecsBox
 {
-  GtkHBox parent;
+  GtkBox parent;
 
   CodecsBoxPrivate *priv;
 };
@@ -70,7 +70,7 @@ struct _CodecsBox
 
 struct _CodecsBoxClass
 {
-  GtkHBoxClass parent_class;
+  GtkBoxClass parent_class;
 };
 
 

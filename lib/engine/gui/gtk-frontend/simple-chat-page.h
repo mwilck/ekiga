@@ -54,13 +54,13 @@ typedef struct _SimpleChatPagePrivate SimpleChatPagePrivate;
 typedef struct _SimpleChatPageClass SimpleChatPageClass;
 
 struct _SimpleChatPage {
-  GtkVBox parent;
+  GtkBox parent;
 
   SimpleChatPagePrivate* priv;
 };
 
 struct _SimpleChatPageClass {
-  GtkVBoxClass parent_class;
+  GtkBoxClass parent_class;
 
   /* this is the "message-notice-event" signal */
   void (*message_notice_event) (SimpleChatPage* self);

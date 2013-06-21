@@ -75,7 +75,7 @@ enum {
 
 static guint signals[LAST_SIGNAL] = { 0 };
 
-G_DEFINE_TYPE (ChatArea, chat_area, GTK_TYPE_VPANED);
+G_DEFINE_TYPE (ChatArea, chat_area, GTK_TYPE_PANED);
 
 /* declaration of internal api */
 
@@ -676,6 +676,10 @@ chat_area_init (ChatArea* self)
   GtkTextIter iter;
   GtkWidget *frame = NULL;
   GtkWidget *sep = NULL;
+
+  g_object_set (G_OBJECT (self),
+		"orientation", GTK_ORIENTATION_VERTICAL,
+		NULL);
 
   self->priv = new ChatAreaPrivate;
 

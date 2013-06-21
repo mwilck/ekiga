@@ -50,7 +50,7 @@ enum {
 
 static guint signals[LAST_SIGNAL] = { 0 };
 
-G_DEFINE_TYPE (SimpleChatPage, simple_chat_page, GTK_TYPE_VBOX);
+G_DEFINE_TYPE (SimpleChatPage, simple_chat_page, GTK_TYPE_BOX);
 
 static void on_page_grab_focus (GtkWidget*,
 				gpointer);
@@ -119,7 +119,9 @@ simple_chat_page_new (Ekiga::SimpleChatPtr chat)
   GtkWidget* presentity_view = NULL;
   GtkWidget* area = NULL;
 
-  result = (SimpleChatPage*)g_object_new (TYPE_SIMPLE_CHAT_PAGE, NULL);
+  result = (SimpleChatPage*)g_object_new (TYPE_SIMPLE_CHAT_PAGE,
+					  "orientation", GTK_ORIENTATION_VERTICAL,
+					  NULL);
 
   presentity_view = presentity_view_new (chat->get_presentity ());
   gtk_box_pack_start (GTK_BOX (result), presentity_view,

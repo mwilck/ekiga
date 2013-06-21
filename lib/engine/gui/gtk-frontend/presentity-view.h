@@ -50,14 +50,14 @@ typedef struct _PresentityViewClass PresentityViewClass;
 
 struct _PresentityView
 {
-  GtkHBox parent;
+  GtkBox parent;
 
   PresentityViewPrivate* priv;
 };
 
 struct _PresentityViewClass
 {
-  GtkHBoxClass parent;
+  GtkBoxClass parent;
 };
 
 /* public api */

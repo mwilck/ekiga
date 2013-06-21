@@ -68,31 +68,30 @@ gm_cell_renderer_bitext_update_text (GmCellRendererBitext *renderer,
 				     GtkWidget *widget,
 				     gboolean is_selected)
 {
-  GtkStyle *style = NULL;
+  GtkStateFlags state = GTK_STATE_FLAG_NORMAL;
+  GtkStyleContext *style = NULL;
   PangoAttrList *attr_list = NULL;
-  GdkColor color;
+  GdkRGBA color;
   PangoAttribute *attr_color = NULL;
   PangoAttribute *attr_size = NULL;
+  const PangoFontDescription* font = NULL;
   gchar *str = NULL;
 
   if (renderer->priv->is_valid && renderer->priv->is_selected == is_selected)
     return;
 
-  style = gtk_widget_get_style (widget);
+  style = gtk_widget_get_style_context (widget);
+
+  if (is_selected)
+    state = GTK_STATE_FLAG_SELECTED;
 
   attr_list = pango_attr_list_new ();
-  if (!is_selected) {
-
-    color = style->text_aa[GTK_STATE_NORMAL];
-
-    attr_color = pango_attr_foreground_new (color.red, color.green, color.blue);
-    attr_color->start_index = strlen (renderer->priv->primary_text) + 1;
-    attr_color->end_index = (guint) - 1;
-    pango_attr_list_insert (attr_list, attr_color);
-  }
 
   /* we want the secondary text smaller */
-  attr_size = pango_attr_size_new ((int) (pango_font_description_get_size (style->font_desc) * 0.8));
+  gtk_style_context_get (style, state,
+			 "font", &font,
+			 NULL);
+  attr_size = pango_attr_size_new ((int) (pango_font_description_get_size (font) * 0.8));
   attr_size->start_index = strlen (renderer->priv->primary_text) + 1;
   attr_size->end_index = (guint) - 1;
   pango_attr_list_insert (attr_list, attr_size);

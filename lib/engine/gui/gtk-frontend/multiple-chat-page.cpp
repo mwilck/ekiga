@@ -42,7 +42,7 @@ struct _MultipleChatPagePrivate {
   GtkWidget* area;
 };
 
-G_DEFINE_TYPE (MultipleChatPage, multiple_chat_page, GTK_TYPE_HBOX);
+G_DEFINE_TYPE (MultipleChatPage, multiple_chat_page, GTK_TYPE_BOX);
 
 static void on_page_grab_focus (GtkWidget*,
 				gpointer);

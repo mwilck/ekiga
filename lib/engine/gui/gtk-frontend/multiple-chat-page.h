@@ -54,13 +54,13 @@ typedef struct _MultipleChatPagePrivate MultipleChatPagePrivate;
 typedef struct _MultipleChatPageClass MultipleChatPageClass;
 
 struct _MultipleChatPage {
-  GtkHBox parent;
+  GtkBox parent;
 
   MultipleChatPagePrivate* priv;
 };
 
 struct _MultipleChatPageClass {
-  GtkHBoxClass parent_class;
+  GtkBoxClass parent_class;
 };
 
 #define TYPE_MULTIPLE_CHAT_PAGE             (multiple_chat_page_get_type())
