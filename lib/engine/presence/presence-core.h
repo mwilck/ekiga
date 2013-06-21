@@ -42,10 +42,10 @@
 #include "scoped-connections.h"
 #include "cluster.h"
 #include "account-core.h"
+#include "personal-details.h"
 
 namespace Ekiga
 {
-  class PersonalDetails;
 
 /**
  * @defgroup presence Presence
@@ -139,7 +139,7 @@ namespace Ekiga
 
     /** The constructor.
      */
-    PresenceCore (ServiceCore& core);
+    PresenceCore (boost::shared_ptr<PersonalDetails> details);
 
     /*** Service Implementation ***/
   public:
@@ -314,6 +314,7 @@ namespace Ekiga
 
   private:
 
+    boost::shared_ptr<PersonalDetails> details;
     Ekiga::scoped_connections conns;
   };
 

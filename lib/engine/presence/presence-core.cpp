@@ -39,12 +39,9 @@
 #include "personal-details.h"
 
 
-Ekiga::PresenceCore::PresenceCore (Ekiga::ServiceCore& core)
+Ekiga::PresenceCore::PresenceCore ( boost::shared_ptr<Ekiga::PersonalDetails> _details): details(_details)
 {
-  boost::shared_ptr<Ekiga::PersonalDetails> details = core.get<Ekiga::PersonalDetails> ("personal-details");
-
-  if (details)
-    conns.add (details->updated.connect (boost::bind (boost::bind (&Ekiga::PresenceCore::publish, this, _1), details)));
+  conns.add (details->updated.connect (boost::bind (boost::bind (&Ekiga::PresenceCore::publish, this, _1), details)));
 }
 
 void

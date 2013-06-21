@@ -562,9 +562,7 @@ libekiga_la_SOURCES += \
 
 libekiga_la_SOURCES += \
 	$(components_dir)/gmconf-personal-details/gmconf-personal-details.cpp \
-	$(components_dir)/gmconf-personal-details/gmconf-personal-details.h \
-	$(components_dir)/gmconf-personal-details/gmconf-personal-details-main.cpp \
-	$(components_dir)/gmconf-personal-details/gmconf-personal-details-main.h
+	$(components_dir)/gmconf-personal-details/gmconf-personal-details.h
 
 ##
 # Sources of the local roster component

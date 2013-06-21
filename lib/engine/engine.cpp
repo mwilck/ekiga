@@ -60,7 +60,7 @@
 #include "local-roster-bridge.h"
 #include "gtk-core-main.h"
 #include "gtk-frontend.h"
-#include "gmconf-personal-details-main.h"
+#include "gmconf-personal-details.h"
 
 #ifndef WIN32
 #include "videooutput-main-x.h"
@@ -95,6 +95,58 @@ engine_init (Ekiga::ServiceCorePtr service_core,
 	     int argc,
              char *argv [])
 {
+  // FIRST we add a few things by hand
+  // (for speed and because that's less code)
+
+  Ekiga::ServicePtr notification_core(new Ekiga::NotificationCore);
+  boost::shared_ptr<Ekiga::AccountCore> account_core (new Ekiga::AccountCore);
+  boost::shared_ptr<Ekiga::ContactCore> contact_core (new Ekiga::ContactCore);
+  boost::shared_ptr<Ekiga::CallCore> call_core (new Ekiga::CallCore);
+  boost::shared_ptr<Ekiga::ChatCore> chat_core (new Ekiga::ChatCore);
+  boost::shared_ptr<Ekiga::VideoOutputCore> videooutput_core (new Ekiga::VideoOutputCore);
+  boost::shared_ptr<Ekiga::VideoInputCore> videoinput_core (new Ekiga::VideoInputCore (*service_core, videooutput_core));
+  boost::shared_ptr<Ekiga::AudioOutputCore> audiooutput_core (new Ekiga::AudioOutputCore (*service_core));
+  boost::shared_ptr<Ekiga::AudioInputCore> audioinput_core (new Ekiga::AudioInputCore(*service_core));
+  boost::shared_ptr<Ekiga::HalCore> hal_core (new Ekiga::HalCore);
+  boost::shared_ptr<Ekiga::FriendOrFoe> friend_or_foe (new Ekiga::FriendOrFoe);
+  boost::shared_ptr<Gmconf::PersonalDetails> details(new Gmconf::PersonalDetails);
+  boost::shared_ptr<Ekiga::PresenceCore> presence_core(new Ekiga::PresenceCore (details));
+
+  service_core->add (notification_core);
+  service_core->add (contact_core);
+  service_core->add (chat_core);
+  service_core->add (friend_or_foe);
+  service_core->add (videoinput_core);
+  service_core->add (videooutput_core);
+  service_core->add (audioinput_core);
+  service_core->add (audiooutput_core);
+  service_core->add (hal_core);
+  service_core->add (call_core);
+  service_core->add (account_core);
+  service_core->add (details);
+  service_core->add (presence_core);
+
+#ifndef WIN32
+  if (!videooutput_x_init (*service_core, &argc, &argv)) {
+
+    return;
+  }
+#endif
+
+#ifdef HAVE_DX
+  if (!videooutput_dx_init (*service_core, &argc, &argv)) {
+
+    return;
+  }
+#endif
+
+  if (!videoinput_mlogo_init (*service_core, &argc, &argv)) {
+
+    return;
+  }
+
+  // THEN we use the kickstart scheme
+
   Ekiga::KickStart kickstart;
 
   audioinput_null_init (kickstart);
@@ -119,68 +171,17 @@ engine_init (Ekiga::ServiceCorePtr service_core,
 
   plugin_init (kickstart);
 
-  service_core->add (Ekiga::ServicePtr(new Ekiga::NotificationCore));
+  // FIXME: Some parts in the kickstart need the gui.  The gui needs
+  //  some parts in the kickstart.  So we will kick a first time to
+  //  get things not needing the gui up and running, then start the
+  //  gui (which will hence find what it needs) and kick a second time
+  //  to really make the engine go vroom. It would be nicer to either
+  //  push the parts needed by the gui in the hand-crafted part of
+  //  this initialization, or put the gui in the kickstart too.
 
-  boost::shared_ptr<Ekiga::AccountCore> account_core (new Ekiga::AccountCore);
-  boost::shared_ptr<Ekiga::ContactCore> contact_core (new Ekiga::ContactCore);
-  boost::shared_ptr<Ekiga::CallCore> call_core (new Ekiga::CallCore);
-  boost::shared_ptr<Ekiga::ChatCore> chat_core (new Ekiga::ChatCore);
-  boost::shared_ptr<Ekiga::VideoOutputCore> videooutput_core (new Ekiga::VideoOutputCore);
-  boost::shared_ptr<Ekiga::VideoInputCore> videoinput_core (new Ekiga::VideoInputCore ((*service_core.get ()), videooutput_core));
-  boost::shared_ptr<Ekiga::AudioOutputCore> audiooutput_core (new Ekiga::AudioOutputCore ((*service_core.get ())));
-  boost::shared_ptr<Ekiga::AudioInputCore> audioinput_core (new Ekiga::AudioInputCore ((*service_core.get ())));
-  boost::shared_ptr<Ekiga::HalCore> hal_core (new Ekiga::HalCore);
-  boost::shared_ptr<Ekiga::FriendOrFoe> friend_or_foe (new Ekiga::FriendOrFoe);
-
-
-  /* The last item in the following list will be destroyed first.   *
-   * - VideoInputCore must be destroyed before VideoOutputCore since its  *
-   *   PreviewManager may call functions of VideoOutputCore.            */
-
-  service_core->add (contact_core);
-  service_core->add (chat_core);
-  service_core->add (friend_or_foe);
-  service_core->add (videoinput_core);
-  service_core->add (videooutput_core);
-  service_core->add (audioinput_core);
-  service_core->add (audiooutput_core);
-  service_core->add (hal_core);
-  service_core->add (call_core);
-  service_core->add (account_core);
-
-  if (!gmconf_personal_details_init (*service_core, &argc, &argv)) {
-
-    return;
-  }
-
-  service_core->add (boost::shared_ptr<Ekiga::PresenceCore> (new Ekiga::PresenceCore (*service_core)));
-
-#ifndef WIN32
-  if (!videooutput_x_init (*service_core, &argc, &argv)) {
-
-    return;
-  }
-#endif
-
-#ifdef HAVE_DX
-  if (!videooutput_dx_init (*service_core, &argc, &argv)) {
-
-    return;
-  }
-#endif
-
-  if (!videoinput_mlogo_init (*service_core, &argc, &argv)) {
-
-    return;
-  }
-
-  /* FIXME: the gui needs to have many things ready to work before it
-   * starts, but this way of doing things will prevent plugins to
-   * access it ; the proper fix would be to have the gui handled
-   * through the kickstart scheme
-   */
   kickstart.kick (*service_core, &argc, &argv);
 
+  // FIXME: can't we have a single function for the whole gui?
   gtk_core_init (*service_core, &argc, &argv);
 
   if (!gtk_frontend_init (*service_core, &argc, &argv)) {
