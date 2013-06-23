@@ -337,8 +337,6 @@ libekiga_la_SOURCES += \
 	engine/videooutput/videooutput-manager.h \
 	engine/videooutput/videooutput-core.h \
 	engine/videooutput/videooutput-core.cpp \
-	engine/videooutput/videooutput-gmconf-bridge.h \
-	engine/videooutput/videooutput-gmconf-bridge.cpp
 
 ##
 # Sources of the video input stack

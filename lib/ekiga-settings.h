@@ -47,6 +47,7 @@
 #define SOUND_EVENTS_SCHEMA "org.gnome." PACKAGE_NAME ".general.sound-events"
 #define AUDIO_DEVICES_SCHEMA "org.gnome." PACKAGE_NAME ".devices.audio"
 #define VIDEO_DEVICES_SCHEMA "org.gnome." PACKAGE_NAME ".devices.video"
+#define VIDEO_DISPLAY_SCHEMA USER_INTERFACE ".video-display"
 
 namespace Ekiga {
 

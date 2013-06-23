@@ -39,7 +39,6 @@
 
 #include "services.h"
 
-#include "videooutput-gmconf-bridge.h"
 #include "videooutput-manager.h"
 
 #include <boost/signals2.hpp>
@@ -48,6 +47,8 @@
 #include <map>
 #include <glib.h>
 #include <ptlib.h>
+
+#include "ekiga-settings.h"
 
 namespace Ekiga
 {
@@ -79,9 +80,9 @@ namespace Ekiga
       */
       ~VideoOutputCore ();
 
-      /** Set up gmconf bridge
+      /** Set up core
        */
-      void setup_conf_bridge();
+      void setup (std::string setting = "");
 
 
       /*** Service Implementation ***/
@@ -193,7 +194,7 @@ namespace Ekiga
 
       PMutex core_mutex;
 
-      VideoOutputCoreConfBridge* videooutput_core_conf_bridge;
+      Settings* settings;
     };
 /**
  * @}
