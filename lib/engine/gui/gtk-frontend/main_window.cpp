@@ -632,15 +632,14 @@ static bool on_handle_errors (std::string error,
 {
   g_return_val_if_fail (data != NULL, false);
 
-  GtkWidget *dialog = gtk_message_dialog_new (GTK_WINDOW (data),
-                                              GTK_DIALOG_MODAL,
-                                              GTK_MESSAGE_ERROR,
-                                              GTK_BUTTONS_OK, NULL);
+  GtkWidget *dialog = gtk_message_dialog_new_with_markup (GTK_WINDOW (data),
+                                                          GTK_DIALOG_MODAL,
+                                                          GTK_MESSAGE_ERROR,
+                                                          GTK_BUTTONS_OK,
+                                                          error.c_str (),
+                                                          NULL);
 
   gtk_window_set_title (GTK_WINDOW (dialog), _("Error"));
-  gtk_label_set_markup (GTK_LABEL (gtk_message_dialog_get_message_area (GTK_MESSAGE_DIALOG (dialog))),
-                        error.c_str ());
-
   g_signal_connect_swapped (dialog, "response",
                             G_CALLBACK (gtk_widget_destroy),
                             dialog);
