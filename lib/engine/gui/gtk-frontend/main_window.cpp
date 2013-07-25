@@ -636,8 +636,8 @@ static bool on_handle_errors (std::string error,
                                                           GTK_DIALOG_MODAL,
                                                           GTK_MESSAGE_ERROR,
                                                           GTK_BUTTONS_OK,
-                                                          error.c_str (),
-                                                          NULL);
+                                                          "%s",
+                                                          error.c_str ());
 
   gtk_window_set_title (GTK_WINDOW (dialog), _("Error"));
   g_signal_connect_swapped (dialog, "response",
