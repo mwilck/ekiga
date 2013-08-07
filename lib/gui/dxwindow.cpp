@@ -283,10 +283,16 @@ DXWindow::Init (HWND rootWindow,
   ddSurfaceDesc.ddpfPixelFormat.dwSize = sizeof( DDPIXELFORMAT);
   ddSurfaceDesc.ddpfPixelFormat.dwFlags = DDPF_FOURCC;
   ddSurfaceDesc.ddpfPixelFormat.dwFourCC = mmioFOURCC ('Y', 'V', '1', '2');
+  _colourFormat = CF_YV12;
   ddResult = _DDraw->CreateSurface (&ddSurfaceDesc, &_DXSurface.overlay, NULL);
   if (ddResult != DD_OK) { 
-    PTRACE (1, "DirectX\tCreateSurface(Overlay) failed - " << DDErrorMessage (ddResult)); 
-    return false; 
+    ddSurfaceDesc.ddpfPixelFormat.dwFourCC = mmioFOURCC ('Y', 'U', 'Y', '2');
+    _colourFormat = CF_YUY2;
+    ddResult = _DDraw->CreateSurface (&ddSurfaceDesc, &_DXSurface.overlay, NULL);
+    if (ddResult != DD_OK) { 
+      PTRACE (1, "DirectX\tCreateSurface(Overlay) failed for YV12 and YUY2 - no local image will be shown - " << DDErrorMessage (ddResult)); 
+      return false; 
+    }
   }
 
   PTRACE (4, "DirectX\tCreating Clipper");
@@ -690,23 +696,50 @@ DXWindow::CopyFrameBackbuffer (uint8_t *frame,
   uint8_t *srcV = frame + ((unsigned int) (width * height * 5) >> 2);
   uint8_t *srcU = frame + (unsigned int) (width * height);
 
-  for (i = 0 ; i < height ; i += 2) {
+  if (_colourFormat == CF_YV12) {
+    // transform from IYUV (YUV420P) to YV12 (different pitches too)
+    for (i = 0 ; i < height ; i += 2) {
+      memcpy (dstY, srcY, width);
+      dstY += ddSurfaceDesc.lPitch;
+      srcY += width;
 
-    memcpy (dstY, srcY, width);  
-    dstY += ddSurfaceDesc.lPitch; 
-    srcY += width;
+      memcpy (dstY, srcY, width);
+      dstY += ddSurfaceDesc.lPitch;
+      srcY += width;
 
-    memcpy (dstY, srcY, width);  
-    dstY += ddSurfaceDesc.lPitch; 
-    srcY += width;
+      memcpy (dstV, srcV, width2);
+      dstV += lPitch2;
+      srcV += width2;
 
-    memcpy (dstV, srcV, width2); 
-    dstV += lPitch2;              
-    srcV += width2;
+      memcpy (dstU, srcU, width2);
+      dstU += lPitch2;
+      srcU += width2;
+    }
+  } else {
+    // transform from IYUV (YUV420P) to YUY2
+    // see http://msdn.microsoft.com/en-us/library/windows/desktop/dd206750%28v=vs.85%29.aspx for colour formats
+    // a possibly better solution would be to set the colour format to YUY2 directly (in videoinput-manager-ptlib.cpp) for cameras supporting it, to avoid the double conversion, but ptlib crashes in this case with unknown conversion yuy2->yuy2...
+    for (i=0 ; i<height ; i++) {
+      for (int j=0 ; j<width ; j++) {
+        // copy luma
+        *dstY++ = *srcY++;
 
-    memcpy (dstU, srcU, width2); 
-    dstU += lPitch2;              
-    srcU += width2;
+        // copy chroma
+        if (j%2 == 0)
+          *dstY++ = *srcU++;
+        else
+          *dstY++ = *srcV++;
+      }
+
+      // go to next line
+      dstY += ddSurfaceDesc.lPitch - width*2;
+
+      // if odd line, upscale from 4:2:0 to 4:2:2 by reusing U and V
+      if (i%2 == 0) {
+        srcU -= width/2;
+        srcV -= width/2;
+      }
+    }
   }
 
   // unlocks the memory area

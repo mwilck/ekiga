@@ -202,7 +202,7 @@ private:
     bool _embedded;
     bool _pip;
     bool _sizemove;
-
+    enum {CF_YV12, CF_YUY2} _colourFormat;
 
     /* DESCRIPTION  :  /
      * BEHAVIOR     :  Static temporary message handler
