@@ -70,8 +70,6 @@ DXWindow::~DXWindow()
   PTRACE(4, "DirectX\tDXWindow Destructor called");
 
   MSG message;
-  char errormsg [1024];
-  memset (&errormsg, 0, sizeof (errormsg));
 
   // release DirectDraw Resources
   if (_DXSurface.clipper)
@@ -153,9 +151,6 @@ DXWindow::Init (HWND rootWindow,
     windowWidth += 4;
     windowHeight += 4;
   }
-
-  char errormsg [1024];
-  memset (&errormsg, 0, sizeof (errormsg));
 
   // the destination surface is actually the original YV12 image
   if (!SetRect (&_DXSurface.mainSrc, 0, 0, imageWidth, imageHeight)) {
@@ -248,9 +243,9 @@ DXWindow::Init (HWND rootWindow,
   // create a backbuffer surface, this is necessary because we first
   // paint the main frame and then the PIP frame on top, which leads
   // to flickering if done on the actual overlay
-  PTRACE(4, "DirectX\tCreating Bacbuffer Surface");
-  memset ( &ddSurfaceDesc, 0, sizeof (ddSurfaceDesc) );
-  ddSurfaceDesc.dwSize = sizeof ( ddSurfaceDesc );
+  PTRACE(4, "DirectX\tCreating Backbuffer Surface");
+  memset (&ddSurfaceDesc, 0, sizeof (ddSurfaceDesc));
+  ddSurfaceDesc.dwSize = sizeof (ddSurfaceDesc);
   ddSurfaceDesc.dwFlags = DDSD_CAPS | DDSD_WIDTH | DDSD_HEIGHT ;
   ddSurfaceDesc.ddsCaps.dwCaps = DDSCAPS_OFFSCREENPLAIN;
   ddSurfaceDesc.dwWidth = GetSystemMetrics(SM_CXSCREEN);
@@ -281,7 +276,7 @@ DXWindow::Init (HWND rootWindow,
     ddSurfaceDesc.dwHeight = imageHeight;
 
   ddSurfaceDesc.dwBackBufferCount = 1;
-  ddSurfaceDesc.ddpfPixelFormat.dwSize = sizeof( DDPIXELFORMAT);
+  ddSurfaceDesc.ddpfPixelFormat.dwSize = sizeof (DDPIXELFORMAT);
   ddSurfaceDesc.ddpfPixelFormat.dwFlags = DDPF_FOURCC;
   ddSurfaceDesc.ddpfPixelFormat.dwFourCC = mmioFOURCC ('Y', 'V', '1', '2');
   _colourFormat = CF_YV12;
@@ -336,7 +331,6 @@ void DXWindow::ProcessEvents()
 
   // handle messages
   while (PeekMessage (&message, _DXWindow, 0, 0, PM_REMOVE)) {
-
     TranslateMessage (&message);
     DispatchMessage (&message);
   }
@@ -361,7 +355,7 @@ DXWindow::PutFrame (uint8_t *frame,
   if (!pip) {
     if (   ( width  != (_DXSurface.mainSrc.right - _DXSurface.mainSrc.left))
         || ( height != (_DXSurface.mainSrc.bottom - _DXSurface.mainSrc.top)) ) {
-      PTRACE (1, "DirectX\tDynamic switching of resolution not supported\n");
+      PTRACE (1, "DirectX\tDynamic switching of resolution not supported");
       PTRACE (1, "DirectX\tMy Resolution: " << (_DXSurface.mainSrc.right  - _DXSurface.mainSrc.left)
               << "x" << (_DXSurface.mainSrc.bottom - _DXSurface.mainSrc.top )
               << ", frame: " << width << "x" << height);
@@ -373,7 +367,7 @@ DXWindow::PutFrame (uint8_t *frame,
   else {
       if (   ( width  != (_DXSurface.pipSrc.right  - _DXSurface.pipSrc.left))
         || ( height != (_DXSurface.pipSrc.bottom - _DXSurface.pipSrc.top )) ) {
-      PTRACE (1, "DirectX\tDynamic switching of resolution not supported\n");
+      PTRACE (1, "DirectX\tDynamic switching of resolution not supported");
       PTRACE (1, "DirectX\tMy PIP Resolution: " << (_DXSurface.pipSrc.right  - _DXSurface.pipSrc.left)
               << "x" << (_DXSurface.pipSrc.bottom - _DXSurface.pipSrc.top )
               << ", PIP frame: " << width << "x" << height);
@@ -416,11 +410,8 @@ void DXWindow::Sync()
 void
 DXWindow::ToggleOntop ()
 {
-  char errormsg [1024];
-  memset (&errormsg, 0, sizeof(errormsg));
-
   if (!SetWindowPos (_DXWindow,
-                     (_state.ontop) ? HWND_TOPMOST : HWND_NOTOPMOST,
+                     _state.ontop ? HWND_TOPMOST : HWND_NOTOPMOST,
                      0,
                      0,
                      0,
@@ -435,9 +426,6 @@ void
 DXWindow::ToggleFullscreen ()
 {
   WINDOWINFO windowInfo;
-
-  char errormsg [1024];
-  memset (&errormsg, 0, sizeof (errormsg));
 
   if (!_state.fullscreen) {
 
@@ -479,7 +467,7 @@ DXWindow::ToggleFullscreen ()
     }
 
     if (!SetWindowPos (_DXWindow,
-                       (_state.ontop) ?  HWND_TOPMOST : HWND_NOTOPMOST,
+                       _state.ontop ? HWND_TOPMOST : HWND_NOTOPMOST,
                        _state.oldWinFS.left,
                        _state.oldWinFS.top,
                        _state.oldWinFS.right - _state.oldWinFS.left,
@@ -500,8 +488,6 @@ DXWindow::ToggleFullscreen ()
 void
 DXWindow::ToggleDecoration ()
 {
-  char errormsg [1024];
-  memset (&errormsg, 0, sizeof (errormsg));
   WINDOWINFO windowInfo;
 
   if (_state.decoration) {
@@ -522,7 +508,7 @@ DXWindow::ToggleDecoration ()
       PTRACE (1, "DirectX\tSetWindowLongPtr failed - " << ErrorMessage());
 
     if (!SetWindowPos (_DXWindow,
-                       (_state.ontop) ?  HWND_TOPMOST : HWND_NOTOPMOST,
+                       _state.ontop ? HWND_TOPMOST : HWND_NOTOPMOST,
                        windowInfo.rcClient.left,
                        windowInfo.rcClient.top,
                        windowInfo.rcClient.right  - windowInfo.rcClient.left,
@@ -540,7 +526,7 @@ DXWindow::ToggleDecoration ()
       PTRACE (1, "DirectX\tSetWindowLongPtr failed - " << ErrorMessage ());
 
     if (!SetWindowPos (_DXWindow,
-                       (_state.ontop) ?  HWND_TOPMOST : HWND_NOTOPMOST,
+                       _state.ontop ? HWND_TOPMOST : HWND_NOTOPMOST,
                        _state.oldWinD.left,
                        _state.oldWinD.top,
                        _state.oldWinD.right  - _state.oldWinD.left,
@@ -563,9 +549,6 @@ DXWindow::GetWindow (int *x,
                      unsigned int *windowHeight)
 {
   WINDOWINFO windowInfo;
-
-  char errormsg [1024];
-  memset (&errormsg, 0, sizeof (errormsg));
 
   windowInfo.cbSize = sizeof (WINDOWINFO);
   if (!GetWindowInfo (_DXWindow, &windowInfo))
@@ -687,14 +670,14 @@ DXWindow::CopyFrameBackbuffer (uint8_t *frame,
 
   // copy the frame data
   uint16_t i = 0;
-  uint16_t width2  = width >> 1;
-  uint16_t lPitch2 = ddSurfaceDesc.lPitch >> 1;
+  uint16_t width2  = width / 2;
+  uint16_t lPitch2 = ddSurfaceDesc.lPitch / 2;
 
   uint8_t *dstY = (uint8_t*) ddSurfaceDesc.lpSurface;
   uint8_t *dstV = (uint8_t*) ddSurfaceDesc.lpSurface +  (unsigned int) (ddSurfaceDesc.lPitch * ddSurfaceDesc.dwHeight);
-  uint8_t *dstU = (uint8_t*) ddSurfaceDesc.lpSurface + ((unsigned int) (ddSurfaceDesc.lPitch * ddSurfaceDesc.dwHeight * 5) >> 2);
+  uint8_t *dstU = (uint8_t*) ddSurfaceDesc.lpSurface + ((unsigned int) (ddSurfaceDesc.lPitch * ddSurfaceDesc.dwHeight * 5) / 4);
   uint8_t *srcY = frame;
-  uint8_t *srcV = frame + ((unsigned int) (width * height * 5) >> 2);
+  uint8_t *srcV = frame + ((unsigned int) (width * height * 5) / 4);
   uint8_t *srcU = frame + (unsigned int) (width * height);
 
   if (_colourFormat == CF_YV12) {
@@ -737,8 +720,8 @@ DXWindow::CopyFrameBackbuffer (uint8_t *frame,
 
       // if odd line, upscale from 4:2:0 to 4:2:2 by reusing U and V
       if (i%2 == 0) {
-        srcU -= width/2;
-        srcV -= width/2;
+        srcU -= width2;
+        srcV -= width2;
       }
     }
   }
@@ -906,7 +889,7 @@ DXWindow::SetWindow (int x,
       if (!AdjustWindowRect (&windowRect,
                              (_state.decoration) ? WS_OVERLAPPEDWINDOW | WS_SIZEBOX : WS_OVERLAPPED,
                              0))
-        PTRACE (1, "DirectX\tAdddddjustWindowRect failed - " << ErrorMessage());
+        PTRACE (1, "DirectX\tAdjustWindowRect failed - " << ErrorMessage());
 
       windowRect.left   -= 2;
       windowRect.right  += 2;
@@ -914,7 +897,7 @@ DXWindow::SetWindow (int x,
       windowRect.bottom += 2;
 
       if (!SetWindowPos (_DXWindow,
-                         (_state.ontop) ? HWND_TOPMOST : HWND_NOTOPMOST,
+                         _state.ontop ? HWND_TOPMOST : HWND_NOTOPMOST,
                          windowRect.left,
                          windowRect.top,
                          windowRect.right - windowRect.left,
@@ -977,8 +960,6 @@ DXWindow::CorrectAspectRatio (RECT uncorrected)
 bool
 DXWindow::NewWindow (int x, int y, int windowWidth, int windowHeight)
 {
-  char errormsg [1024];
-  memset (&errormsg, 0, sizeof(errormsg));
   WNDCLASSEX windowClass;
   RECT windowRect;
 
