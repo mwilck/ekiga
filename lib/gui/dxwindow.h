@@ -31,7 +31,7 @@
  *                         --------------------------
  *   begin                : Sun April 15 2007
  *   copyright            : (C) 2007 by Matthias Schneider <ma30002000@yahoo.de>
- *   description          : High-level class offering DirectDraw hardware 
+ *   description          : High-level class offering DirectDraw hardware
  *                          acceleration.
  */
 
@@ -48,7 +48,7 @@
 struct DXSurface {
   LPDIRECTDRAWSURFACE primary;
   LPDIRECTDRAWSURFACE overlay;
-  LPDIRECTDRAWSURFACE back; 
+  LPDIRECTDRAWSURFACE back;
   LPDIRECTDRAWCLIPPER clipper;
   RECT mainSrc;    // corresponds to the resolution of the main image
   RECT pipSrc;     // corresponds to the resolution of the pip image
@@ -73,21 +73,25 @@ typedef struct {
 /**
  * DXWindow:
  *
- * This class provides DirectDraw support under Windows if it is supported by the graphics hardware and driver.
- * DirectDraw makes use of hardware capabilities in order to do
+ * This class provides DirectDraw support under Windows if it is
+ * supported by the graphics hardware and driver.  DirectDraw makes
+ * use of hardware capabilities in order to do:
  * - colorspace transformation
  * - scaling
  * - anti-aliasing
  *
- * This class features a fullscreen mode, an always-on-top mode and allows to enable and disable the window
- * manager decorations. A picture-in-picture functionality is provided. The class has to initialized
- * with the window where it shall appear and the original image and intial window size (if a PIP is desired also 
- * the PIP image size and factor has to be provided. After having been initialized successfully a frame 
- * is passed via putFrame which takes care of the presentation.
+ * This class features a fullscreen mode, an always-on-top mode and
+ * allows to enable and disable the window manager decorations. A
+ * picture-in-picture functionality is provided. The class has to
+ * initialized with the window where it shall appear and the original
+ * image and intial window size (if a PIP is desired also the PIP
+ * image size and factor has to be provided. After having been
+ * initialized successfully a frame is passed via putFrame which takes
+ * care of the presentation.
  *
  * @author Matthias Schneider
  */
-class DXWindow 
+class DXWindow
 {
 public:
     DXWindow ();
@@ -98,15 +102,15 @@ public:
      *                 a new window will be created.
      * PRE          :  x and y positions of the window / area  (>=0),
      *                 width and height of the window / area (>0),
-     *                 width and height of the frame that is to be displayed 
+     *                 width and height of the frame that is to be displayed
      *                 in that window / area
      */
-    bool Init (HWND rootWindow, 
-               int x, 
+    bool Init (HWND rootWindow,
+               int x,
                int y,
-               int windowWidth, 
-               int windowHeight, 
-               int imageWidth, 
+               int windowWidth,
+               int windowHeight,
+               int imageWidth,
                int imageHeight);
 
 
@@ -115,19 +119,19 @@ public:
      *                 a new window will be created. Enable picture-in-picture
      * PRE          :  x and y positions of the window / area  (>=0),
      *                 width and height of the window / area (>0),
-     *                 width and height of the frame that is to be displayed 
+     *                 width and height of the frame that is to be displayed
      *                 in that window / area
-     *                 width and height of the frame that is to be displayed 
+     *                 width and height of the frame that is to be displayed
      *                 as a picture-in-picture in that window / area
      */
-    bool Init (HWND rootWindow, 
+    bool Init (HWND rootWindow,
                int x,
                int y,
-               int windowWidth, 
-               int windowHeight, 
-               int imageWidth, 
-               int imageHeight, 
-               int PIPimageWidth, 
+               int windowWidth,
+               int windowHeight,
+               int imageWidth,
+               int imageHeight,
+               int PIPimageWidth,
                int PIPimageHeight);
 
 
@@ -135,11 +139,11 @@ public:
      * BEHAVIOR     :  Display a new frame
      * PRE          :  pointer to the frame data
      *                 width and height of the frame
-     *                 changing the framesize after having been 
+     *                 changing the framesize after having been
      *                 initialized is not supported
      */
     void PutFrame (uint8_t *frame,
-                   uint16_t width, 
+                   uint16_t width,
                    uint16_t height,
 		   bool pip);
 
@@ -156,9 +160,9 @@ public:
      * PRE          :  pointer to the main frame data
      *                 width and height of the main frame
      */
-    void SetWindow (int x, 
-                    int y, 
-                    unsigned int windowWidth, 
+    void SetWindow (int x,
+                    int y,
+                    unsigned int windowWidth,
                     unsigned int windowHeight);
 
 
@@ -166,35 +170,35 @@ public:
      * BEHAVIOR     :  Get current window coordinates and size
      * PRE          :  /
      */
-    void GetWindow (int *x, 
+    void GetWindow (int *x,
                     int *y,
-                    unsigned int *windowWidth, 
+                    unsigned int *windowWidth,
                     unsigned int *windowHeight);
 
-    bool IsFullScreen ()  const 
-      { 
-        return _state.fullscreen; 
+    bool IsFullScreen ()  const
+      {
+        return _state.fullscreen;
       }
 
-    bool HasDecoration () const 
-      { 
-        return _state.decoration; 
+    bool HasDecoration () const
+      {
+        return _state.decoration;
       }
 
-    bool IsOntop () const 
-      { 
-        return _state.ontop;      
+    bool IsOntop () const
+      {
+        return _state.ontop;
       }
 
-    bool HasPIP () const 
-      { 
-        return _pip;              
+    bool HasPIP () const
+      {
+        return _pip;
       }
 
 private:
 
     HWND _DXWindow;
-    LPDIRECTDRAW _DDraw;	
+    LPDIRECTDRAW _DDraw;
     DXSurface _DXSurface;
     DXState _state;
     HINSTANCE _instance;
@@ -212,7 +216,7 @@ private:
      */
     static LRESULT CALLBACK WndProc (HWND window,
                                      UINT message,
-                                     WPARAM wParam, 
+                                     WPARAM wParam,
                                      LPARAM lParam);
 
 
@@ -232,10 +236,10 @@ private:
      *                 width and height of the frame,
      *                 source and destination rectangles
      */
-    void CopyFrameBackbuffer (uint8_t *mainFrame, 
-                              uint16_t width, 
+    void CopyFrameBackbuffer (uint8_t *mainFrame,
+                              uint16_t width,
                               uint16_t height,
-                              RECT *src, 
+                              RECT *src,
                               RECT *dst);
 
 
@@ -246,7 +250,7 @@ private:
 
     /* DESCRIPTION  :  /
      * BEHAVIOR     :  Takes care that the window does not leave the screen.
-     Then calls SetOverlayRect with the window coordiates and size 
+     *                 Then calls SetOverlayRect with the window coordiates and size
      * PRE          :
      */
     void SetOverlayToWindow ();
@@ -254,8 +258,8 @@ private:
 
     /* DESCRIPTION  :  /
      * BEHAVIOR     :  Sets the destination Rectangle Position and sizes
-     *                 Takes into the aspect ratio of the image and the 
-     *                 destination and adjusts the destination rectangle 
+     *                 Takes into the aspect ratio of the image and the
+     *                 destination and adjusts the destination rectangle
      *                 accordingly. Also calculates the position and size of the picture-in-picture
      * PRE          :
      */
@@ -267,8 +271,8 @@ private:
      * PRE          :  x and y positions of the window   (>=0),
      *                 width and height of the window (>0),
      */
-    bool NewWindow (int x, 
-                    int y, 
+    bool NewWindow (int x,
+                    int y,
                     int windowWidth,
                     int windowHeight);
 
