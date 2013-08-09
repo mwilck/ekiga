@@ -31,7 +31,7 @@
  *                         ----------------------------
  *   begin                : Sun April 15 2007
  *   copyright            : (C) 2007 by Matthias Schneider <ma30002000@yahoo.de>
- *   description          : High-level class offering DirectDraw hardware 
+ *   description          : High-level class offering DirectDraw hardware
  *                          acceleration.
  */
 
@@ -46,7 +46,7 @@ DXWindow::DXWindow()
 {
 
   PTRACE(4, "DirectX\tDXWindow Constructor called");
-  
+
   _state.fullscreen = false;
   _state.ontop = false;
   _state.decoration = true;
@@ -70,23 +70,23 @@ DXWindow::~DXWindow()
   PTRACE(4, "DirectX\tDXWindow Destructor called");
 
   MSG message;
-  char errormsg [1024];	
+  char errormsg [1024];
   memset (&errormsg, 0, sizeof (errormsg));
 
   // release DirectDraw Resources
-  if (_DXSurface.clipper) 
+  if (_DXSurface.clipper)
     _DXSurface.clipper->Release ();
 
-  if (_DXSurface.back) 
+  if (_DXSurface.back)
     _DXSurface.back->Release ();
 
-  if (_DXSurface.overlay) 
+  if (_DXSurface.overlay)
     _DXSurface.overlay->Release ();
 
-  if (_DXSurface.primary) 
+  if (_DXSurface.primary)
     _DXSurface.primary->Release ();
 
-  if (_DDraw) 
+  if (_DDraw)
     _DDraw->Release ();
 
   if (!_embedded) {
@@ -113,7 +113,7 @@ DXWindow::~DXWindow()
 
 bool
 DXWindow::Init (HWND rootWindow,
-                int x, 
+                int x,
                 int y,
                 int windowWidth,
                 int windowHeight,
@@ -121,20 +121,20 @@ DXWindow::Init (HWND rootWindow,
                 int imageHeight)
 {
   _pip = false;
-  return ( Init(rootWindow, 
+  return ( Init(rootWindow,
                  x,
                  y,
                  windowWidth,
                  windowHeight,
-                 imageWidth, 
+                 imageWidth,
                  imageHeight,
                  0,
                  0));
 }
 
 
-bool 
-DXWindow::Init (HWND rootWindow, 
+bool
+DXWindow::Init (HWND rootWindow,
                 int x,
                 int y,
                 int windowWidth,
@@ -154,7 +154,7 @@ DXWindow::Init (HWND rootWindow,
     windowHeight += 4;
   }
 
-  char errormsg [1024];	
+  char errormsg [1024];
   memset (&errormsg, 0, sizeof (errormsg));
 
   // the destination surface is actually the original YV12 image
@@ -174,63 +174,63 @@ DXWindow::Init (HWND rootWindow,
   if (rootWindow) {
     _embedded = true;
     _DXWindow = rootWindow;
-  } 
+  }
   else {
     _embedded = false;
-    if (!NewWindow (x, y, windowWidth, windowHeight)) 
-      return false; 
+    if (!NewWindow (x, y, windowWidth, windowHeight))
+      return false;
   }
 
   PTRACE(4, "DirectX\tConfiguring DirectX");
 
   // create a DirectDraw object
   ddResult = DirectDrawCreate (NULL, &_DDraw, NULL);
-  if (ddResult != DD_OK) { 
-    PTRACE (1, "DirectX\tDirectDrawCreate failed - " << DDErrorMessage (ddResult)); 
-    return false; 
+  if (ddResult != DD_OK) {
+    PTRACE (1, "DirectX\tDirectDrawCreate failed - " << DDErrorMessage (ddResult));
+    return false;
   }
 
   ddResult = _DDraw->SetCooperativeLevel (_DXWindow, DDSCL_NORMAL | DDSCL_MULTITHREADED);
-  if (ddResult != DD_OK) { 
-    PTRACE (1, "DirectX\tSetCooperativeLevel failed - " << DDErrorMessage (ddResult));  
-    return false; 
+  if (ddResult != DD_OK) {
+    PTRACE (1, "DirectX\tSetCooperativeLevel failed - " << DDErrorMessage (ddResult));
+    return false;
   }
 
   // check for overlay and stretch capabilities
   ddCaps.dwSize = sizeof (ddCaps);
   ddResult = _DDraw->GetCaps (&ddCaps, NULL);
 
-  if (ddResult != DD_OK) { 
-    PTRACE (1, "DirectX\tGetCaps failed - " << DDErrorMessage (ddResult)); 
-    return false; 
+  if (ddResult != DD_OK) {
+    PTRACE (1, "DirectX\tGetCaps failed - " << DDErrorMessage (ddResult));
+    return false;
   }
 
   if (!(ddCaps.dwCaps & DDCAPS_OVERLAY)) {
-    PTRACE (1, "DirectX\tno Overlay Capabilities"); 
-    return false; 
+    PTRACE (1, "DirectX\tno Overlay Capabilities");
+    return false;
   }
 
-  if (!(ddCaps.dwCaps & DDCAPS_OVERLAYSTRETCH)) { 
-    PTRACE (1, "DirectX\tno Stretch Capabilities"); 
-    return false; 
+  if (!(ddCaps.dwCaps & DDCAPS_OVERLAYSTRETCH)) {
+    PTRACE (1, "DirectX\tno Stretch Capabilities");
+    return false;
   }
 
   if (!(ddCaps.dwCaps & DDCAPS_BLT)) {
-    PTRACE (1, "DirectX\tno Blt Capabilities"); 
-    return false; 
+    PTRACE (1, "DirectX\tno Blt Capabilities");
+    return false;
   }
 
-  if (ddCaps.dwCaps & DDCAPS_ALIGNBOUNDARYDEST) 
-    PTRACE(4, "DirectX\tdwAlignBoundaryDest " << ddCaps.dwAlignBoundaryDest); 
+  if (ddCaps.dwCaps & DDCAPS_ALIGNBOUNDARYDEST)
+    PTRACE(4, "DirectX\tdwAlignBoundaryDest " << ddCaps.dwAlignBoundaryDest);
 
-  if (ddCaps.dwCaps & DDCAPS_ALIGNBOUNDARYSRC) 
+  if (ddCaps.dwCaps & DDCAPS_ALIGNBOUNDARYSRC)
     PTRACE(4, "DirectX\tdwAlignBoundarySrc " << ddCaps.dwAlignBoundarySrc);
 
-  if (ddCaps.dwCaps & DDCAPS_ALIGNSIZEDEST) 
+  if (ddCaps.dwCaps & DDCAPS_ALIGNSIZEDEST)
     PTRACE(4, "DirectX\tdwAlignSizeDest " << ddCaps.dwAlignSizeDest);
 
-  if (ddCaps.dwCaps & DDCAPS_ALIGNSIZESRC)      
-    PTRACE(4, "DirectX\tdwAlignSizeSrc " << ddCaps.dwAlignSizeSrc); 
+  if (ddCaps.dwCaps & DDCAPS_ALIGNSIZESRC)
+    PTRACE(4, "DirectX\tdwAlignSizeSrc " << ddCaps.dwAlignSizeSrc);
 
   // create a primary surface where all other surfaces are located
   PTRACE(4, "DirectX\tCreating Primary Surface");
@@ -240,13 +240,14 @@ DXWindow::Init (HWND rootWindow,
   ddSurfaceDesc.ddsCaps.dwCaps = DDSCAPS_PRIMARYSURFACE;
 
   ddResult = _DDraw->CreateSurface (&ddSurfaceDesc, &_DXSurface.primary, NULL);
-  if (ddResult != DD_OK) { 
-    PTRACE (1, "DirectX\tCreateSurface(primary) failed - " << DDErrorMessage (ddResult)); 
-    return false; 
+  if (ddResult != DD_OK) {
+    PTRACE (1, "DirectX\tCreateSurface(primary) failed - " << DDErrorMessage (ddResult));
+    return false;
   }
 
-  // create a backbuffer surface, this is necessary because we first paint the main frame 
-  // and then the PIP frame ontop, which leads to flickering if done on the actual overlay
+  // create a backbuffer surface, this is necessary because we first
+  // paint the main frame and then the PIP frame on top, which leads
+  // to flickering if done on the actual overlay
   PTRACE(4, "DirectX\tCreating Bacbuffer Surface");
   memset ( &ddSurfaceDesc, 0, sizeof (ddSurfaceDesc) );
   ddSurfaceDesc.dwSize = sizeof ( ddSurfaceDesc );
@@ -256,27 +257,27 @@ DXWindow::Init (HWND rootWindow,
   ddSurfaceDesc.dwHeight = GetSystemMetrics(SM_CYSCREEN);
 
   ddResult = _DDraw->CreateSurface (&ddSurfaceDesc, &_DXSurface.back, NULL);
-  if (ddResult != DD_OK) { 
-    PTRACE (1, "DirectX\tCreateSurface(Backbuffer) failed - " << DDErrorMessage(ddResult));  
-    return false; 
+  if (ddResult != DD_OK) {
+    PTRACE (1, "DirectX\tCreateSurface(Backbuffer) failed - " << DDErrorMessage(ddResult));
+    return false;
   }
 
   PTRACE(4, "DirectX\tCreating Overlay Surface");
-  // this is the actual overlay surface, size is the highest value of width and height 
-  // of both frames to be displayed
+  // this is the actual overlay surface, size is the highest value of
+  // width and height of both frames to be displayed
   memset (&ddSurfaceDesc, 0, sizeof (DDSURFACEDESC));
   ddSurfaceDesc.dwSize = sizeof (DDSURFACEDESC);
   ddSurfaceDesc.dwFlags = DDSD_CAPS | DDSD_WIDTH | DDSD_HEIGHT | DDSD_BACKBUFFERCOUNT | DDSD_PIXELFORMAT;
   ddSurfaceDesc.ddsCaps.dwCaps = DDSCAPS_OVERLAY | DDSCAPS_FLIP | DDSCAPS_COMPLEX;
 
-  if (PIPimageWidth > imageWidth) 
+  if (PIPimageWidth > imageWidth)
     ddSurfaceDesc.dwWidth = PIPimageWidth;
-  else 
+  else
     ddSurfaceDesc.dwWidth = imageWidth;
 
-  if (PIPimageHeight > imageHeight) 
+  if (PIPimageHeight > imageHeight)
     ddSurfaceDesc.dwHeight = PIPimageHeight;
-  else 
+  else
     ddSurfaceDesc.dwHeight = imageHeight;
 
   ddSurfaceDesc.dwBackBufferCount = 1;
@@ -285,39 +286,39 @@ DXWindow::Init (HWND rootWindow,
   ddSurfaceDesc.ddpfPixelFormat.dwFourCC = mmioFOURCC ('Y', 'V', '1', '2');
   _colourFormat = CF_YV12;
   ddResult = _DDraw->CreateSurface (&ddSurfaceDesc, &_DXSurface.overlay, NULL);
-  if (ddResult != DD_OK) { 
+  if (ddResult != DD_OK) {
     ddSurfaceDesc.ddpfPixelFormat.dwFourCC = mmioFOURCC ('Y', 'U', 'Y', '2');
     _colourFormat = CF_YUY2;
     ddResult = _DDraw->CreateSurface (&ddSurfaceDesc, &_DXSurface.overlay, NULL);
-    if (ddResult != DD_OK) { 
-      PTRACE (1, "DirectX\tCreateSurface(Overlay) failed for YV12 and YUY2 - no local image will be shown - " << DDErrorMessage (ddResult)); 
-      return false; 
+    if (ddResult != DD_OK) {
+      PTRACE (1, "DirectX\tCreateSurface(Overlay) failed for YV12 and YUY2 - no local image will be shown - " << DDErrorMessage (ddResult));
+      return false;
     }
   }
 
   PTRACE (4, "DirectX\tCreating Clipper");
   // create a clipper that other windows may cover the overlay when not on top
   ddResult=_DDraw->CreateClipper (0, &_DXSurface.clipper, NULL);
-  if (ddResult != DD_OK) { 
-    PTRACE (1, "DirectX\tCreateClipper failed - " << DDErrorMessage (ddResult)); 
-    return false; 
+  if (ddResult != DD_OK) {
+    PTRACE (1, "DirectX\tCreateClipper failed - " << DDErrorMessage (ddResult));
+    return false;
   }
 
   ddResult = _DXSurface.clipper->SetHWnd (0, _DXWindow);
-  if (ddResult != DD_OK) { 
-    PTRACE (1, "DirectX\tSetHWnd failed - " << DDErrorMessage (ddResult)); 
-    return false; 
+  if (ddResult != DD_OK) {
+    PTRACE (1, "DirectX\tSetHWnd failed - " << DDErrorMessage (ddResult));
+    return false;
   }
 
   ddResult = _DXSurface.primary->SetClipper (_DXSurface.clipper);
-  if (ddResult != DD_OK) { 
-    PTRACE (1, "DirectX\tSetClipper failed - " << DDErrorMessage (ddResult)); 
-    return false; 
+  if (ddResult != DD_OK) {
+    PTRACE (1, "DirectX\tSetClipper failed - " << DDErrorMessage (ddResult));
+    return false;
   }
 
   PTRACE(4, "DirectX\tShowing Window");
   if (_embedded) {
-    SetWindow (x,y,windowWidth, windowHeight); 
+    SetWindow (x,y,windowWidth, windowHeight);
   }
   else {
     ShowWindow (_DXWindow, SW_SHOW);
@@ -325,7 +326,7 @@ DXWindow::Init (HWND rootWindow,
   }
 
   PTRACE(4, "DirectX\tLeaving Init");
-  return true;	
+  return true;
 }
 
 void DXWindow::ProcessEvents()
@@ -340,28 +341,28 @@ void DXWindow::ProcessEvents()
     DispatchMessage (&message);
   }
 
-  if (_embedded) 
-    CalculateEmbWindCoord (); 
+  if (_embedded)
+    CalculateEmbWindCoord ();
 
   PTRACE(4, "DirectX\tLeaving processEvents");
 }
 
 void
-DXWindow::PutFrame (uint8_t *frame, 
+DXWindow::PutFrame (uint8_t *frame,
                     uint16_t width,
                     uint16_t height,
 		    bool pip)
 {
   PTRACE(4, "DirectX\tEntering putFrame");
 
-  if (_sizemove) 
+  if (_sizemove)
     return;
 
   if (!pip) {
     if (   ( width  != (_DXSurface.mainSrc.right - _DXSurface.mainSrc.left))
         || ( height != (_DXSurface.mainSrc.bottom - _DXSurface.mainSrc.top)) ) {
       PTRACE (1, "DirectX\tDynamic switching of resolution not supported\n");
-      PTRACE (1, "DirectX\tMy Resolution: " << (_DXSurface.mainSrc.right  - _DXSurface.mainSrc.left) 
+      PTRACE (1, "DirectX\tMy Resolution: " << (_DXSurface.mainSrc.right  - _DXSurface.mainSrc.left)
               << "x" << (_DXSurface.mainSrc.bottom - _DXSurface.mainSrc.top )
               << ", frame: " << width << "x" << height);
       return;
@@ -373,7 +374,7 @@ DXWindow::PutFrame (uint8_t *frame,
       if (   ( width  != (_DXSurface.pipSrc.right  - _DXSurface.pipSrc.left))
         || ( height != (_DXSurface.pipSrc.bottom - _DXSurface.pipSrc.top )) ) {
       PTRACE (1, "DirectX\tDynamic switching of resolution not supported\n");
-      PTRACE (1, "DirectX\tMy PIP Resolution: " << (_DXSurface.pipSrc.right  - _DXSurface.pipSrc.left) 
+      PTRACE (1, "DirectX\tMy PIP Resolution: " << (_DXSurface.pipSrc.right  - _DXSurface.pipSrc.left)
               << "x" << (_DXSurface.pipSrc.bottom - _DXSurface.pipSrc.top )
               << ", PIP frame: " << width << "x" << height);
       return;
@@ -389,19 +390,19 @@ void DXWindow::Sync()
   HRESULT ddResult, ddResultRestore;
 
   PTRACE(4, "DirectX\tEntering Sync");
-  // Blt the combined pip and main window from the backbuffer 
-  // to the final position on the visible primary surface
+  // Blt the combined pip and main window from the backbuffer to the
+  // final position on the visible primary surface
   ddResult = _DXSurface.primary->Blt (&_DXSurface.primaryDst,
-                                      _DXSurface.back, 
-                                      &_DXSurface.mainBack, 
-                                      DDBLT_WAIT, 
+                                      _DXSurface.back,
+                                      &_DXSurface.mainBack,
+                                      DDBLT_WAIT,
                                       NULL);
 
   if (ddResult == DDERR_SURFACELOST) {
     ddResultRestore = _DXSurface.primary->Restore ();
     if ( ddResultRestore != DD_OK) {
       PTRACE (1, "DirectX\tRestore failed - " << DDErrorMessage (ddResultRestore));
-      return; 
+      return;
     }
   }
   else if (ddResult != DD_OK) {
@@ -412,14 +413,14 @@ void DXWindow::Sync()
 }
 
 
-void 
+void
 DXWindow::ToggleOntop ()
 {
-  char errormsg [1024];	
+  char errormsg [1024];
   memset (&errormsg, 0, sizeof(errormsg));
 
-  if (!SetWindowPos (_DXWindow, 
-                     (_state.ontop) ? HWND_TOPMOST : HWND_NOTOPMOST, 
+  if (!SetWindowPos (_DXWindow,
+                     (_state.ontop) ? HWND_TOPMOST : HWND_NOTOPMOST,
                      0,
                      0,
                      0,
@@ -435,7 +436,7 @@ DXWindow::ToggleFullscreen ()
 {
   WINDOWINFO windowInfo;
 
-  char errormsg [1024];	
+  char errormsg [1024];
   memset (&errormsg, 0, sizeof (errormsg));
 
   if (!_state.fullscreen) {
@@ -449,22 +450,22 @@ DXWindow::ToggleFullscreen ()
     _state.oldWinFS = windowInfo.rcWindow;
 
     SetLastError (0);
-    if ((!SetWindowLongPtr (_DXWindow, 
-                            GWL_STYLE, 
+    if ((!SetWindowLongPtr (_DXWindow,
+                            GWL_STYLE,
                             WS_OVERLAPPED | WS_VISIBLE))
         && (GetLastError ()))
       PTRACE (1, "DirectX\tSetWindowLongPtr failed - " << ErrorMessage());
 
-    if (!SetWindowPos (_DXWindow, 
+    if (!SetWindowPos (_DXWindow,
                        HWND_TOPMOST,
                        0,
                        0,
                        GetSystemMetrics (SM_CXSCREEN),
-                       GetSystemMetrics (SM_CYSCREEN), 
+                       GetSystemMetrics (SM_CYSCREEN),
                        SWP_FRAMECHANGED))
       PTRACE (1, "DirectX\tSetWindowPos failed - " << ErrorMessage());
 
-  } 
+  }
   else {
 
     if (_state.decoration)  {
@@ -478,7 +479,7 @@ DXWindow::ToggleFullscreen ()
     }
 
     if (!SetWindowPos (_DXWindow,
-                       (_state.ontop) ?  HWND_TOPMOST : HWND_NOTOPMOST, 
+                       (_state.ontop) ?  HWND_TOPMOST : HWND_NOTOPMOST,
                        _state.oldWinFS.left,
                        _state.oldWinFS.top,
                        _state.oldWinFS.right - _state.oldWinFS.left,
@@ -499,7 +500,7 @@ DXWindow::ToggleFullscreen ()
 void
 DXWindow::ToggleDecoration ()
 {
-  char errormsg [1024];	
+  char errormsg [1024];
   memset (&errormsg, 0, sizeof (errormsg));
   WINDOWINFO windowInfo;
 
@@ -514,8 +515,8 @@ DXWindow::ToggleDecoration ()
     _state.oldWinD = windowInfo.rcWindow;
 
     SetLastError (0);
-    if ((!SetWindowLongPtr (_DXWindow, 
-                            GWL_STYLE, 
+    if ((!SetWindowLongPtr (_DXWindow,
+                            GWL_STYLE,
                             WS_OVERLAPPED | WS_VISIBLE))
         && (GetLastError ()))
       PTRACE (1, "DirectX\tSetWindowLongPtr failed - " << ErrorMessage());
@@ -528,17 +529,17 @@ DXWindow::ToggleDecoration ()
                        windowInfo.rcClient.bottom - windowInfo.rcClient.top,
                        SWP_NOOWNERZORDER | SWP_FRAMECHANGED))
       PTRACE (1, "DirectX\tSetWindowLongPtr failed - " << ErrorMessage());
-  } 
+  }
   else {
 
     SetLastError (0);
     if ((!SetWindowLongPtr (_DXWindow,
-                            GWL_STYLE, 
+                            GWL_STYLE,
                             WS_OVERLAPPEDWINDOW | WS_SIZEBOX | WS_VISIBLE))
         && (GetLastError ()))
       PTRACE (1, "DirectX\tSetWindowLongPtr failed - " << ErrorMessage ());
 
-    if (!SetWindowPos (_DXWindow, 
+    if (!SetWindowPos (_DXWindow,
                        (_state.ontop) ?  HWND_TOPMOST : HWND_NOTOPMOST,
                        _state.oldWinD.left,
                        _state.oldWinD.top,
@@ -546,7 +547,7 @@ DXWindow::ToggleDecoration ()
                        _state.oldWinD.bottom - _state.oldWinD.top,
                        SWP_NOOWNERZORDER | SWP_FRAMECHANGED))
       PTRACE (1, "DirectX\tSetWindowPos failed - " << ErrorMessage());
-  }	
+  }
 
   PTRACE(4, "DirectX\tCaller: ToggleDecoration");
 
@@ -557,30 +558,30 @@ DXWindow::ToggleDecoration ()
 
 void
 DXWindow::GetWindow (int *x,
-                     int *y, 
+                     int *y,
                      unsigned int *windowWidth,
                      unsigned int *windowHeight)
 {
   WINDOWINFO windowInfo;
-  
-  char errormsg [1024];	
+
+  char errormsg [1024];
   memset (&errormsg, 0, sizeof (errormsg));
 
   windowInfo.cbSize = sizeof (WINDOWINFO);
-  if (!GetWindowInfo (_DXWindow, &windowInfo)) 
-    PTRACE (1, "DirectX\tGetWindowInfo failed - " << ErrorMessage ()); 
+  if (!GetWindowInfo (_DXWindow, &windowInfo))
+    PTRACE (1, "DirectX\tGetWindowInfo failed - " << ErrorMessage ());
 
   (*x) = windowInfo.rcClient.left;
   (*y) = windowInfo.rcClient.top;
   (*windowWidth) = windowInfo.rcClient.right - windowInfo.rcClient.left;
   (*windowHeight) = windowInfo.rcClient.bottom - windowInfo.rcClient.top;
-  PTRACE (4, "DirectX\tGetWindow - " << (*x) << "," << (*y) << " " << (*windowWidth) << "x"<< (*windowHeight)); 
+  PTRACE (4, "DirectX\tGetWindow - " << (*x) << "," << (*y) << " " << (*windowWidth) << "x"<< (*windowHeight));
 }
 
 
-LRESULT CALLBACK 
+LRESULT CALLBACK
 DXWindow::WndProc (HWND window,
-                   UINT message, 
+                   UINT message,
                    WPARAM wParam,
                    LPARAM lParam)
 {
@@ -594,12 +595,12 @@ DXWindow::WndProc (HWND window,
 
 
 LRESULT
-DXWindow::HandleMessage (HWND window, 
-                         UINT message, 
+DXWindow::HandleMessage (HWND window,
+                         UINT message,
                          WPARAM wParam,
                          LPARAM lParam)
 {
-  switch(message) 
+  switch(message)
     {
     case WM_CLOSE:
       return 0;
@@ -613,13 +614,13 @@ DXWindow::HandleMessage (HWND window,
       _sizemove = true;
       return 0;
     case WM_LBUTTONDOWN:
-      if (!_state.decoration) 
+      if (!_state.decoration)
         ToggleDecoration ();
-      else 
+      else
         ToggleFullscreen ();
       return 0;
     case WM_CHAR:
-      switch (wParam) 
+      switch (wParam)
         {
         case 'f' :
         case 'F' :
@@ -627,21 +628,21 @@ DXWindow::HandleMessage (HWND window,
           return 0;
         case 'o' :
         case 'O' :
-          if (!_state.fullscreen) 
+          if (!_state.fullscreen)
             ToggleOntop ();
           return 0;
         case 'd' :
         case 'D' :
-          if (!_state.fullscreen) 
+          if (!_state.fullscreen)
             ToggleDecoration ();
           return 0;
         case 27:
-          if (_state.fullscreen) 
+          if (_state.fullscreen)
             ToggleFullscreen ();
           return 0;
         }
-      return 0;	
-    case WM_DESTROY:	
+      return 0;
+    case WM_DESTROY:
       PostQuitMessage (0);
       return 0;
     default:
@@ -653,7 +654,7 @@ DXWindow::HandleMessage (HWND window,
 
 
 void
-DXWindow::CopyFrameBackbuffer (uint8_t *frame, 
+DXWindow::CopyFrameBackbuffer (uint8_t *frame,
                                uint16_t width,
                                uint16_t height,
                                RECT *src,
@@ -663,12 +664,12 @@ DXWindow::CopyFrameBackbuffer (uint8_t *frame,
   DDBLTFX ddBltFX;
   HRESULT ddResult, ddResultRestore;
 
-  memset (&ddSurfaceDesc, 0, sizeof (ddSurfaceDesc));	
-  ddSurfaceDesc.dwSize = sizeof (ddSurfaceDesc);	
+  memset (&ddSurfaceDesc, 0, sizeof (ddSurfaceDesc));
+  ddSurfaceDesc.dwSize = sizeof (ddSurfaceDesc);
 
   // locks the shared memory area
-  ddResult = _DXSurface.overlay->Lock (NULL, 
-                                       &ddSurfaceDesc, 
+  ddResult = _DXSurface.overlay->Lock (NULL,
+                                       &ddSurfaceDesc,
                                        DDLOCK_NOSYSLOCK | DDLOCK_WAIT,
                                        NULL);
 
@@ -676,12 +677,12 @@ DXWindow::CopyFrameBackbuffer (uint8_t *frame,
     ddResultRestore = _DXSurface.overlay->Restore ();
     if ( ddResultRestore != DD_OK) {
       PTRACE (1, "DirectX\tRestore failed - " << DDErrorMessage (ddResultRestore));
-      return; 
+      return;
     }
   }
   else if ( ddResult != DD_OK) {
     PTRACE (1, "DirectX\tLock failed - " << DDErrorMessage(ddResult));
-    return; 
+    return;
   }
 
   // copy the frame data
@@ -749,15 +750,15 @@ DXWindow::CopyFrameBackbuffer (uint8_t *frame,
     ddResultRestore = _DXSurface.overlay->Restore ();
     if ( ddResultRestore != DD_OK) {
       PTRACE (1, "DirectX\tRestore failed - " << DDErrorMessage (ddResultRestore));
-      return; 
+      return;
     }
   }
   else if ( ddResult != DD_OK) {
     PTRACE (1, "DirectX\tUnlock failed - " << DDErrorMessage (ddResult));
-    return; 
+    return;
   }
 
-  memset (&ddBltFX, 0, sizeof (ddBltFX));	
+  memset (&ddBltFX, 0, sizeof (ddBltFX));
   ddBltFX.dwSize = sizeof (DDBLTFX);
 
   // writes the copied data to the (back) surface
@@ -770,21 +771,22 @@ DXWindow::CopyFrameBackbuffer (uint8_t *frame,
     ddResultRestore = _DXSurface.back->Restore ();
     if ( ddResultRestore != DD_OK) {
       PTRACE (1, "DirectX\tRestore failed - " << DDErrorMessage(ddResultRestore));
-      return; 
+      return;
     }
   }
   else if ( ddResult != DD_OK) {
     PTRACE (1, "DirectX\tBlt failed - " << DDErrorMessage(ddResult));
-    return; 
+    return;
   }
 }
 
 
-void 
+void
 DXWindow::CalculateBackBuffer ()
 {
-  // The backbuffer surface does not support clippers, we thus  move the window
-  // to 0,0, from where it is blted to the final position in putFrame
+  // The backbuffer surface does not support clippers, we thus move
+  // the window to 0,0, from where it is blted to the final position
+  // in putFrame
 
   if (!SetRect (&_DXSurface.mainBack,
                 0,
@@ -800,17 +802,17 @@ DXWindow::CalculateBackBuffer ()
 
     _DXSurface.pipBack.right = _DXSurface.mainBack.right;
     _DXSurface.pipBack.bottom = _DXSurface.mainBack.bottom;
-    _DXSurface.pipBack.left = (int) (_DXSurface.mainBack.right - 
+    _DXSurface.pipBack.left = (int) (_DXSurface.mainBack.right -
                                      ((_DXSurface.mainBack.right - _DXSurface.mainBack.left) /
 				     ( _state.fullscreen ? PIP_RATIO_FS :  PIP_RATIO_WIN)));
-    _DXSurface.pipBack.top = (int) (_DXSurface.pipBack.bottom - 
+    _DXSurface.pipBack.top = (int) (_DXSurface.pipBack.bottom -
                                     ((_DXSurface.pipBack.right - _DXSurface.pipBack.left) *
                                      _DXSurface.pipSrc.bottom / _DXSurface.pipSrc.right));
   }
 }
 
 
-void 
+void
 DXWindow::CalculateEmbWindCoord ()
 {
   WINDOWINFO windowInfo;
@@ -822,10 +824,10 @@ DXWindow::CalculateEmbWindCoord ()
     return;
   }
 
-  if (!SetRect (&_DXSurface.primaryDst, 
+  if (!SetRect (&_DXSurface.primaryDst,
                 windowInfo.rcClient.left + _DXSurface.embeddedRelative.left,
-                windowInfo.rcClient.top  + _DXSurface.embeddedRelative.top, 
-                windowInfo.rcClient.left + _DXSurface.embeddedRelative.right, 
+                windowInfo.rcClient.top  + _DXSurface.embeddedRelative.top,
+                windowInfo.rcClient.left + _DXSurface.embeddedRelative.right,
                 windowInfo.rcClient.top  + _DXSurface.embeddedRelative.bottom)) {
     PTRACE (1, "DirectX\tSetRect failed - " << ErrorMessage ());
     return;
@@ -835,7 +837,7 @@ DXWindow::CalculateEmbWindCoord ()
 }
 
 
-void 
+void
 DXWindow::SetOverlayToWindow ()
 {
   WINDOWINFO windowInfo;
@@ -862,13 +864,13 @@ DXWindow::SetWindow (int x,
 {
   RECT newRect, windowRect;
 
-  PTRACE (4, "DirectX\tSetWindow - " << x << "," << y << " " << windowWidth << "x" << windowHeight); 
+  PTRACE (4, "DirectX\tSetWindow - " << x << "," << y << " " << windowWidth << "x" << windowHeight);
   if (_embedded) {
 
-    if (!SetRect(&_DXSurface.embeddedRelative, 
-                 x, 
-                 y, 
-                 x + windowWidth, 
+    if (!SetRect(&_DXSurface.embeddedRelative,
+                 x,
+                 y,
+                 x + windowWidth,
                  y + windowHeight)) {
 
       PTRACE (1, "DirectX\tSetRect failed - " << ErrorMessage ());
@@ -878,13 +880,13 @@ DXWindow::SetWindow (int x,
     CalculateEmbWindCoord ();
     CalculateBackBuffer ();
 
-  } 
+  }
   else {
 
-    if (!SetRect(&newRect, 
-                 x, 
-                 y, 
-                 x + windowWidth, 
+    if (!SetRect(&newRect,
+                 x,
+                 y,
+                 x + windowWidth,
                  y + windowHeight)) {
       PTRACE (1, "DirectX\tSetRect failed - " << ErrorMessage ());
       return;
@@ -906,13 +908,13 @@ DXWindow::SetWindow (int x,
                              0))
         PTRACE (1, "DirectX\tAdddddjustWindowRect failed - " << ErrorMessage());
 
-      windowRect.left   -= 2; 
+      windowRect.left   -= 2;
       windowRect.right  += 2;
-      windowRect.top    -= 2; 
-      windowRect.bottom += 2;	
+      windowRect.top    -= 2;
+      windowRect.bottom += 2;
 
-      if (!SetWindowPos (_DXWindow, 
-                         (_state.ontop) ? HWND_TOPMOST : HWND_NOTOPMOST, 
+      if (!SetWindowPos (_DXWindow,
+                         (_state.ontop) ? HWND_TOPMOST : HWND_NOTOPMOST,
                          windowRect.left,
                          windowRect.top,
                          windowRect.right - windowRect.left,
@@ -924,7 +926,7 @@ DXWindow::SetWindow (int x,
 }
 
 
-void 
+void
 DXWindow::CorrectAspectRatio (RECT uncorrected)
 {
   int imgWidth = _DXSurface.mainSrc.right - _DXSurface.mainSrc.left;
@@ -932,8 +934,8 @@ DXWindow::CorrectAspectRatio (RECT uncorrected)
   int scrWidth = uncorrected.right - uncorrected.left;
   int scrHeight = uncorrected.bottom - uncorrected.top;
 
-  // We have to limit the window height to a certain minimum  
-  // in order to prevent the Blt operation from whining..
+  // We have to limit the window height to a certain minimum in order
+  // to prevent the Blt operation from whining..
   // The width is already limited by windows
   if (scrHeight < 100) {
 
@@ -956,7 +958,7 @@ DXWindow::CorrectAspectRatio (RECT uncorrected)
     _DXSurface.primaryDst.right = _DXSurface.primaryDst.left + (int) (scrHeight * imgWidth / imgHeight);
     _DXSurface.primaryDst.bottom = _DXSurface.primaryDst.top + scrHeight;
 
-  } 
+  }
   else if ((scrHeight * imgWidth / imgHeight) > scrWidth) {
 
     _DXSurface.primaryDst.left = uncorrected.left + 0;
@@ -964,7 +966,7 @@ DXWindow::CorrectAspectRatio (RECT uncorrected)
     _DXSurface.primaryDst.right = _DXSurface.primaryDst.left + scrWidth;
     _DXSurface.primaryDst.bottom = _DXSurface.primaryDst.top + (int)(scrWidth * imgHeight / imgWidth);
 
-  } 
+  }
   else {
 
     _DXSurface.primaryDst = uncorrected;
@@ -975,22 +977,22 @@ DXWindow::CorrectAspectRatio (RECT uncorrected)
 bool
 DXWindow::NewWindow (int x, int y, int windowWidth, int windowHeight)
 {
-  char errormsg [1024];	
+  char errormsg [1024];
   memset (&errormsg, 0, sizeof(errormsg));
   WNDCLASSEX windowClass;
   RECT windowRect;
 
   PTRACE(4, "DirectX\tCreating Window");
   if (!SetRect (&windowRect, x, y, x + windowWidth, y + windowHeight)) {
-    PTRACE (1, "DirectX\tSetRect failed - " << ErrorMessage ()); 
+    PTRACE (1, "DirectX\tSetRect failed - " << ErrorMessage ());
   }
 
   // the window has to be larger because of titlebar and border lines
-  if (!AdjustWindowRect (&windowRect, 
-                         WS_OVERLAPPEDWINDOW | WS_SIZEBOX, 
+  if (!AdjustWindowRect (&windowRect,
+                         WS_OVERLAPPEDWINDOW | WS_SIZEBOX,
                          0))
   {
-    PTRACE (1, "DirectX\tAdjustWindowRect failed - " << ErrorMessage ()); 
+    PTRACE (1, "DirectX\tAdjustWindowRect failed - " << ErrorMessage ());
   }
 
   // define a window class
@@ -1002,18 +1004,18 @@ DXWindow::NewWindow (int x, int y, int windowWidth, int windowHeight)
   windowClass.hInstance     = _instance;
   windowClass.hIcon         = LoadIcon (NULL, IDI_APPLICATION);
   windowClass.hCursor       = LoadCursor (NULL, IDC_ARROW);
-  windowClass.hbrBackground = CreateSolidBrush (RGB (0,0,0)); 
+  windowClass.hbrBackground = CreateSolidBrush (RGB (0,0,0));
   windowClass.lpszMenuName  = NULL;
-  windowClass.lpszClassName = _windowTitle; 
+  windowClass.lpszClassName = _windowTitle;
   windowClass.hIconSm       = LoadIcon (NULL, IDI_APPLICATION);
 
   // register the window class
   if (!RegisterClassEx (&windowClass)) {
-    PTRACE (1, "DirectX\tRegisterClassEx failed - " << ErrorMessage ()); 
+    PTRACE (1, "DirectX\tRegisterClassEx failed - " << ErrorMessage ());
     return false;
   };
 
-  _DXWindow = CreateWindowEx (WS_EX_CLIENTEDGE, 
+  _DXWindow = CreateWindowEx (WS_EX_CLIENTEDGE,
                               _windowTitle,
                               _windowTitle,
                               WS_OVERLAPPEDWINDOW | WS_SIZEBOX,
@@ -1022,11 +1024,11 @@ DXWindow::NewWindow (int x, int y, int windowWidth, int windowHeight)
                               windowRect.right - windowRect.left,
                               windowRect.bottom - windowRect.top,
                               GetDesktopWindow (),
-                              NULL, 
+                              NULL,
                               _instance,
                               NULL);
   if (_DXWindow == NULL) {
-    PTRACE (1, "DirectX\tCreateWindowEx failed - " << ErrorMessage ()); 
+    PTRACE (1, "DirectX\tCreateWindowEx failed - " << ErrorMessage ());
     return false;
   }
 
@@ -1050,7 +1052,7 @@ DXWindow::NewWindow (int x, int y, int windowWidth, int windowHeight)
 }
 
 
-const char* 
+const char*
 DXWindow::ErrorMessage()
 {
   static char buffer[1024];
@@ -1080,7 +1082,7 @@ const char*
 DXWindow::DDErrorMessage(int code)
 {
   static const char *error;
-  static char errormsg [1024];	
+  static char errormsg [1024];
 
   switch (code) {
     case DDERR_GENERIC:
