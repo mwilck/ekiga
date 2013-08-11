@@ -71,8 +71,6 @@ gm_cell_renderer_bitext_update_text (GmCellRendererBitext *renderer,
   GtkStateFlags state = GTK_STATE_FLAG_NORMAL;
   GtkStyleContext *style = NULL;
   PangoAttrList *attr_list = NULL;
-  GdkRGBA color;
-  PangoAttribute *attr_color = NULL;
   PangoAttribute *attr_size = NULL;
   const PangoFontDescription* font = NULL;
   gchar *str = NULL;
