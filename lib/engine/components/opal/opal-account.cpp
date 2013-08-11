@@ -701,10 +701,9 @@ Opal::Account::handle_registration_event (RegistrationState state_,
           sip_endpoint->Subscribe (SIPSubscribe::MessageSummary, 3600, get_aor ());
         }
       }
-      boost::shared_ptr<Ekiga::PresenceCore> pcore = presence_core.lock ();
       boost::shared_ptr<Ekiga::PersonalDetails> details = personal_details.lock ();
-      if (pcore && details)
-	pcore->publish (details);
+      if (details)
+	const_cast<Account*>(this)->publish (*details);
 
       state = state_;
       failed_registration_already_notified = false;
