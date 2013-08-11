@@ -109,7 +109,6 @@ public:
 
 private:
     boost::shared_ptr<Opal::Sip::EndPoint> sip_endpoint;
-    boost::weak_ptr<Ekiga::PresenceCore> presence_core;
     boost::shared_ptr<Ekiga::NotificationCore> notification_core;
     boost::shared_ptr<Ekiga::PersonalDetails> personal_details;
     boost::shared_ptr<Ekiga::AudioOutputCore> audiooutput_core;

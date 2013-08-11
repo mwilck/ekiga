@@ -73,7 +73,6 @@ public:
     typedef enum { Processing, Registered, Unregistered, RegistrationFailed, UnregistrationFailed } RegistrationState;
 
     Account (boost::shared_ptr<Opal::Sip::EndPoint> _sip_endpoint,
-	     boost::shared_ptr<Ekiga::PresenceCore> _presence_core,
 	     boost::shared_ptr<Ekiga::NotificationCore> _notification_core,
 	     boost::shared_ptr<Ekiga::PersonalDetails> _personal_details,
 	     boost::shared_ptr<Ekiga::AudioOutputCore> _audiooutput_core,
@@ -81,7 +80,6 @@ public:
 	     const std::string & account);
 
     Account (boost::shared_ptr<Opal::Sip::EndPoint> _sip_endpoint,
-	     boost::shared_ptr<Ekiga::PresenceCore> _presence_core,
 	     boost::shared_ptr<Ekiga::NotificationCore> _notification_core,
 	     boost::shared_ptr<Ekiga::PersonalDetails> _personal_details,
 	     boost::shared_ptr<Ekiga::AudioOutputCore> _audiooutput_core,
@@ -230,7 +228,6 @@ private:
 				  std::string status);
 
     boost::shared_ptr<Opal::Sip::EndPoint> sip_endpoint;
-    boost::weak_ptr<Ekiga::PresenceCore> presence_core;
     boost::weak_ptr<Ekiga::NotificationCore> notification_core;
     boost::weak_ptr<Ekiga::PersonalDetails> personal_details;
     boost::weak_ptr<Ekiga::AudioOutputCore> audiooutput_core;

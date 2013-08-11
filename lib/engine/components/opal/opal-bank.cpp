@@ -52,16 +52,11 @@
 
 Opal::Bank::Bank (Ekiga::ServiceCore& core):
   sip_endpoint(core.get<Opal::Sip::EndPoint> ("opal-sip-endpoint")),
-  presence_core(core.get<Ekiga::PresenceCore> ("presence-core")),
   notification_core(core.get<Ekiga::NotificationCore> ("notification-core")),
   personal_details(core.get<Ekiga::PersonalDetails> ("personal-details")),
   audiooutput_core(core.get<Ekiga::AudioOutputCore> ("audiooutput-core")),
   opal_component(core.get<CallManager> ("opal-component"))
 {
-  boost::shared_ptr<Ekiga::PresenceCore> pcore = presence_core.lock ();
-  if ( !pcore)
-    return;
-
   GSList *accounts = gm_conf_get_string_list (PROTOCOLS_KEY "accounts_list");
   GSList *accounts_iter = accounts;
 
@@ -69,7 +64,6 @@ Opal::Bank::Bank (Ekiga::ServiceCore& core):
 
     boost::shared_ptr<Account> account
       = boost::shared_ptr<Account> (new Account (sip_endpoint,
-						 pcore,
 						 notification_core,
 						 personal_details,
 						 audiooutput_core,
@@ -278,12 +272,8 @@ void Opal::Bank::add (Account::Type acc_type,
                       bool enabled,
                       unsigned timeout)
 {
-  boost::shared_ptr<Ekiga::PresenceCore> pcore = presence_core.lock ();
-  if ( !pcore)
-    return;
   AccountPtr account
     = AccountPtr(new Opal::Account (sip_endpoint,
-				    pcore,
 				    notification_core,
 				    personal_details,
 				    audiooutput_core,

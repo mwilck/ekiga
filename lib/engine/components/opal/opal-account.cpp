@@ -59,14 +59,12 @@
 #include "sip-endpoint.h"
 
 Opal::Account::Account (boost::shared_ptr<Opal::Sip::EndPoint> _sip_endpoint,
-			boost::shared_ptr<Ekiga::PresenceCore> _presence_core,
 			boost::shared_ptr<Ekiga::NotificationCore> _notification_core,
 			boost::shared_ptr<Ekiga::PersonalDetails> _personal_details,
 			boost::shared_ptr<Ekiga::AudioOutputCore> _audiooutput_core,
 			boost::shared_ptr<CallManager> _call_manager,
 			const std::string & account):
   sip_endpoint(_sip_endpoint),
-  presence_core(_presence_core),
   notification_core(_notification_core),
   personal_details(_personal_details),
   audiooutput_core(_audiooutput_core),
@@ -155,7 +153,6 @@ Opal::Account::Account (boost::shared_ptr<Opal::Sip::EndPoint> _sip_endpoint,
 
 
 Opal::Account::Account (boost::shared_ptr<Opal::Sip::EndPoint> _sip_endpoint,
-			boost::shared_ptr<Ekiga::PresenceCore> _presence_core,
 			boost::shared_ptr<Ekiga::NotificationCore> _notification_core,
 			boost::shared_ptr<Ekiga::PersonalDetails> _personal_details,
 			boost::shared_ptr<Ekiga::AudioOutputCore> _audiooutput_core,
@@ -169,7 +166,6 @@ Opal::Account::Account (boost::shared_ptr<Opal::Sip::EndPoint> _sip_endpoint,
                         bool _enabled,
                         unsigned _timeout):
   sip_endpoint(_sip_endpoint),
-  presence_core(_presence_core),
   notification_core(_notification_core),
   personal_details(_personal_details),
   audiooutput_core(_audiooutput_core),
