@@ -276,12 +276,10 @@ namespace Ekiga
 
     void add_presence_publisher (boost::shared_ptr<PresencePublisher> publisher);
 
-    void publish (boost::shared_ptr<PersonalDetails> details);
-
   private:
 
     std::list<boost::shared_ptr<PresencePublisher> > presence_publishers;
-    void on_personal_details_updated (PersonalDetails &details);
+    void publish ();
 
     /*** API to control which uri are supported by runtime ***/
   public:

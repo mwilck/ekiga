@@ -41,7 +41,7 @@
 
 Ekiga::PresenceCore::PresenceCore ( boost::shared_ptr<Ekiga::PersonalDetails> _details): details(_details)
 {
-  conns.add (details->updated.connect (boost::bind (boost::bind (&Ekiga::PresenceCore::publish, this, _1), details)));
+  conns.add (details->updated.connect(boost::bind (&Ekiga::PresenceCore::publish, this)));
 }
 
 void
@@ -221,7 +221,8 @@ Ekiga::PresenceCore::add_presence_publisher (boost::shared_ptr<PresencePublisher
   presence_publishers.push_back (publisher);
 }
 
-void Ekiga::PresenceCore::publish (boost::shared_ptr<PersonalDetails> details) 
+void
+Ekiga::PresenceCore::publish ()
 {
   for (std::list<boost::shared_ptr<PresencePublisher> >::iterator iter
 	 = presence_publishers.begin ();
