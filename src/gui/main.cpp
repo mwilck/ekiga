@@ -105,6 +105,13 @@ main (int argc,
   signal (SIGPIPE, SIG_IGN);
 #endif
 
+  /* Gettext initialization */
+  path = g_build_filename (DATA_DIR, "locale", NULL);
+  textdomain (GETTEXT_PACKAGE);
+  bindtextdomain (GETTEXT_PACKAGE, path);
+  bind_textdomain_codeset (GETTEXT_PACKAGE, "UTF-8");
+  g_free (path);
+
   /* Application name */
   g_set_application_name (_("Ekiga Softphone"));
 #ifndef WIN32
@@ -120,13 +127,6 @@ main (int argc,
 
   /* Configuration backend initialization */
   gm_conf_init ();
-
-  /* Gettext initialization */
-  path = g_build_filename (DATA_DIR, "locale", NULL);
-  textdomain (GETTEXT_PACKAGE);
-  bindtextdomain (GETTEXT_PACKAGE, path);
-  bind_textdomain_codeset (GETTEXT_PACKAGE, "UTF-8");
-  g_free (path);
 
   /* Arguments initialization */
   GOptionEntry arguments [] =
