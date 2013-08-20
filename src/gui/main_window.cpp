@@ -850,16 +850,10 @@ static void
 on_chat_unread_alert (G_GNUC_UNUSED GtkWidget* widget,
 		      gpointer data)
 {
-  if (!gm_conf_get_bool (SOUND_EVENTS_KEY "enable_new_message_sound"))
-    return;
-
   Ekiga::ServiceCore *core = (Ekiga::ServiceCore*)data;
   boost::shared_ptr<Ekiga::AudioOutputCore> audiooutput_core = core->get<Ekiga::AudioOutputCore> ("audiooutput-core");
 
-  std::string file_name_string = gm_conf_get_string (SOUND_EVENTS_KEY "new_message_sound");
-
-  if (!file_name_string.empty ())
-    audiooutput_core->play_file(file_name_string);
+  audiooutput_core->play_file("new_message_sound");
 }
 
 
