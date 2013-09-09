@@ -94,7 +94,7 @@ ifeq ($(RELEASE),1)
 	OPAL_ARCHIVE := opal-$(OPAL_VER).tar.xz
 	OPAL_DIR := $(BUILDROOT)/opal-$(OPAL_VER)
 else
-	OPAL_VER := 3.10-beta11
+	OPAL_VER := 3.10-beta12
 	# OPAL_REV: HEAD or revision number
 	OPAL_REV := HEAD
 	OPAL_URL := svn://svn.code.sf.net/p/opalvoip/code/opal/branches/v3_10
@@ -109,7 +109,7 @@ ifeq ($(RELEASE),1)
 	PTLIB_ARCHIVE := ptlib-$(PTLIB_VER).tar.xz
 	PTLIB_DIR := $(BUILDROOT)/ptlib-$(PTLIB_VER)
 else
-	PTLIB_VER := 2.10-beta11
+	PTLIB_VER := 2.10-beta12
 	# PTLIB_REV: HEAD or revision number
 	PTLIB_REV := HEAD
 	PTLIB_URL := svn://svn.code.sf.net/p/opalvoip/code/ptlib/branches/v2_10
@@ -441,6 +441,10 @@ ifeq ($(MINGW32), 1)
 	sed -i -e 's#\#include <ntverp.h># #g' $(PTLIB_DIR)/include/ptclib/pdns.h
 	sed -i -e 's#enum { DnsSectionAdditional = DnsSectionAddtional };# #g' $(PTLIB_DIR)/include/ptclib/pdns.h
 endif
+ifeq ($(MINGW32), 0)
+	# fix build error appearing with branch <=v2_10, can be removed for >=v2_12
+	sed -i -e 's#\#if (WINVER <= 0x502)#\#if (WINVER <= 0x400)#g' $(PTLIB_DIR)/src/ptlib/msos/ethsock.cxx
+endif
 	touch $@
 
 $(PTLIB_DIR)/config.status: binaries $(PTLIB_DIR)/configure
@@ -550,6 +554,11 @@ update-sources::
 $(THEORA_DIR)/config.status: $(SRCDIR)/$(THEORA_ARCHIVE) $(LIBDIR)/libogg.a
 	rm -rf $(THEORA_DIR)
 	tar xfJ $(SRCDIR)/$(THEORA_ARCHIVE) -C $(BUILDROOT)
+	# .def files of theora use CRLF line terminators, which makes the new
+	#   binutils trigger a linker error:
+	# /usr/bin/i686-w64-mingw32-ld: .libs/libtheoradec-1.dll.def:3: syntax error
+	sed -i -e 's#\r##g' $(THEORA_DIR)/win32/xmingw32/libtheoradec-all.def
+	sed -i -e 's#\r##g' $(THEORA_DIR)/win32/xmingw32/libtheoraenc-all.def
 	cd $(THEORA_DIR); ./autogen.sh $(conftheora)
 
 $(LIBDIR)/libtheora.a: $(THEORA_DIR)/config.status
