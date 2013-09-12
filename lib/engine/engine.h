@@ -38,7 +38,6 @@
 #define __ENGINE_H__
 
 #include "services.h"
-#include "runtime.h"
 
 /**
  * @addtogroup services

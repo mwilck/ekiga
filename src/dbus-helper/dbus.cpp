@@ -37,12 +37,10 @@
  *
  */
 
-#include "config.h"
-
 #include <dbus/dbus-glib.h>
+#include <ptlib.h>
 
 #include "dbus.h"
-#include "ekiga.h"
 #include "gmconf.h"
 #include "gmcallbacks.h"
 #include "gtk-frontend.h"

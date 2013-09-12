@@ -972,7 +972,7 @@ gnome_prefs_window_new (const gchar *logo_name)
   cwhite.blue  = 1.0;
   cwhite.alpha = 1.0;
   gtk_widget_override_background_color (GTK_WIDGET (event_box),
-                                        GTK_STATE_NORMAL, &cwhite);
+                                        GTK_STATE_FLAG_NORMAL, &cwhite);
 
   gtk_notebook_prepend_page (GTK_NOTEBOOK (gpw->notebook), event_box, NULL);
 

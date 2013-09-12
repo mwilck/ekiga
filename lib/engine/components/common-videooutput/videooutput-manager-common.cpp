@@ -49,6 +49,8 @@
 
 #include "videooutput-manager-common.h"
 
+#include "runtime.h"
+
 /* The functions */
 GMVideoOutputManager::GMVideoOutputManager(Ekiga::ServiceCore & _core)
   : PThread (1000, AutoDeleteThread, HighestPriority, "GMVideoOutputManager"),

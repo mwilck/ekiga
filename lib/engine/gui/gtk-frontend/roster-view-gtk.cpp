@@ -35,14 +35,9 @@
  *
  */
 
-#include <algorithm>
-#include <iostream>
-#include <vector>
 #include <ctime>
 #include <glib/gi18n.h>
 #include <gdk/gdkkeysyms.h>
-
-#include "config.h"
 
 #include "gm-cell-renderer-bitext.h"
 #include "gmcellrendererexpander.h"

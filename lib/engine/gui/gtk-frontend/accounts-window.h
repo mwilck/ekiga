@@ -40,7 +40,6 @@
 #define _ACCOUNTS_H_
 
 #include <glib.h>
-#include <glib/gi18n.h>
 #include <gtk/gtk.h>
 
 #include "services.h"

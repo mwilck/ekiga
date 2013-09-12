@@ -43,9 +43,7 @@
 
 #include <glib.h>
 #include <vector>
-
-#include "ptbuildopts.h"
-#include "ptlib.h"
+#include <ptlib.h>
 #include <ptclib/pwavfile.h>
 
 namespace Ekiga

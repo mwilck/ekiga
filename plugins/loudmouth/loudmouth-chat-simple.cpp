@@ -33,11 +33,9 @@
  *
  */
 
-#include <iostream>
+#include "loudmouth-chat-simple.h"
 
 #include "personal-details.h"
-
-#include "loudmouth-chat-simple.h"
 
 LM::SimpleChat::SimpleChat (Ekiga::ServiceCore& core_,
 			    PresentityPtr presentity_):

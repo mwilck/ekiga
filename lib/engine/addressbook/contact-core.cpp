@@ -33,10 +33,7 @@
  *
  */
 
-#include <iostream>
 #include <glib/gi18n.h>
-
-#include "config.h"
 
 #include "contact-core.h"
 

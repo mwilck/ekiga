@@ -39,9 +39,8 @@
 #define __VIDEOINPUT_MANAGER_PTLIB_H__
 
 #include "videoinput-manager.h"
-#include "runtime.h"
 
-#include "ptbuildopts.h"
+#include <ptbuildopts.h>
 #include <ptlib/videoio.h>
 
 /**

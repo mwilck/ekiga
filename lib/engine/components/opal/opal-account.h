@@ -38,9 +38,8 @@
 #ifndef __OPAL_ACCOUNT_H__
 #define __OPAL_ACCOUNT_H__
 
-#include "config.h"
-
 #include <opal/pres_ent.h>
+#include <sip/sippdu.h>
 
 #include "notification-core.h"
 #include "presence-core.h"
@@ -48,7 +47,6 @@
 #include "audiooutput-core.h"
 
 #include "bank-impl.h"
-#include <sip/sippdu.h>
 
 namespace Opal
 {

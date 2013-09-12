@@ -38,8 +38,6 @@
 #include <glib/gi18n.h>
 #include <gdk/gdkkeysyms.h>
 
-#include "config.h"
-
 #include "call-window.h"
 
 #include "dialpad.h"
@@ -51,7 +49,6 @@
 #include "gmconf.h"
 #include <boost/smart_ptr.hpp>
 #include "gmmenuaddon.h"
-//#include "gmlevelmeter.h"
 #include "gmpowermeter.h"
 #include "trigger.h"
 #include "scoped-connections.h"
@@ -77,8 +74,6 @@
 #include "videoinput-core.h"
 #include "audioinput-core.h"
 #include "audiooutput-core.h"
-
-#include <algorithm>
 
 enum CallingState {Standby, Calling, Ringing, Connected, Called};
 

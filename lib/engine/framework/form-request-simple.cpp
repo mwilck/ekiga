@@ -33,8 +33,6 @@
  *
  */
 
-#include <iostream>
-
 #include "form-request-simple.h"
 
 Ekiga::FormRequestSimple::FormRequestSimple (boost::function2<void, bool, Form&> callback_): callback(callback_)

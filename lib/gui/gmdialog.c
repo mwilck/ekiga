@@ -45,14 +45,10 @@
 #include <glib/gi18n.h>
 
 #include <stdio.h>
-#include <string.h>
 #include <stdarg.h>
 
 #include "gmdialog.h"
-
 #include "gmwindow.h"
-
-#include "config.h"
 
 
 /* GUI functions */

@@ -37,7 +37,6 @@
  *
  */
 
-#include "config.h"
 #include <fcntl.h>	// for open()
 #include <unistd.h>	// for read(), write(), close()
 #include <sys/ioctl.h>	// for ioctl()

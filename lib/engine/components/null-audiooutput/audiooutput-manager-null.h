@@ -38,7 +38,7 @@
 #define __AUDIOOUTPUT_MANAGER_NULL_H__
 
 #include "audiooutput-manager.h"
-#include "runtime.h"
+#include "services.h"
 
 #include <ptlib.h>
 #include <ptclib/delaychan.h>

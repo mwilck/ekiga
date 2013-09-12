@@ -33,8 +33,6 @@
  *
  */
 
-#include <iostream>
-
 #include "history-source.h"
 
 History::Source::Source (Ekiga::ServiceCore &_core): core(_core)

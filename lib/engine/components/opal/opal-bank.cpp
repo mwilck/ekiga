@@ -37,9 +37,7 @@
 
 #include "config.h"
 
-#include <string.h>
 #include <stdlib.h>
-#include <sstream>
 
 #include <glib/gi18n.h>
 

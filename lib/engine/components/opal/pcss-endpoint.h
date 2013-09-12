@@ -40,7 +40,6 @@
 #define _PCSS_ENDPOINT_H_
 
 #include "services.h"
-#include "runtime.h"
 
 #include <opal/opal.h>
 #include <opal/pcss.h>

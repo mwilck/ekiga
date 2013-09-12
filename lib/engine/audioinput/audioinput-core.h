@@ -45,8 +45,7 @@
 #include "hal-core.h"
 #include "audioinput-gmconf-bridge.h"
 
-#include "ptbuildopts.h"
-#include "ptlib.h"
+#include <ptlib.h>
 
 #define AUDIO_INPUT_FALLBACK_DEVICE_TYPE   "Ekiga"
 #define AUDIO_INPUT_FALLBACK_DEVICE_SOURCE "Ekiga"

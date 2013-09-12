@@ -38,6 +38,8 @@
 
 #include "gmstatusbar.h"
 
+#include <stdarg.h>
+
 G_DEFINE_TYPE (GmStatusbar, gm_statusbar, GTK_TYPE_STATUSBAR);
 
 /* this is ugly, but we want to give several pieces of data to a callback...

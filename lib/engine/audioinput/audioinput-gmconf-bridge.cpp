@@ -34,8 +34,6 @@
  *
  */
 
-#include "config.h"
-
 #include "audioinput-gmconf-bridge.h"
 #include "audioinput-core.h"
 

@@ -3,7 +3,7 @@
   extern PPlugin_##serviceType##_##serviceName##_Registration PPlugin_##serviceType##_##serviceName##_Registration_Instance; \
   PPlugin_##serviceType##_##serviceName##_Registration const *PPlugin_##serviceType##_##serviceName##_Registration_Static_Library_Loader = &PPlugin_##serviceType##_##serviceName##_Registration_Instance;
 
-#include "ptbuildopts.h"
+#include <ptbuildopts.h>
 
 #if P_AUDIO
   PPLUGIN_STATIC_LOAD(WindowsMultimedia, PSoundChannel);

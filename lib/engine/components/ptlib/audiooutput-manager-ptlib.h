@@ -39,9 +39,9 @@
 #define __AUDIOINPUT_MANAGER_PTLIB_H__
 
 #include "audiooutput-manager.h"
-#include "runtime.h"
+#include "services.h"
 
-#include "ptbuildopts.h"
+#include <ptbuildopts.h>
 #include <ptlib/sound.h>
 
 /**

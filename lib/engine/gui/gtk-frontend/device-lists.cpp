@@ -32,9 +32,9 @@
  *   description          : This file contains functions to get device lists
  */
 
-#include "config.h"
-
 #include "device-lists.h"
+
+#include <glib/gi18n.h>
 
 gchar**
 vector_of_string_to_array (const std::vector<std::string>& list)

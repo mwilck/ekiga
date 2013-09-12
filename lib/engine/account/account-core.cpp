@@ -33,10 +33,6 @@
  *
  */
 
-#include <iostream>
-
-#include "config.h"
-
 #include "account-core.h"
 #include "bank.h"
 

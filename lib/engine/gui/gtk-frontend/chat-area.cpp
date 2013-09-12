@@ -44,7 +44,6 @@
 #include "gm-text-extlink.h"
 #include "gm-smiley-chooser-button.h"
 
-#include "gm-smileys.h"
 #include "platform.h"
 
 #include <string.h>

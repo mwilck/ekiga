@@ -42,7 +42,7 @@
 
 #include <gtk/gtk.h>
 
-#include "framework/services.h"
+#include "services.h"
 
 /* DESCRIPTION  :  /
  * BEHAVIOR     :  It builds the preferences window

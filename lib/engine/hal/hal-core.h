@@ -44,7 +44,6 @@
 #include <boost/bind.hpp>
 
 #include <set>
-#include <map>
 
 #define V4L_VERSION_1 (1<<0)
 #define V4L_VERSION_2 (1<<1)

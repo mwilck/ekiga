@@ -41,6 +41,7 @@
 
 #include "videooutput-manager-x.h"
 
+#include "runtime.h"
 #include "xwindow.h"
 
 #ifdef HAVE_XV

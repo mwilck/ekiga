@@ -38,8 +38,6 @@
 #include <glib/gi18n.h>
 #include <gdk/gdkkeysyms.h>
 
-#include <vector>
-
 #include "statusicon.h"
 
 #include "gmstockicons.h"

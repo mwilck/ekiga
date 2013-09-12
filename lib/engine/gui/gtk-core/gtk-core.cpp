@@ -33,8 +33,6 @@
  *
  */
 
-#include <gtk/gtk.h>
-
 #include "gmstockicons.h"
 
 #include "gtk-core.h"

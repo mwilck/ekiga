@@ -35,9 +35,10 @@
  */
 
 #include "videoinput-manager-ptlib.h"
-#include "ptbuildopts.h"
-#include "ptlib.h"
-#include "utils.h"
+
+#include <ptlib.h>
+
+#include "runtime.h"
 
 #define DEVICE_TYPE "PTLIB"
 

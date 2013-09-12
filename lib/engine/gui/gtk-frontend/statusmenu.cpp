@@ -35,17 +35,14 @@
  *
  */
 
-
-#include "config.h"
-
 #include "statusmenu.h"
 
-#include "personal-details.h"
+#include <glib/gi18n.h>
 
 #include "gmconf.h"
 
-#include <glib/gi18n.h>
-#include <vector>
+#include "personal-details.h"
+
 
 struct _StatusMenuPrivate
 {

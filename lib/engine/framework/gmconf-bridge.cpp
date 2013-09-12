@@ -34,8 +34,6 @@
  *
  */
 
-#include <iostream>
-
 #include "gmconf-bridge.h"
 
 #include "gmconf.h"

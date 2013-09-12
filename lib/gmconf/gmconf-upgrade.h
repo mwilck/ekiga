@@ -44,7 +44,7 @@
 #ifndef _GMCONF_UPGRADE_H
 #define _GMCONF_UPGRADE_H
 
-#include "gmconf.h"
+#include <glib.h>
 
 G_BEGIN_DECLS
 

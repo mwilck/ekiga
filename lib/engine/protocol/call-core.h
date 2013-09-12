@@ -51,8 +51,6 @@
 
 #include <set>
 #include <map>
-#include <iostream>
-
 
 namespace Ekiga
 {

@@ -43,7 +43,7 @@
 
 #include "gmconf-upgrade.h"
 
-#include "config.h"
+#include "gmconf.h"
 
 void
 gmconf_upgrade_version ()

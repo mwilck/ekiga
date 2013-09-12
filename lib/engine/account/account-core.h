@@ -37,7 +37,7 @@
 #define __ACCOUNT_CORE_H__
 
 #include <list>
-#include <iostream>
+#include <string>
 
 #include "menu-builder.h"
 #include "form-request.h"

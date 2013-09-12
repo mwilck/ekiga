@@ -36,8 +36,6 @@
  *
  */
 
-#include <gtk/gtk.h>
-
 #include "gtk-core-main.h"
 #include "gtk-core.h"
 

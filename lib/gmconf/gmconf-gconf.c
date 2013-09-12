@@ -38,13 +38,13 @@
  *
  */
 
+#include <string.h>
+#include <glib.h>
+#include <gconf/gconf-client.h>
+
+#include "gmconf.h"
 
 #include "config.h"
-
-#include <gconf/gconf-client.h>
-#include <string.h>
-
-#include <gmconf/gmconf.h>
 
 /* Using a global variable is dirty, but the api is built like this
  */
@@ -54,6 +54,7 @@ static GConfClient *client;
  * call the GmConfNotifier from inside a gconf notifier, so we hide the real
  * notifier and its associated user data into the user data of a gconf
  * notifier, that will do the unwrapping, and call the real stuff */
+
 typedef struct _GConfNotifierWrap GConfNotifierWrap;
 
 struct _GConfNotifierWrap {

@@ -37,13 +37,13 @@
 
 #include "accounts-window.h"
 
+#include <glib/gi18n.h>
+
 #include "account.h"
 #include "bank.h"
 #include "opal-bank.h"
 
 #include "gmcallbacks.h"
-
-#include "gmconf.h"
 
 #include "services.h"
 #include "menu-builder-tools.h"

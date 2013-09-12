@@ -36,12 +36,8 @@
  */
 
 
-#ifndef _GNOMEMEETING_H_
-#define _GNOMEMEETING_H_
-
-#include "config.h"
-#include "gmconf.h"
-#include "runtime.h"
+#ifndef __EKIGA_H__
+#define __EKIGA_H__
 
 #include <ptlib.h>
 #include <ptlib/pprocess.h>

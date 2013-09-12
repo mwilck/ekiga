@@ -34,8 +34,6 @@
  *
  */
 
-#include "config.h"
-
 #include "videooutput-gmconf-bridge.h"
 #include "videooutput-core.h"
 

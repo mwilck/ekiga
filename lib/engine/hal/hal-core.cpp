@@ -34,11 +34,6 @@
  *
  */
 
-#include <iostream>
-#include <sstream>
-
-#include "config.h"
-
 #include "hal-core.h"
 #include "hal-manager.h"
 

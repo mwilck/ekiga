@@ -33,7 +33,6 @@
  *   description          : Functions to change encoding of std::string
  */
 
-
 #include <string>
 
 /* DESCRIPTION  :  /

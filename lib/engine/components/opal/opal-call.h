@@ -38,7 +38,6 @@
 #include <opal/opal.h>
 #include <opal/call.h>
 
-#include "runtime.h"
 #include "call.h"
 
 #include "notification-core.h"

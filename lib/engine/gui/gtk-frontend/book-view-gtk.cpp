@@ -35,16 +35,12 @@
  *
  */
 
-
-#include <algorithm>
-#include <iostream>
 #include <glib/gi18n.h>
 
 #include "book-view-gtk.h"
 
 #include "filterable.h"
 
-#include "gmstockicons.h"
 #include "menu-builder-tools.h"
 #include "menu-builder-gtk.h"
 #include "scoped-connections.h"

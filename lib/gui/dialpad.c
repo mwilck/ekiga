@@ -36,6 +36,7 @@
 
 #include <gdk/gdkkeysyms.h>
 #include <glib/gi18n.h>
+#include <string.h>
 
 struct const_key_info
 {

@@ -40,7 +40,6 @@
 #define __GTK_FRONTEND_H__
 
 #include <gtk/gtk.h>
-#include <vector>
 
 #include "statusicon.h"
 

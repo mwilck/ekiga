@@ -36,6 +36,7 @@
  *
  */
 
+#include "config.h"
 
 #ifndef GMCONF_EKIGA_KEYS_H_
 #define GMCONF_EKIGA_KEYS_H_

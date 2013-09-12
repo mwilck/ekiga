@@ -32,12 +32,7 @@
  *
  */
 
-#include <iostream>
-#include <map>
-#include <vector>
 #include <glib/gi18n.h>
-
-#include "gmstockicons.h"
 
 #include "addressbook-window.h"
 #include "book-view-gtk.h"

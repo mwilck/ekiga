@@ -35,13 +35,8 @@
  *
  */
 
-
-#include "config.h"
-
 #include "pcss-endpoint.h"
 #include "opal-call-manager.h"
-
-#include "call.h"
 
 
 GMPCSSEndpoint::GMPCSSEndpoint (Opal::CallManager & ep,

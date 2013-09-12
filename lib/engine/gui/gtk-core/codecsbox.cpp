@@ -35,8 +35,9 @@
  *
  */
 
-#include "config.h"
 #include "codecsbox.h"
+
+#include <glib/gi18n.h>
 
 #include "gmconf.h"
 #include "codec-description.h"

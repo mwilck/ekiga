@@ -35,8 +35,6 @@
  *
  */
 
-#include <iostream>
-
 #include "menu-builder-gtk.h"
 
 struct Action

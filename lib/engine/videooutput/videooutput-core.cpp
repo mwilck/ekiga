@@ -34,11 +34,6 @@
  *
  */
 
-#include <iostream>
-#include <sstream>
-
-#include "config.h"
-
 #include "videooutput-core.h"
 #include "videooutput-manager.h"
 

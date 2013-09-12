@@ -46,8 +46,6 @@
 #ifndef __GM_DIALOG_H
 #define __GM_DIALOG_H
 
-#include <stdarg.h>
-
 G_BEGIN_DECLS
 
 /**

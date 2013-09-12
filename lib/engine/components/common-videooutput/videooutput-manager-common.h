@@ -47,10 +47,10 @@
 #define _VIDEOOUTPUT_MANAGER_COMMON_H_
 
 #include "videooutput-manager.h"
-#include "runtime.h"
 
-#include "ptbuildopts.h"
-#include "ptlib.h"
+#include <ptlib.h>
+
+#include "services.h"
 
 /**
  * @addtogroup videooutput

@@ -33,17 +33,16 @@
  *
  */
 
-#include <algorithm>
+#include "local-heap.h"
+
 #include <set>
 #include <glib/gi18n.h>
 
-#include "config.h"
-
 #include "gmconf.h"
+
 #include "form-request-simple.h"
 
 #include "local-cluster.h"
-#include "local-heap.h"
 #include "local-presentity.h"
 
 /*

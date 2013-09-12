@@ -33,10 +33,11 @@
  *
  */
 
-#include "config.h"
-#include <glib/gi18n.h>
-#include "gmconf.h"
 #include "history-book.h"
+
+#include <glib/gi18n.h>
+
+#include "gmconf.h"
 
 History::Book::Book (Ekiga::ServiceCore& core):
   contact_core(core.get<Ekiga::ContactCore>("contact-core")), doc()

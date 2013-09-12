@@ -33,10 +33,6 @@
  *
  */
 
-#include <iostream>
-
-#include "personal-details.h"
-
 #include "loudmouth-chat-multiple.h"
 
 LM::MultipleChat::MultipleChat (Ekiga::ServiceCore& core_,

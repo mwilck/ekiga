@@ -47,7 +47,6 @@
 #include "videoinput-info.h"
 
 #include "call-manager.h"
-#include "form-request-simple.h"
 
 #include "sip-endpoint.h"
 #ifdef HAVE_H323

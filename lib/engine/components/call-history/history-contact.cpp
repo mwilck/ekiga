@@ -33,15 +33,12 @@
  *
  */
 
-#include "config.h"
+#include "history-contact.h"
 
-#include <iostream>
-#include <glib/gi18n.h>
 #include <glib.h>
+#include <glib/gi18n.h>
 
 #include "robust-xml.h"
-
-#include "history-contact.h"
 
 /* at one point we will return a smart pointer on this... and if we don't use
  * a false smart pointer, we will crash : the reference count isn't embedded!

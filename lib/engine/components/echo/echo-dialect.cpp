@@ -33,8 +33,6 @@
  *
  */
 
-#include <iostream>
-
 #include "echo-dialect.h"
 
 Echo::Dialect::Dialect ()

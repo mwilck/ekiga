@@ -39,7 +39,7 @@
 
 #include "audioinput-info.h"
 #include "audioinput-manager.h"
-#include "runtime.h"
+#include "services.h"
 
 #include <ptlib.h>
 #include <ptclib/delaychan.h>

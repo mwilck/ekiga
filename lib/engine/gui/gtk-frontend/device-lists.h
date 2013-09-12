@@ -33,7 +33,6 @@
  */
 
 #include <glib.h>
-#include <glib/gi18n.h>
 
 #include "audiooutput-core.h"
 #include "audioinput-core.h"

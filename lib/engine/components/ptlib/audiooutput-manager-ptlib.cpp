@@ -35,8 +35,10 @@
  */
 
 #include "audiooutput-manager-ptlib.h"
-#include "ptbuildopts.h"
-#include "ptlib.h"
+
+#include <ptlib.h>
+
+#include "runtime.h"
 #include "utils.h"
 
 #define DEVICE_TYPE "PTLIB"

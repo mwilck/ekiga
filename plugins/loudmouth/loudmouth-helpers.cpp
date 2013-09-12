@@ -33,12 +33,6 @@
  *
  */
 
-#define DEBUG 1
-
-#if DEBUG
-#include <iostream>
-#endif
-
 #include "loudmouth-helpers.h"
 
 boost::shared_ptr<LmMessageHandler> ignore_message_handler;

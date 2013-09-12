@@ -40,12 +40,11 @@
 
 #include "hal-core.h"
 #include "hal-manager.h"
-#include "runtime.h"
+#include "services.h"
 
 extern "C" {
 #include <dbus/dbus.h>
 #include <dbus/dbus-glib.h>
-#include <glib-object.h>
 }
 
 #include <vector>

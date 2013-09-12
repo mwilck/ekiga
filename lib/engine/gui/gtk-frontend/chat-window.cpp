@@ -41,7 +41,6 @@
 #include "chat-core.h"
 #include "notification-core.h"
 
-#include "menu-builder-gtk.h"
 #include "form-dialog-gtk.h"
 #include "scoped-connections.h"
 

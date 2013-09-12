@@ -34,8 +34,6 @@
  */
 
 #include <algorithm>
-#include <iostream>
-#include <sstream>
 
 #include "opal-codec-description.h"
 

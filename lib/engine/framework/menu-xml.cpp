@@ -33,8 +33,6 @@
  *
  */
 
-#include <iostream>
-
 #include <glib.h>
 
 #include "menu-xml.h"

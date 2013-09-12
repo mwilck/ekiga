@@ -36,14 +36,11 @@
  *
  */
 
-#include "config.h"
-
 #include "gmwindow.h"
 
 #include "gmconf.h"
 
 #include <gdk/gdkkeysyms.h>
-#include <string.h>
 #include <stdlib.h>
 
 /*

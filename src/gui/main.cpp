@@ -41,11 +41,11 @@
 
 #include <glib/gi18n.h>
 
+#include <opal/buildopts.h> // only for OPAL_VERSION!
+
 #ifdef HAVE_DBUS
 #include "dbus-helper/dbus.h"
 #endif
-
-#include <sip/sip.h>
 
 #ifndef WIN32
 #include <signal.h>
@@ -60,6 +60,7 @@
 #include "gmconf-upgrade.h"
 
 #include "engine.h"
+#include "runtime.h"
 
 #include "call-core.h"
 

@@ -33,12 +33,9 @@
  *
  */
 
-#include "config.h"
-
-#include <iostream>
-#include <glib/gi18n.h>
-
 #include "local-cluster.h"
+
+#include <glib/gi18n.h>
 
 Local::Cluster::Cluster (boost::shared_ptr<Ekiga::PresenceCore> pcore):
   presence_core (pcore)

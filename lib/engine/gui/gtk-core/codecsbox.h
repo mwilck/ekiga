@@ -40,7 +40,6 @@
 #ifndef __CODECS_BOX_H
 #define __CODECS_BOX_H
 
-#include <glib/gi18n.h>
 #include <glib-object.h>
 #include <gtk/gtk.h>
 

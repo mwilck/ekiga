@@ -42,8 +42,6 @@
 #include "config.h"
 
 #include <opal/buildopts.h>
-#include <ptbuildopts.h>
-
 #include <ptlib.h>
 
 #include <h323/h323.h>

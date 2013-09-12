@@ -33,10 +33,9 @@
  *   description          : Functions to change encoding of std::string
  */
 
+#include "utils.h"
 
 #include <glib.h>
-
-#include "utils.h"
 
 const std::string
 codepage2utf (const std::string str)

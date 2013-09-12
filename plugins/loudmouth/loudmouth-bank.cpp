@@ -33,13 +33,11 @@
  *
  */
 
+#include "loudmouth-bank.h"
+
 #include <glib/gi18n.h>
 
 #include "gmconf.h"
-
-#include "config.h"
-
-#include "loudmouth-bank.h"
 
 #include "form-request-simple.h"
 

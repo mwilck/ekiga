@@ -26,7 +26,6 @@
  * GNU GPL for all the rest of the software thus combined.
  */
 
-#include "config.h"
 #include "ext-window.h"
 
 #ifndef WIN32

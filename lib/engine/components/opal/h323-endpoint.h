@@ -46,8 +46,6 @@
 #include "presence-core.h"
 #include "contact-core.h"
 #include "call-manager.h"
-#include "runtime.h"
-#include "services.h"
 #include "opal-account.h"
 
 #include "opal-call-manager.h"

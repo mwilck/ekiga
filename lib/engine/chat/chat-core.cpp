@@ -35,8 +35,6 @@
 
 #include "chat-core.h"
 
-#include <iostream>
-
 Ekiga::ChatCore::~ChatCore ()
 {
 }

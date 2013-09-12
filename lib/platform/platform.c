@@ -35,6 +35,7 @@
  */
 
 #include "platform.h"
+#include <gtk/gtk.h> // for gtk_show_uri
 
 #ifdef WIN32
 #include "winpaths.h"

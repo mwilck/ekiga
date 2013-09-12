@@ -34,6 +34,9 @@
 
 #include "audioinput-manager-null.h"
 
+#include "runtime.h"
+#include "services.h"
+
 #define DEVICE_TYPE   "Ekiga"
 #define DEVICE_SOURCE "Ekiga"
 #define DEVICE_NAME   "SILENT"

@@ -49,9 +49,7 @@
 #include <boost/bind.hpp>
 #include <glib.h>
 #include <set>
-
-#include "ptbuildopts.h"
-#include "ptlib.h"
+#include <ptlib.h>
 
 #define VIDEO_INPUT_FALLBACK_DEVICE_TYPE   "Moving Logo"
 #define VIDEO_INPUT_FALLBACK_DEVICE_SOURCE "Moving Logo"

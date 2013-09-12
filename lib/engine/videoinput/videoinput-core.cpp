@@ -35,11 +35,8 @@
  */
 
 #include <iostream>
-#include <sstream>
 
 #include <glib/gi18n.h>
-
-#include "config.h"
 
 #include "videoinput-core.h"
 #include "videoinput-manager.h"

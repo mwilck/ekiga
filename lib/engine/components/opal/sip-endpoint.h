@@ -48,7 +48,6 @@
 #include "sip-dialect.h"
 #include "call-core.h"
 #include "contact-core.h"
-#include "runtime.h"
 #include "services.h"
 
 #include "opal-call-manager.h"

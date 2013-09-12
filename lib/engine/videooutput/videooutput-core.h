@@ -46,11 +46,8 @@
 #include <boost/bind.hpp>
 #include <set>
 #include <map>
-
 #include <glib.h>
-
-#include "ptbuildopts.h"
-#include "ptlib.h"
+#include <ptlib.h>
 
 namespace Ekiga
 {

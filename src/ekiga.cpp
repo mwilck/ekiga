@@ -35,18 +35,18 @@
  *
  */
 
-
 #include "config.h"
 
 #include "ekiga.h"
 
 #include <gtk/gtk.h>
-#include <opal/buildopts.h>
+
+#include "runtime.h"
 
 #define new PNEW
 
 
-GnomeMeeting *GnomeMeeting::GM = NULL;
+GnomeMeeting *GnomeMeeting::GM = 0;
 
 /* The main GnomeMeeting Class  */
 GnomeMeeting::GnomeMeeting ()

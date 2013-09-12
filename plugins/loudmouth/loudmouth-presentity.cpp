@@ -33,14 +33,14 @@
  *
  */
 
-#include <string.h>
+#include "loudmouth-presentity.h"
+
 #include <stdlib.h>
 #include <glib/gi18n.h>
 
 #include "form-request-simple.h"
 
 #include "loudmouth-helpers.h"
-#include "loudmouth-presentity.h"
 
 LM::Presentity::Presentity (LmConnection* connection_,
 			    LmMessageNode* item_):

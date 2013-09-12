@@ -35,10 +35,10 @@
  *
  */
 
-#include <iostream>
+#include "local-roster-bridge.h"
+
 #include <glib/gi18n.h>
 
-#include "local-roster-bridge.h"
 #include "contact-core.h"
 #include "local-cluster.h"
 

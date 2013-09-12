@@ -35,8 +35,6 @@
  *
  */
 
-#include "config.h"
-
 #include "sip-dialect.h"
 #include "presence-core.h"
 #include "personal-details.h"

@@ -35,8 +35,6 @@
  *
  */
 
-#include "config.h"
-
 #include <dbus/dbus-glib.h>
 
 /* Here is the description of method calls that this little program

@@ -48,6 +48,7 @@
 #include "opal-call-manager.h"
 #include "notification-core.h"
 #include "call-core.h"
+#include "runtime.h"
 
 using namespace Opal;
 

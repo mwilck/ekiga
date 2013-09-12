@@ -34,11 +34,6 @@
  *
  */
 
-#include <iostream>
-#include <sstream>
-
-#include "config.h"
-
 #include "call-core.h"
 #include "call-manager.h"
 

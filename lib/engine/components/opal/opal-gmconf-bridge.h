@@ -40,8 +40,6 @@
 #include "gmconf-bridge.h"
 #include "services.h"
 
-class GMManager;
-
 namespace Opal
 {
   class CallManager;

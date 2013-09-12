@@ -36,9 +36,10 @@
 
 #include "videoinput-manager-mlogo.h"
 
+#include <glib.h>
+
 #include "runtime.h"
 
-#include <glib.h>
 #include "pixmaps/icon.h"
 
 #define DEVICE_TYPE   "Moving Logo"

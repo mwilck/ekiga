@@ -38,7 +38,6 @@
 #include "gm-text-extlink.h"
 
 #include <string.h>
-#include <sys/types.h>
 #include <regex.h>
 
 struct _GmTextExtlinkPrivate {

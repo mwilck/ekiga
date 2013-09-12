@@ -39,8 +39,6 @@
 
 #include <glib/gi18n.h>
 
-#include "config.h"
-
 #include "audiooutput-core.h"
 #include "audiooutput-manager.h"
 

@@ -42,8 +42,6 @@
 
 #include "videooutput-core.h"
 
-class GMManager;
-
 class PVideoOutputDevice_EKIGA : public PVideoOutputDevice
 {
   PCLASSINFO(PVideoOutputDevice_EKIGA, PVideoOutputDevice);

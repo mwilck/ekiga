@@ -41,7 +41,6 @@
 
 #include "gmcallbacks.h"
 
-#include "gmwindow.h"
 #include "gmstockicons.h"
 
 #ifdef WIN32

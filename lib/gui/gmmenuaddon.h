@@ -41,7 +41,6 @@
 
 #include <gtk/gtk.h>
 
-
 G_BEGIN_DECLS
 
 /* Possible values for the Menu entries */

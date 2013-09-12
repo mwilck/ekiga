@@ -34,12 +34,11 @@
  *
  */
 
-#include <glib.h>
-#include <iostream>
-
-#include "config.h"
-#include "gmconf.h"
 #include "gmconf-personal-details.h"
+
+#include <glib.h>
+
+#include "gmconf.h"
 
 static void
 display_name_changed_nt (G_GNUC_UNUSED gpointer id,

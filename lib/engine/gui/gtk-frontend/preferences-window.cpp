@@ -39,8 +39,10 @@
 
 #include "config.h"
 
-#include <gmpreferences.h>
-#include <gmconf.h>
+#include <glib/gi18n.h>
+
+#include "gmpreferences.h"
+#include "gmconf.h"
 
 #include "preferences-window.h"
 #include "default_devices.h"
