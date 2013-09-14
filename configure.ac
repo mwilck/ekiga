@@ -173,15 +173,16 @@ AC_SUBST(GLIB_LIBS)
 dnl ###############################
 dnl   Mandatory BOOST support
 dnl ###############################
-AX_BOOST_BASE([1.34])
-AX_BOOST_SIGNALS
+AX_BOOST_BASE([1.53])
 
-if test "x${ax_cv_boost_signals}" == "xno"; then
-   AC_MSG_ERROR([You need the boost signals library to compile Ekiga])
+CPPFLAGS_save="$CPPFLAGS"
+CPPFLAGS="$CPPFLAGS $BOOST_CPPFLAGS"
+AC_CHECK_HEADER(boost/signals2.hpp,, found_signals2=no)
+CPPFLAGS="$CPPFLAGS_save"
+
+if test "x$found_signals2" = "xno"; then
+   AC_MSG_ERROR([Could not find BOOST signals2 headers])
 fi
-
-BOOST_LIBS="${BOOST_SIGNALS_LIB}"
-AC_SUBST(BOOST_LIBS)
 
 
 dnl ###############################

@@ -2,9 +2,8 @@ plugin_LTLIBRARIES = libgmkab.la
 
 kab_dir = $(top_srcdir)/plugins/kab
 
-AM_CPPFLAGS = $(BOOST_CPPFLAGS) $(KAB_CFLAGS)
-
-INCLUDES = \
+AM_CPPFLAGS = \
+	$(BOOST_CPPFLAGS) $(KAB_CFLAGS) \
 	-I$(top_srcdir)/lib/engine/framework \
 	-I$(top_srcdir)/lib/engine/addressbook
 

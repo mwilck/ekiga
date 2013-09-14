@@ -2,9 +2,8 @@ plugin_LTLIBRARIES = libgmxcap.la
 
 xcap_dir = $(top_srcdir)/plugins/xcap
 
-AM_CXXFLAGS = $(BOOST_CPPFLAGS) $(SOUP_CFLAGS)
-
-INCLUDES = \
+AM_CXXFLAGS = \
+	$(BOOST_CPPFLAGS) $(SOUP_CFLAGS) \
 	-I$(top_srcdir)/lib/engine/framework
 
 libgmxcap_la_SOURCES = \
@@ -18,4 +17,4 @@ libgmxcap_la_SOURCES = \
 libgmxcap_la_LDFLAGS = $(PLUGINS_LIBTOOL_FLAGS)
 libgmxcap_la_LIBADD = \
 	$(top_builddir)/lib/libekiga.la \
-	$(BOOST_LDFLAGS) $(BOOST_LIBS) $(SOUP_LIBS)
+	$(BOOST_LDFLAGS) $(SOUP_LIBS)

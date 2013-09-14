@@ -1,4 +1,4 @@
-INCLUDES = \
+AM_CPPFLAGS = \
 	-I$(top_srcdir)/lib				\
 	-I$(top_srcdir)/lib/gmconf			\
 	-I$(top_srcdir)/lib/gui				\
@@ -31,14 +31,14 @@ BUILT_SOURCES = src/revision.h
 
 # XVideo/X
 if !WIN32
-INCLUDES +=                   				\
+AM_CPPFLAGS +=                   				\
 	-I$(top_srcdir)/lib/engine/videooutput/common   \
 	-I$(top_srcdir)/lib/engine/videooutput/x
 endif
 
 # DirectX
 if HAVE_DX
-INCLUDES +=                   				\
+AM_CPPFLAGS +=                   				\
 	-I$(top_srcdir)/lib/engine/videooutput/common   \
 	-I$(top_srcdir)/lib/engine/videooutput/dx
 endif
@@ -75,7 +75,7 @@ ekiga_SOURCES +=		\
 	dbus-helper/dbus.cpp
 
 # find gmmarshallers.h
-INCLUDES += \
+AM_CPPFLAGS += \
 	-I$(top_builddir)/lib
 
 nodist_ekiga_SOURCES +=		\
@@ -134,7 +134,7 @@ src/revision.h:
         fi
 
 AM_CXXFLAGS = $(GTK_CFLAGS) $(GLIB_CFLAGS) $(DBUS_CFLAGS) $(OPAL_CFLAGS) $(PTLIB_CFLAGS) $(BOOST_CPPFLAGS) $(XML_CFLAGS)
-AM_LIBS = $(GTK_LIBS) $(GLIB_LIBS) $(DBUS_LIBS) $(OPAL_LIBS) $(PTLIB_LIBS) $(BOOST_LDFLAGS) $(BOOST_LIBS) $(XML_LIBS)
+AM_LIBS = $(GTK_LIBS) $(GLIB_LIBS) $(DBUS_LIBS) $(OPAL_LIBS) $(PTLIB_LIBS) $(BOOST_LDFLAGS) $(XML_LIBS)
 
 ekiga_LDADD = \
 	$(top_builddir)/lib/libekiga.la $(AM_LIBS)

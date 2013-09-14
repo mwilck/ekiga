@@ -1,7 +1,7 @@
 stacklib_LTLIBRARIES = libekiga.la
 stacklib_dir = $(stacklibdir)
 
-libekiga_la_LDFLAGS = $(STACKLIB_LDFLAGS) $(BOOST_LIBS) $(GLIB_LIBS) $(XML_LIBS) $(GTK_LIBS)
+libekiga_la_LDFLAGS = $(STACKLIB_LDFLAGS) $(GLIB_LIBS) $(XML_LIBS) $(GTK_LIBS)
 
 if !WIN32
 libekiga_la_LDFLAGS += -lX11
@@ -9,7 +9,9 @@ endif
 
 CLEANFILES =
 
-INCLUDES = \
+AM_CPPFLAGS = \
+	$(BOOST_CPPFLAGS) $(GLIB_CFLAGS) $(XML_CFLAGS) $(GTK_CFLAGS) \
+	$(DBUS_CFLAGS) $(PTLIB_CFLAGS) $(OPAL_CFLAGS) \
 	-DSYSCONFDIR=\""$(sysconfdir)"\" \
 	-DEKIGA_PLUGIN_DIR=\"$(PLUGIN_DIR)\" \
 	-I$(top_srcdir) \
@@ -50,11 +52,7 @@ INCLUDES = \
 AM_CFLAGS = \
 	$(GLIB_CFLAGS) $(GTK_CFLAGS) $(GCONF_CFLAGS) $(DBUS_CFLAGS)
 
-AM_CPPFLAGS = \
-	$(BOOST_CPPFLAGS) $(GLIB_CFLAGS) $(XML_CFLAGS) $(GTK_CFLAGS) \
-	$(DBUS_CFLAGS) $(PTLIB_CFLAGS) $(OPAL_CFLAGS)
-AM_LIBS = \
-	$(BOOST_LIBS) $(GLIB_LIBS) $(XML_LIBS) $(GTK_LIBS)
+AM_LIBS = $(GLIB_LIBS) $(XML_LIBS) $(GTK_LIBS)
 
 engine_dir = $(top_srcdir)/lib/engine
 components_dir = $(top_srcdir)/lib/engine/components
@@ -88,7 +86,7 @@ endif
 ##
 if !WIN32
 
-INCLUDES += -I$(top_srcdir)/lib/pixops
+AM_CPPFLAGS += -I$(top_srcdir)/lib/pixops
 EXTRA_DIST += $(top_srcdir)/lib/pixops/README
 
 libekiga_la_SOURCES += \
@@ -669,7 +667,7 @@ libekiga_la_SOURCES += \
 
 if !WIN32
 
-INCLUDES += \
+AM_CPPFLAGS += \
 	-I$(top_srcdir)/lib/engine/components/x-videooutput
 
 libekiga_la_SOURCES += \

@@ -2,9 +2,8 @@ plugin_LTLIBRARIES = libgmavahi.la
 
 avahi_dir = $(top_srcdir)/plugins/avahi
 
-AM_CXXFLAGS = $(BOOST_CPPFLAGS) $(AVAHI_CFLAGS)
-
-INCLUDES = \
+AM_CXXFLAGS = \
+	$(BOOST_CPPFLAGS) $(AVAHI_CFLAGS) \
 	-I$(top_srcdir)/lib/engine/framework \
 	-I$(top_srcdir)/lib/engine/account \
 	-I$(top_srcdir)/lib/engine/presence \
@@ -22,4 +21,4 @@ libgmavahi_la_SOURCES = \
 libgmavahi_la_LDFLAGS = $(PLUGINS_LIBTOOL_FLAGS)
 libgmavahi_la_LIBADD = \
 	$(top_builddir)/lib/libekiga.la \
-	$(BOOST_LDFLAGS) $(BOOST_LIBS) $(AVAHI_LIBS)
+	$(BOOST_LDFLAGS) $(AVAHI_LIBS)

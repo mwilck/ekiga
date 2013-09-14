@@ -2,12 +2,11 @@ plugin_LTLIBRARIES = libgmresource_list.la
 
 resource_list_dir = $(top_srcdir)/plugins/resource-list
 
-AM_CXXFLAGS = $(BOOST_CPPFLAGS) $(GLIB_CFLAGS) $(XML_CFLAGS)
-
-INCLUDES = 						\
+AM_CXXFLAGS = \
+	$(BOOST_CPPFLAGS) $(GLIB_CFLAGS) $(XML_CFLAGS) \
 	-I$(top_srcdir)/lib/gmconf			\
 	-I$(top_srcdir)/lib/engine/framework		\
-	-I$(top_srcdir)/lib/engine/presence	\
+	-I$(top_srcdir)/lib/engine/presence		\
 	-I$(top_srcdir)/lib/engine/account		\
 	-I$(top_srcdir)/plugins/xcap
 
@@ -33,4 +32,4 @@ libgmresource_list_la_LDFLAGS = \
 libgmresource_list_la_LIBADD = \
 	$(top_builddir)/lib/libekiga.la \
 	$(top_builddir)/plugins/xcap/libgmxcap.la \
-	$(BOOST_LDFLAGS) $(BOOST_LIBS) $(GLIB_LIBS) $(XML_LIBS)
+	$(BOOST_LDFLAGS) $(GLIB_LIBS) $(XML_LIBS)

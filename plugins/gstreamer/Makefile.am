@@ -2,9 +2,8 @@ plugin_LTLIBRARIES = libgmgstreamer.la
 
 gstreamer_dir = $(top_srcdir)/plugins/gstreamer/
 
-AM_CXXFLAGS = $(BOOST_CPPFLAGS) $(GSTREAMER_CFLAGS) $(PTLIB_CFLAGS)
-
-INCLUDES = \
+AM_CXXFLAGS = \
+	$(BOOST_CPPFLAGS) $(GSTREAMER_CFLAGS) $(PTLIB_CFLAGS) \
 	-I$(top_srcdir)/lib/gmconf \
 	-I$(top_srcdir)/lib/engine/framework \
 	-I$(top_srcdir)/lib/engine/notification	\
@@ -28,4 +27,4 @@ libgmgstreamer_la_SOURCES = \
 
 libgmgstreamer_la_LDFLAGS = $(PLUGINS_LIBTOOL_FLAGS)
 libgmgstreamer_la_LIBADD = \
-	$(BOOST_LDFLAGS) $(BOOST_LIBS) $(GSTREAMER_LIBS) $(PTLIB_LIBS)
+	$(BOOST_LDFLAGS) $(GSTREAMER_LIBS) $(PTLIB_LIBS)

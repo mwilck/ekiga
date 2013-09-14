@@ -2,9 +2,8 @@ plugin_LTLIBRARIES = libgmloudmouth.la
 
 loudmouth_dir = $(top_srcdir)/plugins/loudmouth
 
-AM_CXXFLAGS = $(BOOST_CPPFLAGS) $(XML_CFLAGS) $(LOUDMOUTH_CFLAGS)
-
-INCLUDES = \
+AM_CXXFLAGS = \
+	$(BOOST_CPPFLAGS) $(XML_CFLAGS) $(LOUDMOUTH_CFLAGS) \
 	-I$(top_srcdir)/lib/gmconf \
 	-I$(top_srcdir)/lib/engine/framework \
 	-I$(top_srcdir)/lib/engine/account \
@@ -36,4 +35,4 @@ libgmloudmouth_la_SOURCES = \
 libgmloudmouth_la_LDFLAGS = $(PLUGINS_LIBTOOL_FLAGS)
 libgmloudmouth_la_LIBADD = \
 	$(top_builddir)/lib/libekiga.la \
-	$(BOOST_LDFLAGS) $(BOOST_LIBS) $(XML_LIBS) $(LOUDMOUTH_LIBS)
+	$(BOOST_LDFLAGS) $(XML_LIBS) $(LOUDMOUTH_LIBS)
