@@ -115,11 +115,11 @@ namespace Opal {
 
       // a registration event occurred
       // the parameters are the aor, the state and the message
-      boost::signal3<void, std::string, Opal::Account::RegistrationState, std::string> registration_event;
+      boost::signals2::signal<void(std::string, Opal::Account::RegistrationState, std::string)> registration_event;
 
       // a message waiting information was received
       // the parameters are the aor and the info
-      boost::signal2<void, std::string, std::string> mwi_event;
+      boost::signals2::signal<void(std::string, std::string)> mwi_event;
 
       /* AccountSubscriber */
       bool subscribe (const Opal::Account & account, const PSafePtr<OpalPresentity> & presentity);

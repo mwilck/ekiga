@@ -37,7 +37,7 @@
 #define __LOUDMOUTH_HELPERS_H__
 
 #include <boost/smart_ptr.hpp>
-#include <boost/signals.hpp>
+#include <boost/signals2.hpp>
 
 #include <loudmouth/loudmouth.h>
 

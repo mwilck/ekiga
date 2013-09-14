@@ -45,7 +45,7 @@
 
 #include <list>
 #include <string>
-#include <boost/signals.hpp>
+#include <boost/signals2.hpp>
 #include <boost/bind.hpp>
 
 namespace Ekiga
@@ -103,7 +103,7 @@ namespace Ekiga
 
     void dump (std::ostream &stream) const;
 
-    boost::signal1<void, ServicePtr> service_added;
+    boost::signals2::signal<void(ServicePtr)> service_added;
 
   private:
 

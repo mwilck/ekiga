@@ -36,7 +36,7 @@
 #ifndef __FORM_REQUEST_SIMPLE_H__
 #define __FORM_REQUEST_SIMPLE_H__
 
-#include <boost/signals.hpp>
+#include <boost/signals2.hpp>
 #include <boost/bind.hpp>
 
 #include "form-builder.h"

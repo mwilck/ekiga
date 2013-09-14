@@ -94,9 +94,9 @@ public: // no need to make anything private
 
   void publish () const;
 
-  boost::signal1<void, boost::shared_ptr<Entry> > entry_added;
-  boost::signal1<void, boost::shared_ptr<Entry> > entry_updated;
-  boost::signal1<void, boost::shared_ptr<Entry> > entry_removed;
+  boost::signals2::signal<void(boost::shared_ptr<Entry>)> entry_added;
+  boost::signals2::signal<void(boost::shared_ptr<Entry>)> entry_updated;
+  boost::signals2::signal<void(boost::shared_ptr<Entry>)> entry_removed;
 
 
   /* data for its children */
@@ -104,7 +104,7 @@ public: // no need to make anything private
 
   std::list<ChildType> ordering;
   std::list<boost::shared_ptr<List> > lists;
-  std::list<std::pair<boost::shared_ptr<Entry>, std::list<boost::signals::connection> > > entries;
+  std::list<std::pair<boost::shared_ptr<Entry>, std::list<boost::signals2::connection> > > entries;
 };
 
 
@@ -235,12 +235,12 @@ RL::ListImpl::flush ()
     (*iter)->flush ();
   lists.clear ();
 
-  for (std::list<std::pair<boost::shared_ptr<Entry>, std::list<boost::signals::connection> > >::iterator iter = entries.begin ();
+  for (std::list<std::pair<boost::shared_ptr<Entry>, std::list<boost::signals2::connection> > >::iterator iter = entries.begin ();
        iter != entries.end ();
        ++iter) {
 
     iter->first->removed ();
-    for (std::list<boost::signals::connection>::iterator conn_iter
+    for (std::list<boost::signals2::connection>::iterator conn_iter
 	   = iter->second.begin ();
 	 conn_iter != iter->second.end ();
 	 ++conn_iter)
@@ -342,10 +342,10 @@ RL::ListImpl::parse ()
 							    entry_pos,
 							    display_name,
 							    doc, child));
-      std::list<boost::signals::connection> conns;
+      std::list<boost::signals2::connection> conns;
       conns.push_back (entry->updated.connect (boost::bind (boost::ref (entry_updated), entry)));
       conns.push_back (entry->removed.connect (boost::bind (boost::ref (entry_removed), entry)));
-      entries.push_back (std::pair<boost::shared_ptr<Entry>, std::list<boost::signals::connection> > (entry, conns));
+      entries.push_back (std::pair<boost::shared_ptr<Entry>, std::list<boost::signals2::connection> > (entry, conns));
       ordering.push_back (ENTRY);
       entry_pos++;
       entry_added (entry);
@@ -363,7 +363,7 @@ RL::ListImpl::push_presence (const std::string uri_,
        ++iter)
     (*iter)->push_presence (uri_, presence);
 
-  for (std::list<std::pair<boost::shared_ptr<Entry>, std::list<boost::signals::connection> > >::const_iterator iter = entries.begin ();
+  for (std::list<std::pair<boost::shared_ptr<Entry>, std::list<boost::signals2::connection> > >::const_iterator iter = entries.begin ();
        iter != entries.end ();
        ++iter) {
 
@@ -381,7 +381,7 @@ RL::ListImpl::push_status (const std::string uri_,
        ++iter)
     (*iter)->push_status (uri_, status);
 
-  for (std::list<std::pair<boost::shared_ptr<Entry>, std::list<boost::signals::connection> > >::const_iterator iter = entries.begin ();
+  for (std::list<std::pair<boost::shared_ptr<Entry>, std::list<boost::signals2::connection> > >::const_iterator iter = entries.begin ();
        iter != entries.end ();
        ++iter) {
 
@@ -400,7 +400,7 @@ RL::ListImpl::visit_presentities (boost::function1<bool, Ekiga::Presentity&> vis
        ++iter)
     go_on = (*iter)->visit_presentities (visitor);
 
-  for (std::list<std::pair<boost::shared_ptr<Entry>, std::list<boost::signals::connection> > >::const_iterator iter = entries.begin ();
+  for (std::list<std::pair<boost::shared_ptr<Entry>, std::list<boost::signals2::connection> > >::const_iterator iter = entries.begin ();
        go_on && iter != entries.end ();
        ++iter) {
 
@@ -418,7 +418,7 @@ RL::ListImpl::publish () const
        ++iter)
     (*iter)->publish ();
 
-  for (std::list<std::pair<boost::shared_ptr<Entry>, std::list<boost::signals::connection> > >::const_iterator iter = entries.begin ();
+  for (std::list<std::pair<boost::shared_ptr<Entry>, std::list<boost::signals2::connection> > >::const_iterator iter = entries.begin ();
        iter != entries.end ();
        ++iter) {
 

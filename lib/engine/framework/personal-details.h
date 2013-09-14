@@ -37,7 +37,7 @@
 #define __PERSONAL_DETAILS_H__
 
 #include <string>
-#include <boost/signals.hpp>
+#include <boost/signals2.hpp>
 #include <boost/bind.hpp>
 
 #include "services.h"
@@ -66,7 +66,7 @@ namespace Ekiga
     virtual void set_presence_info (const std::string presence,
                                     const std::string status) = 0;
 
-    boost::signal0<void> updated;
+    boost::signals2::signal<void(void)> updated;
   };
 };
 

@@ -34,7 +34,7 @@
  *
  */
 
-#include <boost/signals.hpp>
+#include <boost/signals2.hpp>
 #include <boost/bind.hpp>
 
 #ifndef __RUNTIME_H__

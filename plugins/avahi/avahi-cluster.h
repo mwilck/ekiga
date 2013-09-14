@@ -53,7 +53,7 @@ namespace Avahi
   class Cluster:
     public Ekiga::Service,
     public Ekiga::ClusterImpl<Heap>,
-    public boost::signals::trackable
+    public boost::signals2::trackable
   {
   public:
 

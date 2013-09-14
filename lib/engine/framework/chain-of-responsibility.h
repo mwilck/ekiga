@@ -36,7 +36,7 @@
 #ifndef __CHAIN_OF_RESPONSIBILITY_H__
 #define __CHAIN_OF_RESPONSIBILITY_H__
 
-#include <boost/signals.hpp>
+#include <boost/signals2.hpp>
 #include <boost/bind.hpp>
 
 /* This code uses boost signals to implement the "chain of responsibility"
@@ -117,9 +117,8 @@ namespace Ekiga
 
   template<typename T_request>
   struct ChainOfResponsibility:
-    public boost::signal1<bool,
-			 T_request,
-			 responsibility_accumulator>
+    public boost::signals2::signal<bool(T_request),
+			           responsibility_accumulator>
   {
   };
 };

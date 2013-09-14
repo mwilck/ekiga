@@ -74,7 +74,7 @@ namespace Ekiga
   template<class AccountType = Account>
   class BankImpl:
     public Bank,
-    public boost::signals::trackable,
+    public boost::signals2::trackable,
     protected RefLister<AccountType>
   {
 

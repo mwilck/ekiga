@@ -51,7 +51,7 @@ namespace Local
   class Cluster :
     public Ekiga::ClusterImpl<Heap>,
     public Ekiga::Trigger,
-    public boost::signals::trackable
+    public boost::signals2::trackable
   {
   public:
 

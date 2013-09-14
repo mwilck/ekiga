@@ -100,7 +100,7 @@ namespace Ekiga
     /** This signal is emitted when an Ekiga::Dialect has been added to
      * the ChatCore service.
      */
-    boost::signal1<void, DialectPtr > dialect_added;
+    boost::signals2::signal<void(DialectPtr)> dialect_added;
 
   private:
 
@@ -116,7 +116,7 @@ namespace Ekiga
 
     /** This signal is emitted when the ChatCore service has been updated.
      */
-    boost::signal0<void> updated;
+    boost::signals2::signal<void(void)> updated;
 
     /** This chain allows the ChatCore to present forms to the user
      */

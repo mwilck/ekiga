@@ -74,15 +74,15 @@ namespace Ekiga
 
     /** This signal is emitted when a account has been added.
      */
-    boost::signal1<void, AccountPtr> account_added;
+    boost::signals2::signal<void(AccountPtr)> account_added;
 
     /** This signal is emitted when a account has been removed.
      */
-    boost::signal1<void, AccountPtr> account_removed;
+    boost::signals2::signal<void(AccountPtr)> account_removed;
 
     /** This signal is emitted when a account has been updated.
      */
-    boost::signal1<void, AccountPtr> account_updated;
+    boost::signals2::signal<void(AccountPtr)> account_updated;
 
     /** This chain allows the BankImpl to present forms to the user
      */

@@ -42,7 +42,7 @@
 
 #include <gtk/gtk.h>
 
-#include <boost/signals.hpp>
+#include <boost/signals2.hpp>
 #include <boost/bind.hpp>
 
 G_BEGIN_DECLS

@@ -530,7 +530,7 @@ status_icon_new (Ekiga::ServiceCore & core)
   if (!statusicon_should_run ())
     return self;
 
-  boost::signals::connection conn;
+  boost::signals2::connection conn;
 
   self = STATUSICON (g_object_new (STATUSICON_TYPE, NULL));
   self->priv = new StatusIconPrivate;

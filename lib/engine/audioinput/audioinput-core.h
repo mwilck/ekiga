@@ -135,7 +135,7 @@ namespace Ekiga
       /** This signal is emitted when a Ekiga::AudioInputManager has been
        * added to the AudioInputCore Service.
        */
-      boost::signal1<void, AudioInputManager &> manager_added;
+      boost::signals2::signal<void(AudioInputManager &)> manager_added;
 
 
       /*** AudioInput Device Management ***/
@@ -253,23 +253,23 @@ namespace Ekiga
 
       /** See audioinput-manager.h for the API
        */
-      boost::signal3<void, AudioInputManager &, AudioInputDevice &, AudioInputSettings&> device_opened;
-      boost::signal2<void, AudioInputManager &, AudioInputDevice &> device_closed;
-      boost::signal3<void, AudioInputManager &, AudioInputDevice &, AudioInputErrorCodes> device_error;
+      boost::signals2::signal<void(AudioInputManager &, AudioInputDevice &, AudioInputSettings&)> device_opened;
+      boost::signals2::signal<void(AudioInputManager &, AudioInputDevice &)> device_closed;
+      boost::signals2::signal<void(AudioInputManager &, AudioInputDevice &, AudioInputErrorCodes)> device_error;
 
       /** This signal is emitted when an audio device input has been added to the system.
        * This signal will be emitted if add_device was called with a device name and
        * a manager claimed support for this device.
        * @param device the audio input device that was added.
        */
-      boost::signal2<void, AudioInputDevice, bool> device_added;
+      boost::signals2::signal<void(AudioInputDevice, bool)> device_added;
 
       /** This signal is emitted when an audio input device has been removed from the system.
        * This signal will be emitted if remove_device was called with a device name and
        * a manager claimed support for this device.
        * @param device the audio input device that was removed.
        */
-      boost::signal2<void, AudioInputDevice, bool> device_removed;
+      boost::signals2::signal<void(AudioInputDevice, bool)> device_removed;
 
   private:
       void on_set_device (const AudioInputDevice & device);

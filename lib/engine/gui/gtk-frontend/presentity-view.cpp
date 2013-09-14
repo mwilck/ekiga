@@ -40,8 +40,8 @@
 struct _PresentityViewPrivate
 {
   Ekiga::Presentity* presentity;
-  boost::signals::connection updated_conn;
-  boost::signals::connection removed_conn;
+  boost::signals2::connection updated_conn;
+  boost::signals2::connection removed_conn;
 
   /* we contain those, so no need to unref them */
   GtkWidget* presence_image;

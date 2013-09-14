@@ -37,6 +37,8 @@
 
 #include "codecsbox.h"
 
+#include <sstream>
+
 #include <glib/gi18n.h>
 
 #include "gmconf.h"

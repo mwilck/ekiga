@@ -48,7 +48,7 @@ namespace Ekiga
 	   typename MultipleChatType = MultipleChat>
   class DialectImpl:
     public Dialect,
-    public boost::signals::trackable
+    public boost::signals2::trackable
   {
   public:
 

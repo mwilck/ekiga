@@ -39,7 +39,7 @@
 #define __VIDEOINPUT_MANAGER_H__
 
 #include <vector>
-#include <boost/signals.hpp>
+#include <boost/signals2.hpp>
 #include <boost/bind.hpp>
 
 #include "videoinput-info.h"
@@ -159,18 +159,18 @@ namespace Ekiga
        * @param device the video input device that was opened.
        * @param config the current video input device configuration (current brightness, colour, etc.).
        */
-      boost::signal2<void, VideoInputDevice, VideoInputSettings> device_opened;
+      boost::signals2::signal<void(VideoInputDevice, VideoInputSettings)> device_opened;
 
       /** This signal is emitted when a video input device is closed.
        * @param device the video input device that was closed.
        */
-      boost::signal1<void, VideoInputDevice> device_closed;
+      boost::signals2::signal<void(VideoInputDevice)> device_closed;
 
       /** This signal is emitted when an error occurs when opening a video input device.
        * @param device the video input device that caused the error.
        * @param error_code the video input device error code.
        */
-      boost::signal2<void, VideoInputDevice, VideoInputErrorCodes> device_error;
+      boost::signals2::signal<void(VideoInputDevice, VideoInputErrorCodes)> device_error;
 
   protected:  
       typedef struct ManagerState {

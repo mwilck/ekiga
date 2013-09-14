@@ -1606,7 +1606,7 @@ assistant_window_new (Ekiga::ServiceCore& service_core)
   g_signal_connect (assistant, "key-press-event",
                     G_CALLBACK (assistant_window_key_press_cb), NULL);
 
-  boost::signals::connection conn;
+  boost::signals2::connection conn;
   assistant->priv->videoinput_core = service_core.get<Ekiga::VideoInputCore> ("videoinput-core");
   assistant->priv->audioinput_core = service_core.get<Ekiga::AudioInputCore> ("audioinput-core");
   assistant->priv->audiooutput_core = service_core.get<Ekiga::AudioOutputCore> ("audiooutput-core");

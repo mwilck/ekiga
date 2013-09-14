@@ -185,7 +185,7 @@ RL::Heap::visit_presentities (boost::function1<bool, Ekiga::PresentityPtr > visi
 {
   bool go_on = true;
 
-  for (std::map<PresentityPtr,std::list<boost::signals::connection> >::const_iterator
+  for (std::map<PresentityPtr,std::list<boost::signals2::connection> >::const_iterator
 	 iter = presentities.begin ();
        go_on && iter != presentities.end ();
        ++iter)
@@ -254,7 +254,7 @@ RL::Heap::refresh ()
   while ( !presentities.empty ()) {
 
     presentities.begin()->first->removed ();
-    for (std::list<boost::signals::connection>::const_iterator iter2
+    for (std::list<boost::signals2::connection>::const_iterator iter2
 	   = presentities.begin()->second.begin ();
 	 iter2 != presentities.begin()->second.end ();
 	 ++iter2)
@@ -366,7 +366,7 @@ RL::Heap::parse_list (xmlNodePtr list)
 	&& xmlStrEqual (BAD_CAST ("entry"), child->name)) {
 
       PresentityPtr presentity(new Presentity (services, path, doc, child, writable));
-      std::list<boost::signals::connection> conns;
+      std::list<boost::signals2::connection> conns;
       conns.push_back (presentity->updated.connect (boost::bind (boost::ref (presentity_updated), presentity)));
       conns.push_back (presentity->removed.connect (boost::bind(boost::ref (presentity_removed),presentity)));
       conns.push_back (presentity->trigger_reload.connect (boost::bind (&RL::Heap::refresh, this)));
@@ -381,7 +381,7 @@ void
 RL::Heap::push_presence (const std::string uri_,
 			 const std::string presence)
 {
-  for (std::map<PresentityPtr,std::list<boost::signals::connection> >::const_iterator
+  for (std::map<PresentityPtr,std::list<boost::signals2::connection> >::const_iterator
 	 iter = presentities.begin ();
        iter != presentities.end ();
        ++iter) {
@@ -395,7 +395,7 @@ void
 RL::Heap::push_status (const std::string uri_,
 		       const std::string status)
 {
-  for (std::map<PresentityPtr,std::list<boost::signals::connection> >::const_iterator
+  for (std::map<PresentityPtr,std::list<boost::signals2::connection> >::const_iterator
 	 iter = presentities.begin ();
        iter != presentities.end ();
        ++iter) {
@@ -514,7 +514,7 @@ RL::Heap::new_entry ()
 			   "contact on a remote server"));
 
   std::set<std::string> all_groups;
-  for (std::map<PresentityPtr,std::list<boost::signals::connection> >::const_iterator
+  for (std::map<PresentityPtr,std::list<boost::signals2::connection> >::const_iterator
 	 iter = presentities.begin ();
        iter != presentities.end ();
        ++iter) {

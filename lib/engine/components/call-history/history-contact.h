@@ -61,7 +61,7 @@ namespace History
 
   class Contact:
     public Ekiga::Contact,
-    public boost::signals::trackable
+    public boost::signals2::trackable
   {
   public:
 

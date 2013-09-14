@@ -42,9 +42,9 @@
 
 /* The boost signals library has several tricks to disconnect connections on signals
  * automatically, namely :
- * - inherit from boost::signals::trackable, which is good to get rid of
+ * - inherit from boost::signals2::trackable, which is good to get rid of
  * connnections to a dying object ;
- * - use a boost::signals::scoped_connection which makes it possible to do things
+ * - use a boost::signals2::scoped_connection which makes it possible to do things
  * more manually, but is annoying when you need many of them because they're not
  * easy to put in a container ;
  *
@@ -65,12 +65,12 @@ namespace Ekiga {
     ~scoped_connections ()
       { clear (); }
 
-    void add (boost::signals::connection conn)
+    void add (boost::signals2::connection conn)
     { conns.push_front (conn); }
 
     void clear ()
     {
-      for (std::list<boost::signals::connection>::iterator iter = conns.begin ();
+      for (std::list<boost::signals2::connection>::iterator iter = conns.begin ();
 	   iter != conns.end ();
 	   ++iter)
 	iter->disconnect ();
@@ -79,7 +79,7 @@ namespace Ekiga {
 
   private:
 
-    std::list<boost::signals::connection> conns;
+    std::list<boost::signals2::connection> conns;
   };
 };
 

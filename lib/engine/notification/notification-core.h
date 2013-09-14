@@ -77,7 +77,7 @@ namespace Ekiga
     void action_trigger ()
     { if (action_callback) action_callback (); }
 
-    boost::signal0<void> removed;
+    boost::signals2::signal<void(void)> removed;
 
   private:
 
@@ -109,7 +109,7 @@ namespace Ekiga
     void push_notification (boost::shared_ptr<Notification> notification)
     { notification_added (notification); }
 
-    boost::signal1<void, boost::shared_ptr<Notification> > notification_added;
+    boost::signals2::signal<void(boost::shared_ptr<Notification>)> notification_added;
   };
 };
 

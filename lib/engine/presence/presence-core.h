@@ -94,8 +94,8 @@ namespace Ekiga
      * presence information about an uri it was required to handle.
      * The information is given as a pair of strings (uri, data).
      */
-    boost::signal2<void, std::string, std::string> presence_received;
-    boost::signal2<void, std::string, std::string> status_received;
+    boost::signals2::signal<void(std::string, std::string)> presence_received;
+    boost::signals2::signal<void(std::string, std::string)> status_received;
   };
 
   class PresencePublisher
@@ -173,22 +173,22 @@ namespace Ekiga
     /** This signal is emitted when an Ekiga::Cluster has been added
      * to the PresenceCore Service.
      */
-    boost::signal1<void, ClusterPtr > cluster_added;
+    boost::signals2::signal<void(ClusterPtr)> cluster_added;
 
     /** Those signals are forwarding the heap_added, heap_updated
      * and heap_removed from the given Cluster.
      *
      */
-    boost::signal2<void, ClusterPtr , HeapPtr > heap_added;
-    boost::signal2<void, ClusterPtr , HeapPtr > heap_updated;
-    boost::signal2<void, ClusterPtr , HeapPtr > heap_removed;
+    boost::signals2::signal<void(ClusterPtr , HeapPtr )> heap_added;
+    boost::signals2::signal<void(ClusterPtr , HeapPtr )> heap_updated;
+    boost::signals2::signal<void(ClusterPtr , HeapPtr )> heap_removed;
 
     /** Those signals are forwarding the presentity_added, presentity_updated
      * and presentity_removed from the given Heap of the given Cluster.
      */
-    boost::signal3<void, ClusterPtr , HeapPtr , PresentityPtr > presentity_added;
-    boost::signal3<void, ClusterPtr , HeapPtr , PresentityPtr > presentity_updated;
-    boost::signal3<void, ClusterPtr , HeapPtr , PresentityPtr > presentity_removed;
+    boost::signals2::signal<void(ClusterPtr , HeapPtr , PresentityPtr )> presentity_added;
+    boost::signals2::signal<void(ClusterPtr , HeapPtr , PresentityPtr )> presentity_updated;
+    boost::signals2::signal<void(ClusterPtr , HeapPtr , PresentityPtr )> presentity_removed;
 
   private:
 
@@ -249,8 +249,8 @@ namespace Ekiga
     /** Those signals are emitted whenever information has been received
      * about an uri ; the information is a pair of strings (uri, information).
      */
-    boost::signal2<void, std::string, std::string> presence_received;
-    boost::signal2<void, std::string, std::string> status_received;
+    boost::signals2::signal<void(std::string, std::string)> presence_received;
+    boost::signals2::signal<void(std::string, std::string)> status_received;
 
   private:
 

@@ -38,7 +38,7 @@
 #ifndef __CALL_H__
 #define __CALL_H__
 
-#include <boost/signals.hpp>
+#include <boost/signals2.hpp>
 #include <boost/bind.hpp>
 #include <string>
 
@@ -198,69 +198,69 @@ namespace Ekiga
 
       /* Signal emitted when the call is established
        */
-      boost::signal0<void> established;
+      boost::signals2::signal<void(void)> established;
 
       /* Signal emitted when an established call is cleared
        * @param: a string describing why the call was cleared
        */
-      boost::signal1<void, std::string> cleared;
+      boost::signals2::signal<void(std::string)> cleared;
 
       /* Signal emitted when the call is missed, ie cleared
        * without having been established
        */
-      boost::signal0<void> missed;
+      boost::signals2::signal<void(void)> missed;
 
       /* Signal emitted when the call is forwarded
        */
-      boost::signal0<void> forwarded;
+      boost::signals2::signal<void(void)> forwarded;
 
       /* Signal emitted when the call is held
        */
-      boost::signal0<void> held;
+      boost::signals2::signal<void(void)> held;
 
       /* Signal emitted when the call is retrieved
        */
-      boost::signal0<void> retrieved;
+      boost::signals2::signal<void(void)> retrieved;
 
       /* Signal emitted when the call is being setup
        */
-      boost::signal0<void> setup;
+      boost::signals2::signal<void(void)> setup;
 
       /* Signal emitted when the remote party is ringing
        */
-      boost::signal0<void> ringing;
+      boost::signals2::signal<void(void)> ringing;
 
       /* Signal emitted when a stream is opened
        * @param the stream name
        * @param the stream type
        * @param transmission or reception
        */
-      boost::signal3<void, std::string, StreamType, bool> stream_opened;
+      boost::signals2::signal<void(std::string, StreamType, bool)> stream_opened;
 
       /* Signal emitted when a stream is closed
        * @param the stream name
        * @param the stream type
        * @param transmission or reception
        */
-      boost::signal3<void, std::string, StreamType, bool> stream_closed;
+      boost::signals2::signal<void(std::string, StreamType, bool)> stream_closed;
 
       /* Signal emitted when a transmitted stream is paused
        * @param the stream name
        * @param the stream type
        * @param transmission or reception
        */
-      boost::signal2<void, std::string, StreamType> stream_paused;
+      boost::signals2::signal<void(std::string, StreamType)> stream_paused;
 
       /* Signal emitted when a transmitted stream is resumed
        * @param the stream name
        * @param the stream type
        * @param transmission or reception
        */
-      boost::signal2<void, std::string, StreamType> stream_resumed;
+      boost::signals2::signal<void(std::string, StreamType)> stream_resumed;
 
       /** This signal is emitted when the Call is removed.
        */
-      boost::signal0<void> removed;
+      boost::signals2::signal<void(void)> removed;
      
     };
 

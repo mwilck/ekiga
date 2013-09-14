@@ -604,7 +604,7 @@ addressbook_window_new (boost::shared_ptr<Ekiga::ContactCore> core)
 {
   AddressBookWindow *self = NULL;
 
-  boost::signals::connection conn;
+  boost::signals2::connection conn;
 
   GtkWidget *menu_bar = NULL;
   GtkWidget *frame = NULL;

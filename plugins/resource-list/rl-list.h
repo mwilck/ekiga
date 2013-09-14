@@ -74,9 +74,9 @@ namespace RL
 
     void publish () const;
 
-    boost::signal1<void, boost::shared_ptr<Entry> > entry_added;
-    boost::signal1<void, boost::shared_ptr<Entry> > entry_updated;
-    boost::signal1<void, boost::shared_ptr<Entry> > entry_removed;
+    boost::signals2::signal<void(boost::shared_ptr<Entry>)> entry_added;
+    boost::signals2::signal<void(boost::shared_ptr<Entry>)> entry_updated;
+    boost::signals2::signal<void(boost::shared_ptr<Entry>)> entry_removed;
 
     /* this method orders the list to get rid of all its children */
     void flush ();

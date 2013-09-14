@@ -457,7 +457,7 @@ heap_view_set_heap (HeapView* self,
 
   if (heap) {
 
-    boost::signals::connection conn;
+    boost::signals2::connection conn;
 
     conn = heap->removed.connect (boost::bind (&on_heap_removed, self));
     self->priv->connections.add (conn);

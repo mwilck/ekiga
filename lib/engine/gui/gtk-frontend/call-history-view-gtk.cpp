@@ -54,7 +54,7 @@ struct _CallHistoryViewGtkPrivate
   boost::shared_ptr<History::Book> book;
   GtkListStore* store;
   GtkTreeView* tree;
-  boost::signals::scoped_connection connection;
+  boost::signals2::scoped_connection connection;
 };
 
 /* this is what we put in the view */

@@ -72,12 +72,12 @@ namespace Ekiga
     /** This signal is emitted when an Ekiga::SimpleChat has been added to
      * the dialect.
      */
-    boost::signal1<void, SimpleChatPtr> simple_chat_added;
+    boost::signals2::signal<void(SimpleChatPtr)> simple_chat_added;
 
     /** This signal is emitted when an Ekiga::MultipleChat has been added to
      * the dialect.
      */
-    boost::signal1<void, MultipleChatPtr> multiple_chat_added;
+    boost::signals2::signal<void(MultipleChatPtr)> multiple_chat_added;
 
     /** This chain allows the Dialect to present forms to the user.
      */

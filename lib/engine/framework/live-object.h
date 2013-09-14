@@ -62,12 +62,12 @@ namespace Ekiga
 
     /** This signal is emitted when the object has been updated.
      */
-    boost::signal0<void> updated;
+    boost::signals2::signal<void(void)> updated;
 
 
     /** This signal is emitted when the object has been removed.
      */
-    boost::signal0<void> removed;
+    boost::signals2::signal<void(void)> removed;
 
     /** This chain allows the object to present forms to the user
      */

@@ -166,7 +166,7 @@ namespace Local
      * This signal makes the Local::Heap know that the XML tree changed
      * and hence should be saved
      */
-    boost::signal0<void> trigger_saving;
+    boost::signals2::signal<void(void)> trigger_saving;
 
 
   private:

@@ -83,15 +83,15 @@ namespace Ekiga
 
     /** This signal is emitted  when a Presentity has been added to the Heap.
      */
-    boost::signal1<void, PresentityPtr > presentity_added;
+    boost::signals2::signal<void(PresentityPtr)> presentity_added;
 
     /** This signal is emitted when a Presentity has been updated in the Heap.
      */
-    boost::signal1<void, PresentityPtr > presentity_updated;
+    boost::signals2::signal<void(PresentityPtr)> presentity_updated;
 
     /** This signal is emitted when a Presentity has been removed from the Heap.
      */
-    boost::signal1<void, PresentityPtr > presentity_removed;
+    boost::signals2::signal<void(PresentityPtr)> presentity_removed;
   };
 
   typedef boost::shared_ptr<Heap> HeapPtr;

@@ -66,16 +66,16 @@ namespace Ekiga
      * from the Cluster.
      * @param The Heap in question.
      */
-    boost::signal1<void, HeapPtr > heap_added;
-    boost::signal1<void, HeapPtr > heap_removed;
+    boost::signals2::signal<void(HeapPtr)> heap_added;
+    boost::signals2::signal<void(HeapPtr)> heap_removed;
 
     /** Those signals are forwarded from the given Heap
      * @param The Heap in question.
      */
-    boost::signal1<void, HeapPtr > heap_updated;
-    boost::signal2<void, HeapPtr , PresentityPtr > presentity_added;
-    boost::signal2<void, HeapPtr , PresentityPtr > presentity_updated;
-    boost::signal2<void, HeapPtr , PresentityPtr > presentity_removed;
+    boost::signals2::signal<void(HeapPtr)> heap_updated;
+    boost::signals2::signal<void(HeapPtr , PresentityPtr )> presentity_added;
+    boost::signals2::signal<void(HeapPtr , PresentityPtr )> presentity_updated;
+    boost::signals2::signal<void(HeapPtr , PresentityPtr )> presentity_removed;
   };
 
   typedef boost::shared_ptr<Cluster> ClusterPtr;

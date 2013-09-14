@@ -1554,7 +1554,7 @@ GtkWidget *
 roster_view_gtk_new (boost::shared_ptr<Ekiga::PresenceCore> core)
 {
   RosterViewGtk* self = NULL;
-  boost::signals::connection conn;
+  boost::signals2::connection conn;
 
   self = (RosterViewGtk *) g_object_new (ROSTER_VIEW_GTK_TYPE, NULL);
 

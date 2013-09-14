@@ -53,7 +53,7 @@ namespace History
 
   class Book:
     public Ekiga::Book,
-    public boost::signals::trackable
+    public boost::signals2::trackable
   {
   public:
 
@@ -86,7 +86,7 @@ namespace History
 
     void clear ();
 
-    boost::signal0<void> cleared;
+    boost::signals2::signal<void(void)> cleared;
 
   private:
 

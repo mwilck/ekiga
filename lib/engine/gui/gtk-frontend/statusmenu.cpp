@@ -49,7 +49,7 @@ struct _StatusMenuPrivate
   ~_StatusMenuPrivate ();
 
   boost::shared_ptr<Ekiga::PersonalDetails> personal_details;
-  boost::signals::connection connection;
+  boost::signals2::connection connection;
   std::list<gpointer> notifiers;
 
   GtkListStore *list_store; // List store storing the menu

@@ -45,7 +45,7 @@
 #include "videoinput-manager.h"
 #include "videoinput-gmconf-bridge.h"
 
-#include <boost/signals.hpp>
+#include <boost/signals2.hpp>
 #include <boost/bind.hpp>
 #include <glib.h>
 #include <set>
@@ -144,7 +144,7 @@ namespace Ekiga
       /** This signal is emitted when a Ekiga::VideoInputManager has been
        * added to the VideoInputCore Service.
        */
-       boost::signal1<void, VideoInputManager &> manager_added;
+       boost::signals2::signal<void(VideoInputManager &)> manager_added;
 
 
       /*** VideoInput Device Management ***/
@@ -275,23 +275,23 @@ namespace Ekiga
 
       /** See videoinput-manager.h for the API
        */
-      boost::signal3<void, VideoInputManager &, VideoInputDevice &, VideoInputSettings&> device_opened;
-      boost::signal2<void, VideoInputManager &, VideoInputDevice &> device_closed;
-      boost::signal3<void, VideoInputManager &, VideoInputDevice &, VideoInputErrorCodes> device_error;
+      boost::signals2::signal<void(VideoInputManager &, VideoInputDevice &, VideoInputSettings&)> device_opened;
+      boost::signals2::signal<void(VideoInputManager &, VideoInputDevice &)> device_closed;
+      boost::signals2::signal<void(VideoInputManager &, VideoInputDevice &, VideoInputErrorCodes)> device_error;
 
       /** This signal is emitted when a video input has been added to the system.
        * This signal will be emitted if add_device was called with a device name and
        * a manager claimed support for this device.
        * @param device the video input device that was added.
        */
-      boost::signal2<void, VideoInputDevice, bool> device_added;
+      boost::signals2::signal<void(VideoInputDevice, bool)> device_added;
 
       /** This signal is emitted when a video input has been removed from the system.
        * This signal will be emitted if remove_device was called with a device name and
        * a manager claimed support for this device.
        * @param device the video input device that was removed.
        */
-      boost::signal2<void, VideoInputDevice, bool> device_removed;
+      boost::signals2::signal<void(VideoInputDevice, bool)> device_removed;
 
   private:
       void on_set_device (const VideoInputDevice & device);

@@ -57,7 +57,7 @@ class ChatAreaHelper;
 struct _ChatAreaPrivate
 {
   boost::shared_ptr<Ekiga::Chat> chat;
-  boost::signals::scoped_connection connection;
+  boost::signals2::scoped_connection connection;
   boost::shared_ptr<ChatAreaHelper> helper;
   GmTextBufferEnhancer* enhancer;
 

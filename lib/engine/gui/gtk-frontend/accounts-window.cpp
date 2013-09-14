@@ -527,7 +527,7 @@ accounts_window_new (boost::shared_ptr<Ekiga::AccountCore> account_core,
 {
   AccountsWindow *self = NULL;
 
-  boost::signals::connection conn;
+  boost::signals2::connection conn;
 
   GtkWidget *vbox = NULL;
   GtkWidget *menu_bar = NULL;

@@ -37,7 +37,7 @@
 #ifndef __REFLISTER_H__
 #define __REFLISTER_H__
 
-#include <boost/signals.hpp>
+#include <boost/signals2.hpp>
 #include <boost/bind.hpp>
 #include <list>
 
@@ -65,7 +65,7 @@ namespace Ekiga
     void add_object (boost::shared_ptr<ObjectType> obj);
 
     void add_connection (boost::shared_ptr<ObjectType> obj,
-			 boost::signals::connection connection);
+			 boost::signals2::connection connection);
 
     void remove_object (boost::shared_ptr<ObjectType> obj);
 
@@ -77,9 +77,9 @@ namespace Ekiga
     const_iterator begin () const;
     const_iterator end () const;
 
-    boost::signal1<void, boost::shared_ptr<ObjectType> > object_added;
-    boost::signal1<void, boost::shared_ptr<ObjectType> > object_removed;
-    boost::signal1<void, boost::shared_ptr<ObjectType> > object_updated;
+    boost::signals2::signal<void(boost::shared_ptr<ObjectType>)> object_added;
+    boost::signals2::signal<void(boost::shared_ptr<ObjectType>)> object_removed;
+    boost::signals2::signal<void(boost::shared_ptr<ObjectType>)> object_updated;
 
   private:
     container_type objects;
@@ -117,7 +117,7 @@ Ekiga::RefLister<ObjectType>::add_object (boost::shared_ptr<ObjectType> obj)
 template<typename ObjectType>
 void
 Ekiga::RefLister<ObjectType>::add_connection (boost::shared_ptr<ObjectType> obj,
-					      boost::signals::connection connection)
+					      boost::signals2::connection connection)
 {
   typename container_type::iterator iter = objects.find (obj);
   if (iter == objects.end ())

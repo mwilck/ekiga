@@ -57,7 +57,7 @@ namespace Opal {
   class Call
     : public OpalCall,
       public Ekiga::Call,
-      public boost::signals::trackable
+      public boost::signals2::trackable
   {
 
 public:

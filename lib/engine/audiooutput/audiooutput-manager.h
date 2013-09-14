@@ -39,7 +39,7 @@
 #define __AUDIOOUTPUT_MANAGER_H__
 
 #include <vector>
-#include <boost/signals.hpp>
+#include <boost/signals2.hpp>
 #include <boost/bind.hpp>
 
 #include "audiooutput-info.h"
@@ -152,20 +152,20 @@ namespace Ekiga
        * @param device the audio output device that was opened.
        * @param config the current audio output device configuration (current volume, etc.).
        */
-      boost::signal3<void, AudioOutputPS, AudioOutputDevice, AudioOutputSettings> device_opened;
+      boost::signals2::signal<void(AudioOutputPS, AudioOutputDevice, AudioOutputSettings)> device_opened;
 
       /** This signal is emitted when an audio output device is closed.
        * @param prim whether the primary or secondary audio output device was closed.
        * @param device the audio output device that was closed.
        */
-      boost::signal2<void, AudioOutputPS, AudioOutputDevice> device_closed;
+      boost::signals2::signal<void(AudioOutputPS, AudioOutputDevice)> device_closed;
 
       /** This signal is emitted when an error occurs when opening an audio output device.
        * @param prim whether the primary or secondary audio output device caused the error.
        * @param device the audio output device that caused the error.
        * @param error_code the audio output device error code.
        */
-      boost::signal3<void, AudioOutputPS, AudioOutputDevice, AudioOutputErrorCodes> device_error;
+      boost::signals2::signal<void(AudioOutputPS, AudioOutputDevice, AudioOutputErrorCodes)> device_error;
 
   protected:  
       typedef struct ManagerState {

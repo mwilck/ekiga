@@ -46,7 +46,7 @@ namespace LM
   class HeapRoster:
     public Ekiga::HeapImpl<Presentity>,
     public LM::Handler,
-    public boost::signals::trackable
+    public boost::signals2::trackable
   {
   public:
 

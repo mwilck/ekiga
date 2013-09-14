@@ -60,7 +60,7 @@ namespace Avahi
   class Heap:
     public Ekiga::PresenceFetcher,
     public Ekiga::HeapImpl<Ekiga::URIPresentity>,
-    public boost::signals::trackable
+    public boost::signals2::trackable
   {
   public:
 

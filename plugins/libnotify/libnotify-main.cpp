@@ -51,7 +51,7 @@
 
 class LibNotify:
   public Ekiga::Service,
-  public boost::signals::trackable
+  public boost::signals2::trackable
 {
 public:
 
@@ -77,7 +77,7 @@ private:
                              boost::shared_ptr<Ekiga::Call>  call);
   void on_call_notification_closed (gpointer self);
 
-  typedef std::map<boost::shared_ptr<Ekiga::Notification>, std::pair<boost::signals::connection, boost::shared_ptr<NotifyNotification> > > container_type;
+  typedef std::map<boost::shared_ptr<Ekiga::Notification>, std::pair<boost::signals2::connection, boost::shared_ptr<NotifyNotification> > > container_type;
   container_type live;
 };
 
@@ -234,10 +234,10 @@ LibNotify::on_notification_added (boost::shared_ptr<Ekiga::Notification> notific
                                     notify_action_cb, notification.get (), NULL);
 
   g_signal_connect (notif, "closed", G_CALLBACK (on_notif_closed), notification.get ());
-  boost::signals::connection conn = notification->removed.connect (boost::bind (&LibNotify::on_notification_removed,
+  boost::signals2::connection conn = notification->removed.connect (boost::bind (&LibNotify::on_notification_removed,
                                                                                 this, notification));
 
-  live[notification] = std::pair<boost::signals::connection, boost::shared_ptr<NotifyNotification> > (conn, boost::shared_ptr<NotifyNotification> (notif, g_object_unref));
+  live[notification] = std::pair<boost::signals2::connection, boost::shared_ptr<NotifyNotification> > (conn, boost::shared_ptr<NotifyNotification> (notif, g_object_unref));
 
   notify_notification_show (notif, NULL);
 }

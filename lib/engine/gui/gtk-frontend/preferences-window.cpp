@@ -1255,7 +1255,7 @@ preferences_window_new (Ekiga::ServiceCore& core)
 
   gm_window_hide_on_delete (window);
 
-  boost::signals::connection conn;
+  boost::signals2::connection conn;
 
   conn = pw->videoinput_core->device_added.connect (boost::bind (&on_videoinput_device_added_cb, _1, _2, window));
   pw->connections.add (conn);

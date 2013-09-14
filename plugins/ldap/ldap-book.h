@@ -124,7 +124,7 @@ namespace OPENLDAP
 
     xmlNodePtr get_node ();
 
-    boost::signal0<void> trigger_saving;
+    boost::signals2::signal<void(void)> trigger_saving;
 
     bool is_ekiga_net_book () const;
 

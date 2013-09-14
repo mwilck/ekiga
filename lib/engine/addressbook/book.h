@@ -92,17 +92,17 @@ namespace Ekiga {
 
     /** This signal is emitted when a Contact has been added to the Book.
      */
-    boost::signal1<void, ContactPtr > contact_added;
+    boost::signals2::signal<void(ContactPtr)> contact_added;
 
 
     /** This signal is emitted when a Contact has been removed from the Book.
      */
-    boost::signal1<void, ContactPtr > contact_removed;
+    boost::signals2::signal<void(ContactPtr)> contact_removed;
 
 
     /** This signal is emitted when a Contact has been updated in the Book.
      */
-    boost::signal1<void, ContactPtr > contact_updated;
+    boost::signals2::signal<void(ContactPtr)> contact_updated;
   };
 
   typedef boost::shared_ptr<Book> BookPtr;

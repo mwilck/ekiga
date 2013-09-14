@@ -42,7 +42,7 @@
 #include "videooutput-gmconf-bridge.h"
 #include "videooutput-manager.h"
 
-#include <boost/signals.hpp>
+#include <boost/signals2.hpp>
 #include <boost/bind.hpp>
 #include <set>
 #include <map>
@@ -113,7 +113,7 @@ namespace Ekiga
       /** This signal is emitted when a Ekiga::VideoOutputManager has been
        * added to the VideoOutputCore Service.
        */
-      boost::signal1<void, VideoOutputManager &> manager_added;
+      boost::signals2::signal<void(VideoOutputManager &)> manager_added;
 
 
       /*** Videooutput Management ***/
@@ -163,11 +163,11 @@ namespace Ekiga
 
       /** See videooutput-manager.h for the API
        */
-      boost::signal6<void, VideoOutputManager &, VideoOutputAccel, VideoOutputMode, unsigned, bool, bool> device_opened;
-      boost::signal1<void, VideoOutputManager &> device_closed;
-      boost::signal2<void, VideoOutputManager &, VideoOutputErrorCodes> device_error;
-      boost::signal2<void, VideoOutputManager &, VideoOutputFSToggle> fullscreen_mode_changed;
-      boost::signal4<void, VideoOutputManager &, unsigned, unsigned, VideoOutputMode> size_changed;
+      boost::signals2::signal<void(VideoOutputManager &, VideoOutputAccel, VideoOutputMode, unsigned, bool, bool)> device_opened;
+      boost::signals2::signal<void(VideoOutputManager &)> device_closed;
+      boost::signals2::signal<void(VideoOutputManager &, VideoOutputErrorCodes)> device_error;
+      boost::signals2::signal<void(VideoOutputManager &, VideoOutputFSToggle)> fullscreen_mode_changed;
+      boost::signals2::signal<void(VideoOutputManager &, unsigned, unsigned, VideoOutputMode)> size_changed;
 
 
   private:

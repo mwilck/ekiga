@@ -40,7 +40,7 @@
 
 #include "services.h"
 
-#include <boost/signals.hpp>
+#include <boost/signals2.hpp>
 #include <boost/bind.hpp>
 
 #include <set>
@@ -113,24 +113,24 @@ namespace Ekiga
       /** This signal is emitted when an Ekiga::HalManager has been
        * added to the HalCore Service.
        */
-       boost::signal1<void, HalManager &> manager_added;
+       boost::signals2::signal<void(HalManager &)> manager_added;
 
 
       /*** API to act on HAL events ***/
 
       /** See hal-manager.h for the API
        */
-      boost::signal4<void, const std::string &, const std::string &, unsigned, HalManager*> videoinput_device_added;
-      boost::signal4<void, const std::string &, const std::string &, unsigned, HalManager*> videoinput_device_removed;
+      boost::signals2::signal<void(const std::string &, const std::string &, unsigned, HalManager*)> videoinput_device_added;
+      boost::signals2::signal<void(const std::string &, const std::string &, unsigned, HalManager*)> videoinput_device_removed;
 
-      boost::signal3<void, const std::string &, const std::string &, HalManager*> audioinput_device_added;
-      boost::signal3<void, const std::string &, const std::string &, HalManager*> audioinput_device_removed;
+      boost::signals2::signal<void(const std::string &, const std::string &, HalManager*)> audioinput_device_added;
+      boost::signals2::signal<void(const std::string &, const std::string &, HalManager*)> audioinput_device_removed;
 
-      boost::signal3<void, const std::string &, const std::string &, HalManager*> audiooutput_device_added;
-      boost::signal3<void, const std::string &, const std::string &, HalManager*> audiooutput_device_removed;
+      boost::signals2::signal<void(const std::string &, const std::string &, HalManager*)> audiooutput_device_added;
+      boost::signals2::signal<void(const std::string &, const std::string &, HalManager*)> audiooutput_device_removed;
 
-      boost::signal3<void, const std::string &, const std::string &, HalManager*> network_interface_up;
-      boost::signal3<void, const std::string &, const std::string &, HalManager*> network_interface_down;
+      boost::signals2::signal<void(const std::string &, const std::string &, HalManager*)> network_interface_up;
+      boost::signals2::signal<void(const std::string &, const std::string &, HalManager*)> network_interface_down;
 
   private:
 

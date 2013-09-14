@@ -63,32 +63,32 @@ namespace Ekiga {
 
     /** This signal is emitted when a Book has been added to the Source.
      */
-    boost::signal1<void, BookPtr > book_added;
+    boost::signals2::signal<void(BookPtr)> book_added;
     
     
     /** This signal is emitted when a Book has been updated in the Source.
      */
-    boost::signal1<void, BookPtr > book_updated;
+    boost::signals2::signal<void(BookPtr)> book_updated;
     
     
     /** This signal is emitted when a Book has been removed in the Source.
      */
-    boost::signal1<void, BookPtr > book_removed;
+    boost::signals2::signal<void(BookPtr)> book_removed;
 
     /** This signal is emitted when a Contact has been added to a book in
      *  this source.
      */
-    boost::signal2<void, BookPtr, ContactPtr > contact_added;
+    boost::signals2::signal<void(BookPtr, ContactPtr )> contact_added;
 
     /** This signal is emitted when a Contact has been removed from a book in
      *  this source.
      */
-    boost::signal2<void, BookPtr, ContactPtr > contact_removed;
+    boost::signals2::signal<void(BookPtr, ContactPtr )> contact_removed;
 
     /** This signal is emitted when a Contact has been updated in a book in
      *  this source
      */
-    boost::signal2<void, BookPtr, ContactPtr > contact_updated;
+    boost::signals2::signal<void(BookPtr, ContactPtr )> contact_updated;
   };
 
   typedef boost::shared_ptr<Source> SourcePtr;

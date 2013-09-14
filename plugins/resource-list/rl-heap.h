@@ -90,7 +90,7 @@ namespace RL {
     void push_status (const std::string uri,
 		      const std::string status);
 
-    boost::signal0<void> trigger_saving;
+    boost::signals2::signal<void(void)> trigger_saving;
 
   private:
 
@@ -106,7 +106,7 @@ namespace RL {
     boost::shared_ptr<xmlDoc> doc;
     xmlNodePtr list_node;
 
-    std::map<PresentityPtr, std::list<boost::signals::connection> > presentities;
+    std::map<PresentityPtr, std::list<boost::signals2::connection> > presentities;
 
     void refresh ();
 

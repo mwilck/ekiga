@@ -38,7 +38,7 @@
 #define __GMCONF_BRIDGE_H__
 
 #include <vector>
-#include <boost/signals.hpp>
+#include <boost/signals2.hpp>
 #include <boost/bind.hpp>
 
 #include "gmconf.h"
@@ -95,7 +95,7 @@ namespace Ekiga
        * @param key is the GmConf key whose value changed
        * @param entry is the new GmConf entry
        */
-      boost::signal2<void, std::string /*key*/, GmConfEntry * /*entry*/> property_changed;
+      boost::signals2::signal<void(std::string /*key*/, GmConfEntry * /*entry*/)> property_changed;
 
   private:
       std::list<gpointer> notifiers;

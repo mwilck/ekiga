@@ -2198,7 +2198,7 @@ ekiga_call_window_transfer_dialog_run (EkigaCallWindow *cw,
 static void
 ekiga_call_window_connect_engine_signals (EkigaCallWindow *cw)
 {
-  boost::signals::connection conn;
+  boost::signals2::connection conn;
 
   g_return_if_fail (EKIGA_IS_CALL_WINDOW (cw));
 

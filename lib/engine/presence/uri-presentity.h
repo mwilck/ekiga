@@ -60,7 +60,7 @@ namespace Ekiga
    */
   class URIPresentity:
     public Ekiga::Presentity,
-    public boost::signals::trackable
+    public boost::signals2::trackable
   {
   public:
 

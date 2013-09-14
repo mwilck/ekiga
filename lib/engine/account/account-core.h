@@ -106,26 +106,26 @@ namespace Ekiga
 
     /** This signal is emitted when a bank has been added to the core
      */
-    boost::signal1<void, BankPtr> bank_added;
+    boost::signals2::signal<void(BankPtr)> bank_added;
 
     /** This signal is emitted when a bank has been removed from the core
      */
-    boost::signal1<void, BankPtr> bank_removed;
+    boost::signals2::signal<void(BankPtr)> bank_removed;
 
     /** This signal is emitted when a account has been added to one of
      * the banks
      */
-    boost::signal2<void, BankPtr, AccountPtr> account_added;
+    boost::signals2::signal<void(BankPtr, AccountPtr)> account_added;
 
     /** This signal is emitted when a account has been removed from one of
      * the banks
      */
-    boost::signal2<void, BankPtr, AccountPtr> account_removed;
+    boost::signals2::signal<void(BankPtr, AccountPtr)> account_removed;
 
     /** This signal is emitted when a account has been updated in one of
      * the banks
      */
-    boost::signal2<void, BankPtr, AccountPtr> account_updated;
+    boost::signals2::signal<void(BankPtr, AccountPtr)> account_updated;
 
   private:
 
@@ -147,7 +147,7 @@ namespace Ekiga
     /** This signal is emitted when the AccountCore Service has been
      * updated.
      */
-    boost::signal0<void> updated;
+    boost::signals2::signal<void(void)> updated;
 
 
     /** This chain allows the AccountCore to present forms to the user

@@ -164,7 +164,7 @@ public:
 
     const std::string as_string () const;
 
-    boost::signal0<void> trigger_saving;
+    boost::signals2::signal<void(void)> trigger_saving;
 
     /*
      * This is because an opal account is an Ekiga::PresencePublisher
