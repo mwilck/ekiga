@@ -730,24 +730,12 @@ if test "x$PTLIB_VIDEO" != "xyes"; then
   AC_MSG_ERROR([You need ptlib video support to compile ekiga])
 fi
 
-# check ptlib has been compiled with exceptions, which are mandatory
-# for boost's signals2
-AC_MSG_CHECKING([for exceptions in ptlib])
-CPPFLAGS_save="$CPPFLAGS"
-CPPFLAGS="$CPPFLAGS $PTLIB_CFLAGS"
-AC_COMPILE_IFELSE([AC_LANG_PROGRAM([[]], [[try { } catch(...) { }]])],
-		  [
-		    AC_MSG_RESULT([yes])
-		    ptlib_exceptions=yes
-		  ],
-		  [
-		    AC_MSG_RESULT([no])
-		    ptlib_exceptions=no
-		  ])
-CPPFLAGS="$CPPFLAGS_save"
-if test "x$ptlib_exceptions" = "xno"; then
-   AC_MSG_ERROR([Sorry, but you must recompile PTLIB with --enable-exceptions])
-fi
+# Make sure ptlib and opal don't force no-exceptions,
+# as we need them for boost's signals2
+PTLIB_CFLAGS="$PTLIB_CFLAGS -fexceptions"
+AC_SUBST(PTLIB_CFLAGS)
+OPAL_CFLAGS="$OPAL_CFLAGS -fexceptions"
+AC_SUBST(OPAL_CFLAGS)
 
 SUFFIX=
 AC_ARG_ENABLE([opal-debug],
