@@ -37,6 +37,8 @@
 
 #include "videooutput-manager-dx.h"
 
+#include "runtime.h"
+
 GMVideoOutputManager_dx::GMVideoOutputManager_dx (Ekiga::ServiceCore & _core)
 : GMVideoOutputManager(_core)
 {
