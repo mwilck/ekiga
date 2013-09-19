@@ -1,7 +1,5 @@
 plugin_LTLIBRARIES = libgmavahi.la
 
-avahi_dir = $(top_srcdir)/plugins/avahi
-
 AM_CXXFLAGS = \
 	$(BOOST_CPPFLAGS) $(AVAHI_CFLAGS) \
 	-I$(top_srcdir)/lib/engine/framework \
@@ -10,13 +8,13 @@ AM_CXXFLAGS = \
 	-I$(top_srcdir)/lib/engine/protocol
 
 libgmavahi_la_SOURCES = \
-	$(avahi_dir)/avahi-main.cpp \
-	$(avahi_dir)/avahi-publisher.cpp \
-	$(avahi_dir)/avahi-publisher.h \
-	$(avahi_dir)/avahi-heap.h \
-	$(avahi_dir)/avahi-heap.cpp \
-	$(avahi_dir)/avahi-cluster.h \
-	$(avahi_dir)/avahi-cluster.cpp
+	avahi-main.cpp \
+	avahi-publisher.cpp \
+	avahi-publisher.h \
+	avahi-heap.h \
+	avahi-heap.cpp \
+	avahi-cluster.h \
+	avahi-cluster.cpp
 
 libgmavahi_la_LDFLAGS = $(PLUGINS_LIBTOOL_FLAGS)
 libgmavahi_la_LIBADD = \

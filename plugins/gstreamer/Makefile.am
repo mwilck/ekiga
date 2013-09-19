@@ -1,7 +1,5 @@
 plugin_LTLIBRARIES = libgmgstreamer.la
 
-gstreamer_dir = $(top_srcdir)/plugins/gstreamer/
-
 AM_CXXFLAGS = \
 	$(BOOST_CPPFLAGS) $(GSTREAMER_CFLAGS) $(PTLIB_CFLAGS) \
 	-I$(top_srcdir)/lib/gmconf \
@@ -14,16 +12,16 @@ AM_CXXFLAGS = \
 	-I$(top_srcdir)/lib/engine/hal
 
 libgmgstreamer_la_SOURCES = \
-	$(gstreamer_dir)/gst-helper.h \
-	$(gstreamer_dir)/gst-helper.cpp \
-	$(gstreamer_dir)/gst-main.h \
-	$(gstreamer_dir)/gst-main.cpp \
-	$(gstreamer_dir)/gst-videoinput.h \
-	$(gstreamer_dir)/gst-videoinput.cpp \
-	$(gstreamer_dir)/gst-audioinput.h \
-	$(gstreamer_dir)/gst-audioinput.cpp \
-	$(gstreamer_dir)/gst-audiooutput.h \
-	$(gstreamer_dir)/gst-audiooutput.cpp
+	gst-helper.h \
+	gst-helper.cpp \
+	gst-main.h \
+	gst-main.cpp \
+	gst-videoinput.h \
+	gst-videoinput.cpp \
+	gst-audioinput.h \
+	gst-audioinput.cpp \
+	gst-audiooutput.h \
+	gst-audiooutput.cpp
 
 libgmgstreamer_la_LDFLAGS = $(PLUGINS_LIBTOOL_FLAGS)
 libgmgstreamer_la_LIBADD = \

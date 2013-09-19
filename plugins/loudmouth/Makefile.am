@@ -1,7 +1,5 @@
 plugin_LTLIBRARIES = libgmloudmouth.la
 
-loudmouth_dir = $(top_srcdir)/plugins/loudmouth
-
 AM_CXXFLAGS = \
 	$(BOOST_CPPFLAGS) $(XML_CFLAGS) $(LOUDMOUTH_CFLAGS) \
 	-I$(top_srcdir)/lib/gmconf \
@@ -11,26 +9,26 @@ AM_CXXFLAGS = \
 	-I$(top_srcdir)/lib/engine/chat
 
 libgmloudmouth_la_SOURCES = \
-	$(loudmouth_dir)/loudmouth-main.cpp \
-	$(loudmouth_dir)/loudmouth-handler.h \
-	$(loudmouth_dir)/loudmouth-helpers.h \
-	$(loudmouth_dir)/loudmouth-helpers.cpp \
-	$(loudmouth_dir)/loudmouth-bank.h \
-	$(loudmouth_dir)/loudmouth-bank.cpp \
-	$(loudmouth_dir)/loudmouth-account.h \
-	$(loudmouth_dir)/loudmouth-account.cpp \
-	$(loudmouth_dir)/loudmouth-cluster.h \
-	$(loudmouth_dir)/loudmouth-cluster.cpp \
-	$(loudmouth_dir)/loudmouth-heap-roster.h \
-	$(loudmouth_dir)/loudmouth-heap-roster.cpp \
-	$(loudmouth_dir)/loudmouth-presentity.h \
-	$(loudmouth_dir)/loudmouth-presentity.cpp \
-	$(loudmouth_dir)/loudmouth-chat-simple.h \
-	$(loudmouth_dir)/loudmouth-chat-simple.cpp \
-	$(loudmouth_dir)/loudmouth-chat-multiple.h \
-	$(loudmouth_dir)/loudmouth-chat-multiple.cpp \
-	$(loudmouth_dir)/loudmouth-dialect.h \
-	$(loudmouth_dir)/loudmouth-dialect.cpp
+	loudmouth-main.cpp \
+	loudmouth-handler.h \
+	loudmouth-helpers.h \
+	loudmouth-helpers.cpp \
+	loudmouth-bank.h \
+	loudmouth-bank.cpp \
+	loudmouth-account.h \
+	loudmouth-account.cpp \
+	loudmouth-cluster.h \
+	loudmouth-cluster.cpp \
+	loudmouth-heap-roster.h \
+	loudmouth-heap-roster.cpp \
+	loudmouth-presentity.h \
+	loudmouth-presentity.cpp \
+	loudmouth-chat-simple.h \
+	loudmouth-chat-simple.cpp \
+	loudmouth-chat-multiple.h \
+	loudmouth-chat-multiple.cpp \
+	loudmouth-dialect.h \
+	loudmouth-dialect.cpp
 
 libgmloudmouth_la_LDFLAGS = $(PLUGINS_LIBTOOL_FLAGS)
 libgmloudmouth_la_LIBADD = \

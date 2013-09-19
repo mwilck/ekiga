@@ -1,7 +1,5 @@
 plugin_LTLIBRARIES = libgmresource_list.la
 
-resource_list_dir = $(top_srcdir)/plugins/resource-list
-
 AM_CXXFLAGS = \
 	$(BOOST_CPPFLAGS) $(GLIB_CFLAGS) $(XML_CFLAGS) \
 	-I$(top_srcdir)/lib/gmconf			\
@@ -11,20 +9,20 @@ AM_CXXFLAGS = \
 	-I$(top_srcdir)/plugins/xcap
 
 libgmresource_list_la_SOURCES = \
-	$(resource_list_dir)/resource-list-main.h \
-	$(resource_list_dir)/resource-list-main.cpp \
-	$(resource_list_dir)/rl-presentity.h \
-	$(resource_list_dir)/rl-presentity.cpp \
-	$(resource_list_dir)/rl-entry.h \
-	$(resource_list_dir)/rl-entry.cpp \
-	$(resource_list_dir)/rl-entry-ref.h \
-	$(resource_list_dir)/rl-entry-ref.cpp \
-	$(resource_list_dir)/rl-list.h \
-	$(resource_list_dir)/rl-list.cpp \
-	$(resource_list_dir)/rl-heap.h \
-	$(resource_list_dir)/rl-heap.cpp \
-	$(resource_list_dir)/rl-cluster.h \
-	$(resource_list_dir)/rl-cluster.cpp
+	resource-list-main.h \
+	resource-list-main.cpp \
+	rl-presentity.h \
+	rl-presentity.cpp \
+	rl-entry.h \
+	rl-entry.cpp \
+	rl-entry-ref.h \
+	rl-entry-ref.cpp \
+	rl-list.h \
+	rl-list.cpp \
+	rl-heap.h \
+	rl-heap.cpp \
+	rl-cluster.h \
+	rl-cluster.cpp
 
 libgmresource_list_la_LDFLAGS = \
 	-L$(top_builddir)/plugins/xcap \
