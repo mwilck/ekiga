@@ -155,7 +155,7 @@ REGEX_REV := 203e34
 REGEX_DIR := $(BUILDROOT)/regex
 REGEX_ARCHIVE := regex
 
-BOOST_VER := 1.52.0
+BOOST_VER := 1.54.0
 BOOST_URL := http://downloads.sourceforge.net/project/boost/boost/$(BOOST_VER)
 BOOST_ARCHIVE := boost_$(shell echo $(BOOST_VER)|tr . _).tar.gz
 BOOST_DIR := $(BUILDROOT)/boost_$(shell echo $(BOOST_VER)|tr . _)
@@ -353,8 +353,8 @@ $(BOOST_DIR)/config.status: $(SRCDIR)/$(BOOST_ARCHIVE)
 
 $(LIBDIR)/libboost_signals.dll: $(BOOST_DIR)/config.status
 	echo "using gcc : : $(HOST_TOOL_PREFIX)-g++ : ;" >$(BOOST_DIR)/user-config.jam
-	cd $(BOOST_DIR); ./bjam $(confboost)
-	cd $(BOOST_DIR); ./bjam $(confboost) install
+	cd $(BOOST_DIR); ./b2 $(confboost)
+	cd $(BOOST_DIR); ./b2 $(confboost) install
 
 ### expat
 update-sources::
