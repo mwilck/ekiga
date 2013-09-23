@@ -1,23 +1,23 @@
 # Japanses translation for Ekiga (a.k.a GnomeMeeting).
 # Copyright (C) 2001-2002,2004-2013 Ekiga's COPYRIGHT HOLDER
-#
-# 対訳表:
-#   roster: 登録簿
-#   presence: プレゼンス
 # Katsumi Saito <katsumi@jo1upk.ymt.prug.or.jp>, 2001-2002.
 # Takeshi AIHANA <takeshi.aihana@gmail.com>, 2004-2009.
 # Satoru SATOH <ss@gnome.gr.jp>, 2006.
 # OKANO Takayoshi <kano@na.rim.or.jp>, 2010, 2011.
 # KUSANO Takayuki <AE5T-KSN@asahi-net.or.jp>, 2010, 2011.
 # Jiro Matsuzawa <jmatsuzawa@gnome.org>, 2011, 2013.
-# Noriko Mizumoto <noriko@fedoraproject.org>, 2012.
+# Noriko Mizumoto <noriko@fedoraproject.org>, 2012, 2013.
+#
+# 対訳表:
+#   roster: 登録簿
+#   presence: プレゼンス
 #
 msgid ""
 msgstr ""
 "Project-Id-Version: ekiga gnome-2-32\n"
 "Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?product=ekiga&keywords=I18N+L10N&component=general\n"
-"POT-Creation-Date: 2013-06-22 19:18+0000\n"
-"PO-Revision-Date: 2013-07-14 23:46+0900\n"
+"POT-Creation-Date: 2013-09-15 19:37+0000\n"
+"PO-Revision-Date: 2013-09-17 09:57+0000\n"
 "Last-Translator: Noriko Mizumoto <noriko@fedoraproject.org>\n"
 "Language-Team: Japanese <gnome-translation@gnome.gr.jp>\n"
 "Language: ja\n"
@@ -27,7 +27,7 @@ msgstr ""
 "Plural-Forms: nplurals=1; plural=0;\n"
 
 #. Application name
-#: ../ekiga.desktop.in.in.h:1 ../src/gui/main.cpp:109 ../src/gui/main.cpp:111
+#: ../ekiga.desktop.in.in.h:1 ../src/gui/main.cpp:117 ../src/gui/main.cpp:119
 msgid "Ekiga Softphone"
 msgstr "Ekiga ソフトフォン"
 
@@ -44,7 +44,7 @@ msgid "Audio output device"
 msgstr "音声の出力デバイス"
 
 #: ../ekiga.schemas.in.in.h:2
-#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:737
+#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:739
 msgid "Select the audio output device to use"
 msgstr "使用する音声出力デバイスを指定します"
 
@@ -53,7 +53,7 @@ msgid "Audio input device"
 msgstr "音声の入力デバイス"
 
 #: ../ekiga.schemas.in.in.h:4
-#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:744
+#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:746
 msgid "Select the audio input device to use"
 msgstr "使用する音声入力デバイスを指定します"
 
@@ -62,7 +62,7 @@ msgid "Video input device"
 msgstr "ビデオの入力デバイス"
 
 #: ../ekiga.schemas.in.in.h:6
-#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:803
+#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:805
 msgid "Select the video input device to use. If an error occurs when using this device a test picture will be transmitted."
 msgstr "使用するビデオ入力デバイスを選択します (このデバイスを使用した時にエラーが発生した場合は、テスト用の画像が発信されます)"
 
@@ -79,7 +79,7 @@ msgid "Video channel"
 msgstr "映像チャンネル"
 
 #: ../ekiga.schemas.in.in.h:10
-#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:807
+#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:809
 msgid "The video channel number to use (to select camera, tv or other sources)"
 msgstr "使用する映像チャンネルの番号 (カメラ、テレビ、またはその他のソース) です"
 
@@ -88,7 +88,7 @@ msgid "Video format"
 msgstr "ビデオの形式"
 
 #: ../ekiga.schemas.in.in.h:12
-#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:811
+#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:813
 msgid "Select the format for video cameras (does not apply to most USB cameras)"
 msgstr "ビデオカメラのフォーマットを指定します (多くの USB カメラには適用できません)"
 
@@ -97,8 +97,8 @@ msgid "Video preview"
 msgstr "映像をプレビューする"
 
 #: ../ekiga.schemas.in.in.h:14
-#: ../lib/engine/gui/gtk-frontend/main_window.cpp:1077
-#: ../lib/engine/gui/gtk-frontend/main_window.cpp:1220
+#: ../lib/engine/gui/gtk-frontend/main_window.cpp:1075
+#: ../lib/engine/gui/gtk-frontend/main_window.cpp:1218
 msgid "Display images from your camera device"
 msgstr "カメラデバイスからの映像を表示します"
 
@@ -115,7 +115,7 @@ msgid "Full name"
 msgstr "氏名"
 
 #: ../ekiga.schemas.in.in.h:18
-#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:445
+#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:447
 msgid "Enter your full name"
 msgstr "氏名を入力してください"
 
@@ -148,7 +148,7 @@ msgid "Enable silence detection"
 msgstr "無音検出を有効にする"
 
 #: ../ekiga.schemas.in.in.h:26
-#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:841
+#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:843
 msgid "If enabled, use silence detection with the codecs supporting it"
 msgstr "有効にすると、コーデックがサポートする無音検出を使用します"
 
@@ -157,7 +157,7 @@ msgid "Enable echo cancellation"
 msgstr "エコーキャンセレーションを有効にする"
 
 #: ../ekiga.schemas.in.in.h:28
-#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:843
+#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:845
 msgid "If enabled, use echo cancellation"
 msgstr "有効にすると、エコーキャンセレーションを使用します。"
 
@@ -178,7 +178,7 @@ msgid "The sound that will be played on incoming calls, if enabled"
 msgstr "着信時に鳴らす音です (可能な場合)。"
 
 #: ../ekiga.schemas.in.in.h:33
-#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:350
+#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:352
 msgid "Play sound on incoming calls"
 msgstr "着信時に音を鳴らす"
 
@@ -219,7 +219,7 @@ msgid "The chosen sound will be played when a new voice mail is received, if ena
 msgstr "新しいボイスメールを受信した時に音を鳴らします (可能な場合)。"
 
 #: ../ekiga.schemas.in.in.h:43
-#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:360
+#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:362
 msgid "Play ring tone"
 msgstr "着信音を演奏する"
 
@@ -236,7 +236,7 @@ msgid "The sound that will be played when calling somebody, if enabled"
 msgstr "発信時に演奏するサウンドです (可能な場合)。"
 
 #: ../ekiga.schemas.in.in.h:47
-#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:370
+#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:372
 msgid "Play busy tone"
 msgstr "話中音を演奏する"
 
@@ -265,11 +265,9 @@ msgid "Type of Service (TOS) byte on outgoing RTP IP packets"
 msgstr "発信RTP IPパケット上のType of Service (TOS)バイト"
 
 #: ../ekiga.schemas.in.in.h:54
-#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:467
-#, fuzzy
-#| msgid "The Type of Service (TOS) byte on outgoing RTP IP packets. This byte is used by the network to provide some level of Quality of Service (QoS). Default value 184 (0xB8) correspond to Expedited Forwarding (EF) PHB as defined in RFC 3246."
+#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:469
 msgid "The Type of Service (TOS) byte on outgoing RTP IP packets. This byte is used by the network to provide some level of Quality of Service (QoS). Default value 184 (0xB8) corresponds to Expedited Forwarding (EF) PHB as defined in RFC 3246."
-msgstr "発信RTP IPパケット上のType of Service (TOS)バイトです。このバイトは一定のQuality of Service (QoS)レベルを提供する目的でネットワークにより使用されます。デフォルト値の184 (0xB8)は、RFC 3246で定義されているExpedited Forwarding (EF) PHBに該当します。"
+msgstr "発信 RTP IP パケット上の Type of Service (TOS) バイトです。このバイトは一定の Quality of Service (QoS) レベルを提供する目的でネットワークにより使用されます。デフォルト値の 184 (0xB8) は、RFC 3246 で定義されている Expedited Forwarding (EF) PHB に該当します。"
 
 #: ../ekiga.schemas.in.in.h:55
 msgid "Listen port"
@@ -284,7 +282,7 @@ msgid "Outbound Proxy"
 msgstr "外向きのプロキシ"
 
 #: ../ekiga.schemas.in.in.h:58
-#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:699
+#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:701
 msgid "The SIP Outbound Proxy to use for outgoing calls"
 msgstr "発信する際に使用する外向きの SIP プロキシです"
 
@@ -293,8 +291,8 @@ msgid "Forward calls to host"
 msgstr "転送先のホスト"
 
 #: ../ekiga.schemas.in.in.h:60
-#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:654
-#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:702
+#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:656
+#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:704
 msgid "The host where calls should be forwarded if call forwarding is enabled"
 msgstr "転送機能が有効な場合に、呼び出しを転送するホスト名です"
 
@@ -331,18 +329,16 @@ msgid "Enable H.245 tunneling"
 msgstr "H.245 のトンネリングを有効にするかどうか"
 
 #: ../ekiga.schemas.in.in.h:69
-#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:663
-#, fuzzy
-#| msgid "This enables H.245 Tunneling mode. In H.245 Tunneling mode H.245 messages are encapsulated into the H.225 channel (port 1720). This saves one TCP connection during calls. H.245 Tunneling was introduced in H.323v2 and Netmeeting does not support it. Using both Fast Start and H.245 Tunneling can crash some versions of Netmeeting."
+#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:665
 msgid "This enables H.245 Tunneling mode. In H.245 Tunneling mode H.245 messages are encapsulated into the H.225 channel (port 1720). This saves one TCP connection during calls. H.245 Tunneling was introduced in H.323v2."
-msgstr "H.245 のトンネリングモードを有効にします; H.245 のトンネリングモードでは H.245 のメッセージを H.225 のチャンネル (ポート番号 1720) の中にカプセル化します; これにより通話中の TCP 接続を保護します; このトンネリングは H.323v2 プロトコルで導入されましたが、Netmeeting ではサポートしていません; 高速起動と H.245 トンネリングの両方を利用すると Netmeeting のいくつかのバージョンでクラッシュすることがあります"
+msgstr "H.245 のトンネルモードを有効にします。H.245 のトンネルモードでは H.245 のメッセージを H.225 のチャンネル (ポート番号 1720) の中にカプセル化します。これにより通話中の TCP 接続を保護します。このトンネル機能は H.323v2 プロトコルで導入されました。"
 
 #: ../ekiga.schemas.in.in.h:70
 msgid "Enable early H.245"
 msgstr "H.245 (初期版) を有効にするかどうか"
 
 #: ../ekiga.schemas.in.in.h:71
-#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:665
+#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:667
 msgid "This enables H.245 early in the setup"
 msgstr "H.245 トンネリングを有効にします"
 
@@ -351,10 +347,8 @@ msgid "Enable 'Fast Start'"
 msgstr "高速起動を有効にするかどうか"
 
 #: ../ekiga.schemas.in.in.h:73
-#, fuzzy
-#| msgid "Connection will be established in Fast Start mode. Fast Start is a new way to start calls faster that was introduced in H.323v2. It is not supported by Netmeeting and using both Fast Start and H.245 Tunneling can crash some versions of Netmeeting"
 msgid "Connection will be established in Fast Start mode. Fast Start (Fast Connect) is a new way to start calls faster that was introduced in H.323v2."
-msgstr "高速起動モードで接続を確立します。高速起動モードは通話を素早く開始する新しい手法の一つで、H.323v2 で規格化されています。Netmeeting ではサポートされておらず、いくつかの Netmeeting のバージョンで高速起動と H.245 トンネリングを併用するとクラッシュすることがあります。"
+msgstr "高速起動モードで接続を確立します。高速起動モードは通話を素早く開始する新しい手法の一つで、H.323v2 で規格化されています。"
 
 #: ../ekiga.schemas.in.in.h:74
 msgid "Enable H.239"
@@ -413,7 +407,7 @@ msgid "Enable STUN network detection"
 msgstr "STUN ネットワークの検出を有効にする"
 
 #: ../ekiga.schemas.in.in.h:88
-#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:469
+#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:471
 msgid "Enable the automatic network setup resulting from the STUN test"
 msgstr "STUN のテストにより自動的にネットワークを設定する"
 
@@ -494,16 +488,12 @@ msgid "Size of the preferences window"
 msgstr "設定ウィンドウのサイズ"
 
 #: ../ekiga.schemas.in.in.h:108
-#, fuzzy
-#| msgid "Position on the screen of the main window"
 msgid "Position on the screen of the accounts window"
-msgstr "メインウィンドウの位置"
+msgstr "アカウントウィンドウの位置"
 
 #: ../ekiga.schemas.in.in.h:109
-#, fuzzy
-#| msgid "Size of the chat window"
 msgid "Size of the accounts window"
-msgstr "チャットウィンドウのサイズ"
+msgstr "アカウントウィンドウのサイズ"
 
 #: ../ekiga.schemas.in.in.h:110
 msgid "Disable video hardware acceleration"
@@ -540,13 +530,11 @@ msgid "The zoom value in percent to apply to images displayed in the main GUI (c
 msgstr "ウィンドウの中に表示される映像に適用するズーム率です (指定可能な値は 50、100、200)。"
 
 #: ../ekiga.schemas.in.in.h:118
-#, fuzzy
-#| msgid "The zoom value in percent to apply to images displayed in the main GUI (can be 50, 100, or 200)"
 msgid "The zoom value in percent to apply to images displayed in the extended GUI (can be 50, 100, or 200)"
-msgstr "ウィンドウの中に表示される映像に適用するズーム率です (指定可能な値は 50、100、200)。"
+msgstr "拡張された GUI の中に表示されるイメージに適用するズーム率です (指定可能な値は 50、100、200)"
 
 #: ../ekiga.schemas.in.in.h:119
-#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:461
+#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:463
 msgid "Place windows displaying video above other windows during calls"
 msgstr "着信中は他のウィンドウの上に映像を表示するウィンドウを配置します"
 
@@ -587,7 +575,7 @@ msgid "Maximum jitter buffer"
 msgstr "ジッターバッファーの最大値"
 
 #: ../ekiga.schemas.in.in.h:129
-#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:845
+#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:847
 msgid "The maximum jitter buffer size for audio reception (in ms)"
 msgstr "音声の受信に必要なジッターバッファーの最大サイズ (ミリ秒) です。"
 
@@ -624,7 +612,7 @@ msgid "List of folded groups in the roster"
 msgstr "名簿内に折り畳まれているグループの一覧です"
 
 #: ../ekiga.schemas.in.in.h:138
-#: ../lib/engine/gui/gtk-frontend/main_window.cpp:1245
+#: ../lib/engine/gui/gtk-frontend/main_window.cpp:1243
 msgid "Show offline contacts"
 msgstr "オフラインの連絡先を表示するかどうか"
 
@@ -661,7 +649,7 @@ msgid "No answer timeout"
 msgstr "「応答なし」にするまでのタイムアウト"
 
 #: ../ekiga.schemas.in.in.h:147
-#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:492
+#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:494
 msgid "Automatically reject or forward incoming calls if no answer is given after the specified amount of time (in seconds)"
 msgstr "指定した時間 (秒) が経過するまで応答がない場合、自動的に着信拒否または転送を行います"
 
@@ -670,87 +658,87 @@ msgid "Automatic answer"
 msgstr "自動応答"
 
 #: ../ekiga.schemas.in.in.h:149
-#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:493
+#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:495
 msgid "If enabled, automatically answer incoming calls"
 msgstr "有効にすると、自動的に呼び出しに応答します"
 
-#: ../lib/engine/audioinput/audioinput-core.cpp:199
-#: ../lib/engine/audioinput/audioinput-core.cpp:204
-#: ../lib/engine/audiooutput/audiooutput-core.cpp:219
-#: ../lib/engine/audiooutput/audiooutput-core.cpp:224
-#: ../lib/engine/videoinput/videoinput-core.cpp:243
-#: ../lib/engine/videoinput/videoinput-core.cpp:248
+#: ../lib/engine/audioinput/audioinput-core.cpp:196
+#: ../lib/engine/audioinput/audioinput-core.cpp:201
+#: ../lib/engine/audiooutput/audiooutput-core.cpp:217
+#: ../lib/engine/audiooutput/audiooutput-core.cpp:222
+#: ../lib/engine/videoinput/videoinput-core.cpp:240
+#: ../lib/engine/videoinput/videoinput-core.cpp:245
 msgid "New device detected"
 msgstr "新しいデバイスが検出されました"
 
-#: ../lib/engine/audioinput/audioinput-core.cpp:204
-#: ../lib/engine/audiooutput/audiooutput-core.cpp:224
-#: ../lib/engine/videoinput/videoinput-core.cpp:248
+#: ../lib/engine/audioinput/audioinput-core.cpp:201
+#: ../lib/engine/audiooutput/audiooutput-core.cpp:222
+#: ../lib/engine/videoinput/videoinput-core.cpp:245
 msgid "Use it"
 msgstr "これを使用する"
 
-#: ../lib/engine/audioinput/audioinput-core.cpp:234
-#: ../lib/engine/audiooutput/audiooutput-core.cpp:253
-#: ../lib/engine/videoinput/videoinput-core.cpp:278
+#: ../lib/engine/audioinput/audioinput-core.cpp:231
+#: ../lib/engine/audiooutput/audiooutput-core.cpp:251
+#: ../lib/engine/videoinput/videoinput-core.cpp:275
 msgid "Device removed"
 msgstr "デバイスが削除されました"
 
-#: ../lib/engine/components/call-history/history-book.cpp:143
-#: ../lib/engine/gui/gtk-frontend/call-history-view-gtk.cpp:188
+#: ../lib/engine/components/call-history/history-book.cpp:144
+#: ../lib/engine/gui/gtk-frontend/call-history-view-gtk.cpp:186
 msgid "Clear List"
 msgstr "一覧のクリア"
 
-#: ../lib/engine/components/call-history/history-contact.cpp:170
+#: ../lib/engine/components/call-history/history-contact.cpp:167
 msgid "Received"
 msgstr "着信"
 
-#: ../lib/engine/components/call-history/history-contact.cpp:173
+#: ../lib/engine/components/call-history/history-contact.cpp:170
 msgid "Placed"
 msgstr "発信"
 
-#: ../lib/engine/components/call-history/history-contact.cpp:176
+#: ../lib/engine/components/call-history/history-contact.cpp:173
 msgid "Missed"
 msgstr "不在着信"
 
-#: ../lib/engine/components/local-roster/local-cluster.cpp:78
-#: ../lib/engine/components/local-roster/local-heap.cpp:118
-#: ../lib/engine/gui/gtk-frontend/main_window.cpp:1171
+#: ../lib/engine/components/local-roster/local-cluster.cpp:75
+#: ../lib/engine/components/local-roster/local-heap.cpp:117
+#: ../lib/engine/gui/gtk-frontend/main_window.cpp:1169
 #: ../plugins/evolution/evolution-book.cpp:301
 #: ../plugins/loudmouth/loudmouth-heap-roster.cpp:71
 msgid "A_dd Contact"
 msgstr "連絡先の追加(_D)"
 
-#: ../lib/engine/components/local-roster/local-heap.cpp:94
+#: ../lib/engine/components/local-roster/local-heap.cpp:93
 msgid "Services"
 msgstr "サービス"
 
-#: ../lib/engine/components/local-roster/local-heap.cpp:95
+#: ../lib/engine/components/local-roster/local-heap.cpp:94
 msgid "Echo test"
 msgstr "エコーテスト"
 
-#: ../lib/engine/components/local-roster/local-heap.cpp:96
+#: ../lib/engine/components/local-roster/local-heap.cpp:95
 msgid "Conference room"
 msgstr "会議室"
 
-#: ../lib/engine/components/local-roster/local-heap.cpp:97
+#: ../lib/engine/components/local-roster/local-heap.cpp:96
 msgid "Call back test"
 msgstr "コールバックテスト"
 
-#: ../lib/engine/components/local-roster/local-heap.cpp:111
-#: ../lib/engine/gui/gtk-frontend/main_window.cpp:1307
+#: ../lib/engine/components/local-roster/local-heap.cpp:110
+#: ../lib/engine/gui/gtk-frontend/main_window.cpp:1305
 msgid "Contacts"
 msgstr "連絡先"
 
-#: ../lib/engine/components/local-roster/local-heap.cpp:128
+#: ../lib/engine/components/local-roster/local-heap.cpp:127
 msgid "Rename"
 msgstr "名前の変更"
 
-#: ../lib/engine/components/local-roster/local-heap.cpp:197
+#: ../lib/engine/components/local-roster/local-heap.cpp:196
 #: ../plugins/loudmouth/loudmouth-heap-roster.cpp:485
 msgid "Family"
 msgstr "家族"
 
-#: ../lib/engine/components/local-roster/local-heap.cpp:198
+#: ../lib/engine/components/local-roster/local-heap.cpp:197
 #: ../plugins/loudmouth/loudmouth-heap-roster.cpp:486
 msgid "Friend"
 msgstr "友人"
@@ -759,7 +747,7 @@ msgstr "友人"
 #. relationships between you and your contact; associate means
 #. someone who is at the same "level" than you.
 #.
-#: ../lib/engine/components/local-roster/local-heap.cpp:203
+#: ../lib/engine/components/local-roster/local-heap.cpp:202
 #: ../plugins/loudmouth/loudmouth-heap-roster.cpp:491
 msgid "Associate"
 msgstr "仲間/同僚"
@@ -768,7 +756,7 @@ msgstr "仲間/同僚"
 #. relationships between you and your contact; assistant means
 #. someone who is at a lower "level" than you.
 #.
-#: ../lib/engine/components/local-roster/local-heap.cpp:208
+#: ../lib/engine/components/local-roster/local-heap.cpp:207
 #: ../plugins/loudmouth/loudmouth-heap-roster.cpp:496
 msgid "Assistant"
 msgstr "アシスタント"
@@ -777,7 +765,7 @@ msgstr "アシスタント"
 #. relationships between you and your contact; supervisor means
 #. someone who is at a higher "level" than you.
 #.
-#: ../lib/engine/components/local-roster/local-heap.cpp:213
+#: ../lib/engine/components/local-roster/local-heap.cpp:212
 #: ../plugins/loudmouth/loudmouth-heap-roster.cpp:501
 msgid "Supervisor"
 msgstr "上司"
@@ -785,27 +773,27 @@ msgstr "上司"
 #. Translator: http://www.ietf.org/rfc/rfc4480.txt proposes several
 #. relationships between you and your contact; self means yourself.
 #.
-#: ../lib/engine/components/local-roster/local-heap.cpp:217
+#: ../lib/engine/components/local-roster/local-heap.cpp:216
 #: ../plugins/loudmouth/loudmouth-heap-roster.cpp:505
 msgid "Self"
 msgstr "自分自身"
 
-#: ../lib/engine/components/local-roster/local-heap.cpp:236
+#: ../lib/engine/components/local-roster/local-heap.cpp:235
 #: ../lib/engine/components/local-roster/local-roster-bridge.cpp:93
 msgid "Add to local roster"
 msgstr "ローカルの名簿に追加"
 
-#: ../lib/engine/components/local-roster/local-heap.cpp:237
+#: ../lib/engine/components/local-roster/local-heap.cpp:236
 msgid "Please fill in this form to add a new contact to ekiga's internal roster"
 msgstr "Ekiga 内部の名簿に新規の連絡先を追加する場合は、このフォームに入力してください"
 
-#: ../lib/engine/components/local-roster/local-heap.cpp:239
-#: ../lib/engine/components/local-roster/local-heap.cpp:436
+#: ../lib/engine/components/local-roster/local-heap.cpp:238
+#: ../lib/engine/components/local-roster/local-heap.cpp:435
 #: ../lib/engine/components/local-roster/local-presentity.cpp:279
-#: ../lib/engine/components/opal/opal-account.cpp:504
+#: ../lib/engine/components/opal/opal-account.cpp:497
 #: ../plugins/evolution/evolution-contact.cpp:324
 #: ../plugins/loudmouth/loudmouth-account.cpp:342
-#: ../plugins/loudmouth/loudmouth-bank.cpp:125
+#: ../plugins/loudmouth/loudmouth-bank.cpp:123
 #: ../plugins/loudmouth/loudmouth-heap-roster.cpp:338
 #: ../plugins/loudmouth/loudmouth-presentity.cpp:289
 #: ../plugins/resource-list/rl-cluster.cpp:169
@@ -814,45 +802,45 @@ msgstr "Ekiga 内部の名簿に新規の連絡先を追加する場合は、こ
 msgid "Name:"
 msgstr "名前:"
 
-#: ../lib/engine/components/local-roster/local-heap.cpp:239
+#: ../lib/engine/components/local-roster/local-heap.cpp:238
 #: ../lib/engine/components/local-roster/local-presentity.cpp:279
 #: ../plugins/loudmouth/loudmouth-heap-roster.cpp:338
 msgid "Name of the contact, as shown in your roster"
 msgstr "名簿に表示される連絡先の名前"
 
-#: ../lib/engine/components/local-roster/local-heap.cpp:248
-#: ../lib/engine/components/local-roster/local-heap.cpp:250
+#: ../lib/engine/components/local-roster/local-heap.cpp:247
+#: ../lib/engine/components/local-roster/local-heap.cpp:249
 #: ../lib/engine/components/local-roster/local-presentity.cpp:280
 #: ../plugins/resource-list/rl-cluster.cpp:170
 #: ../plugins/resource-list/rl-heap.cpp:527
 #: ../plugins/resource-list/rl-presentity.cpp:234
 msgid "Address:"
-msgstr "E-メール:"
+msgstr "メール:"
 
-#: ../lib/engine/components/local-roster/local-heap.cpp:248
-#: ../lib/engine/components/local-roster/local-heap.cpp:250
+#: ../lib/engine/components/local-roster/local-heap.cpp:247
+#: ../lib/engine/components/local-roster/local-heap.cpp:249
 #: ../lib/engine/components/local-roster/local-presentity.cpp:280
 msgid "Address, e.g. sip:xyz@ekiga.net; if you do not specify the host part, e.g. sip:xyz, then you can choose it by right-clicking on the contact in roster"
-msgstr ""
+msgstr "メールアドレス (sip:xyz@ekiga.net など)、ホストの部分を指定しない (sip:xyz) 場合は名簿の連絡先で右クリックすると選択することができます。"
 
-#: ../lib/engine/components/local-roster/local-heap.cpp:254
+#: ../lib/engine/components/local-roster/local-heap.cpp:253
 #: ../plugins/loudmouth/loudmouth-heap-roster.cpp:340
 msgid "Put contact in groups:"
 msgstr "連絡先を登録するグループ:"
 
-#: ../lib/engine/components/local-roster/local-heap.cpp:421
+#: ../lib/engine/components/local-roster/local-heap.cpp:420
 msgid "You supplied an unsupported address"
 msgstr "未サポートのアドレスを指定しました"
 
-#: ../lib/engine/components/local-roster/local-heap.cpp:423
+#: ../lib/engine/components/local-roster/local-heap.cpp:422
 msgid "You already have a contact with this address!"
-msgstr "この E-メールアドレスを持った連絡先が既に存在します"
+msgstr "このメールアドレスを持った連絡先が既に存在します"
 
-#: ../lib/engine/components/local-roster/local-heap.cpp:434
+#: ../lib/engine/components/local-roster/local-heap.cpp:433
 msgid "Rename group"
 msgstr "グループ名の変更"
 
-#: ../lib/engine/components/local-roster/local-heap.cpp:435
+#: ../lib/engine/components/local-roster/local-heap.cpp:434
 msgid "Please edit this group name"
 msgstr "このグループの名前を入力してください"
 
@@ -866,8 +854,8 @@ msgid "Unnamed"
 msgstr "名前なし"
 
 #: ../lib/engine/components/local-roster/local-presentity.cpp:245
-#: ../lib/engine/components/opal/opal-account.cpp:406
-#: ../lib/engine/gui/gtk-frontend/main_window.cpp:1195
+#: ../lib/engine/components/opal/opal-account.cpp:399
+#: ../lib/engine/gui/gtk-frontend/main_window.cpp:1193
 #: ../plugins/evolution/evolution-contact.cpp:228
 #: ../plugins/loudmouth/loudmouth-presentity.cpp:174
 #: ../plugins/resource-list/rl-presentity.cpp:212
@@ -875,7 +863,7 @@ msgid "_Edit"
 msgstr "編集(_E)"
 
 #: ../lib/engine/components/local-roster/local-presentity.cpp:247
-#: ../lib/engine/components/opal/opal-account.cpp:408
+#: ../lib/engine/components/opal/opal-account.cpp:401
 #: ../lib/engine/gui/gtk-frontend/accounts-window.cpp:679
 #: ../plugins/evolution/evolution-contact.cpp:230
 #: ../plugins/loudmouth/loudmouth-account.cpp:445
@@ -905,14 +893,14 @@ msgid "Choose groups:"
 msgstr "所属するグループ:"
 
 #: ../lib/engine/components/opal/h323-endpoint.cpp:124
-#: ../lib/engine/components/opal/opal-call.cpp:696
+#: ../lib/engine/components/opal/opal-call.cpp:697
 #: ../lib/engine/components/opal/sip-endpoint.cpp:163
 msgid "Call"
 msgstr "発信"
 
 #: ../lib/engine/components/opal/h323-endpoint.cpp:127
 #: ../lib/engine/components/opal/sip-endpoint.cpp:166
-#: ../lib/engine/gui/gtk-frontend/call-window.cpp:2168
+#: ../lib/engine/gui/gtk-frontend/call-window.cpp:2163
 msgid "Transfer"
 msgstr "転送"
 
@@ -938,439 +926,429 @@ msgstr "失敗"
 
 #. Translators: this is a state, not an action, i.e. it should be read as
 #. "(you are) unregistered", and not as "(you have been) unregistered"
-#: ../lib/engine/components/opal/opal-account.cpp:76
-#: ../lib/engine/components/opal/opal-account.cpp:354
-#: ../lib/engine/components/opal/opal-account.cpp:719
+#: ../lib/engine/components/opal/opal-account.cpp:71
+#: ../lib/engine/components/opal/opal-account.cpp:347
+#: ../lib/engine/components/opal/opal-account.cpp:711
 msgid "Unregistered"
 msgstr "登録を解除しました"
 
 #. translators : the result will look like :
 #. * "registered (with 2 voice mail messages)"
 #.
-#: ../lib/engine/components/opal/opal-account.cpp:245
+#: ../lib/engine/components/opal/opal-account.cpp:238
 #, c-format
 msgid "%s (with %d voice mail message)"
 msgid_plural "%s (with %d voice mail messages)"
 msgstr[0] "%s (ボイスメールのメッセージ %d 件)"
 
-#: ../lib/engine/components/opal/opal-account.cpp:323
-#: ../lib/engine/components/opal/opal-account.cpp:801
+#: ../lib/engine/components/opal/opal-account.cpp:316
+#: ../lib/engine/components/opal/opal-account.cpp:793
 msgid "Processing..."
 msgstr "処理中です..."
 
-#: ../lib/engine/components/opal/opal-account.cpp:398
+#: ../lib/engine/components/opal/opal-account.cpp:391
 #: ../lib/engine/gui/gtk-frontend/accounts-window.cpp:673
 #: ../plugins/loudmouth/loudmouth-account.cpp:433
 msgid "_Disable"
 msgstr "無効にする(_D)"
 
-#: ../lib/engine/components/opal/opal-account.cpp:401
+#: ../lib/engine/components/opal/opal-account.cpp:394
 #: ../lib/engine/gui/gtk-frontend/accounts-window.cpp:670
 #: ../plugins/loudmouth/loudmouth-account.cpp:437
 msgid "_Enable"
 msgstr "有効にする(_E)"
 
-#: ../lib/engine/components/opal/opal-account.cpp:422
+#: ../lib/engine/components/opal/opal-account.cpp:415
 #: ../lib/engine/gui/gtk-frontend/assistant-window.cpp:752
 msgid "Recharge the account"
 msgstr "アカウントを再発行する"
 
-#: ../lib/engine/components/opal/opal-account.cpp:427
+#: ../lib/engine/components/opal/opal-account.cpp:420
 #: ../lib/engine/gui/gtk-frontend/assistant-window.cpp:764
 msgid "Consult the balance history"
 msgstr "バランスヒストリを調べる"
 
-#: ../lib/engine/components/opal/opal-account.cpp:432
+#: ../lib/engine/components/opal/opal-account.cpp:425
 #: ../lib/engine/gui/gtk-frontend/assistant-window.cpp:776
 msgid "Consult the call history"
 msgstr "発信履歴を閲覧する"
 
-#: ../lib/engine/components/opal/opal-account.cpp:500
-#: ../lib/engine/components/opal/opal-bank.cpp:171
+#: ../lib/engine/components/opal/opal-account.cpp:493
+#: ../lib/engine/components/opal/opal-bank.cpp:163
 #: ../plugins/loudmouth/loudmouth-account.cpp:337
-#: ../plugins/loudmouth/loudmouth-bank.cpp:121
+#: ../plugins/loudmouth/loudmouth-bank.cpp:119
 msgid "Edit account"
 msgstr "アカウントの編集"
 
-#: ../lib/engine/components/opal/opal-account.cpp:502
-#: ../lib/engine/components/opal/opal-bank.cpp:172
+#: ../lib/engine/components/opal/opal-account.cpp:495
+#: ../lib/engine/components/opal/opal-bank.cpp:164
 #: ../plugins/evolution/evolution-book.cpp:345
 #: ../plugins/evolution/evolution-contact.cpp:322
 #: ../plugins/loudmouth/loudmouth-account.cpp:339
 msgid "Please update the following fields:"
 msgstr "次の項目を更新してください:"
 
-#: ../lib/engine/components/opal/opal-account.cpp:504
-#: ../lib/engine/components/opal/opal-bank.cpp:198
-#: ../lib/engine/components/opal/opal-bank.cpp:208
+#: ../lib/engine/components/opal/opal-account.cpp:497
+#: ../lib/engine/components/opal/opal-bank.cpp:190
+#: ../lib/engine/components/opal/opal-bank.cpp:200
 #: ../plugins/loudmouth/loudmouth-account.cpp:342
-#: ../plugins/loudmouth/loudmouth-bank.cpp:125
+#: ../plugins/loudmouth/loudmouth-bank.cpp:123
 msgid "Account name, e.g. MyAccount"
 msgstr "アカウント名、例: MyAccount"
 
-#: ../lib/engine/components/opal/opal-account.cpp:506
+#: ../lib/engine/components/opal/opal-account.cpp:499
 msgid "Registrar:"
 msgstr "レジストラー:"
 
-#: ../lib/engine/components/opal/opal-account.cpp:506
-#: ../lib/engine/components/opal/opal-bank.cpp:209
+#: ../lib/engine/components/opal/opal-account.cpp:499
+#: ../lib/engine/components/opal/opal-bank.cpp:201
 msgid "The registrar, e.g. ekiga.net"
 msgstr "レジストラー、例: ekiga.net"
 
-#: ../lib/engine/components/opal/opal-account.cpp:508
+#: ../lib/engine/components/opal/opal-account.cpp:501
 msgid "Gatekeeper:"
 msgstr "ゲートキーパー:"
 
-#: ../lib/engine/components/opal/opal-account.cpp:508
-#: ../lib/engine/components/opal/opal-bank.cpp:199
+#: ../lib/engine/components/opal/opal-account.cpp:501
+#: ../lib/engine/components/opal/opal-bank.cpp:191
 msgid "The gatekeeper, e.g. ekiga.net"
 msgstr "ゲートキーパー、例: ekiga.net"
 
-#: ../lib/engine/components/opal/opal-account.cpp:509
+#: ../lib/engine/components/opal/opal-account.cpp:502
 #: ../plugins/loudmouth/loudmouth-account.cpp:346
-#: ../plugins/loudmouth/loudmouth-bank.cpp:126
+#: ../plugins/loudmouth/loudmouth-bank.cpp:124
 #: ../plugins/resource-list/rl-cluster.cpp:174
 msgid "User:"
 msgstr "ユーザー:"
 
-#: ../lib/engine/components/opal/opal-account.cpp:509
-#: ../lib/engine/components/opal/opal-bank.cpp:180
-#: ../lib/engine/components/opal/opal-bank.cpp:191
-#: ../lib/engine/components/opal/opal-bank.cpp:200
-#: ../lib/engine/components/opal/opal-bank.cpp:210
+#: ../lib/engine/components/opal/opal-account.cpp:502
+#: ../lib/engine/components/opal/opal-bank.cpp:172
+#: ../lib/engine/components/opal/opal-bank.cpp:183
+#: ../lib/engine/components/opal/opal-bank.cpp:192
+#: ../lib/engine/components/opal/opal-bank.cpp:202
 #: ../plugins/loudmouth/loudmouth-account.cpp:346
-#: ../plugins/loudmouth/loudmouth-bank.cpp:126
+#: ../plugins/loudmouth/loudmouth-bank.cpp:124
 msgid "The user name, e.g. jim"
 msgstr "ユーザー名、例: jim"
 
 #. Translators:
 #. * SIP knows two usernames: The name for the client ("User") and the name
 #. * for the authentication procedure ("Authentication user")
-#: ../lib/engine/components/opal/opal-account.cpp:514
-#, fuzzy
-#| msgid "Authentication User:"
+#: ../lib/engine/components/opal/opal-account.cpp:507
 msgid "Authentication user:"
-msgstr "ユーザーの認証:"
+msgstr "認証ユーザー:"
 
-#: ../lib/engine/components/opal/opal-account.cpp:514
-#: ../lib/engine/components/opal/opal-bank.cpp:211
+#: ../lib/engine/components/opal/opal-account.cpp:507
+#: ../lib/engine/components/opal/opal-bank.cpp:203
 msgid "The user name used during authentication, if different than the user name; leave empty if you do not have one"
 msgstr "認証時に使用されるユーザー名が次のユーザー名とは異なる場合のユーザー名です; ユーザー名がない場合は空白のままにしてください"
 
-#: ../lib/engine/components/opal/opal-account.cpp:515
+#: ../lib/engine/components/opal/opal-account.cpp:508
 #: ../plugins/loudmouth/loudmouth-account.cpp:362
-#: ../plugins/loudmouth/loudmouth-bank.cpp:129
+#: ../plugins/loudmouth/loudmouth-bank.cpp:127
 #: ../plugins/resource-list/rl-cluster.cpp:173
 msgid "Password:"
 msgstr "パスワード:"
 
-#: ../lib/engine/components/opal/opal-account.cpp:515
-#: ../lib/engine/components/opal/opal-bank.cpp:182
-#: ../lib/engine/components/opal/opal-bank.cpp:193
-#: ../lib/engine/components/opal/opal-bank.cpp:202
-#: ../lib/engine/components/opal/opal-bank.cpp:212
+#: ../lib/engine/components/opal/opal-account.cpp:508
+#: ../lib/engine/components/opal/opal-bank.cpp:174
+#: ../lib/engine/components/opal/opal-bank.cpp:185
+#: ../lib/engine/components/opal/opal-bank.cpp:194
+#: ../lib/engine/components/opal/opal-bank.cpp:204
 #: ../plugins/loudmouth/loudmouth-account.cpp:362
-#: ../plugins/loudmouth/loudmouth-bank.cpp:129
+#: ../plugins/loudmouth/loudmouth-bank.cpp:127
 msgid "Password associated to the user"
 msgstr "ユーザーに関連付けられているパスワード"
 
-#: ../lib/engine/components/opal/opal-account.cpp:516
+#: ../lib/engine/components/opal/opal-account.cpp:509
 msgid "Timeout:"
 msgstr "タイムアウト:"
 
-#: ../lib/engine/components/opal/opal-account.cpp:516
-#: ../lib/engine/components/opal/opal-bank.cpp:203
-#: ../lib/engine/components/opal/opal-bank.cpp:213
+#: ../lib/engine/components/opal/opal-account.cpp:509
+#: ../lib/engine/components/opal/opal-bank.cpp:195
+#: ../lib/engine/components/opal/opal-bank.cpp:205
 msgid "Time in seconds after which the account registration is automatically retried"
 msgstr "指定した時間 (秒) 経過後に、アカウント登録が自動的にリトライされます"
 
-#: ../lib/engine/components/opal/opal-account.cpp:517
-#: ../lib/engine/components/opal/opal-bank.cpp:216
+#: ../lib/engine/components/opal/opal-account.cpp:510
+#: ../lib/engine/components/opal/opal-bank.cpp:208
 #: ../plugins/loudmouth/loudmouth-account.cpp:376
-#: ../plugins/loudmouth/loudmouth-bank.cpp:130
+#: ../plugins/loudmouth/loudmouth-bank.cpp:128
 msgid "Enable account"
 msgstr "アカウントを有効にする"
 
-#: ../lib/engine/components/opal/opal-account.cpp:545
-#: ../lib/engine/components/opal/opal-bank.cpp:250
+#: ../lib/engine/components/opal/opal-account.cpp:538
+#: ../lib/engine/components/opal/opal-bank.cpp:242
 msgid "You did not supply a name for that account."
 msgstr "そのアカウントの名前を入力していませんでした"
 
-#: ../lib/engine/components/opal/opal-account.cpp:547
-#: ../lib/engine/components/opal/opal-bank.cpp:252
+#: ../lib/engine/components/opal/opal-account.cpp:540
+#: ../lib/engine/components/opal/opal-bank.cpp:244
 msgid "You did not supply a host to register to."
 msgstr "登録先のホスト名を入力していませんでした"
 
-#: ../lib/engine/components/opal/opal-account.cpp:549
-#: ../lib/engine/components/opal/opal-bank.cpp:254
+#: ../lib/engine/components/opal/opal-account.cpp:542
+#: ../lib/engine/components/opal/opal-bank.cpp:246
 msgid "You did not supply a user name for that account."
 msgstr "そのアカウントのユーザー名を入力していませんでした"
 
-#: ../lib/engine/components/opal/opal-account.cpp:551
-#: ../lib/engine/components/opal/opal-bank.cpp:256
+#: ../lib/engine/components/opal/opal-account.cpp:544
+#: ../lib/engine/components/opal/opal-bank.cpp:248
 msgid "The timeout should be at least 10 seconds."
 msgstr "タイムアウトの値は最低でも10秒にしてください。"
 
 #. Translators: this is a state, not an action, i.e. it should be read as
 #. "(you are) registered", and not as "(you have been) registered"
-#: ../lib/engine/components/opal/opal-account.cpp:691
+#: ../lib/engine/components/opal/opal-account.cpp:684
 msgid "Registered"
 msgstr "登録しました"
 
-#: ../lib/engine/components/opal/opal-account.cpp:733
+#: ../lib/engine/components/opal/opal-account.cpp:725
 msgid "Could not unregister"
 msgstr "登録を解除できませんでした"
 
-#: ../lib/engine/components/opal/opal-account.cpp:745
-#: ../lib/engine/components/opal/opal-account.cpp:780
+#: ../lib/engine/components/opal/opal-account.cpp:737
+#: ../lib/engine/components/opal/opal-account.cpp:772
 msgid "Could not register to "
 msgstr "登録できませんでした"
 
-#: ../lib/engine/components/opal/opal-account.cpp:746
-#: ../lib/engine/components/opal/opal-account.cpp:781
+#: ../lib/engine/components/opal/opal-account.cpp:738
+#: ../lib/engine/components/opal/opal-account.cpp:773
 #: ../plugins/loudmouth/loudmouth-account.cpp:443
 msgid "Edit"
 msgstr "編集"
 
-#: ../lib/engine/components/opal/opal-account.cpp:775
+#: ../lib/engine/components/opal/opal-account.cpp:767
 msgid "Could not register"
 msgstr "登録できませんでした"
 
-#: ../lib/engine/components/opal/opal-account.cpp:924
+#: ../lib/engine/components/opal/opal-account.cpp:916
 msgid "Appointment"
 msgstr "アポイントメント"
 
-#: ../lib/engine/components/opal/opal-account.cpp:929
+#: ../lib/engine/components/opal/opal-account.cpp:921
 msgid "Breakfast"
 msgstr "朝食"
 
-#: ../lib/engine/components/opal/opal-account.cpp:934
+#: ../lib/engine/components/opal/opal-account.cpp:926
 msgid "Dinner"
 msgstr "夕食"
 
-#: ../lib/engine/components/opal/opal-account.cpp:940
+#: ../lib/engine/components/opal/opal-account.cpp:932
 msgid "Holiday"
 msgstr "休暇"
 
-#: ../lib/engine/components/opal/opal-account.cpp:945
+#: ../lib/engine/components/opal/opal-account.cpp:937
 msgid "In transit"
 msgstr "移動中"
 
-#: ../lib/engine/components/opal/opal-account.cpp:950
+#: ../lib/engine/components/opal/opal-account.cpp:942
 msgid "Looking for work"
 msgstr "就職活動中"
 
-#: ../lib/engine/components/opal/opal-account.cpp:955
+#: ../lib/engine/components/opal/opal-account.cpp:947
 msgid "Lunch"
 msgstr "昼食"
 
-#: ../lib/engine/components/opal/opal-account.cpp:960
+#: ../lib/engine/components/opal/opal-account.cpp:952
 msgid "Meal"
 msgstr "食事"
 
-#: ../lib/engine/components/opal/opal-account.cpp:965
+#: ../lib/engine/components/opal/opal-account.cpp:957
 msgid "Meeting"
 msgstr "会議"
 
-#: ../lib/engine/components/opal/opal-account.cpp:970
+#: ../lib/engine/components/opal/opal-account.cpp:962
 msgid "On the phone"
 msgstr "通話中"
 
-#: ../lib/engine/components/opal/opal-account.cpp:975
+#: ../lib/engine/components/opal/opal-account.cpp:967
 msgid "Playing"
 msgstr "遊び"
 
-#: ../lib/engine/components/opal/opal-account.cpp:980
+#: ../lib/engine/components/opal/opal-account.cpp:972
 msgid "Shopping"
 msgstr "ショッピング"
 
-#: ../lib/engine/components/opal/opal-account.cpp:985
+#: ../lib/engine/components/opal/opal-account.cpp:977
 msgid "Sleeping"
 msgstr "睡眠中"
 
-#: ../lib/engine/components/opal/opal-account.cpp:990
+#: ../lib/engine/components/opal/opal-account.cpp:982
 msgid "Working"
 msgstr "仕事中"
 
-#: ../lib/engine/components/opal/opal-bank.cpp:110
+#: ../lib/engine/components/opal/opal-bank.cpp:102
 msgid "_Add an Ekiga.net Account"
 msgstr "Ekiga.net のアカウントを追加する(_A)"
 
-#: ../lib/engine/components/opal/opal-bank.cpp:112
+#: ../lib/engine/components/opal/opal-bank.cpp:104
 msgid "_Add an Ekiga Call Out Account"
 msgstr "Ekiga コールアウトのアカウントを追加する(_A)"
 
-#: ../lib/engine/components/opal/opal-bank.cpp:114
+#: ../lib/engine/components/opal/opal-bank.cpp:106
 msgid "_Add a SIP Account"
 msgstr "SIP のアカウントを追加する(_A)"
 
-#: ../lib/engine/components/opal/opal-bank.cpp:117
+#: ../lib/engine/components/opal/opal-bank.cpp:109
 msgid "_Add an H.323 Account"
 msgstr "H.323 のアカウントを追加する(_A)"
 
-#: ../lib/engine/components/opal/opal-bank.cpp:177
+#: ../lib/engine/components/opal/opal-bank.cpp:169
 #: ../lib/engine/gui/gtk-frontend/assistant-window.cpp:636
 msgid "Get an Ekiga.net SIP account"
 msgstr "Ekiga.net の SIP アカウントを手に入れる"
 
-#: ../lib/engine/components/opal/opal-bank.cpp:180
-#: ../lib/engine/components/opal/opal-bank.cpp:200
-#: ../lib/engine/components/opal/opal-bank.cpp:210
+#: ../lib/engine/components/opal/opal-bank.cpp:172
+#: ../lib/engine/components/opal/opal-bank.cpp:192
+#: ../lib/engine/components/opal/opal-bank.cpp:202
 msgid "_User:"
 msgstr "ユーザー(_U):"
 
-#: ../lib/engine/components/opal/opal-bank.cpp:182
-#: ../lib/engine/components/opal/opal-bank.cpp:202
-#: ../lib/engine/components/opal/opal-bank.cpp:212
+#: ../lib/engine/components/opal/opal-bank.cpp:174
+#: ../lib/engine/components/opal/opal-bank.cpp:194
+#: ../lib/engine/components/opal/opal-bank.cpp:204
 #: ../plugins/ldap/ldap-book.cpp:986
 msgid "_Password:"
 msgstr "パスワード(_P):"
 
-#: ../lib/engine/components/opal/opal-bank.cpp:187
+#: ../lib/engine/components/opal/opal-bank.cpp:179
 #: ../lib/engine/gui/gtk-frontend/assistant-window.cpp:740
 msgid "Get an Ekiga Call Out account"
 msgstr "Ekiga のコールアウトのアカウントを購入する"
 
-#: ../lib/engine/components/opal/opal-bank.cpp:191
+#: ../lib/engine/components/opal/opal-bank.cpp:183
 msgid "_Account ID:"
 msgstr "アカウントの ID(_A):"
 
-#: ../lib/engine/components/opal/opal-bank.cpp:193
-#, fuzzy
-#| msgid "_PIN Code:"
+#: ../lib/engine/components/opal/opal-bank.cpp:185
 msgid "_PIN code:"
 msgstr "PIN コード(_P):"
 
-#: ../lib/engine/components/opal/opal-bank.cpp:198
-#: ../lib/engine/components/opal/opal-bank.cpp:208
+#: ../lib/engine/components/opal/opal-bank.cpp:190
+#: ../lib/engine/components/opal/opal-bank.cpp:200
 #: ../plugins/evolution/evolution-book.cpp:347
 msgid "_Name:"
 msgstr "名前(_N):"
 
-#: ../lib/engine/components/opal/opal-bank.cpp:199
+#: ../lib/engine/components/opal/opal-bank.cpp:191
 msgid "_Gatekeeper:"
 msgstr "ゲートキーパー(_G):"
 
-#: ../lib/engine/components/opal/opal-bank.cpp:203
-#: ../lib/engine/components/opal/opal-bank.cpp:213
+#: ../lib/engine/components/opal/opal-bank.cpp:195
+#: ../lib/engine/components/opal/opal-bank.cpp:205
 msgid "_Timeout:"
 msgstr "タイムアウト(_T):"
 
-#: ../lib/engine/components/opal/opal-bank.cpp:209
+#: ../lib/engine/components/opal/opal-bank.cpp:201
 msgid "_Registrar:"
 msgstr "レジストラー(_R):"
 
-#: ../lib/engine/components/opal/opal-bank.cpp:211
-#, fuzzy
-#| msgid "_Authentication User:"
+#: ../lib/engine/components/opal/opal-bank.cpp:203
 msgid "_Authentication user:"
-msgstr "ユーザーの認証(_A):"
+msgstr "認証ユーザー(_A):"
 
-#: ../lib/engine/components/opal/opal-call.cpp:424
+#: ../lib/engine/components/opal/opal-call.cpp:425
 msgid "Local user cleared the call"
 msgstr "ローカルのユーザーがこちらの発信を切りました"
 
-#: ../lib/engine/components/opal/opal-call.cpp:427
-#: ../lib/engine/components/opal/opal-call.cpp:430
+#: ../lib/engine/components/opal/opal-call.cpp:428
+#: ../lib/engine/components/opal/opal-call.cpp:431
 msgid "Local user rejected the call"
 msgstr "ローカルのユーザーがこちらの発信を拒否しました"
 
-#: ../lib/engine/components/opal/opal-call.cpp:433
+#: ../lib/engine/components/opal/opal-call.cpp:434
 msgid "Remote user cleared the call"
 msgstr "リモートのユーザーがこちらの発信を切りました"
 
-#: ../lib/engine/components/opal/opal-call.cpp:436
+#: ../lib/engine/components/opal/opal-call.cpp:437
 msgid "Remote user rejected the call"
 msgstr "リモートのユーザーがこちらの発信を拒否しました"
 
-#: ../lib/engine/components/opal/opal-call.cpp:439
+#: ../lib/engine/components/opal/opal-call.cpp:440
 msgid "Remote user has stopped calling"
 msgstr "リモートのユーザーが通話を停止しました"
 
-#: ../lib/engine/components/opal/opal-call.cpp:442
+#: ../lib/engine/components/opal/opal-call.cpp:443
 msgid "Abnormal call termination"
 msgstr "着信が切断されました (異常あり)"
 
-#: ../lib/engine/components/opal/opal-call.cpp:445
-#: ../lib/engine/gui/gtk-frontend/main_window.cpp:424
+#: ../lib/engine/components/opal/opal-call.cpp:446
+#: ../lib/engine/gui/gtk-frontend/main_window.cpp:423
 msgid "Could not connect to remote host"
 msgstr "リモートホストへ接続できませんでした"
 
-#: ../lib/engine/components/opal/opal-call.cpp:449
+#: ../lib/engine/components/opal/opal-call.cpp:450
 msgid "The Gatekeeper cleared the call"
 msgstr "ゲートキーパーがこちらの発信を切りました"
 
-#: ../lib/engine/components/opal/opal-call.cpp:452
+#: ../lib/engine/components/opal/opal-call.cpp:453
 msgid "User not found"
 msgstr "ユーザーが見つかりません"
 
-#: ../lib/engine/components/opal/opal-call.cpp:455
+#: ../lib/engine/components/opal/opal-call.cpp:456
 msgid "Insufficient bandwidth"
 msgstr "帯域幅が不十分です"
 
-#: ../lib/engine/components/opal/opal-call.cpp:458
+#: ../lib/engine/components/opal/opal-call.cpp:459
 msgid "No common codec"
 msgstr "共通コーデックではありません"
 
-#: ../lib/engine/components/opal/opal-call.cpp:461
+#: ../lib/engine/components/opal/opal-call.cpp:462
 msgid "Call forwarded"
 msgstr "着信を転送しました"
 
-#: ../lib/engine/components/opal/opal-call.cpp:464
+#: ../lib/engine/components/opal/opal-call.cpp:465
 msgid "Security check failed"
 msgstr "セキュリティチェックに失敗しました"
 
-#: ../lib/engine/components/opal/opal-call.cpp:467
+#: ../lib/engine/components/opal/opal-call.cpp:468
 msgid "Local user is busy"
 msgstr "ローカルのユーザーは多忙のようです"
 
-#: ../lib/engine/components/opal/opal-call.cpp:470
-#: ../lib/engine/components/opal/opal-call.cpp:476
+#: ../lib/engine/components/opal/opal-call.cpp:471
+#: ../lib/engine/components/opal/opal-call.cpp:477
 msgid "Congested link to remote party"
 msgstr "リモートの連絡先へのリンクが混在しています"
 
-#: ../lib/engine/components/opal/opal-call.cpp:473
+#: ../lib/engine/components/opal/opal-call.cpp:474
 msgid "Remote user is busy"
 msgstr "リモートのユーザーは多忙のようです"
 
-#: ../lib/engine/components/opal/opal-call.cpp:479
+#: ../lib/engine/components/opal/opal-call.cpp:480
 msgid "Remote host is offline"
 msgstr "リモートホストはオフラインです"
 
-#: ../lib/engine/components/opal/opal-call.cpp:482
-#, fuzzy
-#| msgid "user offline"
+#: ../lib/engine/components/opal/opal-call.cpp:483
 msgid "User is offline"
 msgstr "ユーザーはオフラインです"
 
-#: ../lib/engine/components/opal/opal-call.cpp:485
-#, fuzzy
-#| msgid "Remote host is offline"
+#: ../lib/engine/components/opal/opal-call.cpp:486
 msgid "Remote host not found"
-msgstr "リモートホストはオフラインです"
+msgstr "リモートホストが見つかりません"
 
-#: ../lib/engine/components/opal/opal-call.cpp:489
+#: ../lib/engine/components/opal/opal-call.cpp:490
 msgid "User is not available"
 msgstr "該当するユーザーはいません"
 
-#: ../lib/engine/components/opal/opal-call.cpp:492
+#: ../lib/engine/components/opal/opal-call.cpp:493
 #: ../lib/engine/components/opal/sip-endpoint.cpp:661
 msgid "Service unavailable"
 msgstr "サービスは利用できません"
 
-#: ../lib/engine/components/opal/opal-call.cpp:502
+#: ../lib/engine/components/opal/opal-call.cpp:503
 msgid "Call completed"
 msgstr "発信が完了しました"
 
-#: ../lib/engine/components/opal/opal-call.cpp:693
+#: ../lib/engine/components/opal/opal-call.cpp:694
 msgid "Missed call from"
-msgstr ""
+msgstr "不在着信"
 
-#: ../lib/engine/components/opal/opal-call.cpp:695
+#: ../lib/engine/components/opal/opal-call.cpp:696
 msgid "Missed call"
 msgstr "不在着信"
 
-#: ../lib/engine/components/opal/opal-call-manager.cpp:876
+#: ../lib/engine/components/opal/opal-call-manager.cpp:875
 msgid ""
 "Ekiga did not manage to configure your network settings automatically. You can still use it, but you need to configure your network settings manually.\n"
 "\n"
@@ -1511,7 +1489,7 @@ msgstr "ホップの数が多すぎます"
 
 #: ../lib/engine/components/opal/sip-endpoint.cpp:617
 msgid "Address incomplete"
-msgstr "E-メールアドレスが不完全です"
+msgstr "メールアドレスが不完全です"
 
 #: ../lib/engine/components/opal/sip-endpoint.cpp:621
 msgid "Ambiguous"
@@ -1611,11 +1589,11 @@ msgstr "%s さんと話中です"
 msgid "In a call"
 msgstr "話中です"
 
-#: ../lib/engine/gui/gtk-core/codecsbox.cpp:450
+#: ../lib/engine/gui/gtk-core/codecsbox.cpp:453
 msgid "Move selected codec priority upwards"
 msgstr "選択したコーデックの優先度を上げます"
 
-#: ../lib/engine/gui/gtk-core/codecsbox.cpp:460
+#: ../lib/engine/gui/gtk-core/codecsbox.cpp:463
 msgid "Move selected codec priority downwards"
 msgstr "選択したコーデックの優先度を下げます"
 
@@ -1625,7 +1603,7 @@ msgstr "拡張設定"
 
 #: ../lib/engine/gui/gtk-core/form-dialog-gtk.cpp:1278
 msgid "Add Group"
-msgstr ""
+msgstr "グループの追加"
 
 #: ../lib/engine/gui/gtk-frontend/accounts-window.cpp:559
 msgid "Account Name"
@@ -1641,12 +1619,12 @@ msgid "Accounts"
 msgstr "アカウント"
 
 #: ../lib/engine/gui/gtk-frontend/accounts-window.cpp:580
-#: ../lib/engine/gui/gtk-frontend/main_window.cpp:1205
+#: ../lib/engine/gui/gtk-frontend/main_window.cpp:1203
 msgid "_Accounts"
 msgstr "アカウント(_A)"
 
 #: ../lib/engine/gui/gtk-frontend/accounts-window.cpp:584
-#: ../lib/engine/gui/gtk-frontend/main_window.cpp:1251
+#: ../lib/engine/gui/gtk-frontend/main_window.cpp:1249
 msgid "_Help"
 msgstr "ヘルプ(_H)"
 
@@ -1654,21 +1632,21 @@ msgstr "ヘルプ(_H)"
 msgid "Edi_t"
 msgstr "編集(_T)"
 
-#: ../lib/engine/gui/gtk-frontend/addressbook-window.cpp:626
+#: ../lib/engine/gui/gtk-frontend/addressbook-window.cpp:621
 msgid "Address Book"
 msgstr "アドレス帳"
 
-#: ../lib/engine/gui/gtk-frontend/addressbook-window.cpp:642
-#: ../lib/engine/gui/gtk-frontend/main_window.cpp:1176
+#: ../lib/engine/gui/gtk-frontend/addressbook-window.cpp:637
+#: ../lib/engine/gui/gtk-frontend/main_window.cpp:1174
 msgid "Address _Book"
 msgstr "アドレス帳(_B)"
 
 #. This will add static and dynamic actions
-#: ../lib/engine/gui/gtk-frontend/addressbook-window.cpp:651
+#: ../lib/engine/gui/gtk-frontend/addressbook-window.cpp:646
 msgid "_Action"
 msgstr "アクション(_A)"
 
-#: ../lib/engine/gui/gtk-frontend/addressbook-window.cpp:697
+#: ../lib/engine/gui/gtk-frontend/addressbook-window.cpp:692
 msgid "Category"
 msgstr "カテゴリ"
 
@@ -1687,7 +1665,7 @@ msgid "Welcome to Ekiga"
 msgstr "Ekiga へようこそ"
 
 #: ../lib/engine/gui/gtk-frontend/assistant-window.cpp:365
-#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:441
+#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:443
 msgid "Personal Information"
 msgstr "個人の情報"
 
@@ -1807,7 +1785,7 @@ msgid "The connection type will permit determining the best quality settings tha
 msgstr "Ekiga から最適な品質で通話できるような接続方法を選択します。あとで設定ウィンドウからも変更できます。"
 
 #: ../lib/engine/gui/gtk-frontend/assistant-window.cpp:987
-#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:727
+#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:729
 msgid "Audio Devices"
 msgstr "音声のデバイス"
 
@@ -1863,7 +1841,7 @@ msgid "Configuration summary:"
 msgstr "設定内容:"
 
 #: ../lib/engine/gui/gtk-frontend/assistant-window.cpp:1302
-#: ../lib/engine/gui/gtk-frontend/book-view-gtk.cpp:588
+#: ../lib/engine/gui/gtk-frontend/book-view-gtk.cpp:584
 msgid "Full Name"
 msgstr "氏名"
 
@@ -1892,48 +1870,48 @@ msgstr "Ekiga のコールアウト"
 msgid "Ekiga Configuration Assistant (%d of %d)"
 msgstr "Ekiga の設定アシスタント (%d / %d)"
 
-#: ../lib/engine/gui/gtk-frontend/book-view-gtk.cpp:531
+#: ../lib/engine/gui/gtk-frontend/book-view-gtk.cpp:527
 msgid "_Search Filter:"
 msgstr "検索する文字(_S):"
 
-#: ../lib/engine/gui/gtk-frontend/call-window.cpp:765
+#: ../lib/engine/gui/gtk-frontend/call-window.cpp:760
 msgid "Error while initializing video output"
 msgstr "映像出力を初期化する際にエラー"
 
-#: ../lib/engine/gui/gtk-frontend/call-window.cpp:766
+#: ../lib/engine/gui/gtk-frontend/call-window.cpp:761
 msgid "No video will be displayed on your machine during this call"
 msgstr "この会話中は映像を表示しません"
 
-#: ../lib/engine/gui/gtk-frontend/call-window.cpp:776
+#: ../lib/engine/gui/gtk-frontend/call-window.cpp:771
 msgid "There was an error opening or initializing the video output. Please verify that no other application is using the accelerated video output."
 msgstr "映像の出力デバイスをオープンするまたは初期化する際にエラーが発生しました。そのデバイスを他のアプリケーションで使用していないか確認してください。"
 
-#: ../lib/engine/gui/gtk-frontend/call-window.cpp:778
+#: ../lib/engine/gui/gtk-frontend/call-window.cpp:773
 msgid "There was an error opening or initializing the video output. Please verify that you are using a color depth of 24 or 32 bits per pixel."
 msgstr "映像の出力デバイスをオープンするまたは初期化する際にエラーが発生しました。お使いのビデオドライバーの色設定が 24 または 32 bpp になっているか確認してください。"
 
-#: ../lib/engine/gui/gtk-frontend/call-window.cpp:901
+#: ../lib/engine/gui/gtk-frontend/call-window.cpp:896
 #, c-format
 msgid "Error while accessing video device %s"
 msgstr "ビデオ入力デバイスの %s にアクセスする際にエラーが発生しました"
 
-#: ../lib/engine/gui/gtk-frontend/call-window.cpp:904
+#: ../lib/engine/gui/gtk-frontend/call-window.cpp:899
 msgid "A moving logo will be transmitted during calls."
 msgstr "呼び出し中は動くロゴが転送されます。"
 
-#: ../lib/engine/gui/gtk-frontend/call-window.cpp:908
+#: ../lib/engine/gui/gtk-frontend/call-window.cpp:903
 msgid "There was an error while opening the device. In case it is a pluggable device it may be sufficient to reconnect it. If not, or if it still is not accessible, please check your permissions and make sure that the appropriate driver is loaded."
 msgstr "デバイスを開く際にエラーが発生しました。抜き差しが可能なデバイスの場合はもう一度挿入すると上手くいくかもしれません。そうではない場合、あるいは依然としてアクセスが拒否される場合はアクセス権限が正しいか、または妥当なドライバーが読み込まれているかを確認してみてください。"
 
-#: ../lib/engine/gui/gtk-frontend/call-window.cpp:912
+#: ../lib/engine/gui/gtk-frontend/call-window.cpp:907
 msgid "Your video driver doesn't support the requested video format."
 msgstr "お使いのビデオドライバーは、要求された映像フォーマットをサポートしていません。"
 
-#: ../lib/engine/gui/gtk-frontend/call-window.cpp:916
+#: ../lib/engine/gui/gtk-frontend/call-window.cpp:911
 msgid "Could not open the chosen channel."
 msgstr "選択したチャンネルを開けませんでした"
 
-#: ../lib/engine/gui/gtk-frontend/call-window.cpp:920
+#: ../lib/engine/gui/gtk-frontend/call-window.cpp:915
 msgid ""
 "Your driver doesn't seem to support any of the color formats supported by Ekiga.\n"
 " Please check your kernel driver documentation in order to determine which Palette is supported."
@@ -1941,93 +1919,91 @@ msgstr ""
 "お使いのドライバーは Ekiga で利用できる色のフォーマットをサポートしていないようです。\n"
 "どのパレットがサポートされているかを確認するには、Kernel ドライバーのドキュメントで確認してみてください。"
 
-#: ../lib/engine/gui/gtk-frontend/call-window.cpp:924
+#: ../lib/engine/gui/gtk-frontend/call-window.cpp:919
 msgid "Error while setting the frame rate."
 msgstr "フレームレートを設定する際にエラーが発生しました。"
 
-#: ../lib/engine/gui/gtk-frontend/call-window.cpp:928
+#: ../lib/engine/gui/gtk-frontend/call-window.cpp:923
 msgid "Error while setting the frame size."
 msgstr "フレームサイズを設定する際にエラーが発生しました。"
 
-#: ../lib/engine/gui/gtk-frontend/call-window.cpp:933
-#: ../lib/engine/gui/gtk-frontend/call-window.cpp:1003
-#: ../lib/engine/gui/gtk-frontend/call-window.cpp:1084
+#: ../lib/engine/gui/gtk-frontend/call-window.cpp:928
+#: ../lib/engine/gui/gtk-frontend/call-window.cpp:998
+#: ../lib/engine/gui/gtk-frontend/call-window.cpp:1079
 msgid "Unknown error."
 msgstr "原因不明のエラーです"
 
-#: ../lib/engine/gui/gtk-frontend/call-window.cpp:985
+#: ../lib/engine/gui/gtk-frontend/call-window.cpp:980
 #, c-format
 msgid "Error while opening audio input device %s"
 msgstr "音声デバイスの %s を開く際にエラーが発生しました"
 
 #. Translators: This happens when there is an error with audio input:
 #. * Nothing ("silence") will be transmitted
-#: ../lib/engine/gui/gtk-frontend/call-window.cpp:990
+#: ../lib/engine/gui/gtk-frontend/call-window.cpp:985
 msgid "Only silence will be transmitted."
 msgstr "サイレンス (無音) だけ転送します"
 
-#: ../lib/engine/gui/gtk-frontend/call-window.cpp:994
+#: ../lib/engine/gui/gtk-frontend/call-window.cpp:989
 msgid "Unable to open the selected audio device for recording. In case it is a pluggable device it may be sufficient to reconnect it. If not, or if it still is not accessible, please check your audio setup, the permissions and that the device is not busy."
 msgstr "選択した音声のデバイスを録音用に開けません。抜き差しが可能なデバイスの場合はもう一度挿入すると上手くいくかもしれません。そうではない場合、あるいは依然としてアクセスが拒否される場合はオーディオの設定やデバイスへのアクセス権限、またはデバイスが使用中ではないか確認してみてください。"
 
-#: ../lib/engine/gui/gtk-frontend/call-window.cpp:998
+#: ../lib/engine/gui/gtk-frontend/call-window.cpp:993
 msgid "The selected audio device was successfully opened but it is impossible to read data from this device. In case it is a pluggable device it may be sufficient to reconnect it. If not, or if it still is not accessible, please check your audio setup."
 msgstr "選択した音声デバイスを開けましたが、このデバイスからデータを読み込めません。抜き差しが可能なデバイスの場合はもう一度挿入すると上手くいくかもしれません。そうではない場合、あるいは依然としてアクセスが拒否される場合はオーディオの設定を確認してください。"
 
-#: ../lib/engine/gui/gtk-frontend/call-window.cpp:1068
+#: ../lib/engine/gui/gtk-frontend/call-window.cpp:1063
 #, c-format
 msgid "Error while opening audio output device %s"
 msgstr "音声出力デバイスの %s を開く際にエラーが発生しました"
 
-#: ../lib/engine/gui/gtk-frontend/call-window.cpp:1071
+#: ../lib/engine/gui/gtk-frontend/call-window.cpp:1066
 msgid "No incoming sound will be played."
 msgstr "着信音は演奏されていません"
 
-#: ../lib/engine/gui/gtk-frontend/call-window.cpp:1075
+#: ../lib/engine/gui/gtk-frontend/call-window.cpp:1070
 msgid "Unable to open the selected audio device for playing. In case it is a pluggable device it may be sufficient to reconnect it. If not, or if it still is not accessible, please check your audio setup, the permissions and that the device is not busy."
 msgstr "選択した音声のデバイスを再生用に開けません。抜き差しが可能なデバイスの場合はもう一度挿入すると上手くいくかもしれません。そうではない場合、あるいは依然としてアクセスが拒否される場合はオーディオの設定やデバイスへのアクセス権限、またはデバイスが使用中ではないか確認してみてください。"
 
-#: ../lib/engine/gui/gtk-frontend/call-window.cpp:1079
+#: ../lib/engine/gui/gtk-frontend/call-window.cpp:1074
 msgid "The selected audio device was successfully opened but it is impossible to write data to this device. In case it is a pluggable device it may be sufficient to reconnect it. If not, or if it still is not accessible, please check your audio setup."
 msgstr "選択した音声デバイスは開けましたが、このデバイスへデータを書き込めません。抜き差しが可能なデバイスの場合はもう一度挿入すると上手くいくかもしれません。そうではない場合、あるいは依然としてアクセスが拒否される場合はオーディオの設定を確認してください。"
 
-#: ../lib/engine/gui/gtk-frontend/call-window.cpp:1120
+#: ../lib/engine/gui/gtk-frontend/call-window.cpp:1115
 #, c-format
 msgid "Calling %s..."
 msgstr "%sを呼び出し中..."
 
 #. %s is the SIP/H.323 address of the remote user, this text is shown
 #. below video during a call
-#: ../lib/engine/gui/gtk-frontend/call-window.cpp:1150
-#: ../lib/engine/gui/gtk-frontend/main_window.cpp:546
+#: ../lib/engine/gui/gtk-frontend/call-window.cpp:1145
+#: ../lib/engine/gui/gtk-frontend/main_window.cpp:545
 #, c-format
 msgid "Connected with %s"
 msgstr "%s で接続しました"
 
 #. Init
-#: ../lib/engine/gui/gtk-frontend/call-window.cpp:1173
-#: ../lib/engine/gui/gtk-frontend/call-window.cpp:1204
-#: ../lib/engine/gui/gtk-frontend/call-window.cpp:2502
+#: ../lib/engine/gui/gtk-frontend/call-window.cpp:1168
+#: ../lib/engine/gui/gtk-frontend/call-window.cpp:1199
+#: ../lib/engine/gui/gtk-frontend/call-window.cpp:2497
 msgid "Standby"
 msgstr "待機中です"
 
-#: ../lib/engine/gui/gtk-frontend/call-window.cpp:1189
-#: ../lib/engine/gui/gtk-frontend/call-window.cpp:1202
-#: ../lib/engine/gui/gtk-frontend/call-window.cpp:2652
-#, fuzzy
-#| msgid "Chat Window"
+#: ../lib/engine/gui/gtk-frontend/call-window.cpp:1184
+#: ../lib/engine/gui/gtk-frontend/call-window.cpp:1197
+#: ../lib/engine/gui/gtk-frontend/call-window.cpp:2647
 msgid "Call Window"
-msgstr "チャットウィンドウ"
+msgstr "コールウィンドウ"
 
-#: ../lib/engine/gui/gtk-frontend/call-window.cpp:1215
+#: ../lib/engine/gui/gtk-frontend/call-window.cpp:1210
 msgid "Call on hold"
 msgstr "保留中の発信"
 
-#: ../lib/engine/gui/gtk-frontend/call-window.cpp:1226
+#: ../lib/engine/gui/gtk-frontend/call-window.cpp:1221
 msgid "Call retrieved"
 msgstr "保留から復帰しました"
 
-#: ../lib/engine/gui/gtk-frontend/call-window.cpp:1313
+#: ../lib/engine/gui/gtk-frontend/call-window.cpp:1308
 #, c-format
 msgid ""
 "Connected with %s\n"
@@ -2038,27 +2014,27 @@ msgstr ""
 
 #. Translators: TX is a common abbreviation for "transmit".  As it
 #. * is shown in a tooltip, there is no space constraint
-#: ../lib/engine/gui/gtk-frontend/call-window.cpp:1521
+#: ../lib/engine/gui/gtk-frontend/call-window.cpp:1516
 #, c-format
 msgid "TX: %dx%d"
 msgstr "TX: %dx%d"
 
-#: ../lib/engine/gui/gtk-frontend/call-window.cpp:1523
+#: ../lib/engine/gui/gtk-frontend/call-window.cpp:1518
 msgid "TX: / "
 msgstr "TX: / "
 
 #. Translators: RX is a common abbreviation for "receive".  As it
 #. * is shown in a tooltip, there is no space constraint
-#: ../lib/engine/gui/gtk-frontend/call-window.cpp:1528
+#: ../lib/engine/gui/gtk-frontend/call-window.cpp:1523
 #, c-format
 msgid "RX: %dx%d"
 msgstr "RX: %dx%d"
 
-#: ../lib/engine/gui/gtk-frontend/call-window.cpp:1530
+#: ../lib/engine/gui/gtk-frontend/call-window.cpp:1525
 msgid "RX: / "
 msgstr "RX: / "
 
-#: ../lib/engine/gui/gtk-frontend/call-window.cpp:1539
+#: ../lib/engine/gui/gtk-frontend/call-window.cpp:1534
 #, c-format
 msgid ""
 "Lost packets: %.1f %%\n"
@@ -2076,199 +2052,199 @@ msgstr ""
 "解像度: %s %s"
 
 #. Translators: A = Audio, V = Video, FPS = Frames per second
-#: ../lib/engine/gui/gtk-frontend/call-window.cpp:1639
+#: ../lib/engine/gui/gtk-frontend/call-window.cpp:1634
 #, c-format
 msgid "A:%.1f/%.1f V:%.1f/%.1f FPS:%d/%d"
 msgstr "A:%.1f/%.1f V:%.1f/%.1f FPS:%d/%d"
 
-#: ../lib/engine/gui/gtk-frontend/call-window.cpp:1663
+#: ../lib/engine/gui/gtk-frontend/call-window.cpp:1658
 msgid "_Retrieve Call"
 msgstr "再開(_R)"
 
-#: ../lib/engine/gui/gtk-frontend/call-window.cpp:1676
-#: ../lib/engine/gui/gtk-frontend/call-window.cpp:1991
+#: ../lib/engine/gui/gtk-frontend/call-window.cpp:1671
+#: ../lib/engine/gui/gtk-frontend/call-window.cpp:1986
 msgid "H_old Call"
 msgstr "保留(_O)"
 
-#: ../lib/engine/gui/gtk-frontend/call-window.cpp:1707
-#: ../lib/engine/gui/gtk-frontend/call-window.cpp:2003
+#: ../lib/engine/gui/gtk-frontend/call-window.cpp:1702
+#: ../lib/engine/gui/gtk-frontend/call-window.cpp:1998
 msgid "Suspend _Audio"
 msgstr "音声の一時停止(_A)"
 
-#: ../lib/engine/gui/gtk-frontend/call-window.cpp:1709
-#: ../lib/engine/gui/gtk-frontend/call-window.cpp:2008
+#: ../lib/engine/gui/gtk-frontend/call-window.cpp:1704
+#: ../lib/engine/gui/gtk-frontend/call-window.cpp:2003
 msgid "Suspend _Video"
 msgstr "映像の一時停止(_V)"
 
-#: ../lib/engine/gui/gtk-frontend/call-window.cpp:1711
+#: ../lib/engine/gui/gtk-frontend/call-window.cpp:1706
 msgid "Resume _Audio"
 msgstr "音声の再開(_A)"
 
-#: ../lib/engine/gui/gtk-frontend/call-window.cpp:1713
+#: ../lib/engine/gui/gtk-frontend/call-window.cpp:1708
 msgid "Resume _Video"
 msgstr "ビデオの再開(_V)"
 
-#: ../lib/engine/gui/gtk-frontend/call-window.cpp:1747
+#: ../lib/engine/gui/gtk-frontend/call-window.cpp:1742
 msgid "Video Settings"
 msgstr "映像の設定"
 
-#: ../lib/engine/gui/gtk-frontend/call-window.cpp:1773
+#: ../lib/engine/gui/gtk-frontend/call-window.cpp:1768
 msgid "Adjust brightness"
 msgstr "明るさを調整します"
 
-#: ../lib/engine/gui/gtk-frontend/call-window.cpp:1793
+#: ../lib/engine/gui/gtk-frontend/call-window.cpp:1788
 msgid "Adjust whiteness"
 msgstr "白さを調整します"
 
-#: ../lib/engine/gui/gtk-frontend/call-window.cpp:1813
+#: ../lib/engine/gui/gtk-frontend/call-window.cpp:1808
 msgid "Adjust color"
 msgstr "色を調整します"
 
-#: ../lib/engine/gui/gtk-frontend/call-window.cpp:1833
+#: ../lib/engine/gui/gtk-frontend/call-window.cpp:1828
 msgid "Adjust contrast"
 msgstr "コントラストを調整します"
 
-#: ../lib/engine/gui/gtk-frontend/call-window.cpp:1875
+#: ../lib/engine/gui/gtk-frontend/call-window.cpp:1870
 msgid "Audio Settings"
 msgstr "音声の設定"
 
-#: ../lib/engine/gui/gtk-frontend/call-window.cpp:1979
+#: ../lib/engine/gui/gtk-frontend/call-window.cpp:1974
 msgid "_Call"
 msgstr "通話(_C)"
 
-#: ../lib/engine/gui/gtk-frontend/call-window.cpp:1981
+#: ../lib/engine/gui/gtk-frontend/call-window.cpp:1976
 msgid "_Pick up"
 msgstr "応答する(_P)"
 
-#: ../lib/engine/gui/gtk-frontend/call-window.cpp:1981
-#: ../lib/engine/gui/gtk-frontend/call-window.cpp:2390
+#: ../lib/engine/gui/gtk-frontend/call-window.cpp:1976
+#: ../lib/engine/gui/gtk-frontend/call-window.cpp:2385
 msgid "Pick up the current call"
 msgstr "現在の呼び出しに応答します"
 
-#: ../lib/engine/gui/gtk-frontend/call-window.cpp:1985
+#: ../lib/engine/gui/gtk-frontend/call-window.cpp:1980
 msgid "_Hang up"
 msgstr "切断する(_H)"
 
-#: ../lib/engine/gui/gtk-frontend/call-window.cpp:1985
-#: ../lib/engine/gui/gtk-frontend/call-window.cpp:2406
+#: ../lib/engine/gui/gtk-frontend/call-window.cpp:1980
+#: ../lib/engine/gui/gtk-frontend/call-window.cpp:2401
 msgid "Hang up the current call"
 msgstr "現在の通話を切断します"
 
-#: ../lib/engine/gui/gtk-frontend/call-window.cpp:1991
-#: ../lib/engine/gui/gtk-frontend/call-window.cpp:2472
+#: ../lib/engine/gui/gtk-frontend/call-window.cpp:1986
+#: ../lib/engine/gui/gtk-frontend/call-window.cpp:2467
 msgid "Hold the current call"
 msgstr "現在の通話を保留します"
 
-#: ../lib/engine/gui/gtk-frontend/call-window.cpp:1995
+#: ../lib/engine/gui/gtk-frontend/call-window.cpp:1990
 msgid "_Transfer Call"
 msgstr "発信の転送(_T)"
 
-#: ../lib/engine/gui/gtk-frontend/call-window.cpp:1996
+#: ../lib/engine/gui/gtk-frontend/call-window.cpp:1991
 msgid "Transfer the current call"
 msgstr "現在の発信を転送します"
 
-#: ../lib/engine/gui/gtk-frontend/call-window.cpp:2004
+#: ../lib/engine/gui/gtk-frontend/call-window.cpp:1999
 msgid "Suspend or resume the audio transmission"
 msgstr "音声の発信を一時停止または再開します"
 
-#: ../lib/engine/gui/gtk-frontend/call-window.cpp:2009
+#: ../lib/engine/gui/gtk-frontend/call-window.cpp:2004
 msgid "Suspend or resume the video transmission"
 msgstr "映像の発信を一時停止または再開します"
 
-#: ../lib/engine/gui/gtk-frontend/call-window.cpp:2016
-#: ../lib/engine/gui/gtk-frontend/main_window.cpp:1184
+#: ../lib/engine/gui/gtk-frontend/call-window.cpp:2011
+#: ../lib/engine/gui/gtk-frontend/main_window.cpp:1182
 msgid "Close the Ekiga window"
 msgstr "Ekiga のウィンドウを閉じます"
 
-#: ../lib/engine/gui/gtk-frontend/call-window.cpp:2021
-#: ../lib/engine/gui/gtk-frontend/main_window.cpp:1217
+#: ../lib/engine/gui/gtk-frontend/call-window.cpp:2016
+#: ../lib/engine/gui/gtk-frontend/main_window.cpp:1215
 msgid "_View"
 msgstr "表示(_V)"
 
-#: ../lib/engine/gui/gtk-frontend/call-window.cpp:2023
+#: ../lib/engine/gui/gtk-frontend/call-window.cpp:2018
 msgid "_Local Video"
 msgstr "ローカルの映像(_L)"
 
-#: ../lib/engine/gui/gtk-frontend/call-window.cpp:2024
+#: ../lib/engine/gui/gtk-frontend/call-window.cpp:2019
 msgid "Local video image"
 msgstr "ローカルの映像にします"
 
-#: ../lib/engine/gui/gtk-frontend/call-window.cpp:2028
+#: ../lib/engine/gui/gtk-frontend/call-window.cpp:2023
 msgid "_Remote Video"
 msgstr "リモートの映像(_R)"
 
-#: ../lib/engine/gui/gtk-frontend/call-window.cpp:2029
+#: ../lib/engine/gui/gtk-frontend/call-window.cpp:2024
 msgid "Remote video image"
 msgstr "リモートの映像にします"
 
-#: ../lib/engine/gui/gtk-frontend/call-window.cpp:2033
+#: ../lib/engine/gui/gtk-frontend/call-window.cpp:2028
 msgid "_Picture-in-Picture"
 msgstr "両方 (画像の中に重ねる)(_P)"
 
-#: ../lib/engine/gui/gtk-frontend/call-window.cpp:2034
+#: ../lib/engine/gui/gtk-frontend/call-window.cpp:2029
 msgid "Both video images"
 msgstr "両方の映像にします"
 
-#: ../lib/engine/gui/gtk-frontend/call-window.cpp:2040
+#: ../lib/engine/gui/gtk-frontend/call-window.cpp:2035
 msgid "Zoom in"
 msgstr "映像を拡大します"
 
-#: ../lib/engine/gui/gtk-frontend/call-window.cpp:2044
+#: ../lib/engine/gui/gtk-frontend/call-window.cpp:2039
 msgid "Zoom out"
 msgstr "映像を縮小します"
 
-#: ../lib/engine/gui/gtk-frontend/call-window.cpp:2048
+#: ../lib/engine/gui/gtk-frontend/call-window.cpp:2043
 msgid "Normal size"
 msgstr "デフォルトの映像サイズにします"
 
-#: ../lib/engine/gui/gtk-frontend/call-window.cpp:2052
+#: ../lib/engine/gui/gtk-frontend/call-window.cpp:2047
 msgid "_Fullscreen"
 msgstr "フルスクリーン(_F)"
 
-#: ../lib/engine/gui/gtk-frontend/call-window.cpp:2052
+#: ../lib/engine/gui/gtk-frontend/call-window.cpp:2047
 msgid "Switch to fullscreen"
 msgstr "フルスクリーンに切り替える"
 
-#: ../lib/engine/gui/gtk-frontend/call-window.cpp:2167
+#: ../lib/engine/gui/gtk-frontend/call-window.cpp:2162
 msgid "Transfer call to:"
 msgstr "転送先:"
 
-#: ../lib/engine/gui/gtk-frontend/call-window.cpp:2433
+#: ../lib/engine/gui/gtk-frontend/call-window.cpp:2428
 msgid "Change the volume of your soundcard"
 msgstr "サウンドカードの音量を変更します"
 
-#: ../lib/engine/gui/gtk-frontend/call-window.cpp:2453
+#: ../lib/engine/gui/gtk-frontend/call-window.cpp:2448
 msgid "Change the color settings of your video device"
 msgstr "映像デバイスの色の設定を変更します"
 
-#: ../lib/engine/gui/gtk-frontend/chat-area.cpp:242
+#: ../lib/engine/gui/gtk-frontend/chat-area.cpp:241
 msgid "says:"
 msgstr "さんの発言:"
 
-#: ../lib/engine/gui/gtk-frontend/chat-area.cpp:369
+#: ../lib/engine/gui/gtk-frontend/chat-area.cpp:368
 msgid "Open link in browser"
 msgstr "ブラウザーで開く"
 
-#: ../lib/engine/gui/gtk-frontend/chat-area.cpp:375
+#: ../lib/engine/gui/gtk-frontend/chat-area.cpp:374
 msgid "Copy link"
 msgstr "リンクのコピー"
 
-#: ../lib/engine/gui/gtk-frontend/chat-area.cpp:832
+#: ../lib/engine/gui/gtk-frontend/chat-area.cpp:831
 msgid "_Smile..."
 msgstr "顔文字(_S)..."
 
-#: ../lib/engine/gui/gtk-frontend/chat-window.cpp:137
+#: ../lib/engine/gui/gtk-frontend/chat-window.cpp:136
 #, c-format
 msgid "You have %d unread text message"
 msgid_plural "You have %d unread text messages"
 msgstr[0] " %d 件の未読メッセージがあります"
 
-#: ../lib/engine/gui/gtk-frontend/chat-window.cpp:140
+#: ../lib/engine/gui/gtk-frontend/chat-window.cpp:139
 msgid "Read"
 msgstr "読む"
 
 #. we can't do much here since we get the Chat as reference...
-#: ../lib/engine/gui/gtk-frontend/chat-window.cpp:441
+#: ../lib/engine/gui/gtk-frontend/chat-window.cpp:440
 msgid "Chat Window"
 msgstr "チャットウィンドウ"
 
@@ -2280,622 +2256,602 @@ msgstr "デバイスが見つかりませんでした"
 
 #: ../lib/engine/gui/gtk-frontend/heap-view.cpp:239
 #: ../lib/engine/gui/gtk-frontend/heap-view.cpp:278
-#: ../lib/engine/gui/gtk-frontend/roster-view-gtk.cpp:1037
-#: ../lib/engine/gui/gtk-frontend/roster-view-gtk.cpp:1139
+#: ../lib/engine/gui/gtk-frontend/roster-view-gtk.cpp:1032
+#: ../lib/engine/gui/gtk-frontend/roster-view-gtk.cpp:1134
 msgid "Unsorted"
 msgstr "未分類"
 
-#: ../lib/engine/gui/gtk-frontend/main_window.cpp:347
+#: ../lib/engine/gui/gtk-frontend/main_window.cpp:346
 msgid "Presence"
 msgstr "プレゼンス"
 
-#: ../lib/engine/gui/gtk-frontend/main_window.cpp:353
+#: ../lib/engine/gui/gtk-frontend/main_window.cpp:352
 msgid "Addressbook"
 msgstr "アドレス帳"
 
-#: ../lib/engine/gui/gtk-frontend/main_window.cpp:607
+#: ../lib/engine/gui/gtk-frontend/main_window.cpp:606
 #, c-format
 msgid "Missed call from %s"
 msgstr "\"%s\" さんからの不在着信です"
 
-#: ../lib/engine/gui/gtk-frontend/main_window.cpp:640
+#: ../lib/engine/gui/gtk-frontend/main_window.cpp:641
 msgid "Error"
 msgstr "エラー"
 
-#: ../lib/engine/gui/gtk-frontend/main_window.cpp:1045
-#, fuzzy
-#| msgid "Enter a URI on the left, and click this button to place a call or to hangup"
+#: ../lib/engine/gui/gtk-frontend/main_window.cpp:1043
 msgid "Enter a URI on the left, and click this button to place a call or to hang up"
-msgstr "左側に URI を入力してから、このボタンをクリックして発信してください"
+msgstr "左側に URI を入力してから、このボタンをクリックして発信または終了してください"
 
-#: ../lib/engine/gui/gtk-frontend/main_window.cpp:1096
-#: ../lib/engine/gui/gtk-frontend/main_window.cpp:1227
+#: ../lib/engine/gui/gtk-frontend/main_window.cpp:1094
+#: ../lib/engine/gui/gtk-frontend/main_window.cpp:1225
 msgid "View the contacts list"
 msgstr "連絡先一覧を表示します"
 
-#: ../lib/engine/gui/gtk-frontend/main_window.cpp:1107
-#: ../lib/engine/gui/gtk-frontend/main_window.cpp:1232
+#: ../lib/engine/gui/gtk-frontend/main_window.cpp:1105
+#: ../lib/engine/gui/gtk-frontend/main_window.cpp:1230
 msgid "View the dialpad"
 msgstr "ダイアルを表示します"
 
-#: ../lib/engine/gui/gtk-frontend/main_window.cpp:1118
-#: ../lib/engine/gui/gtk-frontend/main_window.cpp:1237
+#: ../lib/engine/gui/gtk-frontend/main_window.cpp:1116
+#: ../lib/engine/gui/gtk-frontend/main_window.cpp:1235
 msgid "View the call history"
 msgstr "着信履歴を表示します"
 
-#: ../lib/engine/gui/gtk-frontend/main_window.cpp:1158
+#: ../lib/engine/gui/gtk-frontend/main_window.cpp:1156
 msgid "_Chat"
 msgstr "チャット(_C)"
 
-#: ../lib/engine/gui/gtk-frontend/main_window.cpp:1160
+#: ../lib/engine/gui/gtk-frontend/main_window.cpp:1158
 msgid "Co_ntact"
 msgstr "連絡をとる(_N)"
 
-#: ../lib/engine/gui/gtk-frontend/main_window.cpp:1161
+#: ../lib/engine/gui/gtk-frontend/main_window.cpp:1159
 msgid "Act on selected contact"
 msgstr "連絡方法を選択します"
 
-#: ../lib/engine/gui/gtk-frontend/main_window.cpp:1165
-#, fuzzy
-#| msgid "Ca_ll a number"
+#: ../lib/engine/gui/gtk-frontend/main_window.cpp:1163
 msgid "Ca_ll a Number"
 msgstr "電話をかける(_L)"
 
-#: ../lib/engine/gui/gtk-frontend/main_window.cpp:1165
+#: ../lib/engine/gui/gtk-frontend/main_window.cpp:1163
 msgid "Place a new call"
 msgstr "発信します"
 
-#: ../lib/engine/gui/gtk-frontend/main_window.cpp:1171
+#: ../lib/engine/gui/gtk-frontend/main_window.cpp:1169
 msgid "Add a contact to the roster"
 msgstr "名簿に連絡先を追加"
 
-#: ../lib/engine/gui/gtk-frontend/main_window.cpp:1177
+#: ../lib/engine/gui/gtk-frontend/main_window.cpp:1175
 msgid "Find contacts"
 msgstr "連絡先を検索します"
 
-#: ../lib/engine/gui/gtk-frontend/main_window.cpp:1191
-#: ../lib/engine/gui/gtk-frontend/statusicon.cpp:375
+#: ../lib/engine/gui/gtk-frontend/main_window.cpp:1189
+#: ../lib/engine/gui/gtk-frontend/statusicon.cpp:373
 msgid "Quit"
 msgstr "終了します"
 
-#: ../lib/engine/gui/gtk-frontend/main_window.cpp:1197
+#: ../lib/engine/gui/gtk-frontend/main_window.cpp:1195
 msgid "_Configuration Assistant"
 msgstr "設定アシスタント(_C)"
 
-#: ../lib/engine/gui/gtk-frontend/main_window.cpp:1198
+#: ../lib/engine/gui/gtk-frontend/main_window.cpp:1196
 msgid "Run the configuration assistant"
 msgstr "設定アシスタントを起動します"
 
-#: ../lib/engine/gui/gtk-frontend/main_window.cpp:1206
+#: ../lib/engine/gui/gtk-frontend/main_window.cpp:1204
 msgid "Edit your accounts"
 msgstr "アカウントを編集します"
 
-#: ../lib/engine/gui/gtk-frontend/main_window.cpp:1212
+#: ../lib/engine/gui/gtk-frontend/main_window.cpp:1210
 msgid "Change your preferences"
 msgstr "設定を変更します"
 
-#: ../lib/engine/gui/gtk-frontend/main_window.cpp:1219
-#, fuzzy
-#| msgid "Video preview"
+#: ../lib/engine/gui/gtk-frontend/main_window.cpp:1217
 msgid "_Video Preview"
-msgstr "映像をプレビューするかどうか"
+msgstr "映像のプレビュー(_V)"
 
-#: ../lib/engine/gui/gtk-frontend/main_window.cpp:1227
+#: ../lib/engine/gui/gtk-frontend/main_window.cpp:1225
 msgid "Con_tacts"
 msgstr "連絡先一覧(_T)"
 
-#: ../lib/engine/gui/gtk-frontend/main_window.cpp:1232
+#: ../lib/engine/gui/gtk-frontend/main_window.cpp:1230
 msgid "_Dialpad"
 msgstr "ダイアルパッド(_D)"
 
-#: ../lib/engine/gui/gtk-frontend/main_window.cpp:1237
+#: ../lib/engine/gui/gtk-frontend/main_window.cpp:1235
 msgid "_Call History"
 msgstr "着信履歴(_C)"
 
-#: ../lib/engine/gui/gtk-frontend/main_window.cpp:1245
-#, fuzzy
-#| msgid "Show offline _contacts"
+#: ../lib/engine/gui/gtk-frontend/main_window.cpp:1243
 msgid "Show Offline _Contacts"
-msgstr "オフラインの連絡先も表示する(_C)"
+msgstr "オフラインの連絡先を表示する(_C)"
 
-#: ../lib/engine/gui/gtk-frontend/main_window.cpp:1254
-#: ../lib/engine/gui/gtk-frontend/statusicon.cpp:363
+#: ../lib/engine/gui/gtk-frontend/main_window.cpp:1252
+#: ../lib/engine/gui/gtk-frontend/statusicon.cpp:361
 msgid "Get help by reading the Ekiga manual"
 msgstr "Ekiga のマニュアルを表示します"
 
-#: ../lib/engine/gui/gtk-frontend/main_window.cpp:1259
-#: ../lib/engine/gui/gtk-frontend/statusicon.cpp:368
+#: ../lib/engine/gui/gtk-frontend/main_window.cpp:1257
+#: ../lib/engine/gui/gtk-frontend/statusicon.cpp:366
 msgid "View information about Ekiga"
 msgstr "Ekiga の情報を表示します"
 
-#: ../lib/engine/gui/gtk-frontend/main_window.cpp:1336
+#: ../lib/engine/gui/gtk-frontend/main_window.cpp:1334
 msgid "Dialpad"
 msgstr "ダイアルパッド"
 
-#: ../lib/engine/gui/gtk-frontend/main_window.cpp:1354
+#: ../lib/engine/gui/gtk-frontend/main_window.cpp:1352
 msgid "Call history"
 msgstr "着信履歴"
 
-#: ../lib/engine/gui/gtk-frontend/main_window.cpp:1366
+#: ../lib/engine/gui/gtk-frontend/main_window.cpp:1364
 msgid "Ekiga"
 msgstr "Ekiga"
 
-#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:380
+#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:382
 msgid "Play sound for new voice mails"
 msgstr "新しいボイスメールを受信したら音を鳴らす"
 
-#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:390
+#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:392
 msgid "Play sound for new instant messages"
 msgstr "新しいインスタントメッセージを受信したら音を鳴らす"
 
-#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:443
+#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:445
 msgid "_Full name:"
 msgstr "氏名(_F):"
 
-#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:459
+#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:461
 msgid "Video Display"
 msgstr "映像の表示"
 
-#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:461
+#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:463
 msgid "Place windows displaying video _above other windows"
 msgstr "他のウィンドウよりも前に映像ウィンドウを配置する(_A)"
 
-#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:465
+#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:467
 msgid "Network Settings"
 msgstr "ネットワークの設定"
 
-#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:467
-msgid "Type of Service (TOS):"
-msgstr ""
-
 #: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:469
+msgid "Type of Service (TOS):"
+msgstr "Type of Service (TOS):"
+
+#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:471
 msgid "Enable network _detection"
 msgstr "ネットワークの検出を有効にする(_D)"
 
-#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:479
+#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:481
 msgid "Call Forwarding"
 msgstr "着信の転送"
 
-#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:481
+#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:483
 msgid "_Always forward calls to the given host"
 msgstr "常に指定したホストへ転送する(_A)"
 
-#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:481
+#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:483
 msgid "If enabled, all incoming calls will be forwarded to the host that is specified in the protocol settings"
 msgstr "有効にすると、[プロトコル] の設定で指定したホストへすべての着信を転送します"
 
-#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:483
+#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:485
 msgid "Forward calls to the given host if _no answer"
 msgstr "応答しない着信を指定したホストへ転送する(_N)"
 
-#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:483
+#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:485
 msgid "If enabled, all incoming calls will be forwarded to the host that is specified in the protocol settings if you do not answer the call"
 msgstr "有効にすると、着信に応答しない場合、[プロトコル] の設定で指定したホストへすべての着信を転送します"
 
-#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:485
+#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:487
 msgid "Forward calls to the given host if _busy"
 msgstr "取り込み中の場合に指定したホストへ転送する(_B)"
 
-#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:485
+#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:487
 msgid "If enabled, all incoming calls will be forwarded to the host that is specified in the protocol settings if you already are in a call or if you are in busy mode"
 msgstr "有効にすると、通話中または取り込み中の場合、プロトコルの設定で指定したホストへすべての着信を転送します。"
 
-#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:489
-#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:1207
+#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:491
+#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:1209
 msgid "Call Options"
 msgstr "着信のオプション"
 
 #. Add all the fields
-#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:492
+#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:494
 msgid "Call forwarding delay (in seconds):"
-msgstr ""
+msgstr "着信転送の遅延 (秒単位):"
 
-#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:493
+#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:495
 msgid "_Automatically answer incoming calls"
 msgstr "自動的に呼び出しに応答(_A)"
 
-#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:524
+#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:526
 msgid "Ekiga Sound Events"
 msgstr "Ekiga の効果音"
 
-#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:558
+#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:560
 msgid "A"
 msgstr "有効"
 
-#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:570
+#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:572
 msgid "Event"
 msgstr "イベント"
 
-#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:582
+#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:584
 msgid "Choose a sound"
 msgstr "効果音の選択"
 
-#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:587
+#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:589
 msgid "Wavefiles"
 msgstr "WAVE ファイル"
 
-#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:596
-#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:615
+#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:598
+#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:617
 msgid "Play"
 msgstr "テスト"
 
-#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:636
+#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:638
 msgid "String"
 msgstr "文字列"
 
-#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:637
+#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:639
 msgid "Tone"
 msgstr "トーン"
 
-#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:638
-#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:690
+#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:640
+#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:692
 msgid "RFC2833"
 msgstr "RFC2833"
 
-#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:639
+#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:641
 msgid "Q.931"
 msgstr "Q.931"
 
-#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:643
+#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:645
 msgid "Disable H.239 Extended Video"
 msgstr "H.239拡張映像を無効にする"
 
-#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:644
+#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:646
 msgid "Allow H.239 per Content Role Mask"
 msgstr "コンテンツロールマスクごとにH.239を許可する"
 
-#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:645
+#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:647
 msgid "Force H.239 Presentation Role"
 msgstr "H.239プレゼンテーションロールを強制"
 
-#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:646
+#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:648
 msgid "Force H.239 Live Role"
 msgstr "H.239ライブロールを強制"
 
-#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:651
-#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:697
+#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:653
+#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:699
 msgid "Misc Settings"
 msgstr "その他の設定"
 
-#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:654
-#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:702
+#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:656
+#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:704
 msgid "Forward _URI:"
 msgstr "転送先の URI(_U):"
 
-#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:660
+#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:662
 msgid "Advanced Settings"
 msgstr "拡張設定"
 
 #. The toggles
-#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:663
+#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:665
 msgid "Enable H.245 _tunneling"
 msgstr "H.245 トンネリングを有効にする(_T)"
 
-#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:665
+#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:667
 msgid "Enable _early H.245"
 msgstr "初期の H.245 を有効にする(_E)"
 
-#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:667
+#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:669
 msgid "Enable fast _start procedure"
 msgstr "高速起動を有効にする(_S)"
 
-#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:667
-#, fuzzy
-#| msgid "Connection will be established in Fast Start mode. Fast Start is a new way to start calls faster that was introduced in H.323v2. It is not supported by Netmeeting and using both Fast Start and H.245 Tunneling can crash some versions of Netmeeting"
-msgid "Connection will be established in Fast Start (Fast Connect) mode. Fast Start is a new way to start calls faster that was introduced in H.323v2."
-msgstr "高速起動モードで接続を確立します。高速起動モードは通話を素早く開始する新しい手法の一つで、H.323v2 で規格化されています。Netmeeting ではサポートされておらず、いくつかの Netmeeting のバージョンで高速起動と H.245 トンネリングを併用するとクラッシュすることがあります。"
-
 #: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:669
+msgid "Connection will be established in Fast Start (Fast Connect) mode. Fast Start is a new way to start calls faster that was introduced in H.323v2."
+msgstr "高速起動 (高速接続) モードで接続を確立します。高速起動モードは通話を素早く開始する新しい手法の一つで、H.323v2 で規格化されています。"
+
+#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:671
 msgid "Enable H.239 control"
 msgstr "H.239制御を有効にする"
 
-#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:669
+#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:671
 msgid "This enables H.239 capability for additional video roles."
 msgstr "追加の映像ロールのH.239機能を有効にします。"
 
-#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:671
+#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:673
 msgid "Select the H.239 Video Role"
 msgstr "H.239映像ロールの選択"
 
-#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:675
-#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:708
+#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:677
+#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:710
 msgid "DTMF Mode"
 msgstr "DTMF のモード"
 
-#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:677
-#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:710
+#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:679
+#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:712
 msgid "_Send DTMF as:"
 msgstr "DTMF の送信方式(_S):"
 
-#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:677
-#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:710
+#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:679
+#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:712
 msgid "Select the mode for DTMFs sending"
 msgstr "DTMF 送信のモードを選択"
 
-#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:691
+#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:693
 msgid "INFO"
 msgstr "INFO"
 
-#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:699
-#, fuzzy
-#| msgid "_Outbound Proxy:"
+#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:701
 msgid "_Outbound proxy:"
-msgstr "外側のプロキシ(_O):"
+msgstr "送信のプロキシ(_O):"
 
-#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:735
-#, fuzzy
-#| msgid "Ringing Device"
+#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:737
 msgid "Ringing device:"
-msgstr "着信音のデバイス"
+msgstr "着信音のデバイス:"
 
-#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:735
+#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:737
 msgid "Select the ringing audio device to use"
 msgstr "使用する着信音のデバイスを指定します"
 
-#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:737
+#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:739
 msgid "Output device:"
 msgstr "出力デバイス:"
 
-#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:744
-#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:803
+#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:746
+#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:805
 msgid "Input device:"
 msgstr "入力デバイス:"
 
 #. That button will refresh the device list
-#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:748
-#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:814
+#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:750
+#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:816
 msgid "_Detect devices"
 msgstr "デバイスの検出(_D)"
 
-#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:748
-#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:814
+#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:750
+#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:816
 msgid "Click here to refresh the device list"
 msgstr "ここをクリックするとデバイスの一覧を更新します"
 
-#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:782
+#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:784
 msgid "PAL (Europe)"
 msgstr "PAL (欧州)"
 
-#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:783
+#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:785
 msgid "NTSC (America)"
 msgstr "NTSC (北米)"
 
-#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:784
+#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:786
 msgid "SECAM (France)"
 msgstr "SECAM (フランス)"
 
-#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:785
+#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:787
 msgid "Auto"
 msgstr "自動"
 
-#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:797
+#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:799
 msgid "Video Devices"
 msgstr "映像のデバイス"
 
 #. Video Channel
-#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:807
+#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:809
 msgid "Channel:"
 msgstr "チャンネル:"
 
-#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:809
+#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:811
 msgid "Size:"
 msgstr "サイズ:"
 
-#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:809
+#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:811
 msgid "Select the transmitted video size"
 msgstr "転送する映像のサイズを選択します"
 
-#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:811
+#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:813
 msgid "Format:"
 msgstr "形式:"
 
-#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:830
-#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:858
-#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:1234
-#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:1244
+#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:832
+#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:860
+#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:1236
+#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:1246
 msgid "Codecs"
 msgstr "コーデック"
 
-#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:837
-#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:865
+#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:839
+#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:867
 msgid "Settings"
 msgstr "設定"
 
 #. Translators: the full sentence is Automatically adjust jitter buffer
 #. between X and Y ms
-#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:841
+#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:843
 msgid "Enable silence _detection"
 msgstr "無音検出を有効にする(_D)"
 
-#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:843
+#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:845
 msgid "Enable echo can_celation"
 msgstr "エコーキャンセレーションを有効にする(_C)"
 
-#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:845
+#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:847
 msgid "Maximum _jitter buffer (in ms):"
 msgstr "ジッターバッファーの最大値(_J):"
 
 #. Translators: the full sentence is Keep a minimum video quality of X %
-#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:868
-#, fuzzy
-#| msgid "Picture Quality"
+#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:870
 msgid "Picture quality"
-msgstr "画像の品質"
+msgstr "画質"
 
-#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:868
-#, fuzzy
-#| msgid "Frame Rate"
+#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:870
 msgid "Frame rate"
 msgstr "フレームレート"
 
-#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:868
+#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:870
 msgid "Choose if you want to guarantee a minimum image quality (possibly leading to dropped frames in order not to surpass the bitrate limit) or if you prefer to keep the frame rate"
 msgstr "画像の最低限の品質を保証したい場合 (ビットレートの上限を超えないようにフレームの数を間引く)、またはフレームレートを維持したい場合に指定しuてください"
 
-#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:870
+#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:872
 msgid "Maximum video _bitrate (in kbits/s):"
 msgstr "映像の最大ビットレート (Kバイト/秒)(_B):"
 
-#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:870
+#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:872
 msgid "The maximum video bitrate in kbits/s. The video quality and the effective frame rate will be dynamically adjusted to keep the bitrate at the given value."
 msgstr "映像の最大ビットレートを Kバイト/秒で指定します (ここで指定した値のビットレートを維持するために最も効率の良いフレームレートを自動的に計算します)"
 
-#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:1177
+#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:1179
 msgid "Ekiga Preferences"
 msgstr "Ekiga の設定"
 
-#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:1197
+#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:1199
 msgid "General"
 msgstr "全般"
 
-#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:1198
+#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:1200
 msgid "Personal Data"
 msgstr "個人の情報"
 
-#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:1203
+#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:1205
 msgid "General Settings"
 msgstr "全般の設定"
 
-#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:1212
+#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:1214
 msgid "Sound Events"
 msgstr "イベントの演奏"
 
-#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:1216
+#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:1218
 msgid "Protocols"
 msgstr "プロトコル"
 
-#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:1218
+#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:1220
 msgid "SIP Settings"
 msgstr "SIP の設定"
 
-#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:1223
+#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:1225
 msgid "H.323 Settings"
 msgstr "H.323 の設定"
 
 #. The player
-#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:1229
+#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:1231
 msgid "Audio"
 msgstr "音声"
 
-#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:1230
-#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:1240
+#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:1232
+#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:1242
 msgid "Devices"
 msgstr "デバイス"
 
-#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:1239
+#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:1241
 msgid "Video"
 msgstr "映像"
 
-#: ../lib/engine/gui/gtk-frontend/roster-view-gtk.cpp:1088
-#: ../lib/engine/gui/gtk-frontend/statusmenu.cpp:98
+#: ../lib/engine/gui/gtk-frontend/roster-view-gtk.cpp:1083
+#: ../lib/engine/gui/gtk-frontend/statusmenu.cpp:95
 msgid "Away"
 msgstr "離席中"
 
-#: ../lib/engine/gui/gtk-frontend/roster-view-gtk.cpp:1090
-#: ../lib/engine/gui/gtk-frontend/statusmenu.cpp:97
+#: ../lib/engine/gui/gtk-frontend/roster-view-gtk.cpp:1085
+#: ../lib/engine/gui/gtk-frontend/statusmenu.cpp:94
 msgid "Available"
 msgstr "在席中"
 
-#: ../lib/engine/gui/gtk-frontend/roster-view-gtk.cpp:1092
+#: ../lib/engine/gui/gtk-frontend/roster-view-gtk.cpp:1087
 msgid "Offline"
 msgstr "オフライン"
 
-#: ../lib/engine/gui/gtk-frontend/roster-view-gtk.cpp:1094
-#: ../lib/engine/gui/gtk-frontend/statusmenu.cpp:99
+#: ../lib/engine/gui/gtk-frontend/roster-view-gtk.cpp:1089
+#: ../lib/engine/gui/gtk-frontend/statusmenu.cpp:96
 msgid "Busy"
 msgstr "取り込み中"
 
-#: ../lib/engine/gui/gtk-frontend/statusicon.cpp:296
+#: ../lib/engine/gui/gtk-frontend/statusicon.cpp:294
 #, c-format
 msgid "You have %d message"
 msgid_plural "You have %d messages"
 msgstr[0] " %d件のメッセージを受け取りました"
 
-#: ../lib/engine/gui/gtk-frontend/statusmenu.cpp:395
+#: ../lib/engine/gui/gtk-frontend/statusmenu.cpp:392
 msgid "Custom message..."
 msgstr "独自のメッセージ..."
 
-#: ../lib/engine/gui/gtk-frontend/statusmenu.cpp:440
+#: ../lib/engine/gui/gtk-frontend/statusmenu.cpp:437
 msgid "Clear"
 msgstr "クリア"
 
 #. Build the dialog
-#: ../lib/engine/gui/gtk-frontend/statusmenu.cpp:528
-#: ../lib/engine/gui/gtk-frontend/statusmenu.cpp:676
+#: ../lib/engine/gui/gtk-frontend/statusmenu.cpp:525
+#: ../lib/engine/gui/gtk-frontend/statusmenu.cpp:673
 msgid "Custom Message"
 msgstr "独自のメッセージ"
 
-#: ../lib/engine/gui/gtk-frontend/statusmenu.cpp:544
+#: ../lib/engine/gui/gtk-frontend/statusmenu.cpp:541
 msgid "Delete custom messages:"
 msgstr "使用しない独自のメッセージ:"
 
-#: ../lib/engine/gui/gtk-frontend/statusmenu.cpp:693
+#: ../lib/engine/gui/gtk-frontend/statusmenu.cpp:690
 msgid "Define a custom message:"
 msgstr "使用する独自のメッセージ:"
 
-#: ../lib/gui/dialpad.c:52
+#: ../lib/gui/dialpad.c:53
 msgid "abc"
 msgstr "abc"
 
-#: ../lib/gui/dialpad.c:53
+#: ../lib/gui/dialpad.c:54
 msgid "def"
 msgstr "def"
 
-#: ../lib/gui/dialpad.c:54
+#: ../lib/gui/dialpad.c:55
 msgid "ghi"
 msgstr "ghi"
 
-#: ../lib/gui/dialpad.c:55
+#: ../lib/gui/dialpad.c:56
 msgid "jkl"
 msgstr "jkl"
 
-#: ../lib/gui/dialpad.c:56
+#: ../lib/gui/dialpad.c:57
 msgid "mno"
 msgstr "mno"
 
-#: ../lib/gui/dialpad.c:57
+#: ../lib/gui/dialpad.c:58
 msgid "pqrs"
 msgstr "pqrs"
 
-#: ../lib/gui/dialpad.c:58
+#: ../lib/gui/dialpad.c:59
 msgid "tuv"
 msgstr "tuv"
 
-#: ../lib/gui/dialpad.c:59
+#: ../lib/gui/dialpad.c:60
 msgid "wxyz"
 msgstr "wxyz"
 
-#: ../lib/gui/gmcallbacks.c:67
+#: ../lib/gui/gmcallbacks.c:66
 msgid "Contributors:"
 msgstr "貢献者:"
 
-#: ../lib/gui/gmcallbacks.c:72
+#: ../lib/gui/gmcallbacks.c:71
 msgid "Artwork:"
 msgstr "アートワーク:"
 
-#: ../lib/gui/gmcallbacks.c:79
+#: ../lib/gui/gmcallbacks.c:78
 msgid "See AUTHORS file for full credits"
 msgstr ""
 "すべてのクレジットについては\n"
 "AUTHORS ファイルを参照ください"
 
-#: ../lib/gui/gmcallbacks.c:95
+#: ../lib/gui/gmcallbacks.c:94
 msgid "This program is free software; you can redistribute it and/or modify it under the terms of the GNU General Public License as published by the Free Software Foundation; either version 2 of the License, or (at your option) any later version. "
-msgstr "このプログラムはフリーソフトウェアです。フリーソフトウェア財団が提供する GNU 一般公衆利用許諾契約書の第二版、あるいはそれ以降の版が定める条項の下で本プログラムを再頒布または変更することができます。"
+msgstr "This program is free software; you can redistribute it and/or modify it under the terms of the GNU General Public License as published by the Free Software Foundation; either version 2 of the License, or (at your option) any later version. "
 
-#: ../lib/gui/gmcallbacks.c:99
+#: ../lib/gui/gmcallbacks.c:98
 msgid "This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for more details. You should have received a copy of the GNU General Public License along with this program; if not, write to the Free Software Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301, USA."
-msgstr "本プログラムは有用とは思いますが、頒布にあたっては市場性または特定の目的に対する適合性についての暗黙の保証を含めて、いかなる保証も行ないません。詳細には GNU 一般公衆利用許諾契約書をご覧ください。"
+msgstr "This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for more details. You should have received a copy of the GNU General Public License along with this program; if not, write to the Free Software Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301, USA."
 
-#: ../lib/gui/gmcallbacks.c:106
+#: ../lib/gui/gmcallbacks.c:105
 msgid "Ekiga is licensed under the GPL license and as a special exception, you have permission to link or otherwise combine this program with the programs OPAL, OpenH323 and PWLIB, and distribute the combination, without applying the requirements of the GNU GPL to the OPAL, OpenH323 and PWLIB programs, as long as you do follow the requirements of the GNU GPL for all the rest of the software thus combined."
-msgstr ""
-"(以下、原文のままにする)\n"
-"Ekiga is licensed under the GPL license and as a special exception, you have permission to link or otherwise combine this program with the programs OPAL, OpenH323 and PWLIB, and distribute the combination, without applying the requirements of the GNU GPL to the OPAL, OpenH323 and PWLIB programs, as long as you do follow the requirements of the GNU GPL for all the rest of the software thus combined."
+msgstr "Ekiga is licensed under the GPL license and as a special exception, you have permission to link or otherwise combine this program with the programs OPAL, OpenH323 and PWLIB, and distribute the combination, without applying the requirements of the GNU GPL to the OPAL, OpenH323 and PWLIB programs, as long as you do follow the requirements of the GNU GPL for all the rest of the software thus combined."
 
 #. Translators: Please write translator credits here, and
 #. * separate names with \n
-#: ../lib/gui/gmcallbacks.c:118
+#: ../lib/gui/gmcallbacks.c:117
 msgid "translator-credits"
 msgstr ""
 "相花 毅 <takeshi.aihana@gmail.com>\n"
@@ -2906,15 +2862,15 @@ msgstr ""
 "松澤 二郎 <jmatsuzawa@gnome.org>\n"
 "日本GNOMEユーザー会 <http://www.gnome.gr.jp/>"
 
-#: ../lib/gui/gmcallbacks.c:123
+#: ../lib/gui/gmcallbacks.c:122
 msgid "Ekiga is full-featured SIP and H.323 compatible VoIP, IP-Telephony and Videoconferencing application that allows you to make audio and video calls to remote users with SIP and H.323 hardware or software."
 msgstr "Ekiga は SIP と H.323 に完全準拠な VoIP/IP 電話、そしてビデオ会議用のアプリケーションで、SIP と H.323 ハードウェアまたはソフトウェアを使って、音声と映像でリモートユーザーと通話することができます。"
 
-#: ../lib/gui/gmcallbacks.c:196
+#: ../lib/gui/gmcallbacks.c:195
 msgid "Unable to open help file."
 msgstr "ヘルプを表示できません"
 
-#: ../lib/gui/gmdialog.c:327
+#: ../lib/gui/gmdialog.c:323
 msgid "Do not show this dialog again"
 msgstr "次回からこのダイアログを表示しない"
 
@@ -2930,10 +2886,8 @@ msgid_plural "%d users found"
 msgstr[0] " %d人見つかりました"
 
 #: ../plugins/evolution/evolution-book.cpp:343
-#, fuzzy
-#| msgid "A_dd Contact"
 msgid "Add Contact"
-msgstr "連絡先の追加(_D)"
+msgstr "連絡先の追加"
 
 #: ../plugins/evolution/evolution-book.cpp:348
 #: ../plugins/evolution/evolution-contact.cpp:333
@@ -3064,8 +3018,6 @@ msgid "Please edit the following fields"
 msgstr "次の項目を編集してください:"
 
 #: ../plugins/ldap/ldap-book.cpp:944
-#, fuzzy
-#| msgid "Book _Name:"
 msgid "Book _name:"
 msgstr "アドレス帳の名前(_N):"
 
@@ -3090,14 +3042,10 @@ msgid "Subtree"
 msgstr "サブツリー"
 
 #: ../plugins/ldap/ldap-book.cpp:953
-#, fuzzy
-#| msgid "Single Level"
 msgid "Single level"
 msgstr "レベル1"
 
 #: ../plugins/ldap/ldap-book.cpp:954
-#, fuzzy
-#| msgid "_Search Scope"
 msgid "_Search scope"
 msgstr "検索範囲(_S):"
 
@@ -3108,30 +3056,24 @@ msgstr "検索範囲(_S):"
 #. * most LDAP servers it's "CommonName".
 #.
 #: ../plugins/ldap/ldap-book.cpp:969
-#, fuzzy
-#| msgid "_DisplayName Attribute:"
 msgid "_DisplayName attribute:"
-msgstr "DisplayName の属性(_D):"
+msgstr "表示名の属性(_D):"
 
 #: ../plugins/ldap/ldap-book.cpp:970
-#, fuzzy
-#| msgid "Call _Attributes:"
 msgid "Call _attributes:"
-msgstr "Call の属性(_A):"
+msgstr "コールの属性(_A):"
 
 #: ../plugins/ldap/ldap-book.cpp:970
 msgid "The field you are searching for"
 msgstr "検索しているフィールド"
 
 #: ../plugins/ldap/ldap-book.cpp:972 ../plugins/ldap/ldap-book.cpp:974
-#, fuzzy
-#| msgid "_Filter Template:"
 msgid "_Filter template:"
 msgstr "フィルターのテンプレート(_F):"
 
 #: ../plugins/ldap/ldap-book.cpp:972 ../plugins/ldap/ldap-book.cpp:974
 msgid "Here, a \"$\" is replaced by the search string"
-msgstr ""
+msgstr "ここでは、「$」は検索文字列に置換されます"
 
 #. Translators: Bind ID - In LDAP, the operation that begins an LDAP
 #. * session and authenticates the user to the directory is called a
@@ -3163,10 +3105,8 @@ msgid "Use SAS_L"
 msgstr "SASL を使う(_L)"
 
 #: ../plugins/ldap/ldap-book.cpp:1002
-#, fuzzy
-#| msgid "SASL _Mechanism"
 msgid "SASL _mechanism"
-msgstr "SASL の方式(_M):"
+msgstr "SASL 方式(_M)"
 
 #: ../plugins/ldap/ldap-book.cpp:1012
 msgid "Edit LDAP directory"
@@ -3181,16 +3121,12 @@ msgid "Please provide a Server URI\n"
 msgstr "サーバーの URI を指定してください\n"
 
 #: ../plugins/ldap/ldap-book.cpp:1040
-#, fuzzy
-#| msgid "Please provide a DisplayName Attribute\n"
 msgid "Please provide a DisplayName attribute\n"
-msgstr "DisplayName の属性を指定してください\n"
+msgstr "表示名の属性を指定してください\n"
 
 #: ../plugins/ldap/ldap-book.cpp:1043
-#, fuzzy
-#| msgid "Please provide a Call Attribute\n"
 msgid "Please provide a Call attribute\n"
-msgstr "Call 属性を指定してください\n"
+msgstr "コールの属性を指定してください\n"
 
 #: ../plugins/ldap/ldap-book.cpp:1046 ../plugins/ldap/ldap-book.cpp:1082
 msgid "Invalid Server URI\n"
@@ -3226,62 +3162,47 @@ msgstr "受諾"
 
 #: ../plugins/loudmouth/loudmouth-account.cpp:112
 #: ../plugins/loudmouth/loudmouth-account.cpp:159
-#, fuzzy
-#| msgid "inactive"
 msgid "Inactive"
-msgstr "アクティブではない"
+msgstr "休止"
 
 #: ../plugins/loudmouth/loudmouth-account.cpp:238
-#, fuzzy, c-format
-#| msgid "Could not connect to server"
+#, c-format
 msgid "Could not connect (%s)"
-msgstr "サーバーに接続できませんでした"
+msgstr "接続できませんでした (%s)"
 
 #: ../plugins/loudmouth/loudmouth-account.cpp:244
-#, fuzzy
-#| msgid "connecting"
 msgid "Connecting..."
-msgstr "接続中"
+msgstr "接続中..."
 
 #: ../plugins/loudmouth/loudmouth-account.cpp:284
-#, fuzzy
-#| msgid "authenticating"
 msgid "Authenticating..."
-msgstr "認証中"
+msgstr "認証中..."
 
 #. FIXME: can't we report better?
 #: ../plugins/loudmouth/loudmouth-account.cpp:294
-#, fuzzy
-#| msgid "Could not connect to server"
 msgid "Could not connect"
-msgstr "サーバーに接続できませんでした"
+msgstr "接続できませんでした"
 
 #: ../plugins/loudmouth/loudmouth-account.cpp:304
-#, fuzzy
-#| msgid "disconnected"
 msgid "Disconnected"
-msgstr "切断されました"
+msgstr "切断しました"
 
 #: ../plugins/loudmouth/loudmouth-account.cpp:314
-#, fuzzy
-#| msgid "connected"
 msgid "Connected"
 msgstr "接続しました"
 
 #. FIXME: can't we report something better?
 #: ../plugins/loudmouth/loudmouth-account.cpp:320
-#, fuzzy
-#| msgid "Could not unregister"
 msgid "Could not authenticate"
-msgstr "登録を解除できませんでした"
+msgstr "認証できませんでした"
 
 #: ../plugins/loudmouth/loudmouth-account.cpp:350
-#: ../plugins/loudmouth/loudmouth-bank.cpp:127
+#: ../plugins/loudmouth/loudmouth-bank.cpp:125
 msgid "Server:"
 msgstr "サーバー:"
 
 #: ../plugins/loudmouth/loudmouth-account.cpp:350
-#: ../plugins/loudmouth/loudmouth-bank.cpp:127
+#: ../plugins/loudmouth/loudmouth-bank.cpp:125
 msgid "The server, e.g. jabber.org"
 msgstr "サーバー、例: jabber.org"
 
@@ -3294,22 +3215,20 @@ msgid "The transport protocol port, if different than the default"
 msgstr "トランスポートプロトコルのポート(デフォルトと異なる場合)"
 
 #: ../plugins/loudmouth/loudmouth-account.cpp:358
-#: ../plugins/loudmouth/loudmouth-bank.cpp:128
+#: ../plugins/loudmouth/loudmouth-bank.cpp:126
 msgid "Resource:"
 msgstr "リソース:"
 
 #: ../plugins/loudmouth/loudmouth-account.cpp:358
-#: ../plugins/loudmouth/loudmouth-bank.cpp:128
+#: ../plugins/loudmouth/loudmouth-bank.cpp:126
 msgid "The resource, such as home or work, allowing to distinguish among several terminals registered to the same account; leave empty if you do not know what it is"
 msgstr "自宅または勤務先など、同じアカウントに登録されている複数のターミナルで区別するために指定します。分からない場合は空白のままにしてください。"
 
-#: ../plugins/loudmouth/loudmouth-bank.cpp:111
-#, fuzzy
-#| msgid "_Add a jabber/XMPP account"
+#: ../plugins/loudmouth/loudmouth-bank.cpp:109
 msgid "_Add a Jabber/XMPP Account"
 msgstr "jabber/XMPP のアカウントを追加(_A)"
 
-#: ../plugins/loudmouth/loudmouth-bank.cpp:123
+#: ../plugins/loudmouth/loudmouth-bank.cpp:121
 msgid "Please fill in the following fields:"
 msgstr "次のフィールドを入力してください:"
 
@@ -3421,10 +3340,8 @@ msgid "Please fill in this form to change an existing element of the remote rost
 msgstr "リモートの名簿の既存エレメントを変更する場合は、このフォームに入力してください"
 
 #: ../plugins/resource-list/rl-cluster.cpp:102
-#, fuzzy
-#| msgid "Add new resource-list"
 msgid "Add resource list"
-msgstr "新しいリソース一覧の追加"
+msgstr "リソース一覧の追加"
 
 #: ../plugins/resource-list/rl-cluster.cpp:166
 msgid "Add new resource-list"
@@ -3520,11 +3437,11 @@ msgstr "リモートの連絡先の編集"
 msgid "Please fill in this form to change an existing contact on a remote server"
 msgstr "リモートのサーバーに保存している連絡先を編集してください:"
 
-#: ../src/gui/main.cpp:136
+#: ../src/gui/main.cpp:137
 msgid "Prints debug messages in the console (level between 1 and 8)"
 msgstr "デバッグメッセージをコンソールに表示する (レベル: 1〜8)"
 
-#: ../src/gui/main.cpp:141
+#: ../src/gui/main.cpp:142
 msgid "Makes Ekiga call the given URI"
 msgstr "指定した URI を呼び出す"
 
@@ -3591,11 +3508,6 @@ msgstr "指定した URI を呼び出す"
 #~ msgid "Ca_ll"
 #~ msgstr "発信(_L)"
 
-#, fuzzy
-#~| msgid "Close the Ekiga window"
-#~ msgid "Close the call window"
-#~ msgstr "Ekiga のウィンドウを閉じます"
-
 #~ msgid "Picture-in-Picture in Separate _Window"
 #~ msgstr "両方 (別々のウィンドウ)(_W)"
 
@@ -3638,20 +3550,11 @@ msgstr "指定した URI を呼び出す"
 #~ msgid "Detected new audio output device:"
 #~ msgstr "新しく検出した音声出力デバイス:"
 
-#, fuzzy
-#~ msgid "Detected new ringer device:"
-#~ msgstr "新しく検出した音声入力デバイス:"
-
 #~ msgid "Detected new video input device:"
 #~ msgstr "新しく検出した映像入力デバイス:"
 
 #~ msgid "Do you want to use it as default device?"
 #~ msgstr "これをデフォルトのデバイスとして使用しますか?"
-
-#, fuzzy
-#~| msgid "Show the call panel"
-#~ msgid "Show the call window"
-#~ msgstr "呼び出しパネルを表示するかどうか"
 
 #~ msgid "User Interface"
 #~ msgstr "ユーザーインターフェース"
