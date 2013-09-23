@@ -164,7 +164,7 @@ GETTEXT_VER := 0.18.1.1-2
 GETTEXT_URL := http://ftp.gnome.org/pub/gnome/binaries/win32/dependencies
 GETTEXT_ARCHIVE := gettext-runtime-dev_$(GETTEXT_VER)_win32.zip
 
-LIBAV_VER := 0.8.6
+LIBAV_VER := 9.9
 LIBAV_URL := http://www.libav.org/releases
 LIBAV_DIR := $(BUILDROOT)/libav-$(LIBAV_VER)
 LIBAV_ARCHIVE := libav-$(LIBAV_VER).tar.xz
@@ -494,14 +494,7 @@ update-sources::
 $(LIBAV_DIR)/config.status: $(SRCDIR)/$(LIBAV_ARCHIVE)
 	rm -rf $(LIBAV_DIR)
 	tar Jxf $(SRCDIR)/$(LIBAV_ARCHIVE) -C $(BUILDROOT)
-ifeq ($(MINGW32), 0)
-	#avoid unnecessary configuration error
-	# see also http://ac3filter.net/wiki/How_to_build_ffmpeg
-ifeq ($(BIT32), 1)
-	sed -i -e 's#die "ERROR: MinGW runtime version must be >= 3.15."#echo die#g' $(LIBAV_DIR)/configure
-	sed -i -e 's#die "ERROR: avisynth and vfwcap_demuxer require w32api version 3.13 or later."#echo die#g' $(LIBAV_DIR)/configure
-endif
-else
+ifeq ($(MINGW32), 1)
 	# workaround a bug in gcc 4.2.x (http://code.google.com/p/chromium/issues/detail?id=37905)
 	sed -i -e 's#check_cflags -Werror=missing-prototypes##g' $(LIBAV_DIR)/configure
 endif
@@ -787,7 +780,7 @@ $(TARGETDIR)/zips: binaries $(EKIGA_DIR)/src/ekiga.exe
 	for lib in $(PTLIB_LIB) $(OPAL_LIB) libboost_signals.dll; do \
 		install -m 755 $(LIBDIR)/$$lib $(EKIGA_PREFIX) ;\
 	done
-	for lib in liblber.dll libldap.dll libxml2-2.dll libspeex-1.dll libspeexdsp-1.dll libtheora-0.dll avcodec-53.dll avutil-51.dll libogg-0.dll; do \
+	for lib in liblber.dll libldap.dll libxml2-2.dll libspeex-1.dll libspeexdsp-1.dll libtheora-0.dll avcodec-54.dll avutil-52.dll libogg-0.dll; do \
 		install -m 755 $(BINDIR)/$$lib $(EKIGA_PREFIX) ;\
 	done
 ifeq ($(MINGW32), 1)
