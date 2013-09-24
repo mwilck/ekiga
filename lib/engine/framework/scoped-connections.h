@@ -38,9 +38,9 @@
 #define __SCOPED_CONNECTIONS_H__
 
 #include <list>
-#include <boost/signal.hpp>
+#include <boost/signals2.hpp>
 
-/* The boost signals library has several tricks to disconnect connections on signals
+/* The boost signals2 library has several tricks to disconnect connections on signals
  * automatically, namely :
  * - inherit from boost::signals2::trackable, which is good to get rid of
  * connnections to a dying object ;
