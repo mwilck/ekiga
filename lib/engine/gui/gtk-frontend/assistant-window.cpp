@@ -49,8 +49,6 @@
 #include "default_devices.h"
 #include "gtk-frontend.h"
 #include "opal-bank.h"
-#include "audioinput-core.h"
-#include "audiooutput-core.h"
 #include "device-lists.h"
 
 #include <gdk/gdkkeysyms.h>
@@ -72,7 +70,6 @@ struct _AssistantWindowPrivate
   GtkWidget *ekiga_net_page;
   GtkWidget *ekiga_out_page;
   GtkWidget *connection_type_page;
-  GtkWidget *audio_devices_page;
   GtkWidget *summary_page;
 
   GtkWidget *name;
@@ -86,10 +83,6 @@ struct _AssistantWindowPrivate
   GtkWidget *skip_ekiga_out;
 
   GtkWidget *connection_type;
-
-  GtkWidget *audio_ringer;
-  GtkWidget *audio_player;
-  GtkWidget *audio_recorder;
 
   gint last_active_page;
 
@@ -142,158 +135,6 @@ set_current_page_complete (GtkAssistant *assistant,
   page_number = gtk_assistant_get_current_page (assistant);
   current_page = gtk_assistant_get_nth_page (assistant, page_number);
   gtk_assistant_set_page_complete (assistant, current_page, complete);
-}
-
-static void
-update_combo_box (GtkComboBox         *combo_box,
-                  const gchar * const *options,
-                  const gchar         *default_value)
-{
-  GtkTreeIter iter;
-  GtkTreeModel *model;
-
-  int i;
-  int selected;
-
-  g_return_if_fail (options != NULL);
-
-  model = gtk_combo_box_get_model (combo_box);
-  gtk_list_store_clear (GTK_LIST_STORE (model));
-
-  selected = 0;
-  for (i = 0; options[i]; i++) {
-    if (default_value && g_strcmp0 (options[i], default_value) == 0)
-      selected = i;
-
-    gtk_list_store_append (GTK_LIST_STORE (model), &iter);
-    gtk_list_store_set (GTK_LIST_STORE (model), &iter,
-                        0, options [i],
-                        1, true,
-                        -1);
-  }
-
-  gtk_combo_box_set_active(combo_box, selected);
-}
-
-static void
-add_combo_box (GtkComboBox         *combo_box,
-               const gchar         *option)
-{
-  GtkTreeModel *model = NULL;
-  GtkTreeIter iter;
-
-  gboolean found = FALSE;
-
-  if (!option)
-    return;
-
-  model = gtk_combo_box_get_model (combo_box);
-
-  if (gtk_tree_model_get_iter_first (GTK_TREE_MODEL (model), &iter)) {
-
-    do {
-      gchar *value_string = NULL;
-      GValue value = { 0, {{0}, {0}} };
-      gtk_tree_model_get_value (GTK_TREE_MODEL (model), &iter, 0, &value);
-      value_string = (gchar *) g_value_get_string (&value);
-      if (g_ascii_strcasecmp  (value_string, option) == 0) {
-        gtk_list_store_set (GTK_LIST_STORE (model), &iter,
-                            1, TRUE,
-                            -1);
-        g_value_unset(&value);
-        found = TRUE;
-        break;
-      }
-      g_value_unset(&value);
-
-    } while (gtk_tree_model_iter_next(GTK_TREE_MODEL (model), &iter));
-  }
-
-  if (!found) {
-    gtk_list_store_append (GTK_LIST_STORE (model), &iter);
-    gtk_list_store_set (GTK_LIST_STORE (model), &iter,
-                        0, option,
-                        1, TRUE,
-                        -1);
-  }
-}
-
-static void
-remove_combo_box (GtkComboBox         *combo_box,
-                  const gchar         *option)
-{
-  GtkTreeModel *model;
-  GtkTreeIter iter;
-  int cpt = 0;
-  int active;
-
-  g_return_if_fail (option != NULL);
-  model = gtk_combo_box_get_model (combo_box);
-  active = gtk_combo_box_get_active (GTK_COMBO_BOX (combo_box));
-
-  if (gtk_tree_model_get_iter_first (GTK_TREE_MODEL (model), &iter)) {
-
-    do {
-      gchar *value_string = NULL;
-      GValue value = { 0, {{0}, {0}} };
-      gtk_tree_model_get_value (GTK_TREE_MODEL (model), &iter, 0, &value);
-      value_string = (gchar *) g_value_get_string (&value);
-      if (g_ascii_strcasecmp  (value_string, option) == 0) {
-
-        if (cpt == active) {
-          gtk_list_store_set (GTK_LIST_STORE (model), &iter,
-                              1, FALSE,
-                              -1);
-        }
-        else {
-          gtk_list_store_remove (GTK_LIST_STORE (model), &iter);
-        }
-        g_value_unset(&value);
-        break;
-      }
-      g_value_unset(&value);
-      cpt++;
-
-    } while (gtk_tree_model_iter_next(GTK_TREE_MODEL (model), &iter));
-  }
-}
-
-static void
-on_audioinput_device_added_cb (const Ekiga::AudioInputDevice& device,
-			       bool,
-			       AssistantWindow* assistant)
-{
-  std::string device_string = device.GetString();
-  add_combo_box (GTK_COMBO_BOX (assistant->priv->audio_recorder), device_string.c_str());
-}
-
-static void
-on_audioinput_device_removed_cb (const Ekiga::AudioInputDevice& device,
-				 bool,
-				 AssistantWindow* assistant)
-{
-  std::string device_string = device.GetString();
-  remove_combo_box (GTK_COMBO_BOX (assistant->priv->audio_recorder),  device_string.c_str());
-}
-
-static void
-on_audiooutput_device_added_cb (const Ekiga::AudioOutputDevice& device,
-				bool,
-				AssistantWindow *assistant)
-{
-  std::string device_string = device.GetString();
-  add_combo_box (GTK_COMBO_BOX (assistant->priv->audio_player), device_string.c_str());
-  add_combo_box (GTK_COMBO_BOX (assistant->priv->audio_ringer), device_string.c_str());
-}
-
-static void
-on_audiooutput_device_removed_cb (const Ekiga::AudioOutputDevice& device,
-				  bool,
-				  AssistantWindow* assistant)
-{
-  std::string device_string = device.GetString();
-  remove_combo_box (GTK_COMBO_BOX (assistant->priv->audio_player),  device_string.c_str());
-  remove_combo_box (GTK_COMBO_BOX (assistant->priv->audio_ringer),  device_string.c_str());
 }
 
 static void
@@ -952,184 +793,30 @@ apply_connection_type_page (AssistantWindow *assistant)
 
 
 static void
-create_audio_devices_page (AssistantWindow *assistant)
+apply_audio_devices_page (AssistantWindow */*assistant*/)
 {
-  GtkListStore *model;
-  GtkWidget *vbox;
-  GtkWidget *label;
-
-  GtkCellRenderer *renderer;
-
-  gchar *text;
-
-  vbox = create_page (assistant, _("Audio Devices"), GTK_ASSISTANT_PAGE_CONTENT);
-
-  label = gtk_label_new (_("Please choose the audio ringing device:"));
-  gtk_misc_set_alignment (GTK_MISC (label), 0.0, 0.5);
-  gtk_box_pack_start (GTK_BOX (vbox), label, FALSE, FALSE, 0);
-
-  model = gtk_list_store_new (2, G_TYPE_STRING, G_TYPE_BOOLEAN);
-  assistant->priv->audio_ringer = gtk_combo_box_new_with_model (GTK_TREE_MODEL (model));
-  renderer = gtk_cell_renderer_text_new ();
-  gtk_cell_layout_pack_start (GTK_CELL_LAYOUT (assistant->priv->audio_ringer), renderer, FALSE);
-  gtk_cell_layout_set_attributes (GTK_CELL_LAYOUT (assistant->priv->audio_ringer), renderer,
-                                  "text", 0,
-                                  "sensitive", 1,
-                                  NULL);
-  g_object_set (G_OBJECT (renderer),
-                "ellipsize-set", TRUE,
-                "ellipsize", PANGO_ELLIPSIZE_END,
-                "width-chars", 65, NULL);
-  gtk_label_set_mnemonic_widget (GTK_LABEL (label), assistant->priv->audio_ringer);
-  gtk_box_pack_start (GTK_BOX (vbox), assistant->priv->audio_ringer, FALSE, FALSE, 0);
-
-  label = gtk_label_new (NULL);
-  text = g_strdup_printf ("<i>%s</i>", _("The audio ringing device is the device that will be used to play the ringing sound on incoming calls."));
-  gtk_label_set_markup (GTK_LABEL (label), text);
-  g_free (text);
-  gtk_label_set_line_wrap (GTK_LABEL (label), TRUE);
-  gtk_misc_set_alignment (GTK_MISC (label), 0.0, 0.5);
-  gtk_box_pack_start (GTK_BOX (vbox), label, FALSE, TRUE, 0);
-
-  label = gtk_label_new ("");
-  gtk_box_pack_start (GTK_BOX (vbox), label, FALSE, FALSE, 0);
-
-  //---
-  label = gtk_label_new (_("Please choose the audio output device:"));
-  gtk_misc_set_alignment (GTK_MISC (label), 0.0, 0.5);
-  gtk_box_pack_start (GTK_BOX (vbox), label, FALSE, FALSE, 0);
-
-  model = gtk_list_store_new (2, G_TYPE_STRING, G_TYPE_BOOLEAN);
-  assistant->priv->audio_player = gtk_combo_box_new_with_model (GTK_TREE_MODEL (model));
-  renderer = gtk_cell_renderer_text_new ();
-  gtk_cell_layout_pack_start (GTK_CELL_LAYOUT (assistant->priv->audio_player), renderer, FALSE);
-  gtk_cell_layout_set_attributes (GTK_CELL_LAYOUT (assistant->priv->audio_player), renderer,
-                                  "text", 0,
-                                  "sensitive", 1,
-                                  NULL);
-  g_object_set (G_OBJECT (renderer),
-                "ellipsize-set", TRUE,
-                "ellipsize", PANGO_ELLIPSIZE_END,
-                "width-chars", 65, NULL);
-  gtk_label_set_mnemonic_widget (GTK_LABEL (label), assistant->priv->audio_player);
-  gtk_box_pack_start (GTK_BOX (vbox), assistant->priv->audio_player, FALSE, FALSE, 0);
-
-  label = gtk_label_new (NULL);
-  text = g_strdup_printf ("<i>%s</i>", _("The audio output device is the device that will be used to play audio during calls."));
-  gtk_label_set_markup (GTK_LABEL (label), text);
-  g_free (text);
-  gtk_label_set_line_wrap (GTK_LABEL (label), TRUE);
-  gtk_misc_set_alignment (GTK_MISC (label), 0.0, 0.5);
-  gtk_box_pack_start (GTK_BOX (vbox), label, FALSE, TRUE, 0);
-
-  label = gtk_label_new ("");
-  gtk_box_pack_start (GTK_BOX (vbox), label, FALSE, FALSE, 0);
-
-  //---
-  label = gtk_label_new (_("Please choose the audio input device:"));
-  gtk_misc_set_alignment (GTK_MISC (label), 0.0, 0.5);
-  gtk_box_pack_start (GTK_BOX (vbox), label, FALSE, FALSE, 0);
-
-  model = gtk_list_store_new (2, G_TYPE_STRING, G_TYPE_BOOLEAN);
-  assistant->priv->audio_recorder = gtk_combo_box_new_with_model (GTK_TREE_MODEL (model));
-  renderer = gtk_cell_renderer_text_new ();
-  gtk_cell_layout_pack_start (GTK_CELL_LAYOUT (assistant->priv->audio_recorder), renderer, FALSE);
-  gtk_cell_layout_set_attributes (GTK_CELL_LAYOUT (assistant->priv->audio_recorder), renderer,
-                                  "text", 0,
-                                  "sensitive", 1,
-                                  NULL);
-  g_object_set (G_OBJECT (renderer),
-                "ellipsize-set", TRUE,
-                "ellipsize", PANGO_ELLIPSIZE_END,
-                "width-chars", 65, NULL);
-  gtk_label_set_mnemonic_widget (GTK_LABEL (label), assistant->priv->audio_recorder);
-  gtk_box_pack_start (GTK_BOX (vbox), assistant->priv->audio_recorder, FALSE, FALSE, 0);
-
-  label = gtk_label_new (NULL);
-  text = g_strdup_printf ("<i>%s</i>", _("The audio input device is the device that will be used to record your voice during calls."));
-  gtk_label_set_markup (GTK_LABEL (label), text);
-  g_free (text);
-  gtk_label_set_line_wrap (GTK_LABEL (label), TRUE);
-  gtk_misc_set_alignment (GTK_MISC (label), 0.0, 0.5);
-  gtk_box_pack_start (GTK_BOX (vbox), label, FALSE, TRUE, 0);
-
-  label = gtk_label_new ("");
-  gtk_box_pack_start (GTK_BOX (vbox), label, FALSE, FALSE, 0);
-
-  assistant->priv->audio_devices_page = vbox;
-  gtk_widget_show_all (vbox);
-  gtk_assistant_set_page_complete (GTK_ASSISTANT (assistant), vbox, TRUE);
-}
-
-
-static void
-prepare_audio_devices_page (AssistantWindow *assistant)
-{
-  gchar *ringer;
-  gchar *player;
-  gchar *recorder;
-  PStringArray devices;
-  char **array;
+  gchar *ringer, *player, *recorder;
 
   ringer = gm_conf_get_string (SOUND_EVENTS_KEY "output_device");
-  if (ringer == NULL || !ringer[0])
+  if (ringer == NULL || !ringer[0]) {
     ringer = g_strdup (DEFAULT_AUDIO_DEVICE_NAME);
+    gm_conf_set_string (SOUND_EVENTS_KEY "output_device", ringer);
+  }
+  g_free (ringer);
 
   player = gm_conf_get_string (AUDIO_DEVICES_KEY "output_device");
-  if (player == NULL || !player[0])
+  if (player == NULL || !player[0]) {
     player = g_strdup (DEFAULT_AUDIO_DEVICE_NAME);
+    gm_conf_set_string (AUDIO_DEVICES_KEY "output_device", player);
+  }
+  g_free (player);
 
   recorder = gm_conf_get_string (AUDIO_DEVICES_KEY "input_device");
-  if (recorder == NULL || !recorder[0])
+  if (recorder == NULL || !recorder[0]) {
     recorder = g_strdup (DEFAULT_AUDIO_DEVICE_NAME);
-
-  /* FIXME: We should use DetectDevices, however DetectDevices
-   * works only for the currently selected audio and video plugins,
-   * not for a random one.
-   */
-  std::vector <std::string> device_list;
-
-  get_audiooutput_devices (assistant->priv->audiooutput_core, device_list);
-  array = vector_of_string_to_array (device_list);
-  update_combo_box (GTK_COMBO_BOX (assistant->priv->audio_ringer), array, ringer);
-  update_combo_box (GTK_COMBO_BOX (assistant->priv->audio_player), array, player);
-  g_free (array);
-
-
-  get_audioinput_devices (assistant->priv->audioinput_core, device_list);
-  array = vector_of_string_to_array (device_list);
-  update_combo_box (GTK_COMBO_BOX (assistant->priv->audio_recorder), array, recorder);
-  g_free (array);
-
-  g_free (ringer);
-  g_free (player);
+    gm_conf_set_string (AUDIO_DEVICES_KEY "input_device", recorder);
+  }
   g_free (recorder);
-}
-
-
-static void
-apply_audio_devices_page (AssistantWindow *assistant)
-{
-  gchar *device;
-  GtkTreeIter citer;
-
-  if (!gtk_combo_box_get_active_iter (GTK_COMBO_BOX (assistant->priv->audio_ringer), &citer))
-    g_warn_if_reached ();
-  gtk_tree_model_get (gtk_combo_box_get_model (GTK_COMBO_BOX (assistant->priv->audio_ringer)), &citer, 0, &device, -1);
-  gm_conf_set_string (SOUND_EVENTS_KEY "output_device", device);
-  g_free (device);
-
-  if (!gtk_combo_box_get_active_iter (GTK_COMBO_BOX (assistant->priv->audio_player), &citer))
-    g_warn_if_reached ();
-  gtk_tree_model_get (gtk_combo_box_get_model (GTK_COMBO_BOX (assistant->priv->audio_player)), &citer, 0, &device, -1);
-  gm_conf_set_string (AUDIO_DEVICES_KEY "output_device", device);
-  g_free (device);
-
-  if (!gtk_combo_box_get_active_iter (GTK_COMBO_BOX (assistant->priv->audio_recorder), &citer))
-    g_warn_if_reached ();
-  gtk_tree_model_get (gtk_combo_box_get_model (GTK_COMBO_BOX (assistant->priv->audio_recorder)), &citer, 0, &device, -1);
-  gm_conf_set_string (AUDIO_DEVICES_KEY "input_device", device);
-  g_free (device);
 }
 
 
@@ -1141,7 +828,6 @@ apply_video_devices_page (AssistantWindow *assistant)
   gchar* current_plugin;
 
   current_plugin = gm_conf_get_string (VIDEO_DEVICES_KEY "input_device");
-  cout << "eugen crt plugin was " << current_plugin << endl;
   if (current_plugin == NULL || !current_plugin[0]) {
     g_free (current_plugin);
     get_videoinput_devices (assistant->priv->videoinput_core, device_list);
@@ -1149,7 +835,6 @@ apply_video_devices_page (AssistantWindow *assistant)
     current_plugin = g_strdup (get_default_video_device_name (array));
     g_free (array);
     gm_conf_set_string (VIDEO_DEVICES_KEY "input_device", current_plugin);
-    cout << "eugen crt plugin is set to " << current_plugin << endl;
   }
   g_free (current_plugin);
 }
@@ -1241,57 +926,6 @@ prepare_summary_page (AssistantWindow *assistant)
     g_free (value);
   }
 
-  /* The audio ringing device */
-  gtk_list_store_append (model, &iter);
-  if (!gtk_combo_box_get_active_iter (GTK_COMBO_BOX (assistant->priv->audio_ringer), &citer)) {
-
-    g_warn_if_reached ();
-
-  } else {
-
-    gchar *value = NULL;
-    gtk_tree_model_get (gtk_combo_box_get_model (GTK_COMBO_BOX (assistant->priv->audio_ringer)), &citer, 0, &value, -1);
-    gtk_list_store_set (model, &iter,
-			SUMMARY_KEY_COLUMN, _("Audio Ringing Device"),
-			SUMMARY_VALUE_COLUMN, value,
-			-1);
-    g_free (value);
-  }
-
-  /* The audio playing device */
-  gtk_list_store_append (model, &iter);
-  if (!gtk_combo_box_get_active_iter (GTK_COMBO_BOX (assistant->priv->audio_player), &citer)) {
-
-    g_warn_if_reached ();
-
-  } else {
-
-    gchar* value = NULL;
-    gtk_tree_model_get (gtk_combo_box_get_model (GTK_COMBO_BOX (assistant->priv->audio_player)), &citer, 0, &value, -1);
-    gtk_list_store_set (model, &iter,
-			SUMMARY_KEY_COLUMN, _("Audio Output Device"),
-			SUMMARY_VALUE_COLUMN, value,
-			-1);
-    g_free (value);
-  }
-
-  /* The audio recording device */
-  gtk_list_store_append (model, &iter);
-  if (!gtk_combo_box_get_active_iter (GTK_COMBO_BOX (assistant->priv->audio_recorder), &citer)) {
-
-    g_warn_if_reached ();
-
-  } else {
-
-    gchar* value = NULL;
-    gtk_tree_model_get (gtk_combo_box_get_model (GTK_COMBO_BOX (assistant->priv->audio_recorder)), &citer, 0, &value, -1);
-    gtk_list_store_set (model, &iter,
-			SUMMARY_KEY_COLUMN, _("Audio Input Device"),
-			SUMMARY_VALUE_COLUMN, value,
-			-1);
-    g_free (value);
-  }
-
   /* The ekiga.net account */
   {
     gchar* value = NULL;
@@ -1342,7 +976,6 @@ assistant_window_init (AssistantWindow *assistant)
   create_ekiga_net_page (assistant);
   create_ekiga_out_page (assistant);
   create_connection_type_page (assistant);
-  create_audio_devices_page (assistant);
   create_summary_page (assistant);
 
   /* FIXME: what the hell is it needed for? */
@@ -1389,11 +1022,6 @@ assistant_window_prepare (GtkAssistant *gtkassistant,
 
   if (page == assistant->priv->connection_type_page) {
     prepare_connection_type_page (assistant);
-    return;
-  }
-
-  if (page == assistant->priv->audio_devices_page) {
-    prepare_audio_devices_page (assistant);
     return;
   }
 
@@ -1513,24 +1141,12 @@ assistant_window_new (Ekiga::ServiceCore& service_core)
   assistant->priv->audiooutput_core = service_core.get<Ekiga::AudioOutputCore> ("audiooutput-core");
   assistant->priv->bank = service_core.get<Opal::Bank> ("opal-account-store");
 
-  conn = assistant->priv->audioinput_core->device_added.connect (boost::bind (&on_audioinput_device_added_cb, _1, _2, assistant));
-  assistant->priv->connections.add (conn);
-  conn = assistant->priv->audioinput_core->device_removed.connect (boost::bind (&on_audioinput_device_removed_cb, _1, _2, assistant));
-  assistant->priv->connections.add (conn);
-
-  conn = assistant->priv->audiooutput_core->device_added.connect (boost::bind (&on_audiooutput_device_added_cb, _1, _2, assistant));
-  assistant->priv->connections.add (conn);
-  conn = assistant->priv->audiooutput_core->device_removed.connect (boost::bind (&on_audiooutput_device_removed_cb, _1, _2, assistant));
-  assistant->priv->connections.add (conn);
-
   /* Notifiers for the VIDEO_CODECS_KEY keys */
-  notifier =
-    gm_conf_notifier_add (VIDEO_CODECS_KEY "maximum_video_tx_bitrate",
-			  kind_of_net_changed_nt, NULL);
+  notifier = gm_conf_notifier_add (VIDEO_CODECS_KEY "maximum_video_tx_bitrate",
+                                   kind_of_net_changed_nt, NULL);
   assistant->priv->notifiers.push_front (notifier);
-  notifier =
-    gm_conf_notifier_add (VIDEO_CODECS_KEY "temporal_spatial_tradeoff",
-			  kind_of_net_changed_nt, NULL);
+  notifier = gm_conf_notifier_add (VIDEO_CODECS_KEY "temporal_spatial_tradeoff",
+                                   kind_of_net_changed_nt, NULL);
   assistant->priv->notifiers.push_front (notifier);
 
   return GTK_WIDGET (assistant);
