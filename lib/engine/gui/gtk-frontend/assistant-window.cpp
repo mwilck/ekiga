@@ -49,7 +49,6 @@
 #include "default_devices.h"
 #include "gtk-frontend.h"
 #include "opal-bank.h"
-#include "videoinput-core.h"
 #include "audioinput-core.h"
 #include "audiooutput-core.h"
 #include "device-lists.h"
@@ -74,7 +73,6 @@ struct _AssistantWindowPrivate
   GtkWidget *ekiga_out_page;
   GtkWidget *connection_type_page;
   GtkWidget *audio_devices_page;
-  GtkWidget *video_devices_page;
   GtkWidget *summary_page;
 
   GtkWidget *name;
@@ -92,8 +90,6 @@ struct _AssistantWindowPrivate
   GtkWidget *audio_ringer;
   GtkWidget *audio_player;
   GtkWidget *audio_recorder;
-
-  GtkWidget *video_device;
 
   gint last_active_page;
 
@@ -260,24 +256,6 @@ remove_combo_box (GtkComboBox         *combo_box,
 
     } while (gtk_tree_model_iter_next(GTK_TREE_MODEL (model), &iter));
   }
-}
-
-static void
-on_videoinput_device_added_cb (const Ekiga::VideoInputDevice& device,
-			       bool,
-			       AssistantWindow* assistant)
-{
-  std::string device_string = device.GetString();
-  add_combo_box (GTK_COMBO_BOX (assistant->priv->video_device), device_string.c_str());
-}
-
-static void
-on_videoinput_device_removed_cb (const Ekiga::VideoInputDevice& device,
-				 bool,
-				 AssistantWindow* assistant)
-{
-  std::string device_string = device.GetString();
-  remove_combo_box (GTK_COMBO_BOX (assistant->priv->video_device),  device_string.c_str());
 }
 
 static void
@@ -1156,79 +1134,24 @@ apply_audio_devices_page (AssistantWindow *assistant)
 
 
 static void
-create_video_devices_page (AssistantWindow *assistant)
-{
-  GtkListStore *model;
-  GtkCellRenderer *renderer;
-  GtkWidget *vbox;
-  GtkWidget *label;
-  gchar *text;
-
-  vbox = create_page (assistant, _("Video Input Device"), GTK_ASSISTANT_PAGE_CONTENT);
-
-  label = gtk_label_new (_("Please choose your video input device:"));
-  gtk_misc_set_alignment (GTK_MISC (label), 0.0, 0.5);
-  gtk_box_pack_start (GTK_BOX (vbox), label, FALSE, FALSE, 0);
-
-  model = gtk_list_store_new (2, G_TYPE_STRING, G_TYPE_BOOLEAN);
-  assistant->priv->video_device = gtk_combo_box_new_with_model (GTK_TREE_MODEL (model));
-  renderer = gtk_cell_renderer_text_new ();
-  gtk_cell_layout_pack_start (GTK_CELL_LAYOUT (assistant->priv->video_device), renderer, FALSE);
-  gtk_cell_layout_set_attributes (GTK_CELL_LAYOUT (assistant->priv->video_device), renderer,
-                                  "text", 0,
-                                  "sensitive", 1,
-                                  NULL);
-  g_object_set (G_OBJECT (renderer),
-                "ellipsize-set", TRUE,
-                "ellipsize", PANGO_ELLIPSIZE_END,
-                "width-chars", 65, NULL);
-  gtk_label_set_mnemonic_widget (GTK_LABEL (label), assistant->priv->video_device);
-  gtk_box_pack_start (GTK_BOX (vbox), assistant->priv->video_device, FALSE, FALSE, 0);
-
-  label = gtk_label_new (NULL);
-  text = g_strdup_printf ("<i>%s</i>", _("The video input device is the device that will be used to capture video during calls."));
-  gtk_label_set_markup (GTK_LABEL (label), text);
-  g_free (text);
-  gtk_label_set_line_wrap (GTK_LABEL (label), TRUE);
-  gtk_misc_set_alignment (GTK_MISC (label), 0.0, 0.5);
-  gtk_box_pack_start (GTK_BOX (vbox), label, FALSE, TRUE, 0);
-
-  assistant->priv->video_devices_page = vbox;
-  gtk_widget_show_all (vbox);
-  gtk_assistant_set_page_complete (GTK_ASSISTANT (assistant), vbox, TRUE);
-}
-
-static void
-prepare_video_devices_page (AssistantWindow *assistant)
+apply_video_devices_page (AssistantWindow *assistant)
 {
   std::vector <std::string> device_list;
   gchar** array;
   gchar* current_plugin;
 
-  get_videoinput_devices (assistant->priv->videoinput_core, device_list);
-  array = vector_of_string_to_array (device_list);
   current_plugin = gm_conf_get_string (VIDEO_DEVICES_KEY "input_device");
+  cout << "eugen crt plugin was " << current_plugin << endl;
   if (current_plugin == NULL || !current_plugin[0]) {
     g_free (current_plugin);
+    get_videoinput_devices (assistant->priv->videoinput_core, device_list);
+    array = vector_of_string_to_array (device_list);
     current_plugin = g_strdup (get_default_video_device_name (array));
+    g_free (array);
+    gm_conf_set_string (VIDEO_DEVICES_KEY "input_device", current_plugin);
+    cout << "eugen crt plugin is set to " << current_plugin << endl;
   }
-  update_combo_box (GTK_COMBO_BOX (assistant->priv->video_device),
-                    array, current_plugin);
-  g_free (array);
   g_free (current_plugin);
-}
-
-static void
-apply_video_devices_page (AssistantWindow *assistant)
-{
-  gchar *device;
-  GtkTreeIter citer;
-
-  if (!gtk_combo_box_get_active_iter (GTK_COMBO_BOX (assistant->priv->video_device), &citer))
-    g_warn_if_reached ();
-  gtk_tree_model_get (gtk_combo_box_get_model (GTK_COMBO_BOX (assistant->priv->video_device)), &citer, 0, &device, -1);
-  gm_conf_set_string (VIDEO_DEVICES_KEY "input_device", device);
-  g_free (device);
 }
 
 
@@ -1369,22 +1292,6 @@ prepare_summary_page (AssistantWindow *assistant)
     g_free (value);
   }
 
-  /* The video manager */
-  gtk_list_store_append (model, &iter);
-  if (!gtk_combo_box_get_active_iter (GTK_COMBO_BOX (assistant->priv->video_device), &citer)) {
-
-    g_warn_if_reached ();
-  } else {
-
-    gchar* value = NULL;
-    gtk_tree_model_get (gtk_combo_box_get_model (GTK_COMBO_BOX (assistant->priv->video_device)), &citer, 0, &value, -1);
-    gtk_list_store_set (model, &iter,
-			SUMMARY_KEY_COLUMN, _("Video Input Device"),
-			SUMMARY_VALUE_COLUMN, value,
-			-1);
-    g_free (value);
-  }
-
   /* The ekiga.net account */
   {
     gchar* value = NULL;
@@ -1436,7 +1343,6 @@ assistant_window_init (AssistantWindow *assistant)
   create_ekiga_out_page (assistant);
   create_connection_type_page (assistant);
   create_audio_devices_page (assistant);
-  create_video_devices_page (assistant);
   create_summary_page (assistant);
 
   /* FIXME: what the hell is it needed for? */
@@ -1488,11 +1394,6 @@ assistant_window_prepare (GtkAssistant *gtkassistant,
 
   if (page == assistant->priv->audio_devices_page) {
     prepare_audio_devices_page (assistant);
-    return;
-  }
-
-  if (page == assistant->priv->video_devices_page) {
-    prepare_video_devices_page (assistant);
     return;
   }
 
@@ -1611,11 +1512,6 @@ assistant_window_new (Ekiga::ServiceCore& service_core)
   assistant->priv->audioinput_core = service_core.get<Ekiga::AudioInputCore> ("audioinput-core");
   assistant->priv->audiooutput_core = service_core.get<Ekiga::AudioOutputCore> ("audiooutput-core");
   assistant->priv->bank = service_core.get<Opal::Bank> ("opal-account-store");
-
-  conn = assistant->priv->videoinput_core->device_added.connect (boost::bind (&on_videoinput_device_added_cb, _1, _2, assistant));
-  assistant->priv->connections.add (conn);
-  conn = assistant->priv->videoinput_core->device_removed.connect (boost::bind (&on_videoinput_device_removed_cb, _1, _2, assistant));
-  assistant->priv->connections.add (conn);
 
   conn = assistant->priv->audioinput_core->device_added.connect (boost::bind (&on_audioinput_device_added_cb, _1, _2, assistant));
   assistant->priv->connections.add (conn);
