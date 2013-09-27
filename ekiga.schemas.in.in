@@ -38,10 +38,10 @@
       <applyto>/apps/@PACKAGE_NAME@/devices/video/size</applyto>
       <owner>Ekiga</owner>
       <type>int</type>
-      <default>0</default>
+      <default>1</default>
       <locale name="C">
 	<short>Video size</short>
-	<long>Select the transmitted video size: Small (QCIF 176x144) or Large (CIF 352x288)</long>
+	<long>Select the transmitted video size: 0: QCIF (176x144), 1: CIF (352x288), 2: 4CIF (704x576), 3: SIF (320x240), 4: 4SIF (640x480)</long>
       </locale>
     </schema>
     <schema>
@@ -898,7 +898,7 @@
       <applyto>/apps/@PACKAGE_NAME@/codecs/video/maximum_video_tx_bitrate</applyto>
       <owner>Ekiga</owner>
       <type>int</type>
-      <default>64</default>
+      <default>384</default>
       <locale name="C">
 	<short>Maximum TX video bitrate</short>
 	<long>The maximum TX video bitrate in kbit/s. The video quality and the number of transmitted frames per second (depends on selected codec) will be dynamically adjusted above their minimum during calls to try to minimize the bandwidth to the given value</long>
@@ -978,17 +978,6 @@
       <locale name="C">
 	<short></short>
 	<long></long>
-      </locale>
-    </schema>
-    <schema>
-      <key>/schemas/apps/@PACKAGE_NAME@/general/kind_of_net</key>
-      <applyto>/apps/@PACKAGE_NAME@/general/kind_of_net</applyto>
-      <owner>Ekiga</owner>
-      <type>int</type>
-      <default>2</default>
-      <locale name="C">
-	<short>Kind of network selected in the assistant</short>
-	<long>0: 56kbps, 1: ISDN, 2: DSL128, 3: DSL512, 4: LAN, 5: Custom</long>
       </locale>
     </schema>
     <schema>

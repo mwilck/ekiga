@@ -101,7 +101,7 @@ Opal::H323::EndPoint::EndPoint (Opal::CallManager & _manager):
   listen_port = (listen_port > 0 ? listen_port : 1720);
 
   /* Initial requested bandwidth */
-  set_initial_bandwidth (gm_conf_get_int (GENERAL_KEY "kind_of_net"));
+  set_initial_bandwidth (gm_conf_get_int (VIDEO_CODECS_KEY "maximum_video_tx_bitrate"));
 
   /* Start listener */
   set_listen_port (listen_port);
@@ -218,28 +218,12 @@ Opal::H323::EndPoint::set_listen_port (unsigned port)
 }
 
 void
-Opal::H323::EndPoint::set_initial_bandwidth (unsigned kind_of_net)
+Opal::H323::EndPoint::set_initial_bandwidth (unsigned maximum_video_tx_bitrate)
 {
-  unsigned bandwidth = GetInitialBandwidth ();
-
-  switch (kind_of_net) {
-  case 0: // PSTN
-  case 1: // ISDN
-    bandwidth = 1280;
-    break;
-  case 2: // DSL128
-  case 3: // DSL512
-    bandwidth = 40000;
-    break;
-  case 4:
-    bandwidth = 100000;
-    break;
-  default:
-    break;
-  }
-
-  /* Initial requested bandwidth */
-  SetInitialBandwidth (bandwidth);
+  // maximum_video_tx_bitrate is the max video bitrate specified by the user
+  // add to it 10% (approx.) accounting for audio,
+  // and multiply it by 10 as needed by SetInitialBandwidth
+  SetInitialBandwidth (maximum_video_tx_bitrate * 11);
 }
 
 

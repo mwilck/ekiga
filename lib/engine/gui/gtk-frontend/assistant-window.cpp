@@ -39,11 +39,9 @@
 #include <glib/gi18n.h>
 
 #include "services.h"
-#include "scoped-connections.h"
 #include "account-core.h"
 #include "account.h"
 
-#include "gmconf.h"
 #include "platform.h"
 #include "assistant-window.h"
 #include "default_devices.h"
@@ -69,7 +67,6 @@ struct _AssistantWindowPrivate
   GtkWidget *info_page;
   GtkWidget *ekiga_net_page;
   GtkWidget *ekiga_out_page;
-  GtkWidget *connection_type_page;
   GtkWidget *summary_page;
 
   GtkWidget *name;
@@ -82,22 +79,11 @@ struct _AssistantWindowPrivate
   GtkWidget *dpassword;
   GtkWidget *skip_ekiga_out;
 
-  GtkWidget *connection_type;
-
   gint last_active_page;
 
   GtkListStore *summary_model;
-  Ekiga::scoped_connections connections;
-  std::list<gpointer> notifiers;
 };
 
-/* presenting the network connection type to the user */
-enum {
-  CNX_LABEL_COLUMN,
-  CNX_CODE_COLUMN
-};
-
-/**/
 enum {
   SUMMARY_KEY_COLUMN,
   SUMMARY_VALUE_COLUMN
@@ -135,14 +121,6 @@ set_current_page_complete (GtkAssistant *assistant,
   page_number = gtk_assistant_get_current_page (assistant);
   current_page = gtk_assistant_get_nth_page (assistant, page_number);
   gtk_assistant_set_page_complete (assistant, current_page, complete);
-}
-
-static void
-kind_of_net_changed_nt (G_GNUC_UNUSED gpointer id,
-			GmConfEntry *,
-			gpointer)
-{
-  gm_conf_set_int (GENERAL_KEY "kind_of_net", NET_CUSTOM);
 }
 
 static void
@@ -654,145 +632,6 @@ apply_ekiga_out_page (AssistantWindow *assistant)
 
 
 static void
-create_connection_type_page (AssistantWindow *assistant)
-{
-  GtkWidget *vbox;
-  GtkWidget *label;
-  gchar *text;
-
-  GtkListStore *store;
-  GtkCellRenderer *cell;
-  GtkTreeIter iter;
-
-  vbox = create_page (assistant, _("Connection Type"), GTK_ASSISTANT_PAGE_CONTENT);
-
-  /* The connection type */
-  label = gtk_label_new (_("Please choose your connection type:"));
-  gtk_misc_set_alignment (GTK_MISC (label), 0.0, 0.5);
-  gtk_box_pack_start (GTK_BOX (vbox), label, FALSE, FALSE, 0);
-
-  store = gtk_list_store_new (2, G_TYPE_STRING, G_TYPE_INT);
-  assistant->priv->connection_type = gtk_combo_box_new_with_model (GTK_TREE_MODEL (store));
-  g_object_unref (store);
-  cell = gtk_cell_renderer_text_new ();
-  gtk_cell_layout_pack_start (GTK_CELL_LAYOUT (assistant->priv->connection_type), cell, TRUE);
-  gtk_cell_layout_set_attributes (GTK_CELL_LAYOUT (assistant->priv->connection_type), cell,
-                                  "text", CNX_LABEL_COLUMN,
-                                  NULL);
-  gtk_box_pack_start (GTK_BOX (vbox), assistant->priv->connection_type, FALSE, FALSE, 0);
-
-  /* Fill the model with available connection types */
-  gtk_list_store_append (store, &iter);
-  gtk_list_store_set (store, &iter,
-                      CNX_LABEL_COLUMN, _("56k Modem"),
-                      CNX_CODE_COLUMN, NET_PSTN,
-                      -1);
-  gtk_list_store_append (store, &iter);
-  gtk_list_store_set (store, &iter,
-                      CNX_LABEL_COLUMN, _("ISDN"),
-                      CNX_CODE_COLUMN, NET_ISDN,
-                      -1);
-  gtk_list_store_append (store, &iter);
-  gtk_list_store_set (store, &iter,
-                      CNX_LABEL_COLUMN, _("DSL/Cable (128 kbit/s uplink)"),
-                      CNX_CODE_COLUMN, NET_DSL128,
-                      -1);
-  gtk_list_store_append (store, &iter);
-  gtk_list_store_set (store, &iter,
-                      CNX_LABEL_COLUMN, _("DSL/Cable (512 kbit/s uplink)"),
-                      CNX_CODE_COLUMN, NET_DSL512,
-                      -1);
-  gtk_list_store_append (store, &iter);
-  gtk_list_store_set (store, &iter,
-                      CNX_LABEL_COLUMN, _("LAN"),
-                      CNX_CODE_COLUMN, NET_LAN,
-                      -1);
-  gtk_list_store_append (store, &iter);
-  gtk_list_store_set (store, &iter,
-                      CNX_LABEL_COLUMN, _("Keep current settings"),
-                      CNX_CODE_COLUMN, NET_CUSTOM,
-                      -1);
-
-  label = gtk_label_new (NULL);
-  text = g_strdup_printf ("<i>%s</i>", _("The connection type will permit "
-					 "determining the best quality settings that Ekiga "
-					 "will use during calls. You can later change the "
-					 "settings individually in the preferences window."));
-  gtk_label_set_markup (GTK_LABEL (label), text);
-  g_free (text);
-  gtk_label_set_line_wrap (GTK_LABEL (label), TRUE);
-  gtk_misc_set_alignment (GTK_MISC (label), 0.0, 0.5);
-  gtk_box_pack_start (GTK_BOX (vbox), label, FALSE, TRUE, 0);
-
-  assistant->priv->connection_type_page = vbox;
-  gtk_widget_show_all (vbox);
-  gtk_assistant_set_page_complete (GTK_ASSISTANT (assistant), vbox, TRUE);
-}
-
-static void
-prepare_connection_type_page (AssistantWindow *assistant)
-{
-  GtkComboBox *combo_box = GTK_COMBO_BOX (assistant->priv->connection_type);
-  GtkTreeModel *model = gtk_combo_box_get_model (combo_box);
-  GtkTreeIter iter;
-  gint connection_type = gm_conf_get_int (GENERAL_KEY "kind_of_net");
-
-  if (gtk_tree_model_get_iter_first (model, &iter)) {
-    do {
-      gint code;
-      gtk_tree_model_get (model, &iter, CNX_CODE_COLUMN, &code, -1);
-      if (code == connection_type) {
-        gtk_combo_box_set_active_iter (combo_box, &iter);
-        break;
-      }
-    } while (gtk_tree_model_iter_next (model, &iter));
-  }
-}
-
-static void
-apply_connection_type_page (AssistantWindow *assistant)
-{
-  GtkComboBox *combo_box = GTK_COMBO_BOX (assistant->priv->connection_type);
-  GtkTreeModel *model = gtk_combo_box_get_model (combo_box);
-  GtkTreeIter iter;
-  gint connection_type = NET_CUSTOM;
-
-  if (gtk_combo_box_get_active_iter (combo_box, &iter))
-    gtk_tree_model_get (model, &iter, CNX_CODE_COLUMN, &connection_type, -1);
-
-  /* Set the connection quality settings */
-  switch (connection_type) {
-  case NET_PSTN:
-  case NET_ISDN:
-    gm_conf_set_int (VIDEO_DEVICES_KEY "size", 0); //QCIF
-    gm_conf_set_int (VIDEO_CODECS_KEY "maximum_video_tx_bitrate", 32);
-    break;
-
-  case NET_DSL128:
-    gm_conf_set_int (VIDEO_DEVICES_KEY "size", 0); //QCIF
-    gm_conf_set_int (VIDEO_CODECS_KEY "maximum_video_tx_bitrate", 64);
-    break;
-
-  case NET_DSL512:
-    gm_conf_set_int (VIDEO_DEVICES_KEY "size", 3); // 320x240
-    gm_conf_set_int (VIDEO_CODECS_KEY "maximum_video_tx_bitrate", 384);
-    break;
-
-  case NET_LAN:
-    gm_conf_set_int (VIDEO_DEVICES_KEY "size", 3); // 320x240
-    gm_conf_set_int (VIDEO_CODECS_KEY "maximum_video_tx_bitrate", 1024);
-    break;
-
-  case NET_CUSTOM:
-  default:
-    break; /* don't touch anything */
-  }
-
-  gm_conf_set_int (GENERAL_KEY "kind_of_net", connection_type);
-}
-
-
-static void
 apply_audio_devices_page (AssistantWindow */*assistant*/)
 {
   gchar *ringer, *player, *recorder;
@@ -900,7 +739,6 @@ prepare_summary_page (AssistantWindow *assistant)
 {
   GtkListStore *model = assistant->priv->summary_model;
   GtkTreeIter iter;
-  GtkTreeIter citer;
 
   gtk_list_store_clear (model);
 
@@ -910,21 +748,6 @@ prepare_summary_page (AssistantWindow *assistant)
                       SUMMARY_KEY_COLUMN, _("Full Name"),
                       SUMMARY_VALUE_COLUMN, gtk_entry_get_text (GTK_ENTRY (assistant->priv->name)),
                       -1);
-
-  /* The connection type */
-  if (gtk_combo_box_get_active_iter (GTK_COMBO_BOX (assistant->priv->connection_type), &citer)) {
-
-    gchar *value = NULL;
-    GtkTreeModel *cmodel = gtk_combo_box_get_model (GTK_COMBO_BOX (assistant->priv->connection_type));
-    gtk_tree_model_get (cmodel, &citer, CNX_LABEL_COLUMN, &value, -1);
-
-    gtk_list_store_append (model, &iter);
-    gtk_list_store_set (model, &iter,
-                        SUMMARY_KEY_COLUMN, _("Connection Type"),
-                        SUMMARY_VALUE_COLUMN, value,
-                        -1);
-    g_free (value);
-  }
 
   /* The ekiga.net account */
   {
@@ -975,7 +798,6 @@ assistant_window_init (AssistantWindow *assistant)
   create_info_page (assistant);
   create_ekiga_net_page (assistant);
   create_ekiga_out_page (assistant);
-  create_connection_type_page (assistant);
   create_summary_page (assistant);
 
   /* FIXME: what the hell is it needed for? */
@@ -1020,11 +842,6 @@ assistant_window_prepare (GtkAssistant *gtkassistant,
     return;
   }
 
-  if (page == assistant->priv->connection_type_page) {
-    prepare_connection_type_page (assistant);
-    return;
-  }
-
   if (page == assistant->priv->summary_page) {
     prepare_summary_page (assistant);
     return;
@@ -1040,7 +857,6 @@ assistant_window_apply (GtkAssistant *gtkassistant)
   apply_personal_data_page (assistant);
   apply_ekiga_net_page (assistant);
   apply_ekiga_out_page (assistant);
-  apply_connection_type_page (assistant);
   apply_audio_devices_page (assistant);
   apply_video_devices_page (assistant);
 
@@ -1067,20 +883,6 @@ assistant_window_cancel (GtkAssistant *gtkassistant)
 
 
 static void
-assistant_window_dispose (GObject *object)
-{
-  AssistantWindow *assistant = ASSISTANT_WINDOW (object);
-
-  for (std::list<gpointer>::iterator iter = assistant->priv->notifiers.begin ();
-       iter != assistant->priv->notifiers.end ();
-       ++iter)
-    gm_conf_notifier_remove (*iter);
-  assistant->priv->notifiers.clear (); // dispose might be called several times
-
-  G_OBJECT_CLASS (assistant_window_parent_class)->dispose (object);
-}
-
-static void
 assistant_window_finalize (GObject *object)
 {
   AssistantWindow *assistant = ASSISTANT_WINDOW (object);
@@ -1101,7 +903,6 @@ assistant_window_class_init (AssistantWindowClass *klass)
   assistant_class->apply = assistant_window_apply;
   assistant_class->cancel = assistant_window_cancel;
 
-  object_class->dispose = assistant_window_dispose;
   object_class->finalize = assistant_window_finalize;
 }
 
@@ -1125,7 +926,6 @@ GtkWidget *
 assistant_window_new (Ekiga::ServiceCore& service_core)
 {
   AssistantWindow *assistant;
-  gpointer notifier;
 
   assistant = ASSISTANT_WINDOW (g_object_new (ASSISTANT_WINDOW_TYPE, NULL));
 
@@ -1140,14 +940,6 @@ assistant_window_new (Ekiga::ServiceCore& service_core)
   assistant->priv->audioinput_core = service_core.get<Ekiga::AudioInputCore> ("audioinput-core");
   assistant->priv->audiooutput_core = service_core.get<Ekiga::AudioOutputCore> ("audiooutput-core");
   assistant->priv->bank = service_core.get<Opal::Bank> ("opal-account-store");
-
-  /* Notifiers for the VIDEO_CODECS_KEY keys */
-  notifier = gm_conf_notifier_add (VIDEO_CODECS_KEY "maximum_video_tx_bitrate",
-                                   kind_of_net_changed_nt, NULL);
-  assistant->priv->notifiers.push_front (notifier);
-  notifier = gm_conf_notifier_add (VIDEO_CODECS_KEY "temporal_spatial_tradeoff",
-                                   kind_of_net_changed_nt, NULL);
-  assistant->priv->notifiers.push_front (notifier);
 
   return GTK_WIDGET (assistant);
 }
