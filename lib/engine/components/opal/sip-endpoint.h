@@ -52,6 +52,8 @@
 
 #include "opal-call-manager.h"
 
+#include "ekiga-settings.h"
+
 namespace Opal {
 
   namespace Sip {
@@ -72,6 +74,9 @@ namespace Opal {
 
       ~EndPoint ();
 
+      /* Set up endpoint: all options or a specific setting */
+      void setup (std::string setting = "");
+      
       /* Service */
       const std::string get_name () const
       { return "opal-sip-endpoint"; }
@@ -196,6 +201,8 @@ namespace Opal {
       unsigned listen_port;
 
       boost::shared_ptr<SIP::Dialect> dialect;
+
+      Ekiga::Settings* settings;
     };
   };
 };

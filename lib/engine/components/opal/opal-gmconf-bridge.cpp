@@ -251,39 +251,6 @@ ConfBridge::on_property_changed (std::string key,
   }
 
   //
-  // SIP related keys
-  // 
-  else if (key.find (SIP_KEY) != string::npos) {
-
-    boost::shared_ptr<Opal::Sip::EndPoint> sip_manager = boost::dynamic_pointer_cast<Opal::Sip::EndPoint> (manager.get_protocol_manager ("sip"));
-    if (sip_manager) {
-
-      if (key == SIP_KEY "outbound_proxy_host") {
-
-        gchar* str = gm_conf_entry_get_string (entry);
-        if (str != NULL)
-          sip_manager->set_outbound_proxy (str);
-        g_free (str);
-      }
-      else if (key == SIP_KEY "dtmf_mode") {
-
-        sip_manager->set_dtmf_mode (gm_conf_entry_get_int (entry));
-      }
-      else if (key == SIP_KEY "forward_host") {
-
-        gchar* str = gm_conf_entry_get_string (entry);
-        if (str != NULL)
-          sip_manager->set_forward_uri (str);
-        g_free (str);
-      }
-      else if (key == SIP_KEY "binding_timeout") {
-
-        sip_manager->set_nat_binding_delay (gm_conf_entry_get_int (entry));
-      }
-    }
-  }
-
-  //
   // H.323 keys
   //
 #ifdef HAVE_H323

@@ -148,12 +148,53 @@ Opal::Sip::EndPoint::EndPoint (Opal::CallManager & _manager,
 
   /* NAT Binding */
   SetNATBindingRefreshMethod (SIPEndPoint::Options);
+
+  settings = new Ekiga::Settings (SIP_SCHEMA);
+  settings->changed.connect (boost::bind (&EndPoint::setup, this, _1));
 }
 
 
 Opal::Sip::EndPoint::~EndPoint ()
 {
 }
+
+void
+Opal::Sip::EndPoint::setup (std::string setting)
+{
+  //keys.push_back (SIP_KEY "forward_host"); 
+  //keys.push_back (SIP_KEY "outbound_proxy_host");
+  //keys.push_back (SIP_KEY "dtmf_mode");
+  ///keys.push_back (SIP_KEY "binding_timeout");
+  GSettings *s = settings->get_g_settings ();
+  if (setting.empty () || setting == "binding-timeout")  {
+    PTRACE(4, "Sip::EndPoint\tSet NAT binding delay to " << g_settings_get_int (s, "binding-timeout"));
+    set_nat_binding_delay (g_settings_get_int (s, "binding-timeout"));
+  }
+  if (setting.empty () || setting == "outbound-proxy-host")  {
+
+    gchar* str = g_settings_get_string (s, "outbound-proxy-host");
+    if (str != NULL && strcmp (str, "")) {
+      PTRACE(4, "Sip::EndPoint\tSet outbound proxy to " << str);
+      set_outbound_proxy (str);
+    }
+    g_free (str);
+  }
+  if (setting.empty () || setting == "dtmf-mode")  {
+
+    PTRACE(4, "Sip::EndPoint\tSet DTMF mode to " << g_settings_get_int (s, "dtmf-mode"));
+    set_dtmf_mode (g_settings_get_int (s, "dtmf-mode"));
+  }
+  if (setting.empty () || setting == "forward-host")  {
+
+    gchar* str = g_settings_get_string (s, "forward-host");
+    if (str != NULL && strcmp (str, "") && strcasecmp (str, "sip:")) {
+      PTRACE(4, "Sip::EndPoint\tSet forward host to " << str);
+      set_forward_uri (str);
+    }
+    g_free (str);
+  }
+}
+
 
 bool
 Opal::Sip::EndPoint::populate_menu (const std::string& fullname,

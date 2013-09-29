@@ -112,6 +112,8 @@ struct OPALSpark: public Ekiga::Spark
       core.add (call_manager);
 
       boost::shared_ptr<Sip::EndPoint> sip_manager (new Sip::EndPoint (*call_manager, core), null_deleter ());
+      sip_manager->setup ();
+      std::cout << "FIXME: why are we doing this only for the SIP endpoint and not for the H.323 endpoint?" << std::endl << std::flush;
       call_manager->set_sip_endpoint (sip_manager);
       core.add (sip_manager);
 
