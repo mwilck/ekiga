@@ -8,13 +8,14 @@
 # Viesturs Zarins <viesturs.zarins@mii.lu.lv>, 2006.
 # Raivis Dejus <orvils@gmail.com>, 2006.
 # Klaids Borovs <eklaids@gmail.com>, 2010.
-# Rūdofls Mazurs <rudolfs.mazurs@gmail.com>, 2010, 2011, 2012.
+# Rūdofls Mazurs <rudolfs.mazurs@gmail.com>, 2010, 2011, 2012, 2013.
 msgid ""
 msgstr ""
 "Project-Id-Version: lv\n"
-"Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2012-09-29 15:18+0300\n"
-"PO-Revision-Date: 2012-09-29 15:22+0300\n"
+"Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?"
+"product=ekiga&keywords=I18N+L10N&component=general\n"
+"POT-Creation-Date: 2013-09-27 21:29+0000\n"
+"PO-Revision-Date: 2013-10-05 10:31+0300\n"
 "Last-Translator: Rūdolfs Mazurs <rudolfs.mazurs@gmail.com>\n"
 "Language-Team: Latvian <lata-l10n@googlegroups.com>\n"
 "Language: lv\n"
@@ -23,10 +24,10 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=3; plural=(n%10==1 && n%100!=11 ? 0 : n != 0 ? 1 : "
 "2);\n"
-"X-Generator: Lokalize 1.4\n"
+"X-Generator: Lokalize 1.5\n"
 
 #. Application name
-#: ../ekiga.desktop.in.in.h:1 ../src/gui/main.cpp:103 ../src/gui/main.cpp:105
+#: ../ekiga.desktop.in.in.h:1 ../src/gui/main.cpp:117 ../src/gui/main.cpp:119
 msgid "Ekiga Softphone"
 msgstr "Ekiga Softphone"
 
@@ -43,7 +44,7 @@ msgid "Audio output device"
 msgstr "Audio atskaņošanas ierīce"
 
 #: ../ekiga.schemas.in.in.h:2
-#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:754
+#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:739
 msgid "Select the audio output device to use"
 msgstr "Izvēlieties lietojamo audio atskaņošanas ierīci"
 
@@ -52,7 +53,7 @@ msgid "Audio input device"
 msgstr "Audio ierakstīšanas ierīce"
 
 #: ../ekiga.schemas.in.in.h:4
-#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:761
+#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:746
 msgid "Select the audio input device to use"
 msgstr "Izvēlieties lietojamo audio ierakstīšanas ierīci"
 
@@ -61,7 +62,7 @@ msgid "Video input device"
 msgstr "Video ierakstīšanas ierīce"
 
 #: ../ekiga.schemas.in.in.h:6
-#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:897
+#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:805
 msgid ""
 "Select the video input device to use. If an error occurs when using this "
 "device a test picture will be transmitted."
@@ -74,19 +75,22 @@ msgid "Video size"
 msgstr "Video izmērs"
 
 #: ../ekiga.schemas.in.in.h:8
+#| msgid ""
+#| "Select the transmitted video size: Small (QCIF 176x144) or Large (CIF "
+#| "352x288)"
 msgid ""
-"Select the transmitted video size: Small (QCIF 176x144) or Large (CIF "
-"352x288)"
+"Select the transmitted video size: 0: QCIF (176x144), 1: CIF (352x288), 2: "
+"4CIF (704x576), 3: SIF (320x240), 4: 4SIF (640x480)"
 msgstr ""
-"Izvēlieties pārsūtāmā video izmēru: mazs (QCIF 176x144) vai liels (CIF "
-"352x288)"
+"Izvēlieties pārsūtāmā video izmēru: 0: QCIF (176x144), 1: CIF (352x288), 2: "
+"4CIF (704x576), 3: SIF (320x240), 4: 4SIF (640x480)"
 
 #: ../ekiga.schemas.in.in.h:9
 msgid "Video channel"
 msgstr "Video kanāls"
 
 #: ../ekiga.schemas.in.in.h:10
-#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:901
+#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:809
 msgid "The video channel number to use (to select camera, tv or other sources)"
 msgstr "Lietojamā video kanāla numurs (izvēloties kameru, tv vai citus avotus)"
 
@@ -95,7 +99,7 @@ msgid "Video format"
 msgstr "Video formāts"
 
 #: ../ekiga.schemas.in.in.h:12
-#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:905
+#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:813
 msgid ""
 "Select the format for video cameras (does not apply to most USB cameras)"
 msgstr ""
@@ -105,8 +109,9 @@ msgstr ""
 msgid "Video preview"
 msgstr "Video priekšskatījums"
 
-#: ../ekiga.schemas.in.in.h:14 ../src/gui/main_window.cpp:1200
-#: ../src/gui/main_window.cpp:1350
+#: ../ekiga.schemas.in.in.h:14
+#: ../lib/engine/gui/gtk-frontend/main_window.cpp:1075
+#: ../lib/engine/gui/gtk-frontend/main_window.cpp:1218
 msgid "Display images from your camera device"
 msgstr "Parādīt attēlus no jūsu video kameras"
 
@@ -130,7 +135,7 @@ msgid "Full name"
 msgstr "Pilns vārds"
 
 #: ../ekiga.schemas.in.in.h:18
-#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:461
+#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:447
 msgid "Enter your full name"
 msgstr "Ievadiet savu vārdu un uzvārdu"
 
@@ -163,7 +168,7 @@ msgid "Enable silence detection"
 msgstr "Aktivēt klusuma noteikšanu"
 
 #: ../ekiga.schemas.in.in.h:26
-#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:940
+#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:843
 msgid "If enabled, use silence detection with the codecs supporting it"
 msgstr ""
 "Ja aktivēts, tiks lietota klusuma noteikšana ar kodeksiem, kas to atbalsta"
@@ -173,7 +178,7 @@ msgid "Enable echo cancellation"
 msgstr "Aktivēt atbalss slāpēšanu"
 
 #: ../ekiga.schemas.in.in.h:28
-#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:942
+#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:845
 msgid "If enabled, use echo cancellation"
 msgstr "Ja aktivēts, tiks lietota atbalss slāpēšana"
 
@@ -194,7 +199,7 @@ msgid "The sound that will be played on incoming calls, if enabled"
 msgstr "Skaņa, ko atskaņot saņemot ienākošo zvanu, ja aktivēts"
 
 #: ../ekiga.schemas.in.in.h:33
-#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:366
+#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:352
 msgid "Play sound on incoming calls"
 msgstr "Atskaņot skaņu ienākošo zvanu laikā"
 
@@ -243,7 +248,7 @@ msgstr ""
 "skaņa"
 
 #: ../ekiga.schemas.in.in.h:43
-#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:376
+#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:362
 msgid "Play ring tone"
 msgstr "Atskaņot zvana signālu"
 
@@ -260,7 +265,7 @@ msgid "The sound that will be played when calling somebody, if enabled"
 msgstr "Skaņa, ko atskaņot zvanot kādam, ja aktivēts"
 
 #: ../ekiga.schemas.in.in.h:47
-#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:386
+#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:372
 msgid "Play busy tone"
 msgstr "Atskaņot “aizņemts” signālu"
 
@@ -297,10 +302,16 @@ msgid "Type of Service (TOS) byte on outgoing RTP IP packets"
 msgstr "Type of Service (TOS) baits izejošajās RTP IP paketēs"
 
 #: ../ekiga.schemas.in.in.h:54
+#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:469
+#| msgid ""
+#| "The Type of Service (TOS) byte on outgoing RTP IP packets. This byte is "
+#| "used by the network to provide some level of Quality of Service (QoS). "
+#| "Default value 184 (0xB8) correspond to Expedited Forwarding (EF) PHB as "
+#| "defined in RFC 3246."
 msgid ""
 "The Type of Service (TOS) byte on outgoing RTP IP packets. This byte is used "
 "by the network to provide some level of Quality of Service (QoS). Default "
-"value 184 (0xB8) correspond to Expedited Forwarding (EF) PHB as defined in "
+"value 184 (0xB8) corresponds to Expedited Forwarding (EF) PHB as defined in "
 "RFC 3246."
 msgstr ""
 "Type of Service (TOS) baits izejošajām RTP IP paketēm. Šo baitu izmanto "
@@ -324,7 +335,7 @@ msgid "Outbound Proxy"
 msgstr "Izejošais starpniekserveris"
 
 #: ../ekiga.schemas.in.in.h:58
-#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:716
+#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:701
 msgid "The SIP Outbound Proxy to use for outgoing calls"
 msgstr "SIP izejošais starpniekserveris, ko izmantot izejošajiem zvaniem"
 
@@ -333,8 +344,8 @@ msgid "Forward calls to host"
 msgstr "Pārsūtīt zvanus uz datoru"
 
 #: ../ekiga.schemas.in.in.h:60
-#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:671
-#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:719
+#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:656
+#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:704
 msgid "The host where calls should be forwarded if call forwarding is enabled"
 msgstr "Dators, uz kuru zvani pārsūtāmi, ja aktivēta zvanu pārsūtīšana"
 
@@ -383,26 +394,28 @@ msgid "Enable H.245 tunneling"
 msgstr "Aktivēt H.245 tunelēšanu"
 
 #: ../ekiga.schemas.in.in.h:69
-#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:680
+#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:665
+#| msgid ""
+#| "This enables H.245 Tunneling mode. In H.245 Tunneling mode H.245 messages "
+#| "are encapsulated into the H.225 channel (port 1720). This saves one TCP "
+#| "connection during calls. H.245 Tunneling was introduced in H.323v2 and "
+#| "Netmeeting does not support it. Using both Fast Start and H.245 Tunneling "
+#| "can crash some versions of Netmeeting."
 msgid ""
 "This enables H.245 Tunneling mode. In H.245 Tunneling mode H.245 messages "
 "are encapsulated into the H.225 channel (port 1720). This saves one TCP "
-"connection during calls. H.245 Tunneling was introduced in H.323v2 and "
-"Netmeeting does not support it. Using both Fast Start and H.245 Tunneling "
-"can crash some versions of Netmeeting."
+"connection during calls. H.245 Tunneling was introduced in H.323v2."
 msgstr ""
 "Šis aktivē H.245 tunelēšanas režīmu. H.245 tunelēšanas režīmā H.245 ziņas "
 "tiek iekapsulētas H.225 kanālā (ports 1720). Tas aiztaupa vienu TCP "
-"savienojumu zvanu laikā. H.245 tunelēšana tika ieviesta ar H.323v2 un to "
-"neatbalsta Netmeeting. Gan Ātrā sākuma, gan H.245 tunelēšanas vienlaicīga "
-"lietošana var izraisīt avārijas dažās Netmeeting versijās."
+"savienojumu zvanu laikā. H.245 tunelēšana tika ieviesta ar H.323v2."
 
 #: ../ekiga.schemas.in.in.h:70
 msgid "Enable early H.245"
 msgstr "Aktivēt agrāko H.245"
 
 #: ../ekiga.schemas.in.in.h:71
-#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:682
+#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:667
 msgid "This enables H.245 early in the setup"
 msgstr "Šis aktivē H.245 uzstādīšanas sākumā"
 
@@ -411,16 +424,18 @@ msgid "Enable 'Fast Start'"
 msgstr "Aktivēt “Ātro startu”"
 
 #: ../ekiga.schemas.in.in.h:73
+#| msgid ""
+#| "Connection will be established in Fast Start mode. Fast Start is a new "
+#| "way to start calls faster that was introduced in H.323v2. It is not "
+#| "supported by Netmeeting and using both Fast Start and H.245 Tunneling can "
+#| "crash some versions of Netmeeting"
 msgid ""
-"Connection will be established in Fast Start mode. Fast Start is a new way "
-"to start calls faster that was introduced in H.323v2. It is not supported by "
-"Netmeeting and using both Fast Start and H.245 Tunneling can crash some "
-"versions of Netmeeting"
+"Connection will be established in Fast Start mode. Fast Start (Fast Connect) "
+"is a new way to start calls faster that was introduced in H.323v2."
 msgstr ""
-"Savienojums tiks veidots Ātrā starta režīmā. Ātrais starts ir jauns veids, "
-"kā sākt zvanus ātrāk, kas tika ieviests H.323v2. To neatbalsta Netmeeting "
-"un, lietojot gan Ātrā starta, gan H.245 tunelēšanu reizē, var izraisīt "
-"avārijas dažās Netmeeting versijās."
+"Savienojums tiks veidots Ātrā starta režīmā. Ātrais starts (ātrais "
+"savienojums) ir jauns veids, "
+"kā sākt zvanus ātrāk, kas tika ieviests H.323v2."
 
 #: ../ekiga.schemas.in.in.h:74
 msgid "Enable H.239"
@@ -508,7 +523,7 @@ msgid "Enable STUN network detection"
 msgstr "Aktivēt STUN tīkla noteikšanu"
 
 #: ../ekiga.schemas.in.in.h:88
-#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:483
+#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:471
 msgid "Enable the automatic network setup resulting from the STUN test"
 msgstr "Aktivēt automātiskus tīkla iestatījumu rezultātus no STUN testa"
 
@@ -596,10 +611,20 @@ msgid "Size of the preferences window"
 msgstr "Iestatījumu loga izmērs"
 
 #: ../ekiga.schemas.in.in.h:108
+#| msgid "Position on the screen of the main window"
+msgid "Position on the screen of the accounts window"
+msgstr "Kontu loga novietojums uz ekrāna"
+
+#: ../ekiga.schemas.in.in.h:109
+#| msgid "Size of the chat window"
+msgid "Size of the accounts window"
+msgstr "Kontu loga izmērs"
+
+#: ../ekiga.schemas.in.in.h:110
 msgid "Disable video hardware acceleration"
 msgstr "Deaktivēt video aparatūras paātrināšanu"
 
-#: ../ekiga.schemas.in.in.h:109
+#: ../ekiga.schemas.in.in.h:111
 msgid ""
 "This key disables DirectX (on win32) and XVideo (on Linux) video hardware "
 "acceleration"
@@ -607,11 +632,11 @@ msgstr ""
 "Šī atslēga deaktivē DirectX (uz win32) un XVideo (uz Linux) video aparatūras "
 "paātrināšanu"
 
-#: ../ekiga.schemas.in.in.h:110
+#: ../ekiga.schemas.in.in.h:112
 msgid "Allow picture-in-picture software scaling"
 msgstr "Atļaut programmatisko mērogošanu bilde-bildē"
 
-#: ../ekiga.schemas.in.in.h:111
+#: ../ekiga.schemas.in.in.h:113
 msgid ""
 "Allow Ekiga to fall back to software scaling the picture-in-picture if "
 "hardware support is not available. If this is set to false, Ekiga will not "
@@ -621,11 +646,11 @@ msgstr ""
 "aparatūras atbalsts nav pieejams. Ja šis parametrs ir norādīts nepareizi, "
 "Ekiga nemēģinās atvērt PIP, ja aparatūras atbalsts nav pieejams."
 
-#: ../ekiga.schemas.in.in.h:112
+#: ../ekiga.schemas.in.in.h:114
 msgid "Specify the software scaling algorithm"
 msgstr "Norādiet programmatūras mērogošanas algoritmu"
 
-#: ../ekiga.schemas.in.in.h:113
+#: ../ekiga.schemas.in.in.h:115
 msgid ""
 "Specify the software scaling algorithm: 0: nearest neighbor, 1: nearest "
 "neighbor with box filter, 2: bilinear filtering, 3: hyperbolic filtering. "
@@ -635,11 +660,11 @@ msgstr ""
 "tuvākais kaimiņš ar logu filtru, 2: bilineāru filtrēšanu, 3: hiperbolisko "
 "filtrēšanu. Neattiecas uz Windows sistēmām."
 
-#: ../ekiga.schemas.in.in.h:114
+#: ../ekiga.schemas.in.in.h:116
 msgid "The zoom value"
 msgstr "Mēroga vērtība"
 
-#: ../ekiga.schemas.in.in.h:115
+#: ../ekiga.schemas.in.in.h:117
 msgid ""
 "The zoom value in percent to apply to images displayed in the main GUI (can "
 "be 50, 100, or 200)"
@@ -647,16 +672,28 @@ msgstr ""
 "Mēroga vērtība, kuru pielietot attēliem, kas parādīti galvenajā logā(var būt "
 "50, 100, vai 200)"
 
-#: ../ekiga.schemas.in.in.h:116
-#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:477
+#: ../ekiga.schemas.in.in.h:118
+#| msgid ""
+#| "The zoom value in percent to apply to images displayed in the main GUI "
+#| "(can be 50, 100, or 200)"
+msgid ""
+"The zoom value in percent to apply to images displayed in the extended GUI "
+"(can be 50, 100, or 200)"
+msgstr ""
+"Mēroga vērtība, kuru pielietot attēliem, kas parādīti paplašinātajā logā (var "
+"būt "
+"50, 100, vai 200)"
+
+#: ../ekiga.schemas.in.in.h:119
+#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:463
 msgid "Place windows displaying video above other windows during calls"
 msgstr "Novietot video logus virs pārējiem logiem zvana laikā"
 
-#: ../ekiga.schemas.in.in.h:117
+#: ../ekiga.schemas.in.in.h:120
 msgid "The default video view"
 msgstr "Noklusētais video skats"
 
-#: ../ekiga.schemas.in.in.h:118
+#: ../ekiga.schemas.in.in.h:121
 msgid ""
 "The default video view (0: Local, 1: Remote, 2: Both, 3: Both in a separate "
 "window)"
@@ -664,11 +701,11 @@ msgstr ""
 "Noklusētais video skats (0: Lokālais, 1: Attālinātais, 2: Abi, 3: Abi "
 "atsevišķos logos)"
 
-#: ../ekiga.schemas.in.in.h:119
+#: ../ekiga.schemas.in.in.h:122
 msgid "The video view before having switched to fullscreen"
 msgstr "Video skats pirms pārslēdzas uz pilnekrānu"
 
-#: ../ekiga.schemas.in.in.h:120
+#: ../ekiga.schemas.in.in.h:123
 msgid ""
 "The video view before having switched to fullscreen (same values as "
 "video_view)"
@@ -676,40 +713,40 @@ msgstr ""
 "Video skats pirms pārslēdzas uz pilnekrānu (tādas pašas vērtības kā "
 "video_view)"
 
-#: ../ekiga.schemas.in.in.h:121
+#: ../ekiga.schemas.in.in.h:124
 msgid "Remote video window size"
 msgstr "Attālinātā video loga izmērs"
 
-#: ../ekiga.schemas.in.in.h:122
+#: ../ekiga.schemas.in.in.h:125
 msgid "The size of the remote video window"
 msgstr "Attālinātā video loga izmērs"
 
-#: ../ekiga.schemas.in.in.h:123
+#: ../ekiga.schemas.in.in.h:126
 msgid "Remote video window position"
 msgstr "Attālinātā video loga novietojums"
 
-#: ../ekiga.schemas.in.in.h:124
+#: ../ekiga.schemas.in.in.h:127
 msgid "The position of the remote video window"
 msgstr "Attālinātā video loga novietojums"
 
-#: ../ekiga.schemas.in.in.h:125
+#: ../ekiga.schemas.in.in.h:128
 msgid "Maximum jitter buffer"
 msgstr "Maksimālais jitter buferis"
 
-#: ../ekiga.schemas.in.in.h:126
-#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:944
+#: ../ekiga.schemas.in.in.h:129
+#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:847
 msgid "The maximum jitter buffer size for audio reception (in ms)"
 msgstr "Maksimālais jitter bufera izmērs audio uztveršanai (ms)"
 
-#: ../ekiga.schemas.in.in.h:127
+#: ../ekiga.schemas.in.in.h:130
 msgid "The video codecs list"
 msgstr "Video kodeku saraksts"
 
-#: ../ekiga.schemas.in.in.h:128
+#: ../ekiga.schemas.in.in.h:131
 msgid "Maximum TX video bitrate"
 msgstr "Maksimālais TX video bitu pārraides ātrums"
 
-#: ../ekiga.schemas.in.in.h:129
+#: ../ekiga.schemas.in.in.h:132
 msgid ""
 "The maximum TX video bitrate in kbit/s. The video quality and the number of "
 "transmitted frames per second (depends on selected codec) will be "
@@ -720,11 +757,11 @@ msgstr ""
 "daudzums sekundē tiks dinamiski pieregulēts virs to minimuma zvanu laikā, "
 "lai mēģinātu samazināt joslas platumu līdz dotajai vērtībai."
 
-#: ../ekiga.schemas.in.in.h:130
+#: ../ekiga.schemas.in.in.h:133
 msgid "Maximum RX video bitrate"
 msgstr "Maksimālais RX video bitu pārraides ātrums"
 
-#: ../ekiga.schemas.in.in.h:131
+#: ../ekiga.schemas.in.in.h:134
 msgid ""
 "The maximum RX video bitrate in kbit/s. This value will be signaled to the "
 "peer endpoint that can adjust (if it supports it) its TX bitrate if it is "
@@ -734,11 +771,11 @@ msgstr ""
 "dalībniekam, lai tas varētu pielāgot savu TX bitu ātrumu, ja tas ir virs "
 "ziņotās vērtības."
 
-#: ../ekiga.schemas.in.in.h:132
+#: ../ekiga.schemas.in.in.h:135
 msgid "Temporal Spatial Trade Off"
 msgstr "Pagaidu sadalītais kompromiss"
 
-#: ../ekiga.schemas.in.in.h:133
+#: ../ekiga.schemas.in.in.h:136
 msgid ""
 "Whether to prefer to sustain the max. frame rate or lower it possibly in "
 "order to keep a minimum level of (spatial) quality for all frames. 0: "
@@ -748,48 +785,41 @@ msgstr ""
 "lai nodrošinātu minimālo kvalitātes līmeni visiem kadriem. 0: augstākā "
 "minimālā kvalitāte, 31: zemākā minimālā kvalitāte"
 
-#: ../ekiga.schemas.in.in.h:134
+#: ../ekiga.schemas.in.in.h:137
 msgid "List of folded groups in the roster"
 msgstr "Sakļautās grupas sarakstā"
 
-#: ../ekiga.schemas.in.in.h:135 ../src/gui/main_window.cpp:1375
+#: ../ekiga.schemas.in.in.h:138
+#: ../lib/engine/gui/gtk-frontend/main_window.cpp:1243
 msgid "Show offline contacts"
 msgstr "Radīt nesaistes kontaktus"
 
-#: ../ekiga.schemas.in.in.h:136
+#: ../ekiga.schemas.in.in.h:139
 msgid "If enabled, offline contacts will be shown in the roster"
 msgstr "Ja aktivēts, nesaistes kontakti būs redzami sarakstā"
 
-#: ../ekiga.schemas.in.in.h:137
+#: ../ekiga.schemas.in.in.h:140
 msgid "LDAP servers"
 msgstr "LDAP serveri"
 
-#: ../ekiga.schemas.in.in.h:138
+#: ../ekiga.schemas.in.in.h:141
 msgid "List of configured LDAP servers"
 msgstr "Konfigurēto LDAP serveru saraksts"
 
-#: ../ekiga.schemas.in.in.h:139
+#: ../ekiga.schemas.in.in.h:142
 msgid "Calls history"
 msgstr "Zvanu vēsture"
 
-#: ../ekiga.schemas.in.in.h:140
+#: ../ekiga.schemas.in.in.h:143
 msgid "The history of the 100 last calls"
 msgstr "Pēdējo 100 veikto zvanu vēsture"
 
-#: ../ekiga.schemas.in.in.h:141
-msgid "Kind of network selected in the assistant"
-msgstr "Izvēlētais tīkla veids vednī"
-
-#: ../ekiga.schemas.in.in.h:142
-msgid "0: 56kbps, 1: ISDN, 2: DSL128, 3: DSL512, 4: LAN, 5: Custom"
-msgstr "0: 56kbps, 1: ISDN, 2: DSL128, 3: DSL512 4: LAN, 5: Izvēles"
-
-#: ../ekiga.schemas.in.in.h:143
+#: ../ekiga.schemas.in.in.h:144
 msgid "No answer timeout"
 msgstr "“Nav atbildes” noildze"
 
-#: ../ekiga.schemas.in.in.h:144
-#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:506
+#: ../ekiga.schemas.in.in.h:145
+#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:494
 msgid ""
 "Automatically reject or forward incoming calls if no answer is given after "
 "the specified amount of time (in seconds)"
@@ -797,112 +827,93 @@ msgstr ""
 "Automātiski noraidīt vai pārsūtīt ienākošos zvanus, ja norādītajā laika "
 "intervālā netiek dota atbilde (sekundēs)"
 
-#: ../ekiga.schemas.in.in.h:145
+#: ../ekiga.schemas.in.in.h:146
 msgid "Automatic answer"
 msgstr "Automātiska atbilde"
 
-#: ../ekiga.schemas.in.in.h:146
-#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:507
+#: ../ekiga.schemas.in.in.h:147
+#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:495
 msgid "If enabled, automatically answer incoming calls"
 msgstr "Ja aktivēts, automātiski atbildēt uz ienākošajiem zvaniem"
 
+#: ../lib/engine/audioinput/audioinput-core.cpp:196
 #: ../lib/engine/audioinput/audioinput-core.cpp:201
-#: ../lib/engine/audioinput/audioinput-core.cpp:206
-#: ../lib/engine/audiooutput/audiooutput-core.cpp:218
-#: ../lib/engine/audiooutput/audiooutput-core.cpp:223
-#: ../lib/engine/videoinput/videoinput-core.cpp:242
-#: ../lib/engine/videoinput/videoinput-core.cpp:247
+#: ../lib/engine/audiooutput/audiooutput-core.cpp:217
+#: ../lib/engine/audiooutput/audiooutput-core.cpp:222
+#: ../lib/engine/videoinput/videoinput-core.cpp:240
+#: ../lib/engine/videoinput/videoinput-core.cpp:245
 msgid "New device detected"
 msgstr "Atklāta jauna ierīce"
 
-#: ../lib/engine/audioinput/audioinput-core.cpp:206
-#: ../lib/engine/audiooutput/audiooutput-core.cpp:223
-#: ../lib/engine/videoinput/videoinput-core.cpp:247
+#: ../lib/engine/audioinput/audioinput-core.cpp:201
+#: ../lib/engine/audiooutput/audiooutput-core.cpp:222
+#: ../lib/engine/videoinput/videoinput-core.cpp:245
 msgid "Use it"
 msgstr "Izmantot to"
 
-#: ../lib/engine/audioinput/audioinput-core.cpp:236
-#: ../lib/engine/audiooutput/audiooutput-core.cpp:252
-#: ../lib/engine/videoinput/videoinput-core.cpp:277
+#: ../lib/engine/audioinput/audioinput-core.cpp:231
+#: ../lib/engine/audiooutput/audiooutput-core.cpp:251
+#: ../lib/engine/videoinput/videoinput-core.cpp:275
 msgid "Device removed"
 msgstr "Ierīce ir izņemta"
 
-#: ../lib/engine/components/avahi/avahi-heap.cpp:129
-#: ../lib/engine/components/avahi/avahi-heap.cpp:375
-msgid "Neighbours"
-msgstr "Kaimiņi"
-
-#: ../lib/engine/components/call-history/history-book.cpp:141
-#: ../lib/engine/gui/gtk-frontend/call-history-view-gtk.cpp:189
+#: ../lib/engine/components/call-history/history-book.cpp:144
+#: ../lib/engine/gui/gtk-frontend/call-history-view-gtk.cpp:186
 msgid "Clear List"
 msgstr "Attīrīt sarakstu"
 
-#: ../lib/engine/components/call-history/history-contact.cpp:171
+#: ../lib/engine/components/call-history/history-contact.cpp:167
 msgid "Received"
 msgstr "Saņemts"
 
-#: ../lib/engine/components/call-history/history-contact.cpp:174
+#: ../lib/engine/components/call-history/history-contact.cpp:170
 msgid "Placed"
 msgstr "Novietots"
 
-#: ../lib/engine/components/call-history/history-contact.cpp:177
+#: ../lib/engine/components/call-history/history-contact.cpp:173
 msgid "Missed"
 msgstr "Pazaudēts"
 
-#. Ignore
-#: ../lib/engine/components/libnotify/libnotify-main.cpp:229
-#: ../lib/engine/components/opal/sip-endpoint.cpp:988
-#, c-format
-msgid "Incoming call from %s"
-msgstr "Ienākošais zvans no %s"
+#: ../lib/engine/components/local-roster/local-cluster.cpp:75
+#: ../lib/engine/components/local-roster/local-heap.cpp:117
+#: ../lib/engine/gui/gtk-frontend/main_window.cpp:1169
+#: ../plugins/evolution/evolution-book.cpp:301
+#: ../plugins/loudmouth/loudmouth-heap-roster.cpp:71
+msgid "A_dd Contact"
+msgstr "_Pievienot kontaktu"
 
-#: ../lib/engine/components/libnotify/libnotify-main.cpp:230
-msgid "Remote URI:"
-msgstr "Attālinātais URI:"
-
-#: ../lib/engine/components/libnotify/libnotify-main.cpp:242
-msgid "Reject"
-msgstr "Noraidīt"
-
-#: ../lib/engine/components/libnotify/libnotify-main.cpp:243
-msgid "Accept"
-msgstr "Pieņemt"
-
-#: ../lib/engine/components/local-roster/local-cluster.cpp:82
-#: ../lib/engine/components/local-roster/local-heap.cpp:118
-#: ../plugins/evolution/evolution-book.cpp:343
-msgid "_New Contact"
-msgstr "Jau_ns kontakts"
-
-#: ../lib/engine/components/local-roster/local-heap.cpp:94
+#: ../lib/engine/components/local-roster/local-heap.cpp:93
 msgid "Services"
 msgstr "Servisi"
 
-#: ../lib/engine/components/local-roster/local-heap.cpp:95
+#: ../lib/engine/components/local-roster/local-heap.cpp:94
 msgid "Echo test"
 msgstr "Atbalss pārbaude"
 
-#: ../lib/engine/components/local-roster/local-heap.cpp:96
+#: ../lib/engine/components/local-roster/local-heap.cpp:95
 msgid "Conference room"
 msgstr "Konferences istaba"
 
-#: ../lib/engine/components/local-roster/local-heap.cpp:97
+#: ../lib/engine/components/local-roster/local-heap.cpp:96
 msgid "Call back test"
 msgstr "Atzvana pārbaude"
 
-#: ../lib/engine/components/local-roster/local-heap.cpp:111
-msgid "Local roster"
-msgstr "Lokālais saraksts"
+#: ../lib/engine/components/local-roster/local-heap.cpp:110
+#: ../lib/engine/gui/gtk-frontend/main_window.cpp:1305
+msgid "Contacts"
+msgstr "Kontakti"
 
-#: ../lib/engine/components/local-roster/local-heap.cpp:128
+#: ../lib/engine/components/local-roster/local-heap.cpp:127
 msgid "Rename"
 msgstr "Pārsaukt"
 
-#: ../lib/engine/components/local-roster/local-heap.cpp:197
+#: ../lib/engine/components/local-roster/local-heap.cpp:196
+#: ../plugins/loudmouth/loudmouth-heap-roster.cpp:485
 msgid "Family"
 msgstr "Ģimene"
 
-#: ../lib/engine/components/local-roster/local-heap.cpp:198
+#: ../lib/engine/components/local-roster/local-heap.cpp:197
+#: ../plugins/loudmouth/loudmouth-heap-roster.cpp:486
 msgid "Friend"
 msgstr "Draugs"
 
@@ -910,7 +921,8 @@ msgstr "Draugs"
 #. relationships between you and your contact; associate means
 #. someone who is at the same "level" than you.
 #.
-#: ../lib/engine/components/local-roster/local-heap.cpp:203
+#: ../lib/engine/components/local-roster/local-heap.cpp:202
+#: ../plugins/loudmouth/loudmouth-heap-roster.cpp:491
 msgid "Associate"
 msgstr "Kolēģis"
 
@@ -918,7 +930,8 @@ msgstr "Kolēģis"
 #. relationships between you and your contact; assistant means
 #. someone who is at a lower "level" than you.
 #.
-#: ../lib/engine/components/local-roster/local-heap.cpp:208
+#: ../lib/engine/components/local-roster/local-heap.cpp:207
+#: ../plugins/loudmouth/loudmouth-heap-roster.cpp:496
 msgid "Assistant"
 msgstr "Asistents"
 
@@ -926,84 +939,93 @@ msgstr "Asistents"
 #. relationships between you and your contact; supervisor means
 #. someone who is at a higher "level" than you.
 #.
-#: ../lib/engine/components/local-roster/local-heap.cpp:213
+#: ../lib/engine/components/local-roster/local-heap.cpp:212
+#: ../plugins/loudmouth/loudmouth-heap-roster.cpp:501
 msgid "Supervisor"
 msgstr "Uzraugs"
 
 #. Translator: http://www.ietf.org/rfc/rfc4480.txt proposes several
 #. relationships between you and your contact; self means yourself.
 #.
-#: ../lib/engine/components/local-roster/local-heap.cpp:217
+#: ../lib/engine/components/local-roster/local-heap.cpp:216
+#: ../plugins/loudmouth/loudmouth-heap-roster.cpp:505
 msgid "Self"
 msgstr "Pats"
 
-#: ../lib/engine/components/local-roster/local-heap.cpp:233
+#: ../lib/engine/components/local-roster/local-heap.cpp:235
 #: ../lib/engine/components/local-roster/local-roster-bridge.cpp:93
 msgid "Add to local roster"
 msgstr "Pievienot lokālajam sarakstam"
 
-#: ../lib/engine/components/local-roster/local-heap.cpp:234
+#: ../lib/engine/components/local-roster/local-heap.cpp:236
 msgid ""
 "Please fill in this form to add a new contact to ekiga's internal roster"
 msgstr ""
 "Lūdzu, aizpildiet šo formu, lai pievienotu jaunu kontaktu ekiga iekšējam "
 "sarakstam"
 
-#: ../lib/engine/components/local-roster/local-heap.cpp:236
-#: ../lib/engine/components/local-roster/local-heap.cpp:427
-#: ../lib/engine/components/local-roster/local-presentity.cpp:270
-#: ../lib/engine/components/opal/opal-account.cpp:425
+#: ../lib/engine/components/local-roster/local-heap.cpp:238
+#: ../lib/engine/components/local-roster/local-heap.cpp:435
+#: ../lib/engine/components/local-roster/local-presentity.cpp:279
+#: ../lib/engine/components/opal/opal-account.cpp:497
 #: ../plugins/evolution/evolution-contact.cpp:324
 #: ../plugins/loudmouth/loudmouth-account.cpp:342
-#: ../plugins/loudmouth/loudmouth-bank.cpp:125
-#: ../plugins/loudmouth/loudmouth-presentity.cpp:283
+#: ../plugins/loudmouth/loudmouth-bank.cpp:123
+#: ../plugins/loudmouth/loudmouth-heap-roster.cpp:338
+#: ../plugins/loudmouth/loudmouth-presentity.cpp:289
 #: ../plugins/resource-list/rl-cluster.cpp:169
 #: ../plugins/resource-list/rl-heap.cpp:526
 #: ../plugins/resource-list/rl-presentity.cpp:233
 msgid "Name:"
 msgstr "Nosaukums:"
 
-#: ../lib/engine/components/local-roster/local-heap.cpp:236
-#: ../lib/engine/components/local-roster/local-presentity.cpp:270
+#: ../lib/engine/components/local-roster/local-heap.cpp:238
+#: ../lib/engine/components/local-roster/local-presentity.cpp:279
+#: ../plugins/loudmouth/loudmouth-heap-roster.cpp:338
 msgid "Name of the contact, as shown in your roster"
 msgstr "Kontakta vārds, kāds redzams sarakstā"
 
-#: ../lib/engine/components/local-roster/local-heap.cpp:245
 #: ../lib/engine/components/local-roster/local-heap.cpp:247
-#: ../lib/engine/components/local-roster/local-presentity.cpp:271
+#: ../lib/engine/components/local-roster/local-heap.cpp:249
+#: ../lib/engine/components/local-roster/local-presentity.cpp:280
 #: ../plugins/resource-list/rl-cluster.cpp:170
 #: ../plugins/resource-list/rl-heap.cpp:527
 #: ../plugins/resource-list/rl-presentity.cpp:234
 msgid "Address:"
 msgstr "Adrese:"
 
-#: ../lib/engine/components/local-roster/local-heap.cpp:245
 #: ../lib/engine/components/local-roster/local-heap.cpp:247
-#: ../lib/engine/components/local-roster/local-presentity.cpp:271
-msgid "Address, e.g. sip:xyz@ekiga.net"
-msgstr "Adrese, piem. sip:xyz@ekiga.net"
+#: ../lib/engine/components/local-roster/local-heap.cpp:249
+#: ../lib/engine/components/local-roster/local-presentity.cpp:280
+msgid ""
+"Address, e.g. sip:xyz@ekiga.net; if you do not specify the host part, e.g. "
+"sip:xyz, then you can choose it by right-clicking on the contact in roster"
+msgstr ""
+"Adrese, piemēram, sip:xyz@ekiga.net; ja nenorādīsiet servera daļu, piemēram, "
+"sip:xyz, jūs to varēsiet izvēlēties, spiežot labo klikšķi sarakstā"
 
-#: ../lib/engine/components/local-roster/local-heap.cpp:251
+#: ../lib/engine/components/local-roster/local-heap.cpp:253
+#: ../plugins/loudmouth/loudmouth-heap-roster.cpp:340
 msgid "Put contact in groups:"
 msgstr "Ievietot kontaktu sekojošās grupās:"
 
-#: ../lib/engine/components/local-roster/local-heap.cpp:412
+#: ../lib/engine/components/local-roster/local-heap.cpp:420
 msgid "You supplied an unsupported address"
 msgstr "Jūs norādījāt neatbalstītu adresi"
 
-#: ../lib/engine/components/local-roster/local-heap.cpp:414
+#: ../lib/engine/components/local-roster/local-heap.cpp:422
 msgid "You already have a contact with this address!"
 msgstr "Jums jau ir kontakts ar šo adresi!"
 
-#: ../lib/engine/components/local-roster/local-heap.cpp:425
+#: ../lib/engine/components/local-roster/local-heap.cpp:433
 msgid "Rename group"
 msgstr "Pārsaukt grupu"
 
-#: ../lib/engine/components/local-roster/local-heap.cpp:426
+#: ../lib/engine/components/local-roster/local-heap.cpp:434
 msgid "Please edit this group name"
 msgstr "Lūdzu, rediģējiet šīs grupas nosaukumu"
 
-#: ../lib/engine/components/local-roster/local-presentity.cpp:138
+#: ../lib/engine/components/local-roster/local-presentity.cpp:140
 #: ../plugins/resource-list/rl-entry.cpp:141
 #: ../plugins/resource-list/rl-heap.cpp:102
 #: ../plugins/resource-list/rl-heap.cpp:144
@@ -1012,94 +1034,92 @@ msgstr "Lūdzu, rediģējiet šīs grupas nosaukumu"
 msgid "Unnamed"
 msgstr "Nenosaukts"
 
-#: ../lib/engine/components/local-roster/local-presentity.cpp:240
-#: ../lib/engine/components/opal/opal-account.cpp:380
+#: ../lib/engine/components/local-roster/local-presentity.cpp:245
+#: ../lib/engine/components/opal/opal-account.cpp:399
+#: ../lib/engine/gui/gtk-frontend/main_window.cpp:1193
 #: ../plugins/evolution/evolution-contact.cpp:228
-#: ../plugins/loudmouth/loudmouth-presentity.cpp:160
+#: ../plugins/loudmouth/loudmouth-presentity.cpp:174
 #: ../plugins/resource-list/rl-presentity.cpp:212
-#: ../src/gui/main_window.cpp:1325
 msgid "_Edit"
 msgstr "R_ediģēt"
 
-#: ../lib/engine/components/local-roster/local-presentity.cpp:242
-#: ../lib/engine/components/opal/opal-account.cpp:382
-#: ../lib/engine/gui/gtk-frontend/accounts-window.cpp:683
+#: ../lib/engine/components/local-roster/local-presentity.cpp:247
+#: ../lib/engine/components/opal/opal-account.cpp:401
+#: ../lib/engine/gui/gtk-frontend/accounts-window.cpp:679
 #: ../plugins/evolution/evolution-contact.cpp:230
 #: ../plugins/loudmouth/loudmouth-account.cpp:445
-#: ../plugins/loudmouth/loudmouth-presentity.cpp:193
+#: ../plugins/loudmouth/loudmouth-presentity.cpp:199
 #: ../plugins/resource-list/rl-presentity.cpp:214
 msgid "_Remove"
 msgstr "_Izņemt"
 
-#: ../lib/engine/components/local-roster/local-presentity.cpp:267
-#: ../plugins/loudmouth/loudmouth-presentity.cpp:280
+#: ../lib/engine/components/local-roster/local-presentity.cpp:276
+#: ../plugins/loudmouth/loudmouth-presentity.cpp:286
 msgid "Edit roster element"
 msgstr "Rediģēt saraksta elementu"
 
-#: ../lib/engine/components/local-roster/local-presentity.cpp:268
+#: ../lib/engine/components/local-roster/local-presentity.cpp:277
 msgid ""
 "Please fill in this form to change an existing element of ekiga's internal "
 "roster"
 msgstr ""
 "Lūdzu, aizpildiet šo formu, lai mainītu ekiga iekšējā saraksta esošo elementu"
 
-#: ../lib/engine/components/local-roster/local-presentity.cpp:272
+#: ../lib/engine/components/local-roster/local-presentity.cpp:281
 msgid "Is a preferred contact"
 msgstr "Tas ir vēlamais kontakts"
 
-#: ../lib/engine/components/local-roster/local-presentity.cpp:274
-#: ../plugins/loudmouth/loudmouth-presentity.cpp:285
+#: ../lib/engine/components/local-roster/local-presentity.cpp:283
+#: ../plugins/loudmouth/loudmouth-presentity.cpp:291
 #: ../plugins/resource-list/rl-heap.cpp:528
 #: ../plugins/resource-list/rl-presentity.cpp:236
 msgid "Choose groups:"
 msgstr "Izvēlieties grupas:"
 
-#: ../lib/engine/components/opal/h323-endpoint.cpp:135
-#: ../lib/engine/components/opal/opal-call.cpp:682
-#: ../lib/engine/components/opal/sip-endpoint.cpp:250
-#: ../lib/engine/components/opal/sip-endpoint.cpp:254
+#: ../lib/engine/components/opal/h323-endpoint.cpp:124
+#: ../lib/engine/components/opal/opal-call.cpp:697
+#: ../lib/engine/components/opal/sip-endpoint.cpp:163
 msgid "Call"
 msgstr "Zvanīt"
 
-#: ../lib/engine/components/opal/h323-endpoint.cpp:138
-#: ../lib/engine/components/opal/sip-endpoint.cpp:251
-#: ../lib/engine/components/opal/sip-endpoint.cpp:255
-#: ../lib/engine/gui/gtk-frontend/call-window.cpp:2111
+#: ../lib/engine/components/opal/h323-endpoint.cpp:127
+#: ../lib/engine/components/opal/sip-endpoint.cpp:166
+#: ../lib/engine/gui/gtk-frontend/call-window.cpp:2163
 msgid "Transfer"
 msgstr "Pārsūtīšana"
 
 #. Translators : The alias we are registering already exists : failure
-#: ../lib/engine/components/opal/h323-endpoint.cpp:340
+#: ../lib/engine/components/opal/h323-endpoint.cpp:306
 msgid "Duplicate alias"
 msgstr "Aizstājvārds atkārtojas"
 
-#: ../lib/engine/components/opal/h323-endpoint.cpp:343
+#: ../lib/engine/components/opal/h323-endpoint.cpp:309
 msgid "Bad username/password"
 msgstr "Nepareizs lietotājvārds/parole"
 
-#: ../lib/engine/components/opal/h323-endpoint.cpp:346
-#: ../lib/engine/components/opal/sip-endpoint.cpp:603
+#: ../lib/engine/components/opal/h323-endpoint.cpp:312
+#: ../lib/engine/components/opal/sip-endpoint.cpp:483
 msgid "Transport error"
 msgstr "Transportēšanas kļūda"
 
-#: ../lib/engine/components/opal/h323-endpoint.cpp:357
-#: ../lib/engine/components/opal/h323-endpoint.cpp:362
-#: ../lib/engine/components/opal/sip-endpoint.cpp:816
+#: ../lib/engine/components/opal/h323-endpoint.cpp:323
+#: ../lib/engine/components/opal/h323-endpoint.cpp:328
+#: ../lib/engine/components/opal/sip-endpoint.cpp:696
 msgid "Failed"
 msgstr "Neizdevās"
 
 #. Translators: this is a state, not an action, i.e. it should be read as
 #. "(you are) unregistered", and not as "(you have been) unregistered"
-#: ../lib/engine/components/opal/opal-account.cpp:69
-#: ../lib/engine/components/opal/opal-account.cpp:328
-#: ../lib/engine/components/opal/opal-account.cpp:611
+#: ../lib/engine/components/opal/opal-account.cpp:71
+#: ../lib/engine/components/opal/opal-account.cpp:347
+#: ../lib/engine/components/opal/opal-account.cpp:711
 msgid "Unregistered"
 msgstr "Atreģistrēts"
 
 #. translators : the result will look like :
 #. * "registered (with 2 voice mail messages)"
 #.
-#: ../lib/engine/components/opal/opal-account.cpp:223
+#: ../lib/engine/components/opal/opal-account.cpp:238
 #, c-format
 msgid "%s (with %d voice mail message)"
 msgid_plural "%s (with %d voice mail messages)"
@@ -1107,105 +1127,105 @@ msgstr[0] "%s (ar %d balss pasta vēstuli)"
 msgstr[1] "%s (ar %d balss pasta vēstulēm)"
 msgstr[2] "%s (ar %d balss pasta vēstulēm)"
 
-#: ../lib/engine/components/opal/opal-account.cpp:301
-#: ../lib/engine/components/opal/opal-account.cpp:681
+#: ../lib/engine/components/opal/opal-account.cpp:316
+#: ../lib/engine/components/opal/opal-account.cpp:793
 msgid "Processing..."
 msgstr "Apstrādā..."
 
-#: ../lib/engine/components/opal/opal-account.cpp:372
-#: ../lib/engine/gui/gtk-frontend/accounts-window.cpp:677
+#: ../lib/engine/components/opal/opal-account.cpp:391
+#: ../lib/engine/gui/gtk-frontend/accounts-window.cpp:673
 #: ../plugins/loudmouth/loudmouth-account.cpp:433
 msgid "_Disable"
 msgstr "_Deaktivēt"
 
-#: ../lib/engine/components/opal/opal-account.cpp:375
-#: ../lib/engine/gui/gtk-frontend/accounts-window.cpp:674
+#: ../lib/engine/components/opal/opal-account.cpp:394
+#: ../lib/engine/gui/gtk-frontend/accounts-window.cpp:670
 #: ../plugins/loudmouth/loudmouth-account.cpp:437
 msgid "_Enable"
 msgstr "_Aktivēt"
 
-#: ../lib/engine/components/opal/opal-account.cpp:396
-#: ../src/gui/assistant.cpp:761
+#: ../lib/engine/components/opal/opal-account.cpp:415
+#: ../lib/engine/gui/gtk-frontend/assistant-window.cpp:549
 msgid "Recharge the account"
 msgstr "Papildināt bilanci"
 
-#: ../lib/engine/components/opal/opal-account.cpp:401
-#: ../src/gui/assistant.cpp:773
+#: ../lib/engine/components/opal/opal-account.cpp:420
+#: ../lib/engine/gui/gtk-frontend/assistant-window.cpp:561
 msgid "Consult the balance history"
 msgstr "Skatīt bilances vēsturi"
 
-#: ../lib/engine/components/opal/opal-account.cpp:406
-#: ../src/gui/assistant.cpp:785
+#: ../lib/engine/components/opal/opal-account.cpp:425
+#: ../lib/engine/gui/gtk-frontend/assistant-window.cpp:573
 msgid "Consult the call history"
 msgstr "Skatīt zvanu vēsturi"
 
-#: ../lib/engine/components/opal/opal-account.cpp:421
-#: ../lib/engine/components/opal/opal-bank.cpp:96
+#: ../lib/engine/components/opal/opal-account.cpp:493
+#: ../lib/engine/components/opal/opal-bank.cpp:163
 #: ../plugins/loudmouth/loudmouth-account.cpp:337
-#: ../plugins/loudmouth/loudmouth-bank.cpp:121
+#: ../plugins/loudmouth/loudmouth-bank.cpp:119
 msgid "Edit account"
 msgstr "Rediģēt kontu"
 
-#: ../lib/engine/components/opal/opal-account.cpp:423
-#: ../lib/engine/components/opal/opal-bank.cpp:97
+#: ../lib/engine/components/opal/opal-account.cpp:495
+#: ../lib/engine/components/opal/opal-bank.cpp:164
 #: ../plugins/evolution/evolution-book.cpp:345
 #: ../plugins/evolution/evolution-contact.cpp:322
 #: ../plugins/loudmouth/loudmouth-account.cpp:339
 msgid "Please update the following fields:"
 msgstr "Lūdzu, atjauniniet sekojošus laukus:"
 
-#: ../lib/engine/components/opal/opal-account.cpp:425
-#: ../lib/engine/components/opal/opal-bank.cpp:123
-#: ../lib/engine/components/opal/opal-bank.cpp:133
+#: ../lib/engine/components/opal/opal-account.cpp:497
+#: ../lib/engine/components/opal/opal-bank.cpp:190
+#: ../lib/engine/components/opal/opal-bank.cpp:200
 #: ../plugins/loudmouth/loudmouth-account.cpp:342
-#: ../plugins/loudmouth/loudmouth-bank.cpp:125
+#: ../plugins/loudmouth/loudmouth-bank.cpp:123
 msgid "Account name, e.g. MyAccount"
 msgstr "Konta nosaukums, piem., MansKonts"
 
-#: ../lib/engine/components/opal/opal-account.cpp:427
+#: ../lib/engine/components/opal/opal-account.cpp:499
 msgid "Registrar:"
 msgstr "Reģistrētājs:"
 
-#: ../lib/engine/components/opal/opal-account.cpp:427
-#: ../lib/engine/components/opal/opal-bank.cpp:134
+#: ../lib/engine/components/opal/opal-account.cpp:499
+#: ../lib/engine/components/opal/opal-bank.cpp:201
 msgid "The registrar, e.g. ekiga.net"
 msgstr "Reģistrētājs, piem., ekiga.net"
 
-#: ../lib/engine/components/opal/opal-account.cpp:429
+#: ../lib/engine/components/opal/opal-account.cpp:501
 msgid "Gatekeeper:"
 msgstr "Vārtzinis:"
 
-#: ../lib/engine/components/opal/opal-account.cpp:429
-#: ../lib/engine/components/opal/opal-bank.cpp:124
+#: ../lib/engine/components/opal/opal-account.cpp:501
+#: ../lib/engine/components/opal/opal-bank.cpp:191
 msgid "The gatekeeper, e.g. ekiga.net"
 msgstr "Vārtzinis, piem., ekiga.net"
 
-#: ../lib/engine/components/opal/opal-account.cpp:430
+#: ../lib/engine/components/opal/opal-account.cpp:502
 #: ../plugins/loudmouth/loudmouth-account.cpp:346
-#: ../plugins/loudmouth/loudmouth-bank.cpp:126
+#: ../plugins/loudmouth/loudmouth-bank.cpp:124
 #: ../plugins/resource-list/rl-cluster.cpp:174
 msgid "User:"
 msgstr "Lietotājs:"
 
-#: ../lib/engine/components/opal/opal-account.cpp:430
-#: ../lib/engine/components/opal/opal-bank.cpp:105
-#: ../lib/engine/components/opal/opal-bank.cpp:116
-#: ../lib/engine/components/opal/opal-bank.cpp:125
-#: ../lib/engine/components/opal/opal-bank.cpp:135
+#: ../lib/engine/components/opal/opal-account.cpp:502
+#: ../lib/engine/components/opal/opal-bank.cpp:172
+#: ../lib/engine/components/opal/opal-bank.cpp:183
+#: ../lib/engine/components/opal/opal-bank.cpp:192
+#: ../lib/engine/components/opal/opal-bank.cpp:202
 #: ../plugins/loudmouth/loudmouth-account.cpp:346
-#: ../plugins/loudmouth/loudmouth-bank.cpp:126
+#: ../plugins/loudmouth/loudmouth-bank.cpp:124
 msgid "The user name, e.g. jim"
 msgstr "Lietotāja vārds, piem., janis"
 
 #. Translators:
 #. * SIP knows two usernames: The name for the client ("User") and the name
 #. * for the authentication procedure ("Authentication user")
-#: ../lib/engine/components/opal/opal-account.cpp:435
+#: ../lib/engine/components/opal/opal-account.cpp:507
 msgid "Authentication user:"
 msgstr "Autentifikācijas lietotājs:"
 
-#: ../lib/engine/components/opal/opal-account.cpp:435
-#: ../lib/engine/components/opal/opal-bank.cpp:136
+#: ../lib/engine/components/opal/opal-account.cpp:507
+#: ../lib/engine/components/opal/opal-bank.cpp:203
 msgid ""
 "The user name used during authentication, if different than the user name; "
 "leave empty if you do not have one"
@@ -1213,304 +1233,316 @@ msgstr ""
 "Autentifikācijas lietotāja vārds, ja tas atšķiras no lietotāja vārda; atstāt "
 "tukšu, ja jums tāda nav."
 
-#: ../lib/engine/components/opal/opal-account.cpp:436
+#: ../lib/engine/components/opal/opal-account.cpp:508
 #: ../plugins/loudmouth/loudmouth-account.cpp:362
-#: ../plugins/loudmouth/loudmouth-bank.cpp:129
+#: ../plugins/loudmouth/loudmouth-bank.cpp:127
 #: ../plugins/resource-list/rl-cluster.cpp:173
 msgid "Password:"
 msgstr "Parole:"
 
-#: ../lib/engine/components/opal/opal-account.cpp:436
-#: ../lib/engine/components/opal/opal-bank.cpp:107
-#: ../lib/engine/components/opal/opal-bank.cpp:118
-#: ../lib/engine/components/opal/opal-bank.cpp:127
-#: ../lib/engine/components/opal/opal-bank.cpp:137
+#: ../lib/engine/components/opal/opal-account.cpp:508
+#: ../lib/engine/components/opal/opal-bank.cpp:174
+#: ../lib/engine/components/opal/opal-bank.cpp:185
+#: ../lib/engine/components/opal/opal-bank.cpp:194
+#: ../lib/engine/components/opal/opal-bank.cpp:204
 #: ../plugins/loudmouth/loudmouth-account.cpp:362
-#: ../plugins/loudmouth/loudmouth-bank.cpp:129
+#: ../plugins/loudmouth/loudmouth-bank.cpp:127
 msgid "Password associated to the user"
 msgstr "Parole, kas saistīta ar lietotāju"
 
-#: ../lib/engine/components/opal/opal-account.cpp:437
+#: ../lib/engine/components/opal/opal-account.cpp:509
 msgid "Timeout:"
 msgstr "Noildze:"
 
-#: ../lib/engine/components/opal/opal-account.cpp:437
-#: ../lib/engine/components/opal/opal-bank.cpp:128
-#: ../lib/engine/components/opal/opal-bank.cpp:138
+#: ../lib/engine/components/opal/opal-account.cpp:509
+#: ../lib/engine/components/opal/opal-bank.cpp:195
+#: ../lib/engine/components/opal/opal-bank.cpp:205
 msgid ""
 "Time in seconds after which the account registration is automatically retried"
 msgstr ""
 "Laiks sekundēs pēc kura automātiski atkārtot konta reģistrēšanas mēģinājumu"
 
-#: ../lib/engine/components/opal/opal-account.cpp:438
-#: ../lib/engine/components/opal/opal-bank.cpp:141
+#: ../lib/engine/components/opal/opal-account.cpp:510
+#: ../lib/engine/components/opal/opal-bank.cpp:208
 #: ../plugins/loudmouth/loudmouth-account.cpp:376
-#: ../plugins/loudmouth/loudmouth-bank.cpp:130
+#: ../plugins/loudmouth/loudmouth-bank.cpp:128
 msgid "Enable account"
 msgstr "Aktivēt kontu"
 
-#: ../lib/engine/components/opal/opal-account.cpp:464
-#: ../lib/engine/components/opal/opal-bank.cpp:175
+#: ../lib/engine/components/opal/opal-account.cpp:538
+#: ../lib/engine/components/opal/opal-bank.cpp:242
 msgid "You did not supply a name for that account."
 msgstr "Jūs nenorādījāt konta nosaukumu."
 
-#: ../lib/engine/components/opal/opal-account.cpp:466
-#: ../lib/engine/components/opal/opal-bank.cpp:177
+#: ../lib/engine/components/opal/opal-account.cpp:540
+#: ../lib/engine/components/opal/opal-bank.cpp:244
 msgid "You did not supply a host to register to."
 msgstr "Jūs nenorādījāt datoru, kuru reģistrēt."
 
-#: ../lib/engine/components/opal/opal-account.cpp:468
-#: ../lib/engine/components/opal/opal-bank.cpp:179
+#: ../lib/engine/components/opal/opal-account.cpp:542
+#: ../lib/engine/components/opal/opal-bank.cpp:246
 msgid "You did not supply a user name for that account."
 msgstr "Jūs nenorādījāt konta lietotājvārdu."
 
-#: ../lib/engine/components/opal/opal-account.cpp:470
-#: ../lib/engine/components/opal/opal-bank.cpp:181
+#: ../lib/engine/components/opal/opal-account.cpp:544
+#: ../lib/engine/components/opal/opal-bank.cpp:248
 msgid "The timeout should be at least 10 seconds."
 msgstr "Noildzei būtu jābūt vismaz 10 sekundēm."
 
 #. Translators: this is a state, not an action, i.e. it should be read as
 #. "(you are) registered", and not as "(you have been) registered"
-#: ../lib/engine/components/opal/opal-account.cpp:588
+#: ../lib/engine/components/opal/opal-account.cpp:684
 msgid "Registered"
 msgstr "Reģistrēts"
 
-#: ../lib/engine/components/opal/opal-account.cpp:625
+#: ../lib/engine/components/opal/opal-account.cpp:725
 msgid "Could not unregister"
 msgstr "Nevar atreģistrēt"
 
-#: ../lib/engine/components/opal/opal-account.cpp:658
-msgid "Could not register"
-msgstr "Nevar reģistrēt"
-
-#: ../lib/engine/components/opal/opal-account.cpp:663
+#: ../lib/engine/components/opal/opal-account.cpp:737
+#: ../lib/engine/components/opal/opal-account.cpp:772
 msgid "Could not register to "
 msgstr "Nevarēja reģistrēt ar"
 
-#: ../lib/engine/components/opal/opal-account.cpp:664
+#: ../lib/engine/components/opal/opal-account.cpp:738
+#: ../lib/engine/components/opal/opal-account.cpp:773
 #: ../plugins/loudmouth/loudmouth-account.cpp:443
 msgid "Edit"
 msgstr "Rediģēt"
 
-#: ../lib/engine/components/opal/opal-account.cpp:803
+#: ../lib/engine/components/opal/opal-account.cpp:767
+msgid "Could not register"
+msgstr "Nevar reģistrēt"
+
+#: ../lib/engine/components/opal/opal-account.cpp:916
 msgid "Appointment"
 msgstr "Tikšanās"
 
-#: ../lib/engine/components/opal/opal-account.cpp:808
+#: ../lib/engine/components/opal/opal-account.cpp:921
 msgid "Breakfast"
 msgstr "Brokastis"
 
-#: ../lib/engine/components/opal/opal-account.cpp:813
+#: ../lib/engine/components/opal/opal-account.cpp:926
 msgid "Dinner"
 msgstr "Vakariņas"
 
-#: ../lib/engine/components/opal/opal-account.cpp:819
+#: ../lib/engine/components/opal/opal-account.cpp:932
 msgid "Holiday"
 msgstr "Brīvdiena"
 
-#: ../lib/engine/components/opal/opal-account.cpp:824
+#: ../lib/engine/components/opal/opal-account.cpp:937
 msgid "In transit"
 msgstr "Ceļā"
 
-#: ../lib/engine/components/opal/opal-account.cpp:829
+#: ../lib/engine/components/opal/opal-account.cpp:942
 msgid "Looking for work"
 msgstr "Meklē darbu"
 
-#: ../lib/engine/components/opal/opal-account.cpp:834
+#: ../lib/engine/components/opal/opal-account.cpp:947
 msgid "Lunch"
 msgstr "Pusdienas"
 
-#: ../lib/engine/components/opal/opal-account.cpp:839
+#: ../lib/engine/components/opal/opal-account.cpp:952
 msgid "Meal"
 msgstr "Ēdienreize"
 
-#: ../lib/engine/components/opal/opal-account.cpp:844
+#: ../lib/engine/components/opal/opal-account.cpp:957
 msgid "Meeting"
 msgstr "Sanāksme"
 
-#: ../lib/engine/components/opal/opal-account.cpp:849
+#: ../lib/engine/components/opal/opal-account.cpp:962
 msgid "On the phone"
 msgstr "Runā pa tālruni"
 
-#: ../lib/engine/components/opal/opal-account.cpp:854
+#: ../lib/engine/components/opal/opal-account.cpp:967
 msgid "Playing"
 msgstr "Spēlē"
 
-#: ../lib/engine/components/opal/opal-account.cpp:859
+#: ../lib/engine/components/opal/opal-account.cpp:972
 msgid "Shopping"
 msgstr "Iepērkas"
 
-#: ../lib/engine/components/opal/opal-account.cpp:864
+#: ../lib/engine/components/opal/opal-account.cpp:977
 msgid "Sleeping"
 msgstr "Guļ"
 
-#: ../lib/engine/components/opal/opal-account.cpp:869
+#: ../lib/engine/components/opal/opal-account.cpp:982
 msgid "Working"
 msgstr "Strādā"
 
-#: ../lib/engine/components/opal/opal-bank.cpp:76
+#: ../lib/engine/components/opal/opal-bank.cpp:102
 msgid "_Add an Ekiga.net Account"
 msgstr "Pievienot Ekig_a.net kontu"
 
-#: ../lib/engine/components/opal/opal-bank.cpp:78
+#: ../lib/engine/components/opal/opal-bank.cpp:104
 msgid "_Add an Ekiga Call Out Account"
 msgstr "Pievienot Ekig_a izejošo zvanu kontu"
 
-#: ../lib/engine/components/opal/opal-bank.cpp:80
+#: ../lib/engine/components/opal/opal-bank.cpp:106
 msgid "_Add a SIP Account"
 msgstr "_Pievienot SIP kontu"
 
-#: ../lib/engine/components/opal/opal-bank.cpp:82
+#: ../lib/engine/components/opal/opal-bank.cpp:109
 msgid "_Add an H.323 Account"
 msgstr "_Pievienot H.323 kontu"
 
-#: ../lib/engine/components/opal/opal-bank.cpp:102
-#: ../src/gui/assistant.cpp:645
+#: ../lib/engine/components/opal/opal-bank.cpp:169
+#: ../lib/engine/gui/gtk-frontend/assistant-window.cpp:433
 msgid "Get an Ekiga.net SIP account"
 msgstr "Iegūt Ekiga.net SIP kontu"
 
-#: ../lib/engine/components/opal/opal-bank.cpp:105
-#: ../lib/engine/components/opal/opal-bank.cpp:125
-#: ../lib/engine/components/opal/opal-bank.cpp:135
+#: ../lib/engine/components/opal/opal-bank.cpp:172
+#: ../lib/engine/components/opal/opal-bank.cpp:192
+#: ../lib/engine/components/opal/opal-bank.cpp:202
 msgid "_User:"
 msgstr "_Lietotājs:"
 
-#: ../lib/engine/components/opal/opal-bank.cpp:107
-#: ../lib/engine/components/opal/opal-bank.cpp:127
-#: ../lib/engine/components/opal/opal-bank.cpp:137
+#: ../lib/engine/components/opal/opal-bank.cpp:174
+#: ../lib/engine/components/opal/opal-bank.cpp:194
+#: ../lib/engine/components/opal/opal-bank.cpp:204
 #: ../plugins/ldap/ldap-book.cpp:986
 msgid "_Password:"
 msgstr "_Parole:"
 
-#: ../lib/engine/components/opal/opal-bank.cpp:112
-#: ../src/gui/assistant.cpp:749
+#: ../lib/engine/components/opal/opal-bank.cpp:179
+#: ../lib/engine/gui/gtk-frontend/assistant-window.cpp:537
 msgid "Get an Ekiga Call Out account"
 msgstr "Iegūt Ekiga izejošo zvanu kontu"
 
-#: ../lib/engine/components/opal/opal-bank.cpp:116
+#: ../lib/engine/components/opal/opal-bank.cpp:183
 msgid "_Account ID:"
 msgstr "Kont_a ID"
 
-#: ../lib/engine/components/opal/opal-bank.cpp:118
+#: ../lib/engine/components/opal/opal-bank.cpp:185
 msgid "_PIN code:"
 msgstr "_PIN kods:"
 
-#: ../lib/engine/components/opal/opal-bank.cpp:123
-#: ../lib/engine/components/opal/opal-bank.cpp:133
+#: ../lib/engine/components/opal/opal-bank.cpp:190
+#: ../lib/engine/components/opal/opal-bank.cpp:200
 #: ../plugins/evolution/evolution-book.cpp:347
 msgid "_Name:"
 msgstr "_Nosaukums:"
 
-#: ../lib/engine/components/opal/opal-bank.cpp:124
+#: ../lib/engine/components/opal/opal-bank.cpp:191
 msgid "_Gatekeeper:"
 msgstr "_Vārtzinis:"
 
-#: ../lib/engine/components/opal/opal-bank.cpp:128
-#: ../lib/engine/components/opal/opal-bank.cpp:138
+#: ../lib/engine/components/opal/opal-bank.cpp:195
+#: ../lib/engine/components/opal/opal-bank.cpp:205
 msgid "_Timeout:"
 msgstr "_Noildze:"
 
-#: ../lib/engine/components/opal/opal-bank.cpp:134
+#: ../lib/engine/components/opal/opal-bank.cpp:201
 msgid "_Registrar:"
 msgstr "_Reģistrētājs:"
 
-#: ../lib/engine/components/opal/opal-bank.cpp:136
+#: ../lib/engine/components/opal/opal-bank.cpp:203
 msgid "_Authentication user:"
 msgstr "_Autentifikācijas lietotājs:"
 
-#: ../lib/engine/components/opal/opal-call.cpp:405
+#: ../lib/engine/components/opal/opal-call.cpp:425
 msgid "Local user cleared the call"
 msgstr "Lokālā puse ir beigusi zvanu"
 
-#: ../lib/engine/components/opal/opal-call.cpp:408
-#: ../lib/engine/components/opal/opal-call.cpp:411
+#: ../lib/engine/components/opal/opal-call.cpp:428
+#: ../lib/engine/components/opal/opal-call.cpp:431
 msgid "Local user rejected the call"
 msgstr "Lokālā puse ir noraidījusi zvanu"
 
-#: ../lib/engine/components/opal/opal-call.cpp:414
+#: ../lib/engine/components/opal/opal-call.cpp:434
 msgid "Remote user cleared the call"
 msgstr "Attālinātā puse ir beigusi zvanu"
 
-#: ../lib/engine/components/opal/opal-call.cpp:417
+#: ../lib/engine/components/opal/opal-call.cpp:437
 msgid "Remote user rejected the call"
 msgstr "Attālinātā puse ir noraidījusi zvanu"
 
-#: ../lib/engine/components/opal/opal-call.cpp:420
+#: ../lib/engine/components/opal/opal-call.cpp:440
 msgid "Remote user has stopped calling"
 msgstr "Attālinātais lietotājs pārtraucis zvanīt"
 
-#: ../lib/engine/components/opal/opal-call.cpp:423
+#: ../lib/engine/components/opal/opal-call.cpp:443
 msgid "Abnormal call termination"
 msgstr "Nenormālas zvana beigas"
 
-#: ../lib/engine/components/opal/opal-call.cpp:426
-#: ../src/gui/main_window.cpp:527
+#: ../lib/engine/components/opal/opal-call.cpp:446
+#: ../lib/engine/gui/gtk-frontend/main_window.cpp:423
 msgid "Could not connect to remote host"
 msgstr "Nevar savienoties ar attālināto datoru"
 
-#: ../lib/engine/components/opal/opal-call.cpp:430
+#: ../lib/engine/components/opal/opal-call.cpp:450
 msgid "The Gatekeeper cleared the call"
 msgstr "Vārtzinis ir beidzis zvanu"
 
-#: ../lib/engine/components/opal/opal-call.cpp:433
+#: ../lib/engine/components/opal/opal-call.cpp:453
 msgid "User not found"
 msgstr "Lietotājs nav atrasts"
 
-#: ../lib/engine/components/opal/opal-call.cpp:436
+#: ../lib/engine/components/opal/opal-call.cpp:456
 msgid "Insufficient bandwidth"
 msgstr "Nepietiekams joslas platums"
 
-#: ../lib/engine/components/opal/opal-call.cpp:439
+#: ../lib/engine/components/opal/opal-call.cpp:459
 msgid "No common codec"
 msgstr "Nav kopīga kodeka"
 
-#: ../lib/engine/components/opal/opal-call.cpp:442
+#: ../lib/engine/components/opal/opal-call.cpp:462
 msgid "Call forwarded"
 msgstr "Zvans pārsūtīts"
 
-#: ../lib/engine/components/opal/opal-call.cpp:445
+#: ../lib/engine/components/opal/opal-call.cpp:465
 msgid "Security check failed"
 msgstr "Drošības pārbaude neveiksmīga"
 
-#: ../lib/engine/components/opal/opal-call.cpp:448
+#: ../lib/engine/components/opal/opal-call.cpp:468
 msgid "Local user is busy"
 msgstr "Lokālais lietotājs ir aizņemts"
 
-#: ../lib/engine/components/opal/opal-call.cpp:451
-#: ../lib/engine/components/opal/opal-call.cpp:457
+#: ../lib/engine/components/opal/opal-call.cpp:471
+#: ../lib/engine/components/opal/opal-call.cpp:477
 msgid "Congested link to remote party"
 msgstr "Pārpildīta saite ar attālināto pusi"
 
-#: ../lib/engine/components/opal/opal-call.cpp:454
+#: ../lib/engine/components/opal/opal-call.cpp:474
 msgid "Remote user is busy"
 msgstr "Attālinātais lietotājs ir aizņemts"
 
-#: ../lib/engine/components/opal/opal-call.cpp:460
+#: ../lib/engine/components/opal/opal-call.cpp:480
 msgid "Remote host is offline"
 msgstr "Attālinātais dators ir bezsaistē"
 
-#: ../lib/engine/components/opal/opal-call.cpp:466
+#: ../lib/engine/components/opal/opal-call.cpp:483
+#| msgid "user offline"
+msgid "User is offline"
+msgstr "Lietotājs nesaistē"
+
+#: ../lib/engine/components/opal/opal-call.cpp:486
+#| msgid "Remote host is offline"
+msgid "Remote host not found"
+msgstr "Attālinātais resursdators nav atrasts"
+
+#: ../lib/engine/components/opal/opal-call.cpp:490
 msgid "User is not available"
 msgstr "Lokālais lietotājs šobrīd nav sasniedzams"
 
-#: ../lib/engine/components/opal/opal-call.cpp:469
-#: ../lib/engine/components/opal/sip-endpoint.cpp:781
+#: ../lib/engine/components/opal/opal-call.cpp:493
+#: ../lib/engine/components/opal/sip-endpoint.cpp:661
 msgid "Service unavailable"
 msgstr "Serviss nav pieejams"
 
-#: ../lib/engine/components/opal/opal-call.cpp:479
+#: ../lib/engine/components/opal/opal-call.cpp:503
 msgid "Call completed"
 msgstr "Zvans pabeigts"
 
-#: ../lib/engine/components/opal/opal-call.cpp:679
+#: ../lib/engine/components/opal/opal-call.cpp:694
 msgid "Missed call from"
 msgstr "Neatbildēts zvans no"
 
-#: ../lib/engine/components/opal/opal-call.cpp:681
+#: ../lib/engine/components/opal/opal-call.cpp:696
 msgid "Missed call"
 msgstr "Neatbildēts zvans"
 
-#: ../lib/engine/components/opal/opal-call-manager.cpp:830
+#: ../lib/engine/components/opal/opal-call-manager.cpp:875
 msgid ""
 "Ekiga did not manage to configure your network settings automatically. You "
 "can still use it, but you need to configure your network settings manually.\n"
@@ -1524,106 +1556,105 @@ msgstr ""
 "Lai saņemtu instrukcijas, skatiet http://wiki.ekiga.org/index.php/"
 "Enable_port_forwarding_manually"
 
-#: ../lib/engine/components/opal/sip-endpoint.cpp:275
-#: ../lib/engine/components/opal/sip-endpoint.cpp:277
+#: ../lib/engine/components/opal/sip-endpoint.cpp:168
 msgid "Message"
 msgstr "Ziņojums"
 
-#: ../lib/engine/components/opal/sip-endpoint.cpp:599
+#: ../lib/engine/components/opal/sip-endpoint.cpp:479
 msgid "Illegal status code"
 msgstr "Nepareizs statusa kods"
 
-#: ../lib/engine/components/opal/sip-endpoint.cpp:607
+#: ../lib/engine/components/opal/sip-endpoint.cpp:487
 msgid "Invalid address"
 msgstr "Nederīga adrese"
 
 #. Translators: Host of the remote party is offline, this should
 #. * appear when the remote host does not reply in an acceptable time
-#: ../lib/engine/components/opal/sip-endpoint.cpp:613
+#: ../lib/engine/components/opal/sip-endpoint.cpp:493
 msgid "Remote party host is offline"
 msgstr "Attālinās puses dators ir bezsaistē"
 
 #. Translators: the following strings are answers from the SIP server
 #. * when the packet it receives has an error, see
 #. * http://www.ietf.org/rfc/rfc3261.txt, chapter 21 for more information
-#: ../lib/engine/components/opal/sip-endpoint.cpp:629
+#: ../lib/engine/components/opal/sip-endpoint.cpp:509
 msgid "Multiple choices"
 msgstr "Vairākas izvēles"
 
-#: ../lib/engine/components/opal/sip-endpoint.cpp:633
+#: ../lib/engine/components/opal/sip-endpoint.cpp:513
 msgid "Moved permanently"
 msgstr "Pārvietots pastāvīgi"
 
-#: ../lib/engine/components/opal/sip-endpoint.cpp:637
+#: ../lib/engine/components/opal/sip-endpoint.cpp:517
 msgid "Moved temporarily"
 msgstr "Pārvietots uz laiku"
 
-#: ../lib/engine/components/opal/sip-endpoint.cpp:641
+#: ../lib/engine/components/opal/sip-endpoint.cpp:521
 msgid "Use proxy"
 msgstr "Izmantot starpniekserveri"
 
-#: ../lib/engine/components/opal/sip-endpoint.cpp:645
+#: ../lib/engine/components/opal/sip-endpoint.cpp:525
 msgid "Alternative service"
 msgstr "Alternatīvs serviss"
 
-#: ../lib/engine/components/opal/sip-endpoint.cpp:649
+#: ../lib/engine/components/opal/sip-endpoint.cpp:529
 msgid "Bad request"
 msgstr "Nederīgs pieprasījums"
 
-#: ../lib/engine/components/opal/sip-endpoint.cpp:653
+#: ../lib/engine/components/opal/sip-endpoint.cpp:533
 msgid "Unauthorized"
 msgstr "Neautorizēts"
 
-#: ../lib/engine/components/opal/sip-endpoint.cpp:657
+#: ../lib/engine/components/opal/sip-endpoint.cpp:537
 msgid "Payment required"
 msgstr "Nepieciešama apmaksa"
 
-#: ../lib/engine/components/opal/sip-endpoint.cpp:661
+#: ../lib/engine/components/opal/sip-endpoint.cpp:541
 msgid "Forbidden, please check that username and password are correct"
 msgstr ""
 "Aizliegts. Lūdzu, pārliecinieties, ka lietotājvārds un parole ir pareizi"
 
-#: ../lib/engine/components/opal/sip-endpoint.cpp:665
+#: ../lib/engine/components/opal/sip-endpoint.cpp:545
 msgid "Not found"
 msgstr "Nav atrasts"
 
-#: ../lib/engine/components/opal/sip-endpoint.cpp:669
+#: ../lib/engine/components/opal/sip-endpoint.cpp:549
 msgid "Method not allowed"
 msgstr "Metode nav atļauta"
 
-#: ../lib/engine/components/opal/sip-endpoint.cpp:673
+#: ../lib/engine/components/opal/sip-endpoint.cpp:553
 msgid "Not acceptable"
 msgstr "Nav pieņemams"
 
-#: ../lib/engine/components/opal/sip-endpoint.cpp:677
+#: ../lib/engine/components/opal/sip-endpoint.cpp:557
 msgid "Proxy authentication required"
 msgstr "Nepieciešama starpnieka autentifikācija"
 
-#: ../lib/engine/components/opal/sip-endpoint.cpp:681
+#: ../lib/engine/components/opal/sip-endpoint.cpp:561
 msgid "Timeout"
 msgstr "Noildze"
 
-#: ../lib/engine/components/opal/sip-endpoint.cpp:685
+#: ../lib/engine/components/opal/sip-endpoint.cpp:565
 msgid "Conflict"
 msgstr "Konflikts"
 
-#: ../lib/engine/components/opal/sip-endpoint.cpp:689
+#: ../lib/engine/components/opal/sip-endpoint.cpp:569
 msgid "Length required"
 msgstr "Nepieciešams garums"
 
-#: ../lib/engine/components/opal/sip-endpoint.cpp:693
+#: ../lib/engine/components/opal/sip-endpoint.cpp:573
 msgid "Request entity too big"
 msgstr "Pieprasījuma ieraksts ir pārāk garš"
 
-#: ../lib/engine/components/opal/sip-endpoint.cpp:697
+#: ../lib/engine/components/opal/sip-endpoint.cpp:577
 msgid "Request URI too long"
 msgstr "Pieprasījuma URI ir pārāk garš"
 
-#: ../lib/engine/components/opal/sip-endpoint.cpp:701
+#: ../lib/engine/components/opal/sip-endpoint.cpp:581
 msgid "Unsupported media type"
 msgstr "Neatbalstīts datu nesējs"
 
-#: ../lib/engine/components/opal/sip-endpoint.cpp:705
+#: ../lib/engine/components/opal/sip-endpoint.cpp:585
 msgid "Unsupported URI scheme"
 msgstr "Neatbalstīta URI shēma"
 
@@ -1631,204 +1662,368 @@ msgstr "Neatbalstīta URI shēma"
 #. * Here extension is a specific "phone number", see
 #. * http://en.wikipedia.org/wiki/Extension_(telephone)
 #. * for more information
-#: ../lib/engine/components/opal/sip-endpoint.cpp:713
+#: ../lib/engine/components/opal/sip-endpoint.cpp:593
 msgid "Bad extension"
 msgstr "Slikts paplašinājums"
 
-#: ../lib/engine/components/opal/sip-endpoint.cpp:717
+#: ../lib/engine/components/opal/sip-endpoint.cpp:597
 msgid "Extension required"
 msgstr "Nepieciešams paplašinājums"
 
-#: ../lib/engine/components/opal/sip-endpoint.cpp:721
+#: ../lib/engine/components/opal/sip-endpoint.cpp:601
 msgid "Interval too brief"
 msgstr "Pārāk īss intervāls"
 
-#: ../lib/engine/components/opal/sip-endpoint.cpp:725
+#: ../lib/engine/components/opal/sip-endpoint.cpp:605
 msgid "Temporarily unavailable"
 msgstr "Uz brīdi nepieejams"
 
-#: ../lib/engine/components/opal/sip-endpoint.cpp:729
+#: ../lib/engine/components/opal/sip-endpoint.cpp:609
 msgid "Loop detected"
 msgstr "Cilpa atklāta"
 
-#: ../lib/engine/components/opal/sip-endpoint.cpp:733
+#: ../lib/engine/components/opal/sip-endpoint.cpp:613
 msgid "Too many hops"
 msgstr "Pārāk daudz lēcienu"
 
-#: ../lib/engine/components/opal/sip-endpoint.cpp:737
+#: ../lib/engine/components/opal/sip-endpoint.cpp:617
 msgid "Address incomplete"
 msgstr "Adrese ir nepilnīga"
 
-#: ../lib/engine/components/opal/sip-endpoint.cpp:741
+#: ../lib/engine/components/opal/sip-endpoint.cpp:621
 msgid "Ambiguous"
 msgstr "Nenoteikts"
 
-#: ../lib/engine/components/opal/sip-endpoint.cpp:745
+#: ../lib/engine/components/opal/sip-endpoint.cpp:625
 msgid "Busy Here"
 msgstr "Šeit aizņemts"
 
-#: ../lib/engine/components/opal/sip-endpoint.cpp:749
+#: ../lib/engine/components/opal/sip-endpoint.cpp:629
 msgid "Request terminated"
 msgstr "Pieprasījums izbeigts"
 
-#: ../lib/engine/components/opal/sip-endpoint.cpp:753
+#: ../lib/engine/components/opal/sip-endpoint.cpp:633
 msgid "Not acceptable here"
 msgstr "Šeit nav pieņemams"
 
-#: ../lib/engine/components/opal/sip-endpoint.cpp:757
+#: ../lib/engine/components/opal/sip-endpoint.cpp:637
 msgid "Bad event"
 msgstr "Slikts notikums"
 
-#: ../lib/engine/components/opal/sip-endpoint.cpp:761
+#: ../lib/engine/components/opal/sip-endpoint.cpp:641
 msgid "Request pending"
 msgstr "Pieprasījums gaida izpildi"
 
-#: ../lib/engine/components/opal/sip-endpoint.cpp:765
+#: ../lib/engine/components/opal/sip-endpoint.cpp:645
 msgid "Undecipherable"
 msgstr "Neatšifrējams"
 
-#: ../lib/engine/components/opal/sip-endpoint.cpp:769
+#: ../lib/engine/components/opal/sip-endpoint.cpp:649
 msgid "Internal server error"
 msgstr "Iekšēja servera kļūda"
 
-#: ../lib/engine/components/opal/sip-endpoint.cpp:773
+#: ../lib/engine/components/opal/sip-endpoint.cpp:653
 msgid "Not implemented"
 msgstr "Nav ieviests"
 
-#: ../lib/engine/components/opal/sip-endpoint.cpp:777
+#: ../lib/engine/components/opal/sip-endpoint.cpp:657
 msgid "Bad gateway"
 msgstr "Slikta vārteja"
 
-#: ../lib/engine/components/opal/sip-endpoint.cpp:785
+#: ../lib/engine/components/opal/sip-endpoint.cpp:665
 msgid "Server timeout"
 msgstr "Servera noildze"
 
-#: ../lib/engine/components/opal/sip-endpoint.cpp:789
+#: ../lib/engine/components/opal/sip-endpoint.cpp:669
 msgid "SIP version not supported"
 msgstr "SIP versija nav atbalstīta"
 
-#: ../lib/engine/components/opal/sip-endpoint.cpp:793
+#: ../lib/engine/components/opal/sip-endpoint.cpp:673
 msgid "Message too large"
 msgstr "Ziņojums pārāk garš"
 
-#: ../lib/engine/components/opal/sip-endpoint.cpp:797
+#: ../lib/engine/components/opal/sip-endpoint.cpp:677
 msgid "Busy everywhere"
 msgstr "Aizņemts visur"
 
-#: ../lib/engine/components/opal/sip-endpoint.cpp:801
+#: ../lib/engine/components/opal/sip-endpoint.cpp:681
 msgid "Decline"
 msgstr "Noraidīt"
 
-#: ../lib/engine/components/opal/sip-endpoint.cpp:805
+#: ../lib/engine/components/opal/sip-endpoint.cpp:685
 msgid "Does not exist anymore"
 msgstr "Vairs neeksistē"
 
-#: ../lib/engine/components/opal/sip-endpoint.cpp:809
+#: ../lib/engine/components/opal/sip-endpoint.cpp:689
 msgid "Globally not acceptable"
 msgstr "Globāli nav pieņemams"
 
-#: ../lib/engine/components/opal/sip-endpoint.cpp:947
+#: ../lib/engine/components/opal/sip-endpoint.cpp:808
 msgid "Could not send message: "
 msgstr "Nevar nosūtīt ziņojumu: "
 
-#: ../lib/engine/components/opal/sip-endpoint.cpp:949
+#: ../lib/engine/components/opal/sip-endpoint.cpp:810
 msgid "user offline"
 msgstr "lietotājs nesaistē"
 
-#: ../lib/engine/components/opal/sip-endpoint.cpp:990
+#. Ignore
+#: ../lib/engine/components/opal/sip-endpoint.cpp:849
+#: ../plugins/libnotify/libnotify-main.cpp:272
+#, c-format
+msgid "Incoming call from %s"
+msgstr "Ienākošais zvans no %s"
+
+#: ../lib/engine/components/opal/sip-endpoint.cpp:851
 #, c-format
 msgid "Incoming call"
 msgstr "Ienākošais zvans"
 
-#: ../lib/engine/components/opal/sip-endpoint.cpp:996
+#: ../lib/engine/components/opal/sip-endpoint.cpp:857
 #, c-format
 msgid "In a call with %s"
 msgstr "Sazvanās ar %s"
 
-#: ../lib/engine/components/opal/sip-endpoint.cpp:998
+#: ../lib/engine/components/opal/sip-endpoint.cpp:859
 #, c-format
 msgid "In a call"
 msgstr "Sazvanās"
 
-#: ../lib/engine/gui/gtk-core/codecsbox.cpp:452
+#: ../lib/engine/gui/gtk-core/codecsbox.cpp:453
 msgid "Move selected codec priority upwards"
 msgstr "Pārvietot izvēlētā kodeka prioritāti uz augšu"
 
-#: ../lib/engine/gui/gtk-core/codecsbox.cpp:462
+#: ../lib/engine/gui/gtk-core/codecsbox.cpp:463
 msgid "Move selected codec priority downwards"
 msgstr "Pārvietot izvēlētā kodeka prioritāti uz leju"
 
-#: ../lib/engine/gui/gtk-core/form-dialog-gtk.cpp:664
+#: ../lib/engine/gui/gtk-core/form-dialog-gtk.cpp:661
 msgid "Advanced"
 msgstr "Paplašināti"
 
-#: ../lib/engine/gui/gtk-core/form-dialog-gtk.cpp:1306
+#: ../lib/engine/gui/gtk-core/form-dialog-gtk.cpp:1278
 msgid "Add Group"
 msgstr "Pievienot grupu"
 
-#: ../lib/engine/gui/gtk-frontend/accounts-window.cpp:567
+#: ../lib/engine/gui/gtk-frontend/accounts-window.cpp:559
 msgid "Account Name"
 msgstr "Konta nosaukums"
 
-#: ../lib/engine/gui/gtk-frontend/accounts-window.cpp:568
+#: ../lib/engine/gui/gtk-frontend/accounts-window.cpp:560
 msgid "Status"
 msgstr "Statuss"
 
-#: ../lib/engine/gui/gtk-frontend/accounts-window.cpp:575
-#: ../lib/engine/gui/gtk-frontend/accounts-window.cpp:613
+#: ../lib/engine/gui/gtk-frontend/accounts-window.cpp:571
+#: ../lib/engine/gui/gtk-frontend/accounts-window.cpp:609
 msgid "Accounts"
 msgstr "Konti"
 
-#: ../lib/engine/gui/gtk-frontend/accounts-window.cpp:584
-#: ../src/gui/main_window.cpp:1335
+#: ../lib/engine/gui/gtk-frontend/accounts-window.cpp:580
+#: ../lib/engine/gui/gtk-frontend/main_window.cpp:1203
 msgid "_Accounts"
 msgstr "_Konti"
 
-#: ../lib/engine/gui/gtk-frontend/accounts-window.cpp:588
-#: ../src/gui/main_window.cpp:1381
+#: ../lib/engine/gui/gtk-frontend/accounts-window.cpp:584
+#: ../lib/engine/gui/gtk-frontend/main_window.cpp:1249
 msgid "_Help"
 msgstr "_Palīdzība"
 
-#: ../lib/engine/gui/gtk-frontend/accounts-window.cpp:680
+#: ../lib/engine/gui/gtk-frontend/accounts-window.cpp:676
 msgid "Edi_t"
 msgstr "Rediģē_t"
 
-#: ../lib/engine/gui/gtk-frontend/addressbook-window.cpp:630
+#: ../lib/engine/gui/gtk-frontend/addressbook-window.cpp:621
 msgid "Address Book"
 msgstr "Adrešu grāmata"
 
-#: ../lib/engine/gui/gtk-frontend/addressbook-window.cpp:646
-#: ../src/gui/main_window.cpp:1296
+#: ../lib/engine/gui/gtk-frontend/addressbook-window.cpp:637
+#: ../lib/engine/gui/gtk-frontend/main_window.cpp:1174
 msgid "Address _Book"
 msgstr "Adrešu _grāmata"
 
 #. This will add static and dynamic actions
-#: ../lib/engine/gui/gtk-frontend/addressbook-window.cpp:655
+#: ../lib/engine/gui/gtk-frontend/addressbook-window.cpp:646
 msgid "_Action"
 msgstr "D_arbība"
 
-#: ../lib/engine/gui/gtk-frontend/addressbook-window.cpp:699
+#: ../lib/engine/gui/gtk-frontend/addressbook-window.cpp:692
 msgid "Category"
 msgstr "Kategorija"
 
-#: ../lib/engine/gui/gtk-frontend/book-view-gtk.cpp:585
-#: ../src/gui/assistant.cpp:1394
+#: ../lib/engine/gui/gtk-frontend/assistant-window.cpp:131
+msgid ""
+"This is the Ekiga general configuration assistant. The following steps will "
+"set up Ekiga by asking a few simple questions.\n"
+"\n"
+"Once you have completed these steps, you can always change them later by "
+"selecting Preferences in the Edit menu."
+msgstr ""
+"Laipni lūgti Ekiga vispārīgās konfigurācijas vednī. Nākamajos soļos tiks "
+"iestatīta Ekiga, vaicājot pāris vienkāršus jautājumus.\n"
+"\n"
+"Kad būsiet pabeidzis šos soļus, jūs vienmēr tos varat izmainīt “Rediģēt” "
+"izvēlnē izvēloties “Iestatījumi”."
+
+#: ../lib/engine/gui/gtk-frontend/assistant-window.cpp:139
+msgid "Welcome to Ekiga"
+msgstr "Laipni lūdzam Ekiga"
+
+#: ../lib/engine/gui/gtk-frontend/assistant-window.cpp:162
+#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:443
+msgid "Personal Information"
+msgstr "Personīga informācija"
+
+#. The user fields
+#: ../lib/engine/gui/gtk-frontend/assistant-window.cpp:165
+msgid "Please enter your first name and your surname:"
+msgstr "Lūdzu, ievadiet savu vārdu un uzvārdu:"
+
+#: ../lib/engine/gui/gtk-frontend/assistant-window.cpp:174
+msgid ""
+"Your first name and surname will be used when connecting to other VoIP and "
+"videoconferencing software."
+msgstr ""
+"Jūsu vārds un uzvārds tiks lietoti, veidojot savienojumu ar citām VoIP un "
+"videokonferenču programmām."
+
+#: ../lib/engine/gui/gtk-frontend/assistant-window.cpp:224
+msgid ""
+"If you do not have a SIP or H323 account, ekiga can only be used on your "
+"local internal network (inside your company, for example).  You will require "
+"an account if you want to be accessible to people on the Internet.  Many web "
+"sites allow you to create an account.  We suggest that you use a free ekiga."
+"net account, which allows you to be joined by any person with a SIP "
+"account.  If you want to call regular phone lines too, we suggest that you "
+"purchase an inexpensive call out account.\n"
+"\n"
+"The following two pages allow you to create such accounts."
+msgstr ""
+"Ja jums nav SIP vai H323 konta, ekiga varēs izmantot tikai lokālajā tīklā "
+"(piemēram, kompānijas iekšienē). Jums vajadzēs kontu, lai varētu piekļūt "
+"cilvēkiem internetā. Daudzas tīmekļa vietnes ļauj jums izveidot šādu kontu. "
+"Mēs jums iesakām izmantot bezmaksas ekiga.net kontu, kas jums ļauj "
+"sazināties ar jebkuru cilvēku, kam ir SIP konts. Ja vēlaties veikt arī "
+"zvanus uz parastajiem tālruņiem, mēs iesakām iegādāties lētu izejošo zvanu "
+"kontu.\n"
+"\n"
+"Nākamās divas lapas ļaus jums izveidot šādus kontus."
+
+#: ../lib/engine/gui/gtk-frontend/assistant-window.cpp:239
+msgid "Introduction to Accounts"
+msgstr "Ievas kontos"
+
+#: ../lib/engine/gui/gtk-frontend/assistant-window.cpp:396
+msgid "Ekiga.net Account"
+msgstr "Ekiga.net konts"
+
+#: ../lib/engine/gui/gtk-frontend/assistant-window.cpp:398
+msgid "Please enter your username:"
+msgstr "Lūdzu, ievadiet savu lietotājvārdu:"
+
+#: ../lib/engine/gui/gtk-frontend/assistant-window.cpp:406
+msgid "Please enter your password:"
+msgstr "Lūdzu, ievadiet savu paroli:"
+
+#: ../lib/engine/gui/gtk-frontend/assistant-window.cpp:416
+msgid ""
+"The username and password are used to login to your existing account at the "
+"ekiga.net free SIP service. If you do not have an ekiga.net SIP address yet, "
+"you may first create an account below. This will provide a SIP address that "
+"allows people to call you.\n"
+"\n"
+"You may skip this step if you use an alternative SIP service, or if you "
+"would prefer to specify the login details later."
+msgstr ""
+"Lietotājvārds un parole tiek izmantoti, lai pieteiktos jūsu esošajam ekiga."
+"net bezmaksas SIP servisa kontam. Ja jums vēl nav ekiga.net SIP adreses, tad "
+"zemāk varat izveidot kontu. Tas nodrošinās jūs ar SIP adresi, kas ļaus "
+"cilvēkiem jūs sazvanīt.\n"
+"\n"
+"Jūs varat izlaist šo soli, ja lietojat citu SIP pakalpojumu, vai ja jūs "
+"vēlaties pieslēgšanās informāciju norādīt vēlāk."
+
+#: ../lib/engine/gui/gtk-frontend/assistant-window.cpp:442
+msgid "I do not want to sign up for the ekiga.net free service"
+msgstr "Es nevēlos pieteikties uz ekiga.net bezmaksas pakalpojumu"
+
+#: ../lib/engine/gui/gtk-frontend/assistant-window.cpp:502
+msgid "Ekiga Call Out Account"
+msgstr "Ekiga izejošo zvanu konts"
+
+#: ../lib/engine/gui/gtk-frontend/assistant-window.cpp:504
+msgid "Please enter your account ID:"
+msgstr "Lūdzu, ievadiet savu konta ID:"
+
+#: ../lib/engine/gui/gtk-frontend/assistant-window.cpp:512
+msgid "Please enter your PIN code:"
+msgstr "Lūdzu, ievadiet savu PIN kodu:"
+
+#: ../lib/engine/gui/gtk-frontend/assistant-window.cpp:523
+msgid ""
+"You can make calls to regular phones and cell numbers worldwide using Ekiga. "
+"To enable this, you need to do two things:\n"
+"- First buy an account at the URL below.\n"
+"- Then enter your account ID and PIN code.\n"
+"The service will work only if your account is created using the URL in this "
+"dialog.\n"
+msgstr ""
+"Izmantojot Ekiga, jūs varat veikt zvanus uz parastajiem tālruņiem un "
+"mobilajiem tālruņiem. Lai aktivētu šo iespēju, jums jāizdara divas lietas:\n"
+"- Vispirms izveidojiet kontu zemāk norādītajā URL.\n"
+"- Tad ievadiet konta ID un PIN kodu.\n"
+"Šis pakalpojums darbosies tikai tad, ja jūsu konts ir izveidots izmantojot "
+"šajā logā doto URL.\n"
+
+#: ../lib/engine/gui/gtk-frontend/assistant-window.cpp:582
+msgid "I do not want to sign up for the Ekiga Call Out service"
+msgstr "Es nevēlos pieteikties uz Ekiga izejošo zvanu pakalpojumu"
+
+#: ../lib/engine/gui/gtk-frontend/assistant-window.cpp:692
+msgid "Configuration Complete"
+msgstr "Konfigurācija pabeigta"
+
+#: ../lib/engine/gui/gtk-frontend/assistant-window.cpp:694
+msgid ""
+"You have now finished the Ekiga configuration. All the settings can be "
+"changed in the Ekiga preferences. Enjoy!"
+msgstr ""
+"Jūs esat pabeidzis Ekiga konfigurēšanu. Visus iestatījumus var mainīt Ekiga "
+"iestatījumos. Patīkamas sarunas!"
+
+#: ../lib/engine/gui/gtk-frontend/assistant-window.cpp:701
+msgid "Configuration summary:"
+msgstr "Konfigurācijas kopsavilkums:"
+
+#: ../lib/engine/gui/gtk-frontend/assistant-window.cpp:748
+#: ../lib/engine/gui/gtk-frontend/book-view-gtk.cpp:584
 msgid "Full Name"
 msgstr "Pilns vārds"
 
-#: ../lib/engine/gui/gtk-frontend/book-view-gtk.cpp:600
+#: ../lib/engine/gui/gtk-frontend/assistant-window.cpp:762
+msgid "SIP URI"
+msgstr "SIP URI"
+
+#: ../lib/engine/gui/gtk-frontend/assistant-window.cpp:777
+msgid "Ekiga Call Out"
+msgstr "Ekiga izejošie zvani"
+
+#: ../lib/engine/gui/gtk-frontend/assistant-window.cpp:816
+#, c-format
+msgid "Ekiga Configuration Assistant (%d of %d)"
+msgstr "Ekiga konfigurācijas asistents (%d no %d)"
+
+#: ../lib/engine/gui/gtk-frontend/book-view-gtk.cpp:527
 msgid "_Search Filter:"
 msgstr "Meklēšana_s filtrs:"
 
-#: ../lib/engine/gui/gtk-frontend/call-window.cpp:772
+#: ../lib/engine/gui/gtk-frontend/call-window.cpp:760
 msgid "Error while initializing video output"
 msgstr "Kļūda, inicializējot video atskaņošanu"
 
-#: ../lib/engine/gui/gtk-frontend/call-window.cpp:773
+#: ../lib/engine/gui/gtk-frontend/call-window.cpp:761
 msgid "No video will be displayed on your machine during this call"
 msgstr "Šī zvana laikā uz šī datora netiks rādīts nekāds video"
 
-#: ../lib/engine/gui/gtk-frontend/call-window.cpp:783
+#: ../lib/engine/gui/gtk-frontend/call-window.cpp:771
 msgid ""
 "There was an error opening or initializing the video output. Please verify "
 "that no other application is using the accelerated video output."
@@ -1836,7 +2031,7 @@ msgstr ""
 "Gadījās kļūda, atverot vai inicializējot video atskaņošanu. Lūdzu,  "
 "pārliecinieties, ka neviena cita lietotne neizmanto paātrināto video izeju."
 
-#: ../lib/engine/gui/gtk-frontend/call-window.cpp:785
+#: ../lib/engine/gui/gtk-frontend/call-window.cpp:773
 msgid ""
 "There was an error opening or initializing the video output. Please verify "
 "that you are using a color depth of 24 or 32 bits per pixel."
@@ -1844,16 +2039,16 @@ msgstr ""
 "Gadījās kļūda, atverot vai inicializējot video atskaņošanu. Lūdzu, "
 "pārliecinieties, ka jūs izmantojat krāsu dziļumu 24 vai 32 biti uz pikseli."
 
-#: ../lib/engine/gui/gtk-frontend/call-window.cpp:895
+#: ../lib/engine/gui/gtk-frontend/call-window.cpp:896
 #, c-format
 msgid "Error while accessing video device %s"
 msgstr "Kļūda, piekļūstot video ierīcei %s"
 
-#: ../lib/engine/gui/gtk-frontend/call-window.cpp:898
+#: ../lib/engine/gui/gtk-frontend/call-window.cpp:899
 msgid "A moving logo will be transmitted during calls."
 msgstr "Zvanu laikā tiks pārraidīts kustīgs logo."
 
-#: ../lib/engine/gui/gtk-frontend/call-window.cpp:902
+#: ../lib/engine/gui/gtk-frontend/call-window.cpp:903
 msgid ""
 "There was an error while opening the device. In case it is a pluggable "
 "device it may be sufficient to reconnect it. If not, or if it still is not "
@@ -1865,15 +2060,15 @@ msgstr ""
 "lūdzu pārbaudiet atļaujas un pārliecinieties ka ir ielādēts pareizais "
 "draiveris."
 
-#: ../lib/engine/gui/gtk-frontend/call-window.cpp:906
+#: ../lib/engine/gui/gtk-frontend/call-window.cpp:907
 msgid "Your video driver doesn't support the requested video format."
 msgstr "Jūsu video draiveris neatbalsta pieprasīto video formātu."
 
-#: ../lib/engine/gui/gtk-frontend/call-window.cpp:910
+#: ../lib/engine/gui/gtk-frontend/call-window.cpp:911
 msgid "Could not open the chosen channel."
 msgstr "Nevar atvērt izvēlēto kanālu."
 
-#: ../lib/engine/gui/gtk-frontend/call-window.cpp:914
+#: ../lib/engine/gui/gtk-frontend/call-window.cpp:915
 msgid ""
 "Your driver doesn't seem to support any of the color formats supported by "
 "Ekiga.\n"
@@ -1884,32 +2079,32 @@ msgstr ""
 "Lūdzu, pārbaudiet sava kodola draiveru dokumentāciju, lai varētu noteikt, "
 "kura palete tiek atbalstīta."
 
-#: ../lib/engine/gui/gtk-frontend/call-window.cpp:918
+#: ../lib/engine/gui/gtk-frontend/call-window.cpp:919
 msgid "Error while setting the frame rate."
 msgstr "Kļūda, iestatot kadru ātrumu."
 
-#: ../lib/engine/gui/gtk-frontend/call-window.cpp:922
+#: ../lib/engine/gui/gtk-frontend/call-window.cpp:923
 msgid "Error while setting the frame size."
 msgstr "Kļūda, iestatot kadru izmēru."
 
-#: ../lib/engine/gui/gtk-frontend/call-window.cpp:927
-#: ../lib/engine/gui/gtk-frontend/call-window.cpp:997
-#: ../lib/engine/gui/gtk-frontend/call-window.cpp:1078
+#: ../lib/engine/gui/gtk-frontend/call-window.cpp:928
+#: ../lib/engine/gui/gtk-frontend/call-window.cpp:998
+#: ../lib/engine/gui/gtk-frontend/call-window.cpp:1079
 msgid "Unknown error."
 msgstr "Nezināma kļūda."
 
-#: ../lib/engine/gui/gtk-frontend/call-window.cpp:979
+#: ../lib/engine/gui/gtk-frontend/call-window.cpp:980
 #, c-format
 msgid "Error while opening audio input device %s"
 msgstr "Kļūda, atverot audio ierakstīšanas ierīci %s"
 
 #. Translators: This happens when there is an error with audio input:
 #. * Nothing ("silence") will be transmitted
-#: ../lib/engine/gui/gtk-frontend/call-window.cpp:984
+#: ../lib/engine/gui/gtk-frontend/call-window.cpp:985
 msgid "Only silence will be transmitted."
 msgstr "Tiks pārraidīts tikai klusums."
 
-#: ../lib/engine/gui/gtk-frontend/call-window.cpp:988
+#: ../lib/engine/gui/gtk-frontend/call-window.cpp:989
 msgid ""
 "Unable to open the selected audio device for recording. In case it is a "
 "pluggable device it may be sufficient to reconnect it. If not, or if it "
@@ -1921,7 +2116,7 @@ msgstr ""
 "aizvien nav pieejama, lūdzu pārbaudiet savus audio iestatījumus, atļaujas un "
 "pārliecinieties, ka ierīce nav aizņemta."
 
-#: ../lib/engine/gui/gtk-frontend/call-window.cpp:992
+#: ../lib/engine/gui/gtk-frontend/call-window.cpp:993
 msgid ""
 "The selected audio device was successfully opened but it is impossible to "
 "read data from this device. In case it is a pluggable device it may be "
@@ -1933,16 +2128,16 @@ msgstr ""
 "pievienošanu. Ja nē, vai arī tā vēl aizvien nav pieejama, lūdzu pārbaudiet "
 "savus audio iestatījumus."
 
-#: ../lib/engine/gui/gtk-frontend/call-window.cpp:1062
+#: ../lib/engine/gui/gtk-frontend/call-window.cpp:1063
 #, c-format
 msgid "Error while opening audio output device %s"
 msgstr "Kļūda, atverot audio atskaņošanas ierīci %s"
 
-#: ../lib/engine/gui/gtk-frontend/call-window.cpp:1065
+#: ../lib/engine/gui/gtk-frontend/call-window.cpp:1066
 msgid "No incoming sound will be played."
 msgstr "Netiks atskaņota ienākošā skaņa."
 
-#: ../lib/engine/gui/gtk-frontend/call-window.cpp:1069
+#: ../lib/engine/gui/gtk-frontend/call-window.cpp:1070
 msgid ""
 "Unable to open the selected audio device for playing. In case it is a "
 "pluggable device it may be sufficient to reconnect it. If not, or if it "
@@ -1954,7 +2149,7 @@ msgstr ""
 "aizvien nav pieejama, lūdzu pārbaudiet savus audio iestatījumus, atļaujas un "
 "pārliecinieties, ka ierīce nav aizņemta."
 
-#: ../lib/engine/gui/gtk-frontend/call-window.cpp:1073
+#: ../lib/engine/gui/gtk-frontend/call-window.cpp:1074
 msgid ""
 "The selected audio device was successfully opened but it is impossible to "
 "write data to this device. In case it is a pluggable device it may be "
@@ -1966,39 +2161,41 @@ msgstr ""
 "atkārtotu pievienošanu. Ja nē, vai arī tā vēl aizvien nav pieejama, lūdzu "
 "pārbaudiet savus audio iestatījumus."
 
-#: ../lib/engine/gui/gtk-frontend/call-window.cpp:1114
+#: ../lib/engine/gui/gtk-frontend/call-window.cpp:1115
 #, c-format
 msgid "Calling %s..."
 msgstr "Zvana %s..."
 
 #. %s is the SIP/H.323 address of the remote user, this text is shown
 #. below video during a call
-#: ../lib/engine/gui/gtk-frontend/call-window.cpp:1130
-#: ../src/gui/main_window.cpp:649
+#: ../lib/engine/gui/gtk-frontend/call-window.cpp:1145
+#: ../lib/engine/gui/gtk-frontend/main_window.cpp:545
 #, c-format
 msgid "Connected with %s"
 msgstr "Savienots ar %s"
 
 #. Init
-#: ../lib/engine/gui/gtk-frontend/call-window.cpp:1153
-#: ../lib/engine/gui/gtk-frontend/call-window.cpp:2433
+#: ../lib/engine/gui/gtk-frontend/call-window.cpp:1168
+#: ../lib/engine/gui/gtk-frontend/call-window.cpp:1199
+#: ../lib/engine/gui/gtk-frontend/call-window.cpp:2497
 msgid "Standby"
 msgstr "Gaidīšanas režīms"
 
-#: ../lib/engine/gui/gtk-frontend/call-window.cpp:1170
-#: ../lib/engine/gui/gtk-frontend/call-window.cpp:2645
+#: ../lib/engine/gui/gtk-frontend/call-window.cpp:1184
+#: ../lib/engine/gui/gtk-frontend/call-window.cpp:1197
+#: ../lib/engine/gui/gtk-frontend/call-window.cpp:2647
 msgid "Call Window"
 msgstr "Zvanīšanas logs"
 
-#: ../lib/engine/gui/gtk-frontend/call-window.cpp:1181
+#: ../lib/engine/gui/gtk-frontend/call-window.cpp:1210
 msgid "Call on hold"
 msgstr "Zvans pauzēts"
 
-#: ../lib/engine/gui/gtk-frontend/call-window.cpp:1192
+#: ../lib/engine/gui/gtk-frontend/call-window.cpp:1221
 msgid "Call retrieved"
 msgstr "Zvans atgūts"
 
-#: ../lib/engine/gui/gtk-frontend/call-window.cpp:1280
+#: ../lib/engine/gui/gtk-frontend/call-window.cpp:1308
 #, c-format
 msgid ""
 "Connected with %s\n"
@@ -2009,27 +2206,27 @@ msgstr ""
 
 #. Translators: TX is a common abbreviation for "transmit".  As it
 #. * is shown in a tooltip, there is no space constraint
-#: ../lib/engine/gui/gtk-frontend/call-window.cpp:1476
+#: ../lib/engine/gui/gtk-frontend/call-window.cpp:1516
 #, c-format
 msgid "TX: %dx%d"
 msgstr "TX: %dx%d"
 
-#: ../lib/engine/gui/gtk-frontend/call-window.cpp:1478
+#: ../lib/engine/gui/gtk-frontend/call-window.cpp:1518
 msgid "TX: / "
 msgstr "TX: /"
 
 #. Translators: RX is a common abbreviation for "receive".  As it
 #. * is shown in a tooltip, there is no space constraint
-#: ../lib/engine/gui/gtk-frontend/call-window.cpp:1483
+#: ../lib/engine/gui/gtk-frontend/call-window.cpp:1523
 #, c-format
 msgid "RX: %dx%d"
 msgstr "RX: %dx%d"
 
-#: ../lib/engine/gui/gtk-frontend/call-window.cpp:1485
+#: ../lib/engine/gui/gtk-frontend/call-window.cpp:1525
 msgid "RX: / "
 msgstr "RX: / "
 
-#: ../lib/engine/gui/gtk-frontend/call-window.cpp:1494
+#: ../lib/engine/gui/gtk-frontend/call-window.cpp:1534
 #, c-format
 msgid ""
 "Lost packets: %.1f %%\n"
@@ -2047,191 +2244,189 @@ msgstr ""
 "Izšķirtspēja: %s %s"
 
 #. Translators: A = Audio, V = Video, FPS = Frames per second
-#: ../lib/engine/gui/gtk-frontend/call-window.cpp:1588
+#: ../lib/engine/gui/gtk-frontend/call-window.cpp:1634
 #, c-format
 msgid "A:%.1f/%.1f V:%.1f/%.1f FPS:%d/%d"
 msgstr "A:%.1f/%.1f V:%.1f/%.1f Kadri sekundē:%d/%d"
 
-#: ../lib/engine/gui/gtk-frontend/call-window.cpp:1612
+#: ../lib/engine/gui/gtk-frontend/call-window.cpp:1658
 msgid "_Retrieve Call"
 msgstr "_Atgūt zvanu"
 
-#: ../lib/engine/gui/gtk-frontend/call-window.cpp:1625
-#: ../lib/engine/gui/gtk-frontend/call-window.cpp:1934
+#: ../lib/engine/gui/gtk-frontend/call-window.cpp:1671
+#: ../lib/engine/gui/gtk-frontend/call-window.cpp:1986
 msgid "H_old Call"
 msgstr "_Apturēt zvanu"
 
-#: ../lib/engine/gui/gtk-frontend/call-window.cpp:1656
-#: ../lib/engine/gui/gtk-frontend/call-window.cpp:1946
+#: ../lib/engine/gui/gtk-frontend/call-window.cpp:1702
+#: ../lib/engine/gui/gtk-frontend/call-window.cpp:1998
 msgid "Suspend _Audio"
 msgstr "Pārtraukt _audio"
 
-#: ../lib/engine/gui/gtk-frontend/call-window.cpp:1658
-#: ../lib/engine/gui/gtk-frontend/call-window.cpp:1951
+#: ../lib/engine/gui/gtk-frontend/call-window.cpp:1704
+#: ../lib/engine/gui/gtk-frontend/call-window.cpp:2003
 msgid "Suspend _Video"
 msgstr "Pārtraukt _video"
 
-#: ../lib/engine/gui/gtk-frontend/call-window.cpp:1660
+#: ../lib/engine/gui/gtk-frontend/call-window.cpp:1706
 msgid "Resume _Audio"
 msgstr "Atsākt _audio"
 
-#: ../lib/engine/gui/gtk-frontend/call-window.cpp:1662
+#: ../lib/engine/gui/gtk-frontend/call-window.cpp:1708
 msgid "Resume _Video"
 msgstr "Atsākt _video"
 
-#: ../lib/engine/gui/gtk-frontend/call-window.cpp:1696
+#: ../lib/engine/gui/gtk-frontend/call-window.cpp:1742
 msgid "Video Settings"
 msgstr "Video iestatījumi"
 
-#: ../lib/engine/gui/gtk-frontend/call-window.cpp:1721
+#: ../lib/engine/gui/gtk-frontend/call-window.cpp:1768
 msgid "Adjust brightness"
 msgstr "Pielāgot gaišumu"
 
-#: ../lib/engine/gui/gtk-frontend/call-window.cpp:1740
+#: ../lib/engine/gui/gtk-frontend/call-window.cpp:1788
 msgid "Adjust whiteness"
 msgstr "Pielāgot baltumu"
 
-#: ../lib/engine/gui/gtk-frontend/call-window.cpp:1759
+#: ../lib/engine/gui/gtk-frontend/call-window.cpp:1808
 msgid "Adjust color"
 msgstr "Pielāgot krāsu"
 
-#: ../lib/engine/gui/gtk-frontend/call-window.cpp:1778
+#: ../lib/engine/gui/gtk-frontend/call-window.cpp:1828
 msgid "Adjust contrast"
 msgstr "Pielāgot kontrastu"
 
-#: ../lib/engine/gui/gtk-frontend/call-window.cpp:1820
+#: ../lib/engine/gui/gtk-frontend/call-window.cpp:1870
 msgid "Audio Settings"
 msgstr "Audio iestatījumi"
 
-#: ../lib/engine/gui/gtk-frontend/call-window.cpp:1922
+#: ../lib/engine/gui/gtk-frontend/call-window.cpp:1974
 msgid "_Call"
 msgstr "_Zvanīt"
 
-#: ../lib/engine/gui/gtk-frontend/call-window.cpp:1924
+#: ../lib/engine/gui/gtk-frontend/call-window.cpp:1976
 msgid "_Pick up"
 msgstr "_Pacelt"
 
-#: ../lib/engine/gui/gtk-frontend/call-window.cpp:1924
+#: ../lib/engine/gui/gtk-frontend/call-window.cpp:1976
+#: ../lib/engine/gui/gtk-frontend/call-window.cpp:2385
 msgid "Pick up the current call"
 msgstr "Atbildēt uz pašreizējo zvanu"
 
-#: ../lib/engine/gui/gtk-frontend/call-window.cpp:1928
-msgid "_Hangup"
+#: ../lib/engine/gui/gtk-frontend/call-window.cpp:1980
+#| msgid "_Hangup"
+msgid "_Hang up"
 msgstr "_Nolikt klausuli"
 
-#: ../lib/engine/gui/gtk-frontend/call-window.cpp:1928
-msgid "Hangup the current call"
-msgstr "Apturēt pašreizējo zvanu"
-
-#: ../lib/engine/gui/gtk-frontend/call-window.cpp:1934
-#: ../lib/engine/gui/gtk-frontend/call-window.cpp:2402
-msgid "Hold the current call"
-msgstr "Apturēt pašreizējo zvanu"
-
-#: ../lib/engine/gui/gtk-frontend/call-window.cpp:1938
-msgid "_Transfer Call"
-msgstr "Pārsū_tīt zvanu"
-
-#: ../lib/engine/gui/gtk-frontend/call-window.cpp:1939
-msgid "Transfer the current call"
-msgstr "Pārsūtīt aktīvo zvanu"
-
-#: ../lib/engine/gui/gtk-frontend/call-window.cpp:1947
-msgid "Suspend or resume the audio transmission"
-msgstr "Pārtraukt vai atsākt audio pārraidi"
-
-#: ../lib/engine/gui/gtk-frontend/call-window.cpp:1952
-msgid "Suspend or resume the video transmission"
-msgstr "Pārtraukt vai atsākt video pārraidi"
-
-#: ../lib/engine/gui/gtk-frontend/call-window.cpp:1959
-#: ../src/gui/main_window.cpp:1314
-msgid "Close the Ekiga window"
-msgstr "Aizvērt Ekiga logu"
-
-#: ../lib/engine/gui/gtk-frontend/call-window.cpp:1964
-#: ../src/gui/main_window.cpp:1347
-msgid "_View"
-msgstr "_Skats"
-
-#: ../lib/engine/gui/gtk-frontend/call-window.cpp:1966
-msgid "_Local Video"
-msgstr "_Lokālais video"
-
-#: ../lib/engine/gui/gtk-frontend/call-window.cpp:1967
-msgid "Local video image"
-msgstr "Lokālā video attēls"
-
-#: ../lib/engine/gui/gtk-frontend/call-window.cpp:1971
-msgid "_Remote Video"
-msgstr "_Attālinātais video"
-
-#: ../lib/engine/gui/gtk-frontend/call-window.cpp:1972
-msgid "Remote video image"
-msgstr "Attālinātā video attēls"
-
-#: ../lib/engine/gui/gtk-frontend/call-window.cpp:1976
-msgid "_Picture-in-Picture"
-msgstr "_Attēls attēlā"
-
-#: ../lib/engine/gui/gtk-frontend/call-window.cpp:1977
-msgid "Both video images"
-msgstr "Abi video attēli"
-
-#: ../lib/engine/gui/gtk-frontend/call-window.cpp:1983
-msgid "Zoom in"
-msgstr "Tuvināt"
-
-#: ../lib/engine/gui/gtk-frontend/call-window.cpp:1987
-msgid "Zoom out"
-msgstr "Tālināt"
-
-#: ../lib/engine/gui/gtk-frontend/call-window.cpp:1991
-msgid "Normal size"
-msgstr "Normāla izmēra"
-
-#: ../lib/engine/gui/gtk-frontend/call-window.cpp:1995
-msgid "_Fullscreen"
-msgstr "_Pilnekrāna"
-
-#: ../lib/engine/gui/gtk-frontend/call-window.cpp:1995
-msgid "Switch to fullscreen"
-msgstr "Pārslēgties uz pilnekrānu"
-
-#: ../lib/engine/gui/gtk-frontend/call-window.cpp:2110
-msgid "Transfer call to:"
-msgstr "Pārsūtīt zvanus uz:"
-
-#: ../lib/engine/gui/gtk-frontend/call-window.cpp:2320
-#: ../lib/engine/gui/gtk-frontend/call-window.cpp:2335
+#: ../lib/engine/gui/gtk-frontend/call-window.cpp:1980
+#: ../lib/engine/gui/gtk-frontend/call-window.cpp:2401
 msgid "Hang up the current call"
 msgstr "Apturēt pašreizējo zvanu"
 
-#: ../lib/engine/gui/gtk-frontend/call-window.cpp:2363
+#: ../lib/engine/gui/gtk-frontend/call-window.cpp:1986
+#: ../lib/engine/gui/gtk-frontend/call-window.cpp:2467
+msgid "Hold the current call"
+msgstr "Apturēt pašreizējo zvanu"
+
+#: ../lib/engine/gui/gtk-frontend/call-window.cpp:1990
+msgid "_Transfer Call"
+msgstr "Pārsū_tīt zvanu"
+
+#: ../lib/engine/gui/gtk-frontend/call-window.cpp:1991
+msgid "Transfer the current call"
+msgstr "Pārsūtīt aktīvo zvanu"
+
+#: ../lib/engine/gui/gtk-frontend/call-window.cpp:1999
+msgid "Suspend or resume the audio transmission"
+msgstr "Pārtraukt vai atsākt audio pārraidi"
+
+#: ../lib/engine/gui/gtk-frontend/call-window.cpp:2004
+msgid "Suspend or resume the video transmission"
+msgstr "Pārtraukt vai atsākt video pārraidi"
+
+#: ../lib/engine/gui/gtk-frontend/call-window.cpp:2011
+#: ../lib/engine/gui/gtk-frontend/main_window.cpp:1182
+msgid "Close the Ekiga window"
+msgstr "Aizvērt Ekiga logu"
+
+#: ../lib/engine/gui/gtk-frontend/call-window.cpp:2016
+#: ../lib/engine/gui/gtk-frontend/main_window.cpp:1215
+msgid "_View"
+msgstr "_Skats"
+
+#: ../lib/engine/gui/gtk-frontend/call-window.cpp:2018
+msgid "_Local Video"
+msgstr "_Lokālais video"
+
+#: ../lib/engine/gui/gtk-frontend/call-window.cpp:2019
+msgid "Local video image"
+msgstr "Lokālā video attēls"
+
+#: ../lib/engine/gui/gtk-frontend/call-window.cpp:2023
+msgid "_Remote Video"
+msgstr "_Attālinātais video"
+
+#: ../lib/engine/gui/gtk-frontend/call-window.cpp:2024
+msgid "Remote video image"
+msgstr "Attālinātā video attēls"
+
+#: ../lib/engine/gui/gtk-frontend/call-window.cpp:2028
+msgid "_Picture-in-Picture"
+msgstr "_Attēls attēlā"
+
+#: ../lib/engine/gui/gtk-frontend/call-window.cpp:2029
+msgid "Both video images"
+msgstr "Abi video attēli"
+
+#: ../lib/engine/gui/gtk-frontend/call-window.cpp:2035
+msgid "Zoom in"
+msgstr "Tuvināt"
+
+#: ../lib/engine/gui/gtk-frontend/call-window.cpp:2039
+msgid "Zoom out"
+msgstr "Tālināt"
+
+#: ../lib/engine/gui/gtk-frontend/call-window.cpp:2043
+msgid "Normal size"
+msgstr "Normāla izmēra"
+
+#: ../lib/engine/gui/gtk-frontend/call-window.cpp:2047
+msgid "_Fullscreen"
+msgstr "_Pilnekrāna"
+
+#: ../lib/engine/gui/gtk-frontend/call-window.cpp:2047
+msgid "Switch to fullscreen"
+msgstr "Pārslēgties uz pilnekrānu"
+
+#: ../lib/engine/gui/gtk-frontend/call-window.cpp:2162
+msgid "Transfer call to:"
+msgstr "Pārsūtīt zvanus uz:"
+
+#: ../lib/engine/gui/gtk-frontend/call-window.cpp:2428
 msgid "Change the volume of your soundcard"
 msgstr "Mainīt skaņas kartes skaļumu"
 
-#: ../lib/engine/gui/gtk-frontend/call-window.cpp:2383
+#: ../lib/engine/gui/gtk-frontend/call-window.cpp:2448
 msgid "Change the color settings of your video device"
 msgstr "Mainīt videokartes krāsu iestatījumus"
 
-#: ../lib/engine/gui/gtk-frontend/chat-area.cpp:247
+#: ../lib/engine/gui/gtk-frontend/chat-area.cpp:241
 msgid "says:"
 msgstr "saka:"
 
-#: ../lib/engine/gui/gtk-frontend/chat-area.cpp:370
+#: ../lib/engine/gui/gtk-frontend/chat-area.cpp:368
 msgid "Open link in browser"
 msgstr "Atvērt saiti pārlūkā"
 
-#: ../lib/engine/gui/gtk-frontend/chat-area.cpp:376
+#: ../lib/engine/gui/gtk-frontend/chat-area.cpp:374
 msgid "Copy link"
 msgstr "Kopēt saiti"
 
-#: ../lib/engine/gui/gtk-frontend/chat-area.cpp:899
+#: ../lib/engine/gui/gtk-frontend/chat-area.cpp:831
 msgid "_Smile..."
 msgstr "_Smaids..."
 
-#: ../lib/engine/gui/gtk-frontend/chat-window.cpp:139
+#: ../lib/engine/gui/gtk-frontend/chat-window.cpp:136
 #, c-format
 msgid "You have %d unread text message"
 msgid_plural "You have %d unread text messages"
@@ -2239,64 +2434,202 @@ msgstr[0] "Jums ir %d neizlasīts teksta ziņojums"
 msgstr[1] "Jums ir %d neizlasīti teksta ziņojumi"
 msgstr[2] "Jums ir %d neizlasītu teksta ziņojumu"
 
-#: ../lib/engine/gui/gtk-frontend/chat-window.cpp:144
+#: ../lib/engine/gui/gtk-frontend/chat-window.cpp:139
 msgid "Read"
 msgstr "Lasīt"
 
 #. we can't do much here since we get the Chat as reference...
-#: ../lib/engine/gui/gtk-frontend/chat-window.cpp:451
+#: ../lib/engine/gui/gtk-frontend/chat-window.cpp:440
 msgid "Chat Window"
 msgstr "Tērzēšanas logs"
 
-#: ../lib/engine/gui/gtk-frontend/heap-view.cpp:238
-#: ../lib/engine/gui/gtk-frontend/heap-view.cpp:277
-#: ../lib/engine/gui/gtk-frontend/roster-view-gtk.cpp:953
-#: ../lib/engine/gui/gtk-frontend/roster-view-gtk.cpp:1008
+#: ../lib/engine/gui/gtk-frontend/device-lists.cpp:71
+#: ../lib/engine/gui/gtk-frontend/device-lists.cpp:90
+#: ../lib/engine/gui/gtk-frontend/device-lists.cpp:110
+msgid "No device found"
+msgstr "Ierīce nav atrasta"
+
+#: ../lib/engine/gui/gtk-frontend/heap-view.cpp:239
+#: ../lib/engine/gui/gtk-frontend/heap-view.cpp:278
+#: ../lib/engine/gui/gtk-frontend/roster-view-gtk.cpp:1032
+#: ../lib/engine/gui/gtk-frontend/roster-view-gtk.cpp:1134
 msgid "Unsorted"
 msgstr "Nesakārtots"
 
-#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:396
+#: ../lib/engine/gui/gtk-frontend/main_window.cpp:346
+msgid "Presence"
+msgstr "Klātesamība"
+
+#: ../lib/engine/gui/gtk-frontend/main_window.cpp:352
+msgid "Addressbook"
+msgstr "Adrešu grāmata"
+
+#: ../lib/engine/gui/gtk-frontend/main_window.cpp:606
+#, c-format
+msgid "Missed call from %s"
+msgstr "Neatbildēts zvans no %s"
+
+#: ../lib/engine/gui/gtk-frontend/main_window.cpp:641
+msgid "Error"
+msgstr "Kļūda"
+
+#: ../lib/engine/gui/gtk-frontend/main_window.cpp:1043
+#| msgid ""
+#| "Enter a URI on the left, and click this button to place a call or to "
+#| "hangup"
+msgid ""
+"Enter a URI on the left, and click this button to place a call or to hang up"
+msgstr ""
+"Lai veiktu zvanu vai noliktu klausuli, ievadiet URI kreisajā pusē un "
+"nospiediet šo pogu"
+
+#: ../lib/engine/gui/gtk-frontend/main_window.cpp:1094
+#: ../lib/engine/gui/gtk-frontend/main_window.cpp:1225
+msgid "View the contacts list"
+msgstr "Skatīt kontaktu sarakstu"
+
+#: ../lib/engine/gui/gtk-frontend/main_window.cpp:1105
+#: ../lib/engine/gui/gtk-frontend/main_window.cpp:1230
+msgid "View the dialpad"
+msgstr "Skatīt ciparnīcu"
+
+#: ../lib/engine/gui/gtk-frontend/main_window.cpp:1116
+#: ../lib/engine/gui/gtk-frontend/main_window.cpp:1235
+msgid "View the call history"
+msgstr "Skatīt zvanu vēsturi"
+
+#: ../lib/engine/gui/gtk-frontend/main_window.cpp:1156
+msgid "_Chat"
+msgstr "_Tērzēt"
+
+#: ../lib/engine/gui/gtk-frontend/main_window.cpp:1158
+msgid "Co_ntact"
+msgstr "Ko_ntakti"
+
+#: ../lib/engine/gui/gtk-frontend/main_window.cpp:1159
+msgid "Act on selected contact"
+msgstr "Veikt darbības ar šo kontaktu"
+
+#: ../lib/engine/gui/gtk-frontend/main_window.cpp:1163
+msgid "Ca_ll a Number"
+msgstr "Z_vanīt uz numuru"
+
+#: ../lib/engine/gui/gtk-frontend/main_window.cpp:1163
+msgid "Place a new call"
+msgstr "Veikt jaunu zvanu"
+
+#: ../lib/engine/gui/gtk-frontend/main_window.cpp:1169
+msgid "Add a contact to the roster"
+msgstr "Pievienot kontaktu sarakstam"
+
+#: ../lib/engine/gui/gtk-frontend/main_window.cpp:1175
+msgid "Find contacts"
+msgstr "Meklēt kontaktus"
+
+#: ../lib/engine/gui/gtk-frontend/main_window.cpp:1189
+#: ../lib/engine/gui/gtk-frontend/statusicon.cpp:373
+msgid "Quit"
+msgstr "Iziet"
+
+#: ../lib/engine/gui/gtk-frontend/main_window.cpp:1195
+msgid "_Configuration Assistant"
+msgstr "_Konfigurācijas asistents"
+
+#: ../lib/engine/gui/gtk-frontend/main_window.cpp:1196
+msgid "Run the configuration assistant"
+msgstr "Palaist konfigurācijas asistentu"
+
+#: ../lib/engine/gui/gtk-frontend/main_window.cpp:1204
+msgid "Edit your accounts"
+msgstr "Rediģēt jūsu kontus"
+
+#: ../lib/engine/gui/gtk-frontend/main_window.cpp:1210
+msgid "Change your preferences"
+msgstr "Mainīt savus iestatījumus"
+
+#: ../lib/engine/gui/gtk-frontend/main_window.cpp:1217
+msgid "_Video Preview"
+msgstr "_Video priekšskatījums"
+
+#: ../lib/engine/gui/gtk-frontend/main_window.cpp:1225
+msgid "Con_tacts"
+msgstr "Kon_takti"
+
+#: ../lib/engine/gui/gtk-frontend/main_window.cpp:1230
+msgid "_Dialpad"
+msgstr "_Ciparnīca"
+
+#: ../lib/engine/gui/gtk-frontend/main_window.cpp:1235
+msgid "_Call History"
+msgstr "_Zvanu vēsture"
+
+#: ../lib/engine/gui/gtk-frontend/main_window.cpp:1243
+msgid "Show Offline _Contacts"
+msgstr "Rādīt nesaistes _kontaktus"
+
+#: ../lib/engine/gui/gtk-frontend/main_window.cpp:1252
+#: ../lib/engine/gui/gtk-frontend/statusicon.cpp:361
+msgid "Get help by reading the Ekiga manual"
+msgstr "Meklēt palīdzību Ekiga rokasgrāmatā"
+
+#: ../lib/engine/gui/gtk-frontend/main_window.cpp:1257
+#: ../lib/engine/gui/gtk-frontend/statusicon.cpp:366
+msgid "View information about Ekiga"
+msgstr "Skatīt informāciju par Ekiga"
+
+#: ../lib/engine/gui/gtk-frontend/main_window.cpp:1334
+msgid "Dialpad"
+msgstr "Ciparnīca"
+
+#: ../lib/engine/gui/gtk-frontend/main_window.cpp:1352
+msgid "Call history"
+msgstr "Zvanu vēsture"
+
+#: ../lib/engine/gui/gtk-frontend/main_window.cpp:1364
+msgid "Ekiga"
+msgstr "Ekiga"
+
+#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:382
 msgid "Play sound for new voice mails"
 msgstr "Atskaņot skaņu jauniem balss pasta ziņojumiem"
 
-#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:406
+#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:392
 msgid "Play sound for new instant messages"
 msgstr "Atskaņot skaņu jauniem tūlītējiem ziņojumiem"
 
-#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:457
-#: ../src/gui/assistant.cpp:373
-msgid "Personal Information"
-msgstr "Personīga informācija"
-
-#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:459
+#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:445
 msgid "_Full name:"
 msgstr "_Pilns vārds:"
 
-#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:475
+#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:461
 msgid "Video Display"
 msgstr "Video attēlošana"
 
-#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:477
+#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:463
 msgid "Place windows displaying video _above other windows"
 msgstr "Novietot video attēlošanas logus _virs pārējiem logiem"
 
-#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:481
+#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:467
 msgid "Network Settings"
 msgstr "Tīkla iestatījumi"
 
-#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:483
+#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:469
+msgid "Type of Service (TOS):"
+msgstr "Type of Service (TOS):"
+
+#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:471
 msgid "Enable network _detection"
 msgstr "Aktivēt tīkla _noteikšanu"
 
-#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:493
+#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:481
 msgid "Call Forwarding"
 msgstr "Zvanu pārsūtīšana"
 
-#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:495
+#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:483
 msgid "_Always forward calls to the given host"
 msgstr "_Vienmēr pārsūtīt zvanus uz doto datoru"
 
-#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:495
+#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:483
 msgid ""
 "If enabled, all incoming calls will be forwarded to the host that is "
 "specified in the protocol settings"
@@ -2304,11 +2637,11 @@ msgstr ""
 "Ja aktivēts, visi ienākošie zvani tiks pārsūtīti uz datoru, kas norādīts "
 "protokolu iestatījumos"
 
-#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:497
+#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:485
 msgid "Forward calls to the given host if _no answer"
 msgstr "Pārsūtīt zvanus uz doto datoru, ja _nav atbildes"
 
-#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:497
+#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:485
 msgid ""
 "If enabled, all incoming calls will be forwarded to the host that is "
 "specified in the protocol settings if you do not answer the call"
@@ -2316,11 +2649,11 @@ msgstr ""
 "Ja aktivēts, visi ienākošie zvani tiks pārsūtīti uz datoru, kas norādīts "
 "protokolu iestatījumos, ja jūs neatbildat uz zvanu"
 
-#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:499
+#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:487
 msgid "Forward calls to the given host if _busy"
 msgstr "Pārsūtīt zvanus uz doto datoru, ja _aizņemts"
 
-#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:499
+#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:487
 msgid ""
 "If enabled, all incoming calls will be forwarded to the host that is "
 "specified in the protocol settings if you already are in a call or if you "
@@ -2329,271 +2662,259 @@ msgstr ""
 "Ja aktivēts, visi ienākošie zvani tiks pārsūtīti uz datoru, kas norādīts "
 "protokola iestatījumos, ja jau notiek saruna vai esat “Aizņemts” režīmā"
 
-#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:503
-#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:1311
+#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:491
+#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:1209
 msgid "Call Options"
 msgstr "Zvana opcijas"
 
 #. Add all the fields
-#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:506
-msgid "Timeout to reject or forward unanswered incoming calls (in seconds):"
-msgstr ""
-"Noildze, lai noraidītu vai pārsūtītu neatbildētu ienākošo zvanu (sekundēs):"
+#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:494
+msgid "Call forwarding delay (in seconds):"
+msgstr "Zvanu pārsūtīšanas noildze (sekundēs):"
 
-#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:507
+#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:495
 msgid "_Automatically answer incoming calls"
 msgstr "_Automātiski atbildēt uz ienākošo zvanu"
 
-#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:538
+#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:526
 msgid "Ekiga Sound Events"
 msgstr "Ekiga notikumu skaņas"
 
-#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:575
+#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:560
 msgid "A"
 msgstr "A"
 
-#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:587
+#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:572
 msgid "Event"
 msgstr "Notikums"
 
-#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:599
+#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:584
 msgid "Choose a sound"
 msgstr "Izvēlieties skaņu"
 
-#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:604
+#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:589
 msgid "Wavefiles"
 msgstr "WAV datnes"
 
-#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:613
-#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:632
+#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:598
+#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:617
 msgid "Play"
 msgstr "Atskaņot"
 
-#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:653
+#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:638
 msgid "String"
 msgstr "Simbolu virkne"
 
-#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:654
+#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:639
 msgid "Tone"
 msgstr "Tonis"
 
-#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:655
-#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:707
+#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:640
+#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:692
 msgid "RFC2833"
 msgstr "RFC2833"
 
-#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:656
+#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:641
 msgid "Q.931"
 msgstr "Q.931"
 
-#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:660
+#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:645
 msgid "Disable H.239 Extended Video"
 msgstr "Deaktivēt H.239 paplašināto video"
 
-#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:661
+#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:646
 msgid "Allow H.239 per Content Role Mask"
 msgstr "Atļaut H.239 katrai satura lomas maskai"
 
-#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:662
+#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:647
 msgid "Force H.239 Presentation Role"
 msgstr "Uzspiest H.239 prezentācijas lomu"
 
-#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:663
+#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:648
 msgid "Force H.239 Live Role"
 msgstr "Uzspiest H.239 dzīvo lomu"
 
-#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:668
-#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:714
+#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:653
+#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:699
 msgid "Misc Settings"
 msgstr "Dažādi iestatījumi"
 
-#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:671
-#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:719
+#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:656
+#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:704
 msgid "Forward _URI:"
 msgstr "Pārsūtīšanas URI:"
 
-#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:677
+#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:662
 msgid "Advanced Settings"
 msgstr "Paplašinātie iestatījumi"
 
 #. The toggles
-#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:680
+#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:665
 msgid "Enable H.245 _tunneling"
 msgstr "Aktivēt H.245 _tunelēšanu"
 
-#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:682
+#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:667
 msgid "Enable _early H.245"
 msgstr "Akti_vēt agro H.245"
 
-#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:684
+#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:669
 msgid "Enable fast _start procedure"
 msgstr "Aktivēt ātrā _sākuma procedūru"
 
-#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:684
+#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:669
+#| msgid ""
+#| "Connection will be established in Fast Start mode. Fast Start is a new "
+#| "way to start calls faster that was introduced in H.323v2. It is not "
+#| "supported by Netmeeting and using both Fast Start and H.245 Tunneling can "
+#| "crash some versions of Netmeeting"
 msgid ""
-"Connection will be established in Fast Start mode. Fast Start is a new way "
-"to start calls faster that was introduced in H.323v2. It is not supported by "
-"Netmeeting and using both Fast Start and H.245 Tunneling can crash some "
-"versions of Netmeeting."
+"Connection will be established in Fast Start (Fast Connect) mode. Fast Start "
+"is a new way to start calls faster that was introduced in H.323v2."
 msgstr ""
-"Savienojums tiks dibināts Ātrā sākuma režīmā. Ātrais sākums ir jauns veids, "
-"kā sākt zvanus ātrāk, kas tika ieviests H.323v2. To neatbalsta Netmeeting, "
-"un Ātrā sākuma un H.245 tunelēšanas lietošana reizē var izraisīt avārijas "
-"dažās Netmeeting versijās."
+"Savienojums tiks veidots Ātrā starta (ātrais savienojums) režīmā. Ātrais "
+"starts ir jauns veids, "
+"kā sākt zvanus ātrāk, kas tika ieviests H.323v2."
 
-#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:686
+#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:671
 msgid "Enable H.239 control"
 msgstr "Aktivēt H.245 vadību"
 
-#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:686
+#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:671
 msgid "This enables H.239 capability for additional video roles."
 msgstr "Tas aktivē H.239 iespējas papildu video lomām."
 
-#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:688
-msgid "Extended Video Roles:"
-msgstr "Paplašinātās video lomas:"
-
-#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:688
+#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:673
 msgid "Select the H.239 Video Role"
 msgstr "Izvēlieties H.239 video lomu"
 
-#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:692
-#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:725
+#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:677
+#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:710
 msgid "DTMF Mode"
 msgstr "DTMF režīms"
 
-#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:694
-#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:727
+#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:679
+#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:712
 msgid "_Send DTMF as:"
 msgstr "_Sūtīt DTMF kā:"
 
-#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:694
-#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:727
+#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:679
+#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:712
 msgid "Select the mode for DTMFs sending"
 msgstr "iestatiet DTMF sūtīšanas režīmu."
 
-#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:708
+#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:693
 msgid "INFO"
 msgstr "INFO"
 
-#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:716
+#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:701
 msgid "_Outbound proxy:"
 msgstr "Izej_ošais starpnieks:"
 
-#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:744
-#: ../src/gui/assistant.cpp:996
+#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:729
 msgid "Audio Devices"
 msgstr "Audio ierīces"
 
-#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:752
+#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:737
 msgid "Ringing device:"
 msgstr "Zvanīšanas ierīce:"
 
-#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:752
+#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:737
 msgid "Select the ringing audio device to use"
 msgstr "Izvēlieties lietojamo zvanīšanas audio ierīci"
 
-#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:754
+#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:739
 msgid "Output device:"
 msgstr "Atskaņošanas ierīce:"
 
-#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:761
-#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:897
+#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:746
+#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:805
 msgid "Input device:"
 msgstr "Ierakstīšanas ierīce:"
 
 #. That button will refresh the device list
-#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:765
-#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:908
+#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:750
+#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:816
 msgid "_Detect devices"
 msgstr "_Atrast ierīces"
 
-#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:765
-#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:908
+#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:750
+#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:816
 msgid "Click here to refresh the device list"
 msgstr "Spiediet šeit, lai atsvaidzinātu ierīču sarakstu"
 
-#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:785
-#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:807
-#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:827
-#: ../src/gui/assistant.cpp:1262 ../src/gui/assistant.cpp:1284
-#: ../src/gui/assistant.cpp:1306
-msgid "No device found"
-msgstr "Ierīce nav atrasta"
-
-#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:876
+#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:784
 msgid "PAL (Europe)"
 msgstr "PAL (Eiropa)"
 
-#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:877
+#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:785
 msgid "NTSC (America)"
 msgstr "NTSC (Amerika)"
 
-#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:878
+#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:786
 msgid "SECAM (France)"
 msgstr "SECAM (Francija)"
 
-#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:879
+#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:787
 msgid "Auto"
 msgstr "Auto"
 
-#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:891
+#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:799
 msgid "Video Devices"
 msgstr "Video ierīces"
 
 #. Video Channel
-#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:901
+#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:809
 msgid "Channel:"
 msgstr "Kanāls:"
 
-#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:903
+#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:811
 msgid "Size:"
 msgstr "Izmērs:"
 
-#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:903
+#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:811
 msgid "Select the transmitted video size"
 msgstr "Izvēlieties pārraidāmā video izmēru"
 
-#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:905
+#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:813
 msgid "Format:"
 msgstr "Formāts:"
 
-#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:924
-#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:957
-#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:1338
-#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:1348
+#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:832
+#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:860
+#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:1236
+#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:1246
 msgid "Codecs"
 msgstr "Kodeki"
 
-#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:936
-#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:969
+#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:839
+#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:867
 msgid "Settings"
 msgstr "Iestatījumi"
 
 #. Translators: the full sentence is Automatically adjust jitter buffer
 #. between X and Y ms
-#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:940
+#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:843
 msgid "Enable silence _detection"
 msgstr "Aktivēt klusuma _noteikšanu"
 
-#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:942
+#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:845
 msgid "Enable echo can_celation"
 msgstr "Aktivēt atbalss _slāpēšanu"
 
-#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:944
+#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:847
 msgid "Maximum _jitter buffer (in ms):"
 msgstr "Maksimālais _jitter buferis (in ms):"
 
 #. Translators: the full sentence is Keep a minimum video quality of X %
-#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:972
+#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:870
 msgid "Picture quality"
 msgstr "Attēla kvalitāte:"
 
-#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:972
+#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:870
 msgid "Frame rate"
 msgstr "Kadru biežums"
 
-#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:972
+#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:870
 msgid ""
 "Choose if you want to guarantee a minimum image quality (possibly leading to "
 "dropped frames in order not to surpass the bitrate limit) or if you prefer "
@@ -2603,11 +2924,11 @@ msgstr ""
 "kadri, lai nepārsniegtu bitu ātruma ierobežojumu), vai tomēr paturēt kadru "
 "ātrumu"
 
-#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:974
+#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:872
 msgid "Maximum video _bitrate (in kbits/s):"
 msgstr "Maksimālais video joslas _platums (kbit/s):"
 
-#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:974
+#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:872
 msgid ""
 "The maximum video bitrate in kbits/s. The video quality and the effective "
 "frame rate will be dynamically adjusted to keep the bitrate at the given "
@@ -2617,53 +2938,73 @@ msgstr ""
 "daudzums sekundē tiks dinamiski pieregulēts virs to minimuma zvanu laikā, "
 "lai mēģinātu samazināt joslas platumu līdz dotajai vērtībai."
 
-#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:1283
+#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:1179
 msgid "Ekiga Preferences"
 msgstr "Ekiga iestatījumi"
 
-#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:1301
+#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:1199
 msgid "General"
 msgstr "Vispārīgi"
 
-#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:1302
+#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:1200
 msgid "Personal Data"
 msgstr "Personas dati"
 
-#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:1307
+#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:1205
 msgid "General Settings"
 msgstr "Vispārīgie iestatījumi"
 
-#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:1316
+#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:1214
 msgid "Sound Events"
 msgstr "Notikumu skaņas"
 
-#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:1320
+#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:1218
 msgid "Protocols"
 msgstr "Protokoli"
 
-#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:1322
+#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:1220
 msgid "SIP Settings"
 msgstr "SIP iestatījumi"
 
-#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:1327
+#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:1225
 msgid "H.323 Settings"
 msgstr "H.323 iestatījumi"
 
 #. The player
-#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:1333
+#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:1231
 msgid "Audio"
 msgstr "Audio"
 
-#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:1334
-#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:1344
+#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:1232
+#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:1242
 msgid "Devices"
 msgstr "Ierīces"
 
-#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:1343
+#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:1241
 msgid "Video"
 msgstr "Video"
 
-#: ../lib/engine/gui/gtk-frontend/statusicon.cpp:313
+#: ../lib/engine/gui/gtk-frontend/roster-view-gtk.cpp:1083
+#: ../lib/engine/gui/gtk-frontend/statusmenu.cpp:95
+msgid "Away"
+msgstr "Prom"
+
+#: ../lib/engine/gui/gtk-frontend/roster-view-gtk.cpp:1085
+#: ../lib/engine/gui/gtk-frontend/statusmenu.cpp:94
+msgid "Available"
+msgstr "Pieejams"
+
+#: ../lib/engine/gui/gtk-frontend/roster-view-gtk.cpp:1087
+#| msgid "Online"
+msgid "Offline"
+msgstr "Nesaistē"
+
+#: ../lib/engine/gui/gtk-frontend/roster-view-gtk.cpp:1089
+#: ../lib/engine/gui/gtk-frontend/statusmenu.cpp:96
+msgid "Busy"
+msgstr "Aizņemts"
+
+#: ../lib/engine/gui/gtk-frontend/statusicon.cpp:294
 #, c-format
 msgid "You have %d message"
 msgid_plural "You have %d messages"
@@ -2671,66 +3012,73 @@ msgstr[0] "Jums ir %d ziņojums"
 msgstr[1] "Jums ir %d ziņojumi"
 msgstr[2] "Jums ir %d ziņojumu"
 
-#: ../lib/engine/gui/gtk-frontend/statusicon.cpp:382
-#: ../src/gui/main_window.cpp:1384
-msgid "Get help by reading the Ekiga manual"
-msgstr "Meklēt palīdzību Ekiga rokasgrāmatā"
+#: ../lib/engine/gui/gtk-frontend/statusmenu.cpp:392
+msgid "Custom message..."
+msgstr "Pielāgots ziņojums..."
 
-#: ../lib/engine/gui/gtk-frontend/statusicon.cpp:387
-#: ../src/gui/main_window.cpp:1389
-msgid "View information about Ekiga"
-msgstr "Skatīt informāciju par Ekiga"
+#: ../lib/engine/gui/gtk-frontend/statusmenu.cpp:437
+msgid "Clear"
+msgstr "Attīrīt"
 
-#: ../lib/engine/gui/gtk-frontend/statusicon.cpp:394
-#: ../src/gui/main_window.cpp:1321
-msgid "Quit"
-msgstr "Iziet"
+#. Build the dialog
+#: ../lib/engine/gui/gtk-frontend/statusmenu.cpp:525
+#: ../lib/engine/gui/gtk-frontend/statusmenu.cpp:673
+msgid "Custom Message"
+msgstr "Pielāgots ziņojums"
 
-#: ../lib/gui/dialpad.c:52
+#: ../lib/engine/gui/gtk-frontend/statusmenu.cpp:541
+msgid "Delete custom messages:"
+msgstr "Dzēsiet pielāgotos ziņojumus:"
+
+#: ../lib/engine/gui/gtk-frontend/statusmenu.cpp:690
+msgid "Define a custom message:"
+msgstr "Nosakiet pielāgotu ziņojumu:"
+
+#: ../lib/gui/dialpad.c:53
 msgid "abc"
 msgstr "abc"
 
-#: ../lib/gui/dialpad.c:53
+#: ../lib/gui/dialpad.c:54
 msgid "def"
 msgstr "def"
 
-#: ../lib/gui/dialpad.c:54
+#: ../lib/gui/dialpad.c:55
 msgid "ghi"
 msgstr "ghi"
 
-#: ../lib/gui/dialpad.c:55
+#: ../lib/gui/dialpad.c:56
 msgid "jkl"
 msgstr "jkl"
 
-#: ../lib/gui/dialpad.c:56
+#: ../lib/gui/dialpad.c:57
 msgid "mno"
 msgstr "mno"
 
-#: ../lib/gui/dialpad.c:57
+#: ../lib/gui/dialpad.c:58
 msgid "pqrs"
 msgstr "pqrs"
 
-#: ../lib/gui/dialpad.c:58
+#: ../lib/gui/dialpad.c:59
 msgid "tuv"
 msgstr "tuv"
 
-#: ../lib/gui/dialpad.c:59
+#: ../lib/gui/dialpad.c:60
 msgid "wxyz"
 msgstr "wxyz"
 
-#: ../lib/gui/gmcallbacks.c:67
+#: ../lib/gui/gmcallbacks.c:66
 msgid "Contributors:"
 msgstr "Veidotāji:"
 
-#: ../lib/gui/gmcallbacks.c:80
+#: ../lib/gui/gmcallbacks.c:71
 msgid "Artwork:"
 msgstr "Grafika:"
 
-#: ../lib/gui/gmcallbacks.c:88
+#: ../lib/gui/gmcallbacks.c:78
 msgid "See AUTHORS file for full credits"
 msgstr "Skatīt AUTHORS datni pilnam sarakstam"
 
-#: ../lib/gui/gmcallbacks.c:104
+#: ../lib/gui/gmcallbacks.c:94
 msgid ""
 "This program is free software; you can redistribute it and/or modify it "
 "under the terms of the GNU General Public License as published by the Free "
@@ -2741,7 +3089,7 @@ msgstr ""
 "saskaņā ar Free Software Foundation GNU Vispārējās publiskās licences 2 vai "
 "kādas brīvi izvēlētas vēlākas versijas noteikumiem."
 
-#: ../lib/gui/gmcallbacks.c:108
+#: ../lib/gui/gmcallbacks.c:98
 msgid ""
 "This program is distributed in the hope that it will be useful, but WITHOUT "
 "ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or "
@@ -2757,7 +3105,7 @@ msgstr ""
 "nesaņēmāt, rakstiet uz Brīvas programmatūras fondu, Free Software "
 "Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301, USA."
 
-#: ../lib/gui/gmcallbacks.c:115
+#: ../lib/gui/gmcallbacks.c:105
 msgid ""
 "Ekiga is licensed under the GPL license and as a special exception, you have "
 "permission to link or otherwise combine this program with the programs OPAL, "
@@ -2774,14 +3122,14 @@ msgstr ""
 
 #. Translators: Please write translator credits here, and
 #. * separate names with \n
-#: ../lib/gui/gmcallbacks.c:127
+#: ../lib/gui/gmcallbacks.c:117
 msgid "translator-credits"
 msgstr ""
 "Artis Trops <hornet@navigator.lv>\n"
 "Viesturs Zariņš <viesturs.zarins@mii.lu.lv>\n"
 "Rūdolfs Mazurs <rudolfs.mazurs@gmail.com>"
 
-#: ../lib/gui/gmcallbacks.c:132
+#: ../lib/gui/gmcallbacks.c:122
 msgid ""
 "Ekiga is full-featured SIP and H.323 compatible VoIP, IP-Telephony and "
 "Videoconferencing application that allows you to make audio and video calls "
@@ -2791,13 +3139,17 @@ msgstr ""
 "videokonferenču lietotne, kas ļauj jums veikt audio un video zvanus ar "
 "attālinātiem lietotājiem ar SIP un H.323 aparatūru vai programmatūru."
 
-#: ../lib/gui/gmcallbacks.c:205
+#: ../lib/gui/gmcallbacks.c:195
 msgid "Unable to open help file."
 msgstr "Nevar atvērt palīdzības datni."
 
-#: ../lib/gui/gmdialog.c:327
+#: ../lib/gui/gmdialog.c:323
 msgid "Do not show this dialog again"
 msgstr "Turpmāk nerādīt šo dialogu"
+
+#: ../plugins/avahi/avahi-heap.cpp:131 ../plugins/avahi/avahi-heap.cpp:378
+msgid "Neighbours"
+msgstr "Kaimiņi"
 
 #: ../plugins/evolution/evolution-book.cpp:75
 #: ../plugins/ldap/ldap-book.cpp:920
@@ -2808,10 +3160,10 @@ msgstr[0] "Atrasts %d lietotājs"
 msgstr[1] "Atrasti %d lietotāji"
 msgstr[2] "Atrasti %d lietotāju"
 
-#: ../plugins/evolution/evolution-book.cpp:301
-#: ../plugins/loudmouth/loudmouth-heap-roster.cpp:71
-msgid "New _Contact"
-msgstr "Jauns _kontakts"
+#: ../plugins/evolution/evolution-book.cpp:343
+#| msgid "A_dd Contact"
+msgid "Add Contact"
+msgstr "Pievienot kontaktu"
 
 #: ../plugins/evolution/evolution-book.cpp:348
 #: ../plugins/evolution/evolution-contact.cpp:333
@@ -2855,7 +3207,7 @@ msgstr "Vai tiešām vēlaties izņemt %s no adrešu grāmatas?"
 msgid "Audio test"
 msgstr "Audio tests"
 
-#: ../plugins/gstreamer/gst-audiooutput.cpp:223
+#: ../plugins/gstreamer/gst-audiooutput.cpp:226
 msgid "Silent"
 msgstr "Klusums"
 
@@ -3022,12 +3374,14 @@ msgid "The password for the user ID above, if any"
 msgstr "Parole augstāk esošajai lietotāja ID, ja tāda ir"
 
 #: ../plugins/ldap/ldap-book.cpp:987
-msgid "Use TLS"
-msgstr "Izmantot TLS"
+#| msgid "Use TLS"
+msgid "Use _TLS"
+msgstr "Izmantot _TLS"
 
 #: ../plugins/ldap/ldap-book.cpp:988
-msgid "Use SASL"
-msgstr "Izmantot SASL"
+#| msgid "Use SASL"
+msgid "Use SAS_L"
+msgstr "Izmantot SAS_L"
 
 #: ../plugins/ldap/ldap-book.cpp:1002
 msgid "SASL _mechanism"
@@ -3053,7 +3407,7 @@ msgstr "Lūdzu, norādiet DisplayName atribūtu\n"
 msgid "Please provide a Call attribute\n"
 msgstr "Lūdzu, norādiet zvana atribūtu\n"
 
-#: ../plugins/ldap/ldap-book.cpp:1046
+#: ../plugins/ldap/ldap-book.cpp:1046 ../plugins/ldap/ldap-book.cpp:1082
 msgid "Invalid Server URI\n"
 msgstr "Nederīgs servera URI\n"
 
@@ -3073,49 +3427,69 @@ msgstr "Izveidot LDAP direktoriju"
 msgid "Ekiga.net Directory"
 msgstr "Ekiga.net direktorija"
 
+#: ../plugins/libnotify/libnotify-main.cpp:273
+msgid "Remote URI:"
+msgstr "Attālinātais URI:"
+
+#: ../plugins/libnotify/libnotify-main.cpp:286
+msgid "Reject"
+msgstr "Noraidīt"
+
+#: ../plugins/libnotify/libnotify-main.cpp:288
+msgid "Accept"
+msgstr "Pieņemt"
+
 #: ../plugins/loudmouth/loudmouth-account.cpp:112
 #: ../plugins/loudmouth/loudmouth-account.cpp:159
-msgid "inactive"
-msgstr "neaktīvs"
+#| msgid "inactive"
+msgid "Inactive"
+msgstr "Neaktīvs"
 
 #: ../plugins/loudmouth/loudmouth-account.cpp:238
 #, c-format
-msgid "error connecting (%s)"
-msgstr "kļūda savienojoties (%s)"
+#| msgid "Could not connect to server"
+msgid "Could not connect (%s)"
+msgstr "Nevarēja savienoties (%s)"
 
 #: ../plugins/loudmouth/loudmouth-account.cpp:244
-msgid "connecting"
-msgstr "savienojas"
+#| msgid "connecting"
+msgid "Connecting..."
+msgstr "Savienojas..."
 
 #: ../plugins/loudmouth/loudmouth-account.cpp:284
-msgid "authenticating"
-msgstr "autentificējas"
+#| msgid "authenticating"
+msgid "Authenticating..."
+msgstr "Autentificē..."
 
 #. FIXME: can't we report better?
 #: ../plugins/loudmouth/loudmouth-account.cpp:294
-msgid "error connecting"
-msgstr "kļūda savienojoties"
+#| msgid "Could not connect to server"
+msgid "Could not connect"
+msgstr "Nevarēja savienoties"
 
 #: ../plugins/loudmouth/loudmouth-account.cpp:304
-msgid "disconnected"
-msgstr "atvienojas"
+#| msgid "disconnected"
+msgid "Disconnected"
+msgstr "Atvienots"
 
 #: ../plugins/loudmouth/loudmouth-account.cpp:314
-msgid "connected"
-msgstr "savienojies"
+#| msgid "connected"
+msgid "Connected"
+msgstr "Savienots"
 
 #. FIXME: can't we report something better?
 #: ../plugins/loudmouth/loudmouth-account.cpp:320
-msgid "error authenticating loudmouth account"
-msgstr "kļūda, autentificējot loudmouth kontu"
+#| msgid "Could not unregister"
+msgid "Could not authenticate"
+msgstr "Neizdevās autentificēties"
 
 #: ../plugins/loudmouth/loudmouth-account.cpp:350
-#: ../plugins/loudmouth/loudmouth-bank.cpp:127
+#: ../plugins/loudmouth/loudmouth-bank.cpp:125
 msgid "Server:"
 msgstr "Serveris:"
 
 #: ../plugins/loudmouth/loudmouth-account.cpp:350
-#: ../plugins/loudmouth/loudmouth-bank.cpp:127
+#: ../plugins/loudmouth/loudmouth-bank.cpp:125
 msgid "The server, e.g. jabber.org"
 msgstr "Serveris, piemēram, jabber.org"
 
@@ -3128,12 +3502,12 @@ msgid "The transport protocol port, if different than the default"
 msgstr "Transporta protokola ports, ja atšķiras no noklusētā"
 
 #: ../plugins/loudmouth/loudmouth-account.cpp:358
-#: ../plugins/loudmouth/loudmouth-bank.cpp:128
+#: ../plugins/loudmouth/loudmouth-bank.cpp:126
 msgid "Resource:"
 msgstr "Resurss:"
 
 #: ../plugins/loudmouth/loudmouth-account.cpp:358
-#: ../plugins/loudmouth/loudmouth-bank.cpp:128
+#: ../plugins/loudmouth/loudmouth-bank.cpp:126
 msgid ""
 "The resource, such as home or work, allowing to distinguish among several "
 "terminals registered to the same account; leave empty if you do not know "
@@ -3143,11 +3517,11 @@ msgstr ""
 "reģistrēti uz viena un tā paša konta. Atstājiet tukšu, ja nezināt, kas tas "
 "ir."
 
-#: ../plugins/loudmouth/loudmouth-bank.cpp:111
+#: ../plugins/loudmouth/loudmouth-bank.cpp:109
 msgid "_Add a Jabber/XMPP Account"
 msgstr "_Pievienot Jabber/XMPP kontu"
 
-#: ../plugins/loudmouth/loudmouth-bank.cpp:123
+#: ../plugins/loudmouth/loudmouth-bank.cpp:121
 msgid "Please fill in the following fields:"
 msgstr "Lūdzu, aizpildiet sekojošos laukus:"
 
@@ -3210,61 +3584,62 @@ msgstr "noraidīt vēlāk (arī aizvērt vai atcelt šo dialogu)"
 msgid "Your answer is: "
 msgstr "Jūsu atbilde ir: "
 
-#: ../plugins/loudmouth/loudmouth-heap-roster.cpp:306
+#: ../plugins/loudmouth/loudmouth-heap-roster.cpp:334
 msgid "Add a roster element"
 msgstr "Pievienot saraksta elementu"
 
-#: ../plugins/loudmouth/loudmouth-heap-roster.cpp:307
+#: ../plugins/loudmouth/loudmouth-heap-roster.cpp:335
 msgid "Please fill in this form to add a new element to the remote roster"
 msgstr ""
 "Lūdzu, aizpildiet šo formu, lai pievienotu jaunu elementu attālinātajam "
 "sarakstam"
 
-#: ../plugins/loudmouth/loudmouth-heap-roster.cpp:309
+#: ../plugins/loudmouth/loudmouth-heap-roster.cpp:337
 #: ../plugins/resource-list/rl-heap.cpp:470
 msgid "Identifier:"
 msgstr "Identifikators:"
 
-#: ../plugins/loudmouth/loudmouth-heap-roster.cpp:309
+#: ../plugins/loudmouth/loudmouth-heap-roster.cpp:337
 msgid "identifier@server"
 msgstr "identifikators@serveris"
 
-#: ../plugins/loudmouth/loudmouth-presentity.cpp:165
-#: ../plugins/loudmouth/loudmouth-presentity.cpp:171
-msgid "Ask him/her to see his/her status"
-msgstr "Prasīt viņam(-ai) atļauju redzēt viņa(-as) statusu"
-
-#: ../plugins/loudmouth/loudmouth-presentity.cpp:169
-#: ../plugins/loudmouth/loudmouth-presentity.cpp:181
-msgid "Forbid him/her to see my status"
-msgstr "Liegt viņam(-ai) redzēt manu statusu"
-
-#: ../plugins/loudmouth/loudmouth-presentity.cpp:173
-msgid "Ask him/her to see his/her status (pending)"
-msgstr "Prasīt viņam(-ai) atļauju redzēt viņa(-as) statusu (gaida izpildi)"
-
-#: ../plugins/loudmouth/loudmouth-presentity.cpp:177
-#: ../plugins/loudmouth/loudmouth-presentity.cpp:182
-msgid "Stop getting his/her status"
-msgstr "Apturēt viņa(-as) statusa iegūšanu"
-
-#: ../plugins/loudmouth/loudmouth-presentity.cpp:187
+#: ../plugins/loudmouth/loudmouth-presentity.cpp:167
 msgid "Start chat"
 msgstr "Sākt tērzēt"
 
-#: ../plugins/loudmouth/loudmouth-presentity.cpp:190
+#: ../plugins/loudmouth/loudmouth-presentity.cpp:170
 msgid "Continue chat"
 msgstr "Turpināt tērzēt"
 
-#: ../plugins/loudmouth/loudmouth-presentity.cpp:281
+#: ../plugins/loudmouth/loudmouth-presentity.cpp:179
+#: ../plugins/loudmouth/loudmouth-presentity.cpp:185
+msgid "Ask him/her to see his/her status"
+msgstr "Prasīt viņam(-ai) atļauju redzēt viņa(-as) statusu"
+
+#: ../plugins/loudmouth/loudmouth-presentity.cpp:183
+#: ../plugins/loudmouth/loudmouth-presentity.cpp:195
+msgid "Forbid him/her to see my status"
+msgstr "Liegt viņam(-ai) redzēt manu statusu"
+
+#: ../plugins/loudmouth/loudmouth-presentity.cpp:187
+msgid "Ask him/her to see his/her status (pending)"
+msgstr "Prasīt viņam(-ai) atļauju redzēt viņa(-as) statusu (gaida izpildi)"
+
+#: ../plugins/loudmouth/loudmouth-presentity.cpp:191
+#: ../plugins/loudmouth/loudmouth-presentity.cpp:196
+msgid "Stop getting his/her status"
+msgstr "Apturēt viņa(-as) statusa iegūšanu"
+
+#: ../plugins/loudmouth/loudmouth-presentity.cpp:287
 msgid ""
 "Please fill in this form to change an existing element of the remote roster"
 msgstr ""
 "Lūdzu, aizpildiet šo formu, lai mainītu esošo elementu attālinātajā sarakstā"
 
 #: ../plugins/resource-list/rl-cluster.cpp:102
-msgid "New resource list"
-msgstr "Jauns resursu saraksts"
+#| msgid "Add new resource-list"
+msgid "Add resource list"
+msgstr "Pievienot resursu sarakstu"
 
 #: ../plugins/resource-list/rl-cluster.cpp:166
 msgid "Add new resource-list"
@@ -3367,439 +3742,158 @@ msgid ""
 msgstr ""
 "Lūdzu, aizpildiet šo formu, lai mainītu esošo kontaktu uz attālinātā servera"
 
-#: ../src/gui/assistant.cpp:341
-msgid ""
-"This is the Ekiga general configuration assistant. The following steps will "
-"set up Ekiga by asking a few simple questions.\n"
-"\n"
-"Once you have completed these steps, you can always change them later by "
-"selecting Preferences in the Edit menu."
-msgstr ""
-"Laipni lūgti Ekiga vispārīgās konfigurācijas vednī. Nākamajos soļos tiks "
-"iestatīta Ekiga, vaicājot pāris vienkāršus jautājumus.\n"
-"\n"
-"Kad būsiet pabeidzis šos soļus, jūs vienmēr tos varat izmainīt “Rediģēt” "
-"izvēlnē izvēloties “Iestatījumi”."
-
-#: ../src/gui/assistant.cpp:349
-msgid "Welcome to Ekiga"
-msgstr "Laipni lūdzam Ekiga"
-
-#. The user fields
-#: ../src/gui/assistant.cpp:376
-msgid "Please enter your first name and your surname:"
-msgstr "Lūdzu, ievadiet savu vārdu un uzvārdu:"
-
-#: ../src/gui/assistant.cpp:385
-msgid ""
-"Your first name and surname will be used when connecting to other VoIP and "
-"videoconferencing software."
-msgstr ""
-"Jūsu vārds un uzvārds tiks lietoti, veidojot savienojumu ar citām VoIP un "
-"videokonferenču programmām."
-
-#: ../src/gui/assistant.cpp:435
-msgid ""
-"If you do not have a SIP or H323 account, ekiga can only be used on your "
-"local internal network (inside your company, for example).  You will require "
-"an account if you want to be accessible to people on the Internet.  Many web "
-"sites allow you to create an account.  We suggest that you use a free ekiga."
-"net account, which allows you to be joined by any person with a SIP "
-"account.  If you want to call regular phone lines too, we suggest that you "
-"purchase an inexpensive call out account.\n"
-"\n"
-"The following two pages allow you to create such accounts."
-msgstr ""
-"Ja jums nav SIP vai H323 konta, ekiga varēs izmantot tikai lokālajā tīklā "
-"(piemēram, kompānijas iekšienē). Jums vajadzēs kontu, lai varētu piekļūt "
-"cilvēkiem internetā. Daudzas tīmekļa vietnes ļauj jums izveidot šādu kontu. "
-"Mēs jums iesakām izmantot bezmaksas ekiga.net kontu, kas jums ļauj "
-"sazināties ar jebkuru cilvēku, kam ir SIP konts. Ja vēlaties veikt arī "
-"zvanus uz parastajiem tālruņiem, mēs iesakām iegādāties lētu izejošo zvanu "
-"kontu.\n"
-"\n"
-"Nākamās divas lapas ļaus jums izveidot šādus kontus."
-
-#: ../src/gui/assistant.cpp:450
-msgid "Introduction to Accounts"
-msgstr "Ievas kontos"
-
-#: ../src/gui/assistant.cpp:608
-msgid "Ekiga.net Account"
-msgstr "Ekiga.net konts"
-
-#: ../src/gui/assistant.cpp:610
-msgid "Please enter your username:"
-msgstr "Lūdzu, ievadiet savu lietotājvārdu:"
-
-#: ../src/gui/assistant.cpp:618
-msgid "Please enter your password:"
-msgstr "Lūdzu, ievadiet savu paroli:"
-
-#: ../src/gui/assistant.cpp:628
-msgid ""
-"The username and password are used to login to your existing account at the "
-"ekiga.net free SIP service. If you do not have an ekiga.net SIP address yet, "
-"you may first create an account below. This will provide a SIP address that "
-"allows people to call you.\n"
-"\n"
-"You may skip this step if you use an alternative SIP service, or if you "
-"would prefer to specify the login details later."
-msgstr ""
-"Lietotājvārds un parole tiek izmantoti, lai pieteiktos jūsu esošajam ekiga."
-"net bezmaksas SIP servisa kontam. Ja jums vēl nav ekiga.net SIP adreses, tad "
-"zemāk varat izveidot kontu. Tas nodrošinās jūs ar SIP adresi, kas ļaus "
-"cilvēkiem jūs sazvanīt.\n"
-"\n"
-"Jūs varat izlaist šo soli, ja lietojat citu SIP pakalpojumu, vai ja jūs "
-"vēlaties pieslēgšanās informāciju norādīt vēlāk."
-
-#: ../src/gui/assistant.cpp:654
-msgid "I do not want to sign up for the ekiga.net free service"
-msgstr "Es nevēlos pieteikties uz ekiga.net bezmaksas pakalpojumu"
-
-#: ../src/gui/assistant.cpp:714
-msgid "Ekiga Call Out Account"
-msgstr "Ekiga izejošo zvanu konts"
-
-#: ../src/gui/assistant.cpp:716
-msgid "Please enter your account ID:"
-msgstr "Lūdzu, ievadiet savu konta ID:"
-
-#: ../src/gui/assistant.cpp:724
-msgid "Please enter your PIN code:"
-msgstr "Lūdzu, ievadiet savu PIN kodu:"
-
-#: ../src/gui/assistant.cpp:735
-msgid ""
-"You can make calls to regular phones and cell numbers worldwide using Ekiga. "
-"To enable this, you need to do two things:\n"
-"- First buy an account at the URL below.\n"
-"- Then enter your account ID and PIN code.\n"
-"The service will work only if your account is created using the URL in this "
-"dialog.\n"
-msgstr ""
-"Izmantojot Ekiga, jūs varat veikt zvanus uz parastajiem tālruņiem un "
-"mobilajiem tālruņiem. Lai aktivētu šo iespēju, jums jāizdara divas lietas:\n"
-"- Vispirms izveidojiet kontu zemāk norādītajā URL.\n"
-"- Tad ievadiet konta ID un PIN kodu.\n"
-"Šis pakalpojums darbosies tikai tad, ja jūsu konts ir izveidots izmantojot "
-"šajā logā doto URL.\n"
-
-#: ../src/gui/assistant.cpp:794
-msgid "I do not want to sign up for the Ekiga Call Out service"
-msgstr "Es nevēlos pieteikties uz Ekiga izejošo zvanu pakalpojumu"
-
-#: ../src/gui/assistant.cpp:857 ../src/gui/assistant.cpp:1407
-msgid "Connection Type"
-msgstr "Savienojuma tips"
-
-#. The connection type
-#: ../src/gui/assistant.cpp:860
-msgid "Please choose your connection type:"
-msgstr "Lūdzu, izvēlieties jūsu savienojuma tipu:"
-
-#: ../src/gui/assistant.cpp:877
-msgid "56k Modem"
-msgstr "56k modems"
-
-#: ../src/gui/assistant.cpp:882
-msgid "ISDN"
-msgstr "ISDN"
-
-#: ../src/gui/assistant.cpp:887
-msgid "DSL/Cable (128 kbit/s uplink)"
-msgstr "DSL/kabelis (128 kbit/s augšupsaite)"
-
-#: ../src/gui/assistant.cpp:892
-msgid "DSL/Cable (512 kbit/s uplink)"
-msgstr "DSL/kabelis (512 kbit/s augšupsaite)"
-
-#: ../src/gui/assistant.cpp:897
-msgid "LAN"
-msgstr "LAN"
-
-#: ../src/gui/assistant.cpp:902
-msgid "Keep current settings"
-msgstr "Paturēt esošos iestatījumus"
-
-#: ../src/gui/assistant.cpp:907
-msgid ""
-"The connection type will permit determining the best quality settings that "
-"Ekiga will use during calls. You can later change the settings individually "
-"in the preferences window."
-msgstr ""
-"Savienojuma tips ļauj noteikt labākos kvalitātes iestatījumus, ko Ekiga "
-"izmantos zvanu veikšanai. Jūs varat tos vēlāk izmainīt iestatījumu logā."
-
-#: ../src/gui/assistant.cpp:998
-msgid "Please choose the audio ringing device:"
-msgstr "Lūdzu, izvēlieties audio zvanīšanas ierīci:"
-
-#: ../src/gui/assistant.cpp:1018
-msgid ""
-"The audio ringing device is the device that will be used to play the ringing "
-"sound on incoming calls."
-msgstr ""
-"Audio zvanīšanas ierīce ir ierīce, kas tiks izmantota, lai atskaņotu "
-"zvanīšanas skaņu ienākošajiem zvaniem."
-
-#. ---
-#: ../src/gui/assistant.cpp:1029
-msgid "Please choose the audio output device:"
-msgstr "Lūdzu, izvēlieties audio atskaņošanas ierīci:"
-
-#: ../src/gui/assistant.cpp:1049
-msgid ""
-"The audio output device is the device that will be used to play audio during "
-"calls."
-msgstr ""
-"Audio atskaņošanas ierīce ir ierīce, kas tiks izmantota audio atskaņošanai "
-"zvanu laikā."
-
-#. ---
-#: ../src/gui/assistant.cpp:1060
-msgid "Please choose the audio input device:"
-msgstr "Lūdzu, izvēlieties audio ierakstīšanas ierīci:"
-
-#: ../src/gui/assistant.cpp:1080
-msgid ""
-"The audio input device is the device that will be used to record your voice "
-"during calls."
-msgstr ""
-"Audio ierakstīšanas ierīce ir ierīce, kas tiks izmantota audio ierakstīšanai "
-"zvanu laikā."
-
-#: ../src/gui/assistant.cpp:1176 ../src/gui/assistant.cpp:1474
-msgid "Video Input Device"
-msgstr "Video ierakstīšanas ierīce"
-
-#: ../src/gui/assistant.cpp:1178
-msgid "Please choose your video input device:"
-msgstr "Lūdzu, izvēlieties video ierakstīšanas ierīci:"
-
-#: ../src/gui/assistant.cpp:1198
-msgid ""
-"The video input device is the device that will be used to capture video "
-"during calls."
-msgstr ""
-"Video ierakstīšanas ierīce ir ierīce, kas tiks izmantota video ierakstīšanai "
-"zvanu laikā."
-
-#: ../src/gui/assistant.cpp:1337
-msgid "Configuration Complete"
-msgstr "Konfigurācija pabeigta"
-
-#: ../src/gui/assistant.cpp:1339
-msgid ""
-"You have now finished the Ekiga configuration. All the settings can be "
-"changed in the Ekiga preferences. Enjoy!"
-msgstr ""
-"Jūs esat pabeidzis Ekiga konfigurēšanu. Visus iestatījumus var mainīt Ekiga "
-"iestatījumos. Patīkamas sarunas!"
-
-#: ../src/gui/assistant.cpp:1346
-msgid "Configuration summary:"
-msgstr "Konfigurācijas kopsavilkums:"
-
-#: ../src/gui/assistant.cpp:1424
-msgid "Audio Ringing Device"
-msgstr "Audio zvanīšanas ierīce"
-
-#: ../src/gui/assistant.cpp:1441
-msgid "Audio Output Device"
-msgstr "Audio atskaņošanas ierīce"
-
-#: ../src/gui/assistant.cpp:1458
-msgid "Audio Input Device"
-msgstr "Audio ierakstīšanas ierīce"
-
-#: ../src/gui/assistant.cpp:1490
-msgid "SIP URI"
-msgstr "SIP URI"
-
-#: ../src/gui/assistant.cpp:1505
-msgid "Ekiga Call Out"
-msgstr "Ekiga izejošie zvani"
-
-#: ../src/gui/assistant.cpp:1550
-#, c-format
-msgid "Ekiga Configuration Assistant (%d of %d)"
-msgstr "Ekiga konfigurācijas asistents (%d no %d)"
-
-#: ../src/gui/main.cpp:126
+#: ../src/gui/main.cpp:137
 msgid "Prints debug messages in the console (level between 1 and 8)"
 msgstr "Izdrukā atkļūdošanas informāciju konsolē (līmenis no 1 līdz 8)"
 
-#: ../src/gui/main.cpp:131
+#: ../src/gui/main.cpp:142
 msgid "Makes Ekiga call the given URI"
 msgstr "Liek Ekiga zvanīt dotajam URI"
 
-#: ../src/gui/main_window.cpp:372
-msgid "Presence"
-msgstr "Klātesamība"
+#~ msgid "Kind of network selected in the assistant"
+#~ msgstr "Izvēlētais tīkla veids vednī"
 
-#: ../src/gui/main_window.cpp:379
-msgid "Addressbook"
-msgstr "Adrešu grāmata"
+#~ msgid "0: 56kbps, 1: ISDN, 2: DSL128, 3: DSL512, 4: LAN, 5: Custom"
+#~ msgstr "0: 56kbps, 1: ISDN, 2: DSL128, 3: DSL512 4: LAN, 5: Izvēles"
 
-#: ../src/gui/main_window.cpp:408
-msgid "Unknown"
-msgstr "Nezināms"
+#~ msgid "_New Contact"
+#~ msgstr "Jau_ns kontakts"
 
-#: ../src/gui/main_window.cpp:714
-#, c-format
-msgid "Missed call from %s"
-msgstr "Neatbildēts zvans no %s"
+#~ msgid "Local roster"
+#~ msgstr "Lokālais saraksts"
 
-#: ../src/gui/main_window.cpp:748
-msgid "Error"
-msgstr "Kļūda"
+#~ msgid "Address, e.g. sip:xyz@ekiga.net"
+#~ msgstr "Adrese, piem. sip:xyz@ekiga.net"
 
-#: ../src/gui/main_window.cpp:1168
-msgid ""
-"Enter a URI on the left, and click this button to place a call or to hangup"
-msgstr ""
-"Lai veiktu zvanu vai noliktu klausuli, ievadiet URI kreisajā pusē un "
-"nospiediet šo pogu"
+#~ msgid "Hangup the current call"
+#~ msgstr "Apturēt pašreizējo zvanu"
 
-#: ../src/gui/main_window.cpp:1219 ../src/gui/main_window.cpp:1357
-msgid "View the contacts list"
-msgstr "Skatīt kontaktu sarakstu"
+#~ msgid "Timeout to reject or forward unanswered incoming calls (in seconds):"
+#~ msgstr ""
+#~ "Noildze, lai noraidītu vai pārsūtītu neatbildētu ienākošo zvanu "
+#~ "(sekundēs):"
 
-#: ../src/gui/main_window.cpp:1230 ../src/gui/main_window.cpp:1362
-msgid "View the dialpad"
-msgstr "Skatīt ciparnīcu"
+#~ msgid ""
+#~ "Connection will be established in Fast Start mode. Fast Start is a new "
+#~ "way to start calls faster that was introduced in H.323v2. It is not "
+#~ "supported by Netmeeting and using both Fast Start and H.245 Tunneling can "
+#~ "crash some versions of Netmeeting."
+#~ msgstr ""
+#~ "Savienojums tiks dibināts Ātrā sākuma režīmā. Ātrais sākums ir jauns "
+#~ "veids, kā sākt zvanus ātrāk, kas tika ieviests H.323v2. To neatbalsta "
+#~ "Netmeeting, un Ātrā sākuma un H.245 tunelēšanas lietošana reizē var "
+#~ "izraisīt avārijas dažās Netmeeting versijās."
 
-#: ../src/gui/main_window.cpp:1241 ../src/gui/main_window.cpp:1367
-msgid "View the call history"
-msgstr "Skatīt zvanu vēsturi"
+#~ msgid "Extended Video Roles:"
+#~ msgstr "Paplašinātās video lomas:"
 
-#: ../src/gui/main_window.cpp:1279
-msgid "_Chat"
-msgstr "_Tērzēt"
+#~ msgid "New _Contact"
+#~ msgstr "Jauns _kontakts"
 
-#: ../src/gui/main_window.cpp:1281
-msgid "Co_ntact"
-msgstr "Ko_ntakti"
+#~ msgid "error connecting (%s)"
+#~ msgstr "kļūda savienojoties (%s)"
 
-#: ../src/gui/main_window.cpp:1282
-msgid "Act on selected contact"
-msgstr "Veikt darbības ar šo kontaktu"
+#~ msgid "error connecting"
+#~ msgstr "kļūda savienojoties"
 
-#: ../src/gui/main_window.cpp:1286
-msgid "Ca_ll a Number"
-msgstr "Z_vanīt uz numuru"
+#~ msgid "error authenticating loudmouth account"
+#~ msgstr "kļūda, autentificējot loudmouth kontu"
 
-#: ../src/gui/main_window.cpp:1286
-msgid "Place a new call"
-msgstr "Veikt jaunu zvanu"
+#~ msgid "New resource list"
+#~ msgstr "Jauns resursu saraksts"
 
-#: ../src/gui/main_window.cpp:1292
-msgid "A_dd Contact"
-msgstr "_Pievienot kontaktu"
+#~ msgid "Connection Type"
+#~ msgstr "Savienojuma tips"
 
-#: ../src/gui/main_window.cpp:1292
-msgid "Add a contact to the roster"
-msgstr "Pievienot kontaktu sarakstam"
+#~ msgid "Please choose your connection type:"
+#~ msgstr "Lūdzu, izvēlieties jūsu savienojuma tipu:"
 
-#: ../src/gui/main_window.cpp:1297
-msgid "Find contacts"
-msgstr "Meklēt kontaktus"
+#~ msgid "56k Modem"
+#~ msgstr "56k modems"
 
-#. FIXME: that isn't a very good way to do things
-#: ../src/gui/main_window.cpp:1306
-msgid "Other"
-msgstr "Citi"
+#~ msgid "ISDN"
+#~ msgstr "ISDN"
 
-#: ../src/gui/main_window.cpp:1307
-msgid "Other possible actions"
-msgstr "Citas iespējamās darbības"
+#~ msgid "DSL/Cable (128 kbit/s uplink)"
+#~ msgstr "DSL/kabelis (128 kbit/s augšupsaite)"
 
-#: ../src/gui/main_window.cpp:1327
-msgid "_Configuration Assistant"
-msgstr "_Konfigurācijas asistents"
+#~ msgid "DSL/Cable (512 kbit/s uplink)"
+#~ msgstr "DSL/kabelis (512 kbit/s augšupsaite)"
 
-#: ../src/gui/main_window.cpp:1328
-msgid "Run the configuration assistant"
-msgstr "Palaist konfigurācijas asistentu"
+#~ msgid "LAN"
+#~ msgstr "LAN"
 
-#: ../src/gui/main_window.cpp:1336
-msgid "Edit your accounts"
-msgstr "Rediģēt jūsu kontus"
+#~ msgid "Keep current settings"
+#~ msgstr "Paturēt esošos iestatījumus"
 
-#: ../src/gui/main_window.cpp:1342
-msgid "Change your preferences"
-msgstr "Mainīt savus iestatījumus"
+#~ msgid ""
+#~ "The connection type will permit determining the best quality settings "
+#~ "that Ekiga will use during calls. You can later change the settings "
+#~ "individually in the preferences window."
+#~ msgstr ""
+#~ "Savienojuma tips ļauj noteikt labākos kvalitātes iestatījumus, ko Ekiga "
+#~ "izmantos zvanu veikšanai. Jūs varat tos vēlāk izmainīt iestatījumu logā."
 
-#: ../src/gui/main_window.cpp:1349
-msgid "_Video Preview"
-msgstr "_Video priekšskatījums"
+#~ msgid "Please choose the audio ringing device:"
+#~ msgstr "Lūdzu, izvēlieties audio zvanīšanas ierīci:"
 
-#: ../src/gui/main_window.cpp:1357
-msgid "Con_tacts"
-msgstr "Kon_takti"
+#~ msgid ""
+#~ "The audio ringing device is the device that will be used to play the "
+#~ "ringing sound on incoming calls."
+#~ msgstr ""
+#~ "Audio zvanīšanas ierīce ir ierīce, kas tiks izmantota, lai atskaņotu "
+#~ "zvanīšanas skaņu ienākošajiem zvaniem."
 
-#: ../src/gui/main_window.cpp:1362
-msgid "_Dialpad"
-msgstr "_Ciparnīca"
+#~ msgid "Please choose the audio output device:"
+#~ msgstr "Lūdzu, izvēlieties audio atskaņošanas ierīci:"
 
-#: ../src/gui/main_window.cpp:1367
-msgid "_Call History"
-msgstr "_Zvanu vēsture"
+#~ msgid ""
+#~ "The audio output device is the device that will be used to play audio "
+#~ "during calls."
+#~ msgstr ""
+#~ "Audio atskaņošanas ierīce ir ierīce, kas tiks izmantota audio "
+#~ "atskaņošanai zvanu laikā."
 
-#: ../src/gui/main_window.cpp:1375
-msgid "Show Offline _Contacts"
-msgstr "Rādīt nesaistes _kontaktus"
+#~ msgid "Please choose the audio input device:"
+#~ msgstr "Lūdzu, izvēlieties audio ierakstīšanas ierīci:"
 
-#: ../src/gui/main_window.cpp:1439
-msgid "Contacts"
-msgstr "Kontakti"
+#~ msgid ""
+#~ "The audio input device is the device that will be used to record your "
+#~ "voice during calls."
+#~ msgstr ""
+#~ "Audio ierakstīšanas ierīce ir ierīce, kas tiks izmantota audio "
+#~ "ierakstīšanai zvanu laikā."
 
-#: ../src/gui/main_window.cpp:1468
-msgid "Dialpad"
-msgstr "Ciparnīca"
+#~ msgid "Video Input Device"
+#~ msgstr "Video ierakstīšanas ierīce"
 
-#: ../src/gui/main_window.cpp:1486
-msgid "Call history"
-msgstr "Zvanu vēsture"
+#~ msgid "Please choose your video input device:"
+#~ msgstr "Lūdzu, izvēlieties video ierakstīšanas ierīci:"
 
-#: ../src/gui/main_window.cpp:1498
-msgid "Ekiga"
-msgstr "Ekiga"
+#~ msgid ""
+#~ "The video input device is the device that will be used to capture video "
+#~ "during calls."
+#~ msgstr ""
+#~ "Video ierakstīšanas ierīce ir ierīce, kas tiks izmantota video "
+#~ "ierakstīšanai zvanu laikā."
 
-#: ../src/gui/statusmenu.cpp:87
-msgid "Available"
-msgstr "Pieejams"
+#~ msgid "Audio Ringing Device"
+#~ msgstr "Audio zvanīšanas ierīce"
 
-#: ../src/gui/statusmenu.cpp:88
-msgid "Away"
-msgstr "Prom"
+#~ msgid "Audio Output Device"
+#~ msgstr "Audio atskaņošanas ierīce"
 
-#: ../src/gui/statusmenu.cpp:89
-msgid "Busy"
-msgstr "Aizņemts"
+#~ msgid "Audio Input Device"
+#~ msgstr "Audio ierakstīšanas ierīce"
 
-#: ../src/gui/statusmenu.cpp:387
-msgid "Custom message..."
-msgstr "Pielāgots ziņojums..."
+#~ msgid "Unknown"
+#~ msgstr "Nezināms"
 
-#: ../src/gui/statusmenu.cpp:432
-msgid "Clear"
-msgstr "Attīrīt"
+#~ msgid "Other"
+#~ msgstr "Citi"
 
-#. Build the dialog
-#: ../src/gui/statusmenu.cpp:520 ../src/gui/statusmenu.cpp:668
-msgid "Custom Message"
-msgstr "Pielāgots ziņojums"
-
-#: ../src/gui/statusmenu.cpp:536
-msgid "Delete custom messages:"
-msgstr "Dzēsiet pielāgotos ziņojumus:"
-
-#: ../src/gui/statusmenu.cpp:685
-msgid "Define a custom message:"
-msgstr "Nosakiet pielāgotu ziņojumu:"
+#~ msgid "Other possible actions"
+#~ msgstr "Citas iespējamās darbības"
 
 #~ msgid "_Find"
 #~ msgstr "_Meklēt"
@@ -3879,9 +3973,6 @@ msgstr "Nosakiet pielāgotu ziņojumu:"
 
 #~ msgid "The following accounts are inactive:"
 #~ msgstr "Sekojoši konti nav aktīvi:"
-
-#~ msgid "Online"
-#~ msgstr "Tiešsaistē"
 
 #~ msgid "Do Not Disturb"
 #~ msgstr "Netraucēt"
