@@ -39,8 +39,12 @@
 #ifndef EKIGA_SETTINGS_H_
 #define EKIGA_SETTINGS_H_
 
-#include <boost/signals.hpp>
+#include <boost/smart_ptr.hpp>
+#include <boost/signals2.hpp>
+
 #include <gio/gio.h>
+
+#include "config.h"
 
 #define USER_INTERFACE "org.gnome." PACKAGE_NAME ".general.user-interface"
 #define PROTOCOLS "org.gnome." PACKAGE_NAME ".protocols"
@@ -87,7 +91,7 @@ public:
       return gsettings;
     }
 
-    boost::signal1<void, std::string> changed;
+    boost::signals2::signal<void(std::string)> changed;
 
 private:
     gulong handler;

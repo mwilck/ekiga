@@ -600,7 +600,8 @@ addressbook_window_class_init (AddressBookWindowClass *klass)
  * Public API 
  */
 GtkWidget *
-addressbook_window_new (boost::shared_ptr<Ekiga::ContactCore> core)
+addressbook_window_new (boost::shared_ptr<Ekiga::ContactCore> core,
+			const char* key)
 {
   AddressBookWindow *self = NULL;
 
@@ -615,7 +616,7 @@ addressbook_window_new (boost::shared_ptr<Ekiga::ContactCore> core)
   GtkTreeViewColumn *column = NULL;
   GtkTreeStore *store = NULL;
 
-  self = (AddressBookWindow *) g_object_new (ADDRESSBOOK_WINDOW_TYPE, NULL);
+  self = (AddressBookWindow *) g_object_new (ADDRESSBOOK_WINDOW_TYPE, "key", key, NULL);
   self->priv = new AddressBookWindowPrivate (core);
 
   gtk_window_set_title (GTK_WINDOW (self), _("Address Book"));

@@ -49,6 +49,8 @@
 #include "opal-bank.h"
 #include "device-lists.h"
 
+#include "gmconf.h"
+
 #include <gdk/gdkkeysyms.h>
 
 G_DEFINE_TYPE (AssistantWindow, assistant_window, GTK_TYPE_ASSISTANT);
@@ -632,54 +634,6 @@ apply_ekiga_out_page (AssistantWindow *assistant)
 
 
 static void
-apply_audio_devices_page (AssistantWindow */*assistant*/)
-{
-  gchar *ringer, *player, *recorder;
-
-  ringer = gm_conf_get_string (SOUND_EVENTS_KEY "output_device");
-  if (ringer == NULL || !ringer[0]) {
-    ringer = g_strdup (DEFAULT_AUDIO_DEVICE_NAME);
-    gm_conf_set_string (SOUND_EVENTS_KEY "output_device", ringer);
-  }
-  g_free (ringer);
-
-  player = gm_conf_get_string (AUDIO_DEVICES_KEY "output_device");
-  if (player == NULL || !player[0]) {
-    player = g_strdup (DEFAULT_AUDIO_DEVICE_NAME);
-    gm_conf_set_string (AUDIO_DEVICES_KEY "output_device", player);
-  }
-  g_free (player);
-
-  recorder = gm_conf_get_string (AUDIO_DEVICES_KEY "input_device");
-  if (recorder == NULL || !recorder[0]) {
-    recorder = g_strdup (DEFAULT_AUDIO_DEVICE_NAME);
-    gm_conf_set_string (AUDIO_DEVICES_KEY "input_device", recorder);
-  }
-  g_free (recorder);
-}
-
-
-static void
-apply_video_devices_page (AssistantWindow *assistant)
-{
-  std::vector <std::string> device_list;
-  gchar** array;
-  gchar* current_plugin;
-
-  current_plugin = gm_conf_get_string (VIDEO_DEVICES_KEY "input_device");
-  if (current_plugin == NULL || !current_plugin[0]) {
-    g_free (current_plugin);
-    get_videoinput_devices (assistant->priv->videoinput_core, device_list);
-    array = vector_of_string_to_array (device_list);
-    current_plugin = g_strdup (get_default_video_device_name (array));
-    g_free (array);
-    gm_conf_set_string (VIDEO_DEVICES_KEY "input_device", current_plugin);
-  }
-  g_free (current_plugin);
-}
-
-
-static void
 create_summary_page (AssistantWindow *assistant)
 {
   GtkWidget *vbox;
@@ -857,8 +811,6 @@ assistant_window_apply (GtkAssistant *gtkassistant)
   apply_personal_data_page (assistant);
   apply_ekiga_net_page (assistant);
   apply_ekiga_out_page (assistant);
-  apply_audio_devices_page (assistant);
-  apply_video_devices_page (assistant);
 
   /* Hide the assistant and show the main Ekiga window */
   gtk_widget_hide (GTK_WIDGET (assistant));

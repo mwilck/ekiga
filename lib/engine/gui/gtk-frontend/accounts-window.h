@@ -88,6 +88,7 @@ GType accounts_window_get_type ();
  * PRE          : /
  */
 GtkWidget* accounts_window_new (boost::shared_ptr<Ekiga::AccountCore> account_core,
-				boost::shared_ptr<Ekiga::PersonalDetails> details);
+				boost::shared_ptr<Ekiga::PersonalDetails> details,
+				const char* key);
 
 #endif

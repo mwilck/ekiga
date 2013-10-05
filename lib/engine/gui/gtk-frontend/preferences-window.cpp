@@ -65,6 +65,7 @@
 
 typedef struct _GmPreferencesWindow
 {
+  _GmPreferencesWindow();
   ~_GmPreferencesWindow();
 
   GtkWidget *audio_codecs_list;
@@ -86,7 +87,7 @@ typedef struct _GmPreferencesWindow
 
 #define GM_PREFERENCES_WINDOW(x) (GmPreferencesWindow *) (x)
 
-_GmPreferencesWindow::_GmPreferencesWindow(Ekiga::ServiceCore &_core): core(_core)
+_GmPreferencesWindow::_GmPreferencesWindow()
 {
   sound_events_settings = g_settings_new (SOUND_EVENTS_SCHEMA);
   audio_devices_settings = g_settings_new (AUDIO_DEVICES_SCHEMA);
@@ -843,8 +844,6 @@ gm_pw_init_audio_devices_page (GtkWidget *prefs_window,
 
 
 static void
-<<<<<<< HEAD
-=======
 gm_prefs_window_get_videoinput_devices_list (Ekiga::ServiceCore& core,
                                              std::vector<std::string> & device_list)
 {
@@ -1045,7 +1044,7 @@ gm_pw_init_video_codecs_page (GtkWidget *prefs_window,
 
 
 GtkWidget *
-gm_pw_string_option_menu_new (GtkWidget *table,
+gm_pw_string_option_menu_new (GtkWidget *grid,
                               const gchar *label_txt,
                               const gchar **options,
                               GSettings *settings,
@@ -1072,10 +1071,8 @@ gm_pw_string_option_menu_new (GtkWidget *table,
   if (!writable)
     gtk_widget_set_sensitive (GTK_WIDGET (label), FALSE);
 
-  gtk_table_attach (GTK_TABLE (table), label, 0, 1, row, row+1,
-                    (GtkAttachOptions) (GTK_FILL),
-                    (GtkAttachOptions) (GTK_FILL),
-                    0, 0);
+  g_object_set (G_OBJECT (label), "expand", TRUE, NULL);
+  gtk_grid_attach (GTK_GRID (grid), label, 0, row, 1, 1);
 
   gtk_misc_set_alignment (GTK_MISC (label), 0.0, 0.5);
   gtk_label_set_justify (GTK_LABEL (label), GTK_JUSTIFY_LEFT);
@@ -1125,10 +1122,8 @@ gm_pw_string_option_menu_new (GtkWidget *table,
   }
 
   gtk_combo_box_set_active (GTK_COMBO_BOX (option_menu), history);
-  gtk_table_attach (GTK_TABLE (table), option_menu, 1, 2, row, row+1,
-                    (GtkAttachOptions) (GTK_FILL),
-                    (GtkAttachOptions) (GTK_FILL),
-                    0, 0);
+  g_object_set (G_OBJECT (option_menu), "expand", TRUE, NULL);
+  gtk_grid_attach (GTK_GRID (grid), option_menu, 1, row, 1, 1);
 
   gtk_widget_set_tooltip_text (option_menu, tooltip);
 
@@ -1144,14 +1139,14 @@ gm_pw_string_option_menu_new (GtkWidget *table,
   g_free (signal_name);
 
   g_free (conf_string);
-  gtk_widget_show_all (table);
+  gtk_widget_show_all (grid);
 
   return option_menu;
 }
 
 
 GtkWidget *
-gm_pw_int_option_menu_new (GtkWidget *table,
+gm_pw_int_option_menu_new (GtkWidget *grid,
                            const gchar *label_txt,
                            const gchar **options,
                            GSettings *settings,
@@ -1178,10 +1173,8 @@ gm_pw_int_option_menu_new (GtkWidget *table,
   if (!writable)
     gtk_widget_set_sensitive (GTK_WIDGET (label), FALSE);
 
-  gtk_table_attach (GTK_TABLE (table), label, 0, 1, row, row+1,
-                    (GtkAttachOptions) (GTK_FILL),
-                    (GtkAttachOptions) (GTK_FILL),
-                    0, 0);
+  g_object_set (G_OBJECT (label), "expand", TRUE, NULL);
+  gtk_grid_attach (GTK_GRID (grid), label, 0, row, 1, 1);
 
   gtk_misc_set_alignment (GTK_MISC (label), 0.0, 0.5);
   gtk_label_set_justify (GTK_LABEL (label), GTK_JUSTIFY_LEFT);
@@ -1214,10 +1207,8 @@ gm_pw_int_option_menu_new (GtkWidget *table,
   }
 
   gtk_combo_box_set_active (GTK_COMBO_BOX (option_menu), history);
-  gtk_table_attach (GTK_TABLE (table), option_menu, 1, 2, row, row+1,
-                    (GtkAttachOptions) (GTK_FILL),
-                    (GtkAttachOptions) (GTK_FILL),
-                    0, 0);
+  g_object_set (G_OBJECT (option_menu), "expand", TRUE, NULL);
+  gtk_grid_attach (GTK_GRID (grid), option_menu, 1, row, 1, 1);
 
   if (tooltip)
     gtk_widget_set_tooltip_text (option_menu, tooltip);
@@ -1233,7 +1224,7 @@ gm_pw_int_option_menu_new (GtkWidget *table,
                     G_CALLBACK (int_option_setting_changed), option_menu);
   g_free (signal_name);
 
-  gtk_widget_show_all (table);
+  gtk_widget_show_all (grid);
 
   return option_menu;
 }

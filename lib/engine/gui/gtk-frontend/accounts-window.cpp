@@ -523,7 +523,8 @@ accounts_window_class_init (AccountsWindowClass *klass)
 /* Public API */
 GtkWidget *
 accounts_window_new (boost::shared_ptr<Ekiga::AccountCore> account_core,
-		     boost::shared_ptr<Ekiga::PersonalDetails> details)
+		     boost::shared_ptr<Ekiga::PersonalDetails> details,
+		     const char* key)
 {
   AccountsWindow *self = NULL;
 
@@ -561,7 +562,7 @@ accounts_window_new (boost::shared_ptr<Ekiga::AccountCore> account_core,
   };
 
   /* The window */
-  self = (AccountsWindow *) g_object_new (ACCOUNTS_WINDOW_TYPE, NULL);
+  self = (AccountsWindow *) g_object_new (ACCOUNTS_WINDOW_TYPE, "key", key, NULL);
 
   self->priv = new AccountsWindowPrivate;
   self->priv->details = details;

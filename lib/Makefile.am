@@ -336,7 +336,7 @@ libekiga_la_SOURCES += \
 	engine/videooutput/videooutput-info.h \
 	engine/videooutput/videooutput-manager.h \
 	engine/videooutput/videooutput-core.h \
-	engine/videooutput/videooutput-core.cpp \
+	engine/videooutput/videooutput-core.cpp
 
 ##
 # Sources of the video input stack
@@ -346,7 +346,7 @@ libekiga_la_SOURCES += \
 	engine/videoinput/videoinput-manager.h \
 	engine/videoinput/videoinput-info.h \
 	engine/videoinput/videoinput-core.h \
-	engine/videoinput/videoinput-core.cpp \
+	engine/videoinput/videoinput-core.cpp
 
 ##
 # Sources of the audio output stack
@@ -358,7 +358,7 @@ libekiga_la_SOURCES += \
 	engine/audiooutput/audiooutput-scheduler.h \
 	engine/audiooutput/audiooutput-scheduler.cpp \
 	engine/audiooutput/audiooutput-core.h \
-	engine/audiooutput/audiooutput-core.cpp \
+	engine/audiooutput/audiooutput-core.cpp
 
 ##
 # Sources of the audio input stack
@@ -368,7 +368,7 @@ libekiga_la_SOURCES += \
 	engine/audioinput/audioinput-manager.h	\
 	engine/audioinput/audioinput-info.h	\
 	engine/audioinput/audioinput-core.h	\
-	engine/audioinput/audioinput-core.cpp       \
+	engine/audioinput/audioinput-core.cpp
 
 ##
 # Sources of the hardware abstraction layer (HAL) stack
