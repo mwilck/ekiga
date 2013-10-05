@@ -45,7 +45,6 @@
 #include "hal-core.h"
 
 #include <ptlib.h>
-
 #include <gio/gio.h>
 
 #define AUDIO_INPUT_FALLBACK_DEVICE_TYPE   "Ekiga"

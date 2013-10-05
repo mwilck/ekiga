@@ -41,9 +41,10 @@
 
 #include <glib/gi18n.h>
 
+#include "ekiga-settings.h"
+
 #include "gmpreferences.h"
 #include "gmconf.h"
-#include "ekiga-settings.h"
 
 #include "preferences-window.h"
 #include "default_devices.h"
@@ -287,8 +288,6 @@ static void gm_pw_string_option_menu_update (GtkWidget *option_menu,
                                              GSettings *settings,
                                              const gchar *conf_key,
                                              const gchar *default_value);
-
-
 /* Callbacks */
 
 /* DESCRIPTION  :  This callback is called when the user clicks
@@ -368,30 +367,12 @@ static void string_option_setting_changed (GSettings *settings,
                                            gchar *key,
                                            gpointer data);
 
-/* DESCRIPTION  :  This callback is called by the preview-play button of the
- * 		   selected audio file in the audio file selector.
- * BEHAVIOR     :  GMSoundEv's the audio file.
- * PRE          :  /
- */
-static void audioev_filename_browse_play_cb (GtkWidget *playbutton,
-                                             gpointer data);
 static void int_option_menu_changed (GtkWidget *option_menu,
                                      gpointer data);
 
 static void int_option_setting_changed (GSettings *settings,
                                         gchar *key,
                                         gpointer data);
-
-static void
-gm_prefs_window_get_audiooutput_devices_list (Ekiga::ServiceCore& core,
-                                        std::vector<std::string> & device_list);
-
-static void
-gm_prefs_window_get_audioinput_devices_list (Ekiga::ServiceCore& core,
-                                             std::vector<std::string> & device_list);
-
-gchar**
-gm_prefs_window_convert_string_list (const std::vector<std::string> & list);
 
 void 
 gm_prefs_window_update_devices_list (GtkWidget *prefs_window);
@@ -844,84 +825,6 @@ gm_pw_init_audio_devices_page (GtkWidget *prefs_window,
 
 
 static void
-gm_prefs_window_get_videoinput_devices_list (Ekiga::ServiceCore& core,
-                                             std::vector<std::string> & device_list)
-{
-  boost::shared_ptr<Ekiga::VideoInputCore> videoinput_core =
-    core.get<Ekiga::VideoInputCore> ("videoinput-core");
-  std::vector <Ekiga::VideoInputDevice> devices;
-
-  device_list.clear();
-  videoinput_core->get_devices(devices);
-
-  for (std::vector<Ekiga::VideoInputDevice>::iterator iter = devices.begin ();
-       iter != devices.end ();
-       iter++)
-    device_list.push_back(iter->GetString());
-
-  if (device_list.size() == 0)
-    device_list.push_back(_("No device found"));
-}
-
-
-void
-gm_prefs_window_get_audiooutput_devices_list (Ekiga::ServiceCore& core,
-                                              std::vector<std::string> & device_list)
-{
-  boost::shared_ptr<Ekiga::AudioOutputCore> audiooutput_core = core.get<Ekiga::AudioOutputCore> ("audiooutput-core");
-  std::vector <Ekiga::AudioOutputDevice> devices;
-
-  std::string device_string;
-  device_list.clear();
-
-  audiooutput_core->get_devices(devices);
-
-  for (std::vector<Ekiga::AudioOutputDevice>::iterator iter = devices.begin ();
-       iter != devices.end ();
-       iter++)
-    device_list.push_back(iter->GetString());
-
-  if (device_list.size() == 0)
-    device_list.push_back(_("No device found"));
-}
-
-
-void
-gm_prefs_window_get_audioinput_devices_list (Ekiga::ServiceCore& core,
-                                             std::vector<std::string> & device_list)
-{
-  boost::shared_ptr<Ekiga::AudioInputCore> audioinput_core = core.get<Ekiga::AudioInputCore> ("audioinput-core");
-  std::vector <Ekiga::AudioInputDevice> devices;
-
-  device_list.clear();
-  audioinput_core->get_devices(devices);
-
-  for (std::vector<Ekiga::AudioInputDevice>::iterator iter = devices.begin ();
-       iter != devices.end ();
-       iter++)
-    device_list.push_back(iter->GetString());
-
-  if (device_list.size() == 0)
-    device_list.push_back(_("No device found"));
-}
-
-
-gchar**
-gm_prefs_window_convert_string_list (const std::vector<std::string> & list)
-{
-  gchar **array = NULL;
-  unsigned i;
-
-  array = (gchar**) g_malloc (sizeof(gchar*) * (list.size() + 1));
-  for (i = 0; i < list.size(); i++)
-    array[i] = (gchar*) list[i].c_str();
-  array[i] = NULL;
-
-  return array;
-}
-
-
-static void
 gm_pw_init_video_devices_page (GtkWidget *prefs_window,
                                GtkWidget *container)
 {
@@ -1229,8 +1132,6 @@ gm_pw_int_option_menu_new (GtkWidget *grid,
   return option_menu;
 }
 
-
-
 void
 gm_pw_string_option_menu_update (GtkWidget *option_menu,
                                  const gchar **options,
@@ -1496,24 +1397,6 @@ sound_event_toggled_cb (G_GNUC_UNUSED GtkCellRendererToggle *cell,
 
   g_free (key);
   gtk_tree_path_free (path);
-}
-
-
-static void
-audioev_filename_browse_play_cb (GtkWidget* /* playbutton */,
-				 gpointer data)
-{
-  GmPreferencesWindow* pw = NULL;
-
-  g_return_if_fail (data != NULL);
-
-  pw = gm_pw_get_pw (GTK_WIDGET (data));
-
-  gchar* file_name = gtk_file_chooser_get_filename (GTK_FILE_CHOOSER (pw->fsbutton));
-  std::string file_name_string = file_name;
-  pw->audiooutput_core->play_file(file_name_string);
-
-  g_free (file_name);
 }
 
 void on_videoinput_device_added_cb (const Ekiga::VideoInputDevice & device, bool isDesired, GtkWidget *prefs_window)

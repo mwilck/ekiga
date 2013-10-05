@@ -45,7 +45,6 @@
 #include "audiooutput-scheduler.h"
 
 #include <ptlib.h>
-
 #include <gio/gio.h>
 
 #define AUDIO_OUTPUT_FALLBACK_DEVICE_TYPE "Ekiga"
