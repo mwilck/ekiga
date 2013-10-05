@@ -373,9 +373,9 @@ void
 Local::Heap::save () const
 {
   xmlChar *buffer = NULL;
-  int size = 0;
+  int doc_size = 0;
 
-  xmlDocDumpMemory (doc.get (), &buffer, &size);
+  xmlDocDumpMemory (doc.get (), &buffer, &doc_size);
 
   gm_conf_set_string (ROSTER_KEY, (const char *)buffer);
 

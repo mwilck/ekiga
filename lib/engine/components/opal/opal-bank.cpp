@@ -55,10 +55,11 @@ Opal::Bank::Bank (Ekiga::ServiceCore& core):
   audiooutput_core(core.get<Ekiga::AudioOutputCore> ("audiooutput-core")),
   opal_component(core.get<CallManager> ("opal-component"))
 {
-  GSList *accounts = gm_conf_get_string_list (PROTOCOLS_KEY "accounts_list");
-  GSList *accounts_iter = accounts;
+  gchar **accounts = NULL;
+  protocols_settings = g_settings_new (PROTOCOLS_SCHEMA);
 
-  while (accounts_iter) {
+  accounts = g_settings_get_strv (protocols_settings, "accounts-list");
+  for (int i = 0 ; accounts[i] != NULL ; i++) {
 
     boost::shared_ptr<Account> account
       = boost::shared_ptr<Account> (new Account (sip_endpoint,
@@ -66,17 +67,14 @@ Opal::Bank::Bank (Ekiga::ServiceCore& core):
 						 personal_details,
 						 audiooutput_core,
 						 opal_component,
-						 (char *)accounts_iter->data));
+						 (char *)accounts[i]));
 
     add_account (account);
     Ekiga::BankImpl<Account>::add_connection (account, account->trigger_saving.connect (boost::bind (&Opal::Bank::save, this)));
     Ekiga::BankImpl<Account>::add_connection (account, account->presence_received.connect (boost::ref (presence_received)));
     Ekiga::BankImpl<Account>::add_connection (account, account->status_received.connect (boost::ref (status_received)));
-    accounts_iter = g_slist_next (accounts_iter);
   }
-
-  g_slist_foreach (accounts, (GFunc) g_free, NULL);
-  g_slist_free (accounts);
+  g_strfreev (accounts);
 
   sip_endpoint->registration_event.connect (boost::bind(&Opal::Bank::on_registration_event, this, _1, _2, _3));
   sip_endpoint->mwi_event.connect (boost::bind(&Opal::Bank::on_mwi_event, this, _1, _2));
@@ -94,6 +92,8 @@ Opal::Bank::~Bank ()
   // presence when killed, and that gives a crash if the call manager
   // is already gone!
   Ekiga::RefLister<Opal::Account>::remove_all_objects ();
+
+  g_clear_object (&protocols_settings);
 }
 
 bool
@@ -316,21 +316,18 @@ Opal::Bank::find_account (const std::string& aor)
 void
 Opal::Bank::save () const
 {
-  GSList *accounts = NULL;
+  int i = 0;
+  gchar** accounts = NULL;
 
+  accounts = (gchar**) g_malloc (sizeof (gchar*) * (size() + 1));
   for (const_iterator it = begin ();
        it != end ();
-       it++) {
+       it++)
+    accounts[i++] = g_strdup ((*it)->as_string ().c_str ());
+  accounts[i++] = NULL;
 
-    std::string acct_str = (*it)->as_string ();
-    if ( !acct_str.empty ())
-      accounts = g_slist_append (accounts, g_strdup (acct_str.c_str ()));
-  }
-
-  gm_conf_set_string_list (PROTOCOLS_KEY "accounts_list", accounts);
-
-  g_slist_foreach (accounts, (GFunc) g_free, NULL);
-  g_slist_free (accounts);
+  g_settings_set_strv (protocols_settings, "accounts-list", accounts);
+  g_strfreev (accounts);
 }
 
 void

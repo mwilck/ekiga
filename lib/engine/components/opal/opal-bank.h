@@ -142,6 +142,7 @@ private:
 
     void update_sip_endpoint_aor_map ();
 
+    GSettings *protocols_settings;
   };
 
   /**
