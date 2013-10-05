@@ -186,8 +186,9 @@ GtkFrontend::build ()
   // FIXME: hence should disappear with it
   status_icon =
     boost::shared_ptr<StatusIcon> (status_icon_new (core), g_object_unref);
-  g_signal_connect (status_icon.get (), "clicked",
-		    G_CALLBACK (on_status_icon_clicked), this);
+  if (status_icon)
+    g_signal_connect (status_icon.get (), "clicked",
+		      G_CALLBACK (on_status_icon_clicked), this);
 
   // BEWARE: the main window uses the chat window at startup already,
   // and later on needs the call window, addressbook window,
