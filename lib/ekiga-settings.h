@@ -48,6 +48,7 @@
 
 #define USER_INTERFACE "org.gnome." PACKAGE_NAME ".general.user-interface"
 
+#define PERSONAL_DATA_SCHEMA "org.gnome." PACKAGE_NAME ".general.personal-data"
 #define SOUND_EVENTS_SCHEMA "org.gnome." PACKAGE_NAME ".general.sound-events"
 #define AUDIO_DEVICES_SCHEMA "org.gnome." PACKAGE_NAME ".devices.audio"
 #define VIDEO_DEVICES_SCHEMA "org.gnome." PACKAGE_NAME ".devices.video"
@@ -89,6 +90,43 @@ public:
     GSettings* get_g_settings ()
     {
       return gsettings;
+    }
+
+    const std::string get_string (const std::string & key)
+    {
+      gchar *value = g_settings_get_string (gsettings, key.c_str ());
+      std::string result;
+
+      if (value)
+	result = value;
+
+      g_free (value);
+      return result;
+    }
+
+    void set_string (const std::string & key, const std::string & value)
+    {
+      g_settings_set_string (gsettings, key.c_str (), value.c_str ());
+    }
+    
+    int get_int (const std::string & key)
+    {
+      return g_settings_get_int (gsettings, key.c_str ());
+    }
+
+    void set_int (const std::string & key, int i)
+    {
+      g_settings_set_int (gsettings, key.c_str (), i);
+    }
+
+    bool get_bool (const std::string & key)
+    {
+      return g_settings_get_boolean (gsettings, key.c_str ());
+    }
+
+    void set_bool (const std::string & key, bool i)
+    {
+      g_settings_set_boolean (gsettings, key.c_str (), i);
     }
 
     boost::signals2::signal<void(std::string)> changed;
