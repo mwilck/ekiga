@@ -38,6 +38,7 @@
 #define __GMCONF_PERSONAL_DETAILS_H__
 
 #include "personal-details.h"
+#include "ekiga-settings.h"
 
 namespace Gmconf
 {
@@ -76,19 +77,13 @@ namespace Gmconf
     void set_presence_info (const std::string presence, 
                             const std::string status);
 
-    /*** public but only to be called by C callbacks ***/
-  public:
-    void display_name_changed (std::string val);
-    void presence_changed (std::string val);
-    void status_changed (std::string val);
-
   private:
-    void* display_name_notifier;
-    void* presence_notifier;
-    void* status_notifier;
+    void setup (std::string what = "");
+
     std::string display_name;
     std::string presence;
     std::string status;
+    Ekiga::Settings *personal_details;
   };
 };
 

@@ -36,93 +36,44 @@
 
 #include "gmconf-personal-details.h"
 
-#include <glib.h>
-
-#include "gmconf.h"
-
-static void
-display_name_changed_nt (G_GNUC_UNUSED gpointer id,
-                         GmConfEntry* entry,
-                         gpointer data)
-{
-  Gmconf::PersonalDetails *details = (Gmconf::PersonalDetails *) data;
-  gchar* val = gm_conf_entry_get_string (entry);
-
-  if (val != NULL)
-    details->display_name_changed (val);
-  g_free (val);
-}
-
-static void
-presence_changed_nt (G_GNUC_UNUSED gpointer id,
-                     GmConfEntry* entry,
-                     gpointer data)
-{
-  Gmconf::PersonalDetails *details = (Gmconf::PersonalDetails *) data;
-  gchar* val = gm_conf_entry_get_string (entry);
-
-  if (val != NULL)
-    details->presence_changed (val);
-  g_free (val);
-}
-
-static void
-status_changed_nt (G_GNUC_UNUSED gpointer id,
-                   GmConfEntry* entry,
-                   gpointer data)
-{
-  Gmconf::PersonalDetails *details = (Gmconf::PersonalDetails *) data;
-  gchar* val = gm_conf_entry_get_string (entry);
-
-  if (val != NULL)
-    details->status_changed (val);
-  g_free (val);
-}
-
 Gmconf::PersonalDetails::PersonalDetails ()
 {
-  gchar* str = NULL;
+  personal_details = new Ekiga::Settings (PERSONAL_DATA_SCHEMA);
+  personal_details->changed.connect (boost::bind (&PersonalDetails::setup, this, _1));
 
-  display_name_notifier
-    = gm_conf_notifier_add (PERSONAL_DATA_KEY "full_name",
-                            display_name_changed_nt, this);
-  presence_notifier
-    = gm_conf_notifier_add (PERSONAL_DATA_KEY "short_status",
-                            presence_changed_nt, this);
-  status_notifier
-    = gm_conf_notifier_add (PERSONAL_DATA_KEY "long_status",
-                            status_changed_nt, this);
-
-  str = gm_conf_get_string (PERSONAL_DATA_KEY "full_name");
-  if (str != NULL) {
-
-    display_name = str;
-    g_free (str);
-  } else
-    display_name = "";
-
-  str = gm_conf_get_string (PERSONAL_DATA_KEY "short_status");
-  if (str != NULL) {
-
-    presence = str;
-    g_free (str);
-  } else
-    presence = "";
-
-  str = gm_conf_get_string (PERSONAL_DATA_KEY "long_status");
-  if (str != NULL) {
-
-    status = str;
-    g_free (str);
-  } else
-    status = "";
+  setup ();
 }
 
 Gmconf::PersonalDetails::~PersonalDetails ()
 {
-  gm_conf_notifier_remove (display_name_notifier);
-  gm_conf_notifier_remove (presence_notifier);
-  gm_conf_notifier_remove (status_notifier);
+  delete personal_details;
+}
+
+void
+Gmconf::PersonalDetails::setup (std::string setting)
+{
+  std::string value;
+  if (setting.empty () || setting == "full-name")  {
+    value = personal_details->get_string ("full-name");
+    if (value != display_name) {
+      display_name = value;
+      updated ();
+    }
+  }
+  if (setting.empty () || setting == "short-status")  {
+    value = personal_details->get_string ("short-status");
+    if (value != presence) {
+      presence = value;
+      updated ();
+    }
+  }
+  if (setting.empty () || setting == "full-name")  {
+    value = personal_details->get_string ("long-status");
+    if (value != status) {
+      status = value;
+      updated ();
+    }
+  }
 }
 
 const std::string
@@ -146,22 +97,19 @@ Gmconf::PersonalDetails::get_status () const
 void
 Gmconf::PersonalDetails::set_display_name (const std::string display_name_)
 {
-  gm_conf_set_string (PERSONAL_DATA_KEY "full_name",
-                      display_name_.c_str ());
+  personal_details->set_string ("full-name", display_name_);
 }
 
 void
 Gmconf::PersonalDetails::set_presence (const std::string presence_)
 {
-  gm_conf_set_string (PERSONAL_DATA_KEY "short_status",
-                      presence_.c_str ());
+  personal_details->set_string ("short-status", presence_);
 }
 
 void
 Gmconf::PersonalDetails::set_status (const std::string status_)
 {
-  gm_conf_set_string (PERSONAL_DATA_KEY "long_status",
-                      status_.c_str ());
+  personal_details->set_string ("long-status", status_);
 }
 
 void
@@ -175,29 +123,4 @@ Gmconf::PersonalDetails::set_presence_info (const std::string _presence,
   set_status (_status);
 
   updated ();
-}
-
-void
-Gmconf::PersonalDetails::display_name_changed (std::string val)
-{
-  display_name = val;
-  updated ();
-}
-
-void
-Gmconf::PersonalDetails::presence_changed (std::string val)
-{
-  if (presence != val) {
-    presence = val;
-    updated ();
-  }
-}
-
-void
-Gmconf::PersonalDetails::status_changed (std::string val)
-{
-  if (status != val) {
-    status = val;
-    updated ();
-  }
 }
