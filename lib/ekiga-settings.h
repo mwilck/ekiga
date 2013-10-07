@@ -129,6 +129,31 @@ public:
       g_settings_set_boolean (gsettings, key.c_str (), i);
     }
 
+    std::list<std::string> get_string_list (const std::string & key)
+    {
+      gchar **values = g_settings_get_strv (gsettings, key.c_str ());
+      std::list<std::string> result;
+
+      for (int i = 0 ; values && values[i] != NULL ; i++)
+	result.push_back (values[i]);
+
+      return result;
+    }
+
+    void set_string_list (const std::string & key, const std::list<std::string> & list)
+    {
+      gchar **values = (gchar**) g_malloc (sizeof (gchar*) * (list.size() + 1));
+      int i = 0;
+      for (std::list<std::string>::const_iterator it = list.begin ();
+	   it != list.end ();
+	   it++)
+	values[i++] = g_strdup (it->c_str ());
+      values[i++] = NULL;
+
+      g_settings_set_strv (gsettings, key.c_str (), values);
+      g_strfreev (values);
+    }
+
     boost::signals2::signal<void(std::string)> changed;
 
 private:
