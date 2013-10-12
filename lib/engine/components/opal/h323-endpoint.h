@@ -41,6 +41,8 @@
 
 #include <opal/opal.h>
 
+#include "ekiga-settings.h"
+
 #include "call-core.h"
 #include "account-core.h"
 #include "presence-core.h"
@@ -118,6 +120,8 @@ namespace Opal {
 				       Account::RegistrationState state,
 				       const std::string msg);
 
+      void setup (const std::string key = "");
+
       // this object is really managed by opal,
       // so the way it is handled here is correct
       CallManager & manager;
@@ -131,7 +135,8 @@ namespace Opal {
       std::string uri_prefix;
       std::string forward_uri;
 
-      unsigned listen_port;
+      boost::shared_ptr<Ekiga::Settings> settings;
+      boost::shared_ptr<Ekiga::Settings> video_codecs_settings;
     };
   };
 };

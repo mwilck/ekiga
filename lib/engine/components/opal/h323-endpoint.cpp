@@ -98,18 +98,17 @@ Opal::H323::EndPoint::EndPoint (Opal::CallManager & _manager):
 {
   protocol_name = "h323";
   uri_prefix = "h323:";
-  listen_port = gm_conf_get_int (H323_KEY "listen_port");
-  listen_port = (listen_port > 0 ? listen_port : 1720);
-
-  /* Initial requested bandwidth */
-  set_initial_bandwidth (gm_conf_get_int (VIDEO_CODECS_KEY "maximum_video_tx_bitrate"));
-
-  /* Start listener */
-  set_listen_port (listen_port);
-
   /* Ready to take calls */
   manager.AddRouteEntry("h323:.* = pc:*");
   manager.AddRouteEntry("pc:.* = h323:<da>");
+
+  settings = boost::shared_ptr<Ekiga::Settings> (new Ekiga::Settings (H323_SCHEMA));
+  settings->changed.connect (boost::bind (&EndPoint::setup, this, _1));
+
+  video_codecs_settings = boost::shared_ptr<Ekiga::Settings> (new Ekiga::Settings (VIDEO_CODECS_SCHEMA));
+  video_codecs_settings->changed.connect (boost::bind (&EndPoint::setup, this, _1));
+
+  setup ();
 }
 
 Opal::H323::EndPoint::~EndPoint ()
@@ -202,29 +201,27 @@ Opal::H323::EndPoint::set_listen_port (unsigned port)
   listen_iface.voip_protocol = "h323";
   listen_iface.id = "*";
 
-  if (port > 0) {
+  port = (port > 0 ? port : 1720);
 
-    std::stringstream str;
-    RemoveListener (NULL);
+  std::stringstream str;
+  RemoveListener (NULL);
 
-    str << "tcp$*:" << port;
-    if (StartListeners (PStringArray (str.str ()))) {
+  str << "tcp$*:" << port;
+  if (StartListeners (PStringArray (str.str ()))) {
 
-      listen_iface.port = port;
-      return true;
-    }
+    listen_iface.port = port;
+    PTRACE (4, "Opal::H323::EndPoint\tSet listen port to " << port);
+    return true;
   }
 
   return false;
 }
 
 void
-Opal::H323::EndPoint::set_initial_bandwidth (unsigned maximum_video_tx_bitrate)
+Opal::H323::EndPoint::set_initial_bandwidth (unsigned bitrate)
 {
-  // maximum_video_tx_bitrate is the max video bitrate specified by the user
-  // add to it 10% (approx.) accounting for audio,
-  // and multiply it by 10 as needed by SetInitialBandwidth
-  SetInitialBandwidth (maximum_video_tx_bitrate * 11);
+  SetInitialBandwidth (bitrate > 0 ? bitrate : 100000);
+  PTRACE (4, "Opal::H323::EndPoint\tSet maximum bandwidth to " << bitrate);
 }
 
 
@@ -452,4 +449,20 @@ Opal::H323::EndPoint::registration_event_in_main (const Opal::Account& account,
 						  const std::string msg)
 {
   account.handle_registration_event (state, msg);
+}
+
+void
+Opal::H323::EndPoint::setup (const std::string setting)
+{
+  if (setting.empty () || setting == "listen-port") {
+    int listen_port = settings->get_int ("listen-port");
+    set_listen_port (listen_port);
+  }
+  if (setting.empty () || setting == "maximum-video-tx-bitrate") {
+    int maximum_video_tx_bitrate = video_codecs_settings->get_int ("maximum-video-tx-bitrate");
+    // maximum_video_tx_bitrate is the max video bitrate specified by the user
+    // add to it 10% (approx.) accounting for audio,
+    // and multiply it by 10 as needed by SetInitialBandwidth
+    set_initial_bandwidth (maximum_video_tx_bitrate * 11);
+  }
 }

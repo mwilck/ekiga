@@ -53,8 +53,13 @@
 #define AUDIO_DEVICES_SCHEMA "org.gnome." PACKAGE_NAME ".devices.audio"
 #define VIDEO_DEVICES_SCHEMA "org.gnome." PACKAGE_NAME ".devices.video"
 #define VIDEO_DISPLAY_SCHEMA USER_INTERFACE ".video-display"
+
 #define PROTOCOLS_SCHEMA "org.gnome." PACKAGE_NAME ".protocols"
 #define SIP_SCHEMA PROTOCOLS_SCHEMA ".sip"
+#define H323_SCHEMA PROTOCOLS_SCHEMA ".h323"
+
+#define CODECS_SCHEMA "org.gnome." PACKAGE_NAME ".codecs"
+#define VIDEO_CODECS_SCHEMA CODECS_SCHEMA ".video"
 
 namespace Ekiga {
 
