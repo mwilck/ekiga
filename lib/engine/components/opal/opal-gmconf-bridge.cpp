@@ -73,11 +73,6 @@ ConfBridge::ConfBridge (Opal::CallManager& _core): manager(_core)
   keys.push_back (VIDEO_DEVICES_KEY "size"); 
   keys.push_back (VIDEO_DEVICES_KEY "max_frame_rate");
 
-  keys.push_back (SIP_KEY "forward_host"); 
-  keys.push_back (SIP_KEY "outbound_proxy_host");
-  keys.push_back (SIP_KEY "dtmf_mode");
-  keys.push_back (SIP_KEY "binding_timeout");
-
   keys.push_back (PERSONAL_DATA_KEY "full_name");
 
   keys.push_back (CALL_FORWARDING_KEY "forward_on_no_answer");

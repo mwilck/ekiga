@@ -122,8 +122,6 @@ Opal::Sip::EndPoint::EndPoint (Opal::CallManager & _manager,
 
   protocol_name = "sip";
   uri_prefix = "sip:";
-  listen_port = gm_conf_get_int (SIP_KEY "listen_port");
-  listen_port = (listen_port > 0 ? listen_port : 5060);
 
   dialect = boost::shared_ptr<SIP::Dialect>(new SIP::Dialect (core, boost::bind (&Opal::Sip::EndPoint::send_message, this, _1, _2)));
   chat_core->add_dialect (dialect);
@@ -136,9 +134,6 @@ Opal::Sip::EndPoint::EndPoint (Opal::CallManager & _manager,
   SetRetryTimeouts (500, 4000);
   SetMaxRetries (8);
 
-  /* Start listener */
-  set_listen_port (listen_port);
-
   /* Update the User Agent */
   SetUserAgent ("Ekiga/" PACKAGE_VERSION);
 
@@ -149,7 +144,7 @@ Opal::Sip::EndPoint::EndPoint (Opal::CallManager & _manager,
   /* NAT Binding */
   SetNATBindingRefreshMethod (SIPEndPoint::Options);
 
-  settings = new Ekiga::Settings (SIP_SCHEMA);
+  settings = boost::shared_ptr<Ekiga::Settings> (new Ekiga::Settings (SIP_SCHEMA));
   settings->changed.connect (boost::bind (&EndPoint::setup, this, _1));
 }
 
@@ -161,37 +156,20 @@ Opal::Sip::EndPoint::~EndPoint ()
 void
 Opal::Sip::EndPoint::setup (std::string setting)
 {
-  //keys.push_back (SIP_KEY "forward_host"); 
-  //keys.push_back (SIP_KEY "outbound_proxy_host");
-  //keys.push_back (SIP_KEY "dtmf_mode");
-  ///keys.push_back (SIP_KEY "binding_timeout");
-  GSettings *s = settings->get_g_settings ();
+  if (setting.empty () || setting == "listen-port")  {
+    set_listen_port (settings->get_int ("listen-port"));
+  }
   if (setting.empty () || setting == "binding-timeout")  {
-    PTRACE(4, "Sip::EndPoint\tSet NAT binding delay to " << g_settings_get_int (s, "binding-timeout"));
-    set_nat_binding_delay (g_settings_get_int (s, "binding-timeout"));
+    set_nat_binding_delay (settings->get_int ("binding-timeout"));
   }
   if (setting.empty () || setting == "outbound-proxy-host")  {
-
-    gchar* str = g_settings_get_string (s, "outbound-proxy-host");
-    if (str != NULL && strcmp (str, "")) {
-      PTRACE(4, "Sip::EndPoint\tSet outbound proxy to " << str);
-      set_outbound_proxy (str);
-    }
-    g_free (str);
+    set_outbound_proxy (settings->get_string ("outbound-proxy-host"));
   }
   if (setting.empty () || setting == "dtmf-mode")  {
-
-    PTRACE(4, "Sip::EndPoint\tSet DTMF mode to " << g_settings_get_int (s, "dtmf-mode"));
-    set_dtmf_mode (g_settings_get_int (s, "dtmf-mode"));
+    set_dtmf_mode (settings->get_int ("dtmf-mode"));
   }
   if (setting.empty () || setting == "forward-host")  {
-
-    gchar* str = g_settings_get_string (s, "forward-host");
-    if (str != NULL && strcmp (str, "") && strcasecmp (str, "sip:")) {
-      PTRACE(4, "Sip::EndPoint\tSet forward host to " << str);
-      set_forward_uri (str);
-    }
-    g_free (str);
+    set_forward_uri (settings->get_string ("forward-host"));
   }
 }
 
@@ -266,13 +244,13 @@ Opal::Sip::EndPoint::set_dtmf_mode (unsigned mode)
   switch (mode) {
 
   case 0:  // RFC2833
+    PTRACE (4, "Opal::Sip::EndPoint\tSet DTMF Mode to RFC2833");
     SetSendUserInputMode (OpalConnection::SendUserInputAsInlineRFC2833);
     break;
   case 1:  // SIP Info
-    SetSendUserInputMode (OpalConnection::SendUserInputAsTone);
-    break;
   default:
-    g_return_if_reached ();
+    PTRACE (4, "Opal::Sip::EndPoint\tSet DTMF Mode to SIP INFO");
+    SetSendUserInputMode (OpalConnection::SendUserInputAsTone);
     break;
   }
 }
@@ -320,6 +298,7 @@ Opal::Sip::EndPoint::set_listen_port (unsigned port)
         if (StartListeners (PStringArray (str.str ()))) {
 
           listen_iface.port = port;
+	  PTRACE (4, "Opal::Sip::EndPoint\tSet listen port to " << port);
           return true;
         }
 
@@ -328,6 +307,7 @@ Opal::Sip::EndPoint::set_listen_port (unsigned port)
     }
     else {
       listen_iface.port = port;
+      PTRACE (4, "Opal::Sip::EndPoint\tSet listen port to " << port);
       return true;
     }
   }
@@ -347,7 +327,10 @@ Opal::Sip::EndPoint::get_listen_interface () const
 void
 Opal::Sip::EndPoint::set_forward_uri (const std::string & uri)
 {
-  forward_uri = uri;
+  if (!uri.empty ()) {
+    forward_uri = uri;
+    PTRACE (4, "Opal::Sip::EndPoint\tSet Forward URI to " << uri);
+  }
 }
 
 
@@ -361,8 +344,11 @@ Opal::Sip::EndPoint::get_forward_uri () const
 void
 Opal::Sip::EndPoint::set_outbound_proxy (const std::string & uri)
 {
-  outbound_proxy = uri;
-  SetProxy (SIPURL (outbound_proxy));
+  if (!uri.empty ()) {
+    outbound_proxy = uri;
+    PTRACE (4, "Opal::Sip::EndPoint\tSet outbound proxy to " << uri);
+    SetProxy (SIPURL (outbound_proxy));
+  }
 }
 
 
@@ -376,9 +362,10 @@ Opal::Sip::EndPoint::get_outbound_proxy () const
 void
 Opal::Sip::EndPoint::set_nat_binding_delay (unsigned delay)
 {
-  PTRACE (3, "Ekiga\tNat binding delay set to " << delay);
-  if (delay > 0)
+  if (delay > 0) {
+    PTRACE (4, "Opal::Sip::EndPoint\tNat binding delay set to " << delay);
     SetNATBindingTimeout (PTimeInterval (0, delay));
+  }
 }
 
 

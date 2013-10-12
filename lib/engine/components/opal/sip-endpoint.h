@@ -198,11 +198,9 @@ namespace Opal {
       std::string forward_uri;
       std::string outbound_proxy;
 
-      unsigned listen_port;
-
       boost::shared_ptr<SIP::Dialect> dialect;
 
-      Ekiga::Settings* settings;
+      boost::shared_ptr<Ekiga::Settings> settings;
     };
   };
 };
