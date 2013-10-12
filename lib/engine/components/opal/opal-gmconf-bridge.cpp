@@ -47,10 +47,6 @@
 
 #include "sip-endpoint.h"
 
-#ifdef HAVE_H323
-#include "h323-endpoint.h"
-#endif
-
 using namespace Opal;
 
 ConfBridge::ConfBridge (Opal::CallManager& _core): manager(_core)
@@ -89,14 +85,6 @@ ConfBridge::ConfBridge (Opal::CallManager& _core): manager(_core)
   keys.push_back (CALL_FORWARDING_KEY "always_forward");
   keys.push_back (CALL_OPTIONS_KEY "no_answer_timeout");
   keys.push_back (CALL_OPTIONS_KEY "auto_answer");
-
-  keys.push_back (H323_KEY "enable_h245_tunneling");
-  keys.push_back (H323_KEY "enable_early_h245");
-  keys.push_back (H323_KEY "enable_fast_start");
-  keys.push_back (H323_KEY "dtmf_mode");
-  keys.push_back (H323_KEY "forward_host");
-  keys.push_back (H323_KEY "enable_h239");
-  keys.push_back (H323_KEY "video_role");
 
   keys.push_back (NAT_KEY "stun_server");
   keys.push_back (NAT_KEY "enable_stun");
@@ -249,52 +237,6 @@ ConfBridge::on_property_changed (std::string key,
       g_slist_free (video_codecs);
     }
   }
-
-  //
-  // H.323 keys
-  //
-#ifdef HAVE_H323
-  else if (key.find (H323_KEY) != string::npos) {
-
-    boost::shared_ptr<Opal::H323::EndPoint> h323_manager = boost::dynamic_pointer_cast<Opal::H323::EndPoint> (manager.get_protocol_manager ("h323"));
-    if (h323_manager) {
-
-      if (key == H323_KEY "enable_h245_tunneling") {
-
-        h323_manager->DisableH245Tunneling (!gm_conf_entry_get_bool (entry));
-      }
-      else if (key == H323_KEY "enable_early_h245") {
-
-        h323_manager->DisableH245inSetup (!gm_conf_entry_get_bool (entry));
-      }
-      else if (key == H323_KEY "enable_fast_start") {
-
-        h323_manager->DisableFastStart (!gm_conf_entry_get_bool (entry));
-      }
-      else if (key == H323_KEY "dtmf_mode") {
-
-        h323_manager->set_dtmf_mode (gm_conf_entry_get_int (entry));
-      }
-      else if (key == H323_KEY "forward_host") {
-
-        gchar* str = gm_conf_entry_get_string (entry);
-        if (str != NULL)
-          h323_manager->set_forward_uri (str);
-        g_free (str);
-      }
-      else if (key == H323_KEY "video_role") {
-        CallManager::VideoOptions options;
-        manager.get_video_options (options);
-        options.extended_video_roles = gm_conf_entry_get_int (entry);
-        manager.set_video_options (options);
-      }
-      else if (key == H323_KEY "enable_h239") {
-        h323_manager->SetDefaultH239Control(gm_conf_entry_get_bool (entry));
-      }
-    }
-  }
-#endif
-
 
   //
   // Personal Data Key

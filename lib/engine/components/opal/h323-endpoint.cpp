@@ -159,17 +159,19 @@ Opal::H323::EndPoint::set_dtmf_mode (unsigned mode)
     {
     case 0:
       SetSendUserInputMode (OpalConnection::SendUserInputAsString);
+      PTRACE (4, "Opal::H323::EndPoint\tSet DTMF Mode to String");
       break;
     case 1:
       SetSendUserInputMode (OpalConnection::SendUserInputAsTone);
-      break;
-    case 2:
-      SetSendUserInputMode (OpalConnection::SendUserInputAsInlineRFC2833);
+      PTRACE (4, "Opal::H323::EndPoint\tSet DTMF Mode to Tone");
       break;
     case 3:
       SetSendUserInputMode (OpalConnection::SendUserInputAsQ931);
+      PTRACE (4, "Opal::H323::EndPoint\tSet DTMF Mode to Q931");
       break;
     default:
+      SetSendUserInputMode (OpalConnection::SendUserInputAsInlineRFC2833);
+      PTRACE (4, "Opal::H323::EndPoint\tSet DTMF Mode to RFC2833");
       break;
     }
 }
@@ -235,7 +237,9 @@ Opal::H323::EndPoint::get_listen_interface () const
 void
 Opal::H323::EndPoint::set_forward_uri (const std::string& uri)
 {
-  forward_uri = uri;
+  if (!uri.empty ())
+    forward_uri = uri;
+  PTRACE (4, "Opal::H323::EndPoint\tSet Forward URI to " << uri);
 }
 
 
@@ -455,14 +459,50 @@ void
 Opal::H323::EndPoint::setup (const std::string setting)
 {
   if (setting.empty () || setting == "listen-port") {
+
     int listen_port = settings->get_int ("listen-port");
     set_listen_port (listen_port);
   }
   if (setting.empty () || setting == "maximum-video-tx-bitrate") {
+
     int maximum_video_tx_bitrate = video_codecs_settings->get_int ("maximum-video-tx-bitrate");
     // maximum_video_tx_bitrate is the max video bitrate specified by the user
     // add to it 10% (approx.) accounting for audio,
     // and multiply it by 10 as needed by SetInitialBandwidth
     set_initial_bandwidth (maximum_video_tx_bitrate * 11);
+  }
+  if (setting.empty () || setting == "enable-h245-tunneling") {
+
+    DisableH245Tunneling (!settings->get_bool ("enable-h245-tunneling"));
+    PTRACE (4, "Opal::H323::EndPoint\tH.245 Tunneling: " << settings->get_bool ("enable-h245-tunneling"));
+  }
+  if (setting.empty () || setting == "enable-early-h245") {
+
+    DisableH245inSetup (!settings->get_bool ("enable-early-h245"));
+    PTRACE (4, "Opal::H323::EndPoint\tEarly H.245: " << settings->get_bool ("enable-early-h245"));
+  }
+  if (setting.empty () || setting == "enable-fast-start") {
+
+    DisableFastStart (!settings->get_bool ("enable-fast-start"));
+    PTRACE (4, "Opal::H323::EndPoint\tFast Start: " << settings->get_bool ("enable-fast-start"));
+  }
+  if (setting.empty () || setting == "dtmf-mode") {
+
+    set_dtmf_mode (settings->get_int ("dtmf-mode"));
+  }
+  if (setting.empty () || setting == "forward-host") {
+
+    set_forward_uri (settings->get_string ("forward-host"));
+  }
+  if (setting.empty () || setting == "video-role") {
+
+    CallManager::VideoOptions options;
+    manager.get_video_options (options);
+    options.extended_video_roles = settings->get_int ("video-role");
+    manager.set_video_options (options);
+  }
+  if (setting.empty () || setting == "enable-h239") {
+    SetDefaultH239Control(settings->get_bool ("enable-h239"));
+    PTRACE (4, "Opal::H323::EndPoint\tH.239 Control: " << settings->get_bool ("enable-h239"));
   }
 }
