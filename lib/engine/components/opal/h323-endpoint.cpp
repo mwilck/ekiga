@@ -460,8 +460,7 @@ Opal::H323::EndPoint::setup (const std::string setting)
 {
   if (setting.empty () || setting == "listen-port") {
 
-    int listen_port = settings->get_int ("listen-port");
-    set_listen_port (listen_port);
+    set_listen_port (settings->get_int ("listen-port"));
   }
   if (setting.empty () || setting == "maximum-video-tx-bitrate") {
 
