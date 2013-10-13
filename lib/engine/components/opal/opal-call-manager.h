@@ -52,6 +52,8 @@
 #include "call-manager.h"
 #include "opal-call.h"
 
+#include "ekiga-settings.h"
+
 #include <boost/enable_shared_from_this.hpp>
 
 
@@ -198,6 +200,9 @@ private:
                                              PVideoOutputDevice * & device,
                                              PBoolean & auto_delete);
 
+    /* Set up endpoint: all options or a specific setting */
+    void setup (const std::string & setting = "");
+
     /* The various related endpoints */
     GMPCSSEndpoint *pcssEP;
 
@@ -220,6 +225,10 @@ private:
     bool stun_enabled;
     bool auto_answer;
 
+    boost::shared_ptr<Ekiga::Settings> nat_settings;
+    boost::shared_ptr<Ekiga::Settings> audio_codecs_settings;
+    boost::shared_ptr<Ekiga::Settings> video_codecs_settings;
+    boost::shared_ptr<Ekiga::Settings> video_devices_settings;
 
     /* FIXME: this piece of the api is because the code is getting turned around,
      * this should disappear at some point! */

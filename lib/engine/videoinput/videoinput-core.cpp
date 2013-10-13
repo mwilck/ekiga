@@ -178,6 +178,9 @@ VideoInputCore::VideoInputCore (Ekiga::ServiceCore & _core,
 
   device_settings = new Settings (VIDEO_DEVICES_SCHEMA);
   device_settings->changed.connect (boost::bind (&VideoInputCore::setup, this, _1));
+
+  video_codecs_settings = new Settings (VIDEO_CODECS_SCHEMA);
+  video_codecs_settings->changed.connect (boost::bind (&VideoInputCore::setup, this, _1));
 }
 
 VideoInputCore::~VideoInputCore ()
@@ -194,12 +197,14 @@ VideoInputCore::~VideoInputCore ()
   managers.clear();
 
   delete device_settings;
+  delete video_codecs_settings;
 }
 
 
 void VideoInputCore::setup (std::string setting)
 {
   GSettings* settings = device_settings->get_g_settings ();
+  GSettings* codecs_settings = video_codecs_settings->get_g_settings ();
   VideoInputDevice device;
 
   /* Get device settings */
@@ -216,7 +221,7 @@ void VideoInputCore::setup (std::string setting)
   /* Size and framerate */
   if (setting == "any" || setting == "size" || setting == "max-frame-rate") {
     unsigned size = g_settings_get_int (settings, "size");
-    unsigned max_frame_rate = g_settings_get_int (settings, "max-frame-rate");
+    unsigned max_frame_rate = g_settings_get_int (codecs_settings, "max-frame-rate");
     if (size >= NB_VIDEO_SIZES) {
       PTRACE(1, "VidInputCore\t" << "size out of range, ajusting to 0");
       size = 0;

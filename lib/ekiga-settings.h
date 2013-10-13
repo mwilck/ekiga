@@ -58,7 +58,11 @@
 #define SIP_SCHEMA PROTOCOLS_SCHEMA ".sip"
 #define H323_SCHEMA PROTOCOLS_SCHEMA ".h323"
 
+#define GENERAL_SCHEMA "org.gnome." PACKAGE_NAME ".general"
+#define NAT_SCHEMA GENERAL_SCHEMA ".nat"
+
 #define CODECS_SCHEMA "org.gnome." PACKAGE_NAME ".codecs"
+#define AUDIO_CODECS_SCHEMA CODECS_SCHEMA ".audio"
 #define VIDEO_CODECS_SCHEMA CODECS_SCHEMA ".video"
 
 namespace Ekiga {

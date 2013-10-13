@@ -442,6 +442,7 @@ private:
       boost::shared_ptr<Ekiga::NotificationCore> notification_core;
 
       Settings* device_settings;
+      Settings* video_codecs_settings;
     };
 /**
  * @}

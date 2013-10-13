@@ -48,11 +48,6 @@
       <_summary>Video preview</_summary>
       <_description>Display images from your camera device</_description>
     </key>
-    <key name="max-frame-rate" type="i">
-      <default>30</default>
-      <_summary>Frame Rate</_summary>
-      <_description>The maximum transmitted frame rate in frames/s. This rate may not be reached in case a minimum quality was configure via a TSTO value smaller than 31 and the bitrate selected is not sufficient to support this minimum quality</_description>
-    </key>
   </schema>
   <schema gettext-domain="@GETTEXT_PACKAGE@" id="org.gnome.@PACKAGE_NAME@.general" path="/org/gnome/@PACKAGE_NAME@/general/">
     <key name="version" type="i">
@@ -376,6 +371,11 @@
       <default>31</default>
       <_summary>Temporal Spatial Trade Off</_summary>
       <_description>Whether to prefer to sustain the max. frame rate or lower it possibly in order to keep a minimum level of (spatial) quality for all frames. 0: Highest minimal quality, 31: lowest minimal quality</_description>
+    </key>
+    <key name="max-frame-rate" type="i">
+      <default>30</default>
+      <_summary>Frame Rate</_summary>
+      <_description>The maximum transmitted frame rate in frames/s. This rate may not be reached in case a minimum quality was configure via a TSTO value smaller than 31 and the bitrate selected is not sufficient to support this minimum quality</_description>
     </key>
   </schema>
   <schema gettext-domain="@GETTEXT_PACKAGE@" id="org.gnome.@PACKAGE_NAME@.protocols" path="/org/gnome/@PACKAGE_NAME@/protocols/">
