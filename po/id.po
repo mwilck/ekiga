@@ -4,25 +4,25 @@
 #
 # Abdul Hamid A Nawawi <hameed@linuxmail.org>, 2005.
 # Dirgita <dirgitadevina@yahoo.co.id>, 2011.
-# Andika Triwidada <andika@gmail.com>, 2012.
+# Andika Triwidada <andika@gmail.com>, 2012, 2013.
 msgid ""
 msgstr ""
 "Project-Id-Version: ekiga master\n"
 "Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?"
 "product=ekiga&keywords=I18N+L10N&component=general\n"
-"POT-Creation-Date: 2012-09-24 04:14+0000\n"
-"PO-Revision-Date: 2012-10-03 20:47+0700\n"
+"POT-Creation-Date: 2013-09-27 21:29+0000\n"
+"PO-Revision-Date: 2013-10-14 10:07+0700\n"
 "Last-Translator: Andika Triwidada <andika@gmail.com>\n"
 "Language-Team: GNOME Indonesian Translation Team <gnome@i15n.org>\n"
 "Language: id\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Generator: Poedit 1.5.3\n"
+"X-Generator: Poedit 1.5.7\n"
 "Plural-Forms: nplurals=1; plural=0;\n"
 
 #. Application name
-#: ../ekiga.desktop.in.in.h:1 ../src/gui/main.cpp:103 ../src/gui/main.cpp:105
+#: ../ekiga.desktop.in.in.h:1 ../src/gui/main.cpp:117 ../src/gui/main.cpp:119
 msgid "Ekiga Softphone"
 msgstr "Ekiga Softphone"
 
@@ -39,7 +39,7 @@ msgid "Audio output device"
 msgstr "Perangkat keluaran audio"
 
 #: ../ekiga.schemas.in.in.h:2
-#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:754
+#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:739
 msgid "Select the audio output device to use"
 msgstr "Pilih perangkat keluaran audio yang digunakan"
 
@@ -48,7 +48,7 @@ msgid "Audio input device"
 msgstr "Perangkat masukan audio"
 
 #: ../ekiga.schemas.in.in.h:4
-#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:761
+#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:746
 msgid "Select the audio input device to use"
 msgstr "Pilih perangkat input audio yang digunakan"
 
@@ -57,7 +57,7 @@ msgid "Video input device"
 msgstr "Perangkat masukan video"
 
 #: ../ekiga.schemas.in.in.h:6
-#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:897
+#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:805
 msgid ""
 "Select the video input device to use. If an error occurs when using this "
 "device a test picture will be transmitted."
@@ -71,18 +71,18 @@ msgstr "Ukuran video"
 
 #: ../ekiga.schemas.in.in.h:8
 msgid ""
-"Select the transmitted video size: Small (QCIF 176x144) or Large (CIF "
-"352x288)"
+"Select the transmitted video size: 0: QCIF (176x144), 1: CIF (352x288), 2: "
+"4CIF (704x576), 3: SIF (320x240), 4: 4SIF (640x480)"
 msgstr ""
-"Pilih ukuran video yang dikirimkan: Kecil (QCIF 176x144) atau Besar (CIF "
-"325x288)"
+"Pilih ukuran video yang dikirimkan: 0: QCIF (176x144), 1: CIF (325x288), 2: "
+"4CIF (704x576), 3: SIF (320x240), 4: 4SIF (640x480)"
 
 #: ../ekiga.schemas.in.in.h:9
 msgid "Video channel"
 msgstr "Saluran video"
 
 #: ../ekiga.schemas.in.in.h:10
-#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:901
+#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:809
 msgid "The video channel number to use (to select camera, tv or other sources)"
 msgstr "Nomor saluran video yang digunakan (pilih kamera, tv atau sumber lain)"
 
@@ -91,7 +91,7 @@ msgid "Video format"
 msgstr "Format video"
 
 #: ../ekiga.schemas.in.in.h:12
-#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:905
+#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:813
 msgid ""
 "Select the format for video cameras (does not apply to most USB cameras)"
 msgstr ""
@@ -101,8 +101,9 @@ msgstr ""
 msgid "Video preview"
 msgstr "Pratilik video"
 
-#: ../ekiga.schemas.in.in.h:14 ../src/gui/main_window.cpp:1200
-#: ../src/gui/main_window.cpp:1350
+#: ../ekiga.schemas.in.in.h:14
+#: ../lib/engine/gui/gtk-frontend/main_window.cpp:1075
+#: ../lib/engine/gui/gtk-frontend/main_window.cpp:1218
 msgid "Display images from your camera device"
 msgstr "Tampilkan gambar dari perangkat kamera Anda"
 
@@ -126,7 +127,7 @@ msgid "Full name"
 msgstr "Nama lengkap"
 
 #: ../ekiga.schemas.in.in.h:18
-#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:461
+#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:447
 msgid "Enter your full name"
 msgstr "Masukkan nama lengkap Anda"
 
@@ -159,7 +160,7 @@ msgid "Enable silence detection"
 msgstr "Fungsikan deteksi hening"
 
 #: ../ekiga.schemas.in.in.h:26
-#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:940
+#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:843
 msgid "If enabled, use silence detection with the codecs supporting it"
 msgstr ""
 "Bila difungsikan, gunakan deteksi hening dengan codec yang mendukungnya"
@@ -169,7 +170,7 @@ msgid "Enable echo cancellation"
 msgstr "Fungsikan penghilang gema"
 
 #: ../ekiga.schemas.in.in.h:28
-#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:942
+#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:845
 msgid "If enabled, use echo cancellation"
 msgstr "Bila difungsikan, pakai penghilang gaung"
 
@@ -192,7 +193,7 @@ msgid "The sound that will be played on incoming calls, if enabled"
 msgstr "Suara yang dibunyikan ketika panggilan datang, jika diizinkan"
 
 #: ../ekiga.schemas.in.in.h:33
-#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:366
+#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:352
 msgid "Play sound on incoming calls"
 msgstr "Bunyikan suara saat panggilan masuk"
 
@@ -244,7 +245,7 @@ msgstr ""
 "diaktifkan"
 
 #: ../ekiga.schemas.in.in.h:43
-#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:376
+#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:362
 msgid "Play ring tone"
 msgstr "Mainkan ring tone"
 
@@ -262,7 +263,7 @@ msgid "The sound that will be played when calling somebody, if enabled"
 msgstr "Suara akan dimainkan ketika menghubungi sesorang, jika difungsikan"
 
 #: ../ekiga.schemas.in.in.h:47
-#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:386
+#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:372
 msgid "Play busy tone"
 msgstr "Mainkan nada sibuk"
 
@@ -299,10 +300,11 @@ msgid "Type of Service (TOS) byte on outgoing RTP IP packets"
 msgstr "Nilai bita Type of Service (TOS) pada paket IP RTP keluar"
 
 #: ../ekiga.schemas.in.in.h:54
+#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:469
 msgid ""
 "The Type of Service (TOS) byte on outgoing RTP IP packets. This byte is used "
 "by the network to provide some level of Quality of Service (QoS). Default "
-"value 184 (0xB8) correspond to Expedited Forwarding (EF) PHB as defined in "
+"value 184 (0xB8) corresponds to Expedited Forwarding (EF) PHB as defined in "
 "RFC 3246."
 msgstr ""
 "Nilai bita Type of Service (TOS) pada paket IP RTP keluar. Bita ini dipakai "
@@ -327,7 +329,7 @@ msgid "Outbound Proxy"
 msgstr "Proksi Keluar"
 
 #: ../ekiga.schemas.in.in.h:58
-#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:716
+#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:701
 msgid "The SIP Outbound Proxy to use for outgoing calls"
 msgstr "Proksi Keluar SIP yang dipakai untuk panggilan keluar"
 
@@ -336,8 +338,8 @@ msgid "Forward calls to host"
 msgstr "Teruskan panggilan ke host"
 
 #: ../ekiga.schemas.in.in.h:60
-#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:671
-#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:719
+#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:656
+#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:704
 msgid "The host where calls should be forwarded if call forwarding is enabled"
 msgstr ""
 "Host dimana panggilan mesti diteruskan bila call forwarding difungsikan"
@@ -389,27 +391,23 @@ msgid "Enable H.245 tunneling"
 msgstr "Fungsikan tunneling H.245"
 
 #: ../ekiga.schemas.in.in.h:69
-#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:680
+#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:665
 msgid ""
 "This enables H.245 Tunneling mode. In H.245 Tunneling mode H.245 messages "
 "are encapsulated into the H.225 channel (port 1720). This saves one TCP "
-"connection during calls. H.245 Tunneling was introduced in H.323v2 and "
-"Netmeeting does not support it. Using both Fast Start and H.245 Tunneling "
-"can crash some versions of Netmeeting."
+"connection during calls. H.245 Tunneling was introduced in H.323v2."
 msgstr ""
 "Ini memfungsikan mode Tunneling H.245. Dalam mode Tunneling H.245, pesan "
 "H.245 dibungkus ke dalam saluran H.225 (port 1720). Hal ini menghemat satu "
 "koneksi TCP selama koneksi berlangsung. Tunneling H.245 diperkenalkan dalam "
-"H.323v2 dan Netmeeting tidak mendukungnya. Menggunakan Fast Start dan "
-"Tunneling H.245 sekaligus dapat menyebabkan crash di beberapa versi "
-"Netmeeting."
+"H.323v2."
 
 #: ../ekiga.schemas.in.in.h:70
 msgid "Enable early H.245"
 msgstr "Fungsikan H.245 versi awal"
 
 #: ../ekiga.schemas.in.in.h:71
-#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:682
+#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:667
 msgid "This enables H.245 early in the setup"
 msgstr "Ini mengizinkan permulaan H.245 pada setup"
 
@@ -419,15 +417,11 @@ msgstr "Fungsikan 'Fast-Start'"
 
 #: ../ekiga.schemas.in.in.h:73
 msgid ""
-"Connection will be established in Fast Start mode. Fast Start is a new way "
-"to start calls faster that was introduced in H.323v2. It is not supported by "
-"Netmeeting and using both Fast Start and H.245 Tunneling can crash some "
-"versions of Netmeeting"
+"Connection will be established in Fast Start mode. Fast Start (Fast Connect) "
+"is a new way to start calls faster that was introduced in H.323v2."
 msgstr ""
 "Koneksi akan dijalin dalam mode Fast Start. Fast Start adalah cara baru "
-"untuk memulai panggilan lebih cepat yang telah diperkenalkan di H.323v2. Ini "
-"tidak didukung oleh NetMeeting dan penggunaan Tunneling Fast Start dan H.245 "
-"sekaligus dapat menyebabkan crash di beberapa versi Netmeeting."
+"untuk memulai panggilan lebih cepat yang telah diperkenalkan di H.323v2."
 
 #: ../ekiga.schemas.in.in.h:74
 msgid "Enable H.239"
@@ -516,7 +510,7 @@ msgid "Enable STUN network detection"
 msgstr "Fungsikan deteksi jaringan STUN"
 
 #: ../ekiga.schemas.in.in.h:88
-#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:483
+#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:471
 msgid "Enable the automatic network setup resulting from the STUN test"
 msgstr "Fungsikan penyiapan jaringan otomatis sebagai hasil dari uji STUN"
 
@@ -605,10 +599,18 @@ msgid "Size of the preferences window"
 msgstr "Ukuran jendela preferensi"
 
 #: ../ekiga.schemas.in.in.h:108
+msgid "Position on the screen of the accounts window"
+msgstr "Posisi jendela akun pada layar"
+
+#: ../ekiga.schemas.in.in.h:109
+msgid "Size of the accounts window"
+msgstr "Ukuran jendela akun"
+
+#: ../ekiga.schemas.in.in.h:110
 msgid "Disable video hardware acceleration"
 msgstr "Nonfungsikan akselerasi perangkat keras video"
 
-#: ../ekiga.schemas.in.in.h:109
+#: ../ekiga.schemas.in.in.h:111
 msgid ""
 "This key disables DirectX (on win32) and XVideo (on Linux) video hardware "
 "acceleration"
@@ -616,11 +618,11 @@ msgstr ""
 "Kunci ini mematikan akselerasi perangkat keras video DirectX (pada win32) "
 "dan XVideo (pada Linux)"
 
-#: ../ekiga.schemas.in.in.h:110
+#: ../ekiga.schemas.in.in.h:112
 msgid "Allow picture-in-picture software scaling"
 msgstr "Ijinkan penskalaan perangkat lunak gambar-dalam-gambar"
 
-#: ../ekiga.schemas.in.in.h:111
+#: ../ekiga.schemas.in.in.h:113
 msgid ""
 "Allow Ekiga to fall back to software scaling the picture-in-picture if "
 "hardware support is not available. If this is set to false, Ekiga will not "
@@ -631,11 +633,11 @@ msgstr ""
 "tersedia. Bila ini diisi dengan false, Ekiga tak akan mencoba membuka PIP "
 "bila dukungan perangkat keras tak tersedia."
 
-#: ../ekiga.schemas.in.in.h:112
+#: ../ekiga.schemas.in.in.h:114
 msgid "Specify the software scaling algorithm"
 msgstr "Nyatakan algoritma penskalaan perangkat lunak"
 
-#: ../ekiga.schemas.in.in.h:113
+#: ../ekiga.schemas.in.in.h:115
 msgid ""
 "Specify the software scaling algorithm: 0: nearest neighbor, 1: nearest "
 "neighbor with box filter, 2: bilinear filtering, 3: hyperbolic filtering. "
@@ -645,11 +647,11 @@ msgstr ""
 "tetangga terdekat dengan tapis kotak, 2: penapisan bilinier, 3: penapisan "
 "hiperbolik. Tak berlaku pada sistem windows."
 
-#: ../ekiga.schemas.in.in.h:114
+#: ../ekiga.schemas.in.in.h:116
 msgid "The zoom value"
 msgstr "Nilai zum"
 
-#: ../ekiga.schemas.in.in.h:115
+#: ../ekiga.schemas.in.in.h:117
 msgid ""
 "The zoom value in percent to apply to images displayed in the main GUI (can "
 "be 50, 100, or 200)"
@@ -657,17 +659,25 @@ msgstr ""
 "Nilai zum dalam persen yang diterapkan pada gambar yang ditampilkan dalam "
 "GUI utama (bisa 50, 100, atau 200)"
 
-#: ../ekiga.schemas.in.in.h:116
-#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:477
+#: ../ekiga.schemas.in.in.h:118
+msgid ""
+"The zoom value in percent to apply to images displayed in the extended GUI "
+"(can be 50, 100, or 200)"
+msgstr ""
+"Nilai zum dalam persen yang diterapkan pada gambar yang ditampilkan dalam "
+"GUI yang diperluas (bisa 50, 100, atau 200)"
+
+#: ../ekiga.schemas.in.in.h:119
+#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:463
 msgid "Place windows displaying video above other windows during calls"
 msgstr ""
 "Tempatkan jendela tampilan video diatas jendela lain yang ada panggilan"
 
-#: ../ekiga.schemas.in.in.h:117
+#: ../ekiga.schemas.in.in.h:120
 msgid "The default video view"
 msgstr "Tampilan awal video"
 
-#: ../ekiga.schemas.in.in.h:118
+#: ../ekiga.schemas.in.in.h:121
 msgid ""
 "The default video view (0: Local, 1: Remote, 2: Both, 3: Both in a separate "
 "window)"
@@ -675,11 +685,11 @@ msgstr ""
 "Tampilan video baku (0: Lokal, 1: Jarak-jauh, 2: Bukan keduanya, 3: Keduanya "
 "dalam jendela terpisah)"
 
-#: ../ekiga.schemas.in.in.h:119
+#: ../ekiga.schemas.in.in.h:122
 msgid "The video view before having switched to fullscreen"
 msgstr "Tampilan video sebelum ditukar ke layar penuh"
 
-#: ../ekiga.schemas.in.in.h:120
+#: ../ekiga.schemas.in.in.h:123
 msgid ""
 "The video view before having switched to fullscreen (same values as "
 "video_view)"
@@ -687,40 +697,40 @@ msgstr ""
 "Tampilan video sebelum ditukar ke layar penuh (nilai yang sama dengan "
 "video_view)"
 
-#: ../ekiga.schemas.in.in.h:121
+#: ../ekiga.schemas.in.in.h:124
 msgid "Remote video window size"
 msgstr "Ukuran jendela video jarak-jauh"
 
-#: ../ekiga.schemas.in.in.h:122
+#: ../ekiga.schemas.in.in.h:125
 msgid "The size of the remote video window"
 msgstr "Ukuran jendela video jarak-jauh"
 
-#: ../ekiga.schemas.in.in.h:123
+#: ../ekiga.schemas.in.in.h:126
 msgid "Remote video window position"
 msgstr "Posisi jendela video jarak-jauh"
 
-#: ../ekiga.schemas.in.in.h:124
+#: ../ekiga.schemas.in.in.h:127
 msgid "The position of the remote video window"
 msgstr "Posisi jendela video jarak-jauh"
 
-#: ../ekiga.schemas.in.in.h:125
+#: ../ekiga.schemas.in.in.h:128
 msgid "Maximum jitter buffer"
 msgstr "Buffer jitter maksimal"
 
-#: ../ekiga.schemas.in.in.h:126
-#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:944
+#: ../ekiga.schemas.in.in.h:129
+#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:847
 msgid "The maximum jitter buffer size for audio reception (in ms)"
 msgstr "Ukuran maksimum buffer jitter untuk penerima audio (dalam ms)"
 
-#: ../ekiga.schemas.in.in.h:127
+#: ../ekiga.schemas.in.in.h:130
 msgid "The video codecs list"
 msgstr "Daftar codec video"
 
-#: ../ekiga.schemas.in.in.h:128
+#: ../ekiga.schemas.in.in.h:131
 msgid "Maximum TX video bitrate"
 msgstr "Laju bit video TX maksimum"
 
-#: ../ekiga.schemas.in.in.h:129
+#: ../ekiga.schemas.in.in.h:132
 msgid ""
 "The maximum TX video bitrate in kbit/s. The video quality and the number of "
 "transmitted frames per second (depends on selected codec) will be "
@@ -732,11 +742,11 @@ msgstr ""
 "akan disesuaikan di atas ukuran minimumnya selama panggilan untuk mencoba "
 "meminimalkan bandwith ke nilai yang diberikan"
 
-#: ../ekiga.schemas.in.in.h:130
+#: ../ekiga.schemas.in.in.h:133
 msgid "Maximum RX video bitrate"
 msgstr "Laju bit video RX maksimum"
 
-#: ../ekiga.schemas.in.in.h:131
+#: ../ekiga.schemas.in.in.h:134
 msgid ""
 "The maximum RX video bitrate in kbit/s. This value will be signaled to the "
 "peer endpoint that can adjust (if it supports it) its TX bitrate if it is "
@@ -746,11 +756,11 @@ msgstr ""
 "pasangan yang dapat menyetel (bila itu mendukungnya) lajut bit TXnya bila "
 "itu di atas nilai yang disinyalkan"
 
-#: ../ekiga.schemas.in.in.h:132
+#: ../ekiga.schemas.in.in.h:135
 msgid "Temporal Spatial Trade Off"
 msgstr "Trade Off Spasial Temporal"
 
-#: ../ekiga.schemas.in.in.h:133
+#: ../ekiga.schemas.in.in.h:136
 msgid ""
 "Whether to prefer to sustain the max. frame rate or lower it possibly in "
 "order to keep a minimum level of (spatial) quality for all frames. 0: "
@@ -760,48 +770,41 @@ msgstr ""
 "mungkin agar menjaga tingkat minimum dari kualitas (spasial) bagi semua "
 "bingkai. 0: kualitas minimal tertinggi, 21: kualitas minimal terrendah"
 
-#: ../ekiga.schemas.in.in.h:134
+#: ../ekiga.schemas.in.in.h:137
 msgid "List of folded groups in the roster"
 msgstr "Daftar dari grup yang dilipat dalam roster"
 
-#: ../ekiga.schemas.in.in.h:135 ../src/gui/main_window.cpp:1375
+#: ../ekiga.schemas.in.in.h:138
+#: ../lib/engine/gui/gtk-frontend/main_window.cpp:1243
 msgid "Show offline contacts"
 msgstr "Tampilkan kontak luring"
 
-#: ../ekiga.schemas.in.in.h:136
+#: ../ekiga.schemas.in.in.h:139
 msgid "If enabled, offline contacts will be shown in the roster"
 msgstr "Bila difungsikan, kontak luring akan ditunjukkan dalam roster"
 
-#: ../ekiga.schemas.in.in.h:137
+#: ../ekiga.schemas.in.in.h:140
 msgid "LDAP servers"
 msgstr "Server LDAP"
 
-#: ../ekiga.schemas.in.in.h:138
+#: ../ekiga.schemas.in.in.h:141
 msgid "List of configured LDAP servers"
 msgstr "Daftar server LDAP yang tertata"
 
-#: ../ekiga.schemas.in.in.h:139
+#: ../ekiga.schemas.in.in.h:142
 msgid "Calls history"
 msgstr "Riwayat panggilan"
 
-#: ../ekiga.schemas.in.in.h:140
+#: ../ekiga.schemas.in.in.h:143
 msgid "The history of the 100 last calls"
 msgstr "Riwayat 100 panggilan terakhir"
 
-#: ../ekiga.schemas.in.in.h:141
-msgid "Kind of network selected in the assistant"
-msgstr "Jenis jaringan terpilih dalam asisten"
-
-#: ../ekiga.schemas.in.in.h:142
-msgid "0: 56kbps, 1: ISDN, 2: DSL128, 3: DSL512, 4: LAN, 5: Custom"
-msgstr "0: 56kbps, 1: ISDN, 2: DSL128, 3: DSL512, 4: LAN, 5: Ubahan"
-
-#: ../ekiga.schemas.in.in.h:143
+#: ../ekiga.schemas.in.in.h:144
 msgid "No answer timeout"
 msgstr "Batas waktu tidak ada jawaban"
 
-#: ../ekiga.schemas.in.in.h:144
-#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:506
+#: ../ekiga.schemas.in.in.h:145
+#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:494
 msgid ""
 "Automatically reject or forward incoming calls if no answer is given after "
 "the specified amount of time (in seconds)"
@@ -809,112 +812,93 @@ msgstr ""
 "Otomatis tolak atau teruskan panggilan yang masuk jika tidak ada jawaban "
 "setelah melewati waktu tenggang (dalam detik)"
 
-#: ../ekiga.schemas.in.in.h:145
+#: ../ekiga.schemas.in.in.h:146
 msgid "Automatic answer"
 msgstr "Menjawab otomatis"
 
-#: ../ekiga.schemas.in.in.h:146
-#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:507
+#: ../ekiga.schemas.in.in.h:147
+#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:495
 msgid "If enabled, automatically answer incoming calls"
 msgstr "Bila difungsikan, secara otomatis menjawab panggilan"
 
+#: ../lib/engine/audioinput/audioinput-core.cpp:196
 #: ../lib/engine/audioinput/audioinput-core.cpp:201
-#: ../lib/engine/audioinput/audioinput-core.cpp:206
-#: ../lib/engine/audiooutput/audiooutput-core.cpp:218
-#: ../lib/engine/audiooutput/audiooutput-core.cpp:223
-#: ../lib/engine/videoinput/videoinput-core.cpp:242
-#: ../lib/engine/videoinput/videoinput-core.cpp:247
+#: ../lib/engine/audiooutput/audiooutput-core.cpp:217
+#: ../lib/engine/audiooutput/audiooutput-core.cpp:222
+#: ../lib/engine/videoinput/videoinput-core.cpp:240
+#: ../lib/engine/videoinput/videoinput-core.cpp:245
 msgid "New device detected"
 msgstr "Terdeteksi perangkat baru"
 
-#: ../lib/engine/audioinput/audioinput-core.cpp:206
-#: ../lib/engine/audiooutput/audiooutput-core.cpp:223
-#: ../lib/engine/videoinput/videoinput-core.cpp:247
+#: ../lib/engine/audioinput/audioinput-core.cpp:201
+#: ../lib/engine/audiooutput/audiooutput-core.cpp:222
+#: ../lib/engine/videoinput/videoinput-core.cpp:245
 msgid "Use it"
 msgstr "Pakai itu"
 
-#: ../lib/engine/audioinput/audioinput-core.cpp:236
-#: ../lib/engine/audiooutput/audiooutput-core.cpp:252
-#: ../lib/engine/videoinput/videoinput-core.cpp:277
+#: ../lib/engine/audioinput/audioinput-core.cpp:231
+#: ../lib/engine/audiooutput/audiooutput-core.cpp:251
+#: ../lib/engine/videoinput/videoinput-core.cpp:275
 msgid "Device removed"
 msgstr "Perangkat dilepas"
 
-#: ../lib/engine/components/avahi/avahi-heap.cpp:129
-#: ../lib/engine/components/avahi/avahi-heap.cpp:375
-msgid "Neighbours"
-msgstr "Tetangga"
-
-#: ../lib/engine/components/call-history/history-book.cpp:141
-#: ../lib/engine/gui/gtk-frontend/call-history-view-gtk.cpp:189
+#: ../lib/engine/components/call-history/history-book.cpp:144
+#: ../lib/engine/gui/gtk-frontend/call-history-view-gtk.cpp:186
 msgid "Clear List"
 msgstr "Kosongkan Daftar"
 
-#: ../lib/engine/components/call-history/history-contact.cpp:171
+#: ../lib/engine/components/call-history/history-contact.cpp:167
 msgid "Received"
 msgstr "Diterima"
 
-#: ../lib/engine/components/call-history/history-contact.cpp:174
+#: ../lib/engine/components/call-history/history-contact.cpp:170
 msgid "Placed"
 msgstr "Ditempatkan"
 
-#: ../lib/engine/components/call-history/history-contact.cpp:177
+#: ../lib/engine/components/call-history/history-contact.cpp:173
 msgid "Missed"
 msgstr "Tak terjawab"
 
-#. Ignore
-#: ../lib/engine/components/libnotify/libnotify-main.cpp:229
-#: ../lib/engine/components/opal/sip-endpoint.cpp:988
-#, c-format
-msgid "Incoming call from %s"
-msgstr "Panggilan masuk dari %s"
+#: ../lib/engine/components/local-roster/local-cluster.cpp:75
+#: ../lib/engine/components/local-roster/local-heap.cpp:117
+#: ../lib/engine/gui/gtk-frontend/main_window.cpp:1169
+#: ../plugins/evolution/evolution-book.cpp:301
+#: ../plugins/loudmouth/loudmouth-heap-roster.cpp:71
+msgid "A_dd Contact"
+msgstr "_Tambah Kontak"
 
-#: ../lib/engine/components/libnotify/libnotify-main.cpp:230
-msgid "Remote URI:"
-msgstr "URI Remote:"
-
-#: ../lib/engine/components/libnotify/libnotify-main.cpp:242
-msgid "Reject"
-msgstr "Tolak"
-
-#: ../lib/engine/components/libnotify/libnotify-main.cpp:243
-msgid "Accept"
-msgstr "Terima"
-
-#: ../lib/engine/components/local-roster/local-cluster.cpp:82
-#: ../lib/engine/components/local-roster/local-heap.cpp:118
-#: ../plugins/evolution/evolution-book.cpp:343
-msgid "_New Contact"
-msgstr "Ko_ntak Baru"
-
-#: ../lib/engine/components/local-roster/local-heap.cpp:94
+#: ../lib/engine/components/local-roster/local-heap.cpp:93
 msgid "Services"
 msgstr "Layanan"
 
-#: ../lib/engine/components/local-roster/local-heap.cpp:95
+#: ../lib/engine/components/local-roster/local-heap.cpp:94
 msgid "Echo test"
 msgstr "Uji echo"
 
-#: ../lib/engine/components/local-roster/local-heap.cpp:96
+#: ../lib/engine/components/local-roster/local-heap.cpp:95
 msgid "Conference room"
 msgstr "Ruang konferensi"
 
-#: ../lib/engine/components/local-roster/local-heap.cpp:97
+#: ../lib/engine/components/local-roster/local-heap.cpp:96
 msgid "Call back test"
 msgstr "Uji panggil balik"
 
-#: ../lib/engine/components/local-roster/local-heap.cpp:111
-msgid "Local roster"
-msgstr "Kotak-surat M_H lokal…"
+#: ../lib/engine/components/local-roster/local-heap.cpp:110
+#: ../lib/engine/gui/gtk-frontend/main_window.cpp:1305
+msgid "Contacts"
+msgstr "Kontak"
 
-#: ../lib/engine/components/local-roster/local-heap.cpp:128
+#: ../lib/engine/components/local-roster/local-heap.cpp:127
 msgid "Rename"
 msgstr "Ganti Nama"
 
-#: ../lib/engine/components/local-roster/local-heap.cpp:197
+#: ../lib/engine/components/local-roster/local-heap.cpp:196
+#: ../plugins/loudmouth/loudmouth-heap-roster.cpp:485
 msgid "Family"
 msgstr "Keluarga"
 
-#: ../lib/engine/components/local-roster/local-heap.cpp:198
+#: ../lib/engine/components/local-roster/local-heap.cpp:197
+#: ../plugins/loudmouth/loudmouth-heap-roster.cpp:486
 msgid "Friend"
 msgstr "Teman"
 
@@ -922,7 +906,8 @@ msgstr "Teman"
 #. relationships between you and your contact; associate means
 #. someone who is at the same "level" than you.
 #.
-#: ../lib/engine/components/local-roster/local-heap.cpp:203
+#: ../lib/engine/components/local-roster/local-heap.cpp:202
+#: ../plugins/loudmouth/loudmouth-heap-roster.cpp:491
 msgid "Associate"
 msgstr "Associate"
 
@@ -930,7 +915,8 @@ msgstr "Associate"
 #. relationships between you and your contact; assistant means
 #. someone who is at a lower "level" than you.
 #.
-#: ../lib/engine/components/local-roster/local-heap.cpp:208
+#: ../lib/engine/components/local-roster/local-heap.cpp:207
+#: ../plugins/loudmouth/loudmouth-heap-roster.cpp:496
 msgid "Assistant"
 msgstr "Asisten"
 
@@ -938,83 +924,93 @@ msgstr "Asisten"
 #. relationships between you and your contact; supervisor means
 #. someone who is at a higher "level" than you.
 #.
-#: ../lib/engine/components/local-roster/local-heap.cpp:213
+#: ../lib/engine/components/local-roster/local-heap.cpp:212
+#: ../plugins/loudmouth/loudmouth-heap-roster.cpp:501
 msgid "Supervisor"
 msgstr "Penyelia"
 
 #. Translator: http://www.ietf.org/rfc/rfc4480.txt proposes several
 #. relationships between you and your contact; self means yourself.
 #.
-#: ../lib/engine/components/local-roster/local-heap.cpp:217
+#: ../lib/engine/components/local-roster/local-heap.cpp:216
+#: ../plugins/loudmouth/loudmouth-heap-roster.cpp:505
 msgid "Self"
 msgstr "Diri Sendiri"
 
-#: ../lib/engine/components/local-roster/local-heap.cpp:233
+#: ../lib/engine/components/local-roster/local-heap.cpp:235
 #: ../lib/engine/components/local-roster/local-roster-bridge.cpp:93
 msgid "Add to local roster"
 msgstr "Tambah ke roster lokal"
 
-#: ../lib/engine/components/local-roster/local-heap.cpp:234
+#: ../lib/engine/components/local-roster/local-heap.cpp:236
 msgid ""
 "Please fill in this form to add a new contact to ekiga's internal roster"
 msgstr ""
 "Harap isi formulir ini untuk menambahkan kontak baru ke roster internal ekiga"
 
-#: ../lib/engine/components/local-roster/local-heap.cpp:236
-#: ../lib/engine/components/local-roster/local-heap.cpp:427
-#: ../lib/engine/components/local-roster/local-presentity.cpp:270
-#: ../lib/engine/components/opal/opal-account.cpp:426
+#: ../lib/engine/components/local-roster/local-heap.cpp:238
+#: ../lib/engine/components/local-roster/local-heap.cpp:435
+#: ../lib/engine/components/local-roster/local-presentity.cpp:279
+#: ../lib/engine/components/opal/opal-account.cpp:497
 #: ../plugins/evolution/evolution-contact.cpp:324
 #: ../plugins/loudmouth/loudmouth-account.cpp:342
-#: ../plugins/loudmouth/loudmouth-bank.cpp:125
-#: ../plugins/loudmouth/loudmouth-presentity.cpp:283
+#: ../plugins/loudmouth/loudmouth-bank.cpp:123
+#: ../plugins/loudmouth/loudmouth-heap-roster.cpp:338
+#: ../plugins/loudmouth/loudmouth-presentity.cpp:289
 #: ../plugins/resource-list/rl-cluster.cpp:169
 #: ../plugins/resource-list/rl-heap.cpp:526
 #: ../plugins/resource-list/rl-presentity.cpp:233
 msgid "Name:"
 msgstr "Nama:"
 
-#: ../lib/engine/components/local-roster/local-heap.cpp:236
-#: ../lib/engine/components/local-roster/local-presentity.cpp:270
+#: ../lib/engine/components/local-roster/local-heap.cpp:238
+#: ../lib/engine/components/local-roster/local-presentity.cpp:279
+#: ../plugins/loudmouth/loudmouth-heap-roster.cpp:338
 msgid "Name of the contact, as shown in your roster"
 msgstr "Nama kontak, seperti yang ditampilkan dalam roster Anda"
 
-#: ../lib/engine/components/local-roster/local-heap.cpp:245
 #: ../lib/engine/components/local-roster/local-heap.cpp:247
-#: ../lib/engine/components/local-roster/local-presentity.cpp:271
+#: ../lib/engine/components/local-roster/local-heap.cpp:249
+#: ../lib/engine/components/local-roster/local-presentity.cpp:280
 #: ../plugins/resource-list/rl-cluster.cpp:170
 #: ../plugins/resource-list/rl-heap.cpp:527
 #: ../plugins/resource-list/rl-presentity.cpp:234
 msgid "Address:"
 msgstr "Alamat:"
 
-#: ../lib/engine/components/local-roster/local-heap.cpp:245
 #: ../lib/engine/components/local-roster/local-heap.cpp:247
-#: ../lib/engine/components/local-roster/local-presentity.cpp:271
-msgid "Address, e.g. sip:xyz@ekiga.net"
-msgstr "Alamat, mis. sip:xyz@ekiga.net"
+#: ../lib/engine/components/local-roster/local-heap.cpp:249
+#: ../lib/engine/components/local-roster/local-presentity.cpp:280
+msgid ""
+"Address, e.g. sip:xyz@ekiga.net; if you do not specify the host part, e.g. "
+"sip:xyz, then you can choose it by right-clicking on the contact in roster"
+msgstr ""
+"Alamat, mis. sip:xyz@ekiga.net; bila Anda tak menyatakan bagian host, mis. "
+"sip:xyz, maka Anda dapat memilihnya dengan klik kanan pada kontak dalam "
+"daftar"
 
-#: ../lib/engine/components/local-roster/local-heap.cpp:251
+#: ../lib/engine/components/local-roster/local-heap.cpp:253
+#: ../plugins/loudmouth/loudmouth-heap-roster.cpp:340
 msgid "Put contact in groups:"
 msgstr "Masukkan kontak dalam grup:"
 
-#: ../lib/engine/components/local-roster/local-heap.cpp:412
+#: ../lib/engine/components/local-roster/local-heap.cpp:420
 msgid "You supplied an unsupported address"
 msgstr "Anda memberikan alamat yang tak didukung"
 
-#: ../lib/engine/components/local-roster/local-heap.cpp:414
+#: ../lib/engine/components/local-roster/local-heap.cpp:422
 msgid "You already have a contact with this address!"
 msgstr "Anda telah memiliki kontak dengan alamat ini!"
 
-#: ../lib/engine/components/local-roster/local-heap.cpp:425
+#: ../lib/engine/components/local-roster/local-heap.cpp:433
 msgid "Rename group"
 msgstr "Ubah nama grup"
 
-#: ../lib/engine/components/local-roster/local-heap.cpp:426
+#: ../lib/engine/components/local-roster/local-heap.cpp:434
 msgid "Please edit this group name"
 msgstr "Silakan sunting nama grup ini"
 
-#: ../lib/engine/components/local-roster/local-presentity.cpp:138
+#: ../lib/engine/components/local-roster/local-presentity.cpp:140
 #: ../plugins/resource-list/rl-entry.cpp:141
 #: ../plugins/resource-list/rl-heap.cpp:102
 #: ../plugins/resource-list/rl-heap.cpp:144
@@ -1023,31 +1019,31 @@ msgstr "Silakan sunting nama grup ini"
 msgid "Unnamed"
 msgstr "Tanpa nama"
 
-#: ../lib/engine/components/local-roster/local-presentity.cpp:240
-#: ../lib/engine/components/opal/opal-account.cpp:381
+#: ../lib/engine/components/local-roster/local-presentity.cpp:245
+#: ../lib/engine/components/opal/opal-account.cpp:399
+#: ../lib/engine/gui/gtk-frontend/main_window.cpp:1193
 #: ../plugins/evolution/evolution-contact.cpp:228
-#: ../plugins/loudmouth/loudmouth-presentity.cpp:160
+#: ../plugins/loudmouth/loudmouth-presentity.cpp:174
 #: ../plugins/resource-list/rl-presentity.cpp:212
-#: ../src/gui/main_window.cpp:1325
 msgid "_Edit"
 msgstr "_Ubah"
 
-#: ../lib/engine/components/local-roster/local-presentity.cpp:242
-#: ../lib/engine/components/opal/opal-account.cpp:383
-#: ../lib/engine/gui/gtk-frontend/accounts-window.cpp:683
+#: ../lib/engine/components/local-roster/local-presentity.cpp:247
+#: ../lib/engine/components/opal/opal-account.cpp:401
+#: ../lib/engine/gui/gtk-frontend/accounts-window.cpp:679
 #: ../plugins/evolution/evolution-contact.cpp:230
 #: ../plugins/loudmouth/loudmouth-account.cpp:445
-#: ../plugins/loudmouth/loudmouth-presentity.cpp:193
+#: ../plugins/loudmouth/loudmouth-presentity.cpp:199
 #: ../plugins/resource-list/rl-presentity.cpp:214
 msgid "_Remove"
 msgstr "_Hapus"
 
-#: ../lib/engine/components/local-roster/local-presentity.cpp:267
-#: ../plugins/loudmouth/loudmouth-presentity.cpp:280
+#: ../lib/engine/components/local-roster/local-presentity.cpp:276
+#: ../plugins/loudmouth/loudmouth-presentity.cpp:286
 msgid "Edit roster element"
 msgstr "Sunting elemen roster"
 
-#: ../lib/engine/components/local-roster/local-presentity.cpp:268
+#: ../lib/engine/components/local-roster/local-presentity.cpp:277
 msgid ""
 "Please fill in this form to change an existing element of ekiga's internal "
 "roster"
@@ -1055,165 +1051,165 @@ msgstr ""
 "Harap isi formulir ini untuk mengubah elemen yang ada dari roster internal "
 "ekiga"
 
-#: ../lib/engine/components/local-roster/local-presentity.cpp:272
+#: ../lib/engine/components/local-roster/local-presentity.cpp:281
 msgid "Is a preferred contact"
 msgstr "Adalah kontak yang disukai"
 
-#: ../lib/engine/components/local-roster/local-presentity.cpp:274
-#: ../plugins/loudmouth/loudmouth-presentity.cpp:285
+#: ../lib/engine/components/local-roster/local-presentity.cpp:283
+#: ../plugins/loudmouth/loudmouth-presentity.cpp:291
 #: ../plugins/resource-list/rl-heap.cpp:528
 #: ../plugins/resource-list/rl-presentity.cpp:236
 msgid "Choose groups:"
 msgstr "Pilih grup"
 
-#: ../lib/engine/components/opal/h323-endpoint.cpp:135
-#: ../lib/engine/components/opal/opal-call.cpp:682
-#: ../lib/engine/components/opal/sip-endpoint.cpp:250
-#: ../lib/engine/components/opal/sip-endpoint.cpp:254
+#: ../lib/engine/components/opal/h323-endpoint.cpp:124
+#: ../lib/engine/components/opal/opal-call.cpp:697
+#: ../lib/engine/components/opal/sip-endpoint.cpp:163
 msgid "Call"
 msgstr "Panggil"
 
-#: ../lib/engine/components/opal/h323-endpoint.cpp:138
-#: ../lib/engine/components/opal/sip-endpoint.cpp:251
-#: ../lib/engine/components/opal/sip-endpoint.cpp:255
-#: ../lib/engine/gui/gtk-frontend/call-window.cpp:2108
+#: ../lib/engine/components/opal/h323-endpoint.cpp:127
+#: ../lib/engine/components/opal/sip-endpoint.cpp:166
+#: ../lib/engine/gui/gtk-frontend/call-window.cpp:2163
 msgid "Transfer"
 msgstr "Kirim"
 
 #. Translators : The alias we are registering already exists : failure
-#: ../lib/engine/components/opal/h323-endpoint.cpp:340
+#: ../lib/engine/components/opal/h323-endpoint.cpp:306
 msgid "Duplicate alias"
 msgstr "Alias yang duplikat"
 
-#: ../lib/engine/components/opal/h323-endpoint.cpp:343
+#: ../lib/engine/components/opal/h323-endpoint.cpp:309
 msgid "Bad username/password"
 msgstr "Nama pengguna atau sandi salah"
 
-#: ../lib/engine/components/opal/h323-endpoint.cpp:346
-#: ../lib/engine/components/opal/sip-endpoint.cpp:603
+#: ../lib/engine/components/opal/h323-endpoint.cpp:312
+#: ../lib/engine/components/opal/sip-endpoint.cpp:483
 msgid "Transport error"
 msgstr "Galat transport"
 
-#: ../lib/engine/components/opal/h323-endpoint.cpp:357
-#: ../lib/engine/components/opal/h323-endpoint.cpp:362
-#: ../lib/engine/components/opal/sip-endpoint.cpp:816
+#: ../lib/engine/components/opal/h323-endpoint.cpp:323
+#: ../lib/engine/components/opal/h323-endpoint.cpp:328
+#: ../lib/engine/components/opal/sip-endpoint.cpp:696
 msgid "Failed"
 msgstr "Gagal"
 
 #. Translators: this is a state, not an action, i.e. it should be read as
 #. "(you are) unregistered", and not as "(you have been) unregistered"
-#: ../lib/engine/components/opal/opal-account.cpp:69
-#: ../lib/engine/components/opal/opal-account.cpp:328
-#: ../lib/engine/components/opal/opal-account.cpp:612
+#: ../lib/engine/components/opal/opal-account.cpp:71
+#: ../lib/engine/components/opal/opal-account.cpp:347
+#: ../lib/engine/components/opal/opal-account.cpp:711
 msgid "Unregistered"
 msgstr "Belum terdaftar"
 
 #. translators : the result will look like :
 #. * "registered (with 2 voice mail messages)"
 #.
-#: ../lib/engine/components/opal/opal-account.cpp:223
+#: ../lib/engine/components/opal/opal-account.cpp:238
 #, c-format
 msgid "%s (with %d voice mail message)"
 msgid_plural "%s (with %d voice mail messages)"
 msgstr[0] "%s (dengan %d pesan suara)"
 
-#: ../lib/engine/components/opal/opal-account.cpp:301
-#: ../lib/engine/components/opal/opal-account.cpp:682
+#: ../lib/engine/components/opal/opal-account.cpp:316
+#: ../lib/engine/components/opal/opal-account.cpp:793
 msgid "Processing..."
 msgstr "Memproses..."
 
-#: ../lib/engine/components/opal/opal-account.cpp:373
-#: ../lib/engine/gui/gtk-frontend/accounts-window.cpp:677
+#: ../lib/engine/components/opal/opal-account.cpp:391
+#: ../lib/engine/gui/gtk-frontend/accounts-window.cpp:673
 #: ../plugins/loudmouth/loudmouth-account.cpp:433
 msgid "_Disable"
 msgstr "_Nonaktif"
 
-#: ../lib/engine/components/opal/opal-account.cpp:376
-#: ../lib/engine/gui/gtk-frontend/accounts-window.cpp:674
+#: ../lib/engine/components/opal/opal-account.cpp:394
+#: ../lib/engine/gui/gtk-frontend/accounts-window.cpp:670
 #: ../plugins/loudmouth/loudmouth-account.cpp:437
 msgid "_Enable"
 msgstr "_Fungsikan"
 
-#: ../lib/engine/components/opal/opal-account.cpp:397
-#: ../src/gui/assistant.cpp:761
+#: ../lib/engine/components/opal/opal-account.cpp:415
+#: ../lib/engine/gui/gtk-frontend/assistant-window.cpp:549
 msgid "Recharge the account"
 msgstr "Isi ulang akun"
 
-#: ../lib/engine/components/opal/opal-account.cpp:402
-#: ../src/gui/assistant.cpp:773
+#: ../lib/engine/components/opal/opal-account.cpp:420
+#: ../lib/engine/gui/gtk-frontend/assistant-window.cpp:561
 msgid "Consult the balance history"
 msgstr "Periksa riwayat sisa kredit"
 
-#: ../lib/engine/components/opal/opal-account.cpp:407
-#: ../src/gui/assistant.cpp:785
+#: ../lib/engine/components/opal/opal-account.cpp:425
+#: ../lib/engine/gui/gtk-frontend/assistant-window.cpp:573
 msgid "Consult the call history"
 msgstr "Periksa riwayat panggilan"
 
-#: ../lib/engine/components/opal/opal-account.cpp:422
-#: ../lib/engine/components/opal/opal-bank.cpp:96
+#: ../lib/engine/components/opal/opal-account.cpp:493
+#: ../lib/engine/components/opal/opal-bank.cpp:163
 #: ../plugins/loudmouth/loudmouth-account.cpp:337
-#: ../plugins/loudmouth/loudmouth-bank.cpp:121
+#: ../plugins/loudmouth/loudmouth-bank.cpp:119
 msgid "Edit account"
 msgstr "Sunting akun"
 
-#: ../lib/engine/components/opal/opal-account.cpp:424
-#: ../lib/engine/components/opal/opal-bank.cpp:97
+#: ../lib/engine/components/opal/opal-account.cpp:495
+#: ../lib/engine/components/opal/opal-bank.cpp:164
 #: ../plugins/evolution/evolution-book.cpp:345
 #: ../plugins/evolution/evolution-contact.cpp:322
 #: ../plugins/loudmouth/loudmouth-account.cpp:339
 msgid "Please update the following fields:"
 msgstr "Harap mutakhirkan ruas-ruas berikut:"
 
-#: ../lib/engine/components/opal/opal-account.cpp:426
-#: ../lib/engine/components/opal/opal-bank.cpp:123
-#: ../lib/engine/components/opal/opal-bank.cpp:133
+#: ../lib/engine/components/opal/opal-account.cpp:497
+#: ../lib/engine/components/opal/opal-bank.cpp:190
+#: ../lib/engine/components/opal/opal-bank.cpp:200
 #: ../plugins/loudmouth/loudmouth-account.cpp:342
+#: ../plugins/loudmouth/loudmouth-bank.cpp:123
 msgid "Account name, e.g. MyAccount"
 msgstr "Nama akun, cth. Akunku"
 
-#: ../lib/engine/components/opal/opal-account.cpp:428
+#: ../lib/engine/components/opal/opal-account.cpp:499
 msgid "Registrar:"
 msgstr "Registrar:"
 
-#: ../lib/engine/components/opal/opal-account.cpp:428
-#: ../lib/engine/components/opal/opal-bank.cpp:134
+#: ../lib/engine/components/opal/opal-account.cpp:499
+#: ../lib/engine/components/opal/opal-bank.cpp:201
 msgid "The registrar, e.g. ekiga.net"
 msgstr "Penerima pendaftaran, mis. ekiga.net"
 
-#: ../lib/engine/components/opal/opal-account.cpp:430
+#: ../lib/engine/components/opal/opal-account.cpp:501
 msgid "Gatekeeper:"
 msgstr "Gatekeeper:"
 
-#: ../lib/engine/components/opal/opal-account.cpp:430
-#: ../lib/engine/components/opal/opal-bank.cpp:124
+#: ../lib/engine/components/opal/opal-account.cpp:501
+#: ../lib/engine/components/opal/opal-bank.cpp:191
 msgid "The gatekeeper, e.g. ekiga.net"
 msgstr "Gatekeeper, mis. ekiga.net"
 
-#: ../lib/engine/components/opal/opal-account.cpp:431
+#: ../lib/engine/components/opal/opal-account.cpp:502
 #: ../plugins/loudmouth/loudmouth-account.cpp:346
-#: ../plugins/loudmouth/loudmouth-bank.cpp:126
+#: ../plugins/loudmouth/loudmouth-bank.cpp:124
 #: ../plugins/resource-list/rl-cluster.cpp:174
 msgid "User:"
 msgstr "Pengguna:"
 
-#: ../lib/engine/components/opal/opal-account.cpp:431
-#: ../lib/engine/components/opal/opal-bank.cpp:105
-#: ../lib/engine/components/opal/opal-bank.cpp:116
-#: ../lib/engine/components/opal/opal-bank.cpp:125
-#: ../lib/engine/components/opal/opal-bank.cpp:135
+#: ../lib/engine/components/opal/opal-account.cpp:502
+#: ../lib/engine/components/opal/opal-bank.cpp:172
+#: ../lib/engine/components/opal/opal-bank.cpp:183
+#: ../lib/engine/components/opal/opal-bank.cpp:192
+#: ../lib/engine/components/opal/opal-bank.cpp:202
 #: ../plugins/loudmouth/loudmouth-account.cpp:346
+#: ../plugins/loudmouth/loudmouth-bank.cpp:124
 msgid "The user name, e.g. jim"
 msgstr "Nama pengguna, cth. jim"
 
 #. Translators:
 #. * SIP knows two usernames: The name for the client ("User") and the name
 #. * for the authentication procedure ("Authentication user")
-#: ../lib/engine/components/opal/opal-account.cpp:436
+#: ../lib/engine/components/opal/opal-account.cpp:507
 msgid "Authentication user:"
 msgstr "Nama pengguna otentikasi:"
 
-#: ../lib/engine/components/opal/opal-account.cpp:436
-#: ../lib/engine/components/opal/opal-bank.cpp:136
+#: ../lib/engine/components/opal/opal-account.cpp:507
+#: ../lib/engine/components/opal/opal-bank.cpp:203
 msgid ""
 "The user name used during authentication, if different than the user name; "
 "leave empty if you do not have one"
@@ -1221,304 +1217,315 @@ msgstr ""
 "Nama pengguna yang dipakai ketika otentikasi, bila berbeda dengan nama "
 "pengguna; biarkan kosong bila Anda tak punya"
 
-#: ../lib/engine/components/opal/opal-account.cpp:437
+#: ../lib/engine/components/opal/opal-account.cpp:508
 #: ../plugins/loudmouth/loudmouth-account.cpp:362
-#: ../plugins/loudmouth/loudmouth-bank.cpp:129
+#: ../plugins/loudmouth/loudmouth-bank.cpp:127
 #: ../plugins/resource-list/rl-cluster.cpp:173
 msgid "Password:"
 msgstr "Sandi:"
 
-#: ../lib/engine/components/opal/opal-account.cpp:437
-#: ../lib/engine/components/opal/opal-bank.cpp:107
-#: ../lib/engine/components/opal/opal-bank.cpp:118
-#: ../lib/engine/components/opal/opal-bank.cpp:127
-#: ../lib/engine/components/opal/opal-bank.cpp:137
+#: ../lib/engine/components/opal/opal-account.cpp:508
+#: ../lib/engine/components/opal/opal-bank.cpp:174
+#: ../lib/engine/components/opal/opal-bank.cpp:185
+#: ../lib/engine/components/opal/opal-bank.cpp:194
+#: ../lib/engine/components/opal/opal-bank.cpp:204
 #: ../plugins/loudmouth/loudmouth-account.cpp:362
+#: ../plugins/loudmouth/loudmouth-bank.cpp:127
 msgid "Password associated to the user"
 msgstr "Sandi milik pengguna"
 
-#: ../lib/engine/components/opal/opal-account.cpp:438
+#: ../lib/engine/components/opal/opal-account.cpp:509
 msgid "Timeout:"
 msgstr "Tenggang waktu:"
 
-#: ../lib/engine/components/opal/opal-account.cpp:438
-#: ../lib/engine/components/opal/opal-bank.cpp:128
-#: ../lib/engine/components/opal/opal-bank.cpp:138
+#: ../lib/engine/components/opal/opal-account.cpp:509
+#: ../lib/engine/components/opal/opal-bank.cpp:195
+#: ../lib/engine/components/opal/opal-bank.cpp:205
 msgid ""
 "Time in seconds after which the account registration is automatically retried"
 msgstr ""
 "Waktu dalam detik dimana setelahnya pendaftaran akun dicoba ulang secara "
 "otomatis"
 
-#: ../lib/engine/components/opal/opal-account.cpp:439
-#: ../lib/engine/components/opal/opal-bank.cpp:141
+#: ../lib/engine/components/opal/opal-account.cpp:510
+#: ../lib/engine/components/opal/opal-bank.cpp:208
 #: ../plugins/loudmouth/loudmouth-account.cpp:376
-#: ../plugins/loudmouth/loudmouth-bank.cpp:130
+#: ../plugins/loudmouth/loudmouth-bank.cpp:128
 msgid "Enable account"
 msgstr "Fungsikan akun"
 
-#: ../lib/engine/components/opal/opal-account.cpp:465
-#: ../lib/engine/components/opal/opal-bank.cpp:175
+#: ../lib/engine/components/opal/opal-account.cpp:538
+#: ../lib/engine/components/opal/opal-bank.cpp:242
 msgid "You did not supply a name for that account."
 msgstr "Anda tidak mengisi nama bagi akun tersebut."
 
-#: ../lib/engine/components/opal/opal-account.cpp:467
-#: ../lib/engine/components/opal/opal-bank.cpp:177
+#: ../lib/engine/components/opal/opal-account.cpp:540
+#: ../lib/engine/components/opal/opal-bank.cpp:244
 msgid "You did not supply a host to register to."
 msgstr "Anda tidak mengisi host tempat mendaftar."
 
-#: ../lib/engine/components/opal/opal-account.cpp:469
-#: ../lib/engine/components/opal/opal-bank.cpp:179
+#: ../lib/engine/components/opal/opal-account.cpp:542
+#: ../lib/engine/components/opal/opal-bank.cpp:246
 msgid "You did not supply a user name for that account."
 msgstr "Anda tidak mengisi nama pengguna bagi akun tersebut."
 
-#: ../lib/engine/components/opal/opal-account.cpp:471
-#: ../lib/engine/components/opal/opal-bank.cpp:181
+#: ../lib/engine/components/opal/opal-account.cpp:544
+#: ../lib/engine/components/opal/opal-bank.cpp:248
 msgid "The timeout should be at least 10 seconds."
 msgstr "Tenggang waktu mesti paling tidak 10 detik."
 
 #. Translators: this is a state, not an action, i.e. it should be read as
 #. "(you are) registered", and not as "(you have been) registered"
-#: ../lib/engine/components/opal/opal-account.cpp:589
+#: ../lib/engine/components/opal/opal-account.cpp:684
 msgid "Registered"
 msgstr "Terdaftar"
 
-#: ../lib/engine/components/opal/opal-account.cpp:626
+#: ../lib/engine/components/opal/opal-account.cpp:725
 msgid "Could not unregister"
 msgstr "Tak bisa keluar dari terdaftar"
 
-#: ../lib/engine/components/opal/opal-account.cpp:659
-msgid "Could not register"
-msgstr "Tak bisa mendaftar"
-
-#: ../lib/engine/components/opal/opal-account.cpp:664
+#: ../lib/engine/components/opal/opal-account.cpp:737
+#: ../lib/engine/components/opal/opal-account.cpp:772
 msgid "Could not register to "
 msgstr "Tak bisa mendaftar ke"
 
-#: ../lib/engine/components/opal/opal-account.cpp:665
+#: ../lib/engine/components/opal/opal-account.cpp:738
+#: ../lib/engine/components/opal/opal-account.cpp:773
 #: ../plugins/loudmouth/loudmouth-account.cpp:443
 msgid "Edit"
 msgstr "Sunting"
 
-#: ../lib/engine/components/opal/opal-account.cpp:804
+#: ../lib/engine/components/opal/opal-account.cpp:767
+msgid "Could not register"
+msgstr "Tak bisa mendaftar"
+
+#: ../lib/engine/components/opal/opal-account.cpp:916
 msgid "Appointment"
 msgstr "Janji temu"
 
-#: ../lib/engine/components/opal/opal-account.cpp:809
+#: ../lib/engine/components/opal/opal-account.cpp:921
 msgid "Breakfast"
 msgstr "Sarapan"
 
-#: ../lib/engine/components/opal/opal-account.cpp:814
+#: ../lib/engine/components/opal/opal-account.cpp:926
 msgid "Dinner"
 msgstr "Makan malam"
 
-#: ../lib/engine/components/opal/opal-account.cpp:820
+#: ../lib/engine/components/opal/opal-account.cpp:932
 msgid "Holiday"
 msgstr "Hari libur"
 
-#: ../lib/engine/components/opal/opal-account.cpp:825
+#: ../lib/engine/components/opal/opal-account.cpp:937
 msgid "In transit"
 msgstr "Dalam perjalanan"
 
-#: ../lib/engine/components/opal/opal-account.cpp:830
+#: ../lib/engine/components/opal/opal-account.cpp:942
 msgid "Looking for work"
 msgstr "Mencari kerja"
 
-#: ../lib/engine/components/opal/opal-account.cpp:835
+#: ../lib/engine/components/opal/opal-account.cpp:947
 msgid "Lunch"
 msgstr "Makan siang"
 
-#: ../lib/engine/components/opal/opal-account.cpp:840
+#: ../lib/engine/components/opal/opal-account.cpp:952
 msgid "Meal"
 msgstr "Makan"
 
-#: ../lib/engine/components/opal/opal-account.cpp:845
+#: ../lib/engine/components/opal/opal-account.cpp:957
 msgid "Meeting"
 msgstr "Rapat"
 
-#: ../lib/engine/components/opal/opal-account.cpp:850
+#: ../lib/engine/components/opal/opal-account.cpp:962
 msgid "On the phone"
 msgstr "Sedang menelepon"
 
-#: ../lib/engine/components/opal/opal-account.cpp:855
+#: ../lib/engine/components/opal/opal-account.cpp:967
 msgid "Playing"
 msgstr "Memutar"
 
-#: ../lib/engine/components/opal/opal-account.cpp:860
+#: ../lib/engine/components/opal/opal-account.cpp:972
 msgid "Shopping"
 msgstr "Berbelanja"
 
-#: ../lib/engine/components/opal/opal-account.cpp:865
+#: ../lib/engine/components/opal/opal-account.cpp:977
 msgid "Sleeping"
 msgstr "Tidur"
 
-#: ../lib/engine/components/opal/opal-account.cpp:870
+#: ../lib/engine/components/opal/opal-account.cpp:982
 msgid "Working"
 msgstr "Bekerja"
 
-#: ../lib/engine/components/opal/opal-bank.cpp:76
+#: ../lib/engine/components/opal/opal-bank.cpp:102
 msgid "_Add an Ekiga.net Account"
 msgstr "T_ambah Akun Ekiga.net"
 
-#: ../lib/engine/components/opal/opal-bank.cpp:78
+#: ../lib/engine/components/opal/opal-bank.cpp:104
 msgid "_Add an Ekiga Call Out Account"
 msgstr "T_ambah Akun Panggil Ekiga"
 
-#: ../lib/engine/components/opal/opal-bank.cpp:80
+#: ../lib/engine/components/opal/opal-bank.cpp:106
 msgid "_Add a SIP Account"
 msgstr "Tambah _Akun SIP"
 
-#: ../lib/engine/components/opal/opal-bank.cpp:82
+#: ../lib/engine/components/opal/opal-bank.cpp:109
 msgid "_Add an H.323 Account"
 msgstr "Tambah _Akun H.323"
 
-#: ../lib/engine/components/opal/opal-bank.cpp:102
-#: ../src/gui/assistant.cpp:645
+#: ../lib/engine/components/opal/opal-bank.cpp:169
+#: ../lib/engine/gui/gtk-frontend/assistant-window.cpp:433
 msgid "Get an Ekiga.net SIP account"
 msgstr "Dapatkan akun SIP Ekiga.net"
 
-#: ../lib/engine/components/opal/opal-bank.cpp:105
-#: ../lib/engine/components/opal/opal-bank.cpp:125
-#: ../lib/engine/components/opal/opal-bank.cpp:135
+#: ../lib/engine/components/opal/opal-bank.cpp:172
+#: ../lib/engine/components/opal/opal-bank.cpp:192
+#: ../lib/engine/components/opal/opal-bank.cpp:202
 msgid "_User:"
 msgstr "Pengg_una:"
 
-#: ../lib/engine/components/opal/opal-bank.cpp:107
-#: ../lib/engine/components/opal/opal-bank.cpp:127
-#: ../lib/engine/components/opal/opal-bank.cpp:137
+#: ../lib/engine/components/opal/opal-bank.cpp:174
+#: ../lib/engine/components/opal/opal-bank.cpp:194
+#: ../lib/engine/components/opal/opal-bank.cpp:204
 #: ../plugins/ldap/ldap-book.cpp:986
 msgid "_Password:"
 msgstr "_Sandi:"
 
-#: ../lib/engine/components/opal/opal-bank.cpp:112
-#: ../src/gui/assistant.cpp:749
+#: ../lib/engine/components/opal/opal-bank.cpp:179
+#: ../lib/engine/gui/gtk-frontend/assistant-window.cpp:537
 msgid "Get an Ekiga Call Out account"
 msgstr "Dapatkan akun Panggil Ekiga"
 
-#: ../lib/engine/components/opal/opal-bank.cpp:116
+#: ../lib/engine/components/opal/opal-bank.cpp:183
 msgid "_Account ID:"
 msgstr "ID _Akun:"
 
-#: ../lib/engine/components/opal/opal-bank.cpp:118
+#: ../lib/engine/components/opal/opal-bank.cpp:185
 msgid "_PIN code:"
 msgstr "Kode _PIN:"
 
-#: ../lib/engine/components/opal/opal-bank.cpp:123
-#: ../lib/engine/components/opal/opal-bank.cpp:133
+#: ../lib/engine/components/opal/opal-bank.cpp:190
+#: ../lib/engine/components/opal/opal-bank.cpp:200
 #: ../plugins/evolution/evolution-book.cpp:347
 msgid "_Name:"
 msgstr "_Nama:"
 
-#: ../lib/engine/components/opal/opal-bank.cpp:124
+#: ../lib/engine/components/opal/opal-bank.cpp:191
 msgid "_Gatekeeper:"
 msgstr "_Gatekeeper:"
 
-#: ../lib/engine/components/opal/opal-bank.cpp:128
-#: ../lib/engine/components/opal/opal-bank.cpp:138
+#: ../lib/engine/components/opal/opal-bank.cpp:195
+#: ../lib/engine/components/opal/opal-bank.cpp:205
 msgid "_Timeout:"
 msgstr "_Tenggang waktu:"
 
-#: ../lib/engine/components/opal/opal-bank.cpp:134
+#: ../lib/engine/components/opal/opal-bank.cpp:201
 msgid "_Registrar:"
 msgstr "_Registrar:"
 
-#: ../lib/engine/components/opal/opal-bank.cpp:136
+#: ../lib/engine/components/opal/opal-bank.cpp:203
 msgid "_Authentication user:"
 msgstr "Nam_a pengguna otentikasi:"
 
-#: ../lib/engine/components/opal/opal-call.cpp:405
+#: ../lib/engine/components/opal/opal-call.cpp:425
 msgid "Local user cleared the call"
 msgstr "Pengguna lokal mengosongkan panggilan"
 
-#: ../lib/engine/components/opal/opal-call.cpp:408
-#: ../lib/engine/components/opal/opal-call.cpp:411
+#: ../lib/engine/components/opal/opal-call.cpp:428
+#: ../lib/engine/components/opal/opal-call.cpp:431
 msgid "Local user rejected the call"
 msgstr "Pengguna lokal menolak panggilan"
 
-#: ../lib/engine/components/opal/opal-call.cpp:414
+#: ../lib/engine/components/opal/opal-call.cpp:434
 msgid "Remote user cleared the call"
 msgstr "Pengguna jarak-jauh keluar dari panggilan"
 
-#: ../lib/engine/components/opal/opal-call.cpp:417
+#: ../lib/engine/components/opal/opal-call.cpp:437
 msgid "Remote user rejected the call"
 msgstr "Pengguna jarak-jauh menolak panggilan"
 
-#: ../lib/engine/components/opal/opal-call.cpp:420
+#: ../lib/engine/components/opal/opal-call.cpp:440
 msgid "Remote user has stopped calling"
 msgstr "Pengguna jarak-jauh menghentikan panggilan"
 
-#: ../lib/engine/components/opal/opal-call.cpp:423
+#: ../lib/engine/components/opal/opal-call.cpp:443
 msgid "Abnormal call termination"
 msgstr "Penghentian panggilan tidak normal"
 
-#: ../lib/engine/components/opal/opal-call.cpp:426
-#: ../src/gui/main_window.cpp:527
+#: ../lib/engine/components/opal/opal-call.cpp:446
+#: ../lib/engine/gui/gtk-frontend/main_window.cpp:423
 msgid "Could not connect to remote host"
 msgstr "Tak bisa menyambung ke host jarak-jauh"
 
-#: ../lib/engine/components/opal/opal-call.cpp:430
+#: ../lib/engine/components/opal/opal-call.cpp:450
 msgid "The Gatekeeper cleared the call"
 msgstr "Gatekeeper mengosongkan panggilan"
 
-#: ../lib/engine/components/opal/opal-call.cpp:433
+#: ../lib/engine/components/opal/opal-call.cpp:453
 msgid "User not found"
 msgstr "Pengguna tidak ada"
 
-#: ../lib/engine/components/opal/opal-call.cpp:436
+#: ../lib/engine/components/opal/opal-call.cpp:456
 msgid "Insufficient bandwidth"
 msgstr "Bandwith tidak cukup"
 
-#: ../lib/engine/components/opal/opal-call.cpp:439
+#: ../lib/engine/components/opal/opal-call.cpp:459
 msgid "No common codec"
 msgstr "Bukan codec yang biasa"
 
-#: ../lib/engine/components/opal/opal-call.cpp:442
+#: ../lib/engine/components/opal/opal-call.cpp:462
 msgid "Call forwarded"
 msgstr "Panggilan diteruskan"
 
-#: ../lib/engine/components/opal/opal-call.cpp:445
+#: ../lib/engine/components/opal/opal-call.cpp:465
 msgid "Security check failed"
 msgstr "Pemeriksaan keamanan gagal"
 
-#: ../lib/engine/components/opal/opal-call.cpp:448
+#: ../lib/engine/components/opal/opal-call.cpp:468
 msgid "Local user is busy"
 msgstr "Pengguna lokal sedang sibuk"
 
-#: ../lib/engine/components/opal/opal-call.cpp:451
-#: ../lib/engine/components/opal/opal-call.cpp:457
+#: ../lib/engine/components/opal/opal-call.cpp:471
+#: ../lib/engine/components/opal/opal-call.cpp:477
 msgid "Congested link to remote party"
 msgstr "Hubungan padat ke pertemuan jarak-jauh"
 
-#: ../lib/engine/components/opal/opal-call.cpp:454
+#: ../lib/engine/components/opal/opal-call.cpp:474
 msgid "Remote user is busy"
 msgstr "Pengguna jarak-jauh sedang sibuk"
 
-#: ../lib/engine/components/opal/opal-call.cpp:460
+#: ../lib/engine/components/opal/opal-call.cpp:480
 msgid "Remote host is offline"
 msgstr "Pengguna Jarak-jauh sedang offline"
 
-#: ../lib/engine/components/opal/opal-call.cpp:466
+#: ../lib/engine/components/opal/opal-call.cpp:483
+msgid "User is offline"
+msgstr "Pengguna luring"
+
+#: ../lib/engine/components/opal/opal-call.cpp:486
+msgid "Remote host not found"
+msgstr "Host remote tak ditemukan"
+
+#: ../lib/engine/components/opal/opal-call.cpp:490
 msgid "User is not available"
 msgstr "Pengguna tidak tersedia"
 
-#: ../lib/engine/components/opal/opal-call.cpp:469
-#: ../lib/engine/components/opal/sip-endpoint.cpp:781
+#: ../lib/engine/components/opal/opal-call.cpp:493
+#: ../lib/engine/components/opal/sip-endpoint.cpp:661
 msgid "Service unavailable"
 msgstr "Layanan tidak tersedia"
 
-#: ../lib/engine/components/opal/opal-call.cpp:479
+#: ../lib/engine/components/opal/opal-call.cpp:503
 msgid "Call completed"
 msgstr "Panggilan selesai"
 
-#: ../lib/engine/components/opal/opal-call.cpp:679
+#: ../lib/engine/components/opal/opal-call.cpp:694
 msgid "Missed call from"
 msgstr "Panggilan tak terjawab dari"
 
-#: ../lib/engine/components/opal/opal-call.cpp:681
+#: ../lib/engine/components/opal/opal-call.cpp:696
 msgid "Missed call"
 msgstr "Panggilan tak terjawab"
 
-#: ../lib/engine/components/opal/opal-call-manager.cpp:830
+#: ../lib/engine/components/opal/opal-call-manager.cpp:875
 msgid ""
 "Ekiga did not manage to configure your network settings automatically. You "
 "can still use it, but you need to configure your network settings manually.\n"
@@ -1533,105 +1540,104 @@ msgstr ""
 "Harap lihat http://wiki.ekiga.org/index.php/Enable_port_forwarding_manually "
 "untuk instruksi"
 
-#: ../lib/engine/components/opal/sip-endpoint.cpp:275
-#: ../lib/engine/components/opal/sip-endpoint.cpp:277
+#: ../lib/engine/components/opal/sip-endpoint.cpp:168
 msgid "Message"
 msgstr "Pesan"
 
-#: ../lib/engine/components/opal/sip-endpoint.cpp:599
+#: ../lib/engine/components/opal/sip-endpoint.cpp:479
 msgid "Illegal status code"
 msgstr "Kode status ilegal"
 
-#: ../lib/engine/components/opal/sip-endpoint.cpp:607
+#: ../lib/engine/components/opal/sip-endpoint.cpp:487
 msgid "Invalid address"
 msgstr "Alamat tidak valid"
 
 #. Translators: Host of the remote party is offline, this should
 #. * appear when the remote host does not reply in an acceptable time
-#: ../lib/engine/components/opal/sip-endpoint.cpp:613
+#: ../lib/engine/components/opal/sip-endpoint.cpp:493
 msgid "Remote party host is offline"
 msgstr "Host pengguna jauh sedang luring"
 
 #. Translators: the following strings are answers from the SIP server
 #. * when the packet it receives has an error, see
 #. * http://www.ietf.org/rfc/rfc3261.txt, chapter 21 for more information
-#: ../lib/engine/components/opal/sip-endpoint.cpp:629
+#: ../lib/engine/components/opal/sip-endpoint.cpp:509
 msgid "Multiple choices"
 msgstr "Pilihan berganda"
 
-#: ../lib/engine/components/opal/sip-endpoint.cpp:633
+#: ../lib/engine/components/opal/sip-endpoint.cpp:513
 msgid "Moved permanently"
 msgstr "Pindah seterusnya"
 
-#: ../lib/engine/components/opal/sip-endpoint.cpp:637
+#: ../lib/engine/components/opal/sip-endpoint.cpp:517
 msgid "Moved temporarily"
 msgstr "Pindah sementara"
 
-#: ../lib/engine/components/opal/sip-endpoint.cpp:641
+#: ../lib/engine/components/opal/sip-endpoint.cpp:521
 msgid "Use proxy"
 msgstr "Pakai proksi"
 
-#: ../lib/engine/components/opal/sip-endpoint.cpp:645
+#: ../lib/engine/components/opal/sip-endpoint.cpp:525
 msgid "Alternative service"
 msgstr "Layanan alternatif"
 
-#: ../lib/engine/components/opal/sip-endpoint.cpp:649
+#: ../lib/engine/components/opal/sip-endpoint.cpp:529
 msgid "Bad request"
 msgstr "Permintaan buruk"
 
-#: ../lib/engine/components/opal/sip-endpoint.cpp:653
+#: ../lib/engine/components/opal/sip-endpoint.cpp:533
 msgid "Unauthorized"
 msgstr "Tanpa otorisasi"
 
-#: ../lib/engine/components/opal/sip-endpoint.cpp:657
+#: ../lib/engine/components/opal/sip-endpoint.cpp:537
 msgid "Payment required"
 msgstr "Perlu pembayaran"
 
-#: ../lib/engine/components/opal/sip-endpoint.cpp:661
+#: ../lib/engine/components/opal/sip-endpoint.cpp:541
 msgid "Forbidden, please check that username and password are correct"
 msgstr "Dilarang, harap periksa bahwa nama pengguna dan sandi benar"
 
-#: ../lib/engine/components/opal/sip-endpoint.cpp:665
+#: ../lib/engine/components/opal/sip-endpoint.cpp:545
 msgid "Not found"
 msgstr "Tidak ditemukan"
 
-#: ../lib/engine/components/opal/sip-endpoint.cpp:669
+#: ../lib/engine/components/opal/sip-endpoint.cpp:549
 msgid "Method not allowed"
 msgstr "Metoda tidak diperbolehkan"
 
-#: ../lib/engine/components/opal/sip-endpoint.cpp:673
+#: ../lib/engine/components/opal/sip-endpoint.cpp:553
 msgid "Not acceptable"
 msgstr "Tidak dapat diterima"
 
-#: ../lib/engine/components/opal/sip-endpoint.cpp:677
+#: ../lib/engine/components/opal/sip-endpoint.cpp:557
 msgid "Proxy authentication required"
 msgstr "Perlu otentikasi proksi"
 
-#: ../lib/engine/components/opal/sip-endpoint.cpp:681
+#: ../lib/engine/components/opal/sip-endpoint.cpp:561
 msgid "Timeout"
 msgstr "Habis waktu"
 
-#: ../lib/engine/components/opal/sip-endpoint.cpp:685
+#: ../lib/engine/components/opal/sip-endpoint.cpp:565
 msgid "Conflict"
 msgstr "Konflik"
 
-#: ../lib/engine/components/opal/sip-endpoint.cpp:689
+#: ../lib/engine/components/opal/sip-endpoint.cpp:569
 msgid "Length required"
 msgstr "Perlu panjang"
 
-#: ../lib/engine/components/opal/sip-endpoint.cpp:693
+#: ../lib/engine/components/opal/sip-endpoint.cpp:573
 msgid "Request entity too big"
 msgstr "Entitas permintaan terlalu besar"
 
-#: ../lib/engine/components/opal/sip-endpoint.cpp:697
+#: ../lib/engine/components/opal/sip-endpoint.cpp:577
 msgid "Request URI too long"
 msgstr "URI permintaan terlalu panjang"
 
-#: ../lib/engine/components/opal/sip-endpoint.cpp:701
+#: ../lib/engine/components/opal/sip-endpoint.cpp:581
 msgid "Unsupported media type"
 msgstr "Tipe media tak didukung"
 
-#: ../lib/engine/components/opal/sip-endpoint.cpp:705
+#: ../lib/engine/components/opal/sip-endpoint.cpp:585
 msgid "Unsupported URI scheme"
 msgstr "Skema URI tak didukung"
 
@@ -1639,205 +1645,370 @@ msgstr "Skema URI tak didukung"
 #. * Here extension is a specific "phone number", see
 #. * http://en.wikipedia.org/wiki/Extension_(telephone)
 #. * for more information
-#: ../lib/engine/components/opal/sip-endpoint.cpp:713
+#: ../lib/engine/components/opal/sip-endpoint.cpp:593
 msgid "Bad extension"
 msgstr "Ekstensi buruk"
 
-#: ../lib/engine/components/opal/sip-endpoint.cpp:717
+#: ../lib/engine/components/opal/sip-endpoint.cpp:597
 msgid "Extension required"
 msgstr "Perlu ekstensi"
 
-#: ../lib/engine/components/opal/sip-endpoint.cpp:721
+#: ../lib/engine/components/opal/sip-endpoint.cpp:601
 msgid "Interval too brief"
 msgstr "Interval terlalu singkat"
 
-#: ../lib/engine/components/opal/sip-endpoint.cpp:725
+#: ../lib/engine/components/opal/sip-endpoint.cpp:605
 msgid "Temporarily unavailable"
 msgstr "Tidak tersedia untuk sementara"
 
-#: ../lib/engine/components/opal/sip-endpoint.cpp:729
+#: ../lib/engine/components/opal/sip-endpoint.cpp:609
 msgid "Loop detected"
 msgstr "Terdeteksi loop"
 
-#: ../lib/engine/components/opal/sip-endpoint.cpp:733
+#: ../lib/engine/components/opal/sip-endpoint.cpp:613
 msgid "Too many hops"
 msgstr "Terlalu banyak hop"
 
-#: ../lib/engine/components/opal/sip-endpoint.cpp:737
+#: ../lib/engine/components/opal/sip-endpoint.cpp:617
 msgid "Address incomplete"
 msgstr "Alamat tak lengkap"
 
-#: ../lib/engine/components/opal/sip-endpoint.cpp:741
+#: ../lib/engine/components/opal/sip-endpoint.cpp:621
 msgid "Ambiguous"
 msgstr "Ambigu"
 
-#: ../lib/engine/components/opal/sip-endpoint.cpp:745
+#: ../lib/engine/components/opal/sip-endpoint.cpp:625
 msgid "Busy Here"
 msgstr "Sibuk Di Sini"
 
-#: ../lib/engine/components/opal/sip-endpoint.cpp:749
+#: ../lib/engine/components/opal/sip-endpoint.cpp:629
 msgid "Request terminated"
 msgstr "Permintaan diakhiri"
 
-#: ../lib/engine/components/opal/sip-endpoint.cpp:753
+#: ../lib/engine/components/opal/sip-endpoint.cpp:633
 msgid "Not acceptable here"
 msgstr "Di sini tak dapat diterima"
 
-#: ../lib/engine/components/opal/sip-endpoint.cpp:757
+#: ../lib/engine/components/opal/sip-endpoint.cpp:637
 msgid "Bad event"
 msgstr "Kejadian buruk"
 
-#: ../lib/engine/components/opal/sip-endpoint.cpp:761
+#: ../lib/engine/components/opal/sip-endpoint.cpp:641
 msgid "Request pending"
 msgstr "Permintaan tertunda"
 
-#: ../lib/engine/components/opal/sip-endpoint.cpp:765
+#: ../lib/engine/components/opal/sip-endpoint.cpp:645
 msgid "Undecipherable"
 msgstr "Tak dapat diawasandi"
 
-#: ../lib/engine/components/opal/sip-endpoint.cpp:769
+#: ../lib/engine/components/opal/sip-endpoint.cpp:649
 msgid "Internal server error"
 msgstr "Galat internal pada server"
 
-#: ../lib/engine/components/opal/sip-endpoint.cpp:773
+#: ../lib/engine/components/opal/sip-endpoint.cpp:653
 msgid "Not implemented"
 msgstr "Tak diimplementasi"
 
-#: ../lib/engine/components/opal/sip-endpoint.cpp:777
+#: ../lib/engine/components/opal/sip-endpoint.cpp:657
 msgid "Bad gateway"
 msgstr "Gateway buruk"
 
-#: ../lib/engine/components/opal/sip-endpoint.cpp:785
+#: ../lib/engine/components/opal/sip-endpoint.cpp:665
 msgid "Server timeout"
 msgstr "Waktu tunggu server habis"
 
-#: ../lib/engine/components/opal/sip-endpoint.cpp:789
+#: ../lib/engine/components/opal/sip-endpoint.cpp:669
 msgid "SIP version not supported"
 msgstr "Versi SIP tidak didukung"
 
-#: ../lib/engine/components/opal/sip-endpoint.cpp:793
+#: ../lib/engine/components/opal/sip-endpoint.cpp:673
 msgid "Message too large"
 msgstr "Pesan terlalu besar"
 
-#: ../lib/engine/components/opal/sip-endpoint.cpp:797
+#: ../lib/engine/components/opal/sip-endpoint.cpp:677
 msgid "Busy everywhere"
 msgstr "Dimana-mana sibuk"
 
-#: ../lib/engine/components/opal/sip-endpoint.cpp:801
+#: ../lib/engine/components/opal/sip-endpoint.cpp:681
 msgid "Decline"
 msgstr "Tolak"
 
-#: ../lib/engine/components/opal/sip-endpoint.cpp:805
+#: ../lib/engine/components/opal/sip-endpoint.cpp:685
 msgid "Does not exist anymore"
 msgstr "Tidak lagi ada"
 
-#: ../lib/engine/components/opal/sip-endpoint.cpp:809
+#: ../lib/engine/components/opal/sip-endpoint.cpp:689
 msgid "Globally not acceptable"
 msgstr "Tak dapat diterima secara global"
 
-#: ../lib/engine/components/opal/sip-endpoint.cpp:947
+#: ../lib/engine/components/opal/sip-endpoint.cpp:808
 msgid "Could not send message: "
 msgstr "Tak bisa mengirim pesan:"
 
-#: ../lib/engine/components/opal/sip-endpoint.cpp:949
+#: ../lib/engine/components/opal/sip-endpoint.cpp:810
 msgid "user offline"
 msgstr "pengguna luring"
 
-#: ../lib/engine/components/opal/sip-endpoint.cpp:990
+#. Ignore
+#: ../lib/engine/components/opal/sip-endpoint.cpp:849
+#: ../plugins/libnotify/libnotify-main.cpp:272
+#, c-format
+msgid "Incoming call from %s"
+msgstr "Panggilan masuk dari %s"
+
+#: ../lib/engine/components/opal/sip-endpoint.cpp:851
 #, c-format
 msgid "Incoming call"
 msgstr "Panggilan masuk"
 
-#: ../lib/engine/components/opal/sip-endpoint.cpp:996
+#: ../lib/engine/components/opal/sip-endpoint.cpp:857
 #, c-format
 msgid "In a call with %s"
 msgstr "Sedang memanggil %s"
 
-#: ../lib/engine/components/opal/sip-endpoint.cpp:998
+#: ../lib/engine/components/opal/sip-endpoint.cpp:859
 #, c-format
 msgid "In a call"
 msgstr "Sedang memanggil"
 
-#: ../lib/engine/gui/gtk-core/codecsbox.cpp:452
+#: ../lib/engine/gui/gtk-core/codecsbox.cpp:453
 msgid "Move selected codec priority upwards"
 msgstr "Pindahkan prioritas kodek yang dipilih ke arah atas"
 
-#: ../lib/engine/gui/gtk-core/codecsbox.cpp:462
+#: ../lib/engine/gui/gtk-core/codecsbox.cpp:463
 msgid "Move selected codec priority downwards"
 msgstr "Pindahkan prioritas kodek yang dipilih ke arah bawah"
 
-#: ../lib/engine/gui/gtk-core/form-dialog-gtk.cpp:664
+#: ../lib/engine/gui/gtk-core/form-dialog-gtk.cpp:661
 msgid "Advanced"
 msgstr "Lanjutan"
 
-#: ../lib/engine/gui/gtk-core/form-dialog-gtk.cpp:1306
+#: ../lib/engine/gui/gtk-core/form-dialog-gtk.cpp:1278
 msgid "Add Group"
 msgstr "Tambah Grup"
 
-#: ../lib/engine/gui/gtk-frontend/accounts-window.cpp:567
+#: ../lib/engine/gui/gtk-frontend/accounts-window.cpp:559
 msgid "Account Name"
 msgstr "Nama Akun"
 
-#: ../lib/engine/gui/gtk-frontend/accounts-window.cpp:568
+#: ../lib/engine/gui/gtk-frontend/accounts-window.cpp:560
 msgid "Status"
 msgstr "Status"
 
-#: ../lib/engine/gui/gtk-frontend/accounts-window.cpp:575
-#: ../lib/engine/gui/gtk-frontend/accounts-window.cpp:613
+#: ../lib/engine/gui/gtk-frontend/accounts-window.cpp:571
+#: ../lib/engine/gui/gtk-frontend/accounts-window.cpp:609
 msgid "Accounts"
 msgstr "Akun"
 
-#: ../lib/engine/gui/gtk-frontend/accounts-window.cpp:584
-#: ../src/gui/main_window.cpp:1335
+#: ../lib/engine/gui/gtk-frontend/accounts-window.cpp:580
+#: ../lib/engine/gui/gtk-frontend/main_window.cpp:1203
 msgid "_Accounts"
 msgstr "_Akun"
 
-#: ../lib/engine/gui/gtk-frontend/accounts-window.cpp:588
-#: ../src/gui/main_window.cpp:1381
+#: ../lib/engine/gui/gtk-frontend/accounts-window.cpp:584
+#: ../lib/engine/gui/gtk-frontend/main_window.cpp:1249
 msgid "_Help"
 msgstr "_Bantuan"
 
-#: ../lib/engine/gui/gtk-frontend/accounts-window.cpp:680
+#: ../lib/engine/gui/gtk-frontend/accounts-window.cpp:676
 msgid "Edi_t"
 msgstr "Sun_ting"
 
-#: ../lib/engine/gui/gtk-frontend/addressbook-window.cpp:630
+#: ../lib/engine/gui/gtk-frontend/addressbook-window.cpp:621
 msgid "Address Book"
 msgstr "Buku Alamat"
 
-#: ../lib/engine/gui/gtk-frontend/addressbook-window.cpp:646
-#: ../src/gui/main_window.cpp:1296
+#: ../lib/engine/gui/gtk-frontend/addressbook-window.cpp:637
+#: ../lib/engine/gui/gtk-frontend/main_window.cpp:1174
 msgid "Address _Book"
 msgstr "_Buku Alamat"
 
 #. This will add static and dynamic actions
-#: ../lib/engine/gui/gtk-frontend/addressbook-window.cpp:655
+#: ../lib/engine/gui/gtk-frontend/addressbook-window.cpp:646
 msgid "_Action"
 msgstr "_Aksi"
 
-#: ../lib/engine/gui/gtk-frontend/addressbook-window.cpp:699
+#: ../lib/engine/gui/gtk-frontend/addressbook-window.cpp:692
 msgid "Category"
 msgstr "Kategori"
 
-#: ../lib/engine/gui/gtk-frontend/book-view-gtk.cpp:585
-#: ../src/gui/assistant.cpp:1394
+#: ../lib/engine/gui/gtk-frontend/assistant-window.cpp:131
+msgid ""
+"This is the Ekiga general configuration assistant. The following steps will "
+"set up Ekiga by asking a few simple questions.\n"
+"\n"
+"Once you have completed these steps, you can always change them later by "
+"selecting Preferences in the Edit menu."
+msgstr ""
+"Ini adalah asisten konfigurasi umum Ekiga. Langkah-langkah berikut akan "
+"menyiapkan Ekiga dengan menanyakan beberapa pertanyaan sederhana.\n"
+"\n"
+"Setelah Anda menyelesaikan langkah-langkah ini, Anda selalu dapat "
+"mengubahnya nanti dengan memilih Preferensi pada menu Sunting."
+
+#: ../lib/engine/gui/gtk-frontend/assistant-window.cpp:139
+msgid "Welcome to Ekiga"
+msgstr "Selamat Datang di Ekiga"
+
+#: ../lib/engine/gui/gtk-frontend/assistant-window.cpp:162
+#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:443
+msgid "Personal Information"
+msgstr "Informasi Diri"
+
+#. The user fields
+#: ../lib/engine/gui/gtk-frontend/assistant-window.cpp:165
+msgid "Please enter your first name and your surname:"
+msgstr "Silahkan cantumkan nama depan dan nama keluarga Anda:"
+
+#: ../lib/engine/gui/gtk-frontend/assistant-window.cpp:174
+msgid ""
+"Your first name and surname will be used when connecting to other VoIP and "
+"videoconferencing software."
+msgstr ""
+"Nama depan Anda dan nama keluarga akan digunakan ketika tersambung ke VoIP "
+"dan software konferensi-video lain."
+
+#: ../lib/engine/gui/gtk-frontend/assistant-window.cpp:224
+msgid ""
+"If you do not have a SIP or H323 account, ekiga can only be used on your "
+"local internal network (inside your company, for example).  You will require "
+"an account if you want to be accessible to people on the Internet.  Many web "
+"sites allow you to create an account.  We suggest that you use a free ekiga."
+"net account, which allows you to be joined by any person with a SIP "
+"account.  If you want to call regular phone lines too, we suggest that you "
+"purchase an inexpensive call out account.\n"
+"\n"
+"The following two pages allow you to create such accounts."
+msgstr ""
+"Bila Anda tak punya akun SIP atau H323, ekiga hanya dapat dipakai pada "
+"jaringan internal lokal Anda (di dalam perusahaan Anda misalnya). Anda akan "
+"perlu suatu akun bila Anda ingin terhubung ke orang di Internet. Banyak "
+"situs web yang mengijinkan Anda untuk membuat akun. Kami sarankan agar Anda "
+"memakai akun ekiga.net yang gratis, yang mengijinkan Anda dihubungi oleh "
+"siapapun yang memiliki akun SIP. Bila Anda juga ingin memanggil nomor "
+"telepon biasa, kami sarankan agar Anda membeli akun panggil yang tidak "
+"mahal.\n"
+"\n"
+"Dua halaman berikut memungkinkan Anda memuat akun tersebut."
+
+#: ../lib/engine/gui/gtk-frontend/assistant-window.cpp:239
+msgid "Introduction to Accounts"
+msgstr "Pengenalan ke Akun"
+
+#: ../lib/engine/gui/gtk-frontend/assistant-window.cpp:396
+msgid "Ekiga.net Account"
+msgstr "Akun Ekiga.net"
+
+#: ../lib/engine/gui/gtk-frontend/assistant-window.cpp:398
+msgid "Please enter your username:"
+msgstr "Ketikkan nama pengguna Anda:"
+
+#: ../lib/engine/gui/gtk-frontend/assistant-window.cpp:406
+msgid "Please enter your password:"
+msgstr "Ketikkan sandi Anda:"
+
+#: ../lib/engine/gui/gtk-frontend/assistant-window.cpp:416
+msgid ""
+"The username and password are used to login to your existing account at the "
+"ekiga.net free SIP service. If you do not have an ekiga.net SIP address yet, "
+"you may first create an account below. This will provide a SIP address that "
+"allows people to call you.\n"
+"\n"
+"You may skip this step if you use an alternative SIP service, or if you "
+"would prefer to specify the login details later."
+msgstr ""
+"Nama pengguna dan sandi dipakai untuk log masuk ke akun Anda yang telah ada "
+"di layanan SIP gratis ekiga.net. Bila Anda belum memiliki alamat SIP ekiga."
+"net, Anda dapat membuat akun terlebih dahulu di bawah. Ini akan menyediakan "
+"alamat SIP yang memungkinkan orang memanggil Anda.\n"
+"\n"
+"Anda bisa melewati langkah ini bila Anda memakai layanan SIP alternatif, "
+"atau bila Anda lebih suka untuk mengisi rincian log masuk nanti."
+
+#: ../lib/engine/gui/gtk-frontend/assistant-window.cpp:442
+msgid "I do not want to sign up for the ekiga.net free service"
+msgstr "Saya tak ingin mendaftar ke layanan gratis ekiga.net"
+
+#: ../lib/engine/gui/gtk-frontend/assistant-window.cpp:502
+msgid "Ekiga Call Out Account"
+msgstr "Akun Panggil Ekiga"
+
+#: ../lib/engine/gui/gtk-frontend/assistant-window.cpp:504
+msgid "Please enter your account ID:"
+msgstr "Ketikkan ID akun Anda:"
+
+#: ../lib/engine/gui/gtk-frontend/assistant-window.cpp:512
+msgid "Please enter your PIN code:"
+msgstr "Ketikkan kode PIN Anda:"
+
+#: ../lib/engine/gui/gtk-frontend/assistant-window.cpp:523
+msgid ""
+"You can make calls to regular phones and cell numbers worldwide using Ekiga. "
+"To enable this, you need to do two things:\n"
+"- First buy an account at the URL below.\n"
+"- Then enter your account ID and PIN code.\n"
+"The service will work only if your account is created using the URL in this "
+"dialog.\n"
+msgstr ""
+"Anda dapat memanggil telepon biasa dan seluler di seluruh dunia memakai "
+"Ekiga. Untuk memfungsikan ini, Anda perlu melakukan dua hal:\n"
+"- Pertama belilah akun pada URL di bawah.\n"
+"- Lalu masukkan ID akun dan kode PIN Anda.\n"
+"Layanan akan bekerja hanya jika akun Anda dibuat dengan URL dalam dialog "
+"ini.\n"
+
+#: ../lib/engine/gui/gtk-frontend/assistant-window.cpp:582
+msgid "I do not want to sign up for the Ekiga Call Out service"
+msgstr "Saya tak ingin mendaftar ke layanan Panggil Ekiga"
+
+#: ../lib/engine/gui/gtk-frontend/assistant-window.cpp:692
+msgid "Configuration Complete"
+msgstr "Konfigurasi Selesai"
+
+#: ../lib/engine/gui/gtk-frontend/assistant-window.cpp:694
+msgid ""
+"You have now finished the Ekiga configuration. All the settings can be "
+"changed in the Ekiga preferences. Enjoy!"
+msgstr ""
+"Kini Anda telah menyelesaikan konfigurasi Ekiga. Semua pengaturan dapat "
+"diubah dalam preferensi Ekiga. Nikmati!"
+
+#: ../lib/engine/gui/gtk-frontend/assistant-window.cpp:701
+msgid "Configuration summary:"
+msgstr "Ringkasan konfigurasi:"
+
+#: ../lib/engine/gui/gtk-frontend/assistant-window.cpp:748
+#: ../lib/engine/gui/gtk-frontend/book-view-gtk.cpp:584
 msgid "Full Name"
 msgstr "Nama Lengkap"
 
-#: ../lib/engine/gui/gtk-frontend/book-view-gtk.cpp:600
+#: ../lib/engine/gui/gtk-frontend/assistant-window.cpp:762
+msgid "SIP URI"
+msgstr "URI SIP"
+
+#: ../lib/engine/gui/gtk-frontend/assistant-window.cpp:777
+msgid "Ekiga Call Out"
+msgstr "Panggilan Ekiga"
+
+#: ../lib/engine/gui/gtk-frontend/assistant-window.cpp:816
+#, c-format
+msgid "Ekiga Configuration Assistant (%d of %d)"
+msgstr "Asisten Konfigurasi Ekiga (%d dari %d)"
+
+#: ../lib/engine/gui/gtk-frontend/book-view-gtk.cpp:527
 msgid "_Search Filter:"
 msgstr "_Saringan Pencarian:"
 
-#: ../lib/engine/gui/gtk-frontend/call-window.cpp:772
+#: ../lib/engine/gui/gtk-frontend/call-window.cpp:760
 msgid "Error while initializing video output"
 msgstr "Galat ketika menginisialisasi keluaran video"
 
-#: ../lib/engine/gui/gtk-frontend/call-window.cpp:773
+#: ../lib/engine/gui/gtk-frontend/call-window.cpp:761
 msgid "No video will be displayed on your machine during this call"
 msgstr ""
 "Tak akan ada video yang ditampilkan pada mesin Anda selama panggilan ini"
 
-#: ../lib/engine/gui/gtk-frontend/call-window.cpp:783
+#: ../lib/engine/gui/gtk-frontend/call-window.cpp:771
 msgid ""
 "There was an error opening or initializing the video output. Please verify "
 "that no other application is using the accelerated video output."
@@ -1846,7 +2017,7 @@ msgstr ""
 "verifikasi bahwa tak ada aplikasi lain yang tengah memakai keluaran video "
 "yang diakselerasi."
 
-#: ../lib/engine/gui/gtk-frontend/call-window.cpp:785
+#: ../lib/engine/gui/gtk-frontend/call-window.cpp:773
 msgid ""
 "There was an error opening or initializing the video output. Please verify "
 "that you are using a color depth of 24 or 32 bits per pixel."
@@ -1854,16 +2025,16 @@ msgstr ""
 "Ada galat saat membuka atau menginisialisasi keluaran video. Harap "
 "verifikasi bahwa Anda memakai kedalaman warna 24 atau 32 bit per piksel."
 
-#: ../lib/engine/gui/gtk-frontend/call-window.cpp:895
+#: ../lib/engine/gui/gtk-frontend/call-window.cpp:896
 #, c-format
 msgid "Error while accessing video device %s"
 msgstr "Galat saat mengakses perangkat video %s"
 
-#: ../lib/engine/gui/gtk-frontend/call-window.cpp:898
+#: ../lib/engine/gui/gtk-frontend/call-window.cpp:899
 msgid "A moving logo will be transmitted during calls."
 msgstr "Logo yang bergerak akan dipancarkan selama panggilan."
 
-#: ../lib/engine/gui/gtk-frontend/call-window.cpp:902
+#: ../lib/engine/gui/gtk-frontend/call-window.cpp:903
 msgid ""
 "There was an error while opening the device. In case it is a pluggable "
 "device it may be sufficient to reconnect it. If not, or if it still is not "
@@ -1875,15 +2046,15 @@ msgstr ""
 "tak dapat diakses, harap periksa hak akses Anda dan pastikan telah memuat "
 "driver yang tepat."
 
-#: ../lib/engine/gui/gtk-frontend/call-window.cpp:906
+#: ../lib/engine/gui/gtk-frontend/call-window.cpp:907
 msgid "Your video driver doesn't support the requested video format."
 msgstr "Driver Anda tidak mendukung format video yang dimaksud"
 
-#: ../lib/engine/gui/gtk-frontend/call-window.cpp:910
+#: ../lib/engine/gui/gtk-frontend/call-window.cpp:911
 msgid "Could not open the chosen channel."
 msgstr "Tak bisa membuka kanal yang dipilih"
 
-#: ../lib/engine/gui/gtk-frontend/call-window.cpp:914
+#: ../lib/engine/gui/gtk-frontend/call-window.cpp:915
 msgid ""
 "Your driver doesn't seem to support any of the color formats supported by "
 "Ekiga.\n"
@@ -1895,32 +2066,32 @@ msgstr ""
 " Harap periksa dokumentasi driver kernel Anda untuk mengetahui Palet mana "
 "yang didukung."
 
-#: ../lib/engine/gui/gtk-frontend/call-window.cpp:918
+#: ../lib/engine/gui/gtk-frontend/call-window.cpp:919
 msgid "Error while setting the frame rate."
 msgstr "Error ketika mengubah nilai frame."
 
-#: ../lib/engine/gui/gtk-frontend/call-window.cpp:922
+#: ../lib/engine/gui/gtk-frontend/call-window.cpp:923
 msgid "Error while setting the frame size."
 msgstr "Error ketika mengubah ukuran frame."
 
-#: ../lib/engine/gui/gtk-frontend/call-window.cpp:927
-#: ../lib/engine/gui/gtk-frontend/call-window.cpp:997
-#: ../lib/engine/gui/gtk-frontend/call-window.cpp:1078
+#: ../lib/engine/gui/gtk-frontend/call-window.cpp:928
+#: ../lib/engine/gui/gtk-frontend/call-window.cpp:998
+#: ../lib/engine/gui/gtk-frontend/call-window.cpp:1079
 msgid "Unknown error."
 msgstr "Galat tak dikenal."
 
-#: ../lib/engine/gui/gtk-frontend/call-window.cpp:979
+#: ../lib/engine/gui/gtk-frontend/call-window.cpp:980
 #, c-format
 msgid "Error while opening audio input device %s"
 msgstr "Galat saat membuka perangkat masukan audio %s"
 
 #. Translators: This happens when there is an error with audio input:
 #. * Nothing ("silence") will be transmitted
-#: ../lib/engine/gui/gtk-frontend/call-window.cpp:984
+#: ../lib/engine/gui/gtk-frontend/call-window.cpp:985
 msgid "Only silence will be transmitted."
 msgstr "Hanya hening yang akan dipancarkan."
 
-#: ../lib/engine/gui/gtk-frontend/call-window.cpp:988
+#: ../lib/engine/gui/gtk-frontend/call-window.cpp:989
 msgid ""
 "Unable to open the selected audio device for recording. In case it is a "
 "pluggable device it may be sufficient to reconnect it. If not, or if it "
@@ -1932,7 +2103,7 @@ msgstr ""
 "tidak, atau itu masih tak dapat diakses, harap periksa penyiapan audio Anda, "
 "hak akses, dan perangkat tidak dalam keadaan sibuk."
 
-#: ../lib/engine/gui/gtk-frontend/call-window.cpp:992
+#: ../lib/engine/gui/gtk-frontend/call-window.cpp:993
 msgid ""
 "The selected audio device was successfully opened but it is impossible to "
 "read data from this device. In case it is a pluggable device it may be "
@@ -1944,16 +2115,16 @@ msgstr ""
 "dengan menyambung ulang. Jika tidak, atau itu masih tak dapat diakses, harap "
 "periksa penyiapan audio Anda."
 
-#: ../lib/engine/gui/gtk-frontend/call-window.cpp:1062
+#: ../lib/engine/gui/gtk-frontend/call-window.cpp:1063
 #, c-format
 msgid "Error while opening audio output device %s"
 msgstr "Galat saat membuka perangkat keluaran audio %s"
 
-#: ../lib/engine/gui/gtk-frontend/call-window.cpp:1065
+#: ../lib/engine/gui/gtk-frontend/call-window.cpp:1066
 msgid "No incoming sound will be played."
 msgstr "Tak ada suara masuk yang akan dibunyikan."
 
-#: ../lib/engine/gui/gtk-frontend/call-window.cpp:1069
+#: ../lib/engine/gui/gtk-frontend/call-window.cpp:1070
 msgid ""
 "Unable to open the selected audio device for playing. In case it is a "
 "pluggable device it may be sufficient to reconnect it. If not, or if it "
@@ -1965,7 +2136,7 @@ msgstr ""
 "tidak, atau itu masih tak dapat diakses, harap periksa penyiapan audio Anda, "
 "hak akses, dan perangkat tidak dalam keadaan sibuk."
 
-#: ../lib/engine/gui/gtk-frontend/call-window.cpp:1073
+#: ../lib/engine/gui/gtk-frontend/call-window.cpp:1074
 msgid ""
 "The selected audio device was successfully opened but it is impossible to "
 "write data to this device. In case it is a pluggable device it may be "
@@ -1977,39 +2148,41 @@ msgstr ""
 "dengan menyambung ulang. Jika tidak, atau itu masih tak dapat diakses, harap "
 "periksa penyiapan audio Anda."
 
-#: ../lib/engine/gui/gtk-frontend/call-window.cpp:1114
+#: ../lib/engine/gui/gtk-frontend/call-window.cpp:1115
 #, c-format
 msgid "Calling %s..."
 msgstr "Memanggil %s…"
 
 #. %s is the SIP/H.323 address of the remote user, this text is shown
 #. below video during a call
-#: ../lib/engine/gui/gtk-frontend/call-window.cpp:1130
-#: ../src/gui/main_window.cpp:649
+#: ../lib/engine/gui/gtk-frontend/call-window.cpp:1145
+#: ../lib/engine/gui/gtk-frontend/main_window.cpp:545
 #, c-format
 msgid "Connected with %s"
 msgstr "Tersambung dengan %s"
 
 #. Init
-#: ../lib/engine/gui/gtk-frontend/call-window.cpp:1153
-#: ../lib/engine/gui/gtk-frontend/call-window.cpp:2430
+#: ../lib/engine/gui/gtk-frontend/call-window.cpp:1168
+#: ../lib/engine/gui/gtk-frontend/call-window.cpp:1199
+#: ../lib/engine/gui/gtk-frontend/call-window.cpp:2497
 msgid "Standby"
 msgstr "Siaga"
 
-#: ../lib/engine/gui/gtk-frontend/call-window.cpp:1170
-#: ../lib/engine/gui/gtk-frontend/call-window.cpp:2642
+#: ../lib/engine/gui/gtk-frontend/call-window.cpp:1184
+#: ../lib/engine/gui/gtk-frontend/call-window.cpp:1197
+#: ../lib/engine/gui/gtk-frontend/call-window.cpp:2647
 msgid "Call Window"
 msgstr "Jendela Panggil"
 
-#: ../lib/engine/gui/gtk-frontend/call-window.cpp:1181
+#: ../lib/engine/gui/gtk-frontend/call-window.cpp:1210
 msgid "Call on hold"
 msgstr "Panggilan ditahan"
 
-#: ../lib/engine/gui/gtk-frontend/call-window.cpp:1192
+#: ../lib/engine/gui/gtk-frontend/call-window.cpp:1221
 msgid "Call retrieved"
 msgstr "Panggilan diteruskan"
 
-#: ../lib/engine/gui/gtk-frontend/call-window.cpp:1280
+#: ../lib/engine/gui/gtk-frontend/call-window.cpp:1308
 #, c-format
 msgid ""
 "Connected with %s\n"
@@ -2020,27 +2193,27 @@ msgstr ""
 
 #. Translators: TX is a common abbreviation for "transmit".  As it
 #. * is shown in a tooltip, there is no space constraint
-#: ../lib/engine/gui/gtk-frontend/call-window.cpp:1476
+#: ../lib/engine/gui/gtk-frontend/call-window.cpp:1516
 #, c-format
 msgid "TX: %dx%d"
 msgstr "TX: %dx%d"
 
-#: ../lib/engine/gui/gtk-frontend/call-window.cpp:1478
+#: ../lib/engine/gui/gtk-frontend/call-window.cpp:1518
 msgid "TX: / "
 msgstr "TX: / "
 
 #. Translators: RX is a common abbreviation for "receive".  As it
 #. * is shown in a tooltip, there is no space constraint
-#: ../lib/engine/gui/gtk-frontend/call-window.cpp:1483
+#: ../lib/engine/gui/gtk-frontend/call-window.cpp:1523
 #, c-format
 msgid "RX: %dx%d"
 msgstr "RX: %dx%d"
 
-#: ../lib/engine/gui/gtk-frontend/call-window.cpp:1485
+#: ../lib/engine/gui/gtk-frontend/call-window.cpp:1525
 msgid "RX: / "
 msgstr "RX: / "
 
-#: ../lib/engine/gui/gtk-frontend/call-window.cpp:1494
+#: ../lib/engine/gui/gtk-frontend/call-window.cpp:1534
 #, c-format
 msgid ""
 "Lost packets: %.1f %%\n"
@@ -2058,254 +2231,386 @@ msgstr ""
 "Resolusi: %s %s"
 
 #. Translators: A = Audio, V = Video, FPS = Frames per second
-#: ../lib/engine/gui/gtk-frontend/call-window.cpp:1588
+#: ../lib/engine/gui/gtk-frontend/call-window.cpp:1634
 #, c-format
 msgid "A:%.1f/%.1f V:%.1f/%.1f FPS:%d/%d"
 msgstr "A:%.1f/%.1f V:%.1f/%.1f FPS:%d/%d"
 
-#: ../lib/engine/gui/gtk-frontend/call-window.cpp:1609
+#: ../lib/engine/gui/gtk-frontend/call-window.cpp:1658
 msgid "_Retrieve Call"
 msgstr "Te_rima Panggilan"
 
-#: ../lib/engine/gui/gtk-frontend/call-window.cpp:1622
-#: ../lib/engine/gui/gtk-frontend/call-window.cpp:1931
+#: ../lib/engine/gui/gtk-frontend/call-window.cpp:1671
+#: ../lib/engine/gui/gtk-frontend/call-window.cpp:1986
 msgid "H_old Call"
 msgstr "_Tahan Panggilan"
 
-#: ../lib/engine/gui/gtk-frontend/call-window.cpp:1653
-#: ../lib/engine/gui/gtk-frontend/call-window.cpp:1943
+#: ../lib/engine/gui/gtk-frontend/call-window.cpp:1702
+#: ../lib/engine/gui/gtk-frontend/call-window.cpp:1998
 msgid "Suspend _Audio"
 msgstr "Tahan _Audio"
 
-#: ../lib/engine/gui/gtk-frontend/call-window.cpp:1655
-#: ../lib/engine/gui/gtk-frontend/call-window.cpp:1948
+#: ../lib/engine/gui/gtk-frontend/call-window.cpp:1704
+#: ../lib/engine/gui/gtk-frontend/call-window.cpp:2003
 msgid "Suspend _Video"
 msgstr "Tahan _Video"
 
-#: ../lib/engine/gui/gtk-frontend/call-window.cpp:1657
+#: ../lib/engine/gui/gtk-frontend/call-window.cpp:1706
 msgid "Resume _Audio"
 msgstr "Lanjutkan _Audio"
 
-#: ../lib/engine/gui/gtk-frontend/call-window.cpp:1659
+#: ../lib/engine/gui/gtk-frontend/call-window.cpp:1708
 msgid "Resume _Video"
 msgstr "Lanjutkan _Video"
 
-#: ../lib/engine/gui/gtk-frontend/call-window.cpp:1693
+#: ../lib/engine/gui/gtk-frontend/call-window.cpp:1742
 msgid "Video Settings"
 msgstr "Pengaturan Video"
 
-#: ../lib/engine/gui/gtk-frontend/call-window.cpp:1718
+#: ../lib/engine/gui/gtk-frontend/call-window.cpp:1768
 msgid "Adjust brightness"
 msgstr "Atur kecerahan"
 
-#: ../lib/engine/gui/gtk-frontend/call-window.cpp:1737
+#: ../lib/engine/gui/gtk-frontend/call-window.cpp:1788
 msgid "Adjust whiteness"
 msgstr "Atur warna-putih"
 
-#: ../lib/engine/gui/gtk-frontend/call-window.cpp:1756
+#: ../lib/engine/gui/gtk-frontend/call-window.cpp:1808
 msgid "Adjust color"
 msgstr "Atur warna"
 
-#: ../lib/engine/gui/gtk-frontend/call-window.cpp:1775
+#: ../lib/engine/gui/gtk-frontend/call-window.cpp:1828
 msgid "Adjust contrast"
 msgstr "Atur kontras"
 
-#: ../lib/engine/gui/gtk-frontend/call-window.cpp:1817
+#: ../lib/engine/gui/gtk-frontend/call-window.cpp:1870
 msgid "Audio Settings"
 msgstr "Pengaturan Audio"
 
-#: ../lib/engine/gui/gtk-frontend/call-window.cpp:1919
+#: ../lib/engine/gui/gtk-frontend/call-window.cpp:1974
 msgid "_Call"
 msgstr "_Panggil"
 
-#: ../lib/engine/gui/gtk-frontend/call-window.cpp:1921
+#: ../lib/engine/gui/gtk-frontend/call-window.cpp:1976
 msgid "_Pick up"
 msgstr "T_erima"
 
-#: ../lib/engine/gui/gtk-frontend/call-window.cpp:1921
+#: ../lib/engine/gui/gtk-frontend/call-window.cpp:1976
+#: ../lib/engine/gui/gtk-frontend/call-window.cpp:2385
 msgid "Pick up the current call"
 msgstr "Terima panggilan saat ini"
 
-#: ../lib/engine/gui/gtk-frontend/call-window.cpp:1925
-msgid "_Hangup"
-msgstr "_Hentikan"
-
-#: ../lib/engine/gui/gtk-frontend/call-window.cpp:1925
-msgid "Hangup the current call"
-msgstr "Hentikan panggilan saat ini"
-
-#: ../lib/engine/gui/gtk-frontend/call-window.cpp:1931
-#: ../lib/engine/gui/gtk-frontend/call-window.cpp:2399
-msgid "Hold the current call"
-msgstr "Tahan panggilan aktif saat ini"
-
-#: ../lib/engine/gui/gtk-frontend/call-window.cpp:1935
-msgid "_Transfer Call"
-msgstr "_Kirim Panggilan"
-
-#: ../lib/engine/gui/gtk-frontend/call-window.cpp:1936
-msgid "Transfer the current call"
-msgstr "Kirim panggilan aktif saat ini"
-
-#: ../lib/engine/gui/gtk-frontend/call-window.cpp:1944
-msgid "Suspend or resume the audio transmission"
-msgstr "Tahan atau lanjutkan pengiriman audio"
-
-#: ../lib/engine/gui/gtk-frontend/call-window.cpp:1949
-msgid "Suspend or resume the video transmission"
-msgstr "Tahan atau lanjutkan pengiriman video"
-
-#: ../lib/engine/gui/gtk-frontend/call-window.cpp:1956
-#: ../src/gui/main_window.cpp:1314
-msgid "Close the Ekiga window"
-msgstr "Tutup jendela Ekiga"
-
-#: ../lib/engine/gui/gtk-frontend/call-window.cpp:1961
-#: ../src/gui/main_window.cpp:1347
-msgid "_View"
-msgstr "_Tampilan"
-
-#: ../lib/engine/gui/gtk-frontend/call-window.cpp:1963
-msgid "_Local Video"
-msgstr "Video _Lokal"
-
-#: ../lib/engine/gui/gtk-frontend/call-window.cpp:1964
-msgid "Local video image"
-msgstr "Gambar video lokal"
-
-#: ../lib/engine/gui/gtk-frontend/call-window.cpp:1968
-msgid "_Remote Video"
-msgstr "Video ja_rak-jauh"
-
-#: ../lib/engine/gui/gtk-frontend/call-window.cpp:1969
-msgid "Remote video image"
-msgstr "Gambar video jarak-jauh"
-
-#: ../lib/engine/gui/gtk-frontend/call-window.cpp:1973
-msgid "_Picture-in-Picture"
-msgstr "_Gambar-dalam-Gambar"
-
-#: ../lib/engine/gui/gtk-frontend/call-window.cpp:1974
-msgid "Both video images"
-msgstr "Kedua gambar video"
+#: ../lib/engine/gui/gtk-frontend/call-window.cpp:1980
+msgid "_Hang up"
+msgstr "_Tutup"
 
 #: ../lib/engine/gui/gtk-frontend/call-window.cpp:1980
-msgid "Zoom in"
-msgstr "Zoom ke dalam"
-
-#: ../lib/engine/gui/gtk-frontend/call-window.cpp:1984
-msgid "Zoom out"
-msgstr "Zoom ke luar"
-
-#: ../lib/engine/gui/gtk-frontend/call-window.cpp:1988
-msgid "Normal size"
-msgstr "Ukuran normal"
-
-#: ../lib/engine/gui/gtk-frontend/call-window.cpp:1992
-msgid "_Fullscreen"
-msgstr "Layar _Penuh"
-
-#: ../lib/engine/gui/gtk-frontend/call-window.cpp:1992
-msgid "Switch to fullscreen"
-msgstr "Pilih ke layar penuh"
-
-#: ../lib/engine/gui/gtk-frontend/call-window.cpp:2107
-msgid "Transfer call to:"
-msgstr "Kirim panggilan ke:"
-
-#: ../lib/engine/gui/gtk-frontend/call-window.cpp:2317
-#: ../lib/engine/gui/gtk-frontend/call-window.cpp:2332
+#: ../lib/engine/gui/gtk-frontend/call-window.cpp:2401
 msgid "Hang up the current call"
 msgstr "Tutup panggilan"
 
-#: ../lib/engine/gui/gtk-frontend/call-window.cpp:2360
+#: ../lib/engine/gui/gtk-frontend/call-window.cpp:1986
+#: ../lib/engine/gui/gtk-frontend/call-window.cpp:2467
+msgid "Hold the current call"
+msgstr "Tahan panggilan aktif saat ini"
+
+#: ../lib/engine/gui/gtk-frontend/call-window.cpp:1990
+msgid "_Transfer Call"
+msgstr "_Kirim Panggilan"
+
+#: ../lib/engine/gui/gtk-frontend/call-window.cpp:1991
+msgid "Transfer the current call"
+msgstr "Kirim panggilan aktif saat ini"
+
+#: ../lib/engine/gui/gtk-frontend/call-window.cpp:1999
+msgid "Suspend or resume the audio transmission"
+msgstr "Tahan atau lanjutkan pengiriman audio"
+
+#: ../lib/engine/gui/gtk-frontend/call-window.cpp:2004
+msgid "Suspend or resume the video transmission"
+msgstr "Tahan atau lanjutkan pengiriman video"
+
+#: ../lib/engine/gui/gtk-frontend/call-window.cpp:2011
+#: ../lib/engine/gui/gtk-frontend/main_window.cpp:1182
+msgid "Close the Ekiga window"
+msgstr "Tutup jendela Ekiga"
+
+#: ../lib/engine/gui/gtk-frontend/call-window.cpp:2016
+#: ../lib/engine/gui/gtk-frontend/main_window.cpp:1215
+msgid "_View"
+msgstr "_Tampilan"
+
+#: ../lib/engine/gui/gtk-frontend/call-window.cpp:2018
+msgid "_Local Video"
+msgstr "Video _Lokal"
+
+#: ../lib/engine/gui/gtk-frontend/call-window.cpp:2019
+msgid "Local video image"
+msgstr "Gambar video lokal"
+
+#: ../lib/engine/gui/gtk-frontend/call-window.cpp:2023
+msgid "_Remote Video"
+msgstr "Video ja_rak-jauh"
+
+#: ../lib/engine/gui/gtk-frontend/call-window.cpp:2024
+msgid "Remote video image"
+msgstr "Gambar video jarak-jauh"
+
+#: ../lib/engine/gui/gtk-frontend/call-window.cpp:2028
+msgid "_Picture-in-Picture"
+msgstr "_Gambar-dalam-Gambar"
+
+#: ../lib/engine/gui/gtk-frontend/call-window.cpp:2029
+msgid "Both video images"
+msgstr "Kedua gambar video"
+
+#: ../lib/engine/gui/gtk-frontend/call-window.cpp:2035
+msgid "Zoom in"
+msgstr "Zoom ke dalam"
+
+#: ../lib/engine/gui/gtk-frontend/call-window.cpp:2039
+msgid "Zoom out"
+msgstr "Zoom ke luar"
+
+#: ../lib/engine/gui/gtk-frontend/call-window.cpp:2043
+msgid "Normal size"
+msgstr "Ukuran normal"
+
+#: ../lib/engine/gui/gtk-frontend/call-window.cpp:2047
+msgid "_Fullscreen"
+msgstr "Layar _Penuh"
+
+#: ../lib/engine/gui/gtk-frontend/call-window.cpp:2047
+msgid "Switch to fullscreen"
+msgstr "Pilih ke layar penuh"
+
+#: ../lib/engine/gui/gtk-frontend/call-window.cpp:2162
+msgid "Transfer call to:"
+msgstr "Kirim panggilan ke:"
+
+#: ../lib/engine/gui/gtk-frontend/call-window.cpp:2428
 msgid "Change the volume of your soundcard"
 msgstr "Ubah volume kartu suara Anda"
 
-#: ../lib/engine/gui/gtk-frontend/call-window.cpp:2380
+#: ../lib/engine/gui/gtk-frontend/call-window.cpp:2448
 msgid "Change the color settings of your video device"
 msgstr "Ubah pengaturan warna dari perangkat video Anda"
 
-#: ../lib/engine/gui/gtk-frontend/chat-area.cpp:247
+#: ../lib/engine/gui/gtk-frontend/chat-area.cpp:241
 msgid "says:"
 msgstr "berkata:"
 
-#: ../lib/engine/gui/gtk-frontend/chat-area.cpp:370
+#: ../lib/engine/gui/gtk-frontend/chat-area.cpp:368
 msgid "Open link in browser"
 msgstr "Buka taut dalam peramban"
 
-#: ../lib/engine/gui/gtk-frontend/chat-area.cpp:376
+#: ../lib/engine/gui/gtk-frontend/chat-area.cpp:374
 msgid "Copy link"
 msgstr "Salin taut"
 
-#: ../lib/engine/gui/gtk-frontend/chat-area.cpp:899
+#: ../lib/engine/gui/gtk-frontend/chat-area.cpp:831
 msgid "_Smile..."
 msgstr "_Senyum..."
 
-#: ../lib/engine/gui/gtk-frontend/chat-window.cpp:139
+#: ../lib/engine/gui/gtk-frontend/chat-window.cpp:136
 #, c-format
 msgid "You have %d unread text message"
 msgid_plural "You have %d unread text messages"
 msgstr[0] "Anda memiliki %d pesan yang belum dibaca"
 
-#: ../lib/engine/gui/gtk-frontend/chat-window.cpp:144
+#: ../lib/engine/gui/gtk-frontend/chat-window.cpp:139
 msgid "Read"
 msgstr "Baca"
 
 #. we can't do much here since we get the Chat as reference...
-#: ../lib/engine/gui/gtk-frontend/chat-window.cpp:451
+#: ../lib/engine/gui/gtk-frontend/chat-window.cpp:440
 msgid "Chat Window"
 msgstr "Jendela Obrolan"
 
-#: ../lib/engine/gui/gtk-frontend/heap-view.cpp:238
-#: ../lib/engine/gui/gtk-frontend/heap-view.cpp:277
-#: ../lib/engine/gui/gtk-frontend/roster-view-gtk.cpp:953
-#: ../lib/engine/gui/gtk-frontend/roster-view-gtk.cpp:1008
+#: ../lib/engine/gui/gtk-frontend/device-lists.cpp:71
+#: ../lib/engine/gui/gtk-frontend/device-lists.cpp:90
+#: ../lib/engine/gui/gtk-frontend/device-lists.cpp:110
+msgid "No device found"
+msgstr "Perangkat tidak ada"
+
+#: ../lib/engine/gui/gtk-frontend/heap-view.cpp:239
+#: ../lib/engine/gui/gtk-frontend/heap-view.cpp:278
+#: ../lib/engine/gui/gtk-frontend/roster-view-gtk.cpp:1032
+#: ../lib/engine/gui/gtk-frontend/roster-view-gtk.cpp:1134
 msgid "Unsorted"
 msgstr "Tak terurut"
 
-#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:396
+#: ../lib/engine/gui/gtk-frontend/main_window.cpp:346
+msgid "Presence"
+msgstr "Kehadiran"
+
+#: ../lib/engine/gui/gtk-frontend/main_window.cpp:352
+msgid "Addressbook"
+msgstr "Buku alamat"
+
+#: ../lib/engine/gui/gtk-frontend/main_window.cpp:606
+#, c-format
+msgid "Missed call from %s"
+msgstr "Panggilan tak terjawab dari %s"
+
+#: ../lib/engine/gui/gtk-frontend/main_window.cpp:641
+msgid "Error"
+msgstr "Galat"
+
+#: ../lib/engine/gui/gtk-frontend/main_window.cpp:1043
+msgid ""
+"Enter a URI on the left, and click this button to place a call or to hang up"
+msgstr ""
+"Tulis sebuah URI di sebelah kiri, dan klik tombol ini untuk memanggil atau "
+"memutus"
+
+#: ../lib/engine/gui/gtk-frontend/main_window.cpp:1094
+#: ../lib/engine/gui/gtk-frontend/main_window.cpp:1225
+msgid "View the contacts list"
+msgstr "Menampilkan daftar kontak"
+
+#: ../lib/engine/gui/gtk-frontend/main_window.cpp:1105
+#: ../lib/engine/gui/gtk-frontend/main_window.cpp:1230
+msgid "View the dialpad"
+msgstr "Tampilkan dialpad"
+
+#: ../lib/engine/gui/gtk-frontend/main_window.cpp:1116
+#: ../lib/engine/gui/gtk-frontend/main_window.cpp:1235
+msgid "View the call history"
+msgstr "Menampilkan riwayat panggilan"
+
+#: ../lib/engine/gui/gtk-frontend/main_window.cpp:1156
+msgid "_Chat"
+msgstr "_Obrolan"
+
+#: ../lib/engine/gui/gtk-frontend/main_window.cpp:1158
+msgid "Co_ntact"
+msgstr "Ko_ntak"
+
+#: ../lib/engine/gui/gtk-frontend/main_window.cpp:1159
+msgid "Act on selected contact"
+msgstr "Beraksi pada kontak yang dipilih"
+
+#: ../lib/engine/gui/gtk-frontend/main_window.cpp:1163
+msgid "Ca_ll a Number"
+msgstr "Panggi_l suatu Nomor"
+
+#: ../lib/engine/gui/gtk-frontend/main_window.cpp:1163
+msgid "Place a new call"
+msgstr "Buat panggilan baru"
+
+#: ../lib/engine/gui/gtk-frontend/main_window.cpp:1169
+msgid "Add a contact to the roster"
+msgstr "Tambah kontak ke roster"
+
+#: ../lib/engine/gui/gtk-frontend/main_window.cpp:1175
+msgid "Find contacts"
+msgstr "Cari kontak"
+
+#: ../lib/engine/gui/gtk-frontend/main_window.cpp:1189
+#: ../lib/engine/gui/gtk-frontend/statusicon.cpp:373
+msgid "Quit"
+msgstr "Keluar"
+
+#: ../lib/engine/gui/gtk-frontend/main_window.cpp:1195
+msgid "_Configuration Assistant"
+msgstr "Asisten _Konfigurasi"
+
+#: ../lib/engine/gui/gtk-frontend/main_window.cpp:1196
+msgid "Run the configuration assistant"
+msgstr "Menjalankan asisten konfigurasi"
+
+#: ../lib/engine/gui/gtk-frontend/main_window.cpp:1204
+msgid "Edit your accounts"
+msgstr "Sunting akun Anda"
+
+#: ../lib/engine/gui/gtk-frontend/main_window.cpp:1210
+msgid "Change your preferences"
+msgstr "Ganti settingan Anda"
+
+#: ../lib/engine/gui/gtk-frontend/main_window.cpp:1217
+msgid "_Video Preview"
+msgstr "Pratilik _Video"
+
+#: ../lib/engine/gui/gtk-frontend/main_window.cpp:1225
+msgid "Con_tacts"
+msgstr "Kon_tak"
+
+#: ../lib/engine/gui/gtk-frontend/main_window.cpp:1230
+msgid "_Dialpad"
+msgstr "_Dialpad"
+
+#: ../lib/engine/gui/gtk-frontend/main_window.cpp:1235
+msgid "_Call History"
+msgstr "_Riwayat Panggilan"
+
+#: ../lib/engine/gui/gtk-frontend/main_window.cpp:1243
+msgid "Show Offline _Contacts"
+msgstr "Tampilkan _Kontak Luring"
+
+#: ../lib/engine/gui/gtk-frontend/main_window.cpp:1252
+#: ../lib/engine/gui/gtk-frontend/statusicon.cpp:361
+msgid "Get help by reading the Ekiga manual"
+msgstr "Dapatkan bantuan dengan membaca manual Ekiga"
+
+#: ../lib/engine/gui/gtk-frontend/main_window.cpp:1257
+#: ../lib/engine/gui/gtk-frontend/statusicon.cpp:366
+msgid "View information about Ekiga"
+msgstr "Menampilkan informasi tentang Ekiga"
+
+#: ../lib/engine/gui/gtk-frontend/main_window.cpp:1334
+msgid "Dialpad"
+msgstr "Dialpad"
+
+#: ../lib/engine/gui/gtk-frontend/main_window.cpp:1352
+msgid "Call history"
+msgstr "Riwayat panggilan"
+
+#: ../lib/engine/gui/gtk-frontend/main_window.cpp:1364
+msgid "Ekiga"
+msgstr "Ekiga"
+
+#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:382
 msgid "Play sound for new voice mails"
 msgstr "Bunyikan suara pada pesan suara baru"
 
-#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:406
+#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:392
 msgid "Play sound for new instant messages"
 msgstr "Bunyikan suara saat ada pesan instan baru"
 
-#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:457
-#: ../src/gui/assistant.cpp:373
-msgid "Personal Information"
-msgstr "Informasi Diri"
-
-#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:459
+#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:445
 msgid "_Full name:"
 msgstr "Nama _lengkap:"
 
-#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:475
+#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:461
 msgid "Video Display"
 msgstr "Layar Video"
 
-#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:477
+#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:463
 msgid "Place windows displaying video _above other windows"
 msgstr "Tempatkan jendela tampilan video di _atas jendela lain"
 
-#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:481
+#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:467
 msgid "Network Settings"
 msgstr "Pengaturan Jaringan"
 
-#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:483
+#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:469
+msgid "Type of Service (TOS):"
+msgstr "Type of Service (TOS):"
+
+#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:471
 msgid "Enable network _detection"
 msgstr "Fungsikan _deteksi jaringan"
 
-#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:493
+#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:481
 msgid "Call Forwarding"
 msgstr "Panggilan teruskan"
 
-#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:495
+#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:483
 msgid "_Always forward calls to the given host"
 msgstr "Sel_alu teruskan panggilan ke host yang dimaksud"
 
-#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:495
+#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:483
 msgid ""
 "If enabled, all incoming calls will be forwarded to the host that is "
 "specified in the protocol settings"
@@ -2313,11 +2618,11 @@ msgstr ""
 "Jika difungsikan, seluruh panggilan masuk akan diteruskan ke host yang "
 "dinyatakan dalam pengaturan protokol"
 
-#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:497
+#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:485
 msgid "Forward calls to the given host if _no answer"
 msgstr "Teruskan panggilan ke host yang dituju jika tidak ada jawaba_n"
 
-#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:497
+#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:485
 msgid ""
 "If enabled, all incoming calls will be forwarded to the host that is "
 "specified in the protocol settings if you do not answer the call"
@@ -2325,11 +2630,11 @@ msgstr ""
 "Jika difungsikan, seluruh panggilan masuk akan diteruskan ke host yang "
 "dinyatakan dalam pengaturan protokol apabila Anda tidak menjawab panggilan"
 
-#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:499
+#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:487
 msgid "Forward calls to the given host if _busy"
 msgstr "Teruskan panggilan ke host yang dituju jika si_buk"
 
-#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:499
+#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:487
 msgid ""
 "If enabled, all incoming calls will be forwarded to the host that is "
 "specified in the protocol settings if you already are in a call or if you "
@@ -2339,272 +2644,253 @@ msgstr ""
 "dinyatakan dalam pengaturan protokol jika Anda sedang dalam percakapan atau "
 "saat Anda dalam mode sibuk"
 
-#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:503
-#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:1311
+#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:491
+#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:1209
 msgid "Call Options"
 msgstr "Opsi Panggilan"
 
 #. Add all the fields
-#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:506
-msgid "Timeout to reject or forward unanswered incoming calls (in seconds):"
-msgstr ""
-"Tenggang waktu untuk menolak atau meneruskan panggilan masuk yang tak "
-"terjawab (dalam detik):"
+#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:494
+msgid "Call forwarding delay (in seconds):"
+msgstr "Tundaan penerusan panggilan (dalam detik):"
 
-#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:507
+#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:495
 msgid "_Automatically answer incoming calls"
 msgstr "Sec_ara otomatis menjawab panggilan masuk"
 
-#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:538
+#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:526
 msgid "Ekiga Sound Events"
 msgstr "Kejadian Suara Ekiga"
 
-#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:575
+#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:560
 msgid "A"
 msgstr "A"
 
-#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:587
+#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:572
 msgid "Event"
 msgstr "Kejadian"
 
-#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:599
+#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:584
 msgid "Choose a sound"
 msgstr "Pilih suara"
 
-#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:604
+#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:589
 msgid "Wavefiles"
 msgstr "Berkas gelombang"
 
-#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:613
-#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:632
+#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:598
+#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:617
 msgid "Play"
 msgstr "Mainkan"
 
-#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:653
+#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:638
 msgid "String"
 msgstr "String"
 
-#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:654
+#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:639
 msgid "Tone"
 msgstr "Nada"
 
-#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:655
-#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:707
+#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:640
+#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:692
 msgid "RFC2833"
 msgstr "RFC2833"
 
-#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:656
+#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:641
 msgid "Q.931"
 msgstr "Q.931"
 
-#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:660
+#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:645
 msgid "Disable H.239 Extended Video"
 msgstr "Nonfungsikan Video H.239 Yang Diperluas"
 
-#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:661
+#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:646
 msgid "Allow H.239 per Content Role Mask"
 msgstr "Ijinkan H.239 per Masker Peran Isi"
 
-#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:662
+#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:647
 msgid "Force H.239 Presentation Role"
 msgstr "Paksakan Peran Presentasi H.239"
 
-#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:663
+#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:648
 msgid "Force H.239 Live Role"
 msgstr "Paksakan Peran Hidup H.239"
 
-#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:668
-#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:714
+#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:653
+#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:699
 msgid "Misc Settings"
 msgstr "Pengaturan Lainnya"
 
-#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:671
-#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:719
+#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:656
+#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:704
 msgid "Forward _URI:"
 msgstr "Teruskan _URI:"
 
-#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:677
+#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:662
 msgid "Advanced Settings"
 msgstr "Pengaturan Tingkat Lanjut"
 
 #. The toggles
-#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:680
+#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:665
 msgid "Enable H.245 _tunneling"
 msgstr "Fungsikan _tunneling H.245"
 
-#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:682
+#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:667
 msgid "Enable _early H.245"
 msgstr "Fungsikan H.245 v_ersi awal"
 
-#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:684
+#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:669
 msgid "Enable fast _start procedure"
 msgstr "Fungsikan pro_sedur awalan cepat"
 
-#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:684
+#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:669
 msgid ""
-"Connection will be established in Fast Start mode. Fast Start is a new way "
-"to start calls faster that was introduced in H.323v2. It is not supported by "
-"Netmeeting and using both Fast Start and H.245 Tunneling can crash some "
-"versions of Netmeeting."
+"Connection will be established in Fast Start (Fast Connect) mode. Fast Start "
+"is a new way to start calls faster that was introduced in H.323v2."
 msgstr ""
-"Koneksi akan dijalankan dalam modus Fast Start. Fast Start adalah cara baru "
-"untuk memulai panggilan lebih cepat yang telah diperkenalkan di H.323v2. Ini "
-"tidak didukung oleh NetMeeting dan penggunaan kedua Tunneling Fast Start dan "
-"H.245 dapat menyebabkan crash di beberapa versi Netmeeting."
+"Koneksi akan dijalin dalam mode Fast Start. Fast Start adalah cara baru "
+"untuk memulai panggilan lebih cepat yang telah diperkenalkan di H.323v2."
 
-#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:686
+#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:671
 msgid "Enable H.239 control"
 msgstr "Fungsikan kendali H.239"
 
-#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:686
+#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:671
 msgid "This enables H.239 capability for additional video roles."
 msgstr "Ini memfungsikan kapabilitas H.239 untuk peran-peran video tambahan."
 
-#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:688
-msgid "Extended Video Roles:"
-msgstr "Peran Video Diperluas:"
-
-#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:688
+#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:673
 msgid "Select the H.239 Video Role"
 msgstr "Pilih Peran Video H.239"
 
-#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:692
-#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:725
+#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:677
+#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:710
 msgid "DTMF Mode"
 msgstr "Mode DTMF"
 
-#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:694
-#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:727
+#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:679
+#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:712
 msgid "_Send DTMF as:"
 msgstr "_Kirim DTMF selaku:"
 
-#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:694
-#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:727
+#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:679
+#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:712
 msgid "Select the mode for DTMFs sending"
 msgstr "Pilih mode untuk pengiriman DTMF"
 
-#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:708
+#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:693
 msgid "INFO"
 msgstr "INFO"
 
-#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:716
+#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:701
 msgid "_Outbound proxy:"
 msgstr "Pr_oksi keluar:"
 
-#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:744
-#: ../src/gui/assistant.cpp:996
+#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:729
 msgid "Audio Devices"
 msgstr "Perangkat Audio"
 
-#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:752
+#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:737
 msgid "Ringing device:"
 msgstr "Perangkat dering:"
 
-#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:752
+#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:737
 msgid "Select the ringing audio device to use"
 msgstr "Pilih perangkat dering audio yang digunakan"
 
-#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:754
+#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:739
 msgid "Output device:"
 msgstr "Perangkat keluaran:"
 
-#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:761
-#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:897
+#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:746
+#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:805
 msgid "Input device:"
 msgstr "Perangkat masukan:"
 
 #. That button will refresh the device list
-#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:765
-#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:908
+#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:750
+#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:816
 msgid "_Detect devices"
 msgstr "Perangkat _deteksi"
 
-#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:765
-#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:908
+#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:750
+#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:816
 msgid "Click here to refresh the device list"
 msgstr "Klik di sini untuk menyegarkan daftar perangkat"
 
-#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:785
-#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:807
-#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:827
-#: ../src/gui/assistant.cpp:1262 ../src/gui/assistant.cpp:1284
-#: ../src/gui/assistant.cpp:1306
-msgid "No device found"
-msgstr "Perangkat tidak ada"
-
-#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:876
+#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:784
 msgid "PAL (Europe)"
 msgstr "PAL (Eropa)"
 
-#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:877
+#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:785
 msgid "NTSC (America)"
 msgstr "NTSC (Amerika)"
 
-#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:878
+#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:786
 msgid "SECAM (France)"
 msgstr "SECAM (Prancis)"
 
-#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:879
+#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:787
 msgid "Auto"
 msgstr "Otomatis"
 
-#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:891
+#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:799
 msgid "Video Devices"
 msgstr "Perangkat Video"
 
 #. Video Channel
-#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:901
+#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:809
 msgid "Channel:"
 msgstr "Saluran:"
 
-#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:903
+#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:811
 msgid "Size:"
 msgstr "Ukuran:"
 
-#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:903
+#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:811
 msgid "Select the transmitted video size"
 msgstr "Pilih ukuran video yang dipancarkan"
 
-#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:905
+#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:813
 msgid "Format:"
 msgstr "Format:"
 
-#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:924
-#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:957
-#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:1338
-#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:1348
+#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:832
+#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:860
+#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:1236
+#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:1246
 msgid "Codecs"
 msgstr "Codec"
 
-#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:936
-#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:969
+#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:839
+#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:867
 msgid "Settings"
 msgstr "Pengaturan"
 
 #. Translators: the full sentence is Automatically adjust jitter buffer
 #. between X and Y ms
-#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:940
+#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:843
 msgid "Enable silence _detection"
 msgstr "Fungsikan _deteksi hening"
 
-#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:942
+#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:845
 msgid "Enable echo can_celation"
 msgstr "Fungsikan penghilang _gema"
 
-#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:944
+#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:847
 msgid "Maximum _jitter buffer (in ms):"
 msgstr "Penyangga _jitter maksimum (dalam md):"
 
 #. Translators: the full sentence is Keep a minimum video quality of X %
-#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:972
+#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:870
 msgid "Picture quality"
 msgstr "Kualitas gambar"
 
-#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:972
+#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:870
 msgid "Frame rate"
 msgstr "Laju bingkai"
 
-#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:972
+#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:870
 msgid ""
 "Choose if you want to guarantee a minimum image quality (possibly leading to "
 "dropped frames in order not to surpass the bitrate limit) or if you prefer "
@@ -2614,11 +2900,11 @@ msgstr ""
 "menyebabkan bingkai yang terlewat agar tak melampaui batas laju bit) atau "
 "apakah Anda lebih suka menjaga laju bingkai"
 
-#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:974
+#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:872
 msgid "Maximum video _bitrate (in kbits/s):"
 msgstr "Laju _bit video maksimum (dalam kbit/d)"
 
-#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:974
+#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:872
 msgid ""
 "The maximum video bitrate in kbits/s. The video quality and the effective "
 "frame rate will be dynamically adjusted to keep the bitrate at the given "
@@ -2627,118 +2913,144 @@ msgstr ""
 "Laju bit video maksimum dalam kbit/d. Kualitas video dan laju frame efektif "
 "akan diatur secara dinamis untuk menjaga laju bit ke nilai yang diberikan."
 
-#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:1283
+#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:1179
 msgid "Ekiga Preferences"
 msgstr "Preferensi Ekiga"
 
-#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:1301
+#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:1199
 msgid "General"
 msgstr "Umum"
 
-#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:1302
+#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:1200
 msgid "Personal Data"
 msgstr "Data Pribadi"
 
-#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:1307
+#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:1205
 msgid "General Settings"
 msgstr "Pengaturan Umum"
 
-#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:1316
+#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:1214
 msgid "Sound Events"
 msgstr "Suara Kejadian"
 
-#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:1320
+#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:1218
 msgid "Protocols"
 msgstr "Protokol"
 
-#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:1322
+#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:1220
 msgid "SIP Settings"
 msgstr "Pengaturan SIP"
 
-#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:1327
+#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:1225
 msgid "H.323 Settings"
 msgstr "Settingan H.323"
 
 #. The player
-#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:1333
+#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:1231
 msgid "Audio"
 msgstr "Suara"
 
-#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:1334
-#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:1344
+#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:1232
+#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:1242
 msgid "Devices"
 msgstr "Perangkat"
 
-#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:1343
+#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:1241
 msgid "Video"
 msgstr "Video"
 
-#: ../lib/engine/gui/gtk-frontend/statusicon.cpp:313
+#: ../lib/engine/gui/gtk-frontend/roster-view-gtk.cpp:1083
+#: ../lib/engine/gui/gtk-frontend/statusmenu.cpp:95
+msgid "Away"
+msgstr "Pergi"
+
+#: ../lib/engine/gui/gtk-frontend/roster-view-gtk.cpp:1085
+#: ../lib/engine/gui/gtk-frontend/statusmenu.cpp:94
+msgid "Available"
+msgstr "Ada"
+
+#: ../lib/engine/gui/gtk-frontend/roster-view-gtk.cpp:1087
+msgid "Offline"
+msgstr "Luring"
+
+#: ../lib/engine/gui/gtk-frontend/roster-view-gtk.cpp:1089
+#: ../lib/engine/gui/gtk-frontend/statusmenu.cpp:96
+msgid "Busy"
+msgstr "Sibuk"
+
+#: ../lib/engine/gui/gtk-frontend/statusicon.cpp:294
 #, c-format
 msgid "You have %d message"
 msgid_plural "You have %d messages"
 msgstr[0] "Anda memiliki %d pesan"
 
-#: ../lib/engine/gui/gtk-frontend/statusicon.cpp:382
-#: ../src/gui/main_window.cpp:1384
-msgid "Get help by reading the Ekiga manual"
-msgstr "Dapatkan bantuan dengan membaca manual Ekiga"
+#: ../lib/engine/gui/gtk-frontend/statusmenu.cpp:392
+msgid "Custom message..."
+msgstr "Pesan ubahan..."
 
-#: ../lib/engine/gui/gtk-frontend/statusicon.cpp:387
-#: ../src/gui/main_window.cpp:1389
-msgid "View information about Ekiga"
-msgstr "Menampilkan informasi tentang Ekiga"
+#: ../lib/engine/gui/gtk-frontend/statusmenu.cpp:437
+msgid "Clear"
+msgstr "Bersih"
 
-#: ../lib/engine/gui/gtk-frontend/statusicon.cpp:394
-#: ../src/gui/main_window.cpp:1321
-msgid "Quit"
-msgstr "Keluar"
+#. Build the dialog
+#: ../lib/engine/gui/gtk-frontend/statusmenu.cpp:525
+#: ../lib/engine/gui/gtk-frontend/statusmenu.cpp:673
+msgid "Custom Message"
+msgstr "Pesan Ubahan"
 
-#: ../lib/gui/dialpad.c:52
+#: ../lib/engine/gui/gtk-frontend/statusmenu.cpp:541
+msgid "Delete custom messages:"
+msgstr "Hapus pesan ubahan:"
+
+#: ../lib/engine/gui/gtk-frontend/statusmenu.cpp:690
+msgid "Define a custom message:"
+msgstr "Tentukan pesan ubahan:"
+
+#: ../lib/gui/dialpad.c:53
 msgid "abc"
 msgstr "abc"
 
-#: ../lib/gui/dialpad.c:53
+#: ../lib/gui/dialpad.c:54
 msgid "def"
 msgstr "def"
 
-#: ../lib/gui/dialpad.c:54
+#: ../lib/gui/dialpad.c:55
 msgid "ghi"
 msgstr "ghi"
 
-#: ../lib/gui/dialpad.c:55
+#: ../lib/gui/dialpad.c:56
 msgid "jkl"
 msgstr "jkl"
 
-#: ../lib/gui/dialpad.c:56
+#: ../lib/gui/dialpad.c:57
 msgid "mno"
 msgstr "mno"
 
-#: ../lib/gui/dialpad.c:57
+#: ../lib/gui/dialpad.c:58
 msgid "pqrs"
 msgstr "pqrs"
 
-#: ../lib/gui/dialpad.c:58
+#: ../lib/gui/dialpad.c:59
 msgid "tuv"
 msgstr "tuv"
 
-#: ../lib/gui/dialpad.c:59
+#: ../lib/gui/dialpad.c:60
 msgid "wxyz"
 msgstr "wxyz"
 
-#: ../lib/gui/gmcallbacks.c:67
+#: ../lib/gui/gmcallbacks.c:66
 msgid "Contributors:"
 msgstr "Penyumbang:"
 
-#: ../lib/gui/gmcallbacks.c:80
+#: ../lib/gui/gmcallbacks.c:71
 msgid "Artwork:"
 msgstr "Artwork:"
 
-#: ../lib/gui/gmcallbacks.c:88
+#: ../lib/gui/gmcallbacks.c:78
 msgid "See AUTHORS file for full credits"
 msgstr "Lihat berkas AUTHORS untuk kredit selengkapnya."
 
-#: ../lib/gui/gmcallbacks.c:104
+#: ../lib/gui/gmcallbacks.c:94
 msgid ""
 "This program is free software; you can redistribute it and/or modify it "
 "under the terms of the GNU General Public License as published by the Free "
@@ -2750,7 +3062,7 @@ msgstr ""
 "dipublikasikan oleh Free Software Foundation, bisa Lisensi versi 2, atau "
 "(sesuai pilihan Anda) sebarang versi setelahnya. "
 
-#: ../lib/gui/gmcallbacks.c:108
+#: ../lib/gui/gmcallbacks.c:98
 msgid ""
 "This program is distributed in the hope that it will be useful, but WITHOUT "
 "ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or "
@@ -2766,7 +3078,7 @@ msgstr ""
 "program ini; jika tidak, kirimkan surat Anda ke Free Software Foundation, "
 "Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA."
 
-#: ../lib/gui/gmcallbacks.c:115
+#: ../lib/gui/gmcallbacks.c:105
 msgid ""
 "Ekiga is licensed under the GPL license and as a special exception, you have "
 "permission to link or otherwise combine this program with the programs OPAL, "
@@ -2784,14 +3096,14 @@ msgstr ""
 
 #. Translators: Please write translator credits here, and
 #. * separate names with \n
-#: ../lib/gui/gmcallbacks.c:127
+#: ../lib/gui/gmcallbacks.c:117
 msgid "translator-credits"
 msgstr ""
 "Abdul Hamid A Nawawi <hameed@linuxmail.org>, 2005.\n"
 "Dirgita <dirgitadevina@yahoo.co.id>, 2011.\n"
-"Andika Triwidada <andika@gmai.com>, 2012"
+"Andika Triwidada <andika@gmai.com>, 2012. 2013"
 
-#: ../lib/gui/gmcallbacks.c:132
+#: ../lib/gui/gmcallbacks.c:122
 msgid ""
 "Ekiga is full-featured SIP and H.323 compatible VoIP, IP-Telephony and "
 "Videoconferencing application that allows you to make audio and video calls "
@@ -2802,13 +3114,17 @@ msgstr ""
 "mengadakan panggilan audio dan video ke pengguna jarak-jauh dengan perangkat "
 "keras atau lunak SIP dan H.323."
 
-#: ../lib/gui/gmcallbacks.c:205
+#: ../lib/gui/gmcallbacks.c:195
 msgid "Unable to open help file."
 msgstr "Tidak dapat membuka berkas bantuan."
 
-#: ../lib/gui/gmdialog.c:327
+#: ../lib/gui/gmdialog.c:323
 msgid "Do not show this dialog again"
 msgstr "Jangan tampilkan dialog ini lagi"
+
+#: ../plugins/avahi/avahi-heap.cpp:131 ../plugins/avahi/avahi-heap.cpp:378
+msgid "Neighbours"
+msgstr "Tetangga"
 
 #: ../plugins/evolution/evolution-book.cpp:75
 #: ../plugins/ldap/ldap-book.cpp:920
@@ -2817,10 +3133,9 @@ msgid "%d user found"
 msgid_plural "%d users found"
 msgstr[0] "%d pengguna ditemukan"
 
-#: ../plugins/evolution/evolution-book.cpp:301
-#: ../plugins/loudmouth/loudmouth-heap-roster.cpp:71
-msgid "New _Contact"
-msgstr "_Koneksi Baru"
+#: ../plugins/evolution/evolution-book.cpp:343
+msgid "Add Contact"
+msgstr "Tambah Kontak"
 
 #: ../plugins/evolution/evolution-book.cpp:348
 #: ../plugins/evolution/evolution-contact.cpp:333
@@ -2864,21 +3179,21 @@ msgstr "Yakin untuk menghapus %s dari buku alamat?"
 msgid "Audio test"
 msgstr "Uji audio"
 
-#: ../plugins/gstreamer/gst-audiooutput.cpp:223
+#: ../plugins/gstreamer/gst-audiooutput.cpp:226
 msgid "Silent"
 msgstr "Hening"
 
-#: ../plugins/gstreamer/gst-videoinput.cpp:185
+#: ../plugins/gstreamer/gst-videoinput.cpp:190
 msgid "Video test"
 msgstr "Uji video"
 
 #. Translators: "Screencast" means the video input device will be your screen -- the other end will see your desktop
-#: ../plugins/gstreamer/gst-videoinput.cpp:337
 #: ../plugins/gstreamer/gst-videoinput.cpp:342
+#: ../plugins/gstreamer/gst-videoinput.cpp:347
 msgid "Crazy"
 msgstr "Gila"
 
-#: ../plugins/gstreamer/gst-videoinput.cpp:342
+#: ../plugins/gstreamer/gst-videoinput.cpp:347
 msgid "Screencast"
 msgstr "Screencast"
 
@@ -3030,12 +3345,12 @@ msgid "The password for the user ID above, if any"
 msgstr "Sandi bagi ID pengguna di atas, bila ada"
 
 #: ../plugins/ldap/ldap-book.cpp:987
-msgid "Use TLS"
-msgstr "Pakai TLS"
+msgid "Use _TLS"
+msgstr "Pakai _TLS"
 
 #: ../plugins/ldap/ldap-book.cpp:988
-msgid "Use SASL"
-msgstr "Pakai SASL"
+msgid "Use SAS_L"
+msgstr "Pakai SAS_L"
 
 #: ../plugins/ldap/ldap-book.cpp:1002
 msgid "SASL _mechanism"
@@ -3061,7 +3376,7 @@ msgstr "Harap sediakan atribut DisplayName\n"
 msgid "Please provide a Call attribute\n"
 msgstr "Harap sediakan atribut Panggilan\n"
 
-#: ../plugins/ldap/ldap-book.cpp:1046
+#: ../plugins/ldap/ldap-book.cpp:1046 ../plugins/ldap/ldap-book.cpp:1082
 msgid "Invalid Server URI\n"
 msgstr "URI Server Tak Valid\n"
 
@@ -3081,48 +3396,61 @@ msgstr "Buat direktori LDAP"
 msgid "Ekiga.net Directory"
 msgstr "Direktori Ekiga.net"
 
+#: ../plugins/libnotify/libnotify-main.cpp:273
+msgid "Remote URI:"
+msgstr "URI Remote:"
+
+#: ../plugins/libnotify/libnotify-main.cpp:286
+msgid "Reject"
+msgstr "Tolak"
+
+#: ../plugins/libnotify/libnotify-main.cpp:288
+msgid "Accept"
+msgstr "Terima"
+
 #: ../plugins/loudmouth/loudmouth-account.cpp:112
 #: ../plugins/loudmouth/loudmouth-account.cpp:159
-msgid "inactive"
-msgstr "tak aktif"
+msgid "Inactive"
+msgstr "Tak aktif"
 
 #: ../plugins/loudmouth/loudmouth-account.cpp:238
 #, c-format
-msgid "error connecting (%s)"
-msgstr "galat saat menyambung (%s)"
+msgid "Could not connect (%s)"
+msgstr "Tak bisa menyambung (%s)"
 
 #: ../plugins/loudmouth/loudmouth-account.cpp:244
-msgid "connecting"
-msgstr "menyambung"
+msgid "Connecting..."
+msgstr "Menyambung..."
 
 #: ../plugins/loudmouth/loudmouth-account.cpp:284
-msgid "authenticating"
-msgstr "mengotentikasi"
+msgid "Authenticating..."
+msgstr "Mengotentikasi..."
 
 #. FIXME: can't we report better?
 #: ../plugins/loudmouth/loudmouth-account.cpp:294
-msgid "error connecting"
-msgstr "galat saat menyambung"
+msgid "Could not connect"
+msgstr "Tak bisa menyambung"
 
 #: ../plugins/loudmouth/loudmouth-account.cpp:304
-msgid "disconnected"
-msgstr "terputus"
+msgid "Disconnected"
+msgstr "Terputus"
 
 #: ../plugins/loudmouth/loudmouth-account.cpp:314
-msgid "connected"
-msgstr "terhubung"
+msgid "Connected"
+msgstr "Terhubung"
 
 #. FIXME: can't we report something better?
 #: ../plugins/loudmouth/loudmouth-account.cpp:320
-msgid "error authenticating loudmouth account"
-msgstr "galat saat mengotentikasi akun loudmouth"
+msgid "Could not authenticate"
+msgstr "Tak bisa otentikasi"
 
 #: ../plugins/loudmouth/loudmouth-account.cpp:350
-#: ../plugins/loudmouth/loudmouth-bank.cpp:127
+#: ../plugins/loudmouth/loudmouth-bank.cpp:125
 msgid "Server:"
 msgstr "Server:"
 
 #: ../plugins/loudmouth/loudmouth-account.cpp:350
+#: ../plugins/loudmouth/loudmouth-bank.cpp:125
 msgid "The server, e.g. jabber.org"
 msgstr "Server, mis. jabber.org"
 
@@ -3135,11 +3463,12 @@ msgid "The transport protocol port, if different than the default"
 msgstr "Port protokol transport, bila berbeda dengan nilai baku"
 
 #: ../plugins/loudmouth/loudmouth-account.cpp:358
-#: ../plugins/loudmouth/loudmouth-bank.cpp:128
+#: ../plugins/loudmouth/loudmouth-bank.cpp:126
 msgid "Resource:"
 msgstr "Sumber daya:"
 
 #: ../plugins/loudmouth/loudmouth-account.cpp:358
+#: ../plugins/loudmouth/loudmouth-bank.cpp:126
 msgid ""
 "The resource, such as home or work, allowing to distinguish among several "
 "terminals registered to the same account; leave empty if you do not know "
@@ -3149,11 +3478,11 @@ msgstr ""
 "beberapa terminal yang didaftarkan ke akun yang sama; biarkan kosong bila "
 "Anda tak tahu apa itu"
 
-#: ../plugins/loudmouth/loudmouth-bank.cpp:111
+#: ../plugins/loudmouth/loudmouth-bank.cpp:109
 msgid "_Add a Jabber/XMPP Account"
 msgstr "T_ambah Akun Jabber/XMPP"
 
-#: ../plugins/loudmouth/loudmouth-bank.cpp:123
+#: ../plugins/loudmouth/loudmouth-bank.cpp:121
 msgid "Please fill in the following fields:"
 msgstr "Harap isi ruas-ruas berikut:"
 
@@ -3216,58 +3545,58 @@ msgstr "putuskan nanti (juga tutup atau batalkan dialog ini)"
 msgid "Your answer is: "
 msgstr "Nama Anda: "
 
-#: ../plugins/loudmouth/loudmouth-heap-roster.cpp:306
+#: ../plugins/loudmouth/loudmouth-heap-roster.cpp:334
 msgid "Add a roster element"
 msgstr "Tambah elemen roster"
 
-#: ../plugins/loudmouth/loudmouth-heap-roster.cpp:307
+#: ../plugins/loudmouth/loudmouth-heap-roster.cpp:335
 msgid "Please fill in this form to add a new element to the remote roster"
 msgstr "Harap isi formulir ini untuk menambah elemen baru ke roster jauh"
 
-#: ../plugins/loudmouth/loudmouth-heap-roster.cpp:309
+#: ../plugins/loudmouth/loudmouth-heap-roster.cpp:337
 #: ../plugins/resource-list/rl-heap.cpp:470
 msgid "Identifier:"
 msgstr "Identifier:"
 
-#: ../plugins/loudmouth/loudmouth-heap-roster.cpp:309
+#: ../plugins/loudmouth/loudmouth-heap-roster.cpp:337
 msgid "identifier@server"
 msgstr "identifier@server"
 
-#: ../plugins/loudmouth/loudmouth-presentity.cpp:165
-#: ../plugins/loudmouth/loudmouth-presentity.cpp:171
-msgid "Ask him/her to see his/her status"
-msgstr "Minta padanya untuk melihat statusnya"
-
-#: ../plugins/loudmouth/loudmouth-presentity.cpp:169
-#: ../plugins/loudmouth/loudmouth-presentity.cpp:181
-msgid "Forbid him/her to see my status"
-msgstr "Larang dia melihat status saya"
-
-#: ../plugins/loudmouth/loudmouth-presentity.cpp:173
-msgid "Ask him/her to see his/her status (pending)"
-msgstr "Minta padanya untuk melihat statusnya (menunggu)"
-
-#: ../plugins/loudmouth/loudmouth-presentity.cpp:177
-#: ../plugins/loudmouth/loudmouth-presentity.cpp:182
-msgid "Stop getting his/her status"
-msgstr "Berhenti memeriksa statusnya"
-
-#: ../plugins/loudmouth/loudmouth-presentity.cpp:187
+#: ../plugins/loudmouth/loudmouth-presentity.cpp:167
 msgid "Start chat"
 msgstr "Mulai mengobrol"
 
-#: ../plugins/loudmouth/loudmouth-presentity.cpp:190
+#: ../plugins/loudmouth/loudmouth-presentity.cpp:170
 msgid "Continue chat"
 msgstr "Lanjutkan percakapan"
 
-#: ../plugins/loudmouth/loudmouth-presentity.cpp:281
+#: ../plugins/loudmouth/loudmouth-presentity.cpp:179
+#: ../plugins/loudmouth/loudmouth-presentity.cpp:185
+msgid "Ask him/her to see his/her status"
+msgstr "Minta padanya untuk melihat statusnya"
+
+#: ../plugins/loudmouth/loudmouth-presentity.cpp:183
+#: ../plugins/loudmouth/loudmouth-presentity.cpp:195
+msgid "Forbid him/her to see my status"
+msgstr "Larang dia melihat status saya"
+
+#: ../plugins/loudmouth/loudmouth-presentity.cpp:187
+msgid "Ask him/her to see his/her status (pending)"
+msgstr "Minta padanya untuk melihat statusnya (menunggu)"
+
+#: ../plugins/loudmouth/loudmouth-presentity.cpp:191
+#: ../plugins/loudmouth/loudmouth-presentity.cpp:196
+msgid "Stop getting his/her status"
+msgstr "Berhenti memeriksa statusnya"
+
+#: ../plugins/loudmouth/loudmouth-presentity.cpp:287
 msgid ""
 "Please fill in this form to change an existing element of the remote roster"
 msgstr "Harap isi formulir ini untuk mengubah elemen yang ada dari roster jauh"
 
 #: ../plugins/resource-list/rl-cluster.cpp:102
-msgid "New resource list"
-msgstr "Daftar sumber daya baru"
+msgid "Add resource list"
+msgstr "Tambah daftar sumber daya"
 
 #: ../plugins/resource-list/rl-cluster.cpp:166
 msgid "Add new resource-list"
@@ -3367,438 +3696,10 @@ msgid ""
 msgstr ""
 "Harap isi formulir ini untuk mengubah kontak yang telah ada pada server jauh"
 
-#: ../src/gui/assistant.cpp:341
-msgid ""
-"This is the Ekiga general configuration assistant. The following steps will "
-"set up Ekiga by asking a few simple questions.\n"
-"\n"
-"Once you have completed these steps, you can always change them later by "
-"selecting Preferences in the Edit menu."
-msgstr ""
-"Ini adalah asisten konfigurasi umum Ekiga. Langkah-langkah berikut akan "
-"menyiapkan Ekiga dengan menanyakan beberapa pertanyaan sederhana.\n"
-"\n"
-"Setelah Anda menyelesaikan langkah-langkah ini, Anda selalu dapat "
-"mengubahnya nanti dengan memilih Preferensi pada menu Sunting."
-
-#: ../src/gui/assistant.cpp:349
-msgid "Welcome to Ekiga"
-msgstr "Selamat Datang di Ekiga"
-
-#. The user fields
-#: ../src/gui/assistant.cpp:376
-msgid "Please enter your first name and your surname:"
-msgstr "Silahkan cantumkan nama depan dan nama keluarga Anda:"
-
-#: ../src/gui/assistant.cpp:385
-msgid ""
-"Your first name and surname will be used when connecting to other VoIP and "
-"videoconferencing software."
-msgstr ""
-"Nama depan Anda dan nama keluarga akan digunakan ketika tersambung ke VoIP "
-"dan software konferensi-video lain."
-
-#: ../src/gui/assistant.cpp:435
-msgid ""
-"If you do not have a SIP or H323 account, ekiga can only be used on your "
-"local internal network (inside your company, for example).  You will require "
-"an account if you want to be accessible to people on the Internet.  Many web "
-"sites allow you to create an account.  We suggest that you use a free ekiga."
-"net account, which allows you to be joined by any person with a SIP "
-"account.  If you want to call regular phone lines too, we suggest that you "
-"purchase an inexpensive call out account.\n"
-"\n"
-"The following two pages allow you to create such accounts."
-msgstr ""
-"Bila Anda tak punya akun SIP atau H323, ekiga hanya dapat dipakai pada "
-"jaringan internal lokal Anda (di dalam perusahaan Anda misalnya). Anda akan "
-"perlu suatu akun bila Anda ingin terhubung ke orang di Internet. Banyak "
-"situs web yang mengijinkan Anda untuk membuat akun. Kami sarankan agar Anda "
-"memakai akun ekiga.net yang gratis, yang mengijinkan Anda dihubungi oleh "
-"siapapun yang memiliki akun SIP. Bila Anda juga ingin memanggil nomor "
-"telepon biasa, kami sarankan agar Anda membeli akun panggil yang tidak "
-"mahal.\n"
-"\n"
-"Dua halaman berikut memungkinkan Anda memuat akun tersebut."
-
-#: ../src/gui/assistant.cpp:450
-msgid "Introduction to Accounts"
-msgstr "Pengenalan ke Akun"
-
-#: ../src/gui/assistant.cpp:608
-msgid "Ekiga.net Account"
-msgstr "Akun Ekiga.net"
-
-#: ../src/gui/assistant.cpp:610
-msgid "Please enter your username:"
-msgstr "Ketikkan nama pengguna Anda:"
-
-#: ../src/gui/assistant.cpp:618
-msgid "Please enter your password:"
-msgstr "Ketikkan sandi Anda:"
-
-#: ../src/gui/assistant.cpp:628
-msgid ""
-"The username and password are used to login to your existing account at the "
-"ekiga.net free SIP service. If you do not have an ekiga.net SIP address yet, "
-"you may first create an account below. This will provide a SIP address that "
-"allows people to call you.\n"
-"\n"
-"You may skip this step if you use an alternative SIP service, or if you "
-"would prefer to specify the login details later."
-msgstr ""
-"Nama pengguna dan sandi dipakai untuk log masuk ke akun Anda yang telah ada "
-"di layanan SIP gratis ekiga.net. Bila Anda belum memiliki alamat SIP ekiga."
-"net, Anda dapat membuat akun terlebih dahulu di bawah. Ini akan menyediakan "
-"alamat SIP yang memungkinkan orang memanggil Anda.\n"
-"\n"
-"Anda bisa melewati langkah ini bila Anda memakai layanan SIP alternatif, "
-"atau bila Anda lebih suka untuk mengisi rincian log masuk nanti."
-
-#: ../src/gui/assistant.cpp:654
-msgid "I do not want to sign up for the ekiga.net free service"
-msgstr "Saya tak ingin mendaftar ke layanan gratis ekiga.net"
-
-#: ../src/gui/assistant.cpp:714
-msgid "Ekiga Call Out Account"
-msgstr "Akun Panggil Ekiga"
-
-#: ../src/gui/assistant.cpp:716
-msgid "Please enter your account ID:"
-msgstr "Ketikkan ID akun Anda:"
-
-#: ../src/gui/assistant.cpp:724
-msgid "Please enter your PIN code:"
-msgstr "Ketikkan kode PIN Anda:"
-
-#: ../src/gui/assistant.cpp:735
-msgid ""
-"You can make calls to regular phones and cell numbers worldwide using Ekiga. "
-"To enable this, you need to do two things:\n"
-"- First buy an account at the URL below.\n"
-"- Then enter your account ID and PIN code.\n"
-"The service will work only if your account is created using the URL in this "
-"dialog.\n"
-msgstr ""
-"Anda dapat memanggil telepon biasa dan seluler di seluruh dunia memakai "
-"Ekiga. Untuk memfungsikan ini, Anda perlu melakukan dua hal:\n"
-"- Pertama belilah akun pada URL di bawah.\n"
-"- Lalu masukkan ID akun dan kode PIN Anda.\n"
-"Layanan akan bekerja hanya jika akun Anda dibuat dengan URL dalam dialog "
-"ini.\n"
-
-#: ../src/gui/assistant.cpp:794
-msgid "I do not want to sign up for the Ekiga Call Out service"
-msgstr "Saya tak ingin mendaftar ke layanan Panggil Ekiga"
-
-#: ../src/gui/assistant.cpp:857 ../src/gui/assistant.cpp:1407
-msgid "Connection Type"
-msgstr "Jenis Koneksi"
-
-#. The connection type
-#: ../src/gui/assistant.cpp:860
-msgid "Please choose your connection type:"
-msgstr "Silakan pilih tipe sambungan Anda:"
-
-#: ../src/gui/assistant.cpp:877
-msgid "56k Modem"
-msgstr "Modem 56k"
-
-#: ../src/gui/assistant.cpp:882
-msgid "ISDN"
-msgstr "ISDN"
-
-#: ../src/gui/assistant.cpp:887
-msgid "DSL/Cable (128 kbit/s uplink)"
-msgstr "DSL/Kabel (128 kbit/s uplink)"
-
-#: ../src/gui/assistant.cpp:892
-msgid "DSL/Cable (512 kbit/s uplink)"
-msgstr "DSL/Kabel (512 kbit/s uplink)"
-
-#: ../src/gui/assistant.cpp:897
-msgid "LAN"
-msgstr "LAN"
-
-#: ../src/gui/assistant.cpp:902
-msgid "Keep current settings"
-msgstr "Tetap pada settingan saat ini"
-
-#: ../src/gui/assistant.cpp:907
-msgid ""
-"The connection type will permit determining the best quality settings that "
-"Ekiga will use during calls. You can later change the settings individually "
-"in the preferences window."
-msgstr ""
-"Tipe sambungan akan memperbolehkan penentuan pengaturan kualitas terbaik "
-"yang akan digunakan Ekiga selama memanggil. Anda kemudian dapat mengubah "
-"pengaturan secara individu pada jendela preferensi."
-
-#: ../src/gui/assistant.cpp:998
-msgid "Please choose the audio ringing device:"
-msgstr "Silakan pilih perangkat dering audio:"
-
-#: ../src/gui/assistant.cpp:1018
-msgid ""
-"The audio ringing device is the device that will be used to play the ringing "
-"sound on incoming calls."
-msgstr ""
-"Perangkat dering audio adalah perangkat yang digunakan untuk membunyikan "
-"suara dering ketika ada panggilan masuk."
-
-#. ---
-#: ../src/gui/assistant.cpp:1029
-msgid "Please choose the audio output device:"
-msgstr "Silakan pilih perangkat keluaran audio:"
-
-#: ../src/gui/assistant.cpp:1049
-msgid ""
-"The audio output device is the device that will be used to play audio during "
-"calls."
-msgstr ""
-"Perangkat keluaran audio adalah perangkat yang akan digunakan untuk "
-"memainkan suara selama panggilan."
-
-#. ---
-#: ../src/gui/assistant.cpp:1060
-msgid "Please choose the audio input device:"
-msgstr "Silakan pilih perangkat masukan audio:"
-
-#: ../src/gui/assistant.cpp:1080
-msgid ""
-"The audio input device is the device that will be used to record your voice "
-"during calls."
-msgstr ""
-"Perangkat masukan audio adalah perangkat yang akan digunakan untuk merekam "
-"suara Anda selama panggilan."
-
-#: ../src/gui/assistant.cpp:1176 ../src/gui/assistant.cpp:1474
-msgid "Video Input Device"
-msgstr "Perangkat Masukan Video"
-
-#: ../src/gui/assistant.cpp:1178
-msgid "Please choose your video input device:"
-msgstr "Silakan pilih perangkat masukan video Anda:"
-
-#: ../src/gui/assistant.cpp:1198
-msgid ""
-"The video input device is the device that will be used to capture video "
-"during calls."
-msgstr ""
-"Perangkat masukan video adalah perangkat yang akan digunakan untuk menangkap "
-"video selama panggilan."
-
-#: ../src/gui/assistant.cpp:1337
-msgid "Configuration Complete"
-msgstr "Konfigurasi Selesai"
-
-#: ../src/gui/assistant.cpp:1339
-msgid ""
-"You have now finished the Ekiga configuration. All the settings can be "
-"changed in the Ekiga preferences. Enjoy!"
-msgstr ""
-"Kini Anda telah menyelesaikan konfigurasi Ekiga. Semua pengaturan dapat "
-"diubah dalam preferensi Ekiga. Nikmati!"
-
-#: ../src/gui/assistant.cpp:1346
-msgid "Configuration summary:"
-msgstr "Ringkasan konfigurasi:"
-
-#: ../src/gui/assistant.cpp:1424
-msgid "Audio Ringing Device"
-msgstr "Perangkat Dering Audio"
-
-#: ../src/gui/assistant.cpp:1441
-msgid "Audio Output Device"
-msgstr "Perangkat Keluaran Audio"
-
-#: ../src/gui/assistant.cpp:1458
-msgid "Audio Input Device"
-msgstr "Perangkat Masukan Audio"
-
-#: ../src/gui/assistant.cpp:1490
-msgid "SIP URI"
-msgstr "URI SIP"
-
-#: ../src/gui/assistant.cpp:1505
-msgid "Ekiga Call Out"
-msgstr "Panggilan Ekiga"
-
-#: ../src/gui/assistant.cpp:1550
-#, c-format
-msgid "Ekiga Configuration Assistant (%d of %d)"
-msgstr "Asisten Konfigurasi Ekiga (%d dari %d)"
-
-#: ../src/gui/main.cpp:126
+#: ../src/gui/main.cpp:137
 msgid "Prints debug messages in the console (level between 1 and 8)"
 msgstr "Cetak pesan awakutu di konsol (antara tingkat 1 hingga 8)"
 
-#: ../src/gui/main.cpp:131
+#: ../src/gui/main.cpp:142
 msgid "Makes Ekiga call the given URI"
 msgstr "Membuat Ekiga memanggil URI yang diberikan"
-
-#: ../src/gui/main_window.cpp:372
-msgid "Presence"
-msgstr "Kehadiran"
-
-#: ../src/gui/main_window.cpp:379
-msgid "Addressbook"
-msgstr "Buku alamat"
-
-#: ../src/gui/main_window.cpp:408
-msgid "Unknown"
-msgstr "Tak dikenal"
-
-#: ../src/gui/main_window.cpp:714
-#, c-format
-msgid "Missed call from %s"
-msgstr "Panggilan tak terjawab dari %s"
-
-#: ../src/gui/main_window.cpp:748
-msgid "Error"
-msgstr "Galat"
-
-#: ../src/gui/main_window.cpp:1168
-msgid ""
-"Enter a URI on the left, and click this button to place a call or to hangup"
-msgstr ""
-"Tulis sebuah URI di sebelah kiri, dan klik tombol ini untuk memanggil atau "
-"memutus"
-
-#: ../src/gui/main_window.cpp:1219 ../src/gui/main_window.cpp:1357
-msgid "View the contacts list"
-msgstr "Menampilkan daftar kontak"
-
-#: ../src/gui/main_window.cpp:1230 ../src/gui/main_window.cpp:1362
-msgid "View the dialpad"
-msgstr "Tampilkan dialpad"
-
-#: ../src/gui/main_window.cpp:1241 ../src/gui/main_window.cpp:1367
-msgid "View the call history"
-msgstr "Menampilkan riwayat panggilan"
-
-#: ../src/gui/main_window.cpp:1279
-msgid "_Chat"
-msgstr "_Obrolan"
-
-#: ../src/gui/main_window.cpp:1281
-msgid "Co_ntact"
-msgstr "Ko_ntak"
-
-#: ../src/gui/main_window.cpp:1282
-msgid "Act on selected contact"
-msgstr "Beraksi pada kontak yang dipilih"
-
-#: ../src/gui/main_window.cpp:1286
-msgid "Ca_ll a Number"
-msgstr "Panggi_l suatu Nomor"
-
-#: ../src/gui/main_window.cpp:1286
-msgid "Place a new call"
-msgstr "Buat panggilan baru"
-
-#: ../src/gui/main_window.cpp:1292
-msgid "A_dd Contact"
-msgstr "_Tambah Kontak"
-
-#: ../src/gui/main_window.cpp:1292
-msgid "Add a contact to the roster"
-msgstr "Tambah kontak ke roster"
-
-#: ../src/gui/main_window.cpp:1297
-msgid "Find contacts"
-msgstr "Cari kontak"
-
-#. FIXME: that isn't a very good way to do things
-#: ../src/gui/main_window.cpp:1306
-msgid "Other"
-msgstr "Lainnya"
-
-#: ../src/gui/main_window.cpp:1307
-msgid "Other possible actions"
-msgstr "Aksi lain yang mungkin"
-
-#: ../src/gui/main_window.cpp:1327
-msgid "_Configuration Assistant"
-msgstr "Asisten _Konfigurasi"
-
-#: ../src/gui/main_window.cpp:1328
-msgid "Run the configuration assistant"
-msgstr "Menjalankan asisten konfigurasi"
-
-#: ../src/gui/main_window.cpp:1336
-msgid "Edit your accounts"
-msgstr "Sunting akun Anda"
-
-#: ../src/gui/main_window.cpp:1342
-msgid "Change your preferences"
-msgstr "Ganti settingan Anda"
-
-#: ../src/gui/main_window.cpp:1349
-msgid "_Video Preview"
-msgstr "Pratilik _Video"
-
-#: ../src/gui/main_window.cpp:1357
-msgid "Con_tacts"
-msgstr "Kon_tak"
-
-#: ../src/gui/main_window.cpp:1362
-msgid "_Dialpad"
-msgstr "_Dialpad"
-
-#: ../src/gui/main_window.cpp:1367
-msgid "_Call History"
-msgstr "_Riwayat Panggilan"
-
-#: ../src/gui/main_window.cpp:1375
-msgid "Show Offline _Contacts"
-msgstr "Tampilkan _Kontak Luring"
-
-#: ../src/gui/main_window.cpp:1439
-msgid "Contacts"
-msgstr "Kontak"
-
-#: ../src/gui/main_window.cpp:1468
-msgid "Dialpad"
-msgstr "Dialpad"
-
-#: ../src/gui/main_window.cpp:1486
-msgid "Call history"
-msgstr "Riwayat panggilan"
-
-#: ../src/gui/main_window.cpp:1498
-msgid "Ekiga"
-msgstr "Ekiga"
-
-#: ../src/gui/statusmenu.cpp:87
-msgid "Available"
-msgstr "Ada"
-
-#: ../src/gui/statusmenu.cpp:88
-msgid "Away"
-msgstr "Pergi"
-
-#: ../src/gui/statusmenu.cpp:89
-msgid "Busy"
-msgstr "Sibuk"
-
-#: ../src/gui/statusmenu.cpp:387
-msgid "Custom message..."
-msgstr "Pesan ubahan..."
-
-#: ../src/gui/statusmenu.cpp:432
-msgid "Clear"
-msgstr "Bersih"
-
-#. Build the dialog
-#: ../src/gui/statusmenu.cpp:520 ../src/gui/statusmenu.cpp:668
-msgid "Custom Message"
-msgstr "Pesan Ubahan"
-
-#: ../src/gui/statusmenu.cpp:536
-msgid "Delete custom messages:"
-msgstr "Hapus pesan ubahan:"
-
-#: ../src/gui/statusmenu.cpp:685
-msgid "Define a custom message:"
-msgstr "Tentukan pesan ubahan:"
