@@ -65,12 +65,18 @@
 #define AUDIO_CODECS_SCHEMA CODECS_SCHEMA ".audio"
 #define VIDEO_CODECS_SCHEMA CODECS_SCHEMA ".video"
 
+#define CONTACTS_SCHEMA "org.gnome." PACKAGE_NAME ".contacts"
+
 namespace Ekiga {
 
   /*
-   * This is a C++ wrapper around the GSettings signal function.
+   * This is a C++ wrapper class around GSettings.
    *
-   * Please use it in C++ code.
+   * It is recommended to use it in C++ code, but also
+   * when defining GObjects.
+   *
+   * When defining GObjects, you can use the standard g_signal_connect
+   * instead of the "changed" C++ signal.
    */
   class Settings : boost::noncopyable {
 
@@ -161,6 +167,29 @@ public:
 
       g_settings_set_strv (gsettings, key.c_str (), values);
       g_strfreev (values);
+    }
+
+    GSList* get_slist (const std::string & key)
+    {
+      GSList* list = NULL;
+      gchar **values = g_settings_get_strv (gsettings, key.c_str ());
+      if (values) {
+	for (int i = 0 ; values[i] ; i++) {
+	    list = g_slist_append (list, g_strdup (values[i]));
+	}
+      }
+      g_strfreev (values);
+
+      return list;
+    }
+
+    void set_slist (const std::string & key, const GSList *list)
+    {
+      GArray* array = g_array_new (TRUE, TRUE, sizeof (gchar *));
+      for (const GSList *l = list ; l ; l = g_slist_next (l))
+	array = g_array_append_val (array, l->data);
+      g_settings_set_strv (gsettings, key.c_str (), (const gchar **) array->data);
+      g_array_free (array, TRUE);
     }
 
     boost::signals2::signal<void(std::string)> changed;
