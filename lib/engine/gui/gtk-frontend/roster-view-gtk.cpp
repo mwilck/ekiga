@@ -39,9 +39,10 @@
 #include <glib/gi18n.h>
 #include <gdk/gdkkeysyms.h>
 
+#include "ekiga-settings.h"
+
 #include "gm-cell-renderer-bitext.h"
 #include "gmcellrendererexpander.h"
-#include "gmconf.h"
 #include "menu-builder-tools.h"
 #include "roster-view-gtk.h"
 #include "menu-builder-gtk.h"
@@ -54,11 +55,11 @@
 struct _RosterViewGtkPrivate
 {
   Ekiga::scoped_connections connections;
+  Ekiga::Settings *settings;
   GtkTreeStore *store;
   GtkTreeView *tree_view;
   GSList *folded_groups;
   gboolean show_offline_contacts;
-  gpointer notifier;
 };
 
 typedef struct _StatusIconInfo {
@@ -162,8 +163,8 @@ static void update_offline_count (RosterViewGtk* self,
  * BEHAVIOUR   : Updates things...
  * PRE         : The gpointer must be a RosterViewGtk
  */
-static void show_offline_contacts_changed_nt (gpointer id,
-					      GmConfEntry *entry,
+static void show_offline_contacts_changed_cb (GSettings *settings,
+					      gchar *key,
 					      gpointer data);
 
 /* DESCRIPTION  : Called when the user selects a presentity
@@ -586,8 +587,8 @@ on_clicked_fold (RosterViewGtk* self,
     }
   }
 
-  gm_conf_set_string_list (CONTACTS_KEY "roster_folded_groups",
-			   self->priv->folded_groups);
+  /* Update gsettings */
+  self->priv->settings->set_slist ("roster-folded-groups", self->priv->folded_groups);
 }
 
 static void
@@ -638,9 +639,9 @@ update_offline_count (RosterViewGtk* self,
 }
 
 static void
-show_offline_contacts_changed_nt (G_GNUC_UNUSED gpointer id,
-                                  GmConfEntry *entry,
-                                  gpointer data)
+show_offline_contacts_changed_cb (GSettings *settings,
+				  gchar *key,
+				  gpointer data)
 {
   RosterViewGtk *self = NULL;
   GtkTreeModel *model = NULL;
@@ -649,32 +650,29 @@ show_offline_contacts_changed_nt (G_GNUC_UNUSED gpointer id,
 
   self = ROSTER_VIEW_GTK (data);
 
-  if (gm_conf_entry_get_type (entry) == GM_CONF_BOOL) {
+  self->priv->show_offline_contacts = g_settings_get_boolean (settings, key);
 
-    self->priv->show_offline_contacts = gm_conf_entry_get_bool (entry);
+  /* beware: model is filtered here */
+  model = gtk_tree_view_get_model (self->priv->tree_view);
+  gtk_tree_model_filter_refilter (GTK_TREE_MODEL_FILTER (model));
 
-    /* beware: model is filtered here */
-    model = gtk_tree_view_get_model (self->priv->tree_view);
-    gtk_tree_model_filter_refilter (GTK_TREE_MODEL_FILTER (model));
+  /* beware: we want the unfiltered model now */
+  model = GTK_TREE_MODEL (self->priv->store);
 
-    /* beware: we want the unfiltered model now */
-    model = GTK_TREE_MODEL (self->priv->store);
+  /* there's an interesting problem there : hiding makes the rows
+   * unexpanded... so they don't come back as they should! */
+  GtkTreeIter heaps;
+  GtkTreePath* path = NULL;
+  if (gtk_tree_model_get_iter_first (model, &heaps)) {
 
-    /* there's an interesting problem there : hiding makes the rows
-     * unexpanded... so they don't come back as they should! */
-    GtkTreeIter heaps;
-    GtkTreePath* path = NULL;
-    if (gtk_tree_model_get_iter_first (model, &heaps)) {
+    do {
 
-      do {
+      path = gtk_tree_model_get_path (model, &heaps);
+      gtk_tree_view_expand_row (self->priv->tree_view, path, FALSE);
+      gtk_tree_path_free (path);
 
-        path = gtk_tree_model_get_path (model, &heaps);
-        gtk_tree_view_expand_row (self->priv->tree_view, path, FALSE);
-        gtk_tree_path_free (path);
-
-        roster_view_gtk_update_groups (self, &heaps);
-      } while (gtk_tree_model_iter_next (model, &heaps));
-    }
+      roster_view_gtk_update_groups (self, &heaps);
+    } while (gtk_tree_model_iter_next (model, &heaps));
   }
 }
 
@@ -1392,7 +1390,7 @@ roster_view_gtk_finalize (GObject *obj)
 
   view = (RosterViewGtk *)obj;
 
-  gm_conf_notifier_remove (view->priv->notifier);
+  delete view->priv->settings;
 
   g_slist_foreach (view->priv->folded_groups, (GFunc) g_free, NULL);
   g_slist_free (view->priv->folded_groups);
@@ -1403,7 +1401,7 @@ roster_view_gtk_finalize (GObject *obj)
 }
 
 static void
-roster_view_gtk_init (G_GNUC_UNUSED RosterViewGtk* self)
+roster_view_gtk_init (RosterViewGtk* self)
 {
   GtkWidget *scrolled_window;
   GtkWidget *vbox = NULL;
@@ -1414,8 +1412,9 @@ roster_view_gtk_init (G_GNUC_UNUSED RosterViewGtk* self)
 
   self->priv = new RosterViewGtkPrivate;
 
-  self->priv->folded_groups = gm_conf_get_string_list (CONTACTS_KEY "roster_folded_groups");
-  self->priv->show_offline_contacts = gm_conf_get_bool (CONTACTS_KEY "show_offline_contacts");
+  self->priv->settings = new Ekiga::Settings (CONTACTS_SCHEMA);
+  self->priv->folded_groups = self->priv->settings->get_slist ("roster-folded-groups");
+  self->priv->show_offline_contacts = self->priv->settings->get_bool ("show-offline-contacts");
   vbox = gtk_box_new (GTK_ORIENTATION_VERTICAL, 0);
   scrolled_window = gtk_scrolled_window_new (NULL, NULL);
   gtk_container_set_border_width (GTK_CONTAINER (vbox), 0);
@@ -1524,10 +1523,8 @@ roster_view_gtk_init (G_GNUC_UNUSED RosterViewGtk* self)
   g_signal_connect (self->priv->tree_view, "event-after",
 		    G_CALLBACK (on_view_event_after), self);
 
-  /* Notifiers */
-  self->priv->notifier =
-    gm_conf_notifier_add (CONTACTS_KEY "show_offline_contacts",
-			  show_offline_contacts_changed_nt, self);
+  g_signal_connect (self->priv->settings->get_g_settings (), "changed::show-offline-contacts",
+		    G_CALLBACK (&show_offline_contacts_changed_cb), self);
 }
 
 static void
