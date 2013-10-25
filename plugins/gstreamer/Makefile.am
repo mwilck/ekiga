@@ -2,6 +2,7 @@ plugin_LTLIBRARIES = libgmgstreamer.la
 
 AM_CXXFLAGS = \
 	$(BOOST_CPPFLAGS) $(GSTREAMER_CFLAGS) $(PTLIB_CFLAGS) \
+	-I$(top_srcdir)/lib \
 	-I$(top_srcdir)/lib/gmconf \
 	-I$(top_srcdir)/lib/engine/framework \
 	-I$(top_srcdir)/lib/engine/notification	\
