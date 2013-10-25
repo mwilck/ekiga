@@ -38,7 +38,6 @@
 #include <glib/gi18n.h>
 
 #include "form-request-simple.h"
-#include "opal-cluster.h"
 #include "robust-xml.h"
 
 #include "opal-presentity.h"
@@ -97,11 +96,11 @@ Opal::Presentity::build_node (const std::string name,
 }
 
 
-Opal::Presentity::Presentity (boost::weak_ptr<Opal::Cluster> cluster_,
-			      boost::weak_ptr<Ekiga::PresenceCore> presence_core_,
+Opal::Presentity::Presentity (boost::weak_ptr<Ekiga::PresenceCore> presence_core_,
+			      boost::function0<std::set<std::string> > existing_groups_,
 			      xmlNodePtr node_):
-  cluster(cluster_),
   presence_core(presence_core_),
+  existing_groups(existing_groups_),
   node(node_),
   presence("unknown")
 {
@@ -255,17 +254,12 @@ Opal::Presentity::populate_menu (Ekiga::MenuBuilder &builder)
 void
 Opal::Presentity::edit_presentity ()
 {
-  ClusterPtr cluster = cluster.lock ();
-
-  if (!cluster)
-    return;
-
   boost::shared_ptr<Ekiga::FormRequestSimple> request = boost::shared_ptr<Ekiga::FormRequestSimple> (new Ekiga::FormRequestSimple (boost::bind (&Opal::Presentity::edit_presentity_form_submitted, this, _1, _2)));
 
   std::string name = get_name ();
   std::string uri = get_uri ();
   std::set<std::string> groups = get_groups ();
-  std::set<std::string> all_groups = cluster->existing_groups ();
+  std::set<std::string> all_groups = existing_groups ();
 
   request->title (_("Edit roster element"));
   request->instructions (_("Please fill in this form to change an existing "
