@@ -99,11 +99,9 @@ Opal::Presentity::build_node (const std::string name,
 
 Opal::Presentity::Presentity (boost::weak_ptr<Opal::Cluster> cluster_,
 			      boost::weak_ptr<Ekiga::PresenceCore> presence_core_,
-			      boost::shared_ptr<xmlDoc> doc_,
 			      xmlNodePtr node_):
   cluster(cluster_),
   presence_core(presence_core_),
-  doc(doc_),
   node(node_),
   presence("unknown")
 {

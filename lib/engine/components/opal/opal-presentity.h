@@ -66,7 +66,6 @@ namespace Opal
 
     Presentity (boost::weak_ptr<Opal::Cluster> cluster_,
 		boost::weak_ptr<Ekiga::PresenceCore> presence_core_,
-		boost::shared_ptr<xmlDoc> doc_,
 		xmlNodePtr node_);
 
     ~Presentity ();
@@ -128,7 +127,6 @@ namespace Opal
     // existing groups in the edit presentity form!
     boost::weak_ptr<Opal::Cluster> cluster;
     boost::weak_ptr<Ekiga::PresenceCore> presence_core;
-    boost::shared_ptr<xmlDoc> doc;
     xmlNodePtr node;
 
     std::string presence;
