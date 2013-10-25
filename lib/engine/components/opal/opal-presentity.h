@@ -64,8 +64,8 @@ namespace Opal
 				  const std::string uri_,
 				  const std::set<std::string> groups_);
 
-    Presentity (boost::weak_ptr<Opal::Cluster> cluster_,
-		boost::weak_ptr<Ekiga::PresenceCore> presence_core_,
+    Presentity (boost::weak_ptr<Ekiga::PresenceCore> presence_core_,
+		boost::function0<std::set<std::string> > existing_groups_,
 		xmlNodePtr node_);
 
     ~Presentity ();
@@ -123,10 +123,8 @@ namespace Opal
     void edit_presentity_form_submitted (bool submitted,
 					 Ekiga::Form& result);
 
-    // FIXME: this is stupid! We only need the cluster to get a list of
-    // existing groups in the edit presentity form!
-    boost::weak_ptr<Opal::Cluster> cluster;
     boost::weak_ptr<Ekiga::PresenceCore> presence_core;
+    boost::function0<std::set<std::string> > existing_groups;
     xmlNodePtr node;
 
     std::string presence;
