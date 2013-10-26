@@ -1,6 +1,6 @@
 
 /* Ekiga -- A VoIP and Video-Conferencing application
- * Copyright (C) 2000-2009 Damien Sandras <dsandras@seconix.com>
+ * Copyright (C) 2000-2013 Damien Sandras <dsandras@seconix.com>
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -31,6 +31,7 @@
  *                         ------------------------------------------
  *   begin                : written in 2008 by Damien Sandras
  *   copyright            : (c) 2008 by Damien Sandras
+ *                          (c) 2013 by Julien Puydt
  *   description          : implementation of an opal account
  *
  */
@@ -48,8 +49,10 @@
 #include "opal-bank.h"
 #include "sip-endpoint.h"
 
+
 Opal::Bank::Bank (Ekiga::ServiceCore& core):
   sip_endpoint(core.get<Opal::Sip::EndPoint> ("opal-sip-endpoint")),
+  presence_core(core.get<Ekiga::PresenceCore> ("presence-core")),
   notification_core(core.get<Ekiga::NotificationCore> ("notification-core")),
   personal_details(core.get<Ekiga::PersonalDetails> ("personal-details")),
   audiooutput_core(core.get<Ekiga::AudioOutputCore> ("audiooutput-core")),
@@ -86,6 +89,7 @@ Opal::Bank::Bank (Ekiga::ServiceCore& core):
   update_sip_endpoint_aor_map ();
 }
 
+
 Opal::Bank::~Bank ()
 {
   // do it forcibly so we're sure the accounts are freed before our
@@ -96,6 +100,7 @@ Opal::Bank::~Bank ()
 
   delete protocols_settings;
 }
+
 
 bool
 Opal::Bank::populate_menu (Ekiga::MenuBuilder & builder)
@@ -114,6 +119,7 @@ Opal::Bank::populate_menu (Ekiga::MenuBuilder & builder)
   return true;
 }
 
+
 bool
 Opal::Bank::populate_menu (Ekiga::ContactPtr contact,
 			   const std::string uri,
@@ -122,6 +128,7 @@ Opal::Bank::populate_menu (Ekiga::ContactPtr contact,
   return populate_menu_helper (contact->get_name (), uri, builder);
 }
 
+
 bool
 Opal::Bank::populate_menu (Ekiga::PresentityPtr presentity,
 			   const std::string uri,
@@ -129,6 +136,7 @@ Opal::Bank::populate_menu (Ekiga::PresentityPtr presentity,
 {
   return populate_menu_helper (presentity->get_name (), uri, builder);
 }
+
 
 bool
 Opal::Bank::populate_menu_helper (const std::string fullname,
@@ -153,6 +161,7 @@ Opal::Bank::populate_menu_helper (const std::string fullname,
 
   return result;
 }
+
 
 void
 Opal::Bank::new_account (Account::Type acc_type,
@@ -215,9 +224,10 @@ Opal::Bank::new_account (Account::Type acc_type,
 }
 
 
-void Opal::Bank::on_new_account_form_submitted (bool submitted,
-						Ekiga::Form &result,
-                                                Account::Type acc_type)
+void
+Opal::Bank::on_new_account_form_submitted (bool submitted,
+					   Ekiga::Form& result,
+					   Account::Type acc_type)
 {
   if (!submitted)
     return;
@@ -262,14 +272,15 @@ void Opal::Bank::on_new_account_form_submitted (bool submitted,
 }
 
 
-void Opal::Bank::add (Account::Type acc_type,
-                      std::string name,
-                      std::string host,
-                      std::string user,
-                      std::string auth_user,
-                      std::string password,
-                      bool enabled,
-                      unsigned timeout)
+void
+Opal::Bank::add (Account::Type acc_type,
+		 std::string name,
+		 std::string host,
+		 std::string user,
+		 std::string auth_user,
+		 std::string password,
+		 bool enabled,
+		 unsigned timeout)
 {
   AccountPtr account
     = AccountPtr(new Opal::Account (sip_endpoint,
@@ -286,6 +297,7 @@ void Opal::Bank::add (Account::Type acc_type,
   Ekiga::BankImpl<Account>::add_connection (account, account->status_received.connect (boost::ref (status_received)));
 }
 
+
 void
 Opal::Bank::call_manager_ready ()
 {
@@ -297,6 +309,7 @@ Opal::Bank::call_manager_ready ()
       (*iter)->enable ();
   }
 }
+
 
 Opal::AccountPtr
 Opal::Bank::find_account (const std::string& aor)
@@ -314,6 +327,7 @@ Opal::Bank::find_account (const std::string& aor)
   return result;
 }
 
+
 void
 Opal::Bank::save () const
 {
@@ -326,6 +340,7 @@ Opal::Bank::save () const
   protocols_settings->set_string_list ("accounts-list", accounts);
 }
 
+
 void
 Opal::Bank::publish (const Ekiga::PersonalDetails& details)
 {
@@ -334,6 +349,7 @@ Opal::Bank::publish (const Ekiga::PersonalDetails& details)
        iter++)
     (*iter)->publish (details);
 }
+
 
 void
 Opal::Bank::fetch (const std::string uri)
@@ -344,6 +360,7 @@ Opal::Bank::fetch (const std::string uri)
     (*iter)->fetch (uri);
 }
 
+
 void
 Opal::Bank::unfetch (const std::string uri)
 {
@@ -352,6 +369,7 @@ Opal::Bank::unfetch (const std::string uri)
        iter++)
     (*iter)->unfetch (uri);
 }
+
 
 void
 Opal::Bank::on_registration_event (std::string aor,
@@ -364,6 +382,7 @@ Opal::Bank::on_registration_event (std::string aor,
     account->handle_registration_event (state, msg);
 }
 
+
 void
 Opal::Bank::on_mwi_event (std::string aor,
 			  std::string info)
@@ -373,6 +392,7 @@ Opal::Bank::on_mwi_event (std::string aor,
   if (account)
     account->handle_message_waiting_information (info);
 }
+
 
 void
 Opal::Bank::update_sip_endpoint_aor_map ()
@@ -385,4 +405,50 @@ Opal::Bank::update_sip_endpoint_aor_map ()
     result[(*iter)->get_host ()] = (*iter)->get_aor ();
 
   sip_endpoint->update_aor_map (result);
+}
+
+
+void
+Opal::Bank::visit_heaps (boost::function1<bool, Ekiga::HeapPtr> visitor) const
+{
+  visit_objects (visitor);
+}
+
+
+const std::set<std::string>
+Opal::Bank::existing_groups () const
+{
+  std::set<std::string> result;
+
+  for (const_iterator iter = begin ();
+       iter != end ();
+       ++iter) {
+
+    std::set<std::string> groups = (*iter)->get_groups ();
+    result.insert (groups.begin (), groups.end ());
+  }
+
+  result.insert (_("Family"));
+  result.insert (_("Friend"));
+  /* Translator: http://www.ietf.org/rfc/rfc4480.txt proposes several
+     relationships between you and your contact; associate means
+     someone who is at the same "level" than you.
+  */
+  result.insert (_("Associate"));
+  /* Translator: http://www.ietf.org/rfc/rfc4480.txt proposes several
+     relationships between you and your contact; assistant means
+     someone who is at a lower "level" than you.
+  */
+  result.insert (_("Assistant"));
+  /* Translator: http://www.ietf.org/rfc/rfc4480.txt proposes several
+     relationships between you and your contact; supervisor means
+     someone who is at a higher "level" than you.
+  */
+  result.insert (_("Supervisor"));
+  /* Translator: http://www.ietf.org/rfc/rfc4480.txt proposes several
+     relationships between you and your contact; self means yourself.
+  */
+  result.insert (_("Self"));
+
+  return result;
 }
