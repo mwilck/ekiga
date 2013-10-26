@@ -764,26 +764,6 @@ on_chat_unread_alert (G_GNUC_UNUSED GtkWidget* widget,
 
 
 static void
-status_icon_clicked_cb (G_GNUC_UNUSED GtkWidget* widget,
-                        gpointer data)
-{
-  GtkWidget *window = GTK_WIDGET (data);
-
-  if (!gtk_widget_get_visible (window)
-      || (gdk_window_get_state (GDK_WINDOW (gtk_widget_get_window (window))) & GDK_WINDOW_STATE_ICONIFIED)) {
-    gtk_widget_show (window);
-  }
-  else {
-
-    if (gtk_window_has_toplevel_focus (GTK_WINDOW (window)))
-      gtk_widget_hide (window);
-    else
-      gtk_window_present (GTK_WINDOW (window));
-  }
-}
-
-
-static void
 panel_section_changed_nt (G_GNUC_UNUSED gpointer id,
                           GmConfEntry *entry,
                           gpointer data)
