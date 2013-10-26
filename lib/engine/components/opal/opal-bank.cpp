@@ -61,23 +61,34 @@ Opal::Bank::Bank (Ekiga::ServiceCore& core):
   std::list<std::string> accounts;
   protocols_settings = new Ekiga::Settings (PROTOCOLS_SCHEMA);
 
-  accounts = protocols_settings->get_string_list ("accounts-list");
-  for (std::list<std::string>::const_iterator it = accounts.begin ();
-       it != accounts.end ();
-       it++) {
+  const std::string raw = protocols_settings->get_string ("accounts");
 
-    boost::shared_ptr<Account> account
-      = boost::shared_ptr<Account> (new Account (sip_endpoint,
-						 notification_core,
-						 personal_details,
-						 audiooutput_core,
-						 opal_component,
-						 (*it)));
+  doc = boost::shared_ptr<xmlDoc> (xmlRecoverMemory (raw.c_str (), raw.length ()), xmlFreeDoc);
+  if (!doc)
+    doc = boost::shared_ptr<xmlDoc> (xmlNewDoc (BAD_CAST "1.0"), xmlFreeDoc);
 
-    add_account (account);
-    Ekiga::BankImpl<Account>::add_connection (account, account->trigger_saving.connect (boost::bind (&Opal::Bank::save, this)));
-    Ekiga::BankImpl<Account>::add_connection (account, account->presence_received.connect (boost::ref (presence_received)));
-    Ekiga::BankImpl<Account>::add_connection (account, account->status_received.connect (boost::ref (status_received)));
+  node = xmlDocGetRootElement (doc.get ());
+  if (node == NULL) {
+
+    node = xmlNewDocNode (doc.get (), NULL, BAD_CAST "accounts", NULL);
+    xmlDocSetRootElement (doc.get (), node);
+  }
+
+  for (xmlNodePtr child = node->children; child != NULL; child = child->next) {
+
+    if (child->type == XML_ELEMENT_NODE
+	&& child->name != NULL
+	&& xmlStrEqual(BAD_CAST "account", child->name)) {
+
+      boost::shared_ptr<Account> account(new Account (sip_endpoint, presence_core, notification_core,
+						      personal_details, audiooutput_core, opal_component,
+						      boost::bind(&Opal::Bank::existing_groups, this), child));
+
+      add_account (account);
+      Ekiga::BankImpl<Account>::add_connection (account, account->trigger_saving.connect (boost::bind (&Opal::Bank::save, this)));
+      Ekiga::BankImpl<Account>::add_connection (account, account->presence_received.connect (boost::ref (presence_received)));
+      Ekiga::BankImpl<Account>::add_connection (account, account->status_received.connect (boost::ref (status_received)));
+    }
   }
 
   sip_endpoint->registration_event.connect (boost::bind(&Opal::Bank::on_registration_event, this, _1, _2, _3));
@@ -273,7 +284,7 @@ Opal::Bank::on_new_account_form_submitted (bool submitted,
 
 
 void
-Opal::Bank::add (Account::Type acc_type,
+Opal::Bank::add (G_GNUC_UNUSED Account::Type acc_type,
 		 std::string name,
 		 std::string host,
 		 std::string user,
@@ -282,15 +293,21 @@ Opal::Bank::add (Account::Type acc_type,
 		 bool enabled,
 		 unsigned timeout)
 {
+  xmlNodePtr child = Opal::Account::build_node (name, host, user, auth_user, password, enabled, timeout);
+
+  xmlAddChild (node, child);
+
+  save ();
+
   AccountPtr account
     = AccountPtr(new Opal::Account (sip_endpoint,
+				    presence_core,
 				    notification_core,
 				    personal_details,
 				    audiooutput_core,
-				    opal_component, acc_type, name,
-				    host, user, auth_user,
-				    password, enabled,
-				    timeout));
+				    opal_component,
+				    boost::bind(&Opal::Bank::existing_groups, this),
+				    child));
   add_account (account);
   Ekiga::BankImpl<Account>::add_connection (account, account->trigger_saving.connect (boost::bind (&Opal::Bank::save, this)));
   Ekiga::BankImpl<Account>::add_connection (account, account->presence_received.connect (boost::ref (presence_received)));
@@ -331,13 +348,14 @@ Opal::Bank::find_account (const std::string& aor)
 void
 Opal::Bank::save () const
 {
-  std::list<std::string> accounts;
-  for (const_iterator it = begin ();
-       it != end ();
-       it++)
-    accounts.push_back ((*it)->as_string ());
+  xmlChar *buffer = NULL;
+  int doc_size = 0;
 
-  protocols_settings->set_string_list ("accounts-list", accounts);
+  xmlDocDumpMemory (doc.get (), &buffer, &doc_size);
+
+  protocols_settings->set_string ("accounts", (const char*)buffer);
+
+  xmlFree (buffer);
 }
 
 

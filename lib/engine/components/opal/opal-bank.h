@@ -123,6 +123,9 @@ private:
     boost::shared_ptr<Ekiga::AudioOutputCore> audiooutput_core;
     boost::shared_ptr<CallManager> opal_component;
 
+    boost::shared_ptr<xmlDoc> doc;
+    xmlNodePtr node;
+
     bool populate_menu_helper (const std::string fullname,
 			       const std::string& uri,
 			       Ekiga::MenuBuilder& builder);
