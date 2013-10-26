@@ -92,7 +92,7 @@ public:
 	     boost::function0<std::set<std::string> > _existing_groups,
 	     xmlNodePtr node_);
 
-    ~Account ();
+    ~Account () {}
 
     const std::string get_name () const;
 
