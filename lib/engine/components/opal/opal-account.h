@@ -1,6 +1,6 @@
 
 /* Ekiga -- A VoIP and Video-Conferencing application
- * Copyright (C) 2000-2009 Damien Sandras <dsandras@seconix.com>
+ * Copyright (C) 2000-2013 Damien Sandras <dsandras@seconix.com>
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -31,6 +31,7 @@
  *                         ------------------------------------------
  *   begin                : written in 2008 by Damien Sandras
  *   copyright            : (c) 2008 by Damien Sandras
+ *                          (c) 2013 by Julien Puydt
  *   description          : declaration of an OPAL account
  *
  */
@@ -38,6 +39,7 @@
 #ifndef __OPAL_ACCOUNT_H__
 #define __OPAL_ACCOUNT_H__
 
+#include <libxml/tree.h>
 #include <opal/pres_ent.h>
 #include <sip/sippdu.h>
 
@@ -52,6 +54,7 @@ namespace Opal
 {
   // forward declarations:
   class CallManager;
+  class Presentity;
   namespace Sip { class EndPoint; };
 
   /**
@@ -61,6 +64,8 @@ namespace Opal
    */
   class Account:
     public Ekiga::Account,
+    public Ekiga::Heap,
+    protected Ekiga::RefLister<Presentity>,
     public Ekiga::PresencePublisher,
     public Ekiga::PresenceFetcher
   {
@@ -70,26 +75,23 @@ public:
 
     typedef enum { Processing, Registered, Unregistered, RegistrationFailed, UnregistrationFailed } RegistrationState;
 
-    Account (boost::shared_ptr<Opal::Sip::EndPoint> _sip_endpoint,
-	     boost::shared_ptr<Ekiga::NotificationCore> _notification_core,
-	     boost::shared_ptr<Ekiga::PersonalDetails> _personal_details,
-	     boost::shared_ptr<Ekiga::AudioOutputCore> _audiooutput_core,
-	     boost::shared_ptr<CallManager> _call_manager,
-	     const std::string & account);
+    static xmlNodePtr build_node (Type t,
+				  std::string name,
+				  std::string host,
+				  std::string user,
+				  std::string auth_user,
+				  std::string password,
+				  bool enabled,
+				  unsigned timeout);
 
     Account (boost::shared_ptr<Opal::Sip::EndPoint> _sip_endpoint,
+	     boost::weak_ptr<Ekiga::PresenceCore> _presence_core,
 	     boost::shared_ptr<Ekiga::NotificationCore> _notification_core,
 	     boost::shared_ptr<Ekiga::PersonalDetails> _personal_details,
 	     boost::shared_ptr<Ekiga::AudioOutputCore> _audiooutput_core,
 	     boost::shared_ptr<CallManager> _call_manager,
-	     Type t,
-             std::string name,
-             std::string host,
-             std::string user,
-             std::string auth_user,
-             std::string password,
-             bool enabled,
-             unsigned timeout);
+	     boost::function0<std::set<std::string> > _existing_groups,
+	     xmlNodePtr node_);
 
     ~Account ();
 
@@ -162,8 +164,6 @@ public:
 			const std::string uri,
 			Ekiga::MenuBuilder& builder);
 
-    const std::string as_string () const;
-
     boost::signals2::signal<void(void)> trigger_saving;
 
     /*
@@ -187,29 +187,32 @@ public:
      */
     void handle_message_waiting_information (const std::string info);
 
+    /* This part of the api is the implementation of Ekiga::Heap */
+    void visit_presentities (boost::function1<bool, Ekiga::PresentityPtr > visitor) const;
+    bool populate_menu_for_group (const std::string name,
+				  Ekiga::MenuBuilder& builder);
 
 private:
+
     void on_edit_form_submitted (bool submitted,
 				 Ekiga::Form &result);
     void on_consult (const std::string url);
     bool is_myself (const std::string uri) const;
 
+    void on_rename_group (const std::string name);
+    void rename_group_form_submitted (std::string old_name,
+				      bool submitted,
+				      Ekiga::Form& result);
+
+    Type type;
     mutable RegistrationState state;
     bool dead;
-    bool enabled;
     bool failed;
     mutable SIPRegister::CompatibilityModes compat_mode;
-    unsigned timeout;
     std::string aid;
-    std::string name;
     mutable std::string status;  // the state, as a string
     int message_waiting_number;
     std::string protocol_name;
-    std::string host;
-    std::string username;
-    std::string auth_username;
-    std::string password;
-    Type type;
 
     mutable bool failed_registration_already_notified;
 
@@ -218,6 +221,9 @@ private:
 
     PDECLARE_PresenceChangeNotifier (Account, OnPresenceChange);
 
+    boost::function0<std::set<std::string> > existing_groups;
+    xmlNodePtr node;
+    xmlNodePtr roster_node;
     std::set<std::string> watched_uris;
     OpalPresenceInfo::State personal_state;
     std::string presence_status;
@@ -226,6 +232,7 @@ private:
 				  std::string status);
 
     boost::shared_ptr<Opal::Sip::EndPoint> sip_endpoint;
+    boost::weak_ptr<Ekiga::PresenceCore> presence_core;
     boost::weak_ptr<Ekiga::NotificationCore> notification_core;
     boost::weak_ptr<Ekiga::PersonalDetails> personal_details;
     boost::weak_ptr<Ekiga::AudioOutputCore> audiooutput_core;
