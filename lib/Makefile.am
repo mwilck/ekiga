@@ -491,7 +491,9 @@ libekiga_la_SOURCES += \
 	engine/components/opal/opal-videooutput.h \
 	engine/components/opal/opal-videooutput.cpp \
 	engine/components/opal/opal-plugins-hook.h \
-	engine/components/opal/opal-plugins-hook.cpp
+	engine/components/opal/opal-plugins-hook.cpp \
+	engine/components/opal/opal-presentity.h \
+	engine/components/opal/opal-presentity.cpp
 
 if HAVE_H323
 libekiga_la_SOURCES += \
