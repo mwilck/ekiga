@@ -73,7 +73,7 @@ struct null_deleter
 };
 
 
-static xmlNodePtr
+xmlNodePtr
 Opal::Presentity::build_node (const std::string name,
 			      const std::string uri,
 			      const std::set<std::string> groups)
