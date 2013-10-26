@@ -155,6 +155,21 @@ Opal::Account::Account (boost::shared_ptr<Opal::Sip::EndPoint> _sip_endpoint,
 }
 
 
+std::set<std::string>
+Opal::Account::get_groups () const
+{
+  std::set<std::string> result;
+
+  for (const_iterator iter = begin (); iter != end (); ++iter) {
+
+    std::set<std::string> groups = (*iter)->get_groups ();
+    result.insert (groups.begin (), groups.end ());
+  }
+
+  return result;
+}
+
+
 const std::string
 Opal::Account::get_name () const
 {

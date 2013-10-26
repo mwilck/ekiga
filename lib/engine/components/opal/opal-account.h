@@ -102,6 +102,8 @@ public:
 
     Type get_type () const;
 
+    std::set<std::string> get_groups () const;
+
     /** Returns the protocol name of the Opal::Account.
      * This function is purely virtual and should be implemented by the
      * Ekiga::Account descendant.
