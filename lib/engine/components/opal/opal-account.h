@@ -75,8 +75,7 @@ public:
 
     typedef enum { Processing, Registered, Unregistered, RegistrationFailed, UnregistrationFailed } RegistrationState;
 
-    static xmlNodePtr build_node (Type t,
-				  std::string name,
+    static xmlNodePtr build_node (std::string name,
 				  std::string host,
 				  std::string user,
 				  std::string auth_user,
@@ -193,6 +192,8 @@ public:
 				  Ekiga::MenuBuilder& builder);
 
 private:
+
+    void decide_type ();
 
     void on_edit_form_submitted (bool submitted,
 				 Ekiga::Form &result);

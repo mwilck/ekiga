@@ -59,8 +59,7 @@
 #include "sip-endpoint.h"
 
 xmlNodePtr
-Opal::Account::build_node(Opal::Account::Type t,
-			  std::string name,
+Opal::Account::build_node(std::string name,
 			  std::string host,
 			  std::string user,
 			  std::string auth_user,
@@ -122,15 +121,7 @@ Opal::Account::Account (boost::shared_ptr<Opal::Sip::EndPoint> _sip_endpoint,
   failed_registration_already_notified = false;
   dead = false;
 
-  const std::string host = get_host ();
-  if (host == "ekiga.net")
-    type = Account::Ekiga;
-  else if (host == "sip.diamondcard.us")
-    type = Account::DiamondCard;
-  else if (protocol_name == "SIP")
-    type = Account::SIP;
-  else
-    type = Account::H323;
+  decide_type ();
 
   if (type != Account::H323) {
 
@@ -685,6 +676,8 @@ Opal::Account::on_edit_form_submitted (bool submitted,
       }
     }
 
+    decide_type ();
+
     if (should_enable)
       enable ();
     else if (should_disable)
@@ -1184,4 +1177,19 @@ Opal::Account::rename_group_form_submitted (std::string old_name,
     rename_group_form_submitted_helper helper (old_name, new_name);
     visit_presentities (boost::ref (helper));
   }
+}
+
+void
+Opal::Account::decide_type ()
+{
+  const std::string host = get_host ();
+
+  if (host == "ekiga.net")
+    type = Account::Ekiga;
+  else if (host == "sip.diamondcard.us")
+    type = Account::DiamondCard;
+  else if (protocol_name == "SIP")
+    type = Account::SIP;
+  else
+    type = Account::H323;
 }
