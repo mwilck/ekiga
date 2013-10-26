@@ -139,15 +139,15 @@ Opal::Account::Account (boost::shared_ptr<Opal::Sip::EndPoint> _sip_endpoint,
       roster_node = child;
       for (xmlNodePtr presnode = roster_node->children; presnode != NULL; presnode = presnode->next) {
 
-	Opal::PresentityPtr presentity(new Presentity (presence_core,
-						       existing_groups,
-						       presnode));
+	Opal::PresentityPtr pres(new Presentity (presence_core,
+						 existing_groups,
+						 presnode));
 
-	presentity->trigger_saving.connect (boost::ref (trigger_saving));
-	presentity->removed.connect (boost::bind (boost::ref (presentity_removed), presentity));
-	presentity->updated.connect (boost::bind (boost::ref (presentity_updated), presentity));
-	add_object (presentity);
-	presentity_added (presentity);
+	pres->trigger_saving.connect (boost::ref (trigger_saving));
+	pres->removed.connect (boost::bind (boost::ref (presentity_removed), pres));
+	pres->updated.connect (boost::bind (boost::ref (presentity_updated), pres));
+	add_object (pres);
+	presentity_added (pres);
       }
     }
   }
