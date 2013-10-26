@@ -1,6 +1,6 @@
 
 /* Ekiga -- A VoIP and Video-Conferencing application
- * Copyright (C) 2000-2009 Damien Sandras <dsandras@seconix.com>
+ * Copyright (C) 2000-2013 Damien Sandras <dsandras@seconix.com>
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -31,7 +31,8 @@
  *                         ------------------------------------------
  *   begin                : written in 2008 by Damien Sandras
  *   copyright            : (c) 2008 by Damien Sandras
- *   description          : declaration of an OPAL bank 
+ *                          (c) 2013 by Julien Puydt
+ *   description          : declaration of an OPAL bank
  *
  */
 
@@ -51,8 +52,9 @@ namespace Opal
    * @internal
    * @{
    */
-  class Bank: 
+  class Bank:
       public Ekiga::BankImpl<Account>,
+      public Ekiga::Cluster,
       public Ekiga::PresencePublisher,
       public Ekiga::PresenceFetcher,
       public Ekiga::ContactDecorator,
@@ -98,7 +100,7 @@ public:
 			Ekiga::MenuBuilder& builder);
 
     /** Find the account with the given address of record in the Bank
-     * @param aor is the address of record of the Account or the host to look 
+     * @param aor is the address of record of the Account or the host to look
      *        for
      * @return The Opal::Account if an Account was found, false otherwise.
      *         The returned account should not be freed.
@@ -108,8 +110,14 @@ public:
 
     void call_manager_ready ();
 
+    /* this object is an Ekiga::Cluster */
+    void visit_heaps (boost::function1<bool, Ekiga::HeapPtr> visitor) const;
+
+    const std::set<std::string> existing_groups () const;
+
 private:
     boost::shared_ptr<Opal::Sip::EndPoint> sip_endpoint;
+    boost::weak_ptr<Ekiga::PresenceCore> presence_core;
     boost::shared_ptr<Ekiga::NotificationCore> notification_core;
     boost::shared_ptr<Ekiga::PersonalDetails> personal_details;
     boost::shared_ptr<Ekiga::AudioOutputCore> audiooutput_core;
@@ -124,7 +132,7 @@ private:
 					Account::Type acc_type);
 
     void add (Account::Type acc_type,
-              std::string name, 
+              std::string name,
               std::string host,
               std::string user,
               std::string auth_user,
