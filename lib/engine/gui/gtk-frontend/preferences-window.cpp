@@ -83,9 +83,9 @@ typedef struct _GmPreferencesWindow
   boost::shared_ptr<Ekiga::Settings> sip_settings;
   boost::shared_ptr<Ekiga::Settings> h323_settings;
   boost::shared_ptr<Ekiga::Settings> personal_data_settings;
-  GSettings *sound_events_settings;
-  GSettings *audio_devices_settings;
-  GSettings *video_devices_settings;
+  boost::shared_ptr<Ekiga::Settings> sound_events_settings;
+  boost::shared_ptr<Ekiga::Settings> audio_devices_settings;
+  boost::shared_ptr<Ekiga::Settings> video_devices_settings;
   Ekiga::scoped_connections connections;
 } GmPreferencesWindow;
 
@@ -93,20 +93,22 @@ typedef struct _GmPreferencesWindow
 
 _GmPreferencesWindow::_GmPreferencesWindow()
 {
-  sound_events_settings = g_settings_new (SOUND_EVENTS_SCHEMA);
-  audio_devices_settings = g_settings_new (AUDIO_DEVICES_SCHEMA);
-  video_devices_settings = g_settings_new (VIDEO_DEVICES_SCHEMA);
+  sound_events_settings =
+    boost::shared_ptr<Ekiga::Settings> (new Ekiga::Settings (SOUND_EVENTS_SCHEMA));
+  audio_devices_settings =
+    boost::shared_ptr<Ekiga::Settings> (new Ekiga::Settings (AUDIO_DEVICES_SCHEMA));
+  video_devices_settings =
+    boost::shared_ptr<Ekiga::Settings> (new Ekiga::Settings (VIDEO_DEVICES_SCHEMA));
   personal_data_settings =
     boost::shared_ptr<Ekiga::Settings> (new Ekiga::Settings (PERSONAL_DATA_SCHEMA));
-  sip_settings = boost::shared_ptr<Ekiga::Settings> (new Ekiga::Settings (SIP_SCHEMA));
-  h323_settings = boost::shared_ptr<Ekiga::Settings> (new Ekiga::Settings (SIP_SCHEMA));
+  sip_settings =
+    boost::shared_ptr<Ekiga::Settings> (new Ekiga::Settings (SIP_SCHEMA));
+  h323_settings =
+    boost::shared_ptr<Ekiga::Settings> (new Ekiga::Settings (SIP_SCHEMA));
 }
 
 _GmPreferencesWindow::~_GmPreferencesWindow()
 {
-  g_clear_object (&sound_events_settings);
-  g_clear_object (&audio_devices_settings);
-  g_clear_object (&video_devices_settings);
 }
 
 enum {
@@ -258,7 +260,7 @@ static void gm_pw_init_video_codecs_page (GtkWidget *prefs_window,
 GtkWidget * gm_pw_entry_new (GtkWidget* grid,
 			     const gchar *label_txt,
 			     boost::shared_ptr<Ekiga::Settings> settings,
-			     const gchar *key,
+			     const std::string & key,
 			     const gchar *tooltip,
 			     int row,
 			     int width,
@@ -278,8 +280,8 @@ GtkWidget * gm_pw_entry_new (GtkWidget* grid,
 static GtkWidget *gm_pw_string_option_menu_new (GtkWidget *,
                                                 const gchar *,
                                                 const gchar **,
-                                                GSettings *,
-                                                const gchar *,
+                                                boost::shared_ptr <Ekiga::Settings>,
+                                                const std::string &,
                                                 const gchar *,
                                                 int);
 
@@ -296,8 +298,8 @@ static GtkWidget *gm_pw_string_option_menu_new (GtkWidget *,
 static GtkWidget *gm_pw_int_option_menu_new (GtkWidget *table,
                                              const gchar *label_txt,
                                              const gchar **options,
-                                             GSettings *settings,
-                                             const gchar *conf_key,
+					     boost::shared_ptr <Ekiga::Settings>,
+					     const std::string & key,
                                              const gchar *tooltip,
                                              int row);
 
@@ -312,8 +314,8 @@ static GtkWidget *gm_pw_int_option_menu_new (GtkWidget *table,
  */
 static void gm_pw_string_option_menu_update (GtkWidget *option_menu,
                                              const gchar **options,
-                                             GSettings *settings,
-                                             const gchar *conf_key,
+					     boost::shared_ptr <Ekiga::Settings>,
+					     const std::string & key,
                                              const gchar *default_value);
 /* Callbacks */
 
@@ -450,7 +452,7 @@ gm_prefs_window_sound_events_list_build (GtkWidget *prefs_window)
   gtk_list_store_clear (GTK_LIST_STORE (model));
 
   /* Sound on incoming calls */
-  enabled = g_settings_get_boolean (pw->sound_events_settings, "enable-incoming-call-sound");
+  enabled = pw->sound_events_settings->get_bool ("enable-incoming-call-sound");
   gtk_list_store_append (GTK_LIST_STORE (model), &iter);
   gtk_list_store_set (GTK_LIST_STORE (model), &iter,
 		      0, enabled,
@@ -460,7 +462,7 @@ gm_prefs_window_sound_events_list_build (GtkWidget *prefs_window)
                       4, "incoming-call-sound",
 		      -1);
 
-  enabled = g_settings_get_boolean (pw->sound_events_settings, "enable-ring-tone-sound");
+  enabled = pw->sound_events_settings->get_bool ("enable-ring-tone-sound");
   gtk_list_store_append (GTK_LIST_STORE (model), &iter);
   gtk_list_store_set (GTK_LIST_STORE (model), &iter,
 		      0, enabled,
@@ -470,7 +472,7 @@ gm_prefs_window_sound_events_list_build (GtkWidget *prefs_window)
                       4, "ring-tone-sound",
 		      -1);
 
-  enabled = g_settings_get_boolean (pw->sound_events_settings, "enable-busy-tone-sound");
+  enabled = pw->sound_events_settings->get_bool ("enable-busy-tone-sound");
   gtk_list_store_append (GTK_LIST_STORE (model), &iter);
   gtk_list_store_set (GTK_LIST_STORE (model), &iter,
 		      0, enabled,
@@ -480,7 +482,7 @@ gm_prefs_window_sound_events_list_build (GtkWidget *prefs_window)
 		      4, "busy-tone-sound",
 		      -1);
 
-  enabled = g_settings_get_boolean (pw->sound_events_settings, "enable-new-voicemail-sound");
+  enabled = pw->sound_events_settings->get_bool ("enable-new-voicemail-sound");
   gtk_list_store_append (GTK_LIST_STORE (model), &iter);
   gtk_list_store_set (GTK_LIST_STORE (model), &iter,
 		      0, enabled,
@@ -490,7 +492,7 @@ gm_prefs_window_sound_events_list_build (GtkWidget *prefs_window)
 		      4, "new-voicemail-sound",
 		      -1);
 
-  enabled = g_settings_get_boolean (pw->sound_events_settings, "enable-new-message-sound");
+  enabled = pw->sound_events_settings->get_bool ("enable-new-message-sound");
   gtk_list_store_append (GTK_LIST_STORE (model), &iter);
   gtk_list_store_set (GTK_LIST_STORE (model), &iter,
 		      0, enabled,
@@ -1001,7 +1003,7 @@ GtkWidget *
 gm_pw_entry_new (GtkWidget* grid,
 		 const gchar *label_txt,
 		 boost::shared_ptr<Ekiga::Settings> settings,
-		 const gchar *key,
+		 const std::string & key,
 		 const gchar *tooltip,
 		 int row,
 		 int width,
@@ -1012,10 +1014,11 @@ gm_pw_entry_new (GtkWidget* grid,
   GtkWidget *hbox = NULL;
 
   gchar *signal_name = NULL;
-  gchar *conf_string = NULL;
+
+  std::string conf_string;
   gboolean writable = FALSE;
 
-  writable = g_settings_is_writable (settings->get_g_settings (), key);
+  writable = g_settings_is_writable (settings->get_g_settings (), key.c_str ());
 
   if (box) {
     hbox = gtk_box_new (GTK_ORIENTATION_HORIZONTAL, 0);
@@ -1048,13 +1051,13 @@ gm_pw_entry_new (GtkWidget* grid,
   else
     gtk_grid_attach (GTK_GRID (grid), entry, 1, row, 1, 1);
 
-  conf_string = g_settings_get_string (settings->get_g_settings (), key);
+  conf_string = settings->get_string (key);
 
-  if (conf_string != NULL)
-    gtk_entry_set_text (GTK_ENTRY (entry), conf_string);
-  g_free (conf_string);
+  if (!conf_string.empty ())
+    gtk_entry_set_text (GTK_ENTRY (entry), conf_string.c_str ());
 
-  g_object_set_data_full (G_OBJECT (entry), "key", (gpointer) key, (GDestroyNotify) g_free);
+  g_object_set_data_full (G_OBJECT (entry), "key", (gpointer) g_strdup (key.c_str ()),
+			  (GDestroyNotify) g_free);
   g_signal_connect_after (entry, "focus-out-event",
 			  G_CALLBACK (entry_focus_changed),
 			  (gpointer) settings->get_g_settings ());
@@ -1063,7 +1066,7 @@ gm_pw_entry_new (GtkWidget* grid,
 			  (gpointer) settings->get_g_settings ());
 
   /* Update the widget when the user changes the configuration */
-  signal_name = g_strdup_printf ("changed::%s", key);
+  signal_name = g_strdup_printf ("changed::%s", key.c_str ());
   g_signal_connect (settings->get_g_settings (), signal_name,
                     G_CALLBACK (entry_setting_changed), entry);
   g_free (signal_name);
@@ -1083,8 +1086,8 @@ GtkWidget *
 gm_pw_string_option_menu_new (GtkWidget *grid,
                               const gchar *label_txt,
                               const gchar **options,
-                              GSettings *settings,
-                              const gchar *conf_key,
+                              boost::shared_ptr <Ekiga::Settings> settings,
+			      const std::string & key,
                               const gchar *tooltip,
                               int row)
 {
@@ -1094,14 +1097,14 @@ gm_pw_string_option_menu_new (GtkWidget *grid,
   GtkCellRenderer *renderer = NULL;
   GtkTreeIter iter;
 
-  gchar *conf_string = NULL;
   gchar *signal_name = NULL;
+  std::string conf_string;
   gboolean writable = FALSE;
 
   int history = -1;
   int cpt = 0;
 
-  writable = g_settings_is_writable (settings, conf_key);
+  writable = g_settings_is_writable (settings->get_g_settings (), key.c_str ());
 
   label = gtk_label_new (label_txt);
   if (!writable)
@@ -1133,10 +1136,10 @@ gm_pw_string_option_menu_new (GtkWidget *grid,
                 "width-chars", 30, NULL);
   gtk_label_set_mnemonic_widget (GTK_LABEL (label), option_menu);
 
-  conf_string = g_settings_get_string (settings, conf_key);
+  conf_string = settings->get_string (key);
   while (options [cpt]) {
 
-    if (conf_string && !g_strcmp0 (conf_string, options [cpt]))
+    if (!conf_string.empty () && !g_strcmp0 (conf_string.c_str (), options [cpt]))
       history = cpt;
 
     gtk_list_store_append (GTK_LIST_STORE (list_store), &iter);
@@ -1144,7 +1147,7 @@ gm_pw_string_option_menu_new (GtkWidget *grid,
                         COLUMN_STRING_RAW, options [cpt],
                         COLUMN_STRING_TRANSLATED, gettext (options [cpt]),
                         COLUMN_SENSITIVE, TRUE,
-                        COLUMN_GSETTINGS, (gpointer) settings,
+                        COLUMN_GSETTINGS, (gpointer) settings->get_g_settings (),
                         -1);
     cpt++;
   }
@@ -1154,7 +1157,7 @@ gm_pw_string_option_menu_new (GtkWidget *grid,
    */
   if (history == -1) {
     history = 0;
-    g_settings_set_string (settings, conf_key, options [0]);
+    settings->set_string (key, options [0]);
   }
 
   gtk_combo_box_set_active (GTK_COMBO_BOX (option_menu), history);
@@ -1164,17 +1167,18 @@ gm_pw_string_option_menu_new (GtkWidget *grid,
   gtk_widget_set_tooltip_text (option_menu, tooltip);
 
   /* Update configuration when the user changes the selected option */
-  g_signal_connect (option_menu, "changed",
-		    G_CALLBACK (string_option_menu_changed),
-  		    (gpointer) conf_key);
+  g_signal_connect_data (option_menu, "changed",
+			 G_CALLBACK (string_option_menu_changed),
+			 (gpointer) g_strdup (key.c_str ()),
+			 (GClosureNotify) g_free,
+			 G_CONNECT_AFTER);
 
   /* Update the widget when the user changes the configuration */
-  signal_name = g_strdup_printf ("changed::%s", conf_key);
-  g_signal_connect (settings, signal_name,
+  signal_name = g_strdup_printf ("changed::%s", key.c_str ());
+  g_signal_connect (settings->get_g_settings (), signal_name,
                     G_CALLBACK (string_option_setting_changed), option_menu);
   g_free (signal_name);
 
-  g_free (conf_string);
   gtk_widget_show_all (grid);
 
   return option_menu;
@@ -1184,8 +1188,8 @@ GtkWidget *
 gm_pw_int_option_menu_new (GtkWidget *grid,
                            const gchar *label_txt,
                            const gchar **options,
-                           GSettings *settings,
-                           const gchar *conf_key,
+                           boost::shared_ptr <Ekiga::Settings> settings,
+			   const std::string & key,
                            const gchar *tooltip,
                            int row)
 {
@@ -1202,7 +1206,7 @@ gm_pw_int_option_menu_new (GtkWidget *grid,
   int history = -1;
   int cpt = 0;
 
-  writable = g_settings_is_writable (settings, conf_key);
+  writable = g_settings_is_writable (settings->get_g_settings (), key.c_str ());
 
   label = gtk_label_new_with_mnemonic (label_txt);
   if (!writable)
@@ -1229,14 +1233,14 @@ gm_pw_int_option_menu_new (GtkWidget *grid,
                 "width-chars", 30, NULL);
   gtk_label_set_mnemonic_widget (GTK_LABEL (label), option_menu);
 
-  history = g_settings_get_int (settings, conf_key);
+  history = settings->get_int (key);
   while (options [cpt]) {
 
     gtk_list_store_append (GTK_LIST_STORE (list_store), &iter);
     gtk_list_store_set (GTK_LIST_STORE (list_store), &iter,
                         COLUMN_STRING_RAW, options [cpt],
                         COLUMN_STRING_TRANSLATED, gettext (options [cpt]),
-                        COLUMN_GSETTINGS, settings,
+                        COLUMN_GSETTINGS, settings->get_g_settings (),
                         -1);
     cpt++;
   }
@@ -1249,13 +1253,15 @@ gm_pw_int_option_menu_new (GtkWidget *grid,
     gtk_widget_set_tooltip_text (option_menu, tooltip);
 
   /* Update configuration when the user changes the selected option */
-  g_signal_connect (option_menu, "changed",
-		    G_CALLBACK (int_option_menu_changed),
-  		    (gpointer) conf_key);
+  g_signal_connect_data (option_menu, "changed",
+			 G_CALLBACK (int_option_menu_changed),
+			 (gpointer) g_strdup (key.c_str ()),
+			 (GClosureNotify) g_free,
+			 G_CONNECT_AFTER);
 
   /* Update the widget when the user changes the configuration */
-  signal_name = g_strdup_printf ("changed::%s", conf_key);
-  g_signal_connect (settings, signal_name,
+  signal_name = g_strdup_printf ("changed::%s", key.c_str ());
+  g_signal_connect (settings->get_g_settings (), signal_name,
                     G_CALLBACK (int_option_setting_changed), option_menu);
   g_free (signal_name);
 
@@ -1267,24 +1273,24 @@ gm_pw_int_option_menu_new (GtkWidget *grid,
 void
 gm_pw_string_option_menu_update (GtkWidget *option_menu,
                                  const gchar **options,
-                                 GSettings *settings,
-                                 const gchar *conf_key,
+                                 boost::shared_ptr<Ekiga::Settings> settings,
+				 const std::string & key,
                                  const gchar *default_value)
 {
   GtkTreeModel *model = NULL;
   GtkTreeIter iter;
 
-  gchar *conf_string = NULL;
+  std::string conf_string;
 
   int history = -1;
   int cpt = 0;
 
-  if (!options || !conf_key)
+  if (!options || key.empty ())
     return;
 
-  conf_string = g_settings_get_string (settings, conf_key);
-  if (conf_string == NULL)
-    conf_string = g_strdup (default_value);
+  conf_string = settings->get_string (key);
+  if (conf_string.empty ())
+    conf_string = default_value;
 
   model = gtk_combo_box_get_model (GTK_COMBO_BOX (option_menu));
 
@@ -1293,7 +1299,7 @@ gm_pw_string_option_menu_update (GtkWidget *option_menu,
   cpt = 0;
   while (options [cpt]) {
 
-    if (conf_string && !g_strcmp0 (options [cpt], conf_string))
+    if (!g_strcmp0 (options [cpt], conf_string.c_str ()))
       history = cpt;
 
     gtk_list_store_append (GTK_LIST_STORE (model), &iter);
@@ -1301,31 +1307,24 @@ gm_pw_string_option_menu_update (GtkWidget *option_menu,
                         COLUMN_STRING_RAW, options [cpt],
                         COLUMN_STRING_TRANSLATED, options [cpt],
                         COLUMN_SENSITIVE, TRUE,
-                        COLUMN_GSETTINGS, (gpointer) settings,
+                        COLUMN_GSETTINGS, (gpointer) settings->get_g_settings (),
                         -1);
     cpt++;
   }
 
   if (history == -1) {
 
-    if (conf_string && g_strcmp0 (conf_string, "")) {
-
-      gtk_list_store_append (GTK_LIST_STORE (model), &iter);
-      gtk_list_store_set (GTK_LIST_STORE (model), &iter,
-                          COLUMN_STRING_RAW, conf_string,
-                          COLUMN_STRING_TRANSLATED, gettext (conf_string),
-                          COLUMN_SENSITIVE, FALSE,
-                          COLUMN_GSETTINGS, (gpointer) settings,
-                          -1);
-      history = cpt;
-    }
-    else
-      history = --cpt;
+    gtk_list_store_append (GTK_LIST_STORE (model), &iter);
+    gtk_list_store_set (GTK_LIST_STORE (model), &iter,
+			COLUMN_STRING_RAW, conf_string.c_str (),
+			COLUMN_STRING_TRANSLATED, gettext (conf_string.c_str ()),
+			COLUMN_SENSITIVE, FALSE,
+			COLUMN_GSETTINGS, (gpointer) settings->get_g_settings (),
+			-1);
+    history = cpt;
   }
 
   gtk_combo_box_set_active (GTK_COMBO_BOX (option_menu), history);
-
-  g_free (conf_string);
 }
 
 
@@ -1354,7 +1353,7 @@ sound_event_changed_cb (GtkWidget *b,
 
   gchar *filename = NULL;
   gchar *key = NULL;
-  gchar *sound_event = NULL;
+  std::string sound_event;
 
   g_return_if_fail (data != NULL);
   pw = gm_pw_get_pw (GTK_WIDGET (data));
@@ -1370,16 +1369,15 @@ sound_event_changed_cb (GtkWidget *b,
     if (key) {
       filename = gtk_file_chooser_get_filename (GTK_FILE_CHOOSER (b));
       if (filename) {
-        sound_event = g_settings_get_string (pw->sound_events_settings, key);
+        sound_event = pw->sound_events_settings->get_string (key);
 
-        if (!sound_event || g_strcmp0 (filename, sound_event))
-          g_settings_set_string (pw->sound_events_settings, key, (gchar *) filename);
+        if (sound_event.empty () || g_strcmp0 (filename, sound_event.c_str ()))
+          pw->sound_events_settings->set_string (key, filename);
 
         g_free (filename);
       }
 
       g_free (key);
-      g_free (sound_event);
     }
   }
 }
@@ -1411,7 +1409,7 @@ sound_event_setting_changed (G_GNUC_UNUSED GSettings *settings,
 
     if (key && str && !g_strcmp0 (key, str)) {
       gtk_list_store_set (GTK_LIST_STORE (model), &iter,
-                          0, g_settings_get_boolean (pw->sound_events_settings, key));
+                          0, pw->sound_events_settings->get_bool (key));
       break;
     }
 
@@ -1430,7 +1428,8 @@ sound_event_selected_cb (GtkTreeSelection *selection,
   GmPreferencesWindow *pw = NULL;
   gchar *key = NULL;
   gchar *filename = NULL;
-  gchar *sound_event = NULL;
+
+  std::string sound_event;
 
   g_return_if_fail (data != NULL);
   pw = gm_pw_get_pw (GTK_WIDGET (data));
@@ -1441,19 +1440,18 @@ sound_event_selected_cb (GtkTreeSelection *selection,
 
     if (key) {
 
-      sound_event = g_settings_get_string (pw->sound_events_settings, key);
+      sound_event = pw->sound_events_settings->get_string (key);
 
-      if (sound_event) {
+      if (!sound_event.empty ()) {
 
-        if (!g_path_is_absolute (sound_event))
+        if (!g_path_is_absolute (sound_event.c_str ()))
           filename = g_build_filename (DATA_DIR, "sounds", PACKAGE_NAME,
-                                       sound_event, NULL);
+                                       sound_event.c_str (), NULL);
         else
-          filename = g_strdup (sound_event);
+          filename = g_strdup (sound_event.c_str ());
 
         gtk_file_chooser_set_filename (GTK_FILE_CHOOSER (pw->fsbutton), filename);
         g_free (filename);
-        g_free (sound_event);
       }
 
       g_free (key);
@@ -1471,7 +1469,8 @@ sound_event_play_cb (G_GNUC_UNUSED GtkWidget *widget,
   GtkTreeIter selected_iter;
 
   gchar *key = NULL;
-  gchar *sound_event = NULL;
+
+  std::string sound_event;
 
   GmPreferencesWindow *pw = NULL;
 
@@ -1486,13 +1485,12 @@ sound_event_play_cb (G_GNUC_UNUSED GtkWidget *widget,
 
     gtk_tree_model_get (GTK_TREE_MODEL (model), &selected_iter, 2, &key, -1);
 
-    sound_event = g_settings_get_string (pw->sound_events_settings, key);
-    if (sound_event) {
-      if (!g_path_is_absolute (sound_event))
-	pw->audiooutput_core->play_event(sound_event);
+    sound_event = pw->sound_events_settings->get_string (key);
+    if (!sound_event.empty ()) {
+      if (!g_path_is_absolute (sound_event.c_str ()))
+	pw->audiooutput_core->play_event (sound_event);
       else
-        pw->audiooutput_core->play_file(sound_event);
-      g_free (sound_event);
+        pw->audiooutput_core->play_file (sound_event);
     }
 
     g_free (key);
@@ -1525,7 +1523,7 @@ sound_event_toggled_cb (G_GNUC_UNUSED GtkCellRendererToggle *cell,
 
   fixed ^= 1;
 
-  g_settings_set_boolean (pw->sound_events_settings, key, fixed);
+  pw->sound_events_settings->set_bool (key, fixed);
 
   g_free (key);
   gtk_tree_path_free (path);
@@ -1966,19 +1964,24 @@ preferences_window_new (Ekiga::ServiceCore& core)
   pw->connections.add (conn);
 
   /* Connect notifiers for SOUND_EVENTS_SCHEMA settings */
-  g_signal_connect (pw->sound_events_settings, "changed::enable-incoming-call-sound",
+  g_signal_connect (pw->sound_events_settings->get_g_settings (),
+		    "changed::enable-incoming-call-sound",
                     G_CALLBACK (sound_event_setting_changed), window);
 
-  g_signal_connect (pw->sound_events_settings, "changed::enable-ring-tone-sound",
+  g_signal_connect (pw->sound_events_settings->get_g_settings (),
+		    "changed::enable-ring-tone-sound",
                     G_CALLBACK (sound_event_setting_changed), window);
 
-  g_signal_connect (pw->sound_events_settings, "changed::enable-busy-tone-sound",
+  g_signal_connect (pw->sound_events_settings->get_g_settings (),
+		    "changed::enable-busy-tone-sound",
                     G_CALLBACK (sound_event_setting_changed), window);
 
-  g_signal_connect (pw->sound_events_settings, "changed::enable-new-voicemail-sound",
+  g_signal_connect (pw->sound_events_settings->get_g_settings (),
+		    "changed::enable-new-voicemail-sound",
                     G_CALLBACK (sound_event_setting_changed), window);
 
-  g_signal_connect (pw->sound_events_settings, "changed::enable-new-message-sound",
+  g_signal_connect (pw->sound_events_settings->get_g_settings (),
+		    "changed::enable-new-message-sound",
                     G_CALLBACK (sound_event_setting_changed), window);
 
   return window;
