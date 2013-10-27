@@ -197,6 +197,10 @@ private:
 
     void decide_type ();
 
+    void add_contact ();
+    void on_add_contact_form_submitted (bool submitted,
+					Ekiga::Form& result);
+
     void on_edit_form_submitted (bool submitted,
 				 Ekiga::Form &result);
     void on_consult (const std::string url);
