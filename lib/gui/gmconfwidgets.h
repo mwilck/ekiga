@@ -57,26 +57,6 @@
 G_BEGIN_DECLS
 
 
-/* DESCRIPTION  :  This function is called when an entry is activated.
- * BEHAVIOR     :  Updates the key given as parameter to the new value of the
- *                 entry.  
- * PRE          :  Non-Null data corresponding to the string config key
- *                 to modify.
- */
-void entry_activate_changed (GtkWidget *,
-                             gpointer);
-
-/* DESCRIPTION  :  This function is called when the focus of an entry changes.
- * BEHAVIOR     :  Updates the key given as parameter to the new value of the
- *                 entry.  
- * PRE          :  Non-Null data corresponding to the string config key
- *                 to modify.
- */
-gboolean entry_focus_changed (GtkWidget *,
-                              GdkEventFocus *,
-                              gpointer);
-
-
 /* DESCRIPTION  :  Generic notifiers for entries.
  *                 This callback is called when a specific key of
  *                 the config database associated with an entry changes.

@@ -80,6 +80,9 @@ typedef struct _GmPreferencesWindow
   boost::shared_ptr<Ekiga::VideoInputCore> videoinput_core;
   boost::shared_ptr<Ekiga::AudioInputCore> audioinput_core;
   boost::shared_ptr<Ekiga::AudioOutputCore> audiooutput_core;
+  boost::shared_ptr<Ekiga::Settings> sip_settings;
+  boost::shared_ptr<Ekiga::Settings> h323_settings;
+  boost::shared_ptr<Ekiga::Settings> personal_data_settings;
   GSettings *sound_events_settings;
   GSettings *audio_devices_settings;
   GSettings *video_devices_settings;
@@ -93,6 +96,10 @@ _GmPreferencesWindow::_GmPreferencesWindow()
   sound_events_settings = g_settings_new (SOUND_EVENTS_SCHEMA);
   audio_devices_settings = g_settings_new (AUDIO_DEVICES_SCHEMA);
   video_devices_settings = g_settings_new (VIDEO_DEVICES_SCHEMA);
+  personal_data_settings =
+    boost::shared_ptr<Ekiga::Settings> (new Ekiga::Settings (PERSONAL_DATA_SCHEMA));
+  sip_settings = boost::shared_ptr<Ekiga::Settings> (new Ekiga::Settings (SIP_SCHEMA));
+  h323_settings = boost::shared_ptr<Ekiga::Settings> (new Ekiga::Settings (SIP_SCHEMA));
 }
 
 _GmPreferencesWindow::~_GmPreferencesWindow()
@@ -237,6 +244,26 @@ static void gm_pw_init_video_codecs_page (GtkWidget *prefs_window,
                                           GtkWidget *container);
 
 
+/* DESCRIPTION  :  /
+ * BEHAVIOR     :  Creates a GtkEntry associated with a config key and returns
+ *                 the result.
+ *                 The first parameter is the section in which
+ *                 the GtkEntry should be attached. The other parameters are
+ *                 the text label, the config key, the tooltip, the row where
+ *                 to attach it in the section, and if the label and GtkEntry
+ *                 should be packed together or aligned with others in the
+ *                 section they belong to.
+ * PRE          :  /
+ */
+GtkWidget * gm_pw_entry_new (GtkWidget* grid,
+			     const gchar *label_txt,
+			     boost::shared_ptr<Ekiga::Settings> settings,
+			     const gchar *key,
+			     const gchar *tooltip,
+			     int row,
+			     int width,
+			     gboolean box);
+
 // FIXME: I'm sure the int and string option menus could be merged together...
 
 /* DESCRIPTION  :  /
@@ -359,6 +386,17 @@ static void sound_event_changed_cb (GtkWidget *widget,
 static void sound_event_setting_changed (GSettings *,
                                          gchar *,
                                          gpointer data);
+
+static void entry_activate_changed (GtkWidget *w,
+				    gpointer data);
+
+static gboolean entry_focus_changed (GtkWidget  *w,
+				     G_GNUC_UNUSED GdkEventFocus *ev,
+				     gpointer data);
+
+static void entry_setting_changed (GSettings *,
+				   gchar *,
+				   gpointer data);
 
 static void string_option_menu_changed (GtkWidget *option_menu,
                                         gpointer data);
@@ -497,14 +535,17 @@ gm_pw_init_general_page (GtkWidget *prefs_window,
 {
   GtkWidget *subsection = NULL;
   GtkWidget *entry = NULL;
+  GmPreferencesWindow *pw = NULL;
+
+  pw = gm_pw_get_pw (prefs_window);
 
   /* Personal Information */
   subsection = gnome_prefs_subsection_new (prefs_window, container,
                                 _("Personal Information"), 2, 2);
 
-  entry = gnome_prefs_entry_new (subsection, _("_Full name:"),
-				 PERSONAL_DATA_KEY "full_name",
-				 _("Enter your full name"), 0, 2, false);
+  entry = gm_pw_entry_new (subsection, _("_Full name:"),
+			   pw->personal_data_settings, "full-name",
+			   _("Enter your full name"), 0, 2, false);
   gtk_widget_set_size_request (GTK_WIDGET (entry), 250, -1);
   gtk_entry_set_max_length (GTK_ENTRY (entry), 65);
 }
@@ -688,6 +729,7 @@ gm_pw_init_h323_page (GtkWidget *prefs_window,
 {
   GtkWidget *entry = NULL;
   GtkWidget *subsection = NULL;
+  GmPreferencesWindow *pw = gm_pw_get_pw (prefs_window);
 
   const gchar *capabilities [] =
     {_("String"),
@@ -708,7 +750,10 @@ gm_pw_init_h323_page (GtkWidget *prefs_window,
                                            _("Misc Settings"), 2, 2);
 
   entry =
-    gnome_prefs_entry_new (subsection, _("Forward _URI:"), H323_KEY "forward_host", _("The host where calls should be forwarded if call forwarding is enabled"), 1, 2, false);
+    gm_pw_entry_new (subsection, _("Forward _URI:"),
+		     pw->h323_settings, "forward-host",
+		     _("The host where calls should be forwarded if call forwarding is enabled"),
+		     1, 2, false);
   if (!g_strcmp0 (gtk_entry_get_text (GTK_ENTRY (entry)), ""))
     gtk_entry_set_text (GTK_ENTRY (entry), "h323:");
 
@@ -741,6 +786,7 @@ gm_pw_init_sip_page (GtkWidget *prefs_window,
 {
   GtkWidget *entry = NULL;
   GtkWidget *subsection = NULL;
+  GmPreferencesWindow *pw = gm_pw_get_pw (prefs_window);
 
   const gchar *capabilities [] =
     {
@@ -753,10 +799,15 @@ gm_pw_init_sip_page (GtkWidget *prefs_window,
   subsection = gnome_prefs_subsection_new (prefs_window, container,
                                            _("Misc Settings"), 2, 2);
 
-  gnome_prefs_entry_new (subsection, _("_Outbound proxy:"), SIP_KEY "outbound_proxy_host", _("The SIP Outbound Proxy to use for outgoing calls"), 0, 2, false);
+  gm_pw_entry_new (subsection, _("_Outbound proxy:"),
+		   pw->sip_settings, "outbound-proxy-host",
+		   _("The SIP Outbound Proxy to use for outgoing calls"), 0, 2, false);
 
   entry =
-    gnome_prefs_entry_new (subsection, _("Forward _URI:"), SIP_KEY "forward_host", _("The host where calls should be forwarded if call forwarding is enabled"), 1, 2, false);
+    gm_pw_entry_new (subsection, _("Forward _URI:"),
+		     pw->sip_settings, "forward-host",
+		     _("The host where calls should be forwarded if call forwarding is enabled"),
+		     1, 2, false);
   if (!g_strcmp0 (gtk_entry_get_text (GTK_ENTRY (entry)), ""))
     gtk_entry_set_text (GTK_ENTRY (entry), "sip:");
 
@@ -947,6 +998,88 @@ gm_pw_init_video_codecs_page (GtkWidget *prefs_window,
 
 
 GtkWidget *
+gm_pw_entry_new (GtkWidget* grid,
+		 const gchar *label_txt,
+		 boost::shared_ptr<Ekiga::Settings> settings,
+		 const gchar *key,
+		 const gchar *tooltip,
+		 int row,
+		 int width,
+		 gboolean box)
+{
+  GtkWidget *entry = NULL;
+  GtkWidget *label = NULL;
+  GtkWidget *hbox = NULL;
+
+  gchar *signal_name = NULL;
+  gchar *conf_string = NULL;
+  gboolean writable = FALSE;
+
+  writable = g_settings_is_writable (settings->get_g_settings (), key);
+
+  if (box) {
+    hbox = gtk_box_new (GTK_ORIENTATION_HORIZONTAL, 0);
+  }
+
+  label = gtk_label_new_with_mnemonic (label_txt);
+  if (!writable)
+    gtk_widget_set_sensitive (GTK_WIDGET (label), FALSE);
+
+  if (box)
+    gtk_box_pack_start (GTK_BOX (hbox), label,
+			FALSE, FALSE, 1 * 2);
+  else {
+
+    g_object_set (G_OBJECT (grid), "expand", TRUE, NULL);
+    gtk_grid_attach (GTK_GRID (grid), label, 0, row, 1, 1);
+  }
+
+  gtk_misc_set_alignment (GTK_MISC (label), 0.0, 0.5);
+  gtk_label_set_justify (GTK_LABEL (label), GTK_JUSTIFY_LEFT);
+
+  entry = gtk_entry_new ();
+  gtk_label_set_mnemonic_widget (GTK_LABEL(label), entry);
+  if (!writable)
+    gtk_widget_set_sensitive (GTK_WIDGET (entry), FALSE);
+
+  if (box)
+    gtk_box_pack_start (GTK_BOX (hbox), entry,
+			FALSE, FALSE, 1 * 2);
+  else
+    gtk_grid_attach (GTK_GRID (grid), entry, 1, row, 1, 1);
+
+  conf_string = g_settings_get_string (settings->get_g_settings (), key);
+
+  if (conf_string != NULL)
+    gtk_entry_set_text (GTK_ENTRY (entry), conf_string);
+  g_free (conf_string);
+
+  g_object_set_data_full (G_OBJECT (entry), "key", (gpointer) key, (GDestroyNotify) g_free);
+  g_signal_connect_after (entry, "focus-out-event",
+			  G_CALLBACK (entry_focus_changed),
+			  (gpointer) settings->get_g_settings ());
+  g_signal_connect_after (entry, "activate",
+			  G_CALLBACK (entry_activate_changed),
+			  (gpointer) settings->get_g_settings ());
+
+  /* Update the widget when the user changes the configuration */
+  signal_name = g_strdup_printf ("changed::%s", key);
+  g_signal_connect (settings->get_g_settings (), signal_name,
+                    G_CALLBACK (entry_setting_changed), entry);
+  g_free (signal_name);
+
+  if (box)
+    gtk_grid_attach (GTK_GRID (grid), hbox, 0, row, width, 1);
+
+  if (tooltip)
+    gtk_widget_set_tooltip_text (entry, tooltip);
+
+  gtk_widget_show_all (grid);
+
+  return entry;
+}
+
+GtkWidget *
 gm_pw_string_option_menu_new (GtkWidget *grid,
                               const gchar *label_txt,
                               const gchar **options,
@@ -1046,7 +1179,6 @@ gm_pw_string_option_menu_new (GtkWidget *grid,
 
   return option_menu;
 }
-
 
 GtkWidget *
 gm_pw_int_option_menu_new (GtkWidget *grid,
@@ -1450,6 +1582,80 @@ void on_audiooutput_device_removed_cb (const Ekiga::AudioOutputDevice & device, 
   gnome_prefs_string_option_menu_remove(pw->sound_events_output, (device.GetString()).c_str());
 }
 
+void
+entry_activate_changed (GtkWidget *w,
+			gpointer data)
+{
+  entry_focus_changed (w, NULL, data);
+}
+
+gboolean
+entry_focus_changed (GtkWidget  *w,
+		     G_GNUC_UNUSED GdkEventFocus *ev,
+		     gpointer data)
+{
+  GSettings *settings = NULL;
+  gchar *key = NULL;
+  gchar *current_value = NULL;
+  
+  g_return_val_if_fail (data, FALSE);
+
+  settings = G_SETTINGS(data);
+  key = (gchar*) g_object_get_data (G_OBJECT (w), (const gchar*) "key");
+
+  current_value = g_settings_get_string (settings, key);
+
+  if (!current_value 
+      || g_strcmp0 (current_value, gtk_entry_get_text (GTK_ENTRY (w)))) {
+
+    g_settings_set_string (settings, key, (gchar *) gtk_entry_get_text (GTK_ENTRY (w)));
+  }
+  g_free (current_value);
+
+  return FALSE;
+}
+
+void
+entry_setting_changed (GSettings *settings,
+		       gchar *key,
+		       gpointer data)
+{
+  GtkWidget *e = NULL;
+  gchar *current_value = NULL;
+
+  g_return_if_fail (data != NULL && GTK_IS_ENTRY (data));
+  e = GTK_WIDGET (data);
+
+  current_value = g_settings_get_string (settings, key);
+
+  if (current_value
+      && g_strcmp0 (current_value, gtk_entry_get_text (GTK_ENTRY (e)))) {
+
+    g_signal_handlers_block_matched (G_OBJECT (e),
+				     G_SIGNAL_MATCH_FUNC,
+				     0, 0, NULL,
+				     (gpointer) entry_focus_changed,
+				     NULL);
+    g_signal_handlers_block_matched (G_OBJECT (e),
+				     G_SIGNAL_MATCH_FUNC,
+				     0, 0, NULL,
+				     (gpointer) entry_activate_changed,
+				     NULL);
+    gtk_entry_set_text (GTK_ENTRY (e), current_value);
+    g_signal_handlers_unblock_matched (G_OBJECT (e),
+				       G_SIGNAL_MATCH_FUNC,
+				       0, 0, NULL,
+				       (gpointer) entry_activate_changed,
+				       NULL);
+    g_signal_handlers_unblock_matched (G_OBJECT (e),
+				       G_SIGNAL_MATCH_FUNC,
+				       0, 0, NULL,
+				       (gpointer) entry_focus_changed,
+				       NULL);
+  }
+
+  g_free (current_value);
+}
 
 void
 string_option_menu_changed (GtkWidget *option_menu,
