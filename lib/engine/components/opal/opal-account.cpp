@@ -58,6 +58,24 @@
 #include "opal-presentity.h"
 #include "sip-endpoint.h"
 
+// remove leading and trailing spaces and tabs (useful for copy/paste)
+// also, if no protocol specified, add leading "sip:"
+static std::string
+canonize_uri (std::string uri)
+{
+  const size_t begin_str = uri.find_first_not_of (" \t");
+  if (begin_str == std::string::npos)  // there is no content
+    return "";
+
+  const size_t end_str = uri.find_last_not_of (" \t");
+  const size_t range = end_str - begin_str + 1;
+  uri = uri.substr (begin_str, range);
+  const size_t pos = uri.find (":");
+  if (pos == std::string::npos)
+    uri = uri.insert (0, "sip:");
+  return uri;
+}
+
 xmlNodePtr
 Opal::Account::build_node(std::string name,
 			  std::string host,
@@ -483,6 +501,11 @@ Opal::Account::populate_menu (Ekiga::MenuBuilder &builder)
 
   builder.add_separator ();
 
+  builder.add_action ("add", _("A_dd Contact"),
+		      boost::bind (&Opal::Account::add_contact, this));
+
+  builder.add_separator ();
+
   builder.add_action ("edit", _("_Edit"),
 		      boost::bind (&Opal::Account::edit, this));
   builder.add_action ("remove", _("_Remove"),
@@ -703,6 +726,74 @@ Opal::Account::on_edit_form_submitted (bool submitted,
   }
 }
 
+void
+Opal::Account::add_contact ()
+{
+  boost::shared_ptr<Ekiga::PresenceCore> pcore = presence_core.lock ();
+  if (!pcore)
+    return;
+
+  boost::shared_ptr<Ekiga::FormRequestSimple> request = boost::shared_ptr<Ekiga::FormRequestSimple> (new Ekiga::FormRequestSimple (boost::bind (&Opal::Account::on_add_contact_form_submitted, this, _1, _2)));
+  std::set<std::string> groups = existing_groups ();
+
+  request->title (_("Add to account roster"));
+  request->instructions (_("Please fill in this form to add a new contact "
+			   "to this account's roster"));
+  request->text ("name", _("Name:"), "", _("Name of the contact, as shown in your roster"));
+
+  request->text ("uri", _("Address:"), "sip:", _("Address, e.g. sip:xyz@ekiga.net; if you do not specify the host part, e.g. sip:xyz, then you can choose it by right-clicking on the contact in roster")); // let's put a default
+
+  request->editable_set ("groups",
+			 _("Put contact in groups:"),
+			 std::set<std::string>(), groups);
+
+  questions (request);
+}
+
+void
+Opal::Account::on_add_contact_form_submitted (bool submitted,
+					      Ekiga::Form& result)
+{
+  if (!submitted)
+    return;
+
+  boost::shared_ptr<Ekiga::PresenceCore> pcore = presence_core.lock ();
+  if (!pcore)
+    return;
+
+  const std::string name = result.text ("name");
+  std::string uri;
+  const std::set<std::string> groups = result.editable_set ("groups");
+
+  uri = result.text ("uri");
+  uri = canonize_uri (uri);
+
+  if (pcore->is_supported_uri (uri)) {
+
+    xmlNodePtr presnode = Opal::Presentity::build_node (name, uri, groups);
+    xmlAddChild (roster_node, presnode);
+    trigger_saving ();
+
+    Opal::PresentityPtr pres(new Presentity (presence_core, existing_groups, presnode));
+    pres->trigger_saving.connect (boost::ref (trigger_saving));
+    pres->removed.connect (boost::bind (boost::ref (presentity_removed), pres));
+    pres->updated.connect (boost::bind (boost::ref (presentity_updated), pres));
+    add_object (pres);
+    presentity_added (pres);
+
+  } else {
+
+    boost::shared_ptr<Ekiga::FormRequestSimple> request = boost::shared_ptr<Ekiga::FormRequestSimple>(new Ekiga::FormRequestSimple (boost::bind (&Opal::Account::on_add_contact_form_submitted, this, _1, _2)));
+
+    result.visit (*request);
+    if (!pcore->is_supported_uri (uri))
+      request->error (_("You supplied an unsupported address"));
+    else
+      request->error (_("You already have a contact with this address!"));
+
+    questions (request);
+  }
+}
 
 void
 Opal::Account::on_consult (const std::string url)
