@@ -2616,7 +2616,10 @@ call_window_new (Ekiga::ServiceCore & core)
 {
   EkigaCallWindow *cw;
 
-  cw = EKIGA_CALL_WINDOW (g_object_new (EKIGA_TYPE_CALL_WINDOW, NULL));
+  cw = EKIGA_CALL_WINDOW (g_object_new (EKIGA_TYPE_CALL_WINDOW,
+					"key", USER_INTERFACE ".call-window",
+					"hide_on_delete", false,
+					"hide_on_esc", false, NULL));
 
   cw->priv->libnotify = core.get ("libnotify");
   cw->priv->videoinput_core = core.get<Ekiga::VideoInputCore> ("videoinput-core");
@@ -2631,10 +2634,6 @@ call_window_new (Ekiga::ServiceCore & core)
 
   gm_conf_notifier_add (VIDEO_DISPLAY_KEY "stay_on_top",
 			stay_on_top_changed_nt, cw);
-
-  gm_window_set_key (GM_WINDOW (cw), USER_INTERFACE ".call-window");
-  gm_window_set_hide_on_delete (GM_WINDOW (cw), false);
-  gm_window_set_hide_on_escape (GM_WINDOW (cw), false);
 
   gtk_window_set_title (GTK_WINDOW (cw), _("Call Window"));
 

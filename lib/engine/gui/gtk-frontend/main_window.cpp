@@ -1608,8 +1608,9 @@ gm_main_window_new (Ekiga::ServiceCore & core)
   EkigaMainWindow *mw;
 
   /* basic gtk+ setup  */
-  mw = EKIGA_MAIN_WINDOW (g_object_new (EKIGA_TYPE_MAIN_WINDOW, NULL));
-  gm_window_set_key (GM_WINDOW (mw), USER_INTERFACE ".main-window");
+  mw = EKIGA_MAIN_WINDOW (g_object_new (EKIGA_TYPE_MAIN_WINDOW,
+					"key", USER_INTERFACE ".main-window",
+					NULL));
 
   /* fetching needed engine objects */
 

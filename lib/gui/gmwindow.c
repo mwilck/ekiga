@@ -71,8 +71,8 @@ gm_window_delete_event_cb (GtkWidget *w,
                            gpointer data);
 
 static void
-window_show_cb (GtkWidget *w,
-		gpointer data);
+window_realize_cb (GtkWidget *w,
+		   gpointer data);
 
 static void
 window_hide_cb (GtkWidget *w,
@@ -224,8 +224,8 @@ gm_window_init (GmWindow* self)
   g_signal_connect (self, "delete-event",
 		    G_CALLBACK (gm_window_delete_event_cb), NULL);
 
-  g_signal_connect (self, "show",
-                    G_CALLBACK (window_show_cb), self);
+  g_signal_connect (self, "realize",
+                    G_CALLBACK (window_realize_cb), self);
 
   g_signal_connect (self, "hide",
                     G_CALLBACK (window_hide_cb), self);
@@ -256,8 +256,8 @@ gm_window_delete_event_cb (GtkWidget *w,
 
 
 static void
-window_show_cb (GtkWidget *w,
-                G_GNUC_UNUSED gpointer data)
+window_realize_cb (GtkWidget *w,
+		   G_GNUC_UNUSED gpointer data)
 {
   int x = 0;
   int y = 0;
@@ -368,17 +368,6 @@ gm_window_new_with_key (const char *key)
   g_return_val_if_fail (key != NULL, NULL);
 
   return GTK_WIDGET (g_object_new (GM_TYPE_WINDOW, "key", key, NULL));
-}
-
-
-void
-gm_window_set_key (GmWindow *window,
-                   const char *key)
-{
-  g_return_if_fail (GM_IS_WINDOW (window));
-  g_return_if_fail (key != NULL);
-
-  g_object_set (window, "key", key, NULL);
 }
 
 
