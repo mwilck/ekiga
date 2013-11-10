@@ -847,7 +847,9 @@ gm_pw_init_h323_page (GtkWidget *prefs_window,
   subsection = gnome_prefs_subsection_new (prefs_window, container,
                                 _("DTMF Mode"), 1, 4);
 
-  gnome_prefs_int_option_menu_new (subsection, _("_Send DTMF as:"), capabilities, H323_KEY "dtmf_mode", _("Select the mode for DTMFs sending"), 0);
+  gm_pw_int_option_menu_new (subsection, _("_Send DTMF as:"), capabilities,
+			     pw->h323_settings, "dtmf-mode",
+			     _("Select the mode for DTMFs sending"), 0);
 }
 
 
@@ -886,7 +888,9 @@ gm_pw_init_sip_page (GtkWidget *prefs_window,
   subsection = gnome_prefs_subsection_new (prefs_window, container,
                                 _("DTMF Mode"), 1, 1);
 
-  gnome_prefs_int_option_menu_new (subsection, _("_Send DTMF as:"), capabilities, SIP_KEY "dtmf_mode", _("Select the mode for DTMFs sending"), 0);
+  gm_pw_int_option_menu_new (subsection, _("_Send DTMF as:"), capabilities,
+			     pw->sip_settings, "dtmf-mode",
+			     _("Select the mode for DTMFs sending"), 0);
 }
 
 
