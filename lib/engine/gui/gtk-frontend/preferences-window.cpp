@@ -82,10 +82,15 @@ typedef struct _GmPreferencesWindow
   boost::shared_ptr<Ekiga::AudioOutputCore> audiooutput_core;
   boost::shared_ptr<Ekiga::Settings> sip_settings;
   boost::shared_ptr<Ekiga::Settings> h323_settings;
+  boost::shared_ptr<Ekiga::Settings> nat_settings;
+  boost::shared_ptr<Ekiga::Settings> call_forwarding_settings;
+  boost::shared_ptr<Ekiga::Settings> call_options_settings;
   boost::shared_ptr<Ekiga::Settings> personal_data_settings;
   boost::shared_ptr<Ekiga::Settings> sound_events_settings;
   boost::shared_ptr<Ekiga::Settings> audio_devices_settings;
+  boost::shared_ptr<Ekiga::Settings> audio_codecs_settings;
   boost::shared_ptr<Ekiga::Settings> video_devices_settings;
+  boost::shared_ptr<Ekiga::Settings> video_display_settings;
   Ekiga::scoped_connections connections;
 } GmPreferencesWindow;
 
@@ -97,14 +102,24 @@ _GmPreferencesWindow::_GmPreferencesWindow()
     boost::shared_ptr<Ekiga::Settings> (new Ekiga::Settings (SOUND_EVENTS_SCHEMA));
   audio_devices_settings =
     boost::shared_ptr<Ekiga::Settings> (new Ekiga::Settings (AUDIO_DEVICES_SCHEMA));
+  audio_codecs_settings =
+    boost::shared_ptr<Ekiga::Settings> (new Ekiga::Settings (AUDIO_CODECS_SCHEMA));
   video_devices_settings =
     boost::shared_ptr<Ekiga::Settings> (new Ekiga::Settings (VIDEO_DEVICES_SCHEMA));
+  video_display_settings =
+    boost::shared_ptr<Ekiga::Settings> (new Ekiga::Settings (VIDEO_DISPLAY_SCHEMA));
   personal_data_settings =
     boost::shared_ptr<Ekiga::Settings> (new Ekiga::Settings (PERSONAL_DATA_SCHEMA));
   sip_settings =
     boost::shared_ptr<Ekiga::Settings> (new Ekiga::Settings (SIP_SCHEMA));
   h323_settings =
-    boost::shared_ptr<Ekiga::Settings> (new Ekiga::Settings (SIP_SCHEMA));
+    boost::shared_ptr<Ekiga::Settings> (new Ekiga::Settings (H323_SCHEMA));
+  nat_settings =
+    boost::shared_ptr<Ekiga::Settings> (new Ekiga::Settings (NAT_SCHEMA));
+  call_forwarding_settings =
+    boost::shared_ptr<Ekiga::Settings> (new Ekiga::Settings (CALL_FORWARDING_SCHEMA));
+  call_options_settings =
+    boost::shared_ptr<Ekiga::Settings> (new Ekiga::Settings (CALL_OPTIONS_SCHEMA));
 }
 
 _GmPreferencesWindow::~_GmPreferencesWindow()
@@ -266,6 +281,25 @@ GtkWidget * gm_pw_entry_new (GtkWidget* grid,
 			     int width,
 			     gboolean box);
 
+/* DESCRIPTION  :  /
+ * BEHAVIOR     :  Creates a GtkCheckButton associated with a config key and returns
+ *                 the result.
+ *                 The first parameter is the section in which
+ *                 the GtkWidget should be attached. The other parameters are
+ *                 the text label, the config key, the tooltip, the row where
+ *                 to attach it in the section, and if the label and GtkEntry
+ *                 should be packed together or aligned with others in the
+ *                 section they belong to.
+ * PRE          :  /
+ */
+GtkWidget * gm_pw_toggle_new (GtkWidget* grid,
+			      const gchar *label_txt,
+			      boost::shared_ptr <Ekiga::Settings> settings,
+			      const std::string & key,
+			      const gchar *tooltip,
+			      int row,
+			      int width);
+
 // FIXME: I'm sure the int and string option menus could be merged together...
 
 /* DESCRIPTION  :  /
@@ -414,6 +448,14 @@ static void int_option_setting_changed (GSettings *settings,
                                         gchar *key,
                                         gpointer data);
 
+static void toggle_changed (GtkCheckButton *but,
+			    gpointer data);
+
+static void toggle_setting_changed (GSettings *settings,
+				    gchar *key,
+				    gpointer data);
+
+
 void 
 gm_prefs_window_update_devices_list (GtkWidget *prefs_window);
 
@@ -558,12 +600,18 @@ gm_pw_init_interface_page (GtkWidget *prefs_window,
                            GtkWidget *container)
 {
   GtkWidget *subsection = NULL;
+  GmPreferencesWindow *pw = NULL;
+
+  pw = gm_pw_get_pw (prefs_window);
 
   /* Video Display */
   subsection = gnome_prefs_subsection_new (prefs_window, container,
                                 _("Video Display"), 1, 2);
 
-  gnome_prefs_toggle_new (subsection, _("Place windows displaying video _above other windows"), VIDEO_DISPLAY_KEY "stay_on_top", _("Place windows displaying video above other windows during calls"), 0, 2);
+  gm_pw_toggle_new (subsection, _("Place windows displaying video _above other windows"),
+		    pw->video_display_settings, "stay-on-top",
+		    _("Place windows displaying video above other windows during calls"),
+		    0, 2);
 
   /* Network Settings */
   subsection = gnome_prefs_subsection_new (prefs_window, container,
@@ -571,7 +619,9 @@ gm_pw_init_interface_page (GtkWidget *prefs_window,
 
   gnome_prefs_spin_new (subsection, _("Type of Service (TOS):"), PROTOCOLS_KEY "rtp_tos_field", _("The Type of Service (TOS) byte on outgoing RTP IP packets. This byte is used by the network to provide some level of Quality of Service (QoS). Default value 184 (0xB8) corresponds to Expedited Forwarding (EF) PHB as defined in RFC 3246."), 0.0, 255.0, 1.0, 0, 2, NULL, true);
 
-  gnome_prefs_toggle_new (subsection, _("Enable network _detection"), NAT_KEY "enable_stun", _("Enable the automatic network setup resulting from the STUN test"), 1, 2);
+  gm_pw_toggle_new (subsection, _("Enable network _detection"),
+		    pw->nat_settings, "enable-stun",
+		    _("Enable the automatic network setup resulting from the STUN test"), 1, 2);
 }
 
 static void
@@ -579,15 +629,24 @@ gm_pw_init_call_options_page (GtkWidget *prefs_window,
                               GtkWidget *container)
 {
   GtkWidget *subsection = NULL;
+  GmPreferencesWindow *pw = NULL;
+
+  pw = gm_pw_get_pw (prefs_window);
 
   subsection = gnome_prefs_subsection_new (prefs_window, container,
                                            _("Call Forwarding"), 3, 2);
 
-  gnome_prefs_toggle_new (subsection, _("_Always forward calls to the given host"), CALL_FORWARDING_KEY "always_forward", _("If enabled, all incoming calls will be forwarded to the host that is specified in the protocol settings"), 0, 2);
+  gm_pw_toggle_new (subsection, _("_Always forward calls to the given host"),
+		    pw->call_forwarding_settings, "always-forward",
+		    _("If enabled, all incoming calls will be forwarded to the host that is specified in the protocol settings"), 0, 2);
 
-  gnome_prefs_toggle_new (subsection, _("Forward calls to the given host if _no answer"), CALL_FORWARDING_KEY "forward_on_no_answer", _("If enabled, all incoming calls will be forwarded to the host that is specified in the protocol settings if you do not answer the call"), 1, 2);
+  gm_pw_toggle_new (subsection, _("Forward calls to the given host if _no answer"),
+		    pw->call_forwarding_settings, "forward-on-no-answer",
+		    _("If enabled, all incoming calls will be forwarded to the host that is specified in the protocol settings if you do not answer the call"), 1, 2);
 
-  gnome_prefs_toggle_new (subsection, _("Forward calls to the given host if _busy"), CALL_FORWARDING_KEY "forward_on_busy", _("If enabled, all incoming calls will be forwarded to the host that is specified in the protocol settings if you already are in a call or if you are in busy mode"), 2, 2);
+  gm_pw_toggle_new (subsection, _("Forward calls to the given host if _busy"),
+		    pw->call_forwarding_settings, "forward-on-busy",
+		    _("If enabled, all incoming calls will be forwarded to the host that is specified in the protocol settings if you already are in a call or if you are in busy mode"), 2, 2);
 
 
   subsection = gnome_prefs_subsection_new (prefs_window, container,
@@ -595,7 +654,9 @@ gm_pw_init_call_options_page (GtkWidget *prefs_window,
 
   /* Add all the fields */
   gnome_prefs_spin_new (subsection, _("Call forwarding delay (in seconds):"), CALL_OPTIONS_KEY "no_answer_timeout", _("Automatically reject or forward incoming calls if no answer is given after the specified amount of time (in seconds)"), 10.0, 299.0, 1.0, 0, 3, NULL, true);
-  gnome_prefs_toggle_new (subsection, _("_Automatically answer incoming calls"), CALL_OPTIONS_KEY "auto_answer", _("If enabled, automatically answer incoming calls"), 1, 3);
+  gm_pw_toggle_new (subsection, _("_Automatically answer incoming calls"),
+		    pw->call_options_settings, "auto-answer",
+		    _("If enabled, automatically answer incoming calls"), 1, 3);
 }
 
 
@@ -761,18 +822,26 @@ gm_pw_init_h323_page (GtkWidget *prefs_window,
 
   /* Packing widget */
   subsection = gnome_prefs_subsection_new (prefs_window, container,
-                                _("Advanced Settings"), 5, 4);
+					   _("Advanced Settings"), 5, 4);
 
   /* The toggles */
-  gnome_prefs_toggle_new (subsection, _("Enable H.245 _tunneling"), H323_KEY "enable_h245_tunneling", _("This enables H.245 Tunneling mode. In H.245 Tunneling mode H.245 messages are encapsulated into the H.225 channel (port 1720). This saves one TCP connection during calls. H.245 Tunneling was introduced in H.323v2."), 0, 4);
+  gm_pw_toggle_new (subsection, _("Enable H.245 _tunneling"),
+		    pw->h323_settings, "enable-h245-tunneling",
+		    _("This enables H.245 Tunneling mode. In H.245 Tunneling mode H.245 messages are encapsulated into the H.225 channel (port 1720). This saves one TCP connection during calls. H.245 Tunneling was introduced in H.323v2."), 0, 4);
 
-  gnome_prefs_toggle_new (subsection, _("Enable _early H.245"), H323_KEY "enable_early_h245", _("This enables H.245 early in the setup"), 1, 4);
+  gm_pw_toggle_new (subsection, _("Enable _early H.245"),
+		    pw->h323_settings, "enable-early-h245",
+		    _("This enables H.245 early in the setup"), 1, 4);
 
-  gnome_prefs_toggle_new (subsection, _("Enable fast _start procedure"), H323_KEY "enable_fast_start", _("Connection will be established in Fast Start (Fast Connect) mode. Fast Start is a new way to start calls faster that was introduced in H.323v2."), 2, 4);
+  gm_pw_toggle_new (subsection, _("Enable fast _start procedure"), pw->h323_settings,
+		    "enable-fast-start", _("Connection will be established in Fast Start (Fast Connect) mode. Fast Start is a new way to start calls faster that was introduced in H.323v2."), 2, 4);
 
-  gnome_prefs_toggle_new (subsection, _("Enable H.239 control"), H323_KEY "enable_h239", _("This enables H.239 capability for additional video roles."), 3, 4);
+  gm_pw_toggle_new (subsection, _("Enable H.239 control"), pw->h323_settings,
+		    "enable-h239", _("This enables H.239 capability for additional video roles."), 3, 4);
 
-  gnome_prefs_int_option_menu_new (subsection, NULL, roles, H323_KEY "video_role", _("Select the H.239 Video Role"), 4);
+  gm_pw_int_option_menu_new (subsection, NULL, roles,
+			     pw->h323_settings, "video-role",
+			     _("Select the H.239 Video Role"), 4);
 
   /* Packing widget */
   subsection = gnome_prefs_subsection_new (prefs_window, container,
@@ -952,6 +1021,9 @@ gm_pw_init_audio_codecs_page (GtkWidget *prefs_window,
 {
   GtkWidget *subsection = NULL;
   GtkWidget *codecs_list = NULL;
+  GmPreferencesWindow *pw = NULL;
+
+  pw = gm_pw_get_pw (prefs_window);
 
   /* Packing widgets */
   subsection = gnome_prefs_subsection_new (prefs_window, container,
@@ -966,9 +1038,13 @@ gm_pw_init_audio_codecs_page (GtkWidget *prefs_window,
 
   /* Translators: the full sentence is Automatically adjust jitter buffer
      between X and Y ms */
-  gnome_prefs_toggle_new (subsection, _("Enable silence _detection"), AUDIO_CODECS_KEY "enable_silence_detection", _("If enabled, use silence detection with the codecs supporting it"), 0, 1);
+  gm_pw_toggle_new (subsection, _("Enable silence _detection"),
+		    pw->audio_codecs_settings, "enable-silence-detection",
+		    _("If enabled, use silence detection with the codecs supporting it"), 0, 1);
 
-  gnome_prefs_toggle_new (subsection, _("Enable echo can_celation"), AUDIO_CODECS_KEY "enable_echo_cancellation", _("If enabled, use echo cancellation"), 1, 1);
+  gm_pw_toggle_new (subsection, _("Enable echo can_celation"),
+		    pw->audio_codecs_settings, "enable-echo-cancellation",
+		    _("If enabled, use echo cancellation"), 1, 1);
 
   gnome_prefs_spin_new (subsection, _("Maximum _jitter buffer (in ms):"), AUDIO_CODECS_KEY "maximum_jitter_buffer", _("The maximum jitter buffer size for audio reception (in ms)"), 20.0, 2000.0, 50.0, 2, 1, NULL, true);
 }
@@ -1325,6 +1401,53 @@ gm_pw_string_option_menu_update (GtkWidget *option_menu,
   }
 
   gtk_combo_box_set_active (GTK_COMBO_BOX (option_menu), history);
+}
+
+
+GtkWidget *
+gm_pw_toggle_new (GtkWidget* grid,
+		  const gchar *label_txt,
+		  boost::shared_ptr <Ekiga::Settings> settings,
+		  const std::string & key,
+		  const gchar *tooltip,
+		  int row,
+		  int width)
+{
+  GtkWidget *toggle = NULL;
+  gchar *signal_name = NULL;
+  gboolean writable = FALSE;
+
+  writable = g_settings_is_writable (settings->get_g_settings (), key.c_str ());
+
+  toggle = gtk_check_button_new_with_mnemonic (label_txt);
+  if (!writable)
+    gtk_widget_set_sensitive (GTK_WIDGET (toggle), FALSE);
+
+  g_object_set_data_full (G_OBJECT (toggle), "key",
+			  (gpointer) g_strdup (key.c_str ()),
+			  (GDestroyNotify) g_free);
+  g_object_set (G_OBJECT (toggle), "expand", TRUE, NULL);
+  gtk_grid_attach (GTK_GRID (grid), toggle, 0, row, width, 1);
+
+  gtk_toggle_button_set_active (GTK_TOGGLE_BUTTON (toggle),
+				settings->get_bool (key));
+
+  if (tooltip)
+    gtk_widget_set_tooltip_text (toggle, tooltip);
+
+  /* Update configuration when the user changes the selected option */
+  g_signal_connect (toggle, "toggled",
+		    G_CALLBACK (toggle_changed), settings->get_g_settings ());
+
+  /* Update the widget when the user changes the configuration */
+  signal_name = g_strdup_printf ("changed::%s", key.c_str ());
+  g_signal_connect (settings->get_g_settings (), signal_name,
+                    G_CALLBACK (toggle_setting_changed), toggle);
+  g_free (signal_name);
+
+  gtk_widget_show_all (grid);
+
+  return toggle;
 }
 
 
@@ -1799,6 +1922,54 @@ int_option_setting_changed (GSettings *settings,
                                      0, 0, NULL,
                                      (gpointer) int_option_menu_changed,
                                      NULL);
+}
+
+
+void
+toggle_changed (GtkCheckButton *but,
+		gpointer data)
+{
+  GSettings *settings = NULL;
+  gchar *key = NULL;
+  bool current_value = FALSE;
+
+  g_return_if_fail (data);
+
+  settings = G_SETTINGS(data);
+  key = (gchar*) g_object_get_data (G_OBJECT (but), (const gchar*) "key");
+
+  current_value = g_settings_get_boolean (settings, key);
+
+  if (current_value != gtk_toggle_button_get_active (GTK_TOGGLE_BUTTON (but)))
+    g_settings_set_boolean (settings, key, !current_value); 
+}
+
+
+void
+toggle_setting_changed (GSettings *settings,
+			gchar *key,
+			gpointer data)
+{
+  GtkWidget *e = NULL;
+  gboolean current_value = FALSE;
+
+  e = GTK_WIDGET (data);
+
+  /* We set the new value for the widget */
+  current_value = g_settings_get_boolean (settings, key);
+
+  g_signal_handlers_block_matched (G_OBJECT (e),
+				   G_SIGNAL_MATCH_FUNC,
+				   0, 0, NULL,
+				   (gpointer) toggle_changed,
+				   NULL);
+  if (gtk_toggle_button_get_active (GTK_TOGGLE_BUTTON (e)) != current_value)
+    gtk_toggle_button_set_active (GTK_TOGGLE_BUTTON (e), current_value);
+  g_signal_handlers_unblock_matched (G_OBJECT (e),
+				     G_SIGNAL_MATCH_FUNC,
+				     0, 0, NULL,
+				     (gpointer) toggle_changed,
+				     NULL);
 }
 
 

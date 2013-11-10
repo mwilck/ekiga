@@ -48,65 +48,6 @@
  */
 
 
-/* DESCRIPTION  :  This function is called when a toggle changes.
- * BEHAVIOR     :  Updates the key given as parameter to the new value of the
- *                 toggle.  
- * PRE          :  Non-Null data corresponding to the boolean config key to
- *                 modify.
- */
-void
-toggle_changed (GtkCheckButton *but,
-		gpointer data)
-{
-  gchar *key = NULL; 
-
-  key = (gchar *) data;
-
-  if (gm_conf_get_bool (key)
-      != gtk_toggle_button_get_active (GTK_TOGGLE_BUTTON (but)))
-    gm_conf_set_bool (key, 
-		      gtk_toggle_button_get_active(GTK_TOGGLE_BUTTON (but)));
-}
-
-
-/* DESCRIPTION  :  Generic notifiers for toggles.
- *                 This callback is called when a specific key of
- *                 the config database associated with a toggle changes, this
- *                 only updates the toggle.
- * BEHAVIOR     :  It only updates the widget.
- * PRE          :  The config key triggering that notifier on modification
- *"                should be of type boolean.
- */
-void
-toggle_changed_nt (G_GNUC_UNUSED gpointer cid, 
-		   GmConfEntry *entry,
-		   gpointer data)
-{
-  GtkWidget *e = NULL;
-  gboolean current_value = FALSE;
-  
-  if (gm_conf_entry_get_type (entry) == GM_CONF_BOOL) {
-   
-    e = GTK_WIDGET (data);
-
-    /* We set the new value for the widget */
-    current_value = gm_conf_entry_get_bool (entry);
-
-    g_signal_handlers_block_matched (G_OBJECT (e),
-				     G_SIGNAL_MATCH_FUNC,
-				     0, 0, NULL,
-				     (gpointer) toggle_changed,
-				     NULL);
-    if (gtk_toggle_button_get_active (GTK_TOGGLE_BUTTON (e)) != current_value)
-      gtk_toggle_button_set_active (GTK_TOGGLE_BUTTON (e), current_value);
-    g_signal_handlers_unblock_matched (G_OBJECT (e),
-				       G_SIGNAL_MATCH_FUNC,
-				       0, 0, NULL,
-				       (gpointer) toggle_changed,
-				       NULL);
-  }
-}
-
 /* DESCRIPTION  :  This function is called when an adjustment changes.
  * BEHAVIOR     :  Updates the key given as parameter to the new value of the
  *                 adjustment.  

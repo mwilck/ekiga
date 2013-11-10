@@ -55,24 +55,6 @@ G_BEGIN_DECLS
  */
 
 
-
-/* DESCRIPTION  :  /
- * BEHAVIOR     :  Creates a GtkToggleButton associated with a config key and
- *                 returns the result.
- *                 The first parameter is the section in which the
- *                 GtkToggleButton should be attached. The other parameters are
- *                 the text label, the config key, the tooltip, the row where
- *                 to attach it in the section.
- * PRE          :  /
- */
-GtkWidget *gnome_prefs_toggle_new (GtkWidget* grid,
-				   const gchar* label_text,
-				   const gchar* conf_key,
-				   const gchar* tooltip,
-				   int row,
-				   int width);
-
-
 /* DESCRIPTION  :  /
  * BEHAVIOR     :  Creates a GtkHScale associated with a config key and
  *                 returns the result.

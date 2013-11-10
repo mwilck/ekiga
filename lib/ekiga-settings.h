@@ -57,9 +57,11 @@
 #define PROTOCOLS_SCHEMA "org.gnome." PACKAGE_NAME ".protocols"
 #define SIP_SCHEMA PROTOCOLS_SCHEMA ".sip"
 #define H323_SCHEMA PROTOCOLS_SCHEMA ".h323"
+#define CALL_FORWARDING_SCHEMA PROTOCOLS_SCHEMA ".call-forwarding"
 
 #define GENERAL_SCHEMA "org.gnome." PACKAGE_NAME ".general"
 #define NAT_SCHEMA GENERAL_SCHEMA ".nat"
+#define CALL_OPTIONS_SCHEMA GENERAL_SCHEMA ".call-options"
 
 #define CODECS_SCHEMA "org.gnome." PACKAGE_NAME ".codecs"
 #define AUDIO_CODECS_SCHEMA CODECS_SCHEMA ".audio"

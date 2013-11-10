@@ -57,40 +57,6 @@
 G_BEGIN_DECLS
 
 
-/* DESCRIPTION  :  Generic notifiers for entries.
- *                 This callback is called when a specific key of
- *                 the config database associated with an entry changes.
- * BEHAVIOR     :  It updates the widget.
- * PRE          :  The config key triggering that notifier on modification
- *                 should be of type string.
- */
-void entry_changed_nt (gpointer,
-		       GmConfEntry *,
-		       gpointer);
-
-
-/* DESCRIPTION  :  This function is called when a toggle changes.
- * BEHAVIOR     :  Updates the key given as parameter to the new value of the
- *                 toggle.  
- * PRE          :  Non-Null data corresponding to the boolean config key to
- *                 modify.
- */
-void toggle_changed (GtkCheckButton *,
-		     gpointer);
-
-
-/* DESCRIPTION  :  Generic notifiers for toggles.
- *                 This callback is called when a specific key of
- *                 the config database associated with a toggle changes, this
- *                 only updates the toggle.
- * BEHAVIOR     :  It only updates the widget.
- * PRE          :  The config key triggering that notifier on modification
- *"                should be of type boolean.
- */
-void toggle_changed_nt (gpointer,
-			GmConfEntry *,
-			gpointer);
-
 
 /* DESCRIPTION  :  This function is called when an adjustment changes.
  * BEHAVIOR     :  Updates the key given as parameter to the new value of the

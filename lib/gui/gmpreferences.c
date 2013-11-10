@@ -112,48 +112,6 @@ tree_selection_changed_cb (GtkTreeSelection *selection,
 
 /* The public functions */
 GtkWidget *
-gnome_prefs_toggle_new (GtkWidget* grid,
-			const gchar *label_txt,
-			const gchar *conf_key,
-			const gchar *tooltip,
-			int row,
-			int width)
-{
-  GnomePrefsWindow *gpw = NULL;
-  GtkWidget *toggle = NULL;
-  gboolean writable = FALSE;
-  gpointer notifier;
-
-  writable = gm_conf_is_key_writable (conf_key);
-
-  toggle = gtk_check_button_new_with_mnemonic (label_txt);
-  if (!writable)
-    gtk_widget_set_sensitive (GTK_WIDGET (toggle), FALSE);
-
-  g_object_set (G_OBJECT (toggle), "expand", TRUE, NULL);
-  gtk_grid_attach (GTK_GRID (grid), toggle, 0, row, width, 1);
-
-  gtk_toggle_button_set_active (GTK_TOGGLE_BUTTON (toggle),
-				gm_conf_get_bool (conf_key));
-
-  gpw = (GnomePrefsWindow *) g_object_get_data (G_OBJECT (grid), "gpw");
-  if (gpw && tooltip)
-    gtk_widget_set_tooltip_text (toggle, tooltip);
-
-  g_signal_connect (toggle, "toggled",
-		    G_CALLBACK (toggle_changed), (gpointer) conf_key);
-
-  notifier = gm_conf_notifier_add (conf_key, toggle_changed_nt, (gpointer) toggle);
-
-  g_object_weak_ref (G_OBJECT (toggle), gobject_gm_conf_notifier_remove, notifier);
-
-  gtk_widget_show_all (grid);
-
-  return toggle;
-}
-
-
-GtkWidget *
 gnome_prefs_scale_new (GtkWidget* grid,
 		       const gchar *down_label_txt,
 		       const gchar *up_label_txt,
