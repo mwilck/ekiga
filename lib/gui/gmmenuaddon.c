@@ -132,16 +132,23 @@ menu_item_selected (GtkWidget *w,
 
 
 /* The public functions */
+// FIXME: I'm not particularly happy with those public callbacks
+//        because they require a GSettings parameter to be passed
+//        to the GtkMenu structure...
 void
 radio_menu_changed_cb (GtkWidget *widget,
 		       gpointer data)
 {
   GSList *group = NULL;
 
+  GSettings *settings = NULL;
   int group_last_pos = 0;
   int active = 0;
 
   g_return_if_fail (data != NULL);
+
+  settings = g_object_get_data (G_OBJECT (widget), "settings");
+  g_return_if_fail (settings != NULL);
 
   group = gtk_radio_menu_item_get_group (GTK_RADIO_MENU_ITEM (widget));
   group_last_pos = g_slist_length (group) - 1; /* If length 1, last pos is 0 */
@@ -159,7 +166,7 @@ radio_menu_changed_cb (GtkWidget *widget,
       group = g_slist_next (group);
     }
 
-    gm_conf_set_int ((gchar *) data, group_last_pos - active);
+    g_settings_set_int (settings, (gchar *) data, group_last_pos - active);
   }
 }
 
@@ -168,10 +175,14 @@ void
 toggle_menu_changed_cb (GtkWidget *widget,
 			gpointer data)
 {
+  GSettings *settings = NULL;
   g_return_if_fail (data != NULL);
 
-  gm_conf_set_bool ((gchar *) data,
-		    gtk_check_menu_item_get_active (GTK_CHECK_MENU_ITEM (widget)));
+  settings = g_object_get_data (G_OBJECT (widget), "settings");
+  g_return_if_fail (settings != NULL);
+
+  g_settings_set_boolean (settings, (gchar *) data,
+			  gtk_check_menu_item_get_active (GTK_CHECK_MENU_ITEM (widget)));
 }
 
 
@@ -219,6 +230,8 @@ gtk_build_menu (GtkWidget *menubar,
       else if (menu [i].type == MENU_TOGGLE_ENTRY) {
 
         menu [i].widget = gtk_check_menu_item_new_with_mnemonic (menu_name);
+	if (menu [i].settings)
+	  g_object_set_data (G_OBJECT (menu [i].widget), "settings", menu [i].settings);
         gtk_check_menu_item_set_active (GTK_CHECK_MENU_ITEM (menu [i].widget),
                                         menu [i].enabled);
       }
@@ -229,6 +242,8 @@ gtk_build_menu (GtkWidget *menubar,
 
         menu [i].widget = gtk_radio_menu_item_new_with_mnemonic (group,
                                                                  menu_name);
+	if (menu [i].settings)
+	  g_object_set_data (G_OBJECT (menu [i].widget), "settings", menu [i].settings);
 
         gtk_check_menu_item_set_active (GTK_CHECK_MENU_ITEM (menu [i].widget),
                                         menu [i].enabled);
