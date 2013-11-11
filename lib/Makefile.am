@@ -130,14 +130,10 @@ libekiga_la_SOURCES += \
 	gui/gmwindow.h \
 	gui/gmcallbacks.c \
 	gui/gmcallbacks.h \
-	gui/gmconfwidgets.c \
-	gui/gmconfwidgets.h \
 	gui/gmentrydialog.c \
 	gui/gmentrydialog.h \
 	gui/gmmenuaddon.c \
 	gui/gmmenuaddon.h \
-	gui/gmpreferences.c \
-	gui/gmpreferences.h \
 	gui/gmstatusbar.c \
 	gui/gmstatusbar.h \
 	gui/gmstockicons.c \
