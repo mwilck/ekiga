@@ -1141,11 +1141,8 @@ ekiga_main_window_init_actions_toolbar (EkigaMainWindow *mw)
   gtk_tool_button_set_icon_widget (GTK_TOOL_BUTTON (mw->priv->toggle_buttons[CONTACTS]), image);
   gtk_tool_item_set_expand (GTK_TOOL_ITEM (mw->priv->toggle_buttons[CONTACTS]), false);
   gtk_toolbar_insert (GTK_TOOLBAR (mw->priv->actions_toolbar), mw->priv->toggle_buttons[CONTACTS], -1);
-  gtk_toggle_tool_button_set_active (GTK_TOGGLE_TOOL_BUTTON (mw->priv->toggle_buttons[CONTACTS]), (cps == CONTACTS));
   gtk_widget_set_tooltip_text (GTK_WIDGET (mw->priv->toggle_buttons[CONTACTS]),
                                _("View the contacts list"));
-  g_signal_connect (mw->priv->toggle_buttons[CONTACTS], "clicked",
-		    G_CALLBACK (roster_panel_section_action_clicked_cb), mw);
 
   /* The dialpad button */
   image = gtk_image_new_from_icon_name ("input-dialpad", GTK_ICON_SIZE_MENU);
@@ -1154,11 +1151,8 @@ ekiga_main_window_init_actions_toolbar (EkigaMainWindow *mw)
   gtk_tool_button_set_icon_widget (GTK_TOOL_BUTTON (mw->priv->toggle_buttons[DIALPAD]), image);
   gtk_tool_item_set_expand (GTK_TOOL_ITEM (mw->priv->toggle_buttons[DIALPAD]), false);
   gtk_toolbar_insert (GTK_TOOLBAR (mw->priv->actions_toolbar), mw->priv->toggle_buttons[DIALPAD], -1);
-  gtk_toggle_tool_button_set_active (GTK_TOGGLE_TOOL_BUTTON (mw->priv->toggle_buttons[DIALPAD]), (cps == DIALPAD));
   gtk_widget_set_tooltip_text (GTK_WIDGET (mw->priv->toggle_buttons[DIALPAD]),
                                _("View the dialpad"));
-  g_signal_connect (mw->priv->toggle_buttons[DIALPAD], "clicked",
-		    G_CALLBACK (dialpad_panel_section_action_clicked_cb), mw);
 
   /* The history button */
   image = gtk_image_new_from_icon_name ("document-open-recent", GTK_ICON_SIZE_MENU);
@@ -1167,13 +1161,17 @@ ekiga_main_window_init_actions_toolbar (EkigaMainWindow *mw)
   gtk_tool_button_set_icon_widget (GTK_TOOL_BUTTON (mw->priv->toggle_buttons[CALL]), image);
   gtk_tool_item_set_expand (GTK_TOOL_ITEM (mw->priv->toggle_buttons[CALL]), false);
   gtk_toolbar_insert (GTK_TOOLBAR (mw->priv->actions_toolbar), mw->priv->toggle_buttons[CALL], -1);
-  gtk_toggle_tool_button_set_active (GTK_TOGGLE_TOOL_BUTTON (mw->priv->toggle_buttons[CALL]), (cps == CALL));
   gtk_widget_set_tooltip_text (GTK_WIDGET (mw->priv->toggle_buttons[CALL]),
                                _("View the call history"));
-  g_signal_connect (mw->priv->toggle_buttons[CALL], "clicked",
-		    G_CALLBACK (history_panel_section_action_clicked_cb), mw);
 
   gtk_toggle_tool_button_set_active (GTK_TOGGLE_TOOL_BUTTON (mw->priv->toggle_buttons[cps]), true);
+
+  g_signal_connect (mw->priv->toggle_buttons[CONTACTS], "clicked",
+		    G_CALLBACK (roster_panel_section_action_clicked_cb), mw);
+  g_signal_connect (mw->priv->toggle_buttons[DIALPAD], "clicked",
+		    G_CALLBACK (dialpad_panel_section_action_clicked_cb), mw);
+  g_signal_connect (mw->priv->toggle_buttons[CALL], "clicked",
+		    G_CALLBACK (history_panel_section_action_clicked_cb), mw);
 }
 
 static void
