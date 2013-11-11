@@ -32,12 +32,11 @@
  *   begin                : 16 August 2007
  *   copyright            : (c) 2007 by Damien Sandras
  *   description          : Implementation of a GtkWindow able to restore
- *                          its position and size in a GmConf key.
+ *                          its position and size in a GSettings key.
  *
  */
 
 #include "gmwindow.h"
-#include "gmconf.h"
 
 #include <gdk/gdkkeysyms.h>
 #include <stdlib.h>
@@ -383,7 +382,7 @@ gm_window_get_size (GmWindow *self,
   g_return_if_fail (GM_IS_WINDOW (self) && x != NULL && y != NULL);
 
   conf_key_size = g_strdup_printf ("%s/size", self->priv->key);
-  size = gm_conf_get_string (conf_key_size);
+  size = g_settings_get_string (self->priv->settings, "size");
   if (size)
     couple = g_strsplit (size, ",", 0);
 
