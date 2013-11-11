@@ -894,7 +894,8 @@ roster_panel_section_action_clicked_cb (GtkWidget * /*widget*/,
 {
   EkigaMainWindow *mw = EKIGA_MAIN_WINDOW (data);
 
-  mw->priv->user_interface_settings->set_int ("panel-section", CONTACTS);
+  if (mw->priv->user_interface_settings->get_int ("panel-section") != CONTACTS)
+    mw->priv->user_interface_settings->set_int ("panel-section", CONTACTS);
 }
 
 
@@ -904,7 +905,8 @@ dialpad_panel_section_action_clicked_cb (GtkWidget * /*widget*/,
 {
   EkigaMainWindow *mw = EKIGA_MAIN_WINDOW (data);
 
-  mw->priv->user_interface_settings->set_int ("panel-section", DIALPAD);
+  if (mw->priv->user_interface_settings->get_int ("panel-section") != DIALPAD)
+    mw->priv->user_interface_settings->set_int ("panel-section", DIALPAD);
 }
 
 
@@ -914,7 +916,8 @@ history_panel_section_action_clicked_cb (GtkWidget * /*widget*/,
 {
   EkigaMainWindow *mw = EKIGA_MAIN_WINDOW (data);
 
-  mw->priv->user_interface_settings->set_int ("panel-section", CALL);
+  if (mw->priv->user_interface_settings->get_int ("panel-section") != CALL)
+    mw->priv->user_interface_settings->set_int ("panel-section", CALL);
 }
 
 
