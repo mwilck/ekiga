@@ -2,8 +2,8 @@ plugin_LTLIBRARIES = libgmldap.la
 
 AM_CPPFLAGS = \
 	$(LDAP_CFLAGS) $(BOOST_CPPFLAGS) $(GLIB_CFLAGS) $(XML_CFLAGS) \
-	-I$(top_srcdir)/lib/gmconf 			\
-	-I$(top_srcdir)/lib/engine/framework 		\
+	-I$(top_srcdir)/lib/ 			\
+	-I$(top_srcdir)/lib/engine/framework 	\
 	-I$(top_srcdir)/lib/engine/addressbook
 
 libgmldap_la_SOURCES = \
