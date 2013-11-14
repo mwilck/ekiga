@@ -41,6 +41,7 @@
 #include "cluster-impl.h"
 
 #include "rl-heap.h"
+#include "ekiga-settings.h"
 
 namespace RL {
 
@@ -94,7 +95,7 @@ namespace RL {
   };
 
   typedef boost::shared_ptr<Cluster> ClusterPtr;
-
+  boost::shared_ptr<Ekiga::Settings> contacts_settings;
 };
 
 #endif
