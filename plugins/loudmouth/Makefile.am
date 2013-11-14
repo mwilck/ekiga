@@ -2,7 +2,7 @@ plugin_LTLIBRARIES = libgmloudmouth.la
 
 AM_CXXFLAGS = \
 	$(BOOST_CPPFLAGS) $(XML_CFLAGS) $(LOUDMOUTH_CFLAGS) \
-	-I$(top_srcdir)/lib/gmconf \
+	-I$(top_srcdir)/lib/ \
 	-I$(top_srcdir)/lib/engine/framework \
 	-I$(top_srcdir)/lib/engine/account \
 	-I$(top_srcdir)/lib/engine/presence \
