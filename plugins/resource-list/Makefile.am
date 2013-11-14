@@ -2,7 +2,7 @@ plugin_LTLIBRARIES = libgmresource_list.la
 
 AM_CXXFLAGS = \
 	$(BOOST_CPPFLAGS) $(GLIB_CFLAGS) $(XML_CFLAGS) \
-	-I$(top_srcdir)/lib/gmconf			\
+	-I$(top_srcdir)/lib/				\
 	-I$(top_srcdir)/lib/engine/framework		\
 	-I$(top_srcdir)/lib/engine/presence		\
 	-I$(top_srcdir)/lib/engine/account		\
