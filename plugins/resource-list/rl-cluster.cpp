@@ -143,7 +143,7 @@ RL::Cluster::save () const
 
   xmlDocDumpMemory (doc.get (), &buffer, &size);
 
-  gm_conf_set_string (RL_KEY, (const char*)buffer);
+  contacts_settings->set_string (RL_KEY, (const char *)buffer);
 
   xmlFree (buffer);
 }

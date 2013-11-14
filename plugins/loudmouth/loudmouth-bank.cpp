@@ -93,7 +93,7 @@ LM::Bank::save () const
 
   xmlDocDumpMemory (doc, &buffer, &size);
 
-  gm_conf_set_string (JABBER_KEY, (const char *)buffer);
+  contacts_settings->set_string (JABBER_KEY, (const char *)buffer);
 
   xmlFree (buffer);
 }
