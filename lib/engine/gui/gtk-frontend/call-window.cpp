@@ -2648,7 +2648,7 @@ call_window_new (Ekiga::ServiceCore & core)
   ekiga_call_window_init_gui (cw);
 
   g_signal_connect (cw->priv->video_display_settings->get_g_settings (),
-                    "changed",
+                    "changed::stay-on-top",
                     G_CALLBACK (stay_on_top_changed_cb), cw);
 
   gtk_window_set_title (GTK_WINDOW (cw), _("Call Window"));

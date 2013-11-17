@@ -274,7 +274,7 @@ ext_window_new (boost::shared_ptr<Ekiga::VideoOutputCore> &vocore)
 
   g_signal_connect (ew, "delete-event", G_CALLBACK (gtk_true), NULL);
   g_signal_connect (ew->priv->video_display_settings->get_g_settings (),
-                    "changed",
+                    "changed::stay-on-top",
                     G_CALLBACK (stay_on_top_changed_cb), ew);
 
   return GTK_WIDGET (ew);
