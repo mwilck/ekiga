@@ -229,6 +229,11 @@ private:
     boost::shared_ptr<Ekiga::Settings> audio_codecs_settings;
     boost::shared_ptr<Ekiga::Settings> video_codecs_settings;
     boost::shared_ptr<Ekiga::Settings> video_devices_settings;
+    boost::shared_ptr<Ekiga::Settings> protocols_settings;
+    boost::shared_ptr<Ekiga::Settings> ports_settings;
+    boost::shared_ptr<Ekiga::Settings> call_options_settings;
+    boost::shared_ptr<Ekiga::Settings> call_forwarding_settings;
+    boost::shared_ptr<Ekiga::Settings> personal_data_settings;
 
     /* FIXME: this piece of the api is because the code is getting turned around,
      * this should disappear at some point! */

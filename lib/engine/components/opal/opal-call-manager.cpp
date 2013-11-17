@@ -175,17 +175,41 @@ CallManager::CallManager (Ekiga::ServiceCore& core)
   add_protocol_manager (h323_endpoint);
 #endif
 
-  nat_settings = boost::shared_ptr<Ekiga::Settings> (new Ekiga::Settings (NAT_SCHEMA));
+  nat_settings =
+    boost::shared_ptr<Ekiga::Settings> (new Ekiga::Settings (NAT_SCHEMA));
   nat_settings->changed.connect (boost::bind (&CallManager::setup, this, _1));
 
-  audio_codecs_settings = boost::shared_ptr<Ekiga::Settings> (new Ekiga::Settings (AUDIO_CODECS_SCHEMA));
+  audio_codecs_settings =
+    boost::shared_ptr<Ekiga::Settings> (new Ekiga::Settings (AUDIO_CODECS_SCHEMA));
   audio_codecs_settings->changed.connect (boost::bind (&CallManager::setup, this, _1));
-  
-  video_codecs_settings = boost::shared_ptr<Ekiga::Settings> (new Ekiga::Settings (VIDEO_CODECS_SCHEMA));
+
+  video_codecs_settings =
+    boost::shared_ptr<Ekiga::Settings> (new Ekiga::Settings (VIDEO_CODECS_SCHEMA));
   video_codecs_settings->changed.connect (boost::bind (&CallManager::setup, this, _1));
 
-  video_devices_settings = boost::shared_ptr<Ekiga::Settings> (new Ekiga::Settings (VIDEO_DEVICES_SCHEMA));
+  video_devices_settings =
+    boost::shared_ptr<Ekiga::Settings> (new Ekiga::Settings (VIDEO_DEVICES_SCHEMA));
   video_devices_settings->changed.connect (boost::bind (&CallManager::setup, this, _1));
+
+  ports_settings =
+    boost::shared_ptr<Ekiga::Settings> (new Ekiga::Settings (PORTS_SCHEMA));
+  ports_settings->changed.connect (boost::bind (&CallManager::setup, this, _1));
+
+  protocols_settings =
+    boost::shared_ptr<Ekiga::Settings> (new Ekiga::Settings (PROTOCOLS_SCHEMA));
+  protocols_settings->changed.connect (boost::bind (&CallManager::setup, this, _1));
+
+  call_options_settings =
+    boost::shared_ptr<Ekiga::Settings> (new Ekiga::Settings (CALL_OPTIONS_SCHEMA));
+  call_options_settings->changed.connect (boost::bind (&CallManager::setup, this, _1));
+
+  call_forwarding_settings =
+    boost::shared_ptr<Ekiga::Settings> (new Ekiga::Settings (CALL_FORWARDING_SCHEMA));
+  call_forwarding_settings->changed.connect (boost::bind (&CallManager::setup, this, _1));
+
+  personal_data_settings =
+    boost::shared_ptr<Ekiga::Settings> (new Ekiga::Settings (PERSONAL_DATA_SCHEMA));
+  personal_data_settings->changed.connect (boost::bind (&CallManager::setup, this, _1));
 
   setup ();
 }
@@ -1022,7 +1046,7 @@ CallManager::setup (const std::string & setting)
     set_stun_server (nat_settings->get_string ("stun-server"));
   }
   if (setting.empty () || setting == "enable-stun") {
-    
+
     set_stun_enabled (nat_settings->get_bool ("enable-stun"));
   }
   if (setting.empty () || setting == "maximum-jitter-buffer") {
@@ -1036,6 +1060,30 @@ CallManager::setup (const std::string & setting)
   if (setting.empty () || setting == "enable-echo-cancellation") {
 
     set_echo_cancellation (audio_codecs_settings->get_bool ("enable-echo-cancellation"));
+  }
+  if (setting.empty () || setting == "rtp-tos-field") {
+    set_rtp_tos (protocols_settings->get_int ("rtp-tos-field"));
+  }
+  if (setting.empty () || setting == "no-answer-timeout") {
+
+    set_reject_delay (call_options_settings->get_int ("no-answer-timeout"));
+  }
+  if (setting.empty () || setting == "auto-answer") {
+    set_auto_answer (call_options_settings->get_bool ("auto-answer"));
+  }
+  if (setting.empty () || setting == "forward-on-no-anwer") {
+    set_forward_on_no_answer (call_forwarding_settings->get_bool ("forward-on-no-answer"));
+  }
+  if (setting.empty () || setting == "forward-on-busy") {
+    set_forward_on_busy (call_forwarding_settings->get_bool ("forward-on-busy"));
+  }
+  if (setting.empty () || setting == "always-forward") {
+    set_unconditional_forward (call_forwarding_settings->get_bool ("always-forward"));
+  }
+  if (setting.empty () || setting == "full-name") {
+    std::string full_name = personal_data_settings->get_string ("full-name");
+    if (!full_name.empty ())
+      set_display_name (full_name);
   }
   if (setting.empty () || setting == "maximum-video-tx-bitrate") {
 
@@ -1078,6 +1126,31 @@ CallManager::setup (const std::string & setting)
 
     if (v_codecs != fcodecs.get_video_list ())
       video_codecs_settings->set_string_list ("media-list", fcodecs.get_video_list ().slist ());
+  }
+  if (setting.empty () || setting == "udp-port-range" || setting == "tcp-port-range") {
+
+    std::string ports;
+    gchar **couple = NULL;
+    unsigned min_port = 0;
+    unsigned max_port = 0;
+    const char *key[2] = { "udp-port-range", "tcp-port-range" };
+
+    for (int i = 0 ; i < 2 ; i++) {
+      ports = ports_settings->get_string (key[i]);
+      if (!ports.empty ())
+        couple = g_strsplit (ports.c_str (), ":", 2);
+      if (couple && couple [0])
+        min_port = atoi (couple [0]);
+      if (couple && couple [1])
+        max_port = atoi (couple [1]);
+
+      if (i == 0)
+        set_udp_ports (min_port, max_port);
+      else
+        set_tcp_ports (min_port, max_port);
+
+      g_strfreev (couple);
+    }
   }
 
   set_video_options (options);
