@@ -207,11 +207,6 @@ main (int argc,
 #else
   PTRACE (1, "DBUS support disabled");
 #endif
-#ifdef HAVE_GCONF
-  PTRACE (1, "GConf support enabled");
-#else
-  PTRACE (1, "GConf support disabled");
-#endif
 
   boost::shared_ptr<GtkFrontend> gtk_frontend
     = service_core->get<GtkFrontend>("gtk-frontend");
