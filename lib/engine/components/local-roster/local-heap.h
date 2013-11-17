@@ -41,6 +41,8 @@
 #include "friend-or-foe.h"
 #include "local-presentity.h"
 
+#include "ekiga-settings.h"
+
 namespace Local
 {
 /**
@@ -208,6 +210,7 @@ namespace Local
     boost::weak_ptr<Ekiga::PresenceCore> presence_core;
     boost::weak_ptr<Local::Cluster> local_cluster;
     boost::shared_ptr<xmlDoc> doc;
+    boost::shared_ptr<Ekiga::Settings> contacts_settings;
   };
 
   typedef boost::shared_ptr<Heap> HeapPtr;

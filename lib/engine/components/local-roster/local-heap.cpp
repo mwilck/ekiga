@@ -38,12 +38,12 @@
 #include <set>
 #include <glib/gi18n.h>
 
-#include "gmconf.h"
-
 #include "form-request-simple.h"
 
 #include "local-cluster.h"
 #include "local-presentity.h"
+
+#define ROSTER_KEY "roster"
 
 /*
  * Public API
@@ -53,12 +53,12 @@ Local::Heap::Heap (boost::shared_ptr<Ekiga::PresenceCore> _presence_core,
   presence_core(_presence_core), local_cluster(_local_cluster), doc ()
 {
   xmlNodePtr root;
-  gchar *c_raw = gm_conf_get_string (ROSTER_KEY);
+  contacts_settings = boost::shared_ptr<Ekiga::Settings> (new Ekiga::Settings (CONTACTS_SCHEMA));
+  std::string raw = contacts_settings->get_string (ROSTER_KEY);
 
   // Build the XML document representing the contacts list from the configuration
-  if (c_raw != NULL) {
+  if (!raw.empty ()) {
 
-    const std::string raw = c_raw;
     doc = boost::shared_ptr<xmlDoc> (xmlRecoverMemory (raw.c_str (), raw.length ()), xmlFreeDoc);
     if ( !doc)
       doc = boost::shared_ptr<xmlDoc> (xmlNewDoc (BAD_CAST "1.0"), xmlFreeDoc);
@@ -75,8 +75,6 @@ Local::Heap::Heap (boost::shared_ptr<Ekiga::PresenceCore> _presence_core,
 	  && child->name != NULL
 	  && xmlStrEqual (BAD_CAST ("entry"), child->name))
 	add (child);
-
-    g_free (c_raw);
 
     // Or create a new XML document
   }
@@ -377,7 +375,7 @@ Local::Heap::save () const
 
   xmlDocDumpMemory (doc.get (), &buffer, &doc_size);
 
-  gm_conf_set_string (ROSTER_KEY, (const char *)buffer);
+  contacts_settings->set_string (ROSTER_KEY, (const char *)buffer);
 
   xmlFree (buffer);
 }
