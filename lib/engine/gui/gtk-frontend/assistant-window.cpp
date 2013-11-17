@@ -49,7 +49,7 @@
 #include "opal-bank.h"
 #include "device-lists.h"
 
-#include "gmconf.h"
+#include "ekiga-settings.h"
 
 #include <gdk/gdkkeysyms.h>
 
@@ -84,6 +84,8 @@ struct _AssistantWindowPrivate
   gint last_active_page;
 
   GtkListStore *summary_model;
+
+  boost::shared_ptr<Ekiga::Settings> personal_data_settings;
 };
 
 enum {
@@ -193,17 +195,11 @@ create_personal_data_page (AssistantWindow *assistant)
 static void
 prepare_personal_data_page (AssistantWindow *assistant)
 {
-  gchar* full_name = gm_conf_get_string (PERSONAL_DATA_KEY "full_name");
+  std::string full_name =
+    assistant->priv->personal_data_settings->get_string ("full-name");
 
-  if (full_name == NULL || strlen (full_name) == 0) {
-
-    g_free (full_name);
-    full_name = g_strdup (g_get_real_name ());
-  }
-
-  gtk_entry_set_text (GTK_ENTRY (assistant->priv->name), full_name);
-
-  g_free (full_name);
+  gtk_entry_set_text (GTK_ENTRY (assistant->priv->name),
+                      full_name.empty () ? g_get_real_name () : full_name.c_str ());
 }
 
 
@@ -213,8 +209,10 @@ apply_personal_data_page (AssistantWindow *assistant)
   GtkEntry *entry = GTK_ENTRY (assistant->priv->name);
   const gchar *full_name = gtk_entry_get_text (entry);
 
-  if (full_name)
-    gm_conf_set_string (PERSONAL_DATA_KEY "full_name", full_name);
+  if (full_name && strlen (full_name) > 0)
+    assistant->priv->personal_data_settings->set_string ("full-name", full_name);
+  else
+    assistant->priv->personal_data_settings->set_string ("full-name", g_get_real_name ());
 }
 
 
@@ -746,6 +744,8 @@ assistant_window_init (AssistantWindow *assistant)
   gtk_container_set_border_width (GTK_CONTAINER (assistant), 12);
 
   assistant->priv->last_active_page = 0;
+  assistant->priv->personal_data_settings =
+    boost::shared_ptr<Ekiga::Settings> (new Ekiga::Settings (PERSONAL_DATA_SCHEMA));
 
   create_welcome_page (assistant);
   create_personal_data_page (assistant);
