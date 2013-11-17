@@ -16,7 +16,6 @@ AM_CPPFLAGS = \
 	-DEKIGA_PLUGIN_DIR=\"$(PLUGIN_DIR)\" \
 	-I$(top_srcdir) \
 	-I$(top_srcdir)/lib \
-	-I$(top_srcdir)/lib/gmconf \
 	-I$(top_srcdir)/lib/gui \
 	-I$(top_srcdir)/lib/platform \
 	-I$(top_srcdir)/lib/engine \
@@ -99,22 +98,6 @@ libekiga_la_SOURCES += \
 	pixops/composite_line_color_22_4a4_mmx.S
 endif
 
-endif
-
-##
-# Sources out of the gmconf directory
-##
-libekiga_la_SOURCES += \
-	gmconf/gmconf.h \
-	gmconf/gmconf-ekiga-keys.h \
-	gmconf/gmconf-upgrade.h \
-	gmconf/gmconf-upgrade.c
-
-if HAVE_GCONF
-libekiga_la_SOURCES += gmconf/gmconf-gconf.c
-libekiga_la_LDFLAGS += $(GCONF_LIBS)
-else
-libekiga_la_SOURCES += gmconf/gmconf-glib.c
 endif
 
 ##
@@ -207,8 +190,6 @@ libekiga_la_SOURCES += \
 	engine/framework/robust-xml.h \
 	engine/framework/robust-xml.cpp \
 	engine/framework/form-visitor.h \
-	engine/framework/gmconf-bridge.h \
-	engine/framework/gmconf-bridge.cpp \
 	engine/framework/runtime.h \
 	engine/framework/menu-builder.h \
 	engine/framework/menu-builder.cpp \
@@ -480,8 +461,6 @@ libekiga_la_SOURCES += \
 	engine/components/opal/opal-call.cpp \
 	engine/components/opal/opal-codec-description.h \
 	engine/components/opal/opal-codec-description.cpp \
-	engine/components/opal/opal-gmconf-bridge.h \
-	engine/components/opal/opal-gmconf-bridge.cpp \
 	engine/components/opal/opal-main.h \
 	engine/components/opal/opal-main.cpp \
 	engine/components/opal/opal-audio.h \

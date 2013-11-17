@@ -45,7 +45,6 @@
 #include "videoinput-core.h"
 #include "videooutput-core.h"
 
-#include "opal-gmconf-bridge.h"
 #include "opal-plugins-hook.h"
 
 #include "sip-endpoint.h"
@@ -127,9 +126,6 @@ struct OPALSpark: public Ekiga::Spark
       presence_core->add_presence_fetcher (bank);
 
       call_core->add_manager (call_manager);
-
-      boost::shared_ptr<ConfBridge> bridge(new ConfBridge (*call_manager));
-      core.add (bridge);
 
       presence_core->add_supported_uri (&is_supported_address); //FIXME
 

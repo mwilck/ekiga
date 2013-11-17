@@ -215,8 +215,7 @@ main (int argc,
 
   boost::shared_ptr<GtkFrontend> gtk_frontend
     = service_core->get<GtkFrontend>("gtk-frontend");
-  boost::shared_ptr<Ekiga::Settings> general_settings;
-    boost::shared_ptr<Ekiga::Settings> (new Ekiga::Settings (GENERAL_SCHEMA));
+  boost::shared_ptr<Ekiga::Settings> general_settings (new Ekiga::Settings (GENERAL_SCHEMA));
 
   GtkWidget *main_window = GTK_WIDGET (gtk_frontend->get_main_window ());
 

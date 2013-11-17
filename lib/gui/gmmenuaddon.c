@@ -41,8 +41,6 @@
 #include <libintl.h>
 #include <gdk/gdkkeysyms.h>
 
-#include "gmconf.h"
-
 
 /* Notice, this implementation sets the menu item name as data of the menu
  * widget, the statusbar and also the given structure.

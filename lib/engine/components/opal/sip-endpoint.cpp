@@ -38,7 +38,6 @@
 
 #include <glib/gi18n.h>
 #include "config.h"
-#include "gmconf.h"
 #include "sip-endpoint.h"
 #include "chat-core.h"
 
