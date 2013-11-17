@@ -39,7 +39,7 @@
 
 #include <glib/gi18n.h>
 
-#include "gmconf.h"
+#include "ekiga-settings.h"
 
 #include "personal-details.h"
 
@@ -49,8 +49,8 @@ struct _StatusMenuPrivate
   ~_StatusMenuPrivate ();
 
   boost::shared_ptr<Ekiga::PersonalDetails> personal_details;
+  boost::shared_ptr<Ekiga::Settings> personal_data_settings;
   boost::signals2::connection connection;
-  std::list<gpointer> notifiers;
 
   GtkListStore *list_store; // List store storing the menu
   GtkWindow    *parent;     // Parent window
@@ -58,10 +58,6 @@ struct _StatusMenuPrivate
 
 _StatusMenuPrivate::~_StatusMenuPrivate()
 {
-  for (std::list<gpointer>::iterator iter = notifiers.begin ();
-       iter != notifiers.end ();
-       ++iter)
-    gm_conf_notifier_remove (*iter);
 }
 
 enum Columns
@@ -105,9 +101,9 @@ const char* status_types_names[] =
 
 const char* status_types_keys[] =
 {
-  PERSONAL_DATA_KEY "available_custom_status",
-  PERSONAL_DATA_KEY "away_custom_status",
-  PERSONAL_DATA_KEY "busy_custom_status"
+  "available-custom-status",
+  "away-custom-status",
+  "busy-custom-status"
 };
 
 
@@ -156,14 +152,14 @@ status_menu_option_changed (GtkComboBox *box,
  *
  * It updates the StatusMenu content with the new values.
  *
- * @param id is the GmConf notifier id
- * @param entry is the GmConfEntry for which the notification was triggered
+ * @param settings is the GSettings triggering the callback
+ * @param _key is the key
  * @param data is a pointer to the StatusMenu
  */
 static void
-status_menu_custom_messages_changed (gpointer id,
-                                     GmConfEntry *entry,
-                                     gpointer data);
+status_menu_custom_messages_changed (GSettings *settings,
+                                     gchar *_key,
+                                     StatusMenu *self);
 
 
 /** This callback is triggered when the user details are modified.
@@ -323,19 +319,20 @@ status_menu_option_changed (GtkComboBox *box,
 
 
 static void
-status_menu_custom_messages_changed (gpointer /*id*/,
-                                     GmConfEntry *entry,
-                                     gpointer self)
+status_menu_custom_messages_changed (G_GNUC_UNUSED GSettings *settings,
+                                     gchar *_key,
+                                     StatusMenu *self)
 {
-  std::string key = gm_conf_entry_get_key (entry);
-  GSList *current = gm_conf_entry_get_list (entry);
+  std::string key = _key;
+  GSList *current = self->priv->personal_data_settings->get_slist (_key);
   GSList *custom_status_array [NUM_STATUS_TYPES];
 
   for (int i = 0 ; i < NUM_STATUS_TYPES ; i++) {
     if (key == status_types_keys [i])
       custom_status_array [i] = current;
     else
-      custom_status_array [i] = gm_conf_get_string_list (status_types_keys [i]);
+      custom_status_array [i] =
+        self->priv->personal_data_settings->get_slist (status_types_keys [i]);
   }
 
   status_menu_populate (STATUS_MENU (self), custom_status_array);
@@ -516,10 +513,10 @@ status_menu_clear_status_message_dialog_run (StatusMenu *self)
   int response = 0;
   int i = 0;
   gchar *message = NULL;
-  gchar *status = NULL;
+  std::string status;
 
   // Current status
-  status = gm_conf_get_string (PERSONAL_DATA_KEY "long_status");
+  status = self->priv->personal_data_settings->get_string ("long-status");
 
   // Build the dialog
   dialog = gtk_dialog_new_with_buttons (_("Custom Message"),
@@ -627,7 +624,7 @@ status_menu_clear_status_message_dialog_run (StatusMenu *self)
       gtk_tree_model_get (GTK_TREE_MODEL (list_store), &iter,
                           1, &message,
                           2, &i, -1);
-      if (status && message && !g_strcmp0 (status, message))
+      if (!status.empty () && status == message)
         found = true;
 
       conf_list[i - NUM_STATUS_TYPES - 1] = g_slist_append (conf_list[i - NUM_STATUS_TYPES - 1], g_strdup (message));
@@ -636,7 +633,7 @@ status_menu_clear_status_message_dialog_run (StatusMenu *self)
   }
 
   for (int j = 0 ; j < 3 ; j++) {
-    gm_conf_set_string_list (status_types_keys[j], conf_list[j]);
+    self->priv->personal_data_settings->set_slist (status_types_keys[j], conf_list[j]);
     g_slist_foreach (conf_list[j], (GFunc) g_free, NULL);
     g_slist_free (conf_list[j]);
   }
@@ -654,8 +651,8 @@ static void
 status_menu_new_status_message_dialog_run (StatusMenu *self,
                                            int option)
 {
-  gchar *presence = NULL;
-  gchar *status = NULL;
+  std::string presence;
+  std::string status;
 
   GSList *clist = NULL;
   GtkWidget *dialog = NULL;
@@ -667,8 +664,8 @@ status_menu_new_status_message_dialog_run (StatusMenu *self,
 
   const char *message = NULL;
 
-  presence = gm_conf_get_string (PERSONAL_DATA_KEY "short_status");
-  status = gm_conf_get_string (PERSONAL_DATA_KEY "long_status");
+  presence = self->priv->personal_data_settings->get_string ("short-status");
+  status = self->priv->personal_data_settings->get_string ("long-status");
 
   dialog = gtk_dialog_new_with_buttons (_("Custom Message"),
                                         self->priv->parent,
@@ -701,28 +698,27 @@ status_menu_new_status_message_dialog_run (StatusMenu *self,
 
   case GTK_RESPONSE_ACCEPT:
     message = gtk_entry_get_text (GTK_ENTRY (entry));
-    clist = gm_conf_get_string_list (status_types_keys[option - NUM_STATUS_TYPES - 1]);
+    clist =
+      self->priv->personal_data_settings->get_slist (status_types_keys[option - NUM_STATUS_TYPES - 1]);
     if (message && g_strcmp0 (message, "")) {
       clist = g_slist_append (clist, g_strdup (message));
-      gm_conf_set_string_list (status_types_keys[option - NUM_STATUS_TYPES - 1], clist);
+      self->priv->personal_data_settings->set_slist (status_types_keys[option - NUM_STATUS_TYPES - 1],
+                                                     clist);
       self->priv->personal_details->set_presence_info (status_types_names[option - NUM_STATUS_TYPES - 1], message);
     }
     else {
-      status_menu_set_option (self, presence ? presence : "", status ? status : "");
+      status_menu_set_option (self, presence.c_str (), status.c_str ());
     }
     g_slist_foreach (clist, (GFunc) g_free, NULL);
     g_slist_free (clist);
     break;
 
   default:
-    status_menu_set_option (self, presence ? presence : "", status ? status : "");
+    status_menu_set_option (self, presence.c_str (), status.c_str ());
     break;
   }
 
   gtk_widget_destroy (dialog);
-
-  g_free (presence);
-  g_free (status);
 }
 
 
@@ -787,7 +783,6 @@ status_menu_new (Ekiga::ServiceCore & core)
 {
   StatusMenu *self = NULL;
 
-  gpointer notifier;
   GtkCellRenderer *renderer = NULL;
   GSList *custom_status_array [NUM_STATUS_TYPES];
 
@@ -795,6 +790,8 @@ status_menu_new (Ekiga::ServiceCore & core)
   self->priv = new StatusMenuPrivate ();
 
   self->priv->personal_details = core.get<Ekiga::PersonalDetails> ("personal-details");
+  self->priv->personal_data_settings =
+    boost::shared_ptr<Ekiga::Settings> (new Ekiga::Settings (PERSONAL_DATA_SCHEMA));
   self->priv->parent = NULL;
   self->priv->list_store = gtk_list_store_new (NUM_COLUMNS,
                                                GDK_TYPE_PIXBUF,
@@ -819,7 +816,7 @@ status_menu_new (Ekiga::ServiceCore & core)
                 "ellipsize", PANGO_ELLIPSIZE_END, NULL);
 
   for (int i = 0 ; i < NUM_STATUS_TYPES ; i++)
-    custom_status_array [i] = gm_conf_get_string_list (status_types_keys [i]);
+    custom_status_array [i] = self->priv->personal_data_settings->get_slist (status_types_keys [i]);
 
   status_menu_populate (self, custom_status_array);
 
@@ -839,20 +836,18 @@ status_menu_new (Ekiga::ServiceCore & core)
   g_signal_connect (self, "changed",
                     G_CALLBACK (status_menu_option_changed), self);
 
-  notifier =
-    gm_conf_notifier_add (PERSONAL_DATA_KEY "available_custom_status",
-			  status_menu_custom_messages_changed, self);
-  self->priv->notifiers.push_front (notifier);
-  notifier =
-    gm_conf_notifier_add (PERSONAL_DATA_KEY "away_custom_status",
-			  status_menu_custom_messages_changed, self);
-  self->priv->notifiers.push_front (notifier);
-  notifier =
-    gm_conf_notifier_add (PERSONAL_DATA_KEY "busy_custom_status",
-			  status_menu_custom_messages_changed, self);
-  self->priv->notifiers.push_front (notifier);
+  g_signal_connect (self->priv->personal_data_settings->get_g_settings (),
+                    "changed::available-custom-status",
+                    G_CALLBACK (status_menu_custom_messages_changed), self);
+  g_signal_connect (self->priv->personal_data_settings->get_g_settings (),
+                    "changed::away-custom-status",
+                    G_CALLBACK (status_menu_custom_messages_changed), self);
+  g_signal_connect (self->priv->personal_data_settings->get_g_settings (),
+                    "changed::busy-custom-status",
+                    G_CALLBACK (status_menu_custom_messages_changed), self);
 
-  self->priv->connection = self->priv->personal_details->updated.connect (boost::bind (&on_details_updated, self));
+  self->priv->connection =
+    self->priv->personal_details->updated.connect (boost::bind (&on_details_updated, self));
 
   return GTK_WIDGET (self);
 }
