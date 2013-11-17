@@ -56,8 +56,7 @@
 #include <cstdio>
 #endif
 
-#include "gmconf.h"
-#include "gmconf-upgrade.h"
+#include "ekiga-settings.h"
 
 #include "engine.h"
 #include "runtime.h"
@@ -125,9 +124,6 @@ main (int argc,
   // plugins (i.e. the audio/video ptlib/opal codecs) are searched in ./plugins
   chdir (win32_datadir ());
 #endif
-
-  /* Configuration backend initialization */
-  gm_conf_init ();
 
   /* Arguments initialization */
   GOptionEntry arguments [] =
@@ -219,23 +215,23 @@ main (int argc,
 
   boost::shared_ptr<GtkFrontend> gtk_frontend
     = service_core->get<GtkFrontend>("gtk-frontend");
+  boost::shared_ptr<Ekiga::Settings> general_settings;
+    boost::shared_ptr<Ekiga::Settings> (new Ekiga::Settings (GENERAL_SCHEMA));
 
   GtkWidget *main_window = GTK_WIDGET (gtk_frontend->get_main_window ());
 
   const int schema_version = MAJOR_VERSION * 1000
                              + MINOR_VERSION * 10
                              + BUILD_NUMBER;
-  int crt_version = gm_conf_get_int (GENERAL_KEY "version");
+  int crt_version = general_settings->get_int ("version");
   if (crt_version < schema_version) {
-
-    gmconf_upgrade_version ();
 
     // show the assistant if there is no config file
     if (crt_version == 0)
       gtk_widget_show_all (GTK_WIDGET (gtk_frontend->get_assistant_window ()));
 
     /* Update the version number */
-    gm_conf_set_int (GENERAL_KEY "version", schema_version);
+    general_settings->set_int ("version", schema_version);
   }
 
   /* Show the main window */
@@ -266,10 +262,6 @@ main (int argc,
   GnomeMeeting::Process ()->Exit ();
   service_core.reset ();
   Ekiga::Runtime::quit ();
-
-  /* Save and shutdown the configuration */
-  gm_conf_save ();
-  gm_conf_shutdown ();
 
   /* deinitialize platform-specific code */
   gm_platform_shutdown ();
