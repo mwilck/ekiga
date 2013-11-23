@@ -334,7 +334,6 @@ void AudioOutputCore::set_device(AudioOutputPS ps, const AudioOutputDevice & dev
       yield = true;
       core_mutex[primary].Wait();
       internal_set_primary_device (device);
-      desired_primary_device = device;
       core_mutex[primary].Signal();
 
       break;
@@ -367,18 +366,11 @@ void AudioOutputCore::add_device (const std::string & sink, const std::string & 
        iter++) {
      if ((*iter)->has_device (sink, device_name, device)) {
 
-       if ( desired_primary_device == device) {
-         internal_set_primary_device(desired_primary_device);
-         boost::shared_ptr<Ekiga::Notification> notif (new Ekiga::Notification (Ekiga::Notification::Info, _("New device detected"), device.GetString ()));
-         notification_core->push_notification (notif);
-       }
-       else {
+       device_added(device);
 
-         boost::shared_ptr<Ekiga::Notification> notif (new Ekiga::Notification (Ekiga::Notification::Info, _("New device detected"), device.GetString (), _("Use it"), boost::bind (&AudioOutputCore::on_set_device, (AudioOutputCore*) this, device)));
-         notification_core->push_notification (notif);
-       }
+       boost::shared_ptr<Ekiga::Notification> notif (new Ekiga::Notification (Ekiga::Notification::Info, _("New device detected"), device.GetString (), _("Use it"), boost::bind (&AudioOutputCore::on_set_device, (AudioOutputCore*) this, device)));
 
-       device_added(device, desired_primary_device == device);
+       notification_core->push_notification (notif);
      }
   }
 }
@@ -421,7 +413,6 @@ void AudioOutputCore::start (unsigned channels, unsigned samplerate, unsigned bi
     return;
   }
 
-  internal_set_manager(primary, desired_primary_device);    /* may be left undetermined after the last call */
 
   average_level = 0;
   internal_open(primary, channels, samplerate, bits_per_sample);
@@ -440,7 +431,6 @@ void AudioOutputCore::stop()
 
   average_level = 0;
   internal_close(primary);
-  internal_set_manager(primary, desired_primary_device);
 
   current_primary_config.active = false;
 }

@@ -333,7 +333,6 @@ void VideoInputCore::set_device(const VideoInputDevice & _device, int channel, V
     g_settings_set_string (settings, "input-device", device.GetString ().c_str ());
 
   internal_set_device (device, channel, format);
-  desired_device  = _device;
 }
 
 void VideoInputCore::add_device (const std::string & source, const std::string & device_name, unsigned capabilities, HalManager* /*manager*/)
@@ -347,18 +346,10 @@ void VideoInputCore::add_device (const std::string & source, const std::string &
        iter++) {
     if ((*iter)->has_device (source, device_name, capabilities, device)) {
 
-      if ( desired_device == device ) {
-        internal_set_device(device, current_channel, current_format);
-        boost::shared_ptr<Ekiga::Notification> notif (new Ekiga::Notification (Ekiga::Notification::Info, _("New device detected"), device.GetString ()));
-        notification_core->push_notification (notif);
-      }
-      else {
+      device_added (device);
 
-        boost::shared_ptr<Ekiga::Notification> notif (new Ekiga::Notification (Ekiga::Notification::Info, _("New device detected"), device.GetString (), _("Use it"), boost::bind (&VideoInputCore::on_set_device, (VideoInputCore*) this, device)));
-        notification_core->push_notification (notif);
-      }
-
-      device_added(device, desired_device == device);
+      boost::shared_ptr<Ekiga::Notification> notif (new Ekiga::Notification (Ekiga::Notification::Info, _("New device detected"), device.GetString (), _("Use it"), boost::bind (&VideoInputCore::on_set_device, (VideoInputCore*) this, device)));
+      notification_core->push_notification (notif);
     }
   }
 }
@@ -438,7 +429,6 @@ void VideoInputCore::stop_preview ()
   if (preview_config.active && !stream_config.active) {
     preview_manager->stop();
     internal_close();
-    internal_set_manager(desired_device, current_channel, current_format);
   }
 
   preview_config.active = false;
@@ -490,7 +480,6 @@ void VideoInputCore::stop_stream ()
     if ( preview_config != stream_config ) 
     {
       internal_close();
-      internal_set_manager(desired_device, current_channel, current_format);
       internal_open(preview_config.width, preview_config.height, preview_config.fps);
     }
     preview_manager->start(preview_config.width, preview_config.height);
@@ -498,7 +487,6 @@ void VideoInputCore::stop_stream ()
 
   if (!preview_config.active && stream_config.active) {
     internal_close();
-    internal_set_manager(desired_device, current_channel, current_format);
   }
 
   stream_config.active = false;

@@ -454,8 +454,7 @@ static void gm_pw_string_option_menu_update (GtkWidget *option_menu,
 					     const gchar *default_value);
 
 static void gm_pw_string_option_menu_add (GtkWidget *option_menu,
-					  const gchar *option,
-					  gboolean active);
+					  const gchar *option);
 
 static void gm_pw_string_option_menu_remove (GtkWidget *option_menu,
 					     const gchar *option);
@@ -1234,7 +1233,6 @@ gm_pw_string_option_menu_new (GtkWidget *grid,
 
   std::string conf_string;
 
-  bool found = false;
   int cpt = 0;
 
   label = gtk_label_new (label_txt);
@@ -1252,10 +1250,7 @@ gm_pw_string_option_menu_new (GtkWidget *grid,
   conf_string = settings->get_string (key);
   while (options [cpt]) {
 
-    if (!conf_string.empty () && !g_strcmp0 (conf_string.c_str (), options [cpt]))
-      found = true;
     gtk_combo_box_text_append (GTK_COMBO_BOX_TEXT (option_menu), options [cpt], options [cpt]);
-
     cpt++;
   }
 
@@ -1353,14 +1348,12 @@ gm_pw_string_option_menu_update (GtkWidget *option_menu,
 
 void
 gm_pw_string_option_menu_add (GtkWidget *option_menu,
-			      const gchar *option,
-			      gboolean active)
+			      const gchar *option)
 {
   if (!option)
     return;
 
   gtk_combo_box_text_append (GTK_COMBO_BOX_TEXT (option_menu), option, option);
-  std::cout << "FIXME: active not handled" << std::endl << std::flush;
 }
 
 
@@ -2008,13 +2001,12 @@ sound_event_toggled_cb (G_GNUC_UNUSED GtkCellRendererToggle *cell,
   gtk_tree_path_free (path);
 }
 
-void on_videoinput_device_added_cb (const Ekiga::VideoInputDevice & device, bool isDesired, GtkWidget *prefs_window)
+void on_videoinput_device_added_cb (const Ekiga::VideoInputDevice & device, GtkWidget *prefs_window)
 {
   GmPreferencesWindow *pw = NULL;
   g_return_if_fail (prefs_window != NULL);
   pw = gm_pw_get_pw (prefs_window);
-  gm_pw_string_option_menu_add (pw->video_device, (device.GetString()).c_str(),
-                                isDesired ? TRUE : FALSE);
+  gm_pw_string_option_menu_add (pw->video_device, (device.GetString()).c_str());
 }
 
 void on_videoinput_device_removed_cb (const Ekiga::VideoInputDevice & device, bool, GtkWidget *prefs_window)
@@ -2025,13 +2017,12 @@ void on_videoinput_device_removed_cb (const Ekiga::VideoInputDevice & device, bo
   gm_pw_string_option_menu_remove(pw->video_device, (device.GetString()).c_str());
 }
 
-void on_audioinput_device_added_cb (const Ekiga::AudioInputDevice & device, bool isDesired, GtkWidget *prefs_window)
+void on_audioinput_device_added_cb (const Ekiga::AudioInputDevice & device, GtkWidget *prefs_window)
 {
   GmPreferencesWindow *pw = NULL;
   g_return_if_fail (prefs_window != NULL);
   pw = gm_pw_get_pw (prefs_window);
-  gm_pw_string_option_menu_add (pw->audio_recorder, (device.GetString()).c_str(),
-                                isDesired ? TRUE : FALSE);
+  gm_pw_string_option_menu_add (pw->audio_recorder, (device.GetString()).c_str());
 
 }
 
@@ -2043,15 +2034,13 @@ void on_audioinput_device_removed_cb (const Ekiga::AudioInputDevice & device, bo
   gm_pw_string_option_menu_remove(pw->audio_recorder, (device.GetString()).c_str());
 }
 
-void on_audiooutput_device_added_cb (const Ekiga::AudioOutputDevice & device, bool isDesired,  GtkWidget *prefs_window)
+void on_audiooutput_device_added_cb (const Ekiga::AudioOutputDevice & device, GtkWidget *prefs_window)
 {
   GmPreferencesWindow *pw = NULL;
   g_return_if_fail (prefs_window != NULL);
   pw = gm_pw_get_pw (prefs_window);
-  gm_pw_string_option_menu_add (pw->audio_player, (device.GetString()).c_str(),
-                                isDesired ? TRUE : FALSE);
-  gm_pw_string_option_menu_add (pw->sound_events_output, (device.GetString()).c_str(),
-                                isDesired ? TRUE : FALSE);
+  gm_pw_string_option_menu_add (pw->audio_player, (device.GetString()).c_str());
+  gm_pw_string_option_menu_add (pw->sound_events_output, (device.GetString()).c_str());
 }
 
 void on_audiooutput_device_removed_cb (const Ekiga::AudioOutputDevice & device, bool, GtkWidget *prefs_window)
@@ -2211,17 +2200,17 @@ preferences_window_new (Ekiga::ServiceCore& core)
 
   boost::signals2::connection conn;
 
-  conn = pw->videoinput_core->device_added.connect (boost::bind (&on_videoinput_device_added_cb, _1, _2, window));
+  conn = pw->videoinput_core->device_added.connect (boost::bind (&on_videoinput_device_added_cb, _1, window));
   pw->connections.add (conn);
   conn = pw->videoinput_core->device_removed.connect (boost::bind (&on_videoinput_device_removed_cb, _1, _2, window));
   pw->connections.add (conn);
 
-  conn = pw->audioinput_core->device_added.connect (boost::bind (&on_audioinput_device_added_cb, _1, _2, window));
+  conn = pw->audioinput_core->device_added.connect (boost::bind (&on_audioinput_device_added_cb, _1, window));
   pw->connections.add (conn);
   conn = pw->audioinput_core->device_removed.connect (boost::bind (&on_audioinput_device_removed_cb, _1, _2, window));
   pw->connections.add (conn);
 
-  conn = pw->audiooutput_core->device_added.connect (boost::bind (&on_audiooutput_device_added_cb, _1, _2, window));
+  conn = pw->audiooutput_core->device_added.connect (boost::bind (&on_audiooutput_device_added_cb, _1, window));
   pw->connections.add(conn);
   conn = pw->audiooutput_core->device_removed.connect (boost::bind (&on_audiooutput_device_removed_cb, _1, _2, window));
   pw->connections.add (conn);

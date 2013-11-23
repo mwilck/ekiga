@@ -286,7 +286,7 @@ namespace Ekiga
        * a manager claimed support for this device.
        * @param device the video input device that was added.
        */
-      boost::signals2::signal<void(VideoInputDevice, bool)> device_added;
+      boost::signals2::signal<void(VideoInputDevice)> device_added;
 
       /** This signal is emitted when a video input has been removed from the system.
        * This signal will be emitted if remove_device was called with a device name and
@@ -427,7 +427,6 @@ private:
       VideoDeviceConfig       stream_config;
 
       VideoInputManager*      current_manager;
-      VideoInputDevice        desired_device;
       VideoInputDevice        current_device;
       VideoInputFormat        current_format;
       int                     current_channel;

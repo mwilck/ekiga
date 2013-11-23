@@ -313,7 +313,7 @@ namespace Ekiga
        * a manager claimed support for this device.
        * @param device the audio output device that was added.
        */
-      boost::signals2::signal<void(AudioOutputDevice, bool)> device_added;
+      boost::signals2::signal<void(AudioOutputDevice)> device_added;
 
       /** This signal is emitted when an audio output device has been removed from the system.
        * This signal will be emitted if remove_device was called with a device name and

@@ -201,8 +201,6 @@ AudioInputCore::set_device (const std::string& device_string)
 
   internal_set_device (device);
 
-  desired_device  = device;
-
   PTRACE(4, "AudioInputCore\tSet device to " << device.source << "/" << device.name);
 }
 
@@ -218,18 +216,10 @@ void AudioInputCore::add_device (const std::string & source, const std::string &
        iter++) {
     if ((*iter)->has_device (source, device_name, device)) {
 
-      if ( desired_device == device) {
-        internal_set_device(desired_device);
-        boost::shared_ptr<Ekiga::Notification> notif (new Ekiga::Notification (Ekiga::Notification::Info, _("New device detected"), device.GetString ()));
-        notification_core->push_notification (notif);
-      }
-      else {
+      device_added(device);
 
-        boost::shared_ptr<Ekiga::Notification> notif (new Ekiga::Notification (Ekiga::Notification::Info, _("New device detected"), device.GetString (), _("Use it"), boost::bind (&AudioInputCore::on_set_device, (AudioInputCore*) this, device)));
-        notification_core->push_notification (notif);
-      }
-
-      device_added(device, desired_device == device);
+      boost::shared_ptr<Ekiga::Notification> notif (new Ekiga::Notification (Ekiga::Notification::Info, _("New device detected"), device.GetString (), _("Use it"), boost::bind (&AudioInputCore::on_set_device, (AudioInputCore*) this, device)));
+      notification_core->push_notification (notif);
     }
   }
 }
@@ -301,7 +291,6 @@ void AudioInputCore::stop_preview ()
   }
 
   internal_close();
-  internal_set_manager(desired_device);
   preview_config.active = false;
 }
 
@@ -326,8 +315,6 @@ void AudioInputCore::start_stream (unsigned channels, unsigned samplerate, unsig
   PWaitAndSignal m(core_mutex);
 
   PTRACE(4, "AudioInputCore\tStarting stream " << channels << "x" << samplerate << "/" << bits_per_sample);
-
-  internal_set_manager(desired_device);  /* make sure it is set */
 
   if (preview_config.active || stream_config.active) {
     PTRACE(1, "AudioInputCore\tTrying to start stream in wrong state");
@@ -356,8 +343,6 @@ void AudioInputCore::stop_stream ()
   }
 
   internal_close();
-  internal_set_manager(desired_device);
-
   stream_config.active = false;
   average_level = 0;
 }
