@@ -117,7 +117,6 @@ gui_layout (EkigaExtWindow *ew)
   ew->priv->video = gtk_image_new ();
   gtk_container_add (GTK_CONTAINER (ew->priv->event_box), ew->priv->video);
   gtk_box_pack_start (GTK_BOX (vbox), GTK_WIDGET (ew->priv->event_box), FALSE, FALSE, 0);
-  gtk_widget_show (ew->priv->event_box);
 
   ew->priv->zin = zin;
   ew->priv->zout = zout;
@@ -126,6 +125,7 @@ gui_layout (EkigaExtWindow *ew)
   g_signal_connect (zout, "clicked", G_CALLBACK (zoom_out), ew);
 
   gtk_widget_show_all (vbox);
+  gtk_widget_realize (vbox);
 
   gtk_window_set_resizable (GTK_WINDOW (ew), FALSE);
 }
