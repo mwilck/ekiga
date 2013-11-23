@@ -411,13 +411,7 @@ Opal::Call::OnCleared ()
   while (!call_setup)
     PThread::Current ()->Sleep (100);
 
-  if (!IsEstablished ()
-      && !is_outgoing ()
-      && GetCallEndReason () != OpalConnection::EndedByAnswerDenied) {
-
-    Ekiga::Runtime::run_in_main (boost::bind (&Opal::Call::emit_missed_in_main, this));
-  }
-  else {
+  OpalCall::OnCleared ();
 
     switch (GetCallEndReason ()) {
 
@@ -503,10 +497,10 @@ Opal::Call::OnCleared ()
       reason = _("Call completed");
     }
 
-    Ekiga::Runtime::run_in_main (boost::bind (&Opal::Call::emit_cleared_in_main, this, reason));
-  }
-
-  OpalCall::OnCleared ();
+    if (IsEstablished ())
+      Ekiga::Runtime::run_in_main (boost::bind (&Opal::Call::emit_cleared_in_main, this, reason));
+    else
+      Ekiga::Runtime::run_in_main (boost::bind (&Opal::Call::emit_missed_in_main, this));
 }
 
 
