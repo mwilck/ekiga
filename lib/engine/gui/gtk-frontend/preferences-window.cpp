@@ -279,9 +279,7 @@ static void gm_pw_init_video_codecs_page (GtkWidget *prefs_window,
  *                 The first parameter is the section in which
  *                 the GtkEntry should be attached. The other parameters are
  *                 the text label, the config key, the tooltip, the row where
- *                 to attach it in the section, and if the label and GtkEntry
- *                 should be packed together or aligned with others in the
- *                 section they belong to.
+ *                 to attach it in the section.
  * PRE          :  /
  */
 GtkWidget * gm_pw_entry_new (GtkWidget* grid,
@@ -289,10 +287,7 @@ GtkWidget * gm_pw_entry_new (GtkWidget* grid,
 			     boost::shared_ptr<Ekiga::Settings> settings,
 			     const std::string & key,
 			     const gchar *tooltip,
-			     int row,
-			     int width,
-			     gboolean box);
-
+			     int row);
 
 /* DESCRIPTION  :  /
  * BEHAVIOR     :  Creates a GtkHScale associated with a config key and
@@ -715,7 +710,7 @@ gm_pw_init_general_page (GtkWidget *prefs_window,
 
   entry = gm_pw_entry_new (subsection, _("_Full name:"),
 			   pw->personal_data_settings, "full-name",
-			   _("Enter your full name"), 0, 2, false);
+			   _("Enter your full name"), 0);
   gtk_widget_set_size_request (GTK_WIDGET (entry), 250, -1);
   gtk_entry_set_max_length (GTK_ENTRY (entry), 65);
 }
@@ -947,7 +942,7 @@ gm_pw_init_h323_page (GtkWidget *prefs_window,
     gm_pw_entry_new (subsection, _("Forward _URI:"),
 		     pw->h323_settings, "forward-host",
 		     _("The host where calls should be forwarded if call forwarding is enabled"),
-		     1, 2, false);
+		     1);
   if (!g_strcmp0 (gtk_entry_get_text (GTK_ENTRY (entry)), ""))
     gtk_entry_set_text (GTK_ENTRY (entry), "h323:");
 
@@ -1005,13 +1000,13 @@ gm_pw_init_sip_page (GtkWidget *prefs_window,
 
   gm_pw_entry_new (subsection, _("_Outbound proxy:"),
 		   pw->sip_settings, "outbound-proxy-host",
-		   _("The SIP Outbound Proxy to use for outgoing calls"), 0, 2, false);
+		   _("The SIP Outbound Proxy to use for outgoing calls"), 0);
 
   entry =
     gm_pw_entry_new (subsection, _("Forward _URI:"),
 		     pw->sip_settings, "forward-host",
 		     _("The host where calls should be forwarded if call forwarding is enabled"),
-		     1, 2, false);
+		     1);
   if (!g_strcmp0 (gtk_entry_get_text (GTK_ENTRY (entry)), ""))
     gtk_entry_set_text (GTK_ENTRY (entry), "sip:");
 
@@ -1230,13 +1225,10 @@ gm_pw_entry_new (GtkWidget* grid,
 		 boost::shared_ptr<Ekiga::Settings> settings,
 		 const std::string & key,
 		 const gchar *tooltip,
-		 int row,
-		 int width,
-		 gboolean box)
+		 int row)
 {
   GtkWidget *entry = NULL;
   GtkWidget *label = NULL;
-  GtkWidget *hbox = NULL;
 
   gchar *signal_name = NULL;
 
@@ -1245,22 +1237,12 @@ gm_pw_entry_new (GtkWidget* grid,
 
   writable = g_settings_is_writable (settings->get_g_settings (), key.c_str ());
 
-  if (box) {
-    hbox = gtk_box_new (GTK_ORIENTATION_HORIZONTAL, 0);
-  }
-
   label = gtk_label_new_with_mnemonic (label_txt);
   if (!writable)
     gtk_widget_set_sensitive (GTK_WIDGET (label), FALSE);
 
-  if (box)
-    gtk_box_pack_start (GTK_BOX (hbox), label,
-			FALSE, FALSE, 1 * 2);
-  else {
-
-    g_object_set (G_OBJECT (grid), "expand", TRUE, NULL);
-    gtk_grid_attach (GTK_GRID (grid), label, 0, row, 1, 1);
-  }
+  g_object_set (G_OBJECT (grid), "expand", TRUE, NULL);
+  gtk_grid_attach (GTK_GRID (grid), label, 0, row, 1, 1);
 
   gtk_misc_set_alignment (GTK_MISC (label), 0.0, 0.5);
   gtk_label_set_justify (GTK_LABEL (label), GTK_JUSTIFY_LEFT);
@@ -1270,11 +1252,7 @@ gm_pw_entry_new (GtkWidget* grid,
   if (!writable)
     gtk_widget_set_sensitive (GTK_WIDGET (entry), FALSE);
 
-  if (box)
-    gtk_box_pack_start (GTK_BOX (hbox), entry,
-			FALSE, FALSE, 1 * 2);
-  else
-    gtk_grid_attach (GTK_GRID (grid), entry, 1, row, 1, 1);
+  gtk_grid_attach (GTK_GRID (grid), entry, 1, row, 1, 1);
 
   conf_string = settings->get_string (key);
 
@@ -1295,9 +1273,6 @@ gm_pw_entry_new (GtkWidget* grid,
   g_signal_connect (settings->get_g_settings (), signal_name,
 		    G_CALLBACK (entry_setting_changed), entry);
   g_free (signal_name);
-
-  if (box)
-    gtk_grid_attach (GTK_GRID (grid), hbox, 0, row, width, 1);
 
   if (tooltip)
     gtk_widget_set_tooltip_text (entry, tooltip);
