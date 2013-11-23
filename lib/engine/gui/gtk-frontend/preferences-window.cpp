@@ -581,13 +581,6 @@ static void adjustment_setting_changed (GSettings *settings,
 					gchar *key,
 					gpointer data);
 
-static void toggle_changed (GtkCheckButton *but,
-			    gpointer data);
-
-static void toggle_setting_changed (GSettings *settings,
-				    gchar *key,
-				    gpointer data);
-
 
 void 
 gm_prefs_window_update_devices_list (GtkWidget *prefs_window);
@@ -1841,36 +1834,16 @@ gm_pw_toggle_new (GtkWidget* grid,
 		  int width)
 {
   GtkWidget *toggle = NULL;
-  gchar *signal_name = NULL;
-  gboolean writable = FALSE;
-
-  writable = g_settings_is_writable (settings->get_g_settings (), key.c_str ());
 
   toggle = gtk_check_button_new_with_mnemonic (label_txt);
-  if (!writable)
-    gtk_widget_set_sensitive (GTK_WIDGET (toggle), FALSE);
+  g_settings_bind (settings->get_g_settings (), key.c_str (),
+                   toggle, "active", G_SETTINGS_BIND_DEFAULT);
 
-  g_object_set_data_full (G_OBJECT (toggle), "key",
-			  (gpointer) g_strdup (key.c_str ()),
-			  (GDestroyNotify) g_free);
   g_object_set (G_OBJECT (toggle), "expand", TRUE, NULL);
   gtk_grid_attach (GTK_GRID (grid), toggle, 0, row, width, 1);
 
-  gtk_toggle_button_set_active (GTK_TOGGLE_BUTTON (toggle),
-				settings->get_bool (key));
-
   if (tooltip)
     gtk_widget_set_tooltip_text (toggle, tooltip);
-
-  /* Update configuration when the user changes the selected option */
-  g_signal_connect (toggle, "toggled",
-		    G_CALLBACK (toggle_changed), settings->get_g_settings ());
-
-  /* Update the widget when the user changes the configuration */
-  signal_name = g_strdup_printf ("changed::%s", key.c_str ());
-  g_signal_connect (settings->get_g_settings (), signal_name,
-		    G_CALLBACK (toggle_setting_changed), toggle);
-  g_free (signal_name);
 
   gtk_widget_show_all (grid);
 
@@ -2677,54 +2650,6 @@ adjustment_setting_changed (GSettings *settings,
 				     G_SIGNAL_MATCH_FUNC,
 				     0, 0, NULL,
 				     (gpointer) adjustment_changed,
-				     NULL);
-}
-
-
-void
-toggle_changed (GtkCheckButton *but,
-		gpointer data)
-{
-  GSettings *settings = NULL;
-  gchar *key = NULL;
-  bool current_value = FALSE;
-
-  g_return_if_fail (data);
-
-  settings = G_SETTINGS(data);
-  key = (gchar*) g_object_get_data (G_OBJECT (but), (const gchar*) "key");
-
-  current_value = g_settings_get_boolean (settings, key);
-
-  if (current_value != gtk_toggle_button_get_active (GTK_TOGGLE_BUTTON (but)))
-    g_settings_set_boolean (settings, key, !current_value); 
-}
-
-
-void
-toggle_setting_changed (GSettings *settings,
-			gchar *key,
-			gpointer data)
-{
-  GtkWidget *e = NULL;
-  gboolean current_value = FALSE;
-
-  e = GTK_WIDGET (data);
-
-  /* We set the new value for the widget */
-  current_value = g_settings_get_boolean (settings, key);
-
-  g_signal_handlers_block_matched (G_OBJECT (e),
-				   G_SIGNAL_MATCH_FUNC,
-				   0, 0, NULL,
-				   (gpointer) toggle_changed,
-				   NULL);
-  if (gtk_toggle_button_get_active (GTK_TOGGLE_BUTTON (e)) != current_value)
-    gtk_toggle_button_set_active (GTK_TOGGLE_BUTTON (e), current_value);
-  g_signal_handlers_unblock_matched (G_OBJECT (e),
-				     G_SIGNAL_MATCH_FUNC,
-				     0, 0, NULL,
-				     (gpointer) toggle_changed,
 				     NULL);
 }
 
