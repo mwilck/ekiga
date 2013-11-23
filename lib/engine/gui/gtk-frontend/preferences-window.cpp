@@ -544,16 +544,6 @@ static void sound_event_setting_changed (GSettings *,
 					 gchar *,
 					 gpointer data);
 
-static void entry_activate_changed (GtkWidget *w,
-				    gpointer data);
-
-static gboolean entry_focus_changed (GtkWidget  *w,
-				     G_GNUC_UNUSED GdkEventFocus *ev,
-				     gpointer data);
-
-static void entry_setting_changed (GSettings *,
-				   gchar *,
-				   gpointer data);
 
 static void string_option_menu_changed (GtkWidget *option_menu,
 					gpointer data);
@@ -1230,16 +1220,7 @@ gm_pw_entry_new (GtkWidget* grid,
   GtkWidget *entry = NULL;
   GtkWidget *label = NULL;
 
-  gchar *signal_name = NULL;
-
-  std::string conf_string;
-  gboolean writable = FALSE;
-
-  writable = g_settings_is_writable (settings->get_g_settings (), key.c_str ());
-
   label = gtk_label_new_with_mnemonic (label_txt);
-  if (!writable)
-    gtk_widget_set_sensitive (GTK_WIDGET (label), FALSE);
 
   g_object_set (G_OBJECT (grid), "expand", TRUE, NULL);
   gtk_grid_attach (GTK_GRID (grid), label, 0, row, 1, 1);
@@ -1248,31 +1229,10 @@ gm_pw_entry_new (GtkWidget* grid,
   gtk_label_set_justify (GTK_LABEL (label), GTK_JUSTIFY_LEFT);
 
   entry = gtk_entry_new ();
+  g_settings_bind (settings->get_g_settings (), key.c_str (),
+                   entry, "text", G_SETTINGS_BIND_DEFAULT);
   gtk_label_set_mnemonic_widget (GTK_LABEL(label), entry);
-  if (!writable)
-    gtk_widget_set_sensitive (GTK_WIDGET (entry), FALSE);
-
   gtk_grid_attach (GTK_GRID (grid), entry, 1, row, 1, 1);
-
-  conf_string = settings->get_string (key);
-
-  if (!conf_string.empty ())
-    gtk_entry_set_text (GTK_ENTRY (entry), conf_string.c_str ());
-
-  g_object_set_data_full (G_OBJECT (entry), "key", (gpointer) g_strdup (key.c_str ()),
-			  (GDestroyNotify) g_free);
-  g_signal_connect_after (entry, "focus-out-event",
-			  G_CALLBACK (entry_focus_changed),
-			  (gpointer) settings->get_g_settings ());
-  g_signal_connect_after (entry, "activate",
-			  G_CALLBACK (entry_activate_changed),
-			  (gpointer) settings->get_g_settings ());
-
-  /* Update the widget when the user changes the configuration */
-  signal_name = g_strdup_printf ("changed::%s", key.c_str ());
-  g_signal_connect (settings->get_g_settings (), signal_name,
-		    G_CALLBACK (entry_setting_changed), entry);
-  g_free (signal_name);
 
   if (tooltip)
     gtk_widget_set_tooltip_text (entry, tooltip);
@@ -2359,81 +2319,6 @@ void on_audiooutput_device_removed_cb (const Ekiga::AudioOutputDevice & device, 
   pw = gm_pw_get_pw (prefs_window);
   gm_pw_string_option_menu_remove(pw->audio_player, (device.GetString()).c_str());
   gm_pw_string_option_menu_remove(pw->sound_events_output, (device.GetString()).c_str());
-}
-
-void
-entry_activate_changed (GtkWidget *w,
-			gpointer data)
-{
-  entry_focus_changed (w, NULL, data);
-}
-
-gboolean
-entry_focus_changed (GtkWidget  *w,
-		     G_GNUC_UNUSED GdkEventFocus *ev,
-		     gpointer data)
-{
-  GSettings *settings = NULL;
-  gchar *key = NULL;
-  gchar *current_value = NULL;
-
-  g_return_val_if_fail (data, FALSE);
-
-  settings = G_SETTINGS(data);
-  key = (gchar*) g_object_get_data (G_OBJECT (w), (const gchar*) "key");
-
-  current_value = g_settings_get_string (settings, key);
-
-  if (!current_value 
-      || g_strcmp0 (current_value, gtk_entry_get_text (GTK_ENTRY (w)))) {
-
-    g_settings_set_string (settings, key, (gchar *) gtk_entry_get_text (GTK_ENTRY (w)));
-  }
-  g_free (current_value);
-
-  return FALSE;
-}
-
-void
-entry_setting_changed (GSettings *settings,
-		       gchar *key,
-		       gpointer data)
-{
-  GtkWidget *e = NULL;
-  gchar *current_value = NULL;
-
-  g_return_if_fail (data != NULL && GTK_IS_ENTRY (data));
-  e = GTK_WIDGET (data);
-
-  current_value = g_settings_get_string (settings, key);
-
-  if (current_value
-      && g_strcmp0 (current_value, gtk_entry_get_text (GTK_ENTRY (e)))) {
-
-    g_signal_handlers_block_matched (G_OBJECT (e),
-				     G_SIGNAL_MATCH_FUNC,
-				     0, 0, NULL,
-				     (gpointer) entry_focus_changed,
-				     NULL);
-    g_signal_handlers_block_matched (G_OBJECT (e),
-				     G_SIGNAL_MATCH_FUNC,
-				     0, 0, NULL,
-				     (gpointer) entry_activate_changed,
-				     NULL);
-    gtk_entry_set_text (GTK_ENTRY (e), current_value);
-    g_signal_handlers_unblock_matched (G_OBJECT (e),
-				       G_SIGNAL_MATCH_FUNC,
-				       0, 0, NULL,
-				       (gpointer) entry_activate_changed,
-				       NULL);
-    g_signal_handlers_unblock_matched (G_OBJECT (e),
-				       G_SIGNAL_MATCH_FUNC,
-				       0, 0, NULL,
-				       (gpointer) entry_focus_changed,
-				       NULL);
-  }
-
-  g_free (current_value);
 }
 
 void
