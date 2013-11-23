@@ -63,12 +63,16 @@ void VideoInputCore::VideoPreviewManager::quit ()
 {
   stop ();
 
-  PWaitAndSignal q(exit_mutex);
-  end_thread = true;
+  {
+    PWaitAndSignal q(exit_mutex);
+    end_thread = true;
+  }
 
-  PWaitAndSignal m(thread_mutex);
-  if (frame)
-    free (frame);
+  {
+    PWaitAndSignal m(thread_mutex);
+    if (frame)
+      free (frame);
+  }
 }
 
 void VideoInputCore::VideoPreviewManager::start (unsigned _width, unsigned _height)
@@ -116,7 +120,7 @@ void VideoInputCore::VideoPreviewManager::Main ()
         frame = (char*) malloc (unsigned (width * height * 3 / 2));
       }
     }
-    while (capture) {
+    while (capture && !exit) {
 
       if (frame) {
 
@@ -185,9 +189,9 @@ VideoInputCore::VideoInputCore (Ekiga::ServiceCore & _core,
 
 VideoInputCore::~VideoInputCore ()
 {
-  PWaitAndSignal m(core_mutex);
-
   preview_manager->quit ();
+
+  PWaitAndSignal m(core_mutex);
 
   for (std::set<VideoInputManager *>::iterator iter = managers.begin ();
        iter != managers.end ();
