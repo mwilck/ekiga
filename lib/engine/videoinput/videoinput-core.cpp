@@ -292,6 +292,7 @@ void VideoInputCore::get_devices (std::vector <VideoInputDevice> & devices)
 void VideoInputCore::set_device(const VideoInputDevice & _device, int channel, VideoInputFormat format)
 {
   PWaitAndSignal m(core_mutex);
+  GSettings* settings = device_settings->get_g_settings ();
   VideoInputDevice device;
 
   /* Check if device exists */
@@ -320,6 +321,7 @@ void VideoInputCore::set_device(const VideoInputDevice & _device, int channel, V
     device.type = VIDEO_INPUT_FALLBACK_DEVICE_TYPE;
     device.source = VIDEO_INPUT_FALLBACK_DEVICE_SOURCE;
     device.name = VIDEO_INPUT_FALLBACK_DEVICE_NAME;
+    found = false;
   }
 
   if (format >= VI_FORMAT_MAX) {
@@ -327,8 +329,11 @@ void VideoInputCore::set_device(const VideoInputDevice & _device, int channel, V
     format = (VideoInputFormat) 3;
   }
 
+  if (!found)
+    g_settings_set_string (settings, "input-device", device.GetString ().c_str ());
+
   internal_set_device (device, channel, format);
-  desired_device  = device;
+  desired_device  = _device;
 }
 
 void VideoInputCore::add_device (const std::string & source, const std::string & device_name, unsigned capabilities, HalManager* /*manager*/)

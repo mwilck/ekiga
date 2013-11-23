@@ -180,9 +180,13 @@ void AudioOutputCore::setup_audio_device (AudioOutputPS device_idx)
     device.type   = AUDIO_OUTPUT_FALLBACK_DEVICE_TYPE;
     device.source = AUDIO_OUTPUT_FALLBACK_DEVICE_SOURCE;
     device.name   = AUDIO_OUTPUT_FALLBACK_DEVICE_NAME;
+    found = false;
   }
 
   PTRACE(1, "AudioOutputCore\tSet " << (device_idx == primary ? "primary" : "secondary") << " audio device to " << device.name);
+  if (!found)
+    g_settings_set_string ((device_idx == primary)?audio_device_settings:sound_events_settings,
+                           "output-device", device.GetString ().c_str ());
   set_device (device_idx, device);
 
   if (audio_device_settings_signals[device_idx] == 0 && device_idx == primary)

@@ -1258,9 +1258,6 @@ gm_pw_string_option_menu_new (GtkWidget *grid,
 
     cpt++;
   }
-  std::cout << "FIXME: Should be handled by the engine" << std::endl << std::flush;
-  if (!found)
-    settings->set_string (key, options [0]);
 
   g_settings_bind (settings->get_g_settings (), key.c_str (),
                    option_menu, "active-id", G_SETTINGS_BIND_DEFAULT);
@@ -1465,11 +1462,10 @@ gm_pw_spin_new (GtkWidget* grid,
   adj = (GtkAdjustment *)
     gtk_adjustment_new (settings->get_int (key),
 			min, max, step,
-			10.0, 0.0);
+			1.0, 1.0);
+  spin_button = gtk_spin_button_new (adj, 1.0, 0);
   g_settings_bind (settings->get_g_settings (), key.c_str (),
                    adj, "value", G_SETTINGS_BIND_DEFAULT);
-
-  spin_button = gtk_spin_button_new (adj, 1.0, 0);
   if (box)
     gtk_box_pack_start (GTK_BOX (hbox), spin_button, FALSE, FALSE,
 			1 * 2);

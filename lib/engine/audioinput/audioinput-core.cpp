@@ -1,4 +1,3 @@
-//
 /*
  * Ekiga -- A VoIP and Video-Conferencing application
  * Copyright (C) 2000-2009 Damien Sandras <dsandras@seconix.com>
@@ -194,7 +193,11 @@ AudioInputCore::set_device (const std::string& device_string)
     device.type = AUDIO_INPUT_FALLBACK_DEVICE_TYPE;
     device.source = AUDIO_INPUT_FALLBACK_DEVICE_SOURCE;
     device.name = AUDIO_INPUT_FALLBACK_DEVICE_NAME;
+    found = false;
   }
+
+  if (!found)
+    g_settings_set_string (audio_device_settings, "input-device", device.GetString ().c_str ());
 
   internal_set_device (device);
 
