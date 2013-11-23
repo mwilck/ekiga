@@ -545,13 +545,6 @@ static void sound_event_setting_changed (GSettings *,
 					 gpointer data);
 
 
-static void string_option_menu_changed (GtkWidget *option_menu,
-					gpointer data);
-
-static void string_option_setting_changed (GSettings *settings,
-					   gchar *key,
-					   gpointer data);
-
 static void int_option_menu_changed (GtkWidget *option_menu,
 				     gpointer data);
 
@@ -1245,22 +1238,14 @@ gm_pw_string_option_menu_new (GtkWidget *grid,
 {
   GtkWidget *label = NULL;
   GtkWidget *option_menu = NULL;
-  GtkListStore *list_store = NULL;
-  GtkCellRenderer *renderer = NULL;
-  GtkTreeIter iter;
 
-  gchar *signal_name = NULL;
   std::string conf_string;
-  gboolean writable = FALSE;
 
-  int history = -1;
+  bool found = false;
   int cpt = 0;
 
-  writable = g_settings_is_writable (settings->get_g_settings (), key.c_str ());
-
   label = gtk_label_new (label_txt);
-  if (!writable)
-    gtk_widget_set_sensitive (GTK_WIDGET (label), FALSE);
+  gtk_widget_set_sensitive (GTK_WIDGET (label), FALSE);
 
   g_object_set (G_OBJECT (label), "expand", TRUE, NULL);
   gtk_grid_attach (GTK_GRID (grid), label, 0, row, 1, 1);
@@ -1268,68 +1253,29 @@ gm_pw_string_option_menu_new (GtkWidget *grid,
   gtk_misc_set_alignment (GTK_MISC (label), 0.0, 0.5);
   gtk_label_set_justify (GTK_LABEL (label), GTK_JUSTIFY_LEFT);
 
-  list_store = gtk_list_store_new (4,
-				   G_TYPE_STRING,
-				   G_TYPE_STRING,
-				   G_TYPE_BOOLEAN,
-				   G_TYPE_POINTER);
-  option_menu = gtk_combo_box_new_with_model (GTK_TREE_MODEL (list_store));
-  if (!writable)
-    gtk_widget_set_sensitive (GTK_WIDGET (option_menu), FALSE);
-  renderer = gtk_cell_renderer_text_new ();
-  gtk_cell_layout_pack_start (GTK_CELL_LAYOUT (option_menu), renderer, FALSE);
-  gtk_cell_layout_set_attributes (GTK_CELL_LAYOUT (option_menu), renderer,
-				  "text", COLUMN_STRING_TRANSLATED,
-				  "sensitive", COLUMN_SENSITIVE,
-				  NULL);
-  g_object_set (G_OBJECT (renderer),
-		"ellipsize-set", TRUE,
-		"ellipsize", PANGO_ELLIPSIZE_END,
-		"width-chars", 30, NULL);
+  option_menu = gtk_combo_box_text_new ();
   gtk_label_set_mnemonic_widget (GTK_LABEL (label), option_menu);
 
   conf_string = settings->get_string (key);
   while (options [cpt]) {
 
     if (!conf_string.empty () && !g_strcmp0 (conf_string.c_str (), options [cpt]))
-      history = cpt;
+      found = true;
+    gtk_combo_box_text_append (GTK_COMBO_BOX_TEXT (option_menu), options [cpt], options [cpt]);
 
-    gtk_list_store_append (GTK_LIST_STORE (list_store), &iter);
-    gtk_list_store_set (GTK_LIST_STORE (list_store), &iter,
-			COLUMN_STRING_RAW, options [cpt],
-			COLUMN_STRING_TRANSLATED, gettext (options [cpt]),
-			COLUMN_SENSITIVE, TRUE,
-			COLUMN_GSETTINGS, (gpointer) settings->get_g_settings (),
-			-1);
     cpt++;
   }
-
-  /* Default value not found in the valid choices,
-   * select the first one
-   */
-  if (history == -1) {
-    history = 0;
+  std::cout << "FIXME: Should be handled by the engine" << std::endl << std::flush;
+  if (!found)
     settings->set_string (key, options [0]);
-  }
 
-  gtk_combo_box_set_active (GTK_COMBO_BOX (option_menu), history);
+  g_settings_bind (settings->get_g_settings (), key.c_str (),
+                   option_menu, "active-id", G_SETTINGS_BIND_DEFAULT);
+
   g_object_set (G_OBJECT (option_menu), "expand", TRUE, NULL);
   gtk_grid_attach (GTK_GRID (grid), option_menu, 1, row, 1, 1);
 
   gtk_widget_set_tooltip_text (option_menu, tooltip);
-
-  /* Update configuration when the user changes the selected option */
-  g_signal_connect_data (option_menu, "changed",
-			 G_CALLBACK (string_option_menu_changed),
-			 (gpointer) g_strdup (key.c_str ()),
-			 (GClosureNotify) g_free,
-			 G_CONNECT_AFTER);
-
-  /* Update the widget when the user changes the configuration */
-  signal_name = g_strdup_printf ("changed::%s", key.c_str ());
-  g_signal_connect (settings->get_g_settings (), signal_name,
-		    G_CALLBACK (string_option_setting_changed), option_menu);
-  g_free (signal_name);
 
   gtk_widget_show_all (grid);
 
@@ -1377,7 +1323,7 @@ gm_pw_int_option_menu_new (GtkWidget *grid,
   renderer = gtk_cell_renderer_text_new ();
   gtk_cell_layout_pack_start (GTK_CELL_LAYOUT (option_menu), renderer, FALSE);
   gtk_cell_layout_set_attributes (GTK_CELL_LAYOUT (option_menu), renderer,
-				  "text", COLUMN_STRING_TRANSLATED,
+				  "text", COLUMN_STRING_RAW,
 				  NULL);
   g_object_set (G_OBJECT (renderer),
 		"ellipsize-set", TRUE,
@@ -1391,7 +1337,6 @@ gm_pw_int_option_menu_new (GtkWidget *grid,
     gtk_list_store_append (GTK_LIST_STORE (list_store), &iter);
     gtk_list_store_set (GTK_LIST_STORE (list_store), &iter,
 			COLUMN_STRING_RAW, options [cpt],
-			COLUMN_STRING_TRANSLATED, gettext (options [cpt]),
 			COLUMN_GSETTINGS, settings->get_g_settings (),
 			-1);
     cpt++;
@@ -1429,12 +1374,9 @@ gm_pw_string_option_menu_update (GtkWidget *option_menu,
 				 const std::string & key,
 				 const gchar *default_value)
 {
-  GtkTreeModel *model = NULL;
-  GtkTreeIter iter;
-
   std::string conf_string;
 
-  int history = -1;
+  bool found = false;
   int cpt = 0;
 
   if (!options || key.empty ())
@@ -1444,39 +1386,19 @@ gm_pw_string_option_menu_update (GtkWidget *option_menu,
   if (conf_string.empty ())
     conf_string = default_value;
 
-  model = gtk_combo_box_get_model (GTK_COMBO_BOX (option_menu));
+  gtk_combo_box_text_remove_all (GTK_COMBO_BOX_TEXT (option_menu));
 
-  gtk_list_store_clear (GTK_LIST_STORE (model));
-
-  cpt = 0;
   while (options [cpt]) {
 
-    if (!g_strcmp0 (options [cpt], conf_string.c_str ()))
-      history = cpt;
+    if (!conf_string.empty () && !g_strcmp0 (conf_string.c_str (), options [cpt]))
+      found = true;
+    gtk_combo_box_text_append (GTK_COMBO_BOX_TEXT (option_menu), options [cpt], options [cpt]);
 
-    gtk_list_store_append (GTK_LIST_STORE (model), &iter);
-    gtk_list_store_set (GTK_LIST_STORE (model), &iter,
-			COLUMN_STRING_RAW, options [cpt],
-			COLUMN_STRING_TRANSLATED, options [cpt],
-			COLUMN_SENSITIVE, TRUE,
-			COLUMN_GSETTINGS, (gpointer) settings->get_g_settings (),
-			-1);
     cpt++;
   }
-
-  if (history == -1) {
-
-    gtk_list_store_append (GTK_LIST_STORE (model), &iter);
-    gtk_list_store_set (GTK_LIST_STORE (model), &iter,
-			COLUMN_STRING_RAW, conf_string.c_str (),
-			COLUMN_STRING_TRANSLATED, gettext (conf_string.c_str ()),
-			COLUMN_SENSITIVE, FALSE,
-			COLUMN_GSETTINGS, (gpointer) settings->get_g_settings (),
-			-1);
-    history = cpt;
-  }
-
-  gtk_combo_box_set_active (GTK_COMBO_BOX (option_menu), history);
+  std::cout << "FIXME: Should be handled by the engine" << std::endl << std::flush;
+  if (!found)
+    settings->set_string (key, options [0]);
 }
 
 
@@ -1485,45 +1407,11 @@ gm_pw_string_option_menu_add (GtkWidget *option_menu,
 			      const gchar *option,
 			      gboolean active)
 {
-  GtkTreeModel *model = NULL;
-  GtkTreeIter iter;
-  gboolean found = FALSE;
-
   if (!option)
     return;
 
-  model = gtk_combo_box_get_model (GTK_COMBO_BOX (option_menu));
-
-  if (gtk_tree_model_get_iter_first (GTK_TREE_MODEL (model), &iter)) {
-
-    do {
-      gchar *value_string = NULL;
-      GValue value = { 0, {{0}, {0}} };
-      gtk_tree_model_get_value (GTK_TREE_MODEL (model), &iter, 0, &value);
-      value_string = (gchar *) g_value_get_string (&value);
-      if (g_ascii_strcasecmp  (value_string, option) == 0) {
-        gtk_list_store_set (GTK_LIST_STORE (model), &iter,
-                            COLUMN_SENSITIVE, TRUE,
-                            -1);
-        g_value_unset(&value);
-        found = TRUE;
-        break;
-      }
-      g_value_unset(&value);
-
-    } while (gtk_tree_model_iter_next(GTK_TREE_MODEL (model), &iter));
-  }
-
-  if (!found) {
-    gtk_list_store_append (GTK_LIST_STORE (model), &iter);
-    gtk_list_store_set (GTK_LIST_STORE (model), &iter,
-                        COLUMN_STRING_RAW, option,
-                        COLUMN_STRING_TRANSLATED, option,
-                        COLUMN_SENSITIVE, TRUE,
-                        -1);
-  }
-  if (active == TRUE)
-    gtk_combo_box_set_active_iter (GTK_COMBO_BOX (option_menu), &iter);
+  gtk_combo_box_text_append (GTK_COMBO_BOX_TEXT (option_menu), option, option);
+  std::cout << "FIXME: active not handled" << std::endl << std::flush;
 }
 
 
@@ -1531,42 +1419,7 @@ void
 gm_pw_string_option_menu_remove (GtkWidget *option_menu,
 				 const gchar *option)
 {
-  GtkTreeModel *model = NULL;
-  GtkTreeIter iter;
-  int cpt = 0;
-  int active = 0;
-
-  if (!option)
-    return;
-
-  model = gtk_combo_box_get_model (GTK_COMBO_BOX (option_menu));
-  active = gtk_combo_box_get_active (GTK_COMBO_BOX (option_menu));
-
-  if (gtk_tree_model_get_iter_first (GTK_TREE_MODEL (model), &iter)) {
-
-    do {
-      gchar *value_string = NULL;
-      GValue value = { 0, {{0}, {0}} };
-      gtk_tree_model_get_value (GTK_TREE_MODEL (model), &iter, 0, &value);
-      value_string = (gchar *) g_value_get_string (&value);
-      if (g_ascii_strcasecmp  (value_string, option) == 0) {
-
-        if (cpt == active) {
-          gtk_list_store_set (GTK_LIST_STORE (model), &iter,
-                              COLUMN_SENSITIVE, FALSE,
-                              -1);
-        }
-        else {
-          gtk_list_store_remove (GTK_LIST_STORE (model), &iter);
-        }
-        g_value_unset(&value);
-        break;
-      }
-      g_value_unset(&value);
-      cpt++;
-
-    } while (gtk_tree_model_iter_next(GTK_TREE_MODEL (model), &iter));
-  }
+  std::cout << "FIXME" << std::endl << std::flush;
 }
 
 
@@ -2212,7 +2065,8 @@ void on_videoinput_device_added_cb (const Ekiga::VideoInputDevice & device, bool
   GmPreferencesWindow *pw = NULL;
   g_return_if_fail (prefs_window != NULL);
   pw = gm_pw_get_pw (prefs_window);
-  gm_pw_string_option_menu_add (pw->video_device, (device.GetString()).c_str(),  isDesired ? TRUE : FALSE);
+  gm_pw_string_option_menu_add (pw->video_device, (device.GetString()).c_str(),
+                                isDesired ? TRUE : FALSE);
 }
 
 void on_videoinput_device_removed_cb (const Ekiga::VideoInputDevice & device, bool, GtkWidget *prefs_window)
@@ -2228,7 +2082,8 @@ void on_audioinput_device_added_cb (const Ekiga::AudioInputDevice & device, bool
   GmPreferencesWindow *pw = NULL;
   g_return_if_fail (prefs_window != NULL);
   pw = gm_pw_get_pw (prefs_window);
-  gm_pw_string_option_menu_add (pw->audio_recorder, (device.GetString()).c_str(),  isDesired ? TRUE : FALSE);
+  gm_pw_string_option_menu_add (pw->audio_recorder, (device.GetString()).c_str(),
+                                isDesired ? TRUE : FALSE);
 
 }
 
@@ -2245,8 +2100,10 @@ void on_audiooutput_device_added_cb (const Ekiga::AudioOutputDevice & device, bo
   GmPreferencesWindow *pw = NULL;
   g_return_if_fail (prefs_window != NULL);
   pw = gm_pw_get_pw (prefs_window);
-  gm_pw_string_option_menu_add (pw->audio_player, (device.GetString()).c_str(), isDesired ? TRUE : FALSE);
-  gm_pw_string_option_menu_add (pw->sound_events_output, (device.GetString()).c_str(), isDesired ? TRUE : FALSE);
+  gm_pw_string_option_menu_add (pw->audio_player, (device.GetString()).c_str(),
+                                isDesired ? TRUE : FALSE);
+  gm_pw_string_option_menu_add (pw->sound_events_output, (device.GetString()).c_str(),
+                                isDesired ? TRUE : FALSE);
 }
 
 void on_audiooutput_device_removed_cb (const Ekiga::AudioOutputDevice & device, bool, GtkWidget *prefs_window)
@@ -2254,91 +2111,9 @@ void on_audiooutput_device_removed_cb (const Ekiga::AudioOutputDevice & device, 
   GmPreferencesWindow *pw = NULL;
   g_return_if_fail (prefs_window != NULL);
   pw = gm_pw_get_pw (prefs_window);
-  gm_pw_string_option_menu_remove(pw->audio_player, (device.GetString()).c_str());
-  gm_pw_string_option_menu_remove(pw->sound_events_output, (device.GetString()).c_str());
+  gm_pw_string_option_menu_remove (pw->audio_player, (device.GetString()).c_str());
+  gm_pw_string_option_menu_remove (pw->sound_events_output, (device.GetString()).c_str());
 }
-
-void
-string_option_menu_changed (GtkWidget *option_menu,
-			    gpointer data)
-{
-  GSettings *settings = NULL;
-
-  GtkTreeModel *model = NULL;
-  GtkTreeIter iter;
-
-  gchar *text = NULL;
-  gchar *current_value = NULL;
-  gchar *key = NULL;
-
-  key = (gchar *) data;
-
-  model = gtk_combo_box_get_model (GTK_COMBO_BOX (option_menu));
-  if (gtk_combo_box_get_active_iter (GTK_COMBO_BOX (option_menu), &iter)) {
-
-    gtk_tree_model_get (GTK_TREE_MODEL (model), &iter,
-			COLUMN_STRING_RAW, &text,
-			COLUMN_GSETTINGS, &settings, -1);
-    current_value = g_settings_get_string (settings, key);
-
-    if (text && current_value && g_strcmp0 (text, current_value))
-      g_settings_set_string (settings, key, text);
-
-    g_free (text);
-  }
-}
-
-
-void
-string_option_setting_changed (GSettings *settings,
-			       gchar *key,
-			       gpointer data)
-{
-  int cpt = 0;
-  int count = 0;
-
-  GtkTreeModel *model = NULL;
-  GtkTreeIter iter;
-
-  gchar *text = NULL;
-  gchar* txt = NULL;
-
-  GtkWidget *e = GTK_WIDGET (data);
-
-  model = gtk_combo_box_get_model (GTK_COMBO_BOX (e));
-  count = gtk_tree_model_iter_n_children (model, NULL);
-  gtk_tree_model_get_iter_first (model, &iter);
-
-  for (cpt = 0 ; cpt < count ; cpt++) {
-
-    gtk_tree_model_get (model, &iter, COLUMN_STRING_RAW, &text, -1);
-    txt = g_settings_get_string (settings, key);
-    if (text && !g_strcmp0 (text, txt)) {
-
-      g_free (text);
-      g_free (txt);
-      break;
-    }
-    g_free (txt);
-    gtk_tree_model_iter_next (model, &iter);
-
-    g_free (text);
-  }
-
-  g_signal_handlers_block_matched (G_OBJECT (e),
-				   G_SIGNAL_MATCH_FUNC,
-				   0, 0, NULL,
-				   (gpointer) string_option_menu_changed,
-				   NULL);
-  if (cpt != count && gtk_combo_box_get_active (GTK_COMBO_BOX (data)) != cpt)
-    gtk_combo_box_set_active (GTK_COMBO_BOX (data), cpt);
-  g_signal_handlers_unblock_matched (G_OBJECT (e),
-				     G_SIGNAL_MATCH_FUNC,
-				     0, 0, NULL,
-				     (gpointer) string_option_menu_changed,
-				     NULL);
-}
-
 
 void
 int_option_menu_changed (GtkWidget *option_menu,
