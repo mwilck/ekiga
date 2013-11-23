@@ -42,7 +42,7 @@ struct _EkigaExtWindowPrivate {
 #ifndef WIN32
   GC gc;
 #endif
-  GtkWidget *video, *zin, *zout;
+  GtkWidget *video, *zin, *zout, *event_box;
   boost::shared_ptr<Ekiga::VideoOutputCore> vocore;
   boost::shared_ptr<Ekiga::Settings> video_display_settings;
 };
@@ -113,8 +113,11 @@ gui_layout (EkigaExtWindow *ew)
   zout = gtk_button_new_from_stock (GTK_STOCK_ZOOM_OUT);
   gtk_box_pack_start (GTK_BOX (hbox), zout, FALSE, FALSE, 0);
 
+  ew->priv->event_box = gtk_event_box_new ();
   ew->priv->video = gtk_image_new ();
-  gtk_box_pack_start (GTK_BOX (vbox), ew->priv->video, FALSE, FALSE, 0);
+  gtk_container_add (GTK_CONTAINER (ew->priv->event_box), ew->priv->video);
+  gtk_box_pack_start (GTK_BOX (vbox), GTK_WIDGET (ew->priv->event_box), FALSE, FALSE, 0);
+  gtk_widget_show (ew->priv->event_box);
 
   ew->priv->zin = zin;
   ew->priv->zout = zout;
@@ -220,7 +223,7 @@ draw_event (GtkWidget *widget,
 
   if (!ew->priv->gc) {
     Display *display;
-    display = GDK_WINDOW_XDISPLAY (gtk_widget_get_window (ew->priv->video));
+    display = GDK_DISPLAY_XDISPLAY (gtk_widget_get_display (ew->priv->video));
     ew->priv->gc = XCreateGC(display, info.window, 0, 0);
     g_return_val_if_fail (ew->priv->gc != NULL, handled);
   }
@@ -287,23 +290,23 @@ ekiga_ext_window_set_size (EkigaExtWindow *ew, int width, int height)
 
   g_return_if_fail (width > 0 && height > 0);
 
-  gtk_widget_get_size_request (ew->priv->video, &pw, &ph);
+  gtk_widget_get_size_request (ew->priv->event_box, &pw, &ph);
 
   /* No size requisition yet
    * It's our first call so we silently set the new requisition and exit...
    */
   if (pw == -1) {
-    gtk_widget_set_size_request (ew->priv->video, width, height);
+    gtk_widget_set_size_request (ew->priv->event_box, width, height);
     return;
   }
 
   /* Do some kind of filtering here. We often get duplicate "size-changed" events...
-   * Note that we currently only bother about the width of the video.
+   * Note that we currently only bother about the width of the event_box.
    */
   if (pw == width)
     return;
 
-  gtk_widget_set_size_request (ew->priv->video, width, height);
+  gtk_widget_set_size_request (ew->priv->event_box, width, height);
   gdk_window_invalidate_rect (gtk_widget_get_window (GTK_WIDGET (ew)), NULL, TRUE);
 }
 

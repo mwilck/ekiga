@@ -103,6 +103,7 @@ struct _EkigaCallWindowPrivate
   unsigned calling_state;
 
   GtkWidget *ext_video_win;
+  GtkWidget *event_box;
   GtkWidget *main_video_image;
   GtkWidget *spinner;
   GtkWidget *info_text;
@@ -813,13 +814,13 @@ ekiga_call_window_set_video_size (EkigaCallWindow *cw,
     zoom_in_changed_cb (NULL, (gpointer) cw);
   }
 
-  gtk_widget_get_size_request (cw->priv->main_video_image, &pw, &ph);
+  gtk_widget_get_size_request (cw->priv->event_box, &pw, &ph);
 
   /* No size requisition yet
    * It's our first call so we silently set the new requisition and exit...
    */
   if (pw == -1) {
-    gtk_widget_set_size_request (cw->priv->main_video_image, width, height);
+    gtk_widget_set_size_request (cw->priv->event_box, width, height);
     return;
   }
 
@@ -829,7 +830,7 @@ ekiga_call_window_set_video_size (EkigaCallWindow *cw,
   if (pw == width)
     return;
 
-  gtk_widget_set_size_request (cw->priv->main_video_image, width, height);
+  gtk_widget_set_size_request (cw->priv->event_box, width, height);
 
   gtk_widget_get_allocation (GTK_WIDGET (cw), &a);
   gdk_window_invalidate_rect (gtk_widget_get_window (GTK_WIDGET (cw)), &a, true);
@@ -1212,7 +1213,7 @@ static void on_missed_call_cb (boost::shared_ptr<Ekiga::CallManager>  /*manager*
 {
   EkigaCallWindow *cw = EKIGA_CALL_WINDOW (self);
 
-  if (cw->priv->current_call && cw->priv->current_call->get_id () != call->get_id ()) {
+  if (cw->priv->current_call && call && cw->priv->current_call->get_id () != call->get_id ()) {
     return; // Trying to clear another call than the current active one
   }
 
@@ -2348,9 +2349,11 @@ ekiga_call_window_init_gui (EkigaCallWindow *cw)
   gtk_widget_show_all (alignment);
 
   /* The frame that contains the video */
+  cw->priv->event_box = gtk_event_box_new ();
   cw->priv->main_video_image = gtk_image_new ();
-  gtk_box_pack_start (GTK_BOX (vbox), GTK_WIDGET (cw->priv->main_video_image), true, true, 0);
-  gtk_widget_show (cw->priv->main_video_image);
+  gtk_container_add (GTK_CONTAINER (cw->priv->event_box), cw->priv->main_video_image);
+  gtk_box_pack_start (GTK_BOX (vbox), GTK_WIDGET (cw->priv->event_box), true, true, 0);
+  gtk_widget_show (cw->priv->event_box);
 
   /* The frame that contains information about the call */
   cw->priv->call_frame = gtk_frame_new (NULL);
@@ -2587,7 +2590,7 @@ ekiga_call_window_draw (GtkWidget *widget,
 
   if (!cw->priv->gc) {
     Display *display;
-    display = GDK_WINDOW_XDISPLAY (gtk_widget_get_window (video_widget));
+    display = GDK_DISPLAY_XDISPLAY (gtk_widget_get_display (video_widget));
     cw->priv->gc = XCreateGC(display, display_info.window, 0, 0);
     g_return_val_if_fail (cw->priv->gc != NULL, handled);
   }
