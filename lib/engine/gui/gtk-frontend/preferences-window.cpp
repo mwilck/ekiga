@@ -559,14 +559,6 @@ static void int_option_setting_changed (GSettings *settings,
 					gchar *key,
 					gpointer data);
 
-static void adjustment_changed (GtkAdjustment *adj,
-				gpointer data);
-
-static void adjustment_setting_changed (GSettings *settings,
-					gchar *key,
-					gpointer data);
-
-
 void 
 gm_prefs_window_update_devices_list (GtkWidget *prefs_window);
 
@@ -1594,20 +1586,12 @@ gm_pw_scale_new (GtkWidget* grid,
   GtkAdjustment *adj = NULL;
   GtkWidget *label = NULL;
   GtkWidget *hscale = NULL;
-  gchar *signal_name = NULL;
-  gboolean writable = FALSE;
-
-  writable = g_settings_is_writable (settings->get_g_settings (), key.c_str ());
 
   hbox = gtk_box_new (GTK_ORIENTATION_HORIZONTAL, 0);
 
   label = gtk_label_new_with_mnemonic (down_label_txt);
-  if (!writable)
-    gtk_widget_set_sensitive (GTK_WIDGET (label), FALSE);
-
   gtk_box_pack_start (GTK_BOX (hbox), label, FALSE, FALSE,
 		      1 * 2);
-
   gtk_misc_set_alignment (GTK_MISC (label), 0.0, 0.5);
   gtk_label_set_justify (GTK_LABEL (label), GTK_JUSTIFY_LEFT);
 
@@ -1615,44 +1599,23 @@ gm_pw_scale_new (GtkWidget* grid,
     gtk_adjustment_new (settings->get_int (key),
 			min, max, step,
 			2.0, 1.0);
-  g_object_set_data_full (G_OBJECT (adj), "key",
-			  (gpointer) g_strdup (key.c_str ()),
-			  (GDestroyNotify) g_free);
-
+  g_settings_bind (settings->get_g_settings (), key.c_str (),
+                   adj, "value", G_SETTINGS_BIND_DEFAULT);
 
   hscale = gtk_scale_new (GTK_ORIENTATION_HORIZONTAL, adj);
   gtk_scale_set_draw_value (GTK_SCALE (hscale), FALSE);
   gtk_widget_set_size_request (GTK_WIDGET (hscale), 150, -1);
-  if (!writable)
-    gtk_widget_set_sensitive (GTK_WIDGET (hscale), FALSE);
-
   gtk_box_pack_start (GTK_BOX (hbox), hscale, FALSE, FALSE,
 		      1 * 2);
 
-
   label = gtk_label_new_with_mnemonic (up_label_txt);
-  if (!writable)
-    gtk_widget_set_sensitive (GTK_WIDGET (label), FALSE);
-
   gtk_box_pack_start (GTK_BOX (hbox), label, FALSE, FALSE,
 		      1 * 2);
-
   g_object_set (G_OBJECT (hbox), "expand", TRUE, NULL);
   gtk_grid_attach (GTK_GRID (grid), hbox, 0, row, 1, 1);
 
   if (tooltip)
     gtk_widget_set_tooltip_text (hscale, tooltip);
-
-  /* Update configuration when the user changes the selected option */
-  g_signal_connect (adj, "value-changed",
-		    G_CALLBACK (adjustment_changed),
-		    settings->get_g_settings ());
-
-  /* Update the widget when the user changes the configuration */
-  signal_name = g_strdup_printf ("changed::%s", key.c_str ());
-  g_signal_connect (settings->get_g_settings (), signal_name,
-		    G_CALLBACK (adjustment_setting_changed), adj);
-  g_free (signal_name);
 
   gtk_widget_show_all (grid);
 
@@ -1678,18 +1641,11 @@ gm_pw_spin_new (GtkWidget* grid,
   GtkAdjustment *adj = NULL;
   GtkWidget *label = NULL;
   GtkWidget *spin_button = NULL;
-  gchar *signal_name = NULL;
-  gboolean writable = FALSE;
-
-  writable = g_settings_is_writable (settings->get_g_settings (), key.c_str ());
 
   if (box)
     hbox = gtk_box_new (GTK_ORIENTATION_HORIZONTAL, 0);
 
   label = gtk_label_new_with_mnemonic (label_txt);
-  if (!writable)
-    gtk_widget_set_sensitive (GTK_WIDGET (label), FALSE);
-
   if (box)
     gtk_box_pack_start (GTK_BOX (hbox), label, FALSE, FALSE,
 			1 * 2);
@@ -1698,7 +1654,6 @@ gm_pw_spin_new (GtkWidget* grid,
     g_object_set (G_OBJECT (label), "expand", TRUE, NULL);
     gtk_grid_attach (GTK_GRID (grid), label, 0, row, 1, 1);
   }
-
   gtk_misc_set_alignment (GTK_MISC (label), 0.0, 0.5);
   gtk_label_set_justify (GTK_LABEL (label), GTK_JUSTIFY_LEFT);
 
@@ -1706,14 +1661,10 @@ gm_pw_spin_new (GtkWidget* grid,
     gtk_adjustment_new (settings->get_int (key),
 			min, max, step,
 			10.0, 0.0);
-  g_object_set_data_full (G_OBJECT (adj), "key",
-			  (gpointer) g_strdup (key.c_str ()),
-			  (GDestroyNotify) g_free);
+  g_settings_bind (settings->get_g_settings (), key.c_str (),
+                   adj, "value", G_SETTINGS_BIND_DEFAULT);
 
   spin_button = gtk_spin_button_new (adj, 1.0, 0);
-  if (!writable)
-    gtk_widget_set_sensitive (GTK_WIDGET (spin_button), FALSE);
-
   if (box)
     gtk_box_pack_start (GTK_BOX (hbox), spin_button, FALSE, FALSE,
 			1 * 2);
@@ -1726,9 +1677,6 @@ gm_pw_spin_new (GtkWidget* grid,
   if (box && label_txt2) {
 
     label = gtk_label_new_with_mnemonic (label_txt2);
-    if (!writable)
-      gtk_widget_set_sensitive (GTK_WIDGET (label), FALSE);
-
     gtk_box_pack_start (GTK_BOX (hbox), label, FALSE, FALSE,
 			1 * 2);
   }
@@ -1741,17 +1689,6 @@ gm_pw_spin_new (GtkWidget* grid,
 
   if (tooltip)
     gtk_widget_set_tooltip_text (spin_button, tooltip);
-
-  /* Update configuration when the user changes the selected option */
-  g_signal_connect (adj, "value-changed",
-		    G_CALLBACK (adjustment_changed),
-		    settings->get_g_settings ());
-
-  /* Update the widget when the user changes the configuration */
-  signal_name = g_strdup_printf ("changed::%s", key.c_str ());
-  g_signal_connect (settings->get_g_settings (), signal_name,
-		    G_CALLBACK (adjustment_setting_changed), adj);
-  g_free (signal_name);
 
   gtk_widget_show_all (grid);
 
@@ -2464,52 +2401,6 @@ int_option_setting_changed (GSettings *settings,
 				     G_SIGNAL_MATCH_FUNC,
 				     0, 0, NULL,
 				     (gpointer) int_option_menu_changed,
-				     NULL);
-}
-
-
-void
-adjustment_changed (GtkAdjustment *adj,
-		    gpointer data)
-{
-  GSettings *settings = NULL;
-  gchar *key = NULL;
-
-  g_return_if_fail (data);
-
-  settings = G_SETTINGS(data);
-  key = (gchar*) g_object_get_data (G_OBJECT (adj), (const gchar*) "key");
-
-  if (g_settings_get_int (settings, key) != (int) gtk_adjustment_get_value (adj))
-    g_settings_set_int (settings, key, (int) gtk_adjustment_get_value (adj));
-}
-
-
-
-void
-adjustment_setting_changed (GSettings *settings,
-			    gchar *key,
-			    gpointer data)
-{
-  GtkAdjustment *s = NULL;
-  gdouble current_value = 0.0;
-
-  s = GTK_ADJUSTMENT (data);
-
-  current_value = g_settings_get_int (settings, key);
-
-  g_signal_handlers_block_matched (G_OBJECT (s),
-				   G_SIGNAL_MATCH_FUNC,
-				   0, 0, NULL,
-				   (gpointer) adjustment_changed,
-				   NULL);
-  if (gtk_adjustment_get_value (GTK_ADJUSTMENT (s)) > current_value
-      || gtk_adjustment_get_value (GTK_ADJUSTMENT (s)) < current_value)
-    gtk_adjustment_set_value (GTK_ADJUSTMENT (s), current_value);
-  g_signal_handlers_unblock_matched (G_OBJECT (s),
-				     G_SIGNAL_MATCH_FUNC,
-				     0, 0, NULL,
-				     (gpointer) adjustment_changed,
 				     NULL);
 }
 
