@@ -106,8 +106,6 @@ Opal::H323::EndPoint::EndPoint (Opal::CallManager & _manager):
 
   video_codecs_settings = boost::shared_ptr<Ekiga::Settings> (new Ekiga::Settings (VIDEO_CODECS_SCHEMA));
   video_codecs_settings->changed.connect (boost::bind (&EndPoint::setup, this, _1));
-
-  setup ();
 }
 
 Opal::H323::EndPoint::~EndPoint ()

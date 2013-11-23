@@ -92,6 +92,9 @@ public:
 			const std::string uri,
 			Ekiga::MenuBuilder& builder);
 
+    /* Set up endpoint: all options or a specific setting */
+    void setup (const std::string & setting = "");
+
     /** Call Manager **/
     bool dial (const std::string & uri); 
 
@@ -199,9 +202,6 @@ private:
                                              PBoolean preview,
                                              PVideoOutputDevice * & device,
                                              PBoolean & auto_delete);
-
-    /* Set up endpoint: all options or a specific setting */
-    void setup (const std::string & setting = "");
 
     /* The various related endpoints */
     GMPCSSEndpoint *pcssEP;

@@ -210,8 +210,6 @@ CallManager::CallManager (Ekiga::ServiceCore& core)
   personal_data_settings =
     boost::shared_ptr<Ekiga::Settings> (new Ekiga::Settings (PERSONAL_DATA_SCHEMA));
   personal_data_settings->changed.connect (boost::bind (&CallManager::setup, this, _1));
-
-  setup ();
 }
 
 
