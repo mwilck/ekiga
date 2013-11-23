@@ -545,13 +545,6 @@ static void sound_event_setting_changed (GSettings *,
 					 gpointer data);
 
 
-static void int_option_menu_changed (GtkWidget *option_menu,
-				     gpointer data);
-
-static void int_option_setting_changed (GSettings *settings,
-					gchar *key,
-					gpointer data);
-
 void 
 gm_prefs_window_update_devices_list (GtkWidget *prefs_window);
 
@@ -1294,21 +1287,9 @@ gm_pw_int_option_menu_new (GtkWidget *grid,
   GtkWidget *label = NULL;
   GtkWidget *option_menu = NULL;
 
-  GtkListStore *list_store = NULL;
-  GtkCellRenderer *renderer = NULL;
-  GtkTreeIter iter;
-
-  gchar *signal_name = NULL;
-  gboolean writable = FALSE;
-
-  int history = -1;
   int cpt = 0;
 
-  writable = g_settings_is_writable (settings->get_g_settings (), key.c_str ());
-
-  label = gtk_label_new_with_mnemonic (label_txt);
-  if (!writable)
-    gtk_widget_set_sensitive (GTK_WIDGET (label), FALSE);
+  label = gtk_label_new (label_txt);
 
   g_object_set (G_OBJECT (label), "expand", TRUE, NULL);
   gtk_grid_attach (GTK_GRID (grid), label, 0, row, 1, 1);
@@ -1316,51 +1297,22 @@ gm_pw_int_option_menu_new (GtkWidget *grid,
   gtk_misc_set_alignment (GTK_MISC (label), 0.0, 0.5);
   gtk_label_set_justify (GTK_LABEL (label), GTK_JUSTIFY_LEFT);
 
-  list_store = gtk_list_store_new (4, G_TYPE_STRING, G_TYPE_STRING, G_TYPE_STRING, G_TYPE_POINTER);
-  option_menu = gtk_combo_box_new_with_model (GTK_TREE_MODEL (list_store));
-  if (!writable)
-    gtk_widget_set_sensitive (GTK_WIDGET (option_menu), FALSE);
-  renderer = gtk_cell_renderer_text_new ();
-  gtk_cell_layout_pack_start (GTK_CELL_LAYOUT (option_menu), renderer, FALSE);
-  gtk_cell_layout_set_attributes (GTK_CELL_LAYOUT (option_menu), renderer,
-				  "text", COLUMN_STRING_RAW,
-				  NULL);
-  g_object_set (G_OBJECT (renderer),
-		"ellipsize-set", TRUE,
-		"ellipsize", PANGO_ELLIPSIZE_END,
-		"width-chars", 30, NULL);
+  option_menu = gtk_combo_box_text_new ();
   gtk_label_set_mnemonic_widget (GTK_LABEL (label), option_menu);
 
-  history = settings->get_int (key);
   while (options [cpt]) {
 
-    gtk_list_store_append (GTK_LIST_STORE (list_store), &iter);
-    gtk_list_store_set (GTK_LIST_STORE (list_store), &iter,
-			COLUMN_STRING_RAW, options [cpt],
-			COLUMN_GSETTINGS, settings->get_g_settings (),
-			-1);
+    gtk_combo_box_text_append_text (GTK_COMBO_BOX_TEXT (option_menu), options [cpt]);
     cpt++;
   }
 
-  gtk_combo_box_set_active (GTK_COMBO_BOX (option_menu), history);
+  g_settings_bind (settings->get_g_settings (), key.c_str (),
+                   GTK_COMBO_BOX (option_menu), "active", G_SETTINGS_BIND_DEFAULT);
+
   g_object_set (G_OBJECT (option_menu), "expand", TRUE, NULL);
   gtk_grid_attach (GTK_GRID (grid), option_menu, 1, row, 1, 1);
 
-  if (tooltip)
-    gtk_widget_set_tooltip_text (option_menu, tooltip);
-
-  /* Update configuration when the user changes the selected option */
-  g_signal_connect_data (option_menu, "changed",
-			 G_CALLBACK (int_option_menu_changed),
-			 (gpointer) g_strdup (key.c_str ()),
-			 (GClosureNotify) g_free,
-			 G_CONNECT_AFTER);
-
-  /* Update the widget when the user changes the configuration */
-  signal_name = g_strdup_printf ("changed::%s", key.c_str ());
-  g_signal_connect (settings->get_g_settings (), signal_name,
-		    G_CALLBACK (int_option_setting_changed), option_menu);
-  g_free (signal_name);
+  gtk_widget_set_tooltip_text (option_menu, tooltip);
 
   gtk_widget_show_all (grid);
 
@@ -2113,70 +2065,6 @@ void on_audiooutput_device_removed_cb (const Ekiga::AudioOutputDevice & device, 
   pw = gm_pw_get_pw (prefs_window);
   gm_pw_string_option_menu_remove (pw->audio_player, (device.GetString()).c_str());
   gm_pw_string_option_menu_remove (pw->sound_events_output, (device.GetString()).c_str());
-}
-
-void
-int_option_menu_changed (GtkWidget *option_menu,
-			 gpointer data)
-{
-  gchar *key = NULL;
-  GSettings *settings = NULL;
-
-  GtkTreeModel *model = NULL;
-  GtkTreeIter iter;
-
-  unsigned int i = 0;
-  unsigned int current_value = 0;
-
-  key = (gchar *) data;
-
-  model = gtk_combo_box_get_model (GTK_COMBO_BOX (option_menu));
-  if (gtk_combo_box_get_active_iter (GTK_COMBO_BOX (option_menu), &iter)) {
-
-    gtk_tree_model_get (GTK_TREE_MODEL (model), &iter,
-			COLUMN_GSETTINGS, &settings, -1);
-    i = gtk_combo_box_get_active (GTK_COMBO_BOX (option_menu));
-    current_value = g_settings_get_int (settings, key);
-
-    if (i != current_value)
-      g_settings_set_int (settings, key, i);
-  }
-}
-
-
-void
-int_option_setting_changed (GSettings *settings,
-			    gchar *key,
-			    gpointer data)
-{
-  GtkWidget *e = NULL;
-
-  GtkTreeModel *model = NULL;
-  GtkTreeIter iter;
-
-  gint current_value = 0;
-
-  e = GTK_WIDGET (data);
-
-  model = gtk_combo_box_get_model (GTK_COMBO_BOX (e));
-  gtk_tree_model_get_iter_first (model, &iter);
-
-  gtk_tree_model_get (model, &iter, COLUMN_GSETTINGS, &settings, -1);
-
-  current_value = g_settings_get_int (settings, key);
-
-  g_signal_handlers_block_matched (G_OBJECT (e),
-				   G_SIGNAL_MATCH_FUNC,
-				   0, 0, NULL,
-				   (gpointer) int_option_menu_changed,
-				   NULL);
-  if (current_value != gtk_combo_box_get_active (GTK_COMBO_BOX (e)))
-    gtk_combo_box_set_active (GTK_COMBO_BOX (e), current_value);
-  g_signal_handlers_unblock_matched (G_OBJECT (e),
-				     G_SIGNAL_MATCH_FUNC,
-				     0, 0, NULL,
-				     (gpointer) int_option_menu_changed,
-				     NULL);
 }
 
 
