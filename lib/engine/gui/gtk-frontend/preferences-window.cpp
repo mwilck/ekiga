@@ -1231,8 +1231,6 @@ gm_pw_string_option_menu_new (GtkWidget *grid,
   GtkWidget *label = NULL;
   GtkWidget *option_menu = NULL;
 
-  std::string conf_string;
-
   int cpt = 0;
 
   label = gtk_label_new (label_txt);
@@ -1247,7 +1245,6 @@ gm_pw_string_option_menu_new (GtkWidget *grid,
   option_menu = gtk_combo_box_text_new ();
   gtk_label_set_mnemonic_widget (GTK_LABEL (label), option_menu);
 
-  conf_string = settings->get_string (key);
   while (options [cpt]) {
 
     gtk_combo_box_text_append (GTK_COMBO_BOX_TEXT (option_menu), options [cpt], options [cpt]);
@@ -1318,31 +1315,30 @@ gm_pw_string_option_menu_update (GtkWidget *option_menu,
 				 const std::string & key,
 				 const gchar *default_value)
 {
-  std::string conf_string;
-
-  bool found = false;
   int cpt = 0;
 
   if (!options || key.empty ())
     return;
 
-  conf_string = settings->get_string (key);
-  if (conf_string.empty ())
-    conf_string = default_value;
-
   gtk_combo_box_text_remove_all (GTK_COMBO_BOX_TEXT (option_menu));
 
   while (options [cpt]) {
 
-    if (!conf_string.empty () && !g_strcmp0 (conf_string.c_str (), options [cpt]))
-      found = true;
     gtk_combo_box_text_append (GTK_COMBO_BOX_TEXT (option_menu), options [cpt], options [cpt]);
-
     cpt++;
   }
-  std::cout << "FIXME: Should be handled by the engine" << std::endl << std::flush;
-  if (!found)
-    settings->set_string (key, options [0]);
+
+  // We need to bind again after a remove_all operation
+  g_settings_bind (settings->get_g_settings (), key.c_str (),
+                   option_menu, "active-id", G_SETTINGS_BIND_DEFAULT);
+
+  // Force the corresponding AudioInputCore/AudioOutputCore/VideoInputCore
+  // to select the most appropriate device if we removed the currently used
+  // device
+  if (gtk_combo_box_get_active (GTK_COMBO_BOX (option_menu)) == -1)
+    settings->set_string (key, ""); // Nothing selected
+  if (gtk_combo_box_get_active (GTK_COMBO_BOX (option_menu)) == -1)
+    settings->set_string (key, ""); // Nothing selected
 }
 
 
@@ -1361,7 +1357,29 @@ void
 gm_pw_string_option_menu_remove (GtkWidget *option_menu,
 				 const gchar *option)
 {
-  std::cout << "FIXME" << std::endl << std::flush;
+  GtkTreeModel *model = gtk_combo_box_get_model (GTK_COMBO_BOX (option_menu));
+  GtkTreeIter iter;
+  int pos = 0;
+  gchar *s = NULL;
+
+  if (gtk_tree_model_get_iter_first (GTK_TREE_MODEL (model), &iter)) {
+    do {
+      gtk_tree_model_get (GTK_TREE_MODEL (model), &iter, 0, &s, -1);
+      if (s && !strcmp (s, option)) {
+        g_free (s);
+        break;
+      }
+      g_free (s);
+      pos++;
+    } while (gtk_tree_model_iter_next (GTK_TREE_MODEL (model), &iter));
+  }
+  gtk_combo_box_text_remove (GTK_COMBO_BOX_TEXT (option_menu), pos);
+
+  // Force the corresponding AudioInputCore/AudioOutputCore/VideoInputCore
+  // to select the most appropriate device if we removed the currently used
+  // device
+  if (gtk_combo_box_get_active (GTK_COMBO_BOX (option_menu)) == -1)
+    settings->set_string (key, ""); // Nothing selected
 }
 
 
