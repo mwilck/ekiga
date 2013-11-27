@@ -169,6 +169,8 @@ codecs_box_set_codecs (CodecsBox *self,
 
   if (!selected && gtk_tree_model_get_iter_first (GTK_TREE_MODEL (model), &iter))
     gtk_tree_selection_select_iter (selection, &iter);
+
+  g_free (selected_codec);
 }
 
 
