@@ -273,8 +273,8 @@ endif
 conflibav := --cross-prefix=$(HOST_TOOL_PREFIX)- --enable-shared --disable-static \
 	--enable-cross-compile --arch=`echo $(HOST_TOOL_PREFIX)|cut -d- -f1` --target-os=mingw32 \
 	--prefix=$(BUILDROOT) --libdir=$(LIBDIR) \
-	--disable-avserver --disable-ffmpeg --disable-avplay --disable-avconv --disable-avprobe --disable-network \
-	--disable-swscale --disable-avfilter --disable-avformat --disable-avdevice \
+	--disable-programs --enable-runtime-cpudetect \
+	--disable-network --disable-swscale --disable-avfilter --disable-avformat --disable-avdevice \
 	--disable-everything --enable-decoder=mpeg4 --enable-decoder=h263 --enable-encoder=mpeg4 --enable-encoder=h263 --enable-encoder=h263p --enable-decoder=h264 --enable-hwaccel=h264_dxva2
 
 confx264 := $(confflags) --enable-static --disable-cli --disable-avs
