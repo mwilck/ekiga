@@ -170,37 +170,50 @@ AudioInputCore::set_device (const std::string& device_string)
 
   std::vector<AudioInputDevice> devices;
   AudioInputDevice device;
+  AudioInputDevice device_fallback (AUDIO_INPUT_FALLBACK_DEVICE_TYPE,
+                                    AUDIO_INPUT_FALLBACK_DEVICE_SOURCE,
+                                    AUDIO_INPUT_FALLBACK_DEVICE_NAME);
+  AudioInputDevice device_preferred1 (AUDIO_INPUT_PREFERRED_DEVICE_TYPE1,
+                                      AUDIO_INPUT_PREFERRED_DEVICE_SOURCE1,
+                                      AUDIO_INPUT_PREFERRED_DEVICE_NAME1);
+  AudioInputDevice device_preferred2 (AUDIO_INPUT_PREFERRED_DEVICE_TYPE2,
+                                      AUDIO_INPUT_PREFERRED_DEVICE_SOURCE2,
+                                      AUDIO_INPUT_PREFERRED_DEVICE_NAME2);
   bool found = false;
+  bool found_preferred1 = false;
+  bool found_preferred2 = false;
 
   get_devices (devices);
   for (std::vector<AudioInputDevice>::iterator it = devices.begin ();
        it < devices.end ();
-       it++)
+       it++) {
     if ((*it).GetString () == device_string) {
       found = true;
       break;
     }
+    else if ((*it).GetString () == device_preferred1.GetString ()) {
+      found_preferred1 = true;
+    }
+    else if ((*it).GetString () == device_preferred2.GetString ()) {
+      found_preferred2 = true;
+    }
+  }
 
   if (found)
     device.SetFromString (device_string);
+  else if (found_preferred1)
+    device.SetFromString (device_preferred1.GetString ());
+  else if (found_preferred2)
+    device.SetFromString (device_preferred2.GetString ());
   else if (!devices.empty ())
     device.SetFromString (devices.begin ()->GetString ());
-  std::cout << "FIXME: We should probably fallback to a sane default like Pulseaudio" << std::endl << std::flush;
-
-  if (device.type == ""
-      || device.source == ""
-      || device.name == "") {
-    PTRACE(1, "AudioInputCore\tTried to set malformed device");
-    device.type = AUDIO_INPUT_FALLBACK_DEVICE_TYPE;
-    device.source = AUDIO_INPUT_FALLBACK_DEVICE_SOURCE;
-    device.name = AUDIO_INPUT_FALLBACK_DEVICE_NAME;
-    found = false;
-  }
+  else
+    device.SetFromString (device_fallback.GetString ());
 
   if (!found)
     g_settings_set_string (audio_device_settings, "input-device", device.GetString ().c_str ());
-
-  internal_set_device (device);
+  else
+    internal_set_device (device);
 
   PTRACE(4, "AudioInputCore\tSet device to " << device.source << "/" << device.name);
 }
