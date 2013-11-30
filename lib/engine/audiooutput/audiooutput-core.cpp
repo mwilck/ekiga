@@ -141,7 +141,18 @@ void AudioOutputCore::setup_audio_device (AudioOutputPS device_idx)
   AudioOutputDevice device;
 
   std::vector <AudioOutputDevice> devices;
+  AudioOutputDevice device_fallback (AUDIO_OUTPUT_FALLBACK_DEVICE_TYPE,
+                                     AUDIO_OUTPUT_FALLBACK_DEVICE_SOURCE,
+                                     AUDIO_OUTPUT_FALLBACK_DEVICE_NAME);
+  AudioOutputDevice device_preferred1 (AUDIO_OUTPUT_PREFERRED_DEVICE_TYPE1,
+                                       AUDIO_OUTPUT_PREFERRED_DEVICE_SOURCE1,
+                                       AUDIO_OUTPUT_PREFERRED_DEVICE_NAME1);
+  AudioOutputDevice device_preferred2 (AUDIO_OUTPUT_PREFERRED_DEVICE_TYPE2,
+                                       AUDIO_OUTPUT_PREFERRED_DEVICE_SOURCE2,
+                                       AUDIO_OUTPUT_PREFERRED_DEVICE_NAME2);
   bool found = false;
+  bool found_preferred1 = false;
+  bool found_preferred2 = false;
 
   gchar* audio_device = NULL;
 
@@ -159,35 +170,32 @@ void AudioOutputCore::setup_audio_device (AudioOutputPS device_idx)
         found = true;
         break;
       }
+      else if ((*it).GetString () == device_preferred1.GetString ()) {
+        found_preferred1 = true;
+      }
+      else if ((*it).GetString () == device_preferred2.GetString ()) {
+        found_preferred2 = true;
+      }
     }
   }
 
   if (found) {
     device.SetFromString (audio_device);
   }
-  else {
-    if (!devices.empty())
-      device.SetFromString (devices.begin ()->GetString ());
-    else {
-      // if there is no audio device / ptlib plugin, use fallback device below
-      device.type = "";
-    }
-  }
+  else if (found_preferred1)
+    device.SetFromString (device_preferred1.GetString ());
+  else if (found_preferred2)
+    device.SetFromString (device_preferred2.GetString ());
+  else if (!devices.empty ())
+    device.SetFromString (devices.begin ()->GetString ());
+  else
+    device.SetFromString (device_fallback.GetString ());
 
-  if (audio_device == NULL || !g_strcmp0 (audio_device, "")
-      || device.type.empty () || device.source.empty () || device.name.empty ()) {
-    PTRACE(1, "AudioOutputCore\tTried to set malformed audio device");
-    device.type   = AUDIO_OUTPUT_FALLBACK_DEVICE_TYPE;
-    device.source = AUDIO_OUTPUT_FALLBACK_DEVICE_SOURCE;
-    device.name   = AUDIO_OUTPUT_FALLBACK_DEVICE_NAME;
-    found = false;
-  }
-
-  PTRACE(1, "AudioOutputCore\tSet " << (device_idx == primary ? "primary" : "secondary") << " audio device to " << device.name);
   if (!found)
     g_settings_set_string ((device_idx == primary)?audio_device_settings:sound_events_settings,
                            "output-device", device.GetString ().c_str ());
-  set_device (device_idx, device);
+  else
+    set_device (device_idx, device);
 
   if (audio_device_settings_signals[device_idx] == 0 && device_idx == primary)
     audio_device_settings_signals[device_idx] =
@@ -198,6 +206,7 @@ void AudioOutputCore::setup_audio_device (AudioOutputPS device_idx)
       g_signal_connect (sound_events_settings, "changed::output-device",
                         G_CALLBACK (audio_device_changed), this);
   g_free (audio_device);
+  PTRACE(1, "AudioOutputCore\tSet " << (device_idx == primary ? "primary" : "secondary") << " audio device to " << device.name);
 }
 
 
