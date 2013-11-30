@@ -185,6 +185,7 @@ AudioInputCore::set_device (const std::string& device_string)
     device.SetFromString (device_string);
   else if (!devices.empty ())
     device.SetFromString (devices.begin ()->GetString ());
+  std::cout << "FIXME: We should probably fallback to a sane default like Pulseaudio" << std::endl << std::flush;
 
   if (device.type == ""
       || device.source == ""

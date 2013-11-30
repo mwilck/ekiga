@@ -331,8 +331,8 @@ void VideoInputCore::set_device(const VideoInputDevice & _device, int channel, V
 
   if (!found)
     g_settings_set_string (settings, "input-device", device.GetString ().c_str ());
-
-  internal_set_device (device, channel, format);
+  else
+    internal_set_device (device, channel, format);
 }
 
 void VideoInputCore::add_device (const std::string & source, const std::string & device_name, unsigned capabilities, HalManager* /*manager*/)
