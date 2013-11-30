@@ -41,7 +41,14 @@
 
 namespace Ekiga
 {
-  class AudioInputDevice : public Device {};
+  class AudioInputDevice : public Device
+  {
+public:
+    AudioInputDevice () : Device () {};
+    AudioInputDevice (const std::string & t,
+                      const std::string & s,
+                      const std::string & n) : Device (t, s, n) {};
+  };
 
   typedef struct AudioInputSettings {
     unsigned volume;
@@ -50,10 +57,9 @@ namespace Ekiga
 
   enum AudioInputErrorCodes {
     AI_ERROR_NONE = 0,
-    AI_ERROR_DEVICE, 
+    AI_ERROR_DEVICE,
     AI_ERROR_READ
   };
-				      
 };
 
 #endif
