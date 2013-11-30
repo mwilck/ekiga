@@ -443,21 +443,23 @@ static GtkWidget *gm_pw_int_option_menu_new (GtkWidget *table,
  * BEHAVIOR     :  Updates the content of a GtkOptionMenu associated with
  *                 a string config key. The first parameter is the menu,
  *                 the second is the array of possible values, and the
- *                 last one is the config key and the default value if the
- *                 conf key is associated to a NULL value.
+ *                 last parameters are config related.
  * PRE          :  The array ends with NULL.
  */
 static void gm_pw_string_option_menu_update (GtkWidget *option_menu,
 					     const gchar **options,
 					     boost::shared_ptr <Ekiga::Settings>,
-					     const std::string & key,
-					     const gchar *default_value);
+					     const std::string & key);
 
 static void gm_pw_string_option_menu_add (GtkWidget *option_menu,
-					  const gchar *option);
+                                          const std::string & option,
+                                          boost::shared_ptr <Ekiga::Settings>,
+                                          const std::string & key);
 
 static void gm_pw_string_option_menu_remove (GtkWidget *option_menu,
-					     const gchar *option);
+                                             const std::string & option,
+                                             boost::shared_ptr <Ekiga::Settings>,
+                                             const std::string & key);
 
 
 /* Callbacks */
@@ -1312,8 +1314,7 @@ void
 gm_pw_string_option_menu_update (GtkWidget *option_menu,
 				 const gchar **options,
 				 boost::shared_ptr<Ekiga::Settings> settings,
-				 const std::string & key,
-				 const gchar *default_value)
+				 const std::string & key)
 {
   int cpt = 0;
 
@@ -1337,25 +1338,27 @@ gm_pw_string_option_menu_update (GtkWidget *option_menu,
   // device
   if (gtk_combo_box_get_active (GTK_COMBO_BOX (option_menu)) == -1)
     settings->set_string (key, ""); // Nothing selected
-  if (gtk_combo_box_get_active (GTK_COMBO_BOX (option_menu)) == -1)
-    settings->set_string (key, ""); // Nothing selected
 }
 
 
 void
 gm_pw_string_option_menu_add (GtkWidget *option_menu,
-			      const gchar *option)
+                              const std::string & option,
+                              G_GNUC_UNUSED boost::shared_ptr <Ekiga::Settings>,
+                              G_GNUC_UNUSED const std::string & key)
 {
-  if (!option)
+  if (option.empty ())
     return;
 
-  gtk_combo_box_text_append (GTK_COMBO_BOX_TEXT (option_menu), option, option);
+  gtk_combo_box_text_append (GTK_COMBO_BOX_TEXT (option_menu), option.c_str (), option.c_str ());
 }
 
 
 void
 gm_pw_string_option_menu_remove (GtkWidget *option_menu,
-				 const gchar *option)
+                                 const std::string & option,
+                                 boost::shared_ptr <Ekiga::Settings> settings,
+                                 const std::string & key)
 {
   GtkTreeModel *model = gtk_combo_box_get_model (GTK_COMBO_BOX (option_menu));
   GtkTreeIter iter;
@@ -1365,7 +1368,7 @@ gm_pw_string_option_menu_remove (GtkWidget *option_menu,
   if (gtk_tree_model_get_iter_first (GTK_TREE_MODEL (model), &iter)) {
     do {
       gtk_tree_model_get (GTK_TREE_MODEL (model), &iter, 0, &s, -1);
-      if (s && !strcmp (s, option)) {
+      if (s && !strcmp (s, option.c_str ())) {
         g_free (s);
         break;
       }
@@ -2024,7 +2027,8 @@ void on_videoinput_device_added_cb (const Ekiga::VideoInputDevice & device, GtkW
   GmPreferencesWindow *pw = NULL;
   g_return_if_fail (prefs_window != NULL);
   pw = gm_pw_get_pw (prefs_window);
-  gm_pw_string_option_menu_add (pw->video_device, (device.GetString()).c_str());
+  gm_pw_string_option_menu_add (pw->video_device, device.GetString(),
+                                pw->video_devices_settings, "input-device");
 }
 
 void on_videoinput_device_removed_cb (const Ekiga::VideoInputDevice & device, bool, GtkWidget *prefs_window)
@@ -2032,7 +2036,8 @@ void on_videoinput_device_removed_cb (const Ekiga::VideoInputDevice & device, bo
   GmPreferencesWindow *pw = NULL;
   g_return_if_fail (prefs_window != NULL);
   pw = gm_pw_get_pw (prefs_window);
-  gm_pw_string_option_menu_remove(pw->video_device, (device.GetString()).c_str());
+  gm_pw_string_option_menu_remove (pw->video_device, device.GetString(),
+                                   pw->video_devices_settings, "input-device");
 }
 
 void on_audioinput_device_added_cb (const Ekiga::AudioInputDevice & device, GtkWidget *prefs_window)
@@ -2040,8 +2045,8 @@ void on_audioinput_device_added_cb (const Ekiga::AudioInputDevice & device, GtkW
   GmPreferencesWindow *pw = NULL;
   g_return_if_fail (prefs_window != NULL);
   pw = gm_pw_get_pw (prefs_window);
-  gm_pw_string_option_menu_add (pw->audio_recorder, (device.GetString()).c_str());
-
+  gm_pw_string_option_menu_add (pw->audio_recorder, device.GetString(),
+                                pw->audio_devices_settings, "input-device");
 }
 
 void on_audioinput_device_removed_cb (const Ekiga::AudioInputDevice & device, bool, GtkWidget *prefs_window)
@@ -2049,7 +2054,8 @@ void on_audioinput_device_removed_cb (const Ekiga::AudioInputDevice & device, bo
   GmPreferencesWindow *pw = NULL;
   g_return_if_fail (prefs_window != NULL);
   pw = gm_pw_get_pw (prefs_window);
-  gm_pw_string_option_menu_remove(pw->audio_recorder, (device.GetString()).c_str());
+  gm_pw_string_option_menu_remove (pw->audio_recorder, device.GetString(),
+                                   pw->audio_devices_settings, "input-device");
 }
 
 void on_audiooutput_device_added_cb (const Ekiga::AudioOutputDevice & device, GtkWidget *prefs_window)
@@ -2057,8 +2063,10 @@ void on_audiooutput_device_added_cb (const Ekiga::AudioOutputDevice & device, Gt
   GmPreferencesWindow *pw = NULL;
   g_return_if_fail (prefs_window != NULL);
   pw = gm_pw_get_pw (prefs_window);
-  gm_pw_string_option_menu_add (pw->audio_player, (device.GetString()).c_str());
-  gm_pw_string_option_menu_add (pw->sound_events_output, (device.GetString()).c_str());
+  gm_pw_string_option_menu_add (pw->audio_player, device.GetString(),
+                                pw->audio_devices_settings, "output-device");
+  gm_pw_string_option_menu_add (pw->sound_events_output, device.GetString(),
+                                pw->sound_events_settings, "output-device");
 }
 
 void on_audiooutput_device_removed_cb (const Ekiga::AudioOutputDevice & device, bool, GtkWidget *prefs_window)
@@ -2066,8 +2074,10 @@ void on_audiooutput_device_removed_cb (const Ekiga::AudioOutputDevice & device, 
   GmPreferencesWindow *pw = NULL;
   g_return_if_fail (prefs_window != NULL);
   pw = gm_pw_get_pw (prefs_window);
-  gm_pw_string_option_menu_remove (pw->audio_player, (device.GetString()).c_str());
-  gm_pw_string_option_menu_remove (pw->sound_events_output, (device.GetString()).c_str());
+  gm_pw_string_option_menu_remove (pw->audio_player, device.GetString(),
+                                   pw->audio_devices_settings, "output-device");
+  gm_pw_string_option_menu_remove (pw->sound_events_output, device.GetString(),
+                                   pw->sound_events_settings, "output-device");
 }
 
 
@@ -2087,25 +2097,22 @@ gm_prefs_window_update_devices_list (GtkWidget *prefs_window)
   get_audiooutput_devices (pw->audiooutput_core, device_list);
   array = vector_of_string_to_array (device_list);
   gm_pw_string_option_menu_update (pw->audio_player,
-				   (const gchar **)array,
+				   (const gchar **) array,
 				   pw->audio_devices_settings,
-				   "output-device",
-				   DEFAULT_AUDIO_DEVICE_NAME);
+				   "output-device");
   gm_pw_string_option_menu_update (pw->sound_events_output,
-				   (const gchar **)array,
+				   (const gchar **) array,
 				   pw->sound_events_settings,
-				   "output-device",
-				   DEFAULT_AUDIO_DEVICE_NAME);
+				   "output-device");
   g_free (array);
 
   /* The recorder */
   get_audioinput_devices (pw->audioinput_core, device_list);
   array = vector_of_string_to_array (device_list);
   gm_pw_string_option_menu_update (pw->audio_recorder,
-				   (const gchar **)array,
+				   (const gchar **) array,
 				   pw->audio_devices_settings,
-				   "input-device",
-				   DEFAULT_AUDIO_DEVICE_NAME);
+				   "input-device");
   g_free (array);
 
 
@@ -2113,10 +2120,9 @@ gm_prefs_window_update_devices_list (GtkWidget *prefs_window)
   get_videoinput_devices (pw->videoinput_core, device_list);
   array = vector_of_string_to_array (device_list);
   gm_pw_string_option_menu_update (pw->video_device,
-				   (const gchar **)array,
+				   (const gchar **) array,
 				   pw->video_devices_settings,
-				   "input-device",
-				   get_default_video_device_name (array));
+				   "input-device");
   g_free (array);
 }
 
