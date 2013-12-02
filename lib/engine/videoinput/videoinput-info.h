@@ -56,9 +56,9 @@ namespace Ekiga
 {
 #define NB_VIDEO_SIZES 5
 
-  static const struct { 
-    int width; 
-    int height; 
+  static const struct {
+    int width;
+    int height;
   } VideoSizes[NB_VIDEO_SIZES] = {
     {  GM_QCIF_WIDTH,  GM_QCIF_HEIGHT },
     {  GM_CIF_WIDTH,   GM_CIF_HEIGHT  },

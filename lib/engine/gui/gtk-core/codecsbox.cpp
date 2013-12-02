@@ -473,6 +473,7 @@ codecs_box_init (CodecsBox *self)
 
   gtk_box_pack_start (GTK_BOX (self), alignment, FALSE, FALSE, 0);
 
+  gtk_widget_set_hexpand (GTK_WIDGET (self), TRUE);
   gtk_widget_show_all (GTK_WIDGET (self));
 }
 
