@@ -624,7 +624,7 @@ ifeq ($(MINGW32), 1)
 	cd $(EKIGA_PREFIX); cp /usr/share/doc/mingw32-runtime/mingwm10.dll.gz . && gunzip mingwm10.dll.gz
 else
 	# for standard libraries, mingw-w64 uses dynamically linking by default
-	cd $(EKIGA_PREFIX); cp /usr/lib/gcc/i686-w64-mingw32/4.6/libgcc_s_sjlj-1.dll /usr/lib/gcc/i686-w64-mingw32/4.6/libstdc++-6.dll .
+	cd $(EKIGA_PREFIX); cp /usr/lib/gcc/i686-w64-mingw32/4.8/libgcc_s_sjlj-1.dll /usr/lib/gcc/i686-w64-mingw32/4.8/libstdc++-6.dll .
 endif
 ifeq ($(DEBUG),0)
 	$(STRIP) $(EKIGA_PREFIX)/*.dll
