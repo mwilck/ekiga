@@ -139,11 +139,6 @@ SPEEX_DIR := $(BUILDROOT)/speex-$(SPEEX_VER)
 SPEEX_ARCHIVE := speex-$(SPEEX_VER).tar.gz
 SPEEX_URL := http://downloads.xiph.org/releases/speex
 
-XML2_VER := 2.9.0
-XML2_DIR := libxml2-$(XML2_VER)
-XML2_URL := ftp://xmlsoft.org/libxml2
-XML2_ARCHIVE := libxml2-$(XML2_VER).tar.gz
-
 EXPAT_VER = 2.1.0
 EXPAT_DIR = $(BUILDROOT)/expat-$(EXPAT_VER)
 EXPAT_ARCHIVE := expat-$(EXPAT_VER).tar.gz
@@ -159,10 +154,6 @@ BOOST_VER := 1.54.0
 BOOST_URL := http://downloads.sourceforge.net/project/boost/boost/$(BOOST_VER)
 BOOST_ARCHIVE := boost_$(shell echo $(BOOST_VER)|tr . _).tar.gz
 BOOST_DIR := $(BUILDROOT)/boost_$(shell echo $(BOOST_VER)|tr . _)
-
-GETTEXT_VER := 0.18.1.1-2
-GETTEXT_URL := http://ftp.gnome.org/pub/gnome/binaries/win32/dependencies
-GETTEXT_ARCHIVE := gettext-runtime-dev_$(GETTEXT_VER)_win32.zip
 
 LIBAV_VER := 9.9
 LIBAV_URL := http://www.libav.org/releases
@@ -192,50 +183,9 @@ NSISSYTEM_DIR := /usr/share/nsis/Contrib/Modern\ UI
 NSISPLUGIN_DIR := $(BUILDROOT)/nsisplugins
 
 # gtk headers
-GTK_VER := 2.22.0-2
-GTK_URL := http://ftp.gnome.org/pub/gnome/binaries/win32/gtk+/2.22
-GTK_ARCHIVE := gtk+-dev_$(GTK_VER)_win32.zip
-
-# gtk library
-# this is an installer, not a zip of files to be manually installed
-# see http://gtk-win.sourceforge.net for more information
-GTK_BIN_VER := 2.22
-GTK_INSTALLER_URL := http://downloads.sourceforge.net/gtk-win
-GTK_BIN_EXE := gtk2-runtime-2.22.0-2010-10-21-ash.exe
-
-##############   gtk headers dependencies
-# during building, ekiga uses gtk.h, which needs headers of various libraries
-GLIB_VER := 2.28.1-1
-GLIB_URL := http://ftp.gnome.org/pub/gnome/binaries/win32/glib/2.28
-GLIB_ARCHIVE := glib-dev_$(GLIB_VER)_win32.zip
-
-ATK_VER := 1.32.0-1
-ATK_URL := http://ftp.gnome.org/pub/gnome/binaries/win32/atk/1.32
-ATK_ARCHIVE := atk-dev_$(ATK_VER)_win32.zip
-
-CAIRO_VER := 1.10.2-1
-CAIRO_URL := http://ftp.gnome.org/pub/gnome/binaries/win32/dependencies
-CAIRO_ARCHIVE := cairo-dev_$(CAIRO_VER)_win32.zip
-
-PANGO_VER := 1.28.3-1
-PANGO_URL := http://ftp.gnome.org/pub/gnome/binaries/win32/pango/1.28
-PANGO_ARCHIVE := pango-dev_$(PANGO_VER)_win32.zip
-
-FREETYPE_VER := 2.4.4-1
-FREETYPE_URL := http://ftp.gnome.org/pub/gnome/binaries/win32/dependencies/
-FREETYPE_ARCHIVE := freetype-dev_$(FREETYPE_VER)_win32.zip
-
-FONTCONFIG_VER := 2.8.0-2
-FONTCONFIG_URL := http://ftp.gnome.org/pub/gnome/binaries/win32/dependencies/
-FONTCONFIG_ARCHIVE := fontconfig-dev_$(FONTCONFIG_VER)_win32.zip
-
-GDKPIXBUF_VER := 2.22.1-1
-GDKPIXBUF_URL := http://ftp.gnome.org/pub/gnome/binaries/win32/gdk-pixbuf/2.22
-GDKPIXBUF_ARCHIVE := gdk-pixbuf-dev_$(GDKPIXBUF_VER)_win32.zip
-
-PNG_VER := 1.4.3-1
-PNG_URL := http://ftp.gnome.org/pub/gnome/binaries/win32/dependencies/
-PNG_ARCHIVE := libpng-dev_$(PNG_VER)_win32.zip
+GTK_VER := 3.6.4-20130921
+GTK_URL := http://win32builder.gnome.org
+GTK_ARCHIVE := gtk+-bundle_$(GTK_VER)_win32.zip
 
 LN:=ln
 RM:=rm
@@ -471,7 +421,7 @@ $(LIBDIR)/libogg.a: binaries $(OGG_DIR)/config.status
 
 ### libspeex
 update-sources::
-	@echo --- Getting Vorbis ...
+	@echo --- Getting Speex ...
 	$(WGET) -P $(SRCDIR) $(SPEEX_URL)/$(SPEEX_ARCHIVE)
 
 $(SPEEX_DIR)/config.status: binaries $(SRCDIR)/$(SPEEX_ARCHIVE)
@@ -592,131 +542,20 @@ $(LIBDIR)/$(OPAL_LIB): binaries $(OPAL_DIR)/config.status
 	$(MAKE) $(MAKEOPTS) VERBOSE=1 -C $(OPAL_DIR)
 	$(MAKE) -C $(OPAL_DIR) install
 
-### libgtk
+### gtk bundle
 update-sources::
-	@echo --- Getting GTK2+ ...
+	@echo --- Getting GTK3 libs + headers bundle...
 	$(WGET) -P $(SRCDIR) $(GTK_URL)/$(GTK_ARCHIVE)
 
-$(LIBDIR)/pkgconfig/gtk+-2.0.pc: $(SRCDIR)/$(GTK_ARCHIVE)
+$(LIBDIR)/pkgconfig/gtk+-3.0.pc: $(SRCDIR)/$(GTK_ARCHIVE)
 	unzip -u $(SRCDIR)/$(GTK_ARCHIVE) -d $(BUILDROOT)
+	sed -i -e 's#^prefix=.*$$#prefix=$(BUILDROOT)#g' $(BINDIR)/glib-gettextize
 	sed -i -e 's#^prefix=.*$$#prefix=$(BUILDROOT)#g' $(LIBDIR)/pkgconfig/g*.pc
-	touch $@
-
-### GTK Runtime
-update-sources::
-	@echo --- Getting GTK2+ Runtime Library ...
-	$(WGET) -P $(SRCDIR) $(GTK_INSTALLER_URL)/$(GTK_BIN_EXE)
-
-$(LIBDIR)/gtk+-$(GTK_BIN_VER)-setup.exe: $(SRCDIR)/$(GTK_BIN_EXE)
-	$(CP) $(SRCDIR)/$(GTK_BIN_EXE) $(LIBDIR)/gtk+-$(GTK_BIN_VER)-setup.exe
-	touch $@
-
-### libglib
-update-sources::
-	@echo --- Getting GLib ...
-	$(WGET) -P $(SRCDIR) $(GLIB_URL)/$(GLIB_ARCHIVE)
-
-$(LIBDIR)/pkgconfig/glib-2.0.pc: $(SRCDIR)/$(GLIB_ARCHIVE)
-	unzip -u $(SRCDIR)/$(GLIB_ARCHIVE) -d $(BUILDROOT)
-	sed -i -e 's#^prefix=.*$$#prefix=$(BUILDROOT)#g' $(LIBDIR)/pkgconfig/g*.pc $(BINDIR)/glib-gettextize
-	chmod +x $(BINDIR)/glib-gettextize
-	touch $@
-
-### atk
-update-sources::
-	@echo --- Getting ATK ...
-	$(WGET) -P $(SRCDIR) $(ATK_URL)/$(ATK_ARCHIVE)
-
-$(LIBDIR)/pkgconfig/atk-2.0.pc: $(SRCDIR)/$(ATK_ARCHIVE)
-	unzip -u $(SRCDIR)/$(ATK_ARCHIVE) -d $(BUILDROOT)
 	sed -i -e 's#^prefix=.*$$#prefix=$(BUILDROOT)#g' $(LIBDIR)/pkgconfig/atk*.pc
-	touch $@
-
-### png
-update-sources::
-	@echo --- Getting PNG ...
-	$(WGET) -P $(SRCDIR) $(PNG_URL)/$(PNG_ARCHIVE)
-
-$(LIBDIR)/pkgconfig/libpng.pc: $(SRCDIR)/$(PNG_ARCHIVE)
-	unzip -u $(SRCDIR)/$(PNG_ARCHIVE) -d $(BUILDROOT)
-	sed -i -e 's#^prefix=.*$$#prefix=$(BUILDROOT)#g' $(LIBDIR)/pkgconfig/libpng*.pc
-	touch $@
-
-### libintl
-update-sources::
-	@echo --- Getting Gettext ...
-	$(WGET) -P $(SRCDIR) $(GETTEXT_URL)/$(GETTEXT_ARCHIVE)
-
-$(LIBDIR)/libintl.a: $(SRCDIR)/$(GETTEXT_ARCHIVE)
-	unzip -u $(SRCDIR)/$(GETTEXT_ARCHIVE) -d $(BUILDROOT)
-	touch $@
-
-### pango
-update-sources::
-	@echo --- Getting Pango ...
-	$(WGET) -P $(SRCDIR) $(PANGO_URL)/$(PANGO_ARCHIVE)
-
-$(LIBDIR)/pkgconfig/pango32.pc: $(SRCDIR)/$(PANGO_ARCHIVE)
-	unzip -u $(SRCDIR)/$(PANGO_ARCHIVE) -d $(BUILDROOT)
 	sed -i -e 's#^prefix=.*$$#prefix=$(BUILDROOT)#g' $(LIBDIR)/pkgconfig/pango*.pc
-	touch $@
-
-### cairo
-update-sources::
-	@echo --- Getting Cairo ...
-	$(WGET) -P $(SRCDIR) $(CAIRO_URL)/$(CAIRO_ARCHIVE)
-
-$(LIBDIR)/pkgconfig/cairo.pc: $(SRCDIR)/$(CAIRO_ARCHIVE)
-	unzip -u $(SRCDIR)/$(CAIRO_ARCHIVE) -d $(BUILDROOT)
 	sed -i -e 's#^prefix=.*$$#prefix=$(BUILDROOT)#g' $(LIBDIR)/pkgconfig/cairo*.pc
+	sed -i -e 's#^prefix=.*$$#prefix=$(BUILDROOT)#g' $(LIBDIR)/pkgconfig/libxml*.pc
 	touch $@
-
-### gdk-pixbuf
-update-sources::
-	@echo --- Getting GDK Pixbuf ...
-	$(WGET) -P $(SRCDIR) $(GDKPIXBUF_URL)/$(GDKPIXBUF_ARCHIVE)
-
-$(LIBDIR)/pkgconfig/gdk-pixbuf-2.0.pc: $(SRCDIR)/$(GDKPIXBUF_ARCHIVE)
-	unzip -u $(SRCDIR)/$(GDKPIXBUF_ARCHIVE) -d $(BUILDROOT)
-	sed -i -e 's#^prefix=.*$$#prefix=$(BUILDROOT)#g' $(LIBDIR)/pkgconfig/gdk-pixbuf*.pc
-# remove -lpng14, which is not needed, to avoid downloading it
-	sed -i -e 's#^\(Libs: .*\)-lpng14\(.*\)#\1\2#g' $(LIBDIR)/pkgconfig/gdk-pixbuf*.pc
-	touch $@
-
-### freetype
-update-sources::
-	@echo --- Getting Freetype ...
-	$(WGET) -P $(SRCDIR) $(FREETYPE_URL)/$(FREETYPE_ARCHIVE)
-
-$(LIBDIR)/pkgconfig/freetype2.pc: $(SRCDIR)/$(FREETYPE_ARCHIVE)
-	unzip -u $(SRCDIR)/$(FREETYPE_ARCHIVE) -d $(BUILDROOT)
-	sed -i -e 's#^prefix=.*$$#prefix=$(BUILDROOT)#g' $(LIBDIR)/pkgconfig/freetype2.pc
-	touch $@
-
-### fontconfig
-update-sources::
-	@echo --- Getting Fontconfig ...
-	$(WGET) -P $(SRCDIR) $(FONTCONFIG_URL)/$(FONTCONFIG_ARCHIVE)
-
-$(LIBDIR)/pkgconfig/fontconfig.pc: $(SRCDIR)/$(FONTCONFIG_ARCHIVE)
-	unzip -u $(SRCDIR)/$(FONTCONFIG_ARCHIVE) -d $(BUILDROOT)
-	sed -i -e 's#^prefix=.*$$#prefix=$(BUILDROOT)#g' $(LIBDIR)/pkgconfig/fontconfig.pc
-	touch $@
-
-### libxml2
-update-sources::
-	@echo --- Getting libXML2 ...
-	$(WGET) -P $(SRCDIR) $(XML2_URL)/$(XML2_ARCHIVE)
-
-$(XML2_DIR)/config.status: binaries $(SRCDIR)/$(XML2_ARCHIVE)
-	rm -f $(LIBDIR)/libxml2.a
-	tar xfz $(SRCDIR)/$(XML2_ARCHIVE) -C $(BUILDROOT)
-	cd $(XML2_DIR); ./configure $(confflags) --without-python
-
-$(LIBDIR)/libxml2.a: binaries $(XML2_DIR)/config.status
-	rm -f $(LIBDIR)/libxml2.a
-	$(MAKE) $(MAKEOPTS) -C $(XML2_DIR)
-	$(MAKE) $(MAKEOPTS) -C $(XML2_DIR) install
 
 ### ekiga
 update-sources::
@@ -747,11 +586,10 @@ endif
 	done; true
 	touch $@
 
-$(EKIGA_DIR)/config.status: binaries $(EKIGA_DIR)/configure $(LIBDIR)/$(PTLIB_LIB) $(LIBDIR)/$(OPAL_LIB) \
-	$(LIBDIR)/pkgconfig/gtk+-2.0.pc $(LIBDIR)/pkgconfig/atk-2.0.pc $(LIBDIR)/pkgconfig/glib-2.0.pc \
-	$(LIBDIR)/pkgconfig/libpng.pc $(LIBDIR)/pkgconfig/pango32.pc $(LIBDIR)/pkgconfig/cairo.pc $(LIBDIR)/libxml2.a \
-	$(LIBDIR)/pkgconfig/freetype2.pc $(LIBDIR)/pkgconfig/fontconfig.pc $(LIBDIR)/pkgconfig/gdk-pixbuf-2.0.pc \
-	$(LIBDIR)/libintl.a $(LIBDIR)/libboost_signals.dll $(LIBDIR)/libsasl2.a
+$(EKIGA_DIR)/config.status: binaries $(EKIGA_DIR)/configure \
+		$(LIBDIR)/$(PTLIB_LIB) $(LIBDIR)/$(OPAL_LIB) \
+		$(LIBDIR)/pkgconfig/gtk+-3.0.pc \
+		$(LIBDIR)/libboost_signals.dll $(LIBDIR)/libsasl2.a
 	rm -f $(EKIGA_DIR)/src/ekiga.exe
 	cd $(EKIGA_DIR); ACLOCAL_FLAGS="-I $(BUILDROOT)/share/aclocal" LDFLAGS="$(LDFLAGS) -Wl,-subsystem,windows" ./configure $(confekiga)
 
@@ -779,7 +617,7 @@ $(TARGETDIR)/zips: binaries $(EKIGA_DIR)/src/ekiga.exe
 	for lib in $(PTLIB_LIB) $(OPAL_LIB) libboost_signals.dll; do \
 		install -m 755 $(LIBDIR)/$$lib $(EKIGA_PREFIX) ;\
 	done
-	for lib in liblber.dll libldap.dll libxml2-2.dll libspeex-1.dll libspeexdsp-1.dll libtheora-0.dll avcodec-54.dll avutil-52.dll libogg-0.dll; do \
+	for lib in liblber.dll libldap.dll libspeex-1.dll libspeexdsp-1.dll libtheora-0.dll avcodec-54.dll avutil-52.dll libogg-0.dll; do \
 		install -m 755 $(BINDIR)/$$lib $(EKIGA_PREFIX) ;\
 	done
 ifeq ($(MINGW32), 1)
@@ -853,10 +691,10 @@ $(NSISPLUGIN_DIR)/Processes.dll: $(SRCDIR)/Processes.zip
 	unzip -u -j $(SRCDIR)/Processes.zip setup-processes/bin/Processes.dll -d $(NSISPLUGIN_DIR)
 	touch $@
 
-$(TARGETDIR)/$(EKIGA_INSTALLER): $(TARGETDIR)/zips $(LIBDIR)/gtk+-$(GTK_BIN_VER)-setup.exe $(NSISPLUGIN_DIR)/SystemLocal.dll $(NSISPLUGIN_DIR)/Processes.dll
+$(TARGETDIR)/$(EKIGA_INSTALLER): $(TARGETDIR)/zips $(NSISPLUGIN_DIR)/SystemLocal.dll $(NSISPLUGIN_DIR)/Processes.dll
 	makensis -DEKIGA_VERSION=$(EKIGA_VER) -DEKIGA_DIR=$(EKIGA_DIR) \
 		-DINSTALLER_DIR=$(EKIGA_INSTALLER_DIR) -DLIB_DIR=$(LIBDIR) \
-		-DTARGET_DIR=$(TARGETDIR) -DWITH_GTK=true -DGTK_VERSION=$(GTK_BIN_VER) \
+		-DTARGET_DIR=$(TARGETDIR) -DWITH_GTK=true \
 		-DNSISSYSTEMDIR=$(NSISSYTEM_DIR) -DNSISPLUGINDIR=$(NSISPLUGIN_DIR) \
 		-DDEBUG=$(DEBUG) $(EKIGA_INSTALLER_DIR)/ekiga.nsi
 
@@ -873,7 +711,6 @@ distclean:
 	$(RM) -rf $(INCLUDEDIR)
 	$(RM) -rf $(LIBDIR)
 	$(RM) -rf $(OGG_DIR)
-	$(RM) -rf $(XML2_DIR)
 	$(RM) -rf $(BUILDROOT)/man
 	$(RM) -rf $(BUILDROOT)/manifest
 	$(RM) -rf $(OPAL_DIR)
