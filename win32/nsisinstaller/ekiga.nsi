@@ -226,6 +226,7 @@ Section $(EKIGA_SECTION_TITLE) SecEkiga
   ekiga_install_files:
     SetOutPath "$INSTDIR"
     ; Ekiga files
+    ; read http://nsis.sourceforge.net/Docs/Chapter4.html#4.9.1.5 to understand File /r
     SetOverwrite on
     File "${TARGET_DIR}\Ekiga\*.exe"
     File "${TARGET_DIR}\Ekiga\*.dll"
@@ -234,6 +235,7 @@ Section $(EKIGA_SECTION_TITLE) SecEkiga
     File /r "${TARGET_DIR}\Ekiga\sounds"
     File /r "${TARGET_DIR}\Ekiga\help"
     File /r "${TARGET_DIR}\Ekiga\share\locale"
+    File /r /x man "${TARGET_DIR}\Ekiga\share"
     File /r "${TARGET_DIR}\Ekiga\plugins"
     File "${EKIGA_DIR}/win32/ico/ekiga.ico"
 

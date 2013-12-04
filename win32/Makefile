@@ -139,6 +139,7 @@ SPEEX_DIR := $(BUILDROOT)/speex-$(SPEEX_VER)
 SPEEX_ARCHIVE := speex-$(SPEEX_VER).tar.gz
 SPEEX_URL := http://downloads.xiph.org/releases/speex
 
+# libexpat is needed by ptlib
 EXPAT_VER = 2.1.0
 EXPAT_DIR = $(BUILDROOT)/expat-$(EXPAT_VER)
 EXPAT_ARCHIVE := expat-$(EXPAT_VER).tar.gz
@@ -182,7 +183,7 @@ NSISPROCESSES_URL := http://nsis.sourceforge.net/mediawiki/images/f/f3/
 NSISSYTEM_DIR := /usr/share/nsis/Contrib/Modern\ UI
 NSISPLUGIN_DIR := $(BUILDROOT)/nsisplugins
 
-# gtk headers
+# gtk headers + libraries
 GTK_VER := 3.6.4-20130921
 GTK_URL := http://win32builder.gnome.org
 GTK_ARCHIVE := gtk+-bundle_$(GTK_VER)_win32.zip
@@ -609,22 +610,28 @@ $(TARGETDIR)/zips: binaries $(EKIGA_DIR)/src/ekiga.exe
 
 	mkdir -p $(EKIGA_PREFIX)/plugins  # create directory, if does not exist
 	for plugin in $(LIBDIR)/opal*/codecs/audio/*; do \
-		install -m 755 $$plugin $(EKIGA_PREFIX)/plugins ;\
+		cp -r $$plugin $(EKIGA_PREFIX)/plugins ;\
 	done
 	for plugin in $(LIBDIR)/opal*/codecs/video/*; do \
-		install -m 755 $$plugin $(EKIGA_PREFIX)/plugins ;\
+		cp -r $$plugin $(EKIGA_PREFIX)/plugins ;\
 	done
 	for lib in $(PTLIB_LIB) $(OPAL_LIB) libboost_signals.dll; do \
 		install -m 755 $(LIBDIR)/$$lib $(EKIGA_PREFIX) ;\
 	done
 	for lib in liblber.dll libldap.dll libspeex-1.dll libspeexdsp-1.dll libtheora-0.dll avcodec-54.dll avutil-52.dll libogg-0.dll; do \
-		install -m 755 $(BINDIR)/$$lib $(EKIGA_PREFIX) ;\
+		cp -r $(BINDIR)/$$lib $(EKIGA_PREFIX) ;\
 	done
+	# GTK libraries
+	for lib in libatk-1.0-0.dll libcairo-2.dll libcairo-gobject-2.dll libffi-6.dll libfreetype-6.dll libgdk_pixbuf-2.0-0.dll libgdk-3-0.dll libgio-2.0-0.dll libglib-2.0-0.dll libgmodule-2.0-0.dll libgobject-2.0-0.dll libgtk-3-0.dll libiconv-2.dll libintl-8.dll libpango-1.0-0.dll libpangocairo-1.0-0.dll libpangowin32-1.0-0.dll libpixman-1-0.dll libpng15-15.dll libxml2-2.dll pthreadGC2.dll zlib1.dll liblzma-5.dll; do \
+		cp -r $(BINDIR)/$$lib $(EKIGA_PREFIX) ;\
+	done
+	cp -r $(BUILDROOT)/share/locale $(EKIGA_PREFIX)/share
+	mkdir -p $(EKIGA_PREFIX)/share/glib-2.0; cp -r $(BUILDROOT)/share/glib-2.0/schemas $(EKIGA_PREFIX)/share/glib-2.0
 ifeq ($(MINGW32), 1)
 	cd $(EKIGA_PREFIX); cp /usr/share/doc/mingw32-runtime/mingwm10.dll.gz . && gunzip mingwm10.dll.gz
 else
 	# for standard libraries, mingw-w64 uses dynamically linking by default
-	cd $(EKIGA_PREFIX); cp /usr/lib/gcc/i686-w64-mingw32/4.8/libgcc_s_sjlj-1.dll /usr/lib/gcc/i686-w64-mingw32/4.8/libstdc++-6.dll .
+	cp /usr/lib/gcc/i686-w64-mingw32/4.8/libgcc_s_sjlj-1.dll /usr/lib/gcc/i686-w64-mingw32/4.8/libstdc++-6.dll /usr/i686-w64-mingw32/lib/libwinpthread-1.dll $(EKIGA_PREFIX)
 endif
 ifeq ($(DEBUG),0)
 	$(STRIP) $(EKIGA_PREFIX)/*.dll
@@ -633,7 +640,7 @@ ifeq ($(DEBUG),0)
 	$(STRIP) $(EKIGA_PREFIX)/plugins/*.exe
 endif
 	# we cannot strip MS compiled dlls
-	install -m 755 $(LIBSASL2_DIR)/bin/libsasl.dll $(EKIGA_PREFIX)
+	cp -r $(LIBSASL2_DIR)/bin/libsasl.dll $(EKIGA_PREFIX)
 
 	# for RELEASE=0 ekiga.xml files do not exist, so create them
 	D=$(DOC_LINGUAS); test -z "$(DOC_LINGUAS)" && D=`grep DOC_LINGUAS $(EKIGA_DIR)/help/Makefile.am | cut -d= -f2`; for lc in C $$D; do \
@@ -642,10 +649,10 @@ endif
 		if test -f $(EKIGA_DIR)/help/$$lc/ekiga.xml; then \
 			xmlto -o $(EKIGA_PREFIX)/help/$$lc/ --skip-validation html $(EKIGA_DIR)/help/$$lc/ekiga.xml; \
 		fi ;\
-		install -m 644 $(EKIGA_DIR)/help/$$lc/ekiga.xml $(EKIGA_PREFIX)/help/$$lc;\
+		cp -r $(EKIGA_DIR)/help/$$lc/ekiga.xml $(EKIGA_PREFIX)/help/$$lc;\
 		if test -d $(EKIGA_DIR)/help/$$lc/figures; then \
 			mkdir -p $(EKIGA_PREFIX)/help/$$lc/figures; \
-			install -m 644 $(EKIGA_DIR)/help/$$lc/figures/*.png $(EKIGA_PREFIX)/help/$$lc/figures; \
+			cp -r $(EKIGA_DIR)/help/$$lc/figures/*.png $(EKIGA_PREFIX)/help/$$lc/figures; \
 		fi \
 	done
 
@@ -706,12 +713,10 @@ distclean:
 	$(RM) -rf $(LIBSASL2_DIR)
 	$(RM) -rf $(BUILDROOT)/share/
 	$(RM) -rf $(BINDIR)
-	$(RM) -rf $(BUILDROOT)/contrib
 	$(RM) -rf $(BUILDROOT)/etc
 	$(RM) -rf $(INCLUDEDIR)
 	$(RM) -rf $(LIBDIR)
 	$(RM) -rf $(OGG_DIR)
-	$(RM) -rf $(BUILDROOT)/man
 	$(RM) -rf $(BUILDROOT)/manifest
 	$(RM) -rf $(OPAL_DIR)
 	$(RM) -rf $(EKIGA_DIR)
@@ -725,7 +730,6 @@ distclean:
 	$(RM) -rf $(THEORA_DIR)
 	$(RM) -rf $(CELT_DIR)
 	$(RM) -rf $(NSISPLUGIN_DIR)
-	$(RM) -rf make
 	$(RM) -f binaries
 #	$(RM) -rf $(SRCDIR)
 
