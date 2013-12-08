@@ -47,7 +47,6 @@
 #include "default_devices.h"
 #include "gtk-frontend.h"
 #include "opal-bank.h"
-#include "device-lists.h"
 
 #include "ekiga-settings.h"
 
@@ -58,9 +57,6 @@ G_DEFINE_TYPE (AssistantWindow, assistant_window, GTK_TYPE_ASSISTANT);
 struct _AssistantWindowPrivate
 {
   Ekiga::ServiceCore* service_core; // FIXME: wrong memory management
-  boost::shared_ptr<Ekiga::VideoInputCore> videoinput_core;
-  boost::shared_ptr<Ekiga::AudioInputCore> audioinput_core;
-  boost::shared_ptr<Ekiga::AudioOutputCore> audiooutput_core;
   boost::shared_ptr<Opal::Bank> bank;
   GdkPixbuf *icon;
 
@@ -888,9 +884,6 @@ assistant_window_new (Ekiga::ServiceCore& service_core)
                     G_CALLBACK (assistant_window_key_press_cb), NULL);
 
   boost::signals2::connection conn;
-  assistant->priv->videoinput_core = service_core.get<Ekiga::VideoInputCore> ("videoinput-core");
-  assistant->priv->audioinput_core = service_core.get<Ekiga::AudioInputCore> ("audioinput-core");
-  assistant->priv->audiooutput_core = service_core.get<Ekiga::AudioOutputCore> ("audiooutput-core");
   assistant->priv->bank = service_core.get<Opal::Bank> ("opal-account-store");
 
   return GTK_WIDGET (assistant);
