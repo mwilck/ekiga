@@ -152,6 +152,7 @@ namespace Ekiga
       /** Get a list of all devices supported by all managers registered to the core.
        * @param devices a vector of device names to be filled by the core.
        */
+      void get_devices(std::vector <std::string> & devices);
       void get_devices(std::vector <AudioOutputDevice> & devices);
 
       /** Set a specific device

@@ -261,6 +261,19 @@ void VideoInputCore::visit_managers (boost::function1<bool, VideoInputManager &>
       go_on = visitor (*(*iter));
 }
 
+void VideoInputCore::get_devices (std::vector <std::string> & devices)
+{
+  std::vector <VideoInputDevice> d;
+  get_devices (d);
+
+  devices.clear ();
+
+  for (std::vector<VideoInputDevice>::iterator iter = d.begin ();
+       iter != d.end ();
+       ++iter)
+    devices.push_back (iter->GetString ());
+}
+
 void VideoInputCore::get_devices (std::vector <VideoInputDevice> & devices)
 {
   PWaitAndSignal m(core_mutex);

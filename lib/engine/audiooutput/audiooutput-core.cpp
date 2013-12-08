@@ -309,6 +309,19 @@ void AudioOutputCore::stop_play_event (const std::string & event_name)
   audio_event_scheduler->remove_event_from_queue(event_name);
 }
 
+void AudioOutputCore::get_devices (std::vector <std::string> & devices)
+{
+  std::vector <AudioOutputDevice> d;
+  get_devices (d);
+
+  devices.clear ();
+
+  for (std::vector<AudioOutputDevice>::iterator iter = d.begin ();
+       iter != d.end ();
+       ++iter)
+    devices.push_back (iter->GetString ());
+}
+
 void AudioOutputCore::get_devices (std::vector <AudioOutputDevice> & devices)
 {
   yield = true;

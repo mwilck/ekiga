@@ -141,6 +141,19 @@ void AudioInputCore::visit_managers (boost::function1<bool, AudioInputManager &>
       go_on = visitor (*(*iter));
 }
 
+void AudioInputCore::get_devices (std::vector <std::string> & devices)
+{
+  std::vector <AudioInputDevice> d;
+  get_devices (d);
+
+  devices.clear ();
+
+  for (std::vector<AudioInputDevice>::iterator iter = d.begin ();
+       iter != d.end ();
+       ++iter)
+    devices.push_back (iter->GetString ());
+}
+
 void AudioInputCore::get_devices (std::vector <AudioInputDevice> & devices)
 {
   yield = true;
