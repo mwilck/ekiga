@@ -1036,9 +1036,6 @@ CallManager::set_sip_endpoint (boost::shared_ptr<Opal::Sip::EndPoint> _sip_endpo
 void
 CallManager::setup (const std::string & setting)
 {
-  CallManager::VideoOptions options;
-  get_video_options (options);
-
   if (setting.empty () || setting == "stun-server") {
 
     set_stun_server (nat_settings->get_string ("stun-server"));
@@ -1085,23 +1082,38 @@ CallManager::setup (const std::string & setting)
   }
   if (setting.empty () || setting == "maximum-video-tx-bitrate") {
 
+    CallManager::VideoOptions options;
+    get_video_options (options);
     options.maximum_transmitted_bitrate = video_codecs_settings->get_int ("maximum-video-tx-bitrate");
+    set_video_options (options);
   }
   if (setting.empty () || setting == "temporal-spatial-tradeoff") {
 
+    CallManager::VideoOptions options;
+    get_video_options (options);
     options.temporal_spatial_tradeoff = video_codecs_settings->get_int ("temporal-spatial-tradeoff");
+    set_video_options (options);
   }
   if (setting.empty () || setting == "size") {
 
-    options.size = video_devices_settings->get_int ("size");
+    CallManager::VideoOptions options;
+    get_video_options (options);
+    options.size = video_devices_settings->get_enum ("size");
+    set_video_options (options);
   }
   if (setting.empty () || setting == "max-frame-rate") {
 
+    CallManager::VideoOptions options;
+    get_video_options (options);
     options.maximum_frame_rate = video_codecs_settings->get_int ("max-frame-rate");
+    set_video_options (options);
   }
   if (setting.empty () || setting == "maximum-video-rx-bitrate") {
 
+    CallManager::VideoOptions options;
+    get_video_options (options);
     options.maximum_received_bitrate = video_codecs_settings->get_int ("maximum-video-rx-bitrate");
+    set_video_options (options);
   }
   if (setting.empty () || setting == "media-list") {
 
@@ -1150,6 +1162,4 @@ CallManager::setup (const std::string & setting)
       g_strfreev (couple);
     }
   }
-
-  set_video_options (options);
 }
