@@ -40,6 +40,7 @@
 #include "config.h"
 
 #include <glib/gi18n.h>
+#include <boost/tuple/tuple.hpp>
 
 #include "ekiga-settings.h"
 
@@ -55,8 +56,6 @@
 #include "videoinput-core.h"
 #include "audioinput-core.h"
 #include "audiooutput-core.h"
-
-#include "device-lists.h"
 
 #ifdef WIN32
 #include "platform/winpaths.h"
@@ -145,6 +144,11 @@ typedef struct _GnomePrefsWindow {
   GtkWidget *notebook;
 
 } GnomePrefsWindow;
+
+typedef boost::tuple<std::string, std::string> Choice;
+typedef std::list<Choice> Choices;
+typedef std::list<Choice>::iterator Choices_iterator;
+typedef std::list<Choice>::const_iterator Choices_const_iterator;
 
 /* Declarations */
 
@@ -357,7 +361,7 @@ GtkWidget *gm_pw_window_subsection_new (GtkWidget *,
  */
 static GtkWidget *gm_pw_string_option_menu_new (GtkWidget *,
                                                 const gchar *,
-                                                const gchar **,
+                                                const Choices &,
                                                 boost::shared_ptr <Ekiga::Settings>,
                                                 const std::string &,
                                                 const gchar *,
@@ -372,12 +376,12 @@ static GtkWidget *gm_pw_string_option_menu_new (GtkWidget *,
  * PRE          :  The array ends with NULL.
  */
 static void gm_pw_string_option_menu_update (GtkWidget *option_menu,
-                                             const gchar **options,
+                                             const Choices & options,
                                              boost::shared_ptr <Ekiga::Settings>,
                                              const std::string & key);
 
 static void gm_pw_string_option_menu_add (GtkWidget *option_menu,
-                                          const std::string & option,
+                                          const Choice & option,
                                           boost::shared_ptr <Ekiga::Settings>,
                                           const std::string & key);
 
@@ -385,6 +389,8 @@ static void gm_pw_string_option_menu_remove (GtkWidget *option_menu,
                                              const std::string & option,
                                              boost::shared_ptr <Ekiga::Settings>,
                                              const std::string & key);
+
+static Choices gm_pw_get_device_choices (const std::vector<std::string> & v);
 
 
 /* Callbacks */
@@ -791,20 +797,30 @@ gm_pw_init_h323_page (GtkWidget *prefs_window,
 {
   GtkWidget *entry = NULL;
   GmPreferencesWindow *pw = gm_pw_get_pw (prefs_window);
+  Choices capabilities_choices;
+  Choices roles_choices;
 
-  const gchar *capabilities [] =
-    {_("String"),
-      _("Tone"),
-      _("RFC2833"),
-      _("Q.931"),
-      NULL};
+  static const char *capabilities[][2] =
+    { { "string",  N_("String") },
+      { "tone",    N_("Tone") },
+      { "rfc2833", N_("RFC2833") },
+      { "q931",    N_("Q.931") },
+      { NULL,      NULL }
+    };
 
-  const gchar *roles [] =
-    { _("Disable H.239 Extended Video"),
-      _("Allow H.239 per Content Role Mask"),
-      _("Force H.239 Presentation Role"),
-      _("Force H.239 Live Role"),
-      NULL };
+  static const char *roles[][2] =
+    { { "none",         N_("Disable H.239 Extended Video") },
+      { "content",      N_("Allow H.239 per Content Role Mask") },
+      { "presentation", N_("Force H.239 Presentation Role") },
+      { "live",         N_("Force H.239 Live Role") },
+      { NULL,           NULL }
+    };
+  for (int i=0 ; capabilities[i][0] ; ++i)
+    capabilities_choices.push_back (boost::make_tuple (capabilities[i][0],
+                                                       gettext (capabilities[i][1])));
+  for (int i=0 ; roles[i][0] ; ++i)
+    roles_choices.push_back (boost::make_tuple (roles[i][0],
+                                                gettext (roles[i][1])));
 
   /* Add Misc Settings */
   entry =
@@ -833,14 +849,16 @@ gm_pw_init_h323_page (GtkWidget *prefs_window,
   gm_pw_toggle_new (container, _("Enable H.239 control"), pw->h323_settings,
                     "enable-h239", _("This enables H.239 capability for additional video roles."));
 
-  gm_pw_string_option_menu_new (container, NULL, roles,
+  gm_pw_string_option_menu_new (container, NULL,
+                                roles_choices,
                                 pw->h323_settings, "video-role",
                                 _("Select the H.239 Video Role"));
 
   /* Packing widget */
   gm_pw_subsection_new (container, _("DTMF Mode"));
 
-  gm_pw_string_option_menu_new (container, _("_Send DTMF as:"), capabilities,
+  gm_pw_string_option_menu_new (container, _("_Send DTMF as:"),
+                                capabilities_choices,
                                 pw->h323_settings, "dtmf-mode",
                                 _("Select the mode for DTMFs sending"));
 }
@@ -853,12 +871,16 @@ gm_pw_init_sip_page (GtkWidget *prefs_window,
   GtkWidget *entry = NULL;
   GmPreferencesWindow *pw = gm_pw_get_pw (prefs_window);
 
-  const gchar *capabilities [] =
+  Choices capabilities_choices;
+
+  static const char *capabilities [][2] =
     {
-      _("RFC2833"),
-      _("INFO"),
-      NULL
+        { "rfc2833", _("RFC2833") },
+        { "info",    _("INFO") },
+        { NULL,      NULL }
     };
+  for (int i=0 ; capabilities[i][0] != NULL ; ++i)
+    capabilities_choices.push_back (boost::make_tuple (capabilities[i][0], capabilities[i][1]));
 
   /* Add Misc Settings */
   gm_pw_entry_new (container, _("_Outbound proxy:"),
@@ -877,7 +899,8 @@ gm_pw_init_sip_page (GtkWidget *prefs_window,
   /* Packing widget */
   gm_pw_subsection_new (container, _("DTMF Mode"));
 
-  gm_pw_string_option_menu_new (container, _("_Send DTMF as:"), capabilities,
+  gm_pw_string_option_menu_new (container, _("_Send DTMF as:"),
+                                capabilities_choices,
                                 pw->sip_settings, "dtmf-mode",
                                 _("Select the mode for DTMFs sending"));
 }
@@ -890,8 +913,9 @@ gm_pw_init_audio_page (GtkWidget *prefs_window,
   GtkWidget *codecs_list = NULL;
   GmPreferencesWindow *pw = NULL;
 
-  gchar **array = NULL;
   int pos = 0;
+
+  std::vector<std::string> devices;
 
   pw = gm_pw_get_pw (prefs_window);
 
@@ -924,37 +948,31 @@ gm_pw_init_audio_page (GtkWidget *prefs_window,
   gm_pw_subsection_new (container, _("Devices"));
 
   /* Add all the fields for the audio manager */
-  std::vector <std::string> device_list;
-
-  get_audiooutput_devices (pw->audiooutput_core, device_list);
-  array = vector_of_string_to_array (device_list);
+  pw->audiooutput_core->get_devices (devices);
   pw->sound_events_output =
     gm_pw_string_option_menu_new (container,
                                   _("Ringing device:"),
-                                  (const gchar **) array,
+                                  gm_pw_get_device_choices (devices),
                                   pw->sound_events_settings,
                                   "output-device",
                                   _("Select the ringing audio device to use"));
   pw->audio_player =
     gm_pw_string_option_menu_new (container,
                                   _("Output device:"),
-                                  (const gchar **) array,
+                                  gm_pw_get_device_choices (devices),
                                   pw->audio_devices_settings,
                                   "output-device",
                                   _("Select the audio output device to use"));
-  g_free (array);
 
   /* The recorder */
-  get_audioinput_devices (pw->audioinput_core, device_list);
-  array = vector_of_string_to_array (device_list);
+  pw->audioinput_core->get_devices (devices);
   pw->audio_recorder =
     gm_pw_string_option_menu_new (container,
                                   _("Input device:"),
-                                  (const gchar **) array,
+                                  gm_pw_get_device_choices (devices),
                                   pw->audio_devices_settings,
                                   "input-device",
                                   _("Select the audio input device to use"));
-  g_free (array);
 
   /* That button will refresh the device list */
   gm_pw_add_update_button (container, _("_Detect devices"),
@@ -971,40 +989,47 @@ gm_pw_init_video_page (GtkWidget *prefs_window,
   GtkWidget *codecs_list = NULL;
   PStringArray devs;
 
-  std::vector <std::string> device_list;
+  GmPreferencesWindow *pw = NULL;
 
-  gchar **array = NULL;
-  gchar *video_size[NB_VIDEO_SIZES+1];
-  const gchar *video_sizes_text [] =
-    {
-      _("Small"),
-      _("Medium"),
-      _("Large"),
-      _("Extra Large"),
-      _("480p HD"),
-    };
+  std::vector <std::string> devices;
+
+  Choices video_size_options;
+  Choices video_input_formats;
 
   unsigned int i;
   unsigned int pos = 0;
 
-  for (i=0; i< NB_VIDEO_SIZES; i++)
-    video_size[i] = g_strdup_printf ("%s (%dx%d)",
-                                     video_sizes_text[i < 5 ? i : 4],
-                                     Ekiga::VideoSizes[i].width,
-                                     Ekiga::VideoSizes[i].height);
-  video_size [NB_VIDEO_SIZES] = NULL;
+  // FIXME: Probably should come from the core itself
+  static const char* VideoSizesDescription[NB_VIDEO_SIZES][2] = {
+      { "qcif", N_("Small")       },
+      { "sif",  N_("Medium")      },
+      { "cif",  N_("Medium")      },
+      { "4sif", N_("480p 4:3 HD") },
+      { "4cif", N_("DVD")         }
+  };
 
-  const gchar *video_format [] =
-    {
-      _("PAL (Europe)"),
-      _("NTSC (America)"),
-      _("SECAM (France)"),
-      _("Auto"),
-      NULL
+  // FIXME: Probably should come from the core itself
+  static const char* VideoInputFormatDescription[][2] = {
+      { "pal",   N_("PAL (Europe)")   },
+      { "ntsc",  N_("NTSC (America)") },
+      { "secam", N_("SECAM (France)") },
+      { "auto",  N_("Auto")           },
+      { NULL, NULL }
     };
 
+  for (i=0; i< NB_VIDEO_SIZES; i++) {
+    gchar *value = g_strdup_printf ("%s (%dx%d)",
+                                    gettext (VideoSizesDescription[i][1]),
+                                    Ekiga::VideoSizes[i].width,
+                                    Ekiga::VideoSizes[i].height);
+    video_size_options.push_back (boost::make_tuple (VideoSizesDescription[i][0], value));
+    g_free (value);
+  }
 
-  GmPreferencesWindow *pw = NULL;
+  for (i=0; VideoInputFormatDescription[i][0]; i++) {
+    video_input_formats.push_back (boost::make_tuple (VideoInputFormatDescription[i][0],
+                                                      VideoInputFormatDescription[i][1]));
+  }
 
   pw = gm_pw_get_pw (prefs_window);
 
@@ -1034,15 +1059,23 @@ gm_pw_init_video_page (GtkWidget *prefs_window,
   gm_pw_subsection_new (container, _("Devices"));
 
   /* The video device */
-  get_videoinput_devices (pw->videoinput_core, device_list);
-  array = vector_of_string_to_array (device_list);
+  pw->videoinput_core->get_devices (devices);
   pw->video_device =
-    gm_pw_string_option_menu_new (container, _("Input device:"), (const gchar **)array, pw->video_devices_settings, "input-device", _("Select the video input device to use. If an error occurs when using this device a test picture will be transmitted."));
-  g_free (array);
+    gm_pw_string_option_menu_new (container, _("Input device:"),
+                                  gm_pw_get_device_choices (devices),
+                                  pw->video_devices_settings, "input-device", _("Select the video input device to use. If an error occurs when using this device a test picture will be transmitted."));
 
-  gm_pw_string_option_menu_new (container, _("Size:"), (const gchar**)video_size, pw->video_devices_settings, "size", _("Select the transmitted video size"));
+  gm_pw_string_option_menu_new (container, _("Size:"),
+                                video_size_options,
+                                pw->video_devices_settings,
+                                "size",
+                                _("Select the transmitted video size"));
 
-  gm_pw_string_option_menu_new (container, _("Format:"), video_format, pw->video_devices_settings, "format", _("Select the format for video cameras (does not apply to most USB cameras)"));
+  gm_pw_string_option_menu_new (container, _("Format:"),
+                                video_input_formats,
+                                pw->video_devices_settings,
+                                "format",
+                                _("Select the format for video cameras (does not apply to most USB cameras)"));
 
   gm_pw_spin_new (container, _("Channel:"), NULL,
                   pw->video_devices_settings, "channel",
@@ -1050,9 +1083,6 @@ gm_pw_init_video_page (GtkWidget *prefs_window,
 
   /* That button will refresh the device list */
   gm_pw_add_update_button (container, _("_Detect devices"), G_CALLBACK (refresh_devices_list_cb), _("Click here to refresh the device list"), 1, prefs_window);
-
-  for (i=0; i< NB_VIDEO_SIZES; i++)
-    g_free (video_size[i]);
 }
 
 
@@ -1096,7 +1126,7 @@ gm_pw_entry_new (GtkWidget *subsection,
 GtkWidget *
 gm_pw_string_option_menu_new (GtkWidget *subsection,
                               const gchar *label_txt,
-                              const gchar **options,
+                              const Choices & options,
                               boost::shared_ptr <Ekiga::Settings> settings,
                               const std::string & key,
                               const gchar *tooltip,
@@ -1106,16 +1136,9 @@ gm_pw_string_option_menu_new (GtkWidget *subsection,
   GtkWidget *option_menu = NULL;
   GList *cells = NULL;
 
-  int cpt = 0;
   int pos = 0;
-  bool int_setting = false;
 
   GTK_GRID_LAST_ROW (subsection, pos);
-
-  int_setting =
-    !(g_variant_type_equal (g_variant_get_type (g_settings_get_value (settings->get_g_settings (),
-                                                                      key.c_str ())),
-                            G_VARIANT_TYPE_STRING));
 
   label = gtk_label_new_with_mnemonic (label_txt);
   gtk_misc_set_alignment (GTK_MISC (label), 0.0, 0.5);
@@ -1130,17 +1153,18 @@ gm_pw_string_option_menu_new (GtkWidget *subsection,
   g_list_free (cells);
 
   gtk_label_set_mnemonic_widget (GTK_LABEL (label), option_menu);
-  while (options [cpt]) {
-    if (int_setting)
-      gtk_combo_box_text_append_text (GTK_COMBO_BOX_TEXT (option_menu), options [cpt]);
-    else
-      gtk_combo_box_text_append (GTK_COMBO_BOX_TEXT (option_menu), options [cpt], options [cpt]);
-    cpt++;
-  }
+  for (Choices_const_iterator iter = options.begin ();
+       iter != options.end ();
+       ++iter)
+    gtk_combo_box_text_append (GTK_COMBO_BOX_TEXT (option_menu),
+                               boost::get<0>(*iter).c_str (),
+                               boost::get<1>(*iter).c_str ());
+
   gtk_grid_attach_next_to (GTK_GRID (subsection), option_menu, label, GTK_POS_RIGHT, 1, 1);
 
-  g_settings_bind (settings->get_g_settings (), key.c_str (),
-                   option_menu, int_setting ? "active" : "active-id",
+  g_settings_bind (settings->get_g_settings (),
+                   key.c_str (),
+                   option_menu, "active-id",
                    G_SETTINGS_BIND_DEFAULT);
 
   if (tooltip)
@@ -1154,35 +1178,26 @@ gm_pw_string_option_menu_new (GtkWidget *subsection,
 
 void
 gm_pw_string_option_menu_update (GtkWidget *option_menu,
-                                 const gchar **options,
+                                 const Choices & options,
                                  boost::shared_ptr<Ekiga::Settings> settings,
                                  const std::string & key)
 {
-  int cpt = 0;
-  bool int_setting = false;
-
-  if (!options || key.empty ())
+  if (options.empty () || key.empty ())
     return;
-
-  int_setting =
-    !(g_variant_type_equal (g_variant_get_type (g_settings_get_value (settings->get_g_settings (),
-                                                                      key.c_str ())),
-                            G_VARIANT_TYPE_STRING));
 
   gtk_combo_box_text_remove_all (GTK_COMBO_BOX_TEXT (option_menu));
 
-  while (options [cpt]) {
-
-    if (int_setting)
-      gtk_combo_box_text_append_text (GTK_COMBO_BOX_TEXT (option_menu), options [cpt]);
-    else
-      gtk_combo_box_text_append (GTK_COMBO_BOX_TEXT (option_menu), options [cpt], options [cpt]);
-    cpt++;
-  }
+  for (Choices_const_iterator iter = options.begin ();
+       iter != options.end ();
+       ++iter)
+    gtk_combo_box_text_append (GTK_COMBO_BOX_TEXT (option_menu),
+                               boost::get<0>(*iter).c_str (),
+                               boost::get<1>(*iter).c_str ());
 
   // We need to bind again after a remove_all operation
-  g_settings_bind (settings->get_g_settings (), key.c_str (),
-                   option_menu, int_setting ? "active" : "active-id",
+  g_settings_bind (settings->get_g_settings (),
+                   key.c_str (),
+                   option_menu, "active-id",
                    G_SETTINGS_BIND_DEFAULT);
 
   // Force the corresponding AudioInputCore/AudioOutputCore/VideoInputCore
@@ -1195,24 +1210,16 @@ gm_pw_string_option_menu_update (GtkWidget *option_menu,
 
 void
 gm_pw_string_option_menu_add (GtkWidget *option_menu,
-                              const std::string & option,
-                              boost::shared_ptr <Ekiga::Settings> settings,
-                              const std::string & key)
+                              const Choice & option,
+                              G_GNUC_UNUSED boost::shared_ptr <Ekiga::Settings> settings,
+                              G_GNUC_UNUSED const std::string & key)
 {
-  bool int_setting = false;
-
-  if (option.empty ())
+  if (boost::get<0>(option).empty () || boost::get<1>(option).empty ())
     return;
 
-  int_setting =
-    !(g_variant_type_equal (g_variant_get_type (g_settings_get_value (settings->get_g_settings (),
-                                                                      key.c_str ())),
-                            G_VARIANT_TYPE_STRING));
-
-  if (int_setting)
-    gtk_combo_box_text_append_text (GTK_COMBO_BOX_TEXT (option_menu), option.c_str ());
-  else
-    gtk_combo_box_text_append (GTK_COMBO_BOX_TEXT (option_menu), option.c_str (), option.c_str ());
+  gtk_combo_box_text_append (GTK_COMBO_BOX_TEXT (option_menu),
+                             boost::get<0>(option).c_str (),
+                             boost::get<1>(option).c_str ());
 }
 
 
@@ -1482,6 +1489,18 @@ gm_pw_subsection_new (GtkWidget *container,
   g_free (label_txt);
 }
 
+static Choices
+gm_pw_get_device_choices (const std::vector<std::string> & v)
+{
+  Choices c;
+
+  for (std::vector<std::string>::const_iterator iter = v.begin ();
+       iter != v.end ();
+       ++iter)
+    c.push_back (boost::make_tuple (*iter, *iter));
+
+  return c;
+}
 
 /* Callbacks */
 static void
@@ -1705,7 +1724,8 @@ void on_videoinput_device_added_cb (const Ekiga::VideoInputDevice & device, GtkW
   GmPreferencesWindow *pw = NULL;
   g_return_if_fail (prefs_window != NULL);
   pw = gm_pw_get_pw (prefs_window);
-  gm_pw_string_option_menu_add (pw->video_device, device.GetString(),
+  gm_pw_string_option_menu_add (pw->video_device,
+                                boost::make_tuple (device.GetString (), device.GetString ()),
                                 pw->video_devices_settings, "input-device");
 }
 
@@ -1723,7 +1743,8 @@ void on_audioinput_device_added_cb (const Ekiga::AudioInputDevice & device, GtkW
   GmPreferencesWindow *pw = NULL;
   g_return_if_fail (prefs_window != NULL);
   pw = gm_pw_get_pw (prefs_window);
-  gm_pw_string_option_menu_add (pw->audio_recorder, device.GetString(),
+  gm_pw_string_option_menu_add (pw->audio_recorder,
+                                boost::make_tuple (device.GetString (), device.GetString ()),
                                 pw->audio_devices_settings, "input-device");
 }
 
@@ -1741,9 +1762,11 @@ void on_audiooutput_device_added_cb (const Ekiga::AudioOutputDevice & device, Gt
   GmPreferencesWindow *pw = NULL;
   g_return_if_fail (prefs_window != NULL);
   pw = gm_pw_get_pw (prefs_window);
-  gm_pw_string_option_menu_add (pw->audio_player, device.GetString(),
+  gm_pw_string_option_menu_add (pw->audio_player,
+                                boost::make_tuple (device.GetString (), device.GetString ()),
                                 pw->audio_devices_settings, "output-device");
-  gm_pw_string_option_menu_add (pw->sound_events_output, device.GetString(),
+  gm_pw_string_option_menu_add (pw->sound_events_output,
+                                boost::make_tuple (device.GetString (), device.GetString ()),
                                 pw->sound_events_settings, "output-device");
 }
 
@@ -1764,44 +1787,36 @@ void
 gm_prefs_window_update_devices_list (GtkWidget *prefs_window)
 {
   GmPreferencesWindow *pw = NULL;
-  gchar **array = NULL;
 
   g_return_if_fail (prefs_window != NULL);
   pw = gm_pw_get_pw (prefs_window);
 
-  std::vector <std::string> device_list;
+  std::vector<std::string> devices;
 
   /* The player */
-  get_audiooutput_devices (pw->audiooutput_core, device_list);
-  array = vector_of_string_to_array (device_list);
+  pw->audiooutput_core->get_devices (devices);
   gm_pw_string_option_menu_update (pw->audio_player,
-                                   (const gchar **) array,
+                                   gm_pw_get_device_choices (devices),
                                    pw->audio_devices_settings,
                                    "output-device");
   gm_pw_string_option_menu_update (pw->sound_events_output,
-                                   (const gchar **) array,
+                                   gm_pw_get_device_choices (devices),
                                    pw->sound_events_settings,
                                    "output-device");
-  g_free (array);
 
   /* The recorder */
-  get_audioinput_devices (pw->audioinput_core, device_list);
-  array = vector_of_string_to_array (device_list);
+  pw->audioinput_core->get_devices (devices);
   gm_pw_string_option_menu_update (pw->audio_recorder,
-                                   (const gchar **) array,
+                                   gm_pw_get_device_choices (devices),
                                    pw->audio_devices_settings,
                                    "input-device");
-  g_free (array);
-
 
   /* The Video player */
-  get_videoinput_devices (pw->videoinput_core, device_list);
-  array = vector_of_string_to_array (device_list);
+  pw->videoinput_core->get_devices (devices);
   gm_pw_string_option_menu_update (pw->video_device,
-                                   (const gchar **) array,
+                                   gm_pw_get_device_choices (devices),
                                    pw->video_devices_settings,
                                    "input-device");
-  g_free (array);
 }
 
 

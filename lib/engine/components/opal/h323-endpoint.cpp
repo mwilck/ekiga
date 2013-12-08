@@ -92,8 +92,8 @@ namespace Opal {
 
 /* The class */
 Opal::H323::EndPoint::EndPoint (Opal::CallManager & _manager):
-  H323EndPoint (_manager),
-  manager (_manager)
+    H323EndPoint (_manager),
+    manager (_manager)
 {
   protocol_name = "h323";
   uri_prefix = "h323:";
@@ -114,15 +114,15 @@ Opal::H323::EndPoint::~EndPoint ()
 
 bool
 Opal::H323::EndPoint::populate_menu (const std::string& /*fullname*/,
-				     const std::string& uri,
-				     Ekiga::MenuBuilder& builder)
+                                     const std::string& uri,
+                                     Ekiga::MenuBuilder& builder)
 {
   if (0 == GetConnectionCount ())
     builder.add_action ("phone-pick-up", _("Call"),
-			boost::bind (&Opal::H323::EndPoint::on_dial, this, uri));
+                        boost::bind (&Opal::H323::EndPoint::on_dial, this, uri));
   else
     builder.add_action ("mail-forward", _("Transfer"),
-			boost::bind (&Opal::H323::EndPoint::on_transfer, this, uri));
+                        boost::bind (&Opal::H323::EndPoint::on_transfer, this, uri));
   return true;
 }
 
@@ -484,7 +484,7 @@ Opal::H323::EndPoint::setup (const std::string setting)
   }
   if (setting.empty () || setting == "dtmf-mode") {
 
-    set_dtmf_mode (settings->get_int ("dtmf-mode"));
+    set_dtmf_mode (settings->get_enum ("dtmf-mode"));
   }
   if (setting.empty () || setting == "forward-host") {
 
@@ -494,7 +494,7 @@ Opal::H323::EndPoint::setup (const std::string setting)
 
     CallManager::VideoOptions options;
     manager.get_video_options (options);
-    options.extended_video_roles = settings->get_int ("video-role");
+    options.extended_video_roles = settings->get_enum ("video-role");
     manager.set_video_options (options);
   }
   if (setting.empty () || setting == "enable-h239") {

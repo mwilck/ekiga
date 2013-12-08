@@ -206,7 +206,7 @@ void VideoInputCore::setup (std::string setting)
   /* Get device settings */
   if (setting == "any" || setting == "input-device" || setting == "format" || setting == "channel") {
     gchar *device_string = g_settings_get_string (settings, "input-device");
-    unsigned video_format = g_settings_get_int (settings, "format");
+    unsigned video_format = g_settings_get_enum (settings, "format");
     unsigned channel = g_settings_get_int (settings, "channel");
     device.SetFromString (device_string);
 
@@ -216,7 +216,7 @@ void VideoInputCore::setup (std::string setting)
 
   /* Size and framerate */
   if (setting == "any" || setting == "size" || setting == "max-frame-rate") {
-    unsigned size = g_settings_get_int (settings, "size");
+    unsigned size = g_settings_get_enum (settings, "size");
     unsigned max_frame_rate = g_settings_get_int (codecs_settings, "max-frame-rate");
     if (size >= NB_VIDEO_SIZES) {
       PTRACE(1, "VidInputCore\t" << "size out of range, ajusting to 0");

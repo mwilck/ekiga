@@ -1,4 +1,33 @@
 <schemalist>
+  <enum id="org.gnome.@PACKAGE_NAME@.video-sizes">
+    <value nick="qcif" value="0"/>
+    <value nick="sif" value="1"/>
+    <value nick="cif" value="2"/>
+    <value nick="4sif" value="3"/>
+    <value nick="4cif" value="4"/>
+  </enum>
+  <enum id="org.gnome.@PACKAGE_NAME@.video-formats">
+    <value nick="pal" value="0"/>
+    <value nick="ntsc" value="1"/>
+    <value nick="secam" value="2"/>
+    <value nick="auto" value="3"/>
+  </enum>
+  <enum id="org.gnome.@PACKAGE_NAME@.h323-dtmf-modes">
+    <value nick="string" value="0"/>
+    <value nick="tone" value="1"/>
+    <value nick="rfc2833" value="2"/>
+    <value nick="q931" value="3"/>
+  </enum>
+  <enum id="org.gnome.@PACKAGE_NAME@.h239-video-roles">
+    <value nick="none" value="0"/>
+    <value nick="content" value="1"/>
+    <value nick="presentation" value="2"/>
+    <value nick="live" value="3"/>
+  </enum>
+  <enum id="org.gnome.@PACKAGE_NAME@.sip-dtmf-modes">
+    <value nick="info" value="0"/>
+    <value nick="rfc2833" value="1"/>
+  </enum>
   <schema gettext-domain="@GETTEXT_PACKAGE@" id="org.gnome.@PACKAGE_NAME@" path="/org/gnome/@PACKAGE_NAME@/">
     <child name="devices" schema="org.gnome.@PACKAGE_NAME@.devices"/>
     <child name="general" schema="org.gnome.@PACKAGE_NAME@.general"/>
@@ -28,18 +57,31 @@
       <_summary>Video input device</_summary>
       <_description>Select the video input device to use. If an error occurs when using this device a test picture will be transmitted.</_description>
     </key>
-    <key name="size" type="i">
-      <default>0</default>
+    <key name="size" enum="org.gnome.@PACKAGE_NAME@.video-sizes">
+      <aliases>
+        <alias value='QCIF' target='qcif'/>
+        <alias value='SIF' target='sif'/>
+        <alias value='CIF' target='cif'/>
+        <alias value='4SIF' target='4sif'/>
+        <alias value='4CIF' target='4cif'/>
+      </aliases>
+      <default>'4sif'</default>
       <_summary>Video size</_summary>
-      <_description>Select the transmitted video size: Small (QCIF 176x144) or Large (CIF 352x288)</_description>
+      <_description>Select the transmitted video size</_description>
     </key>
     <key name="channel" type="i">
       <default>0</default>
       <_summary>Video channel</_summary>
       <_description>The video channel number to use (to select camera, tv or other sources)</_description>
     </key>
-    <key name="format" type="i">
-      <default>0</default>
+    <key name="format" enum="org.gnome.@PACKAGE_NAME@.video-formats">
+      <aliases>
+        <alias value='PAL' target='pal'/>
+        <alias value='NTSC' target='ntsc'/>
+        <alias value='SECAM' target='secam'/>
+        <alias value='AUTO' target='auto'/>
+      </aliases>
+      <default>'auto'</default>
       <_summary>Video format</_summary>
       <_description>Select the format for video cameras (does not apply to most USB cameras)</_description>
     </key>
@@ -413,10 +455,14 @@
       <_summary>Forward calls to host</_summary>
       <_description>The host where calls should be forwarded if call forwarding is enabled</_description>
     </key>
-    <key name="dtmf-mode" type="i">
-      <default>1</default>
+    <key name="dtmf-mode" enum="org.gnome.@PACKAGE_NAME@.sip-dtmf-modes">
+      <aliases>
+        <alias value='Info' target='info'/>
+        <alias value='RFC2833' target='rfc2833'/>
+      </aliases>
+      <default>'info'</default>
       <_summary>DTMF sending</_summary>
-      <_description>Select the mode for sending DTMFs. The values can be 0 (for "RFC2833") and 1 (for "INFO")</_description>
+      <_description>Select the mode for sending DTMFs. The values can be 'RFC2833' (for "RFC2833") and 'Info' (for "SIP INFO")</_description>
     </key>
     <key name="binding-timeout" type="i">
       <default>10</default>
@@ -450,15 +496,27 @@
       <_summary>Enable H.239</_summary>
       <_description>This enables H.239 capability for additional video roles</_description>
     </key>
-    <key name="video-role" type="i">
-      <default>0</default>
+    <key name="video-role" enum="org.gnome.@PACKAGE_NAME@.h239-video-roles">
+      <aliases>
+        <alias value='None' target='none'/>
+        <alias value='Content' target='content'/>
+        <alias value='Presentation' target='presentation'/>
+        <alias value='Live' target='live'/>
+      </aliases>
+      <default>'none'</default>
       <_summary>Extended Video Roles</_summary>
-      <_description>Select the H.239 Video Role. The values can be 0 (for "disable extended video"), 1 (for "allow per content role mask"), 2 (for "force presentation"), or 3 (for "force live role")</_description>
+      <_description>Select the H.239 Video Role. The values can be "None" (for "disable extended video"), "Content" (for "allow per content role mask"), "Presentation" (for "force presentation"), or "Live" (for "force live role")</_description>
     </key>
-    <key name="dtmf-mode" type="i">
-      <default>2</default>
+    <key name="dtmf-mode" enum="org.gnome.@PACKAGE_NAME@.h323-dtmf-modes">
+      <aliases>
+        <alias value='String' target='string'/>
+        <alias value='Tone' target='tone'/>
+        <alias value='RFC2833' target='rfc2833'/>
+        <alias value='Q.931' target='q931'/>
+      </aliases>
+      <default>'rfc2833'</default>
       <_summary>DTMF sending</_summary>
-      <_description>Select the mode for sending DTMFs. The values can be 0 (for "String"), 1 (for "Tone"), 2 (for "RFC2833"), or 3 (for "Q.931") (default is "RFC2833").</_description>
+      <_description>Select the mode for sending DTMFs</_description>
     </key>
     <key name="forward-host" type="s">
       <default>'h323:'</default>

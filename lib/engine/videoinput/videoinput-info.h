@@ -61,10 +61,10 @@ namespace Ekiga
     int height;
   } VideoSizes[NB_VIDEO_SIZES] = {
     {  GM_QCIF_WIDTH,  GM_QCIF_HEIGHT },
-    {  GM_CIF_WIDTH,   GM_CIF_HEIGHT  },
-    {  GM_4CIF_WIDTH,  GM_4CIF_HEIGHT },
     {  GM_SIF_WIDTH,   GM_SIF_HEIGHT  },
+    {  GM_CIF_WIDTH,   GM_CIF_HEIGHT  },
     {  GM_4SIF_WIDTH,  GM_4SIF_HEIGHT },
+    {  GM_4CIF_WIDTH,  GM_4CIF_HEIGHT },
   };
 
   class VideoInputDevice : public Device {};

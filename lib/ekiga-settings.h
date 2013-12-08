@@ -126,7 +126,7 @@ public:
     {
       g_settings_set_string (gsettings, key.c_str (), value.c_str ());
     }
-    
+
     int get_int (const std::string & key)
     {
       return g_settings_get_int (gsettings, key.c_str ());
@@ -135,6 +135,16 @@ public:
     void set_int (const std::string & key, int i)
     {
       g_settings_set_int (gsettings, key.c_str (), i);
+    }
+
+    int get_enum (const std::string & key)
+    {
+      return g_settings_get_enum (gsettings, key.c_str ());
+    }
+
+    void set_enum (const std::string & key, int i)
+    {
+      g_settings_set_enum (gsettings, key.c_str (), i);
     }
 
     bool get_bool (const std::string & key)

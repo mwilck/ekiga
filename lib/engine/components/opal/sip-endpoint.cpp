@@ -165,7 +165,7 @@ Opal::Sip::EndPoint::setup (std::string setting)
     set_outbound_proxy (settings->get_string ("outbound-proxy-host"));
   }
   if (setting.empty () || setting == "dtmf-mode")  {
-    set_dtmf_mode (settings->get_int ("dtmf-mode"));
+    set_dtmf_mode (settings->get_enum ("dtmf-mode"));
   }
   if (setting.empty () || setting == "forward-host")  {
     set_forward_uri (settings->get_string ("forward-host"));

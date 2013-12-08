@@ -379,8 +379,6 @@ libekiga_la_SOURCES += \
 ##
 
 libekiga_la_SOURCES += \
-	engine/gui/gtk-frontend/device-lists.h \
-	engine/gui/gtk-frontend/device-lists.cpp \
 	engine/gui/gtk-frontend/addressbook-window.h \
 	engine/gui/gtk-frontend/addressbook-window.cpp \
 	engine/gui/gtk-frontend/accounts-window.h \
