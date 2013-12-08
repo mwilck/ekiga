@@ -1494,9 +1494,11 @@ gm_pw_get_device_choices (const std::vector<std::string> & v)
 {
   Choices c;
 
-  for (std::vector<std::string>::const_iterator iter = v.begin ();
-       iter != v.end ();
-       ++iter)
+  if (v.size () == 0)
+    c.push_back (boost::make_tuple ("none", _("No device found")));
+  else for (std::vector<std::string>::const_iterator iter = v.begin ();
+            iter != v.end ();
+            ++iter)
     c.push_back (boost::make_tuple (*iter, *iter));
 
   return c;
