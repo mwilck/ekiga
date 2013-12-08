@@ -357,6 +357,7 @@ private:
 
         PMutex exit_mutex;
         PMutex thread_mutex;
+        PMutex frame_mutex;
         PMutex capture_mutex;
 
         VideoInputCore  & videoinput_core;

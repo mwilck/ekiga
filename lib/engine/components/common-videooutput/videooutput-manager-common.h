@@ -286,6 +286,7 @@
 
     void device_closed_in_main ();
 
+    bool ready;
   };
 
 /**

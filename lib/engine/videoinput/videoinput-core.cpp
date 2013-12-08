@@ -61,8 +61,6 @@ VideoInputCore::VideoPreviewManager::VideoPreviewManager (VideoInputCore& _video
 
 void VideoInputCore::VideoPreviewManager::quit ()
 {
-  stop ();
-
   {
     PWaitAndSignal q(exit_mutex);
     end_thread = true;
@@ -70,8 +68,7 @@ void VideoInputCore::VideoPreviewManager::quit ()
 
   {
     PWaitAndSignal m(thread_mutex);
-    if (frame)
-      free (frame);
+    stop ();
   }
 }
 
@@ -85,6 +82,10 @@ void VideoInputCore::VideoPreviewManager::start (unsigned _width, unsigned _heig
     height = _height;
     pause_thread = false;
   }
+  {
+    PWaitAndSignal c(frame_mutex);
+    frame = (char*) malloc (unsigned (width * height * 3 / 2));
+  }
 
   videooutput_core->start();
 }
@@ -93,6 +94,8 @@ void VideoInputCore::VideoPreviewManager::stop ()
 {
   PTRACE(4, "PreviewManager\tStopping Preview");
 
+  videooutput_core->stop();
+
   {
     PWaitAndSignal c(capture_mutex);
     if (pause_thread)
@@ -100,7 +103,11 @@ void VideoInputCore::VideoPreviewManager::stop ()
     pause_thread = true;
   }
 
-  videooutput_core->stop();
+  {
+    PWaitAndSignal c(frame_mutex);
+    if (frame)
+      free (frame);
+  }
 }
 
 void VideoInputCore::VideoPreviewManager::Main ()
@@ -114,36 +121,21 @@ void VideoInputCore::VideoPreviewManager::Main ()
     {
       PWaitAndSignal c(capture_mutex);
       capture = !pause_thread;
-      if (capture) {
-        if (frame)
-          free (frame);
-        frame = (char*) malloc (unsigned (width * height * 3 / 2));
-      }
     }
-    while (capture && !exit) {
-
-      if (frame) {
-
-        videoinput_core.get_frame_data(frame);
-        videooutput_core->set_frame_data(frame, width, height, 0, 1);
-      }
+    if (capture) {
       {
-        PWaitAndSignal c(capture_mutex);
-        capture = !pause_thread;
+        PWaitAndSignal c(frame_mutex);
+        if (frame) {
+          videoinput_core.get_frame_data(frame);
+          videooutput_core->set_frame_data(frame, width, height, 0, 1);
+        }
       }
-
-      // We have to sleep some time outside the mutex lock
-      // to give other threads time to get the mutex
-      // It will be taken into account by PAdaptiveDelay
-      Current()->Sleep (5);
     }
-
     {
-      PWaitAndSignal q(exit_mutex);
-      exit = end_thread;
+       PWaitAndSignal q(exit_mutex);
+       exit = end_thread;
     }
-
-    Current()->Sleep (5);
+    Current()->Sleep (50);
   }
 }
 
@@ -494,11 +486,10 @@ void VideoInputCore::stop_stream ()
 
 void VideoInputCore::get_frame_data (char *data)
 {
-  PWaitAndSignal m(core_mutex);
-
   if (current_manager) {
     if (!current_manager->get_frame_data(data)) {
 
+      PWaitAndSignal m(core_mutex);
       internal_close();
 
       if (preview_config.active && !stream_config.active)
