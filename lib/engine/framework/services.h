@@ -56,8 +56,10 @@ namespace Ekiga
  * @{
  */
 
-  struct Service
+  class Service
   {
+  public:
+
     virtual ~Service () {}
 
     virtual const std::string get_name () const = 0;
