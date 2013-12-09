@@ -146,10 +146,20 @@ GtkFrontend::build ()
 {
   StatusIcon *s = NULL;
 
-  boost::shared_ptr<Ekiga::ContactCore> contact_core = core.get<Ekiga::ContactCore> ("contact-core");
-  boost::shared_ptr<Ekiga::PersonalDetails> details = core.get<Ekiga::PersonalDetails> ("personal-details");
-  boost::shared_ptr<Ekiga::ChatCore> chat_core = core.get<Ekiga::ChatCore> ("chat-core");
-  boost::shared_ptr<Ekiga::AccountCore> account_core = core.get<Ekiga::AccountCore> ("account-core");
+  boost::shared_ptr<Ekiga::ContactCore> contact_core =
+    core.get<Ekiga::ContactCore> ("contact-core");
+  boost::shared_ptr<Ekiga::PersonalDetails> details =
+    core.get<Ekiga::PersonalDetails> ("personal-details");
+  boost::shared_ptr<Ekiga::ChatCore> chat_core =
+    core.get<Ekiga::ChatCore> ("chat-core");
+  boost::shared_ptr<Ekiga::AccountCore> account_core =
+    core.get<Ekiga::AccountCore> ("account-core");
+  boost::shared_ptr<Ekiga::AudioInputCore> audio_input_core =
+    core.get<Ekiga::AudioInputCore> ("audioinput-core");
+  boost::shared_ptr<Ekiga::AudioOutputCore> audio_output_core =
+    core.get<Ekiga::AudioOutputCore> ("audiooutput-core");
+  boost::shared_ptr<Ekiga::VideoInputCore> video_input_core =
+    core.get<Ekiga::VideoInputCore> ("videoinput-core");
 
   /* Init the stock icons */
   gnomemeeting_stock_icons_init ();
@@ -178,9 +188,10 @@ GtkFrontend::build ()
 						   USER_INTERFACE ".chat-window"),
 				  gtk_widget_destroy);
 
-  // FIXME: GmWindow ?
   preferences_window =
-    boost::shared_ptr<GtkWidget> (preferences_window_new (core),
+    boost::shared_ptr<GtkWidget> (preferences_window_new (audio_input_core,
+                                                          audio_output_core,
+                                                          video_input_core),
 				  gtk_widget_destroy);
 
   // BEWARE: the status icon needs the chat window at startup
@@ -199,9 +210,10 @@ GtkFrontend::build ()
   // preferences window and assistant window
   main_window =
     boost::shared_ptr<GtkWidget> (gm_main_window_new (core),
-				 gtk_widget_destroy);
+                                  gtk_widget_destroy);
 
   gtk_window_set_transient_for (GTK_WINDOW (assistant_window.get ()), GTK_WINDOW (main_window.get ()));
+  gtk_window_set_transient_for (GTK_WINDOW (preferences_window.get ()), GTK_WINDOW (main_window.get ()));
 }
 
 
