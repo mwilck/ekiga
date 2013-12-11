@@ -316,11 +316,7 @@ $(EXPAT_DIR)/config.status: $(SRCDIR)/$(EXPAT_ARCHIVE)
 	tar xfz $(SRCDIR)/$(EXPAT_ARCHIVE)
 	cd $(EXPAT_DIR); ./configure $(confflags)
 
-$(INCLUDEDIR)/expat.h:
-	install -m 644 $(EXPAT_DIR)/lib/expat.h $(INCLUDEDIR)/
-	touch $@
-
-$(LIBDIR)/libexpat.a: $(EXPAT_DIR)/config.status $(INCLUDEDIR)/expat.h
+$(LIBDIR)/libexpat.a: $(EXPAT_DIR)/config.status
 	$(MAKE) $(MAKEOPTS) -C $(EXPAT_DIR)
 	$(MAKE) $(MAKEOPTS) -C $(EXPAT_DIR) install
 	touch $@
