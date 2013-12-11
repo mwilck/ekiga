@@ -618,13 +618,13 @@ $(TARGETDIR)/zips: binaries $(EKIGA_DIR)/src/ekiga.exe
 	for lib in $(PTLIB_LIB) $(OPAL_LIB) libboost_signals.dll; do \
 		install -m 755 $(LIBDIR)/$$lib $(EKIGA_PREFIX) ;\
 	done
-	for lib in liblber.dll libldap.dll libspeex-1.dll libspeexdsp-1.dll libtheora-0.dll avcodec-54.dll avutil-52.dll libogg-0.dll; do \
+	for lib in libexpat-1.dll liblber.dll libldap.dll libspeex-1.dll libspeexdsp-1.dll libtheora-0.dll avcodec-54.dll avutil-52.dll libogg-0.dll; do \
 		cp -r $(BINDIR)/$$lib $(EKIGA_PREFIX) ;\
 	done
 	# locale for ekiga are not found if they are in /share
 	mv $(EKIGA_PREFIX)/share/locale $(EKIGA_PREFIX)
-	# GTK libraries
-	for lib in libatk-1.0-0.dll libcairo-2.dll libcairo-gobject-2.dll libffi-6.dll libfreetype-6.dll libgdk_pixbuf-2.0-0.dll libgdk-3-0.dll libgio-2.0-0.dll libglib-2.0-0.dll libgmodule-2.0-0.dll libgobject-2.0-0.dll libgtk-3-0.dll libiconv-2.dll libintl-8.dll libpango-1.0-0.dll libpangocairo-1.0-0.dll libpangowin32-1.0-0.dll libpixman-1-0.dll libpng15-15.dll libxml2-2.dll pthreadGC2.dll zlib1.dll liblzma-5.dll; do \
+	# libraries from GTK bundle
+	for lib in libatk-1.0-0.dll libcairo-2.dll libcairo-gobject-2.dll libffi-6.dll libfreetype-6.dll libgdk_pixbuf-2.0-0.dll libgdk-3-0.dll libgio-2.0-0.dll libglib-2.0-0.dll libgmodule-2.0-0.dll libgobject-2.0-0.dll libgtk-3-0.dll libiconv-2.dll libintl-8.dll libpango-1.0-0.dll libpangocairo-1.0-0.dll libpangowin32-1.0-0.dll libpixman-1-0.dll libpng15-15.dll libxml2-2.dll pthreadGC2.dll zlib1.dll libfontconfig-1.dll libpangoft2-1.0-0.dll liblzma-5.dll; do \
 		cp -r $(BINDIR)/$$lib $(EKIGA_PREFIX) ;\
 	done
 	cp -r $(BUILDROOT)/share/locale $(EKIGA_PREFIX)/share
