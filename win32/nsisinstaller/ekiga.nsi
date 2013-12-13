@@ -79,24 +79,26 @@ SetCompressor /SOLID lzma
 
 ;!define MUI_LANGDLL_ALLLANGUAGES  ; show all languages during install
 !insertmacro MUI_LANGUAGE "English"
-!insertmacro MUI_LANGUAGE "Hungarian"
-!insertmacro MUI_LANGUAGE "French"
-!insertmacro MUI_LANGUAGE "Romanian"
 !insertmacro MUI_LANGUAGE "Dutch"
-!insertmacro MUI_LANGUAGE "Russian"
+!insertmacro MUI_LANGUAGE "French"
 !insertmacro MUI_LANGUAGE "German"
+!insertmacro MUI_LANGUAGE "Hungarian"
+!insertmacro MUI_LANGUAGE "Polish"
+!insertmacro MUI_LANGUAGE "Romanian"
+!insertmacro MUI_LANGUAGE "Russian"
 
 !define EKIGA_DEFAULT_LANGFILE "${INSTALLER_DIR}/language_files/english.nsh"
 
 !include "${INSTALLER_DIR}/langmacros.nsh"
 
 !insertmacro EKIGA_MACRO_INCLUDE_LANGFILE "ENGLISH"		"${INSTALLER_DIR}/language_files/english.nsh"
-!insertmacro EKIGA_MACRO_INCLUDE_LANGFILE "HUNGARIAN"	"${INSTALLER_DIR}/language_files/hungarian.nsh"
-!insertmacro EKIGA_MACRO_INCLUDE_LANGFILE "FRENCH"		"${INSTALLER_DIR}/language_files/french.nsh"
-!insertmacro EKIGA_MACRO_INCLUDE_LANGFILE "ROMANIAN"	"${INSTALLER_DIR}/language_files/romanian.nsh"
 !insertmacro EKIGA_MACRO_INCLUDE_LANGFILE "DUTCH"		"${INSTALLER_DIR}/language_files/dutch.nsh"
-!insertmacro EKIGA_MACRO_INCLUDE_LANGFILE "RUSSIAN"		"${INSTALLER_DIR}/language_files/russian.nsh"
+!insertmacro EKIGA_MACRO_INCLUDE_LANGFILE "FRENCH"		"${INSTALLER_DIR}/language_files/french.nsh"
 !insertmacro EKIGA_MACRO_INCLUDE_LANGFILE "GERMAN"		"${INSTALLER_DIR}/language_files/german.nsh"
+!insertmacro EKIGA_MACRO_INCLUDE_LANGFILE "HUNGARIAN"		"${INSTALLER_DIR}/language_files/hungarian.nsh"
+!insertmacro EKIGA_MACRO_INCLUDE_LANGFILE "POLISH"		"${INSTALLER_DIR}/language_files/polish.nsh"
+!insertmacro EKIGA_MACRO_INCLUDE_LANGFILE "ROMANIAN"		"${INSTALLER_DIR}/language_files/romanian.nsh"
+!insertmacro EKIGA_MACRO_INCLUDE_LANGFILE "RUSSIAN"		"${INSTALLER_DIR}/language_files/russian.nsh"
 
 ; ===========================
 ; Section SecUninstallOldEkiga
