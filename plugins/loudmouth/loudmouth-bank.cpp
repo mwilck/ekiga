@@ -89,9 +89,9 @@ void
 LM::Bank::save () const
 {
   xmlChar* buffer = NULL;
-  int size = 0;
+  int docsize = 0;
 
-  xmlDocDumpMemory (doc, &buffer, &size);
+  xmlDocDumpMemory (doc, &buffer, &docsize);
 
   contacts_settings->set_string (JABBER_KEY, (const char *)buffer);
 

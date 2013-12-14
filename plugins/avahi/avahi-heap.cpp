@@ -339,8 +339,8 @@ Avahi::Heap::ResolverCallback (AvahiServiceResolver *resolver,
 
       char *ckey = NULL;
       char *cvalue = NULL;
-      size_t size;
-      if (avahi_string_list_get_pair (txt_tmp, &ckey, &cvalue, &size) >= 0) {
+      size_t valsize;
+      if (avahi_string_list_get_pair (txt_tmp, &ckey, &cvalue, &valsize) >= 0) {
 
 	if (ckey != NULL && cvalue != NULL) {
 

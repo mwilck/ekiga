@@ -40,6 +40,7 @@
 #include "opal-main.h"
 
 #include "chat-core.h"
+#include "presence-core.h"
 #include "audioinput-core.h"
 #include "audiooutput-core.h"
 #include "videoinput-core.h"
@@ -118,6 +119,7 @@ struct OPALSpark: public Ekiga::Spark
 
       boost::shared_ptr<Bank> bank (new Bank (core));
       account_core->add_bank (bank);
+      presence_core->add_cluster (bank);
       core.add (bank);
       contact_core->add_contact_decorator (bank);
       presence_core->add_presentity_decorator (bank);
