@@ -1037,7 +1037,9 @@ on_presentity_added (RosterViewGtk* self,
 					 *group, &group_iter);
     roster_view_gtk_find_iter_for_presentity (self, &group_iter, presentity, &iter);
 
-    if (gtk_tree_model_filter_convert_child_iter_to_iter (filtered_model, &filtered_iter, &iter))
+    if (gtk_tree_store_iter_is_valid (self->priv->store, &iter)
+        && gtk_tree_store_iter_is_valid (self->priv->store, &filtered_iter)
+        && gtk_tree_model_filter_convert_child_iter_to_iter (filtered_model, &filtered_iter, &iter))
       if (gtk_tree_selection_iter_is_selected (selection, &filtered_iter))
 	should_emit = TRUE;
 
