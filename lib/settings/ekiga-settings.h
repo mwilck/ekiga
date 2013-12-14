@@ -70,6 +70,7 @@
 
 #define CONTACTS_SCHEMA "org.gnome." PACKAGE_NAME ".contacts"
 
+
 namespace Ekiga {
 
   /*

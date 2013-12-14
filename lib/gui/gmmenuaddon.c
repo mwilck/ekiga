@@ -41,6 +41,8 @@
 #include <libintl.h>
 #include <gdk/gdkkeysyms.h>
 
+#include "settings-mappings.h"
+
 
 /* Notice, this implementation sets the menu item name as data of the menu
  * widget, the statusbar and also the given structure.
@@ -130,60 +132,6 @@ menu_item_selected (GtkWidget *w,
 
 
 /* The public functions */
-// FIXME: I'm not particularly happy with those public callbacks
-//        because they require a GSettings parameter to be passed
-//        to the GtkMenu structure...
-void
-radio_menu_changed_cb (GtkWidget *widget,
-		       gpointer data)
-{
-  GSList *group = NULL;
-
-  GSettings *settings = NULL;
-  int group_last_pos = 0;
-  int active = 0;
-
-  g_return_if_fail (data != NULL);
-
-  settings = g_object_get_data (G_OBJECT (widget), "settings");
-  g_return_if_fail (settings != NULL);
-
-  group = gtk_radio_menu_item_get_group (GTK_RADIO_MENU_ITEM (widget));
-  group_last_pos = g_slist_length (group) - 1; /* If length 1, last pos is 0 */
-
-  /* Only do something when a new CHECK_MENU_ITEM becomes active,
-     not when it becomes inactive */
-  if (gtk_check_menu_item_get_active (GTK_CHECK_MENU_ITEM (widget))) {
-
-    while (group) {
-
-      if (group->data == widget)
-        break;
-
-      active++;
-      group = g_slist_next (group);
-    }
-
-    g_settings_set_int (settings, (gchar *) data, group_last_pos - active);
-  }
-}
-
-
-void
-toggle_menu_changed_cb (GtkWidget *widget,
-			gpointer data)
-{
-  GSettings *settings = NULL;
-  g_return_if_fail (data != NULL);
-
-  settings = g_object_get_data (G_OBJECT (widget), "settings");
-  g_return_if_fail (settings != NULL);
-
-  g_settings_set_boolean (settings, (gchar *) data,
-			  gtk_check_menu_item_get_active (GTK_CHECK_MENU_ITEM (widget)));
-}
-
-
 void
 gtk_build_menu (GtkWidget *menubar,
 		MenuEntry *menu,
@@ -195,19 +143,12 @@ gtk_build_menu (GtkWidget *menubar,
   GtkWidget *image = NULL;
   GtkStockItem item;
 
-  GSList *group = NULL;
-
   int i = 0;
   gchar *menu_name = NULL;
 
   gboolean show_icons = TRUE;
 
   while (menu [i].type != MENU_END) {
-
-    GSList *new_group = NULL;
-
-    if (menu [i].type != MENU_RADIO_ENTRY)
-      group = NULL;
 
     if (menu [i].stock_id && !menu [i].stock_is_theme && !menu [i].name) {
 
@@ -228,25 +169,23 @@ gtk_build_menu (GtkWidget *menubar,
       else if (menu [i].type == MENU_TOGGLE_ENTRY) {
 
         menu [i].widget = gtk_check_menu_item_new_with_mnemonic (menu_name);
-	if (menu [i].settings)
-	  g_object_set_data (G_OBJECT (menu [i].widget), "settings", menu [i].settings);
-        gtk_check_menu_item_set_active (GTK_CHECK_MENU_ITEM (menu [i].widget),
-                                        menu [i].enabled);
+	if (menu [i].settings && menu [i].key)
+          g_settings_bind (menu [i].settings, menu [i].key,
+                           menu [i].widget, "active", G_SETTINGS_BIND_DEFAULT);
       }
       else if (menu [i].type == MENU_RADIO_ENTRY) {
 
-        if (group == NULL)
-          group = new_group;
+        menu [i].widget = gtk_check_menu_item_new_with_mnemonic (menu_name);
+        g_object_set (menu [i].widget, "draw-as-radio", TRUE, NULL);
 
-        menu [i].widget = gtk_radio_menu_item_new_with_mnemonic (group,
-                                                                 menu_name);
-	if (menu [i].settings)
-	  g_object_set_data (G_OBJECT (menu [i].widget), "settings", menu [i].settings);
-
-        gtk_check_menu_item_set_active (GTK_CHECK_MENU_ITEM (menu [i].widget),
-                                        menu [i].enabled);
-
-        group = gtk_radio_menu_item_get_group (GTK_RADIO_MENU_ITEM (menu[i].widget));
+	if (menu [i].settings && menu [i].key)
+          g_settings_bind_with_mapping (menu [i].settings, menu [i].key,
+                                        menu [i].widget, "active",
+                                        G_SETTINGS_BIND_DEFAULT,
+                                        string_gsettings_get_from_active,
+                                        string_gsettings_set_from_active,
+                                        (gpointer) menu [i].id,
+                                        NULL);
       }
 
       if (menu [i].stock_id && show_icons) {
@@ -342,6 +281,9 @@ gtk_build_menu (GtkWidget *menubar,
       gtk_menu_shell_append (GTK_MENU_SHELL (menu_widget),
                              menu [i].widget);
 
+    if (!menu [i].sensitive)
+      gtk_widget_set_sensitive (GTK_WIDGET (menu [i].widget), FALSE);
+
     if (menu [i].id) {
 
       if (menu [i].type != MENU_SUBMENU_NEW)
@@ -351,9 +293,6 @@ gtk_build_menu (GtkWidget *menubar,
         g_object_set_data (G_OBJECT (menubar), menu [i].id,
                            menu_widget);
     }
-
-    if (!menu [i].sensitive)
-      gtk_widget_set_sensitive (GTK_WIDGET (menu [i].widget), FALSE);
 
     gtk_widget_show (menu [i].widget);
 

@@ -18,6 +18,7 @@ AM_CPPFLAGS = \
 	-I$(top_srcdir)/lib \
 	-I$(top_srcdir)/lib/gui \
 	-I$(top_srcdir)/lib/platform \
+	-I$(top_srcdir)/lib/settings \
 	-I$(top_srcdir)/lib/engine \
 	-I$(top_srcdir)/lib/engine/account \
 	-I$(top_srcdir)/lib/engine/addressbook \
@@ -76,6 +77,17 @@ libekiga_la_SOURCES += \
 if WIN32
 libekiga_la_SOURCES += platform/winpaths.h
 endif
+
+
+##
+# Sources out of the settings directory
+##
+
+libekiga_la_SOURCES += \
+	settings/settings-mappings.h \
+        settings/settings-mappings.c \
+	settings/ekiga-settings.h
+
 
 ##
 # Sources out of the pixops directory

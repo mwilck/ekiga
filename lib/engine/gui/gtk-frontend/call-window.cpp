@@ -2017,6 +2017,7 @@ ekiga_call_window_init_menu (EkigaCallWindow *cw)
 
       GTK_MENU_NEW(_("_View")),
 
+      /*
       GTK_MENU_RADIO_ENTRY("local_video", _("_Local Video"),
 			   _("Local video image"),
 			   NULL, '1',
@@ -2035,6 +2036,7 @@ ekiga_call_window_init_menu (EkigaCallWindow *cw)
 			   NULL,
 			   G_CALLBACK (display_changed_cb), cw,
 			   false, false),
+                           */
       GTK_MENU_SEPARATOR,
 
       GTK_MENU_ENTRY("zoom_in", NULL, _("Zoom in"),

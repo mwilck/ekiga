@@ -68,58 +68,42 @@ typedef struct _MenuEntry {
   guint accel;
   MenuEntryType type;
   GSettings *settings;
+  const char *key;
   GCallback func;
   GClosureNotify clofunc;
   gpointer data;
   GtkWidget *widget;
-  gboolean enabled;
-  gboolean sensitive;
+  gboolean enabled; // FIXME
+  gboolean sensitive; // FIXME
 } MenuEntry;
 
 
 #define GTK_MENU_SEPARATOR \
-{NULL, NULL, NULL, NULL, FALSE, 0, MENU_SEP, NULL, NULL, NULL, NULL, NULL, TRUE, TRUE}
+{NULL, NULL, NULL, NULL, FALSE, 0, MENU_SEP, NULL, NULL, NULL, NULL, NULL, NULL, TRUE, TRUE}
 
 #define GTK_MENU_ENTRY(a, b, c, d, e, f, g, h) \
-{a, b, c, d, FALSE, e, MENU_ENTRY, NULL, f, NULL, g, NULL, TRUE, h}
+{a, b, c, d, FALSE, e, MENU_ENTRY, NULL, NULL, f, NULL, g, NULL, TRUE, h}
 
 #define GTK_MENU_THEME_ENTRY(a, b, c, d, e, f, g, h) \
-{a, b, c, d, TRUE, e, MENU_ENTRY, NULL, f, NULL, g, NULL, TRUE, h}
+{a, b, c, d, TRUE, e, MENU_ENTRY, NULL, NULL, f, NULL, g, NULL, TRUE, h}
 
 #define GTK_MENU_ENTRY_WITH_CLOSURE(a, b, c, d, e, f, g, h, i) \
-{a, b, c, d, FALSE, e, MENU_ENTRY, NULL, f, g, h, NULL, TRUE, i}
+{a, b, c, d, FALSE, e, MENU_ENTRY, NULL, NULL, f, g, h, NULL, TRUE, i}
 
-#define GTK_MENU_RADIO_ENTRY(a, b, c, d, e, f, g, h, i, j) \
-{a, b, c, d, FALSE, e, MENU_RADIO_ENTRY, f, g, NULL, h, NULL, i, j}
+#define GTK_MENU_RADIO_ENTRY(a, b, c, d, e, f, g, h) \
+{a, b, c, d, FALSE, e, MENU_RADIO_ENTRY, f, g, NULL, NULL, NULL, NULL, TRUE, h}
 
-#define GTK_MENU_TOGGLE_ENTRY(a, b, c, d, e, f, g, h, i, j) \
-{a, b, c, d, FALSE, e, MENU_TOGGLE_ENTRY, f, g, NULL, h, NULL, i, j}
+#define GTK_MENU_TOGGLE_ENTRY(a, b, c, d, e, f, g, h) \
+{a, b, c, d, FALSE, e, MENU_TOGGLE_ENTRY, f, g, NULL, NULL, NULL, NULL, TRUE, h}
 
 #define GTK_MENU_NEW(a) \
-{NULL, a, NULL, NULL, FALSE, 0, MENU_NEW, NULL, NULL, NULL, NULL, NULL, TRUE, TRUE}
+{NULL, a, NULL, NULL, FALSE, 0, MENU_NEW, NULL, NULL, NULL, NULL, NULL, NULL, TRUE, TRUE}
 
 #define GTK_SUBMENU_NEW(a, b) \
-{a, b, NULL, NULL, FALSE, 0, MENU_SUBMENU_NEW, NULL, NULL, NULL, NULL, NULL, TRUE, TRUE}
+{a, b, NULL, NULL, FALSE, 0, MENU_SUBMENU_NEW, NULL, NULL, NULL, NULL, NULL, NULL, TRUE, TRUE}
 
 #define GTK_MENU_END \
-{NULL, NULL, NULL, NULL, FALSE, 0, MENU_END, NULL, NULL, NULL, NULL, NULL, TRUE, TRUE}
-
-
-/* DESCRIPTION  :  This callback is called when the user
- *                 selects a different option in a radio menu.
- * BEHAVIOR     :  Sets the config key.
- * PRE          :  data is the config key.
- */
-void radio_menu_changed_cb (GtkWidget *,
-			    gpointer);
-
-
-/* DESCRIPTION  :  This callback is called when the user toggles an
- * BEHAVIOR     :  Updates the config key given as parameter.
- * PRE          :  data is the key.
- */
-void toggle_menu_changed_cb (GtkWidget *,
-			     gpointer);
+{NULL, NULL, NULL, NULL, FALSE, 0, MENU_END, NULL, NULL, NULL, NULL, NULL, NULL, TRUE, TRUE}
 
 
 /* DESCRIPTION  :  /
