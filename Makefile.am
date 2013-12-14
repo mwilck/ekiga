@@ -69,7 +69,7 @@ Applications_DATA = $(DESKTOP_FILE)
 
 
 ### Dist Clear
-DISTCLEANFILES=gnome-doc-utils.make ekiga.desktop ekiga.schemas org.gnome.ekiga.gschema
+DISTCLEANFILES=gnome-doc-utils.make ekiga.desktop org.gnome.ekiga.gschema
 
 MAINTAINERCLEANFILES= \
 	Makefile.in aclocal.m4 compile config.guess config.sub \
