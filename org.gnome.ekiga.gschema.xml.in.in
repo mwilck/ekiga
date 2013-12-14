@@ -344,6 +344,7 @@
   </schema>
   <schema gettext-domain="@GETTEXT_PACKAGE@" id="org.gnome.@PACKAGE_NAME@.general.call-options" path="/org/gnome/@PACKAGE_NAME@/general/call-options/">
     <key name="no-answer-timeout" type="i">
+      <range min="5" max="600"/>
       <default>45</default>
       <_summary>No answer timeout</_summary>
       <_description>Automatically reject or forward incoming calls if no answer is given after the specified amount of time (in seconds)</_description>
@@ -375,6 +376,7 @@
       <_description>If enabled, use echo cancellation</_description>
     </key>
     <key name="maximum-jitter-buffer" type="i">
+      <range min="20" max="1000"/>
       <default>500</default>
       <_summary>Maximum jitter buffer</_summary>
       <_description>The maximum jitter buffer size for audio reception (in ms)</_description>
@@ -397,11 +399,13 @@
       <_description>The maximum RX video bitrate in kbit/s. This value will be signaled to the peer endpoint that can adjust (if it supports it) its TX bitrate if it is above the signaled value</_description>
     </key>
     <key name="temporal-spatial-tradeoff" type="i">
+      <range min="0" max="31"/>
       <default>12</default>
       <_summary>Temporal Spatial Trade Off</_summary>
       <_description>Whether to prefer to sustain the max. frame rate or lower it possibly in order to keep a minimum level of (spatial) quality for all frames. 0: Highest minimal quality, 31: lowest minimal quality</_description>
     </key>
     <key name="max-frame-rate" type="i">
+      <range min="1" max="30"/>
       <default>30</default>
       <_summary>Frame Rate</_summary>
       <_description>The maximum transmitted frame rate in frames/s. This rate may not be reached in case a minimum quality was configure via a TSTO value smaller than 31 and the bitrate selected is not sufficient to support this minimum quality</_description>
@@ -445,6 +449,7 @@
       <_description>Select the mode for DTMFs transmission. The values can be 'rfc2833' (for "RFC2833") and 'info' (for "SIP INFO")</_description>
     </key>
     <key name="binding-timeout" type="i">
+      <range min="5" max="600"/>
       <default>10</default>
       <_summary>NAT Binding Timeout</_summary>
       <_description>Enter the number of seconds after which Ekiga should try refreshing the NAT binding when STUN is being used</_description>
