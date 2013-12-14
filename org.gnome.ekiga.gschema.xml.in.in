@@ -28,6 +28,11 @@
     <value nick="info" value="0"/>
     <value nick="rfc2833" value="1"/>
   </enum>
+  <enum id="org.gnome.@PACKAGE_NAME@.main-views">
+    <value nick="contacts" value="0"/>
+    <value nick="dialpad" value="1"/>
+    <value nick="call-history" value="2"/>
+  </enum>
   <schema gettext-domain="@GETTEXT_PACKAGE@" id="org.gnome.@PACKAGE_NAME@" path="/org/gnome/@PACKAGE_NAME@/">
     <child name="devices" schema="org.gnome.@PACKAGE_NAME@.devices"/>
     <child name="general" schema="org.gnome.@PACKAGE_NAME@.general"/>
@@ -58,13 +63,6 @@
       <_description>Select the video input device to use. If an error occurs when using this device a test picture will be transmitted.</_description>
     </key>
     <key name="size" enum="org.gnome.@PACKAGE_NAME@.video-sizes">
-      <aliases>
-        <alias value='QCIF' target='qcif'/>
-        <alias value='SIF' target='sif'/>
-        <alias value='CIF' target='cif'/>
-        <alias value='4SIF' target='4sif'/>
-        <alias value='4CIF' target='4cif'/>
-      </aliases>
       <default>'4sif'</default>
       <_summary>Video size</_summary>
       <_description>Select the transmitted video size</_description>
@@ -75,12 +73,6 @@
       <_description>The video channel number to use (to select camera, tv or other sources)</_description>
     </key>
     <key name="format" enum="org.gnome.@PACKAGE_NAME@.video-formats">
-      <aliases>
-        <alias value='PAL' target='pal'/>
-        <alias value='NTSC' target='ntsc'/>
-        <alias value='SECAM' target='secam'/>
-        <alias value='AUTO' target='auto'/>
-      </aliases>
       <default>'auto'</default>
       <_summary>Video format</_summary>
       <_description>Select the format for video cameras (does not apply to most USB cameras)</_description>
@@ -94,11 +86,6 @@
   <schema gettext-domain="@GETTEXT_PACKAGE@" id="org.gnome.@PACKAGE_NAME@.general" path="/org/gnome/@PACKAGE_NAME@/general/">
     <key name="version" type="i">
       <default>0</default>
-    </key>
-    <key name="kind-of-net" type="i">
-      <default>2</default>
-      <_summary>Kind of network selected in the assistant</_summary>
-      <_description>0: 56kbps, 1: ISDN, 2: DSL128, 3: DSL512, 4: LAN, 5: Custom</_description>
     </key>
     <child name="personal-data" schema="org.gnome.@PACKAGE_NAME@.general.personal-data"/>
     <child name="sound-events" schema="org.gnome.@PACKAGE_NAME@.general.sound-events"/>
@@ -235,10 +222,10 @@
       <_summary>Position on the screen of the main window</_summary>
       <_description>Position on the screen of the main window</_description>
     </key>
-    <key name="panel-section" type="i">
-      <default>0</default>
+    <key name="panel-section" enum="org.gnome.@PACKAGE_NAME@.main-views">
+      <default>'contacts'</default>
       <_summary>Change the panel section of the main window</_summary>
-      <_description>Change the panel section of the main window (0=Contacts, 1=Dialpad, 2=Call history)</_description>
+      <_description>Change the panel section of the main window</_description>
     </key>
   </schema>
   <schema gettext-domain="@GETTEXT_PACKAGE@" id="org.gnome.@PACKAGE_NAME@.general.user-interface.chat-window" path="/org/gnome/@PACKAGE_NAME@/general/user-interface/chat-window/">
@@ -335,7 +322,7 @@
     <key name="video-view" type="i">
       <default>2</default>
       <_summary>The default video view</_summary>
-      <_description>The default video view (0: Local, 1: Remote, 2: Both, 3: Both in a separate window)</_description>
+      <_description>The default video view (local, remote, both)</_description>
     </key>
     <key name="video-view-before-fullscreen" type="i">
       <default>1</default>
@@ -383,7 +370,7 @@
       <_description>If enabled, use silence detection with the codecs supporting it</_description>
     </key>
     <key name="enable-echo-cancellation" type="b">
-      <default>false</default>
+      <default>true</default>
       <_summary>Enable echo cancellation</_summary>
       <_description>If enabled, use echo cancellation</_description>
     </key>
@@ -400,7 +387,7 @@
       <_description>The video codecs list</_description>
     </key>
     <key name="maximum-video-tx-bitrate" type="i">
-      <default>64</default>
+      <default>256</default>
       <_summary>Maximum TX video bitrate</_summary>
       <_description>The maximum TX video bitrate in kbit/s. The video quality and the number of transmitted frames per second (depends on selected codec) will be dynamically adjusted above their minimum during calls to try to minimize the bandwidth to the given value</_description>
     </key>
@@ -410,7 +397,7 @@
       <_description>The maximum RX video bitrate in kbit/s. This value will be signaled to the peer endpoint that can adjust (if it supports it) its TX bitrate if it is above the signaled value</_description>
     </key>
     <key name="temporal-spatial-tradeoff" type="i">
-      <default>31</default>
+      <default>12</default>
       <_summary>Temporal Spatial Trade Off</_summary>
       <_description>Whether to prefer to sustain the max. frame rate or lower it possibly in order to keep a minimum level of (spatial) quality for all frames. 0: Highest minimal quality, 31: lowest minimal quality</_description>
     </key>
@@ -430,9 +417,6 @@
       <default>184</default>
       <_summary>Type of Service (TOS) byte on outgoing RTP IP packets</_summary>
       <_description>The Type of Service (TOS) byte on outgoing RTP IP packets. This byte is used by the network to provide some level of Quality of Service (QoS). Default value 184 (0xB8) corresponds to Expedited Forwarding (EF) PHB as defined in RFC 3246.</_description>
-    </key>
-    <key name="interface" type="s">
-      <default>''</default>
     </key>
     <child name="sip" schema="org.gnome.@PACKAGE_NAME@.protocols.sip"/>
     <child name="h323" schema="org.gnome.@PACKAGE_NAME@.protocols.h323"/>
@@ -456,13 +440,9 @@
       <_description>The host where calls should be forwarded if call forwarding is enabled</_description>
     </key>
     <key name="dtmf-mode" enum="org.gnome.@PACKAGE_NAME@.sip-dtmf-modes">
-      <aliases>
-        <alias value='Info' target='info'/>
-        <alias value='RFC2833' target='rfc2833'/>
-      </aliases>
       <default>'info'</default>
-      <_summary>DTMF sending</_summary>
-      <_description>Select the mode for sending DTMFs. The values can be 'RFC2833' (for "RFC2833") and 'Info' (for "SIP INFO")</_description>
+      <_summary>DTMF transmission</_summary>
+      <_description>Select the mode for DTMFs transmission. The values can be 'rfc2833' (for "RFC2833") and 'info' (for "SIP INFO")</_description>
     </key>
     <key name="binding-timeout" type="i">
       <default>10</default>
@@ -497,26 +477,14 @@
       <_description>This enables H.239 capability for additional video roles</_description>
     </key>
     <key name="video-role" enum="org.gnome.@PACKAGE_NAME@.h239-video-roles">
-      <aliases>
-        <alias value='None' target='none'/>
-        <alias value='Content' target='content'/>
-        <alias value='Presentation' target='presentation'/>
-        <alias value='Live' target='live'/>
-      </aliases>
       <default>'none'</default>
       <_summary>Extended Video Roles</_summary>
       <_description>Select the H.239 Video Role. The values can be "None" (for "disable extended video"), "Content" (for "allow per content role mask"), "Presentation" (for "force presentation"), or "Live" (for "force live role")</_description>
     </key>
     <key name="dtmf-mode" enum="org.gnome.@PACKAGE_NAME@.h323-dtmf-modes">
-      <aliases>
-        <alias value='String' target='string'/>
-        <alias value='Tone' target='tone'/>
-        <alias value='RFC2833' target='rfc2833'/>
-        <alias value='Q.931' target='q931'/>
-      </aliases>
       <default>'rfc2833'</default>
-      <_summary>DTMF sending</_summary>
-      <_description>Select the mode for sending DTMFs</_description>
+      <_summary>DTMF transmission</_summary>
+      <_description>Select the mode for DTMFs transmission</_description>
     </key>
     <key name="forward-host" type="s">
       <default>'h323:'</default>
