@@ -44,13 +44,51 @@
 
 #include "services.h"
 
+#include "audioinput-core.h"
+#include "audiooutput-core.h"
+#include "videoinput-core.h"
+
+typedef struct _PreferencesWindow PreferencesWindow;
+typedef struct _PreferencesWindowPrivate PreferencesWindowPrivate;
+typedef struct _PreferencesWindowClass PreferencesWindowClass;
+
+/* GObject thingies */
+struct _PreferencesWindow
+{
+  GtkDialog parent;
+
+  PreferencesWindowPrivate *priv;
+};
+
+struct _PreferencesWindowClass
+{
+  GtkDialogClass parent;
+};
+
+
+#define PREFERENCES_WINDOW_TYPE (preferences_window_get_type ())
+
+#define PREFERENCES_WINDOW(obj) (G_TYPE_CHECK_INSTANCE_CAST ((obj), PREFERENCES_WINDOW_TYPE, PreferencesWindow))
+
+#define IS_PREFERENCES_WINDOW(obj) (G_TYPE_CHECK_INSTANCE_TYPE ((obj), PREFERENCES_WINDOW_TYPE))
+
+#define PREFERENCES_WINDOW_CLASS(klass) (G_TYPE_CHECK_CLASS_CAST ((klass), PREFERENCES_WINDOW_TYPE, PreferencesWindowClass))
+
+#define IS_PREFERENCES_WINDOW_CLASS(klass) (G_TYPE_CHECK_CLASS_TYPE ((klass), PREFERENCES_WINDOW_TYPE))
+
+#define PREFERENCES_WINDOW_GET_CLASS(obj) (G_TYPE_INSTANCE_GET_CLASS ((obj), PREFERENCES_WINDOW_TYPE, PreferencesWindowClass))
+
+GType preferences_window_get_type ();
+
+
+/* Public API */
+
 /* DESCRIPTION  :  /
- * BEHAVIOR     :  It builds the preferences window
- *                 (sections' ctree / Notebook pages) and connect GTK signals
- *                 to appropriate callbacks, then returns it.
+ * BEHAVIOR     :  It builds the preferences window.
  * PRE          :  /
  */
-GtkWidget *preferences_window_new (Ekiga::ServiceCore & core);
-
+GtkWidget *preferences_window_new (boost::shared_ptr<Ekiga::AudioInputCore> audio_input_core,
+                                   boost::shared_ptr<Ekiga::AudioOutputCore> audio_output_core,
+                                   boost::shared_ptr<Ekiga::VideoInputCore> video_input_core);
 
 #endif

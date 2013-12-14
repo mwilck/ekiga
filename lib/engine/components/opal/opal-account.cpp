@@ -49,19 +49,85 @@
 #include <sip/sippres.h>
 
 #include "opal-account.h"
+
+#include "robust-xml.h"
 #include "form-request-simple.h"
 #include "menu-builder-tools.h"
 #include "platform.h"
 
+#include "opal-presentity.h"
 #include "sip-endpoint.h"
 
+// remove leading and trailing spaces and tabs (useful for copy/paste)
+// also, if no protocol specified, add leading "sip:"
+static std::string
+canonize_uri (std::string uri)
+{
+  const size_t begin_str = uri.find_first_not_of (" \t");
+  if (begin_str == std::string::npos)  // there is no content
+    return "";
+
+  const size_t end_str = uri.find_last_not_of (" \t");
+  const size_t range = end_str - begin_str + 1;
+  uri = uri.substr (begin_str, range);
+  const size_t pos = uri.find (":");
+  if (pos == std::string::npos)
+    uri = uri.insert (0, "sip:");
+  return uri;
+}
+
+xmlNodePtr
+Opal::Account::build_node(std::string name,
+			  std::string host,
+			  std::string user,
+			  std::string auth_user,
+			  std::string password,
+			  bool enabled,
+			  unsigned timeout)
+{
+  xmlNodePtr node = xmlNewNode (NULL, BAD_CAST "account");
+
+  xmlNewChild (node, NULL, BAD_CAST "name",
+	       BAD_CAST robust_xmlEscape (node->doc, name).c_str ());
+  xmlNewChild (node, NULL, BAD_CAST "host",
+	       BAD_CAST robust_xmlEscape (node->doc, host).c_str ());
+  xmlNewChild (node, NULL, BAD_CAST "user",
+	       BAD_CAST robust_xmlEscape (node->doc, user).c_str ());
+  xmlNewChild (node, NULL, BAD_CAST "auth_user",
+	       BAD_CAST robust_xmlEscape (node->doc, auth_user).c_str ());
+  xmlNewChild (node, NULL, BAD_CAST "password",
+	       BAD_CAST robust_xmlEscape (node->doc, password).c_str ());
+  if (enabled) {
+
+    xmlSetProp (node, BAD_CAST "enabled", BAD_CAST "true");
+  } else {
+
+    xmlSetProp (node, BAD_CAST "enabled", BAD_CAST "false");
+  }
+  {
+    std::stringstream sstream;
+    sstream << timeout;
+    xmlSetProp (node, BAD_CAST "timeout", BAD_CAST sstream.str ().c_str ());
+  }
+
+  xmlNewChild(node, NULL, BAD_CAST "roster", NULL);
+
+  return node;
+}
+
+
 Opal::Account::Account (boost::shared_ptr<Opal::Sip::EndPoint> _sip_endpoint,
+			boost::weak_ptr<Ekiga::PresenceCore> _presence_core,
 			boost::shared_ptr<Ekiga::NotificationCore> _notification_core,
 			boost::shared_ptr<Ekiga::PersonalDetails> _personal_details,
 			boost::shared_ptr<Ekiga::AudioOutputCore> _audiooutput_core,
 			boost::shared_ptr<CallManager> _call_manager,
-			const std::string & account):
+			boost::function0<std::set<std::string> > _existing_groups,
+			xmlNodePtr _node):
+  existing_groups(_existing_groups),
+  node(_node),
   sip_endpoint(_sip_endpoint),
+  presence_core(_presence_core),
   notification_core(_notification_core),
   personal_details(_personal_details),
   audiooutput_core(_audiooutput_core),
@@ -73,156 +139,77 @@ Opal::Account::Account (boost::shared_ptr<Opal::Sip::EndPoint> _sip_endpoint,
   failed_registration_already_notified = false;
   dead = false;
 
-  int i = 0;
-  char *pch = strtok ((char *) account.c_str (), "|");
-  while (pch != NULL) {
-
-    switch (i) {
-
-    case 0:
-      enabled = atoi (pch);
-      break;
-
-    case 2:
-      aid = pch;
-      break;
-
-    case 3:
-      name = pch;
-      break;
-
-    case 4:
-      protocol_name = pch;
-      break;
-
-    case 5:
-      host = pch;
-      break;
-
-    case 7:
-      username = pch;
-      break;
-
-    case 8:
-      auth_username = pch;
-      break;
-
-    case 9:
-      password = pch;
-      // Could be empty, it is the only field allowed to be empty
-      if (password == " ")
-        password = "";
-      break;
-
-    case 10:
-      timeout = atoi (pch);
-      break;
-
-    case 1:
-    case 6:
-    case 11:
-    default:
-      break;
-    }
-    pch = strtok (NULL, "|");
-    i++;
-  }
-
-  if (host == "ekiga.net")
-    type = Account::Ekiga;
-  else if (host == "sip.diamondcard.us")
-    type = Account::DiamondCard;
-  else if (protocol_name == "SIP")
-    type = Account::SIP;
-  else
-    type = Account::H323;
+  decide_type ();
 
   if (type != Account::H323) {
 
+    const std::string name = get_name ();
     if (name.find ("%limit") != std::string::npos)
       compat_mode = SIPRegister::e_CannotRegisterMultipleContacts;  // start registration in this compat mode
     else
       compat_mode = SIPRegister::e_FullyCompliant;
   }
 
+  for (xmlNodePtr child = node->children; child != NULL; child = child->next) {
+
+    if (child->type == XML_ELEMENT_NODE && child->name != NULL && xmlStrEqual (BAD_CAST "roster", child->name)) {
+
+      roster_node = child;
+      for (xmlNodePtr presnode = roster_node->children; presnode != NULL; presnode = presnode->next) {
+
+	Opal::PresentityPtr pres(new Presentity (presence_core,
+						 existing_groups,
+						 presnode));
+
+	pres->trigger_saving.connect (boost::ref (trigger_saving));
+	pres->removed.connect (boost::bind (boost::ref (presentity_removed), pres));
+	pres->updated.connect (boost::bind (boost::ref (presentity_updated), pres));
+	add_object (pres);
+	presentity_added (pres);
+      }
+    }
+  }
   setup_presentity ();
 }
 
 
-Opal::Account::Account (boost::shared_ptr<Opal::Sip::EndPoint> _sip_endpoint,
-			boost::shared_ptr<Ekiga::NotificationCore> _notification_core,
-			boost::shared_ptr<Ekiga::PersonalDetails> _personal_details,
-			boost::shared_ptr<Ekiga::AudioOutputCore> _audiooutput_core,
-			boost::shared_ptr<CallManager> _call_manager,
-			Type t,
-                        std::string _name,
-                        std::string _host,
-                        std::string _username,
-                        std::string _auth_username,
-                        std::string _password,
-                        bool _enabled,
-                        unsigned _timeout):
-  sip_endpoint(_sip_endpoint),
-  notification_core(_notification_core),
-  personal_details(_personal_details),
-  audiooutput_core(_audiooutput_core),
-  call_manager(_call_manager)
+std::set<std::string>
+Opal::Account::get_groups () const
 {
-  state = Unregistered;
-  status = "";
-  message_waiting_number = 0;
-  enabled = _enabled;
-  aid = (const char *) PGloballyUniqueID ().AsString ();
-  name = _name;
-  protocol_name = (t == H323) ? "H323" : "SIP";
-  host = _host;
-  username = _username;
-  if (!_auth_username.empty())
-    auth_username = _auth_username;
-  else
-    auth_username = _username;
-  password = _password;
-  timeout = _timeout;
-  type = t;
-  failed_registration_already_notified = false;
-  dead = false;
+  std::set<std::string> result;
 
-  setup_presentity ();
+  for (const_iterator iter = begin (); iter != end (); ++iter) {
 
-  if (enabled)
-    enable ();
+    std::set<std::string> groups = (*iter)->get_groups ();
+    result.insert (groups.begin (), groups.end ());
+  }
+
+  return result;
 }
 
-Opal::Account::~Account ()
+
+const std::string
+Opal::Account::get_name () const
 {
-  if (presentity)
-    presentity->SetPresenceChangeNotifier (OpalPresentity::PresenceChangeNotifier(0));
-}
+  std::string result;
+  xmlChar* xml_str = NULL;
 
-const std::string Opal::Account::as_string () const
-{
-  std::stringstream str;
+  for (xmlNodePtr child = node->children; child != NULL; child = child->next) {
 
-  if (dead)
-    return "";
+    if (child->type == XML_ELEMENT_NODE && child->name != NULL && xmlStrEqual (BAD_CAST "name", child->name)) {
 
-  str << enabled << "|1|"
-      << aid << "|"
-      << name << "|"
-      << protocol_name << "|"
-      << host << "|"
-      << host << "|"
-      << username << "|"
-      << auth_username << "|"
-      << (password.empty () ? " " : password) << "|"
-      << timeout;
+      xml_str = xmlNodeGetContent (child);
+      if (xml_str != NULL) {
 
-  return str.str ();
-}
+	result = (const char*)xml_str;
+	xmlFree (xml_str);
+      } else {
+	result = _("Unnamed");
+      }
+    }
+  }
 
-const std::string Opal::Account::get_name () const
-{
-  return name;
+  return result;
 }
 
 const std::string
@@ -249,68 +236,165 @@ Opal::Account::get_status () const
   return result;
 }
 
-const std::string Opal::Account::get_aor () const
+const std::string
+Opal::Account::get_aor () const
 {
   std::stringstream str;
 
-  str << (protocol_name == "SIP" ? "sip:" : "h323:") << username;
+  str << (protocol_name == "SIP" ? "sip:" : "h323:") << get_username ();
 
-  if (username.find ("@") == string::npos)
-    str << "@" << host;
+  if (get_username ().find ("@") == string::npos)
+    str << "@" << get_host ();
 
   return str.str ();
 }
 
-const std::string Opal::Account::get_protocol_name () const
+const std::string
+Opal::Account::get_protocol_name () const
 {
   return protocol_name;
 }
 
 
-const std::string Opal::Account::get_host () const
+const std::string
+Opal::Account::get_host () const
 {
-  return host;
+  std::string result;
+  xmlChar* xml_str = NULL;
+
+  for (xmlNodePtr child = node->children; child != NULL; child = child->next) {
+
+    if (child->type == XML_ELEMENT_NODE && child->name != NULL && xmlStrEqual (BAD_CAST "host", child->name)) {
+
+      xml_str = xmlNodeGetContent (child);
+      if (xml_str != NULL) {
+
+	result = (const char*)xml_str;
+	xmlFree (xml_str);
+      }
+    }
+  }
+
+  return result;
 }
 
 
-const std::string Opal::Account::get_username () const
+const std::string
+Opal::Account::get_username () const
 {
-  return username;
+  std::string result;
+  xmlChar* xml_str = NULL;
+
+  for (xmlNodePtr child = node->children; child != NULL; child = child->next) {
+
+    if (child->type == XML_ELEMENT_NODE && child->name != NULL && xmlStrEqual (BAD_CAST "user", child->name)) {
+
+      xml_str = xmlNodeGetContent (child);
+      if (xml_str != NULL) {
+
+	result = (const char*)xml_str;
+	xmlFree (xml_str);
+      }
+    }
+  }
+
+  return result;
 }
 
 
-const std::string Opal::Account::get_authentication_username () const
+const std::string
+Opal::Account::get_authentication_username () const
 {
-  return auth_username;
+  std::string result;
+  xmlChar* xml_str = NULL;
+
+  for (xmlNodePtr child = node->children; child != NULL; child = child->next) {
+
+    if (child->type == XML_ELEMENT_NODE && child->name != NULL && xmlStrEqual (BAD_CAST "auth_user", child->name)) {
+
+      xml_str = xmlNodeGetContent (child);
+      if (xml_str != NULL) {
+
+	result = (const char*)xml_str;
+	xmlFree (xml_str);
+      }
+    }
+  }
+
+  return result;
 }
 
 
-const std::string Opal::Account::get_password () const
+const std::string
+Opal::Account::get_password () const
 {
-  return password;
+  std::string result;
+  xmlChar* xml_str = NULL;
+
+  for (xmlNodePtr child = node->children; child != NULL; child = child->next) {
+
+    if (child->type == XML_ELEMENT_NODE && child->name != NULL && xmlStrEqual (BAD_CAST "password", child->name)) {
+
+      xml_str = xmlNodeGetContent (child);
+      if (xml_str != NULL) {
+
+	result = (const char*)xml_str;
+	xmlFree (xml_str);
+      }
+    }
+  }
+
+  return result;
 }
 
 
-unsigned Opal::Account::get_timeout () const
+unsigned
+Opal::Account::get_timeout () const
 {
-  return timeout;
+  unsigned result = 0;
+  xmlChar* xml_str = xmlGetProp (node, BAD_CAST "timeout");
+
+  if (xml_str != NULL) {
+
+    result = std::strtoul ((const char*)xml_str, NULL, 0);
+    xmlFree (xml_str);
+  }
+
+  return result;
 }
 
 
-void Opal::Account::set_authentication_settings (const std::string & _username,
-                                                 const std::string & _password)
+void
+Opal::Account::set_authentication_settings (const std::string& username,
+					    const std::string& password)
 {
-  username = _username;
-  auth_username = _username;
-  password = _password;
+  for (xmlNodePtr child = node->children; child != NULL; child = child->next) {
+
+    if (child->type == XML_ELEMENT_NODE && child->name != NULL) {
+
+      if (xmlStrEqual (BAD_CAST "user", child->name)) {
+
+	robust_xmlNodeSetContent (node, &child, "user", username);
+      }
+      if (xmlStrEqual (BAD_CAST "auth_user", child->name)) {
+
+	robust_xmlNodeSetContent (node, &child, "auth_user", username);
+      }
+      if (xmlStrEqual (BAD_CAST "password", child->name)) {
+
+	robust_xmlNodeSetContent (node, &child, "password", password);
+      }
+    }
+  }
 
   enable ();
 }
 
 
-void Opal::Account::enable ()
+void
+Opal::Account::enable ()
 {
-  enabled = true;
+  xmlSetProp (node, BAD_CAST "enabled", BAD_CAST "true");
 
   state = Processing;
   status = _("Processing...");
@@ -321,9 +405,10 @@ void Opal::Account::enable ()
 }
 
 
-void Opal::Account::disable ()
+void
+Opal::Account::disable ()
 {
-  enabled = false;
+  xmlSetProp (node, BAD_CAST "enabled", BAD_CAST "false");
 
   if (presentity) {
 
@@ -351,28 +436,47 @@ void Opal::Account::disable ()
 }
 
 
-bool Opal::Account::is_enabled () const
+bool
+Opal::Account::is_enabled () const
 {
-  return enabled;
+  bool result = false;
+  xmlChar* xml_str = xmlGetProp (node, BAD_CAST "enabled");
+
+  if (xml_str != NULL) {
+
+    if (xmlStrEqual (xml_str, BAD_CAST "true")) {
+
+      result = true;
+    } else {
+
+      result = false;
+    }
+    xmlFree (xml_str);
+  }
+
+  return result;
 }
 
 
-bool Opal::Account::is_active () const
+bool
+Opal::Account::is_active () const
 {
-  if (!enabled)
+  if (!is_enabled ())
     return false;
 
   return (state == Registered);
 }
 
 
-SIPRegister::CompatibilityModes Opal::Account::get_compat_mode () const
+SIPRegister::CompatibilityModes
+Opal::Account::get_compat_mode () const
 {
   return compat_mode;
 }
 
 
-void Opal::Account::remove ()
+void
+Opal::Account::remove ()
 {
   dead = true;
   if (state == Registered || state == Processing) {
@@ -385,14 +489,20 @@ void Opal::Account::remove ()
 }
 
 
-bool Opal::Account::populate_menu (Ekiga::MenuBuilder &builder)
+bool
+Opal::Account::populate_menu (Ekiga::MenuBuilder &builder)
 {
-  if (enabled)
+  if (is_enabled ())
     builder.add_action ("user-offline", _("_Disable"),
                         boost::bind (&Opal::Account::disable, this));
   else
     builder.add_action ("user-available", _("_Enable"),
                         boost::bind (&Opal::Account::enable, this));
+
+  builder.add_separator ();
+
+  builder.add_action ("add", _("A_dd Contact"),
+		      boost::bind (&Opal::Account::add_contact, this));
 
   builder.add_separator ();
 
@@ -480,10 +590,11 @@ Opal::Account::populate_menu (const std::string fullname,
   }
 
   return result;
- 
+
 }
 
-void Opal::Account::edit ()
+void
+Opal::Account::edit ()
 {
   boost::shared_ptr<Ekiga::FormRequestSimple> request = boost::shared_ptr<Ekiga::FormRequestSimple> (new Ekiga::FormRequestSimple (boost::bind (&Opal::Account::on_edit_form_submitted, this, _1, _2)));
   std::stringstream str;
@@ -507,14 +618,15 @@ void Opal::Account::edit ()
     request->text ("authentication_user", _("Authentication user:"), get_authentication_username (), _("The user name used during authentication, if different than the user name; leave empty if you do not have one"));
   request->private_text ("password", _("Password:"), get_password (), _("Password associated to the user"));
   request->text ("timeout", _("Timeout:"), str.str (), _("Time in seconds after which the account registration is automatically retried"));
-  request->boolean ("enabled", _("Enable account"), enabled);
+  request->boolean ("enabled", _("Enable account"), is_enabled ());
 
   questions (request);
 }
 
 
-void Opal::Account::on_edit_form_submitted (bool submitted,
-					    Ekiga::Form &result)
+void
+Opal::Account::on_edit_form_submitted (bool submitted,
+				       Ekiga::Form &result)
 {
   if (!submitted)
     return;
@@ -555,31 +667,54 @@ void Opal::Account::on_edit_form_submitted (bool submitted,
 
     // Account was enabled and is now disabled
     // Disable it
-    if (enabled != new_enabled && !new_enabled) {
+    if (is_enabled () != new_enabled && !new_enabled) {
       should_disable = true;
     }
     // Account was disabled and is now enabled
     // or account was already enabled
     else if (new_enabled) {
       // Some critical setting just changed
-      if (host != new_host || username != new_user
-          || auth_username != new_authentication_user
-          || password != new_password
-          || timeout != new_timeout
-          || enabled != new_enabled) {
+      if (get_host () != new_host
+	  || get_username () != new_user
+          || get_authentication_username () != new_authentication_user
+          || get_password () != new_password
+          || get_timeout () != new_timeout
+          || is_enabled () != new_enabled) {
 
         should_enable = true;
       }
     }
 
-    enabled = new_enabled;
-    name = new_name;
-    host = new_host;
-    username = new_user;
-    auth_username = new_authentication_user;
-    password = new_password;
-    timeout = new_timeout;
-    enabled = new_enabled;
+    if (new_enabled)
+      xmlSetProp (node, BAD_CAST "enabled", BAD_CAST "true");
+    else
+      xmlSetProp (node, BAD_CAST "enabled", BAD_CAST "false");
+
+    {
+      std::stringstream sstream;
+      sstream << new_timeout;
+      xmlSetProp (node, BAD_CAST "timeout", BAD_CAST sstream.str ().c_str ());
+    }
+
+    for (xmlNodePtr child = node->children; child != NULL; child = child->next) {
+
+      if (child->type == XML_ELEMENT_NODE && child->name != NULL) {
+
+
+	if (xmlStrEqual (BAD_CAST "name", child->name))
+	  robust_xmlNodeSetContent (node, &child, "name", new_name);
+	if (xmlStrEqual (BAD_CAST "host", child->name))
+	  robust_xmlNodeSetContent (node, &child, "host", new_host);
+	if (xmlStrEqual (BAD_CAST "user", child->name))
+	  robust_xmlNodeSetContent (node, &child, "user", new_user);
+	if (xmlStrEqual (BAD_CAST "auth_user", child->name))
+	  robust_xmlNodeSetContent (node, &child, "auth_user", new_authentication_user);
+	if (xmlStrEqual (BAD_CAST "password", child->name))
+	  robust_xmlNodeSetContent (node, &child, "password", new_password);
+      }
+    }
+
+    decide_type ();
 
     if (should_enable)
       enable ();
@@ -591,6 +726,74 @@ void Opal::Account::on_edit_form_submitted (bool submitted,
   }
 }
 
+void
+Opal::Account::add_contact ()
+{
+  boost::shared_ptr<Ekiga::PresenceCore> pcore = presence_core.lock ();
+  if (!pcore)
+    return;
+
+  boost::shared_ptr<Ekiga::FormRequestSimple> request = boost::shared_ptr<Ekiga::FormRequestSimple> (new Ekiga::FormRequestSimple (boost::bind (&Opal::Account::on_add_contact_form_submitted, this, _1, _2)));
+  std::set<std::string> groups = existing_groups ();
+
+  request->title (_("Add to account roster"));
+  request->instructions (_("Please fill in this form to add a new contact "
+			   "to this account's roster"));
+  request->text ("name", _("Name:"), "", _("Name of the contact, as shown in your roster"));
+
+  request->text ("uri", _("Address:"), "sip:", _("Address, e.g. sip:xyz@ekiga.net; if you do not specify the host part, e.g. sip:xyz, then you can choose it by right-clicking on the contact in roster")); // let's put a default
+
+  request->editable_set ("groups",
+			 _("Put contact in groups:"),
+			 std::set<std::string>(), groups);
+
+  questions (request);
+}
+
+void
+Opal::Account::on_add_contact_form_submitted (bool submitted,
+					      Ekiga::Form& result)
+{
+  if (!submitted)
+    return;
+
+  boost::shared_ptr<Ekiga::PresenceCore> pcore = presence_core.lock ();
+  if (!pcore)
+    return;
+
+  const std::string name = result.text ("name");
+  std::string uri;
+  const std::set<std::string> groups = result.editable_set ("groups");
+
+  uri = result.text ("uri");
+  uri = canonize_uri (uri);
+
+  if (pcore->is_supported_uri (uri)) {
+
+    xmlNodePtr presnode = Opal::Presentity::build_node (name, uri, groups);
+    xmlAddChild (roster_node, presnode);
+    trigger_saving ();
+
+    Opal::PresentityPtr pres(new Presentity (presence_core, existing_groups, presnode));
+    pres->trigger_saving.connect (boost::ref (trigger_saving));
+    pres->removed.connect (boost::bind (boost::ref (presentity_removed), pres));
+    pres->updated.connect (boost::bind (boost::ref (presentity_updated), pres));
+    add_object (pres);
+    presentity_added (pres);
+
+  } else {
+
+    boost::shared_ptr<Ekiga::FormRequestSimple> request = boost::shared_ptr<Ekiga::FormRequestSimple>(new Ekiga::FormRequestSimple (boost::bind (&Opal::Account::on_add_contact_form_submitted, this, _1, _2)));
+
+    result.visit (*request);
+    if (!pcore->is_supported_uri (uri))
+      request->error (_("You supplied an unsupported address"));
+    else
+      request->error (_("You already have a contact with this address!"));
+
+    questions (request);
+  }
+}
 
 void
 Opal::Account::on_consult (const std::string url)
@@ -659,6 +862,7 @@ Opal::Account::fetch (const std::string uri)
   }
 }
 
+
 void
 Opal::Account::unfetch (const std::string uri)
 {
@@ -668,6 +872,7 @@ Opal::Account::unfetch (const std::string uri)
     Ekiga::Runtime::run_in_main (boost::bind (&Opal::Account::presence_status_in_main, this, uri, "unknown", ""));
   }
 }
+
 
 void
 Opal::Account::handle_registration_event (RegistrationState state_,
@@ -800,6 +1005,7 @@ Opal::Account::handle_registration_event (RegistrationState state_,
   }
 }
 
+
 void
 Opal::Account::handle_message_waiting_information (const std::string info)
 {
@@ -819,6 +1025,7 @@ Opal::Account::handle_message_waiting_information (const std::string info)
   }
 }
 
+
 Opal::Account::Type
 Opal::Account::get_type () const
 {
@@ -834,8 +1041,8 @@ Opal::Account::setup_presentity ()
   if (presentity) {
 
     presentity->SetPresenceChangeNotifier (PCREATE_PresenceChangeNotifier (OnPresenceChange));
-    presentity->GetAttributes().Set(OpalPresentity::AuthNameKey, username);
-    presentity->GetAttributes().Set(OpalPresentity::AuthPasswordKey, password);
+    presentity->GetAttributes().Set(OpalPresentity::AuthNameKey, get_authentication_username ());
+    presentity->GetAttributes().Set(OpalPresentity::AuthPasswordKey, get_password ());
     if (type != H323) {
       presentity->GetAttributes().Set(SIP_Presentity::SubProtocolKey, "Agent");
     }
@@ -1007,4 +1214,88 @@ Opal::Account::presence_status_in_main (std::string uri,
 {
   presence_received (uri, uri_presence);
   status_received (uri, uri_status);
+}
+
+
+void
+Opal::Account::visit_presentities (boost::function1<bool, Ekiga::PresentityPtr > visitor) const
+{
+  visit_objects (visitor);
+}
+
+
+bool
+Opal::Account::populate_menu_for_group (const std::string name,
+					Ekiga::MenuBuilder& builder)
+{
+  builder.add_action ("edit", _("Rename"),
+		      boost::bind (&Opal::Account::on_rename_group, this, name));
+  return true;
+}
+
+
+void
+Opal::Account::on_rename_group (std::string name)
+{
+  boost::shared_ptr<Ekiga::FormRequestSimple> request = boost::shared_ptr<Ekiga::FormRequestSimple> (new Ekiga::FormRequestSimple (boost::bind (&Opal::Account::rename_group_form_submitted, this, name, _1, _2)));
+
+  request->title (_("Rename group"));
+  request->instructions (_("Please edit this group name"));
+  request->text ("name", _("Name:"), name, std::string ());
+
+  questions (request);
+}
+
+
+struct rename_group_form_submitted_helper
+{
+  rename_group_form_submitted_helper (const std::string old_name_,
+				      const std::string new_name_):
+    old_name(old_name_),
+    new_name(new_name_)
+  {}
+
+  const std::string old_name;
+  const std::string new_name;
+
+  bool operator() (Ekiga::PresentityPtr pres)
+  {
+    Opal::PresentityPtr presentity = boost::dynamic_pointer_cast<Opal::Presentity> (pres);
+    if (presentity)
+      presentity->rename_group (old_name, new_name);
+    return true;
+  }
+};
+
+
+void
+Opal::Account::rename_group_form_submitted (std::string old_name,
+					    bool submitted,
+					    Ekiga::Form& result)
+{
+  if (!submitted)
+    return;
+
+  const std::string new_name = result.text ("name");
+
+  if ( !new_name.empty () && new_name != old_name) {
+
+    rename_group_form_submitted_helper helper (old_name, new_name);
+    visit_presentities (boost::ref (helper));
+  }
+}
+
+void
+Opal::Account::decide_type ()
+{
+  const std::string host = get_host ();
+
+  if (host == "ekiga.net")
+    type = Account::Ekiga;
+  else if (host == "sip.diamondcard.us")
+    type = Account::DiamondCard;
+  else if (protocol_name == "SIP")
+    type = Account::SIP;
+  else
+    type = Account::H323;
 }

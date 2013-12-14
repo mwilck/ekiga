@@ -43,13 +43,15 @@
 #include "hal-core.h"
 #include "notification-core.h"
 #include "videoinput-manager.h"
-#include "videoinput-gmconf-bridge.h"
 
 #include <boost/signals2.hpp>
 #include <boost/bind.hpp>
 #include <glib.h>
 #include <set>
 #include <ptlib.h>
+#include <gio/gio.h>
+
+#include "ekiga-settings.h"
 
 #define VIDEO_INPUT_FALLBACK_DEVICE_TYPE   "Moving Logo"
 #define VIDEO_INPUT_FALLBACK_DEVICE_SOURCE "Moving Logo"
@@ -111,9 +113,9 @@ namespace Ekiga
        */
       ~VideoInputCore ();
 
-      /** Set up gmconf bridge
+      /** Set up settings
        */
-      void setup_conf_bridge();
+      void setup (std::string setting);
 
 
       /*** Service Implementation ***/
@@ -152,6 +154,7 @@ namespace Ekiga
       /** Get a list of all devices supported by all managers registered to the core.
        * @param devices a vector of device names to be filled by the core.
        */
+      void get_devices(std::vector <std::string> & devices);
       void get_devices(std::vector <VideoInputDevice> & devices);
 
       /** Set a specific device
@@ -284,7 +287,7 @@ namespace Ekiga
        * a manager claimed support for this device.
        * @param device the video input device that was added.
        */
-      boost::signals2::signal<void(VideoInputDevice, bool)> device_added;
+      boost::signals2::signal<void(VideoInputDevice)> device_added;
 
       /** This signal is emitted when a video input has been removed from the system.
        * This signal will be emitted if remove_device was called with a device name and
@@ -352,9 +355,11 @@ private:
 
         bool end_thread;
         bool pause_thread;
-        PMutex     thread_ended;
-        PSyncPoint thread_paused;
-        PSyncPoint run_thread;
+
+        PMutex exit_mutex;
+        PMutex thread_mutex;
+        PMutex frame_mutex;
+        PMutex capture_mutex;
 
         VideoInputCore  & videoinput_core;
         boost::shared_ptr<VideoOutputCore> videooutput_core;
@@ -417,17 +422,17 @@ private:
       };
 
 private:
+
       std::set<VideoInputManager *> managers;
 
       VideoDeviceConfig       preview_config;
       VideoDeviceConfig       stream_config;
 
       VideoInputManager*      current_manager;
-      VideoInputDevice        desired_device;
       VideoInputDevice        current_device;
       VideoInputFormat        current_format;
       int                     current_channel;
-      VideoInputSettings      current_settings; 
+      VideoInputSettings      current_settings;
       VideoInputSettings      desired_settings;
 
       PMutex core_mutex;
@@ -435,8 +440,10 @@ private:
 
       Ekiga::ServiceCore & core;
       VideoPreviewManager* preview_manager;
-      VideoInputCoreConfBridge* videoinput_core_conf_bridge;
       boost::shared_ptr<Ekiga::NotificationCore> notification_core;
+
+      Settings* device_settings;
+      Settings* video_codecs_settings;
     };
 /**
  * @}

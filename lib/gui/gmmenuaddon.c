@@ -41,43 +41,18 @@
 #include <libintl.h>
 #include <gdk/gdkkeysyms.h>
 
-#include "gmconf.h"
+#include "settings-mappings.h"
+
 
 /* Notice, this implementation sets the menu item name as data of the menu
  * widget, the statusbar and also the given structure.
  */
-static void menus_have_icons_changed_nt (gpointer,
-					 GmConfEntry *,
-					 gpointer);
-
 static gint popup_menu_callback (GtkWidget *,
 				 GdkEventButton *,
 				 gpointer);
 
 static void menu_item_selected (GtkWidget *,
 				gpointer);
-
-static void menu_widget_destroyed (GtkWidget *,
-				   gpointer);
-
-
-/* DESCRIPTION  :  This notifier is called when the menu_have_icons key is
- *                 modified.
- * BEHAVIOR     :  Show/hide icons in the menu.
- * PRE          :  data = the GtkWidget for the menu.
- */
-static void
-menus_have_icons_changed_nt (G_GNUC_UNUSED gpointer cid,
-			     GmConfEntry *entry,
-			     gpointer data)
-{
-  gboolean show_icons = TRUE;
-
-  g_return_if_fail (gm_conf_entry_get_type (entry) == GM_CONF_BOOL && data);
-
-  show_icons = gm_conf_entry_get_bool (entry);
-  gtk_menu_show_icons (GTK_WIDGET (data), show_icons);
-}
 
 
 /* DESCRIPTION  :  This callback is called when the user clicks on an
@@ -156,63 +131,7 @@ menu_item_selected (GtkWidget *w,
 }
 
 
-/* DESCRIPTION  :  This callback is called when the widget associated to a menu
- *                 is destroyed.
- * BEHAVIOR     :  Removes the notifier watching the "menus_have_icons" key.
- * PRE          :  data = the notifier id.
- */
-static void
-menu_widget_destroyed (G_GNUC_UNUSED GtkWidget *w,
-		       gpointer data)
-{
-  gm_conf_notifier_remove (data);
-}
-
-
 /* The public functions */
-void
-radio_menu_changed_cb (GtkWidget *widget,
-		       gpointer data)
-{
-  GSList *group = NULL;
-
-  int group_last_pos = 0;
-  int active = 0;
-
-  g_return_if_fail (data != NULL);
-
-  group = gtk_radio_menu_item_get_group (GTK_RADIO_MENU_ITEM (widget));
-  group_last_pos = g_slist_length (group) - 1; /* If length 1, last pos is 0 */
-
-  /* Only do something when a new CHECK_MENU_ITEM becomes active,
-     not when it becomes inactive */
-  if (gtk_check_menu_item_get_active (GTK_CHECK_MENU_ITEM (widget))) {
-
-    while (group) {
-
-      if (group->data == widget)
-        break;
-
-      active++;
-      group = g_slist_next (group);
-    }
-
-    gm_conf_set_int ((gchar *) data, group_last_pos - active);
-  }
-}
-
-
-void
-toggle_menu_changed_cb (GtkWidget *widget,
-			gpointer data)
-{
-  g_return_if_fail (data != NULL);
-
-  gm_conf_set_bool ((gchar *) data,
-		    gtk_check_menu_item_get_active (GTK_CHECK_MENU_ITEM (widget)));
-}
-
-
 void
 gtk_build_menu (GtkWidget *menubar,
 		MenuEntry *menu,
@@ -224,23 +143,12 @@ gtk_build_menu (GtkWidget *menubar,
   GtkWidget *image = NULL;
   GtkStockItem item;
 
-  GSList *group = NULL;
-
   int i = 0;
   gchar *menu_name = NULL;
 
-  gpointer id = NULL;
   gboolean show_icons = TRUE;
 
-  show_icons =
-    gm_conf_get_bool ("/desktop/gnome/interface/menus_have_icons");
-
   while (menu [i].type != MENU_END) {
-
-    GSList *new_group = NULL;
-
-    if (menu [i].type != MENU_RADIO_ENTRY)
-      group = NULL;
 
     if (menu [i].stock_id && !menu [i].stock_is_theme && !menu [i].name) {
 
@@ -261,21 +169,23 @@ gtk_build_menu (GtkWidget *menubar,
       else if (menu [i].type == MENU_TOGGLE_ENTRY) {
 
         menu [i].widget = gtk_check_menu_item_new_with_mnemonic (menu_name);
-        gtk_check_menu_item_set_active (GTK_CHECK_MENU_ITEM (menu [i].widget),
-                                        menu [i].enabled);
+	if (menu [i].settings && menu [i].key)
+          g_settings_bind (menu [i].settings, menu [i].key,
+                           menu [i].widget, "active", G_SETTINGS_BIND_DEFAULT);
       }
       else if (menu [i].type == MENU_RADIO_ENTRY) {
 
-        if (group == NULL)
-          group = new_group;
+        menu [i].widget = gtk_check_menu_item_new_with_mnemonic (menu_name);
+        g_object_set (menu [i].widget, "draw-as-radio", TRUE, NULL);
 
-        menu [i].widget = gtk_radio_menu_item_new_with_mnemonic (group,
-                                                                 menu_name);
-
-        gtk_check_menu_item_set_active (GTK_CHECK_MENU_ITEM (menu [i].widget),
-                                        menu [i].enabled);
-
-        group = gtk_radio_menu_item_get_group (GTK_RADIO_MENU_ITEM (menu[i].widget));
+	if (menu [i].settings && menu [i].key)
+          g_settings_bind_with_mapping (menu [i].settings, menu [i].key,
+                                        menu [i].widget, "active",
+                                        G_SETTINGS_BIND_DEFAULT,
+                                        string_gsettings_get_from_active,
+                                        string_gsettings_set_from_active,
+                                        (gpointer) menu [i].id,
+                                        NULL);
       }
 
       if (menu [i].stock_id && show_icons) {
@@ -371,6 +281,9 @@ gtk_build_menu (GtkWidget *menubar,
       gtk_menu_shell_append (GTK_MENU_SHELL (menu_widget),
                              menu [i].widget);
 
+    if (!menu [i].sensitive)
+      gtk_widget_set_sensitive (GTK_WIDGET (menu [i].widget), FALSE);
+
     if (menu [i].id) {
 
       if (menu [i].type != MENU_SUBMENU_NEW)
@@ -381,22 +294,12 @@ gtk_build_menu (GtkWidget *menubar,
                            menu_widget);
     }
 
-    if (!menu [i].sensitive)
-      gtk_widget_set_sensitive (GTK_WIDGET (menu [i].widget), FALSE);
-
     gtk_widget_show (menu [i].widget);
 
     i++;
   }
 
   g_object_set_data (G_OBJECT (menubar), "menu_entry", menu);
-
-  id = gm_conf_notifier_add ("/desktop/gnome/interface/menus_have_icons",
-			     menus_have_icons_changed_nt,
-			     menubar);
-
-  g_signal_connect (menubar, "destroy",
-		    G_CALLBACK (menu_widget_destroyed), id);
 }
 
 
@@ -551,49 +454,6 @@ gtk_radio_menu_select_with_widget (GtkWidget *widget,
     }
 
     group = g_slist_next (group);
-    i++;
-  }
-}
-
-
-void
-gtk_menu_show_icons (GtkWidget *menu, gboolean show_icons)
-{
-  MenuEntry *menu_entry = NULL;
-  GtkWidget *image = NULL;
-  int i = 0;
-
-  menu_entry = (MenuEntry *) g_object_get_data (G_OBJECT (menu), "menu_entry");
-
-  while (menu_entry && menu_entry [i].type != MENU_END) {
-
-    if (menu_entry [i].stock_id) {
-
-      image = gtk_image_menu_item_get_image (GTK_IMAGE_MENU_ITEM (menu_entry [i].widget));
-
-      if (show_icons) {
-
-        if (!image) {
-
-          if (menu_entry [i].stock_is_theme)
-            image = gtk_image_new_from_icon_name(menu_entry [i].stock_id,
-                                                 GTK_ICON_SIZE_MENU);
-          else
-            image = gtk_image_new_from_stock (menu_entry [i].stock_id,
-                                              GTK_ICON_SIZE_MENU);
-          gtk_widget_show (image);
-
-          gtk_image_menu_item_set_image (GTK_IMAGE_MENU_ITEM (menu_entry [i].widget), image);
-        }
-        else
-          gtk_widget_show (image);
-      }
-      else
-        if (image)
-          gtk_widget_hide (image);
-
-    }
-
     i++;
   }
 }

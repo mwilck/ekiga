@@ -30,7 +30,7 @@
  *   begin                : written in 2008 by Matthias Schneider
  *   copyright            : (c) 2008 by Matthias Schneider
  *   description          : Declaration of structs and classes used for communication
- *                          with the AudioInputManagers
+ *                          with the AudioOutputManagers
  *
  */
 
@@ -41,7 +41,14 @@
 
 namespace Ekiga
 {
-  class AudioOutputDevice : public Device {};
+  class AudioOutputDevice : public Device
+  {
+public:
+    AudioOutputDevice () : Device () {}
+    AudioOutputDevice (const std::string & t,
+                      const std::string & s,
+                      const std::string & n) : Device (t, s, n) {};
+  };
 
   typedef struct AudioOutputSettings {
     unsigned volume;

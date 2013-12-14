@@ -27,6 +27,7 @@
  */
 
 #include "ext-window.h"
+#include "ekiga-settings.h"
 
 #ifndef WIN32
 #include <gdk/gdkx.h>
@@ -41,8 +42,9 @@ struct _EkigaExtWindowPrivate {
 #ifndef WIN32
   GC gc;
 #endif
-  GtkWidget *video, *zin, *zout;
+  GtkWidget *video, *zin, *zout, *event_box;
   boost::shared_ptr<Ekiga::VideoOutputCore> vocore;
+  boost::shared_ptr<Ekiga::Settings> video_display_settings;
 };
 
 static void
@@ -56,26 +58,42 @@ static void
 zoom_in (G_GNUC_UNUSED GtkWidget *widget, gpointer user_data)
 {
   guint zoom;
+  EkigaExtWindow *ew = EKIGA_EXT_WINDOW (user_data);
 
-  zoom = gm_conf_get_int (VIDEO_DISPLAY_KEY "ext_zoom");
+  zoom = ew->priv->video_display_settings->get_int ( "ext_zoom");
   if (zoom < 200)
     zoom = zoom * 2;
-  gm_conf_set_int (VIDEO_DISPLAY_KEY "ext_zoom", zoom);
+  ew->priv->video_display_settings->set_int ("ext_zoom", zoom);
 
-  set_zoom_buttons_sensitive (EKIGA_EXT_WINDOW (user_data), zoom);
+  set_zoom_buttons_sensitive (ew, zoom);
 }
 
 static void
 zoom_out (G_GNUC_UNUSED GtkWidget *widget, gpointer user_data)
 {
   guint zoom;
+  EkigaExtWindow *ew = EKIGA_EXT_WINDOW (user_data);
 
-  zoom = gm_conf_get_int (VIDEO_DISPLAY_KEY "ext_zoom");
+  zoom = ew->priv->video_display_settings->get_int ( "ext_zoom");
   if (zoom > 50)
     zoom = (guint) zoom / 2;
-  gm_conf_set_int (VIDEO_DISPLAY_KEY "ext_zoom", zoom);
+  ew->priv->video_display_settings->set_int ("ext_zoom", zoom);
 
-  set_zoom_buttons_sensitive (EKIGA_EXT_WINDOW (user_data), zoom);
+  set_zoom_buttons_sensitive (ew, zoom);
+}
+
+static void
+stay_on_top_changed_cb (GSettings *settings,
+                        gchar *key,
+                        gpointer self)
+
+{
+  bool val = false;
+
+  g_return_if_fail (self != NULL);
+
+  val = g_settings_get_boolean (settings, key);
+  gdk_window_set_keep_above (GDK_WINDOW (gtk_widget_get_window (GTK_WIDGET (self))), val);
 }
 
 static void
@@ -95,8 +113,10 @@ gui_layout (EkigaExtWindow *ew)
   zout = gtk_button_new_from_stock (GTK_STOCK_ZOOM_OUT);
   gtk_box_pack_start (GTK_BOX (hbox), zout, FALSE, FALSE, 0);
 
+  ew->priv->event_box = gtk_event_box_new ();
   ew->priv->video = gtk_image_new ();
-  gtk_box_pack_start (GTK_BOX (vbox), ew->priv->video, FALSE, FALSE, 0);
+  gtk_container_add (GTK_CONTAINER (ew->priv->event_box), ew->priv->video);
+  gtk_box_pack_start (GTK_BOX (vbox), GTK_WIDGET (ew->priv->event_box), FALSE, FALSE, 0);
 
   ew->priv->zin = zin;
   ew->priv->zout = zout;
@@ -105,6 +125,7 @@ gui_layout (EkigaExtWindow *ew)
   g_signal_connect (zout, "clicked", G_CALLBACK (zoom_out), ew);
 
   gtk_widget_show_all (vbox);
+  gtk_widget_realize (vbox);
 
   gtk_window_set_resizable (GTK_WINDOW (ew), FALSE);
 }
@@ -168,9 +189,10 @@ focus_in_event (GtkWidget *widget, GdkEventFocus *event)
 static void
 show (GtkWidget *widget)
 {
+  EkigaExtWindow *ew = EKIGA_EXT_WINDOW (widget);
   GdkWindow *w = gtk_widget_get_window (widget);
 
-  if (w && gm_conf_get_bool (VIDEO_DISPLAY_KEY "stay_on_top"))
+  if (w && ew->priv->video_display_settings->get_bool ("stay-on-top"))
     gdk_window_set_keep_above (w, true);
 
   GTK_WIDGET_CLASS (ekiga_ext_window_parent_class)->show (widget);
@@ -201,7 +223,7 @@ draw_event (GtkWidget *widget,
 
   if (!ew->priv->gc) {
     Display *display;
-    display = GDK_WINDOW_XDISPLAY (gtk_widget_get_window (ew->priv->video));
+    display = GDK_DISPLAY_XDISPLAY (gtk_widget_get_display (ew->priv->video));
     ew->priv->gc = XCreateGC(display, info.window, 0, 0);
     g_return_val_if_fail (ew->priv->gc != NULL, handled);
   }
@@ -249,9 +271,14 @@ ext_window_new (boost::shared_ptr<Ekiga::VideoOutputCore> &vocore)
   EkigaExtWindow *ew =
     EKIGA_EXT_WINDOW (g_object_new (EKIGA_TYPE_EXT_WINDOW, NULL));
 
-  g_signal_connect (ew, "delete-event", G_CALLBACK (gtk_true), NULL);
-
   ew->priv->vocore = vocore;
+  ew->priv->video_display_settings =
+    boost::shared_ptr<Ekiga::Settings> (new Ekiga::Settings (VIDEO_DISPLAY_SCHEMA));
+
+  g_signal_connect (ew, "delete-event", G_CALLBACK (gtk_true), NULL);
+  g_signal_connect (ew->priv->video_display_settings->get_g_settings (),
+                    "changed::stay-on-top",
+                    G_CALLBACK (stay_on_top_changed_cb), ew);
 
   return GTK_WIDGET (ew);
 }
@@ -263,23 +290,23 @@ ekiga_ext_window_set_size (EkigaExtWindow *ew, int width, int height)
 
   g_return_if_fail (width > 0 && height > 0);
 
-  gtk_widget_get_size_request (ew->priv->video, &pw, &ph);
+  gtk_widget_get_size_request (ew->priv->event_box, &pw, &ph);
 
   /* No size requisition yet
    * It's our first call so we silently set the new requisition and exit...
    */
   if (pw == -1) {
-    gtk_widget_set_size_request (ew->priv->video, width, height);
+    gtk_widget_set_size_request (ew->priv->event_box, width, height);
     return;
   }
 
   /* Do some kind of filtering here. We often get duplicate "size-changed" events...
-   * Note that we currently only bother about the width of the video.
+   * Note that we currently only bother about the width of the event_box.
    */
   if (pw == width)
     return;
 
-  gtk_widget_set_size_request (ew->priv->video, width, height);
+  gtk_widget_set_size_request (ew->priv->event_box, width, height);
   gdk_window_invalidate_rect (gtk_widget_get_window (GTK_WIDGET (ew)), NULL, TRUE);
 }
 

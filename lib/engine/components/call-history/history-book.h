@@ -42,6 +42,8 @@
 #include "book-impl.h"
 #include "history-contact.h"
 
+#include "ekiga-settings.h"
+
 namespace History
 {
 
@@ -110,6 +112,7 @@ namespace History
     boost::weak_ptr<Ekiga::ContactCore> contact_core;
     boost::shared_ptr<xmlDoc> doc;
     std::list<ContactPtr> ordered_contacts;
+    boost::shared_ptr<Ekiga::Settings> contacts_settings;
   };
 
   typedef boost::shared_ptr<Book> BookPtr;

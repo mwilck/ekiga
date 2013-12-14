@@ -194,31 +194,10 @@ AC_SUBST(XML_LIBS)
 
 
 dnl ###############################
-dnl   GConf support
+dnl   GSettings support
 dnl ###############################
-GCONF="disabled"
 
-if test "x${gm_platform}" != "xmingw" ; then
-  AC_ARG_ENABLE(gconf, AS_HELP_STRING([--enable-gconf],[enable GConf support (default is enabled)]),
-[if test "x$enableval" = "xyes"; then
-  enable_gconf = yes
-fi],enable_gconf=yes)
-
-  if test "x$enable_gconf" = "xyes"; then
-    PKG_CHECK_MODULES([GCONF], [gconf-2.0 >= 2.6.0], [found_gconf=yes])
-    AM_GCONF_SOURCE_2
-    AC_SUBST(GCONF_CFLAGS)
-    AC_SUBST(GCONF_LIBS)
-    GCONF="enabled"
-    AC_DEFINE(HAVE_GCONF,1,[GConf support])
-  else
-    AM_CONDITIONAL(GCONF_SCHEMAS_INSTALL, false)
-  fi
-else
-  AM_CONDITIONAL(GCONF_SCHEMAS_INSTALL, false)
-fi
-
-AM_CONDITIONAL(HAVE_GCONF, test "x$found_gconf" = "xyes")
+GLIB_GSETTINGS
 
 
 dnl ###############################
@@ -876,7 +855,8 @@ dnl ###########################################################################
 AC_CONFIG_FILES([Makefile
 Doxyfile
 src/ekiga-config-tool
-ekiga.schemas.in
+org.gnome.ekiga.gschema.xml.in
+ekiga.convert
 ekiga.desktop.in
 lib/Makefile
 po/Makefile.in
@@ -909,7 +889,6 @@ echo "          Installing into prefix  :  $prefix"
 echo ""
 if test "x${gm_platform}" != "xmingw" ; then
 echo "                     GDU support  :  $GDU"
-echo "                   GConf support  :  $GCONF"
 echo "   Evolution-Data-Server support  :  $EDS"
 echo "                  NOTIFY support  :  $NOTIFY"
 fi

@@ -47,7 +47,8 @@
 #include "default_devices.h"
 #include "gtk-frontend.h"
 #include "opal-bank.h"
-#include "device-lists.h"
+
+#include "ekiga-settings.h"
 
 #include <gdk/gdkkeysyms.h>
 
@@ -56,9 +57,6 @@ G_DEFINE_TYPE (AssistantWindow, assistant_window, GTK_TYPE_ASSISTANT);
 struct _AssistantWindowPrivate
 {
   Ekiga::ServiceCore* service_core; // FIXME: wrong memory management
-  boost::shared_ptr<Ekiga::VideoInputCore> videoinput_core;
-  boost::shared_ptr<Ekiga::AudioInputCore> audioinput_core;
-  boost::shared_ptr<Ekiga::AudioOutputCore> audiooutput_core;
   boost::shared_ptr<Opal::Bank> bank;
   GdkPixbuf *icon;
 
@@ -82,6 +80,8 @@ struct _AssistantWindowPrivate
   gint last_active_page;
 
   GtkListStore *summary_model;
+
+  boost::shared_ptr<Ekiga::Settings> personal_data_settings;
 };
 
 enum {
@@ -191,17 +191,11 @@ create_personal_data_page (AssistantWindow *assistant)
 static void
 prepare_personal_data_page (AssistantWindow *assistant)
 {
-  gchar* full_name = gm_conf_get_string (PERSONAL_DATA_KEY "full_name");
+  std::string full_name =
+    assistant->priv->personal_data_settings->get_string ("full-name");
 
-  if (full_name == NULL || strlen (full_name) == 0) {
-
-    g_free (full_name);
-    full_name = g_strdup (g_get_real_name ());
-  }
-
-  gtk_entry_set_text (GTK_ENTRY (assistant->priv->name), full_name);
-
-  g_free (full_name);
+  gtk_entry_set_text (GTK_ENTRY (assistant->priv->name),
+                      full_name.empty () ? g_get_real_name () : full_name.c_str ());
 }
 
 
@@ -211,8 +205,10 @@ apply_personal_data_page (AssistantWindow *assistant)
   GtkEntry *entry = GTK_ENTRY (assistant->priv->name);
   const gchar *full_name = gtk_entry_get_text (entry);
 
-  if (full_name)
-    gm_conf_set_string (PERSONAL_DATA_KEY "full_name", full_name);
+  if (full_name && strlen (full_name) > 0)
+    assistant->priv->personal_data_settings->set_string ("full-name", full_name);
+  else
+    assistant->priv->personal_data_settings->set_string ("full-name", g_get_real_name ());
 }
 
 
@@ -632,54 +628,6 @@ apply_ekiga_out_page (AssistantWindow *assistant)
 
 
 static void
-apply_audio_devices_page (AssistantWindow */*assistant*/)
-{
-  gchar *ringer, *player, *recorder;
-
-  ringer = gm_conf_get_string (SOUND_EVENTS_KEY "output_device");
-  if (ringer == NULL || !ringer[0]) {
-    ringer = g_strdup (DEFAULT_AUDIO_DEVICE_NAME);
-    gm_conf_set_string (SOUND_EVENTS_KEY "output_device", ringer);
-  }
-  g_free (ringer);
-
-  player = gm_conf_get_string (AUDIO_DEVICES_KEY "output_device");
-  if (player == NULL || !player[0]) {
-    player = g_strdup (DEFAULT_AUDIO_DEVICE_NAME);
-    gm_conf_set_string (AUDIO_DEVICES_KEY "output_device", player);
-  }
-  g_free (player);
-
-  recorder = gm_conf_get_string (AUDIO_DEVICES_KEY "input_device");
-  if (recorder == NULL || !recorder[0]) {
-    recorder = g_strdup (DEFAULT_AUDIO_DEVICE_NAME);
-    gm_conf_set_string (AUDIO_DEVICES_KEY "input_device", recorder);
-  }
-  g_free (recorder);
-}
-
-
-static void
-apply_video_devices_page (AssistantWindow *assistant)
-{
-  std::vector <std::string> device_list;
-  gchar** array;
-  gchar* current_plugin;
-
-  current_plugin = gm_conf_get_string (VIDEO_DEVICES_KEY "input_device");
-  if (current_plugin == NULL || !current_plugin[0]) {
-    g_free (current_plugin);
-    get_videoinput_devices (assistant->priv->videoinput_core, device_list);
-    array = vector_of_string_to_array (device_list);
-    current_plugin = g_strdup (get_default_video_device_name (array));
-    g_free (array);
-    gm_conf_set_string (VIDEO_DEVICES_KEY "input_device", current_plugin);
-  }
-  g_free (current_plugin);
-}
-
-
-static void
 create_summary_page (AssistantWindow *assistant)
 {
   GtkWidget *vbox;
@@ -792,6 +740,8 @@ assistant_window_init (AssistantWindow *assistant)
   gtk_container_set_border_width (GTK_CONTAINER (assistant), 12);
 
   assistant->priv->last_active_page = 0;
+  assistant->priv->personal_data_settings =
+    boost::shared_ptr<Ekiga::Settings> (new Ekiga::Settings (PERSONAL_DATA_SCHEMA));
 
   create_welcome_page (assistant);
   create_personal_data_page (assistant);
@@ -857,8 +807,6 @@ assistant_window_apply (GtkAssistant *gtkassistant)
   apply_personal_data_page (assistant);
   apply_ekiga_net_page (assistant);
   apply_ekiga_out_page (assistant);
-  apply_audio_devices_page (assistant);
-  apply_video_devices_page (assistant);
 
   /* Hide the assistant and show the main Ekiga window */
   gtk_widget_hide (GTK_WIDGET (assistant));
@@ -936,9 +884,6 @@ assistant_window_new (Ekiga::ServiceCore& service_core)
                     G_CALLBACK (assistant_window_key_press_cb), NULL);
 
   boost::signals2::connection conn;
-  assistant->priv->videoinput_core = service_core.get<Ekiga::VideoInputCore> ("videoinput-core");
-  assistant->priv->audioinput_core = service_core.get<Ekiga::AudioInputCore> ("audioinput-core");
-  assistant->priv->audiooutput_core = service_core.get<Ekiga::AudioOutputCore> ("audiooutput-core");
   assistant->priv->bank = service_core.get<Opal::Bank> ("opal-account-store");
 
   return GTK_WIDGET (assistant);

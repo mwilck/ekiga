@@ -1,0 +1,5 @@
+- Make sure we have no recursion : gsetting changed, updates the widget, updates the key, gsetting changed, updates the widget, ... For example, the toggle menu change in main_window.cpp related to enable-preview (enable_preview) does not seem to be protected by g_signal_handlers_block.
+
+- Move gmmenuaddon to GSettings.
+
+- Move gmprefs and gmconfwidgets to static methods of the preferences-window. No need to share those specific methods in lib as they are only used by the preferences window.

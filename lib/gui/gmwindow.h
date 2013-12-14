@@ -64,9 +64,6 @@ struct _GmWindowClass
 /* Public API */
 
 /** Create a new GmWindow.
- * It will be necessary to call gm_window_set_key
- * in order to allow saving and restoring the position
- * and size of the GmWindow.
  * @return A GmWindow 
  */
 GtkWidget *gm_window_new ();
@@ -78,15 +75,6 @@ GtkWidget *gm_window_new ();
  * @return A GmWindow 
  */
 GtkWidget *gm_window_new_with_key (const char *key);
-
-
-/** Set a new key for a given GmWindow.
- * @param window is the GmWindow and key
- * is the key where the position and size of the
- * window will be saved.
- */
-void gm_window_set_key (GmWindow *window,
-                        const char *key);
 
 
 /** Return the size of the GmWindow.
@@ -125,21 +113,6 @@ gboolean gm_window_get_hide_on_escape (GmWindow *window);
  * @param window is a GtkWidget
  */
 gboolean gm_window_is_visible (GtkWidget* window);
-
-/** Show the given window if hidden, and present if no
- * @param window is a GtkWindow
- */
-void gm_window_show (GtkWidget* window);
-
-/** Hide the given window
- * @param window is a GtkWindow
- */
-void gm_window_hide (GtkWidget* window);
-
-/** Hide on delete the given window : only for old-style GMWindows
- * @param window is a GtkWindow
- */
-void gm_window_hide_on_delete (GtkWidget* window);
 
 
 /* GObject boilerplate */

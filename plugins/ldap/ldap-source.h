@@ -39,6 +39,8 @@
 #ifndef __LDAP_SOURCE_H__
 #define __LDAP_SOURCE_H__
 
+#include "ekiga-settings.h"
+
 #include "services.h"
 #include "form.h"
 #include "contact-core.h"
@@ -97,6 +99,8 @@ namespace OPENLDAP
     bool has_ekiga_net_book () const;
     gboolean should_add_ekiga_net_book;
     void migrate_from_3_0_0 ();
+
+    boost::shared_ptr<Ekiga::Settings> contacts_settings;
   };
 
 /**

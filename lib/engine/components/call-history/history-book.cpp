@@ -37,18 +37,17 @@
 
 #include <glib/gi18n.h>
 
-#include "gmconf.h"
+#define CALL_HISTORY_KEY "call-history"
 
 History::Book::Book (Ekiga::ServiceCore& core):
   contact_core(core.get<Ekiga::ContactCore>("contact-core")), doc()
 {
   xmlNodePtr root = NULL;
 
-  gchar *c_raw = gm_conf_get_string (CALL_HISTORY_KEY);
+  contacts_settings = boost::shared_ptr<Ekiga::Settings> (new Ekiga::Settings (CONTACTS_SCHEMA));
+  std::string raw = contacts_settings->get_string (CALL_HISTORY_KEY);
 
-  if (c_raw != NULL) {
-
-    const std::string raw = c_raw;
+  if (!raw.empty ()) {
 
     doc = boost::shared_ptr<xmlDoc> (xmlRecoverMemory (raw.c_str (), raw.length ()), xmlFreeDoc);
     if ( !doc)
@@ -69,8 +68,8 @@ History::Book::Book (Ekiga::ServiceCore& core):
 	  && xmlStrEqual (BAD_CAST ("entry"), child->name))
         add (child);
 
-    g_free (c_raw);
-  } else {
+  }
+  else {
 
     doc = boost::shared_ptr<xmlDoc> (xmlNewDoc (BAD_CAST "1.0"), xmlFreeDoc);
     root = xmlNewDocNode (doc.get (), NULL, BAD_CAST "list", NULL);
@@ -166,7 +165,7 @@ History::Book::save () const
 
   xmlDocDumpMemory (doc.get (), &buffer, &size);
 
-  gm_conf_set_string (CALL_HISTORY_KEY, (const char *)buffer);
+  contacts_settings->set_string (CALL_HISTORY_KEY, (const char *)buffer);
 
   xmlFree (buffer);
 }

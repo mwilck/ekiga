@@ -50,15 +50,14 @@ VideoOutputCore::VideoOutputCore ()
   videooutput_stats.rx_frames = 0;
   videooutput_stats.tx_frames = 0;
   number_times_started = 0;
-  videooutput_core_conf_bridge = NULL;
+
+  settings = new Settings (VIDEO_DISPLAY_SCHEMA);
+  settings->changed.connect (boost::bind (&VideoOutputCore::setup, this, _1));
 }
 
 VideoOutputCore::~VideoOutputCore ()
 {
   PWaitAndSignal m(core_mutex);
-
-  if (videooutput_core_conf_bridge)
-    delete videooutput_core_conf_bridge;
 
   for (std::set<VideoOutputManager *>::iterator iter = managers.begin ();
        iter != managers.end ();
@@ -68,11 +67,71 @@ VideoOutputCore::~VideoOutputCore ()
   managers.clear();
 }
 
-void VideoOutputCore::setup_conf_bridge ()
+void VideoOutputCore::setup (std::string setting)
 {
-  PWaitAndSignal m(core_mutex);
+  GSettings *s = settings->get_g_settings ();
+  if (setting.empty () || setting == "video-view")  {
 
-  videooutput_core_conf_bridge = new VideoOutputCoreConfBridge (*this);
+    DisplayInfo display_info;
+    PTRACE(4, "VideoOutputCore\tUpdating video view");
+
+    if ((g_settings_get_int (s, "video-view") < Ekiga::VO_MODE_LOCAL) ||
+	(g_settings_get_int (s, "video-view") >= Ekiga::VO_MODE_UNSET))
+      g_settings_set_int (s, "video-view", Ekiga::VO_MODE_LOCAL);
+
+    display_info.mode = (VideoOutputMode) g_settings_get_int (s, "video-view");
+    set_display_info (display_info);
+  }
+
+  if (setting.empty () || setting == "zoom") {
+
+    DisplayInfo display_info;
+    PTRACE(4, "VideoOutputCore\tUpdating zoom");
+
+    display_info.zoom = g_settings_get_int (s, "zoom");
+    if ((display_info.zoom != 100) &&
+	(display_info.zoom != 50) &&
+	(display_info.zoom != 200)) {
+      display_info.zoom = 100;
+      g_settings_set_int (s, "zoom", 100);
+    }
+
+    set_display_info (display_info);
+  }
+
+  if (setting.empty () || setting == "ext-zoom") {
+
+    DisplayInfo display_info;
+
+    display_info.zoom = g_settings_get_int (s, "ext-zoom");
+    if ((display_info.zoom != 100) &&
+	(display_info.zoom != 50) &&
+	(display_info.zoom != 200)) {
+      display_info.zoom = 100;
+      g_settings_set_int (s, "ext-zoom", 100);
+    }
+
+    set_ext_display_info(display_info);
+  }
+
+  if (setting.empty () || setting == "stay-on-top" || setting == "disable-hw-accel"
+      || setting == "allow-pip-sw-scaling" || setting == "sw-scaling-algorithm") {
+
+    PTRACE(4, "VideoOutputCore\tUpdating Video Settings");
+    DisplayInfo display_info;
+
+    display_info.on_top = g_settings_get_boolean (s, "stay-on-top");
+    display_info.disable_hw_accel = g_settings_get_boolean (s, "disable-hw-accel");
+    display_info.allow_pip_sw_scaling = g_settings_get_boolean (s,"allow-pip-sw-scaling");
+    display_info.sw_scaling_algorithm = g_settings_get_int (s, "sw-scaling-algorithm");
+    if (display_info.sw_scaling_algorithm > 3) {
+      display_info.sw_scaling_algorithm = 0;
+      g_settings_set_int (s, "sw-scaling-algorithm", 0);
+    }
+    display_info.config_info_set = TRUE;
+
+    set_display_info(display_info);
+  }
 }
 
 void VideoOutputCore::add_manager (VideoOutputManager &manager)

@@ -41,8 +41,8 @@
 
 #include <glib/gi18n.h>
 
-#include "gmconf.h"
 #include "codec-description.h"
+#include "ekiga-settings.h"
 
 /* Columns for the codecs page */
 enum {
@@ -61,7 +61,9 @@ struct _CodecsBoxPrivate
 {
   Ekiga::Call::StreamType type;
   GtkWidget *codecs_list;
-  gpointer notifier;
+  boost::shared_ptr<Ekiga::Settings> audio_settings;
+  boost::shared_ptr<Ekiga::Settings> video_settings;
+  gulong handler;
 };
 
 enum { TYPE = 1 };
@@ -70,10 +72,14 @@ G_DEFINE_TYPE (CodecsBox, codecs_box, GTK_TYPE_BOX);
 
 /* Static functions */
 static void codecs_box_set_codecs (CodecsBox *self,
-                                   GSList *list);
+                                   const std::list<std::string> list);
 
 
 /* GTK+ Callbacks */
+static void settings_changed (G_GNUC_UNUSED GSettings *settings,
+			      G_GNUC_UNUSED gchar *key,
+			      gpointer data);
+
 static void codec_toggled_cb (GtkCellRendererToggle *cell,
                               gchar *path_str,
                               gpointer data);
@@ -81,7 +87,7 @@ static void codec_toggled_cb (GtkCellRendererToggle *cell,
 static void codec_moved_cb (GtkWidget *widget,
                             gpointer data);
 
-static GSList *codecs_box_to_gm_conf_list (CodecsBox *self);
+static std::list<std::string> codecs_box_to_list (CodecsBox *self);
 
 static void codecs_box_class_init (CodecsBoxClass* klass);
 
@@ -101,22 +107,17 @@ static void codecs_box_set_property (GObject *obj,
 
 static void
 codecs_box_set_codecs (CodecsBox *self,
-                       GSList *list)
+		       const std::list<std::string> list)
 {
   GtkTreeSelection *selection = NULL;
   GtkTreeModel *model = NULL;
   GtkTreeIter iter;
-
-  GSList *codecs_data = NULL;
-  GSList *codecs_data_iter = NULL;
 
   gchar *selected_codec = NULL;
   unsigned select_rate = 0;
   bool selected = false;
 
   model = gtk_tree_view_get_model (GTK_TREE_VIEW (self->priv->codecs_list));
-  codecs_data = list;
-
   selection = gtk_tree_view_get_selection (GTK_TREE_VIEW (self->priv->codecs_list));
 
   if (gtk_tree_selection_get_selected (selection, &model, &iter))
@@ -125,10 +126,11 @@ codecs_box_set_codecs (CodecsBox *self,
                         COLUMN_CODEC_CLOCKRATE, &select_rate, -1);
   gtk_list_store_clear (GTK_LIST_STORE (model));
 
-  codecs_data_iter = codecs_data;
-  while (codecs_data_iter) {
+  for (std::list<std::string>::const_iterator itr = list.begin ();
+       itr != list.end ();
+       itr++) {
 
-    Ekiga::CodecDescription desc = Ekiga::CodecDescription ((char *) codecs_data_iter->data);
+    Ekiga::CodecDescription desc = Ekiga::CodecDescription (*itr);
 
     if ((self->priv->type == Ekiga::Call::Audio && desc.audio)
         || (self->priv->type == Ekiga::Call::Video && !desc.audio)) {
@@ -163,12 +165,37 @@ codecs_box_set_codecs (CodecsBox *self,
         gtk_tree_selection_select_iter (selection, &iter);
       }
     }
-
-    codecs_data_iter = g_slist_next (codecs_data_iter);
   }
 
   if (!selected && gtk_tree_model_get_iter_first (GTK_TREE_MODEL (model), &iter))
     gtk_tree_selection_select_iter (selection, &iter);
+
+  g_free (selected_codec);
+}
+
+
+static void
+settings_changed (G_GNUC_UNUSED GSettings *settings,
+		  G_GNUC_UNUSED gchar *key,
+		  gpointer data)
+{
+  std::list<std::string> list;
+  CodecsBox *self = CODECS_BOX (data);
+
+  g_return_if_fail (self);
+
+  std::list<std::string> current_list = codecs_box_to_list (CODECS_BOX (self));
+
+  if (self->priv->type == Ekiga::Call::Audio)
+    list = self->priv->audio_settings->get_string_list ("media-list");
+  else if (self->priv->type == Ekiga::Call::Video)
+    list = self->priv->video_settings->get_string_list ("media-list");
+
+  Ekiga::CodecList clist (list);
+  Ekiga::CodecList curlist (current_list);
+
+  if (clist != curlist)
+    codecs_box_set_codecs (self, list);
 }
 
 
@@ -183,7 +210,7 @@ codec_toggled_cb (G_GNUC_UNUSED GtkCellRendererToggle *cell,
   GtkTreePath *path = NULL;
   GtkTreeIter iter;
 
-  GSList *codecs_data = NULL;
+  std::list<std::string> list;
 
   gboolean fixed = FALSE;
 
@@ -200,13 +227,11 @@ codec_toggled_cb (G_GNUC_UNUSED GtkCellRendererToggle *cell,
   gtk_tree_path_free (path);
 
   /* Update the gmconf key */
-  codecs_data = codecs_box_to_gm_conf_list (self);
+  list = codecs_box_to_list (self);
   if (self->priv->type == Ekiga::Call::Audio)
-    gm_conf_set_string_list (AUDIO_CODECS_KEY "media_list", codecs_data);
+    self->priv->audio_settings->set_string_list ("media-list", list);
   else if (self->priv->type == Ekiga::Call::Video)
-    gm_conf_set_string_list (VIDEO_CODECS_KEY "media_list", codecs_data);
-  g_slist_foreach (codecs_data, (GFunc) g_free, NULL);
-  g_slist_free (codecs_data);
+    self->priv->video_settings->set_string_list ("media-list", list);
 }
 
 
@@ -222,7 +247,7 @@ codec_moved_cb (GtkWidget *widget,
   GtkTreeSelection *selection = NULL;
   GtkTreePath *tree_path = NULL;
 
-  GSList *codecs_data = NULL;
+  std::list<std::string> list;
 
   gchar *path_str = NULL;
 
@@ -258,19 +283,17 @@ codec_moved_cb (GtkWidget *widget,
   gtk_tree_iter_free (iter2);
   g_free (path_str);
 
-  /* Update the gmconf key */
-  codecs_data = codecs_box_to_gm_conf_list (self);
+  /* Update the key */
+  list = codecs_box_to_list (self);
   if (self->priv->type == Ekiga::Call::Audio)
-    gm_conf_set_string_list (AUDIO_CODECS_KEY "media_list", codecs_data);
+    self->priv->audio_settings->set_string_list ("media-list", list);
   else if (self->priv->type == Ekiga::Call::Video)
-    gm_conf_set_string_list (VIDEO_CODECS_KEY "media_list", codecs_data);
-  g_slist_foreach (codecs_data, (GFunc) g_free, NULL);
-  g_slist_free (codecs_data);
+    self->priv->video_settings->set_string_list ("media-list", list);
 }
 
 
-static GSList *
-codecs_box_to_gm_conf_list (CodecsBox *self)
+static std::list<std::string> 
+codecs_box_to_list (CodecsBox *self)
 {
   GtkTreeModel *model = NULL;
   GtkTreeIter iter;
@@ -281,7 +304,7 @@ codecs_box_to_gm_conf_list (CodecsBox *self)
   gboolean active = false;
   gboolean audio = false;
 
-  GSList *codecs_data = NULL;
+  std::list<std::string> list;
 
   model = gtk_tree_view_get_model (GTK_TREE_VIEW (self->priv->codecs_list));
   if (gtk_tree_model_get_iter_first (GTK_TREE_MODEL (model), &iter)) {
@@ -298,7 +321,7 @@ codecs_box_to_gm_conf_list (CodecsBox *self)
 
       Ekiga::CodecDescription desc;
       desc = Ekiga::CodecDescription (name, atoi (rate) * 1000, audio, protocols, active);
-      codecs_data = g_slist_append (codecs_data, g_strdup (desc.str ().c_str ()));
+      list.push_back (desc.str ());
 
       g_free (name);
       g_free (protocols);
@@ -307,30 +330,7 @@ codecs_box_to_gm_conf_list (CodecsBox *self)
     } while (gtk_tree_model_iter_next (GTK_TREE_MODEL (model), &iter));
   }
 
-  return codecs_data;
-}
-
-
-static void 
-codecs_list_changed_nt (G_GNUC_UNUSED gpointer id,
-                        GmConfEntry *entry,
-                        gpointer data)
-{
-  CodecsBox *self = CODECS_BOX (data);
-
-  GSList *list = gm_conf_entry_get_list (entry);
-  GSList *current_list = codecs_box_to_gm_conf_list (self);
-  Ekiga::CodecList clist (list);
-  Ekiga::CodecList curlist (current_list);
-
-  if (clist != curlist)
-    codecs_box_set_codecs (self, list);
-
-  g_slist_foreach (list, (GFunc) g_free, NULL);
-  g_slist_free (list);
-
-  g_slist_foreach (current_list, (GFunc) g_free, NULL);
-  g_slist_free (current_list);
+  return list;
 }
 
 
@@ -368,6 +368,10 @@ codecs_box_init (CodecsBox *self)
 
   self->priv = G_TYPE_INSTANCE_GET_PRIVATE (self, CODECS_BOX_TYPE, CodecsBoxPrivate);
   self->priv->type = Ekiga::Call::Audio;
+  self->priv->audio_settings =
+    boost::shared_ptr<Ekiga::Settings> (new Ekiga::Settings (AUDIO_CODECS_SCHEMA));
+  self->priv->video_settings =
+    boost::shared_ptr<Ekiga::Settings> (new Ekiga::Settings (VIDEO_CODECS_SCHEMA));
   self->priv->codecs_list = gtk_tree_view_new ();
 
   gtk_box_set_spacing (GTK_BOX (self), 6);
@@ -435,7 +439,7 @@ codecs_box_init (CodecsBox *self)
                                   GTK_POLICY_AUTOMATIC);
   gtk_scrolled_window_set_shadow_type (GTK_SCROLLED_WINDOW (scroll_window),
                                        GTK_SHADOW_IN);
-  gtk_widget_set_size_request (scroll_window, -1, 120);
+  gtk_widget_set_size_request (scroll_window, -1, 130);
   gtk_container_add (GTK_CONTAINER (scroll_window), 
                      GTK_WIDGET (self->priv->codecs_list));
   gtk_box_pack_start (GTK_BOX (self), scroll_window, TRUE, TRUE, 0);
@@ -469,6 +473,7 @@ codecs_box_init (CodecsBox *self)
 
   gtk_box_pack_start (GTK_BOX (self), alignment, FALSE, FALSE, 0);
 
+  gtk_widget_set_hexpand (GTK_WIDGET (self), TRUE);
   gtk_widget_show_all (GTK_WIDGET (self));
 }
 
@@ -480,9 +485,13 @@ codecs_box_dispose (GObject *obj)
 
   self = CODECS_BOX (obj);
 
-  if (self->priv->notifier)
-    gm_conf_notifier_remove (self->priv->notifier);
-  self->priv->notifier = NULL;
+  if (self->priv->handler > 0) {
+    if (self->priv->type == Ekiga::Call::Audio)
+      g_signal_handler_disconnect (self->priv->audio_settings->get_g_settings (), self->priv->handler);
+    else if (self->priv->type == Ekiga::Call::Video)
+      g_signal_handler_disconnect (self->priv->video_settings->get_g_settings (), self->priv->handler);
+  }
+  self->priv->handler = 0;
   self->priv->codecs_list = NULL;
 
   G_OBJECT_CLASS (codecs_box_parent_class)->dispose (obj);
@@ -516,7 +525,7 @@ codecs_box_set_property (GObject *obj,
                          GParamSpec *spec)
 {
   CodecsBox *self = CODECS_BOX (obj);
-  GSList *list = NULL;
+  std::list<std::string> list;
 
   switch (prop_id) {
 
@@ -530,23 +539,20 @@ codecs_box_set_property (GObject *obj,
   }
 
   if (self->priv->type == Ekiga::Call::Audio)
-    list = gm_conf_get_string_list (AUDIO_CODECS_KEY "media_list");
+    list = self->priv->audio_settings->get_string_list ("media-list");
   else if (self->priv->type == Ekiga::Call::Video)
-    list = gm_conf_get_string_list (VIDEO_CODECS_KEY "media_list");
+    list = self->priv->video_settings->get_string_list ("media-list");
 
   codecs_box_set_codecs (self, list);
 
-  g_slist_foreach (list, (GFunc) g_free, NULL);
-  g_slist_free (list);
-
   if (self->priv->type == Ekiga::Call::Audio)
-    self->priv->notifier =
-      gm_conf_notifier_add (AUDIO_CODECS_KEY "media_list",
-			    codecs_list_changed_nt, GTK_WIDGET (self));
+    self->priv->handler =
+      g_signal_connect (self->priv->audio_settings->get_g_settings (), "changed",
+			G_CALLBACK (settings_changed), self);
   else
-    self->priv->notifier =
-      gm_conf_notifier_add (VIDEO_CODECS_KEY "media_list",
-			    codecs_list_changed_nt, GTK_WIDGET (self));
+    self->priv->handler =
+      g_signal_connect (self->priv->video_settings->get_g_settings (), "changed",
+			G_CALLBACK (settings_changed), self);
 }
 
 

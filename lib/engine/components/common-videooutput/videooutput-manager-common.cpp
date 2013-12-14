@@ -48,6 +48,7 @@
 
 
 #include "videooutput-manager-common.h"
+#include "videoinput-info.h"
 
 #include "runtime.h"
 
@@ -60,21 +61,20 @@ GMVideoOutputManager::GMVideoOutputManager(Ekiga::ServiceCore & _core)
 
 GMVideoOutputManager::~GMVideoOutputManager ()
 {
+  PWaitAndSignal m(thread_ended);
 }
 
 void GMVideoOutputManager::open ()
 {
   init_thread = true;
-  run_thread.Signal();
   thread_initialised.Wait();
 }
 
-void GMVideoOutputManager::close () 
+void GMVideoOutputManager::close ()
 {
-
+  ready = false;
   uninit_thread = true;
-  run_thread.Signal();
-  thread_uninitialised.Wait();
+  thread_uninitialised.Wait ();
 }
 
 void
@@ -88,40 +88,42 @@ GMVideoOutputManager::Main ()
   thread_created.Signal ();
 
   while (!end_thread) {
-    if (initialised_thread)
-      run_thread.Wait(250);
-    else
-      run_thread.Wait();
 
     if (init_thread) {
       init();
       init_thread = false;
       initialised_thread = true;
+      ready = true;
       thread_initialised.Signal();
     }
-
-    if (initialised_thread) {
+    else if (uninit_thread) {
       var_mutex.Wait ();
-        do_sync = local_frame_received | remote_frame_received | ext_frame_received;
+      close_frame_display ();
+      uninit();
+      uninit_thread = false;
+      initialised_thread = false;
+      lframeStore.SetSize (0);
+      var_mutex.Signal ();
+      thread_uninitialised.Signal();
+    }
+    else if (initialised_thread) {
+      var_mutex.Wait ();
+        do_sync = local_frame_received || remote_frame_received || ext_frame_received;
         if (do_sync)
           sync_required = redraw();
+        local_frame_received = false;
+        remote_frame_received = false;
+        ext_frame_received = false;
       var_mutex.Signal ();
       if (do_sync)
         sync(sync_required);
     }
 
-    if (uninit_thread) {
-      var_mutex.Wait ();
-      close_frame_display ();
-      var_mutex.Signal ();
-      uninit();
-      uninit_thread = false;
-      initialised_thread = false;
-      thread_uninitialised.Signal();
-    }
+    PThread::Current()->Sleep(50);
   }
 
   var_mutex.Wait ();
+  ready = false;
   close_frame_display ();
   var_mutex.Signal ();
 }
@@ -142,11 +144,16 @@ void GMVideoOutputManager::set_frame_data (const char* data,
   bool local = (type == 0);
 
   var_mutex.Wait();
+  if (!ready) {
+    var_mutex.Signal();
+    return;
+  }
 
   if (local) {
 
     /* memcpy the frame */
-    lframeStore.SetSize (width * height * 3);
+    if ((unsigned) lframeStore.GetSize () != width * height * 3)
+      lframeStore.SetSize (width * height *3);
     current_frame.local_width = width;
     current_frame.local_height= height;
     memcpy (lframeStore.GetPointer(), data, (width * height * 3) >> 1);
@@ -155,7 +162,8 @@ void GMVideoOutputManager::set_frame_data (const char* data,
   else if (type == 1) { // REMOTE 1
 
     /* memcpy the frame */
-    rframeStore.SetSize (width * height * 3);
+    if ((unsigned) rframeStore.GetSize () != width * height * 3)
+      rframeStore.SetSize (width * height * 3);
     current_frame.remote_width = width;
     current_frame.remote_height= height;
     memcpy (rframeStore.GetPointer(), data, (width * height * 3) >> 1);
@@ -163,14 +171,14 @@ void GMVideoOutputManager::set_frame_data (const char* data,
   }
   else if (type == 2) { // REMOTE 2 (extended video)
     /* memcpy the frame */
-    eframeStore.SetSize (width * height * 3);
+    if ((unsigned) eframeStore.GetSize () != width * height * 3)
+      eframeStore.SetSize (width * height * 3);
     current_frame.ext_width = width;
     current_frame.ext_height= height;
     memcpy (eframeStore.GetPointer(), data, (width * height * 3) >> 1);
     ext_frame_received = true;
   } else {
     var_mutex.Signal();
-    run_thread.Signal();
     return; // nothing happened
   }
 
@@ -231,7 +239,7 @@ void GMVideoOutputManager::set_frame_data (const char* data,
       (local_display_info.zoom == 0) ||
       (!local_display_info.config_info_set)) {
     PTRACE(4, "GMVideoOutputManager\tDisplay and zoom variable not set yet, not opening display");
-     return;
+    return;
   }
 
   if ((local_display_info.mode == Ekiga::VO_MODE_LOCAL) && !local)
@@ -242,8 +250,6 @@ void GMVideoOutputManager::set_frame_data (const char* data,
 
   if (local_display_info.mode == Ekiga::VO_MODE_REMOTE_EXT && type != 2)
     return;
-
-  run_thread.Signal();
 }
 
 
@@ -297,7 +303,7 @@ void GMVideoOutputManager::init()
   update_required.local = false;
   update_required.remote = false;
   update_required.extended = false;
-
+  ready = false;
 }
 
 void GMVideoOutputManager::uninit ()
@@ -395,6 +401,8 @@ GMVideoOutputManager::frame_display_change_needed ()
 GMVideoOutputManager::UpdateRequired
 GMVideoOutputManager::redraw ()
 {
+  PWaitAndSignal m(var_mutex);
+
   UpdateRequired sync_required;
   sync_required = update_required;
 
@@ -408,13 +416,13 @@ GMVideoOutputManager::redraw ()
 
   switch (current_frame.mode) {
   case Ekiga::VO_MODE_LOCAL:
-    if (lframeStore.GetSize() > 0)
+    if ((unsigned) lframeStore.GetSize() == current_frame.local_width*current_frame.local_height*3)
       display_frame ((char *) lframeStore.GetPointer (),
                      current_frame.local_width, current_frame.local_height);
     break;
 
   case Ekiga::VO_MODE_REMOTE:
-    if (rframeStore.GetSize() > 0)
+    if ((unsigned) rframeStore.GetSize() == current_frame.remote_width*current_frame.remote_height*3)
       display_frame ((char *) rframeStore.GetPointer (),
                      current_frame.remote_width, current_frame.remote_height);
     break;
@@ -422,7 +430,8 @@ GMVideoOutputManager::redraw ()
   case Ekiga::VO_MODE_FULLSCREEN:
   case Ekiga::VO_MODE_PIP:
   case Ekiga::VO_MODE_PIP_WINDOW:
-    if ((lframeStore.GetSize() > 0) &&  (rframeStore.GetSize() > 0))
+    if (((unsigned) lframeStore.GetSize() == current_frame.local_width*current_frame.local_height *3)
+        && ((unsigned) rframeStore.GetSize() == current_frame.remote_width * current_frame.remote_height *3))
       display_pip_frames ((char *) lframeStore.GetPointer (),
                           current_frame.local_width, current_frame.local_height,
                           (char *) rframeStore.GetPointer (),
@@ -430,7 +439,7 @@ GMVideoOutputManager::redraw ()
     break;
 
   case Ekiga::VO_MODE_REMOTE_EXT:
-    if (eframeStore.GetSize() > 0)
+    if ((unsigned) eframeStore.GetSize() == current_frame.ext_width*current_frame.ext_height*3)
       display_frame ((char *) eframeStore.GetPointer (),
                      current_frame.ext_width, current_frame.ext_height);
     break;

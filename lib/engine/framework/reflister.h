@@ -71,6 +71,8 @@ namespace Ekiga
 
     void remove_all_objects ();
 
+    int size () const;
+
     iterator begin ();
     iterator end ();
 
@@ -141,6 +143,13 @@ Ekiga::RefLister<ObjectType>::remove_all_objects ()
   /* iterators get invalidated as we go, hence the strange loop */
   while ( !objects.empty ())
     remove_object (objects.begin ()->first);
+}
+
+template<typename ObjectType>
+int
+Ekiga::RefLister<ObjectType>::size () const
+{
+  return objects.size ();
 }
 
 template<typename ObjectType>

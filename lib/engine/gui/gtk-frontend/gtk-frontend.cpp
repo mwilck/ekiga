@@ -39,6 +39,7 @@
 #include <gtk/gtk.h>
 
 #include "config.h"
+#include "ekiga-settings.h"
 
 #include "trigger.h"
 #include "gtk-frontend.h"
@@ -143,24 +144,37 @@ GtkFrontend::~GtkFrontend ()
 void
 GtkFrontend::build ()
 {
-  boost::shared_ptr<Ekiga::ContactCore> contact_core = core.get<Ekiga::ContactCore> ("contact-core");
-  boost::shared_ptr<Ekiga::PersonalDetails> details = core.get<Ekiga::PersonalDetails> ("personal-details");
-  boost::shared_ptr<Ekiga::ChatCore> chat_core = core.get<Ekiga::ChatCore> ("chat-core");
-  boost::shared_ptr<Ekiga::AccountCore> account_core = core.get<Ekiga::AccountCore> ("account-core");
+  StatusIcon *s = NULL;
+
+  boost::shared_ptr<Ekiga::ContactCore> contact_core =
+    core.get<Ekiga::ContactCore> ("contact-core");
+  boost::shared_ptr<Ekiga::PersonalDetails> details =
+    core.get<Ekiga::PersonalDetails> ("personal-details");
+  boost::shared_ptr<Ekiga::ChatCore> chat_core =
+    core.get<Ekiga::ChatCore> ("chat-core");
+  boost::shared_ptr<Ekiga::AccountCore> account_core =
+    core.get<Ekiga::AccountCore> ("account-core");
+  boost::shared_ptr<Ekiga::AudioInputCore> audio_input_core =
+    core.get<Ekiga::AudioInputCore> ("audioinput-core");
+  boost::shared_ptr<Ekiga::AudioOutputCore> audio_output_core =
+    core.get<Ekiga::AudioOutputCore> ("audiooutput-core");
+  boost::shared_ptr<Ekiga::VideoInputCore> video_input_core =
+    core.get<Ekiga::VideoInputCore> ("videoinput-core");
 
   /* Init the stock icons */
   gnomemeeting_stock_icons_init ();
   gtk_window_set_default_icon_name (GM_ICON_LOGO);
 
   addressbook_window =
-    boost::shared_ptr<GtkWidget>(addressbook_window_new (contact_core), gtk_widget_destroy);
-  gm_window_set_key (GM_WINDOW (addressbook_window.get ()),
-		     "/apps/" PACKAGE_NAME "/general/user_interface/addressbook_window");
+    boost::shared_ptr<GtkWidget>(addressbook_window_new (contact_core,
+							 USER_INTERFACE ".addressbook-window"),
+				 gtk_widget_destroy);
 
   accounts_window =
-    boost::shared_ptr<GtkWidget> (accounts_window_new (account_core, details), gtk_widget_destroy);
-  gm_window_set_key(GM_WINDOW (accounts_window.get ()),
-		    "/apps/" PACKAGE_NAME "/general/user_interface/accounts_window");
+    boost::shared_ptr<GtkWidget>(accounts_window_new (account_core,
+						      details, 
+						      USER_INTERFACE ".accounts-window"),
+				 gtk_widget_destroy);
 
   // BEWARE: uses the main window during runtime
   assistant_window =
@@ -170,28 +184,36 @@ GtkFrontend::build ()
     boost::shared_ptr<GtkWidget> (call_window_new (core), gtk_widget_destroy);
 
   chat_window =
-    boost::shared_ptr<GtkWidget> (chat_window_new (core), gtk_widget_destroy);
-  gm_window_set_key(GM_WINDOW(chat_window.get ()), "/apps/" PACKAGE_NAME "/general/user_interface/chat_window");
+    boost::shared_ptr<GtkWidget> (chat_window_new (core,
+						   USER_INTERFACE ".chat-window"),
+				  gtk_widget_destroy);
 
   preferences_window =
-    boost::shared_ptr<GtkWidget> (preferences_window_new (core), gtk_widget_destroy);
+    boost::shared_ptr<GtkWidget> (preferences_window_new (audio_input_core,
+                                                          audio_output_core,
+                                                          video_input_core),
+				  gtk_widget_destroy);
 
   // BEWARE: the status icon needs the chat window at startup
   // FIXME: the above BEWARE is related to a FIXME in the main window code,
   // FIXME: hence should disappear with it
-  status_icon =
-    boost::shared_ptr<StatusIcon> (status_icon_new (core), g_object_unref);
-  g_signal_connect (status_icon.get (), "clicked",
-		    G_CALLBACK (on_status_icon_clicked), this);
+  s = status_icon_new (core);
+  if (s) {
+    status_icon =
+      boost::shared_ptr<StatusIcon> (status_icon_new (core), g_object_unref);
+    g_signal_connect (status_icon.get (), "clicked",
+		      G_CALLBACK (on_status_icon_clicked), this);
+  }
 
   // BEWARE: the main window uses the chat window at startup already,
   // and later on needs the call window, addressbook window,
   // preferences window and assistant window
   main_window =
     boost::shared_ptr<GtkWidget> (gm_main_window_new (core),
-				 gtk_widget_destroy);
+                                  gtk_widget_destroy);
 
   gtk_window_set_transient_for (GTK_WINDOW (assistant_window.get ()), GTK_WINDOW (main_window.get ()));
+  gtk_window_set_transient_for (GTK_WINDOW (preferences_window.get ()), GTK_WINDOW (main_window.get ()));
 }
 
 

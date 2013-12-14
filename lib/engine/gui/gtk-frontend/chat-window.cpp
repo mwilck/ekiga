@@ -443,12 +443,14 @@ chat_window_init (ChatWindow* self)
 /* public api */
 
 GtkWidget*
-chat_window_new (Ekiga::ServiceCore& core)
+chat_window_new (Ekiga::ServiceCore& core,
+		 const char* key)
 {
   ChatWindow* self = NULL;
   GtkAccelGroup *accel = NULL;
 
   self = (ChatWindow*)g_object_new (CHAT_WINDOW_TYPE,
+				    "key", key,
                                     "hide_on_esc", FALSE,
 				    NULL);
 

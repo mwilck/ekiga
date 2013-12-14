@@ -1,4 +1,4 @@
-SUBDIRS = man sounds pixmaps lib src plugins po 
+SUBDIRS = man sounds pixmaps lib src plugins po
 
 ACLOCAL_AMFLAGS = -I m4 ${ACLOCAL_FLAGS}
 
@@ -15,8 +15,13 @@ endif
 DESKTOP_IN_FILE=@PACKAGE_NAME@.desktop.in.in
 DESKTOP_FILE=@PACKAGE_NAME@.desktop
 
-SCHEMAS_IN_IN_FILE = @PACKAGE_NAME@.schemas.in.in
-SCHEMAS_FILE = @PACKAGE_NAME@.schemas
+gsettings_SCHEMAS = org.gnome.@PACKAGE_NAME@.gschema.xml
+@INTLTOOL_XML_NOMERGE_RULE@
+
+convertdir = $(datadir)/GConf/gsettings
+convert_DATA = @PACKAGE_NAME@.convert
+
+@GSETTINGS_RULES@
 
 
 ### Win32 files
@@ -58,6 +63,7 @@ EXTRA_DIST = \
 	README							\
         LICENSE                                                 \
         MAINTAINERS                                             \
+	$(gsettings_SCHEMAS) 					\
 	$(SCHEMAS_FILE) 					\
 	$(WIN32_DIST)
 
@@ -66,30 +72,10 @@ Applications_DATA = $(DESKTOP_FILE)
 
 
 ### Dist Clear
-DISTCLEANFILES=gnome-doc-utils.make ekiga.desktop ekiga.schemas
+DISTCLEANFILES=gnome-doc-utils.make ekiga.desktop org.gnome.ekiga.gschema
 
 MAINTAINERCLEANFILES= \
 	Makefile.in aclocal.m4 compile config.guess config.sub \
 	depcomp install-sh ltmain.sh missing config.h.in configure \
 	m4/libtool.m4 m4/ltoptions.m4 m4/ltsugar.m4 m4/ltversion.m4 \
 	m4/lt~obsolete.m4 m4/gnome-doc-utils.m4
-
-### Install the schemas file in /etc if GCONF support is not compiled in,
-### and do not install the schemas at all
-if HAVE_GCONF
-schemasdir = $(GCONF_SCHEMA_FILE_DIR)
-schemas_DATA = $(SCHEMAS_FILE)
-else
-schemasdir = $(sysconfdir)/@PACKAGE_NAME@
-schemas_DATA = $(SCHEMAS_FILE)
-endif
-
-install-schemas: @PACKAGE_NAME@.schemas
-	GCONF_CONFIG_SOURCE=$(GCONF_SCHEMA_CONFIG_SOURCE) gconftool-2 --makefile-install-rule $(SCHEMAS_FILE) >/dev/null 2>&1
-	gconftool-2 --shutdown
-
-if GCONF_SCHEMAS_INSTALL
-install-data-local: install-schemas 
-else
-install-data-local:
-endif

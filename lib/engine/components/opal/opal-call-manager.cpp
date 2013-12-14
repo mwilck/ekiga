@@ -174,6 +174,42 @@ CallManager::CallManager (Ekiga::ServiceCore& core)
   h323_endpoint = boost::shared_ptr<H323::EndPoint> (new H323::EndPoint (*this), null_deleter ());
   add_protocol_manager (h323_endpoint);
 #endif
+
+  nat_settings =
+    boost::shared_ptr<Ekiga::Settings> (new Ekiga::Settings (NAT_SCHEMA));
+  nat_settings->changed.connect (boost::bind (&CallManager::setup, this, _1));
+
+  audio_codecs_settings =
+    boost::shared_ptr<Ekiga::Settings> (new Ekiga::Settings (AUDIO_CODECS_SCHEMA));
+  audio_codecs_settings->changed.connect (boost::bind (&CallManager::setup, this, _1));
+
+  video_codecs_settings =
+    boost::shared_ptr<Ekiga::Settings> (new Ekiga::Settings (VIDEO_CODECS_SCHEMA));
+  video_codecs_settings->changed.connect (boost::bind (&CallManager::setup, this, _1));
+
+  video_devices_settings =
+    boost::shared_ptr<Ekiga::Settings> (new Ekiga::Settings (VIDEO_DEVICES_SCHEMA));
+  video_devices_settings->changed.connect (boost::bind (&CallManager::setup, this, _1));
+
+  ports_settings =
+    boost::shared_ptr<Ekiga::Settings> (new Ekiga::Settings (PORTS_SCHEMA));
+  ports_settings->changed.connect (boost::bind (&CallManager::setup, this, _1));
+
+  protocols_settings =
+    boost::shared_ptr<Ekiga::Settings> (new Ekiga::Settings (PROTOCOLS_SCHEMA));
+  protocols_settings->changed.connect (boost::bind (&CallManager::setup, this, _1));
+
+  call_options_settings =
+    boost::shared_ptr<Ekiga::Settings> (new Ekiga::Settings (CALL_OPTIONS_SCHEMA));
+  call_options_settings->changed.connect (boost::bind (&CallManager::setup, this, _1));
+
+  call_forwarding_settings =
+    boost::shared_ptr<Ekiga::Settings> (new Ekiga::Settings (CALL_FORWARDING_SCHEMA));
+  call_forwarding_settings->changed.connect (boost::bind (&CallManager::setup, this, _1));
+
+  personal_data_settings =
+    boost::shared_ptr<Ekiga::Settings> (new Ekiga::Settings (PERSONAL_DATA_SCHEMA));
+  personal_data_settings->changed.connect (boost::bind (&CallManager::setup, this, _1));
 }
 
 
@@ -257,6 +293,8 @@ void CallManager::set_echo_cancellation (bool enabled)
       }
     }
   }
+
+  PTRACE (4, "Opal::CallManager\tEcho Cancellation: " << enabled);
 }
 
 
@@ -270,8 +308,9 @@ bool CallManager::get_echo_cancellation () const
 
 void CallManager::set_maximum_jitter (unsigned max_val)
 {
-  // Adjust general settings
-  SetAudioJitterDelay (20, PMIN (PMAX (max_val, 20), 1000));
+  unsigned val = PMIN (PMAX (max_val, 20), 1000);
+
+  SetAudioJitterDelay (20, val);
 
   // Adjust setting for all sessions of all connections of all calls
   for (PSafePtr<OpalCall> call = activeCalls;
@@ -292,12 +331,14 @@ void CallManager::set_maximum_jitter (unsigned max_val)
           if (session != NULL) {
 
             unsigned units = session->GetJitterTimeUnits ();
-            session->SetJitterBufferSize (20 * units, max_val * units, units);
+            session->SetJitterBufferSize (20 * units, val * units, units);
           }
         }
       }
     }
   }
+
+  PTRACE (4, "Opal::CallManager\tSet Maximum Jitter to " << val);
 }
 
 
@@ -338,6 +379,8 @@ void CallManager::set_silence_detection (bool enabled)
       }
     }
   }
+
+  PTRACE (4, "Opal::CallManager\tSilence Detection: " << enabled);
 }
 
 
@@ -568,7 +611,11 @@ CallManager::set_rtp_tos (unsigned tos)
 
 void CallManager::set_stun_server (const std::string & server)
 {
+  if (server.empty ())
+    stun_server = "stun.ekiga.net";
+
   stun_server = server;
+  PTRACE (4, "Opal::CallManager\tSet STUN Server to " << stun_server);
 }
 
 
@@ -583,6 +630,8 @@ void CallManager::set_stun_enabled (bool enabled)
     Ekiga::Runtime::run_in_main (boost::bind (&CallManager::HandleSTUNResult, this), 1);
   } else
     ready ();
+
+  PTRACE (4, "Opal::CallManager\tSTUN Detection: " << enabled);
 }
 
 
@@ -603,6 +652,10 @@ void CallManager::set_video_options (const CallManager::VideoOptions & options)
   OpalMediaFormatList media_formats_list;
   OpalMediaFormat::GetAllRegisteredMediaFormats (media_formats_list);
 
+  int maximum_frame_rate = PMIN (PMAX (options.maximum_frame_rate, 1), 30);
+  int maximum_received_bitrate = (options.maximum_received_bitrate > 0 ? options.maximum_received_bitrate : 4096);
+  int maximum_transmitted_bitrate = (options.maximum_transmitted_bitrate > 0 ? options.maximum_transmitted_bitrate : 48);
+  int temporal_spatial_tradeoff = (options.temporal_spatial_tradeoff > 0 ? options.temporal_spatial_tradeoff : 31);
   // Configure all mediaOptions of all Video MediaFormats
   for (int i = 0 ; i < media_formats_list.GetSize () ; i++) {
 
@@ -614,11 +667,11 @@ void CallManager::set_video_options (const CallManager::VideoOptions & options)
       media_format.SetOptionInteger (OpalVideoFormat::FrameHeightOption (),
                                      Ekiga::VideoSizes [options.size].height);
       media_format.SetOptionInteger (OpalVideoFormat::FrameTimeOption (),
-                                     (int) (90000 / (options.maximum_frame_rate > 0 ? options.maximum_frame_rate : 30)));
+                                     (int) (90000 / maximum_frame_rate));
       media_format.SetOptionInteger (OpalVideoFormat::MaxBitRateOption (),
-                                     (options.maximum_received_bitrate > 0 ? options.maximum_received_bitrate : 4096) * 1000);
+                                     maximum_received_bitrate * 1000);
       media_format.SetOptionInteger (OpalVideoFormat::TargetBitRateOption (),
-                                     (options.maximum_transmitted_bitrate > 0 ? options.maximum_transmitted_bitrate : 48) * 1000);
+                                     maximum_transmitted_bitrate * 1000);
       media_format.SetOptionInteger (OpalVideoFormat::MinRxFrameWidthOption(),
                                      160);
       media_format.SetOptionInteger (OpalVideoFormat::MinRxFrameHeightOption(),
@@ -629,9 +682,9 @@ void CallManager::set_video_options (const CallManager::VideoOptions & options)
                                      1088);
       media_format.AddOption(new OpalMediaOptionUnsigned (OpalVideoFormat::TemporalSpatialTradeOffOption (),
                                                           true, OpalMediaOption::NoMerge,
-                                                          options.temporal_spatial_tradeoff));
+                                                          temporal_spatial_tradeoff));
       media_format.SetOptionInteger (OpalVideoFormat::TemporalSpatialTradeOffOption(),
-                                     (options.temporal_spatial_tradeoff > 0 ? options.temporal_spatial_tradeoff : 31));
+                                     temporal_spatial_tradeoff);
       media_format.AddOption(new OpalMediaOptionUnsigned (OpalVideoFormat::MaxFrameSizeOption (),
                                                           true, OpalMediaOption::NoMerge, 1400));
       media_format.SetOptionInteger (OpalVideoFormat::MaxFrameSizeOption (),
@@ -685,15 +738,21 @@ void CallManager::set_video_options (const CallManager::VideoOptions & options)
 
           OpalMediaFormat mediaFormat = stream->GetMediaFormat ();
           mediaFormat.SetOptionInteger (OpalVideoFormat::TemporalSpatialTradeOffOption(),
-                                        (options.temporal_spatial_tradeoff > 0 ? options.temporal_spatial_tradeoff : 31));
+                                        temporal_spatial_tradeoff);
           mediaFormat.SetOptionInteger (OpalVideoFormat::TargetBitRateOption (),
-                                        (options.maximum_transmitted_bitrate > 0 ? options.maximum_transmitted_bitrate : 48) * 1000);
+                                        maximum_transmitted_bitrate * 1000);
           mediaFormat.ToNormalisedOptions();
           stream->UpdateMediaFormat (mediaFormat);
         }
       }
     }
   }
+
+  PTRACE (4, "Opal::CallManager\tVideo Max Tx Bitrate: " << maximum_transmitted_bitrate);
+  PTRACE (4, "Opal::CallManager\tVideo Max Rx Bitrate: " << maximum_received_bitrate);
+  PTRACE (4, "Opal::CallManager\tVideo Temporal Spatial Tradeoff: " << temporal_spatial_tradeoff);
+  PTRACE (4, "Opal::CallManager\tVideo Size: " << options.size);
+  PTRACE (4, "Opal::CallManager\tVideo Max Frame Rate: " << maximum_frame_rate);
 }
 
 
@@ -972,4 +1031,135 @@ CallManager::set_sip_endpoint (boost::shared_ptr<Opal::Sip::EndPoint> _sip_endpo
 {
   sip_endpoint = _sip_endpoint;
   add_protocol_manager (sip_endpoint);
+}
+
+void
+CallManager::setup (const std::string & setting)
+{
+  if (setting.empty () || setting == "stun-server") {
+
+    set_stun_server (nat_settings->get_string ("stun-server"));
+  }
+  if (setting.empty () || setting == "enable-stun") {
+
+    set_stun_enabled (nat_settings->get_bool ("enable-stun"));
+  }
+  if (setting.empty () || setting == "maximum-jitter-buffer") {
+
+    set_maximum_jitter (audio_codecs_settings->get_int ("maximum-jitter-buffer"));
+  }
+  if (setting.empty () || setting == "enable-silence-detection") {
+
+    set_silence_detection (audio_codecs_settings->get_bool ("enable-silence-detection"));
+  }
+  if (setting.empty () || setting == "enable-echo-cancellation") {
+
+    set_echo_cancellation (audio_codecs_settings->get_bool ("enable-echo-cancellation"));
+  }
+  if (setting.empty () || setting == "rtp-tos-field") {
+    set_rtp_tos (protocols_settings->get_int ("rtp-tos-field"));
+  }
+  if (setting.empty () || setting == "no-answer-timeout") {
+
+    set_reject_delay (call_options_settings->get_int ("no-answer-timeout"));
+  }
+  if (setting.empty () || setting == "auto-answer") {
+    set_auto_answer (call_options_settings->get_bool ("auto-answer"));
+  }
+  if (setting.empty () || setting == "forward-on-no-anwer") {
+    set_forward_on_no_answer (call_forwarding_settings->get_bool ("forward-on-no-answer"));
+  }
+  if (setting.empty () || setting == "forward-on-busy") {
+    set_forward_on_busy (call_forwarding_settings->get_bool ("forward-on-busy"));
+  }
+  if (setting.empty () || setting == "always-forward") {
+    set_unconditional_forward (call_forwarding_settings->get_bool ("always-forward"));
+  }
+  if (setting.empty () || setting == "full-name") {
+    std::string full_name = personal_data_settings->get_string ("full-name");
+    if (!full_name.empty ())
+      set_display_name (full_name);
+  }
+  if (setting.empty () || setting == "maximum-video-tx-bitrate") {
+
+    CallManager::VideoOptions options;
+    get_video_options (options);
+    options.maximum_transmitted_bitrate = video_codecs_settings->get_int ("maximum-video-tx-bitrate");
+    set_video_options (options);
+  }
+  if (setting.empty () || setting == "temporal-spatial-tradeoff") {
+
+    CallManager::VideoOptions options;
+    get_video_options (options);
+    options.temporal_spatial_tradeoff = video_codecs_settings->get_int ("temporal-spatial-tradeoff");
+    set_video_options (options);
+  }
+  if (setting.empty () || setting == "size") {
+
+    CallManager::VideoOptions options;
+    get_video_options (options);
+    options.size = video_devices_settings->get_enum ("size");
+    set_video_options (options);
+  }
+  if (setting.empty () || setting == "max-frame-rate") {
+
+    CallManager::VideoOptions options;
+    get_video_options (options);
+    options.maximum_frame_rate = video_codecs_settings->get_int ("max-frame-rate");
+    set_video_options (options);
+  }
+  if (setting.empty () || setting == "maximum-video-rx-bitrate") {
+
+    CallManager::VideoOptions options;
+    get_video_options (options);
+    options.maximum_received_bitrate = video_codecs_settings->get_int ("maximum-video-rx-bitrate");
+    set_video_options (options);
+  }
+  if (setting.empty () || setting == "media-list") {
+
+    std::list<std::string> audio_codecs = audio_codecs_settings->get_string_list ("media-list");
+    std::list<std::string> video_codecs = video_codecs_settings->get_string_list ("media-list");
+
+    Ekiga::CodecList fcodecs;
+    Ekiga::CodecList a_codecs (audio_codecs);
+    Ekiga::CodecList v_codecs (video_codecs);
+
+    // Update the manager codecs
+    fcodecs = a_codecs;
+    fcodecs.append (v_codecs);
+    set_codecs (fcodecs);
+
+    // Update the GmConf keys, in case we would have missed some codecs or
+    // used codecs we do not really support
+    if (a_codecs != fcodecs.get_audio_list ())
+      audio_codecs_settings->set_string_list ("media-list", fcodecs.get_audio_list ().slist ());
+
+    if (v_codecs != fcodecs.get_video_list ())
+      video_codecs_settings->set_string_list ("media-list", fcodecs.get_video_list ().slist ());
+  }
+  if (setting.empty () || setting == "udp-port-range" || setting == "tcp-port-range") {
+
+    std::string ports;
+    gchar **couple = NULL;
+    unsigned min_port = 0;
+    unsigned max_port = 0;
+    const char *key[2] = { "udp-port-range", "tcp-port-range" };
+
+    for (int i = 0 ; i < 2 ; i++) {
+      ports = ports_settings->get_string (key[i]);
+      if (!ports.empty ())
+        couple = g_strsplit (ports.c_str (), ":", 2);
+      if (couple && couple [0])
+        min_port = atoi (couple [0]);
+      if (couple && couple [1])
+        max_port = atoi (couple [1]);
+
+      if (i == 0)
+        set_udp_ports (min_port, max_port);
+      else
+        set_tcp_ports (min_port, max_port);
+
+      g_strfreev (couple);
+    }
+  }
 }

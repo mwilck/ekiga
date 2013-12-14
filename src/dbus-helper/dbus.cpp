@@ -41,7 +41,7 @@
 #include <ptlib.h>
 
 #include "dbus.h"
-#include "gmconf.h"
+#include "ekiga-settings.h"
 #include "gmcallbacks.h"
 #include "gtk-frontend.h"
 #include "call-core.h"
@@ -57,6 +57,7 @@ struct _EkigaDBusComponentPrivate
 {
   boost::weak_ptr<Ekiga::CallCore> call_core;
   boost::weak_ptr<GtkFrontend> gtk_frontend;
+  boost::shared_ptr<Ekiga::Settings> personal_data_settings;
 };
 
 /**************************
@@ -73,12 +74,6 @@ static gboolean ekiga_dbus_component_call (EkigaDBusComponent *self,
 static gboolean ekiga_dbus_component_get_user_name (EkigaDBusComponent *self,
                                                     char **name,
                                                     GError **error);
-static gboolean ekiga_dbus_component_get_user_location (EkigaDBusComponent *self,
-                                                        char **location,
-                                                        GError **error);
-static gboolean ekiga_dbus_component_get_user_comment (EkigaDBusComponent *self,
-                                                       char **comment,
-                                                       GError **error);
 
 /* get the code to make the GObject accessible through dbus
  * (this is especially where we get dbus_glib_dbus_component_object_info !)
@@ -144,45 +139,22 @@ ekiga_dbus_component_call (EkigaDBusComponent *self,
 }
 
 static gboolean
-ekiga_dbus_component_get_user_name (G_GNUC_UNUSED EkigaDBusComponent *self,
+ekiga_dbus_component_get_user_name (EkigaDBusComponent *self,
                                     char **name,
                                     G_GNUC_UNUSED GError **error)
 {
-  gchar * full_name;
+  std::string full_name;
   PTRACE (1, "DBus\tGetName");
 
-  full_name = gm_conf_get_string (PERSONAL_DATA_KEY "full_name");
-  if (full_name)
-    *name = full_name;
+  full_name = self->priv->personal_data_settings->get_string ("full-name");
+  if (!full_name.empty ())
+    *name = g_strdup (full_name.c_str ());
 
   /* not freeing the full name is not a leak : dbus will do it for us ! */
 
   return TRUE;
 }
 
-static gboolean
-ekiga_dbus_component_get_user_location (G_GNUC_UNUSED EkigaDBusComponent *self,
-                                        char **location,
-                                        G_GNUC_UNUSED GError **error)
-{
-  PTRACE (1, "DBus\tGetLocation");
-
-  *location = gm_conf_get_string (PERSONAL_DATA_KEY "location");
-
-  return TRUE;
-}
-
-static gboolean
-ekiga_dbus_component_get_user_comment (G_GNUC_UNUSED EkigaDBusComponent *self,
-                                       char **comment,
-                                       G_GNUC_UNUSED GError **error)
-{
-  PTRACE (1, "DBus\tGetComment");
-
-  *comment = gm_conf_get_string (PERSONAL_DATA_KEY "comment");
-
-  return TRUE;
-}
 
 /**************
  * PUBLIC API *
@@ -251,6 +223,8 @@ ekiga_dbus_component_new (Ekiga::ServiceCore& service_core)
   obj = EKIGA_DBUS_COMPONENT (g_object_new (EKIGA_TYPE_DBUS_COMPONENT, NULL));
   obj->priv->gtk_frontend = service_core.get<GtkFrontend> ("gtk-frontend");
   obj->priv->call_core = service_core.get<Ekiga::CallCore> ("call-core");
+  obj->priv->personal_data_settings =
+    boost::shared_ptr<Ekiga::Settings> (new Ekiga::Settings (PERSONAL_DATA_SCHEMA));
   dbus_g_connection_register_g_object (bus, EKIGA_DBUS_PATH, G_OBJECT (obj));
 
   return obj;

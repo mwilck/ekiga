@@ -40,12 +40,12 @@
 #include "opal-main.h"
 
 #include "chat-core.h"
+#include "presence-core.h"
 #include "audioinput-core.h"
 #include "audiooutput-core.h"
 #include "videoinput-core.h"
 #include "videooutput-core.h"
 
-#include "opal-gmconf-bridge.h"
 #include "opal-plugins-hook.h"
 
 #include "sip-endpoint.h"
@@ -112,22 +112,23 @@ struct OPALSpark: public Ekiga::Spark
       core.add (call_manager);
 
       boost::shared_ptr<Sip::EndPoint> sip_manager (new Sip::EndPoint (*call_manager, core), null_deleter ());
+      std::cout << "FIXME: where is H323" << std::endl << std::flush;
+      sip_manager->setup ();
       call_manager->set_sip_endpoint (sip_manager);
       core.add (sip_manager);
 
       boost::shared_ptr<Bank> bank (new Bank (core));
       account_core->add_bank (bank);
+      presence_core->add_cluster (bank);
       core.add (bank);
       contact_core->add_contact_decorator (bank);
       presence_core->add_presentity_decorator (bank);
       call_manager->ready.connect (boost::bind (&Opal::Bank::call_manager_ready, &*bank));
+      call_manager->setup ();
       presence_core->add_presence_publisher (bank);
       presence_core->add_presence_fetcher (bank);
 
       call_core->add_manager (call_manager);
-
-      boost::shared_ptr<ConfBridge> bridge(new ConfBridge (*call_manager));
-      core.add (bridge);
 
       presence_core->add_supported_uri (&is_supported_address); //FIXME
 

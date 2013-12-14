@@ -32,13 +32,11 @@
  *   begin                : 16 August 2007
  *   copyright            : (c) 2007 by Damien Sandras
  *   description          : Implementation of a GtkWindow able to restore
- *                          its position and size in a GmConf key.
+ *                          its position and size in a GSettings key.
  *
  */
 
 #include "gmwindow.h"
-
-#include "gmconf.h"
 
 #include <gdk/gdkkeysyms.h>
 #include <stdlib.h>
@@ -49,6 +47,7 @@
 struct _GmWindowPrivate
 {
   GtkAccelGroup *accel;
+  GSettings *settings;
   gboolean hide_on_esc;
   gboolean hide_on_delete;
   gchar *key;
@@ -71,8 +70,8 @@ gm_window_delete_event_cb (GtkWidget *w,
                            gpointer data);
 
 static void
-window_show_cb (GtkWidget *w,
-		gpointer data);
+window_realize_cb (GtkWidget *w,
+		   gpointer data);
 
 static void
 window_hide_cb (GtkWidget *w,
@@ -90,12 +89,16 @@ gm_window_configure_event (GtkWidget *widget,
 static void
 gm_window_finalize (GObject *obj)
 {
-  GmWindow *window = NULL;
+  GmWindow *self = NULL;
 
-  window = GM_WINDOW (obj);
+  self = GM_WINDOW (obj);
 
-  g_free (window->priv->key);
-  window->priv->key = NULL;
+  g_free (self->priv->key);
+  self->priv->key = NULL;
+
+  if (self->priv->settings)
+    g_clear_object (&self->priv->settings);
+  self->priv->settings = NULL;
 
   G_OBJECT_CLASS (gm_window_parent_class)->finalize (obj);
 }
@@ -152,6 +155,9 @@ gm_window_set_property (GObject *obj,
       g_free (self->priv->key);
     str = g_value_get_string (value);
     self->priv->key = g_strdup (str ? str : "");
+    if (self->priv->settings)
+      g_clear_object (&self->priv->settings);
+    self->priv->settings = g_settings_new (self->priv->key);
     break;
 
   case GM_HIDE_ON_ESC:
@@ -204,6 +210,7 @@ static void
 gm_window_init (GmWindow* self)
 {
   self->priv = G_TYPE_INSTANCE_GET_PRIVATE (self, GM_TYPE_WINDOW, GmWindowPrivate);
+  self->priv->settings = NULL;
   self->priv->key = g_strdup ("");
   self->priv->hide_on_esc = TRUE;
   self->priv->hide_on_delete = TRUE;
@@ -216,8 +223,8 @@ gm_window_init (GmWindow* self)
   g_signal_connect (self, "delete-event",
 		    G_CALLBACK (gm_window_delete_event_cb), NULL);
 
-  g_signal_connect (self, "show",
-                    G_CALLBACK (window_show_cb), self);
+  g_signal_connect (self, "realize",
+                    G_CALLBACK (window_realize_cb), self);
 
   g_signal_connect (self, "hide",
                     G_CALLBACK (window_hide_cb), self);
@@ -230,16 +237,6 @@ gm_window_init (GmWindow* self)
 /*
  * Our own stuff
  */
-// FIXME drop this when removing old GMWindows
-static gboolean
-old_style_gm_window_delete_event_cb (GtkWidget* window,
-                                     G_GNUC_UNUSED gpointer data)
-{
-  gm_window_hide (window);
-  return TRUE;
-}
-
-
 static gboolean
 gm_window_delete_event_cb (GtkWidget *w,
                            G_GNUC_UNUSED gpointer data)
@@ -258,16 +255,14 @@ gm_window_delete_event_cb (GtkWidget *w,
 
 
 static void
-window_show_cb (GtkWidget *w,
-                G_GNUC_UNUSED gpointer data)
+window_realize_cb (GtkWidget *w,
+		   G_GNUC_UNUSED gpointer data)
 {
   int x = 0;
   int y = 0;
 
   GmWindow *self = NULL;
 
-  gchar *conf_key_size = NULL;
-  gchar *conf_key_position = NULL;
   gchar *size = NULL;
   gchar *position = NULL;
   gchar **couple = NULL;
@@ -276,14 +271,9 @@ window_show_cb (GtkWidget *w,
 
   g_return_if_fail (g_strcmp0 (self->priv->key, ""));
 
-  conf_key_position =
-    g_strdup_printf ("%s/position", self->priv->key);
-  conf_key_size =
-    g_strdup_printf ("%s/size", self->priv->key);
-
   if (gtk_window_get_resizable (GTK_WINDOW (w))) {
 
-    size = gm_conf_get_string (conf_key_size);
+    size = g_settings_get_string (self->priv->settings, "size");
     if (size)
       couple = g_strsplit (size, ",", 0);
 
@@ -300,7 +290,7 @@ window_show_cb (GtkWidget *w,
     g_free (size);
   }
 
-  position = gm_conf_get_string (conf_key_position);
+  position = g_settings_get_string (self->priv->settings, "position");
   if (position)
     couple = g_strsplit (position, ",", 0);
 
@@ -317,9 +307,6 @@ window_show_cb (GtkWidget *w,
   g_free (position);
 
   gtk_widget_realize (GTK_WIDGET (w));
-
-  g_free (conf_key_position);
-  g_free (conf_key_size);
 }
 
 
@@ -329,8 +316,6 @@ window_hide_cb (GtkWidget *w,
 {
   GmWindow *self = NULL;
 
-  gchar *conf_key_size = NULL;
-  gchar *conf_key_position = NULL;
   gchar *size = NULL;
   gchar *position = NULL;
 
@@ -340,24 +325,16 @@ window_hide_cb (GtkWidget *w,
 
   g_return_if_fail (g_strcmp0 (self->priv->key, ""));
 
-  conf_key_position =
-    g_strdup_printf ("%s/position", self->priv->key);
-  conf_key_size =
-    g_strdup_printf ("%s/size", self->priv->key);
-
   position = g_strdup_printf ("%d,%d", self->priv->x, self->priv->y);
-  gm_conf_set_string (conf_key_position, position);
+  g_settings_set_string (self->priv->settings, "position", position);
   g_free (position);
 
   if (gtk_window_get_resizable (GTK_WINDOW (w))) {
 
     size = g_strdup_printf ("%d,%d", self->priv->width, self->priv->height);
-    gm_conf_set_string (conf_key_size, size);
+    g_settings_set_string (self->priv->settings, "size", size);
     g_free (size);
   }
-
-  g_free (conf_key_position);
-  g_free (conf_key_size);
 }
 
 
@@ -394,17 +371,6 @@ gm_window_new_with_key (const char *key)
 
 
 void
-gm_window_set_key (GmWindow *window,
-                   const char *key)
-{
-  g_return_if_fail (GM_IS_WINDOW (window));
-  g_return_if_fail (key != NULL);
-
-  g_object_set (window, "key", key, NULL);
-}
-
-
-void
 gm_window_get_size (GmWindow *self,
                     int *x,
                     int *y)
@@ -416,7 +382,7 @@ gm_window_get_size (GmWindow *self,
   g_return_if_fail (GM_IS_WINDOW (self) && x != NULL && y != NULL);
 
   conf_key_size = g_strdup_printf ("%s/size", self->priv->key);
-  size = gm_conf_get_string (conf_key_size);
+  size = g_settings_get_string (self->priv->settings, "size");
   if (size)
     couple = g_strsplit (size, ",", 0);
 
@@ -473,137 +439,4 @@ gboolean
 gm_window_is_visible (GtkWidget* w)
 {
   return (gtk_widget_get_visible (w) && !(gdk_window_get_state (gtk_widget_get_window (w)) & GDK_WINDOW_STATE_ICONIFIED));
-}
-
-
-void
-gm_window_show (GtkWidget* w)
-{
-  int x = 0;
-  int y = 0;
-
-  gchar* window_name = NULL;
-  gchar* conf_key_size = NULL;
-  gchar* conf_key_position = NULL;
-  gchar* size = NULL;
-  gchar* position = NULL;
-  gchar** couple = NULL;
-
-  g_return_if_fail (GTK_IS_WINDOW (w));
-
-  if (gm_window_is_visible (w)) {
-
-    gtk_window_present (GTK_WINDOW (w));
-    return;
-  } // else we do the show :
-
-  window_name = (char *) g_object_get_data (G_OBJECT (w), "window_name");
-
-  if (window_name) {
-
-    conf_key_position = g_strdup_printf ("%s%s/position", USER_INTERFACE_KEY, window_name);
-    conf_key_size = g_strdup_printf ("%s%s/size", USER_INTERFACE_KEY, window_name);
-
-    if (!gm_window_is_visible (w)) {
-
-      position = gm_conf_get_string (conf_key_position);
-      if (position)
-	couple = g_strsplit (position, ",", 0);
-
-      if (couple && couple [0])
-	x = atoi (couple [0]);
-      if (couple && couple [1])
-	y = atoi (couple [1]);
-
-
-      if (x != 0 && y != 0)
-	gtk_window_move (GTK_WINDOW (w), x, y);
-
-      g_strfreev (couple);
-      couple = NULL;
-      g_free (position);
-
-      if (gtk_window_get_resizable (GTK_WINDOW (w))) {
-
-	size = gm_conf_get_string (conf_key_size);
-	if (size)
-	  couple = g_strsplit (size, ",", 0);
-
-	if (couple && couple [0])
-	  x = atoi (couple [0]);
-	if (couple && couple [1])
-	  y = atoi (couple [1]);
-
-	if (x > 0 && y > 0)
-	  gtk_window_resize (GTK_WINDOW (w), x, y);
-
-	g_strfreev (couple);
-	g_free (size);
-      }
-    }
-
-    gtk_window_present (GTK_WINDOW (w));
-    gtk_widget_show_all (w);
-  }
-
-  g_free (conf_key_position);
-  g_free (conf_key_size);
-}
-
-
-void
-gm_window_hide (GtkWidget* w)
-{
-  int x = 0;
-  int y = 0;
-
-  gchar* window_name = NULL;
-  gchar* conf_key_size = NULL;
-  gchar* conf_key_position = NULL;
-  gchar* size = NULL;
-  gchar* position = NULL;
-
-  g_return_if_fail (GTK_IS_WINDOW (w));
-
-  window_name = (char *) g_object_get_data (G_OBJECT (w), "window_name");
-
-  g_return_if_fail (window_name != NULL);
-
-  conf_key_position =
-    g_strdup_printf ("%s%s/position", USER_INTERFACE_KEY, window_name);
-  conf_key_size =
-    g_strdup_printf ("%s%s/size", USER_INTERFACE_KEY, window_name);
-
-
-  /* If the window is visible, save its position and hide the window */
-  if (gm_window_is_visible (w)) {
-
-    gtk_window_get_position (GTK_WINDOW (w), &x, &y);
-    position = g_strdup_printf ("%d,%d", x, y);
-    gm_conf_set_string (conf_key_position, position);
-    g_free (position);
-
-    if (gtk_window_get_resizable (GTK_WINDOW (w))) {
-
-      gtk_window_get_size (GTK_WINDOW (w), &x, &y);
-      size = g_strdup_printf ("%d,%d", x, y);
-      gm_conf_set_string (conf_key_size, size);
-      g_free (size);
-    }
-
-    gtk_widget_hide (w);
-  }
-
-  g_free (conf_key_position);
-  g_free (conf_key_size);
-}
-
-
-void
-gm_window_hide_on_delete (GtkWidget* window)
-{
-  g_return_if_fail (GTK_IS_WIDGET (window));
-
-  g_signal_connect (window, "delete-event",
-                    G_CALLBACK (old_style_gm_window_delete_event_cb), NULL);
 }

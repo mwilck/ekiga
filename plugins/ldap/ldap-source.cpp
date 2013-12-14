@@ -41,21 +41,18 @@
 
 #include "config.h"
 
-#include "gmconf.h"
-
 #include "ldap-source.h"
 
-#define LDAP_KEY CONTACTS_KEY "ldap_servers"
+#define LDAP_KEY "ldap-servers"
 
 OPENLDAP::Source::Source (Ekiga::ServiceCore &_core):
   core(_core), doc(), should_add_ekiga_net_book(false)
 {
   xmlNodePtr root;
-  gchar *c_raw = gm_conf_get_string (LDAP_KEY);
+  contacts_settings = boost::shared_ptr<Ekiga::Settings> (new Ekiga::Settings (CONTACTS_SCHEMA));
+  std::string raw = contacts_settings->get_string (LDAP_KEY);
 
-  if (c_raw != NULL && g_strcmp0 (c_raw, "")) {
-
-    const std::string raw = c_raw;
+  if (!raw.empty ()) {
 
     doc = boost::shared_ptr<xmlDoc> (xmlRecoverMemory (raw.c_str (), raw.length ()), xmlFreeDoc);
     if ( !doc)
@@ -79,8 +76,8 @@ OPENLDAP::Source::Source (Ekiga::ServiceCore &_core):
 	  && xmlStrEqual (BAD_CAST "server", child->name))
 	add (child);
 
-    g_free (c_raw);
-  } else {
+  } 
+  else {
 
     doc = boost::shared_ptr<xmlDoc> (xmlNewDoc (BAD_CAST "1.0"), xmlFreeDoc);
     root = xmlNewDocNode (doc.get (), NULL, BAD_CAST "list", NULL);
@@ -200,11 +197,11 @@ void
 OPENLDAP::Source::save ()
 {
   xmlChar *buffer = NULL;
-  int size = 0;
+  int lsize = 0;
 
-  xmlDocDumpMemory (doc.get (), &buffer, &size);
+  xmlDocDumpMemory (doc.get (), &buffer, &lsize);
 
-  gm_conf_set_string (LDAP_KEY, (const char *)buffer);
+  contacts_settings->set_string (LDAP_KEY, (const char *)buffer);
 
   xmlFree (buffer);
 }

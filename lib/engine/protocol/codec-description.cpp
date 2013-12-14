@@ -149,19 +149,15 @@ CodecDescription::operator!= (const CodecDescription & c) const
 }
 
 
-CodecList::CodecList (GSList *codecs_config)
+CodecList::CodecList (const std::list<std::string> & codecs_config)
 {
-  GSList *codecs_config_it = NULL;
+  for (std::list<std::string>::const_iterator iter = codecs_config.begin ();
+       iter != codecs_config.end ();
+       iter++) {
 
-  codecs_config_it = (GSList *) codecs_config;
-  while (codecs_config_it) {
-
-
-    Ekiga::CodecDescription d = Ekiga::CodecDescription ((char *) codecs_config_it->data);
+    Ekiga::CodecDescription d = Ekiga::CodecDescription (*iter);
     if (!d.name.empty ())
       codecs.push_back (d);
-
-    codecs_config_it = g_slist_next (codecs_config_it);
   }
 }
 
@@ -241,16 +237,16 @@ CodecList::get_video_list ()
 }
 
 
-GSList*
-CodecList::gslist ()
+std::list<std::string>
+CodecList::slist ()
 {
-  GSList* result = NULL;
+  std::list<std::string> result;
 
   for (iterator it = begin ();
        it != end ();
        it++) {
 
-    result = g_slist_append (result, g_strdup ((*it).str ().c_str ()));
+    result.push_back ((*it).str ());
   }
 
   return result;

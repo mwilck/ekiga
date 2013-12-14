@@ -43,6 +43,8 @@
 #include "loudmouth-account.h"
 #include "loudmouth-dialect.h"
 
+#include "ekiga-settings.h"
+
 namespace LM
 {
 
@@ -88,6 +90,7 @@ namespace LM
   };
 
   typedef boost::shared_ptr<Bank> BankPtr;
+  boost::shared_ptr<Ekiga::Settings> contacts_settings;
 };
 
 #endif

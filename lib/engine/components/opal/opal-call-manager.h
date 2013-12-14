@@ -52,6 +52,8 @@
 #include "call-manager.h"
 #include "opal-call.h"
 
+#include "ekiga-settings.h"
+
 #include <boost/enable_shared_from_this.hpp>
 
 
@@ -89,6 +91,9 @@ public:
     bool populate_menu (const std::string fullname,
 			const std::string uri,
 			Ekiga::MenuBuilder& builder);
+
+    /* Set up endpoint: all options or a specific setting */
+    void setup (const std::string & setting = "");
 
     /** Call Manager **/
     bool dial (const std::string & uri); 
@@ -220,6 +225,15 @@ private:
     bool stun_enabled;
     bool auto_answer;
 
+    boost::shared_ptr<Ekiga::Settings> nat_settings;
+    boost::shared_ptr<Ekiga::Settings> audio_codecs_settings;
+    boost::shared_ptr<Ekiga::Settings> video_codecs_settings;
+    boost::shared_ptr<Ekiga::Settings> video_devices_settings;
+    boost::shared_ptr<Ekiga::Settings> protocols_settings;
+    boost::shared_ptr<Ekiga::Settings> ports_settings;
+    boost::shared_ptr<Ekiga::Settings> call_options_settings;
+    boost::shared_ptr<Ekiga::Settings> call_forwarding_settings;
+    boost::shared_ptr<Ekiga::Settings> personal_data_settings;
 
     /* FIXME: this piece of the api is because the code is getting turned around,
      * this should disappear at some point! */

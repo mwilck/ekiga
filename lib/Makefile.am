@@ -16,9 +16,9 @@ AM_CPPFLAGS = \
 	-DEKIGA_PLUGIN_DIR=\"$(PLUGIN_DIR)\" \
 	-I$(top_srcdir) \
 	-I$(top_srcdir)/lib \
-	-I$(top_srcdir)/lib/gmconf \
 	-I$(top_srcdir)/lib/gui \
 	-I$(top_srcdir)/lib/platform \
+	-I$(top_srcdir)/lib/settings \
 	-I$(top_srcdir)/lib/engine \
 	-I$(top_srcdir)/lib/engine/account \
 	-I$(top_srcdir)/lib/engine/addressbook \
@@ -78,6 +78,17 @@ if WIN32
 libekiga_la_SOURCES += platform/winpaths.h
 endif
 
+
+##
+# Sources out of the settings directory
+##
+
+libekiga_la_SOURCES += \
+	settings/settings-mappings.h \
+        settings/settings-mappings.c \
+	settings/ekiga-settings.h
+
+
 ##
 # Sources out of the pixops directory
 ##
@@ -102,22 +113,6 @@ endif
 endif
 
 ##
-# Sources out of the gmconf directory
-##
-libekiga_la_SOURCES += \
-	gmconf/gmconf.h \
-	gmconf/gmconf-ekiga-keys.h \
-	gmconf/gmconf-upgrade.h \
-	gmconf/gmconf-upgrade.c
-
-if HAVE_GCONF
-libekiga_la_SOURCES += gmconf/gmconf-gconf.c
-libekiga_la_LDFLAGS += $(GCONF_LIBS)
-else
-libekiga_la_SOURCES += gmconf/gmconf-glib.c
-endif
-
-##
 # Sources out of the gui directory
 # (those should probably be moved elsewhere like engine/gui/gtk-core/ )
 ##
@@ -130,16 +125,10 @@ libekiga_la_SOURCES += \
 	gui/gmwindow.h \
 	gui/gmcallbacks.c \
 	gui/gmcallbacks.h \
-	gui/gmconfwidgets.c \
-	gui/gmconfwidgets.h \
-	gui/gmdialog.c \
-	gui/gmdialog.h \
 	gui/gmentrydialog.c \
 	gui/gmentrydialog.h \
 	gui/gmmenuaddon.c \
 	gui/gmmenuaddon.h \
-	gui/gmpreferences.c \
-	gui/gmpreferences.h \
 	gui/gmstatusbar.c \
 	gui/gmstatusbar.h \
 	gui/gmstockicons.c \
@@ -213,8 +202,6 @@ libekiga_la_SOURCES += \
 	engine/framework/robust-xml.h \
 	engine/framework/robust-xml.cpp \
 	engine/framework/form-visitor.h \
-	engine/framework/gmconf-bridge.h \
-	engine/framework/gmconf-bridge.cpp \
 	engine/framework/runtime.h \
 	engine/framework/menu-builder.h \
 	engine/framework/menu-builder.cpp \
@@ -338,9 +325,7 @@ libekiga_la_SOURCES += \
 	engine/videooutput/videooutput-info.h \
 	engine/videooutput/videooutput-manager.h \
 	engine/videooutput/videooutput-core.h \
-	engine/videooutput/videooutput-core.cpp \
-	engine/videooutput/videooutput-gmconf-bridge.h \
-	engine/videooutput/videooutput-gmconf-bridge.cpp
+	engine/videooutput/videooutput-core.cpp
 
 ##
 # Sources of the video input stack
@@ -350,9 +335,7 @@ libekiga_la_SOURCES += \
 	engine/videoinput/videoinput-manager.h \
 	engine/videoinput/videoinput-info.h \
 	engine/videoinput/videoinput-core.h \
-	engine/videoinput/videoinput-core.cpp \
-	engine/videoinput/videoinput-gmconf-bridge.h \
-	engine/videoinput/videoinput-gmconf-bridge.cpp
+	engine/videoinput/videoinput-core.cpp
 
 ##
 # Sources of the audio output stack
@@ -364,9 +347,7 @@ libekiga_la_SOURCES += \
 	engine/audiooutput/audiooutput-scheduler.h \
 	engine/audiooutput/audiooutput-scheduler.cpp \
 	engine/audiooutput/audiooutput-core.h \
-	engine/audiooutput/audiooutput-core.cpp \
-	engine/audiooutput/audiooutput-gmconf-bridge.h \
-	engine/audiooutput/audiooutput-gmconf-bridge.cpp
+	engine/audiooutput/audiooutput-core.cpp
 
 ##
 # Sources of the audio input stack
@@ -376,9 +357,7 @@ libekiga_la_SOURCES += \
 	engine/audioinput/audioinput-manager.h	\
 	engine/audioinput/audioinput-info.h	\
 	engine/audioinput/audioinput-core.h	\
-	engine/audioinput/audioinput-core.cpp       \
-	engine/audioinput/audioinput-gmconf-bridge.h \
-	engine/audioinput/audioinput-gmconf-bridge.cpp
+	engine/audioinput/audioinput-core.cpp
 
 ##
 # Sources of the hardware abstraction layer (HAL) stack
@@ -412,8 +391,6 @@ libekiga_la_SOURCES += \
 ##
 
 libekiga_la_SOURCES += \
-	engine/gui/gtk-frontend/device-lists.h \
-	engine/gui/gtk-frontend/device-lists.cpp \
 	engine/gui/gtk-frontend/addressbook-window.h \
 	engine/gui/gtk-frontend/addressbook-window.cpp \
 	engine/gui/gtk-frontend/accounts-window.h \
@@ -494,8 +471,6 @@ libekiga_la_SOURCES += \
 	engine/components/opal/opal-call.cpp \
 	engine/components/opal/opal-codec-description.h \
 	engine/components/opal/opal-codec-description.cpp \
-	engine/components/opal/opal-gmconf-bridge.h \
-	engine/components/opal/opal-gmconf-bridge.cpp \
 	engine/components/opal/opal-main.h \
 	engine/components/opal/opal-main.cpp \
 	engine/components/opal/opal-audio.h \
@@ -505,7 +480,9 @@ libekiga_la_SOURCES += \
 	engine/components/opal/opal-videooutput.h \
 	engine/components/opal/opal-videooutput.cpp \
 	engine/components/opal/opal-plugins-hook.h \
-	engine/components/opal/opal-plugins-hook.cpp
+	engine/components/opal/opal-plugins-hook.cpp \
+	engine/components/opal/opal-presentity.h \
+	engine/components/opal/opal-presentity.cpp
 
 if HAVE_H323
 libekiga_la_SOURCES += \

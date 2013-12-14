@@ -60,6 +60,9 @@ void
 about_callback (G_GNUC_UNUSED GtkWidget *widget,
 		gpointer parent_window)
 {
+  GtkWidget *pixmap = NULL;
+  gchar *filename = NULL;
+
   const gchar *authors [] = {
       "Damien Sandras <dsandras@seconix.com>",
       "",
@@ -124,21 +127,26 @@ GNU GPL for all the rest of the software thus combined.")
   license_trans = g_strconcat (_(license[0]), "\n\n", _(license[1]), "\n\n",
                                _(license[2]), "\n\n", NULL);
 
+  filename = g_build_filename (DATA_DIR, "pixmaps", PACKAGE_NAME,
+                               PACKAGE_NAME "-logo.png", NULL);
+  pixmap =  gtk_image_new_from_file (filename);
+
   gtk_show_about_dialog (GTK_WINDOW (parent_window),
-		"name", "Ekiga",
-		"version", VERSION,
-                "copyright", "Copyright © 2000-2012 Damien Sandras",
-		"authors", authors,
-		"documenters", documenters,
-		"translator-credits", translator_credits,
-		"comments", comments,
-		"logo-icon-name", GM_ICON_LOGO,
-		"license", license_trans,
-		"wrap-license", TRUE,
-		"website", "http://www.ekiga.org",
-		NULL);
+                         "name", "Ekiga",
+                         "version", VERSION,
+                         "copyright", "Copyright © 2000-2014 Damien Sandras",
+                         "authors", authors,
+                         "documenters", documenters,
+                         "translator-credits", translator_credits,
+                         "comments", comments,
+                         "logo", gtk_image_get_pixbuf (GTK_IMAGE (pixmap)),
+                         "license", license_trans,
+                         "wrap-license", TRUE,
+                         "website", "http://www.ekiga.org",
+                         NULL);
 
   g_free (license_trans);
+  g_free (filename);
 }
 
 

@@ -43,9 +43,25 @@
 #include "audioinput-manager.h"
 #include "notification-core.h"
 #include "hal-core.h"
-#include "audioinput-gmconf-bridge.h"
 
 #include <ptlib.h>
+#include <gio/gio.h>
+
+#ifdef WIN32
+#define AUDIO_INPUT_PREFERRED_DEVICE_TYPE1   "FIXME"
+#define AUDIO_INPUT_PREFERRED_DEVICE_SOURCE1 "FIXME"
+#define AUDIO_INPUT_PREFERRED_DEVICE_NAME1   "FIXME"
+#define AUDIO_INPUT_PREFERRED_DEVICE_TYPE2   "FIXME"
+#define AUDIO_INPUT_PREFERRED_DEVICE_SOURCE2 "FIXME"
+#define AUDIO_INPUT_PREFERRED_DEVICE_NAME2   "FIXME"
+#else
+#define AUDIO_INPUT_PREFERRED_DEVICE_TYPE1   "PTLIB"
+#define AUDIO_INPUT_PREFERRED_DEVICE_SOURCE1 "Pulse"
+#define AUDIO_INPUT_PREFERRED_DEVICE_NAME1   "PulseAudio"
+#define AUDIO_INPUT_PREFERRED_DEVICE_TYPE2   "PTLIB"
+#define AUDIO_INPUT_PREFERRED_DEVICE_SOURCE2 "ALSA"
+#define AUDIO_INPUT_PREFERRED_DEVICE_NAME2   "Default"
+#endif
 
 #define AUDIO_INPUT_FALLBACK_DEVICE_TYPE   "Ekiga"
 #define AUDIO_INPUT_FALLBACK_DEVICE_SOURCE "Ekiga"
@@ -101,9 +117,9 @@ namespace Ekiga
       */
       ~AudioInputCore ();
 
-      /** Set up gmconf bridge
+      /** Set up devices
        */
-      void setup_conf_bridge();
+      void setup ();
 
 
       /*** Service Implementation ***/
@@ -143,6 +159,7 @@ namespace Ekiga
       /** Get a list of all devices supported by all managers registered to the core.
        * @param devices a vector of device names to be filled by the core.
        */
+      void get_devices(std::vector <std::string> & devices);
       void get_devices(std::vector <AudioInputDevice> & devices);
 
       /** Set a specific device
@@ -262,7 +279,7 @@ namespace Ekiga
        * a manager claimed support for this device.
        * @param device the audio input device that was added.
        */
-      boost::signals2::signal<void(AudioInputDevice, bool)> device_added;
+      boost::signals2::signal<void(AudioInputDevice)> device_added;
 
       /** This signal is emitted when an audio input device has been removed from the system.
        * This signal will be emitted if remove_device was called with a device name and
@@ -307,7 +324,6 @@ namespace Ekiga
       DeviceConfig stream_config;
 
       AudioInputManager* current_manager;
-      AudioInputDevice desired_device;
       AudioInputDevice current_device;
       unsigned current_volume;
       unsigned desired_volume;
@@ -315,14 +331,15 @@ namespace Ekiga
       PMutex core_mutex;
       PMutex volume_mutex;
 
-      AudioInputCoreConfBridge* audioinput_core_conf_bridge;
-
       float average_level;
       bool calculate_average;
       bool yield;
 
       Ekiga::ServiceCore & core;
       boost::shared_ptr<Ekiga::NotificationCore> notification_core;
+
+      GSettings *audio_device_settings;
+      guint audio_device_settings_signal;
     };
 /**
  * @}

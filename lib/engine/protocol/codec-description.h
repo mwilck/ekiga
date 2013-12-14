@@ -138,7 +138,7 @@ namespace Ekiga
       /** Constructor that creates a CodecList from a GSList whose elements
        * are CodecDescription objects formatted as a string.
        */
-      CodecList (GSList *);
+      CodecList (const std::list<std::string> &);
 
       virtual ~CodecList ()
       {}
@@ -181,7 +181,7 @@ namespace Ekiga
       /** Return the list of codecs descriptions under their str form
        * @return the list of CodecDescription
        */
-      GSList *gslist ();
+      std::list<std::string> slist ();
 
 
       /** Return true if both CodecList are identical, false otherwise

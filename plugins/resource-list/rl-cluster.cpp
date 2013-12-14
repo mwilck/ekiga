@@ -40,28 +40,24 @@
 
 #include "rl-cluster.h"
 
-#include "gmconf.h"
 #include "form-request-simple.h"
 #include "presence-core.h"
 
 #include <iostream>
 
-#define RL_KEY CONTACTS_KEY "resource-lists"
+#define RL_KEY "resource-lists"
 
 RL::Cluster::Cluster (Ekiga::ServiceCore& core_): core(core_), doc()
 {
-  gchar* c_raw = NULL;
-
   boost::shared_ptr<Ekiga::PresenceCore> presence_core = core.get<Ekiga::PresenceCore> ("presence-core");
 
   presence_core->presence_received.connect (boost::bind (&RL::Cluster::on_presence_received, this, _1, _2));
   presence_core->status_received.connect (boost::bind (&RL::Cluster::on_status_received, this, _1, _2));
+  contacts_settings = boost::shared_ptr<Ekiga::Settings> (new Ekiga::Settings (CONTACTS_SCHEMA));
+  std::string raw = contacts_settings->get_string (RL_KEY);
 
-  c_raw = gm_conf_get_string (RL_KEY);
+  if (!raw.empty ()) {
 
-  if (c_raw != NULL) {
-
-    const std::string raw = c_raw;
     doc = boost::shared_ptr<xmlDoc> (xmlRecoverMemory (raw.c_str (), raw.length ()), xmlFreeDoc);
     if ( !doc)
       doc = boost::shared_ptr<xmlDoc> (xmlNewDoc (BAD_CAST "1.0"), xmlFreeDoc);
@@ -81,7 +77,6 @@ RL::Cluster::Cluster (Ekiga::ServiceCore& core_): core(core_), doc()
 	    && xmlStrEqual (BAD_CAST "entry", child->name))
 	  add (child);
     }
-    g_free (c_raw);
 
   } else {
 
@@ -148,7 +143,7 @@ RL::Cluster::save () const
 
   xmlDocDumpMemory (doc.get (), &buffer, &size);
 
-  gm_conf_set_string (RL_KEY, (const char*)buffer);
+  contacts_settings->set_string (RL_KEY, (const char *)buffer);
 
   xmlFree (buffer);
 }

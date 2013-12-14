@@ -40,31 +40,28 @@
 #include "config.h"
 
 #include <glib/gi18n.h>
+#include <boost/tuple/tuple.hpp>
 
-#include "gmpreferences.h"
-#include "gmconf.h"
+#include "ekiga-settings.h"
 
 #include "preferences-window.h"
 #include "default_devices.h"
 
 #include "scoped-connections.h"
 
-#include "gmwindow.h"
+#include "gmcallbacks.h"
 #include "codecsbox.h"
-
-#include "videoinput-core.h"
-#include "audioinput-core.h"
-#include "audiooutput-core.h"
-
-#include "device-lists.h"
 
 #ifdef WIN32
 #include "platform/winpaths.h"
 #endif
 
-typedef struct _GmPreferencesWindow
+#define GTK_GRID_LAST_ROW(g, p) while (gtk_grid_get_child_at (GTK_GRID (g), 0, p++));
+
+
+struct _PreferencesWindowPrivate
 {
-  ~_GmPreferencesWindow();
+  _PreferencesWindowPrivate ();
 
   GtkWidget *audio_codecs_list;
   GtkWidget *sound_events_list;
@@ -74,49 +71,82 @@ typedef struct _GmPreferencesWindow
   GtkWidget *video_device;
   GtkWidget *iface;
   GtkWidget *fsbutton;
+  GtkWidget *notebook;
+
   boost::shared_ptr<Ekiga::VideoInputCore> videoinput_core;
   boost::shared_ptr<Ekiga::AudioInputCore> audioinput_core;
   boost::shared_ptr<Ekiga::AudioOutputCore> audiooutput_core;
+  boost::shared_ptr<Ekiga::Settings> protocols_settings;
+  boost::shared_ptr<Ekiga::Settings> sip_settings;
+  boost::shared_ptr<Ekiga::Settings> h323_settings;
+  boost::shared_ptr<Ekiga::Settings> nat_settings;
+  boost::shared_ptr<Ekiga::Settings> call_forwarding_settings;
+  boost::shared_ptr<Ekiga::Settings> call_options_settings;
+  boost::shared_ptr<Ekiga::Settings> personal_data_settings;
+  boost::shared_ptr<Ekiga::Settings> sound_events_settings;
+  boost::shared_ptr<Ekiga::Settings> audio_devices_settings;
+  boost::shared_ptr<Ekiga::Settings> audio_codecs_settings;
+  boost::shared_ptr<Ekiga::Settings> video_devices_settings;
+  boost::shared_ptr<Ekiga::Settings> video_codecs_settings;
+  boost::shared_ptr<Ekiga::Settings> video_display_settings;
   Ekiga::scoped_connections connections;
-  std::list<gpointer> notifiers;
-} GmPreferencesWindow;
+};
 
-#define GM_PREFERENCES_WINDOW(x) (GmPreferencesWindow *) (x)
 
-_GmPreferencesWindow::~_GmPreferencesWindow()
+_PreferencesWindowPrivate::_PreferencesWindowPrivate ()
 {
-  for (std::list<gpointer>::iterator iter = notifiers.begin ();
-       iter != notifiers.end ();
-       ++iter)
-    gm_conf_notifier_remove (*iter);
+  sound_events_settings =
+    boost::shared_ptr<Ekiga::Settings> (new Ekiga::Settings (SOUND_EVENTS_SCHEMA));
+  audio_devices_settings =
+    boost::shared_ptr<Ekiga::Settings> (new Ekiga::Settings (AUDIO_DEVICES_SCHEMA));
+  audio_codecs_settings =
+    boost::shared_ptr<Ekiga::Settings> (new Ekiga::Settings (AUDIO_CODECS_SCHEMA));
+  video_devices_settings =
+    boost::shared_ptr<Ekiga::Settings> (new Ekiga::Settings (VIDEO_DEVICES_SCHEMA));
+  video_codecs_settings =
+    boost::shared_ptr<Ekiga::Settings> (new Ekiga::Settings (VIDEO_CODECS_SCHEMA));
+  video_display_settings =
+    boost::shared_ptr<Ekiga::Settings> (new Ekiga::Settings (VIDEO_DISPLAY_SCHEMA));
+  personal_data_settings =
+    boost::shared_ptr<Ekiga::Settings> (new Ekiga::Settings (PERSONAL_DATA_SCHEMA));
+  protocols_settings =
+    boost::shared_ptr<Ekiga::Settings> (new Ekiga::Settings (PROTOCOLS_SCHEMA));
+  sip_settings =
+    boost::shared_ptr<Ekiga::Settings> (new Ekiga::Settings (SIP_SCHEMA));
+  h323_settings =
+    boost::shared_ptr<Ekiga::Settings> (new Ekiga::Settings (H323_SCHEMA));
+  nat_settings =
+    boost::shared_ptr<Ekiga::Settings> (new Ekiga::Settings (NAT_SCHEMA));
+  call_forwarding_settings =
+    boost::shared_ptr<Ekiga::Settings> (new Ekiga::Settings (CALL_FORWARDING_SCHEMA));
+  call_options_settings =
+    boost::shared_ptr<Ekiga::Settings> (new Ekiga::Settings (CALL_OPTIONS_SCHEMA));
 }
+
+G_DEFINE_TYPE (PreferencesWindow, preferences_window, GTK_TYPE_DIALOG);
+
+enum {
+  COLUMN_STRING_RAW = 0,
+  COLUMN_STRING_TRANSLATED,
+  COLUMN_SENSITIVE,
+  COLUMN_GSETTINGS,
+};
+
+typedef boost::tuple<std::string, std::string> Choice;
+typedef std::list<Choice> Choices;
+typedef std::list<Choice>::iterator Choices_iterator;
+typedef std::list<Choice>::const_iterator Choices_const_iterator;
+
 
 /* Declarations */
 
 /* GUI Functions */
 
-
-/* DESCRIPTION  : /
- * BEHAVIOR     : Frees a GmPreferencesWindow and its content.
- * PRE          : A non-NULL pointer to a GmPreferencesWindow structure.
- */
-static void gm_pw_destroy (gpointer prefs_window);
-
-
-/* DESCRIPTION  : /
- * BEHAVIOR     : Returns a pointer to the private GmPrerencesWindow structure
- *                used by the preferences window GMObject.
- * PRE          : The given GtkWidget pointer must be a preferences window
- * 		  GMObject.
- */
-static GmPreferencesWindow *gm_pw_get_pw (GtkWidget *preferences_window);
-
-
 /* DESCRIPTION  :  /
  * BEHAVIOR     :  Builds the sound events list of the preferences window.
  * PRE          :  /
  */
-static void gm_prefs_window_sound_events_list_build (GtkWidget *prefs_window);
+static void gm_prefs_window_sound_events_list_build (PreferencesWindow *prefs_window);
 
 
 /* DESCRIPTION  : /
@@ -139,17 +169,8 @@ static void gm_pw_add_update_button (GtkWidget *box,
  * PRE          : A valid pointer to the preferences window GMObject, and to the
  * 		  container widget where to attach the generated page.
  */
-static void gm_pw_init_general_page (GtkWidget *prefs_window,
-				     GtkWidget *container);
-
-
-/* DESCRIPTION  : /
- * BEHAVIOR     : Builds the interface settings page.
- * PRE          : A valid pointer to the preferences window GMObject, and to the
- * 		  container widget where to attach the generated page.
- */
-static void gm_pw_init_interface_page (GtkWidget *prefs_window,
-				       GtkWidget *container);
+static void gm_pw_init_general_page (PreferencesWindow *self,
+                                     GtkWidget *container);
 
 
 
@@ -158,8 +179,8 @@ static void gm_pw_init_interface_page (GtkWidget *prefs_window,
  * PRE          : A valid pointer to the preferences window GMObject, and to the
  * 		  container widget where to attach the generated page.
  */
-static void gm_pw_init_call_options_page (GtkWidget *prefs_window,
-					  GtkWidget *container);
+static void gm_pw_init_call_options_page (PreferencesWindow *self,
+                                          GtkWidget *container);
 
 
 /* DESCRIPTION  : /
@@ -167,8 +188,8 @@ static void gm_pw_init_call_options_page (GtkWidget *prefs_window,
  * PRE          : A valid pointer to the preferences window GMObject, and to the
  * 		  container widget where to attach the generated page.
  */
-static void gm_pw_init_sound_events_page (GtkWidget *prefs_window,
-					  GtkWidget *container);
+static void gm_pw_init_sound_events_page (PreferencesWindow *self,
+                                          GtkWidget *container);
 
 
 /* DESCRIPTION  : /
@@ -176,8 +197,8 @@ static void gm_pw_init_sound_events_page (GtkWidget *prefs_window,
  * PRE          : A valid pointer to the preferences window GMObject, and to the
  * 		  container widget where to attach the generated page.
  */
-static void gm_pw_init_h323_page (GtkWidget *prefs_window,
-				  GtkWidget *container);
+static void gm_pw_init_h323_page (PreferencesWindow *self,
+                                  GtkWidget *container);
 
 
 /* DESCRIPTION  : /
@@ -185,41 +206,184 @@ static void gm_pw_init_h323_page (GtkWidget *prefs_window,
  * PRE          : A valid pointer to the preferences window GMObject, and to the
  * 		  container widget where to attach the generated page.
  */
-static void gm_pw_init_sip_page (GtkWidget *prefs_window,
-				 GtkWidget *container);
+static void gm_pw_init_sip_page (PreferencesWindow *self,
+                                 GtkWidget *container);
 
 
 /* DESCRIPTION  : /
- * BEHAVIOR     : Builds the audio devices settings page.
+ * BEHAVIOR     : Builds the audio settings page.
  * PRE          : A valid pointer to the preferences window GMObject, and to the
  * 		  container widget where to attach the generated page.
  */
-static void gm_pw_init_audio_devices_page (GtkWidget *prefs_window,
-					   GtkWidget *container);
+static void gm_pw_init_audio_page (PreferencesWindow *self,
+                                   GtkWidget *container);
 
 
 /* DESCRIPTION  : /
- * BEHAVIOR     : Builds the video devices settings page.
+ * BEHAVIOR     : Builds the video settings page.
  * PRE          : A valid pointer to the preferences window GMObject, and to the
  * 		  container widget where to attach the generated page.
  */
-static void gm_pw_init_video_devices_page (GtkWidget *prefs_window,
-					   GtkWidget *container);
+static void gm_pw_init_video_page (PreferencesWindow *self,
+                                   GtkWidget *container);
 
 
-/* DESCRIPTION  : /
- * BEHAVIOR     : Builds the codecs settings page.
- * PRE          : A valid pointer to the preferences window GMObject, and to the
- * 		  container widget where to attach the generated page.
+/* DESCRIPTION  :  /
+ * BEHAVIOR     :  Creates a GtkEntry associated with a config key and returns
+ *                 the result.
+ *                 The first parameter is the section in which
+ *                 the GtkEntry should be attached. The other parameters are
+ *                 the text label, the config key, the tooltip.
+ * PRE          :  /
  */
-static void gm_pw_init_audio_codecs_page (GtkWidget *prefs_window,
-                                          GtkWidget *container);
-static void gm_pw_init_video_codecs_page (GtkWidget *prefs_window,
-                                          GtkWidget *container);
+GtkWidget * gm_pw_entry_new (GtkWidget* grid,
+                             const gchar *label_txt,
+                             boost::shared_ptr<Ekiga::Settings> settings,
+                             const std::string & key,
+                             const gchar *tooltip,
+                             bool indent = true);
+
+/* DESCRIPTION  :  /
+ * BEHAVIOR     :  Creates a GtkHScale associated with a config key and
+ *                 returns the result.
+ *                 The first parameter is the section in which
+ *                 the GtkHScale should be attached. The other parameters
+ *                 are the text labels, the config key, the tooltip, the
+ *                 minimal and maximal values and the incrementation step.
+ * PRE          :  /
+ */
+GtkWidget *gm_pw_scale_new (GtkWidget* grid,
+                            const gchar *down_label_txt,
+                            const gchar *up_label_txt,
+                            boost::shared_ptr <Ekiga::Settings> settings,
+                            const std::string & key,
+                            const gchar *tooltip,
+                            double min,
+                            double max,
+                            double step,
+                            bool indent = true);
+
+/* DESCRIPTION  :  /
+ * BEHAVIOR     :  Creates a GtkSpinButton associated with a config key
+ *                 and add it to the given GtkGrid container.
+ *                 The first parameter is the section in which
+ *                 the GtkSpinButton should be attached. The other parameters
+ *                 are the text label(s), the config key, the tooltip, the
+ *                 minimal and maximal values and the incrementation step.
+ * PRE          :  /
+ */
+GtkWidget *gm_pw_spin_new (GtkWidget* grid,
+                           const gchar *label_txt,
+                           const gchar *label_txt2,
+                           boost::shared_ptr <Ekiga::Settings> settings,
+                           const std::string & key,
+                           const gchar *tooltip,
+                           double min,
+                           double max,
+                           double step,
+                           bool indent = true);
 
 
+/* DESCRIPTION  :  /
+ * BEHAVIOR     :  Creates a GtkToggleButton associated with a config key
+ *                 and add it to the given GtkGrid container.
+ *                 The first parameter is the section in which
+ *                 the GtkWidget should be attached. The other parameters are
+ *                 the text label, the config key, the tooltip.
+ * PRE          :  /
+ */
+GtkWidget * gm_pw_toggle_new (GtkWidget* grid,
+                              const gchar *label_txt,
+                              boost::shared_ptr <Ekiga::Settings> settings,
+                              const std::string & key,
+                              const gchar *tooltip,
+                              bool indent = true);
 
-/* GTK Callbacks */
+
+/* DESCRIPTION  :  /
+ * BEHAVIOR     :  Creates a new prefs window.
+ * PRE          :  /
+ */
+GtkWidget *gm_pw_window_new ();
+
+
+/* DESCRIPTION  :  /
+ * BEHAVIOR     :  Creates a subsection inside a section of a prefs window.
+ *                 The parameters are the prefs window and the section name.
+ * PRE          :  Not NULL name.
+ */
+void gm_pw_subsection_new (GtkWidget *container,
+                           const gchar *name);
+
+
+/* DESCRIPTION  :  /
+ * BEHAVIOR     :  Creates a new subsection in the given prefs window and
+ *                 returns it. The parameter are the prefs window and the
+ *                 prefs window subsection name. General subsections can
+ *                 be created in the returned gnome prefs window subsection
+ *                 and widgets can be attached to them.
+ * PRE          :  /
+ */
+GtkWidget *gm_pw_window_subsection_new (GtkWidget *,
+                                        const gchar *);
+
+
+/* DESCRIPTION  :  /
+ * BEHAVIOR     :  Creates a GtkOptionMenu associated with a string config
+ *                 key and returns the result.
+ *                 The first parameter is the section in which the GtkEntry
+ *                 should be attached. The other parameters are the text label,
+ *                 the possible values for the menu, the config key, the
+ *                 tooltip.
+ * PRE          :  The array ends with NULL.
+ */
+static GtkWidget *gm_pw_string_option_menu_new (GtkWidget *,
+                                                const gchar *,
+                                                const Choices &,
+                                                boost::shared_ptr <Ekiga::Settings>,
+                                                const std::string &,
+                                                const gchar *,
+                                                bool indent = true);
+
+
+/* DESCRIPTION  :  /
+ * BEHAVIOR     :  Updates the content of a GtkOptionMenu associated with
+ *                 a string config key. The first parameter is the menu,
+ *                 the second is the array of possible values, and the
+ *                 last parameters are config related.
+ * PRE          :  The array ends with NULL.
+ */
+static void gm_pw_string_option_menu_update (GtkWidget *option_menu,
+                                             const Choices & options,
+                                             boost::shared_ptr <Ekiga::Settings>,
+                                             const std::string & key);
+
+static void gm_pw_string_option_menu_add (GtkWidget *option_menu,
+                                          const Choice & option,
+                                          boost::shared_ptr <Ekiga::Settings>,
+                                          const std::string & key);
+
+static void gm_pw_string_option_menu_remove (GtkWidget *option_menu,
+                                             const std::string & option,
+                                             boost::shared_ptr <Ekiga::Settings>,
+                                             const std::string & key);
+
+static Choices gm_pw_get_device_choices (const std::vector<std::string> & v);
+
+static void  gm_prefs_window_update_devices_list (PreferencesWindow *self);
+
+
+/* Callbacks */
+
+/* DESCRIPTION  :  This callback is called when the user clicks
+ *                 on the Close or Help buttons.
+ * BEHAVIOR     :  Show help or hide the window.
+ * PRE          :  /
+ */
+static void dialog_response_cb (GtkDialog *dialog,
+                                gint response_id,
+                                G_GNUC_UNUSED gpointer data);
+
 
 /* DESCRIPTION  :  This callback is called when the user clicks
  *                 on the refresh devices list button in the prefs.
@@ -227,7 +391,7 @@ static void gm_pw_init_video_codecs_page (GtkWidget *prefs_window,
  * PRE          :  /
  */
 static void refresh_devices_list_cb (GtkWidget *widget,
-				     gpointer data);
+                                     gpointer data);
 
 
 /* DESCRIPTION  :  This callback is called when the user clicks
@@ -237,8 +401,8 @@ static void refresh_devices_list_cb (GtkWidget *widget,
  *                 selected sound event.
  * PRE          :  /
  */
-static void sound_event_clicked_cb (GtkTreeSelection *selection,
-				    gpointer data);
+static void sound_event_selected_cb (GtkTreeSelection *selection,
+                                     gpointer data);
 
 
 /* DESCRIPTION  :  This callback is called when the user clicks
@@ -248,7 +412,7 @@ static void sound_event_clicked_cb (GtkTreeSelection *selection,
  * PRE          :  The entry.
  */
 static void sound_event_play_cb (GtkWidget *widget,
-				 gpointer data);
+                                 gpointer data);
 
 
 /* DESCRIPTION  :  This callback is called when the user clicks
@@ -259,8 +423,8 @@ static void sound_event_play_cb (GtkWidget *widget,
  * PRE          :  /
  */
 static void sound_event_toggled_cb (GtkCellRendererToggle *cell,
-				    gchar *path_str, 
-				    gpointer data);
+                                    gchar *path_str,
+                                    gpointer data);
 
 
 /* DESCRIPTION  :  This callback is called when the user selected a file
@@ -269,143 +433,96 @@ static void sound_event_toggled_cb (GtkCellRendererToggle *cell,
  * PRE          :  /
  */
 /*
-static void image_filename_browse_cb (GtkWidget *widget,
-				      gpointer data);
-*/
+   static void image_filename_browse_cb (GtkWidget *widget,
+   gpointer data);
+ */
 
 /* DESCRIPTION  :  This callback is called when the user selected a file
  *                 for a sound event
  * BEHAVIOR     :  Update of the config database.
  * PRE          :  /
  */
-static void audioev_filename_browse_cb (GtkWidget *widget,
-					gpointer data);
+static void sound_event_changed_cb (GtkWidget *widget,
+                                    gpointer data);
 
 
 /* DESCRIPTION  :  This callback is called when something changes in the sound
- *                 events list.
+ *                 event related settings.
  * BEHAVIOR     :  It updates the events list widget.
  * PRE          :  A pointer to the prefs window GMObject.
  */
-static void sound_events_list_changed_nt (gpointer id,
-					  GmConfEntry *entry,
-					  gpointer data);
+static void sound_event_setting_changed (GSettings *,
+                                         gchar *,
+                                         gpointer data);
 
-
-/* DESCRIPTION  :  This callback is called by the preview-play button of the
- * 		   selected audio file in the audio file selector.
- * BEHAVIOR     :  GMSoundEv's the audio file.
- * PRE          :  /
- */
-static void audioev_filename_browse_play_cb (GtkWidget *playbutton,
-                                             gpointer data);
-
-void 
-gm_prefs_window_update_devices_list (GtkWidget *prefs_window);
 
 /* Implementation */
 static void
-gm_pw_destroy (gpointer prefs_window)
+gm_prefs_window_sound_events_list_build (PreferencesWindow *self)
 {
-  g_return_if_fail (prefs_window != NULL);
-
-  delete ((GmPreferencesWindow *) prefs_window);
-}
-
-
-static GmPreferencesWindow *
-gm_pw_get_pw (GtkWidget *preferences_window)
-{
-  g_return_val_if_fail (preferences_window != NULL, NULL);
-
-  return GM_PREFERENCES_WINDOW (g_object_get_data (G_OBJECT (preferences_window), "GMObject"));
-}
-
-
-static void
-gm_prefs_window_sound_events_list_build (GtkWidget *prefs_window)
-{
-  GmPreferencesWindow *pw = NULL;
-
-  GtkTreeSelection *selection = NULL;
-  GtkTreePath *path = NULL;
   GtkTreeModel *model = NULL;
-  GtkTreeIter iter, selected_iter;
+  GtkTreeIter iter;
 
   bool enabled = FALSE;
 
-  pw = gm_pw_get_pw (prefs_window);
-
-  selection =
-    gtk_tree_view_get_selection (GTK_TREE_VIEW (pw->sound_events_list));
-
-  if (gtk_tree_selection_get_selected (selection, &model, &selected_iter))
-    path = gtk_tree_model_get_path (model, &selected_iter);
-
+  model = gtk_tree_view_get_model (GTK_TREE_VIEW (self->priv->sound_events_list));
   gtk_list_store_clear (GTK_LIST_STORE (model));
 
   /* Sound on incoming calls */
-  enabled = gm_conf_get_bool (SOUND_EVENTS_KEY "enable_incoming_call_sound");
+  enabled = self->priv->sound_events_settings->get_bool ("enable-incoming-call-sound");
   gtk_list_store_append (GTK_LIST_STORE (model), &iter);
   gtk_list_store_set (GTK_LIST_STORE (model), &iter,
-		      0, enabled,
-		      1, _("Play sound on incoming calls"),
-		      2, SOUND_EVENTS_KEY "incoming_call_sound",
-		      3, SOUND_EVENTS_KEY "enable_incoming_call_sound",
-                      4, "incoming_call_sound",
-		      -1);
+                      0, enabled,
+                      1, _("Play sound on incoming calls"),
+                      2, "incoming-call-sound",
+                      3, "enable-incoming-call-sound",
+                      4, "incoming-call-sound",
+                      -1);
 
-  enabled = gm_conf_get_bool (SOUND_EVENTS_KEY "enable_ring_tone_sound");
+  enabled = self->priv->sound_events_settings->get_bool ("enable-ring-tone-sound");
   gtk_list_store_append (GTK_LIST_STORE (model), &iter);
   gtk_list_store_set (GTK_LIST_STORE (model), &iter,
-		      0, enabled,
-		      1, _("Play ring tone"),
-		      2, SOUND_EVENTS_KEY "ring_tone_sound",
-		      3, SOUND_EVENTS_KEY "enable_ring_tone_sound",
-                      4, "ring_tone_sound",
-		      -1);
+                      0, enabled,
+                      1, _("Play ring tone"),
+                      2, "ring-tone-sound",
+                      3, "enable-ring-tone-sound",
+                      4, "ring-tone-sound",
+                      -1);
 
-  enabled = gm_conf_get_bool (SOUND_EVENTS_KEY "enable_busy_tone_sound");
+  enabled = self->priv->sound_events_settings->get_bool ("enable-busy-tone-sound");
   gtk_list_store_append (GTK_LIST_STORE (model), &iter);
   gtk_list_store_set (GTK_LIST_STORE (model), &iter,
-		      0, enabled,
-		      1, _("Play busy tone"),
-		      2, SOUND_EVENTS_KEY "busy_tone_sound",
-		      3, SOUND_EVENTS_KEY "enable_busy_tone_sound",
-		      4, "busy_tone_sound",
-		      -1);
+                      0, enabled,
+                      1, _("Play busy tone"),
+                      2, "busy-tone-sound",
+                      3, "enable-busy-tone-sound",
+                      4, "busy-tone-sound",
+                      -1);
 
-  enabled = gm_conf_get_bool (SOUND_EVENTS_KEY "enable_new_voicemail_sound");
+  enabled = self->priv->sound_events_settings->get_bool ("enable-new-voicemail-sound");
   gtk_list_store_append (GTK_LIST_STORE (model), &iter);
   gtk_list_store_set (GTK_LIST_STORE (model), &iter,
-		      0, enabled,
-		      1, _("Play sound for new voice mails"),
-		      2, SOUND_EVENTS_KEY "new_voicemail_sound",
-		      3, SOUND_EVENTS_KEY "enable_new_voicemail_sound",
-		      4, "new_voicemail_sound",
-		      -1);
+                      0, enabled,
+                      1, _("Play sound for new voice mails"),
+                      2, "new-voicemail-sound",
+                      3, "enable-new-voicemail-sound",
+                      4, "new-voicemail-sound",
+                      -1);
 
-  enabled = gm_conf_get_bool (SOUND_EVENTS_KEY "enable_new_message_sound");
+  enabled = self->priv->sound_events_settings->get_bool ("enable-new-message-sound");
   gtk_list_store_append (GTK_LIST_STORE (model), &iter);
   gtk_list_store_set (GTK_LIST_STORE (model), &iter,
-		      0, enabled,
-		      1, _("Play sound for new instant messages"),
-		      2, SOUND_EVENTS_KEY "new_message_sound",
-		      3, SOUND_EVENTS_KEY "enable_new_message_sound",
-		      4, "new_message_sound",
-		      -1);
-
-  if (!path)
-    path = gtk_tree_path_new_from_string ("0");
-
-  gtk_tree_view_set_cursor (GTK_TREE_VIEW (pw->sound_events_list),
-			    path, NULL, false);
-  gtk_tree_path_free (path);
+                      0, enabled,
+                      1, _("Play sound for new instant messages"),
+                      2, "new-message-sound",
+                      3, "enable-new-message-sound",
+                      4, "new-message-sound",
+                      -1);
 }
 
 
 static void
-gm_pw_add_update_button (GtkWidget *box,
+gm_pw_add_update_button (GtkWidget *container,
                          const char *label,
                          GCallback func,
                          const gchar *tooltip,
@@ -415,15 +532,18 @@ gm_pw_add_update_button (GtkWidget *box,
   GtkWidget* alignment = NULL;
   GtkWidget* button = NULL;
 
+  int pos = 0;
+
   /* Update Button */
   button = gtk_button_new_with_mnemonic (label);
   gtk_widget_set_tooltip_text (button, tooltip);
 
   alignment = gtk_alignment_new (1, valign, 0, 0);
   gtk_container_add (GTK_CONTAINER (alignment), button);
-  gtk_container_set_border_width (GTK_CONTAINER (button), 6);
+  gtk_container_set_border_width (GTK_CONTAINER (button), 0);
 
-  gtk_box_pack_start (GTK_BOX (box), alignment, TRUE, TRUE, 0);
+  GTK_GRID_LAST_ROW (container, pos);
+  gtk_grid_attach (GTK_GRID (container), alignment, 0, pos-1, 2, 1);
 
   g_signal_connect (button, "clicked",
                     G_CALLBACK (func),
@@ -432,81 +552,73 @@ gm_pw_add_update_button (GtkWidget *box,
 
 
 static void
-gm_pw_init_general_page (GtkWidget *prefs_window,
+gm_pw_init_general_page (PreferencesWindow *self,
                          GtkWidget *container)
 {
-  GtkWidget *subsection = NULL;
   GtkWidget *entry = NULL;
 
   /* Personal Information */
-  subsection = gnome_prefs_subsection_new (prefs_window, container,
-                                _("Personal Information"), 2, 2);
-
-  entry = gnome_prefs_entry_new (subsection, _("_Full name:"),
-				 PERSONAL_DATA_KEY "full_name",
-				 _("Enter your full name"), 0, 2, false);
+  entry = gm_pw_entry_new (container, _("_Full name:"),
+                           self->priv->personal_data_settings, "full-name",
+                           _("Enter your full name"), false);
   gtk_widget_set_size_request (GTK_WIDGET (entry), 250, -1);
   gtk_entry_set_max_length (GTK_ENTRY (entry), 65);
-}
-
-
-static void
-gm_pw_init_interface_page (GtkWidget *prefs_window,
-                           GtkWidget *container)
-{
-  GtkWidget *subsection = NULL;
 
   /* Video Display */
-  subsection = gnome_prefs_subsection_new (prefs_window, container,
-                                _("Video Display"), 1, 2);
-
-  gnome_prefs_toggle_new (subsection, _("Place windows displaying video _above other windows"), VIDEO_DISPLAY_KEY "stay_on_top", _("Place windows displaying video above other windows during calls"), 0, 2);
+  gm_pw_subsection_new (container, _("Display"));
+  gm_pw_toggle_new (container, _("Place windows displaying video _above other windows"),
+                    self->priv->video_display_settings, "stay-on-top",
+                    _("Place windows displaying video above other windows during calls"));
 
   /* Network Settings */
-  subsection = gnome_prefs_subsection_new (prefs_window, container,
-                                           _("Network Settings"), 2, 2);
+  gm_pw_subsection_new (container, _("Network Settings"));
+  gm_pw_spin_new (container, _("Type of Service (TOS):"), NULL,
+                  self->priv->protocols_settings, "rtp-tos-field",
+                  _("The Type of Service (TOS) byte on outgoing RTP IP packets. This byte is used by the network to provide some level of Quality of Service (QoS). Default value 184 (0xB8) corresponds to Expedited Forwarding (EF) PHB as defined in RFC 3246."),
+                  0.0, 255.0, 1.0);
 
-  gnome_prefs_spin_new (subsection, _("Type of Service (TOS):"), PROTOCOLS_KEY "rtp_tos_field", _("The Type of Service (TOS) byte on outgoing RTP IP packets. This byte is used by the network to provide some level of Quality of Service (QoS). Default value 184 (0xB8) corresponds to Expedited Forwarding (EF) PHB as defined in RFC 3246."), 0.0, 255.0, 1.0, 0, 2, NULL, true);
-
-  gnome_prefs_toggle_new (subsection, _("Enable network _detection"), NAT_KEY "enable_stun", _("Enable the automatic network setup resulting from the STUN test"), 1, 2);
+  gm_pw_toggle_new (container, _("Enable network _detection"),
+                    self->priv->nat_settings, "enable-stun",
+                    _("Enable the automatic network setup resulting from the STUN test"));
 }
 
 static void
-gm_pw_init_call_options_page (GtkWidget *prefs_window,
+gm_pw_init_call_options_page (PreferencesWindow *self,
                               GtkWidget *container)
 {
-  GtkWidget *subsection = NULL;
+  gm_pw_toggle_new (container, _("_Always forward calls to the given host"),
+                    self->priv->call_forwarding_settings, "always-forward",
+                    _("If enabled, all incoming calls will be forwarded to the host that is specified in the protocol settings"), false);
 
-  subsection = gnome_prefs_subsection_new (prefs_window, container,
-                                           _("Call Forwarding"), 3, 2);
+  gm_pw_toggle_new (container, _("Forward calls to the given host if _no answer"),
+                    self->priv->call_forwarding_settings, "forward-on-no-answer",
+                    _("If enabled, all incoming calls will be forwarded to the host that is specified in the protocol settings if you do not answer the call"), false);
 
-  gnome_prefs_toggle_new (subsection, _("_Always forward calls to the given host"), CALL_FORWARDING_KEY "always_forward", _("If enabled, all incoming calls will be forwarded to the host that is specified in the protocol settings"), 0, 2);
-
-  gnome_prefs_toggle_new (subsection, _("Forward calls to the given host if _no answer"), CALL_FORWARDING_KEY "forward_on_no_answer", _("If enabled, all incoming calls will be forwarded to the host that is specified in the protocol settings if you do not answer the call"), 1, 2);
-
-  gnome_prefs_toggle_new (subsection, _("Forward calls to the given host if _busy"), CALL_FORWARDING_KEY "forward_on_busy", _("If enabled, all incoming calls will be forwarded to the host that is specified in the protocol settings if you already are in a call or if you are in busy mode"), 2, 2);
+  gm_pw_toggle_new (container, _("Forward calls to the given host if _busy"),
+                    self->priv->call_forwarding_settings, "forward-on-busy",
+                    _("If enabled, all incoming calls will be forwarded to the host that is specified in the protocol settings if you already are in a call or if you are in busy mode"), false);
 
 
-  subsection = gnome_prefs_subsection_new (prefs_window, container,
-                                           _("Call Options"), 2, 3);
+  gm_pw_subsection_new (container, _("Call Options"));
 
-  /* Add all the fields */
-  gnome_prefs_spin_new (subsection, _("Call forwarding delay (in seconds):"), CALL_OPTIONS_KEY "no_answer_timeout", _("Automatically reject or forward incoming calls if no answer is given after the specified amount of time (in seconds)"), 10.0, 299.0, 1.0, 0, 3, NULL, true);
-  gnome_prefs_toggle_new (subsection, _("_Automatically answer incoming calls"), CALL_OPTIONS_KEY "auto_answer", _("If enabled, automatically answer incoming calls"), 1, 3);
+  /* Translators: the full sentence is Forward calls after x seconds. */
+  gm_pw_spin_new (container, _("Forward calls after"), _("seconds"),
+                  self->priv->call_options_settings, "no-answer-timeout",
+                  _("Automatically reject or forward incoming calls if no answer is given after the specified amount of time (in seconds)"), 10.0, 299.0, 1.0);
+  gm_pw_toggle_new (container, _("_Automatically answer incoming calls"),
+                    self->priv->call_options_settings, "auto-answer",
+                    _("If enabled, automatically answer incoming calls"));
 }
 
 
 static void
-gm_pw_init_sound_events_page (GtkWidget *prefs_window,
+gm_pw_init_sound_events_page (PreferencesWindow *self,
                               GtkWidget *container)
 {
-  GmPreferencesWindow *pw= NULL;
-
   GtkWidget *button = NULL;
   GtkWidget *hbox = NULL;
   GtkWidget *frame = NULL;
   GtkWidget *vbox = NULL;
-  GtkWidget *subsection = NULL;
   GtkWidget *selector_hbox = NULL;
   GtkWidget *selector_playbutton = NULL;
 
@@ -519,15 +631,15 @@ gm_pw_init_sound_events_page (GtkWidget *prefs_window,
   GtkFileFilter *filefilter = NULL;
 
   PStringArray devs;
+  int pos = 0;
 
-  pw = gm_pw_get_pw (prefs_window);
-
-  subsection = gnome_prefs_subsection_new (prefs_window, container,
-                                           _("Ekiga Sound Events"), 
-                                           1, 1);
+  /* Packing widgets */
+  GTK_GRID_LAST_ROW (container, pos);
 
   vbox = gtk_box_new (GTK_ORIENTATION_VERTICAL, 0);
-  gtk_grid_attach (GTK_GRID (subsection), vbox, 0, 0, 1, 1);
+  g_object_set (G_OBJECT (vbox), "expand", TRUE, NULL);
+  gtk_container_set_border_width (GTK_CONTAINER (vbox), 6);
+  gtk_grid_attach (GTK_GRID (container), vbox, 0, pos-1, 2, 1);
 
   /* The 3rd column will be invisible and contain the config key containing
      the file to play. The 4th one contains the key determining if the
@@ -540,18 +652,19 @@ gm_pw_init_sound_events_page (GtkWidget *prefs_window,
                         G_TYPE_STRING,
                         G_TYPE_STRING);
 
-  pw->sound_events_list =
+  self->priv->sound_events_list =
     gtk_tree_view_new_with_model (GTK_TREE_MODEL (list_store));
-  gtk_tree_view_set_rules_hint (GTK_TREE_VIEW (pw->sound_events_list), TRUE);
+  gtk_tree_view_set_rules_hint (GTK_TREE_VIEW (self->priv->sound_events_list), TRUE);
+  gtk_tree_view_set_headers_visible (GTK_TREE_VIEW (self->priv->sound_events_list), FALSE);
 
   selection =
-    gtk_tree_view_get_selection (GTK_TREE_VIEW (pw->sound_events_list));
+    gtk_tree_view_get_selection (GTK_TREE_VIEW (self->priv->sound_events_list));
 
   frame = gtk_frame_new (NULL);
   gtk_container_set_border_width (GTK_CONTAINER (frame), 4);
   gtk_frame_set_shadow_type (GTK_FRAME (frame), GTK_SHADOW_IN);
-  gtk_container_add (GTK_CONTAINER (frame), pw->sound_events_list);
-  gtk_container_set_border_width (GTK_CONTAINER (pw->sound_events_list), 0);
+  gtk_container_add (GTK_CONTAINER (frame), self->priv->sound_events_list);
+  gtk_container_set_border_width (GTK_CONTAINER (self->priv->sound_events_list), 0);
   gtk_box_pack_start (GTK_BOX (vbox), frame, FALSE, FALSE, 0);
 
 
@@ -559,14 +672,13 @@ gm_pw_init_sound_events_page (GtkWidget *prefs_window,
   renderer = gtk_cell_renderer_toggle_new ();
   column = gtk_tree_view_column_new_with_attributes (_("A"),
                                                      renderer,
-                                                     "active", 
+                                                     "active",
                                                      0,
                                                      NULL);
   gtk_tree_view_column_set_fixed_width (GTK_TREE_VIEW_COLUMN (column), 25);
-  gtk_tree_view_append_column (GTK_TREE_VIEW (pw->sound_events_list), column);
+  gtk_tree_view_append_column (GTK_TREE_VIEW (self->priv->sound_events_list), column);
   g_signal_connect (renderer, "toggled",
-                    G_CALLBACK (sound_event_toggled_cb), 
-                    GTK_TREE_MODEL (list_store));
+                    G_CALLBACK (sound_event_toggled_cb), (gpointer) self);
 
   renderer = gtk_cell_renderer_text_new ();
   column = gtk_tree_view_column_new_with_attributes (_("Event"),
@@ -574,16 +686,16 @@ gm_pw_init_sound_events_page (GtkWidget *prefs_window,
                                                      "text",
                                                      1,
                                                      NULL);
-  gtk_tree_view_append_column (GTK_TREE_VIEW (pw->sound_events_list), column);
+  gtk_tree_view_append_column (GTK_TREE_VIEW (self->priv->sound_events_list), column);
   gtk_tree_view_column_set_fixed_width (GTK_TREE_VIEW_COLUMN (column), 325);
 
   hbox = gtk_box_new (GTK_ORIENTATION_HORIZONTAL, 0);
   gtk_box_pack_start (GTK_BOX (vbox), hbox, FALSE, FALSE, 2);
 
-  pw->fsbutton =
+  self->priv->fsbutton =
     gtk_file_chooser_button_new (_("Choose a sound"),
                                  GTK_FILE_CHOOSER_ACTION_OPEN);
-  gtk_box_pack_start (GTK_BOX (hbox), pw->fsbutton, TRUE, TRUE, 2);
+  gtk_box_pack_start (GTK_BOX (hbox), self->priv->fsbutton, TRUE, TRUE, 2);
 
   filefilter = gtk_file_filter_new ();
   gtk_file_filter_set_name (filefilter, _("Wavefiles"));
@@ -592,393 +704,883 @@ gm_pw_init_sound_events_page (GtkWidget *prefs_window,
 #else
   gtk_file_filter_add_mime_type (filefilter, "audio/x-wav");
 #endif
-  gtk_file_chooser_add_filter (GTK_FILE_CHOOSER (pw->fsbutton), filefilter);
+  gtk_file_chooser_add_filter (GTK_FILE_CHOOSER (self->priv->fsbutton), filefilter);
 
   selector_hbox = gtk_box_new (GTK_ORIENTATION_HORIZONTAL, 0);
   selector_playbutton = gtk_button_new_with_label (_("Play"));
   gtk_box_pack_end (GTK_BOX (selector_hbox),
                     selector_playbutton, FALSE, FALSE, 0);
   gtk_widget_show (selector_playbutton);
-  gtk_file_chooser_set_extra_widget (GTK_FILE_CHOOSER (pw->fsbutton),
+  gtk_file_chooser_set_extra_widget (GTK_FILE_CHOOSER (self->priv->fsbutton),
                                      selector_hbox);
 
-  g_signal_connect (selector_playbutton, "clicked",
-                    G_CALLBACK (audioev_filename_browse_play_cb),
-                    (gpointer) prefs_window);
-
-  g_signal_connect (pw->fsbutton, "selection-changed",
-                    G_CALLBACK (audioev_filename_browse_cb),
-                    (gpointer) prefs_window);
+  g_signal_connect (self->priv->fsbutton, "selection-changed",
+                    G_CALLBACK (sound_event_changed_cb),
+                    (gpointer) self);
 
   g_signal_connect (selection, "changed",
-                    G_CALLBACK (sound_event_clicked_cb),
-                    (gpointer) pw->fsbutton);
+                    G_CALLBACK (sound_event_selected_cb),
+                    (gpointer) self);
 
   button = gtk_button_new_with_label (_("Play"));
   gtk_box_pack_start (GTK_BOX (hbox), button, FALSE, FALSE, 2);
 
   g_signal_connect (button, "clicked",
                     G_CALLBACK (sound_event_play_cb),
-                    (gpointer) prefs_window);
+                    (gpointer) self);
 
   /* Place it after the signals so that we can make sure they are run if
      required */
-  gm_prefs_window_sound_events_list_build (prefs_window);
+  gm_prefs_window_sound_events_list_build (self);
 }
 
 
 static void
-gm_pw_init_h323_page (GtkWidget *prefs_window,
+gm_pw_init_h323_page (PreferencesWindow *self,
                       GtkWidget *container)
 {
   GtkWidget *entry = NULL;
-  GtkWidget *subsection = NULL;
+  Choices capabilities_choices;
+  Choices roles_choices;
 
-  const gchar *capabilities [] =
-    {_("String"),
-      _("Tone"),
-      _("RFC2833"),
-      _("Q.931"),
-      NULL};
+  static const char *capabilities[][2] =
+    { { "string",  N_("String") },
+      { "tone",    N_("Tone") },
+      { "rfc2833", N_("RFC2833") },
+      { "q931",    N_("Q.931") },
+      { NULL,      NULL }
+    };
 
-  const gchar *roles [] =
-    { _("Disable H.239 Extended Video"),
-      _("Allow H.239 per Content Role Mask"),
-      _("Force H.239 Presentation Role"),
-      _("Force H.239 Live Role"),
-      NULL };
+  static const char *roles[][2] =
+    { { "none",         N_("Disable H.239 Extended Video") },
+      { "content",      N_("Allow H.239 per Content Role Mask") },
+      { "presentation", N_("Force H.239 Presentation Role") },
+      { "live",         N_("Force H.239 Live Role") },
+      { NULL,           NULL }
+    };
+  for (int i=0 ; capabilities[i][0] ; ++i)
+    capabilities_choices.push_back (boost::make_tuple (capabilities[i][0],
+                                                       gettext (capabilities[i][1])));
+  for (int i=0 ; roles[i][0] ; ++i)
+    roles_choices.push_back (boost::make_tuple (roles[i][0],
+                                                gettext (roles[i][1])));
 
   /* Add Misc Settings */
-  subsection = gnome_prefs_subsection_new (prefs_window, container,
-                                           _("Misc Settings"), 2, 2);
-
   entry =
-    gnome_prefs_entry_new (subsection, _("Forward _URI:"), H323_KEY "forward_host", _("The host where calls should be forwarded if call forwarding is enabled"), 1, 2, false);
+    gm_pw_entry_new (container, _("Forward _URI:"),
+                     self->priv->h323_settings, "forward-host",
+                     _("The host where calls should be forwarded if call forwarding is enabled"),
+                     false);
   if (!g_strcmp0 (gtk_entry_get_text (GTK_ENTRY (entry)), ""))
     gtk_entry_set_text (GTK_ENTRY (entry), "h323:");
 
   /* Packing widget */
-  subsection = gnome_prefs_subsection_new (prefs_window, container,
-                                _("Advanced Settings"), 5, 4);
+  gm_pw_subsection_new (container, _("Advanced Settings"));
 
   /* The toggles */
-  gnome_prefs_toggle_new (subsection, _("Enable H.245 _tunneling"), H323_KEY "enable_h245_tunneling", _("This enables H.245 Tunneling mode. In H.245 Tunneling mode H.245 messages are encapsulated into the H.225 channel (port 1720). This saves one TCP connection during calls. H.245 Tunneling was introduced in H.323v2."), 0, 4);
+  gm_pw_toggle_new (container, _("Enable H.245 _tunneling"),
+                    self->priv->h323_settings, "enable-h245-tunneling",
+                    _("This enables H.245 Tunneling mode. In H.245 Tunneling mode H.245 messages are encapsulated into the H.225 channel (port 1720). This saves one TCP connection during calls. H.245 Tunneling was introduced in H.323v2."));
 
-  gnome_prefs_toggle_new (subsection, _("Enable _early H.245"), H323_KEY "enable_early_h245", _("This enables H.245 early in the setup"), 1, 4);
+  gm_pw_toggle_new (container, _("Enable _early H.245"),
+                    self->priv->h323_settings, "enable-early-h245",
+                    _("This enables H.245 early in the setup"));
 
-  gnome_prefs_toggle_new (subsection, _("Enable fast _start procedure"), H323_KEY "enable_fast_start", _("Connection will be established in Fast Start (Fast Connect) mode. Fast Start is a new way to start calls faster that was introduced in H.323v2."), 2, 4);
+  gm_pw_toggle_new (container, _("Enable fast _start procedure"), self->priv->h323_settings,
+                    "enable-fast-start", _("Connection will be established in Fast Start (Fast Connect) mode. Fast Start is a new way to start calls faster that was introduced in H.323v2."));
 
-  gnome_prefs_toggle_new (subsection, _("Enable H.239 control"), H323_KEY "enable_h239", _("This enables H.239 capability for additional video roles."), 3, 4);
+  gm_pw_toggle_new (container, _("Enable H.239 control"), self->priv->h323_settings,
+                    "enable-h239", _("This enables H.239 capability for additional video roles."));
 
-  gnome_prefs_int_option_menu_new (subsection, NULL, roles, H323_KEY "video_role", _("Select the H.239 Video Role"), 4);
+  gm_pw_string_option_menu_new (container, NULL,
+                                roles_choices,
+                                self->priv->h323_settings, "video-role",
+                                _("Select the H.239 Video Role"));
 
   /* Packing widget */
-  subsection = gnome_prefs_subsection_new (prefs_window, container,
-                                _("DTMF Mode"), 1, 4);
+  gm_pw_subsection_new (container, _("DTMF Mode"));
 
-  gnome_prefs_int_option_menu_new (subsection, _("_Send DTMF as:"), capabilities, H323_KEY "dtmf_mode", _("Select the mode for DTMFs sending"), 0);
+  gm_pw_string_option_menu_new (container, _("_Send DTMF as:"),
+                                capabilities_choices,
+                                self->priv->h323_settings, "dtmf-mode",
+                                _("Select the mode for DTMFs sending"));
 }
 
 
 static void
-gm_pw_init_sip_page (GtkWidget *prefs_window,
+gm_pw_init_sip_page (PreferencesWindow *self,
                      GtkWidget *container)
 {
   GtkWidget *entry = NULL;
-  GtkWidget *subsection = NULL;
 
-  const gchar *capabilities [] =
+  Choices capabilities_choices;
+
+  static const char *capabilities [][2] =
     {
-      _("RFC2833"),
-      _("INFO"),
-      NULL
+        { "rfc2833", _("RFC2833") },
+        { "info",    _("INFO") },
+        { NULL,      NULL }
     };
+  for (int i=0 ; capabilities[i][0] != NULL ; ++i)
+    capabilities_choices.push_back (boost::make_tuple (capabilities[i][0], capabilities[i][1]));
 
   /* Add Misc Settings */
-  subsection = gnome_prefs_subsection_new (prefs_window, container,
-                                           _("Misc Settings"), 2, 2);
-
-  gnome_prefs_entry_new (subsection, _("_Outbound proxy:"), SIP_KEY "outbound_proxy_host", _("The SIP Outbound Proxy to use for outgoing calls"), 0, 2, false);
+  gm_pw_entry_new (container, _("_Outbound proxy:"),
+                   self->priv->sip_settings, "outbound-proxy-host",
+                   _("The SIP Outbound Proxy to use for outgoing calls"), false);
 
   entry =
-    gnome_prefs_entry_new (subsection, _("Forward _URI:"), SIP_KEY "forward_host", _("The host where calls should be forwarded if call forwarding is enabled"), 1, 2, false);
+    gm_pw_entry_new (container, _("Forward _URI:"),
+                     self->priv->sip_settings, "forward-host",
+                     _("The host where calls should be forwarded if call forwarding is enabled"),
+                     false);
+
   if (!g_strcmp0 (gtk_entry_get_text (GTK_ENTRY (entry)), ""))
     gtk_entry_set_text (GTK_ENTRY (entry), "sip:");
 
   /* Packing widget */
-  subsection = gnome_prefs_subsection_new (prefs_window, container,
-                                _("DTMF Mode"), 1, 1);
+  gm_pw_subsection_new (container, _("DTMF Mode"));
 
-  gnome_prefs_int_option_menu_new (subsection, _("_Send DTMF as:"), capabilities, SIP_KEY "dtmf_mode", _("Select the mode for DTMFs sending"), 0);
+  gm_pw_string_option_menu_new (container, _("_Send DTMF as:"),
+                                capabilities_choices,
+                                self->priv->sip_settings, "dtmf-mode",
+                                _("Select the mode for DTMFs sending"));
 }
 
 
 static void
-gm_pw_init_audio_devices_page (GtkWidget *prefs_window,
-                               GtkWidget *container)
+gm_pw_init_audio_page (PreferencesWindow *self,
+                       GtkWidget *container)
 {
-  GtkWidget *subsection = NULL;
-  PStringArray devs;
-  gchar **array = NULL;
-  GmPreferencesWindow *pw = NULL;
-
-  pw = gm_pw_get_pw (prefs_window);
-
-  /* Add all the fields */
-  subsection = gnome_prefs_subsection_new (prefs_window, container,
-                                           _("Audio Devices"), 4, 3);
-
-  /* Add all the fields for the audio manager */
-  std::vector <std::string> device_list;
-
-  get_audiooutput_devices (pw->audiooutput_core, device_list);
-  array = vector_of_string_to_array (device_list);
-  pw->sound_events_output =
-    gnome_prefs_string_option_menu_new (subsection, _("Ringing device:"), (const gchar **)array, SOUND_EVENTS_KEY "output_device", _("Select the ringing audio device to use"), 0, DEFAULT_AUDIO_DEVICE_NAME);
-  pw->audio_player =
-    gnome_prefs_string_option_menu_new (subsection, _("Output device:"), (const gchar **)array, AUDIO_DEVICES_KEY "output_device", _("Select the audio output device to use"), 1, DEFAULT_AUDIO_DEVICE_NAME);
-  g_free (array);
-
-  /* The recorder */
-  get_audioinput_devices (pw->audioinput_core, device_list);
-  array = vector_of_string_to_array (device_list);
-  pw->audio_recorder =
-    gnome_prefs_string_option_menu_new (subsection, _("Input device:"), (const gchar **)array, AUDIO_DEVICES_KEY "input_device", _("Select the audio input device to use"), 2, DEFAULT_AUDIO_DEVICE_NAME);
-  g_free (array);
-
-  /* That button will refresh the device list */
-  gm_pw_add_update_button (container, _("_Detect devices"), G_CALLBACK (refresh_devices_list_cb), _("Click here to refresh the device list"), 1, prefs_window);
-}
-
-
-static void
-gm_pw_init_video_devices_page (GtkWidget *prefs_window,
-                               GtkWidget *container)
-{
-  GmPreferencesWindow *pw = NULL;
-
-  //GtkWidget *label = NULL;
-  GtkWidget *subsection = NULL;
-
-  //GtkWidget *button = NULL;
-
-  //gchar *conf_image = NULL;
-  //GtkFileFilter *filefilter = NULL;
-  //GtkWidget *preview_image = NULL;
-  //GtkWidget *preview_image_frame = NULL;
-
-  PStringArray devs;
-
-  gchar **array = NULL;
-
-  gchar *video_size[NB_VIDEO_SIZES+1];
-  unsigned int i;
-
-  for (i=0; i< NB_VIDEO_SIZES; i++)
-    video_size[i] = g_strdup_printf ("%dx%d", Ekiga::VideoSizes[i].width, Ekiga::VideoSizes[i].height);
-
-  video_size [NB_VIDEO_SIZES] = NULL;
-
-  const gchar *video_format [] =
-    {
-      _("PAL (Europe)"),
-      _("NTSC (America)"),
-      _("SECAM (France)"),
-      _("Auto"),
-      NULL
-    };
-
-  pw = gm_pw_get_pw (prefs_window);
-
-
-  std::vector <std::string> device_list;
-
-
-  /* The video devices related options */
-  subsection = gnome_prefs_subsection_new (prefs_window, container,
-                                           _("Video Devices"), 5, 3);
-
-  /* The video device */
-  get_videoinput_devices (pw->videoinput_core, device_list);
-  array = vector_of_string_to_array (device_list);
-  pw->video_device =
-    gnome_prefs_string_option_menu_new (subsection, _("Input device:"), (const gchar **)array, VIDEO_DEVICES_KEY "input_device", _("Select the video input device to use. If an error occurs when using this device a test picture will be transmitted."), 0, NULL);
-  g_free (array);
-
-  /* Video Channel */
-  gnome_prefs_spin_new (subsection, _("Channel:"), VIDEO_DEVICES_KEY "channel", _("The video channel number to use (to select camera, tv or other sources)"), 0.0, 10.0, 1.0, 3, 3, NULL, false);
-
-  gnome_prefs_int_option_menu_new (subsection, _("Size:"), (const gchar**)video_size, VIDEO_DEVICES_KEY "size", _("Select the transmitted video size"), 1);
-
-  gnome_prefs_int_option_menu_new (subsection, _("Format:"), video_format, VIDEO_DEVICES_KEY "format", _("Select the format for video cameras (does not apply to most USB cameras)"), 2);
-
-  /* That button will refresh the device list */
-  gm_pw_add_update_button (container, _("_Detect devices"), G_CALLBACK (refresh_devices_list_cb), _("Click here to refresh the device list"), 1, prefs_window);
-
-  for (i=0; i< NB_VIDEO_SIZES; i++)
-    g_free (video_size[i]);
-}
-
-
-static void
-gm_pw_init_audio_codecs_page (GtkWidget *prefs_window,
-                              GtkWidget *container)
-{
-  GtkWidget *subsection = NULL;
   GtkWidget *codecs_list = NULL;
+  int pos = 0;
+
+  std::vector<std::string> devices;
 
   /* Packing widgets */
-  subsection = gnome_prefs_subsection_new (prefs_window, container,
-				_("Codecs"), 1, 1);
-
+  GTK_GRID_LAST_ROW (container, pos);
   codecs_list = codecs_box_new_with_type (Ekiga::Call::Audio);
-  gtk_grid_attach (GTK_GRID (subsection), codecs_list, 0, 0, 1, 1);
+  gtk_container_set_border_width (GTK_CONTAINER (codecs_list), 6);
+  gtk_grid_attach (GTK_GRID (container), codecs_list, 0, pos-1, 2, 1);
 
   /* Here we add the audio codecs options */
-  subsection = gnome_prefs_subsection_new (prefs_window, container,
-				_("Settings"), 3, 1);
+  gm_pw_subsection_new (container, _("Settings"));
 
   /* Translators: the full sentence is Automatically adjust jitter buffer
      between X and Y ms */
-  gnome_prefs_toggle_new (subsection, _("Enable silence _detection"), AUDIO_CODECS_KEY "enable_silence_detection", _("If enabled, use silence detection with the codecs supporting it"), 0, 1);
+  gm_pw_toggle_new (container, _("Enable silence _detection"),
+                    self->priv->audio_codecs_settings, "enable-silence-detection",
+                    _("If enabled, use silence detection with the codecs supporting it"));
 
-  gnome_prefs_toggle_new (subsection, _("Enable echo can_celation"), AUDIO_CODECS_KEY "enable_echo_cancellation", _("If enabled, use echo cancellation"), 1, 1);
+  gm_pw_toggle_new (container, _("Enable echo can_celation"),
+                    self->priv->audio_codecs_settings, "enable-echo-cancellation",
+                    _("If enabled, use echo cancellation"));
 
-  gnome_prefs_spin_new (subsection, _("Maximum _jitter buffer (in ms):"), AUDIO_CODECS_KEY "maximum_jitter_buffer", _("The maximum jitter buffer size for audio reception (in ms)"), 20.0, 2000.0, 50.0, 2, 1, NULL, true);
+  /* Translators: the full sentence is Maximum jitter buffer of x ms. */
+  gm_pw_spin_new (container, _("Maximum _jitter buffer of"), _("ms"),
+                  self->priv->audio_codecs_settings, "maximum-jitter-buffer",
+                  _("The maximum jitter buffer size for audio reception (in ms)"),
+                  20.0, 2000.0, 50.0);
+
+  /* Audio Devices */
+  gm_pw_subsection_new (container, _("Devices"));
+
+  /* Add all the fields for the audio manager */
+  self->priv->audiooutput_core->get_devices (devices);
+  self->priv->sound_events_output =
+    gm_pw_string_option_menu_new (container,
+                                  _("Ringing device:"),
+                                  gm_pw_get_device_choices (devices),
+                                  self->priv->sound_events_settings,
+                                  "output-device",
+                                  _("Select the ringing audio device to use"));
+  self->priv->audio_player =
+    gm_pw_string_option_menu_new (container,
+                                  _("Output device:"),
+                                  gm_pw_get_device_choices (devices),
+                                  self->priv->audio_devices_settings,
+                                  "output-device",
+                                  _("Select the audio output device to use"));
+
+  /* The recorder */
+  self->priv->audioinput_core->get_devices (devices);
+  self->priv->audio_recorder =
+    gm_pw_string_option_menu_new (container,
+                                  _("Input device:"),
+                                  gm_pw_get_device_choices (devices),
+                                  self->priv->audio_devices_settings,
+                                  "input-device",
+                                  _("Select the audio input device to use"));
+
+  /* That button will refresh the device list */
+  gm_pw_add_update_button (container, _("_Detect devices"),
+                           G_CALLBACK (refresh_devices_list_cb),
+                           _("Click here to refresh the device list"), 1,
+                           self);
 }
 
 
 static void
-gm_pw_init_video_codecs_page (GtkWidget *prefs_window,
-                              GtkWidget *container)
+gm_pw_init_video_page (PreferencesWindow *self,
+                       GtkWidget *container)
 {
-  GtkWidget *subsection = NULL;
   GtkWidget *codecs_list = NULL;
+  PStringArray devs;
+
+  std::vector <std::string> devices;
+
+  Choices video_size_options;
+  Choices video_input_formats;
+
+  unsigned int i;
+  unsigned int pos = 0;
+
+  // FIXME: Probably should come from the core itself
+  static const char* VideoSizesDescription[NB_VIDEO_SIZES][2] = {
+      { "qcif", N_("Small")       },
+      { "sif",  N_("Medium")      },
+      { "cif",  N_("Medium")      },
+      { "4sif", N_("480p 4:3 HD") },
+      { "4cif", N_("DVD")         }
+  };
+
+  // FIXME: Probably should come from the core itself
+  static const char* VideoInputFormatDescription[][2] = {
+      { "pal",   N_("PAL (Europe)")   },
+      { "ntsc",  N_("NTSC (America)") },
+      { "secam", N_("SECAM (France)") },
+      { "auto",  N_("Auto")           },
+      { NULL, NULL }
+    };
+
+  for (i=0; i< NB_VIDEO_SIZES; i++) {
+    gchar *value = g_strdup_printf ("%s (%dx%d)",
+                                    gettext (VideoSizesDescription[i][1]),
+                                    Ekiga::VideoSizes[i].width,
+                                    Ekiga::VideoSizes[i].height);
+    video_size_options.push_back (boost::make_tuple (VideoSizesDescription[i][0], value));
+    g_free (value);
+  }
+
+  for (i=0; VideoInputFormatDescription[i][0]; i++) {
+    video_input_formats.push_back (boost::make_tuple (VideoInputFormatDescription[i][0],
+                                                      VideoInputFormatDescription[i][1]));
+  }
 
   /* Packing widgets */
-  subsection = gnome_prefs_subsection_new (prefs_window, container,
-				_("Codecs"), 1, 1);
-
+  GTK_GRID_LAST_ROW (container, pos);
   codecs_list = codecs_box_new_with_type (Ekiga::Call::Video);
-  gtk_grid_attach (GTK_GRID (subsection), codecs_list, 0, 0, 1, 1);
+  gtk_container_set_border_width (GTK_CONTAINER (codecs_list), 6);
+  gtk_grid_attach (GTK_GRID (container), codecs_list, 0, pos-1, 2, 1);
 
   /* Here we add the video codecs options */
-  subsection = gnome_prefs_subsection_new (prefs_window, container,
-				_("Settings"), 3, 1);
+  gm_pw_subsection_new (container, _("Settings"));
 
   /* Translators: the full sentence is Keep a minimum video quality of X % */
-  gnome_prefs_scale_new (subsection, _("Picture quality"), _("Frame rate"), VIDEO_CODECS_KEY "temporal_spatial_tradeoff", _("Choose if you want to guarantee a minimum image quality (possibly leading to dropped frames in order not to surpass the bitrate limit) or if you prefer to keep the frame rate"), 0.0, 32.0, 1.0, 2);
+  gm_pw_scale_new (container, _("Picture quality"), _("Frame rate"),
+                   self->priv->video_codecs_settings, "temporal-spatial-tradeoff",
+                   _("Choose if you want to guarantee a minimum image quality (possibly leading to dropped frames in order not to surpass the bitrate limit) or if you prefer to keep the frame rate"),
+                   0.0, 32.0, 1.0);
 
-  gnome_prefs_spin_new (subsection, _("Maximum video _bitrate (in kbits/s):"), VIDEO_CODECS_KEY "maximum_video_tx_bitrate", _("The maximum video bitrate in kbits/s. The video quality and the effective frame rate will be dynamically adjusted to keep the bitrate at the given value."), 16.0, 10240.0, 1.0, 1, 1, NULL, true);
+  /* Translators: the full sentence is Maximum video bitrate of x kbits/s. */
+  gm_pw_spin_new (container, _("Maximum video _bitrate of"), _("kbits/s"),
+                  self->priv->video_codecs_settings, "maximum-video-tx-bitrate",
+                  _("The maximum video bitrate in kbits/s. The video quality and the effective frame rate will be dynamically adjusted to keep the bitrate at the given value."),
+                  16.0, 10240.0, 1.0);
+
+
+  /* The video devices related options */
+  gm_pw_subsection_new (container, _("Devices"));
+
+  /* The video device */
+  self->priv->videoinput_core->get_devices (devices);
+  self->priv->video_device =
+    gm_pw_string_option_menu_new (container, _("Input device:"),
+                                  gm_pw_get_device_choices (devices),
+                                  self->priv->video_devices_settings, "input-device", _("Select the video input device to use. If an error occurs when using this device a test picture will be transmitted."));
+
+  gm_pw_string_option_menu_new (container, _("Size:"),
+                                video_size_options,
+                                self->priv->video_devices_settings,
+                                "size",
+                                _("Select the transmitted video size"));
+
+  gm_pw_string_option_menu_new (container, _("Format:"),
+                                video_input_formats,
+                                self->priv->video_devices_settings,
+                                "format",
+                                _("Select the format for video cameras (does not apply to most USB cameras)"));
+
+  gm_pw_spin_new (container, _("Channel:"), NULL,
+                  self->priv->video_devices_settings, "channel",
+                  _("The video channel number to use (to select camera, tv or other sources)"), 0.0, 10.0, 1.0);
+
+  /* That button will refresh the device list */
+  gm_pw_add_update_button (container, _("_Detect devices"), G_CALLBACK (refresh_devices_list_cb), _("Click here to refresh the device list"), 1, self);
 }
 
 
-/* GTK Callbacks */
+GtkWidget *
+gm_pw_entry_new (GtkWidget *subsection,
+                 const gchar *label_txt,
+                 boost::shared_ptr<Ekiga::Settings> settings,
+                 const std::string & key,
+                 const gchar *tooltip,
+                 G_GNUC_UNUSED bool indent)
+{
+  GtkWidget *entry = NULL;
+  GtkWidget *label = NULL;
+
+  int pos = 0;
+
+  GTK_GRID_LAST_ROW (subsection, pos);
+
+  label = gtk_label_new_with_mnemonic (label_txt);
+  gtk_misc_set_alignment (GTK_MISC (label), 0.0, 0.5);
+  gtk_label_set_justify (GTK_LABEL (label), GTK_JUSTIFY_LEFT);
+  if (indent)
+    g_object_set (G_OBJECT (label), "margin-left", 12, NULL);
+  gtk_grid_attach (GTK_GRID (subsection), label, 0, pos-1, 1, 1);
+
+  entry = gtk_entry_new ();
+  gtk_label_set_mnemonic_widget (GTK_LABEL(label), entry);
+  gtk_grid_attach_next_to (GTK_GRID (subsection), entry, label, GTK_POS_RIGHT, 1, 1);
+
+  g_settings_bind (settings->get_g_settings (), key.c_str (),
+                   entry, "text", G_SETTINGS_BIND_DEFAULT);
+
+  if (tooltip)
+    gtk_widget_set_tooltip_text (entry, tooltip);
+
+  gtk_widget_show_all (subsection);
+
+  return entry;
+}
+
+GtkWidget *
+gm_pw_string_option_menu_new (GtkWidget *subsection,
+                              const gchar *label_txt,
+                              const Choices & options,
+                              boost::shared_ptr <Ekiga::Settings> settings,
+                              const std::string & key,
+                              const gchar *tooltip,
+                              G_GNUC_UNUSED bool indent)
+{
+  GtkWidget *label = NULL;
+  GtkWidget *option_menu = NULL;
+  GList *cells = NULL;
+
+  int pos = 0;
+
+  GTK_GRID_LAST_ROW (subsection, pos);
+
+  label = gtk_label_new_with_mnemonic (label_txt);
+  gtk_misc_set_alignment (GTK_MISC (label), 0.0, 0.5);
+  gtk_label_set_justify (GTK_LABEL (label), GTK_JUSTIFY_LEFT);
+  if (indent)
+    g_object_set (G_OBJECT (label), "margin-left", 12, NULL);
+  gtk_grid_attach (GTK_GRID (subsection), label, 0, pos-1, 1, 1);
+
+  option_menu = gtk_combo_box_text_new ();
+  cells = gtk_cell_layout_get_cells (GTK_CELL_LAYOUT (option_menu));
+  g_object_set (G_OBJECT (cells->data), "ellipsize", PANGO_ELLIPSIZE_END, "width-chars", 30, NULL);
+  g_list_free (cells);
+
+  gtk_label_set_mnemonic_widget (GTK_LABEL (label), option_menu);
+  for (Choices_const_iterator iter = options.begin ();
+       iter != options.end ();
+       ++iter)
+    gtk_combo_box_text_append (GTK_COMBO_BOX_TEXT (option_menu),
+                               boost::get<0>(*iter).c_str (),
+                               boost::get<1>(*iter).c_str ());
+
+  gtk_grid_attach_next_to (GTK_GRID (subsection), option_menu, label, GTK_POS_RIGHT, 1, 1);
+
+  g_settings_bind (settings->get_g_settings (),
+                   key.c_str (),
+                   option_menu, "active-id",
+                   G_SETTINGS_BIND_DEFAULT);
+
+  if (tooltip)
+    gtk_widget_set_tooltip_text (option_menu, tooltip);
+
+  gtk_widget_show_all (subsection);
+
+  return option_menu;
+}
+
+
+void
+gm_pw_string_option_menu_update (GtkWidget *option_menu,
+                                 const Choices & options,
+                                 boost::shared_ptr<Ekiga::Settings> settings,
+                                 const std::string & key)
+{
+  if (options.empty () || key.empty ())
+    return;
+
+  gtk_combo_box_text_remove_all (GTK_COMBO_BOX_TEXT (option_menu));
+
+  for (Choices_const_iterator iter = options.begin ();
+       iter != options.end ();
+       ++iter)
+    gtk_combo_box_text_append (GTK_COMBO_BOX_TEXT (option_menu),
+                               boost::get<0>(*iter).c_str (),
+                               boost::get<1>(*iter).c_str ());
+
+  // We need to bind again after a remove_all operation
+  g_settings_bind (settings->get_g_settings (),
+                   key.c_str (),
+                   option_menu, "active-id",
+                   G_SETTINGS_BIND_DEFAULT);
+
+  // Force the corresponding AudioInputCore/AudioOutputCore/VideoInputCore
+  // to select the most appropriate device if we removed the currently used
+  // device
+  if (gtk_combo_box_get_active (GTK_COMBO_BOX (option_menu)) == -1)
+    settings->set_string (key, ""); // Nothing selected
+}
+
+
+void
+gm_pw_string_option_menu_add (GtkWidget *option_menu,
+                              const Choice & option,
+                              G_GNUC_UNUSED boost::shared_ptr <Ekiga::Settings> settings,
+                              G_GNUC_UNUSED const std::string & key)
+{
+  if (boost::get<0>(option).empty () || boost::get<1>(option).empty ())
+    return;
+
+  gtk_combo_box_text_append (GTK_COMBO_BOX_TEXT (option_menu),
+                             boost::get<0>(option).c_str (),
+                             boost::get<1>(option).c_str ());
+}
+
+
+void
+gm_pw_string_option_menu_remove (GtkWidget *option_menu,
+                                 const std::string & option,
+                                 boost::shared_ptr <Ekiga::Settings> settings,
+                                 const std::string & key)
+{
+  GtkTreeModel *model = gtk_combo_box_get_model (GTK_COMBO_BOX (option_menu));
+  GtkTreeIter iter;
+  int pos = 0;
+  gchar *s = NULL;
+
+  if (gtk_tree_model_get_iter_first (GTK_TREE_MODEL (model), &iter)) {
+    do {
+      gtk_tree_model_get (GTK_TREE_MODEL (model), &iter, 0, &s, -1);
+      if (s && !strcmp (s, option.c_str ())) {
+        g_free (s);
+        break;
+      }
+      g_free (s);
+      pos++;
+    } while (gtk_tree_model_iter_next (GTK_TREE_MODEL (model), &iter));
+  }
+  gtk_combo_box_text_remove (GTK_COMBO_BOX_TEXT (option_menu), pos);
+
+  // Force the corresponding AudioInputCore/AudioOutputCore/VideoInputCore
+  // to select the most appropriate device if we removed the currently used
+  // device
+  if (gtk_combo_box_get_active (GTK_COMBO_BOX (option_menu)) == -1)
+    settings->set_string (key, ""); // Nothing selected
+}
+
+
+GtkWidget *
+gm_pw_scale_new (GtkWidget* subsection,
+                 const gchar *down_label_txt,
+                 const gchar *up_label_txt,
+                 boost::shared_ptr <Ekiga::Settings> settings,
+                 const std::string & key,
+                 const gchar *tooltip,
+                 double min,
+                 double max,
+                 double step,
+                 G_GNUC_UNUSED bool indent)
+{
+  GtkWidget *hbox = NULL;
+  GtkAdjustment *adj = NULL;
+  GtkWidget *label = NULL;
+  GtkWidget *hscale = NULL;
+
+  int pos = 0;
+
+  GTK_GRID_LAST_ROW (subsection, pos);
+
+  hbox = gtk_box_new (GTK_ORIENTATION_HORIZONTAL, 0);
+
+  label = gtk_label_new_with_mnemonic (down_label_txt);
+  gtk_misc_set_alignment (GTK_MISC (label), 0.0, 0.5);
+  gtk_label_set_justify (GTK_LABEL (label), GTK_JUSTIFY_LEFT);
+  if (indent)
+    g_object_set (G_OBJECT (label), "margin-left", 12, NULL);
+  gtk_box_pack_start (GTK_BOX (hbox), label, FALSE, FALSE, 2);
+
+  adj = (GtkAdjustment *)
+    gtk_adjustment_new (settings->get_int (key),
+                        min, max, step,
+                        2.0, 1.0);
+  g_settings_bind (settings->get_g_settings (), key.c_str (),
+                   adj, "value", G_SETTINGS_BIND_DEFAULT);
+
+  hscale = gtk_scale_new (GTK_ORIENTATION_HORIZONTAL, adj);
+  gtk_scale_set_draw_value (GTK_SCALE (hscale), FALSE);
+  gtk_widget_set_size_request (GTK_WIDGET (hscale), 150, -1);
+  gtk_box_pack_start (GTK_BOX (hbox), hscale, FALSE, FALSE, 2);
+
+  label = gtk_label_new_with_mnemonic (up_label_txt);
+  gtk_box_pack_start (GTK_BOX (hbox), label, FALSE, FALSE, 2);
+
+  gtk_grid_attach (GTK_GRID (subsection), hbox, 0, pos-1, 2, 1);
+
+  if (tooltip)
+    gtk_widget_set_tooltip_text (hscale, tooltip);
+
+  gtk_widget_show_all (subsection);
+
+  return hscale;
+}
+
+
+GtkWidget *
+gm_pw_spin_new (GtkWidget* subsection,
+                const gchar *label_txt,
+                const gchar *label_txt2,
+                boost::shared_ptr <Ekiga::Settings> settings,
+                const std::string & key,
+                const gchar *tooltip,
+                double min,
+                double max,
+                double step,
+                G_GNUC_UNUSED bool indent)
+{
+  GtkAdjustment *adj = NULL;
+  GtkWidget *label = NULL;
+  GtkWidget *spin_button = NULL;
+  GtkWidget *hbox = NULL;
+
+  int pos = 0;
+
+  GTK_GRID_LAST_ROW (subsection, pos);
+
+  label = gtk_label_new_with_mnemonic (label_txt);
+  gtk_misc_set_alignment (GTK_MISC (label), 0.0, 0.5);
+  gtk_label_set_justify (GTK_LABEL (label), GTK_JUSTIFY_LEFT);
+  if (indent)
+    g_object_set (G_OBJECT (label), "margin-left", 12, NULL);
+
+  adj = (GtkAdjustment *)
+    gtk_adjustment_new (settings->get_int (key),
+                        min, max, step,
+                        1.0, 1.0);
+  spin_button = gtk_spin_button_new (adj, 1.0, 0);
+  g_settings_bind (settings->get_g_settings (), key.c_str (),
+                   adj, "value", G_SETTINGS_BIND_DEFAULT);
+
+  if (label_txt2) {
+    hbox = gtk_box_new (GTK_ORIENTATION_HORIZONTAL, 0);
+    gtk_box_pack_start (GTK_BOX (hbox), label, FALSE, FALSE, 2);
+
+    gtk_box_pack_start (GTK_BOX (hbox), spin_button, FALSE, FALSE, 2);
+
+    label = gtk_label_new_with_mnemonic (label_txt2);
+    gtk_box_pack_start (GTK_BOX (hbox), label, FALSE, FALSE, 2);
+
+    gtk_grid_attach (GTK_GRID (subsection), hbox, 0, pos-1, 2, 1);
+  }
+  else {
+    gtk_grid_attach (GTK_GRID (subsection), label, 0, pos-1, 1, 1);
+    gtk_grid_attach_next_to (GTK_GRID (subsection), spin_button, label, GTK_POS_RIGHT, 1, 1);
+  }
+
+  if (tooltip)
+    gtk_widget_set_tooltip_text (spin_button, tooltip);
+
+  gtk_widget_show_all (subsection);
+
+  return spin_button;
+}
+
+
+GtkWidget *
+gm_pw_toggle_new (GtkWidget* subsection,
+                  const gchar *label_txt,
+                  boost::shared_ptr <Ekiga::Settings> settings,
+                  const std::string & key,
+                  const gchar *tooltip,
+                  G_GNUC_UNUSED bool indent)
+{
+  GtkWidget *toggle = NULL;
+
+  int pos = 0;
+
+  GTK_GRID_LAST_ROW (subsection, pos);
+
+  toggle = gtk_check_button_new_with_mnemonic (label_txt);
+  if (indent)
+    g_object_set (G_OBJECT (toggle), "margin-left", 12, NULL);
+  g_settings_bind (settings->get_g_settings (), key.c_str (),
+                   toggle, "active", G_SETTINGS_BIND_DEFAULT);
+  gtk_grid_attach (GTK_GRID (subsection), toggle, 0, pos-1, 2, 1);
+
+  if (tooltip)
+    gtk_widget_set_tooltip_text (toggle, tooltip);
+
+  gtk_widget_show_all (subsection);
+
+  return toggle;
+}
+
+
+GtkWidget *
+gm_pw_window_subsection_new (PreferencesWindow *self,
+                             const gchar *section_name)
+{
+  GtkWidget *container = NULL;
+  GtkWidget *label = NULL;
+
+  if (!self)
+    return NULL;
+
+  if (!section_name)
+    return NULL;
+
+  container = gtk_grid_new ();
+  gtk_container_set_border_width (GTK_CONTAINER (container), 12);
+  gtk_grid_set_column_spacing (GTK_GRID (container), 6);
+  gtk_grid_set_row_spacing (GTK_GRID (container), 6);
+  gtk_grid_set_column_homogeneous (GTK_GRID (container), FALSE);
+  gtk_grid_set_row_homogeneous (GTK_GRID (container), FALSE);
+
+  label = gtk_label_new (section_name);
+  gtk_notebook_append_page (GTK_NOTEBOOK (self->priv->notebook),
+                            container, label);
+
+  gtk_widget_show_all (container);
+
+  return container;
+}
+
+void
+gm_pw_subsection_new (GtkWidget *container,
+                      const gchar *name)
+{
+  GtkWidget *label = NULL;
+  gchar *label_txt = NULL;
+  int pos = 0;
+
+  GTK_GRID_LAST_ROW (container, pos);
+
+  label = gtk_label_new (NULL);
+  label_txt = g_strdup_printf ("<b>%s</b>", name);
+  gtk_label_set_markup (GTK_LABEL (label), label_txt);
+  gtk_misc_set_alignment (GTK_MISC (label), 0.0, 0.5);
+  gtk_label_set_justify (GTK_LABEL (label), GTK_JUSTIFY_LEFT);
+  gtk_grid_attach (GTK_GRID (container), label, 0, pos-1, 2, 1);
+  g_object_set (G_OBJECT (label), "margin-top", 9, NULL);
+  g_free (label_txt);
+}
+
+static Choices
+gm_pw_get_device_choices (const std::vector<std::string> & v)
+{
+  Choices c;
+
+  if (v.size () == 0)
+    c.push_back (boost::make_tuple ("none", _("No device found")));
+  else for (std::vector<std::string>::const_iterator iter = v.begin ();
+            iter != v.end ();
+            ++iter)
+    c.push_back (boost::make_tuple (*iter, *iter));
+
+  return c;
+}
+
+static void
+gm_prefs_window_update_devices_list (PreferencesWindow *self)
+{
+  g_return_if_fail (self != NULL);
+
+  std::vector<std::string> devices;
+
+  /* The player */
+  self->priv->audiooutput_core->get_devices (devices);
+  gm_pw_string_option_menu_update (self->priv->audio_player,
+                                   gm_pw_get_device_choices (devices),
+                                   self->priv->audio_devices_settings,
+                                   "output-device");
+  gm_pw_string_option_menu_update (self->priv->sound_events_output,
+                                   gm_pw_get_device_choices (devices),
+                                   self->priv->sound_events_settings,
+                                   "output-device");
+
+  /* The recorder */
+  self->priv->audioinput_core->get_devices (devices);
+  gm_pw_string_option_menu_update (self->priv->audio_recorder,
+                                   gm_pw_get_device_choices (devices),
+                                   self->priv->audio_devices_settings,
+                                   "input-device");
+
+  /* The Video player */
+  self->priv->videoinput_core->get_devices (devices);
+  gm_pw_string_option_menu_update (self->priv->video_device,
+                                   gm_pw_get_device_choices (devices),
+                                   self->priv->video_devices_settings,
+                                   "input-device");
+}
+
+
+
+/* Callbacks */
+static void
+dialog_response_cb (GtkDialog *dialog,
+                    gint response_id,
+                    G_GNUC_UNUSED gpointer data)
+{
+  switch (response_id) {
+  case GTK_RESPONSE_HELP:
+    help_callback (NULL, NULL);
+    g_signal_stop_emission_by_name (dialog, "response");
+    break;
+  default:
+    gtk_widget_hide (GTK_WIDGET (dialog));
+  }
+}
+
+
+static gboolean
+dialog_delete_event_cb (GtkWidget *dialog,
+                        G_GNUC_UNUSED gpointer data)
+{
+  gtk_widget_hide (dialog);
+  return TRUE;
+}
+
+
 static void
 refresh_devices_list_cb (G_GNUC_UNUSED GtkWidget *widget,
-			 gpointer data)
+                         gpointer data)
 {
   g_return_if_fail (data != NULL);
-  GtkWidget *prefs_window = GTK_WIDGET (data);
+  PreferencesWindow *self = PREFERENCES_WINDOW (data);
 
-  gm_prefs_window_update_devices_list(prefs_window);
+  gm_prefs_window_update_devices_list (self);
 }
 
 
 static void
-audioev_filename_browse_cb (GtkWidget *b,
-                            gpointer data)
+sound_event_changed_cb (GtkWidget *b,
+                        gpointer data)
 {
-
-  GmPreferencesWindow *pw = NULL;
-
   GtkTreeModel *model = NULL;
   GtkTreeSelection *selection = NULL;
   GtkTreeIter iter;
 
   gchar *filename = NULL;
-  gchar *conf_key = NULL;
-  gchar *sound_event = NULL;
+  gchar *key = NULL;
+  std::string sound_event;
 
   g_return_if_fail (data != NULL);
-  pw = gm_pw_get_pw (GTK_WIDGET (data));
+  PreferencesWindow *self = PREFERENCES_WINDOW (data);
 
   selection =
-    gtk_tree_view_get_selection (GTK_TREE_VIEW (pw->sound_events_list));
+    gtk_tree_view_get_selection (GTK_TREE_VIEW (self->priv->sound_events_list));
 
   if (gtk_tree_selection_get_selected (selection, &model, &iter)) {
 
     gtk_tree_model_get (GTK_TREE_MODEL (model), &iter,
-      2, &conf_key, -1);
+                        2, &key, -1);
 
-    if (conf_key) {
+    if (key) {
       filename = gtk_file_chooser_get_filename (GTK_FILE_CHOOSER (b));
       if (filename) {
-        sound_event = gm_conf_get_string (conf_key);
+        sound_event = self->priv->sound_events_settings->get_string (key);
 
-        if (!sound_event || g_strcmp0 (filename, sound_event))
-          gm_conf_set_string (conf_key, (gchar *) filename);
+        if (sound_event.empty () || g_strcmp0 (filename, sound_event.c_str ()))
+          self->priv->sound_events_settings->set_string (key, filename);
 
         g_free (filename);
       }
 
-      g_free (conf_key);
-      g_free (sound_event);
+      g_free (key);
     }
   }
 }
 
 
 static void
-sound_events_list_changed_nt (G_GNUC_UNUSED gpointer id,
-			      GmConfEntry *entry,
-			      gpointer data)
+sound_event_setting_changed (G_GNUC_UNUSED GSettings *settings,
+                             gchar *key,
+                             gpointer data)
 {
-  GtkWidget *prefs_window = (GtkWidget*)data;
+  bool valid = true;
 
-  if (gm_conf_entry_get_type (entry) == GM_CONF_STRING
-      || gm_conf_entry_get_type (entry) == GM_CONF_BOOL) {
+  GtkTreeIter iter;
 
-    if (prefs_window)
-      gm_prefs_window_sound_events_list_build (prefs_window);
+  g_return_if_fail (data != NULL);
+  PreferencesWindow *self = PREFERENCES_WINDOW (data);
+
+  GtkTreeModel *model = gtk_tree_view_get_model (GTK_TREE_VIEW (self->priv->sound_events_list));
+
+  /* Get the first iter in the list, check it is valid and walk
+   *  * through the list, reading each row. */
+  for (valid = gtk_tree_model_get_iter_first (model, &iter);
+       valid;
+       valid = gtk_tree_model_iter_next (model, &iter)) {
+
+    gchar *str = NULL;
+    gtk_tree_model_get (model, &iter, 3, &str, -1);
+
+    if (key && str && !g_strcmp0 (key, str)) {
+      gtk_list_store_set (GTK_LIST_STORE (model), &iter,
+                          0, self->priv->sound_events_settings->get_bool (key));
+      break;
+    }
+
+    g_free (str);
   }
 }
 
 
 static void
-sound_event_clicked_cb (GtkTreeSelection *selection,
-			gpointer data)
+sound_event_selected_cb (GtkTreeSelection *selection,
+                         gpointer data)
 {
   GtkTreeModel *model = NULL;
   GtkTreeIter iter;
 
-  gchar *conf_key = NULL;
+  gchar *key = NULL;
   gchar *filename = NULL;
-  gchar *sound_event = NULL;
+
+  std::string sound_event;
+
+  g_return_if_fail (data != NULL);
+  PreferencesWindow *self = PREFERENCES_WINDOW (data);
 
   if (gtk_tree_selection_get_selected (selection, &model, &iter)) {
 
-    gtk_tree_model_get (GTK_TREE_MODEL (model), &iter,
-			2, &conf_key, -1);
+    gtk_tree_model_get (GTK_TREE_MODEL (model), &iter, 2, &key, -1);
 
-    if (conf_key) {
+    if (key) {
 
-      sound_event = gm_conf_get_string (conf_key);
+      sound_event = self->priv->sound_events_settings->get_string (key);
 
-      if (sound_event) {
+      if (!sound_event.empty ()) {
 
-        if (!g_path_is_absolute (sound_event))
+        if (!g_path_is_absolute (sound_event.c_str ()))
           filename = g_build_filename (DATA_DIR, "sounds", PACKAGE_NAME,
-                                       sound_event, NULL);
+                                       sound_event.c_str (), NULL);
         else
-          filename = g_strdup (sound_event);
+          filename = g_strdup (sound_event.c_str ());
 
-        gtk_file_chooser_set_filename (GTK_FILE_CHOOSER (data), filename);
+        gtk_file_chooser_set_filename (GTK_FILE_CHOOSER (self->priv->fsbutton), filename);
         g_free (filename);
-        g_free (sound_event);
       }
 
-      g_free (conf_key);
+      g_free (key);
     }
   }
 }
@@ -986,342 +1588,295 @@ sound_event_clicked_cb (GtkTreeSelection *selection,
 
 static void
 sound_event_play_cb (G_GNUC_UNUSED GtkWidget *widget,
-		     gpointer data)
+                     gpointer data)
 {
   GtkTreeSelection *selection = NULL;
   GtkTreeModel *model = NULL;
   GtkTreeIter selected_iter;
 
-  gchar *sound_event = NULL;
+  gchar *key = NULL;
 
-  GmPreferencesWindow *pw = NULL;
-  
-  g_return_if_fail (data != NULL);
-  pw = gm_pw_get_pw (GTK_WIDGET (data));
+  std::string sound_event;
 
   g_return_if_fail (data != NULL);
+  PreferencesWindow *self = PREFERENCES_WINDOW (data);
 
-  selection = gtk_tree_view_get_selection (GTK_TREE_VIEW (pw->sound_events_list));
+  selection = gtk_tree_view_get_selection (GTK_TREE_VIEW (self->priv->sound_events_list));
 
   if (gtk_tree_selection_get_selected (selection, &model, &selected_iter)) {
 
-    gtk_tree_model_get (GTK_TREE_MODEL (model), &selected_iter, 4, &sound_event, -1);
+    gtk_tree_model_get (GTK_TREE_MODEL (model), &selected_iter, 2, &key, -1);
 
-    if (sound_event) {
-      pw->audiooutput_core->play_event(sound_event);
-      g_free (sound_event);
+    sound_event = self->priv->sound_events_settings->get_string (key);
+    if (!sound_event.empty ()) {
+      if (!g_path_is_absolute (sound_event.c_str ()))
+        self->priv->audiooutput_core->play_event (sound_event);
+      else
+        self->priv->audiooutput_core->play_file (sound_event);
     }
+
+    g_free (key);
   }
 }
 
 
 static void
 sound_event_toggled_cb (G_GNUC_UNUSED GtkCellRendererToggle *cell,
-			gchar *path_str,
-			gpointer data)
+                        gchar *path_str,
+                        gpointer data)
 {
   GtkTreeModel *model = NULL;
   GtkTreePath *path = NULL;
   GtkTreeIter iter;
 
-  gchar *conf_key = NULL;
+  gchar *key = NULL;
 
   bool fixed = FALSE;
 
+  g_return_if_fail (data != NULL);
+  PreferencesWindow *self = PREFERENCES_WINDOW (data);
 
-  model = (GtkTreeModel *) data;
+  model = gtk_tree_view_get_model (GTK_TREE_VIEW (self->priv->sound_events_list));
   path = gtk_tree_path_new_from_string (path_str);
 
   gtk_tree_model_get_iter (model, &iter, path);
-  gtk_tree_model_get (model, &iter, 0, &fixed, 3, &conf_key, -1);
+  gtk_tree_model_get (model, &iter, 0, &fixed, 3, &key, -1);
 
   fixed ^= 1;
 
-  gm_conf_set_bool (conf_key, fixed);
+  self->priv->sound_events_settings->set_bool (key, fixed);
 
-  g_free (conf_key);
+  g_free (key);
   gtk_tree_path_free (path);
+}
+
+void on_videoinput_device_added_cb (const Ekiga::VideoInputDevice & device,
+                                    PreferencesWindow *self)
+{
+  g_return_if_fail (self != NULL);
+
+  gm_pw_string_option_menu_add (self->priv->video_device,
+                                boost::make_tuple (device.GetString (), device.GetString ()),
+                                self->priv->video_devices_settings, "input-device");
+}
+
+void on_videoinput_device_removed_cb (const Ekiga::VideoInputDevice & device,
+                                      bool,
+                                      PreferencesWindow *self)
+{
+  g_return_if_fail (self != NULL);
+
+  gm_pw_string_option_menu_remove (self->priv->video_device, device.GetString(),
+                                   self->priv->video_devices_settings, "input-device");
+}
+
+void on_audioinput_device_added_cb (const Ekiga::AudioInputDevice & device,
+                                    PreferencesWindow *self)
+{
+  g_return_if_fail (self != NULL);
+
+  gm_pw_string_option_menu_add (self->priv->audio_recorder,
+                                boost::make_tuple (device.GetString (), device.GetString ()),
+                                self->priv->audio_devices_settings, "input-device");
+}
+
+void on_audioinput_device_removed_cb (const Ekiga::AudioInputDevice & device,
+                                      bool,
+                                      PreferencesWindow *self)
+{
+  g_return_if_fail (self != NULL);
+
+  gm_pw_string_option_menu_remove (self->priv->audio_recorder, device.GetString(),
+                                   self->priv->audio_devices_settings, "input-device");
+}
+
+void on_audiooutput_device_added_cb (const Ekiga::AudioOutputDevice & device,
+                                     PreferencesWindow *self)
+{
+  g_return_if_fail (self != NULL);
+
+  gm_pw_string_option_menu_add (self->priv->audio_player,
+                                boost::make_tuple (device.GetString (), device.GetString ()),
+                                self->priv->audio_devices_settings, "output-device");
+  gm_pw_string_option_menu_add (self->priv->sound_events_output,
+                                boost::make_tuple (device.GetString (), device.GetString ()),
+                                self->priv->sound_events_settings, "output-device");
+}
+
+void on_audiooutput_device_removed_cb (const Ekiga::AudioOutputDevice & device,
+                                       bool,
+                                       PreferencesWindow *self)
+{
+  g_return_if_fail (self != NULL);
+
+  gm_pw_string_option_menu_remove (self->priv->audio_player, device.GetString(),
+                                   self->priv->audio_devices_settings, "output-device");
+  gm_pw_string_option_menu_remove (self->priv->sound_events_output, device.GetString(),
+                                   self->priv->sound_events_settings, "output-device");
+}
+
+
+/* Implementation of the GObject stuff */
+static void
+preferences_window_finalize (GObject *obj)
+{
+  PreferencesWindow *self = PREFERENCES_WINDOW (obj);
+
+  delete self->priv;
+
+  G_OBJECT_CLASS (preferences_window_parent_class)->finalize (obj);
 }
 
 
 static void
-audioev_filename_browse_play_cb (GtkWidget* /* playbutton */,
-				 gpointer data)
+preferences_window_init (G_GNUC_UNUSED PreferencesWindow* self)
 {
-  GmPreferencesWindow* pw = NULL;
-
-  g_return_if_fail (data != NULL);
-
-  pw = gm_pw_get_pw (GTK_WIDGET (data));
-
-  gchar* file_name = gtk_file_chooser_get_filename (GTK_FILE_CHOOSER (pw->fsbutton));
-  std::string file_name_string = file_name;
-  pw->audiooutput_core->play_file(file_name_string);
-
-  g_free (file_name);
+  /* can't do anything here... we're waiting for a core :-/ */
 }
 
-void on_videoinput_device_added_cb (const Ekiga::VideoInputDevice & device, bool isDesired, GtkWidget *prefs_window)
+
+static void
+preferences_window_class_init (PreferencesWindowClass *klass)
 {
-  GmPreferencesWindow *pw = NULL;
-  g_return_if_fail (prefs_window != NULL);
-  pw = gm_pw_get_pw (prefs_window);
-  gnome_prefs_string_option_menu_add (pw->video_device, (device.GetString()).c_str(),  isDesired ? TRUE : FALSE);
+  GObjectClass *gobject_class = G_OBJECT_CLASS (klass);
+
+  gobject_class->finalize = preferences_window_finalize;
 }
 
-void on_videoinput_device_removed_cb (const Ekiga::VideoInputDevice & device, bool, GtkWidget *prefs_window)
-{
-  GmPreferencesWindow *pw = NULL;
-  g_return_if_fail (prefs_window != NULL);
-  pw = gm_pw_get_pw (prefs_window);
-  gnome_prefs_string_option_menu_remove(pw->video_device, (device.GetString()).c_str());
-}
-
-void on_audioinput_device_added_cb (const Ekiga::AudioInputDevice & device, bool isDesired, GtkWidget *prefs_window)
-{
-  GmPreferencesWindow *pw = NULL;
-  g_return_if_fail (prefs_window != NULL);
-  pw = gm_pw_get_pw (prefs_window);
-  gnome_prefs_string_option_menu_add (pw->audio_recorder, (device.GetString()).c_str(),  isDesired ? TRUE : FALSE);
-
-}
-
-void on_audioinput_device_removed_cb (const Ekiga::AudioInputDevice & device, bool, GtkWidget *prefs_window)
-{
-  GmPreferencesWindow *pw = NULL;
-  g_return_if_fail (prefs_window != NULL);
-  pw = gm_pw_get_pw (prefs_window);
-  gnome_prefs_string_option_menu_remove(pw->audio_recorder, (device.GetString()).c_str());
-}
-
-void on_audiooutput_device_added_cb (const Ekiga::AudioOutputDevice & device, bool isDesired,  GtkWidget *prefs_window)
-{
-  GmPreferencesWindow *pw = NULL;
-  g_return_if_fail (prefs_window != NULL);
-  pw = gm_pw_get_pw (prefs_window);
-  gnome_prefs_string_option_menu_add (pw->audio_player, (device.GetString()).c_str(), isDesired ? TRUE : FALSE);
-  gnome_prefs_string_option_menu_add (pw->sound_events_output, (device.GetString()).c_str(), isDesired ? TRUE : FALSE);
-}
-
-void on_audiooutput_device_removed_cb (const Ekiga::AudioOutputDevice & device, bool, GtkWidget *prefs_window)
-{
-  GmPreferencesWindow *pw = NULL;
-  g_return_if_fail (prefs_window != NULL);
-  pw = gm_pw_get_pw (prefs_window);
-  gnome_prefs_string_option_menu_remove(pw->audio_player, (device.GetString()).c_str());
-  gnome_prefs_string_option_menu_remove(pw->sound_events_output, (device.GetString()).c_str());
-}
 
 /* Public functions */
-void 
-gm_prefs_window_update_devices_list (GtkWidget *prefs_window)
-{
-  GmPreferencesWindow *pw = NULL;
-  gchar **array = NULL;
-
-  g_return_if_fail (prefs_window != NULL);
-  pw = gm_pw_get_pw (prefs_window);
-
-  std::vector <std::string> device_list;
-
-  /* The player */
-  get_audiooutput_devices (pw->audiooutput_core, device_list);
-  array = vector_of_string_to_array (device_list);
-  gnome_prefs_string_option_menu_update (pw->audio_player,
- 					 (const gchar **)array,
- 					 AUDIO_DEVICES_KEY "output_device",
- 					 DEFAULT_AUDIO_DEVICE_NAME);
-  gnome_prefs_string_option_menu_update (pw->sound_events_output,
-                                         (const gchar **)array,
-                                         SOUND_EVENTS_KEY "output_device",
-                                         DEFAULT_AUDIO_DEVICE_NAME);
-  g_free (array);
-
-  /* The recorder */
-  get_audioinput_devices (pw->audioinput_core, device_list);
-  array = vector_of_string_to_array (device_list);
-  gnome_prefs_string_option_menu_update (pw->audio_recorder,
- 					 (const gchar **)array,
- 					 AUDIO_DEVICES_KEY "input_device",
- 					 DEFAULT_AUDIO_DEVICE_NAME);
-  g_free (array);
-
-
-  /* The Video player */
-  get_videoinput_devices (pw->videoinput_core, device_list);
-  array = vector_of_string_to_array (device_list);
-  gnome_prefs_string_option_menu_update (pw->video_device,
-					 (const gchar **)array,
-					 VIDEO_DEVICES_KEY "input_device",
-					 get_default_video_device_name (array));
-  g_free (array);
-}
-
-
 GtkWidget *
-preferences_window_new (Ekiga::ServiceCore& core)
+preferences_window_new (boost::shared_ptr<Ekiga::AudioInputCore> audio_input_core,
+                        boost::shared_ptr<Ekiga::AudioOutputCore> audio_output_core,
+                        boost::shared_ptr<Ekiga::VideoInputCore> video_input_core)
 {
-  GmPreferencesWindow *pw = NULL;
+  PreferencesWindow *self = NULL;
 
   GdkPixbuf *pixbuf = NULL;
-  GtkWidget *window = NULL;
   GtkWidget *container = NULL;
-  gchar     *filename = NULL;
-  std::vector <std::string> device_list;
-
-  gpointer notifier;
-
-  filename = g_build_filename (DATA_DIR, "pixmaps", PACKAGE_NAME, PACKAGE_NAME "-logo.png", NULL);
-  window = gnome_prefs_window_new (filename);
-  g_free (filename);
-  g_object_set_data_full (G_OBJECT (window), "window_name",
-			  g_strdup ("preferences_window"), g_free);
-  gtk_window_set_title (GTK_WINDOW (window), _("Ekiga Preferences"));
-  pixbuf = gtk_widget_render_icon_pixbuf (GTK_WIDGET (window),
-					  GTK_STOCK_PREFERENCES,
-					  GTK_ICON_SIZE_MENU);
-  gtk_window_set_icon (GTK_WINDOW (window), pixbuf);
-  gtk_widget_realize (GTK_WIDGET (window));
-  g_object_unref (pixbuf);
-
-
-  /* The GMObject data */
-  pw = new GmPreferencesWindow;
-
-  pw->audioinput_core = core.get<Ekiga::AudioInputCore> ("audioinput-core");
-  pw->audiooutput_core = core.get<Ekiga::AudioOutputCore> ("audiooutput-core");
-  pw->videoinput_core = core.get<Ekiga::VideoInputCore> ("videoinput-core");
-
-  g_object_set_data_full (G_OBJECT (window), "GMObject",
-			  pw, (GDestroyNotify) gm_pw_destroy);
-
-
-  gnome_prefs_window_section_new (window, _("General"));
-  container = gnome_prefs_window_subsection_new (window, _("Personal Data"));
-  gm_pw_init_general_page (window, container);
-  gtk_widget_show_all (GTK_WIDGET (container));
-
-  container = gnome_prefs_window_subsection_new (window,
-						 _("General Settings"));
-  gm_pw_init_interface_page (window, container);
-  gtk_widget_show_all (GTK_WIDGET (container));
-
-  container = gnome_prefs_window_subsection_new (window, _("Call Options"));
-  gm_pw_init_call_options_page (window, container);
-  gtk_widget_show_all (GTK_WIDGET (container));
-
-  container = gnome_prefs_window_subsection_new (window,
-						 _("Sound Events"));
-  gm_pw_init_sound_events_page (window, container);
-  gtk_widget_show_all (GTK_WIDGET (container));
-
-  gnome_prefs_window_section_new (window, _("Protocols"));
-  container = gnome_prefs_window_subsection_new (window,
-						 _("SIP Settings"));
-  gm_pw_init_sip_page (window, container);
-  gtk_widget_show_all (GTK_WIDGET (container));
-
-  container = gnome_prefs_window_subsection_new (window,
-						 _("H.323 Settings"));
-  gm_pw_init_h323_page (window, container);
-  gtk_widget_show_all (GTK_WIDGET (container));
-
-
-  /* The player */
-  gnome_prefs_window_section_new (window, _("Audio"));
-  container = gnome_prefs_window_subsection_new (window, _("Devices"));
-  gm_pw_init_audio_devices_page (window, container);
-  gtk_widget_show_all (GTK_WIDGET (container));
-
-  container = gnome_prefs_window_subsection_new (window, _("Codecs"));
-  gm_pw_init_audio_codecs_page (window, container);
-  gtk_widget_show_all (GTK_WIDGET (container));
-
-
-  gnome_prefs_window_section_new (window, _("Video"));
-  container = gnome_prefs_window_subsection_new (window, _("Devices"));
-  gm_pw_init_video_devices_page (window, container);
-  gtk_widget_show_all (GTK_WIDGET (container));
-
-  container = gnome_prefs_window_subsection_new (window, _("Codecs"));
-  gm_pw_init_video_codecs_page (window, container);
-  gtk_widget_show_all (GTK_WIDGET (container));
-
-
-  /* That's an usual GtkWindow, connect it to the signals */
-  g_signal_connect_swapped (window, "response",
-			    G_CALLBACK (gm_window_hide),
-			    (gpointer) window);
-
-  gm_window_hide_on_delete (window);
-
   boost::signals2::connection conn;
 
-  conn = pw->videoinput_core->device_added.connect (boost::bind (&on_videoinput_device_added_cb, _1, _2, window));
-  pw->connections.add (conn);
-  conn = pw->videoinput_core->device_removed.connect (boost::bind (&on_videoinput_device_removed_cb, _1, _2, window));
-  pw->connections.add (conn);
+  /* The window */
+  self = (PreferencesWindow *) g_object_new (PREFERENCES_WINDOW_TYPE, NULL);
+  self->priv = new PreferencesWindowPrivate ();
+  self->priv->audioinput_core = audio_input_core;
+  self->priv->audiooutput_core = audio_output_core;
+  self->priv->videoinput_core = video_input_core;
 
-  conn = pw->audioinput_core->device_added.connect (boost::bind (&on_audioinput_device_added_cb, _1, _2, window));
-  pw->connections.add (conn);
-  conn = pw->audioinput_core->device_removed.connect (boost::bind (&on_audioinput_device_removed_cb, _1, _2, window));
-  pw->connections.add (conn);
+  gtk_dialog_add_button (GTK_DIALOG (self), GTK_STOCK_CLOSE, GTK_RESPONSE_CANCEL);
+  gtk_dialog_add_button (GTK_DIALOG (self), GTK_STOCK_HELP, GTK_RESPONSE_HELP);
 
-  conn = pw->audiooutput_core->device_added.connect (boost::bind (&on_audiooutput_device_added_cb, _1, _2, window));
-  pw->connections.add(conn);
-  conn = pw->audiooutput_core->device_removed.connect (boost::bind (&on_audiooutput_device_removed_cb, _1, _2, window));
-  pw->connections.add (conn);
+  self->priv->notebook = gtk_notebook_new ();
+  gtk_notebook_set_show_tabs (GTK_NOTEBOOK (self->priv->notebook), TRUE);
+  gtk_notebook_set_show_border (GTK_NOTEBOOK (self->priv->notebook), FALSE);
 
-  /* Connect notifiers for SOUND_EVENTS_KEY keys */
-  notifier =
-    gm_conf_notifier_add (SOUND_EVENTS_KEY "enable_incoming_call_sound", 
-			  sound_events_list_changed_nt, window);
-   pw->notifiers.push_front (notifier);
+  container = gtk_dialog_get_content_area (GTK_DIALOG (self));
+  gtk_box_pack_start (GTK_BOX (container), self->priv->notebook, TRUE, TRUE, 0);
+  gtk_widget_show_all (GTK_WIDGET (container));
 
-  notifier =
-    gm_conf_notifier_add (SOUND_EVENTS_KEY "incoming_call_sound",
-			  sound_events_list_changed_nt, window);
-  pw->notifiers.push_front (notifier);
+  g_signal_connect (G_OBJECT (self), "response",
+                    G_CALLBACK (dialog_response_cb), NULL);
+  g_signal_connect (G_OBJECT (self), "delete-event",
+                    G_CALLBACK (dialog_delete_event_cb), NULL);
 
-  notifier =
-    gm_conf_notifier_add (SOUND_EVENTS_KEY "enable_ring_tone_sound", 
-			  sound_events_list_changed_nt, window);
-  pw->notifiers.push_front (notifier);
-  
-  notifier =
-    gm_conf_notifier_add (SOUND_EVENTS_KEY "ring_tone_sound", 
-			  sound_events_list_changed_nt, window);
-  pw->notifiers.push_front (notifier);
-  
-  notifier =
-    gm_conf_notifier_add (SOUND_EVENTS_KEY "enable_busy_tone_sound", 
-			  sound_events_list_changed_nt, window);
-  pw->notifiers.push_front (notifier);
-  
-  notifier =
-    gm_conf_notifier_add (SOUND_EVENTS_KEY "busy_tone_sound",
-			  sound_events_list_changed_nt, window);
-  pw->notifiers.push_front (notifier);
-  
-  notifier =
-    gm_conf_notifier_add (SOUND_EVENTS_KEY "enable_new_voicemail_sound", 
-			  sound_events_list_changed_nt, window);
-  pw->notifiers.push_front (notifier);
-  
-  notifier =
-    gm_conf_notifier_add (SOUND_EVENTS_KEY "new_voicemail_sound",
-			  sound_events_list_changed_nt, window);
-  pw->notifiers.push_front (notifier);
+  gtk_window_set_title (GTK_WINDOW (self), _("Ekiga Preferences"));
+  pixbuf = gtk_widget_render_icon_pixbuf (GTK_WIDGET (self),
+                                          GTK_STOCK_PREFERENCES,
+                                          GTK_ICON_SIZE_MENU);
+  gtk_window_set_icon (GTK_WINDOW (self), pixbuf);
+  g_object_unref (pixbuf);
+  gtk_widget_realize (GTK_WIDGET (self));
 
-  notifier =
-    gm_conf_notifier_add (SOUND_EVENTS_KEY "enable_new_message_sound",
-			  sound_events_list_changed_nt, window);
-  pw->notifiers.push_front (notifier);
+  /* Stuff */
+  container = gm_pw_window_subsection_new (self,
+                                           _("General"));
+  gm_pw_init_general_page (self, container);
+  gtk_widget_show_all (GTK_WIDGET (container));
 
-  notifier =
-    gm_conf_notifier_add (SOUND_EVENTS_KEY "new_message_sound",
-			  sound_events_list_changed_nt, window);
-  pw->notifiers.push_front (notifier);
+  container = gm_pw_window_subsection_new (self, _("Forwarding"));
+  gm_pw_init_call_options_page (self, container);
+  gtk_widget_show_all (GTK_WIDGET (container));
 
-  return window;
+  container = gm_pw_window_subsection_new (self,
+                                           _("Sound Events"));
+  gm_pw_init_sound_events_page (self, container);
+  gtk_widget_show_all (GTK_WIDGET (container));
+
+  container = gm_pw_window_subsection_new (self,
+                                           _("SIP"));
+  gm_pw_init_sip_page (self, container);
+  gtk_widget_show_all (GTK_WIDGET (container));
+
+  container = gm_pw_window_subsection_new (self,
+                                           _("H.323"));
+  gm_pw_init_h323_page (self, container);
+  gtk_widget_show_all (GTK_WIDGET (container));
+
+  container = gm_pw_window_subsection_new (self, _("Audio"));
+  gm_pw_init_audio_page (self, container);
+  gtk_widget_show_all (GTK_WIDGET (container));
+
+  container = gm_pw_window_subsection_new (self, _("Video"));
+  gm_pw_init_video_page (self, container);
+  gtk_widget_show_all (GTK_WIDGET (container));
+
+
+  /* Boost Signals */
+  conn =
+    self->priv->videoinput_core->device_added.connect (boost::bind (&on_videoinput_device_added_cb,
+                                                                    _1,
+                                                                    self));
+  self->priv->connections.add (conn);
+  conn = self->priv->videoinput_core->device_removed.connect (boost::bind (&on_videoinput_device_removed_cb,
+                                                                           _1,
+                                                                           _2,
+                                                                           self));
+  self->priv->connections.add (conn);
+
+  conn =
+    self->priv->audioinput_core->device_added.connect (boost::bind (&on_audioinput_device_added_cb,
+                                                                    _1,
+                                                                    self));
+  self->priv->connections.add (conn);
+  conn =
+    self->priv->audioinput_core->device_removed.connect (boost::bind (&on_audioinput_device_removed_cb,
+                                                                      _1,
+                                                                      _2,
+                                                                      self));
+  self->priv->connections.add (conn);
+
+  conn =
+    self->priv->audiooutput_core->device_added.connect (boost::bind (&on_audiooutput_device_added_cb,
+                                                                     _1,
+                                                                     self));
+  self->priv->connections.add(conn);
+  conn =
+    self->priv->audiooutput_core->device_removed.connect (boost::bind (&on_audiooutput_device_removed_cb,
+                                                                       _1,
+                                                                       _2,
+                                                                       self));
+  self->priv->connections.add (conn);
+
+  /* Connect notifiers for SOUND_EVENTS_SCHEMA settings */
+  g_signal_connect (self->priv->sound_events_settings->get_g_settings (),
+                    "changed::enable-incoming-call-sound",
+                    G_CALLBACK (sound_event_setting_changed), self);
+
+  g_signal_connect (self->priv->sound_events_settings->get_g_settings (),
+                    "changed::enable-ring-tone-sound",
+                    G_CALLBACK (sound_event_setting_changed), self);
+
+  g_signal_connect (self->priv->sound_events_settings->get_g_settings (),
+                    "changed::enable-busy-tone-sound",
+                    G_CALLBACK (sound_event_setting_changed), self);
+
+  g_signal_connect (self->priv->sound_events_settings->get_g_settings (),
+                    "changed::enable-new-voicemail-sound",
+                    G_CALLBACK (sound_event_setting_changed), self);
+
+  g_signal_connect (self->priv->sound_events_settings->get_g_settings (),
+                    "changed::enable-new-message-sound",
+                    G_CALLBACK (sound_event_setting_changed), self);
+
+  return GTK_WIDGET (self);
 }

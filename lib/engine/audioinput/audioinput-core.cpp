@@ -1,4 +1,3 @@
-//
 /*
  * Ekiga -- A VoIP and Video-Conferencing application
  * Copyright (C) 2000-2009 Damien Sandras <dsandras@seconix.com>
@@ -39,9 +38,24 @@
 
 #include <glib/gi18n.h>
 
+#include "config.h"
+
+#include "ekiga-settings.h"
+
 #include "audioinput-core.h"
 
 using namespace Ekiga;
+
+static void audio_device_changed (G_GNUC_UNUSED GSettings *settings,
+                                  G_GNUC_UNUSED const gchar *key,
+                                  gpointer data)
+{
+  g_return_if_fail (data != NULL);
+
+  AudioInputCore *core = (AudioInputCore*) (data);
+  core->setup ();
+}
+
 
 AudioInputCore::AudioInputCore (Ekiga::ServiceCore & _core) : core(_core)
 {
@@ -66,34 +80,43 @@ AudioInputCore::AudioInputCore (Ekiga::ServiceCore & _core) : core(_core)
   current_volume = 0;
 
   current_manager = NULL;
-  audioinput_core_conf_bridge = NULL;
   average_level = 0;
   calculate_average = false;
   yield = false;
 
   notification_core = core.get<Ekiga::NotificationCore> ("notification-core");
+  audio_device_settings = g_settings_new (AUDIO_DEVICES_SCHEMA);
+  audio_device_settings_signal = 0;
 }
 
 AudioInputCore::~AudioInputCore ()
 {
   PWaitAndSignal m(core_mutex);
 
-  if (audioinput_core_conf_bridge)
-    delete audioinput_core_conf_bridge;
-
   for (std::set<AudioInputManager *>::iterator iter = managers.begin ();
        iter != managers.end ();
        iter++)
     delete (*iter);
+  g_clear_object (&audio_device_settings);
 
   managers.clear();
 }
 
-void AudioInputCore::setup_conf_bridge ()
+void AudioInputCore::setup ()
 {
   PWaitAndSignal m(core_mutex);
+  gchar* audio_device = NULL;
 
-  audioinput_core_conf_bridge = new AudioInputCoreConfBridge (*this);
+  audio_device = g_settings_get_string (audio_device_settings, "input-device");
+
+  set_device (audio_device);
+
+  if (audio_device_settings_signal == 0)
+    audio_device_settings_signal =
+      g_signal_connect (audio_device_settings, "changed::input-device",
+                        G_CALLBACK (audio_device_changed), this);
+
+  g_free (audio_device);
 }
 
 void AudioInputCore::add_manager (AudioInputManager &manager)
@@ -116,6 +139,19 @@ void AudioInputCore::visit_managers (boost::function1<bool, AudioInputManager &>
        iter != managers.end () && go_on;
        iter++)
       go_on = visitor (*(*iter));
+}
+
+void AudioInputCore::get_devices (std::vector <std::string> & devices)
+{
+  std::vector <AudioInputDevice> d;
+  get_devices (d);
+
+  devices.clear ();
+
+  for (std::vector<AudioInputDevice>::iterator iter = d.begin ();
+       iter != d.end ();
+       ++iter)
+    devices.push_back (iter->GetString ());
 }
 
 void AudioInputCore::get_devices (std::vector <AudioInputDevice> & devices)
@@ -147,34 +183,50 @@ AudioInputCore::set_device (const std::string& device_string)
 
   std::vector<AudioInputDevice> devices;
   AudioInputDevice device;
+  AudioInputDevice device_fallback (AUDIO_INPUT_FALLBACK_DEVICE_TYPE,
+                                    AUDIO_INPUT_FALLBACK_DEVICE_SOURCE,
+                                    AUDIO_INPUT_FALLBACK_DEVICE_NAME);
+  AudioInputDevice device_preferred1 (AUDIO_INPUT_PREFERRED_DEVICE_TYPE1,
+                                      AUDIO_INPUT_PREFERRED_DEVICE_SOURCE1,
+                                      AUDIO_INPUT_PREFERRED_DEVICE_NAME1);
+  AudioInputDevice device_preferred2 (AUDIO_INPUT_PREFERRED_DEVICE_TYPE2,
+                                      AUDIO_INPUT_PREFERRED_DEVICE_SOURCE2,
+                                      AUDIO_INPUT_PREFERRED_DEVICE_NAME2);
   bool found = false;
+  bool found_preferred1 = false;
+  bool found_preferred2 = false;
 
   get_devices (devices);
   for (std::vector<AudioInputDevice>::iterator it = devices.begin ();
        it < devices.end ();
-       it++)
+       it++) {
     if ((*it).GetString () == device_string) {
       found = true;
       break;
     }
+    else if ((*it).GetString () == device_preferred1.GetString ()) {
+      found_preferred1 = true;
+    }
+    else if ((*it).GetString () == device_preferred2.GetString ()) {
+      found_preferred2 = true;
+    }
+  }
 
   if (found)
     device.SetFromString (device_string);
+  else if (found_preferred1)
+    device.SetFromString (device_preferred1.GetString ());
+  else if (found_preferred2)
+    device.SetFromString (device_preferred2.GetString ());
   else if (!devices.empty ())
     device.SetFromString (devices.begin ()->GetString ());
+  else
+    device.SetFromString (device_fallback.GetString ());
 
-  if (device.type == ""
-      || device.source == ""
-      || device.name == "") {
-    PTRACE(1, "AudioInputCore\tTried to set malformed device");
-    device.type = AUDIO_INPUT_FALLBACK_DEVICE_TYPE;
-    device.source = AUDIO_INPUT_FALLBACK_DEVICE_SOURCE;
-    device.name = AUDIO_INPUT_FALLBACK_DEVICE_NAME;
-  }
-
-  internal_set_device (device);
-
-  desired_device  = device;
+  if (!found)
+    g_settings_set_string (audio_device_settings, "input-device", device.GetString ().c_str ());
+  else
+    internal_set_device (device);
 
   PTRACE(4, "AudioInputCore\tSet device to " << device.source << "/" << device.name);
 }
@@ -191,18 +243,10 @@ void AudioInputCore::add_device (const std::string & source, const std::string &
        iter++) {
     if ((*iter)->has_device (source, device_name, device)) {
 
-      if ( desired_device == device) {
-        internal_set_device(desired_device);
-        boost::shared_ptr<Ekiga::Notification> notif (new Ekiga::Notification (Ekiga::Notification::Info, _("New device detected"), device.GetString ()));
-        notification_core->push_notification (notif);
-      }
-      else {
+      device_added(device);
 
-        boost::shared_ptr<Ekiga::Notification> notif (new Ekiga::Notification (Ekiga::Notification::Info, _("New device detected"), device.GetString (), _("Use it"), boost::bind (&AudioInputCore::on_set_device, (AudioInputCore*) this, device)));
-        notification_core->push_notification (notif);
-      }
-
-      device_added(device, desired_device == device);
+      boost::shared_ptr<Ekiga::Notification> notif (new Ekiga::Notification (Ekiga::Notification::Info, _("New device detected"), device.GetString (), _("Use it"), boost::bind (&AudioInputCore::on_set_device, (AudioInputCore*) this, device)));
+      notification_core->push_notification (notif);
     }
   }
 }
@@ -274,7 +318,6 @@ void AudioInputCore::stop_preview ()
   }
 
   internal_close();
-  internal_set_manager(desired_device);
   preview_config.active = false;
 }
 
@@ -299,8 +342,6 @@ void AudioInputCore::start_stream (unsigned channels, unsigned samplerate, unsig
   PWaitAndSignal m(core_mutex);
 
   PTRACE(4, "AudioInputCore\tStarting stream " << channels << "x" << samplerate << "/" << bits_per_sample);
-
-  internal_set_manager(desired_device);  /* make sure it is set */
 
   if (preview_config.active || stream_config.active) {
     PTRACE(1, "AudioInputCore\tTrying to start stream in wrong state");
@@ -329,8 +370,6 @@ void AudioInputCore::stop_stream ()
   }
 
   internal_close();
-  internal_set_manager(desired_device);
-
   stream_config.active = false;
   average_level = 0;
 }
@@ -374,7 +413,7 @@ void AudioInputCore::set_volume (unsigned volume)
 
 void AudioInputCore::on_set_device (const AudioInputDevice & device)
 {
-  gm_conf_set_string (AUDIO_DEVICES_KEY "input_device", device.GetString ().c_str ());
+  g_settings_set_string (audio_device_settings, "input-device", device.GetString ().c_str ());
 }
 
 void AudioInputCore::on_device_opened (AudioInputDevice device,

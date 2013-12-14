@@ -3,6 +3,7 @@ AM_CPPFLAGS = \
 	-I$(top_srcdir)/lib/gmconf			\
 	-I$(top_srcdir)/lib/gui				\
 	-I$(top_srcdir)/lib/platform			\
+	-I$(top_srcdir)/lib/settings			\
 	-I$(top_srcdir)/lib/engine/			\
 	-I$(top_srcdir)/lib/engine/framework		\
 	-I$(top_srcdir)/lib/engine/gui/gtk-frontend	\

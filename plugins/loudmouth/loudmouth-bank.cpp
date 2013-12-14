@@ -41,18 +41,18 @@
 
 #include "form-request-simple.h"
 
-#define JABBER_KEY CONTACTS_KEY "jabber"
+#define JABBER_KEY "jabber"
 
 LM::Bank::Bank (boost::shared_ptr<Ekiga::PersonalDetails> details_,
 		boost::shared_ptr<Dialect> dialect_,
 		boost::shared_ptr<Cluster> cluster_):
   details(details_), cluster(cluster_), dialect(dialect_), doc (NULL)
 {
-  gchar* c_raw = gm_conf_get_string (JABBER_KEY);
+  contacts_settings = boost::shared_ptr<Ekiga::Settings> (new Ekiga::Settings (CONTACTS_SCHEMA));
+  std::string raw = contacts_settings->get_string (JABBER_KEY);
 
-  if (c_raw != NULL) { // we already have it in store
+  if (!raw.empty ()) { // we already have it in store
 
-    const std::string raw = c_raw;
     doc = xmlRecoverMemory (raw.c_str (), raw.length ());
     xmlNodePtr root = xmlDocGetRootElement (doc);
     if (root == NULL) {
@@ -69,7 +69,6 @@ LM::Bank::Bank (boost::shared_ptr<Ekiga::PersonalDetails> details_,
 	add (account);
       }
     }
-    g_free (c_raw);
 
   } else { // create a new XML document
 
@@ -90,11 +89,11 @@ void
 LM::Bank::save () const
 {
   xmlChar* buffer = NULL;
-  int size = 0;
+  int docsize = 0;
 
-  xmlDocDumpMemory (doc, &buffer, &size);
+  xmlDocDumpMemory (doc, &buffer, &docsize);
 
-  gm_conf_set_string (JABBER_KEY, (const char *)buffer);
+  contacts_settings->set_string (JABBER_KEY, (const char *)buffer);
 
   xmlFree (buffer);
 }

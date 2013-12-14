@@ -47,21 +47,28 @@ namespace Ekiga
   class Device
   {
   public:
-    /** The backend type. 
+
+    Device () {};
+
+    Device (const std::string & t,
+            const std::string & s,
+            const std::string & n) : type(t), source(s), name(n) {};
+
+    /** The backend type.
      *  The backend type like "PTLIB", "NULL", etc.
      */
     std::string type;
-    
-    /** The device source. 
+
+    /** The device source.
      *  The device source like "V4L", "ALSA", "DC", "OSS", etc.
      */
     std::string source;
 
-    /** The device name. 
+    /** The device name.
      *  The device name like "Logitech Quickcam Zoom"
      */
     std::string name;
-    
+
     /** Set the device identifier from a consendes string.
      * Set the device identifier from a condensed string like "type/source/name"
      * Used for setting devices from the saved gmconf configuration.
@@ -86,18 +93,18 @@ namespace Ekiga
     {
       return ( name + " (" + type + "/" + source + ")");
     }
-    
+
     Device & operator= (const Device & rhs)
     {
       type   = rhs.type;
       source = rhs.source;
       name   = rhs.name;
       return *this;
-    } 
+    }
 
     bool operator==( const Device & rhs ) const
     {
-     if ( (type   == rhs.type)   && 
+     if ( (type   == rhs.type)   &&
           (source == rhs.source) &&
           (name   == rhs.name)   )
        return true;
@@ -119,5 +126,5 @@ namespace Ekiga
    * @}
    */
 
-};  
+};
 #endif
