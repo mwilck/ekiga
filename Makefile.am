@@ -15,8 +15,11 @@ endif
 DESKTOP_IN_FILE=@PACKAGE_NAME@.desktop.in.in
 DESKTOP_FILE=@PACKAGE_NAME@.desktop
 
-gsettings_SCHEMAS = org.gnome.ekiga.gschema.xml
+gsettings_SCHEMAS = org.gnome.@PACKAGE_NAME@.gschema.xml
 @INTLTOOL_XML_NOMERGE_RULE@
+
+convertdir = $(datadir)/GConf/gsettings
+convert_DATA = @PACKAGE_NAME@.convert
 
 @GSETTINGS_RULES@
 

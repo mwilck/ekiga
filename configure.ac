@@ -856,6 +856,7 @@ AC_CONFIG_FILES([Makefile
 Doxyfile
 src/ekiga-config-tool
 org.gnome.ekiga.gschema.xml.in
+ekiga.convert
 ekiga.desktop.in
 lib/Makefile
 po/Makefile.in

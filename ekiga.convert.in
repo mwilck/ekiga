@@ -1,0 +1,92 @@
+[org.gnome.@PACKAGE_NAME@.devices.audio]
+output-device = /apps/@PACKAGE_NAME@/devices/audio/output_device
+input-device = /apps/@PACKAGE_NAME@/devices/audio/input_device
+
+[org.gnome.@PACKAGE_NAME@.devices.video]
+input-device = /apps/@PACKAGE_NAME@/devices/video/input_device
+channel = /apps/@PACKAGE_NAME@/devices/video/channel
+format = /apps/@PACKAGE_NAME@/devices/video/format
+enable-preview = /apps/@PACKAGE_NAME@/devices/video/enable_preview
+
+[org.gnome.@PACKAGE_NAME@.general.personal-data]
+full-name = /apps/@PACKAGE_NAME@/general/personal_data/full_name
+short-status = /apps/@PACKAGE_NAME@/general/personal_data/short_status
+long-status = /apps/@PACKAGE_NAME@/general/personal_data/long_status
+away-custom-status = /apps/@PACKAGE_NAME@/general/personal_data/away_custom_status
+busy-custom-status = /apps/@PACKAGE_NAME@/general/personal_data/busy_custom_status
+available-custom-status = /apps/@PACKAGE_NAME@/general/personal_data/available_custom_status
+
+[org.gnome.@PACKAGE_NAME@.general.sound-events]
+output-device = /apps/@PACKAGE_NAME@/general/sound_events/output_device
+incoming-call-sound =/apps/@PACKAGE_NAME@/general/sound_events/incoming_call_sound
+enable-incoming-call-sound = /apps/@PACKAGE_NAME@/general/sound_events/enable_incoming_call_sound
+new-message-sound = /apps/@PACKAGE_NAME@/general/sound_events/new_message_sound
+enable-new-message-sound = /apps/@PACKAGE_NAME@/general/sound_events/enable_new_message_sound
+new-voicemail-sound = /apps/@PACKAGE_NAME@/general/sound_events/new_voicemail_sound
+enable-new-voicemail-sound = /apps/@PACKAGE_NAME@/general/sound_events/enable_new_message_sound
+enable-ring-tone-sound = /apps/@PACKAGE_NAME@/general/sound_events/enable_ring_tone_sound
+ring-tone-sound = /apps/@PACKAGE_NAME@/general/sound_events/ring_tone_sound
+enable-busy-tone-sound = /apps/@PACKAGE_NAME@/general/sound_events/enable_busy_tone_sound
+busy-tone-sound = /apps/@PACKAGE_NAME@/general/sound_events/busy_tone_sound
+
+[org.gnome.@PACKAGE_NAME@.general.nat]
+stun-server = /apps/@PACKAGE_NAME@/general/nat/stun_server
+enable-stun = /apps/@PACKAGE_NAME@/general/nat/enable_stun
+
+[org.gnome.@PACKAGE_NAME@.general.user-interface.main-window]
+panel-section = /apps/@PACKAGE_NAME@/general/user_interface/main_window/panel_section
+
+[org.gnome.@PACKAGE_NAME@.general.user-interface.video-display]
+stay-on-top = /apps/@PACKAGE_NAME@/general/user_interface/video_display/stay_on_top
+
+[org.gnome.@PACKAGE_NAME@.general.call-options]
+no-answer-timeout = /apps/@PACKAGE_NAME@/general/call_options/no_answer_timeout
+auto-answer = /apps/@PACKAGE_NAME@/general/call_options/auto_answer
+
+[org.gnome.@PACKAGE_NAME@.codecs.audio]
+media-list = /apps/@PACKAGE_NAME@/codecs/audio/media_list
+enable-silence-detection = /apps/@PACKAGE_NAME@/codecs/audio/enable_silence_detection
+enable-echo-cancellation = /apps/@PACKAGE_NAME@/codecs/audio/enable_echo_cancellation
+maximum-jitter-buffer = /apps/@PACKAGE_NAME@/codecs/audio/maximum_jitter_buffer
+
+[org.gnome.@PACKAGE_NAME@.codecs.video]
+media-list = /apps/@PACKAGE_NAME@/codecs/video/media_list
+
+[org.gnome.@PACKAGE_NAME@.protocols]
+accounts-list = /apps/@PACKAGE_NAME@/protocols/accounts_list
+rtp-tos-field = /apps/@PACKAGE_NAME@/protocols/rtp_tos_field
+
+[org.gnome.@PACKAGE_NAME@.protocols.sip]
+listen-port = /apps/@PACKAGE_NAME@/protocols/sip/listen_port
+outbound-proxy-host = /apps/@PACKAGE_NAME@/protocols/sip/outbound_proxy_host
+forward-host = /apps/@PACKAGE_NAME@/protocols/sip/forward_host
+dtmf-mode = /apps/@PACKAGE_NAME@/protocols/sip/dtmf_mode
+binding-timeout = /apps/@PACKAGE_NAME@/protocols/sip/binding_timeout
+
+[org.gnome.@PACKAGE_NAME@.protocols.h323]
+listen-port = /apps/@PACKAGE_NAME@/protocols/h323/listen_port
+enable-h245-tunneling = /apps/@PACKAGE_NAME@/protocols/h323/enable_h245_tunneling
+enable-early-h245 = /apps/@PACKAGE_NAME@/protocols/h323/enable_early_h245
+enable-fast-start = /apps/@PACKAGE_NAME@/protocols/h323/enable_fast_start
+enable-h239 = /apps/@PACKAGE_NAME@/protocols/h323/enable_h239
+video-role = /apps/@PACKAGE_NAME@/protocols/h323/video_role
+dtmf-mode = /apps/@PACKAGE_NAME@/protocols/h323/dtmf_mode
+forward-host = /apps/@PACKAGE_NAME@/protocols/h323/forward_host
+
+[org.gnome.@PACKAGE_NAME@.protocols.ports]
+tcp-port-range = /apps/@PACKAGE_NAME@/protocols/ports/tcp_port_range
+udp-port-range = /apps/@PACKAGE_NAME@/protocols/ports/udp_port_range
+
+[org.gnome.@PACKAGE_NAME@.protocols.call-forwarding]
+always-forward = /apps/@PACKAGE_NAME@/protocols/call_forwarding/always_forward
+forward-on-busy = /apps/@PACKAGE_NAME@/protocols/call_forwarding/forward_on_busy
+forward-on-no-answer = /apps/@PACKAGE_NAME@/protocols/call_forwarding/forward_on_no_answer
+
+[org.gnome.@PACKAGE_NAME@.contacts]
+roster-folded-groups = /apps/@PACKAGE_NAME@/contacts/roster_folded_groups
+show-offline-contacts = /apps/@PACKAGE_NAME@/contacts/show_offline_contacts
+ldap-servers = /apps/@PACKAGE_NAME@/contacts/ldap_servers
+resource-lists = /apps/@PACKAGE_NAME@/contacts/resource_lists
+jabber = /apps/@PACKAGE_NAME@/contacts/jabber
+call-history = /apps/@PACKAGE_NAME@/contacts/call_history
+roster = /apps/@PACKAGE_NAME@/contacts/roster
