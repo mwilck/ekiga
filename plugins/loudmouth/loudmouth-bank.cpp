@@ -37,8 +37,6 @@
 
 #include <glib/gi18n.h>
 
-#include "gmconf.h"
-
 #include "form-request-simple.h"
 
 #define JABBER_KEY "jabber"
