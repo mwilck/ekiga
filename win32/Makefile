@@ -612,7 +612,7 @@ $(TARGETDIR)/zips: binaries $(EKIGA_DIR)/src/ekiga.exe
 		cp -r $$plugin $(EKIGA_PREFIX)/plugins ;\
 	done
 	for lib in $(PTLIB_LIB) $(OPAL_LIB) libboost_signals.dll; do \
-		install -m 755 $(LIBDIR)/$$lib $(EKIGA_PREFIX) ;\
+		cp -r $(LIBDIR)/$$lib $(EKIGA_PREFIX) ;\
 	done
 	for lib in libexpat-1.dll liblber.dll libldap.dll libspeex-1.dll libspeexdsp-1.dll libtheora-0.dll avcodec-54.dll avutil-52.dll libogg-0.dll; do \
 		cp -r $(BINDIR)/$$lib $(EKIGA_PREFIX) ;\
