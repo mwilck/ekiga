@@ -358,7 +358,7 @@ gtk_menu_section_set_sensitive (GtkWidget *menu,
   menu_item = (GtkWidget *) g_object_get_data (G_OBJECT (menu), id);
   menu_entry = (MenuEntry *) g_object_get_data (G_OBJECT (menu), "menu_entry");
 
-  if (menu_item && menu_item) {
+  if (menu_item && menu_entry) {
 
     while (menu_entry [i].type != MENU_END
 	   && menu_entry [i].widget != menu_item)
