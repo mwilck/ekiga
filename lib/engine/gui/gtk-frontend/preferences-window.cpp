@@ -786,8 +786,8 @@ gm_pw_init_h323_page (PreferencesWindow *self,
                     self->priv->h323_settings, "enable-early-h245",
                     _("This enables H.245 early in the setup"));
 
-  gm_pw_toggle_new (container, _("Enable fast _start procedure"), self->priv->h323_settings,
-                    "enable-fast-start", _("Connection will be established in Fast Start (Fast Connect) mode. Fast Start is a new way to start calls faster that was introduced in H.323v2."));
+  gm_pw_toggle_new (container, _("Enable fast _connect procedure"), self->priv->h323_settings,
+                    "enable-fast-connect", _("Connection will be established in Fast Connect (Fast Start) mode. Fast Connect is a way to start calls faster that was introduced in H.323v2."));
 
   gm_pw_toggle_new (container, _("Enable H.239 control"), self->priv->h323_settings,
                     "enable-h239", _("This enables H.239 capability for additional video roles."));

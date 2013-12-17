@@ -477,10 +477,10 @@ Opal::H323::EndPoint::setup (const std::string setting)
     DisableH245inSetup (!settings->get_bool ("enable-early-h245"));
     PTRACE (4, "Opal::H323::EndPoint\tEarly H.245: " << settings->get_bool ("enable-early-h245"));
   }
-  if (setting.empty () || setting == "enable-fast-start") {
+  if (setting.empty () || setting == "enable-fast-connect") {
 
-    DisableFastStart (!settings->get_bool ("enable-fast-start"));
-    PTRACE (4, "Opal::H323::EndPoint\tFast Start: " << settings->get_bool ("enable-fast-start"));
+    DisableFastStart (!settings->get_bool ("enable-fast-connect"));
+    PTRACE (4, "Opal::H323::EndPoint\tFast Connect: " << settings->get_bool ("enable-fast-connect"));
   }
   if (setting.empty () || setting == "dtmf-mode") {
 

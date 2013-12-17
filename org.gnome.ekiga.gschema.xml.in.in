@@ -471,10 +471,10 @@
       <_summary>Enable early H.245</_summary>
       <_description>This enables H.245 early in the setup</_description>
     </key>
-    <key name="enable-fast-start" type="b">
+    <key name="enable-fast-connect" type="b">
       <default>true</default>
-      <_summary>Enable 'Fast Start'</_summary>
-      <_description>Connection will be established in Fast Start mode. Fast Start (Fast Connect) is a new way to start calls faster that was introduced in H.323v2.</_description>
+      <_summary>Enable 'Fast Connect'</_summary>
+      <_description>Connection will be established in Fast Connect mode. Fast Connect (Fast Start) is a new way to start calls faster that was introduced in H.323v2.</_description>
     </key>
     <key name="enable-h239" type="b">
       <default>false</default>
@@ -506,7 +506,7 @@
     <key name="udp-port-range" type="s">
       <default>'5061:5100'</default>
       <_summary>UDP port range</_summary>
-      <_description>The range of UDP ports that Ekiga will use.</_description>
+      <_description>The range of UDP ports that Ekiga will use for SIP signalling or when registering to H.323 gatekeepers. It is also used for RTP (audio and video communication channels).</_description>
     </key>
   </schema>
   <schema gettext-domain="@GETTEXT_PACKAGE@" id="org.gnome.@PACKAGE_NAME@.protocols.call-forwarding" path="/org/gnome/@PACKAGE_NAME@/protocols/call-forwarding/">
