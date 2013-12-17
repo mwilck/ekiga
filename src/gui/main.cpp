@@ -105,6 +105,13 @@ main (int argc,
   signal (SIGPIPE, SIG_IGN);
 #endif
 
+  /* initialize platform-specific code */
+  gm_platform_init ();
+#ifdef WIN32
+  // plugins (i.e. the audio/video ptlib/opal codecs) are searched in ./plugins
+  chdir (win32_datadir ());
+#endif
+
   /* Gettext initialization */
   path = g_build_filename (DATA_DIR, "locale", NULL);
   textdomain (GETTEXT_PACKAGE);
@@ -116,13 +123,6 @@ main (int argc,
   g_set_application_name (_("Ekiga Softphone"));
 #ifndef WIN32
   setenv ("PULSE_PROP_application.name", _("Ekiga Softphone"), true);
-#endif
-
-  /* initialize platform-specific code */
-  gm_platform_init ();
-#ifdef WIN32
-  // plugins (i.e. the audio/video ptlib/opal codecs) are searched in ./plugins
-  chdir (win32_datadir ());
 #endif
 
   /* Arguments initialization */
