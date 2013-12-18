@@ -232,8 +232,8 @@ confx264 := $(confflags) --enable-static --disable-cli --disable-avs
 
 conftheora := $(confflags) --disable-vorbistest --disable-sdltest --disable-examples --disable-spec
 
-# only signals is needed
-confboost := --user-config=user-config.jam --layout=system variant=release threading=multi link=shared runtime-link=shared target-os=windows threadapi=win32 --with-signals -q
+# only signals2 is needed, which is a include-only "library"
+#confboost := --user-config=user-config.jam --layout=system variant=release threading=multi link=shared runtime-link=shared target-os=windows threadapi=win32 --with-signals -q
 
 all: binaries $(TARGETDIR)/$(EKIGA_INSTALLER)
 	@echo "Built on $(shell date)"
@@ -293,19 +293,23 @@ $(LIBDIR)/libregex.a: binaries $(REGEX_DIR)/regex.h
 
 ### boost
 update-sources::
-	@echo --- Getting libboost ...
+	@echo --- Getting boost ...
 	$(WGET) -P src $(BOOST_URL)/$(BOOST_ARCHIVE)
 
-$(BOOST_DIR)/config.status: $(SRCDIR)/$(BOOST_ARCHIVE)
+$(INCLUDEDIR)/boost/signals2.hpp: $(SRCDIR)/$(BOOST_ARCHIVE)
 	tar xfz $(SRCDIR)/$(BOOST_ARCHIVE)
-	# avoid configuring error at -g
-	cd $(BOOST_DIR); CC="$(REALCC) -mms-bitfields" ./bootstrap.sh --prefix=$(BUILDROOT)
-	touch $@
+	cp -r $(BOOST_DIR)/boost $(INCLUDEDIR)
 
-$(LIBDIR)/libboost_signals.dll: $(BOOST_DIR)/config.status
-	echo "using gcc : : $(HOST_TOOL_PREFIX)-g++ : ;" >$(BOOST_DIR)/user-config.jam
-	cd $(BOOST_DIR); ./b2 $(confboost)
-	cd $(BOOST_DIR); ./b2 $(confboost) install
+#$(BOOST_DIR)/config.status: $(SRCDIR)/$(BOOST_ARCHIVE)
+#	tar xfz $(SRCDIR)/$(BOOST_ARCHIVE)
+#	# avoid configuring error at -g
+#	cd $(BOOST_DIR); CC="$(REALCC) -mms-bitfields" ./bootstrap.sh --prefix=$(BUILDROOT)
+#	touch $@
+#
+#$(LIBDIR)/libboost_signals.dll: $(BOOST_DIR)/config.status
+#	echo "using gcc : : $(HOST_TOOL_PREFIX)-g++ : ;" >$(BOOST_DIR)/user-config.jam
+#	cd $(BOOST_DIR); ./b2 $(confboost)
+#	cd $(BOOST_DIR); ./b2 $(confboost) install
 
 ### expat
 update-sources::
@@ -586,7 +590,7 @@ endif
 $(EKIGA_DIR)/config.status: binaries $(EKIGA_DIR)/configure \
 		$(LIBDIR)/$(PTLIB_LIB) $(LIBDIR)/$(OPAL_LIB) \
 		$(LIBDIR)/pkgconfig/gtk+-3.0.pc \
-		$(LIBDIR)/libboost_signals.dll $(LIBDIR)/libsasl2.a
+		$(INCLUDEDIR)/boost/signals2.hpp $(LIBDIR)/libsasl2.a
 	rm -f $(EKIGA_DIR)/src/ekiga.exe
 	cd $(EKIGA_DIR); ACLOCAL_FLAGS="-I $(BUILDROOT)/share/aclocal" LDFLAGS="$(LDFLAGS) -Wl,-subsystem,windows" ./configure $(confekiga)
 
@@ -611,7 +615,7 @@ $(TARGETDIR)/zips: binaries $(EKIGA_DIR)/src/ekiga.exe
 	for plugin in $(LIBDIR)/opal*/codecs/video/*; do \
 		cp -r $$plugin $(EKIGA_PREFIX)/plugins ;\
 	done
-	for lib in $(PTLIB_LIB) $(OPAL_LIB) libboost_signals.dll; do \
+	for lib in $(PTLIB_LIB) $(OPAL_LIB); do \
 		cp -r $(LIBDIR)/$$lib $(EKIGA_PREFIX) ;\
 	done
 	for lib in libexpat-1.dll liblber.dll libldap.dll libspeex-1.dll libspeexdsp-1.dll libtheora-0.dll avcodec-54.dll avutil-52.dll libogg-0.dll; do \
