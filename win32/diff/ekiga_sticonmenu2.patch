@@ -1,3 +1,8 @@
+# hide the popup menu of icon from task bar on Windows (does not seem to work)
+# see http://www.mail-archive.com/ekiga-devel-list@gnome.org/msg03181.html and http://stackoverflow.com/questions/1138891/gtk-statusicon-and-gtk-menu-on-windows
+# it is not integrated in ekiga because this bug will probably be fixed
+#   by future GTK+ releases
+
 diff -ur ekiga.orig/lib/engine/gui/gtk-frontend/statusicon.cpp ekiga/lib/engine/gui/gtk-frontend/statusicon.cpp
 --- ekiga.orig/lib/engine/gui/gtk-frontend/statusicon.cpp	2009-09-22 15:39:44.000000000 +0200
 +++ ekiga/lib/engine/gui/gtk-frontend/statusicon.cpp	2009-09-22 15:50:16.000000000 +0200
