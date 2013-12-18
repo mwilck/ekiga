@@ -87,6 +87,13 @@ show_popup_menu_cb (GtkStatusIcon *icon,
                     guint activate_time,
                     gpointer data);
 
+#ifdef WIN32
+static gint
+hide_popup_menu_cb (GtkWidget *widget,
+                    GdkEventButton *event,
+                    gpointer data);
+#endif
+
 static void
 statusicon_activated_cb (GtkStatusIcon *icon,
                          gpointer data);
@@ -250,6 +257,22 @@ show_popup_menu_cb (GtkStatusIcon *icon,
                   button, activate_time);
 }
 
+#ifdef WIN32
+static gint
+hide_popup_menu_cb (G_GNUC_UNUSED GtkWidget *widget,
+                    G_GNUC_UNUSED GdkEventButton *event,
+                    gpointer data)
+{
+  GtkWidget *popup = GTK_WIDGET (data);
+
+  if (gtk_widget_get_visible (popup)) {
+    gtk_menu_popdown (GTK_MENU (popup));
+    return TRUE;
+  }
+  else
+    return FALSE;
+}
+#endif
 
 static void
 statusicon_activated_cb (G_GNUC_UNUSED GtkStatusIcon *icon,
@@ -565,6 +588,13 @@ status_icon_new (Ekiga::ServiceCore & core)
 
   g_signal_connect (self, "popup-menu",
                     G_CALLBACK (show_popup_menu_cb), self->priv->popup_menu);
+
+#ifdef WIN32
+  // hide the popup menu when right-click on the icon
+  // this should have been done in GTK code in my opinion...
+  g_signal_connect (self, "button_press_event",
+                    G_CALLBACK (hide_popup_menu_cb), self->priv->popup_menu);
+#endif
 
   g_signal_connect (self, "activate",
                     G_CALLBACK (statusicon_activated_cb), self);

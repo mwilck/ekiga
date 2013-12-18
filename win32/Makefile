@@ -382,10 +382,6 @@ endif
 	# regenerate configure, since it might be older than configure.ac
 	cd $(PTLIB_DIR); aclocal && autoconf
 	cd $(PTLIB_DIR)/plugins; aclocal && autoconf
-	# apply all ptlib_* patches
-	cd $(PTLIB_DIR); for i in $(EKIGA_DIR)/win32/diff/ptlib_*; do \
-		test "`basename $$i`" != 'ptlib_*' && (patch -p1 <$$i || exit 1) ;\
-	done; true
 ifeq ($(MINGW32), 1)
 	# mingw32 wrongly defines DnsSectionAdditional
 	sed -i -e 's#\#include <ntverp.h># #g' $(PTLIB_DIR)/include/ptclib/pdns.h
@@ -528,10 +524,6 @@ endif
 	# regenerate configure, since it might be older than configure.ac
 	cd $(OPAL_DIR); aclocal && autoconf
 	cd $(OPAL_DIR)/plugins; aclocal && autoconf
-	# apply all opal_* patches
-	cd $(OPAL_DIR); for i in $(EKIGA_DIR)/win32/diff/opal_*; do \
-		test "`basename $$i`" != 'opal_*' && (patch -p1 <$$i || exit 1) ;\
-	done; true
 	touch $@
 
 $(OPAL_DIR)/config.status: binaries $(OPAL_DIR)/configure
@@ -581,10 +573,6 @@ else
 	$(CP) -r $(SRCDIR)/$(EKIGA_ARCHIVE) $(EKIGA_DIR)
 	cd $(EKIGA_DIR); NOCONFIGURE=1 ./autogen.sh  # generate configure
 endif
-	# apply all ekiga_* patches
-	cd $(EKIGA_DIR); for i in $(EKIGA_DIR)/win32/diff/ekiga_*; do \
-		test "`basename $$i`" != 'ekiga_*' && (patch -p1 <$$i || exit 1) ;\
-	done; true
 	touch $@
 
 $(EKIGA_DIR)/config.status: binaries $(EKIGA_DIR)/configure \
