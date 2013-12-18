@@ -19,8 +19,8 @@ msgstr ""
 "Project-Id-Version: ekiga.master\n"
 "Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?"
 "product=ekiga&keywords=I18N+L10N&component=general\n"
-"POT-Creation-Date: 2013-12-14 19:12+0000\n"
-"PO-Revision-Date: 2013-12-18 13:48+0100\n"
+"POT-Creation-Date: 2013-12-18 12:49+0000\n"
+"PO-Revision-Date: 2013-12-18 14:47+0100\n"
 "Last-Translator: Daniel Mustieles <daniel.mustieles@gmail.com>\n"
 "Language-Team: Español <gnome-es-list@gnome.org>\n"
 "Language: \n"
@@ -31,7 +31,7 @@ msgstr ""
 "Plural-Forms: nplurals=2; plural=(n!=1);\n"
 
 #. Application name
-#: ../ekiga.desktop.in.in.h:1 ../src/gui/main.cpp:116 ../src/gui/main.cpp:118
+#: ../ekiga.desktop.in.in.h:1 ../src/gui/main.cpp:123 ../src/gui/main.cpp:125
 msgid "Ekiga Softphone"
 msgstr "Softphone Ekiga"
 
@@ -185,7 +185,7 @@ msgstr ""
 #: ../lib/engine/components/opal/opal-presentity.cpp:267
 #: ../plugins/evolution/evolution-contact.cpp:324
 #: ../plugins/loudmouth/loudmouth-account.cpp:342
-#: ../plugins/loudmouth/loudmouth-bank.cpp:122
+#: ../plugins/loudmouth/loudmouth-bank.cpp:120
 #: ../plugins/loudmouth/loudmouth-heap-roster.cpp:338
 #: ../plugins/loudmouth/loudmouth-presentity.cpp:289
 #: ../plugins/resource-list/rl-cluster.cpp:164
@@ -396,7 +396,7 @@ msgstr "Consultar el histórico de llamadas"
 #: ../lib/engine/components/opal/opal-account.cpp:604
 #: ../lib/engine/components/opal/opal-bank.cpp:186
 #: ../plugins/loudmouth/loudmouth-account.cpp:337
-#: ../plugins/loudmouth/loudmouth-bank.cpp:118
+#: ../plugins/loudmouth/loudmouth-bank.cpp:116
 msgid "Edit account"
 msgstr "Editar cuenta"
 
@@ -412,7 +412,7 @@ msgstr "Actualice los siguientes campos:"
 #: ../lib/engine/components/opal/opal-bank.cpp:213
 #: ../lib/engine/components/opal/opal-bank.cpp:223
 #: ../plugins/loudmouth/loudmouth-account.cpp:342
-#: ../plugins/loudmouth/loudmouth-bank.cpp:122
+#: ../plugins/loudmouth/loudmouth-bank.cpp:120
 msgid "Account name, e.g. MyAccount"
 msgstr "Nombre de la cuenta, ej. «MiCuenta»"
 
@@ -436,7 +436,7 @@ msgstr "El gatekeeper, ej. «ekiga.net»"
 
 #: ../lib/engine/components/opal/opal-account.cpp:613
 #: ../plugins/loudmouth/loudmouth-account.cpp:346
-#: ../plugins/loudmouth/loudmouth-bank.cpp:123
+#: ../plugins/loudmouth/loudmouth-bank.cpp:121
 #: ../plugins/resource-list/rl-cluster.cpp:169
 msgid "User:"
 msgstr "Usuario:"
@@ -447,7 +447,7 @@ msgstr "Usuario:"
 #: ../lib/engine/components/opal/opal-bank.cpp:215
 #: ../lib/engine/components/opal/opal-bank.cpp:225
 #: ../plugins/loudmouth/loudmouth-account.cpp:346
-#: ../plugins/loudmouth/loudmouth-bank.cpp:123
+#: ../plugins/loudmouth/loudmouth-bank.cpp:121
 msgid "The user name, e.g. jim"
 msgstr "El nombre de usuario, ej. «jim»"
 
@@ -469,7 +469,7 @@ msgstr ""
 
 #: ../lib/engine/components/opal/opal-account.cpp:619
 #: ../plugins/loudmouth/loudmouth-account.cpp:362
-#: ../plugins/loudmouth/loudmouth-bank.cpp:126
+#: ../plugins/loudmouth/loudmouth-bank.cpp:124
 #: ../plugins/resource-list/rl-cluster.cpp:168
 msgid "Password:"
 msgstr "Contraseña:"
@@ -480,7 +480,7 @@ msgstr "Contraseña:"
 #: ../lib/engine/components/opal/opal-bank.cpp:217
 #: ../lib/engine/components/opal/opal-bank.cpp:227
 #: ../plugins/loudmouth/loudmouth-account.cpp:362
-#: ../plugins/loudmouth/loudmouth-bank.cpp:126
+#: ../plugins/loudmouth/loudmouth-bank.cpp:124
 msgid "Password associated to the user"
 msgstr "Contraseña asociada al usuario"
 
@@ -499,7 +499,7 @@ msgstr ""
 #: ../lib/engine/components/opal/opal-account.cpp:621
 #: ../lib/engine/components/opal/opal-bank.cpp:231
 #: ../plugins/loudmouth/loudmouth-account.cpp:376
-#: ../plugins/loudmouth/loudmouth-bank.cpp:127
+#: ../plugins/loudmouth/loudmouth-bank.cpp:125
 msgid "Enable account"
 msgstr "Activar cuenta"
 
@@ -524,19 +524,16 @@ msgid "The timeout should be at least 10 seconds."
 msgstr "El tiempo de expiración debería ser de al menos 10 segundos."
 
 #: ../lib/engine/components/opal/opal-account.cpp:739
-#, fuzzy
 #| msgid "Add to local roster"
 msgid "Add to account roster"
-msgstr "Añadir a la lista local"
+msgstr "Añadir a la lista de cuentas"
 
 #: ../lib/engine/components/opal/opal-account.cpp:740
-#, fuzzy
 #| msgid ""
 #| "Please fill in this form to add a new contact to ekiga's internal roster"
 msgid "Please fill in this form to add a new contact to this account's roster"
 msgstr ""
-"Rellene este formulario para añadir un nuevo contacto a la lista interna de "
-"Ekiga"
+"Rellene este formulario para añadir un nuevo contacto a la lista de cuentas"
 
 #. Translators: this is a state, not an action, i.e. it should be read as
 #. "(you are) registered", and not as "(you have been) registered"
@@ -1847,7 +1844,6 @@ msgstr "Introduzca su nombre completo"
 
 #. Video Display
 #: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:568
-#| msgid "Video Display"
 msgid "Display"
 msgstr "Pantalla"
 
@@ -1939,10 +1935,9 @@ msgstr "Opciones de llamada"
 
 #. Translators: the full sentence is Forward calls after x seconds.
 #: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:605
-#, fuzzy
 #| msgid "Forward calls to host"
 msgid "Forward calls after"
-msgstr "Desviar las llamadas al equipo"
+msgstr "Desviar las llamadas después"
 
 #: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:605
 msgid "seconds"
@@ -2066,17 +2061,21 @@ msgid "This enables H.245 early in the setup"
 msgstr "Esto activa H.245 primitivo en la configuración"
 
 #: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:789
-msgid "Enable fast _start procedure"
-msgstr "Activar inicio _rápido"
+#| msgid "Enable fast _start procedure"
+msgid "Enable fast _connect procedure"
+msgstr "Activar el procedimiento de inicio _rápido"
 
 #: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:790
+#| msgid ""
+#| "Connection will be established in Fast Start mode. Fast Start (Fast "
+#| "Connect) is a new way to start calls faster that was introduced in "
+#| "H.323v2."
 msgid ""
-"Connection will be established in Fast Start (Fast Connect) mode. Fast Start "
-"is a new way to start calls faster that was introduced in H.323v2."
+"Connection will be established in Fast Connect (Fast Start) mode. Fast "
+"Connect is a way to start calls faster that was introduced in H.323v2."
 msgstr ""
-"La conexión se establecerá en modo «Inicio rápido» (Conexión rápida). "
-"«Inicio rápido» es un modo nuevo de iniciar llamadas más rápido y se "
-"introdujo en H.323v2."
+"La conexión se establecerá en modo «Inicio rápido». «Esto es un modo nuevo "
+"de iniciar llamadas más rápido y se introdujo en H.323v2."
 
 #: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:792
 msgid "Enable H.239 control"
@@ -2151,10 +2150,9 @@ msgstr "Si está activada, usa la cancelación de eco"
 
 #. Translators: the full sentence is Maximum jitter buffer of x ms.
 #: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:880
-#, fuzzy
 #| msgid "Maximum jitter buffer"
 msgid "Maximum _jitter buffer of"
-msgstr "Búfer máximo para el jitter"
+msgstr "Búfer _máximo para el jitter"
 
 #: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:880
 msgid "ms"
@@ -2212,12 +2210,12 @@ msgstr "Pulse aquí para actualizar la lista de dispositivos"
 
 #: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:940
 msgid "Small"
-msgstr ""
+msgstr "Pequeño"
 
 #: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:941
 #: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:942
 msgid "Medium"
-msgstr ""
+msgstr "Mediano"
 
 #: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:943
 msgid "480p 4:3 HD"
@@ -2265,10 +2263,9 @@ msgstr ""
 
 #. Translators: the full sentence is Maximum video bitrate of x kbits/s.
 #: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:986
-#, fuzzy
 #| msgid "Maximum TX video bitrate"
 msgid "Maximum video _bitrate of"
-msgstr "Máxima tasa de bits de transmisión de vídeo"
+msgstr "Tasa de bits máxima para la _transmisión de vídeo"
 
 #: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:986
 msgid "kbits/s"
@@ -2336,7 +2333,6 @@ msgid "General"
 msgstr "General"
 
 #: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:1796
-#| msgid "Forward"
 msgid "Forwarding"
 msgstr "Reenviando"
 
@@ -2345,7 +2341,6 @@ msgid "Sound Events"
 msgstr "Eventos de sonido"
 
 #: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:1806
-#| msgid "SIP URI"
 msgid "SIP"
 msgstr "SIP"
 
@@ -2702,7 +2697,6 @@ msgid "Size of the call window"
 msgstr "Tamaño de la ventana de llamada"
 
 #: ../org.gnome.ekiga.gschema.xml.in.in.h:49
-#| msgid "Size of the call window"
 msgid "Size of the main window"
 msgstr "Tamaño de la ventana principal"
 
@@ -2819,7 +2813,6 @@ msgid "The default video view"
 msgstr "La vista de vídeo predeterminada"
 
 #: ../org.gnome.ekiga.gschema.xml.in.in.h:73
-#| msgid "The default video view"
 msgid "The default video view (local, remote, both)"
 msgstr "La vista de vídeo predeterminada (local, remoto, ambas)"
 
@@ -2976,12 +2969,9 @@ msgstr "Desviar las llamadas al equipo"
 
 #: ../org.gnome.ekiga.gschema.xml.in.in.h:111
 msgid "DTMF transmission"
-msgstr ""
+msgstr "Transmisión DTMF"
 
 #: ../org.gnome.ekiga.gschema.xml.in.in.h:112
-#| msgid ""
-#| "Select the mode for sending DTMFs. The values can be 0 (for \"RFC2833\") "
-#| "and 1 (for \"INFO\")"
 msgid ""
 "Select the mode for DTMFs transmission. The values can be 'rfc2833' (for "
 "\"RFC2833\") and 'info' (for \"SIP INFO\")"
@@ -3018,17 +3008,20 @@ msgid "Enable early H.245"
 msgstr "Activar H.245 antiguo"
 
 #: ../org.gnome.ekiga.gschema.xml.in.in.h:120
-msgid "Enable 'Fast Start'"
+#| msgid "Enable 'Fast Start'"
+msgid "Enable 'Fast Connect'"
 msgstr "Activar el «Inicio rápido»"
 
 #: ../org.gnome.ekiga.gschema.xml.in.in.h:121
+#| msgid ""
+#| "Connection will be established in Fast Start (Fast Connect) mode. Fast "
+#| "Start is a new way to start calls faster that was introduced in H.323v2."
 msgid ""
-"Connection will be established in Fast Start mode. Fast Start (Fast Connect) "
-"is a new way to start calls faster that was introduced in H.323v2."
+"Connection will be established in Fast Connect mode. Fast Connect (Fast "
+"Start) is a new way to start calls faster that was introduced in H.323v2."
 msgstr ""
-"La conexión se establecerá en modo «Inicio rápido». «Inicio "
-"rápido» (Conexión rápida) es un modo nuevo de iniciar llamadas más rápido y "
-"se introdujo en H.323v2."
+"La conexión se establecerá en modo «Inicio rápido» (Conexión rápida). Esto "
+"es un modo nuevo de iniciar llamadas más rápido y se introdujo en H.323v2."
 
 #: ../org.gnome.ekiga.gschema.xml.in.in.h:122
 msgid "Enable H.239"
@@ -3043,10 +3036,6 @@ msgid "Extended Video Roles"
 msgstr "Roles de vídeo extendidos"
 
 #: ../org.gnome.ekiga.gschema.xml.in.in.h:125
-#| msgid ""
-#| "Select the H.239 Video Role. The values can be 0 (for \"disable extended "
-#| "video\"), 1 (for \"allow per content role mask\"), 2 (for \"force "
-#| "presentation\"), or 3 (for \"force live role\")"
 msgid ""
 "Select the H.239 Video Role. The values can be \"None\" (for \"disable "
 "extended video\"), \"Content\" (for \"allow per content role mask\"), "
@@ -3059,7 +3048,6 @@ msgstr ""
 "«forzar rol en vivo»)"
 
 #: ../org.gnome.ekiga.gschema.xml.in.in.h:126
-#| msgid "Select the mode for DTMFs sending"
 msgid "Select the mode for DTMFs transmission"
 msgstr "Seleccionar el modo para transmisiones DTMF"
 
@@ -3082,8 +3070,14 @@ msgid "UDP port range"
 msgstr "Rango de puertos UDP"
 
 #: ../org.gnome.ekiga.gschema.xml.in.in.h:130
-msgid "The range of UDP ports that Ekiga will use."
-msgstr "El rango de puertos UDP que Ekiga usará."
+msgid ""
+"The range of UDP ports that Ekiga will use for SIP signalling or when "
+"registering to H.323 gatekeepers. It is also used for RTP (audio and video "
+"communication channels)."
+msgstr ""
+"El rango de puertos UDP que usará Ekiga para señalización SIP o al "
+"registrarse en gatekeepers H.323. También se usa para RTP (canales de "
+"comunicación de sonido y de vídeo)."
 
 #: ../org.gnome.ekiga.gschema.xml.in.in.h:131
 msgid "Always forward calls to the given host"
@@ -3140,12 +3134,10 @@ msgid "List of configured LDAP servers"
 msgstr "Lista de servidores LDAP configurados"
 
 #: ../org.gnome.ekiga.gschema.xml.in.in.h:142
-#| msgid "Add resource list"
 msgid "Resource lists"
 msgstr "Lista de recursos"
 
 #: ../org.gnome.ekiga.gschema.xml.in.in.h:143
-#| msgid "List of configured LDAP servers"
 msgid "List of configured resource lists"
 msgstr "Lista de lista de recursos configurados"
 
@@ -3481,12 +3473,12 @@ msgid "Could not authenticate"
 msgstr "No se pudo autenticar"
 
 #: ../plugins/loudmouth/loudmouth-account.cpp:350
-#: ../plugins/loudmouth/loudmouth-bank.cpp:124
+#: ../plugins/loudmouth/loudmouth-bank.cpp:122
 msgid "Server:"
 msgstr "Servidor:"
 
 #: ../plugins/loudmouth/loudmouth-account.cpp:350
-#: ../plugins/loudmouth/loudmouth-bank.cpp:124
+#: ../plugins/loudmouth/loudmouth-bank.cpp:122
 msgid "The server, e.g. jabber.org"
 msgstr "El servidor, ej. «jabber.org»"
 
@@ -3500,12 +3492,12 @@ msgstr ""
 "El puerto del protocolo de transporte, si es diferente del predeterminado"
 
 #: ../plugins/loudmouth/loudmouth-account.cpp:358
-#: ../plugins/loudmouth/loudmouth-bank.cpp:125
+#: ../plugins/loudmouth/loudmouth-bank.cpp:123
 msgid "Resource:"
 msgstr "Recurso:"
 
 #: ../plugins/loudmouth/loudmouth-account.cpp:358
-#: ../plugins/loudmouth/loudmouth-bank.cpp:125
+#: ../plugins/loudmouth/loudmouth-bank.cpp:123
 msgid ""
 "The resource, such as home or work, allowing to distinguish among several "
 "terminals registered to the same account; leave empty if you do not know "
@@ -3515,11 +3507,11 @@ msgstr ""
 "terminales registradas en la misma cuenta; déjelo en blanco si no sabe lo "
 "que es"
 
-#: ../plugins/loudmouth/loudmouth-bank.cpp:108
+#: ../plugins/loudmouth/loudmouth-bank.cpp:106
 msgid "_Add a Jabber/XMPP Account"
 msgstr "_Añadir una cuenta Jabber/XMPP"
 
-#: ../plugins/loudmouth/loudmouth-bank.cpp:120
+#: ../plugins/loudmouth/loudmouth-bank.cpp:118
 msgid "Please fill in the following fields:"
 msgstr "Rellene los siguientes campos:"
 
@@ -3747,6 +3739,9 @@ msgstr "Imprime mensajes de depuración en la consola (nivel entre 1 y 8)"
 #: ../src/gui/main.cpp:138
 msgid "Makes Ekiga call the given URI"
 msgstr "Hace que Ekiga llame al URI dado"
+
+#~ msgid "The range of UDP ports that Ekiga will use."
+#~ msgstr "El rango de puertos UDP que Ekiga usará."
 
 #~| msgid ""
 #~| "Select the transmitted video size: Small (QCIF 176x144) or Large (CIF "
