@@ -854,7 +854,6 @@ dnl  Output the different Makefiles
 dnl ###########################################################################
 AC_CONFIG_FILES([Makefile
 Doxyfile
-src/ekiga-config-tool
 org.gnome.ekiga.gschema.xml.in
 ekiga.convert
 ekiga.desktop.in

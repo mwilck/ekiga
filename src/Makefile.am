@@ -44,7 +44,6 @@ AM_CPPFLAGS +=                   				\
 	-I$(top_srcdir)/lib/engine/videooutput/dx
 endif
 
-bin_SCRIPTS = ekiga-config-tool
 bin_PROGRAMS = ekiga
 
 EXTRA_PROGRAMS =
