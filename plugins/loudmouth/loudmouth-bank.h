@@ -73,6 +73,7 @@ namespace LM
 
   private:
 
+    boost::shared_ptr<Ekiga::Settings> contacts_settings;
     boost::shared_ptr<Ekiga::PersonalDetails> details;
     boost::shared_ptr<Cluster> cluster;
     boost::shared_ptr<Dialect> dialect;
@@ -90,7 +91,6 @@ namespace LM
   };
 
   typedef boost::shared_ptr<Bank> BankPtr;
-  boost::shared_ptr<Ekiga::Settings> contacts_settings;
 };
 
 #endif
