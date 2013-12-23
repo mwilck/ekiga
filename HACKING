@@ -2,9 +2,9 @@ Developers:
 - Please keep the current coding style in Ekiga and put comments.
   Functions descriptions should have 3 fields: DESCRIPTION, BEHAVIOR
   and PRE.  PRE means the set of conditions on the parameters to be
-  sure that the function works.  See src/gui/main.h for an example.
+  sure that the function works.  See src/main.h for an example.
 - Any new file you create must start with the license preamble and the
-  short file description, see src/gui/main.cpp for an example
+  short file description, see src/main.cpp for an example.
 - About gconf: All notifiers and all gconf_client_notify_add must be
   in config.cpp.  The callback that updates the gconf cache must be
   located in the file containing the widget associated to the

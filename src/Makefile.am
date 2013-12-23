@@ -25,7 +25,6 @@ AM_CPPFLAGS = \
 	-I$(top_srcdir)/lib/engine/components/opal	\
 	-I$(top_srcdir)/src				\
 	-I$(top_srcdir)/src/dbus-helper/		\
-	-I$(top_srcdir)/src/gui/			\
 	-I$(top_builddir)/src/dbus-helper/
 
 BUILT_SOURCES = src/revision.h
@@ -53,12 +52,9 @@ ekiga_SOURCES =
 
 nodist_ekiga_SOURCES =
 
-# Graphical User Interface
-ekiga_SOURCES +=			\
-	gui/main.cpp
-
 # Endpoints
 ekiga_SOURCES +=			\
+	main.cpp			\
 	ekiga.h			        \
 	ekiga.cpp
 
