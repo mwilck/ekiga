@@ -25,21 +25,20 @@ msgstr ""
 "Project-Id-Version: ekiga\n"
 "Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?"
 "product=ekiga&keywords=I18N+L10N&component=general\n"
-"POT-Creation-Date: 2013-12-17 12:11+0000\n"
-"PO-Revision-Date: 2013-12-15 01:00-0300\n"
-"Last-Translator: Adorilson Bezerra <adorilson@gmail.com>\n"
+"POT-Creation-Date: 2013-12-26 16:39+0000\n"
+"PO-Revision-Date: 2013-12-26 21:50-0300\n"
+"Last-Translator: Enrico Nicoletto <liverig@gmail.com>\n"
 "Language-Team: Brazilian Portuguese <gnome-pt_br-list@gnome.org>\n"
 "Language: pt_BR\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n > 1);\n"
-"X-Generator: Poedit 1.5.7\n"
-"X-Poedit-Bookmarks: -1,-1,-1,464,-1,-1,-1,-1,-1,-1\n"
+"X-Generator: Poedit 1.6.3\n"
 "X-Project-Style: gnome\n"
 
 #. Application name
-#: ../ekiga.desktop.in.in.h:1 ../src/gui/main.cpp:116 ../src/gui/main.cpp:118
+#: ../ekiga.desktop.in.in.h:1 ../src/main.cpp:123 ../src/main.cpp:125
 msgid "Ekiga Softphone"
 msgstr "Ekiga Softfone"
 
@@ -1756,7 +1755,7 @@ msgid "Find contacts"
 msgstr "Localiza contatos"
 
 #: ../lib/engine/gui/gtk-frontend/main_window.cpp:1132
-#: ../lib/engine/gui/gtk-frontend/statusicon.cpp:373
+#: ../lib/engine/gui/gtk-frontend/statusicon.cpp:396
 msgid "Quit"
 msgstr "Sair"
 
@@ -1802,12 +1801,12 @@ msgid "Show offline contacts"
 msgstr "Mostrar contatos desconectados"
 
 #: ../lib/engine/gui/gtk-frontend/main_window.cpp:1192
-#: ../lib/engine/gui/gtk-frontend/statusicon.cpp:361
+#: ../lib/engine/gui/gtk-frontend/statusicon.cpp:384
 msgid "Get help by reading the Ekiga manual"
 msgstr "Obtém ajuda lendo o manual do Ekiga"
 
 #: ../lib/engine/gui/gtk-frontend/main_window.cpp:1197
-#: ../lib/engine/gui/gtk-frontend/statusicon.cpp:366
+#: ../lib/engine/gui/gtk-frontend/statusicon.cpp:389
 msgid "View information about Ekiga"
 msgstr "Vê informações sobre o Ekiga"
 
@@ -2071,17 +2070,17 @@ msgid "This enables H.245 early in the setup"
 msgstr "Isto habilita o H.245 precocemente durante a configuração"
 
 #: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:789
-msgid "Enable fast _start procedure"
-msgstr "Habilitar procedimento de início _rápido"
+msgid "Enable fast _connect procedure"
+msgstr "Habilitar procedimento de _conexão rápida"
 
 #: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:790
 msgid ""
-"Connection will be established in Fast Start (Fast Connect) mode. Fast Start "
-"is a new way to start calls faster that was introduced in H.323v2."
+"Connection will be established in Fast Connect (Fast Start) mode. Fast "
+"Connect is a way to start calls faster that was introduced in H.323v2."
 msgstr ""
-"A conexão será estabelecida no modo \"fast start\" (fast connect). Fast "
-"start é um modo novo e mais rápido de iniciar chamadas, que foi introduzido "
-"no H.323v2."
+"A conexão será estabelecida no modo conexão rápida (início rápido). Conexão "
+"rápida é um modo mais rápido de iniciar chamadas, que foi introduzido no "
+"H.323v2."
 
 #: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:792
 msgid "Enable H.239 control"
@@ -2380,7 +2379,7 @@ msgstr "Desconectado"
 msgid "Busy"
 msgstr "Ocupado"
 
-#: ../lib/engine/gui/gtk-frontend/statusicon.cpp:294
+#: ../lib/engine/gui/gtk-frontend/statusicon.cpp:317
 #, c-format
 msgid "You have %d message"
 msgid_plural "You have %d messages"
@@ -3018,16 +3017,17 @@ msgid "Enable early H.245"
 msgstr "Habilitar H.245 precoce"
 
 #: ../org.gnome.ekiga.gschema.xml.in.in.h:120
-msgid "Enable 'Fast Start'"
-msgstr "Habilitar \"fast start\""
+msgid "Enable 'Fast Connect'"
+msgstr "Habilitar \"Conexão rápida\""
 
 #: ../org.gnome.ekiga.gschema.xml.in.in.h:121
 msgid ""
-"Connection will be established in Fast Start mode. Fast Start (Fast Connect) "
-"is a new way to start calls faster that was introduced in H.323v2."
+"Connection will be established in Fast Connect mode. Fast Connect (Fast "
+"Start) is a new way to start calls faster that was introduced in H.323v2."
 msgstr ""
-"A conexão será estabelecida no modo \"fast start\". Fast start é um modo "
-"novo e mais rápido de iniciar chamadas, que foi introduzido no H.323v2."
+"A conexão será estabelecida no modo conexão rápida. Conexão rápida (início "
+"rápido) é um novo modo de iniciar chamadas mais rápido, que foi apresentado "
+"no H.323v2."
 
 #: ../org.gnome.ekiga.gschema.xml.in.in.h:122
 msgid "Enable H.239"
@@ -3049,9 +3049,9 @@ msgid ""
 "role\")"
 msgstr ""
 "Seleciona o papel de vídeo H.239. Os valores podem ser: \"None\" (para "
-"\"desativar vídeo estendido\"), \"Content\" (para \"permitir máscara por conteúdo\"), "
-"\"Presentation\" (para \"forçar apresentação\"), ou \"Live\" (para \"forçar "
-"modo ao vivo\")"
+"\"desativar vídeo estendido\"), \"Content\" (para \"permitir máscara por "
+"conteúdo\"), \"Presentation\" (para \"forçar apresentação\"), ou \"Live"
+"\" (para \"forçar modo ao vivo\")"
 
 #: ../org.gnome.ekiga.gschema.xml.in.in.h:126
 msgid "Select the mode for DTMFs transmission"
@@ -3076,8 +3076,14 @@ msgid "UDP port range"
 msgstr "Faixa de portas UDP"
 
 #: ../org.gnome.ekiga.gschema.xml.in.in.h:130
-msgid "The range of UDP ports that Ekiga will use."
-msgstr "A faixa de portas UDP a ser usada pelo Ekiga."
+msgid ""
+"The range of UDP ports that Ekiga will use for SIP signalling or when "
+"registering to H.323 gatekeepers. It is also used for RTP (audio and video "
+"communication channels)."
+msgstr ""
+"O intervalo de portas UDP que o Ekiga usará para sinalização de SIP ou ao "
+"registrar-se com os guardiões H.323. Isto também é usado para RTP (canais de "
+"comunicação de áudio e vídeo)."
 
 #: ../org.gnome.ekiga.gschema.xml.in.in.h:131
 msgid "Always forward calls to the given host"
@@ -3733,11 +3739,13 @@ msgstr ""
 "Por favor, preencha este formulário para alterar um contato existente em um "
 "servidor remoto"
 
-#: ../src/gui/main.cpp:133
+#: ../src/main.cpp:133
 msgid "Prints debug messages in the console (level between 1 and 8)"
 msgstr "Imprime mensagens de depuração no terminal (nível entre 1 e 8)"
 
-#: ../src/gui/main.cpp:138
+#: ../src/main.cpp:138
 msgid "Makes Ekiga call the given URI"
 msgstr "Faz o Ekiga chamar a URI indicada"
 
+#~ msgid "The range of UDP ports that Ekiga will use."
+#~ msgstr "A faixa de portas UDP a ser usada pelo Ekiga."
