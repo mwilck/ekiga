@@ -148,7 +148,8 @@ clear_display_info (EkigaExtWindow *ew)
   info.window = 0;
 #endif
 
-  ew->priv->vocore->set_ext_display_info (info);
+  // FIXME
+  //ew->priv->vocore->set_ext_display_info (info);
 }
 
 static GObject *
@@ -237,7 +238,7 @@ draw_event (GtkWidget *widget,
   info.mode = Ekiga::VO_MODE_REMOTE_EXT;
   info.config_info_set = TRUE;
 
-  ew->priv->vocore->set_ext_display_info (info);
+  //ew->priv->vocore->set_ext_display_info (info);
 
   return handled;
 }
