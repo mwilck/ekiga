@@ -154,7 +154,7 @@ libekiga_la_SOURCES += \
 
 if !WIN32
 libekiga_la_SOURCES +=	\
-	gui/xwindow.cpp		\
+	gui/xwindow.cpp	\
 	gui/xwindow.h
 endif
 
@@ -666,3 +666,18 @@ libekiga_la_SOURCES += \
 
 libekiga_la_LDFLAGS += $(DX_LIBS)
 endif
+
+##
+# Sources of the Clutter video output component
+##
+
+AM_CPPFLAGS += $(CLUTTER_CFLAGS) $(CLUTTER_GTK_CFLAGS) $(CLUTTER_GST_CFLAGS) \
+	-I$(top_srcdir)/lib/engine/components/clutter-gst-videooutput
+
+libekiga_la_SOURCES += \
+	engine/components/clutter-gst-videooutput/videooutput-manager-clutter-gst.cpp   \
+	engine/components/clutter-gst-videooutput/videooutput-manager-clutter-gst.h     \
+	engine/components/clutter-gst-videooutput/videooutput-main-clutter-gst.cpp      \
+	engine/components/clutter-gst-videooutput/videooutput-main-clutter-gst.h
+
+libekiga_la_LDFLAGS += $(CLUTTER_LIBS) $(CLUTTER_GTK_LIBS) $(CLUTTER_GST_LIBS)
