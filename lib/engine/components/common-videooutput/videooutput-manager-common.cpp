@@ -136,11 +136,12 @@ void GMVideoOutputManager::set_frame_data (const char* data,
 {
   Ekiga::DisplayInfo local_display_info;
 
+  /*
   if (type < 2)
     get_display_info (local_display_info);
   else
     get_ext_display_info (local_display_info);
-
+*/
   bool local = (type == 0);
 
   var_mutex.Wait();
@@ -326,7 +327,6 @@ void GMVideoOutputManager::update_gui_device ()
 
   Ekiga::Runtime::run_in_main
     (boost::bind (&GMVideoOutputManager::device_opened_in_main, this,
-                  current_frame.accel, current_frame.mode, current_frame.zoom,
                   current_frame.both_streams_active,
                   current_frame.ext_stream_active));
 }
@@ -458,12 +458,9 @@ GMVideoOutputManager::redraw ()
 
 
 void
-GMVideoOutputManager::device_opened_in_main (Ekiga::VideoOutputAccel accel,
-					     Ekiga::VideoOutputMode mode,
-					     unsigned zoom,
-					     bool both, bool ext)
+GMVideoOutputManager::device_opened_in_main (bool both, bool ext)
 {
-  device_opened (accel, mode, zoom, both, ext);
+  device_opened (both, ext);
 }
 
 void

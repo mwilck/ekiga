@@ -70,6 +70,7 @@ VideoOutputCore::~VideoOutputCore ()
 void VideoOutputCore::setup (std::string setting)
 {
   GSettings *s = settings->get_g_settings ();
+  /*
   if (setting.empty () || setting == "video-view")  {
 
     DisplayInfo display_info;
@@ -98,6 +99,7 @@ void VideoOutputCore::setup (std::string setting)
 
     set_display_info (display_info);
   }
+  */
 
   if (setting.empty () || setting == "ext-zoom") {
 
@@ -111,7 +113,8 @@ void VideoOutputCore::setup (std::string setting)
       g_settings_set_int (s, "ext-zoom", 100);
     }
 
-    set_ext_display_info(display_info);
+    // FIXME
+    //set_ext_display_info(display_info);
   }
 
   if (setting.empty () || setting == "stay-on-top" || setting == "disable-hw-accel"
@@ -130,7 +133,8 @@ void VideoOutputCore::setup (std::string setting)
     }
     display_info.config_info_set = TRUE;
 
-    set_display_info(display_info);
+    std::cout << "FIXME" << std::endl << std::flush;
+    //set_display_info(display_info);
   }
 }
 
@@ -141,10 +145,9 @@ void VideoOutputCore::add_manager (VideoOutputManager &manager)
   managers.insert (&manager);
   manager_added (manager);
 
-  manager.device_opened.connect (boost::bind (&VideoOutputCore::on_device_opened, this, _1, _2, _3, _4, _5, &manager));
+  manager.device_opened.connect (boost::bind (&VideoOutputCore::on_device_opened, this, _1, _2, &manager));
   manager.device_closed.connect (boost::bind (&VideoOutputCore::on_device_closed, this, &manager));
   manager.device_error.connect (boost::bind (&VideoOutputCore::on_device_error, this, _1, &manager));
-  manager.fullscreen_mode_changed.connect (boost::bind (&VideoOutputCore::on_fullscreen_mode_changed, this, _1, &manager));
   manager.size_changed.connect (boost::bind (&VideoOutputCore::on_size_changed, this, _1, _2, _3, &manager));
 }
 
@@ -244,37 +247,35 @@ void VideoOutputCore::set_frame_data (const char *data,
   }
 }
 
-void VideoOutputCore::set_display_info (const DisplayInfo & _display_info)
+void VideoOutputCore::set_display_info (const gpointer _local,
+                                        const gpointer _remote)
 {
   PWaitAndSignal m(core_mutex);
 
   for (std::set<VideoOutputManager *>::iterator iter = managers.begin ();
        iter != managers.end ();
        iter++) {
-    (*iter)->set_display_info (_display_info);
+    (*iter)->set_display_info (_local, _remote);
   }
 }
 
-void VideoOutputCore::set_ext_display_info (const DisplayInfo & _display_info)
+void VideoOutputCore::set_ext_display_info (const gpointer _ext)
 {
   PWaitAndSignal m(core_mutex);
 
   for (std::set<VideoOutputManager *>::iterator iter = managers.begin ();
        iter != managers.end ();
        iter++) {
-    (*iter)->set_ext_display_info (_display_info);
+    (*iter)->set_ext_display_info (_ext);
   }
 }
 
 
-void VideoOutputCore::on_device_opened (VideoOutputAccel videooutput_accel,
-                                        VideoOutputMode mode,
-                                        unsigned zoom,
-                                        bool both_streams,
+void VideoOutputCore::on_device_opened (bool both_streams,
                                         bool ext_stream,
                                         VideoOutputManager *manager)
 {
-  device_opened (*manager, videooutput_accel, mode, zoom, both_streams, ext_stream);
+  device_opened (*manager, both_streams, ext_stream);
 }
 
 void VideoOutputCore::on_device_closed ( VideoOutputManager *manager)
@@ -287,16 +288,11 @@ void VideoOutputCore::on_device_error (VideoOutputErrorCodes error_code, VideoOu
   device_error (*manager, error_code);
 }
 
-void VideoOutputCore::on_fullscreen_mode_changed ( VideoOutputFSToggle toggle, VideoOutputManager *manager)
-{
-  fullscreen_mode_changed (*manager, toggle);
-}
-
 void VideoOutputCore::on_size_changed (unsigned width,
                                        unsigned height,
-                                       VideoOutputMode mode,
+                                       unsigned type,
                                        VideoOutputManager *manager)
 {
-  size_changed (*manager, width, height, mode);
+  size_changed (*manager, width, height, type);
 }
 

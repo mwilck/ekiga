@@ -145,8 +145,8 @@ namespace Ekiga
                            unsigned type,
                            int devices_nbr);
 
-      void set_display_info (const DisplayInfo & _display_info);
-      void set_ext_display_info (const DisplayInfo & _display_info);
+      void set_display_info (const gpointer _local, const gpointer _remote);
+      void set_ext_display_info (const gpointer _ext);
 
 
       /*** Statistics ***/
@@ -164,25 +164,21 @@ namespace Ekiga
 
       /** See videooutput-manager.h for the API
        */
-      boost::signals2::signal<void(VideoOutputManager &, VideoOutputAccel, VideoOutputMode, unsigned, bool, bool)> device_opened;
+      boost::signals2::signal<void(VideoOutputManager &, bool, bool)> device_opened;
       boost::signals2::signal<void(VideoOutputManager &)> device_closed;
       boost::signals2::signal<void(VideoOutputManager &, VideoOutputErrorCodes)> device_error;
-      boost::signals2::signal<void(VideoOutputManager &, VideoOutputFSToggle)> fullscreen_mode_changed;
-      boost::signals2::signal<void(VideoOutputManager &, unsigned, unsigned, VideoOutputMode)> size_changed;
+      boost::signals2::signal<void(VideoOutputManager &, unsigned, unsigned, unsigned)> size_changed;
 
 
   private:
-      void on_device_opened (VideoOutputAccel videooutput_accel,
-                             VideoOutputMode mode,
-                             unsigned zoom,
-                             bool both_streams,
+      void on_device_opened (bool both_streams,
                              bool ext_stream,
                              VideoOutputManager *manager);
       void on_device_closed (VideoOutputManager *manager);
       void on_device_error (VideoOutputErrorCodes error_code, VideoOutputManager *manager);
       void on_size_changed (unsigned width,
                             unsigned height,
-                            VideoOutputMode mode,
+                            unsigned type,
                             VideoOutputManager *manager);
       void on_fullscreen_mode_changed (VideoOutputFSToggle toggle, VideoOutputManager *manager);
 
