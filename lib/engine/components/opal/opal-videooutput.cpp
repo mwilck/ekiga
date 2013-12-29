@@ -36,6 +36,7 @@
  */
 
 #include <ptlib.h>
+
 #include <opal/manager.h>
 
 #include "opal-videooutput.h"
@@ -108,11 +109,11 @@ bool PVideoOutputDevice_EKIGA::IsOpen ()
 
 
 bool PVideoOutputDevice_EKIGA::SetFrameData (unsigned x,
-					   unsigned y,
-					   unsigned width,
-					   unsigned height,
-					   const BYTE * data,
-					   bool endFrame)
+                                             unsigned y,
+                                             unsigned width,
+                                             unsigned height,
+                                             const BYTE * data,
+                                             bool endFrame)
 {
   PWaitAndSignal m(videoDisplay_mutex);
 
@@ -136,8 +137,10 @@ bool PVideoOutputDevice_EKIGA::SetFrameData (unsigned x,
     devices_nbr++;
   }
 
-  videooutput_core->set_frame_data((const char*) data, width, height, device_id, devices_nbr);
-
+  videooutput_core->set_frame_data ((const char*) data,
+                                    width, height,
+                                    device_id,
+                                    devices_nbr);
   return TRUE;
 }
 
