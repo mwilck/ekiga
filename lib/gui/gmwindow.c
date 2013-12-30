@@ -50,6 +50,7 @@ struct _GmWindowPrivate
   GSettings *settings;
   gboolean hide_on_esc;
   gboolean hide_on_delete;
+  gboolean state_restored;
   gchar *key;
   int x;
   int y;
@@ -72,6 +73,10 @@ gm_window_delete_event_cb (GtkWidget *w,
 static void
 window_realize_cb (GtkWidget *w,
 		   gpointer data);
+
+static void
+window_show_cb (GtkWidget *w,
+                gpointer data);
 
 static void
 window_hide_cb (GtkWidget *w,
@@ -212,6 +217,7 @@ gm_window_init (GmWindow* self)
   self->priv->key = g_strdup ("");
   self->priv->hide_on_esc = TRUE;
   self->priv->hide_on_delete = TRUE;
+  self->priv->state_restored = FALSE;
 
   self->priv->accel = gtk_accel_group_new ();
   gtk_window_add_accel_group (GTK_WINDOW (self), self->priv->accel);
@@ -220,6 +226,9 @@ gm_window_init (GmWindow* self)
 
   g_signal_connect (self, "delete-event",
 		    G_CALLBACK (gm_window_delete_event_cb), NULL);
+
+  g_signal_connect (self, "show",
+                    G_CALLBACK (window_show_cb), self);
 
   g_signal_connect (self, "realize",
                     G_CALLBACK (window_realize_cb), self);
@@ -260,12 +269,29 @@ window_realize_cb (GtkWidget *w,
 
   self = GM_WINDOW (w);
 
-  g_return_if_fail (g_strcmp0 (self->priv->key, "") && self);
+  g_return_if_fail (self);
 
   gm_window_restore (self);
+  self->priv->state_restored = TRUE;
 
   gtk_widget_realize (GTK_WIDGET (w));
 }
+
+
+static void
+window_show_cb (GtkWidget *w,
+                G_GNUC_UNUSED gpointer data)
+{
+  GmWindow *self = NULL;
+
+  self = GM_WINDOW (w);
+
+  g_return_if_fail (self);
+
+  if (!self->priv->state_restored)
+    gm_window_restore (self);
+}
+
 
 
 static void
@@ -279,6 +305,7 @@ window_hide_cb (GtkWidget *w,
   self = GM_WINDOW (w);
 
   gm_window_save (self);
+  self->priv->state_restored = FALSE;
 }
 
 
