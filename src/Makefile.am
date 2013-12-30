@@ -30,20 +30,6 @@ AM_CPPFLAGS = \
 
 BUILT_SOURCES = src/revision.h
 
-# XVideo/X
-if !WIN32
-AM_CPPFLAGS +=                   				\
-	-I$(top_srcdir)/lib/engine/videooutput/common   \
-	-I$(top_srcdir)/lib/engine/videooutput/x
-endif
-
-# DirectX
-if HAVE_DX
-AM_CPPFLAGS +=                   				\
-	-I$(top_srcdir)/lib/engine/videooutput/common   \
-	-I$(top_srcdir)/lib/engine/videooutput/dx
-endif
-
 bin_SCRIPTS = ekiga-config-tool
 bin_PROGRAMS = ekiga
 

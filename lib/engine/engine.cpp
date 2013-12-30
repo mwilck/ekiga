@@ -62,14 +62,6 @@
 #include "gtk-frontend.h"
 #include "gmconf-personal-details.h"
 
-#ifndef WIN32
-#include "videooutput-main-x.h"
-#endif
-
-#ifdef HAVE_DX
-#include "videooutput-main-dx.h"
-#endif
-
 #include "videooutput-main-clutter-gst.h"
 
 #include "videoinput-main-mlogo.h"

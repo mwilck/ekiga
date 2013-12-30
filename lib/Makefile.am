@@ -37,8 +37,6 @@ AM_CPPFLAGS = \
 	-I$(top_srcdir)/lib/engine/videoinput \
 	-I$(top_srcdir)/lib/engine/videooutput \
 	-I$(top_srcdir)/lib/engine/components/call-history \
-	-I$(top_srcdir)/lib/engine/components/common-videooutput \
-	-I$(top_srcdir)/lib/engine/components/dx-videooutput \
 	-I$(top_srcdir)/lib/engine/components/echo \
 	-I$(top_srcdir)/lib/engine/components/gmconf-personal-details \
 	-I$(top_srcdir)/lib/engine/components/hal-dbus \
@@ -156,21 +154,6 @@ if !WIN32
 libekiga_la_SOURCES +=	\
 	gui/xwindow.cpp	\
 	gui/xwindow.h
-endif
-
-if HAVE_XV
-libekiga_la_SOURCES +=	\
-	gui/xvwindow.cpp		\
-	gui/xvwindow.h
-
-libekiga_la_LDFLAGS += $(XV_LIBS)
-
-endif
-
-if HAVE_DX
-libekiga_la_SOURCES +=	\
-	gui/dxwindow.cpp		\
-	gui/dxwindow.h
 endif
 
 ##
@@ -625,46 +608,6 @@ if HAVE_SHM
 
 libekiga_la_LDFLAGS += $(SHM_LIBS)
 
-endif
-
-##
-# Common files for several video output components
-##
-
-libekiga_la_SOURCES += \
-	engine/components/common-videooutput/videooutput-manager-common.cpp \
-	engine/components/common-videooutput/videooutput-manager-common.h
-
-##
-# Sources of the X video output component
-##
-
-if !WIN32
-
-AM_CPPFLAGS += \
-	-I$(top_srcdir)/lib/engine/components/x-videooutput
-
-libekiga_la_SOURCES += \
-	engine/components/x-videooutput/videooutput-manager-x.cpp \
-	engine/components/x-videooutput/videooutput-manager-x.h \
-	engine/components/x-videooutput/videooutput-main-x.cpp \
-	engine/components/x-videooutput/videooutput-main-x.h
-
-endif
-
-##
-# Sources of the Direct X video output component
-##
-
-if HAVE_DX
-
-libekiga_la_SOURCES += \
-	engine/components/dx-videooutput/videooutput-manager-dx.cpp \
-	engine/components/dx-videooutput/videooutput-manager-dx.h \
-	engine/components/dx-videooutput/videooutput-main-dx.cpp \
-	engine/components/dx-videooutput/videooutput-main-dx.h
-
-libekiga_la_LDFLAGS += $(DX_LIBS)
 endif
 
 ##
