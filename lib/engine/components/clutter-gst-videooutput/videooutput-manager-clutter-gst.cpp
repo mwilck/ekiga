@@ -44,7 +44,6 @@
 #include <clutter-gtk/clutter-gtk.h>
 
 #include "videooutput-manager-clutter-gst.h"
-#include "videooutput-info.h"
 #include "videoinput-info.h"
 
 #include "runtime.h"
@@ -112,8 +111,7 @@ GMVideoOutputManager_clutter_gst::open ()
     if (!videosink || !appsrc || !conv || !pipeline[i]) {
 
       Ekiga::Runtime::run_in_main (boost::bind (&GMVideoOutputManager_clutter_gst::device_error_in_main,
-                                                this,
-                                                Ekiga::VO_ERROR));
+                                                this));
       break;
     }
 
@@ -265,7 +263,7 @@ GMVideoOutputManager_clutter_gst::device_closed_in_main ()
 }
 
 void
-GMVideoOutputManager_clutter_gst::device_error_in_main (Ekiga::VideoOutputErrorCodes code)
+GMVideoOutputManager_clutter_gst::device_error_in_main ()
 {
-  device_error (code);
+  device_error ();
 }

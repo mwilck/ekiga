@@ -270,7 +270,6 @@ static void on_videooutput_device_closed_cb (Ekiga::VideoOutputManager & /* mana
                                              gpointer self);
 
 static void on_videooutput_device_error_cb (Ekiga::VideoOutputManager & /* manager */,
-                                            Ekiga::VideoOutputErrorCodes error_code,
                                             gpointer self);
 
 static void ekiga_call_window_set_video_size (EkigaCallWindow *cw,
@@ -438,9 +437,7 @@ static void ekiga_call_window_set_bandwidth (EkigaCallWindow *cw,
                                              float ta,
                                              float ra,
                                              float tv,
-                                             float rv,
-                                             int tfps,
-                                             int rfps);
+                                             float rv);
 
 static void ekiga_call_window_set_call_hold (EkigaCallWindow *cw,
                                              bool is_on_hold);
@@ -511,6 +508,7 @@ static void
 zoom_in_changed_cb (G_GNUC_UNUSED GtkWidget *widget,
 		    gpointer data)
 {
+  /*
   g_return_if_fail (data != NULL);
 
   Ekiga::DisplayInfo display_info;
@@ -525,12 +523,14 @@ zoom_in_changed_cb (G_GNUC_UNUSED GtkWidget *widget,
 
   cw->priv->video_display_settings->set_int ("zoom", display_info.zoom);
   ekiga_call_window_zooms_menu_update_sensitivity (cw, display_info.zoom);
+*/
 }
 
 static void
 zoom_out_changed_cb (G_GNUC_UNUSED GtkWidget *widget,
 		     gpointer data)
 {
+  /*
   g_return_if_fail (data != NULL);
 
   Ekiga::DisplayInfo display_info;
@@ -545,12 +545,14 @@ zoom_out_changed_cb (G_GNUC_UNUSED GtkWidget *widget,
 
   cw->priv->video_display_settings->set_int ("zoom", display_info.zoom);
   ekiga_call_window_zooms_menu_update_sensitivity (cw, display_info.zoom);
+*/
 }
 
 static void
 zoom_normal_changed_cb (G_GNUC_UNUSED GtkWidget *widget,
 			gpointer data)
 {
+  /*
   g_return_if_fail (data != NULL);
 
   Ekiga::DisplayInfo display_info;
@@ -562,6 +564,7 @@ zoom_normal_changed_cb (G_GNUC_UNUSED GtkWidget *widget,
 
   cw->priv->video_display_settings->set_int ("zoom", display_info.zoom);
   ekiga_call_window_zooms_menu_update_sensitivity (cw, display_info.zoom);
+*/
 }
 
 static void
@@ -796,24 +799,13 @@ on_videooutput_device_closed_cb (Ekiga::VideoOutputManager & /* manager */, gpoi
 
 static void
 on_videooutput_device_error_cb (Ekiga::VideoOutputManager & /* manager */,
-                                Ekiga::VideoOutputErrorCodes error_code,
                                 gpointer self)
 {
   GtkWidget *dialog = NULL;
 
   const gchar *dialog_title =  _("Error while initializing video output");
   const gchar *tmp_msg = _("No video will be displayed on your machine during this call");
-  gchar *dialog_msg = NULL;
-
-  switch (error_code) {
-
-    case Ekiga::VO_ERROR_NONE:
-      break;
-    case Ekiga::VO_ERROR:
-    default:
-      dialog_msg = g_strconcat (_("There was an error opening or initializing the video output. Please verify that no other application is using the accelerated video output."), "\n\n", tmp_msg, NULL);
-      break;
-  }
+  gchar *dialog_msg = g_strconcat (_("There was an error opening or initializing the video output. Please verify that no other application is using the accelerated video output."), "\n\n", tmp_msg, NULL);
 
   dialog = gtk_message_dialog_new (GTK_WINDOW (self), GTK_DIALOG_MODAL,
                                    GTK_MESSAGE_ERROR, GTK_BUTTONS_OK,
@@ -1236,7 +1228,7 @@ on_cleared_call_cb (G_GNUC_UNUSED boost::shared_ptr<Ekiga::CallManager> manager,
     gdk_window_set_keep_above (gtk_widget_get_window (GTK_WIDGET (cw)), false);
   ekiga_call_window_update_calling_state (cw, Standby);
   ekiga_call_window_set_status (cw, _("Standby"));
-  ekiga_call_window_set_bandwidth (cw, 0.0, 0.0, 0.0, 0.0, 0, 0);
+  ekiga_call_window_set_bandwidth (cw, 0.0, 0.0, 0.0, 0.0);
   ekiga_call_window_clear_stats (cw);
 
   if (cw->priv->ext_video_win) {
@@ -1372,18 +1364,14 @@ on_stats_refresh_cb (gpointer self)
 
   if (cw->priv->calling_state == Connected && cw->priv->current_call) {
 
-    Ekiga::VideoOutputStats videooutput_stats;
-    cw->priv->videooutput_core->get_videooutput_stats(videooutput_stats);
-
-    ekiga_call_window_set_status (cw, _("Connected with %s\n%s"), cw->priv->current_call->get_remote_party_name ().c_str (),
+    ekiga_call_window_set_status (cw, _("Connected with %s\n%s"),
+                                  cw->priv->current_call->get_remote_party_name ().c_str (),
                                   cw->priv->current_call->get_duration ().c_str ());
     ekiga_call_window_set_bandwidth (cw,
                                      cw->priv->current_call->get_transmitted_audio_bandwidth (),
                                      cw->priv->current_call->get_received_audio_bandwidth (),
                                      cw->priv->current_call->get_transmitted_video_bandwidth (),
-                                     cw->priv->current_call->get_received_video_bandwidth (),
-                                     videooutput_stats.tx_fps,
-                                     videooutput_stats.rx_fps);
+                                     cw->priv->current_call->get_received_video_bandwidth ());
 
     unsigned int jitter = cw->priv->current_call->get_jitter_size ();
     double lost = cw->priv->current_call->get_lost_packets ();
@@ -1391,10 +1379,10 @@ on_stats_refresh_cb (gpointer self)
     double out_of_order = cw->priv->current_call->get_out_of_order_packets ();
 
     ekiga_call_window_update_stats (cw, lost, late, out_of_order, jitter,
-                                    videooutput_stats.rx_width,
-                                    videooutput_stats.rx_height,
-                                    videooutput_stats.tx_width,
-                                    videooutput_stats.tx_height,
+                                    cw->priv->local_video_natural_width,
+                                    cw->priv->local_video_natural_height,
+                                    cw->priv->remote_video_natural_width,
+                                    cw->priv->remote_video_natural_height,
                                     cw->priv->transmitted_audio_codec.c_str (),
                                     cw->priv->transmitted_video_codec.c_str ());
   }
@@ -1758,18 +1746,16 @@ ekiga_call_window_set_bandwidth (EkigaCallWindow *cw,
                                  float ta,
                                  float ra,
                                  float tv,
-                                 float rv,
-                                 int tfps,
-                                 int rfps)
+                                 float rv)
 {
   gchar *msg = NULL;
 
   g_return_if_fail (EKIGA_IS_CALL_WINDOW (cw));
 
-  if (ta > 0.0 || ra > 0.0 || tv > 0.0 || rv > 0.0 || tfps > 0 || rfps > 0)
-    /* Translators: A = Audio, V = Video, FPS = Frames per second */
-    msg = g_strdup_printf (_("A:%.1f/%.1f V:%.1f/%.1f FPS:%d/%d"),
-                           ta, ra, tv, rv, tfps, rfps);
+  if (ta > 0.0 || ra > 0.0 || tv > 0.0 || rv > 0.0)
+    /* Translators: A = Audio, V = Video */
+    msg = g_strdup_printf (_("A:%.1f/%.1f V:%.1f/%.1f"),
+                           ta, ra, tv, rv);
 
   if (msg)
     gm_statusbar_push_message (GM_STATUSBAR (cw->priv->statusbar), "%s", msg);
@@ -2402,7 +2388,7 @@ ekiga_call_window_connect_engine_signals (EkigaCallWindow *cw)
   conn = cw->priv->videooutput_core->device_closed.connect (boost::bind (&on_videooutput_device_closed_cb, _1, (gpointer) cw));
   cw->priv->connections.add (conn);
 
-  conn = cw->priv->videooutput_core->device_error.connect (boost::bind (&on_videooutput_device_error_cb, _1, _2, (gpointer) cw));
+  conn = cw->priv->videooutput_core->device_error.connect (boost::bind (&on_videooutput_device_error_cb, _1, (gpointer) cw));
   cw->priv->connections.add (conn);
 
   conn = cw->priv->videooutput_core->size_changed.connect (boost::bind (&on_size_changed_cb, _1, _2, _3, _4, (gpointer) cw));
@@ -2684,7 +2670,7 @@ ekiga_call_window_init_gui (EkigaCallWindow *cw)
 
   /* Init */
   ekiga_call_window_set_status (cw, _("Standby"));
-  ekiga_call_window_set_bandwidth (cw, 0.0, 0.0, 0.0, 0.0, 0, 0);
+  ekiga_call_window_set_bandwidth (cw, 0.0, 0.0, 0.0, 0.0);
 
   gtk_widget_hide (cw->priv->call_frame);
 }
@@ -2754,6 +2740,7 @@ ekiga_call_window_draw (GtkWidget *widget,
                         cairo_t *context)
 {
   return true; //FIXME
+  /*
   EkigaCallWindow *cw = EKIGA_CALL_WINDOW (widget);
   GtkWidget* video_widget = cw->priv->main_video_image;
   Ekiga::DisplayInfo display_info;
@@ -2785,7 +2772,7 @@ ekiga_call_window_draw (GtkWidget *widget,
 
   display_info.widget_info_set = true;
 
-  return handled;
+  return handled;*/
 }
 
 static gboolean

@@ -125,7 +125,7 @@ namespace Ekiga
       void start ();
 
       /** Stop the video output
-       * 
+       *
        */
       void stop ();
 
@@ -149,24 +149,13 @@ namespace Ekiga
       void set_ext_display_info (const gpointer _ext);
 
 
-      /*** Statistics ***/
-
-      /** Get the current video output statistics from the core
-       *
-       * @param _videooutput_stats the struct to be filled with the current values..
-       */
-      void get_videooutput_stats (VideoOutputStats & _videooutput_stats) {
-        _videooutput_stats = videooutput_stats;
-      };
-
-
       /*** Signals ***/
 
       /** See videooutput-manager.h for the API
        */
       boost::signals2::signal<void(VideoOutputManager &, bool, bool)> device_opened;
       boost::signals2::signal<void(VideoOutputManager &)> device_closed;
-      boost::signals2::signal<void(VideoOutputManager &, VideoOutputErrorCodes)> device_error;
+      boost::signals2::signal<void(VideoOutputManager &)> device_error;
       boost::signals2::signal<void(VideoOutputManager &, unsigned, unsigned, unsigned)> size_changed;
 
 
@@ -175,17 +164,14 @@ namespace Ekiga
                              bool ext_stream,
                              VideoOutputManager *manager);
       void on_device_closed (VideoOutputManager *manager);
-      void on_device_error (VideoOutputErrorCodes error_code, VideoOutputManager *manager);
+      void on_device_error (VideoOutputManager *manager);
       void on_size_changed (unsigned width,
                             unsigned height,
                             unsigned type,
                             VideoOutputManager *manager);
-      void on_fullscreen_mode_changed (VideoOutputFSToggle toggle, VideoOutputManager *manager);
 
       std::set<VideoOutputManager *> managers;
 
-      VideoOutputStats videooutput_stats;
-      GTimeVal last_stats;
       int number_times_started;
 
       PMutex core_mutex;

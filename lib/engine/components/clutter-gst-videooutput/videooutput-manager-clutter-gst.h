@@ -40,7 +40,6 @@
 
 #include "services.h"
 #include "videooutput-manager.h"
-#include "videooutput-info.h"
 
 #include <glib.h>
 
@@ -83,7 +82,7 @@ private:
 
   void device_closed_in_main ();
 
-  void device_error_in_main (Ekiga::VideoOutputErrorCodes code);
+  void device_error_in_main ();
 
   // Variables
   PMutex device_mutex;

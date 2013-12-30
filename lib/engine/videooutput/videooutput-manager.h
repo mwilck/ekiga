@@ -42,8 +42,6 @@
 #include <boost/bind.hpp>
 #include <glib.h>
 
-#include "videooutput-info.h"
-
 namespace Ekiga
 {
 
@@ -115,9 +113,8 @@ namespace Ekiga
       boost::signals2::signal<void(void)> device_closed;
 
       /** This signal is emitted when an error occurs when opening a video output device.
-       * @param error_code the video output device error code.
        */
-      boost::signals2::signal<void(VideoOutputErrorCodes)> device_error;
+      boost::signals2::signal<void(void)> device_error;
 
       /** This signal is emitted the video output size has changed.
        * This signal is called whenever the size of the widget carrying the video signal

@@ -133,6 +133,7 @@ gui_layout (EkigaExtWindow *ew)
 static inline void
 clear_display_info (EkigaExtWindow *ew)
 {
+  /*
   Ekiga::DisplayInfo info;
 
   info.x = 0;
@@ -147,7 +148,7 @@ clear_display_info (EkigaExtWindow *ew)
   info.gc = 0;
   info.window = 0;
 #endif
-
+*/
   // FIXME
   //ew->priv->vocore->set_ext_display_info (info);
 }
@@ -205,6 +206,7 @@ static gboolean
 draw_event (GtkWidget *widget,
             cairo_t *context)
 {
+  /*
   EkigaExtWindow *ew = EKIGA_EXT_WINDOW (widget);
   Ekiga::DisplayInfo info;
   gboolean handled;
@@ -241,6 +243,8 @@ draw_event (GtkWidget *widget,
   //ew->priv->vocore->set_ext_display_info (info);
 
   return handled;
+*/
+  return true;
 }
 
 static void
