@@ -390,6 +390,9 @@ static gboolean on_stats_refresh_cb (gpointer self);
 static gboolean ekiga_call_window_delete_event_cb (GtkWidget *widget,
                                                    G_GNUC_UNUSED GdkEventAny *event);
 
+static gboolean ekiga_call_window_fullscreen_event_cb (GtkWidget *widget,
+                                                       G_GNUC_UNUSED GdkEventAny *event);
+
 static void window_closed_from_menu_cb (G_GNUC_UNUSED GtkWidget *,
                                         gpointer);
 
@@ -896,8 +899,8 @@ on_size_changed_cb (Ekiga::VideoOutputManager & /* manager */,
     default:
       break;
   }
+
   gtk_widget_show (GTK_WIDGET (cw));
-  return;
 }
 
 static void
@@ -1421,6 +1424,19 @@ ekiga_call_window_delete_event_cb (GtkWidget *widget,
     g_settings_set_boolean (settings, "enable-preview", false);
     g_clear_object (&settings);
   }
+
+  return true; // Do not relay the event anymore
+}
+
+static gboolean
+ekiga_call_window_fullscreen_event_cb (GtkWidget *widget,
+                                       G_GNUC_UNUSED GdkEventAny *event)
+{
+  EkigaCallWindow *cw = NULL;
+
+  cw = EKIGA_CALL_WINDOW (widget);
+  g_return_val_if_fail (EKIGA_IS_CALL_WINDOW (cw), false);
+  ekiga_call_window_toggle_fullscreen (cw);
 
   return true; // Do not relay the event anymore
 }
@@ -2272,17 +2288,21 @@ ekiga_call_window_toggle_fullscreen (EkigaCallWindow *cw)
   cw->priv->fullscreen = !cw->priv->fullscreen;
 
   if (cw->priv->fullscreen) {
+    gm_window_save (GM_WINDOW (cw));
+    gtk_widget_hide (cw->priv->main_menu);
     gtk_widget_hide (cw->priv->call_panel_toolbar);
     gtk_widget_hide (cw->priv->statusbar_ebox);
     gtk_window_fullscreen (GTK_WINDOW (cw));
     gtk_window_set_keep_above (GTK_WINDOW (cw), true);
   }
   else {
+    gtk_widget_show (cw->priv->main_menu);
     gtk_widget_show (cw->priv->call_panel_toolbar);
     gtk_widget_show (cw->priv->statusbar_ebox);
     gtk_window_unfullscreen (GTK_WINDOW (cw));
     gtk_window_set_keep_above (GTK_WINDOW (cw),
                                cw->priv->video_display_settings->get_bool ("stay-on-top"));
+    gm_window_restore (GM_WINDOW (cw));
   }
 }
 
@@ -2677,7 +2697,11 @@ ekiga_call_window_init (EkigaCallWindow *cw)
   cw->priv->accel = gtk_accel_group_new ();
   gtk_window_add_accel_group (GTK_WINDOW (cw), cw->priv->accel);
   gtk_accel_group_connect (cw->priv->accel, GDK_KEY_Escape, (GdkModifierType) 0, GTK_ACCEL_LOCKED,
-                           g_cclosure_new_swap (G_CALLBACK (ekiga_call_window_delete_event_cb), (gpointer) cw, NULL));
+                           g_cclosure_new_swap (G_CALLBACK (ekiga_call_window_delete_event_cb),
+                                                (gpointer) cw, NULL));
+  gtk_accel_group_connect (cw->priv->accel, GDK_KEY_F11, (GdkModifierType) 0, GTK_ACCEL_LOCKED,
+                           g_cclosure_new_swap (G_CALLBACK (ekiga_call_window_fullscreen_event_cb),
+                                                (gpointer) cw, NULL));
   g_object_unref (cw->priv->accel);
 
   cw->priv->changing_back_to_local_after_a_call = false;
