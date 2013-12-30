@@ -64,7 +64,7 @@ struct _GmWindowClass
 /* Public API */
 
 /** Create a new GmWindow.
- * @return A GmWindow 
+ * @return A GmWindow
  */
 GtkWidget *gm_window_new ();
 
@@ -72,9 +72,21 @@ GtkWidget *gm_window_new ();
 /** Create a new GmWindow.
  * @param The key where the position and size of the
  * window will be saved.
- * @return A GmWindow 
+ * @return A GmWindow
  */
 GtkWidget *gm_window_new_with_key (const char *key);
+
+
+/** Save the state of a GmWindow.
+ * @param A GmWindow
+ */
+void gm_window_save (GmWindow *window);
+
+
+/** Restore the state of a GmWindow.
+ * @param A GmWindow
+ */
+void gm_window_restore (GmWindow *window);
 
 
 /** Return the size of the GmWindow.

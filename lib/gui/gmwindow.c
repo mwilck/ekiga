@@ -81,11 +81,9 @@ static gboolean
 gm_window_configure_event (GtkWidget *widget,
                            GdkEventConfigure *event);
 
-
 /*
  * GObject stuff
  */
-
 static void
 gm_window_finalize (GObject *obj)
 {
@@ -258,53 +256,13 @@ static void
 window_realize_cb (GtkWidget *w,
 		   G_GNUC_UNUSED gpointer data)
 {
-  int x = 0;
-  int y = 0;
-
   GmWindow *self = NULL;
-
-  gchar *size = NULL;
-  gchar *position = NULL;
-  gchar **couple = NULL;
 
   self = GM_WINDOW (w);
 
-  g_return_if_fail (g_strcmp0 (self->priv->key, ""));
+  g_return_if_fail (g_strcmp0 (self->priv->key, "") && self);
 
-  if (gtk_window_get_resizable (GTK_WINDOW (w))) {
-
-    size = g_settings_get_string (self->priv->settings, "size");
-    if (size)
-      couple = g_strsplit (size, ",", 0);
-
-    if (couple && couple [0])
-      x = atoi (couple [0]);
-    if (couple && couple [1])
-      y = atoi (couple [1]);
-
-    if (x > 0 && y > 0) {
-      gtk_window_resize (GTK_WINDOW (w), x, y);
-    }
-
-    g_strfreev (couple);
-    g_free (size);
-  }
-
-  position = g_settings_get_string (self->priv->settings, "position");
-  if (position)
-    couple = g_strsplit (position, ",", 0);
-
-  if (couple && couple [0])
-    x = atoi (couple [0]);
-  if (couple && couple [1])
-    y = atoi (couple [1]);
-
-  if (x != 0 && y != 0)
-    gtk_window_move (GTK_WINDOW (w), x, y);
-
-  g_strfreev (couple);
-  couple = NULL;
-  g_free (position);
+  gm_window_restore (self);
 
   gtk_widget_realize (GTK_WIDGET (w));
 }
@@ -316,25 +274,11 @@ window_hide_cb (GtkWidget *w,
 {
   GmWindow *self = NULL;
 
-  gchar *size = NULL;
-  gchar *position = NULL;
-
   g_return_if_fail (w != NULL);
 
   self = GM_WINDOW (w);
 
-  g_return_if_fail (g_strcmp0 (self->priv->key, ""));
-
-  position = g_strdup_printf ("%d,%d", self->priv->x, self->priv->y);
-  g_settings_set_string (self->priv->settings, "position", position);
-  g_free (position);
-
-  if (gtk_window_get_resizable (GTK_WINDOW (w))) {
-
-    size = g_strdup_printf ("%d,%d", self->priv->width, self->priv->height);
-    g_settings_set_string (self->priv->settings, "size", size);
-    g_free (size);
-  }
+  gm_window_save (self);
 }
 
 
@@ -367,6 +311,76 @@ gm_window_new_with_key (const char *key)
   g_return_val_if_fail (key != NULL, NULL);
 
   return GTK_WIDGET (g_object_new (GM_TYPE_WINDOW, "key", key, NULL));
+}
+
+
+void
+gm_window_save (GmWindow *self)
+{
+  gchar *size = NULL;
+  gchar *position = NULL;
+
+  g_return_if_fail (g_strcmp0 (self->priv->key, "") || self);
+
+  position = g_strdup_printf ("%d,%d", self->priv->x, self->priv->y);
+  g_settings_set_string (self->priv->settings, "position", position);
+  g_free (position);
+
+  if (gtk_window_get_resizable (GTK_WINDOW (self))) {
+
+    size = g_strdup_printf ("%d,%d", self->priv->width, self->priv->height);
+    g_settings_set_string (self->priv->settings, "size", size);
+    g_free (size);
+  }
+}
+
+
+void
+gm_window_restore (GmWindow *self)
+{
+  int x = 0;
+  int y = 0;
+
+  gchar *size = NULL;
+  gchar *position = NULL;
+  gchar **couple = NULL;
+
+  g_return_if_fail (g_strcmp0 (self->priv->key, "") && self);
+
+  if (gtk_window_get_resizable (GTK_WINDOW (self))) {
+
+    size = g_settings_get_string (self->priv->settings, "size");
+    if (size)
+      couple = g_strsplit (size, ",", 0);
+
+    if (couple && couple [0])
+      x = atoi (couple [0]);
+    if (couple && couple [1])
+      y = atoi (couple [1]);
+
+    if (x > 0 && y > 0) {
+      gtk_window_resize (GTK_WINDOW (self), x, y);
+    }
+
+    g_strfreev (couple);
+    g_free (size);
+  }
+
+  position = g_settings_get_string (self->priv->settings, "position");
+  if (position)
+    couple = g_strsplit (position, ",", 0);
+
+  if (couple && couple [0])
+    x = atoi (couple [0]);
+  if (couple && couple [1])
+    y = atoi (couple [1]);
+
+  if (x != 0 && y != 0)
+    gtk_window_move (GTK_WINDOW (self), x, y);
+
+  g_strfreev (couple);
+  couple = NULL;
+  g_free (position);
 }
 
 
