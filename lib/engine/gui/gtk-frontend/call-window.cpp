@@ -2529,46 +2529,6 @@ ekiga_call_window_show (GtkWidget *widget)
 }
 
 static gboolean
-ekiga_call_window_draw (GtkWidget *widget,
-                        cairo_t *context)
-{
-  return true; //FIXME
-  /*
-     EkigaCallWindow *cw = EKIGA_CALL_WINDOW (widget);
-     GtkWidget* video_widget = cw->priv->main_video_image;
-     Ekiga::DisplayInfo display_info;
-     gboolean handled = false;
-     GtkAllocation a;
-
-     handled = (*GTK_WIDGET_CLASS (ekiga_call_window_parent_class)->draw) (widget, context);
-
-     gtk_widget_get_allocation (video_widget, &a);
-     display_info.x = a.x;
-     display_info.y = a.y;
-
-#ifdef WIN32
-display_info.hwnd = ((HWND) GDK_WINDOW_HWND (gtk_widget_get_window (video_widget)));
-#else
-display_info.window = gdk_x11_window_get_xid (gtk_widget_get_window (video_widget));
-g_return_val_if_fail (display_info.window != 0, handled);
-
-if (!cw->priv->gc) {
-Display *display;
-display = GDK_DISPLAY_XDISPLAY (gtk_widget_get_display (video_widget));
-cw->priv->gc = XCreateGC(display, display_info.window, 0, 0);
-g_return_val_if_fail (cw->priv->gc != NULL, handled);
-}
-display_info.gc = cw->priv->gc;
-
-gdk_flush();
-#endif
-
-display_info.widget_info_set = true;
-
-return handled;*/
-  }
-
-static gboolean
 ekiga_call_window_focus_in_event (GtkWidget     *widget,
                                   GdkEventFocus *event)
 {
@@ -2587,7 +2547,6 @@ ekiga_call_window_class_init (EkigaCallWindowClass *klass)
   object_class->finalize = ekiga_call_window_finalize;
 
   widget_class->show = ekiga_call_window_show;
-  widget_class->draw = ekiga_call_window_draw;
   widget_class->focus_in_event = ekiga_call_window_focus_in_event;
 }
 
