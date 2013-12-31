@@ -197,7 +197,6 @@
     <child name="video-settings-window" schema="org.gnome.@PACKAGE_NAME@.general.user-interface.video-settings-window"/>
     <child name="accounts-window" schema="org.gnome.@PACKAGE_NAME@.general.user-interface.accounts-window"/>
     <child name="video-display" schema="org.gnome.@PACKAGE_NAME@.general.user-interface.video-display"/>
-    <child name="remote-video-window" schema="org.gnome.@PACKAGE_NAME@.general.user-interface.remote-video-window"/>
   </schema>
   <schema gettext-domain="@GETTEXT_PACKAGE@" id="org.gnome.@PACKAGE_NAME@.general.user-interface.call-window" path="/org/gnome/@PACKAGE_NAME@/general/user-interface/call-window/">
     <key name="position" type="s">
@@ -298,18 +297,6 @@
       <default>true</default>
       <_summary>Enable Picture-In-Picture mode</_summary>
       <_description>This allows the local video stream to be displayed incrusted in the remote video stream. This is only effective when sending and receiving video.</_description>
-    </key>
-  </schema>
-  <schema gettext-domain="@GETTEXT_PACKAGE@" id="org.gnome.@PACKAGE_NAME@.general.user-interface.remote-video-window" path="/org/gnome/@PACKAGE_NAME@/general/user-interface/remote-video-window/">
-    <key name="size" type="s">
-      <default>'176,144'</default>
-      <_summary>Remote video window size</_summary>
-      <_description>The size of the remote video window</_description>
-    </key>
-    <key name="position" type="s">
-      <default>'0,0'</default>
-      <_summary>Remote video window position</_summary>
-      <_description>The position of the remote video window</_description>
     </key>
   </schema>
   <schema gettext-domain="@GETTEXT_PACKAGE@" id="org.gnome.@PACKAGE_NAME@.general.call-options" path="/org/gnome/@PACKAGE_NAME@/general/call-options/">
