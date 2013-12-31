@@ -114,7 +114,7 @@ struct _EkigaCallWindowPrivate
 
   GtkWidget *ext_video_win;
   GtkWidget *event_box;
-  GtkWidget *main_video_image; //FIXME
+  GtkWidget *clutter_widget; //FIXME
   GtkWidget *spinner;
   GtkWidget *info_text;
 
@@ -1492,7 +1492,7 @@ ekiga_call_window_update_stats (EkigaCallWindow *cw,
   g_free(stats_msg_re);
   g_free(stats_msg_codecs);
 
-  gtk_widget_set_tooltip_text (GTK_WIDGET (cw->priv->main_video_image), stats_msg);
+  gtk_widget_set_tooltip_text (GTK_WIDGET (cw->priv->event_box), stats_msg);
   g_free (stats_msg);
 
   /* "arithmetics" for the quality level */
