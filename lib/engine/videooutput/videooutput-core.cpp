@@ -83,24 +83,6 @@ void VideoOutputCore::setup (std::string setting)
     // FIXME
     //set_ext_display_info(display_info);
   }
-
-  if (setting.empty () || setting == "stay-on-top")
-
-    PTRACE(4, "VideoOutputCore\tUpdating Video Settings");
-    /*
-    DisplayInfo display_info;
-
-    display_info.on_top = g_settings_get_boolean (s, "stay-on-top");
-    if (display_info.sw_scaling_algorithm > 3) {
-      display_info.sw_scaling_algorithm = 0;
-      g_settings_set_int (s, "sw-scaling-algorithm", 0);
-    }
-    display_info.config_info_set = TRUE;
-
-    std::cout << "FIXME" << std::endl << std::flush;
-    //set_display_info(display_info);
-    */
-  }
 }
 
 void VideoOutputCore::add_manager (VideoOutputManager &manager)
