@@ -630,7 +630,6 @@ on_videooutput_device_opened_cb (Ekiga::VideoOutputManager & /* manager */,
                                  bool ext_stream,
                                  gpointer self)
 {
-  gfloat ratio;
   bool show_local = true;
 
   g_return_if_fail (EKIGA_IS_CALL_WINDOW (self));
@@ -1284,7 +1283,7 @@ animate_logo_cb (G_GNUC_UNUSED ClutterActor *actor,
 }
 
 static void
-ekiga_call_window_resize_video_stream_cb (ClutterActor *actor,
+ekiga_call_window_resize_video_stream_cb (G_GNUC_UNUSED ClutterActor *actor,
                                           G_GNUC_UNUSED ClutterActorBox *box,
                                           G_GNUC_UNUSED ClutterAllocationFlags flags,
                                           gpointer data)
