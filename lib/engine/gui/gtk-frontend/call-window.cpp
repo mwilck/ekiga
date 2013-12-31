@@ -114,7 +114,6 @@ struct _EkigaCallWindowPrivate
 
   GtkWidget *ext_video_win;
   GtkWidget *event_box;
-  GtkWidget *clutter_widget; //FIXME
   GtkWidget *spinner;
   GtkWidget *info_text;
 
@@ -168,7 +167,6 @@ struct _EkigaCallWindowPrivate
   std::string transmitted_audio_codec;
   std::string received_video_codec;
   std::string received_audio_codec;
-
 
   /* Statusbar */
   GtkWidget *statusbar;
