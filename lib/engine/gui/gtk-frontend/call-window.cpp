@@ -196,6 +196,10 @@ static void stay_on_top_changed_cb (GSettings *settings,
                                     gchar *key,
                                     gpointer self);
 
+static void pip_mode_changed_cb (GSettings *settings,
+                                 gchar *key,
+                                 gpointer self);
+
 static void pick_up_call_cb (GtkWidget * /*widget*/,
                              gpointer data);
 
@@ -469,6 +473,26 @@ stay_on_top_changed_cb (GSettings *settings,
 }
 
 static void
+pip_mode_changed_cb (GSettings *settings,
+                     gchar *key,
+                     gpointer self)
+
+{
+  g_return_if_fail (EKIGA_IS_CALL_WINDOW (self));
+
+  EkigaCallWindow *cw  = EKIGA_CALL_WINDOW (self);
+  bool val = false;
+
+  val = g_settings_get_boolean (settings, key);
+  if (cw->priv->video_stream_natural_width[Ekiga::VideoOutputManager::LOCAL] > 0
+      && cw->priv->video_stream_natural_height[Ekiga::VideoOutputManager::LOCAL] > 0
+      && cw->priv->video_stream_natural_width[Ekiga::VideoOutputManager::REMOTE] > 0
+      && cw->priv->video_stream_natural_height[Ekiga::VideoOutputManager::REMOTE] > 0)
+    clutter_actor_set_opacity (cw->priv->video_stream[Ekiga::VideoOutputManager::LOCAL],
+                               val ? 255 : 0);
+}
+
+static void
 fullscreen_changed_cb (G_GNUC_UNUSED GtkWidget *widget,
                        gpointer data)
 {
@@ -607,6 +631,7 @@ on_videooutput_device_opened_cb (Ekiga::VideoOutputManager & /* manager */,
                                  gpointer self)
 {
   gfloat ratio;
+  bool show_local = true;
 
   g_return_if_fail (EKIGA_IS_CALL_WINDOW (self));
 
@@ -622,29 +647,20 @@ on_videooutput_device_opened_cb (Ekiga::VideoOutputManager & /* manager */,
    */
   ekiga_call_window_set_pip (cw, both_streams);
 
-  clutter_actor_set_opacity (CLUTTER_ACTOR (cw->priv->video_stream[type]), 255);
+  show_local =
+    (!both_streams || cw->priv->video_display_settings->get_bool ("enable-pip"));
 
+  if (both_streams) {
+    clutter_actor_set_opacity (cw->priv->video_stream[Ekiga::VideoOutputManager::LOCAL],
+                               show_local ? 255 : 0);
+    clutter_actor_set_opacity (cw->priv->video_stream[Ekiga::VideoOutputManager::REMOTE],
+                               255);
+  }
+  else
+    clutter_actor_set_opacity (cw->priv->video_stream[type],
+                               255);
 
-  // FIXME
-  return;
-  /*
-     int vv;
-
-     if (both_streams) {
-     gtk_menu_section_set_sensitive (cw->priv->main_menu, "local_video", true);
-     gtk_menu_section_set_sensitive (cw->priv->main_menu, "fullscreen", true);
-     }
-     else {
-     if (mode == Ekiga::VO_MODE_LOCAL)
-     gtk_menu_set_sensitive (cw->priv->main_menu, "local_video", true);
-     else if (mode == Ekiga::VO_MODE_REMOTE)
-     gtk_menu_set_sensitive (cw->priv->main_menu, "remote_video", true);
-     }
-
-     if (cw->priv->ext_video_win && ext_stream) {
-     gtk_widget_show_now (cw->priv->ext_video_win);
-     }
-   */
+  gtk_menu_section_set_sensitive (cw->priv->main_menu, "pip", both_streams);
 }
 
 static void
@@ -666,6 +682,7 @@ on_videooutput_device_closed_cb (Ekiga::VideoOutputManager & /* manager */, gpoi
                                            cw->priv->video_stream_natural_width[type],
                                            cw->priv->video_stream_natural_height[type],
                                            clutter_actor_get_height (CLUTTER_ACTOR (cw->priv->stage)));
+    gtk_menu_section_set_sensitive (cw->priv->main_menu, "pip", FALSE);
   }
 }
 
@@ -1928,12 +1945,18 @@ ekiga_call_window_init_menu (EkigaCallWindow *cw)
 
       GTK_MENU_SEPARATOR,
 
-      GTK_MENU_ENTRY("close", NULL, _("Close the Ekiga window"),
+      GTK_MENU_ENTRY("close", NULL, _("Close the Ekiga Window"),
                      GTK_STOCK_CLOSE, 'W',
                      G_CALLBACK (window_closed_from_menu_cb),
                      cw, TRUE),
 
       GTK_MENU_NEW(_("_View")),
+
+      GTK_MENU_TOGGLE_ENTRY("pip", _("Enable _Picture-In-Picture Mode"),
+                            _("This allows the local video stream to be displayed incrusted in the remote video stream. This is only effective when sending and receiving video"),
+                            NULL, 'P',
+			    cw->priv->video_display_settings->get_g_settings (), "enable-pip",
+                            FALSE),
 
       GTK_MENU_SEPARATOR,
 
@@ -2572,6 +2595,10 @@ call_window_new (Ekiga::ServiceCore & core)
   g_signal_connect (cw->priv->video_display_settings->get_g_settings (),
                     "changed::stay-on-top",
                     G_CALLBACK (stay_on_top_changed_cb), cw);
+
+  g_signal_connect (cw->priv->video_display_settings->get_g_settings (),
+                    "changed::enable-pip",
+                    G_CALLBACK (pip_mode_changed_cb), cw);
 
   gtk_window_set_title (GTK_WINDOW (cw), _("Call Window"));
 
