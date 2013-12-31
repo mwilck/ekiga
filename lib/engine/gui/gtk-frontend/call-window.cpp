@@ -175,23 +175,6 @@ struct _EkigaCallWindowPrivate
   GtkWidget *statusbar_ebox;
   GtkWidget *qualitymeter;
 
-  /* The problem is the following :
-   * without that boolean, changing the ui will trigger a callback,
-   * which will store in the settings that the user wants only local
-   * video... in fact the problem is that we use a single ui+settings
-   * to mean both "what the user wants during a call" and "what we are
-   * doing right now".
-   *
-   * So we set that boolean to true,
-   * ask the ui to change,
-   * notice that we don't want to update the settings
-   * set the boolean to false...
-   * then run as usual.
-   */
-  bool changing_back_to_local_after_a_call;
-
-  bool automatic_zoom_in;
-
   GtkWidget *transfer_call_popup;
 
   Ekiga::scoped_connections connections;
@@ -207,18 +190,6 @@ enum {
 };
 
 static bool notify_has_actions (EkigaCallWindow* cw);
-
-static void zoom_in_changed_cb (GtkWidget *widget,
-                                gpointer data);
-
-static void zoom_out_changed_cb (GtkWidget *widget,
-                                 gpointer data);
-
-static void zoom_normal_changed_cb (GtkWidget *widget,
-                                    gpointer data);
-
-static void display_changed_cb (GtkWidget *widget,
-                                gpointer data);
 
 static void fullscreen_changed_cb (GtkWidget *widget,
                                    gpointer data);
@@ -272,10 +243,6 @@ static void on_videooutput_device_closed_cb (Ekiga::VideoOutputManager & /* mana
 
 static void on_videooutput_device_error_cb (Ekiga::VideoOutputManager & /* manager */,
                                             gpointer self);
-
-static void ekiga_call_window_set_video_size (EkigaCallWindow *cw,
-                                              int width,
-                                              int height);
 
 static void on_size_changed_cb (Ekiga::VideoOutputManager & /* manager */,
                                 Ekiga::VideoOutputManager::VideoView type,
@@ -456,15 +423,10 @@ static GtkWidget * gm_cw_audio_settings_window_new (EkigaCallWindow *cw);
 
 static GtkWidget *gm_cw_video_settings_window_new (EkigaCallWindow *cw);
 
-static void ekiga_call_window_update_logo (EkigaCallWindow *cw);
-
 static void ekiga_call_window_set_pip (EkigaCallWindow *cw,
                                        gboolean pip);
 
 static void ekiga_call_window_toggle_fullscreen (EkigaCallWindow *cw);
-
-static void ekiga_call_window_zooms_menu_update_sensitivity (EkigaCallWindow *cw,
-                                                             unsigned int zoom);
 
 static void ekiga_call_window_channels_menu_update_sensitivity (EkigaCallWindow *cw,
                                                                 bool is_video,
@@ -506,106 +468,6 @@ stay_on_top_changed_cb (GSettings *settings,
 
   val = g_settings_get_boolean (settings, key);
   gdk_window_set_keep_above (GDK_WINDOW (gtk_widget_get_window (GTK_WIDGET (self))), val);
-}
-
-
-static void
-zoom_in_changed_cb (G_GNUC_UNUSED GtkWidget *widget,
-                    gpointer data)
-{
-  /*
-     g_return_if_fail (data != NULL);
-
-     Ekiga::DisplayInfo display_info;
-     EkigaCallWindow *cw = EKIGA_CALL_WINDOW (data);
-
-     ekiga_call_window_set_video_size (cw, GM_CIF_WIDTH, GM_CIF_HEIGHT);
-
-     display_info.zoom = cw->priv->video_display_settings->get_int ("zoom");
-
-     if (display_info.zoom < 200)
-     display_info.zoom = display_info.zoom * 2;
-
-     cw->priv->video_display_settings->set_int ("zoom", display_info.zoom);
-     ekiga_call_window_zooms_menu_update_sensitivity (cw, display_info.zoom);
-   */
-}
-
-static void
-zoom_out_changed_cb (G_GNUC_UNUSED GtkWidget *widget,
-                     gpointer data)
-{
-  /*
-     g_return_if_fail (data != NULL);
-
-     Ekiga::DisplayInfo display_info;
-     EkigaCallWindow *cw = EKIGA_CALL_WINDOW (data);
-
-     ekiga_call_window_set_video_size (cw, GM_CIF_WIDTH, GM_CIF_HEIGHT);
-
-     display_info.zoom = cw->priv->video_display_settings->get_int ( "zoom");
-
-     if (display_info.zoom  > 50)
-     display_info.zoom  = (unsigned int) (display_info.zoom  / 2);
-
-     cw->priv->video_display_settings->set_int ("zoom", display_info.zoom);
-     ekiga_call_window_zooms_menu_update_sensitivity (cw, display_info.zoom);
-   */
-}
-
-static void
-zoom_normal_changed_cb (G_GNUC_UNUSED GtkWidget *widget,
-                        gpointer data)
-{
-  /*
-     g_return_if_fail (data != NULL);
-
-     Ekiga::DisplayInfo display_info;
-     EkigaCallWindow *cw = EKIGA_CALL_WINDOW (data);
-
-     ekiga_call_window_set_video_size (cw, GM_CIF_WIDTH, GM_CIF_HEIGHT);
-
-     display_info.zoom  = 100;
-
-     cw->priv->video_display_settings->set_int ("zoom", display_info.zoom);
-     ekiga_call_window_zooms_menu_update_sensitivity (cw, display_info.zoom);
-   */
-}
-
-static void
-display_changed_cb (GtkWidget *widget,
-                    gpointer data)
-{
-  g_return_if_fail (data != NULL);
-
-  GSList *group = NULL;
-  int group_last_pos = 0;
-  int active = 0;
-  EkigaCallWindow *cw = EKIGA_CALL_WINDOW (data);
-
-  group = gtk_radio_menu_item_get_group (GTK_RADIO_MENU_ITEM (widget));
-  group_last_pos = g_slist_length (group) - 1; /* If length 1, last pos is 0 */
-
-  /* Only do something when a new CHECK_MENU_ITEM becomes active,
-     not when it becomes inactive */
-  if (gtk_check_menu_item_get_active (GTK_CHECK_MENU_ITEM (widget))) {
-
-    while (group) {
-      if (group->data == widget)
-        break;
-
-      active++;
-      group = g_slist_next (group);
-    }
-
-    if (!cw->priv->changing_back_to_local_after_a_call) {
-      int view = group_last_pos - active;
-      if (view > 2) /* let's skip VO_MODE_PIP_WINDOW & VO_MODE_FULLSCREEN modes
-                       which are not found in the View menu */
-        view += 2;
-      cw->priv->video_display_settings->set_int ("video-view", view);
-    }
-  }
 }
 
 static void
@@ -784,23 +646,6 @@ on_videooutput_device_opened_cb (Ekiga::VideoOutputManager & /* manager */,
      if (cw->priv->ext_video_win && ext_stream) {
      gtk_widget_show_now (cw->priv->ext_video_win);
      }
-
-  // when ending a call and going back to local video, the video_view
-  // setting should not be updated, so memorise the setting and
-  // restore it afterwards
-  vv = cw->priv->video_display_settings->get_int ("video-view");
-  cw->priv->changing_back_to_local_after_a_call = true;
-  gtk_radio_menu_select_with_id (cw->priv->main_menu, "local_video", mode);
-  cw->priv->changing_back_to_local_after_a_call = false;
-  if (!both_streams && mode != Ekiga::VO_MODE_LOCAL)
-  cw->priv->video_display_settings->set_int ("video-view", Ekiga::VO_MODE_LOCAL);
-
-  // if in a past video we left in the extended video stream, but the new
-  // one doesn't have it, we reset the view to the local one
-  if (vv == Ekiga::VO_MODE_REMOTE_EXT && !ext_stream)
-  cw->priv->video_display_settings->set_int ("video-view", Ekiga::VO_MODE_LOCAL);
-
-  ekiga_call_window_zooms_menu_update_sensitivity (cw, zoom);
    */
 }
 
@@ -844,44 +689,6 @@ on_videooutput_device_error_cb (Ekiga::VideoOutputManager & /* manager */,
   gtk_widget_show_all (GTK_WIDGET (dialog));
 
   g_free (dialog_msg);
-}
-
-
-static void
-ekiga_call_window_set_video_size (EkigaCallWindow *cw,
-                                  int width,
-                                  int height)
-{
-  int pw, ph;
-  GdkRectangle a;
-
-  g_return_if_fail (width > 0 && height > 0);
-
-  if (width < GM_CIF_WIDTH && height < GM_CIF_HEIGHT && !cw->priv->automatic_zoom_in) {
-    cw->priv->automatic_zoom_in = true;
-    zoom_in_changed_cb (NULL, (gpointer) cw);
-  }
-
-  gtk_widget_get_size_request (cw->priv->event_box, &pw, &ph);
-
-  /* No size requisition yet
-   * It's our first call so we silently set the new requisition and exit...
-   */
-  if (pw == -1) {
-    gtk_widget_set_size_request (cw->priv->event_box, width, height);
-    return;
-  }
-
-  /* Do some kind of filtering here. We often get duplicate "size-changed" events...
-   * Note that we currently only bother about the width of the video.
-   */
-  if (pw == width)
-    return;
-
-  gtk_widget_set_size_request (cw->priv->event_box, width, height);
-
-  gtk_widget_get_allocation (GTK_WIDGET (cw), &a);
-  gdk_window_invalidate_rect (gtk_widget_get_window (GTK_WIDGET (cw)), &a, true);
 }
 
 static void
@@ -936,13 +743,8 @@ on_videoinput_device_closed_cb (Ekiga::VideoInputManager & /* manager */,
   EkigaCallWindow *cw = EKIGA_CALL_WINDOW (self);
 
   ekiga_call_window_channels_menu_update_sensitivity (cw, true, false);
-  ekiga_call_window_update_logo (cw);
 
   gtk_widget_set_sensitive (cw->priv->video_settings_button,  false);
-  if (cw->priv->automatic_zoom_in) {
-    cw->priv->automatic_zoom_in = false;
-    zoom_out_changed_cb (NULL, (gpointer) cw);
-  }
 }
 
 static void
@@ -2135,40 +1937,8 @@ ekiga_call_window_init_menu (EkigaCallWindow *cw)
 
       GTK_MENU_NEW(_("_View")),
 
-      /*
-         GTK_MENU_RADIO_ENTRY("local_video", _("_Local Video"),
-         _("Local video image"),
-         NULL, '1',
-         NULL,
-         G_CALLBACK (display_changed_cb), cw,
-         true, false),
-         GTK_MENU_RADIO_ENTRY("remote_video", _("_Remote Video"),
-         _("Remote video image"),
-         NULL, '2',
-         NULL,
-         G_CALLBACK (display_changed_cb), cw,
-         false, false),
-         GTK_MENU_RADIO_ENTRY("both_incrusted", _("_Picture-in-Picture"),
-         _("Both video images"),
-         NULL, '3',
-         NULL,
-         G_CALLBACK (display_changed_cb), cw,
-         false, false),
-       */
       GTK_MENU_SEPARATOR,
 
-      GTK_MENU_ENTRY("zoom_in", NULL, _("Zoom in"),
-                     GTK_STOCK_ZOOM_IN, '+',
-                     G_CALLBACK (zoom_in_changed_cb),
-                     (gpointer) cw, false),
-      GTK_MENU_ENTRY("zoom_out", NULL, _("Zoom out"),
-                     GTK_STOCK_ZOOM_OUT, '-',
-                     G_CALLBACK (zoom_out_changed_cb),
-                     (gpointer) cw, false),
-      GTK_MENU_ENTRY("normal_size", NULL, _("Normal size"),
-                     GTK_STOCK_ZOOM_100, '0',
-                     G_CALLBACK (zoom_normal_changed_cb),
-                     (gpointer) cw, false),
       GTK_MENU_ENTRY("fullscreen", _("_Fullscreen"), _("Switch to fullscreen"),
                      GTK_STOCK_ZOOM_IN, GDK_KEY_F11,
                      G_CALLBACK (fullscreen_changed_cb),
@@ -2266,21 +2036,6 @@ ekiga_call_window_init_clutter (EkigaCallWindow *cw)
 }
 
 static void
-ekiga_call_window_update_logo (EkigaCallWindow *cw)
-{
-  return; //FIXME
-  g_return_if_fail (EKIGA_IS_CALL_WINDOW (cw));
-
-  gtk_widget_realize (GTK_WIDGET (cw));
-  g_object_set (G_OBJECT (cw->priv->main_video_image),
-                "icon-name", "avatar-default",
-                "pixel-size", 128,
-                NULL);
-
-  ekiga_call_window_set_video_size (cw, GM_CIF_WIDTH, GM_CIF_HEIGHT);
-}
-
-static void
 ekiga_call_window_set_pip (EkigaCallWindow *cw,
                            gboolean pip)
 {
@@ -2343,17 +2098,6 @@ ekiga_call_window_toggle_fullscreen (EkigaCallWindow *cw)
                                cw->priv->video_display_settings->get_bool ("stay-on-top"));
     gm_window_restore (GM_WINDOW (cw));
   }
-}
-
-static void
-ekiga_call_window_zooms_menu_update_sensitivity (EkigaCallWindow *cw,
-                                                 unsigned int zoom)
-{
-  /* between 0.5 and 2.0 zoom */
-  /* like above, also update the popup menus of the separate video windows */
-  gtk_menu_set_sensitive (cw->priv->main_menu, "zoom_in", zoom != 200);
-  gtk_menu_set_sensitive (cw->priv->main_menu, "zoom_out", zoom != 50);
-  gtk_menu_set_sensitive (cw->priv->main_menu, "normal_size", zoom != 100);
 }
 
 static void
@@ -2717,9 +2461,7 @@ ekiga_call_window_init_gui (EkigaCallWindow *cw)
   gtk_box_pack_start (GTK_BOX (vbox), GTK_WIDGET (cw->priv->statusbar_ebox), false, false, 0);
   gtk_widget_show_all (cw->priv->statusbar_ebox);
 
-  /* Logo */
   gtk_window_set_resizable (GTK_WINDOW (cw), true);
-  ekiga_call_window_update_logo (cw);
 
   /* Init */
   ekiga_call_window_set_status (cw, _("Standby"));
@@ -2742,9 +2484,6 @@ ekiga_call_window_init (EkigaCallWindow *cw)
                            g_cclosure_new_swap (G_CALLBACK (ekiga_call_window_fullscreen_event_cb),
                                                 (gpointer) cw, NULL));
   g_object_unref (cw->priv->accel);
-
-  cw->priv->changing_back_to_local_after_a_call = false;
-  cw->priv->automatic_zoom_in = false;
 
   cw->priv->transfer_call_popup = NULL;
   cw->priv->current_call = boost::shared_ptr<Ekiga::Call>();

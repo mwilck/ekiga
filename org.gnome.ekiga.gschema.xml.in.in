@@ -304,30 +304,10 @@
       <_summary>Specify the software scaling algorithm</_summary>
       <_description>Specify the software scaling algorithm: 0: nearest neighbor, 1: nearest neighbor with box filter, 2: bilinear filtering, 3: hyperbolic filtering. Does not apply on windows systems.</_description>
     </key>
-    <key name="zoom" type="i">
-      <default>100</default>
-      <_summary>The zoom value</_summary>
-      <_description>The zoom value in percent to apply to images displayed in the main GUI (can be 50, 100, or 200)</_description>
-    </key>
-    <key name="ext-zoom" type="i">
-      <default>100</default>
-      <_summary>The zoom value</_summary>
-      <_description>The zoom value in percent to apply to images displayed in the extended GUI (can be 50, 100, or 200)</_description>
-    </key>
     <key name="stay-on-top" type="b">
       <default>true</default>
       <_summary>Place windows displaying video above other windows during calls</_summary>
       <_description>Place windows displaying video above other windows during calls</_description>
-    </key>
-    <key name="video-view" type="i">
-      <default>2</default>
-      <_summary>The default video view</_summary>
-      <_description>The default video view (local, remote, both)</_description>
-    </key>
-    <key name="video-view-before-fullscreen" type="i">
-      <default>1</default>
-      <_summary>The video view before having switched to fullscreen</_summary>
-      <_description>The video view before having switched to fullscreen (same values as video_view)</_description>
     </key>
   </schema>
   <schema gettext-domain="@GETTEXT_PACKAGE@" id="org.gnome.@PACKAGE_NAME@.general.user-interface.remote-video-window" path="/org/gnome/@PACKAGE_NAME@/general/user-interface/remote-video-window/">

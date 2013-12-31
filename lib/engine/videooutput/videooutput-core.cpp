@@ -66,36 +66,6 @@ VideoOutputCore::~VideoOutputCore ()
 void VideoOutputCore::setup (std::string setting)
 {
   GSettings *s = settings->get_g_settings ();
-  /*
-  if (setting.empty () || setting == "video-view")  {
-
-    DisplayInfo display_info;
-    PTRACE(4, "VideoOutputCore\tUpdating video view");
-
-    if ((g_settings_get_int (s, "video-view") < Ekiga::VO_MODE_LOCAL) ||
-	(g_settings_get_int (s, "video-view") >= Ekiga::VO_MODE_UNSET))
-      g_settings_set_int (s, "video-view", Ekiga::VO_MODE_LOCAL);
-
-    display_info.mode = (VideoOutputMode) g_settings_get_int (s, "video-view");
-    set_display_info (display_info);
-  }
-
-  if (setting.empty () || setting == "zoom") {
-
-    DisplayInfo display_info;
-    PTRACE(4, "VideoOutputCore\tUpdating zoom");
-
-    display_info.zoom = g_settings_get_int (s, "zoom");
-    if ((display_info.zoom != 100) &&
-	(display_info.zoom != 50) &&
-	(display_info.zoom != 200)) {
-      display_info.zoom = 100;
-      g_settings_set_int (s, "zoom", 100);
-    }
-
-    set_display_info (display_info);
-  }
-  */
 
   if (setting.empty () || setting == "ext-zoom") {
 
