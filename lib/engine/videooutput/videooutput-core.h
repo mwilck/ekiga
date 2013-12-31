@@ -39,8 +39,6 @@
 
 #include "services.h"
 
-#include "videooutput-manager.h"
-
 #include <boost/signals2.hpp>
 #include <boost/bind.hpp>
 #include <set>
@@ -49,6 +47,8 @@
 #include <ptlib.h>
 
 #include "ekiga-settings.h"
+
+#include "videooutput-manager.h"
 
 namespace Ekiga
 {
@@ -142,7 +142,7 @@ namespace Ekiga
       void set_frame_data (const char *data,
                            unsigned width,
                            unsigned height,
-                           unsigned type,
+                           VideoOutputManager::VideoView type,
                            int devices_nbr);
 
       void set_display_info (const gpointer _local, const gpointer _remote);
@@ -153,21 +153,24 @@ namespace Ekiga
 
       /** See videooutput-manager.h for the API
        */
-      boost::signals2::signal<void(VideoOutputManager &, bool, bool)> device_opened;
+      boost::signals2::signal<void(VideoOutputManager &, VideoOutputManager::VideoView, unsigned, unsigned, bool, bool)> device_opened;
       boost::signals2::signal<void(VideoOutputManager &)> device_closed;
       boost::signals2::signal<void(VideoOutputManager &)> device_error;
-      boost::signals2::signal<void(VideoOutputManager &, unsigned, unsigned, unsigned)> size_changed;
+      boost::signals2::signal<void(VideoOutputManager &, VideoOutputManager::VideoView, unsigned, unsigned)> size_changed;
 
 
   private:
-      void on_device_opened (bool both_streams,
+      void on_device_opened (VideoOutputManager::VideoView type,
+                             unsigned width,
+                             unsigned height,
+                             bool both_streams,
                              bool ext_stream,
                              VideoOutputManager *manager);
       void on_device_closed (VideoOutputManager *manager);
       void on_device_error (VideoOutputManager *manager);
-      void on_size_changed (unsigned width,
+      void on_size_changed (VideoOutputManager::VideoView type,
+                            unsigned width,
                             unsigned height,
-                            unsigned type,
                             VideoOutputManager *manager);
 
       std::set<VideoOutputManager *> managers;

@@ -39,6 +39,7 @@
 
 #include <opal/manager.h>
 
+#include "videooutput-core.h"
 #include "opal-videooutput.h"
 
 int PVideoOutputDevice_EKIGA::devices_nbr = 0;
@@ -139,7 +140,7 @@ bool PVideoOutputDevice_EKIGA::SetFrameData (unsigned x,
 
   videooutput_core->set_frame_data ((const char*) data,
                                     width, height,
-                                    device_id,
+                                    (Ekiga::VideoOutputManager::VideoView) device_id,
                                     devices_nbr);
   return TRUE;
 }

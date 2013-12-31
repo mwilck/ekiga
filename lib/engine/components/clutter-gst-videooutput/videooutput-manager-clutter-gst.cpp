@@ -43,6 +43,7 @@
 #include <gst/app/gstappsrc.h>
 #include <clutter-gtk/clutter-gtk.h>
 
+#include "videooutput-core.h"
 #include "videooutput-manager-clutter-gst.h"
 #include "videoinput-info.h"
 
@@ -155,13 +156,14 @@ void
 GMVideoOutputManager_clutter_gst::set_frame_data (const char *data,
                                                   unsigned width,
                                                   unsigned height,
-                                                  unsigned i,
+                                                  Ekiga::VideoOutputManager::VideoView i,
                                                   int _devices_nbr)
 {
   GstBuffer *buffer = NULL;
   GstMapInfo info;
   int buffer_size = width*height*3/2;
   std::ostringstream name;
+  bool init = false;
 
   info.memory = NULL;
   info.flags = GST_MAP_WRITE;
@@ -180,20 +182,21 @@ GMVideoOutputManager_clutter_gst::set_frame_data (const char *data,
     Ekiga::Runtime::run_in_main
       (boost::bind (&GMVideoOutputManager_clutter_gst::device_opened_in_main,
                     this,
+                    i,
+                    width,
+                    height,
                     (_devices_nbr > 1),
                     (_devices_nbr > 2)));
     devices_nbr = (unsigned) _devices_nbr;
+    current_height[i] = height;
+    current_width[i] = width;
+    init = true;
   }
 
-  if (devices_nbr == 1) { // Only one video stream (either local or remote)
-    // Force whatever stream is received to be displayed as the remote
-    // video (the big one).
-    i = 1;
-  }
   name << std::string ("appsrc") << i;
   GstElement *appsrc = gst_bin_get_by_name (GST_BIN (pipeline[i]), name.str ().c_str ());
 
-  if (current_width[i] != width || current_height[i] != height) {
+  if (init || current_width[i] != width || current_height[i] != height) {
 
     GstCaps *caps = gst_app_src_get_caps (GST_APP_SRC (appsrc));
     GstCaps *new_caps = gst_caps_copy (caps);
@@ -207,11 +210,12 @@ GMVideoOutputManager_clutter_gst::set_frame_data (const char *data,
     current_height[i] = height;
     current_width[i] = width;
 
-    Ekiga::Runtime::run_in_main (boost::bind (&GMVideoOutputManager_clutter_gst::size_changed_in_main,
-                                              this,
-                                              width,
-                                              height,
-                                              i));
+    if (!init)
+      Ekiga::Runtime::run_in_main (boost::bind (&GMVideoOutputManager_clutter_gst::size_changed_in_main,
+                                                this,
+                                                i,
+                                                width,
+                                                height));
   }
 
   buffer = gst_buffer_new_and_alloc (buffer_size);
@@ -229,6 +233,8 @@ void
 GMVideoOutputManager_clutter_gst::set_display_info (const gpointer _local_video,
                                                     const gpointer _remote_video)
 {
+  PWaitAndSignal m(device_mutex);
+
   texture[0] = CLUTTER_ACTOR (_local_video);
   texture[1] = CLUTTER_ACTOR (_remote_video);
 }
@@ -237,23 +243,28 @@ GMVideoOutputManager_clutter_gst::set_display_info (const gpointer _local_video,
 void
 GMVideoOutputManager_clutter_gst::set_ext_display_info (const gpointer _ext_video)
 {
+  PWaitAndSignal m(device_mutex);
+
   texture[2] = CLUTTER_ACTOR (_ext_video);
 }
 
 
 void
-GMVideoOutputManager_clutter_gst::size_changed_in_main (unsigned width,
-                                                        unsigned height,
-                                                        unsigned type)
+GMVideoOutputManager_clutter_gst::size_changed_in_main (Ekiga::VideoOutputManager::VideoView type,
+                                                        unsigned width,
+                                                        unsigned height)
 {
-  size_changed (width, height, type);
+  size_changed (type, width, height);
 }
 
 void
-GMVideoOutputManager_clutter_gst::device_opened_in_main (bool both,
+GMVideoOutputManager_clutter_gst::device_opened_in_main (Ekiga::VideoOutputManager::VideoView type,
+                                                         unsigned width,
+                                                         unsigned height,
+                                                         bool both,
                                                          bool ext)
 {
-  device_opened (both, ext);
+  device_opened (type, width, height, both, ext);
 }
 
 void

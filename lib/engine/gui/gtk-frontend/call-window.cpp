@@ -79,6 +79,7 @@
 #include "videoinput-core.h"
 #include "audioinput-core.h"
 #include "audiooutput-core.h"
+#include "videooutput-manager.h"
 
 #define STAGE_WIDTH 640
 #define STAGE_HEIGHT 480
@@ -119,13 +120,10 @@ struct _EkigaCallWindowPrivate
 
   ClutterActor *stage;
 
-  ClutterActor *local_video;
-  unsigned local_video_natural_width;
-  unsigned local_video_natural_height;
-
-  ClutterActor *remote_video;
-  unsigned remote_video_natural_width;
-  unsigned remote_video_natural_height;
+  ClutterActor *video_stream[3];
+  unsigned video_stream_natural_width[3];
+  unsigned video_stream_natural_height[3];
+  gfloat local_video_ratio;
 
   bool fullscreen;
 
@@ -230,10 +228,10 @@ static void stay_on_top_changed_cb (GSettings *settings,
                                     gpointer self);
 
 static void pick_up_call_cb (GtkWidget * /*widget*/,
-                            gpointer data);
+                             gpointer data);
 
 static void hang_up_call_cb (GtkWidget * /*widget*/,
-                            gpointer data);
+                             gpointer data);
 
 static void hold_current_call_cb (GtkWidget *widget,
                                   gpointer data);
@@ -262,6 +260,9 @@ static void video_settings_changed_cb (GtkAdjustment * /*adjustment*/,
 static gboolean on_signal_level_refresh_cb (gpointer self);
 
 static void on_videooutput_device_opened_cb (Ekiga::VideoOutputManager & /* manager */,
+                                             Ekiga::VideoOutputManager::VideoView type,
+                                             unsigned width,
+                                             unsigned height,
                                              bool both_streams,
                                              bool ext_stream,
                                              gpointer self);
@@ -277,9 +278,9 @@ static void ekiga_call_window_set_video_size (EkigaCallWindow *cw,
                                               int height);
 
 static void on_size_changed_cb (Ekiga::VideoOutputManager & /* manager */,
+                                Ekiga::VideoOutputManager::VideoView type,
                                 unsigned width,
                                 unsigned height,
-                                unsigned type,
                                 gpointer self);
 
 static void on_videoinput_device_opened_cb (Ekiga::VideoInputManager & /* manager */,
@@ -398,17 +399,18 @@ static void window_closed_from_menu_cb (G_GNUC_UNUSED GtkWidget *,
 static void animate_logo_cb (ClutterActor *actor,
                              gpointer logo);
 
-static void resize_actor_cb (ClutterActor *actor,
-                             ClutterActorBox *box,
-                             ClutterAllocationFlags flags,
-                             gpointer data);
+static void ekiga_call_window_resize_video_stream_cb (ClutterActor *actor,
+                                                      ClutterActorBox *box,
+                                                      ClutterAllocationFlags flags,
+                                                      gpointer data);
 
 /**/
-static void resize_actor (ClutterActor *texture,
-                          unsigned natural_width,
-                          unsigned natural_height,
-                          unsigned available_height,
-                          unsigned easing_delay = 0);
+static void ekiga_call_window_resize_video_stream (ClutterActor *texture,
+                                                   unsigned natural_width,
+                                                   unsigned natural_height,
+                                                   unsigned available_height);
+
+static void ekiga_call_window_resize_video_streams (EkigaCallWindow *cw);
 
 static void ekiga_call_window_update_calling_state (EkigaCallWindow *cw,
                                                     unsigned calling_state);
@@ -455,6 +457,9 @@ static GtkWidget * gm_cw_audio_settings_window_new (EkigaCallWindow *cw);
 static GtkWidget *gm_cw_video_settings_window_new (EkigaCallWindow *cw);
 
 static void ekiga_call_window_update_logo (EkigaCallWindow *cw);
+
+static void ekiga_call_window_set_pip (EkigaCallWindow *cw,
+                                       gboolean pip);
 
 static void ekiga_call_window_toggle_fullscreen (EkigaCallWindow *cw);
 
@@ -506,70 +511,70 @@ stay_on_top_changed_cb (GSettings *settings,
 
 static void
 zoom_in_changed_cb (G_GNUC_UNUSED GtkWidget *widget,
-		    gpointer data)
+                    gpointer data)
 {
   /*
-  g_return_if_fail (data != NULL);
+     g_return_if_fail (data != NULL);
 
-  Ekiga::DisplayInfo display_info;
-  EkigaCallWindow *cw = EKIGA_CALL_WINDOW (data);
+     Ekiga::DisplayInfo display_info;
+     EkigaCallWindow *cw = EKIGA_CALL_WINDOW (data);
 
-  ekiga_call_window_set_video_size (cw, GM_CIF_WIDTH, GM_CIF_HEIGHT);
+     ekiga_call_window_set_video_size (cw, GM_CIF_WIDTH, GM_CIF_HEIGHT);
 
-  display_info.zoom = cw->priv->video_display_settings->get_int ("zoom");
+     display_info.zoom = cw->priv->video_display_settings->get_int ("zoom");
 
-  if (display_info.zoom < 200)
-    display_info.zoom = display_info.zoom * 2;
+     if (display_info.zoom < 200)
+     display_info.zoom = display_info.zoom * 2;
 
-  cw->priv->video_display_settings->set_int ("zoom", display_info.zoom);
-  ekiga_call_window_zooms_menu_update_sensitivity (cw, display_info.zoom);
-*/
+     cw->priv->video_display_settings->set_int ("zoom", display_info.zoom);
+     ekiga_call_window_zooms_menu_update_sensitivity (cw, display_info.zoom);
+   */
 }
 
 static void
 zoom_out_changed_cb (G_GNUC_UNUSED GtkWidget *widget,
-		     gpointer data)
+                     gpointer data)
 {
   /*
-  g_return_if_fail (data != NULL);
+     g_return_if_fail (data != NULL);
 
-  Ekiga::DisplayInfo display_info;
-  EkigaCallWindow *cw = EKIGA_CALL_WINDOW (data);
+     Ekiga::DisplayInfo display_info;
+     EkigaCallWindow *cw = EKIGA_CALL_WINDOW (data);
 
-  ekiga_call_window_set_video_size (cw, GM_CIF_WIDTH, GM_CIF_HEIGHT);
+     ekiga_call_window_set_video_size (cw, GM_CIF_WIDTH, GM_CIF_HEIGHT);
 
-  display_info.zoom = cw->priv->video_display_settings->get_int ( "zoom");
+     display_info.zoom = cw->priv->video_display_settings->get_int ( "zoom");
 
-  if (display_info.zoom  > 50)
-    display_info.zoom  = (unsigned int) (display_info.zoom  / 2);
+     if (display_info.zoom  > 50)
+     display_info.zoom  = (unsigned int) (display_info.zoom  / 2);
 
-  cw->priv->video_display_settings->set_int ("zoom", display_info.zoom);
-  ekiga_call_window_zooms_menu_update_sensitivity (cw, display_info.zoom);
-*/
+     cw->priv->video_display_settings->set_int ("zoom", display_info.zoom);
+     ekiga_call_window_zooms_menu_update_sensitivity (cw, display_info.zoom);
+   */
 }
 
 static void
 zoom_normal_changed_cb (G_GNUC_UNUSED GtkWidget *widget,
-			gpointer data)
+                        gpointer data)
 {
   /*
-  g_return_if_fail (data != NULL);
+     g_return_if_fail (data != NULL);
 
-  Ekiga::DisplayInfo display_info;
-  EkigaCallWindow *cw = EKIGA_CALL_WINDOW (data);
+     Ekiga::DisplayInfo display_info;
+     EkigaCallWindow *cw = EKIGA_CALL_WINDOW (data);
 
-  ekiga_call_window_set_video_size (cw, GM_CIF_WIDTH, GM_CIF_HEIGHT);
+     ekiga_call_window_set_video_size (cw, GM_CIF_WIDTH, GM_CIF_HEIGHT);
 
-  display_info.zoom  = 100;
+     display_info.zoom  = 100;
 
-  cw->priv->video_display_settings->set_int ("zoom", display_info.zoom);
-  ekiga_call_window_zooms_menu_update_sensitivity (cw, display_info.zoom);
-*/
+     cw->priv->video_display_settings->set_int ("zoom", display_info.zoom);
+     ekiga_call_window_zooms_menu_update_sensitivity (cw, display_info.zoom);
+   */
 }
 
 static void
 display_changed_cb (GtkWidget *widget,
-		    gpointer data)
+                    gpointer data)
 {
   g_return_if_fail (data != NULL);
 
@@ -605,7 +610,7 @@ display_changed_cb (GtkWidget *widget,
 
 static void
 fullscreen_changed_cb (G_GNUC_UNUSED GtkWidget *widget,
-		       gpointer data)
+                       gpointer data)
 {
   g_return_if_fail (data);
 
@@ -614,7 +619,7 @@ fullscreen_changed_cb (G_GNUC_UNUSED GtkWidget *widget,
 
 static void
 pick_up_call_cb (GtkWidget * /*widget*/,
-                gpointer data)
+                 gpointer data)
 {
   EkigaCallWindow *cw = EKIGA_CALL_WINDOW (data);
 
@@ -624,7 +629,7 @@ pick_up_call_cb (GtkWidget * /*widget*/,
 
 static void
 hang_up_call_cb (GtkWidget * /*widget*/,
-                gpointer data)
+                 gpointer data)
 {
   EkigaCallWindow *cw = EKIGA_CALL_WINDOW (data);
 
@@ -669,7 +674,7 @@ toggle_video_stream_pause_cb (GtkWidget * /*widget*/,
 
 static void
 transfer_current_call_cb (G_GNUC_UNUSED GtkWidget *widget,
-			  gpointer data)
+                          gpointer data)
 {
   EkigaCallWindow *cw = EKIGA_CALL_WINDOW (data);
 
@@ -679,7 +684,7 @@ transfer_current_call_cb (G_GNUC_UNUSED GtkWidget *widget,
 
 static void
 audio_volume_changed_cb (GtkAdjustment * /*adjustment*/,
-			 gpointer data)
+                         gpointer data)
 {
   EkigaCallWindow *cw = EKIGA_CALL_WINDOW (data);
 
@@ -689,7 +694,7 @@ audio_volume_changed_cb (GtkAdjustment * /*adjustment*/,
 
 static void
 audio_volume_window_shown_cb (GtkWidget * /*widget*/,
-	                      gpointer data)
+                              gpointer data)
 {
   EkigaCallWindow *cw = EKIGA_CALL_WINDOW (data);
 
@@ -711,7 +716,7 @@ audio_volume_window_hidden_cb (GtkWidget * /*widget*/,
 
 static void
 video_settings_changed_cb (GtkAdjustment * /*adjustment*/,
-			   gpointer data)
+                           gpointer data)
 {
   EkigaCallWindow *cw = EKIGA_CALL_WINDOW (data);
 
@@ -734,40 +739,51 @@ on_signal_level_refresh_cb (gpointer /*self*/)
 
 static void
 on_videooutput_device_opened_cb (Ekiga::VideoOutputManager & /* manager */,
+                                 Ekiga::VideoOutputManager::VideoView type,
+                                 unsigned width,
+                                 unsigned height,
                                  bool both_streams,
                                  bool ext_stream,
                                  gpointer self)
 {
+  gfloat ratio;
+
   g_return_if_fail (EKIGA_IS_CALL_WINDOW (self));
 
   EkigaCallWindow *cw = EKIGA_CALL_WINDOW (self);
 
-  if (both_streams) {
-    clutter_actor_save_easing_state (CLUTTER_ACTOR (cw->priv->local_video));
-    clutter_actor_set_easing_duration (CLUTTER_ACTOR (cw->priv->local_video), 2000);
-    clutter_actor_set_opacity (CLUTTER_ACTOR (cw->priv->local_video), 255);
-    clutter_actor_restore_easing_state (CLUTTER_ACTOR (cw->priv->local_video));
-  }
+  gtk_widget_show (GTK_WIDGET (cw));
+
+  cw->priv->video_stream_natural_width[type] = width;
+  cw->priv->video_stream_natural_height[type] = height;
+
+  /* As soon as both streams are available, enable PIP for the local
+   * video stream.
+   */
+  ekiga_call_window_set_pip (cw, both_streams);
+
+  clutter_actor_set_opacity (CLUTTER_ACTOR (cw->priv->video_stream[type]), 255);
+
 
   // FIXME
   return;
   /*
-  int vv;
+     int vv;
 
-  if (both_streams) {
-    gtk_menu_section_set_sensitive (cw->priv->main_menu, "local_video", true);
-    gtk_menu_section_set_sensitive (cw->priv->main_menu, "fullscreen", true);
-  }
-  else {
-    if (mode == Ekiga::VO_MODE_LOCAL)
-      gtk_menu_set_sensitive (cw->priv->main_menu, "local_video", true);
-    else if (mode == Ekiga::VO_MODE_REMOTE)
-      gtk_menu_set_sensitive (cw->priv->main_menu, "remote_video", true);
-  }
+     if (both_streams) {
+     gtk_menu_section_set_sensitive (cw->priv->main_menu, "local_video", true);
+     gtk_menu_section_set_sensitive (cw->priv->main_menu, "fullscreen", true);
+     }
+     else {
+     if (mode == Ekiga::VO_MODE_LOCAL)
+     gtk_menu_set_sensitive (cw->priv->main_menu, "local_video", true);
+     else if (mode == Ekiga::VO_MODE_REMOTE)
+     gtk_menu_set_sensitive (cw->priv->main_menu, "remote_video", true);
+     }
 
-  if (cw->priv->ext_video_win && ext_stream) {
-    gtk_widget_show_now (cw->priv->ext_video_win);
-  }
+     if (cw->priv->ext_video_win && ext_stream) {
+     gtk_widget_show_now (cw->priv->ext_video_win);
+     }
 
   // when ending a call and going back to local video, the video_view
   // setting should not be updated, so memorise the setting and
@@ -777,25 +793,38 @@ on_videooutput_device_opened_cb (Ekiga::VideoOutputManager & /* manager */,
   gtk_radio_menu_select_with_id (cw->priv->main_menu, "local_video", mode);
   cw->priv->changing_back_to_local_after_a_call = false;
   if (!both_streams && mode != Ekiga::VO_MODE_LOCAL)
-    cw->priv->video_display_settings->set_int ("video-view", Ekiga::VO_MODE_LOCAL);
+  cw->priv->video_display_settings->set_int ("video-view", Ekiga::VO_MODE_LOCAL);
 
   // if in a past video we left in the extended video stream, but the new
   // one doesn't have it, we reset the view to the local one
   if (vv == Ekiga::VO_MODE_REMOTE_EXT && !ext_stream)
-    cw->priv->video_display_settings->set_int ("video-view", Ekiga::VO_MODE_LOCAL);
+  cw->priv->video_display_settings->set_int ("video-view", Ekiga::VO_MODE_LOCAL);
 
   ekiga_call_window_zooms_menu_update_sensitivity (cw, zoom);
-  */
+   */
 }
 
 static void
 on_videooutput_device_closed_cb (Ekiga::VideoOutputManager & /* manager */, gpointer self)
 {
-  EkigaCallWindow *cw = EKIGA_CALL_WINDOW (self);
-  //FIXME
-}
+  g_return_if_fail (self);
 
-//FIXME Set_stay_on_top "window_show object"
+  EkigaCallWindow *cw = EKIGA_CALL_WINDOW (self);
+
+  cw->priv->local_video_ratio = 1;
+  for (int i = 0 ; i < 2 ; i++) {
+    Ekiga::VideoOutputManager::VideoView type = (Ekiga::VideoOutputManager::VideoView) i;
+    cw->priv->video_stream_natural_width[type] = 0;
+    cw->priv->video_stream_natural_height[type] = 0;
+    cw->priv->video_stream_natural_width[type] = 0;
+    cw->priv->video_stream_natural_height[type] = 0;
+    clutter_actor_set_opacity (CLUTTER_ACTOR (cw->priv->video_stream[type]), 0);
+    ekiga_call_window_resize_video_stream (CLUTTER_ACTOR (cw->priv->video_stream[type]),
+                                           cw->priv->video_stream_natural_width[type],
+                                           cw->priv->video_stream_natural_height[type],
+                                           clutter_actor_get_height (CLUTTER_ACTOR (cw->priv->stage)));
+  }
+}
 
 static void
 on_videooutput_device_error_cb (Ekiga::VideoOutputManager & /* manager */,
@@ -857,42 +886,28 @@ ekiga_call_window_set_video_size (EkigaCallWindow *cw,
 
 static void
 on_size_changed_cb (Ekiga::VideoOutputManager & /* manager */,
+                    Ekiga::VideoOutputManager::VideoView type,
                     unsigned width,
                     unsigned height,
-                    unsigned type,
                     gpointer self)
 {
   EkigaCallWindow *cw = EKIGA_CALL_WINDOW (self);
 
+  gfloat ratio = (type == Ekiga::VideoOutputManager::LOCAL ? cw->priv->local_video_ratio : 1);
+
   /* Resize the clutter texture when we know the natural video size.
    * The real size will depend on the stage available space.
    */
-  switch (type) {
-    case 0:
-      cw->priv->local_video_natural_width = width;
-      cw->priv->local_video_natural_height = height;
-      resize_actor (CLUTTER_ACTOR (cw->priv->local_video),
-                    width,
-                    height,
-                    clutter_actor_get_height (CLUTTER_ACTOR (cw->priv->stage)) * LOCAL_VIDEO_RATIO,
-                    1000);
-      break;
+  clutter_actor_save_easing_state (CLUTTER_ACTOR (cw->priv->video_stream[type]));
+  clutter_actor_set_easing_duration (CLUTTER_ACTOR (cw->priv->video_stream[type]), 2000);
 
-    case 1:
-      cw->priv->remote_video_natural_width = width;
-      cw->priv->remote_video_natural_height = height;
-      resize_actor (CLUTTER_ACTOR (cw->priv->remote_video),
-                    width,
-                    height,
-                    clutter_actor_get_height (CLUTTER_ACTOR (cw->priv->stage)),
-                    1000);
-      break;
-
-    default:
-      break;
-  }
-
-  gtk_widget_show (GTK_WIDGET (cw));
+  cw->priv->video_stream_natural_width[type] = width;
+  cw->priv->video_stream_natural_height[type] = height;
+  ekiga_call_window_resize_video_stream (CLUTTER_ACTOR (cw->priv->video_stream[Ekiga::VideoOutputManager::LOCAL]),
+                                         width,
+                                         height,
+                                         clutter_actor_get_height (CLUTTER_ACTOR (cw->priv->stage)) * ratio);
+  clutter_actor_restore_easing_state (CLUTTER_ACTOR (cw->priv->video_stream[type]));
 }
 
 static void
@@ -948,34 +963,34 @@ on_videoinput_device_error_cb (Ekiga::VideoInputManager & /* manager */,
   tmp_msg = g_strdup (_("A moving logo will be transmitted during calls."));
   switch (error_code) {
 
-    case Ekiga::VI_ERROR_DEVICE:
-      dialog_msg = g_strconcat (_("There was an error while opening the device. In case it is a pluggable device it may be sufficient to reconnect it. If not, or if it still is not accessible, please check your permissions and make sure that the appropriate driver is loaded."), "\n\n", tmp_msg, NULL);
-      break;
+  case Ekiga::VI_ERROR_DEVICE:
+    dialog_msg = g_strconcat (_("There was an error while opening the device. In case it is a pluggable device it may be sufficient to reconnect it. If not, or if it still is not accessible, please check your permissions and make sure that the appropriate driver is loaded."), "\n\n", tmp_msg, NULL);
+    break;
 
-    case Ekiga::VI_ERROR_FORMAT:
-      dialog_msg = g_strconcat (_("Your video driver doesn't support the requested video format."), "\n\n", tmp_msg, NULL);
-      break;
+  case Ekiga::VI_ERROR_FORMAT:
+    dialog_msg = g_strconcat (_("Your video driver doesn't support the requested video format."), "\n\n", tmp_msg, NULL);
+    break;
 
-    case Ekiga::VI_ERROR_CHANNEL:
-      dialog_msg = g_strconcat (_("Could not open the chosen channel."), "\n\n", tmp_msg, NULL);
-      break;
+  case Ekiga::VI_ERROR_CHANNEL:
+    dialog_msg = g_strconcat (_("Could not open the chosen channel."), "\n\n", tmp_msg, NULL);
+    break;
 
-    case Ekiga::VI_ERROR_COLOUR:
-      dialog_msg = g_strconcat (_("Your driver doesn't seem to support any of the color formats supported by Ekiga.\n Please check your kernel driver documentation in order to determine which Palette is supported."), "\n\n", tmp_msg, NULL);
-      break;
+  case Ekiga::VI_ERROR_COLOUR:
+    dialog_msg = g_strconcat (_("Your driver doesn't seem to support any of the color formats supported by Ekiga.\n Please check your kernel driver documentation in order to determine which Palette is supported."), "\n\n", tmp_msg, NULL);
+    break;
 
-    case Ekiga::VI_ERROR_FPS:
-      dialog_msg = g_strconcat (_("Error while setting the frame rate."), "\n\n", tmp_msg, NULL);
-      break;
+  case Ekiga::VI_ERROR_FPS:
+    dialog_msg = g_strconcat (_("Error while setting the frame rate."), "\n\n", tmp_msg, NULL);
+    break;
 
-    case Ekiga::VI_ERROR_SCALE:
-      dialog_msg = g_strconcat (_("Error while setting the frame size."), "\n\n", tmp_msg, NULL);
-      break;
+  case Ekiga::VI_ERROR_SCALE:
+    dialog_msg = g_strconcat (_("Error while setting the frame size."), "\n\n", tmp_msg, NULL);
+    break;
 
-    case Ekiga::VI_ERROR_NONE:
-    default:
-      dialog_msg = g_strconcat (_("Unknown error."), "\n\n", tmp_msg, NULL);
-      break;
+  case Ekiga::VI_ERROR_NONE:
+  default:
+    dialog_msg = g_strconcat (_("Unknown error."), "\n\n", tmp_msg, NULL);
+    break;
   }
 
   dialog = gtk_message_dialog_new (GTK_WINDOW (self), GTK_DIALOG_MODAL,
@@ -1031,26 +1046,26 @@ on_audioinput_device_error_cb (Ekiga::AudioInputManager & /* manager */,
   gchar *tmp_msg = NULL;
 
   dialog_title =
-  g_strdup_printf (_("Error while opening audio input device %s"),
-                   (const char *) device.name.c_str());
+    g_strdup_printf (_("Error while opening audio input device %s"),
+                     (const char *) device.name.c_str());
 
   /* Translators: This happens when there is an error with audio input:
    * Nothing ("silence") will be transmitted */
   tmp_msg = g_strdup (_("Only silence will be transmitted."));
   switch (error_code) {
 
-    case Ekiga::AI_ERROR_DEVICE:
-      dialog_msg = g_strconcat (tmp_msg, "\n\n", _("Unable to open the selected audio device for recording. In case it is a pluggable device it may be sufficient to reconnect it. If not, or if it still is not accessible, please check your audio setup, the permissions and that the device is not busy."), NULL);
-      break;
+  case Ekiga::AI_ERROR_DEVICE:
+    dialog_msg = g_strconcat (tmp_msg, "\n\n", _("Unable to open the selected audio device for recording. In case it is a pluggable device it may be sufficient to reconnect it. If not, or if it still is not accessible, please check your audio setup, the permissions and that the device is not busy."), NULL);
+    break;
 
-    case Ekiga::AI_ERROR_READ:
-      dialog_msg = g_strconcat (tmp_msg, "\n\n", _("The selected audio device was successfully opened but it is impossible to read data from this device. In case it is a pluggable device it may be sufficient to reconnect it. If not, or if it still is not accessible, please check your audio setup."), NULL);
-      break;
+  case Ekiga::AI_ERROR_READ:
+    dialog_msg = g_strconcat (tmp_msg, "\n\n", _("The selected audio device was successfully opened but it is impossible to read data from this device. In case it is a pluggable device it may be sufficient to reconnect it. If not, or if it still is not accessible, please check your audio setup."), NULL);
+    break;
 
-    case Ekiga::AI_ERROR_NONE:
-    default:
-      dialog_msg = g_strconcat (tmp_msg, "\n\n", _("Unknown error."), NULL);
-      break;
+  case Ekiga::AI_ERROR_NONE:
+  default:
+    dialog_msg = g_strconcat (tmp_msg, "\n\n", _("Unknown error."), NULL);
+    break;
   }
 
   dialog = gtk_message_dialog_new (GTK_WINDOW (self), GTK_DIALOG_MODAL,
@@ -1119,24 +1134,24 @@ on_audiooutput_device_error_cb (Ekiga::AudioOutputManager & /*manager */,
   gchar *tmp_msg = NULL;
 
   dialog_title =
-  g_strdup_printf (_("Error while opening audio output device %s"),
-                   (const char *) device.name.c_str());
+    g_strdup_printf (_("Error while opening audio output device %s"),
+                     (const char *) device.name.c_str());
 
   tmp_msg = g_strdup (_("No incoming sound will be played."));
   switch (error_code) {
 
-    case Ekiga::AO_ERROR_DEVICE:
-      dialog_msg = g_strconcat (tmp_msg, "\n\n", _("Unable to open the selected audio device for playing. In case it is a pluggable device it may be sufficient to reconnect it. If not, or if it still is not accessible, please check your audio setup, the permissions and that the device is not busy."), NULL);
-      break;
+  case Ekiga::AO_ERROR_DEVICE:
+    dialog_msg = g_strconcat (tmp_msg, "\n\n", _("Unable to open the selected audio device for playing. In case it is a pluggable device it may be sufficient to reconnect it. If not, or if it still is not accessible, please check your audio setup, the permissions and that the device is not busy."), NULL);
+    break;
 
-    case Ekiga::AO_ERROR_WRITE:
-      dialog_msg = g_strconcat (tmp_msg, "\n\n", _("The selected audio device was successfully opened but it is impossible to write data to this device. In case it is a pluggable device it may be sufficient to reconnect it. If not, or if it still is not accessible, please check your audio setup."), NULL);
-      break;
+  case Ekiga::AO_ERROR_WRITE:
+    dialog_msg = g_strconcat (tmp_msg, "\n\n", _("The selected audio device was successfully opened but it is impossible to write data to this device. In case it is a pluggable device it may be sufficient to reconnect it. If not, or if it still is not accessible, please check your audio setup."), NULL);
+    break;
 
-    case Ekiga::AO_ERROR_NONE:
-    default:
-      dialog_msg = g_strconcat (tmp_msg, "\n\n", _("Unknown error."), NULL);
-      break;
+  case Ekiga::AO_ERROR_NONE:
+  default:
+    dialog_msg = g_strconcat (tmp_msg, "\n\n", _("Unknown error."), NULL);
+    break;
   }
 
   dialog = gtk_message_dialog_new (GTK_WINDOW (self), GTK_DIALOG_MODAL,
@@ -1320,11 +1335,11 @@ on_stream_opened_cb (boost::shared_ptr<Ekiga::CallManager>  /*manager*/,
 
 static void
 on_stream_closed_cb (boost::shared_ptr<Ekiga::CallManager>  /*manager*/,
-                                 boost::shared_ptr<Ekiga::Call>  /* call */,
-                                 G_GNUC_UNUSED std::string name,
-                                 Ekiga::Call::StreamType type,
-                                 bool is_transmitting,
-                                 gpointer self)
+                     boost::shared_ptr<Ekiga::Call>  /* call */,
+                     G_GNUC_UNUSED std::string name,
+                     Ekiga::Call::StreamType type,
+                     bool is_transmitting,
+                     gpointer self)
 {
   EkigaCallWindow *cw = EKIGA_CALL_WINDOW (self);
   bool is_video = (type == Ekiga::Call::Video);
@@ -1379,10 +1394,10 @@ on_stats_refresh_cb (gpointer self)
     double out_of_order = cw->priv->current_call->get_out_of_order_packets ();
 
     ekiga_call_window_update_stats (cw, lost, late, out_of_order, jitter,
-                                    cw->priv->local_video_natural_width,
-                                    cw->priv->local_video_natural_height,
-                                    cw->priv->remote_video_natural_width,
-                                    cw->priv->remote_video_natural_height,
+                                    cw->priv->video_stream_natural_width[Ekiga::VideoOutputManager::LOCAL],
+                                    cw->priv->video_stream_natural_height[Ekiga::VideoOutputManager::LOCAL],
+                                    cw->priv->video_stream_natural_width[Ekiga::VideoOutputManager::REMOTE],
+                                    cw->priv->video_stream_natural_height[Ekiga::VideoOutputManager::REMOTE],
                                     cw->priv->transmitted_audio_codec.c_str (),
                                     cw->priv->transmitted_video_codec.c_str ());
   }
@@ -1452,46 +1467,52 @@ animate_logo_cb (G_GNUC_UNUSED ClutterActor *actor,
 }
 
 static void
-resize_actor_cb (ClutterActor *actor,
-                 G_GNUC_UNUSED ClutterActorBox *box,
-                 G_GNUC_UNUSED ClutterAllocationFlags flags,
-                 gpointer data)
+ekiga_call_window_resize_video_stream_cb (ClutterActor *actor,
+                                          G_GNUC_UNUSED ClutterActorBox *box,
+                                          G_GNUC_UNUSED ClutterAllocationFlags flags,
+                                          gpointer data)
 {
   EkigaCallWindow *cw = NULL;
 
   cw = EKIGA_CALL_WINDOW (data);
   g_return_if_fail (EKIGA_IS_CALL_WINDOW (cw));
 
-  resize_actor (CLUTTER_ACTOR (cw->priv->remote_video),
-                cw->priv->remote_video_natural_width,
-                cw->priv->remote_video_natural_height,
-                clutter_actor_get_height (CLUTTER_ACTOR (actor)),
-                1000);
-  resize_actor (CLUTTER_ACTOR (cw->priv->local_video),
-                cw->priv->local_video_natural_width,
-                cw->priv->local_video_natural_height,
-                clutter_actor_get_height (CLUTTER_ACTOR (actor)) * LOCAL_VIDEO_RATIO);
+  ekiga_call_window_resize_video_streams (cw);
 }
 
 static void
-resize_actor (ClutterActor *texture,
-              unsigned natural_width,
-              unsigned natural_height,
-              unsigned available_height,
-              unsigned easing_delay)
+ekiga_call_window_resize_video_stream (ClutterActor *texture,
+                                       unsigned natural_width,
+                                       unsigned natural_height,
+                                       unsigned available_height)
 {
   gfloat zoom = (gfloat) available_height / natural_height;
 
-  clutter_actor_save_easing_state (texture);
-  clutter_actor_set_easing_duration (texture, easing_delay);
   clutter_actor_set_height (texture, natural_height * zoom);
   clutter_actor_set_width (texture, natural_width * zoom);
-  clutter_actor_restore_easing_state (texture);
+}
+
+static void
+ekiga_call_window_resize_video_streams (EkigaCallWindow *cw)
+{
+  for (int i = 0 ; i < 2 ; i++) {
+    Ekiga::VideoOutputManager::VideoView type = (Ekiga::VideoOutputManager::VideoView) i;
+    gfloat ratio = (type == Ekiga::VideoOutputManager::LOCAL ? cw->priv->local_video_ratio : 1);
+    clutter_actor_save_easing_state (CLUTTER_ACTOR (cw->priv->video_stream[type]));
+    clutter_actor_set_easing_duration (CLUTTER_ACTOR (cw->priv->video_stream[type]), 2000);
+    if (cw->priv->video_stream_natural_height[type] > 0
+        && cw->priv->video_stream_natural_width[type] > 0)
+      ekiga_call_window_resize_video_stream (CLUTTER_ACTOR (cw->priv->video_stream[type]),
+                                             cw->priv->video_stream_natural_width[type],
+                                             cw->priv->video_stream_natural_height[type],
+                                             clutter_actor_get_height (CLUTTER_ACTOR (cw->priv->stage)) * ratio);
+    clutter_actor_restore_easing_state (CLUTTER_ACTOR (cw->priv->video_stream[type]));
+  }
 }
 
 static void
 ekiga_call_window_update_calling_state (EkigaCallWindow *cw,
-					unsigned calling_state)
+                                        unsigned calling_state)
 {
   g_return_if_fail (cw != NULL);
 
@@ -1525,7 +1546,7 @@ ekiga_call_window_update_calling_state (EkigaCallWindow *cw,
       /* Destroy the transfer call popup */
       if (cw->priv->transfer_call_popup)
         gtk_dialog_response (GTK_DIALOG (cw->priv->transfer_call_popup),
-			     GTK_RESPONSE_REJECT);
+                             GTK_RESPONSE_REJECT);
       break;
 
 
@@ -1614,14 +1635,14 @@ ekiga_call_window_clear_stats (EkigaCallWindow *cw)
 
 static void
 ekiga_call_window_update_stats (EkigaCallWindow *cw,
-				float lost,
-				float late,
-				float out_of_order,
-				int jitter,
-				unsigned int re_width,
-				unsigned int re_height,
-				unsigned int tr_width,
-				unsigned int tr_height,
+                                float lost,
+                                float late,
+                                float out_of_order,
+                                int jitter,
+                                unsigned int re_width,
+                                unsigned int re_height,
+                                unsigned int tr_width,
+                                unsigned int tr_height,
                                 const char *tr_audio_codec,
                                 const char *tr_video_codec)
 {
@@ -1657,13 +1678,13 @@ ekiga_call_window_update_stats (EkigaCallWindow *cw,
                                         tr_video_codec?tr_video_codec:"");
 
   stats_msg = g_strdup_printf (_("Lost packets: %.1f %%\nLate packets: %.1f %%\nOut of order packets: %.1f %%\nJitter buffer: %d ms\nCodecs: %s\nResolution: %s %s"),
-                                  lost,
-                                  late,
-                                  out_of_order,
-                                  jitter,
-                                  stats_msg_codecs,
-                                  stats_msg_tr,
-                                  stats_msg_re);
+                               lost,
+                               late,
+                               out_of_order,
+                               jitter,
+                               stats_msg_codecs,
+                               stats_msg_tr,
+                               stats_msg_re);
 
   g_free(stats_msg_tr);
   g_free(stats_msg_re);
@@ -1705,13 +1726,13 @@ ekiga_call_window_update_stats (EkigaCallWindow *cw,
 
   if (cw->priv->qualitymeter)
     gm_powermeter_set_level (GM_POWERMETER (cw->priv->qualitymeter),
-			     quality_level);
+                             quality_level);
 }
 
 
 static void
 ekiga_call_window_set_status (EkigaCallWindow *cw,
-			      const char *msg,
+                              const char *msg,
                               ...)
 {
   GtkTextIter iter;
@@ -1778,7 +1799,7 @@ ekiga_call_window_set_call_hold (EkigaCallWindow *cw,
 
     if (GTK_IS_LABEL (child))
       gtk_label_set_text_with_mnemonic (GTK_LABEL (child),
-					_("_Retrieve Call"));
+                                        _("_Retrieve Call"));
 
     /* Set the audio and video menu to unsensitive */
     gtk_menu_set_sensitive (cw->priv->main_menu, "suspend_audio", false);
@@ -1791,7 +1812,7 @@ ekiga_call_window_set_call_hold (EkigaCallWindow *cw,
 
     if (GTK_IS_LABEL (child))
       gtk_label_set_text_with_mnemonic (GTK_LABEL (child),
-					_("H_old Call"));
+                                        _("H_old Call"));
 
     gtk_menu_set_sensitive (cw->priv->main_menu, "suspend_audio", true);
     gtk_menu_set_sensitive (cw->priv->main_menu, "suspend_video", true);
@@ -1812,8 +1833,8 @@ ekiga_call_window_set_call_hold (EkigaCallWindow *cw,
 
 static void
 ekiga_call_window_set_channel_pause (EkigaCallWindow *cw,
-				     gboolean pause,
-				     gboolean is_video)
+                                     gboolean pause,
+                                     gboolean is_video)
 {
   GtkWidget *widget = NULL;
   GtkWidget *child = NULL;
@@ -1831,7 +1852,7 @@ ekiga_call_window_set_channel_pause (EkigaCallWindow *cw,
     msg = _("Resume _Video");
 
   widget = gtk_menu_get_widget (cw->priv->main_menu,
-			        is_video ? "suspend_video" : "suspend_audio");
+                                is_video ? "suspend_video" : "suspend_audio");
   child = gtk_bin_get_child (GTK_BIN (widget));
 
   if (GTK_IS_LABEL (child))
@@ -1860,7 +1881,7 @@ gm_cw_video_settings_window_new (EkigaCallWindow *cw)
   /* Webcam Control Frame, we need it to disable controls */
   cw->priv->video_settings_frame = gtk_frame_new (NULL);
   gtk_frame_set_shadow_type (GTK_FRAME (cw->priv->video_settings_frame),
-			     GTK_SHADOW_NONE);
+                             GTK_SHADOW_NONE);
   gtk_container_set_border_width (GTK_CONTAINER (cw->priv->video_settings_frame), 5);
 
   /* Category */
@@ -1884,8 +1905,8 @@ gm_cw_video_settings_window_new (EkigaCallWindow *cw)
   gtk_widget_set_tooltip_text (hscale_brightness, _("Adjust brightness"));
 
   g_signal_connect (cw->priv->adj_brightness, "value-changed",
-		    G_CALLBACK (video_settings_changed_cb),
-		    (gpointer) cw);
+                    G_CALLBACK (video_settings_changed_cb),
+                    (gpointer) cw);
 
   /* Whiteness */
   hbox = gtk_box_new (GTK_ORIENTATION_HORIZONTAL, 0);
@@ -1893,7 +1914,7 @@ gm_cw_video_settings_window_new (EkigaCallWindow *cw)
   gtk_box_pack_start (GTK_BOX (hbox), image, false, false, 0);
 
   cw->priv->adj_whiteness = gtk_adjustment_new (whiteness, 0.0,
-						255.0, 1.0, 5.0, 1.0);
+                                                255.0, 1.0, 5.0, 1.0);
   hscale_whiteness = gtk_scale_new (GTK_ORIENTATION_HORIZONTAL,
                                     GTK_ADJUSTMENT (cw->priv->adj_whiteness));
   gtk_scale_set_draw_value (GTK_SCALE (hscale_whiteness), false);
@@ -1904,8 +1925,8 @@ gm_cw_video_settings_window_new (EkigaCallWindow *cw)
   gtk_widget_set_tooltip_text (hscale_whiteness, _("Adjust whiteness"));
 
   g_signal_connect (cw->priv->adj_whiteness, "value-changed",
-		    G_CALLBACK (video_settings_changed_cb),
-		    (gpointer) cw);
+                    G_CALLBACK (video_settings_changed_cb),
+                    (gpointer) cw);
 
   /* Colour */
   hbox = gtk_box_new (GTK_ORIENTATION_HORIZONTAL, 0);
@@ -1913,7 +1934,7 @@ gm_cw_video_settings_window_new (EkigaCallWindow *cw)
   gtk_box_pack_start (GTK_BOX (hbox), image, false, false, 0);
 
   cw->priv->adj_colour = gtk_adjustment_new (colour, 0.0,
-					     255.0, 1.0, 5.0, 1.0);
+                                             255.0, 1.0, 5.0, 1.0);
   hscale_colour = gtk_scale_new (GTK_ORIENTATION_HORIZONTAL,
                                  GTK_ADJUSTMENT (cw->priv->adj_colour));
   gtk_scale_set_draw_value (GTK_SCALE (hscale_colour), false);
@@ -1924,8 +1945,8 @@ gm_cw_video_settings_window_new (EkigaCallWindow *cw)
   gtk_widget_set_tooltip_text (hscale_colour, _("Adjust color"));
 
   g_signal_connect (cw->priv->adj_colour, "value-changed",
-		    G_CALLBACK (video_settings_changed_cb),
-		    (gpointer) cw);
+                    G_CALLBACK (video_settings_changed_cb),
+                    (gpointer) cw);
 
   /* Contrast */
   hbox = gtk_box_new (GTK_ORIENTATION_HORIZONTAL, 0);
@@ -1933,7 +1954,7 @@ gm_cw_video_settings_window_new (EkigaCallWindow *cw)
   gtk_box_pack_start (GTK_BOX (hbox), image, false, false, 0);
 
   cw->priv->adj_contrast = gtk_adjustment_new (contrast, 0.0,
-					       255.0, 1.0, 5.0, 1.0);
+                                               255.0, 1.0, 5.0, 1.0);
   hscale_contrast = gtk_scale_new (GTK_ORIENTATION_HORIZONTAL,
                                    GTK_ADJUSTMENT (cw->priv->adj_contrast));
   gtk_scale_set_draw_value (GTK_SCALE (hscale_contrast), false);
@@ -1944,8 +1965,8 @@ gm_cw_video_settings_window_new (EkigaCallWindow *cw)
   gtk_widget_set_tooltip_text (hscale_contrast, _("Adjust contrast"));
 
   g_signal_connect (cw->priv->adj_contrast, "value-changed",
-		    G_CALLBACK (video_settings_changed_cb),
-		    (gpointer) cw);
+                    G_CALLBACK (video_settings_changed_cb),
+                    (gpointer) cw);
 
   gtk_container_add (GTK_CONTAINER (window),
                      cw->priv->video_settings_frame);
@@ -1976,7 +1997,7 @@ gm_cw_audio_settings_window_new (EkigaCallWindow *cw)
   /* Audio control frame, we need it to disable controls */
   cw->priv->audio_output_volume_frame = gtk_frame_new (NULL);
   gtk_frame_set_shadow_type (GTK_FRAME (cw->priv->audio_output_volume_frame),
-			     GTK_SHADOW_NONE);
+                             GTK_SHADOW_NONE);
   gtk_container_set_border_width (GTK_CONTAINER (cw->priv->audio_output_volume_frame), 5);
   main_vbox = gtk_box_new (GTK_ORIENTATION_VERTICAL, 0);
 
@@ -1987,8 +2008,8 @@ gm_cw_audio_settings_window_new (EkigaCallWindow *cw)
   /* Output volume */
   hbox = gtk_box_new (GTK_ORIENTATION_HORIZONTAL, 0);
   gtk_box_pack_start (GTK_BOX (hbox),
-		      gtk_image_new_from_icon_name ("audio-volume", GTK_ICON_SIZE_SMALL_TOOLBAR),
-		      false, false, 0);
+                      gtk_image_new_from_icon_name ("audio-volume", GTK_ICON_SIZE_SMALL_TOOLBAR),
+                      false, false, 0);
 
   small_vbox = gtk_box_new (GTK_ORIENTATION_VERTICAL, 0);
   cw->priv->adj_output_volume = gtk_adjustment_new (0, 0.0, 101.0, 1.0, 5.0, 1.0);
@@ -2010,7 +2031,7 @@ gm_cw_audio_settings_window_new (EkigaCallWindow *cw)
   /* Audio control frame, we need it to disable controls */
   cw->priv->audio_input_volume_frame = gtk_frame_new (NULL);
   gtk_frame_set_shadow_type (GTK_FRAME (cw->priv->audio_input_volume_frame),
-			     GTK_SHADOW_NONE);
+                             GTK_SHADOW_NONE);
   gtk_container_set_border_width (GTK_CONTAINER (cw->priv->audio_input_volume_frame), 5);
 
   /* The vbox */
@@ -2020,9 +2041,9 @@ gm_cw_audio_settings_window_new (EkigaCallWindow *cw)
   /* Input volume */
   hbox = gtk_box_new (GTK_ORIENTATION_HORIZONTAL, 0);
   gtk_box_pack_start (GTK_BOX (hbox),
-		      gtk_image_new_from_icon_name ("audio-input-microphone",
-						    GTK_ICON_SIZE_SMALL_TOOLBAR),
-		      false, false, 0);
+                      gtk_image_new_from_icon_name ("audio-input-microphone",
+                                                    GTK_ICON_SIZE_SMALL_TOOLBAR),
+                      false, false, 0);
 
   small_vbox = gtk_box_new (GTK_ORIENTATION_VERTICAL, 0);
   cw->priv->adj_input_volume = gtk_adjustment_new (0, 0.0, 101.0, 1.0, 5.0, 1.0);
@@ -2032,8 +2053,8 @@ gm_cw_audio_settings_window_new (EkigaCallWindow *cw)
   gtk_scale_set_draw_value (GTK_SCALE (hscale_rec), false);
   gtk_box_pack_start (GTK_BOX (small_vbox), hscale_rec, true, true, 0);
 
-//  cw->priv->input_signal = gm_level_meter_new ();
-//  gtk_box_pack_start (GTK_BOX (small_vbox), cw->priv->input_signal, true, true, 0);
+  //  cw->priv->input_signal = gm_level_meter_new ();
+  //  gtk_box_pack_start (GTK_BOX (small_vbox), cw->priv->input_signal, true, true, 0);
   gtk_box_pack_start (GTK_BOX (hbox), small_vbox, true, true, 2);
   gtk_box_pack_start (GTK_BOX (vbox), hbox, false, false, 3);
 
@@ -2045,10 +2066,10 @@ gm_cw_audio_settings_window_new (EkigaCallWindow *cw)
   gtk_widget_show_all (main_vbox);
 
   g_signal_connect (cw->priv->adj_output_volume, "value-changed",
-		    G_CALLBACK (audio_volume_changed_cb), cw);
+                    G_CALLBACK (audio_volume_changed_cb), cw);
 
   g_signal_connect (cw->priv->adj_input_volume, "value-changed",
-		    G_CALLBACK (audio_volume_changed_cb), cw);
+                    G_CALLBACK (audio_volume_changed_cb), cw);
 
   gtk_widget_hide_on_delete (window);
 
@@ -2083,84 +2104,84 @@ ekiga_call_window_init_menu (EkigaCallWindow *cw)
       GTK_MENU_SEPARATOR,
 
       GTK_MENU_ENTRY("hold_call", _("H_old Call"), _("Hold the current call"),
-		     NULL, GDK_KEY_h,
-		     G_CALLBACK (hold_current_call_cb), cw,
-		     false),
+                     NULL, GDK_KEY_h,
+                     G_CALLBACK (hold_current_call_cb), cw,
+                     false),
       GTK_MENU_ENTRY("transfer_call", _("_Transfer Call"),
-		     _("Transfer the current call"),
- 		     NULL, GDK_KEY_t,
-		     G_CALLBACK (transfer_current_call_cb), cw,
-		     false),
+                     _("Transfer the current call"),
+                     NULL, GDK_KEY_t,
+                     G_CALLBACK (transfer_current_call_cb), cw,
+                     false),
 
       GTK_MENU_SEPARATOR,
 
       GTK_MENU_ENTRY("suspend_audio", _("Suspend _Audio"),
-		     _("Suspend or resume the audio transmission"),
-		     NULL, GDK_KEY_m,
-		     G_CALLBACK (toggle_audio_stream_pause_cb),
-		     cw, false),
+                     _("Suspend or resume the audio transmission"),
+                     NULL, GDK_KEY_m,
+                     G_CALLBACK (toggle_audio_stream_pause_cb),
+                     cw, false),
       GTK_MENU_ENTRY("suspend_video", _("Suspend _Video"),
-		     _("Suspend or resume the video transmission"),
-		     NULL, GDK_KEY_p,
-		     G_CALLBACK (toggle_video_stream_pause_cb),
-		     cw, false),
+                     _("Suspend or resume the video transmission"),
+                     NULL, GDK_KEY_p,
+                     G_CALLBACK (toggle_video_stream_pause_cb),
+                     cw, false),
 
       GTK_MENU_SEPARATOR,
 
       GTK_MENU_ENTRY("close", NULL, _("Close the Ekiga window"),
-		     GTK_STOCK_CLOSE, 'W',
-		     G_CALLBACK (window_closed_from_menu_cb),
-		     cw, TRUE),
+                     GTK_STOCK_CLOSE, 'W',
+                     G_CALLBACK (window_closed_from_menu_cb),
+                     cw, TRUE),
 
       GTK_MENU_NEW(_("_View")),
 
       /*
-      GTK_MENU_RADIO_ENTRY("local_video", _("_Local Video"),
-			   _("Local video image"),
-			   NULL, '1',
-			   NULL,
-			   G_CALLBACK (display_changed_cb), cw,
-			   true, false),
-      GTK_MENU_RADIO_ENTRY("remote_video", _("_Remote Video"),
-			   _("Remote video image"),
-			   NULL, '2',
-			   NULL,
-			   G_CALLBACK (display_changed_cb), cw,
-			   false, false),
-      GTK_MENU_RADIO_ENTRY("both_incrusted", _("_Picture-in-Picture"),
-			   _("Both video images"),
-			   NULL, '3',
-			   NULL,
-			   G_CALLBACK (display_changed_cb), cw,
-			   false, false),
-                           */
+         GTK_MENU_RADIO_ENTRY("local_video", _("_Local Video"),
+         _("Local video image"),
+         NULL, '1',
+         NULL,
+         G_CALLBACK (display_changed_cb), cw,
+         true, false),
+         GTK_MENU_RADIO_ENTRY("remote_video", _("_Remote Video"),
+         _("Remote video image"),
+         NULL, '2',
+         NULL,
+         G_CALLBACK (display_changed_cb), cw,
+         false, false),
+         GTK_MENU_RADIO_ENTRY("both_incrusted", _("_Picture-in-Picture"),
+         _("Both video images"),
+         NULL, '3',
+         NULL,
+         G_CALLBACK (display_changed_cb), cw,
+         false, false),
+       */
       GTK_MENU_SEPARATOR,
 
       GTK_MENU_ENTRY("zoom_in", NULL, _("Zoom in"),
-		     GTK_STOCK_ZOOM_IN, '+',
-		     G_CALLBACK (zoom_in_changed_cb),
-		     (gpointer) cw, false),
+                     GTK_STOCK_ZOOM_IN, '+',
+                     G_CALLBACK (zoom_in_changed_cb),
+                     (gpointer) cw, false),
       GTK_MENU_ENTRY("zoom_out", NULL, _("Zoom out"),
-		     GTK_STOCK_ZOOM_OUT, '-',
-		     G_CALLBACK (zoom_out_changed_cb),
-		     (gpointer) cw, false),
+                     GTK_STOCK_ZOOM_OUT, '-',
+                     G_CALLBACK (zoom_out_changed_cb),
+                     (gpointer) cw, false),
       GTK_MENU_ENTRY("normal_size", NULL, _("Normal size"),
-		     GTK_STOCK_ZOOM_100, '0',
-		     G_CALLBACK (zoom_normal_changed_cb),
-		     (gpointer) cw, false),
+                     GTK_STOCK_ZOOM_100, '0',
+                     G_CALLBACK (zoom_normal_changed_cb),
+                     (gpointer) cw, false),
       GTK_MENU_ENTRY("fullscreen", _("_Fullscreen"), _("Switch to fullscreen"),
-		     GTK_STOCK_ZOOM_IN, GDK_KEY_F11,
-		     G_CALLBACK (fullscreen_changed_cb),
-		     (gpointer) cw, true),
+                     GTK_STOCK_ZOOM_IN, GDK_KEY_F11,
+                     G_CALLBACK (fullscreen_changed_cb),
+                     (gpointer) cw, true),
 
       GTK_MENU_END
     };
 
 
   gtk_build_menu (cw->priv->main_menu,
-		  gnomemeeting_menu,
-		  cw->priv->accel,
-		  cw->priv->statusbar);
+                  gnomemeeting_menu,
+                  cw->priv->accel,
+                  cw->priv->statusbar);
 
   gtk_widget_show_all (GTK_WIDGET (cw->priv->main_menu));
 }
@@ -2184,13 +2205,21 @@ ekiga_call_window_init_clutter (EkigaCallWindow *cw)
   clutter_actor_set_background_color (CLUTTER_ACTOR (cw->priv->stage), CLUTTER_COLOR_Black);
   clutter_stage_set_user_resizable (CLUTTER_STAGE (cw->priv->stage), TRUE);
 
-  cw->priv->remote_video =
+  cw->priv->video_stream[Ekiga::VideoOutputManager::REMOTE] =
     CLUTTER_ACTOR (g_object_new (CLUTTER_TYPE_TEXTURE, "disable-slicing", TRUE, NULL));
-  clutter_actor_add_child (CLUTTER_ACTOR (cw->priv->stage), CLUTTER_ACTOR (cw->priv->remote_video));
-  clutter_actor_add_constraint (cw->priv->remote_video,
+  clutter_actor_add_child (CLUTTER_ACTOR (cw->priv->stage), CLUTTER_ACTOR (cw->priv->video_stream[Ekiga::VideoOutputManager::REMOTE]));
+  clutter_actor_set_opacity (CLUTTER_ACTOR (cw->priv->video_stream[Ekiga::VideoOutputManager::REMOTE]), 0);
+  clutter_actor_add_constraint (cw->priv->video_stream[Ekiga::VideoOutputManager::REMOTE],
                                 clutter_align_constraint_new (cw->priv->stage,
                                                               CLUTTER_ALIGN_BOTH,
                                                               0.5));
+
+  /* Preview Video */
+  cw->priv->video_stream[Ekiga::VideoOutputManager::LOCAL] =
+    CLUTTER_ACTOR (g_object_new (CLUTTER_TYPE_TEXTURE, "disable-slicing", TRUE, NULL));
+  clutter_actor_add_child (CLUTTER_ACTOR (cw->priv->stage), cw->priv->video_stream[Ekiga::VideoOutputManager::LOCAL]);
+  clutter_actor_set_opacity (CLUTTER_ACTOR (cw->priv->video_stream[Ekiga::VideoOutputManager::LOCAL]), 0);
+
 
   /* Ekiga Logo */
   filename = g_build_filename (DATA_DIR, "pixmaps", PACKAGE_NAME,
@@ -2210,10 +2239,10 @@ ekiga_call_window_init_clutter (EkigaCallWindow *cw)
                           NULL);
   clutter_actor_set_content (emblem, image);
   g_object_unref (image);
-  resize_actor (CLUTTER_ACTOR (emblem),
-                gdk_pixbuf_get_width (pixbuf),
-                gdk_pixbuf_get_height (pixbuf),
-                STAGE_HEIGHT * EMBLEM_RATIO);
+  ekiga_call_window_resize_video_stream (CLUTTER_ACTOR (emblem),
+                                         gdk_pixbuf_get_width (pixbuf),
+                                         gdk_pixbuf_get_height (pixbuf),
+                                         STAGE_HEIGHT * EMBLEM_RATIO);
   clutter_actor_set_margin_top (CLUTTER_ACTOR (emblem), EMBLEM_MARGIN);
   clutter_actor_set_margin_right (CLUTTER_ACTOR (emblem), EMBLEM_MARGIN);
   clutter_actor_add_constraint (emblem,
@@ -2228,27 +2257,12 @@ ekiga_call_window_init_clutter (EkigaCallWindow *cw)
   clutter_actor_set_opacity (CLUTTER_ACTOR (emblem), 0);
   g_object_unref (pixbuf);
 
-  /* Preview Video */
-  cw->priv->local_video =
-    CLUTTER_ACTOR (g_object_new (CLUTTER_TYPE_TEXTURE, "disable-slicing", TRUE, NULL));
-  clutter_actor_add_constraint (cw->priv->local_video,
-                                clutter_align_constraint_new (cw->priv->stage,
-                                                              CLUTTER_ALIGN_X_AXIS,
-                                                              0.0));
-  clutter_actor_add_constraint (cw->priv->local_video,
-                                clutter_align_constraint_new (cw->priv->stage,
-                                                              CLUTTER_ALIGN_Y_AXIS,
-                                                              1.0));
-  clutter_actor_set_margin_bottom (CLUTTER_ACTOR (cw->priv->local_video), LOCAL_VIDEO_MARGIN);
-  clutter_actor_set_margin_left (CLUTTER_ACTOR (cw->priv->local_video), LOCAL_VIDEO_MARGIN);
-  clutter_actor_add_child (CLUTTER_ACTOR (cw->priv->stage), cw->priv->local_video);
-  clutter_actor_set_opacity (CLUTTER_ACTOR (cw->priv->local_video), 0);
-
-  g_signal_connect (cw->priv->stage, "allocation-changed", G_CALLBACK (resize_actor_cb), cw);
+  g_signal_connect (cw->priv->stage, "allocation-changed",
+                    G_CALLBACK (ekiga_call_window_resize_video_stream_cb), cw);
   g_signal_connect (cw->priv->stage, "show", G_CALLBACK (animate_logo_cb), emblem);
 
-  cw->priv->videooutput_core->set_display_info (cw->priv->local_video,
-                                                cw->priv->remote_video);
+  cw->priv->videooutput_core->set_display_info (cw->priv->video_stream[Ekiga::VideoOutputManager::LOCAL],
+                                                cw->priv->video_stream[Ekiga::VideoOutputManager::REMOTE]);
 }
 
 static void
@@ -2264,6 +2278,45 @@ ekiga_call_window_update_logo (EkigaCallWindow *cw)
                 NULL);
 
   ekiga_call_window_set_video_size (cw, GM_CIF_WIDTH, GM_CIF_HEIGHT);
+}
+
+static void
+ekiga_call_window_set_pip (EkigaCallWindow *cw,
+                           gboolean pip)
+{
+  g_return_if_fail (EKIGA_IS_CALL_WINDOW (cw));
+
+  Ekiga::VideoOutputManager::VideoView type = Ekiga::VideoOutputManager::LOCAL;
+
+  if (pip) {
+
+    cw->priv->local_video_ratio = LOCAL_VIDEO_RATIO;
+    clutter_actor_clear_constraints (cw->priv->video_stream[type]);
+    clutter_actor_add_constraint (cw->priv->video_stream[type],
+                                  clutter_align_constraint_new (cw->priv->stage,
+                                                                CLUTTER_ALIGN_X_AXIS,
+                                                                0.0));
+    clutter_actor_add_constraint (cw->priv->video_stream[type],
+                                  clutter_align_constraint_new (cw->priv->stage,
+                                                                CLUTTER_ALIGN_Y_AXIS,
+                                                                1.0));
+    clutter_actor_set_margin_bottom (CLUTTER_ACTOR (cw->priv->video_stream[type]), LOCAL_VIDEO_MARGIN);
+    clutter_actor_set_margin_left (CLUTTER_ACTOR (cw->priv->video_stream[type]), LOCAL_VIDEO_MARGIN);
+  }
+  else {
+
+    cw->priv->local_video_ratio = 1;
+    clutter_actor_clear_constraints (cw->priv->video_stream[type]);
+    clutter_actor_add_constraint (cw->priv->video_stream[type],
+                                  clutter_align_constraint_new (cw->priv->stage,
+                                                                CLUTTER_ALIGN_BOTH,
+                                                                0.5));
+    clutter_actor_set_margin_bottom (CLUTTER_ACTOR (cw->priv->video_stream[type]), 0);
+    clutter_actor_set_margin_left (CLUTTER_ACTOR (cw->priv->video_stream[type]), 0);
+  }
+
+  /* Resize both streams accordingly */
+  ekiga_call_window_resize_video_streams (cw);
 }
 
 static void
@@ -2326,8 +2379,8 @@ ekiga_call_window_channels_menu_update_sensitivity (EkigaCallWindow *cw,
 
 static gboolean
 ekiga_call_window_transfer_dialog_run (EkigaCallWindow *cw,
-				       GtkWidget *parent_window,
-				       const char *u)
+                                       GtkWidget *parent_window,
+                                       const char *u)
 {
   gint answer = 0;
 
@@ -2338,13 +2391,13 @@ ekiga_call_window_transfer_dialog_run (EkigaCallWindow *cw,
 
   cw->priv->transfer_call_popup =
     gm_entry_dialog_new (_("Transfer call to:"),
-			 _("Transfer"));
+                         _("Transfer"));
 
   gtk_window_set_transient_for (GTK_WINDOW (cw->priv->transfer_call_popup),
-				GTK_WINDOW (parent_window));
+                                GTK_WINDOW (parent_window));
 
   gtk_dialog_set_default_response (GTK_DIALOG (cw->priv->transfer_call_popup),
-				   GTK_RESPONSE_ACCEPT);
+                                   GTK_RESPONSE_ACCEPT);
 
   if (u && !g_strcmp0 (u, ""))
     gm_entry_dialog_set_text (GM_ENTRY_DIALOG (cw->priv->transfer_call_popup), u);
@@ -2382,7 +2435,7 @@ ekiga_call_window_connect_engine_signals (EkigaCallWindow *cw)
 
   /* New Display Engine signals */
 
-  conn = cw->priv->videooutput_core->device_opened.connect (boost::bind (&on_videooutput_device_opened_cb, _1, _2, _3, (gpointer) cw));
+  conn = cw->priv->videooutput_core->device_opened.connect (boost::bind (&on_videooutput_device_opened_cb, _1, _2, _3, _4, _5, _6, (gpointer) cw));
   cw->priv->connections.add (conn);
 
   conn = cw->priv->videooutput_core->device_closed.connect (boost::bind (&on_videooutput_device_closed_cb, _1, (gpointer) cw));
@@ -2535,7 +2588,7 @@ ekiga_call_window_init_gui (EkigaCallWindow *cw)
   gtk_text_view_set_editable (GTK_TEXT_VIEW (cw->priv->info_text), false);
   gtk_widget_set_sensitive (GTK_WIDGET (cw->priv->info_text), false);
   gtk_text_view_set_wrap_mode (GTK_TEXT_VIEW (cw->priv->info_text),
-			       GTK_WRAP_NONE);
+                               GTK_WRAP_NONE);
   gtk_text_view_set_cursor_visible  (GTK_TEXT_VIEW (cw->priv->info_text), false);
 
   alignment = gtk_alignment_new (0.0, 0.0, 1.0, 0.0);
@@ -2555,12 +2608,12 @@ ekiga_call_window_init_gui (EkigaCallWindow *cw)
   gtk_button_set_relief (GTK_BUTTON (cw->priv->pick_up_button), GTK_RELIEF_NONE);
   gtk_widget_show (cw->priv->pick_up_button);
   gtk_toolbar_insert (GTK_TOOLBAR (cw->priv->call_panel_toolbar),
-		      GTK_TOOL_ITEM (item), -1);
+                      GTK_TOOL_ITEM (item), -1);
   gtk_widget_set_sensitive (GTK_WIDGET (cw->priv->pick_up_button), false);
   gtk_tool_item_set_tooltip_text (GTK_TOOL_ITEM (item),
-				  _("Pick up the current call"));
+                                  _("Pick up the current call"));
   g_signal_connect (cw->priv->pick_up_button, "clicked",
-		    G_CALLBACK (pick_up_call_cb), cw);
+                    G_CALLBACK (pick_up_call_cb), cw);
 
   /* Hang up */
   item = gtk_tool_item_new ();
@@ -2571,17 +2624,17 @@ ekiga_call_window_init_gui (EkigaCallWindow *cw)
   gtk_button_set_relief (GTK_BUTTON (cw->priv->hang_up_button), GTK_RELIEF_NONE);
   gtk_widget_show (cw->priv->hang_up_button);
   gtk_toolbar_insert (GTK_TOOLBAR (cw->priv->call_panel_toolbar),
-		      GTK_TOOL_ITEM (item), -1);
+                      GTK_TOOL_ITEM (item), -1);
   gtk_widget_set_sensitive (GTK_WIDGET (cw->priv->hang_up_button), false);
   gtk_tool_item_set_tooltip_text (GTK_TOOL_ITEM (item),
-				  _("Hang up the current call"));
+                                  _("Hang up the current call"));
   g_signal_connect (cw->priv->hang_up_button, "clicked",
-		    G_CALLBACK (hang_up_call_cb), cw);
+                    G_CALLBACK (hang_up_call_cb), cw);
 
   /* Separator */
   item = gtk_separator_tool_item_new ();
   gtk_toolbar_insert (GTK_TOOLBAR (cw->priv->call_panel_toolbar),
-		      GTK_TOOL_ITEM (item), -1);
+                      GTK_TOOL_ITEM (item), -1);
 
   /* Audio Volume */
   std::vector <Ekiga::AudioOutputDevice> devices;
@@ -2619,9 +2672,9 @@ ekiga_call_window_init_gui (EkigaCallWindow *cw)
   gtk_widget_show (cw->priv->video_settings_button);
   gtk_widget_set_sensitive (cw->priv->video_settings_button, false);
   gtk_toolbar_insert (GTK_TOOLBAR (cw->priv->call_panel_toolbar),
-		      GTK_TOOL_ITEM (item), -1);
+                      GTK_TOOL_ITEM (item), -1);
   gtk_tool_item_set_tooltip_text (GTK_TOOL_ITEM (item),
-				   _("Change the color settings of your video device"));
+                                  _("Change the color settings of your video device"));
 
   g_signal_connect_swapped (cw->priv->video_settings_button, "clicked",
                             G_CALLBACK (gtk_widget_show),
@@ -2638,13 +2691,13 @@ ekiga_call_window_init_gui (EkigaCallWindow *cw)
 
   gtk_widget_show (cw->priv->hold_button);
   gtk_toolbar_insert (GTK_TOOLBAR (cw->priv->call_panel_toolbar),
-		      GTK_TOOL_ITEM (item), -1);
+                      GTK_TOOL_ITEM (item), -1);
   gtk_tool_item_set_tooltip_text (GTK_TOOL_ITEM (item),
-				  _("Hold the current call"));
+                                  _("Hold the current call"));
   gtk_widget_set_sensitive (GTK_WIDGET (cw->priv->hold_button), false);
 
   g_signal_connect (cw->priv->hold_button, "clicked",
-		    G_CALLBACK (hold_current_call_cb), cw);
+                    G_CALLBACK (hold_current_call_cb), cw);
   gtk_widget_show_all (cw->priv->call_panel_toolbar);
 
   /* The statusbar */
@@ -2699,6 +2752,7 @@ ekiga_call_window_init (EkigaCallWindow *cw)
   cw->priv->levelmeter_timeout_id = -1;
   cw->priv->calling_state = Standby;
   cw->priv->fullscreen = false;
+  cw->priv->local_video_ratio = 1;
 #ifndef WIN32
   cw->priv->gc = NULL;
 #endif
@@ -2706,7 +2760,7 @@ ekiga_call_window_init (EkigaCallWindow *cw)
     boost::shared_ptr<Ekiga::Settings> (new Ekiga::Settings (VIDEO_DISPLAY_SCHEMA));
 
   g_signal_connect (cw, "delete_event",
-		    G_CALLBACK (ekiga_call_window_delete_event_cb), NULL);
+                    G_CALLBACK (ekiga_call_window_delete_event_cb), NULL);
 }
 
 static void
@@ -2741,39 +2795,39 @@ ekiga_call_window_draw (GtkWidget *widget,
 {
   return true; //FIXME
   /*
-  EkigaCallWindow *cw = EKIGA_CALL_WINDOW (widget);
-  GtkWidget* video_widget = cw->priv->main_video_image;
-  Ekiga::DisplayInfo display_info;
-  gboolean handled = false;
-  GtkAllocation a;
+     EkigaCallWindow *cw = EKIGA_CALL_WINDOW (widget);
+     GtkWidget* video_widget = cw->priv->main_video_image;
+     Ekiga::DisplayInfo display_info;
+     gboolean handled = false;
+     GtkAllocation a;
 
-  handled = (*GTK_WIDGET_CLASS (ekiga_call_window_parent_class)->draw) (widget, context);
+     handled = (*GTK_WIDGET_CLASS (ekiga_call_window_parent_class)->draw) (widget, context);
 
-  gtk_widget_get_allocation (video_widget, &a);
-  display_info.x = a.x;
-  display_info.y = a.y;
+     gtk_widget_get_allocation (video_widget, &a);
+     display_info.x = a.x;
+     display_info.y = a.y;
 
 #ifdef WIN32
-  display_info.hwnd = ((HWND) GDK_WINDOW_HWND (gtk_widget_get_window (video_widget)));
+display_info.hwnd = ((HWND) GDK_WINDOW_HWND (gtk_widget_get_window (video_widget)));
 #else
-  display_info.window = gdk_x11_window_get_xid (gtk_widget_get_window (video_widget));
-  g_return_val_if_fail (display_info.window != 0, handled);
+display_info.window = gdk_x11_window_get_xid (gtk_widget_get_window (video_widget));
+g_return_val_if_fail (display_info.window != 0, handled);
 
-  if (!cw->priv->gc) {
-    Display *display;
-    display = GDK_DISPLAY_XDISPLAY (gtk_widget_get_display (video_widget));
-    cw->priv->gc = XCreateGC(display, display_info.window, 0, 0);
-    g_return_val_if_fail (cw->priv->gc != NULL, handled);
-  }
-  display_info.gc = cw->priv->gc;
+if (!cw->priv->gc) {
+Display *display;
+display = GDK_DISPLAY_XDISPLAY (gtk_widget_get_display (video_widget));
+cw->priv->gc = XCreateGC(display, display_info.window, 0, 0);
+g_return_val_if_fail (cw->priv->gc != NULL, handled);
+}
+display_info.gc = cw->priv->gc;
 
-  gdk_flush();
+gdk_flush();
 #endif
 
-  display_info.widget_info_set = true;
+display_info.widget_info_set = true;
 
-  return handled;*/
-}
+return handled;*/
+  }
 
 static gboolean
 ekiga_call_window_focus_in_event (GtkWidget     *widget,
@@ -2804,9 +2858,9 @@ call_window_new (Ekiga::ServiceCore & core)
   EkigaCallWindow *cw;
 
   cw = EKIGA_CALL_WINDOW (g_object_new (EKIGA_TYPE_CALL_WINDOW,
-					"key", USER_INTERFACE ".call-window",
-					"hide_on_delete", false,
-					"hide_on_esc", false, NULL));
+                                        "key", USER_INTERFACE ".call-window",
+                                        "hide_on_delete", false,
+                                        "hide_on_esc", false, NULL));
 
   cw->priv->libnotify = core.get ("libnotify");
   cw->priv->videoinput_core = core.get<Ekiga::VideoInputCore> ("videoinput-core");

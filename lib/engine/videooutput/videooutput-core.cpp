@@ -144,7 +144,7 @@ void VideoOutputCore::add_manager (VideoOutputManager &manager)
   managers.insert (&manager);
   manager_added (manager);
 
-  manager.device_opened.connect (boost::bind (&VideoOutputCore::on_device_opened, this, _1, _2, &manager));
+  manager.device_opened.connect (boost::bind (&VideoOutputCore::on_device_opened, this, _1, _2, _3, _4, _5, &manager));
   manager.device_closed.connect (boost::bind (&VideoOutputCore::on_device_closed, this, &manager));
   manager.device_error.connect (boost::bind (&VideoOutputCore::on_device_error, this, &manager));
   manager.size_changed.connect (boost::bind (&VideoOutputCore::on_size_changed, this, _1, _2, _3, &manager));
@@ -201,7 +201,7 @@ void VideoOutputCore::stop ()
 void VideoOutputCore::set_frame_data (const char *data,
                                       unsigned width,
                                       unsigned height,
-                                      unsigned type,
+                                      VideoOutputManager::VideoView type,
                                       int devices_nbr)
 {
   PWaitAndSignal m(core_mutex);
@@ -237,11 +237,14 @@ void VideoOutputCore::set_ext_display_info (const gpointer _ext)
 }
 
 
-void VideoOutputCore::on_device_opened (bool both_streams,
+void VideoOutputCore::on_device_opened (VideoOutputManager::VideoView type,
+                                        unsigned width,
+                                        unsigned height,
+                                        bool both_streams,
                                         bool ext_stream,
                                         VideoOutputManager *manager)
 {
-  device_opened (*manager, both_streams, ext_stream);
+  device_opened (*manager, type, width, height, both_streams, ext_stream);
 }
 
 void VideoOutputCore::on_device_closed ( VideoOutputManager *manager)
@@ -254,11 +257,11 @@ void VideoOutputCore::on_device_error (VideoOutputManager *manager)
   device_error (*manager);
 }
 
-void VideoOutputCore::on_size_changed (unsigned width,
+void VideoOutputCore::on_size_changed (VideoOutputManager::VideoView type,
+                                       unsigned width,
                                        unsigned height,
-                                       unsigned type,
                                        VideoOutputManager *manager)
 {
-  size_changed (*manager, width, height, type);
+  size_changed (*manager, type, width, height);
 }
 

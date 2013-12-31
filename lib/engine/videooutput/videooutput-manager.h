@@ -42,6 +42,8 @@
 #include <boost/bind.hpp>
 #include <glib.h>
 
+#include "videooutput-core.h"
+
 namespace Ekiga
 {
 
@@ -59,6 +61,7 @@ namespace Ekiga
     {
 
   public:
+      typedef enum { LOCAL, REMOTE, EXTENDED } VideoView;
 
       /** The constructor
        */
@@ -92,7 +95,7 @@ namespace Ekiga
       virtual void set_frame_data (const char *data,
                                    unsigned width,
                                    unsigned height,
-                                   unsigned type,
+                                   VideoView type,
                                    int devices_nbr) = 0;
 
       virtual void set_display_info (G_GNUC_UNUSED const gpointer local,
@@ -103,10 +106,13 @@ namespace Ekiga
       /*** API to act on VideoOutputDevice events ***/
 
       /** This signal is emitted when a video output device is opened.
+       * @param type is the opened device VideoView (local, remote, extended).
+       * @param width is the opened device width.
+       * @param height is the opened device height.
        * @param both_streams if a frame from both local and remote stream has been received.
        * @param ext_stream if a frame from an extended video stream has been received.
        */
-      boost::signals2::signal<void(bool, bool)> device_opened;
+      boost::signals2::signal<void(VideoView, unsigned, unsigned, bool, bool)> device_opened;
 
       /** This signal is emitted when a video output device is closed.
        */
@@ -119,11 +125,11 @@ namespace Ekiga
       /** This signal is emitted the video output size has changed.
        * This signal is called whenever the size of the widget carrying the video signal
        * has to be changed. This happens when the displayed video changes in resolution.
+       * @param type the current device VideoView.
        * @param width the new width of the widget.
        * @param height the new height of the widget.
-       * @param type the current device type.
        */
-      boost::signals2::signal<void(unsigned, unsigned, unsigned)> size_changed;
+      boost::signals2::signal<void(VideoView, unsigned, unsigned)> size_changed;
 
   protected:
     };

@@ -64,7 +64,7 @@ public:
   void set_frame_data (const char *data,
                        unsigned width,
                        unsigned height,
-                       unsigned type,
+                       Ekiga::VideoOutputManager::VideoView type,
                        int devices_nbr);
 
   void set_display_info (const gpointer local_video,
@@ -73,11 +73,14 @@ public:
   void set_ext_display_info (const gpointer ext_video);
 
 private:
-  void size_changed_in_main (unsigned width,
-			     unsigned height,
-			     unsigned type);
+  void size_changed_in_main (Ekiga::VideoOutputManager::VideoView type,
+                             unsigned width,
+			     unsigned height);
 
-  void device_opened_in_main (bool both,
+  void device_opened_in_main (Ekiga::VideoOutputManager::VideoView type,
+                              unsigned width,
+                              unsigned height,
+                              bool both,
 			      bool ext);
 
   void device_closed_in_main ();
