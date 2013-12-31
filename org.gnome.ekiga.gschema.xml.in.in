@@ -289,21 +289,6 @@
     </key>
   </schema>
   <schema gettext-domain="@GETTEXT_PACKAGE@" id="org.gnome.@PACKAGE_NAME@.general.user-interface.video-display" path="/org/gnome/@PACKAGE_NAME@/general/user-interface/video-display/">
-    <key name="disable-hw-accel" type="b">
-      <default>false</default>
-      <_summary>Disable video hardware acceleration</_summary>
-      <_description>This key disables DirectX (on win32) and XVideo (on Linux) video hardware acceleration</_description>
-    </key>
-    <key name="allow-pip-sw-scaling" type="b">
-      <default>true</default>
-      <_summary>Allow picture-in-picture software scaling</_summary>
-      <_description>Allow Ekiga to fall back to software scaling the picture-in-picture if hardware support is not available. If this is set to false, Ekiga will not try to open the PIP if hardware support is not available.</_description>
-    </key>
-    <key name="sw-scaling-algorithm" type="i">
-      <default>0</default>
-      <_summary>Specify the software scaling algorithm</_summary>
-      <_description>Specify the software scaling algorithm: 0: nearest neighbor, 1: nearest neighbor with box filter, 2: bilinear filtering, 3: hyperbolic filtering. Does not apply on windows systems.</_description>
-    </key>
     <key name="stay-on-top" type="b">
       <default>true</default>
       <_summary>Place windows displaying video above other windows during calls</_summary>

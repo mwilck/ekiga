@@ -84,17 +84,13 @@ void VideoOutputCore::setup (std::string setting)
     //set_ext_display_info(display_info);
   }
 
-  if (setting.empty () || setting == "stay-on-top" || setting == "disable-hw-accel"
-      || setting == "allow-pip-sw-scaling" || setting == "sw-scaling-algorithm") {
+  if (setting.empty () || setting == "stay-on-top")
 
     PTRACE(4, "VideoOutputCore\tUpdating Video Settings");
     /*
     DisplayInfo display_info;
 
     display_info.on_top = g_settings_get_boolean (s, "stay-on-top");
-    display_info.disable_hw_accel = g_settings_get_boolean (s, "disable-hw-accel");
-    display_info.allow_pip_sw_scaling = g_settings_get_boolean (s,"allow-pip-sw-scaling");
-    display_info.sw_scaling_algorithm = g_settings_get_int (s, "sw-scaling-algorithm");
     if (display_info.sw_scaling_algorithm > 3) {
       display_info.sw_scaling_algorithm = 0;
       g_settings_set_int (s, "sw-scaling-algorithm", 0);
