@@ -75,7 +75,8 @@ public:
 
     typedef enum { Processing, Registered, Unregistered, RegistrationFailed, UnregistrationFailed } RegistrationState;
 
-    static xmlNodePtr build_node (std::string name,
+    static xmlNodePtr build_node (Opal::Account::Type typus,
+				  std::string name,
 				  std::string host,
 				  std::string user,
 				  std::string auth_user,

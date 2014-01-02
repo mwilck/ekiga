@@ -286,7 +286,7 @@ Opal::Bank::on_new_account_form_submitted (bool submitted,
 
 
 void
-Opal::Bank::add (G_GNUC_UNUSED Account::Type acc_type,
+Opal::Bank::add (Account::Type acc_type,
 		 std::string name,
 		 std::string host,
 		 std::string user,
@@ -295,7 +295,7 @@ Opal::Bank::add (G_GNUC_UNUSED Account::Type acc_type,
 		 bool enabled,
 		 unsigned timeout)
 {
-  xmlNodePtr child = Opal::Account::build_node (name, host, user, auth_user, password, enabled, timeout);
+  xmlNodePtr child = Opal::Account::build_node (acc_type, name, host, user, auth_user, password, enabled, timeout);
 
   xmlAddChild (node, child);
 

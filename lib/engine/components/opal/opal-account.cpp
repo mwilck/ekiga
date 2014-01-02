@@ -77,7 +77,8 @@ canonize_uri (std::string uri)
 }
 
 xmlNodePtr
-Opal::Account::build_node(std::string name,
+Opal::Account::build_node(Opal::Account::Type typus,
+			  std::string name,
 			  std::string host,
 			  std::string user,
 			  std::string auth_user,
@@ -108,6 +109,26 @@ Opal::Account::build_node(std::string name,
     std::stringstream sstream;
     sstream << timeout;
     xmlSetProp (node, BAD_CAST "timeout", BAD_CAST sstream.str ().c_str ());
+  }
+
+  switch (typus) {
+
+  case Ekiga:
+    xmlSetProp (node, BAD_CAST "type", BAD_CAST "Ekiga");
+    break;
+
+  case DiamondCard:
+    xmlSetProp (node, BAD_CAST "type", BAD_CAST "DiamondCard");
+    break;
+
+  case H323:
+    xmlSetProp (node, BAD_CAST "type", BAD_CAST "H323");
+    break;
+
+  case SIP:
+  default:
+    xmlSetProp (node, BAD_CAST "type", BAD_CAST "SIP");
+    break;
   }
 
   xmlNewChild(node, NULL, BAD_CAST "roster", NULL);
@@ -241,7 +262,7 @@ Opal::Account::get_aor () const
 {
   std::stringstream str;
 
-  str << (protocol_name == "SIP" ? "sip:" : "h323:") << get_username ();
+  str << (get_protocol_name () == "SIP" ? "sip:" : "h323:") << get_username ();
 
   if (get_username ().find ("@") == string::npos)
     str << "@" << get_host ();
@@ -252,7 +273,16 @@ Opal::Account::get_aor () const
 const std::string
 Opal::Account::get_protocol_name () const
 {
-  return protocol_name;
+  std::string result = "SIP";
+  xmlChar* xml_str = xmlGetProp (node, BAD_CAST "type");
+
+  if (xml_str != NULL) {
+
+    result = (const char*)xml_str;
+    xmlFree (xml_str);
+  }
+
+  return result;
 }
 
 
@@ -1294,7 +1324,7 @@ Opal::Account::decide_type ()
     type = Account::Ekiga;
   else if (host == "sip.diamondcard.us")
     type = Account::DiamondCard;
-  else if (protocol_name == "SIP")
+  else if (get_protocol_name () == "SIP")
     type = Account::SIP;
   else
     type = Account::H323;
