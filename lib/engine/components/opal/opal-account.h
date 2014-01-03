@@ -66,8 +66,7 @@ namespace Opal
     public Ekiga::Account,
     public Ekiga::Heap,
     protected Ekiga::RefLister<Presentity>,
-    public Ekiga::PresencePublisher,
-    public Ekiga::PresenceFetcher
+    public Ekiga::PresencePublisher
   {
 public:
 
@@ -170,11 +169,8 @@ public:
 
     /*
      * This is because an opal account is an Ekiga::PresencePublisher
-     * and an Ekiga::PresenceFetcher
      */
     void publish (const Ekiga::PersonalDetails& details);
-    void fetch (const std::string uri);
-    void unfetch (const std::string uri);
 
     /* This method is public to be called by an opal endpoint, which will push
      * this Opal::Account's new registration state
@@ -195,6 +191,8 @@ public:
 				  Ekiga::MenuBuilder& builder);
 
 private:
+    void fetch (const std::string uri) const;
+    void unfetch (const std::string uri) const;
 
     void decide_type ();
 
@@ -232,12 +230,13 @@ private:
     boost::function0<std::set<std::string> > existing_groups;
     xmlNodePtr node;
     xmlNodePtr roster_node;
-    std::set<std::string> watched_uris;
     OpalPresenceInfo::State personal_state;
     std::string presence_status;
     void presence_status_in_main (std::string uri,
 				  std::string presence,
-				  std::string status);
+				  std::string status) const;
+    void when_presentity_removed (boost::shared_ptr<Opal::Presentity> pres);
+    void when_presentity_updated (boost::shared_ptr<Opal::Presentity> pres);
 
     boost::shared_ptr<Opal::Sip::EndPoint> sip_endpoint;
     boost::weak_ptr<Ekiga::PresenceCore> presence_core;

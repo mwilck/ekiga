@@ -56,7 +56,6 @@ namespace Opal
       public Ekiga::BankImpl<Account>,
       public Ekiga::Cluster,
       public Ekiga::PresencePublisher,
-      public Ekiga::PresenceFetcher,
       public Ekiga::ContactDecorator,
       public Ekiga::PresentityDecorator,
       public Ekiga::Service
@@ -76,13 +75,9 @@ public:
     { return "\tStores the opal accounts"; }
 
     /*
-     * this object is an Ekiga::PresenceFetcher and an Ekiga::PresencePublisher
+     * this object is an Ekiga::PresencePublisher
      */
     void publish (const Ekiga::PersonalDetails& details);
-
-    void fetch (const std::string uri);
-
-    void unfetch (const std::string uri);
 
     void new_account (Account::Type acc_type,
                       std::string username = "",

@@ -76,6 +76,33 @@ canonize_uri (std::string uri)
   return uri;
 }
 
+struct presence_status_helper
+{
+  presence_status_helper (const std::string uri_,
+			  const std::string presence_,
+			  const std::string status_):
+    uri(uri_),
+    presence(presence_),
+    status(status_)
+  {}
+
+  const std::string uri;
+  const std::string presence;
+  const std::string status;
+
+  bool operator() (Ekiga::PresentityPtr pres)
+  {
+    Opal::PresentityPtr presentity = boost::dynamic_pointer_cast<Opal::Presentity> (pres);
+    if (presentity && presentity->has_uri(uri)) {
+
+      presentity->set_presence (presence);
+      presentity->set_status (status);
+    }
+    return true;
+}
+};
+
+
 xmlNodePtr
 Opal::Account::build_node(Opal::Account::Type typus,
 			  std::string name,
@@ -183,8 +210,8 @@ Opal::Account::Account (boost::shared_ptr<Opal::Sip::EndPoint> _sip_endpoint,
 						 presnode));
 
 	pres->trigger_saving.connect (boost::ref (trigger_saving));
-	pres->removed.connect (boost::bind (boost::ref (presentity_removed), pres));
-	pres->updated.connect (boost::bind (boost::ref (presentity_updated), pres));
+	pres->removed.connect (boost::bind (&Opal::Account::when_presentity_removed, this, pres));
+	pres->updated.connect (boost::bind (&Opal::Account::when_presentity_updated, this, pres));
 	add_object (pres);
 	presentity_added (pres);
       }
@@ -442,10 +469,12 @@ Opal::Account::disable ()
 
   if (presentity) {
 
-    for (std::set<std::string>::iterator iter = watched_uris.begin ();
-         iter != watched_uris.end (); ++iter) {
-      presentity->UnsubscribeFromPresence (PString (*iter));
-      Ekiga::Runtime::run_in_main (boost::bind (&Opal::Account::presence_status_in_main, this, *iter, "unknown", ""));
+    for (iterator iter = begin ();
+	 iter != end ();
+	 ++iter) {
+
+      (*iter)->set_presence ("unknown");
+      (*iter)->set_status ("");
     }
   }
 
@@ -810,6 +839,7 @@ Opal::Account::on_add_contact_form_submitted (bool submitted,
     pres->updated.connect (boost::bind (boost::ref (presentity_updated), pres));
     add_object (pres);
     presentity_added (pres);
+    fetch (pres->get_uri ());
 
   } else {
 
@@ -874,12 +904,11 @@ Opal::Account::publish (const Ekiga::PersonalDetails& details)
 
 
 void
-Opal::Account::fetch (const std::string uri)
+Opal::Account::fetch (const std::string uri) const
 {
   // Check if this is a presentity we watch
   if (!is_myself (uri))
     return;
-  watched_uris.insert (uri);
 
   // Account is disabled, bye
   if (!is_enabled ())
@@ -894,11 +923,10 @@ Opal::Account::fetch (const std::string uri)
 
 
 void
-Opal::Account::unfetch (const std::string uri)
+Opal::Account::unfetch (const std::string uri) const
 {
   if (is_myself (uri) && presentity) {
     presentity->UnsubscribeFromPresence (PString (uri));
-    watched_uris.erase (uri);
     Ekiga::Runtime::run_in_main (boost::bind (&Opal::Account::presence_status_in_main, this, uri, "unknown", ""));
   }
 }
@@ -917,13 +945,15 @@ Opal::Account::handle_registration_event (RegistrationState state_,
       // Translators: this is a state, not an action, i.e. it should be read as
       // "(you are) registered", and not as "(you have been) registered"
       status = _("Registered");
+      state = state_;
+      failed_registration_already_notified = false;
       if (presentity) {
 
-        for (std::set<std::string>::iterator iter = watched_uris.begin ();
-             iter != watched_uris.end (); ++iter) {
-          PTRACE(4, "Ekiga\tSubscribeToPresence for " << iter->c_str () << " (Account Registered)");
-          presentity->SubscribeToPresence (PString (*iter));
-        }
+	for (const_iterator iter = begin ();
+	     iter != end ();
+	     ++iter)
+	  fetch ((*iter)->get_uri());
+
         presentity->SetLocalPresence (personal_state, presence_status);
         if (type != Account::H323) {
           sip_endpoint->Subscribe (SIPSubscribe::MessageSummary, 3600, get_aor ());
@@ -933,8 +963,6 @@ Opal::Account::handle_registration_event (RegistrationState state_,
       if (details)
 	const_cast<Account*>(this)->publish (*details);
 
-      state = state_;
-      failed_registration_already_notified = false;
       updated ();
     }
     break;
@@ -1240,10 +1268,25 @@ Opal::Account::OnPresenceChange (OpalPresentity& /*presentity*/,
 void
 Opal::Account::presence_status_in_main (std::string uri,
 					std::string uri_presence,
-					std::string uri_status)
+					std::string uri_status) const
 {
-  presence_received (uri, uri_presence);
-  status_received (uri, uri_status);
+  presence_status_helper helper(uri, uri_presence, uri_status);
+  visit_presentities (helper);
+}
+
+void
+Opal::Account::when_presentity_removed (Opal::PresentityPtr pres)
+{
+  unfetch (pres->get_uri ());
+  presentity_removed (pres);
+}
+
+void
+Opal::Account::when_presentity_updated (Opal::PresentityPtr pres)
+{
+  // we don't unfetch the previous uri here...
+  fetch (pres->get_uri ());
+  presentity_updated (pres);
 }
 
 
