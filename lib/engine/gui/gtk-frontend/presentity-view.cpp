@@ -74,9 +74,9 @@ on_presentity_updated (PresentityView* self)
 {
   gchar *txt = NULL;
 
-  gtk_image_set_from_stock (GTK_IMAGE (self->priv->presence_image),
-			    self->priv->presentity->get_presence ().c_str (),
-			    GTK_ICON_SIZE_MENU);
+  gtk_image_set_from_icon_name (GTK_IMAGE (self->priv->presence_image),
+				("user-" + self->priv->presentity->get_presence ()).c_str (),
+				GTK_ICON_SIZE_MENU);
   if (!self->priv->presentity->get_status ().empty ())
     txt = g_markup_printf_escaped ("<span weight=\"bold\">%s</span>\n<span size=\"small\">%s</span>",
                                    self->priv->presentity->get_name ().c_str (),
