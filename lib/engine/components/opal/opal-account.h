@@ -190,6 +190,13 @@ public:
     bool populate_menu_for_group (const std::string name,
 				  Ekiga::MenuBuilder& builder);
 
+
+    /* This object is not an Ekiga::PresenceFetcher, but Opal::Bank is,
+     * this is where the information comes from
+     */
+    boost::signals2::signal<void(std::string, std::string)> presence_received;
+    boost::signals2::signal<void(std::string, std::string)> status_received;
+
 private:
     void fetch (const std::string uri) const;
     void unfetch (const std::string uri) const;

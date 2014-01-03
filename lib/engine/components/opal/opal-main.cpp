@@ -126,6 +126,7 @@ struct OPALSpark: public Ekiga::Spark
       call_manager->ready.connect (boost::bind (&Opal::Bank::call_manager_ready, &*bank));
       call_manager->setup ();
       presence_core->add_presence_publisher (bank);
+      presence_core->add_presence_fetcher (bank);
 
       call_core->add_manager (call_manager);
 

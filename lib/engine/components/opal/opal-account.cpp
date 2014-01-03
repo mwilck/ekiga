@@ -76,32 +76,6 @@ canonize_uri (std::string uri)
   return uri;
 }
 
-struct presence_status_helper
-{
-  presence_status_helper (const std::string uri_,
-			  const std::string presence_,
-			  const std::string status_):
-    uri(uri_),
-    presence(presence_),
-    status(status_)
-  {}
-
-  const std::string uri;
-  const std::string presence;
-  const std::string status;
-
-  bool operator() (Ekiga::PresentityPtr pres)
-  {
-    Opal::PresentityPtr presentity = boost::dynamic_pointer_cast<Opal::Presentity> (pres);
-    if (presentity && presentity->has_uri(uri)) {
-
-      presentity->set_presence (presence);
-      presentity->set_status (status);
-    }
-    return true;
-}
-};
-
 
 xmlNodePtr
 Opal::Account::build_node(Opal::Account::Type typus,
@@ -1270,8 +1244,18 @@ Opal::Account::presence_status_in_main (std::string uri,
 					std::string uri_presence,
 					std::string uri_status) const
 {
-  presence_status_helper helper(uri, uri_presence, uri_status);
-  visit_presentities (helper);
+  for (const_iterator iter = begin ();
+       iter != end ();
+       ++iter) {
+
+    if ((*iter)->has_uri (uri)) {
+
+      (*iter)->set_presence (uri_presence);
+      (*iter)->set_status (uri_status);
+    }
+  }
+  presence_received (uri, uri_presence);
+  status_received (uri, uri_status);
 }
 
 void
