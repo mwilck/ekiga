@@ -36,6 +36,7 @@
  */
 
 #include "presentity-view.h"
+#include "menu-builder-gtk.h"
 
 struct _PresentityViewPrivate
 {
@@ -52,13 +53,17 @@ enum {
   PRESENTITY_VIEW_PROP_PRESENTITY = 1
 };
 
-G_DEFINE_TYPE (PresentityView, presentity_view, GTK_TYPE_BOX);
+G_DEFINE_TYPE (PresentityView, presentity_view, GTK_TYPE_EVENT_BOX);
 
 /* declaration of callbacks */
 
 static void on_presentity_updated (PresentityView* self);
 
 static void on_presentity_removed (PresentityView* self);
+
+static gboolean on_event_after (GtkWidget* widget,
+				GdkEventButton* event,
+				gpointer data);
 
 /* declaration of internal api */
 
@@ -93,6 +98,34 @@ static void
 on_presentity_removed (PresentityView* self)
 {
   presentity_view_unset_presentity (self);
+}
+
+static gboolean
+on_event_after (G_GNUC_UNUSED GtkWidget* widget,
+		GdkEventButton* event,
+		gpointer data)
+{
+  gboolean result = FALSE;
+  PresentityView* self = (PresentityView*)data;
+
+  if (self->priv->presentity && event->type == GDK_BUTTON_PRESS && event->button == 3) {
+
+    MenuBuilderGtk builder;
+    self->priv->presentity->populate_menu (builder);
+    if (!builder.empty ()) {
+
+      gtk_widget_show_all (builder.menu);
+      gtk_menu_popup (GTK_MENU (builder.menu), NULL, NULL,
+		      NULL, NULL, event->button, event->time);
+      g_signal_connect (builder.menu, "hide",
+			G_CALLBACK (g_object_unref),
+			(gpointer) builder.menu);
+      result = TRUE;
+    }
+    g_object_ref_sink (G_OBJECT (builder.menu));
+  }
+
+  return result;
 }
 
 /* implementation of internal api */
@@ -182,19 +215,26 @@ presentity_view_class_init (PresentityViewClass* klass)
 static void
 presentity_view_init (PresentityView* self)
 {
-  self->priv = new PresentityViewPrivate;
+  GtkWidget* box = gtk_box_new (GTK_ORIENTATION_HORIZONTAL, 2);
 
+  gtk_container_add (GTK_CONTAINER (self), box);
+  gtk_widget_show (box);
+
+  self->priv = new PresentityViewPrivate;
   self->priv->presentity = NULL;
 
+
   self->priv->presence_image = gtk_image_new ();
-  gtk_box_pack_start (GTK_BOX (self), self->priv->presence_image,
+  gtk_box_pack_start (GTK_BOX (box), self->priv->presence_image,
 		      FALSE, FALSE, 2);
   gtk_widget_show (self->priv->presence_image);
 
   self->priv->name_status = gtk_label_new (NULL);
-  gtk_box_pack_start (GTK_BOX (self), self->priv->name_status,
-		      FALSE, TRUE, 2);
+  gtk_box_pack_start (GTK_BOX (box), self->priv->name_status,
+		      FALSE, FALSE, 2);
   gtk_widget_show (self->priv->name_status);
+
+  g_signal_connect (self, "event-after", G_CALLBACK (on_event_after), self);
 }
 
 /* public api */

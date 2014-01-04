@@ -57,7 +57,7 @@ struct _PresentityView
 
 struct _PresentityViewClass
 {
-  GtkBoxClass parent;
+  GtkEventBoxClass parent;
 };
 
 /* public api */
