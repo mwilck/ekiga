@@ -216,7 +216,7 @@ LM::Account::enable ()
     xmlFree (resource);
   }
 
-  /* FIXME: this is an ugly workaround */
+  /* ugly but necessary */
   if (g_strcmp0 ("gmail.com", (const char*)server) == 0)
     lm_connection_set_server (connection, "xmpp.l.google.com");
   else

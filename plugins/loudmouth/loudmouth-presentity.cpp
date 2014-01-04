@@ -38,6 +38,8 @@
 #include <stdlib.h>
 #include <glib/gi18n.h>
 
+#include <boost/algorithm/string/predicate.hpp>
+
 #include "form-request-simple.h"
 
 #include "loudmouth-helpers.h"
@@ -75,7 +77,9 @@ LM::Presentity::get_name () const
 bool
 LM::Presentity::has_uri (const std::string uri) const
 {
-  return get_jid () == uri; // FIXME: this isn't 100% exact : if our jid is "foo@server/resource", then we also have "foo@server" as uri!
+  std::string full_jid = get_jid ();
+  std::string base_jid = full_jid.substr (0, full_jid.find ('/'));
+  return boost::starts_with (uri, base_jid);
 }
 
 const std::string
@@ -258,7 +262,6 @@ LM::Presentity::push_presence (const std::string resource,
     info.presence = "available";
   }
 
-  // FIXME: this code works but is ugly -- there has to be a better way
   const gchar* oftype = lm_message_node_get_attribute (presence, "type");
   if (oftype != NULL) {
 
@@ -335,7 +338,7 @@ LM::Presentity::handle_edit_reply (LmConnection* /*connection*/,
 {
   if (lm_message_get_sub_type (message) == LM_MESSAGE_SUB_TYPE_ERROR) {
 
-    // FIXME: perhaps we should display an error notice here...
+    std::cout << "Don't know how to handle : " << lm_message_node_to_string (lm_message_get_node (message)) << std::endl;
   }
 
   return LM_HANDLER_RESULT_REMOVE_MESSAGE;

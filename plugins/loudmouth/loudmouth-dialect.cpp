@@ -135,7 +135,7 @@ LM::Dialect::group_chat_action ()
 
   request->text ("name", _("Room name"), "", _("The name of the room you want to enter"));
 
-  request->text ("pseudo", _("Pseudonym"), "FIXME", _("The pseudonym you'll have in the room"));
+  request->text ("pseudo", _("Pseudonym"), g_get_user_name (), _("The pseudonym you'll have in the room"));
 
   questions (request);
 }
