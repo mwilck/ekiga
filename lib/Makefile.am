@@ -115,6 +115,8 @@ endif
 # (those should probably be moved elsewhere like engine/gui/gtk-core/ )
 ##
 libekiga_la_SOURCES += \
+	gui/gmvideowidget.c \
+	gui/gmvideowidget.h \
 	gui/dialpad.h \
 	gui/dialpad.c \
 	gui/gm-smileys.h \
