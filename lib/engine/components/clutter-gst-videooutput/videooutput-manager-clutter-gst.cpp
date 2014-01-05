@@ -57,6 +57,8 @@ GMVideoOutputManager_clutter_gst::GMVideoOutputManager_clutter_gst (G_GNUC_UNUSE
   for (int i = 0 ; i < 3 ; i++) {
     texture[i] = NULL;
     pipeline[i] = NULL;
+    current_height[i] = 0;
+    current_width[i] = 0;
   }
 }
 
@@ -144,6 +146,8 @@ GMVideoOutputManager_clutter_gst::close ()
     gst_element_set_state (pipeline[i], GST_STATE_NULL);
     gst_object_unref (pipeline[i]);
     pipeline[i] = NULL;
+    current_height[i] = 0;
+    current_width[i] = 0;
   }
   devices_nbr = 0;
 
@@ -178,7 +182,7 @@ GMVideoOutputManager_clutter_gst::set_frame_data (const char *data,
     return;
   }
 
-  if (_devices_nbr != devices_nbr) {
+  if (current_width[i] != width || current_height[i] != height) {
     Ekiga::Runtime::run_in_main
       (boost::bind (&GMVideoOutputManager_clutter_gst::device_opened_in_main,
                     this,
