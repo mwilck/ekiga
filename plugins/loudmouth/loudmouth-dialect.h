@@ -37,12 +37,15 @@
 #define __LOUDMOUTH_DIALECT_H__
 
 #include "dialect-impl.h"
+
+#include "loudmouth-handler.h"
 #include "loudmouth-chat-simple.h"
 
 namespace LM
 {
   class Dialect:
-    public Ekiga::DialectImpl<SimpleChat>
+    public Ekiga::DialectImpl<SimpleChat>,
+    public LM::Handler
   {
   public:
 

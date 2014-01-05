@@ -170,14 +170,24 @@ LmHandlerResult
 LM::Dialect::handle_iq (LmConnection* /*connection*/,
 			LmMessage* /*message*/)
 {
-  return LM_HANDLER_RESULT_ALLOW_MORE_HANDLERS; // FIXME: implement properly
+  /* We should never get an iq request from the server, but only
+   * answers to what we asked
+   */
+  return LM_HANDLER_RESULT_ALLOW_MORE_HANDLERS;
 }
 
 LmHandlerResult
 LM::Dialect::handle_message (LmConnection* /*connection*/,
-			     LmMessage* /*message*/)
+			     LmMessage* message)
 {
-  return LM_HANDLER_RESULT_ALLOW_MORE_HANDLERS; // FIXME: implement properly
+  LmHandlerResult result = LM_HANDLER_RESULT_ALLOW_MORE_HANDLERS;
+
+  if (lm_message_get_sub_type (message) == LM_MESSAGE_SUB_TYPE_GROUPCHAT) {
+
+    // FIXME: here we should find the multiple chat which is supposed to receive it, and push it through
+  }
+
+  return result;
 }
 
 LmHandlerResult
@@ -195,7 +205,7 @@ LM::Dialect::handle_presence (LmConnection* /*connection*/,
       bool found_100 = false;
       bool found_110 = false;
       bool found_210 = false;
-      for (LmMessageNode* child = lm_message_node_children (lm_message_get_node (message));
+      for (LmMessageNode* child = lm_message_get_node (message)->children;
 	   child != NULL;
 	   child = child->next) {
 
@@ -204,7 +214,7 @@ LM::Dialect::handle_presence (LmConnection* /*connection*/,
 	  const gchar* code = lm_message_node_get_attribute (child, "code");
 	  if (code != NULL) {
 
-	    if (g_strcmp0 (code, '100') == 0)
+	    if (g_strcmp0 (code, "100") == 0)
 	      found_100 = true;
 	    if (g_strcmp0 (code, "110") == 0)
 	      found_110 = true;
@@ -218,6 +228,9 @@ LM::Dialect::handle_presence (LmConnection* /*connection*/,
        *
        * - if we found a code 110, that means we managed to enter a
        * multiple chat
+       *
+       * - if we get a code 201, then the room was created on our
+       * - behalf and we should configure it
        *
        * - if we found a code 210, then we managed to enter a multiple
        * chat, but the server had to assign us another nick (because
@@ -262,6 +275,7 @@ LM::Dialect::handle_presence (LmConnection* /*connection*/,
        * much according to this idea.
        */
     }
-
-    return result;
   }
+
+  return result;
+}
