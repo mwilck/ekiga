@@ -89,7 +89,7 @@ struct open_chat_helper
 
     if (chat->get_presentity () == presentity) {
 
-      chat->user_requested ();      
+      chat->user_requested ();
       go_on = false;
     }
 
@@ -182,7 +182,86 @@ LM::Dialect::handle_message (LmConnection* /*connection*/,
 
 LmHandlerResult
 LM::Dialect::handle_presence (LmConnection* /*connection*/,
-			      LmMessage* /*message*/)
+			      LmMessage* message)
 {
-  return LM_HANDLER_RESULT_ALLOW_MORE_HANDLERS; // FIXME: implement properly
-}
+  LmHandlerResult result = LM_HANDLER_RESULT_ALLOW_MORE_HANDLERS;
+
+  LmMessageNode* x = lm_message_node_get_child (lm_message_get_node (message), "x");
+  if (x) {
+
+    const gchar* xmlns = lm_message_node_get_attribute (x, "xmlns");
+    if (xmlns != NULL && std::string(xmlns).find ("http://jabber.org/protocol/muc") == 0) {
+
+      bool found_100 = false;
+      bool found_110 = false;
+      bool found_210 = false;
+      for (LmMessageNode* child = lm_message_node_children (lm_message_get_node (message));
+	   child != NULL;
+	   child = child->next) {
+
+	if (g_strcmp0 (child->name, "status") == 0) {
+
+	  const gchar* code = lm_message_node_get_attribute (child, "code");
+	  if (code != NULL) {
+
+	    if (g_strcmp0 (code, '100') == 0)
+	      found_100 = true;
+	    if (g_strcmp0 (code, "110") == 0)
+	      found_110 = true;
+	    if (g_strcmp0 (code, "210") == 0)
+	      found_210 = true;
+	  }
+	}
+      }
+
+      /* FIXME: to implement according to those ideas:
+       *
+       * - if we found a code 110, that means we managed to enter a
+       * multiple chat
+       *
+       * - if we found a code 210, then we managed to enter a multiple
+       * chat, but the server had to assign us another nick (because
+       * of a collision for example)
+       *
+       * - if we found a code 100, then we are supposed to tell the
+       *  user that he entered a non-anynymous room and the full jid
+       *  is known to everyone
+       *
+       * - we should check that the presence comes from a
+       * member of one of the existing multiple chats and handle push
+       * it to the correct multiple chat
+       *
+       * - it could also be an error, in which case the message is of
+       * subtype 'error', and contains a child 'error', which could
+       * have an attribute 'type' set to 'auth', with a child either
+       * 'not-authorized' if we lack a (correct) password or
+       * 'registration-required' if the room is members-only
+       *
+       * In any non-erroneous case, the message may contain (in the x
+       * node) an 'item' child with 'affiliation', 'role' and
+       * (optionally) 'jid' attribute.
+       *
+       *
+       * Perhaps the best organisation is:
+       *
+       * 0. the dialect should check for the erroneous cases and
+       * handle them
+       *
+       * 1. for normal presence packets, the dialect should just check
+       * for the 110 code ;
+       *
+       * 2. if there's one, create a new multiple chat ;
+       *
+       * 3. if there's none, find the corresponding multiple chat ;
+       *
+       * 4. in any case, send the presence message for full treatment
+       * to the right multiple chat ; that is let the multiple chat
+       * manage the various codes.
+       *
+       * Notice that the code as currently written already does too
+       * much according to this idea.
+       */
+    }
+
+    return result;
+  }
