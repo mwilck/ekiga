@@ -61,7 +61,7 @@ namespace Ekiga
     {
 
   public:
-      typedef enum { LOCAL, REMOTE, EXTENDED } VideoView;
+      typedef enum { LOCAL, REMOTE, EXTENDED, MAX_VIEWS } VideoView;
 
       /** The constructor
        */
