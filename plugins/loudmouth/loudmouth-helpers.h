@@ -41,6 +41,10 @@
 
 #include <loudmouth/loudmouth.h>
 
+/* This function helps splitting a jid into base and resource
+ */
+std::pair<std::string, std::string> split_jid (const std::string jid);
+
 /* This function is intended to make it easy to use a C++ function
  * as a callback for the lm_connection_send_with_reply C function ;
  * so when launching an IQ request/order, then it's easy to get the

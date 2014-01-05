@@ -38,8 +38,6 @@
 #include <stdlib.h>
 #include <glib/gi18n.h>
 
-#include <boost/algorithm/string/predicate.hpp>
-
 #include "form-request-simple.h"
 
 #include "loudmouth-helpers.h"
@@ -77,9 +75,7 @@ LM::Presentity::get_name () const
 bool
 LM::Presentity::has_uri (const std::string uri) const
 {
-  std::string full_jid = get_jid ();
-  std::string base_jid = full_jid.substr (0, full_jid.find ('/'));
-  return boost::starts_with (uri, base_jid);
+  return split_jid(uri).first == split_jid(get_jid ()).first;
 }
 
 const std::string

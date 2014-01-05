@@ -35,6 +35,24 @@
 
 #include "loudmouth-helpers.h"
 
+
+std::pair<std::string, std::string>
+split_jid (const std::string jid)
+{
+  size_t pos = jid.find ('/');
+  std::string base = jid;
+  std::string resource;
+
+  if (pos != std::string::npos) {
+
+    base = jid.substr (0, pos);
+    resource = jid.substr (pos);
+  }
+
+  return std::pair<std::string, std::string> (base, resource);
+}
+
+
 boost::shared_ptr<LmMessageHandler> ignore_message_handler;
 
 struct handler_data
