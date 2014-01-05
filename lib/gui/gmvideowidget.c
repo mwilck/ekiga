@@ -486,10 +486,9 @@ gm_video_widget_update_emblem (GmVideoWidget *self)
                                   clutter_align_constraint_new (stage, CLUTTER_ALIGN_BOTH, 0.5));
     clutter_actor_set_margin_top (self->priv->emblem, 0);
     clutter_actor_set_margin_right (self->priv->emblem, 0);
-    gm_video_widget_actor_scale (self->priv->emblem,
-                                 self->priv->available_height,
-                                 self->priv->logo_width,
-                                 self->priv->logo_height);
+    clutter_actor_set_size (self->priv->emblem,
+                            self->priv->logo_width,
+                            self->priv->logo_height);
   }
 }
 
