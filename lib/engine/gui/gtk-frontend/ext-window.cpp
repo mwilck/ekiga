@@ -36,6 +36,9 @@
 #include <gdk/gdkwin32.h>
 #endif
 
+#define STAGE_WIDTH 640
+#define STAGE_HEIGHT 480
+
 G_DEFINE_TYPE (EkigaExtWindow, ekiga_ext_window, GTK_TYPE_WINDOW);
 
 struct _EkigaExtWindowPrivate {
@@ -43,6 +46,8 @@ struct _EkigaExtWindowPrivate {
   GC gc;
 #endif
   GtkWidget *video, *zin, *zout, *event_box;
+  ClutterActor *stage;
+  ClutterActor *video_stream;
   boost::shared_ptr<Ekiga::VideoOutputCore> vocore;
   boost::shared_ptr<Ekiga::Settings> video_display_settings;
 };
@@ -97,37 +102,25 @@ stay_on_top_changed_cb (GSettings *settings,
 }
 
 static void
-gui_layout (EkigaExtWindow *ew)
+ekiga_extended_video_window_init_clutter (EkigaExtWindow *ew)
 {
-  GtkWidget *zin, *zout, *vbox, *hbox;
+  GtkWidget *clutter_widget = NULL;
 
-  vbox = gtk_box_new (GTK_ORIENTATION_VERTICAL, 0);
-  gtk_container_add (GTK_CONTAINER (ew), vbox);
+  clutter_widget = gtk_clutter_embed_new ();
+  gtk_widget_set_size_request (GTK_WIDGET (clutter_widget), STAGE_WIDTH, STAGE_HEIGHT);
+  gtk_container_add (GTK_CONTAINER (ew), clutter_widget);
 
-  hbox = gtk_box_new (GTK_ORIENTATION_HORIZONTAL, 0);
-  gtk_box_pack_start (GTK_BOX (vbox), hbox, FALSE, FALSE, 0);
+  ew->priv->stage = gtk_clutter_embed_get_stage (GTK_CLUTTER_EMBED (clutter_widget));
+  clutter_actor_set_background_color (CLUTTER_ACTOR (ew->priv->stage), CLUTTER_COLOR_Black);
+  clutter_stage_set_user_resizable (CLUTTER_STAGE (ew->priv->stage), TRUE);
 
-  zin = gtk_button_new_from_stock (GTK_STOCK_ZOOM_IN);
-  gtk_box_pack_start (GTK_BOX (hbox), zin, FALSE, FALSE, 0);
-
-  zout = gtk_button_new_from_stock (GTK_STOCK_ZOOM_OUT);
-  gtk_box_pack_start (GTK_BOX (hbox), zout, FALSE, FALSE, 0);
-
-  ew->priv->event_box = gtk_event_box_new ();
-  ew->priv->video = gtk_image_new ();
-  gtk_container_add (GTK_CONTAINER (ew->priv->event_box), ew->priv->video);
-  gtk_box_pack_start (GTK_BOX (vbox), GTK_WIDGET (ew->priv->event_box), FALSE, FALSE, 0);
-
-  ew->priv->zin = zin;
-  ew->priv->zout = zout;
-
-  g_signal_connect (zin, "clicked", G_CALLBACK (zoom_in), ew);
-  g_signal_connect (zout, "clicked", G_CALLBACK (zoom_out), ew);
-
-  gtk_widget_show_all (vbox);
-  gtk_widget_realize (vbox);
-
-  gtk_window_set_resizable (GTK_WINDOW (ew), FALSE);
+  ew->priv->video_stream =
+    CLUTTER_ACTOR (g_object_new (CLUTTER_TYPE_TEXTURE, "disable-slicing", TRUE, NULL));
+  clutter_actor_add_child (CLUTTER_ACTOR (ew->priv->stage), CLUTTER_ACTOR (ew->priv->video_stream));
+  clutter_actor_add_constraint (ew->priv->video_stream,
+                                clutter_align_constraint_new (ew->priv->stage,
+                                                              CLUTTER_ALIGN_BOTH,
+                                                              0.5));
 }
 
 static inline void
@@ -162,7 +155,7 @@ constructor (GType type, guint n_properties, GObjectConstructParam *params)
                                                                         n_properties,
                                                                         params);
 
-  gui_layout (EKIGA_EXT_WINDOW (object));
+  ekiga_extended_video_window_init_clutter (EKIGA_EXT_WINDOW (object));
 
   return object;
 }
@@ -285,7 +278,25 @@ ext_window_new (boost::shared_ptr<Ekiga::VideoOutputCore> &vocore)
                     "changed::stay-on-top",
                     G_CALLBACK (stay_on_top_changed_cb), ew);
 
+  ew->priv->vocore->set_ext_display_info (ew->priv->video_stream);
+
   return GTK_WIDGET (ew);
+}
+
+ClutterActor *
+ekiga_ext_window_get_stage (EkigaExtWindow *ew)
+{
+  g_return_val_if_fail (EKIGA_IS_EXT_WINDOW (ew), NULL);
+
+  return ew->priv->stage;
+}
+
+ClutterActor *
+ekiga_ext_window_get_video_stream (EkigaExtWindow *ew)
+{
+  g_return_val_if_fail (EKIGA_IS_EXT_WINDOW (ew), NULL);
+
+  return ew->priv->video_stream;
 }
 
 void

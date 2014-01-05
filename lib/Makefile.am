@@ -388,8 +388,6 @@ libekiga_la_SOURCES += \
 	engine/gui/gtk-frontend/book-view-gtk.cpp \
 	engine/gui/gtk-frontend/call-window.h \
 	engine/gui/gtk-frontend/call-window.cpp \
-	engine/gui/gtk-frontend/ext-window.h \
-	engine/gui/gtk-frontend/ext-window.cpp \
 	engine/gui/gtk-frontend/roster-view-gtk.h \
 	engine/gui/gtk-frontend/roster-view-gtk.cpp \
 	engine/gui/gtk-frontend/call-history-view-gtk.h \

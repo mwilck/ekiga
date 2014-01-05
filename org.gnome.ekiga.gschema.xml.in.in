@@ -190,6 +190,7 @@
   </schema>
   <schema gettext-domain="@GETTEXT_PACKAGE@" id="org.gnome.@PACKAGE_NAME@.general.user-interface" path="/org/gnome/@PACKAGE_NAME@/general/user-interface/">
     <child name="call-window" schema="org.gnome.@PACKAGE_NAME@.general.user-interface.call-window"/>
+    <child name="extended-video-window" schema="org.gnome.@PACKAGE_NAME@.general.user-interface.extended-video-window"/>
     <child name="main-window" schema="org.gnome.@PACKAGE_NAME@.general.user-interface.main-window"/>
     <child name="chat-window" schema="org.gnome.@PACKAGE_NAME@.general.user-interface.chat-window"/>
     <child name="addressbook-window" schema="org.gnome.@PACKAGE_NAME@.general.user-interface.addressbook-window"/>
@@ -208,6 +209,18 @@
       <default>'270,250'</default>
       <_summary>Size of the call window</_summary>
       <_description>Size of the call window</_description>
+    </key>
+  </schema>
+  <schema gettext-domain="@GETTEXT_PACKAGE@" id="org.gnome.@PACKAGE_NAME@.general.user-interface.extended-video-window" path="/org/gnome/@PACKAGE_NAME@/general/user-interface/extended-video-window/">
+    <key name="position" type="s">
+      <default>'0,0'</default>
+      <_summary>Position on the screen of the extended video window</_summary>
+      <_description>Position on the screen of the extended video window</_description>
+    </key>
+    <key name="size" type="s">
+      <default>'270,250'</default>
+      <_summary>Size of the extended video window</_summary>
+      <_description>Size of the extended video window</_description>
     </key>
   </schema>
   <schema gettext-domain="@GETTEXT_PACKAGE@" id="org.gnome.@PACKAGE_NAME@.general.user-interface.main-window" path="/org/gnome/@PACKAGE_NAME@/general/user-interface/main-window/">
