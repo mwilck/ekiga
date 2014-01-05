@@ -593,15 +593,17 @@ on_videooutput_device_opened_cb (Ekiga::VideoOutputManager & /* manager */,
 }
 
 static void
-on_videooutput_device_closed_cb (Ekiga::VideoOutputManager & /* manager */, gpointer self)
+on_videooutput_device_closed_cb (Ekiga::VideoOutputManager & /* manager */,
+                                 gpointer self)
 {
   g_return_if_fail (self);
 
   EkigaCallWindow *cw = EKIGA_CALL_WINDOW (self);
-  //gm_video_widget_set_stream_state (GM_VIDEO_WIDGET (cw->priv->video_widget),
-    //                                      t, STREAM_STATE_PLAYING);
-
-  // FIXME
+  for (int i = 0 ; i < MAX_STREAM ; i++) {
+    GM_STREAM_TYPE type = (GM_STREAM_TYPE) i;
+    gm_video_widget_set_stream_state (GM_VIDEO_WIDGET (cw->priv->video_widget),
+                                      type, STREAM_STATE_STOPPED);
+  }
 }
 
 static void
