@@ -121,6 +121,20 @@ void gm_window_set_hide_on_escape (GmWindow *window,
  */
 gboolean gm_window_get_hide_on_escape (GmWindow *window);
 
+
+/** Set if the GmWindow will stay on top
+ * @param window is the GmWindow
+ * @param stay_on_top is true if the window should stay on top
+ */
+void gm_window_set_stay_on_top (GmWindow *window,
+                                gboolean stay_on_top);
+
+/** Check if the GmWindow should stay on top
+ * @param window is the GmWindow
+ */
+gboolean gm_window_get_stay_on_top (GmWindow *window);
+
+
 /** Check whether a window is visible or not
  * @param window is a GtkWidget
  */

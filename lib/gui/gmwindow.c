@@ -50,6 +50,7 @@ struct _GmWindowPrivate
   GSettings *settings;
   gboolean hide_on_esc;
   gboolean hide_on_delete;
+  gboolean stay_on_top;
   gboolean state_restored;
   gchar *key;
   int x;
@@ -61,7 +62,8 @@ struct _GmWindowPrivate
 enum {
   GM_WINDOW_KEY = 1,
   GM_HIDE_ON_ESC = 2,
-  GM_HIDE_ON_DELETE = 3
+  GM_HIDE_ON_DELETE = 3,
+  GM_STAY_ON_TOP = 4
 };
 
 G_DEFINE_TYPE (GmWindow, gm_window, GTK_TYPE_WINDOW);
@@ -132,6 +134,10 @@ gm_window_get_property (GObject *obj,
     g_value_set_boolean (value, self->priv->hide_on_delete);
     break;
 
+  case GM_STAY_ON_TOP:
+    g_value_set_boolean (value, self->priv->stay_on_top);
+    break;
+
   default:
     G_OBJECT_WARN_INVALID_PROPERTY_ID (obj, prop_id, spec);
     break;
@@ -176,6 +182,11 @@ gm_window_set_property (GObject *obj,
     self->priv->hide_on_delete = g_value_get_boolean (value);
     break;
 
+  case GM_STAY_ON_TOP:
+    self->priv->stay_on_top = g_value_get_boolean (value);
+    gtk_window_set_keep_above (GTK_WINDOW (self), self->priv->stay_on_top);
+    break;
+
   default:
     G_OBJECT_WARN_INVALID_PROPERTY_ID (obj, prop_id, spec);
     break;
@@ -206,6 +217,10 @@ gm_window_class_init (GmWindowClass* klass)
   spec = g_param_spec_boolean ("hide_on_delete", "Hide on delete-event", "Hide on delete-event (or just relay the event)",
 			       TRUE, (GParamFlags) G_PARAM_READWRITE);
   g_object_class_install_property (gobject_class, GM_HIDE_ON_DELETE, spec);
+
+  spec = g_param_spec_boolean ("stay_on_top", "Stay on top", "Indicates if the window should stay on top of other windows",
+                               FALSE, (GParamFlags) G_PARAM_READWRITE);
+  g_object_class_install_property (gobject_class, GM_HIDE_ON_ESC, spec);
 }
 
 
@@ -475,6 +490,24 @@ gm_window_get_hide_on_escape (GmWindow *window)
   return window->priv->hide_on_esc;
 }
 
+
+void
+gm_window_set_stay_on_top (GmWindow *window,
+                           gboolean stay_on_top)
+{
+  g_return_if_fail (GM_IS_WINDOW (window));
+
+  g_object_set (window, "stay_on_top", stay_on_top, NULL);
+}
+
+
+gboolean
+gm_window_get_stay_on_top (GmWindow *window)
+{
+  g_return_val_if_fail (GM_IS_WINDOW (window), FALSE);
+
+  return window->priv->stay_on_top;
+}
 
 gboolean
 gm_window_is_visible (GtkWidget* w)
