@@ -512,6 +512,8 @@ gm_video_widget_resized_cb (ClutterActor *stage,
   self->priv->available_width = clutter_actor_get_width (stage);
   for (i = 0 ; i < MAX_STREAM ; ++i)
     gm_video_widget_stream_resize (self, i);
+
+  gm_video_widget_update_emblem (self);
 }
 
 
