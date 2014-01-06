@@ -1850,6 +1850,7 @@ ekiga_call_window_init_clutter (EkigaCallWindow *cw)
   gchar *filename = NULL;
 
   cw->priv->video_widget = gm_video_widget_new ();
+  gtk_widget_show (cw->priv->video_widget);
   gtk_widget_set_size_request (GTK_WIDGET (cw->priv->video_widget),
                                STAGE_WIDTH, STAGE_HEIGHT);
   gtk_container_add (GTK_CONTAINER (cw->priv->event_box), cw->priv->video_widget);
