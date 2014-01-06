@@ -108,7 +108,7 @@ void gm_window_set_hide_on_delete (GmWindow *window,
 /** Check if the GmWindow will hide or event-relay on a delete-event
  * @param window is the GmWindow
  */
-gboolean gm_window_get_hide_on_escape (GmWindow *window);
+gboolean gm_window_get_hide_on_delete (GmWindow *window);
 
 /** Check if the GmWindow will hide or event-relay on an escape event
  * @param window is the GmWindow
