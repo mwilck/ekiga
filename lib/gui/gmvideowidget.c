@@ -110,8 +110,9 @@ static void gm_video_widget_resized_cb (ClutterActor *stage,
                                         G_GNUC_UNUSED ClutterAllocationFlags flags,
                                         gpointer self);
 
-static void gm_video_widget_shown_cb (GtkWidget *self,
-                                      gpointer data);
+static gboolean gm_video_widget_map_event_cb (GtkWidget *widget,
+                                              GdkEvent *event,
+                                              gpointer data);
 
 
 /*
@@ -361,8 +362,10 @@ gm_video_widget_init (GmVideoWidget* self)
 
   g_signal_connect (stage, "allocation-changed",
                     G_CALLBACK (gm_video_widget_resized_cb), self);
-  g_signal_connect (gtk_widget_get_toplevel (GTK_WIDGET (self)), "show",
-                    G_CALLBACK (gm_video_widget_shown_cb), self);
+  g_signal_connect (GTK_WIDGET (self), "map-event",
+                    G_CALLBACK (gm_video_widget_map_event_cb), GINT_TO_POINTER (1));
+  g_signal_connect (GTK_WIDGET (self), "unmap-event",
+                    G_CALLBACK (gm_video_widget_map_event_cb), GINT_TO_POINTER (0));
 }
 
 
@@ -512,19 +515,28 @@ gm_video_widget_resized_cb (ClutterActor *stage,
 }
 
 
-static void
-gm_video_widget_shown_cb (G_GNUC_UNUSED GtkWidget *selfe,
-                          gpointer data)
+static gboolean
+gm_video_widget_map_event_cb (GtkWidget *widget,
+                              G_GNUC_UNUSED GdkEvent *event,
+                              gpointer data)
 {
-  g_return_if_fail (GM_IS_VIDEO_WIDGET (data));
+  g_return_if_fail (GM_IS_VIDEO_WIDGET (widget));
 
-  GmVideoWidget *self = GM_VIDEO_WIDGET (data);
+  GmVideoWidget *self = GM_VIDEO_WIDGET (widget);
   self->priv = G_TYPE_INSTANCE_GET_PRIVATE (self, GM_TYPE_VIDEO_WIDGET, GmVideoWidgetPrivate);
 
-  clutter_actor_save_easing_state (self->priv->emblem);
-  clutter_actor_set_easing_duration (self->priv->emblem, 8000);
-  clutter_actor_set_opacity (self->priv->emblem, 255);
-  clutter_actor_restore_easing_state (self->priv->emblem);
+  if (GPOINTER_TO_INT (data) == 1) {
+
+    clutter_actor_save_easing_state (self->priv->emblem);
+    clutter_actor_set_easing_duration (self->priv->emblem, 8000);
+    clutter_actor_set_opacity (self->priv->emblem, 255);
+    clutter_actor_restore_easing_state (self->priv->emblem);
+  }
+  else {
+    clutter_actor_set_opacity (self->priv->emblem, 0);
+  }
+
+  return FALSE;
 }
 
 
