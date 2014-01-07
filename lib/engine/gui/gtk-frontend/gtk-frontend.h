@@ -66,8 +66,6 @@ public:
 
   const GtkWidget* get_main_window () const;
 
-  const GtkWidget *get_preferences_window () const;
-
   const GtkWidget *get_addressbook_window () const;
 
   const GtkWidget *get_accounts_window () const;
@@ -77,6 +75,8 @@ public:
   const GtkWidget *get_chat_window () const;
 
   const StatusIcon *get_status_icon () const;
+
+  GtkWidget* build_preferences_window ();
 
 private :
 

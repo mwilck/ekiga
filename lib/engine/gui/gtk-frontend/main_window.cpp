@@ -185,6 +185,9 @@ static void show_dialpad_cb (GtkWidget *widget,
 static void show_gm_window_cb (GtkWidget *widget,
                                gpointer data);
 
+static void run_prefs_window_cb (G_GNUC_UNUSED GtkWidget *widget,
+                                 gpointer data);
+
 static gboolean on_delayed_hide_call_window_cb (gpointer data);
 
 static void ekiga_main_window_append_call_url (EkigaMainWindow *mw,
@@ -446,6 +449,27 @@ show_gm_window_cb (G_GNUC_UNUSED GtkWidget *widget,
                    gpointer data)
 {
   gtk_widget_show (GTK_WIDGET (data));
+}
+
+static void
+run_prefs_window_cb (G_GNUC_UNUSED GtkWidget *widget,
+                     gpointer data)
+{
+  GtkWidget *prefs_window = NULL;
+
+  g_return_if_fail (EKIGA_IS_MAIN_WINDOW (data));
+  EkigaMainWindow *self = EKIGA_MAIN_WINDOW (data);
+
+  boost::shared_ptr<GtkFrontend> gtk_frontend = self->priv->gtk_frontend.lock ();
+
+  g_return_if_fail (gtk_frontend);
+
+  /* This will build a new window */
+  prefs_window = GTK_WIDGET (gtk_frontend->build_preferences_window ());
+
+  gtk_window_set_transient_for (GTK_WINDOW (prefs_window),
+                                GTK_WINDOW (self));
+  gtk_dialog_run (GTK_DIALOG (prefs_window));
 }
 
 static void
@@ -971,7 +995,7 @@ ekiga_main_window_init_uri_toolbar (EkigaMainWindow *mw)
   /* The call button */
   item = gtk_tool_item_new ();
   call_button = gtk_button_new ();
-  image = gtk_image_new_from_icon_name ("phone-pick-up", GTK_ICON_SIZE_LARGE_TOOLBAR);
+  image = gtk_image_new_from_icon_name ("call-start-symbolic", GTK_ICON_SIZE_LARGE_TOOLBAR);
   gtk_button_set_image (GTK_BUTTON (call_button), image);
   gtk_button_set_relief (GTK_BUTTON (call_button), GTK_RELIEF_NONE);
   gtk_container_add (GTK_CONTAINER (item), call_button);
@@ -1078,7 +1102,6 @@ ekiga_main_window_init_menu (EkigaMainWindow *mw)
 {
   GtkWidget *addressbook_window = NULL;
   GtkWidget *accounts_window = NULL;
-  GtkWidget *prefs_window = NULL;
   GtkWidget *assistant_window = NULL;
 
   mw->priv->main_menu = gtk_menu_bar_new ();
@@ -1091,7 +1114,6 @@ ekiga_main_window_init_menu (EkigaMainWindow *mw)
 
   addressbook_window = GTK_WIDGET (gtk_frontend->get_addressbook_window ());
   accounts_window = GTK_WIDGET (gtk_frontend->get_accounts_window ());
-  prefs_window = GTK_WIDGET (gtk_frontend->get_preferences_window ());
   assistant_window = GTK_WIDGET (gtk_frontend->get_assistant_window ());
 
   static MenuEntry gnomemeeting_menu [] =
@@ -1152,8 +1174,8 @@ ekiga_main_window_init_menu (EkigaMainWindow *mw)
       GTK_MENU_ENTRY("preferences", NULL,
 		     _("Change your preferences"),
 		     GTK_STOCK_PREFERENCES, 0,
-		     G_CALLBACK (show_gm_window_cb),
-		     (gpointer) prefs_window, TRUE),
+		     G_CALLBACK (run_prefs_window_cb),
+		     (gpointer) mw, TRUE),
 
       GTK_MENU_NEW(_("_View")),
 

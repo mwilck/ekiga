@@ -301,13 +301,6 @@ GtkWidget * gm_pw_toggle_new (GtkWidget* grid,
 
 
 /* DESCRIPTION  :  /
- * BEHAVIOR     :  Creates a new prefs window.
- * PRE          :  /
- */
-GtkWidget *gm_pw_window_new ();
-
-
-/* DESCRIPTION  :  /
  * BEHAVIOR     :  Creates a subsection inside a section of a prefs window.
  *                 The parameters are the prefs window and the section name.
  * PRE          :  Not NULL name.
@@ -377,7 +370,7 @@ static void  gm_prefs_window_update_devices_list (PreferencesWindow *self);
 
 /* DESCRIPTION  :  This callback is called when the user clicks
  *                 on the Close or Help buttons.
- * BEHAVIOR     :  Show help or hide the window.
+ * BEHAVIOR     :  Show help or destroy the window.
  * PRE          :  /
  */
 static void dialog_response_cb (GtkDialog *dialog,
@@ -1446,17 +1439,8 @@ dialog_response_cb (GtkDialog *dialog,
     g_signal_stop_emission_by_name (dialog, "response");
     break;
   default:
-    gtk_widget_hide (GTK_WIDGET (dialog));
+    gtk_widget_destroy (GTK_WIDGET (dialog));
   }
-}
-
-
-static gboolean
-dialog_delete_event_cb (GtkWidget *dialog,
-                        G_GNUC_UNUSED gpointer data)
-{
-  gtk_widget_hide (dialog);
-  return TRUE;
 }
 
 
@@ -1776,8 +1760,6 @@ preferences_window_new (boost::shared_ptr<Ekiga::AudioInputCore> audio_input_cor
 
   g_signal_connect (G_OBJECT (self), "response",
                     G_CALLBACK (dialog_response_cb), NULL);
-  g_signal_connect (G_OBJECT (self), "delete-event",
-                    G_CALLBACK (dialog_delete_event_cb), NULL);
 
   gtk_window_set_title (GTK_WINDOW (self), _("Ekiga Preferences"));
   pixbuf = gtk_widget_render_icon_pixbuf (GTK_WIDGET (self),

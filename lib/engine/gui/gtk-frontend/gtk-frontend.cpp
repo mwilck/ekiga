@@ -51,11 +51,11 @@
 #include "addressbook-window.h"
 #include "accounts-window.h"
 #include "assistant-window.h"
+#include "preferences-window.h"
 #include "call-window.h"
 #include "chat-window.h"
 #include "main_window.h"
 #include "statusicon.h"
-#include "preferences-window.h"
 #include "roster-view-gtk.h"
 #include "history-source.h"
 #include "opal-bank.h"
@@ -188,12 +188,6 @@ GtkFrontend::build ()
 						   USER_INTERFACE ".chat-window"),
 				  gtk_widget_destroy);
 
-  preferences_window =
-    boost::shared_ptr<GtkWidget> (preferences_window_new (audio_input_core,
-                                                          audio_output_core,
-                                                          video_input_core),
-				  gtk_widget_destroy);
-
   // BEWARE: the status icon needs the chat window at startup
   // FIXME: the above BEWARE is related to a FIXME in the main window code,
   // FIXME: hence should disappear with it
@@ -207,13 +201,12 @@ GtkFrontend::build ()
 
   // BEWARE: the main window uses the chat window at startup already,
   // and later on needs the call window, addressbook window,
-  // preferences window and assistant window
+  // assistant window
   main_window =
     boost::shared_ptr<GtkWidget> (gm_main_window_new (core),
                                   gtk_widget_destroy);
 
   gtk_window_set_transient_for (GTK_WINDOW (assistant_window.get ()), GTK_WINDOW (main_window.get ()));
-  gtk_window_set_transient_for (GTK_WINDOW (preferences_window.get ()), GTK_WINDOW (main_window.get ()));
 }
 
 
@@ -258,13 +251,6 @@ GtkFrontend::get_accounts_window () const
 
 
 const GtkWidget*
-GtkFrontend::get_preferences_window () const
-{
-  return preferences_window.get ();
-}
-
-
-const GtkWidget*
 GtkFrontend::get_call_window () const
 {
   return call_window.get ();
@@ -282,4 +268,20 @@ const StatusIcon*
 GtkFrontend::get_status_icon () const
 {
   return status_icon.get ();
+}
+
+
+GtkWidget*
+GtkFrontend::build_preferences_window ()
+{
+  boost::shared_ptr<Ekiga::AudioInputCore> audio_input_core =
+    core.get<Ekiga::AudioInputCore> ("audioinput-core");
+  boost::shared_ptr<Ekiga::AudioOutputCore> audio_output_core =
+    core.get<Ekiga::AudioOutputCore> ("audiooutput-core");
+  boost::shared_ptr<Ekiga::VideoInputCore> video_input_core =
+    core.get<Ekiga::VideoInputCore> ("videoinput-core");
+
+  return preferences_window_new (audio_input_core,
+                                 audio_output_core,
+                                 video_input_core);
 }
