@@ -995,7 +995,7 @@ ekiga_main_window_init_uri_toolbar (EkigaMainWindow *mw)
   /* The call button */
   item = gtk_tool_item_new ();
   call_button = gtk_button_new ();
-  image = gtk_image_new_from_icon_name ("call-start-symbolic", GTK_ICON_SIZE_LARGE_TOOLBAR);
+  image = gtk_image_new_from_icon_name ("phone-pick-up", GTK_ICON_SIZE_LARGE_TOOLBAR);
   gtk_button_set_image (GTK_BUTTON (call_button), image);
   gtk_button_set_relief (GTK_BUTTON (call_button), GTK_RELIEF_NONE);
   gtk_container_add (GTK_CONTAINER (item), call_button);
