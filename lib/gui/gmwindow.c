@@ -214,13 +214,15 @@ gm_window_class_init (GmWindowClass* klass)
                                TRUE, (GParamFlags) G_PARAM_READWRITE);
   g_object_class_install_property (gobject_class, GM_HIDE_ON_ESC, spec);
 
-  spec = g_param_spec_boolean ("hide_on_delete", "Hide on delete-event", "Hide on delete-event (or just relay the event)",
+  spec = g_param_spec_boolean ("hide_on_delete", "Hide on delete-event",
+                               "Hide on delete-event (or just relay the event)",
 			       TRUE, (GParamFlags) G_PARAM_READWRITE);
   g_object_class_install_property (gobject_class, GM_HIDE_ON_DELETE, spec);
 
-  spec = g_param_spec_boolean ("stay_on_top", "Stay on top", "Indicates if the window should stay on top of other windows",
+  spec = g_param_spec_boolean ("stay_on_top", "Stay on top",
+                               "Indicates if the window should stay on top of other windows",
                                FALSE, (GParamFlags) G_PARAM_READWRITE);
-  g_object_class_install_property (gobject_class, GM_HIDE_ON_ESC, spec);
+  g_object_class_install_property (gobject_class, GM_STAY_ON_TOP, spec);
 }
 
 
