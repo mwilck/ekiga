@@ -497,7 +497,7 @@ Opal::Call::OnCleared ()
       reason = _("Call completed");
     }
 
-    if (IsEstablished ())
+    if (IsEstablished () || is_outgoing ())
       Ekiga::Runtime::run_in_main (boost::bind (&Opal::Call::emit_cleared_in_main, this, reason));
     else
       Ekiga::Runtime::run_in_main (boost::bind (&Opal::Call::emit_missed_in_main, this));
