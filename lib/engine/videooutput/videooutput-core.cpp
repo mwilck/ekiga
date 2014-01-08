@@ -46,9 +46,6 @@ VideoOutputCore::VideoOutputCore ()
   PWaitAndSignal m(core_mutex);
 
   number_times_started = 0;
-
-  settings = new Settings (VIDEO_DISPLAY_SCHEMA);
-  settings->changed.connect (boost::bind (&VideoOutputCore::setup, this, _1));
 }
 
 VideoOutputCore::~VideoOutputCore ()
@@ -63,27 +60,6 @@ VideoOutputCore::~VideoOutputCore ()
   managers.clear();
 }
 
-void VideoOutputCore::setup (std::string setting)
-{
-  GSettings *s = settings->get_g_settings ();
-
-  if (setting.empty () || setting == "ext-zoom") {
-
-    /*
-    DisplayInfo display_info;
-
-    display_info.zoom = g_settings_get_int (s, "ext-zoom");
-    if ((display_info.zoom != 100) &&
-	(display_info.zoom != 50) &&
-	(display_info.zoom != 200)) {
-      display_info.zoom = 100;
-      g_settings_set_int (s, "ext-zoom", 100);
-    }
-*/
-    // FIXME
-    //set_ext_display_info(display_info);
-  }
-}
 
 void VideoOutputCore::add_manager (VideoOutputManager &manager)
 {

@@ -46,8 +46,6 @@
 #include <glib.h>
 #include <ptlib.h>
 
-#include "ekiga-settings.h"
-
 #include "videooutput-manager.h"
 
 namespace Ekiga
@@ -79,10 +77,6 @@ namespace Ekiga
       /** The destructor
       */
       ~VideoOutputCore ();
-
-      /** Set up core
-       */
-      void setup (std::string setting = "");
 
 
       /*** Service Implementation ***/
@@ -178,8 +172,6 @@ namespace Ekiga
       int number_times_started;
 
       PMutex core_mutex;
-
-      Settings* settings;
     };
 /**
  * @}
