@@ -113,7 +113,6 @@ struct _EkigaCallWindowPrivate
   GtkWidget *info_text;
 
   GtkWidget *video_widget;
-  GtkWidget *extended_video_widget;
   bool fullscreen;
 
   GtkWidget *call_frame;
@@ -178,6 +177,9 @@ enum {
 };
 
 static bool notify_has_actions (EkigaCallWindow* cw);
+
+static void show_extended_video_window_cb (GtkWidget *widget,
+                                           gpointer data);
 
 static void fullscreen_changed_cb (GtkWidget *widget,
                                    gpointer data);
@@ -423,6 +425,17 @@ notify_has_actions (EkigaCallWindow *cw)
 }
 
 static void
+show_extended_video_window_cb (G_GNUC_UNUSED GtkWidget *widget,
+                               gpointer data)
+{
+  g_return_if_fail (EKIGA_IS_CALL_WINDOW (data));
+  EkigaCallWindow *cw = EKIGA_CALL_WINDOW (data);
+
+  if (cw->priv->ext_video_win)
+    gtk_widget_show (GTK_WIDGET (cw->priv->ext_video_win));
+}
+
+static void
 fullscreen_changed_cb (G_GNUC_UNUSED GtkWidget *widget,
                        gpointer data)
 {
@@ -559,13 +572,26 @@ on_videooutput_device_opened_cb (Ekiga::VideoOutputManager & /* manager */,
   g_return_if_fail (EKIGA_IS_CALL_WINDOW (self));
 
   EkigaCallWindow *cw = EKIGA_CALL_WINDOW (self);
+  GtkWidget *video_widget = NULL;
 
   if (type == Ekiga::VideoOutputManager::EXTENDED) {
 
+    if (!cw->priv->ext_video_win) {
+      cw->priv->ext_video_win =
+        gm_window_new_with_key (USER_INTERFACE ".video-settings-window");
+      video_widget = gm_video_widget_new ();
+      gtk_widget_set_size_request (video_widget, STAGE_WIDTH, STAGE_HEIGHT);
+      gtk_widget_show (video_widget);
+      gtk_container_add (GTK_CONTAINER (cw->priv->ext_video_win), video_widget);
+
+      cw->priv->videooutput_core->set_ext_display_info (gm_video_widget_get_stream (GM_VIDEO_WIDGET (video_widget),
+                                                                                    PRIMARY_STREAM));
+      gtk_menu_set_sensitive (cw->priv->main_menu, "extended_video", TRUE);
+    }
     gtk_widget_show (GTK_WIDGET (cw->priv->ext_video_win));
-    gm_video_widget_set_stream_natural_size (GM_VIDEO_WIDGET (cw->priv->extended_video_widget),
+    gm_video_widget_set_stream_natural_size (GM_VIDEO_WIDGET (video_widget),
                                              PRIMARY_STREAM, width, height);
-    gm_video_widget_set_stream_state (GM_VIDEO_WIDGET (cw->priv->extended_video_widget),
+    gm_video_widget_set_stream_state (GM_VIDEO_WIDGET (video_widget),
                                       PRIMARY_STREAM, STREAM_STATE_PLAYING);
   }
   else {
@@ -594,7 +620,12 @@ on_videooutput_device_closed_cb (Ekiga::VideoOutputManager & /* manager */,
     gm_video_widget_set_stream_state (GM_VIDEO_WIDGET (cw->priv->video_widget),
                                       type, STREAM_STATE_STOPPED);
   }
-  gtk_widget_hide (cw->priv->ext_video_win);
+  if (cw->priv->ext_video_win) {
+      cw->priv->videooutput_core->set_ext_display_info (NULL);
+    gtk_widget_destroy (cw->priv->ext_video_win);
+    cw->priv->ext_video_win = NULL;
+    gtk_menu_set_sensitive (cw->priv->main_menu, "extended_video", FALSE);
+  }
 
   gtk_menu_section_set_sensitive (cw->priv->main_menu, "pip", FALSE);
 }
@@ -1803,6 +1834,11 @@ ekiga_call_window_init_menu (EkigaCallWindow *cw)
 			    cw->priv->video_display_settings->get_g_settings (), "enable-pip",
                             FALSE),
 
+      GTK_MENU_ENTRY("extended_video", _("_Extended Video"), _("Display the extended video stream window"),
+                     NULL, 0,
+                     G_CALLBACK (show_extended_video_window_cb),
+                     (gpointer) cw, false),
+
       GTK_MENU_SEPARATOR,
 
       GTK_MENU_ENTRY("fullscreen", _("_Fullscreen"), _("Switch to fullscreen"),
@@ -1833,21 +1869,12 @@ ekiga_call_window_init_clutter (EkigaCallWindow *cw)
                                STAGE_WIDTH, STAGE_HEIGHT);
   gtk_container_add (GTK_CONTAINER (cw->priv->event_box), cw->priv->video_widget);
 
-  cw->priv->extended_video_widget = gm_video_widget_new ();
-  gtk_widget_set_size_request (GTK_WIDGET (cw->priv->extended_video_widget),
-                               STAGE_WIDTH, STAGE_HEIGHT);
-  gtk_widget_show (cw->priv->extended_video_widget);
-  gtk_container_add (GTK_CONTAINER (cw->priv->ext_video_win),
-                     cw->priv->extended_video_widget);
-
   filename = g_build_filename (DATA_DIR, "pixmaps", PACKAGE_NAME,
                                PACKAGE_NAME "-full-icon.png", NULL);
   gm_video_widget_set_logo (GM_VIDEO_WIDGET (cw->priv->video_widget), filename);
   g_free (filename);
 
   cw->priv->videooutput_core->set_display_info (gm_video_widget_get_stream (GM_VIDEO_WIDGET (cw->priv->video_widget), SECONDARY_STREAM), gm_video_widget_get_stream (GM_VIDEO_WIDGET (cw->priv->video_widget), PRIMARY_STREAM));
-
-  cw->priv->videooutput_core->set_ext_display_info (gm_video_widget_get_stream (GM_VIDEO_WIDGET (cw->priv->extended_video_widget), PRIMARY_STREAM));
 }
 
 static void
@@ -2056,7 +2083,7 @@ ekiga_call_window_init_gui (EkigaCallWindow *cw)
   cw->priv->video_settings_window = gm_cw_video_settings_window_new (cw);
 
   /* The extended video stream window */
-  cw->priv->ext_video_win = gm_window_new_with_key (USER_INTERFACE ".video-settings-window");
+  cw->priv->ext_video_win = NULL;
 
   /* The main table */
   event_box = gtk_event_box_new ();
@@ -2284,7 +2311,8 @@ ekiga_call_window_finalize (GObject *gobject)
 
   gtk_widget_destroy (cw->priv->audio_settings_window);
   gtk_widget_destroy (cw->priv->video_settings_window);
-  gtk_widget_destroy (cw->priv->ext_video_win);
+  if (cw->priv->ext_video_win)
+    gtk_widget_destroy (cw->priv->ext_video_win);
 
   delete cw->priv;
 
