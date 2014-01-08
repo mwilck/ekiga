@@ -237,19 +237,52 @@ void
 GMVideoOutputManager_clutter_gst::set_display_info (const gpointer _local_video,
                                                     const gpointer _remote_video)
 {
+  GstElement *videosink = NULL;
   PWaitAndSignal m(device_mutex);
 
-  texture[0] = CLUTTER_ACTOR (_local_video);
-  texture[1] = CLUTTER_ACTOR (_remote_video);
+  if (_local_video == NULL) {
+    gst_element_set_state (pipeline[0], GST_STATE_NULL);
+    texture[0] = NULL;
+  }
+  else {
+    texture[0] = CLUTTER_ACTOR (_local_video);
+    if (pipeline[0]) {
+      videosink = gst_bin_get_by_name (GST_BIN (pipeline[0]), "videosink");
+      g_object_set (videosink, "texture", texture[0], NULL);
+    }
+  }
+
+  if (_remote_video == NULL) {
+    gst_element_set_state (pipeline[1], GST_STATE_NULL);
+    texture[1] = NULL;
+  }
+  else {
+    texture[1] = CLUTTER_ACTOR (_remote_video);
+    if (pipeline[1]) {
+      videosink = gst_bin_get_by_name (GST_BIN (pipeline[1]), "videosink");
+      g_object_set (videosink, "texture", texture[1], NULL);
+    }
+  }
 }
 
 
 void
 GMVideoOutputManager_clutter_gst::set_ext_display_info (const gpointer _ext_video)
 {
+  GstElement *videosink = NULL;
   PWaitAndSignal m(device_mutex);
 
-  texture[2] = CLUTTER_ACTOR (_ext_video);
+  if (_ext_video == NULL) {
+    gst_element_set_state (pipeline[2], GST_STATE_NULL);
+    texture[2] = NULL;
+  }
+  else {
+    texture[2] = CLUTTER_ACTOR (_ext_video);
+    if (pipeline[2]) {
+      videosink = gst_bin_get_by_name (GST_BIN (pipeline[2]), "videosink");
+      g_object_set (videosink, "texture", texture[2], NULL);
+    }
+  }
 }
 
 
