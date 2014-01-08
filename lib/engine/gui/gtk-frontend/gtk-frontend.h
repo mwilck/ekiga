@@ -66,8 +66,6 @@ public:
 
   const GtkWidget* get_main_window () const;
 
-  const GtkWidget *get_addressbook_window () const;
-
   const GtkWidget *get_accounts_window () const;
 
   const GtkWidget *get_call_window () const;
@@ -78,12 +76,13 @@ public:
 
   GtkWidget* build_preferences_window ();
 
+  GtkWidget* build_addressbook_window ();
+
+  GtkWidget* build_assistant_window ();
+
 private :
 
-  boost::shared_ptr<GtkWidget> assistant_window;
   boost::shared_ptr<GtkWidget> main_window;
-  boost::shared_ptr<GtkWidget> preferences_window;
-  boost::shared_ptr<GtkWidget> addressbook_window;
   boost::shared_ptr<GtkWidget> accounts_window;
   boost::shared_ptr<GtkWidget> call_window;
   boost::shared_ptr<GtkWidget> chat_window;

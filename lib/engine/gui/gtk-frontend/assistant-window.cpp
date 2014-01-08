@@ -807,23 +807,15 @@ assistant_window_apply (GtkAssistant *gtkassistant)
   apply_personal_data_page (assistant);
   apply_ekiga_net_page (assistant);
   apply_ekiga_out_page (assistant);
-
-  /* Hide the assistant and show the main Ekiga window */
-  gtk_widget_hide (GTK_WIDGET (assistant));
-  gtk_assistant_set_current_page (gtkassistant, 0);
-  boost::shared_ptr<GtkFrontend> gtk_frontend
-    = assistant->priv->service_core->get<GtkFrontend>("gtk-frontend");
-  gtk_widget_show (GTK_WIDGET (gtk_frontend->get_main_window ()));
 }
 
 
 static void
-assistant_window_cancel (GtkAssistant *gtkassistant)
+assistant_window_close (GtkAssistant *gtkassistant)
 {
   AssistantWindow *assistant = ASSISTANT_WINDOW (gtkassistant);
 
-  gtk_assistant_set_current_page (gtkassistant, 0);
-  gtk_widget_hide (GTK_WIDGET (gtkassistant));
+  gtk_widget_destroy (GTK_WIDGET (gtkassistant));
   boost::shared_ptr<GtkFrontend> gtk_frontend
     = assistant->priv->service_core->get<GtkFrontend>("gtk-frontend");
   gtk_widget_show (GTK_WIDGET (gtk_frontend->get_main_window ()));
@@ -849,7 +841,8 @@ assistant_window_class_init (AssistantWindowClass *klass)
 
   assistant_class->prepare = assistant_window_prepare;
   assistant_class->apply = assistant_window_apply;
-  assistant_class->cancel = assistant_window_cancel;
+  assistant_class->cancel = assistant_window_close;
+  assistant_class->close = assistant_window_close;
 
   object_class->finalize = assistant_window_finalize;
 }
@@ -862,7 +855,7 @@ assistant_window_key_press_cb (GtkWidget *widget,
 {
   if (event->keyval == GDK_KEY_Escape) {
 
-    gtk_widget_hide (widget);
+    gtk_widget_destroy (widget);
     return TRUE;  /* do not propagate the key to parent */
   }
 

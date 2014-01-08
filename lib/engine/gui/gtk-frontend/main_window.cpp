@@ -82,6 +82,7 @@ typedef enum {
 } PanelSection;
 
 enum DeviceType {AudioInput, AudioOutput, Ringer, VideoInput};
+
 struct deviceStruct {
   char name[256];
   DeviceType deviceType;
@@ -182,8 +183,11 @@ static void url_changed_cb (GtkEditable *e,
 static void show_dialpad_cb (GtkWidget *widget,
                              gpointer data);
 
-static void show_gm_window_cb (GtkWidget *widget,
-                               gpointer data);
+static void build_and_show_addressbook_window_cb (GtkWidget *widget,
+                                                  gpointer data);
+
+static void build_and_show_assistant_window_cb (GtkWidget *widget,
+                                                gpointer data);
 
 static void run_prefs_window_cb (G_GNUC_UNUSED GtkWidget *widget,
                                  gpointer data);
@@ -444,12 +448,40 @@ show_dialpad_cb (G_GNUC_UNUSED GtkWidget *widget,
   mw->priv->user_interface_settings->set_int ("panel-section", DIALPAD);
 }
 
+
 static void
-show_gm_window_cb (G_GNUC_UNUSED GtkWidget *widget,
-                   gpointer data)
+build_and_show_addressbook_window_cb (G_GNUC_UNUSED GtkWidget *widget,
+                                      gpointer data)
 {
-  gtk_widget_show (GTK_WIDGET (data));
+  GtkWidget *window = NULL;
+
+  g_return_if_fail (EKIGA_IS_MAIN_WINDOW (data));
+  EkigaMainWindow *self = EKIGA_MAIN_WINDOW (data);
+  boost::shared_ptr<GtkFrontend> gtk_frontend = self->priv->gtk_frontend.lock ();
+
+  window = gtk_frontend->build_addressbook_window ();
+  gm_window_set_hide_on_delete (GM_WINDOW (window), FALSE);
+  gm_window_set_hide_on_escape (GM_WINDOW (window), FALSE);
+  gtk_widget_show (window);
 }
+
+//FIXME: Is there a better way than duplicating code here
+static void
+build_and_show_assistant_window_cb (G_GNUC_UNUSED GtkWidget *widget,
+                                    gpointer data)
+{
+  GtkWidget *window = NULL;
+
+  g_return_if_fail (EKIGA_IS_MAIN_WINDOW (data));
+  EkigaMainWindow *self = EKIGA_MAIN_WINDOW (data);
+  boost::shared_ptr<GtkFrontend> gtk_frontend = self->priv->gtk_frontend.lock ();
+
+  window = gtk_frontend->build_assistant_window ();
+  gtk_window_set_transient_for (GTK_WINDOW (window),
+                                GTK_WINDOW (self));
+  gtk_widget_show (window);
+}
+
 
 static void
 run_prefs_window_cb (G_GNUC_UNUSED GtkWidget *widget,
@@ -1100,9 +1132,7 @@ ekiga_main_window_init_actions_toolbar (EkigaMainWindow *mw)
 static void
 ekiga_main_window_init_menu (EkigaMainWindow *mw)
 {
-  GtkWidget *addressbook_window = NULL;
   GtkWidget *accounts_window = NULL;
-  GtkWidget *assistant_window = NULL;
 
   mw->priv->main_menu = gtk_menu_bar_new ();
 
@@ -1112,9 +1142,7 @@ ekiga_main_window_init_menu (EkigaMainWindow *mw)
 
   g_return_if_fail (gtk_frontend);
 
-  addressbook_window = GTK_WIDGET (gtk_frontend->get_addressbook_window ());
   accounts_window = GTK_WIDGET (gtk_frontend->get_accounts_window ());
-  assistant_window = GTK_WIDGET (gtk_frontend->get_assistant_window ());
 
   static MenuEntry gnomemeeting_menu [] =
     {
@@ -1139,8 +1167,8 @@ ekiga_main_window_init_menu (EkigaMainWindow *mw)
       GTK_MENU_THEME_ENTRY("address_book", _("Address _Book"),
 			   _("Find contacts"),
  			   "x-office-address-book", 'b',
-			   G_CALLBACK (show_widget_cb),
-			   (gpointer) addressbook_window, TRUE),
+			   G_CALLBACK (build_and_show_addressbook_window_cb),
+			   (gpointer) mw, TRUE),
 
       GTK_MENU_SEPARATOR,
 
@@ -1160,8 +1188,8 @@ ekiga_main_window_init_menu (EkigaMainWindow *mw)
       GTK_MENU_ENTRY("configuration_assistant", _("_Configuration Assistant"),
 		     _("Run the configuration assistant"),
 		     NULL, 0,
-		     G_CALLBACK (show_gm_window_cb),
-		     (gpointer) assistant_window, TRUE),
+		     G_CALLBACK (build_and_show_assistant_window_cb),
+		     (gpointer) mw, TRUE),
 
       GTK_MENU_SEPARATOR,
 
@@ -1182,22 +1210,26 @@ ekiga_main_window_init_menu (EkigaMainWindow *mw)
       GTK_MENU_TOGGLE_ENTRY("preview", _("_Video Preview"),
                             _("Display images from your camera device"),
                             NULL, 0,
-			    mw->priv->video_devices_settings->get_g_settings (), "enable-preview",
+			    mw->priv->video_devices_settings->get_g_settings (),
+                            "enable-preview",
                             TRUE),
 
       GTK_MENU_SEPARATOR,
 
       GTK_MENU_RADIO_ENTRY("contacts", _("Con_tacts"), _("View the contacts list"),
 			   NULL, 0,
-			   mw->priv->user_interface_settings->get_g_settings (), "panel-section",
+			   mw->priv->user_interface_settings->get_g_settings (),
+                           "panel-section",
 			   TRUE),
       GTK_MENU_RADIO_ENTRY("dialpad", _("_Dialpad"), _("View the dialpad"),
 			   NULL, 0,
-			   mw->priv->user_interface_settings->get_g_settings (), "panel-section",
+			   mw->priv->user_interface_settings->get_g_settings (),
+                           "panel-section",
 			   TRUE),
       GTK_MENU_RADIO_ENTRY("call-history", _("_Call History"), _("View the call history"),
 			   NULL, 0,
-			   mw->priv->user_interface_settings->get_g_settings (), "panel-section",
+			   mw->priv->user_interface_settings->get_g_settings (),
+                           "panel-section",
 			   TRUE),
 
       GTK_MENU_SEPARATOR,
@@ -1205,7 +1237,8 @@ ekiga_main_window_init_menu (EkigaMainWindow *mw)
       GTK_MENU_TOGGLE_ENTRY ("showofflinecontacts", _("Show Offline _Contacts"),
 			     _("Show offline contacts"),
                              NULL, 0,
-			     mw->priv->contacts_settings->get_g_settings (), "show-offline-contacts",
+			     mw->priv->contacts_settings->get_g_settings (),
+                             "show-offline-contacts",
                              TRUE),
 
       GTK_MENU_NEW(_("_Help")),

@@ -220,9 +220,7 @@ main (int argc,
   int crt_version = general_settings->get_int ("version");
   if (crt_version < schema_version) {
 
-    // show the assistant if there is no config file
-    if (crt_version == 0)
-      gtk_widget_show_all (GTK_WIDGET (gtk_frontend->get_assistant_window ()));
+    gtk_widget_show_all (GTK_WIDGET (gtk_frontend->build_assistant_window ()));
 
     /* Update the version number */
     general_settings->set_int ("version", schema_version);

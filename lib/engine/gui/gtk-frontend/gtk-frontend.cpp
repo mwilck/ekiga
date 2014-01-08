@@ -165,21 +165,13 @@ GtkFrontend::build ()
   gnomemeeting_stock_icons_init ();
   gtk_window_set_default_icon_name (GM_ICON_LOGO);
 
-  addressbook_window =
-    boost::shared_ptr<GtkWidget>(addressbook_window_new (contact_core,
-							 USER_INTERFACE ".addressbook-window"),
-				 gtk_widget_destroy);
-
   accounts_window =
     boost::shared_ptr<GtkWidget>(accounts_window_new (account_core,
-						      details, 
+						      details,
 						      USER_INTERFACE ".accounts-window"),
 				 gtk_widget_destroy);
 
   // BEWARE: uses the main window during runtime
-  assistant_window =
-    boost::shared_ptr<GtkWidget> (assistant_window_new (core), gtk_widget_destroy);
-
   call_window =
     boost::shared_ptr<GtkWidget> (call_window_new (core), gtk_widget_destroy);
 
@@ -205,8 +197,6 @@ GtkFrontend::build ()
   main_window =
     boost::shared_ptr<GtkWidget> (gm_main_window_new (core),
                                   gtk_widget_destroy);
-
-  gtk_window_set_transient_for (GTK_WINDOW (assistant_window.get ()), GTK_WINDOW (main_window.get ()));
 }
 
 
@@ -223,23 +213,11 @@ GtkFrontend::get_description () const
   return "\tGtk+ frontend support";
 }
 
-const GtkWidget*
-GtkFrontend::get_assistant_window () const
-{
-  return assistant_window.get ();
-}
 
 const GtkWidget*
 GtkFrontend::get_main_window () const
 {
   return main_window.get ();
-}
-
-
-const GtkWidget*
-GtkFrontend::get_addressbook_window () const
-{
-  return addressbook_window.get ();
 }
 
 
@@ -284,4 +262,22 @@ GtkFrontend::build_preferences_window ()
   return preferences_window_new (audio_input_core,
                                  audio_output_core,
                                  video_input_core);
+}
+
+
+GtkWidget*
+GtkFrontend::build_addressbook_window ()
+{
+  boost::shared_ptr<Ekiga::ContactCore> contact_core =
+    core.get<Ekiga::ContactCore> ("contact-core");
+
+  return addressbook_window_new (contact_core,
+                                 USER_INTERFACE ".addressbook-window");
+}
+
+
+GtkWidget*
+GtkFrontend::build_assistant_window ()
+{
+  return assistant_window_new (core);
 }

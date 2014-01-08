@@ -733,5 +733,7 @@ addressbook_window_new (boost::shared_ptr<Ekiga::ContactCore> core,
 
   core->visit_sources (boost::bind (on_visit_sources, _1, (gpointer) self));
 
+  gtk_widget_show_all (vbox);
+
   return GTK_WIDGET (self);
 }
