@@ -116,9 +116,6 @@ void VideoInputCore::VideoPreviewManager::Main ()
   PWaitAndSignal m(thread_mutex);
   bool exit = end_thread;
   bool capture = !pause_thread;
-  std::cout << "FIXME" << std::endl << std::flush;
-  int brol = 0;
-  int d = 1;
 
   while (!exit) {
 
@@ -130,17 +127,11 @@ void VideoInputCore::VideoPreviewManager::Main ()
       {
         PWaitAndSignal c(frame_mutex);
         if (frame) {
-          brol++;
           videoinput_core.get_frame_data(frame);
-          videooutput_core->set_frame_data(frame, width, height, VideoOutputManager::LOCAL, d);
-          if (brol > 100) d=2;
-          //FIXME
-          if (d == 2)
-            videooutput_core->set_frame_data(frame, width, height, VideoOutputManager::REMOTE, d);
+          videooutput_core->set_frame_data(frame, width, height, VideoOutputManager::LOCAL, 1);
         }
       }
     }
-    else { brol = 0; d= 1; }
     {
        PWaitAndSignal q(exit_mutex);
        exit = end_thread;
