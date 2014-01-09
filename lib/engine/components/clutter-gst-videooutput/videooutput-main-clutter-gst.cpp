@@ -56,8 +56,11 @@ videooutput_clutter_gst_init (Ekiga::ServiceCore &core,
   if (videooutput_core) {
 
     gst_init (argc, argv);
-    gtk_clutter_init (argc, argv);
-    GMVideoOutputManager_clutter_gst *videooutput_manager = new GMVideoOutputManager_clutter_gst (core);
+    if (gtk_clutter_init (argc, argv) != CLUTTER_INIT_SUCCESS)
+      return false;
+
+    GMVideoOutputManager_clutter_gst *videooutput_manager =
+      new GMVideoOutputManager_clutter_gst (core);
 
     videooutput_core->add_manager (*videooutput_manager);
     result = true;
