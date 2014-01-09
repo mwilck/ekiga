@@ -64,7 +64,7 @@ struct _GmWindowClass
 /* Public API */
 
 /** Create a new GmWindow.
- * @return A GmWindow 
+ * @return A GmWindow
  */
 GtkWidget *gm_window_new ();
 
@@ -72,9 +72,21 @@ GtkWidget *gm_window_new ();
 /** Create a new GmWindow.
  * @param The key where the position and size of the
  * window will be saved.
- * @return A GmWindow 
+ * @return A GmWindow
  */
 GtkWidget *gm_window_new_with_key (const char *key);
+
+
+/** Save the state of a GmWindow.
+ * @param A GmWindow
+ */
+void gm_window_save (GmWindow *window);
+
+
+/** Restore the state of a GmWindow.
+ * @param A GmWindow
+ */
+void gm_window_restore (GmWindow *window);
 
 
 /** Return the size of the GmWindow.
@@ -96,7 +108,7 @@ void gm_window_set_hide_on_delete (GmWindow *window,
 /** Check if the GmWindow will hide or event-relay on a delete-event
  * @param window is the GmWindow
  */
-gboolean gm_window_get_hide_on_escape (GmWindow *window);
+gboolean gm_window_get_hide_on_delete (GmWindow *window);
 
 /** Check if the GmWindow will hide or event-relay on an escape event
  * @param window is the GmWindow
@@ -108,6 +120,20 @@ void gm_window_set_hide_on_escape (GmWindow *window,
  * @param window is the GmWindow
  */
 gboolean gm_window_get_hide_on_escape (GmWindow *window);
+
+
+/** Set if the GmWindow will stay on top
+ * @param window is the GmWindow
+ * @param stay_on_top is true if the window should stay on top
+ */
+void gm_window_set_stay_on_top (GmWindow *window,
+                                gboolean stay_on_top);
+
+/** Check if the GmWindow should stay on top
+ * @param window is the GmWindow
+ */
+gboolean gm_window_get_stay_on_top (GmWindow *window);
+
 
 /** Check whether a window is visible or not
  * @param window is a GtkWidget

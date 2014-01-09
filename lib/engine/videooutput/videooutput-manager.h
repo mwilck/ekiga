@@ -40,8 +40,9 @@
 
 #include <boost/signals2.hpp>
 #include <boost/bind.hpp>
+#include <glib.h>
 
-#include "videooutput-info.h"
+#include "videooutput-core.h"
 
 namespace Ekiga
 {
@@ -60,6 +61,7 @@ namespace Ekiga
     {
 
   public:
+      typedef enum { LOCAL, REMOTE, EXTENDED, MAX_VIEWS } VideoView;
 
       /** The constructor
        */
@@ -93,56 +95,43 @@ namespace Ekiga
       virtual void set_frame_data (const char *data,
                                    unsigned width,
                                    unsigned height,
-                                   unsigned type,
+                                   VideoView type,
                                    int devices_nbr) = 0;
 
-      virtual void set_display_info (const DisplayInfo &) { };
-      virtual void set_ext_display_info (const DisplayInfo &) { };
+      virtual void set_display_info (G_GNUC_UNUSED const gpointer local,
+                                     G_GNUC_UNUSED const gpointer remote) { };
+      virtual void set_ext_display_info (G_GNUC_UNUSED const gpointer ext) { };
 
 
       /*** API to act on VideoOutputDevice events ***/
 
       /** This signal is emitted when a video output device is opened.
-       * @param videooutput_accel actual hardware acceleration support active on the video output device opened.
-       * @param mode the mode in which the device was initially opened.
-       * @param zoom the initial zoom level when de device was opened.
+       * @param type is the opened device VideoView (local, remote, extended).
+       * @param width is the opened device width.
+       * @param height is the opened device height.
        * @param both_streams if a frame from both local and remote stream has been received.
        * @param ext_stream if a frame from an extended video stream has been received.
        */
-      boost::signals2::signal<void(VideoOutputAccel, VideoOutputMode, unsigned, bool, bool)> device_opened;
+      boost::signals2::signal<void(VideoView, unsigned, unsigned, bool, bool)> device_opened;
 
       /** This signal is emitted when a video output device is closed.
        */
       boost::signals2::signal<void(void)> device_closed;
 
       /** This signal is emitted when an error occurs when opening a video output device.
-       * @param error_code the video output device error code.
        */
-      boost::signals2::signal<void(VideoOutputErrorCodes)> device_error;
-
-      /** This signal is emitted when a manager switches autonomously into or out of fullscreen mode.
-       * Some managers like DX and XV  allow the user to switch between FS
-       * by pressing a key or clicking a mouse button on top of the video. In order to
-       * This signal is called whenever the size of the widget carrying the video signal
-       * has to be changed. This happens when the displayed video changes in resolution
-       * or when it is being zoomed in or out.
-       * @param toggle VO_FS_ON or VO_FS_OFF depending on whether FS was activated or deactivated.
-       */
-      boost::signals2::signal<void(VideoOutputFSToggle)> fullscreen_mode_changed;
+      boost::signals2::signal<void(void)> device_error;
 
       /** This signal is emitted the video output size has changed.
        * This signal is called whenever the size of the widget carrying the video signal
-       * has to be changed. This happens when the displayed video changes in resolution
-       * or when it is being zoomed in or out.
+       * has to be changed. This happens when the displayed video changes in resolution.
+       * @param type the current device VideoView.
        * @param width the new width of the widget.
        * @param height the new height of the widget.
-       * @param mode the current frame mode.
        */
-      boost::signals2::signal<void(unsigned, unsigned, VideoOutputMode)> size_changed;
+      boost::signals2::signal<void(VideoView, unsigned, unsigned)> size_changed;
 
   protected:
-      virtual void get_display_info (DisplayInfo &) { };
-      virtual void get_ext_display_info (DisplayInfo &) { };
     };
 
 /**

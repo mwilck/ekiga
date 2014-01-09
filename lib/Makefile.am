@@ -37,8 +37,6 @@ AM_CPPFLAGS = \
 	-I$(top_srcdir)/lib/engine/videoinput \
 	-I$(top_srcdir)/lib/engine/videooutput \
 	-I$(top_srcdir)/lib/engine/components/call-history \
-	-I$(top_srcdir)/lib/engine/components/common-videooutput \
-	-I$(top_srcdir)/lib/engine/components/dx-videooutput \
 	-I$(top_srcdir)/lib/engine/components/echo \
 	-I$(top_srcdir)/lib/engine/components/gmconf-personal-details \
 	-I$(top_srcdir)/lib/engine/components/hal-dbus \
@@ -117,6 +115,8 @@ endif
 # (those should probably be moved elsewhere like engine/gui/gtk-core/ )
 ##
 libekiga_la_SOURCES += \
+	gui/gmvideowidget.c \
+	gui/gmvideowidget.h \
 	gui/dialpad.h \
 	gui/dialpad.c \
 	gui/gm-smileys.h \
@@ -154,23 +154,8 @@ libekiga_la_SOURCES += \
 
 if !WIN32
 libekiga_la_SOURCES +=	\
-	gui/xwindow.cpp		\
+	gui/xwindow.cpp	\
 	gui/xwindow.h
-endif
-
-if HAVE_XV
-libekiga_la_SOURCES +=	\
-	gui/xvwindow.cpp		\
-	gui/xvwindow.h
-
-libekiga_la_LDFLAGS += $(XV_LIBS)
-
-endif
-
-if HAVE_DX
-libekiga_la_SOURCES +=	\
-	gui/dxwindow.cpp		\
-	gui/dxwindow.h
 endif
 
 ##
@@ -403,8 +388,6 @@ libekiga_la_SOURCES += \
 	engine/gui/gtk-frontend/book-view-gtk.cpp \
 	engine/gui/gtk-frontend/call-window.h \
 	engine/gui/gtk-frontend/call-window.cpp \
-	engine/gui/gtk-frontend/ext-window.h \
-	engine/gui/gtk-frontend/ext-window.cpp \
 	engine/gui/gtk-frontend/roster-view-gtk.h \
 	engine/gui/gtk-frontend/roster-view-gtk.cpp \
 	engine/gui/gtk-frontend/call-history-view-gtk.h \
@@ -628,41 +611,16 @@ libekiga_la_LDFLAGS += $(SHM_LIBS)
 endif
 
 ##
-# Common files for several video output components
+# Sources of the Clutter video output component
 ##
+
+AM_CPPFLAGS += $(CLUTTER_CFLAGS) $(CLUTTER_GTK_CFLAGS) $(CLUTTER_GST_CFLAGS) \
+	-I$(top_srcdir)/lib/engine/components/clutter-gst-videooutput
 
 libekiga_la_SOURCES += \
-	engine/components/common-videooutput/videooutput-manager-common.cpp \
-	engine/components/common-videooutput/videooutput-manager-common.h
+	engine/components/clutter-gst-videooutput/videooutput-manager-clutter-gst.cpp   \
+	engine/components/clutter-gst-videooutput/videooutput-manager-clutter-gst.h     \
+	engine/components/clutter-gst-videooutput/videooutput-main-clutter-gst.cpp      \
+	engine/components/clutter-gst-videooutput/videooutput-main-clutter-gst.h
 
-##
-# Sources of the X video output component
-##
-
-if !WIN32
-
-AM_CPPFLAGS += \
-	-I$(top_srcdir)/lib/engine/components/x-videooutput
-
-libekiga_la_SOURCES += \
-	engine/components/x-videooutput/videooutput-manager-x.cpp \
-	engine/components/x-videooutput/videooutput-manager-x.h \
-	engine/components/x-videooutput/videooutput-main-x.cpp \
-	engine/components/x-videooutput/videooutput-main-x.h
-
-endif
-
-##
-# Sources of the Direct X video output component
-##
-
-if HAVE_DX
-
-libekiga_la_SOURCES += \
-	engine/components/dx-videooutput/videooutput-manager-dx.cpp \
-	engine/components/dx-videooutput/videooutput-manager-dx.h \
-	engine/components/dx-videooutput/videooutput-main-dx.cpp \
-	engine/components/dx-videooutput/videooutput-main-dx.h
-
-libekiga_la_LDFLAGS += $(DX_LIBS)
-endif
+libekiga_la_LDFLAGS += $(CLUTTER_LIBS) $(CLUTTER_GTK_LIBS) $(CLUTTER_GST_LIBS)

@@ -190,6 +190,7 @@
   </schema>
   <schema gettext-domain="@GETTEXT_PACKAGE@" id="org.gnome.@PACKAGE_NAME@.general.user-interface" path="/org/gnome/@PACKAGE_NAME@/general/user-interface/">
     <child name="call-window" schema="org.gnome.@PACKAGE_NAME@.general.user-interface.call-window"/>
+    <child name="extended-video-window" schema="org.gnome.@PACKAGE_NAME@.general.user-interface.extended-video-window"/>
     <child name="main-window" schema="org.gnome.@PACKAGE_NAME@.general.user-interface.main-window"/>
     <child name="chat-window" schema="org.gnome.@PACKAGE_NAME@.general.user-interface.chat-window"/>
     <child name="addressbook-window" schema="org.gnome.@PACKAGE_NAME@.general.user-interface.addressbook-window"/>
@@ -197,7 +198,6 @@
     <child name="video-settings-window" schema="org.gnome.@PACKAGE_NAME@.general.user-interface.video-settings-window"/>
     <child name="accounts-window" schema="org.gnome.@PACKAGE_NAME@.general.user-interface.accounts-window"/>
     <child name="video-display" schema="org.gnome.@PACKAGE_NAME@.general.user-interface.video-display"/>
-    <child name="remote-video-window" schema="org.gnome.@PACKAGE_NAME@.general.user-interface.remote-video-window"/>
   </schema>
   <schema gettext-domain="@GETTEXT_PACKAGE@" id="org.gnome.@PACKAGE_NAME@.general.user-interface.call-window" path="/org/gnome/@PACKAGE_NAME@/general/user-interface/call-window/">
     <key name="position" type="s">
@@ -209,6 +209,18 @@
       <default>'270,250'</default>
       <_summary>Size of the call window</_summary>
       <_description>Size of the call window</_description>
+    </key>
+  </schema>
+  <schema gettext-domain="@GETTEXT_PACKAGE@" id="org.gnome.@PACKAGE_NAME@.general.user-interface.extended-video-window" path="/org/gnome/@PACKAGE_NAME@/general/user-interface/extended-video-window/">
+    <key name="position" type="s">
+      <default>'0,0'</default>
+      <_summary>Position on the screen of the extended video window</_summary>
+      <_description>Position on the screen of the extended video window</_description>
+    </key>
+    <key name="size" type="s">
+      <default>'270,250'</default>
+      <_summary>Size of the extended video window</_summary>
+      <_description>Size of the extended video window</_description>
     </key>
   </schema>
   <schema gettext-domain="@GETTEXT_PACKAGE@" id="org.gnome.@PACKAGE_NAME@.general.user-interface.main-window" path="/org/gnome/@PACKAGE_NAME@/general/user-interface/main-window/">
@@ -289,57 +301,15 @@
     </key>
   </schema>
   <schema gettext-domain="@GETTEXT_PACKAGE@" id="org.gnome.@PACKAGE_NAME@.general.user-interface.video-display" path="/org/gnome/@PACKAGE_NAME@/general/user-interface/video-display/">
-    <key name="disable-hw-accel" type="b">
-      <default>false</default>
-      <_summary>Disable video hardware acceleration</_summary>
-      <_description>This key disables DirectX (on win32) and XVideo (on Linux) video hardware acceleration</_description>
-    </key>
-    <key name="allow-pip-sw-scaling" type="b">
-      <default>true</default>
-      <_summary>Allow picture-in-picture software scaling</_summary>
-      <_description>Allow Ekiga to fall back to software scaling the picture-in-picture if hardware support is not available. If this is set to false, Ekiga will not try to open the PIP if hardware support is not available.</_description>
-    </key>
-    <key name="sw-scaling-algorithm" type="i">
-      <default>0</default>
-      <_summary>Specify the software scaling algorithm</_summary>
-      <_description>Specify the software scaling algorithm: 0: nearest neighbor, 1: nearest neighbor with box filter, 2: bilinear filtering, 3: hyperbolic filtering. Does not apply on windows systems.</_description>
-    </key>
-    <key name="zoom" type="i">
-      <default>100</default>
-      <_summary>The zoom value</_summary>
-      <_description>The zoom value in percent to apply to images displayed in the main GUI (can be 50, 100, or 200)</_description>
-    </key>
-    <key name="ext-zoom" type="i">
-      <default>100</default>
-      <_summary>The zoom value</_summary>
-      <_description>The zoom value in percent to apply to images displayed in the extended GUI (can be 50, 100, or 200)</_description>
-    </key>
     <key name="stay-on-top" type="b">
       <default>true</default>
       <_summary>Place windows displaying video above other windows during calls</_summary>
       <_description>Place windows displaying video above other windows during calls</_description>
     </key>
-    <key name="video-view" type="i">
-      <default>2</default>
-      <_summary>The default video view</_summary>
-      <_description>The default video view (local, remote, both)</_description>
-    </key>
-    <key name="video-view-before-fullscreen" type="i">
-      <default>1</default>
-      <_summary>The video view before having switched to fullscreen</_summary>
-      <_description>The video view before having switched to fullscreen (same values as video_view)</_description>
-    </key>
-  </schema>
-  <schema gettext-domain="@GETTEXT_PACKAGE@" id="org.gnome.@PACKAGE_NAME@.general.user-interface.remote-video-window" path="/org/gnome/@PACKAGE_NAME@/general/user-interface/remote-video-window/">
-    <key name="size" type="s">
-      <default>'176,144'</default>
-      <_summary>Remote video window size</_summary>
-      <_description>The size of the remote video window</_description>
-    </key>
-    <key name="position" type="s">
-      <default>'0,0'</default>
-      <_summary>Remote video window position</_summary>
-      <_description>The position of the remote video window</_description>
+    <key name="enable-pip" type="b">
+      <default>true</default>
+      <_summary>Enable Picture-In-Picture mode</_summary>
+      <_description>This allows the local video stream to be displayed incrusted in the remote video stream. This is only effective when sending and receiving video.</_description>
     </key>
   </schema>
   <schema gettext-domain="@GETTEXT_PACKAGE@" id="org.gnome.@PACKAGE_NAME@.general.call-options" path="/org/gnome/@PACKAGE_NAME@/general/call-options/">

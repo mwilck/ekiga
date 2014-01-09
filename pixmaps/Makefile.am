@@ -1,7 +1,7 @@
 icondir = $(datadir)/icons/hicolor
 pixmapdir = $(datadir)/pixmaps/@PACKAGE_NAME@
 
-pixmap_DATA = @PACKAGE_NAME@-logo.png
+pixmap_DATA = @PACKAGE_NAME@-logo.png 256x256/@PACKAGE_NAME@-full-icon.png
 
 nobase_dist_icon_DATA = \
 	16x16/apps/@PACKAGE_NAME@.png \
@@ -26,6 +26,7 @@ IMAGES_FILES= \
 	32x32/multimedia-headset.png \
 	32x32/multimedia-headset.svg \
 	256x256/multimedia-headset.png \
+	256x256/ekiga-full-icon.png \
 	16x16/audio-volume.png \
 	16x16/brightness.png \
 	16x16/color.png \

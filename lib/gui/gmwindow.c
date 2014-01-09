@@ -50,6 +50,8 @@ struct _GmWindowPrivate
   GSettings *settings;
   gboolean hide_on_esc;
   gboolean hide_on_delete;
+  gboolean stay_on_top;
+  gboolean state_restored;
   gchar *key;
   int x;
   int y;
@@ -60,7 +62,8 @@ struct _GmWindowPrivate
 enum {
   GM_WINDOW_KEY = 1,
   GM_HIDE_ON_ESC = 2,
-  GM_HIDE_ON_DELETE = 3
+  GM_HIDE_ON_DELETE = 3,
+  GM_STAY_ON_TOP = 4
 };
 
 G_DEFINE_TYPE (GmWindow, gm_window, GTK_TYPE_WINDOW);
@@ -74,6 +77,10 @@ window_realize_cb (GtkWidget *w,
 		   gpointer data);
 
 static void
+window_show_cb (GtkWidget *w,
+                gpointer data);
+
+static void
 window_hide_cb (GtkWidget *w,
 		gpointer data);
 
@@ -81,11 +88,9 @@ static gboolean
 gm_window_configure_event (GtkWidget *widget,
                            GdkEventConfigure *event);
 
-
 /*
  * GObject stuff
  */
-
 static void
 gm_window_finalize (GObject *obj)
 {
@@ -127,6 +132,10 @@ gm_window_get_property (GObject *obj,
 
   case GM_HIDE_ON_DELETE:
     g_value_set_boolean (value, self->priv->hide_on_delete);
+    break;
+
+  case GM_STAY_ON_TOP:
+    g_value_set_boolean (value, self->priv->stay_on_top);
     break;
 
   default:
@@ -173,6 +182,11 @@ gm_window_set_property (GObject *obj,
     self->priv->hide_on_delete = g_value_get_boolean (value);
     break;
 
+  case GM_STAY_ON_TOP:
+    self->priv->stay_on_top = g_value_get_boolean (value);
+    gtk_window_set_keep_above (GTK_WINDOW (self), self->priv->stay_on_top);
+    break;
+
   default:
     G_OBJECT_WARN_INVALID_PROPERTY_ID (obj, prop_id, spec);
     break;
@@ -200,9 +214,15 @@ gm_window_class_init (GmWindowClass* klass)
                                TRUE, (GParamFlags) G_PARAM_READWRITE);
   g_object_class_install_property (gobject_class, GM_HIDE_ON_ESC, spec);
 
-  spec = g_param_spec_boolean ("hide_on_delete", "Hide on delete-event", "Hide on delete-event (or just relay the event)",
+  spec = g_param_spec_boolean ("hide_on_delete", "Hide on delete-event",
+                               "Hide on delete-event (or just relay the event)",
 			       TRUE, (GParamFlags) G_PARAM_READWRITE);
   g_object_class_install_property (gobject_class, GM_HIDE_ON_DELETE, spec);
+
+  spec = g_param_spec_boolean ("stay_on_top", "Stay on top",
+                               "Indicates if the window should stay on top of other windows",
+                               FALSE, (GParamFlags) G_PARAM_READWRITE);
+  g_object_class_install_property (gobject_class, GM_STAY_ON_TOP, spec);
 }
 
 
@@ -214,6 +234,7 @@ gm_window_init (GmWindow* self)
   self->priv->key = g_strdup ("");
   self->priv->hide_on_esc = TRUE;
   self->priv->hide_on_delete = TRUE;
+  self->priv->state_restored = FALSE;
 
   self->priv->accel = gtk_accel_group_new ();
   gtk_window_add_accel_group (GTK_WINDOW (self), self->priv->accel);
@@ -222,6 +243,9 @@ gm_window_init (GmWindow* self)
 
   g_signal_connect (self, "delete-event",
 		    G_CALLBACK (gm_window_delete_event_cb), NULL);
+
+  g_signal_connect (self, "show",
+                    G_CALLBACK (window_show_cb), self);
 
   g_signal_connect (self, "realize",
                     G_CALLBACK (window_realize_cb), self);
@@ -258,56 +282,33 @@ static void
 window_realize_cb (GtkWidget *w,
 		   G_GNUC_UNUSED gpointer data)
 {
-  int x = 0;
-  int y = 0;
-
   GmWindow *self = NULL;
-
-  gchar *size = NULL;
-  gchar *position = NULL;
-  gchar **couple = NULL;
 
   self = GM_WINDOW (w);
 
-  g_return_if_fail (g_strcmp0 (self->priv->key, ""));
+  g_return_if_fail (self);
 
-  if (gtk_window_get_resizable (GTK_WINDOW (w))) {
-
-    size = g_settings_get_string (self->priv->settings, "size");
-    if (size)
-      couple = g_strsplit (size, ",", 0);
-
-    if (couple && couple [0])
-      x = atoi (couple [0]);
-    if (couple && couple [1])
-      y = atoi (couple [1]);
-
-    if (x > 0 && y > 0) {
-      gtk_window_resize (GTK_WINDOW (w), x, y);
-    }
-
-    g_strfreev (couple);
-    g_free (size);
-  }
-
-  position = g_settings_get_string (self->priv->settings, "position");
-  if (position)
-    couple = g_strsplit (position, ",", 0);
-
-  if (couple && couple [0])
-    x = atoi (couple [0]);
-  if (couple && couple [1])
-    y = atoi (couple [1]);
-
-  if (x != 0 && y != 0)
-    gtk_window_move (GTK_WINDOW (w), x, y);
-
-  g_strfreev (couple);
-  couple = NULL;
-  g_free (position);
+  gm_window_restore (self);
+  self->priv->state_restored = TRUE;
 
   gtk_widget_realize (GTK_WIDGET (w));
 }
+
+
+static void
+window_show_cb (GtkWidget *w,
+                G_GNUC_UNUSED gpointer data)
+{
+  GmWindow *self = NULL;
+
+  self = GM_WINDOW (w);
+
+  g_return_if_fail (self);
+
+  if (!self->priv->state_restored)
+    gm_window_restore (self);
+}
+
 
 
 static void
@@ -316,25 +317,12 @@ window_hide_cb (GtkWidget *w,
 {
   GmWindow *self = NULL;
 
-  gchar *size = NULL;
-  gchar *position = NULL;
-
   g_return_if_fail (w != NULL);
 
   self = GM_WINDOW (w);
 
-  g_return_if_fail (g_strcmp0 (self->priv->key, ""));
-
-  position = g_strdup_printf ("%d,%d", self->priv->x, self->priv->y);
-  g_settings_set_string (self->priv->settings, "position", position);
-  g_free (position);
-
-  if (gtk_window_get_resizable (GTK_WINDOW (w))) {
-
-    size = g_strdup_printf ("%d,%d", self->priv->width, self->priv->height);
-    g_settings_set_string (self->priv->settings, "size", size);
-    g_free (size);
-  }
+  gm_window_save (self);
+  self->priv->state_restored = FALSE;
 }
 
 
@@ -367,6 +355,76 @@ gm_window_new_with_key (const char *key)
   g_return_val_if_fail (key != NULL, NULL);
 
   return GTK_WIDGET (g_object_new (GM_TYPE_WINDOW, "key", key, NULL));
+}
+
+
+void
+gm_window_save (GmWindow *self)
+{
+  gchar *size = NULL;
+  gchar *position = NULL;
+
+  g_return_if_fail (g_strcmp0 (self->priv->key, "") || self);
+
+  position = g_strdup_printf ("%d,%d", self->priv->x, self->priv->y);
+  g_settings_set_string (self->priv->settings, "position", position);
+  g_free (position);
+
+  if (gtk_window_get_resizable (GTK_WINDOW (self))) {
+
+    size = g_strdup_printf ("%d,%d", self->priv->width, self->priv->height);
+    g_settings_set_string (self->priv->settings, "size", size);
+    g_free (size);
+  }
+}
+
+
+void
+gm_window_restore (GmWindow *self)
+{
+  int x = 0;
+  int y = 0;
+
+  gchar *size = NULL;
+  gchar *position = NULL;
+  gchar **couple = NULL;
+
+  g_return_if_fail (g_strcmp0 (self->priv->key, "") && self);
+
+  if (gtk_window_get_resizable (GTK_WINDOW (self))) {
+
+    size = g_settings_get_string (self->priv->settings, "size");
+    if (size)
+      couple = g_strsplit (size, ",", 0);
+
+    if (couple && couple [0])
+      x = atoi (couple [0]);
+    if (couple && couple [1])
+      y = atoi (couple [1]);
+
+    if (x > 0 && y > 0) {
+      gtk_window_resize (GTK_WINDOW (self), x, y);
+    }
+
+    g_strfreev (couple);
+    g_free (size);
+  }
+
+  position = g_settings_get_string (self->priv->settings, "position");
+  if (position)
+    couple = g_strsplit (position, ",", 0);
+
+  if (couple && couple [0])
+    x = atoi (couple [0]);
+  if (couple && couple [1])
+    y = atoi (couple [1]);
+
+  if (x != 0 && y != 0)
+    gtk_window_move (GTK_WINDOW (self), x, y);
+
+  g_strfreev (couple);
+  couple = NULL;
+  g_free (position);
 }
 
 
@@ -434,6 +492,24 @@ gm_window_get_hide_on_escape (GmWindow *window)
   return window->priv->hide_on_esc;
 }
 
+
+void
+gm_window_set_stay_on_top (GmWindow *window,
+                           gboolean stay_on_top)
+{
+  g_return_if_fail (GM_IS_WINDOW (window));
+
+  g_object_set (window, "stay_on_top", stay_on_top, NULL);
+}
+
+
+gboolean
+gm_window_get_stay_on_top (GmWindow *window)
+{
+  g_return_val_if_fail (GM_IS_WINDOW (window), FALSE);
+
+  return window->priv->stay_on_top;
+}
 
 gboolean
 gm_window_is_visible (GtkWidget* w)

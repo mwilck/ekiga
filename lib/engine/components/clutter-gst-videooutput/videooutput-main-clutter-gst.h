@@ -1,6 +1,6 @@
 
 /* Ekiga -- A VoIP and Video-Conferencing application
- * Copyright (C) 2000-2009 Damien Sandras <dsandras@seconix.com>
+ * Copyright (C) 2000-2014 Damien Sandras <dsandras@seconix.com>
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -27,33 +27,21 @@
 
 
 /*
- *                         videooutput-main-dx.cpp  -  description
- *                         ------------------------------------------
- *   begin                : written in 2008 by Matthias Schneider
- *   copyright            : (c) 2008 by Matthias Schneider
- *   description          : code to hook the DX videooutput manager into the main program
+ *                         videooutput-main-clutter-gst.h  -  description
+ *                         -----------------------------------------------
+ *   begin                : Sun 15 December 2013
+ *   copyright            : (c) 2013 by Damien Sandras
+ *   description          : code to hook the Clutter display manager into the main program
  *
  */
 
-#include "videooutput-main-dx.h"
-#include "videooutput-core.h"
-#include "videooutput-manager-dx.h"
+#ifndef __VIDEOOUTPUT_MAIN_CLUTTER_GST_H__
+#define __VIDEOOUTPUT_MAIN_CLUTTER_GST_H__
 
-bool
-videooutput_dx_init (Ekiga::ServiceCore &core,
-	    int */*argc*/,
-	    char **/*argv*/[])
-{
-  bool result = false;
-  boost::shared_ptr<Ekiga::VideoOutputCore> videooutput_core = core.get<Ekiga::VideoOutputCore> ("videooutput-core");
+#include "services.h"
 
-  if (videooutput_core) {
+bool videooutput_clutter_gst_init (Ekiga::ServiceCore &core,
+                                   int *argc,
+                                   char **argv[]);
 
-    GMVideoOutputManager_dx *videooutput_manager = new GMVideoOutputManager_dx(core);
-
-    videooutput_core->add_manager (*videooutput_manager);
-    result = true;
-  }
-
-  return result;
-}
+#endif

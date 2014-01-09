@@ -563,6 +563,10 @@ gm_pw_init_general_page (PreferencesWindow *self,
                     self->priv->video_display_settings, "stay-on-top",
                     _("Place windows displaying video above other windows during calls"));
 
+  gm_pw_toggle_new (container, _("Enable _Picture-In-Picture Mode"),
+                    self->priv->video_display_settings, "enable-pip",
+                    _("This allows the local video stream to be displayed incrusted in the remote video stream. This is only effective when sending and receiving video"));
+
   /* Network Settings */
   gm_pw_subsection_new (container, _("Network Settings"));
   gm_pw_spin_new (container, _("Type of Service (TOS):"), NULL,

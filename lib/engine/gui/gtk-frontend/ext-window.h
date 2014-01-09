@@ -32,6 +32,8 @@
 #include "gmwindow.h"
 #include "videooutput-core.h"
 
+#include <clutter-gtk/clutter-gtk.h>
+
 G_BEGIN_DECLS
 
 #define EKIGA_TYPE_EXT_WINDOW			\
@@ -60,6 +62,8 @@ struct _EkigaExtWindowClass {
 
 GType ekiga_ext_window_get_type ();
 GtkWidget *ext_window_new (boost::shared_ptr<Ekiga::VideoOutputCore> &vocore);
+ClutterActor *ekiga_ext_window_get_stage (EkigaExtWindow *cw);
+ClutterActor *ekiga_ext_window_get_video_stream (EkigaExtWindow *cw);
 void ekiga_ext_window_set_size (EkigaExtWindow *cw, int width, int height);
 void ekiga_ext_window_destroy (EkigaExtWindow *ew);
 

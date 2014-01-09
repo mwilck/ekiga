@@ -62,13 +62,7 @@
 #include "gtk-frontend.h"
 #include "gmconf-personal-details.h"
 
-#ifndef WIN32
-#include "videooutput-main-x.h"
-#endif
-
-#ifdef HAVE_DX
-#include "videooutput-main-dx.h"
-#endif
+#include "videooutput-main-clutter-gst.h"
 
 #include "videoinput-main-mlogo.h"
 #include "audioinput-main-null.h"
@@ -126,22 +120,11 @@ engine_init (Ekiga::ServiceCorePtr service_core,
   service_core->add (details);
   service_core->add (presence_core);
 
-#ifndef WIN32
-  if (!videooutput_x_init (*service_core, &argc, &argv)) {
-
-    return;
-  }
-#endif
-
-#ifdef HAVE_DX
-  if (!videooutput_dx_init (*service_core, &argc, &argv)) {
-
-    return;
-  }
-#endif
-
   if (!videoinput_mlogo_init (*service_core, &argc, &argv)) {
+    return;
+  }
 
+  if (!videooutput_clutter_gst_init (*service_core, &argc, &argv)) {
     return;
   }
 
@@ -197,7 +180,6 @@ engine_init (Ekiga::ServiceCorePtr service_core,
      code in question to do it itself
    */
 
-  videooutput_core->setup ();
   videoinput_core->setup ("any");
   audioinput_core->setup ();
   audiooutput_core->setup ();

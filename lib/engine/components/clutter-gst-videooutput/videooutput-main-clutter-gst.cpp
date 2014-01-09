@@ -1,6 +1,6 @@
 
 /* Ekiga -- A VoIP and Video-Conferencing application
- * Copyright (C) 2000-2009 Damien Sandras <dsandras@seconix.com>
+ * Copyright (C) 2000-2014 Damien Sandras <dsandras@seconix.com>
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -27,29 +27,40 @@
 
 
 /*
- *                         videooutput-main-x.cpp  -  description
- *                         ------------------------------------------
- *   begin                : written in 2008 by Matthias Schneider
- *   copyright            : (c) 2008 by Matthias Schneider
- *   description          : code to hook the X display manager into the main program
+ *                         videooutput-main-clutter.cpp  -  description
+ *                         --------------------------------------------
+ *   begin                : Sun 15 December 2013
+ *   copyright            : (c) 2013 by Damien Sandras
+ *   description          : code to hook the Clutter display manager into the main program
  *
  */
 
-#include "videooutput-main-x.h"
+#include <clutter/clutter.h>
+#include <gst/gst.h>
+#include <clutter-gtk/clutter-gtk.h>
+
 #include "videooutput-core.h"
-#include "videooutput-manager-x.h"
+
+#include "videooutput-main-clutter-gst.h"
+#include "videooutput-manager-clutter-gst.h"
 
 bool
-videooutput_x_init (Ekiga::ServiceCore &core,
-	    int */*argc*/,
-	    char **/*argv*/[])
+videooutput_clutter_gst_init (Ekiga::ServiceCore &core,
+                              G_GNUC_UNUSED int *argc,
+                              G_GNUC_UNUSED char **argv[])
 {
   bool result = false;
-  boost::shared_ptr<Ekiga::VideoOutputCore> videooutput_core = core.get<Ekiga::VideoOutputCore> ("videooutput-core");
+  boost::shared_ptr<Ekiga::VideoOutputCore> videooutput_core =
+    core.get<Ekiga::VideoOutputCore> ("videooutput-core");
 
   if (videooutput_core) {
 
-    GMVideoOutputManager_x *videooutput_manager = new GMVideoOutputManager_x(core);
+    gst_init (argc, argv);
+    if (gtk_clutter_init (argc, argv) != CLUTTER_INIT_SUCCESS)
+      return false;
+
+    GMVideoOutputManager_clutter_gst *videooutput_manager =
+      new GMVideoOutputManager_clutter_gst (core);
 
     videooutput_core->add_manager (*videooutput_manager);
     result = true;

@@ -39,8 +39,6 @@
 
 #include "services.h"
 
-#include "videooutput-manager.h"
-
 #include <boost/signals2.hpp>
 #include <boost/bind.hpp>
 #include <set>
@@ -48,7 +46,7 @@
 #include <glib.h>
 #include <ptlib.h>
 
-#include "ekiga-settings.h"
+#include "videooutput-manager.h"
 
 namespace Ekiga
 {
@@ -79,10 +77,6 @@ namespace Ekiga
       /** The destructor
       */
       ~VideoOutputCore ();
-
-      /** Set up core
-       */
-      void setup (std::string setting = "");
 
 
       /*** Service Implementation ***/
@@ -125,7 +119,7 @@ namespace Ekiga
       void start ();
 
       /** Stop the video output
-       * 
+       *
        */
       void stop ();
 
@@ -142,59 +136,42 @@ namespace Ekiga
       void set_frame_data (const char *data,
                            unsigned width,
                            unsigned height,
-                           unsigned type,
+                           VideoOutputManager::VideoView type,
                            int devices_nbr);
 
-      void set_display_info (const DisplayInfo & _display_info);
-      void set_ext_display_info (const DisplayInfo & _display_info);
-
-
-      /*** Statistics ***/
-
-      /** Get the current video output statistics from the core
-       *
-       * @param _videooutput_stats the struct to be filled with the current values..
-       */
-      void get_videooutput_stats (VideoOutputStats & _videooutput_stats) {
-        _videooutput_stats = videooutput_stats;
-      };
+      void set_display_info (const gpointer _local, const gpointer _remote);
+      void set_ext_display_info (const gpointer _ext);
 
 
       /*** Signals ***/
 
       /** See videooutput-manager.h for the API
        */
-      boost::signals2::signal<void(VideoOutputManager &, VideoOutputAccel, VideoOutputMode, unsigned, bool, bool)> device_opened;
+      boost::signals2::signal<void(VideoOutputManager &, VideoOutputManager::VideoView, unsigned, unsigned, bool, bool)> device_opened;
       boost::signals2::signal<void(VideoOutputManager &)> device_closed;
-      boost::signals2::signal<void(VideoOutputManager &, VideoOutputErrorCodes)> device_error;
-      boost::signals2::signal<void(VideoOutputManager &, VideoOutputFSToggle)> fullscreen_mode_changed;
-      boost::signals2::signal<void(VideoOutputManager &, unsigned, unsigned, VideoOutputMode)> size_changed;
+      boost::signals2::signal<void(VideoOutputManager &)> device_error;
+      boost::signals2::signal<void(VideoOutputManager &, VideoOutputManager::VideoView, unsigned, unsigned)> size_changed;
 
 
   private:
-      void on_device_opened (VideoOutputAccel videooutput_accel,
-                             VideoOutputMode mode,
-                             unsigned zoom,
+      void on_device_opened (VideoOutputManager::VideoView type,
+                             unsigned width,
+                             unsigned height,
                              bool both_streams,
                              bool ext_stream,
                              VideoOutputManager *manager);
       void on_device_closed (VideoOutputManager *manager);
-      void on_device_error (VideoOutputErrorCodes error_code, VideoOutputManager *manager);
-      void on_size_changed (unsigned width,
+      void on_device_error (VideoOutputManager *manager);
+      void on_size_changed (VideoOutputManager::VideoView type,
+                            unsigned width,
                             unsigned height,
-                            VideoOutputMode mode,
                             VideoOutputManager *manager);
-      void on_fullscreen_mode_changed (VideoOutputFSToggle toggle, VideoOutputManager *manager);
 
       std::set<VideoOutputManager *> managers;
 
-      VideoOutputStats videooutput_stats;
-      GTimeVal last_stats;
       int number_times_started;
 
       PMutex core_mutex;
-
-      Settings* settings;
     };
 /**
  * @}

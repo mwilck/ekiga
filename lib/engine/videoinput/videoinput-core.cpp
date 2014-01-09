@@ -39,6 +39,7 @@
 #include <glib/gi18n.h>
 
 #include "videoinput-core.h"
+#include "videooutput-manager.h"
 #include "videoinput-manager.h"
 
 using namespace Ekiga;
@@ -127,7 +128,7 @@ void VideoInputCore::VideoPreviewManager::Main ()
         PWaitAndSignal c(frame_mutex);
         if (frame) {
           videoinput_core.get_frame_data(frame);
-          videooutput_core->set_frame_data(frame, width, height, 0, 1);
+          videooutput_core->set_frame_data(frame, width, height, VideoOutputManager::LOCAL, 1);
         }
       }
     }

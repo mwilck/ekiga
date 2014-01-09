@@ -55,7 +55,7 @@
 namespace Ekiga
 {
 #define NB_VIDEO_SIZES 5
-
+#define MAX_VIDEO_SIZE (GM_4CIF_WIDTH*GM_4CIF_HEIGHT)
   static const struct {
     int width;
     int height;

@@ -170,6 +170,21 @@ AC_SUBST(GLIB_CFLAGS)
 AC_SUBST(GLIB_LIBS)
 
 
+dnl ##########################################
+dnl   Mandatory GST Clutter & Clutter support
+dnl ##########################################
+PKG_CHECK_MODULES([CLUTTER], [clutter-1.0])
+PKG_CHECK_MODULES([CLUTTER_GTK], [clutter-gtk-1.0])
+PKG_CHECK_MODULES([CLUTTER_GST], [clutter-gst-2.0 gstreamer-app-1.0 gstreamer-plugins-base-1.0 gstreamer-plugins-base-1.0])
+
+AC_SUBST(CLUTTER_CFLAGS)
+AC_SUBST(CLUTTER_LIBS)
+AC_SUBST(CLUTTER_GTK_CFLAGS)
+AC_SUBST(CLUTTER_GTK_LIBS)
+AC_SUBST(CLUTTER_GST_CFLAGS)
+AC_SUBST(CLUTTER_GST_LIBS)
+
+
 dnl ###############################
 dnl   Mandatory BOOST support
 dnl ###############################
@@ -384,51 +399,6 @@ fi],enable_shm=yes)
 fi
 AM_CONDITIONAL(HAVE_SHM, test "x$SHM" = "xenabled")
 
-dnl ###############################
-dnl Checks for Xv extension
-dnl ###############################
-XV="disabled"
-AC_ARG_ENABLE(xv, AS_HELP_STRING([--disable-xv],[enable XVideo hardware acceleration (default is enabled)]),
-[if test "x$enableval" = "xyes"; then
-  enable_xv=yes
-fi],enable_xv=yes)
-if test "x${gm_platform}" != "xmingw" -a "x$enable_xv" = "xyes"; then
-  PKG_CHECK_MODULES([XV], [xv],
-                    [AC_DEFINE(HAVE_XV,1,[XVideo support])
-                     XV="enabled"
-                    ])
-  AC_SUBST(XV_CFLAGS)
-  AC_SUBST(XV_LIBS)
-fi
-
-AM_CONDITIONAL(HAVE_XV, test "x$XV" = "xenabled")
-
-
-dnl ###########################################################################
-dnl Checks for DX extension
-dnl ###########################################################################
-DX="disabled"
-
-if test "x${gm_platform}" = "xmingw" ; then
-  AC_ARG_WITH(directx-dir, AS_HELP_STRING([--with-directx-dir=PFX],[location of DirectDraw]), with_directx_dir="$withval", with_directx_dir=".")
-
-  dnl Check for the includes presence
-  AC_MSG_CHECKING(for DirectX includes in ${with_directx_dir})
-  AC_MSG_RESULT()
-  if test -d ${with_directx_dir}; then
-    DX_CFLAGS="-I${with_directx_dir}"
-    DX_LIBS="$EKIGA_LIBS -lddraw"
-    AC_SUBST(DX_LIBS)
-    AC_SUBST(DX_CFLAGS)
-    DX="enabled"
-    AC_DEFINE(HAVE_DX,1,[DirectDraw support])
-  else
-    AC_MSG_ERROR([Unable to locate DirectX header files; --with-directx-dir is obligatory])
-  fi
-fi
-
-AM_CONDITIONAL(HAVE_DX, test "x$DX" = "xenabled")
-
 
 dnl ###############################
 dnl   DBUS Support
@@ -514,7 +484,7 @@ AM_CONDITIONAL(HAVE_AVAHI, test "x$found_avahi" = "xyes")
 
 
 dnl ###############################
-dnl    GStreamer Support
+dnl    GStreamer Plugins Support
 dnl ###############################
 GSTREAMER="disabled"
 
