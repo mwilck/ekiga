@@ -120,6 +120,8 @@ public:
     const std::set<std::string> existing_groups () const;
 
 private:
+    bool is_call_manager_ready;
+
     boost::shared_ptr<Opal::Sip::EndPoint> sip_endpoint;
     boost::weak_ptr<Ekiga::PresenceCore> presence_core;
     boost::shared_ptr<Ekiga::NotificationCore> notification_core;

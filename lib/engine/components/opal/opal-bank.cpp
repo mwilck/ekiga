@@ -50,6 +50,7 @@
 
 
 Opal::Bank::Bank (Ekiga::ServiceCore& core):
+  is_call_manager_ready(false),
   sip_endpoint(core.get<Opal::Sip::EndPoint> ("opal-sip-endpoint")),
   presence_core(core.get<Ekiga::PresenceCore> ("presence-core")),
   notification_core(core.get<Ekiga::NotificationCore> ("notification-core")),
@@ -280,7 +281,6 @@ Opal::Bank::on_new_account_form_submitted (bool submitted,
 
     add (acc_type, new_name, new_host, new_user, new_authentication_user,
 	 new_password, new_enabled, new_timeout);
-    save ();
   }
 }
 
@@ -314,12 +314,16 @@ Opal::Bank::add (Account::Type acc_type,
   Ekiga::BankImpl<Account>::add_connection (account, account->trigger_saving.connect (boost::bind (&Opal::Bank::save, this)));
   Ekiga::BankImpl<Account>::add_connection (account, account->presence_received.connect (boost::ref (presence_received)));
   Ekiga::BankImpl<Account>::add_connection (account, account->status_received.connect (boost::ref (status_received)));
+
+  if (is_call_manager_ready && enabled)
+    account->enable ();
 }
 
 
 void
 Opal::Bank::call_manager_ready ()
 {
+  is_call_manager_ready = true;
   for (iterator iter = begin ();
        iter != end ();
        ++iter) {
