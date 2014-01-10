@@ -517,6 +517,9 @@ Opal::Account::remove ()
     return;
   }
 
+  xmlUnlinkNode (node);
+  xmlFreeNode (node);
+
   trigger_saving ();
   removed ();
 }
