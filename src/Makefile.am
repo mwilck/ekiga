@@ -29,7 +29,6 @@ AM_CPPFLAGS = \
 
 BUILT_SOURCES = src/revision.h
 
-bin_SCRIPTS = ekiga-config-tool
 bin_PROGRAMS = ekiga
 
 EXTRA_PROGRAMS =
