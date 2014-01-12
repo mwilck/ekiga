@@ -286,43 +286,8 @@ GST::AudioOutputManager::detect_pulsesink_devices ()
 
   if (elt != NULL) {
 
-    GstPropertyProbe* probe = NULL;
-    const GParamSpec* pspec = NULL;
-    GValueArray* array = NULL;
-
-    gst_element_set_state (elt, GST_STATE_PAUSED);
-    probe = GST_PROPERTY_PROBE (elt);
-    pspec = gst_property_probe_get_property (probe, "device");
-
-    array = gst_property_probe_probe_and_get_values (probe, pspec);
-    if (array != NULL) {
-
-      for (guint index = 0; index < array->n_values; index++) {
-
-	GValue* device = NULL;
-	gchar* name = NULL;
-	gchar* descr = NULL;
-
-	device = g_value_array_get_nth (array, index);
-	g_object_set_property (G_OBJECT (elt), "device", device);
-	g_object_get (G_OBJECT (elt), "device-name", &name, NULL);
-	descr = g_strdup_printf ("pulsesink name=ekiga_volume device=%s",
-				 g_value_get_string (device));
-
-	if (name != 0) {
-
-	  devices_by_name[std::pair<std::string,std::string>("PULSEAUDIO", name)] = descr;
-
-	  g_free (name);
-	}
-	g_free (descr);
-      }
-      g_value_array_free (array);
-    }
-
     devices_by_name[std::pair<std::string,std::string>("PULSEAUDIO", "Default")] = "pulsesink name=ekiga_volume";
 
-    gst_element_set_state (elt, GST_STATE_NULL);
     gst_object_unref (GST_OBJECT (elt));
   }
 }
