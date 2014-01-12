@@ -87,11 +87,6 @@ main (int argc,
   int debug_level = 0;
 
   /* Globals */
-#ifndef WIN32
-  if (!XInitThreads ())
-    exit (1);
-#endif
-
 #if !GLIB_CHECK_VERSION(2,36,0)
   g_type_init ();
 #endif
