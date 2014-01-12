@@ -468,16 +468,74 @@ Opal::Bank::migrate_from_gconf (const std::list<std::string> old)
        iter != old.end ();
        ++iter) {
 
+    std::string protocol_name;
     Opal::Account::Type acc_type;
     std::string name;
     std::string host;
     std::string user;
     std::string auth_user;
     std::string password;
-    bool enabled;
-    unsigned timeout;
+    bool enabled = false;
+    unsigned timeout = 0;
+    int ii = 0;
+    char* pch = strtok ((char*)iter->c_str (), "|");
+    while (pch != NULL) {
 
-    // FIXME: here we need dirty strtok code to analyze the string in *iter
+      switch (ii) {
+
+      case 0:
+	enabled = atoi (pch);
+	break;
+
+      case 3:
+	name = pch;
+	break;
+
+      case 4:
+	protocol_name = pch;
+	break;
+
+      case 5:
+	host = pch;
+	break;
+
+      case 7:
+	user = pch;
+	break;
+
+      case 8:
+	auth_user = pch;
+	break;
+
+      case 9:
+	password = pch;
+	if (password == " ")
+	  password = "";
+	break;
+
+      case 10:
+	timeout = atoi (pch);
+	break;
+
+      case 1:
+      case 2:
+      case 6:
+      case 11:
+      default:
+	break;
+      }
+      pch = strtok (NULL, "|");
+      ii++;
+    }
+
+    if (host == "ekiga.net")
+      acc_type = Account::Ekiga;
+    else if (host == "sip.diamondcard.us")
+      acc_type = Account::DiamondCard;
+    else if (protocol_name == "SIP")
+      acc_type = Account::SIP;
+    else
+      acc_type = Account::H323;
 
     xmlNodePtr child = Opal::Account::build_node (acc_type, name, host, user, auth_user, password, enabled, timeout);
 
