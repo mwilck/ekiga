@@ -456,3 +456,41 @@ Opal::Bank::existing_groups () const
 
   return result;
 }
+
+void
+Opal::Bank::migrate_from_gconf (const std::list<std::string> old)
+{
+  xmlDoc* doc = xmlNewDoc (BAD_CAST "1.0");
+  xmlNodePtr node = xmlNewDocNode (doc, NULL, BAD_CAST "accounts", NULL);
+  xmlDocSetRootElement (doc, node);
+
+  for (std::list<std::string>::const_iterator iter = old.begin ();
+       iter != old.end ();
+       ++iter) {
+
+    Opal::Account::Type acc_type;
+    std::string name;
+    std::string host;
+    std::string user;
+    std::string auth_user;
+    std::string password;
+    bool enabled;
+    unsigned timeout;
+
+    // FIXME: here we need dirty strtok code to analyze the string in *iter
+
+    xmlNodePtr child = Opal::Account::build_node (acc_type, name, host, user, auth_user, password, enabled, timeout);
+
+    xmlAddChild (node, child);
+  }
+
+  xmlChar* buffer = NULL;
+  int doc_size = 0;
+  Ekiga::Settings* settings = new Ekiga::Settings (PROTOCOLS_SCHEMA);
+
+  xmlDocDumpMemory (doc, &buffer, &doc_size);
+  settings->set_string ("accounts", (const char*)buffer);
+  
+  delete settings;
+  xmlFreeDoc (doc);
+}

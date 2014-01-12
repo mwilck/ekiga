@@ -119,6 +119,10 @@ public:
 
     const std::set<std::string> existing_groups () const;
 
+
+    // FIXME: only here for the transition off gconf
+    static void migrate_from_gconf (const std::list<std::string> old);
+
 private:
     bool is_call_manager_ready;
 
