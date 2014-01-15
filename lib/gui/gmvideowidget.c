@@ -522,7 +522,7 @@ gm_video_widget_map_event_cb (GtkWidget *widget,
                               G_GNUC_UNUSED GdkEvent *event,
                               gpointer data)
 {
-  g_return_if_fail (GM_IS_VIDEO_WIDGET (widget));
+  g_return_val_if_fail (GM_IS_VIDEO_WIDGET (widget), FALSE);
 
   GmVideoWidget *self = GM_VIDEO_WIDGET (widget);
   self->priv = G_TYPE_INSTANCE_GET_PRIVATE (self, GM_TYPE_VIDEO_WIDGET, GmVideoWidgetPrivate);
@@ -557,7 +557,7 @@ gm_video_widget_set_stream_state (GmVideoWidget *self,
                                   const GM_STREAM_TYPE type,
                                   const GM_STREAM_STATE state)
 {
-  g_return_val_if_fail (self != NULL, NULL);
+  g_return_if_fail (self != NULL);
 
   self->priv = G_TYPE_INSTANCE_GET_PRIVATE (self, GM_TYPE_VIDEO_WIDGET, GmVideoWidgetPrivate);
 
