@@ -157,7 +157,7 @@ if test "x${gm_platform}" = "xmingw" ; then
 else
    PKG_CHECK_MODULES([GTK], [gtk+-3.0 >= 3.4.0 gnome-icon-theme >= 3.0.0])
 fi
-PKG_CHECK_MODULES([GLIB], [glib-2.0 >= 2.24.0 gmodule-2.0 gobject-2.0 gthread-2.0])
+PKG_CHECK_MODULES([GLIB], [glib-2.0 >= 2.24.0 gmodule-2.0 gobject-2.0 gthread-2.0 gio-2.0])
 AC_ARG_ENABLE([gtk-debug],
               [AS_HELP_STRING([--enable-gtk-debug],[enable GTK+ debug flags (default is disabled)])],
               [if test "x$enableval" = "xyes"; then
@@ -856,29 +856,23 @@ echo ""
 echo "================ Final configuration ==================="
 echo "          Installing into prefix  :  $prefix"
 echo ""
+echo "                   H.323 support  :  $H323"
+echo ""
 if test "x${gm_platform}" != "xmingw" ; then
 echo "                     GDU support  :  $GDU"
 echo "   Evolution-Data-Server support  :  $EDS"
 echo "                  NOTIFY support  :  $NOTIFY"
-fi
-echo "                    LDAP support  :  $LDAP"
-if test "x${gm_platform}" != "xmingw" ; then
 echo ""
 echo "             Video4Linux support  :  $VIDEO4LINUX"
 fi
+echo "                    LDAP support  :  $LDAP"
 echo ""
-echo "                  XVideo support  :  $XV"
 echo "           Shared Memory support  :  $SHM"
-if test "x${gm_platform}" = "xmingw" ; then
-echo "                 DirectX support  :  $DX"
-fi
-echo ""
-echo "                   H.323 support  :  $H323"
 echo ""
 if test "x${gm_platform}" != "xmingw" ; then
 echo "                    DBUS support  :  $DBUS"
 echo "            DBUS service support  :  $DBUS_SERVICE"
-echo "             mDNS/DNS-SD support  :  $AVAHI"
+echo "     mDNS/DNS-SD (avahi) support  :  $AVAHI"
 fi
 echo ""
 echo "The following features are experimental -- you've been warned:"
@@ -892,5 +886,5 @@ echo "                         OS Type  :  $target_os"
 echo "                    Machine Type  :  $target_cpu"
 echo "                      Byte Order  :  $byte_order"
 echo ""
-echo " If all settings are OK, type make and make install "
+echo " If all settings are OK, type make and make install"
 echo "========================================================"
