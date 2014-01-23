@@ -246,9 +246,8 @@ update: update-sources
 binaries:
 	@echo Checking prerequisites...
 	hash $(REALCC) $(REALCXX) $(LD) $(NM) $(AR) $(RANLIB) $(DLLTOOL) $(DLLWRAP) $(OBJDUMP) $(RC) $(AS)||(echo You need to install mingw-w64 or mingw32; exit 1)
-	hash tar unzip zip xz wget aclocal autoheader libtoolize automake autoconf pkg-config gnome-autogen.sh bison gdk-pixbuf-csource || (echo we need more binaries ; exit 1)
+	hash tar unzip zip xz wget aclocal autoheader libtoolize automake autoconf pkg-config gnome-autogen.sh bison glib-compile-schemas gdk-pixbuf-csource || (echo we need more binaries ; exit 1)
 	[ -f /usr/share/gnome-doc-utils/gnome-doc-utils.make ] || (echo gnome-doc-tools not installed; exit 1)
-	[ -f /usr/lib/`dpkg-architecture -qDEB_HOST_MULTIARCH`/pkgconfig/gconf-2.0.pc -o /usr/lib/pkgconfig/gconf-2.0.pc ] || (echo libgconf2-dev not installed; exit 1)
 	[ -f /usr/share/icons/gnome/index.theme ] || (echo gnome-icon-theme not installed; exit 1)
 	hash makensis || (echo nsis not installed; exit 1)
 	hash xmlto || (echo xmlto not installed; exit 1)
@@ -617,6 +616,7 @@ $(TARGETDIR)/zips: binaries $(EKIGA_DIR)/src/ekiga.exe
 	done
 	cp -r $(BUILDROOT)/share/locale $(EKIGA_PREFIX)/share
 	mkdir -p $(EKIGA_PREFIX)/share/glib-2.0; cp -r $(BUILDROOT)/share/glib-2.0/schemas $(EKIGA_PREFIX)/share/glib-2.0
+	cd $(EKIGA_PREFIX); mv -f glib-2.0/schemas/* share/glib-2.0/schemas; rmdir glib-2.0/schemas; rmdir glib-2.0; glib-compile-schemas share/glib-2.0/schemas
 ifeq ($(MINGW32), 1)
 	cd $(EKIGA_PREFIX); cp /usr/share/doc/mingw32-runtime/mingwm10.dll.gz . && gunzip mingwm10.dll.gz
 else
