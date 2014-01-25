@@ -227,6 +227,11 @@ void gm_video_widget_set_logo_scale (GmVideoWidget *video_widget,
  */
 gfloat gm_video_widget_get_logo_scale (GmVideoWidget *video_widget);
 
+/** Set the GmVideoWidget fullscreen or not.
+ * @param video_widget is the GmVideoWidget
+ */
+void gm_video_widget_set_fullscreen (GmVideoWidget *self,
+                                     const gboolean fs);
 
 /* GObject boilerplate */
 

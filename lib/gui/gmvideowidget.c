@@ -769,3 +769,15 @@ gm_video_widget_get_logo_scale (GmVideoWidget *self)
 
   return self->priv->logo_scale;
 }
+
+void
+gm_video_widget_set_fullscreen (GmVideoWidget *self,
+                                const gboolean fs)
+{
+  g_return_val_if_fail (GM_IS_VIDEO_WIDGET (self), -1);
+
+  ClutterActor *stage = NULL;
+
+  stage = gtk_clutter_embed_get_stage (GTK_CLUTTER_EMBED (self));
+  clutter_stage_set_fullscreen (CLUTTER_STAGE (stage), fs);
+}

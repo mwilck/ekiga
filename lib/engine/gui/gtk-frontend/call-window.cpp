@@ -1889,17 +1889,21 @@ ekiga_call_window_toggle_fullscreen (EkigaCallWindow *cw)
     gtk_widget_hide (cw->priv->main_menu);
     gtk_widget_hide (cw->priv->call_panel_toolbar);
     gtk_widget_hide (cw->priv->statusbar_ebox);
+    gtk_window_maximize (GTK_WINDOW (cw));
     gtk_window_fullscreen (GTK_WINDOW (cw));
+    gm_video_widget_set_fullscreen (GM_VIDEO_WIDGET (cw->priv->video_widget), true);
     gtk_window_set_keep_above (GTK_WINDOW (cw), true);
   }
   else {
     gtk_widget_show (cw->priv->main_menu);
     gtk_widget_show (cw->priv->call_panel_toolbar);
     gtk_widget_show (cw->priv->statusbar_ebox);
+    gtk_window_unmaximize (GTK_WINDOW (cw));
     gtk_window_unfullscreen (GTK_WINDOW (cw));
     gtk_window_set_keep_above (GTK_WINDOW (cw),
                                cw->priv->video_display_settings->get_bool ("stay-on-top"));
     gm_window_restore (GM_WINDOW (cw));
+    gm_video_widget_set_fullscreen (GM_VIDEO_WIDGET (cw->priv->video_widget), false);
   }
 }
 
