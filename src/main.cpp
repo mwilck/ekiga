@@ -192,11 +192,6 @@ main (int argc,
 #endif
   PTRACE (1, "PTLIB version " << PTLIB_VERSION);
   PTRACE (1, "OPAL version " << OPAL_VERSION);
-#if defined HAVE_XV || defined HAVE_DX
-  PTRACE (1, "Accelerated rendering support enabled");
-#else
-  PTRACE (1, "Accelerated rendering support disabled");
-#endif
 #ifdef HAVE_DBUS
   PTRACE (1, "DBUS support enabled");
 #else
