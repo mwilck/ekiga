@@ -26,7 +26,7 @@ IMAGES_FILES= \
 	32x32/multimedia-headset.png \
 	32x32/multimedia-headset.svg \
 	256x256/multimedia-headset.png \
-	256x256/ekiga-full-icon.png \
+	256x256/@PACKAGE_NAME@-full-icon.png \
 	16x16/audio-volume.png \
 	16x16/brightness.png \
 	16x16/color.png \
@@ -38,7 +38,7 @@ IMAGES_FILES= \
 	16x16/user-inacall.png \
 	16x16/video-settings.png \
 	16x16/whiteness.png \
-	ekiga-logo.png \
+	@PACKAGE_NAME@-logo.png \
 	24x24/phone-hang-up.png \
 	24x24/phone-pick-up.png \
 	gm_powermeter_default_00.xpm \
