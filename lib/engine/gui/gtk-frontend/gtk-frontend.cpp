@@ -144,8 +144,6 @@ GtkFrontend::~GtkFrontend ()
 void
 GtkFrontend::build ()
 {
-  StatusIcon *s = NULL;
-
   boost::shared_ptr<Ekiga::ContactCore> contact_core =
     core.get<Ekiga::ContactCore> ("contact-core");
   boost::shared_ptr<Ekiga::PersonalDetails> details =
@@ -183,10 +181,9 @@ GtkFrontend::build ()
   // BEWARE: the status icon needs the chat window at startup
   // FIXME: the above BEWARE is related to a FIXME in the main window code,
   // FIXME: hence should disappear with it
-  s = status_icon_new (core);
-  if (s) {
-    status_icon =
-      boost::shared_ptr<StatusIcon> (status_icon_new (core), g_object_unref);
+  status_icon =
+    boost::shared_ptr<StatusIcon> (status_icon_new (core), g_object_unref);
+  if (status_icon) {
     g_signal_connect (status_icon.get (), "clicked",
 		      G_CALLBACK (on_status_icon_clicked), this);
   }
