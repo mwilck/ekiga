@@ -18,8 +18,8 @@ msgstr ""
 "Project-Id-Version: ekiga.ta\n"
 "Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?"
 "product=ekiga&keywords=I18N+L10N&component=general\n"
-"POT-Creation-Date: 2014-01-18 11:52+0000\n"
-"PO-Revision-Date: 2014-01-21 18:03+0530\n"
+"POT-Creation-Date: 2014-01-28 20:17+0000\n"
+"PO-Revision-Date: 2014-01-29 16:33+0530\n"
 "Last-Translator: Shantha kumar <shkumar@redhat.com>\n"
 "Language-Team: American English <kde-i18n-doc@kde.org>\n"
 "Language: en_US\n"
@@ -182,17 +182,15 @@ msgid "If enabled, use silence detection with the codecs supporting it"
 msgstr "தேர்வு செய்யப்பட்டிருந்தால் ஆதரவு தரும் கோடக்கில் அமைதியை தேடும்"
 
 #: ../ekiga.schemas.in.in.h:27
-#, fuzzy
 #| msgid "Enable echo cancelation"
 msgid "Enable echo cancellation"
-msgstr "எதிரொலி ரத்தானதை செயல்படுத்து"
+msgstr "எதிரொலி ரத்துசெய்தலை செயல்படுத்து"
 
 #: ../ekiga.schemas.in.in.h:28
 #: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:942
-#, fuzzy
 #| msgid "If enabled, use echo cancelation"
 msgid "If enabled, use echo cancellation"
-msgstr "செயல்படுத்தப்பட்டால், எதிரொலி ரத்தினை பயன்படுத்து"
+msgstr "எதிரொலி ரத்துசெய்தல் செயல்படுத்தப்பட்டிருந்தால், அதைப் பயன்படுத்து"
 
 #: ../ekiga.schemas.in.in.h:29
 msgid "Alternative audio output device"
@@ -449,20 +447,19 @@ msgstr ""
 "படுத்தி உள்நுழைதல்நெட்மீட்டிங் இன் சில பதிப்புகளில் வேலையை நிறுத்திவிடும்"
 
 #: ../ekiga.schemas.in.in.h:74
-#, fuzzy
 #| msgid "Enable early H.245"
 msgid "Enable H.239"
-msgstr "முன்கூட்டியே H.245 ஐ செயல்படுத்து"
+msgstr "H.239 ஐ செயல்படுத்து"
 
 #: ../ekiga.schemas.in.in.h:75
 msgid "This enables H.239 capability for additional video roles"
-msgstr ""
+msgstr "இது கூடுதல் வீடியோ ரோல்களின் H.239 அம்சங்களை செயல்படுத்தும்"
 
 #: ../ekiga.schemas.in.in.h:76
 #: ../lib/engine/gui/gtk-frontend/call-window.cpp:2037
 #: ../lib/engine/gui/gtk-frontend/call-window.cpp:2038
 msgid "Extended Video Roles"
-msgstr ""
+msgstr "நீட்டிக்கபப்ட்ட வீடியோ ரோல்கள்"
 
 #: ../ekiga.schemas.in.in.h:77
 msgid ""
@@ -470,6 +467,10 @@ msgid ""
 "video\"), 1 (for \"allow per content role mask\"), 2 (for \"force "
 "presentation\"), or 3 (for \"force live role\")"
 msgstr ""
+"H.239 வீடியோ ரோலைத் தேர்ந்தெடுக்கவும். அதன் மதிப்புகள் 0 (\"நீட்டிக்கப்பட்ட "
+"வீடியோவை முடக்க\"), 1 (\"ஒவ்வொரு உள்ளடக்கத்திற்குமான ரோல் மாஸ்க்கை "
+"அனுமதிக்க\"), 2 (\"விளக்கக்காட்சையை நிர்ப்பந்திக்க\") அல்லது 3 (\"நேரடி ரோலை "
+"நிர்ப்பந்திக்க\") என இருக்கலாம்."
 
 #: ../ekiga.schemas.in.in.h:78
 msgid ""
@@ -501,7 +502,6 @@ msgid "Forward calls to the given host if busy"
 msgstr "கணிணி பயன்பாட்டிவ் இருந்தால் அழைப்புகளை முன்னோக்கு"
 
 #: ../ekiga.schemas.in.in.h:82
-#, fuzzy
 #| msgid ""
 #| "If enabled, all incoming calls will be forwarded to the host that is "
 #| "specified in the field below if you already are in a call or if you are "
@@ -511,10 +511,10 @@ msgid ""
 "specified in the field below if you already are in a call or if you are in "
 "busy mode"
 msgstr ""
-"தேர்வு செய்யப்பட்டிருந்தால் கீழே குறிப்பிட்டது போல் அழைப்புகளை முன்னோக்கி "
-"புரவலனுக்கு "
-"அனுப்பும் நீங்கள் ஏற்கெனவே அழைக்கப்பட்டிருந்தால் உங்களுக்கு எந்த தொல்லையும் "
-"தராது."
+"செயற்படுத்தினால், நீங்கள் வேறு அழைப்பை ஏற்ற போது அல்லது பணிமிகுதி முறைமையில் "
+"உள்ளபோ  "
+"அனைத்து  உள் வரும் அழைப்புகளும் கீழே குறிப்பிட்டுள்ள புலங்களில் உள்ள "
+"புரவலனுக்கு அனுப்பப்படும்"
 
 #: ../ekiga.schemas.in.in.h:83
 msgid "Forward calls to the given host if no answer"
@@ -565,12 +565,10 @@ msgstr ""
 "இடைவெளியை நொடிகளில் உள்ளிடுக."
 
 #: ../ekiga.schemas.in.in.h:91
-#| msgid "Position on the screen of the chat window"
 msgid "Position on the screen of the call window"
 msgstr "திரையில் அழைப்பு சாளரத்தின் இடநிலை"
 
 #: ../ekiga.schemas.in.in.h:92
-#| msgid "Size of the chat window"
 msgid "Size of the call window"
 msgstr "அழைப்பு சாளரத்தின் அளவு"
 
@@ -865,14 +863,12 @@ msgstr "இயலுமைபடுத்தினால் தானியங�
 #: ../lib/engine/audiooutput/audiooutput-core.cpp:227
 #: ../lib/engine/videoinput/videoinput-core.cpp:245
 #: ../lib/engine/videoinput/videoinput-core.cpp:250
-#| msgid "No usable audio codecs detected"
 msgid "New device detected"
 msgstr "புதிய சாதனம் கண்டறியப்பட்டது"
 
 #: ../lib/engine/audioinput/audioinput-core.cpp:206
 #: ../lib/engine/audiooutput/audiooutput-core.cpp:227
 #: ../lib/engine/videoinput/videoinput-core.cpp:250
-#| msgid "Use TLS"
 msgid "Use it"
 msgstr "அதைப் பயன்படுத்து"
 
@@ -902,7 +898,6 @@ msgstr "தவறியது"
 #: ../lib/engine/components/local-roster/local-cluster.cpp:82
 #: ../lib/engine/components/local-roster/local-heap.cpp:118
 #: ../plugins/evolution/evolution-book.cpp:343
-#| msgid "New _Contact"
 msgid "_New Contact"
 msgstr "புதிய தொடர்பு (_N)"
 
@@ -1245,7 +1240,6 @@ msgstr "பயனர் பெயர், எ.கா ராமன்"
 #. * SIP knows two usernames: The name for the client ("User") and the name
 #. * for the authentication procedure ("Authentication user")
 #: ../lib/engine/components/opal/opal-account.cpp:469
-#| msgid "Authentication User:"
 msgid "Authentication user:"
 msgstr "அங்கீகரிப்பு பயனர்:"
 
@@ -1326,7 +1320,6 @@ msgstr "பதிவு நீக்க முடியவில்லை"
 
 #: ../lib/engine/components/opal/opal-account.cpp:700
 #: ../lib/engine/components/opal/opal-account.cpp:734
-#| msgid "Could not register"
 msgid "Could not register to "
 msgstr "இதற்குப் பதிவு செய்ய முடியவில்லை"
 
@@ -1373,17 +1366,14 @@ msgid "Meal"
 msgstr "உணவு"
 
 #: ../lib/engine/components/opal/opal-account.cpp:918
-#| msgid "Settings"
 msgid "Meeting"
 msgstr "சந்திப்பு"
 
 #: ../lib/engine/components/opal/opal-account.cpp:923
-#| msgid "_Office phone:"
 msgid "On the phone"
 msgstr "தொலைபேசியில்"
 
 #: ../lib/engine/components/opal/opal-account.cpp:928
-#| msgid "Play"
 msgid "Playing"
 msgstr "விளையாட்டு"
 
@@ -1443,7 +1433,6 @@ msgid "_Account ID:"
 msgstr "(_A) கணக்கு அடையாளம்:"
 
 #: ../lib/engine/components/opal/opal-bank.cpp:120
-#| msgid "_PIN Code:"
 msgid "_PIN code:"
 msgstr "PIN குறியீடு: (_P)"
 
@@ -1467,7 +1456,6 @@ msgid "_Registrar:"
 msgstr "(_R) பதிவாளர்:"
 
 #: ../lib/engine/components/opal/opal-bank.cpp:138
-#| msgid "_Authentication User:"
 msgid "_Authentication user:"
 msgstr "அங்கீகரிப்பு பயனர் (_A):"
 
@@ -1556,12 +1544,10 @@ msgid "Call completed"
 msgstr "அழைப்பு முடிந்தது"
 
 #: ../lib/engine/components/opal/opal-call.cpp:685
-#| msgid "Missed call from %s"
 msgid "Missed call from"
 msgstr "இவரிடமிருந்து தவறிய அழைப்பு"
 
 #: ../lib/engine/components/opal/opal-call.cpp:687
-#| msgid "Missed call from %s"
 msgid "Missed call"
 msgstr "தவறிய அழைப்பு"
 
@@ -1784,7 +1770,6 @@ msgid "Globally not acceptable"
 msgstr "உலகளவில் ஏற்றுக்கொள்ளவில்லை"
 
 #: ../lib/engine/components/opal/sip-endpoint.cpp:923
-#| msgid "Could not send message"
 msgid "Could not send message: "
 msgstr "செய்தி அனுப்ப முடியவில்லை:"
 
@@ -2068,7 +2053,6 @@ msgstr "செயலிழப்பு"
 #: ../lib/engine/gui/gtk-frontend/call-window.cpp:1193
 #: ../lib/engine/gui/gtk-frontend/call-window.cpp:1206
 #: ../lib/engine/gui/gtk-frontend/call-window.cpp:2722
-#| msgid "Chat Window"
 msgid "Call Window"
 msgstr "அழைப்பு சாளரம்"
 
@@ -2083,7 +2067,6 @@ msgstr "அழைப்பு மீட்கப்பட்டது"
 
 #: ../lib/engine/gui/gtk-frontend/call-window.cpp:1318
 #, c-format
-#| msgid "Connected with %s"
 msgid ""
 "Connected with %s\n"
 "%s"
@@ -2095,12 +2078,10 @@ msgstr ""
 #. * is shown in a tooltip, there is no space constraint
 #: ../lib/engine/gui/gtk-frontend/call-window.cpp:1526
 #, c-format
-#| msgid "TX: %dx%d "
 msgid "TX: %dx%d"
 msgstr "TX: %dx%d"
 
 #: ../lib/engine/gui/gtk-frontend/call-window.cpp:1528
-#| msgid "TX: %dx%d "
 msgid "TX: / "
 msgstr "TX: / "
 
@@ -2108,22 +2089,15 @@ msgstr "TX: / "
 #. * is shown in a tooltip, there is no space constraint
 #: ../lib/engine/gui/gtk-frontend/call-window.cpp:1533
 #, c-format
-#| msgid "RX: %dx%d "
 msgid "RX: %dx%d"
 msgstr "RX: %dx%d"
 
 #: ../lib/engine/gui/gtk-frontend/call-window.cpp:1535
-#| msgid "RX: %dx%d "
 msgid "RX: / "
 msgstr "RX: / "
 
 #: ../lib/engine/gui/gtk-frontend/call-window.cpp:1544
 #, c-format
-#| msgid ""
-#| "Lost packets: %.1f %%\n"
-#| "Late packets: %.1f %%\n"
-#| "Out of order packets: %.1f %%\n"
-#| "Jitter buffer: %d ms%s%s%s"
 msgid ""
 "Lost packets: %.1f %%\n"
 "Late packets: %.1f %%\n"
@@ -2142,7 +2116,6 @@ msgstr ""
 #. Translators: A = Audio, V = Video, FPS = Frames per second
 #: ../lib/engine/gui/gtk-frontend/call-window.cpp:1644
 #, c-format
-#| msgid "A:%.1f/%.1f   V:%.1f/%.1f   FPS:%d/%d"
 msgid "A:%.1f/%.1f V:%.1f/%.1f FPS:%d/%d"
 msgstr "A:%.1f/%.1f V:%.1f/%.1f FPS:%d/%d"
 
@@ -2198,7 +2171,6 @@ msgid "Audio Settings"
 msgstr "கேட்பொலி அமைவுகள்"
 
 #: ../lib/engine/gui/gtk-frontend/call-window.cpp:1978
-#| msgid "Call"
 msgid "_Call"
 msgstr "அழை (_C)"
 
@@ -2207,17 +2179,14 @@ msgid "_Pick up"
 msgstr "பதிலளி (_P)"
 
 #: ../lib/engine/gui/gtk-frontend/call-window.cpp:1980
-#| msgid "Hold the current call"
 msgid "Pick up the current call"
 msgstr "தற்போதைய அழைப்புக்கு பதிலளி"
 
 #: ../lib/engine/gui/gtk-frontend/call-window.cpp:1984
-#| msgid "_Hang up"
 msgid "_Hangup"
 msgstr "முடி (_H)"
 
 #: ../lib/engine/gui/gtk-frontend/call-window.cpp:1984
-#| msgid "Hold the current call"
 msgid "Hangup the current call"
 msgstr "தற்போதைய அழைப்பை முடி"
 
@@ -2302,7 +2271,6 @@ msgstr "அழைப்புகளை மாற்று:"
 
 #: ../lib/engine/gui/gtk-frontend/call-window.cpp:2397
 #: ../lib/engine/gui/gtk-frontend/call-window.cpp:2412
-#| msgid "Hold the current call"
 msgid "Hang up the current call"
 msgstr "தற்போதைய அழைப்பை முடி"
 
@@ -2332,8 +2300,6 @@ msgstr "_S புன்னகை..."
 
 #: ../lib/engine/gui/gtk-frontend/chat-window.cpp:139
 #, c-format
-#| msgid "You have %d message"
-#| msgid_plural "You have %d messages"
 msgid "You have %d unread text message"
 msgid_plural "You have %d unread text messages"
 msgstr[0] "உங்களுக்கு %d படிக்காத செய்தி உள்ளது"
@@ -2424,10 +2390,6 @@ msgid "Forward calls to the given host if _busy"
 msgstr "(_b)புரவலன்ணி பயன்பாட்டிவ் இருந்தால் அழைப்புகளை முன்னோக்கு"
 
 #: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:499
-#| msgid ""
-#| "If enabled, all incoming calls will be forwarded to the host that is "
-#| "specified in the protocol settings if you already are in a call or if you "
-#| "are in Do Not Disturb mode"
 msgid ""
 "If enabled, all incoming calls will be forwarded to the host that is "
 "specified in the protocol settings if you already are in a call or if you "
@@ -2554,7 +2516,6 @@ msgstr ""
 "மற்றும் H.245 உள்நுழைதல் இணைய மாநாட்டின் சில பதிப்புகளில் வேலை செய்யாது"
 
 #: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:686
-#| msgid "Enable Account"
 msgid "Enable H.239 control"
 msgstr "H.239 கட்டுப்பாட்டை செயல்படுத்து"
 
@@ -2567,7 +2528,6 @@ msgid "Extended Video Roles:"
 msgstr "நீட்டிக்கபப்ட்ட வீடியோ ரோல்கள்:"
 
 #: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:688
-#| msgid "Select the transmitted video size"
 msgid "Select the H.239 Video Role"
 msgstr "H.239 வீடியோ ரோலைத் தேர்ந்தெடுக்கவும்"
 
@@ -2591,7 +2551,6 @@ msgid "INFO"
 msgstr "INFO"
 
 #: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:716
-#| msgid "_Outbound Proxy:"
 msgid "_Outbound proxy:"
 msgstr "வெளிசெல் பதிலி: (_O)"
 
@@ -2601,7 +2560,6 @@ msgid "Audio Devices"
 msgstr "ஒலிக்கருவிகள்"
 
 #: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:752
-#| msgid "Ringing Device"
 msgid "Ringing device:"
 msgstr "ரிங்கின் சாதனம்:"
 
@@ -2702,12 +2660,10 @@ msgstr "_j அதிக பட்ச அபாய இடையகம் மி�
 
 #. Translators: the full sentence is Keep a minimum video quality of X %
 #: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:972
-#| msgid "Picture Quality"
 msgid "Picture quality"
 msgstr "படத் தரம்"
 
 #: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:972
-#| msgid "Frame Rate"
 msgid "Frame rate"
 msgstr "சட்ட வீதம்"
 
@@ -3075,7 +3031,6 @@ msgid "Please edit the following fields"
 msgstr "தயவு செய்து  பின்வரும் புலங்களை திருத்தவும்"
 
 #: ../plugins/ldap/ldap-book.cpp:944
-#| msgid "Book _Name:"
 msgid "Book _name:"
 msgstr "புத்தக பெயர் (_N):"
 
@@ -3100,12 +3055,10 @@ msgid "Subtree"
 msgstr "துணைமரம்"
 
 #: ../plugins/ldap/ldap-book.cpp:953
-#| msgid "Single Level"
 msgid "Single level"
 msgstr "ஒற்றை நிலை"
 
 #: ../plugins/ldap/ldap-book.cpp:954
-#| msgid "_Search Scope"
 msgid "_Search scope"
 msgstr "தேடல் எல்லை (_S)"
 
@@ -3116,12 +3069,10 @@ msgstr "தேடல் எல்லை (_S)"
 #. * most LDAP servers it's "CommonName".
 #.
 #: ../plugins/ldap/ldap-book.cpp:969
-#| msgid "_DisplayName Attribute:"
 msgid "_DisplayName attribute:"
 msgstr "DisplayName பண்புரு: (_D)"
 
 #: ../plugins/ldap/ldap-book.cpp:970
-#| msgid "Call _Attributes:"
 msgid "Call _attributes:"
 msgstr "அழைப்பு பண்புருக்கள்: (_A)"
 
@@ -3130,7 +3081,6 @@ msgid "The field you are searching for"
 msgstr "நீங்கள் தேடும் புலம்"
 
 #: ../plugins/ldap/ldap-book.cpp:972 ../plugins/ldap/ldap-book.cpp:974
-#| msgid "_Filter Template:"
 msgid "_Filter template:"
 msgstr "வடிப்பி மாதிரிஉரு (_F):"
 
@@ -3169,7 +3119,6 @@ msgid "Use SASL"
 msgstr "SASLஐ பயன்படுத்து"
 
 #: ../plugins/ldap/ldap-book.cpp:1002
-#| msgid "SASL _Mechanism"
 msgid "SASL _mechanism"
 msgstr "SASL இயங்கம்சம் (_m)"
 
@@ -3186,12 +3135,10 @@ msgid "Please provide a Server URI\n"
 msgstr "ஒரு சேவையக URIஐ கொடுக்கவும்\n"
 
 #: ../plugins/ldap/ldap-book.cpp:1040
-#| msgid "Please provide a DisplayName Attribute\n"
 msgid "Please provide a DisplayName attribute\n"
 msgstr "ஒரு DisplayName பண்புக்கூறை வழங்கவும்\n"
 
 #: ../plugins/ldap/ldap-book.cpp:1043
-#| msgid "Please provide a Call Attribute\n"
 msgid "Please provide a Call attribute\n"
 msgstr "ஒரு அழைப்பு பண்புருவை வழங்கவும்\n"
 
@@ -3270,7 +3217,6 @@ msgstr "சேவையகம்:"
 
 #: ../plugins/loudmouth/loudmouth-account.cpp:350
 #: ../plugins/loudmouth/loudmouth-bank.cpp:127
-#| msgid "The user name, e.g. jim"
 msgid "The server, e.g. jabber.org"
 msgstr "சேவையகம், எ.கா. jabber.org"
 
@@ -3295,11 +3241,10 @@ msgid ""
 "what it is"
 msgstr ""
 "ஒரே கணக்கிற்கு பதிவு செய்யப்பட்ட சில முனையங்களை வித்தியாசப்படுத்த "
-"அனுமதிக்கும் வீடு அல்லது அலுவலகம் போன்ற வளம்; என்ன என்று தெரியாவிட்டால் "
-"காலியாக விடவும்"
+"அனுமதிக்கும் வீடு "
+"அல்லது அலுவலகம் போன்ற வளம்; என்ன என்று தெரியாவிட்டால் காலியாக விடவும்"
 
 #: ../plugins/loudmouth/loudmouth-bank.cpp:111
-#| msgid "_Add a jabber/XMPP account"
 msgid "_Add a Jabber/XMPP Account"
 msgstr "ஜாபர்/எக்ஸ்எம்பிபி கணக்கு ஒன்று  சேர் (_A)"
 
@@ -3317,12 +3262,10 @@ msgid "Open a group chat room"
 msgstr "குழு அரட்டை அறையைத் திற"
 
 #: ../plugins/loudmouth/loudmouth-dialect.cpp:134
-#| msgid "Please provide a Server URI\n"
 msgid "Please provide a room name"
 msgstr "ஒரு அறை பெயரை வழங்கவும்"
 
 #: ../plugins/loudmouth/loudmouth-dialect.cpp:136
-#| msgid "Rename"
 msgid "Room name"
 msgstr "அறை பெயர்"
 
@@ -3574,12 +3517,16 @@ msgid ""
 "The following two pages allow you to create such accounts."
 msgstr ""
 "உங்களிடம் SIP அல்லது H323 கணக்கு இல்லாவிட்டால், ekiga வை உங்கள் உள்ளமை "
-"பிணையத்தில் (நிறுவனத்திற்குள் உதாரணமாக) மட்டுமே பயன்படுத்த முடியும்.  "
-"இணையத்தில் உள்ளவர்கள் உங்களை அணுக வேண்டுமானால் உங்களுக்கு ஒரு கணக்கு இருக்க "
-"வேண்டும்.  பல வலைத்தளங்களில் நீங்கள் ஒரு கணக்கை உருவாக்கலாம்.  ஒரு இலவச ekiga."
-"net கணக்கை உருவாக்கப் பரிந்துரைக்கிறோம், அதைக் கொண்டு நீங்கள் ஒரு SIP கணக்கு "
-"கொண்டுள்ள எவருடனும் இணைய முடியும்.  சாதாரண தொலைபேசிகளையும் அழைக்க "
-"விரும்பினால், சிக்கனமான கால் அவுட் கணக்கை வாங்கப் பரிந்துரைக்கிறோம்.\n"
+"பிணையத்தில் "
+"(நிறுவனத்திற்குள் உதாரணமாக) மட்டுமே பயன்படுத்த முடியும்.  இணையத்தில் "
+"உள்ளவர்கள் உங்களை "
+"அணுக வேண்டுமானால் உங்களுக்கு ஒரு கணக்கு இருக்க வேண்டும்.  பல வலைத்தளங்களில் "
+"நீங்கள் ஒரு "
+"கணக்கை உருவாக்கலாம்.  ஒரு இலவச ekiga.net கணக்கை உருவாக்கப் பரிந்துரைக்கிறோம், "
+"அதைக் "
+"கொண்டு நீங்கள் ஒரு SIP கணக்கு கொண்டுள்ள எவருடனும் இணைய முடியும்.  சாதாரண "
+"தொலைபேசிகளையும் அழைக்க விரும்பினால், சிக்கனமான கால் அவுட் கணக்கை வாங்கப் "
+"பரிந்துரைக்கிறோம்.\n"
 "\n"
 "பின்வரும் இரு பக்கங்களில் நீங்கள் அத்தகைய கணக்குகளை உருவாக்கலாம்."
 
@@ -3789,7 +3736,6 @@ msgid "Ekiga Configuration Assistant (%d of %d)"
 msgstr "Ekiga அமைப்பு உதவியாளர் (%d,%d இல்)"
 
 #: ../src/gui/main.cpp:133
-#| msgid "Prints debug messages in the console (level between 1 and 5)"
 msgid "Prints debug messages in the console (level between 1 and 8)"
 msgstr "வழு நீக்கு செய்திகளை கன்சோலில் (மட்டம் 1 முதல் 8 வரை) அச்சிடுகிறது"
 
@@ -3885,7 +3831,6 @@ msgid "Change your preferences"
 msgstr "உங்கள் விருப்பங்களை மாற்று"
 
 #: ../src/gui/main_window.cpp:1341
-#| msgid "Video preview"
 msgid "_Video Preview"
 msgstr "வீடியோ மாதிரிக்காட்சி (_V)"
 
@@ -3902,7 +3847,6 @@ msgid "_Call History"
 msgstr "_C அழைப்பு  வரலாறு"
 
 #: ../src/gui/main_window.cpp:1367
-#| msgid "Show offline _contacts"
 msgid "Show Offline _Contacts"
 msgstr "இணைப்பில் இல்லா தொடர்புகளை காட்டுக (_c)"
 
@@ -3919,7 +3863,6 @@ msgid "Ekiga"
 msgstr "எகிகா "
 
 #: ../src/gui/statusmenu.cpp:87
-#| msgid "Disable"
 msgid "Available"
 msgstr "பேசலாம்"
 
@@ -3928,7 +3871,6 @@ msgid "Away"
 msgstr "வெளியில்"
 
 #: ../src/gui/statusmenu.cpp:89
-#| msgid "Busy Here"
 msgid "Busy"
 msgstr "வேலையில்"
 
