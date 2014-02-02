@@ -29,10 +29,10 @@
 /*
  *                         gmwindow.h -  description
  *                         -------------------------
- *   begin                : 16 August 2007 
- *   copyright            : (c) 2007 by Damien Sandras 
- *   description          : Implementation of a GtkWindow able to restore
- *                          its position and size in a GmConf key.
+ *   begin                : 16 August 2007
+ *   copyright            : (c) 2007 by Damien Sandras
+ *   description          : Implementation of a GtkApplicationWindow able
+ *                          to restore its position and size in a GmConf key.
  *
  */
 
@@ -52,13 +52,13 @@ typedef struct _GmWindowClass GmWindowClass;
 /* GObject thingies */
 struct _GmWindow
 {
-  GtkWindow parent;
+  GtkApplicationWindow parent;
   GmWindowPrivate *priv;
 };
 
 struct _GmWindowClass
 {
-  GtkWindowClass parent;
+  GtkApplicationWindowClass parent;
 };
 
 /* Public API */
@@ -133,6 +133,19 @@ void gm_window_set_stay_on_top (GmWindow *window,
  * @param window is the GmWindow
  */
 gboolean gm_window_get_stay_on_top (GmWindow *window);
+
+
+/** Set the GmWindow GtkApplication
+ * @param window is the GmWindow
+ * @param application is the GtkApplication to link the window with
+ */
+void gm_window_set_application (GmWindow *window,
+                                GtkApplication *application);
+
+/** Get the GmWindow linked GtkApplication
+ * @param window is the GmWindow
+ */
+GtkApplication *gm_window_get_application (GmWindow *window);
 
 
 /** Check whether a window is visible or not
