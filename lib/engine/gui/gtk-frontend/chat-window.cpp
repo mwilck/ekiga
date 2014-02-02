@@ -39,7 +39,9 @@
 #include <glib/gi18n.h>
 
 #include "chat-core.h"
+#include "audiooutput-core.h"
 #include "notification-core.h"
+#include "ekiga-settings.h"
 
 #include "form-dialog-gtk.h"
 #include "scoped-connections.h"
@@ -51,9 +53,13 @@
 struct _ChatWindowPrivate
 {
   boost::shared_ptr<Ekiga::NotificationCore> notification_core;
+  boost::shared_ptr<Ekiga::AudioOutputCore> audiooutput_core;
   Ekiga::scoped_connections connections;
 
   GtkWidget* notebook;
+
+  /* GSettings */
+  boost::shared_ptr<Ekiga::Settings> sound_events_settings;
 };
 
 enum {
@@ -103,6 +109,15 @@ static void on_some_chat_user_requested (ChatWindow* self,
 					 GtkWidget* page);
 
 static void show_chat_window_cb (ChatWindow *self);
+
+/* DESCRIPTION  :  This callback is called when the chat window alerts about
+ *                 unread messages
+ * BEHAVIOR     :  Plays a sound (if enabled)
+ * PRE          :  /
+ */
+static void on_chat_unread_alert (GtkWidget*,
+				  gpointer);
+
 
 /* helper (implementation) */
 
@@ -390,9 +405,24 @@ show_chat_window_cb (ChatWindow *self)
   gtk_window_present (GTK_WINDOW (self));
 }
 
+static void
+on_chat_unread_alert (G_GNUC_UNUSED GtkWidget* widget,
+		      gpointer data)
+{
+  ChatWindow *self = CHAT_WINDOW (data);
+
+  g_return_if_fail (self != NULL);
+  if (!self->priv->sound_events_settings->get_bool ("enable-new-message-sound"))
+    return;
+
+  std::string file_name_string = self->priv->sound_events_settings->get_string ("new-message-sound");
+
+  if (!file_name_string.empty ())
+    self->priv->audiooutput_core->play_file (file_name_string);
+}
+
 
 /* GObject code */
-
 static void
 chat_window_finalize (GObject* obj)
 {
@@ -438,26 +468,33 @@ chat_window_init (ChatWindow* self)
 {
   /* we can't do much here since we get the Chat as reference... */
   gtk_window_set_title (GTK_WINDOW (self), _("Chat Window"));
+
+  self->priv = new ChatWindowPrivate;
 }
 
-/* public api */
 
+/* Public API */
 GtkWidget*
-chat_window_new (Ekiga::ServiceCore& core,
-		 const char* key)
+chat_window_new (GmApplication *app)
 {
   ChatWindow* self = NULL;
   GtkAccelGroup *accel = NULL;
 
+  g_return_val_if_fail (GM_IS_APPLICATION (app), NULL);
+
+  Ekiga::ServiceCorePtr core = gm_application_get_core (app);
+
   self = (ChatWindow*)g_object_new (CHAT_WINDOW_TYPE,
-				    "key", key,
-                                    "hide_on_esc", FALSE,
+                                    "application", GTK_APPLICATION (app),
+                                    "key", USER_INTERFACE ".chat-window",
 				    NULL);
 
-  self->priv = new ChatWindowPrivate;
-
+  self->priv->sound_events_settings =
+    boost::shared_ptr<Ekiga::Settings> (new Ekiga::Settings (SOUND_EVENTS_SCHEMA));
   self->priv->notification_core =
-    core.get<Ekiga::NotificationCore>("notification-core");
+    core->get<Ekiga::NotificationCore>("notification-core");
+  self->priv->audiooutput_core =
+    core->get<Ekiga::AudioOutputCore>("audiooutput-core");
 
   self->priv->notebook = gtk_notebook_new ();
   gtk_container_add (GTK_CONTAINER (self), self->priv->notebook);
@@ -473,9 +510,11 @@ chat_window_new (Ekiga::ServiceCore& core,
 		    G_CALLBACK (on_focus_in_event), self);
   g_signal_connect (self->priv->notebook, "switch-page",
 		    G_CALLBACK (on_switch_page), self);
+  g_signal_connect (self, "unread-alert",
+                    G_CALLBACK (on_chat_unread_alert), self);
 
   boost::shared_ptr<Ekiga::ChatCore> chat_core =
-    core.get<Ekiga::ChatCore> ("chat-core");
+    core->get<Ekiga::ChatCore> ("chat-core");
   self->priv->connections.add (chat_core->dialect_added.connect (boost::bind (&on_dialect_added, self, _1)));
   self->priv->connections.add (chat_core->questions.connect (boost::bind (&on_handle_questions, self, _1)));
   chat_core->visit_dialects (boost::bind (&on_dialect_added, self, _1));

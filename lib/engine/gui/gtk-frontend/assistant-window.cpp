@@ -56,7 +56,6 @@ G_DEFINE_TYPE (AssistantWindow, assistant_window, GTK_TYPE_ASSISTANT);
 
 struct _AssistantWindowPrivate
 {
-  Ekiga::ServiceCore* service_core; // FIXME: wrong memory management
   boost::shared_ptr<Opal::Bank> bank;
   GdkPixbuf *icon;
 
@@ -813,12 +812,7 @@ assistant_window_apply (GtkAssistant *gtkassistant)
 static void
 assistant_window_close (GtkAssistant *gtkassistant)
 {
-  AssistantWindow *assistant = ASSISTANT_WINDOW (gtkassistant);
-
   gtk_widget_destroy (GTK_WIDGET (gtkassistant));
-  boost::shared_ptr<GtkFrontend> gtk_frontend
-    = assistant->priv->service_core->get<GtkFrontend>("gtk-frontend");
-  gtk_widget_show (GTK_WIDGET (gtk_frontend->get_main_window ()));
 }
 
 
@@ -864,20 +858,18 @@ assistant_window_key_press_cb (GtkWidget *widget,
 
 
 GtkWidget *
-assistant_window_new (Ekiga::ServiceCore& service_core)
+assistant_window_new (Ekiga::ServiceCorePtr service_core)
 {
   AssistantWindow *assistant;
 
   assistant = ASSISTANT_WINDOW (g_object_new (ASSISTANT_WINDOW_TYPE, NULL));
-
-  assistant->priv->service_core = &service_core;
 
   /* FIXME: move this into the caller */
   g_signal_connect (assistant, "key-press-event",
                     G_CALLBACK (assistant_window_key_press_cb), NULL);
 
   boost::signals2::connection conn;
-  assistant->priv->bank = service_core.get<Opal::Bank> ("opal-account-store");
+  assistant->priv->bank = service_core->get<Opal::Bank> ("opal-account-store");
 
   return GTK_WIDGET (assistant);
 }

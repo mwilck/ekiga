@@ -1,6 +1,6 @@
 
 /* Ekiga -- A VoIP and Video-Conferencing application
- * Copyright (C) 2000-2009 Damien Sandras <dsandras@seconix.com>
+ * Copyright (C) 2000-2014 Damien Sandras <dsandras@seconix.com>
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -29,10 +29,9 @@
 /*
  *                         gtk-frontend.h  -  description
  *                         ------------------------------------------
- *   begin                : written in 2007 by Julien Puydt
- *   copyright            : (c) 2007 by Julien Puydt
- *   description          : code to hook a gtk+ user interface to
- *                          the main program
+ *   begin                : written in 2014 by Damien Sandras
+ *   copyright            : (c) 2014 by Damien Sandras
+ *   description          : main Ekiga GtkApplication
  *
  */
 
@@ -41,59 +40,76 @@
 
 #include <gtk/gtk.h>
 
-#include "statusicon.h"
-
 #include "services.h"
 #include "contact-core.h"
 #include "presence-core.h"
 
+G_BEGIN_DECLS
 
-class GtkFrontend: public Ekiga::Service
+typedef struct _GmApplication GmApplication;
+typedef struct _GmApplicationPrivate GmApplicationPrivate;
+typedef struct _GmApplicationClass GmApplicationClass;
+
+
+/* GObject thingies */
+struct _GmApplication
 {
-public:
+  GtkApplication parent;
+  GmApplicationPrivate *priv;
+};
 
-  GtkFrontend (Ekiga::ServiceCore & _core);
-
-  ~GtkFrontend ();
-
-  void build ();
-
-  const std::string get_name () const;
-
-  const std::string get_description () const;
-
-  const GtkWidget* get_assistant_window () const;
-
-  const GtkWidget* get_main_window () const;
-
-  const GtkWidget *get_accounts_window () const;
-
-  const GtkWidget *get_call_window () const;
-
-  const GtkWidget *get_chat_window () const;
-
-  const StatusIcon *get_status_icon () const;
-
-  GtkWidget* build_preferences_window ();
-
-  GtkWidget* build_addressbook_window ();
-
-  GtkWidget* build_assistant_window ();
-
-private :
-
-  boost::shared_ptr<GtkWidget> main_window;
-  boost::shared_ptr<GtkWidget> accounts_window;
-  boost::shared_ptr<GtkWidget> call_window;
-  boost::shared_ptr<GtkWidget> chat_window;
-  boost::shared_ptr<StatusIcon> status_icon;
-
-  Ekiga::ServiceCore & core;
+struct _GmApplicationClass
+{
+  GtkApplicationClass parent;
 };
 
 
-bool gtk_frontend_init (Ekiga::ServiceCore &core,
-			int *argc,
-			char **argv[]);
+void ekiga_main (Ekiga::ServiceCorePtr core,
+                 int argc,
+                 char **argv);
+
+GmApplication *gm_application_new (Ekiga::ServiceCorePtr core);
+
+Ekiga::ServiceCorePtr gm_application_get_core (GmApplication *app);
+
+void gm_application_show_main_window (GmApplication *app);
+
+void gm_application_hide_main_window (GmApplication *app);
+
+GtkWidget *gm_application_get_main_window (GmApplication *app);
+
+gboolean gm_application_show_help (GmApplication *app,
+                                   const gchar *link_id);
+
+void gm_application_show_about (GmApplication *app);
+
+GtkWidget *gm_application_show_call_window (GmApplication *app);
+
+void gm_application_show_chat_window (GmApplication *app);
+
+GtkWidget *gm_application_get_chat_window (GmApplication *app);
+
+void gm_application_show_preferences_window (GmApplication *app);
+
+void gm_application_show_addressbook_window (GmApplication *app);
+
+void gm_application_show_accounts_window (GmApplication *app);
+
+/* GObject boilerplate */
+#define GM_TYPE_APPLICATION (gm_application_get_type ())
+
+#define GM_APPLICATION(obj) (G_TYPE_CHECK_INSTANCE_CAST ((obj), GM_TYPE_APPLICATION, GmApplication))
+
+#define GM_IS_APPLICATION(obj) (G_TYPE_CHECK_INSTANCE_TYPE ((obj), GM_TYPE_APPLICATION))
+
+#define GM_APPLICATION_CLASS(klass) (G_TYPE_CHECK_CLASS_CAST ((klass), GM_TYPE_APPLICATION, GmApplicationClass))
+
+#define GM_IS_APPLICATION_CLASS(klass) (G_TYPE_CHECK_CLASS_TYPE ((klass), GM_TYPE_APPLICATION))
+
+#define GM_APPLICATION_GET_CLASS(obj) (G_TYPE_INSTANCE_GET_CLASS ((obj), GM_TYPE_APPLICATION, GmApplicationClass))
+
+GType gm_application_get_type (void) G_GNUC_CONST;
+
+G_END_DECLS
 
 #endif

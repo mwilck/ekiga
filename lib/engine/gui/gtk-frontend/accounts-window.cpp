@@ -43,8 +43,6 @@
 #include "bank.h"
 #include "opal-bank.h"
 
-#include "gmcallbacks.h"
-
 #include "services.h"
 #include "menu-builder-tools.h"
 #include "menu-builder-gtk.h"
@@ -522,11 +520,11 @@ accounts_window_class_init (AccountsWindowClass *klass)
 
 /* Public API */
 GtkWidget *
-accounts_window_new (boost::shared_ptr<Ekiga::AccountCore> account_core,
-		     boost::shared_ptr<Ekiga::PersonalDetails> details,
-		     const char* key)
+accounts_window_new (GmApplication *app)
 {
   AccountsWindow *self = NULL;
+
+  g_return_val_if_fail (GM_IS_APPLICATION (app), NULL);
 
   boost::signals2::connection conn;
 
@@ -561,12 +559,18 @@ accounts_window_new (boost::shared_ptr<Ekiga::AccountCore> account_core,
     _("Status")
   };
 
+  Ekiga::ServiceCorePtr core = gm_application_get_core (app);
+
   /* The window */
-  self = (AccountsWindow *) g_object_new (ACCOUNTS_WINDOW_TYPE, "key", key, NULL);
+  self = (AccountsWindow *) g_object_new (ACCOUNTS_WINDOW_TYPE,
+                                          "application", GTK_APPLICATION (app),
+                                          "key", USER_INTERFACE ".accounts-window",
+                                          "hide_on_delete", false,
+                                          "hide_on_esc", false, NULL);
 
   self->priv = new AccountsWindowPrivate;
-  self->priv->details = details;
-  self->priv->account_core = account_core;
+  self->priv->details = core->get<Ekiga::PersonalDetails> ("personal-details");
+  self->priv->account_core = core->get<Ekiga::AccountCore> ("account-core");
 
   vbox = gtk_box_new (GTK_ORIENTATION_VERTICAL, 2);
   gtk_window_set_title (GTK_WINDOW (self), _("Accounts"));
@@ -589,7 +593,8 @@ accounts_window_new (boost::shared_ptr<Ekiga::AccountCore> account_core,
   gtk_menu_item_set_submenu (GTK_MENU_ITEM (menu_item), menu);
   item = gtk_image_menu_item_new_from_stock (GTK_STOCK_HELP, NULL);
   gtk_menu_shell_append (GTK_MENU_SHELL (menu), item);
-  g_signal_connect (item, "activate", G_CALLBACK (help_callback), NULL);
+  //g_signal_connect (item, "activate", G_CALLBACK (help_callback), NULL);
+  std::cout << "FIXME" << std::endl << std::flush;
 
   /* The accounts list store */
   list_store = gtk_list_store_new (COLUMN_ACCOUNT_NUMBER,

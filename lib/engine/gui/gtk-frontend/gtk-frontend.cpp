@@ -1,6 +1,6 @@
 
 /* Ekiga -- A VoIP and Video-Conferencing application
- * Copyright (C) 2000-2009 Damien Sandras <dsandras@seconix.com>
+ * Copyright (C) 2000-2014 Damien Sandras <dsandras@seconix.com>
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -29,10 +29,9 @@
 /*
  *                         gtk-frontend.cpp  -  description
  *                         ------------------------------------------
- *   begin                : written in 2007 by Julien Puydt
- *   copyright            : (c) 2007 by Julien Puydt
- *   description          : code to hook a gtk+ user interface to
- *                          the main program
+ *   begin                : written in 2014 by Damien Sandras
+ *   copyright            : (c) 2014 by Damien Sandras
+ *   description          : main Ekiga GtkApplication
  *
  */
 
@@ -70,214 +69,562 @@
 
 #include "gmwindow.h"
 
-/* Private helpers */
+#ifdef WIN32
+#include "platform/winpaths.h"
+#include <windows.h>
+#include <shellapi.h>
+#define WIN32_HELP_DIR "help"
+#define WIN32_HELP_FILE "index.html"
+#endif
 
-// when the status icon is clicked, we want to either show or hide the main window
-static void
-on_status_icon_clicked (G_GNUC_UNUSED GtkWidget* widget,
-                        gpointer data)
+#ifdef HAVE_DBUS
+#include "../../../../src/dbus-helper/dbus.h"
+#endif
+
+
+#include <glib/gi18n.h>
+
+/*
+ * The GmApplication
+ */
+struct _GmApplicationPrivate
 {
-  GtkWidget *window = GTK_WIDGET (((GtkFrontend*)data)->get_main_window ());
+  Ekiga::ServiceCorePtr core;
 
-  if (!gtk_widget_get_visible (window)
-      || (gdk_window_get_state (GDK_WINDOW (gtk_widget_get_window (window))) & GDK_WINDOW_STATE_ICONIFIED)) {
-    gtk_widget_show (window);
-  }
-  else {
+  GtkWidget *main_window;
+  GtkWidget *chat_window;
 
-    if (gtk_window_has_toplevel_focus (GTK_WINDOW (window)))
-      gtk_widget_hide (window);
-    else
-      gtk_window_present (GTK_WINDOW (window));
+  EkigaDBusComponent *dbus_component;
+};
+
+G_DEFINE_TYPE (GmApplication, gm_application, GTK_TYPE_APPLICATION);
+
+
+/* Private helpers */
+static void
+quit_activated (G_GNUC_UNUSED GSimpleAction *action,
+                G_GNUC_UNUSED GVariant *parameter,
+                gpointer app)
+{
+  g_application_quit (G_APPLICATION (app));
+}
+
+
+static void
+about_activated (G_GNUC_UNUSED GSimpleAction *action,
+                 G_GNUC_UNUSED GVariant *parameter,
+                 gpointer app)
+{
+  gm_application_show_about (GM_APPLICATION (app));
+}
+
+
+static void
+help_activated (G_GNUC_UNUSED GSimpleAction *action,
+                G_GNUC_UNUSED GVariant *parameter,
+                gpointer app)
+{
+  gm_application_show_help (GM_APPLICATION (app), NULL);
+}
+
+
+static void
+window_activated (GSimpleAction *action,
+                  G_GNUC_UNUSED GVariant *parameter,
+                  gpointer app)
+{
+  GmApplication *self = GM_APPLICATION (app);
+  GtkWindow *window = NULL;
+  GmWindow *parent = NULL;
+
+  self->priv = G_TYPE_INSTANCE_GET_PRIVATE (self, GM_TYPE_APPLICATION, GmApplicationPrivate);
+
+  boost::shared_ptr<Ekiga::AudioInputCore> audio_input_core =
+    self->priv->core->get<Ekiga::AudioInputCore> ("audioinput-core");
+  boost::shared_ptr<Ekiga::AudioOutputCore> audio_output_core =
+    self->priv->core->get<Ekiga::AudioOutputCore> ("audiooutput-core");
+  boost::shared_ptr<Ekiga::VideoInputCore> video_input_core =
+    self->priv->core->get<Ekiga::VideoInputCore> ("videoinput-core");
+  boost::shared_ptr<Ekiga::ContactCore> contact_core =
+    self->priv->core->get<Ekiga::ContactCore> ("contact-core");
+
+  parent = GM_WINDOW (gtk_application_get_active_window (GTK_APPLICATION (self)));
+
+  if (!g_strcmp0 (g_action_get_name (G_ACTION (action)), "preferences"))
+    gm_application_show_preferences_window (self);
+
+  else if (!g_strcmp0 (g_action_get_name (G_ACTION (action)), "addressbook"))
+    gm_application_show_addressbook_window (self);
+
+  else if (!g_strcmp0 (g_action_get_name (G_ACTION (action)), "accounts"))
+    gm_application_show_accounts_window (self);
+
+  else if (!g_strcmp0 (g_action_get_name (G_ACTION (action)), "assistant")) {
+
+    window = GTK_WINDOW (assistant_window_new (self->priv->core));
+    gtk_window_set_transient_for (GTK_WINDOW (window), GTK_WINDOW (parent));
+    gtk_window_present (window);
   }
 }
+
+static GActionEntry app_entries[] =
+{
+    { "preferences", window_activated, NULL, NULL, NULL, 0 },
+    { "assistant", window_activated, NULL, NULL, NULL, 0 },
+    { "addressbook", window_activated, NULL, NULL, NULL, 0 },
+    { "accounts", window_activated, NULL, NULL, NULL, 0 },
+    { "help", help_activated, NULL, NULL, NULL, 0 },
+    { "about", about_activated, NULL, NULL, NULL, 0 },
+    { "quit", quit_activated, NULL, NULL, NULL, 0 }
+};
+
 
 /* Public api */
-
-bool
-gtk_frontend_init (Ekiga::ServiceCore &core,
-		   int * /*argc*/,
-		   char ** /*argv*/[])
+void
+ekiga_main (Ekiga::ServiceCorePtr core,
+            int argc,
+            char **argv)
 {
-  bool result = false;
+  GmApplication *app = NULL;
 
-  boost::shared_ptr<Ekiga::PresenceCore> presence_core = core.get<Ekiga::PresenceCore> ("presence-core");
-  boost::shared_ptr<Ekiga::ContactCore> contact_core = core.get<Ekiga::ContactCore> ("contact-core");
-  boost::shared_ptr<Ekiga::ChatCore> chat_core = core.get<Ekiga::ChatCore> ("chat-core");
-  boost::shared_ptr<History::Source> history_source = core.get<History::Source> ("call-history-store");
-  boost::shared_ptr<Opal::Bank> opal_bank = core.get<Opal::Bank> ("opal-account-store");
-  boost::shared_ptr<Ekiga::Trigger> local_cluster_trigger = core.get<Ekiga::Trigger> ("local-cluster");
-  boost::shared_ptr<Ekiga::PersonalDetails> details = core.get<Ekiga::PersonalDetails> ("personal-details");
-  boost::shared_ptr<Ekiga::NotificationCore> notification_core = core.get<Ekiga::NotificationCore> ("notification-core");
-  boost::shared_ptr<Ekiga::AccountCore> account_core = core.get<Ekiga::AccountCore> ("account-core");
-  boost::shared_ptr<Ekiga::VideoInputCore> videoinput_core = core.get<Ekiga::VideoInputCore> ("videoinput-core");
-  boost::shared_ptr<Ekiga::VideoOutputCore> videooutput_core = core.get<Ekiga::VideoOutputCore> ("videooutput-core");
-  boost::shared_ptr<Ekiga::AudioInputCore> audioinput_core = core.get<Ekiga::AudioInputCore> ("audioinput-core");
-  boost::shared_ptr<Ekiga::AudioOutputCore> audioooutput_core = core.get<Ekiga::AudioOutputCore> ("audiooutput-core");
-  boost::shared_ptr<Ekiga::CallCore> call_core = core.get<Ekiga::CallCore> ("call-core");
+  app = gm_application_new (core);
 
-  if (presence_core && contact_core && chat_core && history_source && opal_bank && local_cluster_trigger
-      && notification_core && details && account_core && audioooutput_core && audioinput_core
-      && videooutput_core && videoinput_core && call_core) {
-
-    // BEWARE: the GtkFrontend ctor could do everything, but the status
-    // icon ctor and the main window ctor use GtkFrontend, so we must
-    // keep the ctor+build setup
-    boost::shared_ptr<GtkFrontend> gtk_frontend (new GtkFrontend (core));
-    core.add (gtk_frontend);
-    gtk_frontend->build ();
-    result = true;
+  if (g_application_get_is_remote (G_APPLICATION (app))) {
+    std::cout << "FIXME Remote" << std::endl << std::flush;
+    return;
   }
-  return result;
+
+  app->priv->main_window = gm_main_window_new (app);
+  gm_application_show_main_window (app);
+
+  app->priv->chat_window = chat_window_new (app);
+  status_icon_new (app);
+
+#ifdef HAVE_DBUS
+  app->priv->dbus_component = ekiga_dbus_component_new (app);
+#endif
+
+  g_application_run (G_APPLICATION (app), argc, argv);
+  g_object_unref (app);
 }
 
 
-GtkFrontend::GtkFrontend (Ekiga::ServiceCore & _core) : core(_core)
+/* GObject stuff */
+static void
+gm_application_activate (GApplication *self)
 {
+  GmApplication *app = GM_APPLICATION (self);
+  std::cout << "activate" << std::endl << std::flush;
 }
 
-GtkFrontend::~GtkFrontend ()
+static void
+gm_application_startup (GApplication *app)
 {
+  GmApplication *self = GM_APPLICATION (app);
+
+  GtkBuilder *builder = NULL;
+  GMenuModel *app_menu = NULL;
+
+  G_APPLICATION_CLASS (gm_application_parent_class)->startup (app);
+
+  const gchar *menu =
+    "<?xml version=\"1.0\"?>"
+    "<interface>"
+    "  <menu id=\"appmenu\">"
+    "    <section>"
+    "      <item>"
+    "        <attribute name=\"label\" translatable=\"yes\">Address _Book</attribute>"
+    "        <attribute name=\"action\">app.addressbook</attribute>"
+    "      </item>"
+    "      <item>"
+    "        <attribute name=\"label\" translatable=\"yes\">_Accounts</attribute>"
+    "        <attribute name=\"action\">app.accounts</attribute>"
+    "      </item>"
+    "    </section>"
+    "    <section>"
+    "      <item>"
+    "        <attribute name=\"label\" translatable=\"yes\">_Preferences</attribute>"
+    "        <attribute name=\"action\">app.preferences</attribute>"
+    "      </item>"
+    "      <item>"
+    "        <attribute name=\"label\" translatable=\"yes\">Configuration _Assistant</attribute>"
+    "        <attribute name=\"action\">app.assistant</attribute>"
+    "      </item>"
+    "    </section>"
+    "    <section>"
+    "      <item>"
+    "        <attribute name=\"label\" translatable=\"yes\">_Help</attribute>"
+    "        <attribute name=\"action\">app.help</attribute>"
+    "        <attribute name=\"accel\">F1</attribute>"
+    "      </item>"
+    "      <item>"
+    "        <attribute name=\"label\" translatable=\"yes\">_About</attribute>"
+    "        <attribute name=\"action\">app.about</attribute>"
+    "      </item>"
+    "    </section>"
+    "    <section>"
+    "      <item>"
+    "        <attribute name=\"label\" translatable=\"yes\">_Quit</attribute>"
+    "        <attribute name=\"action\">app.quit</attribute>"
+    "        <attribute name=\"accel\">&lt;Primary&gt;q</attribute>"
+    "      </item>"
+    "    </section>"
+    "  </menu>"
+    "</interface>";
+
+  g_action_map_add_action_entries (G_ACTION_MAP (self),
+                                   app_entries, G_N_ELEMENTS (app_entries),
+                                   self);
+
+  builder = gtk_builder_new ();
+  gtk_builder_add_from_string (builder, menu, -1, NULL);
+  app_menu = G_MENU_MODEL (gtk_builder_get_object (builder, "appmenu"));
+  gtk_application_set_app_menu (GTK_APPLICATION (self), app_menu);
+  g_object_unref (builder);
+}
+
+
+static void
+gm_application_dispose (GObject *obj)
+{
+  GmApplication *self = NULL;
+
+  self = GM_APPLICATION (obj);
+
+#ifdef HAVE_DBUS
+  g_object_unref (self->priv->dbus_component);
+#endif
+
+
+  G_OBJECT_CLASS (gm_application_parent_class)->dispose (obj);
+}
+
+
+static void
+gm_application_class_init (GmApplicationClass *klass)
+{
+  GObjectClass *object_class = G_OBJECT_CLASS (klass);
+  GApplicationClass *app_class = G_APPLICATION_CLASS (klass);
+
+  object_class->dispose = gm_application_dispose;
+//  object_class->get_property = gm_application_get_property;
+//  object_class->constructed = gm_application_constructed;
+
+  app_class->startup = gm_application_startup;
+  app_class->activate = gm_application_activate;
+//  app_class->command_line = gm_application_command_line;
+//  app_class->local_command_line = gm_application_local_command_line;
+//  app_class->shutdown = gm_application_shutdown;
+
+//  klass->show_help = gm_application_show_help_impl;
+//  klass->help_link_id = gm_application_help_link_id_impl;
+//  klass->set_window_title = gm_application_set_window_title_impl;
+//  klass->create_window = gm_application_create_window_impl;
+
+  g_type_class_add_private (object_class, sizeof (GmApplicationPrivate));
+}
+
+
+static void
+gm_application_init (GmApplication *self)
+{
+  self->priv = G_TYPE_INSTANCE_GET_PRIVATE (self, GM_TYPE_APPLICATION, GmApplicationPrivate);
+}
+
+
+GmApplication *
+gm_application_new (Ekiga::ServiceCorePtr core)
+{
+  GmApplication *self =
+    GM_APPLICATION (g_object_new (GM_TYPE_APPLICATION,
+                                  "application-id", "org.gnome.Ekiga",
+                                  "flags", G_APPLICATION_FLAGS_NONE,
+                                  NULL));
+  g_application_register (G_APPLICATION (self), NULL, NULL);
+
+  self->priv = G_TYPE_INSTANCE_GET_PRIVATE (self, GM_TYPE_APPLICATION, GmApplicationPrivate);
+  self->priv->core = core;
+
+  return self;
+}
+
+
+Ekiga::ServiceCorePtr
+gm_application_get_core (GmApplication *self)
+{
+  g_return_val_if_fail (GM_IS_APPLICATION (self), boost::shared_ptr<Ekiga::ServiceCore> ());
+  self->priv = G_TYPE_INSTANCE_GET_PRIVATE (self, GM_TYPE_APPLICATION, GmApplicationPrivate);
+
+  return self->priv->core;
 }
 
 
 void
-GtkFrontend::build ()
+gm_application_show_main_window (GmApplication *self)
 {
-  StatusIcon *s = NULL;
+  g_return_if_fail (GM_IS_APPLICATION (self));
+  self->priv = G_TYPE_INSTANCE_GET_PRIVATE (self, GM_TYPE_APPLICATION, GmApplicationPrivate);
 
-  boost::shared_ptr<Ekiga::ContactCore> contact_core =
-    core.get<Ekiga::ContactCore> ("contact-core");
-  boost::shared_ptr<Ekiga::PersonalDetails> details =
-    core.get<Ekiga::PersonalDetails> ("personal-details");
-  boost::shared_ptr<Ekiga::ChatCore> chat_core =
-    core.get<Ekiga::ChatCore> ("chat-core");
-  boost::shared_ptr<Ekiga::AccountCore> account_core =
-    core.get<Ekiga::AccountCore> ("account-core");
-  boost::shared_ptr<Ekiga::AudioInputCore> audio_input_core =
-    core.get<Ekiga::AudioInputCore> ("audioinput-core");
-  boost::shared_ptr<Ekiga::AudioOutputCore> audio_output_core =
-    core.get<Ekiga::AudioOutputCore> ("audiooutput-core");
-  boost::shared_ptr<Ekiga::VideoInputCore> video_input_core =
-    core.get<Ekiga::VideoInputCore> ("videoinput-core");
+  gtk_window_present (GTK_WINDOW (self->priv->main_window));
+}
 
-  /* Init the stock icons */
-  gnomemeeting_stock_icons_init ();
-  gtk_window_set_default_icon_name (GM_ICON_LOGO);
 
-  accounts_window =
-    boost::shared_ptr<GtkWidget>(accounts_window_new (account_core,
-						      details,
-						      USER_INTERFACE ".accounts-window"),
-				 gtk_widget_destroy);
+void
+gm_application_hide_main_window (GmApplication *self)
+{
+  g_return_if_fail (GM_IS_APPLICATION (self));
+  self->priv = G_TYPE_INSTANCE_GET_PRIVATE (self, GM_TYPE_APPLICATION, GmApplicationPrivate);
 
-  // BEWARE: uses the main window during runtime
-  call_window =
-    boost::shared_ptr<GtkWidget> (call_window_new (core), gtk_widget_destroy);
+  gtk_widget_hide (self->priv->main_window);
+}
 
-  chat_window =
-    boost::shared_ptr<GtkWidget> (chat_window_new (core,
-						   USER_INTERFACE ".chat-window"),
-				  gtk_widget_destroy);
 
-  // BEWARE: the status icon needs the chat window at startup
-  // FIXME: the above BEWARE is related to a FIXME in the main window code,
-  // FIXME: hence should disappear with it
-  s = status_icon_new (core);
-  if (s) {
-    status_icon =
-      boost::shared_ptr<StatusIcon> (status_icon_new (core), g_object_unref);
-    g_signal_connect (status_icon.get (), "clicked",
-		      G_CALLBACK (on_status_icon_clicked), this);
+GtkWidget *
+gm_application_get_main_window (GmApplication *self)
+{
+  g_return_val_if_fail (GM_IS_APPLICATION (self), NULL);
+  self->priv = G_TYPE_INSTANCE_GET_PRIVATE (self, GM_TYPE_APPLICATION, GmApplicationPrivate);
+
+  return self->priv->main_window;
+}
+
+
+gboolean
+gm_application_show_help (GmApplication *app,
+                          G_GNUC_UNUSED const gchar *link_id)
+{
+  g_return_val_if_fail (GM_IS_APPLICATION (app), FALSE);
+
+  GtkWindow *parent = gtk_application_get_active_window (GTK_APPLICATION (app));
+
+#ifdef WIN32
+  gchar *locale, *loc_ , *index_path;
+  int hinst = 0;
+
+  locale = g_win32_getlocale ();
+  if (strlen (locale) > 0) {
+
+    /* try returned locale first, it may be fully qualified e.g. zh_CN */
+    index_path = g_build_filename (WIN32_HELP_DIR, locale,
+				   WIN32_HELP_FILE, NULL);
+    hinst = (int) ShellExecute (NULL, "open", index_path, NULL,
+			  	DATA_DIR, SW_SHOWNORMAL);
+    g_free (index_path);
   }
 
-  // BEWARE: the main window uses the chat window at startup already,
-  // and later on needs the call window, addressbook window,
-  // assistant window
-  main_window =
-    boost::shared_ptr<GtkWidget> (gm_main_window_new (core),
-                                  gtk_widget_destroy);
+  if (hinst <= 32 && (loc_ = g_strrstr (locale, "_"))) {
+    /* on error, try short locale */
+    *loc_ = 0;
+    index_path = g_build_filename (WIN32_HELP_DIR, locale,
+				   WIN32_HELP_FILE, NULL);
+    hinst = (int) ShellExecute (NULL, "open", index_path, NULL,
+				DATA_DIR, SW_SHOWNORMAL);
+    g_free (index_path);
+  }
+
+  g_free (locale);
+
+  if (hinst <= 32) {
+
+    /* on error or missing locale, try default locale */
+    index_path = g_build_filename (WIN32_HELP_DIR, "C", WIN32_HELP_FILE, NULL);
+    (void)ShellExecute (NULL, "open", index_path, NULL,
+			DATA_DIR, SW_SHOWNORMAL);
+    g_free (index_path);
+  }
+#else /* !WIN32 */
+  GError *err = NULL;
+  gboolean success = FALSE;
+
+  success = gtk_show_uri (NULL, "ghelp:" PACKAGE_NAME, GDK_CURRENT_TIME, &err);
+
+  if (!success) {
+    GtkWidget *d;
+    d = gtk_message_dialog_new (NULL,
+                                (GtkDialogFlags) (GTK_DIALOG_MODAL),
+                                GTK_MESSAGE_ERROR, GTK_BUTTONS_CLOSE,
+                                "%s", _("Unable to open help file."));
+    gtk_message_dialog_format_secondary_text (GTK_MESSAGE_DIALOG (d),
+                                              "%s", err->message);
+    g_signal_connect (d, "response", G_CALLBACK (gtk_widget_destroy), NULL);
+    gtk_window_set_transient_for (GTK_WINDOW (d), GTK_WINDOW (parent));
+    gtk_window_present (GTK_WINDOW (d));
+    g_error_free (err);
+    return FALSE;
+  }
+#endif
+
+  return TRUE;
 }
 
 
-const std::string
-GtkFrontend::get_name () const
+void
+gm_application_show_about (GmApplication *app)
 {
-  return "gtk-frontend";
+  g_return_if_fail (GM_IS_APPLICATION (app));
+
+  GtkWidget *pixmap = NULL;
+  gchar *filename = NULL;
+
+  const gchar *authors [] = {
+      "Damien Sandras <dsandras@seconix.com>",
+      "",
+      N_("Contributors:"),
+      "Eugen Dedu <eugen.dedu@pu-pm.univ-fcomte.fr>",
+      "Julien Puydt <julien.puydt@laposte.net>",
+      "Robert Jongbloed <rjongbloed@postincrement.com>",
+      "",
+      N_("Artwork:"),
+      "Fabian Deutsch <fabian.deutsch@gmx.de>",
+      "Vinicius Depizzol <vdepizzol@gmail.com>",
+      "Andreas Kwiatkowski <post@kwiat.org>",
+      "Carlos Pardo <me@m4de.com>",
+      "Jakub Steiner <jimmac@ximian.com>",
+      "",
+      N_("See AUTHORS file for full credits"),
+      NULL
+  };
+
+  authors [2] = gettext (authors [2]);
+  authors [7] = gettext (authors [7]);
+  authors [14] = gettext (authors [14]);
+
+  const gchar *documenters [] = {
+    "Damien Sandras <dsandras@seconix.com>",
+    "Christopher Warner <zanee@kernelcode.com>",
+    "Matthias Redlich <m-redlich@t-online.de>",
+    NULL
+  };
+
+  const gchar *license[] = {
+N_("This program is free software; you can redistribute it and/or modify \
+it under the terms of the GNU General Public License as published by \
+the Free Software Foundation; either version 2 of the License, or \
+(at your option) any later version. "),
+N_("This program is distributed in the hope that it will be useful, \
+but WITHOUT ANY WARRANTY; without even the implied warranty of \
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the \
+GNU General Public License for more details. \
+You should have received a copy of the GNU General Public License \
+along with this program; if not, write to the Free Software Foundation, \
+Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301, USA."),
+N_("Ekiga is licensed under the GPL license and as a special exception, \
+you have permission to link or otherwise combine this program with the \
+programs OPAL, OpenH323 and PWLIB, and distribute the combination, \
+without applying the requirements of the GNU GPL to the OPAL, OpenH323 \
+and PWLIB programs, as long as you do follow the requirements of the \
+GNU GPL for all the rest of the software thus combined.")
+  };
+
+  gchar *license_trans;
+
+  /* Translators: Please write translator credits here, and
+   * separate names with \n */
+  const gchar *translator_credits = _("translator-credits");
+  if (g_strcmp0 (translator_credits, "translator-credits") == 0)
+    translator_credits = "No translators, English by\n"
+        "Damien Sandras <dsandras@seconix.com>";
+
+  const gchar *comments =  _("Ekiga is full-featured SIP and H.323 compatible VoIP, IP-Telephony and Videoconferencing application that allows you to make audio and video calls to remote users with SIP and H.323 hardware or software.");
+
+  license_trans = g_strconcat (_(license[0]), "\n\n", _(license[1]), "\n\n",
+                               _(license[2]), "\n\n", NULL);
+
+  filename = g_build_filename (DATA_DIR, "pixmaps", PACKAGE_NAME,
+                               PACKAGE_NAME "-logo.png", NULL);
+  pixmap =  gtk_image_new_from_file (filename);
+
+  gtk_show_about_dialog (GTK_WINDOW (gtk_application_get_active_window (GTK_APPLICATION (app))),
+                         "name", "Ekiga",
+                         "version", VERSION,
+                         "copyright", "Copyright © 2000-2014 Damien Sandras",
+                         "authors", authors,
+                         "documenters", documenters,
+                         "translator-credits", translator_credits,
+                         "comments", comments,
+                         "logo", gtk_image_get_pixbuf (GTK_IMAGE (pixmap)),
+                         "license", license_trans,
+                         "wrap-license", TRUE,
+                         "website", "http://www.ekiga.org",
+                         NULL);
+
+  g_free (license_trans);
+  g_free (filename);
 }
 
 
-const std::string
-GtkFrontend::get_description () const
+GtkWidget *
+gm_application_show_call_window (GmApplication *self)
 {
-  return "\tGtk+ frontend support";
+  GtkWidget *call_window = NULL;
+  g_return_val_if_fail (GM_IS_APPLICATION (self), NULL);
+
+  self->priv = G_TYPE_INSTANCE_GET_PRIVATE (self, GM_TYPE_APPLICATION, GmApplicationPrivate);
+
+  call_window = call_window_new (self);
+  gtk_window_present (GTK_WINDOW (call_window));
+
+  return call_window;
 }
 
 
-const GtkWidget*
-GtkFrontend::get_main_window () const
+void
+gm_application_show_chat_window (GmApplication *self)
 {
-  return main_window.get ();
+  g_return_if_fail (GM_IS_APPLICATION (self));
+
+  self->priv = G_TYPE_INSTANCE_GET_PRIVATE (self, GM_TYPE_APPLICATION, GmApplicationPrivate);
+
+  // FIXME: We should move the chat window to a build & destroy scheme
+  // but unread-alert prevents this
+  std::cout << "FIXME" << std::endl << std::flush;
+  gtk_window_present (GTK_WINDOW (self->priv->chat_window));
 }
 
 
-const GtkWidget*
-GtkFrontend::get_accounts_window () const
+GtkWidget *
+gm_application_get_chat_window (GmApplication *self)
 {
-  return accounts_window.get ();
+  g_return_val_if_fail (GM_IS_APPLICATION (self), NULL);
+
+  return self->priv->chat_window;
 }
 
 
-const GtkWidget*
-GtkFrontend::get_call_window () const
+void
+gm_application_show_preferences_window (GmApplication *self)
 {
-  return call_window.get ();
+  GtkWindow *parent = NULL;
+  GtkWindow *window = NULL;
+
+  g_return_if_fail (GM_IS_APPLICATION (self));
+
+  self->priv = G_TYPE_INSTANCE_GET_PRIVATE (self, GM_TYPE_APPLICATION, GmApplicationPrivate);
+  parent = gtk_application_get_active_window (GTK_APPLICATION (self));
+
+  window = GTK_WINDOW (preferences_window_new (self));
+  gtk_window_set_transient_for (GTK_WINDOW (window), GTK_WINDOW (parent));
+  gtk_dialog_run (GTK_DIALOG (window));
 }
 
 
-const GtkWidget*
-GtkFrontend::get_chat_window () const
+void
+gm_application_show_addressbook_window (GmApplication *self)
 {
-  return chat_window.get ();
+  g_return_if_fail (GM_IS_APPLICATION (self));
+
+  self->priv = G_TYPE_INSTANCE_GET_PRIVATE (self, GM_TYPE_APPLICATION, GmApplicationPrivate);
+
+  gtk_window_present (GTK_WINDOW (addressbook_window_new (self)));
 }
 
 
-const StatusIcon*
-GtkFrontend::get_status_icon () const
+void
+gm_application_show_accounts_window (GmApplication *self)
 {
-  return status_icon.get ();
-}
+  g_return_if_fail (GM_IS_APPLICATION (self));
 
+  self->priv = G_TYPE_INSTANCE_GET_PRIVATE (self, GM_TYPE_APPLICATION, GmApplicationPrivate);
 
-GtkWidget*
-GtkFrontend::build_preferences_window ()
-{
-  boost::shared_ptr<Ekiga::AudioInputCore> audio_input_core =
-    core.get<Ekiga::AudioInputCore> ("audioinput-core");
-  boost::shared_ptr<Ekiga::AudioOutputCore> audio_output_core =
-    core.get<Ekiga::AudioOutputCore> ("audiooutput-core");
-  boost::shared_ptr<Ekiga::VideoInputCore> video_input_core =
-    core.get<Ekiga::VideoInputCore> ("videoinput-core");
-
-  return preferences_window_new (audio_input_core,
-                                 audio_output_core,
-                                 video_input_core);
-}
-
-
-GtkWidget*
-GtkFrontend::build_addressbook_window ()
-{
-  boost::shared_ptr<Ekiga::ContactCore> contact_core =
-    core.get<Ekiga::ContactCore> ("contact-core");
-
-  return addressbook_window_new (contact_core,
-                                 USER_INTERFACE ".addressbook-window");
-}
-
-
-GtkWidget*
-GtkFrontend::build_assistant_window ()
-{
-  return assistant_window_new (core);
+  gtk_window_present (GTK_WINDOW (accounts_window_new (self)));
 }

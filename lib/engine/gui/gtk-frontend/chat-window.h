@@ -41,6 +41,7 @@
 
 #include "gmwindow.h"
 #include "services.h"
+#include "gtk-frontend.h"
 
 G_BEGIN_DECLS
 
@@ -69,8 +70,7 @@ struct _ChatWindowClass
 
 /* Public API */
 
-GtkWidget* chat_window_new (Ekiga::ServiceCore& core,
-			    const char* key);
+GtkWidget* chat_window_new (GmApplication *app);
 
 /* GObject's boilerplate */
 

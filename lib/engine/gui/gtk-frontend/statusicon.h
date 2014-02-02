@@ -45,6 +45,8 @@
 #include <boost/signals2.hpp>
 #include <boost/bind.hpp>
 
+#include "gtk-frontend.h"
+
 G_BEGIN_DECLS
 
 typedef struct _StatusIcon StatusIcon;
@@ -84,7 +86,7 @@ GType statusicon_get_type ();
 /* DESCRIPTION  : /
  * BEHAVIOR     : Returns a new statusicon, with the default icon and menu
  */
-StatusIcon *status_icon_new (Ekiga::ServiceCore & core);
+StatusIcon *status_icon_new (GmApplication *app);
 
 G_END_DECLS
 

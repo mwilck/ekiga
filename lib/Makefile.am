@@ -123,8 +123,6 @@ libekiga_la_SOURCES += \
 	gui/gm-smileys.c \
 	gui/gmwindow.c \
 	gui/gmwindow.h \
-	gui/gmcallbacks.c \
-	gui/gmcallbacks.h \
 	gui/gmentrydialog.c \
 	gui/gmentrydialog.h \
 	gui/gmmenuaddon.c \
@@ -151,12 +149,6 @@ libekiga_la_SOURCES += \
 	gui/gm-text-buffer-enhancer.h \
 	gui/gm-smiley-chooser-button.c \
 	gui/gm-smiley-chooser-button.h
-
-if !WIN32
-libekiga_la_SOURCES +=	\
-	gui/xwindow.cpp	\
-	gui/xwindow.h
-endif
 
 ##
 # Sources of the main engine code

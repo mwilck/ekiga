@@ -70,7 +70,7 @@ struct _AssistantWindow {
 typedef GtkAssistantClass AssistantWindowClass;
 
 GType assistant_window_get_type   ();
-GtkWidget* assistant_window_new (Ekiga::ServiceCore& core);
+GtkWidget* assistant_window_new (Ekiga::ServiceCorePtr core);
 
 G_END_DECLS
 

@@ -41,6 +41,8 @@
 #define __DBUS_COMPONENT_H
 
 #include <glib-object.h>
+#include "gtk-frontend.h"
+
 #include "framework/services.h"
 
 G_BEGIN_DECLS
@@ -62,7 +64,7 @@ struct _EkigaDBusComponent {
 typedef GObjectClass EkigaDBusComponentClass;
 
 GType                ekiga_dbus_component_get_type ();
-EkigaDBusComponent  *ekiga_dbus_component_new (Ekiga::ServiceCore& core);
+EkigaDBusComponent  *ekiga_dbus_component_new (GmApplication *app);
 
 gboolean             ekiga_dbus_claim_ownership ();
 

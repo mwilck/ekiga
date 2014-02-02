@@ -34,14 +34,16 @@
 
 #include <glib/gi18n.h>
 
+#include "ekiga-settings.h"
+
 #include "addressbook-window.h"
 #include "book-view-gtk.h"
 #include "menu-builder-gtk.h"
 #include "form-dialog-gtk.h"
 #include "scoped-connections.h"
 
-/* 
- * The Search Window 
+/*
+ * The Search Window
  */
 struct _AddressBookWindowPrivate
 {
@@ -597,11 +599,10 @@ addressbook_window_class_init (AddressBookWindowClass *klass)
 }
 
 /*
- * Public API 
+ * Public API
  */
 GtkWidget *
-addressbook_window_new (boost::shared_ptr<Ekiga::ContactCore> core,
-			const char* key)
+addressbook_window_new (GmApplication *app)
 {
   AddressBookWindow *self = NULL;
 
@@ -616,8 +617,17 @@ addressbook_window_new (boost::shared_ptr<Ekiga::ContactCore> core,
   GtkTreeViewColumn *column = NULL;
   GtkTreeStore *store = NULL;
 
-  self = (AddressBookWindow *) g_object_new (ADDRESSBOOK_WINDOW_TYPE, "key", key, NULL);
-  self->priv = new AddressBookWindowPrivate (core);
+  Ekiga::ServiceCorePtr core = gm_application_get_core (app);
+
+  self = (AddressBookWindow *) g_object_new (ADDRESSBOOK_WINDOW_TYPE,
+                                             "application", GTK_APPLICATION (app),
+                                             "key", USER_INTERFACE ".addressbook-window",
+                                             "hide_on_delete", FALSE,
+                                             "hide_on_esc", FALSE,
+                                             NULL);
+  boost::shared_ptr<Ekiga::ContactCore> contact_core =
+    core->get<Ekiga::ContactCore> ("contact-core");
+  self->priv = new AddressBookWindowPrivate (contact_core);
 
   gtk_window_set_title (GTK_WINDOW (self), _("Address Book"));
   gtk_window_set_position (GTK_WINDOW (self), GTK_WIN_POS_CENTER);
@@ -639,8 +649,8 @@ addressbook_window_new (boost::shared_ptr<Ekiga::ContactCore> core,
   gtk_menu_shell_append (GTK_MENU_SHELL (menu_bar),
                          self->priv->menu_item_core);
   g_object_ref (self->priv->menu_item_core);
-  conn = core->updated.connect (boost::bind (&on_core_updated,
-                                           (gpointer) self));
+  conn = contact_core->updated.connect (boost::bind (&on_core_updated,
+                                                     (gpointer) self));
   self->priv->connections.add (conn);
   on_core_updated (self); // This will add static and dynamic actions
 
@@ -714,24 +724,24 @@ addressbook_window_new (boost::shared_ptr<Ekiga::ContactCore> core,
                     G_CALLBACK (on_notebook_realize), self);
   gtk_paned_pack2 (GTK_PANED (hpaned), self->priv->notebook, TRUE, TRUE);
 
-  conn = core->source_added.connect (boost::bind (&on_source_added, _1, (gpointer) self));
+  conn = contact_core->source_added.connect (boost::bind (&on_source_added, _1, (gpointer) self));
   self->priv->connections.add (conn);
 
-  conn = core->book_updated.connect (boost::bind (&on_book_updated, _1, _2,
-                                                (gpointer) self));
+  conn = contact_core->book_updated.connect (boost::bind (&on_book_updated, _1, _2,
+                                                          (gpointer) self));
   self->priv->connections.add (conn);
-  conn = core->book_added.connect (boost::bind (&on_book_added, _1, _2,
-                                              (gpointer) self));
+  conn = contact_core->book_added.connect (boost::bind (&on_book_added, _1, _2,
+                                                        (gpointer) self));
   self->priv->connections.add (conn);
   conn =
-    core->book_removed.connect (boost::bind (&on_book_removed, _1, _2,
-                                           (gpointer) self));
+    contact_core->book_removed.connect (boost::bind (&on_book_removed, _1, _2,
+                                                     (gpointer) self));
   self->priv->connections.add (conn);
 
-  conn = core->questions.connect (boost::bind (&on_handle_questions, _1, (gpointer) self));
+  conn = contact_core->questions.connect (boost::bind (&on_handle_questions, _1, (gpointer) self));
   self->priv->connections.add (conn);
 
-  core->visit_sources (boost::bind (on_visit_sources, _1, (gpointer) self));
+  contact_core->visit_sources (boost::bind (on_visit_sources, _1, (gpointer) self));
 
   gtk_widget_show_all (vbox);
 

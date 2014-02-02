@@ -43,9 +43,6 @@
 
 #include <opal/buildopts.h> // only for OPAL_VERSION!
 
-#ifdef HAVE_DBUS
-#include "dbus-helper/dbus.h"
-#endif
 
 #ifndef WIN32
 #include <signal.h>
@@ -94,8 +91,6 @@ main (int argc,
   g_thread_init();
 #endif
 
-  /* GTK+ initialization */
-  gtk_init (&argc, &argv);
 #ifndef WIN32
   signal (SIGPIPE, SIG_IGN);
 #endif
@@ -169,17 +164,7 @@ main (int argc,
 			| PTrace::Blocks | PTrace::DateAndTime);
 #endif
 
-#ifdef HAVE_DBUS
-  if (!ekiga_dbus_claim_ownership ()) {
-    ekiga_dbus_client_show ();
-    if (url != NULL)
-      ekiga_dbus_client_connect (url);
-    exit (0);
-  }
-#endif
-
   /* Ekiga initialisation */
-  // should come *after* ptrace initialisation, to track codec loading for ex.
   GnomeMeeting instance;
 
   Ekiga::Runtime::init ();
@@ -198,11 +183,9 @@ main (int argc,
   PTRACE (1, "DBUS support disabled");
 #endif
 
-  boost::shared_ptr<GtkFrontend> gtk_frontend
-    = service_core->get<GtkFrontend>("gtk-frontend");
+  std::cout << "FIXME" << std::endl << std::flush;
+  /*
   boost::shared_ptr<Ekiga::Settings> general_settings (new Ekiga::Settings (GENERAL_SCHEMA));
-
-  GtkWidget *main_window = GTK_WIDGET (gtk_frontend->get_main_window ());
 
   const int schema_version = MAJOR_VERSION * 1000
                              + MINOR_VERSION * 10
@@ -212,12 +195,9 @@ main (int argc,
 
     gtk_widget_show_all (GTK_WIDGET (gtk_frontend->build_assistant_window ()));
 
-    /* Update the version number */
     general_settings->set_int ("version", schema_version);
   }
-
-  /* Show the main window */
-  gtk_widget_show (main_window);
+*/
 
   /* Call the given host if needed */
   if (url) {
@@ -226,19 +206,12 @@ main (int argc,
     call_core->dial (url);
   }
 
-#ifdef HAVE_DBUS
-  EkigaDBusComponent *dbus_component = ekiga_dbus_component_new (*service_core);
-#endif
-
   // from now on, things should have taken their final place
   service_core->close ();
 
   /* The GTK loop */
-  gtk_main ();
-
-#ifdef HAVE_DBUS
-  g_object_unref (dbus_component);
-#endif
+  ekiga_main (service_core, argc, argv);
+//  gtk_main ();
 
   /* Exit Ekiga */
   GnomeMeeting::Process ()->Exit ();

@@ -2356,21 +2356,25 @@ ekiga_call_window_class_init (EkigaCallWindowClass *klass)
 }
 
 GtkWidget *
-call_window_new (Ekiga::ServiceCore & core)
+call_window_new (GmApplication *app)
 {
   EkigaCallWindow *cw;
 
+  g_return_val_if_fail (GM_IS_APPLICATION (app), NULL);
+
   cw = EKIGA_CALL_WINDOW (g_object_new (EKIGA_TYPE_CALL_WINDOW,
+                                        "application", GTK_APPLICATION (app),
                                         "key", USER_INTERFACE ".call-window",
                                         "hide_on_delete", false,
                                         "hide_on_esc", false, NULL));
+  Ekiga::ServiceCorePtr core = gm_application_get_core (app);
 
-  cw->priv->libnotify = core.get ("libnotify");
-  cw->priv->videoinput_core = core.get<Ekiga::VideoInputCore> ("videoinput-core");
-  cw->priv->videooutput_core = core.get<Ekiga::VideoOutputCore> ("videooutput-core");
-  cw->priv->audioinput_core = core.get<Ekiga::AudioInputCore> ("audioinput-core");
-  cw->priv->audiooutput_core = core.get<Ekiga::AudioOutputCore> ("audiooutput-core");
-  cw->priv->call_core = core.get<Ekiga::CallCore> ("call-core");
+  cw->priv->libnotify = core->get ("libnotify");
+  cw->priv->videoinput_core = core->get<Ekiga::VideoInputCore> ("videoinput-core");
+  cw->priv->videooutput_core = core->get<Ekiga::VideoOutputCore> ("videooutput-core");
+  cw->priv->audioinput_core = core->get<Ekiga::AudioInputCore> ("audioinput-core");
+  cw->priv->audiooutput_core = core->get<Ekiga::AudioOutputCore> ("audiooutput-core");
+  cw->priv->call_core = core->get<Ekiga::CallCore> ("call-core");
 
   ekiga_call_window_connect_engine_signals (cw);
 

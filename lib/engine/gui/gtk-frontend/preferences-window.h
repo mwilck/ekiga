@@ -48,6 +48,8 @@
 #include "audiooutput-core.h"
 #include "videoinput-core.h"
 
+#include "gtk-frontend.h"
+
 typedef struct _PreferencesWindow PreferencesWindow;
 typedef struct _PreferencesWindowPrivate PreferencesWindowPrivate;
 typedef struct _PreferencesWindowClass PreferencesWindowClass;
@@ -87,8 +89,6 @@ GType preferences_window_get_type ();
  * BEHAVIOR     :  It builds the preferences window.
  * PRE          :  /
  */
-GtkWidget *preferences_window_new (boost::shared_ptr<Ekiga::AudioInputCore> audio_input_core,
-                                   boost::shared_ptr<Ekiga::AudioOutputCore> audio_output_core,
-                                   boost::shared_ptr<Ekiga::VideoInputCore> video_input_core);
+GtkWidget *preferences_window_new (GmApplication *app);
 
 #endif

@@ -164,13 +164,7 @@ engine_init (Ekiga::ServiceCorePtr service_core,
 
   kickstart.kick (*service_core, &argc, &argv);
 
-  // FIXME: can't we have a single function for the whole gui?
   gtk_core_init (*service_core, &argc, &argv);
-
-  if (!gtk_frontend_init (*service_core, &argc, &argv)) {
-
-    return;
-  }
 
   kickstart.kick (*service_core, &argc, &argv);
 

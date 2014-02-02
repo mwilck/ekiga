@@ -44,7 +44,6 @@
 #include "dialpad.h"
 #include "statusmenu.h"
 
-#include "gmcallbacks.h"
 #include "gmentrydialog.h"
 #include "gmstatusbar.h"
 #include "gmmenuaddon.h"
@@ -93,7 +92,8 @@ G_DEFINE_TYPE (EkigaMainWindow, ekiga_main_window, GM_TYPE_WINDOW);
 
 struct _EkigaMainWindowPrivate
 {
-  Ekiga::ServiceCore* core;
+  GmApplication *app;
+  Ekiga::ServiceCorePtr core;
 
   boost::shared_ptr<Ekiga::AccountCore> account_core;
   boost::shared_ptr<Ekiga::AudioOutputCore> audiooutput_core;
@@ -104,9 +104,7 @@ struct _EkigaMainWindowPrivate
   boost::shared_ptr<Ekiga::Trigger> local_cluster_trigger;
   boost::shared_ptr<History::Source> history_source;
 
-  // this one is weak because otherwise we're sure to have a
-  // dependency loop
-  boost::weak_ptr<GtkFrontend> gtk_frontend;
+  GtkWidget *call_window;
 
   GtkAccelGroup *accel;
   GtkWidget *main_menu;
@@ -183,15 +181,6 @@ static void url_changed_cb (GtkEditable *e,
 static void show_dialpad_cb (GtkWidget *widget,
                              gpointer data);
 
-static void build_and_show_addressbook_window_cb (GtkWidget *widget,
-                                                  gpointer data);
-
-static void build_and_show_assistant_window_cb (GtkWidget *widget,
-                                                gpointer data);
-
-static void run_prefs_window_cb (G_GNUC_UNUSED GtkWidget *widget,
-                                 gpointer data);
-
 static gboolean on_delayed_hide_call_window_cb (gpointer data);
 
 static void ekiga_main_window_append_call_url (EkigaMainWindow *mw,
@@ -199,14 +188,6 @@ static void ekiga_main_window_append_call_url (EkigaMainWindow *mw,
 
 static const std::string ekiga_main_window_get_call_url (EkigaMainWindow *mw);
 
-
-/* DESCRIPTION  :  This callback is called when the chat window alerts about
- *                 unread messages
- * BEHAVIOR     :  Plays a sound (if enabled)
- * PRE          :  /
- */
-static void on_chat_unread_alert (GtkWidget*,
-				  gpointer);
 
 
 /* DESCRIPTION  :  This callback is called when the control panel
@@ -234,14 +215,6 @@ static void video_preview_changed (GtkToggleToolButton *button,
  * @param data is a pointer to the Ekiga::Trigger
  */
 static void pull_trigger_cb (GtkWidget * /*widget*/,
-                             gpointer data);
-
-
-/** Show the widget passed as parameter
- *
- * @param data is a pointer to the widget to show
- */
-static void  show_widget_cb (GtkWidget * /*widget*/,
                              gpointer data);
 
 
@@ -448,62 +421,6 @@ show_dialpad_cb (G_GNUC_UNUSED GtkWidget *widget,
   mw->priv->user_interface_settings->set_int ("panel-section", DIALPAD);
 }
 
-
-static void
-build_and_show_addressbook_window_cb (G_GNUC_UNUSED GtkWidget *widget,
-                                      gpointer data)
-{
-  GtkWidget *window = NULL;
-
-  g_return_if_fail (EKIGA_IS_MAIN_WINDOW (data));
-  EkigaMainWindow *self = EKIGA_MAIN_WINDOW (data);
-  boost::shared_ptr<GtkFrontend> gtk_frontend = self->priv->gtk_frontend.lock ();
-
-  window = gtk_frontend->build_addressbook_window ();
-  gm_window_set_hide_on_delete (GM_WINDOW (window), FALSE);
-  gm_window_set_hide_on_escape (GM_WINDOW (window), FALSE);
-  gtk_widget_show (window);
-}
-
-//FIXME: Is there a better way than duplicating code here
-static void
-build_and_show_assistant_window_cb (G_GNUC_UNUSED GtkWidget *widget,
-                                    gpointer data)
-{
-  GtkWidget *window = NULL;
-
-  g_return_if_fail (EKIGA_IS_MAIN_WINDOW (data));
-  EkigaMainWindow *self = EKIGA_MAIN_WINDOW (data);
-  boost::shared_ptr<GtkFrontend> gtk_frontend = self->priv->gtk_frontend.lock ();
-
-  window = gtk_frontend->build_assistant_window ();
-  gtk_window_set_transient_for (GTK_WINDOW (window),
-                                GTK_WINDOW (self));
-  gtk_widget_show (window);
-}
-
-
-static void
-run_prefs_window_cb (G_GNUC_UNUSED GtkWidget *widget,
-                     gpointer data)
-{
-  GtkWidget *prefs_window = NULL;
-
-  g_return_if_fail (EKIGA_IS_MAIN_WINDOW (data));
-  EkigaMainWindow *self = EKIGA_MAIN_WINDOW (data);
-
-  boost::shared_ptr<GtkFrontend> gtk_frontend = self->priv->gtk_frontend.lock ();
-
-  g_return_if_fail (gtk_frontend);
-
-  /* This will build a new window */
-  prefs_window = GTK_WIDGET (gtk_frontend->build_preferences_window ());
-
-  gtk_window_set_transient_for (GTK_WINDOW (prefs_window),
-                                GTK_WINDOW (self));
-  gtk_dialog_run (GTK_DIALOG (prefs_window));
-}
-
 static void
 on_account_updated (Ekiga::BankPtr /*bank*/,
 		    Ekiga::AccountPtr account,
@@ -533,7 +450,6 @@ static void on_setup_call_cb (boost::shared_ptr<Ekiga::CallManager> manager,
                               gpointer self)
 {
   EkigaMainWindow *mw = EKIGA_MAIN_WINDOW (self);
-  GtkWidget *call_window = NULL;
 
   if (!call->is_outgoing () && !manager->get_auto_answer ()) {
     if (mw->priv->current_call)
@@ -546,13 +462,7 @@ static void on_setup_call_cb (boost::shared_ptr<Ekiga::CallManager> manager,
   }
   else {
 
-    /* Show call window */
-    boost::shared_ptr<GtkFrontend> gtk_frontend = mw->priv->gtk_frontend.lock ();
-    if (gtk_frontend) {
-
-      call_window = GTK_WIDGET (gtk_frontend->get_call_window ());
-      gtk_widget_show (call_window);
-    }
+    gm_application_show_call_window (mw->priv->app);
 
     mw->priv->current_call = call;
     mw->priv->calling_state = Calling;
@@ -581,7 +491,6 @@ static void on_established_call_cb (boost::shared_ptr<Ekiga::CallManager>  /*man
                                     gpointer self)
 {
   EkigaMainWindow *mw = EKIGA_MAIN_WINDOW (self);
-  GtkWidget *call_window = NULL;
   gchar* info = NULL;
 
   /* Update calling state */
@@ -599,13 +508,7 @@ static void on_established_call_cb (boost::shared_ptr<Ekiga::CallManager>  /*man
   mw->priv->audiooutput_core->stop_play_event("incoming_call_sound");
   mw->priv->audiooutput_core->stop_play_event("ring_tone_sound");
 
-  /* Show call window */
-    boost::shared_ptr<GtkFrontend> gtk_frontend = mw->priv->gtk_frontend.lock ();
-    if (gtk_frontend) {
-
-      call_window = GTK_WIDGET (gtk_frontend->get_call_window ());
-      gtk_widget_show (call_window);
-    }
+  gm_application_show_call_window (mw->priv->app);
 }
 
 
@@ -706,15 +609,12 @@ on_delayed_hide_call_window_cb (gpointer data)
 
   EkigaMainWindow *mw = EKIGA_MAIN_WINDOW (data);
 
-    boost::shared_ptr<GtkFrontend> gtk_frontend = mw->priv->gtk_frontend.lock ();
-    if (gtk_frontend) {
-
-      GtkWidget* call_window = GTK_WIDGET (gtk_frontend->get_call_window ());
-
-      if (!mw->priv->current_call
-          && !mw->priv->video_devices_settings->get_bool ("enable-preview"))
-	gtk_widget_hide (GTK_WIDGET (call_window));
-    }
+  if (!mw->priv->current_call
+      && !mw->priv->video_devices_settings->get_bool ("enable-preview")
+      && mw->priv->call_window) {
+    gtk_widget_destroy (mw->priv->call_window);
+    mw->priv->call_window = NULL;
+  }
 
   return FALSE;
 }
@@ -789,23 +689,6 @@ on_roster_selection_changed (G_GNUC_UNUSED GtkWidget* view,
 
 
 static void
-on_chat_unread_alert (G_GNUC_UNUSED GtkWidget* widget,
-		      gpointer self)
-{
-  EkigaMainWindow *mw = EKIGA_MAIN_WINDOW (self);
-
-  g_return_if_fail (mw != NULL);
-  if (!mw->priv->sound_events_settings->get_bool ("enable-new-message-sound"))
-    return;
-
-  std::string file_name_string = mw->priv->sound_events_settings->get_string ("new-message-sound");
-
-  if (!file_name_string.empty ())
-    mw->priv->audiooutput_core->play_file (file_name_string);
-}
-
-
-static void
 panel_section_changed (G_GNUC_UNUSED GtkNotebook *notebook,
                        G_GNUC_UNUSED GtkWidget *page,
                        guint section,
@@ -837,15 +720,13 @@ video_preview_changed (GtkToggleToolButton *button,
   if (mw->priv->calling_state == Standby) {
 
     bool toggled = gtk_toggle_tool_button_get_active (button);
-    boost::shared_ptr<GtkFrontend> gtk_frontend = mw->priv->gtk_frontend.lock ();
-    if (gtk_frontend) {
-
-      GtkWidget *call_window = GTK_WIDGET (gtk_frontend->get_call_window ());
-      if (!toggled)
-        gtk_widget_hide (call_window);
-      else
-        gtk_widget_show (call_window);
+    if (!toggled) {
+      if (mw->priv->call_window)
+        gtk_widget_destroy (mw->priv->call_window);
+      mw->priv->call_window = NULL;
     }
+    else
+      mw->priv->call_window = gm_application_show_call_window (mw->priv->app);
   }
 }
 
@@ -859,16 +740,6 @@ pull_trigger_cb (GtkWidget * /*widget*/,
   g_return_if_fail (trigger != NULL);
 
   trigger->pull ();
-}
-
-
-static void
-show_widget_cb (GtkWidget * /*widget*/,
-                gpointer data)
-{
-  g_return_if_fail (data != NULL);
-
-  gtk_widget_show_all (GTK_WIDGET (data));
 }
 
 
@@ -1132,17 +1003,9 @@ ekiga_main_window_init_actions_toolbar (EkigaMainWindow *mw)
 static void
 ekiga_main_window_init_menu (EkigaMainWindow *mw)
 {
-  GtkWidget *accounts_window = NULL;
-
   mw->priv->main_menu = gtk_menu_bar_new ();
 
   g_return_if_fail (mw != NULL);
-
-  boost::shared_ptr<GtkFrontend> gtk_frontend = mw->priv->gtk_frontend.lock ();
-
-  g_return_if_fail (gtk_frontend);
-
-  accounts_window = GTK_WIDGET (gtk_frontend->get_accounts_window ());
 
   static MenuEntry gnomemeeting_menu [] =
     {
@@ -1164,45 +1027,11 @@ ekiga_main_window_init_menu (EkigaMainWindow *mw)
 		     G_CALLBACK (pull_trigger_cb),
 		     &*mw->priv->local_cluster_trigger, true),
 
-      GTK_MENU_THEME_ENTRY("address_book", _("Address _Book"),
-			   _("Find contacts"),
- 			   "x-office-address-book", 'b',
-			   G_CALLBACK (build_and_show_addressbook_window_cb),
-			   (gpointer) mw, TRUE),
-
       GTK_MENU_SEPARATOR,
 
       GTK_MENU_ENTRY("close", NULL, _("Close the Ekiga window"),
 		     GTK_STOCK_CLOSE, 'W',
 		     G_CALLBACK (window_closed_from_menu_cb),
-		     (gpointer) mw, TRUE),
-
-      GTK_MENU_SEPARATOR,
-
-      GTK_MENU_ENTRY("quit", NULL, _("Quit"),
-		     GTK_STOCK_QUIT, 'Q',
-		     G_CALLBACK (quit_callback), NULL, TRUE),
-
-      GTK_MENU_NEW (_("_Edit")),
-
-      GTK_MENU_ENTRY("configuration_assistant", _("_Configuration Assistant"),
-		     _("Run the configuration assistant"),
-		     NULL, 0,
-		     G_CALLBACK (build_and_show_assistant_window_cb),
-		     (gpointer) mw, TRUE),
-
-      GTK_MENU_SEPARATOR,
-
-      GTK_MENU_ENTRY("accounts", _("_Accounts"),
-		     _("Edit your accounts"),
-		     NULL, 'E',
-		     G_CALLBACK (show_widget_cb),
-		     (gpointer) accounts_window, TRUE),
-
-      GTK_MENU_ENTRY("preferences", NULL,
-		     _("Change your preferences"),
-		     GTK_STOCK_PREFERENCES, 0,
-		     G_CALLBACK (run_prefs_window_cb),
 		     (gpointer) mw, TRUE),
 
       GTK_MENU_NEW(_("_View")),
@@ -1240,19 +1069,6 @@ ekiga_main_window_init_menu (EkigaMainWindow *mw)
 			     mw->priv->contacts_settings->get_g_settings (),
                              "show-offline-contacts",
                              TRUE),
-
-      GTK_MENU_NEW(_("_Help")),
-
-      GTK_MENU_ENTRY("help", NULL,
-                     _("Get help by reading the Ekiga manual"),
-                     GTK_STOCK_HELP, GDK_KEY_F1,
-                     G_CALLBACK (help_callback), NULL, TRUE),
-
-      GTK_MENU_ENTRY("about", NULL,
-		     _("View information about Ekiga"),
-		     GTK_STOCK_ABOUT, 0,
-		     G_CALLBACK (about_callback), (gpointer) mw,
-		     TRUE),
 
       GTK_MENU_END
     };
@@ -1435,6 +1251,7 @@ ekiga_main_window_init (EkigaMainWindow *mw)
 
   mw->priv->current_call = boost::shared_ptr<Ekiga::Call>();
   mw->priv->calling_state = Standby;
+  mw->priv->call_window = NULL;
 
   mw->priv->user_interface_settings =
     boost::shared_ptr<Ekiga::Settings> (new Ekiga::Settings (USER_INTERFACE ".main-window"));
@@ -1560,38 +1377,39 @@ ekiga_main_window_connect_engine_signals (EkigaMainWindow *mw)
 }
 
 GtkWidget *
-gm_main_window_new (Ekiga::ServiceCore & core)
+gm_main_window_new (GmApplication *app)
 {
   EkigaMainWindow *mw;
 
+  g_return_val_if_fail (GM_IS_APPLICATION (app), NULL);
+
   /* basic gtk+ setup  */
   mw = EKIGA_MAIN_WINDOW (g_object_new (EKIGA_TYPE_MAIN_WINDOW,
+                                        "application", GTK_APPLICATION (app),
 					"key", USER_INTERFACE ".main-window",
 					NULL));
+  Ekiga::ServiceCorePtr core = gm_application_get_core (app);
 
   /* fetching needed engine objects */
-
-  mw->priv->core = &core;
+  mw->priv->core = core;
+  mw->priv->app = app;
 
   mw->priv->account_core
-    = core.get<Ekiga::AccountCore> ("account-core");
+    = core->get<Ekiga::AccountCore> ("account-core");
   mw->priv->audiooutput_core
-    = core.get<Ekiga::AudioOutputCore>("audiooutput-core");
+    = core->get<Ekiga::AudioOutputCore>("audiooutput-core");
   mw->priv->call_core
-    = core.get<Ekiga::CallCore> ("call-core");
+    = core->get<Ekiga::CallCore> ("call-core");
   mw->priv->contact_core
-    = core.get<Ekiga::ContactCore> ("contact-core");
+    = core->get<Ekiga::ContactCore> ("contact-core");
   mw->priv->presence_core
-    = core.get<Ekiga::PresenceCore> ("presence-core");
+    = core->get<Ekiga::PresenceCore> ("presence-core");
   mw->priv->bank
-    = core.get<Opal::Bank> ("opal-account-store");
+    = core->get<Opal::Bank> ("opal-account-store");
   mw->priv->local_cluster_trigger
-    = core.get<Ekiga::Trigger> ("local-cluster");
+    = core->get<Ekiga::Trigger> ("local-cluster");
   mw->priv->history_source
-    = core.get<History::Source> ("call-history-store");
-
-  mw->priv->gtk_frontend
-    = core.get<GtkFrontend> ("gtk-frontend");
+    = core->get<History::Source> ("call-history-store");
 
   ekiga_main_window_connect_engine_signals (mw);
 
@@ -1599,21 +1417,6 @@ gm_main_window_new (Ekiga::ServiceCore & core)
 
   // initial population
   on_some_core_updated (mw);
-
-  // FIXME: what does it do inside the main window if it's all about
-  // FIXME: the chat window and the audio output core!?
-  // FIXME: I don't like this either (damien).
-
-  /* initialize the callback to play IM message sound */
-  boost::shared_ptr<GtkFrontend> gtk_frontend = mw->priv->gtk_frontend.lock ();
-
-  if (gtk_frontend) {
-
-    GtkWidget *chat_window = GTK_WIDGET (gtk_frontend->get_chat_window ());
-
-    g_signal_connect (chat_window, "unread-alert",
-		      G_CALLBACK (on_chat_unread_alert), mw);
-  }
 
   return GTK_WIDGET(mw);
 }

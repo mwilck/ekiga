@@ -39,8 +39,8 @@
 #ifndef __CALL_WINDOW_H__
 #define __CALL_WINDOW_H__
 
-#include "services.h"
 #include "gmwindow.h"
+#include "gtk-frontend.h"
 
 G_BEGIN_DECLS
 
@@ -62,11 +62,8 @@ typedef GmWindowClass EkigaCallWindowClass;
 
 GType        ekiga_call_window_get_type   ();
 
-/* DESCRIPTION  :  /
- * BEHAVIOR     :  Builds the call window and adds the popup to the image.
- * PRE          :  Accels.
- */
-GtkWidget *call_window_new (Ekiga::ServiceCore & core);
+
+GtkWidget *call_window_new (GmApplication *app);
 
 G_END_DECLS
 #endif

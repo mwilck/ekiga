@@ -42,7 +42,6 @@
 
 #include "dbus.h"
 #include "ekiga-settings.h"
-#include "gmcallbacks.h"
 #include "gtk-frontend.h"
 #include "call-core.h"
 
@@ -55,8 +54,9 @@ G_DEFINE_TYPE(EkigaDBusComponent, ekiga_dbus_component, G_TYPE_OBJECT);
 
 struct _EkigaDBusComponentPrivate
 {
+  GmApplication *app;
+
   boost::weak_ptr<Ekiga::CallCore> call_core;
-  boost::weak_ptr<GtkFrontend> gtk_frontend;
   boost::shared_ptr<Ekiga::Settings> personal_data_settings;
 };
 
@@ -102,24 +102,18 @@ ekiga_dbus_component_show (EkigaDBusComponent *self,
                            G_GNUC_UNUSED GError **error)
 {
   PTRACE (1, "DBus\tShow");
-  boost::shared_ptr<GtkFrontend> gtk_frontend = self->priv->gtk_frontend.lock ();
 
-  g_return_val_if_fail (gtk_frontend, FALSE);
-
-  const GtkWidget *window = gtk_frontend->get_main_window ();
-  if (gtk_widget_get_visible (GTK_WIDGET (window)))
-    gtk_window_set_urgency_hint (GTK_WINDOW (window), TRUE);
-  else
-    gtk_window_present (GTK_WINDOW (window));
+  g_return_val_if_fail (self, FALSE);
+  gm_application_show_main_window (self->priv->app);
 
   return TRUE;
 }
 
 static gboolean
-ekiga_dbus_component_shutdown (G_GNUC_UNUSED EkigaDBusComponent *self,
+ekiga_dbus_component_shutdown (EkigaDBusComponent *self,
                                G_GNUC_UNUSED GError **error)
 {
-  quit_callback (NULL, NULL);
+  g_application_quit (G_APPLICATION (self->priv->app));
 
   return TRUE;
 }
@@ -207,11 +201,13 @@ ekiga_dbus_claim_ownership ()
  *       the manager and other key components are running.
  */
 EkigaDBusComponent *
-ekiga_dbus_component_new (Ekiga::ServiceCore& service_core)
+ekiga_dbus_component_new (GmApplication *app)
 {
   DBusGConnection *bus;
   GError *error = NULL;
   EkigaDBusComponent *obj;
+
+  Ekiga::ServiceCorePtr core = gm_application_get_core (app);
 
   bus = dbus_g_bus_get (DBUS_BUS_SESSION, &error);
   if (!bus) {
@@ -221,10 +217,10 @@ ekiga_dbus_component_new (Ekiga::ServiceCore& service_core)
   }
 
   obj = EKIGA_DBUS_COMPONENT (g_object_new (EKIGA_TYPE_DBUS_COMPONENT, NULL));
-  obj->priv->gtk_frontend = service_core.get<GtkFrontend> ("gtk-frontend");
-  obj->priv->call_core = service_core.get<Ekiga::CallCore> ("call-core");
+  obj->priv->call_core = core->get<Ekiga::CallCore> ("call-core");
   obj->priv->personal_data_settings =
     boost::shared_ptr<Ekiga::Settings> (new Ekiga::Settings (PERSONAL_DATA_SCHEMA));
+  obj->priv->app = app;
   dbus_g_connection_register_g_object (bus, EKIGA_DBUS_PATH, G_OBJECT (obj));
 
   return obj;

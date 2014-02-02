@@ -49,7 +49,6 @@
 
 #include "scoped-connections.h"
 
-#include "gmcallbacks.h"
 #include "codecsbox.h"
 
 #ifdef WIN32
@@ -72,6 +71,8 @@ struct _PreferencesWindowPrivate
   GtkWidget *iface;
   GtkWidget *fsbutton;
   GtkWidget *notebook;
+
+  GmApplication *app;
 
   boost::shared_ptr<Ekiga::VideoInputCore> videoinput_core;
   boost::shared_ptr<Ekiga::AudioInputCore> audioinput_core;
@@ -1439,7 +1440,8 @@ dialog_response_cb (GtkDialog *dialog,
 {
   switch (response_id) {
   case GTK_RESPONSE_HELP:
-    help_callback (NULL, NULL);
+    //help_callback (NULL, NULL);
+    std::cout << "FIXME" << std::endl << std::flush;
     g_signal_stop_emission_by_name (dialog, "response");
     break;
   default:
@@ -1734,22 +1736,25 @@ preferences_window_class_init (PreferencesWindowClass *klass)
 
 /* Public functions */
 GtkWidget *
-preferences_window_new (boost::shared_ptr<Ekiga::AudioInputCore> audio_input_core,
-                        boost::shared_ptr<Ekiga::AudioOutputCore> audio_output_core,
-                        boost::shared_ptr<Ekiga::VideoInputCore> video_input_core)
+preferences_window_new (GmApplication *app)
 {
   PreferencesWindow *self = NULL;
+
+  g_return_val_if_fail (GM_IS_APPLICATION (app), NULL);
 
   GdkPixbuf *pixbuf = NULL;
   GtkWidget *container = NULL;
   boost::signals2::connection conn;
 
+  Ekiga::ServiceCorePtr core = gm_application_get_core (app);
+
   /* The window */
   self = (PreferencesWindow *) g_object_new (PREFERENCES_WINDOW_TYPE, NULL);
   self->priv = new PreferencesWindowPrivate ();
-  self->priv->audioinput_core = audio_input_core;
-  self->priv->audiooutput_core = audio_output_core;
-  self->priv->videoinput_core = video_input_core;
+  self->priv->audioinput_core = core->get<Ekiga::AudioInputCore> ("audioinput-core");
+  self->priv->audiooutput_core = core->get<Ekiga::AudioOutputCore> ("audiooutput-core");
+  self->priv->videoinput_core = core->get<Ekiga::VideoInputCore> ("videoinput-core");
+  self->priv->app = app;
 
   gtk_dialog_add_button (GTK_DIALOG (self), GTK_STOCK_CLOSE, GTK_RESPONSE_CANCEL);
   gtk_dialog_add_button (GTK_DIALOG (self), GTK_STOCK_HELP, GTK_RESPONSE_HELP);
