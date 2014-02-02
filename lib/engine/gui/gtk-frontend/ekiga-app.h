@@ -27,9 +27,9 @@
 
 
 /*
- *                         gtk-frontend.h  -  description
- *                         ------------------------------------------
- *   begin                : written in 2014 by Damien Sandras
+ *                         ekiga-app.cpp  -  description
+ *                         -----------------------------
+ *   begin                : written in Feb 2014 by Damien Sandras
  *   copyright            : (c) 2014 by Damien Sandras
  *   description          : main Ekiga GtkApplication
  *

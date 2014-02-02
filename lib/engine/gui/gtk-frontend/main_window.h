@@ -40,7 +40,7 @@
 #define __MAIN_WINDOW_H__
 
 #include "gmwindow.h"
-#include "gtk-frontend.h"
+#include "ekiga-app.h"
 
 G_BEGIN_DECLS
 

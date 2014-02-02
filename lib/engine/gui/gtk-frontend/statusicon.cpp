@@ -44,7 +44,7 @@
 #include "gmmenuaddon.h"
 
 #include "services.h"
-#include "gtk-frontend.h"
+#include "ekiga-app.h"
 #include "call-core.h"
 #include "notification-core.h"
 #include "personal-details.h"

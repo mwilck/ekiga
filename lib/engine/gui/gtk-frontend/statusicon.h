@@ -45,7 +45,7 @@
 #include <boost/signals2.hpp>
 #include <boost/bind.hpp>
 
-#include "gtk-frontend.h"
+#include "ekiga-app.h"
 
 G_BEGIN_DECLS
 

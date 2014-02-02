@@ -42,7 +42,7 @@
 
 #include "dbus.h"
 #include "ekiga-settings.h"
-#include "gtk-frontend.h"
+#include "ekiga-app.h"
 #include "call-core.h"
 
 /* Those defines the namespace and path we want to use. */

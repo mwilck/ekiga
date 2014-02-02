@@ -41,7 +41,7 @@
 #define __DBUS_COMPONENT_H
 
 #include <glib-object.h>
-#include "gtk-frontend.h"
+#include "ekiga-app.h"
 
 #include "framework/services.h"
 

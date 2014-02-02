@@ -59,7 +59,6 @@
 #include "local-roster-main.h"
 #include "local-roster-bridge.h"
 #include "gtk-core-main.h"
-#include "gtk-frontend.h"
 #include "gmconf-personal-details.h"
 
 #include "videooutput-main-clutter-gst.h"

@@ -43,7 +43,7 @@
 #include <gtk/gtk.h>
 
 #include "gmwindow.h"
-#include "gtk-frontend.h"
+#include "ekiga-app.h"
 
 typedef struct _AccountsWindow AccountsWindow;
 typedef struct _AccountsWindowPrivate AccountsWindowPrivate;

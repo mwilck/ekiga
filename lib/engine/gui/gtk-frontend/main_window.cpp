@@ -62,7 +62,7 @@
 #include "audioinput-core.h"
 #include "audiooutput-core.h"
 
-#include "gtk-frontend.h"
+#include "ekiga-app.h"
 #include "roster-view-gtk.h"
 #include "call-history-view-gtk.h"
 #include "history-source.h"

@@ -42,7 +42,7 @@
 #include "contact-core.h"
 
 #include "gmwindow.h"
-#include "gtk-frontend.h"
+#include "ekiga-app.h"
 
 
 typedef struct _AddressBookWindow AddressBookWindow;

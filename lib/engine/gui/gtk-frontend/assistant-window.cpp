@@ -45,7 +45,7 @@
 #include "platform.h"
 #include "assistant-window.h"
 #include "default_devices.h"
-#include "gtk-frontend.h"
+#include "ekiga-app.h"
 #include "opal-bank.h"
 
 #include "ekiga-settings.h"

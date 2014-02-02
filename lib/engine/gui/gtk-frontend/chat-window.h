@@ -41,7 +41,7 @@
 
 #include "gmwindow.h"
 #include "services.h"
-#include "gtk-frontend.h"
+#include "ekiga-app.h"
 
 G_BEGIN_DECLS
 

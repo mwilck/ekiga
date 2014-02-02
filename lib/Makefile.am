@@ -404,8 +404,8 @@ libekiga_la_SOURCES += \
 	engine/gui/gtk-frontend/statusmenu.cpp \
 	engine/gui/gtk-frontend/chat-window.h \
 	engine/gui/gtk-frontend/chat-window.cpp \
-	engine/gui/gtk-frontend/gtk-frontend.h \
-	engine/gui/gtk-frontend/gtk-frontend.cpp
+	engine/gui/gtk-frontend/ekiga-app.h \
+	engine/gui/gtk-frontend/ekiga-app.cpp
 
 ##
 # Sources of the ptlib component

@@ -27,9 +27,9 @@
 
 
 /*
- *                         gtk-frontend.cpp  -  description
- *                         ------------------------------------------
- *   begin                : written in 2014 by Damien Sandras
+ *                         ekiga-app.cpp  -  description
+ *                         -----------------------------
+ *   begin                : written in Feb 2014 by Damien Sandras
  *   copyright            : (c) 2014 by Damien Sandras
  *   description          : main Ekiga GtkApplication
  *
@@ -41,7 +41,7 @@
 #include "ekiga-settings.h"
 
 #include "trigger.h"
-#include "gtk-frontend.h"
+#include "ekiga-app.h"
 #include "gmstockicons.h"
 #include "account-core.h"
 #include "chat-core.h"

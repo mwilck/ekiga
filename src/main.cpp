@@ -60,7 +60,7 @@
 
 #include "call-core.h"
 
-#include "gtk-frontend.h"
+#include "ekiga-app.h"
 #include "ekiga.h"
 
 #ifdef WIN32

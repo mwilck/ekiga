@@ -48,7 +48,7 @@
 #include "audiooutput-core.h"
 #include "videoinput-core.h"
 
-#include "gtk-frontend.h"
+#include "ekiga-app.h"
 
 typedef struct _PreferencesWindow PreferencesWindow;
 typedef struct _PreferencesWindowPrivate PreferencesWindowPrivate;
