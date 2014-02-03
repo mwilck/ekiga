@@ -121,10 +121,6 @@ AM_LIBS = $(GTK_LIBS) $(GLIB_LIBS) $(DBUS_LIBS) $(OPAL_LIBS) $(PTLIB_LIBS) $(BOO
 ekiga_LDADD = \
 	$(top_builddir)/lib/libekiga.la $(AM_LIBS)
 
-if !WIN32
-ekiga_LDFLAGS = -lX11
-endif
-
 EXTRA_DIST = \
 	$(service_in_files)		\
 	dbus-helper/dbus-stub.xml	\

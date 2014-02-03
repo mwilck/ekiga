@@ -3,10 +3,6 @@ stacklib_dir = $(stacklibdir)
 
 libekiga_la_LDFLAGS = $(STACKLIB_LDFLAGS) $(GLIB_LIBS) $(XML_LIBS) $(GTK_LIBS)
 
-if !WIN32
-libekiga_la_LDFLAGS += -lX11
-endif
-
 CLEANFILES =
 
 AM_CPPFLAGS = \
@@ -151,12 +147,6 @@ libekiga_la_SOURCES += \
 	gui/gm-text-buffer-enhancer.h \
 	gui/gm-smiley-chooser-button.c \
 	gui/gm-smiley-chooser-button.h
-
-if !WIN32
-libekiga_la_SOURCES +=	\
-	gui/xwindow.cpp	\
-	gui/xwindow.h
-endif
 
 ##
 # Sources of the main engine code
@@ -598,15 +588,6 @@ engine/components/hal-dbus/hal-marshal.h: engine/components/hal-dbus/hal-marshal
 
 engine/components/hal-dbus/hal-marshal.c: engine/components/hal-dbus/hal-marshal.list
 	$(AM_V_GEN)$(LIBTOOL) --mode=execute glib-genmarshal --prefix=gm_hal_dbus_marshal $^ --body > $@.tmp && mv $@.tmp $@
-
-endif
-
-##
-# Support for shared memory
-##
-if HAVE_SHM
-
-libekiga_la_LDFLAGS += $(SHM_LIBS)
 
 endif
 

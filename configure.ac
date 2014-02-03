@@ -121,25 +121,6 @@ AC_MSG_RESULT([yes])
 
 AM_CONDITIONAL(WIN32, test "x${win32}" = "x1")
 
-dnl Check the byte order
-AC_MSG_CHECKING(Byte order)
-byte_order="unknown"
-AC_ARG_WITH([endianess],
-            [AS_HELP_STRING([--with-endianess=big|little],[endianess of target system])],
-	    [byte_order="$withval endian"],
-            [AC_C_BIGENDIAN([byte_order="big endian"], [byte_order="little endian"], [])])
-
-if test "x$byte_order" = "xbig endian"; then
-    AC_DEFINE(WORDS_BIGENDIAN,1,[Big Endian Architecture])
-else
-    if test "x$byte_order" = "xlittle endian"; then
-	AC_DEFINE(WORDS_LITTLEENDIAN,1,[Little Endian Architecture])
-    else
-      AC_MSG_ERROR([Unable to detect endianess of target system - please specify])
-    fi
-fi
-
-AC_MSG_RESULT([$byte_order])
 
 
 dnl ###############################
@@ -374,30 +355,6 @@ if test "x$use_x86_asm" = "xyes"; then
 fi
 
 AM_CONDITIONAL(USE_MMX, test "x$use_mmx_asm" = "xyes")
-
-
-
-dnl ###############################
-dnl Checks for Shared Memory extension
-dnl ###############################
-SHM="disabled"
-
-if test "x${gm_platform}" = "xlinux" ; then
-  AC_ARG_ENABLE(shm, AS_HELP_STRING([--enable-shm],[enable SHM support (default is enabled)]),
-[if test "x$enableval" = "xyes"; then
-  enable_shm=yes
-fi],enable_shm=yes)
-  if test "x$enable_shm" = "xyes"; then
-    AC_CHECK_LIB(Xext, XShmAttach, with_shm="yes", with_shm="no")
-    if test "x${with_shm}" != "xno"; then
-      SHM="enabled"
-      AC_DEFINE(HAVE_SHM,1,[SHM Support])
-      SHM_LIBS="-lXext"
-      AC_SUBST(SHM_LIBS)
-    fi
-  fi
-fi
-AM_CONDITIONAL(HAVE_SHM, test "x$SHM" = "xenabled")
 
 
 dnl ###############################
@@ -866,8 +823,6 @@ echo ""
 echo "             Video4Linux support  :  $VIDEO4LINUX"
 fi
 echo "                    LDAP support  :  $LDAP"
-echo ""
-echo "           Shared Memory support  :  $SHM"
 echo ""
 if test "x${gm_platform}" != "xmingw" ; then
 echo "                    DBUS support  :  $DBUS"
