@@ -79,32 +79,9 @@ endif
 
 libekiga_la_SOURCES += \
 	settings/settings-mappings.h \
-        settings/settings-mappings.c \
+	settings/settings-mappings.c \
 	settings/ekiga-settings.h
 
-
-##
-# Sources out of the pixops directory
-##
-if !WIN32
-
-AM_CPPFLAGS += -I$(top_srcdir)/lib/pixops
-EXTRA_DIST += $(top_srcdir)/lib/pixops/README
-
-libekiga_la_SOURCES += \
-	pixops/pixops.h \
-	pixops/pixops.c \
-	pixops/pixops-internal.h
-
-if USE_MMX
-libekiga_la_SOURCES += \
-	pixops/have_mmx.S \
-	pixops/scale_line_22_33_mmx.S \
-	pixops/composite_line_22_4a4_mmx.S \
-	pixops/composite_line_color_22_4a4_mmx.S
-endif
-
-endif
 
 ##
 # Sources out of the gui directory
