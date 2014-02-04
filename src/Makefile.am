@@ -40,9 +40,7 @@ nodist_ekiga_SOURCES =
 
 # Endpoints
 ekiga_SOURCES +=			\
-	main.cpp			\
-	ekiga.h			        \
-	ekiga.cpp
+	main.cpp
 
 # resources
 if WIN32

@@ -38,6 +38,7 @@
 #include "config.h"
 
 #include "opal-main.h"
+#include "opal-process.h"
 
 #include "chat-core.h"
 #include "presence-core.h"
@@ -148,9 +149,15 @@ struct OPALSpark: public Ekiga::Spark
 };
 
 void
+opal_init_pprocess ()
+{
+  /* Ekiga PTLIB Process initialisation */
+  static GnomeMeeting instance;
+}
+
+void
 opal_init (Ekiga::KickStart& kickstart)
 {
   boost::shared_ptr<Ekiga::Spark> spark(new OPALSpark);
   kickstart.add_spark (spark);
 }
-

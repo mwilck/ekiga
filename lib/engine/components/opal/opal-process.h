@@ -1,4 +1,5 @@
 
+
 /* Ekiga -- A VoIP and Video-Conferencing application
  * Copyright (C) 2000-2009 Damien Sandras <dsandras@seconix.com>
  *
@@ -59,17 +60,9 @@ class GnomeMeeting : public PProcess
    */
   GnomeMeeting ();
 
-
-  /* DESCRIPTION  :  /
-   * BEHAVIOR     :  Prepare the endpoint to exit by removing all
-   * 		     associated threads and components.
-   * PRE          :  /
-   */
-  void Exit ();
-
-
   /* Needed for PProcess */
   void Main();
+
   static GnomeMeeting *Process ();
 
  private:

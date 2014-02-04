@@ -41,6 +41,7 @@
 
 #include <glib/gi18n.h>
 
+#include <ptlib.h>
 #include <opal/buildopts.h> // only for OPAL_VERSION!
 
 
@@ -61,7 +62,6 @@
 #include "call-core.h"
 
 #include "ekiga-app.h"
-#include "ekiga.h"
 
 #ifdef WIN32
 // the linker must not find main
@@ -113,6 +113,7 @@ main (int argc,
   g_set_application_name (_("Ekiga Softphone"));
 #ifndef WIN32
   setenv ("PULSE_PROP_application.name", _("Ekiga Softphone"), true);
+  setenv ("PA_PROP_MEDIA_ROLE", "phone", true);
 #endif
 
   /* Arguments initialization */
@@ -164,9 +165,6 @@ main (int argc,
 			| PTrace::Blocks | PTrace::DateAndTime);
 #endif
 
-  /* Ekiga initialisation */
-  GnomeMeeting instance;
-
   Ekiga::Runtime::init ();
   engine_init (service_core, argc, argv);
 
@@ -214,7 +212,6 @@ main (int argc,
 //  gtk_main ();
 
   /* Exit Ekiga */
-  GnomeMeeting::Process ()->Exit ();
   service_core.reset ();
   Ekiga::Runtime::quit ();
 

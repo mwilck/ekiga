@@ -457,7 +457,9 @@ libekiga_la_SOURCES += \
 	engine/components/opal/opal-plugins-hook.h \
 	engine/components/opal/opal-plugins-hook.cpp \
 	engine/components/opal/opal-presentity.h \
-	engine/components/opal/opal-presentity.cpp
+	engine/components/opal/opal-presentity.cpp \
+	engine/components/opal/opal-process.h \
+	engine/components/opal/opal-process.cpp
 
 if HAVE_H323
 libekiga_la_SOURCES += \

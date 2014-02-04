@@ -88,6 +88,10 @@ engine_init (Ekiga::ServiceCorePtr service_core,
 	     int argc,
              char *argv [])
 {
+  // AT THE VERY FIRST, create the PProcess
+
+  opal_init_pprocess ();
+
   // FIRST we add a few things by hand
   // (for speed and because that's less code)
 

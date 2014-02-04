@@ -37,7 +37,7 @@
 
 #include "config.h"
 
-#include "ekiga.h"
+#include "opal-process.h"
 
 #include <gtk/gtk.h>
 
@@ -54,14 +54,6 @@ GnomeMeeting::GnomeMeeting ()
 
 {
   GM = this;
-}
-
-
-void
-GnomeMeeting::Exit ()
-{
-  while (gtk_events_pending ())
-    gtk_main_iteration ();
 }
 
 
