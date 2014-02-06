@@ -49,7 +49,7 @@ export RANLIB:=$(HOST_TOOL_PREFIX)-ranlib
 export DLLTOOL:=$(HOST_TOOL_PREFIX)-dlltool
 export DLLWRAP:=$(HOST_TOOL_PREFIX)-dllwrap
 export OBJDUMP:=$(HOST_TOOL_PREFIX)-objdump
-export RC:=$(HOST_TOOL_PREFIX)-windres
+export WINDRES:=$(HOST_TOOL_PREFIX)-windres
 export STRIP:=$(HOST_TOOL_PREFIX)-strip
 export AS:=$(HOST_TOOL_PREFIX)-as
 export LDD:=$(BUILDROOT)/$(HOST_TOOL_PREFIX)-ldd.sh
@@ -129,7 +129,7 @@ LIBSASL2_DIR := $(BUILDROOT)/cyrus-sasl-$(LIBSASL2_VER)
 LIBSASL2_ARCHIVE := cyrus-sasl-$(LIBSASL2_VER).zip
 LIBSASL2_URL := http://developer.pidgin.im/static/win32
 
-OGG_VER := 1.3.0
+OGG_VER := 1.3.1
 OGG_DIR := $(BUILDROOT)/libogg-$(OGG_VER)
 OGG_ARCHIVE := libogg-$(OGG_VER).tar.xz
 OGG_URL := http://downloads.xiph.org/releases/ogg
@@ -182,6 +182,41 @@ NSIS_URL := http://downloads.sourceforge.net/nsis
 NSISPROCESSES_URL := http://nsis.sourceforge.net/mediawiki/images/f/f3/
 NSISSYTEM_DIR := /usr/share/nsis/Contrib/Modern\ UI
 NSISPLUGIN_DIR := $(BUILDROOT)/nsisplugins
+
+COGL_VER := 1.14.0
+COGL_URL := http://ftp.gnome.org/pub/GNOME/sources/cogl/$(shell echo $(COGL_VER)|cut -f1-2 -d.)
+COGL_DIR := $(BUILDROOT)/cogl-$(COGL_VER)
+COGL_ARCHIVE := cogl-$(COGL_VER).tar.xz
+
+JSONGLIB_VER := 0.16.2
+JSONGLIB_URL := http://ftp.gnome.org/pub/GNOME/sources/json-glib/$(shell echo $(JSONGLIB_VER)|cut -f1-2 -d.)
+JSONGLIB_DIR := $(BUILDROOT)/json-glib-$(JSONGLIB_VER)
+JSONGLIB_ARCHIVE := json-glib-$(JSONGLIB_VER).tar.xz
+
+CLUTTER_VER := 1.14.6
+CLUTTER_URL := http://ftp.gnome.org/pub/GNOME/sources/clutter/$(shell echo $(CLUTTER_VER)|cut -f1-2 -d.)
+CLUTTER_DIR := $(BUILDROOT)/clutter-$(CLUTTER_VER)
+CLUTTER_ARCHIVE := clutter-$(CLUTTER_VER).tar.xz
+
+CLUTTERGTK_VER := 1.4.4
+CLUTTERGTK_URL := http://ftp.gnome.org/pub/GNOME/sources/clutter-gtk/$(shell echo $(CLUTTERGTK_VER)|cut -f1-2 -d.)
+CLUTTERGTK_DIR := $(BUILDROOT)/clutter-gtk-$(CLUTTERGTK_VER)
+CLUTTERGTK_ARCHIVE := clutter-gtk-$(CLUTTERGTK_VER).tar.xz
+
+GSTREAMER_VER := 1.2.2
+GSTREAMER_URL := http://ftp.gnome.org/pub/GNOME/sources/gstreamer/$(shell echo $(GSTREAMER_VER)|cut -f1-2 -d.)
+GSTREAMER_DIR := $(BUILDROOT)/gstreamer-$(GSTREAMER_VER)
+GSTREAMER_ARCHIVE := gstreamer-$(GSTREAMER_VER).tar.xz
+
+GSTPLUGINSBASE_VER := 1.2.2
+GSTPLUGINSBASE_URL := http://ftp.gnome.org/pub/GNOME/sources/gst-plugins-base/$(shell echo $(GSTPLUGINSBASE_VER)|cut -f1-2 -d.)
+GSTPLUGINSBASE_DIR := $(BUILDROOT)/gst-plugins-base-$(GSTPLUGINSBASE_VER)
+GSTPLUGINSBASE_ARCHIVE := gst-plugins-base-$(GSTPLUGINSBASE_VER).tar.xz
+
+CLUTTERGST_VER := 2.0.10
+CLUTTERGST_URL := http://ftp.gnome.org/pub/GNOME/sources/clutter-gst/$(shell echo $(CLUTTERGST_VER)|cut -f1-2 -d.)
+CLUTTERGST_DIR := $(BUILDROOT)/clutter-gst-$(CLUTTERGST_VER)
+CLUTTERGST_ARCHIVE := clutter-gst-$(CLUTTERGST_VER).tar.xz
 
 # gtk headers + libraries
 GTK_VER := 3.6.4-20130921
@@ -245,7 +280,7 @@ update: update-sources
 
 binaries:
 	@echo Checking prerequisites...
-	hash $(REALCC) $(REALCXX) $(LD) $(NM) $(AR) $(RANLIB) $(DLLTOOL) $(DLLWRAP) $(OBJDUMP) $(RC) $(AS)||(echo You need to install mingw-w64 or mingw32; exit 1)
+	hash $(REALCC) $(REALCXX) $(LD) $(NM) $(AR) $(RANLIB) $(DLLTOOL) $(DLLWRAP) $(OBJDUMP) $(WINDRES) $(AS)||(echo You need to install mingw-w64 or mingw32; exit 1)
 	hash tar unzip zip xz wget aclocal autoheader libtoolize automake autoconf pkg-config gnome-autogen.sh bison glib-compile-schemas gdk-pixbuf-csource || (echo we need more binaries ; exit 1)
 	[ -f /usr/share/gnome-doc-utils/gnome-doc-utils.make ] || (echo gnome-doc-tools not installed; exit 1)
 	[ -f /usr/share/icons/gnome/index.theme ] || (echo gnome-icon-theme not installed; exit 1)
@@ -332,7 +367,7 @@ update-sources::
 $(OPENLDAP_DIR)/configure: $(LIBDIR)/libregex.a $(SRCDIR)/$(OPENLDAP_ARCHIVE)
 	rm -f $(LIBDIR)/libldap.dll
 	tar xfz $(SRCDIR)/$(OPENLDAP_ARCHIVE) -C $(BUILDROOT)
-	sed -i -e 's#windres#$(RC)#g' $(OPENLDAP_DIR)/libraries/liblutil/Makefile.in
+	sed -i -e 's#windres#$(WINDRES)#g' $(OPENLDAP_DIR)/libraries/liblutil/Makefile.in
 	touch $@
 
 $(OPENLDAP_DIR)/config.status: binaries $(OPENLDAP_DIR)/configure
@@ -540,7 +575,7 @@ update-sources::
 	$(WGET) -P $(SRCDIR) $(GTK_URL)/$(GTK_ARCHIVE)
 
 $(LIBDIR)/pkgconfig/gtk+-3.0.pc: $(SRCDIR)/$(GTK_ARCHIVE)
-	unzip -u $(SRCDIR)/$(GTK_ARCHIVE) -d $(BUILDROOT)
+	unzip -o $(SRCDIR)/$(GTK_ARCHIVE) -d $(BUILDROOT)
 	sed -i -e 's#^prefix=.*$$#prefix=$(BUILDROOT)#g' $(BINDIR)/glib-gettextize
 	sed -i -e 's#^prefix=.*$$#prefix=$(BUILDROOT)#g' $(LIBDIR)/pkgconfig/g*.pc
 	sed -i -e 's#^prefix=.*$$#prefix=$(BUILDROOT)#g' $(LIBDIR)/pkgconfig/atk*.pc
@@ -548,6 +583,112 @@ $(LIBDIR)/pkgconfig/gtk+-3.0.pc: $(SRCDIR)/$(GTK_ARCHIVE)
 	sed -i -e 's#^prefix=.*$$#prefix=$(BUILDROOT)#g' $(LIBDIR)/pkgconfig/cairo*.pc
 	sed -i -e 's#^prefix=.*$$#prefix=$(BUILDROOT)#g' $(LIBDIR)/pkgconfig/libxml*.pc
 	touch $@
+
+### cogl
+update-sources::
+	@echo --- Getting cogl ...
+	$(WGET) -P $(SRCDIR) $(COGL_URL)/$(COGL_ARCHIVE)
+	# without gl.h, cogl gives compile (not configure!) errors
+	# mingw-w64 too provides gl.h, but perhaps it is too old?
+	$(WGET) -P $(SRCDIR) http://cgit.freedesktop.org/mesa/mesa/plain/include/GL/gl.h
+
+$(COGL_DIR)/config.status: $(SRCDIR)/$(COGL_ARCHIVE)
+	rm -rf $(COGL_DIR)
+	tar xf $(SRCDIR)/$(COGL_ARCHIVE) -C $(BUILDROOT)
+	mkdir -p $(INCLUDEDIR)/GL; cp $(SRCDIR)/gl.h $(INCLUDEDIR)/GL
+	cd $(COGL_DIR); ./configure $(confflags)
+
+$(LIBDIR)/pkgconfig/cogl-1.0.pc: $(COGL_DIR)/config.status
+	$(MAKE) $(MAKE_LIB_OPTS) -C $(COGL_DIR)
+	$(MAKE) -C $(COGL_DIR) install
+
+### json glib
+update-sources::
+	@echo --- Getting json glib ...
+	$(WGET) -P $(SRCDIR) $(JSONGLIB_URL)/$(JSONGLIB_ARCHIVE)
+
+$(JSONGLIB_DIR)/config.status: $(SRCDIR)/$(JSONGLIB_ARCHIVE)
+	rm -rf $(JSONGLIB_DIR)
+	tar xf $(SRCDIR)/$(JSONGLIB_ARCHIVE) -C $(BUILDROOT)
+	cd $(JSONGLIB_DIR); ./configure $(confflags)
+
+$(LIBDIR)/pkgconfig/json-glib-1.0.pc: $(JSONGLIB_DIR)/config.status
+	$(MAKE) $(MAKE_LIB_OPTS) -C $(JSONGLIB_DIR)
+	$(MAKE) -C $(JSONGLIB_DIR) install
+
+### clutter
+update-sources::
+	@echo --- Getting clutter ...
+	$(WGET) -P $(SRCDIR) $(CLUTTER_URL)/$(CLUTTER_ARCHIVE)
+
+$(CLUTTER_DIR)/config.status: $(SRCDIR)/$(CLUTTER_ARCHIVE) $(LIBDIR)/pkgconfig/cogl-1.0.pc $(LIBDIR)/pkgconfig/json-glib-1.0.pc
+	rm -rf $(CLUTTER_DIR) $(INCLUDEDIR)/clutter
+	tar xf $(SRCDIR)/$(CLUTTER_ARCHIVE) -C $(BUILDROOT)
+	cd $(CLUTTER_DIR); ./configure $(confflags) --disable-examples
+
+$(LIBDIR)/pkgconfig/clutter-1.0.pc: $(CLUTTER_DIR)/config.status
+	$(MAKE) $(MAKE_LIB_OPTS) -C $(CLUTTER_DIR)
+	$(MAKE) -C $(CLUTTER_DIR) install
+
+### clutter gtk
+update-sources::
+	@echo --- Getting clutter gtk ...
+	$(WGET) -P $(SRCDIR) $(CLUTTERGTK_URL)/$(CLUTTERGTK_ARCHIVE)
+
+$(CLUTTERGTK_DIR)/config.status: $(SRCDIR)/$(CLUTTERGTK_ARCHIVE)
+	rm -rf $(CLUTTERGTK_DIR) $(INCLUDEDIR)/clutter-gtk-1.0
+	tar xf $(SRCDIR)/$(CLUTTERGTK_ARCHIVE) -C $(BUILDROOT)
+	# without the sed there is a compile error
+	sed -i -e 's#<clutter/clutter-win32.h>#<clutter/win32/clutter-win32.h>#g' $(CLUTTERGTK_DIR)/clutter-gtk/gtk-clutter-actor.c
+	# without the sed no .dll file is generated, which fools the linker
+	sed -i -e 's#$$(CLUTTER_LT_LDFLAGS)#$$(CLUTTER_LT_LDFLAGS) -no-undefined#g' $(CLUTTERGTK_DIR)/clutter-gtk/Makefile.in
+	cd $(CLUTTERGTK_DIR); ./configure $(confflags)
+
+$(LIBDIR)/pkgconfig/clutter-gtk-1.0.pc: $(CLUTTERGTK_DIR)/config.status
+	$(MAKE) $(MAKE_LIB_OPTS) -C $(CLUTTERGTK_DIR)
+	$(MAKE) -C $(CLUTTERGTK_DIR) install
+
+### gstreamer
+update-sources::
+	@echo --- Getting gstreamer ...
+	$(WGET) -P $(SRCDIR) $(GSTREAMER_URL)/$(GSTREAMER_ARCHIVE)
+
+$(GSTREAMER_DIR)/config.status: $(SRCDIR)/$(GSTREAMER_ARCHIVE)
+	rm -rf $(GSTREAMER_DIR) $(INCLUDEDIR)/gstreamer-1.0
+	tar xf $(SRCDIR)/$(GSTREAMER_ARCHIVE) -C $(BUILDROOT)
+	cd $(GSTREAMER_DIR); ./configure $(confflags) --disable-gtk-doc-html
+
+$(LIBDIR)/pkgconfig/gstreamer-1.0.pc: $(GSTREAMER_DIR)/config.status
+	$(MAKE) $(MAKE_LIB_OPTS) -C $(GSTREAMER_DIR)
+	$(MAKE) -C $(GSTREAMER_DIR) install
+
+### gst plugins base
+update-sources::
+	@echo --- Getting gst plugins base ...
+	$(WGET) -P $(SRCDIR) $(GSTPLUGINSBASE_URL)/$(GSTPLUGINSBASE_ARCHIVE)
+
+$(GSTPLUGINSBASE_DIR)/config.status: $(SRCDIR)/$(GSTPLUGINSBASE_ARCHIVE) $(LIBDIR)/pkgconfig/gstreamer-1.0.pc
+	rm -rf $(GSTPLUGINSBASE_DIR)
+	tar xf $(SRCDIR)/$(GSTPLUGINSBASE_ARCHIVE) -C $(BUILDROOT)
+	cd $(GSTPLUGINSBASE_DIR); ./configure $(confflags) --disable-gtk-doc-html
+
+$(LIBDIR)/pkgconfig/gstreamer-plugins-base-1.0.pc: $(GSTPLUGINSBASE_DIR)/config.status
+	$(MAKE) $(MAKE_LIB_OPTS) -C $(GSTPLUGINSBASE_DIR)
+	$(MAKE) -C $(GSTPLUGINSBASE_DIR) install
+
+### clutter gst
+update-sources::
+	@echo --- Getting clutter gst ...
+	$(WGET) -P $(SRCDIR) $(CLUTTERGST_URL)/$(CLUTTERGST_ARCHIVE)
+
+$(CLUTTERGST_DIR)/config.status: $(SRCDIR)/$(CLUTTERGST_ARCHIVE) $(LIBDIR)/pkgconfig/gstreamer-1.0.pc $(LIBDIR)/pkgconfig/gstreamer-plugins-base-1.0.pc
+	rm -rf $(CLUTTERGST_DIR) $(INCLUDEDIR)/clutter-gst-2.0
+	tar xf $(SRCDIR)/$(CLUTTERGST_ARCHIVE) -C $(BUILDROOT)
+	cd $(CLUTTERGST_DIR); ./configure $(confflags) --disable-gtk-doc-html
+
+$(LIBDIR)/pkgconfig/clutter-gst-2.0.pc: $(CLUTTERGST_DIR)/config.status
+	$(MAKE) $(MAKE_LIB_OPTS) -C $(CLUTTERGST_DIR)
+	$(MAKE) -C $(CLUTTERGST_DIR) install
 
 ### ekiga
 update-sources::
@@ -577,7 +718,9 @@ endif
 $(EKIGA_DIR)/config.status: binaries $(EKIGA_DIR)/configure \
 		$(LIBDIR)/$(PTLIB_LIB) $(LIBDIR)/$(OPAL_LIB) \
 		$(LIBDIR)/pkgconfig/gtk+-3.0.pc \
-		$(INCLUDEDIR)/boost/signals2.hpp $(LIBDIR)/libsasl2.a
+		$(INCLUDEDIR)/boost/signals2.hpp $(LIBDIR)/libsasl2.a \
+		$(LIBDIR)/pkgconfig/clutter-1.0.pc $(LIBDIR)/pkgconfig/clutter-gtk-1.0.pc \
+		$(LIBDIR)/pkgconfig/clutter-gst-2.0.pc
 	rm -f $(EKIGA_DIR)/src/ekiga.exe
 	cd $(EKIGA_DIR); ACLOCAL_FLAGS="-I $(BUILDROOT)/share/aclocal" LDFLAGS="$(LDFLAGS) -Wl,-subsystem,windows" ./configure $(confekiga)
 
@@ -605,11 +748,21 @@ $(TARGETDIR)/zips: binaries $(EKIGA_DIR)/src/ekiga.exe
 	for lib in $(PTLIB_LIB) $(OPAL_LIB); do \
 		cp -r $(LIBDIR)/$$lib $(EKIGA_PREFIX) ;\
 	done
-	for lib in libexpat-1.dll liblber.dll libldap.dll libspeex-1.dll libspeexdsp-1.dll libtheora-0.dll avcodec-54.dll avutil-52.dll libogg-0.dll; do \
+	for lib in libexpat-1.dll liblber.dll libldap.dll libspeex-1.dll libspeexdsp-1.dll libtheora-0.dll avcodec-54.dll avutil-52.dll libogg-0.dll \
+		libclutter-1.0-0.dll libclutter-gtk-1.0-0.dll libcogl-pango-12.dll libcogl-12.dll libjson-glib-1.0-0.dll; do \
 		cp -r $(BINDIR)/$$lib $(EKIGA_PREFIX) ;\
 	done
+
+	# gstreamer
+	# for the moment, copy everything, except theora, which adds external dependencies (libtheoraenc-1.dll and libtheoradec-1.dll)
+	cp $(BINDIR)/libgst*.dll $(EKIGA_PREFIX)
+	mkdir -p $(EKIGA_PREFIX)/lib/gstreamer-1.0
+	cp -r $(LIBDIR)/gstreamer-1.0/*.dll $(EKIGA_PREFIX)/lib/gstreamer-1.0
+	rm $(EKIGA_PREFIX)/lib/gstreamer-1.0/libgsttheora.dll
+
 	# locale for ekiga are not found if they are in /share
 	mv $(EKIGA_PREFIX)/share/locale $(EKIGA_PREFIX)
+
 	# libraries from GTK bundle
 	for lib in libatk-1.0-0.dll libcairo-2.dll libcairo-gobject-2.dll libffi-6.dll libfreetype-6.dll libgdk_pixbuf-2.0-0.dll libgdk-3-0.dll libgio-2.0-0.dll libglib-2.0-0.dll libgmodule-2.0-0.dll libgobject-2.0-0.dll libgtk-3-0.dll libiconv-2.dll libintl-8.dll libpango-1.0-0.dll libpangocairo-1.0-0.dll libpangowin32-1.0-0.dll libpixman-1-0.dll libpng15-15.dll libxml2-2.dll pthreadGC2.dll zlib1.dll libfontconfig-1.dll libpangoft2-1.0-0.dll liblzma-5.dll; do \
 		cp -r $(BINDIR)/$$lib $(EKIGA_PREFIX) ;\
@@ -617,17 +770,19 @@ $(TARGETDIR)/zips: binaries $(EKIGA_DIR)/src/ekiga.exe
 	cp -r $(BUILDROOT)/share/locale $(EKIGA_PREFIX)/share
 	mkdir -p $(EKIGA_PREFIX)/share/glib-2.0; cp -r $(BUILDROOT)/share/glib-2.0/schemas $(EKIGA_PREFIX)/share/glib-2.0
 	cd $(EKIGA_PREFIX); mv -f glib-2.0/schemas/* share/glib-2.0/schemas; rmdir glib-2.0/schemas; rmdir glib-2.0; glib-compile-schemas share/glib-2.0/schemas
+
 ifeq ($(MINGW32), 1)
 	cd $(EKIGA_PREFIX); cp /usr/share/doc/mingw32-runtime/mingwm10.dll.gz . && gunzip mingwm10.dll.gz
 else
-	# for standard libraries, mingw-w64 uses dynamically linking by default
 	cp /usr/lib/gcc/i686-w64-mingw32/4.8/libgcc_s_sjlj-1.dll /usr/lib/gcc/i686-w64-mingw32/4.8/libstdc++-6.dll /usr/i686-w64-mingw32/lib/libwinpthread-1.dll $(EKIGA_PREFIX)
 endif
+
 ifeq ($(DEBUG),0)
 	$(STRIP) $(EKIGA_PREFIX)/*.dll
 	$(STRIP) $(EKIGA_PREFIX)/*.exe
 	$(STRIP) $(EKIGA_PREFIX)/plugins/*.dll
 	$(STRIP) $(EKIGA_PREFIX)/plugins/*.exe
+	$(STRIP) $(EKIGA_PREFIX)/lib/gstreamer-1.0/*.dll
 endif
 	# we cannot strip MS compiled dlls
 	cp -r $(LIBSASL2_DIR)/bin/libsasl.dll $(EKIGA_PREFIX)
@@ -660,10 +815,6 @@ endif
 		done; \
 	done
 	cp /usr/share/icons/gnome/index.theme $(EKIGA_PREFIX)/share/icons/hicolor
-
-	#cd $(TARGETDIR); zip -9r ekiga-$(EKIGA_VER).zip Ekiga
-	#zip -9r $(TARGETDIR)/ekiga_build-$(EKIGA_VER).zip Makefile #$(EKIGA_WIN32_DIFF_DIR)
-	#tar cfvz $(TARGETDIR)/ekiga_build-$(EKIGA_VER).tgz Makefile #$(EKIGA_WIN32_DIFF_DIR)
 	touch $@
 
 # Two additional plugins are needed from nsis:
@@ -719,6 +870,14 @@ distclean:
 	$(RM) -rf $(X264_DIR)
 	$(RM) -rf $(THEORA_DIR)
 	$(RM) -rf $(CELT_DIR)
+	$(RM) -rf $(COGL_DIR)
+	$(RM) -rf $(JSONGLIB_DIR)
+	$(RM) -rf $(CLUTTER_DIR)
+	$(RM) -rf $(CLUTTERGTK_DIR)
+	$(RM) -rf $(GSTREAMER_DIR)
+	$(RM) -rf $(GSTPLUGINSBASE_DIR)
+	$(RM) -rf $(BUILDROOT)/libexec
+	$(RM) -rf $(CLUTTERGST_DIR)
 	$(RM) -rf $(NSISPLUGIN_DIR)
 	$(RM) -f binaries
 #	$(RM) -rf $(SRCDIR)
