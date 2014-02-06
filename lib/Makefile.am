@@ -44,7 +44,7 @@ AM_CPPFLAGS = \
 	-I$(top_srcdir)/lib/engine/components/ptlib
 
 AM_CFLAGS = \
-	$(GLIB_CFLAGS) $(GTK_CFLAGS) $(GCONF_CFLAGS) $(DBUS_CFLAGS)
+	$(GLIB_CFLAGS) $(GTK_CFLAGS) $(DBUS_CFLAGS)
 
 AM_LIBS = $(GLIB_LIBS) $(XML_LIBS) $(GTK_LIBS)
 

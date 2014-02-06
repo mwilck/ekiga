@@ -5,11 +5,6 @@ Developers:
   sure that the function works.  See src/main.h for an example.
 - Any new file you create must start with the license preamble and the
   short file description, see src/main.cpp for an example.
-- About gconf: All notifiers and all gconf_client_notify_add must be
-  in config.cpp.  The callback that updates the gconf cache must be
-  located in the file containing the widget associated to the
-  callback.  Some general callbacks for toggles, entries, option menus
-  are located in gconf.cpp.
 - Options: Ekiga follows the "Instant Apply" model.
 - The way to include things is the following: include the Ekiga
   headers before the others.  All the .h files should contain #include
@@ -26,5 +21,3 @@ Developers:
 - Encoding: Ekiga is completely UTF-8.  The only exception is that the
   (audio/video) device names are in system codepage for Windows.  The
   latin2utf and utf2latin functions take care of that.
-- To find out which callbacks are called when a value in gconf
-  changes, search gm_conf_notifier_add in ekiga code.
