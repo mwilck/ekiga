@@ -86,6 +86,15 @@ bool CallCore::dial (const std::string uri)
 }
 
 
+void CallCore::hang_up ()
+{
+  for (std::set<boost::shared_ptr<CallManager> >::iterator iter = managers.begin ();
+       iter != managers.end ();
+       iter++)
+    (*iter)->hang_up ();
+}
+
+
 void CallCore::add_call (boost::shared_ptr<Call> call, boost::shared_ptr<CallManager> manager)
 {
   boost::shared_ptr<Ekiga::scoped_connections> conns(new Ekiga::scoped_connections);

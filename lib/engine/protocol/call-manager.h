@@ -102,15 +102,19 @@ namespace Ekiga
     boost::signals2::signal<void(boost::shared_ptr<CallProtocolManager>)> manager_added;
 
 
-    /*                 
-     * CALL MANAGEMENT 
-     */              
+    /*
+     * CALL MANAGEMENT
+     */
 
     /** Create a call based on the remote uri given as parameter
      * @param: An uri
      * @return: true if a Ekiga::Call could be created
      */
-    virtual bool dial (const std::string & uri) = 0; 
+    virtual bool dial (const std::string & uri) = 0;
+
+    /** Hang up all active calls (if any).
+     */
+    virtual void hang_up () = 0;
 
 
     /*

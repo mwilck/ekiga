@@ -96,7 +96,8 @@ public:
     void setup (const std::string & setting = "");
 
     /** Call Manager **/
-    bool dial (const std::string & uri); 
+    bool dial (const std::string & uri);
+    void hang_up ();
 
     void set_display_name (const std::string & name);
     const std::string & get_display_name () const;

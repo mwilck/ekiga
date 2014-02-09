@@ -223,6 +223,7 @@ CallManager::~CallManager ()
   g_async_queue_unref (queue);
 }
 
+
 bool
 CallManager::populate_menu (const std::string fullname,
 			    const std::string uri,
@@ -644,6 +645,12 @@ bool CallManager::dial (const std::string & uri)
       return true;
 
   return false;
+}
+
+
+void CallManager::hang_up ()
+{
+  ClearAllCalls (OpalConnection::EndedByLocalUser, true);
 }
 
 

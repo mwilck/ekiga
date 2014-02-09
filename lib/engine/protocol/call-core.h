@@ -134,6 +134,11 @@ namespace Ekiga
        */
       bool dial (const std::string uri); 
 
+      /** Hang up all active calls (if any).
+       */
+      void hang_up ();
+
+
       /*** Call Related Signals ***/
       
       /** See call.h for the API
