@@ -66,6 +66,8 @@
 #include "videoinput-core.h"
 #include "videooutput-core.h"
 #include "call-core.h"
+#include "engine.h"
+#include "runtime.h"
 
 #include "gmwindow.h"
 
@@ -99,8 +101,32 @@ struct _GmApplicationPrivate
 
 G_DEFINE_TYPE (GmApplication, gm_application, GTK_TYPE_APPLICATION);
 
-
 /* Private helpers */
+static gboolean
+option_context_parse (GOptionContext *context,
+                      gchar **arguments,
+                      GError **error)
+{
+  gint argc;
+  gchar **argv;
+  gint i;
+  gboolean ret;
+
+  /* We have to make an extra copy of the array, since g_option_context_parse()
+   * assumes that it can remove strings from the array without freeing them.
+   */
+  argc = g_strv_length (arguments);
+  argv = g_new (gchar *, argc);
+  for (i = 0; i < argc; i++)
+    argv[i] = arguments[i];
+
+  ret = g_option_context_parse (context, &argc, &argv, error);
+
+  g_free (argv);
+
+  return ret;
+}
+
 static void
 quit_activated (G_GNUC_UNUSED GSimpleAction *action,
                 G_GNUC_UNUSED GVariant *parameter,
@@ -136,6 +162,8 @@ window_activated (GSimpleAction *action,
   GmApplication *self = GM_APPLICATION (app);
   GtkWindow *window = NULL;
   GmWindow *parent = NULL;
+
+  g_return_if_fail (self && self->priv->core);
 
   self->priv = G_TYPE_INSTANCE_GET_PRIVATE (self, GM_TYPE_APPLICATION, GmApplicationPrivate);
 
@@ -181,18 +209,23 @@ static GActionEntry app_entries[] =
 
 /* Public api */
 void
-ekiga_main (Ekiga::ServiceCorePtr core,
-            int argc,
+ekiga_main (int argc,
             char **argv)
 {
-  GmApplication *app = NULL;
-
-  app = gm_application_new (core);
+  GmApplication *app = gm_application_new ();
+  g_application_set_inactivity_timeout (G_APPLICATION (app), 10000);
 
   if (g_application_get_is_remote (G_APPLICATION (app))) {
-    std::cout << "FIXME Remote" << std::endl << std::flush;
+    g_application_run (G_APPLICATION (app), argc, argv);
     return;
   }
+
+  Ekiga::ServiceCorePtr core(new Ekiga::ServiceCore);
+
+  Ekiga::Runtime::init ();
+  engine_init (core, argc, argv);
+
+  gm_application_set_core (app, core);
 
   app->priv->main_window = gm_main_window_new (app);
   gm_application_show_main_window (app);
@@ -204,7 +237,9 @@ ekiga_main (Ekiga::ServiceCorePtr core,
   app->priv->dbus_component = ekiga_dbus_component_new (app);
 #endif
 
+  core->close ();
   g_application_run (G_APPLICATION (app), argc, argv);
+
   g_object_unref (app);
 }
 
@@ -214,7 +249,8 @@ static void
 gm_application_activate (GApplication *self)
 {
   GmApplication *app = GM_APPLICATION (self);
-  std::cout << "activate" << std::endl << std::flush;
+
+  gm_application_show_main_window (app);
 }
 
 static void
@@ -301,25 +337,147 @@ gm_application_dispose (GObject *obj)
 
 
 static void
+gm_application_shutdown (GApplication *app)
+{
+  GmApplication *self = GM_APPLICATION (app);
+
+  g_return_if_fail (self);
+
+  self->priv = G_TYPE_INSTANCE_GET_PRIVATE (self, GM_TYPE_APPLICATION, GmApplicationPrivate);
+  PThread::Current()->Sleep (2000); // FIXME, This allows all threads to start and quit. Sucks.
+
+  gtk_widget_hide (GTK_WIDGET (self->priv->main_window));
+
+  self->priv->core.reset ();
+  Ekiga::Runtime::quit ();
+
+  G_APPLICATION_CLASS (gm_application_parent_class)->shutdown (app);
+}
+
+static gint
+gm_application_command_line (GApplication *app,
+                             GApplicationCommandLine *cl)
+{
+  gchar **arguments = NULL;
+  GOptionContext *context = NULL;
+  GError *error = NULL;
+
+  GmApplication *self = GM_APPLICATION (app);
+
+  g_return_val_if_fail (self && self->priv->core, -1);
+
+  static gchar *url = NULL;
+  static int debug_level = 0;
+  static gboolean hangup = FALSE;
+  static gboolean help = FALSE;
+  static gboolean version = FALSE;
+
+  static GOptionEntry options [] =
+    {
+        {
+          "help", '?', 0, G_OPTION_ARG_NONE, &help,
+          N_("Show the application's help"), NULL
+        },
+
+        /* Version */
+        {
+          "version", 'V', 0, G_OPTION_ARG_NONE, &version,
+          N_("Show the application's version"), NULL
+        },
+        {
+          "debug", 'd', 0, G_OPTION_ARG_INT, &debug_level,
+          N_("Prints debug messages in the console (level between 1 and 8)"),
+          NULL
+        },
+        {
+          "call", 'c', 0, G_OPTION_ARG_STRING, &url,
+          N_("Makes Ekiga call the given URI"),
+          NULL
+        },
+        {
+          "hangup", '\0', 0, G_OPTION_ARG_NONE, &hangup,
+          N_("Hangup the current call (if any)"),
+          NULL
+        },
+        {
+          NULL, 0, 0, (GOptionArg)0, NULL,
+          NULL,
+          NULL
+        }
+    };
+
+  self->priv =
+    G_TYPE_INSTANCE_GET_PRIVATE (self,
+                                 GM_TYPE_APPLICATION,
+                                 GmApplicationPrivate);
+
+  context = g_option_context_new (NULL);
+  g_option_context_add_main_entries (context, options, PACKAGE_NAME);
+  g_option_context_add_group (context, gtk_get_option_group (FALSE));
+
+  arguments = g_application_command_line_get_arguments (cl, NULL);
+
+  /* Avoid exit() on the main instance */
+  g_option_context_set_help_enabled (context, FALSE);
+
+  if (!option_context_parse (context, arguments, &error)) {
+    /* We should never get here since parsing would have
+     * failed on the client side... */
+    g_application_command_line_printerr (cl,
+                                         _("%s\nRun '%s --help' to see a full list of available command line options.\n"),
+                                         error->message, arguments[0]);
+
+    g_error_free (error);
+    g_application_command_line_set_exit_status (cl, 1);
+    g_application_quit (app);
+  }
+  else if (url) {
+    boost::shared_ptr<Ekiga::CallCore> call_core =
+      self->priv->core->get<Ekiga::CallCore> ("call-core");
+    call_core->dial (url);
+  }
+  else if (hangup) {
+    boost::shared_ptr<Ekiga::CallCore> call_core =
+      self->priv->core->get<Ekiga::CallCore> ("call-core");
+    call_core->hang_up ();
+  }
+  else if (version) {
+    g_print ("%s - Version %d.%d.%d\n",
+             g_get_application_name (),
+             MAJOR_VERSION, MINOR_VERSION, BUILD_NUMBER);
+    g_application_quit (app);
+  }
+  else if (help) {
+    g_print (g_option_context_get_help (context, TRUE, NULL));
+    g_application_quit (app);
+  }
+
+  g_strfreev (arguments);
+  g_option_context_free (context);
+
+  g_application_activate (app);
+
+  g_free (url);
+  url = NULL;
+  hangup = FALSE;
+  version = FALSE;
+  help = FALSE;
+
+  return 0;
+}
+
+static void
 gm_application_class_init (GmApplicationClass *klass)
 {
   GObjectClass *object_class = G_OBJECT_CLASS (klass);
   GApplicationClass *app_class = G_APPLICATION_CLASS (klass);
 
   object_class->dispose = gm_application_dispose;
-//  object_class->get_property = gm_application_get_property;
-//  object_class->constructed = gm_application_constructed;
 
   app_class->startup = gm_application_startup;
   app_class->activate = gm_application_activate;
-//  app_class->command_line = gm_application_command_line;
-//  app_class->local_command_line = gm_application_local_command_line;
-//  app_class->shutdown = gm_application_shutdown;
-
-//  klass->show_help = gm_application_show_help_impl;
-//  klass->help_link_id = gm_application_help_link_id_impl;
-//  klass->set_window_title = gm_application_set_window_title_impl;
-//  klass->create_window = gm_application_create_window_impl;
+  app_class->command_line = gm_application_command_line;
+  app_class->shutdown = gm_application_shutdown;
 
   g_type_class_add_private (object_class, sizeof (GmApplicationPrivate));
 }
@@ -333,19 +491,27 @@ gm_application_init (GmApplication *self)
 
 
 GmApplication *
-gm_application_new (Ekiga::ServiceCorePtr core)
+gm_application_new ()
 {
   GmApplication *self =
     GM_APPLICATION (g_object_new (GM_TYPE_APPLICATION,
                                   "application-id", "org.gnome.Ekiga",
-                                  "flags", G_APPLICATION_FLAGS_NONE,
+                                  "flags", G_APPLICATION_HANDLES_COMMAND_LINE,
                                   NULL));
   g_application_register (G_APPLICATION (self), NULL, NULL);
 
-  self->priv = G_TYPE_INSTANCE_GET_PRIVATE (self, GM_TYPE_APPLICATION, GmApplicationPrivate);
-  self->priv->core = core;
-
   return self;
+}
+
+
+void
+gm_application_set_core (GmApplication *self,
+                         Ekiga::ServiceCorePtr core)
+{
+  g_return_if_fail (GM_IS_APPLICATION (self));
+  self->priv = G_TYPE_INSTANCE_GET_PRIVATE (self, GM_TYPE_APPLICATION, GmApplicationPrivate);
+
+  self->priv->core = core;
 }
 
 
@@ -577,7 +743,6 @@ gm_application_show_chat_window (GmApplication *self)
 
   // FIXME: We should move the chat window to a build & destroy scheme
   // but unread-alert prevents this
-  std::cout << "FIXME" << std::endl << std::flush;
   gtk_window_present (GTK_WINDOW (self->priv->chat_window));
 }
 

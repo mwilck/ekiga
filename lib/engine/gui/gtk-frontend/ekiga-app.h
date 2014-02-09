@@ -64,11 +64,13 @@ struct _GmApplicationClass
 };
 
 
-void ekiga_main (Ekiga::ServiceCorePtr core,
-                 int argc,
+void ekiga_main (int argc,
                  char **argv);
 
-GmApplication *gm_application_new (Ekiga::ServiceCorePtr core);
+GmApplication *gm_application_new ();
+
+void gm_application_set_core (GmApplication *app,
+                              Ekiga::ServiceCorePtr core);
 
 Ekiga::ServiceCorePtr gm_application_get_core (GmApplication *app);
 

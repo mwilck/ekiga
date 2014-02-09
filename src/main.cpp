@@ -74,10 +74,6 @@ main (int argc,
       char ** argv,
       char ** /*envp*/)
 {
-  GOptionContext *context = NULL;
-
-  Ekiga::ServiceCorePtr service_core(new Ekiga::ServiceCore);
-
   gchar *path = NULL;
   gchar *url = NULL;
 
@@ -116,32 +112,6 @@ main (int argc,
   setenv ("PA_PROP_MEDIA_ROLE", "phone", true);
 #endif
 
-  /* Arguments initialization */
-  GOptionEntry arguments [] =
-    {
-      {
-	"debug", 'd', 0, G_OPTION_ARG_INT, &debug_level,
-       N_("Prints debug messages in the console (level between 1 and 8)"),
-       NULL
-      },
-      {
-	"call", 'c', 0, G_OPTION_ARG_STRING, &url,
-	N_("Makes Ekiga call the given URI"),
-	NULL
-      },
-      {
-	NULL, 0, 0, (GOptionArg)0, NULL,
-	NULL,
-	NULL
-      }
-    };
-  context = g_option_context_new (NULL);
-  g_option_context_add_main_entries (context, arguments, PACKAGE_NAME);
-  g_option_context_set_help_enabled (context, TRUE);
-
-  g_option_context_add_group (context, gtk_get_option_group (TRUE));
-  g_option_context_parse (context, &argc, &argv, NULL);
-  g_option_context_free (context);
 
 #ifndef WIN32
   char* text_label =  g_strdup_printf ("%d", debug_level);
@@ -165,8 +135,6 @@ main (int argc,
 			| PTrace::Blocks | PTrace::DateAndTime);
 #endif
 
-  Ekiga::Runtime::init ();
-  engine_init (service_core, argc, argv);
 
   PTRACE (1, "Ekiga version "
           << MAJOR_VERSION << "." << MINOR_VERSION << "." << BUILD_NUMBER);
@@ -197,23 +165,7 @@ main (int argc,
   }
 */
 
-  /* Call the given host if needed */
-  if (url) {
-
-    boost::shared_ptr<Ekiga::CallCore> call_core = service_core->get<Ekiga::CallCore> ("call-core");
-    call_core->dial (url);
-  }
-
-  // from now on, things should have taken their final place
-  service_core->close ();
-
-  /* The GTK loop */
-  ekiga_main (service_core, argc, argv);
-//  gtk_main ();
-
-  /* Exit Ekiga */
-  service_core.reset ();
-  Ekiga::Runtime::quit ();
+  ekiga_main (argc, argv);
 
   /* deinitialize platform-specific code */
   gm_platform_shutdown ();
