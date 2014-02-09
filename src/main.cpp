@@ -109,30 +109,6 @@ main (int argc,
   setenv ("PA_PROP_MEDIA_ROLE", "phone", true);
 #endif
 
-
-#ifndef WIN32
-  char* text_label =  g_strdup_printf ("%d", debug_level);
-  setenv ("PTLIB_TRACE_CODECS", text_label, TRUE);
-  g_free (text_label);
-#else
-  char* text_label =  g_strdup_printf ("PTLIB_TRACE_CODECS=%d", debug_level);
-  _putenv (text_label);
-  g_free (text_label);
-  if (debug_level != 0) {
-    std::string desk_path = g_get_user_special_dir (G_USER_DIRECTORY_DESKTOP);
-    if (!desk_path.empty ())
-      std::freopen((desk_path + "\\ekiga-stderr.txt").c_str (), "w", stderr);
-  }
-#endif
-
-#if PTRACING
-  if (debug_level != 0)
-    PTrace::Initialise (PMAX (PMIN (8, debug_level), 0), NULL,
-			PTrace::Timestamp | PTrace::Thread
-			| PTrace::Blocks | PTrace::DateAndTime);
-#endif
-
-
   PTRACE (1, "Ekiga version "
           << MAJOR_VERSION << "." << MINOR_VERSION << "." << BUILD_NUMBER);
 #ifdef EKIGA_REVISION
