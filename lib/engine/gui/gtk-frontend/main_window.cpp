@@ -44,6 +44,7 @@
 #include "dialpad.h"
 #include "statusmenu.h"
 
+#include "gmstockicons.h"
 #include "gmentrydialog.h"
 #include "gmstatusbar.h"
 #include "gmmenuaddon.h"
@@ -1174,7 +1175,8 @@ ekiga_main_window_init_gui (EkigaMainWindow *mw)
   // FIXME ??? ekiga-settings.h
   static const gchar *main_views [] = { "contacts", "dialpad", "call-history", NULL };
 
-  gtk_window_set_title (GTK_WINDOW (mw), _("Ekiga"));
+  gtk_window_set_title (GTK_WINDOW (mw), _("Ekiga Softphone"));
+  gtk_window_set_icon_name (GTK_WINDOW (mw), GM_ICON_LOGO);
 
   window_vbox = gtk_box_new (GTK_ORIENTATION_VERTICAL, 0);
   gtk_container_add (GTK_CONTAINER (mw), window_vbox);
