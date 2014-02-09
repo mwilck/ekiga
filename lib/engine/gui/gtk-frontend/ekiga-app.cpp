@@ -174,8 +174,6 @@ window_activated (GSimpleAction *action,
   boost::shared_ptr<Ekiga::ContactCore> contact_core =
     self->priv->core->get<Ekiga::ContactCore> ("contact-core");
 
-  parent = GM_WINDOW (gtk_application_get_active_window (GTK_APPLICATION (self)));
-
   if (!g_strcmp0 (g_action_get_name (G_ACTION (action)), "preferences"))
     gm_application_show_preferences_window (self);
 
