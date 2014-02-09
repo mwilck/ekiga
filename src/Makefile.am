@@ -27,8 +27,6 @@ AM_CPPFLAGS = \
 	-I$(top_srcdir)/src/dbus-helper/		\
 	-I$(top_builddir)/src/dbus-helper/
 
-BUILT_SOURCES = src/revision.h
-
 bin_PROGRAMS = ekiga
 
 EXTRA_PROGRAMS =
@@ -71,7 +69,7 @@ nodist_ekiga_helper_SOURCES = 	\
 
 ekiga_helper_LDADD = $(DBUS_LIBS)
 
-BUILT_SOURCES += dbus-helper/dbus-helper-stub.h dbus-helper/dbus-stub.h
+BUILT_SOURCES = dbus-helper/dbus-helper-stub.h dbus-helper/dbus-stub.h
 
 dbus-helper/dbus-helper-stub.h: dbus-helper/dbus-helper-stub.xml build-subdir-stamp
 	$(LIBTOOL) --mode=execute dbus-binding-tool --prefix=helper --mode=glib-server --output=$@ $<
@@ -99,20 +97,6 @@ endif
 .rc.o:
 	$(RC) $< -o $@ -I $(top_srcdir)
 
-GIT_REVISION=\"$$(cd ../.git; git describe )\"
-CACHED_REVISION=$$(cat revision.h 2>/dev/null | cut -c24-)
-
-src/revision.h:
-	@if test -d "../.git" -a -n "$$(which git)"; then \
-          if test "x$(GIT_REVISION)" != "x$(CACHED_REVISION)"; then \
-            echo "#define EKIGA_REVISION $(GIT_REVISION)" > revision.h; \
-          fi \
-        else \
-          if !(test -e "./revision.h"); then\
-            echo "#define EKIGA_REVISION \"unknown\"" > revision.h; \
-          fi \
-        fi
-
 AM_CXXFLAGS = $(GTK_CFLAGS) $(GLIB_CFLAGS) $(DBUS_CFLAGS) $(OPAL_CFLAGS) $(PTLIB_CFLAGS) $(BOOST_CPPFLAGS) $(XML_CFLAGS)
 AM_LIBS = $(GTK_LIBS) $(GLIB_LIBS) $(DBUS_LIBS) $(OPAL_LIBS) $(PTLIB_LIBS) $(BOOST_LDFLAGS) $(XML_LIBS)
 
@@ -133,5 +117,3 @@ CLEANFILES = \
 	$(service_DATA)		\
 	build-subdir-stamp	\
 	$(BUILT_SOURCES)
-
-DISTCLEANFILES = revision.h

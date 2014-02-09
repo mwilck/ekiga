@@ -3,7 +3,7 @@ AC_INIT([ekiga],[4.1.0],[http://bugzilla.gnome.org/enter_bug.cgi?product=ekiga])
 AC_CANONICAL_TARGET
 AC_PREREQ([2.53])
 AC_CONFIG_MACRO_DIR([m4])
-AC_CONFIG_SRCDIR(src/ekiga.cpp)
+AC_CONFIG_SRCDIR(src/main.cpp)
 AM_INIT_AUTOMAKE([1.11 no-dist-gzip dist-xz tar-ustar subdir-objects])
 
 AM_MAINTAINER_MODE([enable])

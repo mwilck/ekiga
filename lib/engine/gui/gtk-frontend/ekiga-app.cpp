@@ -39,6 +39,7 @@
 
 #include "config.h"
 #include "ekiga-settings.h"
+#include "revision.h"
 
 #include "trigger.h"
 #include "ekiga-app.h"
@@ -68,6 +69,7 @@
 #include "call-core.h"
 #include "engine.h"
 #include "runtime.h"
+#include "platform/platform.h"
 
 #include "gmwindow.h"
 
@@ -75,16 +77,23 @@
 #include "platform/winpaths.h"
 #include <windows.h>
 #include <shellapi.h>
+#include <gdk/gdkwin32.h>
+#include <cstdio>
 #define WIN32_HELP_DIR "help"
 #define WIN32_HELP_FILE "index.html"
+#else
+#include <signal.h>
+#include <gdk/gdkx.h>
 #endif
 
 #ifdef HAVE_DBUS
 #include "../../../../src/dbus-helper/dbus.h"
 #endif
 
-
 #include <glib/gi18n.h>
+#include <ptlib.h>
+#include <opal/buildopts.h>
+
 
 /*
  * The GmApplication
@@ -257,10 +266,45 @@ gm_application_startup (GApplication *app)
 {
   GmApplication *self = GM_APPLICATION (app);
 
+  gchar *path = NULL;
   GtkBuilder *builder = NULL;
   GMenuModel *app_menu = NULL;
 
   G_APPLICATION_CLASS (gm_application_parent_class)->startup (app);
+
+  /* Globals */
+#if !GLIB_CHECK_VERSION(2,36,0)
+  g_type_init ();
+#endif
+#if !GLIB_CHECK_VERSION(2,32,0)
+  g_thread_init();
+#endif
+
+#ifndef WIN32
+  signal (SIGPIPE, SIG_IGN);
+#endif
+
+  /* initialize platform-specific code */
+  gm_platform_init ();
+#ifdef WIN32
+  // plugins (i.e. the audio/video ptlib/opal codecs) are searched in ./plugins
+  chdir (win32_datadir ());
+#endif
+
+
+  /* Gettext initialization */
+  path = g_build_filename (DATA_DIR, "locale", NULL);
+  textdomain (GETTEXT_PACKAGE);
+  bindtextdomain (GETTEXT_PACKAGE, path);
+  bind_textdomain_codeset (GETTEXT_PACKAGE, "UTF-8");
+  g_free (path);
+
+  /* Application name */
+  g_set_application_name (_("Ekiga Softphone"));
+#ifndef WIN32
+  setenv ("PULSE_PROP_application.name", _("Ekiga Softphone"), true);
+  setenv ("PA_PROP_MEDIA_ROLE", "phone", true);
+#endif
 
   const gchar *menu =
     "<?xml version=\"1.0\"?>"
@@ -349,6 +393,8 @@ gm_application_shutdown (GApplication *app)
 
   self->priv->core.reset ();
   Ekiga::Runtime::quit ();
+
+  gm_platform_shutdown ();
 
   G_APPLICATION_CLASS (gm_application_parent_class)->shutdown (app);
 }
@@ -467,10 +513,21 @@ gm_application_command_line (GApplication *app,
 #endif
 
 #if PTRACING
-    if (debug_level != 0)
-      PTrace::Initialise (PMAX (PMIN (8, debug_level), 0), NULL,
-                          PTrace::Timestamp | PTrace::Thread
-                          | PTrace::Blocks | PTrace::DateAndTime);
+    PTrace::Initialise (PMAX (PMIN (8, debug_level), 0), NULL,
+                        PTrace::Timestamp | PTrace::Thread
+                        | PTrace::Blocks | PTrace::DateAndTime);
+    PTRACE (1, "Ekiga version "
+            << MAJOR_VERSION << "." << MINOR_VERSION << "." << BUILD_NUMBER);
+#ifdef EKIGA_REVISION
+    PTRACE (1, "Ekiga git revision: " << EKIGA_REVISION);
+#endif
+    PTRACE (1, "PTLIB version " << PTLIB_VERSION);
+    PTRACE (1, "OPAL version " << OPAL_VERSION);
+#ifdef HAVE_DBUS
+    PTRACE (1, "DBUS support enabled");
+#else
+    PTRACE (1, "DBUS support disabled");
+#endif
 #endif
   }
 

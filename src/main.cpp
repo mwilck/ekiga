@@ -34,32 +34,10 @@
  *   description          : This file contains the main method.
  */
 
-#include "revision.h"
 #include "config.h"
 
-#include "platform/platform.h"
 
 #include <glib/gi18n.h>
-
-#include <ptlib.h>
-#include <opal/buildopts.h> // only for OPAL_VERSION!
-
-
-#ifndef WIN32
-#include <signal.h>
-#include <gdk/gdkx.h>
-#else
-#include "platform/winpaths.h"
-#include <gdk/gdkwin32.h>
-#include <cstdio>
-#endif
-
-#include "ekiga-settings.h"
-
-#include "engine.h"
-#include "runtime.h"
-
-#include "call-core.h"
 
 #include "ekiga-app.h"
 
@@ -74,58 +52,7 @@ main (int argc,
       char ** argv,
       char ** /*envp*/)
 {
-  gchar *path = NULL;
-
-  /* Globals */
-#if !GLIB_CHECK_VERSION(2,36,0)
-  g_type_init ();
-#endif
-#if !GLIB_CHECK_VERSION(2,32,0)
-  g_thread_init();
-#endif
-
-#ifndef WIN32
-  signal (SIGPIPE, SIG_IGN);
-#endif
-
-  /* initialize platform-specific code */
-  gm_platform_init ();
-#ifdef WIN32
-  // plugins (i.e. the audio/video ptlib/opal codecs) are searched in ./plugins
-  chdir (win32_datadir ());
-#endif
-
-  /* Gettext initialization */
-  path = g_build_filename (DATA_DIR, "locale", NULL);
-  textdomain (GETTEXT_PACKAGE);
-  bindtextdomain (GETTEXT_PACKAGE, path);
-  bind_textdomain_codeset (GETTEXT_PACKAGE, "UTF-8");
-  g_free (path);
-
-  /* Application name */
-  g_set_application_name (_("Ekiga Softphone"));
-#ifndef WIN32
-  setenv ("PULSE_PROP_application.name", _("Ekiga Softphone"), true);
-  setenv ("PA_PROP_MEDIA_ROLE", "phone", true);
-#endif
-
-  PTRACE (1, "Ekiga version "
-          << MAJOR_VERSION << "." << MINOR_VERSION << "." << BUILD_NUMBER);
-#ifdef EKIGA_REVISION
-  PTRACE (1, "Ekiga git revision: " << EKIGA_REVISION);
-#endif
-  PTRACE (1, "PTLIB version " << PTLIB_VERSION);
-  PTRACE (1, "OPAL version " << OPAL_VERSION);
-#ifdef HAVE_DBUS
-  PTRACE (1, "DBUS support enabled");
-#else
-  PTRACE (1, "DBUS support disabled");
-#endif
-
   ekiga_main (argc, argv);
-
-  /* deinitialize platform-specific code */
-  gm_platform_shutdown ();
 
   return 0;
 }
