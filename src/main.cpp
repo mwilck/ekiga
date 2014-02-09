@@ -150,20 +150,7 @@ main (int argc,
 #endif
 
   std::cout << "FIXME" << std::endl << std::flush;
-  /*
-  boost::shared_ptr<Ekiga::Settings> general_settings (new Ekiga::Settings (GENERAL_SCHEMA));
 
-  const int schema_version = MAJOR_VERSION * 1000
-                             + MINOR_VERSION * 10
-                             + BUILD_NUMBER;
-  int crt_version = general_settings->get_int ("version");
-  if (crt_version < schema_version) {
-
-    gtk_widget_show_all (GTK_WIDGET (gtk_frontend->build_assistant_window ()));
-
-    general_settings->set_int ("version", schema_version);
-  }
-*/
 
   ekiga_main (argc, argv);
 

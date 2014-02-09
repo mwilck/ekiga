@@ -160,8 +160,6 @@ window_activated (GSimpleAction *action,
                   gpointer app)
 {
   GmApplication *self = GM_APPLICATION (app);
-  GtkWindow *window = NULL;
-  GmWindow *parent = NULL;
 
   g_return_if_fail (self && self->priv->core);
 
@@ -187,12 +185,8 @@ window_activated (GSimpleAction *action,
   else if (!g_strcmp0 (g_action_get_name (G_ACTION (action)), "accounts"))
     gm_application_show_accounts_window (self);
 
-  else if (!g_strcmp0 (g_action_get_name (G_ACTION (action)), "assistant")) {
-
-    window = GTK_WINDOW (assistant_window_new (self->priv->core));
-    gtk_window_set_transient_for (GTK_WINDOW (window), GTK_WINDOW (parent));
-    gtk_window_present (window);
-  }
+  else if (!g_strcmp0 (g_action_get_name (G_ACTION (action)), "assistant"))
+    gm_application_show_assistant_window (self);
 }
 
 static GActionEntry app_entries[] =
@@ -236,6 +230,13 @@ ekiga_main (int argc,
 #ifdef HAVE_DBUS
   app->priv->dbus_component = ekiga_dbus_component_new (app);
 #endif
+
+  boost::shared_ptr<Ekiga::Settings> general_settings (new Ekiga::Settings (GENERAL_SCHEMA));
+  const int schema_version = MAJOR_VERSION * 1000 + MINOR_VERSION * 10 + BUILD_NUMBER;
+  if (general_settings->get_int ("version") < schema_version) {
+    gm_application_show_assistant_window (app);
+    general_settings->set_int ("version", schema_version);
+  }
 
   core->close ();
   g_application_run (G_APPLICATION (app), argc, argv);
@@ -792,4 +793,21 @@ gm_application_show_accounts_window (GmApplication *self)
   self->priv = G_TYPE_INSTANCE_GET_PRIVATE (self, GM_TYPE_APPLICATION, GmApplicationPrivate);
 
   gtk_window_present (GTK_WINDOW (accounts_window_new (self)));
+}
+
+
+void
+gm_application_show_assistant_window (GmApplication *self)
+{
+  GtkWindow *parent = NULL;
+  GtkWindow *window = NULL;
+
+  g_return_if_fail (GM_IS_APPLICATION (self));
+
+  self->priv = G_TYPE_INSTANCE_GET_PRIVATE (self, GM_TYPE_APPLICATION, GmApplicationPrivate);
+  parent = gtk_application_get_active_window (GTK_APPLICATION (self));
+
+  window = GTK_WINDOW (assistant_window_new (self));
+  gtk_window_set_transient_for (GTK_WINDOW (window), GTK_WINDOW (parent));
+  gtk_window_present (window);
 }

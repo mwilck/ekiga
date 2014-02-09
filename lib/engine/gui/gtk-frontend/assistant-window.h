@@ -41,6 +41,7 @@
 #define __ASSISTANT_WINDOW_H__
 
 #include <gtk/gtk.h>
+#include "ekiga-app.h"
 
 G_BEGIN_DECLS
 
@@ -70,7 +71,7 @@ struct _AssistantWindow {
 typedef GtkAssistantClass AssistantWindowClass;
 
 GType assistant_window_get_type   ();
-GtkWidget* assistant_window_new (Ekiga::ServiceCorePtr core);
+GtkWidget* assistant_window_new (GmApplication *app);
 
 G_END_DECLS
 
