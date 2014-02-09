@@ -75,9 +75,6 @@ main (int argc,
       char ** /*envp*/)
 {
   gchar *path = NULL;
-  gchar *url = NULL;
-
-  int debug_level = 0;
 
   /* Globals */
 #if !GLIB_CHECK_VERSION(2,36,0)
@@ -148,9 +145,6 @@ main (int argc,
 #else
   PTRACE (1, "DBUS support disabled");
 #endif
-
-  std::cout << "FIXME" << std::endl << std::flush;
-
 
   ekiga_main (argc, argv);
 
