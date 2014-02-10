@@ -218,6 +218,7 @@ libekiga_la_SOURCES += \
 	engine/chat/chat-core.cpp \
 	engine/chat/dialect.h \
 	engine/chat/dialect-impl.h \
+	engine/chat/conversation.h \
 	engine/chat/chat.h \
 	engine/chat/chat-simple.h \
 	engine/chat/chat-multiple.h
