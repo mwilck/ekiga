@@ -77,7 +77,7 @@ DISTCLEANFILES = inlines.h
 
 EXTRA_DIST= $(IMAGES_FILES)
 
-inlines.h: $(IMAGE_FILES) $(nobase_dist_icon_DATA) Makefile.am
+inlines.h: $(IMAGES_FILES) $(nobase_dist_icon_DATA) Makefile.am
 	gdk-pixbuf-csource --raw --build-list $(IMAGES) > inlines.h
 
 gtk_update_icon_cache = gtk-update-icon-cache -f -t $(datadir)/icons/hicolor
