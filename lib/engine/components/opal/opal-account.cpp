@@ -281,6 +281,8 @@ Opal::Account::get_protocol_name () const
 
     result = (const char*)xml_str;
     xmlFree (xml_str);
+    if (result.compare ("Ekiga") == 0 || result.compare ("DiamondCard") == 0)
+      result = "SIP";
   }
 
   return result;
