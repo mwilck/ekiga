@@ -136,6 +136,7 @@ option_context_parse (GOptionContext *context,
   return ret;
 }
 
+
 static void
 quit_activated (G_GNUC_UNUSED GSimpleAction *action,
                 G_GNUC_UNUSED GVariant *parameter,
@@ -228,6 +229,7 @@ ekiga_main (int argc,
 
   gm_application_set_core (app, core);
 
+  /* Create the main application window */
   app->priv->main_window = gm_main_window_new (app);
   gm_application_show_main_window (app);
 
@@ -268,7 +270,9 @@ gm_application_startup (GApplication *app)
 
   gchar *path = NULL;
   GtkBuilder *builder = NULL;
+
   GMenuModel *app_menu = NULL;
+  GMenuModel *menubar = NULL;
 
   G_APPLICATION_CLASS (gm_application_parent_class)->startup (app);
 
@@ -291,7 +295,6 @@ gm_application_startup (GApplication *app)
   chdir (win32_datadir ());
 #endif
 
-
   /* Gettext initialization */
   path = g_build_filename (DATA_DIR, "locale", NULL);
   textdomain (GETTEXT_PACKAGE);
@@ -306,57 +309,72 @@ gm_application_startup (GApplication *app)
   setenv ("PA_PROP_MEDIA_ROLE", "phone", true);
 #endif
 
-  const gchar *menu =
-    "<?xml version=\"1.0\"?>"
-    "<interface>"
-    "  <menu id=\"appmenu\">"
-    "    <section>"
-    "      <item>"
-    "        <attribute name=\"label\" translatable=\"yes\">Address _Book</attribute>"
-    "        <attribute name=\"action\">app.addressbook</attribute>"
-    "      </item>"
-    "      <item>"
-    "        <attribute name=\"label\" translatable=\"yes\">_Accounts</attribute>"
-    "        <attribute name=\"action\">app.accounts</attribute>"
-    "      </item>"
-    "    </section>"
-    "    <section>"
-    "      <item>"
-    "        <attribute name=\"label\" translatable=\"yes\">_Preferences</attribute>"
-    "        <attribute name=\"action\">app.preferences</attribute>"
-    "      </item>"
-    "      <item>"
-    "        <attribute name=\"label\" translatable=\"yes\">Configuration _Assistant</attribute>"
-    "        <attribute name=\"action\">app.assistant</attribute>"
-    "      </item>"
-    "    </section>"
-    "    <section>"
-    "      <item>"
-    "        <attribute name=\"label\" translatable=\"yes\">_Help</attribute>"
-    "        <attribute name=\"action\">app.help</attribute>"
-    "        <attribute name=\"accel\">F1</attribute>"
-    "      </item>"
-    "      <item>"
-    "        <attribute name=\"label\" translatable=\"yes\">_About</attribute>"
-    "        <attribute name=\"action\">app.about</attribute>"
-    "      </item>"
-    "    </section>"
-    "    <section>"
-    "      <item>"
-    "        <attribute name=\"label\" translatable=\"yes\">_Quit</attribute>"
-    "        <attribute name=\"action\">app.quit</attribute>"
-    "        <attribute name=\"accel\">&lt;Primary&gt;q</attribute>"
-    "      </item>"
-    "    </section>"
-    "  </menu>"
-    "</interface>";
-
+  /* Menu */
   g_action_map_add_action_entries (G_ACTION_MAP (self),
                                    app_entries, G_N_ELEMENTS (app_entries),
                                    self);
-
   builder = gtk_builder_new ();
-  gtk_builder_add_from_string (builder, menu, -1, NULL);
+  gtk_builder_add_from_string (builder,
+                               "<?xml version=\"1.0\"?>"
+                               "<interface>"
+                               "  <menu id=\"appmenu\">"
+                               "    <section>"
+                               "      <item>"
+                               "        <attribute name=\"label\" translatable=\"yes\">Address _Book</attribute>"
+                               "        <attribute name=\"action\">app.addressbook</attribute>"
+                               "      </item>"
+                               "      <item>"
+                               "        <attribute name=\"label\" translatable=\"yes\">_Accounts</attribute>"
+                               "        <attribute name=\"action\">app.accounts</attribute>"
+                               "      </item>"
+                               "    </section>"
+                               "    <section>"
+                               "      <item>"
+                               "        <attribute name=\"label\" translatable=\"yes\">_Preferences</attribute>"
+                               "        <attribute name=\"action\">app.preferences</attribute>"
+                               "      </item>"
+                               "      <item>"
+                               "        <attribute name=\"label\" translatable=\"yes\">Configuration _Assistant</attribute>"
+                               "        <attribute name=\"action\">app.assistant</attribute>"
+                               "      </item>"
+                               "    </section>"
+                               "    <section>"
+                               "      <item>"
+                               "        <attribute name=\"label\" translatable=\"yes\">_Help</attribute>"
+                               "        <attribute name=\"action\">app.help</attribute>"
+                               "        <attribute name=\"accel\">F1</attribute>"
+                               "      </item>"
+                               "      <item>"
+                               "        <attribute name=\"label\" translatable=\"yes\">_About</attribute>"
+                               "        <attribute name=\"action\">app.about</attribute>"
+                               "      </item>"
+                               "    </section>"
+                               "    <section>"
+                               "      <item>"
+                               "        <attribute name=\"label\" translatable=\"yes\">_Quit</attribute>"
+                               "        <attribute name=\"action\">app.quit</attribute>"
+                               "        <attribute name=\"accel\">&lt;Primary&gt;q</attribute>"
+                               "      </item>"
+                               "    </section>"
+                               "  </menu>"
+                               "  <menu id=\"menubar\">"
+                               "    <submenu>"
+                               "      <attribute name='label' translatable='yes'>_Chat</attribute>"
+                               "      <section>"
+                               "      </section>"
+                               "    </submenu>"
+                               "    <submenu>"
+                               "      <attribute name='label' translatable='yes'>_View</attribute>"
+                               "      <section>"
+                               "        <item>"
+                               "          <attribute name=\"label\" translatable=\"yes\">_Video Preview</attribute>"
+                               "          <attribute name=\"action\">win.enable-preview</attribute>"
+                               "        </item>"
+                               "      </section>"
+                               "    </submenu>"
+                               "  </menu>"
+                               "</interface>", -1, NULL);
+
   app_menu = G_MENU_MODEL (gtk_builder_get_object (builder, "appmenu"));
   gtk_application_set_app_menu (GTK_APPLICATION (self), app_menu);
   g_object_unref (builder);

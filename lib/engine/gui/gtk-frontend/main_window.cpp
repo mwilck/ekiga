@@ -110,6 +110,7 @@ struct _EkigaMainWindowPrivate
   GtkAccelGroup *accel;
   GtkWidget *main_menu;
   GtkWidget *main_notebook;
+  GtkBuilder *builder;
 
   /* Dialpad uri toolbar */
   GtkWidget *uri_toolbar;
@@ -160,13 +161,6 @@ enum {
   CHANNEL_LAST
 };
 
-/* Non-GUI functions */
-
-
-/* This function is to be called whenever some core gets updated,
- * so we update the menu of the main possible actions
- */
-static void on_some_core_updated (EkigaMainWindow* self);
 
 /* GUI Functions */
 static bool account_completion_helper_cb (Ekiga::AccountPtr acc,
@@ -178,11 +172,6 @@ static void place_call_cb (GtkWidget * /*widget*/,
 
 static void url_changed_cb (GtkEditable *e,
                             gpointer data);
-
-static void show_dialpad_cb (GtkWidget *widget,
-                             gpointer data);
-
-static gboolean on_delayed_hide_call_window_cb (gpointer data);
 
 static void ekiga_main_window_append_call_url (EkigaMainWindow *mw,
                                                const char *url);
@@ -211,14 +200,6 @@ static void video_preview_changed (GtkToggleToolButton *button,
                                    gpointer data);
 
 
-/** Pull a trigger from a Ekiga::Service
- *
- * @param data is a pointer to the Ekiga::Trigger
- */
-static void pull_trigger_cb (GtkWidget * /*widget*/,
-                             gpointer data);
-
-
 /* DESCRIPTION  :  This callback is called when the user
  *                 presses a key.
  * BEHAVIOR     :  Sends a DTMF if we are in a call.
@@ -238,25 +219,34 @@ static void dialpad_button_clicked_cb (EkigaDialpad  *dialpad,
 				       EkigaMainWindow *main_window);
 
 
+/** Call a number action activated.
+ *
+ * @param data is a pointer to the EkigaMainWindow.
+ */
+static void show_dialpad_activated (G_GNUC_UNUSED GSimpleAction *action,
+                                    G_GNUC_UNUSED GVariant *parameter,
+                                    gpointer data);
+
+
+/** Pull a trigger from a Ekiga::Service
+ *
+ * @param data is a pointer to the EkigaMainWindow.
+ */
+static void pull_trigger_activated (G_GNUC_UNUSED GSimpleAction *action,
+                                    G_GNUC_UNUSED GVariant *parameter,
+                                    gpointer data);
+
+
 /* DESCRIPTION  :  This callback is called when the user tries to close
  *                 the application using the window manager.
  * BEHAVIOR     :  Calls the real callback if the notification icon is
  *                 not shown else hide GM.
  * PRE          :  A valid pointer to the main window GMObject.
  */
-static gint window_closed_cb (GtkWidget *,
-			      GdkEvent *,
-			      gpointer);
+static void close_activated (G_GNUC_UNUSED GSimpleAction *action,
+                             G_GNUC_UNUSED GVariant *parameter,
+                             gpointer data);
 
-
-/* DESCRIPTION  :  This callback is called when the user tries to close
- *                 the main window using the FILE-menu
- * BEHAVIOUR    :  Directly calls window_closed_cb (i.e. it's just a wrapper)
- * PRE          :  ---
- */
-
-static void window_closed_from_menu_cb (GtkWidget *,
-                                       gpointer);
 
 /* DESCRIPTION  :  This callback is called when the status bar is clicked.
  * BEHAVIOR     :  Clear all info message, not normal messages.
@@ -299,42 +289,13 @@ static void ekiga_main_window_push_message (EkigaMainWindow *main_window,
                                             ...) G_GNUC_PRINTF(2,3);
 
 
-static
-void on_some_core_updated (EkigaMainWindow* self)
+static GActionEntry win_entries[] =
 {
-  GtkWidget* menu = gtk_menu_get_widget (self->priv->main_menu, "core-actions");
+    { "call", show_dialpad_activated, NULL, NULL, NULL, 0 },
+    { "add", pull_trigger_activated, NULL, NULL, NULL, 0 },
+    { "close", close_activated, NULL, NULL, NULL, 0 }
+};
 
-  // this can happen if the menu is compiled out
-  if (menu == NULL)
-    return;
-
-  MenuBuilderGtk builder;
-  Ekiga::TemporaryMenuBuilder tmp_builder;
-
-  if (self->priv->presence_core->populate_menu (tmp_builder)) {
-
-    builder.add_ghost ("", _("Presence"));
-    tmp_builder.populate_menu (builder);
-  }
-
-  if (self->priv->contact_core->populate_menu (tmp_builder)) {
-
-    builder.add_ghost ("", _("Addressbook"));
-    tmp_builder.populate_menu (builder);
-  }
-
-  if (!builder.empty ()) {
-
-    gtk_widget_set_sensitive (menu, TRUE);
-    gtk_menu_item_set_submenu (GTK_MENU_ITEM (menu), builder.menu);
-    gtk_widget_show_all (builder.menu);
-  } else {
-
-    gtk_widget_set_sensitive (menu, FALSE);
-    g_object_ref_sink (builder.menu);
-    g_object_unref (builder.menu);
-  }
-}
 
 /*
  * Callbacks
@@ -413,14 +374,6 @@ url_changed_cb (GtkEditable *e,
   gtk_widget_set_tooltip_text (GTK_WIDGET (e), tip_text);
 }
 
-static void
-show_dialpad_cb (G_GNUC_UNUSED GtkWidget *widget,
-                 gpointer data)
-{
-  EkigaMainWindow *mw = EKIGA_MAIN_WINDOW (data);
-
-  mw->priv->user_interface_settings->set_int ("panel-section", DIALPAD);
-}
 
 static void
 on_account_updated (Ekiga::BankPtr /*bank*/,
@@ -536,9 +489,6 @@ static void on_cleared_call_cb (boost::shared_ptr<Ekiga::CallManager>  /*manager
   mw->priv->audiooutput_core->stop_play_event("incoming_call_sound");
   mw->priv->audiooutput_core->stop_play_event("ring_tone_sound");
 
-  /* Hide call window */
-  g_timeout_add_seconds (2, on_delayed_hide_call_window_cb, mw);
-
   /* Sensitive a few things back */
   gtk_widget_set_sensitive (GTK_WIDGET (mw->priv->uri_toolbar), true);
   gtk_widget_set_sensitive (GTK_WIDGET (mw->priv->preview_button), true);
@@ -601,44 +551,23 @@ static bool on_handle_errors (std::string error,
 
 
 /* GTK callbacks */
-// FIXME: I should probably be moved to CallWindow code
-static gboolean
-on_delayed_hide_call_window_cb (gpointer data)
-{
-  g_return_val_if_fail (data != NULL, FALSE);
-  g_return_val_if_fail (GTK_IS_WIDGET (data), FALSE);
-
-  EkigaMainWindow *mw = EKIGA_MAIN_WINDOW (data);
-
-  if (!mw->priv->current_call
-      && !mw->priv->video_devices_settings->get_bool ("enable-preview")
-      && mw->priv->call_window) {
-    gtk_widget_destroy (mw->priv->call_window);
-    mw->priv->call_window = NULL;
-  }
-
-  return FALSE;
-}
-
 static void
 on_history_selection_changed (G_GNUC_UNUSED GtkWidget* view,
 			      gpointer self)
 {
   EkigaMainWindow *mw = EKIGA_MAIN_WINDOW (self);
   gint section;
-  GtkWidget* menu = gtk_menu_get_widget (mw->priv->main_menu, "contact");
-  std::cout << menu << std::endl << std::flush;
+  GtkWidget* menu = gtk_menu_new_from_model (G_MENU_MODEL (gtk_builder_get_object (mw->priv->builder, "contact")));
 
   section = gtk_notebook_get_current_page (GTK_NOTEBOOK (mw->priv->main_notebook));
 
   if (section == mw->priv->call_history_page_number) {
 
-    MenuBuilderGtk builder;
+    MenuBuilderGtk builder (menu);
     gtk_widget_set_sensitive (menu, TRUE);
 
     if (call_history_view_gtk_populate_menu_for_selected (CALL_HISTORY_VIEW_GTK (mw->priv->call_history_view), builder)) {
 
-      gtk_menu_item_set_submenu (GTK_MENU_ITEM (menu), builder.menu);
       gtk_widget_show_all (builder.menu);
     } else {
 
@@ -733,18 +662,6 @@ video_preview_changed (GtkToggleToolButton *button,
 
 
 static void
-pull_trigger_cb (GtkWidget * /*widget*/,
-                 gpointer data)
-{
-  Ekiga::Trigger *trigger = (Ekiga::Trigger *) data;
-
-  g_return_if_fail (trigger != NULL);
-
-  trigger->pull ();
-}
-
-
-static void
 dialpad_button_clicked_cb (EkigaDialpad  * /* dialpad */,
 			   const gchar *button_text,
 			   EkigaMainWindow *mw)
@@ -777,10 +694,36 @@ key_press_event_cb (EkigaMainWindow *mw,
 }
 
 
-static gint
-window_closed_cb (G_GNUC_UNUSED GtkWidget *widget,
-		  G_GNUC_UNUSED GdkEvent *event,
-		  gpointer data)
+static void
+show_dialpad_activated (G_GNUC_UNUSED GSimpleAction *action,
+                        G_GNUC_UNUSED GVariant *parameter,
+                        gpointer data)
+{
+  g_return_if_fail (EKIGA_IS_MAIN_WINDOW (data));
+  EkigaMainWindow *self = EKIGA_MAIN_WINDOW (data);
+
+  self->priv->user_interface_settings->set_enum ("panel-section", DIALPAD);
+}
+
+
+static void
+pull_trigger_activated (G_GNUC_UNUSED GSimpleAction *action,
+                        G_GNUC_UNUSED GVariant *parameter,
+                        gpointer self)
+{
+  g_return_if_fail (EKIGA_IS_MAIN_WINDOW (self));
+  boost::shared_ptr<Ekiga::Trigger> trigger = EKIGA_MAIN_WINDOW (self)->priv->local_cluster_trigger;
+
+  g_return_if_fail (trigger != NULL);
+
+  trigger->pull ();
+}
+
+
+static void
+close_activated (G_GNUC_UNUSED GSimpleAction *action,
+                 G_GNUC_UNUSED GVariant *parameter,
+                 gpointer data)
 {
   // If we have persistent notifications:
   //  - we can hide the window
@@ -789,17 +732,8 @@ window_closed_cb (G_GNUC_UNUSED GtkWidget *widget,
   // If we do not have persistent notifications:
   //  - the status icon allows showing the window back
   gtk_widget_hide (GTK_WIDGET (data));
-
-  return (TRUE);
 }
 
-
-static void
-window_closed_from_menu_cb (GtkWidget *widget,
-                            gpointer data)
-{
-  window_closed_cb (widget, NULL, data);
-}
 
 static gboolean
 statusbar_clicked_cb (G_GNUC_UNUSED GtkWidget *widget,
@@ -937,11 +871,6 @@ ekiga_main_window_init_actions_toolbar (EkigaMainWindow *mw)
   gtk_toolbar_insert (GTK_TOOLBAR (mw->priv->actions_toolbar), GTK_TOOL_ITEM (mw->priv->preview_button), -1);
   gtk_widget_set_tooltip_text (GTK_WIDGET (mw->priv->preview_button),
                                _("Display images from your camera device"));
-  g_settings_bind (mw->priv->video_devices_settings->get_g_settings (),
-                   "enable-preview",
-                   mw->priv->preview_button,
-                   "active",
-                   G_SETTINGS_BIND_DEFAULT);
   g_signal_connect (mw->priv->preview_button, "toggled",
                     G_CALLBACK (video_preview_changed), mw);
 
@@ -1004,84 +933,91 @@ ekiga_main_window_init_actions_toolbar (EkigaMainWindow *mw)
 static void
 ekiga_main_window_init_menu (EkigaMainWindow *mw)
 {
-  mw->priv->main_menu = gtk_menu_bar_new ();
+  GMenuModel *menubar = NULL;
+  GMenuModel *contacts_submenu = NULL;
 
-  g_return_if_fail (mw != NULL);
+  static const char* win_menu =
+    "<?xml version='1.0'?>"
+    "<interface>"
+    "  <menu id='menubar'>"
+    "    <submenu>"
+    "      <attribute name='label' translatable='yes'>Co_ntact</attribute>"
+    "      <section id='action'>"
+    "      </section>"
+    "      <section>"
+    "        <item>"
+    "          <attribute name='label' translatable='yes'>_Add Contact</attribute>"
+    "          <attribute name='action'>win.add</attribute>"
+    "        </item>"
+    "        <item>"
+    "          <attribute name='label' translatable='yes'>Place _Call</attribute>"
+    "          <attribute name='action'>win.call</attribute>"
+    "        </item>"
+    "      </section>"
+    "      <section>"
+    "        <item>"
+    "          <attribute name='label' translatable='yes'>_Close</attribute>"
+    "          <attribute name='action'>win.close</attribute>"
+    "        </item>"
+    "      </section>"
+    "    </submenu>"
+    "    <submenu>"
+    "      <attribute name='label' translatable='yes'>_View</attribute>"
+    "      <section>"
+    "        <item>"
+    "          <attribute name='label' translatable='yes'>_Video Preview</attribute>"
+    "          <attribute name='action'>win.enable-preview</attribute>"
+    "        </item>"
+    "      </section>"
+    "      <section>"
+    "        <item>"
+    "          <attribute name='label' translatable='yes'>Con_tacts</attribute>"
+    "          <attribute name='action'>win.panel-section</attribute>"
+    "          <attribute name='target'>contacts</attribute>"
+    "        </item>"
+    "        <item>"
+    "          <attribute name='label' translatable='yes'>_Dialpad</attribute>"
+    "          <attribute name='action'>win.panel-section</attribute>"
+    "          <attribute name='target'>dialpad</attribute>"
+    "        </item>"
+    "        <item>"
+    "          <attribute name='label' translatable='yes'>Call _History</attribute>"
+    "          <attribute name='action'>win.panel-section</attribute>"
+    "          <attribute name='target'>call-history</attribute>"
+    "        </item>"
+    "      </section>"
+    "      <section>"
+    "        <item>"
+    "          <attribute name='label' translatable='yes'>Show _Offline Contacts</attribute>"
+    "          <attribute name='action'>win.show-offline-contacts</attribute>"
+    "        </item>"
+    "      </section>"
+    "    </submenu>"
+    "  </menu>"
+    "</interface>";
 
-  static MenuEntry gnomemeeting_menu [] =
-    {
-      GTK_MENU_NEW (_("_Chat")),
+  mw->priv->builder = gtk_builder_new ();
+  gtk_builder_add_from_string (mw->priv->builder, win_menu, -1, NULL);
 
-      GTK_MENU_ENTRY ("contact", _("Co_ntact"),
-		      _("Act on selected contact"),
-		      GTK_STOCK_EXECUTE, 0,
-		      NULL, NULL, FALSE),
-
-      GTK_MENU_THEME_ENTRY("connect", _("Ca_ll a Number"), _("Place a new call"),
-                           "phone-pick-up", 'o',
-                           G_CALLBACK (show_dialpad_cb), mw, TRUE),
-
-      GTK_MENU_SEPARATOR,
-
-      GTK_MENU_ENTRY("add_contact", _("A_dd Contact"), _("Add a contact to the roster"),
-		     GTK_STOCK_ADD, 'n',
-		     G_CALLBACK (pull_trigger_cb),
-		     &*mw->priv->local_cluster_trigger, true),
-
-      GTK_MENU_SEPARATOR,
-
-      GTK_MENU_ENTRY("close", NULL, _("Close the Ekiga window"),
-		     GTK_STOCK_CLOSE, 'W',
-		     G_CALLBACK (window_closed_from_menu_cb),
-		     (gpointer) mw, TRUE),
-
-      GTK_MENU_NEW(_("_View")),
-
-      GTK_MENU_TOGGLE_ENTRY("preview", _("_Video Preview"),
-                            _("Display images from your camera device"),
-                            NULL, 0,
-			    mw->priv->video_devices_settings->get_g_settings (),
-                            "enable-preview",
-                            TRUE),
-
-      GTK_MENU_SEPARATOR,
-
-      GTK_MENU_RADIO_ENTRY("contacts", _("Con_tacts"), _("View the contacts list"),
-			   NULL, 0,
-			   mw->priv->user_interface_settings->get_g_settings (),
-                           "panel-section",
-			   TRUE),
-      GTK_MENU_RADIO_ENTRY("dialpad", _("_Dialpad"), _("View the dialpad"),
-			   NULL, 0,
-			   mw->priv->user_interface_settings->get_g_settings (),
-                           "panel-section",
-			   TRUE),
-      GTK_MENU_RADIO_ENTRY("call-history", _("_Call History"), _("View the call history"),
-			   NULL, 0,
-			   mw->priv->user_interface_settings->get_g_settings (),
-                           "panel-section",
-			   TRUE),
-
-      GTK_MENU_SEPARATOR,
-
-      GTK_MENU_TOGGLE_ENTRY ("showofflinecontacts", _("Show Offline _Contacts"),
-			     _("Show offline contacts"),
-                             NULL, 0,
-			     mw->priv->contacts_settings->get_g_settings (),
-                             "show-offline-contacts",
-                             TRUE),
-
-      GTK_MENU_END
-    };
-
-
-  gtk_build_menu (mw->priv->main_menu,
-		  gnomemeeting_menu,
-		  mw->priv->accel,
-		  mw->priv->statusbar);
-
-  gtk_widget_show_all (GTK_WIDGET (mw->priv->main_menu));
+  menubar = G_MENU_MODEL (gtk_builder_get_object (mw->priv->builder, "menubar"));
+  gtk_application_set_menubar (GTK_APPLICATION (mw->priv->app), menubar);
+  g_action_map_add_action (G_ACTION_MAP (mw),
+                           g_settings_create_action (mw->priv->video_devices_settings->get_g_settings (),
+                                                     "enable-preview"));
+  g_action_map_add_action (G_ACTION_MAP (mw),
+                           g_settings_create_action (mw->priv->user_interface_settings->get_g_settings (),
+                                                     "panel-section"));
+  g_action_map_add_action (G_ACTION_MAP (mw),
+                           g_settings_create_action (mw->priv->contacts_settings->get_g_settings (),
+                                                     "show-offline-contacts"));
+  g_action_map_add_action_entries (G_ACTION_MAP (mw),
+                                   win_entries, G_N_ELEMENTS (win_entries),
+                                   mw);
+  contacts_submenu = G_MENU_MODEL (gtk_builder_get_object (mw->priv->builder, "action"));
+  std::cout << contacts_submenu << std::endl << std::flush;
+  g_menu_item_set_action_and_target (G_MENU_ITEM (contacts_submenu), NULL, NULL, -1);
 }
+
 
 static void
 ekiga_main_window_init_status_toolbar (EkigaMainWindow *mw)
@@ -1183,11 +1119,10 @@ ekiga_main_window_init_gui (EkigaMainWindow *mw)
   gtk_widget_show_all (window_vbox);
 
   /* The main menu */
-  mw->priv->statusbar = gm_statusbar_new ();
-
   ekiga_main_window_init_menu (mw);
-  gtk_box_pack_start (GTK_BOX (window_vbox), mw->priv->main_menu,
-                      FALSE, FALSE, 0);
+
+  /* Status bar */
+  mw->priv->statusbar = gm_statusbar_new ();
 
   /* The actions toolbar */
   ekiga_main_window_init_actions_toolbar (mw);
@@ -1319,14 +1254,6 @@ ekiga_main_window_focus_in_event (GtkWidget     *widget,
   return GTK_WIDGET_CLASS (ekiga_main_window_parent_class)->focus_in_event (widget, event);
 }
 
-static gboolean
-ekiga_main_window_delete_event (GtkWidget   *widget,
-				G_GNUC_UNUSED GdkEventAny *event)
-{
-  window_closed_cb (widget, NULL, NULL);
-
-  return TRUE;
-}
 
 static void
 ekiga_main_window_class_init (EkigaMainWindowClass *klass)
@@ -1339,8 +1266,8 @@ ekiga_main_window_class_init (EkigaMainWindowClass *klass)
   object_class->finalize = ekiga_main_window_finalize;
 
   widget_class->focus_in_event = ekiga_main_window_focus_in_event;
-  widget_class->delete_event = ekiga_main_window_delete_event;
 }
+
 
 static void
 ekiga_main_window_connect_engine_signals (EkigaMainWindow *mw)
@@ -1369,12 +1296,6 @@ ekiga_main_window_connect_engine_signals (EkigaMainWindow *mw)
   mw->priv->connections.add (conn);
 
   conn = mw->priv->call_core->errors.connect (boost::bind (&on_handle_errors, _1, (gpointer) mw));
-  mw->priv->connections.add (conn);
-
-  // FIXME: here we should watch for updates of the presence core
-  // FIXME: and call on_some_core_updated... if it had such a signal!
-  // FIXME: (that is about updating the menu of possible actions)
-  conn = mw->priv->contact_core->updated.connect (boost::bind (&on_some_core_updated, mw));
   mw->priv->connections.add (conn);
 }
 
@@ -1416,9 +1337,6 @@ gm_main_window_new (GmApplication *app)
   ekiga_main_window_connect_engine_signals (mw);
 
   ekiga_main_window_init_gui (mw);
-
-  // initial population
-  on_some_core_updated (mw);
 
   return GTK_WIDGET(mw);
 }
