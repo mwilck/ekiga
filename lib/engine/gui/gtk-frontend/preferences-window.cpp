@@ -90,6 +90,7 @@ struct _PreferencesWindowPrivate
   boost::shared_ptr<Ekiga::Settings> video_devices_settings;
   boost::shared_ptr<Ekiga::Settings> video_codecs_settings;
   boost::shared_ptr<Ekiga::Settings> video_display_settings;
+  boost::shared_ptr<Ekiga::Settings> contacts_settings;
   Ekiga::scoped_connections connections;
 };
 
@@ -122,6 +123,8 @@ _PreferencesWindowPrivate::_PreferencesWindowPrivate ()
     boost::shared_ptr<Ekiga::Settings> (new Ekiga::Settings (CALL_FORWARDING_SCHEMA));
   call_options_settings =
     boost::shared_ptr<Ekiga::Settings> (new Ekiga::Settings (CALL_OPTIONS_SCHEMA));
+  contacts_settings =
+    boost::shared_ptr<Ekiga::Settings> (new Ekiga::Settings (CONTACTS_SCHEMA));
 }
 
 G_DEFINE_TYPE (PreferencesWindow, preferences_window, GTK_TYPE_DIALOG);
@@ -558,8 +561,12 @@ gm_pw_init_general_page (PreferencesWindow *self,
   gtk_widget_set_size_request (GTK_WIDGET (entry), 250, -1);
   gtk_entry_set_max_length (GTK_ENTRY (entry), 65);
 
-  /* Video Display */
+  /* Display */
   gm_pw_subsection_new (container, _("Display"));
+  gm_pw_toggle_new (container, _("Show O_ffline Contacts"),
+                    self->priv->contacts_settings, "show-offline-contacts",
+                    _("Show offline contacts in the roster"));
+
   gm_pw_toggle_new (container, _("Place windows displaying video _above other windows"),
                     self->priv->video_display_settings, "stay-on-top",
                     _("Place windows displaying video above other windows during calls"));
