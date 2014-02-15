@@ -105,6 +105,8 @@ struct _GmApplicationPrivate
   GtkWidget *main_window;
   GtkWidget *chat_window;
 
+  boost::shared_ptr<Ekiga::Settings> video_devices_settings;
+
   EkigaDBusComponent *dbus_component;
 };
 
@@ -197,6 +199,27 @@ window_activated (GSimpleAction *action,
     gm_application_show_assistant_window (self);
 }
 
+
+static void
+video_preview_changed (GSettings *settings,
+                       const gchar *key,
+                       gpointer data)
+{
+  g_return_if_fail (GM_IS_APPLICATION (data));
+
+  GmApplication *self = GM_APPLICATION (data);
+  boost::shared_ptr<Ekiga::VideoInputCore> video_input_core =
+    self->priv->core->get<Ekiga::VideoInputCore> ("videoinput-core");
+
+  if (g_settings_get_boolean (settings, key)) {
+    gm_application_show_call_window (self);
+    video_input_core->start_preview ();
+  }
+  else
+    video_input_core->stop_preview ();
+}
+
+
 static GActionEntry app_entries[] =
 {
     { "preferences", window_activated, NULL, NULL, NULL, 0 },
@@ -272,7 +295,6 @@ gm_application_startup (GApplication *app)
   GtkBuilder *builder = NULL;
 
   GMenuModel *app_menu = NULL;
-  GMenuModel *menubar = NULL;
 
   G_APPLICATION_CLASS (gm_application_parent_class)->startup (app);
 
@@ -378,6 +400,12 @@ gm_application_startup (GApplication *app)
   app_menu = G_MENU_MODEL (gtk_builder_get_object (builder, "appmenu"));
   gtk_application_set_app_menu (GTK_APPLICATION (self), app_menu);
   g_object_unref (builder);
+
+  self->priv->video_devices_settings =
+    boost::shared_ptr<Ekiga::Settings> (new Ekiga::Settings (VIDEO_DEVICES_SCHEMA));
+  g_signal_connect (self->priv->video_devices_settings->get_g_settings (),
+                    "changed::enable-preview",
+                    G_CALLBACK (video_preview_changed), self);
 }
 
 

@@ -191,14 +191,6 @@ static void panel_section_changed (GtkNotebook *notebook,
                                    gpointer user_data);
 
 
-/* DESCRIPTION  :  This callback is called when the preview button is toggled.
- * BEHAVIOR     :  Show / hide the call window.
- * PRE          :  /
- */
-static void video_preview_changed (GtkToggleToolButton *button,
-                                   gpointer data);
-
-
 /* DESCRIPTION  :  This callback is called when the user
  *                 presses a key.
  * BEHAVIOR     :  Sends a DTMF if we are in a call.
@@ -634,28 +626,6 @@ panel_section_changed (G_GNUC_UNUSED GtkNotebook *notebook,
     menu = gtk_menu_get_widget (mw->priv->main_menu, "contact");
     gtk_widget_set_sensitive (menu, FALSE);
     gtk_menu_item_set_submenu (GTK_MENU_ITEM (menu), NULL);
-  }
-}
-
-
-static void
-video_preview_changed (GtkToggleToolButton *button,
-                       gpointer data)
-{
-  g_return_if_fail (EKIGA_IS_MAIN_WINDOW (data));
-
-  EkigaMainWindow* mw = EKIGA_MAIN_WINDOW (data);
-
-  if (mw->priv->calling_state == Standby) {
-
-    bool toggled = gtk_toggle_tool_button_get_active (button);
-    if (!toggled) {
-      if (mw->priv->call_window)
-        gtk_widget_destroy (mw->priv->call_window);
-      mw->priv->call_window = NULL;
-    }
-    else
-      mw->priv->call_window = gm_application_show_call_window (mw->priv->app);
   }
 }
 
