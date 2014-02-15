@@ -379,22 +379,6 @@ gm_application_startup (GApplication *app)
                                "      </item>"
                                "    </section>"
                                "  </menu>"
-                               "  <menu id=\"menubar\">"
-                               "    <submenu>"
-                               "      <attribute name='label' translatable='yes'>_Chat</attribute>"
-                               "      <section>"
-                               "      </section>"
-                               "    </submenu>"
-                               "    <submenu>"
-                               "      <attribute name='label' translatable='yes'>_View</attribute>"
-                               "      <section>"
-                               "        <item>"
-                               "          <attribute name=\"label\" translatable=\"yes\">_Video Preview</attribute>"
-                               "          <attribute name=\"action\">win.enable-preview</attribute>"
-                               "        </item>"
-                               "      </section>"
-                               "    </submenu>"
-                               "  </menu>"
                                "</interface>", -1, NULL);
 
   app_menu = G_MENU_MODEL (gtk_builder_get_object (builder, "appmenu"));
