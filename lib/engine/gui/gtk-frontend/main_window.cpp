@@ -119,7 +119,6 @@ struct _EkigaMainWindowPrivate
 
   /* Actions toolbar */
   GtkWidget *actions_toolbar;
-  GtkToolItem *toggle_buttons[NUM_SECTIONS];
   GtkWidget *preview_button;
 
   /* notebook pages
@@ -854,88 +853,82 @@ static void
 ekiga_main_window_init_actions_toolbar (EkigaMainWindow *mw)
 {
   GtkWidget *image = NULL;
-  GtkToolItem *item = NULL;
+  GtkWidget *menu_button = NULL;
+  GtkWidget *box = NULL;
+  GtkWidget *button = NULL;
 
   g_return_if_fail (EKIGA_IS_MAIN_WINDOW (mw));
 
-  /* The call horizontal toolbar */
-  mw->priv->actions_toolbar = gtk_toolbar_new ();
-  gtk_toolbar_set_style (GTK_TOOLBAR (mw->priv->actions_toolbar), GTK_TOOLBAR_ICONS);
-  gtk_toolbar_set_show_arrow (GTK_TOOLBAR (mw->priv->actions_toolbar), FALSE);
+  gtk_style_context_add_class (gtk_widget_get_style_context (GTK_WIDGET (mw)),
+                               "header-bar");
 
-  /* The video preview button */
-  image = gtk_image_new_from_icon_name ("camera-web", GTK_ICON_SIZE_MENU);
-  mw->priv->preview_button = GTK_WIDGET (gtk_toggle_tool_button_new ());
-  gtk_tool_button_set_icon_widget (GTK_TOOL_BUTTON (mw->priv->preview_button), image);
-  gtk_tool_item_set_expand (GTK_TOOL_ITEM (mw->priv->preview_button), false);
-  gtk_toolbar_insert (GTK_TOOLBAR (mw->priv->actions_toolbar), GTK_TOOL_ITEM (mw->priv->preview_button), -1);
-  gtk_widget_set_tooltip_text (GTK_WIDGET (mw->priv->preview_button),
+  gtk_style_context_set_junction_sides (gtk_widget_get_style_context (GTK_WIDGET (mw)),
+                                        GTK_JUNCTION_BOTTOM);
+
+  mw->priv->actions_toolbar = gtk_box_new (GTK_ORIENTATION_HORIZONTAL, 0);
+
+  button = gtk_toggle_button_new ();
+  image = gtk_image_new_from_icon_name ("camera-web-symbolic", GTK_ICON_SIZE_MENU);
+  g_object_set (G_OBJECT (image), "margin", 3, NULL);
+  gtk_button_set_image (GTK_BUTTON (button), image);
+  gtk_widget_set_tooltip_text (GTK_WIDGET (button),
                                _("Display images from your camera device"));
-  g_signal_connect (mw->priv->preview_button, "toggled",
-                    G_CALLBACK (video_preview_changed), mw);
+  gtk_actionable_set_detailed_action_name (GTK_ACTIONABLE (button), "win.enable-preview");
+  gtk_box_pack_start (GTK_BOX (mw->priv->actions_toolbar), button, FALSE, FALSE, 0);
+  gtk_widget_set_margin_left (button, 6);
+  gtk_widget_set_margin_right (button, 6);
 
-  /* Separator */
-  item = gtk_separator_tool_item_new ();
-  gtk_toolbar_insert (GTK_TOOLBAR (mw->priv->actions_toolbar),
-		      GTK_TOOL_ITEM (item), -1);
-
-  /* The roster button */
-  image = gtk_image_new_from_icon_name ("avatar-default", GTK_ICON_SIZE_MENU);
-  mw->priv->toggle_buttons[CONTACTS] = gtk_radio_tool_button_new (NULL);
-  gtk_tool_button_set_icon_widget (GTK_TOOL_BUTTON (mw->priv->toggle_buttons[CONTACTS]), image);
-  gtk_tool_item_set_expand (GTK_TOOL_ITEM (mw->priv->toggle_buttons[CONTACTS]), false);
-  gtk_toolbar_insert (GTK_TOOLBAR (mw->priv->actions_toolbar), mw->priv->toggle_buttons[CONTACTS], -1);
-  gtk_widget_set_tooltip_text (GTK_WIDGET (mw->priv->toggle_buttons[CONTACTS]),
+  box = gtk_box_new (GTK_ORIENTATION_HORIZONTAL, 0);
+  button = gtk_toggle_button_new ();
+  image = gtk_image_new_from_icon_name ("avatar-default-symbolic", GTK_ICON_SIZE_MENU);
+  g_object_set (G_OBJECT (image), "margin", 3, NULL);
+  gtk_button_set_image (GTK_BUTTON (button), image);
+  gtk_widget_set_tooltip_text (GTK_WIDGET (button),
                                _("View the contacts list"));
-  g_settings_bind_with_mapping (mw->priv->user_interface_settings->get_g_settings (),
-                                "panel-section", mw->priv->toggle_buttons[CONTACTS],
-                                "active",
-                                G_SETTINGS_BIND_DEFAULT,
-                                string_gsettings_get_from_active, string_gsettings_set_from_active,
-                                (gpointer) "contacts",
-                                NULL);
+  gtk_actionable_set_detailed_action_name (GTK_ACTIONABLE (button), "win.panel-section::contacts");
+  gtk_container_add (GTK_CONTAINER (box), button);
 
-  /* The dialpad button */
-  image = gtk_image_new_from_icon_name ("input-dialpad", GTK_ICON_SIZE_MENU);
-  mw->priv->toggle_buttons[DIALPAD] =
-    gtk_radio_tool_button_new (gtk_radio_tool_button_get_group (GTK_RADIO_TOOL_BUTTON (mw->priv->toggle_buttons[CONTACTS])));
-  gtk_tool_button_set_icon_widget (GTK_TOOL_BUTTON (mw->priv->toggle_buttons[DIALPAD]), image);
-  gtk_tool_item_set_expand (GTK_TOOL_ITEM (mw->priv->toggle_buttons[DIALPAD]), false);
-  gtk_toolbar_insert (GTK_TOOLBAR (mw->priv->actions_toolbar), mw->priv->toggle_buttons[DIALPAD], -1);
-  gtk_widget_set_tooltip_text (GTK_WIDGET (mw->priv->toggle_buttons[DIALPAD]),
+  button = gtk_toggle_button_new ();
+  image = gtk_image_new_from_icon_name ("input-dialpad-symbolic", GTK_ICON_SIZE_MENU);
+  g_object_set (G_OBJECT (image), "margin", 3, NULL);
+  gtk_button_set_image (GTK_BUTTON (button), image);
+  gtk_widget_set_tooltip_text (GTK_WIDGET (button),
                                _("View the dialpad"));
-  g_settings_bind_with_mapping (mw->priv->user_interface_settings->get_g_settings (),
-                                "panel-section", mw->priv->toggle_buttons[DIALPAD],
-                                "active",
-                                G_SETTINGS_BIND_DEFAULT,
-                                string_gsettings_get_from_active, string_gsettings_set_from_active,
-                                (gpointer) "dialpad",
-                                NULL);
+  gtk_actionable_set_detailed_action_name (GTK_ACTIONABLE (button), "win.panel-section::dialpad");
+  gtk_container_add (GTK_CONTAINER (box), button);
 
-  /* The history button */
-  image = gtk_image_new_from_icon_name ("document-open-recent", GTK_ICON_SIZE_MENU);
-  mw->priv->toggle_buttons[CALL] =
-    gtk_radio_tool_button_new (gtk_radio_tool_button_get_group (GTK_RADIO_TOOL_BUTTON (mw->priv->toggle_buttons[CONTACTS])));
-  gtk_tool_button_set_icon_widget (GTK_TOOL_BUTTON (mw->priv->toggle_buttons[CALL]), image);
-  gtk_tool_item_set_expand (GTK_TOOL_ITEM (mw->priv->toggle_buttons[CALL]), false);
-  gtk_toolbar_insert (GTK_TOOLBAR (mw->priv->actions_toolbar), mw->priv->toggle_buttons[CALL], -1);
-  gtk_widget_set_tooltip_text (GTK_WIDGET (mw->priv->toggle_buttons[CALL]),
+  button = gtk_toggle_button_new ();
+  image = gtk_image_new_from_icon_name ("document-open-recent-symbolic", GTK_ICON_SIZE_MENU);
+  g_object_set (G_OBJECT (image), "margin", 3, NULL);
+  gtk_button_set_image (GTK_BUTTON (button), image);
+  gtk_widget_set_tooltip_text (GTK_WIDGET (button),
                                _("View the call history"));
-  g_settings_bind_with_mapping (mw->priv->user_interface_settings->get_g_settings (),
-                                "panel-section", mw->priv->toggle_buttons[CALL],
-                                "active",
-                                G_SETTINGS_BIND_DEFAULT,
-                                string_gsettings_get_from_active, string_gsettings_set_from_active,
-                                (gpointer) "call-history",
-                                NULL);
+  gtk_actionable_set_detailed_action_name (GTK_ACTIONABLE (button), "win.panel-section::call-history");
+  gtk_container_add (GTK_CONTAINER (box), button);
+
+  gtk_style_context_add_class (gtk_widget_get_style_context (box),
+                               GTK_STYLE_CLASS_RAISED);
+  gtk_style_context_add_class (gtk_widget_get_style_context (box),
+                               GTK_STYLE_CLASS_LINKED);
+
+  gtk_box_pack_start (GTK_BOX (mw->priv->actions_toolbar), box, FALSE, FALSE, 0);
+  gtk_widget_set_margin_left (box, 6);
+  gtk_widget_set_margin_right (box, 6);
+
+  button = gtk_menu_button_new ();
+  image = gtk_image_new_from_icon_name ("emblem-system-symbolic", GTK_ICON_SIZE_MENU);
+  g_object_set (G_OBJECT (image), "margin", 3, NULL);
+  gtk_button_set_image (GTK_BUTTON (button), image);
+  gtk_menu_button_set_menu_model (GTK_MENU_BUTTON (button),
+                                  G_MENU_MODEL (gtk_builder_get_object (mw->priv->builder, "menubar")));
+  gtk_box_pack_end (GTK_BOX (mw->priv->actions_toolbar), button, FALSE, FALSE, 0);
+  gtk_widget_set_margin_left (button, 6);
+  gtk_widget_set_margin_right (button, 6);
 }
 
 static void
 ekiga_main_window_init_menu (EkigaMainWindow *mw)
 {
-  GMenuModel *menubar = NULL;
-  GMenuModel *contacts_submenu = NULL;
-
   static const char* win_menu =
     "<?xml version='1.0'?>"
     "<interface>"
@@ -999,8 +992,6 @@ ekiga_main_window_init_menu (EkigaMainWindow *mw)
   mw->priv->builder = gtk_builder_new ();
   gtk_builder_add_from_string (mw->priv->builder, win_menu, -1, NULL);
 
-  menubar = G_MENU_MODEL (gtk_builder_get_object (mw->priv->builder, "menubar"));
-  gtk_application_set_menubar (GTK_APPLICATION (mw->priv->app), menubar);
   g_action_map_add_action (G_ACTION_MAP (mw),
                            g_settings_create_action (mw->priv->video_devices_settings->get_g_settings (),
                                                      "enable-preview"));
@@ -1013,9 +1004,6 @@ ekiga_main_window_init_menu (EkigaMainWindow *mw)
   g_action_map_add_action_entries (G_ACTION_MAP (mw),
                                    win_entries, G_N_ELEMENTS (win_entries),
                                    mw);
-  contacts_submenu = G_MENU_MODEL (gtk_builder_get_object (mw->priv->builder, "action"));
-  std::cout << contacts_submenu << std::endl << std::flush;
-  g_menu_item_set_action_and_target (G_MENU_ITEM (contacts_submenu), NULL, NULL, -1);
 }
 
 
@@ -1198,10 +1186,6 @@ ekiga_main_window_init (EkigaMainWindow *mw)
     boost::shared_ptr<Ekiga::Settings> (new Ekiga::Settings (VIDEO_DEVICES_SCHEMA));
   mw->priv->contacts_settings =
     boost::shared_ptr<Ekiga::Settings> (new Ekiga::Settings (CONTACTS_SCHEMA));
-
-  for (int i = 0 ; i < NUM_SECTIONS ; i++)
-    mw->priv->toggle_buttons[i] = NULL;
-
 }
 
 
