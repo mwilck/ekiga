@@ -1023,7 +1023,7 @@ ekiga_main_window_init_status_toolbar (EkigaMainWindow *mw)
   status_menu_set_parent_window (STATUS_MENU (mw->priv->status_option_menu),
                                  GTK_WINDOW (mw));
   gtk_container_add (GTK_CONTAINER (item), mw->priv->status_option_menu);
-  gtk_container_set_border_width (GTK_CONTAINER (item), 0);
+  gtk_container_set_border_width (GTK_CONTAINER (item), 2);
   gtk_tool_item_set_expand (GTK_TOOL_ITEM (item), TRUE);
 
   gtk_toolbar_insert (GTK_TOOLBAR (mw->priv->status_toolbar), item, 0);
