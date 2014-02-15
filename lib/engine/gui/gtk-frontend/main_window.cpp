@@ -853,7 +853,6 @@ static void
 ekiga_main_window_init_actions_toolbar (EkigaMainWindow *mw)
 {
   GtkWidget *image = NULL;
-  GtkWidget *menu_button = NULL;
   GtkWidget *box = NULL;
   GtkWidget *button = NULL;
 
