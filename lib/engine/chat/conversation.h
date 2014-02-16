@@ -60,7 +60,8 @@ namespace Ekiga {
      *
      * <if code comes here that's a problem>
      */
-    const std::map<const std::string, const std::string> payload;
+    typedef typename std::map<std::string, std::string> payload_type;
+    const payload_type payload;
   };
 
   class Conversation: public LiveObject
@@ -81,17 +82,26 @@ namespace Ekiga {
      */
     virtual void visit_messages (boost::function1<bool, const Message&>) const = 0;
 
+    /* Send a message through this conversation
+     * @param: the message to send
+     * @return: whether we could send
+     */
+    virtual bool send_message (const Message::payload_type&) = 0;
+
     /* This couple of methods makes it possible to count how many
      * messages haven't been read by the user: the conversation
      * increments its unread counter everytime a message is received,
      * and everytime a view is seen (has the focus, not just exists),
      * it resets it to zero.
      */
-    virtual int get_unred_messages_number () const = 0;
-    virtual void reset_unread_messages_number () const = 0;
+    virtual int get_unread_messages_count () const = 0;
+    virtual void reset_unread_messages_count () = 0;
 
     /* views which already exist need to know only about new messages */
     boost::signals2::signal<void(const Message&)> message_received;
+
+    /* This signal is emitted when the user requested to see this */
+    boost::signals2::signal<void(void)> user_requested;
   };
 
   typedef boost::shared_ptr<Conversation> ConversationPtr;

@@ -37,13 +37,12 @@
 #ifndef __DIALECT_H__
 #define __DIALECT_H__
 
-#include "chat-simple.h"
-#include "chat-multiple.h"
+#include "conversation.h"
 
 namespace Ekiga
 {
 
-  class Dialect
+  class Dialect: public virtual LiveObject
   {
   public:
 
@@ -51,37 +50,34 @@ namespace Ekiga
      */
     virtual ~Dialect () {}
 
-    /** Triggers a callback for all simple chats of the Dialect.
+    /** Aggregates the number of unread messages in all conversations
+     * within the dialect
+     */
+    virtual int get_unread_messages_count () const = 0;
+
+    /** Triggers a callback for all conversations of the Dialect
      * @param: The callback (the return value means "go on" and allows
      * stopping the visit)
      */
-    virtual void visit_simple_chats (boost::function1<bool, SimpleChatPtr > visitor) const = 0;
+    virtual void visit_conversations (boost::function1<bool, ConversationPtr> visitor) const = 0;
 
-    /** Triggers a callback for all multiple chats of the Dialect.
-     * @param: The callback (the return value means "go on" and allows
-     * stopping the visit)
+    /**
+     * This signal is emitted when an Ekiga::Conversation has been added
+     * to the dialect.
      */
-    virtual void visit_multiple_chats (boost::function1<bool, MultipleChatPtr > visitor) const = 0;
+    boost::signals2::signal<void(ConversationPtr)> conversation_added;
 
-
-    /** Feed possible actions on this Dialect to the given MenuBuilder
-     * @param A MenuBuilder object to populate.
+    /**
+     * This signal is emitted when an Ekiga::Conversation has been removed
+     * from the dialect.
      */
-    virtual bool populate_menu (MenuBuilder &) = 0;
+    boost::signals2::signal<void(ConversationPtr)> conversation_removed;
 
-    /** This signal is emitted when an Ekiga::SimpleChat has been added to
-     * the dialect.
+    /**
+     * This signal is emitted when an Ekiga::Conversation has been updated
+     * in the dialect.
      */
-    boost::signals2::signal<void(SimpleChatPtr)> simple_chat_added;
-
-    /** This signal is emitted when an Ekiga::MultipleChat has been added to
-     * the dialect.
-     */
-    boost::signals2::signal<void(MultipleChatPtr)> multiple_chat_added;
-
-    /** This chain allows the Dialect to present forms to the user.
-     */
-    ChainOfResponsibility<FormRequestPtr> questions;
+    boost::signals2::signal<void(ConversationPtr)> conversation_updated;
   };
 
   typedef boost::shared_ptr<Dialect> DialectPtr;

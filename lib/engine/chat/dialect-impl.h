@@ -1,7 +1,7 @@
 
 /*
  * Ekiga -- A VoIP and Video-Conferencing application
- * Copyright (C) 2000-2009 Damien Sandras <dsandras@seconix.com>
+ * Copyright (C) 2000-2014 Damien Sandras <dsandras@seconix.com>
 
  * This program is free software; you can  redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -28,7 +28,7 @@
  *                         dialect.h  -  description
  *                         ------------------------------------------
  *   begin                : written in 2008 by Julien Puydt
- *   copyright            : (c) 2008 by Julien Puydt
+ *   copyright            : (c) 2008-2014 by Julien Puydt
  *   description          : basic implementation of a real chat backend
  *
  */
@@ -38,16 +38,14 @@
 
 #include "dialect.h"
 
-#include "scoped-connections.h"
-#include "map-key-iterator.h"
-#include "map-key-const-iterator.h"
+#include "reflister.h"
 
 namespace Ekiga
 {
-  template<typename SimpleChatType = SimpleChat,
-	   typename MultipleChatType = MultipleChat>
+  template<typename ConversationType = Conversation>
   class DialectImpl:
     public Dialect,
+    public RefLister<ConversationType>,
     public boost::signals2::trackable
   {
   public:
@@ -56,208 +54,114 @@ namespace Ekiga
      */
     DialectImpl ();
 
-    /** Triggers a callback for all simple chats of the Dialect.
-     * @param: The callback (the return value means "go on" and allows
-     * stopping the visit)
+    /** Aggregates the number of unread messages in all conversations
+     * within the dialect
      */
-    void visit_simple_chats (boost::function1<bool, SimpleChatPtr > visitor) const;
+    int get_unread_messages_count () const;
 
-    /** Triggers a callback for all multiple chats of the Dialect.
+    /** Triggers a callback for all conversations of the Dialect
      * @param: The callback (the return value means "go on" and allows
      * stopping the visit)
      */
-    void visit_multiple_chats (boost::function1<bool, MultipleChatPtr > visitor) const;
+    void visit_conversations (boost::function1<bool, ConversationPtr> visitor) const;
 
   protected:
 
+    using RefLister<ConversationType>::add_connection;
+
     /* More STL-like ways to access the chats within this Ekiga::DialectImpl
      */
-    typedef typename std::map<boost::shared_ptr<SimpleChatType>, boost::shared_ptr<Ekiga::scoped_connections> > simple_chats_type;
-    typedef typename std::map<boost::shared_ptr<MultipleChatType>, boost::shared_ptr<Ekiga::scoped_connections> > multiple_chats_type;
+    typedef typename RefLister<ConversationType>::iterator iterator;
+    typedef typename RefLister<ConversationType>::const_iterator const_iterator;
 
-    typedef typename Ekiga::map_key_iterator<simple_chats_type> simple_iterator;
-    typedef typename Ekiga::map_key_const_iterator<simple_chats_type> simple_const_iterator;
-    typedef typename Ekiga::map_key_iterator<multiple_chats_type> multiple_iterator;
-    typedef typename Ekiga::map_key_const_iterator<multiple_chats_type> multiple_const_iterator;
+    iterator begin ();
+    iterator end ();
+    
+    const_iterator begin () const;
+    const_iterator end () const;
 
-    simple_iterator simple_begin ();
-    simple_iterator simple_end ();
-
-    simple_const_iterator simple_begin () const;
-    simple_const_iterator simple_end () const;
-
-    multiple_iterator multiple_begin ();
-    multiple_iterator multiple_end ();
-
-    multiple_const_iterator multiple_begin () const;
-    multiple_const_iterator multiple_end () const;
-
-    /** Adds a SimpleChat to the Ekiga::Dialect.
-     * @param The SimpleChat to be added.
-     * @return: The Ekiga::Dialect 'simple_chat_added' signal is emitted.
+    /** Adds a Conversation to the Ekiga::Dialect.
+     * @param The Conversation to be added
+     * @return: The Ekiga::Dialect 'conversation_added' signal is emitted.
      */
-    void add_simple_chat (boost::shared_ptr<SimpleChatType> chat);
+    void add_conversation (boost::shared_ptr<ConversationType> conversation);
 
-    /** Removes a SimpleChat from the Ekiga::Dialect.
-     * @param The SimpleChat to be removed.
+    /** Removes a Conversation from the Ekiga::Dialect.
+     * @param The Conversation to be removed.
      */
-    void remove_simple_chat (boost::shared_ptr<SimpleChatType> chat);
+    void remove_conversation (boost::shared_ptr<ConversationType> conversation);
 
-    /** Adds a MultipleChat to the Ekiga::Dialect.
-     * @param The MultipleChat to be added.
-     * @return: The Ekiga::Dialect 'multiple_chat_added' signal is emitted.
-     */
-    void add_multiple_chat (boost::shared_ptr<MultipleChatType> chat);
-
-    /** Removes a MultipleChat from the Ekiga::Dialect.
-     * @param The MultipleChat to be removed.
-     */
-    void remove_multiple_chat (boost::shared_ptr<MultipleChatType> chat);
-
-  private:
-
-    simple_chats_type simple_chats;
-    multiple_chats_type multiple_chats;
-
-    void on_simple_chat_removed (boost::shared_ptr<SimpleChatType> chat);
-
-    void on_multiple_chat_removed (boost::shared_ptr<MultipleChatType> chat);
   };
 };
 
-template<typename SimpleChatType, typename MultipleChatType>
-Ekiga::DialectImpl<SimpleChatType, MultipleChatType>::DialectImpl ()
+template<typename ConversationType>
+Ekiga::DialectImpl<ConversationType>::DialectImpl ()
 {
+  RefLister<ConversationType>::object_added.connect (boost::ref (conversation_added));
+  RefLister<ConversationType>::object_removed.connect (boost::ref (conversation_removed));
+  RefLister<ConversationType>::object_updated.connect (boost::ref (conversation_updated));
 }
 
-template<typename SimpleChatType, typename MultipleChatType>
+template<typename ConversationType>
+int
+Ekiga::DialectImpl<ConversationType>::get_unread_messages_count () const
+{
+  int count = 0;
+  for (const_iterator iter = begin (); iter != end (); ++iter)
+    count += (*iter)->get_unread_messages_count ();
+
+  return count;
+}
+
+template<typename ConversationType>
 void
-Ekiga::DialectImpl<SimpleChatType, MultipleChatType>::visit_simple_chats (boost::function1<bool, SimpleChatPtr > visitor) const
+Ekiga::DialectImpl<ConversationType>::visit_conversations (boost::function1<bool, ConversationPtr> visitor) const
 {
-  bool go_on = true;
-
-  for (typename simple_chats_type::const_iterator iter = simple_chats.begin ();
-       go_on && iter != simple_chats.end ();
-       iter++) {
-
-    go_on = visitor (iter->first);
-  }
+  RefLister<ConversationType>::visit_objects (visitor);
 }
 
-template<typename SimpleChatType, typename MultipleChatType>
+template<typename ConversationType>
+typename Ekiga::DialectImpl<ConversationType>::iterator
+Ekiga::DialectImpl<ConversationType>::begin ()
+{
+  return RefLister<ConversationType>::begin ();
+}
+
+template<typename ConversationType>
+typename Ekiga::DialectImpl<ConversationType>::iterator
+Ekiga::DialectImpl<ConversationType>::end ()
+{
+  return RefLister<ConversationType>::end ();
+}
+
+template<typename ConversationType>
+typename Ekiga::DialectImpl<ConversationType>::const_iterator
+Ekiga::DialectImpl<ConversationType>::begin () const
+{
+  return RefLister<ConversationType>::begin ();
+}
+
+template<typename ConversationType>
+typename Ekiga::DialectImpl<ConversationType>::const_iterator
+Ekiga::DialectImpl<ConversationType>::end () const
+{
+  return RefLister<ConversationType>::end ();
+}
+
+template<typename ConversationType>
 void
-Ekiga::DialectImpl<SimpleChatType, MultipleChatType>::visit_multiple_chats (boost::function1<bool, MultipleChatPtr > visitor) const
+Ekiga::DialectImpl<ConversationType>::add_conversation (boost::shared_ptr<ConversationType> conversation)
 {
-  bool go_on = true;
+  conversation->questions.connect (boost::ref (questions));
 
-  for (typename multiple_chats_type::const_iterator iter = multiple_chats.begin ();
-       go_on && iter != multiple_chats.end ();
-       iter++) {
-
-    go_on = visitor (iter->first);
-  }
+  this->add_object (conversation);
 }
 
-template<typename SimpleChatType, typename MultipleChatType>
-typename Ekiga::DialectImpl<SimpleChatType, MultipleChatType>::simple_iterator
-Ekiga::DialectImpl<SimpleChatType, MultipleChatType>::simple_begin ()
-{
-  return simple_iterator (simple_chats.begin ());
-}
-
-template<typename SimpleChatType, typename MultipleChatType>
-typename Ekiga::DialectImpl<SimpleChatType, MultipleChatType>::simple_iterator
-Ekiga::DialectImpl<SimpleChatType, MultipleChatType>::simple_end ()
-{
-  return simple_iterator (simple_chats.end ());
-}
-
-template<typename SimpleChatType, typename MultipleChatType>
-typename Ekiga::DialectImpl<SimpleChatType, MultipleChatType>::simple_const_iterator
-Ekiga::DialectImpl<SimpleChatType, MultipleChatType>::simple_begin () const
-{
-  return simple_const_iterator (simple_chats.begin ());
-}
-
-template<typename SimpleChatType, typename MultipleChatType>
-typename Ekiga::DialectImpl<SimpleChatType, MultipleChatType>::simple_const_iterator
-Ekiga::DialectImpl<SimpleChatType, MultipleChatType>::simple_end () const
-{
-  return simple_const_iterator (simple_chats.end ());
-}
-
-template<typename SimpleChatType, typename MultipleChatType>
-typename Ekiga::DialectImpl<SimpleChatType, MultipleChatType>::multiple_iterator
-Ekiga::DialectImpl<SimpleChatType, MultipleChatType>::multiple_begin ()
-{
-  return multiple_iterator (multiple_chats.begin ());
-}
-
-template<typename SimpleChatType, typename MultipleChatType>
-typename Ekiga::DialectImpl<SimpleChatType, MultipleChatType>::multiple_iterator
-Ekiga::DialectImpl<SimpleChatType, MultipleChatType>::multiple_end ()
-{
-  return multiple_iterator (multiple_chats.end ());
-}
-
-template<typename SimpleChatType, typename MultipleChatType>
-typename Ekiga::DialectImpl<SimpleChatType, MultipleChatType>::multiple_const_iterator
-Ekiga::DialectImpl<SimpleChatType, MultipleChatType>::multiple_begin () const
-{
-  return multiple_const_iterator (multiple_chats.begin ());
-}
-
-template<typename SimpleChatType, typename MultipleChatType>
-typename Ekiga::DialectImpl<SimpleChatType, MultipleChatType>::multiple_const_iterator
-Ekiga::DialectImpl<SimpleChatType, MultipleChatType>::multiple_end () const
-{
-  return multiple_const_iterator (multiple_chats.end ());
-}
-
-template<typename SimpleChatType, typename MultipleChatType>
+template<typename ConversationType>
 void
-Ekiga::DialectImpl<SimpleChatType, MultipleChatType>::add_simple_chat (boost::shared_ptr<SimpleChatType> chat)
+Ekiga::DialectImpl<ConversationType>::remove_conversation (boost::shared_ptr<ConversationType> conversation)
 {
-  simple_chats[chat] = boost::shared_ptr<scoped_connections> (new scoped_connections);
-  simple_chats[chat]->add (chat->removed.connect (boost::bind (&Ekiga::DialectImpl<SimpleChatType, MultipleChatType>::on_simple_chat_removed, this, chat)));
-  simple_chat_added (chat);
-}
-
-template<typename SimpleChatType, typename MultipleChatType>
-void
-Ekiga::DialectImpl<SimpleChatType, MultipleChatType>::remove_simple_chat (boost::shared_ptr<SimpleChatType> chat)
-{
-  chat->removed ();
-}
-
-template<typename SimpleChatType, typename MultipleChatType>
-void
-Ekiga::DialectImpl<SimpleChatType, MultipleChatType>::add_multiple_chat (boost::shared_ptr<MultipleChatType> chat)
-{
-  multiple_chats[chat] = boost::shared_ptr<scoped_connections> (new scoped_connections);
-  multiple_chats[chat]->add (chat->removed.connect (boost::bind (&Ekiga::DialectImpl<SimpleChatType, MultipleChatType>::on_multiple_chat_removed, this, chat)));
-  multiple_chat_added (chat);
-}
-
-template<typename SimpleChatType, typename MultipleChatType>
-void
-Ekiga::DialectImpl<SimpleChatType, MultipleChatType>::remove_multiple_chat (boost::shared_ptr<MultipleChatType> chat)
-{
-  chat->removed ();
-}
-
-template<typename SimpleChatType, typename MultipleChatType>
-void
-Ekiga::DialectImpl<SimpleChatType, MultipleChatType>::on_simple_chat_removed (boost::shared_ptr<SimpleChatType> chat)
-{
-  simple_chats.erase (chat);
-}
-
-template<typename SimpleChatType, typename MultipleChatType>
-void
-Ekiga::DialectImpl<SimpleChatType, MultipleChatType>::on_multiple_chat_removed (boost::shared_ptr<MultipleChatType> chat)
-{
-  multiple_chats.erase (chat);
+  this->remove_object (conversation);
 }
 
 #endif

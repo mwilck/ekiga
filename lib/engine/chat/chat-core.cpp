@@ -42,7 +42,8 @@ Ekiga::ChatCore::~ChatCore ()
 void
 Ekiga::ChatCore::add_dialect (DialectPtr dialect)
 {
-  dialects.push_back (dialect);
+  add_object (dialect);
+  dialect->updated.connect (boost::ref (updated));
   dialect->questions.connect (boost::ref (questions));
   dialect_added (dialect);
 }
@@ -52,10 +53,25 @@ Ekiga::ChatCore::visit_dialects (boost::function1<bool, DialectPtr > visitor) co
 {
   bool go_on = true;
 
-  for (std::list<DialectPtr >::const_iterator iter = dialects.begin ();
-       iter != dialects.end () && go_on;
+  for (const_iterator iter = begin ();
+       iter != end () && go_on;
        iter++)
     go_on = visitor (*iter);
+}
+
+int
+Ekiga::ChatCore::get_unread_messages_count () const
+{
+  int result = 0;
+
+  for (const_iterator iter = begin ();
+       iter != end ();
+       ++iter) {
+
+    result += (*iter)->get_unread_messages_count ();
+  }
+
+  return result;
 }
 
 bool
@@ -63,8 +79,8 @@ Ekiga::ChatCore::populate_menu (MenuBuilder &builder)
 {
   bool result = false;
 
-  for (std::list<DialectPtr >::iterator iter = dialects.begin ();
-       iter != dialects.end ();
+  for (iterator iter = begin ();
+       iter != end ();
        ++iter)
     result = (*iter)->populate_menu (builder) || result;
 

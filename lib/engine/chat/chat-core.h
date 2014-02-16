@@ -1,7 +1,7 @@
 
 /*
  * Ekiga -- A VoIP and Video-Conferencing application
- * Copyright (C) 2000-2009 Damien Sandras <dsandras@seconix.com>
+ * Copyright (C) 2000-2014 Damien Sandras <dsandras@seconix.com>
 
  * This program is free software; you can  redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -28,7 +28,7 @@
  *                         chat-core.h  -  description
  *                         ------------------------------------------
  *   begin                : written in 2007 by Julien Puydt
- *   copyright            : (c) 2007 by Julien Puydt
+ *   copyright            : (c) 2007-2014 by Julien Puydt
  *   description          : declaration of the main chat managing object
  *
  */
@@ -36,12 +36,10 @@
 #ifndef __CHAT_CORE_H__
 #define __CHAT_CORE_H__
 
+#include "reflister.h"
+
 #include "services.h"
 #include "dialect.h"
-
-/* FIXME: probably it should have a decorator system, so we can for example
- * hook a logger
- */
 
 namespace Ekiga
 {
@@ -55,7 +53,9 @@ namespace Ekiga
    * Notice that you give dialects to this object as references, so they won't
    * be freed here : it's up to you to free them somehow.
    */
-  class ChatCore: public Service
+  class ChatCore:
+    public Service,
+    public RefLister<Dialect>
   {
   public:
 
@@ -97,14 +97,15 @@ namespace Ekiga
      */
     void visit_dialects (boost::function1<bool, DialectPtr > visitor) const;
 
+    /** This method makes it easy to know how many unread messages
+     *	there are
+     */
+    int get_unread_messages_count () const;
+
     /** This signal is emitted when an Ekiga::Dialect has been added to
      * the ChatCore service.
      */
     boost::signals2::signal<void(DialectPtr)> dialect_added;
-
-  private:
-
-    std::list<DialectPtr > dialects;
 
     /*** Misc ***/
   public:
@@ -113,14 +114,6 @@ namespace Ekiga
      * @param A MenuBuilder object to populate.
      */
     bool populate_menu (MenuBuilder &builder);
-
-    /** This signal is emitted when the ChatCore service has been updated.
-     */
-    boost::signals2::signal<void(void)> updated;
-
-    /** This chain allows the ChatCore to present forms to the user
-     */
-    ChainOfResponsibility<FormRequestPtr> questions;
 
   };
 
