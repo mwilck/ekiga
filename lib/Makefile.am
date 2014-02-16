@@ -463,20 +463,6 @@ libekiga_la_SOURCES += \
 	engine/components/call-history/history-main.cpp
 
 ##
-# Sources of the text chat echo component
-##
-
-libekiga_la_SOURCES += \
-	engine/components/echo/echo-presentity.h \
-	engine/components/echo/echo-presentity.cpp \
-	engine/components/echo/echo-simple.h \
-	engine/components/echo/echo-simple.cpp \
-	engine/components/echo/echo-dialect.h \
-	engine/components/echo/echo-dialect.cpp \
-	engine/components/echo/echo-main.h \
-	engine/components/echo/echo-main.cpp
-
-##
 # Sources of the gmconf personal details component
 ##
 
