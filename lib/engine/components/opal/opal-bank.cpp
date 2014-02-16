@@ -94,7 +94,6 @@ Opal::Bank::Bank (Ekiga::ServiceCore& core):
                                                       boost::bind(&Opal::Bank::existing_groups, this),
                                                       child));
 
-      add_account (account);
       Ekiga::BankImpl<Account>::add_connection (account, account->presentity_added.connect (boost::bind (boost::ref(presentity_added), account, _1)));
       Ekiga::BankImpl<Account>::add_connection (account, account->presentity_updated.connect (boost::bind (boost::ref(presentity_updated), account, _1)));
       Ekiga::BankImpl<Account>::add_connection (account, account->presentity_removed.connect (boost::bind (boost::ref(presentity_removed), account, _1)));
@@ -107,6 +106,9 @@ Opal::Bank::Bank (Ekiga::ServiceCore& core):
       Ekiga::BankImpl<Account>::add_connection (account, account->trigger_saving.connect (boost::bind (&Opal::Bank::save, this)));
       Ekiga::BankImpl<Account>::add_connection (account, account->presence_received.connect (boost::ref (presence_received)));
       Ekiga::BankImpl<Account>::add_connection (account, account->status_received.connect (boost::ref (status_received)));
+      Ekiga::BankImpl<Account>::add_connection (account, account->removed.connect (boost::bind (&Opal::Bank::on_account_removed, this, account)));
+      add_account (account);
+      heap_added (account);
     }
   }
 
@@ -266,10 +268,15 @@ Opal::Bank::add (Account::Type acc_type,
 				    opal_component,
 				    boost::bind(&Opal::Bank::existing_groups, this),
 				    child));
-  add_account (account);
+  Ekiga::BankImpl<Account>::add_connection (account, account->presentity_added.connect (boost::bind (boost::ref(presentity_added), account, _1)));
+  Ekiga::BankImpl<Account>::add_connection (account, account->presentity_updated.connect (boost::bind (boost::ref(presentity_updated), account, _1)));
+  Ekiga::BankImpl<Account>::add_connection (account, account->presentity_removed.connect (boost::bind (boost::ref(presentity_removed), account, _1)));
   Ekiga::BankImpl<Account>::add_connection (account, account->trigger_saving.connect (boost::bind (&Opal::Bank::save, this)));
   Ekiga::BankImpl<Account>::add_connection (account, account->presence_received.connect (boost::ref (presence_received)));
   Ekiga::BankImpl<Account>::add_connection (account, account->status_received.connect (boost::ref (status_received)));
+  Ekiga::BankImpl<Account>::add_connection (account, account->removed.connect (boost::bind (&Opal::Bank::on_account_removed, this, account)));
+  add_account (account);
+  heap_added (account);
 
   if (is_call_manager_ready && enabled)
     account->enable ();
@@ -318,6 +325,13 @@ Opal::Bank::save () const
   protocols_settings->set_string ("accounts", (const char*)buffer);
 
   xmlFree (buffer);
+}
+
+void
+Opal::Bank::on_account_removed (boost::shared_ptr<Account> account)
+{
+  heap_removed (account);
+  remove_account (account);
 }
 
 
