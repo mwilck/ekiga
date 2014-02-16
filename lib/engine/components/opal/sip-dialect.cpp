@@ -82,6 +82,7 @@ SIP::Dialect::open_chat_with (std::string uri,
 {
   ConversationPtr result;
   std::string display_name = name;
+  boost::shared_ptr<Ekiga::PresenceCore> pcore = presence_core.lock ();
 
   for (iterator iter = begin ();
        iter != end ();
@@ -89,10 +90,10 @@ SIP::Dialect::open_chat_with (std::string uri,
     if ((*iter)->get_uri () == uri)
       result = *iter;
 
-  if ( !result) {
+  if ( !result && pcore) {
 
     // FIXME: here find a better display_name
-    result = ConversationPtr (new Conversation(presence_core,
+    result = ConversationPtr (new Conversation(pcore,
 					       uri,
 					       display_name,
 					       boost::bind(sender, uri, _1)));

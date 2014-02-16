@@ -62,7 +62,7 @@ namespace SIP
 			  std::string name);
 
   private:
-    boost::shared_ptr<Ekiga::PresenceCore> presence_core;
+    boost::weak_ptr<Ekiga::PresenceCore> presence_core;
     boost::function2<bool, std::string, Ekiga::Message::payload_type> sender;
 
     ConversationPtr open_chat_with (std::string uri,
