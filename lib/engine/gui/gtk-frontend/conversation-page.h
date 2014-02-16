@@ -65,7 +65,7 @@ struct _ConversationPageClass {
 
 #define TYPE_CONVERSATION_PAGE             (conversation_page_get_type())
 #define CONVERSATION_PAGE(obj)             (G_TYPE_CHECK_INSTANCE_CAST((obj),TYPE_CONVERSATION_PAGE,ConversationPage))
-#define CONVERSATION_PAGE_CLASS(klass)     (G_TYPE_CHECK_CLASS_CAST((klass),TYPE_CONVERSATION_PAGE,GtkVBox))
+#define CONVERSATION_PAGE_CLASS(klass)     (G_TYPE_CHECK_CLASS_CAST((klass),TYPE_CONVERSATION_PAGE,ConversationPageClass))
 #define IS_CONVERSATION_PAGE(obj)          (G_TYPE_CHECK_INSTANCE_TYPE((obj),TYPE_CONVERSATION_PAGE))
 #define IS_CONVERSATION_PAGE_CLASS(klass)  (G_TYPE_CHECK_CLASS_TYPE((klass),TYPE_CONVERSATION_PAGE))
 #define CONVERSATION_PAGE_GET_CLASS(obj)   (G_TYPE_INSTANCE_GET_CLASS((obj),TYPE_CONVERSATION_PAGE,ConversationPageClass))
