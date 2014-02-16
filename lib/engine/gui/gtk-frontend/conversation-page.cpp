@@ -37,9 +37,11 @@
 
 #include "conversation-page.h"
 #include "chat-area.h"
+#include "heap-view.h"
 
 struct _ConversationPagePrivate {
   GtkWidget* area;
+  GtkWidget* heapview;
 };
 
 G_DEFINE_TYPE (ConversationPage, conversation_page, GTK_TYPE_BOX);
@@ -79,6 +81,7 @@ conversation_page_new (Ekiga::ConversationPtr conversation)
 {
   ConversationPage* result = NULL;
   GtkWidget* area = NULL;
+  GtkWidget* heapview = NULL;
 
   result = (ConversationPage*)g_object_new (TYPE_CONVERSATION_PAGE, NULL);
 
@@ -87,6 +90,13 @@ conversation_page_new (Ekiga::ConversationPtr conversation)
   gtk_box_pack_start (GTK_BOX (result), area,
 		      TRUE,TRUE, 2);
   gtk_widget_show (area);
+
+  heapview = heap_view_new (conversation->get_heap());
+
+  result->priv->heapview = heapview;
+  gtk_box_pack_start (GTK_BOX (result), heapview,
+		      TRUE,TRUE, 2);
+  gtk_widget_show (heapview);
 
   return GTK_WIDGET (result);
 }
