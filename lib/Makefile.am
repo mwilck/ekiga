@@ -365,10 +365,8 @@ libekiga_la_SOURCES += \
 	engine/gui/gtk-frontend/heap-view.cpp \
 	engine/gui/gtk-frontend/chat-area.h \
 	engine/gui/gtk-frontend/chat-area.cpp \
-	engine/gui/gtk-frontend/simple-chat-page.h \
-	engine/gui/gtk-frontend/simple-chat-page.cpp \
-	engine/gui/gtk-frontend/multiple-chat-page.h \
-	engine/gui/gtk-frontend/multiple-chat-page.cpp \
+	engine/gui/gtk-frontend/conversation-page.h \
+	engine/gui/gtk-frontend/conversation-page.cpp \
 	engine/gui/gtk-frontend/preferences-window.cpp \
 	engine/gui/gtk-frontend/preferences-window.h \
 	engine/gui/gtk-frontend/statusicon.cpp \

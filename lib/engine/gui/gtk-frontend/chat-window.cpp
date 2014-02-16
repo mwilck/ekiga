@@ -45,8 +45,8 @@
 #include "scoped-connections.h"
 
 #include "chat-window.h"
-#include "simple-chat-page.h"
-#include "multiple-chat-page.h"
+
+#include "conversation-page.h"
 
 struct _ChatWindowPrivate
 {
@@ -95,12 +95,10 @@ static void on_message_notice_event (GtkWidget* page,
 
 static bool on_dialect_added (ChatWindow* self,
 			      Ekiga::DialectPtr dialect);
-static bool on_simple_chat_added (ChatWindow* self,
-				  Ekiga::SimpleChatPtr chat);
-static bool on_multiple_chat_added (ChatWindow* self,
-				    Ekiga::MultipleChatPtr chat);
-static void on_some_chat_user_requested (ChatWindow* self,
-					 GtkWidget* page);
+static bool on_conversation_added (ChatWindow* self,
+				   Ekiga::ConversationPtr conversation);
+static void on_some_conversation_user_requested (ChatWindow* self,
+						 GtkWidget* page);
 
 static void show_chat_window_cb (ChatWindow *self);
 
@@ -296,84 +294,35 @@ static bool
 on_dialect_added (ChatWindow* self,
 		  Ekiga::DialectPtr dialect)
 {
-  self->priv->connections.add (dialect->simple_chat_added.connect (boost::bind (&on_simple_chat_added, self, _1)));
-  self->priv->connections.add (dialect->multiple_chat_added.connect (boost::bind (&on_multiple_chat_added, self, _1)));
+  self->priv->connections.add (dialect->conversation_added.connect (boost::bind(&on_conversation_added, self, _1)));
 
-  dialect->visit_simple_chats (boost::bind (&on_simple_chat_added, self, _1));
-  dialect->visit_multiple_chats (boost::bind (&on_multiple_chat_added, self, _1));
+  dialect->visit_conversations (boost::bind (&on_conversation_added, self, _1));
 
   return true;
 }
 
 static bool
-on_simple_chat_added (ChatWindow* self,
-		      Ekiga::SimpleChatPtr chat)
-{
-  GtkWidget* page = NULL;
-  GtkWidget* hbox = NULL;
-  GtkWidget* label = NULL;
-  GtkWidget* close_button = NULL;
-  GtkWidget* close_image = NULL;
-
-  page = simple_chat_page_new (chat);
-  hbox = gtk_box_new (GTK_ORIENTATION_HORIZONTAL, 2);
-
-  label = gtk_label_new (chat->get_title ().c_str ());
-  g_object_set_data_full (G_OBJECT (label), "base-title",
-			  g_strdup (chat->get_title ().c_str ()),
-			  g_free);
-
-  close_button = gtk_button_new ();
-  gtk_button_set_relief (GTK_BUTTON (close_button), GTK_RELIEF_NONE);
-  gtk_button_set_focus_on_click (GTK_BUTTON (close_button), FALSE);
-  close_image = gtk_image_new_from_stock (GTK_STOCK_CLOSE, GTK_ICON_SIZE_MENU);
-  gtk_widget_set_size_request (GTK_WIDGET (close_image), 12, 12);
-  gtk_widget_set_size_request (GTK_WIDGET (close_button), 16, 16);
-  gtk_container_add (GTK_CONTAINER (close_button), close_image);
-  gtk_container_set_border_width (GTK_CONTAINER (close_button), 0);
-  g_object_set_data (G_OBJECT (close_button), "page-widget", page);
-  g_signal_connect (close_button, "clicked",
-		    G_CALLBACK (on_close_button_clicked), self);
-
-  gtk_box_pack_start (GTK_BOX (hbox), label, TRUE, TRUE, 2);
-  g_object_set_data (G_OBJECT (hbox), "label-widget", label);
-  gtk_box_pack_end (GTK_BOX (hbox), close_button, FALSE, FALSE, 2);
-  g_object_set_data (G_OBJECT (hbox), "close-button-widget", close_button);
-  gtk_widget_show_all (hbox);
-
-  gtk_notebook_append_page (GTK_NOTEBOOK (self->priv->notebook),
-			    page, hbox);
-  gtk_widget_show (page);
-  g_signal_connect (page, "message-notice-event",
-		    G_CALLBACK (on_message_notice_event), self);
-
-  self->priv->connections.add (chat->user_requested.connect (boost::bind (&on_some_chat_user_requested, self, page)));
-
-  return true;
-}
-
-static bool
-on_multiple_chat_added (ChatWindow* self,
-			Ekiga::MultipleChatPtr chat)
+on_conversation_added (ChatWindow* self,
+		       Ekiga::ConversationPtr conversation)
 {
   GtkWidget* page = NULL;
   GtkWidget* label = NULL;
 
-  page = multiple_chat_page_new (chat);
-  label = gtk_label_new (chat->get_title ().c_str ());
+  page = conversation_page_new (conversation);
+  label = gtk_label_new (conversation->get_title ().c_str ());
 
   gtk_notebook_append_page (GTK_NOTEBOOK (self->priv->notebook),
 			    page, label);
   gtk_widget_show_all (page);
 
-  self->priv->connections.add (chat->user_requested.connect (boost::bind (&on_some_chat_user_requested, self, page)));
+  self->priv->connections.add (conversation->user_requested.connect (boost::bind (&on_some_conversation_user_requested, self, page)));
 
   return true;
 }
 
 static void
-on_some_chat_user_requested (ChatWindow* self,
-			     GtkWidget* page)
+on_some_conversation_user_requested (ChatWindow* self,
+				     GtkWidget* page)
 {
   gint num;
 

@@ -1,6 +1,6 @@
 
 /* Ekiga -- A VoIP and Video-Conferencing application
- * Copyright (C) 2000-2009 Damien Sandras <dsandras@seconix.com>
+ * Copyright (C) 2000-2014 Damien Sandras <dsandras@seconix.com>
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -30,8 +30,8 @@
  *                        chat-area.h  -  description
  *                         --------------------------------
  *   begin                : written in july 2008 by Julien Puydt
- *   copyright            : (C) 2008 by Julien Puydt
- *   description          : Declaration of a Chat area (both view and control)
+ *   copyright            : (C) 2008-2014 by Julien Puydt
+ *   description          : Declaration of a chat area (both view and control)
  *
  */
 
@@ -40,7 +40,7 @@
 
 #include <gtk/gtk.h>
 
-#include "chat.h"
+#include "conversation.h"
 
 G_BEGIN_DECLS
 
@@ -65,9 +65,9 @@ struct _ChatAreaClass
 
 /* public api */
 
-GtkWidget *chat_area_new (boost::shared_ptr<Ekiga::Chat> chat);
+GtkWidget *chat_area_new (Ekiga::ConversationPtr conversation);
 
-const std::string chat_area_get_title (ChatArea* chat);
+const std::string chat_area_get_title (ChatArea* area);
 
 /* GObject thingies */
 

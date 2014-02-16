@@ -1,6 +1,6 @@
 
 /* Ekiga -- A VoIP and Video-Conferencing application
- * Copyright (C) 2000-2009 Damien Sandras <dsandras@seconix.com>
+ * Copyright (C) 2000-2014 Damien Sandras <dsandras@seconix.com>
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -30,7 +30,7 @@
  *                        chat-area.cpp  -  description
  *                         --------------------------------
  *   begin                : written in july 2008 by Julien Puydt
- *   copyright            : (C) 2008 by Julien Puydt
+ *   copyright            : (C) 2008-2014 by Julien Puydt
  *                          (C) 2008 by Jan Schampera
  *   description          : Implementation of a Chat area (view and control)
  *
@@ -38,6 +38,9 @@
 
 
 #include "chat-area.h"
+
+#include "scoped-connections.h"
+
 #include "gm-text-buffer-enhancer.h"
 #include "gm-text-anchored-tag.h"
 #include "gm-text-smiley.h"
@@ -52,13 +55,10 @@
 #include <glib/gi18n.h>
 #include <gdk/gdkkeysyms.h>
 
-class ChatAreaHelper;
-
 struct _ChatAreaPrivate
 {
-  boost::shared_ptr<Ekiga::Chat> chat;
-  boost::signals2::scoped_connection connection;
-  boost::shared_ptr<ChatAreaHelper> helper;
+  Ekiga::ConversationPtr conversation;
+  Ekiga::scoped_connections connections;
   GmTextBufferEnhancer* enhancer;
 
   /* we contain those, so no need to unref them */
@@ -84,27 +84,6 @@ static void chat_area_add_notice (ChatArea* self,
 static void chat_area_add_message (ChatArea* self,
 				   const gchar* from,
 				   const gchar* txt);
-
-/* declaration of the helping observer */
-class ChatAreaHelper: public Ekiga::ChatObserver
-{
-public:
-  ChatAreaHelper (ChatArea* area_): area(area_)
-  {}
-
-  ~ChatAreaHelper ()
-  {}
-
-  void message (const std::string from,
-		const std::string msg)
-  { chat_area_add_message (area, from.c_str (), msg.c_str ()); }
-
-  void notice (const std::string msg)
-  { chat_area_add_notice (area, msg.c_str ()); }
-
-private:
-  ChatArea* area;
-};
 
 /* a helper to shorten tag definitions
  * FIXME when C99 finally is supported everywhere, this
@@ -148,7 +127,13 @@ static gboolean message_activated_cb (GtkWidget *w,
                                       GdkEventKey *key,
                                       gpointer data);
 
-static void on_chat_removed (ChatArea* self);
+static bool visit_messages (ChatArea* self,
+			    const Ekiga::Message& message);
+
+static void on_message_received (ChatArea* self,
+				 const Ekiga::Message& message);
+
+static void on_conversation_removed (ChatArea* self);
 
 static void on_chat_area_grab_focus (GtkWidget*,
 				     gpointer);
@@ -552,7 +537,6 @@ message_activated_cb (G_GNUC_UNUSED GtkWidget *w,
   GtkTextIter start_iter, end_iter;
   GtkTextBuffer *buffer = NULL;
   gchar *body = NULL;
-  std::string message;
 
   g_return_val_if_fail (data != NULL, false);
 
@@ -572,7 +556,10 @@ message_activated_cb (G_GNUC_UNUSED GtkWidget *w,
 
     body = gtk_text_buffer_get_text (GTK_TEXT_BUFFER (buffer), &start_iter, &end_iter, TRUE);
 
-    if (self->priv->chat->send_message (body))
+    Ekiga::Message::payload_type message;
+    // FIXME: perhaps we have more than bare!
+    message.insert(std::make_pair("bare", body));
+    if (self->priv->conversation->send_message (message))
       gtk_text_buffer_delete (GTK_TEXT_BUFFER (buffer), &start_iter, &end_iter);
 
     return TRUE;
@@ -581,10 +568,38 @@ message_activated_cb (G_GNUC_UNUSED GtkWidget *w,
   return FALSE;
 }
 
+static bool
+visit_messages (ChatArea* self,
+		const Ekiga::Message& message)
+{
+  on_message_received (self, message);
+  return true;
+}
+
 static void
-on_chat_removed (ChatArea* self)
+on_message_received (ChatArea* self,
+		     const Ekiga::Message& message)
+{
+  if (message.name == "") {
+
+
+    Ekiga::Message::payload_type::const_iterator iter = message.payload.find ("bare");
+    if (iter != message.payload.end ())
+      chat_area_add_notice (self, iter->second.c_str ());
+  } else {
+
+    Ekiga::Message::payload_type::const_iterator iter = message.payload.find ("bare");
+    if (iter != message.payload.end ())
+      chat_area_add_message (self, message.name.c_str (), iter->second.c_str ());
+  }
+}
+
+static void
+on_conversation_removed (ChatArea* self)
 {
   gtk_widget_hide (self->priv->message);
+  self->priv->connections.clear ();
+  self->priv->conversation.reset ();
 }
 
 static void
@@ -621,11 +636,7 @@ chat_area_dispose (GObject* obj)
 
   self = (ChatArea*)obj;
 
-  if (self->priv->helper) {
-
-    self->priv->chat->disconnect (self->priv->helper);
-    self->priv->helper.reset ();
-  }
+  self->priv->connections.clear ();
 
   if (self->priv->enhancer != NULL) {
 
@@ -904,15 +915,15 @@ chat_area_init (ChatArea* self)
 /* public api */
 
 GtkWidget*
-chat_area_new (boost::shared_ptr<Ekiga::Chat> chat)
+chat_area_new (Ekiga::ConversationPtr conversation)
 {
   ChatArea* self = NULL;
 
   self = (ChatArea*)g_object_new (TYPE_CHAT_AREA, NULL);
-  self->priv->chat = chat;
-  self->priv->connection = self->priv->chat->removed.connect (boost::bind (&on_chat_removed, self));
-  self->priv->helper = boost::shared_ptr<ChatAreaHelper>(new ChatAreaHelper (self));
-  self->priv->chat->connect (self->priv->helper);
+  self->priv->conversation = conversation;
+  self->priv->connections.add (conversation->removed.connect (boost::bind (&on_conversation_removed, self)));
+  self->priv->connections.add (conversation->message_received.connect (boost::bind (&on_message_received, self, _1)));
+  conversation->visit_messages (boost::bind (&visit_messages, self, _1));
 
   return (GtkWidget*)self;
 }
@@ -920,5 +931,5 @@ chat_area_new (boost::shared_ptr<Ekiga::Chat> chat)
 const std::string
 chat_area_get_title (ChatArea* area)
 {
-  return area->priv->chat->get_title ();
+  return area->priv->conversation->get_title ();
 }
