@@ -829,7 +829,7 @@ ekiga_main_window_init_actions_toolbar (EkigaMainWindow *mw)
   g_return_if_fail (EKIGA_IS_MAIN_WINDOW (mw));
 
   gtk_style_context_add_class (gtk_widget_get_style_context (GTK_WIDGET (mw)),
-                               "header-bar");
+                               GTK_STYLE_CLASS_MENUBAR);
 
   gtk_style_context_set_junction_sides (gtk_widget_get_style_context (GTK_WIDGET (mw)),
                                         GTK_JUNCTION_BOTTOM);
@@ -979,24 +979,17 @@ ekiga_main_window_init_menu (EkigaMainWindow *mw)
 static void
 ekiga_main_window_init_status_toolbar (EkigaMainWindow *mw)
 {
-  GtkToolItem *item = NULL;
-
   g_return_if_fail (EKIGA_IS_MAIN_WINDOW (mw));
 
   /* The main horizontal toolbar */
-  mw->priv->status_toolbar = gtk_toolbar_new ();
-  gtk_toolbar_set_style (GTK_TOOLBAR (mw->priv->status_toolbar), GTK_TOOLBAR_ICONS);
-  gtk_toolbar_set_show_arrow (GTK_TOOLBAR (mw->priv->status_toolbar), FALSE);
-
-  item = gtk_tool_item_new ();
+  mw->priv->status_toolbar = gtk_box_new (GTK_ORIENTATION_HORIZONTAL, 0);
   mw->priv->status_option_menu = status_menu_new (*mw->priv->core);
   status_menu_set_parent_window (STATUS_MENU (mw->priv->status_option_menu),
                                  GTK_WINDOW (mw));
-  gtk_container_add (GTK_CONTAINER (item), mw->priv->status_option_menu);
-  gtk_container_set_border_width (GTK_CONTAINER (item), 2);
-  gtk_tool_item_set_expand (GTK_TOOL_ITEM (item), TRUE);
-
-  gtk_toolbar_insert (GTK_TOOLBAR (mw->priv->status_toolbar), item, 0);
+  gtk_box_pack_start (GTK_BOX (mw->priv->status_toolbar),
+                      mw->priv->status_option_menu, TRUE, TRUE, 0);
+  gtk_widget_set_margin_left (mw->priv->status_option_menu, 6);
+  gtk_widget_set_margin_right (mw->priv->status_option_menu, 6);
 
   gtk_widget_show_all (mw->priv->status_toolbar);
 }
@@ -1089,7 +1082,7 @@ ekiga_main_window_init_gui (EkigaMainWindow *mw)
   /* The status toolbar */
   ekiga_main_window_init_status_toolbar (mw);
   gtk_box_pack_start (GTK_BOX (window_vbox), mw->priv->status_toolbar,
-                      false, true, 0);
+                      false, false, 0);
 
   /* The notebook pages */
   mw->priv->main_notebook = gtk_notebook_new ();
