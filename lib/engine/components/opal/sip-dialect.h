@@ -39,26 +39,22 @@
 #define __SIP_DIALECT_H__
 
 #include "dialect-impl.h"
-#include "sip-chat-simple.h"
+
+#include "presence-core.h"
+#include "sip-conversation.h"
 
 namespace SIP
 {
-  class Dialect: public Ekiga::DialectImpl<SimpleChat>
+  class Dialect: public Ekiga::DialectImpl<Conversation>
   {
   public:
     Dialect (Ekiga::ServiceCore& core_,
-	     /* the strings are : uri then msg */
-	     boost::function2<bool, std::string, std::string> sender_);
+	     boost::function2<bool, std::string, Ekiga::Message::payload_type> sender_);
 
     ~Dialect ();
 
     void push_message (const std::string uri,
-		       const std::string name,
-		       const std::string msg);
-
-    void push_notice (const std::string uri,
-		      const std::string name,
-		      const std::string msg);
+		       const Ekiga::Message& msg);
 
     bool populate_menu (Ekiga::MenuBuilder& builder);
 
@@ -66,14 +62,12 @@ namespace SIP
 			  std::string name);
 
   private:
-    boost::weak_ptr<Ekiga::PresenceCore> presence_core;
-    boost::weak_ptr<Ekiga::PersonalDetails> personal_details;
-    /* the strings are : uri then msg */
-    boost::function2<bool, std::string, std::string> sender;
+    Ekiga::ServiceCore& core;
+    boost::function2<bool, std::string, Ekiga::Message::payload_type> sender;
 
-    SimpleChatPtr open_chat_with (std::string uri,
-					  std::string name,
-					  bool user_request);
+    ConversationPtr open_chat_with (std::string uri,
+				    std::string name,
+				    bool user_request);
   };
 
   typedef boost::shared_ptr<Dialect> DialectPtr;

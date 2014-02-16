@@ -92,7 +92,7 @@ namespace Opal {
 
       /* Chat subsystem */
       bool send_message (const std::string & uri,
-                         const std::string & message);
+                         const Ekiga::Message::payload_type payload);
 
 
       /* CallProtocolManager */
@@ -175,12 +175,7 @@ namespace Opal {
       void on_transfer (std::string uri);
 
       void push_message_in_main (const std::string uri,
-				 const std::string name,
-				 const std::string msg);
-
-      void push_notice_in_main (const std::string uri,
-				const std::string name,
-				const std::string msg);
+				 const Ekiga::Message msg);
 
       PMutex aorMutex;
       std::map<std::string, std::string> accounts;

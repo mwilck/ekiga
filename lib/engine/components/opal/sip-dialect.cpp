@@ -1,6 +1,6 @@
 
 /* Ekiga -- A VoIP and Video-Conferencing application
- * Copyright (C) 2000-2009 Damien Sandras <dsandras@seconix.com>
+ * Copyright (C) 2000-2014 Damien Sandras <dsandras@seconix.com>
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -30,7 +30,7 @@
  *                         sip-dialect.cpp  -  description
  *                         --------------------------------
  *   begin                : written in july 2008 by Julien Puydt
- *   copyright            : (C) 2008 by Julien Puydt
+ *   copyright            : (C) 2014 by Julien Puydt
  *   description          : Implementation of the SIP dialect
  *
  */
@@ -39,10 +39,9 @@
 #include "presence-core.h"
 #include "personal-details.h"
 
-SIP::Dialect::Dialect (Ekiga::ServiceCore& core,
-		       boost::function2<bool, std::string, std::string> sender_):
-  presence_core(core.get<Ekiga::PresenceCore> ("presence-core")),
-  personal_details(core.get<Ekiga::PersonalDetails> ("personal-details")),
+SIP::Dialect::Dialect (Ekiga::ServiceCore& core_,
+		       boost::function2<bool, std::string, Ekiga::Message::payload_type> sender_):
+  core(core_),
   sender(sender_)
 {
 }
@@ -53,27 +52,14 @@ SIP::Dialect::~Dialect ()
 
 void
 SIP::Dialect::push_message (const std::string uri,
-			    const std::string name,
-			    const std::string msg)
+			    const Ekiga::Message& msg)
 {
-  SimpleChatPtr chat;
+  ConversationPtr conversation;
 
-  chat = open_chat_with (uri, name, false);
+  conversation = open_chat_with (uri, msg.name, false);
 
-  if (chat)
-    chat->receive_message (msg);
-}
-
-void
-SIP::Dialect::push_notice (const std::string uri,
-			   const std::string name,
-			   const std::string msg)
-{
-  SimpleChatPtr chat;
-
-  chat = open_chat_with (uri, name, false);
-
-  chat->receive_notice (msg);
+  if (conversation)
+    conversation->receive_message (msg);
 }
 
 bool
@@ -89,29 +75,27 @@ SIP::Dialect::start_chat_with (std::string uri,
   (void)open_chat_with (uri, name, true);
 }
 
-boost::shared_ptr<SIP::SimpleChat>
+SIP::ConversationPtr
 SIP::Dialect::open_chat_with (std::string uri,
 			      std::string name,
 			      bool user_request)
 {
-  SimpleChatPtr result;
+  ConversationPtr result;
+  std::string display_name = name;
 
-  for (simple_iterator iter = simple_begin ();
-       iter != simple_end ();
+  for (iterator iter = begin ();
+       iter != end ();
        ++iter)
     if ((*iter)->get_uri () == uri)
       result = *iter;
 
   if ( !result) {
 
-    boost::shared_ptr<Ekiga::PresenceCore> pcore = presence_core.lock ();
-    boost::shared_ptr<Ekiga::PersonalDetails> details = personal_details.lock ();
-    if (pcore && details) {
-
-      result = SimpleChatPtr (new SimpleChat (pcore, details, name, uri,
-					      boost::bind(sender, uri, _1)));
-      add_simple_chat (result);
-    }
+    // FIXME: here find a better display_name
+    result = ConversationPtr (new Conversation(uri,
+					       display_name,
+					       boost::bind(sender, uri, _1)));
+    add_conversation (result);
   }
 
   if (user_request && result)

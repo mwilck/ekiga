@@ -193,13 +193,15 @@ Opal::Sip::EndPoint::populate_menu (const std::string& fullname,
 
 bool
 Opal::Sip::EndPoint::send_message (const std::string & _uri,
-				   const std::string & _message)
+				   const Ekiga::Message::payload_type payload)
 {
-  if (!_uri.empty () && (_uri.find ("sip:") == 0 || _uri.find (':') == string::npos) && !_message.empty ()) {
+  // FIXME: here we should check which kind of payload we have
+  Ekiga::Message::payload_type::const_iterator iter = payload.find("bare");
+  if (!_uri.empty () && (_uri.find ("sip:") == 0 || _uri.find (':') == string::npos) && iter != payload.end ()) {
     OpalIM im;
     im.m_to = PURL (_uri);
     im.m_mimeType = "text/plain;charset=UTF-8";
-    im.m_body = _message;
+    im.m_body = iter->second;
     Message (im);
     return true;
   }
@@ -811,8 +813,16 @@ Opal::Sip::EndPoint::OnReceivedMESSAGE (OpalTransport & transport,
   std::string display_name = (const char *) uri.GetDisplayName ();
   std::string message_uri = (const char *) uri.AsString ();
   std::string _message = (const char *) pdu.GetEntityBody ();
+  Ekiga::Message::payload_type payload;
+  // FIXME: we push as 'bare' without really knowing
+  payload.insert (std::make_pair ("bare", _message));
+  GTimeVal current;
+  g_get_current_time (&current);
+  gchar* time = g_time_val_to_iso8601 (&current);
+  Ekiga::Message msg = {time, display_name, payload };
+  g_free (time);
 
-  Ekiga::Runtime::run_in_main (boost::bind (&Opal::Sip::EndPoint::push_message_in_main, this, message_uri, display_name, _message));
+  Ekiga::Runtime::run_in_main (boost::bind (&Opal::Sip::EndPoint::push_message_in_main, this, message_uri, msg));
 
   return SIPEndPoint::OnReceivedMESSAGE (transport, pdu);
 }
@@ -838,8 +848,16 @@ Opal::Sip::EndPoint::OnMESSAGECompleted (const SIPMessage::Params & params,
     reason_shown += _("user offline");
   else
     reason_shown += SIP_PDU::GetStatusCodeDescription (reason);  // too many to translate them with _()...
+  Ekiga::Message::payload_type payload;
+  // FIXME: we push as 'bare' without really knowing...
+  payload.insert (std::make_pair ("bare", reason_shown));
+  GTimeVal current;
+  g_get_current_time (&current);
+  gchar* time = g_time_val_to_iso8601 (&current);
+  Ekiga::Message msg = {time, "" /* it's a notice */, payload };
+  g_free (time);
 
-  Ekiga::Runtime::run_in_main (boost::bind (&Opal::Sip::EndPoint::push_notice_in_main, this, uri, display_name, reason_shown));
+  Ekiga::Runtime::run_in_main (boost::bind (&Opal::Sip::EndPoint::push_message_in_main, this, uri, msg));
 }
 
 
@@ -919,18 +937,9 @@ void Opal::Sip::EndPoint::on_transfer (std::string uri)
 
 void
 Opal::Sip::EndPoint::push_message_in_main (const std::string uri,
-					   const std::string name,
-					   const std::string msg)
+					   const Ekiga::Message msg)
 {
-  dialect->push_message (uri, name, msg);
-}
-
-void
-Opal::Sip::EndPoint::push_notice_in_main (const std::string uri,
-					  const std::string name,
-					  const std::string msg)
-{
-  dialect->push_notice (uri, name, msg);
+  dialect->push_message (uri, msg);
 }
 
 void
