@@ -247,11 +247,15 @@ on_presentity_added (HeapView* self,
     if (gtk_tree_selection_iter_is_selected (selection, &iter))
       should_emit = true;
 
+    std::string icon = "avatar-default";
+    if (presentity->get_presence () != "unknown")
+      icon = "user-" + presentity->get_presence ();
+
     gtk_tree_store_set (self->priv->store, &iter,
 			COLUMN_TYPE, TYPE_PRESENTITY,
 			COLUMN_PRESENTITY, presentity.get (),
 			COLUMN_NAME, presentity->get_name ().c_str (),
-			COLUMN_PRESENCE, presentity->get_presence ().c_str (),
+			COLUMN_PRESENCE, icon.c_str (),
 			COLUMN_STATUS, presentity->get_status ().c_str (),
 			-1);
   }
@@ -491,7 +495,7 @@ on_questions (HeapView* self,
 
 /* implementation of the GObject */
 
-G_DEFINE_TYPE (HeapView, heap_view, GTK_TYPE_FRAME);
+G_DEFINE_TYPE (HeapView, heap_view, GTK_TYPE_BOX);
 
 static void
 heap_view_finalize (GObject* obj)
@@ -523,9 +527,11 @@ heap_view_init (HeapView* self)
   self->priv->view = GTK_TREE_VIEW (gtk_tree_view_new_with_model (GTK_TREE_MODEL (self->priv->store)));
   g_object_unref (self->priv->store);
   gtk_tree_view_set_headers_visible (self->priv->view, FALSE);
+  gtk_box_pack_start (GTK_BOX(self), GTK_WIDGET (self->priv->view), TRUE, TRUE, 0);
+  col = gtk_tree_view_column_new ();
+  gtk_tree_view_append_column (self->priv->view, col);
 
   /* show the name of a group */
-  col = gtk_tree_view_column_new ();
   renderer = gtk_cell_renderer_text_new ();
   gtk_tree_view_column_set_spacing (col, 0);
   gtk_tree_view_column_pack_start (col, renderer, FALSE);
@@ -533,13 +539,22 @@ heap_view_init (HeapView* self)
   gtk_tree_view_column_set_alignment (col, 0.0);
   g_object_set (renderer, "xalign", 0.5, "ypad", 0, NULL);
   g_object_set (renderer, "weight", PANGO_WEIGHT_BOLD, NULL);
-  gtk_tree_view_append_column (self->priv->view, col);
   gtk_tree_view_column_set_cell_data_func (col, renderer,
                                            hide_show_depending_on_type,
 					   GINT_TO_POINTER (TYPE_GROUP), NULL);
 
+  /* show the presence of a presentity */
+  renderer = gtk_cell_renderer_pixbuf_new ();
+  g_object_set (renderer, "yalign", 0.5, "xpad", 5, NULL);
+  gtk_tree_view_column_pack_start (col, renderer, FALSE);
+  gtk_tree_view_column_add_attribute (col, renderer,
+				      "icon-name",
+				      COLUMN_PRESENCE);
+  gtk_tree_view_column_set_cell_data_func (col, renderer,
+                                           hide_show_depending_on_type,
+					   GINT_TO_POINTER (TYPE_PRESENTITY), NULL);
+
   /* show the name+status of a presentity */
-  col = gtk_tree_view_column_new ();
   renderer = gm_cell_renderer_bitext_new ();
   gtk_tree_view_column_set_spacing (col, 0);
   gtk_tree_view_column_pack_start (col, renderer, FALSE);
@@ -547,20 +562,6 @@ heap_view_init (HeapView* self)
   gtk_tree_view_column_add_attribute (col, renderer, "secondary-text", COLUMN_STATUS);
   gtk_tree_view_column_set_alignment (col, 0.0);
   g_object_set (renderer, "xalign", 0.5, "ypad", 0, NULL);
-  gtk_tree_view_append_column (self->priv->view, col);
-  gtk_tree_view_column_set_cell_data_func (col, renderer,
-                                           hide_show_depending_on_type,
-					   GINT_TO_POINTER (TYPE_PRESENTITY), NULL);
-
-  /* show the presence of a presentity */
-  col = gtk_tree_view_column_new ();
-  renderer = gtk_cell_renderer_pixbuf_new ();
-  g_object_set (renderer, "yalign", 0.5, "xpad", 5, NULL);
-  gtk_tree_view_column_pack_start (col, renderer, FALSE);
-  gtk_tree_view_column_add_attribute (col, renderer,
-				      "stock-id",
-				      COLUMN_PRESENCE);
-  gtk_tree_view_append_column (self->priv->view, col);
   gtk_tree_view_column_set_cell_data_func (col, renderer,
                                            hide_show_depending_on_type,
 					   GINT_TO_POINTER (TYPE_PRESENTITY), NULL);
@@ -572,6 +573,8 @@ heap_view_init (HeapView* self)
 
   /* show a popup menu when right-click */
   g_signal_connect (self->priv->view, "event-after", G_CALLBACK (on_right_click_in_the_view), self);
+
+  gtk_widget_show_all (GTK_WIDGET (self->priv->view));
 }
 
 static void
