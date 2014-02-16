@@ -50,67 +50,62 @@ LM::Dialect::~Dialect ()
 
 void
 LM::Dialect::push_message (PresentityPtr presentity,
-			   const std::string msg)
+			   const Ekiga::Message::payload_type payload)
 {
   bool found = false;
 
-  for (simple_iterator iter = simple_begin ();
-       iter != simple_end ();
+  for (iterator iter = begin ();
+       iter != end () and not found;
        ++iter) {
 
-    if (presentity == (*iter)->get_presentity ()) {
+    HeapPtr heap = (*iter)->heap;
+    for (Heap::iterator iter2 = heap->begin ();
+	 iter2 != heap->end () and not found;
+	 ++iter2)
 
-      (*iter)->got_message (msg);
-      found = true;
-      break;
+      if (presentity == (*iter2)) {
+
+	(*iter)->got_message (payload);
+	found = true;
     }
   }
 
   if ( !found) {
 
-    SimpleChatPtr chat(new SimpleChat (core, presentity));
+    ConversationPtr conversation(new Conversation);
 
-    add_simple_chat (chat);
-    chat->got_message (msg);
+    add_conversation (conversation);
+    conversation->got_message (payload);
   }
 }
-
-struct open_chat_helper
-{
-
-  open_chat_helper (Ekiga::PresentityPtr presentity_):
-    presentity(presentity_)
-  { }
-
-  bool operator() (Ekiga::SimpleChatPtr chat_) const
-  {
-    LM::SimpleChatPtr chat = boost::dynamic_pointer_cast<LM::SimpleChat> (chat_);
-    bool go_on = true;
-
-    if (chat->get_presentity () == presentity) {
-
-      chat->user_requested ();
-      go_on = false;
-    }
-
-    return go_on;
-  }
-
-  Ekiga::PresentityPtr presentity;
-};
 
 void
 LM::Dialect::open_chat (PresentityPtr presentity)
 {
   if ( !presentity->has_chat) {
 
-    LM::SimpleChatPtr chat(new SimpleChat (core, presentity));
-    add_simple_chat (chat);
-    chat->user_requested ();
+    ConversationPtr conversation(new Conversation);
+    add_conversation (conversation);
+    conversation->user_requested();
   } else {
 
-    open_chat_helper helper(presentity);
-    visit_simple_chats (boost::ref (helper));
+    bool found = false;
+    for (iterator iter = begin ();
+	 iter != end () and not found;
+	 ++iter) {
+
+      HeapPtr heap = (*iter)->heap;
+      for (Heap::iterator iter2 = heap->begin ();
+	   iter2 != heap->end () and not found;
+	   ++iter2) {
+
+	if (presentity == (*iter2)) {
+
+	    (*iter)->user_requested ();
+	    found = true;
+	  }
+      }
+    }
   }
 }
 

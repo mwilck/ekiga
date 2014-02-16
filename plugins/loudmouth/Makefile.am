@@ -24,10 +24,9 @@ libgmloudmouth_la_SOURCES = \
 	loudmouth-heap-roster.cpp \
 	loudmouth-presentity.h \
 	loudmouth-presentity.cpp \
-	loudmouth-chat-simple.h \
-	loudmouth-chat-simple.cpp \
-	loudmouth-chat-multiple.h \
-	loudmouth-chat-multiple.cpp \
+	loudmouth-heap.h \
+	loudmouth-conversation.h \
+	loudmouth-conversation.cpp \
 	loudmouth-dialect.h \
 	loudmouth-dialect.cpp
 

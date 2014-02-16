@@ -39,12 +39,15 @@
 #include "dialect-impl.h"
 
 #include "loudmouth-handler.h"
-#include "loudmouth-chat-simple.h"
+#include "loudmouth-conversation.h"
+#include "loudmouth-presentity.h"
+
+#include "services.h"
 
 namespace LM
 {
   class Dialect:
-    public Ekiga::DialectImpl<SimpleChat>,
+    public Ekiga::DialectImpl<Conversation>,
     public LM::Handler
   {
   public:
@@ -58,7 +61,7 @@ namespace LM
     /* specific */
 
     void push_message (PresentityPtr,
-		       const std::string msg);
+		       const Ekiga::Message::payload_type payload);
 
     void open_chat (PresentityPtr presentity);
 
