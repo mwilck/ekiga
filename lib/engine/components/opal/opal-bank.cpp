@@ -46,6 +46,7 @@
 #include "form-request-simple.h"
 
 #include "opal-bank.h"
+#include "opal-presentity.h"
 #include "sip-endpoint.h"
 
 
@@ -471,6 +472,40 @@ Opal::Bank::existing_groups () const
   return result;
 }
 
+struct find_presentity_helper
+{
+  find_presentity_helper (const std::string uri_): uri(uri_)
+  {}
+
+  bool operator() (Ekiga::PresentityPtr pres)
+  {
+    Opal::PresentityPtr presentity = boost::dynamic_pointer_cast<Opal::Presentity> (pres);
+
+    if (presentity && presentity->get_uri () == uri)
+      result = presentity;
+
+    return !result;
+  }
+
+  std::string uri;
+  Ekiga::PresentityPtr result;
+};
+
+Ekiga::PresentityPtr
+Opal::Bank::find_presentity_for_uri (const std::string uri) const
+{
+  find_presentity_helper helper(uri);
+
+  for (const_iterator iter = begin ();
+       iter != end () && !helper.result;
+       ++iter) {
+
+    (*iter)->visit_presentities(boost::ref(helper));
+  }
+
+  return helper.result;
+}
+
 void
 Opal::Bank::migrate_from_gconf (const std::list<std::string> old)
 {
@@ -566,3 +601,4 @@ Opal::Bank::migrate_from_gconf (const std::list<std::string> old)
   delete settings;
   xmlFreeDoc (doc);
 }
+

@@ -111,7 +111,6 @@ public:
      */
     AccountPtr find_account (const std::string& aor);
 
-
     void call_manager_ready ();
 
     /* this object is an Ekiga::Cluster */
@@ -119,6 +118,9 @@ public:
 
     const std::set<std::string> existing_groups () const;
 
+    /* this is useful when we want to do something with some uri and
+       would like to avoid creating a brand-new presentity on it */
+    Ekiga::PresentityPtr find_presentity_for_uri (const std::string uri) const;
 
     // FIXME: only here for the transition off gconf
     static void migrate_from_gconf (const std::list<std::string> old);
