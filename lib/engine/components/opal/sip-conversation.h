@@ -37,6 +37,9 @@
 #define __SIP_CONVERSATION_H__
 
 #include "conversation.h"
+#include "presence-core.h"
+
+#include "sip-heap.h"
 
 namespace SIP {
 
@@ -44,16 +47,15 @@ namespace SIP {
   {
   public:
 
-    Conversation (const std::string _uri,
+    Conversation (boost::shared_ptr<Ekiga::PresenceCore> _core,
+		  const std::string _uri,
 		  const std::string _name,
-		  boost::function1<bool, const Ekiga::Message::payload_type&> _sender):
-      uri(_uri), title(_name), sender(_sender)
-    {}
+		  boost::function1<bool, const Ekiga::Message::payload_type&> _sender);
 
     // generic Ekiga::Conversation api:
 
     Ekiga::HeapPtr get_heap () const
-    { return heap; }
+    { return boost::dynamic_pointer_cast<Ekiga::Heap>(heap); }
 
     // FIXME: is that part of the api any good?!
     const std::string get_title () const
@@ -80,10 +82,11 @@ namespace SIP {
 
   private:
 
+    boost::weak_ptr<Ekiga::PresenceCore> presence_core;
     std::string uri;
     std::string title;
     boost::function1<bool, Ekiga::Message::payload_type> sender;
-    Ekiga::HeapPtr heap;
+    boost::shared_ptr<Heap> heap;
     std::string topic;
     int unreads;
     std::list<Ekiga::Message> messages;

@@ -34,6 +34,21 @@
  */
 
 #include "sip-conversation.h"
+#include "uri-presentity.h"
+
+SIP::Conversation::Conversation (boost::shared_ptr<Ekiga::PresenceCore> _core,
+				 const std::string _uri,
+				 const std::string _name,
+				 boost::function1<bool, const Ekiga::Message::payload_type&> _sender):
+  presence_core(_core), uri(_uri), title(_name), sender(_sender)
+{
+  // FIXME: this api isn't good: we obviously don't handle correctly Conversation with several people!
+  boost::shared_ptr<Ekiga::URIPresentity> presentity =
+    boost::shared_ptr<Ekiga::URIPresentity> (new Ekiga::URIPresentity (_core, title, uri,
+								       std::set<std::string> ()));
+  heap  = boost::shared_ptr<Heap> (new Heap);
+  heap->add_presentity (boost::dynamic_pointer_cast<Ekiga::Presentity> (presentity));
+}
 
 void
 SIP::Conversation::visit_messages (boost::function1<bool, const Ekiga::Message&> visitor) const

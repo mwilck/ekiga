@@ -39,9 +39,9 @@
 #include "presence-core.h"
 #include "personal-details.h"
 
-SIP::Dialect::Dialect (Ekiga::ServiceCore& core_,
+SIP::Dialect::Dialect (boost::shared_ptr<Ekiga::PresenceCore> core_,
 		       boost::function2<bool, std::string, Ekiga::Message::payload_type> sender_):
-  core(core_),
+  presence_core(core_),
   sender(sender_)
 {
 }
@@ -92,7 +92,8 @@ SIP::Dialect::open_chat_with (std::string uri,
   if ( !result) {
 
     // FIXME: here find a better display_name
-    result = ConversationPtr (new Conversation(uri,
+    result = ConversationPtr (new Conversation(presence_core,
+					       uri,
 					       display_name,
 					       boost::bind(sender, uri, _1)));
     add_conversation (result);

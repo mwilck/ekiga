@@ -437,6 +437,8 @@ libekiga_la_SOURCES += \
 endif
 
 libekiga_la_SOURCES += \
+	engine/components/opal/sip-heap.h \
+	engine/components/opal/sip-heap.cpp \
 	engine/components/opal/sip-conversation.h \
 	engine/components/opal/sip-conversation.cpp \
 	engine/components/opal/sip-dialect.h \

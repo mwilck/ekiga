@@ -118,11 +118,12 @@ Opal::Sip::EndPoint::EndPoint (Opal::CallManager & _manager,
   manager (_manager)
 {
   boost::shared_ptr<Ekiga::ChatCore> chat_core = core.get<Ekiga::ChatCore> ("chat-core");
+  boost::shared_ptr<Ekiga::PresenceCore> presence_core = core.get<Ekiga::PresenceCore> ("presence-core");
 
   protocol_name = "sip";
   uri_prefix = "sip:";
 
-  dialect = boost::shared_ptr<SIP::Dialect>(new SIP::Dialect (core, boost::bind (&Opal::Sip::EndPoint::send_message, this, _1, _2)));
+  dialect = boost::shared_ptr<SIP::Dialect>(new SIP::Dialect (presence_core, boost::bind (&Opal::Sip::EndPoint::send_message, this, _1, _2)));
   chat_core->add_dialect (dialect);
 
   /* Timeouts */

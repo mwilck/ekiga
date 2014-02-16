@@ -48,7 +48,7 @@ namespace SIP
   class Dialect: public Ekiga::DialectImpl<Conversation>
   {
   public:
-    Dialect (Ekiga::ServiceCore& core_,
+    Dialect (boost::shared_ptr<Ekiga::PresenceCore> core_,
 	     boost::function2<bool, std::string, Ekiga::Message::payload_type> sender_);
 
     ~Dialect ();
@@ -62,7 +62,7 @@ namespace SIP
 			  std::string name);
 
   private:
-    Ekiga::ServiceCore& core;
+    boost::shared_ptr<Ekiga::PresenceCore> presence_core;
     boost::function2<bool, std::string, Ekiga::Message::payload_type> sender;
 
     ConversationPtr open_chat_with (std::string uri,
