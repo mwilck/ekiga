@@ -98,7 +98,7 @@ case $target_os in
     gm_platform="gnu"
     ;;
 
-  FreeBSD* | freebsd* | kfreebsd* | NetBSD* | netbsd* )
+  FreeBSD* | freebsd* | kfreebsd* | NetBSD* | netbsd* | OpenBSD* | openbsd* )
     gm_platform="freebsd"
     ;;
 
