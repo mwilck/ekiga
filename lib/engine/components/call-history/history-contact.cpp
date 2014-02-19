@@ -91,7 +91,7 @@ History::Contact::Contact (boost::shared_ptr<Ekiga::ContactCore> _contact_core,
 
         xml_str = xmlNodeGetContent (child);
 	if (xml_str != NULL)
-	  call_start = (time_t) atoi ((const char *) xml_str);
+	  call_start = (time_t) strtoll((const char *) xml_str, NULL, 0);
         xmlFree (xml_str);
       }
 
@@ -127,7 +127,7 @@ History::Contact::Contact (boost::shared_ptr<Ekiga::ContactCore> _contact_core,
 	       BAD_CAST "name",
 	       BAD_CAST robust_xmlEscape (node->doc, name).c_str ());
 
-  tmp = g_strdup_printf ("%lu", call_start);
+  tmp = g_strdup_printf ("%" G_GINT64_FORMAT, (gint64)call_start);
   xmlNewChild (node, NULL,
 	       BAD_CAST "call_start", BAD_CAST tmp);
   g_free (tmp);
