@@ -110,7 +110,7 @@ src/revision.h:
             echo "#define EKIGA_REVISION $(GIT_REVISION)" > revision.h; \
           fi \
         else \
-          if !(test -e "./revision.h"); then\
+          if ! test -e "./revision.h"; then\
             echo "#define EKIGA_REVISION \"unknown\"" > revision.h; \
           fi \
         fi
