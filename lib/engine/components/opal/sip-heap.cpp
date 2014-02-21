@@ -34,6 +34,7 @@
  */
 
 #include "sip-heap.h"
+#include "uri-presentity.h"
 
 bool
 SIP::Heap::populate_menu (Ekiga::MenuBuilder& /*builder*/)
@@ -52,4 +53,25 @@ SIP::Heap::populate_menu_for_group (const std::string /*name*/,
 				    Ekiga::MenuBuilder& /*builder*/)
 {
   return false;
+}
+
+const std::string
+SIP::Heap::get_name (const std::string uri) const
+{
+  bool found = false;
+  std::string result = uri; // sensible default
+
+  for (const_iterator iter = begin ();
+       iter != end () and not found;
+       ++iter) {
+
+    boost::shared_ptr<Ekiga::URIPresentity> pres
+      = boost::dynamic_pointer_cast<Ekiga::URIPresentity> (*iter);
+    if (pres and pres->get_uri () == uri) {
+      
+      found = true;
+      result = pres->get_name ();
+    }
+  }
+  return result;
 }
