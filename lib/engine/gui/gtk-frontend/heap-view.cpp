@@ -206,8 +206,17 @@ find_iter_for_presentity (HeapView* self,
     } while (!found && gtk_tree_model_iter_next (model, iter));
   }
 
-  if (!found)
+  if (!found) {
+
     gtk_tree_store_append (self->priv->store, iter, group_iter);
+    // ugly, but I didn't find how to make a group appear as expanded
+    // by default
+    GtkTreePath* path
+      = gtk_tree_model_get_path (GTK_TREE_MODEL (self->priv->store),
+				 group_iter);
+    (void)gtk_tree_view_expand_row (self->priv->view, path, TRUE);
+    gtk_tree_path_free (path);
+  }
 }
 
 static bool
