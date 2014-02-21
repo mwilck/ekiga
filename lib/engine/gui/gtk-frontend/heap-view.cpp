@@ -40,6 +40,7 @@
 #include "heap-view.h"
 
 #include "gm-cell-renderer-bitext.h"
+#include "gmcellrendererexpander.h"
 #include "menu-builder-tools.h"
 #include "menu-builder-gtk.h"
 #include "form-dialog-gtk.h"
@@ -88,6 +89,12 @@ static guint signals[LAST_SIGNAL] = { 0 };
 
 /* Helpers' declarations */
 
+static void expand_cell_data_func (GtkTreeViewColumn* column,
+				   GtkCellRenderer* renderer,
+				   GtkTreeModel* model,
+				   GtkTreeIter* iter,
+				   gpointer data);
+
 static void clear_empty_groups (HeapView* self);
 
 static void find_iter_for_group (HeapView* self,
@@ -128,6 +135,35 @@ static bool on_questions (HeapView* self,
 			  Ekiga::FormRequestPtr request);
 
 /* Helpers' implementations */
+
+static void
+expand_cell_data_func (GtkTreeViewColumn* /*column*/,
+		       GtkCellRenderer* renderer,
+		       GtkTreeModel* model,
+		       GtkTreeIter* iter,
+		       gpointer data)
+{
+  HeapView* self = HEAP_VIEW (data);
+  GtkTreePath *path = NULL;
+  gint column_type;
+  gboolean row_expanded = FALSE;
+
+  path = gtk_tree_model_get_path (model, iter);
+  row_expanded = gtk_tree_view_row_expanded (self->priv->view, path);
+  gtk_tree_path_free (path);
+
+  gtk_tree_model_get (model, iter, COLUMN_TYPE, &column_type, -1);
+
+  if (column_type == TYPE_PRESENTITY)
+    g_object_set (renderer, "visible", FALSE, NULL);
+  else
+    g_object_set (renderer, "visible", TRUE, NULL);
+
+  g_object_set (renderer,
+                "expander-style", row_expanded ? GTK_EXPANDER_EXPANDED : GTK_EXPANDER_COLLAPSED,
+                NULL);
+}
+
 
 static void
 clear_empty_groups (HeapView* self)
@@ -537,7 +573,33 @@ heap_view_init (HeapView* self)
   g_object_unref (self->priv->store);
   gtk_tree_view_set_headers_visible (self->priv->view, FALSE);
   gtk_box_pack_start (GTK_BOX(self), GTK_WIDGET (self->priv->view), TRUE, TRUE, 0);
+
+  /* hidden column to hide the default expanders */
   col = gtk_tree_view_column_new ();
+  renderer = gtk_cell_renderer_pixbuf_new ();
+  gtk_tree_view_column_set_spacing (col, 0);
+  gtk_tree_view_column_pack_start (col, renderer, TRUE);
+  g_object_set (col, "visible", FALSE, NULL);
+  gtk_tree_view_append_column (self->priv->view, col);
+  gtk_tree_view_set_expander_column (self->priv->view, col);
+
+
+  /* the real thing! */
+  col = gtk_tree_view_column_new ();
+  gtk_tree_view_append_column (self->priv->view, col);
+
+  /* our own expanders */
+  renderer = gm_cell_renderer_expander_new ();
+  gtk_tree_view_column_pack_start (col, renderer, FALSE);
+  g_object_set (renderer,
+                "xalign", 0.0,
+                "xpad", 0,
+                "ypad", 0,
+                "visible", TRUE,
+                "expander-style", GTK_EXPANDER_COLLAPSED,
+                NULL);
+  gtk_tree_view_column_set_cell_data_func (col, renderer,
+					   expand_cell_data_func, self, NULL);
   gtk_tree_view_append_column (self->priv->view, col);
 
   /* show the name of a group */
@@ -546,7 +608,6 @@ heap_view_init (HeapView* self)
   gtk_tree_view_column_pack_start (col, renderer, FALSE);
   gtk_tree_view_column_add_attribute (col, renderer, "text", COLUMN_NAME);
   gtk_tree_view_column_set_alignment (col, 0.0);
-  g_object_set (renderer, "xalign", 0.5, "ypad", 0, NULL);
   g_object_set (renderer, "weight", PANGO_WEIGHT_BOLD, NULL);
   gtk_tree_view_column_set_cell_data_func (col, renderer,
                                            hide_show_depending_on_type,
