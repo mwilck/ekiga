@@ -78,6 +78,10 @@ SIP::Conversation::reset_unread_messages_count ()
 void
 SIP::Conversation::receive_message (const Ekiga::Message& message)
 {
-  messages.push_back (message);
-  message_received (message);
+  // if the endpoint doesn't put a real name, we'll try to find one
+  Ekiga::Message msg = { message.time,
+			 heap->get_name (message.name),
+			 message.payload };
+  messages.push_back (msg);
+  message_received (msg);
 }
