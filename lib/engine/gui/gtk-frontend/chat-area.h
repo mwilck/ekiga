@@ -58,9 +58,6 @@ struct _ChatArea
 struct _ChatAreaClass
 {
   GtkPanedClass parent;
-
-  /* this is the "message-notice-event" signal */
-  void (*message_notice_event) (ChatArea* self);
 };
 
 /* public api */

@@ -67,13 +67,6 @@ struct _ChatAreaPrivate
   GtkWidget* message;
 };
 
-enum {
-  MESSAGE_NOTICE_EVENT,
-  LAST_SIGNAL
-};
-
-static guint signals[LAST_SIGNAL] = { 0 };
-
 G_DEFINE_TYPE (ChatArea, chat_area, GTK_TYPE_PANED);
 
 /* declaration of internal api */
@@ -209,8 +202,6 @@ chat_area_add_notice (ChatArea* self,
   mark = gtk_text_buffer_get_mark (buffer, "current-position");
   gtk_text_view_scroll_to_mark (GTK_TEXT_VIEW (self->priv->text_view), mark,
                                 0.0, FALSE, 0,0);
-
-  g_signal_emit (self, signals[MESSAGE_NOTICE_EVENT], 0);
 }
 
 static void
@@ -233,8 +224,6 @@ chat_area_add_message (ChatArea* self,
   mark = gtk_text_buffer_get_mark (buffer, "current-position");
   gtk_text_view_scroll_to_mark (GTK_TEXT_VIEW (self->priv->text_view), mark,
                                 0.0, FALSE, 0,0);
-
-  g_signal_emit (self, signals[MESSAGE_NOTICE_EVENT], 0);
 }
 
 /* implementation of callbacks */
@@ -666,15 +655,6 @@ chat_area_class_init (ChatAreaClass* klass)
 
   gobject_class->dispose = chat_area_dispose;
   gobject_class->finalize = chat_area_finalize;
-
-  signals[MESSAGE_NOTICE_EVENT] =
-    g_signal_new ("message-notice-event",
-		  G_OBJECT_CLASS_TYPE (gobject_class),
-		  G_SIGNAL_RUN_LAST,
-		  G_STRUCT_OFFSET (ChatAreaClass, message_notice_event),
-		  NULL, NULL,
-		  g_cclosure_marshal_VOID__VOID,
-		  G_TYPE_NONE, 0);
 }
 
 static void
