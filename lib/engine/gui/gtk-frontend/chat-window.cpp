@@ -66,10 +66,6 @@ static guint signals[LAST_SIGNAL] = { 0 };
 
 G_DEFINE_TYPE (ChatWindow, chat_window, GM_TYPE_WINDOW);
 
-/* helper (declaration) */
-
-static void update_unread (ChatWindow* self);
-
 /* signal callbacks (declarations) */
 
 static bool on_handle_questions (ChatWindow* self,
@@ -86,13 +82,6 @@ static void on_switch_page (GtkNotebook* notebook,
 			    guint num,
 			    gpointer data);
 
-static gboolean on_focus_in_event (GtkWidget* widget,
-				   GdkEventFocus* event,
-				   gpointer data);
-
-static void on_message_notice_event (GtkWidget* page,
-				     gpointer data);
-
 static bool on_dialect_added (ChatWindow* self,
 			      Ekiga::DialectPtr dialect);
 static bool on_conversation_added (ChatWindow* self,
@@ -105,35 +94,42 @@ static void show_chat_window_cb (ChatWindow *self);
 /* helper (implementation) */
 
 static void
-update_unread (ChatWindow* self)
+on_updated (G_GNUC_UNUSED ConversationPage* page_,
+	    gpointer data)
 {
+  ChatWindow* self = (ChatWindow*)data;
   guint unread_count = 0;
-  GtkWidget* page = NULL;
-  GtkWidget* hbox = NULL;
-  GtkWidget* label = NULL;
-  gchar *info = NULL;
 
   for (gint ii = 0;
        ii < gtk_notebook_get_n_pages (GTK_NOTEBOOK (self->priv->notebook)) ;
        ii++) {
 
-    page
-      = gtk_notebook_get_nth_page (GTK_NOTEBOOK (self->priv->notebook), ii);
-    hbox = gtk_notebook_get_tab_label (GTK_NOTEBOOK (self->priv->notebook),
-				       page);
-    label = (GtkWidget*)g_object_get_data (G_OBJECT (hbox), "label-widget");
-    unread_count
-      = unread_count
-      + GPOINTER_TO_UINT (g_object_get_data (G_OBJECT (label), "unread-count"));
+    GtkWidget* page = gtk_notebook_get_nth_page (GTK_NOTEBOOK (self->priv->notebook), ii);
+    guint page_unread_count = conversation_page_get_unread_count (page);
+    GtkWidget* hbox = gtk_notebook_get_tab_label (GTK_NOTEBOOK (self->priv->notebook), page);
+    GtkWidget* label = GTK_WIDGET (g_object_get_data (G_OBJECT (hbox), "label-widget"));
+    const gchar* base_title = conversation_page_get_title (page);
 
+    unread_count = unread_count + page_unread_count;
+
+    if (page_unread_count > 0) {
+
+      gchar* title = g_strdup_printf ("[%d] %s", page_unread_count, base_title);
+      gtk_label_set_text (GTK_LABEL (label), title);
+      g_free (title);
+    } else {
+
+      gtk_label_set_text (GTK_LABEL (label), base_title);
+    }
   }
 
   g_signal_emit (self, signals[UNREAD_COUNT], 0, unread_count);
+  g_signal_emit (self, signals[UNREAD_ALERT], 0, NULL);
 
   if (unread_count > 0) {
-    info = g_strdup_printf (ngettext ("You have %d unread text message",
-                                      "You have %d unread text messages",
-                                      unread_count), unread_count);
+    gchar* info = g_strdup_printf (ngettext ("You have %d unread text message",
+					     "You have %d unread text messages",
+					     unread_count), unread_count);
     boost::shared_ptr<Ekiga::Notification> notif (new Ekiga::Notification (Ekiga::Notification::Warning, info, "", _("Read"), boost::bind (show_chat_window_cb, self)));
     self->priv->notification_core->push_notification (notif);
     g_free (info);
@@ -164,7 +160,16 @@ on_close_button_clicked (GtkButton* button,
   page = (GtkWidget*)g_object_get_data (G_OBJECT (button), "page-widget");
   num = gtk_notebook_page_num (GTK_NOTEBOOK (self->priv->notebook), page);
 
-  gtk_notebook_remove_page (GTK_NOTEBOOK (self->priv->notebook), num);
+  /* FIXME: we add a page when the conversation is added ; ok. But if
+   * we get rid of the page here, then if the same conversation is
+   * still alive and kicking, we have no way to add a corresponding
+   * page again. So there's something lacking in our API: how does one
+   * close an Ekiga::Conversation?
+   *
+   */
+  g_print ("FIXME %s\n", __PRETTY_FUNCTION__);
+  num = num + 1; // FIXME: just to stop a warning
+  //  gtk_notebook_remove_page (GTK_NOTEBOOK (self->priv->notebook), num);
 
   if (gtk_notebook_get_n_pages (GTK_NOTEBOOK (self->priv->notebook)) == 0)
     gtk_widget_hide (GTK_WIDGET (self));
@@ -192,102 +197,10 @@ on_switch_page (G_GNUC_UNUSED GtkNotebook* notebook,
 {
   ChatWindow* self = (ChatWindow*)data;
   GtkWidget* page = NULL;
-  GtkWidget* hbox = NULL;
-  GtkWidget* label = NULL;
 
   page = gtk_notebook_get_nth_page (GTK_NOTEBOOK (self->priv->notebook), num);
-  hbox = gtk_notebook_get_tab_label (GTK_NOTEBOOK (self->priv->notebook),
-				     page);
-  label = (GtkWidget*)g_object_get_data (G_OBJECT (hbox), "label-widget");
-  gtk_label_set_text (GTK_LABEL (label),
-		      (const gchar*)g_object_get_data (G_OBJECT (label),
-						       "base-title"));
-  g_object_set_data (G_OBJECT (label), "unread-count",
-		     GUINT_TO_POINTER (0));
-
-  update_unread (self);
 
   gtk_widget_grab_focus (page);
-}
-
-static gboolean
-on_focus_in_event (G_GNUC_UNUSED GtkWidget* widget,
-		   G_GNUC_UNUSED GdkEventFocus* event,
-		   gpointer data)
-{
-  ChatWindow* self = (ChatWindow*)data;
-  gint num;
-  GtkWidget* page = NULL;
-  GtkWidget* hbox = NULL;
-  GtkWidget* label = NULL;
-
-  num = gtk_notebook_get_current_page (GTK_NOTEBOOK (self->priv->notebook));
-  if (num != -1) { /* the notebook may be empty */
-
-    page = gtk_notebook_get_nth_page (GTK_NOTEBOOK (self->priv->notebook), num);
-    hbox = gtk_notebook_get_tab_label (GTK_NOTEBOOK (self->priv->notebook),
-				       page);
-    label = (GtkWidget*)g_object_get_data (G_OBJECT (hbox), "label-widget");
-    gtk_label_set_text (GTK_LABEL (label),
-			(const gchar*)g_object_get_data (G_OBJECT (label),
-						       "base-title"));
-    g_object_set_data (G_OBJECT (label), "unread-count",
-		       GUINT_TO_POINTER (0));
-
-    update_unread (self);
-  }
-
-  return FALSE;
-}
-
-static void
-on_message_notice_event (GtkWidget* page,
-			 gpointer data)
-{
-  ChatWindow* self = (ChatWindow*)data;
-  gint num = -1;
-
-  for (gint ii = 0;
-       ii < gtk_notebook_get_n_pages (GTK_NOTEBOOK (self->priv->notebook)) ;
-       ii++) {
-
-    if (page == gtk_notebook_get_nth_page (GTK_NOTEBOOK (self->priv->notebook),
-					   ii)) {
-
-      num = ii;
-      break;
-    }
-  }
-
-  if (num
-      != gtk_notebook_get_current_page (GTK_NOTEBOOK (self->priv->notebook))
-      || !gtk_window_is_active (GTK_WINDOW (self))) {
-
-    GtkWidget* hbox = NULL;
-    GtkWidget* label = NULL;
-    guint unread_count = 0;
-    const gchar* base_title = NULL;
-    gchar* txt = NULL;
-
-    hbox = gtk_notebook_get_tab_label (GTK_NOTEBOOK (self->priv->notebook),
-				       page);
-    label = (GtkWidget*)g_object_get_data (G_OBJECT (hbox), "label-widget");
-    base_title = (const gchar*)g_object_get_data (G_OBJECT (label),
-						  "base-title");
-    unread_count = GPOINTER_TO_UINT (g_object_get_data (G_OBJECT (label),
-							"unread-count"));
-    unread_count = unread_count + 1;
-    g_object_set_data (G_OBJECT (label), "unread-count",
-		       GUINT_TO_POINTER (unread_count));
-
-    txt = g_strdup_printf ("[%d] %s", unread_count, base_title);
-    gtk_label_set_text (GTK_LABEL (label), txt);
-    g_free (txt);
-
-    g_signal_emit (self, signals[UNREAD_ALERT], 0, NULL);
-  }
-
-  update_unread (self);
 }
 
 static bool
@@ -306,13 +219,41 @@ on_conversation_added (ChatWindow* self,
 		       Ekiga::ConversationPtr conversation)
 {
   GtkWidget* page = NULL;
+  GtkWidget* hbox = NULL;
   GtkWidget* label = NULL;
+  GtkWidget* close_button = NULL;
+  GtkWidget* close_image = NULL;
+  const std::string title = conversation->get_title ();
 
   page = conversation_page_new (conversation);
-  label = gtk_label_new (conversation->get_title ().c_str ());
+  g_signal_connect (page, "updated",
+		    G_CALLBACK (on_updated), self);
+
+  hbox = gtk_box_new (GTK_ORIENTATION_HORIZONTAL, 2);
+
+  label = gtk_label_new (title.c_str ());
+  g_object_set_data (G_OBJECT (hbox), "label-widget", label);
+
+  close_button = gtk_button_new ();
+  gtk_widget_set_size_request (close_button, 16, 16); // FIXME: hardcoded!?
+  gtk_button_set_relief (GTK_BUTTON (close_button), GTK_RELIEF_NONE);
+  gtk_button_set_focus_on_click (GTK_BUTTON (close_button), FALSE);
+  gtk_container_set_border_width (GTK_CONTAINER (close_button), 0);
+  g_object_set_data (G_OBJECT (close_button), "page-widget", page);
+  g_signal_connect (close_button, "clicked",
+		    G_CALLBACK (on_close_button_clicked), self);
+
+  close_image = gtk_image_new_from_icon_name ("gtk-close",
+					      GTK_ICON_SIZE_MENU);
+  gtk_widget_set_size_request (close_image, 12, 12); // FIXME hardcoded!?
+  gtk_container_add (GTK_CONTAINER (close_button), close_image);
+
+  gtk_box_pack_start (GTK_BOX (hbox), label, TRUE, TRUE, 2);
+  gtk_box_pack_start (GTK_BOX (hbox), close_button, FALSE, FALSE, 2);
+  gtk_widget_show_all (hbox);
 
   gtk_notebook_append_page (GTK_NOTEBOOK (self->priv->notebook),
-			    page, label);
+			    page, hbox);
   gtk_widget_show_all (page);
 
   self->priv->connections.add (conversation->user_requested.connect (boost::bind (&on_some_conversation_user_requested, self, page)));
@@ -418,8 +359,6 @@ chat_window_new (Ekiga::ServiceCore& core,
                            g_cclosure_new_swap (G_CALLBACK (on_escaped), (gpointer) self, NULL));
   g_object_unref (accel);
 
-  g_signal_connect (self, "focus-in-event",
-		    G_CALLBACK (on_focus_in_event), self);
   g_signal_connect (self->priv->notebook, "switch-page",
 		    G_CALLBACK (on_switch_page), self);
 
