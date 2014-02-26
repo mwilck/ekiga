@@ -830,7 +830,8 @@ chat_area_init (ChatArea* self)
 		      FALSE, TRUE, 2);
 
   /* the BOLD button */
-  button = gtk_button_new_from_stock (GTK_STOCK_BOLD);
+  button = gtk_button_new_from_icon_name ("format-text-bold",
+					  GTK_ICON_SIZE_BUTTON);
   g_object_set_data_full (G_OBJECT (button), "gm_open_tag",
 			  (gpointer) "<b>", NULL);
   g_object_set_data_full (G_OBJECT (button), "gm_close_tag",
@@ -844,7 +845,8 @@ chat_area_init (ChatArea* self)
   gtk_widget_show (button);
 
   /* the ITALIC button */
-  button = gtk_button_new_from_stock (GTK_STOCK_ITALIC);
+  button = gtk_button_new_from_icon_name ("format-text-italic",
+					  GTK_ICON_SIZE_BUTTON);
   g_object_set_data_full (G_OBJECT (button), "gm_open_tag",
 			  (gpointer) "<i>", NULL);
   g_object_set_data_full (G_OBJECT (button), "gm_close_tag",
@@ -858,7 +860,8 @@ chat_area_init (ChatArea* self)
   gtk_widget_show (button);
 
   /* the UNDERLINE button */
-  button = gtk_button_new_from_stock (GTK_STOCK_UNDERLINE);
+  button = gtk_button_new_from_icon_name ("format-text-underline",
+					  GTK_ICON_SIZE_BUTTON);
   g_object_set_data_full (G_OBJECT (button), "gm_open_tag",
 			  (gpointer) "<u>", NULL);
   g_object_set_data_full (G_OBJECT (button), "gm_close_tag",
