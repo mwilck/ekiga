@@ -39,39 +39,74 @@
 #include "chat-area.h"
 #include "heap-view.h"
 
+#include "scoped-connections.h"
+
 struct _ConversationPagePrivate {
+
+  Ekiga::ConversationPtr conversation;
+  Ekiga::scoped_connections connections;
   GtkWidget* area;
   GtkWidget* heapview;
 };
 
+enum {
+  UPDATED_SIGNAL,
+  LAST_SIGNAL
+};
+
+static guint signals[LAST_SIGNAL] = {0,};
+
 G_DEFINE_TYPE (ConversationPage, conversation_page, GTK_TYPE_BOX);
 
-static void on_page_grab_focus (GtkWidget*,
-				gpointer);
 
-static void on_page_grab_focus (GtkWidget* widget,
-				G_GNUC_UNUSED gpointer data)
+static void
+on_conversation_updated (ConversationPage* self)
 {
-  ConversationPage* self = NULL;
+  g_signal_emit (self, signals[UPDATED_SIGNAL], 0);
+}
 
-  self = (ConversationPage*)widget;
+static void
+on_page_grab_focus (GtkWidget* widget,
+		    G_GNUC_UNUSED gpointer data)
+{
+  ConversationPage* self = (ConversationPage*)widget;
 
-  if (self->priv->area)
-    gtk_widget_grab_focus (self->priv->area);
+  gtk_widget_grab_focus (self->priv->area);
+}
+
+static void
+conversation_page_finalize (GObject* obj)
+{
+  ConversationPage* self = (ConversationPage*)obj;
+
+  delete self->priv;
+
+  G_OBJECT_CLASS (conversation_page_parent_class)->finalize (obj);
 }
 
 static void
 conversation_page_init (ConversationPage* self)
 {
-  self->priv = g_new0 (ConversationPagePrivate, 1);
+  self->priv = new ConversationPagePrivate;
 
   g_signal_connect (self, "grab-focus",
                     G_CALLBACK (on_page_grab_focus), NULL);
 }
 
 static void
-conversation_page_class_init (G_GNUC_UNUSED ConversationPageClass* klass)
+conversation_page_class_init (ConversationPageClass* klass)
 {
+  GObjectClass* gobject_class = G_OBJECT_CLASS (klass);
+
+  gobject_class->finalize = conversation_page_finalize;
+
+  signals[UPDATED_SIGNAL] =
+    g_signal_new ("updated", G_OBJECT_CLASS_TYPE (gobject_class),
+		  G_SIGNAL_RUN_LAST,
+		  G_STRUCT_OFFSET (ConversationPageClass, updated),
+		  NULL, NULL,
+		  g_cclosure_marshal_VOID__VOID,
+		  G_TYPE_NONE, 0);
 }
 
 /* implementation of the public api */
@@ -84,6 +119,10 @@ conversation_page_new (Ekiga::ConversationPtr conversation)
   GtkWidget* heapview = NULL;
 
   result = (ConversationPage*)g_object_new (TYPE_CONVERSATION_PAGE, NULL);
+
+  result->priv->conversation = conversation;
+
+  result->priv->connections.add (conversation->updated.connect (boost::bind (&on_conversation_updated, result)));
 
   area = chat_area_new (conversation);
   result->priv->area = area;
@@ -99,4 +138,20 @@ conversation_page_new (Ekiga::ConversationPtr conversation)
   gtk_widget_show (heapview);
 
   return GTK_WIDGET (result);
+}
+
+const gchar*
+conversation_page_get_title (GtkWidget* widget)
+{
+  g_return_val_if_fail (IS_CONVERSATION_PAGE (widget), NULL);
+
+  return ((ConversationPage*)widget)->priv->conversation->get_title().c_str();
+}
+
+guint
+conversation_page_get_unread_count (GtkWidget* widget)
+{
+  g_return_val_if_fail (IS_CONVERSATION_PAGE (widget), 0);
+
+  return ((ConversationPage*)widget)->priv->conversation->get_unread_messages_count ();
 }

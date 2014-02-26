@@ -47,6 +47,10 @@ G_BEGIN_DECLS
 
 GtkWidget* conversation_page_new (Ekiga::ConversationPtr conversation);
 
+const gchar* conversation_page_get_title (GtkWidget* page);
+
+guint conversation_page_get_unread_count (GtkWidget* page);
+
 /* GObject boilerplate */
 
 typedef struct _ConversationPage ConversationPage;
@@ -61,6 +65,9 @@ struct _ConversationPage {
 
 struct _ConversationPageClass {
   GtkBoxClass parent_class;
+
+  /* signals */
+  void (*updated) (ConversationPage* self); // allows tracking unread counts
 };
 
 #define TYPE_CONVERSATION_PAGE             (conversation_page_get_type())
