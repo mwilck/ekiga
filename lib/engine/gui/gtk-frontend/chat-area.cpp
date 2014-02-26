@@ -600,6 +600,7 @@ on_chat_area_grab_focus (GtkWidget* widget,
   self = (ChatArea*)widget;
 
   gtk_widget_grab_focus (self->priv->message);
+  self->priv->conversation->reset_unread_messages_count ();
 }
 
 static gboolean
