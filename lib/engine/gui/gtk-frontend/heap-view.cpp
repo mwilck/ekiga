@@ -576,11 +576,11 @@ heap_view_init (HeapView* self)
 
   /* hidden column to hide the default expanders */
   col = gtk_tree_view_column_new ();
+  gtk_tree_view_append_column (self->priv->view, col);
   renderer = gtk_cell_renderer_pixbuf_new ();
   gtk_tree_view_column_set_spacing (col, 0);
   gtk_tree_view_column_pack_start (col, renderer, TRUE);
   g_object_set (col, "visible", FALSE, NULL);
-  gtk_tree_view_append_column (self->priv->view, col);
   gtk_tree_view_set_expander_column (self->priv->view, col);
 
 
@@ -600,7 +600,6 @@ heap_view_init (HeapView* self)
                 NULL);
   gtk_tree_view_column_set_cell_data_func (col, renderer,
 					   expand_cell_data_func, self, NULL);
-  gtk_tree_view_append_column (self->priv->view, col);
 
   /* show the name of a group */
   renderer = gtk_cell_renderer_text_new ();
