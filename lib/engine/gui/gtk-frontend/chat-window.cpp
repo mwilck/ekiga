@@ -237,6 +237,7 @@ chat_window_new (Ekiga::ServiceCore& core,
 		 const char* key)
 {
   ChatWindow* self = NULL;
+  GtkWidget* box = NULL;
 
   self = (ChatWindow*)g_object_new (CHAT_WINDOW_TYPE,
 				    "key", key,
@@ -248,8 +249,19 @@ chat_window_new (Ekiga::ServiceCore& core,
   self->priv->notification_core =
     core.get<Ekiga::NotificationCore>("notification-core");
 
+  box = gtk_box_new (GTK_ORIENTATION_VERTICAL, 2);
+  gtk_container_add (GTK_CONTAINER (self), box);
+  gtk_widget_show (box);
+
+  GtkWidget* switcher = gtk_stack_switcher_new ();
+  gtk_box_pack_start (GTK_BOX (box), switcher,
+		      FALSE, FALSE, 0);
+  gtk_widget_show (switcher);
+
   self->priv->stack = gtk_stack_new ();
-  gtk_container_add (GTK_CONTAINER (self), self->priv->stack);
+  gtk_stack_switcher_set_stack (GTK_STACK_SWITCHER (switcher), GTK_STACK (self->priv->stack));
+  gtk_box_pack_start (GTK_BOX (box), self->priv->stack,
+		      TRUE, TRUE, 0);
   gtk_widget_show (self->priv->stack);
 
   boost::shared_ptr<Ekiga::ChatCore> chat_core =
