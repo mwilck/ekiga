@@ -117,14 +117,13 @@ gm_cell_renderer_bitext_update_text (GmCellRendererBitext *renderer,
 
 /* overriden inherited functions, so we make sure the text is right before
  * we compute size or draw */
+
 static void
-gm_cell_renderer_bitext_get_size (GtkCellRenderer *cell,
-				  GtkWidget *widget,
-				  const GdkRectangle *cell_area,
-				  gint *x_offset,
-				  gint *y_offset,
-				  gint *width,
-				  gint *height)
+gm_cell_renderer_bitext_get_aligned_area (GtkCellRenderer* cell,
+					  GtkWidget* widget,
+					  GtkCellRendererState flags,
+					  const GdkRectangle* cell_area,
+					  GdkRectangle* aligned_area)
 {
   GmCellRendererBitext *renderer = NULL;
   GtkCellRendererClass* parent_class = NULL;
@@ -135,9 +134,85 @@ gm_cell_renderer_bitext_get_size (GtkCellRenderer *cell,
   gm_cell_renderer_bitext_update_text (renderer, widget,
 				       renderer->priv->is_selected);
 
-  parent_class->get_size (cell, widget, cell_area,
-			  x_offset, y_offset,
-			  width, height);
+  parent_class->get_aligned_area (cell, widget, flags, cell_area, aligned_area);
+}
+
+
+static void
+gm_cell_renderer_bitext_get_preferred_height (GtkCellRenderer* cell,
+					      GtkWidget* widget,
+					      gint* minimum_size,
+					      gint* natural_size)
+{
+  GmCellRendererBitext *renderer = NULL;
+  GtkCellRendererClass* parent_class = NULL;
+
+  renderer = (GmCellRendererBitext *)cell;
+  parent_class = GTK_CELL_RENDERER_CLASS (gm_cell_renderer_bitext_parent_class);
+
+  gm_cell_renderer_bitext_update_text (renderer, widget,
+				       renderer->priv->is_selected);
+
+  parent_class->get_preferred_height (cell, widget, minimum_size, natural_size);
+}
+
+
+static void
+gm_cell_renderer_bitext_get_preferred_height_for_width (GtkCellRenderer* cell,
+							GtkWidget* widget,
+							gint width,
+							gint* minimum_size,
+							gint* natural_size)
+{
+  GmCellRendererBitext *renderer = NULL;
+  GtkCellRendererClass* parent_class = NULL;
+
+  renderer = (GmCellRendererBitext *)cell;
+  parent_class = GTK_CELL_RENDERER_CLASS (gm_cell_renderer_bitext_parent_class);
+
+  gm_cell_renderer_bitext_update_text (renderer, widget,
+				       renderer->priv->is_selected);
+
+  parent_class->get_preferred_height_for_width (cell, widget, width, minimum_size, natural_size);
+}
+
+
+static void
+gm_cell_renderer_bitext_get_preferred_width (GtkCellRenderer* cell,
+					     GtkWidget* widget,
+					     gint* minimum_size,
+					     gint* natural_size)
+{
+  GmCellRendererBitext *renderer = NULL;
+  GtkCellRendererClass* parent_class = NULL;
+
+  renderer = (GmCellRendererBitext *)cell;
+  parent_class = GTK_CELL_RENDERER_CLASS (gm_cell_renderer_bitext_parent_class);
+
+  gm_cell_renderer_bitext_update_text (renderer, widget,
+				       renderer->priv->is_selected);
+
+  parent_class->get_preferred_width (cell, widget, minimum_size, natural_size);
+}
+
+
+static void
+gm_cell_renderer_bitext_get_preferred_width_for_height (GtkCellRenderer* cell,
+							GtkWidget* widget,
+							gint height,
+							gint* minimum_size,
+							gint* natural_size)
+{
+  GmCellRendererBitext *renderer = NULL;
+  GtkCellRendererClass* parent_class = NULL;
+
+  renderer = (GmCellRendererBitext *)cell;
+  parent_class = GTK_CELL_RENDERER_CLASS (gm_cell_renderer_bitext_parent_class);
+
+  gm_cell_renderer_bitext_update_text (renderer, widget,
+				       renderer->priv->is_selected);
+
+  parent_class->get_preferred_width_for_height (cell, widget, height, minimum_size, natural_size);
 }
 
 
@@ -284,7 +359,11 @@ gm_cell_renderer_bitext_class_init (GmCellRendererBitextClass* klass)
 				   spec);
 
   renderer_class = GTK_CELL_RENDERER_CLASS (klass);
-  renderer_class->get_size = gm_cell_renderer_bitext_get_size;
+  renderer_class->get_aligned_area = gm_cell_renderer_bitext_get_aligned_area;
+  renderer_class->get_preferred_height = gm_cell_renderer_bitext_get_preferred_height;
+  renderer_class->get_preferred_height_for_width = gm_cell_renderer_bitext_get_preferred_height_for_width;
+  renderer_class->get_preferred_width = gm_cell_renderer_bitext_get_preferred_width;
+  renderer_class->get_preferred_width_for_height = gm_cell_renderer_bitext_get_preferred_width_for_height;
   renderer_class->render = gm_cell_renderer_bitext_render;
 }
 
