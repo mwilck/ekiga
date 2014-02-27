@@ -40,7 +40,7 @@ SIP::Conversation::Conversation (boost::shared_ptr<Ekiga::PresenceCore> _core,
 				 const std::string _uri,
 				 const std::string _name,
 				 boost::function1<bool, const Ekiga::Message::payload_type&> _sender):
-  presence_core(_core), uri(_uri), title(_name), sender(_sender)
+  presence_core(_core), uri(_uri), title(_name), sender(_sender), unreads(0)
 {
   // FIXME: this api isn't good: we obviously don't handle correctly Conversation with several people!
   boost::shared_ptr<Ekiga::URIPresentity> presentity =
@@ -84,4 +84,6 @@ SIP::Conversation::receive_message (const Ekiga::Message& message)
 			 message.payload };
   messages.push_back (msg);
   message_received (msg);
+  unreads++;
+  updated();
 }
