@@ -47,6 +47,7 @@ struct _ConversationPagePrivate {
   Ekiga::scoped_connections connections;
   GtkWidget* area;
   GtkWidget* heapview;
+  gchar* title;
 };
 
 enum {
@@ -57,7 +58,6 @@ enum {
 static guint signals[LAST_SIGNAL] = {0,};
 
 G_DEFINE_TYPE (ConversationPage, conversation_page, GTK_TYPE_BOX);
-
 
 static void
 on_conversation_updated (ConversationPage* self)
@@ -75,10 +75,28 @@ on_page_grab_focus (GtkWidget* widget,
 }
 
 static void
+conversation_page_update_title (ConversationPage* self)
+{
+  g_free (self->priv->title);
+  guint unread_count = self->priv->conversation->get_unread_messages_count ();
+  if (unread_count > 0) {
+
+    self->priv->title = g_strdup_printf ("[%d] %s",
+					 unread_count,
+					 self->priv->conversation->get_title ().c_str ());
+  } else {
+
+    self->priv->title = g_strdup_printf ("%s",
+					 self->priv->conversation->get_title ().c_str ());
+  }
+}
+
+static void
 conversation_page_finalize (GObject* obj)
 {
   ConversationPage* self = (ConversationPage*)obj;
 
+  g_free (self->priv->title);
   delete self->priv;
 
   G_OBJECT_CLASS (conversation_page_parent_class)->finalize (obj);
@@ -121,6 +139,8 @@ conversation_page_new (Ekiga::ConversationPtr conversation)
   result = (ConversationPage*)g_object_new (TYPE_CONVERSATION_PAGE, NULL);
 
   result->priv->conversation = conversation;
+  result->priv->title = NULL;
+  conversation_page_update_title (result);
 
   result->priv->connections.add (conversation->updated.connect (boost::bind (&on_conversation_updated, result)));
 
@@ -141,17 +161,17 @@ conversation_page_new (Ekiga::ConversationPtr conversation)
 }
 
 const gchar*
-conversation_page_get_title (GtkWidget* widget)
+conversation_page_get_title (ConversationPage* page)
 {
-  g_return_val_if_fail (IS_CONVERSATION_PAGE (widget), NULL);
+  g_return_val_if_fail (IS_CONVERSATION_PAGE (page), NULL);
 
-  return ((ConversationPage*)widget)->priv->conversation->get_title().c_str();
+  return page->priv->title;
 }
 
 guint
-conversation_page_get_unread_count (GtkWidget* widget)
+conversation_page_get_unread_count (ConversationPage* page)
 {
-  g_return_val_if_fail (IS_CONVERSATION_PAGE (widget), 0);
+  g_return_val_if_fail (IS_CONVERSATION_PAGE (page), 0);
 
-  return ((ConversationPage*)widget)->priv->conversation->get_unread_messages_count ();
+  return page->priv->conversation->get_unread_messages_count ();
 }

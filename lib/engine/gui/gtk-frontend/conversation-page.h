@@ -44,16 +44,16 @@
 G_BEGIN_DECLS
 
 /* public api */
+typedef struct _ConversationPage ConversationPage;
 
 GtkWidget* conversation_page_new (Ekiga::ConversationPtr conversation);
 
-const gchar* conversation_page_get_title (GtkWidget* page);
+const gchar* conversation_page_get_title (ConversationPage* page);
 
-guint conversation_page_get_unread_count (GtkWidget* page);
+guint conversation_page_get_unread_count (ConversationPage* page);
 
 /* GObject boilerplate */
 
-typedef struct _ConversationPage ConversationPage;
 typedef struct _ConversationPagePrivate ConversationPagePrivate;
 typedef struct _ConversationPageClass ConversationPageClass;
 
@@ -77,7 +77,7 @@ struct _ConversationPageClass {
 #define IS_CONVERSATION_PAGE_CLASS(klass)  (G_TYPE_CHECK_CLASS_TYPE((klass),TYPE_CONVERSATION_PAGE))
 #define CONVERSATION_PAGE_GET_CLASS(obj)   (G_TYPE_INSTANCE_GET_CLASS((obj),TYPE_CONVERSATION_PAGE,ConversationPageClass))
 
-GType multiple_chat_page_get_type () G_GNUC_CONST;
+GType conversation_page_get_type () G_GNUC_CONST;
 
 G_END_DECLS
 
