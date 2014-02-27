@@ -125,14 +125,9 @@ gm_cell_renderer_bitext_get_aligned_area (GtkCellRenderer* cell,
 					  const GdkRectangle* cell_area,
 					  GdkRectangle* aligned_area)
 {
-  GmCellRendererBitext *renderer = NULL;
   GtkCellRendererClass* parent_class = NULL;
 
-  renderer = (GmCellRendererBitext *)cell;
   parent_class = GTK_CELL_RENDERER_CLASS (gm_cell_renderer_bitext_parent_class);
-
-  gm_cell_renderer_bitext_update_text (renderer, widget,
-				       renderer->priv->is_selected);
 
   parent_class->get_aligned_area (cell, widget, flags, cell_area, aligned_area);
 }
