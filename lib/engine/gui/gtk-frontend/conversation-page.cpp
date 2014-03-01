@@ -175,3 +175,12 @@ conversation_page_get_unread_count (ConversationPage* page)
 
   return page->priv->conversation->get_unread_messages_count ();
 }
+
+Ekiga::ConversationPtr
+conversation_page_get_conversation (ConversationPage* page)
+{
+  g_return_val_if_fail (IS_CONVERSATION_PAGE (page), Ekiga::ConversationPtr());
+
+  return page->priv->conversation;
+  
+}

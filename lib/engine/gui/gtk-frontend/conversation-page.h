@@ -52,6 +52,8 @@ const gchar* conversation_page_get_title (ConversationPage* page);
 
 guint conversation_page_get_unread_count (ConversationPage* page);
 
+Ekiga::ConversationPtr conversation_page_get_conversation (ConversationPage* page);
+
 /* GObject boilerplate */
 
 typedef struct _ConversationPagePrivate ConversationPagePrivate;
