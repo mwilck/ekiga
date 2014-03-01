@@ -114,10 +114,11 @@ gm_cell_renderer_bitext_update_text (GmCellRendererBitext* renderer)
 /* override inherited methods */
 
 static void
-gm_cell_renderer_bitext_get_preferred_height (GtkCellRenderer* cell,
-					      GtkWidget* widget,
-					      gint *minimum_size,
-					      gint* natural_size)
+gm_cell_renderer_bitext_get_preferred_height_for_width (GtkCellRenderer* cell,
+							GtkWidget* widget,
+							gint width,
+							gint *minimum_size,
+							gint* natural_size)
 {
   GtkCellRendererClass* parent
     = GTK_CELL_RENDERER_CLASS (gm_cell_renderer_bitext_parent_class);
@@ -125,22 +126,7 @@ gm_cell_renderer_bitext_get_preferred_height (GtkCellRenderer* cell,
   gm_cell_renderer_bitext_update_style (GM_CELL_RENDERER_BITEXT (cell),
 					widget);
 
-  parent->get_preferred_height (cell, widget, minimum_size, natural_size);
-}
-
-static void
-gm_cell_renderer_bitext_get_preferred_width (GtkCellRenderer* cell,
-					     GtkWidget* widget,
-					     gint *minimum_size,
-					     gint* natural_size)
-{
-  GtkCellRendererClass* parent
-    = GTK_CELL_RENDERER_CLASS (gm_cell_renderer_bitext_parent_class);
-
-  gm_cell_renderer_bitext_update_style (GM_CELL_RENDERER_BITEXT (cell),
-					widget);
-
-  parent->get_preferred_width (cell, widget, minimum_size, natural_size);
+  parent->get_preferred_height_for_width (cell, widget, width, minimum_size, natural_size);
 }
 
 /* GObject code */
@@ -244,8 +230,7 @@ gm_cell_renderer_bitext_class_init (GmCellRendererBitextClass* klass)
 
   g_type_class_add_private (klass, sizeof (GmCellRendererBitextPrivate));
 
-  cell_class->get_preferred_height = gm_cell_renderer_bitext_get_preferred_height;
-  cell_class->get_preferred_width = gm_cell_renderer_bitext_get_preferred_width;
+  cell_class->get_preferred_height_for_width = gm_cell_renderer_bitext_get_preferred_height_for_width;
 
   gobject_class->finalize = gm_cell_renderer_bitext_finalize;
   gobject_class->get_property = gm_cell_renderer_bitext_get_property;
