@@ -39,7 +39,6 @@
 #include <glib/gi18n.h>
 
 #include "services.h"
-#include "account-core.h"
 #include "account.h"
 
 #include "platform.h"

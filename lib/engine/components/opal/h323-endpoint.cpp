@@ -40,8 +40,6 @@
 
 #include "h323-endpoint.h"
 
-#include "account-core.h"
-
 namespace Opal {
 
   namespace H323 {

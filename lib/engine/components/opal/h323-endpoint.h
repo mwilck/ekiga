@@ -44,7 +44,6 @@
 #include "ekiga-settings.h"
 
 #include "call-core.h"
-#include "account-core.h"
 #include "presence-core.h"
 #include "contact-core.h"
 #include "call-manager.h"

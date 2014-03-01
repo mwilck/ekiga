@@ -59,6 +59,7 @@
 
 #include "engine.h"
 
+#include "account-core.h"
 #include "videoinput-core.h"
 #include "audioinput-core.h"
 #include "audiooutput-core.h"

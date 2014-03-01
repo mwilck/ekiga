@@ -39,6 +39,7 @@
 
 #include "opal-main.h"
 
+#include "account-core.h"
 #include "chat-core.h"
 #include "presence-core.h"
 #include "audioinput-core.h"

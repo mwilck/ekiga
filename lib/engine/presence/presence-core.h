@@ -41,7 +41,6 @@
 #include "services.h"
 #include "scoped-connections.h"
 #include "cluster.h"
-#include "account-core.h"
 #include "personal-details.h"
 
 namespace Ekiga
