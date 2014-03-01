@@ -39,6 +39,7 @@
 #include "cluster-impl.h"
 #include "trigger.h"
 #include "local-heap.h"
+#include "scoped-connections.h"
 
 namespace Local
 {
@@ -50,8 +51,7 @@ namespace Local
 
   class Cluster :
     public Ekiga::ClusterImpl<Heap>,
-    public Ekiga::Trigger,
-    public boost::signals2::trackable
+    public Ekiga::Trigger
   {
   public:
 
@@ -80,6 +80,8 @@ namespace Local
     void set_heap (HeapPtr _heap);
 
   private:
+
+    Ekiga::scoped_connections connections;
 
     boost::weak_ptr<Ekiga::PresenceCore> presence_core;
     HeapPtr heap;

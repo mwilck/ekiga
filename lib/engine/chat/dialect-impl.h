@@ -45,8 +45,7 @@ namespace Ekiga
   template<typename ConversationType = Conversation>
   class DialectImpl:
     public Dialect,
-    public RefLister<ConversationType>,
-    public boost::signals2::trackable
+    public RefLister<ConversationType>
   {
   public:
 

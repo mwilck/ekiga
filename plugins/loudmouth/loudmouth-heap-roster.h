@@ -45,8 +45,7 @@ namespace LM
 {
   class HeapRoster:
     public Ekiga::HeapImpl<Presentity>,
-    public LM::Handler,
-    public boost::signals2::trackable
+    public LM::Handler
   {
   public:
 
@@ -84,6 +83,8 @@ namespace LM
 				     LmMessage* message);
 
   private:
+
+    boost::signals2::connection details_connection;
 
     boost::shared_ptr<Ekiga::PersonalDetails> details;
 

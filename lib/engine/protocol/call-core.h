@@ -63,8 +63,7 @@ namespace Ekiga
   class CallManager;
 
   class CallCore:
-    public Service,
-    public boost::signals2::trackable
+    public Service
     {
 
   public:

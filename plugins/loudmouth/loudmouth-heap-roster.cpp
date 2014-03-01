@@ -46,11 +46,12 @@ LM::HeapRoster::HeapRoster (boost::shared_ptr<Ekiga::PersonalDetails> details_,
 			    DialectPtr dialect_):
   details(details_), dialect(dialect_)
 {
-  details->updated.connect (boost::bind (&LM::HeapRoster::on_personal_details_updated, this));
+  details_connection = details->updated.connect (boost::bind (&LM::HeapRoster::on_personal_details_updated, this));
 }
 
 LM::HeapRoster::~HeapRoster ()
 {
+  details_connection.disconnect ();
 }
 
 const std::string

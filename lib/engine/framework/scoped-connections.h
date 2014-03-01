@@ -43,7 +43,9 @@
 /* The boost signals2 library has several tricks to disconnect connections on signals
  * automatically, namely :
  * - inherit from boost::signals2::trackable, which is good to get rid of
- * connnections to a dying object ;
+ * connnections to a dying object (but that basically means you are lazy
+ * so it's probably better to avoid that method, as that means we might
+ * end up with memory problems later on) ;
  * - use a boost::signals2::scoped_connection which makes it possible to do things
  * more manually, but is annoying when you need many of them because they're not
  * easy to put in a container ;

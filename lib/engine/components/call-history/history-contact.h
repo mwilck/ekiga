@@ -60,8 +60,7 @@ namespace History
   } call_type;
 
   class Contact:
-    public Ekiga::Contact,
-    public boost::signals2::trackable
+    public Ekiga::Contact
   {
   public:
 

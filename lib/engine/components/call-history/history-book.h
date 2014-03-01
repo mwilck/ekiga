@@ -43,6 +43,7 @@
 #include "history-contact.h"
 
 #include "ekiga-settings.h"
+#include "scoped-connections.h"
 
 namespace History
 {
@@ -54,8 +55,7 @@ namespace History
  */
 
   class Book:
-    public Ekiga::Book,
-    public boost::signals2::trackable
+    public Ekiga::Book
   {
   public:
 
@@ -91,6 +91,8 @@ namespace History
     boost::signals2::signal<void(void)> cleared;
 
   private:
+
+    Ekiga::scoped_connections connections;
 
     void parse_entry (xmlNodePtr entry);
 

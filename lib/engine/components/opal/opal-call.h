@@ -56,8 +56,7 @@ namespace Opal {
   class CallManager;
   class Call
     : public OpalCall,
-      public Ekiga::Call,
-      public boost::signals2::trackable
+      public Ekiga::Call
   {
 
 public:

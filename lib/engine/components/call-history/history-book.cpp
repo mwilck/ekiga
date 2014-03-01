@@ -78,8 +78,8 @@ History::Book::Book (Ekiga::ServiceCore& core):
 
   boost::shared_ptr<Ekiga::CallCore> call_core = core.get<Ekiga::CallCore> ("call-core");
 
-  call_core->missed_call.connect (boost::bind (&History::Book::on_missed_call, this, _1, _2));
-  call_core->cleared_call.connect (boost::bind (&History::Book::on_cleared_call, this, _1, _2, _3));
+  connections.add (call_core->missed_call.connect (boost::bind (&History::Book::on_missed_call, this, _1, _2)));
+  connections.add (call_core->cleared_call.connect (boost::bind (&History::Book::on_cleared_call, this, _1, _2, _3)));
 
   enforce_size_limit ();
 }

@@ -47,11 +47,10 @@
 #include "kickstart.h"
 #include "notification-core.h"
 #include "call-core.h"
-
+#include "scoped-connections.h"
 
 class LibNotify:
-  public Ekiga::Service,
-  public boost::signals2::trackable
+  public Ekiga::Service
 {
 public:
 
@@ -68,6 +67,8 @@ public:
   boost::optional<bool> get_bool_property (const std::string name) const;
 
 private:
+
+  Ekiga::scoped_connections connections;
 
   bool has_actions;
 
@@ -179,10 +180,10 @@ LibNotify::LibNotify (Ekiga::ServiceCore& core)
     g_list_free (capabilities);
   }
   /* Notifications coming from various components */
-  notification_core->notification_added.connect (boost::bind (&LibNotify::on_notification_added, this, _1));
+  connections.append (notification_core->notification_added.connect (boost::bind (&LibNotify::on_notification_added, this, _1)));
 
   /* Specific notifications */
-  call_core->setup_call.connect (boost::bind (&LibNotify::on_call_notification, this, _1, _2));
+  connections.append (call_core->setup_call.connect (boost::bind (&LibNotify::on_call_notification, this, _1, _2)));
 }
 
 LibNotify::~LibNotify ()
@@ -289,9 +290,9 @@ LibNotify::on_call_notification (boost::shared_ptr<Ekiga::CallManager> manager,
   notify_notification_set_timeout (notify, NOTIFY_EXPIRES_NEVER);
   notify_notification_set_urgency (notify, NOTIFY_URGENCY_CRITICAL);
 
-  call->established.connect (boost::bind (&LibNotify::on_call_notification_closed, this, (gpointer) notify));
-  call->missed.connect (boost::bind (&LibNotify::on_call_notification_closed, this, (gpointer) notify));
-  call->cleared.connect (boost::bind (&LibNotify::on_call_notification_closed, this, (gpointer) notify));
+  connections.append (call->established.connect (boost::bind (&LibNotify::on_call_notification_closed, this, (gpointer) notify)));
+  connections.append (call->missed.connect (boost::bind (&LibNotify::on_call_notification_closed, this, (gpointer) notify)));
+  connections.append (call->cleared.connect (boost::bind (&LibNotify::on_call_notification_closed, this, (gpointer) notify)));
 
   notify_notification_show (notify, NULL);
 

@@ -86,8 +86,8 @@ Local::Cluster::set_heap (HeapPtr _heap)
   boost::shared_ptr<Ekiga::PresenceCore> pcore = presence_core.lock ();
   if (pcore) {
 
-    pcore->presence_received.connect (boost::bind (&Local::Cluster::on_presence_received, this, _1, _2));
-    pcore->status_received.connect (boost::bind (&Local::Cluster::on_status_received, this, _1, _2));
+    connections.add (pcore->presence_received.connect (boost::bind (&Local::Cluster::on_presence_received, this, _1, _2)));
+    connections.add (pcore->status_received.connect (boost::bind (&Local::Cluster::on_status_received, this, _1, _2)));
   }
 }
 
