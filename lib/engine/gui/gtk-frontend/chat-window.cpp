@@ -1,6 +1,6 @@
 
 /* Ekiga -- A VoIP and Video-Conferencing application
- * Copyright (C) 2000-2009 Damien Sandras <dsandras@seconix.com>
+ * Copyright (C) 2000-2014 Damien Sandras <dsandras@seconix.com>
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -27,10 +27,10 @@
 
 
 /*
- *                         chat-window.h  -  description
+ *                         chat-window.cpp  -  description
  *                         -----------------------------
  *   begin                : written in july 2008 by Julien Puydt
- *   copyright            : (C) 2008 by Julien Puydt
+ *   copyright            : (C) 2008-2014 by Julien Puydt
  *   description          : Implementation of a window to display chats
  *
  */
@@ -39,6 +39,8 @@
 
 #include <gdk/gdkkeysyms.h>
 #include <glib/gi18n.h>
+
+#include "menu-builder-gtk.h"
 
 #include "chat-core.h"
 #include "notification-core.h"
@@ -54,8 +56,10 @@ struct _ChatWindowPrivate
 {
   boost::shared_ptr<Ekiga::NotificationCore> notification_core;
   Ekiga::scoped_connections connections;
+  boost::signals2::connection visible_conversation_connection;
 
   GtkWidget* stack;
+  GtkWidget* gear;
 };
 
 enum {
@@ -68,7 +72,14 @@ static guint signals[LAST_SIGNAL] = { 0 };
 
 G_DEFINE_TYPE (ChatWindow, chat_window, GM_TYPE_WINDOW);
 
+
 /* signal callbacks (declarations) */
+
+static void on_visible_conversation_updated (ChatWindow* self);
+
+static void on_visible_conversation_changed (GtkWidget* widget,
+					     GParamSpec* spec,
+					     ChatWindow* self);
 
 static bool on_handle_questions (ChatWindow* self,
 				 Ekiga::FormRequestPtr request);
@@ -82,11 +93,16 @@ static void on_some_conversation_user_requested (ChatWindow* self,
 
 static void show_chat_window_cb (ChatWindow *self);
 
-/* helper (implementation) */
+/* internal api (declaration) */
+
+static void chat_window_update_menu (ChatWindow* self,
+				     Ekiga::ConversationPtr conversation);
+
+/* helpers (implementation) */
 
 static void
-on_updated (ConversationPage* page,
-	    gpointer data)
+on_unread_count_updated (ConversationPage* page,
+			 gpointer data)
 {
   ChatWindow* self = (ChatWindow*)data;
   guint unread_count = 0;
@@ -119,8 +135,33 @@ on_updated (ConversationPage* page,
 
 /* signal callbacks (implementations) */
 
-static bool on_handle_questions (ChatWindow* self,
-				 Ekiga::FormRequestPtr request)
+static void
+on_visible_conversation_updated (ChatWindow* self)
+{
+  self->priv->visible_conversation_connection.disconnect ();
+
+  GtkWidget* page = gtk_stack_get_visible_child (GTK_STACK (self->priv->stack));
+
+  if (IS_CONVERSATION_PAGE (page)) {
+
+    Ekiga::ConversationPtr conversation = conversation_page_get_conversation (CONVERSATION_PAGE (page));
+
+    self->priv->visible_conversation_connection = conversation->updated.connect (boost::bind (&on_visible_conversation_updated, self));
+    chat_window_update_menu (self, conversation);
+  }
+}
+
+static void
+on_visible_conversation_changed (G_GNUC_UNUSED GtkWidget* widget,
+				 G_GNUC_UNUSED GParamSpec* spec,
+				 ChatWindow* self)
+{
+  on_visible_conversation_updated (self);
+}
+
+static bool
+on_handle_questions (ChatWindow* self,
+		     Ekiga::FormRequestPtr request)
 {
   GtkWidget *parent = gtk_widget_get_toplevel (GTK_WIDGET (self));
   FormDialog dialog (request, parent);
@@ -152,7 +193,7 @@ on_conversation_added (ChatWindow* self,
 
   page = conversation_page_new (conversation);
   g_signal_connect (page, "updated",
-		    G_CALLBACK (on_updated), self);
+		    G_CALLBACK (on_unread_count_updated), self);
 
   gtk_stack_add_titled (GTK_STACK (self->priv->stack),
 			page, name.c_str (),
@@ -230,6 +271,24 @@ chat_window_init (ChatWindow* self)
   gtk_window_set_title (GTK_WINDOW (self), _("Chat Window"));
 }
 
+/* internal api (implementation) */
+
+static void chat_window_update_menu (ChatWindow* self,
+				     Ekiga::ConversationPtr conversation)
+{
+  MenuBuilderGtk builder;
+
+  conversation->populate_menu (builder);
+
+  if (!builder.empty ()) {
+
+    gtk_widget_show_all (builder.menu);
+    gtk_menu_button_set_popup (GTK_MENU_BUTTON (self->priv->gear),
+			       builder.menu);
+  }
+  g_object_ref_sink (builder.menu);
+}
+
 /* public api */
 
 GtkWidget*
@@ -237,7 +296,6 @@ chat_window_new (Ekiga::ServiceCore& core,
 		 const char* key)
 {
   ChatWindow* self = NULL;
-  GtkWidget* box = NULL;
 
   self = (ChatWindow*)g_object_new (CHAT_WINDOW_TYPE,
 				    "key", key,
@@ -249,20 +307,31 @@ chat_window_new (Ekiga::ServiceCore& core,
   self->priv->notification_core =
     core.get<Ekiga::NotificationCore>("notification-core");
 
-  box = gtk_box_new (GTK_ORIENTATION_VERTICAL, 2);
-  gtk_container_add (GTK_CONTAINER (self), box);
-  gtk_widget_show (box);
+  GtkWidget* vbox = gtk_box_new (GTK_ORIENTATION_VERTICAL, 2);
+  gtk_container_add (GTK_CONTAINER (self), vbox);
+  gtk_widget_show (vbox);
+
+  GtkWidget* hbox = gtk_box_new (GTK_ORIENTATION_HORIZONTAL, 2);
+  gtk_container_add (GTK_CONTAINER (vbox), hbox);
+  gtk_widget_show (hbox);
+
+  self->priv->gear = gtk_menu_button_new ();
+  gtk_box_pack_start (GTK_BOX (hbox), self->priv->gear,
+		      FALSE, FALSE, 0);
+  gtk_widget_show (self->priv->gear);
 
   GtkWidget* switcher = gtk_stack_switcher_new ();
-  gtk_box_pack_start (GTK_BOX (box), switcher,
-		      FALSE, FALSE, 0);
+  gtk_box_pack_start (GTK_BOX (hbox), switcher,
+		      FALSE, TRUE, 0);
   gtk_widget_show (switcher);
 
   self->priv->stack = gtk_stack_new ();
   gtk_stack_switcher_set_stack (GTK_STACK_SWITCHER (switcher), GTK_STACK (self->priv->stack));
-  gtk_box_pack_start (GTK_BOX (box), self->priv->stack,
+  gtk_box_pack_start (GTK_BOX (vbox), self->priv->stack,
 		      TRUE, TRUE, 0);
   gtk_widget_show (self->priv->stack);
+  g_signal_connect (self->priv->stack, "notify::visible-child",
+		    G_CALLBACK (on_visible_conversation_changed), self);
 
   boost::shared_ptr<Ekiga::ChatCore> chat_core =
     core.get<Ekiga::ChatCore> ("chat-core");
