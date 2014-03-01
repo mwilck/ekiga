@@ -51,8 +51,14 @@ Ekiga::URIPresentity::URIPresentity (boost::shared_ptr<Ekiga::PresenceCore> pcor
 				     std::set<std::string> groups_):
   presence_core(pcore), name(name_), uri(uri_), presence("unknown"), groups(groups_)
 {
-  pcore->presence_received.connect (boost::bind (&Ekiga::URIPresentity::on_presence_received, this, _1, _2));
-  pcore->status_received.connect (boost::bind (&Ekiga::URIPresentity::on_status_received, this, _1, _2));
+  boost::signals2::connection conn;
+
+  conn = pcore->presence_received.connect (boost::bind (&Ekiga::URIPresentity::on_presence_received, this, _1, _2));
+  connections.add (conn);
+
+  conn = pcore->status_received.connect (boost::bind (&Ekiga::URIPresentity::on_status_received, this, _1, _2));
+  connections.add (conn);
+
   pcore->fetch_presence (uri);
 }
 

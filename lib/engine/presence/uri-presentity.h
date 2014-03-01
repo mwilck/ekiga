@@ -41,6 +41,7 @@
 #include "form.h"
 #include "presence-core.h"
 #include "presentity.h"
+#include "scoped-connections.h"
 
 /* The basic use-case is when one has only an uri (and a name), but not much
  * data, and the presence core is supposed to take care of making it live.
@@ -98,6 +99,7 @@ namespace Ekiga
   private:
 
     boost::weak_ptr<Ekiga::PresenceCore> presence_core;
+    Ekiga::scoped_connections connections;
 
     std::string name;
     std::string uri;
