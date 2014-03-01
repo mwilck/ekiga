@@ -420,9 +420,11 @@ on_clicked_show_group_menu (HeapView* self,
     gtk_widget_show_all (builder.menu);
     gtk_menu_popup (GTK_MENU (builder.menu), NULL, NULL,
 		    NULL, NULL, event->button, event->time);
+    g_signal_connect (builder.menu, "hide",
+                      G_CALLBACK (g_object_unref),
+                      (gpointer) builder.menu);
   }
   g_object_ref_sink (builder.menu);
-  g_object_unref (builder.menu);
 }
 
 static void
@@ -447,9 +449,11 @@ on_clicked_show_presentity_menu (HeapView* self,
     gtk_widget_show_all (builder.menu);
     gtk_menu_popup (GTK_MENU (builder.menu), NULL, NULL,
 		    NULL, NULL, event->button, event->time);
+    g_signal_connect (builder.menu, "hide",
+                      G_CALLBACK (g_object_unref),
+                      (gpointer) builder.menu);
   }
   g_object_ref_sink (builder.menu);
-  g_object_unref (builder.menu);
 }
 
 static gint
