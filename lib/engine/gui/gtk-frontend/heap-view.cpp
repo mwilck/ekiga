@@ -296,12 +296,24 @@ on_presentity_added (HeapView* self,
     if (presentity->get_presence () != "unknown")
       icon = "user-" + presentity->get_presence ();
 
+    std::string status = presentity->get_status ();
+    if (status.empty ()) {
+      if (presentity->get_presence () == "away")
+        status = _("Away");
+      else if (presentity->get_presence () == "available")
+        status = _("Available");
+      else if (presentity->get_presence () == "offline")
+        status = _("Offline");
+      else if (presentity->get_presence () == "busy")
+        status = _("Busy");
+    }
+
     gtk_tree_store_set (self->priv->store, &iter,
 			COLUMN_TYPE, TYPE_PRESENTITY,
 			COLUMN_PRESENTITY, presentity.get (),
 			COLUMN_NAME, presentity->get_name ().c_str (),
 			COLUMN_PRESENCE, icon.c_str (),
-			COLUMN_STATUS, presentity->get_status ().c_str (),
+			COLUMN_STATUS, status.c_str (),
 			-1);
   }
 
@@ -576,9 +588,9 @@ heap_view_init (HeapView* self)
 
   /* hidden column to hide the default expanders */
   col = gtk_tree_view_column_new ();
+  gtk_tree_view_column_set_spacing (col, 0);
   gtk_tree_view_append_column (self->priv->view, col);
   renderer = gtk_cell_renderer_pixbuf_new ();
-  gtk_tree_view_column_set_spacing (col, 0);
   gtk_tree_view_column_pack_start (col, renderer, TRUE);
   g_object_set (col, "visible", FALSE, NULL);
   gtk_tree_view_set_expander_column (self->priv->view, col);
@@ -586,6 +598,7 @@ heap_view_init (HeapView* self)
 
   /* the real thing! */
   col = gtk_tree_view_column_new ();
+  gtk_tree_view_column_set_spacing (col, 0);
   gtk_tree_view_append_column (self->priv->view, col);
 
   /* our own expanders */
@@ -603,7 +616,6 @@ heap_view_init (HeapView* self)
 
   /* show the name of a group */
   renderer = gtk_cell_renderer_text_new ();
-  gtk_tree_view_column_set_spacing (col, 0);
   gtk_tree_view_column_pack_start (col, renderer, FALSE);
   gtk_tree_view_column_add_attribute (col, renderer, "text", COLUMN_NAME);
   gtk_tree_view_column_set_alignment (col, 0.0);
@@ -625,7 +637,7 @@ heap_view_init (HeapView* self)
 
   /* show the name+status of a presentity */
   renderer = gm_cell_renderer_bitext_new ();
-  gtk_tree_view_column_set_spacing (col, 0);
+  g_object_set (renderer, "ellipsize", PANGO_ELLIPSIZE_END, "width-chars", 30, NULL);
   gtk_tree_view_column_pack_start (col, renderer, FALSE);
   gtk_tree_view_column_add_attribute (col, renderer, "primary-text", COLUMN_NAME);
   gtk_tree_view_column_add_attribute (col, renderer, "secondary-text", COLUMN_STATUS);
