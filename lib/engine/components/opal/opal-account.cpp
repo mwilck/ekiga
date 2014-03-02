@@ -186,6 +186,7 @@ Opal::Account::Account (boost::shared_ptr<Opal::Sip::EndPoint> _sip_endpoint,
 	pres->trigger_saving.connect (boost::ref (trigger_saving));
 	pres->removed.connect (boost::bind (&Opal::Account::when_presentity_removed, this, pres));
 	pres->updated.connect (boost::bind (&Opal::Account::when_presentity_updated, this, pres));
+	pres->questions.connect (boost::ref (questions));
 	add_object (pres);
 	presentity_added (pres);
       }
