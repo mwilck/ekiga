@@ -129,6 +129,23 @@ gm_cell_renderer_bitext_get_preferred_height_for_width (GtkCellRenderer* cell,
   parent->get_preferred_height_for_width (cell, widget, width, minimum_size, natural_size);
 }
 
+static void
+gm_cell_renderer_bitext_render (GtkCellRenderer* cell,
+				cairo_t* cr,
+				GtkWidget* widget,
+				const GdkRectangle* background_area,
+				const GdkRectangle* cell_area,
+				GtkCellRendererState flags)
+{
+  GtkCellRendererClass* parent
+    = GTK_CELL_RENDERER_CLASS (gm_cell_renderer_bitext_parent_class);
+
+  gm_cell_renderer_bitext_update_style (GM_CELL_RENDERER_BITEXT (cell),
+					widget);
+
+  parent->render (cell, cr, widget, background_area, cell_area, flags);
+}
+
 /* GObject code */
 
 static void
@@ -231,6 +248,7 @@ gm_cell_renderer_bitext_class_init (GmCellRendererBitextClass* klass)
   g_type_class_add_private (klass, sizeof (GmCellRendererBitextPrivate));
 
   cell_class->get_preferred_height_for_width = gm_cell_renderer_bitext_get_preferred_height_for_width;
+  cell_class->render = gm_cell_renderer_bitext_render;
 
   gobject_class->finalize = gm_cell_renderer_bitext_finalize;
   gobject_class->get_property = gm_cell_renderer_bitext_get_property;
