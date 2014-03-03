@@ -46,8 +46,8 @@ namespace Ekiga {
     /* who? */
     const std::string name;
     /* For the payload the idea is:
-     * payload["bare"] for a bare text message for example
-     * paylord["xhtml"] for a XHTML-enhanced message
+     * payload["text/plain"] for a bare text message for example
+     * paylord["text/xhtml"] for a XHTML-enhanced message
      *
      * A gui trying to show a message would so something like:
      * iter = payload.find('xhtml')

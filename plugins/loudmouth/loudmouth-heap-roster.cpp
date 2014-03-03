@@ -234,7 +234,7 @@ LM::HeapRoster::handle_message (LmConnection* /*connection*/,
 
       result = LM_HANDLER_RESULT_REMOVE_MESSAGE;
       Ekiga::Message::payload_type payload;
-      payload["bare"] = lm_message_node_get_value (body);
+      payload["text/plain"] = lm_message_node_get_value (body);
       dialect->push_message (item, payload);
     }
     // it could also be an avatar or a pubsub event or...

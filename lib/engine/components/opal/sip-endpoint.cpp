@@ -197,7 +197,7 @@ Opal::Sip::EndPoint::send_message (const std::string & _uri,
 				   const Ekiga::Message::payload_type payload)
 {
   // FIXME: here we should check which kind of payload we have
-  Ekiga::Message::payload_type::const_iterator iter = payload.find("bare");
+  Ekiga::Message::payload_type::const_iterator iter = payload.find("text/plain");
   if (!_uri.empty () && (_uri.find ("sip:") == 0 || _uri.find (':') == string::npos) && iter != payload.end ()) {
     OpalIM im;
     im.m_to = PURL (_uri);
@@ -815,8 +815,8 @@ Opal::Sip::EndPoint::OnReceivedMESSAGE (OpalTransport & transport,
   std::string message_uri = (const char *) uri.AsString ();
   std::string _message = (const char *) pdu.GetEntityBody ();
   Ekiga::Message::payload_type payload;
-  // FIXME: we push as 'bare' without really knowing
-  payload.insert (std::make_pair ("bare", _message));
+  // FIXME: we push as 'text/plain' without really knowing
+  payload.insert (std::make_pair ("text/plain", _message));
   GTimeVal current;
   g_get_current_time (&current);
   gchar* time = g_time_val_to_iso8601 (&current);
@@ -850,8 +850,8 @@ Opal::Sip::EndPoint::OnMESSAGECompleted (const SIPMessage::Params & params,
   else
     reason_shown += SIP_PDU::GetStatusCodeDescription (reason);  // too many to translate them with _()...
   Ekiga::Message::payload_type payload;
-  // FIXME: we push as 'bare' without really knowing...
-  payload.insert (std::make_pair ("bare", reason_shown));
+  // FIXME: we push as 'text/plain' without really knowing...
+  payload.insert (std::make_pair ("text/plain", reason_shown));
   GTimeVal current;
   g_get_current_time (&current);
   gchar* time = g_time_val_to_iso8601 (&current);

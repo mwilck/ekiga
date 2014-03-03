@@ -546,8 +546,8 @@ message_activated_cb (G_GNUC_UNUSED GtkWidget *w,
     body = gtk_text_buffer_get_text (GTK_TEXT_BUFFER (buffer), &start_iter, &end_iter, TRUE);
 
     Ekiga::Message::payload_type message;
-    // FIXME: perhaps we have more than bare!
-    message.insert(std::make_pair("bare", body));
+    // FIXME: perhaps we have more than plain!
+    message.insert(std::make_pair("text/plain", body));
     if (self->priv->conversation->send_message (message))
       gtk_text_buffer_delete (GTK_TEXT_BUFFER (buffer), &start_iter, &end_iter);
 
@@ -572,12 +572,14 @@ on_message_received (ChatArea* self,
   if (message.name == "") {
 
 
-    Ekiga::Message::payload_type::const_iterator iter = message.payload.find ("bare");
+    Ekiga::Message::payload_type::const_iterator iter
+      = message.payload.find ("text/plain");
     if (iter != message.payload.end ())
       chat_area_add_notice (self, iter->second.c_str ());
   } else {
 
-    Ekiga::Message::payload_type::const_iterator iter = message.payload.find ("bare");
+    Ekiga::Message::payload_type::const_iterator iter
+      = message.payload.find ("text/plain");
     if (iter != message.payload.end ())
       chat_area_add_message (self, message.name.c_str (), iter->second.c_str ());
   }
