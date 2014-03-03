@@ -195,6 +195,28 @@ dnl ###############################
 
 GLIB_GSETTINGS
 
+dnl ###############################
+dnl   GUDev support
+dnl ###############################
+
+GUDEV="disabled"
+if test "x${gm_platform}" == "xlinux" ; then
+  AC_ARG_ENABLE(gudev, AS_HELP_STRING([--enable-gudev],[enable GUDev support (default is enabled)]),
+[if test "x$enableval" = "xyes"; then
+    enable_gudev=yes
+fi],enable_gudev=yes)
+
+  if test "x$enable_gudev" = "xyes"; then
+    PKG_CHECK_MODULES([GUDEV], [gudev-1.0], [found_gudev=yes])
+    AC_SUBST(GUDEV_CFLAGS)
+    AC_SUBST(GUDEV_LIBS)
+    GUDEV="enabled"
+    AC_DEFINE(HAVE_GUDEV,1,[GUDev support])
+  fi
+fi
+
+AM_CONDITIONAL(HAVE_GUDEV, test "x$found_gudev" = "xyes")
+
 
 dnl ###############################
 dnl   Evolution-data-server support
@@ -779,6 +801,9 @@ echo "   Evolution-Data-Server support  :  $EDS"
 echo "                  NOTIFY support  :  $NOTIFY"
 echo ""
 echo "             Video4Linux support  :  $VIDEO4LINUX"
+fi
+if test "x${gm_platform}" = "xlinux" ; then
+echo "                   GUDev support  :  $GUDEV"
 fi
 echo "                    LDAP support  :  $LDAP"
 echo ""
