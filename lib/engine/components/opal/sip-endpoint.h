@@ -76,7 +76,7 @@ namespace Opal {
 
       /* Set up endpoint: all options or a specific setting */
       void setup (std::string setting = "");
-      
+
       /* Service */
       const std::string get_name () const
       { return "opal-sip-endpoint"; }
@@ -88,6 +88,10 @@ namespace Opal {
       bool populate_menu (const std::string& fullname,
 			  const std::string& uri,
 			  Ekiga::MenuBuilder& builder);
+
+
+      /* Register actions on the ContactCore */
+      void register_actions (boost::shared_ptr<Ekiga::ContactCore> contact_core);
 
 
       /* Chat subsystem */
@@ -166,13 +170,25 @@ namespace Opal {
       SIPURL GetRegisteredPartyName (const SIPURL & host,
 				     const OpalTransport & transport);
 
+      /* Return true if URI can be handled by the endpoint,
+       * false otherwise.
+       */
+      bool is_valid_uri (const std::string & uri);
+
+      /* Return true if the endpoint is currently handling one or more calls,
+       * and there is an active call to transfer, false otherwise.
+       */
+      bool can_transfer (const std::string & uri);
+
 
       /* Callbacks */
     private:
-      void on_dial (std::string uri);
-      void on_message (std::string uri,
-		       std::string name);
-      void on_transfer (std::string uri);
+      void on_dial (Ekiga::ContactPtr contact,
+                    const std::string & uri);
+      void on_message (Ekiga::ContactPtr contact,
+                       const std::string & uri);
+      void on_transfer (Ekiga::ContactPtr contact,
+                        const std::string & uri);
 
       void push_message_in_main (const std::string uri,
 				 const std::string name,

@@ -210,8 +210,14 @@ History::Contact::get_call_start () const
   return call_start;
 }
 
-const std::string 
+const std::string
 History::Contact::get_call_duration () const
 {
   return call_duration;
+}
+
+const std::string
+History::Contact::get_uri () const
+{
+  return uri;
 }

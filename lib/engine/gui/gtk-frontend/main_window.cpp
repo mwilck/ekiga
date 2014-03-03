@@ -826,6 +826,11 @@ ekiga_main_window_init_actions_toolbar (EkigaMainWindow *mw)
   GtkWidget *box = NULL;
   GtkWidget *button = NULL;
 
+  GtkIconSize toolbar_size;
+  gint toolbar_size_px = 0;
+  gint menu_size_px = 0;
+  gint margin_px = 0;
+
   g_return_if_fail (EKIGA_IS_MAIN_WINDOW (mw));
 
   gtk_style_context_add_class (gtk_widget_get_style_context (GTK_WIDGET (mw)),
@@ -834,23 +839,31 @@ ekiga_main_window_init_actions_toolbar (EkigaMainWindow *mw)
   gtk_style_context_set_junction_sides (gtk_widget_get_style_context (GTK_WIDGET (mw)),
                                         GTK_JUNCTION_BOTTOM);
 
-  mw->priv->actions_toolbar = gtk_box_new (GTK_ORIENTATION_HORIZONTAL, 0);
+  mw->priv->actions_toolbar = gtk_header_bar_new ();
 
-  button = gtk_toggle_button_new ();
+  /* Compute the image button margin */
+  g_object_get (gtk_settings_get_default (), "gtk-toolbar-icon-size", &toolbar_size, NULL);
+  gtk_icon_size_lookup (GTK_ICON_SIZE_MENU, &menu_size_px, NULL);
+  gtk_icon_size_lookup (toolbar_size, &toolbar_size_px, NULL);
+  margin_px = (gint) floor ((toolbar_size_px - menu_size_px) / 2.0);
+
+  /* Start packing buttons */
+  mw->priv->preview_button = gtk_toggle_button_new ();
   image = gtk_image_new_from_icon_name ("camera-web-symbolic", GTK_ICON_SIZE_MENU);
-  g_object_set (G_OBJECT (image), "margin", 3, NULL);
-  gtk_button_set_image (GTK_BUTTON (button), image);
-  gtk_widget_set_tooltip_text (GTK_WIDGET (button),
+  g_object_set (G_OBJECT (image), "margin", margin_px, NULL);
+  gtk_button_set_image (GTK_BUTTON (mw->priv->preview_button), image);
+  gtk_widget_set_tooltip_text (GTK_WIDGET (mw->priv->preview_button),
                                _("Display images from your camera device"));
-  gtk_actionable_set_detailed_action_name (GTK_ACTIONABLE (button), "win.enable-preview");
-  gtk_box_pack_start (GTK_BOX (mw->priv->actions_toolbar), button, FALSE, FALSE, 0);
-  gtk_widget_set_margin_left (button, 6);
-  gtk_widget_set_margin_right (button, 6);
+  gtk_actionable_set_detailed_action_name (GTK_ACTIONABLE (mw->priv->preview_button),
+                                           "win.enable-preview");
+  gtk_header_bar_pack_start (GTK_HEADER_BAR (mw->priv->actions_toolbar), mw->priv->preview_button);
+  gtk_widget_set_margin_left (mw->priv->preview_button, 6);
+  gtk_widget_set_margin_right (mw->priv->preview_button, 6);
 
   box = gtk_box_new (GTK_ORIENTATION_HORIZONTAL, 0);
   button = gtk_toggle_button_new ();
   image = gtk_image_new_from_icon_name ("avatar-default-symbolic", GTK_ICON_SIZE_MENU);
-  g_object_set (G_OBJECT (image), "margin", 3, NULL);
+  g_object_set (G_OBJECT (image), "margin", margin_px, NULL);
   gtk_button_set_image (GTK_BUTTON (button), image);
   gtk_widget_set_tooltip_text (GTK_WIDGET (button),
                                _("View the contacts list"));
@@ -859,7 +872,7 @@ ekiga_main_window_init_actions_toolbar (EkigaMainWindow *mw)
 
   button = gtk_toggle_button_new ();
   image = gtk_image_new_from_icon_name ("input-dialpad-symbolic", GTK_ICON_SIZE_MENU);
-  g_object_set (G_OBJECT (image), "margin", 3, NULL);
+  g_object_set (G_OBJECT (image), "margin", margin_px, NULL);
   gtk_button_set_image (GTK_BUTTON (button), image);
   gtk_widget_set_tooltip_text (GTK_WIDGET (button),
                                _("View the dialpad"));
@@ -868,7 +881,7 @@ ekiga_main_window_init_actions_toolbar (EkigaMainWindow *mw)
 
   button = gtk_toggle_button_new ();
   image = gtk_image_new_from_icon_name ("document-open-recent-symbolic", GTK_ICON_SIZE_MENU);
-  g_object_set (G_OBJECT (image), "margin", 3, NULL);
+  g_object_set (G_OBJECT (image), "margin", margin_px, NULL);
   gtk_button_set_image (GTK_BUTTON (button), image);
   gtk_widget_set_tooltip_text (GTK_WIDGET (button),
                                _("View the call history"));
@@ -880,17 +893,17 @@ ekiga_main_window_init_actions_toolbar (EkigaMainWindow *mw)
   gtk_style_context_add_class (gtk_widget_get_style_context (box),
                                GTK_STYLE_CLASS_LINKED);
 
-  gtk_box_pack_start (GTK_BOX (mw->priv->actions_toolbar), box, FALSE, FALSE, 0);
+  gtk_header_bar_pack_start (GTK_HEADER_BAR (mw->priv->actions_toolbar), box);
   gtk_widget_set_margin_left (box, 6);
   gtk_widget_set_margin_right (box, 6);
 
   button = gtk_menu_button_new ();
   image = gtk_image_new_from_icon_name ("emblem-system-symbolic", GTK_ICON_SIZE_MENU);
-  g_object_set (G_OBJECT (image), "margin", 3, NULL);
+  g_object_set (G_OBJECT (image), "margin", margin_px, NULL);
   gtk_button_set_image (GTK_BUTTON (button), image);
   gtk_menu_button_set_menu_model (GTK_MENU_BUTTON (button),
                                   G_MENU_MODEL (gtk_builder_get_object (mw->priv->builder, "menubar")));
-  gtk_box_pack_end (GTK_BOX (mw->priv->actions_toolbar), button, FALSE, FALSE, 0);
+  gtk_header_bar_pack_end (GTK_HEADER_BAR (mw->priv->actions_toolbar), button);
   gtk_widget_set_margin_left (button, 6);
   gtk_widget_set_margin_right (button, 6);
 }
@@ -905,6 +918,10 @@ ekiga_main_window_init_menu (EkigaMainWindow *mw)
     "    <section id='action'>"
     "    </section>"
     "    <section>"
+    "      <item>"
+    "        <attribute name='label' translatable='yes'>_Aontact</attribute>"
+    "        <attribute name='action'>win.clear</attribute>"
+    "      </item>"
     "      <item>"
     "        <attribute name='label' translatable='yes'>_Add Contact</attribute>"
     "        <attribute name='action'>win.add</attribute>"
@@ -1008,7 +1025,8 @@ ekiga_main_window_init_history (EkigaMainWindow *mw)
   boost::shared_ptr<History::Book> history_book
     = mw->priv->history_source->get_book ();
 
-  mw->priv->call_history_view = call_history_view_gtk_new (history_book);
+  mw->priv->call_history_view = call_history_view_gtk_new (history_book,
+                                                           mw->priv->contact_core);
 
   label = gtk_label_new (_("Call history"));
   mw->priv->call_history_page_number =
@@ -1139,6 +1157,8 @@ ekiga_main_window_dispose (GObject* gobject)
     g_object_unref (mw->priv->roster_view);
     mw->priv->roster_view = NULL;
   }
+  g_object_unref (mw->priv->builder);
+  mw->priv->builder = NULL;
 
   G_OBJECT_CLASS (ekiga_main_window_parent_class)->dispose (gobject);
 }

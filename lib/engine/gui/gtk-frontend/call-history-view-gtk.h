@@ -50,7 +50,8 @@ typedef struct _CallHistoryViewGtkClass CallHistoryViewGtkClass;
  */
 
 /* creating the widget, connected to an History::Book object */
-GtkWidget *call_history_view_gtk_new (boost::shared_ptr<History::Book> book);
+GtkWidget *call_history_view_gtk_new (boost::shared_ptr<History::Book> book,
+                                      boost::shared_ptr<Ekiga::ContactCore> ccore);
 
 
 /* Whatever is selected, we want the view to populate the given menu builder

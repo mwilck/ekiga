@@ -99,6 +99,8 @@ namespace History
 
     const std::string get_call_duration () const;
 
+    const std::string get_uri () const;
+
   private:
 
     boost::weak_ptr<Ekiga::ContactCore> contact_core;

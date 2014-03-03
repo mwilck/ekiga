@@ -43,6 +43,15 @@
 #include "menu-builder-tools.h"
 #include "menu-builder-gtk.h"
 #include "gm-cell-renderer-bitext.h"
+#include "live-object-menu.h"
+
+
+struct null_deleter
+{
+  void operator()(void const *) const
+  {
+  }
+};
 
 
 struct _CallHistoryViewGtkPrivate
@@ -52,6 +61,8 @@ struct _CallHistoryViewGtkPrivate
   {}
 
   boost::shared_ptr<History::Book> book;
+  boost::shared_ptr<Ekiga::ActorMenu> menu;
+  boost::shared_ptr<Ekiga::ContactActorMenu> contact_menu;
   GtkListStore* store;
   GtkTreeView* tree;
   boost::signals2::scoped_connection connection;
@@ -155,15 +166,16 @@ on_clicked (GtkWidget *tree,
 	    GdkEventButton *event,
 	    gpointer data)
 {
-  History::Book *book = NULL;
+  GtkWidget *menu = NULL;
+  GtkBuilder *builder = NULL;
   GtkTreeModel *model = NULL;
   GtkTreePath *path = NULL;
   GtkTreeIter iter;
-  Ekiga::Contact *contact = NULL;
+  History::Contact *contact = NULL;
 
-  book = (History::Book*)data;
+  CallHistoryViewGtk *self = CALL_HISTORY_VIEW_GTK (data);
+
   model = gtk_tree_view_get_model (GTK_TREE_VIEW (tree));
-
 
   if (gtk_tree_view_get_path_at_pos (GTK_TREE_VIEW (tree),
 				     (gint) event->x, (gint) event->y,
@@ -175,23 +187,26 @@ on_clicked (GtkWidget *tree,
 			  COLUMN_CONTACT, &contact,
 			  -1);
 
-
       if (event->type == GDK_BUTTON_PRESS && event->button == 3) {
 
-	MenuBuilderGtk builder;
-	if (contact != NULL)
-	  contact->populate_menu (builder);
-	if (!builder.empty())
-	  builder.add_separator ();
-	builder.add_action ("gtk-clear", _("Clear List"),
-			    boost::bind (&History::Book::clear, book));
-	gtk_widget_show_all (builder.menu);
-	gtk_menu_popup (GTK_MENU (builder.menu), NULL, NULL,
+        builder = gtk_builder_new ();
+
+        self->priv->contact_menu->set_data (Ekiga::ContactPtr (contact, null_deleter ()),
+                                            contact->get_uri ());
+        std::string menu_content = self->priv->contact_menu->as_xml () + self->priv->menu->as_xml ();
+        gtk_builder_add_from_string (builder,
+                                     Ekiga::ActorMenu::get_xml_menu ("popup", menu_content, true).c_str (),
+                                     -1, NULL);
+        menu = gtk_menu_new_from_model (G_MENU_MODEL (gtk_builder_get_object (builder, "popup")));
+        gtk_widget_insert_action_group (menu, "win", G_ACTION_GROUP (g_application_get_default ()));
+	gtk_menu_popup (GTK_MENU (menu), NULL, NULL,
 			NULL, NULL, event->button, event->time);
-	g_object_ref_sink (builder.menu);
+	g_object_ref (menu);
+        g_object_unref (builder);
       }
       if (event->type == GDK_2BUTTON_PRESS) {
 
+        std::cout << "FIXME" << std::endl << std::flush;
 	if (contact != NULL) {
 
 	  Ekiga::TriggerMenuBuilder builder;
@@ -297,7 +312,8 @@ call_history_view_gtk_class_init (CallHistoryViewGtkClass* klass)
 /* public api */
 
 GtkWidget *
-call_history_view_gtk_new (boost::shared_ptr<History::Book> book)
+call_history_view_gtk_new (boost::shared_ptr<History::Book> book,
+                           boost::shared_ptr<Ekiga::ContactCore> ccore)
 {
   CallHistoryViewGtk* self = NULL;
 
@@ -349,7 +365,7 @@ call_history_view_gtk_new (boost::shared_ptr<History::Book> book)
   g_signal_connect (selection, "changed",
 		    G_CALLBACK (on_selection_changed), self);
   g_signal_connect (self->priv->tree, "event-after",
-		    G_CALLBACK (on_clicked), &(*book));
+		    G_CALLBACK (on_clicked), self);
 
   /* connect to the signal */
   self->priv->connection = book->updated.connect (boost::bind (&on_book_updated, self));
@@ -357,7 +373,13 @@ call_history_view_gtk_new (boost::shared_ptr<History::Book> book)
   /* initial populate */
   on_book_updated(self);
 
-  return (GtkWidget*)self;
+  /* register book actions */
+  self->priv->menu =
+    boost::shared_ptr<Ekiga::ActorMenu> (new Ekiga::ActorMenu (*book));
+  self->priv->contact_menu =
+    boost::shared_ptr<Ekiga::ContactActorMenu> (new Ekiga::ContactActorMenu (*ccore));
+
+  return GTK_WIDGET (self);
 }
 
 void
