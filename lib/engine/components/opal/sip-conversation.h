@@ -57,11 +57,11 @@ namespace SIP {
     Ekiga::HeapPtr get_heap () const
     { return boost::dynamic_pointer_cast<Ekiga::Heap>(heap); }
 
-    // FIXME: is that part of the api any good?!
     const std::string get_title () const
     { return title; }
-    const std::string get_topic () const
-    { return topic; }
+
+    const std::string get_status () const
+    { return status; }
 
     void visit_messages (boost::function1<bool, const Ekiga::Message&> visitor) const;
     bool send_message (const Ekiga::Message::payload_type& payload);
@@ -85,9 +85,9 @@ namespace SIP {
     boost::weak_ptr<Ekiga::PresenceCore> presence_core;
     std::string uri;
     std::string title;
+    std::string status;
     boost::function1<bool, Ekiga::Message::payload_type> sender;
     boost::shared_ptr<Heap> heap;
-    std::string topic;
     int unreads;
     std::list<Ekiga::Message> messages;
   };

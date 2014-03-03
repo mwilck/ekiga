@@ -54,8 +54,8 @@ namespace LM {
     const std::string get_title () const
     { return title; }
 
-    const std::string get_topic () const
-    { return topic; }
+    const std::string get_status () const
+    { return status; }
 
     void visit_messages (boost::function1<bool, const Ekiga::Message&>) const;
 
@@ -76,7 +76,7 @@ namespace LM {
   private:
     int unreads;
     std::string title;
-    std::string topic;
+    std::string status;
     std::list<Ekiga::Message> messages;
   };
 
