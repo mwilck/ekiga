@@ -50,11 +50,11 @@ namespace Ekiga {
      * paylord["text/xhtml"] for a XHTML-enhanced message
      *
      * A gui trying to show a message would so something like:
-     * iter = payload.find('xhtml')
+     * iter = payload.find('text/xhtml')
      * if (iter != msg.payload.end())
      *     display_xhtml (iter->second);
      *
-     * iter = msg.payload.find('bare')
+     * iter = msg.payload.find('text/plain')
      * if (iter != msg.payload.end())
      *     display_bare (iter->second);
      *
@@ -71,11 +71,15 @@ namespace Ekiga {
     /* This contains the list of people we discuss with */
     virtual HeapPtr get_heap () const = 0;
 
-    /*FIXME: perhaps a std::map<const std::string, const std::string>
-     * would be better?
+    /* The title of the conversation
+     * (which can be as simple as the name of the remote contact/room)
      */
     virtual const std::string get_title () const = 0;
-    virtual const std::string get_topic () const = 0;
+
+    /* The conversation status
+     * (can for example contain typing notifications)
+     */
+    virtual const std::string get_status () const = 0;
 
     /* A view created after a conversation started needs to be able to list
      * the existing messages
@@ -96,6 +100,30 @@ namespace Ekiga {
      */
     virtual int get_unread_messages_count () const = 0;
     virtual void reset_unread_messages_count () = 0;
+
+    /* Those are properties accessors, which can be used to access
+     * things like a 'topic', for example, which make little sense in
+     * a generic api but could still be handy in a gui.
+     *
+     * Beware that if you check the result directly (in an if, or passing it
+     * through a function, the obtained value will be wether or not the value
+     * is available, and not the value itself!
+     *
+     * To be more specific, you're supposed to:
+     * val = foo.get_bool_property ("bar");
+     * if (val) {
+     *   <do something with *val> (notice *val not val!)
+     * }
+     */
+    virtual boost::optional<bool> get_bool_property (const std::string) const
+    { return boost::optional<bool> (); }
+
+    virtual boost::optional<int> get_int_property (const std::string) const
+    { return boost::optional<int> (); }
+
+    virtual boost::optional<std::string> get_string_property (const std::string) const
+    { return boost::optional<std::string> (); }
+
 
     /* views which already exist need to know only about new messages */
     boost::signals2::signal<void(const Message&)> message_received;
