@@ -47,6 +47,7 @@ struct _ConversationPagePrivate {
   Ekiga::scoped_connections connections;
   GtkWidget* area;
   GtkWidget* heapview;
+  GtkWidget* header;
   gchar* title;
 };
 
@@ -75,7 +76,7 @@ on_page_grab_focus (GtkWidget* widget,
 }
 
 static void
-conversation_page_update_title (ConversationPage* self)
+conversation_page_update_title_and_status (ConversationPage* self)
 {
   g_free (self->priv->title);
   guint unread_count = self->priv->conversation->get_unread_messages_count ();
@@ -89,6 +90,9 @@ conversation_page_update_title (ConversationPage* self)
     self->priv->title = g_strdup_printf ("%s",
 					 self->priv->conversation->get_title ().c_str ());
   }
+  gtk_header_bar_set_title (GTK_HEADER_BAR (self->priv->header), self->priv->title);
+  gtk_header_bar_set_subtitle (GTK_HEADER_BAR (self->priv->header),
+			       self->priv->conversation->get_status ().c_str ());
 }
 
 static void
@@ -133,29 +137,45 @@ GtkWidget*
 conversation_page_new (Ekiga::ConversationPtr conversation)
 {
   ConversationPage* result = NULL;
+  GtkWidget* header = NULL;
+  GtkWidget* box = NULL;
   GtkWidget* area = NULL;
   GtkWidget* heapview = NULL;
 
-  result = (ConversationPage*)g_object_new (TYPE_CONVERSATION_PAGE, NULL);
+  result = (ConversationPage*)g_object_new (TYPE_CONVERSATION_PAGE,
+					    "orientation", GTK_ORIENTATION_VERTICAL,
+					    NULL);
 
   result->priv->conversation = conversation;
   result->priv->title = NULL;
-  conversation_page_update_title (result);
 
   result->priv->connections.add (conversation->updated.connect (boost::bind (&on_conversation_updated, result)));
 
+  header = gtk_header_bar_new ();
+  result->priv->header = header;
+  gtk_box_pack_start (GTK_BOX (result), header,
+		      FALSE, FALSE, 2);
+  gtk_widget_show (header);
+
+  box = gtk_box_new (GTK_ORIENTATION_HORIZONTAL, 2);
+  gtk_box_pack_start (GTK_BOX (result), box,
+		      TRUE, TRUE, 2);
+  gtk_widget_show (box);
+
   area = chat_area_new (conversation);
   result->priv->area = area;
-  gtk_box_pack_start (GTK_BOX (result), area,
-		      TRUE,TRUE, 2);
+  gtk_box_pack_start (GTK_BOX (box), area,
+		      TRUE, TRUE, 2);
   gtk_widget_show (area);
 
   heapview = heap_view_new (conversation->get_heap());
 
   result->priv->heapview = heapview;
-  gtk_box_pack_start (GTK_BOX (result), heapview,
-		      TRUE,TRUE, 2);
+  gtk_box_pack_start (GTK_BOX (box), heapview,
+		      TRUE, TRUE, 2);
   gtk_widget_show (heapview);
+
+  conversation_page_update_title_and_status (result);
 
   return GTK_WIDGET (result);
 }
@@ -182,5 +202,5 @@ conversation_page_get_conversation (ConversationPage* page)
   g_return_val_if_fail (IS_CONVERSATION_PAGE (page), Ekiga::ConversationPtr());
 
   return page->priv->conversation;
-  
+
 }
