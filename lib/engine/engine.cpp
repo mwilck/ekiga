@@ -72,6 +72,10 @@
 #include "audioinput-main-ptlib.h"
 #include "audiooutput-main-ptlib.h"
 
+#ifdef HAVE_GUDEV
+#include "hal-gudev-main.h"
+#endif
+
 #ifdef HAVE_DBUS
 #include "hal-main-dbus.h"
 #endif
@@ -140,6 +144,10 @@ engine_init (Ekiga::ServiceCorePtr service_core,
 
   audioinput_ptlib_init (kickstart);
   audiooutput_ptlib_init (kickstart);
+
+#ifdef HAVE_GUDEV
+  hal_gudev_init (kickstart);
+#endif
 
 #ifdef HAVE_DBUS
   hal_dbus_init (kickstart);

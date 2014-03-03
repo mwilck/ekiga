@@ -36,6 +36,7 @@ AM_CPPFLAGS = \
 	-I$(top_srcdir)/lib/engine/components/echo \
 	-I$(top_srcdir)/lib/engine/components/gmconf-personal-details \
 	-I$(top_srcdir)/lib/engine/components/hal-dbus \
+	-I$(top_srcdir)/lib/engine/components/hal-gudev \
 	-I$(top_srcdir)/lib/engine/components/local-roster \
 	-I$(top_srcdir)/lib/engine/components/mlogo-videoinput \
 	-I$(top_srcdir)/lib/engine/components/null-audioinput \
@@ -515,6 +516,20 @@ libekiga_la_SOURCES += \
 	engine/components/null-audiooutput/audiooutput-manager-null.cpp \
 	engine/components/null-audiooutput/audiooutput-main-null.h \
 	engine/components/null-audiooutput/audiooutput-main-null.cpp
+
+##
+# Sources of the GUDev component
+##
+if HAVE_GUDEV
+libekiga_la_SOURCES += \
+	engine/components/hal-gudev/hal-gudev-monitor.h \
+	engine/components/hal-gudev/hal-gudev-monitor.cpp \
+	engine/components/hal-gudev/hal-gudev-main.h \
+	engine/components/hal-gudev/hal-gudev-main.cpp
+
+AM_CPPFLAGS += $(GUDEV_CFLAGS)
+libekiga_la_LDFLAGS += $(GUDEV_LIBS)
+endif
 
 ##
 # Sources of the hal dbus component
