@@ -38,7 +38,6 @@
 #define __OPAL_CODEC_DESCRIPTION_H__
 
 #include <ptlib.h>
-#include <opal/buildopts.h>
 #include <opal/manager.h>
 
 #include "codec-description.h"
