@@ -93,6 +93,8 @@ engine_init (Ekiga::ServiceCorePtr service_core,
   // (for speed and because that's less code)
 
   Ekiga::ServicePtr notification_core(new Ekiga::NotificationCore);
+  service_core->add (notification_core);
+
   boost::shared_ptr<Ekiga::AccountCore> account_core (new Ekiga::AccountCore);
   boost::shared_ptr<Ekiga::ContactCore> contact_core (new Ekiga::ContactCore);
   boost::shared_ptr<Ekiga::CallCore> call_core (new Ekiga::CallCore);
@@ -106,7 +108,6 @@ engine_init (Ekiga::ServiceCorePtr service_core,
   boost::shared_ptr<Gmconf::PersonalDetails> details(new Gmconf::PersonalDetails);
   boost::shared_ptr<Ekiga::PresenceCore> presence_core(new Ekiga::PresenceCore (details));
 
-  service_core->add (notification_core);
   service_core->add (contact_core);
   service_core->add (chat_core);
   service_core->add (friend_or_foe);
