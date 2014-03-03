@@ -40,7 +40,6 @@
 
 #include "videoinput-manager.h"
 
-#include <ptbuildopts.h>
 #include <ptlib/videoio.h>
 
 /**

@@ -38,7 +38,6 @@
 #ifndef __AUDIOINPUT_MANAGER_PTLIB_H__
 #define __AUDIOINPUT_MANAGER_PTLIB_H__
 
-#include <ptbuildopts.h>
 #include <ptlib/sound.h>
 
 #include "services.h"
