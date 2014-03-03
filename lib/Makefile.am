@@ -163,6 +163,10 @@ libekiga_la_SOURCES += \
 ##
 
 libekiga_la_SOURCES += \
+	engine/framework/action.h \
+	engine/framework/action.cpp \
+	engine/framework/actor.h \
+	engine/framework/actor.cpp \
 	engine/framework/boost-exceptions.cpp \
 	engine/framework/services.h \
 	engine/framework/map-key-iterator.h \
@@ -231,6 +235,8 @@ libekiga_la_SOURCES += \
 	engine/addressbook/book-impl.h \
 	engine/addressbook/source.h \
 	engine/addressbook/source-impl.h \
+	engine/addressbook/contact-action.h \
+	engine/addressbook/contact-action.cpp \
 	engine/addressbook/contact-core.h \
 	engine/addressbook/contact-core.cpp
 
@@ -354,6 +360,8 @@ libekiga_la_SOURCES += \
 	engine/gui/gtk-core/menu-builder-gtk.cpp \
 	engine/gui/gtk-core/form-dialog-gtk.h \
 	engine/gui/gtk-core/form-dialog-gtk.cpp \
+	engine/gui/gtk-core/live-object-menu.h \
+	engine/gui/gtk-core/live-object-menu.cpp \
 	engine/gui/gtk-core/optional-buttons-gtk.h \
 	engine/gui/gtk-core/optional-buttons-gtk.cpp \
 	engine/gui/gtk-core/codecsbox.cpp \
