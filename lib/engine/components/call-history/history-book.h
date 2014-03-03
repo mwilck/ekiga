@@ -55,6 +55,7 @@ namespace History
 
   class Book:
     public Ekiga::Book,
+    public Ekiga::Actor,
     public boost::signals2::trackable
   {
   public:
@@ -77,6 +78,11 @@ namespace History
 
     const std::string get_icon () const
     { return "document-open-recent"; }
+
+
+    /* Actor api */
+    void register_actions ();
+
 
     /* more specific api */
 

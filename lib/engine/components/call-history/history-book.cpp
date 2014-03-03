@@ -82,6 +82,9 @@ History::Book::Book (Ekiga::ServiceCore& core):
   call_core->cleared_call.connect (boost::bind (&History::Book::on_cleared_call, this, _1, _2, _3));
 
   enforce_size_limit ();
+
+  /* Ready to take actions */
+  register_actions ();
 }
 
 History::Book::~Book ()
@@ -101,6 +104,16 @@ History::Book::visit_contacts (boost::function1<bool, Ekiga::ContactPtr> visitor
        iter != ordered_contacts.end();
        ++iter)
     visitor (*iter);
+}
+
+void
+History::Book::register_actions ()
+{
+  /* Add Actor actions */
+  add_action (ActionPtr (new Ekiga::Action ("history_book_clear",
+                                            _("Clear History"),
+                                            boost::bind (&History::Book::clear,
+                                                         this))));
 }
 
 void
