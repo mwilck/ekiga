@@ -58,7 +58,6 @@ extern "C" {
     std::string category;
     std::string name;
     std::string type;
-    unsigned video_capabilities;
   } HalDevice;
 
   typedef struct NmInterface {

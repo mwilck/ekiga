@@ -542,12 +542,6 @@ libekiga_la_SOURCES += \
 	engine/components/hal-dbus/hal-main-dbus.h \
 	engine/components/hal-dbus/hal-main-dbus.cpp
 
-if HAVE_V4L
-libekiga_la_SOURCES += \
-	engine/components/hal-dbus/hal-v4l-helper.h \
-	engine/components/hal-dbus/hal-v4l-helper.c
-endif
-
 nodist_libekiga_la_SOURCES += \
 	engine/components/hal-dbus/hal-marshal.h \
 	engine/components/hal-dbus/hal-marshal.c

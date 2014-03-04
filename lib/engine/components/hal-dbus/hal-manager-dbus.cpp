@@ -41,12 +41,6 @@
 #include <dbus/dbus-glib-lowlevel.h>
 #include <glib.h>
 
-#ifdef HAVE_V4L
-extern "C" {
-#include "hal-v4l-helper.h"
-}
-#endif /* HAVE_V4L */
-
 //FIXME: for tracing
 #include <ptlib.h>
 
@@ -143,7 +137,7 @@ void HalManager_dbus::device_added_cb (const char *device)
     return;
 
   hal_devices.push_back(hal_device);
-  PTRACE(4, "HalManager_dbus\tAdded device " << hal_device.category << "," << hal_device.name << "," << hal_device.type << " Video Capabilities: " << hal_device.video_capabilities);
+  PTRACE(4, "HalManager_dbus\tAdded device " << hal_device.category << "," << hal_device.name << "," << hal_device.type);
 
   if (hal_device.category == "alsa") {
 
@@ -158,13 +152,6 @@ void HalManager_dbus::device_added_cb (const char *device)
     audioinput_device_added(hal_device.category, hal_device.name);
     audiooutput_device_added(hal_device.category, hal_device.name);
   }
-  else if (hal_device.category == "video4linux") {
-      if (hal_device.video_capabilities & 0x01) 
-        videoinput_device_added(hal_device.category, hal_device.name, 0x01);
-      if (hal_device.video_capabilities & 0x02) 
-        videoinput_device_added(hal_device.category, hal_device.name, 0x02);
-  }
-
 }
 
 void HalManager_dbus::device_removed_cb (const char *device)
@@ -175,16 +162,16 @@ void HalManager_dbus::device_removed_cb (const char *device)
   for (iter = hal_devices.begin ();
        iter != hal_devices.end () ;
        iter++)
-      if (iter->key == device) { 
+      if (iter->key == device) {
         found = true;
         break;
       }
 
   if (found) {
-    PTRACE(4, "HalManager_dbus\tRemoved device " << iter->category << "," << iter->name << "," << iter->type << " Video Capabilities: " << iter->video_capabilities);
+    PTRACE(4, "HalManager_dbus\tRemoved device " << iter->category << "," << iter->name << "," << iter->type);
 
     if (iter->category == "alsa") {
-  
+
       if (iter->type == "capture") {
         audioinput_device_removed(iter->category, iter->name);
       }
@@ -196,14 +183,6 @@ void HalManager_dbus::device_removed_cb (const char *device)
       audioinput_device_removed(iter->category, iter->name);
       audiooutput_device_removed(iter->category, iter->name);
     }
-    else if (iter->category == "video4linux") {
-      if (iter->video_capabilities & 0x01) 
-        videoinput_device_removed(iter->category, iter->name, 0x01);
-      if (iter->video_capabilities & 0x02) 
-        videoinput_device_removed(iter->category, iter->name, 0x02);
-	
-    }
-
 
     hal_devices.erase(iter);
   }
@@ -230,7 +209,7 @@ void HalManager_dbus::interface_no_longer_active_cb (const char *interface)
   for (iter = nm_interfaces.begin ();
        iter != nm_interfaces.end () ;
        iter++)
-      if (iter->key == interface) { 
+      if (iter->key == interface) {
         found = true;
         break;
       }
@@ -258,7 +237,7 @@ void HalManager_dbus::get_string_property(DBusGProxy *proxy, const char * proper
   if (error != NULL)
     g_error_free(error);
    else
-     if (c_value) 
+     if (c_value)
        value = c_value;
 
   g_free (c_value);
@@ -274,8 +253,6 @@ bool HalManager_dbus::get_device_type_name (const char * device, HalDevice & hal
                                                  "org.freedesktop.Hal.Device");
   get_string_property(device_proxy, "info.category", hal_device.category);
 
-  hal_device.video_capabilities = 0;
-
   if (hal_device.category == "alsa") {
     get_string_property(device_proxy, "alsa.card_id", hal_device.name);
     get_string_property(device_proxy, "alsa.type", hal_device.type);
@@ -286,72 +263,9 @@ bool HalManager_dbus::get_device_type_name (const char * device, HalDevice & hal
     hal_device.type = "";
     ret = true;
   }
-  else if (hal_device.category == "video4linux") {
-  
-#ifdef HAVE_V4L
-    std::string device_dir;
-    char* v4l1_name;
-    char* v4l2_name;
-    int supported_versions;
-
-    get_string_property(device_proxy, "video4linux.device", device_dir);
-
-    if (device_dir != "") {
-      supported_versions = v4l_get_device_names ((const char*) device_dir.c_str(), &v4l1_name, &v4l2_name);
-
-      if (supported_versions == 0) {
-        PTRACE(1, "HalManager_dbus\tNo supported V4L version detected for device " << device_dir);
-        hal_device.name = device_dir;
-        hal_device.type = "";
-      }
-      else if (supported_versions == -1) {
-        PTRACE(1, "HalManager_dbus\tCould not open device " << device_dir);
-        hal_device.name = device_dir;
-        hal_device.type = "";
-      }
-      else {
-        if (supported_versions && 1) {
-          if (v4l1_name) {
-            PTRACE(4, "HalManager_dbus\tDetected V4L capabilities on " << device_dir << " name: " << v4l1_name);
-            hal_device.name = v4l1_name;
-            hal_device.type = "capture";
-            hal_device.video_capabilities  |= V4L_VERSION_1;
-          }
-          else {
-            PTRACE(4, "HalManager_dbus\tSkipped V4L1 device " << device_dir <<  "without name");
-            ret = false;
-          }
-        }
-        if (supported_versions && 2) {
-          if (v4l2_name) {
-            PTRACE(4, "HalManager_dbus\tDetected V4L2 capabilities on " << device_dir << " name: " << v4l2_name);
-            hal_device.name = v4l2_name;
-            hal_device.type = "capture";
-            hal_device.video_capabilities  |= V4L_VERSION_2;
-            ret = true;
-          }
-          else {
-            PTRACE(4, "HalManager_dbus\tSkipped V4L2 device " << device_dir <<  "without name");
-            ret = false;
-          }
-        }
-
-      }
-  
-      v4l_free_device_name(&v4l1_name);
-      v4l_free_device_name(&v4l2_name);
-    }
-#endif /* HAVE_V4L */
-  }
 
   g_object_unref(device_proxy);
-  
-  // FIXME: Hack to support badly named Logitech devices
-  // Maybe this should be fixed in hald?
-  if (hal_device.name.substr(0, 17) == "Logitech Logitech") {
-    hal_device.name = hal_device.name.substr(9);
-  }
-  
+
   return ret;
 }
 
@@ -369,14 +283,14 @@ void HalManager_dbus::get_interface_name_ip (const char * interface, NmInterface
                                                  "org.freedesktop.NetworkManager.Properties");
   nm_interface.key = interface;
 
-  
+
 // getName
   dbus_g_proxy_call (interface_proxy, "getName", &error, G_TYPE_INVALID, G_TYPE_STRING, &c_value, G_TYPE_INVALID);
 
   if (error != NULL)
     g_error_free(error);
    else
-     if (c_value) 
+     if (c_value)
        nm_interface.name = c_value;
 
   g_free (c_value);
@@ -425,12 +339,11 @@ void HalManager_dbus::populate_devices_list ()
 
   for (device_list_ptr = device_list; *device_list_ptr; device_list_ptr++) {
     hal_device.key = *device_list_ptr;
-    
+
     if (hal_device.key != "/org/freedesktop/Hal/devices/computer") {
       if (get_device_type_name(*device_list_ptr, hal_device)) {
         if ( (hal_device.category == "alsa") ||
-             (hal_device.category == "oss") ||
-             (hal_device.category == "video4linux") )  
+             (hal_device.category == "oss"))
               hal_devices.push_back(hal_device);
       }
     }
