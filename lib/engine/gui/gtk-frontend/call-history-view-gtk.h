@@ -59,6 +59,9 @@ GtkWidget *call_history_view_gtk_new (boost::shared_ptr<History::Book> book,
 bool call_history_view_gtk_populate_menu_for_selected (CallHistoryViewGtk* self,
 						       Ekiga::MenuBuilder &builder);
 
+void call_history_view_gtk_get_selected (CallHistoryViewGtk* self,
+                                         History::Contact** contact);
+
 /* The signals emitted by this widget:
  *
  * - "selection-changed", comes with nothing -- it just says that either
