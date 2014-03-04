@@ -180,10 +180,10 @@ LibNotify::LibNotify (Ekiga::ServiceCore& core)
     g_list_free (capabilities);
   }
   /* Notifications coming from various components */
-  connections.append (notification_core->notification_added.connect (boost::bind (&LibNotify::on_notification_added, this, _1)));
+  connections.add (notification_core->notification_added.connect (boost::bind (&LibNotify::on_notification_added, this, _1)));
 
   /* Specific notifications */
-  connections.append (call_core->setup_call.connect (boost::bind (&LibNotify::on_call_notification, this, _1, _2)));
+  connections.add (call_core->setup_call.connect (boost::bind (&LibNotify::on_call_notification, this, _1, _2)));
 }
 
 LibNotify::~LibNotify ()
@@ -290,9 +290,9 @@ LibNotify::on_call_notification (boost::shared_ptr<Ekiga::CallManager> manager,
   notify_notification_set_timeout (notify, NOTIFY_EXPIRES_NEVER);
   notify_notification_set_urgency (notify, NOTIFY_URGENCY_CRITICAL);
 
-  connections.append (call->established.connect (boost::bind (&LibNotify::on_call_notification_closed, this, (gpointer) notify)));
-  connections.append (call->missed.connect (boost::bind (&LibNotify::on_call_notification_closed, this, (gpointer) notify)));
-  connections.append (call->cleared.connect (boost::bind (&LibNotify::on_call_notification_closed, this, (gpointer) notify)));
+  connections.add (call->established.connect (boost::bind (&LibNotify::on_call_notification_closed, this, (gpointer) notify)));
+  connections.add (call->missed.connect (boost::bind (&LibNotify::on_call_notification_closed, this, (gpointer) notify)));
+  connections.add (call->cleared.connect (boost::bind (&LibNotify::on_call_notification_closed, this, (gpointer) notify)));
 
   notify_notification_show (notify, NULL);
 
