@@ -52,6 +52,7 @@
 #include "menu-builder-tools.h"
 #include "menu-builder-gtk.h"
 #include "scoped-connections.h"
+#include "actor-menu.h"
 
 #include <glib/gi18n.h>
 #include <gdk/gdkkeysyms.h>
@@ -90,6 +91,12 @@ struct deviceStruct {
 
 G_DEFINE_TYPE (EkigaMainWindow, ekiga_main_window, GM_TYPE_WINDOW);
 
+struct null_deleter
+{
+  void operator()(void const *) const
+  {
+  }
+};
 
 struct _EkigaMainWindowPrivate
 {
@@ -111,6 +118,8 @@ struct _EkigaMainWindowPrivate
   GtkWidget *main_menu;
   GtkWidget *main_notebook;
   GtkBuilder *builder;
+
+  boost::shared_ptr<Ekiga::ContactActorMenu> contact_menu;
 
   /* Dialpad uri toolbar */
   GtkWidget *uri_toolbar;
@@ -547,29 +556,29 @@ on_history_selection_changed (G_GNUC_UNUSED GtkWidget* view,
 			      gpointer self)
 {
   EkigaMainWindow *mw = EKIGA_MAIN_WINDOW (self);
-  gint section;
-  GtkWidget* menu = gtk_menu_new_from_model (G_MENU_MODEL (gtk_builder_get_object (mw->priv->builder, "contact")));
+  History::Contact *contact = NULL;
+  GtkBuilder *builder = NULL;
 
-  section = gtk_notebook_get_current_page (GTK_NOTEBOOK (mw->priv->main_notebook));
+  call_history_view_gtk_get_selected (CALL_HISTORY_VIEW_GTK (mw->priv->call_history_view),
+                                      &contact);
 
-  if (section == mw->priv->call_history_page_number) {
-
-    MenuBuilderGtk builder (menu);
-    gtk_widget_set_sensitive (menu, TRUE);
-
-    if (call_history_view_gtk_populate_menu_for_selected (CALL_HISTORY_VIEW_GTK (mw->priv->call_history_view), builder)) {
-
-      gtk_widget_show_all (builder.menu);
-    } else {
-
-      gtk_widget_set_sensitive (menu, FALSE);
-      g_object_ref_sink (builder.menu);
-      g_object_unref (builder.menu);
-    }
-  } else {
-
-    gtk_widget_set_sensitive (menu, FALSE);
-    gtk_menu_item_set_submenu (GTK_MENU_ITEM (menu), NULL);
+  if (contact == NULL) {
+    mw->priv->contact_menu->set_data ();
+    g_menu_remove (G_MENU (gtk_builder_get_object (mw->priv->builder, "menubar")), 0);
+  }
+  else {
+    mw->priv->contact_menu->set_data (Ekiga::ContactPtr (contact, null_deleter ()),
+                                      contact->get_uri ());
+    builder = gtk_builder_new ();
+    gtk_builder_add_from_string (builder,
+                                 Ekiga::ActorMenu::get_xml_menu ("action",
+                                                                 mw->priv->contact_menu->as_xml (),
+                                                                 true).c_str (),
+                                 -1, NULL);
+    g_menu_prepend_submenu (G_MENU (gtk_builder_get_object (mw->priv->builder, "menubar")),
+                            _("Contact"),
+                            G_MENU_MODEL (gtk_builder_get_object (builder, "action")));
+    g_object_unref (builder);
   }
 }
 
@@ -915,13 +924,7 @@ ekiga_main_window_init_menu (EkigaMainWindow *mw)
     "<?xml version='1.0'?>"
     "<interface>"
     "  <menu id='menubar'>"
-    "    <section id='action'>"
-    "    </section>"
     "    <section>"
-    "      <item>"
-    "        <attribute name='label' translatable='yes'>_Aontact</attribute>"
-    "        <attribute name='action'>win.clear</attribute>"
-    "      </item>"
     "      <item>"
     "        <attribute name='label' translatable='yes'>_Add Contact</attribute>"
     "        <attribute name='action'>win.add</attribute>"
@@ -943,16 +946,19 @@ ekiga_main_window_init_menu (EkigaMainWindow *mw)
   mw->priv->builder = gtk_builder_new ();
   gtk_builder_add_from_string (mw->priv->builder, win_menu, -1, NULL);
 
-  g_action_map_add_action (G_ACTION_MAP (mw),
+  g_action_map_add_action (G_ACTION_MAP (g_application_get_default ()),
                            g_settings_create_action (mw->priv->video_devices_settings->get_g_settings (),
                                                      "enable-preview"));
-  g_action_map_add_action (G_ACTION_MAP (mw),
+  g_action_map_add_action (G_ACTION_MAP (g_application_get_default ()),
                            g_settings_create_action (mw->priv->user_interface_settings->get_g_settings (),
                                                      "panel-section"));
 
-  g_action_map_add_action_entries (G_ACTION_MAP (mw),
+  g_action_map_add_action_entries (G_ACTION_MAP (g_application_get_default ()),
                                    win_entries, G_N_ELEMENTS (win_entries),
                                    mw);
+
+  gtk_widget_insert_action_group (GTK_WIDGET (mw), "win",
+                                  G_ACTION_GROUP (g_application_get_default ()));
 }
 
 
@@ -1266,6 +1272,9 @@ gm_main_window_new (GmApplication *app)
   ekiga_main_window_connect_engine_signals (mw);
 
   ekiga_main_window_init_gui (mw);
+
+  mw->priv->contact_menu =
+    Ekiga::ContactActorMenuPtr (Ekiga::ContactActorMenu::create (*mw->priv->contact_core));
 
   return GTK_WIDGET(mw);
 }
