@@ -110,10 +110,10 @@ void
 History::Book::register_actions ()
 {
   /* Add Actor actions */
-  add_action (ActionPtr (new Ekiga::Action ("history_book_clear",
-                                            _("Clear History"),
-                                            boost::bind (&History::Book::clear,
-                                                         this))));
+  add_action (Ekiga::ActionPtr (new Ekiga::Action ("history_book_clear",
+                                                   _("Clear History"),
+                                                   boost::bind (&History::Book::clear,
+                                                                this))));
 }
 
 void

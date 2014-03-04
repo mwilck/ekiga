@@ -183,6 +183,7 @@ Opal::Sip::EndPoint::populate_menu (const std::string& fullname,
 				    const std::string& uri,
 				    Ekiga::MenuBuilder& builder)
 {
+  /*
   if (0 == GetConnectionCount ())
     builder.add_action ("phone-pick-up", _("Call"),
                         boost::bind (&Opal::Sip::EndPoint::on_dial, this, uri));
@@ -191,7 +192,7 @@ Opal::Sip::EndPoint::populate_menu (const std::string& fullname,
                         boost::bind (&Opal::Sip::EndPoint::on_transfer, this, uri));
   builder.add_action ("im-message-new", _("Message"),
                       boost::bind (&Opal::Sip::EndPoint::on_message, this, uri, fullname));
-
+*/
   return true;
 }
 
