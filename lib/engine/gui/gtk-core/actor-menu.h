@@ -60,18 +60,21 @@ namespace Ekiga {
   {
   public:
 
-    ActorMenu (const Actor & obj);
+    static ActorMenu* create (const Actor & obj);
 
     ~ActorMenu ();
 
     virtual void activate (Ekiga::Action *action);
-    virtual const std::string as_xml ();
+    virtual const std::string as_xml (const std::string & id = "");
 
     static const std::string get_xml_menu (const std::string & id,
                                            const std::string & content,
                                            bool full);
 
   protected:
+    ActorMenu (const Actor & obj);
+    virtual void add_gio_actions ();
+
     const Actor & obj;
   };
 
@@ -79,17 +82,23 @@ namespace Ekiga {
   {
   public:
 
-    ContactActorMenu (const Actor & obj);
+    static ContactActorMenu* create (const Actor & obj);
 
-    void set_data (ContactPtr _contact,
-                   const std::string & _uri);
+    void set_data (ContactPtr _contact = ContactPtr (),
+                   const std::string & _uri = "");
 
-    const std::string as_xml ();
+    const std::string as_xml (const std::string & id = "");
 
   protected:
+    ContactActorMenu (const Actor & obj);
+    void add_gio_actions ();
+
     ContactPtr contact;
     std::string uri;
   };
+
+  typedef boost::shared_ptr<ActorMenu> ActorMenuPtr;
+  typedef boost::shared_ptr<ContactActorMenu> ContactActorMenuPtr;
 }
 
 #endif
