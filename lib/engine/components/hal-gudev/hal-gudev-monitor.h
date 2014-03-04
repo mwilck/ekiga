@@ -56,26 +56,23 @@ public:
   { return "gudev"; }
 
   const std::string get_description () const
-  { return "\tComponent monitoring devices using GUDev"; }
+  { return "\tComponent monitoring Video4Linux devices using GUDev"; }
 
 private:
 
-  // video input part of the api
-
-  friend void videoinput_uevent_handler_cb (GUdevClient* client,
-					    const gchar* action,
-					    GUdevDevice* device,
-					    GUDevMonitor* monitor);
-  void videoinput_added (GUdevDevice* device);
-  void videoinput_remove (GUdevDevice* device);
-  typedef struct VideoInputDevice {
+  typedef struct {
     std::string framework;
     std::string name;
     int caps;
   } VideoInputDevice;
+  friend void gudev_monitor_videoinput_uevent_handler (GUdevClient* client,
+						       const gchar* action,
+						       GUdevDevice* device,
+						       GUDevMonitor* monitor);
+  void videoinput_add (GUdevDevice* device);
+  void videoinput_remove (GUdevDevice* device);
   std::vector<VideoInputDevice> videoinput_devices;
   GUdevClient* videoinput;
-  
 };
 
 #endif

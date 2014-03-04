@@ -37,11 +37,34 @@
 
 #include "hal-gudev-monitor.h"
 
+#define DEBUG 1
+
+#if DEBUG
+static void
+print_gudev_device (GUdevDevice* device)
+{
+  g_print ("GUdevDevice:\n");
+  g_print ("\tname: %s\n", g_udev_device_get_name (device));
+  g_print ("\tfile: %s\n", g_udev_device_get_device_file (device));
+
+  g_print ("\tproperties:\n");
+  const gchar* const *keys = g_udev_device_get_property_keys (device);
+  for (int num = 0;
+       keys[num] != NULL;
+       num++) {
+
+    const gchar* key = keys[num];
+    const gchar* val = g_udev_device_get_property (device, key);
+    g_print ("\t\t%s -> %s\n", key, val);
+  }
+}
+#endif
+
 void
-videoinput_uevent_handler_cb (G_GNUC_UNUSED GUdevClient* client,
-			      const gchar* action,
-			      GUdevDevice* device,
-			      GUDevMonitor* monitor)
+gudev_monitor_videoinput_uevent_handler (G_GNUC_UNUSED GUdevClient* client,
+					 const gchar* action,
+					 GUdevDevice* device,
+					 GUDevMonitor* monitor)
 {
   if (g_str_equal ("remove", action)) {
 
@@ -49,7 +72,7 @@ videoinput_uevent_handler_cb (G_GNUC_UNUSED GUdevClient* client,
   }
   if (g_str_equal ("add", action)) {
 
-    monitor->videoinput_added (device);
+    monitor->videoinput_add (device);
   }
 }
 
@@ -58,7 +81,7 @@ GUDevMonitor::GUDevMonitor ()
   const gchar* videoinput_subsystems[] = {"video4linux", NULL};
   videoinput = g_udev_client_new (videoinput_subsystems);
   g_signal_connect (G_OBJECT (videoinput), "uevent",
-		    G_CALLBACK (videoinput_uevent_handler_cb), this);
+		    G_CALLBACK (gudev_monitor_videoinput_uevent_handler), this);
 }
 
 GUDevMonitor::~GUDevMonitor ()
@@ -67,8 +90,12 @@ GUDevMonitor::~GUDevMonitor ()
 }
 
 void
-GUDevMonitor::videoinput_added (GUdevDevice* device)
+GUDevMonitor::videoinput_add (GUdevDevice* device)
 {
+#if DEBUG
+  g_print ("%s\n", __PRETTY_FUNCTION__);
+  print_gudev_device (device);
+#endif
   gint v4l_version = 0;
 
   // first check the api version
