@@ -562,9 +562,9 @@ on_history_selection_changed (G_GNUC_UNUSED GtkWidget* view,
   call_history_view_gtk_get_selected (CALL_HISTORY_VIEW_GTK (mw->priv->call_history_view),
                                       &contact);
 
+  g_menu_remove (G_MENU (gtk_builder_get_object (mw->priv->builder, "menubar")), 0);
   if (contact == NULL) {
     mw->priv->contact_menu->set_data ();
-    g_menu_remove (G_MENU (gtk_builder_get_object (mw->priv->builder, "menubar")), 0);
   }
   else {
     mw->priv->contact_menu->set_data (Ekiga::ContactPtr (contact, null_deleter ()),
