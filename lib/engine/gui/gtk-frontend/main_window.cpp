@@ -857,6 +857,17 @@ ekiga_main_window_init_actions_toolbar (EkigaMainWindow *mw)
   margin_px = (gint) floor ((toolbar_size_px - menu_size_px) / 2.0);
 
   /* Start packing buttons */
+  button = gtk_toggle_button_new ();
+  image = gtk_image_new_from_icon_name ("call-start-symbolic", GTK_ICON_SIZE_MENU);
+  g_object_set (G_OBJECT (image), "margin", margin_px, NULL);
+  gtk_button_set_image (GTK_BUTTON (button), image);
+  gtk_widget_set_tooltip_text (GTK_WIDGET (button),
+                               _("Call the selected contact"));
+  gtk_actionable_set_detailed_action_name (GTK_ACTIONABLE (button), "win.sip-call");
+  gtk_header_bar_pack_start (GTK_HEADER_BAR (mw->priv->actions_toolbar), button);
+  gtk_widget_set_margin_left (button, 3);
+  gtk_widget_set_margin_right (button, 6);
+
   mw->priv->preview_button = gtk_toggle_button_new ();
   image = gtk_image_new_from_icon_name ("camera-web-symbolic", GTK_ICON_SIZE_MENU);
   g_object_set (G_OBJECT (image), "margin", margin_px, NULL);
@@ -866,7 +877,6 @@ ekiga_main_window_init_actions_toolbar (EkigaMainWindow *mw)
   gtk_actionable_set_detailed_action_name (GTK_ACTIONABLE (mw->priv->preview_button),
                                            "win.enable-preview");
   gtk_header_bar_pack_start (GTK_HEADER_BAR (mw->priv->actions_toolbar), mw->priv->preview_button);
-  gtk_widget_set_margin_left (mw->priv->preview_button, 6);
   gtk_widget_set_margin_right (mw->priv->preview_button, 6);
 
   box = gtk_box_new (GTK_ORIENTATION_HORIZONTAL, 0);
@@ -903,7 +913,6 @@ ekiga_main_window_init_actions_toolbar (EkigaMainWindow *mw)
                                GTK_STYLE_CLASS_LINKED);
 
   gtk_header_bar_pack_start (GTK_HEADER_BAR (mw->priv->actions_toolbar), box);
-  gtk_widget_set_margin_left (box, 6);
   gtk_widget_set_margin_right (box, 6);
 
   button = gtk_menu_button_new ();
@@ -913,8 +922,7 @@ ekiga_main_window_init_actions_toolbar (EkigaMainWindow *mw)
   gtk_menu_button_set_menu_model (GTK_MENU_BUTTON (button),
                                   G_MENU_MODEL (gtk_builder_get_object (mw->priv->builder, "menubar")));
   gtk_header_bar_pack_end (GTK_HEADER_BAR (mw->priv->actions_toolbar), button);
-  gtk_widget_set_margin_left (button, 6);
-  gtk_widget_set_margin_right (button, 6);
+  gtk_widget_set_margin_right (button, 3);
 }
 
 static void
@@ -974,8 +982,8 @@ ekiga_main_window_init_status_toolbar (EkigaMainWindow *mw)
                                  GTK_WINDOW (mw));
   gtk_box_pack_start (GTK_BOX (mw->priv->status_toolbar),
                       mw->priv->status_option_menu, TRUE, TRUE, 0);
-  gtk_widget_set_margin_left (mw->priv->status_option_menu, 6);
-  gtk_widget_set_margin_right (mw->priv->status_option_menu, 6);
+  gtk_widget_set_margin_left (mw->priv->status_option_menu, 0);
+  gtk_widget_set_margin_right (mw->priv->status_option_menu, 0);
 
   gtk_widget_show_all (mw->priv->status_toolbar);
 }
@@ -1066,11 +1074,6 @@ ekiga_main_window_init_gui (EkigaMainWindow *mw)
   gtk_box_pack_start (GTK_BOX (window_vbox), mw->priv->actions_toolbar,
                       false, false, 0);
 
-  /* The status toolbar */
-  ekiga_main_window_init_status_toolbar (mw);
-  gtk_box_pack_start (GTK_BOX (window_vbox), mw->priv->status_toolbar,
-                      false, false, 0);
-
   /* The notebook pages */
   mw->priv->main_notebook = gtk_notebook_new ();
   gtk_notebook_popup_enable (GTK_NOTEBOOK (mw->priv->main_notebook));
@@ -1082,6 +1085,11 @@ ekiga_main_window_init_gui (EkigaMainWindow *mw)
   ekiga_main_window_init_history (mw);
   gtk_box_pack_start (GTK_BOX (window_vbox), mw->priv->main_notebook,
                       true, true, 0);
+
+  /* The status toolbar */
+  ekiga_main_window_init_status_toolbar (mw);
+  gtk_box_pack_start (GTK_BOX (window_vbox), mw->priv->status_toolbar,
+                      false, false, 0);
 
   /* The statusbar */
   mw->priv->statusbar_ebox = gtk_event_box_new ();
