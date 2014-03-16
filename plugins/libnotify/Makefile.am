@@ -4,6 +4,7 @@ AM_CXXFLAGS = \
 	$(BOOST_CPPFLAGS) $(NOTIFY_CFLAGS) \
 	-I$(top_srcdir)/lib/engine/framework \
 	-I$(top_srcdir)/lib/engine/notification \
+	-I$(top_srcdir)/lib/engine/addressbook \
 	-I$(top_srcdir)/lib/engine/protocol
 
 libgmlibnotify_la_SOURCES = \
