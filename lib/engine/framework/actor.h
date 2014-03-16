@@ -38,6 +38,8 @@
 #ifndef __ACTOR_H__
 #define __ACTOR_H__
 
+#include <string>
+
 #include "action.h"
 
 namespace Ekiga {
@@ -60,7 +62,6 @@ namespace Ekiga {
 
   public:
 
-
     /** Register an action on the given Actor.
      *
      * Actions that are not "added" using this method will not be usable
@@ -71,11 +72,24 @@ namespace Ekiga {
     void add_action (ActionPtr action);
 
 
+    /** Remove an action on the given Actor.
+     *
+     * @param An Action name.
+     * @return True if the action has been removed, false otherwise.
+     */
+    bool remove_action (const std::string & name);
+
+
   protected:
 
     /** This method must be called by each Actor to register Actions.
      */
     virtual void register_actions () = 0;
+
+    /** Those signals are emitted when the ActionMap is updated.
+     */
+    boost::signals2::signal<void(const std::string &)> action_added;
+    boost::signals2::signal<void(const std::string &)> action_removed;
 
     ActionMap actions;
   };

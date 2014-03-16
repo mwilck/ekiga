@@ -44,4 +44,16 @@ void
 Actor::add_action (ActionPtr action)
 {
   actions.insert (std::make_pair (action->get_name (), action));
+  action_added (action->get_name ());
+}
+
+
+bool
+Actor::remove_action (const std::string & name)
+{
+  bool success = (actions.erase (name) > 0);
+  if (success)
+    action_removed (name);
+
+  return success;
 }
