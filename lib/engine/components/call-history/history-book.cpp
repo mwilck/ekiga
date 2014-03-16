@@ -83,7 +83,7 @@ History::Book::Book (Ekiga::ServiceCore& core):
 
   enforce_size_limit ();
 
-  /* Ready to take actions */
+  /* Actor actions should be added */
   register_actions ();
 }
 
