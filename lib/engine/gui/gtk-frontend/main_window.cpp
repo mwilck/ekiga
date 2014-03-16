@@ -857,7 +857,7 @@ ekiga_main_window_init_actions_toolbar (EkigaMainWindow *mw)
   margin_px = (gint) floor ((toolbar_size_px - menu_size_px) / 2.0);
 
   /* Start packing buttons */
-  button = gtk_toggle_button_new ();
+  button = gtk_button_new ();
   image = gtk_image_new_from_icon_name ("call-start-symbolic", GTK_ICON_SIZE_MENU);
   g_object_set (G_OBJECT (image), "margin", margin_px, NULL);
   gtk_button_set_image (GTK_BUTTON (button), image);
