@@ -75,6 +75,7 @@ namespace Ekiga {
     ActorMenu (Actor & obj);
     virtual void add_gio_actions ();
     virtual void add_gio_action (const std::string & name);
+    virtual void add_action (Action *a);
     virtual void remove_gio_action (const std::string & name);
 
     Actor & obj;
@@ -95,6 +96,7 @@ namespace Ekiga {
     ContactActorMenu (Actor & obj);
     void add_gio_actions ();
     void add_gio_action (const std::string & name);
+    void add_action (Action *a);
 
     ContactPtr contact;
     std::string uri;

@@ -77,7 +77,6 @@ Ekiga::ActorMenu::~ActorMenu ()
 void
 Ekiga::ActorMenu::add_gio_actions ()
 {
-  GSimpleAction *action = NULL;
   ActionMap::const_iterator it;
 
   for (it = obj.actions.begin(); it != obj.actions.end(); ++it) {
@@ -85,14 +84,8 @@ Ekiga::ActorMenu::add_gio_actions ()
     if (!g_action_map_lookup_action (G_ACTION_MAP (g_application_get_default ()),
                                      it->first.c_str ())) {
 
-      action = g_simple_action_new (it->first.c_str (), NULL);
-      g_object_set_data (G_OBJECT (action), "action", it->second.get ());
-      g_action_map_add_action (G_ACTION_MAP (g_application_get_default ()),
-                               G_ACTION (action));
-      g_signal_connect (action, "activate",
-                        G_CALLBACK (action_activated),
-                        (gpointer) this);
-      g_object_unref (action);
+      Ekiga::Action *a = dynamic_cast<Ekiga::Action *> (it->second.get ());
+      add_action (a);
     }
   }
 }
@@ -101,7 +94,6 @@ Ekiga::ActorMenu::add_gio_actions ()
 void
 Ekiga::ActorMenu::add_gio_action (const std::string & name)
 {
-  GSimpleAction *action = NULL;
   ActionMap::const_iterator it;
 
   it = obj.actions.find (name);
@@ -110,15 +102,25 @@ Ekiga::ActorMenu::add_gio_action (const std::string & name)
       && !g_action_map_lookup_action (G_ACTION_MAP (g_application_get_default ()),
                                       it->first.c_str ())) {
 
-    action = g_simple_action_new (it->first.c_str (), NULL);
-    g_object_set_data (G_OBJECT (action), "action", it->second.get ());
-    g_action_map_add_action (G_ACTION_MAP (g_application_get_default ()),
-                             G_ACTION (action));
-    g_signal_connect (action, "activate",
-                      G_CALLBACK (action_activated),
-                      (gpointer) this);
-    g_object_unref (action);
+    Ekiga::Action *a = dynamic_cast<Ekiga::Action *> (it->second.get ());
+    add_action (a);
   }
+}
+
+
+void
+Ekiga::ActorMenu::add_action (Ekiga::Action *a)
+{
+  GSimpleAction *action = NULL;
+
+  action = g_simple_action_new (a->get_name ().c_str (), NULL);
+  g_object_set_data (G_OBJECT (action), "action", a);
+  g_action_map_add_action (G_ACTION_MAP (g_application_get_default ()),
+                           G_ACTION (action));
+  g_signal_connect (action, "activate",
+                    G_CALLBACK (action_activated),
+                    (gpointer) this);
+  g_object_unref (action);
 }
 
 
@@ -196,28 +198,12 @@ Ekiga::ContactActorMenu::ContactActorMenu (Ekiga::Actor & _obj) : ActorMenu (_ob
 void
 Ekiga::ContactActorMenu::add_gio_actions ()
 {
-  GSimpleAction *action = NULL;
   ActionMap::const_iterator it;
 
   for (it = obj.actions.begin(); it != obj.actions.end(); ++it) {
 
     Ekiga::ContactAction *a = dynamic_cast<Ekiga::ContactAction *> (it->second.get ());
-
-    if (!a || !a->can_run_with_data (contact, uri)) {
-      g_action_map_remove_action (G_ACTION_MAP (g_application_get_default ()),
-                                  it->first.c_str ());
-    }
-    else if (a && a->can_run_with_data (contact, uri)) {
-
-      action = g_simple_action_new (it->first.c_str (), NULL);
-      g_object_set_data (G_OBJECT (action), "action", it->second.get ());
-      g_action_map_add_action (G_ACTION_MAP (g_application_get_default ()),
-                               G_ACTION (action));
-      g_signal_connect (action, "activate",
-                        G_CALLBACK (action_activated),
-                        (gpointer) this);
-      g_object_unref (action);
-    }
+    add_action (a);
   }
 }
 
@@ -225,7 +211,6 @@ Ekiga::ContactActorMenu::add_gio_actions ()
 void
 Ekiga::ContactActorMenu::add_gio_action (const std::string & name)
 {
-  GSimpleAction *action = NULL;
   ActionMap::const_iterator it;
 
   it = obj.actions.find (name);
@@ -235,21 +220,30 @@ Ekiga::ContactActorMenu::add_gio_action (const std::string & name)
                                                  it->first.c_str ())) {
 
     Ekiga::ContactAction *a = dynamic_cast<Ekiga::ContactAction *> (it->second.get ());
+    add_action (a);
+  }
+}
 
-    if (!a || !a->can_run_with_data (contact, uri)) {
-      g_action_map_remove_action (G_ACTION_MAP (g_application_get_default ()),
-                                  it->first.c_str ());
-    }
-    else if (a && a->can_run_with_data (contact, uri)) {
-      action = g_simple_action_new (it->first.c_str (), NULL);
-      g_object_set_data (G_OBJECT (action), "action", it->second.get ());
-      g_action_map_add_action (G_ACTION_MAP (g_application_get_default ()),
-                               G_ACTION (action));
-      g_signal_connect (action, "activate",
-                        G_CALLBACK (action_activated),
-                        (gpointer) this);
-      g_object_unref (action);
-    }
+
+void
+Ekiga::ContactActorMenu::add_action (Ekiga::Action *_action)
+{
+  GSimpleAction *action = NULL;
+  Ekiga::ContactAction *a = dynamic_cast<Ekiga::ContactAction *> (_action);
+
+  if (!a || !a->can_run_with_data (contact, uri)) {
+    g_action_map_remove_action (G_ACTION_MAP (g_application_get_default ()),
+                                a->get_name ().c_str ());
+  }
+  else if (a && a->can_run_with_data (contact, uri)) {
+    action = g_simple_action_new (a->get_name ().c_str (), NULL);
+    g_object_set_data (G_OBJECT (action), "action", a);
+    g_action_map_add_action (G_ACTION_MAP (g_application_get_default ()),
+                             G_ACTION (action));
+    g_signal_connect (action, "activate",
+                      G_CALLBACK (action_activated),
+                      (gpointer) this);
+    g_object_unref (action);
   }
 }
 
