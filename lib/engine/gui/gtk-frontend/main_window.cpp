@@ -863,7 +863,7 @@ ekiga_main_window_init_actions_toolbar (EkigaMainWindow *mw)
   gtk_button_set_image (GTK_BUTTON (button), image);
   gtk_widget_set_tooltip_text (GTK_WIDGET (button),
                                _("Call the selected contact"));
-  gtk_actionable_set_detailed_action_name (GTK_ACTIONABLE (button), "win.sip-call");
+  gtk_actionable_set_detailed_action_name (GTK_ACTIONABLE (button), "win.call");
   gtk_header_bar_pack_start (GTK_HEADER_BAR (mw->priv->actions_toolbar), button);
   gtk_widget_set_margin_left (button, 3);
   gtk_widget_set_margin_right (button, 6);
