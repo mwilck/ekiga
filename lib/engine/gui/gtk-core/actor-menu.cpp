@@ -57,8 +57,10 @@ action_activated (GSimpleAction *a,
 
 
 
-Ekiga::ActorMenu::ActorMenu (const Ekiga::Actor & _obj) : obj (_obj)
+Ekiga::ActorMenu::ActorMenu (Ekiga::Actor & _obj) : obj (_obj)
 {
+  obj.action_added.connect (boost::bind (&Ekiga::ActorMenu::add_gio_action, this, _1));
+  obj.action_removed.connect (boost::bind (&Ekiga::ActorMenu::remove_gio_action, this, _1));
 }
 
 
@@ -96,6 +98,38 @@ Ekiga::ActorMenu::add_gio_actions ()
 }
 
 
+void
+Ekiga::ActorMenu::add_gio_action (const std::string & name)
+{
+  GSimpleAction *action = NULL;
+  ActionMap::const_iterator it;
+
+  it = obj.actions.find (name);
+
+  if (it != obj.actions.end ()
+      && !g_action_map_lookup_action (G_ACTION_MAP (g_application_get_default ()),
+                                      it->first.c_str ())) {
+
+    action = g_simple_action_new (it->first.c_str (), NULL);
+    g_object_set_data (G_OBJECT (action), "action", it->second.get ());
+    g_action_map_add_action (G_ACTION_MAP (g_application_get_default ()),
+                             G_ACTION (action));
+    g_signal_connect (action, "activate",
+                      G_CALLBACK (action_activated),
+                      (gpointer) this);
+    g_object_unref (action);
+  }
+}
+
+
+void
+Ekiga::ActorMenu::remove_gio_action (const std::string & name)
+{
+  g_action_map_remove_action (G_ACTION_MAP (g_application_get_default ()),
+                              name.c_str ());
+}
+
+
 const std::string
 Ekiga::ActorMenu::get_xml_menu (const std::string & id,
                                 const std::string & content,
@@ -111,7 +145,7 @@ Ekiga::ActorMenu::get_xml_menu (const std::string & id,
 
 
 Ekiga::ActorMenu *
-Ekiga::ActorMenu::create (const Ekiga::Actor & obj)
+Ekiga::ActorMenu::create (Ekiga::Actor & obj)
 {
   Ekiga::ActorMenu *m = new Ekiga::ActorMenu (obj);
   m->add_gio_actions ();
@@ -154,7 +188,7 @@ Ekiga::ActorMenu::as_xml (const std::string & id)
 }
 
 
-Ekiga::ContactActorMenu::ContactActorMenu (const Ekiga::Actor & _obj) : ActorMenu (_obj)
+Ekiga::ContactActorMenu::ContactActorMenu (Ekiga::Actor & _obj) : ActorMenu (_obj)
 {
 }
 
@@ -175,6 +209,38 @@ Ekiga::ContactActorMenu::add_gio_actions ()
     }
     else if (a && a->can_run_with_data (contact, uri)) {
 
+      action = g_simple_action_new (it->first.c_str (), NULL);
+      g_object_set_data (G_OBJECT (action), "action", it->second.get ());
+      g_action_map_add_action (G_ACTION_MAP (g_application_get_default ()),
+                               G_ACTION (action));
+      g_signal_connect (action, "activate",
+                        G_CALLBACK (action_activated),
+                        (gpointer) this);
+      g_object_unref (action);
+    }
+  }
+}
+
+
+void
+Ekiga::ContactActorMenu::add_gio_action (const std::string & name)
+{
+  GSimpleAction *action = NULL;
+  ActionMap::const_iterator it;
+
+  it = obj.actions.find (name);
+
+  if (it != obj.actions.end ()
+      && !g_action_map_lookup_action (G_ACTION_MAP (g_application_get_default ()),
+                                                 it->first.c_str ())) {
+
+    Ekiga::ContactAction *a = dynamic_cast<Ekiga::ContactAction *> (it->second.get ());
+
+    if (!a || !a->can_run_with_data (contact, uri)) {
+      g_action_map_remove_action (G_ACTION_MAP (g_application_get_default ()),
+                                  it->first.c_str ());
+    }
+    else if (a && a->can_run_with_data (contact, uri)) {
       action = g_simple_action_new (it->first.c_str (), NULL);
       g_object_set_data (G_OBJECT (action), "action", it->second.get ());
       g_action_map_add_action (G_ACTION_MAP (g_application_get_default ()),
@@ -232,7 +298,7 @@ Ekiga::ContactActorMenu::as_xml (const std::string & id)
 
 
 Ekiga::ContactActorMenu *
-Ekiga::ContactActorMenu::create (const Ekiga::Actor & obj)
+Ekiga::ContactActorMenu::create (Ekiga::Actor & obj)
 {
   Ekiga::ContactActorMenu *m = new Ekiga::ContactActorMenu (obj);
   m->add_gio_actions ();

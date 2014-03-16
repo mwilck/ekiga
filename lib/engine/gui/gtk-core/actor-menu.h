@@ -60,7 +60,7 @@ namespace Ekiga {
   {
   public:
 
-    static ActorMenu* create (const Actor & obj);
+    static ActorMenu* create (Actor & obj);
 
     ~ActorMenu ();
 
@@ -72,17 +72,19 @@ namespace Ekiga {
                                            bool full);
 
   protected:
-    ActorMenu (const Actor & obj);
+    ActorMenu (Actor & obj);
     virtual void add_gio_actions ();
+    virtual void add_gio_action (const std::string & name);
+    virtual void remove_gio_action (const std::string & name);
 
-    const Actor & obj;
+    Actor & obj;
   };
 
   class ContactActorMenu : public ActorMenu
   {
   public:
 
-    static ContactActorMenu* create (const Actor & obj);
+    static ContactActorMenu* create (Actor & obj);
 
     void set_data (ContactPtr _contact = ContactPtr (),
                    const std::string & _uri = "");
@@ -90,8 +92,9 @@ namespace Ekiga {
     const std::string as_xml (const std::string & id = "");
 
   protected:
-    ContactActorMenu (const Actor & obj);
+    ContactActorMenu (Actor & obj);
     void add_gio_actions ();
+    void add_gio_action (const std::string & name);
 
     ContactPtr contact;
     std::string uri;
