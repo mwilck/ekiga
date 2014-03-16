@@ -171,6 +171,8 @@ namespace Ekiga
 
   private:
 
+    void register_actions ();
+
     std::list<boost::shared_ptr<ContactDecorator> > contact_decorators;
 
     /*** Misc stuff ***/

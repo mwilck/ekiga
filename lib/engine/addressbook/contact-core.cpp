@@ -117,3 +117,11 @@ Ekiga::ContactCore::populate_contact_menu (ContactPtr contact,
 
   return populated;
 }
+
+
+void
+Ekiga::ContactCore::register_actions ()
+{
+  // We have nothing to do. Other Core's will add their own contact actions
+  // to us.
+}

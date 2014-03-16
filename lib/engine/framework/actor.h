@@ -60,6 +60,7 @@ namespace Ekiga {
 
   public:
 
+
     /** Register an action on the given Actor.
      *
      * Actions that are not "added" using this method will not be usable
@@ -74,7 +75,7 @@ namespace Ekiga {
 
     /** This method must be called by each Actor to register Actions.
      */
-    virtual void register_actions ();
+    virtual void register_actions () = 0;
 
     ActionMap actions;
   };

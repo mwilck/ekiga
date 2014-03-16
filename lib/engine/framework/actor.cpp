@@ -45,10 +45,3 @@ Actor::add_action (ActionPtr action)
 {
   actions.insert (std::make_pair (action->get_name (), action));
 }
-
-
-void
-Actor::register_actions ()
-{
-  // Nothing to do here yet.
-}
