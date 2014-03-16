@@ -223,6 +223,7 @@ namespace Ekiga
       std::set<boost::shared_ptr<CallManager> > managers;
       std::map<std::string, boost::shared_ptr<Ekiga::scoped_connections> > call_connections;
       unsigned nr_ready;
+      boost::shared_ptr<ContactCore> contact_core;
     };
 
 /**

@@ -149,26 +149,28 @@ bool CallCore::is_supported_uri (const std::string & uri)
 }
 
 
-void CallCore::register_actions (boost::shared_ptr<ContactCore> ccore)
+void CallCore::register_actions (boost::shared_ptr<ContactCore> _contact_core)
 {
-  ccore->add_action (ActionPtr (
-                       new ContactAction ("call", _("Call"),
-                                          boost::bind (&CallCore::dial,
-                                                       this, _2),
-                                          boost::bind (&CallCore::is_supported_uri,
-                                                       this, _2))));
+  contact_core = _contact_core;
+  contact_core->add_action (ActionPtr (
+                              new ContactAction ("call", _("Call"),
+                                                 boost::bind (&CallCore::dial,
+                                                              this, _2),
+                                                 boost::bind (&CallCore::is_supported_uri,
+                                                              this, _2))));
 
-  ccore->add_action (ActionPtr (
-                       new ContactAction ("message", _("Message"),
-                                          boost::bind (&CallCore::message,
-                                                       this, _1, _2),
-                                          boost::bind (&CallCore::is_supported_uri,
-                                                       this, _2))));
+  contact_core->add_action (ActionPtr (
+                              new ContactAction ("message", _("Message"),
+                                                 boost::bind (&CallCore::message,
+                                                              this, _1, _2),
+                                                 boost::bind (&CallCore::is_supported_uri,
+                                                              this, _2))));
 }
 
 
 void CallCore::add_call (boost::shared_ptr<Call> call, boost::shared_ptr<CallManager> manager)
 {
+  contact_core->remove_action ("call");
   boost::shared_ptr<Ekiga::scoped_connections> conns(new Ekiga::scoped_connections);
 
   conns->add (call->ringing.connect (boost::bind (&CallCore::on_ringing_call, this,
@@ -196,12 +198,27 @@ void CallCore::add_call (boost::shared_ptr<Call> call, boost::shared_ptr<CallMan
   conns->add (call->removed.connect (boost::bind (&CallCore::on_call_removed, this, call)));
 
   call_connections [call->get_id ()] = conns;
+  contact_core->add_action (ActionPtr (
+                              new ContactAction ("transfer", _("Transfer"),
+                                                 boost::bind (&CallCore::transfer,
+                                                              this, _2, false),
+                                                 boost::bind (&CallCore::is_supported_uri,
+                                                              this, _2))));
 }
 
 
 void CallCore::remove_call (boost::shared_ptr<Call> call)
 {
+  contact_core->remove_action ("transfer");
+
   call_connections.erase (call->get_id ());
+
+  contact_core->add_action (ActionPtr (
+                              new ContactAction ("call", _("Call"),
+                                                 boost::bind (&CallCore::dial,
+                                                              this, _2),
+                                                 boost::bind (&CallCore::is_supported_uri,
+                                                              this, _2))));
 }
 
 
