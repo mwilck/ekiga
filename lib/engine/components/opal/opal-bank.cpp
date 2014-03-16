@@ -135,15 +135,6 @@ Opal::Bank::populate_menu (Ekiga::MenuBuilder & builder)
 
 
 bool
-Opal::Bank::populate_menu (Ekiga::ContactPtr contact,
-			   const std::string uri,
-			   Ekiga::MenuBuilder& builder)
-{
-  return populate_menu_helper (contact->get_name (), uri, builder);
-}
-
-
-bool
 Opal::Bank::populate_menu (Ekiga::PresentityPtr presentity,
 			   const std::string uri,
 			   Ekiga::MenuBuilder& builder)
@@ -159,19 +150,7 @@ Opal::Bank::populate_menu_helper (const std::string fullname,
 {
   bool result = false;
 
-  if (uri.find ("@") == string::npos) {
-
-    // no domain: try to save the situation by trying all accounts
-
-    for (iterator iter = begin ();
-	 iter != end ();
-	 ++iter)
-      result = (*iter)->populate_menu (fullname, uri, builder) || result;
-  } else {
-
-    // there is a domain: just add the actions
-    result = opal_component->populate_menu (fullname, uri, builder);
-  }
+  std::cout << "should be fixed" << std::endl << std::flush;
 
   return result;
 }

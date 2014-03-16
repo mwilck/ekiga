@@ -160,11 +160,6 @@ public:
 
     bool populate_menu (Ekiga::MenuBuilder &builder);
 
-    // used by the bank to add actions on contacts/presentities
-    bool populate_menu (const std::string fullname,
-			const std::string uri,
-			Ekiga::MenuBuilder& builder);
-
     boost::signals2::signal<void(void)> trigger_saving;
 
     /*

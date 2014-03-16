@@ -87,17 +87,19 @@ public:
     const std::string get_description () const
       { return "\tObject bringing in Opal support (calls, text messaging, sip, h323, ...)"; }
 
-    /* helper function for the Opal::Bank contact/presentity decorator work */
-    bool populate_menu (const std::string fullname,
-			const std::string uri,
-			Ekiga::MenuBuilder& builder);
 
     /* Set up endpoint: all options or a specific setting */
     void setup (const std::string & setting = "");
 
+
     /** Call Manager **/
     bool dial (const std::string & uri);
     void hang_up ();
+    bool transfer (const std::string & uri,
+                   bool attended);
+    bool message (const Ekiga::ContactPtr & contact,
+                  const std::string & uri);
+    bool is_supported_uri (const std::string & uri);
 
     void set_display_name (const std::string & name);
     const std::string & get_display_name () const;

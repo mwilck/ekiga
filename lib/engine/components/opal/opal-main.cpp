@@ -122,7 +122,6 @@ struct OPALSpark: public Ekiga::Spark
       account_core->add_bank (bank);
       presence_core->add_cluster (bank);
       core.add (bank);
-      contact_core->add_contact_decorator (bank);
       presence_core->add_presentity_decorator (bank);
       call_manager->ready.connect (boost::bind (&Opal::Bank::call_manager_ready, &*bank));
       call_manager->setup ();

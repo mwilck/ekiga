@@ -34,11 +34,24 @@
  *
  */
 
+#include "config.h"
+
+#include <glib/gi18n.h>
+
 #include "call-core.h"
+
+
 #include "call-manager.h"
+#include "contact-action.h"
 
 
 using namespace Ekiga;
+
+CallCore::CallCore ()
+{
+  nr_ready = 0;
+}
+
 
 void CallCore::add_manager (boost::shared_ptr<CallManager> manager)
 {
@@ -63,17 +76,17 @@ CallCore::const_iterator CallCore::begin () const
 
 CallCore::iterator CallCore::end ()
 {
-  return managers.end (); 
+  return managers.end ();
 }
 
 
 CallCore::const_iterator CallCore::end () const
 {
-  return managers.end (); 
+  return managers.end ();
 }
 
 
-bool CallCore::dial (const std::string uri)
+bool CallCore::dial (const std::string & uri)
 {
   for (std::set<boost::shared_ptr<CallManager> >::iterator iter = managers.begin ();
        iter != managers.end ();
@@ -95,21 +108,91 @@ void CallCore::hang_up ()
 }
 
 
+bool CallCore::transfer (const std::string & uri,
+                         bool attended)
+{
+  for (std::set<boost::shared_ptr<CallManager> >::iterator iter = managers.begin ();
+       iter != managers.end ();
+       iter++) {
+    if ((*iter)->transfer (uri, attended))
+      return true;
+  }
+
+  return false;
+}
+
+
+bool CallCore::message (const ContactPtr & contact,
+                        const std::string & uri)
+{
+  for (std::set<boost::shared_ptr<CallManager> >::iterator iter = managers.begin ();
+       iter != managers.end ();
+       iter++) {
+    if ((*iter)->message (contact, uri))
+      return true;
+  }
+
+  return false;
+}
+
+
+bool CallCore::is_supported_uri (const std::string & uri)
+{
+  for (std::set<boost::shared_ptr<CallManager> >::iterator iter = managers.begin ();
+       iter != managers.end ();
+       iter++) {
+    if ((*iter)->is_supported_uri (uri))
+      return true;
+  }
+
+  return false;
+}
+
+
+void CallCore::register_actions (boost::shared_ptr<ContactCore> ccore)
+{
+  ccore->add_action (ActionPtr (
+                       new ContactAction ("call", _("Call"),
+                                          boost::bind (&CallCore::dial,
+                                                       this, _2),
+                                          boost::bind (&CallCore::is_supported_uri,
+                                                       this, _2))));
+
+  ccore->add_action (ActionPtr (
+                       new ContactAction ("message", _("Message"),
+                                          boost::bind (&CallCore::message,
+                                                       this, _1, _2),
+                                          boost::bind (&CallCore::is_supported_uri,
+                                                       this, _2))));
+}
+
+
 void CallCore::add_call (boost::shared_ptr<Call> call, boost::shared_ptr<CallManager> manager)
 {
   boost::shared_ptr<Ekiga::scoped_connections> conns(new Ekiga::scoped_connections);
 
-  conns->add (call->ringing.connect (boost::bind (&CallCore::on_ringing_call, this, call, manager)));
-  conns->add (call->setup.connect (boost::bind (&CallCore::on_setup_call, this, call, manager)));
-  conns->add (call->missed.connect (boost::bind (&CallCore::on_missed_call, this, call, manager)));
-  conns->add (call->cleared.connect (boost::bind (&CallCore::on_cleared_call, this, _1, call, manager)));
-  conns->add (call->established.connect (boost::bind (&CallCore::on_established_call, this, call, manager)));
-  conns->add (call->held.connect (boost::bind (&CallCore::on_held_call, this, call, manager)));
-  conns->add (call->retrieved.connect (boost::bind (&CallCore::on_retrieved_call, this, call, manager)));
-  conns->add (call->stream_opened.connect (boost::bind (&CallCore::on_stream_opened, this, _1, _2, _3, call, manager)));
-  conns->add (call->stream_closed.connect (boost::bind (&CallCore::on_stream_closed, this, _1, _2, _3, call, manager)));
-  conns->add (call->stream_paused.connect (boost::bind (&CallCore::on_stream_paused, this, _1, _2, call, manager)));
-  conns->add (call->stream_resumed.connect (boost::bind (&CallCore::on_stream_resumed, this, _1, _2, call, manager)));
+  conns->add (call->ringing.connect (boost::bind (&CallCore::on_ringing_call, this,
+                                                  call, manager)));
+  conns->add (call->setup.connect (boost::bind (&CallCore::on_setup_call, this,
+                                                call, manager)));
+  conns->add (call->missed.connect (boost::bind (&CallCore::on_missed_call, this,
+                                                 call, manager)));
+  conns->add (call->cleared.connect (boost::bind (&CallCore::on_cleared_call, this,
+                                                  _1, call, manager)));
+  conns->add (call->established.connect (boost::bind (&CallCore::on_established_call, this,
+                                                      call, manager)));
+  conns->add (call->held.connect (boost::bind (&CallCore::on_held_call, this,
+                                               call, manager)));
+  conns->add (call->retrieved.connect (boost::bind (&CallCore::on_retrieved_call, this,
+                                                    call, manager)));
+  conns->add (call->stream_opened.connect (boost::bind (&CallCore::on_stream_opened, this,
+                                                        _1, _2, _3, call, manager)));
+  conns->add (call->stream_closed.connect (boost::bind (&CallCore::on_stream_closed, this,
+                                                        _1, _2, _3, call, manager)));
+  conns->add (call->stream_paused.connect (boost::bind (&CallCore::on_stream_paused, this,
+                                                        _1, _2, call, manager)));
+  conns->add (call->stream_resumed.connect (boost::bind (&CallCore::on_stream_resumed, this,
+                                                         _1, _2, call, manager)));
   conns->add (call->removed.connect (boost::bind (&CallCore::on_call_removed, this, call)));
 
   call_connections [call->get_id ()] = conns;

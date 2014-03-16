@@ -57,7 +57,6 @@ namespace Opal
       public Ekiga::Cluster,
       public Ekiga::PresencePublisher,
       public Ekiga::PresenceFetcher,
-      public Ekiga::ContactDecorator,
       public Ekiga::PresentityDecorator,
       public Ekiga::Service
   {
@@ -95,10 +94,6 @@ public:
     /*
      * this object is an Ekiga::ContactDecorator and an Ekiga::PresentityDecorator
      */
-    bool populate_menu (Ekiga::ContactPtr contact,
-			const std::string uri,
-			Ekiga::MenuBuilder& builder);
-
     bool populate_menu (Ekiga::PresentityPtr presentity,
 			const std::string uri,
 			Ekiga::MenuBuilder& builder);

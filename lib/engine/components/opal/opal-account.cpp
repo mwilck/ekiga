@@ -575,59 +575,6 @@ Opal::Account::populate_menu (Ekiga::MenuBuilder &builder)
   return true;
 }
 
-bool
-Opal::Account::populate_menu (const std::string fullname,
-			      const std::string uri,
-			      Ekiga::MenuBuilder& builder)
-{
-  bool result = false;
-  Ekiga::TemporaryMenuBuilder tmp_builder;
-  std::string protocol;
-  std::string complete_uri;
-
-  if (!is_enabled ())
-    return false;
-
-  // if there is no protocol, add what we are
-  if (uri.find (":") == string::npos) {
-
-    if (type == H323)
-      protocol = "h323:";
-    else
-      protocol = "sip:";
-    complete_uri = protocol + uri;
-  } else
-    complete_uri = uri;
-
-  // whatever the protocol was previously, check if it fits
-  if (not(
-      (type == H323 && complete_uri.find ("h323:" != 0))
-      ||
-      (type != H323 && complete_uri.find ("sip:" != 0))
-	  ))
-    return false;
-
-  // from now on, we're sure we have an uri corresponding to the account
-
-  // but does it have a domain?
-  //
-  // (it is supposed not to, but let's still test so the function
-  // can be called from several places without problem)
-  if (complete_uri.find ("@") == string::npos && type != H323)
-    complete_uri = complete_uri + "@" + get_host ();
-
-  call_manager->populate_menu (fullname, complete_uri, tmp_builder);
-
-  if ( !tmp_builder.empty ()) {
-
-    builder.add_ghost ("", get_name ());
-    tmp_builder.populate_menu (builder);
-    result = true;
-  }
-
-  return result;
-
-}
 
 void
 Opal::Account::edit ()

@@ -112,33 +112,59 @@ Opal::H323::EndPoint::~EndPoint ()
 {
 }
 
+
 bool
-Opal::H323::EndPoint::populate_menu (const std::string& /*fullname*/,
-                                     const std::string& uri,
-                                     Ekiga::MenuBuilder& builder)
+Opal::H323::EndPoint::dial (const std::string&  uri)
 {
-  if (0 == GetConnectionCount ())
-    builder.add_action ("phone-pick-up", _("Call"),
-                        boost::bind (&Opal::H323::EndPoint::on_dial, this, uri));
-  else
-    builder.add_action ("mail-forward", _("Transfer"),
-                        boost::bind (&Opal::H323::EndPoint::on_transfer, this, uri));
+  if (!is_supported_uri (uri))
+    return false;
+
+  PString token;
+  manager.SetUpCall("pc:*", uri, token, (void*) uri.c_str());
+
   return true;
 }
 
 
 bool
-Opal::H323::EndPoint::dial (const std::string&  uri)
+Opal::H323::EndPoint::transfer (const std::string & uri,
+                                bool attended)
 {
-  if (uri.find ("h323:") == 0) {
+  /* This is not handled yet */
+  if (attended)
+    return false;
 
-    PString token;
-    manager.SetUpCall("pc:*", uri, token, (void*) uri.c_str());
+  if (GetConnectionCount () == 0 || !is_supported_uri (uri))
+      return false; /* No active SIP connection to transfer, or
+                     * transfer request to unsupported uri
+                     */
 
-    return true;
+  /* We don't handle several calls here */
+  for (PSafePtr<OpalConnection> connection(connectionsActive, PSafeReference);
+       connection != NULL;
+       ++connection) {
+    if (!PIsDescendant(&(*connection), OpalPCSSConnection)) {
+      connection->TransferConnection (uri);
+      return true; /* We could handle the transfer */
+    }
   }
 
   return false;
+}
+
+
+bool
+Opal::H323::EndPoint::message (const Ekiga::ContactPtr & contact,
+                               const std::string & uri)
+{
+  return false; /* Not reimplemented yet */
+}
+
+
+bool
+Opal::H323::EndPoint::is_supported_uri (const std::string & uri)
+{
+  return (!uri.empty () && uri.find ("h323:") == 0);
 }
 
 
@@ -429,28 +455,13 @@ Opal::H323::EndPoint::OnIncomingConnection (OpalConnection & connection,
 
 
 void
-Opal::H323::EndPoint::on_dial (std::string uri)
-{
-  manager.dial (uri);
-}
-
-
-void
-Opal::H323::EndPoint::on_transfer (std::string uri)
-{
-  /* FIXME : we don't handle several calls here */
-  for (PSafePtr<OpalConnection> connection(connectionsActive, PSafeReference); connection != NULL; ++connection)
-    if (!PIsDescendant(&(*connection), OpalPCSSConnection))
-      connection->TransferConnection (uri);
-}
-
-void
 Opal::H323::EndPoint::registration_event_in_main (const Opal::Account& account,
 						  Opal::Account::RegistrationState state,
 						  const std::string msg)
 {
   account.handle_registration_event (state, msg);
 }
+
 
 void
 Opal::H323::EndPoint::setup (const std::string setting)

@@ -38,7 +38,6 @@
 
 #include <glib/gi18n.h>
 #include "config.h"
-#include "contact-action.h"
 #include "sip-endpoint.h"
 #include "chat-core.h"
 
@@ -119,7 +118,6 @@ Opal::Sip::EndPoint::EndPoint (Opal::CallManager & _manager,
   manager (_manager)
 {
   boost::shared_ptr<Ekiga::ChatCore> chat_core = core.get<Ekiga::ChatCore> ("chat-core");
-  boost::shared_ptr<Ekiga::ContactCore> contact_core = core.get<Ekiga::ContactCore> ("contact-core");
 
   protocol_name = "sip";
   uri_prefix = "sip:";
@@ -147,9 +145,6 @@ Opal::Sip::EndPoint::EndPoint (Opal::CallManager & _manager,
 
   settings = boost::shared_ptr<Ekiga::Settings> (new Ekiga::Settings (SIP_SCHEMA));
   settings->changed.connect (boost::bind (&EndPoint::setup, this, _1));
-
-  /* Ready to take actions */
-  register_actions (contact_core);
 }
 
 
@@ -179,53 +174,11 @@ Opal::Sip::EndPoint::setup (std::string setting)
 
 
 bool
-Opal::Sip::EndPoint::populate_menu (const std::string& fullname,
-				    const std::string& uri,
-				    Ekiga::MenuBuilder& builder)
-{
-  /*
-  if (0 == GetConnectionCount ())
-    builder.add_action ("phone-pick-up", _("Call"),
-                        boost::bind (&Opal::Sip::EndPoint::on_dial, this, uri));
-  else
-    builder.add_action ("mail-forward", _("Transfer"),
-                        boost::bind (&Opal::Sip::EndPoint::on_transfer, this, uri));
-  builder.add_action ("im-message-new", _("Message"),
-                      boost::bind (&Opal::Sip::EndPoint::on_message, this, uri, fullname));
-*/
-  return true;
-}
-
-
-void
-Opal::Sip::EndPoint::register_actions (boost::shared_ptr<Ekiga::ContactCore> ccore)
-{
-  ccore->add_action (Ekiga::ActionPtr (
-    new Ekiga::ContactAction ("sip-call", _("Call"),
-                              boost::bind (&Opal::Sip::EndPoint::on_dial,
-                                           this, _1, _2),
-                              boost::bind (&Opal::Sip::EndPoint::is_valid_uri,
-                                           this, _2))));
-  ccore->add_action (Ekiga::ActionPtr (
-    new Ekiga::ContactAction ("sip-transfer", _("Transfer"),
-                              boost::bind (&Opal::Sip::EndPoint::on_transfer,
-                                           this, _1, _2),
-                              boost::bind (&Opal::Sip::EndPoint::can_transfer,
-                                           this, _2))));
-  ccore->add_action (Ekiga::ActionPtr (
-    new Ekiga::ContactAction ("sip-message", _("Message"),
-                              boost::bind (&Opal::Sip::EndPoint::on_message,
-                                           this, _1, _2),
-                              boost::bind (&Opal::Sip::EndPoint::is_valid_uri,
-                                           this, _2))));
-}
-
-
-bool
 Opal::Sip::EndPoint::send_message (const std::string & _uri,
 				   const std::string & _message)
 {
-  if (!_uri.empty () && (_uri.find ("sip:") == 0 || _uri.find (':') == string::npos) && !_message.empty ()) {
+  if (is_supported_uri (_uri) && !_message.empty ()) {
+
     OpalIM im;
     im.m_to = PURL (_uri);
     im.m_mimeType = "text/plain;charset=UTF-8";
@@ -243,20 +196,64 @@ Opal::Sip::EndPoint::dial (const std::string & uri)
 {
   std::stringstream ustr;
 
-  if (uri.find ("sip:") == 0 || uri.find (":") == string::npos) {
+  if (!is_supported_uri (uri))
+    return false;
 
-    if (uri.find (":") == string::npos)
-      ustr << "sip:" << uri;
-    else
-      ustr << uri;
+  if (uri.find (":") == string::npos)
+    ustr << "sip:" << uri;
+  else
+    ustr << uri;
 
-    PString token;
-    manager.SetUpCall("pc:*", ustr.str(), token, (void*) ustr.str().c_str());
+  PString token;
+  manager.SetUpCall("pc:*", ustr.str(), token, (void*) ustr.str().c_str());
 
-    return true;
+  return true;
+}
+
+
+bool
+Opal::Sip::EndPoint::transfer (const std::string & uri,
+                               bool attended)
+{
+  /* This is not handled yet */
+  if (attended)
+    return false;
+
+  if (GetConnectionCount () == 0 || !is_supported_uri (uri))
+      return false; /* No active SIP connection to transfer, or
+                     * transfer request to unsupported uri
+                     */
+
+  /* We don't handle several calls here */
+  for (PSafePtr<OpalConnection> connection(connectionsActive, PSafeReference);
+       connection != NULL;
+       ++connection) {
+    if (!PIsDescendant(&(*connection), OpalPCSSConnection)) {
+      connection->TransferConnection (uri);
+      return true; /* We could handle the transfer */
+    }
   }
 
   return false;
+}
+
+
+bool
+Opal::Sip::EndPoint::message (const Ekiga::ContactPtr & contact,
+                              const std::string & uri)
+{
+  if (!is_supported_uri (uri))
+    return false;
+
+  dialect->start_chat_with (uri, contact->get_name ());
+  return true;
+}
+
+
+bool
+Opal::Sip::EndPoint::is_supported_uri (const std::string & uri)
+{
+  return (!uri.empty () && (uri.find ("sip:") == 0 || uri.find (':') == string::npos));
 }
 
 
@@ -926,32 +923,6 @@ Opal::Sip::EndPoint::OnDialogInfoReceived (const SIPDialogNotification & info)
 }
 
 
-void Opal::Sip::EndPoint::on_dial (Ekiga::ContactPtr contact,
-                                   const std::string & uri)
-{
-  // FIXME: I really think Ekiga::Contacts are TelephonyContacts and, as such,
-  // should have an uri. All methods should act on Contacts, the Ekiga central
-  // point of things.
-  manager.dial (uri);
-}
-
-
-void Opal::Sip::EndPoint::on_message (Ekiga::ContactPtr contact,
-                                      const std::string & uri)
-{
-  dialect->start_chat_with (uri, contact->get_name ());
-}
-
-
-void Opal::Sip::EndPoint::on_transfer (Ekiga::ContactPtr contact,
-                                       const std::string & uri)
-{
-  /* FIXME : we don't handle several calls here */
-  for (PSafePtr<OpalConnection> connection(connectionsActive, PSafeReference); connection != NULL; ++connection)
-    if (!PIsDescendant(&(*connection), OpalPCSSConnection))
-      connection->TransferConnection (uri);
-}
-
 void
 Opal::Sip::EndPoint::push_message_in_main (const std::string uri,
 					   const std::string name,
@@ -973,18 +944,4 @@ Opal::Sip::EndPoint::update_aor_map (std::map<std::string, std::string> _account
 {
   PWaitAndSignal m(aorMutex);
   accounts = _accounts;
-}
-
-
-bool
-Opal::Sip::EndPoint::is_valid_uri (const std::string & uri)
-{
-  return (!uri.empty () && (uri.find ("sip:") == 0 || uri.find (':') == string::npos));
-}
-
-
-bool
-Opal::Sip::EndPoint::can_transfer (const std::string & uri)
-{
-  return (GetConnectionCount () > 0 && is_valid_uri (uri));
 }

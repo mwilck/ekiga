@@ -47,7 +47,6 @@
 #include "opal-bank.h"
 #include "sip-dialect.h"
 #include "call-core.h"
-#include "contact-core.h"
 #include "services.h"
 
 #include "opal-call-manager.h"
@@ -84,15 +83,6 @@ namespace Opal {
       const std::string get_description () const
       { return "\tObject managing SIP objects with the Opal library"; }
 
-      // helper for Opal::Bank's contact/presentity decorator code
-      bool populate_menu (const std::string& fullname,
-			  const std::string& uri,
-			  Ekiga::MenuBuilder& builder);
-
-
-      /* Register actions on the ContactCore */
-      void register_actions (boost::shared_ptr<Ekiga::ContactCore> contact_core);
-
 
       /* Chat subsystem */
       bool send_message (const std::string & uri,
@@ -101,6 +91,12 @@ namespace Opal {
 
       /* CallProtocolManager */
       bool dial (const std::string & uri);
+      bool transfer (const std::string & uri,
+                     bool attended);
+      bool message (const Ekiga::ContactPtr & contact,
+                    const std::string & uri);
+      bool is_supported_uri (const std::string & uri);
+
 
       const std::string & get_protocol_name () const;
 
@@ -170,26 +166,9 @@ namespace Opal {
       SIPURL GetRegisteredPartyName (const SIPURL & host,
 				     const OpalTransport & transport);
 
-      /* Return true if URI can be handled by the endpoint,
-       * false otherwise.
-       */
-      bool is_valid_uri (const std::string & uri);
-
-      /* Return true if the endpoint is currently handling one or more calls,
-       * and there is an active call to transfer, false otherwise.
-       */
-      bool can_transfer (const std::string & uri);
-
 
       /* Callbacks */
     private:
-      void on_dial (Ekiga::ContactPtr contact,
-                    const std::string & uri);
-      void on_message (Ekiga::ContactPtr contact,
-                       const std::string & uri);
-      void on_transfer (Ekiga::ContactPtr contact,
-                        const std::string & uri);
-
       void push_message_in_main (const std::string uri,
 				 const std::string name,
 				 const std::string msg);

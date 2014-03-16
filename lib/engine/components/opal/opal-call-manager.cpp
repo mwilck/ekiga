@@ -224,31 +224,6 @@ CallManager::~CallManager ()
 }
 
 
-bool
-CallManager::populate_menu (const std::string fullname,
-			    const std::string uri,
-			    Ekiga::MenuBuilder& builder)
-{
-  std::string complete_uri;
-  bool result = false;
-
-  // by default, prefer SIP
-  if (uri.find (":") == std::string::npos)
-    complete_uri = "sip:" + uri;
-  else
-    complete_uri = uri;
-
-  if (uri.find ("sip:") == 0)
-    result = sip_endpoint->populate_menu (fullname, complete_uri, builder);
-
-#ifdef HAVE_H323
-  if (uri.find ("h323:") == 0)
-    result = h323_endpoint->populate_menu (fullname, complete_uri, builder);
-#endif
-
-  return result;
-}
-
 void CallManager::set_display_name (const std::string & name)
 {
   display_name = name;
@@ -651,6 +626,44 @@ bool CallManager::dial (const std::string & uri)
 void CallManager::hang_up ()
 {
   ClearAllCalls (OpalConnection::EndedByLocalUser, true);
+}
+
+
+bool CallManager::transfer (const std::string & uri,
+                            bool attended)
+{
+  for (CallManager::iterator iter = begin ();
+       iter != end ();
+       iter++)
+    if ((*iter)->transfer (uri, attended))
+      return true;
+
+  return false;
+}
+
+
+bool CallManager::message (const Ekiga::ContactPtr & contact,
+                           const std::string & uri)
+{
+  for (CallManager::iterator iter = begin ();
+       iter != end ();
+       iter++)
+    if ((*iter)->message (contact, uri))
+      return true;
+
+  return false;
+}
+
+
+bool CallManager::is_supported_uri (const std::string & uri)
+{
+  for (CallManager::iterator iter = begin ();
+       iter != end ();
+       iter++)
+    if ((*iter)->is_supported_uri (uri))
+      return true;
+
+  return false;
 }
 
 
