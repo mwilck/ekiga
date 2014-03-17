@@ -552,37 +552,6 @@ static bool on_handle_errors (std::string error,
 
 /* GTK callbacks */
 static void
-on_history_selection_changed (G_GNUC_UNUSED GtkWidget* view,
-			      gpointer self)
-{
-  EkigaMainWindow *mw = EKIGA_MAIN_WINDOW (self);
-  History::Contact *contact = NULL;
-  GtkBuilder *builder = NULL;
-
-  call_history_view_gtk_get_selected (CALL_HISTORY_VIEW_GTK (mw->priv->call_history_view),
-                                      &contact);
-
-  g_menu_remove (G_MENU (gtk_builder_get_object (mw->priv->builder, "menubar")), 0);
-  if (contact == NULL) {
-    mw->priv->contact_menu->set_data ();
-  }
-  else {
-    mw->priv->contact_menu->set_data (Ekiga::ContactPtr (contact, null_deleter ()),
-                                      contact->get_uri ());
-    builder = gtk_builder_new ();
-    gtk_builder_add_from_string (builder,
-                                 Ekiga::ActorMenu::get_xml_menu ("action",
-                                                                 mw->priv->contact_menu->as_xml (),
-                                                                 true).c_str (),
-                                 -1, NULL);
-    g_menu_prepend_submenu (G_MENU (gtk_builder_get_object (mw->priv->builder, "menubar")),
-                            _("Contact"),
-                            G_MENU_MODEL (gtk_builder_get_object (builder, "action")));
-    g_object_unref (builder);
-  }
-}
-
-static void
 on_roster_selection_changed (G_GNUC_UNUSED GtkWidget* view,
 			     gpointer self)
 {
@@ -934,12 +903,22 @@ ekiga_main_window_init_menu (EkigaMainWindow *mw)
     "  <menu id='menubar'>"
     "    <section>"
     "      <item>"
-    "        <attribute name='label' translatable='yes'>_Add Contact</attribute>"
-    "        <attribute name='action'>win.add</attribute>"
-    "      </item>"
-    "      <item>"
     "        <attribute name='label' translatable='yes'>Place _Call</attribute>"
     "        <attribute name='action'>win.call</attribute>"
+    "      </item>"
+    "      <item>"
+    "        <attribute name='label' translatable='yes'>_Transfer Call</attribute>"
+    "        <attribute name='action'>win.transfer</attribute>"
+    "      </item>"
+    "      <item>"
+    "        <attribute name='label' translatable='yes'>_Message</attribute>"
+    "        <attribute name='action'>win.message</attribute>"
+    "      </item>"
+    "    </section>"
+    "    <section>"
+    "      <item>"
+    "        <attribute name='label' translatable='yes'>_Add Contact</attribute>"
+    "        <attribute name='action'>win.add</attribute>"
     "      </item>"
     "    </section>"
     "    <section>"
@@ -1045,8 +1024,6 @@ ekiga_main_window_init_history (EkigaMainWindow *mw)
   label = gtk_label_new (_("Call history"));
   mw->priv->call_history_page_number =
     gtk_notebook_append_page (GTK_NOTEBOOK (mw->priv->main_notebook), mw->priv->call_history_view, label);
-  g_signal_connect (mw->priv->call_history_view, "selection-changed",
-		    G_CALLBACK (on_history_selection_changed), mw);
 }
 
 static void
