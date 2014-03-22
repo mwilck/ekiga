@@ -903,7 +903,7 @@ ekiga_main_window_init_menu (EkigaMainWindow *mw)
     "  <menu id='menubar'>"
     "    <section>"
     "      <item>"
-    "        <attribute name='label' translatable='yes'>Place _Call</attribute>"
+    "        <attribute name='label' translatable='yes'>_Call</attribute>"
     "        <attribute name='action'>win.call</attribute>"
     "      </item>"
     "      <item>"
