@@ -177,12 +177,6 @@ on_clicked (GtkWidget *tree,
   if (event->type != GDK_BUTTON_PRESS && event->type != GDK_2BUTTON_PRESS)
     return TRUE;
 
-  /* Set or reset ContactActor data */
-  call_history_view_gtk_get_selected (self, &contact);
-  if (contact == NULL) {
-    return TRUE;
-  }
-
   if (event->type == GDK_BUTTON_PRESS && event->button == 3) {
 
     builder = gtk_builder_new ();
