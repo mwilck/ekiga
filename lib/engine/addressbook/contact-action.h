@@ -80,8 +80,8 @@ namespace Ekiga {
      * @param the contact part of the tuple.
      * @param the uri part of the tuple.
      */
-    void set_data (ContactPtr _contact,
-                   const std::string & _uri);
+    void set_data (ContactPtr _contact = ContactPtr (),
+                   const std::string & _uri = "");
 
 
     /** Checks if the ContactAction can be run on the (Contact, uri) tuple given
