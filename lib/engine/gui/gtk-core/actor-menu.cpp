@@ -232,10 +232,14 @@ Ekiga::ContactActorMenu::add_action (Ekiga::Action *_action)
   Ekiga::ContactAction *a = dynamic_cast<Ekiga::ContactAction *> (_action);
 
   if (!a || !a->can_run_with_data (contact, uri)) {
+    a->set_data (); // Make sure action data is reset
+
     g_action_map_remove_action (G_ACTION_MAP (g_application_get_default ()),
                                 a->get_name ().c_str ());
   }
   else if (a && a->can_run_with_data (contact, uri)) {
+    a->set_data (contact, uri); // Make sure action data is set
+
     action = g_simple_action_new (a->get_name ().c_str (), NULL);
     g_object_set_data (G_OBJECT (action), "action", a);
     g_action_map_add_action (G_ACTION_MAP (g_application_get_default ()),
