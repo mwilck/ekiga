@@ -48,6 +48,9 @@ ContactAction::ContactAction (const std::string & _name,
 {
   callback = _callback;
   tester = _tester;
+
+  /* ContactAction objects should be disabled until data is set */
+  set_data ();
 }
 
 
