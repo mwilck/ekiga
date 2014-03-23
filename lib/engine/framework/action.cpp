@@ -45,6 +45,7 @@ Action::Action (const std::string & _name,
 {
   name = _name;
   description = _description;
+  enabled = true;
 
   activated.connect (boost::bind (&Action::on_activated, this));
 }
@@ -57,6 +58,7 @@ Action::Action (const std::string & _name,
   name = _name;
   description = _description;
   callback = _callback;
+  enabled = true;
 
   activated.connect (boost::bind (&Action::on_activated, this));
 }
@@ -82,6 +84,27 @@ void
 Action::activate ()
 {
   activated ();
+}
+
+
+void
+Action::enable ()
+{
+  enabled = true;
+}
+
+
+void
+Action::disable ()
+{
+  enabled = false;
+}
+
+
+bool
+Action::is_enabled ()
+{
+  return enabled;
 }
 
 

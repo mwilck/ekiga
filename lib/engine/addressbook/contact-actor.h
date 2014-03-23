@@ -27,25 +27,26 @@
 
 
 /*
- *                         actor.h  -  description
- *                         -----------------------
- *   begin                : written in February 2014 by Damien Sandras
+ *                         contact-actor.h  -  description
+ *                         -------------------------------
+ *   begin                : written in March 2014 by Damien Sandras
  *   copyright            : (c) 2014 by Damien Sandras
- *   description          : An engine actor.
+ *   description          : An engine contact actor.
  *
  */
 
-#ifndef __ACTOR_H__
-#define __ACTOR_H__
+#ifndef __CONTACT_ACTOR_H__
+#define __CONTACT_ACTOR_H__
 
 #include <string>
 
-#include "action.h"
+#include "contact-action.h"
+#include "actor.h"
 
 namespace Ekiga {
 
   /**
-   * @defgroup actions Actor
+   * @defgroup actions ContactActor
    * @{
    */
 
@@ -55,50 +56,36 @@ namespace Ekiga {
    * Actor can register actions through the add_action method.
    * acting.
    */
-  class Actor
+  class ContactActor : public Actor
   {
-    friend class ActorMenu;
+    friend class ContactActorMenu;
 
   public:
 
-    /** Register an action on the given Actor.
+    /** Register an action on the given ContactActor.
      *
      * Actions that are not "added" using this method will not be usable
      * from menus.
      *
-     * @param An Action.
+     * @param A ContactAction.
      */
-    virtual void add_action (ActionPtr action);
+    void add_action (ActionPtr action);
 
 
-    /** Enable a specific action on the given Actor.
-     *
-     * @param The Action name.
+    /** Set the (Contact, uri) tuple on which the ContactActions should be run.
+     * They must stay valid until the ContactAction is activated.
+     * Actions are enabled/disabled following the parameters validity.
+     * @param the contact part of the tuple.
+     * @param the uri part of the tuple.
      */
-    void enable_action (const std::string & name);
+    void set_data (ContactPtr _contact = ContactPtr (),
+                   const std::string & _uri = "");
 
 
-    /** Disable a specific action on the given Actor.
-     *
-     * @param The Action name.
-     */
-    void disable_action (const std::string & name);
+  private:
 
-
-  protected:
-
-    /** This method must be called by each Actor to register Actions.
-     */
-    virtual void register_actions () = 0;
-
-
-    /** Those signals are emitted when an Action is enabled/disabled
-     *  in the ActionMap.
-     */
-    boost::signals2::signal<void(const std::string &)> action_enabled;
-    boost::signals2::signal<void(const std::string &)> action_disabled;
-
-    ActionMap actions;
+    ContactPtr contact;
+    std::string uri;
   };
 
   /**

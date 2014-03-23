@@ -77,6 +77,7 @@ namespace Ekiga {
 
     /** Set the (Contact, uri) tuple on which the ContactAction should be run.
      * They must stay valid until the ContactAction is activated.
+     * The Action is enabled/disabled following the parameters validity.
      * @param the contact part of the tuple.
      * @param the uri part of the tuple.
      */
@@ -103,6 +104,8 @@ namespace Ekiga {
     ContactPtr contact;
     std::string uri;
   };
+
+  typedef boost::shared_ptr<ContactAction> ContactActionPtr;
 
   /**
    * @}

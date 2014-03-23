@@ -122,6 +122,26 @@ namespace Ekiga {
     void activate ();
 
 
+    /** Enable the Action.
+     * This will enable the action. Only enabled actions are usable
+     * and appear in menus.
+     */
+    void enable ();
+
+
+    /** Disable the Action.
+     * This will disable the action. Only enabled actions are usable
+     * and appear in menus.
+     */
+    void disable ();
+
+
+    /** Return the Action state.
+     * @return true if the Action is enabled, false otherwise.
+     */
+    bool is_enabled ();
+
+
   protected:
 
     std::string name;
@@ -141,6 +161,8 @@ namespace Ekiga {
      * the signal execution.
      */
     boost::signals2::signal<void(void)> activated;
+
+    bool enabled;
   };
 
   typedef boost::shared_ptr<Action> ActionPtr;

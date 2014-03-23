@@ -101,8 +101,8 @@ Ekiga::ContactCore::add_contact_decorator (boost::shared_ptr<ContactDecorator> d
 
 
 bool
-Ekiga::ContactCore::populate_contact_menu (ContactPtr contact,
-					   const std::string uri,
+Ekiga::ContactCore::populate_contact_menu (ContactPtr _contact,
+					   const std::string _uri,
 					   MenuBuilder &builder)
 {
   bool populated = false;
@@ -112,7 +112,7 @@ Ekiga::ContactCore::populate_contact_menu (ContactPtr contact,
        iter != contact_decorators.end ();
        ++iter) {
 
-    populated = (*iter)->populate_menu (contact, uri, builder) || populated;
+    populated = (*iter)->populate_menu (_contact, _uri, builder) || populated;
   }
 
   return populated;

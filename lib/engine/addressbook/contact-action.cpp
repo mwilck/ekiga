@@ -57,13 +57,18 @@ ContactAction::set_data (ContactPtr _contact,
 {
   contact = _contact;
   uri = _uri;
+
+  if (can_run_with_data (contact, uri))
+    enable ();
+  else
+    disable ();
 }
 
 
 void
 ContactAction::on_activated ()
 {
-  if (can_run_with_data (contact, uri))
+  if (is_enabled ())
     callback (contact, uri);
 }
 

@@ -37,7 +37,7 @@
 #define __CONTACT_CORE_H__
 
 #include "services.h"
-#include "actor.h"
+#include "contact-actor.h"
 #include "source.h"
 #include "scoped-connections.h"
 
@@ -69,7 +69,7 @@ namespace Ekiga
    */
   class ContactCore:
     public virtual LiveObject,
-    public Actor,
+    public ContactActor,
     public Service
   {
   public:

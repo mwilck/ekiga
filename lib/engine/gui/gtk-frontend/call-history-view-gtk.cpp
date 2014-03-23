@@ -367,8 +367,8 @@ call_history_view_gtk_new (boost::shared_ptr<History::Book> book,
   on_book_updated(self);
 
   /* register book actions */
-  self->priv->menu = Ekiga::ActorMenuPtr (Ekiga::ActorMenu::create (*book));
-  self->priv->contact_menu = Ekiga::ContactActorMenuPtr (Ekiga::ContactActorMenu::create (*ccore));
+  self->priv->menu = Ekiga::ActorMenuPtr (new Ekiga::ActorMenu (*book));
+  self->priv->contact_menu = Ekiga::ContactActorMenuPtr (new Ekiga::ContactActorMenu (*ccore));
 
   return GTK_WIDGET (self);
 }

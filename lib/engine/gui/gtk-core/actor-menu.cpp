@@ -40,6 +40,7 @@
 
 #include "action.h"
 #include "contact-core.h"
+#include "contact-actor.h"
 #include "actor-menu.h"
 
 
@@ -59,8 +60,10 @@ action_activated (GSimpleAction *a,
 
 Ekiga::ActorMenu::ActorMenu (Ekiga::Actor & _obj) : obj (_obj)
 {
-  obj.action_added.connect (boost::bind (&Ekiga::ActorMenu::add_gio_action, this, _1));
-  obj.action_removed.connect (boost::bind (&Ekiga::ActorMenu::remove_gio_action, this, _1));
+  obj.action_enabled.connect (boost::bind (static_cast<void (Ekiga::ActorMenu::*)(const std::string&)>(&Ekiga::ActorMenu::add_gio_action), this, _1));
+  obj.action_disabled.connect (boost::bind (&Ekiga::ActorMenu::remove_gio_action, this, _1));
+
+  sync_gio_actions ();
 }
 
 
@@ -75,19 +78,12 @@ Ekiga::ActorMenu::~ActorMenu ()
 
 
 void
-Ekiga::ActorMenu::add_gio_actions ()
+Ekiga::ActorMenu::sync_gio_actions ()
 {
   ActionMap::const_iterator it;
 
-  for (it = obj.actions.begin(); it != obj.actions.end(); ++it) {
-
-    if (!g_action_map_lookup_action (G_ACTION_MAP (g_application_get_default ()),
-                                     it->first.c_str ())) {
-
-      Ekiga::Action *a = dynamic_cast<Ekiga::Action *> (it->second.get ());
-      add_action (a);
-    }
-  }
+  for (it = obj.actions.begin(); it != obj.actions.end(); ++it)
+    add_gio_action (boost::dynamic_pointer_cast<Action> (it->second));
 }
 
 
@@ -97,24 +93,24 @@ Ekiga::ActorMenu::add_gio_action (const std::string & name)
   ActionMap::const_iterator it;
 
   it = obj.actions.find (name);
-
-  if (it != obj.actions.end ()
-      && !g_action_map_lookup_action (G_ACTION_MAP (g_application_get_default ()),
-                                      it->first.c_str ())) {
-
-    Ekiga::Action *a = dynamic_cast<Ekiga::Action *> (it->second.get ());
-    add_action (a);
-  }
+  if (it != obj.actions.end ())
+    add_gio_action (boost::dynamic_pointer_cast<Action> (it->second));
 }
 
 
 void
-Ekiga::ActorMenu::add_action (Ekiga::Action *a)
+Ekiga::ActorMenu::add_gio_action (Ekiga::ActionPtr a)
 {
   GSimpleAction *action = NULL;
 
+  /* Action is disabled or already present */
+  if (!a->is_enabled ()
+      || g_action_map_lookup_action (G_ACTION_MAP (g_application_get_default ()),
+                                     a->get_name ().c_str ()))
+    return;
+
   action = g_simple_action_new (a->get_name ().c_str (), NULL);
-  g_object_set_data (G_OBJECT (action), "action", a);
+  g_object_set_data (G_OBJECT (action), "action", a.get ());
   g_action_map_add_action (G_ACTION_MAP (g_application_get_default ()),
                            G_ACTION (action));
   g_signal_connect (action, "activate",
@@ -146,16 +142,6 @@ Ekiga::ActorMenu::get_xml_menu (const std::string & id,
 }
 
 
-Ekiga::ActorMenu *
-Ekiga::ActorMenu::create (Ekiga::Actor & obj)
-{
-  Ekiga::ActorMenu *m = new Ekiga::ActorMenu (obj);
-  m->add_gio_actions ();
-
-  return m;
-}
-
-
 void
 Ekiga::ActorMenu::activate (Ekiga::Action *action)
 {
@@ -176,11 +162,12 @@ Ekiga::ActorMenu::as_xml (const std::string & id)
 
   for (it = obj.actions.begin(); it != obj.actions.end(); ++it) {
 
-    xml_content +=
-      "      <item>"
-      "        <attribute name=\"label\" translatable=\"yes\">"+it->second->get_description ()+"</attribute>"
-      "        <attribute name=\"action\">win."+it->second->get_name ()+"</attribute>"
-      "      </item>";
+    if (it->second->is_enabled ())
+      xml_content +=
+        "      <item>"
+        "        <attribute name=\"label\" translatable=\"yes\">"+it->second->get_description ()+"</attribute>"
+        "        <attribute name=\"action\">win."+it->second->get_name ()+"</attribute>"
+        "      </item>";
   }
 
   xml_content +=
@@ -196,110 +183,12 @@ Ekiga::ContactActorMenu::ContactActorMenu (Ekiga::Actor & _obj) : ActorMenu (_ob
 
 
 void
-Ekiga::ContactActorMenu::add_gio_actions ()
-{
-  ActionMap::const_iterator it;
-
-  for (it = obj.actions.begin(); it != obj.actions.end(); ++it) {
-
-    Ekiga::ContactAction *a = dynamic_cast<Ekiga::ContactAction *> (it->second.get ());
-    add_action (a);
-  }
-}
-
-
-void
-Ekiga::ContactActorMenu::add_gio_action (const std::string & name)
-{
-  ActionMap::const_iterator it;
-
-  it = obj.actions.find (name);
-
-  if (it != obj.actions.end ()
-      && !g_action_map_lookup_action (G_ACTION_MAP (g_application_get_default ()),
-                                                 it->first.c_str ())) {
-
-    Ekiga::ContactAction *a = dynamic_cast<Ekiga::ContactAction *> (it->second.get ());
-    add_action (a);
-  }
-}
-
-
-void
-Ekiga::ContactActorMenu::add_action (Ekiga::Action *_action)
-{
-  GSimpleAction *action = NULL;
-  Ekiga::ContactAction *a = dynamic_cast<Ekiga::ContactAction *> (_action);
-
-  if (!a || !a->can_run_with_data (contact, uri)) {
-    a->set_data (); // Make sure action data is reset
-
-    g_action_map_remove_action (G_ACTION_MAP (g_application_get_default ()),
-                                a->get_name ().c_str ());
-  }
-  else if (a && a->can_run_with_data (contact, uri)) {
-    a->set_data (contact, uri); // Make sure action data is set
-
-    action = g_simple_action_new (a->get_name ().c_str (), NULL);
-    g_object_set_data (G_OBJECT (action), "action", a);
-    g_action_map_add_action (G_ACTION_MAP (g_application_get_default ()),
-                             G_ACTION (action));
-    g_signal_connect (action, "activate",
-                      G_CALLBACK (action_activated),
-                      (gpointer) this);
-    g_object_unref (action);
-  }
-}
-
-
-void
 Ekiga::ContactActorMenu::set_data (Ekiga::ContactPtr _contact,
                                    const std::string & _uri)
 {
-  contact = _contact;
-  uri = _uri;
+  Ekiga::ContactActor *actor = dynamic_cast <Ekiga::ContactActor *> (&obj);
+  if (actor)
+    actor->set_data (_contact, _uri);
 
-  add_gio_actions ();
-}
-
-
-const std::string
-Ekiga::ContactActorMenu::as_xml (const std::string & id)
-{
-  ActionMap::const_iterator it;
-  std::string xml_content;
-
-  if (!id.empty ())
-   xml_content += "    <section id=\"" + id + "\">";
-  else
-   xml_content += "    <section>";
-
-  for (it = obj.actions.begin(); it != obj.actions.end(); ++it) {
-
-    Ekiga::ContactAction *action = dynamic_cast<Ekiga::ContactAction *> (it->second.get ());
-
-    if (action && action->can_run_with_data (contact, uri)) {
-      action->set_data (contact, uri);
-      xml_content +=
-        "      <item>"
-        "        <attribute name=\"label\" translatable=\"yes\">"+it->second->get_description ()+"</attribute>"
-        "        <attribute name=\"action\">win."+it->second->get_name ()+"</attribute>"
-        "      </item>";
-    }
-  }
-
-  xml_content +=
-    "    </section>";
-
-  return xml_content;
-}
-
-
-Ekiga::ContactActorMenu *
-Ekiga::ContactActorMenu::create (Ekiga::Actor & obj)
-{
-  Ekiga::ContactActorMenu *m = new Ekiga::ContactActorMenu (obj);
-  m->add_gio_actions ();
-
-  return m;
+  sync_gio_actions ();
 }

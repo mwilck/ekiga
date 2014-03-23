@@ -27,47 +27,43 @@
 
 
 /*
- *                         actor.cpp  -  description
- *                         -------------------------
- *   begin                : written in February 2014 by Damien Sandras
+ *                         contact-actor.cpp  -  description
+ *                         ---------------------------------
+ *   begin                : written in March 2014 by Damien Sandras
  *   copyright            : (c) 2014 by Damien Sandras
- *   description          : An engine actor.
+ *   description          : An engine contact actor.
  *
  */
 
-#include "actor.h"
+#include "contact-actor.h"
 
 using namespace Ekiga;
 
 
 void
-Actor::add_action (ActionPtr action)
+ContactActor::add_action (ActionPtr action)
 {
   actions.insert (std::make_pair (action->get_name (), action));
+
+  ContactActionPtr a = boost::dynamic_pointer_cast<ContactAction> (action);
+  if (a != NULL)
+    a->set_data (contact, uri);
 }
 
 
 void
-Actor::enable_action (const std::string & name)
+ContactActor::set_data (ContactPtr _contact,
+                        const std::string & _uri)
 {
   ActionMap::iterator it;
-  it = actions.find (name);
 
-  if (it != actions.end ()) {
-    it->second->enable ();
-    action_enabled (name);
-  }
-}
+  contact = _contact;
+  uri = _uri;
 
+  for (it = actions.begin(); it != actions.end(); ++it) {
 
-void
-Actor::disable_action (const std::string & name)
-{
-  ActionMap::iterator it;
-  it = actions.find (name);
-
-  if (it != actions.end ()) {
-    it->second->disable ();
-    action_disabled (name);
+    ContactActionPtr a = boost::dynamic_pointer_cast<ContactAction> (it->second);
+    if (a != NULL)
+      a->set_data (contact, uri);
   }
 }

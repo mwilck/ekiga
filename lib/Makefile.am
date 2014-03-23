@@ -237,6 +237,8 @@ libekiga_la_SOURCES += \
 	engine/addressbook/source-impl.h \
 	engine/addressbook/contact-action.h \
 	engine/addressbook/contact-action.cpp \
+	engine/addressbook/contact-actor.h \
+	engine/addressbook/contact-actor.cpp \
 	engine/addressbook/contact-core.h \
 	engine/addressbook/contact-core.cpp
 
