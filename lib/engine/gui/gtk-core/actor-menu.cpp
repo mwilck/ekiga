@@ -49,7 +49,7 @@ action_activated (GSimpleAction *a,
                   G_GNUC_UNUSED GVariant *p,
                   gpointer data)
 {
-  Ekiga::Action *action = (Ekiga::Action *) g_object_get_data (G_OBJECT (a), "action");
+  const char *action = (const char *) g_object_get_data (G_OBJECT (a), "action");
   Ekiga::ActorMenu *menu = (Ekiga::ActorMenu *) data;
 
   g_return_if_fail (action && menu);
@@ -114,7 +114,9 @@ Ekiga::ActorMenu::add_gio_action (Ekiga::ActionPtr a)
     return;
 
   action = g_simple_action_new (a->get_name ().c_str (), NULL);
-  g_object_set_data (G_OBJECT (action), "action", a.get ());
+  g_object_set_data_full (G_OBJECT (action), "action",
+                          g_strdup (a->get_name ().c_str ()),
+                          (GDestroyNotify) g_free);
   g_action_map_add_action (G_ACTION_MAP (g_application_get_default ()),
                            G_ACTION (action));
   g_signal_connect (action, "activate",
@@ -147,9 +149,12 @@ Ekiga::ActorMenu::get_xml_menu (const std::string & id,
 
 
 void
-Ekiga::ActorMenu::activate (Ekiga::Action *action)
+Ekiga::ActorMenu::activate (const std::string & name)
 {
-  action->activate ();
+  ActionMap::const_iterator it = obj.actions.find (name);
+
+  if (it != obj.actions.end ())
+    it->second->activate ();
 }
 
 

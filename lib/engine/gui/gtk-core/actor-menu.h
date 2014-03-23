@@ -63,7 +63,7 @@ namespace Ekiga {
     ActorMenu (Actor & obj);
     virtual ~ActorMenu ();
 
-    virtual void activate (Ekiga::Action *action);
+    virtual void activate (const std::string & name);
     virtual const std::string as_xml (const std::string & id = "");
 
     static const std::string get_xml_menu (const std::string & id,
