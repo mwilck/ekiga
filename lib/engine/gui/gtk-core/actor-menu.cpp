@@ -82,8 +82,12 @@ Ekiga::ActorMenu::sync_gio_actions ()
 {
   ActionMap::const_iterator it;
 
-  for (it = obj.actions.begin(); it != obj.actions.end(); ++it)
-    add_gio_action (boost::dynamic_pointer_cast<Action> (it->second));
+  for (it = obj.actions.begin(); it != obj.actions.end(); ++it) {
+    if (it->second->is_enabled ())
+      add_gio_action (boost::dynamic_pointer_cast<Action> (it->second));
+    else
+      remove_gio_action (it->first);
+  }
 }
 
 
