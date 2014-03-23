@@ -119,8 +119,6 @@ struct _EkigaMainWindowPrivate
   GtkWidget *main_notebook;
   GtkBuilder *builder;
 
-  boost::shared_ptr<Ekiga::ContactActorMenu> contact_menu;
-
   /* Dialpad uri toolbar */
   GtkWidget *uri_toolbar;
   GtkWidget *entry;
@@ -153,6 +151,9 @@ struct _EkigaMainWindowPrivate
 
   gulong roster_selection_connection_id;
   Ekiga::scoped_connections connections;
+
+  /* Menu */
+  boost::shared_ptr<Ekiga::ContactActorMenu> contact_menu;
 
   /* GSettings */
   boost::shared_ptr<Ekiga::Settings> user_interface_settings;
@@ -696,6 +697,35 @@ statusbar_clicked_cb (G_GNUC_UNUSED GtkWidget *widget,
 
 
 static void
+menu_button_toggled_cb (GtkToggleButton *togglebutton,
+                        gpointer data)
+{
+  GtkBuilder *builder = NULL;
+  GMenu *menu = NULL;
+
+  g_return_if_fail (EKIGA_IS_MAIN_WINDOW (data));
+  EkigaMainWindow *mw = EKIGA_MAIN_WINDOW (data);
+
+  if (!gtk_toggle_button_get_active (togglebutton))
+    return;
+
+  builder = gtk_builder_new ();
+  gtk_builder_add_from_string (builder,
+                               Ekiga::ActorMenu::get_xml_menu ("popup",
+                                                               mw->priv->contact_menu->as_xml ("brol"),
+                                                               true).c_str (),
+                               -1, NULL);
+
+  menu = G_MENU (gtk_builder_get_object (mw->priv->builder, "menubar"));
+  g_menu_remove (menu, 0);
+  g_menu_insert_section (menu, 0,
+                         NULL,
+                         G_MENU_MODEL (gtk_builder_get_object (builder, "brol")));
+  g_object_unref (builder);
+}
+
+
+static void
 ekiga_main_window_append_call_url (EkigaMainWindow *mw,
 				   const char *url)
 {
@@ -890,6 +920,8 @@ ekiga_main_window_init_actions_toolbar (EkigaMainWindow *mw)
   gtk_button_set_image (GTK_BUTTON (button), image);
   gtk_menu_button_set_menu_model (GTK_MENU_BUTTON (button),
                                   G_MENU_MODEL (gtk_builder_get_object (mw->priv->builder, "menubar")));
+  g_signal_connect (GTK_TOGGLE_BUTTON (button), "toggled",
+                    G_CALLBACK (menu_button_toggled_cb), mw);
   gtk_header_bar_pack_end (GTK_HEADER_BAR (mw->priv->actions_toolbar), button);
   gtk_widget_set_margin_right (button, 3);
 }
@@ -1254,12 +1286,12 @@ gm_main_window_new (GmApplication *app)
   mw->priv->history_source
     = core->get<History::Source> ("call-history-store");
 
+  mw->priv->contact_menu =
+    Ekiga::ContactActorMenuPtr (new Ekiga::ContactActorMenu (*mw->priv->contact_core));
+
   ekiga_main_window_connect_engine_signals (mw);
 
   ekiga_main_window_init_gui (mw);
-
-  mw->priv->contact_menu =
-    Ekiga::ContactActorMenuPtr (Ekiga::ContactActorMenu::create (*mw->priv->contact_core));
 
   return GTK_WIDGET(mw);
 }
