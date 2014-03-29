@@ -152,25 +152,18 @@ bool CallCore::is_supported_uri (const std::string & uri)
 void CallCore::register_actions (boost::shared_ptr<ContactCore> _contact_core)
 {
   contact_core = _contact_core;
-  contact_core->add_action (ActionPtr (
-                              new ContactAction ("call", _("Call"),
-                                                 boost::bind (&CallCore::dial,
-                                                              this, _2),
-                                                 boost::bind (&CallCore::is_supported_uri,
-                                                              this, _2))));
-
-  contact_core->add_action (ActionPtr (
-                              new ContactAction ("transfer", _("Transfer"),
-                                                 boost::bind (&CallCore::transfer,
-                                                              this, _2, false),
-                                                 boost::bind (&CallCore::is_supported_uri,
-                                                              this, _2))));
-  contact_core->add_action (ActionPtr (
-                              new ContactAction ("message", _("Message"),
-                                                 boost::bind (&CallCore::message,
-                                                              this, _1, _2),
-                                                 boost::bind (&CallCore::is_supported_uri,
-                                                              this, _2))));
+  ActionPtr call (new ContactAction ("call", _("Call"),
+                                     boost::bind (&CallCore::dial, this, _2),
+                                     boost::bind (&CallCore::is_supported_uri, this, _2)));
+  ActionPtr xfer (new ContactAction ("transfer", _("Transfer"),
+                                     boost::bind (&CallCore::transfer, this, _2, false),
+                                     boost::bind (&CallCore::is_supported_uri, this, _2)));
+  ActionPtr msg (new ContactAction ("message", _("Message"),
+                                    boost::bind (&CallCore::message, this, _1, _2),
+                                    boost::bind (&CallCore::is_supported_uri, this, _2)));
+  contact_core->add_action (call);
+  contact_core->add_action (xfer);
+  contact_core->add_action (msg);
 }
 
 
@@ -232,7 +225,7 @@ void CallCore::on_missed_call (boost::shared_ptr<Call> call, boost::shared_ptr<C
 
 void CallCore::on_cleared_call (std::string reason, boost::shared_ptr<Call> call, boost::shared_ptr<CallManager> manager)
 {
-  cleared_call (manager, call, reason); 
+  cleared_call (manager, call, reason);
 }
 
 
