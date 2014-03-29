@@ -1007,6 +1007,7 @@ on_presentity_added (RosterViewGtk* self,
 		     Ekiga::HeapPtr heap,
 		     Ekiga::PresentityPtr presentity)
 {
+  GdkRGBA color;
   GtkTreeIter heap_iter;
   std::set<std::string> groups = presentity->get_groups ();
   GtkTreeSelection* selection = gtk_tree_view_get_selection (self->priv->tree_view);
@@ -1088,6 +1089,9 @@ on_presentity_added (RosterViewGtk* self,
       else if (presentity->get_presence () == "busy")
         status = _("Busy");
     }
+    gtk_style_context_get_color (gtk_widget_get_style_context (GTK_WIDGET (self->priv->tree_view)),
+                                 (!active||away)?GTK_STATE_FLAG_INSENSITIVE:GTK_STATE_FLAG_NORMAL,
+                                 &color);
     gtk_tree_store_set (self->priv->store, &iter,
                         COLUMN_TYPE, TYPE_PRESENTITY,
                         COLUMN_OFFLINE, active,
@@ -1096,7 +1100,7 @@ on_presentity_added (RosterViewGtk* self,
                         COLUMN_NAME, presentity->get_name ().c_str (),
                         COLUMN_STATUS, status.c_str (),
                         COLUMN_PRESENCE, presentity->get_presence ().c_str (),
-                        COLUMN_ACTIVE, (!active || away) ? "gray" : "black", -1);
+                        COLUMN_ACTIVE, &color, -1);
     gtk_tree_model_get (GTK_TREE_MODEL (self->priv->store), &iter,
                         COLUMN_TIMEOUT, &timeout,
                         -1);
@@ -1432,7 +1436,7 @@ roster_view_gtk_init (RosterViewGtk* self)
                                           G_TYPE_STRING,      // name
                                           G_TYPE_STRING,      // status
                                           G_TYPE_STRING,      // presence
-                                          G_TYPE_STRING,      // color if active
+                                          GDK_TYPE_RGBA,      // color if active
                                           G_TYPE_STRING,      // group name (invisible)
                                           G_TYPE_STRING,      // presence
 					  G_TYPE_BOOLEAN,     // offline
@@ -1513,7 +1517,7 @@ roster_view_gtk_init (RosterViewGtk* self)
   gtk_tree_view_column_pack_start (col, renderer, FALSE);
   gtk_tree_view_column_add_attribute (col, renderer, "primary-text", COLUMN_NAME);
   gtk_tree_view_column_add_attribute (col, renderer, "secondary-text", COLUMN_STATUS);
-  gtk_tree_view_column_add_attribute (col, renderer, "foreground", COLUMN_ACTIVE);
+  gtk_tree_view_column_add_attribute (col, renderer, "foreground-rgba", COLUMN_ACTIVE);
   gtk_tree_view_column_set_cell_data_func (col, renderer,
                                            show_cell_data_func, GINT_TO_POINTER (TYPE_PRESENTITY), NULL);
 
