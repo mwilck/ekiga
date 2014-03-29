@@ -84,6 +84,11 @@ typedef enum {
 
 enum DeviceType {AudioInput, AudioOutput, Ringer, VideoInput};
 
+typedef enum {
+  CONTACT,
+  NUM_MENU_SECTIONS
+} MenuSection;
+
 struct deviceStruct {
   char name[256];
   DeviceType deviceType;
@@ -169,6 +174,25 @@ enum {
   CHANNEL_VIDEO,
   CHANNEL_LAST
 };
+
+static const char* win_menu =
+  "<?xml version='1.0'?>"
+  "<interface>"
+  "  <menu id='menubar'>"
+  "    <section>"
+  "      <item>"
+  "        <attribute name='label' translatable='yes'>_Add Contact</attribute>"
+  "        <attribute name='action'>win.add</attribute>"
+  "      </item>"
+  "    </section>"
+  "    <section>"
+  "      <item>"
+  "        <attribute name='label' translatable='yes'>_Close</attribute>"
+  "        <attribute name='action'>win.close</attribute>"
+  "      </item>"
+  "    </section>"
+  "  </menu>"
+  "</interface>";
 
 
 /* GUI Functions */
@@ -292,7 +316,6 @@ static void ekiga_main_window_push_message (EkigaMainWindow *main_window,
 
 static GActionEntry win_entries[] =
 {
-    { "call", show_dialpad_activated, NULL, NULL, NULL, 0 },
     { "add", pull_trigger_activated, NULL, NULL, NULL, 0 },
     { "close", close_activated, NULL, NULL, NULL, 0 }
 };
@@ -700,8 +723,8 @@ static void
 menu_button_toggled_cb (GtkToggleButton *togglebutton,
                         gpointer data)
 {
-  GtkBuilder *builder = NULL;
   GMenu *menu = NULL;
+  GMenuModel *contact_menu = NULL;
 
   g_return_if_fail (EKIGA_IS_MAIN_WINDOW (data));
   EkigaMainWindow *mw = EKIGA_MAIN_WINDOW (data);
@@ -709,19 +732,13 @@ menu_button_toggled_cb (GtkToggleButton *togglebutton,
   if (!gtk_toggle_button_get_active (togglebutton))
     return;
 
-  builder = gtk_builder_new ();
-  gtk_builder_add_from_string (builder,
-                               Ekiga::ActorMenu::get_xml_menu ("popup",
-                                                               mw->priv->contact_menu->as_xml ("brol"),
-                                                               true).c_str (),
-                               -1, NULL);
-
   menu = G_MENU (gtk_builder_get_object (mw->priv->builder, "menubar"));
-  g_menu_remove (menu, 0);
-  g_menu_insert_section (menu, 0,
-                         NULL,
-                         G_MENU_MODEL (gtk_builder_get_object (builder, "brol")));
-  g_object_unref (builder);
+  if (mw->priv->contact_menu->size () > 0)
+    g_menu_remove (menu, 0);
+
+  contact_menu = mw->priv->contact_menu->get ();
+  if (contact_menu)
+    g_menu_insert_section (menu, 0, NULL, contact_menu);
 }
 
 
@@ -926,42 +943,10 @@ ekiga_main_window_init_actions_toolbar (EkigaMainWindow *mw)
   gtk_widget_set_margin_right (button, 3);
 }
 
+
 static void
 ekiga_main_window_init_menu (EkigaMainWindow *mw)
 {
-  static const char* win_menu =
-    "<?xml version='1.0'?>"
-    "<interface>"
-    "  <menu id='menubar'>"
-    "    <section>"
-    "      <item>"
-    "        <attribute name='label' translatable='yes'>_Call</attribute>"
-    "        <attribute name='action'>win.call</attribute>"
-    "      </item>"
-    "      <item>"
-    "        <attribute name='label' translatable='yes'>_Transfer Call</attribute>"
-    "        <attribute name='action'>win.transfer</attribute>"
-    "      </item>"
-    "      <item>"
-    "        <attribute name='label' translatable='yes'>_Message</attribute>"
-    "        <attribute name='action'>win.message</attribute>"
-    "      </item>"
-    "    </section>"
-    "    <section>"
-    "      <item>"
-    "        <attribute name='label' translatable='yes'>_Add Contact</attribute>"
-    "        <attribute name='action'>win.add</attribute>"
-    "      </item>"
-    "    </section>"
-    "    <section>"
-    "      <item>"
-    "        <attribute name='label' translatable='yes'>_Close</attribute>"
-    "        <attribute name='action'>win.close</attribute>"
-    "      </item>"
-    "    </section>"
-    "  </menu>"
-    "</interface>";
-
   mw->priv->builder = gtk_builder_new ();
   gtk_builder_add_from_string (mw->priv->builder, win_menu, -1, NULL);
 
