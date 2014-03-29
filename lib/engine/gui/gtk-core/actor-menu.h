@@ -41,6 +41,8 @@
 #include "action.h"
 #include "contact-action.h"
 
+#include <gtk/gtk.h>
+
 namespace Ekiga {
 
   /* ActorMenu
@@ -63,27 +65,65 @@ namespace Ekiga {
     ActorMenu (Actor & obj);
     virtual ~ActorMenu ();
 
-    virtual void activate (const std::string & name);
-    virtual const std::string as_xml (const std::string & id = "");
 
-    static const std::string get_xml_menu (const std::string & id,
-                                           const std::string & content,
-                                           bool full);
+    /** Activate the action of the given name. The first enabled action
+     *  (if any) is activated when no action name is given.
+     * @param name is the action name, or can be left empty.
+     */
+    virtual void activate (const std::string & name = "");
+
+
+    /** Return a pointer to the GMenuModel corresponding to the ActorMenu (if any).
+     * @return a pointer to the GMenuModel, NULL if none (no action, or all actions
+     *         are disabled).
+     */
+    GMenuModel *get ();
+
+
+    /** Return the number of actions of the ActorMenu. The counter is only
+     *  updated after get () has been called.
+     */
+    unsigned size ();
 
   protected:
+    /** Sync GIO actions with Actions */
     virtual void sync_gio_actions ();
+
+    /** Add GIO action with given name */
     virtual void add_gio_action (const std::string & name);
+
+    /** Add GIO action corresponding to the given Action */
     virtual void add_gio_action (ActionPtr a);
+
+    /** Remove GIO action with the given name */
     virtual void remove_gio_action (const std::string & name);
 
+    /** Return the XML representation of the enabled Actions */
+    virtual const std::string as_xml (const std::string & id = "");
+
+    /** Remove the XML representation of the full menu with
+     * enabled Actions.
+     */
+    virtual const std::string build ();
+
     Actor & obj;
+
+  private:
+    unsigned n;
+    GtkBuilder *builder;
   };
 
   class ContactActorMenu : public ActorMenu
   {
   public:
+
     ContactActorMenu (Actor & obj);
 
+    /** Set the data usable by the ContactActorMenu.
+     *  Available actions will depend on the data being set.
+     * @param a ContactPtr (if any).
+     * @param an uri (if any).
+     */
     void set_data (ContactPtr _contact = ContactPtr (),
                    const std::string & _uri = "");
   };
