@@ -163,13 +163,15 @@ on_book_updated (CallHistoryViewGtk* self)
 
 /* react to user clicks */
 static gint
-on_clicked (GtkWidget *tree,
+on_clicked (G_GNUC_UNUSED GtkWidget *tree,
 	    GdkEventButton *event,
 	    gpointer data)
 {
+  GMenuModel *full_menu = NULL;
+  GMenuModel *contact_menu = NULL;
+  GMenuModel *history_menu = NULL;
+
   GtkWidget *menu = NULL;
-  GtkBuilder *builder = NULL;
-  History::Contact *contact = NULL;
 
   CallHistoryViewGtk *self = CALL_HISTORY_VIEW_GTK (data);
 
@@ -179,28 +181,21 @@ on_clicked (GtkWidget *tree,
 
   if (event->type == GDK_BUTTON_PRESS && event->button == 3) {
 
-    builder = gtk_builder_new ();
-    std::string menu_content = self->priv->contact_menu->as_xml () + self->priv->menu->as_xml ();
-    gtk_builder_add_from_string (builder,
-                                 Ekiga::ActorMenu::get_xml_menu ("popup", menu_content, true).c_str (),
-                                 -1, NULL);
-    menu = gtk_menu_new_from_model (G_MENU_MODEL (gtk_builder_get_object (builder, "popup")));
+    contact_menu = self->priv->contact_menu->get (); // Sometimes empty
+    history_menu = self->priv->menu->get (); // Never empty
+    if (contact_menu)
+      g_menu_append_section (G_MENU (contact_menu), NULL, history_menu);
+    full_menu = contact_menu ? contact_menu : history_menu;
+
+    menu = gtk_menu_new_from_model (full_menu);
     gtk_widget_insert_action_group (menu, "win", G_ACTION_GROUP (g_application_get_default ()));
     gtk_menu_popup (GTK_MENU (menu), NULL, NULL,
                     NULL, NULL, event->button, event->time);
     g_object_ref (menu);
-    g_object_unref (builder);
   }
 
-  if (event->type == GDK_2BUTTON_PRESS) {
-
-    if (contact != NULL) {
-
-      Ekiga::TriggerMenuBuilder tbuilder;
-
-      contact->populate_menu (tbuilder);
-    }
-  }
+  if (event->type == GDK_2BUTTON_PRESS)
+    self->priv->contact_menu->activate ();
 
   return TRUE;
 }
