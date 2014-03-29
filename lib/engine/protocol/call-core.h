@@ -218,7 +218,8 @@ namespace Ekiga
       void on_manager_ready (boost::shared_ptr<CallManager> manager);
 
       void on_call_removed (boost::shared_ptr<Call> call);
-
+      bool can_call (const std::string & uri);
+      bool can_transfer (const std::string & uri);
 
       std::set<boost::shared_ptr<CallManager> > managers;
       std::map<std::string, boost::shared_ptr<Ekiga::scoped_connections> > call_connections;

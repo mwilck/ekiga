@@ -154,10 +154,10 @@ void CallCore::register_actions (boost::shared_ptr<ContactCore> _contact_core)
   contact_core = _contact_core;
   ActionPtr call (new ContactAction ("call", _("Call"),
                                      boost::bind (&CallCore::dial, this, _2),
-                                     boost::bind (&CallCore::is_supported_uri, this, _2)));
+                                     boost::bind (&CallCore::can_call, this, _2)));
   ActionPtr xfer (new ContactAction ("transfer", _("Transfer"),
                                      boost::bind (&CallCore::transfer, this, _2, false),
-                                     boost::bind (&CallCore::is_supported_uri, this, _2)));
+                                     boost::bind (&CallCore::can_transfer, this, _2)));
   ActionPtr msg (new ContactAction ("message", _("Message"),
                                     boost::bind (&CallCore::message, this, _1, _2),
                                     boost::bind (&CallCore::is_supported_uri, this, _2)));
@@ -284,4 +284,16 @@ void CallCore::on_manager_ready (boost::shared_ptr<CallManager> manager)
 void CallCore::on_call_removed (boost::shared_ptr<Call> call)
 {
   remove_call (call);
+}
+
+
+bool CallCore::can_call (const std::string & uri)
+{
+  return (is_supported_uri (uri) && call_connections.size () == 0);
+}
+
+
+bool CallCore::can_transfer (const std::string & uri)
+{
+  return (is_supported_uri (uri) && call_connections.size () > 0);
 }
