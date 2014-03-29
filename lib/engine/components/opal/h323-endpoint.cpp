@@ -154,8 +154,8 @@ Opal::H323::EndPoint::transfer (const std::string & uri,
 
 
 bool
-Opal::H323::EndPoint::message (const Ekiga::ContactPtr & contact,
-                               const std::string & uri)
+Opal::H323::EndPoint::message (G_GNUC_UNUSED const Ekiga::ContactPtr & contact,
+                               G_GNUC_UNUSED const std::string & uri)
 {
   return false; /* Not reimplemented yet */
 }
