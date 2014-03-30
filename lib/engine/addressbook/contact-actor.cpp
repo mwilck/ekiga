@@ -43,7 +43,7 @@ using namespace Ekiga;
 void
 ContactActor::add_action (ActionPtr action)
 {
-  actions.insert (std::make_pair (action->get_name (), action));
+  Actor::add_action (action);
 
   ContactActionPtr a = boost::dynamic_pointer_cast<ContactAction> (action);
   if (a != NULL)
