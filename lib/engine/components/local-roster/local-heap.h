@@ -40,6 +40,7 @@
 #include "heap-impl.h"
 #include "friend-or-foe.h"
 #include "local-presentity.h"
+#include "contact.h"
 
 #include "ekiga-settings.h"
 
@@ -109,9 +110,9 @@ namespace Local
 
     /** Determines if the given uri is already present in the Heap.
      * @param: A string representing an uri.
-     * @return: TRUE if that uri is already present in the Heap.
+     * @return: FALSE if that uri is already present in the Heap.
      */
-    bool has_presentity_with_uri (const std::string uri);
+    bool has_no_presentity_with_uri (const std::string & uri);
 
 
     /** Returns the list of all groups already in used in the Heap.
@@ -130,8 +131,10 @@ namespace Local
      * @param: The name and uri of the presentity.
      * @return: TRUE if that uri is already present in the Heap.
      */
-    void new_presentity (const std::string name,
-			 const std::string uri);
+    void new_presentity (const Ekiga::ContactPtr & contact,
+                         const std::string & uri);
+    void new_presentity (const std::string & name = "",
+			 const std::string & uri = "");
 
 
     /**

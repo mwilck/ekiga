@@ -37,8 +37,8 @@
 #define __LOCAL_CLUSTER_H__
 
 #include "cluster-impl.h"
-#include "trigger.h"
 #include "local-heap.h"
+#include "contact-core.h"
 
 namespace Local
 {
@@ -50,7 +50,8 @@ namespace Local
 
   class Cluster :
     public Ekiga::ClusterImpl<Heap>,
-    public Ekiga::Trigger,
+    public Ekiga::Service,
+    public Ekiga::Actor,
     public boost::signals2::trackable
   {
   public:
@@ -59,17 +60,13 @@ namespace Local
 
     ~Cluster ();
 
-    bool populate_menu (Ekiga::MenuBuilder &);
-
-    bool is_supported_uri (const std::string uri) const;
+    bool is_supported_uri (const std::string & uri) const;
 
     const std::string get_name () const
     { return "local-cluster"; }
 
     const std::string get_description () const
     { return "\tProvides the internal roster"; }
-
-    void pull ();
 
     const std::set<std::string> existing_groups () const;
 
@@ -79,12 +76,15 @@ namespace Local
     // used by the local roster main code
     void set_heap (HeapPtr _heap);
 
+    /*** Actor stuff ***/
+    void register_actions (boost::shared_ptr<Ekiga::ContactCore> contact_core);
+    void register_actions ();
+
+
   private:
 
     boost::weak_ptr<Ekiga::PresenceCore> presence_core;
     HeapPtr heap;
-
-    void on_new_presentity ();
 
     void on_presence_received (std::string uri,
 			       std::string presence);

@@ -112,8 +112,10 @@ Local::Heap::get_name () const
 bool
 Local::Heap::populate_menu (Ekiga::MenuBuilder &builder)
 {
-  builder.add_action ("add", _("A_dd Contact"),
-		      boost::bind (&Local::Heap::new_presentity, this, "", ""));
+  std::cout << "FIXME" << std::endl << std::flush;
+  //FIXME
+//  builder.add_action ("add", _("A_dd Contact"),
+//		      boost::bind (&Local::Heap::new_presentity, this, "", ""));
   return true;
 }
 
@@ -150,13 +152,13 @@ struct has_presentity_with_uri_helper
 };
 
 bool
-Local::Heap::has_presentity_with_uri (const std::string uri)
+Local::Heap::has_no_presentity_with_uri (const std::string & uri)
 {
   has_presentity_with_uri_helper helper(uri);
 
   visit_presentities (boost::ref (helper));
 
-  return helper.found;
+  return !helper.found;
 }
 
 struct existing_groups_helper
@@ -216,12 +218,18 @@ Local::Heap::existing_groups ()
   return result;
 }
 
+void
+Local::Heap::new_presentity (const Ekiga::ContactPtr & contact,
+			     const std::string & uri)
+{
+  new_presentity (contact->get_name (), uri);
+}
 
 void
-Local::Heap::new_presentity (const std::string name,
-			     const std::string uri)
+Local::Heap::new_presentity (const std::string & name,
+			     const std::string & uri)
 {
-  if (!has_presentity_with_uri (uri)) {
+  if (has_no_presentity_with_uri (uri)) {
 
     boost::shared_ptr<Ekiga::PresenceCore> pcore = presence_core.lock ();
     if (!pcore)
@@ -405,7 +413,7 @@ Local::Heap::new_presentity_form_submitted (bool submitted,
   uri = canonize_uri (uri);
 
   if (pcore->is_supported_uri (uri)
-      && !has_presentity_with_uri (uri)) {
+      && has_no_presentity_with_uri (uri)) {
 
     add (name, uri, groups);
     save ();

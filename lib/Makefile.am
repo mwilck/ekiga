@@ -535,9 +535,7 @@ libekiga_la_SOURCES += \
 	engine/components/local-roster/local-cluster.h \
 	engine/components/local-roster/local-cluster.cpp \
 	engine/components/local-roster/local-roster-main.h \
-	engine/components/local-roster/local-roster-main.cpp \
-	engine/components/local-roster/local-roster-bridge.h \
-	engine/components/local-roster/local-roster-bridge.cpp
+	engine/components/local-roster/local-roster-main.cpp
 
 ##
 # Sources of the moving logo component

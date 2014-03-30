@@ -37,6 +37,7 @@
 
 #include "local-roster-main.h"
 #include "presence-core.h"
+#include "contact-core.h"
 #include "friend-or-foe.h"
 #include "local-cluster.h"
 
@@ -49,8 +50,12 @@ struct LOCALROSTERSpark: public Ekiga::Spark
 			    int* /*argc*/,
 			    char** /*argv*/[])
   {
-    boost::shared_ptr<Ekiga::PresenceCore> presence_core = core.get<Ekiga::PresenceCore> ("presence-core");
-    boost::shared_ptr<Ekiga::FriendOrFoe> iff = core.get<Ekiga::FriendOrFoe> ("friend-or-foe");
+    boost::shared_ptr<Ekiga::PresenceCore> presence_core =
+      core.get<Ekiga::PresenceCore> ("presence-core");
+    boost::shared_ptr<Ekiga::ContactCore> contact_core =
+      core.get<Ekiga::ContactCore> ("contact-core");
+    boost::shared_ptr<Ekiga::FriendOrFoe> iff =
+      core.get<Ekiga::FriendOrFoe> ("friend-or-foe");
 
     if (presence_core && iff) {
 
@@ -61,6 +66,7 @@ struct LOCALROSTERSpark: public Ekiga::Spark
 	iff->add_helper (heap);
 	cluster->set_heap (heap);
 	presence_core->add_cluster (cluster);
+        cluster->register_actions (contact_core);
 	result = true;
       }
     }

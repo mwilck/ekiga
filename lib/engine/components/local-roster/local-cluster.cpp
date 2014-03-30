@@ -34,6 +34,7 @@
  */
 
 #include "local-cluster.h"
+#include "action.h"
 
 #include <glib/gi18n.h>
 
@@ -47,7 +48,7 @@ Local::Cluster::~Cluster ()
 }
 
 bool
-Local::Cluster::is_supported_uri (const std::string uri) const
+Local::Cluster::is_supported_uri (const std::string & uri) const
 {
   boost::shared_ptr<Ekiga::PresenceCore> pcore = presence_core.lock ();
 
@@ -57,30 +58,15 @@ Local::Cluster::is_supported_uri (const std::string uri) const
     return false;
 }
 
-void
-Local::Cluster::pull ()
-{
-  heap->new_presentity ("", "");
-}
-
 const std::set<std::string>
 Local::Cluster::existing_groups () const
 {
   return heap->existing_groups ();
 }
 
-bool
-Local::Cluster::populate_menu (Ekiga::MenuBuilder& builder)
-{
-  builder.add_action ("add", _("A_dd Contact"),
-		      boost::bind (&Local::Cluster::on_new_presentity, this));
-
-  return true;
-}
-
 void
 Local::Cluster::set_heap (HeapPtr _heap)
-{ 
+{
   heap = _heap;
   add_heap (heap);
   boost::shared_ptr<Ekiga::PresenceCore> pcore = presence_core.lock ();
@@ -89,12 +75,6 @@ Local::Cluster::set_heap (HeapPtr _heap)
     pcore->presence_received.connect (boost::bind (&Local::Cluster::on_presence_received, this, _1, _2));
     pcore->status_received.connect (boost::bind (&Local::Cluster::on_status_received, this, _1, _2));
   }
-}
-
-void
-Local::Cluster::on_new_presentity ()
-{
-  heap->new_presentity ("", "");
 }
 
 void
@@ -108,4 +88,22 @@ void Local::Cluster::on_status_received (std::string uri,
 					 std::string status)
 {
   heap->push_status (uri, status);
+}
+
+void Local::Cluster::register_actions (boost::shared_ptr<Ekiga::ContactCore> contact_core)
+{
+  Ekiga::TesterList testers;
+  testers.push_back (boost::bind (&Local::Cluster::is_supported_uri, this, _2));
+  testers.push_back (boost::bind (&Local::Heap::has_no_presentity_with_uri, heap, _2));
+  Ekiga::ActionPtr add (new Ekiga::ContactAction ("local-cluster-add", _("Add to Contact List"),
+                                                  boost::bind (static_cast<void (Local::Heap::*)(const Ekiga::ContactPtr&, const std::string&)>(&Local::Heap::new_presentity), heap, _1, _2),
+                                                  testers));
+  contact_core->add_action (add);
+}
+
+void Local::Cluster::register_actions ()
+{
+  /* Add Actor actions */
+  add_action (Ekiga::ActionPtr (new Ekiga::Action ("local-cluster-new", _("New Contact"),
+                                                   boost::bind (static_cast<void (Local::Heap::*)(const std::string&, const std::string&)>(&Local::Heap::new_presentity), heap, "", ""))));
 }
