@@ -42,17 +42,30 @@ using namespace Ekiga;
 
 ContactAction::ContactAction (const std::string & _name,
                               const std::string & _description,
-                              boost::function2<void, ContactPtr, std::string> _callback,
-                              boost::function2<bool, ContactPtr, std::string> _tester) :
+                              Callback _callback,
+                              Tester _tester) :
     Action (_name, _description)
 {
   callback = _callback;
-  tester = _tester;
+  testers.push_back (_tester);
 
   /* ContactAction objects should be disabled until data is set */
   set_data ();
 }
 
+
+ContactAction::ContactAction (const std::string & _name,
+                              const std::string & _description,
+                              Callback _callback,
+                              const TesterList & _testers) :
+    Action (_name, _description)
+{
+  callback = _callback;
+  testers = _testers;
+
+  /* ContactAction objects should be disabled until data is set */
+  set_data ();
+}
 
 void
 ContactAction::set_data (ContactPtr _contact,
@@ -80,5 +93,14 @@ bool
 ContactAction::can_run_with_data (ContactPtr _contact,
                                   const std::string & _uri)
 {
-  return (tester (_contact, _uri));
+  if (!testers.empty ()) {
+    for (TesterList::const_iterator it = testers.begin ();
+         it != testers.end ();
+         ++it) {
+      if (!(*it) (_contact, _uri))
+        return false;
+    }
+    return true;
+  }
+  return false;
 }

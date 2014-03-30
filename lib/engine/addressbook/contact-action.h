@@ -41,7 +41,13 @@
 #include "contact.h"
 #include "action.h"
 
+#include <list>
+
 namespace Ekiga {
+
+  typedef boost::function2<void, ContactPtr, const std::string &> Callback;
+  typedef boost::function2<bool, ContactPtr, const std::string &> Tester;
+  typedef std::list<Tester> TesterList;
 
   /**
    * @defgroup contacts Address Book
@@ -71,8 +77,25 @@ namespace Ekiga {
      */
     ContactAction (const std::string & _name,
                    const std::string & _description,
-                   boost::function2<void, ContactPtr, std::string> _callback,
-                   boost::function2<bool, ContactPtr, std::string> _tester);
+                   Callback _callback,
+                   Tester _tester);
+
+
+    /** Create an Action given a name, a description, a callback and
+     * a validity tester.
+     * @param the Action name (please read 'CONVENTION' in action.h).
+     * @param the Action description. Can be used as description in menus
+     *        implementing Actions.
+     * @param the callback to executed when the ContactAction is activated by
+     *        the user (from a menu or from the code itself) for the
+     *        given Contact and uri.
+     * @param a list of testers to check if the ContactAction can be executed for
+     *        the given tuple.
+     */
+    ContactAction (const std::string & _name,
+                   const std::string & _description,
+                   Callback _callback,
+                   const TesterList & _testers);
 
 
     /** Set the (Contact, uri) tuple on which the ContactAction should be run.
@@ -99,8 +122,9 @@ namespace Ekiga {
 
     void on_activated ();
 
-    boost::function2<void, ContactPtr, std::string> callback;
-    boost::function2<bool, ContactPtr, std::string> tester;
+    Callback callback;
+    TesterList testers;
+
     ContactPtr contact;
     std::string uri;
   };
