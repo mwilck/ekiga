@@ -48,7 +48,6 @@
 #include "gmentrydialog.h"
 #include "gmstatusbar.h"
 #include "gmmenuaddon.h"
-#include "trigger.h"
 #include "menu-builder-tools.h"
 #include "menu-builder-gtk.h"
 #include "scoped-connections.h"
@@ -114,7 +113,6 @@ struct _EkigaMainWindowPrivate
   boost::shared_ptr<Ekiga::ContactCore> contact_core;
   boost::shared_ptr<Ekiga::PresenceCore> presence_core;
   boost::shared_ptr<Opal::Bank> bank;
-  boost::shared_ptr<Ekiga::Trigger> local_cluster_trigger;
   boost::shared_ptr<History::Source> history_source;
 
   GtkWidget *call_window;
@@ -182,7 +180,7 @@ static const char* win_menu =
   "    <section>"
   "      <item>"
   "        <attribute name='label' translatable='yes'>_Add Contact</attribute>"
-  "        <attribute name='action'>win.add</attribute>"
+  "        <attribute name='action'>win.local-cluster-new</attribute>"
   "      </item>"
   "    </section>"
   "    <section>"
@@ -253,15 +251,6 @@ static void show_dialpad_activated (G_GNUC_UNUSED GSimpleAction *action,
                                     gpointer data);
 
 
-/** Pull a trigger from a Ekiga::Service
- *
- * @param data is a pointer to the EkigaMainWindow.
- */
-static void pull_trigger_activated (G_GNUC_UNUSED GSimpleAction *action,
-                                    G_GNUC_UNUSED GVariant *parameter,
-                                    gpointer data);
-
-
 /* DESCRIPTION  :  This callback is called when the user tries to close
  *                 the application using the window manager.
  * BEHAVIOR     :  Calls the real callback if the notification icon is
@@ -316,7 +305,6 @@ static void ekiga_main_window_push_message (EkigaMainWindow *main_window,
 
 static GActionEntry win_entries[] =
 {
-    { "add", pull_trigger_activated, NULL, NULL, NULL, 0 },
     { "close", close_activated, NULL, NULL, NULL, 0 }
 };
 
@@ -674,20 +662,6 @@ show_dialpad_activated (G_GNUC_UNUSED GSimpleAction *action,
   EkigaMainWindow *self = EKIGA_MAIN_WINDOW (data);
 
   self->priv->user_interface_settings->set_enum ("panel-section", DIALPAD);
-}
-
-
-static void
-pull_trigger_activated (G_GNUC_UNUSED GSimpleAction *action,
-                        G_GNUC_UNUSED GVariant *parameter,
-                        gpointer self)
-{
-  g_return_if_fail (EKIGA_IS_MAIN_WINDOW (self));
-  boost::shared_ptr<Ekiga::Trigger> trigger = EKIGA_MAIN_WINDOW (self)->priv->local_cluster_trigger;
-
-  g_return_if_fail (trigger != NULL);
-
-  trigger->pull ();
 }
 
 
@@ -1266,8 +1240,6 @@ gm_main_window_new (GmApplication *app)
     = core->get<Ekiga::PresenceCore> ("presence-core");
   mw->priv->bank
     = core->get<Opal::Bank> ("opal-account-store");
-  mw->priv->local_cluster_trigger
-    = core->get<Ekiga::Trigger> ("local-cluster");
   mw->priv->history_source
     = core->get<History::Source> ("call-history-store");
 
