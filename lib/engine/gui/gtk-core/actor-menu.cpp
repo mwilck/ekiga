@@ -180,6 +180,7 @@ const std::string
 Ekiga::ActorMenu::as_xml (const std::string & id)
 {
   ActionMap::const_iterator it;
+  std::list<std::string>::const_iterator nit;
   std::string xml_content;
   n = 0;
 
@@ -188,9 +189,10 @@ Ekiga::ActorMenu::as_xml (const std::string & id)
   else
    xml_content += "    <section>";
 
-  for (it = obj.actions.begin(); it != obj.actions.end(); ++it) {
+  for (nit = obj.action_names.begin(); nit != obj.action_names.end(); ++nit) {
 
-    if (it->second->is_enabled ()) {
+    it = obj.actions.find (*nit);
+    if (it != obj.actions.end () && it->second->is_enabled ()) {
       xml_content +=
         "      <item>"
         "        <attribute name=\"label\" translatable=\"yes\">"+it->second->get_description ()+"</attribute>"

@@ -44,6 +44,7 @@ void
 Actor::add_action (ActionPtr action)
 {
   actions.insert (std::make_pair (action->get_name (), action));
+  action_names.push_back (action->get_name ());
 }
 
 

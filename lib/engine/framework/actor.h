@@ -99,6 +99,7 @@ namespace Ekiga {
     boost::signals2::signal<void(const std::string &)> action_disabled;
 
     ActionMap actions;
+    std::list<std::string> action_names;
   };
 
   /**
