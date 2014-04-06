@@ -2,6 +2,7 @@ plugin_LTLIBRARIES = libgmevolution.la
 
 AM_CXXFLAGS = \
 	$(BOOST_CPPFLAGS) $(EDS_CFLAGS) $(GLIB_CFLAGS) \
+	-I$(top_srcdir)/lib/engine/action \
 	-I$(top_srcdir)/lib/engine/framework \
 	-I$(top_srcdir)/lib/engine/addressbook
 

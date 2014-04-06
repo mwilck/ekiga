@@ -39,7 +39,8 @@
 #define __LIVE_OBJECT_MENU_H__
 
 #include "action.h"
-#include "contact-action.h"
+#include "data-action.h"
+#include "null-deleter.h"
 
 #include <gtk/gtk.h>
 
@@ -113,23 +114,26 @@ namespace Ekiga {
     GtkBuilder *builder;
   };
 
-  class ContactActorMenu : public ActorMenu
+  template < class T >
+  class DataActorMenu : public ActorMenu
   {
   public:
 
-    ContactActorMenu (Actor & obj);
+    DataActorMenu (DataActor< T > & _obj) : ActorMenu (_obj) {};
 
-    /** Set the data usable by the ContactActorMenu.
+    /** Set the (data, string) tuple usable by the DataActorMenu.
      *  Available actions will depend on the data being set.
-     * @param a ContactPtr (if any).
-     * @param an uri (if any).
+     * @param the Data part of the tuple.
+     * @param the s part of the tuple.
      */
-    void set_data (ContactPtr _contact = ContactPtr (),
-                   const std::string & _uri = "");
+    void set_data (T _t = T (),
+                   const std::string & _s = "")
+    {
+      boost::shared_ptr< DataActor< T > > a = boost::dynamic_pointer_cast< DataActor< T > > (boost::shared_ptr< Actor > (&obj, null_deleter2 ()));
+      if (a) a->set_data (_t, _s);
+      sync_gio_actions ();
+    };
   };
-
   typedef boost::shared_ptr<ActorMenu> ActorMenuPtr;
-  typedef boost::shared_ptr<ContactActorMenu> ContactActorMenuPtr;
 }
-
 #endif

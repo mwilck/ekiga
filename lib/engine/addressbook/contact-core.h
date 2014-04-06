@@ -37,7 +37,7 @@
 #define __CONTACT_CORE_H__
 
 #include "services.h"
-#include "contact-actor.h"
+#include "data-actor.h"
 #include "source.h"
 #include "scoped-connections.h"
 
@@ -49,6 +49,11 @@ namespace Ekiga
  * @defgroup contacts Address Book
  * @{
  */
+
+  /* DataActor stuff */
+  typedef DataActor< ContactPtr > ContactActor;
+  typedef DataAction< ContactPtr > ContactAction;
+  typedef boost::shared_ptr< ContactAction > ContactActionPtr;
 
   class ContactDecorator
   {

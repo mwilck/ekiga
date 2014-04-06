@@ -156,7 +156,7 @@ struct _EkigaMainWindowPrivate
   Ekiga::scoped_connections connections;
 
   /* Menu */
-  boost::shared_ptr<Ekiga::ContactActorMenu> contact_menu;
+  boost::shared_ptr<Ekiga::DataActorMenu < Ekiga::ContactPtr > > contact_menu;
 
   /* GSettings */
   boost::shared_ptr<Ekiga::Settings> user_interface_settings;
@@ -1244,7 +1244,7 @@ gm_main_window_new (GmApplication *app)
     = core->get<History::Source> ("call-history-store");
 
   mw->priv->contact_menu =
-    Ekiga::ContactActorMenuPtr (new Ekiga::ContactActorMenu (*mw->priv->contact_core));
+    boost::shared_ptr< Ekiga::DataActorMenu < Ekiga::ContactPtr> > (new Ekiga::DataActorMenu< Ekiga::ContactPtr > (*mw->priv->contact_core));
 
   ekiga_main_window_connect_engine_signals (mw);
 

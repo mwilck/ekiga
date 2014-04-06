@@ -62,7 +62,7 @@ struct _CallHistoryViewGtkPrivate
 
   boost::shared_ptr<History::Book> book;
   boost::shared_ptr<Ekiga::ActorMenu> menu;
-  boost::shared_ptr<Ekiga::ContactActorMenu> contact_menu;
+  boost::shared_ptr<Ekiga::DataActorMenu < Ekiga::ContactPtr > > contact_menu;
   GtkListStore* store;
   GtkTreeView* tree;
   boost::signals2::scoped_connection connection;
@@ -213,7 +213,7 @@ on_selection_changed (G_GNUC_UNUSED GtkTreeSelection* selection,
   call_history_view_gtk_get_selected (self, &contact);
 
   if (contact == NULL)
-    self->priv->contact_menu->set_data ();
+    self->priv->contact_menu->set_data (Ekiga::ContactPtr (), "");
   else
     self->priv->contact_menu->set_data (Ekiga::ContactPtr (contact, null_deleter ()),
                                         contact->get_uri ());
@@ -363,7 +363,8 @@ call_history_view_gtk_new (boost::shared_ptr<History::Book> book,
 
   /* register book actions */
   self->priv->menu = Ekiga::ActorMenuPtr (new Ekiga::ActorMenu (*book));
-  self->priv->contact_menu = Ekiga::ContactActorMenuPtr (new Ekiga::ContactActorMenu (*ccore));
+  self->priv->contact_menu =
+    boost::shared_ptr< Ekiga::DataActorMenu < Ekiga::ContactPtr> > (new Ekiga::DataActorMenu< Ekiga::ContactPtr > (*ccore));
 
   return GTK_WIDGET (self);
 }

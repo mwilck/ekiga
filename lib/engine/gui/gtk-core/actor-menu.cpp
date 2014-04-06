@@ -40,7 +40,7 @@
 
 #include "action.h"
 #include "contact-core.h"
-#include "contact-actor.h"
+#include "data-actor.h"
 #include "actor-menu.h"
 
 
@@ -215,22 +215,4 @@ Ekiga::ActorMenu::build ()
   std::string xml_content = "<menu id=\"menu\">" + as_xml () + "</menu>";
 
   return "<?xml_content version=\"1.0\"?><interface>" + xml_content + "</interface>";
-}
-
-
-
-Ekiga::ContactActorMenu::ContactActorMenu (Ekiga::Actor & _obj) : ActorMenu (_obj)
-{
-}
-
-
-void
-Ekiga::ContactActorMenu::set_data (Ekiga::ContactPtr _contact,
-                                   const std::string & _uri)
-{
-  Ekiga::ContactActor *actor = dynamic_cast <Ekiga::ContactActor *> (&obj);
-  if (actor)
-    actor->set_data (_contact, _uri);
-
-  sync_gio_actions ();
 }

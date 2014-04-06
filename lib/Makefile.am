@@ -21,6 +21,7 @@ AM_CPPFLAGS = \
 	-I$(top_srcdir)/lib/settings \
 	-I$(top_srcdir)/lib/engine \
 	-I$(top_srcdir)/lib/engine/account \
+	-I$(top_srcdir)/lib/engine/action \
 	-I$(top_srcdir)/lib/engine/addressbook \
 	-I$(top_srcdir)/lib/engine/audioinput \
 	-I$(top_srcdir)/lib/engine/audiooutput \
@@ -163,12 +164,9 @@ libekiga_la_SOURCES += \
 ##
 
 libekiga_la_SOURCES += \
-	engine/framework/action.h \
-	engine/framework/action.cpp \
-	engine/framework/actor.h \
-	engine/framework/actor.cpp \
 	engine/framework/boost-exceptions.cpp \
 	engine/framework/services.h \
+	engine/framework/null-deleter.h \
 	engine/framework/map-key-iterator.h \
 	engine/framework/map-key-const-iterator.h \
 	engine/framework/reflister.h \
@@ -226,6 +224,18 @@ libekiga_la_SOURCES += \
 	engine/account/account-core.cpp
 
 ##
+# Actions
+##
+
+libekiga_la_SOURCES += \
+	engine/action/action.h \
+	engine/action/action.cpp \
+	engine/action/actor.h \
+	engine/action/actor.cpp \
+	engine/action/data-action.h \
+	engine/action/data-actor.h
+
+##
 #  Sources of the addressbook stack
 ##
 
@@ -235,10 +245,6 @@ libekiga_la_SOURCES += \
 	engine/addressbook/book-impl.h \
 	engine/addressbook/source.h \
 	engine/addressbook/source-impl.h \
-	engine/addressbook/contact-action.h \
-	engine/addressbook/contact-action.cpp \
-	engine/addressbook/contact-actor.h \
-	engine/addressbook/contact-actor.cpp \
 	engine/addressbook/contact-core.h \
 	engine/addressbook/contact-core.cpp
 

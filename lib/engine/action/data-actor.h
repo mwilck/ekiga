@@ -27,7 +27,7 @@
 
 
 /*
- *                         contact-actor.h  -  description
+ *                         data-actor.h  -  description
  *                         -------------------------------
  *   begin                : written in March 2014 by Damien Sandras
  *   copyright            : (c) 2014 by Damien Sandras
@@ -40,13 +40,13 @@
 
 #include <string>
 
-#include "contact-action.h"
+#include "data-action.h"
 #include "actor.h"
 
 namespace Ekiga {
 
   /**
-   * @defgroup actions ContactActor
+   * @defgroup actions DataActor
    * @{
    */
 
@@ -56,36 +56,52 @@ namespace Ekiga {
    * Actor can register actions through the add_action method.
    * acting.
    */
-  class ContactActor : public Actor
+  template < class T >
+  class DataActor : public Actor
   {
-    friend class ContactActorMenu;
 
   public:
+    typedef boost::shared_ptr< DataAction< T > > DataActionPtr;
 
-    /** Register an action on the given ContactActor.
+    /** Register an action on the given DataActor.
      *
      * Actions that are not "added" using this method will not be usable
      * from menus.
      *
-     * @param A ContactAction.
+     * @param A DataAction.
      */
-    void add_action (ActionPtr action);
+    void add_action (DataActionPtr action)
+    {
+      Actor::add_action (action);
+      action->set_data (t, s);
+    }
 
 
-    /** Set the (Contact, uri) tuple on which the ContactActions should be run.
-     * They must stay valid until the ContactAction is activated.
+
+    /** Set the (Data, s) tuple on which the DataActions should be run.
+     * They must stay valid until the DataAction is activated.
      * Actions are enabled/disabled following the parameters validity.
-     * @param the contact part of the tuple.
-     * @param the uri part of the tuple.
+     * @param the Data part of the tuple.
+     * @param the s part of the tuple.
      */
-    void set_data (ContactPtr _contact = ContactPtr (),
-                   const std::string & _uri = "");
+    void set_data (T _t = T (),
+                   const std::string & _s = "")
+    {
+      ActionMap::iterator it;
+      t = _t;
+      s = _s;
 
+      for (it = actions.begin(); it != actions.end(); ++it) {
+        boost::shared_ptr < DataAction < T > > a = boost::dynamic_pointer_cast< DataAction < T > > (it->second);
+        if (a)
+          a->set_data (t, s);
+      }
+    }
 
   private:
 
-    ContactPtr contact;
-    std::string uri;
+    T t;
+    std::string s;
   };
 
   /**
