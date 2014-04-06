@@ -117,11 +117,13 @@ namespace Ekiga {
   template < class T >
   class DataActorMenu : public ActorMenu
   {
+    typedef boost::shared_ptr< DataActor< T > > DataActorPtr;
+
   public:
 
     DataActorMenu (DataActor< T > & _obj) : ActorMenu (_obj) {};
 
-    /** Set the (data, string) tuple usable by the DataActorMenu.
+    /** Set the (DataPtr, string) tuple usable by the DataActorMenu.
      *  Available actions will depend on the data being set.
      * @param the Data part of the tuple.
      * @param the s part of the tuple.
@@ -129,11 +131,12 @@ namespace Ekiga {
     void set_data (T _t = T (),
                    const std::string & _s = "")
     {
-      boost::shared_ptr< DataActor< T > > a = boost::dynamic_pointer_cast< DataActor< T > > (boost::shared_ptr< Actor > (&obj, null_deleter2 ()));
+      DataActorPtr a = boost::dynamic_pointer_cast< DataActor< T > > (ActorPtr (&obj, null_deleter2 ()));
       if (a) a->set_data (_t, _s);
       sync_gio_actions ();
     };
   };
+
   typedef boost::shared_ptr<ActorMenu> ActorMenuPtr;
 }
 #endif

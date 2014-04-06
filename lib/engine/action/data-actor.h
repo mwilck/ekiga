@@ -50,6 +50,10 @@ namespace Ekiga {
    * @{
    */
 
+  /**
+   * Forward declaration of the DataActorMenu class.
+   */
+  template < class T > class DataActorMenu;
 
   /* An actor is an object able to execute Actions.
    *

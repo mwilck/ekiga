@@ -50,10 +50,12 @@ namespace Ekiga
  * @{
  */
 
-  /* DataActor stuff */
+  /* Action stuff */
   typedef DataActor< ContactPtr > ContactActor;
   typedef DataAction< ContactPtr > ContactAction;
+  typedef DataActorMenu< ContactPtr > ContactActorMenu;
   typedef boost::shared_ptr< ContactAction > ContactActionPtr;
+  typedef boost::shared_ptr< ContactActorMenu > ContactActorMenuPtr;
 
   class ContactDecorator
   {

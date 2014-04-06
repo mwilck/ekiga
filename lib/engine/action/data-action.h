@@ -46,7 +46,6 @@
 namespace Ekiga {
 
 
-
   /**
    * @defgroup contacts Address Book
    * @{
@@ -56,8 +55,10 @@ namespace Ekiga {
    * the data it should act on.
    *
    * The main difference between an Action and a DataAction is the fact
-   * that a DataAction is executed for a given (Data, string) tuple
-   * iff the (Data, s) tuple is valid for the given action.
+   * that a DataAction is executed for a given (DataPtr, string) tuple
+   * iff the (DataPtr, s) tuple is valid for the given action.
+   *
+   * Usually, DataPtr will be a boost::shared_ptr< Data >.
    */
   template < class T >
   class DataAction : public Action
@@ -103,7 +104,7 @@ namespace Ekiga {
                 const TesterList & _testers);
 
 
-    /** Set the (Data, string) tuple on which the DataAction should be run.
+    /** Set the (DataPtr, string) tuple on which the DataAction should be run.
      * They must stay valid until the DataAction is activated.
      * The Action is enabled/disabled following the parameters validity.
      * @param the contact part of the tuple.

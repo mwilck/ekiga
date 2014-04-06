@@ -102,6 +102,8 @@ namespace Ekiga {
     std::list<std::string> action_names;
   };
 
+  typedef boost::shared_ptr< Actor > ActorPtr;
+
   /**
    * @}
    */
