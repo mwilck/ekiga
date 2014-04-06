@@ -152,7 +152,6 @@ struct _EkigaMainWindowPrivate
   boost::shared_ptr<Ekiga::Call> current_call;
   unsigned calling_state;
 
-  gulong roster_selection_connection_id;
   Ekiga::scoped_connections connections;
 
   /* Menu */
@@ -564,42 +563,6 @@ static bool on_handle_errors (std::string error,
 
 /* GTK callbacks */
 static void
-on_roster_selection_changed (G_GNUC_UNUSED GtkWidget* view,
-			     gpointer self)
-{
-  EkigaMainWindow *mw = EKIGA_MAIN_WINDOW (self);
-  gint section;
-  GtkWidget* menu = gtk_menu_get_widget (mw->priv->main_menu, "contact");
-
-  if (GTK_IS_MENU_ITEM (menu)) {
-
-    section = gtk_notebook_get_current_page (GTK_NOTEBOOK (mw->priv->main_notebook));
-
-    if (section == mw->priv->roster_view_page_number) {
-
-      MenuBuilderGtk builder;
-      gtk_widget_set_sensitive (menu, TRUE);
-
-      if (roster_view_gtk_populate_menu_for_selected (ROSTER_VIEW_GTK (mw->priv->roster_view), builder)) {
-
-	gtk_menu_item_set_submenu (GTK_MENU_ITEM (menu), builder.menu);
-	gtk_widget_show_all (builder.menu);
-      } else {
-
-	gtk_widget_set_sensitive (menu, FALSE);
-	g_object_ref_sink (builder.menu);
-	g_object_unref (builder.menu);
-      }
-    } else {
-
-      gtk_widget_set_sensitive (menu, FALSE);
-      gtk_menu_item_set_submenu (GTK_MENU_ITEM (menu), NULL);
-    }
-  }
-}
-
-
-static void
 panel_section_changed (G_GNUC_UNUSED GtkNotebook *notebook,
                        G_GNUC_UNUSED GtkWidget *page,
                        guint section,
@@ -969,8 +932,6 @@ ekiga_main_window_init_contact_list (EkigaMainWindow *mw)
   mw->priv->roster_view = roster_view_gtk_new (mw->priv->presence_core);
   mw->priv->roster_view_page_number = gtk_notebook_append_page (GTK_NOTEBOOK (mw->priv->main_notebook), mw->priv->roster_view, label);
   g_object_ref (mw->priv->roster_view); // keep it alive as long as we didn't unconnect the signal :
-  mw->priv->roster_selection_connection_id = g_signal_connect (mw->priv->roster_view, "selection-changed",
-							       G_CALLBACK (on_roster_selection_changed), mw);
 }
 
 
@@ -1134,9 +1095,6 @@ ekiga_main_window_dispose (GObject* gobject)
   EkigaMainWindow *mw = EKIGA_MAIN_WINDOW (gobject);
 
   if (mw->priv->roster_view) {
-
-    g_signal_handler_disconnect (mw->priv->roster_view,
-				 mw->priv->roster_selection_connection_id);
     g_object_unref (mw->priv->roster_view);
     mw->priv->roster_view = NULL;
   }
