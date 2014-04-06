@@ -153,9 +153,9 @@ dnl   Mandatory GTK+ support
 dnl ###############################
 # on Windows the icons are manually copied in the installer
 if test "x${gm_platform}" = "xmingw" ; then
-   PKG_CHECK_MODULES([GTK], [gtk+-3.0 >= 3.4.0])
+   PKG_CHECK_MODULES([GTK], [gtk+-3.0 >= 3.12.0])
 else
-   PKG_CHECK_MODULES([GTK], [gtk+-3.0 >= 3.4.0 gnome-icon-theme >= 3.0.0])
+   PKG_CHECK_MODULES([GTK], [gtk+-3.0 >= 3.12.0 gnome-icon-theme >= 3.0.0])
 fi
 PKG_CHECK_MODULES([GLIB], [glib-2.0 >= 2.24.0 gmodule-2.0 gobject-2.0 gthread-2.0 gio-2.0])
 AC_ARG_ENABLE([gtk-debug],
