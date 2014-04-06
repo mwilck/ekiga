@@ -855,8 +855,8 @@ ekiga_main_window_init_actions_toolbar (EkigaMainWindow *mw)
                                _("Call the selected contact"));
   gtk_actionable_set_detailed_action_name (GTK_ACTIONABLE (button), "win.call");
   gtk_header_bar_pack_start (GTK_HEADER_BAR (mw->priv->actions_toolbar), button);
-  gtk_widget_set_margin_left (button, 3);
-  gtk_widget_set_margin_right (button, 6);
+  gtk_widget_set_margin_start (button, 3);
+  gtk_widget_set_margin_end (button, 6);
 
   mw->priv->preview_button = gtk_toggle_button_new ();
   image = gtk_image_new_from_icon_name ("camera-web-symbolic", GTK_ICON_SIZE_MENU);
@@ -867,7 +867,7 @@ ekiga_main_window_init_actions_toolbar (EkigaMainWindow *mw)
   gtk_actionable_set_detailed_action_name (GTK_ACTIONABLE (mw->priv->preview_button),
                                            "win.enable-preview");
   gtk_header_bar_pack_start (GTK_HEADER_BAR (mw->priv->actions_toolbar), mw->priv->preview_button);
-  gtk_widget_set_margin_right (mw->priv->preview_button, 6);
+  gtk_widget_set_margin_end (mw->priv->preview_button, 6);
 
   box = gtk_box_new (GTK_ORIENTATION_HORIZONTAL, 0);
   button = gtk_toggle_button_new ();
@@ -903,7 +903,7 @@ ekiga_main_window_init_actions_toolbar (EkigaMainWindow *mw)
                                GTK_STYLE_CLASS_LINKED);
 
   gtk_header_bar_pack_start (GTK_HEADER_BAR (mw->priv->actions_toolbar), box);
-  gtk_widget_set_margin_right (box, 6);
+  gtk_widget_set_margin_end (box, 6);
 
   button = gtk_menu_button_new ();
   image = gtk_image_new_from_icon_name ("emblem-system-symbolic", GTK_ICON_SIZE_MENU);
@@ -914,7 +914,7 @@ ekiga_main_window_init_actions_toolbar (EkigaMainWindow *mw)
   g_signal_connect (GTK_TOGGLE_BUTTON (button), "toggled",
                     G_CALLBACK (menu_button_toggled_cb), mw);
   gtk_header_bar_pack_end (GTK_HEADER_BAR (mw->priv->actions_toolbar), button);
-  gtk_widget_set_margin_right (button, 3);
+  gtk_widget_set_margin_end (button, 3);
 }
 
 
@@ -952,8 +952,8 @@ ekiga_main_window_init_status_toolbar (EkigaMainWindow *mw)
                                  GTK_WINDOW (mw));
   gtk_box_pack_start (GTK_BOX (mw->priv->status_toolbar),
                       mw->priv->status_option_menu, TRUE, TRUE, 0);
-  gtk_widget_set_margin_left (mw->priv->status_option_menu, 0);
-  gtk_widget_set_margin_right (mw->priv->status_option_menu, 0);
+  gtk_widget_set_margin_start (mw->priv->status_option_menu, 0);
+  gtk_widget_set_margin_end (mw->priv->status_option_menu, 0);
 
   gtk_widget_show_all (mw->priv->status_toolbar);
 }
