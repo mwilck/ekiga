@@ -177,9 +177,10 @@ void
 Ekiga::DataAction< T >::set_data (T _t,
                                   const std::string & _s)
 {
+  t = _t;
+  s = _s;
+
   if (can_run_with_data (t, s)) {
-    t = _t;
-    s = _s;
     enable ();
   }
   else {
