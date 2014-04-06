@@ -906,6 +906,7 @@ ekiga_main_window_init_actions_toolbar (EkigaMainWindow *mw)
   gtk_widget_set_margin_end (box, 6);
 
   button = gtk_menu_button_new ();
+  g_object_set (G_OBJECT (button), "use-popover", true, NULL);
   image = gtk_image_new_from_icon_name ("emblem-system-symbolic", GTK_ICON_SIZE_MENU);
   g_object_set (G_OBJECT (image), "margin", margin_px, NULL);
   gtk_button_set_image (GTK_BUTTON (button), image);
