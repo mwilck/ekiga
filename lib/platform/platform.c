@@ -122,6 +122,8 @@ gm_platform_open_uri_fallback (const gchar *uri)
     success = g_spawn_command_line_async (commandline, NULL);
     g_free (commandline);
   }
+
+  g_return_if_fail (success);
 }
 
 void

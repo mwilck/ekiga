@@ -115,7 +115,7 @@ void VideoInputCore::VideoPreviewManager::Main ()
 {
   PWaitAndSignal m(thread_mutex);
   bool exit = end_thread;
-  bool capture = !pause_thread;
+  bool capture;
 
   while (!exit) {
 
@@ -391,12 +391,13 @@ void VideoInputCore::set_preview_config (unsigned width, unsigned height, unsign
 {
   PWaitAndSignal m(core_mutex);
 
-  VideoDeviceConfig new_preview_config(width, height, fps);
-
   if ( fps < 1 || fps > 30 ) {
     PTRACE(1, "VidInputCore\tmax-frame-rate out of range, ajusting to 30");
     fps = 30;
   }
+
+  VideoDeviceConfig new_preview_config(width, height, fps);
+
   PTRACE(4, "VidInputCore\tSetting new preview config: " << new_preview_config);
   // There is only one state where we have to reopen the preview device:
   // we have preview enabled, no stream is active and some value has changed

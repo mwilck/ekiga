@@ -688,7 +688,6 @@ chat_area_init (ChatArea* self)
   self->priv->text_view = gtk_text_view_new ();
   g_signal_connect (self->priv->text_view, "motion-notify-event",
 		    G_CALLBACK (on_motion_notify_event), NULL);
-  buffer = gtk_text_view_get_buffer (GTK_TEXT_VIEW (self->priv->text_view));
 
   gtk_text_view_set_editable (GTK_TEXT_VIEW (self->priv->text_view), FALSE);
   gtk_text_view_set_cursor_visible (GTK_TEXT_VIEW (self->priv->text_view),

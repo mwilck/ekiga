@@ -774,7 +774,7 @@ void
 gm_video_widget_set_fullscreen (GmVideoWidget *self,
                                 const gboolean fs)
 {
-  g_return_val_if_fail (GM_IS_VIDEO_WIDGET (self), -1);
+  g_return_if_fail (GM_IS_VIDEO_WIDGET (self));
 
   ClutterActor *stage = NULL;
 

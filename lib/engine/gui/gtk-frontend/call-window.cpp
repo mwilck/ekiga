@@ -2094,7 +2094,6 @@ ekiga_call_window_init_gui (EkigaCallWindow *cw)
   vbox = gtk_box_new (GTK_ORIENTATION_VERTICAL, 0);
   frame = gtk_frame_new (NULL);
   gtk_frame_set_shadow_type (GTK_FRAME (frame), GTK_SHADOW_NONE);
-  event_box = gtk_event_box_new ();
   gtk_container_set_border_width (GTK_CONTAINER (frame), 0);
   gtk_container_add (GTK_CONTAINER (event_box), vbox);
   gtk_container_add (GTK_CONTAINER (frame), event_box);
