@@ -142,9 +142,11 @@ OPENLDAP::Source::new_book ()
 
   bookinfo.name = "";
   bookinfo.uri = "ldap://localhost/dc=net?cn,telephoneNumber?sub?(cn=$)";
+  bookinfo.uri_host = "";
   bookinfo.authcID = "";
   bookinfo.password = "";
   bookinfo.saslMech = "";
+  bookinfo.urld = boost::shared_ptr<LDAPURLDesc> ();
   bookinfo.sasl = false;
   bookinfo.starttls = false;
 
@@ -161,9 +163,11 @@ OPENLDAP::Source::new_ekiga_net_book ()
   bookinfo.name = _("Ekiga.net Directory");
   bookinfo.uri =
     "ldap://ekiga.net/dc=ekiga,dc=net?givenName,telephoneNumber?sub?(cn=$)";
+  bookinfo.uri_host = "";
   bookinfo.authcID = "";
   bookinfo.password = "";
   bookinfo.saslMech = "";
+  bookinfo.urld = boost::shared_ptr<LDAPURLDesc> ();
   bookinfo.sasl = false;
   bookinfo.starttls = false;
 
