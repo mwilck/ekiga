@@ -40,6 +40,12 @@
 
 using namespace Ekiga;
 
+CallCore::CallCore (boost::shared_ptr<Ekiga::FriendOrFoe> iff_):
+  iff(iff_)
+{
+  nr_ready = 0;
+}
+
 void CallCore::add_manager (boost::shared_ptr<CallManager> manager)
 {
   managers.insert (manager);
@@ -86,8 +92,18 @@ bool CallCore::dial (const std::string uri)
 }
 
 
-void CallCore::add_call (boost::shared_ptr<Call> call, boost::shared_ptr<CallManager> manager)
+void
+CallCore::add_call (boost::shared_ptr<Call> call,
+		    boost::shared_ptr<CallManager> manager)
 {
+  Ekiga::FriendOrFoe::Identification id = iff->decide ("call", call->get_remote_uri ());
+
+  if (id == Ekiga::FriendOrFoe::Foe) {
+
+    call->hang_up ();
+    return;
+  }
+
   boost::shared_ptr<Ekiga::scoped_connections> conns(new Ekiga::scoped_connections);
 
   conns->add (call->ringing.connect (boost::bind (&CallCore::on_ringing_call, this, call, manager)));

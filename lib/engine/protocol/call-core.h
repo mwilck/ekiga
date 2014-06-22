@@ -41,6 +41,8 @@
 #include "chain-of-responsibility.h"
 #include "services.h"
 #include "scoped-connections.h"
+
+#include "friend-or-foe/friend-or-foe.h"
 #include "call.h"
 #include "call-manager.h"
 #include "call-protocol-manager.h"
@@ -72,7 +74,7 @@ namespace Ekiga
 
       /** The constructor
        */
-      CallCore () { nr_ready = 0; }
+      CallCore (boost::shared_ptr<Ekiga::FriendOrFoe> iff);
 
 
       /*** Service Implementation ***/
@@ -180,7 +182,7 @@ namespace Ekiga
 
       void on_call_removed (boost::shared_ptr<Call> call);
 
-      
+      boost::shared_ptr<Ekiga::FriendOrFoe> iff;
       std::set<boost::shared_ptr<CallManager> > managers;
       std::map<std::string, boost::shared_ptr<Ekiga::scoped_connections> > call_connections;
       unsigned nr_ready;
