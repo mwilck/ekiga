@@ -48,6 +48,8 @@
 #include "default_devices.h"
 
 #include "scoped-connections.h"
+#include "form-request-simple.h"
+#include "form-dialog-gtk.h"
 
 #include "gmcallbacks.h"
 #include "codecsbox.h"
@@ -449,6 +451,21 @@ static void sound_event_setting_changed (GSettings *,
                                          gpointer data);
 
 
+/* DESCRIPTION : This callback is triggered when the user asks to edit
+ *               the blacklist
+ * BEHAVIOR    : Display a form to edit the blacklist
+ * PRE         : A pointer to the preferences window
+ */
+static void edit_blacklist_cb (GtkWidget* widget,
+			       gpointer data);
+
+/* DESCRIPTION : This callback is triggered when the user submits the blacklist-editing form
+ * BEHAVIOR    : /
+ * PRE         : A pointer to the preferences window
+ */
+static void on_edit_blacklist_form_submitted (bool submitted,
+					      Ekiga::Form& result);
+
 /* Implementation */
 static void
 gm_prefs_window_sound_events_list_build (PreferencesWindow *self)
@@ -577,6 +594,19 @@ gm_pw_init_general_page (PreferencesWindow *self,
   gm_pw_toggle_new (container, _("Enable network _detection"),
                     self->priv->nat_settings, "enable-stun",
                     _("Enable the automatic network setup resulting from the STUN test"));
+
+  /* Blacklist Settings */
+  gm_pw_subsection_new (container, _("Blacklist"));
+  GtkWidget* edit_blacklist_button = gtk_button_new_with_label(_("Edit"));
+  g_signal_connect (edit_blacklist_button, "clicked",
+		    G_CALLBACK (edit_blacklist_cb), (gpointer)self);
+  int pos = 0;
+  GTK_GRID_LAST_ROW (container, pos);
+  GtkWidget* alignment = gtk_alignment_new (0, 0, 0, 0);
+  gtk_container_add (GTK_CONTAINER (alignment), edit_blacklist_button);
+  gtk_container_set_border_width (GTK_CONTAINER (edit_blacklist_button), 0);
+
+  gtk_grid_attach (GTK_GRID (container), alignment, 0, pos-1, 2, 1);
 }
 
 static void
@@ -1637,6 +1667,43 @@ sound_event_toggled_cb (G_GNUC_UNUSED GtkCellRendererToggle *cell,
   g_free (key);
   gtk_tree_path_free (path);
 }
+
+static void
+edit_blacklist_cb (GtkWidget* /*widget*/,
+		   gpointer data)
+{
+  g_return_if_fail (data != NULL);
+
+  boost::shared_ptr<Ekiga::FormRequestSimple> request(new Ekiga::FormRequestSimple (&on_edit_blacklist_form_submitted));
+
+  request->title (_("Blacklist edition"));
+  request->instructions (_("This form lets you add and remove tokens from the blacklist"));
+
+  boost::scoped_ptr<Ekiga::Settings> settings(new Ekiga::Settings (CONTACTS_SCHEMA));
+  std::list<std::string> foes(settings->get_string_list ("foe-list"));
+
+  request->editable_set ("foes", _("Current list of undesirables"),
+			 std::set<std::string> (foes.begin (), foes.end ()),
+			 std::set<std::string>());
+
+  FormDialog dialog(request, GTK_WIDGET (data));
+
+  dialog.run ();
+}
+
+static void
+on_edit_blacklist_form_submitted (bool submitted,
+				  Ekiga::Form& result)
+{
+  if (!submitted)
+    return;
+
+  std::set<std::string> foes = result.editable_set ("foes");
+  boost::scoped_ptr<Ekiga::Settings> settings(new Ekiga::Settings (CONTACTS_SCHEMA));
+  settings->set_string_list ("foe-list",
+			     std::list<std::string> (foes.begin (), foes.end ()));
+}
+
 
 void on_videoinput_device_added_cb (const Ekiga::VideoInputDevice & device,
                                     PreferencesWindow *self)
