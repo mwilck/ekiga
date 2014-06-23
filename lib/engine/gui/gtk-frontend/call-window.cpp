@@ -79,6 +79,7 @@
 #include "audioinput-core.h"
 #include "audiooutput-core.h"
 #include "videooutput-manager.h"
+#include "foe-list.h"
 
 #define STAGE_WIDTH 640
 #define STAGE_HEIGHT 480
@@ -101,6 +102,8 @@ struct _EkigaCallWindowPrivate
   boost::shared_ptr<Ekiga::AudioInputCore> audioinput_core;
   boost::shared_ptr<Ekiga::AudioOutputCore> audiooutput_core;
   boost::shared_ptr<Ekiga::CallCore> call_core;
+  boost::shared_ptr<Ekiga::FriendOrFoe> friend_or_foe;
+  boost::shared_ptr<Ekiga::FoeList> foe_list;
 
   GtkAccelGroup *accel;
 
@@ -125,6 +128,7 @@ struct _EkigaCallWindowPrivate
   GtkWidget *hold_button;
   GtkWidget *audio_settings_button;
   GtkWidget *video_settings_button;
+  GtkWidget *blacklist_button;
 
   GtkWidget *audio_settings_window;
   GtkWidget *audio_input_volume_frame;
@@ -192,6 +196,9 @@ static void hang_up_call_cb (GtkWidget * /*widget*/,
 
 static void hold_current_call_cb (GtkWidget *widget,
                                   gpointer data);
+
+static void blacklist_cb (GtkWidget* widget,
+			  gpointer data);
 
 static void toggle_audio_stream_pause_cb (GtkWidget * /*widget*/,
                                           gpointer data);
@@ -473,6 +480,25 @@ hold_current_call_cb (G_GNUC_UNUSED GtkWidget *widget,
 
   if (cw->priv->current_call)
     cw->priv->current_call->toggle_hold ();
+}
+
+
+static void
+blacklist_cb (G_GNUC_UNUSED GtkWidget *widget,
+	      gpointer data)
+{
+  EkigaCallWindow *cw = EKIGA_CALL_WINDOW (data);
+
+  if (cw->priv->current_call) {
+
+    const std::string uri = cw->priv->current_call->get_remote_uri ();
+    Ekiga::FriendOrFoe::Identification id = cw->priv->friend_or_foe->decide ("call", uri);
+    if (id == Ekiga::FriendOrFoe::Unknown) {
+
+      cw->priv->foe_list->add_foe (uri);
+      gtk_widget_set_sensitive (GTK_WIDGET (cw->priv->blacklist_button), false);
+    }
+  }
 }
 
 static void
@@ -934,6 +960,15 @@ on_setup_call_cb (G_GNUC_UNUSED boost::shared_ptr<Ekiga::CallManager> manager,
 
     cw->priv->current_call = call;
     cw->priv->calling_state = Calling;
+  }
+
+  { // do we know about this contact already?
+    const std::string uri = cw->priv->current_call->get_remote_uri ();
+    Ekiga::FriendOrFoe::Identification id = cw->priv->friend_or_foe->decide ("call", uri);
+    if (id == Ekiga::FriendOrFoe::Unknown)
+      gtk_widget_set_sensitive (GTK_WIDGET (cw->priv->blacklist_button), true);
+    else
+      gtk_widget_set_sensitive (GTK_WIDGET (cw->priv->blacklist_button), false);
   }
 
   gtk_window_set_title (GTK_WINDOW (cw), call->get_remote_uri ().c_str ());
@@ -2248,6 +2283,28 @@ ekiga_call_window_init_gui (EkigaCallWindow *cw)
 
   g_signal_connect (cw->priv->hold_button, "clicked",
                     G_CALLBACK (hold_current_call_cb), cw);
+
+  /* Separator */
+  item = gtk_separator_tool_item_new ();
+  gtk_toolbar_insert (GTK_TOOLBAR (cw->priv->call_panel_toolbar),
+                      GTK_TOOL_ITEM (item), -1);
+
+  /* Blacklist */
+  item = gtk_tool_item_new ();
+  cw->priv->blacklist_button = gtk_button_new ();
+  image = gtk_image_new_from_icon_name ("stop", GTK_ICON_SIZE_LARGE_TOOLBAR);
+  gtk_container_add (GTK_CONTAINER (cw->priv->blacklist_button), image);
+  gtk_container_add (GTK_CONTAINER (item), cw->priv->blacklist_button);
+  gtk_button_set_relief (GTK_BUTTON (cw->priv->blacklist_button), GTK_RELIEF_NONE);
+  gtk_widget_show (cw->priv->blacklist_button);
+  gtk_toolbar_insert (GTK_TOOLBAR (cw->priv->call_panel_toolbar),
+                      GTK_TOOL_ITEM (item), -1);
+  gtk_widget_set_sensitive (GTK_WIDGET (cw->priv->blacklist_button), false);
+  gtk_tool_item_set_tooltip_text (GTK_TOOL_ITEM (item),
+                                  _("Add caller/callee to the blacklist"));
+  g_signal_connect (cw->priv->blacklist_button, "clicked",
+                    G_CALLBACK (blacklist_cb), cw);
+
   gtk_widget_show_all (cw->priv->call_panel_toolbar);
 
   /* The statusbar */
@@ -2370,6 +2427,8 @@ call_window_new (Ekiga::ServiceCore & core)
   cw->priv->audioinput_core = core.get<Ekiga::AudioInputCore> ("audioinput-core");
   cw->priv->audiooutput_core = core.get<Ekiga::AudioOutputCore> ("audiooutput-core");
   cw->priv->call_core = core.get<Ekiga::CallCore> ("call-core");
+  cw->priv->friend_or_foe = core.get<Ekiga::FriendOrFoe> ("friend-or-foe");
+  cw->priv->foe_list = core.get<Ekiga::FoeList> ("foe-list");
 
   ekiga_call_window_connect_engine_signals (cw);
 
