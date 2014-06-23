@@ -33,17 +33,44 @@
  *
  */
 
-#include "foe-list.h"
+#include <glib/gi18n.h>
 
 #include "ekiga-settings.h"
 
-Ekiga::FoeList::FoeList()
+#include "foe-list.h"
+
+Ekiga::FoeList::FoeList(boost::shared_ptr<FriendOrFoe> fof):
+  friend_or_foe(fof)
 {
 }
 
 
 Ekiga::FoeList::~FoeList()
 {
+}
+
+bool
+Ekiga::FoeList::populate_menu (ContactPtr /*contact*/,
+			       const std::string uri,
+			       MenuBuilder& builder)
+{
+  bool result = false;
+  boost::shared_ptr<FriendOrFoe> fof = friend_or_foe.lock ();
+
+  if (fof) {
+
+    Ekiga::FriendOrFoe::Identification current = fof->decide ("" /* FIXME */,
+							      uri);
+
+    if (current == Ekiga::FriendOrFoe::Unknown) {
+
+      builder.add_action ("blacklist", _("Add to blacklist"),
+			  boost::bind(&Ekiga::FoeList::add_foe, this, uri));
+      result = true;
+    }
+  }
+
+  return result;
 }
 
 Ekiga::FriendOrFoe::Identification

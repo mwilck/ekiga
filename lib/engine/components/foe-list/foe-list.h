@@ -36,6 +36,7 @@
 #ifndef __FOE_LIST_H__
 #define __FOE_LIST_H__
 
+#include "contact-core.h"
 #include "friend-or-foe.h"
 
 namespace Ekiga
@@ -43,10 +44,11 @@ namespace Ekiga
 
   class FoeList:
     public Service,
+    public ContactDecorator,
     public FriendOrFoe::Helper
   {
   public:
-    FoeList();
+    FoeList(boost::shared_ptr<FriendOrFoe> friend_or_foo);
 
     ~FoeList();
 
@@ -58,7 +60,13 @@ namespace Ekiga
     const std::string get_description () const
     { return "List of persons the user does not want to hear about"; }
 
-    /* FriendOrFoe::Helper api */
+    /* Ekiga::ContactDecorator api */
+
+    bool populate_menu (ContactPtr contact,
+			const std::string uri,
+			MenuBuilder& builder);
+
+    /* Ekiga::FriendOrFoe::Helper api */
 
     FriendOrFoe::Identification decide (const std::string domain,
 					const std::string token) const;
@@ -66,6 +74,11 @@ namespace Ekiga
     /* specific api */
 
     void add_foe (const std::string token);
+
+  private:
+
+    // beware of dependency loops!
+    boost::weak_ptr<FriendOrFoe> friend_or_foe;
   };
 };
 

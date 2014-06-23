@@ -101,7 +101,7 @@ engine_init (Ekiga::ServiceCorePtr service_core,
   service_core->add (notification_core);
 
   boost::shared_ptr<Ekiga::FriendOrFoe> friend_or_foe (new Ekiga::FriendOrFoe);
-  boost::shared_ptr<Ekiga::FoeList> foe_list (new Ekiga::FoeList);
+  boost::shared_ptr<Ekiga::FoeList> foe_list (new Ekiga::FoeList (friend_or_foe));
   boost::shared_ptr<Ekiga::AccountCore> account_core (new Ekiga::AccountCore);
   boost::shared_ptr<Ekiga::ContactCore> contact_core (new Ekiga::ContactCore);
   boost::shared_ptr<Ekiga::CallCore> call_core (new Ekiga::CallCore (friend_or_foe));
@@ -127,8 +127,6 @@ engine_init (Ekiga::ServiceCorePtr service_core,
   service_core->add (account_core);
   service_core->add (details);
   service_core->add (presence_core);
-
-  friend_or_foe->add_helper (foe_list);
 
   if (!videoinput_mlogo_init (*service_core, &argc, &argv)) {
     return;
@@ -205,6 +203,11 @@ engine_init (Ekiga::ServiceCorePtr service_core,
   hal_core->audiooutput_device_removed.connect (boost::bind (&Ekiga::AudioOutputCore::remove_device, boost::ref (*audiooutput_core), _1, _2, _3));
   hal_core->audioinput_device_added.connect (boost::bind (&Ekiga::AudioInputCore::add_device, boost::ref (*audioinput_core), _1, _2, _3));
   hal_core->audioinput_device_removed.connect (boost::bind (&Ekiga::AudioInputCore::remove_device, boost::ref (*audioinput_core), _1, _2, _3));
+
+
+  /* FIXME: does it really belong here? */
+  friend_or_foe->add_helper (foe_list);
+  contact_core->add_contact_decorator (foe_list);
 
 #if DEBUG_STARTUP
   std::cout << "Here is what ekiga is made of for this run :" << std::endl;
