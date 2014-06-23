@@ -34,6 +34,7 @@ AM_CPPFLAGS = \
 	-I$(top_srcdir)/lib/engine/videooutput \
 	-I$(top_srcdir)/lib/engine/components/call-history \
 	-I$(top_srcdir)/lib/engine/components/echo \
+	-I$(top_srcdir)/lib/engine/components/foe-list \
 	-I$(top_srcdir)/lib/engine/components/gmconf-personal-details \
 	-I$(top_srcdir)/lib/engine/components/hal-dbus \
 	-I$(top_srcdir)/lib/engine/components/hal-gudev \
@@ -575,3 +576,10 @@ libekiga_la_SOURCES += \
 	engine/components/clutter-gst-videooutput/videooutput-main-clutter-gst.h
 
 libekiga_la_LDFLAGS += $(CLUTTER_LIBS) $(CLUTTER_GTK_LIBS) $(CLUTTER_GST_LIBS)
+
+##
+#  Sources of the foe list component
+##
+libekiga_la_SOURCES += \
+	engine/components/foe-list/foe-list.h \
+	engine/components/foe-list/foe-list.cpp

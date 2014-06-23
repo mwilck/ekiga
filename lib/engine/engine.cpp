@@ -50,6 +50,7 @@
 #include "call-core.h"
 #include "chat-core.h"
 #include "friend-or-foe.h"
+#include "foe-list.h"
 #include "videooutput-core.h"
 #include "videoinput-core.h"
 #include "audioinput-core.h"
@@ -100,6 +101,7 @@ engine_init (Ekiga::ServiceCorePtr service_core,
   service_core->add (notification_core);
 
   boost::shared_ptr<Ekiga::FriendOrFoe> friend_or_foe (new Ekiga::FriendOrFoe);
+  boost::shared_ptr<Ekiga::FoeList> foe_list (new Ekiga::FoeList);
   boost::shared_ptr<Ekiga::AccountCore> account_core (new Ekiga::AccountCore);
   boost::shared_ptr<Ekiga::ContactCore> contact_core (new Ekiga::ContactCore);
   boost::shared_ptr<Ekiga::CallCore> call_core (new Ekiga::CallCore (friend_or_foe));
@@ -115,6 +117,7 @@ engine_init (Ekiga::ServiceCorePtr service_core,
   service_core->add (contact_core);
   service_core->add (chat_core);
   service_core->add (friend_or_foe);
+  service_core->add (foe_list);
   service_core->add (videoinput_core);
   service_core->add (videooutput_core);
   service_core->add (audioinput_core);
@@ -124,6 +127,8 @@ engine_init (Ekiga::ServiceCorePtr service_core,
   service_core->add (account_core);
   service_core->add (details);
   service_core->add (presence_core);
+
+  friend_or_foe->add_helper (foe_list);
 
   if (!videoinput_mlogo_init (*service_core, &argc, &argv)) {
     return;
