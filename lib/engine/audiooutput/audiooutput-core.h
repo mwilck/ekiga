@@ -341,13 +341,6 @@ namespace Ekiga
 
   private:
       void on_set_device (const AudioOutputDevice & device);
-      void on_device_opened (AudioOutputPS ps,
-                             AudioOutputDevice device,
-                             AudioOutputSettings settings,
-                             AudioOutputManager *manager);
-      void on_device_closed (AudioOutputPS ps, AudioOutputDevice device, AudioOutputManager *manager);
-      void on_device_error  (AudioOutputPS ps, AudioOutputDevice device,
-                             AudioOutputErrorCodes error_code, AudioOutputManager *manager);
 
       void internal_set_primary_device (const AudioOutputDevice & device);
       void internal_set_manager (AudioOutputPS ps, const AudioOutputDevice & device);

@@ -47,19 +47,22 @@
 
 using namespace Ekiga;
 
-static void sound_event_changed (G_GNUC_UNUSED GSettings *settings,
-                                 const gchar *key,
-                                 gpointer data)
+static void
+sound_event_changed (G_GNUC_UNUSED GSettings* settings,
+		     const gchar* key,
+		     gpointer data)
 {
   g_return_if_fail (data != NULL);
-  AudioOutputCore *core = (AudioOutputCore*) (data);
+
+  AudioOutputCore* core = (AudioOutputCore*) (data);
 
   core->setup_sound_events (key);
 }
 
-static void audio_device_changed (GSettings *settings,
-                                  G_GNUC_UNUSED const gchar *key,
-                                  gpointer data)
+static void
+audio_device_changed (GSettings* settings,
+		      G_GNUC_UNUSED const gchar* key,
+		      gpointer data)
 {
   g_return_if_fail (data != NULL);
 
@@ -115,9 +118,9 @@ AudioOutputCore::~AudioOutputCore ()
 
   audio_event_scheduler->quit ();
 
-  for (std::set<AudioOutputManager *>::iterator iter = managers.begin ();
+  for (std::set<AudioOutputManager*>::iterator iter = managers.begin ();
        iter != managers.end ();
-       iter++)
+       ++iter)
     delete (*iter);
 
   managers.clear();
@@ -127,20 +130,22 @@ AudioOutputCore::~AudioOutputCore ()
 }
 
 
-void AudioOutputCore::setup ()
+void
+AudioOutputCore::setup ()
 {
   setup_audio_device (primary);
   setup_audio_device (secondary);
   setup_sound_events ();
 }
 
-void AudioOutputCore::setup_audio_device (AudioOutputPS device_idx)
+void
+AudioOutputCore::setup_audio_device (AudioOutputPS device_idx)
 {
   PWaitAndSignal m_pri(core_mutex[primary]);
   PWaitAndSignal m_sec(core_mutex[secondary]);
   AudioOutputDevice device;
 
-  std::vector <AudioOutputDevice> devices;
+  std::vector<AudioOutputDevice> devices;
   AudioOutputDevice device_fallback (AUDIO_OUTPUT_FALLBACK_DEVICE_TYPE,
                                      AUDIO_OUTPUT_FALLBACK_DEVICE_SOURCE,
                                      AUDIO_OUTPUT_FALLBACK_DEVICE_NAME);
@@ -156,32 +161,38 @@ void AudioOutputCore::setup_audio_device (AudioOutputPS device_idx)
 
   gchar* audio_device = NULL;
 
-  audio_device = (device_idx == primary) ?
-    g_settings_get_string (audio_device_settings, "output-device")
-    :
-    g_settings_get_string (sound_events_settings, "output-device");
+ 
+  if (device_idx == primary)
+    audio_device = g_settings_get_string (audio_device_settings, "output-device");
+  else
+    audio_device = g_settings_get_string (sound_events_settings, "output-device");
 
   get_devices (devices);
+
   if (audio_device != NULL) {
+
     for (std::vector<AudioOutputDevice>::iterator it = devices.begin ();
          it < devices.end ();
-         it++) {
+         ++it) {
+
       if ((*it).GetString () == audio_device) {
+
         found = true;
         break;
       }
       else if ((*it).GetString () == device_preferred1.GetString ()) {
+
         found_preferred1 = true;
       }
       else if ((*it).GetString () == device_preferred2.GetString ()) {
+
         found_preferred2 = true;
       }
     }
   }
 
-  if (found) {
+  if (found)
     device.SetFromString (audio_device);
-  }
   else if (found_preferred1)
     device.SetFromString (device_preferred1.GetString ());
   else if (found_preferred2)
@@ -197,22 +208,28 @@ void AudioOutputCore::setup_audio_device (AudioOutputPS device_idx)
   else
     set_device (device_idx, device);
 
-  if (audio_device_settings_signals[device_idx] == 0 && device_idx == primary)
+  if (audio_device_settings_signals[device_idx] == 0 && device_idx == primary) {
+
     audio_device_settings_signals[device_idx] =
       g_signal_connect (audio_device_settings, "changed::output-device",
                         G_CALLBACK (audio_device_changed), this);
-  else if (audio_device_settings_signals[device_idx] == 0 && device_idx == secondary)
+  }
+  else if (audio_device_settings_signals[device_idx] == 0 && device_idx == secondary) {
+
     audio_device_settings_signals[device_idx] =
       g_signal_connect (sound_events_settings, "changed::output-device",
                         G_CALLBACK (audio_device_changed), this);
+  }
+
   g_free (audio_device);
   PTRACE(1, "AudioOutputCore\tSet " << (device_idx == primary ? "primary" : "secondary") << " audio device to " << device.name);
 }
 
 
-void AudioOutputCore::setup_sound_events (std::string e)
+void
+AudioOutputCore::setup_sound_events (std::string e)
 {
-  static const char *events[] =
+  static const char* events [] =
     {
       "busy-tone-sound",
       "incoming-call-sound",
@@ -224,16 +241,20 @@ void AudioOutputCore::setup_sound_events (std::string e)
   gulong signal = 0;
 
   boost::replace_all (e, "enable-", "");
+
   for (int i = 0 ; i < 5 ; i++) {
+
     std::string event = events[i];
 
     if (e.empty () || e == event) {
+
       gchar *file_name = NULL;
       bool enabled;
 
       file_name = g_settings_get_string (sound_events_settings, event.c_str ());
       enabled = g_settings_get_boolean (sound_events_settings, ("enable-" + event).c_str ());
       if (file_name == NULL) {
+
         PTRACE(1, "AudioOutputCoreConfBridge\t" << event << " is NULL");
         return;
       }
@@ -252,7 +273,9 @@ void AudioOutputCore::setup_sound_events (std::string e)
                                   NULL);
   /* Connect all signals at once if no handler is found */
   if (signal == 0) {
+
     for (int i = 0 ; i < 5 ; i++) {
+
       std::string event = events[i];
       g_signal_connect (sound_events_settings, ("changed::" + event).c_str (),
                         G_CALLBACK (sound_event_changed), this);
@@ -262,17 +285,19 @@ void AudioOutputCore::setup_sound_events (std::string e)
   }
 }
 
-void AudioOutputCore::add_manager (AudioOutputManager &manager)
+void
+AudioOutputCore::add_manager (AudioOutputManager& manager)
 {
   managers.insert (&manager);
   manager_added (manager);
 
-  manager.device_error.connect (boost::bind (&AudioOutputCore::on_device_error, this, _1, _2, _3, &manager));
-  manager.device_opened.connect (boost::bind (&AudioOutputCore::on_device_opened, this, _1, _2, _3, &manager));
-  manager.device_closed.connect (boost::bind (&AudioOutputCore::on_device_closed, this, _1, _2, &manager));
+  manager.device_error.connect (boost::bind (boost::ref(device_error), boost::ref(manager), _1, _2, _3));
+  manager.device_opened.connect (boost::bind (boost::ref(device_opened), boost::ref(manager), _1, _2, _3));
+  manager.device_closed.connect (boost::bind (boost::ref(device_closed), boost::ref(manager), _1, _2));
 }
 
-void AudioOutputCore::visit_managers (boost::function1<bool, AudioOutputManager &> visitor) const
+void
+AudioOutputCore::visit_managers (boost::function1<bool, AudioOutputManager&> visitor) const
 {
   PWaitAndSignal m_pri(core_mutex[primary]);
   PWaitAndSignal m_sec(core_mutex[secondary]);
@@ -280,38 +305,50 @@ void AudioOutputCore::visit_managers (boost::function1<bool, AudioOutputManager 
   
   for (std::set<AudioOutputManager *>::const_iterator iter = managers.begin ();
        iter != managers.end () && go_on;
-       iter++)
+       ++iter)
       go_on = visitor (*(*iter));
 }
 
-void AudioOutputCore::map_event (const std::string & event_name, const std::string & file_name, AudioOutputPS ps,  bool enabled)
+void
+AudioOutputCore::map_event (const std::string& event_name,
+			    const std::string& file_name,
+			    AudioOutputPS ps,
+			    bool enabled)
 {
   audio_event_scheduler->set_file_name(event_name, file_name, ps, enabled);
 }
 
-void AudioOutputCore::play_file (const std::string & file_name)
+void
+AudioOutputCore::play_file (const std::string& file_name)
 {
   audio_event_scheduler->add_event_to_queue(file_name, true, 0, 0);
 }
 
-void AudioOutputCore::play_event (const std::string & event_name)
+void
+AudioOutputCore::play_event (const std::string& event_name)
 {
   audio_event_scheduler->add_event_to_queue(event_name, false, 0, 0);
 }
 
-void AudioOutputCore::start_play_event (const std::string & event_name, unsigned interval, unsigned repetitions)
+void
+AudioOutputCore::start_play_event (const std::string& event_name,
+				   unsigned interval,
+				   unsigned repetitions)
 {
   audio_event_scheduler->add_event_to_queue(event_name, false, interval, repetitions);
 }
 
-void AudioOutputCore::stop_play_event (const std::string & event_name)
+void
+AudioOutputCore::stop_play_event (const std::string& event_name)
 {
   audio_event_scheduler->remove_event_from_queue(event_name);
 }
 
-void AudioOutputCore::get_devices (std::vector <std::string> & devices)
+void
+AudioOutputCore::get_devices (std::vector<std::string>& devices)
 {
-  std::vector <AudioOutputDevice> d;
+  std::vector<AudioOutputDevice> d;
+
   get_devices (d);
 
   devices.clear ();
@@ -322,7 +359,8 @@ void AudioOutputCore::get_devices (std::vector <std::string> & devices)
     devices.push_back (iter->GetString ());
 }
 
-void AudioOutputCore::get_devices (std::vector <AudioOutputDevice> & devices)
+void
+AudioOutputCore::get_devices (std::vector <AudioOutputDevice>& devices)
 {
   yield = true;
   PWaitAndSignal m_pri(core_mutex[primary]);
@@ -330,28 +368,31 @@ void AudioOutputCore::get_devices (std::vector <AudioOutputDevice> & devices)
 
   devices.clear();
 
-  for (std::set<AudioOutputManager *>::iterator iter = managers.begin ();
+  for (std::set<AudioOutputManager*>::const_iterator iter = managers.begin ();
        iter != managers.end ();
-       iter++)
+       ++iter)
     (*iter)->get_devices (devices);
 
 #if PTRACING
-  for (std::vector<AudioOutputDevice>::iterator iter = devices.begin ();
+  for (std::vector<AudioOutputDevice>::const_iterator iter = devices.begin ();
        iter != devices.end ();
-       iter++) {
+       ++iter) {
     PTRACE(4, "AudioOutputCore\tDetected Device: " << *iter);
   }
 #endif
 
 }
 
-void AudioOutputCore::set_device(AudioOutputPS ps, const AudioOutputDevice & device)
+void
+AudioOutputCore::set_device(AudioOutputPS ps,
+			    const AudioOutputDevice& device)
 {
   PTRACE(4, "AudioOutputCore\tSetting device[" << ps << "]: " << device);
   yield = true;
   PWaitAndSignal m_sec(core_mutex[secondary]);
 
   switch (ps) {
+
     case primary:
       yield = true;
       core_mutex[primary].Wait();
@@ -359,55 +400,70 @@ void AudioOutputCore::set_device(AudioOutputPS ps, const AudioOutputDevice & dev
       core_mutex[primary].Signal();
 
       break;
+
     case secondary:
-        if (device == current_device[primary])
-        {
+        if (device == current_device[primary]) {
+
           current_manager[secondary] = NULL;
           current_device[secondary].type = "";
           current_device[secondary].source = "";
           current_device[secondary].name = "";
         }
-        else {
+        else
           internal_set_manager (secondary, device);
-        }
+
         break;
+
     default:
       break;
   }
 }
 
-void AudioOutputCore::add_device (const std::string & sink, const std::string & device_name, HalManager* /*manager*/)
+void
+AudioOutputCore::add_device (const std::string& sink,
+			     const std::string& device_name,
+			     HalManager* /*manager*/)
 {
   PTRACE(4, "AudioOutputCore\tAdding Device " << device_name);
   yield = true;
   PWaitAndSignal m_pri(core_mutex[primary]);
 
   AudioOutputDevice device;
-  for (std::set<AudioOutputManager *>::iterator iter = managers.begin ();
+  for (std::set<AudioOutputManager*>::iterator iter = managers.begin ();
        iter != managers.end ();
-       iter++) {
+       ++iter) {
+
      if ((*iter)->has_device (sink, device_name, device)) {
 
        device_added(device);
 
-       boost::shared_ptr<Ekiga::Notification> notif (new Ekiga::Notification (Ekiga::Notification::Info, _("New device detected"), device.GetString (), _("Use it"), boost::bind (&AudioOutputCore::on_set_device, (AudioOutputCore*) this, device)));
-
+       boost::shared_ptr<Ekiga::Notification> notif (new Ekiga::Notification (Ekiga::Notification::Info,
+									      _("New device detected"),
+									      device.GetString (),
+									      _("Use it"),
+									      boost::bind (&AudioOutputCore::on_set_device, (AudioOutputCore*) this, device)));
        notification_core->push_notification (notif);
      }
   }
 }
 
-void AudioOutputCore::remove_device (const std::string & sink, const std::string & device_name, HalManager* /*manager*/)
+void
+AudioOutputCore::remove_device (const std::string& sink,
+				const std::string& device_name,
+				HalManager* /*manager*/)
 {
   PTRACE(4, "AudioOutputCore\tRemoving Device " << device_name);
   yield = true;
   PWaitAndSignal m_pri(core_mutex[primary]);
 
   AudioOutputDevice device;
-  for (std::set<AudioOutputManager *>::iterator iter = managers.begin ();
+
+  for (std::set<AudioOutputManager*>::iterator iter = managers.begin ();
        iter != managers.end ();
-       iter++) {
+       ++iter) {
+
      if ((*iter)->has_device (sink, device_name, device)) {
+
        if ( (device == current_device[primary]) && (current_primary_config.active) ) {
 
          AudioOutputDevice new_device;
@@ -425,12 +481,16 @@ void AudioOutputCore::remove_device (const std::string & sink, const std::string
   }
 }
 
-void AudioOutputCore::start (unsigned channels, unsigned samplerate, unsigned bits_per_sample)
+void
+AudioOutputCore::start (unsigned channels,
+			unsigned samplerate,
+			unsigned bits_per_sample)
 {
   yield = true;
   PWaitAndSignal m_pri(core_mutex[primary]);
 
   if (current_primary_config.active) {
+
     PTRACE(1, "AudioOutputCore\tTrying to start output device although already started");
     return;
   }
@@ -446,7 +506,8 @@ void AudioOutputCore::start (unsigned channels, unsigned samplerate, unsigned bi
   current_primary_config.num_buffers = 0;
 }
 
-void AudioOutputCore::stop()
+void
+AudioOutputCore::stop()
 {
   yield = true;
   PWaitAndSignal m_pri(core_mutex[primary]);
@@ -457,7 +518,10 @@ void AudioOutputCore::stop()
   current_primary_config.active = false;
 }
 
-void AudioOutputCore::set_buffer_size (unsigned buffer_size, unsigned num_buffers) {
+void
+AudioOutputCore::set_buffer_size (unsigned buffer_size,
+				  unsigned num_buffers)
+{
   yield = true;
   PWaitAndSignal m_pri(core_mutex[primary]);
 
@@ -468,18 +532,22 @@ void AudioOutputCore::set_buffer_size (unsigned buffer_size, unsigned num_buffer
   current_primary_config.num_buffers = num_buffers;
 }
 
-void AudioOutputCore::set_frame_data (const char *data,
-                                      unsigned size,
-				      unsigned & bytes_written)
+void
+AudioOutputCore::set_frame_data (const char* data,
+				 unsigned size,
+				 unsigned& bytes_written)
 {
   if (yield) {
+
     yield = false;
     g_usleep (5 * G_TIME_SPAN_MILLISECOND);
   }
   PWaitAndSignal m_pri(core_mutex[primary]);
 
   if (current_manager[primary]) {
+
     if (!current_manager[primary]->set_frame_data(primary, data, size, bytes_written)) {
+
       internal_close(primary);
       internal_set_primary_fallback();
       internal_open(primary, current_primary_config.channels, current_primary_config.samplerate, current_primary_config.bits_per_sample);
@@ -489,6 +557,7 @@ void AudioOutputCore::set_frame_data (const char *data,
 
     PWaitAndSignal m_vol(volume_mutex);
     if (desired_primary_volume != current_primary_volume) {
+
       current_manager[primary]->set_volume(primary, desired_primary_volume);
       current_primary_volume = desired_primary_volume;
     }
@@ -498,28 +567,38 @@ void AudioOutputCore::set_frame_data (const char *data,
     calculate_average_level((const short*) data, bytes_written);
 }
 
-void AudioOutputCore::set_volume (AudioOutputPS ps, unsigned volume)
+void
+AudioOutputCore::set_volume (AudioOutputPS ps,
+			     unsigned volume)
 {
   PWaitAndSignal m_vol(volume_mutex);
 
-  if (ps == primary) {
+  if (ps == primary)
     desired_primary_volume = volume;
-  }
 }
 
-void AudioOutputCore::play_buffer(AudioOutputPS ps, const char* buffer, unsigned long len, unsigned channels, unsigned sample_rate, unsigned bps)
+void
+AudioOutputCore::play_buffer(AudioOutputPS ps,
+			     const char* buffer,
+			     unsigned long len,
+			     unsigned channels,
+			     unsigned sample_rate,
+			     unsigned bps)
 {
   switch (ps) {
+
     case primary:
       core_mutex[primary].Wait();
 
       if (!current_manager[primary]) {
+
         PTRACE(1, "AudioOutputCore\tDropping sound event, primary manager not set");
         core_mutex[primary].Signal();
         return;
       }
 
       if (current_primary_config.active) {
+
         PTRACE(1, "AudioOutputCore\tDropping sound event, primary device not set");
         core_mutex[primary].Signal();
         return;
@@ -528,48 +607,35 @@ void AudioOutputCore::play_buffer(AudioOutputPS ps, const char* buffer, unsigned
       core_mutex[primary].Signal();
 
       break;
+
     case secondary:
         core_mutex[secondary].Wait();
  
         if (current_manager[secondary]) {
-             internal_play(secondary, buffer, len, channels, sample_rate, bps);
-          core_mutex[secondary].Signal();
-        }
-        else {
+
+	  internal_play(secondary, buffer, len, channels, sample_rate, bps);
+	  core_mutex[secondary].Signal();
+        } else {
           core_mutex[secondary].Signal();
           PTRACE(1, "AudioOutputCore\tNo secondary audiooutput device defined, trying primary");
           play_buffer(primary, buffer, len, channels, sample_rate, bps);
         }
+
       break;
+
     default:
       break;
   }
 }
 
-void AudioOutputCore::on_set_device (const AudioOutputDevice & device)
+void
+AudioOutputCore::on_set_device (const AudioOutputDevice& device)
 {
   g_settings_set_string (audio_device_settings, "output-device", device.GetString ().c_str ());
 }
 
-void AudioOutputCore::on_device_opened (AudioOutputPS ps,
-                                        AudioOutputDevice device,
-                                        AudioOutputSettings settings,
-                                        AudioOutputManager *manager)
-{
-  device_opened (*manager, ps, device, settings);
-}
-
-void AudioOutputCore::on_device_closed (AudioOutputPS ps, AudioOutputDevice device, AudioOutputManager *manager)
-{
-  device_closed (*manager, ps, device);
-}
-
-void AudioOutputCore::on_device_error (AudioOutputPS ps, AudioOutputDevice device, AudioOutputErrorCodes error_code, AudioOutputManager *manager)
-{
-  device_error (*manager, ps, device, error_code);
-}
-
-void AudioOutputCore::internal_set_primary_device(const AudioOutputDevice & device)
+void
+AudioOutputCore::internal_set_primary_device(const AudioOutputDevice& device)
 {
   if (current_primary_config.active)
      internal_close(primary);
@@ -588,30 +654,36 @@ void AudioOutputCore::internal_set_primary_device(const AudioOutputDevice & devi
     internal_open(primary, current_primary_config.channels, current_primary_config.samplerate, current_primary_config.bits_per_sample);
 
   if ((current_primary_config.buffer_size > 0) && (current_primary_config.num_buffers > 0 ) ) {
+
     if (current_manager[primary])
       current_manager[primary]->set_buffer_size (primary, current_primary_config.buffer_size, current_primary_config.num_buffers);
   }
 }
-void AudioOutputCore::internal_set_manager (AudioOutputPS ps, const AudioOutputDevice & device)
+
+void
+AudioOutputCore::internal_set_manager (AudioOutputPS ps,
+				       const AudioOutputDevice& device)
 {
   current_manager[ps] = NULL;
-  for (std::set<AudioOutputManager *>::iterator iter = managers.begin ();
+  for (std::set<AudioOutputManager*>::iterator iter = managers.begin ();
        iter != managers.end ();
-       iter++) {
-     if ((*iter)->set_device (ps, device)) {
+       ++iter) {
+
+     if ((*iter)->set_device (ps, device))
        current_manager[ps] = (*iter);
-     }
   }
 
   if (current_manager[ps]) {
+
     current_device[ps]  = device;
-  }
-  else {
+  } else {
+
     if (ps == primary) {
+
       PTRACE(1, "AudioOutputCore\tTried to set unexisting primary device " << device);
       internal_set_primary_fallback();
-    }
-    else {
+    } else {
+
       PTRACE(1, "AudioOutputCore\tTried to set unexisting secondary device " << device);
       current_device[secondary].type = "";
       current_device[secondary].source = "";
@@ -621,7 +693,8 @@ void AudioOutputCore::internal_set_manager (AudioOutputPS ps, const AudioOutputD
 
 }
 
-void AudioOutputCore::internal_set_primary_fallback()
+void
+AudioOutputCore::internal_set_primary_fallback ()
 {
   current_device[primary].type   = AUDIO_OUTPUT_FALLBACK_DEVICE_TYPE;
   current_device[primary].source = AUDIO_OUTPUT_FALLBACK_DEVICE_SOURCE;
@@ -630,38 +703,54 @@ void AudioOutputCore::internal_set_primary_fallback()
   internal_set_manager(primary, current_device[primary]);
 }
 
-bool AudioOutputCore::internal_open (AudioOutputPS ps, unsigned channels, unsigned samplerate, unsigned bits_per_sample)
+bool
+AudioOutputCore::internal_open (AudioOutputPS ps,
+				unsigned channels,
+				unsigned samplerate,
+				unsigned bits_per_sample)
 {
   PTRACE(4, "AudioOutputCore\tOpening device["<<ps<<"] with " << channels<< "-" << samplerate << "/" << bits_per_sample);
 
   if (!current_manager[ps]) {
+
     PTRACE(1, "AudioOutputCore\tUnable to obtain current manager for device["<<ps<<"]");
     return false;
   }
 
   if (!current_manager[ps]->open(ps, channels, samplerate, bits_per_sample)) {
+
     PTRACE(1, "AudioOutputCore\tUnable to open device["<<ps<<"]");
     if (ps == primary) {
+
       internal_set_primary_fallback();
       if (current_manager[primary])
         current_manager[primary]->open(ps, channels, samplerate, bits_per_sample);
+
       return true;
-    }
-    else {
+    } else {
+
       return false;
     }
   }
+
   return true;
 }
 
-void AudioOutputCore::internal_close(AudioOutputPS ps)
+void
+AudioOutputCore::internal_close (AudioOutputPS ps)
 {
   PTRACE(4, "AudioOutputCore\tClosing current device");
   if (current_manager[ps])
     current_manager[ps]->close(ps);
 }
 
-void AudioOutputCore::internal_play(AudioOutputPS ps, const char* buffer, unsigned long len, unsigned channels, unsigned sample_rate, unsigned bps)
+void
+AudioOutputCore::internal_play(AudioOutputPS ps,
+			       const char* buffer,
+			       unsigned long len,
+			       unsigned channels,
+			       unsigned sample_rate,
+			       unsigned bps)
 {
   unsigned long pos = 0;
   unsigned bytes_written = 0;
@@ -671,8 +760,10 @@ void AudioOutputCore::internal_play(AudioOutputPS ps, const char* buffer, unsign
     return;
 
   if (current_manager[ps]) {
+
     current_manager[ps]->set_buffer_size (ps, buffer_size, 4);
     do {
+
       if (!current_manager[ps]->set_frame_data(ps, buffer+pos, std::min(buffer_size, (unsigned) (len - pos)), bytes_written))
         break;
       pos += buffer_size;
@@ -682,7 +773,9 @@ void AudioOutputCore::internal_play(AudioOutputPS ps, const char* buffer, unsign
   internal_close( ps);
 }
 
-void AudioOutputCore::calculate_average_level (const short *buffer, unsigned size)
+void
+AudioOutputCore::calculate_average_level (const short*buffer,
+					  unsigned size)
 {
   int sum = 0;
   unsigned csize = 0;
