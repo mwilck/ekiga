@@ -290,11 +290,6 @@ namespace Ekiga
 
   private:
       void on_set_device (const AudioInputDevice & device);
-      void on_device_opened (AudioInputDevice device,
-                             AudioInputSettings settings,
-                             AudioInputManager *manager);
-      void on_device_closed (AudioInputDevice device, AudioInputManager *manager);
-      void on_device_error  (AudioInputDevice device, AudioInputErrorCodes error_code, AudioInputManager *manager);
 
       void internal_set_device(const AudioInputDevice & device);
       void internal_set_manager (const AudioInputDevice & device);

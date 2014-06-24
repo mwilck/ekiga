@@ -46,18 +46,20 @@
 
 using namespace Ekiga;
 
-static void audio_device_changed (G_GNUC_UNUSED GSettings *settings,
-                                  G_GNUC_UNUSED const gchar *key,
-                                  gpointer data)
+static void
+audio_device_changed (G_GNUC_UNUSED GSettings* settings,
+		      G_GNUC_UNUSED const gchar* key,
+		      gpointer data)
 {
   g_return_if_fail (data != NULL);
 
-  AudioInputCore *core = (AudioInputCore*) (data);
+  AudioInputCore* core = (AudioInputCore*) (data);
   core->setup ();
 }
 
 
-AudioInputCore::AudioInputCore (Ekiga::ServiceCore & _core) : core(_core)
+AudioInputCore::AudioInputCore (Ekiga::ServiceCore& _core):
+  core(_core)
 {
   PWaitAndSignal m_var(core_mutex);
   PWaitAndSignal m_vol(volume_mutex);
@@ -93,16 +95,17 @@ AudioInputCore::~AudioInputCore ()
 {
   PWaitAndSignal m(core_mutex);
 
-  for (std::set<AudioInputManager *>::iterator iter = managers.begin ();
+  for (std::set<AudioInputManager*>::iterator iter = managers.begin ();
        iter != managers.end ();
-       iter++)
+       ++iter)
     delete (*iter);
-  g_clear_object (&audio_device_settings);
 
+  g_clear_object (&audio_device_settings);
   managers.clear();
 }
 
-void AudioInputCore::setup ()
+void
+AudioInputCore::setup ()
 {
   PWaitAndSignal m(core_mutex);
   gchar* audio_device = NULL;
@@ -111,65 +114,72 @@ void AudioInputCore::setup ()
 
   set_device (audio_device);
 
-  if (audio_device_settings_signal == 0)
+  if (audio_device_settings_signal == 0) {
+
     audio_device_settings_signal =
       g_signal_connect (audio_device_settings, "changed::input-device",
                         G_CALLBACK (audio_device_changed), this);
+  }
 
   g_free (audio_device);
 }
 
-void AudioInputCore::add_manager (AudioInputManager &manager)
+void
+AudioInputCore::add_manager (AudioInputManager& manager)
 {
   managers.insert (&manager);
   manager_added (manager);
 
-  manager.device_error.connect   (boost::bind (&AudioInputCore::on_device_error, this, _1, _2, &manager));
-  manager.device_opened.connect  (boost::bind (&AudioInputCore::on_device_opened, this, _1, _2, &manager));
-  manager.device_closed.connect  (boost::bind (&AudioInputCore::on_device_closed, this, _1, &manager));
+  manager.device_error.connect   (boost::bind (boost::ref(device_error), boost::ref(manager), _1, _2));
+  manager.device_opened.connect  (boost::bind (boost::ref(device_opened), boost::ref(manager), _1, _2));
+  manager.device_closed.connect  (boost::bind (boost::ref(device_closed), boost::ref(manager), _1));
 }
 
 
-void AudioInputCore::visit_managers (boost::function1<bool, AudioInputManager &> visitor) const
+void
+AudioInputCore::visit_managers (boost::function1<bool, AudioInputManager&> visitor) const
 {
   PWaitAndSignal m(core_mutex);
   bool go_on = true;
 
-  for (std::set<AudioInputManager *>::const_iterator iter = managers.begin ();
+  for (std::set<AudioInputManager*>::const_iterator iter = managers.begin ();
        iter != managers.end () && go_on;
-       iter++)
+       ++iter)
       go_on = visitor (*(*iter));
 }
 
-void AudioInputCore::get_devices (std::vector <std::string> & devices)
+void
+AudioInputCore::get_devices (std::vector<std::string>& devices)
 {
-  std::vector <AudioInputDevice> d;
+  std::vector<AudioInputDevice> d;
   get_devices (d);
 
   devices.clear ();
 
-  for (std::vector<AudioInputDevice>::iterator iter = d.begin ();
+  for (std::vector<AudioInputDevice>::const_iterator iter = d.begin ();
        iter != d.end ();
        ++iter)
     devices.push_back (iter->GetString ());
 }
 
-void AudioInputCore::get_devices (std::vector <AudioInputDevice> & devices)
+void
+AudioInputCore::get_devices (std::vector<AudioInputDevice>& devices)
 {
   yield = true;
   PWaitAndSignal m(core_mutex);
 
   devices.clear();
 
-  for (std::set<AudioInputManager *>::iterator iter = managers.begin ();
+  for (std::set<AudioInputManager*>::const_iterator iter = managers.begin ();
        iter != managers.end ();
-       iter++)
+       ++iter)
     (*iter)->get_devices (devices);
 
 #if PTRACING
-  for (std::vector<AudioInputDevice>::iterator iter = devices.begin ();
+  for (std::vector<AudioInputDevice>::const_iterator iter = devices.begin ();
        iter != devices.end ();
-       iter++) {
+       ++iter) {
+
     PTRACE(4, "AudioInputCore\tDetected Device: " << *iter);
   }
 #endif
@@ -197,17 +207,21 @@ AudioInputCore::set_device (const std::string& device_string)
   bool found_preferred2 = false;
 
   get_devices (devices);
-  for (std::vector<AudioInputDevice>::iterator it = devices.begin ();
+  for (std::vector<AudioInputDevice>::const_iterator it = devices.begin ();
        it < devices.end ();
-       it++) {
+       ++it) {
+
     if ((*it).GetString () == device_string) {
+
       found = true;
       break;
     }
     else if ((*it).GetString () == device_preferred1.GetString ()) {
+
       found_preferred1 = true;
     }
     else if ((*it).GetString () == device_preferred2.GetString ()) {
+
       found_preferred2 = true;
     }
   }
@@ -231,36 +245,47 @@ AudioInputCore::set_device (const std::string& device_string)
   PTRACE(4, "AudioInputCore\tSet device to " << device.source << "/" << device.name);
 }
 
-void AudioInputCore::add_device (const std::string & source, const std::string & device_name, HalManager* /*manager*/)
+void
+AudioInputCore::add_device (const std::string& source,
+			    const std::string& device_name,
+			    HalManager* /*manager*/)
 {
   PTRACE(4, "AudioInputCore\tAdding Device " << device_name);
   yield = true;
   PWaitAndSignal m(core_mutex);
 
   AudioInputDevice device;
-  for (std::set<AudioInputManager *>::iterator iter = managers.begin ();
+  for (std::set<AudioInputManager*>::const_iterator iter = managers.begin ();
        iter != managers.end ();
-       iter++) {
+       ++iter) {
+
     if ((*iter)->has_device (source, device_name, device)) {
 
-      device_added(device);
+      device_added (device);
 
-      boost::shared_ptr<Ekiga::Notification> notif (new Ekiga::Notification (Ekiga::Notification::Info, _("New device detected"), device.GetString (), _("Use it"), boost::bind (&AudioInputCore::on_set_device, (AudioInputCore*) this, device)));
+      boost::shared_ptr<Ekiga::Notification> notif (new Ekiga::Notification (Ekiga::Notification::Info,
+									     _("New device detected"),
+									     device.GetString (), _("Use it"),
+									     boost::bind (&AudioInputCore::on_set_device, (AudioInputCore*) this, device)));
       notification_core->push_notification (notif);
     }
   }
 }
 
-void AudioInputCore::remove_device (const std::string & source, const std::string & device_name, HalManager* /*manager*/)
+void
+AudioInputCore::remove_device (const std::string& source,
+			       const std::string& device_name,
+			       HalManager* /*manager*/)
 {
   PTRACE(4, "AudioInputCore\tRemoving Device " << device_name);
   yield = true;
   PWaitAndSignal m(core_mutex);
 
   AudioInputDevice device;
-  for (std::set<AudioInputManager *>::iterator iter = managers.begin ();
+  for (std::set<AudioInputManager*>::iterator iter = managers.begin ();
        iter != managers.end ();
-       iter++) {
+       ++iter) {
+
      if ((*iter)->has_device (source, device_name, device)) {
 
        if ( ( current_device == device) && (preview_config.active || stream_config.active) ) {
@@ -272,15 +297,19 @@ void AudioInputCore::remove_device (const std::string & source, const std::strin
             internal_set_device( new_device);
        }
 
-       boost::shared_ptr<Ekiga::Notification> notif (new Ekiga::Notification (Ekiga::Notification::Info, _("Device removed"), device.GetString ()));
+       boost::shared_ptr<Ekiga::Notification> notif (new Ekiga::Notification (Ekiga::Notification::Info,
+									      _("Device removed"),
+									      device.GetString ()));
        notification_core->push_notification (notif);
-
        device_removed (device,  current_device == device);
      }
   }
 }
 
-void AudioInputCore::start_preview (unsigned channels, unsigned samplerate, unsigned bits_per_sample)
+void
+AudioInputCore::start_preview (unsigned channels,
+			       unsigned samplerate,
+			       unsigned bits_per_sample)
 {
   yield = true;
   PWaitAndSignal m(core_mutex);
@@ -288,6 +317,7 @@ void AudioInputCore::start_preview (unsigned channels, unsigned samplerate, unsi
   PTRACE(4, "AudioInputCore\tStarting preview " << channels << "x" << samplerate << "/" << bits_per_sample);
 
   if (preview_config.active || stream_config.active) {
+
     PTRACE(1, "AudioInputCore\tTrying to start preview in wrong state");
   }
 
@@ -306,7 +336,8 @@ void AudioInputCore::start_preview (unsigned channels, unsigned samplerate, unsi
   average_level = 0;
 }
 
-void AudioInputCore::stop_preview ()
+void
+AudioInputCore::stop_preview ()
 {
   yield = true;
   PWaitAndSignal m(core_mutex);
@@ -314,6 +345,7 @@ void AudioInputCore::stop_preview ()
   PTRACE(4, "AudioInputCore\tStopping Preview");
 
   if (!preview_config.active || stream_config.active) {
+
     PTRACE(1, "AudioInputCore\tTrying to stop preview in wrong state");
   }
 
@@ -322,7 +354,9 @@ void AudioInputCore::stop_preview ()
 }
 
 
-void AudioInputCore::set_stream_buffer_size (unsigned buffer_size, unsigned num_buffers)
+void
+AudioInputCore::set_stream_buffer_size (unsigned buffer_size,
+					unsigned num_buffers)
 {
   yield = true;
   PWaitAndSignal m(core_mutex);
@@ -336,7 +370,10 @@ void AudioInputCore::set_stream_buffer_size (unsigned buffer_size, unsigned num_
   stream_config.num_buffers = num_buffers;
 }
 
-void AudioInputCore::start_stream (unsigned channels, unsigned samplerate, unsigned bits_per_sample)
+void
+AudioInputCore::start_stream (unsigned channels,
+			      unsigned samplerate,
+			      unsigned bits_per_sample)
 {
   yield = true;
   PWaitAndSignal m(core_mutex);
@@ -344,6 +381,7 @@ void AudioInputCore::start_stream (unsigned channels, unsigned samplerate, unsig
   PTRACE(4, "AudioInputCore\tStarting stream " << channels << "x" << samplerate << "/" << bits_per_sample);
 
   if (preview_config.active || stream_config.active) {
+
     PTRACE(1, "AudioInputCore\tTrying to start stream in wrong state");
   }
 
@@ -357,7 +395,8 @@ void AudioInputCore::start_stream (unsigned channels, unsigned samplerate, unsig
   average_level = 0;
 }
 
-void AudioInputCore::stop_stream ()
+void
+AudioInputCore::stop_stream ()
 {
   yield = true;
   PWaitAndSignal m(core_mutex);
@@ -365,6 +404,7 @@ void AudioInputCore::stop_stream ()
   PTRACE(4, "AudioInputCore\tStopping Stream");
 
   if (preview_config.active || !stream_config.active) {
+
     PTRACE(1, "AudioInputCore\tTrying to stop stream in wrong state");
     return;
   }
@@ -374,9 +414,10 @@ void AudioInputCore::stop_stream ()
   average_level = 0;
 }
 
-void AudioInputCore::get_frame_data (char *data,
-                                     unsigned size,
-				     unsigned & bytes_read)
+void
+AudioInputCore::get_frame_data (char* data,
+				unsigned size,
+				unsigned& bytes_read)
 {
   if (yield) {
     yield = false;
@@ -385,7 +426,9 @@ void AudioInputCore::get_frame_data (char *data,
   PWaitAndSignal m_var(core_mutex);
 
   if (current_manager) {
+
     if (!current_manager->get_frame_data(data, size, bytes_read)) {
+
       internal_close();
       internal_set_fallback();
       internal_open(stream_config.channels, stream_config.samplerate, stream_config.bits_per_sample);
@@ -395,6 +438,7 @@ void AudioInputCore::get_frame_data (char *data,
 
     PWaitAndSignal m_vol(volume_mutex);
     if (desired_volume != current_volume) {
+
       current_manager->set_volume (desired_volume);
       current_volume = desired_volume;
     }
@@ -404,36 +448,22 @@ void AudioInputCore::get_frame_data (char *data,
     calculate_average_level((const short*) data, bytes_read);
 }
 
-void AudioInputCore::set_volume (unsigned volume)
+void
+AudioInputCore::set_volume (unsigned volume)
 {
   PWaitAndSignal m(volume_mutex);
 
   desired_volume = volume;
 }
 
-void AudioInputCore::on_set_device (const AudioInputDevice & device)
+void
+AudioInputCore::on_set_device (const AudioInputDevice& device)
 {
   g_settings_set_string (audio_device_settings, "input-device", device.GetString ().c_str ());
 }
 
-void AudioInputCore::on_device_opened (AudioInputDevice device,
-                                       AudioInputSettings settings,
-                                       AudioInputManager *manager)
-{
-  device_opened (*manager, device, settings);
-}
-
-void AudioInputCore::on_device_closed (AudioInputDevice device, AudioInputManager *manager)
-{
-  device_closed (*manager, device);
-}
-
-void AudioInputCore::on_device_error (AudioInputDevice device, AudioInputErrorCodes error_code, AudioInputManager *manager)
-{
- device_error (*manager, device, error_code);
-}
-
-void AudioInputCore::internal_set_device(const AudioInputDevice & device)
+void
+AudioInputCore::internal_set_device(const AudioInputDevice& device)
 {
   PTRACE(4, "AudioInputCore\tSetting device: " << device);
 
@@ -443,39 +473,45 @@ void AudioInputCore::internal_set_device(const AudioInputDevice & device)
   internal_set_manager (device);
 
   if (preview_config.active) {
+
     internal_open(preview_config.channels, preview_config.samplerate, preview_config.bits_per_sample);
 
     if ((preview_config.buffer_size > 0) && (preview_config.num_buffers > 0 ) ) {
+
       if (current_manager)
         current_manager->set_buffer_size (preview_config.buffer_size, preview_config.num_buffers);
     }
   }
 
   if (stream_config.active) {
+
     internal_open(stream_config.channels, stream_config.samplerate, stream_config.bits_per_sample);
 
     if ((stream_config.buffer_size > 0) && (stream_config.num_buffers > 0 ) ) {
+
       if (current_manager)
         current_manager->set_buffer_size (stream_config.buffer_size, stream_config.num_buffers);
     }
   }
 }
 
-void AudioInputCore::internal_set_manager (const AudioInputDevice & device)
+void
+AudioInputCore::internal_set_manager (const AudioInputDevice& device)
 {
   current_manager = NULL;
-  for (std::set<AudioInputManager *>::iterator iter = managers.begin ();
+  for (std::set<AudioInputManager*>::iterator iter = managers.begin ();
        iter != managers.end ();
-       iter++) {
-     if ((*iter)->set_device (device)) {
+       ++iter) {
+
+     if ((*iter)->set_device (device))
        current_manager = (*iter);
-     }
   }
 
   // If the desired manager could not be found,
   // we se the default device. The default device
   // MUST ALWAYS be loaded and openable
   if (current_manager) {
+
     current_device  = device;
   }
   else {
@@ -485,7 +521,8 @@ void AudioInputCore::internal_set_manager (const AudioInputDevice & device)
   }
 }
 
-void AudioInputCore::internal_set_fallback()
+void
+AudioInputCore::internal_set_fallback()
 {
     current_device.type = AUDIO_INPUT_FALLBACK_DEVICE_TYPE;
     current_device.source = AUDIO_INPUT_FALLBACK_DEVICE_SOURCE;
@@ -494,7 +531,10 @@ void AudioInputCore::internal_set_fallback()
     internal_set_manager (current_device);
 }
 
-void AudioInputCore::internal_open (unsigned channels, unsigned samplerate, unsigned bits_per_sample)
+void
+AudioInputCore::internal_open (unsigned channels,
+			       unsigned samplerate,
+			       unsigned bits_per_sample)
 {
   PTRACE(4, "AudioInputCore\tOpening device with " << channels << "-" << samplerate << "/" << bits_per_sample );
 
@@ -507,14 +547,17 @@ void AudioInputCore::internal_open (unsigned channels, unsigned samplerate, unsi
   }
 }
 
-void AudioInputCore::internal_close()
+void
+AudioInputCore::internal_close ()
 {
   PTRACE(4, "AudioInputCore\tClosing current device");
   if (current_manager)
     current_manager->close();
 }
 
-void AudioInputCore::calculate_average_level (const short *buffer, unsigned size)
+void
+AudioInputCore::calculate_average_level (const short* buffer,
+					 unsigned size)
 {
   int sum = 0;
   unsigned csize = 0;
