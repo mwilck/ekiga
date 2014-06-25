@@ -460,6 +460,8 @@ build_and_show_addressbook_window_cb (G_GNUC_UNUSED GtkWidget *widget,
   EkigaMainWindow *self = EKIGA_MAIN_WINDOW (data);
   boost::shared_ptr<GtkFrontend> gtk_frontend = self->priv->gtk_frontend.lock ();
 
+  g_return_if_fail (gtk_frontend);
+
   window = gtk_frontend->build_addressbook_window ();
   gm_window_set_hide_on_delete (GM_WINDOW (window), FALSE);
   gm_window_set_hide_on_escape (GM_WINDOW (window), FALSE);
@@ -476,6 +478,8 @@ build_and_show_assistant_window_cb (G_GNUC_UNUSED GtkWidget *widget,
   g_return_if_fail (EKIGA_IS_MAIN_WINDOW (data));
   EkigaMainWindow *self = EKIGA_MAIN_WINDOW (data);
   boost::shared_ptr<GtkFrontend> gtk_frontend = self->priv->gtk_frontend.lock ();
+
+  g_return_if_fail (gtk_frontend);
 
   window = gtk_frontend->build_assistant_window ();
   gtk_window_set_transient_for (GTK_WINDOW (window),
@@ -547,16 +551,14 @@ static void on_setup_call_cb (boost::shared_ptr<Ekiga::CallManager> manager,
   }
   else {
 
-    /* Show call window */
-    boost::shared_ptr<GtkFrontend> gtk_frontend = mw->priv->gtk_frontend.lock ();
-    if (gtk_frontend) {
-
-      call_window = GTK_WIDGET (gtk_frontend->get_call_window ());
-      gtk_widget_show (call_window);
-    }
-
     mw->priv->current_call = call;
     mw->priv->calling_state = Calling;
+
+    /* Show call window */
+    boost::shared_ptr<GtkFrontend> gtk_frontend = mw->priv->gtk_frontend.lock ();
+    g_return_if_fail (gtk_frontend);
+    call_window = GTK_WIDGET (gtk_frontend->get_call_window ());
+    gtk_widget_show (call_window);
   }
 
   /* Unsensitive a few things */
@@ -602,11 +604,9 @@ static void on_established_call_cb (boost::shared_ptr<Ekiga::CallManager>  /*man
 
   /* Show call window */
     boost::shared_ptr<GtkFrontend> gtk_frontend = mw->priv->gtk_frontend.lock ();
-    if (gtk_frontend) {
-
-      call_window = GTK_WIDGET (gtk_frontend->get_call_window ());
-      gtk_widget_show (call_window);
-    }
+    g_return_if_fail (gtk_frontend);
+    call_window = GTK_WIDGET (gtk_frontend->get_call_window ());
+    gtk_widget_show (call_window);
 }
 
 
@@ -708,14 +708,12 @@ on_delayed_hide_call_window_cb (gpointer data)
   EkigaMainWindow *mw = EKIGA_MAIN_WINDOW (data);
 
     boost::shared_ptr<GtkFrontend> gtk_frontend = mw->priv->gtk_frontend.lock ();
-    if (gtk_frontend) {
+    g_return_val_if_fail (gtk_frontend, FALSE);
+    GtkWidget* call_window = GTK_WIDGET (gtk_frontend->get_call_window ());
 
-      GtkWidget* call_window = GTK_WIDGET (gtk_frontend->get_call_window ());
-
-      if (!mw->priv->current_call
-          && !mw->priv->video_devices_settings->get_bool ("enable-preview"))
-	gtk_widget_hide (GTK_WIDGET (call_window));
-    }
+    if (!mw->priv->current_call
+	&& !mw->priv->video_devices_settings->get_bool ("enable-preview"))
+      gtk_widget_hide (GTK_WIDGET (call_window));
 
   return FALSE;
 }
@@ -839,14 +837,12 @@ video_preview_changed (GtkToggleToolButton *button,
 
     bool toggled = gtk_toggle_tool_button_get_active (button);
     boost::shared_ptr<GtkFrontend> gtk_frontend = mw->priv->gtk_frontend.lock ();
-    if (gtk_frontend) {
-
-      GtkWidget *call_window = GTK_WIDGET (gtk_frontend->get_call_window ());
-      if (!toggled)
-        gtk_widget_hide (call_window);
-      else
-        gtk_widget_show (call_window);
-    }
+    g_return_if_fail (gtk_frontend);
+    GtkWidget *call_window = GTK_WIDGET (gtk_frontend->get_call_window ());
+    if (!toggled)
+      gtk_widget_hide (call_window);
+    else
+      gtk_widget_show (call_window);
   }
 }
 
@@ -1140,9 +1136,7 @@ ekiga_main_window_init_menu (EkigaMainWindow *mw)
   g_return_if_fail (mw != NULL);
 
   boost::shared_ptr<GtkFrontend> gtk_frontend = mw->priv->gtk_frontend.lock ();
-
   g_return_if_fail (gtk_frontend);
-
   accounts_window = GTK_WIDGET (gtk_frontend->get_accounts_window ());
 
   static MenuEntry gnomemeeting_menu [] =
