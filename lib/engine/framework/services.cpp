@@ -83,13 +83,13 @@ Ekiga::ServiceCore::~ServiceCore ()
        ++iter)
     remaining_services[(*iter)->get_name ()] = *iter;
 #endif
-  /* this frees the memory, if we're the only to hold references,
-   * and frees the last first -- so there's no problem
-   */
-  while ( !services.empty ())
-    services.pop_front ();
+
+  /* this is supposed to free everything */
+  services.clear ();
 
 #if DEBUG
+  int count = 0;
+  std::cout << "Ekiga::ServiceCore:" << std::endl;
   for (std::map<std::string, boost::weak_ptr<Service> >::iterator iter = remaining_services.begin();
        iter != remaining_services.end ();
        ++iter) {
@@ -97,15 +97,16 @@ Ekiga::ServiceCore::~ServiceCore ()
     ServicePtr service = iter->second.lock();
     if (service) {
 
-      std::cout << "Ekiga::ServiceCore: "
+      count++;
+      std::cout << "    "
 		<< iter->first
-		<< " hasn't been freed correctly!"
-		<< " (with "
+		<< " has "
 		<< service.use_count() - 1
 		<< " dangling references)"
 		<< std::endl;
     }
   }
+  std::cout << "(which means " << count << " leaked services)" << std::endl;
 #endif
 }
 
@@ -136,6 +137,22 @@ void
 Ekiga::ServiceCore::close ()
 {
   closed = true;
+
+#if DEBUG
+  std::cout << "Ekiga::ServiceCore closes with "
+	    << services.size () << " services:" << std::endl;
+  for (services_type::iterator iter = services.begin();
+       iter != services.end ();
+       ++iter) {
+
+    std::cout << "   "
+	      << (*iter)->get_name ()
+	      << " (with "
+	      << iter->use_count ()
+	      << " references)"
+	      << std::endl;
+  }
+#endif
 }
 
 Ekiga::ServicePtr
