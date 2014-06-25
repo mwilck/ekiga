@@ -55,8 +55,8 @@ G_DEFINE_TYPE (AssistantWindow, assistant_window, GTK_TYPE_ASSISTANT);
 
 struct _AssistantWindowPrivate
 {
-  Ekiga::ServiceCore* service_core; // FIXME: wrong memory management
   boost::shared_ptr<Opal::Bank> bank;
+  boost::weak_ptr<GtkFrontend> frontend;
   GdkPixbuf *icon;
 
   GtkWidget *welcome_page;
@@ -816,7 +816,8 @@ assistant_window_close (GtkAssistant *gtkassistant)
 
   gtk_widget_destroy (GTK_WIDGET (gtkassistant));
   boost::shared_ptr<GtkFrontend> gtk_frontend
-    = assistant->priv->service_core->get<GtkFrontend>("gtk-frontend");
+    = assistant->priv->frontend.lock ();
+  g_return_if_fail (gtk_frontend);
   gtk_widget_show (GTK_WIDGET (gtk_frontend->get_main_window ()));
 }
 
@@ -869,7 +870,7 @@ assistant_window_new (Ekiga::ServiceCore& service_core)
 
   assistant = ASSISTANT_WINDOW (g_object_new (ASSISTANT_WINDOW_TYPE, NULL));
 
-  assistant->priv->service_core = &service_core;
+  assistant->priv->frontend = service_core.get<GtkFrontend> ("gtk-frontend");
 
   /* FIXME: move this into the caller */
   g_signal_connect (assistant, "key-press-event",
