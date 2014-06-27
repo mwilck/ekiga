@@ -102,11 +102,14 @@ Ekiga::ServiceCore::~ServiceCore ()
 		<< iter->first
 		<< " has "
 		<< service.use_count() - 1
-		<< " dangling references)"
+		<< " dangling references"
 		<< std::endl;
     }
   }
-  std::cout << "(which means " << count << " leaked services)" << std::endl;
+  if (count)
+    std::cout << "  (which means " << count << " leaked services)" << std::endl;
+  else
+    std::cout << "  (no service leaked)" << std::endl;
 #endif
 }
 
@@ -172,23 +175,14 @@ Ekiga::ServiceCore::get (const std::string name)
 #if DEBUG
 
   if (result)
-    if (closed)
-      std::cout << "Ekiga::ServiceCore refuses to return " << name << std::endl;
-    else
-      std::cout << "Ekiga::ServiceCore returns " << name << std::endl;
+    std::cout << "Ekiga::ServiceCore returns " << name << std::endl;
   else
     std::cout << "Ekiga::ServiceCore doesn't have " << name << std::endl;
 
-  if (closed)
-    raise (SIGSEGV);
-
-  return result;
-
-#else
-
-  return result;
-
 #endif
+
+  return result;
+
 }
 
 void
