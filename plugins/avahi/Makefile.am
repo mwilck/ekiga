@@ -2,6 +2,7 @@ plugin_LTLIBRARIES = libgmavahi.la
 
 AM_CXXFLAGS = \
 	$(BOOST_CPPFLAGS) $(AVAHI_CFLAGS) \
+	-I$(top_srcdir)/lib/engine \
 	-I$(top_srcdir)/lib/engine/framework \
 	-I$(top_srcdir)/lib/engine/account \
 	-I$(top_srcdir)/lib/engine/presence \

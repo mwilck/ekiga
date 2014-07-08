@@ -2,6 +2,7 @@ plugin_LTLIBRARIES = libgmlibnotify.la
 
 AM_CXXFLAGS = \
 	$(BOOST_CPPFLAGS) $(NOTIFY_CFLAGS) \
+	-I$(top_srcdir)/lib/engine \
 	-I$(top_srcdir)/lib/engine/framework \
 	-I$(top_srcdir)/lib/engine/notification \
 	-I$(top_srcdir)/lib/engine/protocol
