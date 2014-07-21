@@ -631,7 +631,7 @@ gm_pw_init_call_options_page (PreferencesWindow *self,
   /* Translators: the full sentence is Forward calls after x seconds. */
   gm_pw_spin_new (container, _("Forward calls after"), _("seconds"),
                   self->priv->call_options_settings, "no-answer-timeout",
-                  _("Automatically reject or forward incoming calls if no answer is given after the specified amount of time (in seconds)"), 10.0, 299.0, 1.0);
+                  _("Automatically reject or forward incoming calls if no answer is given after the specified amount of time (in seconds)"), 0.0, 299.0, 1.0);
   gm_pw_toggle_new (container, _("_Automatically answer incoming calls"),
                     self->priv->call_options_settings, "auto-answer",
                     _("If enabled, automatically answer incoming calls"));
