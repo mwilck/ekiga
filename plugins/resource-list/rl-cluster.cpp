@@ -139,9 +139,9 @@ void
 RL::Cluster::save () const
 {
   xmlChar* buffer = NULL;
-  int size = 0;
+  int bsize = 0;
 
-  xmlDocDumpMemory (doc.get (), &buffer, &size);
+  xmlDocDumpMemory (doc.get (), &buffer, &bsize);
 
   contacts_settings->set_string (RL_KEY, (const char *)buffer);
 
