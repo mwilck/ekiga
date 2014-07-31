@@ -92,10 +92,11 @@ namespace RL {
 			       std::string presence);
     void on_status_received (std::string uri,
 			     std::string presence);
+
+    boost::shared_ptr<Ekiga::Settings> contacts_settings;
   };
 
   typedef boost::shared_ptr<Cluster> ClusterPtr;
-  boost::shared_ptr<Ekiga::Settings> contacts_settings;
 };
 
 #endif
