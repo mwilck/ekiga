@@ -249,8 +249,6 @@ gm_cell_renderer_bitext_init (GmCellRendererBitext* self)
 					    GmCellRendererBitextPrivate);
   self->priv->primary_text = g_strdup ("");
   self->priv->secondary_text = g_strdup ("");
-
-  gtk_cell_renderer_text_set_fixed_height_from_font (GTK_CELL_RENDERER_TEXT (self), 2);
 }
 
 static void

@@ -1066,7 +1066,6 @@ on_presentity_added (RosterViewGtk* self,
   bool active = false;
   bool away = false;
   guint timeout = 0;
-  std::string status;
   gchar *old_presence = NULL;
   gboolean should_emit = FALSE;
 
@@ -1126,17 +1125,7 @@ on_presentity_added (RosterViewGtk* self,
                             -1);
       }
     }
-    status = presentity->get_status ();
-    if (status.empty ()) {
-      if (presentity->get_presence () == "away")
-        status = _("Away");
-      else if (presentity->get_presence () == "available")
-        status = _("Available");
-      else if (presentity->get_presence () == "offline")
-        status = _("Offline");
-      else if (presentity->get_presence () == "busy")
-        status = _("Busy");
-    }
+
     gtk_style_context_get_color (gtk_widget_get_style_context (GTK_WIDGET (self->priv->tree_view)),
                                  (!active||away)?GTK_STATE_FLAG_INSENSITIVE:GTK_STATE_FLAG_NORMAL,
                                  &color);
@@ -1146,7 +1135,7 @@ on_presentity_added (RosterViewGtk* self,
                         COLUMN_HEAP, heap.get (),
                         COLUMN_PRESENTITY, presentity.get (),
                         COLUMN_NAME, presentity->get_name ().c_str (),
-                        COLUMN_STATUS, status.c_str (),
+                        COLUMN_STATUS, presentity->get_status ().c_str (),
                         COLUMN_PRESENCE, presentity->get_presence ().c_str (),
                         COLUMN_ACTIVE, &color, -1);
     gtk_tree_model_get (GTK_TREE_MODEL (self->priv->store), &iter,
