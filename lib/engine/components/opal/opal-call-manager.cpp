@@ -53,6 +53,8 @@
 #include "h323-endpoint.h"
 #endif
 
+#include <opal/transcoders.h>
+
 #include <stdlib.h>
 
 // opal manages its endpoints itself, so we must be wary
@@ -268,10 +270,7 @@ void CallManager::set_echo_cancellation (bool enabled)
 
   // General settings
   ec = GetEchoCancelParams ();
-  if (enabled)
-    ec.m_mode = OpalEchoCanceler::Cancelation;
-  else
-    ec.m_mode = OpalEchoCanceler::NoCancelation;
+  ec.m_enabled = enabled;
   SetEchoCancelParams (ec);
 
   // Adjust setting for all connections of all calls
@@ -302,13 +301,13 @@ bool CallManager::get_echo_cancellation () const
 {
   OpalEchoCanceler::Params ec = GetEchoCancelParams ();
 
-  return (ec.m_mode == OpalEchoCanceler::Cancelation);
+  return ec.m_enabled;
 }
 
 
 void CallManager::set_maximum_jitter (unsigned max_val)
 {
-  unsigned val = PMIN (PMAX (max_val, 20), 1000);
+  unsigned val = std::min (std::max (max_val, (unsigned) 20), (unsigned) 1000);
 
   SetAudioJitterDelay (20, val);
 
@@ -327,11 +326,15 @@ void CallManager::set_maximum_jitter (unsigned max_val)
         OpalMediaStreamPtr stream = connection->GetMediaStream (OpalMediaType::Audio (), false);
         if (stream != NULL) {
 
-          RTP_Session *session = connection->GetSession (stream->GetSessionID ());
+          OpalRTPSession *session = (OpalRTPSession*)connection->GetMediaSession (stream->GetSessionID ());
           if (session != NULL) {
 
             unsigned units = session->GetJitterTimeUnits ();
-            session->SetJitterBufferSize (20 * units, val * units, units);
+            OpalJitterBuffer::Init init;
+            init.m_minJitterDelay = 20 * units;
+            init.m_maxJitterDelay = val * units;
+            init.m_timeUnits = units;
+            session->SetJitterBufferSize (init);
           }
         }
       }
@@ -396,7 +399,7 @@ bool CallManager::get_silence_detection () const
 
 void CallManager::set_reject_delay (unsigned delay)
 {
-  reject_delay = PMAX (5, delay);
+  reject_delay = std::max ((unsigned) 5, delay);
 }
 
 
@@ -496,7 +499,7 @@ void CallManager::set_codecs (Ekiga::CodecList & _codecs)
             && (rate == all_media_formats [j].GetClockRate () || name == "G722")) {
 
           // Found something
-          order += all_media_formats [j];
+          order = order + all_media_formats [j];
         }
       }
     }
@@ -508,7 +511,7 @@ void CallManager::set_codecs (Ekiga::CodecList & _codecs)
   for (int j = 0 ;
        j < all_media_formats.GetSize () ;
        j++)
-    order += all_media_formats [j];
+    order = order + all_media_formats [j];
 
 
   // Build the mask
@@ -518,7 +521,7 @@ void CallManager::set_codecs (Ekiga::CodecList & _codecs)
   for (int i = 0 ;
        i < all_media_formats.GetSize () ;
        i++)
-    mask += all_media_formats [i];
+    mask = mask + all_media_formats [i];
 
   // Blacklist IM protocols for now
   mask += "T.140";
@@ -652,7 +655,7 @@ void CallManager::set_video_options (const CallManager::VideoOptions & options)
   OpalMediaFormatList media_formats_list;
   OpalMediaFormat::GetAllRegisteredMediaFormats (media_formats_list);
 
-  int maximum_frame_rate = PMIN (PMAX (options.maximum_frame_rate, 1), 30);
+  int maximum_frame_rate = std::min (std::max ((signed) options.maximum_frame_rate, 1), 30);
   int maximum_received_bitrate = (options.maximum_received_bitrate > 0 ? options.maximum_received_bitrate : 4096);
   int maximum_transmitted_bitrate = (options.maximum_transmitted_bitrate > 0 ? options.maximum_transmitted_bitrate : 48);
   int temporal_spatial_tradeoff = (options.temporal_spatial_tradeoff > 0 ? options.temporal_spatial_tradeoff : 31);
@@ -913,7 +916,7 @@ CallManager::HandleSTUNResult ()
 
     if (result == PSTUNClient::SymmetricNat
 	|| result == PSTUNClient::BlockedNat
-	|| result == PSTUNClient::PartialBlockedNat) {
+	|| result == PSTUNClient::PartiallyBlocked) {
 
       error = true;
     } else {

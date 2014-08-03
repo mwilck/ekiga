@@ -59,11 +59,7 @@ public:
 		      boost::shared_ptr<Ekiga::AudioOutputCore> audiooutput_core);
   ~PSoundChannel_EKIGA();
   static PString GetDefaultDevice(PSoundChannel::Directions);
-  bool Open(const PString & _device,
-       Directions _dir,
-       unsigned _numChannels,
-       unsigned _sampleRate,
-       unsigned _bitsPerSample);
+  bool Open(const Params & params);
   bool Close();
   bool Write(const void * buf, PINDEX len);
   bool Read(void * buf, PINDEX len);

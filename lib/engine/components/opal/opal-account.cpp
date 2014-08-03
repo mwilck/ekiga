@@ -862,22 +862,14 @@ Opal::Account::publish (const Ekiga::PersonalDetails& details)
 {
   std::string presence = details.get_presence ();
 
-  if (presence == "available")
-    personal_state = OpalPresenceInfo::Available;
-  else if (presence == "away")
-    personal_state = OpalPresenceInfo::Away;
-  else if (presence == "busy")
-    personal_state = OpalPresenceInfo::Busy;
-  else {  // ekiga knows only these three presence types
-    std::string s = "Warning: Unknown presence type ";
-    s.append (presence);
-    g_warning ("%s",s.data());
-  }
-
+  personal_state = OpalPresenceInfo::Available;
   presence_status = details.get_status ();
 
   if (presentity) {
-    presentity->SetLocalPresence (personal_state, presence_status);
+    OpalPresenceInfo opi = OpalPresenceInfo (OpalPresenceInfo::Available);
+    opi.m_activities = PString (presence);
+    opi.m_note = presence_status;
+    presentity->SetLocalPresence (opi);
     PTRACE (4, "Ekiga\tSent its own presence (publish) for " << get_aor() << ": " << presence << ", note " << presence_status);
   }
 }
@@ -929,10 +921,10 @@ Opal::Account::handle_registration_event (RegistrationState state_,
       failed_registration_already_notified = false;
       if (presentity) {
 
-	for (const_iterator iter = begin ();
-	     iter != end ();
-	     ++iter)
-	  fetch ((*iter)->get_uri());
+        for (const_iterator iter = begin ();
+             iter != end ();
+             ++iter)
+          fetch ((*iter)->get_uri());
 
         presentity->SetLocalPresence (personal_state, presence_status);
         if (type != Account::H323) {
@@ -941,7 +933,7 @@ Opal::Account::handle_registration_event (RegistrationState state_,
       }
       boost::shared_ptr<Ekiga::PersonalDetails> details = personal_details.lock ();
       if (details)
-	const_cast<Account*>(this)->publish (*details);
+        const_cast<Account*>(this)->publish (*details);
 
       updated ();
     }
@@ -1092,52 +1084,46 @@ Opal::Account::setup_presentity ()
 
 void
 Opal::Account::OnPresenceChange (OpalPresentity& /*presentity*/,
-				 const OpalPresenceInfo& info)
+                                 const std::auto_ptr<OpalPresenceInfo> info)
 {
   std::string new_presence;
   std::string new_status = "";
 
-  SIPURL sip_uri = SIPURL (info.m_entity);
+  SIPURL sip_uri = SIPURL (info->m_entity);
   sip_uri.Sanitise (SIPURL::ExternalURI);
   std::string uri = sip_uri.AsString ();
-  PCaselessString note = info.m_note;
+  PCaselessString note = info->m_note;
 
-  PTRACE (4, "Ekiga\tReceived a presence change (notify) for " << info.m_entity << ": state " << info.m_state << ", note " << info.m_note);
-
-  if (info.m_state == OpalPresenceInfo::Unchanged)
-    return;
+  PTRACE (4, "Ekiga\tReceived a presence change (notify) for " << info->m_entity << ": state " << info->m_state << ", activities " << info->m_activities << ", note " << info->m_note);
 
   if (!uri.compare (0, 5, "pres:"))
     uri.replace (0, 5, "sip:");  // replace "pres:" sith "sip:" FIXME
 
-  new_status = (const char*) info.m_note;
-  switch (info.m_state) {
+  new_status = (const char*) info->m_note;
+  switch (info->m_state) {
 
   case OpalPresenceInfo::Unchanged:
     // do not change presence
     break;
   case OpalPresenceInfo::Available:
     new_presence = "available";
-    if (!note.IsEmpty ()) {
-      if (note.Find ("dnd") != P_MAX_INDEX
-          || note.Find ("meeting") != P_MAX_INDEX
-          || note.Find ("do not disturb") != P_MAX_INDEX
-          || note.Find ("busy") != P_MAX_INDEX) {
-        new_presence = "busy";
-      }
-      else if (note.Find ("away") != P_MAX_INDEX
-               || note.Find ("out") != P_MAX_INDEX
-               || note.Find ("vacation") != P_MAX_INDEX
-               || note.Find ("holiday") != P_MAX_INDEX
-               || note.Find ("lunch") != P_MAX_INDEX) {
-        new_presence = "away";
-      }
-      else if (note.Find ("phone") != P_MAX_INDEX
-               || note.Find ("ringing") != P_MAX_INDEX
-               || note.Find ("call") != P_MAX_INDEX) {
-        new_presence = "inacall";
-      }
-    }
+    if (note.Find ("dnd") != P_MAX_INDEX
+        || note.Find ("meeting") != P_MAX_INDEX
+        || note.Find ("do not disturb") != P_MAX_INDEX
+        || note.Find ("busy") != P_MAX_INDEX
+        || info->m_activities.Contains ("busy"))
+      new_presence = "busy";
+    else if (note.Find ("away") != P_MAX_INDEX
+             || note.Find ("out") != P_MAX_INDEX
+             || note.Find ("vacation") != P_MAX_INDEX
+             || note.Find ("holiday") != P_MAX_INDEX
+             || note.Find ("lunch") != P_MAX_INDEX
+             || info->m_activities.Contains ("away"))
+      new_presence = "away";
+    else if (note.Find ("phone") != P_MAX_INDEX
+             || note.Find ("ringing") != P_MAX_INDEX
+             || note.Find ("call") != P_MAX_INDEX)
+      new_presence = "inacall";
     break;
   case OpalPresenceInfo::NoPresence:
     new_presence = "offline";
@@ -1145,15 +1131,10 @@ Opal::Account::OnPresenceChange (OpalPresentity& /*presentity*/,
   case OpalPresenceInfo::InternalError:
   case OpalPresenceInfo::Forbidden:
   case OpalPresenceInfo::Unavailable:
-  case OpalPresenceInfo::UnknownExtended:
+  //case OpalPresenceInfo::UnknownExtended:
     new_presence = "unknown";
     break;
-  case OpalPresenceInfo::Away:
-    new_presence = "away";
-    break;
-  case OpalPresenceInfo::Busy:
-    new_presence = "busy";
-    break;
+  /* for reference purposes:
   case OpalPresenceInfo::Appointment:
     new_presence = "away";
     // Translators: see RFC 4480 for more information about activities
@@ -1237,6 +1218,7 @@ Opal::Account::OnPresenceChange (OpalPresentity& /*presentity*/,
   case OpalPresenceInfo::Worship:
     new_presence = "away";
     break;
+  */
   default:
     break;
   }

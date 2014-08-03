@@ -40,7 +40,7 @@
 
 #include <glib/gi18n.h>
 #include <opal/opal.h>
-#include <opal/pcss.h>
+#include <ep/pcss.h>
 #include <sip/sippdu.h>
 
 #include "call.h"
@@ -163,10 +163,7 @@ Opal::Call::toggle_hold ()
   if (connection != NULL) {
 
     on_hold = connection->IsOnHold (false);
-    if (!on_hold)
-      connection->Hold (false, true);
-    else
-      connection->Hold (false, false);
+    connection->HoldRemote (!on_hold);
   }
 }
 
@@ -214,13 +211,13 @@ void Opal::Call::set_no_answer_forward (unsigned delay, const std::string & uri)
 {
   forward_uri = uri;
 
-  NoAnswerTimer.SetInterval (0, PMIN (delay, 299));
+  NoAnswerTimer.SetInterval (0, std::min (delay, (unsigned) 299));
 }
 
 
 void Opal::Call::set_reject_delay (unsigned delay)
 {
-  NoAnswerTimer.SetInterval (0, PMIN (delay, 299));
+  NoAnswerTimer.SetInterval (0, std::min (delay, (unsigned) 299));
 }
 
 
@@ -349,7 +346,7 @@ Opal::Call::parse_info (OpalConnection & connection)
 PBoolean
 Opal::Call::OnEstablished (OpalConnection & connection)
 {
-  RTP_Session *session = NULL;
+  OpalRTPSession *session = NULL;
   OpalMediaStreamPtr stream;
 
   NoAnswerTimer.Stop (false);
@@ -365,7 +362,7 @@ Opal::Call::OnEstablished (OpalConnection & connection)
     stream = connection.GetMediaStream (OpalMediaType::Audio (), false);
     if (stream != NULL) {
 
-      session = PDownCast (OpalRTPConnection, &connection)->GetSession (stream->GetSessionID ());
+      session = (OpalRTPSession*)PDownCast (OpalRTPConnection, &connection)->GetMediaSession (stream->GetSessionID ());
       if (session) {
 
         session->SetIgnorePayloadTypeChanges (TRUE);
@@ -377,7 +374,7 @@ Opal::Call::OnEstablished (OpalConnection & connection)
     stream = connection.GetMediaStream (OpalMediaType::Video (), false);
     if (stream != NULL) {
 
-      session = PDownCast (OpalRTPConnection, &connection)->GetSession (stream->GetSessionID ());
+      session = (OpalRTPSession*)PDownCast (OpalRTPConnection, &connection)->GetMediaSession (stream->GetSessionID ());
       if (session) {
 
         session->SetIgnorePayloadTypeChanges (TRUE);
@@ -587,8 +584,8 @@ Opal::Call::OnClosedMediaStream (OpalMediaStream & stream)
 
 
 void
-Opal::Call::OnRTPStatistics (const OpalConnection & /* connection */,
-			     const RTP_Session & session)
+Opal::Call::OnRTPStatistics2 (const OpalConnection & /* connection */,
+			     const OpalRTPSession & session)
 {
   PWaitAndSignal m(stats_mutex); // The stats are computed from two different threads
 

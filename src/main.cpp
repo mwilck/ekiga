@@ -41,7 +41,7 @@
 
 #include <glib/gi18n.h>
 
-#include <opal/buildopts.h> // only for OPAL_VERSION!
+#include <opal/opal_config.h> // only for OPAL_VERSION!
 
 #ifdef HAVE_DBUS
 #include "dbus-helper/dbus.h"

@@ -169,12 +169,12 @@ class PVideoInputDevice_EKIGA : public PVideoInputDevice
 			           unsigned &maxWidth,
 			           unsigned &maxHeight);
   
-  virtual bool GetParameters (int *whiteness,
+  /*virtual bool GetParameters (int *whiteness,
 		              int *brightness,
 		              int *colour,
 		              int *contrast,
 		              int *hue);
-  
+  */
 
   virtual PStringArray GetDeviceNames() const;
 

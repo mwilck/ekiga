@@ -217,8 +217,8 @@ Opal::H323::EndPoint::set_listen_port (unsigned port)
 void
 Opal::H323::EndPoint::set_initial_bandwidth (unsigned bitrate)
 {
-  SetInitialBandwidth (bitrate > 0 ? bitrate : 100000);
-  PTRACE (4, "Opal::H323::EndPoint\tSet maximum bandwidth to " << bitrate);
+  SetInitialBandwidth (OpalBandwidth::Tx, bitrate > 0 ? bitrate : 100000);
+  PTRACE (4, "Opal::H323::EndPoint\tSet maximum/initial tx bandwidth to " << bitrate);
 }
 
 
@@ -296,7 +296,7 @@ Opal::H323::EndPoint::Register (const Opal::Account& account)
       // Registering failed
       if (GetGatekeeper () != NULL) {
 
-        switch (gatekeeper->GetRegistrationFailReason ()) {
+        switch (GetGatekeeper()->GetRegistrationFailReason ()) {
 
         case H323Gatekeeper::DuplicateAlias :
           // Translators : The alias we are registering already exists : failure

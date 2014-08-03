@@ -142,7 +142,7 @@ Opal::Sip::EndPoint::EndPoint (Opal::CallManager & _manager,
   manager.AddRouteEntry("pc:.* = sip:<da>");
 
   /* NAT Binding */
-  SetNATBindingRefreshMethod (SIPEndPoint::Options);
+  SetNATBindingRefreshMethod (KeepAliveByOPTION);
 
   settings = boost::shared_ptr<Ekiga::Settings> (new Ekiga::Settings (SIP_SCHEMA));
   settings->changed.connect (boost::bind (&EndPoint::setup, this, _1));
@@ -201,8 +201,7 @@ Opal::Sip::EndPoint::send_message (const std::string & _uri,
   if (!_uri.empty () && (_uri.find ("sip:") == 0 || _uri.find (':') == string::npos) && iter != payload.end ()) {
     OpalIM im;
     im.m_to = PURL (_uri);
-    im.m_mimeType = "text/plain;charset=UTF-8";
-    im.m_body = iter->second;
+    im.m_bodies.SetAt (PMIMEInfo::TextPlain(), iter->second);
     Message (im);
     return true;
   }
@@ -445,19 +444,13 @@ Opal::Sip::EndPoint::Register (const std::string username,
 			       unsigned timeout)
 {
   PString _aor;
-  std::stringstream aor;
   std::string host(host_);
   std::string::size_type loc = host.find (":", 0);
   if (loc != std::string::npos)
     host = host.substr (0, loc);
 
-  if (username.find ("@") == std::string::npos)
-    aor << username << "@" << host;
-  else
-    aor << username;
-
   SIPRegister::Params params;
-  params.m_addressOfRecord = PString (aor.str ());
+  params.m_addressOfRecord = PString (username);
   params.m_registrarAddress = PString (host_);
   params.m_compatibility = compat_mode;
   params.m_authID = auth_username;
@@ -466,14 +459,14 @@ Opal::Sip::EndPoint::Register (const std::string username,
   params.m_minRetryTime = PMaxTimeInterval;  // use default value
   params.m_maxRetryTime = PMaxTimeInterval;  // use default value
 
-  // Register the given aor to the give registrar
+  // Register the given aor to the given registrar
   if (!SIPEndPoint::Register (params, _aor)) {
     SIPEndPoint::RegistrationStatus status;
     status.m_wasRegistering = true;
     status.m_reRegistering = false;
     status.m_userData = NULL;
     status.m_reason = SIP_PDU::Local_TransportError;
-    status.m_addressofRecord = PString (aor.str ());
+    status.m_addressofRecord = PString (username);
 
     OnRegistrationStatus (status);
   }
@@ -795,8 +788,7 @@ Opal::Sip::EndPoint::OnIncomingConnection (OpalConnection &connection,
 
 
 bool
-Opal::Sip::EndPoint::OnReceivedMESSAGE (OpalTransport & transport,
-					SIP_PDU & pdu)
+Opal::Sip::EndPoint::OnReceivedMESSAGE (SIP_PDU & pdu)
 {
   if (pdu.GetMIME().GetContentType(false) != "text/plain")
     return false; // Ignore what we do not handle.
@@ -825,7 +817,7 @@ Opal::Sip::EndPoint::OnReceivedMESSAGE (OpalTransport & transport,
 
   Ekiga::Runtime::run_in_main (boost::bind (&Opal::Sip::EndPoint::push_message_in_main, this, message_uri, msg));
 
-  return SIPEndPoint::OnReceivedMESSAGE (transport, pdu);
+  return SIPEndPoint::OnReceivedMESSAGE (pdu);
 }
 
 
@@ -848,7 +840,7 @@ Opal::Sip::EndPoint::OnMESSAGECompleted (const SIPMessage::Params & params,
   if (reason == SIP_PDU::Failure_TemporarilyUnavailable)
     reason_shown += _("user offline");
   else
-    reason_shown += SIP_PDU::GetStatusCodeDescription (reason);  // too many to translate them with _()...
+    reason_shown += SIP_PDU::GetStatusCodeDescription (reason).operator std::string ();  // too many to translate them with _()...
   Ekiga::Message::payload_type payload;
   // FIXME: we push as 'text/plain' without really knowing...
   payload.insert (std::make_pair ("text/plain", reason_shown));
@@ -873,7 +865,7 @@ Opal::Sip::EndPoint::GetRegisteredPartyName (const SIPURL & aor,
     return local_aor.c_str ();
 
   // as a last resort, use the local address
-  return GetDefaultRegisteredPartyName (transport);
+  return GetDefaultLocalURL (transport);
 }
 
 

@@ -236,7 +236,7 @@ PVideoInputDevice_EKIGA::GetFrameSizeLimits (unsigned & minWidth,
   return true;
 }
 
-
+/*
 bool PVideoInputDevice_EKIGA::GetParameters (int *whiteness,
 					       int *brightness,
 					       int *colour,
@@ -251,3 +251,4 @@ bool PVideoInputDevice_EKIGA::GetParameters (int *whiteness,
 
   return true;
 }
+*/
