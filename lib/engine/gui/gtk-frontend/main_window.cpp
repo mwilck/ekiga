@@ -544,7 +544,7 @@ static void on_setup_call_cb (boost::shared_ptr<Ekiga::CallManager> manager,
     if (mw->priv->current_call)
       return; // No call setup needed if already in a call
 
-    mw->priv->audiooutput_core->start_play_event ("incoming_call_sound", 4000, 256);
+    mw->priv->audiooutput_core->start_play_event ("incoming-call-sound", 4000, 256);
 
     mw->priv->current_call = call;
     mw->priv->calling_state = Called;
@@ -574,7 +574,7 @@ static void on_ringing_call_cb (boost::shared_ptr<Ekiga::CallManager>  /*manager
   EkigaMainWindow *mw = EKIGA_MAIN_WINDOW (self);
 
   if (call->is_outgoing ()) {
-    mw->priv->audiooutput_core->start_play_event("ring_tone_sound", 3000, 256);
+    mw->priv->audiooutput_core->start_play_event("ring-tone-sound", 3000, 256);
   }
 }
 
@@ -599,8 +599,8 @@ static void on_established_call_cb (boost::shared_ptr<Ekiga::CallManager>  /*man
 
   /* Manage sound events */
 
-  mw->priv->audiooutput_core->stop_play_event("incoming_call_sound");
-  mw->priv->audiooutput_core->stop_play_event("ring_tone_sound");
+  mw->priv->audiooutput_core->stop_play_event("incoming-call-sound");
+  mw->priv->audiooutput_core->stop_play_event("ring-tone-sound");
 
   /* Show call window */
     boost::shared_ptr<GtkFrontend> gtk_frontend = mw->priv->gtk_frontend.lock ();
@@ -630,8 +630,8 @@ static void on_cleared_call_cb (boost::shared_ptr<Ekiga::CallManager>  /*manager
   ekiga_main_window_flash_message (mw, "%s", reason.c_str ());
 
   /* Sound events */
-  mw->priv->audiooutput_core->stop_play_event("incoming_call_sound");
-  mw->priv->audiooutput_core->stop_play_event("ring_tone_sound");
+  mw->priv->audiooutput_core->stop_play_event("incoming-call-sound");
+  mw->priv->audiooutput_core->stop_play_event("ring-tone-sound");
 
   /* Hide call window */
   g_timeout_add_seconds (2, on_delayed_hide_call_window_cb, mw);
@@ -668,8 +668,8 @@ static void on_missed_call_cb (boost::shared_ptr<Ekiga::CallManager>  /*manager*
     gtk_widget_set_sensitive (GTK_WIDGET (mw->priv->preview_button), true);
 
     /* Clear sounds */
-    mw->priv->audiooutput_core->stop_play_event ("incoming_call_sound");
-    mw->priv->audiooutput_core->stop_play_event ("ring_tone_sound");
+    mw->priv->audiooutput_core->stop_play_event ("incoming-call-sound");
+    mw->priv->audiooutput_core->stop_play_event ("ring-tone-sound");
   }
 }
 

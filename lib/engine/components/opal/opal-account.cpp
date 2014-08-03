@@ -1057,7 +1057,7 @@ Opal::Account::handle_message_waiting_information (const std::string info)
     if (message_waiting_number > 0) {
       boost::shared_ptr<Ekiga::AudioOutputCore> audiooutput = audiooutput_core.lock ();
       if (audiooutput)
-	audiooutput->play_event ("new_voicemail_sound");
+	audiooutput->play_event ("new-voicemail-sound");
     }
     updated ();
   }
