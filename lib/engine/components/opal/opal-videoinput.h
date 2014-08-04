@@ -31,7 +31,7 @@
  *                         ------------------------------
  *   begin                : Mon Feb 12 2001
  *   copyright            : (C) 2000-2006 by Damien Sandras
- *   description          : Video4Linux compliant functions to manipulate the 
+ *   description          : Video4Linux compliant functions to manipulate the
  *                          webcam device.
  *
  */
@@ -45,12 +45,12 @@
 
 #include "videoinput-core.h"
 
-class PVideoInputDevice_EKIGA : public PVideoInputDevice 
+class PVideoInputDevice_EKIGA : public PVideoInputDevice
 {
   PCLASSINFO(PVideoInputDevice_EKIGA, PVideoInputDevice);
-  
+
  public:
-  
+
   /* DESCRIPTION  :  The constructor.
    * BEHAVIOR     :  Creates the Fake Input Device.
    * PRE          :  /
@@ -64,26 +64,26 @@ class PVideoInputDevice_EKIGA : public PVideoInputDevice
    */
   ~PVideoInputDevice_EKIGA ();
 
-  
+
   virtual bool Open (const PString &name,
      	             bool start_immediate = TRUE);
 
-  
+
   /**Determine of the device is currently open.
    */
   virtual bool IsOpen() ;
 
-  
+
   /**Close the device.
    */
   virtual bool Close();
 
-  
+
   /**Start the video device I/O.
    */
   virtual bool Start();
 
-  
+
   /**Stop the video device I/O capture.
    */
   virtual bool Stop();
@@ -93,11 +93,11 @@ class PVideoInputDevice_EKIGA : public PVideoInputDevice
    */
   virtual bool IsCapturing();
 
-  
+
   virtual bool SetFrameSize (unsigned int width,
        		             unsigned int height);
-  
-  
+
+
   /* DESCRIPTION  :  The destructor
    * BEHAVIOR     :  /
    * PRE          :  /
@@ -111,42 +111,42 @@ class PVideoInputDevice_EKIGA : public PVideoInputDevice
    */
   virtual bool GetFrameDataNoDelay (BYTE *frame, PINDEX *i = NULL);
 
-  
+
   virtual bool TestAllFormats ();
 
-  
+
   /**Get the maximum frame size in bytes.
   */
   virtual PINDEX GetMaxFrameBytes();
 
-  
+
   /** Given a preset interval of n milliseconds, this function
       returns n msecs after the previous frame capture was initiated.
   */
 //  virtual void WaitFinishPreviousFrame();
 
-  
+
   /**Set the video format to be used.
 
   Default behaviour sets the value of the videoFormat variable and then
   returns the IsOpen() status.
   */
   virtual bool SetVideoFormat (VideoFormat newFormat);
-  
+
   /**Get the number of video channels available on the device.
 
   Default behaviour returns 1.
   */
   virtual int GetNumChannels() ;
 
-  
+
   /**Set the video channel to be used on the device.
 
   Default behaviour sets the value of the channelNumber variable and then
   returns the IsOpen() status.
   */
   virtual bool SetChannel (int newChannel);
-			
+
 
   /**Set the colour format to be used.
 
@@ -155,7 +155,7 @@ class PVideoInputDevice_EKIGA : public PVideoInputDevice
   */
   virtual bool SetColourFormat (const PString &newFormat);
 
-  
+
   /**Set the video frame rate to be used on the device.
 
   Default behaviour sets the value of the frameRate variable and then
@@ -163,24 +163,17 @@ class PVideoInputDevice_EKIGA : public PVideoInputDevice
   */
   virtual bool SetFrameRate (unsigned rate);
 
-  
+
   virtual bool GetFrameSizeLimits (unsigned &minWidth,
 			           unsigned &minHeight,
 			           unsigned &maxWidth,
 			           unsigned &maxHeight);
-  
-  /*virtual bool GetParameters (int *whiteness,
-		              int *brightness,
-		              int *colour,
-		              int *contrast,
-		              int *hue);
-  */
 
   virtual PStringArray GetDeviceNames() const;
 
   static int devices_nbr;
   bool is_active;
-  
+
 protected:
   boost::shared_ptr<Ekiga::VideoInputCore> videoinput_core;
 

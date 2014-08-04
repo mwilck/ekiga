@@ -31,7 +31,7 @@
  *                         --------------------------------
  *   begin                : Mon Feb 12 2001
  *   copyright            : (C) 2000-2006 by Damien Sandras
- *   description          : Video4Linux compliant functions to manipulate the 
+ *   description          : Video4Linux compliant functions to manipulate the
  *                          webcam device.
  *
  */
@@ -94,7 +94,7 @@ PVideoInputDevice_EKIGA::Close ()
   return true;
 }
 
-  
+
 bool
 PVideoInputDevice_EKIGA::Start ()
 {
@@ -110,7 +110,7 @@ PVideoInputDevice_EKIGA::Start ()
   return true;
 }
 
-  
+
 bool
 PVideoInputDevice_EKIGA::Stop ()
 {
@@ -153,7 +153,7 @@ PVideoInputDevice_EKIGA::GetFrameData (BYTE *frame,
   videoinput_core->get_frame_data((char*)frame);
 
   *i = frameWidth * frameHeight * 3 / 2;
- 
+
   return true;
 }
 
@@ -206,10 +206,10 @@ PVideoInputDevice_EKIGA::SetChannel (int /*newChannel*/)
 bool
 PVideoInputDevice_EKIGA::SetColourFormat (const PString &newFormat)
 {
-  if (newFormat == "YUV420P") 
+  if (newFormat == "YUV420P")
     return PVideoDevice::SetColourFormat (newFormat);
 
-  return false;  
+  return false;
 }
 
 
@@ -217,7 +217,7 @@ bool
 PVideoInputDevice_EKIGA::SetFrameRate (unsigned rate)
 {
   PVideoDevice::SetFrameRate (rate);
- 
+
   return true;
 }
 
@@ -235,20 +235,3 @@ PVideoInputDevice_EKIGA::GetFrameSizeLimits (unsigned & minWidth,
 
   return true;
 }
-
-/*
-bool PVideoInputDevice_EKIGA::GetParameters (int *whiteness,
-					       int *brightness,
-					       int *colour,
-					       int *contrast,
-					       int *hue)
-{
-  *whiteness = 0;
-  *brightness = 0;
-  *colour = 0;
-  *contrast = 0;
-  *hue = 0;
-
-  return true;
-}
-*/
