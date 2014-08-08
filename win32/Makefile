@@ -684,7 +684,7 @@ $(GSTPLUGINSBASE_DIR)/config.status: $(SRCDIR)/$(GSTPLUGINSBASE_ARCHIVE) $(LIBDI
 	rm -rf $(GSTPLUGINSBASE_DIR)
 	tar xf $(SRCDIR)/$(GSTPLUGINSBASE_ARCHIVE) -C $(BUILDROOT)
 	# version 1.2.2 compile error with gcc 4.9: https://github.com/mxe/mxe/commit/34cc814
-	sed -i -e 's#libgstaudioresample_la_CFLAGS =#libgstaudioresample_la_CFLAGS =-msse2#g' $(GSTPLUGINBASE_DIR)/gst/audioresample/Makefile.am
+	sed -i -e 's#libgstaudioresample_la_CFLAGS =#libgstaudioresample_la_CFLAGS =-msse2#g' $(GSTPLUGINSBASE_DIR)/gst/audioresample/Makefile.in
 	cd $(GSTPLUGINSBASE_DIR); ./configure $(confflags) --disable-gtk-doc-html
 
 $(LIBDIR)/pkgconfig/gstreamer-plugins-base-1.0.pc: $(GSTPLUGINSBASE_DIR)/config.status
@@ -792,7 +792,7 @@ $(TARGETDIR)/zips: binaries $(EKIGA_DIR)/src/ekiga.exe
 ifeq ($(MINGW32), 1)
 	cd $(EKIGA_PREFIX); cp /usr/share/doc/mingw32-runtime/mingwm10.dll.gz . && gunzip mingwm10.dll.gz
 else
-	cp /usr/lib/gcc/i686-w64-mingw32/4.9-win32/libgcc_s_sjlj-1.dll /usr/lib/gcc/i686-w64-mingw32/4.9-win32/libstdc++-6.dll $(EKIGA_PREFIX)
+	cp /usr/lib/gcc/i686-w64-mingw32/4.9-win32/libgcc_s_sjlj-1.dll /usr/lib/gcc/i686-w64-mingw32/4.9-win32/libstdc++-6.dll /usr/i686-w64-mingw32/lib/libwinpthread-1.dll $(EKIGA_PREFIX)
 endif
 
 ifeq ($(DEBUG),0)
