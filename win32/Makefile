@@ -40,8 +40,8 @@ endif
 endif
 REALCC:=$(HOST_TOOL_PREFIX)-gcc
 REALCXX:=$(HOST_TOOL_PREFIX)-g++
-export CC=$(REALCC) -mms-bitfields -g -O2
-export CXX=$(REALCXX) -mms-bitfields -g -O2
+export CC=$(REALCC) -g -O2
+export CXX=$(REALCXX) -g -O2
 export LD:=$(HOST_TOOL_PREFIX)-ld
 export NM:=$(HOST_TOOL_PREFIX)-nm
 export AR:=$(HOST_TOOL_PREFIX)-ar
@@ -341,7 +341,7 @@ $(INCLUDEDIR)/boost/signals2.hpp: $(SRCDIR)/$(BOOST_ARCHIVE)
 #$(BOOST_DIR)/config.status: $(SRCDIR)/$(BOOST_ARCHIVE)
 #	tar xfz $(SRCDIR)/$(BOOST_ARCHIVE)
 #	# avoid configuring error at -g
-#	cd $(BOOST_DIR); CC="$(REALCC) -mms-bitfields" ./bootstrap.sh --prefix=$(BUILDROOT)
+#	cd $(BOOST_DIR); CC="$(REALCC)" ./bootstrap.sh --prefix=$(BUILDROOT)
 #	touch $@
 #
 #$(LIBDIR)/libboost_signals.dll: $(BOOST_DIR)/config.status
@@ -729,7 +729,7 @@ else
 	cd $(EKIGA_DIR); NOCONFIGURE=1 ./autogen.sh  # generate configure
 endif
 	# until gtk 3.10 bundle works on windows
-	cd $(EKIGA_DIR); patch -p1 <usegtk3.6.patch
+	cd $(EKIGA_DIR); patch -p1 <$(EKIGA_DIR)/win32/usegtk3.6.patch
 	sed -i -e 's/3.10.0/3.6.0/g' $(EKIGA_DIR)/configure
 	touch $@
 
