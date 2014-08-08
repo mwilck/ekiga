@@ -89,30 +89,30 @@ endif
 EKIGA_INSTALLER_DIR := $(EKIGA_DIR)/win32/nsisinstaller
 
 ifeq ($(RELEASE),1)
-	OPAL_VER := 3.10.9
-	OPAL_URL := http://ftp.gnome.org/pub/gnome/sources/opal/3.10
+	OPAL_VER := 3.14.2
+	OPAL_URL := http://ftp.gnome.org/pub/gnome/sources/opal/3.14
 	OPAL_ARCHIVE := opal-$(OPAL_VER).tar.xz
 	OPAL_DIR := $(BUILDROOT)/opal-$(OPAL_VER)
 else
-	OPAL_VER := 3.10-beta12
+	OPAL_VER := 3.14-beta3
 	# OPAL_REV: HEAD or revision number
 	OPAL_REV := HEAD
-	OPAL_URL := svn://svn.code.sf.net/p/opalvoip/code/opal/branches/v3_10
+	OPAL_URL := svn://svn.code.sf.net/p/opalvoip/code/opal/branches/v3_14
 	OPAL_ARCHIVE := opal
 	OPAL_DIR := $(BUILDROOT)/opal
 endif
 OPAL_LIB := libopal.$(OPAL_VER).dll
 
 ifeq ($(RELEASE),1)
-	PTLIB_VER := 2.10.9
-	PTLIB_URL := http://ftp.gnome.org/pub/gnome/sources/ptlib/2.10
+	PTLIB_VER := 2.14.2
+	PTLIB_URL := http://ftp.gnome.org/pub/gnome/sources/ptlib/2.14
 	PTLIB_ARCHIVE := ptlib-$(PTLIB_VER).tar.xz
 	PTLIB_DIR := $(BUILDROOT)/ptlib-$(PTLIB_VER)
 else
-	PTLIB_VER := 2.10-beta12
+	PTLIB_VER := 2.14-beta3
 	# PTLIB_REV: HEAD or revision number
 	PTLIB_REV := HEAD
-	PTLIB_URL := svn://svn.code.sf.net/p/opalvoip/code/ptlib/branches/v2_10
+	PTLIB_URL := svn://svn.code.sf.net/p/opalvoip/code/ptlib/branches/v2_14
 	PTLIB_ARCHIVE := ptlib
 	PTLIB_DIR := $(BUILDROOT)/ptlib
 endif
@@ -161,7 +161,7 @@ LIBAV_URL := http://www.libav.org/releases
 LIBAV_DIR := $(BUILDROOT)/libav-$(LIBAV_VER)
 LIBAV_ARCHIVE := libav-$(LIBAV_VER).tar.xz
 
-X264_VER := 35cf912
+X264_VER := a5831aa
 X264_URL := git://git.videolan.org/x264.git
 X264_DIR := $(BUILDROOT)/x264
 X264_ARCHIVE := x264
@@ -237,8 +237,12 @@ DOC_LINGUAS :=
 
 confflags := --prefix=$(BUILDROOT) --build=$(DEB_BUILD_GNU_TYPE) --host=$(DEB_HOST_GNU_TYPE)
 
+# without --disable-sasl there is a compile error
+# libsasl2.a is found, but sasl.h is not
+# the question is whether we need sasl support or not
+# sasl does not seem to be needed by ptlib
 confptlib := $(confflags) --enable-vfw \
-	--disable-qos --disable-alsa --disable-esd --disable-oss --disable-sunaudio --disable-shmaudio \
+	--disable-sasl --disable-alsa --disable-esd --disable-oss --disable-sunaudio --disable-shmaudio \
 	--disable-v4l --disable-v4l2 --disable-bsdvideo --disable-avc --disable-dc
 ifeq ($(MINGW32), 1)
 confptlib := $(confptlib) --with-directx-includedir=$(EKIGA_DIR)/win32/directx
@@ -406,7 +410,7 @@ else
 	$(SVN) co $(PTLIB_URL) $(SRCDIR)/$(PTLIB_ARCHIVE) -r $(PTLIB_REV)
 endif
 
-$(PTLIB_DIR)/configure: binaries $(LIBDIR)/libldap.dll $(LIBDIR)/libogg.a $(LIBDIR)/libspeex.a $(SRCDIR)/$(PTLIB_ARCHIVE) $(LIBDIR)/libexpat.a
+$(PTLIB_DIR)/configure: binaries $(LIBDIR)/libldap.dll $(LIBDIR)/libogg.a $(LIBDIR)/libspeex.a $(SRCDIR)/$(PTLIB_ARCHIVE) $(LIBDIR)/libexpat.a $(LIBDIR)/libregex.a
 	rm -rf $(PTLIB_DIR) $(LIBDIR)/$(PTLIB_LIB) $(INCLUDEDIR)/ptclib $(INCLUDEDIR)/ptlib
 ifeq ($(RELEASE),1)
 	tar Jxf $(SRCDIR)/$(PTLIB_ARCHIVE) -C $(BUILDROOT)
@@ -415,15 +419,10 @@ else
 endif
 	# regenerate configure, since it might be older than configure.ac
 	cd $(PTLIB_DIR); aclocal && autoconf
-	cd $(PTLIB_DIR)/plugins; aclocal && autoconf
 ifeq ($(MINGW32), 1)
 	# mingw32 wrongly defines DnsSectionAdditional
 	sed -i -e 's#\#include <ntverp.h># #g' $(PTLIB_DIR)/include/ptclib/pdns.h
 	sed -i -e 's#enum { DnsSectionAdditional = DnsSectionAddtional };# #g' $(PTLIB_DIR)/include/ptclib/pdns.h
-endif
-ifeq ($(MINGW32), 0)
-	# fix build error appearing with branch <=v2_10, can be removed for >=v2_12
-	sed -i -e 's#\#if (WINVER <= 0x502)#\#if (WINVER <= 0x400)#g' $(PTLIB_DIR)/src/ptlib/msos/ethsock.cxx
 endif
 	touch $@
 
@@ -432,7 +431,8 @@ $(PTLIB_DIR)/config.status: binaries $(PTLIB_DIR)/configure
 	cd $(PTLIB_DIR); ./configure $(confptlib)
 
 $(LIBDIR)/$(PTLIB_LIB): binaries $(PTLIB_DIR)/config.status
-	$(MAKE) $(MAKEOPTS) VERBOSE=1 -C $(PTLIB_DIR)
+	# use make opt instead of make until ptlib fixes bug where plugins are not built
+	$(MAKE) opt $(MAKEOPTS) VERBOSE=1 -C $(PTLIB_DIR)
 	$(MAKE) -C $(PTLIB_DIR) install
 
 ### libogg
@@ -555,18 +555,31 @@ ifeq ($(RELEASE),1)
 else
 	$(CP) -r $(SRCDIR)/$(OPAL_ARCHIVE) $(OPAL_DIR)
 endif
+	# fix build error with isac
+	sed -i -e 's/#elif (defined(WEBRTC_ARCH_X86) \&\& defined(WIN32))/#elif 0 \&\& (defined(WEBRTC_ARCH_X86) \&\& defined(WIN32))/g' $(OPAL_DIR)/plugins/audio/iSAC/iSAC/os_specific_inline.h
+	# fix build errors with libg722.1
+	##sed -i -e 's#\#\! /bin/sh#\#\! /bin/sh\nLD=#g' $(OPAL_DIR)/plugins/audio/G.722.1/libg722_1/configure
+	###sed -i -e 's#rpl_# #g' $(OPAL_DIR)/plugins/audio/G.722.1/libg722_1/configure
+	###sed -i -e 's#am__api_version='1.13'#am__api_version='1.14'#g' $(OPAL_DIR)/plugins/audio/G.722.1/libg722_1/configure
+	# try also touch aclocal.m4
+	# fix build errors with opus
+	###sed -i -e 's#\#\! /bin/sh#\#\! /bin/sh\nLD=#g' $(OPAL_DIR)/plugins/audio/Opus/opus/configure
 	# regenerate configure, since it might be older than configure.ac
 	cd $(OPAL_DIR); aclocal && autoconf
 	cd $(OPAL_DIR)/plugins; aclocal && autoconf
+	#cd $(OPAL_DIR)/plugins/audio/G.722.1/libg722_1; ./autogen.sh
+	#cd $(OPAL_DIR)/plugins/audio/Opus/opus; aclocal && autoconf
 	touch $@
 
 $(OPAL_DIR)/config.status: binaries $(OPAL_DIR)/configure
 	rm -f $(LIBDIR)/$(OPAL_LIB)
-	cd $(OPAL_DIR); ./configure $(confopal)
+	# g.722.1 gives complex build errors, disable it until it gets fixed
+	cd $(OPAL_DIR); ./configure --disable-g.722.1 $(confopal)
 
 $(LIBDIR)/$(OPAL_LIB): binaries $(OPAL_DIR)/config.status
 	rm -f $(LIBDIR)/$(OPAL_LIB)
-	$(MAKE) $(MAKEOPTS) VERBOSE=1 -C $(OPAL_DIR)
+	# use make opt instead of make until opal fixes bug where plugins are not built
+	$(MAKE) opt $(MAKEOPTS) VERBOSE=1 -C $(OPAL_DIR)
 	$(MAKE) -C $(OPAL_DIR) install
 
 ### gtk bundle
@@ -670,6 +683,8 @@ update-sources::
 $(GSTPLUGINSBASE_DIR)/config.status: $(SRCDIR)/$(GSTPLUGINSBASE_ARCHIVE) $(LIBDIR)/pkgconfig/gstreamer-1.0.pc
 	rm -rf $(GSTPLUGINSBASE_DIR)
 	tar xf $(SRCDIR)/$(GSTPLUGINSBASE_ARCHIVE) -C $(BUILDROOT)
+	# version 1.2.2 compile error with gcc 4.9: https://github.com/mxe/mxe/commit/34cc814
+	sed -i -e 's#libgstaudioresample_la_CFLAGS =#libgstaudioresample_la_CFLAGS =-msse2#g' $(GSTPLUGINBASE_DIR)/gst/audioresample/Makefile.am
 	cd $(GSTPLUGINSBASE_DIR); ./configure $(confflags) --disable-gtk-doc-html
 
 $(LIBDIR)/pkgconfig/gstreamer-plugins-base-1.0.pc: $(GSTPLUGINSBASE_DIR)/config.status
@@ -713,6 +728,9 @@ else
 	$(CP) -r $(SRCDIR)/$(EKIGA_ARCHIVE) $(EKIGA_DIR)
 	cd $(EKIGA_DIR); NOCONFIGURE=1 ./autogen.sh  # generate configure
 endif
+	# until gtk 3.10 bundle works on windows
+	cd $(EKIGA_DIR); patch -p1 <usegtk3.6.patch
+	sed -i -e 's/3.10.0/3.6.0/g' $(EKIGA_DIR)/configure
 	touch $@
 
 $(EKIGA_DIR)/config.status: binaries $(EKIGA_DIR)/configure \
@@ -774,7 +792,7 @@ $(TARGETDIR)/zips: binaries $(EKIGA_DIR)/src/ekiga.exe
 ifeq ($(MINGW32), 1)
 	cd $(EKIGA_PREFIX); cp /usr/share/doc/mingw32-runtime/mingwm10.dll.gz . && gunzip mingwm10.dll.gz
 else
-	cp /usr/lib/gcc/i686-w64-mingw32/4.8/libgcc_s_sjlj-1.dll /usr/lib/gcc/i686-w64-mingw32/4.8/libstdc++-6.dll /usr/i686-w64-mingw32/lib/libwinpthread-1.dll $(EKIGA_PREFIX)
+	cp /usr/lib/gcc/i686-w64-mingw32/4.9-win32/libgcc_s_sjlj-1.dll /usr/lib/gcc/i686-w64-mingw32/4.9-win32/libstdc++-6.dll $(EKIGA_PREFIX)
 endif
 
 ifeq ($(DEBUG),0)
