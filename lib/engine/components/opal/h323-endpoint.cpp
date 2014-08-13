@@ -314,9 +314,12 @@ Opal::H323::EndPoint::Register (const Opal::Account& account)
         case H323Gatekeeper::UnregisteredByGatekeeper:
         case H323Gatekeeper::GatekeeperLostRegistration:
         case H323Gatekeeper::InvalidListener:
+        case H323Gatekeeper::TryingAlternate:
         case H323Gatekeeper::NumRegistrationFailReasons:
+        case H323Gatekeeper::GatekeeperRejectReasonMask:
         case H323Gatekeeper::RegistrationRejectReasonMask:
-        default :
+        case H323Gatekeeper::UnregistrationRejectReasonMask:
+        default:
           info = _("Failed");
           break;
         }

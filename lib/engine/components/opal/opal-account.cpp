@@ -996,9 +996,15 @@ Opal::Account::handle_registration_event (RegistrationState state_,
         call_manager->subscribe (*this, presentity);
         break;
       case SIPRegister::e_HasApplicationLayerGateway:
-        // HasAppLG did not work, stop registration with error
+        // HasAppLG did not work, try next compat mode
+        compat_mode = SIPRegister::e_RFC5626;
+        PTRACE (4, "Register failed in HasApplicationLayerGateway mode, retrying in RFC5626 mode");
+        call_manager->subscribe (*this, presentity);
+        break;
+      case SIPRegister::e_RFC5626:
+        // RFC5626 did not work, stop registration with error
         compat_mode = SIPRegister::e_FullyCompliant;
-        PTRACE (4, "Register failed in HasApplicationLayerGateway mode, aborting registration");
+        PTRACE (4, "Register failed in RFC5626 mode, aborting registration");
         status = _("Could not register");
         if (!info.empty ())
           status = status + " (" + info + ")";
@@ -1012,6 +1018,9 @@ Opal::Account::handle_registration_event (RegistrationState state_,
         }
         updated ();
         failed_registration_already_notified = true;
+        break;
+      case SIPRegister::EndCompatibilityModes:
+        // bookkeeping code, to remove a compile warning
         break;
       default:
 
@@ -1131,6 +1140,7 @@ Opal::Account::OnPresenceChange (OpalPresentity& /*presentity*/,
   case OpalPresenceInfo::InternalError:
   case OpalPresenceInfo::Forbidden:
   case OpalPresenceInfo::Unavailable:
+  case OpalPresenceInfo::UnknownUser:
   //case OpalPresenceInfo::UnknownExtended:
     new_presence = "unknown";
     break;
@@ -1219,6 +1229,11 @@ Opal::Account::OnPresenceChange (OpalPresentity& /*presentity*/,
     new_presence = "away";
     break;
   */
+  case OpalPresenceInfo::EndState:
+  case OpalPresenceInfo::StateCount:
+    // the above two items are bookkeeping code, so do not consider them
+    // shut up the compiler which checks all cases in switch
+    break;
   default:
     break;
   }

@@ -313,7 +313,7 @@ Opal::Call::parse_info (OpalConnection & connection)
 
   if (!PIsDescendant(&connection, OpalPCSSConnection)) {
 
-    remote_uri = (const char *) connection.GetRemotePartyAddress ();
+    remote_uri = (const char *) connection.GetRemotePartyURL ();
 
     l_party_name = (const char *) connection.GetLocalPartyName ();
     r_party_name = (const char *) connection.GetRemotePartyName ();
@@ -483,14 +483,20 @@ Opal::Call::OnCleared ()
     case OpalConnection::EndedByOutOfService:
       reason = _("Service unavailable");  // this appears when 500 does not work
       break;
+    case OpalConnection::EndedByCertificateAuthority:
+      reason = _("Remote certifcate not authenticated");
+      break;
     case OpalConnection::EndedByQ931Cause:
     case OpalConnection::EndedByDurationLimit:
     case OpalConnection::EndedByInvalidConferenceID:
     case OpalConnection::EndedByNoDialTone:
     case OpalConnection::EndedByNoRingBackTone:
     case OpalConnection::EndedByAcceptingCallWaiting:
+    case OpalConnection::EndedByMediaFailed:
+    case OpalConnection::EndedByCallCompletedElsewhere:
+    case OpalConnection::EndedByIllegalAddress:
     case OpalConnection::NumCallEndReasons:
-    default :
+    default:
       reason = _("Call completed");
     }
 

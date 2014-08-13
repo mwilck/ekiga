@@ -142,7 +142,10 @@ Opal::Sip::EndPoint::EndPoint (Opal::CallManager & _manager,
   manager.AddRouteEntry("pc:.* = sip:<da>");
 
   /* NAT Binding */
-  SetNATBindingRefreshMethod (KeepAliveByOPTION);
+  PTimeInterval timeout;
+  KeepAliveType type;
+  GetKeepAlive (timeout, type);
+  SetKeepAlive(timeout, KeepAliveByOPTION);
 
   settings = boost::shared_ptr<Ekiga::Settings> (new Ekiga::Settings (SIP_SCHEMA));
   settings->changed.connect (boost::bind (&EndPoint::setup, this, _1));
@@ -365,7 +368,10 @@ Opal::Sip::EndPoint::set_nat_binding_delay (unsigned delay)
 {
   if (delay > 0) {
     PTRACE (4, "Opal::Sip::EndPoint\tNat binding delay set to " << delay);
-    SetNATBindingTimeout (PTimeInterval (0, delay));
+    PTimeInterval timeout;
+    KeepAliveType type;
+    GetKeepAlive (timeout, type);
+    SetKeepAlive (PTimeInterval (0, delay), type);
   }
 }
 
@@ -373,7 +379,10 @@ Opal::Sip::EndPoint::set_nat_binding_delay (unsigned delay)
 unsigned
 Opal::Sip::EndPoint::get_nat_binding_delay ()
 {
-  return GetNATBindingTimeout ().GetSeconds ();
+  PTimeInterval timeout;
+  KeepAliveType type;
+  GetKeepAlive (timeout, type);
+  return timeout.GetSeconds ();
 }
 
 
@@ -713,9 +722,18 @@ Opal::Sip::EndPoint::OnRegistrationStatus (const RegistrationStatus & status)
       info = _("Globally not acceptable");
       break;
 
+    case SIP_PDU::Local_NotAuthenticated:
+      info = _("Invalid certificates");
+      break;
+
     case SIP_PDU::Failure_TransactionDoesNotExist:
     case SIP_PDU::Failure_Gone:
     case SIP_PDU::MaxStatusCode:
+    case SIP_PDU::Local_NoCompatibleListener:
+    case SIP_PDU::Local_CannotMapScheme:
+    case SIP_PDU::Local_KeepAlive:
+    case SIP_PDU::Local_TransportLost:
+    case SIP_PDU::Failure_UnresolvableDestination:
     default:
       info = _("Failed");
     }
@@ -899,9 +917,11 @@ Opal::Sip::EndPoint::OnDialogInfoReceived (const SIPDialogNotification & info)
     presence = "inacall";
     status = _status;
     break;
-  default:
+  case SIPDialogNotification::EndStates:  // bookkeeping code
+    break;
   case SIPDialogNotification::Trying:
   case SIPDialogNotification::Terminated:
+  default:
     break;
   }
 }
