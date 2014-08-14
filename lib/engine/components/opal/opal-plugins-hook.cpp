@@ -41,18 +41,32 @@
 
 #include "opal-plugins-hook.h"
 
+///////////////////////////////////////////////////////////////////////////////////////////////////////
 // we first declare the three plugin service descriptor classes
+///////////////////////////////////////////////////////////////////////////////////////////////////////
 
-class PSoundChannel_EKIGA_PluginServiceDescriptor : public PDevicePluginServiceDescriptor
+class PSoundChannel_EKIGA_PluginDeviceDescriptor : public PPluginDeviceDescriptor
 {
 public:
 
-  PSoundChannel_EKIGA_PluginServiceDescriptor (Ekiga::ServiceCore& core):
+  PSoundChannel_EKIGA_PluginDeviceDescriptor ()
+  {
+    // FIXME: this is due to opal's PFactory design
+    PAssertAlways("This constructor is not to be called");
+  }
+
+  PSoundChannel_EKIGA_PluginDeviceDescriptor (Ekiga::ServiceCore& core):
     audioinput_core(core.get<Ekiga::AudioInputCore> ("audioinput-core")),
     audiooutput_core(core.get<Ekiga::AudioOutputCore> ("audiooutput-core"))
   {}
 
-  virtual PObject* CreateInstance (int) const
+  const char* GetServiceType () const
+  { return "PSoundChannel"; }
+
+  const char* GetServiceName () const
+  { return "EKIGA"; }
+
+  virtual PObject* CreateInstance (P_INT_PTR) const
   {
     // FIXME: if that happens in a thread, that's bad...
     boost::shared_ptr<Ekiga::AudioInputCore> input = audioinput_core.lock ();
@@ -63,11 +77,11 @@ public:
       return NULL;
   }
 
-  virtual PStringArray GetDeviceNames(int) const
+  virtual PStringArray GetDeviceNames (P_INT_PTR) const
   { return PStringList ("EKIGA"); }
 
   virtual bool ValidateDeviceName (const PString & deviceName,
-				   int) const
+				   P_INT_PTR) const
   { return deviceName.Find ("EKIGA") == 0; }
 
 private:
@@ -75,15 +89,27 @@ private:
   boost::weak_ptr<Ekiga::AudioOutputCore> audiooutput_core;
 };
 
-class PVideoInputDevice_EKIGA_PluginServiceDescriptor : public PDevicePluginServiceDescriptor
+class PVideoInputDevice_EKIGA_PluginDeviceDescriptor : public PPluginDeviceDescriptor
 {
 public:
 
-  PVideoInputDevice_EKIGA_PluginServiceDescriptor (Ekiga::ServiceCore& core):
+  PVideoInputDevice_EKIGA_PluginDeviceDescriptor ()
+  {
+    // FIXME: this is due to opal's PFactory design
+    PAssertAlways("This constructor is not to be called");
+  }
+
+  PVideoInputDevice_EKIGA_PluginDeviceDescriptor (Ekiga::ServiceCore& core):
     videoinput_core(core.get<Ekiga::VideoInputCore> ("videoinput-core"))
   {}
 
-  virtual PObject* CreateInstance (int) const
+  const char* GetServiceType () const
+  { return "PVideoInputDevice"; }
+
+  const char* GetServiceName () const
+  { return "EKIGA"; }
+
+  virtual PObject* CreateInstance (P_INT_PTR) const
   {
     // FIXME: if it happens in a thread, that's bad...
     boost::shared_ptr<Ekiga::VideoInputCore> output = videoinput_core.lock ();
@@ -93,12 +119,11 @@ public:
       return NULL;
   }
 
-
-  virtual PStringArray GetDeviceNames (int) const
+  virtual PStringArray GetDeviceNames (P_INT_PTR) const
   { return PStringList ("EKIGA"); }
 
   virtual bool ValidateDeviceName (const PString & deviceName,
-				   int) const
+				   P_INT_PTR) const
   { return deviceName.Find ("EKIGA") == 0; }
 
 private:
@@ -106,15 +131,27 @@ private:
   boost::weak_ptr<Ekiga::VideoInputCore> videoinput_core;
 };
 
-class PVideoOutputDevice_EKIGA_PluginServiceDescriptor : public PDevicePluginServiceDescriptor
+class PVideoOutputDevice_EKIGA_PluginDeviceDescriptor : public PPluginDeviceDescriptor
 {
 public:
 
-  PVideoOutputDevice_EKIGA_PluginServiceDescriptor (Ekiga::ServiceCore& core):
+  PVideoOutputDevice_EKIGA_PluginDeviceDescriptor ()
+  {
+    // FIXME: this is due to opal's PFactory design
+    PAssertAlways("This constructor is not to be called");
+  }
+
+  PVideoOutputDevice_EKIGA_PluginDeviceDescriptor (Ekiga::ServiceCore& core):
     videooutput_core(core.get<Ekiga::VideoOutputCore> ("videooutput-core"))
   {}
 
-  virtual PObject *CreateInstance (int) const
+  const char* GetServiceType () const
+  { return "PVideoOutputDevice"; }
+
+  const char* GetServiceName () const
+  { return "EKIGA"; }
+
+  virtual PObject *CreateInstance (P_INT_PTR) const
   {
     // FIXME: if it happens in a thread, that's bad...
     boost::shared_ptr<Ekiga::VideoOutputCore> output = videooutput_core.lock ();
@@ -124,11 +161,11 @@ public:
       return NULL;
   }
 
-  virtual PStringArray GetDeviceNames (int) const
+  virtual PStringArray GetDeviceNames (P_INT_PTR) const
   { return PStringList("EKIGA"); }
 
   virtual bool ValidateDeviceName (const PString & deviceName,
-				   int) const
+				   P_INT_PTR) const
   { return deviceName.Find ("EKIGA") == 0; }
 
 private:
@@ -136,25 +173,78 @@ private:
   boost::weak_ptr<Ekiga::VideoOutputCore> videooutput_core;
 };
 
-// now, let's rock :
+///////////////////////////////////////////////////////////////////////////////////////////////////////
+// then we will need workers:
+///////////////////////////////////////////////////////////////////////////////////////////////////////
 
-static boost::shared_ptr<PSoundChannel_EKIGA_PluginServiceDescriptor> audio;
-static boost::shared_ptr<PVideoInputDevice_EKIGA_PluginServiceDescriptor> videoinput;
-static boost::shared_ptr<PVideoOutputDevice_EKIGA_PluginServiceDescriptor> videooutput;
+
+struct opal_audio_worker:
+  public PPluginFactory::Worker<PSoundChannel_EKIGA_PluginDeviceDescriptor>
+{
+  opal_audio_worker (Ekiga::ServiceCore& core_):
+    PPluginFactory::Worker<PSoundChannel_EKIGA_PluginDeviceDescriptor> ("PSoundChannelEKIGA"),
+    core(core_)
+  {}
+
+  PPluginDeviceDescriptor* Create (PPluginFactory::Param_T) const
+  { return new PSoundChannel_EKIGA_PluginDeviceDescriptor (core); }
+
+  Ekiga::ServiceCore& core;
+};
+
+struct opal_videoinput_worker:
+  public PPluginFactory::Worker<PVideoInputDevice_EKIGA_PluginDeviceDescriptor>
+{
+  opal_videoinput_worker (Ekiga::ServiceCore& core_):
+    PPluginFactory::Worker<PVideoInputDevice_EKIGA_PluginDeviceDescriptor> ("PVideoInputDeviceEKIGA"),
+    core(core_)
+  {}
+
+  PPluginDeviceDescriptor* Create (PPluginFactory::Param_T) const
+  { return new PVideoInputDevice_EKIGA_PluginDeviceDescriptor (core); }
+
+  Ekiga::ServiceCore& core;
+};
+
+struct opal_videooutput_worker:
+  PPluginFactory::Worker<PVideoOutputDevice_EKIGA_PluginDeviceDescriptor>
+{
+  opal_videooutput_worker (Ekiga::ServiceCore& core_):
+    PPluginFactory::Worker<PVideoOutputDevice_EKIGA_PluginDeviceDescriptor> ("PVideoOutputDeviceEKIGA"),
+    core(core_)
+  {}
+
+  PPluginDeviceDescriptor* Create (PPluginFactory::Param_T) const
+  { return new PVideoOutputDevice_EKIGA_PluginDeviceDescriptor (core); }
+
+  Ekiga::ServiceCore& core;
+};
+
+///////////////////////////////////////////////////////////////////////////////////////////////////////
+// now, let's rock :
+///////////////////////////////////////////////////////////////////////////////////////////////////////
+
+struct opal_plugins_hook_workers
+{
+  opal_plugins_hook_workers (Ekiga::ServiceCore& core):
+    audio(core),
+    videoinput(core),
+    videooutput(core)
+  {}
+
+  opal_audio_worker audio;
+  opal_videoinput_worker videoinput;
+  opal_videooutput_worker videooutput;
+};
+
+static boost::shared_ptr<opal_plugins_hook_workers> workers;
 
 void
 hook_ekiga_plugins_to_opal (Ekiga::ServiceCore& core)
 {
-  /*
-  audio = boost::shared_ptr<PSoundChannel_EKIGA_PluginServiceDescriptor> (new PSoundChannel_EKIGA_PluginServiceDescriptor (core));
-  videoinput = boost::shared_ptr<PVideoInputDevice_EKIGA_PluginServiceDescriptor> (new PVideoInputDevice_EKIGA_PluginServiceDescriptor (core));
-  videooutput = boost::shared_ptr<PVideoOutputDevice_EKIGA_PluginServiceDescriptor> (new PVideoOutputDevice_EKIGA_PluginServiceDescriptor (core));
+  workers = boost::shared_ptr<opal_plugins_hook_workers> (new opal_plugins_hook_workers (core));
 
-  PPluginManager::GetPluginManager().RegisterService ("EKIGA", "PSoundChannel",
-						      audio.get ());
-  PPluginManager::GetPluginManager().RegisterService ("EKIGA", "PVideoInputDevice",
-						      videoinput.get ());
-  PPluginManager::GetPluginManager().RegisterService ("EKIGA", "PVideoOutputDevice",
-						      videooutput.get ());
-  */
+  PPluginManager::GetPluginManager().RegisterService ("PSoundChannelEKIGA");
+  PPluginManager::GetPluginManager().RegisterService ("PVideoInputDeviceEKIGA");
+  PPluginManager::GetPluginManager().RegisterService ("PVideoOutputDeviceEKIGA");
 }
