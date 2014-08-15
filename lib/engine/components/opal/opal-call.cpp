@@ -484,7 +484,7 @@ Opal::Call::OnCleared ()
       reason = _("Service unavailable");  // this appears when 500 does not work
       break;
     case OpalConnection::EndedByCertificateAuthority:
-      reason = _("Remote certifcate not authenticated");
+      reason = _("Remote certificate not authenticated");
       break;
     case OpalConnection::EndedByQ931Cause:
     case OpalConnection::EndedByDurationLimit:
