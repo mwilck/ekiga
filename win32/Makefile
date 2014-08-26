@@ -241,9 +241,7 @@ confflags := --prefix=$(BUILDROOT) --build=$(DEB_BUILD_GNU_TYPE) --host=$(DEB_HO
 # libsasl2.a is found, but sasl.h is not
 # the question is whether we need sasl support or not
 # sasl does not seem to be needed by ptlib
-confptlib := $(confflags) --enable-vfw \
-	--disable-sasl --disable-alsa --disable-esd --disable-oss --disable-sunaudio --disable-shmaudio \
-	--disable-v4l --disable-v4l2 --disable-bsdvideo --disable-avc --disable-dc
+confptlib := $(confflags) --enable-vfw --disable-sasl
 ifeq ($(MINGW32), 1)
 confptlib := $(confptlib) --with-directx-includedir=$(EKIGA_DIR)/win32/directx
 endif
