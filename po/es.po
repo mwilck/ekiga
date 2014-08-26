@@ -19,8 +19,8 @@ msgstr ""
 "Project-Id-Version: ekiga.master\n"
 "Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?"
 "product=ekiga&keywords=I18N+L10N&component=general\n"
-"POT-Creation-Date: 2014-06-30 03:14+0000\n"
-"PO-Revision-Date: 2014-06-30 12:28+0200\n"
+"POT-Creation-Date: 2014-08-26 15:15+0000\n"
+"PO-Revision-Date: 2014-08-26 17:52+0200\n"
 "Last-Translator: Daniel Mustieles <daniel.mustieles@gmail.com>\n"
 "Language-Team: Español; Castellano <gnome-es-list@gnome.org>\n"
 "Language: \n"
@@ -79,7 +79,6 @@ msgid "Missed"
 msgstr "Perdidas"
 
 #: ../lib/engine/components/foe-list/foe-list.cpp:67
-#| msgid "Add to local roster"
 msgid "Add to blacklist"
 msgstr "Añadir a la lista negra"
 
@@ -114,7 +113,7 @@ msgid "Contacts"
 msgstr "Contactos"
 
 #: ../lib/engine/components/local-roster/local-heap.cpp:125
-#: ../lib/engine/components/opal/opal-account.cpp:1294
+#: ../lib/engine/components/opal/opal-account.cpp:1291
 msgid "Rename"
 msgstr "Renombrar"
 
@@ -186,7 +185,7 @@ msgstr ""
 #: ../lib/engine/components/local-roster/local-presentity.cpp:279
 #: ../lib/engine/components/opal/opal-account.cpp:647
 #: ../lib/engine/components/opal/opal-account.cpp:781
-#: ../lib/engine/components/opal/opal-account.cpp:1307
+#: ../lib/engine/components/opal/opal-account.cpp:1304
 #: ../lib/engine/components/opal/opal-presentity.cpp:267
 #: ../plugins/evolution/evolution-contact.cpp:324
 #: ../plugins/loudmouth/loudmouth-account.cpp:342
@@ -247,12 +246,12 @@ msgid "You already have a contact with this address!"
 msgstr "Ya tiene un contacto con esa dirección."
 
 #: ../lib/engine/components/local-roster/local-heap.cpp:431
-#: ../lib/engine/components/opal/opal-account.cpp:1305
+#: ../lib/engine/components/opal/opal-account.cpp:1302
 msgid "Rename group"
 msgstr "Renombrar grupo"
 
 #: ../lib/engine/components/local-roster/local-heap.cpp:432
-#: ../lib/engine/components/opal/opal-account.cpp:1306
+#: ../lib/engine/components/opal/opal-account.cpp:1303
 msgid "Please edit this group name"
 msgstr "Edite el nombre del grupo"
 
@@ -317,13 +316,13 @@ msgid "Choose groups:"
 msgstr "Elija los grupos:"
 
 #: ../lib/engine/components/opal/h323-endpoint.cpp:119
-#: ../lib/engine/components/opal/opal-call.cpp:691
-#: ../lib/engine/components/opal/sip-endpoint.cpp:183
+#: ../lib/engine/components/opal/opal-call.cpp:694
+#: ../lib/engine/components/opal/sip-endpoint.cpp:186
 msgid "Call"
 msgstr "Llamada"
 
 #: ../lib/engine/components/opal/h323-endpoint.cpp:122
-#: ../lib/engine/components/opal/sip-endpoint.cpp:186
+#: ../lib/engine/components/opal/sip-endpoint.cpp:189
 #: ../lib/engine/gui/gtk-frontend/call-window.cpp:1980
 msgid "Transfer"
 msgstr "Desviar"
@@ -338,13 +337,13 @@ msgid "Bad username/password"
 msgstr "Nombre de usuario/contraseña incorrecto"
 
 #: ../lib/engine/components/opal/h323-endpoint.cpp:309
-#: ../lib/engine/components/opal/sip-endpoint.cpp:514
+#: ../lib/engine/components/opal/sip-endpoint.cpp:516
 msgid "Transport error"
 msgstr "Error en el transporte"
 
-#: ../lib/engine/components/opal/h323-endpoint.cpp:320
-#: ../lib/engine/components/opal/h323-endpoint.cpp:325
-#: ../lib/engine/components/opal/sip-endpoint.cpp:727
+#: ../lib/engine/components/opal/h323-endpoint.cpp:323
+#: ../lib/engine/components/opal/h323-endpoint.cpp:328
+#: ../lib/engine/components/opal/sip-endpoint.cpp:738
 msgid "Failed"
 msgstr "Falló"
 
@@ -352,7 +351,7 @@ msgstr "Falló"
 #. "(you are) unregistered", and not as "(you have been) unregistered"
 #: ../lib/engine/components/opal/opal-account.cpp:159
 #: ../lib/engine/components/opal/opal-account.cpp:468
-#: ../lib/engine/components/opal/opal-account.cpp:954
+#: ../lib/engine/components/opal/opal-account.cpp:946
 msgid "Unregistered"
 msgstr "No registrado"
 
@@ -367,7 +366,7 @@ msgstr[0] "%s (con %d mensaje de voz)"
 msgstr[1] "%s (con %d mensajes de voz)"
 
 #: ../lib/engine/components/opal/opal-account.cpp:434
-#: ../lib/engine/components/opal/opal-account.cpp:1036
+#: ../lib/engine/components/opal/opal-account.cpp:1037
 msgid "Processing..."
 msgstr "Procesando…"
 
@@ -539,85 +538,29 @@ msgstr ""
 
 #. Translators: this is a state, not an action, i.e. it should be read as
 #. "(you are) registered", and not as "(you have been) registered"
-#: ../lib/engine/components/opal/opal-account.cpp:927
+#: ../lib/engine/components/opal/opal-account.cpp:919
 msgid "Registered"
 msgstr "Registrado"
 
-#: ../lib/engine/components/opal/opal-account.cpp:968
+#: ../lib/engine/components/opal/opal-account.cpp:960
 msgid "Could not unregister"
 msgstr "No se pudo eliminar el registro"
 
-#: ../lib/engine/components/opal/opal-account.cpp:980
-#: ../lib/engine/components/opal/opal-account.cpp:1015
+#: ../lib/engine/components/opal/opal-account.cpp:972
+#: ../lib/engine/components/opal/opal-account.cpp:1013
 msgid "Could not register to "
 msgstr "No se pudo registrar con "
 
-#: ../lib/engine/components/opal/opal-account.cpp:981
-#: ../lib/engine/components/opal/opal-account.cpp:1016
+#: ../lib/engine/components/opal/opal-account.cpp:973
+#: ../lib/engine/components/opal/opal-account.cpp:1014
 #: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:600
 #: ../plugins/loudmouth/loudmouth-account.cpp:443
 msgid "Edit"
 msgstr "Editar"
 
-#: ../lib/engine/components/opal/opal-account.cpp:1010
+#: ../lib/engine/components/opal/opal-account.cpp:1008
 msgid "Could not register"
 msgstr "No se pudo registrar"
-
-#: ../lib/engine/components/opal/opal-account.cpp:1161
-msgid "Appointment"
-msgstr "Cita"
-
-#: ../lib/engine/components/opal/opal-account.cpp:1166
-msgid "Breakfast"
-msgstr "Desayunando"
-
-#: ../lib/engine/components/opal/opal-account.cpp:1171
-msgid "Dinner"
-msgstr "Cenando"
-
-#: ../lib/engine/components/opal/opal-account.cpp:1177
-msgid "Holiday"
-msgstr "Festivo"
-
-#: ../lib/engine/components/opal/opal-account.cpp:1182
-msgid "In transit"
-msgstr "En tránsito"
-
-#: ../lib/engine/components/opal/opal-account.cpp:1187
-msgid "Looking for work"
-msgstr "Buscando trabajo"
-
-#: ../lib/engine/components/opal/opal-account.cpp:1192
-msgid "Lunch"
-msgstr "Almorzando"
-
-#: ../lib/engine/components/opal/opal-account.cpp:1197
-msgid "Meal"
-msgstr "Comiendo"
-
-#: ../lib/engine/components/opal/opal-account.cpp:1202
-msgid "Meeting"
-msgstr "Reunión"
-
-#: ../lib/engine/components/opal/opal-account.cpp:1207
-msgid "On the phone"
-msgstr "Al teléfono"
-
-#: ../lib/engine/components/opal/opal-account.cpp:1212
-msgid "Playing"
-msgstr "Jugando"
-
-#: ../lib/engine/components/opal/opal-account.cpp:1217
-msgid "Shopping"
-msgstr "Comprando"
-
-#: ../lib/engine/components/opal/opal-account.cpp:1222
-msgid "Sleeping"
-msgstr "Durmiendo"
-
-#: ../lib/engine/components/opal/opal-account.cpp:1227
-msgid "Working"
-msgstr "Trabajando"
 
 #: ../lib/engine/components/opal/opal-bank.cpp:125
 msgid "_Add an Ekiga.net Account"
@@ -689,107 +632,112 @@ msgstr "Servidor de _registro:"
 msgid "_Authentication user:"
 msgstr "Usuario para _autenticación:"
 
-#: ../lib/engine/components/opal/opal-call.cpp:419
+#: ../lib/engine/components/opal/opal-call.cpp:416
 msgid "Local user cleared the call"
 msgstr "El usuario local ha colgado"
 
+#: ../lib/engine/components/opal/opal-call.cpp:419
 #: ../lib/engine/components/opal/opal-call.cpp:422
-#: ../lib/engine/components/opal/opal-call.cpp:425
 msgid "Local user rejected the call"
 msgstr "El usuario local rechazó la llamada"
 
-#: ../lib/engine/components/opal/opal-call.cpp:428
+#: ../lib/engine/components/opal/opal-call.cpp:425
 msgid "Remote user cleared the call"
 msgstr "El usuario remoto ha colgado"
 
-#: ../lib/engine/components/opal/opal-call.cpp:431
+#: ../lib/engine/components/opal/opal-call.cpp:428
 msgid "Remote user rejected the call"
 msgstr "El usuario remoto rechazó la llamada"
 
-#: ../lib/engine/components/opal/opal-call.cpp:434
+#: ../lib/engine/components/opal/opal-call.cpp:431
 msgid "Remote user has stopped calling"
 msgstr "El usuario remoto ha dejado de llamar"
 
-#: ../lib/engine/components/opal/opal-call.cpp:437
+#: ../lib/engine/components/opal/opal-call.cpp:434
 msgid "Abnormal call termination"
 msgstr "Terminación anormal de la llamada"
 
-#: ../lib/engine/components/opal/opal-call.cpp:440
+#: ../lib/engine/components/opal/opal-call.cpp:437
 #: ../lib/engine/gui/gtk-frontend/main_window.cpp:420
 msgid "Could not connect to remote host"
 msgstr "No se pudo conectar con el equipo remoto"
 
-#: ../lib/engine/components/opal/opal-call.cpp:444
+#: ../lib/engine/components/opal/opal-call.cpp:441
 msgid "The Gatekeeper cleared the call"
 msgstr "El gatekeeper colgó la llamada"
 
-#: ../lib/engine/components/opal/opal-call.cpp:447
+#: ../lib/engine/components/opal/opal-call.cpp:444
 msgid "User not found"
 msgstr "Usuario no encontrado"
 
-#: ../lib/engine/components/opal/opal-call.cpp:450
+#: ../lib/engine/components/opal/opal-call.cpp:447
 msgid "Insufficient bandwidth"
 msgstr "Ancho de banda insuficiente"
 
-#: ../lib/engine/components/opal/opal-call.cpp:453
+#: ../lib/engine/components/opal/opal-call.cpp:450
 msgid "No common codec"
 msgstr "No hay códec común"
 
-#: ../lib/engine/components/opal/opal-call.cpp:456
+#: ../lib/engine/components/opal/opal-call.cpp:453
 msgid "Call forwarded"
 msgstr "Llamada desviada"
 
-#: ../lib/engine/components/opal/opal-call.cpp:459
+#: ../lib/engine/components/opal/opal-call.cpp:456
 msgid "Security check failed"
 msgstr "Falló la comprobación de seguridad"
 
-#: ../lib/engine/components/opal/opal-call.cpp:462
+#: ../lib/engine/components/opal/opal-call.cpp:459
 msgid "Local user is busy"
 msgstr "El usuario local está ocupado"
 
-#: ../lib/engine/components/opal/opal-call.cpp:465
-#: ../lib/engine/components/opal/opal-call.cpp:471
+#: ../lib/engine/components/opal/opal-call.cpp:462
+#: ../lib/engine/components/opal/opal-call.cpp:468
 msgid "Congested link to remote party"
 msgstr "Línea congestionada hacia el usuario remoto"
 
-#: ../lib/engine/components/opal/opal-call.cpp:468
+#: ../lib/engine/components/opal/opal-call.cpp:465
 msgid "Remote user is busy"
 msgstr "El usuario remoto está ocupado"
 
-#: ../lib/engine/components/opal/opal-call.cpp:474
+#: ../lib/engine/components/opal/opal-call.cpp:471
 msgid "Remote host is offline"
 msgstr "El equipo remoto no está en línea"
 
-#: ../lib/engine/components/opal/opal-call.cpp:477
+#: ../lib/engine/components/opal/opal-call.cpp:474
 msgid "User is offline"
 msgstr "El usuario está desconectado"
 
-#: ../lib/engine/components/opal/opal-call.cpp:480
+#: ../lib/engine/components/opal/opal-call.cpp:477
 msgid "Remote host not found"
 msgstr "Equipo remoto no encontrado"
 
-#: ../lib/engine/components/opal/opal-call.cpp:484
+#: ../lib/engine/components/opal/opal-call.cpp:481
 msgid "User is not available"
 msgstr "El usuario no está disponible"
 
-#: ../lib/engine/components/opal/opal-call.cpp:487
-#: ../lib/engine/components/opal/sip-endpoint.cpp:692
+#: ../lib/engine/components/opal/opal-call.cpp:484
+#: ../lib/engine/components/opal/sip-endpoint.cpp:694
 msgid "Service unavailable"
 msgstr "Servicio no disponible"
 
-#: ../lib/engine/components/opal/opal-call.cpp:497
+#: ../lib/engine/components/opal/opal-call.cpp:487
+#| msgid "Could not authenticate"
+msgid "Remote certificate not authenticated"
+msgstr "Certificado remoto no autenticado"
+
+#: ../lib/engine/components/opal/opal-call.cpp:500
 msgid "Call completed"
 msgstr "Llamada concluida"
 
-#: ../lib/engine/components/opal/opal-call.cpp:688
+#: ../lib/engine/components/opal/opal-call.cpp:691
 msgid "Missed call from"
 msgstr "Llamada perdida de"
 
-#: ../lib/engine/components/opal/opal-call.cpp:690
+#: ../lib/engine/components/opal/opal-call.cpp:693
 msgid "Missed call"
 msgstr "Llamada perdida"
 
-#: ../lib/engine/components/opal/opal-call-manager.cpp:934
+#: ../lib/engine/components/opal/opal-call-manager.cpp:937
 msgid ""
 "Ekiga did not manage to configure your network settings automatically. You "
 "can still use it, but you need to configure your network settings manually.\n"
@@ -804,104 +752,104 @@ msgstr ""
 "Consulte http://wiki.ekiga.org/index.php/Enable_port_forwarding_manually "
 "para obtener instrucciones."
 
-#: ../lib/engine/components/opal/sip-endpoint.cpp:188
+#: ../lib/engine/components/opal/sip-endpoint.cpp:191
 msgid "Message"
 msgstr "Mensaje"
 
-#: ../lib/engine/components/opal/sip-endpoint.cpp:510
+#: ../lib/engine/components/opal/sip-endpoint.cpp:512
 msgid "Illegal status code"
 msgstr "Código de estado ilegal"
 
-#: ../lib/engine/components/opal/sip-endpoint.cpp:518
+#: ../lib/engine/components/opal/sip-endpoint.cpp:520
 msgid "Invalid address"
 msgstr "Dirección no válida"
 
 #. Translators: Host of the remote party is offline, this should
 #. * appear when the remote host does not reply in an acceptable time
-#: ../lib/engine/components/opal/sip-endpoint.cpp:524
+#: ../lib/engine/components/opal/sip-endpoint.cpp:526
 msgid "Remote party host is offline"
 msgstr "El equipo remoto no está en línea"
 
 #. Translators: the following strings are answers from the SIP server
 #. * when the packet it receives has an error, see
 #. * http://www.ietf.org/rfc/rfc3261.txt, chapter 21 for more information
-#: ../lib/engine/components/opal/sip-endpoint.cpp:540
+#: ../lib/engine/components/opal/sip-endpoint.cpp:542
 msgid "Multiple choices"
 msgstr "Múltiples opciones"
 
-#: ../lib/engine/components/opal/sip-endpoint.cpp:544
+#: ../lib/engine/components/opal/sip-endpoint.cpp:546
 msgid "Moved permanently"
 msgstr "Movido permanentemente"
 
-#: ../lib/engine/components/opal/sip-endpoint.cpp:548
+#: ../lib/engine/components/opal/sip-endpoint.cpp:550
 msgid "Moved temporarily"
 msgstr "Movido temporalmente"
 
-#: ../lib/engine/components/opal/sip-endpoint.cpp:552
+#: ../lib/engine/components/opal/sip-endpoint.cpp:554
 msgid "Use proxy"
 msgstr "Usar proxy"
 
-#: ../lib/engine/components/opal/sip-endpoint.cpp:556
+#: ../lib/engine/components/opal/sip-endpoint.cpp:558
 msgid "Alternative service"
 msgstr "Servicio alternativo"
 
-#: ../lib/engine/components/opal/sip-endpoint.cpp:560
+#: ../lib/engine/components/opal/sip-endpoint.cpp:562
 msgid "Bad request"
 msgstr "Solicitud errónea"
 
-#: ../lib/engine/components/opal/sip-endpoint.cpp:564
+#: ../lib/engine/components/opal/sip-endpoint.cpp:566
 msgid "Unauthorized"
 msgstr "No autorizado"
 
-#: ../lib/engine/components/opal/sip-endpoint.cpp:568
+#: ../lib/engine/components/opal/sip-endpoint.cpp:570
 msgid "Payment required"
 msgstr "Pago requerido"
 
-#: ../lib/engine/components/opal/sip-endpoint.cpp:572
+#: ../lib/engine/components/opal/sip-endpoint.cpp:574
 msgid "Forbidden, please check that username and password are correct"
 msgstr "Denegado, compruebe que el usuario y la contraseña son correctos"
 
-#: ../lib/engine/components/opal/sip-endpoint.cpp:576
+#: ../lib/engine/components/opal/sip-endpoint.cpp:578
 msgid "Not found"
 msgstr "No encontrado"
 
-#: ../lib/engine/components/opal/sip-endpoint.cpp:580
+#: ../lib/engine/components/opal/sip-endpoint.cpp:582
 msgid "Method not allowed"
 msgstr "Método no permitido"
 
-#: ../lib/engine/components/opal/sip-endpoint.cpp:584
+#: ../lib/engine/components/opal/sip-endpoint.cpp:586
 msgid "Not acceptable"
 msgstr "No aceptable"
 
-#: ../lib/engine/components/opal/sip-endpoint.cpp:588
+#: ../lib/engine/components/opal/sip-endpoint.cpp:590
 msgid "Proxy authentication required"
 msgstr "El proxy requiere autenticación"
 
-#: ../lib/engine/components/opal/sip-endpoint.cpp:592
+#: ../lib/engine/components/opal/sip-endpoint.cpp:594
 msgid "Timeout"
 msgstr "Retardo"
 
-#: ../lib/engine/components/opal/sip-endpoint.cpp:596
+#: ../lib/engine/components/opal/sip-endpoint.cpp:598
 msgid "Conflict"
 msgstr "Conflicto"
 
-#: ../lib/engine/components/opal/sip-endpoint.cpp:600
+#: ../lib/engine/components/opal/sip-endpoint.cpp:602
 msgid "Length required"
 msgstr "Longitud requerida"
 
-#: ../lib/engine/components/opal/sip-endpoint.cpp:604
+#: ../lib/engine/components/opal/sip-endpoint.cpp:606
 msgid "Request entity too big"
 msgstr "La entidad solicitada es demasiado grande"
 
-#: ../lib/engine/components/opal/sip-endpoint.cpp:608
+#: ../lib/engine/components/opal/sip-endpoint.cpp:610
 msgid "Request URI too long"
 msgstr "El URI solicitado es demasiado largo"
 
-#: ../lib/engine/components/opal/sip-endpoint.cpp:612
+#: ../lib/engine/components/opal/sip-endpoint.cpp:614
 msgid "Unsupported media type"
 msgstr "No se soporta el tipo de medio"
 
-#: ../lib/engine/components/opal/sip-endpoint.cpp:616
+#: ../lib/engine/components/opal/sip-endpoint.cpp:618
 msgid "Unsupported URI scheme"
 msgstr "No se soporta el esquema URI"
 
@@ -909,128 +857,133 @@ msgstr "No se soporta el esquema URI"
 #. * Here extension is a specific "phone number", see
 #. * http://en.wikipedia.org/wiki/Extension_(telephone)
 #. * for more information
-#: ../lib/engine/components/opal/sip-endpoint.cpp:624
+#: ../lib/engine/components/opal/sip-endpoint.cpp:626
 msgid "Bad extension"
 msgstr "Extensión errónea"
 
-#: ../lib/engine/components/opal/sip-endpoint.cpp:628
+#: ../lib/engine/components/opal/sip-endpoint.cpp:630
 msgid "Extension required"
 msgstr "Extensión requerida"
 
-#: ../lib/engine/components/opal/sip-endpoint.cpp:632
+#: ../lib/engine/components/opal/sip-endpoint.cpp:634
 msgid "Interval too brief"
 msgstr "Intervalo demasiado corto"
 
-#: ../lib/engine/components/opal/sip-endpoint.cpp:636
+#: ../lib/engine/components/opal/sip-endpoint.cpp:638
 msgid "Temporarily unavailable"
 msgstr "Temporalmente no disponible"
 
-#: ../lib/engine/components/opal/sip-endpoint.cpp:640
+#: ../lib/engine/components/opal/sip-endpoint.cpp:642
 msgid "Loop detected"
 msgstr "Bucle detectado"
 
-#: ../lib/engine/components/opal/sip-endpoint.cpp:644
+#: ../lib/engine/components/opal/sip-endpoint.cpp:646
 msgid "Too many hops"
 msgstr "Demasiados saltos"
 
-#: ../lib/engine/components/opal/sip-endpoint.cpp:648
+#: ../lib/engine/components/opal/sip-endpoint.cpp:650
 msgid "Address incomplete"
 msgstr "Dirección incompleta"
 
-#: ../lib/engine/components/opal/sip-endpoint.cpp:652
+#: ../lib/engine/components/opal/sip-endpoint.cpp:654
 msgid "Ambiguous"
 msgstr "Ambiguo"
 
-#: ../lib/engine/components/opal/sip-endpoint.cpp:656
+#: ../lib/engine/components/opal/sip-endpoint.cpp:658
 msgid "Busy Here"
 msgstr "Ocupado aquí"
 
-#: ../lib/engine/components/opal/sip-endpoint.cpp:660
+#: ../lib/engine/components/opal/sip-endpoint.cpp:662
 msgid "Request terminated"
 msgstr "Petición terminada"
 
-#: ../lib/engine/components/opal/sip-endpoint.cpp:664
+#: ../lib/engine/components/opal/sip-endpoint.cpp:666
 msgid "Not acceptable here"
 msgstr "No es aceptable aquí"
 
-#: ../lib/engine/components/opal/sip-endpoint.cpp:668
+#: ../lib/engine/components/opal/sip-endpoint.cpp:670
 msgid "Bad event"
 msgstr "Evento erróneo"
 
-#: ../lib/engine/components/opal/sip-endpoint.cpp:672
+#: ../lib/engine/components/opal/sip-endpoint.cpp:674
 msgid "Request pending"
 msgstr "Solicitud en espera"
 
-#: ../lib/engine/components/opal/sip-endpoint.cpp:676
+#: ../lib/engine/components/opal/sip-endpoint.cpp:678
 msgid "Undecipherable"
 msgstr "Indescifrable"
 
-#: ../lib/engine/components/opal/sip-endpoint.cpp:680
+#: ../lib/engine/components/opal/sip-endpoint.cpp:682
 msgid "Internal server error"
 msgstr "Error interno del servidor"
 
-#: ../lib/engine/components/opal/sip-endpoint.cpp:684
+#: ../lib/engine/components/opal/sip-endpoint.cpp:686
 msgid "Not implemented"
 msgstr "No implementado"
 
-#: ../lib/engine/components/opal/sip-endpoint.cpp:688
+#: ../lib/engine/components/opal/sip-endpoint.cpp:690
 msgid "Bad gateway"
 msgstr "Pasarela errónea"
 
-#: ../lib/engine/components/opal/sip-endpoint.cpp:696
+#: ../lib/engine/components/opal/sip-endpoint.cpp:698
 msgid "Server timeout"
 msgstr "Expiró el tiempo de conexión del servidor"
 
-#: ../lib/engine/components/opal/sip-endpoint.cpp:700
+#: ../lib/engine/components/opal/sip-endpoint.cpp:702
 msgid "SIP version not supported"
 msgstr "La versión SIP no está soportada"
 
-#: ../lib/engine/components/opal/sip-endpoint.cpp:704
+#: ../lib/engine/components/opal/sip-endpoint.cpp:706
 msgid "Message too large"
 msgstr "El mensaje es demasiado largo"
 
-#: ../lib/engine/components/opal/sip-endpoint.cpp:708
+#: ../lib/engine/components/opal/sip-endpoint.cpp:710
 msgid "Busy everywhere"
 msgstr "Ocupado en todas partes"
 
-#: ../lib/engine/components/opal/sip-endpoint.cpp:712
+#: ../lib/engine/components/opal/sip-endpoint.cpp:714
 msgid "Decline"
 msgstr "Declinar"
 
-#: ../lib/engine/components/opal/sip-endpoint.cpp:716
+#: ../lib/engine/components/opal/sip-endpoint.cpp:718
 msgid "Does not exist anymore"
 msgstr "Ya no existe"
 
-#: ../lib/engine/components/opal/sip-endpoint.cpp:720
+#: ../lib/engine/components/opal/sip-endpoint.cpp:722
 msgid "Globally not acceptable"
 msgstr "No aceptable globalmente"
 
-#: ../lib/engine/components/opal/sip-endpoint.cpp:847
+#: ../lib/engine/components/opal/sip-endpoint.cpp:726
+#| msgid "Invalid address"
+msgid "Invalid certificates"
+msgstr "Certificados no válidos"
+
+#: ../lib/engine/components/opal/sip-endpoint.cpp:857
 msgid "Could not send message: "
 msgstr "No se pudo enviar el mensaje: "
 
-#: ../lib/engine/components/opal/sip-endpoint.cpp:849
+#: ../lib/engine/components/opal/sip-endpoint.cpp:859
 msgid "user offline"
 msgstr "usuario desconectado"
 
 #. Ignore
-#: ../lib/engine/components/opal/sip-endpoint.cpp:896
+#: ../lib/engine/components/opal/sip-endpoint.cpp:906
 #: ../plugins/libnotify/libnotify-main.cpp:273
 #, c-format
 msgid "Incoming call from %s"
 msgstr "Llamada entrante de %s"
 
-#: ../lib/engine/components/opal/sip-endpoint.cpp:898
+#: ../lib/engine/components/opal/sip-endpoint.cpp:908
 #, c-format
 msgid "Incoming call"
 msgstr "Llamada entrante"
 
-#: ../lib/engine/components/opal/sip-endpoint.cpp:904
+#: ../lib/engine/components/opal/sip-endpoint.cpp:914
 #, c-format
 msgid "In a call with %s"
 msgstr "En una llamada con %s"
 
-#: ../lib/engine/components/opal/sip-endpoint.cpp:906
+#: ../lib/engine/components/opal/sip-endpoint.cpp:916
 #, c-format
 msgid "In a call"
 msgstr "En una llamada"
@@ -1671,30 +1624,26 @@ msgstr "Ventana de charla"
 
 #: ../lib/engine/gui/gtk-frontend/heap-view.cpp:284
 #: ../lib/engine/gui/gtk-frontend/heap-view.cpp:339
-#: ../lib/engine/gui/gtk-frontend/roster-view-gtk.cpp:1030
-#: ../lib/engine/gui/gtk-frontend/roster-view-gtk.cpp:1134
+#: ../lib/engine/gui/gtk-frontend/roster-view-gtk.cpp:1029
+#: ../lib/engine/gui/gtk-frontend/roster-view-gtk.cpp:1122
 msgid "Unsorted"
 msgstr "Sin ordenar"
 
 #: ../lib/engine/gui/gtk-frontend/heap-view.cpp:302
-#: ../lib/engine/gui/gtk-frontend/roster-view-gtk.cpp:1083
 #: ../lib/engine/gui/gtk-frontend/statusmenu.cpp:91
 msgid "Away"
 msgstr "Fuera"
 
 #: ../lib/engine/gui/gtk-frontend/heap-view.cpp:304
-#: ../lib/engine/gui/gtk-frontend/roster-view-gtk.cpp:1085
 #: ../lib/engine/gui/gtk-frontend/statusmenu.cpp:90
 msgid "Available"
 msgstr "Disponible"
 
 #: ../lib/engine/gui/gtk-frontend/heap-view.cpp:306
-#: ../lib/engine/gui/gtk-frontend/roster-view-gtk.cpp:1087
 msgid "Offline"
 msgstr "Desconectado"
 
 #: ../lib/engine/gui/gtk-frontend/heap-view.cpp:308
-#: ../lib/engine/gui/gtk-frontend/roster-view-gtk.cpp:1089
 #: ../lib/engine/gui/gtk-frontend/statusmenu.cpp:92
 msgid "Busy"
 msgstr "Ocupado"
@@ -3692,6 +3641,48 @@ msgstr "Imprime mensajes de depuración en la consola (nivel entre 1 y 8)"
 #: ../src/main.cpp:133
 msgid "Makes Ekiga call the given URI"
 msgstr "Hace que Ekiga llame al URI dado"
+
+#~ msgid "Appointment"
+#~ msgstr "Cita"
+
+#~ msgid "Breakfast"
+#~ msgstr "Desayunando"
+
+#~ msgid "Dinner"
+#~ msgstr "Cenando"
+
+#~ msgid "Holiday"
+#~ msgstr "Festivo"
+
+#~ msgid "In transit"
+#~ msgstr "En tránsito"
+
+#~ msgid "Looking for work"
+#~ msgstr "Buscando trabajo"
+
+#~ msgid "Lunch"
+#~ msgstr "Almorzando"
+
+#~ msgid "Meal"
+#~ msgstr "Comiendo"
+
+#~ msgid "Meeting"
+#~ msgstr "Reunión"
+
+#~ msgid "On the phone"
+#~ msgstr "Al teléfono"
+
+#~ msgid "Playing"
+#~ msgstr "Jugando"
+
+#~ msgid "Shopping"
+#~ msgstr "Comprando"
+
+#~ msgid "Sleeping"
+#~ msgstr "Durmiendo"
+
+#~ msgid "Working"
+#~ msgstr "Trabajando"
 
 #~ msgid ""
 #~ "There was an error opening or initializing the video output. Please "
