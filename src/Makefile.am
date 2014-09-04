@@ -47,7 +47,6 @@ ekiga_SOURCES +=			\
 # resources
 if WIN32
 ekiga_SOURCES +=                   		\
-	../win32/plugin-gconst.cpp	\
 	../win32/ekiga-rc.rc
 endif
 
