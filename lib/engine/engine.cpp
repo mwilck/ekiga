@@ -122,12 +122,6 @@ engine_init (Ekiga::ServiceCorePtr service_core,
   service_core->add (details);
   service_core->add (presence_core);
 
-  // Register actions
-  // FIXME: Perhaps this should be automated
-  // but I did not want to pass the contactcore as
-  // argument of the callcore...
-  call_core->register_actions (contact_core);
-
   if (!videoinput_mlogo_init (*service_core, &argc, &argv)) {
     return;
   }

@@ -49,10 +49,14 @@
 
 #include "menu-builder.h"
 
-#include "call-manager.h"
 #include "opal-call.h"
 
+#include "call-manager.h"
+#include "contact-core.h"
+
 #include "ekiga-settings.h"
+
+#include "actor.h"
 
 #include <boost/enable_shared_from_this.hpp>
 
@@ -70,6 +74,7 @@ namespace Opal {
     public boost::enable_shared_from_this<CallManager>,
     public Ekiga::Service,
     public Ekiga::CallManager,
+    public Ekiga::URIActionProvider,
     public OpalManager
   {
     PCLASSINFO(CallManager, OpalManager);
@@ -79,6 +84,12 @@ public:
     CallManager (Ekiga::ServiceCore & _core);
 
     ~CallManager ();
+
+    /* URIActionProvider stuff */
+    void pull_actions (Ekiga::ActionStore & store,
+                       const std::string & name,
+                       const std::string & uri);
+
 
     /* Ekiga::Service implementation */
     const std::string get_name () const

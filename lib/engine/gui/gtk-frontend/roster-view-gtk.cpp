@@ -60,6 +60,8 @@ struct _RosterViewGtkPrivate
   GtkTreeView *tree_view;
   GSList *folded_groups;
   gboolean show_offline_contacts;
+
+  //Ekiga::ActorMenuPtr menu;
 };
 
 typedef struct _StatusIconInfo {
@@ -531,27 +533,7 @@ on_clicked_show_presentity_menu (Ekiga::Heap* heap,
 				 Ekiga::Presentity* presentity,
 				 GdkEventButton* event)
 {
-  Ekiga::TemporaryMenuBuilder temp;
-  MenuBuilderGtk builder;
 
-  heap->populate_menu (temp);
-  presentity->populate_menu (builder);
-
-  if (!temp.empty ()) {
-
-    builder.add_separator ();
-    temp.populate_menu (builder);
-  }
-
-  if (!builder.empty ()) {
-    gtk_widget_show_all (builder.menu);
-    gtk_menu_popup (GTK_MENU (builder.menu), NULL, NULL,
-                    NULL, NULL, event->button, event->time);
-    g_signal_connect (builder.menu, "hide",
-                      G_CALLBACK (g_object_unref),
-                      (gpointer) builder.menu);
-  }
-  g_object_ref_sink (G_OBJECT (builder.menu));
 }
 
 static void
@@ -924,6 +906,12 @@ on_heap_added (RosterViewGtk* self,
 	       Ekiga::ClusterPtr cluster,
 	       Ekiga::HeapPtr heap)
 {
+  /* register heap actions */
+  std::cout << "FIXME" << std::endl << std::flush;
+
+  //self->priv->menu = Ekiga::ActorMenuPtr (new Ekiga::ActorMenu (*heap));
+  // SUCKS
+
   on_heap_updated (self, cluster, heap);
   heap->visit_presentities (boost::bind (&visit_presentities, self, cluster, heap, _1));
 }

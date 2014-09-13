@@ -39,6 +39,7 @@
 #include "cluster-impl.h"
 #include "local-heap.h"
 #include "contact-core.h"
+#include "actor.h"
 
 namespace Local
 {

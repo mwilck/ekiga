@@ -191,7 +191,11 @@ Opal::Account::Account (boost::shared_ptr<Opal::Sip::EndPoint> _sip_endpoint,
       }
     }
   }
+
   setup_presentity ();
+
+  /* Actor stuff */
+  register_actions ();
 }
 
 
@@ -200,7 +204,7 @@ Opal::Account::get_groups () const
 {
   std::set<std::string> result;
 
-  for (const_iterator iter = begin (); iter != end (); ++iter) {
+  for (Ekiga::RefLister< Presentity >::const_iterator iter = Ekiga::RefLister< Presentity >::begin (); iter != Ekiga::RefLister< Presentity >::end (); ++iter) {
 
     std::set<std::string> groups = (*iter)->get_groups ();
     result.insert (groups.begin (), groups.end ());
@@ -443,8 +447,8 @@ Opal::Account::disable ()
 
   if (presentity) {
 
-    for (iterator iter = begin ();
-	 iter != end ();
+    for (Ekiga::RefLister< Presentity >::iterator iter = Ekiga::RefLister< Presentity >::begin ();
+	 iter != Ekiga::RefLister< Presentity >::end ();
 	 ++iter) {
 
       (*iter)->set_presence ("unknown");
@@ -813,9 +817,9 @@ Opal::Account::publish (const Ekiga::PersonalDetails& details)
   else if (presence == "busy")
     personal_state = OpalPresenceInfo::Busy;
   else {  // ekiga knows only these three presence types
-    std::string s = "Warning: Unknown presence type ";
-    s.append (presence);
-    g_warning ("%s",s.data());
+    std::string str = "Warning: Unknown presence type ";
+    str.append (presence);
+    g_warning ("%s",str.data());
   }
 
   presence_status = details.get_status ();
@@ -824,6 +828,16 @@ Opal::Account::publish (const Ekiga::PersonalDetails& details)
     presentity->SetLocalPresence (personal_state, presence_status);
     PTRACE (4, "Ekiga\tSent its own presence (publish) for " << get_aor() << ": " << presence << ", note " << presence_status);
   }
+}
+
+
+void
+Opal::Account::register_actions ()
+{
+  /* Add Actor actions */
+//  add_action (Ekiga::ActionPtr (new Ekiga::Action (id + "-new-contact", _("New Contact"),
+  //                                                 boost::bind (&Opal::Account::add_contact, this)));
+  std::cout << "FIXME" << std::endl << std::flush;
 }
 
 
@@ -873,8 +887,8 @@ Opal::Account::handle_registration_event (RegistrationState state_,
       failed_registration_already_notified = false;
       if (presentity) {
 
-	for (const_iterator iter = begin ();
-	     iter != end ();
+	for (Ekiga::RefLister< Presentity >::const_iterator iter = Ekiga::RefLister< Presentity >::begin ();
+	     iter != Ekiga::RefLister< Presentity >::end ();
 	     ++iter)
 	  fetch ((*iter)->get_uri());
 
@@ -1194,8 +1208,8 @@ Opal::Account::presence_status_in_main (std::string uri,
 					std::string uri_presence,
 					std::string uri_status) const
 {
-  for (const_iterator iter = begin ();
-       iter != end ();
+  for (Ekiga::RefLister< Presentity >::const_iterator iter = Ekiga::RefLister< Presentity >::begin ();
+       iter != Ekiga::RefLister< Presentity >::end ();
        ++iter) {
 
     if ((*iter)->has_uri (uri)) {

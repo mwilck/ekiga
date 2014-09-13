@@ -37,9 +37,9 @@
 #define __CONTACT_CORE_H__
 
 #include "services.h"
-#include "data-actor.h"
 #include "source.h"
 #include "scoped-connections.h"
+#include "action-provider.h"
 
 /* declaration of a few helper classes */
 namespace Ekiga
@@ -49,13 +49,6 @@ namespace Ekiga
  * @defgroup contacts Address Book
  * @{
  */
-
-  /* Action stuff */
-  typedef DataActor< ContactPtr > ContactActor;
-  typedef DataAction< ContactPtr > ContactAction;
-  typedef DataActorMenu< ContactPtr > ContactActorMenu;
-  typedef boost::shared_ptr< ContactAction > ContactActionPtr;
-  typedef boost::shared_ptr< ContactActorMenu > ContactActorMenuPtr;
 
   class ContactDecorator
   {
@@ -69,6 +62,7 @@ namespace Ekiga
 				MenuBuilder& /*builder*/) = 0;
   };
 
+
   /** Core object for address book support.
    *
    * Notice that you give sources to this object as references, so they won't
@@ -76,7 +70,7 @@ namespace Ekiga
    */
   class ContactCore:
     public virtual LiveObject,
-    public ContactActor,
+    public URIActionProviderStore,
     public Service
   {
   public:
@@ -101,6 +95,7 @@ namespace Ekiga
      */
     const std::string get_description () const
     { return "\tContact managing object"; }
+
 
     /*** LiveObject implementation ***/
     bool populate_menu (MenuBuilder& builder);
@@ -177,8 +172,6 @@ namespace Ekiga
                                 MenuBuilder &builder);
 
   private:
-
-    void register_actions ();
 
     std::list<boost::shared_ptr<ContactDecorator> > contact_decorators;
 

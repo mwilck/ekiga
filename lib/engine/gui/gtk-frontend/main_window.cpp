@@ -51,7 +51,6 @@
 #include "menu-builder-tools.h"
 #include "menu-builder-gtk.h"
 #include "scoped-connections.h"
-#include "actor-menu.h"
 
 #include <glib/gi18n.h>
 #include <gdk/gdkkeysyms.h>
@@ -154,9 +153,6 @@ struct _EkigaMainWindowPrivate
 
   Ekiga::scoped_connections connections;
 
-  /* Menu */
-  Ekiga::ContactActorMenuPtr contact_menu;
-
   /* GSettings */
   boost::shared_ptr<Ekiga::Settings> user_interface_settings;
   boost::shared_ptr<Ekiga::Settings> sound_events_settings;
@@ -176,6 +172,12 @@ static const char* win_menu =
   "<?xml version='1.0'?>"
   "<interface>"
   "  <menu id='menubar'>"
+  "    <section>"
+  "      <item>"
+  "        <attribute name='label' translatable='yes'>_Call</attribute>"
+  "        <attribute name='action'>win.call</attribute>"
+  "      </item>"
+  "    </section>"
   "    <section>"
   "      <item>"
   "        <attribute name='label' translatable='yes'>_Add Contact</attribute>"
@@ -661,7 +663,6 @@ menu_button_toggled_cb (GtkToggleButton *togglebutton,
                         gpointer data)
 {
   GMenu *menu = NULL;
-  GMenuModel *contact_menu = NULL;
 
   g_return_if_fail (EKIGA_IS_MAIN_WINDOW (data));
   EkigaMainWindow *mw = EKIGA_MAIN_WINDOW (data);
@@ -670,12 +671,12 @@ menu_button_toggled_cb (GtkToggleButton *togglebutton,
     return;
 
   menu = G_MENU (gtk_builder_get_object (mw->priv->builder, "menubar"));
-  if (mw->priv->contact_menu->size () > 0)
+ /* if (mw->priv->contact_menu->size () > 0)
     g_menu_remove (menu, 0);
 
   contact_menu = mw->priv->contact_menu->get ();
   if (contact_menu)
-    g_menu_insert_section (menu, 0, NULL, contact_menu);
+    g_menu_insert_section (menu, 0, NULL, contact_menu);*/
 }
 
 
@@ -972,6 +973,7 @@ ekiga_main_window_init_history (EkigaMainWindow *mw)
     = mw->priv->history_source->get_book ();
 
   mw->priv->call_history_view = call_history_view_gtk_new (history_book,
+                                                           mw->priv->call_core,
                                                            mw->priv->contact_core);
 
   label = gtk_label_new (_("Call history"));
@@ -1201,9 +1203,6 @@ gm_main_window_new (GmApplication *app)
     = core->get<Opal::Bank> ("opal-account-store");
   mw->priv->history_source
     = core->get<History::Source> ("call-history-store");
-
-  mw->priv->contact_menu =
-    Ekiga::ContactActorMenuPtr (new Ekiga::ContactActorMenu (*mw->priv->contact_core));
 
   ekiga_main_window_connect_engine_signals (mw);
 

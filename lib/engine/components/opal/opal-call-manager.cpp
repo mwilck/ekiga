@@ -58,7 +58,7 @@
 // opal manages its endpoints itself, so we must be wary
 struct null_deleter
 {
-    void operator()(void const *) const
+  void operator()(void const *) const
     { }
 };
 
@@ -75,12 +75,12 @@ class StunDetector : public PThread
 public:
 
   StunDetector (const std::string & _server,
-		Opal::CallManager& _manager,
+                Opal::CallManager& _manager,
                 GAsyncQueue* _queue)
     : PThread (1000, AutoDeleteThread),
-      server (_server),
-      manager (_manager),
-      queue (_queue)
+    server (_server),
+    manager (_manager),
+    queue (_queue)
   {
     PTRACE (3, "Ekiga\tStarted STUN detector");
     g_async_queue_ref (queue);
@@ -88,17 +88,17 @@ public:
   };
 
   ~StunDetector ()
-  {
-    g_async_queue_unref (queue);
-    PTRACE (3, "Ekiga\tStopped STUN detector");
-  }
+    {
+      g_async_queue_unref (queue);
+      PTRACE (3, "Ekiga\tStopped STUN detector");
+    }
 
   void Main ()
-  {
-    PSTUNClient::NatTypes result = manager.SetSTUNServer (server);
+    {
+      PSTUNClient::NatTypes result = manager.SetSTUNServer (server);
 
-    g_async_queue_push (queue, GUINT_TO_POINTER ((guint)result + 1));
-  };
+      g_async_queue_push (queue, GUINT_TO_POINTER ((guint)result + 1));
+    };
 
 private:
   const std::string server;
@@ -210,6 +210,10 @@ CallManager::CallManager (Ekiga::ServiceCore& core)
   personal_data_settings =
     boost::shared_ptr<Ekiga::Settings> (new Ekiga::Settings (PERSONAL_DATA_SCHEMA));
   personal_data_settings->changed.connect (boost::bind (&CallManager::setup, this, _1));
+
+  /* ContactActor registration */
+  boost::shared_ptr<Ekiga::ContactCore> contact_core = core.get< Ekiga::ContactCore > ("contact-core");
+  contact_core->push_back (Ekiga::URIActionProviderPtr (this));
 }
 
 
@@ -221,6 +225,25 @@ CallManager::~CallManager ()
   ShutDownEndpoints ();
 
   g_async_queue_unref (queue);
+}
+
+
+void CallManager::pull_actions (Ekiga::ActionStore & store,
+                                const std::string & name,
+                                const std::string & uri)
+{
+  if (is_supported_uri (uri)) {
+
+    Ekiga::ActionPtr c (new Ekiga::Action ("call", _("Call"), boost::bind (&CallManager::dial, this, uri)));
+    Ekiga::ActionPtr t (new Ekiga::Action ("transfer", _("Transfer"), boost::bind (&CallManager::transfer, this, uri, false)));
+    t->disable ();
+
+    store.push_back (c);
+    store.push_back (t);
+
+//    store.push_back (Ekiga::ActionPtr (new Ekiga::Action ("message", _("Message"),
+  //                                                        boost::bind (&CallManager::message, this, name, uri))));
+  }
 }
 
 
@@ -613,8 +636,8 @@ void CallManager::set_stun_enabled (bool enabled)
 
 bool CallManager::dial (const std::string & uri)
 {
-  for (CallManager::iterator iter = begin ();
-       iter != end ();
+  for (Ekiga::CallManager::iterator iter = Ekiga::CallManager::begin ();
+       iter != Ekiga::CallManager::end ();
        iter++)
     if ((*iter)->dial (uri))
       return true;
@@ -632,8 +655,8 @@ void CallManager::hang_up ()
 bool CallManager::transfer (const std::string & uri,
                             bool attended)
 {
-  for (CallManager::iterator iter = begin ();
-       iter != end ();
+  for (Ekiga::CallManager::iterator iter = Ekiga::CallManager::begin ();
+       iter != Ekiga::CallManager::end ();
        iter++)
     if ((*iter)->transfer (uri, attended))
       return true;
@@ -645,8 +668,8 @@ bool CallManager::transfer (const std::string & uri,
 bool CallManager::message (const Ekiga::ContactPtr & contact,
                            const std::string & uri)
 {
-  for (CallManager::iterator iter = begin ();
-       iter != end ();
+  for (Ekiga::CallManager::iterator iter = Ekiga::CallManager::begin ();
+       iter != Ekiga::CallManager::end ();
        iter++)
     if ((*iter)->message (contact, uri))
       return true;
@@ -657,8 +680,8 @@ bool CallManager::message (const Ekiga::ContactPtr & contact,
 
 bool CallManager::is_supported_uri (const std::string & uri)
 {
-  for (CallManager::iterator iter = begin ();
-       iter != end ();
+  for (Ekiga::CallManager::iterator iter = Ekiga::CallManager::begin ();
+       iter != Ekiga::CallManager::end ();
        iter++)
     if ((*iter)->is_supported_uri (uri))
       return true;
@@ -938,8 +961,8 @@ CallManager::HandleSTUNResult ()
       error = true;
     } else {
 
-      for (Ekiga::CallManager::iterator iter = begin ();
-	   iter != end ();
+      for (Ekiga::CallManager::iterator iter = Ekiga::CallManager::begin ();
+	   iter != Ekiga::CallManager::end ();
 	   ++iter)
 	(*iter)->set_listen_port ((*iter)->get_listen_interface ().port);
       ready ();

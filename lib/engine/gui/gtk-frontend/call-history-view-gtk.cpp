@@ -37,13 +37,14 @@
 
 #include <sstream>
 #include <glib/gi18n.h>
+#include <boost/assign/ptr_list_of.hpp>
 
 #include "call-history-view-gtk.h"
 
 #include "menu-builder-tools.h"
 #include "menu-builder-gtk.h"
 #include "gm-cell-renderer-bitext.h"
-#include "actor-menu.h"
+#include "gactor-menu.h"
 
 
 struct null_deleter
@@ -61,8 +62,11 @@ struct _CallHistoryViewGtkPrivate
   {}
 
   boost::shared_ptr<History::Book> book;
-  Ekiga::ActorMenuPtr menu;
-  Ekiga::ContactActorMenuPtr contact_menu;
+  History::Contact *active_contact;
+
+  Ekiga::GActorMenuPtr menu;
+  Ekiga::GActorMenuPtr contact_menu;
+
   GtkListStore* store;
   GtkTreeView* tree;
   boost::signals2::scoped_connection connection;
@@ -167,10 +171,6 @@ on_clicked (G_GNUC_UNUSED GtkWidget *tree,
 	    GdkEventButton *event,
 	    gpointer data)
 {
-  GMenuModel *full_menu = NULL;
-  GMenuModel *contact_menu = NULL;
-  GMenuModel *history_menu = NULL;
-
   GtkWidget *menu = NULL;
 
   CallHistoryViewGtk *self = CALL_HISTORY_VIEW_GTK (data);
@@ -179,23 +179,11 @@ on_clicked (G_GNUC_UNUSED GtkWidget *tree,
   if (event->type != GDK_BUTTON_PRESS && event->type != GDK_2BUTTON_PRESS)
     return TRUE;
 
-  if (event->type == GDK_BUTTON_PRESS && event->button == 3) {
+  if (event->type == GDK_BUTTON_PRESS && event->button == 3 && self->priv->active_contact) {
 
-    contact_menu = self->priv->contact_menu->get (); // Sometimes empty
-    history_menu = self->priv->menu->get (); // Never empty
-    if (contact_menu)
-      g_menu_append_section (G_MENU (contact_menu), NULL, history_menu);
-    full_menu = contact_menu ? contact_menu : history_menu;
-
-    menu = gtk_menu_new_from_model (full_menu);
-    gtk_widget_insert_action_group (menu, "win", G_ACTION_GROUP (g_application_get_default ()));
-    gtk_menu_popup (GTK_MENU (menu), NULL, NULL,
-                    NULL, NULL, event->button, event->time);
-    g_object_ref (menu);
+    gtk_menu_popup (GTK_MENU (self->priv->contact_menu->get_menu (boost::assign::list_of (self->priv->menu))),
+                    NULL, NULL, NULL, NULL, event->button, event->time);
   }
-
-  if (event->type == GDK_2BUTTON_PRESS)
-    self->priv->contact_menu->activate ();
 
   return TRUE;
 }
@@ -209,14 +197,19 @@ on_selection_changed (G_GNUC_UNUSED GtkTreeSelection* selection,
 
   self = CALL_HISTORY_VIEW_GTK (data);
 
+  /* Reset old data. This also ensures GIO actions are
+   * properly removed before adding new ones.
+   */
+  self->priv->contact_menu.reset ();
+  self->priv->active_contact = NULL;
+
   /* Set or reset ContactActor data */
   call_history_view_gtk_get_selected (self, &contact);
 
-  if (contact == NULL)
-    self->priv->contact_menu->set_data (Ekiga::ContactPtr (), "");
-  else
-    self->priv->contact_menu->set_data (Ekiga::ContactPtr (contact, null_deleter ()),
-                                        contact->get_uri ());
+  if (contact != NULL) {
+    self->priv->active_contact = contact;
+    self->priv->contact_menu = Ekiga::GActorMenuPtr (new Ekiga::GActorMenu (*self->priv->active_contact));
+  }
 
   g_signal_emit (self, signals[SELECTION_CHANGED_SIGNAL], 0);
 }
@@ -301,7 +294,8 @@ call_history_view_gtk_class_init (CallHistoryViewGtkClass* klass)
 
 GtkWidget *
 call_history_view_gtk_new (boost::shared_ptr<History::Book> book,
-                           boost::shared_ptr<Ekiga::ContactCore> ccore)
+                           boost::shared_ptr<Ekiga::CallCore> call_core,
+                           boost::shared_ptr<Ekiga::ContactCore> contact_core)
 {
   CallHistoryViewGtk* self = NULL;
 
@@ -314,6 +308,7 @@ call_history_view_gtk_new (boost::shared_ptr<History::Book> book,
   self = (CallHistoryViewGtk*)g_object_new (CALL_HISTORY_VIEW_GTK_TYPE, NULL);
 
   self->priv = new _CallHistoryViewGtkPrivate (book);
+  self->priv->active_contact = NULL;
 
   gtk_scrolled_window_set_policy (GTK_SCROLLED_WINDOW (self),
 				  GTK_POLICY_AUTOMATIC, GTK_POLICY_AUTOMATIC);
@@ -362,9 +357,7 @@ call_history_view_gtk_new (boost::shared_ptr<History::Book> book,
   on_book_updated(self);
 
   /* register book actions */
-  self->priv->menu = Ekiga::ActorMenuPtr (new Ekiga::ActorMenu (*book));
-  self->priv->contact_menu =
-    Ekiga::ContactActorMenuPtr (new Ekiga::ContactActorMenu (*ccore));
+  self->priv->menu = Ekiga::GActorMenuPtr (new Ekiga::GActorMenu (*book));
 
   return GTK_WIDGET (self);
 }
@@ -388,30 +381,4 @@ call_history_view_gtk_get_selected (CallHistoryViewGtk* self,
 			-1);
   } else
     *contact = NULL;
-}
-
-bool
-call_history_view_gtk_populate_menu_for_selected (CallHistoryViewGtk* self,
-						  Ekiga::MenuBuilder &builder)
-{
-  g_return_val_if_fail (IS_CALL_HISTORY_VIEW_GTK (self), false);
-
-  bool result = false;
-  GtkTreeSelection* selection = NULL;
-  GtkTreeModel* model = NULL;
-  GtkTreeIter iter;
-
-  selection = gtk_tree_view_get_selection (self->priv->tree);
-
-  if (gtk_tree_selection_get_selected (selection, &model, &iter)) {
-
-    Ekiga::Contact *contact = NULL;
-    gtk_tree_model_get (model, &iter,
-			COLUMN_CONTACT, &contact,
-			-1);
-    if (contact)
-      result = contact->populate_menu (builder);
-  }
-
-  return result;
 }

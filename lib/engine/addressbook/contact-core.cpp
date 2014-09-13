@@ -65,6 +65,7 @@ Ekiga::ContactCore::populate_menu (MenuBuilder &builder)
   return populated;
 }
 
+
 void
 Ekiga::ContactCore::add_source (SourcePtr source)
 {
@@ -99,7 +100,6 @@ Ekiga::ContactCore::add_contact_decorator (boost::shared_ptr<ContactDecorator> d
   contact_decorators.push_back (decorator);
 }
 
-
 bool
 Ekiga::ContactCore::populate_contact_menu (ContactPtr _contact,
 					   const std::string _uri,
@@ -116,12 +116,4 @@ Ekiga::ContactCore::populate_contact_menu (ContactPtr _contact,
   }
 
   return populated;
-}
-
-
-void
-Ekiga::ContactCore::register_actions ()
-{
-  // We have nothing to do. Other Core's will add their own contact actions
-  // to us.
 }
