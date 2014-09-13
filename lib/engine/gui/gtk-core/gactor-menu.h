@@ -27,44 +27,53 @@
 
 
 /*
- *                         live-object-menu.h  -  description
+ *                         gactor-menu.h  -  description
  *                         ----------------------------------
  *   begin                : written in 2014 by Damien Sandras
  *   copyright            : (c) 2014 by Damien Sandras
- *   description          : A live object menu definition
+ *   description          : An actor object menu definition
  *
  */
 
-#ifndef __LIVE_OBJECT_MENU_H__
-#define __LIVE_OBJECT_MENU_H__
+#ifndef __GACTOR_MENU_H__
+#define __GACTOR_MENU_H__
 
-#include "action.h"
-#include "data-action.h"
+#include "actor.h"
 #include "null-deleter.h"
 
 #include <gtk/gtk.h>
 
 namespace Ekiga {
 
-  /* ActorMenu
+  class GActorMenu;
+  typedef boost::shared_ptr<GActorMenu> GActorMenuPtr;
+  typedef std::list< GActorMenuPtr > GActorMenuStore;
+
+  /* GActorMenu
    *
-   * We will have one ActorMenu per UI object displaying a Actor.
+   * We will have one GActorMenu per UI object displaying an Actor.
    *
-   * Each Actor object exposes Action objects. Those actions are actions
+   * Each Actor object exposes Actions. Those actions are actions
    * specific to the Actor. They can be triggered, for example, by the
-   * various ActorMenu associated with the different views of the
+   * various GActorMenu associated with the different views of the
    * Actor.
    *
-   * However, even though we can have several ActorMenu for the same
-   * Actor (one per UI view), we need to register the associated actions
-   * only once.
+   * The GActorMenu is the binding between GIO Actions and Ekiga::Actions.
+   *
+   * When a GActorMenu is created from an Actor, all available Actions are
+   * automatically registered through the GIO subsystem. Actions are
+   * unregistered from the GIO subsystem when the GActorMenu is destroyed.
+   *
+   * You should not have several GActorMenu with conflicting Actions alive
+   * at the same time (e.g. several GActorMenu associated to different contacts
+   * each exposing a call action).
    */
-  class ActorMenu
+  class GActorMenu
   {
   public:
 
-    ActorMenu (Actor & obj);
-    virtual ~ActorMenu ();
+    GActorMenu (Actor & obj);
+    virtual ~GActorMenu ();
 
 
     /** Activate the action of the given name. The first enabled action
@@ -74,14 +83,24 @@ namespace Ekiga {
     virtual void activate (const std::string & name = "");
 
 
-    /** Return a pointer to the GMenuModel corresponding to the ActorMenu (if any).
+    /** Return a pointer to the GMenuModel corresponding to the current GActorMenu
+     *  and the list of GActorMenus given as argument.
+     *
      * @return a pointer to the GMenuModel, NULL if none (no action, or all actions
      *         are disabled).
      */
-    GMenuModel *get ();
+    GMenuModel *get_model (const GActorMenuStore & store = GActorMenuStore ());
+
+    /** Return a pointer to the GtkMenu corresponding to the current GActorMenu
+     *  and the list of GActorMenus given as argument.
+     *
+     * @return a pointer to the GtkMenu, NULL if none (no action, or all actions
+     *         are disabled).
+     */
+    GtkWidget *get_menu (const Ekiga::GActorMenuStore & store = GActorMenuStore ());
 
 
-    /** Return the number of actions of the ActorMenu. The counter is only
+    /** Return the number of actions of the GActorMenu. The counter is only
      *  updated after get () has been called.
      */
     unsigned size ();
@@ -102,7 +121,7 @@ namespace Ekiga {
     /** Return the XML representation of the enabled Actions */
     virtual const std::string as_xml (const std::string & id = "");
 
-    /** Remove the XML representation of the full menu with
+    /** Return the XML representation of the full menu with
      * enabled Actions.
      */
     virtual const std::string build ();
@@ -110,33 +129,9 @@ namespace Ekiga {
     Actor & obj;
 
   private:
+    Ekiga::scoped_connections conns;
     unsigned n;
     GtkBuilder *builder;
   };
-
-  template < class T >
-  class DataActorMenu : public ActorMenu
-  {
-    typedef boost::shared_ptr< DataActor< T > > DataActorPtr;
-
-  public:
-
-    DataActorMenu (DataActor< T > & _obj) : ActorMenu (_obj) {};
-
-    /** Set the (DataPtr, string) tuple usable by the DataActorMenu.
-     *  Available actions will depend on the data being set.
-     * @param the Data part of the tuple.
-     * @param the s part of the tuple.
-     */
-    void set_data (T _t = T (),
-                   const std::string & _s = "")
-    {
-      DataActorPtr a = boost::dynamic_pointer_cast< DataActor< T > > (ActorPtr (&obj, null_deleter2 ()));
-      if (a) a->set_data (_t, _s);
-      sync_gio_actions ();
-    };
-  };
-
-  typedef boost::shared_ptr<ActorMenu> ActorMenuPtr;
 }
 #endif

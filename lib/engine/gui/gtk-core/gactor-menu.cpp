@@ -27,11 +27,11 @@
 
 
 /*
- *                         live-object-menu.cpp  -  description
- *                         -------------------------------------
+ *                         gactor-menu.cpp  -  description
+ *                         -------------------------------
  *   begin                : written in 2014 by Damien Sandras
  *   copyright            : (c) 2014 by Damien Sandras
- *   description          : A live object menu implementation
+ *   description          : An Actor object menu implementation
  *
  */
 
@@ -39,9 +39,7 @@
 #include <string>
 
 #include "action.h"
-#include "contact-core.h"
-#include "data-actor.h"
-#include "actor-menu.h"
+#include "gactor-menu.h"
 
 
 static void
@@ -50,102 +48,123 @@ action_activated (GSimpleAction *a,
                   gpointer data)
 {
   const char *action = (const char *) g_object_get_data (G_OBJECT (a), "action");
-  Ekiga::ActorMenu *menu = (Ekiga::ActorMenu *) data;
+  Ekiga::GActorMenu *menu = (Ekiga::GActorMenu *) data;
 
   g_return_if_fail (action && menu);
   menu->activate (action);
 }
 
 
-
-Ekiga::ActorMenu::ActorMenu (Ekiga::Actor & _obj) : obj (_obj)
+Ekiga::GActorMenu::GActorMenu (Ekiga::Actor & _obj) : obj (_obj)
 {
   n = 0;
   builder = gtk_builder_new ();
 
-  obj.action_enabled.connect (boost::bind (static_cast<void (Ekiga::ActorMenu::*)(const std::string&)>(&Ekiga::ActorMenu::add_gio_action), this, _1));
-  obj.action_disabled.connect (boost::bind (&Ekiga::ActorMenu::remove_gio_action, this, _1));
-
   sync_gio_actions ();
+
+  conns.add (obj.action_enabled.connect (boost::bind (static_cast<void (Ekiga::GActorMenu::*)(const std::string&)>(&Ekiga::GActorMenu::add_gio_action), this, _1)));
+  conns.add (obj.action_disabled.connect (boost::bind (&Ekiga::GActorMenu::remove_gio_action, this, _1)));
+
+  conns.add (obj.action_added.connect (boost::bind (static_cast<void (Ekiga::GActorMenu::*)(const std::string&)>(&Ekiga::GActorMenu::add_gio_action), this, _1)));
+  conns.add (obj.action_removed.connect (boost::bind (&Ekiga::GActorMenu::remove_gio_action, this, _1)));
 }
 
 
-Ekiga::ActorMenu::~ActorMenu ()
+Ekiga::GActorMenu::~GActorMenu ()
 {
-  ActionMap::const_iterator it;
+  Actor::const_iterator it;
 
-  for (it = obj.actions.begin(); it != obj.actions.end(); ++it)
+  for (it = obj.begin(); it != obj.end(); ++it)
     g_action_map_remove_action (G_ACTION_MAP (g_application_get_default ()),
-                                it->first.c_str ());
+                                (*it)->get_name ().c_str ());
 
   g_object_unref (builder);
 }
 
 
 void
-Ekiga::ActorMenu::activate (const std::string & name)
+Ekiga::GActorMenu::activate (const std::string & name)
 {
-  ActionMap::const_iterator it;
-  if (!name.empty ()) {
+  Actor::const_iterator it;
 
-    it = obj.actions.find (name);
-    if (it != obj.actions.end ())
-      it->second->activate ();
-  }
-  else {
-
-    for (it = obj.actions.begin(); it != obj.actions.end(); ++it) {
-      if (it->second->is_enabled ()) {
-        it->second->activate ();
-        return;
-      }
+  for (it = obj.begin(); it != obj.end(); ++it) {
+    if (name.empty () || (*it)->get_name () == name) {
+      (*it)->activate ();
+      return;
     }
   }
 }
 
 
 GMenuModel *
-Ekiga::ActorMenu::get ()
+Ekiga::GActorMenu::get_model (const Ekiga::GActorMenuStore & store)
 {
-  gtk_builder_add_from_string (builder, build ().c_str (), -1, NULL);
-  return (n > 0 ? G_MENU_MODEL (gtk_builder_get_object (builder, "menu")) : NULL);
+  int c = 0;
+  std::string content = as_xml ();
+  for (Ekiga::GActorMenuStore::const_iterator it = store.begin ();
+       it != store.end ();
+       it++) {
+    content += (*it)->as_xml ();
+    c += (*it)->size ();
+  }
+  content = "<?xml_content version=\"1.0\"?>"
+            "<interface>"
+            "  <menu id=\"menu\">" + content + "</menu>"
+            "</interface>";
+
+  gtk_builder_add_from_string (builder, content.c_str (), -1, NULL);
+  return (n > 0 || c > 0 ? G_MENU_MODEL (gtk_builder_get_object (builder, "menu")) : NULL);
+}
+
+
+GtkWidget *
+Ekiga::GActorMenu::get_menu (const Ekiga::GActorMenuStore & store)
+{
+  GtkWidget *menu = gtk_menu_new_from_model (get_model (store));
+  gtk_widget_insert_action_group (menu, "win", G_ACTION_GROUP (g_application_get_default ()));
+  g_object_ref (menu);
+
+  return menu;
 }
 
 
 unsigned
-Ekiga::ActorMenu::size ()
+Ekiga::GActorMenu::size ()
 {
   return n;
 }
 
 
 void
-Ekiga::ActorMenu::sync_gio_actions ()
+Ekiga::GActorMenu::sync_gio_actions ()
 {
-  ActionMap::const_iterator it;
+  Actor::const_iterator it;
 
-  for (it = obj.actions.begin(); it != obj.actions.end(); ++it) {
-    if (it->second->is_enabled ())
-      add_gio_action (boost::dynamic_pointer_cast<Action> (it->second));
+  for (it = obj.begin(); it != obj.end(); ++it) {
+    if ((*it)->is_enabled ())
+      add_gio_action (*it);
     else
-      remove_gio_action (it->first);
+      remove_gio_action ((*it)->get_name ());
   }
 }
 
 
 void
-Ekiga::ActorMenu::add_gio_action (const std::string & name)
+Ekiga::GActorMenu::add_gio_action (const std::string & name)
 {
-  ActionMap::const_iterator it;
+  Actor::const_iterator it;
 
-  it = obj.actions.find (name);
-  if (it != obj.actions.end ())
-    add_gio_action (boost::dynamic_pointer_cast<Action> (it->second));
+  for (it = obj.begin(); it != obj.end(); ++it) {
+    if ((*it)->get_name () == name) {
+      add_gio_action (*it);
+      return;
+    }
+  }
 }
 
 
 void
-Ekiga::ActorMenu::add_gio_action (Ekiga::ActionPtr a)
+Ekiga::GActorMenu::add_gio_action (Ekiga::ActionPtr a)
 {
   GSimpleAction *action = NULL;
 
@@ -169,7 +188,7 @@ Ekiga::ActorMenu::add_gio_action (Ekiga::ActionPtr a)
 
 
 void
-Ekiga::ActorMenu::remove_gio_action (const std::string & name)
+Ekiga::GActorMenu::remove_gio_action (const std::string & name)
 {
   g_action_map_remove_action (G_ACTION_MAP (g_application_get_default ()),
                               name.c_str ());
@@ -177,10 +196,9 @@ Ekiga::ActorMenu::remove_gio_action (const std::string & name)
 
 
 const std::string
-Ekiga::ActorMenu::as_xml (const std::string & id)
+Ekiga::GActorMenu::as_xml (const std::string & id)
 {
-  ActionMap::const_iterator it;
-  std::list<std::string>::const_iterator nit;
+  Actor::const_iterator it;
   std::string xml_content;
   n = 0;
 
@@ -189,17 +207,14 @@ Ekiga::ActorMenu::as_xml (const std::string & id)
   else
    xml_content += "    <section>";
 
-  for (nit = obj.action_names.begin(); nit != obj.action_names.end(); ++nit) {
+  for (it = obj.begin(); it != obj.end(); ++it) {
 
-    it = obj.actions.find (*nit);
-    if (it != obj.actions.end () && it->second->is_enabled ()) {
       xml_content +=
         "      <item>"
-        "        <attribute name=\"label\" translatable=\"yes\">"+it->second->get_description ()+"</attribute>"
-        "        <attribute name=\"action\">win."+it->second->get_name ()+"</attribute>"
+        "        <attribute name=\"label\" translatable=\"yes\">"+(*it)->get_description ()+"</attribute>"
+        "        <attribute name=\"action\">win."+(*it)->get_name ()+"</attribute>"
         "      </item>";
       n++;
-    }
   }
 
   xml_content +=
@@ -210,9 +225,8 @@ Ekiga::ActorMenu::as_xml (const std::string & id)
 
 
 const std::string
-Ekiga::ActorMenu::build ()
+Ekiga::GActorMenu::build ()
 {
   std::string xml_content = "<menu id=\"menu\">" + as_xml () + "</menu>";
-
   return "<?xml_content version=\"1.0\"?><interface>" + xml_content + "</interface>";
 }
