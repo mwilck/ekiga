@@ -27,95 +27,61 @@
 
 
 /*
- *                         action.cpp  -  description
- *                         --------------------------
+ *                         action-provider.h  -  description
+ *                         ---------------------------------
  *   begin                : written in February 2014 by Damien Sandras
  *   copyright            : (c) 2014 by Damien Sandras
- *   description          : An engine action.
+ *   description          : An engine action provider.
  *
  */
 
+#ifndef __ACTION_PROVIDER_H__
+#define __ACTION_PROVIDER_H__
+
+#include <string>
+
+#include "scoped-connections.h"
+
 #include "action.h"
 
-using namespace Ekiga;
+namespace Ekiga {
+
+  /**
+   * @defgroup actions ActionProvider
+   * @{
+   */
+
+  /* An ActionProvider is an object able to provide Actions to
+   * Actors.
+   */
+  class ActionProvider
+  {
+  public:
+    virtual void pull_actions (ActionStore & /*store*/) {};
+  };
+  typedef boost::shared_ptr< ActionProvider > ActionProviderPtr;
+
+  class URIActionProvider : public ActionProvider
+  {
+  public:
+    virtual void pull_actions (ActionStore & /*store*/,
+                               const std::string & /*display_name*/,
+                               const std::string & /*uri*/) = 0;
+  };
+  typedef boost::shared_ptr< URIActionProvider > URIActionProviderPtr;
+
+  class URIActionProviderStore : public std::list< URIActionProviderPtr >
+  {
+  public:
+    virtual void pull_actions (ActionStore & /*store*/,
+                               const std::string & /*display_name*/,
+                               const std::string & /*uri*/);
+  };
 
 
-Action::Action (const std::string & _name,
-                const std::string & _description)
-{
-  name = _name;
-  description = _description;
-  action_enabled = true;
-
-  conns.add (activated.connect (boost::bind (&Action::on_activated, this)));
+  /**
+   * @}
+   */
 }
 
-
-Action::Action (const std::string & _name,
-                const std::string & _description,
-                boost::function0<void> _callback)
-{
-  name = _name;
-  description = _description;
-  callback = _callback;
-  action_enabled = true;
-
-  conns.add (activated.connect (boost::bind (&Action::on_activated, this)));
-}
-
-
-Action::~Action ()
-{
-}
-
-const std::string &
-Action::get_name () const
-{
-  return name;
-}
-
-
-
-const std::string &
-Action::get_description () const
-{
-  return description;
-}
-
-
-
-void
-Action::activate ()
-{
-  activated ();
-}
-
-
-void
-Action::enable ()
-{
-  action_enabled = true;
-  enabled ();
-}
-
-
-void
-Action::disable ()
-{
-  action_enabled = false;
-  disabled ();
-}
-
-
-bool
-Action::is_enabled () const
-{
-  return action_enabled;
-}
-
-
-void
-Action::on_activated ()
-{
-  callback ();
-}
+#endif

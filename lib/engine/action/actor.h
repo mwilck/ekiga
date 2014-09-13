@@ -38,9 +38,11 @@
 #ifndef __ACTOR_H__
 #define __ACTOR_H__
 
-#include <string>
 
 #include "action.h"
+#include "scoped-connections.h"
+
+#include <string>
 
 namespace Ekiga {
 
@@ -52,16 +54,19 @@ namespace Ekiga {
 
   /* An actor is an object able to execute Actions.
    *
-   * Actor can register actions through the add_action method.
-   * acting.
+   * An Actor can register actions through the add_action method.
+   * It can remove them using the remove_action and remove_actions methods.
+   *
    */
   class Actor
   {
-    friend class ActorMenu;
+    friend class GActorMenu;
+    typedef ActionStore::const_iterator const_iterator;
+    typedef ActionStore::iterator iterator;
 
   public:
 
-    /** Register an action on the given Actor.
+    /** Add an action to the given Actor.
      *
      * Actions that are not "added" using this method will not be usable
      * from menus.
@@ -71,37 +76,63 @@ namespace Ekiga {
     virtual void add_action (ActionPtr action);
 
 
-    /** Enable a specific action on the given Actor.
+    /** Add actions from an ActionStore to the given Actor.
      *
-     * @param The Action name.
-     */
-    void enable_action (const std::string & name);
-
-
-    /** Disable a specific action on the given Actor.
+     * Actions that are not "added" using this method will not be usable
+     * from menus.
      *
-     * @param The Action name.
+     * @param An ActionStore.
      */
-    void disable_action (const std::string & name);
+    virtual void add_action (const ActionStore & actions);
 
 
-  protected:
-
-    /** This method must be called by each Actor to register Actions.
+    /** Remove an action from the given Actor.
+     *
+     * @param An Action name.
+     * @return true if the Action was successfully removed, false otherwise.
      */
-    virtual void register_actions () = 0;
+    virtual bool remove_action (const std::string & name);
 
 
-    /** Those signals are emitted when an Action is enabled/disabled
-     *  in the ActionMap.
+    /** Remove all actions from the given Actor.
+     *
+     */
+    virtual void remove_actions ();
+
+
+    /** Iterators (able to iterate through actions)
+     */
+    const_iterator begin () const;
+    const_iterator end () const;
+    iterator begin ();
+    iterator end ();
+
+
+    /**
+     * Those signals are emitted when an Action is enabled/disabled
+     * in the ActionMap.
      */
     boost::signals2::signal<void(const std::string &)> action_enabled;
     boost::signals2::signal<void(const std::string &)> action_disabled;
 
-    ActionMap actions;
-    std::list<std::string> action_names;
-  };
 
+    /**
+     * Those signals are emitted when an Action is added/removed
+     * to/from the ActionMap.
+     */
+    boost::signals2::signal<void(const std::string &)> action_added;
+    boost::signals2::signal<void(const std::string &)> action_removed;
+
+
+  protected:
+
+    /**
+     * This is the Actor ActionStore.
+     * It contains all actions supported by the current Actor.
+     */
+    ActionStore actions;
+    Ekiga::scoped_connections conns;
+  };
   typedef boost::shared_ptr< Actor > ActorPtr;
 
   /**

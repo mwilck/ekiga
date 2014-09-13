@@ -43,32 +43,72 @@ using namespace Ekiga;
 void
 Actor::add_action (ActionPtr action)
 {
-  actions.insert (std::make_pair (action->get_name (), action));
-  action_names.push_back (action->get_name ());
+  remove_action (action->get_name ()); // Remove any other action with the same name.
+
+  actions.push_back (action);
+
+  conns.add (action->enabled.connect (boost::bind (boost::ref (action_enabled), action->get_name ())));
+  conns.add (action->disabled.connect (boost::bind (boost::ref (action_enabled), action->get_name ())));
+
+  action_added (action->get_name ());
 }
 
 
 void
-Actor::enable_action (const std::string & name)
+Actor::add_action (const ActionStore & _actions)
 {
-  ActionMap::iterator it;
-  it = actions.find (name);
+  for (ActionStore::const_iterator it = _actions.begin (); it != _actions.end () ; ++it)
+    add_action (*it);
+}
 
-  if (it != actions.end ()) {
-    it->second->enable ();
-    action_enabled (name);
+
+bool
+Actor::remove_action (const std::string & name)
+{
+  for (ActionStore::iterator it = actions.begin (); it != actions.end () ; ++it) {
+    if ((*it)->get_name () == name) {
+      action_removed (name);
+      actions.erase (it);
+      return true;
+    }
   }
+  return false;
 }
 
 
 void
-Actor::disable_action (const std::string & name)
+Actor::remove_actions ()
 {
-  ActionMap::iterator it;
-  it = actions.find (name);
-
-  if (it != actions.end ()) {
-    it->second->disable ();
-    action_disabled (name);
+  for (ActionStore::iterator it = actions.begin (); it != actions.end () ; ++it) {
+    action_removed ((*it)->get_name ());
   }
+  actions.clear ();
+}
+
+
+Actor::const_iterator
+Actor::begin () const
+{
+  return actions.begin ();
+}
+
+
+Actor::const_iterator
+Actor::end () const
+{
+  return actions.end ();
+}
+
+
+Actor::iterator
+Actor::begin ()
+{
+  return actions.begin ();
+}
+
+
+Actor::iterator
+Actor::end ()
+{
+  return actions.end ();
 }

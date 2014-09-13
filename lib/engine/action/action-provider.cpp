@@ -27,95 +27,26 @@
 
 
 /*
- *                         action.cpp  -  description
- *                         --------------------------
+ *                         action-provider.cpp  -  description
+ *                         -----------------------------------
  *   begin                : written in February 2014 by Damien Sandras
  *   copyright            : (c) 2014 by Damien Sandras
- *   description          : An engine action.
+ *   description          : An engine action provider.
  *
  */
 
-#include "action.h"
+#include "action-provider.h"
 
 using namespace Ekiga;
 
-
-Action::Action (const std::string & _name,
-                const std::string & _description)
-{
-  name = _name;
-  description = _description;
-  action_enabled = true;
-
-  conns.add (activated.connect (boost::bind (&Action::on_activated, this)));
-}
-
-
-Action::Action (const std::string & _name,
-                const std::string & _description,
-                boost::function0<void> _callback)
-{
-  name = _name;
-  description = _description;
-  callback = _callback;
-  action_enabled = true;
-
-  conns.add (activated.connect (boost::bind (&Action::on_activated, this)));
-}
-
-
-Action::~Action ()
-{
-}
-
-const std::string &
-Action::get_name () const
-{
-  return name;
-}
-
-
-
-const std::string &
-Action::get_description () const
-{
-  return description;
-}
-
-
-
 void
-Action::activate ()
+URIActionProviderStore::pull_actions (ActionStore & store,
+                                      const std::string & name,
+                                      const std::string & uri)
 {
-  activated ();
-}
-
-
-void
-Action::enable ()
-{
-  action_enabled = true;
-  enabled ();
-}
-
-
-void
-Action::disable ()
-{
-  action_enabled = false;
-  disabled ();
-}
-
-
-bool
-Action::is_enabled () const
-{
-  return action_enabled;
-}
-
-
-void
-Action::on_activated ()
-{
-  callback ();
+  ActionStore provider_store;
+  for (URIActionProviderStore::iterator it = begin (); it != end (); it++) {
+    (*it)->pull_actions (provider_store, name, uri);
+    store.merge (provider_store);
+  }
 }

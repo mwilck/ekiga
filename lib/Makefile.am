@@ -230,10 +230,10 @@ libekiga_la_SOURCES += \
 libekiga_la_SOURCES += \
 	engine/action/action.h \
 	engine/action/action.cpp \
+	engine/action/action-provider.h \
+	engine/action/action-provider.cpp \
 	engine/action/actor.h \
-	engine/action/actor.cpp \
-	engine/action/data-action.h \
-	engine/action/data-actor.h
+	engine/action/actor.cpp
 
 ##
 #  Sources of the addressbook stack
@@ -368,8 +368,8 @@ libekiga_la_SOURCES += \
 	engine/gui/gtk-core/menu-builder-gtk.cpp \
 	engine/gui/gtk-core/form-dialog-gtk.h \
 	engine/gui/gtk-core/form-dialog-gtk.cpp \
-	engine/gui/gtk-core/actor-menu.h \
-	engine/gui/gtk-core/actor-menu.cpp \
+	engine/gui/gtk-core/gactor-menu.h \
+	engine/gui/gtk-core/gactor-menu.cpp \
 	engine/gui/gtk-core/optional-buttons-gtk.h \
 	engine/gui/gtk-core/optional-buttons-gtk.cpp \
 	engine/gui/gtk-core/codecsbox.cpp \

@@ -41,7 +41,12 @@
 #include <boost/signals2.hpp>
 #include <boost/function.hpp>
 #include <boost/smart_ptr.hpp>
-#include <map>
+
+#include <list>
+#include <string>
+
+#include "scoped-connections.h"
+
 
 namespace Ekiga {
 
@@ -60,7 +65,7 @@ namespace Ekiga {
    * objects might allow processing more actions than the parent object.
    *
    * The Action object interface allows such derived objects to expose their
-   * own specific actions to be globally in such a way that they are usable
+   * own specific actions in such a way that they are usable
    * through the user interface without requiring dynamic casts in the UI code
    * to be able to use the full derived object API.
    *
@@ -80,6 +85,8 @@ namespace Ekiga {
    */
   class Action
   {
+    friend class Actor;
+
   public:
 
     /** Create an Action given a name and a description.
@@ -102,17 +109,23 @@ namespace Ekiga {
             const std::string & _description,
             boost::function0<void> _callback);
 
+    /** Destructor.
+     *
+     * Does nothing special.
+     */
+    ~Action ();
+
 
     /** Return the Action name.
      * @return the Action name (please read 'CONVENTION').
      */
-    const std::string & get_name ();
+    const std::string & get_name () const;
 
 
     /** Return the Action description.
      * @return the Action description.
      */
-    const std::string & get_description ();
+    const std::string & get_description () const;
 
 
     /** Activate the Action.
@@ -139,14 +152,20 @@ namespace Ekiga {
     /** Return the Action state.
      * @return true if the Action is enabled, false otherwise.
      */
-    bool is_enabled ();
+    bool is_enabled () const;
 
 
   protected:
 
     std::string name;
     std::string description;
+    bool action_enabled;
     boost::function0<void> callback;
+
+    /** Those signals are emitted when the Action is enabled/disabled.
+     */
+    boost::signals2::signal<void(void)> enabled;
+    boost::signals2::signal<void(void)> disabled;
 
 
   private:
@@ -162,15 +181,14 @@ namespace Ekiga {
      */
     boost::signals2::signal<void(void)> activated;
 
-    bool enabled;
+    Ekiga::scoped_connections conns;
   };
 
-  typedef boost::shared_ptr<Action> ActionPtr;
-  typedef std::map< std::string, ActionPtr > ActionMap;
+  typedef boost::shared_ptr< Action > ActionPtr;
+  typedef std::list< ActionPtr > ActionStore;
 
   /**
    * @}
    */
 }
-
 #endif
