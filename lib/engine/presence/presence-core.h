@@ -43,6 +43,7 @@
 #include "cluster.h"
 #include "account-core.h"
 #include "personal-details.h"
+#include "action-provider.h"
 
 namespace Ekiga
 {
@@ -133,6 +134,7 @@ namespace Ekiga
    */
   class PresenceCore:
     public virtual LiveObject,
+    public URIActionProviderStore,
     public Service
   {
   public:

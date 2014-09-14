@@ -211,9 +211,13 @@ CallManager::CallManager (Ekiga::ServiceCore& core)
     boost::shared_ptr<Ekiga::Settings> (new Ekiga::Settings (PERSONAL_DATA_SCHEMA));
   personal_data_settings->changed.connect (boost::bind (&CallManager::setup, this, _1));
 
-  /* ContactActor registration */
+  /* ContactActor & PresenceCore registration */
+  // FIXME could move to CallCore
   boost::shared_ptr<Ekiga::ContactCore> contact_core = core.get< Ekiga::ContactCore > ("contact-core");
   contact_core->push_back (Ekiga::URIActionProviderPtr (this));
+
+  boost::shared_ptr<Ekiga::PresenceCore> presence_core = core.get< Ekiga::PresenceCore > ("presence-core");
+  presence_core->push_back (Ekiga::URIActionProviderPtr (this));
 }
 
 
