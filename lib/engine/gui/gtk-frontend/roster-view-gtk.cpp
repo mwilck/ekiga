@@ -48,6 +48,7 @@
 #include "menu-builder-gtk.h"
 #include "form-dialog-gtk.h"
 #include "scoped-connections.h"
+#include "gactor-menu.h"
 
 /*
  * The Roster
@@ -61,7 +62,8 @@ struct _RosterViewGtkPrivate
   GSList *folded_groups;
   gboolean show_offline_contacts;
 
-  //Ekiga::ActorMenuPtr menu;
+  Ekiga::Presentity *selected_presentity;
+  Ekiga::GActorMenuPtr presentity_menu;
 };
 
 typedef struct _StatusIconInfo {
@@ -660,12 +662,65 @@ show_offline_contacts_changed_cb (GSettings *settings,
 
 
 static void
-on_selection_changed (G_GNUC_UNUSED GtkTreeSelection* selection,
+on_selection_changed (GtkTreeSelection* selection,
 		      gpointer data)
 {
   RosterViewGtk* self = NULL;
+  GtkTreeModel *model = NULL;
+  GtkTreeIter iter;
+
+  gint column_type;
+  Ekiga::Heap *heap = NULL;
+  Ekiga::Presentity *presentity = NULL;
+  Ekiga::MenuBuilder builder;
+
+  gchar *name = NULL;
+  gchar *group_name = NULL;
 
   self = ROSTER_VIEW_GTK (data);
+  model = gtk_tree_view_get_model (self->priv->tree_view);
+
+  if (gtk_tree_selection_get_selected (selection, &model, &iter)) {
+
+    gtk_tree_model_get (model, &iter,
+                        COLUMN_NAME, &name,
+                        COLUMN_GROUP_NAME, &group_name,
+                        COLUMN_TYPE, &column_type,
+                        COLUMN_HEAP, &heap,
+                        COLUMN_PRESENTITY, &presentity,
+                        -1);
+
+    switch (column_type) {
+
+    case TYPE_HEAP:
+
+      break;
+    case TYPE_GROUP:
+
+      break;
+    case TYPE_PRESENTITY:
+
+      /* Reset old data. This also ensures GIO actions are
+       * properly removed before adding new ones.
+       */
+      self->priv->presentity_menu.reset ();
+      self->priv->selected_presentity = NULL;
+
+      if (presentity != NULL) {
+        self->priv->selected_presentity = presentity;
+        self->priv->presentity_menu = Ekiga::GActorMenuPtr (new Ekiga::GActorMenu (*self->priv->selected_presentity));
+      }
+
+      presentity->populate_menu (builder);
+      break;
+    default:
+
+      g_assert_not_reached ();
+      break; // shouldn't happen
+    }
+    g_free (group_name);
+    g_free (name);
+  }
 
   g_signal_emit (self, signals[SELECTION_CHANGED_SIGNAL], 0);
 }
@@ -679,6 +734,7 @@ on_view_event_after (GtkWidget *tree_view,
   GtkTreeModel *model = NULL;
   GtkTreePath *path = NULL;
   GtkTreeIter iter;
+
 
   // take into account only clicks and Enter keys
   if (event->type != GDK_BUTTON_PRESS && event->type != GDK_2BUTTON_PRESS && event->type != GDK_KEY_PRESS)
@@ -735,7 +791,10 @@ on_view_event_after (GtkWidget *tree_view,
     case TYPE_PRESENTITY:
 
       if (event->type == GDK_BUTTON_PRESS && event->button == 3)
-        on_clicked_show_presentity_menu (heap, presentity, event);
+        gtk_menu_popup (GTK_MENU (self->priv->presentity_menu->get_menu ()),
+                        NULL, NULL, NULL, NULL, event->button, event->time);
+        //on_clicked_show_presentity_menu (heap, presentity, event);
+
       if (event->type == GDK_2BUTTON_PRESS || event->type == GDK_KEY_PRESS)
         on_clicked_trigger_presentity (presentity);
       break;
@@ -745,6 +804,7 @@ on_view_event_after (GtkWidget *tree_view,
       break; // shouldn't happen
     }
     g_free (name);
+    g_free (group_name);
   }
   gtk_tree_path_free (path);
 
@@ -1405,6 +1465,8 @@ roster_view_gtk_init (RosterViewGtk* self)
   GtkCellRenderer *renderer = NULL;
 
   self->priv = new RosterViewGtkPrivate;
+
+  self->priv->selected_presentity = NULL;
 
   self->priv->settings = new Ekiga::Settings (CONTACTS_SCHEMA);
   self->priv->folded_groups = self->priv->settings->get_slist ("roster-folded-groups");

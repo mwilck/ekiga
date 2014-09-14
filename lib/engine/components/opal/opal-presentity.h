@@ -42,8 +42,11 @@
 #include <boost/smart_ptr.hpp>
 
 #include "form.h"
+
 #include "presence-core.h"
+
 #include "presentity.h"
+
 
 namespace Opal
 {
@@ -54,7 +57,8 @@ namespace Opal
    * probably be abstracted, should the need arise!
    */
 
-  class Presentity: public Ekiga::Presentity
+  class Presentity:
+      public Ekiga::Presentity
   {
   public:
 

@@ -104,6 +104,13 @@ Opal::Presentity::Presentity (boost::weak_ptr<Ekiga::PresenceCore> presence_core
   node(node_),
   presence("unknown")
 {
+  /* Pull actions */
+  boost::shared_ptr<Ekiga::PresenceCore> pcore = presence_core.lock ();
+  if (pcore)
+    pcore->pull_actions (actions, get_name (), get_uri ());
+
+  add_action (Ekiga::ActionPtr (new Ekiga::Action ("edit", _("_Edit"), boost::bind (&Opal::Presentity::edit_presentity, this))));
+  add_action (Ekiga::ActionPtr (new Ekiga::Action ("remove", _("_Remove"), boost::bind (&Opal::Presentity::remove, this))));
 }
 
 
@@ -229,24 +236,6 @@ Opal::Presentity::set_status (const std::string status_)
 bool
 Opal::Presentity::populate_menu (Ekiga::MenuBuilder &builder)
 {
-  bool populated = false;
-  boost::shared_ptr<Ekiga::PresenceCore> pcore = presence_core.lock ();
-
-  if (!pcore)
-    return false;
-
-  populated
-    = pcore->populate_presentity_menu (PresentityPtr(this, null_deleter ()),
-				       get_uri (), builder);
-
-  if (populated)
-    builder.add_separator ();
-
-  builder.add_action ("edit", _("_Edit"),
-		      boost::bind (&Opal::Presentity::edit_presentity, this));
-  builder.add_action ("remove", _("_Remove"),
-		      boost::bind (&Opal::Presentity::remove, this));
-
   return true;
 }
 
@@ -254,7 +243,8 @@ Opal::Presentity::populate_menu (Ekiga::MenuBuilder &builder)
 void
 Opal::Presentity::edit_presentity ()
 {
-  boost::shared_ptr<Ekiga::FormRequestSimple> request = boost::shared_ptr<Ekiga::FormRequestSimple> (new Ekiga::FormRequestSimple (boost::bind (&Opal::Presentity::edit_presentity_form_submitted, this, _1, _2)));
+  boost::shared_ptr<Ekiga::FormRequestSimple> request =
+    boost::shared_ptr<Ekiga::FormRequestSimple> (new Ekiga::FormRequestSimple (boost::bind (&Opal::Presentity::edit_presentity_form_submitted, this, _1, _2)));
 
   std::string name = get_name ();
   std::string uri = get_uri ();
