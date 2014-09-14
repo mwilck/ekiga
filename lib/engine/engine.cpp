@@ -56,7 +56,6 @@
 #include "audiooutput-core.h"
 #include "hal-core.h"
 #include "history-main.h"
-#include "local-roster-main.h"
 #include "gtk-core-main.h"
 #include "gmconf-personal-details.h"
 
@@ -149,8 +148,6 @@ engine_init (Ekiga::ServiceCorePtr service_core,
   opal_init (kickstart);
 
   history_init (kickstart);
-
-  local_roster_init (kickstart);
 
   plugin_init (kickstart);
 

@@ -41,7 +41,6 @@ AM_CPPFLAGS = \
 	-I$(top_srcdir)/lib/engine/components/echo \
 	-I$(top_srcdir)/lib/engine/components/gmconf-personal-details \
 	-I$(top_srcdir)/lib/engine/components/hal-dbus \
-	-I$(top_srcdir)/lib/engine/components/local-roster \
 	-I$(top_srcdir)/lib/engine/components/mlogo-videoinput \
 	-I$(top_srcdir)/lib/engine/components/null-audioinput \
 	-I$(top_srcdir)/lib/engine/components/null-audiooutput \
@@ -529,19 +528,6 @@ libekiga_la_SOURCES += \
 	engine/components/gmconf-personal-details/gmconf-personal-details.cpp \
 	engine/components/gmconf-personal-details/gmconf-personal-details.h
 
-##
-# Sources of the local roster component
-##
-
-libekiga_la_SOURCES += \
-	engine/components/local-roster/local-presentity.h \
-	engine/components/local-roster/local-presentity.cpp \
-	engine/components/local-roster/local-heap.h \
-	engine/components/local-roster/local-heap.cpp \
-	engine/components/local-roster/local-cluster.h \
-	engine/components/local-roster/local-cluster.cpp \
-	engine/components/local-roster/local-roster-main.h \
-	engine/components/local-roster/local-roster-main.cpp
 
 ##
 # Sources of the moving logo component
