@@ -62,7 +62,7 @@ struct _CallHistoryViewGtkPrivate
   {}
 
   boost::shared_ptr<History::Book> book;
-  History::Contact *active_contact;
+  History::Contact *selected_contact;
 
   Ekiga::GActorMenuPtr menu;
   Ekiga::GActorMenuPtr contact_menu;
@@ -179,7 +179,7 @@ on_clicked (G_GNUC_UNUSED GtkWidget *tree,
   if (event->type != GDK_BUTTON_PRESS && event->type != GDK_2BUTTON_PRESS)
     return TRUE;
 
-  if (event->type == GDK_BUTTON_PRESS && event->button == 3 && self->priv->active_contact) {
+  if (event->type == GDK_BUTTON_PRESS && event->button == 3 && self->priv->selected_contact) {
 
     gtk_menu_popup (GTK_MENU (self->priv->contact_menu->get_menu (boost::assign::list_of (self->priv->menu))),
                     NULL, NULL, NULL, NULL, event->button, event->time);
@@ -201,14 +201,14 @@ on_selection_changed (G_GNUC_UNUSED GtkTreeSelection* selection,
    * properly removed before adding new ones.
    */
   self->priv->contact_menu.reset ();
-  self->priv->active_contact = NULL;
+  self->priv->selected_contact = NULL;
 
   /* Set or reset ContactActor data */
   call_history_view_gtk_get_selected (self, &contact);
 
   if (contact != NULL) {
-    self->priv->active_contact = contact;
-    self->priv->contact_menu = Ekiga::GActorMenuPtr (new Ekiga::GActorMenu (*self->priv->active_contact));
+    self->priv->selected_contact = contact;
+    self->priv->contact_menu = Ekiga::GActorMenuPtr (new Ekiga::GActorMenu (*self->priv->selected_contact));
   }
 
   g_signal_emit (self, signals[SELECTION_CHANGED_SIGNAL], 0);
@@ -308,7 +308,7 @@ call_history_view_gtk_new (boost::shared_ptr<History::Book> book,
   self = (CallHistoryViewGtk*)g_object_new (CALL_HISTORY_VIEW_GTK_TYPE, NULL);
 
   self->priv = new _CallHistoryViewGtkPrivate (book);
-  self->priv->active_contact = NULL;
+  self->priv->selected_contact = NULL;
 
   gtk_scrolled_window_set_policy (GTK_SCROLLED_WINDOW (self),
 				  GTK_POLICY_AUTOMATIC, GTK_POLICY_AUTOMATIC);
