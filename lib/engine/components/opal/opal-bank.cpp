@@ -88,6 +88,12 @@ Opal::Bank::Bank (Ekiga::ServiceCore& core):
       Ekiga::BankImpl<Account>::add_connection (account, account->presentity_added.connect (boost::bind (boost::ref(presentity_added), account, _1)));
       Ekiga::BankImpl<Account>::add_connection (account, account->presentity_updated.connect (boost::bind (boost::ref(presentity_updated), account, _1)));
       Ekiga::BankImpl<Account>::add_connection (account, account->presentity_removed.connect (boost::bind (boost::ref(presentity_removed), account, _1)));
+
+      // We have several questions to relay following we are a Cluster or a Bank.
+      // Clusters will relay questions from Heaps. Banks will relay questions from Accounts.
+      Ekiga::BankImpl<Account>::add_connection (account, account->Heap::questions.connect (boost::ref(Ekiga::Cluster::questions)));
+      Ekiga::BankImpl<Account>::add_connection (account, account->Account::questions.connect (boost::ref(Ekiga::Bank::questions)));
+
       Ekiga::BankImpl<Account>::add_connection (account, account->trigger_saving.connect (boost::bind (&Opal::Bank::save, this)));
       Ekiga::BankImpl<Account>::add_connection (account, account->presence_received.connect (boost::ref (presence_received)));
       Ekiga::BankImpl<Account>::add_connection (account, account->status_received.connect (boost::ref (status_received)));

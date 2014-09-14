@@ -186,6 +186,7 @@ Opal::Account::Account (boost::shared_ptr<Opal::Sip::EndPoint> _sip_endpoint,
 	pres->trigger_saving.connect (boost::ref (trigger_saving));
 	pres->removed.connect (boost::bind (&Opal::Account::when_presentity_removed, this, pres));
 	pres->updated.connect (boost::bind (&Opal::Account::when_presentity_updated, this, pres));
+	pres->questions.connect (boost::ref (Ekiga::Heap::questions));
 	add_object (pres);
 	presentity_added (pres);
       }
@@ -607,7 +608,7 @@ Opal::Account::edit ()
   request->text ("timeout", _("Timeout:"), str.str (), _("Time in seconds after which the account registration is automatically retried"));
   request->boolean ("enabled", _("Enable account"), is_enabled ());
 
-  questions (request);
+  Ekiga::Account::questions (request);
 }
 
 
@@ -648,7 +649,7 @@ Opal::Account::on_edit_form_submitted (bool submitted,
     result.visit (*request);
     request->error (error);
 
-    questions (request);
+    Ekiga::Account::questions (request);
   }
   else {
 
@@ -734,7 +735,7 @@ Opal::Account::add_contact ()
 			 _("Put contact in groups:"),
 			 std::set<std::string>(), groups);
 
-  questions (request);
+  Ekiga::Heap::questions (request);
 }
 
 void
@@ -779,7 +780,7 @@ Opal::Account::on_add_contact_form_submitted (bool submitted,
     else
       request->error (_("You already have a contact with this address!"));
 
-    questions (request);
+    Ekiga::Heap::questions (request);
   }
 }
 
@@ -1264,7 +1265,7 @@ Opal::Account::on_rename_group (std::string name)
   request->instructions (_("Please edit this group name"));
   request->text ("name", _("Name:"), name, std::string ());
 
-  questions (request);
+  Ekiga::Heap::questions (request);
 }
 
 
