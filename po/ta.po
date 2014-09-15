@@ -18,8 +18,8 @@ msgstr ""
 "Project-Id-Version: ekiga.ta\n"
 "Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?"
 "product=ekiga&keywords=I18N+L10N&component=general\n"
-"POT-Creation-Date: 2014-01-18 14:52+0000\n"
-"PO-Revision-Date: 2014-01-21 17:39+0530\n"
+"POT-Creation-Date: 2014-09-15 03:15+0000\n"
+"PO-Revision-Date: 2014-09-15 16:57+0630\n"
 "Last-Translator: Shantha kumar <shkumar@redhat.com>\n"
 "Language-Team: American English <kde-i18n-doc@kde.org>\n"
 "Language: en_US\n"
@@ -31,7 +31,7 @@ msgstr ""
 ";\n"
 
 #. Application name
-#: ../ekiga.desktop.in.in.h:1 ../src/main.cpp:123 ../src/main.cpp:125
+#: ../ekiga.desktop.in.in.h:1 ../src/main.cpp:118 ../src/main.cpp:120
 msgid "Ekiga Softphone"
 msgstr "எகிகா  ஸாஃப்ட்போன்"
 
@@ -43,20 +43,20 @@ msgstr "ஐபி தொலைபேச்சு, வாய்ப் (VoIP) ம�
 msgid "Talk to and see people over the Internet"
 msgstr "இணையம் வழியாக நபருடன் பேசுங்கள், பாருங்கள்"
 
-#: ../lib/engine/audioinput/audioinput-core.cpp:248
-#: ../lib/engine/audiooutput/audiooutput-core.cpp:393
+#: ../lib/engine/audioinput/audioinput-core.cpp:267
+#: ../lib/engine/audiooutput/audiooutput-core.cpp:441
 #: ../lib/engine/videoinput/videoinput-core.cpp:357
 msgid "New device detected"
 msgstr "புதிய சாதனம் கண்டறியப்பட்டது"
 
-#: ../lib/engine/audioinput/audioinput-core.cpp:248
-#: ../lib/engine/audiooutput/audiooutput-core.cpp:393
+#: ../lib/engine/audioinput/audioinput-core.cpp:268
+#: ../lib/engine/audiooutput/audiooutput-core.cpp:443
 #: ../lib/engine/videoinput/videoinput-core.cpp:357
 msgid "Use it"
 msgstr "அதைப் பயன்படுத்து"
 
-#: ../lib/engine/audioinput/audioinput-core.cpp:275
-#: ../lib/engine/audiooutput/audiooutput-core.cpp:420
+#: ../lib/engine/audioinput/audioinput-core.cpp:301
+#: ../lib/engine/audiooutput/audiooutput-core.cpp:476
 #: ../lib/engine/videoinput/videoinput-core.cpp:384
 msgid "Device removed"
 msgstr "சாதனம் நீக்கப்பட்டது"
@@ -78,12 +78,17 @@ msgstr "வைக்கப்பட்டது"
 msgid "Missed"
 msgstr "தவறியது"
 
+#: ../lib/engine/components/foe-list/foe-list.cpp:67
+#| msgid "Add to local roster"
+msgid "Add to blacklist"
+msgstr "தடைப்பட்டியலில் சேர்"
+
 #: ../lib/engine/components/local-roster/local-cluster.cpp:75
 #: ../lib/engine/components/local-roster/local-heap.cpp:115
-#: ../lib/engine/components/opal/opal-account.cpp:540
-#: ../lib/engine/gui/gtk-frontend/main_window.cpp:1162
+#: ../lib/engine/components/opal/opal-account.cpp:543
+#: ../lib/engine/gui/gtk-frontend/main_window.cpp:1157
 #: ../plugins/evolution/evolution-book.cpp:301
-#: ../plugins/loudmouth/loudmouth-heap-roster.cpp:71
+#: ../plugins/loudmouth/loudmouth-heap-roster.cpp:72
 msgid "A_dd Contact"
 msgstr "_d தொடர்பு சேர்"
 
@@ -104,7 +109,7 @@ msgid "Call back test"
 msgstr "திருப்பு அழைப்பு சோதனை"
 
 #: ../lib/engine/components/local-roster/local-heap.cpp:108
-#: ../lib/engine/gui/gtk-frontend/main_window.cpp:1300
+#: ../lib/engine/gui/gtk-frontend/main_window.cpp:1295
 msgid "Contacts"
 msgstr "தொடர்புகள்"
 
@@ -114,14 +119,14 @@ msgid "Rename"
 msgstr "மறுபெயரிடு"
 
 #: ../lib/engine/components/local-roster/local-heap.cpp:194
-#: ../lib/engine/components/opal/opal-bank.cpp:435
-#: ../plugins/loudmouth/loudmouth-heap-roster.cpp:485
+#: ../lib/engine/components/opal/opal-bank.cpp:450
+#: ../plugins/loudmouth/loudmouth-heap-roster.cpp:488
 msgid "Family"
 msgstr "குடும்பம்"
 
 #: ../lib/engine/components/local-roster/local-heap.cpp:195
-#: ../lib/engine/components/opal/opal-bank.cpp:436
-#: ../plugins/loudmouth/loudmouth-heap-roster.cpp:486
+#: ../lib/engine/components/opal/opal-bank.cpp:451
+#: ../plugins/loudmouth/loudmouth-heap-roster.cpp:489
 msgid "Friend"
 msgstr "நண்பர்"
 
@@ -130,8 +135,8 @@ msgstr "நண்பர்"
 #. someone who is at the same "level" than you.
 #.
 #: ../lib/engine/components/local-roster/local-heap.cpp:200
-#: ../lib/engine/components/opal/opal-bank.cpp:441
-#: ../plugins/loudmouth/loudmouth-heap-roster.cpp:491
+#: ../lib/engine/components/opal/opal-bank.cpp:456
+#: ../plugins/loudmouth/loudmouth-heap-roster.cpp:494
 msgid "Associate"
 msgstr "கூட்டாளி"
 
@@ -140,8 +145,8 @@ msgstr "கூட்டாளி"
 #. someone who is at a lower "level" than you.
 #.
 #: ../lib/engine/components/local-roster/local-heap.cpp:205
-#: ../lib/engine/components/opal/opal-bank.cpp:446
-#: ../plugins/loudmouth/loudmouth-heap-roster.cpp:496
+#: ../lib/engine/components/opal/opal-bank.cpp:461
+#: ../plugins/loudmouth/loudmouth-heap-roster.cpp:499
 msgid "Assistant"
 msgstr "உதவியாளர்"
 
@@ -150,8 +155,8 @@ msgstr "உதவியாளர்"
 #. someone who is at a higher "level" than you.
 #.
 #: ../lib/engine/components/local-roster/local-heap.cpp:210
-#: ../lib/engine/components/opal/opal-bank.cpp:451
-#: ../plugins/loudmouth/loudmouth-heap-roster.cpp:501
+#: ../lib/engine/components/opal/opal-bank.cpp:466
+#: ../plugins/loudmouth/loudmouth-heap-roster.cpp:504
 msgid "Supervisor"
 msgstr "கண்காணிப்பாளர்"
 
@@ -159,8 +164,8 @@ msgstr "கண்காணிப்பாளர்"
 #. relationships between you and your contact; self means yourself.
 #.
 #: ../lib/engine/components/local-roster/local-heap.cpp:214
-#: ../lib/engine/components/opal/opal-bank.cpp:455
-#: ../plugins/loudmouth/loudmouth-heap-roster.cpp:505
+#: ../lib/engine/components/opal/opal-bank.cpp:470
+#: ../plugins/loudmouth/loudmouth-heap-roster.cpp:508
 msgid "Self"
 msgstr "தானாக"
 
@@ -180,14 +185,14 @@ msgstr ""
 #: ../lib/engine/components/local-roster/local-heap.cpp:236
 #: ../lib/engine/components/local-roster/local-heap.cpp:433
 #: ../lib/engine/components/local-roster/local-presentity.cpp:279
-#: ../lib/engine/components/opal/opal-account.cpp:644
-#: ../lib/engine/components/opal/opal-account.cpp:778
+#: ../lib/engine/components/opal/opal-account.cpp:647
+#: ../lib/engine/components/opal/opal-account.cpp:781
 #: ../lib/engine/components/opal/opal-account.cpp:1304
 #: ../lib/engine/components/opal/opal-presentity.cpp:267
 #: ../plugins/evolution/evolution-contact.cpp:324
 #: ../plugins/loudmouth/loudmouth-account.cpp:342
 #: ../plugins/loudmouth/loudmouth-bank.cpp:120
-#: ../plugins/loudmouth/loudmouth-heap-roster.cpp:338
+#: ../plugins/loudmouth/loudmouth-heap-roster.cpp:341
 #: ../plugins/loudmouth/loudmouth-presentity.cpp:288
 #: ../plugins/resource-list/rl-cluster.cpp:164
 #: ../plugins/resource-list/rl-heap.cpp:526
@@ -197,16 +202,16 @@ msgstr "பெயர்:"
 
 #: ../lib/engine/components/local-roster/local-heap.cpp:236
 #: ../lib/engine/components/local-roster/local-presentity.cpp:279
-#: ../lib/engine/components/opal/opal-account.cpp:778
+#: ../lib/engine/components/opal/opal-account.cpp:781
 #: ../lib/engine/components/opal/opal-presentity.cpp:267
-#: ../plugins/loudmouth/loudmouth-heap-roster.cpp:338
+#: ../plugins/loudmouth/loudmouth-heap-roster.cpp:341
 msgid "Name of the contact, as shown in your roster"
 msgstr "தொடர்பின் பெயர், உங்கள் பதிவேட்டில் காட்டியபடி"
 
 #: ../lib/engine/components/local-roster/local-heap.cpp:245
 #: ../lib/engine/components/local-roster/local-heap.cpp:247
 #: ../lib/engine/components/local-roster/local-presentity.cpp:280
-#: ../lib/engine/components/opal/opal-account.cpp:780
+#: ../lib/engine/components/opal/opal-account.cpp:783
 #: ../lib/engine/components/opal/opal-presentity.cpp:268
 #: ../plugins/resource-list/rl-cluster.cpp:165
 #: ../plugins/resource-list/rl-heap.cpp:527
@@ -217,7 +222,7 @@ msgstr "முகவரி புத்தகம்:"
 #: ../lib/engine/components/local-roster/local-heap.cpp:245
 #: ../lib/engine/components/local-roster/local-heap.cpp:247
 #: ../lib/engine/components/local-roster/local-presentity.cpp:280
-#: ../lib/engine/components/opal/opal-account.cpp:780
+#: ../lib/engine/components/opal/opal-account.cpp:783
 #: ../lib/engine/components/opal/opal-presentity.cpp:268
 msgid ""
 "Address, e.g. sip:xyz@ekiga.net; if you do not specify the host part, e.g. "
@@ -228,18 +233,18 @@ msgstr ""
 "தேர்வு செய்யலாம்"
 
 #: ../lib/engine/components/local-roster/local-heap.cpp:251
-#: ../lib/engine/components/opal/opal-account.cpp:783
-#: ../plugins/loudmouth/loudmouth-heap-roster.cpp:340
+#: ../lib/engine/components/opal/opal-account.cpp:786
+#: ../plugins/loudmouth/loudmouth-heap-roster.cpp:343
 msgid "Put contact in groups:"
 msgstr "தொடர்பை குழுவின்  உள்ளே வைக்கவும்:"
 
 #: ../lib/engine/components/local-roster/local-heap.cpp:418
-#: ../lib/engine/components/opal/opal-account.cpp:827
+#: ../lib/engine/components/opal/opal-account.cpp:830
 msgid "You supplied an unsupported address"
 msgstr "நீங்கள் ஆதரவில்லாத முகவரியை கொடுத்தீர்கள்."
 
 #: ../lib/engine/components/local-roster/local-heap.cpp:420
-#: ../lib/engine/components/opal/opal-account.cpp:829
+#: ../lib/engine/components/opal/opal-account.cpp:832
 msgid "You already have a contact with this address!"
 msgstr "நீங்கள் இந்த முகவரியில் ஏற்கெனவே ஒரு தொடர்பு வைத்து உள்ளீர்கள்!"
 
@@ -254,7 +259,7 @@ msgid "Please edit this group name"
 msgstr "இந்த குழு பெயரை தயவு செய்து திருத்தவும் ."
 
 #: ../lib/engine/components/local-roster/local-presentity.cpp:140
-#: ../lib/engine/components/opal/opal-account.cpp:229
+#: ../lib/engine/components/opal/opal-account.cpp:230
 #: ../lib/engine/components/opal/opal-presentity.cpp:137
 #: ../plugins/resource-list/rl-entry.cpp:141
 #: ../plugins/resource-list/rl-heap.cpp:102
@@ -265,9 +270,9 @@ msgid "Unnamed"
 msgstr "பெயரில்லாதது"
 
 #: ../lib/engine/components/local-roster/local-presentity.cpp:245
-#: ../lib/engine/components/opal/opal-account.cpp:545
+#: ../lib/engine/components/opal/opal-account.cpp:548
 #: ../lib/engine/components/opal/opal-presentity.cpp:245
-#: ../lib/engine/gui/gtk-frontend/main_window.cpp:1186
+#: ../lib/engine/gui/gtk-frontend/main_window.cpp:1181
 #: ../plugins/evolution/evolution-contact.cpp:228
 #: ../plugins/loudmouth/loudmouth-presentity.cpp:174
 #: ../plugins/resource-list/rl-presentity.cpp:212
@@ -275,7 +280,7 @@ msgid "_Edit"
 msgstr "திருத்து (_E)"
 
 #: ../lib/engine/components/local-roster/local-presentity.cpp:247
-#: ../lib/engine/components/opal/opal-account.cpp:547
+#: ../lib/engine/components/opal/opal-account.cpp:550
 #: ../lib/engine/components/opal/opal-presentity.cpp:247
 #: ../lib/engine/gui/gtk-frontend/accounts-window.cpp:680
 #: ../plugins/evolution/evolution-contact.cpp:230
@@ -313,141 +318,141 @@ msgstr "இவர் ஒரு முன்னுரிமை தொடர்ப
 msgid "Choose groups:"
 msgstr "குழுக்களை தேர்வு செய்யவும்:"
 
-#: ../lib/engine/components/opal/h323-endpoint.cpp:121
-#: ../lib/engine/components/opal/opal-call.cpp:691
-#: ../lib/engine/components/opal/sip-endpoint.cpp:182
+#: ../lib/engine/components/opal/h323-endpoint.cpp:119
+#: ../lib/engine/components/opal/opal-call.cpp:694
+#: ../lib/engine/components/opal/sip-endpoint.cpp:186
 msgid "Call"
 msgstr "அழை"
 
-#: ../lib/engine/components/opal/h323-endpoint.cpp:124
-#: ../lib/engine/components/opal/sip-endpoint.cpp:185
-#: ../lib/engine/gui/gtk-frontend/call-window.cpp:1941
+#: ../lib/engine/components/opal/h323-endpoint.cpp:122
+#: ../lib/engine/components/opal/sip-endpoint.cpp:189
+#: ../lib/engine/gui/gtk-frontend/call-window.cpp:1980
 msgid "Transfer"
 msgstr "அனுப்பு"
 
 #. Translators : The alias we are registering already exists : failure
-#: ../lib/engine/components/opal/h323-endpoint.cpp:305
+#: ../lib/engine/components/opal/h323-endpoint.cpp:303
 msgid "Duplicate alias"
 msgstr "போலி புனைபெயர்"
 
-#: ../lib/engine/components/opal/h323-endpoint.cpp:308
+#: ../lib/engine/components/opal/h323-endpoint.cpp:306
 msgid "Bad username/password"
 msgstr "தீய பயனர்சொல்/ கடவுச்சொல்"
 
-#: ../lib/engine/components/opal/h323-endpoint.cpp:311
-#: ../lib/engine/components/opal/sip-endpoint.cpp:511
+#: ../lib/engine/components/opal/h323-endpoint.cpp:309
+#: ../lib/engine/components/opal/sip-endpoint.cpp:516
 msgid "Transport error"
 msgstr "போக்குவரத்து தவறு"
 
-#: ../lib/engine/components/opal/h323-endpoint.cpp:322
-#: ../lib/engine/components/opal/h323-endpoint.cpp:327
-#: ../lib/engine/components/opal/sip-endpoint.cpp:724
+#: ../lib/engine/components/opal/h323-endpoint.cpp:323
+#: ../lib/engine/components/opal/h323-endpoint.cpp:328
+#: ../lib/engine/components/opal/sip-endpoint.cpp:738
 msgid "Failed"
 msgstr "தோற்றது "
 
 #. Translators: this is a state, not an action, i.e. it should be read as
 #. "(you are) unregistered", and not as "(you have been) unregistered"
 #: ../lib/engine/components/opal/opal-account.cpp:159
-#: ../lib/engine/components/opal/opal-account.cpp:465
-#: ../lib/engine/components/opal/opal-account.cpp:951
+#: ../lib/engine/components/opal/opal-account.cpp:468
+#: ../lib/engine/components/opal/opal-account.cpp:946
 msgid "Unregistered"
 msgstr "பதிவு நீக்கப்பட்டது"
 
 #. translators : the result will look like :
 #. * "registered (with 2 voice mail messages)"
 #.
-#: ../lib/engine/components/opal/opal-account.cpp:247
+#: ../lib/engine/components/opal/opal-account.cpp:248
 #, c-format
 msgid "%s (with %d voice mail message)"
 msgid_plural "%s (with %d voice mail messages)"
 msgstr[0] "%s ( %d குரல் அஞ்சல் செய்தியுடன்)"
 msgstr[1] "%s ( %d குரல் அஞ்சல் செய்திகளுடன்)"
 
-#: ../lib/engine/components/opal/opal-account.cpp:431
-#: ../lib/engine/components/opal/opal-account.cpp:1033
+#: ../lib/engine/components/opal/opal-account.cpp:434
+#: ../lib/engine/components/opal/opal-account.cpp:1037
 msgid "Processing..."
 msgstr "செயலாக்கம்..."
 
-#: ../lib/engine/components/opal/opal-account.cpp:532
+#: ../lib/engine/components/opal/opal-account.cpp:535
 #: ../lib/engine/gui/gtk-frontend/accounts-window.cpp:674
 #: ../plugins/loudmouth/loudmouth-account.cpp:433
 msgid "_Disable"
 msgstr "செயல் நீக்கு (_D)"
 
-#: ../lib/engine/components/opal/opal-account.cpp:535
+#: ../lib/engine/components/opal/opal-account.cpp:538
 #: ../lib/engine/gui/gtk-frontend/accounts-window.cpp:671
 #: ../plugins/loudmouth/loudmouth-account.cpp:437
 msgid "_Enable"
 msgstr "செயல்படுத்து (_E)"
 
-#: ../lib/engine/components/opal/opal-account.cpp:561
-#: ../lib/engine/gui/gtk-frontend/assistant-window.cpp:545
+#: ../lib/engine/components/opal/opal-account.cpp:564
+#: ../lib/engine/gui/gtk-frontend/assistant-window.cpp:544
 msgid "Recharge the account"
 msgstr "கணக்கினை புதுப்பிக்கவும்"
 
-#: ../lib/engine/components/opal/opal-account.cpp:566
-#: ../lib/engine/gui/gtk-frontend/assistant-window.cpp:557
+#: ../lib/engine/components/opal/opal-account.cpp:569
+#: ../lib/engine/gui/gtk-frontend/assistant-window.cpp:556
 msgid "Consult the balance history"
 msgstr "கணக்கு வரலாற்றை அணுகவும்"
 
-#: ../lib/engine/components/opal/opal-account.cpp:571
-#: ../lib/engine/gui/gtk-frontend/assistant-window.cpp:569
+#: ../lib/engine/components/opal/opal-account.cpp:574
+#: ../lib/engine/gui/gtk-frontend/assistant-window.cpp:568
 msgid "Consult the call history"
 msgstr "அழைப்பு வரலாற்றை சோதிக்கவும்."
 
-#: ../lib/engine/components/opal/opal-account.cpp:640
-#: ../lib/engine/components/opal/opal-bank.cpp:187
+#: ../lib/engine/components/opal/opal-account.cpp:643
+#: ../lib/engine/components/opal/opal-bank.cpp:190
 #: ../plugins/loudmouth/loudmouth-account.cpp:337
 #: ../plugins/loudmouth/loudmouth-bank.cpp:116
 msgid "Edit account"
 msgstr "கணக்கை திருத்துக"
 
-#: ../lib/engine/components/opal/opal-account.cpp:642
-#: ../lib/engine/components/opal/opal-bank.cpp:188
+#: ../lib/engine/components/opal/opal-account.cpp:645
+#: ../lib/engine/components/opal/opal-bank.cpp:191
 #: ../plugins/evolution/evolution-book.cpp:345
 #: ../plugins/evolution/evolution-contact.cpp:322
 #: ../plugins/loudmouth/loudmouth-account.cpp:339
 msgid "Please update the following fields:"
 msgstr "தயவு செய்து பின்வரும் புலங்களை இற்றைப்படுத்தவும்:"
 
-#: ../lib/engine/components/opal/opal-account.cpp:644
-#: ../lib/engine/components/opal/opal-bank.cpp:214
-#: ../lib/engine/components/opal/opal-bank.cpp:224
+#: ../lib/engine/components/opal/opal-account.cpp:647
+#: ../lib/engine/components/opal/opal-bank.cpp:217
+#: ../lib/engine/components/opal/opal-bank.cpp:227
 #: ../plugins/loudmouth/loudmouth-account.cpp:342
 #: ../plugins/loudmouth/loudmouth-bank.cpp:120
 msgid "Account name, e.g. MyAccount"
 msgstr "கணக்கு பெயர், எ.கா என் கணக்கு"
 
-#: ../lib/engine/components/opal/opal-account.cpp:646
+#: ../lib/engine/components/opal/opal-account.cpp:649
 msgid "Registrar:"
 msgstr "பதிவாளர்:"
 
-#: ../lib/engine/components/opal/opal-account.cpp:646
-#: ../lib/engine/components/opal/opal-bank.cpp:225
+#: ../lib/engine/components/opal/opal-account.cpp:649
+#: ../lib/engine/components/opal/opal-bank.cpp:228
 msgid "The registrar, e.g. ekiga.net"
 msgstr "பதிவாளர், எ.கா ekiga.net"
 
-#: ../lib/engine/components/opal/opal-account.cpp:648
+#: ../lib/engine/components/opal/opal-account.cpp:651
 msgid "Gatekeeper:"
 msgstr "வாயில் காப்பாளர்:"
 
-#: ../lib/engine/components/opal/opal-account.cpp:648
-#: ../lib/engine/components/opal/opal-bank.cpp:215
+#: ../lib/engine/components/opal/opal-account.cpp:651
+#: ../lib/engine/components/opal/opal-bank.cpp:218
 msgid "The gatekeeper, e.g. ekiga.net"
 msgstr "வாயில் காப்பாளர் எ.கா ekiga.net"
 
-#: ../lib/engine/components/opal/opal-account.cpp:649
+#: ../lib/engine/components/opal/opal-account.cpp:652
 #: ../plugins/loudmouth/loudmouth-account.cpp:346
 #: ../plugins/loudmouth/loudmouth-bank.cpp:121
 #: ../plugins/resource-list/rl-cluster.cpp:169
 msgid "User:"
 msgstr "பயனர்:"
 
-#: ../lib/engine/components/opal/opal-account.cpp:649
-#: ../lib/engine/components/opal/opal-bank.cpp:196
-#: ../lib/engine/components/opal/opal-bank.cpp:207
-#: ../lib/engine/components/opal/opal-bank.cpp:216
-#: ../lib/engine/components/opal/opal-bank.cpp:226
+#: ../lib/engine/components/opal/opal-account.cpp:652
+#: ../lib/engine/components/opal/opal-bank.cpp:199
+#: ../lib/engine/components/opal/opal-bank.cpp:210
+#: ../lib/engine/components/opal/opal-bank.cpp:219
+#: ../lib/engine/components/opal/opal-bank.cpp:229
 #: ../plugins/loudmouth/loudmouth-account.cpp:346
 #: ../plugins/loudmouth/loudmouth-bank.cpp:121
 msgid "The user name, e.g. jim"
@@ -456,12 +461,12 @@ msgstr "பயனர் பெயர், எ.கா ராமன்"
 #. Translators:
 #. * SIP knows two usernames: The name for the client ("User") and the name
 #. * for the authentication procedure ("Authentication user")
-#: ../lib/engine/components/opal/opal-account.cpp:654
+#: ../lib/engine/components/opal/opal-account.cpp:657
 msgid "Authentication user:"
 msgstr "அங்கீகரிப்பு பயனர்:"
 
-#: ../lib/engine/components/opal/opal-account.cpp:654
-#: ../lib/engine/components/opal/opal-bank.cpp:227
+#: ../lib/engine/components/opal/opal-account.cpp:657
+#: ../lib/engine/components/opal/opal-bank.cpp:230
 msgid ""
 "The user name used during authentication, if different than the user name; "
 "leave empty if you do not have one"
@@ -470,66 +475,66 @@ msgstr ""
 "இருப்பின்; வேறாக "
 "இல்லையானால் வெற்றாக விடவும்"
 
-#: ../lib/engine/components/opal/opal-account.cpp:655
+#: ../lib/engine/components/opal/opal-account.cpp:658
 #: ../plugins/loudmouth/loudmouth-account.cpp:362
 #: ../plugins/loudmouth/loudmouth-bank.cpp:124
 #: ../plugins/resource-list/rl-cluster.cpp:168
 msgid "Password:"
 msgstr "கடவுச்சொல்:"
 
-#: ../lib/engine/components/opal/opal-account.cpp:655
-#: ../lib/engine/components/opal/opal-bank.cpp:198
-#: ../lib/engine/components/opal/opal-bank.cpp:209
-#: ../lib/engine/components/opal/opal-bank.cpp:218
-#: ../lib/engine/components/opal/opal-bank.cpp:228
+#: ../lib/engine/components/opal/opal-account.cpp:658
+#: ../lib/engine/components/opal/opal-bank.cpp:201
+#: ../lib/engine/components/opal/opal-bank.cpp:212
+#: ../lib/engine/components/opal/opal-bank.cpp:221
+#: ../lib/engine/components/opal/opal-bank.cpp:231
 #: ../plugins/loudmouth/loudmouth-account.cpp:362
 #: ../plugins/loudmouth/loudmouth-bank.cpp:124
 msgid "Password associated to the user"
 msgstr "பயனருடன் இணைந்த கடவுச்சொல்"
 
-#: ../lib/engine/components/opal/opal-account.cpp:656
+#: ../lib/engine/components/opal/opal-account.cpp:659
 msgid "Timeout:"
 msgstr "நேரம் முடிந்தது:"
 
-#: ../lib/engine/components/opal/opal-account.cpp:656
-#: ../lib/engine/components/opal/opal-bank.cpp:219
-#: ../lib/engine/components/opal/opal-bank.cpp:229
+#: ../lib/engine/components/opal/opal-account.cpp:659
+#: ../lib/engine/components/opal/opal-bank.cpp:222
+#: ../lib/engine/components/opal/opal-bank.cpp:232
 msgid ""
 "Time in seconds after which the account registration is automatically retried"
 msgstr "கணக்கு பதிவு தானியங்கியாக மீண்டும் முயற்சிக்க நொடிகளில் இடைவெளி "
 
-#: ../lib/engine/components/opal/opal-account.cpp:657
-#: ../lib/engine/components/opal/opal-bank.cpp:232
+#: ../lib/engine/components/opal/opal-account.cpp:660
+#: ../lib/engine/components/opal/opal-bank.cpp:235
 #: ../plugins/loudmouth/loudmouth-account.cpp:376
 #: ../plugins/loudmouth/loudmouth-bank.cpp:125
 msgid "Enable account"
 msgstr "கணக்கை செயல்படுத்துக"
 
-#: ../lib/engine/components/opal/opal-account.cpp:686
-#: ../lib/engine/components/opal/opal-bank.cpp:267
+#: ../lib/engine/components/opal/opal-account.cpp:689
+#: ../lib/engine/components/opal/opal-bank.cpp:270
 msgid "You did not supply a name for that account."
 msgstr "நீங்கள்  கணக்குக்கு  பெயர் தரவில்லை."
 
-#: ../lib/engine/components/opal/opal-account.cpp:688
-#: ../lib/engine/components/opal/opal-bank.cpp:269
+#: ../lib/engine/components/opal/opal-account.cpp:691
+#: ../lib/engine/components/opal/opal-bank.cpp:272
 msgid "You did not supply a host to register to."
 msgstr "நீங்கள்  பதிவு செய்ய  புரவலன்  பெயர் தரவில்லை."
 
-#: ../lib/engine/components/opal/opal-account.cpp:690
-#: ../lib/engine/components/opal/opal-bank.cpp:271
+#: ../lib/engine/components/opal/opal-account.cpp:693
+#: ../lib/engine/components/opal/opal-bank.cpp:274
 msgid "You did not supply a user name for that account."
 msgstr "நீங்கள்  கணக்குக்கு  பயனர் பெயர் தரவில்லை"
 
-#: ../lib/engine/components/opal/opal-account.cpp:692
-#: ../lib/engine/components/opal/opal-bank.cpp:273
+#: ../lib/engine/components/opal/opal-account.cpp:695
+#: ../lib/engine/components/opal/opal-bank.cpp:276
 msgid "The timeout should be at least 10 seconds."
 msgstr "காலாவதி நேரம் குறைந்தது 10 விநாடிகள் இருக்க வேண்டும் ."
 
-#: ../lib/engine/components/opal/opal-account.cpp:775
+#: ../lib/engine/components/opal/opal-account.cpp:778
 msgid "Add to account roster"
 msgstr "கணக்குப் பட்டியலில் சேர்க்கவும்"
 
-#: ../lib/engine/components/opal/opal-account.cpp:776
+#: ../lib/engine/components/opal/opal-account.cpp:779
 msgid "Please fill in this form to add a new contact to this account's roster"
 msgstr ""
 "இந்த கணக்கின் பட்டியலில் ஒரு புதிய தொடர்பைச் சேர்க்க இந்தப் படிவத்தை "
@@ -537,256 +542,206 @@ msgstr ""
 
 #. Translators: this is a state, not an action, i.e. it should be read as
 #. "(you are) registered", and not as "(you have been) registered"
-#: ../lib/engine/components/opal/opal-account.cpp:924
+#: ../lib/engine/components/opal/opal-account.cpp:919
 msgid "Registered"
 msgstr "பதிவு செய்யப்பட்டது"
 
-#: ../lib/engine/components/opal/opal-account.cpp:965
+#: ../lib/engine/components/opal/opal-account.cpp:960
 msgid "Could not unregister"
 msgstr "பதிவு நீக்க முடியவில்லை"
 
-#: ../lib/engine/components/opal/opal-account.cpp:977
-#: ../lib/engine/components/opal/opal-account.cpp:1012
+#: ../lib/engine/components/opal/opal-account.cpp:972
+#: ../lib/engine/components/opal/opal-account.cpp:1013
 msgid "Could not register to "
 msgstr "இதற்குப் பதிவு செய்ய முடியவில்லை "
 
-#: ../lib/engine/components/opal/opal-account.cpp:978
-#: ../lib/engine/components/opal/opal-account.cpp:1013
+#: ../lib/engine/components/opal/opal-account.cpp:973
+#: ../lib/engine/components/opal/opal-account.cpp:1014
+#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:600
 #: ../plugins/loudmouth/loudmouth-account.cpp:443
 msgid "Edit"
 msgstr "திருத்து"
 
-#: ../lib/engine/components/opal/opal-account.cpp:1007
+#: ../lib/engine/components/opal/opal-account.cpp:1008
 msgid "Could not register"
 msgstr "பதிவு செய்ய முடியவில்லை"
 
-#: ../lib/engine/components/opal/opal-account.cpp:1158
-msgid "Appointment"
-msgstr "சந்திப்பு"
-
-#: ../lib/engine/components/opal/opal-account.cpp:1163
-msgid "Breakfast"
-msgstr "காலை உணவு"
-
-#: ../lib/engine/components/opal/opal-account.cpp:1168
-msgid "Dinner"
-msgstr "இரவு உணவு"
-
-#: ../lib/engine/components/opal/opal-account.cpp:1174
-msgid "Holiday"
-msgstr "விடுமுறை"
-
-#: ../lib/engine/components/opal/opal-account.cpp:1179
-msgid "In transit"
-msgstr "பயணத்தில்"
-
-#: ../lib/engine/components/opal/opal-account.cpp:1184
-msgid "Looking for work"
-msgstr "வேலை தேடுகிறார்"
-
-#: ../lib/engine/components/opal/opal-account.cpp:1189
-msgid "Lunch"
-msgstr "மதிய உணவு"
-
-#: ../lib/engine/components/opal/opal-account.cpp:1194
-msgid "Meal"
-msgstr "உணவு வேளை"
-
-#: ../lib/engine/components/opal/opal-account.cpp:1199
-msgid "Meeting"
-msgstr "சந்திப்பு"
-
-#: ../lib/engine/components/opal/opal-account.cpp:1204
-msgid "On the phone"
-msgstr "தொலைபேசியில்"
-
-#: ../lib/engine/components/opal/opal-account.cpp:1209
-msgid "Playing"
-msgstr "இயங்குகிறது"
-
-#: ../lib/engine/components/opal/opal-account.cpp:1214
-msgid "Shopping"
-msgstr "ஷாப்பிங்"
-
-#: ../lib/engine/components/opal/opal-account.cpp:1219
-msgid "Sleeping"
-msgstr "தூங்குகிறார்"
-
-#: ../lib/engine/components/opal/opal-account.cpp:1224
-msgid "Working"
-msgstr "வேலை"
-
-#: ../lib/engine/components/opal/opal-bank.cpp:122
+#: ../lib/engine/components/opal/opal-bank.cpp:125
 msgid "_Add an Ekiga.net Account"
 msgstr "_A  Ekiga.net கணக்கு ஒன்று  சேர்"
 
-#: ../lib/engine/components/opal/opal-bank.cpp:124
+#: ../lib/engine/components/opal/opal-bank.cpp:127
 msgid "_Add an Ekiga Call Out Account"
 msgstr "_A Ekiga வெளி அழை கணக்கு ஒன்று  சேர்"
 
-#: ../lib/engine/components/opal/opal-bank.cpp:126
+#: ../lib/engine/components/opal/opal-bank.cpp:129
 msgid "_Add a SIP Account"
 msgstr "_A சிப்  கணக்கு ஒன்று  சேர்"
 
-#: ../lib/engine/components/opal/opal-bank.cpp:129
+#: ../lib/engine/components/opal/opal-bank.cpp:132
 msgid "_Add an H.323 Account"
 msgstr "_A H.323 கணக்கு ஒன்று  சேர்"
 
-#: ../lib/engine/components/opal/opal-bank.cpp:193
-#: ../lib/engine/gui/gtk-frontend/assistant-window.cpp:429
+#: ../lib/engine/components/opal/opal-bank.cpp:196
+#: ../lib/engine/gui/gtk-frontend/assistant-window.cpp:428
 msgid "Get an Ekiga.net SIP account"
 msgstr "Ekiga.net சிப்  கணக்கு ஒன்று  பெறு"
 
-#: ../lib/engine/components/opal/opal-bank.cpp:196
-#: ../lib/engine/components/opal/opal-bank.cpp:216
-#: ../lib/engine/components/opal/opal-bank.cpp:226
+#: ../lib/engine/components/opal/opal-bank.cpp:199
+#: ../lib/engine/components/opal/opal-bank.cpp:219
+#: ../lib/engine/components/opal/opal-bank.cpp:229
 msgid "_User:"
 msgstr "(_U) பயனர்:"
 
-#: ../lib/engine/components/opal/opal-bank.cpp:198
-#: ../lib/engine/components/opal/opal-bank.cpp:218
-#: ../lib/engine/components/opal/opal-bank.cpp:228
+#: ../lib/engine/components/opal/opal-bank.cpp:201
+#: ../lib/engine/components/opal/opal-bank.cpp:221
+#: ../lib/engine/components/opal/opal-bank.cpp:231
 #: ../plugins/ldap/ldap-book.cpp:986
 msgid "_Password:"
 msgstr "(_P) கடவுச்சொல்: (_P)"
 
-#: ../lib/engine/components/opal/opal-bank.cpp:203
-#: ../lib/engine/gui/gtk-frontend/assistant-window.cpp:533
+#: ../lib/engine/components/opal/opal-bank.cpp:206
+#: ../lib/engine/gui/gtk-frontend/assistant-window.cpp:532
 msgid "Get an Ekiga Call Out account"
 msgstr "Ekiga வெளி அழை கணக்கு ஒன்று பெறு"
 
-#: ../lib/engine/components/opal/opal-bank.cpp:207
+#: ../lib/engine/components/opal/opal-bank.cpp:210
 msgid "_Account ID:"
 msgstr "(_A) கணக்கு அடையாளம்:"
 
-#: ../lib/engine/components/opal/opal-bank.cpp:209
+#: ../lib/engine/components/opal/opal-bank.cpp:212
 msgid "_PIN code:"
 msgstr "(_P) பின் குறியீடு:"
 
-#: ../lib/engine/components/opal/opal-bank.cpp:214
-#: ../lib/engine/components/opal/opal-bank.cpp:224
+#: ../lib/engine/components/opal/opal-bank.cpp:217
+#: ../lib/engine/components/opal/opal-bank.cpp:227
 #: ../plugins/evolution/evolution-book.cpp:347
 msgid "_Name:"
 msgstr "_N பெயர்:"
 
-#: ../lib/engine/components/opal/opal-bank.cpp:215
+#: ../lib/engine/components/opal/opal-bank.cpp:218
 msgid "_Gatekeeper:"
 msgstr "(_G) வாயில் காப்பாளர்:"
 
-#: ../lib/engine/components/opal/opal-bank.cpp:219
-#: ../lib/engine/components/opal/opal-bank.cpp:229
+#: ../lib/engine/components/opal/opal-bank.cpp:222
+#: ../lib/engine/components/opal/opal-bank.cpp:232
 msgid "_Timeout:"
 msgstr "(_T) நேரம் முடிந்தது:"
 
-#: ../lib/engine/components/opal/opal-bank.cpp:225
+#: ../lib/engine/components/opal/opal-bank.cpp:228
 msgid "_Registrar:"
 msgstr "(_R) பதிவாளர்:"
 
-#: ../lib/engine/components/opal/opal-bank.cpp:227
+#: ../lib/engine/components/opal/opal-bank.cpp:230
 msgid "_Authentication user:"
 msgstr "அங்கீகரிப்பு பயனர் (_A):"
 
-#: ../lib/engine/components/opal/opal-call.cpp:419
+#: ../lib/engine/components/opal/opal-call.cpp:416
 msgid "Local user cleared the call"
 msgstr "உள் பயனீட்டாளர் அழைப்பை நீக்கி விட்டார்"
 
+#: ../lib/engine/components/opal/opal-call.cpp:419
 #: ../lib/engine/components/opal/opal-call.cpp:422
-#: ../lib/engine/components/opal/opal-call.cpp:425
 msgid "Local user rejected the call"
 msgstr "உள் பயனர் அழைப்பை தவிர்த்தார்"
 
-#: ../lib/engine/components/opal/opal-call.cpp:428
+#: ../lib/engine/components/opal/opal-call.cpp:425
 msgid "Remote user cleared the call"
 msgstr "தொலைவில் உள்ளவர் அழைப்பை நீக்கி விட்டார்"
 
-#: ../lib/engine/components/opal/opal-call.cpp:431
+#: ../lib/engine/components/opal/opal-call.cpp:428
 msgid "Remote user rejected the call"
 msgstr "தொலை பயனர் அழைப்பினை தவிர்த்தார்"
 
-#: ../lib/engine/components/opal/opal-call.cpp:434
+#: ../lib/engine/components/opal/opal-call.cpp:431
 msgid "Remote user has stopped calling"
 msgstr "தொலைவில் உள்ளவர் அழைப்பதை நிறுத்தி விட்டார்"
 
-#: ../lib/engine/components/opal/opal-call.cpp:437
+#: ../lib/engine/components/opal/opal-call.cpp:434
 msgid "Abnormal call termination"
 msgstr "இயல்பற்ற அழைப்பு முடிவு"
 
-#: ../lib/engine/components/opal/opal-call.cpp:440
-#: ../lib/engine/gui/gtk-frontend/main_window.cpp:419
+#: ../lib/engine/components/opal/opal-call.cpp:437
+#: ../lib/engine/gui/gtk-frontend/main_window.cpp:420
 msgid "Could not connect to remote host"
 msgstr "தொலைவில் உள்ளவரிடம் இணைக்க முடியவில்லை"
 
-#: ../lib/engine/components/opal/opal-call.cpp:444
+#: ../lib/engine/components/opal/opal-call.cpp:441
 msgid "The Gatekeeper cleared the call"
 msgstr "நுழைவாயில் காப்பாளர்உள்ளவர் அழைப்பை நீக்கி விட்டார்"
 
-#: ../lib/engine/components/opal/opal-call.cpp:447
+#: ../lib/engine/components/opal/opal-call.cpp:444
 msgid "User not found"
 msgstr "பயனர் இல்லை"
 
-#: ../lib/engine/components/opal/opal-call.cpp:450
+#: ../lib/engine/components/opal/opal-call.cpp:447
 msgid "Insufficient bandwidth"
 msgstr "போதிய அலை அடையகலம் இல்லை"
 
-#: ../lib/engine/components/opal/opal-call.cpp:453
+#: ../lib/engine/components/opal/opal-call.cpp:450
 msgid "No common codec"
 msgstr "பொதுவான கோடெக் இல்லை"
 
-#: ../lib/engine/components/opal/opal-call.cpp:456
+#: ../lib/engine/components/opal/opal-call.cpp:453
 msgid "Call forwarded"
 msgstr "அழைப்பு முன்னோக்கப்பட்டது"
 
-#: ../lib/engine/components/opal/opal-call.cpp:459
+#: ../lib/engine/components/opal/opal-call.cpp:456
 msgid "Security check failed"
 msgstr "பாதுகாப்பினை சோதிக்க முடியவில்லை"
 
-#: ../lib/engine/components/opal/opal-call.cpp:462
+#: ../lib/engine/components/opal/opal-call.cpp:459
 msgid "Local user is busy"
 msgstr "உள் பயனீட்டாளர் வேலையாக உள்ளார்"
 
-#: ../lib/engine/components/opal/opal-call.cpp:465
-#: ../lib/engine/components/opal/opal-call.cpp:471
+#: ../lib/engine/components/opal/opal-call.cpp:462
+#: ../lib/engine/components/opal/opal-call.cpp:468
 msgid "Congested link to remote party"
 msgstr "தொலைவில் உள்ளவர் இணைப்பு கிடைக்கவில்லை"
 
-#: ../lib/engine/components/opal/opal-call.cpp:468
+#: ../lib/engine/components/opal/opal-call.cpp:465
 msgid "Remote user is busy"
 msgstr "தொலைவில் உள்ளவர் ஏற்கனவே பயன்படுத்திக் கொண்டு உள்ளார்"
 
-#: ../lib/engine/components/opal/opal-call.cpp:474
+#: ../lib/engine/components/opal/opal-call.cpp:471
 msgid "Remote host is offline"
 msgstr "தொலைவில் உள்ள புரவலன் இணையத்தில் இப்போது இல்லை"
 
-#: ../lib/engine/components/opal/opal-call.cpp:477
+#: ../lib/engine/components/opal/opal-call.cpp:474
 msgid "User is offline"
 msgstr "பயனாளர் ஆஃப்லைனில் உள்ளார்"
 
-#: ../lib/engine/components/opal/opal-call.cpp:480
+#: ../lib/engine/components/opal/opal-call.cpp:477
 msgid "Remote host not found"
 msgstr "தொலைநிலை ஹோஸ்ட் இல்லை"
 
-#: ../lib/engine/components/opal/opal-call.cpp:484
+#: ../lib/engine/components/opal/opal-call.cpp:481
 msgid "User is not available"
 msgstr "பயனர் கிடைக்கவில்லை"
 
-#: ../lib/engine/components/opal/opal-call.cpp:487
-#: ../lib/engine/components/opal/sip-endpoint.cpp:689
+#: ../lib/engine/components/opal/opal-call.cpp:484
+#: ../lib/engine/components/opal/sip-endpoint.cpp:694
 msgid "Service unavailable"
 msgstr "சேவை கிடைக்கவில்லை"
 
-#: ../lib/engine/components/opal/opal-call.cpp:497
+#: ../lib/engine/components/opal/opal-call.cpp:487
+#| msgid "Could not authenticate"
+msgid "Remote certificate not authenticated"
+msgstr "தொலைநிலைச் சான்றிதழை அங்கீகரிக்க முடியவில்லை"
+
+#: ../lib/engine/components/opal/opal-call.cpp:500
 msgid "Call completed"
 msgstr "அழைப்பு முடிந்தது"
 
-#: ../lib/engine/components/opal/opal-call.cpp:688
+#: ../lib/engine/components/opal/opal-call.cpp:691
 msgid "Missed call from"
 msgstr "இவரிடமிருந்து தவறிய அழைப்பு"
 
-#: ../lib/engine/components/opal/opal-call.cpp:690
+#: ../lib/engine/components/opal/opal-call.cpp:693
 msgid "Missed call"
 msgstr "தவறிய அழைப்பு"
 
-#: ../lib/engine/components/opal/opal-call-manager.cpp:934
+#: ../lib/engine/components/opal/opal-call-manager.cpp:937
 msgid ""
 "Ekiga did not manage to configure your network settings automatically. You "
 "can still use it, but you need to configure your network settings manually.\n"
@@ -801,105 +756,105 @@ msgstr ""
 "http://wiki.ekiga.org/index.php/Enable_port_forwarding_manually ஐ மேற் கொண்டு "
 "தகவல்களுக்கு பார்க்க"
 
-#: ../lib/engine/components/opal/sip-endpoint.cpp:187
+#: ../lib/engine/components/opal/sip-endpoint.cpp:191
 msgid "Message"
 msgstr "செய்தி"
 
-#: ../lib/engine/components/opal/sip-endpoint.cpp:507
+#: ../lib/engine/components/opal/sip-endpoint.cpp:512
 msgid "Illegal status code"
 msgstr "சட்டவிரோத  இருப்பு நிலை"
 
-#: ../lib/engine/components/opal/sip-endpoint.cpp:515
+#: ../lib/engine/components/opal/sip-endpoint.cpp:520
 msgid "Invalid address"
 msgstr "செல்லுபடியாகாத முகவரி"
 
 #. Translators: Host of the remote party is offline, this should
 #. * appear when the remote host does not reply in an acceptable time
-#: ../lib/engine/components/opal/sip-endpoint.cpp:521
+#: ../lib/engine/components/opal/sip-endpoint.cpp:526
 msgid "Remote party host is offline"
 msgstr "தொலைவில் உள்ள புரவலன் இணைப்பு விலகி உள்ளது"
 
 #. Translators: the following strings are answers from the SIP server
 #. * when the packet it receives has an error, see
 #. * http://www.ietf.org/rfc/rfc3261.txt, chapter 21 for more information
-#: ../lib/engine/components/opal/sip-endpoint.cpp:537
+#: ../lib/engine/components/opal/sip-endpoint.cpp:542
 msgid "Multiple choices"
 msgstr "பல தேர்வுகள்"
 
-#: ../lib/engine/components/opal/sip-endpoint.cpp:541
+#: ../lib/engine/components/opal/sip-endpoint.cpp:546
 msgid "Moved permanently"
 msgstr "நிரந்தரமாக நகர்த்தப்பட்டது"
 
-#: ../lib/engine/components/opal/sip-endpoint.cpp:545
+#: ../lib/engine/components/opal/sip-endpoint.cpp:550
 msgid "Moved temporarily"
 msgstr "தற்காலிகமாக நகர்த்தப்பட்டது"
 
-#: ../lib/engine/components/opal/sip-endpoint.cpp:549
+#: ../lib/engine/components/opal/sip-endpoint.cpp:554
 msgid "Use proxy"
 msgstr "பதிலாளை பயன்படுத்து"
 
-#: ../lib/engine/components/opal/sip-endpoint.cpp:553
+#: ../lib/engine/components/opal/sip-endpoint.cpp:558
 msgid "Alternative service"
 msgstr "மாற்று சேவை"
 
-#: ../lib/engine/components/opal/sip-endpoint.cpp:557
+#: ../lib/engine/components/opal/sip-endpoint.cpp:562
 msgid "Bad request"
 msgstr "தவறான கோரிக்கை"
 
-#: ../lib/engine/components/opal/sip-endpoint.cpp:561
+#: ../lib/engine/components/opal/sip-endpoint.cpp:566
 msgid "Unauthorized"
 msgstr "உறுதி படுத்தாதது"
 
-#: ../lib/engine/components/opal/sip-endpoint.cpp:565
+#: ../lib/engine/components/opal/sip-endpoint.cpp:570
 msgid "Payment required"
 msgstr "பணம் தேவைப்படுகிறது"
 
-#: ../lib/engine/components/opal/sip-endpoint.cpp:569
+#: ../lib/engine/components/opal/sip-endpoint.cpp:574
 msgid "Forbidden, please check that username and password are correct"
 msgstr ""
 "தடை செய்யப்பட்டது, தயை செய்து பயனர் பெயரையும் கடவுச்சொல்லையும் சரி பார்க்கவும்"
 
-#: ../lib/engine/components/opal/sip-endpoint.cpp:573
+#: ../lib/engine/components/opal/sip-endpoint.cpp:578
 msgid "Not found"
 msgstr "காணவில்லை"
 
-#: ../lib/engine/components/opal/sip-endpoint.cpp:577
+#: ../lib/engine/components/opal/sip-endpoint.cpp:582
 msgid "Method not allowed"
 msgstr "முறை அனுமதி இல்லாதது"
 
-#: ../lib/engine/components/opal/sip-endpoint.cpp:581
+#: ../lib/engine/components/opal/sip-endpoint.cpp:586
 msgid "Not acceptable"
 msgstr "ஒப்புக்கொள்ள இயலாது"
 
-#: ../lib/engine/components/opal/sip-endpoint.cpp:585
+#: ../lib/engine/components/opal/sip-endpoint.cpp:590
 msgid "Proxy authentication required"
 msgstr "பதிலாள் உறுதிப்படுத்தல் தேவை"
 
-#: ../lib/engine/components/opal/sip-endpoint.cpp:589
+#: ../lib/engine/components/opal/sip-endpoint.cpp:594
 msgid "Timeout"
 msgstr "நேரம் முடிந்தது"
 
-#: ../lib/engine/components/opal/sip-endpoint.cpp:593
+#: ../lib/engine/components/opal/sip-endpoint.cpp:598
 msgid "Conflict"
 msgstr "முரண்பாடு"
 
-#: ../lib/engine/components/opal/sip-endpoint.cpp:597
+#: ../lib/engine/components/opal/sip-endpoint.cpp:602
 msgid "Length required"
 msgstr "நீளம் தேவை"
 
-#: ../lib/engine/components/opal/sip-endpoint.cpp:601
+#: ../lib/engine/components/opal/sip-endpoint.cpp:606
 msgid "Request entity too big"
 msgstr "வேண்டுதல் உருப்படி மிகப் பெரியது"
 
-#: ../lib/engine/components/opal/sip-endpoint.cpp:605
+#: ../lib/engine/components/opal/sip-endpoint.cpp:610
 msgid "Request URI too long"
 msgstr "வேண்டுதல் URI மிக நீளமானது"
 
-#: ../lib/engine/components/opal/sip-endpoint.cpp:609
+#: ../lib/engine/components/opal/sip-endpoint.cpp:614
 msgid "Unsupported media type"
 msgstr "ஆதரவில்லா ஊடக வகை"
 
-#: ../lib/engine/components/opal/sip-endpoint.cpp:613
+#: ../lib/engine/components/opal/sip-endpoint.cpp:618
 msgid "Unsupported URI scheme"
 msgstr "ஆதரவில்லா URI திட்டம் "
 
@@ -907,128 +862,133 @@ msgstr "ஆதரவில்லா URI திட்டம் "
 #. * Here extension is a specific "phone number", see
 #. * http://en.wikipedia.org/wiki/Extension_(telephone)
 #. * for more information
-#: ../lib/engine/components/opal/sip-endpoint.cpp:621
+#: ../lib/engine/components/opal/sip-endpoint.cpp:626
 msgid "Bad extension"
 msgstr "தீய விரிவாக்கம் "
 
-#: ../lib/engine/components/opal/sip-endpoint.cpp:625
+#: ../lib/engine/components/opal/sip-endpoint.cpp:630
 msgid "Extension required"
 msgstr "விரிவாக்கம் தேவை"
 
-#: ../lib/engine/components/opal/sip-endpoint.cpp:629
+#: ../lib/engine/components/opal/sip-endpoint.cpp:634
 msgid "Interval too brief"
 msgstr "இடைவெளி மிக அதிகம்"
 
-#: ../lib/engine/components/opal/sip-endpoint.cpp:633
+#: ../lib/engine/components/opal/sip-endpoint.cpp:638
 msgid "Temporarily unavailable"
 msgstr "தற்காலிகமாக இல்லை"
 
-#: ../lib/engine/components/opal/sip-endpoint.cpp:637
+#: ../lib/engine/components/opal/sip-endpoint.cpp:642
 msgid "Loop detected"
 msgstr "சுருளல் கண்டு பிடிக்கப்பட்டது."
 
-#: ../lib/engine/components/opal/sip-endpoint.cpp:641
+#: ../lib/engine/components/opal/sip-endpoint.cpp:646
 msgid "Too many hops"
 msgstr "மிக அதிக தத்தல்கள் உள்ளன"
 
-#: ../lib/engine/components/opal/sip-endpoint.cpp:645
+#: ../lib/engine/components/opal/sip-endpoint.cpp:650
 msgid "Address incomplete"
 msgstr "முகவரி பூர்த்தி ஆகவில்லை"
 
-#: ../lib/engine/components/opal/sip-endpoint.cpp:649
+#: ../lib/engine/components/opal/sip-endpoint.cpp:654
 msgid "Ambiguous"
 msgstr "இரட்டுறு"
 
-#: ../lib/engine/components/opal/sip-endpoint.cpp:653
+#: ../lib/engine/components/opal/sip-endpoint.cpp:658
 msgid "Busy Here"
 msgstr "இங்கு வேலையில்"
 
-#: ../lib/engine/components/opal/sip-endpoint.cpp:657
+#: ../lib/engine/components/opal/sip-endpoint.cpp:662
 msgid "Request terminated"
 msgstr "வேண்டுதல் முடிக்கப்பட்டது."
 
-#: ../lib/engine/components/opal/sip-endpoint.cpp:661
+#: ../lib/engine/components/opal/sip-endpoint.cpp:666
 msgid "Not acceptable here"
 msgstr "இங்கு ஒப்புக்கொள்ள முடியாதது"
 
-#: ../lib/engine/components/opal/sip-endpoint.cpp:665
+#: ../lib/engine/components/opal/sip-endpoint.cpp:670
 msgid "Bad event"
 msgstr "தீய நிகழ்வு"
 
-#: ../lib/engine/components/opal/sip-endpoint.cpp:669
+#: ../lib/engine/components/opal/sip-endpoint.cpp:674
 msgid "Request pending"
 msgstr "வேண்டுதல் நிலுவையில்"
 
-#: ../lib/engine/components/opal/sip-endpoint.cpp:673
+#: ../lib/engine/components/opal/sip-endpoint.cpp:678
 msgid "Undecipherable"
 msgstr "ஊகம் செய்ய முடியாதது"
 
-#: ../lib/engine/components/opal/sip-endpoint.cpp:677
+#: ../lib/engine/components/opal/sip-endpoint.cpp:682
 msgid "Internal server error"
 msgstr "சேவையக உள்லமை பிழை"
 
-#: ../lib/engine/components/opal/sip-endpoint.cpp:681
+#: ../lib/engine/components/opal/sip-endpoint.cpp:686
 msgid "Not implemented"
 msgstr "நிறைவேற்ற இல்லை"
 
-#: ../lib/engine/components/opal/sip-endpoint.cpp:685
+#: ../lib/engine/components/opal/sip-endpoint.cpp:690
 msgid "Bad gateway"
 msgstr "தீய வாசல் "
 
-#: ../lib/engine/components/opal/sip-endpoint.cpp:693
+#: ../lib/engine/components/opal/sip-endpoint.cpp:698
 msgid "Server timeout"
 msgstr "சேவையக சேவை நேரம் முடிந்தது "
 
-#: ../lib/engine/components/opal/sip-endpoint.cpp:697
+#: ../lib/engine/components/opal/sip-endpoint.cpp:702
 msgid "SIP version not supported"
 msgstr "சிப் வடிவ நிலைக்கு ஆதரவு இல்லை"
 
-#: ../lib/engine/components/opal/sip-endpoint.cpp:701
+#: ../lib/engine/components/opal/sip-endpoint.cpp:706
 msgid "Message too large"
 msgstr "செய்தி மிக பெரியது"
 
-#: ../lib/engine/components/opal/sip-endpoint.cpp:705
+#: ../lib/engine/components/opal/sip-endpoint.cpp:710
 msgid "Busy everywhere"
 msgstr "எங்கும் வேலையில்"
 
-#: ../lib/engine/components/opal/sip-endpoint.cpp:709
+#: ../lib/engine/components/opal/sip-endpoint.cpp:714
 msgid "Decline"
 msgstr "நிராகரிக்கப்பட்டது"
 
-#: ../lib/engine/components/opal/sip-endpoint.cpp:713
+#: ../lib/engine/components/opal/sip-endpoint.cpp:718
 msgid "Does not exist anymore"
 msgstr "இனியும் இங்கு இல்லை"
 
-#: ../lib/engine/components/opal/sip-endpoint.cpp:717
+#: ../lib/engine/components/opal/sip-endpoint.cpp:722
 msgid "Globally not acceptable"
 msgstr "உலகளவில் ஏற்றுக்கொள்ளவில்லை"
 
-#: ../lib/engine/components/opal/sip-endpoint.cpp:836
+#: ../lib/engine/components/opal/sip-endpoint.cpp:726
+#| msgid "Invalid address"
+msgid "Invalid certificates"
+msgstr "செல்லுபடியாகாத சான்றிதழ்கள்"
+
+#: ../lib/engine/components/opal/sip-endpoint.cpp:857
 msgid "Could not send message: "
 msgstr "செய்தியை அனுப்ப முடியவில்லை:"
 
-#: ../lib/engine/components/opal/sip-endpoint.cpp:838
+#: ../lib/engine/components/opal/sip-endpoint.cpp:859
 msgid "user offline"
 msgstr "பயனர் ஆஃப்லைனில் உள்ளார்"
 
 #. Ignore
-#: ../lib/engine/components/opal/sip-endpoint.cpp:877
-#: ../plugins/libnotify/libnotify-main.cpp:272
+#: ../lib/engine/components/opal/sip-endpoint.cpp:906
+#: ../plugins/libnotify/libnotify-main.cpp:273
 #, c-format
 msgid "Incoming call from %s"
 msgstr "%sஇலிருந்து உள்வரும் அழைப்பு"
 
-#: ../lib/engine/components/opal/sip-endpoint.cpp:879
+#: ../lib/engine/components/opal/sip-endpoint.cpp:908
 #, c-format
 msgid "Incoming call"
 msgstr "உள்வரும் அழைப்பு"
 
-#: ../lib/engine/components/opal/sip-endpoint.cpp:885
+#: ../lib/engine/components/opal/sip-endpoint.cpp:914
 #, c-format
 msgid "In a call with %s"
 msgstr "%sஉடன் அழைப்பில்"
 
-#: ../lib/engine/components/opal/sip-endpoint.cpp:887
+#: ../lib/engine/components/opal/sip-endpoint.cpp:916
 #, c-format
 msgid "In a call"
 msgstr "அழைப்பில்"
@@ -1063,12 +1023,12 @@ msgid "Accounts"
 msgstr "கணக்கு"
 
 #: ../lib/engine/gui/gtk-frontend/accounts-window.cpp:581
-#: ../lib/engine/gui/gtk-frontend/main_window.cpp:1196
+#: ../lib/engine/gui/gtk-frontend/main_window.cpp:1191
 msgid "_Accounts"
 msgstr "கணக்குகள் (_A)"
 
 #: ../lib/engine/gui/gtk-frontend/accounts-window.cpp:585
-#: ../lib/engine/gui/gtk-frontend/main_window.cpp:1244
+#: ../lib/engine/gui/gtk-frontend/main_window.cpp:1239
 msgid "_Help"
 msgstr "_H உதவி"
 
@@ -1081,7 +1041,7 @@ msgid "Address Book"
 msgstr "முகவரி புத்தகம்"
 
 #: ../lib/engine/gui/gtk-frontend/addressbook-window.cpp:638
-#: ../lib/engine/gui/gtk-frontend/main_window.cpp:1167
+#: ../lib/engine/gui/gtk-frontend/main_window.cpp:1162
 msgid "Address _Book"
 msgstr "(_B)முகவரி புத்தகம்"
 
@@ -1094,7 +1054,7 @@ msgstr "(_A)செயல்"
 msgid "Category"
 msgstr "வகை"
 
-#: ../lib/engine/gui/gtk-frontend/assistant-window.cpp:131
+#: ../lib/engine/gui/gtk-frontend/assistant-window.cpp:130
 msgid ""
 "This is the Ekiga general configuration assistant. The following steps will "
 "set up Ekiga by asking a few simple questions.\n"
@@ -1106,20 +1066,20 @@ msgstr ""
 "வடிவமைக்கப்படும். n\n"
 "அமைத்த பின் எப்போது வேண்டுமானால் திருத்து பட்டி மூலம் தேர்வுகளை மாற்றலாம்."
 
-#: ../lib/engine/gui/gtk-frontend/assistant-window.cpp:139
+#: ../lib/engine/gui/gtk-frontend/assistant-window.cpp:138
 msgid "Welcome to Ekiga"
 msgstr "எகிகாவுக்கு நல்வரவு"
 
-#: ../lib/engine/gui/gtk-frontend/assistant-window.cpp:162
+#: ../lib/engine/gui/gtk-frontend/assistant-window.cpp:161
 msgid "Personal Information"
 msgstr "தனிப்பட்ட தகவல்"
 
 #. The user fields
-#: ../lib/engine/gui/gtk-frontend/assistant-window.cpp:165
+#: ../lib/engine/gui/gtk-frontend/assistant-window.cpp:164
 msgid "Please enter your first name and your surname:"
 msgstr "உங்கள் முதல் பெயர் மற்றும் குடும்ப பெயரை உள்ளிடவும்"
 
-#: ../lib/engine/gui/gtk-frontend/assistant-window.cpp:174
+#: ../lib/engine/gui/gtk-frontend/assistant-window.cpp:173
 msgid ""
 "Your first name and surname will be used when connecting to other VoIP and "
 "videoconferencing software."
@@ -1128,7 +1088,7 @@ msgstr ""
 "மென்பொருள்களை அமைக்கும் "
 "போது பயன்படும்"
 
-#: ../lib/engine/gui/gtk-frontend/assistant-window.cpp:220
+#: ../lib/engine/gui/gtk-frontend/assistant-window.cpp:219
 msgid ""
 "If you do not have a SIP or H323 account, ekiga can only be used on your "
 "local internal network (inside your company, for example).  You will require "
@@ -1156,23 +1116,23 @@ msgstr ""
 "\n"
 "இத்தகைய கணக்குகளை பின்வரும் இரண்டு பக்கங்களில் உருவாக்கிக்கொள்ளலாம்."
 
-#: ../lib/engine/gui/gtk-frontend/assistant-window.cpp:235
+#: ../lib/engine/gui/gtk-frontend/assistant-window.cpp:234
 msgid "Introduction to Accounts"
 msgstr "கணக்குகள் - அறிமுகம்"
 
-#: ../lib/engine/gui/gtk-frontend/assistant-window.cpp:392
+#: ../lib/engine/gui/gtk-frontend/assistant-window.cpp:391
 msgid "Ekiga.net Account"
 msgstr "Ekiga.net கணக்கு"
 
-#: ../lib/engine/gui/gtk-frontend/assistant-window.cpp:394
+#: ../lib/engine/gui/gtk-frontend/assistant-window.cpp:393
 msgid "Please enter your username:"
 msgstr "உங்கள் பயனர் பெயரை உள்ளிடவும்:"
 
-#: ../lib/engine/gui/gtk-frontend/assistant-window.cpp:402
+#: ../lib/engine/gui/gtk-frontend/assistant-window.cpp:401
 msgid "Please enter your password:"
 msgstr "உங்கள் கடவுச்சொல்லை உள்ளிடவும்:"
 
-#: ../lib/engine/gui/gtk-frontend/assistant-window.cpp:412
+#: ../lib/engine/gui/gtk-frontend/assistant-window.cpp:411
 msgid ""
 "The username and password are used to login to your existing account at the "
 "ekiga.net free SIP service. If you do not have an ekiga.net SIP address yet, "
@@ -1192,23 +1152,23 @@ msgstr ""
 "அமைத்துக்கொள்ள "
 "விரும்பினால் இந்த படிகளை இப்போது  தவிர்க்கலாம்."
 
-#: ../lib/engine/gui/gtk-frontend/assistant-window.cpp:438
+#: ../lib/engine/gui/gtk-frontend/assistant-window.cpp:437
 msgid "I do not want to sign up for the ekiga.net free service"
 msgstr "ekiga.net இலவச சேவைக்கு கணக்கு துவக்க நான் விரும்பவில்லை."
 
-#: ../lib/engine/gui/gtk-frontend/assistant-window.cpp:498
+#: ../lib/engine/gui/gtk-frontend/assistant-window.cpp:497
 msgid "Ekiga Call Out Account"
 msgstr "Ekiga வெளி அழை கணக்கு"
 
-#: ../lib/engine/gui/gtk-frontend/assistant-window.cpp:500
+#: ../lib/engine/gui/gtk-frontend/assistant-window.cpp:499
 msgid "Please enter your account ID:"
 msgstr "தயவு செய்து உங்கள் கணக்கு குறியை உள்ளிடுக:"
 
-#: ../lib/engine/gui/gtk-frontend/assistant-window.cpp:508
+#: ../lib/engine/gui/gtk-frontend/assistant-window.cpp:507
 msgid "Please enter your PIN code:"
 msgstr "தயவு செய்து  உங்கள் 'பின்' குறியை உள்ளிடுக:"
 
-#: ../lib/engine/gui/gtk-frontend/assistant-window.cpp:519
+#: ../lib/engine/gui/gtk-frontend/assistant-window.cpp:518
 msgid ""
 "You can make calls to regular phones and cell numbers worldwide using Ekiga. "
 "To enable this, you need to do two things:\n"
@@ -1226,15 +1186,15 @@ msgstr ""
 "இந்த சேவை இந்த உரையாடலில் கொடுத்த  யூஆர்எல்(URL) இல் கணக்கு துவங்கினால்தான் "
 "செயல் படும்.\n"
 
-#: ../lib/engine/gui/gtk-frontend/assistant-window.cpp:578
+#: ../lib/engine/gui/gtk-frontend/assistant-window.cpp:577
 msgid "I do not want to sign up for the Ekiga Call Out service"
 msgstr "Ekiga  வெளி அழை கணக்கு துவக்க நான் விரும்பவில்லை"
 
-#: ../lib/engine/gui/gtk-frontend/assistant-window.cpp:640
+#: ../lib/engine/gui/gtk-frontend/assistant-window.cpp:639
 msgid "Configuration Complete"
 msgstr "வடிவமைப்பு முடிவடைந்தது"
 
-#: ../lib/engine/gui/gtk-frontend/assistant-window.cpp:642
+#: ../lib/engine/gui/gtk-frontend/assistant-window.cpp:641
 msgid ""
 "You have now finished the Ekiga configuration. All the settings can be "
 "changed in the Ekiga preferences. Enjoy!"
@@ -1243,24 +1203,24 @@ msgstr ""
 "அமைப்புகளையும் "
 "பின்னால் தேவையானால் Ekiga தேர்வுகளில் மாற்றலாம்.  அனுபவியுங்கள்!"
 
-#: ../lib/engine/gui/gtk-frontend/assistant-window.cpp:649
+#: ../lib/engine/gui/gtk-frontend/assistant-window.cpp:648
 msgid "Configuration summary:"
 msgstr "வடிவமைப்பு சுருக்கம்:"
 
-#: ../lib/engine/gui/gtk-frontend/assistant-window.cpp:696
+#: ../lib/engine/gui/gtk-frontend/assistant-window.cpp:695
 #: ../lib/engine/gui/gtk-frontend/book-view-gtk.cpp:584
 msgid "Full Name"
 msgstr "முழு பெயர்"
 
-#: ../lib/engine/gui/gtk-frontend/assistant-window.cpp:710
+#: ../lib/engine/gui/gtk-frontend/assistant-window.cpp:709
 msgid "SIP URI"
 msgstr "சிப் URI"
 
-#: ../lib/engine/gui/gtk-frontend/assistant-window.cpp:725
+#: ../lib/engine/gui/gtk-frontend/assistant-window.cpp:724
 msgid "Ekiga Call Out"
 msgstr "Ekiga வெளி அழைப்பு"
 
-#: ../lib/engine/gui/gtk-frontend/assistant-window.cpp:766
+#: ../lib/engine/gui/gtk-frontend/assistant-window.cpp:765
 #, c-format
 msgid "Ekiga Configuration Assistant (%d of %d)"
 msgstr "Ekiga அமைப்பு உதவியாளர் (%d,%d இல்)"
@@ -1269,15 +1229,15 @@ msgstr "Ekiga அமைப்பு உதவியாளர் (%d,%d இல்
 msgid "_Search Filter:"
 msgstr "_S தேடல் வடிப்பிகள்:"
 
-#: ../lib/engine/gui/gtk-frontend/call-window.cpp:639
+#: ../lib/engine/gui/gtk-frontend/call-window.cpp:665
 msgid "Error while initializing video output"
 msgstr "கேட்பொலி  வெளியீடு  சாதனத்தை துவக்குவதில்  பிழை "
 
-#: ../lib/engine/gui/gtk-frontend/call-window.cpp:640
+#: ../lib/engine/gui/gtk-frontend/call-window.cpp:666
 msgid "No video will be displayed on your machine during this call"
 msgstr "இந்த அழைப்பின் போது வீடியோ எதுவும் உங்கள் கணினியில் காட்ட இயலாது"
 
-#: ../lib/engine/gui/gtk-frontend/call-window.cpp:641
+#: ../lib/engine/gui/gtk-frontend/call-window.cpp:667
 msgid ""
 "There was an error opening or initializing the video output. Please verify "
 "that no other application is using the accelerated video output."
@@ -1285,16 +1245,16 @@ msgstr ""
 "வீடியோ வெளிப்பாட்டை திறக்க அல்லது துவக்குவதில் பிழை. வேறு பயன்பாடு எதுவும் "
 "பயன்படுத்துகிறதா என சரி பார்க்கவும்."
 
-#: ../lib/engine/gui/gtk-frontend/call-window.cpp:710
+#: ../lib/engine/gui/gtk-frontend/call-window.cpp:736
 #, c-format
 msgid "Error while accessing video device %s"
 msgstr "விடியோ சாதனம் உள்ளீடு சாதனம் %s ஐ அணுகுவதில் பிழை "
 
-#: ../lib/engine/gui/gtk-frontend/call-window.cpp:713
+#: ../lib/engine/gui/gtk-frontend/call-window.cpp:739
 msgid "A moving logo will be transmitted during calls."
 msgstr "அழைப்பின் போது நகரும் லோகோ ஒன்று அனுப்பப்படும்."
 
-#: ../lib/engine/gui/gtk-frontend/call-window.cpp:717
+#: ../lib/engine/gui/gtk-frontend/call-window.cpp:743
 msgid ""
 "There was an error while opening the device. In case it is a pluggable "
 "device it may be sufficient to reconnect it. If not, or if it still is not "
@@ -1307,15 +1267,15 @@ msgstr ""
 "அனுமதிகளை "
 "சோதிக்கவும்.  மற்றும் சரியான இயக்கிகள் உள்ளன என உறுதி செய்க"
 
-#: ../lib/engine/gui/gtk-frontend/call-window.cpp:721
+#: ../lib/engine/gui/gtk-frontend/call-window.cpp:747
 msgid "Your video driver doesn't support the requested video format."
 msgstr "உங்கள் விடியோ சாதனம் இந்த விடியோ  முறையை ஆதரிக்கவில்லை"
 
-#: ../lib/engine/gui/gtk-frontend/call-window.cpp:725
+#: ../lib/engine/gui/gtk-frontend/call-window.cpp:751
 msgid "Could not open the chosen channel."
 msgstr "தேர்வு செய்த தடத்தை திறக்க முடியவில்லை"
 
-#: ../lib/engine/gui/gtk-frontend/call-window.cpp:729
+#: ../lib/engine/gui/gtk-frontend/call-window.cpp:755
 msgid ""
 "Your driver doesn't seem to support any of the color formats supported by "
 "Ekiga.\n"
@@ -1328,32 +1288,32 @@ msgstr ""
 "ஆதரவு உள்ளது "
 "என பாருங்கள்."
 
-#: ../lib/engine/gui/gtk-frontend/call-window.cpp:733
+#: ../lib/engine/gui/gtk-frontend/call-window.cpp:759
 msgid "Error while setting the frame rate."
 msgstr "சட்ட விகிதத்தை அமைப்பதில் பிழை"
 
-#: ../lib/engine/gui/gtk-frontend/call-window.cpp:737
+#: ../lib/engine/gui/gtk-frontend/call-window.cpp:763
 msgid "Error while setting the frame size."
 msgstr "சட்டட்டவை அமைப்பதில்ளவில் பிழை"
 
-#: ../lib/engine/gui/gtk-frontend/call-window.cpp:742
-#: ../lib/engine/gui/gtk-frontend/call-window.cpp:817
-#: ../lib/engine/gui/gtk-frontend/call-window.cpp:903
+#: ../lib/engine/gui/gtk-frontend/call-window.cpp:768
+#: ../lib/engine/gui/gtk-frontend/call-window.cpp:843
+#: ../lib/engine/gui/gtk-frontend/call-window.cpp:929
 msgid "Unknown error."
 msgstr "தெரியாத பிழை."
 
-#: ../lib/engine/gui/gtk-frontend/call-window.cpp:799
+#: ../lib/engine/gui/gtk-frontend/call-window.cpp:825
 #, c-format
 msgid "Error while opening audio input device %s"
 msgstr "கேட்பொலி உள்ளீடு சாதனம் %s ஐ துவக்குவதில்  பிழை"
 
 #. Translators: This happens when there is an error with audio input:
 #. * Nothing ("silence") will be transmitted
-#: ../lib/engine/gui/gtk-frontend/call-window.cpp:804
+#: ../lib/engine/gui/gtk-frontend/call-window.cpp:830
 msgid "Only silence will be transmitted."
 msgstr "மௌனம் மட்டுமே அனுப்ப முடிந்தது.."
 
-#: ../lib/engine/gui/gtk-frontend/call-window.cpp:808
+#: ../lib/engine/gui/gtk-frontend/call-window.cpp:834
 msgid ""
 "Unable to open the selected audio device for recording. In case it is a "
 "pluggable device it may be sufficient to reconnect it. If not, or if it "
@@ -1368,7 +1328,7 @@ msgstr ""
 "இல்லை என "
 "உறுதி செய்க"
 
-#: ../lib/engine/gui/gtk-frontend/call-window.cpp:812
+#: ../lib/engine/gui/gtk-frontend/call-window.cpp:838
 msgid ""
 "The selected audio device was successfully opened but it is impossible to "
 "read data from this device. In case it is a pluggable device it may be "
@@ -1383,16 +1343,16 @@ msgstr ""
 "அமைப்பை  "
 "சோதிக்கவும்."
 
-#: ../lib/engine/gui/gtk-frontend/call-window.cpp:887
+#: ../lib/engine/gui/gtk-frontend/call-window.cpp:913
 #, c-format
 msgid "Error while opening audio output device %s"
 msgstr "கேட்பொலி  வெளியீடு  சாதனம் %s ஐ துவக்குவதில்  பிழை "
 
-#: ../lib/engine/gui/gtk-frontend/call-window.cpp:890
+#: ../lib/engine/gui/gtk-frontend/call-window.cpp:916
 msgid "No incoming sound will be played."
 msgstr "எந்த உள்வரும் ஒலியும் இசைக்கப்படமாட்டாது.."
 
-#: ../lib/engine/gui/gtk-frontend/call-window.cpp:894
+#: ../lib/engine/gui/gtk-frontend/call-window.cpp:920
 msgid ""
 "Unable to open the selected audio device for playing. In case it is a "
 "pluggable device it may be sufficient to reconnect it. If not, or if it "
@@ -1407,7 +1367,7 @@ msgstr ""
 "இயக்கத்தில் இல்லை "
 "என உறுதி செய்க"
 
-#: ../lib/engine/gui/gtk-frontend/call-window.cpp:898
+#: ../lib/engine/gui/gtk-frontend/call-window.cpp:924
 msgid ""
 "The selected audio device was successfully opened but it is impossible to "
 "write data to this device. In case it is a pluggable device it may be "
@@ -1421,42 +1381,42 @@ msgstr ""
 "இல்லையானால்  அல்லது அதை  இன்னும் அணுக முடியவில்லை எனில் உங்கள் ஒலி அமைப்பை  "
 "சோதிக்கவும்."
 
-#: ../lib/engine/gui/gtk-frontend/call-window.cpp:942
+#: ../lib/engine/gui/gtk-frontend/call-window.cpp:977
 #, c-format
 msgid "Calling %s..."
 msgstr "%s ஐ அழைக்கிறது..."
 
 #. %s is the SIP/H.323 address of the remote user, this text is shown
 #. below video during a call
-#: ../lib/engine/gui/gtk-frontend/call-window.cpp:970
-#: ../lib/engine/gui/gtk-frontend/main_window.cpp:592
+#: ../lib/engine/gui/gtk-frontend/call-window.cpp:1005
+#: ../lib/engine/gui/gtk-frontend/main_window.cpp:595
 #, c-format
 msgid "Connected with %s"
 msgstr "%s உடன் இணைக்கப்பட்டுள்ளது"
 
 #. Init
-#: ../lib/engine/gui/gtk-frontend/call-window.cpp:991
-#: ../lib/engine/gui/gtk-frontend/call-window.cpp:1018
-#: ../lib/engine/gui/gtk-frontend/call-window.cpp:2270
+#: ../lib/engine/gui/gtk-frontend/call-window.cpp:1026
+#: ../lib/engine/gui/gtk-frontend/call-window.cpp:1053
+#: ../lib/engine/gui/gtk-frontend/call-window.cpp:2330
 msgid "Standby"
 msgstr "செயலிழப்பு"
 
-#: ../lib/engine/gui/gtk-frontend/call-window.cpp:1003
-#: ../lib/engine/gui/gtk-frontend/call-window.cpp:1016
-#: ../lib/engine/gui/gtk-frontend/call-window.cpp:2386
+#: ../lib/engine/gui/gtk-frontend/call-window.cpp:1038
+#: ../lib/engine/gui/gtk-frontend/call-window.cpp:1051
+#: ../lib/engine/gui/gtk-frontend/call-window.cpp:2448
 msgid "Call Window"
 msgstr "அழைப்பு சாளரம்"
 
-#: ../lib/engine/gui/gtk-frontend/call-window.cpp:1029
+#: ../lib/engine/gui/gtk-frontend/call-window.cpp:1064
 msgid "Call on hold"
 msgstr "அழைப்பு தாமதப்படுத்தப்படுகிறது "
 
 #
-#: ../lib/engine/gui/gtk-frontend/call-window.cpp:1040
+#: ../lib/engine/gui/gtk-frontend/call-window.cpp:1075
 msgid "Call retrieved"
 msgstr "அழைப்பு மீட்கப்பட்டது"
 
-#: ../lib/engine/gui/gtk-frontend/call-window.cpp:1128
+#: ../lib/engine/gui/gtk-frontend/call-window.cpp:1163
 #, c-format
 msgid ""
 "Connected with %s\n"
@@ -1467,27 +1427,27 @@ msgstr ""
 
 #. Translators: TX is a common abbreviation for "transmit".  As it
 #. * is shown in a tooltip, there is no space constraint
-#: ../lib/engine/gui/gtk-frontend/call-window.cpp:1355
+#: ../lib/engine/gui/gtk-frontend/call-window.cpp:1390
 #, c-format
 msgid "TX: %dx%d"
 msgstr "TX: %dx%d"
 
-#: ../lib/engine/gui/gtk-frontend/call-window.cpp:1357
+#: ../lib/engine/gui/gtk-frontend/call-window.cpp:1392
 msgid "TX: / "
 msgstr "TX: / "
 
 #. Translators: RX is a common abbreviation for "receive".  As it
 #. * is shown in a tooltip, there is no space constraint
-#: ../lib/engine/gui/gtk-frontend/call-window.cpp:1362
+#: ../lib/engine/gui/gtk-frontend/call-window.cpp:1397
 #, c-format
 msgid "RX: %dx%d"
 msgstr "RX: %dx%d"
 
-#: ../lib/engine/gui/gtk-frontend/call-window.cpp:1364
+#: ../lib/engine/gui/gtk-frontend/call-window.cpp:1399
 msgid "RX: / "
 msgstr "RX: / "
 
-#: ../lib/engine/gui/gtk-frontend/call-window.cpp:1373
+#: ../lib/engine/gui/gtk-frontend/call-window.cpp:1408
 #, c-format
 msgid ""
 "Lost packets: %.1f %%\n"
@@ -1505,388 +1465,408 @@ msgstr ""
 "தெளிவுத்திறன்: %s %s"
 
 #. Translators: A = Audio, V = Video
-#: ../lib/engine/gui/gtk-frontend/call-window.cpp:1471
+#: ../lib/engine/gui/gtk-frontend/call-window.cpp:1506
 #, c-format
-#| msgid "A:%.1f/%.1f V:%.1f/%.1f FPS:%d/%d"
 msgid "A:%.1f/%.1f V:%.1f/%.1f"
 msgstr "A:%.1f/%.1f V:%.1f/%.1f"
 
-#: ../lib/engine/gui/gtk-frontend/call-window.cpp:1495
+#: ../lib/engine/gui/gtk-frontend/call-window.cpp:1530
 msgid "_Retrieve Call"
 msgstr "மீட்கப்பட்ட அழைப்புகள் (_R)"
 
-#: ../lib/engine/gui/gtk-frontend/call-window.cpp:1508
-#: ../lib/engine/gui/gtk-frontend/call-window.cpp:1799
+#: ../lib/engine/gui/gtk-frontend/call-window.cpp:1543
+#: ../lib/engine/gui/gtk-frontend/call-window.cpp:1834
 msgid "H_old Call"
 msgstr "_o அழைப்பை தாமதி"
 
-#: ../lib/engine/gui/gtk-frontend/call-window.cpp:1539
-#: ../lib/engine/gui/gtk-frontend/call-window.cpp:1811
+#: ../lib/engine/gui/gtk-frontend/call-window.cpp:1574
+#: ../lib/engine/gui/gtk-frontend/call-window.cpp:1846
 msgid "Suspend _Audio"
 msgstr "(_A)தடைசெய்யப்பட்ட ஒலி"
 
-#: ../lib/engine/gui/gtk-frontend/call-window.cpp:1541
-#: ../lib/engine/gui/gtk-frontend/call-window.cpp:1816
+#: ../lib/engine/gui/gtk-frontend/call-window.cpp:1576
+#: ../lib/engine/gui/gtk-frontend/call-window.cpp:1851
 msgid "Suspend _Video"
 msgstr "(_V)வீடியோவை நிறுத்து"
 
-#: ../lib/engine/gui/gtk-frontend/call-window.cpp:1543
+#: ../lib/engine/gui/gtk-frontend/call-window.cpp:1578
 msgid "Resume _Audio"
 msgstr "ஒலியை தொடரவும் (_A)"
 
-#: ../lib/engine/gui/gtk-frontend/call-window.cpp:1545
+#: ../lib/engine/gui/gtk-frontend/call-window.cpp:1580
 msgid "Resume _Video"
 msgstr "வீடியோவை தொடரவும் (_V)"
 
-#: ../lib/engine/gui/gtk-frontend/call-window.cpp:1572
+#: ../lib/engine/gui/gtk-frontend/call-window.cpp:1607
 msgid "Video Settings"
 msgstr "வீடியோ அமைவுகள்"
 
-#: ../lib/engine/gui/gtk-frontend/call-window.cpp:1598
+#: ../lib/engine/gui/gtk-frontend/call-window.cpp:1633
 msgid "Adjust brightness"
 msgstr "பொலிவை சரி செய்"
 
-#: ../lib/engine/gui/gtk-frontend/call-window.cpp:1618
+#: ../lib/engine/gui/gtk-frontend/call-window.cpp:1653
 msgid "Adjust whiteness"
 msgstr "வெண்மையை சரி செய்"
 
-#: ../lib/engine/gui/gtk-frontend/call-window.cpp:1638
+#: ../lib/engine/gui/gtk-frontend/call-window.cpp:1673
 msgid "Adjust color"
 msgstr "வண்ணங்களை சரி செய்"
 
-#: ../lib/engine/gui/gtk-frontend/call-window.cpp:1658
+#: ../lib/engine/gui/gtk-frontend/call-window.cpp:1693
 msgid "Adjust contrast"
 msgstr "வேறுபாட்டை சரி செய்"
 
-#: ../lib/engine/gui/gtk-frontend/call-window.cpp:1688
+#: ../lib/engine/gui/gtk-frontend/call-window.cpp:1723
 msgid "Audio Settings"
 msgstr "கேட்பொலி அமைவுகள்"
 
-#: ../lib/engine/gui/gtk-frontend/call-window.cpp:1787
+#: ../lib/engine/gui/gtk-frontend/call-window.cpp:1822
 msgid "_Call"
 msgstr "அழை (_C)"
 
-#: ../lib/engine/gui/gtk-frontend/call-window.cpp:1789
+#: ../lib/engine/gui/gtk-frontend/call-window.cpp:1824
 msgid "_Pick up"
 msgstr "எடு (_P)"
 
-#: ../lib/engine/gui/gtk-frontend/call-window.cpp:1789
-#: ../lib/engine/gui/gtk-frontend/call-window.cpp:2161
+#: ../lib/engine/gui/gtk-frontend/call-window.cpp:1824
+#: ../lib/engine/gui/gtk-frontend/call-window.cpp:2199
 msgid "Pick up the current call"
 msgstr "தற்போதைய அழைப்புக்கு பதிலளி"
 
-#: ../lib/engine/gui/gtk-frontend/call-window.cpp:1793
+#: ../lib/engine/gui/gtk-frontend/call-window.cpp:1828
 msgid "_Hang up"
 msgstr "முடி (_H)"
 
-#: ../lib/engine/gui/gtk-frontend/call-window.cpp:1793
-#: ../lib/engine/gui/gtk-frontend/call-window.cpp:2177
+#: ../lib/engine/gui/gtk-frontend/call-window.cpp:1828
+#: ../lib/engine/gui/gtk-frontend/call-window.cpp:2215
 msgid "Hang up the current call"
 msgstr "தற்போதைய அழைப்பை துண்டி"
 
-#: ../lib/engine/gui/gtk-frontend/call-window.cpp:1799
-#: ../lib/engine/gui/gtk-frontend/call-window.cpp:2243
+#: ../lib/engine/gui/gtk-frontend/call-window.cpp:1834
+#: ../lib/engine/gui/gtk-frontend/call-window.cpp:2281
 msgid "Hold the current call"
 msgstr "தற்போதைய அழைப்பை காத்திருக்க செய்"
 
-#: ../lib/engine/gui/gtk-frontend/call-window.cpp:1803
+#: ../lib/engine/gui/gtk-frontend/call-window.cpp:1838
 msgid "_Transfer Call"
 msgstr "(_T)அழைப்பை அனுப்பு"
 
-#: ../lib/engine/gui/gtk-frontend/call-window.cpp:1804
+#: ../lib/engine/gui/gtk-frontend/call-window.cpp:1839
 msgid "Transfer the current call"
 msgstr "தற்போதைய அழைப்பை அனுப்பு"
 
-#: ../lib/engine/gui/gtk-frontend/call-window.cpp:1812
+#: ../lib/engine/gui/gtk-frontend/call-window.cpp:1847
 msgid "Suspend or resume the audio transmission"
 msgstr "ஒலி அனுப்புதலை நிறுத்து அல்லது மீட்கச்செய்"
 
-#: ../lib/engine/gui/gtk-frontend/call-window.cpp:1817
+#: ../lib/engine/gui/gtk-frontend/call-window.cpp:1852
 msgid "Suspend or resume the video transmission"
 msgstr "ஒளித்தோற்ற அனுப்புதலை முடமாக்கு அல்லது அனுப்பு"
 
-#: ../lib/engine/gui/gtk-frontend/call-window.cpp:1824
-#| msgid "Close the Ekiga window"
+#: ../lib/engine/gui/gtk-frontend/call-window.cpp:1859
 msgid "Close the Ekiga Window"
 msgstr "எகிகா  சாளரத்தை மூடவும்"
 
-#: ../lib/engine/gui/gtk-frontend/call-window.cpp:1829
-#: ../lib/engine/gui/gtk-frontend/main_window.cpp:1208
+#: ../lib/engine/gui/gtk-frontend/call-window.cpp:1864
+#: ../lib/engine/gui/gtk-frontend/main_window.cpp:1203
 msgid "_View"
 msgstr "_V பார்"
 
-#: ../lib/engine/gui/gtk-frontend/call-window.cpp:1831
-#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:566
-#| msgid "_Picture-in-Picture"
+#: ../lib/engine/gui/gtk-frontend/call-window.cpp:1866
+#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:583
 msgid "Enable _Picture-In-Picture Mode"
 msgstr "படத்துக்குள்ளே படம் முறைமையை செயல்படுத்தவும் (_P)"
 
-#: ../lib/engine/gui/gtk-frontend/call-window.cpp:1832
-#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:568
+#: ../lib/engine/gui/gtk-frontend/call-window.cpp:1867
+#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:585
 msgid ""
 "This allows the local video stream to be displayed incrusted in the remote "
 "video stream. This is only effective when sending and receiving video"
 msgstr ""
 "இது கணினிக்குள்ளான வீடியோ ஸ்ட்ரீம் உள்ளமைக்கப்பட்ட தொலை நிலை ஸ்ட்ரீமில் "
-"காண்பிக்கப்பட அனுமதிக்கிறது. வீடியோவை அனுப்பும் போதும் பெறும் போதும் மட்டுமே "
-"இது விளைவை அளிக்கும்"
+"காண்பிக்கப்பட "
+"அனுமதிக்கிறது. வீடியோவை அனுப்பும் போதும் பெறும் போதும் மட்டுமே இது விளைவை "
+"அளிக்கும்"
 
-#: ../lib/engine/gui/gtk-frontend/call-window.cpp:1837
-#| msgid "Extended Video Roles"
+#: ../lib/engine/gui/gtk-frontend/call-window.cpp:1872
 msgid "_Extended Video"
 msgstr "நீட்டிக்கப்பட்ட வீடியோ (_E)"
 
-#: ../lib/engine/gui/gtk-frontend/call-window.cpp:1837
+#: ../lib/engine/gui/gtk-frontend/call-window.cpp:1872
 msgid "Display the extended video stream window"
 msgstr "நீட்டிக்கப்பட்ட வீடியோ ஸ்ட்ரீம் சாளரத்தைக் காண்பி"
 
-#: ../lib/engine/gui/gtk-frontend/call-window.cpp:1844
+#: ../lib/engine/gui/gtk-frontend/call-window.cpp:1879
 msgid "_Fullscreen"
 msgstr "_F முழுத்திரை"
 
-#: ../lib/engine/gui/gtk-frontend/call-window.cpp:1844
+#: ../lib/engine/gui/gtk-frontend/call-window.cpp:1879
 msgid "Switch to fullscreen"
 msgstr "முழுத்திரைக்கு மாறு"
 
-#: ../lib/engine/gui/gtk-frontend/call-window.cpp:1940
+#: ../lib/engine/gui/gtk-frontend/call-window.cpp:1979
 msgid "Transfer call to:"
 msgstr "அழைப்புகளை மாற்று:"
 
-#: ../lib/engine/gui/gtk-frontend/call-window.cpp:2204
+#: ../lib/engine/gui/gtk-frontend/call-window.cpp:2242
 msgid "Change the volume of your soundcard"
 msgstr "உங்கள் ஒலி அட்டையின் ஒலி அளவினை மாற்று"
 
-#: ../lib/engine/gui/gtk-frontend/call-window.cpp:2224
+#: ../lib/engine/gui/gtk-frontend/call-window.cpp:2262
 msgid "Change the color settings of your video device"
 msgstr "உங்கள் ஒளி சாதனத்தின் நிற அமைவுகளை மாற்று"
 
-#: ../lib/engine/gui/gtk-frontend/chat-area.cpp:241
+#: ../lib/engine/gui/gtk-frontend/call-window.cpp:2304
+msgid "Add caller/callee to the blacklist"
+msgstr "அழைப்பவர்/அழைக்கப்படுபவரை தடைப்பட்டியலில் சேர்"
+
+#: ../lib/engine/gui/gtk-frontend/chat-area.cpp:217
 msgid "says:"
 msgstr "சொல்கிறது:"
 
-#: ../lib/engine/gui/gtk-frontend/chat-area.cpp:368
+#: ../lib/engine/gui/gtk-frontend/chat-area.cpp:342
 msgid "Open link in browser"
 msgstr "உலாவி உள்ளே இணைப்பை திற"
 
-#: ../lib/engine/gui/gtk-frontend/chat-area.cpp:374
+#: ../lib/engine/gui/gtk-frontend/chat-area.cpp:348
 msgid "Copy link"
 msgstr "தொடுப்பை நகலெடு"
 
-#: ../lib/engine/gui/gtk-frontend/chat-area.cpp:831
+#: ../lib/engine/gui/gtk-frontend/chat-area.cpp:824
 msgid "_Smile..."
 msgstr "_S புன்னகை..."
 
-#: ../lib/engine/gui/gtk-frontend/chat-window.cpp:136
+#: ../lib/engine/gui/gtk-frontend/chat-window.cpp:127
 #, c-format
 msgid "You have %d unread text message"
 msgid_plural "You have %d unread text messages"
 msgstr[0] "படிக்காத %d செய்தி உள்ளது"
 msgstr[1] "படிக்காத %d செய்திகள் உள்ளன"
 
-#: ../lib/engine/gui/gtk-frontend/chat-window.cpp:139
+#: ../lib/engine/gui/gtk-frontend/chat-window.cpp:130
 msgid "Read"
 msgstr "படி"
 
 #. we can't do much here since we get the Chat as reference...
-#: ../lib/engine/gui/gtk-frontend/chat-window.cpp:440
+#: ../lib/engine/gui/gtk-frontend/chat-window.cpp:271
 msgid "Chat Window"
 msgstr "அரட்டை சாளரம்"
 
-#: ../lib/engine/gui/gtk-frontend/heap-view.cpp:239
-#: ../lib/engine/gui/gtk-frontend/heap-view.cpp:278
-#: ../lib/engine/gui/gtk-frontend/roster-view-gtk.cpp:1030
-#: ../lib/engine/gui/gtk-frontend/roster-view-gtk.cpp:1134
+#: ../lib/engine/gui/gtk-frontend/heap-view.cpp:284
+#: ../lib/engine/gui/gtk-frontend/heap-view.cpp:339
+#: ../lib/engine/gui/gtk-frontend/roster-view-gtk.cpp:1029
+#: ../lib/engine/gui/gtk-frontend/roster-view-gtk.cpp:1122
 msgid "Unsorted"
 msgstr "வகையாகதது"
 
-#: ../lib/engine/gui/gtk-frontend/main_window.cpp:342
+#: ../lib/engine/gui/gtk-frontend/heap-view.cpp:302
+#: ../lib/engine/gui/gtk-frontend/statusmenu.cpp:91
+msgid "Away"
+msgstr "வெளியில்"
+
+#: ../lib/engine/gui/gtk-frontend/heap-view.cpp:304
+#: ../lib/engine/gui/gtk-frontend/statusmenu.cpp:90
+msgid "Available"
+msgstr "பேசலாம்"
+
+#: ../lib/engine/gui/gtk-frontend/heap-view.cpp:306
+msgid "Offline"
+msgstr "இணைப்பு விலகி"
+
+#: ../lib/engine/gui/gtk-frontend/heap-view.cpp:308
+#: ../lib/engine/gui/gtk-frontend/statusmenu.cpp:92
+msgid "Busy"
+msgstr "பணியில்"
+
+#: ../lib/engine/gui/gtk-frontend/main_window.cpp:343
 msgid "Presence"
 msgstr "இருப்பு"
 
-#: ../lib/engine/gui/gtk-frontend/main_window.cpp:348
+#: ../lib/engine/gui/gtk-frontend/main_window.cpp:349
 msgid "Addressbook"
 msgstr "முகவரி புத்தகம்"
 
-#: ../lib/engine/gui/gtk-frontend/main_window.cpp:653
+#: ../lib/engine/gui/gtk-frontend/main_window.cpp:654
 #, c-format
 msgid "Missed call from %s"
 msgstr "%s இடமிருந்து தவறிய அழைப்பு"
 
-#: ../lib/engine/gui/gtk-frontend/main_window.cpp:688
+#: ../lib/engine/gui/gtk-frontend/main_window.cpp:689
 msgid "Error"
 msgstr "பிழை"
 
-#: ../lib/engine/gui/gtk-frontend/main_window.cpp:1038
+#: ../lib/engine/gui/gtk-frontend/main_window.cpp:1035
 msgid ""
 "Enter a URI on the left, and click this button to place a call or to hang up"
 msgstr ""
 "அழைப்பைச் செய்ய அல்லது முடிக்க இடப்புறம் ஒரு URI ஐ உள்ளிட்டு, இந்த பொத்தானை "
 "சொடுக்குக"
 
-#: ../lib/engine/gui/gtk-frontend/main_window.cpp:1067
-#: ../lib/engine/gui/gtk-frontend/main_window.cpp:1211
+#: ../lib/engine/gui/gtk-frontend/main_window.cpp:1064
+#: ../lib/engine/gui/gtk-frontend/main_window.cpp:1206
 #: ../org.gnome.ekiga.gschema.xml.in.in.h:14
 msgid "Display images from your camera device"
 msgstr "உங்கள் கேமரா சாதனத்திலிருந்து படத்தை காட்டவும்"
 
-#: ../lib/engine/gui/gtk-frontend/main_window.cpp:1088
-#: ../lib/engine/gui/gtk-frontend/main_window.cpp:1219
+#: ../lib/engine/gui/gtk-frontend/main_window.cpp:1085
+#: ../lib/engine/gui/gtk-frontend/main_window.cpp:1214
 msgid "View the contacts list"
 msgstr "தொடர்புகள்  பட்டியலை பார்க்க"
 
-#: ../lib/engine/gui/gtk-frontend/main_window.cpp:1105
-#: ../lib/engine/gui/gtk-frontend/main_window.cpp:1224
+#: ../lib/engine/gui/gtk-frontend/main_window.cpp:1102
+#: ../lib/engine/gui/gtk-frontend/main_window.cpp:1219
 msgid "View the dialpad"
 msgstr "டையல் அட்டையை காட்டு"
 
-#: ../lib/engine/gui/gtk-frontend/main_window.cpp:1122
-#: ../lib/engine/gui/gtk-frontend/main_window.cpp:1229
+#: ../lib/engine/gui/gtk-frontend/main_window.cpp:1119
+#: ../lib/engine/gui/gtk-frontend/main_window.cpp:1224
 msgid "View the call history"
 msgstr "அழைப்பு  வரலாற்றை பார்க்க"
 
-#: ../lib/engine/gui/gtk-frontend/main_window.cpp:1149
+#: ../lib/engine/gui/gtk-frontend/main_window.cpp:1144
 msgid "_Chat"
 msgstr "_C அரட்டை"
 
-#: ../lib/engine/gui/gtk-frontend/main_window.cpp:1151
+#: ../lib/engine/gui/gtk-frontend/main_window.cpp:1146
 msgid "Co_ntact"
 msgstr "(_n) தொடர்பு"
 
-#: ../lib/engine/gui/gtk-frontend/main_window.cpp:1152
+#: ../lib/engine/gui/gtk-frontend/main_window.cpp:1147
 msgid "Act on selected contact"
 msgstr "தேர்ந்தெடுக்கப்பட்ட தொடர்பு மீது செயல்படு"
 
-#: ../lib/engine/gui/gtk-frontend/main_window.cpp:1156
+#: ../lib/engine/gui/gtk-frontend/main_window.cpp:1151
 msgid "Ca_ll a Number"
 msgstr "ஓர் எண்ணை அழை (_l)"
 
-#: ../lib/engine/gui/gtk-frontend/main_window.cpp:1156
+#: ../lib/engine/gui/gtk-frontend/main_window.cpp:1151
 msgid "Place a new call"
 msgstr "புதிய அழைப்பினை ஏற்படுத்தவும்"
 
-#: ../lib/engine/gui/gtk-frontend/main_window.cpp:1162
+#: ../lib/engine/gui/gtk-frontend/main_window.cpp:1157
 msgid "Add a contact to the roster"
 msgstr "முறைப்பட்டியலில்  ஒரு தொடர்பு சேர் "
 
-#: ../lib/engine/gui/gtk-frontend/main_window.cpp:1168
+#: ../lib/engine/gui/gtk-frontend/main_window.cpp:1163
 msgid "Find contacts"
 msgstr "தொடர்புகளை தேடு"
 
-#: ../lib/engine/gui/gtk-frontend/main_window.cpp:1175
+#: ../lib/engine/gui/gtk-frontend/main_window.cpp:1170
 msgid "Close the Ekiga window"
 msgstr "எகிகா  சாளரத்தை மூடவும்"
 
-#: ../lib/engine/gui/gtk-frontend/main_window.cpp:1182
+#: ../lib/engine/gui/gtk-frontend/main_window.cpp:1177
 #: ../lib/engine/gui/gtk-frontend/statusicon.cpp:396
 msgid "Quit"
 msgstr "வெளிச்செல்"
 
-#: ../lib/engine/gui/gtk-frontend/main_window.cpp:1188
+#: ../lib/engine/gui/gtk-frontend/main_window.cpp:1183
 msgid "_Configuration Assistant"
 msgstr "_C வடிவமைப்பு உதவியாளர்"
 
-#: ../lib/engine/gui/gtk-frontend/main_window.cpp:1189
+#: ../lib/engine/gui/gtk-frontend/main_window.cpp:1184
 msgid "Run the configuration assistant"
 msgstr "வடிவமைப்பு உதவியாளரை இயக்கு"
 
-#: ../lib/engine/gui/gtk-frontend/main_window.cpp:1197
+#: ../lib/engine/gui/gtk-frontend/main_window.cpp:1192
 msgid "Edit your accounts"
 msgstr "உங்கள் கணக்குகளை தொகுக்கவும்"
 
-#: ../lib/engine/gui/gtk-frontend/main_window.cpp:1203
+#: ../lib/engine/gui/gtk-frontend/main_window.cpp:1198
 msgid "Change your preferences"
 msgstr "உங்கள் விருப்பங்களை மாற்று"
 
-#: ../lib/engine/gui/gtk-frontend/main_window.cpp:1210
+#: ../lib/engine/gui/gtk-frontend/main_window.cpp:1205
 msgid "_Video Preview"
 msgstr "வீடியோ முன்தோற்றம் (_V)"
 
-#: ../lib/engine/gui/gtk-frontend/main_window.cpp:1219
+#: ../lib/engine/gui/gtk-frontend/main_window.cpp:1214
 msgid "Con_tacts"
 msgstr "தொடர்புகள் (_t)"
 
-#: ../lib/engine/gui/gtk-frontend/main_window.cpp:1224
+#: ../lib/engine/gui/gtk-frontend/main_window.cpp:1219
 msgid "_Dialpad"
 msgstr "(_D)டையல் அட்டை"
 
-#: ../lib/engine/gui/gtk-frontend/main_window.cpp:1229
+#: ../lib/engine/gui/gtk-frontend/main_window.cpp:1224
 msgid "_Call History"
 msgstr "_C அழைப்பு  வரலாறு"
 
-#: ../lib/engine/gui/gtk-frontend/main_window.cpp:1237
+#: ../lib/engine/gui/gtk-frontend/main_window.cpp:1232
 msgid "Show Offline _Contacts"
 msgstr "இணைப்பில் இல்லா தொடர்புகளை காட்டுக (_c)"
 
-#: ../lib/engine/gui/gtk-frontend/main_window.cpp:1238
+#: ../lib/engine/gui/gtk-frontend/main_window.cpp:1233
 #: ../org.gnome.ekiga.gschema.xml.in.in.h:125
 msgid "Show offline contacts"
 msgstr " வலை தொடர்பில்லாத தொடர்புகளை காட்டு"
 
-#: ../lib/engine/gui/gtk-frontend/main_window.cpp:1247
+#: ../lib/engine/gui/gtk-frontend/main_window.cpp:1242
 #: ../lib/engine/gui/gtk-frontend/statusicon.cpp:384
 msgid "Get help by reading the Ekiga manual"
 msgstr "எகிகா  கையேட்டினை வாசிப்பதின் மூலம் உதவி பெறவும்"
 
-#: ../lib/engine/gui/gtk-frontend/main_window.cpp:1252
+#: ../lib/engine/gui/gtk-frontend/main_window.cpp:1247
 #: ../lib/engine/gui/gtk-frontend/statusicon.cpp:389
 msgid "View information about Ekiga"
 msgstr "எகிகா  பற்றிய தகவல்களை பார்வையிடவும்"
 
-#: ../lib/engine/gui/gtk-frontend/main_window.cpp:1329
+#: ../lib/engine/gui/gtk-frontend/main_window.cpp:1324
 msgid "Dialpad"
 msgstr "டையல் அட்டை"
 
-#: ../lib/engine/gui/gtk-frontend/main_window.cpp:1347
+#: ../lib/engine/gui/gtk-frontend/main_window.cpp:1342
 msgid "Call history"
 msgstr "அழைப்பு வரலாறு"
 
-#: ../lib/engine/gui/gtk-frontend/main_window.cpp:1361
+#: ../lib/engine/gui/gtk-frontend/main_window.cpp:1356
 msgid "Ekiga"
 msgstr "எகிகா "
 
-#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:469
+#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:486
 #: ../org.gnome.ekiga.gschema.xml.in.in.h:25
 msgid "Play sound on incoming calls"
 msgstr "அழைப்பு வரும்போது ஒலி எழுப்பு"
 
-#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:479
+#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:496
 #: ../org.gnome.ekiga.gschema.xml.in.in.h:35
 msgid "Play ring tone"
 msgstr "ரிங் சத்தத்தை இயக்குகிறது"
 
-#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:489
+#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:506
 #: ../org.gnome.ekiga.gschema.xml.in.in.h:39
 msgid "Play busy tone"
 msgstr "வேலையில் இருக்கும் சத்தத்தை அமை"
 
-#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:499
+#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:516
 msgid "Play sound for new voice mails"
 msgstr "புதிய ஒலி அஞ்சல் செய்தி வரின் ஒலிக்கவும்"
 
-#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:509
+#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:526
 msgid "Play sound for new instant messages"
 msgstr "புதிய உடனடி செய்தி வரின் ஒலிக்கவும்"
 
 #. Personal Information
-#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:554
+#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:571
 msgid "_Full name:"
 msgstr "_F முழு பெயர்:"
 
-#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:556
+#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:573
 #: ../org.gnome.ekiga.gschema.xml.in.in.h:16
 msgid "Enter your full name"
 msgstr "உங்கள் முழு பெயரை உள்ளிடுக"
 
 #. Video Display
-#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:561
+#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:578
 msgid "Display"
 msgstr "காட்சி"
 
-#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:562
+#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:579
 msgid "Place windows displaying video _above other windows"
 msgstr "(_a)சாளர காட்சிபடத்தை மற்ற சாளரங்களுக்கு மேலே வைக்கவும்"
 
-#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:564
+#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:581
 #: ../org.gnome.ekiga.gschema.xml.in.in.h:64
 msgid "Place windows displaying video above other windows during calls"
 msgstr ""
@@ -1894,15 +1874,15 @@ msgstr ""
 "காட்டும்படியாகவோ சாளரத்தை வைக்கவும்"
 
 #. Network Settings
-#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:571
+#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:588
 msgid "Network Settings"
 msgstr "பிணைய அமைவுகள்"
 
-#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:572
+#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:589
 msgid "Type of Service (TOS):"
 msgstr "சேவையின் வகை (TOS):"
 
-#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:574
+#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:591
 #: ../org.gnome.ekiga.gschema.xml.in.in.h:91
 msgid ""
 "The Type of Service (TOS) byte on outgoing RTP IP packets. This byte is used "
@@ -1918,21 +1898,26 @@ msgstr ""
 "(EF) PHB க்கு "
 "உரியது ."
 
-#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:577
+#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:594
 msgid "Enable network _detection"
 msgstr "பிணைய கண்டறிதலை செயலாக்கு (_d)"
 
-#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:579
+#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:596
 #: ../org.gnome.ekiga.gschema.xml.in.in.h:46
 msgid "Enable the automatic network setup resulting from the STUN test"
 msgstr "STUN சோதனையிலிருந்து கிடைக்கும் தானியங்கி பிணைய அமைவை செயலாக்குக"
 
-#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:586
+#. Blacklist Settings
+#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:599
+msgid "Blacklist"
+msgstr "தடைப்பட்டியல்"
+
+#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:616
 msgid "_Always forward calls to the given host"
 msgstr ""
 "(_A)எப்போதும் அழைப்புகளை கொடுக்கப்பட்டுள்ள புரவலனுக்கு முன்னோக்கி அனுப்பு"
 
-#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:588
+#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:618
 msgid ""
 "If enabled, all incoming calls will be forwarded to the host that is "
 "specified in the protocol settings"
@@ -1941,11 +1926,11 @@ msgstr ""
 "புரவலனுக்கு  "
 "மேல் நோக்கி அனுப்பப்படும்."
 
-#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:590
+#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:620
 msgid "Forward calls to the given host if _no answer"
 msgstr "(_n)கணிணி பதிலலிக்க மறுத்தால் அழைப்புகளை முன்னோக்கு"
 
-#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:592
+#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:622
 msgid ""
 "If enabled, all incoming calls will be forwarded to the host that is "
 "specified in the protocol settings if you do not answer the call"
@@ -1954,11 +1939,11 @@ msgstr ""
 "நடபடி "
 "அமைப்பில் குறித்த புரவலனுக்கு  மேல் நோக்கி அனுப்பப்படும்."
 
-#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:594
+#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:624
 msgid "Forward calls to the given host if _busy"
 msgstr "(_b)புரவலன்ணி பயன்பாட்டிவ் இருந்தால் அழைப்புகளை முன்னோக்கு"
 
-#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:596
+#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:626
 msgid ""
 "If enabled, all incoming calls will be forwarded to the host that is "
 "specified in the protocol settings if you already are in a call or if you "
@@ -1970,20 +1955,20 @@ msgstr ""
 "குறிப்பிடப்பட்டுள்ள "
 "வழங்கிக்கு முன்னனுப்பப்படும்."
 
-#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:599
+#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:629
 msgid "Call Options"
 msgstr "அழைப்பு தேர்வு"
 
 #. Translators: the full sentence is Forward calls after x seconds.
-#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:602
+#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:632
 msgid "Forward calls after"
 msgstr "இதன்பிறகு அழைப்புகளை முன்னனுப்பவும்"
 
-#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:602
+#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:632
 msgid "seconds"
 msgstr "வினாடிகள்"
 
-#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:604
+#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:634
 #: ../org.gnome.ekiga.gschema.xml.in.in.h:68
 msgid ""
 "Automatically reject or forward incoming calls if no answer is given after "
@@ -1993,91 +1978,91 @@ msgstr ""
 "மறுக்கவும் "
 "அல்லது திசைமாற்றவும்(நொடிகள்)"
 
-#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:605
+#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:635
 msgid "_Automatically answer incoming calls"
 msgstr "(_A) தானியங்கியாக உள்வரும் அழைப்புகளுக்கு பதில் தருக"
 
-#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:607
+#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:637
 #: ../org.gnome.ekiga.gschema.xml.in.in.h:70
 msgid "If enabled, automatically answer incoming calls"
 msgstr "இயலுமைபடுத்தினால் தானியங்கியாக உள்வரும் அழைப்புகளுக்கு பதில் தரும்"
 
-#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:670
+#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:700
 msgid "A"
 msgstr "A"
 
-#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:681
+#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:711
 msgid "Event"
 msgstr "நிகழ்வுகள்"
 
-#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:693
+#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:723
 msgid "Choose a sound"
 msgstr "ஒரு ஒலியை தேர்வு செய்யவும்"
 
-#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:698
+#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:728
 msgid "Wavefiles"
 msgstr "ஒலி கோப்புகள்"
 
-#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:707
-#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:722
+#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:737
+#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:752
 msgid "Play"
 msgstr "இயக்கு"
 
-#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:744
+#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:774
 msgid "String"
 msgstr "சரம்"
 
-#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:745
+#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:775
 msgid "Tone"
 msgstr "தொனி"
 
-#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:746
-#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:817
+#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:776
+#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:847
 msgid "RFC2833"
 msgstr "RFC2833"
 
-#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:747
+#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:777
 msgid "Q.931"
 msgstr "Q.931"
 
-#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:752
+#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:782
 msgid "Disable H.239 Extended Video"
 msgstr "H.239 நீட்டிக்கப்பட்ட வீடியோவை முடக்கு"
 
-#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:753
+#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:783
 msgid "Allow H.239 per Content Role Mask"
 msgstr "ஒரு உள்ளடக்க ரோல் முகமூடிக்கு H.239 ஐ அனுமதி"
 
-#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:754
+#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:784
 msgid "Force H.239 Presentation Role"
 msgstr "H.239 விளக்கக்காட்சி ரோலைக் கட்டாயப்படுத்து"
 
-#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:755
+#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:785
 msgid "Force H.239 Live Role"
 msgstr "H.239 நேரடி ரோலைக் கட்டாயப்படுத்து"
 
-#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:767
-#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:830
+#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:797
+#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:860
 msgid "Forward _URI:"
 msgstr "_U மேல் அனுப்பு URI:"
 
-#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:769
-#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:832
+#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:799
+#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:862
 #: ../org.gnome.ekiga.gschema.xml.in.in.h:97
 msgid "The host where calls should be forwarded if call forwarding is enabled"
 msgstr "அழைப்புகளை முன்னோக்க வேண்டிய புரவலன்  பெயரை இங்கு உள்ளீடு செய்யவும்"
 
 #. Packing widget
-#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:775
+#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:805
 msgid "Advanced Settings"
 msgstr "மேம்பட்ட தோற்ற அமைப்புகள்"
 
 #. The toggles
-#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:778
+#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:808
 msgid "Enable H.245 _tunneling"
 msgstr "H.245 சுரங்கத்தை செயல்படுத்து"
 
-#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:780
+#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:810
 #: ../org.gnome.ekiga.gschema.xml.in.in.h:104
 msgid ""
 "This enables H.245 Tunneling mode. In H.245 Tunneling mode H.245 messages "
@@ -2089,20 +2074,20 @@ msgstr ""
 "அலைவரிசையை தரும்(வழி 1720) .இது அழைப்பின் போது TCP இணைப்பை சேமிக்கும்.  H.245 "
 "சுரங்கம் H.323v2 பதிப்போடு அறிமுகப்படுத்தப்பட்டது."
 
-#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:782
+#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:812
 msgid "Enable _early H.245"
 msgstr "(_e)முந்தைய H.245 ஐ செயல்படுத்து"
 
-#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:784
+#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:814
 #: ../org.gnome.ekiga.gschema.xml.in.in.h:106
 msgid "This enables H.245 early in the setup"
 msgstr "H.245 முன்கூட்டிய அமைப்பை செயல்படுத்து"
 
-#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:786
+#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:816
 msgid "Enable fast _connect procedure"
 msgstr "வேக இணைப்பு செயல்முறையை இயக்கவும் (_c)"
 
-#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:787
+#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:817
 msgid ""
 "Connection will be established in Fast Connect (Fast Start) mode. Fast "
 "Connect is a way to start calls faster that was introduced in H.323v2."
@@ -2112,177 +2097,177 @@ msgstr ""
 "என்பது அழைப்புகளை வேகமாகத் தொடங்குவதறாகன ஒரு புதிய வழியாகும், இது H.323v2 இல் "
 "அறிமுகப்படுத்தப்பட்டது."
 
-#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:789
+#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:819
 msgid "Enable H.239 control"
 msgstr "H.239 கட்டுப்பாட்டை செயல்படுத்து"
 
-#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:790
+#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:820
 msgid "This enables H.239 capability for additional video roles."
 msgstr "இது கூடுதல் வீடியோ ரோல்களுக்கு H.239 திறப்பாட்டை செயல்படுத்தும்."
 
-#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:795
+#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:825
 msgid "Select the H.239 Video Role"
 msgstr "H.239 வீடியோ ரோலைத் தேர்ந்தெடுக்கவும்"
 
 #. Packing widget
-#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:798
-#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:839
+#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:828
+#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:869
 msgid "DTMF Mode"
 msgstr "DTMF முறை"
 
-#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:800
-#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:841
+#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:830
+#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:871
 msgid "_Send DTMF as:"
 msgstr "(_S)DTMF என அனுப்பு:"
 
-#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:803
-#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:844
+#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:833
+#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:874
 msgid "Select the mode for DTMFs sending"
 msgstr "டிடிஎம்ஃஎப் கள் அனுப்பலுக்கு  முறைமையை  தேர்ந்தெடு"
 
-#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:818
+#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:848
 msgid "INFO"
 msgstr "INFO"
 
 #. Add Misc Settings
-#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:825
+#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:855
 msgid "_Outbound proxy:"
 msgstr "(_O) வெளிசெல் பதிலாள்:"
 
-#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:827
+#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:857
 #: ../org.gnome.ekiga.gschema.xml.in.in.h:95
 msgid "The SIP Outbound Proxy to use for outgoing calls"
 msgstr "வெளி செல்லும் அழைப்புகளுக்கு பயனாகும் சிப் வெளி செல்லும்  பதிலாள் "
 
 #. Here we add the audio codecs options
 #. Here we add the video codecs options
-#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:864
-#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:974
+#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:894
+#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:1004
 msgid "Settings"
 msgstr "அமைப்புகள்"
 
 #. Translators: the full sentence is Automatically adjust jitter buffer
 #. between X and Y ms
-#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:868
+#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:898
 msgid "Enable silence _detection"
 msgstr "(_d)நிசப்த அறிவிப்பை செயல்படுத்து"
 
-#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:870
+#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:900
 #: ../org.gnome.ekiga.gschema.xml.in.in.h:74
 msgid "If enabled, use silence detection with the codecs supporting it"
 msgstr "தேர்வு செய்யப்பட்டிருந்தால் ஆதரவு தரும் கோடக்கில் அமைதியை தேடும்"
 
-#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:872
+#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:902
 msgid "Enable echo can_celation"
 msgstr "_c எதிரொலி நீக்கத்தை செயல்படுத்து"
 
-#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:874
+#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:904
 #: ../org.gnome.ekiga.gschema.xml.in.in.h:76
 msgid "If enabled, use echo cancellation"
 msgstr "செயல்படுத்தப்பட்டால், எதிரொலி ரத்தினை பயன்படுத்தும்"
 
 #. Translators: the full sentence is Maximum jitter buffer of x ms.
-#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:877
+#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:907
 msgid "Maximum _jitter buffer of"
 msgstr "அதிகபட்ச ஜிட்டர் பஃபர் (_j)"
 
-#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:877
+#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:907
 msgid "ms"
 msgstr "ms"
 
-#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:879
+#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:909
 #: ../org.gnome.ekiga.gschema.xml.in.in.h:78
 msgid "The maximum jitter buffer size for audio reception (in ms)"
 msgstr "ஒலியை பெருவதற்கான பதட்ட இடையக அளவு(மில்லிசெகண்டில்)"
 
 #. Audio Devices
 #. The video devices related options
-#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:883
-#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:990
+#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:913
+#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:1020
 msgid "Devices"
 msgstr "சாதனங்கள்"
 
-#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:889
+#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:919
 msgid "Ringing device:"
 msgstr "அழைப்பொலி சாதனம்:"
 
-#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:893
+#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:923
 msgid "Select the ringing audio device to use"
 msgstr "அழைப்பொலி சாதனத்தை தேர்வு செய்க"
 
-#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:896
+#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:926
 msgid "Output device:"
 msgstr "விளைவு சாதனங்கள்:"
 
-#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:900
+#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:930
 #: ../org.gnome.ekiga.gschema.xml.in.in.h:2
 msgid "Select the audio output device to use"
 msgstr "பயன்படுத்த வேண்டிய ஒலி இயக்கியை தேர்வுச் செய்"
 
-#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:906
-#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:995
+#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:936
+#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:1025
 msgid "Input device:"
 msgstr "உள்ளீடு சாதனம்:"
 
-#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:910
+#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:940
 #: ../org.gnome.ekiga.gschema.xml.in.in.h:4
 msgid "Select the audio input device to use"
 msgstr "பயன்படுத்த வேண்டிய ஒலி இயக்கியை தேர்வுச் செய்"
 
 #. That button will refresh the device list
-#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:913
-#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:1016
+#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:943
+#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:1046
 msgid "_Detect devices"
 msgstr "(_D)சாதனங்களை கண்டுபிடி"
 
-#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:915
-#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:1016
+#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:945
+#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:1046
 msgid "Click here to refresh the device list"
 msgstr "சாதனங்கள்  பட்டியலை புதுப்பிக்க இங்கு சொடுக்கவும்."
 
-#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:937
+#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:967
 msgid "Small"
 msgstr "சிறிய"
 
-#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:938
-#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:939
+#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:968
+#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:969
 msgid "Medium"
 msgstr "நடுத்தரம்"
 
-#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:940
+#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:970
 msgid "480p 4:3 HD"
 msgstr "480p 4:3 HD"
 
-#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:941
+#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:971
 msgid "DVD"
 msgstr "DVD"
 
-#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:946
+#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:976
 msgid "PAL (Europe)"
 msgstr "PAL (ஐரோப்பா)"
 
-#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:947
+#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:977
 msgid "NTSC (America)"
 msgstr "NTSC (அமெரிக்கா)"
 
-#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:948
+#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:978
 msgid "SECAM (France)"
 msgstr "SECAM (ஃப்ரான்ஸ்)"
 
-#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:949
+#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:979
 msgid "Auto"
 msgstr "தானியங்கி"
 
 #. Translators: the full sentence is Keep a minimum video quality of X %
-#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:977
+#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:1007
 msgid "Picture quality"
 msgstr "ஒளித்தோற்றத் தரம்"
 
-#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:977
+#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:1007
 msgid "Frame rate"
 msgstr "சட்ட விகிதம்"
 
-#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:979
+#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:1009
 msgid ""
 "Choose if you want to guarantee a minimum image quality (possibly leading to "
 "dropped frames in order not to surpass the bitrate limit) or if you prefer "
@@ -2295,15 +2280,15 @@ msgstr ""
 "அப்படியே வைத்துக்கொள்ளலாமா?"
 
 #. Translators: the full sentence is Maximum video bitrate of x kbits/s.
-#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:983
+#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:1013
 msgid "Maximum video _bitrate of"
 msgstr "அதிகபட்ச வீடியோ பிட்ரேட் (_b)"
 
-#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:983
+#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:1013
 msgid "kbits/s"
 msgstr "kbits/s"
 
-#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:985
+#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:1015
 msgid ""
 "The maximum video bitrate in kbits/s. The video quality and the effective "
 "frame rate will be dynamically adjusted to keep the bitrate at the given "
@@ -2313,7 +2298,7 @@ msgstr ""
 "நிறுத்த "
 "விடியோ தரமும் செயலாகும் சட்ட விகிதமும் இயங்கு நிலையில் சரி செய்யப்படும். "
 
-#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:997
+#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:1027
 #: ../org.gnome.ekiga.gschema.xml.in.in.h:6
 msgid ""
 "Select the video input device to use. If an error occurs when using this "
@@ -2323,20 +2308,20 @@ msgstr ""
 "ஏற்பட்டால் சோதனை  "
 "படத்தை அனுப்பி சோதிக்கவும்"
 
-#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:999
+#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:1029
 msgid "Size:"
 msgstr "அளவு:"
 
-#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:1003
+#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:1033
 #: ../org.gnome.ekiga.gschema.xml.in.in.h:8
 msgid "Select the transmitted video size"
 msgstr "அனுப்பும் விடியோ அளவை தேர்வு செய்க"
 
-#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:1005
+#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:1035
 msgid "Format:"
 msgstr "தோற்ற ஒழுங்கு"
 
-#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:1009
+#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:1039
 #: ../org.gnome.ekiga.gschema.xml.in.in.h:12
 msgid ""
 "Select the format for video cameras (does not apply to most USB cameras)"
@@ -2344,70 +2329,65 @@ msgstr ""
 "வீடியோ காமராவிம் வடிவமைப்பை தேர்வு செய்யவும் (USB காமராக்களுக்கு இது "
 "பொருந்தாது)"
 
-#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:1011
+#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:1041
 msgid "Channel:"
 msgstr "தடம்"
 
-#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:1013
+#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:1043
 #: ../org.gnome.ekiga.gschema.xml.in.in.h:10
 msgid "The video channel number to use (to select camera, tv or other sources)"
 msgstr ""
 "பயன்படுத்த வேண்டிய ஒளித்தோற்ற எண்(கேமரா, தொலைகாட்சி அல்லது மற்ற மூலங்கள்)"
 
-#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:1390
+#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:1420
 msgid "No device found"
 msgstr "சாதனம் எதுவும் கிடைக்கவில்லை"
 
-#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:1768
+#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:1679
+msgid "Blacklist edition"
+msgstr "தடைப்பட்டியல் திருத்தம்"
+
+#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:1680
+msgid "This form lets you add and remove tokens from the blacklist"
+msgstr ""
+"இந்தப் படிவத்தைக் கொண்டு நீங்கள் தடைப்பட்டியலில் டோக்கன்களைச் சேர்க்கலாம், "
+"நீக்கலாம்"
+
+#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:1685
+msgid "Current list of undesirables"
+msgstr "தற்போது விரும்பாதவர்களின் பட்டியல்"
+
+#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:1835
 msgid "Ekiga Preferences"
 msgstr "எகிகா  முன்னுரிமைகள்"
 
-#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:1778
+#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:1845
 msgid "General"
 msgstr "பொதுவானவை"
 
-#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:1782
+#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:1849
 msgid "Forwarding"
 msgstr "முன்னனுப்பல்"
 
-#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:1787
+#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:1854
 msgid "Sound Events"
 msgstr "ஒலி நிகழ்வுகள்"
 
-#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:1792
+#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:1859
 msgid "SIP"
 msgstr "SIP"
 
-#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:1797
+#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:1864
 msgid "H.323"
 msgstr "H.323"
 
-#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:1801
+#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:1868
 msgid "Audio"
 msgstr "கேட்பொலி"
 
-#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:1805
+#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:1872
 msgid "Video"
 msgstr "வீடியோ"
-
-#: ../lib/engine/gui/gtk-frontend/roster-view-gtk.cpp:1083
-#: ../lib/engine/gui/gtk-frontend/statusmenu.cpp:91
-msgid "Away"
-msgstr "வெளியில்"
-
-#: ../lib/engine/gui/gtk-frontend/roster-view-gtk.cpp:1085
-#: ../lib/engine/gui/gtk-frontend/statusmenu.cpp:90
-msgid "Available"
-msgstr "பேசலாம்"
-
-#: ../lib/engine/gui/gtk-frontend/roster-view-gtk.cpp:1087
-msgid "Offline"
-msgstr "இணைப்பு விலகி"
-
-#: ../lib/engine/gui/gtk-frontend/roster-view-gtk.cpp:1089
-#: ../lib/engine/gui/gtk-frontend/statusmenu.cpp:92
-msgid "Busy"
-msgstr "பணியில்"
 
 #: ../lib/engine/gui/gtk-frontend/statusicon.cpp:317
 #, c-format
@@ -2731,12 +2711,10 @@ msgid "Size of the call window"
 msgstr "அழைப்பு சாளரத்தின் அளவு"
 
 #: ../org.gnome.ekiga.gschema.xml.in.in.h:49
-#| msgid "Position on the screen of the druid window"
 msgid "Position on the screen of the extended video window"
 msgstr "திரையில் நீட்டிக்கப்பட்ட வீடியோ சாளரத்தின் இடநிலை"
 
 #: ../org.gnome.ekiga.gschema.xml.in.in.h:50
-#| msgid "The size of the remote video window"
 msgid "Size of the extended video window"
 msgstr "நீட்டிக்கப்பட்ட வீடியோ சாளரத்தின் அளவு"
 
@@ -2793,7 +2771,6 @@ msgid "Size of the accounts window"
 msgstr "கணக்குகள் சாளரத்தின் அளவு"
 
 #: ../org.gnome.ekiga.gschema.xml.in.in.h:65
-#| msgid "_Picture-in-Picture"
 msgid "Enable Picture-In-Picture mode"
 msgstr "படத்துக்குள்ளே படம் முறைமையை செயல்படுத்தவும்"
 
@@ -2803,8 +2780,9 @@ msgid ""
 "video stream. This is only effective when sending and receiving video."
 msgstr ""
 "இது கணினிக்குள்ளான வீடியோ ஸ்ட்ரீம் உள்ளமைக்கப்பட்ட தொலை நிலை ஸ்ட்ரீமில் "
-"காண்பிக்கப்பட அனுமதிக்கிறது. வீடியோவை அனுப்பும் போதும் பெறும் போதும் மட்டுமே "
-"இது விளைவை அளிக்கும்."
+"காண்பிக்கப்பட "
+"அனுமதிக்கிறது. வீடியோவை அனுப்பும் போதும் பெறும் போதும் மட்டுமே இது விளைவை "
+"அளிக்கும்."
 
 #: ../org.gnome.ekiga.gschema.xml.in.in.h:67
 msgid "No answer timeout"
@@ -3127,6 +3105,14 @@ msgstr "அழைப்பு வரலாறு"
 msgid "The history of the 100 last calls"
 msgstr "கடைசியாக அழைத்த 100 அழைப்புகளின் வரலாறு"
 
+#: ../org.gnome.ekiga.gschema.xml.in.in.h:133
+msgid "List of foes"
+msgstr "பகைவர்களின் பட்டியல்"
+
+#: ../org.gnome.ekiga.gschema.xml.in.in.h:134
+msgid "List of persons the user does not want to hear about"
+msgstr "பயனர் பேச விரும்பாதவர்களின் பட்டியல்"
+
 #: ../plugins/avahi/avahi-heap.cpp:131 ../plugins/avahi/avahi-heap.cpp:378
 msgid "Neighbours"
 msgstr "அண்டைவீட்டுக்காரர்"
@@ -3395,23 +3381,23 @@ msgstr "LDAP முகவரி புத்தகத்தை சேர்"
 msgid "Add the Ekiga.net Directory"
 msgstr "எகிகா .net அடைவை சேர்"
 
-#: ../plugins/ldap/ldap-source.cpp:152
+#: ../plugins/ldap/ldap-source.cpp:154
 msgid "Create LDAP directory"
 msgstr "LDAP முகவரி புத்தகத்தை உருவாக்கு"
 
-#: ../plugins/ldap/ldap-source.cpp:161
+#: ../plugins/ldap/ldap-source.cpp:163
 msgid "Ekiga.net Directory"
 msgstr "எகிகா .net அடைவு"
 
-#: ../plugins/libnotify/libnotify-main.cpp:273
+#: ../plugins/libnotify/libnotify-main.cpp:274
 msgid "Remote URI:"
 msgstr "தொலை URI:"
 
-#: ../plugins/libnotify/libnotify-main.cpp:286
+#: ../plugins/libnotify/libnotify-main.cpp:287
 msgid "Reject"
 msgstr "மறு"
 
-#: ../plugins/libnotify/libnotify-main.cpp:288
+#: ../plugins/libnotify/libnotify-main.cpp:289
 msgid "Accept"
 msgstr "ஏற்றுக்கொள்"
 
@@ -3494,80 +3480,80 @@ msgid "Please fill in the following fields:"
 msgstr "தயவு செய்து  பின்வரும் புலங்களை  நிரப்பவும்:"
 
 #. FIXME: this is here until the feature is ready
-#: ../plugins/loudmouth/loudmouth-dialect.cpp:121
+#: ../plugins/loudmouth/loudmouth-dialect.cpp:116
 msgid "Join a discussion group"
 msgstr "ஒரு விவாத குழுவில் சேர்"
 
-#: ../plugins/loudmouth/loudmouth-dialect.cpp:132
+#: ../plugins/loudmouth/loudmouth-dialect.cpp:127
 msgid "Open a group chat room"
 msgstr "ஒரு குழு அரட்டை அறையைத் திற"
 
-#: ../plugins/loudmouth/loudmouth-dialect.cpp:134
+#: ../plugins/loudmouth/loudmouth-dialect.cpp:129
 msgid "Please provide a room name"
 msgstr "அறைப் பெயரை வழங்கவும்"
 
-#: ../plugins/loudmouth/loudmouth-dialect.cpp:136
+#: ../plugins/loudmouth/loudmouth-dialect.cpp:131
 msgid "Room name"
 msgstr "அறைப்பெயர்"
 
-#: ../plugins/loudmouth/loudmouth-dialect.cpp:136
+#: ../plugins/loudmouth/loudmouth-dialect.cpp:131
 msgid "The name of the room you want to enter"
 msgstr "நீங்கள் உள்நுழைய விரும்பும் அறையின் பெயர்"
 
-#: ../plugins/loudmouth/loudmouth-dialect.cpp:138
+#: ../plugins/loudmouth/loudmouth-dialect.cpp:133
 msgid "Pseudonym"
 msgstr "புனைப்பெயர்"
 
-#: ../plugins/loudmouth/loudmouth-dialect.cpp:138
+#: ../plugins/loudmouth/loudmouth-dialect.cpp:133
 msgid "The pseudonym you'll have in the room"
 msgstr "அறையில் உங்களுக்கு இருக்கும் புனைப்பெயர்"
 
-#: ../plugins/loudmouth/loudmouth-heap-roster.cpp:172
+#: ../plugins/loudmouth/loudmouth-heap-roster.cpp:173
 msgid "Authorization to see your presence"
 msgstr "உங்கள் இருப்பை காண அங்கீகாரம்"
 
-#: ../plugins/loudmouth/loudmouth-heap-roster.cpp:176
+#: ../plugins/loudmouth/loudmouth-heap-roster.cpp:177
 #, c-format
 msgid "%s asks the permission to see your presence, saying: \"%s\"."
 msgstr "%s  உங்கள் இருப்பை காண அங்கீகாரம் இப்படி சொல்லி கேட்கிறார்: \"%s\"."
 
-#: ../plugins/loudmouth/loudmouth-heap-roster.cpp:180
+#: ../plugins/loudmouth/loudmouth-heap-roster.cpp:181
 #, c-format
 msgid "%s asks the permission to see your presence."
 msgstr "%s  உங்கள் இருப்பை காண அங்கீகாரம்  கேட்கிறார்"
 
-#: ../plugins/loudmouth/loudmouth-heap-roster.cpp:187
+#: ../plugins/loudmouth/loudmouth-heap-roster.cpp:188
 msgid "grant him/her the permission to see your presence"
 msgstr "உங்கள்  இருப்பை காண அங்கீகாரம் அவருக்கு அளிக்கவும்"
 
-#: ../plugins/loudmouth/loudmouth-heap-roster.cpp:188
+#: ../plugins/loudmouth/loudmouth-heap-roster.cpp:189
 msgid "refuse him/her the permission to see your presence"
 msgstr "உங்கள்  இருப்பை காண அங்கீகாரம் அவருக்கு மறுக்கவும்"
 
-#: ../plugins/loudmouth/loudmouth-heap-roster.cpp:189
+#: ../plugins/loudmouth/loudmouth-heap-roster.cpp:190
 msgid "decide later (also close or cancel this dialog)"
 msgstr "பின்னால் முடிவு செய் (இந்த உரையாடலை மூடவும் அல்லது ரத்து செய்க)"
 
-#: ../plugins/loudmouth/loudmouth-heap-roster.cpp:190
+#: ../plugins/loudmouth/loudmouth-heap-roster.cpp:191
 msgid "Your answer is: "
 msgstr "உங்கள் பதில்:"
 
-#: ../plugins/loudmouth/loudmouth-heap-roster.cpp:334
+#: ../plugins/loudmouth/loudmouth-heap-roster.cpp:337
 msgid "Add a roster element"
 msgstr "முறைப்பட்டியல்  உருப்படியை ஒன்றை சேர்"
 
-#: ../plugins/loudmouth/loudmouth-heap-roster.cpp:335
+#: ../plugins/loudmouth/loudmouth-heap-roster.cpp:338
 msgid "Please fill in this form to add a new element to the remote roster"
 msgstr ""
 "தொலை முறைப்பட்டியலில் புதிய தொடர்பு சேர்க்க  தயவு செய்து இந்த படிவத்தை "
 "பூர்த்தி செய்யவும்."
 
-#: ../plugins/loudmouth/loudmouth-heap-roster.cpp:337
+#: ../plugins/loudmouth/loudmouth-heap-roster.cpp:340
 #: ../plugins/resource-list/rl-heap.cpp:470
 msgid "Identifier:"
 msgstr "அடையாளம் காணி"
 
-#: ../plugins/loudmouth/loudmouth-heap-roster.cpp:337
+#: ../plugins/loudmouth/loudmouth-heap-roster.cpp:340
 msgid "identifier@server"
 msgstr "identifier@server"
 
@@ -3715,13 +3701,55 @@ msgstr ""
 "மாற்ற இந்த "
 "படிவத்தை பூர்த்தி செய்க"
 
-#: ../src/main.cpp:133
+#: ../src/main.cpp:128
 msgid "Prints debug messages in the console (level between 1 and 8)"
 msgstr "வழு நீக்கு செய்திகளை முனையத்தில் (மட்டம் 1 முதல் 8 வரை) அச்சிடுகிறது."
 
-#: ../src/main.cpp:138
+#: ../src/main.cpp:133
 msgid "Makes Ekiga call the given URI"
 msgstr "Ekiga வை கொடுத்த யூஆர் ஐ யை அழைக்கச்செய்கிறது"
+
+#~ msgid "Appointment"
+#~ msgstr "சந்திப்பு"
+
+#~ msgid "Breakfast"
+#~ msgstr "காலை உணவு"
+
+#~ msgid "Dinner"
+#~ msgstr "இரவு உணவு"
+
+#~ msgid "Holiday"
+#~ msgstr "விடுமுறை"
+
+#~ msgid "In transit"
+#~ msgstr "பயணத்தில்"
+
+#~ msgid "Looking for work"
+#~ msgstr "வேலை தேடுகிறார்"
+
+#~ msgid "Lunch"
+#~ msgstr "மதிய உணவு"
+
+#~ msgid "Meal"
+#~ msgstr "உணவு வேளை"
+
+#~ msgid "Meeting"
+#~ msgstr "சந்திப்பு"
+
+#~ msgid "On the phone"
+#~ msgstr "தொலைபேசியில்"
+
+#~ msgid "Playing"
+#~ msgstr "இயங்குகிறது"
+
+#~ msgid "Shopping"
+#~ msgstr "ஷாப்பிங்"
+
+#~ msgid "Sleeping"
+#~ msgstr "தூங்குகிறார்"
+
+#~ msgid "Working"
+#~ msgstr "வேலை"
 
 #~ msgid ""
 #~ "There was an error opening or initializing the video output. Please "
