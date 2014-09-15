@@ -41,7 +41,6 @@
 #include <boost/smart_ptr.hpp>
 
 #include "services.h"
-#include "actor.h"
 #include "contact-core.h"
 
 namespace History
@@ -62,7 +61,6 @@ namespace History
 
   class Contact:
     public Ekiga::Contact,
-    public Ekiga::Actor,
     public boost::signals2::trackable
   {
   public:
