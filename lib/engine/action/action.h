@@ -89,25 +89,18 @@ namespace Ekiga {
 
   public:
 
-    /** Create an Action given a name and a description.
-     * @param the Action name (please read 'CONVENTION').
-     * @param the Action description. Can be used as description in menus
-     *        implementing Actions.
-     */
-    Action (const std::string & _name,
-            const std::string & _description);
-
-
     /** Create an Action given a name, a description and a callback.
      * @param the Action name (please read 'CONVENTION').
      * @param the Action description. Can be used as description in menus
      *        implementing Actions.
-     * @param the callback to executed when the Action is activated by
-     *        the user (from a menu or from the code itself).
+     * @param the callback to execute when the Action is activated by
+     *        the user (from a menu or from the code itself), if any.
+     * @param true if the Action is enabled, false otherwise.
      */
     Action (const std::string & _name,
             const std::string & _description,
-            boost::function0<void> _callback);
+            boost::function0<void> _callback = NULL,
+            bool enabled = true);
 
     /** Destructor.
      *
@@ -159,8 +152,8 @@ namespace Ekiga {
 
     std::string name;
     std::string description;
-    bool action_enabled;
     boost::function0<void> callback;
+    bool action_enabled;
 
     /** Those signals are emitted when the Action is enabled/disabled.
      */

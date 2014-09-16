@@ -41,25 +41,10 @@ using namespace Ekiga;
 
 
 Action::Action (const std::string & _name,
-                const std::string & _description)
-{
-  name = _name;
-  description = _description;
-  action_enabled = true;
-
-  conns.add (activated.connect (boost::bind (&Action::on_activated, this)));
-}
-
-
-Action::Action (const std::string & _name,
                 const std::string & _description,
-                boost::function0<void> _callback)
+                boost::function0<void> _callback,
+                bool _enabled) : name (_name), description (_description), callback (_callback), action_enabled (_enabled)
 {
-  name = _name;
-  description = _description;
-  callback = _callback;
-  action_enabled = true;
-
   conns.add (activated.connect (boost::bind (&Action::on_activated, this)));
 }
 
@@ -117,5 +102,6 @@ Action::is_enabled () const
 void
 Action::on_activated ()
 {
-  callback ();
+  if (!callback.empty ())
+    callback ();
 }
