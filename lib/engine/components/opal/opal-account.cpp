@@ -196,7 +196,36 @@ Opal::Account::Account (boost::shared_ptr<Opal::Sip::EndPoint> _sip_endpoint,
   setup_presentity ();
 
   /* Actor stuff */
-  register_actions ();
+  add_action (Ekiga::ActionPtr (new Ekiga::Action ("add", _("A_dd Contact"),
+                                                   boost::bind (&Opal::Account::add_contact, this))));
+  add_action (Ekiga::ActionPtr (new Ekiga::Action ("edit", _("_Edit"),
+                                                   boost::bind (&Opal::Account::edit, this))));
+  add_action (Ekiga::ActionPtr (new Ekiga::Action ("remove", _("_Remove"),
+                                                   boost::bind (&Opal::Account::remove, this))));
+  add_action (Ekiga::ActionPtr (new Ekiga::Action ("enable", _("_Enable"),
+                                                   boost::bind (&Opal::Account::enable, this), !is_enabled ())));
+  add_action (Ekiga::ActionPtr (new Ekiga::Action ("disable", _("_Disable"),
+                                                   boost::bind (&Opal::Account::disable, this), is_enabled ())));
+
+  if (type == DiamondCard) {
+
+    std::stringstream str;
+    std::stringstream url;
+    str << "https://www.diamondcard.us/exec/voip-login?accId=" << get_username () << "&pinCode=" << get_password () << "&spo=ekiga";
+
+    url.str ("");
+    url << str.str () << "&act=rch";
+    add_action (Ekiga::ActionPtr (new Ekiga::Action ("recharge", _("Recharge the account"),
+                                                     boost::bind (&Opal::Account::on_consult, this, url.str ()))));
+    url.str ("");
+    url << str.str () << "&act=bh";
+    add_action (Ekiga::ActionPtr (new Ekiga::Action ("balance", _("Consult the balance history"),
+                                                     boost::bind (&Opal::Account::on_consult, this, url.str ()))));
+    url.str ("");
+    url << str.str () << "&act=ch";
+    add_action (Ekiga::ActionPtr (new Ekiga::Action ("history", _("Consult the call history"),
+                                                     boost::bind (&Opal::Account::on_consult, this, url.str ()))));
+  }
 }
 
 
@@ -438,6 +467,9 @@ Opal::Account::enable ()
 
   updated ();
   trigger_saving ();
+
+  disable_action ("enable");
+  enable_action ("disable");
 }
 
 
@@ -471,6 +503,9 @@ Opal::Account::disable ()
 
   updated ();
   trigger_saving ();
+
+  enable_action ("enable");
+  disable_action ("disable");
 }
 
 
@@ -544,7 +579,7 @@ Opal::Account::populate_menu (Ekiga::MenuBuilder &builder)
 
   builder.add_action ("add", _("A_dd Contact"),
 		      boost::bind (&Opal::Account::add_contact, this));
-
+  
   builder.add_separator ();
 
   builder.add_action ("edit", _("_Edit"),
@@ -829,16 +864,6 @@ Opal::Account::publish (const Ekiga::PersonalDetails& details)
     presentity->SetLocalPresence (personal_state, presence_status);
     PTRACE (4, "Ekiga\tSent its own presence (publish) for " << get_aor() << ": " << presence << ", note " << presence_status);
   }
-}
-
-
-void
-Opal::Account::register_actions ()
-{
-  /* Add Actor actions */
-//  add_action (Ekiga::ActionPtr (new Ekiga::Action (id + "-new-contact", _("New Contact"),
-  //                                                 boost::bind (&Opal::Account::add_contact, this)));
-  std::cout << "FIXME" << std::endl << std::flush;
 }
 
 

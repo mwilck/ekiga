@@ -63,7 +63,9 @@ struct _RosterViewGtkPrivate
   gboolean show_offline_contacts;
 
   Ekiga::Presentity *selected_presentity;
+  Ekiga::Heap *selected_heap;
   Ekiga::GActorMenuPtr presentity_menu;
+  Ekiga::GActorMenuPtr heap_menu;
 };
 
 typedef struct _StatusIconInfo {
@@ -690,28 +692,32 @@ on_selection_changed (GtkTreeSelection* selection,
                         COLUMN_PRESENTITY, &presentity,
                         -1);
 
+    /* Reset old data. This also ensures GIO actions are
+     * properly removed before adding new ones.
+     */
+    self->priv->presentity_menu.reset ();
+    self->priv->heap_menu.reset ();
+    self->priv->selected_presentity = NULL;
+    self->priv->selected_heap = NULL;
+
     switch (column_type) {
 
     case TYPE_HEAP:
 
+      if (heap != NULL) {
+        self->priv->selected_heap = heap;
+        self->priv->heap_menu = Ekiga::GActorMenuPtr (new Ekiga::GActorMenu (*self->priv->selected_heap));
+      }
       break;
     case TYPE_GROUP:
 
       break;
     case TYPE_PRESENTITY:
 
-      /* Reset old data. This also ensures GIO actions are
-       * properly removed before adding new ones.
-       */
-      self->priv->presentity_menu.reset ();
-      self->priv->selected_presentity = NULL;
-
       if (presentity != NULL) {
         self->priv->selected_presentity = presentity;
         self->priv->presentity_menu = Ekiga::GActorMenuPtr (new Ekiga::GActorMenu (*self->priv->selected_presentity));
       }
-
-      presentity->populate_menu (builder);
       break;
     default:
 
@@ -779,7 +785,8 @@ on_view_event_after (GtkWidget *tree_view,
       if (event->type == GDK_BUTTON_PRESS && event->button == 1 && name)
         on_clicked_fold (self, path, name);
       if (event->type == GDK_BUTTON_PRESS && event->button == 3)
-        on_clicked_show_heap_menu (heap, event);
+        gtk_menu_popup (GTK_MENU (self->priv->heap_menu->get_menu ()),
+                        NULL, NULL, NULL, NULL, event->button, event->time);
       break;
     case TYPE_GROUP:
 
@@ -793,8 +800,6 @@ on_view_event_after (GtkWidget *tree_view,
       if (event->type == GDK_BUTTON_PRESS && event->button == 3)
         gtk_menu_popup (GTK_MENU (self->priv->presentity_menu->get_menu ()),
                         NULL, NULL, NULL, NULL, event->button, event->time);
-        //on_clicked_show_presentity_menu (heap, presentity, event);
-
       if (event->type == GDK_2BUTTON_PRESS || event->type == GDK_KEY_PRESS)
         on_clicked_trigger_presentity (presentity);
       break;
@@ -1456,6 +1461,7 @@ roster_view_gtk_init (RosterViewGtk* self)
   self->priv = new RosterViewGtkPrivate;
 
   self->priv->selected_presentity = NULL;
+  self->priv->selected_heap = NULL;
 
   self->priv->settings = new Ekiga::Settings (CONTACTS_SCHEMA);
   self->priv->folded_groups = self->priv->settings->get_slist ("roster-folded-groups");

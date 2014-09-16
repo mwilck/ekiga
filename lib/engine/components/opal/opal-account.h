@@ -193,8 +193,6 @@ public:
     boost::signals2::signal<void(std::string, std::string)> status_received;
 
 private:
-    void register_actions ();
-
     void fetch (const std::string uri) const;
     void unfetch (const std::string uri) const;
 
