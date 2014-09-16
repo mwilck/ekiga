@@ -94,6 +94,22 @@ namespace Ekiga {
     virtual bool remove_action (const std::string & name);
 
 
+    /** Enable an action from the given Actor.
+     *
+     * @param An Action name.
+     * @return true if the Action was successfully enabled, false otherwise.
+     */
+    virtual bool enable_action (const std::string & name);
+
+
+    /** Disable an action from the given Actor.
+     *
+     * @param An Action name.
+     * @return true if the Action was successfully disabled, false otherwise.
+     */
+    virtual bool disable_action (const std::string & name);
+
+
     /** Remove all actions from the given Actor.
      *
      */

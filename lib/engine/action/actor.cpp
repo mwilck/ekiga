@@ -48,7 +48,7 @@ Actor::add_action (ActionPtr action)
   actions.push_back (action);
 
   conns.add (action->enabled.connect (boost::bind (boost::ref (action_enabled), action->get_name ())));
-  conns.add (action->disabled.connect (boost::bind (boost::ref (action_enabled), action->get_name ())));
+  conns.add (action->disabled.connect (boost::bind (boost::ref (action_disabled), action->get_name ())));
 
   action_added (action->get_name ());
 }
@@ -69,6 +69,32 @@ Actor::remove_action (const std::string & name)
     if ((*it)->get_name () == name) {
       action_removed (name);
       actions.erase (it);
+      return true;
+    }
+  }
+  return false;
+}
+
+
+bool
+Actor::enable_action (const std::string & name)
+{
+  for (ActionStore::iterator it = actions.begin (); it != actions.end () ; ++it) {
+    if ((*it)->get_name () == name) {
+      (*it)->enable ();
+      return true;
+    }
+  }
+  return false;
+}
+
+
+bool
+Actor::disable_action (const std::string & name)
+{
+  for (ActionStore::iterator it = actions.begin (); it != actions.end () ; ++it) {
+    if ((*it)->get_name () == name) {
+      (*it)->disable ();
       return true;
     }
   }
