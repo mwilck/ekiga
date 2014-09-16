@@ -65,40 +65,53 @@ Actor::add_action (const ActionStore & _actions)
 bool
 Actor::remove_action (const std::string & name)
 {
-  for (ActionStore::iterator it = actions.begin (); it != actions.end () ; ++it) {
-    if ((*it)->get_name () == name) {
-      action_removed (name);
-      actions.erase (it);
-      return true;
-    }
-  }
-  return false;
+  ActionPtr a = get_action (name);
+  if (!a)
+    return false;
+
+  action_removed (name);
+  actions.remove (a);
+
+  return true;
 }
 
 
 bool
 Actor::enable_action (const std::string & name)
 {
-  for (ActionStore::iterator it = actions.begin (); it != actions.end () ; ++it) {
-    if ((*it)->get_name () == name) {
-      (*it)->enable ();
-      return true;
-    }
-  }
-  return false;
+  ActionPtr a = get_action (name);
+  if (!a)
+    return false;
+
+  a->enable ();
+
+  return true;
 }
 
 
 bool
 Actor::disable_action (const std::string & name)
 {
+  ActionPtr a = get_action (name);
+  if (!a)
+    return false;
+
+  a->disable ();
+
+  return true;
+}
+
+
+ActionPtr
+Actor::get_action (const std::string & name)
+{
   for (ActionStore::iterator it = actions.begin (); it != actions.end () ; ++it) {
     if ((*it)->get_name () == name) {
-      (*it)->disable ();
-      return true;
+      return (*it);
     }
   }
-  return false;
+
+  return ActionPtr ();
 }
 
 

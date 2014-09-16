@@ -116,6 +116,15 @@ namespace Ekiga {
     virtual void remove_actions ();
 
 
+    /** Return an action by name.
+     *
+     * @param An Action name.
+     * @return A smart pointer to the Action if it was found. An empty pointer
+     *         otherwise.
+     */
+    virtual ActionPtr get_action (const std::string & name);
+
+
     /** Iterators (able to iterate through actions)
      */
     const_iterator begin () const;
