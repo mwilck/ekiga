@@ -52,6 +52,12 @@ Ekiga::FormDumper::title (const std::string _title)
 }
 
 void
+Ekiga::FormDumper::action (const std::string _action)
+{
+  out << "Action: " << _action << std::endl;
+}
+
+void
 Ekiga::FormDumper::instructions (const std::string _instructions)
 {
   out << "Instructions: " << std::endl << _instructions << std::endl;

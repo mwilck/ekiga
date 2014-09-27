@@ -57,7 +57,9 @@ namespace Ekiga
 
     void dump (const Form &form);
 
-    void title (const std::string );
+    void title (const std::string);
+
+    void action (const std::string);
 
     void instructions (const std::string );
 

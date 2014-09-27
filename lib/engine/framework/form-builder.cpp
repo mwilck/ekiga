@@ -53,6 +53,7 @@ Ekiga::FormBuilder::visit (Ekiga::FormVisitor &visitor) const
   std::list<struct EditableListField>::const_iterator iter_editable_list = editable_lists.begin ();
 
   visitor.title (my_title);
+  visitor.action (my_action);
   visitor.instructions (my_instructions);
   if (!my_link.first.empty () && !my_link.second.empty ())
     visitor.link (my_link.first, my_link.second); 
@@ -243,6 +244,13 @@ Ekiga::FormBuilder::title (const std::string _title)
 {
   my_title = _title;
 }
+
+void
+Ekiga::FormBuilder::action (const std::string _action)
+{
+  my_action = _action;
+}
+
 
 void
 Ekiga::FormBuilder::instructions (const std::string _instructions)

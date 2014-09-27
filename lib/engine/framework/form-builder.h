@@ -78,6 +78,8 @@ namespace Ekiga
 
     void title (const std::string title);
 
+    void action (const std::string action);
+
     void instructions (const std::string instructions);
 
     void link (const std::string link,
@@ -265,6 +267,7 @@ namespace Ekiga
     } FieldType;
 
     std::string my_title;
+    std::string my_action;
     std::string my_instructions;
     std::pair<std::string, std::string> my_link;
     std::string my_error;
