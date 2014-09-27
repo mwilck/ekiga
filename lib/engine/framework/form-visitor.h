@@ -38,6 +38,7 @@
 
 #include <map>
 #include <set>
+#include <list>
 #include <string>
 
 namespace Ekiga
@@ -106,11 +107,12 @@ namespace Ekiga
 				  const std::map<std::string,std::string> choices,
 				  bool advanced) = 0;
 
-    virtual void editable_set (const std::string name,
-			       const std::string description,
-			       const std::set<std::string> values,
-			       const std::set<std::string> proposed_values,
-			       bool advanced) = 0;
+    virtual void editable_list (const std::string name,
+                                const std::string description,
+                                const std::list<std::string> values,
+                                const std::list<std::string> proposed_values,
+                                bool advanced,
+                                bool rename_only) = 0;
   };
 
 /**

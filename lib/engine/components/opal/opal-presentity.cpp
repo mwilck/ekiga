@@ -41,6 +41,7 @@
 #include "robust-xml.h"
 
 #include "opal-presentity.h"
+#include "opal-account.h"
 
 
 // remove leading and trailing spaces and tabs (useful for copy/paste)
@@ -76,7 +77,7 @@ struct null_deleter
 xmlNodePtr
 Opal::Presentity::build_node (const std::string name,
 			      const std::string uri,
-			      const std::set<std::string> groups)
+			      const std::list<std::string> groups)
 {
   xmlNodePtr node = xmlNewNode (NULL, BAD_CAST "entry");
   xmlSetProp (node, BAD_CAST "uri", BAD_CAST uri.c_str ());
@@ -84,7 +85,7 @@ Opal::Presentity::build_node (const std::string name,
 	       BAD_CAST "name",
 	       BAD_CAST robust_xmlEscape (node->doc,
 					  name).c_str ());
-  for (std::set<std::string>::const_iterator iter = groups.begin ();
+  for (std::list<std::string>::const_iterator iter = groups.begin ();
        iter != groups.end ();
        ++iter)
     xmlNewChild (node, NULL,
@@ -96,9 +97,11 @@ Opal::Presentity::build_node (const std::string name,
 }
 
 
-Opal::Presentity::Presentity (boost::weak_ptr<Ekiga::PresenceCore> presence_core_,
-			      boost::function0<std::set<std::string> > existing_groups_,
+Opal::Presentity::Presentity (const Opal::Account & account_,
+                              boost::weak_ptr<Ekiga::PresenceCore> presence_core_,
+			      boost::function0<std::list<std::string> > existing_groups_,
 			      xmlNodePtr node_):
+  account(account_),
   presence_core(presence_core_),
   existing_groups(existing_groups_),
   node(node_),
@@ -109,8 +112,14 @@ Opal::Presentity::Presentity (boost::weak_ptr<Ekiga::PresenceCore> presence_core
   if (pcore)
     pcore->pull_actions (actions, get_name (), get_uri ());
 
-  add_action (Ekiga::ActionPtr (new Ekiga::Action ("edit", _("_Edit"), boost::bind (&Opal::Presentity::edit_presentity, this))));
-  add_action (Ekiga::ActionPtr (new Ekiga::Action ("remove", _("_Remove"), boost::bind (&Opal::Presentity::remove, this))));
+  add_action (Ekiga::ActionPtr (new Ekiga::Action ("edit", _("_Edit"),
+                                                   boost::bind (&Opal::Presentity::edit_presentity, this))));
+  add_action (Ekiga::ActionPtr (new Ekiga::Action ("remove", _("_Remove"),
+                                                   boost::bind (&Opal::Presentity::remove, this))));
+  add_action (Ekiga::ActionPtr (new Ekiga::Action ("rename", _("Rename _Groups"),
+                                                   boost::bind (&Opal::Account::on_rename_group,
+                                                                (Opal::Account *) &account,
+                                                                PresentityPtr (this)))));
 }
 
 
@@ -165,10 +174,10 @@ Opal::Presentity::get_status () const
 }
 
 
-const std::set<std::string>
+const std::list<std::string>
 Opal::Presentity::get_groups () const
 {
-  std::set<std::string> groups;
+  std::list<std::string> groups;
 
   for (xmlNodePtr child = node->children ;
        child != NULL ;
@@ -182,7 +191,7 @@ Opal::Presentity::get_groups () const
 	xmlChar* xml_str = xmlNodeGetContent (child);
 	if (xml_str != NULL) {
 
-	  groups.insert ((const char*) xml_str);
+	  groups.push_back ((const char*) xml_str);
 	  xmlFree (xml_str);
 	}
       }
@@ -248,8 +257,8 @@ Opal::Presentity::edit_presentity ()
 
   std::string name = get_name ();
   std::string uri = get_uri ();
-  std::set<std::string> groups = get_groups ();
-  std::set<std::string> all_groups = existing_groups ();
+  std::list<std::string> groups = get_groups ();
+  std::list<std::string> all_groups = existing_groups ();
 
   request->title (_("Edit roster element"));
   request->instructions (_("Please fill in this form to change an existing "
@@ -257,7 +266,7 @@ Opal::Presentity::edit_presentity ()
   request->text ("name", _("Name:"), name, _("Name of the contact, as shown in your roster"));
   request->text ("uri", _("Address:"), uri, _("Address, e.g. sip:xyz@ekiga.net; if you do not specify the host part, e.g. sip:xyz, then you can choose it by right-clicking on the contact in roster"));
 
-  request->editable_set ("groups", _("Choose groups:"),
+  request->editable_list ("groups", _("Choose groups:"),
 			 groups, all_groups);
 
   questions (request);
@@ -272,8 +281,8 @@ Opal::Presentity::edit_presentity_form_submitted (bool submitted,
     return;
 
   const std::string new_name = result.text ("name");
-  const std::set<std::string> groups = get_groups ();
-  const std::set<std::string> new_groups = result.editable_set ("groups");
+  const std::list<std::string> groups = get_groups ();
+  const std::list<std::string> new_groups = result.editable_list ("groups");
   std::string new_uri = result.text ("uri");
   const std::string uri = get_uri ();
   std::set<xmlNodePtr> nodes_to_remove;
@@ -314,7 +323,7 @@ Opal::Presentity::edit_presentity_form_submitted (bool submitted,
 
 	if (xml_str != NULL) {
 
-	  if (new_groups.find ((const char*) xml_str) == new_groups.end ()) {
+	  if (std::find (new_groups.begin (), new_groups.end (), (const char*) xml_str) == new_groups.end ()) {
 
 	    nodes_to_remove.insert (child); // don't free what we loop on!
 	  }
@@ -334,7 +343,7 @@ Opal::Presentity::edit_presentity_form_submitted (bool submitted,
   }
 
   // the second loop looking for groups we weren't in but are now
-  for (std::set<std::string>::const_iterator iter = new_groups.begin ();
+  for (std::list<std::string>::const_iterator iter = new_groups.begin ();
        iter != new_groups.end ();
        iter++) {
 

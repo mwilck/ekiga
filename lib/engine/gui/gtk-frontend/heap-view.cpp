@@ -231,14 +231,14 @@ on_presentity_added (HeapView* self,
 {
   GtkTreeIter group_iter;
   GtkTreeIter iter;
-  std::set<std::string> groups = presentity->get_groups ();
+  std::list<std::string> groups = presentity->get_groups ();
   GtkTreeSelection* selection = gtk_tree_view_get_selection (self->priv->view);
   bool should_emit = false;
 
   if (groups.empty ())
-    groups.insert (_("Unsorted"));
+    groups.push_back (_("Unsorted"));
 
-  for (std::set<std::string>::const_iterator group = groups.begin ();
+  for (std::list<std::string>::const_iterator group = groups.begin ();
        group != groups.end (); ++group) {
 
     find_iter_for_group (self, group->c_str (), &group_iter);
@@ -272,10 +272,10 @@ on_presentity_updated (HeapView* self,
   GtkTreeIter group_iter;
   GtkTreeIter iter;
   gchar* group_name = NULL;
-  std::set<std::string> groups = presentity->get_groups ();
+  std::list<std::string> groups = presentity->get_groups ();
 
   if (groups.empty ())
-    groups.insert (_("Unsorted"));
+    groups.push_back (_("Unsorted"));
 
   model = GTK_TREE_MODEL (self->priv->store);
 
@@ -287,7 +287,7 @@ on_presentity_updated (HeapView* self,
 
       if (group_name != NULL) {
 
-	if (groups.find (group_name) == groups.end ()) {
+	if (std::find (groups.begin (), groups.end (), group_name) == groups.end ()) {
 
 	  find_iter_for_presentity (self, presentity.get (), &group_iter, &iter);
 	  gtk_tree_store_remove (self->priv->store, &iter);

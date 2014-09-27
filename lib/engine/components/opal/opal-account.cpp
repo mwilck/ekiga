@@ -144,7 +144,7 @@ Opal::Account::Account (boost::shared_ptr<Opal::Sip::EndPoint> _sip_endpoint,
 			boost::shared_ptr<Ekiga::PersonalDetails> _personal_details,
 			boost::shared_ptr<Ekiga::AudioOutputCore> _audiooutput_core,
 			boost::shared_ptr<CallManager> _call_manager,
-			boost::function0<std::set<std::string> > _existing_groups,
+			boost::function0<std::list<std::string> > _existing_groups,
 			xmlNodePtr _node):
   existing_groups(_existing_groups),
   node(_node),
@@ -179,7 +179,8 @@ Opal::Account::Account (boost::shared_ptr<Opal::Sip::EndPoint> _sip_endpoint,
       roster_node = child;
       for (xmlNodePtr presnode = roster_node->children; presnode != NULL; presnode = presnode->next) {
 
-	Opal::PresentityPtr pres(new Presentity (presence_core,
+	Opal::PresentityPtr pres(new Presentity (*this,
+                                                 presence_core,
 						 existing_groups,
 						 presnode));
 
@@ -229,15 +230,17 @@ Opal::Account::Account (boost::shared_ptr<Opal::Sip::EndPoint> _sip_endpoint,
 }
 
 
-std::set<std::string>
+std::list<std::string>
 Opal::Account::get_groups () const
 {
-  std::set<std::string> result;
+  std::list<std::string> result;
 
   for (Ekiga::RefLister< Presentity >::const_iterator iter = Ekiga::RefLister< Presentity >::begin (); iter != Ekiga::RefLister< Presentity >::end (); ++iter) {
 
-    std::set<std::string> groups = (*iter)->get_groups ();
-    result.insert (groups.begin (), groups.end ());
+    std::list<std::string> groups = (*iter)->get_groups ();
+    result.merge (groups);
+    result.sort ();
+    result.unique ();
   }
 
   return result;
@@ -756,8 +759,9 @@ Opal::Account::add_contact ()
   if (!pcore)
     return;
 
-  boost::shared_ptr<Ekiga::FormRequestSimple> request = boost::shared_ptr<Ekiga::FormRequestSimple> (new Ekiga::FormRequestSimple (boost::bind (&Opal::Account::on_add_contact_form_submitted, this, _1, _2)));
-  std::set<std::string> groups = existing_groups ();
+  boost::shared_ptr<Ekiga::FormRequestSimple> request =
+    boost::shared_ptr<Ekiga::FormRequestSimple> (new Ekiga::FormRequestSimple (boost::bind (&Opal::Account::on_add_contact_form_submitted, this, _1, _2)));
+  std::list<std::string> groups = existing_groups ();
 
   request->title (_("Add to account roster"));
   request->instructions (_("Please fill in this form to add a new contact "
@@ -766,9 +770,9 @@ Opal::Account::add_contact ()
 
   request->text ("uri", _("Address:"), "sip:", _("Address, e.g. sip:xyz@ekiga.net; if you do not specify the host part, e.g. sip:xyz, then you can choose it by right-clicking on the contact in roster")); // let's put a default
 
-  request->editable_set ("groups",
+  request->editable_list ("groups",
 			 _("Put contact in groups:"),
-			 std::set<std::string>(), groups);
+                         std::list<std::string>(), groups);
 
   Ekiga::Heap::questions (request);
 }
@@ -786,7 +790,7 @@ Opal::Account::on_add_contact_form_submitted (bool submitted,
 
   const std::string name = result.text ("name");
   std::string uri;
-  const std::set<std::string> groups = result.editable_set ("groups");
+  const std::list<std::string> groups = result.editable_list ("groups");
 
   uri = result.text ("uri");
   uri = canonize_uri (uri);
@@ -797,7 +801,7 @@ Opal::Account::on_add_contact_form_submitted (bool submitted,
     xmlAddChild (roster_node, presnode);
     trigger_saving ();
 
-    Opal::PresentityPtr pres(new Presentity (presence_core, existing_groups, presnode));
+    Opal::PresentityPtr pres(new Presentity (*this, presence_core, existing_groups, presnode));
     pres->trigger_saving.connect (boost::ref (trigger_saving));
     pres->removed.connect (boost::bind (boost::ref (presentity_removed), pres));
     pres->updated.connect (boost::bind (boost::ref (presentity_updated), pres));
@@ -1275,20 +1279,21 @@ bool
 Opal::Account::populate_menu_for_group (const std::string name,
 					Ekiga::MenuBuilder& builder)
 {
-  builder.add_action ("edit", _("Rename"),
-		      boost::bind (&Opal::Account::on_rename_group, this, name));
-  return true;
 }
 
 
 void
-Opal::Account::on_rename_group (std::string name)
+Opal::Account::on_rename_group (Opal::PresentityPtr pres)
 {
-  boost::shared_ptr<Ekiga::FormRequestSimple> request = boost::shared_ptr<Ekiga::FormRequestSimple> (new Ekiga::FormRequestSimple (boost::bind (&Opal::Account::rename_group_form_submitted, this, name, _1, _2)));
+  boost::shared_ptr<Ekiga::FormRequestSimple> request =
+    boost::shared_ptr<Ekiga::FormRequestSimple> (new Ekiga::FormRequestSimple (boost::bind (&Opal::Account::on_rename_group_form_submitted,
+                                                                                            this, _1, _2, pres->get_groups ())));
 
   request->title (_("Rename group"));
-  request->instructions (_("Please edit this group name"));
-  request->text ("name", _("Name:"), name, std::string ());
+  request->instructions (_("You can rename groups by clicking on the corresponding entry and changing the group name"));
+  request->editable_list ("groups", _("Groups:"),
+			 pres->get_groups (), std::list<std::string>(),
+                         false, true);
 
   Ekiga::Heap::questions (request);
 }
@@ -1316,19 +1321,27 @@ struct rename_group_form_submitted_helper
 
 
 void
-Opal::Account::rename_group_form_submitted (std::string old_name,
-					    bool submitted,
-					    Ekiga::Form& result)
+Opal::Account::on_rename_group_form_submitted (bool submitted,
+                                               Ekiga::Form& result,
+                                               const std::list<std::string> & groups)
 {
   if (!submitted)
     return;
 
-  const std::string new_name = result.text ("name");
+  std::list <std::string> new_groups = result.editable_list ("groups");
 
-  if ( !new_name.empty () && new_name != old_name) {
+  std::list <std::string>::const_iterator nit = new_groups.begin ();
+  std::list <std::string>::const_iterator it = groups.begin ();
 
-    rename_group_form_submitted_helper helper (old_name, new_name);
-    visit_presentities (boost::ref (helper));
+  for (std::pair <std::list<std::string>::const_iterator, std::list<std::string>::const_iterator> i(it, nit);
+       i.first != groups.end ();
+       ++i.first, ++i.second) {
+
+    if (*i.first != *i.second) {
+
+      rename_group_form_submitted_helper helper (*i.first, *i.second);
+      visit_presentities (boost::ref (helper));
+    }
   }
 }
 

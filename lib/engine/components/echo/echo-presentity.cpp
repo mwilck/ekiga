@@ -66,10 +66,10 @@ Echo::Presentity::get_status () const
   return "ready";
 }
 
-const std::set<std::string>
+const std::list<std::string>
 Echo::Presentity::get_groups () const
 {
-  return std::set<std::string>();
+  return std::list<std::string>();
 }
 
 const std::string

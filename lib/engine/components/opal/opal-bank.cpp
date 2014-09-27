@@ -77,12 +77,12 @@ Opal::Bank::Bank (Ekiga::ServiceCore& core):
   for (xmlNodePtr child = node->children; child != NULL; child = child->next) {
 
     if (child->type == XML_ELEMENT_NODE
-	&& child->name != NULL
-	&& xmlStrEqual(BAD_CAST "account", child->name)) {
+        && child->name != NULL
+        && xmlStrEqual(BAD_CAST "account", child->name)) {
 
       boost::shared_ptr<Account> account(new Account (sip_endpoint, presence_core, notification_core,
-						      personal_details, audiooutput_core, opal_component,
-						      boost::bind(&Opal::Bank::existing_groups, this), child));
+                                                      personal_details, audiooutput_core, opal_component,
+                                                      boost::bind(&Opal::Bank::existing_groups, this), child));
 
       add_account (account);
       Ekiga::BankImpl<Account>::add_connection (account, account->presentity_added.connect (boost::bind (boost::ref(presentity_added), account, _1)));
@@ -126,7 +126,7 @@ bool
 Opal::Bank::populate_menu (Ekiga::MenuBuilder & builder)
 {
   builder.add_action ("add", _("_Add an Ekiga.net Account"),
-		      boost::bind (&Opal::Bank::new_account, this, Opal::Account::Ekiga, "", ""));
+                      boost::bind (&Opal::Bank::new_account, this, Opal::Account::Ekiga, "", ""));
   builder.add_action ("add", _("_Add an Ekiga Call Out Account"),
 		      boost::bind (&Opal::Bank::new_account, this, Opal::Account::DiamondCard, "", ""));
   builder.add_action ("add", _("_Add a SIP Account"),
@@ -404,40 +404,43 @@ Opal::Bank::visit_heaps (boost::function1<bool, Ekiga::HeapPtr> visitor) const
 }
 
 
-const std::set<std::string>
+const std::list<std::string>
 Opal::Bank::existing_groups () const
 {
-  std::set<std::string> result;
+  std::list<std::string> result;
 
   for (const_iterator iter = begin ();
        iter != end ();
        ++iter) {
 
-    std::set<std::string> groups = (*iter)->get_groups ();
-    result.insert (groups.begin (), groups.end ());
+    std::list<std::string> groups = (*iter)->get_groups ();
+    result.merge (groups);
   }
 
-  result.insert (_("Family"));
-  result.insert (_("Friend"));
+  result.push_back (_("Family"));
+  result.push_back (_("Friend"));
   /* Translator: http://www.ietf.org/rfc/rfc4480.txt proposes several
      relationships between you and your contact; associate means
      someone who is at the same "level" than you.
   */
-  result.insert (_("Associate"));
+  result.push_back (_("Associate"));
   /* Translator: http://www.ietf.org/rfc/rfc4480.txt proposes several
      relationships between you and your contact; assistant means
      someone who is at a lower "level" than you.
   */
-  result.insert (_("Assistant"));
+  result.push_back (_("Assistant"));
   /* Translator: http://www.ietf.org/rfc/rfc4480.txt proposes several
      relationships between you and your contact; supervisor means
      someone who is at a higher "level" than you.
   */
-  result.insert (_("Supervisor"));
+  result.push_back (_("Supervisor"));
   /* Translator: http://www.ietf.org/rfc/rfc4480.txt proposes several
      relationships between you and your contact; self means yourself.
   */
-  result.insert (_("Self"));
+  result.push_back (_("Self"));
+
+  result.sort ();
+  result.unique ();
 
   return result;
 }

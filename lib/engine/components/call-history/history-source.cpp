@@ -46,7 +46,7 @@ History::Source::~Source ()
 {
 }
 
-const std::set<std::string>
+const std::list<std::string>
 History::Source::existing_groups () const
 {
   return book->existing_groups ();

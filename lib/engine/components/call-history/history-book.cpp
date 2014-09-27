@@ -157,11 +157,11 @@ History::Book::populate_menu (Ekiga::MenuBuilder &builder)
   return true;
 }
 
-const std::set<std::string>
+const std::list<std::string>
 History::Book::existing_groups () const
 {
   // here it's more logical to lie
-  return std::set<std::string> ();
+  return std::list<std::string> ();
 }
 
 const std::string

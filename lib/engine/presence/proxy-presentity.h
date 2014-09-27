@@ -80,7 +80,7 @@ namespace Ekiga
 
     const std::string get_status () const;
 
-    const std::set<std::string> get_groups () const;
+    const std::list<std::string> get_groups () const;
 
     bool has_uri (const std::string uri) const;
 

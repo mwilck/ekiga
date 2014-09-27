@@ -72,7 +72,7 @@ namespace History
 
     bool populate_menu (Ekiga::MenuBuilder &);
 
-    const std::set<std::string> existing_groups () const;
+    const std::list<std::string> existing_groups () const;
 
     const std::string get_status () const;
 

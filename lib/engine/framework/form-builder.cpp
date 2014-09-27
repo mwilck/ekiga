@@ -50,7 +50,7 @@ Ekiga::FormBuilder::visit (Ekiga::FormVisitor &visitor) const
   std::list<struct MultiTextField>::const_iterator iter_multi_text = multi_texts.begin ();
   std::list<struct SingleChoiceField>::const_iterator iter_single_choice = single_choices.begin ();
   std::list<struct MultipleChoiceField>::const_iterator iter_multiple_choice = multiple_choices.begin ();
-  std::list<struct EditableSetField>::const_iterator iter_editable_set = editable_sets.begin ();
+  std::list<struct EditableListField>::const_iterator iter_editable_list = editable_lists.begin ();
 
   visitor.title (my_title);
   visitor.instructions (my_instructions);
@@ -127,12 +127,13 @@ Ekiga::FormBuilder::visit (Ekiga::FormVisitor &visitor) const
 
     case EDITABLE_SET:
 
-      visitor.editable_set (iter_editable_set->name,
-			    iter_editable_set->description,
-			    iter_editable_set->values,
-			    iter_editable_set->proposed_values,
-			    iter_editable_set->advanced);
-      iter_editable_set++;
+      visitor.editable_list (iter_editable_list->name,
+			    iter_editable_list->description,
+			    iter_editable_list->values,
+			    iter_editable_list->proposed_values,
+                            iter_editable_list->advanced,
+                            iter_editable_list->rename_only);
+      iter_editable_list++;
       break;
 
     default:
@@ -225,16 +226,16 @@ Ekiga::FormBuilder::multiple_choice (const std::string name) const
   return std::set<std::string>(); // shouldn't happen
 }
 
-const std::set<std::string>
-Ekiga::FormBuilder::editable_set (const std::string name) const
+const std::list<std::string>
+Ekiga::FormBuilder::editable_list (const std::string name) const
 {
-  for (std::list<struct EditableSetField>::const_iterator iter = editable_sets.begin ();
-       iter != editable_sets.end ();
+  for (std::list<struct EditableListField>::const_iterator iter = editable_lists.begin ();
+       iter != editable_lists.end ();
        iter++)
     if (iter->name == name)
       return iter->values;
 
-  return std::set<std::string>(); // shouldn't happen
+  return std::list<std::string>(); // shouldn't happen
 }
 
 void
@@ -337,13 +338,15 @@ Ekiga::FormBuilder::multiple_choice (const std::string name,
 }
 
 void
-Ekiga::FormBuilder::editable_set (const std::string name,
-				  const std::string description,
-				  const std::set<std::string> values,
-				  const std::set<std::string> proposed_values,
-				  bool advanced)
+Ekiga::FormBuilder::editable_list (const std::string name,
+                                   const std::string description,
+                                   const std::list<std::string> values,
+                                   const std::list<std::string> proposed_values,
+                                   bool advanced,
+                                   bool rename_only)
 {
-  editable_sets.push_back (EditableSetField (name, description, values,
-					     proposed_values, advanced));
+  editable_lists.push_back (EditableListField (name, description, values,
+                                               proposed_values, advanced,
+                                               rename_only));
   ordering.push_back (EDITABLE_SET);
 }

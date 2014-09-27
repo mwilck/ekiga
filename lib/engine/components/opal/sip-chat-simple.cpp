@@ -47,7 +47,7 @@ SIP::SimpleChat::SimpleChat (boost::shared_ptr<Ekiga::PresenceCore> core,
   personal_details(details), sender(sender_), uri(uri_)
 {
   presentity = boost::shared_ptr<Ekiga::URIPresentity> (new Ekiga::URIPresentity (core, name, uri,
-									  std::set<std::string>()));
+                                                                                  std::list<std::string>()));
 }
 
 SIP::SimpleChat::~SimpleChat ()

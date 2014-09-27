@@ -64,7 +64,7 @@ Ekiga::ProxyPresentity::get_status () const
   return presentity.get_status ();
 }
 
-const std::set<std::string>
+const std::list<std::string>
 Ekiga::ProxyPresentity::get_groups () const
 {
   return presentity.get_groups ();

@@ -59,6 +59,7 @@ multiple_choice_choice_toggled_cb (GtkCellRendererToggle *cell,
 
 /** Called when the GtkEntry aiming at adding a new
  * value has been activated.
+ *
  * Checks if the proposed value is not already in
  * the list, add it to the values if it is not the
  * case.
@@ -67,21 +68,38 @@ multiple_choice_choice_toggled_cb (GtkCellRendererToggle *cell,
  * the list of values.
  */
 static void
-editable_set_add_value_activated_cb (GtkWidget *entry,
+editable_list_add_value_activated_cb (GtkWidget *entry,
 				     gpointer data);
+
+
+/** Called when an entry in the GtkListStore has been
+ * edited.
+ *
+ * Checks if the proposed value is not already in
+ * the list, modify the edited value if it is not the
+ * case.
+ *
+ * @param: data is a pointer to the GtkListStore presenting
+ * the list of values.
+ */
+static void
+editable_list_edit_value_cb (GtkCellRendererText *cell,
+                            gchar *path_string,
+                            gchar *value,
+                            gpointer data);
 
 
 /** Called when the GtkButton to add a value
  * has been clicked.
  *
  * Emit the 'activated' signal on the GtkEntry
- * to trigger editable_set_add_value_activated_cb.
+ * to trigger editable_list_add_value_activated_cb.
  *
  * @param: data is a pointer to the GtkEntry containing
  * the new value.
  */
 static void
-editable_set_add_value_clicked_cb (GtkWidget *button,
+editable_list_add_value_clicked_cb (GtkWidget *button,
 				   gpointer data);
 
 
@@ -94,7 +112,7 @@ editable_set_add_value_clicked_cb (GtkWidget *button,
  * the list of choices.
  */
 static void
-editable_set_choice_toggled_cb (GtkCellRendererToggle *cell,
+editable_list_choice_toggled_cb (GtkCellRendererToggle *cell,
 				gchar *path_str,
 				gpointer data);
 
@@ -440,18 +458,18 @@ private:
 };
 
 
-class EditableSetSubmitter: public Submitter
+class EditableListSubmitter: public Submitter
 {
 public:
 
-  EditableSetSubmitter (const std::string _name,
+  EditableListSubmitter (const std::string _name,
 			const std::string _description,
 			bool _advanced,
 			GtkWidget *_tree_view):
     name(_name), description(_description), advanced(_advanced), tree_view(_tree_view)
   { }
 
-  ~EditableSetSubmitter ()
+  ~EditableListSubmitter ()
   { }
 
   enum {
@@ -465,8 +483,8 @@ public:
   {
     GtkTreeModel *model = NULL;
     GtkTreeIter iter;
-    std::set<std::string> values;
-    std::set<std::string> proposed_values;
+    std::list<std::string> values;
+    std::list<std::string> proposed_values;
 
     model = gtk_tree_view_get_model (GTK_TREE_VIEW (tree_view));
     if (gtk_tree_model_get_iter_first (GTK_TREE_MODEL (model), &iter)) {
@@ -484,15 +502,15 @@ public:
 	if (value) {
 
 	  if (active)
-	    values.insert (value);
+	    values.push_back (value);
 	  else
-	    proposed_values.insert (value);
+	    proposed_values.push_back (value);
 	  g_free (value);
 	}
       } while (gtk_tree_model_iter_next (GTK_TREE_MODEL (model), &iter));
     }
 
-    builder.editable_set (name, description, values, proposed_values, advanced);
+    builder.editable_list (name, description, values, proposed_values, advanced);
   }
 
 private:
@@ -509,7 +527,7 @@ private:
  */
 
 static void
-editable_set_add_value_activated_cb (GtkWidget *entry,
+editable_list_add_value_activated_cb (GtkWidget *entry,
 				     gpointer data)
 {
   GtkTreeModel *model = NULL;
@@ -530,7 +548,7 @@ editable_set_add_value_activated_cb (GtkWidget *entry,
     do {
 
       gtk_tree_model_get (GTK_TREE_MODEL (model), &iter,
-                          EditableSetSubmitter::COLUMN_VALUE, &tree_value,
+                          EditableListSubmitter::COLUMN_VALUE, &tree_value,
                           -1);
       if (tree_value && !g_strcmp0 (tree_value, value)) {
         g_free (tree_value);
@@ -545,8 +563,8 @@ editable_set_add_value_activated_cb (GtkWidget *entry,
 
   gtk_list_store_prepend (GTK_LIST_STORE (model), &iter);
   gtk_list_store_set (GTK_LIST_STORE (model), &iter,
-		      EditableSetSubmitter::COLUMN_ACTIVE, TRUE,
-                      EditableSetSubmitter::COLUMN_VALUE, gtk_entry_get_text (GTK_ENTRY (entry)),
+		      EditableListSubmitter::COLUMN_ACTIVE, TRUE,
+                      EditableListSubmitter::COLUMN_VALUE, gtk_entry_get_text (GTK_ENTRY (entry)),
                       -1);
 
   gtk_entry_set_text (GTK_ENTRY (entry), "");
@@ -554,7 +572,45 @@ editable_set_add_value_activated_cb (GtkWidget *entry,
 
 
 static void
-editable_set_add_value_clicked_cb (G_GNUC_UNUSED GtkWidget *button,
+editable_list_edit_value_cb (GtkCellRendererText *cell,
+                            gchar *path_string,
+                            gchar *value,
+                            gpointer data)
+{
+  GtkTreeModel *model = NULL;
+  GtkTreeIter iter;
+
+  gchar *tree_value = NULL;
+
+  if (!g_strcmp0 (value, ""))
+    return;
+
+  model = gtk_tree_view_get_model (GTK_TREE_VIEW (data));
+
+  if (gtk_tree_model_get_iter_first (GTK_TREE_MODEL (model), &iter)) {
+
+    do {
+
+      gtk_tree_model_get (GTK_TREE_MODEL (model), &iter,
+                          EditableListSubmitter::COLUMN_VALUE, &tree_value,
+                          -1);
+      if (tree_value && !g_strcmp0 (tree_value, value)) {
+        g_free (tree_value);
+        return;
+      }
+      g_free (tree_value);
+
+    } while (gtk_tree_model_iter_next (GTK_TREE_MODEL (model), &iter));
+  }
+
+  gtk_tree_model_get_iter_from_string (model, &iter, path_string); 
+  gtk_list_store_set (GTK_LIST_STORE (model), &iter,
+                      EditableListSubmitter::COLUMN_VALUE, value, -1);
+}
+
+
+static void
+editable_list_add_value_clicked_cb (G_GNUC_UNUSED GtkWidget *button,
 				   gpointer data)
 {
   if (g_strcmp0 (gtk_entry_get_text (GTK_ENTRY (data)), ""))
@@ -563,7 +619,7 @@ editable_set_add_value_clicked_cb (G_GNUC_UNUSED GtkWidget *button,
 
 
 static void
-editable_set_choice_toggled_cb (G_GNUC_UNUSED GtkCellRendererToggle *cell,
+editable_list_choice_toggled_cb (G_GNUC_UNUSED GtkCellRendererToggle *cell,
 				gchar *path_str,
 				gpointer data)
 {
@@ -579,10 +635,10 @@ editable_set_choice_toggled_cb (G_GNUC_UNUSED GtkCellRendererToggle *cell,
   /* Update the tree model */
   gtk_tree_model_get_iter (model, &iter, path);
   gtk_tree_model_get (model, &iter,
-		      EditableSetSubmitter::COLUMN_ACTIVE, &fixed,
+		      EditableListSubmitter::COLUMN_ACTIVE, &fixed,
 		      -1);
   gtk_list_store_set (GTK_LIST_STORE (model), &iter,
-                      EditableSetSubmitter::COLUMN_ACTIVE, fixed^1,
+                      EditableListSubmitter::COLUMN_ACTIVE, fixed^1,
 		      -1);
   gtk_tree_path_free (path);
 }
@@ -1162,11 +1218,12 @@ FormDialog::multiple_choice (const std::string name,
 }
 
 void
-FormDialog::editable_set (const std::string name,
-			  const std::string description,
-			  const std::set<std::string> values,
-			  const std::set<std::string> proposed_values,
-			  bool advanced)
+FormDialog::editable_list (const std::string name,
+                           const std::string description,
+                           const std::list<std::string> values,
+                           const std::list<std::string> proposed_values,
+                           bool advanced,
+                           bool rename_only)
 {
   GtkWidget *label = NULL;
   GtkWidget *scroll = NULL;
@@ -1183,7 +1240,7 @@ FormDialog::editable_set (const std::string name,
 
   gchar *label_text = NULL;
 
-  EditableSetSubmitter *submitter = NULL;
+  EditableListSubmitter *submitter = NULL;
 
   /* The label */
   label = gtk_label_new (NULL);
@@ -1193,7 +1250,7 @@ FormDialog::editable_set (const std::string name,
   g_free (label_text);
 
   /* The GtkListStore containing the values */
-  list_store = gtk_list_store_new (EditableSetSubmitter::COLUMN_NUMBER,
+  list_store = gtk_list_store_new (EditableListSubmitter::COLUMN_NUMBER,
 				   G_TYPE_BOOLEAN, G_TYPE_STRING);
   tree_view = gtk_tree_view_new_with_model (GTK_TREE_MODEL (list_store));
   gtk_tree_view_set_rules_hint (GTK_TREE_VIEW (tree_view), TRUE);
@@ -1210,43 +1267,47 @@ FormDialog::editable_set (const std::string name,
   gtk_container_add (GTK_CONTAINER (frame), scroll);
   gtk_container_add (GTK_CONTAINER (scroll), tree_view);
 
-  renderer = gtk_cell_renderer_toggle_new ();
-  column =
-    gtk_tree_view_column_new_with_attributes (NULL, renderer,
-                                              "active", EditableSetSubmitter::COLUMN_ACTIVE,
-                                              NULL);
-  gtk_tree_view_append_column (GTK_TREE_VIEW (tree_view), column);
-  g_signal_connect (renderer, "toggled",
-                    G_CALLBACK (editable_set_choice_toggled_cb), list_store);
-
+  if (!rename_only) {
+    renderer = gtk_cell_renderer_toggle_new ();
+    column =
+      gtk_tree_view_column_new_with_attributes (NULL, renderer,
+                                                "active", EditableListSubmitter::COLUMN_ACTIVE,
+                                                NULL);
+    gtk_tree_view_append_column (GTK_TREE_VIEW (tree_view), column);
+    g_signal_connect (renderer, "toggled",
+                      G_CALLBACK (editable_list_choice_toggled_cb), list_store);
+  }
   renderer = gtk_cell_renderer_text_new ();
+  if (rename_only)
+    g_object_set (renderer, "editable", TRUE, NULL);
   column =
     gtk_tree_view_column_new_with_attributes (NULL, renderer,
-                                              "text", EditableSetSubmitter::COLUMN_VALUE,
+                                              "text", EditableListSubmitter::COLUMN_VALUE,
                                               NULL);
   gtk_tree_view_append_column (GTK_TREE_VIEW (tree_view), column);
+  g_signal_connect (renderer, "edited", (GCallback) editable_list_edit_value_cb, tree_view);
 
-  for (std::set<std::string>::const_iterator set_iter = values.begin ();
-       set_iter != values.end ();
-       set_iter++) {
+  for (std::list<std::string>::const_iterator list_iter = values.begin ();
+       list_iter != values.end ();
+       list_iter++) {
 
     gtk_list_store_append (GTK_LIST_STORE (list_store), &iter);
     gtk_list_store_set (GTK_LIST_STORE (list_store), &iter,
-			EditableSetSubmitter::COLUMN_ACTIVE, TRUE,
-                        EditableSetSubmitter::COLUMN_VALUE, set_iter->c_str (),
+			EditableListSubmitter::COLUMN_ACTIVE, TRUE,
+                        EditableListSubmitter::COLUMN_VALUE, list_iter->c_str (),
                         -1);
   }
-  for (std::set<std::string>::const_iterator set_iter
+  for (std::list<std::string>::const_iterator list_iter
 	 = proposed_values.begin ();
-       set_iter != proposed_values.end ();
-       set_iter++) {
+       list_iter != proposed_values.end ();
+       list_iter++) {
 
-    if (values.find (*set_iter) == values.end ()) {
+    if (std::find(values.begin(), values.end(), *list_iter) == values.end ()) {
 
       gtk_list_store_append (GTK_LIST_STORE (list_store), &iter);
       gtk_list_store_set (GTK_LIST_STORE (list_store), &iter,
-			  EditableSetSubmitter::COLUMN_ACTIVE, FALSE,
-			  EditableSetSubmitter::COLUMN_VALUE, set_iter->c_str (),
+			  EditableListSubmitter::COLUMN_ACTIVE, FALSE,
+			  EditableListSubmitter::COLUMN_VALUE, list_iter->c_str (),
 			  -1);
     }
   }
@@ -1273,34 +1334,37 @@ FormDialog::editable_set (const std::string name,
 		     2, 1);
   }
 
-  hbox = gtk_box_new (GTK_ORIENTATION_HORIZONTAL, 2);
-  entry = gtk_entry_new ();
-  button = gtk_button_new_with_label (_("Add Group"));
-  gtk_box_pack_start (GTK_BOX (hbox), entry, TRUE, TRUE, 2);
-  gtk_box_pack_start (GTK_BOX (hbox), button, FALSE, FALSE, 2);
+  if (!rename_only) {
 
-  g_signal_connect (entry, "activate",
-		    (GCallback) editable_set_add_value_activated_cb,
-		    (gpointer) tree_view);
+    hbox = gtk_box_new (GTK_ORIENTATION_HORIZONTAL, 2);
+    entry = gtk_entry_new ();
+    button = gtk_button_new_with_label (_("Add Group"));
+    gtk_box_pack_start (GTK_BOX (hbox), entry, TRUE, TRUE, 2);
+    gtk_box_pack_start (GTK_BOX (hbox), button, FALSE, FALSE, 2);
 
-  g_signal_connect (button, "clicked",
-		    (GCallback) editable_set_add_value_clicked_cb,
-		    (gpointer) entry);
+    g_signal_connect (entry, "activate",
+                      (GCallback) editable_list_add_value_activated_cb,
+                      (gpointer) tree_view);
 
-  grow_fields (advanced);
-  if (advanced) {
+    g_signal_connect (button, "clicked",
+                      (GCallback) editable_list_add_value_clicked_cb,
+                      (gpointer) entry);
 
-    gtk_grid_attach (GTK_GRID (advanced_fields), hbox,
-		     0, advanced_rows - 1,
-		     2, 1);
-  } else {
+    grow_fields (advanced);
+    if (advanced) {
 
-    gtk_grid_attach (GTK_GRID (fields), hbox,
-		     0, rows - 1,
-		     2, 1);
+      gtk_grid_attach (GTK_GRID (advanced_fields), hbox,
+                       0, advanced_rows - 1,
+                       2, 1);
+    } else {
+
+      gtk_grid_attach (GTK_GRID (fields), hbox,
+                       0, rows - 1,
+                       2, 1);
+    }
   }
 
-  submitter = new EditableSetSubmitter (name, description, advanced, tree_view);
+  submitter = new EditableListSubmitter (name, description, advanced, tree_view);
   submitters.push_back (submitter);
 }
 

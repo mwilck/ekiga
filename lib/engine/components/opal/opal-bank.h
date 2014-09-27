@@ -112,7 +112,7 @@ public:
     /* this object is an Ekiga::Cluster */
     void visit_heaps (boost::function1<bool, Ekiga::HeapPtr> visitor) const;
 
-    const std::set<std::string> existing_groups () const;
+    const std::list<std::string> existing_groups () const;
 
 
     // FIXME: only here for the transition off gconf

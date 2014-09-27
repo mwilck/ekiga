@@ -55,7 +55,7 @@ namespace Echo
 
     const std::string get_status () const;
 
-    const std::set<std::string> get_groups () const;
+    const std::list<std::string> get_groups () const;
 
     const std::string get_uri () const;
 

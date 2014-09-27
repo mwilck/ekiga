@@ -1062,7 +1062,7 @@ on_presentity_added (RosterViewGtk* self,
 {
   GdkRGBA color;
   GtkTreeIter heap_iter;
-  std::set<std::string> groups = presentity->get_groups ();
+  std::list<std::string> groups = presentity->get_groups ();
   GtkTreeSelection* selection = gtk_tree_view_get_selection (self->priv->tree_view);
   GtkTreeModelFilter* filtered_model = GTK_TREE_MODEL_FILTER (gtk_tree_view_get_model (self->priv->tree_view));
   GtkTreeIter group_iter;
@@ -1080,9 +1080,9 @@ on_presentity_added (RosterViewGtk* self,
   away = presentity->get_presence () == "away";
 
   if (groups.empty ())
-    groups.insert (_("Unsorted"));
+    groups.push_back (_("Unsorted"));
 
-  for (std::set<std::string>::const_iterator group = groups.begin ();
+  for (std::list<std::string>::const_iterator group = groups.begin ();
        group != groups.end ();
        group++) {
 
@@ -1172,12 +1172,12 @@ on_presentity_updated (RosterViewGtk* self,
   GtkTreeIter iter;
   gchar *group_name = NULL;
   int timeout = 0;
-  std::set<std::string> groups = presentity->get_groups ();
+  std::list<std::string> groups = presentity->get_groups ();
 
   model = GTK_TREE_MODEL (self->priv->store);
 
   if (groups.empty ())
-    groups.insert (_("Unsorted"));
+    groups.push_back (_("Unsorted"));
 
   // This makes sure we are in all groups where we should
   on_presentity_added (self, cluster, heap, presentity);
@@ -1194,7 +1194,7 @@ on_presentity_updated (RosterViewGtk* self,
                           -1);
       if (group_name != NULL) {
 
-        if (groups.find (group_name) == groups.end ()) {
+        if (std::find (groups.begin (), groups.end (), group_name) == groups.end ()) {
 
           roster_view_gtk_find_iter_for_presentity (self, &group_iter, presentity, &iter);
           gtk_tree_model_get (GTK_TREE_MODEL (self->priv->store), &iter,

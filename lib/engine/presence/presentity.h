@@ -78,9 +78,9 @@ namespace Ekiga
     virtual const std::string get_status () const = 0;
 
     /** Returns the set of groups the Presentity belongs to.
-     * @return The Presentity's set of groups.
+     * @return The Presentity's list of groups.
      */
-    virtual const std::set<std::string> get_groups () const = 0;
+    virtual const std::list<std::string> get_groups () const = 0;
 
     /** Returns whether the Presentity has this uri.
      * @return Whether the Presentity has this uri.

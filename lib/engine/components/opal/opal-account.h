@@ -50,6 +50,8 @@
 
 #include "bank-impl.h"
 
+#include "opal-presentity.h"
+
 namespace Opal
 {
   // forward declarations:
@@ -68,6 +70,7 @@ namespace Opal
     protected Ekiga::RefLister<Presentity>,
     public Ekiga::PresencePublisher
   {
+    friend class Opal::Presentity;
 public:
 
     typedef enum { SIP, Ekiga, DiamondCard, H323 } Type;
@@ -89,7 +92,7 @@ public:
 	     boost::shared_ptr<Ekiga::PersonalDetails> _personal_details,
 	     boost::shared_ptr<Ekiga::AudioOutputCore> _audiooutput_core,
 	     boost::shared_ptr<CallManager> _call_manager,
-	     boost::function0<std::set<std::string> > _existing_groups,
+	     boost::function0<std::list<std::string> > _existing_groups,
 	     xmlNodePtr node_);
 
     ~Account () {}
@@ -102,7 +105,7 @@ public:
 
     Type get_type () const;
 
-    std::set<std::string> get_groups () const;
+    std::list<std::string> get_groups () const;
 
     /** Returns the protocol name of the Opal::Account.
      * This function is purely virtual and should be implemented by the
@@ -192,6 +195,9 @@ public:
     boost::signals2::signal<void(std::string, std::string)> presence_received;
     boost::signals2::signal<void(std::string, std::string)> status_received;
 
+protected:
+    void on_rename_group (Opal::PresentityPtr pres);
+
 private:
     void fetch (const std::string uri) const;
     void unfetch (const std::string uri) const;
@@ -207,10 +213,9 @@ private:
     void on_consult (const std::string url);
     bool is_myself (const std::string uri) const;
 
-    void on_rename_group (const std::string name);
-    void rename_group_form_submitted (std::string old_name,
-				      bool submitted,
-				      Ekiga::Form& result);
+    void on_rename_group_form_submitted (bool submitted,
+                                         Ekiga::Form& result,
+                                         const std::list<std::string> & groups);
 
     Type type;
     mutable RegistrationState state;
@@ -229,7 +234,7 @@ private:
 
     PDECLARE_PresenceChangeNotifier (Account, OnPresenceChange);
 
-    boost::function0<std::set<std::string> > existing_groups;
+    boost::function0<std::list<std::string> > existing_groups;
     xmlNodePtr node;
     xmlNodePtr roster_node;
     OpalPresenceInfo::State personal_state;

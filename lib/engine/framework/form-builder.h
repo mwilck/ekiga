@@ -72,7 +72,7 @@ namespace Ekiga
 
     const std::set<std::string> multiple_choice (const std::string name) const;
 
-    const std::set<std::string> editable_set (const std::string name) const;
+    const std::list<std::string> editable_list (const std::string name) const;
 
     /* builder part */
 
@@ -122,11 +122,13 @@ namespace Ekiga
 			  const std::map<std::string, std::string> choices,
 			  bool advanced = false);
 
-    void editable_set (const std::string name,
-		       const std::string description,
-		       const std::set<std::string> values,
-		       const std::set<std::string> proposed_values,
-		       bool advanced = false);
+    void editable_list (const std::string name,
+                        const std::string description,
+                        const std::list<std::string> values,
+                        const std::list<std::string> proposed_values,
+                        bool advanced = false,
+                        bool rename_only = false);
+
   private:
 
     struct HiddenField
@@ -226,22 +228,28 @@ namespace Ekiga
       bool advanced;
     };
 
-    struct EditableSetField
+    struct EditableListField
     {
-      EditableSetField (const std::string _name,
-			const std::string _description,
-			const std::set<std::string> _values,
-			const std::set<std::string> _proposed_values,
-			bool _advanced):
-	name(_name), description(_description),
-	values(_values), proposed_values(_proposed_values), advanced(_advanced)
+      EditableListField (const std::string _name,
+                         const std::string _description,
+                         const std::list<std::string> _values,
+                         const std::list<std::string> _proposed_values,
+                         bool _advanced,
+                         bool _rename_only):
+	name(_name),
+        description(_description),
+	values(_values),
+        proposed_values(_proposed_values),
+        advanced(_advanced),
+        rename_only(_rename_only)
       {}
 
       const std::string name;
       const std::string description;
-      const std::set<std::string> values;
-      const std::set<std::string> proposed_values;
+      const std::list<std::string> values;
+      const std::list<std::string> proposed_values;
       bool advanced;
+      bool rename_only;
     };
 
     typedef enum {
@@ -268,7 +276,7 @@ namespace Ekiga
     std::list<struct MultiTextField> multi_texts;
     std::list<struct SingleChoiceField> single_choices;
     std::list<struct MultipleChoiceField> multiple_choices;
-    std::list<struct EditableSetField> editable_sets;
+    std::list<struct EditableListField> editable_lists;
   };
 
 /**
