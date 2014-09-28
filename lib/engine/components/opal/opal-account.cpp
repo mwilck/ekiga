@@ -1289,9 +1289,8 @@ Opal::Account::on_rename_group (Opal::PresentityPtr pres)
     boost::shared_ptr<Ekiga::FormRequestSimple> (new Ekiga::FormRequestSimple (boost::bind (&Opal::Account::on_rename_group_form_submitted,
                                                                                             this, _1, _2, pres->get_groups ())));
 
-  request->title (_("Rename group"));
-  request->instructions (_("You can rename groups by clicking on the corresponding entry and changing the group name"));
-  request->editable_list ("groups", _("Groups:"),
+  request->title (_("Renaming Groups"));
+  request->editable_list ("groups", "",
 			 pres->get_groups (), std::list<std::string>(),
                          false, true);
 
