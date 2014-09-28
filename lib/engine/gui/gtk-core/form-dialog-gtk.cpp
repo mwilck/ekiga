@@ -1,7 +1,7 @@
 
 /*
  * Ekiga -- A VoIP and Video-Conferencing application
- * Copyright (C) 2000-2009 Damien Sandras <dsandras@seconix.com>
+ * Copyright (C) 2000-2014 Damien Sandras <dsandras@seconix.com>
  *
  * This program is free software; you can  redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -29,6 +29,7 @@
  *                         ------------------------------------------
  *   begin                : written in 2007 by Julien Puydt
  *   copyright            : (c) 2007-2008 by Julien Puydt
+ *                          (c) 2014 by Damien Sandras
  *   description          : implementation of a gtk+ representation of forms
  *
  */
