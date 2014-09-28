@@ -66,6 +66,8 @@ public:
 
   void title (const std::string title);
 
+  void action (const std::string action);
+
   void instructions (const std::string instructions);
 
   void link (const std::string link,
@@ -133,10 +135,9 @@ private:
   GtkWidget *fields;
   GtkWidget* expander;
   GtkWidget* advanced_fields;
-  GtkSizeGroup *labels_group;
-  GtkSizeGroup *options_group;
   unsigned int rows;
   unsigned int advanced_rows;
+  bool has_preamble;
   std::list<Submitter *> submitters;
 };
 

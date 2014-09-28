@@ -152,6 +152,26 @@ private:
   const std::string title;
 };
 
+class ActionSubmitter: public Submitter
+{
+public:
+
+  ActionSubmitter (const std::string _action):
+    action (_action)
+  { }
+
+  ~ActionSubmitter ()
+  { }
+
+  void submit (Ekiga::FormBuilder &builder)
+  {
+    builder.action (action);
+  }
+
+private:
+
+  const std::string action;
+};
 
 class InstructionsSubmitter: public Submitter
 {
@@ -572,10 +592,10 @@ editable_list_add_value_activated_cb (GtkWidget *entry,
 
 
 static void
-editable_list_edit_value_cb (GtkCellRendererText *cell,
-                            gchar *path_string,
-                            gchar *value,
-                            gpointer data)
+editable_list_edit_value_cb (G_GNUC_UNUSED GtkCellRendererText *cell,
+                             gchar *path_string,
+                             gchar *value,
+                             gpointer data)
 {
   GtkTreeModel *model = NULL;
   GtkTreeIter iter;
@@ -682,44 +702,40 @@ FormDialog::FormDialog (Ekiga::FormRequestPtr _request,
 			GtkWidget *parent): request(_request)
 {
   GtkWidget *vbox = NULL;
-
+  bool use_header = false;
+  has_preamble = false;
   rows = 0;
   advanced_rows = 0;
 
-  window = gtk_dialog_new_with_buttons (NULL, GTK_WINDOW (NULL),
-                                        GTK_DIALOG_MODAL,
-                                        GTK_STOCK_CANCEL, GTK_RESPONSE_CANCEL,
-                                        GTK_STOCK_OK, GTK_RESPONSE_ACCEPT,
-                                        NULL);
+  g_object_get (gtk_settings_get_default (), "gtk-dialogs-use-header", &use_header, NULL);
+  window = GTK_WIDGET (g_object_new (GTK_TYPE_DIALOG,
+                                     "use-header-bar", use_header,
+                                     NULL));
+  gtk_window_set_modal (GTK_WINDOW (window), TRUE);
+  gtk_window_set_resizable (GTK_WINDOW (window), FALSE);
   if (GTK_IS_WINDOW (parent))
     gtk_window_set_transient_for (GTK_WINDOW (window), GTK_WINDOW (parent));
 
-  gtk_dialog_set_default_response (GTK_DIALOG (window),
-                                   GTK_RESPONSE_ACCEPT);
-  gtk_window_set_resizable (GTK_WINDOW (window), FALSE);
-
   vbox = gtk_box_new (GTK_ORIENTATION_VERTICAL, 0);
-  gtk_container_set_border_width (GTK_CONTAINER (vbox), 6);
-  gtk_box_pack_start (GTK_BOX (gtk_dialog_get_content_area (GTK_DIALOG (window))), vbox, FALSE, FALSE, 0);
+  gtk_container_set_border_width (GTK_CONTAINER (vbox), 18);
+  gtk_box_pack_start (GTK_BOX (gtk_dialog_get_content_area (GTK_DIALOG (window))),
+                      vbox, FALSE, FALSE, 0);
   gtk_widget_show (vbox);
 
   preamble = gtk_box_new (GTK_ORIENTATION_VERTICAL, 0);
   gtk_box_pack_start (GTK_BOX (vbox), preamble, FALSE, FALSE, 0);
 
   fields = gtk_grid_new ();
-  gtk_grid_set_row_spacing (GTK_GRID (fields), 2);
-  gtk_grid_set_column_spacing (GTK_GRID (fields), 2);
-  gtk_box_pack_start (GTK_BOX (vbox), fields, FALSE, FALSE, 3);
+  gtk_grid_set_row_spacing (GTK_GRID (fields), 6);
+  gtk_grid_set_column_spacing (GTK_GRID (fields), 12);
+  gtk_box_pack_start (GTK_BOX (vbox), fields, FALSE, FALSE, 0);
 
   advanced_fields = gtk_grid_new ();
-  gtk_grid_set_row_spacing (GTK_GRID (advanced_fields), 2);
-  gtk_grid_set_column_spacing (GTK_GRID (advanced_fields), 2);
+  gtk_grid_set_row_spacing (GTK_GRID (advanced_fields), 6);
+  gtk_grid_set_column_spacing (GTK_GRID (advanced_fields), 12);
   expander = gtk_expander_new (_("Advanced"));
   gtk_container_add (GTK_CONTAINER (expander), advanced_fields);
-  gtk_box_pack_start (GTK_BOX (vbox), expander, FALSE, FALSE, 3);
-
-  labels_group = gtk_size_group_new (GTK_SIZE_GROUP_HORIZONTAL);
-  options_group = gtk_size_group_new (GTK_SIZE_GROUP_HORIZONTAL);
+  gtk_box_pack_start (GTK_BOX (vbox), expander, FALSE, FALSE, 0);
 
   request->visit (*this);
 }
@@ -739,7 +755,8 @@ FormDialog::~FormDialog ()
 void
 FormDialog::run ()
 {
-  gtk_widget_show_all (preamble);
+  if (has_preamble)
+    gtk_widget_show_all (preamble);
   gtk_widget_show_all (fields);
   if (advanced_rows > 0)
     gtk_widget_show_all (expander);
@@ -771,17 +788,32 @@ FormDialog::title (const std::string _title)
 
 
 void
+FormDialog::action (const std::string _action)
+{
+  ActionSubmitter *submitter = NULL;
+
+  gtk_dialog_add_button (GTK_DIALOG (window),
+                         _action.empty () ? _("Apply") : _action.c_str (),
+                         GTK_RESPONSE_ACCEPT);
+  gtk_dialog_set_default_response (GTK_DIALOG (window), GTK_RESPONSE_ACCEPT);
+
+  submitter = new ActionSubmitter (_action);
+  submitters.push_back (submitter);
+}
+
+
+void
 FormDialog::instructions (const std::string _instructions)
 {
   GtkWidget *widget = NULL;
   InstructionsSubmitter *submitter = NULL;
-  gchar * label_text = NULL;
 
-  widget = gtk_label_new (NULL);
-  label_text = g_strdup_printf ("<i>%s</i>", _instructions.c_str());
-  gtk_label_set_markup_with_mnemonic (GTK_LABEL (widget), label_text);
-  g_free (label_text);
+  if (_instructions.empty ())
+    return;
 
+  has_preamble = true;
+
+  widget = gtk_label_new (_instructions.c_str ());
   gtk_label_set_line_wrap (GTK_LABEL (widget), TRUE);
   gtk_label_set_line_wrap_mode (GTK_LABEL (widget), PANGO_WRAP_WORD);
   gtk_box_pack_start (GTK_BOX (preamble), widget, FALSE, FALSE, 0);
@@ -881,34 +913,27 @@ FormDialog::text (const std::string name,
 		  bool advanced)
 {
   GtkWidget *label = NULL;
-  GtkWidget *widget = NULL;
+  GtkWidget *entry = NULL;
   TextSubmitter *submitter = NULL;
-
-  gchar *label_text = NULL;
 
   grow_fields (advanced);
 
-  label = gtk_label_new (NULL);
-  gtk_size_group_add_widget (labels_group, label);
-  gtk_misc_set_alignment (GTK_MISC (label), 0.0, 0.5);
-  label_text = g_strdup_printf ("<b>%s</b>", description.c_str());
-  gtk_label_set_markup_with_mnemonic (GTK_LABEL (label), label_text);
-  g_free (label_text);
+  label = gtk_label_new (description.c_str ());
+  gtk_widget_set_halign (GTK_WIDGET (label), GTK_ALIGN_END);
 
-  widget = gtk_entry_new ();
-  gtk_widget_set_tooltip_text (widget, tooltip.c_str ());
-  gtk_label_set_mnemonic_widget (GTK_LABEL (label), widget);
-  gtk_entry_set_activates_default (GTK_ENTRY (widget), true);
-  gtk_size_group_add_widget (options_group, widget);
-  gtk_entry_set_text (GTK_ENTRY (widget), value.c_str ());
-  g_object_set (G_OBJECT (widget), "expand", TRUE, NULL);
+  entry = gtk_entry_new ();
+  gtk_widget_set_tooltip_text (entry, tooltip.c_str ());
+  gtk_label_set_mnemonic_widget (GTK_LABEL (label), entry);
+  gtk_entry_set_activates_default (GTK_ENTRY (entry), true);
+  gtk_entry_set_text (GTK_ENTRY (entry), value.c_str ());
+  g_object_set (G_OBJECT (entry), "expand", TRUE, NULL);
 
   if (advanced) {
 
     gtk_grid_attach (GTK_GRID (advanced_fields), label,
 		     0, advanced_rows - 1,
 		     1, 1);
-    gtk_grid_attach (GTK_GRID (advanced_fields), widget,
+    gtk_grid_attach (GTK_GRID (advanced_fields), entry,
 		     1, advanced_rows - 1,
 		     1, 1);
   } else {
@@ -916,12 +941,12 @@ FormDialog::text (const std::string name,
     gtk_grid_attach (GTK_GRID (fields), label,
 		     0, rows - 1,
 		     1, 1);
-    gtk_grid_attach (GTK_GRID (fields), widget,
+    gtk_grid_attach (GTK_GRID (fields), entry,
 		     1, rows - 1,
 		     1, 1);
   }
 
-  submitter = new TextSubmitter (name, description, tooltip, advanced, widget);
+  submitter = new TextSubmitter (name, description, tooltip, advanced, entry);
   submitters.push_back (submitter);
 }
 
@@ -937,23 +962,16 @@ FormDialog::private_text (const std::string name,
   GtkWidget *widget = NULL;
   PrivateTextSubmitter *submitter = NULL;
 
-  gchar *label_text = NULL;
-
   grow_fields (advanced);
 
-  label = gtk_label_new (NULL);
-  gtk_size_group_add_widget (labels_group, label);
-  gtk_misc_set_alignment (GTK_MISC (label), 0.0, 0.5);
-  label_text = g_strdup_printf ("<b>%s</b>", description.c_str());
-  gtk_label_set_markup_with_mnemonic (GTK_LABEL (label), label_text);
-  g_free (label_text);
+  label = gtk_label_new (description.c_str ());
+  gtk_widget_set_halign (GTK_WIDGET (label), GTK_ALIGN_END);
 
   widget = gtk_entry_new ();
   gtk_widget_set_tooltip_text (widget, tooltip.c_str ());
   gtk_label_set_mnemonic_widget (GTK_LABEL (label), widget);
   gtk_entry_set_activates_default (GTK_ENTRY (widget), true);
   gtk_entry_set_visibility (GTK_ENTRY (widget), FALSE);
-  gtk_size_group_add_widget (options_group, widget);
   gtk_entry_set_text (GTK_ENTRY (widget), value.c_str ());
   g_object_set (G_OBJECT (widget), "expand", TRUE, NULL);
 
@@ -1045,7 +1063,6 @@ FormDialog::single_choice (const std::string name,
 			   bool advanced)
 {
   GtkWidget *label = NULL;
-  gchar* label_text = NULL;
   GtkListStore *model = NULL;
   GtkWidget *widget = NULL;
   GtkCellRenderer *renderer = NULL;
@@ -1054,12 +1071,8 @@ FormDialog::single_choice (const std::string name,
 
   grow_fields (advanced);
 
-  label = gtk_label_new (NULL);
-  gtk_size_group_add_widget (labels_group, label);
-  gtk_misc_set_alignment (GTK_MISC (label), 0.0, 0.5);
-  label_text = g_strdup_printf ("<b>%s</b>", description.c_str ());
-  gtk_label_set_markup_with_mnemonic (GTK_LABEL (label), label_text);
-  g_free (label_text);
+  label = gtk_label_new (description.c_str ());
+  gtk_widget_set_halign (GTK_WIDGET (label), GTK_ALIGN_START);
   gtk_label_set_line_wrap (GTK_LABEL (label), TRUE);
   gtk_label_set_line_wrap_mode (GTK_LABEL (label), PANGO_WRAP_WORD);
 
@@ -1129,24 +1142,18 @@ FormDialog::multiple_choice (const std::string name,
   GtkCellRenderer *renderer = NULL;
   GtkTreeIter iter;
 
-  gchar *label_text = NULL;
-
   MultipleChoiceSubmitter *submitter = NULL;
 
   grow_fields (advanced);
 
   /* The label */
-  label = gtk_label_new (NULL);
-  gtk_misc_set_alignment (GTK_MISC (label), 0.0, 0.5);
-  label_text = g_strdup_printf ("<b>%s</b>", description.c_str());
-  gtk_label_set_markup_with_mnemonic (GTK_LABEL (label), label_text);
-  g_free (label_text);
+  label = gtk_label_new (description.c_str ());
+  gtk_widget_set_halign (GTK_WIDGET (label), GTK_ALIGN_END);
 
   /* The GtkListStore containing the choices */
   tree_view = gtk_tree_view_new ();
   list_store = gtk_list_store_new (MultipleChoiceSubmitter::COLUMN_NUMBER,
                                    G_TYPE_BOOLEAN, G_TYPE_STRING);
-  gtk_tree_view_set_rules_hint (GTK_TREE_VIEW (tree_view), TRUE);
   gtk_tree_view_set_model (GTK_TREE_VIEW (tree_view), GTK_TREE_MODEL (list_store));
   gtk_tree_view_set_headers_visible (GTK_TREE_VIEW (tree_view), FALSE);
 
@@ -1196,7 +1203,7 @@ FormDialog::multiple_choice (const std::string name,
 
     gtk_grid_attach (GTK_GRID (advanced_fields), label,
 		     0, advanced_rows - 1,
-		     2, 1);
+		     1, 1);
     grow_fields (advanced);
     gtk_grid_attach (GTK_GRID (advanced_fields), frame,
 		     0, advanced_rows - 1,
@@ -1205,7 +1212,7 @@ FormDialog::multiple_choice (const std::string name,
 
     gtk_grid_attach (GTK_GRID (fields), label,
 		     0, rows - 1,
-		     2, 1);
+		     1, 1);
     grow_fields (advanced);
     gtk_grid_attach (GTK_GRID (fields), frame,
 		     0, rows - 1,
@@ -1238,29 +1245,22 @@ FormDialog::editable_list (const std::string name,
   GtkCellRenderer *renderer = NULL;
   GtkTreeIter iter;
 
-  gchar *label_text = NULL;
-
   EditableListSubmitter *submitter = NULL;
 
   /* The label */
-  label = gtk_label_new (NULL);
-  gtk_misc_set_alignment (GTK_MISC (label), 0.0, 0.5);
-  label_text = g_strdup_printf ("<b>%s</b>", description.c_str());
-  gtk_label_set_markup_with_mnemonic (GTK_LABEL (label), label_text);
-  g_free (label_text);
+  label = gtk_label_new (description.c_str ());
+  gtk_widget_set_halign (GTK_WIDGET (label), GTK_ALIGN_END);
 
   /* The GtkListStore containing the values */
   list_store = gtk_list_store_new (EditableListSubmitter::COLUMN_NUMBER,
 				   G_TYPE_BOOLEAN, G_TYPE_STRING);
   tree_view = gtk_tree_view_new_with_model (GTK_TREE_MODEL (list_store));
-  gtk_tree_view_set_rules_hint (GTK_TREE_VIEW (tree_view), TRUE);
   gtk_tree_view_set_headers_visible (GTK_TREE_VIEW (tree_view), FALSE);
 
   frame = gtk_frame_new (NULL);
   g_object_set (G_OBJECT (frame), "expand", TRUE, NULL);
   gtk_widget_set_size_request (GTK_WIDGET (frame), -1, 125);
   gtk_container_set_border_width (GTK_CONTAINER (frame), 0);
-  gtk_frame_set_shadow_type (GTK_FRAME (frame), GTK_SHADOW_IN);
   scroll = gtk_scrolled_window_new (NULL, NULL);
   gtk_scrolled_window_set_policy (GTK_SCROLLED_WINDOW (scroll),
 				  GTK_POLICY_NEVER, GTK_POLICY_AUTOMATIC);
@@ -1317,7 +1317,7 @@ FormDialog::editable_list (const std::string name,
     grow_fields (advanced);
     gtk_grid_attach (GTK_GRID (advanced_fields), label,
 		     0, advanced_rows - 1,
-		     2, 1);
+		     1, 1);
     grow_fields (advanced);
     gtk_grid_attach (GTK_GRID (advanced_fields), frame,
 		     0, advanced_rows - 1,
@@ -1327,7 +1327,7 @@ FormDialog::editable_list (const std::string name,
     grow_fields (advanced);
     gtk_grid_attach (GTK_GRID (fields), label,
 		     0, rows - 1,
-		     2, 1);
+		     1, 1);
     grow_fields (advanced);
     gtk_grid_attach (GTK_GRID (fields), frame,
 		     0, rows - 1,
@@ -1336,11 +1336,11 @@ FormDialog::editable_list (const std::string name,
 
   if (!rename_only) {
 
-    hbox = gtk_box_new (GTK_ORIENTATION_HORIZONTAL, 2);
+    hbox = gtk_box_new (GTK_ORIENTATION_HORIZONTAL, 6);
     entry = gtk_entry_new ();
-    button = gtk_button_new_with_label (_("Add Group"));
-    gtk_box_pack_start (GTK_BOX (hbox), entry, TRUE, TRUE, 2);
-    gtk_box_pack_start (GTK_BOX (hbox), button, FALSE, FALSE, 2);
+    button = gtk_button_new_with_label (_("Add"));
+    gtk_box_pack_start (GTK_BOX (hbox), entry, TRUE, TRUE, 0);
+    gtk_box_pack_start (GTK_BOX (hbox), button, FALSE, FALSE, 0);
 
     g_signal_connect (entry, "activate",
                       (GCallback) editable_list_add_value_activated_cb,
