@@ -762,6 +762,7 @@ FormDialog::run ()
   if (advanced_rows > 0)
     gtk_widget_show_all (expander);
   gtk_widget_show (window);
+
   switch (gtk_dialog_run (GTK_DIALOG (window))) {
 
   case GTK_RESPONSE_ACCEPT:
@@ -1411,8 +1412,6 @@ FormDialog::submit ()
 {
   Ekiga::FormBuilder builder;
 
-  gtk_widget_hide (GTK_WIDGET (window));
-
   for (std::list<Submitter *>::iterator iter = submitters.begin ();
        iter != submitters.end ();
        iter++)
@@ -1425,7 +1424,6 @@ FormDialog::submit ()
 void
 FormDialog::cancel ()
 {
-  gtk_widget_hide (GTK_WIDGET (window));
   request->cancel ();
 }
 
