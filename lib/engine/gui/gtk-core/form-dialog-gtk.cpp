@@ -845,6 +845,8 @@ FormDialog::link (const std::string _link,
   gtk_button_set_relief (GTK_BUTTON (widget), GTK_RELIEF_NONE);
   gtk_box_pack_start (GTK_BOX (preamble), widget, FALSE, FALSE, 0);
 
+  has_preamble = true;
+
   g_signal_connect_data (widget, "clicked",
                          G_CALLBACK (link_clicked_cb), (gpointer) g_strdup (_uri.c_str ()),
                          (GClosureNotify) g_free, (GConnectFlags) 0);
@@ -864,6 +866,7 @@ FormDialog::error (const std::string _error)
     gtk_label_set_markup_with_mnemonic (GTK_LABEL (widget),
 					("<span foreground=\"red\">" + _error + "</span>").c_str ());
     gtk_container_add (GTK_CONTAINER (preamble), widget);
+    has_preamble = true;
   }
 }
 
@@ -877,6 +880,7 @@ FormDialog::hidden (const std::string name,
   submitter = new HiddenSubmitter (name, value);
   submitters.push_back (submitter);
 }
+
 
 void
 FormDialog::boolean (const std::string name,
@@ -906,6 +910,7 @@ FormDialog::boolean (const std::string name,
   submitter = new BooleanSubmitter (name, description, advanced, widget);
   submitters.push_back (submitter);
 }
+
 
 void
 FormDialog::text (const std::string name,
@@ -1015,6 +1020,7 @@ FormDialog::multi_text (const std::string name,
   grow_fields (advanced);
 
   label = gtk_label_new_with_mnemonic (description.c_str ());
+  gtk_widget_set_halign (GTK_WIDGET (label), GTK_ALIGN_END);
   gtk_label_set_line_wrap (GTK_LABEL (label), TRUE);
   gtk_label_set_line_wrap_mode (GTK_LABEL (label), PANGO_WRAP_WORD);
   if (advanced) {
@@ -1074,7 +1080,7 @@ FormDialog::single_choice (const std::string name,
   grow_fields (advanced);
 
   label = gtk_label_new (description.c_str ());
-  gtk_widget_set_halign (GTK_WIDGET (label), GTK_ALIGN_START);
+  gtk_widget_set_halign (GTK_WIDGET (label), GTK_ALIGN_END);
   gtk_label_set_line_wrap (GTK_LABEL (label), TRUE);
   gtk_label_set_line_wrap_mode (GTK_LABEL (label), PANGO_WRAP_WORD);
 
@@ -1250,8 +1256,10 @@ FormDialog::editable_list (const std::string name,
   EditableListSubmitter *submitter = NULL;
 
   /* The label */
-  label = gtk_label_new (description.c_str ());
-  gtk_widget_set_halign (GTK_WIDGET (label), GTK_ALIGN_END);
+  if (!description.empty ()) {
+    label = gtk_label_new (description.c_str ());
+    gtk_widget_set_halign (GTK_WIDGET (label), GTK_ALIGN_END);
+  }
 
   /* The GtkListStore containing the values */
   list_store = gtk_list_store_new (EditableListSubmitter::COLUMN_NUMBER,
@@ -1316,20 +1324,24 @@ FormDialog::editable_list (const std::string name,
 
   if (advanced) {
 
-    grow_fields (advanced);
-    gtk_grid_attach (GTK_GRID (advanced_fields), label,
-		     0, advanced_rows - 1,
-		     1, 1);
+    if (label) {
+      grow_fields (advanced);
+      gtk_grid_attach (GTK_GRID (advanced_fields), label,
+                       0, advanced_rows - 1,
+                       1, 1);
+    }
     grow_fields (advanced);
     gtk_grid_attach (GTK_GRID (advanced_fields), frame,
 		     0, advanced_rows - 1,
 		     2, 1);
   } else {
 
-    grow_fields (advanced);
-    gtk_grid_attach (GTK_GRID (fields), label,
-		     0, rows - 1,
-		     1, 1);
+    if (label) {
+      grow_fields (advanced);
+      gtk_grid_attach (GTK_GRID (fields), label,
+                       0, rows - 1,
+                       1, 1);
+    }
     grow_fields (advanced);
     gtk_grid_attach (GTK_GRID (fields), frame,
 		     0, rows - 1,
@@ -1370,6 +1382,7 @@ FormDialog::editable_list (const std::string name,
   submitters.push_back (submitter);
 }
 
+
 void
 FormDialog::submit ()
 {
@@ -1385,12 +1398,14 @@ FormDialog::submit ()
   request->submit (builder);
 }
 
+
 void
 FormDialog::cancel ()
 {
   gtk_widget_hide (GTK_WIDGET (window));
   request->cancel ();
 }
+
 
 void
 FormDialog::grow_fields (bool advanced)
