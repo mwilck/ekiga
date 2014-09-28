@@ -717,7 +717,7 @@ FormDialog::FormDialog (Ekiga::FormRequestPtr _request,
   if (GTK_IS_WINDOW (parent))
     gtk_window_set_transient_for (GTK_WINDOW (window), GTK_WINDOW (parent));
 
-  vbox = gtk_box_new (GTK_ORIENTATION_VERTICAL, 0);
+  vbox = gtk_box_new (GTK_ORIENTATION_VERTICAL, 18);
   gtk_container_set_border_width (GTK_CONTAINER (vbox), 18);
   gtk_box_pack_start (GTK_BOX (gtk_dialog_get_content_area (GTK_DIALOG (window))),
                       vbox, FALSE, FALSE, 0);
