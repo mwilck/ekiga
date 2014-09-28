@@ -255,11 +255,11 @@ public:
 
   TextSubmitter (const std::string _name,
 		 const std::string _description,
-		 const std::string _tooltip,
+		 const std::string _placeholder_text,
 		 bool _advanced,
 		 GtkWidget *_widget): name(_name),
 				      description(_description),
-				      tooltip(_tooltip),
+				      placeholder_text(_placeholder_text),
 				      advanced(_advanced),
 				      widget(_widget)
   { }
@@ -270,7 +270,7 @@ public:
   void submit (Ekiga::FormBuilder &builder)
   {
     builder.text (name, description,
-          gtk_entry_get_text (GTK_ENTRY (widget)), tooltip,
+          gtk_entry_get_text (GTK_ENTRY (widget)), placeholder_text,
 		  advanced);
   }
 
@@ -278,7 +278,7 @@ private:
 
   const std::string name;
   const std::string description;
-  const std::string tooltip;
+  const std::string placeholder_text;
   bool advanced;
   GtkWidget *widget;
 };
@@ -304,14 +304,14 @@ public:
   {
     builder.private_text (name, description,
 			  gtk_entry_get_text (GTK_ENTRY (widget)),
-			  tooltip, advanced);
+			  placeholder_text, advanced);
   }
 
 private:
 
   const std::string name;
   const std::string description;
-  const std::string tooltip;
+  const std::string placeholder_text;
   bool advanced;
   GtkWidget *widget;
 };
@@ -909,7 +909,7 @@ void
 FormDialog::text (const std::string name,
 		  const std::string description,
 		  const std::string value,
-		  const std::string tooltip,
+		  const std::string placeholder_text,
 		  bool advanced)
 {
   GtkWidget *label = NULL;
@@ -922,7 +922,7 @@ FormDialog::text (const std::string name,
   gtk_widget_set_halign (GTK_WIDGET (label), GTK_ALIGN_END);
 
   entry = gtk_entry_new ();
-  gtk_widget_set_tooltip_text (entry, tooltip.c_str ());
+  gtk_entry_set_placeholder_text (GTK_ENTRY (entry), placeholder_text.c_str ());
   gtk_label_set_mnemonic_widget (GTK_LABEL (label), entry);
   gtk_entry_set_activates_default (GTK_ENTRY (entry), true);
   gtk_entry_set_text (GTK_ENTRY (entry), value.c_str ());
@@ -946,7 +946,7 @@ FormDialog::text (const std::string name,
 		     1, 1);
   }
 
-  submitter = new TextSubmitter (name, description, tooltip, advanced, entry);
+  submitter = new TextSubmitter (name, description, placeholder_text, advanced, entry);
   submitters.push_back (submitter);
 }
 
@@ -955,7 +955,7 @@ void
 FormDialog::private_text (const std::string name,
 			  const std::string description,
 			  const std::string value,
-			  const std::string tooltip,
+			  const std::string placeholder_text,
 			  bool advanced)
 {
   GtkWidget *label = NULL;
@@ -968,7 +968,7 @@ FormDialog::private_text (const std::string name,
   gtk_widget_set_halign (GTK_WIDGET (label), GTK_ALIGN_END);
 
   widget = gtk_entry_new ();
-  gtk_widget_set_tooltip_text (widget, tooltip.c_str ());
+  gtk_entry_set_placeholder_text (GTK_ENTRY (widget), placeholder_text.c_str ());
   gtk_label_set_mnemonic_widget (GTK_LABEL (label), widget);
   gtk_entry_set_activates_default (GTK_ENTRY (widget), true);
   gtk_entry_set_visibility (GTK_ENTRY (widget), FALSE);

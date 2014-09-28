@@ -262,9 +262,9 @@ Opal::Presentity::edit_presentity ()
   request->title (title);
   request->action (_("Done"));
   request->text ("name", _("Name"), get_name (),
-                 _("Name of the contact, as shown in your roster"));
+                 _("John Doe"));
   request->text ("uri", _("URI"), get_uri (),
-                 _("The full URI, e.g. sip:xyz@ekiga.net"));
+                 _("sip:username@ekiga.net"));
 
   request->editable_list ("groups", _("Groups"),
 			 get_groups (), existing_groups ());
