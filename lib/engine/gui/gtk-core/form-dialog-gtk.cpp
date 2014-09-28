@@ -716,6 +716,9 @@ FormDialog::FormDialog (Ekiga::FormRequestPtr _request,
   gtk_window_set_resizable (GTK_WINDOW (window), FALSE);
   if (GTK_IS_WINDOW (parent))
     gtk_window_set_transient_for (GTK_WINDOW (window), GTK_WINDOW (parent));
+  gtk_dialog_add_button (GTK_DIALOG (window),
+                         _("Cancel"),
+                         GTK_RESPONSE_CANCEL);
 
   vbox = gtk_box_new (GTK_ORIENTATION_VERTICAL, 18);
   gtk_container_set_border_width (GTK_CONTAINER (vbox), 18);
