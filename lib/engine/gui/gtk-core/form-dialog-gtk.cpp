@@ -783,6 +783,7 @@ FormDialog::title (const std::string _title)
   TitleSubmitter *submitter = NULL;
 
   gtk_window_set_title (GTK_WINDOW (window), _title.c_str ());
+
   submitter = new TitleSubmitter (_title);
   submitters.push_back (submitter);
 }
@@ -794,7 +795,7 @@ FormDialog::action (const std::string _action)
   ActionSubmitter *submitter = NULL;
 
   gtk_dialog_add_button (GTK_DIALOG (window),
-                         _action.empty () ? _("Apply") : _action.c_str (),
+                         _action.empty () ? _("Done") : _action.c_str (),
                          GTK_RESPONSE_ACCEPT);
   gtk_dialog_set_default_response (GTK_DIALOG (window), GTK_RESPONSE_ACCEPT);
 
