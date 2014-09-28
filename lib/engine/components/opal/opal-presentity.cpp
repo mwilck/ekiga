@@ -255,19 +255,19 @@ Opal::Presentity::edit_presentity ()
   boost::shared_ptr<Ekiga::FormRequestSimple> request =
     boost::shared_ptr<Ekiga::FormRequestSimple> (new Ekiga::FormRequestSimple (boost::bind (&Opal::Presentity::edit_presentity_form_submitted, this, _1, _2)));
 
-  std::string name = get_name ();
-  std::string uri = get_uri ();
-  std::list<std::string> groups = get_groups ();
-  std::list<std::string> all_groups = existing_groups ();
+  /* Translators: This is Edit name of the contact
+   * e.g. Editing Contact Claire Fleury.
+   */
+  const char *title = g_strdup_printf (_("Editing Contact %s"), get_name ().c_str ());
+  request->title (title);
+  request->action (_("Done"));
+  request->text ("name", _("Name"), get_name (),
+                 _("Name of the contact, as shown in your roster"));
+  request->text ("uri", _("URI"), get_uri (),
+                 _("The full URI, e.g. sip:xyz@ekiga.net"));
 
-  request->title (_("Edit roster element"));
-  request->instructions (_("Please fill in this form to change an existing "
-			   "element of ekiga's internal roster"));
-  request->text ("name", _("Name:"), name, _("Name of the contact, as shown in your roster"));
-  request->text ("uri", _("Address:"), uri, _("Address, e.g. sip:xyz@ekiga.net; if you do not specify the host part, e.g. sip:xyz, then you can choose it by right-clicking on the contact in roster"));
-
-  request->editable_list ("groups", _("Choose groups:"),
-			 groups, all_groups);
+  request->editable_list ("groups", _("Groups"),
+			 get_groups (), existing_groups ());
 
   questions (request);
 }
