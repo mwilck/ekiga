@@ -237,7 +237,7 @@ public:
   void submit (Ekiga::FormBuilder &builder)
   {
     builder.boolean (name, description,
-		     gtk_toggle_button_get_active (GTK_TOGGLE_BUTTON (widget)),
+		     gtk_switch_get_active (GTK_SWITCH (widget)),
 		     advanced);
   }
 
@@ -271,8 +271,8 @@ public:
   void submit (Ekiga::FormBuilder &builder)
   {
     builder.text (name, description,
-          gtk_entry_get_text (GTK_ENTRY (widget)), placeholder_text,
-		  advanced);
+                  gtk_entry_get_text (GTK_ENTRY (widget)), placeholder_text,
+                  advanced);
   }
 
 private:
@@ -815,7 +815,7 @@ FormDialog::instructions (const std::string _instructions)
 
   has_preamble = true;
 
-  widget = gtk_label_new (_instructions.c_str ());
+  widget = gtk_label_new_with_mnemonic (_instructions.c_str ());
   gtk_label_set_line_wrap (GTK_LABEL (widget), TRUE);
   gtk_label_set_line_wrap_mode (GTK_LABEL (widget), PANGO_WRAP_WORD);
   gtk_box_pack_start (GTK_BOX (preamble), widget, FALSE, FALSE, 0);
@@ -888,23 +888,46 @@ FormDialog::boolean (const std::string name,
 		     bool value,
 		     bool advanced)
 {
+  GtkWidget *label = NULL;
   GtkWidget *widget = NULL;
+  GtkWidget *header_bar = NULL;
+
   BooleanSubmitter *submitter = NULL;
 
-  grow_fields (advanced);
+  header_bar = gtk_dialog_get_header_bar (GTK_DIALOG (window));
 
-  widget = gtk_check_button_new_with_mnemonic (description.c_str ());
-  gtk_toggle_button_set_active (GTK_TOGGLE_BUTTON (widget), value);
-  if (advanced) {
+  widget = gtk_switch_new ();
+  gtk_switch_set_active (GTK_SWITCH (widget), value);
+  gtk_widget_set_vexpand (GTK_WIDGET (widget), FALSE);
+  gtk_widget_set_hexpand (GTK_WIDGET (widget), FALSE);
+  gtk_widget_set_halign (GTK_WIDGET (widget), GTK_ALIGN_START);
+  gtk_widget_show (widget);
 
-    gtk_grid_attach (GTK_GRID (advanced_fields), widget,
-		     0, advanced_rows - 1,
-		     2, 1);
-  } else {
+  if (header_bar) {
+    gtk_header_bar_pack_start (GTK_HEADER_BAR (header_bar), widget);
+  }
+  else {
+    label = gtk_label_new_with_mnemonic (description.c_str ());
+    gtk_widget_set_halign (GTK_WIDGET (label), GTK_ALIGN_END);
 
-    gtk_grid_attach (GTK_GRID (fields), widget,
-		     0, rows - 1,
-		     2, 1);
+    grow_fields (advanced);
+    if (advanced) {
+
+      gtk_grid_attach (GTK_GRID (advanced_fields), label,
+                       0, advanced_rows - 1,
+                       1, 1);
+      gtk_grid_attach (GTK_GRID (advanced_fields), widget,
+                       1, advanced_rows - 1,
+                       1, 1);
+    } else {
+
+      gtk_grid_attach (GTK_GRID (fields), label,
+                       0, rows - 1,
+                       1, 1);
+      gtk_grid_attach (GTK_GRID (fields), widget,
+                       1, rows - 1,
+                       1, 1);
+    }
   }
 
   submitter = new BooleanSubmitter (name, description, advanced, widget);
