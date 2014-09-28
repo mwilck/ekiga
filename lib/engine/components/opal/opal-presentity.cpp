@@ -258,8 +258,10 @@ Opal::Presentity::edit_presentity ()
   /* Translators: This is Edit name of the contact
    * e.g. Editing Contact Claire Fleury.
    */
-  const char *title = g_strdup_printf (_("Editing Contact %s"), get_name ().c_str ());
+  char *title = g_strdup_printf (_("Editing Contact %s"), get_name ().c_str ());
   request->title (title);
+  g_free (title);
+
   request->action (_("Done"));
   request->text ("name", _("Name"), get_name (),
                  _("John Doe"));
