@@ -35,10 +35,11 @@
 
 #include "form-request-simple.h"
 
-Ekiga::FormRequestSimple::FormRequestSimple (boost::function2<void, bool, Form&> callback_): callback(callback_)
+Ekiga::FormRequestSimple::FormRequestSimple (boost::function3<bool, bool, Form&, std::string&> callback_): callback(callback_)
 {
   // nothing
 }
+
 
 Ekiga::FormRequestSimple::~FormRequestSimple ()
 {
@@ -49,14 +50,16 @@ Ekiga::FormRequestSimple::~FormRequestSimple ()
 void
 Ekiga::FormRequestSimple::cancel ()
 {
+  std::string error_string;
   Ekiga::EmptyForm empty;
   answered = true;
-  callback (false, empty);
+  callback (false, empty, error_string);
 }
 
-void
-Ekiga::FormRequestSimple::submit (Ekiga::Form &form)
+bool
+Ekiga::FormRequestSimple::submit (Ekiga::Form &form,
+                                  std::string &error_string)
 {
   answered = true;
-  callback (true, form);
+  return callback (true, form, error_string);
 }

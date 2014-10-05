@@ -55,7 +55,7 @@ namespace Ekiga
 
     virtual void cancel () = 0;
 
-    virtual void submit (Form &) = 0;
+    virtual bool submit (Form &, std::string &) = 0;
 
   };
 

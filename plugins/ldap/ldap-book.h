@@ -129,7 +129,7 @@ namespace OPENLDAP
     bool is_ekiga_net_book () const;
 
     /* public for access from C */
-    void on_sasl_form_submitted (bool, Ekiga::Form &);
+    bool on_sasl_form_submitted (bool, Ekiga::Form &, std::string &);
     Ekiga::FormBuilder *saslform;
 
   private:
@@ -143,8 +143,9 @@ namespace OPENLDAP
     void parse_uri();
 
     void edit ();
-    void on_edit_form_submitted (bool submitted,
-				 Ekiga::Form &form);
+    bool on_edit_form_submitted (bool submitted,
+				 Ekiga::Form &form,
+                                 std::string &error);
 
     Ekiga::ServiceCore &core;
     boost::shared_ptr<xmlDoc> doc;

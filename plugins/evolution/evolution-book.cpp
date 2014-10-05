@@ -338,7 +338,7 @@ Evolution::Book::refresh ()
 void
 Evolution::Book::new_contact_action ()
 {
-  boost::shared_ptr<Ekiga::FormRequestSimple> request = boost::shared_ptr<Ekiga::FormRequestSimple> (new Ekiga::FormRequestSimple (boost::bind (&Evolution::Book::on_new_contact_form_submitted, this, _1, _2)));
+  boost::shared_ptr<Ekiga::FormRequestSimple> request = boost::shared_ptr<Ekiga::FormRequestSimple> (new Ekiga::FormRequestSimple (boost::bind (&Evolution::Book::on_new_contact_form_submitted, this, _1, _2, _3)));
 
   request->title (_("Add Contact"));
 
@@ -370,12 +370,13 @@ Evolution::Book::set_econtact_attribute_value (EContact *econtact,
   e_vcard_add_attribute (E_VCARD (econtact), attribute);
 }
 
-void
+bool
 Evolution::Book::on_new_contact_form_submitted (bool submitted,
-						Ekiga::Form &result)
+						Ekiga::Form &result,
+                                                std::string& /*error*/)
 {
-  if ( !submitted)
-    return;
+  if (!submitted)
+    return false;
 
   EContact *econtact = NULL;
 
@@ -403,4 +404,6 @@ Evolution::Book::on_new_contact_form_submitted (bool submitted,
 
   e_book_add_contact (book, econtact, NULL);
   g_object_unref (econtact);
+
+  return true;
 }

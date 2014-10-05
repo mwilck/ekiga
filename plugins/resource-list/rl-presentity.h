@@ -85,8 +85,9 @@ namespace RL
 
     void edit_presentity ();
 
-    void edit_presentity_form_submitted (bool submitted,
-					 Ekiga::Form &result);
+    bool edit_presentity_form_submitted (bool submitted,
+					 Ekiga::Form &result,
+                                         std::string &error);
 
     void save (bool reload);
 

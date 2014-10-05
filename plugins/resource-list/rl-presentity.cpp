@@ -222,7 +222,7 @@ RL::Presentity::populate_menu (Ekiga::MenuBuilder &builder)
 void
 RL::Presentity::edit_presentity ()
 {
-  boost::shared_ptr<Ekiga::FormRequestSimple> request = boost::shared_ptr<Ekiga::FormRequestSimple> (new Ekiga::FormRequestSimple (boost::bind (&RL::Presentity::edit_presentity_form_submitted, this, _1, _2)));
+  boost::shared_ptr<Ekiga::FormRequestSimple> request = boost::shared_ptr<Ekiga::FormRequestSimple> (new Ekiga::FormRequestSimple (boost::bind (&RL::Presentity::edit_presentity_form_submitted, this, _1, _2, _3)));
 
   // FIXME: we should be able to know all groups in the heap
   std::set<std::string> all_groups = groups;
@@ -240,12 +240,13 @@ RL::Presentity::edit_presentity ()
 }
 
 
-void
+bool
 RL::Presentity::edit_presentity_form_submitted (bool submitted,
-						Ekiga::Form &result)
+						Ekiga::Form &result,
+                                                std::string &/*error*/)
 {
   if (!submitted)
-    return;
+    return false;
 
   const std::string new_name = result.text ("name");
   const std::string new_uri = result.text ("uri");
@@ -294,6 +295,8 @@ RL::Presentity::edit_presentity_form_submitted (bool submitted,
   groups = new_groups;
 
   save (reload);
+
+  return true;
 }
 
 void

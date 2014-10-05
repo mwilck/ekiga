@@ -315,7 +315,7 @@ Evolution::Contact::set_attribute_value (unsigned int attr_type,
 void
 Evolution::Contact::edit_action ()
 {
-  boost::shared_ptr<Ekiga::FormRequestSimple> request = boost::shared_ptr<Ekiga::FormRequestSimple> (new Ekiga::FormRequestSimple (boost::bind (&Evolution::Contact::on_edit_form_submitted, this, _1, _2)));;
+  boost::shared_ptr<Ekiga::FormRequestSimple> request = boost::shared_ptr<Ekiga::FormRequestSimple> (new Ekiga::FormRequestSimple (boost::bind (&Evolution::Contact::on_edit_form_submitted, this, _1, _2, _3)));;
 
   request->title (_("Edit contact"));
 
@@ -340,12 +340,13 @@ Evolution::Contact::edit_action ()
   questions (request);
 }
 
-void
+bool
 Evolution::Contact::on_edit_form_submitted (bool submitted,
-					    Ekiga::Form &result)
+					    Ekiga::Form &result,
+                                            std::string &/*error*/)
 {
   if (!submitted)
-    return;
+    return false;
 
   std::string name = result.text ("name");
   std::string home = result.text ("home");
@@ -363,12 +364,14 @@ Evolution::Contact::on_edit_form_submitted (bool submitted,
   e_contact_set (econtact, E_CONTACT_FULL_NAME, (gpointer)name.c_str ());
 
   e_book_commit_contact (book, econtact, NULL);
+
+  return true;
 }
 
 void
 Evolution::Contact::remove_action ()
 {
-  boost::shared_ptr<Ekiga::FormRequestSimple> request = boost::shared_ptr<Ekiga::FormRequestSimple>(new Ekiga::FormRequestSimple (boost::bind (&Evolution::Contact::on_remove_form_submitted, this, _1, _2)));
+  boost::shared_ptr<Ekiga::FormRequestSimple> request = boost::shared_ptr<Ekiga::FormRequestSimple>(new Ekiga::FormRequestSimple (boost::bind (&Evolution::Contact::on_remove_form_submitted, this, _1, _2, _3)));
   gchar* instructions = NULL;
 
   request->title (_("Remove contact"));
@@ -380,10 +383,13 @@ Evolution::Contact::remove_action ()
   questions (request);
 }
 
-void
+bool
 Evolution::Contact::on_remove_form_submitted (bool submitted,
-					      Ekiga::Form& /*result*/)
+					      Ekiga::Form& /*result*/,
+                                              std::string& /*error*/)
 {
-  if (submitted)
-    remove ();
+  if (!submitted)
+    return false;
+
+  return true;
 }

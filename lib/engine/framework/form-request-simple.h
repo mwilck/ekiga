@@ -60,19 +60,18 @@ namespace Ekiga
      * the request was cancelled ;
      * - a form, which contains the submitted answer (or is empty otherwise)
      */
-    FormRequestSimple (boost::function2<void, bool, Form&> callback_);
+    FormRequestSimple (boost::function3<bool, bool, Form &, std::string &> callback_);
 
     ~FormRequestSimple ();
 
     void cancel ();
 
-    void submit (Form &);
+    bool submit (Form &, std::string &);
 
   private:
 
     bool answered;
-    boost::function2<void,bool,Form&> callback;
-
+    boost::function3<bool,bool,Form&,std::string&> callback;
   };
 
 /**

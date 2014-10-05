@@ -167,7 +167,7 @@ Opal::Bank::new_account (Account::Type acc_type,
 			 std::string username,
 			 std::string password)
 {
-  boost::shared_ptr<Ekiga::FormRequestSimple> request = boost::shared_ptr<Ekiga::FormRequestSimple> (new Ekiga::FormRequestSimple (boost::bind (&Opal::Bank::on_new_account_form_submitted, this, _1, _2, acc_type)));
+  boost::shared_ptr<Ekiga::FormRequestSimple> request = boost::shared_ptr<Ekiga::FormRequestSimple> (new Ekiga::FormRequestSimple (boost::bind (&Opal::Bank::on_new_account_form_submitted, this, _1, _2, _3, acc_type)));
 
   request->title (_("Edit account"));
   request->instructions (_("Please update the following fields:"));
@@ -216,24 +216,21 @@ Opal::Bank::new_account (Account::Type acc_type,
   }
   request->boolean ("enabled", _("Enable account"), true);
 
-  if (!username.empty () && !password.empty ())
-    request->submit (*request);
-  else
-    questions (request);
+  questions (request);
 }
 
 
-void
+bool
 Opal::Bank::on_new_account_form_submitted (bool submitted,
 					   Ekiga::Form& result,
+                                           std::string& error,
 					   Account::Type acc_type)
 {
   if (!submitted)
-    return;
+    return false;
 
-  boost::shared_ptr<Ekiga::FormRequestSimple> request = boost::shared_ptr<Ekiga::FormRequestSimple> (new Ekiga::FormRequestSimple (boost::bind (&Opal::Bank::on_new_account_form_submitted, this, _1, _2, acc_type)));
+  boost::shared_ptr<Ekiga::FormRequestSimple> request = boost::shared_ptr<Ekiga::FormRequestSimple> (new Ekiga::FormRequestSimple (boost::bind (&Opal::Bank::on_new_account_form_submitted, this, _1, _2, _3, acc_type)));
 
-  std::string error;
   std::string new_name = (acc_type == Opal::Account::SIP
 			  || acc_type == Opal::Account::H323) ? result.text ("name") : result.hidden ("name");
   std::string new_host = (acc_type == Opal::Account::SIP
@@ -257,16 +254,13 @@ Opal::Bank::on_new_account_form_submitted (bool submitted,
   else if (new_timeout < 10)
     error = _("The timeout should be at least 10 seconds.");
 
-  if (!error.empty ()) {
-    request->error (error);
-
-    questions (request);
-  }
-  else {
-
+  if (!error.empty ())
+   return false;
+  else
     add (acc_type, new_name, new_host, new_user, new_authentication_user,
 	 new_password, new_enabled, new_timeout);
-  }
+
+  return true;
 }
 
 

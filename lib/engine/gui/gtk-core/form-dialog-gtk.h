@@ -120,10 +120,9 @@ public:
                       bool rename_only);
 
   /* those are public only to be called from C code */
-
   void cancel ();
 
-  void submit ();
+  bool submit ();
 
 private:
 

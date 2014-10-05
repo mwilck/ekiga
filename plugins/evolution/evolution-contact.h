@@ -107,13 +107,15 @@ namespace Evolution
 
     void edit_action ();
 
-    void on_edit_form_submitted (bool submitted,
-				 Ekiga::Form &result);
+    bool on_edit_form_submitted (bool submitted,
+				 Ekiga::Form &result,
+                                 std::string &error);
 
     void remove_action ();
 
-    void on_remove_form_submitted (bool submitted,
-				   Ekiga::Form &result);
+    bool on_remove_form_submitted (bool submitted,
+				   Ekiga::Form &result,
+                                   std::string &error);
   };
 
   typedef boost::shared_ptr<Contact> ContactPtr;

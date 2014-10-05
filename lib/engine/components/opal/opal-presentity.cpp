@@ -253,7 +253,7 @@ void
 Opal::Presentity::edit_presentity ()
 {
   boost::shared_ptr<Ekiga::FormRequestSimple> request =
-    boost::shared_ptr<Ekiga::FormRequestSimple> (new Ekiga::FormRequestSimple (boost::bind (&Opal::Presentity::edit_presentity_form_submitted, this, _1, _2)));
+    boost::shared_ptr<Ekiga::FormRequestSimple> (new Ekiga::FormRequestSimple (boost::bind (&Opal::Presentity::edit_presentity_form_submitted, this, _1, _2, _3)));
 
   /* Translators: This is Edit name of the contact
    * e.g. Editing Contact Claire Fleury.
@@ -275,12 +275,13 @@ Opal::Presentity::edit_presentity ()
 }
 
 
-void
+bool
 Opal::Presentity::edit_presentity_form_submitted (bool submitted,
-						  Ekiga::Form &result)
+						  Ekiga::Form &result,
+                                                  std::string &error)
 {
   if (!submitted)
-    return;
+    return false;
 
   const std::string new_name = result.text ("name");
   const std::list<std::string> groups = get_groups ();
@@ -288,6 +289,15 @@ Opal::Presentity::edit_presentity_form_submitted (bool submitted,
   std::string new_uri = result.text ("uri");
   const std::string uri = get_uri ();
   std::set<xmlNodePtr> nodes_to_remove;
+
+  if (new_name.empty ()) {
+    error = _("You did not provide a valid name");
+    return false;
+  }
+  else if (new_uri.empty ()) {
+    error = _("You did not provide a valid address");
+    return false;
+  }
 
   new_uri = canonize_uri (new_uri);
 
@@ -358,6 +368,8 @@ Opal::Presentity::edit_presentity_form_submitted (bool submitted,
 
   updated ();
   trigger_saving ();
+
+  return true;
 }
 
 

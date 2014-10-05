@@ -135,9 +135,10 @@ private:
 			       const std::string& uri,
 			       Ekiga::MenuBuilder& builder);
 
-    void on_new_account_form_submitted (bool submitted,
-					Ekiga::Form& form,
-					Account::Type acc_type);
+    bool on_new_account_form_submitted (bool submitted,
+                                        Ekiga::Form& form,
+                                        std::string& error,
+                                        Account::Type acc_type);
 
     void add (Account::Type acc_type,
               std::string name,

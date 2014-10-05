@@ -759,6 +759,8 @@ FormDialog::~FormDialog ()
 void
 FormDialog::run ()
 {
+  bool ok = false;
+
   if (has_preamble)
     gtk_widget_show_all (preamble);
   gtk_widget_show_all (fields);
@@ -766,17 +768,20 @@ FormDialog::run ()
     gtk_widget_show_all (expander);
   gtk_widget_show (window);
 
-  switch (gtk_dialog_run (GTK_DIALOG (window))) {
+  while (!ok) {
+    switch (gtk_dialog_run (GTK_DIALOG (window))) {
 
-  case GTK_RESPONSE_ACCEPT:
-    submit();
-    break;
+    case GTK_RESPONSE_ACCEPT:
+      ok = submit();
+      break;
 
-  case GTK_RESPONSE_CANCEL:
-  case GTK_RESPONSE_DELETE_EVENT:
-  default:
-    cancel();
-    break;
+    case GTK_RESPONSE_CANCEL:
+    case GTK_RESPONSE_DELETE_EVENT:
+    default:
+      cancel();
+      ok = true;
+      break;
+    }
   }
 }
 
@@ -871,6 +876,7 @@ FormDialog::error (const std::string _error)
 					("<span foreground=\"red\">" + _error + "</span>").c_str ());
     gtk_container_add (GTK_CONTAINER (preamble), widget);
     has_preamble = true;
+    gtk_widget_show_all (preamble);
   }
 }
 
@@ -1410,9 +1416,11 @@ FormDialog::editable_list (const std::string name,
 }
 
 
-void
+bool
 FormDialog::submit ()
 {
+  bool ok = false;
+  std::string error_msg;
   Ekiga::FormBuilder builder;
 
   for (std::list<Submitter *>::iterator iter = submitters.begin ();
@@ -1420,7 +1428,10 @@ FormDialog::submit ()
        iter++)
     (*iter)->submit (builder);
 
-  request->submit (builder);
+  ok = request->submit (builder, error_msg);
+  if (!ok)
+    error (error_msg);
+  return ok;
 }
 
 

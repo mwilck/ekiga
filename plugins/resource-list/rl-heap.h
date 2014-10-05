@@ -117,12 +117,14 @@ namespace RL {
     void parse_list (xmlNodePtr node);
 
     void edit ();
-    void on_edit_form_submitted (bool submitted,
-				 Ekiga::Form& result);
+    bool on_edit_form_submitted (bool submitted,
+				 Ekiga::Form& result,
+                                 std::string &error);
 
     void new_entry ();
-    void on_new_entry_form_submitted (bool submitted,
-				      Ekiga::Form& result);
+    bool on_new_entry_form_submitted (bool submitted,
+				      Ekiga::Form& result,
+                                      std::string &error);
     void new_entry_result (std::string error);
   };
 

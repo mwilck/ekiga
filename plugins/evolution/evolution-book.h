@@ -1,4 +1,3 @@
-
 /* Ekiga -- A VoIP and Video-Conferencing application
  * Copyright (C) 2000-2009 Damien Sandras <dsandras@seconix.com>
  *
@@ -102,8 +101,9 @@ namespace Evolution
     void set_econtact_attribute_value (EContact *contact,
 				       const std::string subtype,
 				       const std::string value) const;
-    void on_new_contact_form_submitted (bool submitted,
-					Ekiga::Form &result);
+    bool on_new_contact_form_submitted (bool submitted,
+					Ekiga::Form &result,
+                                        std::string& error);
 
     Ekiga::ServiceCore &services;
     EBook *book;

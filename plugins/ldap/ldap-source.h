@@ -92,8 +92,9 @@ namespace OPENLDAP
     
     void new_ekiga_net_book ();
 
-    void on_new_book_form_submitted (bool submitted,
-				     Ekiga::Form &result);
+    bool on_new_book_form_submitted (bool submitted,
+				     Ekiga::Form &result,
+                                     std::string &error);
 
 
     bool has_ekiga_net_book () const;

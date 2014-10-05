@@ -481,14 +481,17 @@ OPENLDAP::Book::get_node ()
   return node;
 }
 
-void
+bool
 OPENLDAP::Book::on_sasl_form_submitted (bool submitted,
-					Ekiga::Form &result)
+					Ekiga::Form &result,
+                                        std::string &/*error*/)
 {
   if (!submitted)
-    return;
+    return false;
 
   result.visit (*saslform);
+
+  return true;
 }
 
 extern "C" {
@@ -554,7 +557,7 @@ extern "C" {
 
     /* If there are missing items, try to get them all in one dialog */
     if (nprompts) {
-      boost::shared_ptr<Ekiga::FormRequestSimple> request = boost::shared_ptr<Ekiga::FormRequestSimple> (new Ekiga::FormRequestSimple (boost::bind (&OPENLDAP::Book::on_sasl_form_submitted, ctx->book, _1, _2)));
+      boost::shared_ptr<Ekiga::FormRequestSimple> request = boost::shared_ptr<Ekiga::FormRequestSimple> (new Ekiga::FormRequestSimple (boost::bind (&OPENLDAP::Book::on_sasl_form_submitted, ctx->book, _1, _2, _3)));
       Ekiga::FormBuilder result;
       std::string prompt;
       std::string ctxt = "";
@@ -1007,7 +1010,7 @@ OPENLDAP::BookForm (boost::shared_ptr<Ekiga::FormRequestSimple> request,
 void
 OPENLDAP::Book::edit ()
 {
-  boost::shared_ptr<Ekiga::FormRequestSimple> request = boost::shared_ptr<Ekiga::FormRequestSimple> (new Ekiga::FormRequestSimple (boost::bind (&OPENLDAP::Book::on_edit_form_submitted, this, _1, _2)));
+  boost::shared_ptr<Ekiga::FormRequestSimple> request = boost::shared_ptr<Ekiga::FormRequestSimple> (new Ekiga::FormRequestSimple (boost::bind (&OPENLDAP::Book::on_edit_form_submitted, this, _1, _2, _3)));
 
   OPENLDAP::BookForm (request, bookinfo, std::string(_("Edit LDAP directory")));
 
@@ -1113,22 +1116,16 @@ OPENLDAP::BookFormInfo (Ekiga::Form &result,
   return 0;
 }
 
-void
+bool
 OPENLDAP::Book::on_edit_form_submitted (bool submitted,
-					Ekiga::Form &result)
+					Ekiga::Form &result,
+                                        std::string &error)
 {
   if (!submitted)
-    return;
+    return false;
 
-  std::string errmsg;
-  if (OPENLDAP::BookFormInfo (result, bookinfo, errmsg)) {
-    boost::shared_ptr<Ekiga::FormRequestSimple> request = boost::shared_ptr<Ekiga::FormRequestSimple> (new Ekiga::FormRequestSimple (boost::bind (&OPENLDAP::Book::on_edit_form_submitted, this, _1, _2)));
-
-    result.visit (*request);
-    request->error (errmsg);
-
-    questions (request);
-    return;
+  if (OPENLDAP::BookFormInfo (result, bookinfo, error)) {
+    return false;
   }
 
   robust_xmlNodeSetContent (node, &name_node, "name", bookinfo.name);
@@ -1146,4 +1143,6 @@ OPENLDAP::Book::on_edit_form_submitted (bool submitted,
 
   updated ();
   trigger_saving ();
+
+  return true;
 }

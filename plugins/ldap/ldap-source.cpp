@@ -137,7 +137,7 @@ OPENLDAP::Source::populate_menu (Ekiga::MenuBuilder &builder)
 void
 OPENLDAP::Source::new_book ()
 {
-  boost::shared_ptr<Ekiga::FormRequestSimple> request = boost::shared_ptr<Ekiga::FormRequestSimple> (new Ekiga::FormRequestSimple (boost::bind (&OPENLDAP::Source::on_new_book_form_submitted, this, _1, _2)));
+  boost::shared_ptr<Ekiga::FormRequestSimple> request = boost::shared_ptr<Ekiga::FormRequestSimple> (new Ekiga::FormRequestSimple (boost::bind (&OPENLDAP::Source::on_new_book_form_submitted, this, _1, _2, _3)));
   struct BookInfo bookinfo;
 
   bookinfo.name = "";
@@ -170,27 +170,22 @@ OPENLDAP::Source::new_ekiga_net_book ()
   add (bookinfo);
 }
 
-void
+bool
 OPENLDAP::Source::on_new_book_form_submitted (bool submitted,
-					      Ekiga::Form &result)
+					      Ekiga::Form &result,
+                                              std::string &error)
 {
   if (!submitted)
-    return;
+    return false;
 
-  std::string errmsg;
   struct BookInfo bookinfo;
 
-  if (OPENLDAP::BookFormInfo (result, bookinfo, errmsg)) {
-    boost::shared_ptr<Ekiga::FormRequestSimple> request = boost::shared_ptr<Ekiga::FormRequestSimple> (new Ekiga::FormRequestSimple (boost::bind (&OPENLDAP::Source::on_new_book_form_submitted, this, _1, _2)));
-
-    result.visit (*request);
-    request->error (errmsg);
-
-    questions (request);
-    return;
-  }
+  if (OPENLDAP::BookFormInfo (result, bookinfo, error))
+    return false;
 
   add (bookinfo);
+
+  return true;
 }
 
 void

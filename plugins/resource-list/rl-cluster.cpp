@@ -156,7 +156,7 @@ RL::Cluster::new_heap (const std::string name,
 		       const std::string user,
 		       bool writable)
 {
-  boost::shared_ptr<Ekiga::FormRequestSimple> request = boost::shared_ptr<Ekiga::FormRequestSimple> (new Ekiga::FormRequestSimple (boost::bind (&RL::Cluster::on_new_heap_form_submitted, this, _1, _2)));
+  boost::shared_ptr<Ekiga::FormRequestSimple> request = boost::shared_ptr<Ekiga::FormRequestSimple> (new Ekiga::FormRequestSimple (boost::bind (&RL::Cluster::on_new_heap_form_submitted, this, _1, _2, _3)));
 
   request->title (_("Add new resource-list"));
   request->instructions (_("Please fill in this form to add a new "
@@ -171,12 +171,13 @@ RL::Cluster::new_heap (const std::string name,
   questions (request);
 }
 
-void
+bool
 RL::Cluster::on_new_heap_form_submitted (bool submitted,
-					 Ekiga::Form& result)
+					 Ekiga::Form &result,
+                                         std::string &/*error*/)
 {
   if (!submitted)
-    return;
+    return false;
 
   const std::string name = result.text ("name");
   const std::string uri = result.text ("uri");
@@ -186,6 +187,8 @@ RL::Cluster::on_new_heap_form_submitted (bool submitted,
   bool writable = result.boolean ("writable");
 
   add (name, uri, username, password, user, writable);
+
+  return true;
 }
 
 

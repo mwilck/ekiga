@@ -126,8 +126,9 @@ namespace Opal
      * a nice form
      */
     void edit_presentity ();
-    void edit_presentity_form_submitted (bool submitted,
-					 Ekiga::Form& result);
+    bool edit_presentity_form_submitted (bool submitted,
+					 Ekiga::Form& result,
+                                         std::string& error);
 
     const Account & account;
     boost::weak_ptr<Ekiga::PresenceCore> presence_core;

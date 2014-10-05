@@ -622,7 +622,7 @@ Opal::Account::populate_menu (Ekiga::MenuBuilder &builder)
 void
 Opal::Account::edit ()
 {
-  boost::shared_ptr<Ekiga::FormRequestSimple> request = boost::shared_ptr<Ekiga::FormRequestSimple> (new Ekiga::FormRequestSimple (boost::bind (&Opal::Account::on_edit_form_submitted, this, _1, _2)));
+  boost::shared_ptr<Ekiga::FormRequestSimple> request = boost::shared_ptr<Ekiga::FormRequestSimple> (new Ekiga::FormRequestSimple (boost::bind (&Opal::Account::on_edit_form_submitted, this, _1, _2, _3)));
   std::stringstream str;
 
   str << get_timeout ();
@@ -661,12 +661,13 @@ Opal::Account::edit ()
 }
 
 
-void
+bool
 Opal::Account::on_edit_form_submitted (bool submitted,
-				       Ekiga::Form &result)
+				       Ekiga::Form &result,
+                                       std::string &error)
 {
   if (!submitted)
-    return;
+    return false;
 
   std::string new_name = result.text ("name");
   std::string new_host = result.text ("host");
@@ -681,7 +682,6 @@ Opal::Account::on_edit_form_submitted (bool submitted,
   bool should_enable = false;
   bool should_disable = false;
   unsigned new_timeout = atoi (result.text ("timeout").c_str ());
-  std::string error;
 
   if (new_name.empty ())
     error = _("You did not supply a name for that account.");
@@ -694,11 +694,7 @@ Opal::Account::on_edit_form_submitted (bool submitted,
 
   if (!error.empty ()) {
 
-    boost::shared_ptr<Ekiga::FormRequestSimple> request = boost::shared_ptr<Ekiga::FormRequestSimple> (new Ekiga::FormRequestSimple (boost::bind (&Opal::Account::on_edit_form_submitted, this, _1, _2)));
-    result.visit (*request);
-    request->error (error);
-
-    Ekiga::Account::questions (request);
+    return false;
   }
   else {
 
@@ -761,6 +757,8 @@ Opal::Account::on_edit_form_submitted (bool submitted,
     updated ();
     trigger_saving ();
   }
+
+  return true;
 }
 
 void
@@ -771,7 +769,7 @@ Opal::Account::add_contact ()
     return;
 
   boost::shared_ptr<Ekiga::FormRequestSimple> request =
-    boost::shared_ptr<Ekiga::FormRequestSimple> (new Ekiga::FormRequestSimple (boost::bind (&Opal::Account::on_add_contact_form_submitted, this, _1, _2)));
+    boost::shared_ptr<Ekiga::FormRequestSimple> (new Ekiga::FormRequestSimple (boost::bind (&Opal::Account::on_add_contact_form_submitted, this, _1, _2, _3)));
   std::list<std::string> groups = existing_groups ();
 
   request->title (_("Add to account roster"));
@@ -788,16 +786,17 @@ Opal::Account::add_contact ()
   Ekiga::Heap::questions (request);
 }
 
-void
+bool
 Opal::Account::on_add_contact_form_submitted (bool submitted,
-					      Ekiga::Form& result)
+					      Ekiga::Form& result,
+                                              std::string& error)
 {
   if (!submitted)
-    return;
+    return false;
 
   boost::shared_ptr<Ekiga::PresenceCore> pcore = presence_core.lock ();
   if (!pcore)
-    return;
+    return false;
 
   const std::string name = result.text ("name");
   std::string uri;
@@ -820,18 +819,18 @@ Opal::Account::on_add_contact_form_submitted (bool submitted,
     presentity_added (pres);
     fetch (pres->get_uri ());
 
-  } else {
+    return true;
 
-    boost::shared_ptr<Ekiga::FormRequestSimple> request = boost::shared_ptr<Ekiga::FormRequestSimple>(new Ekiga::FormRequestSimple (boost::bind (&Opal::Account::on_add_contact_form_submitted, this, _1, _2)));
-
-    result.visit (*request);
-    if (!pcore->is_supported_uri (uri))
-      request->error (_("You supplied an unsupported address"));
-    else
-      request->error (_("You already have a contact with this address!"));
-
-    Ekiga::Heap::questions (request);
   }
+  else {
+
+    if (!pcore->is_supported_uri (uri))
+      error = _("You supplied an unsupported address");
+    else
+      error = _("You already have a contact with this address!");
+  }
+
+  return false;
 }
 
 void
@@ -1298,7 +1297,7 @@ Opal::Account::on_rename_group (Opal::PresentityPtr pres)
 {
   boost::shared_ptr<Ekiga::FormRequestSimple> request =
     boost::shared_ptr<Ekiga::FormRequestSimple> (new Ekiga::FormRequestSimple (boost::bind (&Opal::Account::on_rename_group_form_submitted,
-                                                                                            this, _1, _2, pres->get_groups ())));
+                                                                                            this, _1, _2, _3, pres->get_groups ())));
 
   request->title (_("Renaming Groups"));
   request->editable_list ("groups", "",
@@ -1330,13 +1329,14 @@ struct rename_group_form_submitted_helper
 };
 
 
-void
+bool
 Opal::Account::on_rename_group_form_submitted (bool submitted,
                                                Ekiga::Form& result,
+                                               std::string& error,
                                                const std::list<std::string> & groups)
 {
   if (!submitted)
-    return;
+    return false;
 
   std::list <std::string> new_groups = result.editable_list ("groups");
 
@@ -1353,6 +1353,8 @@ Opal::Account::on_rename_group_form_submitted (bool submitted,
       visit_presentities (boost::ref (helper));
     }
   }
+
+  return true;
 }
 
 void

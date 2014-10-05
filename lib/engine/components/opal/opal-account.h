@@ -205,16 +205,19 @@ private:
     void decide_type ();
 
     void add_contact ();
-    void on_add_contact_form_submitted (bool submitted,
-					Ekiga::Form& result);
+    bool on_add_contact_form_submitted (bool submitted,
+					Ekiga::Form& result,
+                                        std::string& error);
 
-    void on_edit_form_submitted (bool submitted,
-				 Ekiga::Form &result);
+    bool on_edit_form_submitted (bool submitted,
+				 Ekiga::Form &result,
+                                 std::string& error);
     void on_consult (const std::string url);
     bool is_myself (const std::string uri) const;
 
-    void on_rename_group_form_submitted (bool submitted,
+    bool on_rename_group_form_submitted (bool submitted,
                                          Ekiga::Form& result,
+                                         std::string& error,
                                          const std::list<std::string> & groups);
 
     Type type;
