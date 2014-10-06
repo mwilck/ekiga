@@ -87,13 +87,15 @@ public:
 	     const std::string description,
 	     const std::string value,
 	     const std::string placeholder_text,
-	     bool advanced);
+	     bool advanced,
+             bool allow_empty);
 
   void private_text (const std::string name,
 		     const std::string description,
 		     const std::string value,
                      const std::string placeholder_text,
-		     bool advanced);
+                     bool advanced,
+                     bool allow_empty);
 
   void multi_text (const std::string name,
 		   const std::string description,

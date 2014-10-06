@@ -44,6 +44,20 @@
  * Declarations : GTK+ Callbacks
  */
 
+
+/** Called when a GtkEntry has new content.
+ *
+ * If the Form text entry does not allow empty values,
+ * the "OK" button will stay unsensitive as long as
+ * the entry does not contain non-empty text.
+ *
+ * @param: data is a pointer to the Form GtkDialog.
+ */
+static void
+text_entry_changed_cb (GtkEntry *entry,
+                       gpointer data);
+
+
 /** Called when a choice has been toggled in the
  * GtkListStore.
  *
@@ -258,10 +272,12 @@ public:
 		 const std::string _description,
 		 const std::string _placeholder_text,
 		 bool _advanced,
+		 bool _allow_empty,
 		 GtkWidget *_widget): name(_name),
 				      description(_description),
 				      placeholder_text(_placeholder_text),
 				      advanced(_advanced),
+				      allow_empty(_allow_empty),
 				      widget(_widget)
   { }
 
@@ -270,9 +286,11 @@ public:
 
   void submit (Ekiga::FormBuilder &builder)
   {
-    builder.text (name, description,
+    builder.text (name,
+                  description,
                   gtk_entry_get_text (GTK_ENTRY (widget)), placeholder_text,
-                  advanced);
+                  advanced,
+                  allow_empty);
   }
 
 private:
@@ -281,6 +299,7 @@ private:
   const std::string description;
   const std::string placeholder_text;
   bool advanced;
+  bool allow_empty;
   GtkWidget *widget;
 };
 
@@ -292,9 +311,11 @@ public:
   PrivateTextSubmitter (const std::string _name,
 			const std::string _description,
 			bool _advanced,
+			bool _allow_empty,
 			GtkWidget *_widget): name(_name),
 					     description(_description),
 					     advanced(_advanced),
+					     allow_empty(_allow_empty),
 					     widget(_widget)
   { }
 
@@ -305,7 +326,9 @@ public:
   {
     builder.private_text (name, description,
 			  gtk_entry_get_text (GTK_ENTRY (widget)),
-			  placeholder_text, advanced);
+			  placeholder_text,
+                          advanced,
+                          allow_empty);
   }
 
 private:
@@ -314,6 +337,7 @@ private:
   const std::string description;
   const std::string placeholder_text;
   bool advanced;
+  bool allow_empty;
   GtkWidget *widget;
 };
 
@@ -666,6 +690,19 @@ editable_list_choice_toggled_cb (G_GNUC_UNUSED GtkCellRendererToggle *cell,
 
 
 static void
+text_entry_changed_cb (GtkEntry *entry,
+                       gpointer data)
+{
+  g_return_if_fail (data);
+  std::string value = gtk_entry_get_text (entry);
+  bool sensitive = (!value.empty () && value.find_first_not_of (' ') != std::string::npos);
+
+  gtk_widget_set_sensitive (gtk_dialog_get_widget_for_response (GTK_DIALOG (data), GTK_RESPONSE_ACCEPT),
+                            sensitive);
+}
+
+
+static void
 multiple_choice_choice_toggled_cb (G_GNUC_UNUSED GtkCellRendererToggle *cell,
 				   gchar *path_str,
 				   gpointer data)
@@ -950,10 +987,13 @@ FormDialog::text (const std::string name,
 		  const std::string description,
 		  const std::string value,
 		  const std::string placeholder_text,
-		  bool advanced)
+		  bool advanced,
+                  bool allow_empty)
 {
   GtkWidget *label = NULL;
   GtkWidget *entry = NULL;
+  bool sensitive = false;
+
   TextSubmitter *submitter = NULL;
 
   grow_fields (advanced);
@@ -967,6 +1007,14 @@ FormDialog::text (const std::string name,
   gtk_entry_set_activates_default (GTK_ENTRY (entry), true);
   gtk_entry_set_text (GTK_ENTRY (entry), value.c_str ());
   g_object_set (G_OBJECT (entry), "expand", TRUE, NULL);
+
+  if (!allow_empty) {
+    sensitive = (!value.empty () && value.find_first_not_of (' ') != std::string::npos);
+    gtk_widget_set_sensitive (gtk_dialog_get_widget_for_response (GTK_DIALOG (window), GTK_RESPONSE_ACCEPT),
+                              sensitive);
+    g_signal_connect (entry, "changed",
+                      G_CALLBACK (text_entry_changed_cb), window);
+  }
 
   if (advanced) {
 
@@ -986,7 +1034,7 @@ FormDialog::text (const std::string name,
 		     1, 1);
   }
 
-  submitter = new TextSubmitter (name, description, placeholder_text, advanced, entry);
+  submitter = new TextSubmitter (name, description, placeholder_text, advanced, allow_empty, entry);
   submitters.push_back (submitter);
 }
 
@@ -996,7 +1044,8 @@ FormDialog::private_text (const std::string name,
 			  const std::string description,
 			  const std::string value,
 			  const std::string placeholder_text,
-			  bool advanced)
+			  bool advanced,
+                          bool allow_empty)
 {
   GtkWidget *label = NULL;
   GtkWidget *widget = NULL;
@@ -1033,7 +1082,7 @@ FormDialog::private_text (const std::string name,
 		     1, 1);
   }
 
-  submitter = new PrivateTextSubmitter (name, description, advanced, widget);
+  submitter = new PrivateTextSubmitter (name, description, advanced, allow_empty, widget);
   submitters.push_back (submitter);
 }
 

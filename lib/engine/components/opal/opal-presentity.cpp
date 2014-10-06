@@ -263,10 +263,12 @@ Opal::Presentity::edit_presentity ()
   g_free (title);
 
   request->action (_("Done"));
-  request->text ("name", _("Name"), get_name (),
-                 _("John Doe"));
-  request->text ("uri", _("URI"), get_uri (),
-                 _("sip:username@ekiga.net"));
+  request->text ("name", _("Name"),
+                 get_name (),
+                 _("John Doe"), false, false);
+  request->text ("uri", _("URI"),
+                 get_uri (),
+                 _("sip:username@ekiga.net"), false, false);
 
   request->editable_list ("groups", _("Groups"),
 			 get_groups (), existing_groups ());

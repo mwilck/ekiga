@@ -83,7 +83,8 @@ Ekiga::FormBuilder::visit (Ekiga::FormVisitor &visitor) const
     case TEXT:
 
       visitor.text (iter_text->name, iter_text->description,
-               iter_text->value, iter_text->tooltip, iter_text->advanced);
+                    iter_text->value, iter_text->tooltip,
+                    iter_text->advanced, iter_text->allow_empty);
       iter_text++;
       break;
 
@@ -93,7 +94,8 @@ Ekiga::FormBuilder::visit (Ekiga::FormVisitor &visitor) const
 			    iter_private_text->description,
 			    iter_private_text->value,
 			    iter_private_text->tooltip,
-			    iter_private_text->advanced);
+			    iter_private_text->advanced,
+			    iter_private_text->allow_empty);
       iter_private_text++;
       break;
 
@@ -294,9 +296,10 @@ Ekiga::FormBuilder::text (const std::string name,
 			  const std::string description,
 			  const std::string value,
 			  const std::string tooltip,
-			  bool advanced)
+			  bool advanced,
+                          bool allow_empty)
 {
-  texts.push_back (TextField (name, description, value, tooltip, advanced));
+  texts.push_back (TextField (name, description, value, tooltip, advanced, allow_empty));
   ordering.push_back (TEXT);
 }
 
@@ -305,9 +308,10 @@ Ekiga::FormBuilder::private_text (const std::string name,
 				  const std::string description,
 				  const std::string value,
 				  const std::string tooltip,
-				  bool advanced)
+                                  bool advanced,
+                                  bool allow_empty)
 {
-  private_texts.push_back (TextField (name, description, value, tooltip, advanced));
+  private_texts.push_back (TextField (name, description, value, tooltip, advanced, allow_empty));
   ordering.push_back (PRIVATE_TEXT);
 }
 

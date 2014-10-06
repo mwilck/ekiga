@@ -99,13 +99,15 @@ namespace Ekiga
 	       const std::string description,
 	       const std::string value,
 	       const std::string tooltip,
-	       bool advanced = false);
+	       bool advanced = false,
+               bool allow_empty = true);
 
     void private_text (const std::string text,
 		       const std::string description,
 		       const std::string value,
 		       const std::string tooltip,
-		       bool advanced = false);
+                       bool advanced = false,
+                       bool allow_empty = true);
 
     void multi_text (const std::string text,
 		     const std::string description,
@@ -165,9 +167,13 @@ namespace Ekiga
 		 const std::string _description,
 		 const std::string _value,
 		 const std::string _tooltip,
-		 bool _advanced): name(_name),
-				  description(_description),
-                  value(_value), tooltip (_tooltip), advanced(_advanced)
+		 bool _advanced,
+                 bool _allow_empty): name(_name),
+                                     description(_description),
+                                     value(_value),
+                                     tooltip (_tooltip),
+                                     advanced(_advanced),
+                                     allow_empty(_allow_empty)
       {}
 
       const std::string name;
@@ -175,6 +181,7 @@ namespace Ekiga
       const std::string value;
       const std::string tooltip;
       bool advanced;
+      bool allow_empty;
     };
 
     struct MultiTextField
