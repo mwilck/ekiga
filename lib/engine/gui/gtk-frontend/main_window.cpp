@@ -118,7 +118,7 @@ struct _EkigaMainWindowPrivate
 
   GtkAccelGroup *accel;
   GtkWidget *main_menu;
-  GtkWidget *main_notebook;
+  GtkWidget *main_stack;
   GtkBuilder *builder;
 
   /* Dialpad uri toolbar */
@@ -130,7 +130,7 @@ struct _EkigaMainWindowPrivate
   GtkWidget *actions_toolbar;
   GtkWidget *preview_button;
 
-  /* notebook pages
+  /* stack pages
    *  (we store the numbers so we know where we are)
    */
   gint roster_view_page_number;
@@ -212,18 +212,6 @@ static const std::string ekiga_main_window_get_call_url (EkigaMainWindow *mw);
 
 
 
-/* DESCRIPTION  :  This callback is called when the control panel
- *                 section changes.
- * BEHAVIOR     :  Disable the Contact menu item when the dialpad is
- *                 displayed.
- * PRE          :  /
- */
-static void panel_section_changed (GtkNotebook *notebook,
-                                   GtkWidget *page,
-                                   guint page_num,
-                                   gpointer user_data);
-
-
 /* DESCRIPTION  :  This callback is called when the user
  *                 presses a key.
  * BEHAVIOR     :  Sends a DTMF if we are in a call.
@@ -241,15 +229,6 @@ static gboolean key_press_event_cb (EkigaMainWindow *mw,
 static void dialpad_button_clicked_cb (EkigaDialpad  *dialpad,
 				       const gchar *button_text,
 				       EkigaMainWindow *main_window);
-
-
-/** Call a number action activated.
- *
- * @param data is a pointer to the EkigaMainWindow.
- */
-static void show_dialpad_activated (G_GNUC_UNUSED GSimpleAction *action,
-                                    G_GNUC_UNUSED GVariant *parameter,
-                                    gpointer data);
 
 
 /* DESCRIPTION  :  This callback is called when the user tries to close
@@ -565,27 +544,6 @@ static bool on_handle_errors (std::string error,
 
 /* GTK callbacks */
 static void
-panel_section_changed (G_GNUC_UNUSED GtkNotebook *notebook,
-                       G_GNUC_UNUSED GtkWidget *page,
-                       guint section,
-                       gpointer data)
-{
-  EkigaMainWindow *mw = EKIGA_MAIN_WINDOW (data);
-  GtkWidget* menu = NULL;
-
-  g_return_if_fail (EKIGA_IS_MAIN_WINDOW (data));
-
-  if (section != (unsigned) mw->priv->roster_view_page_number
-      && section != (unsigned) mw->priv->call_history_page_number) {
-
-    menu = gtk_menu_get_widget (mw->priv->main_menu, "contact");
-    gtk_widget_set_sensitive (menu, FALSE);
-    gtk_menu_item_set_submenu (GTK_MENU_ITEM (menu), NULL);
-  }
-}
-
-
-static void
 dialpad_button_clicked_cb (EkigaDialpad  * /* dialpad */,
 			   const gchar *button_text,
 			   EkigaMainWindow *mw)
@@ -615,18 +573,6 @@ key_press_event_cb (EkigaMainWindow *mw,
   }
 
   return false;
-}
-
-
-static void
-show_dialpad_activated (G_GNUC_UNUSED GSimpleAction *action,
-                        G_GNUC_UNUSED GVariant *parameter,
-                        gpointer data)
-{
-  g_return_if_fail (EKIGA_IS_MAIN_WINDOW (data));
-  EkigaMainWindow *self = EKIGA_MAIN_WINDOW (data);
-
-  self->priv->user_interface_settings->set_enum ("panel-section", DIALPAD);
 }
 
 
@@ -786,8 +732,8 @@ static void
 ekiga_main_window_init_actions_toolbar (EkigaMainWindow *mw)
 {
   GtkWidget *image = NULL;
-  GtkWidget *box = NULL;
   GtkWidget *button = NULL;
+  GtkWidget *switcher = NULL;
 
   GtkIconSize toolbar_size;
   gint toolbar_size_px = 0;
@@ -833,41 +779,10 @@ ekiga_main_window_init_actions_toolbar (EkigaMainWindow *mw)
   gtk_header_bar_pack_start (GTK_HEADER_BAR (mw->priv->actions_toolbar), mw->priv->preview_button);
   gtk_widget_set_margin_end (mw->priv->preview_button, 6);
 
-  box = gtk_box_new (GTK_ORIENTATION_HORIZONTAL, 0);
-  button = gtk_toggle_button_new ();
-  image = gtk_image_new_from_icon_name ("avatar-default-symbolic", GTK_ICON_SIZE_MENU);
-  g_object_set (G_OBJECT (image), "margin", margin_px, NULL);
-  gtk_button_set_image (GTK_BUTTON (button), image);
-  gtk_widget_set_tooltip_text (GTK_WIDGET (button),
-                               _("View the contacts list"));
-  gtk_actionable_set_detailed_action_name (GTK_ACTIONABLE (button), "win.panel-section::contacts");
-  gtk_container_add (GTK_CONTAINER (box), button);
-
-  button = gtk_toggle_button_new ();
-  image = gtk_image_new_from_icon_name ("input-dialpad-symbolic", GTK_ICON_SIZE_MENU);
-  g_object_set (G_OBJECT (image), "margin", margin_px, NULL);
-  gtk_button_set_image (GTK_BUTTON (button), image);
-  gtk_widget_set_tooltip_text (GTK_WIDGET (button),
-                               _("View the dialpad"));
-  gtk_actionable_set_detailed_action_name (GTK_ACTIONABLE (button), "win.panel-section::dialpad");
-  gtk_container_add (GTK_CONTAINER (box), button);
-
-  button = gtk_toggle_button_new ();
-  image = gtk_image_new_from_icon_name ("document-open-recent-symbolic", GTK_ICON_SIZE_MENU);
-  g_object_set (G_OBJECT (image), "margin", margin_px, NULL);
-  gtk_button_set_image (GTK_BUTTON (button), image);
-  gtk_widget_set_tooltip_text (GTK_WIDGET (button),
-                               _("View the call history"));
-  gtk_actionable_set_detailed_action_name (GTK_ACTIONABLE (button), "win.panel-section::call-history");
-  gtk_container_add (GTK_CONTAINER (box), button);
-
-  gtk_style_context_add_class (gtk_widget_get_style_context (box),
-                               GTK_STYLE_CLASS_RAISED);
-  gtk_style_context_add_class (gtk_widget_get_style_context (box),
-                               GTK_STYLE_CLASS_LINKED);
-
-  gtk_header_bar_pack_start (GTK_HEADER_BAR (mw->priv->actions_toolbar), box);
-  gtk_widget_set_margin_end (box, 6);
+  switcher = gtk_stack_switcher_new ();
+  gtk_stack_switcher_set_stack (GTK_STACK_SWITCHER (switcher), GTK_STACK (mw->priv->main_stack));
+  gtk_header_bar_pack_start (GTK_HEADER_BAR (mw->priv->actions_toolbar), switcher);
+  gtk_widget_set_margin_end (mw->priv->actions_toolbar, 6);
 
   button = gtk_menu_button_new ();
   g_object_set (G_OBJECT (button), "use-popover", true, NULL);
@@ -927,12 +842,13 @@ ekiga_main_window_init_status_toolbar (EkigaMainWindow *mw)
 static void
 ekiga_main_window_init_contact_list (EkigaMainWindow *mw)
 {
-  GtkWidget *label = NULL;
-
-  label = gtk_label_new (_("Contacts"));
   mw->priv->roster_view = roster_view_gtk_new (mw->priv->presence_core);
-  mw->priv->roster_view_page_number = gtk_notebook_append_page (GTK_NOTEBOOK (mw->priv->main_notebook), mw->priv->roster_view, label);
-  g_object_ref (mw->priv->roster_view); // keep it alive as long as we didn't unconnect the signal :
+  gtk_stack_add_named (GTK_STACK (mw->priv->main_stack), mw->priv->roster_view, "contacts");
+  gtk_container_child_set (GTK_CONTAINER (mw->priv->main_stack),
+                           mw->priv->roster_view,
+                           "icon-name", "avatar-default-symbolic", NULL);
+
+  g_object_ref (mw->priv->roster_view);
 }
 
 
@@ -941,7 +857,6 @@ ekiga_main_window_init_dialpad (EkigaMainWindow *mw)
 {
   GtkWidget *dialpad = NULL;
   GtkWidget *alignment = NULL;
-  GtkWidget *label = NULL;
   GtkWidget *vbox = NULL;
 
   vbox = gtk_box_new (GTK_ORIENTATION_VERTICAL, 0);
@@ -956,8 +871,10 @@ ekiga_main_window_init_dialpad (EkigaMainWindow *mw)
   ekiga_main_window_init_uri_toolbar (mw);
   gtk_box_pack_start (GTK_BOX (vbox), mw->priv->uri_toolbar, false, false, 0);
 
-  label = gtk_label_new (_("Dialpad"));
-  mw->priv->dialpad_page_number = gtk_notebook_append_page (GTK_NOTEBOOK (mw->priv->main_notebook), vbox, label);
+  gtk_stack_add_named (GTK_STACK (mw->priv->main_stack), vbox, "dialpad");
+  gtk_container_child_set (GTK_CONTAINER (mw->priv->main_stack),
+                           vbox,
+                           "icon-name", "input-dialpad-symbolic", NULL);
 
   g_signal_connect (mw, "key-press-event",
                     G_CALLBACK (key_press_event_cb), mw);
@@ -967,33 +884,35 @@ ekiga_main_window_init_dialpad (EkigaMainWindow *mw)
 static void
 ekiga_main_window_init_history (EkigaMainWindow *mw)
 {
-  GtkWidget *label = NULL;
-
   boost::shared_ptr<History::Book> history_book
     = mw->priv->history_source->get_book ();
 
   mw->priv->call_history_view = call_history_view_gtk_new (history_book,
                                                            mw->priv->call_core,
                                                            mw->priv->contact_core);
-
-  label = gtk_label_new (_("Call history"));
-  mw->priv->call_history_page_number =
-    gtk_notebook_append_page (GTK_NOTEBOOK (mw->priv->main_notebook), mw->priv->call_history_view, label);
+  gtk_stack_add_named (GTK_STACK (mw->priv->main_stack), mw->priv->call_history_view, "call-history");
+  gtk_container_child_set (GTK_CONTAINER (mw->priv->main_stack),
+                           mw->priv->call_history_view,
+                           "icon-name", "document-open-recent-symbolic", NULL);
 }
+
 
 static void
 ekiga_main_window_init_gui (EkigaMainWindow *mw)
 {
   GtkWidget *window_vbox;
   // FIXME ??? ekiga-settings.h
-  static const gchar *main_views [] = { "contacts", "dialpad", "call-history", NULL };
-
   gtk_window_set_title (GTK_WINDOW (mw), _("Ekiga Softphone"));
   gtk_window_set_icon_name (GTK_WINDOW (mw), GM_ICON_LOGO);
 
   window_vbox = gtk_box_new (GTK_ORIENTATION_VERTICAL, 0);
   gtk_container_add (GTK_CONTAINER (mw), window_vbox);
   gtk_widget_show_all (window_vbox);
+
+  /* The main stack */
+  mw->priv->main_stack = gtk_stack_new ();
+  gtk_stack_set_transition_type (GTK_STACK (mw->priv->main_stack),
+                                 GTK_STACK_TRANSITION_TYPE_OVER_UP);
 
   /* The main menu */
   ekiga_main_window_init_menu (mw);
@@ -1006,16 +925,11 @@ ekiga_main_window_init_gui (EkigaMainWindow *mw)
   gtk_box_pack_start (GTK_BOX (window_vbox), mw->priv->actions_toolbar,
                       false, false, 0);
 
-  /* The notebook pages */
-  mw->priv->main_notebook = gtk_notebook_new ();
-  gtk_notebook_popup_enable (GTK_NOTEBOOK (mw->priv->main_notebook));
-  gtk_notebook_set_show_tabs (GTK_NOTEBOOK (mw->priv->main_notebook), false);
-  gtk_notebook_set_scrollable (GTK_NOTEBOOK (mw->priv->main_notebook), false);
-
+  /* The stack pages */
   ekiga_main_window_init_contact_list (mw);
   ekiga_main_window_init_dialpad (mw);
   ekiga_main_window_init_history (mw);
-  gtk_box_pack_start (GTK_BOX (window_vbox), mw->priv->main_notebook,
+  gtk_box_pack_start (GTK_BOX (window_vbox), mw->priv->main_stack,
                       true, true, 0);
 
   /* The status toolbar */
@@ -1038,18 +952,9 @@ ekiga_main_window_init_gui (EkigaMainWindow *mw)
   gtk_widget_show_all (window_vbox);
 
   /* Update the widget when the user changes the configuration */
-  g_settings_bind_with_mapping (mw->priv->user_interface_settings->get_g_settings (),
-                                "panel-section", mw->priv->main_notebook,
-                                "page",
-                                G_SETTINGS_BIND_DEFAULT,
-                                string_gsettings_get_from_int,
-                                string_gsettings_set_from_int,
-                                (gpointer) main_views,
-                                NULL);
-
-  /* Update the menu when the page is changed */
-  g_signal_connect (mw->priv->main_notebook, "switch-page",
-		    G_CALLBACK (panel_section_changed), mw);
+  g_settings_bind (mw->priv->user_interface_settings->get_g_settings (),
+                   "panel-section", mw->priv->main_stack,
+                   "visible-child-name", G_SETTINGS_BIND_DEFAULT);
 }
 
 
