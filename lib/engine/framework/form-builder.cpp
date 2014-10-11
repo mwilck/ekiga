@@ -46,7 +46,6 @@ Ekiga::FormBuilder::visit (Ekiga::FormVisitor &visitor) const
   std::list<struct HiddenField>::const_iterator iter_hidden = hiddens.begin ();
   std::list<struct BooleanField>::const_iterator iter_bool = booleans.begin ();
   std::list<struct TextField>::const_iterator iter_text = texts.begin ();
-  std::list<struct TextField>::const_iterator iter_private_text = private_texts.begin ();
   std::list<struct MultiTextField>::const_iterator iter_multi_text = multi_texts.begin ();
   std::list<struct SingleChoiceField>::const_iterator iter_single_choice = single_choices.begin ();
   std::list<struct MultipleChoiceField>::const_iterator iter_multiple_choice = multiple_choices.begin ();
@@ -84,19 +83,8 @@ Ekiga::FormBuilder::visit (Ekiga::FormVisitor &visitor) const
 
       visitor.text (iter_text->name, iter_text->description,
                     iter_text->value, iter_text->tooltip,
-                    iter_text->advanced, iter_text->allow_empty);
+                    iter_text->type, iter_text->advanced, iter_text->allow_empty);
       iter_text++;
-      break;
-
-    case PRIVATE_TEXT:
-
-      visitor.private_text (iter_private_text->name,
-			    iter_private_text->description,
-			    iter_private_text->value,
-			    iter_private_text->tooltip,
-			    iter_private_text->advanced,
-			    iter_private_text->allow_empty);
-      iter_private_text++;
       break;
 
     case MULTI_TEXT:
@@ -167,18 +155,6 @@ Ekiga::FormBuilder::boolean (const std::string name) const
       return iter->value;
 
   return false; // shouldn't happen
-}
-
-const std::string
-Ekiga::FormBuilder::private_text (const std::string name) const
-{
-  for (std::list<struct TextField>::const_iterator iter = private_texts.begin ();
-       iter != private_texts.end ();
-       iter++)
-    if (iter->name == name)
-      return iter->value;
-
-  return ""; // shouldn't happen
 }
 
 const std::string
@@ -296,23 +272,12 @@ Ekiga::FormBuilder::text (const std::string name,
 			  const std::string description,
 			  const std::string value,
 			  const std::string tooltip,
+                          const FormVisitor::FormTextType type,
 			  bool advanced,
                           bool allow_empty)
 {
-  texts.push_back (TextField (name, description, value, tooltip, advanced, allow_empty));
+  texts.push_back (TextField (name, description, value, tooltip, type, advanced, allow_empty));
   ordering.push_back (TEXT);
-}
-
-void
-Ekiga::FormBuilder::private_text (const std::string name,
-				  const std::string description,
-				  const std::string value,
-				  const std::string tooltip,
-                                  bool advanced,
-                                  bool allow_empty)
-{
-  private_texts.push_back (TextField (name, description, value, tooltip, advanced, allow_empty));
-  ordering.push_back (PRIVATE_TEXT);
 }
 
 void

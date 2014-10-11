@@ -40,6 +40,7 @@
 
 #include "form-builder.h"
 #include "form-request.h"
+#include "form-visitor.h"
 
 /* abstract helper class common to all field types */
 class Submitter
@@ -48,8 +49,11 @@ public:
 
   virtual ~Submitter () {}
 
+  virtual bool can_submit () { return true; }
+
   virtual void submit (Ekiga::FormBuilder &builder) = 0;
 };
+
 
 class FormDialog: public Ekiga::FormVisitor
 {
@@ -63,7 +67,6 @@ public:
   void run ();
 
   /* FormVisitor api */
-
   void title (const std::string title);
 
   void action (const std::string action);
@@ -87,15 +90,9 @@ public:
 	     const std::string description,
 	     const std::string value,
 	     const std::string placeholder_text,
+             const FormVisitor::FormTextType type,
 	     bool advanced,
              bool allow_empty);
-
-  void private_text (const std::string name,
-		     const std::string description,
-		     const std::string value,
-                     const std::string placeholder_text,
-                     bool advanced,
-                     bool allow_empty);
 
   void multi_text (const std::string name,
 		   const std::string description,
@@ -124,7 +121,11 @@ public:
   /* those are public only to be called from C code */
   void cancel ();
 
+  bool can_submit ();
+
   bool submit ();
+
+  GtkWidget *get_dialog ();
 
 private:
 

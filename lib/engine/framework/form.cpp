@@ -68,12 +68,6 @@ Ekiga::EmptyForm::text (const std::string /*name*/) const
 }
 
 const std::string
-Ekiga::EmptyForm::private_text (const std::string /*name*/) const
-{
-  return "";
-}
-
-const std::string
 Ekiga::EmptyForm::multi_text (const std::string /*name*/) const
 {
   return "";

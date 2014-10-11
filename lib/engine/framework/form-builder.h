@@ -64,8 +64,6 @@ namespace Ekiga
 
     const std::string text (const std::string name) const;
 
-    const std::string private_text (const std::string name) const;
-
     const std::string multi_text (const std::string name) const;
 
     const std::string single_choice (const std::string name) const;
@@ -75,7 +73,6 @@ namespace Ekiga
     const std::list<std::string> editable_list (const std::string name) const;
 
     /* builder part */
-
     void title (const std::string title);
 
     void action (const std::string action);
@@ -99,15 +96,9 @@ namespace Ekiga
 	       const std::string description,
 	       const std::string value,
 	       const std::string tooltip,
+               const FormTextType type = STANDARD,
 	       bool advanced = false,
                bool allow_empty = true);
-
-    void private_text (const std::string text,
-		       const std::string description,
-		       const std::string value,
-		       const std::string tooltip,
-                       bool advanced = false,
-                       bool allow_empty = true);
 
     void multi_text (const std::string text,
 		     const std::string description,
@@ -167,11 +158,13 @@ namespace Ekiga
 		 const std::string _description,
 		 const std::string _value,
 		 const std::string _tooltip,
+                 const FormTextType _type,
 		 bool _advanced,
                  bool _allow_empty): name(_name),
                                      description(_description),
                                      value(_value),
                                      tooltip (_tooltip),
+                                     type(_type),
                                      advanced(_advanced),
                                      allow_empty(_allow_empty)
       {}
@@ -180,6 +173,7 @@ namespace Ekiga
       const std::string description;
       const std::string value;
       const std::string tooltip;
+      const FormTextType type;
       bool advanced;
       bool allow_empty;
     };
@@ -266,7 +260,6 @@ namespace Ekiga
       HIDDEN,
       BOOLEAN,
       TEXT,
-      PRIVATE_TEXT,
       MULTI_TEXT,
       SINGLE_CHOICE,
       MULTIPLE_CHOICE,
@@ -282,7 +275,6 @@ namespace Ekiga
     std::list<struct HiddenField> hiddens;
     std::list<struct BooleanField> booleans;
     std::list<struct TextField> texts;
-    std::list<struct TextField> private_texts;
     std::list<struct MultiTextField> multi_texts;
     std::list<struct SingleChoiceField> single_choices;
     std::list<struct MultipleChoiceField> multiple_choices;

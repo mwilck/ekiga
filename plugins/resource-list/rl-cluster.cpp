@@ -165,7 +165,7 @@ RL::Cluster::new_heap (const std::string name,
   request->text ("uri", _("Address:"), uri, std::string ());
   request->boolean ("writable", _("Writable:"), writable);
   request->text ("username", _("Username:"), username, std::string ());
-  request->private_text ("password", _("Password:"), password, std::string ());
+  request->text ("password", _("Password:"), password, std::string (), Ekiga::FormVisitor::PASSWORD);
   request->text ("user", _("User:"), user, std::string ());
 
   questions (request);
@@ -182,7 +182,7 @@ RL::Cluster::on_new_heap_form_submitted (bool submitted,
   const std::string name = result.text ("name");
   const std::string uri = result.text ("uri");
   const std::string username = result.text ("username");
-  const std::string password = result.private_text ("password");
+  const std::string password = result.text ("password");
   const std::string user = result.text ("user");
   bool writable = result.boolean ("writable");
 

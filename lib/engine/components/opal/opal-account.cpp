@@ -652,8 +652,11 @@ Opal::Account::edit ()
      */
     request->text ("authentication_user", _("Login"), get_authentication_username (),
                    _("jon.doe"));
-  request->private_text ("password", _("Password"), get_password (),
-                         _("1234"));
+  request->text ("password",
+                 _("Password"),
+                 get_password (),
+                 _("1234"),
+                 Ekiga::FormVisitor::PASSWORD);
   request->text ("timeout", _("Timeout"), str.str (), _("3600"));
   request->boolean ("enabled", _("Enable Account"), is_enabled ());
 
@@ -677,7 +680,7 @@ Opal::Account::on_edit_form_submitted (bool submitted,
     new_authentication_user = result.text ("authentication_user");
   if (new_authentication_user.empty ())
     new_authentication_user = new_user;
-  std::string new_password = result.private_text ("password");
+  std::string new_password = result.text ("password");
   bool new_enabled = result.boolean ("enabled");
   bool should_enable = false;
   bool should_disable = false;

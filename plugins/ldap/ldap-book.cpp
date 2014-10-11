@@ -617,7 +617,7 @@ extern "C" {
 
 	  /* private text or not? */
 	  if (noecho) {
-	    request->private_text (std::string (resbuf), prompt, "", std::string ());
+	    request->text (std::string (resbuf), prompt, "", std::string (), Ekiga::FormVisitor::PASSWORD);
 	  } else {
 	    std::string dflt;
 	    if (in->defresult)
@@ -656,7 +656,7 @@ extern "C" {
 	      break;
 	    }
 	  if (noecho)
-	    prompt = result.private_text (std::string (resbuf));
+	    prompt = result.text (std::string (resbuf));
 	  else
 	    prompt = result.text (std::string (resbuf));
 
@@ -986,7 +986,7 @@ OPENLDAP::BookForm (boost::shared_ptr<Ekiga::FormRequestSimple> request,
    * is anonymous / unauthenticated.)
    */
   request->text ("authcID", _("Bind _ID:"), info.authcID, _("User ID; leave blank for anonymous / nonauthenticated"));
-  request->private_text ("password", _("_Password:"), info.password, _("The password for the user ID above, if any"));
+  request->text ("password", _("_Password:"), info.password, _("The password for the user ID above, if any"), Ekiga::FormVisitor::PASSWORD);
   request->boolean ("startTLS", _("Use _TLS"), info.starttls);
   request->boolean ("sasl", _("Use SAS_L"), info.sasl);
   {
@@ -1063,7 +1063,7 @@ OPENLDAP::BookFormInfo (Ekiga::Form &result,
     result.single_choice ("scope") + "?" +
     result.text ("filter");
   bookinfo.authcID = result.text ("authcID");
-  bookinfo.password = result.private_text ("password");
+  bookinfo.password = result.text ("password");
   bookinfo.starttls = result.boolean ("startTLS");
   bookinfo.sasl = result.boolean ("sasl");
   bookinfo.saslMech = result.single_choice ("saslMech");

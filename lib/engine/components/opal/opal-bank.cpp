@@ -180,7 +180,7 @@ Opal::Bank::new_account (Account::Type acc_type,
     request->hidden ("host", "ekiga.net");
     request->text ("user", _("_User:"), username, _("The user name, e.g. jim"));
     request->hidden ("authentication_user", username);
-    request->private_text ("password", _("_Password:"), password, _("Password associated to the user"));
+    request->text ("password", _("_Password:"), password, _("Password associated to the user"), Ekiga::FormVisitor::PASSWORD);
     request->hidden ("timeout", "3600");
     break;
 
@@ -191,7 +191,7 @@ Opal::Bank::new_account (Account::Type acc_type,
     request->hidden ("host", "sip.diamondcard.us");
     request->text ("user", _("_Account ID:"), username, _("The user name, e.g. jim"));
     request->hidden ("authentication_user", username);
-    request->private_text ("password", _("_PIN code:"), password, _("Password associated to the user"));
+    request->text ("password", _("_PIN code:"), password, _("Password associated to the user"), Ekiga::FormVisitor::PASSWORD);
     request->hidden ("timeout", "3600");
     break;
 
@@ -200,7 +200,7 @@ Opal::Bank::new_account (Account::Type acc_type,
     request->text ("host", _("_Gatekeeper:"), std::string (), _("The gatekeeper, e.g. ekiga.net"));
     request->text ("user", _("_User:"), username, _("The user name, e.g. jim"));
     request->hidden ("authentication_user", username);
-    request->private_text ("password", _("_Password:"), password, _("Password associated to the user"));
+    request->text ("password", _("_Password:"), password, _("Password associated to the user"), Ekiga::FormVisitor::PASSWORD);
     request->text ("timeout", _("_Timeout:"), "3600", _("Time in seconds after which the account registration is automatically retried"));
     break;
 
@@ -210,7 +210,7 @@ Opal::Bank::new_account (Account::Type acc_type,
     request->text ("host", _("_Registrar:"), std::string (), _("The registrar, e.g. ekiga.net"));
     request->text ("user", _("_User:"), username, _("The user name, e.g. jim"));
     request->text ("authentication_user", _("_Authentication user:"), std::string (), _("The user name used during authentication, if different than the user name; leave empty if you do not have one"));
-    request->private_text ("password", _("_Password:"), password, _("Password associated to the user"));
+    request->text ("password", _("_Password:"), password, _("Password associated to the user"), Ekiga::FormVisitor::PASSWORD);
     request->text ("timeout", _("_Timeout:"), "3600", _("Time in seconds after which the account registration is automatically retried"));
     break;
   }
@@ -237,7 +237,7 @@ Opal::Bank::on_new_account_form_submitted (bool submitted,
 			  || acc_type == Opal::Account::H323) ? result.text ("host") : result.hidden ("host");
   std::string new_user = result.text ("user");
   std::string new_authentication_user = (acc_type == Opal::Account::SIP) ? result.text ("authentication_user") : new_user;
-  std::string new_password = result.private_text ("password");
+  std::string new_password = result.text ("password");
   bool new_enabled = result.boolean ("enabled");
   unsigned new_timeout = atoi ((acc_type == Opal::Account::SIP
 				|| acc_type == Opal::Account::H323) ?

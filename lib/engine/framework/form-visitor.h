@@ -41,14 +41,14 @@
 #include <list>
 #include <string>
 
+#include "form.h"
+
 namespace Ekiga
 {
-
 /**
  * @addtogroup forms
  * @{
  */
-
   class FormVisitor
   {
   public:
@@ -74,19 +74,14 @@ namespace Ekiga
 			  bool value,
 			  bool advanced) = 0;
 
+    typedef enum { STANDARD, PHONE_NUMBER, URI, PASSWORD } FormTextType;
     virtual void text (const std::string name,
 		       const std::string description,
 		       const std::string value,
 		       const std::string tooltip,
+                       const FormTextType type,
 		       bool advanced,
                        bool allow_empty) = 0;
-
-    virtual void private_text (const std::string name,
-			       const std::string description,
-			       const std::string tooltip,
-			       const std::string value,
-                               bool advanced,
-                               bool allow_empty) = 0;
 
     virtual void multi_text (const std::string name,
 			     const std::string description,

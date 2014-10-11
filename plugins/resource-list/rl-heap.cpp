@@ -470,7 +470,7 @@ RL::Heap::edit ()
   request->text ("user", _("Identifier:"), user_str, std::string ());
   request->boolean ("writable", _("Writable:"), writable);
   request->text ("username", _("Server username:"), username_str, std::string ());
-  request->private_text ("password", _("Server password:"), password_str, std::string ());
+  request->text ("password", _("Server password:"), password_str, std::string (), Ekiga::FormVisitor::PASSWORD);
 
   questions (request);
 }
@@ -487,7 +487,7 @@ RL::Heap::on_edit_form_submitted (bool submitted,
   std::string root_str = result.text ("root");
   std::string user_str = result.text ("user");
   std::string username_str = result.text ("username");
-  std::string password_str = result.private_text ("password");
+  std::string password_str = result.text ("password");
   bool writable = result.boolean ("writable");
 
   if (writable)

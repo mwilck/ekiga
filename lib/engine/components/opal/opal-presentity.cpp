@@ -265,10 +265,14 @@ Opal::Presentity::edit_presentity ()
   request->action (_("Done"));
   request->text ("name", _("Name"),
                  get_name (),
-                 _("John Doe"), false, false);
+                 _("John Doe"),
+                 Ekiga::FormVisitor::STANDARD,
+                 false, false);
   request->text ("uri", _("URI"),
                  get_uri (),
-                 _("sip:username@ekiga.net"), false, false);
+                 _("sip:username@ekiga.net"),
+                 Ekiga::FormVisitor::URI,
+                 false, false);
 
   request->editable_list ("groups", _("Groups"),
 			 get_groups (), existing_groups ());

@@ -104,27 +104,14 @@ void
 Ekiga::FormDumper::text (const std::string name,
 			 const std::string description,
 			 const std::string value,
+                         const FormVisitor::FormTextType type,
 			 bool advanced,
                          bool allow_empty)
 {
   out << "Text field " << name
       << " (default value: " << value << "): " << std::endl
       << description
-      << (advanced?"[advanced]":"")
-      << (allow_empty?"[allow_empty]":"")
-      << std::endl;
-}
-
-void
-Ekiga::FormDumper::private_text (const std::string name,
-				 const std::string description,
-				 const std::string value,
-				 bool advanced,
-                                 bool allow_empty)
-{
-  out << "Private text field " << name
-      << " (default value: " << value << "): " << std::endl
-      << description
+      << " (Type: " << type << "): " << std::endl
       << (advanced?"[advanced]":"")
       << (allow_empty?"[allow_empty]":"")
       << std::endl;
