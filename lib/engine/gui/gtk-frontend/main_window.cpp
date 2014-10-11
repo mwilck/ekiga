@@ -774,7 +774,7 @@ ekiga_main_window_init_actions_toolbar (EkigaMainWindow *mw)
 
   button = gtk_menu_button_new ();
   g_object_set (G_OBJECT (button), "use-popover", true, NULL);
-  image = gtk_image_new_from_icon_name ("emblem-system-symbolic", GTK_ICON_SIZE_MENU);
+  image = gtk_image_new_from_icon_name ("open-menu-symbolic", GTK_ICON_SIZE_MENU);
   gtk_button_set_image (GTK_BUTTON (button), image);
   gtk_menu_button_set_menu_model (GTK_MENU_BUTTON (button),
                                   G_MENU_MODEL (gtk_builder_get_object (mw->priv->builder, "menubar")));
