@@ -737,13 +737,6 @@ ekiga_main_window_init_actions_toolbar (EkigaMainWindow *mw)
 
   g_return_if_fail (EKIGA_IS_MAIN_WINDOW (mw));
 
-
-  gtk_style_context_add_class (gtk_widget_get_style_context (GTK_WIDGET (mw)),
-                               GTK_STYLE_CLASS_MENUBAR);
-
-  gtk_style_context_set_junction_sides (gtk_widget_get_style_context (GTK_WIDGET (mw)),
-                                        GTK_JUNCTION_BOTTOM);
-
   mw->priv->actions_toolbar = gtk_header_bar_new ();
   gtk_window_set_titlebar (GTK_WINDOW (mw), mw->priv->actions_toolbar);
 
@@ -755,8 +748,6 @@ ekiga_main_window_init_actions_toolbar (EkigaMainWindow *mw)
                                _("Call the selected contact"));
   gtk_actionable_set_detailed_action_name (GTK_ACTIONABLE (button), "win.call");
   gtk_header_bar_pack_start (GTK_HEADER_BAR (mw->priv->actions_toolbar), button);
-  gtk_widget_set_margin_start (button, 3);
-  gtk_widget_set_margin_end (button, 6);
 
   mw->priv->preview_button = gtk_toggle_button_new ();
   image = gtk_image_new_from_icon_name ("camera-web-symbolic", GTK_ICON_SIZE_MENU);
@@ -766,7 +757,6 @@ ekiga_main_window_init_actions_toolbar (EkigaMainWindow *mw)
   gtk_actionable_set_detailed_action_name (GTK_ACTIONABLE (mw->priv->preview_button),
                                            "win.enable-preview");
   gtk_header_bar_pack_start (GTK_HEADER_BAR (mw->priv->actions_toolbar), mw->priv->preview_button);
-  gtk_widget_set_margin_end (mw->priv->preview_button, 6);
 
   switcher = gtk_stack_switcher_new ();
   gtk_stack_switcher_set_stack (GTK_STACK_SWITCHER (switcher), GTK_STACK (mw->priv->main_stack));
@@ -845,7 +835,6 @@ static void
 ekiga_main_window_init_dialpad (EkigaMainWindow *mw)
 {
   GtkWidget *dialpad = NULL;
-  GtkWidget *alignment = NULL;
   GtkWidget *vbox = NULL;
 
   vbox = gtk_box_new (GTK_ORIENTATION_VERTICAL, 0);
@@ -853,9 +842,7 @@ ekiga_main_window_init_dialpad (EkigaMainWindow *mw)
   g_signal_connect (dialpad, "button-clicked",
                     G_CALLBACK (dialpad_button_clicked_cb), mw);
 
-  alignment = gtk_alignment_new (0.5, 0.5, 0.2, 0.2);
-  gtk_container_add (GTK_CONTAINER (alignment), dialpad);
-  gtk_box_pack_start (GTK_BOX (vbox), alignment, true, true, 0);
+  gtk_box_pack_start (GTK_BOX (vbox), dialpad, false, false, 0);
 
   ekiga_main_window_init_uri_toolbar (mw);
   gtk_box_pack_start (GTK_BOX (vbox), mw->priv->uri_toolbar, false, false, 0);
