@@ -737,6 +737,7 @@ ekiga_main_window_init_actions_toolbar (EkigaMainWindow *mw)
 
   g_return_if_fail (EKIGA_IS_MAIN_WINDOW (mw));
 
+
   gtk_style_context_add_class (gtk_widget_get_style_context (GTK_WIDGET (mw)),
                                GTK_STYLE_CLASS_MENUBAR);
 
@@ -744,7 +745,6 @@ ekiga_main_window_init_actions_toolbar (EkigaMainWindow *mw)
                                         GTK_JUNCTION_BOTTOM);
 
   mw->priv->actions_toolbar = gtk_header_bar_new ();
-  gtk_header_bar_set_show_close_button (GTK_HEADER_BAR (mw->priv->actions_toolbar), TRUE);
   gtk_window_set_titlebar (GTK_WINDOW (mw), mw->priv->actions_toolbar);
 
   /* Start packing buttons */
@@ -771,7 +771,6 @@ ekiga_main_window_init_actions_toolbar (EkigaMainWindow *mw)
   switcher = gtk_stack_switcher_new ();
   gtk_stack_switcher_set_stack (GTK_STACK_SWITCHER (switcher), GTK_STACK (mw->priv->main_stack));
   gtk_header_bar_pack_start (GTK_HEADER_BAR (mw->priv->actions_toolbar), switcher);
-  gtk_widget_set_margin_end (mw->priv->actions_toolbar, 6);
 
   button = gtk_menu_button_new ();
   g_object_set (G_OBJECT (button), "use-popover", true, NULL);
@@ -782,8 +781,9 @@ ekiga_main_window_init_actions_toolbar (EkigaMainWindow *mw)
   g_signal_connect (GTK_TOGGLE_BUTTON (button), "toggled",
                     G_CALLBACK (menu_button_toggled_cb), mw);
   gtk_header_bar_pack_end (GTK_HEADER_BAR (mw->priv->actions_toolbar), button);
-  gtk_widget_set_margin_end (button, 3);
   gtk_widget_show_all (mw->priv->actions_toolbar);
+
+  gtk_header_bar_set_show_close_button (GTK_HEADER_BAR (mw->priv->actions_toolbar), TRUE);
 }
 
 
