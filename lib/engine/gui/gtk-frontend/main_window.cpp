@@ -735,11 +735,6 @@ ekiga_main_window_init_actions_toolbar (EkigaMainWindow *mw)
   GtkWidget *button = NULL;
   GtkWidget *switcher = NULL;
 
-  GtkIconSize toolbar_size;
-  gint toolbar_size_px = 0;
-  gint menu_size_px = 0;
-  gint margin_px = 0;
-
   g_return_if_fail (EKIGA_IS_MAIN_WINDOW (mw));
 
   gtk_style_context_add_class (gtk_widget_get_style_context (GTK_WIDGET (mw)),
@@ -749,17 +744,12 @@ ekiga_main_window_init_actions_toolbar (EkigaMainWindow *mw)
                                         GTK_JUNCTION_BOTTOM);
 
   mw->priv->actions_toolbar = gtk_header_bar_new ();
-
-  /* Compute the image button margin */
-  g_object_get (gtk_settings_get_default (), "gtk-toolbar-icon-size", &toolbar_size, NULL);
-  gtk_icon_size_lookup (GTK_ICON_SIZE_MENU, &menu_size_px, NULL);
-  gtk_icon_size_lookup (toolbar_size, &toolbar_size_px, NULL);
-  margin_px = (gint) floor ((toolbar_size_px - menu_size_px) / 2.0);
+  gtk_header_bar_set_show_close_button (GTK_HEADER_BAR (mw->priv->actions_toolbar), TRUE);
+  gtk_window_set_titlebar (GTK_WINDOW (mw), mw->priv->actions_toolbar);
 
   /* Start packing buttons */
   button = gtk_button_new ();
   image = gtk_image_new_from_icon_name ("call-start-symbolic", GTK_ICON_SIZE_MENU);
-  g_object_set (G_OBJECT (image), "margin", margin_px, NULL);
   gtk_button_set_image (GTK_BUTTON (button), image);
   gtk_widget_set_tooltip_text (GTK_WIDGET (button),
                                _("Call the selected contact"));
@@ -770,7 +760,6 @@ ekiga_main_window_init_actions_toolbar (EkigaMainWindow *mw)
 
   mw->priv->preview_button = gtk_toggle_button_new ();
   image = gtk_image_new_from_icon_name ("camera-web-symbolic", GTK_ICON_SIZE_MENU);
-  g_object_set (G_OBJECT (image), "margin", margin_px, NULL);
   gtk_button_set_image (GTK_BUTTON (mw->priv->preview_button), image);
   gtk_widget_set_tooltip_text (GTK_WIDGET (mw->priv->preview_button),
                                _("Display images from your camera device"));
@@ -787,7 +776,6 @@ ekiga_main_window_init_actions_toolbar (EkigaMainWindow *mw)
   button = gtk_menu_button_new ();
   g_object_set (G_OBJECT (button), "use-popover", true, NULL);
   image = gtk_image_new_from_icon_name ("emblem-system-symbolic", GTK_ICON_SIZE_MENU);
-  g_object_set (G_OBJECT (image), "margin", margin_px, NULL);
   gtk_button_set_image (GTK_BUTTON (button), image);
   gtk_menu_button_set_menu_model (GTK_MENU_BUTTON (button),
                                   G_MENU_MODEL (gtk_builder_get_object (mw->priv->builder, "menubar")));
@@ -795,6 +783,7 @@ ekiga_main_window_init_actions_toolbar (EkigaMainWindow *mw)
                     G_CALLBACK (menu_button_toggled_cb), mw);
   gtk_header_bar_pack_end (GTK_HEADER_BAR (mw->priv->actions_toolbar), button);
   gtk_widget_set_margin_end (button, 3);
+  gtk_widget_show_all (mw->priv->actions_toolbar);
 }
 
 
@@ -922,8 +911,6 @@ ekiga_main_window_init_gui (EkigaMainWindow *mw)
 
   /* The actions toolbar */
   ekiga_main_window_init_actions_toolbar (mw);
-  gtk_box_pack_start (GTK_BOX (window_vbox), mw->priv->actions_toolbar,
-                      false, false, 0);
 
   /* The stack pages */
   ekiga_main_window_init_contact_list (mw);
