@@ -184,12 +184,6 @@ static const char* win_menu =
   "        <attribute name='action'>win.local-cluster-new</attribute>"
   "      </item>"
   "    </section>"
-  "    <section>"
-  "      <item>"
-  "        <attribute name='label' translatable='yes'>_Close</attribute>"
-  "        <attribute name='action'>win.close</attribute>"
-  "      </item>"
-  "    </section>"
   "  </menu>"
   "</interface>";
 
