@@ -140,18 +140,9 @@ static void status_icon_info_delete (gpointer info);
  * Helpers
  */
 
-/* DESCRIPTION : Set of functions called when the user clicks in a view
- * BEHAVIOUR   : Folds/unfolds, shows a menu or triggers default action
+/* DESCRIPTION : Called when the user clicks in a view.
+ * BEHAVIOUR   : Folds/unfolds.
  */
-static void on_clicked_show_heap_menu (Ekiga::Heap* heap,
-				       GdkEventButton* event);
-static void on_clicked_show_heap_group_menu (Ekiga::Heap* heap,
-					     const std::string name,
-					     GdkEventButton* event);
-static void on_clicked_show_presentity_menu (Ekiga::Heap* heap,
-					     Ekiga::Presentity* presentity,
-					     GdkEventButton* event);
-
 static void on_clicked_fold (RosterViewGtk* self,
 			     GtkTreePath* path,
 			     const gchar* name);
@@ -173,12 +164,12 @@ static void show_offline_contacts_changed_cb (GSettings *settings,
 					      gchar *key,
 					      gpointer data);
 
-/* DESCRIPTION  : Called when the user selects a presentity
- * BEHAVIOR     : Emit the presentity-selected signal
+/* DESCRIPTION  : Called when the user selects a presentity.
+ * BEHAVIOR     : Rebuilds menus and emit the actions_changed signal.
  * PRE          : The gpointer must point to the RosterViewGtk GObject.
  */
-static void on_actions_changed (GtkTreeSelection* actions,
-                                gpointer data);
+static void on_selection_changed (GtkTreeSelection* actions,
+                                  gpointer data);
 
 /* DESCRIPTION  : Called when the user clicks or presses Enter
  *                on a heap, group or presentity.
@@ -497,50 +488,6 @@ static void status_icon_info_delete (gpointer data)
 
 /* Implementation of the helpers */
 static void
-on_clicked_show_heap_menu (Ekiga::Heap* heap,
-			   GdkEventButton* event)
-{
-  MenuBuilderGtk builder;
-  heap->populate_menu (builder);
-  if (!builder.empty ()) {
-    gtk_widget_show_all (builder.menu);
-    gtk_menu_popup (GTK_MENU (builder.menu), NULL, NULL,
-                    NULL, NULL, event->button, event->time);
-    g_signal_connect (builder.menu, "hide",
-                      G_CALLBACK (g_object_unref),
-                      (gpointer) builder.menu);
-  }
-  g_object_ref_sink (G_OBJECT (builder.menu));
-}
-
-static void
-on_clicked_show_heap_group_menu (Ekiga::Heap* heap,
-				 const std::string name,
-				 GdkEventButton* event)
-{
-  MenuBuilderGtk builder;
-  heap->populate_menu_for_group (name, builder);
-  if (!builder.empty ()) {
-
-    gtk_widget_show_all (builder.menu);
-    gtk_menu_popup (GTK_MENU (builder.menu), NULL, NULL,
-                    NULL, NULL, event->button, event->time);
-    g_signal_connect (builder.menu, "hide",
-                      G_CALLBACK (g_object_unref),
-                      (gpointer) builder.menu);
-  }
-  g_object_ref_sink (G_OBJECT (builder.menu));
-}
-
-static void
-on_clicked_show_presentity_menu (Ekiga::Heap* heap,
-				 Ekiga::Presentity* presentity,
-				 GdkEventButton* event)
-{
-
-}
-
-static void
 on_clicked_fold (RosterViewGtk* self,
 		 GtkTreePath* path,
 		 const gchar* name)
@@ -743,7 +690,6 @@ on_view_event_after (GtkWidget *tree_view,
   GtkTreePath *path = NULL;
   GtkTreeIter iter;
 
-
   // take into account only clicks and Enter keys
   if (event->type != GDK_BUTTON_PRESS && event->type != GDK_2BUTTON_PRESS && event->type != GDK_KEY_PRESS)
     return FALSE;
@@ -783,26 +729,21 @@ on_view_event_after (GtkWidget *tree_view,
     switch (column_type) {
 
     case TYPE_HEAP:
-
       if (event->type == GDK_BUTTON_PRESS && event->button == 1 && name)
         on_clicked_fold (self, path, name);
-      if (event->type == GDK_BUTTON_PRESS && event->button == 3)
+      else if (event->type == GDK_BUTTON_PRESS && event->button == 3)
         gtk_menu_popup (GTK_MENU (self->priv->heap_menu->get_menu ()),
                         NULL, NULL, NULL, NULL, event->button, event->time);
       break;
     case TYPE_GROUP:
-
       if (event->type == GDK_BUTTON_PRESS && event->button == 1 && group_name)
         on_clicked_fold (self, path, group_name);
-      if (event->type == GDK_BUTTON_PRESS && event->button == 3)
-        on_clicked_show_heap_group_menu (heap, group_name, event);
       break;
     case TYPE_PRESENTITY:
-
       if (event->type == GDK_BUTTON_PRESS && event->button == 3)
         gtk_menu_popup (GTK_MENU (self->priv->presentity_menu->get_menu ()),
                         NULL, NULL, NULL, NULL, event->button, event->time);
-      if (event->type == GDK_2BUTTON_PRESS || event->type == GDK_KEY_PRESS)
+      else if (event->type == GDK_2BUTTON_PRESS || event->type == GDK_KEY_PRESS)
         on_clicked_trigger_presentity (presentity);
       break;
     default:
@@ -973,12 +914,6 @@ on_heap_added (RosterViewGtk* self,
 	       Ekiga::ClusterPtr cluster,
 	       Ekiga::HeapPtr heap)
 {
-  /* register heap actions */
-  std::cout << "FIXME" << std::endl << std::flush;
-
-  //self->priv->menu = Ekiga::ActorMenuPtr (new Ekiga::ActorMenu (*heap));
-  // SUCKS
-
   on_heap_updated (self, cluster, heap);
   heap->visit_presentities (boost::bind (&visit_presentities, self, cluster, heap, _1));
 }
@@ -991,28 +926,17 @@ on_heap_updated (RosterViewGtk* self,
   GtkTreeIter iter;
   GtkTreeIter filtered_iter;
   GtkTreeSelection* selection = NULL;
-  gboolean should_emit = FALSE;
 
-  // FIXME???
-  //
   roster_view_gtk_find_iter_for_heap (self, heap, &iter);
 
   selection = gtk_tree_view_get_selection (self->priv->tree_view);
   GtkTreeModelFilter* model = GTK_TREE_MODEL_FILTER (gtk_tree_view_get_model (self->priv->tree_view));
 
-  if (gtk_tree_model_filter_convert_child_iter_to_iter (model, &filtered_iter, &iter))
-    if (gtk_tree_selection_iter_is_selected (selection, &filtered_iter))
-      should_emit = TRUE;
-
   gtk_tree_store_set (self->priv->store, &iter,
 		      COLUMN_TYPE, TYPE_HEAP,
 		      COLUMN_HEAP, heap.get (),
 		      COLUMN_NAME, heap->get_name ().c_str (), -1);
-
-  if (should_emit)
-    g_signal_emit (self, signals[ACTIONS_CHANGED_SIGNAL], 0);
 }
-
 
 static void
 on_heap_removed (RosterViewGtk* self,
@@ -1630,53 +1554,4 @@ roster_view_gtk_new (boost::shared_ptr<Ekiga::PresenceCore> core)
   core->visit_clusters (boost::bind (&on_visit_clusters, self, _1));
 
   return (GtkWidget *) self;
-}
-
-bool
-roster_view_gtk_populate_menu_for_selected (RosterViewGtk* self,
-					    Ekiga::MenuBuilder& builder)
-{
-  bool result = false;
-  GtkTreeSelection* selection = NULL;
-  GtkTreeModel* model = NULL;
-  GtkTreeIter iter;
-
-  g_return_val_if_fail (IS_ROSTER_VIEW_GTK (self), false);
-
-  selection = gtk_tree_view_get_selection (self->priv->tree_view);
-  if (gtk_tree_selection_get_selected (selection, &model, &iter)) {
-
-    gint column_type;
-    gchar* name = NULL;
-    Ekiga::Heap* heap = NULL;
-    Ekiga::Presentity *presentity = NULL;
-    gtk_tree_model_get (model, &iter,
-			COLUMN_GROUP_NAME, &name,
-			COLUMN_TYPE, &column_type,
-			COLUMN_HEAP, &heap,
-			COLUMN_PRESENTITY, &presentity,
-			-1);
-    switch (column_type) {
-
-    case TYPE_PRESENTITY:
-
-      result = presentity->populate_menu (builder);
-      break;
-    case TYPE_HEAP:
-
-      result = heap->populate_menu (builder);
-      break;
-
-    case TYPE_GROUP:
-
-      result = heap->populate_menu_for_group (name, builder);
-      break;
-
-    default:
-      break;
-    }
-
-    g_free (name);
-  }
-  return result;
 }
