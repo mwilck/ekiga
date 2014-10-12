@@ -63,8 +63,6 @@ struct _RosterViewGtkPrivate
   GSList *folded_groups;
   gboolean show_offline_contacts;
 
-  Ekiga::Presentity *selected_presentity;
-  Ekiga::Heap *selected_heap;
   Ekiga::GActorMenuPtr presentity_menu;
   Ekiga::GActorMenuPtr heap_menu;
 };
@@ -645,17 +643,15 @@ on_selection_changed (GtkTreeSelection* selection,
      */
     self->priv->presentity_menu.reset ();
     self->priv->heap_menu.reset ();
-    self->priv->selected_presentity = NULL;
-    self->priv->selected_heap = NULL;
 
     switch (column_type) {
 
     case TYPE_HEAP:
 
       if (heap != NULL) {
-        self->priv->selected_heap = heap;
-        self->priv->heap_menu = Ekiga::GActorMenuPtr (new Ekiga::GActorMenu (*self->priv->selected_heap));
-        g_signal_emit (self, signals[ACTIONS_CHANGED_SIGNAL], 0, self->priv->heap_menu->get_model ());
+        self->priv->heap_menu = Ekiga::GActorMenuPtr (new Ekiga::GActorMenu (*heap));
+        g_signal_emit (self, signals[ACTIONS_CHANGED_SIGNAL], 0,
+                       self->priv->heap_menu->get_model ());
       }
       break;
     case TYPE_GROUP:
@@ -664,9 +660,9 @@ on_selection_changed (GtkTreeSelection* selection,
     case TYPE_PRESENTITY:
 
       if (presentity != NULL) {
-        self->priv->selected_presentity = presentity;
-        self->priv->presentity_menu = Ekiga::GActorMenuPtr (new Ekiga::GActorMenu (*self->priv->selected_presentity));
-        g_signal_emit (self, signals[ACTIONS_CHANGED_SIGNAL], 0, self->priv->presentity_menu->get_model ());
+        self->priv->presentity_menu = Ekiga::GActorMenuPtr (new Ekiga::GActorMenu (*presentity));
+        g_signal_emit (self, signals[ACTIONS_CHANGED_SIGNAL], 0,
+                       self->priv->presentity_menu->get_model ());
       }
       break;
     default:
@@ -925,13 +921,8 @@ on_heap_updated (RosterViewGtk* self,
 		 Ekiga::HeapPtr heap)
 {
   GtkTreeIter iter;
-  GtkTreeIter filtered_iter;
-  GtkTreeSelection* selection = NULL;
 
   roster_view_gtk_find_iter_for_heap (self, heap, &iter);
-
-  selection = gtk_tree_view_get_selection (self->priv->tree_view);
-  GtkTreeModelFilter* model = GTK_TREE_MODEL_FILTER (gtk_tree_view_get_model (self->priv->tree_view));
 
   gtk_tree_store_set (self->priv->store, &iter,
 		      COLUMN_TYPE, TYPE_HEAP,
@@ -1388,9 +1379,6 @@ roster_view_gtk_init (RosterViewGtk* self)
   GtkCellRenderer *renderer = NULL;
 
   self->priv = new RosterViewGtkPrivate;
-
-  self->priv->selected_presentity = NULL;
-  self->priv->selected_heap = NULL;
 
   self->priv->settings = new Ekiga::Settings (CONTACTS_SCHEMA);
   self->priv->folded_groups = self->priv->settings->get_slist ("roster-folded-groups");
