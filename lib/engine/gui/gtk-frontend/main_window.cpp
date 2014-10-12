@@ -760,7 +760,8 @@ ekiga_main_window_init_actions_toolbar (EkigaMainWindow *mw)
 
   switcher = gtk_stack_switcher_new ();
   gtk_stack_switcher_set_stack (GTK_STACK_SWITCHER (switcher), GTK_STACK (mw->priv->main_stack));
-  gtk_header_bar_pack_start (GTK_HEADER_BAR (mw->priv->actions_toolbar), switcher);
+  gtk_header_bar_set_custom_title (GTK_HEADER_BAR (mw->priv->actions_toolbar), switcher);
+  gtk_widget_set_margin_end (GTK_WIDGET (switcher), 6);
 
   button = gtk_menu_button_new ();
   g_object_set (G_OBJECT (button), "use-popover", true, NULL);
