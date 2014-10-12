@@ -889,7 +889,7 @@ ekiga_main_window_init_gui (EkigaMainWindow *mw)
   /* The main stack */
   mw->priv->main_stack = gtk_stack_new ();
   gtk_stack_set_transition_type (GTK_STACK (mw->priv->main_stack),
-                                 GTK_STACK_TRANSITION_TYPE_OVER_UP);
+                                 GTK_STACK_TRANSITION_TYPE_OVER_LEFT_RIGHT);
 
   /* The main menu */
   ekiga_main_window_init_menu (mw);
