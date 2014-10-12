@@ -62,8 +62,9 @@ bool roster_view_gtk_populate_menu_for_selected (RosterViewGtk* self,
 
 /* Signals emitted by that widget :
  *
- * - "selection-changed", comes with nothing, and notifies whether either the
- * selection changed, or the selected object changed.
+ * - "actions-changed", comes with nothing, and notifies when new
+ * actions are available (wrt the active selection). The GMenuModel
+ * signal callback argument details available actions.
  */
 
 

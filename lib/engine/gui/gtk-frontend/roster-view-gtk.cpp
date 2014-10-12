@@ -85,7 +85,7 @@ enum {
 };
 
 enum {
-  SELECTION_CHANGED_SIGNAL,
+  ACTIONS_CHANGED_SIGNAL,
   LAST_SIGNAL
 };
 
@@ -177,8 +177,8 @@ static void show_offline_contacts_changed_cb (GSettings *settings,
  * BEHAVIOR     : Emit the presentity-selected signal
  * PRE          : The gpointer must point to the RosterViewGtk GObject.
  */
-static void on_selection_changed (GtkTreeSelection* selection,
-				  gpointer data);
+static void on_actions_changed (GtkTreeSelection* actions,
+                                gpointer data);
 
 /* DESCRIPTION  : Called when the user clicks or presses Enter
  *                on a heap, group or presentity.
@@ -707,16 +707,18 @@ on_selection_changed (GtkTreeSelection* selection,
       if (heap != NULL) {
         self->priv->selected_heap = heap;
         self->priv->heap_menu = Ekiga::GActorMenuPtr (new Ekiga::GActorMenu (*self->priv->selected_heap));
+        g_signal_emit (self, signals[ACTIONS_CHANGED_SIGNAL], 0, self->priv->heap_menu->get_model ());
       }
       break;
     case TYPE_GROUP:
-
+        g_signal_emit (self, signals[ACTIONS_CHANGED_SIGNAL], 0, NULL);
       break;
     case TYPE_PRESENTITY:
 
       if (presentity != NULL) {
         self->priv->selected_presentity = presentity;
         self->priv->presentity_menu = Ekiga::GActorMenuPtr (new Ekiga::GActorMenu (*self->priv->selected_presentity));
+        g_signal_emit (self, signals[ACTIONS_CHANGED_SIGNAL], 0, self->priv->presentity_menu->get_model ());
       }
       break;
     default:
@@ -727,8 +729,8 @@ on_selection_changed (GtkTreeSelection* selection,
     g_free (group_name);
     g_free (name);
   }
-
-  g_signal_emit (self, signals[SELECTION_CHANGED_SIGNAL], 0);
+  else
+    g_signal_emit (self, signals[ACTIONS_CHANGED_SIGNAL], 0, NULL);
 }
 
 static gint
@@ -991,6 +993,8 @@ on_heap_updated (RosterViewGtk* self,
   GtkTreeSelection* selection = NULL;
   gboolean should_emit = FALSE;
 
+  // FIXME???
+  //
   roster_view_gtk_find_iter_for_heap (self, heap, &iter);
 
   selection = gtk_tree_view_get_selection (self->priv->tree_view);
@@ -1006,7 +1010,7 @@ on_heap_updated (RosterViewGtk* self,
 		      COLUMN_NAME, heap->get_name ().c_str (), -1);
 
   if (should_emit)
-    g_signal_emit (self, signals[SELECTION_CHANGED_SIGNAL], 0);
+    g_signal_emit (self, signals[ACTIONS_CHANGED_SIGNAL], 0);
 }
 
 
@@ -1156,7 +1160,7 @@ on_presentity_added (RosterViewGtk* self,
   roster_view_gtk_update_groups (self, &heap_iter);
 
   if (should_emit)
-    g_signal_emit (self, signals[SELECTION_CHANGED_SIGNAL], 0);
+    g_signal_emit (self, signals[ACTIONS_CHANGED_SIGNAL], 0);
 }
 
 
@@ -1585,14 +1589,14 @@ roster_view_gtk_class_init (RosterViewGtkClass* klass)
 
   gobject_class->finalize = roster_view_gtk_finalize;
 
-  signals[SELECTION_CHANGED_SIGNAL] =
-    g_signal_new ("selection-changed",
+  signals[ACTIONS_CHANGED_SIGNAL] =
+    g_signal_new ("actions-changed",
 		  G_OBJECT_CLASS_TYPE (gobject_class),
 		  G_SIGNAL_RUN_LAST,
 		  G_STRUCT_OFFSET (RosterViewGtkClass, selection_changed),
 		  NULL, NULL,
-		  g_cclosure_marshal_VOID__VOID,
-		  G_TYPE_NONE, 0);
+		  g_cclosure_marshal_VOID__OBJECT,
+		  G_TYPE_NONE, 1, G_TYPE_MENU_MODEL);
 }
 
 /*

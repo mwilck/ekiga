@@ -153,6 +153,9 @@ struct _EkigaMainWindowPrivate
 
   Ekiga::scoped_connections connections;
 
+  /* Menu Dynamic Section */
+  unsigned menu_dynamic_section_n_items;
+
   /* GSettings */
   boost::shared_ptr<Ekiga::Settings> user_interface_settings;
   boost::shared_ptr<Ekiga::Settings> sound_events_settings;
@@ -172,12 +175,6 @@ static const char* win_menu =
   "<?xml version='1.0'?>"
   "<interface>"
   "  <menu id='menubar'>"
-  "    <section>"
-  "      <item>"
-  "        <attribute name='label' translatable='yes'>_Call</attribute>"
-  "        <attribute name='action'>win.call</attribute>"
-  "      </item>"
-  "    </section>"
   "    <section>"
   "      <item>"
   "        <attribute name='label' translatable='yes'>_Add Contact</attribute>"
@@ -235,6 +232,15 @@ static void close_activated (G_GNUC_UNUSED GSimpleAction *action,
                              G_GNUC_UNUSED GVariant *parameter,
                              gpointer data);
 
+
+/* DESCRIPTION  :  This callback is called when a contact is selected
+ *                 in the roster or call history views.
+ * BEHAVIOR     :  Updates the window menu with new actions.
+ * PRE          :  A valid pointer to the main window GMObject.
+ */
+static void actions_changed_cb (G_GNUC_UNUSED GtkWidget *widget,
+                                GMenuModel *model,
+                                gpointer data);
 
 /* DESCRIPTION  :  This callback is called when the status bar is clicked.
  * BEHAVIOR     :  Clear all info message, not normal messages.
@@ -599,24 +605,26 @@ statusbar_clicked_cb (G_GNUC_UNUSED GtkWidget *widget,
 
 
 static void
-menu_button_toggled_cb (GtkToggleButton *togglebutton,
-                        gpointer data)
+actions_changed_cb (G_GNUC_UNUSED GtkWidget *widget,
+                    GMenuModel *model,
+                    gpointer data)
 {
   GMenu *menu = NULL;
 
   g_return_if_fail (EKIGA_IS_MAIN_WINDOW (data));
   EkigaMainWindow *mw = EKIGA_MAIN_WINDOW (data);
 
-  if (!gtk_toggle_button_get_active (togglebutton))
-    return;
-
   menu = G_MENU (gtk_builder_get_object (mw->priv->builder, "menubar"));
- /* if (mw->priv->contact_menu->size () > 0)
-    g_menu_remove (menu, 0);
 
-  contact_menu = mw->priv->contact_menu->get ();
-  if (contact_menu)
-    g_menu_insert_section (menu, 0, NULL, contact_menu);*/
+  while (mw->priv->menu_dynamic_section_n_items-- > 0) {
+    g_menu_remove (menu, 0);
+  }
+  mw->priv->menu_dynamic_section_n_items = 0;
+
+  if (model) {
+    g_menu_insert_section (menu, 0, NULL, model);
+    mw->priv->menu_dynamic_section_n_items = g_menu_model_get_n_items (model);
+  }
 }
 
 
@@ -763,8 +771,6 @@ ekiga_main_window_init_actions_toolbar (EkigaMainWindow *mw)
   gtk_button_set_image (GTK_BUTTON (button), image);
   gtk_menu_button_set_menu_model (GTK_MENU_BUTTON (button),
                                   G_MENU_MODEL (gtk_builder_get_object (mw->priv->builder, "menubar")));
-  g_signal_connect (GTK_TOGGLE_BUTTON (button), "toggled",
-                    G_CALLBACK (menu_button_toggled_cb), mw);
   gtk_header_bar_pack_end (GTK_HEADER_BAR (mw->priv->actions_toolbar), button);
   gtk_widget_show_all (mw->priv->actions_toolbar);
 
@@ -823,6 +829,9 @@ ekiga_main_window_init_contact_list (EkigaMainWindow *mw)
                            "icon-name", "avatar-default-symbolic", NULL);
 
   g_object_ref (mw->priv->roster_view);
+
+  g_signal_connect (mw->priv->roster_view, "actions-changed",
+                    G_CALLBACK (actions_changed_cb), mw);
 }
 
 
@@ -939,6 +948,7 @@ ekiga_main_window_init (EkigaMainWindow *mw)
 
   mw->priv->current_call = boost::shared_ptr<Ekiga::Call>();
   mw->priv->calling_state = Standby;
+  mw->priv->menu_dynamic_section_n_items = 0;
   mw->priv->call_window = NULL;
 
   mw->priv->user_interface_settings =
