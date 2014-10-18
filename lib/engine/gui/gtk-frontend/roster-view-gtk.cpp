@@ -114,7 +114,9 @@ enum {
   COLUMN_NAME,
   COLUMN_STATUS,
   COLUMN_PRESENCE_ICON,
-  COLUMN_ACTIVE,
+  COLUMN_AVATAR_PIXBUF,
+  COLUMN_FOREGROUND_COLOR,
+  COLUMN_BACKGROUND_COLOR,
   COLUMN_GROUP_NAME,
   COLUMN_PRESENCE,
   COLUMN_OFFLINE,
@@ -456,7 +458,7 @@ roster_view_gtk_icon_blink_cb (gpointer data)
   gtk_tree_model_get (GTK_TREE_MODEL (info->model), info->iter,
                       COLUMN_PRESENCE, &presence, -1);
 
-  std::string icon = "avatar-default";
+  std::string icon = "user-offline";
   if (info->cpt == 0) {
     gtk_tree_store_set (GTK_TREE_STORE (info->model), info->iter,
                         COLUMN_PRESENCE_ICON, "exit",
@@ -849,7 +851,6 @@ show_cell_data_func (GtkTreeViewColumn * /*column*/,
     g_object_set (renderer, "visible", TRUE, NULL);
   else
     g_object_set (renderer, "visible", FALSE, NULL);
-
 }
 
 
@@ -876,7 +877,7 @@ expand_cell_data_func (GtkTreeViewColumn *column,
     g_object_set (renderer, "visible", TRUE, NULL);
 
   g_object_set (renderer,
-                "expander-style", row_expanded ? GTK_EXPANDER_EXPANDED : GTK_EXPANDER_COLLAPSED,
+                "is-expanded", row_expanded,
                 NULL);
 }
 
@@ -920,14 +921,25 @@ on_heap_updated (RosterViewGtk* self,
 		 G_GNUC_UNUSED Ekiga::ClusterPtr cluster,
 		 Ekiga::HeapPtr heap)
 {
+  GdkRGBA fg_color, bg_color;
+  GtkStyleContext *context = NULL;
+  gchar *heap_name = NULL;
   GtkTreeIter iter;
 
+  context = gtk_widget_get_style_context (GTK_WIDGET (self->priv->tree_view));
+
   roster_view_gtk_find_iter_for_heap (self, heap, &iter);
+  gtk_style_context_get_color (context, GTK_STATE_FLAG_ACTIVE, &fg_color);
+  heap_name = g_strdup_printf ("<span weight=\"bold\" stretch=\"expanded\" variant=\"smallcaps\">%s</span>",
+                               heap->get_name ().c_str ());
 
   gtk_tree_store_set (self->priv->store, &iter,
 		      COLUMN_TYPE, TYPE_HEAP,
+                      COLUMN_FOREGROUND_COLOR, &fg_color,
 		      COLUMN_HEAP, heap.get (),
-		      COLUMN_NAME, heap->get_name ().c_str (), -1);
+		      COLUMN_NAME, heap_name, -1);
+
+  g_free (heap_name);
 }
 
 static void
@@ -981,6 +993,7 @@ on_presentity_added (RosterViewGtk* self,
 		     Ekiga::PresentityPtr presentity)
 {
   GdkRGBA color;
+  GdkPixbuf *pixbuf = NULL;
   GtkTreeIter heap_iter;
   std::list<std::string> groups = presentity->get_groups ();
   GtkTreeSelection* selection = gtk_tree_view_get_selection (self->priv->tree_view);
@@ -1036,7 +1049,7 @@ on_presentity_added (RosterViewGtk* self,
     }
     else {
 
-      std::string icon = "avatar-default";
+      std::string icon = "user-offline";
       if (!old_presence) {
         gtk_tree_store_set (self->priv->store, &iter,
                             COLUMN_PRESENCE_ICON, icon.c_str (),
@@ -1054,6 +1067,13 @@ on_presentity_added (RosterViewGtk* self,
     gtk_style_context_get_color (gtk_widget_get_style_context (GTK_WIDGET (self->priv->tree_view)),
                                  (!active||away)?GTK_STATE_FLAG_INSENSITIVE:GTK_STATE_FLAG_NORMAL,
                                  &color);
+
+    pixbuf = gtk_icon_theme_load_icon (gtk_icon_theme_get_default (),
+                                       "avatar-default-symbolic",
+                                       48,
+                                       GTK_ICON_LOOKUP_GENERIC_FALLBACK,
+                                       NULL);
+
     gtk_tree_store_set (self->priv->store, &iter,
                         COLUMN_TYPE, TYPE_PRESENTITY,
                         COLUMN_OFFLINE, active,
@@ -1062,12 +1082,14 @@ on_presentity_added (RosterViewGtk* self,
                         COLUMN_NAME, presentity->get_name ().c_str (),
                         COLUMN_STATUS, presentity->get_status ().c_str (),
                         COLUMN_PRESENCE, presentity->get_presence ().c_str (),
-                        COLUMN_ACTIVE, &color, -1);
+                        COLUMN_AVATAR_PIXBUF, pixbuf,
+                        COLUMN_FOREGROUND_COLOR, &color, -1);
     gtk_tree_model_get (GTK_TREE_MODEL (self->priv->store), &iter,
                         COLUMN_TIMEOUT, &timeout,
                         -1);
 
     g_free (old_presence);
+    g_object_unref (pixbuf);
   }
 
   GtkTreeModel* model = gtk_tree_view_get_model (self->priv->tree_view);
@@ -1398,7 +1420,9 @@ roster_view_gtk_init (RosterViewGtk* self)
                                           G_TYPE_STRING,      // name
                                           G_TYPE_STRING,      // status
                                           G_TYPE_STRING,      // presence
-                                          GDK_TYPE_RGBA,      // color if active
+                                          GDK_TYPE_PIXBUF,    // Avatar
+                                          GDK_TYPE_RGBA,      // cell foreground color
+                                          GDK_TYPE_RGBA,      // cell background color
                                           G_TYPE_STRING,      // group name (invisible)
                                           G_TYPE_STRING,      // presence
 					  G_TYPE_BOOLEAN,     // offline
@@ -1417,6 +1441,7 @@ roster_view_gtk_init (RosterViewGtk* self)
 					  self, NULL);
 
   gtk_tree_view_set_headers_visible (self->priv->tree_view, FALSE);
+  gtk_tree_view_set_grid_lines (self->priv->tree_view, GTK_TREE_VIEW_GRID_LINES_HORIZONTAL);
 
   gtk_container_add (GTK_CONTAINER (self), GTK_WIDGET (vbox));
   gtk_box_pack_start (GTK_BOX (vbox),
@@ -1442,18 +1467,22 @@ roster_view_gtk_init (RosterViewGtk* self)
                 "xpad", 0,
                 "ypad", 0,
                 "visible", TRUE,
-                "expander-style", GTK_EXPANDER_COLLAPSED,
+                "is-expander", TRUE,
+                "is-expanded", FALSE,
                 NULL);
+  gtk_tree_view_column_add_attribute (col, renderer, "cell-background-rgba", COLUMN_BACKGROUND_COLOR);
   gtk_tree_view_column_set_cell_data_func (col, renderer, expand_cell_data_func, NULL, NULL);
   gtk_tree_view_append_column (self->priv->tree_view, col);
 
   renderer = gtk_cell_renderer_text_new ();
   gtk_tree_view_column_set_spacing (col, 0);
   gtk_tree_view_column_pack_start (col, renderer, TRUE);
-  gtk_tree_view_column_add_attribute (col, renderer, "text", COLUMN_NAME);
+  gtk_tree_view_column_add_attribute (col, renderer, "markup", COLUMN_NAME);
+  gtk_tree_view_column_add_attribute (col, renderer, "foreground-rgba", COLUMN_FOREGROUND_COLOR);
+  gtk_tree_view_column_add_attribute (col, renderer, "cell-background-rgba", COLUMN_BACKGROUND_COLOR);
   gtk_tree_view_column_set_alignment (col, 0.0);
-  g_object_set (renderer, "xalign", 0.5, "ypad", 0, NULL);
-  g_object_set (renderer, "weight", PANGO_WEIGHT_BOLD, NULL);
+  g_object_set (renderer,
+                "xalign", 0.5, "ypad", 0, NULL);
   gtk_tree_view_column_set_cell_data_func (col, renderer,
                                            show_cell_data_func, GINT_TO_POINTER (TYPE_HEAP), NULL);
 
@@ -1461,16 +1490,19 @@ roster_view_gtk_init (RosterViewGtk* self)
   gtk_tree_view_column_pack_start (col, renderer, TRUE);
   gtk_tree_view_column_add_attribute (col, renderer,
 				      "text", COLUMN_NAME);
+  gtk_tree_view_column_add_attribute (col, renderer, "foreground-rgba", COLUMN_FOREGROUND_COLOR);
+  gtk_tree_view_column_add_attribute (col, renderer, "cell-background-rgba", COLUMN_BACKGROUND_COLOR);
   g_object_set (renderer, "weight", PANGO_WEIGHT_BOLD, NULL);
   gtk_tree_view_column_set_cell_data_func (col, renderer,
                                            show_cell_data_func, GINT_TO_POINTER (TYPE_GROUP), NULL);
 
   renderer = gtk_cell_renderer_pixbuf_new ();
-  g_object_set (renderer, "yalign", 0.5, "xpad", 5, NULL);
+  g_object_set (renderer, "yalign", 0.5, "xpad", 6, "stock-size", 1, NULL);
   gtk_tree_view_column_pack_start (col, renderer, FALSE);
   gtk_tree_view_column_add_attribute (col, renderer,
 				      "icon-name",
 				      COLUMN_PRESENCE_ICON);
+  gtk_tree_view_column_add_attribute (col, renderer, "cell-background-rgba", COLUMN_BACKGROUND_COLOR);
   gtk_tree_view_column_set_cell_data_func (col, renderer,
                                            show_cell_data_func, GINT_TO_POINTER (TYPE_PRESENTITY), NULL);
 
@@ -1479,7 +1511,18 @@ roster_view_gtk_init (RosterViewGtk* self)
   gtk_tree_view_column_pack_start (col, renderer, FALSE);
   gtk_tree_view_column_add_attribute (col, renderer, "primary-text", COLUMN_NAME);
   gtk_tree_view_column_add_attribute (col, renderer, "secondary-text", COLUMN_STATUS);
-  gtk_tree_view_column_add_attribute (col, renderer, "foreground-rgba", COLUMN_ACTIVE);
+  gtk_tree_view_column_add_attribute (col, renderer, "foreground-rgba", COLUMN_FOREGROUND_COLOR);
+  gtk_tree_view_column_add_attribute (col, renderer, "cell-background-rgba", COLUMN_BACKGROUND_COLOR);
+  gtk_tree_view_column_set_cell_data_func (col, renderer,
+                                           show_cell_data_func, GINT_TO_POINTER (TYPE_PRESENTITY), NULL);
+
+  renderer = gtk_cell_renderer_pixbuf_new ();
+  g_object_set (renderer, "yalign", 1.0, "ypad", 3, "xpad", 6, NULL);
+  gtk_tree_view_column_pack_start (col, renderer, FALSE);
+  gtk_tree_view_column_add_attribute (col, renderer,
+				      "pixbuf",
+				      COLUMN_AVATAR_PIXBUF);
+  gtk_tree_view_column_add_attribute (col, renderer, "cell-background-rgba", COLUMN_BACKGROUND_COLOR);
   gtk_tree_view_column_set_cell_data_func (col, renderer,
                                            show_cell_data_func, GINT_TO_POINTER (TYPE_PRESENTITY), NULL);
 
