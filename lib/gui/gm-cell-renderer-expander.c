@@ -39,7 +39,7 @@
 
 #include <gtk/gtk.h>
 
-#include "gmcellrendererexpander.h"
+#include "gm-cell-renderer-expander.h"
 
 typedef struct {
 	guint expander_size;

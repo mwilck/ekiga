@@ -133,8 +133,8 @@ libekiga_la_SOURCES += \
 	gui/gmstockicons.h \
 	gui/gmpowermeter.c \
 	gui/gmpowermeter.h \
-	gui/gmcellrendererexpander.c \
-	gui/gmcellrendererexpander.h \
+	gui/gm-cell-renderer-expander.c \
+	gui/gm-cell-renderer-expander.h \
 	gui/gm-cell-renderer-bitext.c \
 	gui/gm-cell-renderer-bitext.h \
 	gui/gm-text-buffer-enhancer-helper-interface.c \

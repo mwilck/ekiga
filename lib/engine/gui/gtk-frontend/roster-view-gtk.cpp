@@ -43,7 +43,7 @@
 #include "ekiga-settings.h"
 
 #include "gm-cell-renderer-bitext.h"
-#include "gmcellrendererexpander.h"
+#include "gm-cell-renderer-expander.h"
 #include "menu-builder-tools.h"
 #include "roster-view-gtk.h"
 #include "menu-builder-gtk.h"
