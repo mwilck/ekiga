@@ -123,7 +123,6 @@ struct _EkigaMainWindowPrivate
   GtkBuilder *builder;
 
   /* Dialpad uri toolbar */
-  GtkWidget *uri_toolbar;
   GtkWidget *entry;
   GtkListStore *completion;
 
@@ -255,7 +254,8 @@ static gboolean statusbar_clicked_cb (GtkWidget *,
  * BEHAVIOR     :  Creates the uri toolbar in the dialpad panel.
  * PRE          :  The main window GMObject.
  */
-static void ekiga_main_window_init_uri_toolbar (EkigaMainWindow *mw);
+static GtkWidget *ekiga_main_window_uri_entry_new (EkigaMainWindow *mw);
+
 
 /* DESCRIPTION  :  /
  * BEHAVIOR     :  Creates the actions toolbar in the main window.
@@ -416,7 +416,7 @@ static void on_setup_call_cb (boost::shared_ptr<Ekiga::CallManager> manager,
   }
 
   /* Unsensitive a few things */
-  gtk_widget_set_sensitive (GTK_WIDGET (mw->priv->uri_toolbar), false);
+  gtk_widget_set_sensitive (GTK_WIDGET (mw->priv->entry), false);
   gtk_widget_set_sensitive (GTK_WIDGET (mw->priv->preview_button), false);
 }
 
@@ -483,7 +483,7 @@ static void on_cleared_call_cb (boost::shared_ptr<Ekiga::CallManager>  /*manager
   mw->priv->audiooutput_core->stop_play_event("ring_tone_sound");
 
   /* Sensitive a few things back */
-  gtk_widget_set_sensitive (GTK_WIDGET (mw->priv->uri_toolbar), true);
+  gtk_widget_set_sensitive (GTK_WIDGET (mw->priv->entry), true);
   gtk_widget_set_sensitive (GTK_WIDGET (mw->priv->preview_button), true);
 }
 
@@ -510,7 +510,7 @@ static void on_missed_call_cb (boost::shared_ptr<Ekiga::CallManager>  /*manager*
     mw->priv->calling_state = Standby;
 
     /* Sensitive a few things back */
-    gtk_widget_set_sensitive (GTK_WIDGET (mw->priv->uri_toolbar), true);
+    gtk_widget_set_sensitive (GTK_WIDGET (mw->priv->entry), true);
     gtk_widget_set_sensitive (GTK_WIDGET (mw->priv->preview_button), true);
 
     /* Clear sounds */
@@ -664,72 +664,40 @@ ekiga_main_window_get_call_url (EkigaMainWindow *mw)
     return "";
 }
 
-static void
-ekiga_main_window_init_uri_toolbar (EkigaMainWindow *mw)
+
+static GtkWidget *
+ekiga_main_window_uri_entry_new (EkigaMainWindow *mw)
 {
-  GtkWidget *call_button = NULL;
-  GtkWidget *image = NULL;
-  GtkToolItem *item = NULL;
+  GtkWidget *entry = NULL;
   GtkEntryCompletion *completion = NULL;
 
-  g_return_if_fail (EKIGA_IS_MAIN_WINDOW (mw));
+  g_return_val_if_fail (EKIGA_IS_MAIN_WINDOW (mw), NULL);
 
-  /* The call horizontal toolbar */
-  mw->priv->uri_toolbar = gtk_toolbar_new ();
-  gtk_toolbar_set_style (GTK_TOOLBAR (mw->priv->uri_toolbar), GTK_TOOLBAR_ICONS);
-  gtk_toolbar_set_show_arrow (GTK_TOOLBAR (mw->priv->uri_toolbar), FALSE);
+  /* URI Entry */
+  entry = gm_entry_new (BASIC_URI_REGEX);
+  gm_entry_set_activate_icon (GM_ENTRY (entry), "call-start");
 
-  /* URL bar */
-  /* Entry */
-  item = gtk_tool_item_new ();
-  mw->priv->entry = gm_entry_new (BASIC_URI_REGEX);
   mw->priv->completion = gtk_list_store_new (1, G_TYPE_STRING);
-  gm_entry_set_activate_icon (GM_ENTRY (mw->priv->entry), "call-start");
   completion = gtk_entry_completion_new ();
   gtk_entry_completion_set_model (GTK_ENTRY_COMPLETION (completion), GTK_TREE_MODEL (mw->priv->completion));
-  gtk_entry_set_completion (GTK_ENTRY (mw->priv->entry), completion);
-  gtk_entry_set_text (GTK_ENTRY (mw->priv->entry), "sip:");
-  gtk_entry_completion_set_inline_completion (GTK_ENTRY_COMPLETION (completion), false);
-  gtk_entry_completion_set_popup_completion (GTK_ENTRY_COMPLETION (completion), true);
   gtk_entry_completion_set_text_column (GTK_ENTRY_COMPLETION (completion), 0);
+  gtk_entry_set_completion (GTK_ENTRY (entry), completion);
+  gtk_entry_set_text (GTK_ENTRY (entry), "sip:");
+  gtk_entry_completion_set_inline_completion (GTK_ENTRY_COMPLETION (completion), true);
+  gtk_entry_completion_set_popup_completion (GTK_ENTRY_COMPLETION (completion), true);
 
-  gtk_container_add (GTK_CONTAINER (item), mw->priv->entry);
-  gtk_container_set_border_width (GTK_CONTAINER (item), 0);
-  gtk_tool_item_set_expand (GTK_TOOL_ITEM (item), true);
-
-  // activate Ctrl-L to get the entry focus
-  gtk_widget_add_accelerator (mw->priv->entry, "grab-focus",
+  gtk_widget_add_accelerator (entry, "grab-focus",
 			      mw->priv->accel, GDK_KEY_L,
 			      (GdkModifierType) GDK_CONTROL_MASK,
 			      (GtkAccelFlags) 0);
+  gtk_editable_set_position (GTK_EDITABLE (entry), -1);
 
-  gtk_editable_set_position (GTK_EDITABLE (mw->priv->entry), -1);
-
-  g_signal_connect (mw->priv->entry, "changed",
+  g_signal_connect (entry, "changed",
 		    G_CALLBACK (url_changed_cb), mw);
-  g_signal_connect (mw->priv->entry, "activated",
+  g_signal_connect (entry, "activated",
 		    G_CALLBACK (place_call_cb), mw);
 
-  gtk_toolbar_insert (GTK_TOOLBAR (mw->priv->uri_toolbar), item, 0);
-
-  /* The call button */
-  item = gtk_tool_item_new ();
-  call_button = gtk_button_new ();
-  image = gtk_image_new_from_icon_name ("phone-pick-up", GTK_ICON_SIZE_LARGE_TOOLBAR);
-  gtk_button_set_image (GTK_BUTTON (call_button), image);
-  gtk_button_set_relief (GTK_BUTTON (call_button), GTK_RELIEF_NONE);
-  gtk_container_add (GTK_CONTAINER (item), call_button);
-  gtk_container_set_border_width (GTK_CONTAINER (call_button), 0);
-  gtk_tool_item_set_expand (GTK_TOOL_ITEM (item), FALSE);
-
-  gtk_widget_set_tooltip_text (GTK_WIDGET (call_button),
-			       _("Enter a URI on the left, and click this button to place a call or to hang up"));
-
-  gtk_toolbar_insert (GTK_TOOLBAR (mw->priv->uri_toolbar), item, -1);
-
-  g_signal_connect (call_button, "clicked",
-                    G_CALLBACK (place_call_cb),
-                    mw);
+  return entry;
 }
 
 static void
@@ -841,21 +809,32 @@ static void
 ekiga_main_window_init_dialpad (EkigaMainWindow *mw)
 {
   GtkWidget *dialpad = NULL;
-  GtkWidget *vbox = NULL;
+  GtkWidget *grid = NULL;
 
-  vbox = gtk_box_new (GTK_ORIENTATION_VERTICAL, 0);
+  grid = gtk_grid_new ();
+  gtk_grid_set_row_spacing (GTK_GRID (grid), 18);
+  gtk_container_set_border_width (GTK_CONTAINER (grid), 18);
+
   dialpad = ekiga_dialpad_new (mw->priv->accel);
+  gtk_widget_set_hexpand (dialpad, FALSE);
+  gtk_widget_set_vexpand (dialpad, FALSE);
+  gtk_widget_set_halign (dialpad, GTK_ALIGN_CENTER);
+  gtk_widget_set_valign (dialpad, GTK_ALIGN_CENTER);
+  gtk_grid_attach (GTK_GRID (grid), dialpad, 0, 0, 1, 1);
   g_signal_connect (dialpad, "button-clicked",
                     G_CALLBACK (dialpad_button_clicked_cb), mw);
 
-  gtk_box_pack_start (GTK_BOX (vbox), dialpad, false, false, 0);
+  mw->priv->entry = ekiga_main_window_uri_entry_new (mw);
+  gtk_widget_set_hexpand (dialpad, TRUE);
+  gtk_widget_set_vexpand (dialpad, TRUE);
+  gtk_widget_set_halign (mw->priv->entry, GTK_ALIGN_FILL);
+  gtk_widget_set_valign (mw->priv->entry, GTK_ALIGN_END);
+  gtk_grid_attach_next_to (GTK_GRID (grid), mw->priv->entry, dialpad,
+                           GTK_POS_BOTTOM, 1, 1);
 
-  ekiga_main_window_init_uri_toolbar (mw);
-  gtk_box_pack_start (GTK_BOX (vbox), mw->priv->uri_toolbar, false, false, 0);
-
-  gtk_stack_add_named (GTK_STACK (mw->priv->main_stack), vbox, "dialpad");
+  gtk_stack_add_named (GTK_STACK (mw->priv->main_stack), grid, "dialpad");
   gtk_container_child_set (GTK_CONTAINER (mw->priv->main_stack),
-                           vbox,
+                           grid,
                            "icon-name", "input-dialpad-symbolic", NULL);
 
   g_signal_connect (mw, "key-press-event",

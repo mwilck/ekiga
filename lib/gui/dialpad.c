@@ -155,9 +155,11 @@ ekiga_dialpad_init (EkigaDialpad *dialpad)
                                                EKIGA_TYPE_DIALPAD,
                                                EkigaDialpadPrivate);
 
-  gtk_container_set_border_width (GTK_CONTAINER (dialpad), 15);
+  gtk_container_set_border_width (GTK_CONTAINER (dialpad), 0);
   gtk_grid_set_column_homogeneous (GTK_GRID (dialpad), TRUE);
   gtk_grid_set_row_homogeneous (GTK_GRID (dialpad), TRUE);
+  gtk_grid_set_row_spacing (GTK_GRID (dialpad), 6);
+  gtk_grid_set_column_spacing (GTK_GRID (dialpad), 6);
 
   // the dialpad is LTR even for RTL languages
   gtk_widget_set_direction (GTK_WIDGET (dialpad), GTK_TEXT_DIR_LTR);
@@ -165,8 +167,8 @@ ekiga_dialpad_init (EkigaDialpad *dialpad)
   /* Create the buttons */
   for (i = 0; i < G_N_ELEMENTS (keys_info); i++) {
 
-    box = gtk_box_new (GTK_ORIENTATION_VERTICAL, 0);
-    gtk_container_set_border_width (GTK_CONTAINER (box), 0);
+    box = gtk_box_new (GTK_ORIENTATION_VERTICAL, 3);
+    gtk_container_set_border_width (GTK_CONTAINER (box), 6);
 
     label = gtk_label_new (NULL);
     text = g_strdup_printf ("<b>%s</b>",
@@ -188,7 +190,7 @@ ekiga_dialpad_init (EkigaDialpad *dialpad)
     }
 
     button = gtk_button_new ();
-    gtk_container_set_border_width (GTK_CONTAINER (button), 3);
+    gtk_container_set_border_width (GTK_CONTAINER (button), 0);
     gtk_container_add (GTK_CONTAINER (button), box);
 
     dialpad->priv->buttons[i] = button;
