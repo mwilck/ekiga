@@ -110,18 +110,22 @@ const gchar *gm_entry_get_activate_icon (GmEntry *self);
 /* Signals emitted by that widget :
  *
  * - "validity-changed": Emitted when the GmEntry validity changes.
- * - "activated"       : Emitted when the entry is activated and its content is
- *                       valid. This is similar to the native "activate" signal.
+ * - "activated"       : Emitted when the entry is activated and:
+ *                        - its content matches the regex (is valid).
+ *                        - its content is not empty (independantly of the
+ *                          "allow-empty" property value. There must be
+ *                          something to activate.
+ *                       This signal is similar to the native "activate" signal.
  *                       However, the native signal will be emitted even if the
- *                       GmEntry content is invalid.
+ *                       GmEntry content is invalid or empty.
  *
  */
 
 /* Properties of that widget :
  *
- * - "allow-empty"  :   Defaults to TRUE.
- * - "activate-icon":   Icon that appears when the entry content is not empty
- *                      and valid. Clicking on it emits the activated signal.
+ * - "allow-empty"  :  Defaults to TRUE.
+ * - "activate-icon":  Icon that appears when the entry content is not empty
+ *                     and valid. Clicking on it emits the activated signal.
  * - "regex"        :  Set the regex string to use for validity checking.
  *
  */

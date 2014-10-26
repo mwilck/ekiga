@@ -48,6 +48,7 @@ struct _GmEntryPrivate {
   gchar *regex_string;
   gchar *activate_icon;
   gboolean is_valid;
+  gboolean is_empty;
   gboolean allow_empty;
 };
 
@@ -86,6 +87,8 @@ static void gm_entry_update_clear_icon (GmEntry *self);
 
 static void gm_entry_update_activate_icon (GmEntry *self);
 
+static gboolean gm_entry_text_is_empty (GmEntry *self);
+
 
 /* Static GObject functions and declarations */
 static void gm_entry_class_init (GmEntryClass *);
@@ -112,6 +115,7 @@ gm_entry_changed_cb (GmEntry *self,
 {
   g_return_if_fail (GM_IS_ENTRY (self));
   gboolean is_valid = gm_entry_text_is_valid (self);
+  self->priv->is_empty = gm_entry_text_is_empty (self);
 
   if (is_valid != self->priv->is_valid) {
     self->priv->is_valid = is_valid;
@@ -128,7 +132,7 @@ gm_entry_activated_cb (GmEntry *self,
                        G_GNUC_UNUSED gpointer data)
 {
   g_return_if_fail (GM_IS_ENTRY (self));
-  if (self->priv->is_valid)
+  if (self->priv->is_valid && !self->priv->is_empty)
     g_signal_emit (self, signals[ACTIVATED_SIGNAL], 0);
 }
 
@@ -322,6 +326,7 @@ gm_entry_init (GmEntry* self)
   self->priv->regex_string = NULL;
   self->priv->activate_icon = NULL;
   self->priv->is_valid = gm_entry_text_is_valid (self);
+  self->priv->is_empty = gm_entry_text_is_empty (self);
 
   gm_entry_update_activate_icon (self);
   gm_entry_update_clear_icon (self);
@@ -341,17 +346,13 @@ gm_entry_update_clear_icon (GmEntry *self)
 {
   g_return_if_fail (GM_IS_ENTRY (self));
 
-  gboolean empty = (gtk_entry_get_text_length (GTK_ENTRY (self)) == 0);
+  gboolean has_content = (gtk_entry_get_text_length (GTK_ENTRY (self)) == 0);
   gboolean rtl = (gtk_widget_get_direction (GTK_WIDGET (self)) == GTK_TEXT_DIR_RTL);
 
-  self->priv = G_TYPE_INSTANCE_GET_PRIVATE (self,
-                                            GM_TYPE_ENTRY,
-					    GmEntryPrivate);
-
   g_object_set (self,
-                "secondary-icon-name", !empty ? (rtl ? "edit-clear-rtl-symbolic" : "edit-clear-symbolic") : NULL,
-                "secondary-icon-activatable", !empty,
-                "secondary-icon-sensitive", !empty,
+                "secondary-icon-name", !has_content ? (rtl ? "edit-clear-rtl-symbolic" : "edit-clear-symbolic") : NULL,
+                "secondary-icon-activatable", !has_content,
+                "secondary-icon-sensitive", !has_content,
                 NULL);
 }
 
@@ -359,20 +360,32 @@ gm_entry_update_clear_icon (GmEntry *self)
 static void
 gm_entry_update_activate_icon (GmEntry *self)
 {
-  const gchar *content = gtk_entry_get_text (GTK_ENTRY (self));
-  gchar *value = g_strdup (content);
-  value = g_strstrip (value);
-
-  gboolean empty = (!g_strcmp0 (value, ""));
-  gboolean ok = (!empty && self->priv->is_valid);
+  gboolean ok = (!self->priv->is_empty && self->priv->is_valid);
 
   g_object_set (self,
                 "primary-icon-name", ok ? self->priv->activate_icon : NULL,
                 "primary-icon-activatable", ok,
                 "primary-icon-sensitive", ok,
                 NULL);
+}
+
+
+static gboolean
+gm_entry_text_is_empty (GmEntry *self)
+{
+  gboolean empty = FALSE;
+
+  g_return_val_if_fail (GM_IS_ENTRY (self), TRUE);
+
+  const gchar *content = gtk_entry_get_text (GTK_ENTRY (self));
+  gchar *value = g_strdup (content);
+  value = g_strstrip (value);
+
+  empty = (!g_strcmp0 (value, ""));
 
   g_free (value);
+
+  return empty;
 }
 
 
