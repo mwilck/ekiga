@@ -46,6 +46,11 @@
 
 G_BEGIN_DECLS
 
+#define URI_SCHEME "([A-Za-z]+:)?"
+#define BASIC_URI_PART "[A-Za-z0-9_\\-\\.]+"
+#define BASIC_URI_REGEX "^" URI_SCHEME BASIC_URI_PART "@" BASIC_URI_PART "$"
+#define PHONE_NUMBER_REGEX "\\+?[0-9]+"
+
 typedef struct _GmEntry GmEntry;
 typedef struct _GmEntryPrivate GmEntryPrivate;
 typedef struct _GmEntryClass GmEntryClass;
@@ -84,15 +89,40 @@ void gm_entry_set_allow_empty (GmEntry *self,
 gboolean gm_entry_get_allow_empty (GmEntry *self);
 
 
+/** Set the activate icon.
+ * The activate icon is displayed when the GmEntry content is considered as
+ * valid.
+ *
+ * @param The GmEntry.
+ * @param The activate icon name.
+ */
+void gm_entry_set_activate_icon (GmEntry *self,
+                                 const gchar *activate_icon);
+
+
+/** Return the GmEntry activate icon name.
+ * @param The GmEntry
+ * @return The current activate icon.
+ */
+const gchar *gm_entry_get_activate_icon (GmEntry *self);
+
+
 /* Signals emitted by that widget :
  *
- * - "validity-changed"
+ * - "validity-changed": Emitted when the GmEntry validity changes.
+ * - "activated"       : Emitted when the entry is activated and its content is
+ *                       valid. This is similar to the native "activate" signal.
+ *                       However, the native signal will be emitted even if the
+ *                       GmEntry content is invalid.
  *
  */
 
 /* Properties of that widget :
  *
- * - "allow-empty": Defaults to TRUE.
+ * - "allow-empty"  :   Defaults to TRUE.
+ * - "activate-icon":   Icon that appears when the entry content is not empty
+ *                      and valid. Clicking on it emits the activated signal.
+ * - "regex"        :  Set the regex string to use for validity checking.
  *
  */
 

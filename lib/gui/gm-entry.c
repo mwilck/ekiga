@@ -46,6 +46,7 @@ struct _GmEntryPrivate {
 
   GRegex *regex;
   gchar *regex_string;
+  gchar *activate_icon;
   gboolean is_valid;
   gboolean allow_empty;
 };
@@ -53,10 +54,12 @@ struct _GmEntryPrivate {
 enum {
   GM_ENTRY_REGEX = 1,
   GM_ENTRY_ALLOW_EMPTY = 2,
+  GM_ENTRY_ACTIVATE_ICON = 3,
 };
 
 enum {
   VALIDITY_CHANGED_SIGNAL,
+  ACTIVATED_SIGNAL,
   LAST_SIGNAL
 };
 
@@ -69,8 +72,19 @@ G_DEFINE_TYPE (GmEntry, gm_entry, GTK_TYPE_ENTRY);
 static void gm_entry_changed_cb (GmEntry *self,
                                  G_GNUC_UNUSED gpointer data);
 
+static void gm_entry_activated_cb (GmEntry *self,
+                                   G_GNUC_UNUSED gpointer data);
+
 static void gm_entry_icon_release_cb (GtkEntry *self,
+                                      GtkEntryIconPosition icon_pos,
+                                      G_GNUC_UNUSED GdkEvent *event,
                                       G_GNUC_UNUSED gpointer data);
+
+
+/* Helpers */
+static void gm_entry_update_clear_icon (GmEntry *self);
+
+static void gm_entry_update_activate_icon (GmEntry *self);
 
 
 /* Static GObject functions and declarations */
@@ -96,29 +110,46 @@ static void
 gm_entry_changed_cb (GmEntry *self,
                      G_GNUC_UNUSED gpointer data)
 {
-  gboolean empty = (gtk_entry_get_text_length (GTK_ENTRY (self)) == 0);
-  gboolean rtl = (gtk_widget_get_direction (GTK_WIDGET (self)) == GTK_TEXT_DIR_RTL);
+  g_return_if_fail (GM_IS_ENTRY (self));
   gboolean is_valid = gm_entry_text_is_valid (self);
-
-  g_object_set (self,
-                "secondary-icon-name", !empty ? (rtl ? "edit-clear-rtl-symbolic" : "edit-clear-symbolic") : NULL,
-                "secondary-icon-activatable", !empty,
-                "secondary-icon-sensitive", !empty,
-                NULL);
 
   if (is_valid != self->priv->is_valid) {
     self->priv->is_valid = is_valid;
     g_signal_emit (self, signals[VALIDITY_CHANGED_SIGNAL], 0);
   }
+
+  gm_entry_update_clear_icon (self);
+  gm_entry_update_activate_icon (self);
+}
+
+
+static void
+gm_entry_activated_cb (GmEntry *self,
+                       G_GNUC_UNUSED gpointer data)
+{
+  g_return_if_fail (GM_IS_ENTRY (self));
+  if (self->priv->is_valid)
+    g_signal_emit (self, signals[ACTIVATED_SIGNAL], 0);
 }
 
 
 static void
 gm_entry_icon_release_cb (GtkEntry *self,
+                          GtkEntryIconPosition icon_pos,
+                          G_GNUC_UNUSED GdkEvent *event,
                           G_GNUC_UNUSED gpointer data)
 {
-  gtk_entry_set_text (self, "");
-  gtk_widget_grab_focus (GTK_WIDGET (self));
+  switch (icon_pos) {
+  case GTK_ENTRY_ICON_SECONDARY:
+    gtk_entry_set_text (self, "");
+    gtk_widget_grab_focus (GTK_WIDGET (self));
+    break;
+
+  default:
+  case GTK_ENTRY_ICON_PRIMARY:
+    g_signal_emit_by_name (G_OBJECT (self), "activate");
+    break;
+  }
 }
 
 
@@ -135,6 +166,10 @@ gm_entry_dispose (GObject* obj)
   if (priv->regex_string) {
     g_free (priv->regex_string);
     priv->regex_string = NULL;
+  }
+  if (priv->activate_icon) {
+    g_free (priv->activate_icon);
+    priv->activate_icon = NULL;
   }
 
   G_OBJECT_CLASS (gm_entry_parent_class)->dispose (obj);
@@ -160,6 +195,10 @@ gm_entry_get_property (GObject *obj,
 
   case GM_ENTRY_ALLOW_EMPTY:
     g_value_set_boolean (value, self->priv->allow_empty);
+    break;
+
+  case GM_ENTRY_ACTIVATE_ICON:
+    g_value_set_string (value, self->priv->activate_icon);
     break;
 
   default:
@@ -208,6 +247,19 @@ gm_entry_set_property (GObject *obj,
     self->priv->allow_empty = g_value_get_boolean (value);
     break;
 
+  case GM_ENTRY_ACTIVATE_ICON:
+    if (self->priv->activate_icon)
+      g_free (self->priv->activate_icon);
+    self->priv->activate_icon = NULL;
+
+    str = g_value_get_string (value);
+    if (g_strcmp0 (str, "")) {
+      self->priv->activate_icon = g_strdup (str);
+      gm_entry_update_activate_icon (self);
+    }
+    break;
+
+
   default:
     G_OBJECT_WARN_INVALID_PROPERTY_ID (obj, prop_id, spec);
     break;
@@ -232,14 +284,25 @@ gm_entry_class_init (GmEntryClass *klass)
                               NULL, (GParamFlags) G_PARAM_READWRITE);
   g_object_class_install_property (gobject_class, GM_ENTRY_REGEX, spec);
 
-
   spec = g_param_spec_boolean ("allow-empty", "Allow Empty", "Allow empty GmEntry",
                                TRUE, (GParamFlags) G_PARAM_READWRITE);
   g_object_class_install_property (gobject_class, GM_ENTRY_ALLOW_EMPTY, spec);
 
+  spec = g_param_spec_string ("activate-icon", "Activate Icon", "Icon triggering the activate signal",
+                              NULL, (GParamFlags) G_PARAM_READWRITE);
+  g_object_class_install_property (gobject_class, GM_ENTRY_ACTIVATE_ICON, spec);
+
 
   signals[VALIDITY_CHANGED_SIGNAL] =
     g_signal_new ("validity-changed",
+		  G_OBJECT_CLASS_TYPE (gobject_class),
+		  G_SIGNAL_RUN_LAST,
+		  0, NULL, NULL,
+		  g_cclosure_marshal_generic,
+		  G_TYPE_NONE, 0);
+
+  signals[ACTIVATED_SIGNAL] =
+    g_signal_new ("activated",
 		  G_OBJECT_CLASS_TYPE (gobject_class),
 		  G_SIGNAL_RUN_LAST,
 		  0, NULL, NULL,
@@ -257,12 +320,59 @@ gm_entry_init (GmEntry* self)
 
   self->priv->regex = NULL;
   self->priv->regex_string = NULL;
+  self->priv->activate_icon = NULL;
   self->priv->is_valid = gm_entry_text_is_valid (self);
+
+  gm_entry_update_activate_icon (self);
+  gm_entry_update_clear_icon (self);
 
   g_signal_connect (self, "changed",
                     G_CALLBACK (gm_entry_changed_cb), NULL);
+  g_signal_connect (self, "activate",
+                    G_CALLBACK (gm_entry_activated_cb), NULL);
   g_signal_connect (self, "icon-release",
                     G_CALLBACK (gm_entry_icon_release_cb), NULL);
+}
+
+
+/* Helpers */
+static void
+gm_entry_update_clear_icon (GmEntry *self)
+{
+  g_return_if_fail (GM_IS_ENTRY (self));
+
+  gboolean empty = (gtk_entry_get_text_length (GTK_ENTRY (self)) == 0);
+  gboolean rtl = (gtk_widget_get_direction (GTK_WIDGET (self)) == GTK_TEXT_DIR_RTL);
+
+  self->priv = G_TYPE_INSTANCE_GET_PRIVATE (self,
+                                            GM_TYPE_ENTRY,
+					    GmEntryPrivate);
+
+  g_object_set (self,
+                "secondary-icon-name", !empty ? (rtl ? "edit-clear-rtl-symbolic" : "edit-clear-symbolic") : NULL,
+                "secondary-icon-activatable", !empty,
+                "secondary-icon-sensitive", !empty,
+                NULL);
+}
+
+
+static void
+gm_entry_update_activate_icon (GmEntry *self)
+{
+  const gchar *content = gtk_entry_get_text (GTK_ENTRY (self));
+  gchar *value = g_strdup (content);
+  value = g_strstrip (value);
+
+  gboolean empty = (!g_strcmp0 (value, ""));
+  gboolean ok = (!empty && self->priv->is_valid);
+
+  g_object_set (self,
+                "primary-icon-name", ok ? self->priv->activate_icon : NULL,
+                "primary-icon-activatable", ok,
+                "primary-icon-sensitive", ok,
+                NULL);
+
+  g_free (value);
 }
 
 
@@ -326,4 +436,23 @@ gm_entry_get_allow_empty (GmEntry *self)
   g_return_val_if_fail (GM_IS_ENTRY (self), TRUE);
 
   return self->priv->allow_empty;
+}
+
+
+void
+gm_entry_set_activate_icon (GmEntry *self,
+                            const gchar *activate_icon)
+{
+  g_return_if_fail (GM_IS_ENTRY (self));
+
+  g_object_set (self, "activate-icon", activate_icon, NULL);
+}
+
+
+const gchar *
+gm_entry_get_activate_icon (GmEntry *self)
+{
+  g_return_val_if_fail (GM_IS_ENTRY (self), TRUE);
+
+  return self->priv->activate_icon;
 }
