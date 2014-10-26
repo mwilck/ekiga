@@ -540,15 +540,8 @@ gm_pw_init_general_page (PreferencesWindow *self,
 {
   GtkWidget *entry = NULL;
 
-  /* Personal Information */
-  entry = gm_pw_entry_new (container, _("_Full name:"),
-                           self->priv->personal_data_settings, "full-name",
-                           _("Enter your full name"), false);
-  gtk_entry_set_max_length (GTK_ENTRY (entry), 65);
-
   /* Display */
-  gm_pw_subsection_new (container, _("Display"));
-  gm_pw_toggle_new (container, _("Show O_ffline Contacts"),
+  gm_pw_toggle_new (container, _("Show o_ffline contacts"),
                     self->priv->contacts_settings, "show-offline-contacts",
                     _("Show offline contacts in the roster"));
 
@@ -556,13 +549,20 @@ gm_pw_init_general_page (PreferencesWindow *self,
                     self->priv->video_display_settings, "stay-on-top",
                     _("Place windows displaying video above other windows during calls"));
 
-  gm_pw_toggle_new (container, _("Enable _Picture-In-Picture Mode"),
+  gm_pw_toggle_new (container, _("Enable _Picture-In-Picture mode"),
                     self->priv->video_display_settings, "enable-pip",
                     _("This allows the local video stream to be displayed incrusted in the remote video stream. This is only effective when sending and receiving video"));
 
+  /* Personal Information */
+  gm_pw_subsection_new (container, _("Personal Information"));
+  entry = gm_pw_entry_new (container, _("_Full Name"),
+                           self->priv->personal_data_settings, "full-name",
+                           _("Enter your full name"), false);
+  gtk_entry_set_max_length (GTK_ENTRY (entry), 65);
+
   /* Network Settings */
   gm_pw_subsection_new (container, _("Network Settings"));
-  gm_pw_spin_new (container, _("Type of Service (TOS):"), NULL,
+  gm_pw_spin_new (container, _("Type of Service (TOS)"), NULL,
                   self->priv->protocols_settings, "rtp-tos-field",
                   _("The Type of Service (TOS) byte on outgoing RTP IP packets. This byte is used by the network to provide some level of Quality of Service (QoS). Default value 184 (0xB8) corresponds to Expedited Forwarding (EF) PHB as defined in RFC 3246."),
                   0.0, 255.0, 1.0);
@@ -754,7 +754,7 @@ gm_pw_init_h323_page (PreferencesWindow *self,
 
   /* Add Misc Settings */
   entry =
-    gm_pw_entry_new (container, _("Forward _URI:"),
+    gm_pw_entry_new (container, _("Forward _URI"),
                      self->priv->h323_settings, "forward-host",
                      _("The host where calls should be forwarded if call forwarding is enabled"),
                      false);
@@ -787,7 +787,7 @@ gm_pw_init_h323_page (PreferencesWindow *self,
   /* Packing widget */
   gm_pw_subsection_new (container, _("DTMF Mode"));
 
-  gm_pw_string_option_menu_new (container, _("_Send DTMF as:"),
+  gm_pw_string_option_menu_new (container, _("_Send DTMF as"),
                                 capabilities_choices,
                                 self->priv->h323_settings, "dtmf-mode",
                                 _("Select the mode for DTMFs sending"));
@@ -812,12 +812,12 @@ gm_pw_init_sip_page (PreferencesWindow *self,
     capabilities_choices.push_back (boost::make_tuple (capabilities[i][0], capabilities[i][1]));
 
   /* Add Misc Settings */
-  gm_pw_entry_new (container, _("_Outbound proxy:"),
+  gm_pw_entry_new (container, _("_Outbound proxy"),
                    self->priv->sip_settings, "outbound-proxy-host",
                    _("The SIP Outbound Proxy to use for outgoing calls"), false);
 
   entry =
-    gm_pw_entry_new (container, _("Forward _URI:"),
+    gm_pw_entry_new (container, _("Forward _URI"),
                      self->priv->sip_settings, "forward-host",
                      _("The host where calls should be forwarded if call forwarding is enabled"),
                      false);
@@ -828,7 +828,7 @@ gm_pw_init_sip_page (PreferencesWindow *self,
   /* Packing widget */
   gm_pw_subsection_new (container, _("DTMF Mode"));
 
-  gm_pw_string_option_menu_new (container, _("_Send DTMF as:"),
+  gm_pw_string_option_menu_new (container, _("_Send DTMF as"),
                                 capabilities_choices,
                                 self->priv->sip_settings, "dtmf-mode",
                                 _("Select the mode for DTMFs sending"));
@@ -863,7 +863,7 @@ gm_pw_init_audio_page (PreferencesWindow *self,
                     _("If enabled, use echo cancellation"));
 
   /* Translators: the full sentence is Maximum jitter buffer of x ms. */
-  gm_pw_spin_new (container, _("Maximum _jitter buffer of"), _("ms"),
+  gm_pw_spin_new (container, _("Use a maximum _jitter buffer of"), _("ms"),
                   self->priv->audio_codecs_settings, "maximum-jitter-buffer",
                   _("The maximum jitter buffer size for audio reception (in ms)"),
                   20.0, 2000.0, 50.0);
@@ -875,14 +875,14 @@ gm_pw_init_audio_page (PreferencesWindow *self,
   self->priv->audiooutput_core->get_devices (devices);
   self->priv->sound_events_output =
     gm_pw_string_option_menu_new (container,
-                                  _("Ringing device:"),
+                                  _("Ringing Device"),
                                   gm_pw_get_device_choices (devices),
                                   self->priv->sound_events_settings,
                                   "output-device",
                                   _("Select the ringing audio device to use"));
   self->priv->audio_player =
     gm_pw_string_option_menu_new (container,
-                                  _("Output device:"),
+                                  _("Output Device"),
                                   gm_pw_get_device_choices (devices),
                                   self->priv->audio_devices_settings,
                                   "output-device",
@@ -892,7 +892,7 @@ gm_pw_init_audio_page (PreferencesWindow *self,
   self->priv->audioinput_core->get_devices (devices);
   self->priv->audio_recorder =
     gm_pw_string_option_menu_new (container,
-                                  _("Input device:"),
+                                  _("Input Device"),
                                   gm_pw_get_device_choices (devices),
                                   self->priv->audio_devices_settings,
                                   "input-device",
@@ -962,13 +962,13 @@ gm_pw_init_video_page (PreferencesWindow *self,
   gm_pw_subsection_new (container, _("Settings"));
 
   /* Translators: the full sentence is Keep a minimum video quality of X % */
-  gm_pw_scale_new (container, _("Picture quality"), _("Frame rate"),
+  gm_pw_scale_new (container, _("Picture Quality"), _("Frame Rate"),
                    self->priv->video_codecs_settings, "temporal-spatial-tradeoff",
                    _("Choose if you want to guarantee a minimum image quality (possibly leading to dropped frames in order not to surpass the bitrate limit) or if you prefer to keep the frame rate"),
                    0.0, 32.0, 1.0);
 
   /* Translators: the full sentence is Maximum video bitrate of x kbits/s. */
-  gm_pw_spin_new (container, _("Maximum video _bitrate of"), _("kbits/s"),
+  gm_pw_spin_new (container, _("Use a maximum video _bitrate of"), _("kbits/s"),
                   self->priv->video_codecs_settings, "maximum-video-tx-bitrate",
                   _("The maximum video bitrate in kbits/s. The video quality and the effective frame rate will be dynamically adjusted to keep the bitrate at the given value."),
                   16.0, 10240.0, 1.0);
@@ -980,28 +980,28 @@ gm_pw_init_video_page (PreferencesWindow *self,
   /* The video device */
   self->priv->videoinput_core->get_devices (devices);
   self->priv->video_device =
-    gm_pw_string_option_menu_new (container, _("Input device:"),
+    gm_pw_string_option_menu_new (container, _("Input Device"),
                                   gm_pw_get_device_choices (devices),
                                   self->priv->video_devices_settings, "input-device", _("Select the video input device to use. If an error occurs when using this device a test picture will be transmitted."));
 
-  gm_pw_string_option_menu_new (container, _("Size:"),
+  gm_pw_string_option_menu_new (container, _("Size"),
                                 video_size_options,
                                 self->priv->video_devices_settings,
                                 "size",
                                 _("Select the transmitted video size"));
 
-  gm_pw_string_option_menu_new (container, _("Format:"),
+  gm_pw_string_option_menu_new (container, _("Format"),
                                 video_input_formats,
                                 self->priv->video_devices_settings,
                                 "format",
                                 _("Select the format for video cameras (does not apply to most USB cameras)"));
 
-  gm_pw_spin_new (container, _("Channel:"), NULL,
+  gm_pw_spin_new (container, _("Channel"), NULL,
                   self->priv->video_devices_settings, "channel",
                   _("The video channel number to use (to select camera, tv or other sources)"), 0.0, 10.0, 1.0);
 
   /* That button will refresh the device list */
-  gm_pw_add_update_button (container, _("_Detect devices"),
+  gm_pw_add_update_button (container, _("_Detect Devices"),
                            G_CALLBACK (refresh_devices_list_cb),
                            _("Click here to refresh the device list"), self);
 }
