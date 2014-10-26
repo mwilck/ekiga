@@ -104,7 +104,7 @@ Ekiga::GActorMenu::get_model (const Ekiga::GActorMenuStore & store)
   for (Ekiga::GActorMenuStore::const_iterator it = store.begin ();
        it != store.end ();
        it++) {
-    content += (*it)->as_xml ();
+    content = content + "<section>" + (*it)->as_xml () + "<section>";
     c += (*it)->size ();
   }
   content = "<?xml_content version=\"1.0\"?>"
