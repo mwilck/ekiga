@@ -75,8 +75,6 @@ public:
 
     typedef enum { SIP, Ekiga, DiamondCard, H323 } Type;
 
-    typedef enum { Processing, Registered, Unregistered, RegistrationFailed, UnregistrationFailed } RegistrationState;
-
     static xmlNodePtr build_node (Opal::Account::Type typus,
 				  std::string name,
 				  std::string host,
@@ -100,6 +98,8 @@ public:
     const std::string get_name () const;
 
     const std::string get_status () const;
+
+    Ekiga::Account::RegistrationState get_state () const;
 
     const std::string get_aor () const;
 

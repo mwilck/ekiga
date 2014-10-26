@@ -57,6 +57,14 @@ namespace Ekiga
   {
   public:
 
+    /* Not all accounts have a notion of registration. However,
+     * in that case, Registered will stand for "Active", and
+     * Unregistered for "Inactive".
+     *
+     * Not all accounts need to go through all states.
+     */
+    typedef enum { Processing, Registered, Unregistered, RegistrationFailed, UnregistrationFailed } RegistrationState;
+
     /** The destructor.
      */
     virtual ~Account () { }
@@ -76,6 +84,14 @@ namespace Ekiga
      * @return The status of the Ekiga::Account
      */
     virtual const std::string get_status () const = 0;
+
+
+    /** Returns the registration state of the Ekiga::Account.
+     * This function is purely virtual and should be implemented by the
+     * Ekiga::Account descendant.
+     * @return The status of the Ekiga::Account
+     */
+    virtual RegistrationState get_state () const = 0;
 
 
     /** Returns a boolean indicating whether the account is enabled.

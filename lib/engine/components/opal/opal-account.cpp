@@ -295,6 +295,12 @@ Opal::Account::get_status () const
   return result;
 }
 
+Ekiga::Account::RegistrationState
+Opal::Account::get_state () const
+{
+  return state;
+}
+
 const std::string
 Opal::Account::get_aor () const
 {
@@ -503,6 +509,7 @@ Opal::Account::disable ()
   // Translators: this is a state, not an action, i.e. it should be read as
   // "(you are) unregistered", and not as "(you have been) unregistered"
   status = _("Unregistered");
+  state = Unregistered;
 
   updated ();
   trigger_saving ();
@@ -914,7 +921,7 @@ Opal::Account::unfetch (const std::string uri) const
 
 
 void
-Opal::Account::handle_registration_event (RegistrationState state_,
+Opal::Account::handle_registration_event (Ekiga::Account::RegistrationState state_,
 					  const std::string info) const
 {
   switch (state_) {
