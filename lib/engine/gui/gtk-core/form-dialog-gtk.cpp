@@ -42,11 +42,6 @@
 #include "form-dialog-gtk.h"
 #include "gm-entry.h"
 
-#define URI_SCHEME "([A-Za-z]+:)?"
-#define BASIC_URI_PART "[A-Za-z0-9_\\-\\.]+"
-#define BASIC_URI_REGEX "^" URI_SCHEME BASIC_URI_PART "@" BASIC_URI_PART "$"
-#define PHONE_NUMBER_REGEX "\\+?[0-9]+"
-
 /*
  * Declarations : GTK+ Callbacks
  */
