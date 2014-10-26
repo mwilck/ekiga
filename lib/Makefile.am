@@ -121,6 +121,8 @@ libekiga_la_SOURCES += \
 	gui/dialpad.c \
 	gui/gm-smileys.h \
 	gui/gm-smileys.c \
+	gui/gm-entry.h \
+	gui/gm-entry.c \
 	gui/gmwindow.c \
 	gui/gmwindow.h \
 	gui/gmentrydialog.c \

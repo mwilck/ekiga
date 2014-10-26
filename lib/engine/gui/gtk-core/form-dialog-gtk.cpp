@@ -40,34 +40,31 @@
 
 #include "platform.h"
 #include "form-dialog-gtk.h"
+#include "gm-entry.h"
+
+#define URI_SCHEME "([A-Za-z]+:)?"
+#define BASIC_URI_PART "[A-Za-z0-9_\\-\\.]+"
+#define BASIC_URI_REGEX "^" URI_SCHEME BASIC_URI_PART "@" BASIC_URI_PART "$"
+#define PHONE_NUMBER_REGEX "\\+?[0-9]+"
 
 /*
  * Declarations : GTK+ Callbacks
  */
 
-/** Called when the GtkEntry delete icon has been clicked.
+/** Called when a GmEntry validity has changed.
  *
- * Delete the entry content.
- */
-static void
-text_entry_icon_release_cb (GtkEntry *entry,
-                            G_GNUC_UNUSED gpointer data);
-
-
-/** Called when a GtkEntry has new content.
+ * The GmEntry is considered valid iff:
+ *   - The GmEntry content is empty and it is allowed.
+ *   - The GmEntry regex matches
  *
- * If the Form text entry does not allow empty values,
- * the "OK" button will stay unsensitive as long as
- * the entry does not contain non-empty text.
- *
- * A delete all icon also appears when the entry is not
- * empty.
+ * The "OK" button will be sensitive iff all Form elements
+ * are considered valid.
  *
  * @param: data is a pointer to the FormDialog object.
  */
 static void
-text_entry_changed_cb (GtkEntry *entry,
-                       gpointer data);
+text_entry_validity_changed_cb (GtkEntry *entry,
+                                gpointer data);
 
 
 /** Called when a choice has been toggled in the
@@ -300,40 +297,9 @@ public:
   ~TextSubmitter ()
   { }
 
-  void updated ()
-  {
-    const std::string value = gtk_entry_get_text (GTK_ENTRY (widget));
-    bool empty = value.empty ();
-    bool empty_ok = (allow_empty || (!empty && value.find_first_not_of (' ') != std::string::npos));
-    bool type_ok = false;
-
-    switch (type) {
-
-    case Ekiga::FormVisitor::URI:
-      type_ok =
-        PString (value).MatchesRegEx (PRegularExpression ("[A-Za-z0-9:_\\-\\.]+@[A-Za-z0-9\\-\\.]+",
-                                                          PRegularExpression::Extended));
-      break;
-
-    case Ekiga::FormVisitor::PHONE_NUMBER:
-      type_ok =
-        PString (value).MatchesRegEx (PRegularExpression ("\\+?[0-9]+",
-                                                          PRegularExpression::Extended));
-      break;
-
-    case Ekiga::FormVisitor::STANDARD:
-    case Ekiga::FormVisitor::PASSWORD:
-    default:
-      type_ok = true;
-      break;
-    }
-
-    submit_ok = (type_ok && empty_ok);
-  }
-
   bool can_submit ()
   {
-    return submit_ok;
+    return gm_entry_text_is_valid (GM_ENTRY (widget));
   }
 
   void submit (Ekiga::FormBuilder &builder)
@@ -707,34 +673,14 @@ editable_list_choice_toggled_cb (G_GNUC_UNUSED GtkCellRendererToggle *cell,
 
 
 static void
-text_entry_icon_release_cb (GtkEntry *entry,
-                            G_GNUC_UNUSED gpointer data)
-{
-  gtk_entry_set_text (entry, "");
-  gtk_widget_grab_focus (GTK_WIDGET(entry));
-}
-
-
-static void
-text_entry_changed_cb (GtkEntry *entry,
-                       gpointer data)
+text_entry_validity_changed_cb (G_GNUC_UNUSED GtkEntry *entry,
+                                gpointer data)
 {
   g_return_if_fail (data);
 
-  TextSubmitter *submitter = (TextSubmitter *) g_object_get_data (G_OBJECT (entry), "submitter");
   FormDialog *form_dialog = (FormDialog *) data;
   GtkWidget *dialog = form_dialog->get_dialog ();
   GtkWidget *ok_button = gtk_dialog_get_widget_for_response (GTK_DIALOG (dialog), GTK_RESPONSE_ACCEPT);
-  bool empty = (gtk_entry_get_text_length (entry) == 0);
-  gboolean rtl = (gtk_widget_get_direction (GTK_WIDGET(entry)) == GTK_TEXT_DIR_RTL);
-
-  g_object_set (entry,
-                "secondary-icon-name", !empty ? (rtl ? "edit-clear-rtl-symbolic" : "edit-clear-symbolic") : NULL,
-                "secondary-icon-activatable", !empty,
-                "secondary-icon-sensitive", !empty,
-                NULL);
-
-  submitter->updated ();
 
   gtk_widget_set_sensitive (ok_button, form_dialog->can_submit ());
 }
@@ -1039,38 +985,39 @@ FormDialog::text (const std::string name,
   label = gtk_label_new (description.c_str ());
   gtk_widget_set_halign (GTK_WIDGET (label), GTK_ALIGN_END);
 
-  entry = gtk_entry_new ();
-  gtk_entry_set_placeholder_text (GTK_ENTRY (entry), placeholder_text.c_str ());
-  gtk_label_set_mnemonic_widget (GTK_LABEL (label), entry);
-  gtk_entry_set_activates_default (GTK_ENTRY (entry), true);
-  gtk_entry_set_text (GTK_ENTRY (entry), value.c_str ());
-  g_object_set (G_OBJECT (entry), "expand", TRUE, NULL);
-
   switch (type) {
     case PASSWORD:
+      entry = gm_entry_new (NULL);
       gtk_entry_set_visibility (GTK_ENTRY (entry), FALSE);
       gtk_entry_set_input_purpose (GTK_ENTRY (entry), GTK_INPUT_PURPOSE_PASSWORD);
       break;
     case PHONE_NUMBER:
+      entry = gm_entry_new (PHONE_NUMBER_REGEX);
       gtk_entry_set_input_purpose (GTK_ENTRY (entry), GTK_INPUT_PURPOSE_PHONE);
       break;
     case URI:
+      entry = gm_entry_new (BASIC_URI_REGEX);
       gtk_entry_set_input_purpose (GTK_ENTRY (entry), GTK_INPUT_PURPOSE_URL);
       break;
     case STANDARD:
     default:
+      entry = gm_entry_new (NULL);
       break;
   };
+
+  gtk_entry_set_placeholder_text (GTK_ENTRY (entry), placeholder_text.c_str ());
+  gtk_label_set_mnemonic_widget (GTK_LABEL (label), entry);
+  gtk_entry_set_activates_default (GTK_ENTRY (entry), true);
+  gtk_entry_set_text (GTK_ENTRY (entry), value.c_str ());
+  g_object_set (G_OBJECT (entry), "expand", TRUE, "allow-empty", allow_empty, NULL);
 
   submitter = new TextSubmitter (name, description, placeholder_text, type, advanced, allow_empty, entry);
   submitters.push_back (submitter);
 
   g_object_set_data (G_OBJECT (entry), "submitter", submitter);
-  text_entry_changed_cb (GTK_ENTRY (entry), (gpointer) this);
-  g_signal_connect (entry, "changed",
-                    G_CALLBACK (text_entry_changed_cb), this);
-  g_signal_connect(entry, "icon-release",
-                   G_CALLBACK (text_entry_icon_release_cb), entry);
+  text_entry_validity_changed_cb (GTK_ENTRY (entry), (gpointer) this);
+  g_signal_connect (entry, "validity-changed",
+                    G_CALLBACK (text_entry_validity_changed_cb), this);
 
   if (advanced) {
 
