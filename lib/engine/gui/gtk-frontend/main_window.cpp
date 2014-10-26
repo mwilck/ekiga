@@ -43,6 +43,7 @@
 
 #include "dialpad.h"
 #include "statusmenu.h"
+#include "gm-entry.h"
 
 #include "gmstockicons.h"
 #include "gmentrydialog.h"
@@ -681,8 +682,9 @@ ekiga_main_window_init_uri_toolbar (EkigaMainWindow *mw)
   /* URL bar */
   /* Entry */
   item = gtk_tool_item_new ();
-  mw->priv->entry = gtk_entry_new ();
+  mw->priv->entry = gm_entry_new (BASIC_URI_REGEX);
   mw->priv->completion = gtk_list_store_new (1, G_TYPE_STRING);
+  gm_entry_set_activate_icon (GM_ENTRY (mw->priv->entry), "call-start");
   completion = gtk_entry_completion_new ();
   gtk_entry_completion_set_model (GTK_ENTRY_COMPLETION (completion), GTK_TREE_MODEL (mw->priv->completion));
   gtk_entry_set_completion (GTK_ENTRY (mw->priv->entry), completion);
@@ -705,7 +707,7 @@ ekiga_main_window_init_uri_toolbar (EkigaMainWindow *mw)
 
   g_signal_connect (mw->priv->entry, "changed",
 		    G_CALLBACK (url_changed_cb), mw);
-  g_signal_connect (mw->priv->entry, "activate",
+  g_signal_connect (mw->priv->entry, "activated",
 		    G_CALLBACK (place_call_cb), mw);
 
   gtk_toolbar_insert (GTK_TOOLBAR (mw->priv->uri_toolbar), item, 0);
