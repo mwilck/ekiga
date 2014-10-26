@@ -526,7 +526,7 @@ gm_pw_add_update_button (GtkWidget *container,
   gtk_container_set_border_width (GTK_CONTAINER (button), 0);
 
   GTK_GRID_LAST_ROW (container, pos);
-  gtk_grid_attach (GTK_GRID (container), button, 0, pos-1, 2, 1);
+  gtk_grid_attach (GTK_GRID (container), button, 0, pos-1, 3, 1);
 
   g_signal_connect (button, "clicked",
                     G_CALLBACK (func),
@@ -847,8 +847,7 @@ gm_pw_init_audio_page (PreferencesWindow *self,
   /* Packing widgets */
   GTK_GRID_LAST_ROW (container, pos);
   codecs_list = codecs_box_new_with_type (Ekiga::Call::Audio);
-  gtk_container_set_border_width (GTK_CONTAINER (codecs_list), 6);
-  gtk_grid_attach (GTK_GRID (container), codecs_list, 0, pos-1, 2, 1);
+  gtk_grid_attach (GTK_GRID (container), codecs_list, 0, pos-1, 3, 1);
 
   /* Here we add the audio codecs options */
   gm_pw_subsection_new (container, _("Settings"));
@@ -957,8 +956,7 @@ gm_pw_init_video_page (PreferencesWindow *self,
   /* Packing widgets */
   GTK_GRID_LAST_ROW (container, pos);
   codecs_list = codecs_box_new_with_type (Ekiga::Call::Video);
-  gtk_container_set_border_width (GTK_CONTAINER (codecs_list), 6);
-  gtk_grid_attach (GTK_GRID (container), codecs_list, 0, pos-1, 2, 1);
+  gtk_grid_attach (GTK_GRID (container), codecs_list, 0, pos-1, 3, 1);
 
   /* Here we add the video codecs options */
   gm_pw_subsection_new (container, _("Settings"));
@@ -1082,7 +1080,6 @@ gm_pw_string_option_menu_new (GtkWidget *subsection,
     gtk_combo_box_text_append (GTK_COMBO_BOX_TEXT (option_menu),
                                boost::get<0>(*iter).c_str (),
                                boost::get<1>(*iter).c_str ());
-
   gtk_grid_attach_next_to (GTK_GRID (subsection), option_menu, label, GTK_POS_RIGHT, 1, 1);
 
   g_settings_bind (settings->get_g_settings (),

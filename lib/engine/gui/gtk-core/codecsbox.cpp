@@ -402,7 +402,6 @@ codecs_box_init (CodecsBox *self)
                                                      NULL);
   gtk_tree_view_column_add_attribute (column, renderer, 
                                       "activatable", COLUMN_CODEC_SELECTABLE);
-  gtk_tree_view_column_set_fixed_width (GTK_TREE_VIEW_COLUMN (column), 25);
   gtk_tree_view_append_column (GTK_TREE_VIEW (self->priv->codecs_list), column);
   g_signal_connect (renderer, "toggled",
                     G_CALLBACK (codec_toggled_cb),
