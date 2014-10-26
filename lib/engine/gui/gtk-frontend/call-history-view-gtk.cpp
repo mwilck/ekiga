@@ -75,6 +75,7 @@ struct _CallHistoryViewGtkPrivate
 /* this is what we put in the view */
 enum {
   COLUMN_CONTACT,
+  COLUMN_ERROR_PIXBUF,
   COLUMN_PIXBUF,
   COLUMN_NAME,
   COLUMN_INFO,
@@ -101,7 +102,7 @@ on_contact_added (Ekiga::ContactPtr contact,
   struct tm *timeinfo = NULL;
   char buffer [80];
   std::stringstream info;
-  const gchar *id = NULL;
+  std::string id;
 
   boost::shared_ptr<History::Contact> hcontact = boost::dynamic_pointer_cast<History::Contact> (contact);
   GtkTreeIter iter;
@@ -111,18 +112,15 @@ on_contact_added (Ekiga::ContactPtr contact,
     switch (hcontact->get_type ()) {
 
     case History::RECEIVED:
-
-      id = "back";
+      id = "go-previous-symbolic";
       break;
 
     case History::PLACED:
-
-      id = "forward";
+      id = "go-next-symbolic";
       break;
 
     case History::MISSED:
-
-      id = "gtk-close";
+      id = "call-missed-symbolic";
       break;
 
     default:
@@ -130,6 +128,7 @@ on_contact_added (Ekiga::ContactPtr contact,
     }
   }
 
+  gtk_list_store_prepend (store, &iter);
   t = hcontact->get_call_start ();
   timeinfo = localtime (&t);
   if (timeinfo != NULL) {
@@ -137,14 +136,17 @@ on_contact_added (Ekiga::ContactPtr contact,
     info << buffer;
     if (!hcontact->get_call_duration ().empty ())
       info << " (" << hcontact->get_call_duration () << ")";
+    else
+      gtk_list_store_set (store, &iter,
+                          COLUMN_ERROR_PIXBUF, "error",
+                          -1);
   }
   else
     info << hcontact->get_call_duration ();
 
-  gtk_list_store_prepend (store, &iter);
   gtk_list_store_set (store, &iter,
 		      COLUMN_CONTACT, contact.get (),
-		      COLUMN_PIXBUF, id,
+		      COLUMN_PIXBUF, id.c_str (),
 		      COLUMN_NAME, contact->get_name ().c_str (),
 		      COLUMN_INFO, info.str ().c_str (),
 		      -1);
@@ -318,10 +320,12 @@ call_history_view_gtk_new (boost::shared_ptr<History::Book> book,
 					  G_TYPE_POINTER,
 					  G_TYPE_STRING,
 					  G_TYPE_STRING,
+					  G_TYPE_STRING,
 					  G_TYPE_STRING);
 
   self->priv->tree = (GtkTreeView*)gtk_tree_view_new_with_model (GTK_TREE_MODEL (self->priv->store));
   gtk_tree_view_set_headers_visible (GTK_TREE_VIEW (self->priv->tree), FALSE);
+  gtk_tree_view_set_grid_lines (self->priv->tree, GTK_TREE_VIEW_GRID_LINES_HORIZONTAL);
   gtk_container_add (GTK_CONTAINER (self), GTK_WIDGET (self->priv->tree));
 
   /* one column should be enough for everyone */
@@ -331,7 +335,8 @@ call_history_view_gtk_new (boost::shared_ptr<History::Book> book,
   renderer = gtk_cell_renderer_pixbuf_new ();
   gtk_tree_view_column_pack_start (column, renderer, FALSE);
   gtk_tree_view_column_add_attribute (column, renderer,
-				      "icon-name", COLUMN_PIXBUF);
+				      "icon-name", COLUMN_ERROR_PIXBUF);
+  g_object_set (renderer, "xalign", 0.0, "yalign", 0.5, "xpad", 6, "stock-size", 1, NULL);
 
   /* show name and text */
   renderer = gm_cell_renderer_bitext_new ();
@@ -341,6 +346,13 @@ call_history_view_gtk_new (boost::shared_ptr<History::Book> book,
   gtk_tree_view_column_add_attribute (column, renderer,
 				      "secondary-text", COLUMN_INFO);
   gtk_tree_view_append_column (self->priv->tree, column);
+
+  /* show icon */
+  renderer = gtk_cell_renderer_pixbuf_new ();
+  gtk_tree_view_column_pack_end (column, renderer, FALSE);
+  gtk_tree_view_column_add_attribute (column, renderer,
+				      "icon-name", COLUMN_PIXBUF);
+  g_object_set (renderer, "xalign", 1.0, "yalign", 0.5, "xpad", 6, "stock-size", 2, NULL);
 
   /* react to user clicks */
   selection = gtk_tree_view_get_selection (GTK_TREE_VIEW (self->priv->tree));
