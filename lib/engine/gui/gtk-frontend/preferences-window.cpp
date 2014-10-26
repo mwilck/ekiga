@@ -544,7 +544,6 @@ gm_pw_init_general_page (PreferencesWindow *self,
   entry = gm_pw_entry_new (container, _("_Full name:"),
                            self->priv->personal_data_settings, "full-name",
                            _("Enter your full name"), false);
-  gtk_widget_set_size_request (GTK_WIDGET (entry), 250, -1);
   gtk_entry_set_max_length (GTK_ENTRY (entry), 65);
 
   /* Display */
@@ -665,7 +664,6 @@ gm_pw_init_sound_events_page (PreferencesWindow *self,
                                                      "active",
                                                      0,
                                                      NULL);
-  gtk_tree_view_column_set_fixed_width (GTK_TREE_VIEW_COLUMN (column), 25);
   gtk_tree_view_append_column (GTK_TREE_VIEW (self->priv->sound_events_list), column);
   g_signal_connect (renderer, "toggled",
                     G_CALLBACK (sound_event_toggled_cb), (gpointer) self);
@@ -677,7 +675,6 @@ gm_pw_init_sound_events_page (PreferencesWindow *self,
                                                      1,
                                                      NULL);
   gtk_tree_view_append_column (GTK_TREE_VIEW (self->priv->sound_events_list), column);
-  gtk_tree_view_column_set_fixed_width (GTK_TREE_VIEW_COLUMN (column), 325);
 
   hbox = gtk_box_new (GTK_ORIENTATION_HORIZONTAL, 0);
   gtk_box_pack_start (GTK_BOX (vbox), hbox, FALSE, FALSE, 2);
@@ -1075,7 +1072,7 @@ gm_pw_string_option_menu_new (GtkWidget *subsection,
 
   option_menu = gtk_combo_box_text_new ();
   cells = gtk_cell_layout_get_cells (GTK_CELL_LAYOUT (option_menu));
-  g_object_set (G_OBJECT (cells->data), "ellipsize", PANGO_ELLIPSIZE_END, "width-chars", 30, NULL);
+  g_object_set (G_OBJECT (cells->data), "ellipsize", PANGO_ELLIPSIZE_END, "width-chars", 20, NULL);
   g_list_free (cells);
 
   gtk_label_set_mnemonic_widget (GTK_LABEL (label), option_menu);
@@ -1761,7 +1758,7 @@ preferences_window_new (GmApplication *app)
   gtk_widget_show_all (GTK_WIDGET (container));
 
   container = gm_pw_window_subsection_new (self,
-                                           _("Sound Events"));
+                                           _("Events"));
   gm_pw_init_sound_events_page (self, container);
   gtk_widget_show_all (GTK_WIDGET (container));
 
