@@ -158,13 +158,12 @@ static void gm_prefs_window_sound_events_list_build (PreferencesWindow *prefs_wi
  * 		  the given GtkBox.
  * PRE          : A valid pointer to the container widget where to attach
  *                the button, followed by a label, the callback, a
- *                tooltip and the alignment.
+ *                tooltip.
  */
 static void gm_pw_add_update_button (GtkWidget *box,
                                      const char *label,
                                      GCallback func,
                                      const gchar *tooltip,
-                                     gfloat valign,
                                      gpointer data);
 
 
@@ -513,10 +512,8 @@ gm_pw_add_update_button (GtkWidget *container,
                          const char *label,
                          GCallback func,
                          const gchar *tooltip,
-                         gfloat valign,
                          gpointer data)
 {
-  GtkWidget* alignment = NULL;
   GtkWidget* button = NULL;
 
   int pos = 0;
@@ -524,13 +521,12 @@ gm_pw_add_update_button (GtkWidget *container,
   /* Update Button */
   button = gtk_button_new_with_mnemonic (label);
   gtk_widget_set_tooltip_text (button, tooltip);
-
-  alignment = gtk_alignment_new (1, valign, 0, 0);
-  gtk_container_add (GTK_CONTAINER (alignment), button);
+  gtk_widget_set_halign (button, GTK_ALIGN_END);
+  gtk_widget_set_valign (button, GTK_ALIGN_END);
   gtk_container_set_border_width (GTK_CONTAINER (button), 0);
 
   GTK_GRID_LAST_ROW (container, pos);
-  gtk_grid_attach (GTK_GRID (container), alignment, 0, pos-1, 2, 1);
+  gtk_grid_attach (GTK_GRID (container), button, 0, pos-1, 2, 1);
 
   g_signal_connect (button, "clicked",
                     G_CALLBACK (func),
@@ -649,7 +645,6 @@ gm_pw_init_sound_events_page (PreferencesWindow *self,
 
   self->priv->sound_events_list =
     gtk_tree_view_new_with_model (GTK_TREE_MODEL (list_store));
-  gtk_tree_view_set_rules_hint (GTK_TREE_VIEW (self->priv->sound_events_list), TRUE);
   gtk_tree_view_set_headers_visible (GTK_TREE_VIEW (self->priv->sound_events_list), FALSE);
 
   selection =
@@ -910,7 +905,7 @@ gm_pw_init_audio_page (PreferencesWindow *self,
   /* That button will refresh the device list */
   gm_pw_add_update_button (container, _("_Detect devices"),
                            G_CALLBACK (refresh_devices_list_cb),
-                           _("Click here to refresh the device list"), 1,
+                           _("Click here to refresh the device list"),
                            self);
 }
 
@@ -1011,7 +1006,9 @@ gm_pw_init_video_page (PreferencesWindow *self,
                   _("The video channel number to use (to select camera, tv or other sources)"), 0.0, 10.0, 1.0);
 
   /* That button will refresh the device list */
-  gm_pw_add_update_button (container, _("_Detect devices"), G_CALLBACK (refresh_devices_list_cb), _("Click here to refresh the device list"), 1, self);
+  gm_pw_add_update_button (container, _("_Detect devices"),
+                           G_CALLBACK (refresh_devices_list_cb),
+                           _("Click here to refresh the device list"), self);
 }
 
 
@@ -1031,10 +1028,10 @@ gm_pw_entry_new (GtkWidget *subsection,
   GTK_GRID_LAST_ROW (subsection, pos);
 
   label = gtk_label_new_with_mnemonic (label_txt);
-  gtk_misc_set_alignment (GTK_MISC (label), 0.0, 0.5);
-  gtk_label_set_justify (GTK_LABEL (label), GTK_JUSTIFY_LEFT);
-  if (indent)
-    g_object_set (G_OBJECT (label), "margin-left", 12, NULL);
+  g_object_set (G_OBJECT (label),
+                "margin-left", indent ? 12 : 0,
+                "halign", GTK_ALIGN_END,
+                NULL);
   gtk_grid_attach (GTK_GRID (subsection), label, 0, pos-1, 1, 1);
 
   entry = gtk_entry_new ();
@@ -1070,10 +1067,10 @@ gm_pw_string_option_menu_new (GtkWidget *subsection,
   GTK_GRID_LAST_ROW (subsection, pos);
 
   label = gtk_label_new_with_mnemonic (label_txt);
-  gtk_misc_set_alignment (GTK_MISC (label), 0.0, 0.5);
-  gtk_label_set_justify (GTK_LABEL (label), GTK_JUSTIFY_LEFT);
-  if (indent)
-    g_object_set (G_OBJECT (label), "margin-left", 12, NULL);
+  g_object_set (G_OBJECT (label),
+                "margin-left", indent ? 12 : 0,
+                "halign", GTK_ALIGN_END,
+                NULL);
   gtk_grid_attach (GTK_GRID (subsection), label, 0, pos-1, 1, 1);
 
   option_menu = gtk_combo_box_text_new ();
@@ -1194,7 +1191,7 @@ gm_pw_scale_new (GtkWidget* subsection,
                  double min,
                  double max,
                  double step,
-                 G_GNUC_UNUSED bool indent)
+                 bool indent)
 {
   GtkWidget *hbox = NULL;
   GtkAdjustment *adj = NULL;
@@ -1208,10 +1205,10 @@ gm_pw_scale_new (GtkWidget* subsection,
   hbox = gtk_box_new (GTK_ORIENTATION_HORIZONTAL, 0);
 
   label = gtk_label_new_with_mnemonic (down_label_txt);
-  gtk_misc_set_alignment (GTK_MISC (label), 0.0, 0.5);
-  gtk_label_set_justify (GTK_LABEL (label), GTK_JUSTIFY_LEFT);
-  if (indent)
-    g_object_set (G_OBJECT (label), "margin-left", 12, NULL);
+  g_object_set (G_OBJECT (label),
+                "margin-left", indent ? 12 : 0,
+                "halign", GTK_ALIGN_END,
+                NULL);
   gtk_box_pack_start (GTK_BOX (hbox), label, FALSE, FALSE, 2);
 
   adj = (GtkAdjustment *)
@@ -1250,7 +1247,7 @@ gm_pw_spin_new (GtkWidget* subsection,
                 double min,
                 double max,
                 double step,
-                G_GNUC_UNUSED bool indent)
+                bool indent)
 {
   GtkAdjustment *adj = NULL;
   GtkWidget *label = NULL;
@@ -1262,10 +1259,10 @@ gm_pw_spin_new (GtkWidget* subsection,
   GTK_GRID_LAST_ROW (subsection, pos);
 
   label = gtk_label_new_with_mnemonic (label_txt);
-  gtk_misc_set_alignment (GTK_MISC (label), 0.0, 0.5);
-  gtk_label_set_justify (GTK_LABEL (label), GTK_JUSTIFY_LEFT);
-  if (indent)
-    g_object_set (G_OBJECT (label), "margin-left", 12, NULL);
+  g_object_set (G_OBJECT (label),
+                "margin-left", indent ? 12 : 0,
+                "halign", GTK_ALIGN_END,
+                NULL);
 
   adj = (GtkAdjustment *)
     gtk_adjustment_new (settings->get_int (key),
@@ -1344,9 +1341,10 @@ gm_pw_window_subsection_new (PreferencesWindow *self,
     return NULL;
 
   container = gtk_grid_new ();
-  gtk_container_set_border_width (GTK_CONTAINER (container), 12);
-  gtk_grid_set_column_spacing (GTK_GRID (container), 6);
+  gtk_grid_set_column_spacing (GTK_GRID (container), 12);
   gtk_grid_set_row_spacing (GTK_GRID (container), 6);
+  gtk_container_set_border_width (GTK_CONTAINER (container), 18);
+
   gtk_grid_set_column_homogeneous (GTK_GRID (container), FALSE);
   gtk_grid_set_row_homogeneous (GTK_GRID (container), FALSE);
 
@@ -1372,10 +1370,12 @@ gm_pw_subsection_new (GtkWidget *container,
   label = gtk_label_new (NULL);
   label_txt = g_strdup_printf ("<b>%s</b>", name);
   gtk_label_set_markup (GTK_LABEL (label), label_txt);
-  gtk_misc_set_alignment (GTK_MISC (label), 0.0, 0.5);
-  gtk_label_set_justify (GTK_LABEL (label), GTK_JUSTIFY_LEFT);
+  g_object_set (G_OBJECT (label),
+                "margin-top", 12, // We have 6 pixels between each row
+                                  // and the HIG asks for 18 pixels between
+                                  // subsections
+                "halign", GTK_ALIGN_START, NULL);
   gtk_grid_attach (GTK_GRID (container), label, 0, pos-1, 2, 1);
-  g_object_set (G_OBJECT (label), "margin-top", 9, NULL);
   g_free (label_txt);
 }
 
