@@ -50,6 +50,7 @@
 #include "scoped-connections.h"
 
 #include "codecsbox.h"
+#include "gm-entry.h"
 
 #ifdef WIN32
 #include "platform/winpaths.h"
@@ -558,6 +559,7 @@ gm_pw_init_general_page (PreferencesWindow *self,
   entry = gm_pw_entry_new (container, _("_Full Name"),
                            self->priv->personal_data_settings, "full-name",
                            _("Enter your full name"), false);
+  g_object_set (entry, "allow-empty", FALSE, NULL);
   gtk_entry_set_max_length (GTK_ENTRY (entry), 65);
 
   /* Network Settings */
@@ -758,6 +760,7 @@ gm_pw_init_h323_page (PreferencesWindow *self,
                      self->priv->h323_settings, "forward-host",
                      _("The host where calls should be forwarded if call forwarding is enabled"),
                      false);
+  g_object_set (entry, "regex", BASIC_URI_REGEX, NULL);
   if (!g_strcmp0 (gtk_entry_get_text (GTK_ENTRY (entry)), ""))
     gtk_entry_set_text (GTK_ENTRY (entry), "h323:");
 
@@ -821,7 +824,7 @@ gm_pw_init_sip_page (PreferencesWindow *self,
                      self->priv->sip_settings, "forward-host",
                      _("The host where calls should be forwarded if call forwarding is enabled"),
                      false);
-
+  g_object_set (entry, "regex", BASIC_URI_REGEX, NULL);
   if (!g_strcmp0 (gtk_entry_get_text (GTK_ENTRY (entry)), ""))
     gtk_entry_set_text (GTK_ENTRY (entry), "sip:");
 
@@ -1029,7 +1032,7 @@ gm_pw_entry_new (GtkWidget *subsection,
                 NULL);
   gtk_grid_attach (GTK_GRID (subsection), label, 0, pos-1, 1, 1);
 
-  entry = gtk_entry_new ();
+  entry = gm_entry_new (NULL);
   gtk_label_set_mnemonic_widget (GTK_LABEL(label), entry);
   gtk_grid_attach_next_to (GTK_GRID (subsection), entry, label, GTK_POS_RIGHT, 1, 1);
 
