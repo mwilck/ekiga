@@ -127,7 +127,7 @@ _PreferencesWindowPrivate::_PreferencesWindowPrivate ()
     boost::shared_ptr<Ekiga::Settings> (new Ekiga::Settings (CONTACTS_SCHEMA));
 }
 
-G_DEFINE_TYPE (PreferencesWindow, preferences_window, GTK_TYPE_DIALOG);
+G_DEFINE_TYPE (PreferencesWindow, preferences_window, GM_TYPE_WINDOW);
 
 enum {
   COLUMN_STRING_RAW = 0,
@@ -371,16 +371,6 @@ static void  gm_prefs_window_update_devices_list (PreferencesWindow *self);
 
 
 /* Callbacks */
-
-/* DESCRIPTION  :  This callback is called when the user clicks
- *                 on the Close or Help buttons.
- * BEHAVIOR     :  Show help or destroy the window.
- * PRE          :  /
- */
-static void dialog_response_cb (GtkDialog *dialog,
-                                gint response_id,
-                                G_GNUC_UNUSED gpointer data);
-
 
 /* DESCRIPTION  :  This callback is called when the user clicks
  *                 on the refresh devices list button in the prefs.
@@ -1441,23 +1431,6 @@ gm_prefs_window_update_devices_list (PreferencesWindow *self)
 
 /* Callbacks */
 static void
-dialog_response_cb (GtkDialog *dialog,
-                    gint response_id,
-                    G_GNUC_UNUSED gpointer data)
-{
-  switch (response_id) {
-  case GTK_RESPONSE_HELP:
-    //help_callback (NULL, NULL);
-    std::cout << "FIXME" << std::endl << std::flush;
-    g_signal_stop_emission_by_name (dialog, "response");
-    break;
-  default:
-    gtk_widget_destroy (GTK_WIDGET (dialog));
-  }
-}
-
-
-static void
 refresh_devices_list_cb (G_GNUC_UNUSED GtkWidget *widget,
                          gpointer data)
 {
@@ -1749,40 +1722,32 @@ preferences_window_new (GmApplication *app)
 
   g_return_val_if_fail (GM_IS_APPLICATION (app), NULL);
 
-  GdkPixbuf *pixbuf = NULL;
   GtkWidget *container = NULL;
   boost::signals2::connection conn;
 
   Ekiga::ServiceCorePtr core = gm_application_get_core (app);
 
   /* The window */
-  self = (PreferencesWindow *) g_object_new (PREFERENCES_WINDOW_TYPE, NULL);
+  self = (PreferencesWindow *) g_object_new (PREFERENCES_WINDOW_TYPE,
+                                             "application", GTK_APPLICATION (app),
+                                             "key", USER_INTERFACE ".preferences-window",
+                                             "hide_on_delete", false,
+                                             "hide_on_esc", false, NULL);
+
   self->priv = new PreferencesWindowPrivate ();
   self->priv->audioinput_core = core->get<Ekiga::AudioInputCore> ("audioinput-core");
   self->priv->audiooutput_core = core->get<Ekiga::AudioOutputCore> ("audiooutput-core");
   self->priv->videoinput_core = core->get<Ekiga::VideoInputCore> ("videoinput-core");
   self->priv->app = app;
 
-  gtk_dialog_add_button (GTK_DIALOG (self), GTK_STOCK_CLOSE, GTK_RESPONSE_CANCEL);
-  gtk_dialog_add_button (GTK_DIALOG (self), GTK_STOCK_HELP, GTK_RESPONSE_HELP);
-
   self->priv->notebook = gtk_notebook_new ();
   gtk_notebook_set_show_tabs (GTK_NOTEBOOK (self->priv->notebook), TRUE);
   gtk_notebook_set_show_border (GTK_NOTEBOOK (self->priv->notebook), FALSE);
 
-  container = gtk_dialog_get_content_area (GTK_DIALOG (self));
-  gtk_box_pack_start (GTK_BOX (container), self->priv->notebook, TRUE, TRUE, 0);
-  gtk_widget_show_all (GTK_WIDGET (container));
+  gtk_container_add (GTK_CONTAINER (self), self->priv->notebook);
+  gtk_widget_show_all (GTK_WIDGET (self->priv->notebook));
 
-  g_signal_connect (G_OBJECT (self), "response",
-                    G_CALLBACK (dialog_response_cb), NULL);
-
-  gtk_window_set_title (GTK_WINDOW (self), _("Ekiga Preferences"));
-  pixbuf = gtk_widget_render_icon_pixbuf (GTK_WIDGET (self),
-                                          GTK_STOCK_PREFERENCES,
-                                          GTK_ICON_SIZE_MENU);
-  gtk_window_set_icon (GTK_WINDOW (self), pixbuf);
-  g_object_unref (pixbuf);
+  gtk_window_set_title (GTK_WINDOW (self), _("Preferences"));
   gtk_widget_realize (GTK_WIDGET (self));
 
   /* Stuff */

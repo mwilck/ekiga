@@ -878,7 +878,7 @@ gm_application_show_preferences_window (GmApplication *self)
 
   window = GTK_WINDOW (preferences_window_new (self));
   gtk_window_set_transient_for (GTK_WINDOW (window), GTK_WINDOW (parent));
-  gtk_dialog_run (GTK_DIALOG (window));
+  gtk_window_present (window);
 }
 
 

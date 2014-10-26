@@ -48,6 +48,8 @@
 #include "audiooutput-core.h"
 #include "videoinput-core.h"
 
+#include "gmwindow.h"
+
 #include "ekiga-app.h"
 
 typedef struct _PreferencesWindow PreferencesWindow;
@@ -57,14 +59,14 @@ typedef struct _PreferencesWindowClass PreferencesWindowClass;
 /* GObject thingies */
 struct _PreferencesWindow
 {
-  GtkDialog parent;
+  GmWindow parent;
 
   PreferencesWindowPrivate *priv;
 };
 
 struct _PreferencesWindowClass
 {
-  GtkDialogClass parent;
+  GmWindowClass parent;
 };
 
 
