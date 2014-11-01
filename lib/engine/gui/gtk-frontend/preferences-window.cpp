@@ -52,6 +52,10 @@
 #include "codecsbox.h"
 #include "gm-entry.h"
 
+#ifndef HAVE_SIDEBAR
+#include "gm-sidebar.h"
+#endif
+
 #ifdef WIN32
 #include "platform/winpaths.h"
 #endif
@@ -71,7 +75,7 @@ struct _PreferencesWindowPrivate
   GtkWidget *video_device;
   GtkWidget *iface;
   GtkWidget *fsbutton;
-  GtkWidget *notebook;
+  GtkWidget *stack;
 
   GmApplication *app;
 
@@ -544,21 +548,21 @@ gm_pw_init_general_page (PreferencesWindow *self,
   /* Display */
   gm_pw_toggle_new (container, _("Show o_ffline contacts"),
                     self->priv->contacts_settings, "show-offline-contacts",
-                    _("Show offline contacts in the roster"));
+                    _("Show offline contacts in the roster"), false);
 
   gm_pw_toggle_new (container, _("Place windows displaying video _above other windows"),
                     self->priv->video_display_settings, "stay-on-top",
-                    _("Place windows displaying video above other windows during calls"));
+                    _("Place windows displaying video above other windows during calls"), false);
 
   gm_pw_toggle_new (container, _("Enable _Picture-In-Picture mode"),
                     self->priv->video_display_settings, "enable-pip",
-                    _("This allows the local video stream to be displayed incrusted in the remote video stream. This is only effective when sending and receiving video"));
+                    _("This allows the local video stream to be displayed incrusted in the remote video stream. This is only effective when sending and receiving video"), false);
 
   /* Personal Information */
   gm_pw_subsection_new (container, _("Personal Information"));
   entry = gm_pw_entry_new (container, _("_Full Name"),
                            self->priv->personal_data_settings, "full-name",
-                           _("Enter your full name"), false);
+                           _("Enter your full name"), true);
   g_object_set (entry, "allow-empty", FALSE, NULL);
   gtk_entry_set_max_length (GTK_ENTRY (entry), 65);
 
@@ -1329,7 +1333,6 @@ gm_pw_window_subsection_new (PreferencesWindow *self,
                              const gchar *section_name)
 {
   GtkWidget *container = NULL;
-  GtkWidget *label = NULL;
 
   if (!self)
     return NULL;
@@ -1345,9 +1348,8 @@ gm_pw_window_subsection_new (PreferencesWindow *self,
   gtk_grid_set_column_homogeneous (GTK_GRID (container), FALSE);
   gtk_grid_set_row_homogeneous (GTK_GRID (container), FALSE);
 
-  label = gtk_label_new (section_name);
-  gtk_notebook_append_page (GTK_NOTEBOOK (self->priv->notebook),
-                            container, label);
+  gtk_stack_add_titled (GTK_STACK (self->priv->stack),
+                        container, section_name, section_name);
 
   gtk_widget_show_all (container);
 
@@ -1720,6 +1722,10 @@ preferences_window_new (GmApplication *app)
   g_return_val_if_fail (GM_IS_APPLICATION (app), NULL);
 
   GtkWidget *container = NULL;
+  GtkWidget *box = NULL;
+  GtkWidget *sidebar = NULL;
+  GtkWidget *headerbar = NULL;
+
   boost::signals2::connection conn;
 
   Ekiga::ServiceCorePtr core = gm_application_get_core (app);
@@ -1737,15 +1743,24 @@ preferences_window_new (GmApplication *app)
   self->priv->videoinput_core = core->get<Ekiga::VideoInputCore> ("videoinput-core");
   self->priv->app = app;
 
-  self->priv->notebook = gtk_notebook_new ();
-  gtk_notebook_set_show_tabs (GTK_NOTEBOOK (self->priv->notebook), TRUE);
-  gtk_notebook_set_show_border (GTK_NOTEBOOK (self->priv->notebook), FALSE);
+  headerbar = gtk_header_bar_new ();
+  gtk_header_bar_set_show_close_button (GTK_HEADER_BAR (headerbar), TRUE);
+  gtk_header_bar_set_title (GTK_HEADER_BAR (headerbar), _("Preferences"));
+  gtk_header_bar_set_subtitle (GTK_HEADER_BAR (headerbar), _("Edit your settings"));
+  gtk_window_set_titlebar (GTK_WINDOW (self), headerbar);
+  gtk_widget_show (headerbar);
 
-  gtk_container_add (GTK_CONTAINER (self), self->priv->notebook);
-  gtk_widget_show_all (GTK_WIDGET (self->priv->notebook));
+  box = gtk_box_new (GTK_ORIENTATION_HORIZONTAL, 0);
+  gtk_container_add (GTK_CONTAINER (self), box);
 
-  gtk_window_set_title (GTK_WINDOW (self), _("Preferences"));
-  gtk_widget_realize (GTK_WIDGET (self));
+  sidebar = gtk_sidebar_new ();
+  gtk_box_pack_start (GTK_BOX (box), sidebar, TRUE, TRUE, 0);
+
+  self->priv->stack = gtk_stack_new ();
+  gtk_sidebar_set_stack (GTK_SIDEBAR (sidebar), GTK_STACK (self->priv->stack));
+  gtk_box_pack_start (GTK_BOX (box), self->priv->stack, TRUE, TRUE, 0);
+
+  gtk_widget_show_all (GTK_WIDGET (box));
 
   /* Stuff */
   container = gm_pw_window_subsection_new (self,
@@ -1753,12 +1768,12 @@ preferences_window_new (GmApplication *app)
   gm_pw_init_general_page (self, container);
   gtk_widget_show_all (GTK_WIDGET (container));
 
-  container = gm_pw_window_subsection_new (self, _("Forwarding"));
+  container = gm_pw_window_subsection_new (self, _("Call Forwarding"));
   gm_pw_init_call_options_page (self, container);
   gtk_widget_show_all (GTK_WIDGET (container));
 
   container = gm_pw_window_subsection_new (self,
-                                           _("Events"));
+                                           _("Sound Events"));
   gm_pw_init_sound_events_page (self, container);
   gtk_widget_show_all (GTK_WIDGET (container));
 
