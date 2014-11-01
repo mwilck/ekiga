@@ -101,10 +101,11 @@ Ekiga::GActorMenu::get_model (const Ekiga::GActorMenuStore & store)
 {
   int c = 0;
   std::string content = as_xml ();
+
   for (Ekiga::GActorMenuStore::const_iterator it = store.begin ();
        it != store.end ();
        it++) {
-    content = content + "<section>" + (*it)->as_xml () + "<section>";
+    content = content + (*it)->as_xml ();
     c += (*it)->size ();
   }
   content = "<?xml_content version=\"1.0\"?>"
