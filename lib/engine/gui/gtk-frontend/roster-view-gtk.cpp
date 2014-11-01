@@ -1222,7 +1222,7 @@ on_presentity_added (RosterViewGtk* self,
   roster_view_gtk_update_groups (self, &heap_iter);
 
   if (should_emit)
-    g_signal_emit (self, signals[ACTIONS_CHANGED_SIGNAL], 0);
+    g_signal_emit (self, signals[ACTIONS_CHANGED_SIGNAL], 0, NULL);
 }
 
 
