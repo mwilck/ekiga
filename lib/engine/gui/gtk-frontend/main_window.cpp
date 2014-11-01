@@ -855,6 +855,9 @@ ekiga_main_window_init_history (EkigaMainWindow *mw)
   gtk_container_child_set (GTK_CONTAINER (mw->priv->main_stack),
                            mw->priv->call_history_view,
                            "icon-name", "document-open-recent-symbolic", NULL);
+
+  g_signal_connect (mw->priv->call_history_view, "actions-changed",
+                    G_CALLBACK (actions_changed_cb), mw);
 }
 
 

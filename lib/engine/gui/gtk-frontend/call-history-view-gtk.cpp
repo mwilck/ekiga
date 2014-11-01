@@ -62,7 +62,6 @@ struct _CallHistoryViewGtkPrivate
   {}
 
   boost::shared_ptr<History::Book> book;
-  History::Contact *selected_contact;
 
   Ekiga::GActorMenuPtr menu;
   Ekiga::GActorMenuPtr contact_menu;
@@ -84,7 +83,7 @@ enum {
 
 /* and this is the list of signals supported */
 enum {
-  SELECTION_CHANGED_SIGNAL,
+  ACTIONS_CHANGED_SIGNAL,
   LAST_SIGNAL
 };
 
@@ -173,16 +172,14 @@ on_clicked (G_GNUC_UNUSED GtkWidget *tree,
 	    GdkEventButton *event,
 	    gpointer data)
 {
-  GtkWidget *menu = NULL;
-
   CallHistoryViewGtk *self = CALL_HISTORY_VIEW_GTK (data);
 
   /* Ignore no click events */
   if (event->type != GDK_BUTTON_PRESS && event->type != GDK_2BUTTON_PRESS)
     return TRUE;
 
-  if (event->type == GDK_BUTTON_PRESS && event->button == 3 && self->priv->selected_contact) {
-
+  if (event->type == GDK_BUTTON_PRESS && event->button == 3 && self->priv->contact_menu) {
+    std::cout << "hyyyyyyy " << std::endl << std::flush;
     gtk_menu_popup (GTK_MENU (self->priv->contact_menu->get_menu (boost::assign::list_of (self->priv->menu))),
                     NULL, NULL, NULL, NULL, event->button, event->time);
   }
@@ -203,17 +200,17 @@ on_selection_changed (G_GNUC_UNUSED GtkTreeSelection* selection,
    * properly removed before adding new ones.
    */
   self->priv->contact_menu.reset ();
-  self->priv->selected_contact = NULL;
 
   /* Set or reset ContactActor data */
   call_history_view_gtk_get_selected (self, &contact);
 
   if (contact != NULL) {
-    self->priv->selected_contact = contact;
-    self->priv->contact_menu = Ekiga::GActorMenuPtr (new Ekiga::GActorMenu (*self->priv->selected_contact));
+    self->priv->contact_menu = Ekiga::GActorMenuPtr (new Ekiga::GActorMenu (*contact));
+    g_signal_emit (self, signals[ACTIONS_CHANGED_SIGNAL], 0,
+                   self->priv->contact_menu->get_model (boost::assign::list_of (self->priv->menu)));
   }
-
-  g_signal_emit (self, signals[SELECTION_CHANGED_SIGNAL], 0);
+  else
+    g_signal_emit (self, signals[ACTIONS_CHANGED_SIGNAL], 0, NULL);
 }
 
 /* GObject stuff */
@@ -236,6 +233,7 @@ call_history_view_gtk_dispose (GObject* obj)
 
     selection = gtk_tree_view_get_selection (view->priv->tree);
 
+    std::cout << "ATTENTION FIXME ET DANS ROSTER AUSSI " << std::endl << std::flush;
     g_signal_handlers_disconnect_matched (selection,
 					  (GSignalMatchType) G_SIGNAL_MATCH_DATA,
 					  0, /* signal_id */
@@ -282,14 +280,14 @@ call_history_view_gtk_class_init (CallHistoryViewGtkClass* klass)
   gobject_class->dispose = call_history_view_gtk_dispose;
   gobject_class->finalize = call_history_view_gtk_finalize;
 
-  signals[SELECTION_CHANGED_SIGNAL] =
-    g_signal_new ("selection-changed",
+  signals[ACTIONS_CHANGED_SIGNAL] =
+    g_signal_new ("actions-changed",
 		  G_OBJECT_CLASS_TYPE (gobject_class),
 		  G_SIGNAL_RUN_LAST,
 		  G_STRUCT_OFFSET (CallHistoryViewGtkClass, selection_changed),
 		  NULL, NULL,
-		  g_cclosure_marshal_VOID__VOID,
-		  G_TYPE_NONE, 0);
+		  g_cclosure_marshal_VOID__OBJECT,
+		  G_TYPE_NONE, 1, G_TYPE_MENU_MODEL);
 }
 
 /* public api */
@@ -310,7 +308,6 @@ call_history_view_gtk_new (boost::shared_ptr<History::Book> book,
   self = (CallHistoryViewGtk*)g_object_new (CALL_HISTORY_VIEW_GTK_TYPE, NULL);
 
   self->priv = new _CallHistoryViewGtkPrivate (book);
-  self->priv->selected_contact = NULL;
 
   gtk_scrolled_window_set_policy (GTK_SCROLLED_WINDOW (self),
 				  GTK_POLICY_AUTOMATIC, GTK_POLICY_AUTOMATIC);
