@@ -80,10 +80,6 @@ namespace History
     { return "document-open-recent"; }
 
 
-    /* Actor api */
-    void register_actions ();
-
-
     /* more specific api */
 
     void add (const std::string & name,

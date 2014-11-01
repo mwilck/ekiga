@@ -84,7 +84,10 @@ History::Book::Book (Ekiga::ServiceCore& core):
   enforce_size_limit ();
 
   /* Actor actions should be added */
-  register_actions ();
+  add_action (Ekiga::ActionPtr (new Ekiga::Action ("history_book_clear",
+                                                   _("Clear History"),
+                                                   boost::bind (&History::Book::clear,
+                                                                this))));
 }
 
 History::Book::~Book ()
@@ -104,16 +107,6 @@ History::Book::visit_contacts (boost::function1<bool, Ekiga::ContactPtr> visitor
        iter != ordered_contacts.end();
        ++iter)
     visitor (*iter);
-}
-
-void
-History::Book::register_actions ()
-{
-  /* Add Actor actions */
-  add_action (Ekiga::ActionPtr (new Ekiga::Action ("history_book_clear",
-                                                   _("Clear History"),
-                                                   boost::bind (&History::Book::clear,
-                                                                this))));
 }
 
 void
