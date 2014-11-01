@@ -152,6 +152,12 @@ libekiga_la_SOURCES += \
 	gui/gm-smiley-chooser-button.c \
 	gui/gm-smiley-chooser-button.h
 
+if !HAVE_SIDEBAR
+libekiga_la_SOURCES += \
+	gui/gm-sidebar.h \
+	gui/gm-sidebar.c
+endif
+
 ##
 # Sources of the main engine code
 ##

@@ -158,6 +158,13 @@ else
    PKG_CHECK_MODULES([GTK], [gtk+-3.0 >= 3.12.0 gnome-icon-theme >= 3.0.0])
 fi
 PKG_CHECK_MODULES([GLIB], [glib-2.0 >= 2.24.0 gmodule-2.0 gobject-2.0 gthread-2.0 gio-2.0])
+
+PKG_CHECK_MODULES([GTK_NO_SIDEBAR], [gtk+-3.0 <  3.16.0], [found_sidebar="no"])
+if test "x${found_sidebar}" != "xno" ; then
+     AC_DEFINE(HAVE_SIDEBAR,1,[GtkSideBar support])
+fi
+AM_CONDITIONAL(HAVE_SIDEBAR, test "x$found_sidebar" != "xno")
+
 AC_ARG_ENABLE([gtk-debug],
               [AS_HELP_STRING([--enable-gtk-debug],[enable GTK+ debug flags (default is disabled)])],
               [if test "x$enableval" = "xyes"; then
