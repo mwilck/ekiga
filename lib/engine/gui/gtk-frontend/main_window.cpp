@@ -392,9 +392,9 @@ on_account_updated (Ekiga::BankPtr /*bank*/,
 }
 
 
-static void on_setup_call_cb (boost::shared_ptr<Ekiga::CallManager> manager,
-                              boost::shared_ptr<Ekiga::Call>  call,
-                              gpointer self)
+static void on_created_call_cb (boost::shared_ptr<Ekiga::CallManager> manager,
+                                boost::shared_ptr<Ekiga::Call>  call,
+                                gpointer self)
 {
   EkigaMainWindow *mw = EKIGA_MAIN_WINDOW (self);
 
@@ -1020,7 +1020,7 @@ ekiga_main_window_connect_engine_signals (EkigaMainWindow *mw)
   conn = mw->priv->account_core->account_updated.connect (boost::bind (&on_account_updated, _1, _2, (gpointer) mw));
   mw->priv->connections.add (conn);
 
-  conn = mw->priv->call_core->setup_call.connect (boost::bind (&on_setup_call_cb, _1, _2, (gpointer) mw));
+  conn = mw->priv->call_core->created_call.connect (boost::bind (&on_created_call_cb, _1, _2, (gpointer) mw));
   mw->priv->connections.add (conn);
 
   conn = mw->priv->call_core->ringing_call.connect (boost::bind (&on_ringing_call_cb, _1, _2, (gpointer) mw));
