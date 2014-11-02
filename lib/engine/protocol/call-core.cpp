@@ -149,6 +149,8 @@ bool CallCore::is_supported_uri (const std::string & uri)
 
 void CallCore::add_call (boost::shared_ptr<Call> call, boost::shared_ptr<CallManager> manager)
 {
+  created_call (manager, call);
+
   boost::shared_ptr<Ekiga::scoped_connections> conns(new Ekiga::scoped_connections);
 
   conns->add (call->ringing.connect (boost::bind (&CallCore::on_ringing_call, this,
