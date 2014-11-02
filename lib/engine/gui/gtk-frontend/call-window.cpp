@@ -334,6 +334,9 @@ static void ekiga_call_window_clear_signal_levels (EkigaCallWindow *self);
 
 static void ekiga_call_window_clear_stats (EkigaCallWindow *self);
 
+static void ekiga_call_window_update_title (EkigaCallWindow *self,
+                                            unsigned calling_state);
+
 static void ekiga_call_window_update_stats (EkigaCallWindow *self,
                                             float lost,
                                             float late,
@@ -540,7 +543,7 @@ on_videooutput_device_opened_cb (Ekiga::VideoOutputManager & /* manager */,
                                  Ekiga::VideoOutputManager::VideoView type,
                                  unsigned width,
                                  unsigned height,
-                                 bool both_streams,
+                                 G_GNUC_UNUSED bool both_streams,
                                  G_GNUC_UNUSED bool ext_stream,
                                  gpointer data)
 {
@@ -916,8 +919,6 @@ on_setup_call_cb (boost::shared_ptr<Ekiga::CallManager> manager,
     self->priv->calling_state = Calling;
   }
 
-  gtk_window_set_title (GTK_WINDOW (self), call->get_remote_uri ().c_str ());
-
   ekiga_call_window_update_calling_state (self, self->priv->calling_state);
 
   conn = call->questions.connect (boost::bind (&on_handle_questions, _1, (gpointer) self));
@@ -1181,11 +1182,6 @@ ekiga_call_window_update_calling_state (EkigaCallWindow *self,
   switch (calling_state)
     {
     case Standby:
-      /* Call Window Title */
-      gtk_header_bar_set_title (GTK_HEADER_BAR (self->priv->call_panel_toolbar),
-                                _("Call Window"));
-      gtk_header_bar_set_subtitle (GTK_HEADER_BAR (self->priv->call_panel_toolbar), "");
-
       /* Spinner updates */
       gtk_widget_hide (self->priv->spinner);
       gtk_spinner_stop (GTK_SPINNER (self->priv->spinner));
@@ -1228,6 +1224,7 @@ ekiga_call_window_update_calling_state (EkigaCallWindow *self,
       break;
     }
 
+  ekiga_call_window_update_title (self, calling_state);
   self->priv->calling_state = calling_state;
 }
 
@@ -1250,6 +1247,46 @@ ekiga_call_window_clear_stats (EkigaCallWindow *self)
     gm_powermeter_set_level (GM_POWERMETER (self->priv->qualitymeter), 0.0);
 }
 
+static void
+ekiga_call_window_update_title (EkigaCallWindow *self,
+                                unsigned calling_state)
+{
+  g_return_if_fail (self != NULL);
+  gchar *title = NULL;
+
+  switch (calling_state)
+    {
+    case Standby:
+      title = g_strdup (_("Call Window"));
+      break;
+
+    case Calling:
+      if (self->priv->current_call)
+        title = g_strdup_printf (_("Calling %s"),
+                                 self->priv->current_call->get_remote_uri ().c_str ());
+
+
+      break;
+
+    case Connected:
+      if (self->priv->current_call)
+        title = g_strdup_printf (_("Connected with %s"),
+                                 self->priv->current_call->get_remote_party_name ().c_str ());
+      break;
+
+    case Ringing:
+    case Called:
+      break;
+
+    default:
+      break;
+    }
+
+  if (title) {
+    gtk_header_bar_set_title (GTK_HEADER_BAR (self->priv->call_panel_toolbar), title);
+    g_free (title);
+  }
+}
 
 static void
 ekiga_call_window_update_stats (EkigaCallWindow *self,
@@ -1752,7 +1789,6 @@ ekiga_call_window_init_gui (EkigaCallWindow *self)
   GtkWidget *button = NULL;
 
   GtkWidget *image = NULL;
-  GtkWidget *alignment = NULL;
 
   GtkShadowType shadow_type;
 
