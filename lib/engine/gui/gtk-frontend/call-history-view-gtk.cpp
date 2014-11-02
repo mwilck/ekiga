@@ -179,7 +179,6 @@ on_clicked (G_GNUC_UNUSED GtkWidget *tree,
     return TRUE;
 
   if (event->type == GDK_BUTTON_PRESS && event->button == 3 && self->priv->contact_menu) {
-    std::cout << "hyyyyyyy " << std::endl << std::flush;
     gtk_menu_popup (GTK_MENU (self->priv->contact_menu->get_menu (boost::assign::list_of (self->priv->menu))),
                     NULL, NULL, NULL, NULL, event->button, event->time);
   }
