@@ -403,6 +403,7 @@ gm_application_startup (GApplication *app)
   g_signal_connect (self->priv->video_devices_settings->get_g_settings (),
                     "changed::enable-preview",
                     G_CALLBACK (video_preview_changed), self);
+  self->priv->call_window = NULL;
 }
 
 
@@ -848,10 +849,10 @@ gm_application_show_call_window (GmApplication *self)
 
   self->priv = G_TYPE_INSTANCE_GET_PRIVATE (self, GM_TYPE_APPLICATION, GmApplicationPrivate);
 
-  if (self->priv->call_window)
-    gtk_window_present (GTK_WINDOW (self->priv->call_window));
-  else
+  if (!self->priv->call_window)
     self->priv->call_window = call_window_new (self);
+
+  gtk_window_present (GTK_WINDOW (self->priv->call_window));
 
   g_signal_connect (G_OBJECT (self->priv->call_window), "destroy",
                     G_CALLBACK (call_window_destroyed_cb), self);
