@@ -363,10 +363,6 @@ static GtkWidget *gm_call_window_video_settings_window_new (EkigaCallWindow *cal
 
 static void ekiga_call_window_toggle_fullscreen (EkigaCallWindow *self);
 
-static void ekiga_call_window_channels_menu_update_sensitivity (EkigaCallWindow *self,
-                                                                bool is_video,
-                                                                bool is_transmitting);
-
 static void ekiga_call_window_connect_engine_signals (EkigaCallWindow *self);
 
 static void ekiga_call_window_init_gui (EkigaCallWindow *self);
@@ -656,7 +652,6 @@ on_videoinput_device_closed_cb (Ekiga::VideoInputManager & /* manager */,
 {
   EkigaCallWindow *self = EKIGA_CALL_WINDOW (data);
 
-  ekiga_call_window_channels_menu_update_sensitivity (self, true, false);
 }
 
 static void
@@ -1030,7 +1025,6 @@ on_stream_opened_cb (boost::shared_ptr<Ekiga::CallManager>  /*manager*/,
   bool is_video = (type == Ekiga::Call::Video);
 
   set_codec (self->priv, name, is_video, is_transmitting);
-  ekiga_call_window_channels_menu_update_sensitivity (self, is_video, true);
 }
 
 
@@ -1046,7 +1040,6 @@ on_stream_closed_cb (boost::shared_ptr<Ekiga::CallManager>  /*manager*/,
   bool is_video = (type == Ekiga::Call::Video);
 
   set_codec (self->priv, "", is_video, is_transmitting);
-  ekiga_call_window_channels_menu_update_sensitivity (self, is_video, false);
 }
 
 
@@ -1161,10 +1154,6 @@ ekiga_call_window_update_calling_state (EkigaCallWindow *self,
   switch (calling_state)
     {
     case Standby:
-
-      /* Update the sensitivity, all channels are closed */
-      ekiga_call_window_channels_menu_update_sensitivity (self, true, false);
-      ekiga_call_window_channels_menu_update_sensitivity (self, false, false);
 
       /* Spinner updates */
       gtk_widget_show (self->priv->camera_image);
@@ -1650,28 +1639,6 @@ ekiga_call_window_toggle_fullscreen (EkigaCallWindow *self)
   }
 }
 
-static void
-ekiga_call_window_channels_menu_update_sensitivity (EkigaCallWindow *self,
-                                                    bool is_video,
-                                                    bool is_transmitting)
-{
-  g_return_if_fail (EKIGA_IS_CALL_WINDOW (self));
-
-  /* FIXME
-  if (is_transmitting) {
-    if (!is_video)
-      gtk_menu_set_sensitive (self->priv->main_menu, "suspend_audio", true);
-    else
-      gtk_menu_set_sensitive (self->priv->main_menu, "suspend_video", true);
-  }
-  else {
-    if (!is_video)
-      gtk_menu_set_sensitive (self->priv->main_menu, "suspend_audio", false);
-    else
-      gtk_menu_set_sensitive (self->priv->main_menu, "suspend_video", false);
-  }
-  */
-}
 
 static void
 ekiga_call_window_connect_engine_signals (EkigaCallWindow *self)
