@@ -328,6 +328,9 @@ static gboolean ekiga_call_window_fullscreen_event_cb (GtkWidget *widget,
                                                        G_GNUC_UNUSED GdkEventAny *event);
 
 /**/
+static void ekiga_call_window_remove_action_entries (GActionMap *map,
+                                                      const GActionEntry *entries);
+
 static void ekiga_call_window_update_calling_state (EkigaCallWindow *self,
                                                     unsigned calling_state);
 
@@ -403,10 +406,18 @@ static const char* win_menu =
 
 static GActionEntry win_entries[] =
 {
-    { "audio-volume-settings", show_audio_settings_cb, NULL, NULL, NULL, 0 },
-    { "video-color-settings", show_video_settings_cb, NULL, NULL, NULL, 0 },
     { "show-extended-video",  show_extended_video_window_cb, NULL, NULL, NULL, 0 },
     { "enable-fullscreen", fullscreen_changed_cb, NULL, NULL, NULL, 0 }
+};
+
+static GActionEntry video_settings_entries[] =
+{
+    { "video-color-settings", show_video_settings_cb, NULL, NULL, NULL, 0 },
+};
+
+static GActionEntry audio_settings_entries[] =
+{
+    { "audio-volume-settings", show_audio_settings_cb, NULL, NULL, NULL, 0 },
 };
 /**/
 
@@ -643,6 +654,10 @@ on_videoinput_device_opened_cb (Ekiga::VideoInputManager & /* manager */,
   gtk_adjustment_set_value (GTK_ADJUSTMENT (self->priv->adj_contrast), settings.contrast);
 
   gtk_widget_queue_draw (self->priv->video_settings_frame);
+
+  g_action_map_add_action_entries (G_ACTION_MAP (g_application_get_default ()),
+                                   video_settings_entries, G_N_ELEMENTS (video_settings_entries),
+                                   self);
 }
 
 static void
@@ -652,6 +667,8 @@ on_videoinput_device_closed_cb (Ekiga::VideoInputManager & /* manager */,
 {
   EkigaCallWindow *self = EKIGA_CALL_WINDOW (data);
 
+  ekiga_call_window_remove_action_entries (G_ACTION_MAP (g_application_get_default ()),
+                                           video_settings_entries);
 }
 
 static void
@@ -1025,6 +1042,11 @@ on_stream_opened_cb (boost::shared_ptr<Ekiga::CallManager>  /*manager*/,
   bool is_video = (type == Ekiga::Call::Video);
 
   set_codec (self->priv, name, is_video, is_transmitting);
+
+  if (!is_video)
+    g_action_map_add_action_entries (G_ACTION_MAP (g_application_get_default ()),
+                                     audio_settings_entries, G_N_ELEMENTS (audio_settings_entries),
+                                     self);
 }
 
 
@@ -1040,6 +1062,9 @@ on_stream_closed_cb (boost::shared_ptr<Ekiga::CallManager>  /*manager*/,
   bool is_video = (type == Ekiga::Call::Video);
 
   set_codec (self->priv, "", is_video, is_transmitting);
+  if (!is_video)
+    ekiga_call_window_remove_action_entries (G_ACTION_MAP (g_application_get_default ()),
+                                             audio_settings_entries);
 }
 
 
@@ -1143,6 +1168,14 @@ ekiga_call_window_fullscreen_event_cb (GtkWidget *widget,
   ekiga_call_window_toggle_fullscreen (self);
 
   return true; // Do not relay the event anymore
+}
+
+static void
+ekiga_call_window_remove_action_entries (GActionMap *map,
+                                         const GActionEntry *entries)
+{
+  for (unsigned int i = 0 ; i < G_N_ELEMENTS (entries) ; i++)
+    g_action_map_remove_action (map, entries[i].name);
 }
 
 static void
