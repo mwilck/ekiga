@@ -1189,8 +1189,10 @@ ekiga_call_window_update_calling_state (EkigaCallWindow *self,
       /* Spinner updates */
       gtk_widget_hide (self->priv->spinner);
       gtk_spinner_stop (GTK_SPINNER (self->priv->spinner));
-      break;
 
+      /* Auto destroy */
+      g_timeout_add_seconds (2, on_delayed_destroy_cb, self);
+      break;
 
     case Calling:
       /* Spinner updates */
