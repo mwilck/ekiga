@@ -663,10 +663,8 @@ on_videoinput_device_opened_cb (Ekiga::VideoInputManager & /* manager */,
 static void
 on_videoinput_device_closed_cb (Ekiga::VideoInputManager & /* manager */,
                                 Ekiga::VideoInputDevice & /*device*/,
-                                gpointer data)
+                                gpointer /* data */)
 {
-  EkigaCallWindow *self = EKIGA_CALL_WINDOW (data);
-
   ekiga_call_window_remove_action_entries (G_ACTION_MAP (g_application_get_default ()),
                                            video_settings_entries);
 }
