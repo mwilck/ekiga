@@ -41,6 +41,7 @@
 #include "call.h"
 
 #include "notification-core.h"
+#include "form-request-simple.h"
 
 #ifndef __OPAL_CALL_H__
 #define __OPAL_CALL_H__
@@ -64,6 +65,7 @@ public:
 
     Call (CallManager &_manager,
           const std::string & uri);
+    ~Call ();
 
     /*
      * Call Management
@@ -77,6 +79,11 @@ public:
     */
     void answer ();
 
+    /** Transfer the call.
+     * Opens a popup to ask what uri to transfer to.
+     */
+    void transfer ();
+
     /** Transfer the call to the specified uri
      * @param: uri: where to transfer the call
      */
@@ -89,7 +96,7 @@ public:
     /** Toggle stream transmission (if any)
      * @param type the stream type
      */
-    void toggle_stream_pause (StreamType type);
+    void toggle_stream_pause (Ekiga::Call::StreamType type);
 
     /** Send the given DTMF
      * @param the dtmf (one char)
@@ -199,6 +206,10 @@ private:
     /*
      * Helper methods
      */
+    bool on_transfer_form_submitted (bool submitted,
+                                     Ekiga::Form& result,
+                                     std::string& error);
+
     void parse_info (OpalConnection & connection);
 
     PSafePtr<OpalConnection> get_remote_connection ()
