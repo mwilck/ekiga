@@ -314,19 +314,6 @@ static void on_stream_closed_cb (boost::shared_ptr<Ekiga::CallManager>  /*manage
                                  bool is_transmitting,
                                  gpointer self);
 
-static void on_stream_paused_cb (boost::shared_ptr<Ekiga::CallManager>  /*manager*/,
-                                 boost::shared_ptr<Ekiga::Call>  /*call*/,
-                                 std::string /*name*/,
-                                 Ekiga::Call::StreamType type,
-                                 gpointer self);
-
-
-static void on_stream_resumed_cb (boost::shared_ptr<Ekiga::CallManager>  /*manager*/,
-                                  boost::shared_ptr<Ekiga::Call>  /*call*/,
-                                  std::string /*name*/,
-                                  Ekiga::Call::StreamType type,
-                                  gpointer self);
-
 static bool on_handle_questions (Ekiga::FormRequestPtr request,
                                  gpointer data);
 
@@ -368,10 +355,6 @@ static void ekiga_call_window_set_bandwidth (EkigaCallWindow *self,
 
 static void ekiga_call_window_set_call_hold (EkigaCallWindow *self,
                                              bool is_on_hold);
-
-static void ekiga_call_window_set_channel_pause (EkigaCallWindow *self,
-                                                 gboolean pause,
-                                                 gboolean is_video);
 
 static void ekiga_call_window_init_menu (EkigaCallWindow *self);
 
@@ -1071,29 +1054,6 @@ on_stream_closed_cb (boost::shared_ptr<Ekiga::CallManager>  /*manager*/,
   ekiga_call_window_channels_menu_update_sensitivity (self, is_video, false);
 }
 
-static void
-on_stream_paused_cb (boost::shared_ptr<Ekiga::CallManager>  /*manager*/,
-                     boost::shared_ptr<Ekiga::Call>  /*call*/,
-                     std::string /*name*/,
-                     Ekiga::Call::StreamType type,
-                     gpointer data)
-{
-  EkigaCallWindow *self = EKIGA_CALL_WINDOW (data);
-
-  ekiga_call_window_set_channel_pause (self, true, (type == Ekiga::Call::Video));
-}
-
-static void
-on_stream_resumed_cb (boost::shared_ptr<Ekiga::CallManager>  /*manager*/,
-                      boost::shared_ptr<Ekiga::Call>  /*call*/,
-                      std::string /*name*/,
-                      Ekiga::Call::StreamType type,
-                      gpointer data)
-{
-  EkigaCallWindow *self = EKIGA_CALL_WINDOW (data);
-
-  ekiga_call_window_set_channel_pause (self, false, (type == Ekiga::Call::Video));
-}
 
 static bool
 on_handle_questions (Ekiga::FormRequestPtr request,
@@ -1454,35 +1414,6 @@ ekiga_call_window_set_call_hold (EkigaCallWindow *self,
   */
 }
 
-static void
-ekiga_call_window_set_channel_pause (EkigaCallWindow *self,
-                                     gboolean pause,
-                                     gboolean is_video)
-{
-  /* FIXME
-  GtkWidget *widget = NULL;
-  GtkWidget *child = NULL;
-  gchar *msg = NULL;
-
-  g_return_if_fail (EKIGA_IS_CALL_WINDOW (self));
-
-  if (!pause && !is_video)
-    msg = _("Suspend _Audio");
-  else if (!pause && is_video)
-    msg = _("Suspend _Video");
-  else if (pause && !is_video)
-    msg = _("Resume _Audio");
-  else if (pause && is_video)
-    msg = _("Resume _Video");
-
-  widget = gtk_menu_get_widget (self->priv->main_menu,
-                                is_video ? "suspend_video" : "suspend_audio");
-  child = gtk_bin_get_child (GTK_BIN (widget));
-
-  if (GTK_IS_LABEL (child))
-    gtk_label_set_text_with_mnemonic (GTK_LABEL (child), msg);
-    */
-}
 
 static GtkWidget *
 gm_call_window_video_settings_window_new (EkigaCallWindow *self)
@@ -1874,12 +1805,6 @@ ekiga_call_window_connect_engine_signals (EkigaCallWindow *self)
   self->priv->connections.add (conn);
 
   conn = self->priv->call_core->stream_closed.connect (boost::bind (&on_stream_closed_cb, _1, _2, _3, _4, _5, (gpointer) self));
-  self->priv->connections.add (conn);
-
-  conn = self->priv->call_core->stream_paused.connect (boost::bind (&on_stream_paused_cb, _1, _2, _3, _4, (gpointer) self));
-  self->priv->connections.add (conn);
-
-  conn = self->priv->call_core->stream_resumed.connect (boost::bind (&on_stream_resumed_cb, _1, _2, _3, _4, (gpointer) self));
   self->priv->connections.add (conn);
 }
 
