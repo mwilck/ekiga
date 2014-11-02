@@ -124,6 +124,7 @@ Opal::Call::~Call ()
   remove_action ("hangup");
   remove_action ("transfer");
   remove_action ("hold");
+  remove_action ("transmit-video");
 }
 
 void
@@ -418,6 +419,7 @@ Opal::Call::OnEstablished (OpalConnection & connection)
                                                      boost::bind (&Call::toggle_hold, this))));
     add_action (Ekiga::ActionPtr (new Ekiga::Action ("transfer", _("Transfer"),
                                                      boost::bind (&Call::transfer, this))));
+
     parse_info (connection);
     Ekiga::Runtime::run_in_main (boost::bind (&Opal::Call::emit_established_in_main, this));
   }
@@ -630,6 +632,10 @@ Opal::Call::OnOpenMediaStream (OpalMediaStream & stream)
   is_transmitting = !stream.IsSource ();
 
   Ekiga::Runtime::run_in_main (boost::bind (boost::ref (stream_opened), stream_name, type, is_transmitting));
+
+  if (type == Ekiga::Call::Video)
+    add_action (Ekiga::ActionPtr (new Ekiga::Action ("transmit-video", _("Transmit Video"),
+                                                     boost::bind (&Call::toggle_stream_pause, this, Ekiga::Call::Video))));
 }
 
 

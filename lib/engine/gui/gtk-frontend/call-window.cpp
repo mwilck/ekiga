@@ -192,10 +192,6 @@ static void show_video_settings_cb (G_GNUC_UNUSED GSimpleAction *action,
                                     G_GNUC_UNUSED GVariant *parameter,
                                     gpointer data);
 
-static void toggle_video_stream_pause_cb (G_GNUC_UNUSED GSimpleAction *action,
-                                          G_GNUC_UNUSED GVariant *parameter,
-                                          gpointer data);
-
 static void audio_volume_changed_cb (GtkAdjustment * /*adjustment*/,
                                      gpointer data);
 
@@ -435,8 +431,7 @@ static GActionEntry win_entries[] =
     { "audio-volume-settings", show_audio_settings_cb, NULL, NULL, NULL, 0 },
     { "video-color-settings", show_video_settings_cb, NULL, NULL, NULL, 0 },
     { "show-extended-video",  show_extended_video_window_cb, NULL, NULL, NULL, 0 },
-    { "enable-fullscreen", fullscreen_changed_cb, NULL, NULL, NULL, 0 },
-    { "transmit-video", toggle_video_stream_pause_cb, NULL, "true", NULL, 0 }
+    { "enable-fullscreen", fullscreen_changed_cb, NULL, NULL, NULL, 0 }
 };
 /**/
 
@@ -502,18 +497,6 @@ show_video_settings_cb (G_GNUC_UNUSED GSimpleAction *action,
   if (self->priv->video_settings_window)
     gtk_widget_show (GTK_WIDGET (self->priv->video_settings_window));
 }
-
-static void
-toggle_video_stream_pause_cb (G_GNUC_UNUSED GSimpleAction *action,
-                              G_GNUC_UNUSED GVariant *parameter,
-                              gpointer data)
-{
-  EkigaCallWindow *self = EKIGA_CALL_WINDOW (data);
-
-  if (self->priv->current_call)
-    self->priv->current_call->toggle_stream_pause (Ekiga::Call::Video);
-}
-
 
 static void
 audio_volume_changed_cb (GtkAdjustment * /*adjustment*/,
@@ -2010,7 +1993,6 @@ ekiga_call_window_init_gui (EkigaCallWindow *self)
   gtk_header_bar_pack_start (GTK_HEADER_BAR (self->priv->call_panel_toolbar), button);
   gtk_widget_set_tooltip_text (GTK_WIDGET (button),
                                _("Transfer the current call"));
-
 
   /* Menu button */
   button = gtk_menu_button_new ();
