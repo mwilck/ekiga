@@ -104,6 +104,7 @@ struct _GmApplicationPrivate
 
   GtkWidget *main_window;
   GtkWidget *chat_window;
+  GtkWidget *call_window;
 
   boost::shared_ptr<Ekiga::Settings> video_devices_settings;
 
@@ -113,6 +114,18 @@ struct _GmApplicationPrivate
 G_DEFINE_TYPE (GmApplication, gm_application, GTK_TYPE_APPLICATION);
 
 /* Private helpers */
+static void
+call_window_destroyed_cb (G_GNUC_UNUSED GtkWidget *widget,
+                          gpointer data)
+{
+  g_return_if_fail (GM_IS_APPLICATION (data));
+
+  GmApplication *self = GM_APPLICATION (data);
+  if (self->priv->call_window)
+    self->priv->call_window = NULL;
+}
+
+
 static gboolean
 option_context_parse (GOptionContext *context,
                       gchar **arguments,
@@ -831,15 +844,19 @@ GNU GPL for all the rest of the software thus combined.")
 GtkWidget *
 gm_application_show_call_window (GmApplication *self)
 {
-  GtkWidget *call_window = NULL;
   g_return_val_if_fail (GM_IS_APPLICATION (self), NULL);
 
   self->priv = G_TYPE_INSTANCE_GET_PRIVATE (self, GM_TYPE_APPLICATION, GmApplicationPrivate);
 
-  call_window = call_window_new (self);
-  gtk_window_present (GTK_WINDOW (call_window));
+  if (self->priv->call_window)
+    gtk_window_present (GTK_WINDOW (self->priv->call_window));
+  else
+    self->priv->call_window = call_window_new (self);
 
-  return call_window;
+  g_signal_connect (G_OBJECT (self->priv->call_window), "destroy",
+                    G_CALLBACK (call_window_destroyed_cb), self);
+
+  return self->priv->call_window;
 }
 
 
