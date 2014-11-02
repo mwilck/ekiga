@@ -48,7 +48,6 @@
 
 #include "gmvideowidget.h"
 #include "gmdialog.h"
-#include "gmentrydialog.h"
 #include "gmstatusbar.h"
 #include "gmstockicons.h"
 #include "gactor-menu.h"

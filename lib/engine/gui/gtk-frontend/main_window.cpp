@@ -46,7 +46,6 @@
 #include "gm-entry.h"
 
 #include "gmstockicons.h"
-#include "gmentrydialog.h"
 #include "gmstatusbar.h"
 #include "gmmenuaddon.h"
 #include "menu-builder-tools.h"

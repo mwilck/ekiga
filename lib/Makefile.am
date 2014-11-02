@@ -125,8 +125,6 @@ libekiga_la_SOURCES += \
 	gui/gm-entry.c \
 	gui/gmwindow.c \
 	gui/gmwindow.h \
-	gui/gmentrydialog.c \
-	gui/gmentrydialog.h \
 	gui/gmmenuaddon.c \
 	gui/gmmenuaddon.h \
 	gui/gmstatusbar.c \
