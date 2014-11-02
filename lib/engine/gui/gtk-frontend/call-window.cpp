@@ -111,14 +111,10 @@ struct _EkigaCallWindowPrivate
   GtkWidget *ext_video_win;
   GtkWidget *event_box;
   GtkWidget *spinner;
-  GtkWidget *info_text;
   GtkBuilder *builder;
 
   GtkWidget *video_widget;
   bool fullscreen;
-
-  GtkWidget *call_frame;
-  GtkWidget *camera_image;
 
   GtkWidget *call_panel_toolbar;
 
@@ -1185,38 +1181,33 @@ ekiga_call_window_update_calling_state (EkigaCallWindow *self,
   switch (calling_state)
     {
     case Standby:
+      /* Call Window Title */
+      gtk_header_bar_set_title (GTK_HEADER_BAR (self->priv->call_panel_toolbar),
+                                _("Call Window"));
+      gtk_header_bar_set_subtitle (GTK_HEADER_BAR (self->priv->call_panel_toolbar), "");
 
       /* Spinner updates */
-      gtk_widget_show (self->priv->camera_image);
       gtk_widget_hide (self->priv->spinner);
       gtk_spinner_stop (GTK_SPINNER (self->priv->spinner));
-
-      /* Show/hide call frame */
-      gtk_widget_hide (self->priv->call_frame);
       break;
 
 
     case Calling:
-
-      /* Show/hide call frame */
-      gtk_widget_show (self->priv->call_frame);
+      /* Spinner updates */
+      gtk_widget_show (self->priv->spinner);
+      gtk_spinner_start (GTK_SPINNER (self->priv->spinner));
       break;
 
     case Ringing:
 
       /* Spinner updates */
-      gtk_widget_hide (self->priv->camera_image);
       gtk_widget_show (self->priv->spinner);
       gtk_spinner_start (GTK_SPINNER (self->priv->spinner));
       break;
 
     case Connected:
 
-      /* Show/hide call frame */
-      gtk_widget_show (self->priv->call_frame);
-
       /* Spinner updates */
-      gtk_widget_show (self->priv->camera_image);
       gtk_widget_hide (self->priv->spinner);
       gtk_spinner_start (GTK_SPINNER (self->priv->spinner));
       break;
@@ -1225,7 +1216,6 @@ ekiga_call_window_update_calling_state (EkigaCallWindow *self,
     case Called:
 
       /* Show/hide call frame and call window (if no notifications */
-      gtk_widget_show (self->priv->call_frame);
       if (!notify_has_actions (self)) {
         gtk_window_present (GTK_WINDOW (self));
         gtk_widget_show (GTK_WIDGET (self));
@@ -1756,7 +1746,6 @@ ekiga_call_window_init_gui (EkigaCallWindow *self)
 {
   GtkWidget *event_box = NULL;
   GtkWidget *vbox = NULL;
-  GtkWidget *hbox = NULL;
   GtkWidget *frame = NULL;
   GtkWidget *button = NULL;
 
@@ -1800,32 +1789,6 @@ ekiga_call_window_init_gui (EkigaCallWindow *self)
   gtk_box_pack_start (GTK_BOX (vbox), GTK_WIDGET (self->priv->event_box), true, true, 0);
   gtk_widget_show_all (self->priv->event_box);
 
-  /* The frame that contains information about the call */
-  self->priv->call_frame = gtk_frame_new (NULL);
-  gtk_frame_set_shadow_type (GTK_FRAME (self->priv->call_frame), GTK_SHADOW_NONE);
-  hbox = gtk_box_new (GTK_ORIENTATION_HORIZONTAL, 0);
-
-  self->priv->camera_image = gtk_image_new_from_icon_name ("camera-web", GTK_ICON_SIZE_LARGE_TOOLBAR);
-  gtk_box_pack_start (GTK_BOX (hbox), self->priv->camera_image, false, false, 12);
-
-  self->priv->spinner = gtk_spinner_new ();
-  gtk_widget_set_size_request (GTK_WIDGET (self->priv->spinner), 24, 24);
-  gtk_box_pack_start (GTK_BOX (hbox), self->priv->spinner, false, false, 12);
-
-  self->priv->info_text = gtk_text_view_new ();
-  gtk_text_view_set_editable (GTK_TEXT_VIEW (self->priv->info_text), false);
-  gtk_widget_set_sensitive (GTK_WIDGET (self->priv->info_text), false);
-  gtk_text_view_set_wrap_mode (GTK_TEXT_VIEW (self->priv->info_text),
-                               GTK_WRAP_NONE);
-  gtk_text_view_set_cursor_visible  (GTK_TEXT_VIEW (self->priv->info_text), false);
-
-  alignment = gtk_alignment_new (0.0, 0.0, 1.0, 0.0);
-  gtk_container_add (GTK_CONTAINER (alignment), self->priv->info_text);
-  gtk_box_pack_start (GTK_BOX (hbox), alignment, false, false, 2);
-  gtk_container_add (GTK_CONTAINER (self->priv->call_frame), hbox);
-  gtk_box_pack_start (GTK_BOX (vbox), GTK_WIDGET (self->priv->call_frame), true, true, 2);
-  gtk_widget_show_all (self->priv->call_frame);
-  gtk_widget_hide (self->priv->spinner);
 
   /* FIXME:
    * All those actions should be call specific.
@@ -1860,6 +1823,11 @@ ekiga_call_window_init_gui (EkigaCallWindow *self)
   gtk_header_bar_pack_start (GTK_HEADER_BAR (self->priv->call_panel_toolbar), button);
   gtk_widget_set_tooltip_text (GTK_WIDGET (button),
                                _("Transfer the current call"));
+
+  /* Spinner */
+  self->priv->spinner = gtk_spinner_new ();
+  gtk_widget_set_size_request (GTK_WIDGET (self->priv->spinner), 24, 24);
+  gtk_header_bar_pack_end (GTK_HEADER_BAR (self->priv->call_panel_toolbar), self->priv->spinner);
 
   /* Menu button */
   button = gtk_menu_button_new ();
@@ -1903,8 +1871,6 @@ ekiga_call_window_init_gui (EkigaCallWindow *self)
 
   /* Init */
   ekiga_call_window_set_bandwidth (self, 0.0, 0.0, 0.0, 0.0);
-
-  gtk_widget_hide (self->priv->call_frame);
 }
 
 static void
