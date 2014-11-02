@@ -353,9 +353,6 @@ static void ekiga_call_window_set_bandwidth (EkigaCallWindow *self,
                                              float tv,
                                              float rv);
 
-static void ekiga_call_window_set_call_hold (EkigaCallWindow *self,
-                                             bool is_on_hold);
-
 static void ekiga_call_window_init_menu (EkigaCallWindow *self);
 
 static void ekiga_call_window_init_clutter (EkigaCallWindow *self);
@@ -988,7 +985,6 @@ on_held_call_cb (boost::shared_ptr<Ekiga::CallManager>  /*manager*/,
 {
   EkigaCallWindow *self = EKIGA_CALL_WINDOW (data);
 
-  ekiga_call_window_set_call_hold (self, true);
   gm_statusbar_flash_message (GM_STATUSBAR (self->priv->statusbar), _("Call on hold"));
 }
 
@@ -1000,7 +996,6 @@ on_retrieved_call_cb (boost::shared_ptr<Ekiga::CallManager>  /*manager*/,
 {
   EkigaCallWindow *self = EKIGA_CALL_WINDOW (data);
 
-  ekiga_call_window_set_call_hold (self, false);
   gm_statusbar_flash_message (GM_STATUSBAR (self->priv->statusbar), _("Call retrieved"));
 }
 
@@ -1166,9 +1161,6 @@ ekiga_call_window_update_calling_state (EkigaCallWindow *self,
   switch (calling_state)
     {
     case Standby:
-
-      /* Update the hold state */
-      ekiga_call_window_set_call_hold (self, false);
 
       /* Update the sensitivity, all channels are closed */
       ekiga_call_window_channels_menu_update_sensitivity (self, true, false);
@@ -1365,53 +1357,6 @@ ekiga_call_window_set_bandwidth (EkigaCallWindow *self,
   else
     gm_statusbar_push_message (GM_STATUSBAR (self->priv->statusbar), NULL);
   g_free (msg);
-}
-
-static void
-ekiga_call_window_set_call_hold (EkigaCallWindow *self,
-                                 bool is_on_hold)
-{
-  GtkWidget *child = NULL;
-
-  g_return_if_fail (EKIGA_IS_CALL_WINDOW (self));
-
-  /* FIXME
-  child = gtk_bin_get_child (GTK_BIN (gtk_menu_get_widget (self->priv->main_menu, "hold_call")));
-
-  if (is_on_hold) {
-
-    if (GTK_IS_LABEL (child))
-      gtk_label_set_text_with_mnemonic (GTK_LABEL (child),
-                                        _("_Retrieve Call"));
-
-    gtk_menu_set_sensitive (self->priv->main_menu, "suspend_audio", false);
-    gtk_menu_set_sensitive (self->priv->main_menu, "suspend_video", false);
-
-    ekiga_call_window_set_channel_pause (self, true, false);
-    ekiga_call_window_set_channel_pause (self, true, true);
-  }
-  else {
-
-    if (GTK_IS_LABEL (child))
-      gtk_label_set_text_with_mnemonic (GTK_LABEL (child),
-                                        _("H_old Call"));
-
-    gtk_menu_set_sensitive (self->priv->main_menu, "suspend_audio", true);
-    gtk_menu_set_sensitive (self->priv->main_menu, "suspend_video", true);
-
-    ekiga_call_window_set_channel_pause (self, false, false);
-    ekiga_call_window_set_channel_pause (self, false, true);
-  }
-
-  g_signal_handlers_block_by_func (self->priv->hold_button,
-                                   (gpointer) hold_current_call_cb,
-                                   self);
-  gtk_toggle_button_set_active (GTK_TOGGLE_BUTTON (self->priv->hold_button),
-                                is_on_hold);
-  g_signal_handlers_unblock_by_func (self->priv->hold_button,
-                                     (gpointer) hold_current_call_cb,
-                                     self);
-  */
 }
 
 
