@@ -94,7 +94,7 @@ gm_window_configure_event (GtkWidget *widget,
  * GObject stuff
  */
 static void
-gm_window_dispose (GObject *obj)
+gm_window_finalize (GObject *obj)
 {
   GmWindow *self = NULL;
 
@@ -107,7 +107,7 @@ gm_window_dispose (GObject *obj)
     g_clear_object (&self->priv->settings);
   self->priv->settings = NULL;
 
-  G_OBJECT_CLASS (gm_window_parent_class)->dispose (obj);
+  G_OBJECT_CLASS (gm_window_parent_class)->finalize (obj);
 }
 
 
@@ -216,7 +216,7 @@ gm_window_class_init (GmWindowClass* klass)
 
   g_type_class_add_private (klass, sizeof (GmWindowPrivate));
 
-  gobject_class->dispose = gm_window_dispose;
+  gobject_class->finalize = gm_window_finalize;
   gobject_class->get_property = gm_window_get_property;
   gobject_class->set_property = gm_window_set_property;
 
