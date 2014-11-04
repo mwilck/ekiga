@@ -1,7 +1,12 @@
-icondir = $(datadir)/icons/hicolor
+icondir = $(datadir)/icons/gnome
 pixmapdir = $(datadir)/pixmaps/@PACKAGE_NAME@
 
 pixmap_DATA = @PACKAGE_NAME@-logo.png 256x256/@PACKAGE_NAME@-full-icon.png
+
+theme_icons = \
+	gnome_actions_scalable_call-hold-symbolic.svg \
+	gnome_actions_scalable_call-transfer-symbolic.svg \
+	gnome_actions_scalable_call-transfer-symbolic-rtl.svg
 
 nobase_dist_icon_DATA = \
 	16x16/apps/@PACKAGE_NAME@.png \
@@ -41,6 +46,8 @@ IMAGES_FILES= \
 	ekiga-logo.png \
 	24x24/phone-hang-up.png \
 	24x24/phone-pick-up.png \
+	scalable/call-hold-symbolic.svg \
+	scalable/call-transfer-symbolic.svg \
 	gm_powermeter_default_00.xpm \
 	gm_powermeter_default_01.xpm \
 	gm_powermeter_default_02.xpm \
@@ -75,16 +82,36 @@ noinst_DATA = inlines.h
 
 DISTCLEANFILES = inlines.h
 
-EXTRA_DIST= $(IMAGES_FILES)
+EXTRA_DIST= $(IMAGES_FILES) $(theme_icons)
 
 inlines.h: $(IMAGE_FILES) $(nobase_dist_icon_DATA) Makefile.am
 	gdk-pixbuf-csource --raw --build-list $(IMAGES) > inlines.h
 
-gtk_update_icon_cache = gtk-update-icon-cache -f -t $(datadir)/icons/hicolor
+install-data-hook: install-icons update-icon-cache
 
-install-data-hook: update-icon-cache
+uninstall-hook: uninstall-icons update-icon-cache
 
-uninstall-hook: update-icon-cache
+install-icons:
+	for icon in $(theme_icons); do \
+		THEME=`echo $$icon | cut -d_ -f1`; \
+		CONTEXT=`echo $$icon | cut -d_ -f2`; \
+		SIZE=`echo $$icon | cut -d_ -f3`; \
+		ICONFILE=`echo $$icon | cut -d_ -f4`; \
+		mkdir -p $(DESTDIR)$(datadir)/icons/$$THEME/$$SIZE/$$CONTEXT; \
+		$(INSTALL_DATA) $(srcdir)/$$SIZE/$$icon $(DESTDIR)$(datadir)/icons/$$THEME/$$SIZE/$$CONTEXT/$$ICONFILE; \
+	done;
+
+uninstall-icons:
+	for icon in $(theme_icons); do \
+		THEME=`echo $$icon | cut -d_ -f1`; \
+		CONTEXT=`echo $$icon | cut -d_ -f2`; \
+		SIZE=`echo $$icon | cut -d_ -f3`; \
+		ICONFILE=`echo $$icon | cut -d_ -f4`; \
+		mkdir -p $(DESTDIR)$(datadir)/icons/$$THEME/$$SIZE/$$CONTEXT; \
+		rm -f $(DESTDIR)$(datadir)/icons/$$THEME/$$SIZE/$$CONTEXT/$$ICONFILE; \
+	done;
+
+gtk_update_icon_cache = gtk-update-icon-cache-3.0 -f -t $(DESTDIR)$(datadir)/icons/gnome/
 
 update-icon-cache:
 	@-if test -z "$(DESTDIR)"; then \
