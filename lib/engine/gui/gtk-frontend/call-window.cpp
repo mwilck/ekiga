@@ -1790,6 +1790,8 @@ ekiga_call_window_init_gui (EkigaCallWindow *self)
 
   GtkWidget *image = NULL;
 
+  GIcon *icon = NULL;
+
   GtkShadowType shadow_type;
 
   /* The Audio & Video Settings windows */
@@ -1837,7 +1839,9 @@ ekiga_call_window_init_gui (EkigaCallWindow *self)
 
   /* Hang up */
   button = gtk_button_new ();
-  image = gtk_image_new_from_icon_name ("call-end-symbolic", GTK_ICON_SIZE_MENU);
+  icon = g_themed_icon_new ("call-end-symbolic");
+  image = gtk_image_new_from_gicon (icon, GTK_ICON_SIZE_BUTTON);
+  g_object_unref (icon);
   gtk_button_set_image (GTK_BUTTON (button), image);
   gtk_actionable_set_detailed_action_name (GTK_ACTIONABLE (button), "win.hangup");
   gtk_header_bar_pack_start (GTK_HEADER_BAR (self->priv->call_panel_toolbar), button);
@@ -1846,7 +1850,9 @@ ekiga_call_window_init_gui (EkigaCallWindow *self)
 
   /* Call Hold */
   button = gtk_toggle_button_new ();
-  image = gtk_image_new_from_icon_name ("media-playback-pause-symbolic", GTK_ICON_SIZE_MENU);
+  icon = g_themed_icon_new ("call-hold-symbolic");
+  image = gtk_image_new_from_gicon (icon, GTK_ICON_SIZE_BUTTON);
+  g_object_unref (icon);
   gtk_button_set_image (GTK_BUTTON (button), image);
   gtk_actionable_set_detailed_action_name (GTK_ACTIONABLE (button), "win.hold");
   gtk_header_bar_pack_start (GTK_HEADER_BAR (self->priv->call_panel_toolbar), button);
@@ -1855,7 +1861,9 @@ ekiga_call_window_init_gui (EkigaCallWindow *self)
 
   /* Call Transfer */
   button = gtk_button_new ();
-  image = gtk_image_new_from_icon_name ("send-to-symbolic", GTK_ICON_SIZE_MENU);
+  icon = g_themed_icon_new ("call-transfer-symbolic");
+  image = gtk_image_new_from_gicon (icon, GTK_ICON_SIZE_BUTTON);
+  g_object_unref (icon);
   gtk_button_set_image (GTK_BUTTON (button), image);
   gtk_actionable_set_detailed_action_name (GTK_ACTIONABLE (button), "win.transfer");
   gtk_header_bar_pack_start (GTK_HEADER_BAR (self->priv->call_panel_toolbar), button);
@@ -1869,8 +1877,10 @@ ekiga_call_window_init_gui (EkigaCallWindow *self)
 
   /* Menu button */
   button = gtk_menu_button_new ();
+  icon = g_themed_icon_new ("document-properties-symbolic");
+  image = gtk_image_new_from_gicon (icon, GTK_ICON_SIZE_BUTTON);
+  g_object_unref (icon);
   g_object_set (G_OBJECT (button), "use-popover", true, NULL);
-  image = gtk_image_new_from_icon_name ("document-properties-symbolic", GTK_ICON_SIZE_MENU);
   gtk_button_set_image (GTK_BUTTON (button), image);
   gtk_menu_button_set_menu_model (GTK_MENU_BUTTON (button),
                                   G_MENU_MODEL (gtk_builder_get_object (self->priv->builder, "menubar")));
@@ -1878,7 +1888,9 @@ ekiga_call_window_init_gui (EkigaCallWindow *self)
 
   /* Full Screen */
   button = gtk_button_new ();
-  image = gtk_image_new_from_icon_name ("view-fullscreen-symbolic", GTK_ICON_SIZE_MENU);
+  icon = g_themed_icon_new ("view-fullscreen-symbolic");
+  image = gtk_image_new_from_gicon (icon, GTK_ICON_SIZE_BUTTON);
+  g_object_unref (icon);
   gtk_button_set_image (GTK_BUTTON (button), image);
   gtk_actionable_set_detailed_action_name (GTK_ACTIONABLE (button), "win.enable-fullscreen");
   gtk_header_bar_pack_end (GTK_HEADER_BAR (self->priv->call_panel_toolbar), button);
