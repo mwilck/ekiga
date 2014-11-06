@@ -1737,6 +1737,7 @@ ekiga_call_window_init_gui (EkigaCallWindow *self)
   gtk_window_set_titlebar (GTK_WINDOW (self), self->priv->call_panel_toolbar);
   gtk_header_bar_set_title (GTK_HEADER_BAR (self->priv->call_panel_toolbar),
                             _("Call Window"));
+  gtk_widget_show (self->priv->call_panel_toolbar);
 
   /* The info bar */
   self->priv->info_bar = gm_info_bar_new ();
@@ -1766,6 +1767,7 @@ ekiga_call_window_init_gui (EkigaCallWindow *self)
   gtk_header_bar_pack_start (GTK_HEADER_BAR (self->priv->call_panel_toolbar), button);
   gtk_widget_set_tooltip_text (GTK_WIDGET (button),
                                _("Hang up the current call"));
+  gtk_widget_show (button);
 
   /* Call Hold */
   button = gtk_toggle_button_new ();
@@ -1777,6 +1779,7 @@ ekiga_call_window_init_gui (EkigaCallWindow *self)
   gtk_header_bar_pack_start (GTK_HEADER_BAR (self->priv->call_panel_toolbar), button);
   gtk_widget_set_tooltip_text (GTK_WIDGET (button),
                                _("Hold or retrieve the current call"));
+  gtk_widget_show (button);
 
   /* Call Transfer */
   button = gtk_button_new ();
@@ -1788,6 +1791,7 @@ ekiga_call_window_init_gui (EkigaCallWindow *self)
   gtk_header_bar_pack_start (GTK_HEADER_BAR (self->priv->call_panel_toolbar), button);
   gtk_widget_set_tooltip_text (GTK_WIDGET (button),
                                _("Transfer the current call"));
+  gtk_widget_show (button);
 
   /* Spinner */
   self->priv->spinner = gtk_spinner_new ();
@@ -1804,6 +1808,7 @@ ekiga_call_window_init_gui (EkigaCallWindow *self)
   gtk_menu_button_set_menu_model (GTK_MENU_BUTTON (button),
                                   G_MENU_MODEL (gtk_builder_get_object (self->priv->builder, "menubar")));
   gtk_header_bar_pack_end (GTK_HEADER_BAR (self->priv->call_panel_toolbar), button);
+  gtk_widget_show (button);
 
   /* Full Screen */
   button = gtk_button_new ();
@@ -1815,8 +1820,7 @@ ekiga_call_window_init_gui (EkigaCallWindow *self)
   gtk_header_bar_pack_end (GTK_HEADER_BAR (self->priv->call_panel_toolbar), button);
   gtk_widget_set_tooltip_text (GTK_WIDGET (button),
                                _("Switch to fullscreen"));
-
-  gtk_widget_show_all (self->priv->call_panel_toolbar);
+  gtk_widget_show (button);
 
   gtk_window_set_resizable (GTK_WINDOW (self), true);
 
