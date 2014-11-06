@@ -123,6 +123,8 @@ libekiga_la_SOURCES += \
 	gui/gm-smileys.c \
 	gui/gm-entry.h \
 	gui/gm-entry.c \
+	gui/gm-info-bar.h \
+	gui/gm-info-bar.c \
 	gui/gmwindow.c \
 	gui/gmwindow.h \
 	gui/gmmenuaddon.c \
