@@ -38,6 +38,8 @@
 #include <glib/gi18n.h>
 #include <gdk/gdkkeysyms.h>
 
+#include <boost/smart_ptr.hpp>
+
 #include "config.h"
 
 #include "ekiga-settings.h"
@@ -47,11 +49,9 @@
 #include "dialpad.h"
 
 #include "gmvideowidget.h"
-#include "gmdialog.h"
-#include "gmstatusbar.h"
 #include "gmstockicons.h"
+#include "gm-info-bar.h"
 #include "gactor-menu.h"
-#include <boost/smart_ptr.hpp>
 #include "gmmenuaddon.h"
 #include "gmpowermeter.h"
 #include "trigger.h"
@@ -137,6 +137,8 @@ struct _EkigaCallWindowPrivate
   unsigned int levelmeter_timeout_id;
   unsigned int timeout_id;
 
+  GtkWidget *info_bar;
+
   GtkWidget *video_settings_window;
   GtkWidget *video_settings_frame;
   GtkAdjustment *adj_whiteness;
@@ -150,11 +152,6 @@ struct _EkigaCallWindowPrivate
   std::string received_audio_codec;
 
   Ekiga::GActorMenuPtr menu;
-
-  /* Statusbar */
-  GtkWidget *statusbar;
-  GtkWidget *statusbar_ebox;
-  GtkWidget *qualitymeter;
 
   Ekiga::scoped_connections connections;
   boost::shared_ptr<Ekiga::Settings> video_display_settings;
@@ -605,23 +602,15 @@ on_videooutput_device_closed_cb (Ekiga::VideoOutputManager & /* manager */,
 
 static void
 on_videooutput_device_error_cb (Ekiga::VideoOutputManager & /* manager */,
-                                gpointer self)
+                                gpointer data)
 {
-  GtkWidget *dialog = NULL;
+  EkigaCallWindow *self = EKIGA_CALL_WINDOW (data);
 
-  const gchar *dialog_title =  _("Error while initializing video output");
-  const gchar *tmp_msg = _("No video will be displayed on your machine during this call");
-  gchar *dialog_msg = g_strconcat (_("There was an error opening or initializing the video output. Please verify that no other application is using the accelerated video output."), "\n\n", tmp_msg, NULL);
-
-  dialog = gtk_message_dialog_new (GTK_WINDOW (self), GTK_DIALOG_MODAL,
-                                   GTK_MESSAGE_ERROR, GTK_BUTTONS_OK,
-                                   dialog_msg);
-  gtk_window_set_title (GTK_WINDOW (dialog), dialog_title);
-  g_signal_connect_swapped (dialog, "response", G_CALLBACK (gtk_widget_destroy), dialog);
-  gtk_widget_show_all (GTK_WIDGET (dialog));
-
-  g_free (dialog_msg);
+  gm_info_bar_set_message (GM_INFO_BAR (self->priv->info_bar),
+                           GTK_MESSAGE_ERROR,
+                           _("There was an error opening or initializing the video output. Please verify that no other application is using the accelerated video output."));
 }
+
 
 static void
 on_size_changed_cb (Ekiga::VideoOutputManager & /* manager */,
@@ -672,61 +661,50 @@ static void
 on_videoinput_device_error_cb (Ekiga::VideoInputManager & /* manager */,
                                Ekiga::VideoInputDevice & device,
                                Ekiga::VideoInputErrorCodes error_code,
-                               gpointer self)
+                               gpointer data)
 {
-  GtkWidget *dialog = NULL;
+  EkigaCallWindow *self = EKIGA_CALL_WINDOW (data);
+  gchar *message = NULL;
 
-  gchar *dialog_title = NULL;
-  gchar *dialog_msg = NULL;
-  gchar *tmp_msg = NULL;
-
-  dialog_title = g_strdup_printf (_("Error while accessing video device %s"),
-                                  (const char *) device.name.c_str());
-
-  tmp_msg = g_strdup (_("A moving logo will be transmitted during calls."));
   switch (error_code) {
 
   case Ekiga::VI_ERROR_DEVICE:
-    dialog_msg = g_strconcat (_("There was an error while opening the device. In case it is a pluggable device it may be sufficient to reconnect it. If not, or if it still is not accessible, please check your permissions and make sure that the appropriate driver is loaded."), "\n\n", tmp_msg, NULL);
+    message = g_strdup_printf (_("There was an error while opening %s.\n\nIn case it is a pluggable device, it may be sufficient to reconnect it. If not, or if it still does not work, please check your permissions and make sure that the appropriate driver is loaded."), (const char *) device.name.c_str());
     break;
 
   case Ekiga::VI_ERROR_FORMAT:
-    dialog_msg = g_strconcat (_("Your video driver doesn't support the requested video format."), "\n\n", tmp_msg, NULL);
+    message = g_strdup_printf (_("There was an error while opening %s.\n\nYour video driver doesn't support the requested video format."), (const char *) device.name.c_str());
     break;
 
   case Ekiga::VI_ERROR_CHANNEL:
-    dialog_msg = g_strconcat (_("Could not open the chosen channel."), "\n\n", tmp_msg, NULL);
+    message = g_strdup_printf (_("There was an error while opening %s.\n\nCould not open the chosen channel."), (const char *) device.name.c_str());
     break;
 
   case Ekiga::VI_ERROR_COLOUR:
-    dialog_msg = g_strconcat (_("Your driver doesn't seem to support any of the color formats supported by Ekiga.\n Please check your kernel driver documentation in order to determine which Palette is supported."), "\n\n", tmp_msg, NULL);
+    message = g_strdup_printf (_("There was an error while opening %s.\n\nYour driver doesn't seem to support any of the color formats supported by Ekiga.\n Please check your kernel driver documentation in order to determine which Palette is supported."), (const char *) device.name.c_str());
     break;
 
   case Ekiga::VI_ERROR_FPS:
-    dialog_msg = g_strconcat (_("Error while setting the frame rate."), "\n\n", tmp_msg, NULL);
+    message = g_strdup_printf (_("There was an error while opening %s.\n\nError while setting the frame rate."), (const char *) device.name.c_str());
     break;
 
   case Ekiga::VI_ERROR_SCALE:
-    dialog_msg = g_strconcat (_("Error while setting the frame size."), "\n\n", tmp_msg, NULL);
+    message = g_strdup_printf (_("There was an error while opening %s.\n\nError while setting the frame size."), (const char *) device.name.c_str());
     break;
 
   case Ekiga::VI_ERROR_NONE:
   default:
-    dialog_msg = g_strconcat (_("Unknown error."), "\n\n", tmp_msg, NULL);
+    message = g_strdup_printf (_("There was an error while opening %s."), (const char *) device.name.c_str());
     break;
   }
 
-  dialog = gtk_message_dialog_new (GTK_WINDOW (self), GTK_DIALOG_MODAL,
-                                   GTK_MESSAGE_ERROR, GTK_BUTTONS_OK,
-                                   dialog_msg);
-  gtk_window_set_title (GTK_WINDOW (dialog), dialog_title);
-  g_signal_connect_swapped (dialog, "response", G_CALLBACK (gtk_widget_destroy), dialog);
-  gtk_widget_show_all (dialog);
+  gm_info_bar_set_message (GM_INFO_BAR (self->priv->info_bar),
+                           GTK_MESSAGE_ERROR,
+                           message);
 
-  g_free (dialog_msg);
-  g_free (dialog_title);
-  g_free (tmp_msg);
+  g_free (message);
 }
+
 
 static void
 on_audioinput_device_opened_cb (Ekiga::AudioInputManager & /* manager */,
@@ -742,6 +720,7 @@ on_audioinput_device_opened_cb (Ekiga::AudioInputManager & /* manager */,
   gtk_widget_queue_draw (self->priv->audio_input_volume_frame);
 }
 
+
 static void
 on_audioinput_device_closed_cb (Ekiga::AudioInputManager & /* manager */,
                                 Ekiga::AudioInputDevice & /*device*/,
@@ -752,53 +731,37 @@ on_audioinput_device_closed_cb (Ekiga::AudioInputManager & /* manager */,
   gtk_widget_set_sensitive (self->priv->audio_input_volume_frame, false);
 }
 
+
 static void
 on_audioinput_device_error_cb (Ekiga::AudioInputManager & /* manager */,
                                Ekiga::AudioInputDevice & device,
                                Ekiga::AudioInputErrorCodes error_code,
-                               gpointer self)
+                               gpointer data)
 {
-  GtkWidget *dialog = NULL;
+  EkigaCallWindow *self = EKIGA_CALL_WINDOW (data);
+  gchar *message = NULL;
 
-  gchar *dialog_title = NULL;
-  gchar *dialog_msg = NULL;
-  gchar *tmp_msg = NULL;
-
-  dialog_title =
-    g_strdup_printf (_("Error while opening audio input device %s"),
-                     (const char *) device.name.c_str());
-
-  /* Translators: This happens when there is an error with audio input:
-   * Nothing ("silence") will be transmitted */
-  tmp_msg = g_strdup (_("Only silence will be transmitted."));
   switch (error_code) {
 
   case Ekiga::AI_ERROR_DEVICE:
-    dialog_msg = g_strconcat (tmp_msg, "\n\n", _("Unable to open the selected audio device for recording. In case it is a pluggable device it may be sufficient to reconnect it. If not, or if it still is not accessible, please check your audio setup, the permissions and that the device is not busy."), NULL);
+    message = g_strdup_printf (_("Unable to open %s for recording.\n\nIn case it is a pluggable device, it may be sufficient to reconnect it. If not, or if it still does not work, please check your audio setup, the permissions and that the device is not busy."), (const char *) device.name.c_str ());
     break;
 
   case Ekiga::AI_ERROR_READ:
-    dialog_msg = g_strconcat (tmp_msg, "\n\n", _("The selected audio device was successfully opened but it is impossible to read data from this device. In case it is a pluggable device it may be sufficient to reconnect it. If not, or if it still is not accessible, please check your audio setup."), NULL);
+    message = g_strdup_printf (_("%s was successfully opened but it is impossible to read data from this device.\n\nIn case it is a pluggable device it may be sufficient to reconnect it. If not, or if it still does not work, please check your audio setup."), (const char *) device.name.c_str ());
     break;
 
   case Ekiga::AI_ERROR_NONE:
   default:
-    dialog_msg = g_strconcat (tmp_msg, "\n\n", _("Unknown error."), NULL);
+    message = g_strdup_printf (_("Error while opening audio input device %s"), (const char *) device.name.c_str ());
     break;
   }
 
-  dialog = gtk_message_dialog_new (GTK_WINDOW (self), GTK_DIALOG_MODAL,
-                                   GTK_MESSAGE_ERROR, GTK_BUTTONS_OK,
-                                   dialog_msg);
-  gtk_window_set_title (GTK_WINDOW (dialog), dialog_title);
-  g_signal_connect_swapped (dialog, "response", G_CALLBACK (gtk_widget_destroy), dialog);
-  gtk_widget_show_all (GTK_WIDGET (dialog));
-
-  g_free (dialog_msg);
-  g_free (dialog_title);
-  g_free (tmp_msg);
-
+  gm_info_bar_set_message (GM_INFO_BAR (self->priv->info_bar),
+                           GTK_MESSAGE_ERROR, message);
+  g_free (message);
 }
+
 
 static void
 on_audiooutput_device_opened_cb (Ekiga::AudioOutputManager & /*manager*/,
@@ -818,6 +781,7 @@ on_audiooutput_device_opened_cb (Ekiga::AudioOutputManager & /*manager*/,
   gtk_widget_queue_draw (self->priv->audio_output_volume_frame);
 }
 
+
 static void
 on_audiooutput_device_closed_cb (Ekiga::AudioOutputManager & /*manager*/,
                                  Ekiga::AudioOutputPS ps,
@@ -832,54 +796,43 @@ on_audiooutput_device_closed_cb (Ekiga::AudioOutputManager & /*manager*/,
   gtk_widget_set_sensitive (self->priv->audio_output_volume_frame, false);
 }
 
+
 static void
 on_audiooutput_device_error_cb (Ekiga::AudioOutputManager & /*manager */,
                                 Ekiga::AudioOutputPS ps,
                                 Ekiga::AudioOutputDevice & device,
                                 Ekiga::AudioOutputErrorCodes error_code,
-                                gpointer self)
+                                gpointer data)
 {
-  GtkWidget *dialog = NULL;
+  EkigaCallWindow *self = EKIGA_CALL_WINDOW (data);
+  gchar *message = NULL;
 
   if (ps == Ekiga::secondary)
     return;
 
-  gchar *dialog_title = NULL;
-  gchar *dialog_msg = NULL;
-  gchar *tmp_msg = NULL;
-
-  dialog_title =
-    g_strdup_printf (_("Error while opening audio output device %s"),
-                     (const char *) device.name.c_str());
-
-  tmp_msg = g_strdup (_("No incoming sound will be played."));
   switch (error_code) {
 
   case Ekiga::AO_ERROR_DEVICE:
-    dialog_msg = g_strconcat (tmp_msg, "\n\n", _("Unable to open the selected audio device for playing. In case it is a pluggable device it may be sufficient to reconnect it. If not, or if it still is not accessible, please check your audio setup, the permissions and that the device is not busy."), NULL);
+    message = g_strdup_printf (_("Unable to open %s for playing.\n\nIn case it is a pluggable device it may be sufficient to reconnect it. If not, or if it still does not work, please check your audio setup, the permissions and that the device is not busy."), (const char *) device.name.c_str ());
     break;
 
   case Ekiga::AO_ERROR_WRITE:
-    dialog_msg = g_strconcat (tmp_msg, "\n\n", _("The selected audio device was successfully opened but it is impossible to write data to this device. In case it is a pluggable device it may be sufficient to reconnect it. If not, or if it still is not accessible, please check your audio setup."), NULL);
+    message = g_strdup_printf (_("%s was successfully opened but it is impossible to write data to this device.\n\nIn case it is a pluggable device it may be sufficient to reconnect it. If not, or if it still does not work, please check your audio setup."), (const char *) device.name.c_str ());
     break;
 
   case Ekiga::AO_ERROR_NONE:
   default:
-    dialog_msg = g_strconcat (tmp_msg, "\n\n", _("Unknown error."), NULL);
+    message = g_strdup_printf (_("Error while opening audio output device %s"),
+                               (const char *) device.name.c_str ());
     break;
   }
 
-  dialog = gtk_message_dialog_new (GTK_WINDOW (self), GTK_DIALOG_MODAL,
-                                   GTK_MESSAGE_ERROR, GTK_BUTTONS_OK,
-                                   dialog_msg);
-  gtk_window_set_title (GTK_WINDOW (dialog), dialog_title);
-  g_signal_connect_swapped (dialog, "response", G_CALLBACK (gtk_widget_destroy), dialog);
-  gtk_widget_show_all (GTK_WIDGET (dialog));
+  gm_info_bar_set_message (GM_INFO_BAR (self->priv->info_bar),
+                           GTK_MESSAGE_ERROR, message);
 
-  g_free (dialog_msg);
-  g_free (dialog_title);
-  g_free (tmp_msg);
+  g_free (message);
 }
+
 
 static void
 on_ringing_call_cb (G_GNUC_UNUSED boost::shared_ptr<Ekiga::CallManager> manager,
@@ -967,7 +920,8 @@ on_cleared_call_cb (G_GNUC_UNUSED boost::shared_ptr<Ekiga::CallManager> manager,
 
   ekiga_call_window_clear_signal_levels (self);
 
-  gtk_window_set_title (GTK_WINDOW (self), _("Call Window"));
+  gm_info_bar_set_message (GM_INFO_BAR (self->priv->info_bar),
+                           GTK_MESSAGE_INFO, reason.c_str ());
 }
 
 static void on_missed_call_cb (boost::shared_ptr<Ekiga::CallManager>  /*manager*/,
@@ -992,7 +946,8 @@ on_held_call_cb (boost::shared_ptr<Ekiga::CallManager>  /*manager*/,
 {
   EkigaCallWindow *self = EKIGA_CALL_WINDOW (data);
 
-  gm_statusbar_flash_message (GM_STATUSBAR (self->priv->statusbar), _("Call on hold"));
+  gm_info_bar_set_message (GM_INFO_BAR (self->priv->info_bar),
+                           GTK_MESSAGE_INFO, _("Call on hold"));
 }
 
 
@@ -1003,8 +958,10 @@ on_retrieved_call_cb (boost::shared_ptr<Ekiga::CallManager>  /*manager*/,
 {
   EkigaCallWindow *self = EKIGA_CALL_WINDOW (data);
 
-  gm_statusbar_flash_message (GM_STATUSBAR (self->priv->statusbar), _("Call retrieved"));
+  gm_info_bar_set_message (GM_INFO_BAR (self->priv->info_bar),
+                           GTK_MESSAGE_INFO, _("Call retrieved"));
 }
+
 
 static void
 set_codec (EkigaCallWindowPrivate *priv,
@@ -1243,8 +1200,6 @@ ekiga_call_window_clear_stats (EkigaCallWindow *self)
   g_return_if_fail (EKIGA_IS_CALL_WINDOW (self));
 
   ekiga_call_window_update_stats (self, 0, 0, 0, 0, 0, 0, 0, 0, NULL, NULL);
-  if (self->priv->qualitymeter)
-    gm_powermeter_set_level (GM_POWERMETER (self->priv->qualitymeter), 0.0);
 }
 
 static void
@@ -1306,9 +1261,6 @@ ekiga_call_window_update_stats (EkigaCallWindow *self,
   gchar *stats_msg_re = NULL;
   gchar *stats_msg_codecs = NULL;
 
-  int jitter_quality = 0;
-  gfloat quality_level = 0.0;
-
   g_return_if_fail (EKIGA_IS_CALL_WINDOW (self));
 
   if ((tr_width > 0) && (tr_height > 0))
@@ -1348,40 +1300,10 @@ ekiga_call_window_update_stats (EkigaCallWindow *self,
   gtk_widget_set_tooltip_text (GTK_WIDGET (self->priv->event_box), stats_msg);
   g_free (stats_msg);
 
-  /* "arithmetics" for the quality level */
-  /* Thanks Snark for the math hints */
-  if (jitter < 30)
-    jitter_quality = 100;
-  if (jitter >= 30 && jitter < 50)
-    jitter_quality = 100 - (jitter - 30);
-  if (jitter >= 50 && jitter < 100)
-    jitter_quality = 80 - (jitter - 50) * 20 / 50;
-  if (jitter >= 100 && jitter < 150)
-    jitter_quality = 60 - (jitter - 100) * 20 / 50;
-  if (jitter >= 150 && jitter < 200)
-    jitter_quality = 40 - (jitter - 150) * 20 / 50;
-  if (jitter >= 200 && jitter < 300)
-    jitter_quality = 20 - (jitter - 200) * 20 / 100;
-  if (jitter >= 300 || jitter_quality < 0)
-    jitter_quality = 0;
-
-  quality_level = (float) jitter_quality / 100;
-
-  if ( (lost > 0.0) ||
-       (late > 0.0) ||
-       ((out_of_order > 0.0) && quality_level > 0.2) ) {
-    quality_level = 0.2;
-  }
-
-  if ( (lost > 0.02) ||
-       (late > 0.02) ||
-       (out_of_order > 0.02) ) {
-    quality_level = 0;
-  }
-
-  if (self->priv->qualitymeter)
-    gm_powermeter_set_level (GM_POWERMETER (self->priv->qualitymeter),
-                             quality_level);
+  if (jitter > 150 || lost > 0.02 || late > 0.02 || out_of_order > 0.02)
+    gm_info_bar_set_message (GM_INFO_BAR (self->priv->info_bar),
+                             GTK_MESSAGE_WARNING,
+                             _("The call quality is rather bad. Please check your Internet connection."));
 }
 
 
@@ -1401,10 +1323,7 @@ ekiga_call_window_set_bandwidth (EkigaCallWindow *self,
     msg = g_strdup_printf (_("A:%.1f/%.1f V:%.1f/%.1f"),
                            ta, ra, tv, rv);
 
-  if (msg)
-    gm_statusbar_push_message (GM_STATUSBAR (self->priv->statusbar), "%s", msg);
-  else
-    gm_statusbar_push_message (GM_STATUSBAR (self->priv->statusbar), NULL);
+  // FIXME: Do we keep this or not ?
   g_free (msg);
 }
 
@@ -1681,7 +1600,6 @@ ekiga_call_window_toggle_fullscreen (EkigaCallWindow *self)
   if (self->priv->fullscreen) {
     gm_window_save (GM_WINDOW (self));
     gtk_widget_hide (self->priv->call_panel_toolbar);
-    gtk_widget_hide (self->priv->statusbar_ebox);
     gtk_window_maximize (GTK_WINDOW (self));
     gtk_window_fullscreen (GTK_WINDOW (self));
     gm_video_widget_set_fullscreen (GM_VIDEO_WIDGET (self->priv->video_widget), true);
@@ -1689,7 +1607,6 @@ ekiga_call_window_toggle_fullscreen (EkigaCallWindow *self)
   }
   else {
     gtk_widget_show (self->priv->call_panel_toolbar);
-    gtk_widget_show (self->priv->statusbar_ebox);
     gtk_window_unmaximize (GTK_WINDOW (self));
     gtk_window_unfullscreen (GTK_WINDOW (self));
     gtk_window_set_keep_above (GTK_WINDOW (self),
@@ -1792,8 +1709,6 @@ ekiga_call_window_init_gui (EkigaCallWindow *self)
 
   GIcon *icon = NULL;
 
-  GtkShadowType shadow_type;
-
   /* The Audio & Video Settings windows */
   self->priv->audio_settings_window = gm_call_window_audio_settings_window_new (self);
   self->priv->video_settings_window = gm_call_window_video_settings_window_new (self);
@@ -1823,10 +1738,14 @@ ekiga_call_window_init_gui (EkigaCallWindow *self)
   gtk_header_bar_set_title (GTK_HEADER_BAR (self->priv->call_panel_toolbar),
                             _("Call Window"));
 
+  /* The info bar */
+  self->priv->info_bar = gm_info_bar_new ();
+  gtk_box_pack_start (GTK_BOX (vbox), GTK_WIDGET (self->priv->info_bar), TRUE, TRUE, 0);
+
   /* The frame that contains the video */
   self->priv->event_box = gtk_event_box_new ();
   ekiga_call_window_init_clutter (self);
-  gtk_box_pack_start (GTK_BOX (vbox), GTK_WIDGET (self->priv->event_box), true, true, 0);
+  gtk_box_pack_start (GTK_BOX (vbox), GTK_WIDGET (self->priv->event_box), TRUE, TRUE, 0);
   gtk_widget_show_all (self->priv->event_box);
 
 
@@ -1898,24 +1817,6 @@ ekiga_call_window_init_gui (EkigaCallWindow *self)
                                _("Switch to fullscreen"));
 
   gtk_widget_show_all (self->priv->call_panel_toolbar);
-
-
-  /* The statusbar */
-  self->priv->statusbar = gm_statusbar_new ();
-  gtk_widget_style_get (self->priv->statusbar, "shadow-type", &shadow_type, NULL);
-
-  frame = gtk_frame_new (NULL);
-  gtk_frame_set_shadow_type (GTK_FRAME (frame), shadow_type);
-  gtk_box_pack_start (GTK_BOX (self->priv->statusbar), frame, false, false, 0);
-  gtk_box_reorder_child (GTK_BOX (self->priv->statusbar), frame, 0);
-
-  self->priv->qualitymeter = gm_powermeter_new ();
-  gtk_container_add (GTK_CONTAINER (frame), self->priv->qualitymeter);
-
-  self->priv->statusbar_ebox = gtk_event_box_new ();
-  gtk_container_add (GTK_CONTAINER (self->priv->statusbar_ebox), self->priv->statusbar);
-  gtk_box_pack_start (GTK_BOX (vbox), GTK_WIDGET (self->priv->statusbar_ebox), false, false, 0);
-  gtk_widget_show_all (self->priv->statusbar_ebox);
 
   gtk_window_set_resizable (GTK_WINDOW (self), true);
 
