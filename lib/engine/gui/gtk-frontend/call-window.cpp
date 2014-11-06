@@ -1800,7 +1800,7 @@ ekiga_call_window_init_gui (EkigaCallWindow *self)
 
   /* Menu button */
   button = gtk_menu_button_new ();
-  icon = g_themed_icon_new ("document-properties-symbolic");
+  icon = g_themed_icon_new ("open-menu-symbolic");
   image = gtk_image_new_from_gicon (icon, GTK_ICON_SIZE_BUTTON);
   g_object_unref (icon);
   g_object_set (G_OBJECT (button), "use-popover", true, NULL);
