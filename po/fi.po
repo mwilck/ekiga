@@ -11,7 +11,7 @@ msgstr ""
 "Project-Id-Version: ekiga\n"
 "Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?"
 "product=ekiga&keywords=I18N+L10N&component=general\n"
-"POT-Creation-Date: 2012-09-18 15:37+0000\n"
+"POT-Creation-Date: 2014-11-07 04:18+0000\n"
 "PO-Revision-Date: 2012-09-18 19:36+0300\n"
 "Last-Translator: Jiri Grönroos <jiri.gronroos@iki.fi>\n"
 "Language-Team: Finnish <kde-i18n-doc@kde.org>\n"
@@ -23,7 +23,7 @@ msgstr ""
 "X-Generator: Lokalize 1.5\n"
 
 #. Application name
-#: ../ekiga.desktop.in.in.h:1 ../src/gui/main.cpp:103 ../src/gui/main.cpp:105
+#: ../ekiga.desktop.in.in.h:1 ../src/gui/main.cpp:106 ../src/gui/main.cpp:108
 msgid "Ekiga Softphone"
 msgstr "Ekiga-ohjelmistopuhelin"
 
@@ -40,7 +40,7 @@ msgid "Audio output device"
 msgstr "Äänen toistolaite"
 
 #: ../ekiga.schemas.in.in.h:2
-#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:759
+#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:754
 msgid "Select the audio output device to use"
 msgstr "Valitse käytettävä äänen toistolaite"
 
@@ -49,7 +49,7 @@ msgid "Audio input device"
 msgstr "Äänen syötelaite"
 
 #: ../ekiga.schemas.in.in.h:4
-#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:766
+#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:761
 msgid "Select the audio input device to use"
 msgstr "Valitse käytettävä äänen syötelaite"
 
@@ -58,7 +58,7 @@ msgid "Video input device"
 msgstr "Videon syötelaite"
 
 #: ../ekiga.schemas.in.in.h:6
-#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:902
+#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:897
 msgid ""
 "Select the video input device to use. If an error occurs when using this "
 "device a test picture will be transmitted."
@@ -83,7 +83,7 @@ msgid "Video channel"
 msgstr "Videokanava"
 
 #: ../ekiga.schemas.in.in.h:10
-#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:906
+#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:901
 msgid "The video channel number to use (to select camera, tv or other sources)"
 msgstr "Käytettävä videokanavanumero (valitsemaan kamera, tv tai muu lähde)"
 
@@ -92,7 +92,7 @@ msgid "Video format"
 msgstr "Videomuoto"
 
 #: ../ekiga.schemas.in.in.h:12
-#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:910
+#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:905
 msgid ""
 "Select the format for video cameras (does not apply to most USB cameras)"
 msgstr "Valitse videokameran kuvamuoto (ei koske useimpia USB-kameroita)"
@@ -101,7 +101,8 @@ msgstr "Valitse videokameran kuvamuoto (ei koske useimpia USB-kameroita)"
 msgid "Video preview"
 msgstr "Videon esikatselu"
 
-#: ../ekiga.schemas.in.in.h:14 ../src/gui/main_window.cpp:1197
+#: ../ekiga.schemas.in.in.h:14 ../src/gui/main_window.cpp:1202
+#: ../src/gui/main_window.cpp:1342
 msgid "Display images from your camera device"
 msgstr "Näytä kuvaa kameralaitteeltasi"
 
@@ -124,7 +125,7 @@ msgid "Full name"
 msgstr "Koko nimi"
 
 #: ../ekiga.schemas.in.in.h:18
-#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:466
+#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:461
 msgid "Enter your full name"
 msgstr "Syötä koko nimesi"
 
@@ -157,7 +158,7 @@ msgid "Enable silence detection"
 msgstr "Käytä hiljaisuudentunnistusta"
 
 #: ../ekiga.schemas.in.in.h:26
-#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:945
+#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:940
 msgid "If enabled, use silence detection with the codecs supporting it"
 msgstr ""
 "Kun asetettu, käytetään hiljaisuudentunnistusta sitä tukevilla kodekeilla"
@@ -167,7 +168,7 @@ msgid "Enable echo cancellation"
 msgstr "Käytä kaiunpoistoa"
 
 #: ../ekiga.schemas.in.in.h:28
-#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:947
+#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:942
 msgid "If enabled, use echo cancellation"
 msgstr "Kun asetettu, käytetään kaiunpoistoa"
 
@@ -188,7 +189,7 @@ msgid "The sound that will be played on incoming calls, if enabled"
 msgstr "Ääni, joka soitetaan saapuville puheluille, jos toiminto on käytössä"
 
 #: ../ekiga.schemas.in.in.h:33
-#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:367
+#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:366
 msgid "Play sound on incoming calls"
 msgstr "Soita ääni uusien puheluiden saapuessa"
 
@@ -243,7 +244,7 @@ msgstr ""
 "käytössä"
 
 #: ../ekiga.schemas.in.in.h:43
-#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:377
+#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:376
 msgid "Play ring tone"
 msgstr "Soita hälytysääni"
 
@@ -260,7 +261,7 @@ msgid "The sound that will be played when calling somebody, if enabled"
 msgstr "Ääni, joka soitetaan soitettaessa jollekulle, jos toiminto on käytössä"
 
 #: ../ekiga.schemas.in.in.h:47
-#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:387
+#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:386
 msgid "Play busy tone"
 msgstr "Soita varattu-ääni"
 
@@ -321,7 +322,7 @@ msgid "Outbound Proxy"
 msgstr "Lähtevien välipalvelin"
 
 #: ../ekiga.schemas.in.in.h:58
-#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:721
+#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:716
 msgid "The SIP Outbound Proxy to use for outgoing calls"
 msgstr "Lähteville SIP-puheluille käytettävä välimuisti"
 
@@ -330,8 +331,8 @@ msgid "Forward calls to host"
 msgstr "Siirrä puhelut koneelle"
 
 #: ../ekiga.schemas.in.in.h:60
-#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:676
-#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:724
+#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:671
+#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:719
 msgid "The host where calls should be forwarded if call forwarding is enabled"
 msgstr "Verkkonimi, jolle puhelut ohjataan kun puhelun siirto on käytössä"
 
@@ -386,7 +387,7 @@ msgid "Enable H.245 tunneling"
 msgstr "Käytä H.245-tunnelointia"
 
 #: ../ekiga.schemas.in.in.h:69
-#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:685
+#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:680
 msgid ""
 "This enables H.245 Tunneling mode. In H.245 Tunneling mode H.245 messages "
 "are encapsulated into the H.225 channel (port 1720). This saves one TCP "
@@ -405,7 +406,7 @@ msgid "Enable early H.245"
 msgstr "Käytä aikaista H.245:ttä"
 
 #: ../ekiga.schemas.in.in.h:71
-#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:687
+#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:682
 msgid "This enables H.245 early in the setup"
 msgstr "Tämä ottaa käyttöön H.245:n aikaisessa vaiheessa"
 
@@ -434,6 +435,8 @@ msgid "This enables H.239 capability for additional video roles"
 msgstr ""
 
 #: ../ekiga.schemas.in.in.h:76
+#: ../lib/engine/gui/gtk-frontend/call-window.cpp:2037
+#: ../lib/engine/gui/gtk-frontend/call-window.cpp:2038
 msgid "Extended Video Roles"
 msgstr ""
 
@@ -515,12 +518,11 @@ msgstr ""
 "käyttäen päästään tietyn tyyppisten NAT-yhdyskäytävien läpi"
 
 #: ../ekiga.schemas.in.in.h:87
-#| msgid "Disable STUN network detection"
 msgid "Enable STUN network detection"
 msgstr "Käytä STUN-verkkotunnistusta"
 
 #: ../ekiga.schemas.in.in.h:88
-#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:488
+#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:483
 #, fuzzy
 #| msgid "Disable the automatic network setup resulting from the STUN test"
 msgid "Enable the automatic network setup resulting from the STUN test"
@@ -665,7 +667,7 @@ msgstr ""
 "olla 50, 100 tai 200."
 
 #: ../ekiga.schemas.in.in.h:116
-#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:482
+#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:477
 msgid "Place windows displaying video above other windows during calls"
 msgstr ""
 "Aseta videota näyttävät ikkunat muiden ikkunoiden päälle soittojen ajaksi"
@@ -715,7 +717,7 @@ msgid "Maximum jitter buffer"
 msgstr "Suurin värinäpuskuri"
 
 #: ../ekiga.schemas.in.in.h:126
-#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:949
+#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:944
 msgid "The maximum jitter buffer size for audio reception (in ms)"
 msgstr "Suurin värinäpuskurikoko äänen vastaanotossa (millisekunteina)"
 
@@ -772,7 +774,7 @@ msgstr ""
 msgid "List of folded groups in the roster"
 msgstr "Luettelo nimilistan kansioryhmistä"
 
-#: ../ekiga.schemas.in.in.h:135 ../src/gui/main_window.cpp:1362
+#: ../ekiga.schemas.in.in.h:135 ../src/gui/main_window.cpp:1367
 msgid "Show offline contacts"
 msgstr "Näytä poissaolevat tuttavat"
 
@@ -809,7 +811,7 @@ msgid "No answer timeout"
 msgstr "Ei vastausta -aikakatkaisu"
 
 #: ../ekiga.schemas.in.in.h:144
-#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:511
+#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:506
 msgid ""
 "Automatically reject or forward incoming calls if no answer is given after "
 "the specified amount of time (in seconds)"
@@ -822,38 +824,33 @@ msgid "Automatic answer"
 msgstr "Automaattinen vastaus"
 
 #: ../ekiga.schemas.in.in.h:146
-#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:512
+#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:507
 msgid "If enabled, automatically answer incoming calls"
 msgstr "Kun valittu, saapuviin puheluihin vastataan automaattisesti"
 
 #: ../lib/engine/audioinput/audioinput-core.cpp:201
 #: ../lib/engine/audioinput/audioinput-core.cpp:206
-#: ../lib/engine/audiooutput/audiooutput-core.cpp:218
-#: ../lib/engine/audiooutput/audiooutput-core.cpp:223
-#: ../lib/engine/videoinput/videoinput-core.cpp:242
-#: ../lib/engine/videoinput/videoinput-core.cpp:247
+#: ../lib/engine/audiooutput/audiooutput-core.cpp:222
+#: ../lib/engine/audiooutput/audiooutput-core.cpp:227
+#: ../lib/engine/videoinput/videoinput-core.cpp:245
+#: ../lib/engine/videoinput/videoinput-core.cpp:250
 msgid "New device detected"
 msgstr "Uusi laite havaittu"
 
 #: ../lib/engine/audioinput/audioinput-core.cpp:206
-#: ../lib/engine/audiooutput/audiooutput-core.cpp:223
-#: ../lib/engine/videoinput/videoinput-core.cpp:247
+#: ../lib/engine/audiooutput/audiooutput-core.cpp:227
+#: ../lib/engine/videoinput/videoinput-core.cpp:250
 msgid "Use it"
 msgstr "Käytä sitä"
 
 #: ../lib/engine/audioinput/audioinput-core.cpp:236
-#: ../lib/engine/audiooutput/audiooutput-core.cpp:252
-#: ../lib/engine/videoinput/videoinput-core.cpp:277
+#: ../lib/engine/audiooutput/audiooutput-core.cpp:256
+#: ../lib/engine/videoinput/videoinput-core.cpp:280
 msgid "Device removed"
 msgstr "Laite poistettu"
 
-#: ../lib/engine/components/avahi/avahi-heap.cpp:129
-#: ../lib/engine/components/avahi/avahi-heap.cpp:375
-msgid "Neighbours"
-msgstr "Naapurit"
-
-#: ../lib/engine/components/call-history/history-book.cpp:141
-#: ../lib/engine/gui/gtk-frontend/call-history-view-gtk.cpp:189
+#: ../lib/engine/components/call-history/history-book.cpp:143
+#: ../lib/engine/gui/gtk-frontend/call-history-view-gtk.cpp:188
 msgid "Clear List"
 msgstr "Tyhjennä luettelo"
 
@@ -869,29 +866,9 @@ msgstr "Soitettu"
 msgid "Missed"
 msgstr "Vastaamatta"
 
-#. Ignore
-#: ../lib/engine/components/libnotify/libnotify-main.cpp:229
-#: ../lib/engine/components/opal/sip-endpoint.cpp:988
-#, c-format
-msgid "Incoming call from %s"
-msgstr "Tuleva puhelu käyttäjältä %s"
-
-#: ../lib/engine/components/libnotify/libnotify-main.cpp:230
-msgid "Remote URI:"
-msgstr "Etä-URI:"
-
-#: ../lib/engine/components/libnotify/libnotify-main.cpp:242
-msgid "Reject"
-msgstr "Hylkää"
-
-#: ../lib/engine/components/libnotify/libnotify-main.cpp:243
-msgid "Accept"
-msgstr "Hyväksy"
-
 #: ../lib/engine/components/local-roster/local-cluster.cpp:82
 #: ../lib/engine/components/local-roster/local-heap.cpp:118
 #: ../plugins/evolution/evolution-book.cpp:343
-#| msgid "New _Contact"
 msgid "_New Contact"
 msgstr "Uusi _tuttava"
 
@@ -912,18 +889,21 @@ msgid "Call back test"
 msgstr "Takaisinsoittotesti"
 
 #: ../lib/engine/components/local-roster/local-heap.cpp:111
-msgid "Local roster"
-msgstr "Paikallinen nimilista"
+#: ../src/gui/main_window.cpp:1431
+msgid "Contacts"
+msgstr "Tuttavat"
 
 #: ../lib/engine/components/local-roster/local-heap.cpp:128
 msgid "Rename"
 msgstr "Nimeä uudestaan"
 
 #: ../lib/engine/components/local-roster/local-heap.cpp:197
+#: ../plugins/loudmouth/loudmouth-heap-roster.cpp:485
 msgid "Family"
 msgstr "Perhe"
 
 #: ../lib/engine/components/local-roster/local-heap.cpp:198
+#: ../plugins/loudmouth/loudmouth-heap-roster.cpp:486
 msgid "Friend"
 msgstr "Ystävä"
 
@@ -932,6 +912,7 @@ msgstr "Ystävä"
 #. someone who is at the same "level" than you.
 #.
 #: ../lib/engine/components/local-roster/local-heap.cpp:203
+#: ../plugins/loudmouth/loudmouth-heap-roster.cpp:491
 msgid "Associate"
 msgstr "Työtoveri"
 
@@ -940,6 +921,7 @@ msgstr "Työtoveri"
 #. someone who is at a lower "level" than you.
 #.
 #: ../lib/engine/components/local-roster/local-heap.cpp:208
+#: ../plugins/loudmouth/loudmouth-heap-roster.cpp:496
 msgid "Assistant"
 msgstr "Apulainen"
 
@@ -948,6 +930,7 @@ msgstr "Apulainen"
 #. someone who is at a higher "level" than you.
 #.
 #: ../lib/engine/components/local-roster/local-heap.cpp:213
+#: ../plugins/loudmouth/loudmouth-heap-roster.cpp:501
 msgid "Supervisor"
 msgstr "Esimies"
 
@@ -955,6 +938,7 @@ msgstr "Esimies"
 #. relationships between you and your contact; self means yourself.
 #.
 #: ../lib/engine/components/local-roster/local-heap.cpp:217
+#: ../plugins/loudmouth/loudmouth-heap-roster.cpp:505
 msgid "Self"
 msgstr "Minä"
 
@@ -972,11 +956,12 @@ msgstr ""
 #: ../lib/engine/components/local-roster/local-heap.cpp:236
 #: ../lib/engine/components/local-roster/local-heap.cpp:427
 #: ../lib/engine/components/local-roster/local-presentity.cpp:270
-#: ../lib/engine/components/opal/opal-account.cpp:420
+#: ../lib/engine/components/opal/opal-account.cpp:459
 #: ../plugins/evolution/evolution-contact.cpp:324
 #: ../plugins/loudmouth/loudmouth-account.cpp:342
 #: ../plugins/loudmouth/loudmouth-bank.cpp:125
-#: ../plugins/loudmouth/loudmouth-presentity.cpp:283
+#: ../plugins/loudmouth/loudmouth-heap-roster.cpp:338
+#: ../plugins/loudmouth/loudmouth-presentity.cpp:289
 #: ../plugins/resource-list/rl-cluster.cpp:169
 #: ../plugins/resource-list/rl-heap.cpp:526
 #: ../plugins/resource-list/rl-presentity.cpp:233
@@ -985,6 +970,7 @@ msgstr "Nimi:"
 
 #: ../lib/engine/components/local-roster/local-heap.cpp:236
 #: ../lib/engine/components/local-roster/local-presentity.cpp:270
+#: ../plugins/loudmouth/loudmouth-heap-roster.cpp:338
 #, fuzzy
 #| msgid "If enabled, offline contacts will be shown in the roster"
 msgid "Name of the contact, as shown in your roster"
@@ -1006,6 +992,7 @@ msgid "Address, e.g. sip:xyz@ekiga.net"
 msgstr "Osoite, esim. sip:xyz@ekiga.net"
 
 #: ../lib/engine/components/local-roster/local-heap.cpp:251
+#: ../plugins/loudmouth/loudmouth-heap-roster.cpp:340
 msgid "Put contact in groups:"
 msgstr "Lisää tuttava ryhmiin:"
 
@@ -1035,26 +1022,26 @@ msgid "Unnamed"
 msgstr "Nimeämätön"
 
 #: ../lib/engine/components/local-roster/local-presentity.cpp:240
-#: ../lib/engine/components/opal/opal-account.cpp:375
+#: ../lib/engine/components/opal/opal-account.cpp:414
 #: ../plugins/evolution/evolution-contact.cpp:228
-#: ../plugins/loudmouth/loudmouth-presentity.cpp:160
+#: ../plugins/loudmouth/loudmouth-presentity.cpp:174
 #: ../plugins/resource-list/rl-presentity.cpp:212
-#: ../src/gui/main_window.cpp:1320
+#: ../src/gui/main_window.cpp:1317
 msgid "_Edit"
 msgstr "_Muokkaa"
 
 #: ../lib/engine/components/local-roster/local-presentity.cpp:242
-#: ../lib/engine/components/opal/opal-account.cpp:377
-#: ../lib/engine/gui/gtk-frontend/accounts-window.cpp:682
+#: ../lib/engine/components/opal/opal-account.cpp:416
+#: ../lib/engine/gui/gtk-frontend/accounts-window.cpp:683
 #: ../plugins/evolution/evolution-contact.cpp:230
 #: ../plugins/loudmouth/loudmouth-account.cpp:445
-#: ../plugins/loudmouth/loudmouth-presentity.cpp:193
+#: ../plugins/loudmouth/loudmouth-presentity.cpp:199
 #: ../plugins/resource-list/rl-presentity.cpp:214
 msgid "_Remove"
 msgstr "_Poista"
 
 #: ../lib/engine/components/local-roster/local-presentity.cpp:267
-#: ../plugins/loudmouth/loudmouth-presentity.cpp:280
+#: ../plugins/loudmouth/loudmouth-presentity.cpp:286
 msgid "Edit roster element"
 msgstr "Muokkaa nimilistan kohtaa"
 
@@ -1070,300 +1057,303 @@ msgid "Is a preferred contact"
 msgstr "on ensisijainen yhteys"
 
 #: ../lib/engine/components/local-roster/local-presentity.cpp:274
-#: ../plugins/loudmouth/loudmouth-presentity.cpp:285
+#: ../plugins/loudmouth/loudmouth-presentity.cpp:291
 #: ../plugins/resource-list/rl-heap.cpp:528
 #: ../plugins/resource-list/rl-presentity.cpp:236
 msgid "Choose groups:"
 msgstr "Valitse ryhmät:"
 
-#: ../lib/engine/components/opal/h323-endpoint.cpp:135
-#: ../lib/engine/components/opal/opal-call.cpp:682
-#: ../lib/engine/components/opal/sip-endpoint.cpp:250
-#: ../lib/engine/components/opal/sip-endpoint.cpp:254
+#: ../lib/engine/components/opal/h323-endpoint.cpp:146
+#: ../lib/engine/components/opal/opal-call.cpp:688
+#: ../lib/engine/components/opal/sip-endpoint.cpp:249
+#: ../lib/engine/components/opal/sip-endpoint.cpp:253
 msgid "Call"
 msgstr "Soita"
 
-#: ../lib/engine/components/opal/h323-endpoint.cpp:138
-#: ../lib/engine/components/opal/sip-endpoint.cpp:251
-#: ../lib/engine/components/opal/sip-endpoint.cpp:255
-#: ../lib/engine/gui/gtk-frontend/call-window.cpp:2093
+#: ../lib/engine/components/opal/h323-endpoint.cpp:149
+#: ../lib/engine/components/opal/sip-endpoint.cpp:250
+#: ../lib/engine/components/opal/sip-endpoint.cpp:254
+#: ../lib/engine/gui/gtk-frontend/call-window.cpp:2172
 msgid "Transfer"
 msgstr "Siirrä puhelu"
 
 #. Translators : The alias we are registering already exists : failure
-#: ../lib/engine/components/opal/h323-endpoint.cpp:340
+#: ../lib/engine/components/opal/h323-endpoint.cpp:347
 msgid "Duplicate alias"
 msgstr "Kahdennettu alias"
 
-#: ../lib/engine/components/opal/h323-endpoint.cpp:343
+#: ../lib/engine/components/opal/h323-endpoint.cpp:350
 msgid "Bad username/password"
 msgstr "Virheellinen käyttäjätunnus tai salasana"
 
-#: ../lib/engine/components/opal/h323-endpoint.cpp:346
-#: ../lib/engine/components/opal/sip-endpoint.cpp:603
+#: ../lib/engine/components/opal/h323-endpoint.cpp:353
+#: ../lib/engine/components/opal/sip-endpoint.cpp:598
 msgid "Transport error"
 msgstr "Siirtovirhe"
 
-#: ../lib/engine/components/opal/h323-endpoint.cpp:357
-#: ../lib/engine/components/opal/h323-endpoint.cpp:362
-#: ../lib/engine/components/opal/sip-endpoint.cpp:816
+#: ../lib/engine/components/opal/h323-endpoint.cpp:364
+#: ../lib/engine/components/opal/h323-endpoint.cpp:369
+#: ../lib/engine/components/opal/sip-endpoint.cpp:811
 msgid "Failed"
 msgstr "Epäonnistui"
 
 #. Translators: this is a state, not an action, i.e. it should be read as
 #. "(you are) unregistered", and not as "(you have been) unregistered"
-#: ../lib/engine/components/opal/opal-account.cpp:69
-#: ../lib/engine/components/opal/opal-account.cpp:310
-#: ../lib/engine/components/opal/opal-account.cpp:605
+#: ../lib/engine/components/opal/opal-account.cpp:73
+#: ../lib/engine/components/opal/opal-account.cpp:362
+#: ../lib/engine/components/opal/opal-account.cpp:673
 msgid "Unregistered"
 msgstr "Ei rekisteröity"
 
 #. translators : the result will look like :
 #. * "registered (with 2 voice mail messages)"
 #.
-#: ../lib/engine/components/opal/opal-account.cpp:218
+#: ../lib/engine/components/opal/opal-account.cpp:248
 #, c-format
 msgid "%s (with %d voice mail message)"
 msgid_plural "%s (with %d voice mail messages)"
 msgstr[0] ""
 msgstr[1] ""
 
-#: ../lib/engine/components/opal/opal-account.cpp:296
-#: ../lib/engine/components/opal/opal-account.cpp:674
+#: ../lib/engine/components/opal/opal-account.cpp:326
+#: ../lib/engine/components/opal/opal-account.cpp:755
 msgid "Processing..."
 msgstr "Käsitellään..."
 
-#: ../lib/engine/components/opal/opal-account.cpp:367
-#: ../lib/engine/gui/gtk-frontend/accounts-window.cpp:676
+#: ../lib/engine/components/opal/opal-account.cpp:406
+#: ../lib/engine/gui/gtk-frontend/accounts-window.cpp:677
 #: ../plugins/loudmouth/loudmouth-account.cpp:433
 msgid "_Disable"
 msgstr "Poista _käytöstä"
 
-#: ../lib/engine/components/opal/opal-account.cpp:370
-#: ../lib/engine/gui/gtk-frontend/accounts-window.cpp:673
+#: ../lib/engine/components/opal/opal-account.cpp:409
+#: ../lib/engine/gui/gtk-frontend/accounts-window.cpp:674
 #: ../plugins/loudmouth/loudmouth-account.cpp:437
 msgid "_Enable"
 msgstr "_Ota käyttöön"
 
-#: ../lib/engine/components/opal/opal-account.cpp:391
+#: ../lib/engine/components/opal/opal-account.cpp:430
 #: ../src/gui/assistant.cpp:761
 msgid "Recharge the account"
 msgstr "Lataa tiliä"
 
-#: ../lib/engine/components/opal/opal-account.cpp:396
+#: ../lib/engine/components/opal/opal-account.cpp:435
 #: ../src/gui/assistant.cpp:773
 msgid "Consult the balance history"
 msgstr "Selaa tilihistoriaa"
 
-#: ../lib/engine/components/opal/opal-account.cpp:401
+#: ../lib/engine/components/opal/opal-account.cpp:440
 #: ../src/gui/assistant.cpp:785
 msgid "Consult the call history"
 msgstr "Selaa puheluhistoriaa"
 
-#: ../lib/engine/components/opal/opal-account.cpp:416
-#: ../lib/engine/components/opal/opal-bank.cpp:96
+#: ../lib/engine/components/opal/opal-account.cpp:455
+#: ../lib/engine/components/opal/opal-bank.cpp:98
 #: ../plugins/loudmouth/loudmouth-account.cpp:337
 #: ../plugins/loudmouth/loudmouth-bank.cpp:121
 msgid "Edit account"
 msgstr "Muokkaa tiliä"
 
-#: ../lib/engine/components/opal/opal-account.cpp:418
-#: ../lib/engine/components/opal/opal-bank.cpp:97
+#: ../lib/engine/components/opal/opal-account.cpp:457
+#: ../lib/engine/components/opal/opal-bank.cpp:99
 #: ../plugins/evolution/evolution-book.cpp:345
 #: ../plugins/evolution/evolution-contact.cpp:322
 #: ../plugins/loudmouth/loudmouth-account.cpp:339
 msgid "Please update the following fields:"
 msgstr "Ole hyvä ja päivitä seuraavat kentät:"
 
-#: ../lib/engine/components/opal/opal-account.cpp:420
-#: ../lib/engine/components/opal/opal-bank.cpp:123
-#: ../lib/engine/components/opal/opal-bank.cpp:133
+#: ../lib/engine/components/opal/opal-account.cpp:459
+#: ../lib/engine/components/opal/opal-bank.cpp:125
+#: ../lib/engine/components/opal/opal-bank.cpp:135
 #: ../plugins/loudmouth/loudmouth-account.cpp:342
+#: ../plugins/loudmouth/loudmouth-bank.cpp:125
 msgid "Account name, e.g. MyAccount"
 msgstr "Tilin nimi, esim. OmaTili"
 
-#: ../lib/engine/components/opal/opal-account.cpp:422
+#: ../lib/engine/components/opal/opal-account.cpp:461
 msgid "Registrar:"
 msgstr "Rekisteröijä:"
 
-#: ../lib/engine/components/opal/opal-account.cpp:422
-#: ../lib/engine/components/opal/opal-bank.cpp:134
+#: ../lib/engine/components/opal/opal-account.cpp:461
+#: ../lib/engine/components/opal/opal-bank.cpp:136
 msgid "The registrar, e.g. ekiga.net"
 msgstr "Rekisteröijä, esim. ekiga.net"
 
-#: ../lib/engine/components/opal/opal-account.cpp:424
+#: ../lib/engine/components/opal/opal-account.cpp:463
 msgid "Gatekeeper:"
 msgstr "Porttivahti:"
 
-#: ../lib/engine/components/opal/opal-account.cpp:424
-#: ../lib/engine/components/opal/opal-bank.cpp:124
+#: ../lib/engine/components/opal/opal-account.cpp:463
+#: ../lib/engine/components/opal/opal-bank.cpp:126
 msgid "The gatekeeper, e.g. ekiga.net"
 msgstr "Porttivahti, esim. ekiga.net"
 
-#: ../lib/engine/components/opal/opal-account.cpp:425
+#: ../lib/engine/components/opal/opal-account.cpp:464
 #: ../plugins/loudmouth/loudmouth-account.cpp:346
 #: ../plugins/loudmouth/loudmouth-bank.cpp:126
 #: ../plugins/resource-list/rl-cluster.cpp:174
 msgid "User:"
 msgstr "Käyttäjä:"
 
-#: ../lib/engine/components/opal/opal-account.cpp:425
-#: ../lib/engine/components/opal/opal-bank.cpp:105
-#: ../lib/engine/components/opal/opal-bank.cpp:116
-#: ../lib/engine/components/opal/opal-bank.cpp:125
-#: ../lib/engine/components/opal/opal-bank.cpp:135
+#: ../lib/engine/components/opal/opal-account.cpp:464
+#: ../lib/engine/components/opal/opal-bank.cpp:107
+#: ../lib/engine/components/opal/opal-bank.cpp:118
+#: ../lib/engine/components/opal/opal-bank.cpp:127
+#: ../lib/engine/components/opal/opal-bank.cpp:137
 #: ../plugins/loudmouth/loudmouth-account.cpp:346
+#: ../plugins/loudmouth/loudmouth-bank.cpp:126
 msgid "The user name, e.g. jim"
 msgstr "Käyttäjätunnus, esim. matti"
 
 #. Translators:
 #. * SIP knows two usernames: The name for the client ("User") and the name
 #. * for the authentication procedure ("Authentication user")
-#: ../lib/engine/components/opal/opal-account.cpp:430
-#| msgid "Authentication User:"
+#: ../lib/engine/components/opal/opal-account.cpp:469
 msgid "Authentication user:"
 msgstr "Kirjautumiskäyttäjä:"
 
-#: ../lib/engine/components/opal/opal-account.cpp:430
-#: ../lib/engine/components/opal/opal-bank.cpp:136
+#: ../lib/engine/components/opal/opal-account.cpp:469
+#: ../lib/engine/components/opal/opal-bank.cpp:138
 msgid ""
 "The user name used during authentication, if different than the user name; "
 "leave empty if you do not have one"
 msgstr ""
 
-#: ../lib/engine/components/opal/opal-account.cpp:431
+#: ../lib/engine/components/opal/opal-account.cpp:470
 #: ../plugins/loudmouth/loudmouth-account.cpp:362
 #: ../plugins/loudmouth/loudmouth-bank.cpp:129
 #: ../plugins/resource-list/rl-cluster.cpp:173
 msgid "Password:"
 msgstr "Salasana:"
 
-#: ../lib/engine/components/opal/opal-account.cpp:431
-#: ../lib/engine/components/opal/opal-bank.cpp:107
-#: ../lib/engine/components/opal/opal-bank.cpp:118
-#: ../lib/engine/components/opal/opal-bank.cpp:127
-#: ../lib/engine/components/opal/opal-bank.cpp:137
+#: ../lib/engine/components/opal/opal-account.cpp:470
+#: ../lib/engine/components/opal/opal-bank.cpp:109
+#: ../lib/engine/components/opal/opal-bank.cpp:120
+#: ../lib/engine/components/opal/opal-bank.cpp:129
+#: ../lib/engine/components/opal/opal-bank.cpp:139
 #: ../plugins/loudmouth/loudmouth-account.cpp:362
+#: ../plugins/loudmouth/loudmouth-bank.cpp:129
 msgid "Password associated to the user"
 msgstr "Käyttäjälle määritelty salasana"
 
-#: ../lib/engine/components/opal/opal-account.cpp:432
+#: ../lib/engine/components/opal/opal-account.cpp:471
 msgid "Timeout:"
 msgstr "Aikakatkaisu:"
 
-#: ../lib/engine/components/opal/opal-account.cpp:432
-#: ../lib/engine/components/opal/opal-bank.cpp:128
-#: ../lib/engine/components/opal/opal-bank.cpp:138
+#: ../lib/engine/components/opal/opal-account.cpp:471
+#: ../lib/engine/components/opal/opal-bank.cpp:130
+#: ../lib/engine/components/opal/opal-bank.cpp:140
 msgid ""
 "Time in seconds after which the account registration is automatically retried"
 msgstr "Aikaviive, jonka jälkeen tilin rekisteröintiä yritetään uudelleen"
 
-#: ../lib/engine/components/opal/opal-account.cpp:433
-#: ../lib/engine/components/opal/opal-bank.cpp:141
+#: ../lib/engine/components/opal/opal-account.cpp:472
+#: ../lib/engine/components/opal/opal-bank.cpp:143
 #: ../plugins/loudmouth/loudmouth-account.cpp:376
 #: ../plugins/loudmouth/loudmouth-bank.cpp:130
-#| msgid "Enable Account"
 msgid "Enable account"
 msgstr "Ota tili käyttöön"
 
-#: ../lib/engine/components/opal/opal-account.cpp:459
-#: ../lib/engine/components/opal/opal-bank.cpp:175
+#: ../lib/engine/components/opal/opal-account.cpp:500
+#: ../lib/engine/components/opal/opal-bank.cpp:177
 msgid "You did not supply a name for that account."
 msgstr "Et antanut tilille nimeä."
 
-#: ../lib/engine/components/opal/opal-account.cpp:461
-#: ../lib/engine/components/opal/opal-bank.cpp:177
+#: ../lib/engine/components/opal/opal-account.cpp:502
+#: ../lib/engine/components/opal/opal-bank.cpp:179
 msgid "You did not supply a host to register to."
 msgstr "Et antanut palvelinta johon rekisteröidä."
 
-#: ../lib/engine/components/opal/opal-account.cpp:463
-#: ../lib/engine/components/opal/opal-bank.cpp:179
+#: ../lib/engine/components/opal/opal-account.cpp:504
+#: ../lib/engine/components/opal/opal-bank.cpp:181
 msgid "You did not supply a user name for that account."
 msgstr "Et antanut käyttäjätunnusta tälle tilille."
 
-#: ../lib/engine/components/opal/opal-account.cpp:465
-#: ../lib/engine/components/opal/opal-bank.cpp:181
+#: ../lib/engine/components/opal/opal-account.cpp:506
+#: ../lib/engine/components/opal/opal-bank.cpp:183
 msgid "The timeout should be at least 10 seconds."
 msgstr "Aikakatkaisun tulisi olla vähintään 10 sekuntia."
 
 #. Translators: this is a state, not an action, i.e. it should be read as
 #. "(you are) registered", and not as "(you have been) registered"
-#: ../lib/engine/components/opal/opal-account.cpp:582
+#: ../lib/engine/components/opal/opal-account.cpp:646
 msgid "Registered"
 msgstr "Rekisteröity"
 
-#: ../lib/engine/components/opal/opal-account.cpp:618
+#: ../lib/engine/components/opal/opal-account.cpp:687
 msgid "Could not unregister"
 msgstr "Rekisteröintiä ei voitu perua"
 
-#: ../lib/engine/components/opal/opal-account.cpp:651
-msgid "Could not register"
-msgstr "Rekisteröinti ei onnistunut"
-
-#: ../lib/engine/components/opal/opal-account.cpp:656
+#: ../lib/engine/components/opal/opal-account.cpp:700
+#: ../lib/engine/components/opal/opal-account.cpp:734
 msgid "Could not register to "
 msgstr "Rekisteröinti ei onnistunut kohteeseen "
 
-#: ../lib/engine/components/opal/opal-account.cpp:657
+#: ../lib/engine/components/opal/opal-account.cpp:701
+#: ../lib/engine/components/opal/opal-account.cpp:735
 #: ../plugins/loudmouth/loudmouth-account.cpp:443
 msgid "Edit"
 msgstr "Muokkaa"
 
-#: ../lib/engine/components/opal/opal-account.cpp:794
+#: ../lib/engine/components/opal/opal-account.cpp:729
+msgid "Could not register"
+msgstr "Rekisteröinti ei onnistunut"
+
+#: ../lib/engine/components/opal/opal-account.cpp:877
 msgid "Appointment"
 msgstr ""
 
-#: ../lib/engine/components/opal/opal-account.cpp:799
+#: ../lib/engine/components/opal/opal-account.cpp:882
 msgid "Breakfast"
 msgstr ""
 
-#: ../lib/engine/components/opal/opal-account.cpp:804
+#: ../lib/engine/components/opal/opal-account.cpp:887
 msgid "Dinner"
 msgstr ""
 
-#: ../lib/engine/components/opal/opal-account.cpp:810
+#: ../lib/engine/components/opal/opal-account.cpp:893
 msgid "Holiday"
 msgstr ""
 
-#: ../lib/engine/components/opal/opal-account.cpp:815
+#: ../lib/engine/components/opal/opal-account.cpp:898
 msgid "In transit"
 msgstr ""
 
-#: ../lib/engine/components/opal/opal-account.cpp:820
+#: ../lib/engine/components/opal/opal-account.cpp:903
 msgid "Looking for work"
 msgstr "Etsii töitä"
 
-#: ../lib/engine/components/opal/opal-account.cpp:825
+#: ../lib/engine/components/opal/opal-account.cpp:908
 msgid "Lunch"
 msgstr ""
 
-#: ../lib/engine/components/opal/opal-account.cpp:830
+#: ../lib/engine/components/opal/opal-account.cpp:913
 msgid "Meal"
 msgstr ""
 
-#: ../lib/engine/components/opal/opal-account.cpp:835
+#: ../lib/engine/components/opal/opal-account.cpp:918
 msgid "Meeting"
 msgstr "Kokouksessa"
 
-#: ../lib/engine/components/opal/opal-account.cpp:840
+#: ../lib/engine/components/opal/opal-account.cpp:923
 msgid "On the phone"
 msgstr "Puhelimessa"
 
-#: ../lib/engine/components/opal/opal-account.cpp:845
+#: ../lib/engine/components/opal/opal-account.cpp:928
 #, fuzzy
 #| msgid "Play"
 msgid "Playing"
 msgstr "Soita"
 
-#: ../lib/engine/components/opal/opal-account.cpp:850
+#: ../lib/engine/components/opal/opal-account.cpp:933
 msgid "Shopping"
 msgstr ""
 
-#: ../lib/engine/components/opal/opal-account.cpp:855
+#: ../lib/engine/components/opal/opal-account.cpp:938
 msgid "Sleeping"
 msgstr ""
 
-#: ../lib/engine/components/opal/opal-account.cpp:860
+#: ../lib/engine/components/opal/opal-account.cpp:943
 msgid "Working"
 msgstr "Työskentelee"
 
@@ -1379,159 +1369,157 @@ msgstr "_Lisää Ekigan ulossoittotili"
 msgid "_Add a SIP Account"
 msgstr "_Lisää SIP-tili"
 
-#: ../lib/engine/components/opal/opal-bank.cpp:82
+#: ../lib/engine/components/opal/opal-bank.cpp:83
 msgid "_Add an H.323 Account"
 msgstr "_Lisää H.323-tili"
 
-#: ../lib/engine/components/opal/opal-bank.cpp:102
+#: ../lib/engine/components/opal/opal-bank.cpp:104
 #: ../src/gui/assistant.cpp:645
 msgid "Get an Ekiga.net SIP account"
 msgstr "Hanki Ekiga.netin SIP-tili"
 
-#: ../lib/engine/components/opal/opal-bank.cpp:105
-#: ../lib/engine/components/opal/opal-bank.cpp:125
-#: ../lib/engine/components/opal/opal-bank.cpp:135
-msgid "_User:"
-msgstr "_Käyttäjä:"
-
 #: ../lib/engine/components/opal/opal-bank.cpp:107
 #: ../lib/engine/components/opal/opal-bank.cpp:127
 #: ../lib/engine/components/opal/opal-bank.cpp:137
+msgid "_User:"
+msgstr "_Käyttäjä:"
+
+#: ../lib/engine/components/opal/opal-bank.cpp:109
+#: ../lib/engine/components/opal/opal-bank.cpp:129
+#: ../lib/engine/components/opal/opal-bank.cpp:139
 #: ../plugins/ldap/ldap-book.cpp:986
 msgid "_Password:"
 msgstr "_Salasana:"
 
-#: ../lib/engine/components/opal/opal-bank.cpp:112
+#: ../lib/engine/components/opal/opal-bank.cpp:114
 #: ../src/gui/assistant.cpp:749
 msgid "Get an Ekiga Call Out account"
 msgstr "Hanki Ekigan ulossoittotili"
 
-#: ../lib/engine/components/opal/opal-bank.cpp:116
+#: ../lib/engine/components/opal/opal-bank.cpp:118
 msgid "_Account ID:"
 msgstr "_Tilin tunniste:"
 
-#: ../lib/engine/components/opal/opal-bank.cpp:118
-#| msgid "_PIN Code:"
+#: ../lib/engine/components/opal/opal-bank.cpp:120
 msgid "_PIN code:"
 msgstr "_PIN-koodi:"
 
-#: ../lib/engine/components/opal/opal-bank.cpp:123
-#: ../lib/engine/components/opal/opal-bank.cpp:133
+#: ../lib/engine/components/opal/opal-bank.cpp:125
+#: ../lib/engine/components/opal/opal-bank.cpp:135
 #: ../plugins/evolution/evolution-book.cpp:347
 msgid "_Name:"
 msgstr "_Nimi:"
 
-#: ../lib/engine/components/opal/opal-bank.cpp:124
+#: ../lib/engine/components/opal/opal-bank.cpp:126
 msgid "_Gatekeeper:"
 msgstr "P_orttivahti:"
 
-#: ../lib/engine/components/opal/opal-bank.cpp:128
-#: ../lib/engine/components/opal/opal-bank.cpp:138
+#: ../lib/engine/components/opal/opal-bank.cpp:130
+#: ../lib/engine/components/opal/opal-bank.cpp:140
 msgid "_Timeout:"
 msgstr "_Aikakatkaisu:"
 
-#: ../lib/engine/components/opal/opal-bank.cpp:134
+#: ../lib/engine/components/opal/opal-bank.cpp:136
 msgid "_Registrar:"
 msgstr "_Rekisteröijä:"
 
-#: ../lib/engine/components/opal/opal-bank.cpp:136
-#| msgid "_Authentication User:"
+#: ../lib/engine/components/opal/opal-bank.cpp:138
 msgid "_Authentication user:"
 msgstr "K_irjautumiskäyttäjä:"
 
-#: ../lib/engine/components/opal/opal-call.cpp:405
+#: ../lib/engine/components/opal/opal-call.cpp:423
 msgid "Local user cleared the call"
 msgstr "Paikallinen käyttäjä katkaisi puhelun"
 
-#: ../lib/engine/components/opal/opal-call.cpp:408
-#: ../lib/engine/components/opal/opal-call.cpp:411
+#: ../lib/engine/components/opal/opal-call.cpp:426
+#: ../lib/engine/components/opal/opal-call.cpp:429
 msgid "Local user rejected the call"
 msgstr "Paikallinen käyttäjä hylkäsi puhelun"
 
-#: ../lib/engine/components/opal/opal-call.cpp:414
+#: ../lib/engine/components/opal/opal-call.cpp:432
 msgid "Remote user cleared the call"
 msgstr "Vastapuoli katkaisi puhelun"
 
-#: ../lib/engine/components/opal/opal-call.cpp:417
+#: ../lib/engine/components/opal/opal-call.cpp:435
 msgid "Remote user rejected the call"
 msgstr "Vastapuoli hylkäsi puhelun"
 
-#: ../lib/engine/components/opal/opal-call.cpp:420
+#: ../lib/engine/components/opal/opal-call.cpp:438
 msgid "Remote user has stopped calling"
 msgstr "Vastapuoli lopetti soittamisen"
 
-#: ../lib/engine/components/opal/opal-call.cpp:423
+#: ../lib/engine/components/opal/opal-call.cpp:441
 msgid "Abnormal call termination"
 msgstr "Epänormaali puhelun päättyminen"
 
-#: ../lib/engine/components/opal/opal-call.cpp:426
-#: ../src/gui/main_window.cpp:527
+#: ../lib/engine/components/opal/opal-call.cpp:444
+#: ../src/gui/main_window.cpp:531
 msgid "Could not connect to remote host"
 msgstr "Toiseen koneeseen ei voitu yhdistää"
 
-#: ../lib/engine/components/opal/opal-call.cpp:430
+#: ../lib/engine/components/opal/opal-call.cpp:448
 msgid "The Gatekeeper cleared the call"
 msgstr "Porttivahti katkaisi puhelun"
 
-#: ../lib/engine/components/opal/opal-call.cpp:433
+#: ../lib/engine/components/opal/opal-call.cpp:451
 msgid "User not found"
 msgstr "Käyttäjää ei löydy"
 
-#: ../lib/engine/components/opal/opal-call.cpp:436
+#: ../lib/engine/components/opal/opal-call.cpp:454
 msgid "Insufficient bandwidth"
 msgstr "Kaistanleveys ei riitä"
 
-#: ../lib/engine/components/opal/opal-call.cpp:439
+#: ../lib/engine/components/opal/opal-call.cpp:457
 msgid "No common codec"
 msgstr "Ei yhteistä koodekkia"
 
-#: ../lib/engine/components/opal/opal-call.cpp:442
+#: ../lib/engine/components/opal/opal-call.cpp:460
 msgid "Call forwarded"
 msgstr "Puhelu ohjattu"
 
-#: ../lib/engine/components/opal/opal-call.cpp:445
+#: ../lib/engine/components/opal/opal-call.cpp:463
 msgid "Security check failed"
 msgstr "Tietoturvatarkistus epäonnistui"
 
-#: ../lib/engine/components/opal/opal-call.cpp:448
+#: ../lib/engine/components/opal/opal-call.cpp:466
 msgid "Local user is busy"
 msgstr "Paikallinen käyttäjä on varattu"
 
-#: ../lib/engine/components/opal/opal-call.cpp:451
-#: ../lib/engine/components/opal/opal-call.cpp:457
+#: ../lib/engine/components/opal/opal-call.cpp:469
+#: ../lib/engine/components/opal/opal-call.cpp:475
 msgid "Congested link to remote party"
 msgstr "Ruuhkautunut linkki toiselle osapuolelle"
 
-#: ../lib/engine/components/opal/opal-call.cpp:454
+#: ../lib/engine/components/opal/opal-call.cpp:472
 msgid "Remote user is busy"
 msgstr "Toisen pään käyttäjä on varattu"
 
-#: ../lib/engine/components/opal/opal-call.cpp:460
+#: ../lib/engine/components/opal/opal-call.cpp:478
 msgid "Remote host is offline"
 msgstr "Toisen käyttäjän tietokone ei ole linjoilla"
 
-#: ../lib/engine/components/opal/opal-call.cpp:466
+#: ../lib/engine/components/opal/opal-call.cpp:484
 msgid "User is not available"
 msgstr "Käyttäjä ei ole saatavilla"
 
-#: ../lib/engine/components/opal/opal-call.cpp:469
-#: ../lib/engine/components/opal/sip-endpoint.cpp:781
+#: ../lib/engine/components/opal/opal-call.cpp:487
+#: ../lib/engine/components/opal/sip-endpoint.cpp:776
 msgid "Service unavailable"
 msgstr "Palvelu ei ole käytettävissä"
 
-#: ../lib/engine/components/opal/opal-call.cpp:479
+#: ../lib/engine/components/opal/opal-call.cpp:497
 msgid "Call completed"
 msgstr "Puhelu päättynyt"
 
-#: ../lib/engine/components/opal/opal-call.cpp:679
+#: ../lib/engine/components/opal/opal-call.cpp:685
 msgid "Missed call from"
 msgstr "Vastaamaton puhelu käyttäjältä"
 
-#: ../lib/engine/components/opal/opal-call.cpp:681
+#: ../lib/engine/components/opal/opal-call.cpp:687
 msgid "Missed call"
 msgstr "Vastaamaton puhelu"
 
-#: ../lib/engine/components/opal/opal-call-manager.cpp:830
+#: ../lib/engine/components/opal/opal-call-manager.cpp:842
 msgid ""
 "Ekiga did not manage to configure your network settings automatically. You "
 "can still use it, but you need to configure your network settings manually.\n"
@@ -1545,22 +1533,22 @@ msgstr ""
 "Lue lisäohjeita itse määritellyistä asetuksista osoitteesta http://wiki."
 "ekiga.org/index.php/Enable_port_forwarding_manually"
 
-#: ../lib/engine/components/opal/sip-endpoint.cpp:275
-#: ../lib/engine/components/opal/sip-endpoint.cpp:277
+#: ../lib/engine/components/opal/sip-endpoint.cpp:274
+#: ../lib/engine/components/opal/sip-endpoint.cpp:276
 msgid "Message"
 msgstr "Viesti"
 
-#: ../lib/engine/components/opal/sip-endpoint.cpp:599
+#: ../lib/engine/components/opal/sip-endpoint.cpp:594
 msgid "Illegal status code"
 msgstr "Virheellinen tilakoodi"
 
-#: ../lib/engine/components/opal/sip-endpoint.cpp:607
+#: ../lib/engine/components/opal/sip-endpoint.cpp:602
 msgid "Invalid address"
 msgstr "Virheellinen osoite"
 
 #. Translators: Host of the remote party is offline, this should
 #. * appear when the remote host does not reply in an acceptable time
-#: ../lib/engine/components/opal/sip-endpoint.cpp:613
+#: ../lib/engine/components/opal/sip-endpoint.cpp:608
 #, fuzzy
 #| msgid "Remote host is offline"
 msgid "Remote party host is offline"
@@ -1569,83 +1557,83 @@ msgstr "Toisen käyttäjän tietokone ei ole linjoilla"
 #. Translators: the following strings are answers from the SIP server
 #. * when the packet it receives has an error, see
 #. * http://www.ietf.org/rfc/rfc3261.txt, chapter 21 for more information
-#: ../lib/engine/components/opal/sip-endpoint.cpp:629
+#: ../lib/engine/components/opal/sip-endpoint.cpp:624
 msgid "Multiple choices"
 msgstr "Useita valintoja"
 
-#: ../lib/engine/components/opal/sip-endpoint.cpp:633
+#: ../lib/engine/components/opal/sip-endpoint.cpp:628
 msgid "Moved permanently"
 msgstr "Siirretty pysyvästi"
 
-#: ../lib/engine/components/opal/sip-endpoint.cpp:637
+#: ../lib/engine/components/opal/sip-endpoint.cpp:632
 msgid "Moved temporarily"
 msgstr "Siirretty väliaikaisesti"
 
-#: ../lib/engine/components/opal/sip-endpoint.cpp:641
+#: ../lib/engine/components/opal/sip-endpoint.cpp:636
 msgid "Use proxy"
 msgstr "Käytä välipalvelinta"
 
-#: ../lib/engine/components/opal/sip-endpoint.cpp:645
+#: ../lib/engine/components/opal/sip-endpoint.cpp:640
 msgid "Alternative service"
 msgstr "Vaihtoehtoinen palvelu"
 
-#: ../lib/engine/components/opal/sip-endpoint.cpp:649
+#: ../lib/engine/components/opal/sip-endpoint.cpp:644
 msgid "Bad request"
 msgstr "Virheellinen pyyntö"
 
-#: ../lib/engine/components/opal/sip-endpoint.cpp:653
+#: ../lib/engine/components/opal/sip-endpoint.cpp:648
 msgid "Unauthorized"
 msgstr "Ei sallittu"
 
-#: ../lib/engine/components/opal/sip-endpoint.cpp:657
+#: ../lib/engine/components/opal/sip-endpoint.cpp:652
 msgid "Payment required"
 msgstr "Vaatii maksun"
 
-#: ../lib/engine/components/opal/sip-endpoint.cpp:661
+#: ../lib/engine/components/opal/sip-endpoint.cpp:656
 msgid "Forbidden, please check that username and password are correct"
 msgstr "Evätty, tarkista että käyttäjätunnus ja salasana ovat oikein"
 
-#: ../lib/engine/components/opal/sip-endpoint.cpp:665
+#: ../lib/engine/components/opal/sip-endpoint.cpp:660
 msgid "Not found"
 msgstr "Ei löytynyt"
 
-#: ../lib/engine/components/opal/sip-endpoint.cpp:669
+#: ../lib/engine/components/opal/sip-endpoint.cpp:664
 msgid "Method not allowed"
 msgstr "Menetelmä ei ole sallittu"
 
-#: ../lib/engine/components/opal/sip-endpoint.cpp:673
+#: ../lib/engine/components/opal/sip-endpoint.cpp:668
 msgid "Not acceptable"
 msgstr "Ei hyväksyttävä"
 
-#: ../lib/engine/components/opal/sip-endpoint.cpp:677
+#: ../lib/engine/components/opal/sip-endpoint.cpp:672
 msgid "Proxy authentication required"
 msgstr "Välipalvelin vaatii todentamisen"
 
-#: ../lib/engine/components/opal/sip-endpoint.cpp:681
+#: ../lib/engine/components/opal/sip-endpoint.cpp:676
 msgid "Timeout"
 msgstr "Aikakatkaisu"
 
-#: ../lib/engine/components/opal/sip-endpoint.cpp:685
+#: ../lib/engine/components/opal/sip-endpoint.cpp:680
 msgid "Conflict"
 msgstr "Ristiriita"
 
-#: ../lib/engine/components/opal/sip-endpoint.cpp:689
+#: ../lib/engine/components/opal/sip-endpoint.cpp:684
 msgid "Length required"
 msgstr "Pituus vaaditaan"
 
-#: ../lib/engine/components/opal/sip-endpoint.cpp:693
+#: ../lib/engine/components/opal/sip-endpoint.cpp:688
 msgid "Request entity too big"
 msgstr "Pyyntö on liian pitkä"
 
-#: ../lib/engine/components/opal/sip-endpoint.cpp:697
+#: ../lib/engine/components/opal/sip-endpoint.cpp:692
 msgid "Request URI too long"
 msgstr "Pyynnön URI on liian pitkä"
 
-#: ../lib/engine/components/opal/sip-endpoint.cpp:701
+#: ../lib/engine/components/opal/sip-endpoint.cpp:696
 msgid "Unsupported media type"
 msgstr "Mediatyyppi ei ole tuettu"
 
-#: ../lib/engine/components/opal/sip-endpoint.cpp:705
+#: ../lib/engine/components/opal/sip-endpoint.cpp:700
 msgid "Unsupported URI scheme"
 msgstr "URI-malli ei ole tuettu"
 
@@ -1653,136 +1641,147 @@ msgstr "URI-malli ei ole tuettu"
 #. * Here extension is a specific "phone number", see
 #. * http://en.wikipedia.org/wiki/Extension_(telephone)
 #. * for more information
-#: ../lib/engine/components/opal/sip-endpoint.cpp:713
+#: ../lib/engine/components/opal/sip-endpoint.cpp:708
 msgid "Bad extension"
 msgstr "Virheellinen suuntanumero"
 
-#: ../lib/engine/components/opal/sip-endpoint.cpp:717
+#: ../lib/engine/components/opal/sip-endpoint.cpp:712
 msgid "Extension required"
 msgstr "Suuntanumero vaaditaan"
 
-#: ../lib/engine/components/opal/sip-endpoint.cpp:721
+#: ../lib/engine/components/opal/sip-endpoint.cpp:716
 msgid "Interval too brief"
 msgstr "Väli on liian lyhyt"
 
-#: ../lib/engine/components/opal/sip-endpoint.cpp:725
+#: ../lib/engine/components/opal/sip-endpoint.cpp:720
 msgid "Temporarily unavailable"
 msgstr "Väliaikaisesti poissa käytöstä"
 
-#: ../lib/engine/components/opal/sip-endpoint.cpp:729
+#: ../lib/engine/components/opal/sip-endpoint.cpp:724
 msgid "Loop detected"
 msgstr "Havaittiin silmukka"
 
-#: ../lib/engine/components/opal/sip-endpoint.cpp:733
+#: ../lib/engine/components/opal/sip-endpoint.cpp:728
 msgid "Too many hops"
 msgstr "Liian monta hyppyä"
 
-#: ../lib/engine/components/opal/sip-endpoint.cpp:737
+#: ../lib/engine/components/opal/sip-endpoint.cpp:732
 msgid "Address incomplete"
 msgstr "Osoite on puutteellinen"
 
-#: ../lib/engine/components/opal/sip-endpoint.cpp:741
+#: ../lib/engine/components/opal/sip-endpoint.cpp:736
 msgid "Ambiguous"
 msgstr "Epäselvä"
 
-#: ../lib/engine/components/opal/sip-endpoint.cpp:745
+#: ../lib/engine/components/opal/sip-endpoint.cpp:740
 msgid "Busy Here"
 msgstr "Varattu täällä"
 
-#: ../lib/engine/components/opal/sip-endpoint.cpp:749
+#: ../lib/engine/components/opal/sip-endpoint.cpp:744
 msgid "Request terminated"
 msgstr "Pyyntö keskeytettiin"
 
-#: ../lib/engine/components/opal/sip-endpoint.cpp:753
+#: ../lib/engine/components/opal/sip-endpoint.cpp:748
 msgid "Not acceptable here"
 msgstr "Ei hyväksyttävä tässä"
 
-#: ../lib/engine/components/opal/sip-endpoint.cpp:757
+#: ../lib/engine/components/opal/sip-endpoint.cpp:752
 msgid "Bad event"
 msgstr "Virheellinen tapahtuma"
 
-#: ../lib/engine/components/opal/sip-endpoint.cpp:761
+#: ../lib/engine/components/opal/sip-endpoint.cpp:756
 msgid "Request pending"
 msgstr "Pyyntö on jonossa"
 
-#: ../lib/engine/components/opal/sip-endpoint.cpp:765
+#: ../lib/engine/components/opal/sip-endpoint.cpp:760
 msgid "Undecipherable"
 msgstr "Käsittämätön"
 
-#: ../lib/engine/components/opal/sip-endpoint.cpp:769
+#: ../lib/engine/components/opal/sip-endpoint.cpp:764
 msgid "Internal server error"
 msgstr "Sisäinen palvelinvirhe"
 
-#: ../lib/engine/components/opal/sip-endpoint.cpp:773
+#: ../lib/engine/components/opal/sip-endpoint.cpp:768
 msgid "Not implemented"
 msgstr "Ei toteutettu"
 
-#: ../lib/engine/components/opal/sip-endpoint.cpp:777
+#: ../lib/engine/components/opal/sip-endpoint.cpp:772
 msgid "Bad gateway"
 msgstr "Virheellinen yhtyskäytävä"
 
-#: ../lib/engine/components/opal/sip-endpoint.cpp:785
+#: ../lib/engine/components/opal/sip-endpoint.cpp:780
 msgid "Server timeout"
 msgstr "Palvelimen aikakatkaisu"
 
-#: ../lib/engine/components/opal/sip-endpoint.cpp:789
+#: ../lib/engine/components/opal/sip-endpoint.cpp:784
 msgid "SIP version not supported"
 msgstr "SIP-versio ei ole tuettu"
 
-#: ../lib/engine/components/opal/sip-endpoint.cpp:793
+#: ../lib/engine/components/opal/sip-endpoint.cpp:788
 msgid "Message too large"
 msgstr "Viesti on liian suuri"
 
-#: ../lib/engine/components/opal/sip-endpoint.cpp:797
+#: ../lib/engine/components/opal/sip-endpoint.cpp:792
 msgid "Busy everywhere"
 msgstr "Aina varattu"
 
-#: ../lib/engine/components/opal/sip-endpoint.cpp:801
+#: ../lib/engine/components/opal/sip-endpoint.cpp:796
 msgid "Decline"
 msgstr "Kiellä"
 
-#: ../lib/engine/components/opal/sip-endpoint.cpp:805
+#: ../lib/engine/components/opal/sip-endpoint.cpp:800
 msgid "Does not exist anymore"
 msgstr "Ei ole enää olemassa"
 
-#: ../lib/engine/components/opal/sip-endpoint.cpp:809
+#: ../lib/engine/components/opal/sip-endpoint.cpp:804
 msgid "Globally not acceptable"
 msgstr "Ei hyväksyttävä missään"
 
-#: ../lib/engine/components/opal/sip-endpoint.cpp:947
+#: ../lib/engine/components/opal/sip-endpoint.cpp:923
 msgid "Could not send message: "
 msgstr "Viestin lähetys epäonnistui: "
 
-#: ../lib/engine/components/opal/sip-endpoint.cpp:949
+#: ../lib/engine/components/opal/sip-endpoint.cpp:925
 msgid "user offline"
 msgstr "käyttäjä ei ole linjoilla"
 
-#: ../lib/engine/components/opal/sip-endpoint.cpp:990
+#. Ignore
+#: ../lib/engine/components/opal/sip-endpoint.cpp:964
+#: ../plugins/libnotify/libnotify-main.cpp:272
+#, c-format
+msgid "Incoming call from %s"
+msgstr "Tuleva puhelu käyttäjältä %s"
+
+#: ../lib/engine/components/opal/sip-endpoint.cpp:966
 #, c-format
 msgid "Incoming call"
 msgstr "Tuleva puhelu"
 
-#: ../lib/engine/components/opal/sip-endpoint.cpp:996
+#: ../lib/engine/components/opal/sip-endpoint.cpp:972
 #, c-format
 msgid "In a call with %s"
 msgstr "Puhelu käynnissä käyttäjän %s kanssa"
 
-#: ../lib/engine/components/opal/sip-endpoint.cpp:998
+#: ../lib/engine/components/opal/sip-endpoint.cpp:974
 #, c-format
 msgid "In a call"
 msgstr "Puhelu käynnissä"
 
-#: ../lib/engine/gui/gtk-core/codecsbox.cpp:452
+#: ../lib/engine/gui/gtk-core/codecsbox.cpp:449
 msgid "Move selected codec priority upwards"
 msgstr "Kasvata valitun koodekin tärkeysjärjestystä"
 
-#: ../lib/engine/gui/gtk-core/codecsbox.cpp:462
+#: ../lib/engine/gui/gtk-core/codecsbox.cpp:459
 msgid "Move selected codec priority downwards"
 msgstr "Pienennä valitun koodekin tärkeysjärjestystä"
 
-#: ../lib/engine/gui/gtk-core/form-dialog-gtk.cpp:664
+#: ../lib/engine/gui/gtk-core/form-dialog-gtk.cpp:661
 msgid "Advanced"
 msgstr "Lisäasetukset"
+
+#: ../lib/engine/gui/gtk-core/form-dialog-gtk.cpp:1303
+msgid "Add Group"
+msgstr ""
 
 #: ../lib/engine/gui/gtk-frontend/accounts-window.cpp:567
 msgid "Account Name"
@@ -1792,21 +1791,22 @@ msgstr "Tilin nimi:"
 msgid "Status"
 msgstr "Tila"
 
-#: ../lib/engine/gui/gtk-frontend/accounts-window.cpp:583
-#: ../src/gui/main_window.cpp:1330
-msgid "_Accounts"
-msgstr "_Tilit"
-
-#: ../lib/engine/gui/gtk-frontend/accounts-window.cpp:587
-#: ../src/gui/main_window.cpp:1368
-msgid "_Help"
-msgstr "O_hje"
-
-#: ../lib/engine/gui/gtk-frontend/accounts-window.cpp:612
+#: ../lib/engine/gui/gtk-frontend/accounts-window.cpp:575
+#: ../lib/engine/gui/gtk-frontend/accounts-window.cpp:613
 msgid "Accounts"
 msgstr "Tilit"
 
-#: ../lib/engine/gui/gtk-frontend/accounts-window.cpp:679
+#: ../lib/engine/gui/gtk-frontend/accounts-window.cpp:584
+#: ../src/gui/main_window.cpp:1327
+msgid "_Accounts"
+msgstr "_Tilit"
+
+#: ../lib/engine/gui/gtk-frontend/accounts-window.cpp:588
+#: ../src/gui/main_window.cpp:1373
+msgid "_Help"
+msgstr "O_hje"
+
+#: ../lib/engine/gui/gtk-frontend/accounts-window.cpp:680
 msgid "Edi_t"
 msgstr "_Muokkaa"
 
@@ -1815,7 +1815,7 @@ msgid "Address Book"
 msgstr "Osoitekirja"
 
 #: ../lib/engine/gui/gtk-frontend/addressbook-window.cpp:646
-#: ../src/gui/main_window.cpp:1291
+#: ../src/gui/main_window.cpp:1298
 msgid "Address _Book"
 msgstr "_Osoitekirja"
 
@@ -1828,24 +1828,24 @@ msgstr "_Toiminto"
 msgid "Category"
 msgstr "Luokka"
 
-#: ../lib/engine/gui/gtk-frontend/book-view-gtk.cpp:585
+#: ../lib/engine/gui/gtk-frontend/book-view-gtk.cpp:571
 #: ../src/gui/assistant.cpp:1394
 msgid "Full Name"
 msgstr "Koko nimi"
 
-#: ../lib/engine/gui/gtk-frontend/book-view-gtk.cpp:600
+#: ../lib/engine/gui/gtk-frontend/book-view-gtk.cpp:586
 msgid "_Search Filter:"
 msgstr "_Hakusuodatin:"
 
-#: ../lib/engine/gui/gtk-frontend/call-window.cpp:770
+#: ../lib/engine/gui/gtk-frontend/call-window.cpp:782
 msgid "Error while initializing video output"
 msgstr "Virhe avattaessa videon ulostulolaitetta"
 
-#: ../lib/engine/gui/gtk-frontend/call-window.cpp:771
+#: ../lib/engine/gui/gtk-frontend/call-window.cpp:783
 msgid "No video will be displayed on your machine during this call"
 msgstr "Videota ei näytetä koneellasi tämän puhelun aikana"
 
-#: ../lib/engine/gui/gtk-frontend/call-window.cpp:781
+#: ../lib/engine/gui/gtk-frontend/call-window.cpp:793
 msgid ""
 "There was an error opening or initializing the video output. Please verify "
 "that no other application is using the accelerated video output."
@@ -1853,7 +1853,7 @@ msgstr ""
 "Virhe avattaessa tai alustettaessa videoulostuloa. Varmista, ettei mikään "
 "toinen sovellus käytä kiihdytettyä videoulostuloa."
 
-#: ../lib/engine/gui/gtk-frontend/call-window.cpp:783
+#: ../lib/engine/gui/gtk-frontend/call-window.cpp:795
 msgid ""
 "There was an error opening or initializing the video output. Please verify "
 "that you are using a color depth of 24 or 32 bits per pixel."
@@ -1861,18 +1861,18 @@ msgstr ""
 "Virhe avattaessa tai alustettaessa videoulostuloa. Varmista, että käytät 24 "
 "tai 32 bitin värisyvyyttä."
 
-#: ../lib/engine/gui/gtk-frontend/call-window.cpp:888
+#: ../lib/engine/gui/gtk-frontend/call-window.cpp:909
 #, c-format
 msgid "Error while accessing video device %s"
 msgstr "Virhe avattaessa videolaitetta %s"
 
-#: ../lib/engine/gui/gtk-frontend/call-window.cpp:891
+#: ../lib/engine/gui/gtk-frontend/call-window.cpp:912
 #, fuzzy
 #| msgid "No video will be displayed during this call->"
 msgid "A moving logo will be transmitted during calls."
 msgstr "Videota ei näytetä tämän puhelun aikana->"
 
-#: ../lib/engine/gui/gtk-frontend/call-window.cpp:895
+#: ../lib/engine/gui/gtk-frontend/call-window.cpp:916
 msgid ""
 "There was an error while opening the device. In case it is a pluggable "
 "device it may be sufficient to reconnect it. If not, or if it still is not "
@@ -1883,15 +1883,15 @@ msgstr ""
 "että sen irrottaa ja liittää uudestaan. Jos laite on kiinteä tai tämä ei "
 "auta, tarkista oikeudet ja varmista että asiaankuuluvat ajurit on ladattu."
 
-#: ../lib/engine/gui/gtk-frontend/call-window.cpp:899
+#: ../lib/engine/gui/gtk-frontend/call-window.cpp:920
 msgid "Your video driver doesn't support the requested video format."
 msgstr "Videoajuri ei tue pyydettyä videomuotoa."
 
-#: ../lib/engine/gui/gtk-frontend/call-window.cpp:903
+#: ../lib/engine/gui/gtk-frontend/call-window.cpp:924
 msgid "Could not open the chosen channel."
 msgstr "Valitun kanavan avaaminen ei onnistunut."
 
-#: ../lib/engine/gui/gtk-frontend/call-window.cpp:907
+#: ../lib/engine/gui/gtk-frontend/call-window.cpp:928
 msgid ""
 "Your driver doesn't seem to support any of the color formats supported by "
 "Ekiga.\n"
@@ -1901,32 +1901,32 @@ msgstr ""
 "Ajuri ei näytä tukevan mitään Ekigan tukemista värimuodoista.\n"
 "Tarkista ytimen ajurin ohjeista, mitä paletteja ajurisi tukee."
 
-#: ../lib/engine/gui/gtk-frontend/call-window.cpp:911
+#: ../lib/engine/gui/gtk-frontend/call-window.cpp:932
 msgid "Error while setting the frame rate."
 msgstr "Virhe asetettaessa kehysnopeutta."
 
-#: ../lib/engine/gui/gtk-frontend/call-window.cpp:915
+#: ../lib/engine/gui/gtk-frontend/call-window.cpp:936
 msgid "Error while setting the frame size."
 msgstr "Virhe asetettaessa kehyskokoa."
 
-#: ../lib/engine/gui/gtk-frontend/call-window.cpp:920
-#: ../lib/engine/gui/gtk-frontend/call-window.cpp:990
-#: ../lib/engine/gui/gtk-frontend/call-window.cpp:1071
+#: ../lib/engine/gui/gtk-frontend/call-window.cpp:941
+#: ../lib/engine/gui/gtk-frontend/call-window.cpp:1011
+#: ../lib/engine/gui/gtk-frontend/call-window.cpp:1092
 msgid "Unknown error."
 msgstr "Tuntematon virhe."
 
-#: ../lib/engine/gui/gtk-frontend/call-window.cpp:972
+#: ../lib/engine/gui/gtk-frontend/call-window.cpp:993
 #, c-format
 msgid "Error while opening audio input device %s"
 msgstr "Virhe avattaessa äänen syötelaitetta %s"
 
 #. Translators: This happens when there is an error with audio input:
 #. * Nothing ("silence") will be transmitted
-#: ../lib/engine/gui/gtk-frontend/call-window.cpp:977
+#: ../lib/engine/gui/gtk-frontend/call-window.cpp:998
 msgid "Only silence will be transmitted."
 msgstr "Vain hiljaisuutta lähetetään."
 
-#: ../lib/engine/gui/gtk-frontend/call-window.cpp:981
+#: ../lib/engine/gui/gtk-frontend/call-window.cpp:1002
 msgid ""
 "Unable to open the selected audio device for recording. In case it is a "
 "pluggable device it may be sufficient to reconnect it. If not, or if it "
@@ -1938,7 +1938,7 @@ msgstr ""
 "on kiinteä tai tämä ei auta, tarkista oikeudet ja varmista että "
 "asiaankuuluvat ajurit on ladattu."
 
-#: ../lib/engine/gui/gtk-frontend/call-window.cpp:985
+#: ../lib/engine/gui/gtk-frontend/call-window.cpp:1006
 msgid ""
 "The selected audio device was successfully opened but it is impossible to "
 "read data from this device. In case it is a pluggable device it may be "
@@ -1950,16 +1950,16 @@ msgstr ""
 "uudestaan. Jos laite on kiinteä tai tämä ei auta, tarkista oikeudet ja "
 "varmista että asiaankuuluvat ajurit on ladattu."
 
-#: ../lib/engine/gui/gtk-frontend/call-window.cpp:1055
+#: ../lib/engine/gui/gtk-frontend/call-window.cpp:1076
 #, c-format
 msgid "Error while opening audio output device %s"
 msgstr "Virhe avattaessa äänen toistolaitetta %s"
 
-#: ../lib/engine/gui/gtk-frontend/call-window.cpp:1058
+#: ../lib/engine/gui/gtk-frontend/call-window.cpp:1079
 msgid "No incoming sound will be played."
 msgstr "Saapuvaa ääntä ei voida toistaa."
 
-#: ../lib/engine/gui/gtk-frontend/call-window.cpp:1062
+#: ../lib/engine/gui/gtk-frontend/call-window.cpp:1083
 msgid ""
 "Unable to open the selected audio device for playing. In case it is a "
 "pluggable device it may be sufficient to reconnect it. If not, or if it "
@@ -1971,7 +1971,7 @@ msgstr ""
 "on kiinteä tai tämä ei auta, tarkista oikeudet ja varmista että "
 "asiaankuuluvat ajurit on ladattu."
 
-#: ../lib/engine/gui/gtk-frontend/call-window.cpp:1066
+#: ../lib/engine/gui/gtk-frontend/call-window.cpp:1087
 msgid ""
 "The selected audio device was successfully opened but it is impossible to "
 "write data to this device. In case it is a pluggable device it may be "
@@ -1983,34 +1983,43 @@ msgstr ""
 "liittää uudestaan. Jos laite on kiinteä tai tämä ei auta, tarkista oikeudet "
 "ja ääniasetuksesi."
 
-#: ../lib/engine/gui/gtk-frontend/call-window.cpp:1107
+#: ../lib/engine/gui/gtk-frontend/call-window.cpp:1128
 #, c-format
 msgid "Calling %s..."
 msgstr "Soitetaan kohteelle %s..."
 
 #. %s is the SIP/H.323 address of the remote user, this text is shown
 #. below video during a call
-#: ../lib/engine/gui/gtk-frontend/call-window.cpp:1123
-#: ../src/gui/main_window.cpp:649
+#: ../lib/engine/gui/gtk-frontend/call-window.cpp:1158
+#: ../src/gui/main_window.cpp:653
 #, c-format
 msgid "Connected with %s"
 msgstr "Yhdistetty palveluun %s"
 
 #. Init
-#: ../lib/engine/gui/gtk-frontend/call-window.cpp:1146
-#: ../lib/engine/gui/gtk-frontend/call-window.cpp:2415
+#: ../lib/engine/gui/gtk-frontend/call-window.cpp:1181
+#: ../lib/engine/gui/gtk-frontend/call-window.cpp:1208
+#: ../lib/engine/gui/gtk-frontend/call-window.cpp:2510
 msgid "Standby"
 msgstr "Valmiustila"
 
-#: ../lib/engine/gui/gtk-frontend/call-window.cpp:1166
+#: ../lib/engine/gui/gtk-frontend/call-window.cpp:1193
+#: ../lib/engine/gui/gtk-frontend/call-window.cpp:1206
+#: ../lib/engine/gui/gtk-frontend/call-window.cpp:2722
+#, fuzzy
+#| msgid "Chat Window"
+msgid "Call Window"
+msgstr "Keskusteluikkuna"
+
+#: ../lib/engine/gui/gtk-frontend/call-window.cpp:1219
 msgid "Call on hold"
 msgstr "Puhelu odottamassa"
 
-#: ../lib/engine/gui/gtk-frontend/call-window.cpp:1177
+#: ../lib/engine/gui/gtk-frontend/call-window.cpp:1230
 msgid "Call retrieved"
 msgstr "Puhelu noudettu"
 
-#: ../lib/engine/gui/gtk-frontend/call-window.cpp:1265
+#: ../lib/engine/gui/gtk-frontend/call-window.cpp:1318
 #, c-format
 msgid ""
 "Connected with %s\n"
@@ -2021,31 +2030,27 @@ msgstr ""
 
 #. Translators: TX is a common abbreviation for "transmit".  As it
 #. * is shown in a tooltip, there is no space constraint
-#: ../lib/engine/gui/gtk-frontend/call-window.cpp:1461
+#: ../lib/engine/gui/gtk-frontend/call-window.cpp:1526
 #, c-format
-#| msgid "TX: %dx%d "
 msgid "TX: %dx%d"
 msgstr "TX: %dx%d"
 
-#: ../lib/engine/gui/gtk-frontend/call-window.cpp:1463
-#| msgid "TX: %dx%d "
+#: ../lib/engine/gui/gtk-frontend/call-window.cpp:1528
 msgid "TX: / "
 msgstr "TX: / "
 
 #. Translators: RX is a common abbreviation for "receive".  As it
 #. * is shown in a tooltip, there is no space constraint
-#: ../lib/engine/gui/gtk-frontend/call-window.cpp:1468
+#: ../lib/engine/gui/gtk-frontend/call-window.cpp:1533
 #, c-format
-#| msgid "RX: %dx%d "
 msgid "RX: %dx%d"
 msgstr "RX: %dx%d"
 
-#: ../lib/engine/gui/gtk-frontend/call-window.cpp:1470
-#| msgid "RX: %dx%d "
+#: ../lib/engine/gui/gtk-frontend/call-window.cpp:1535
 msgid "RX: / "
 msgstr "RX: / "
 
-#: ../lib/engine/gui/gtk-frontend/call-window.cpp:1479
+#: ../lib/engine/gui/gtk-frontend/call-window.cpp:1544
 #, c-format
 msgid ""
 "Lost packets: %.1f %%\n"
@@ -2063,173 +2068,171 @@ msgstr ""
 "Resoluutio: %s %s"
 
 #. Translators: A = Audio, V = Video, FPS = Frames per second
-#: ../lib/engine/gui/gtk-frontend/call-window.cpp:1573
+#: ../lib/engine/gui/gtk-frontend/call-window.cpp:1644
 #, c-format
-#| msgid "A:%.1f/%.1f   V:%.1f/%.1f   FPS:%d/%d"
 msgid "A:%.1f/%.1f V:%.1f/%.1f FPS:%d/%d"
 msgstr "A:%.1f/%.1f V:%.1f/%.1f FPS:%d/%d"
 
-#: ../lib/engine/gui/gtk-frontend/call-window.cpp:1594
+#: ../lib/engine/gui/gtk-frontend/call-window.cpp:1668
 msgid "_Retrieve Call"
 msgstr "_Palauta puhelu"
 
-#: ../lib/engine/gui/gtk-frontend/call-window.cpp:1607
-#: ../lib/engine/gui/gtk-frontend/call-window.cpp:1916
+#: ../lib/engine/gui/gtk-frontend/call-window.cpp:1681
+#: ../lib/engine/gui/gtk-frontend/call-window.cpp:1990
 msgid "H_old Call"
 msgstr "Puhelu _pitoon"
 
-#: ../lib/engine/gui/gtk-frontend/call-window.cpp:1638
-#: ../lib/engine/gui/gtk-frontend/call-window.cpp:1928
+#: ../lib/engine/gui/gtk-frontend/call-window.cpp:1712
+#: ../lib/engine/gui/gtk-frontend/call-window.cpp:2002
 msgid "Suspend _Audio"
 msgstr "Vaienna _ääni"
 
-#: ../lib/engine/gui/gtk-frontend/call-window.cpp:1640
-#: ../lib/engine/gui/gtk-frontend/call-window.cpp:1933
+#: ../lib/engine/gui/gtk-frontend/call-window.cpp:1714
+#: ../lib/engine/gui/gtk-frontend/call-window.cpp:2007
 msgid "Suspend _Video"
 msgstr "Vaienna _video"
 
-#: ../lib/engine/gui/gtk-frontend/call-window.cpp:1642
+#: ../lib/engine/gui/gtk-frontend/call-window.cpp:1716
 msgid "Resume _Audio"
 msgstr "Palauta _ääni"
 
-#: ../lib/engine/gui/gtk-frontend/call-window.cpp:1644
+#: ../lib/engine/gui/gtk-frontend/call-window.cpp:1718
 msgid "Resume _Video"
 msgstr "Palauta _video"
 
-#: ../lib/engine/gui/gtk-frontend/call-window.cpp:1678
+#: ../lib/engine/gui/gtk-frontend/call-window.cpp:1752
 msgid "Video Settings"
 msgstr "Videoasetukset"
 
-#: ../lib/engine/gui/gtk-frontend/call-window.cpp:1703
+#: ../lib/engine/gui/gtk-frontend/call-window.cpp:1777
 msgid "Adjust brightness"
 msgstr "Säädä kirkkautta"
 
-#: ../lib/engine/gui/gtk-frontend/call-window.cpp:1722
+#: ../lib/engine/gui/gtk-frontend/call-window.cpp:1796
 msgid "Adjust whiteness"
 msgstr "Säädä valkoisuutta"
 
-#: ../lib/engine/gui/gtk-frontend/call-window.cpp:1741
+#: ../lib/engine/gui/gtk-frontend/call-window.cpp:1815
 msgid "Adjust color"
 msgstr "Säädä värejä"
 
-#: ../lib/engine/gui/gtk-frontend/call-window.cpp:1760
+#: ../lib/engine/gui/gtk-frontend/call-window.cpp:1834
 msgid "Adjust contrast"
 msgstr "Säädä kontrastia"
 
-#: ../lib/engine/gui/gtk-frontend/call-window.cpp:1802
+#: ../lib/engine/gui/gtk-frontend/call-window.cpp:1876
 msgid "Audio Settings"
 msgstr "Ääniasetukset"
 
-#: ../lib/engine/gui/gtk-frontend/call-window.cpp:1904
+#: ../lib/engine/gui/gtk-frontend/call-window.cpp:1978
 msgid "_Call"
 msgstr "_Soita"
 
-#: ../lib/engine/gui/gtk-frontend/call-window.cpp:1906
+#: ../lib/engine/gui/gtk-frontend/call-window.cpp:1980
 msgid "_Pick up"
 msgstr "_Vastaa"
 
-#: ../lib/engine/gui/gtk-frontend/call-window.cpp:1906
-#| msgid "Hold the current call"
+#: ../lib/engine/gui/gtk-frontend/call-window.cpp:1980
 msgid "Pick up the current call"
 msgstr "Jatka nykyistä puhelua"
 
-#: ../lib/engine/gui/gtk-frontend/call-window.cpp:1910
+#: ../lib/engine/gui/gtk-frontend/call-window.cpp:1984
 msgid "_Hangup"
 msgstr "K_atkaise"
 
-#: ../lib/engine/gui/gtk-frontend/call-window.cpp:1910
+#: ../lib/engine/gui/gtk-frontend/call-window.cpp:1984
 msgid "Hangup the current call"
 msgstr "Lopeta nykyinen puhelu"
 
-#: ../lib/engine/gui/gtk-frontend/call-window.cpp:1916
-#: ../lib/engine/gui/gtk-frontend/call-window.cpp:2384
+#: ../lib/engine/gui/gtk-frontend/call-window.cpp:1990
+#: ../lib/engine/gui/gtk-frontend/call-window.cpp:2479
 msgid "Hold the current call"
 msgstr "Pidätä nykyistä puhelua"
 
-#: ../lib/engine/gui/gtk-frontend/call-window.cpp:1920
+#: ../lib/engine/gui/gtk-frontend/call-window.cpp:1994
 msgid "_Transfer Call"
 msgstr "_Siirrä puhelu"
 
-#: ../lib/engine/gui/gtk-frontend/call-window.cpp:1921
+#: ../lib/engine/gui/gtk-frontend/call-window.cpp:1995
 msgid "Transfer the current call"
 msgstr "Siirrä nykyinen puhelu"
 
-#: ../lib/engine/gui/gtk-frontend/call-window.cpp:1929
+#: ../lib/engine/gui/gtk-frontend/call-window.cpp:2003
 msgid "Suspend or resume the audio transmission"
 msgstr "Vaienna tai palauta äänen lähetys"
 
-#: ../lib/engine/gui/gtk-frontend/call-window.cpp:1934
+#: ../lib/engine/gui/gtk-frontend/call-window.cpp:2008
 msgid "Suspend or resume the video transmission"
 msgstr "Vaienna tai palauta videon lähetys"
 
-#: ../lib/engine/gui/gtk-frontend/call-window.cpp:1941
-#: ../src/gui/main_window.cpp:1309
+#: ../lib/engine/gui/gtk-frontend/call-window.cpp:2015
+#: ../src/gui/main_window.cpp:1306
 msgid "Close the Ekiga window"
 msgstr "Sulje Ekiga-ikkuna"
 
-#: ../lib/engine/gui/gtk-frontend/call-window.cpp:1946
-#: ../src/gui/main_window.cpp:1342
+#: ../lib/engine/gui/gtk-frontend/call-window.cpp:2020
+#: ../src/gui/main_window.cpp:1339
 msgid "_View"
 msgstr "_Näytä"
 
-#: ../lib/engine/gui/gtk-frontend/call-window.cpp:1948
+#: ../lib/engine/gui/gtk-frontend/call-window.cpp:2022
 msgid "_Local Video"
 msgstr "_Paikallinen video"
 
-#: ../lib/engine/gui/gtk-frontend/call-window.cpp:1949
+#: ../lib/engine/gui/gtk-frontend/call-window.cpp:2023
 msgid "Local video image"
 msgstr "Paikallinen videokuva"
 
-#: ../lib/engine/gui/gtk-frontend/call-window.cpp:1953
+#: ../lib/engine/gui/gtk-frontend/call-window.cpp:2027
 msgid "_Remote Video"
 msgstr "_Etävideo"
 
-#: ../lib/engine/gui/gtk-frontend/call-window.cpp:1954
+#: ../lib/engine/gui/gtk-frontend/call-window.cpp:2028
 msgid "Remote video image"
 msgstr "Etävideokuva"
 
-#: ../lib/engine/gui/gtk-frontend/call-window.cpp:1958
+#: ../lib/engine/gui/gtk-frontend/call-window.cpp:2032
 msgid "_Picture-in-Picture"
 msgstr "_Kuva-kuvassa"
 
-#: ../lib/engine/gui/gtk-frontend/call-window.cpp:1959
+#: ../lib/engine/gui/gtk-frontend/call-window.cpp:2033
 msgid "Both video images"
 msgstr "Molemmat videokuvat"
 
-#: ../lib/engine/gui/gtk-frontend/call-window.cpp:1965
+#: ../lib/engine/gui/gtk-frontend/call-window.cpp:2044
 msgid "Zoom in"
 msgstr "Lähennä"
 
-#: ../lib/engine/gui/gtk-frontend/call-window.cpp:1969
+#: ../lib/engine/gui/gtk-frontend/call-window.cpp:2048
 msgid "Zoom out"
 msgstr "Loitonna"
 
-#: ../lib/engine/gui/gtk-frontend/call-window.cpp:1973
+#: ../lib/engine/gui/gtk-frontend/call-window.cpp:2052
 msgid "Normal size"
 msgstr "Peruskoko"
 
-#: ../lib/engine/gui/gtk-frontend/call-window.cpp:1977
+#: ../lib/engine/gui/gtk-frontend/call-window.cpp:2056
 msgid "_Fullscreen"
 msgstr "_Koko näyttö"
 
-#: ../lib/engine/gui/gtk-frontend/call-window.cpp:1977
+#: ../lib/engine/gui/gtk-frontend/call-window.cpp:2056
 msgid "Switch to fullscreen"
 msgstr "Vaihda koko näyttöön"
 
-#: ../lib/engine/gui/gtk-frontend/call-window.cpp:2092
+#: ../lib/engine/gui/gtk-frontend/call-window.cpp:2171
 msgid "Transfer call to:"
 msgstr "Siirretään puhelu:"
 
-#: ../lib/engine/gui/gtk-frontend/call-window.cpp:2302
-#: ../lib/engine/gui/gtk-frontend/call-window.cpp:2317
+#: ../lib/engine/gui/gtk-frontend/call-window.cpp:2397
+#: ../lib/engine/gui/gtk-frontend/call-window.cpp:2412
 msgid "Hang up the current call"
 msgstr "Lopeta nykyinen puhelu"
 
-#: ../lib/engine/gui/gtk-frontend/call-window.cpp:2345
+#: ../lib/engine/gui/gtk-frontend/call-window.cpp:2440
 msgid "Change the volume of your soundcard"
 msgstr "Muuta äänenvoimakkuutta äänikortilla"
 
-#: ../lib/engine/gui/gtk-frontend/call-window.cpp:2365
+#: ../lib/engine/gui/gtk-frontend/call-window.cpp:2460
 msgid "Change the color settings of your video device"
 msgstr "Muuta väriasetuksia videolaitteella"
 
@@ -2267,53 +2270,53 @@ msgstr "Keskusteluikkuna"
 
 #: ../lib/engine/gui/gtk-frontend/heap-view.cpp:238
 #: ../lib/engine/gui/gtk-frontend/heap-view.cpp:277
-#: ../lib/engine/gui/gtk-frontend/roster-view-gtk.cpp:953
-#: ../lib/engine/gui/gtk-frontend/roster-view-gtk.cpp:1008
+#: ../lib/engine/gui/gtk-frontend/roster-view-gtk.cpp:1040
+#: ../lib/engine/gui/gtk-frontend/roster-view-gtk.cpp:1131
 msgid "Unsorted"
 msgstr "Ei järjestetty"
 
-#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:397
+#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:396
 msgid "Play sound for new voice mails"
 msgstr "Soita ääni uuden ääniviestin saapuessa"
 
-#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:407
+#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:406
 msgid "Play sound for new instant messages"
 msgstr "Soita ääni uuden pikaviestin saapuessa"
 
-#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:462
+#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:457
 #: ../src/gui/assistant.cpp:373
 msgid "Personal Information"
 msgstr "Henkilötiedot"
 
-#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:464
+#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:459
 msgid "_Full name:"
 msgstr "_Koko nimi:"
 
-#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:480
+#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:475
 msgid "Video Display"
 msgstr "Videonäyttö"
 
-#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:482
+#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:477
 msgid "Place windows displaying video _above other windows"
 msgstr "Aseta videota näyttävät ikkunat muiden ikkunoiden _päälle"
 
-#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:486
+#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:481
 msgid "Network Settings"
 msgstr "Verkkoasetukset"
 
-#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:488
+#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:483
 msgid "Enable network _detection"
 msgstr "Ota verkon _tunnistus käyttöön"
 
-#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:498
+#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:493
 msgid "Call Forwarding"
 msgstr "Puhelunohjaus"
 
-#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:500
+#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:495
 msgid "_Always forward calls to the given host"
 msgstr "Siirrä puhelut _aina tietylle koneelle"
 
-#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:500
+#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:495
 msgid ""
 "If enabled, all incoming calls will be forwarded to the host that is "
 "specified in the protocol settings"
@@ -2321,11 +2324,11 @@ msgstr ""
 "Kun valittu, ohjataan kaikki tulevat puhelut koneelle, joka määritetään "
 "yhteyskäytäntöasetuksissa"
 
-#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:502
+#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:497
 msgid "Forward calls to the given host if _no answer"
 msgstr "Siirrä puhelut annetulle koneelle jos _ei vastata"
 
-#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:502
+#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:497
 msgid ""
 "If enabled, all incoming calls will be forwarded to the host that is "
 "specified in the protocol settings if you do not answer the call"
@@ -2333,11 +2336,11 @@ msgstr ""
 "Kun valittu, ohjataan kaikki saapuvat puhelut yhteyskäytäntöasetuksissa "
 "määritellylle koneelle, jos et vastaa puheluun"
 
-#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:504
+#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:499
 msgid "Forward calls to the given host if _busy"
 msgstr "Siirrä puhelut annetulle koneelle _varattuna oltaessa"
 
-#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:504
+#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:499
 #, fuzzy
 #| msgid ""
 #| "If enabled, all incoming calls will be forwarded to the host that is "
@@ -2352,108 +2355,108 @@ msgstr ""
 "määritellylle koneelle, jos puhut jo puhelua tai sinua ei sovi häiritä (Älä "
 "häiritse -tila)"
 
-#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:508
-#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:1316
+#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:503
+#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:1314
 msgid "Call Options"
 msgstr "Puheluasetukset"
 
 #. Add all the fields
-#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:511
+#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:506
 msgid "Timeout to reject or forward unanswered incoming calls (in seconds):"
 msgstr ""
 "Aikaviive sekunteina, jonka jälkeen saapuvat puhelut hylätään tai ohjataan "
 "uuteen osoitteeseen:"
 
-#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:512
+#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:507
 msgid "_Automatically answer incoming calls"
 msgstr "_Vastaa automaattisesti saapuviin puheluihin"
 
-#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:543
+#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:538
 msgid "Ekiga Sound Events"
 msgstr "Ekigan äänitapahtumat"
 
-#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:580
+#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:575
 msgid "A"
 msgstr "A"
 
-#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:592
+#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:587
 msgid "Event"
 msgstr "Tapahtuma"
 
-#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:604
+#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:599
 msgid "Choose a sound"
 msgstr "Valitse ääni"
 
-#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:609
+#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:604
 msgid "Wavefiles"
 msgstr "Äänitiedostot"
 
-#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:618
-#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:637
+#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:613
+#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:632
 msgid "Play"
 msgstr "Soita"
 
-#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:658
+#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:653
 msgid "String"
 msgstr "Merkkijono"
 
-#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:659
+#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:654
 msgid "Tone"
 msgstr "Ääni"
 
-#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:660
-#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:712
+#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:655
+#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:707
 msgid "RFC2833"
 msgstr "RFC2833"
 
-#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:661
+#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:656
 msgid "Q.931"
 msgstr "Q.931"
 
-#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:665
+#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:660
 msgid "Disable H.239 Extended Video"
 msgstr ""
 
-#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:666
+#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:661
 msgid "Allow H.239 per Content Role Mask"
 msgstr ""
 
-#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:667
+#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:662
 msgid "Force H.239 Presentation Role"
 msgstr ""
 
-#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:668
+#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:663
 msgid "Force H.239 Live Role"
 msgstr ""
 
-#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:673
-#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:719
+#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:668
+#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:714
 msgid "Misc Settings"
 msgstr "Lisäasetukset"
 
-#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:676
-#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:724
+#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:671
+#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:719
 msgid "Forward _URI:"
 msgstr "Uudelleenohjaus-_URI:"
 
-#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:682
+#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:677
 msgid "Advanced Settings"
 msgstr "Lisäasetukset"
 
 #. The toggles
-#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:685
+#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:680
 msgid "Enable H.245 _tunneling"
 msgstr "Käytä H.245-_tunnelointia"
 
-#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:687
+#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:682
 msgid "Enable _early H.245"
 msgstr "Käytä _aikaista H.245:ttä"
 
-#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:689
+#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:684
 msgid "Enable fast _start procedure"
 msgstr "Käytä _nopea käynnistys -menettelyä"
 
-#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:689
+#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:684
 msgid ""
 "Connection will be established in Fast Start mode. Fast Start is a new way "
 "to start calls faster that was introduced in H.323v2. It is not supported by "
@@ -2465,172 +2468,171 @@ msgstr ""
 "tue tätä ja sekä Nopean käynnistykset että H.245-tunneloinnin käyttäminen "
 "voi kaataa jotkut Netmeeting-versiot."
 
-#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:691
+#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:686
 #, fuzzy
 #| msgid "Enable Account"
 msgid "Enable H.239 control"
 msgstr "Ota tili käyttöön"
 
-#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:691
+#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:686
 msgid "This enables H.239 capability for additional video roles."
 msgstr ""
 
-#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:693
+#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:688
 msgid "Extended Video Roles:"
 msgstr ""
 
-#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:693
+#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:688
 #, fuzzy
 #| msgid "Select the transmitted video size"
 msgid "Select the H.239 Video Role"
 msgstr "Valitse siirrettävän videon koko"
 
-#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:697
-#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:730
+#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:692
+#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:725
 msgid "DTMF Mode"
 msgstr "DTMF-tila"
 
-#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:699
-#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:732
+#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:694
+#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:727
 msgid "_Send DTMF as:"
 msgstr "_Lähetä DTMF:"
 
-#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:699
-#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:732
+#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:694
+#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:727
 #, fuzzy
 #| msgid "This allows you to set the mode for DTMFs sending."
 msgid "Select the mode for DTMFs sending"
 msgstr "Tästä voit asettaa DTMF-lähetyksien käyttötavan."
 
-#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:713
+#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:708
 msgid "INFO"
 msgstr "INFO"
 
-#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:721
+#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:716
 #, fuzzy
 #| msgid "_Outbound Proxy:"
 msgid "_Outbound proxy:"
 msgstr "_Lähtevien välimuisti:"
 
-#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:749
+#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:744
 #: ../src/gui/assistant.cpp:996
 msgid "Audio Devices"
 msgstr "Äänilaitteet"
 
-#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:757
+#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:752
 #, fuzzy
 #| msgid "Ringing Device"
 msgid "Ringing device:"
 msgstr "Soittolaite"
 
-#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:757
+#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:752
 msgid "Select the ringing audio device to use"
 msgstr "Valitse soittomerkin toistava äänilaite"
 
-#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:759
+#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:754
 msgid "Output device:"
 msgstr "Soittolaite:"
 
-#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:766
-#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:902
+#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:761
+#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:897
 msgid "Input device:"
 msgstr "Nauhoituslaite:"
 
 #. That button will refresh the device list
-#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:770
-#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:913
+#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:765
+#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:908
 msgid "_Detect devices"
 msgstr "_Tunnista laitteet"
 
-#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:770
-#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:913
+#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:765
+#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:908
 msgid "Click here to refresh the device list"
 msgstr "Päivitä laiteluettelo napsauttamalla tästä"
 
-#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:790
-#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:812
-#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:832
+#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:785
+#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:807
+#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:827
 #: ../src/gui/assistant.cpp:1262 ../src/gui/assistant.cpp:1284
 #: ../src/gui/assistant.cpp:1306
 msgid "No device found"
 msgstr "Laitetta ei löydy"
 
-#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:881
+#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:876
 msgid "PAL (Europe)"
 msgstr "PAL (Eurooppa)"
 
-#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:882
+#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:877
 msgid "NTSC (America)"
 msgstr "NTSC (Amerikka)"
 
-#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:883
+#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:878
 msgid "SECAM (France)"
 msgstr "SECAM (Ranska)"
 
-#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:884
+#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:879
 msgid "Auto"
 msgstr "Automaattinen"
 
-#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:896
+#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:891
 msgid "Video Devices"
 msgstr "Videolaitteet"
 
 #. Video Channel
-#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:906
+#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:901
 msgid "Channel:"
 msgstr "Kanava:"
 
-#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:908
+#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:903
 msgid "Size:"
 msgstr "Koko:"
 
-#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:908
+#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:903
 msgid "Select the transmitted video size"
 msgstr "Valitse siirrettävän videon koko"
 
-#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:910
+#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:905
 msgid "Format:"
 msgstr "Muoto:"
 
-#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:929
-#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:962
-#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:1343
-#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:1353
+#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:924
+#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:957
+#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:1341
+#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:1351
 msgid "Codecs"
 msgstr "Koodekit"
 
-#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:941
-#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:974
+#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:936
+#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:969
 msgid "Settings"
 msgstr "Asetukset"
 
 #. Translators: the full sentence is Automatically adjust jitter buffer
 #. between X and Y ms
-#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:945
+#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:940
 msgid "Enable silence _detection"
 msgstr "Käytä _hiljaisuudentunnistusta"
 
-#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:947
+#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:942
 msgid "Enable echo can_celation"
 msgstr "Ota kaiun_poisto käyttöön"
 
-#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:949
+#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:944
 msgid "Maximum _jitter buffer (in ms):"
 msgstr "Suurin _värinäpuskuri (millisekunneissa):"
 
 #. Translators: the full sentence is Keep a minimum video quality of X %
-#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:977
-#| msgid "Picture Quality"
+#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:972
 msgid "Picture quality"
 msgstr "Kuvanlaatu"
 
-#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:977
+#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:972
 #, fuzzy
 #| msgid "Frame Rate"
 msgid "Frame rate"
 msgstr "Kehysnopeus"
 
-#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:977
+#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:972
 #, fuzzy
 #| msgid ""
 #| "Choose if you want to guarantee a minimum image quality (possibly leading "
@@ -2645,11 +2647,11 @@ msgstr ""
 "puuttuviin ruutuihin, jotta sallittua bittinopeutta ei ylitetä) vai haluatko "
 "säilyttää saman ruutunopeuden."
 
-#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:979
+#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:974
 msgid "Maximum video _bitrate (in kbits/s):"
 msgstr "Suurin videon _bittinopeus (kbit/s):"
 
-#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:979
+#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:974
 msgid ""
 "The maximum video bitrate in kbits/s. The video quality and the effective "
 "frame rate will be dynamically adjusted to keep the bitrate at the given "
@@ -2659,71 +2661,71 @@ msgstr ""
 "lähetettävien ruutujen määrää sekunnissa säädetään dynaamisesti jotta "
 "saavutetaan haluttu siirtokaista."
 
-#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:1288
+#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:1286
 msgid "Ekiga Preferences"
 msgstr "Ekigan asetukset"
 
-#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:1306
+#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:1304
 msgid "General"
 msgstr "Yleinen"
 
-#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:1307
+#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:1305
 msgid "Personal Data"
 msgstr "Henkilökohtaiset tiedot"
 
-#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:1312
+#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:1310
 msgid "General Settings"
 msgstr "Yleiset asetukset"
 
-#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:1321
+#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:1319
 msgid "Sound Events"
 msgstr "Äänitapahtumat"
 
-#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:1325
+#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:1323
 msgid "Protocols"
 msgstr "Protokollat"
 
-#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:1327
+#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:1325
 msgid "SIP Settings"
 msgstr "SIP-asetukset"
 
-#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:1332
+#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:1330
 msgid "H.323 Settings"
 msgstr "H.323-asetukset"
 
 #. The player
-#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:1338
+#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:1336
 msgid "Audio"
 msgstr "Ääni"
 
-#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:1339
-#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:1349
+#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:1337
+#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:1347
 msgid "Devices"
 msgstr "Laitteet"
 
-#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:1348
+#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:1346
 msgid "Video"
 msgstr "Video"
 
-#: ../lib/engine/gui/gtk-frontend/statusicon.cpp:313
+#: ../lib/engine/gui/gtk-frontend/statusicon.cpp:309
 #, c-format
 msgid "You have %d message"
 msgid_plural "You have %d messages"
 msgstr[0] "Sinulla on %d viesti"
 msgstr[1] "Sinulla on %d viestiä"
 
-#: ../lib/engine/gui/gtk-frontend/statusicon.cpp:382
-#: ../src/gui/main_window.cpp:1371
+#: ../lib/engine/gui/gtk-frontend/statusicon.cpp:378
+#: ../src/gui/main_window.cpp:1376
 msgid "Get help by reading the Ekiga manual"
 msgstr "Hanki apua lukemalla Ekigan opaskirjaa"
 
-#: ../lib/engine/gui/gtk-frontend/statusicon.cpp:387
-#: ../src/gui/main_window.cpp:1376
+#: ../lib/engine/gui/gtk-frontend/statusicon.cpp:383
+#: ../src/gui/main_window.cpp:1381
 msgid "View information about Ekiga"
 msgstr "Katso tietoja Ekigasta"
 
-#: ../lib/engine/gui/gtk-frontend/statusicon.cpp:394
-#: ../src/gui/main_window.cpp:1316
+#: ../lib/engine/gui/gtk-frontend/statusicon.cpp:390
+#: ../src/gui/main_window.cpp:1313
 msgid "Quit"
 msgstr "Sulje"
 
@@ -2763,15 +2765,15 @@ msgstr "wxyz"
 msgid "Contributors:"
 msgstr "Avustajat:"
 
-#: ../lib/gui/gmcallbacks.c:80
+#: ../lib/gui/gmcallbacks.c:72
 msgid "Artwork:"
 msgstr "Kuvamateriaali:"
 
-#: ../lib/gui/gmcallbacks.c:88
+#: ../lib/gui/gmcallbacks.c:79
 msgid "See AUTHORS file for full credits"
 msgstr "Katso AUTHORS-tiedostosta kaikki kiitokset"
 
-#: ../lib/gui/gmcallbacks.c:104
+#: ../lib/gui/gmcallbacks.c:95
 msgid ""
 "This program is free software; you can redistribute it and/or modify it "
 "under the terms of the GNU General Public License as published by the Free "
@@ -2783,7 +2785,7 @@ msgstr ""
 "Software Foundation on ne julkaissut; joko lisenssin version 2, tai "
 "(valinnan mukaan) minkä tahansa myöhemmän version mukaisesti."
 
-#: ../lib/gui/gmcallbacks.c:108
+#: ../lib/gui/gmcallbacks.c:99
 msgid ""
 "This program is distributed in the hope that it will be useful, but WITHOUT "
 "ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or "
@@ -2799,7 +2801,7 @@ msgstr ""
 "kopio GPL-lisenssistä; jos näin ei ole, kirjoita osoitteeseen Free Software "
 "Foundation Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301, USA."
 
-#: ../lib/gui/gmcallbacks.c:115
+#: ../lib/gui/gmcallbacks.c:106
 msgid ""
 "Ekiga is licensed under the GPL license and as a special exception, you have "
 "permission to link or otherwise combine this program with the programs OPAL, "
@@ -2816,16 +2818,16 @@ msgstr ""
 
 #. Translators: Please write translator credits here, and
 #. * separate names with \n
-#: ../lib/gui/gmcallbacks.c:127
+#: ../lib/gui/gmcallbacks.c:118
 msgid "translator-credits"
 msgstr ""
 "Timo Jyrinki, 2008-2009\n"
 "Ilkka Tuohela, 2005-2008\n"
 "Tommi Vainikainen, 2003-2005\n"
 "\n"
-"http://gnome.fi/"
+"https://l10n.gnome.org/teams/fi/"
 
-#: ../lib/gui/gmcallbacks.c:132
+#: ../lib/gui/gmcallbacks.c:123
 msgid ""
 "Ekiga is full-featured SIP and H.323 compatible VoIP, IP-Telephony and "
 "Videoconferencing application that allows you to make audio and video calls "
@@ -2835,13 +2837,17 @@ msgstr ""
 "IP-puhelinsovellus, jolla voi soittaa ääni- ja videopuheluita muille SIP- "
 "tai H.323- laitteiston tai -sovellusten käyttäjille."
 
-#: ../lib/gui/gmcallbacks.c:205
+#: ../lib/gui/gmcallbacks.c:196
 msgid "Unable to open help file."
 msgstr "Ohjetiedoston avaaminen ei onnistu."
 
 #: ../lib/gui/gmdialog.c:327
 msgid "Do not show this dialog again"
 msgstr "Älä näytä tätä uudelleen"
+
+#: ../plugins/avahi/avahi-heap.cpp:129 ../plugins/avahi/avahi-heap.cpp:375
+msgid "Neighbours"
+msgstr "Naapurit"
 
 #: ../plugins/evolution/evolution-book.cpp:75
 #: ../plugins/ldap/ldap-book.cpp:920
@@ -2898,21 +2904,21 @@ msgstr "Haluatko varmasti poistaa tuttavan %s osoitekirjasta?"
 msgid "Audio test"
 msgstr "Äänitesti"
 
-#: ../plugins/gstreamer/gst-audiooutput.cpp:223
+#: ../plugins/gstreamer/gst-audiooutput.cpp:226
 msgid "Silent"
 msgstr "Äänetön"
 
-#: ../plugins/gstreamer/gst-videoinput.cpp:185
+#: ../plugins/gstreamer/gst-videoinput.cpp:190
 msgid "Video test"
 msgstr "Videotesti"
 
 #. Translators: "Screencast" means the video input device will be your screen -- the other end will see your desktop
-#: ../plugins/gstreamer/gst-videoinput.cpp:337
 #: ../plugins/gstreamer/gst-videoinput.cpp:342
+#: ../plugins/gstreamer/gst-videoinput.cpp:347
 msgid "Crazy"
 msgstr "Hullu"
 
-#: ../plugins/gstreamer/gst-videoinput.cpp:342
+#: ../plugins/gstreamer/gst-videoinput.cpp:347
 msgid "Screencast"
 msgstr "Näytönvälitys"
 
@@ -2985,8 +2991,9 @@ msgid "Please edit the following fields"
 msgstr "Ole hyvä ja muokkaa seuraavia kenttiä"
 
 #: ../plugins/ldap/ldap-book.cpp:944
-#| msgid "Book _Name"
-msgid "Book _Name:"
+#, fuzzy
+#| msgid "Book _Name:"
+msgid "Book _name:"
 msgstr "Kirjan _nimi:"
 
 #: ../plugins/ldap/ldap-book.cpp:944
@@ -2994,7 +3001,6 @@ msgid "Book name, as shown in your dialog box"
 msgstr ""
 
 #: ../plugins/ldap/ldap-book.cpp:945
-#| msgid "Server _URI"
 msgid "Server _URI:"
 msgstr "Palvelimen _URI:"
 
@@ -3012,11 +3018,15 @@ msgid "Subtree"
 msgstr "Alipuu"
 
 #: ../plugins/ldap/ldap-book.cpp:953
-msgid "Single Level"
+#, fuzzy
+#| msgid "Single Level"
+msgid "Single level"
 msgstr "Yksi taso"
 
 #: ../plugins/ldap/ldap-book.cpp:954
-msgid "_Search Scope"
+#, fuzzy
+#| msgid "_Search Scope"
+msgid "_Search scope"
 msgstr "_Haun laajuus"
 
 #. Translators: DisplayName Attribute is the name of the LDAP
@@ -3026,12 +3036,15 @@ msgstr "_Haun laajuus"
 #. * most LDAP servers it's "CommonName".
 #.
 #: ../plugins/ldap/ldap-book.cpp:969
-msgid "_DisplayName Attribute:"
+#, fuzzy
+#| msgid "_DisplayName Attribute:"
+msgid "_DisplayName attribute:"
 msgstr "_DisplayName-ominaisuus:"
 
 #: ../plugins/ldap/ldap-book.cpp:970
-#| msgid "Call _Attributes"
-msgid "Call _Attributes:"
+#, fuzzy
+#| msgid "Call _Attributes:"
+msgid "Call _attributes:"
 msgstr "Soitto-o_minaisuudet:"
 
 #: ../plugins/ldap/ldap-book.cpp:970
@@ -3039,8 +3052,9 @@ msgid "The field you are searching for"
 msgstr ""
 
 #: ../plugins/ldap/ldap-book.cpp:972 ../plugins/ldap/ldap-book.cpp:974
-#| msgid "_Filter Template"
-msgid "_Filter Template:"
+#, fuzzy
+#| msgid "_Filter Template:"
+msgid "_Filter template:"
 msgstr "_Suodatinmalli:"
 
 #: ../plugins/ldap/ldap-book.cpp:972 ../plugins/ldap/ldap-book.cpp:974
@@ -3079,7 +3093,9 @@ msgid "Use SASL"
 msgstr "Käytä SASL:ia"
 
 #: ../plugins/ldap/ldap-book.cpp:1002
-msgid "SASL _Mechanism"
+#, fuzzy
+#| msgid "SASL _Mechanism"
+msgid "SASL _mechanism"
 msgstr "SASL-_mekanismi"
 
 #: ../plugins/ldap/ldap-book.cpp:1012
@@ -3095,14 +3111,18 @@ msgid "Please provide a Server URI\n"
 msgstr "Syötä palvelimen URI\n"
 
 #: ../plugins/ldap/ldap-book.cpp:1040
-msgid "Please provide a DisplayName Attribute\n"
+#, fuzzy
+#| msgid "Please provide a DisplayName Attribute\n"
+msgid "Please provide a DisplayName attribute\n"
 msgstr "Syötä DisplayName-ominaisuus\n"
 
 #: ../plugins/ldap/ldap-book.cpp:1043
-msgid "Please provide a Call Attribute\n"
+#, fuzzy
+#| msgid "Please provide a Call Attribute\n"
+msgid "Please provide a Call attribute\n"
 msgstr "Syötä soitto-ominaisuus\n"
 
-#: ../plugins/ldap/ldap-book.cpp:1046
+#: ../plugins/ldap/ldap-book.cpp:1046 ../plugins/ldap/ldap-book.cpp:1082
 msgid "Invalid Server URI\n"
 msgstr "Virheellinen palvelin-URI\n"
 
@@ -3122,6 +3142,18 @@ msgstr "Luo LDAP-hakemisto"
 msgid "Ekiga.net Directory"
 msgstr "Ekiga.net-hakemisto"
 
+#: ../plugins/libnotify/libnotify-main.cpp:273
+msgid "Remote URI:"
+msgstr "Etä-URI:"
+
+#: ../plugins/libnotify/libnotify-main.cpp:286
+msgid "Reject"
+msgstr "Hylkää"
+
+#: ../plugins/libnotify/libnotify-main.cpp:288
+msgid "Accept"
+msgstr "Hyväksy"
+
 #: ../plugins/loudmouth/loudmouth-account.cpp:112
 #: ../plugins/loudmouth/loudmouth-account.cpp:159
 msgid "inactive"
@@ -3137,7 +3169,6 @@ msgid "connecting"
 msgstr "yhdistetään"
 
 #: ../plugins/loudmouth/loudmouth-account.cpp:284
-#| msgid "Authentication User:"
 msgid "authenticating"
 msgstr "todennetaan"
 
@@ -3165,6 +3196,7 @@ msgid "Server:"
 msgstr "Palvelin:"
 
 #: ../plugins/loudmouth/loudmouth-account.cpp:350
+#: ../plugins/loudmouth/loudmouth-bank.cpp:127
 msgid "The server, e.g. jabber.org"
 msgstr "Palvelin, esim. jabber.org"
 
@@ -3182,6 +3214,7 @@ msgid "Resource:"
 msgstr "Resurssi:"
 
 #: ../plugins/loudmouth/loudmouth-account.cpp:358
+#: ../plugins/loudmouth/loudmouth-bank.cpp:128
 msgid ""
 "The resource, such as home or work, allowing to distinguish among several "
 "terminals registered to the same account; leave empty if you do not know "
@@ -3189,7 +3222,6 @@ msgid ""
 msgstr ""
 
 #: ../plugins/loudmouth/loudmouth-bank.cpp:111
-#| msgid "_Add a jabber/XMPP account"
 msgid "_Add a Jabber/XMPP Account"
 msgstr "Lisää Jabber-/_XMPP-tili"
 
@@ -3256,13 +3288,13 @@ msgstr "päätä myöhemmin (voit myös sulkea tai perua tämän ikkunan)"
 msgid "Your answer is: "
 msgstr "Vastauksesi on: "
 
-#: ../plugins/loudmouth/loudmouth-heap-roster.cpp:306
+#: ../plugins/loudmouth/loudmouth-heap-roster.cpp:334
 #, fuzzy
 #| msgid "Edit roster element"
 msgid "Add a roster element"
 msgstr "Muokkaa nimilistan kohtaa"
 
-#: ../plugins/loudmouth/loudmouth-heap-roster.cpp:307
+#: ../plugins/loudmouth/loudmouth-heap-roster.cpp:335
 #, fuzzy
 #| msgid ""
 #| "Please fill in this form to add a new contact list to ekiga's remote "
@@ -3270,43 +3302,43 @@ msgstr "Muokkaa nimilistan kohtaa"
 msgid "Please fill in this form to add a new element to the remote roster"
 msgstr "Lisää uusi tuttava ekigan etänimilistaan täyttämällä tämä lomake"
 
-#: ../plugins/loudmouth/loudmouth-heap-roster.cpp:309
+#: ../plugins/loudmouth/loudmouth-heap-roster.cpp:337
 #: ../plugins/resource-list/rl-heap.cpp:470
 msgid "Identifier:"
 msgstr "Tunniste:"
 
-#: ../plugins/loudmouth/loudmouth-heap-roster.cpp:309
+#: ../plugins/loudmouth/loudmouth-heap-roster.cpp:337
 msgid "identifier@server"
 msgstr "tunniste@palvelin"
 
-#: ../plugins/loudmouth/loudmouth-presentity.cpp:165
-#: ../plugins/loudmouth/loudmouth-presentity.cpp:171
-msgid "Ask him/her to see his/her status"
-msgstr ""
-
-#: ../plugins/loudmouth/loudmouth-presentity.cpp:169
-#: ../plugins/loudmouth/loudmouth-presentity.cpp:181
-msgid "Forbid him/her to see my status"
-msgstr ""
-
-#: ../plugins/loudmouth/loudmouth-presentity.cpp:173
-msgid "Ask him/her to see his/her status (pending)"
-msgstr ""
-
-#: ../plugins/loudmouth/loudmouth-presentity.cpp:177
-#: ../plugins/loudmouth/loudmouth-presentity.cpp:182
-msgid "Stop getting his/her status"
-msgstr ""
-
-#: ../plugins/loudmouth/loudmouth-presentity.cpp:187
+#: ../plugins/loudmouth/loudmouth-presentity.cpp:167
 msgid "Start chat"
 msgstr "Käynnistä keskustelu"
 
-#: ../plugins/loudmouth/loudmouth-presentity.cpp:190
+#: ../plugins/loudmouth/loudmouth-presentity.cpp:170
 msgid "Continue chat"
 msgstr "Jatka keskustelua"
 
-#: ../plugins/loudmouth/loudmouth-presentity.cpp:281
+#: ../plugins/loudmouth/loudmouth-presentity.cpp:179
+#: ../plugins/loudmouth/loudmouth-presentity.cpp:185
+msgid "Ask him/her to see his/her status"
+msgstr ""
+
+#: ../plugins/loudmouth/loudmouth-presentity.cpp:183
+#: ../plugins/loudmouth/loudmouth-presentity.cpp:195
+msgid "Forbid him/her to see my status"
+msgstr ""
+
+#: ../plugins/loudmouth/loudmouth-presentity.cpp:187
+msgid "Ask him/her to see his/her status (pending)"
+msgstr ""
+
+#: ../plugins/loudmouth/loudmouth-presentity.cpp:191
+#: ../plugins/loudmouth/loudmouth-presentity.cpp:196
+msgid "Stop getting his/her status"
+msgstr ""
+
+#: ../plugins/loudmouth/loudmouth-presentity.cpp:287
 #, fuzzy
 #| msgid ""
 #| "Please fill in this form to change an existing element of ekiga's "
@@ -3371,7 +3403,6 @@ msgid "Please edit the following fields (no identifier means global)"
 msgstr "Muokkaa seuraavia kenttiä (ei tunnistetta tarkoittaa yleistä)"
 
 #: ../plugins/resource-list/rl-heap.cpp:467
-#| msgid "Contact list's name"
 msgid "Contact list's name:"
 msgstr "Tuttavaluettelon nimi:"
 
@@ -3673,143 +3704,133 @@ msgstr "Ekigan ulossoitto"
 msgid "Ekiga Configuration Assistant (%d of %d)"
 msgstr "Ekigan ohjattu asennus - sivu %d/%d"
 
-#: ../src/gui/main.cpp:126
-#| msgid "Prints debug messages in the console (level between 1 and 5)"
+#: ../src/gui/main.cpp:133
 msgid "Prints debug messages in the console (level between 1 and 8)"
 msgstr "Tulostaa vianetsintäviestit konsoliin (taso väliltä 1 ja 8)"
 
-#: ../src/gui/main.cpp:131
+#: ../src/gui/main.cpp:138
 msgid "Makes Ekiga call the given URI"
 msgstr "Saa Ekigan soittamaan annettuun URI:iin"
 
-#: ../src/gui/main_window.cpp:372
+#: ../src/gui/main_window.cpp:376
 msgid "Presence"
 msgstr "Läsnäolo"
 
-#: ../src/gui/main_window.cpp:379
+#: ../src/gui/main_window.cpp:383
 msgid "Addressbook"
 msgstr "Osoitekirja"
 
-#: ../src/gui/main_window.cpp:408
+#: ../src/gui/main_window.cpp:412
 msgid "Unknown"
 msgstr "Tuntematon"
 
-#: ../src/gui/main_window.cpp:714
+#: ../src/gui/main_window.cpp:713
 #, c-format
 msgid "Missed call from %s"
 msgstr "Vastaamaton puhelu käyttäjältä %s"
 
-#: ../src/gui/main_window.cpp:748
+#: ../src/gui/main_window.cpp:747
 msgid "Error"
 msgstr "Virhe"
 
-#: ../src/gui/main_window.cpp:1165
+#: ../src/gui/main_window.cpp:1170
 msgid ""
 "Enter a URI on the left, and click this button to place a call or to hangup"
 msgstr ""
 "Syötä URI vasemmalle ja soita tai katkaise puhelu napsauttamalla tätä "
 "painiketta"
 
-#: ../src/gui/main_window.cpp:1216 ../src/gui/main_window.cpp:1344
+#: ../src/gui/main_window.cpp:1221 ../src/gui/main_window.cpp:1349
 msgid "View the contacts list"
 msgstr "Näytä tuttavaluettelo"
 
-#: ../src/gui/main_window.cpp:1227 ../src/gui/main_window.cpp:1349
+#: ../src/gui/main_window.cpp:1232 ../src/gui/main_window.cpp:1354
 msgid "View the dialpad"
 msgstr "Näytä numeronäppäimistö"
 
-#: ../src/gui/main_window.cpp:1238 ../src/gui/main_window.cpp:1354
+#: ../src/gui/main_window.cpp:1243 ../src/gui/main_window.cpp:1359
 msgid "View the call history"
 msgstr "Näytä puheluhistoria"
 
-#: ../src/gui/main_window.cpp:1274
+#: ../src/gui/main_window.cpp:1281
 msgid "_Chat"
 msgstr "_Juttele"
 
-#: ../src/gui/main_window.cpp:1276
+#: ../src/gui/main_window.cpp:1283
 msgid "Co_ntact"
 msgstr "T_uttava"
 
-#: ../src/gui/main_window.cpp:1277
+#: ../src/gui/main_window.cpp:1284
 msgid "Act on selected contact"
 msgstr "Tee valitulle tuttavalle"
 
-#: ../src/gui/main_window.cpp:1281
-#| msgid "Ca_ll a number"
+#: ../src/gui/main_window.cpp:1288
 msgid "Ca_ll a Number"
 msgstr "Soita n_umeroon"
 
-#: ../src/gui/main_window.cpp:1281
+#: ../src/gui/main_window.cpp:1288
 msgid "Place a new call"
 msgstr "Soita uusi puhelu"
 
-#: ../src/gui/main_window.cpp:1287
+#: ../src/gui/main_window.cpp:1294
 msgid "A_dd Contact"
 msgstr "_Lisää tuttava"
 
-#: ../src/gui/main_window.cpp:1287
+#: ../src/gui/main_window.cpp:1294
 msgid "Add a contact to the roster"
 msgstr "Lisää tuttava nimilistaan"
 
-#: ../src/gui/main_window.cpp:1292
+#: ../src/gui/main_window.cpp:1299
 msgid "Find contacts"
 msgstr "Etsi tuttavia"
 
-#. FIXME: that isn't a very good way to do things
-#: ../src/gui/main_window.cpp:1301
-msgid "Other"
-msgstr "Muu"
-
-#: ../src/gui/main_window.cpp:1302
-msgid "Other possible actions"
-msgstr "Muut mahdolliset toiminnot"
-
-#: ../src/gui/main_window.cpp:1322
+#: ../src/gui/main_window.cpp:1319
 msgid "_Configuration Assistant"
 msgstr "_Ohjattu asetusten teko"
 
-#: ../src/gui/main_window.cpp:1323
+#: ../src/gui/main_window.cpp:1320
 msgid "Run the configuration assistant"
 msgstr "Suorita ohjattu asetusten teko"
 
-#: ../src/gui/main_window.cpp:1331
+#: ../src/gui/main_window.cpp:1328
 msgid "Edit your accounts"
 msgstr "Muokkaa tilejäsi"
 
-#: ../src/gui/main_window.cpp:1337
+#: ../src/gui/main_window.cpp:1334
 msgid "Change your preferences"
 msgstr "Muuta asetuksiasi"
 
-#: ../src/gui/main_window.cpp:1344
+#: ../src/gui/main_window.cpp:1341
+#, fuzzy
+#| msgid "Video preview"
+msgid "_Video Preview"
+msgstr "Videon esikatselu"
+
+#: ../src/gui/main_window.cpp:1349
 msgid "Con_tacts"
 msgstr "_Tuttavat"
 
-#: ../src/gui/main_window.cpp:1349
+#: ../src/gui/main_window.cpp:1354
 msgid "_Dialpad"
 msgstr "_Numeronäppäimistö"
 
-#: ../src/gui/main_window.cpp:1354
+#: ../src/gui/main_window.cpp:1359
 msgid "_Call History"
 msgstr "_Puheluhistoria"
 
-#: ../src/gui/main_window.cpp:1362
-#| msgid "Show offline _contacts"
+#: ../src/gui/main_window.cpp:1367
 msgid "Show Offline _Contacts"
 msgstr "Näytä _poissa olevat tuttavat"
 
-#: ../src/gui/main_window.cpp:1426
-msgid "Contacts"
-msgstr "Tuttavat"
-
-#: ../src/gui/main_window.cpp:1455
+#: ../src/gui/main_window.cpp:1460
 msgid "Dialpad"
 msgstr "Numeronäppäimistö"
 
-#: ../src/gui/main_window.cpp:1473
+#: ../src/gui/main_window.cpp:1478
 msgid "Call history"
 msgstr "Puheluhistoria"
 
-#: ../src/gui/main_window.cpp:1485
+#: ../src/gui/main_window.cpp:1490
 msgid "Ekiga"
 msgstr "Ekiga"
 
@@ -3845,6 +3866,15 @@ msgstr "Poista omat viestit:"
 #: ../src/gui/statusmenu.cpp:685
 msgid "Define a custom message:"
 msgstr "Määrittele oma viesti:"
+
+#~ msgid "Local roster"
+#~ msgstr "Paikallinen nimilista"
+
+#~ msgid "Other"
+#~ msgstr "Muu"
+
+#~ msgid "Other possible actions"
+#~ msgstr "Muut mahdolliset toiminnot"
 
 #~ msgid "New contact"
 #~ msgstr "Uusi tuttava"
