@@ -1005,11 +1005,12 @@ ekiga_call_window_delete_event_cb (GtkWidget *widget,
   g_return_val_if_fail (EKIGA_IS_CALL_WINDOW (self), false);
 
   /* Hang up or disable preview */
+  if (self->priv->fullscreen) {
+    ekiga_call_window_toggle_fullscreen (self);
+  }
+
   if (self->priv->calling_state != Standby && self->priv->current_call) {
     self->priv->current_call->hang_up ();
-  }
-  else if (self->priv->fullscreen) {
-    ekiga_call_window_toggle_fullscreen (self);
   }
   else {
     settings = g_settings_new (VIDEO_DEVICES_SCHEMA);
