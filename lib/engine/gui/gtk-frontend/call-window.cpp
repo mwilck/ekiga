@@ -94,6 +94,17 @@ struct deviceStruct {
 
 G_DEFINE_TYPE (EkigaCallWindow, ekiga_call_window, GM_TYPE_WINDOW);
 
+enum {
+
+  COLOR,
+  CONTRAST,
+  BRIGHTNESS,
+  WHITENESS,
+  SPEAKER_VOLUME,
+  MIC_VOLUME,
+  MAX_SETTINGS,
+};
+
 struct _EkigaCallWindowPrivate
 {
   Ekiga::ServicePtr libnotify;
@@ -117,34 +128,15 @@ struct _EkigaCallWindowPrivate
   bool fullscreen;
 
   GtkWidget *call_panel_toolbar;
+  GtkWidget *settings_button;
 
-  GtkWidget *audio_settings_window;
-  GtkWidget *audio_input_volume_frame;
-  GtkWidget *audio_output_volume_frame;
-  GtkWidget *input_signal;
-  GtkWidget *output_signal;
-#if GTK_CHECK_VERSION (3, 0, 0)
-  GtkAdjustment *adj_input_volume;
-  GtkAdjustment *adj_output_volume;
-#else
-  GtkObject *adj_input_volume;
-  GtkObject *adj_output_volume;
-#endif
-#ifndef WIN32
-  GC gc;
-#endif
-
-  unsigned int levelmeter_timeout_id;
   unsigned int timeout_id;
 
   GtkWidget *info_bar;
 
-  GtkWidget *video_settings_window;
-  GtkWidget *video_settings_frame;
-  GtkAdjustment *adj_whiteness;
-  GtkAdjustment *adj_brightness;
-  GtkAdjustment *adj_colour;
-  GtkAdjustment *adj_contrast;
+  /* Audio and video settings */
+  int settings[MAX_SETTINGS];
+  GtkWidget *settings_range[MAX_SETTINGS];
 
   std::string transmitted_video_codec;
   std::string transmitted_audio_codec;
@@ -176,27 +168,12 @@ static void fullscreen_changed_cb (G_GNUC_UNUSED GSimpleAction *action,
                                    G_GNUC_UNUSED GVariant *parameter,
                                    gpointer data);
 
-static void show_audio_settings_cb (G_GNUC_UNUSED GSimpleAction *action,
-                                    G_GNUC_UNUSED GVariant *parameter,
-                                    gpointer data);
-
-static void show_video_settings_cb (G_GNUC_UNUSED GSimpleAction *action,
-                                    G_GNUC_UNUSED GVariant *parameter,
-                                    gpointer data);
-
-static void audio_volume_changed_cb (GtkAdjustment * /*adjustment*/,
-                                     gpointer data);
-
-static void audio_volume_window_shown_cb (GtkWidget * /*widget*/,
-                                          gpointer data);
-
-static void audio_volume_window_hidden_cb (GtkWidget * /*widget*/,
+static void show_call_devices_settings_cb (G_GNUC_UNUSED GSimpleAction *action,
+                                           G_GNUC_UNUSED GVariant *parameter,
                                            gpointer data);
 
-static void video_settings_changed_cb (GtkAdjustment * /*adjustment*/,
-                                       gpointer data);
-
-static gboolean on_signal_level_refresh_cb (gpointer self);
+static void call_devices_settings_changed_cb (GtkRange *range,
+                                              gpointer data);
 
 static void on_videooutput_device_opened_cb (Ekiga::VideoOutputManager & /* manager */,
                                              Ekiga::VideoOutputManager::VideoView type,
@@ -356,9 +333,8 @@ static void ekiga_call_window_init_menu (EkigaCallWindow *self);
 
 static void ekiga_call_window_init_clutter (EkigaCallWindow *self);
 
-static GtkWidget *gm_call_window_audio_settings_window_new (EkigaCallWindow *call_window);
-
-static GtkWidget *gm_call_window_video_settings_window_new (EkigaCallWindow *call_window);
+static GtkWidget *gm_call_window_build_settings_popover (EkigaCallWindow *call_window,
+                                                         GtkWidget *relative);
 
 static void ekiga_call_window_toggle_fullscreen (EkigaCallWindow *self);
 
@@ -375,16 +351,6 @@ static const char* win_menu =
   "      <item>"
   "        <attribute name='label' translatable='yes'>Transmit Video</attribute>"
   "        <attribute name='action'>win.transmit-video</attribute>"
-  "      </item>"
-  "    </section>"
-  "    <section>"
-  "      <item>"
-  "        <attribute name='label' translatable='yes'>Change _Volume</attribute>"
-  "        <attribute name='action'>win.audio-volume-settings</attribute>"
-  "      </item>"
-  "      <item>"
-  "        <attribute name='label' translatable='yes'>Change _Color Settings</attribute>"
-  "        <attribute name='action'>win.video-color-settings</attribute>"
   "      </item>"
   "    </section>"
   "    <section>"
@@ -408,13 +374,9 @@ static GActionEntry win_entries[] =
 
 static GActionEntry video_settings_entries[] =
 {
-    { "video-color-settings", show_video_settings_cb, NULL, NULL, NULL, 0 },
+    { "call-devices-settings", show_call_devices_settings_cb, NULL, NULL, NULL, 0 },
 };
 
-static GActionEntry audio_settings_entries[] =
-{
-    { "audio-volume-settings", show_audio_settings_cb, NULL, NULL, NULL, 0 },
-};
 /**/
 
 
@@ -457,82 +419,41 @@ fullscreen_changed_cb (G_GNUC_UNUSED GSimpleAction *action,
 }
 
 static void
-show_audio_settings_cb (G_GNUC_UNUSED GSimpleAction *action,
-                                    G_GNUC_UNUSED GVariant *parameter,
-                                    gpointer data)
-{
-  g_return_if_fail (EKIGA_IS_CALL_WINDOW (data));
-  EkigaCallWindow *self = EKIGA_CALL_WINDOW (data);
-
-  if (self->priv->audio_settings_window)
-    gtk_widget_show (GTK_WIDGET (self->priv->audio_settings_window));
-}
-
-static void
-show_video_settings_cb (G_GNUC_UNUSED GSimpleAction *action,
-                                    G_GNUC_UNUSED GVariant *parameter,
-                                    gpointer data)
-{
-  g_return_if_fail (EKIGA_IS_CALL_WINDOW (data));
-  EkigaCallWindow *self = EKIGA_CALL_WINDOW (data);
-
-  if (self->priv->video_settings_window)
-    gtk_widget_show (GTK_WIDGET (self->priv->video_settings_window));
-}
-
-static void
-audio_volume_changed_cb (GtkAdjustment * /*adjustment*/,
-                         gpointer data)
-{
-  EkigaCallWindow *self = EKIGA_CALL_WINDOW (data);
-
-  self->priv->audiooutput_core->set_volume (Ekiga::primary, (unsigned) gtk_adjustment_get_value (GTK_ADJUSTMENT (self->priv->adj_output_volume)));
-  self->priv->audioinput_core->set_volume ((unsigned) gtk_adjustment_get_value (GTK_ADJUSTMENT (self->priv->adj_input_volume)));
-}
-
-static void
-audio_volume_window_shown_cb (GtkWidget * /*widget*/,
-                              gpointer data)
-{
-  EkigaCallWindow *self = EKIGA_CALL_WINDOW (data);
-
-  self->priv->audioinput_core->set_average_collection (true);
-  self->priv->audiooutput_core->set_average_collection (true);
-  self->priv->levelmeter_timeout_id = g_timeout_add_full (G_PRIORITY_DEFAULT_IDLE, 50, on_signal_level_refresh_cb, data, NULL);
-}
-
-static void
-audio_volume_window_hidden_cb (GtkWidget * /*widget*/,
+show_call_devices_settings_cb (G_GNUC_UNUSED GSimpleAction *action,
+                               G_GNUC_UNUSED GVariant *parameter,
                                gpointer data)
 {
+  g_return_if_fail (EKIGA_IS_CALL_WINDOW (data));
   EkigaCallWindow *self = EKIGA_CALL_WINDOW (data);
 
-  g_source_remove (self->priv->levelmeter_timeout_id);
-  self->priv->audioinput_core->set_average_collection (false);
-  self->priv->audiooutput_core->set_average_collection (false);
+  gtk_widget_show_all (gm_call_window_build_settings_popover (self,
+                                                              self->priv->settings_button));
 }
 
 static void
-video_settings_changed_cb (GtkAdjustment * /*adjustment*/,
-                           gpointer data)
+call_devices_settings_changed_cb (G_GNUC_UNUSED GtkRange *range,
+                                  gpointer data)
 {
   EkigaCallWindow *self = EKIGA_CALL_WINDOW (data);
 
+  for (int i = 0 ; i < MAX_SETTINGS ; i++) {
+    if (self->priv->settings_range[i]) {
+      self->priv->settings[i] = gtk_range_get_value (GTK_RANGE (self->priv->settings_range[i]));
+    }
+  }
 
-  self->priv->videoinput_core->set_whiteness ((unsigned) gtk_adjustment_get_value (GTK_ADJUSTMENT (self->priv->adj_whiteness)));
-  self->priv->videoinput_core->set_brightness ((unsigned) gtk_adjustment_get_value (GTK_ADJUSTMENT (self->priv->adj_brightness)));
-  self->priv->videoinput_core->set_colour ((unsigned) gtk_adjustment_get_value (GTK_ADJUSTMENT (self->priv->adj_colour)));
-  self->priv->videoinput_core->set_contrast ((unsigned) gtk_adjustment_get_value (GTK_ADJUSTMENT (self->priv->adj_contrast)));
-}
-
-static gboolean
-on_signal_level_refresh_cb (gpointer /*self*/)
-{
-  //EkigaCallWindow *self = EKIGA_CALL_WINDOW (self);
-
-  //gm_level_meter_set_level (GM_LEVEL_METER (self->priv->output_signal), self->priv->audiooutput_core->get_average_level());
-  //gm_level_meter_set_level (GM_LEVEL_METER (self->priv->input_signal), self->priv->audioinput_core->get_average_level());
-  return true;
+  if (self->priv->settings[WHITENESS] != -1)
+    self->priv->videoinput_core->set_whiteness (self->priv->settings[WHITENESS]);
+  if (self->priv->settings[BRIGHTNESS] != -1)
+    self->priv->videoinput_core->set_brightness (self->priv->settings[BRIGHTNESS]);
+  if (self->priv->settings[COLOR] != -1)
+    self->priv->videoinput_core->set_colour (self->priv->settings[COLOR]);
+  if (self->priv->settings[CONTRAST] != -1)
+    self->priv->videoinput_core->set_contrast (self->priv->settings[CONTRAST]);
+  if (self->priv->settings[SPEAKER_VOLUME] != -1)
+    self->priv->audiooutput_core->set_volume (Ekiga::primary, self->priv->settings[SPEAKER_VOLUME]);
+  if (self->priv->settings[MIC_VOLUME] != -1)
+    self->priv->audioinput_core->set_volume (self->priv->settings[MIC_VOLUME]);
 }
 
 static void
@@ -633,26 +554,34 @@ on_videoinput_device_opened_cb (Ekiga::VideoInputManager & /* manager */,
                                 Ekiga::VideoInputSettings & settings,
                                 gpointer data)
 {
+  g_return_if_fail (EKIGA_IS_CALL_WINDOW (data));
   EkigaCallWindow *self = EKIGA_CALL_WINDOW (data);
 
-  gtk_widget_set_sensitive (self->priv->video_settings_frame,  settings.modifyable ? true : false);
-  gtk_adjustment_set_value (GTK_ADJUSTMENT (self->priv->adj_whiteness), settings.whiteness);
-  gtk_adjustment_set_value (GTK_ADJUSTMENT (self->priv->adj_brightness), settings.brightness);
-  gtk_adjustment_set_value (GTK_ADJUSTMENT (self->priv->adj_colour), settings.colour);
-  gtk_adjustment_set_value (GTK_ADJUSTMENT (self->priv->adj_contrast), settings.contrast);
+  if (settings.modifyable) {
+    self->priv->settings[WHITENESS] = settings.whiteness;
+    self->priv->settings[BRIGHTNESS] = settings.brightness;
+    self->priv->settings[COLOR] = settings.colour;
+    self->priv->settings[CONTRAST] = settings.contrast;
 
-  gtk_widget_queue_draw (self->priv->video_settings_frame);
-
-  g_action_map_add_action_entries (G_ACTION_MAP (g_application_get_default ()),
-                                   video_settings_entries, G_N_ELEMENTS (video_settings_entries),
-                                   self);
+    g_action_map_add_action_entries (G_ACTION_MAP (g_application_get_default ()),
+                                     video_settings_entries, G_N_ELEMENTS (video_settings_entries),
+                                     self);
+  }
 }
 
 static void
 on_videoinput_device_closed_cb (Ekiga::VideoInputManager & /* manager */,
                                 Ekiga::VideoInputDevice & /*device*/,
-                                gpointer /* data */)
+                                gpointer data)
 {
+  g_return_if_fail (EKIGA_IS_CALL_WINDOW (data));
+  EkigaCallWindow *self = EKIGA_CALL_WINDOW (data);
+
+  self->priv->settings[WHITENESS] = -1;
+  self->priv->settings[BRIGHTNESS] = -1;
+  self->priv->settings[COLOR] = -1;
+  self->priv->settings[CONTRAST] = -1;
+
   ekiga_call_window_remove_action_entries (G_ACTION_MAP (g_application_get_default ()),
                                            video_settings_entries);
 }
@@ -713,11 +642,8 @@ on_audioinput_device_opened_cb (Ekiga::AudioInputManager & /* manager */,
                                 gpointer data)
 {
   EkigaCallWindow *self = EKIGA_CALL_WINDOW (data);
-
-  gtk_widget_set_sensitive (self->priv->audio_input_volume_frame, settings.modifyable);
-  gtk_adjustment_set_value (GTK_ADJUSTMENT (self->priv->adj_input_volume), settings.volume);
-
-  gtk_widget_queue_draw (self->priv->audio_input_volume_frame);
+  if (settings.modifyable)
+    self->priv->settings[MIC_VOLUME] = settings.volume;
 }
 
 
@@ -728,7 +654,7 @@ on_audioinput_device_closed_cb (Ekiga::AudioInputManager & /* manager */,
 {
   EkigaCallWindow *self = EKIGA_CALL_WINDOW (data);
 
-  gtk_widget_set_sensitive (self->priv->audio_input_volume_frame, false);
+  self->priv->settings[MIC_VOLUME] = -1;
 }
 
 
@@ -775,10 +701,8 @@ on_audiooutput_device_opened_cb (Ekiga::AudioOutputManager & /*manager*/,
   if (ps == Ekiga::secondary)
     return;
 
-  gtk_widget_set_sensitive (self->priv->audio_output_volume_frame, settings.modifyable);
-  gtk_adjustment_set_value (GTK_ADJUSTMENT (self->priv->adj_output_volume), settings.volume);
-
-  gtk_widget_queue_draw (self->priv->audio_output_volume_frame);
+  if (settings.modifyable)
+    self->priv->settings[SPEAKER_VOLUME] = settings.volume;
 }
 
 
@@ -793,7 +717,7 @@ on_audiooutput_device_closed_cb (Ekiga::AudioOutputManager & /*manager*/,
   if (ps == Ekiga::secondary)
     return;
 
-  gtk_widget_set_sensitive (self->priv->audio_output_volume_frame, false);
+  self->priv->settings[SPEAKER_VOLUME] = -1;
 }
 
 
@@ -994,11 +918,6 @@ on_stream_opened_cb (boost::shared_ptr<Ekiga::CallManager>  /*manager*/,
   bool is_video = (type == Ekiga::Call::Video);
 
   set_codec (self->priv, name, is_video, is_transmitting);
-
-  if (!is_video)
-    g_action_map_add_action_entries (G_ACTION_MAP (g_application_get_default ()),
-                                     audio_settings_entries, G_N_ELEMENTS (audio_settings_entries),
-                                     self);
 }
 
 
@@ -1014,9 +933,6 @@ on_stream_closed_cb (boost::shared_ptr<Ekiga::CallManager>  /*manager*/,
   bool is_video = (type == Ekiga::Call::Video);
 
   set_codec (self->priv, "", is_video, is_transmitting);
-  if (!is_video)
-    ekiga_call_window_remove_action_entries (G_ACTION_MAP (g_application_get_default ()),
-                                             audio_settings_entries);
 }
 
 
@@ -1329,227 +1245,64 @@ ekiga_call_window_set_bandwidth (EkigaCallWindow *self,
 
 
 static GtkWidget *
-gm_call_window_video_settings_window_new (EkigaCallWindow *self)
+gm_call_window_build_settings_popover (EkigaCallWindow *self,
+                                       GtkWidget *relative)
 {
   GtkWidget *hbox = NULL;
   GtkWidget *vbox = NULL;
   GtkWidget *image = NULL;
-  GtkWidget *window = NULL;
 
-  GtkWidget *hscale_brightness = NULL;
-  GtkWidget *hscale_colour = NULL;
-  GtkWidget *hscale_contrast = NULL;
-  GtkWidget *hscale_whiteness = NULL;
+  GtkWidget *popover = NULL;
 
-  int brightness = 0, colour = 0, contrast = 0, whiteness = 0;
+  GIcon *icon = NULL;
+  gboolean audio = FALSE;
 
-  /* Build the window */
-  window = gm_window_new_with_key (USER_INTERFACE ".video-settings-window");
-  gtk_window_set_title (GTK_WINDOW (window), _("Video Settings"));
+  popover = gtk_popover_new (NULL);
+  vbox = gtk_box_new (GTK_ORIENTATION_VERTICAL, 6);
+  gtk_container_set_border_width (GTK_CONTAINER (popover), 18);
+  gtk_container_add (GTK_CONTAINER (popover), vbox);
+  gtk_popover_set_relative_to (GTK_POPOVER (popover), relative);
 
-  /* Webcam Control Frame, we need it to disable controls */
-  self->priv->video_settings_frame = gtk_frame_new (NULL);
-  gtk_frame_set_shadow_type (GTK_FRAME (self->priv->video_settings_frame),
-                             GTK_SHADOW_NONE);
-  gtk_container_set_border_width (GTK_CONTAINER (self->priv->video_settings_frame), 5);
+  const char *icons[MAX_SETTINGS] = {
+    "preferences-color-symbolic",
+    "display-brightness-symbolic",
+    "display-brightness-symbolic",
+    "display-brightness-symbolic",
+    "audio-speakers-symbolic",
+    "audio-input-microphone-symbolic",
+  };
 
-  /* Category */
-  vbox = gtk_box_new (GTK_ORIENTATION_VERTICAL, 0);
-  gtk_container_add (GTK_CONTAINER (self->priv->video_settings_frame), vbox);
+  for (int i = 0 ; i < MAX_SETTINGS ; i++) {
 
-  /* Brightness */
-  hbox = gtk_box_new (GTK_ORIENTATION_HORIZONTAL, 0);
-  image = gtk_image_new_from_icon_name ("brightness", GTK_ICON_SIZE_MENU);
-  gtk_box_pack_start (GTK_BOX (hbox), image, false, false, 0);
+    if (self->priv->settings[i] == -1)
+      continue;
 
-  self->priv->adj_brightness = gtk_adjustment_new (brightness, 0.0,
-                                                 255.0, 1.0, 5.0, 1.0);
-  hscale_brightness = gtk_scale_new (GTK_ORIENTATION_HORIZONTAL,
-                                     GTK_ADJUSTMENT (self->priv->adj_brightness));
-  gtk_scale_set_draw_value (GTK_SCALE (hscale_brightness), false);
-  gtk_scale_set_value_pos (GTK_SCALE (hscale_brightness), GTK_POS_RIGHT);
-  gtk_box_pack_start (GTK_BOX (hbox), hscale_brightness, true, true, 2);
-  gtk_box_pack_start (GTK_BOX (vbox), hbox, false, false, 3);
+    audio = (i == SPEAKER_VOLUME || i == MIC_VOLUME);
+    hbox = gtk_box_new (GTK_ORIENTATION_HORIZONTAL, 0);
+    icon = g_themed_icon_new (icons[i]);
+    image = gtk_image_new_from_gicon (icon, GTK_ICON_SIZE_MENU);
+    g_object_unref (icon);
+    gtk_box_pack_start (GTK_BOX (hbox), image, false, false, 6);
 
-  gtk_widget_set_tooltip_text (hscale_brightness, _("Adjust brightness"));
+    self->priv->settings_range[i] = gtk_scale_new_with_range (GTK_ORIENTATION_HORIZONTAL, 0.0, audio ? 100.0 : 255.0, 5.0);
+    gtk_range_set_value (GTK_RANGE (self->priv->settings_range[i]), self->priv->settings[i]);
+    gtk_scale_set_draw_value (GTK_SCALE (self->priv->settings_range[i]), false);
+    gtk_scale_set_value_pos (GTK_SCALE (self->priv->settings_range[i]), GTK_POS_RIGHT);
+    gtk_box_pack_start (GTK_BOX (hbox), self->priv->settings_range[i], true, true, 6);
 
-  g_signal_connect (self->priv->adj_brightness, "value-changed",
-                    G_CALLBACK (video_settings_changed_cb),
-                    (gpointer) self);
+    gtk_box_pack_start (GTK_BOX (vbox), hbox, false, false, 0);
+    gtk_widget_set_size_request (GTK_WIDGET (self->priv->settings_range[i]), 150, -1);
 
-  /* Whiteness */
-  hbox = gtk_box_new (GTK_ORIENTATION_HORIZONTAL, 0);
-  image = gtk_image_new_from_icon_name ("whiteness", GTK_ICON_SIZE_MENU);
-  gtk_box_pack_start (GTK_BOX (hbox), image, false, false, 0);
+    g_signal_connect (self->priv->settings_range[i], "value-changed",
+                      G_CALLBACK (call_devices_settings_changed_cb), self);
+  }
 
-  self->priv->adj_whiteness = gtk_adjustment_new (whiteness, 0.0,
-                                                255.0, 1.0, 5.0, 1.0);
-  hscale_whiteness = gtk_scale_new (GTK_ORIENTATION_HORIZONTAL,
-                                    GTK_ADJUSTMENT (self->priv->adj_whiteness));
-  gtk_scale_set_draw_value (GTK_SCALE (hscale_whiteness), false);
-  gtk_scale_set_value_pos (GTK_SCALE (hscale_whiteness), GTK_POS_RIGHT);
-  gtk_box_pack_start (GTK_BOX (hbox), hscale_whiteness, true, true, 2);
-  gtk_box_pack_start (GTK_BOX (vbox), hbox, false, false, 3);
+  g_signal_connect_swapped (popover, "hide",
+                            G_CALLBACK (gtk_widget_destroy), popover);
 
-  gtk_widget_set_tooltip_text (hscale_whiteness, _("Adjust whiteness"));
-
-  g_signal_connect (self->priv->adj_whiteness, "value-changed",
-                    G_CALLBACK (video_settings_changed_cb),
-                    (gpointer) self);
-
-  /* Colour */
-  hbox = gtk_box_new (GTK_ORIENTATION_HORIZONTAL, 0);
-  image = gtk_image_new_from_icon_name ("color", GTK_ICON_SIZE_MENU);
-  gtk_box_pack_start (GTK_BOX (hbox), image, false, false, 0);
-
-  self->priv->adj_colour = gtk_adjustment_new (colour, 0.0,
-                                             255.0, 1.0, 5.0, 1.0);
-  hscale_colour = gtk_scale_new (GTK_ORIENTATION_HORIZONTAL,
-                                 GTK_ADJUSTMENT (self->priv->adj_colour));
-  gtk_scale_set_draw_value (GTK_SCALE (hscale_colour), false);
-  gtk_scale_set_value_pos (GTK_SCALE (hscale_colour), GTK_POS_RIGHT);
-  gtk_box_pack_start (GTK_BOX (hbox), hscale_colour, true, true, 2);
-  gtk_box_pack_start (GTK_BOX (vbox), hbox, false, false, 3);
-
-  gtk_widget_set_tooltip_text (hscale_colour, _("Adjust color"));
-
-  g_signal_connect (self->priv->adj_colour, "value-changed",
-                    G_CALLBACK (video_settings_changed_cb),
-                    (gpointer) self);
-
-  /* Contrast */
-  hbox = gtk_box_new (GTK_ORIENTATION_HORIZONTAL, 0);
-  image = gtk_image_new_from_icon_name ("contrast", GTK_ICON_SIZE_MENU);
-  gtk_box_pack_start (GTK_BOX (hbox), image, false, false, 0);
-
-  self->priv->adj_contrast = gtk_adjustment_new (contrast, 0.0,
-                                               255.0, 1.0, 5.0, 1.0);
-  hscale_contrast = gtk_scale_new (GTK_ORIENTATION_HORIZONTAL,
-                                   GTK_ADJUSTMENT (self->priv->adj_contrast));
-  gtk_scale_set_draw_value (GTK_SCALE (hscale_contrast), false);
-  gtk_scale_set_value_pos (GTK_SCALE (hscale_contrast), GTK_POS_RIGHT);
-  gtk_box_pack_start (GTK_BOX (hbox), hscale_contrast, true, true, 2);
-  gtk_box_pack_start (GTK_BOX (vbox), hbox, false, false, 3);
-
-  gtk_widget_set_tooltip_text (hscale_contrast, _("Adjust contrast"));
-
-  g_signal_connect (self->priv->adj_contrast, "value-changed",
-                    G_CALLBACK (video_settings_changed_cb),
-                    (gpointer) self);
-
-  gtk_container_add (GTK_CONTAINER (window),
-                     self->priv->video_settings_frame);
-  gtk_widget_show_all (self->priv->video_settings_frame);
-
-  gtk_widget_set_sensitive (GTK_WIDGET (self->priv->video_settings_frame), false);
-
-  gtk_widget_hide_on_delete (window);
-
-  return window;
+  return popover;
 }
 
-static GtkWidget *
-gm_call_window_audio_settings_window_new (EkigaCallWindow *self)
-{
-  GtkWidget *hscale_play = NULL;
-  GtkWidget *hscale_rec = NULL;
-  GtkWidget *hbox = NULL;
-  GtkWidget *main_vbox = NULL;
-  GtkWidget *vbox = NULL;
-  GtkWidget *small_vbox = NULL;
-  GtkWidget *window = NULL;
-
-  /* Build the window */
-  window = gm_window_new_with_key (USER_INTERFACE ".audio-settings-window");
-  gtk_window_set_title (GTK_WINDOW (window), _("Audio Settings"));
-
-  /* Audio control frame, we need it to disable controls */
-  self->priv->audio_output_volume_frame = gtk_frame_new (NULL);
-  gtk_frame_set_shadow_type (GTK_FRAME (self->priv->audio_output_volume_frame),
-                             GTK_SHADOW_NONE);
-  gtk_container_set_border_width (GTK_CONTAINER (self->priv->audio_output_volume_frame), 5);
-  main_vbox = gtk_box_new (GTK_ORIENTATION_VERTICAL, 0);
-
-  /* The vbox */
-  vbox = gtk_box_new (GTK_ORIENTATION_VERTICAL, 0);
-  gtk_container_add (GTK_CONTAINER (self->priv->audio_output_volume_frame), vbox);
-
-  /* Output volume */
-  hbox = gtk_box_new (GTK_ORIENTATION_HORIZONTAL, 0);
-  gtk_box_pack_start (GTK_BOX (hbox),
-                      gtk_image_new_from_icon_name ("audio-volume", GTK_ICON_SIZE_SMALL_TOOLBAR),
-                      false, false, 0);
-
-  small_vbox = gtk_box_new (GTK_ORIENTATION_VERTICAL, 0);
-  self->priv->adj_output_volume = gtk_adjustment_new (0, 0.0, 101.0, 1.0, 5.0, 1.0);
-  hscale_play = gtk_scale_new (GTK_ORIENTATION_HORIZONTAL,
-                               GTK_ADJUSTMENT (self->priv->adj_output_volume));
-  gtk_scale_set_value_pos (GTK_SCALE (hscale_play), GTK_POS_RIGHT);
-  gtk_scale_set_draw_value (GTK_SCALE (hscale_play), false);
-  gtk_box_pack_start (GTK_BOX (small_vbox), hscale_play, true, true, 0);
-
-  //self->priv->output_signal = gm_level_meter_new ();
-  //gtk_box_pack_start (GTK_BOX (small_vbox), self->priv->output_signal, true, true, 0);
-  gtk_box_pack_start (GTK_BOX (hbox), small_vbox, true, true, 2);
-  gtk_box_pack_start (GTK_BOX (vbox), hbox, false, false, 3);
-
-  gtk_box_pack_start (GTK_BOX (main_vbox), self->priv->audio_output_volume_frame,
-                      false, false, 0);
-  gtk_widget_set_sensitive (GTK_WIDGET (self->priv->audio_output_volume_frame),  false);
-
-  /* Audio control frame, we need it to disable controls */
-  self->priv->audio_input_volume_frame = gtk_frame_new (NULL);
-  gtk_frame_set_shadow_type (GTK_FRAME (self->priv->audio_input_volume_frame),
-                             GTK_SHADOW_NONE);
-  gtk_container_set_border_width (GTK_CONTAINER (self->priv->audio_input_volume_frame), 5);
-
-  /* The vbox */
-  vbox = gtk_box_new (GTK_ORIENTATION_VERTICAL, 0);
-  gtk_container_add (GTK_CONTAINER (self->priv->audio_input_volume_frame), vbox);
-
-  /* Input volume */
-  hbox = gtk_box_new (GTK_ORIENTATION_HORIZONTAL, 0);
-  gtk_box_pack_start (GTK_BOX (hbox),
-                      gtk_image_new_from_icon_name ("audio-input-microphone",
-                                                    GTK_ICON_SIZE_SMALL_TOOLBAR),
-                      false, false, 0);
-
-  small_vbox = gtk_box_new (GTK_ORIENTATION_VERTICAL, 0);
-  self->priv->adj_input_volume = gtk_adjustment_new (0, 0.0, 101.0, 1.0, 5.0, 1.0);
-  hscale_rec = gtk_scale_new (GTK_ORIENTATION_HORIZONTAL,
-                              GTK_ADJUSTMENT (self->priv->adj_input_volume));
-  gtk_scale_set_value_pos (GTK_SCALE (hscale_rec), GTK_POS_RIGHT);
-  gtk_scale_set_draw_value (GTK_SCALE (hscale_rec), false);
-  gtk_box_pack_start (GTK_BOX (small_vbox), hscale_rec, true, true, 0);
-
-  //  self->priv->input_signal = gm_level_meter_new ();
-  //  gtk_box_pack_start (GTK_BOX (small_vbox), self->priv->input_signal, true, true, 0);
-  gtk_box_pack_start (GTK_BOX (hbox), small_vbox, true, true, 2);
-  gtk_box_pack_start (GTK_BOX (vbox), hbox, false, false, 3);
-
-  gtk_box_pack_start (GTK_BOX (main_vbox), self->priv->audio_input_volume_frame,
-                      false, false, 0);
-  gtk_widget_set_sensitive (GTK_WIDGET (self->priv->audio_input_volume_frame),  false);
-
-  gtk_container_add (GTK_CONTAINER (window), main_vbox);
-  gtk_widget_show_all (main_vbox);
-
-  g_signal_connect (self->priv->adj_output_volume, "value-changed",
-                    G_CALLBACK (audio_volume_changed_cb), self);
-
-  g_signal_connect (self->priv->adj_input_volume, "value-changed",
-                    G_CALLBACK (audio_volume_changed_cb), self);
-
-  gtk_widget_hide_on_delete (window);
-
-  g_signal_connect (window, "show",
-                    G_CALLBACK (audio_volume_window_shown_cb), self);
-
-  g_signal_connect (window, "hide",
-                    G_CALLBACK (audio_volume_window_hidden_cb), self);
-
-  return window;
-}
 
 static void
 ekiga_call_window_init_menu (EkigaCallWindow *self)
@@ -1709,10 +1462,6 @@ ekiga_call_window_init_gui (EkigaCallWindow *self)
 
   GIcon *icon = NULL;
 
-  /* The Audio & Video Settings windows */
-  self->priv->audio_settings_window = gm_call_window_audio_settings_window_new (self);
-  self->priv->video_settings_window = gm_call_window_video_settings_window_new (self);
-
   /* The extended video stream window */
   self->priv->ext_video_win = NULL;
 
@@ -1793,6 +1542,20 @@ ekiga_call_window_init_gui (EkigaCallWindow *self)
                                _("Transfer the current call"));
   gtk_widget_show (button);
 
+  /* Devices settings */
+  self->priv->settings_button = gtk_button_new ();
+  icon = g_themed_icon_new ("emblem-system-symbolic");
+  image = gtk_image_new_from_gicon (icon, GTK_ICON_SIZE_BUTTON);
+  g_object_unref (icon);
+  gtk_button_set_image (GTK_BUTTON (self->priv->settings_button), image);
+  gtk_actionable_set_detailed_action_name (GTK_ACTIONABLE (self->priv->settings_button),
+                                           "win.call-devices-settings");
+  gtk_header_bar_pack_start (GTK_HEADER_BAR (self->priv->call_panel_toolbar),
+                             self->priv->settings_button);
+  gtk_widget_set_tooltip_text (GTK_WIDGET (self->priv->settings_button),
+                               _("Change audio and video settings"));
+  gtk_widget_show (self->priv->settings_button);
+
   /* Spinner */
   self->priv->spinner = gtk_spinner_new ();
   gtk_widget_set_size_request (GTK_WIDGET (self->priv->spinner), 24, 24);
@@ -1845,14 +1608,13 @@ ekiga_call_window_init (EkigaCallWindow *self)
 
   self->priv->current_call = boost::shared_ptr<Ekiga::Call>();
   self->priv->timeout_id = -1;
-  self->priv->levelmeter_timeout_id = -1;
   self->priv->calling_state = Standby;
   self->priv->fullscreen = false;
-#ifndef WIN32
-  self->priv->gc = NULL;
-#endif
   self->priv->video_display_settings =
     boost::shared_ptr<Ekiga::Settings> (new Ekiga::Settings (VIDEO_DISPLAY_SCHEMA));
+
+  for (int i = 0 ; i < MAX_SETTINGS ; i++)
+    self->priv->settings[i] = -1;
 
   g_signal_connect (self, "delete_event",
                     G_CALLBACK (ekiga_call_window_delete_event_cb), NULL);
@@ -1863,8 +1625,6 @@ ekiga_call_window_finalize (GObject *gobject)
 {
   EkigaCallWindow *self = EKIGA_CALL_WINDOW (gobject);
 
-  gtk_widget_destroy (self->priv->audio_settings_window);
-  gtk_widget_destroy (self->priv->video_settings_window);
   if (self->priv->ext_video_win)
     gtk_widget_destroy (self->priv->ext_video_win);
 
