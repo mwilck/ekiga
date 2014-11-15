@@ -846,6 +846,12 @@ ekiga_main_window_init_gui (EkigaMainWindow *mw)
   /* The actions toolbar */
   ekiga_main_window_init_actions_toolbar (mw);
 
+  /* The status toolbar */
+  ekiga_main_window_init_status_toolbar (mw);
+  gtk_widget_show_all (mw->priv->status_toolbar);
+  gtk_box_pack_start (GTK_BOX (window_vbox), mw->priv->status_toolbar,
+                      false, false, 0);
+
   /* The stack pages */
   ekiga_main_window_init_contact_list (mw);
   ekiga_main_window_init_dialpad (mw);
@@ -853,12 +859,6 @@ ekiga_main_window_init_gui (EkigaMainWindow *mw)
   gtk_widget_show_all (mw->priv->main_stack);
   gtk_box_pack_start (GTK_BOX (window_vbox), mw->priv->main_stack,
                       true, true, 0);
-
-  /* The status toolbar */
-  ekiga_main_window_init_status_toolbar (mw);
-  gtk_widget_show_all (mw->priv->status_toolbar);
-  gtk_box_pack_start (GTK_BOX (window_vbox), mw->priv->status_toolbar,
-                      false, false, 0);
 
   /* Realize */
   gtk_widget_realize (GTK_WIDGET (mw));
