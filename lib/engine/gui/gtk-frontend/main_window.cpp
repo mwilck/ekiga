@@ -46,10 +46,10 @@
 #include "gm-entry.h"
 
 #include "gmstockicons.h"
-#include "gmstatusbar.h"
 #include "gmmenuaddon.h"
 #include "menu-builder-tools.h"
 #include "menu-builder-gtk.h"
+#include "gm-info-bar.h"
 #include "scoped-connections.h"
 
 #include <glib/gi18n.h>
@@ -142,9 +142,7 @@ struct _EkigaMainWindowPrivate
   GtkWidget *status_toolbar;
   GtkWidget *status_option_menu;
 
-  /* Statusbar */
-  GtkWidget *statusbar;
-  GtkWidget *statusbar_ebox;
+  GtkWidget *info_bar;
 
   /* Calls */
   boost::shared_ptr<Ekiga::Call> current_call;
@@ -241,13 +239,6 @@ static void actions_changed_cb (G_GNUC_UNUSED GtkWidget *widget,
                                 GMenuModel *model,
                                 gpointer data);
 
-/* DESCRIPTION  :  This callback is called when the status bar is clicked.
- * BEHAVIOR     :  Clear all info message, not normal messages.
- * PRE          :  The main window GMObject.
- */
-static gboolean statusbar_clicked_cb (GtkWidget *,
-				      GdkEventButton *,
-				      gpointer);
 
 /* DESCRIPTION  :  /
  * BEHAVIOR     :  Creates the uri toolbar in the dialpad panel.
@@ -262,25 +253,6 @@ static GtkWidget *ekiga_main_window_uri_entry_new (EkigaMainWindow *mw);
  */
 static void ekiga_main_window_init_actions_toolbar (EkigaMainWindow *mw);
 
-
-/* DESCRIPTION   :  /
- * BEHAVIOR      : Flashes a message on the statusbar during a few seconds.
- *                 Removes the previous message.
- * PRE           : The main window GMObject, followed by printf syntax format.
- */
-static void ekiga_main_window_flash_message (EkigaMainWindow *main_window,
-                                             const char *msg,
-                                             ...) G_GNUC_PRINTF(2,3);
-
-
-/* DESCRIPTION   :  /
- * BEHAVIOR      : Displays a message on the statusbar or clears it if msg = 0.
- *                 Removes the previous message.
- * PRE           : The main window GMObject, followed by printf syntax format.
- */
-static void ekiga_main_window_push_message (EkigaMainWindow *main_window,
-                                            const char *msg,
-                                            ...) G_GNUC_PRINTF(2,3);
 
 
 static GActionEntry win_entries[] =
@@ -343,7 +315,9 @@ place_call_cb (GtkWidget * /*widget*/,
 
     // Dial
     if (!mw->priv->call_core->dial (uri))
-      gm_statusbar_flash_message (GM_STATUSBAR (mw->priv->statusbar), _("Could not connect to remote host"));
+      gm_info_bar_set_message (GM_INFO_BAR (mw->priv->info_bar),
+                               GTK_MESSAGE_ERROR,
+                               _("Could not connect to remote host"));
   }
 }
 
@@ -370,23 +344,31 @@ url_changed_cb (GtkEditable *e,
 static void
 on_account_updated (Ekiga::BankPtr /*bank*/,
 		    Ekiga::AccountPtr account,
-		    gpointer self)
+		    gpointer data)
 {
-  g_return_if_fail (EKIGA_IS_MAIN_WINDOW (self));
+  g_return_if_fail (EKIGA_IS_MAIN_WINDOW (data));
 
-  if (account->get_status () != "") {
+  EkigaMainWindow *self = EKIGA_MAIN_WINDOW (data);
+  gchar *msg = NULL;
 
-    EkigaMainWindow *mw = NULL;
-    gchar *msg = NULL;
-
-    mw = EKIGA_MAIN_WINDOW (self);
+  switch (account->get_state ()) {
+  case Ekiga::Account::RegistrationFailed:
+  case Ekiga::Account::UnregistrationFailed:
     msg = g_strdup_printf ("%s: %s",
 			   account->get_name ().c_str (),
 			   account->get_status ().c_str ());
 
-    ekiga_main_window_flash_message (mw, "%s", msg);
+    gm_info_bar_set_message (GM_INFO_BAR (self->priv->info_bar),
+                             GTK_MESSAGE_ERROR, msg);
 
     g_free (msg);
+    break;
+
+  case Ekiga::Account::Processing:
+  case Ekiga::Account::Registered:
+  case Ekiga::Account::Unregistered:
+  default:
+    break;
   }
 }
 
@@ -432,25 +414,16 @@ static void on_ringing_call_cb (boost::shared_ptr<Ekiga::CallManager>  /*manager
 }
 
 
-static void on_established_call_cb (boost::shared_ptr<Ekiga::CallManager>  /*manager*/,
-                                    boost::shared_ptr<Ekiga::Call>  call,
+static void on_established_call_cb (boost::shared_ptr<Ekiga::CallManager> /*manager*/,
+                                    boost::shared_ptr<Ekiga::Call> /*call*/,
                                     gpointer self)
 {
   EkigaMainWindow *mw = EKIGA_MAIN_WINDOW (self);
-  gchar* info = NULL;
 
   /* Update calling state */
   mw->priv->calling_state = Connected;
 
-  /* %s is the SIP/H.323 address of the remote user, this text is shown
-     below video during a call */
-  info = g_strdup_printf (_("Connected with %s"),
-			  call->get_remote_party_name ().c_str ());
-  ekiga_main_window_flash_message (mw, "%s", info);
-  g_free (info);
-
   /* Manage sound events */
-
   mw->priv->audiooutput_core->stop_play_event("incoming_call_sound");
   mw->priv->audiooutput_core->stop_play_event("ring_tone_sound");
 
@@ -460,7 +433,7 @@ static void on_established_call_cb (boost::shared_ptr<Ekiga::CallManager>  /*man
 
 static void on_cleared_call_cb (boost::shared_ptr<Ekiga::CallManager>  /*manager*/,
                                 boost::shared_ptr<Ekiga::Call> call,
-                                std::string reason,
+                                std::string /*reason*/,
                                 gpointer self)
 {
   EkigaMainWindow *mw = EKIGA_MAIN_WINDOW (self);
@@ -474,8 +447,6 @@ static void on_cleared_call_cb (boost::shared_ptr<Ekiga::CallManager>  /*manager
     mw->priv->current_call = boost::shared_ptr<Ekiga::Call>();
   mw->priv->calling_state = Standby;
 
-  /* Info message */
-  ekiga_main_window_flash_message (mw, "%s", reason.c_str ());
 
   /* Sound events */
   mw->priv->audiooutput_core->stop_play_event("incoming_call_sound");
@@ -487,7 +458,6 @@ static void on_cleared_call_cb (boost::shared_ptr<Ekiga::CallManager>  /*manager
 }
 
 
-// FIXME: this should be done through a notification
 static void on_missed_call_cb (boost::shared_ptr<Ekiga::CallManager>  /*manager*/,
                                boost::shared_ptr<Ekiga::Call>  call,
                                gpointer self)
@@ -497,8 +467,9 @@ static void on_missed_call_cb (boost::shared_ptr<Ekiga::CallManager>  /*manager*
   /* Display info first */
   gchar* info = NULL;
   info = g_strdup_printf (_("Missed call from %s"),
-			  call->get_remote_party_name ().c_str ());
-  ekiga_main_window_push_message (mw, "%s", info);
+                          call->get_remote_party_name ().c_str ());
+  gm_info_bar_set_message (GM_INFO_BAR (mw->priv->info_bar),
+                           GTK_MESSAGE_INFO, info);
   g_free (info);
 
   // FIXME: the engine should take care of this
@@ -588,19 +559,6 @@ close_activated (G_GNUC_UNUSED GSimpleAction *action,
   // If we do not have persistent notifications:
   //  - the status icon allows showing the window back
   gtk_widget_hide (GTK_WIDGET (data));
-}
-
-
-static gboolean
-statusbar_clicked_cb (G_GNUC_UNUSED GtkWidget *widget,
-		      G_GNUC_UNUSED GdkEventButton *event,
-		      gpointer data)
-{
-  g_return_val_if_fail (EKIGA_IS_MAIN_WINDOW (data), FALSE);
-
-  ekiga_main_window_push_message (EKIGA_MAIN_WINDOW (data), NULL);
-
-  return FALSE;
 }
 
 
@@ -872,6 +830,11 @@ ekiga_main_window_init_gui (EkigaMainWindow *mw)
   gtk_container_add (GTK_CONTAINER (mw), window_vbox);
   gtk_widget_show_all (window_vbox);
 
+  /* The info bar */
+  mw->priv->info_bar = gm_info_bar_new ();
+  gtk_box_pack_start (GTK_BOX (window_vbox),
+                      GTK_WIDGET (mw->priv->info_bar), TRUE, TRUE, 0);
+
   /* The main stack */
   mw->priv->main_stack = gtk_stack_new ();
   gtk_stack_set_transition_type (GTK_STACK (mw->priv->main_stack),
@@ -880,9 +843,6 @@ ekiga_main_window_init_gui (EkigaMainWindow *mw)
   /* The main menu */
   ekiga_main_window_init_menu (mw);
 
-  /* Status bar */
-  mw->priv->statusbar = gm_statusbar_new ();
-
   /* The actions toolbar */
   ekiga_main_window_init_actions_toolbar (mw);
 
@@ -890,27 +850,18 @@ ekiga_main_window_init_gui (EkigaMainWindow *mw)
   ekiga_main_window_init_contact_list (mw);
   ekiga_main_window_init_dialpad (mw);
   ekiga_main_window_init_history (mw);
+  gtk_widget_show_all (mw->priv->main_stack);
   gtk_box_pack_start (GTK_BOX (window_vbox), mw->priv->main_stack,
                       true, true, 0);
 
   /* The status toolbar */
   ekiga_main_window_init_status_toolbar (mw);
+  gtk_widget_show_all (mw->priv->status_toolbar);
   gtk_box_pack_start (GTK_BOX (window_vbox), mw->priv->status_toolbar,
                       false, false, 0);
 
-  /* The statusbar */
-  mw->priv->statusbar_ebox = gtk_event_box_new ();
-  gtk_container_add (GTK_CONTAINER (mw->priv->statusbar_ebox), mw->priv->statusbar);
-  gtk_box_pack_start (GTK_BOX (window_vbox), mw->priv->statusbar_ebox,
-                      FALSE, FALSE, 0);
-  gtk_widget_show_all (mw->priv->statusbar_ebox);
-
-  g_signal_connect (mw->priv->statusbar_ebox, "button-press-event",
-		    G_CALLBACK (statusbar_clicked_cb), mw);
-
   /* Realize */
   gtk_widget_realize (GTK_WIDGET (mw));
-  gtk_widget_show_all (window_vbox);
 
   /* Update the widget when the user changes the configuration */
   g_settings_bind (mw->priv->user_interface_settings->get_g_settings (),
@@ -1076,48 +1027,4 @@ gm_main_window_new (GmApplication *app)
   ekiga_main_window_init_gui (mw);
 
   return GTK_WIDGET(mw);
-}
-
-
-static void
-ekiga_main_window_flash_message (EkigaMainWindow *mw,
-				 const char *msg,
-				 ...)
-{
-  char buffer [1025];
-  va_list args;
-
-  g_return_if_fail (EKIGA_IS_MAIN_WINDOW (mw));
-
-  va_start (args, msg);
-
-  if (msg == NULL)
-    buffer[0] = 0;
-  else
-    vsnprintf (buffer, 1024, msg, args);
-
-  gm_statusbar_flash_message (GM_STATUSBAR (mw->priv->statusbar), "%s", buffer);
-  va_end (args);
-}
-
-
-static void
-ekiga_main_window_push_message (EkigaMainWindow *mw,
-				const char *msg,
-				...)
-{
-  char buffer [1025];
-  va_list args;
-
-  g_return_if_fail (EKIGA_IS_MAIN_WINDOW (mw));
-
-  va_start (args, msg);
-
-  if (msg == NULL)
-    buffer[0] = 0;
-  else
-    vsnprintf (buffer, 1024, msg, args);
-
-  gm_statusbar_push_message (GM_STATUSBAR (mw->priv->statusbar), "%s", buffer);
-  va_end (args);
 }
