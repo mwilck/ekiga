@@ -315,9 +315,9 @@ place_call_cb (GtkWidget * /*widget*/,
 
     // Dial
     if (!mw->priv->call_core->dial (uri))
-      gm_info_bar_set_message (GM_INFO_BAR (mw->priv->info_bar),
-                               GTK_MESSAGE_ERROR,
-                               _("Could not connect to remote host"));
+      gm_info_bar_push_message (GM_INFO_BAR (mw->priv->info_bar),
+                                GTK_MESSAGE_ERROR,
+                                _("Could not connect to remote host"));
   }
 }
 
@@ -358,8 +358,8 @@ on_account_updated (Ekiga::BankPtr /*bank*/,
 			   account->get_name ().c_str (),
 			   account->get_status ().c_str ());
 
-    gm_info_bar_set_message (GM_INFO_BAR (self->priv->info_bar),
-                             GTK_MESSAGE_ERROR, msg);
+    gm_info_bar_push_message (GM_INFO_BAR (self->priv->info_bar),
+                              GTK_MESSAGE_ERROR, msg);
 
     g_free (msg);
     break;
@@ -468,8 +468,8 @@ static void on_missed_call_cb (boost::shared_ptr<Ekiga::CallManager>  /*manager*
   gchar* info = NULL;
   info = g_strdup_printf (_("Missed call from %s"),
                           call->get_remote_party_name ().c_str ());
-  gm_info_bar_set_message (GM_INFO_BAR (mw->priv->info_bar),
-                           GTK_MESSAGE_INFO, info);
+  gm_info_bar_push_message (GM_INFO_BAR (mw->priv->info_bar),
+                            GTK_MESSAGE_INFO, info);
   g_free (info);
 
   // FIXME: the engine should take care of this

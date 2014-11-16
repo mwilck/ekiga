@@ -527,9 +527,9 @@ on_videooutput_device_error_cb (Ekiga::VideoOutputManager & /* manager */,
 {
   EkigaCallWindow *self = EKIGA_CALL_WINDOW (data);
 
-  gm_info_bar_set_message (GM_INFO_BAR (self->priv->info_bar),
-                           GTK_MESSAGE_ERROR,
-                           _("There was an error opening or initializing the video output. Please verify that no other application is using the accelerated video output."));
+  gm_info_bar_push_message (GM_INFO_BAR (self->priv->info_bar),
+                            GTK_MESSAGE_ERROR,
+                            _("There was an error opening or initializing the video output. Please verify that no other application is using the accelerated video output."));
 }
 
 
@@ -627,9 +627,9 @@ on_videoinput_device_error_cb (Ekiga::VideoInputManager & /* manager */,
     break;
   }
 
-  gm_info_bar_set_message (GM_INFO_BAR (self->priv->info_bar),
-                           GTK_MESSAGE_ERROR,
-                           message);
+  gm_info_bar_push_message (GM_INFO_BAR (self->priv->info_bar),
+                            GTK_MESSAGE_ERROR,
+                            message);
 
   g_free (message);
 }
@@ -683,8 +683,8 @@ on_audioinput_device_error_cb (Ekiga::AudioInputManager & /* manager */,
     break;
   }
 
-  gm_info_bar_set_message (GM_INFO_BAR (self->priv->info_bar),
-                           GTK_MESSAGE_ERROR, message);
+  gm_info_bar_push_message (GM_INFO_BAR (self->priv->info_bar),
+                            GTK_MESSAGE_ERROR, message);
   g_free (message);
 }
 
@@ -751,8 +751,8 @@ on_audiooutput_device_error_cb (Ekiga::AudioOutputManager & /*manager */,
     break;
   }
 
-  gm_info_bar_set_message (GM_INFO_BAR (self->priv->info_bar),
-                           GTK_MESSAGE_ERROR, message);
+  gm_info_bar_push_message (GM_INFO_BAR (self->priv->info_bar),
+                            GTK_MESSAGE_ERROR, message);
 
   g_free (message);
 }
@@ -844,8 +844,8 @@ on_cleared_call_cb (G_GNUC_UNUSED boost::shared_ptr<Ekiga::CallManager> manager,
 
   ekiga_call_window_clear_signal_levels (self);
 
-  gm_info_bar_set_message (GM_INFO_BAR (self->priv->info_bar),
-                           GTK_MESSAGE_INFO, reason.c_str ());
+  gm_info_bar_push_message (GM_INFO_BAR (self->priv->info_bar),
+                            GTK_MESSAGE_INFO, reason.c_str ());
 }
 
 static void on_missed_call_cb (boost::shared_ptr<Ekiga::CallManager>  /*manager*/,
@@ -870,8 +870,8 @@ on_held_call_cb (boost::shared_ptr<Ekiga::CallManager>  /*manager*/,
 {
   EkigaCallWindow *self = EKIGA_CALL_WINDOW (data);
 
-  gm_info_bar_set_message (GM_INFO_BAR (self->priv->info_bar),
-                           GTK_MESSAGE_INFO, _("Call on hold"));
+  gm_info_bar_push_message (GM_INFO_BAR (self->priv->info_bar),
+                            GTK_MESSAGE_INFO, _("Call on hold"));
 }
 
 
@@ -882,8 +882,8 @@ on_retrieved_call_cb (boost::shared_ptr<Ekiga::CallManager>  /*manager*/,
 {
   EkigaCallWindow *self = EKIGA_CALL_WINDOW (data);
 
-  gm_info_bar_set_message (GM_INFO_BAR (self->priv->info_bar),
-                           GTK_MESSAGE_INFO, _("Call retrieved"));
+  gm_info_bar_push_message (GM_INFO_BAR (self->priv->info_bar),
+                            GTK_MESSAGE_INFO, _("Call retrieved"));
 }
 
 
@@ -1218,9 +1218,9 @@ ekiga_call_window_update_stats (EkigaCallWindow *self,
   g_free (stats_msg);
 
   if (jitter > 150 || lost > 0.02 || late > 0.02 || out_of_order > 0.02)
-    gm_info_bar_set_message (GM_INFO_BAR (self->priv->info_bar),
-                             GTK_MESSAGE_WARNING,
-                             _("The call quality is rather bad. Please check your Internet connection."));
+    gm_info_bar_push_message (GM_INFO_BAR (self->priv->info_bar),
+                              GTK_MESSAGE_WARNING,
+                              _("The call quality is rather bad. Please check your Internet connection."));
 }
 
 

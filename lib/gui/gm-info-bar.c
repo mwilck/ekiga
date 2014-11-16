@@ -44,7 +44,15 @@ struct _GmInfoBarPrivate {
 
   GtkWidget *label;
   guint timeout;
+  GSList *messages;
 };
+
+typedef struct _GmMessage {
+
+  GtkMessageType type;
+  gchar *message;
+} GmMessage;
+
 
 G_DEFINE_TYPE (GmInfoBar, gm_info_bar, GTK_TYPE_INFO_BAR);
 
@@ -65,14 +73,28 @@ static void gm_info_bar_class_init (GmInfoBarClass *);
 static void gm_info_bar_init (GmInfoBar *);
 
 
+/* Static helpers */
+static void gm_info_bar_pop_message (GmInfoBar *self);
+
+static gboolean gm_info_bar_display_last_message (GmInfoBar *self);
+
+static void gm_info_bar_display_message (GmInfoBar *self,
+                                         GtkMessageType type,
+                                         const char *message);
+
+
 /* Callbacks */
 static gboolean
 on_info_bar_delayed_hide (gpointer self)
 {
-  gtk_widget_hide (GTK_WIDGET (self));
+  g_return_if_fail (GM_IS_INFO_BAR (self));
+  /* Display (again) the new last element or hide the infobar */
+  if (!gm_info_bar_display_last_message (self))
+    gtk_widget_hide (GTK_WIDGET (self));
 
   return FALSE;
 }
+
 
 static void
 on_info_bar_response (GmInfoBar *self,
@@ -81,8 +103,9 @@ on_info_bar_response (GmInfoBar *self,
 {
   g_return_if_fail (GM_IS_INFO_BAR (self));
 
-  if (response_id == GTK_RESPONSE_CLOSE)
-    gtk_widget_hide (GTK_WIDGET (self));
+  if (response_id == GTK_RESPONSE_CLOSE) {
+      gm_info_bar_pop_message (self);
+  }
 }
 
 
@@ -121,6 +144,7 @@ gm_info_bar_init (GmInfoBar* self)
 
   self->priv->timeout = 0;
   self->priv->label = gtk_label_new (NULL);
+  self->priv->messages = NULL;
   gtk_label_set_line_wrap (GTK_LABEL (self->priv->label), TRUE);
 
   gtk_box_pack_start (GTK_BOX (gtk_info_bar_get_content_area (GTK_INFO_BAR (self))),
@@ -128,6 +152,70 @@ gm_info_bar_init (GmInfoBar* self)
 
   g_signal_connect (G_OBJECT (self), "response",
                     G_CALLBACK (on_info_bar_response), NULL);
+}
+
+
+/* Helpers */
+static void
+gm_info_bar_pop_message (GmInfoBar *self)
+{
+  GmInfoBarPrivate *priv = GM_INFO_BAR (self)->priv;
+
+  if (!priv->messages)
+    return;
+
+  /* Display the oldest message */
+  GSList *last = g_slist_last (priv->messages);
+  if (last) {
+    /* Free the last element */
+    GmMessage *m = (GmMessage *) last->data;
+    priv->messages = g_slist_remove_link (priv->messages, last);
+    g_free (m->message);
+    g_slist_free_1 (last);
+
+    /* Display the new last element or hide the infobar */
+    if (!gm_info_bar_display_last_message (self))
+      gtk_widget_hide (GTK_WIDGET (self));
+  }
+}
+
+
+static gboolean
+gm_info_bar_display_last_message (GmInfoBar *self)
+{
+  GmInfoBarPrivate *priv = GM_INFO_BAR (self)->priv;
+  GSList *last = NULL;
+
+  if (!priv->messages)
+    return FALSE;
+
+  /* Display the new last element or hide the infobar */
+  last = g_slist_last (priv->messages);
+  if (last) {
+    GmMessage *m = (GmMessage *) last->data;
+    gm_info_bar_display_message (self, m->type, m->message);
+    return TRUE;
+  }
+
+  return FALSE;
+}
+
+
+static void
+gm_info_bar_display_message (GmInfoBar *self,
+                             GtkMessageType type,
+                             const char *message)
+{
+  gtk_info_bar_set_message_type (GTK_INFO_BAR (self), type);
+  gtk_label_set_text (GTK_LABEL (self->priv->label), message);
+  gtk_info_bar_set_show_close_button (GTK_INFO_BAR (self), (type != GTK_MESSAGE_INFO));
+  gtk_widget_show_all (GTK_WIDGET (self));
+
+  /* Flash the information message. Please don't abuse this.
+   */
+  if (type == GTK_MESSAGE_INFO) {
+    self->priv->timeout = g_timeout_add_seconds (4, on_info_bar_delayed_hide, self);
+  }
 }
 
 
@@ -140,20 +228,28 @@ gm_info_bar_new ()
 
 
 void
-gm_info_bar_set_message (GmInfoBar *self,
-                         GtkMessageType type,
-                         const char *message)
+gm_info_bar_push_message (GmInfoBar *self,
+                          GtkMessageType type,
+                          const char *message)
 {
+  GmMessage *m = NULL;
+  gboolean was_empty = FALSE;
   g_return_if_fail (GM_IS_INFO_BAR (self) || !message || !g_strcmp0 (message, ""));
 
-  gtk_info_bar_set_message_type (GTK_INFO_BAR (self), type);
-  gtk_label_set_text (GTK_LABEL (self->priv->label), message);
-  gtk_info_bar_set_show_close_button (GTK_INFO_BAR (self), (type != GTK_MESSAGE_INFO));
-  gtk_widget_show_all (GTK_WIDGET (self));
+  was_empty = (g_slist_length (self->priv->messages) == 0);
 
-  /* Flash the information message. Please don't abuse this.
-   */
   if (type == GTK_MESSAGE_INFO) {
-    self->priv->timeout = g_timeout_add_seconds (4, on_info_bar_delayed_hide, self);
+    gm_info_bar_display_message (self, type, message);
+    return;
   }
+
+  m = g_malloc0 (sizeof (GmMessage));
+  m->type = type;
+  m->message = g_strdup (message);
+
+  /* Last message first */
+  self->priv->messages = g_slist_prepend (self->priv->messages, m);
+
+  if (was_empty)
+    gm_info_bar_display_message (self, type, message);
 }

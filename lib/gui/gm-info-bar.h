@@ -63,11 +63,11 @@ GtkWidget *gm_info_bar_new ();
 /** Update the GmInfoBar content.
  * @param self:    A GmInfoBar
  * @param type:    The message type.
- * @param message: The non empty information message to display.
+ * @param message: The non empty information message to push for display.
  */
-void gm_info_bar_set_message (GmInfoBar *self,
-                              GtkMessageType type,
-                              const char *message);
+void gm_info_bar_push_message (GmInfoBar *self,
+                               GtkMessageType type,
+                               const char *message);
 
 
 /* GObject thingies */
