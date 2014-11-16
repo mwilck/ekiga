@@ -83,7 +83,7 @@ namespace Evolution
     const std::string get_status () const;
 
     const std::string get_icon () const
-    { return "computer"; }
+    { return "computer-symbolic"; }
 
     void refresh ();
 

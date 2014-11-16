@@ -77,7 +77,7 @@ namespace History
     const std::string get_status () const;
 
     const std::string get_icon () const
-    { return "document-open-recent"; }
+    { return "document-open-recent-symbolic"; }
 
 
     /* more specific api */
