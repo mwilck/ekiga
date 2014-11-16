@@ -114,11 +114,20 @@ static void
 gm_info_bar_dispose (GObject* obj)
 {
   GmInfoBarPrivate *priv = GM_INFO_BAR (obj)->priv;
+  GSList *l = priv->messages;
 
   if (priv->timeout > 0) {
     g_source_remove (priv->timeout);
     priv->timeout = 0;
   }
+  while (l) {
+    GmMessage *m = (GmMessage *) l->data;
+    if (m->message)
+      g_free (m->message);
+    l = g_slist_next (l);
+  }
+  g_slist_free (priv->messages);
+  priv->messages = NULL;
 
   G_OBJECT_CLASS (gm_info_bar_parent_class)->dispose (obj);
 }
