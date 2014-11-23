@@ -73,6 +73,8 @@ namespace Ekiga {
   public:
 
     GActorMenu (Actor & obj);
+    GActorMenu (Actor & obj,
+                const std::string & name);
     virtual ~GActorMenu ();
 
 
@@ -129,9 +131,12 @@ namespace Ekiga {
     Actor & obj;
 
   private:
+    void ctor_init ();
+
     Ekiga::scoped_connections conns;
     unsigned n;
     GtkBuilder *builder;
+    std::string name;
   };
 }
 #endif
