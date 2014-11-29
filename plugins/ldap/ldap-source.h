@@ -89,7 +89,7 @@ namespace OPENLDAP
     void save ();
 
     void new_book ();
-    
+
     void new_ekiga_net_book ();
 
     bool on_new_book_form_submitted (bool submitted,

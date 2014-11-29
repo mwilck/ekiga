@@ -76,7 +76,7 @@ OPENLDAP::Source::Source (Ekiga::ServiceCore &_core):
 	  && xmlStrEqual (BAD_CAST "server", child->name))
 	add (child);
 
-  } 
+  }
   else {
 
     doc = boost::shared_ptr<xmlDoc> (xmlNewDoc (BAD_CAST "1.0"), xmlFreeDoc);
@@ -88,6 +88,13 @@ OPENLDAP::Source::Source (Ekiga::ServiceCore &_core):
 
   if (should_add_ekiga_net_book)
     new_ekiga_net_book ();
+
+  add_action (Ekiga::ActionPtr (new Ekiga::Action ("add-ldap-book", _("Add an LDAP Address Book"),
+                                                   boost::bind (&OPENLDAP::Source::new_book, this))));
+  if (!has_ekiga_net_book ()) {
+    add_action (Ekiga::ActionPtr (new Ekiga::Action ("add-ekiga-book", _("Add the Ekiga.net Directory"),
+                                                     boost::bind (&OPENLDAP::Source::new_ekiga_net_book, this))));
+  }
 }
 
 OPENLDAP::Source::~Source ()

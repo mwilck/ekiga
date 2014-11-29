@@ -339,6 +339,14 @@ OPENLDAP::Book::Book (Ekiga::ServiceCore &_core,
     I_am_an_ekiga_net_book = true;
   else
     I_am_an_ekiga_net_book = false;
+
+  /* Actor stuff */
+  add_action (Ekiga::ActionPtr (new Ekiga::Action ("edit-book", _("_Edit"),
+                                                   boost::bind (&OPENLDAP::Book::edit, this))));
+  add_action (Ekiga::ActionPtr (new Ekiga::Action ("remove-book", _("_Remove"),
+                                                   boost::bind (&OPENLDAP::Book::remove, this))));
+  add_action (Ekiga::ActionPtr (new Ekiga::Action ("refresh-book", _("_Refresh"),
+                                                   boost::bind (&OPENLDAP::Book::refresh, this))));
 }
 
 OPENLDAP::Book::Book (Ekiga::ServiceCore &_core,
