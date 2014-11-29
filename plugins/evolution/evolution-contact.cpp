@@ -64,6 +64,24 @@ Evolution::Contact::Contact (Ekiga::ServiceCore &_services,
 
   if (E_IS_CONTACT (_econtact))
     update_econtact (_econtact);
+
+  /* Actor stuff */
+  add_action (Ekiga::ActionPtr (new Ekiga::Action ("edit-contact", _("_Edit"),
+                                                   boost::bind (&Evolution::Contact::edit_action, this))));
+  add_action (Ekiga::ActionPtr (new Ekiga::Action ("remove-contact", _("_Remove"),
+                                                   boost::bind (&Evolution::Contact::remove_action, this))));
+
+  /* Pull actions */
+  boost::shared_ptr<Ekiga::ContactCore> core = services.get<Ekiga::ContactCore> ("contact-core");
+  if (core) {
+    for (unsigned int attr_type = 0; attr_type < ATTR_NUMBER; attr_type++) {
+
+      std::string attr_value = get_attribute_value (attr_type);
+      if (!attr_value.empty ()) {
+        core->pull_actions (actions, get_name (), attr_value);
+      }
+    }
+  }
 }
 
 Evolution::Contact::~Contact ()
