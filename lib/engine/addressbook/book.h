@@ -37,10 +37,12 @@
 #define __BOOK_H__
 
 #include "contact.h"
+#include "actor.h"
 
 namespace Ekiga {
 
   class Book:
+    public Actor,
     public virtual LiveObject
   {
 

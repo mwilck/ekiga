@@ -38,10 +38,12 @@
 #define __SOURCE_H__
 
 #include "book.h"
+#include "actor.h"
 
 namespace Ekiga {
 
   class Source:
+    public Actor,
     public virtual LiveObject
   {
   public:
