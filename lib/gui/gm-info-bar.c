@@ -215,6 +215,9 @@ gm_info_bar_display_message (GmInfoBar *self,
                              GtkMessageType type,
                              const char *message)
 {
+  if (!g_strcmp0 (message, ""))
+    return;
+
   gtk_info_bar_set_message_type (GTK_INFO_BAR (self), type);
   gtk_label_set_text (GTK_LABEL (self->priv->label), message);
   gtk_info_bar_set_show_close_button (GTK_INFO_BAR (self), (type != GTK_MESSAGE_INFO));
