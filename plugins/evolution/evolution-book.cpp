@@ -56,7 +56,6 @@ Evolution::Book::on_view_contacts_added (GList *econtacts)
 {
   EContact *econtact = NULL;
   int nbr = 0;
-  gchar* c_status = NULL;
 
   for (; econtacts != NULL; econtacts = g_list_next (econtacts)) {
 
@@ -71,11 +70,6 @@ Evolution::Book::on_view_contacts_added (GList *econtacts)
       nbr++;
     }
   }
-
-  c_status = g_strdup_printf (ngettext ("%d user found", "%d users found", nbr),
-			      nbr);
-  status = c_status;
-  g_free (c_status);
 
   updated ();
 }
@@ -264,6 +258,10 @@ Evolution::Book::Book (Ekiga::ServiceCore &_services,
   g_object_ref (book);
 
   refresh ();
+
+  /* Actor stuff */
+  add_action (Ekiga::ActionPtr (new Ekiga::Action ("add-contact", _("A_dd Contact"),
+                                                   boost::bind (&Evolution::Book::new_contact_action, this))));
 }
 
 Evolution::Book::~Book ()
