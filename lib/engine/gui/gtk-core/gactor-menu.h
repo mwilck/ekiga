@@ -91,7 +91,8 @@ namespace Ekiga {
      * @return a pointer to the GMenuModel, NULL if none (no action, or all actions
      *         are disabled).
      */
-    GMenuModel *get_model (const GActorMenuStore & store = GActorMenuStore ());
+    GMenuModel *get_model (const GActorMenuStore & store = GActorMenuStore (),
+                           bool display_section_label = true);
 
     /** Return a pointer to the GtkMenu corresponding to the current GActorMenu
      *  and the list of GActorMenus given as argument.
@@ -121,7 +122,8 @@ namespace Ekiga {
     virtual void remove_gio_action (const std::string & name);
 
     /** Return the XML representation of the enabled Actions */
-    virtual const std::string as_xml (const std::string & id = "");
+    virtual const std::string as_xml (const std::string & id = "",
+                                      bool display_section_label = true);
 
     /** Return the XML representation of the full menu with
      * enabled Actions.
