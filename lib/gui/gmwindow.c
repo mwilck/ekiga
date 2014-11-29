@@ -177,6 +177,7 @@ gm_window_set_property (GObject *obj,
 
   case GM_HIDE_ON_ESC:
     self->priv->hide_on_esc = g_value_get_boolean (value);
+    gtk_accel_group_disconnect_key (self->priv->accel, GDK_KEY_Escape, (GdkModifierType) 0);
     if (!self->priv->hide_on_esc)
       gtk_accel_group_connect (self->priv->accel, GDK_KEY_Escape, (GdkModifierType) 0, GTK_ACCEL_LOCKED,
                                g_cclosure_new_swap (G_CALLBACK (gtk_widget_destroy), (gpointer) self, NULL));
