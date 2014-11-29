@@ -55,7 +55,6 @@ namespace History
 
   class Book:
     public Ekiga::Book,
-    public Ekiga::Actor,
     public boost::signals2::trackable
   {
   public:
