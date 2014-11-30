@@ -72,7 +72,8 @@ namespace Ekiga
     virtual void boolean (const std::string name,
 			  const std::string description,
 			  bool value,
-			  bool advanced) = 0;
+			  bool advanced,
+                          bool in_header_bar) = 0;
 
     typedef enum { STANDARD, PHONE_NUMBER, URI, PASSWORD } FormTextType;
     virtual void text (const std::string name,

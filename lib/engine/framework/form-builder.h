@@ -90,7 +90,8 @@ namespace Ekiga
     void boolean (const std::string name,
 		  const std::string description,
 		  bool value,
-		  bool advanced = false);
+		  bool advanced = false,
+                  bool in_header_bar = true);
 
     void text (const std::string text,
 	       const std::string description,
@@ -142,14 +143,17 @@ namespace Ekiga
       BooleanField (const std::string _name,
 		    const std::string _description,
 		    bool _value,
-		    bool _advanced): name(_name), description(_description),
-				     value(_value), advanced(_advanced)
+		    bool _advanced,
+                    bool _in_header_bar): name(_name), description(_description),
+                                          value(_value), advanced(_advanced),
+                                          in_header_bar(_in_header_bar)
       {}
 
       const std::string name;
       const std::string description;
       bool value;
       bool advanced;
+      bool in_header_bar;
     };
 
     struct TextField

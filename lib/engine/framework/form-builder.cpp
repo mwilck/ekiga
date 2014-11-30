@@ -75,7 +75,8 @@ Ekiga::FormBuilder::visit (Ekiga::FormVisitor &visitor) const
       visitor.boolean (iter_bool->name,
 		       iter_bool->description,
 		       iter_bool->value,
-		       iter_bool->advanced);
+		       iter_bool->advanced,
+                       iter_bool->in_header_bar);
       iter_bool++;
       break;
 
@@ -261,9 +262,10 @@ void
 Ekiga::FormBuilder::boolean (const std::string name,
 			     const std::string description,
 			     bool value,
-			     bool advanced)
+			     bool advanced,
+                             bool in_header_bar)
 {
-  booleans.push_back (BooleanField (name, description, value, advanced));
+  booleans.push_back (BooleanField (name, description, value, advanced, in_header_bar));
   ordering.push_back (BOOLEAN);
 }
 

@@ -84,7 +84,8 @@ public:
   void boolean (const std::string name,
 		const std::string description,
 		bool value,
-		bool advanced);
+		bool advanced,
+                bool in_header_bar = true);
 
   void text (const std::string name,
 	     const std::string description,
