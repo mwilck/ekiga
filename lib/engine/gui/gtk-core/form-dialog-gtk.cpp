@@ -912,7 +912,8 @@ void
 FormDialog::boolean (const std::string name,
 		     const std::string description,
 		     bool value,
-		     bool advanced)
+		     bool advanced,
+                     bool in_header_bar)
 {
   GtkWidget *label = NULL;
   GtkWidget *widget = NULL;
@@ -929,7 +930,7 @@ FormDialog::boolean (const std::string name,
   gtk_widget_set_halign (GTK_WIDGET (widget), GTK_ALIGN_START);
   gtk_widget_show (widget);
 
-  if (header_bar) {
+  if (header_bar && in_header_bar) {
     gtk_header_bar_pack_start (GTK_HEADER_BAR (header_bar), widget);
   }
   else {
@@ -977,7 +978,7 @@ FormDialog::text (const std::string name,
 
   grow_fields (advanced);
 
-  label = gtk_label_new (description.c_str ());
+  label = gtk_label_new_with_mnemonic (description.c_str ());
   gtk_widget_set_halign (GTK_WIDGET (label), GTK_ALIGN_END);
 
   switch (type) {
@@ -1108,7 +1109,7 @@ FormDialog::single_choice (const std::string name,
 
   grow_fields (advanced);
 
-  label = gtk_label_new (description.c_str ());
+  label = gtk_label_new_with_mnemonic (description.c_str ());
   gtk_widget_set_halign (GTK_WIDGET (label), GTK_ALIGN_END);
   gtk_label_set_line_wrap (GTK_LABEL (label), TRUE);
   gtk_label_set_line_wrap_mode (GTK_LABEL (label), PANGO_WRAP_WORD);
@@ -1184,7 +1185,7 @@ FormDialog::multiple_choice (const std::string name,
   grow_fields (advanced);
 
   /* The label */
-  label = gtk_label_new (description.c_str ());
+  label = gtk_label_new_with_mnemonic (description.c_str ());
   gtk_widget_set_halign (GTK_WIDGET (label), GTK_ALIGN_END);
 
   /* The GtkListStore containing the choices */
@@ -1287,7 +1288,7 @@ FormDialog::editable_list (const std::string name,
 
   /* The label */
   if (!description.empty ()) {
-    label = gtk_label_new (description.c_str ());
+    label = gtk_label_new_with_mnemonic (description.c_str ());
     gtk_widget_set_halign (GTK_WIDGET (label), GTK_ALIGN_END);
   }
 
