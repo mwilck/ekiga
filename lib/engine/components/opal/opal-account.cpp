@@ -197,15 +197,15 @@ Opal::Account::Account (boost::shared_ptr<Opal::Sip::EndPoint> _sip_endpoint,
   setup_presentity ();
 
   /* Actor stuff */
-  add_action (Ekiga::ActionPtr (new Ekiga::Action ("add", _("A_dd Contact"),
+  add_action (Ekiga::ActionPtr (new Ekiga::Action ("add-contact", _("A_dd Contact"),
                                                    boost::bind (&Opal::Account::add_contact, this))));
-  add_action (Ekiga::ActionPtr (new Ekiga::Action ("edit", _("_Edit"),
+  add_action (Ekiga::ActionPtr (new Ekiga::Action ("edit-account", _("_Edit"),
                                                    boost::bind (&Opal::Account::edit, this))));
-  add_action (Ekiga::ActionPtr (new Ekiga::Action ("remove", _("_Remove"),
+  add_action (Ekiga::ActionPtr (new Ekiga::Action ("remove-account", _("_Remove"),
                                                    boost::bind (&Opal::Account::remove, this))));
-  add_action (Ekiga::ActionPtr (new Ekiga::Action ("enable", _("_Enable"),
+  add_action (Ekiga::ActionPtr (new Ekiga::Action ("enable-account", _("_Enable"),
                                                    boost::bind (&Opal::Account::enable, this), !is_enabled ())));
-  add_action (Ekiga::ActionPtr (new Ekiga::Action ("disable", _("_Disable"),
+  add_action (Ekiga::ActionPtr (new Ekiga::Action ("disable-account", _("_Disable"),
                                                    boost::bind (&Opal::Account::disable, this), is_enabled ())));
 
   if (type == DiamondCard) {
@@ -216,15 +216,15 @@ Opal::Account::Account (boost::shared_ptr<Opal::Sip::EndPoint> _sip_endpoint,
 
     url.str ("");
     url << str.str () << "&act=rch";
-    add_action (Ekiga::ActionPtr (new Ekiga::Action ("recharge", _("Recharge the account"),
+    add_action (Ekiga::ActionPtr (new Ekiga::Action ("recharge-account", _("Recharge the account"),
                                                      boost::bind (&Opal::Account::on_consult, this, url.str ()))));
     url.str ("");
     url << str.str () << "&act=bh";
-    add_action (Ekiga::ActionPtr (new Ekiga::Action ("balance", _("Consult the balance history"),
+    add_action (Ekiga::ActionPtr (new Ekiga::Action ("balance-account", _("Consult the balance history"),
                                                      boost::bind (&Opal::Account::on_consult, this, url.str ()))));
     url.str ("");
     url << str.str () << "&act=ch";
-    add_action (Ekiga::ActionPtr (new Ekiga::Action ("history", _("Consult the call history"),
+    add_action (Ekiga::ActionPtr (new Ekiga::Action ("history-account", _("Consult the call history"),
                                                      boost::bind (&Opal::Account::on_consult, this, url.str ()))));
   }
 }
