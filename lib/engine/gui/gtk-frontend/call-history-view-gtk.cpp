@@ -66,7 +66,6 @@ struct _CallHistoryViewGtkPrivate
   Ekiga::GActorMenuPtr menu;
   Ekiga::GActorMenuPtr contact_menu;
 
-  GtkListStore* store;
   GtkTreeView* tree;
   boost::signals2::scoped_connection connection;
 };
@@ -162,8 +161,10 @@ on_visit_contacts (Ekiga::ContactPtr contact,
 static void
 on_book_updated (CallHistoryViewGtk* self)
 {
-  gtk_list_store_clear (self->priv->store);
-  self->priv->book->visit_contacts (boost::bind (&on_visit_contacts, _1, self->priv->store));
+  GtkTreeModel* store = gtk_tree_view_get_model (self->priv->tree);
+
+  gtk_list_store_clear (GTK_LIST_STORE (store));
+  self->priv->book->visit_contacts (boost::bind (&on_visit_contacts, _1, GTK_LIST_STORE (store)));
 }
 
 /* react to user clicks */
@@ -212,6 +213,7 @@ on_selection_changed (G_GNUC_UNUSED GtkTreeSelection* selection,
     g_signal_emit (self, signals[ACTIONS_CHANGED_SIGNAL], 0, NULL);
 }
 
+
 /* GObject stuff */
 static void
 call_history_view_gtk_dispose (GObject* obj)
@@ -220,51 +222,11 @@ call_history_view_gtk_dispose (GObject* obj)
 
   view = CALL_HISTORY_VIEW_GTK (obj);
 
-  if (view->priv->store) {
-
-    g_object_unref (view->priv->store);
-    view->priv->store = NULL;
-  }
-
-  if (view->priv->tree) {
-
-    GtkTreeSelection* selection = NULL;
-
-    selection = gtk_tree_view_get_selection (view->priv->tree);
-
-    std::cout << "ATTENTION FIXME ET DANS ROSTER AUSSI " << std::endl << std::flush;
-    g_signal_handlers_disconnect_matched (selection,
-					  (GSignalMatchType) G_SIGNAL_MATCH_DATA,
-					  0, /* signal_id */
-					  (GQuark) 0, /* detail */
-					  NULL,	/* closure */
-					  NULL,	/* func */
-					  view /* data */);
-
-    g_signal_handlers_disconnect_matched (view->priv->tree,
-					  (GSignalMatchType) G_SIGNAL_MATCH_DATA,
-					  0, /* signal_id */
-					  (GQuark)0, /* detail */
-					  NULL, /* closure */
-					  NULL, /* func */
-					  &(*(view->priv->book)) /* data */);
-    view->priv->tree = NULL;
-  }
+  delete view->priv;
 
   G_OBJECT_CLASS (call_history_view_gtk_parent_class)->dispose (obj);
 }
 
-static void
-call_history_view_gtk_finalize (GObject* obj)
-{
-  CallHistoryViewGtk* view = NULL;
-
-  view = CALL_HISTORY_VIEW_GTK (obj);
-
-  delete view->priv;
-
-  G_OBJECT_CLASS (call_history_view_gtk_parent_class)->finalize (obj);
-}
 
 static void
 call_history_view_gtk_init (G_GNUC_UNUSED CallHistoryViewGtk* self)
@@ -277,7 +239,6 @@ call_history_view_gtk_class_init (CallHistoryViewGtkClass* klass)
 {
   GObjectClass* gobject_class = G_OBJECT_CLASS (klass);
   gobject_class->dispose = call_history_view_gtk_dispose;
-  gobject_class->finalize = call_history_view_gtk_finalize;
 
   signals[ACTIONS_CHANGED_SIGNAL] =
     g_signal_new ("actions-changed",
@@ -293,11 +254,12 @@ call_history_view_gtk_class_init (CallHistoryViewGtkClass* klass)
 
 GtkWidget *
 call_history_view_gtk_new (boost::shared_ptr<History::Book> book,
-                           boost::shared_ptr<Ekiga::CallCore> call_core,
-                           boost::shared_ptr<Ekiga::ContactCore> contact_core)
+                           G_GNUC_UNUSED boost::shared_ptr<Ekiga::CallCore> call_core,
+                           G_GNUC_UNUSED boost::shared_ptr<Ekiga::ContactCore> contact_core)
 {
   CallHistoryViewGtk* self = NULL;
 
+  GtkListStore *store = NULL;
   GtkTreeViewColumn *column = NULL;
   GtkCellRenderer *renderer = NULL;
   GtkTreeSelection *selection = NULL;
@@ -312,17 +274,18 @@ call_history_view_gtk_new (boost::shared_ptr<History::Book> book,
 				  GTK_POLICY_AUTOMATIC, GTK_POLICY_AUTOMATIC);
 
   /* build the store then the tree */
-  self->priv->store = gtk_list_store_new (COLUMN_NUMBER,
-					  G_TYPE_POINTER,
-					  G_TYPE_STRING,
-					  G_TYPE_STRING,
-					  G_TYPE_STRING,
-					  G_TYPE_STRING);
+  store = gtk_list_store_new (COLUMN_NUMBER,
+                              G_TYPE_POINTER,
+                              G_TYPE_STRING,
+                              G_TYPE_STRING,
+                              G_TYPE_STRING,
+                              G_TYPE_STRING);
 
-  self->priv->tree = (GtkTreeView*)gtk_tree_view_new_with_model (GTK_TREE_MODEL (self->priv->store));
+  self->priv->tree = (GtkTreeView*)gtk_tree_view_new_with_model (GTK_TREE_MODEL (store));
   gtk_tree_view_set_headers_visible (GTK_TREE_VIEW (self->priv->tree), FALSE);
   gtk_tree_view_set_grid_lines (self->priv->tree, GTK_TREE_VIEW_GRID_LINES_HORIZONTAL);
   gtk_container_add (GTK_CONTAINER (self), GTK_WIDGET (self->priv->tree));
+  g_object_unref (store);
 
   /* one column should be enough for everyone */
   column = gtk_tree_view_column_new ();
