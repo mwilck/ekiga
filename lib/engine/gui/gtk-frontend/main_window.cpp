@@ -150,9 +150,6 @@ struct _EkigaMainWindowPrivate
 
   Ekiga::scoped_connections connections;
 
-  /* Menu Dynamic Section */
-  unsigned menu_dynamic_section_n_items;
-
   /* GSettings */
   boost::shared_ptr<Ekiga::Settings> user_interface_settings;
   boost::shared_ptr<Ekiga::Settings> sound_events_settings;
@@ -172,12 +169,6 @@ static const char* win_menu =
   "<?xml version='1.0'?>"
   "<interface>"
   "  <menu id='menubar'>"
-  "    <section>"
-  "      <item>"
-  "        <attribute name='label' translatable='yes'>_Add Contact</attribute>"
-  "        <attribute name='action'>win.local-cluster-new</attribute>"
-  "      </item>"
-  "    </section>"
   "  </menu>"
   "</interface>";
 
@@ -253,12 +244,6 @@ static GtkWidget *ekiga_main_window_uri_entry_new (EkigaMainWindow *mw);
  */
 static void ekiga_main_window_init_actions_toolbar (EkigaMainWindow *mw);
 
-
-
-static GActionEntry win_entries[] =
-{
-    { "close", close_activated, NULL, NULL, NULL, 0 }
-};
 
 
 /*
@@ -568,21 +553,17 @@ actions_changed_cb (G_GNUC_UNUSED GtkWidget *widget,
                     gpointer data)
 {
   GMenu *menu = NULL;
+  int pos = 0;
 
   g_return_if_fail (EKIGA_IS_MAIN_WINDOW (data));
-  EkigaMainWindow *mw = EKIGA_MAIN_WINDOW (data);
+  EkigaMainWindow *self = EKIGA_MAIN_WINDOW (data);
 
-  menu = G_MENU (gtk_builder_get_object (mw->priv->builder, "menubar"));
+  menu = G_MENU (gtk_builder_get_object (self->priv->builder, "menubar"));
+  g_menu_remove_all (menu);
 
-  while (mw->priv->menu_dynamic_section_n_items-- > 0) {
-    g_menu_remove (menu, 0);
-  }
-  mw->priv->menu_dynamic_section_n_items = 0;
-
-  if (model) {
-    g_menu_insert_section (menu, 0, NULL, model);
-    mw->priv->menu_dynamic_section_n_items = g_menu_model_get_n_items (model);
-  }
+  /* Those are Actions from the selected Presentity and Heap */
+  if (model)
+    g_menu_insert_section (menu, pos++, NULL, model);
 }
 
 
@@ -717,10 +698,6 @@ ekiga_main_window_init_menu (EkigaMainWindow *mw)
   g_action_map_add_action (G_ACTION_MAP (g_application_get_default ()),
                            g_settings_create_action (mw->priv->user_interface_settings->get_g_settings (),
                                                      "panel-section"));
-
-  g_action_map_add_action_entries (G_ACTION_MAP (g_application_get_default ()),
-                                   win_entries, G_N_ELEMENTS (win_entries),
-                                   mw);
 
   gtk_widget_insert_action_group (GTK_WIDGET (mw), "win",
                                   G_ACTION_GROUP (g_application_get_default ()));
@@ -882,7 +859,6 @@ ekiga_main_window_init (EkigaMainWindow *mw)
 
   mw->priv->current_call = boost::shared_ptr<Ekiga::Call>();
   mw->priv->calling_state = Standby;
-  mw->priv->menu_dynamic_section_n_items = 0;
   mw->priv->call_window = NULL;
 
   mw->priv->user_interface_settings =
