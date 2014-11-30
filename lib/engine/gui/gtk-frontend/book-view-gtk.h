@@ -45,9 +45,21 @@ typedef struct _BookViewGtk BookViewGtk;
 typedef struct _BookViewGtkPrivate BookViewGtkPrivate;
 typedef struct _BookViewGtkClass BookViewGtkClass;
 
-/* public api */
 
+/* Signals emitted by that widget :
+ *
+ * - "actions-changed", comes with nothing, and notifies when new
+ * actions are available (wrt the active selection). The GMenuModel
+ * signal callback argument details available actions.
+ *
+ * Reported Actions are Book and Contact Actions.
+ */
+
+/* Public API */
 GtkWidget *book_view_gtk_new (Ekiga::BookPtr book);
+
+gboolean book_view_gtk_handle_event (BookViewGtk *self,
+                                     GdkEvent *event);
 
 void book_view_gtk_populate_menu (BookViewGtk *, GtkWidget *);
 
@@ -63,6 +75,8 @@ struct _BookViewGtk
 struct _BookViewGtkClass
 {
   GtkFrameClass parent;
+
+  void (*selection_changed) (BookViewGtk* self);
 };
 
 #define BOOK_VIEW_GTK_TYPE (book_view_gtk_get_type ())
