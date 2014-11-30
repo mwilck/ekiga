@@ -200,10 +200,6 @@ static const char* win_menu =
   "  </menu>"
   "</interface>";
 
-static GActionEntry win_entries[] =
-{
-};
-
 
 /*
  * Private functions
@@ -811,9 +807,6 @@ addressbook_window_new (GmApplication *app)
   contact_core->visit_sources (boost::bind (on_visit_sources, _1, (gpointer) self));
 
   /* Actions */
-  g_action_map_add_action_entries (G_ACTION_MAP (g_application_get_default ()),
-                                   win_entries, G_N_ELEMENTS (win_entries),
-                                   self);
   gtk_widget_insert_action_group (GTK_WIDGET (self), "win",
                                   G_ACTION_GROUP (g_application_get_default ()));
 
