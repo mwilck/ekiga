@@ -340,14 +340,19 @@ Evolution::Book::new_contact_action ()
 
   request->title (_("Add Contact"));
 
-  request->instructions (_("Please update the following fields:"));
+  request->text ("name", _("_Name"), std::string (),
+                 _("John Doe"));
 
-  request->text ("name", _("_Name:"), "", std::string ());
-  request->text ("video", _("VoIP _URI:"), "", std::string ());
-  request->text ("home", _("_Home phone:"), "", std::string ());
-  request->text ("work", _("_Office phone:"), "", std::string ());
-  request->text ("cell", _("_Cell phone:"), "", std::string ());
-  request->text ("pager", _("_Pager:"), "", std::string ());
+  request->text ("video", _("_URI"), std::string (),
+                 _("sip:john.doe@ekiga.net"), Ekiga::FormVisitor::URI);
+  request->text ("home", _("_Home Phone"), std::string (),
+                 _("+3268123456"), Ekiga::FormVisitor::PHONE_NUMBER);
+  request->text ("work", _("_Office Phone"), std::string (),
+                 _("+3268123456"), Ekiga::FormVisitor::PHONE_NUMBER);
+  request->text ("cell", _("_Cell Phone"), std::string (),
+                 _("+3268123456"), Ekiga::FormVisitor::PHONE_NUMBER);
+  request->text ("pager", _("_Pager"), std::string (),
+                 _("+3268123456"), Ekiga::FormVisitor::PHONE_NUMBER);
 
   questions (request);
 }

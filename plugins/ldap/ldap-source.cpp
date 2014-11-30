@@ -156,7 +156,7 @@ OPENLDAP::Source::new_book ()
   bookinfo.starttls = false;
 
   OPENLDAP::BookInfoParse (bookinfo);
-  OPENLDAP::BookForm (request, bookinfo, _("Create LDAP directory"));
+  OPENLDAP::BookForm (request, bookinfo);
 
   questions (request);
 }

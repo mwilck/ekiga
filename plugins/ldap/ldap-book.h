@@ -75,8 +75,7 @@ namespace OPENLDAP
   };
 
   void BookForm (boost::shared_ptr<Ekiga::FormRequestSimple> req,
-		 struct BookInfo &info,
-		 std::string title );
+		 struct BookInfo &info);
 
   int BookFormInfo (Ekiga::Form &result, struct BookInfo &info,
 		    std::string &errmsg);

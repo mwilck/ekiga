@@ -335,11 +335,13 @@ Evolution::Contact::edit_action ()
 {
   boost::shared_ptr<Ekiga::FormRequestSimple> request = boost::shared_ptr<Ekiga::FormRequestSimple> (new Ekiga::FormRequestSimple (boost::bind (&Evolution::Contact::on_edit_form_submitted, this, _1, _2, _3)));;
 
-  request->title (_("Edit contact"));
-
-  request->instructions (_("Please update the following fields:"));
-
-  request->text ("name", _("Name:"), get_name (), std::string ());
+  /* Translators: This is Edit name of the contact
+   * e.g. Editing Damien SANDRAS details
+   */
+  char *title = g_strdup_printf (_("Editing %s details"), get_name ().c_str ());
+  request->title (title);
+  g_free (title);
+  request->text ("name", _("_Name"), get_name (), _("John Doe"));
 
   {
     std::string home_uri = get_attribute_value (ATTR_HOME);
@@ -348,11 +350,16 @@ Evolution::Contact::edit_action ()
     std::string pager_uri = get_attribute_value (ATTR_PAGER);
     std::string video_uri = get_attribute_value (ATTR_VIDEO);
 
-    request->text ("video", _("VoIP _URI:"), video_uri, std::string ());
-    request->text ("home", _("_Home phone:"), home_uri, std::string ());
-    request->text ("work", _("_Office phone:"), work_uri, std::string ());
-    request->text ("cell", _("_Cell phone:"), cell_phone_uri, std::string ());
-    request->text ("pager", _("_Pager:"), pager_uri, std::string ());
+    request->text ("video", _("_URI"), video_uri,
+                   _("sip:john.doe@ekiga.net"), Ekiga::FormVisitor::URI);
+    request->text ("home", _("_Home Phone"), home_uri,
+                   _("+3268123456"), Ekiga::FormVisitor::PHONE_NUMBER);
+    request->text ("work", _("_Office Phone"), work_uri,
+                   _("+3268123456"), Ekiga::FormVisitor::PHONE_NUMBER);
+    request->text ("cell", _("_Cell Phone"), cell_phone_uri,
+                   _("+3268123456"), Ekiga::FormVisitor::PHONE_NUMBER);
+    request->text ("pager", _("_Pager"), pager_uri,
+                   _("+3268123456"), Ekiga::FormVisitor::PHONE_NUMBER);
   }
 
   questions (request);
