@@ -39,6 +39,7 @@
 #include <ctime>
 #include <glib/gi18n.h>
 #include <gdk/gdkkeysyms.h>
+#include <boost/assign/ptr_list_of.hpp>
 
 #include "ekiga-settings.h"
 
@@ -704,38 +705,30 @@ on_selection_changed (GtkTreeSelection* selection,
     self->priv->presentity_menu.reset ();
     self->priv->heap_menu.reset ();
 
-    switch (column_type) {
+    if (heap != NULL)
+      self->priv->heap_menu = Ekiga::GActorMenuPtr (new Ekiga::GActorMenu (*heap, heap->get_name ()));
+    if (presentity != NULL)
+      self->priv->presentity_menu = Ekiga::GActorMenuPtr (new Ekiga::GActorMenu (*presentity, presentity->get_name ()));
 
-    case TYPE_HEAP:
+    if (heap && presentity)
+      g_signal_emit (self, signals[ACTIONS_CHANGED_SIGNAL], 0,
+                     self->priv->presentity_menu->get_model (boost::assign::list_of (self->priv->heap_menu)));
+    else if (heap)
+      g_signal_emit (self, signals[ACTIONS_CHANGED_SIGNAL], 0,
+                     self->priv->heap_menu->get_model ());
+    else if (presentity)
+      g_signal_emit (self, signals[ACTIONS_CHANGED_SIGNAL], 0,
+                     self->priv->presentity_menu->get_model ());
+    else
+      g_signal_emit (self, signals[ACTIONS_CHANGED_SIGNAL], 0, NULL);
 
-      if (heap != NULL) {
-        self->priv->heap_menu = Ekiga::GActorMenuPtr (new Ekiga::GActorMenu (*heap));
-        g_signal_emit (self, signals[ACTIONS_CHANGED_SIGNAL], 0,
-                       self->priv->heap_menu->get_model ());
-      }
-      break;
-    case TYPE_GROUP:
-        g_signal_emit (self, signals[ACTIONS_CHANGED_SIGNAL], 0, NULL);
-      break;
-    case TYPE_PRESENTITY:
-
-      if (presentity != NULL) {
-        self->priv->presentity_menu = Ekiga::GActorMenuPtr (new Ekiga::GActorMenu (*presentity));
-        g_signal_emit (self, signals[ACTIONS_CHANGED_SIGNAL], 0,
-                       self->priv->presentity_menu->get_model ());
-      }
-      break;
-    default:
-
-      g_assert_not_reached ();
-      break; // shouldn't happen
-    }
     g_free (group_name);
     g_free (name);
   }
   else
     g_signal_emit (self, signals[ACTIONS_CHANGED_SIGNAL], 0, NULL);
 }
+
 
 static gint
 on_view_event_after (GtkWidget *tree_view,
