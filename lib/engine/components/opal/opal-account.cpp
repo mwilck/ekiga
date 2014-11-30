@@ -782,15 +782,15 @@ Opal::Account::add_contact ()
     boost::shared_ptr<Ekiga::FormRequestSimple> (new Ekiga::FormRequestSimple (boost::bind (&Opal::Account::on_add_contact_form_submitted, this, _1, _2, _3)));
   std::list<std::string> groups = existing_groups ();
 
-  request->title (_("Add to account roster"));
-  request->instructions (_("Please fill in this form to add a new contact "
-			   "to this account's roster"));
-  request->text ("name", _("Name:"), "", _("Name of the contact, as shown in your roster"));
+  request->title (_("Add Contact"));
+  request->text ("name", _("_Name"), std::string (), _("John Doe"),
+                 Ekiga::FormVisitor::STANDARD, false, false);
 
-  request->text ("uri", _("Address:"), "sip:", _("Address, e.g. sip:xyz@ekiga.net; if you do not specify the host part, e.g. sip:xyz, then you can choose it by right-clicking on the contact in roster")); // let's put a default
+  request->text ("uri", _("_URI"), "sip:", "sip:john.doe@ekiga.net",
+                 Ekiga::FormVisitor::URI, false, false);
 
   request->editable_list ("groups",
-			 _("Put contact in groups:"),
+			 _("Groups"),
                          std::list<std::string>(), groups);
 
   Ekiga::Heap::questions (request);
