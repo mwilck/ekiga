@@ -477,8 +477,8 @@ Opal::Account::enable ()
   updated ();
   trigger_saving ();
 
-  disable_action ("enable");
-  enable_action ("disable");
+  disable_action ("enable-account");
+  enable_action ("disable-account");
 }
 
 
@@ -514,8 +514,8 @@ Opal::Account::disable ()
   updated ();
   trigger_saving ();
 
-  enable_action ("enable");
-  disable_action ("disable");
+  enable_action ("enable-account");
+  disable_action ("disable-account");
 }
 
 
