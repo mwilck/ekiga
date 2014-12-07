@@ -127,6 +127,7 @@ struct _EkigaMainWindowPrivate
   /* Actions toolbar */
   GtkWidget *actions_toolbar;
   GtkWidget *preview_button;
+  GtkWidget *menu_button;
 
   /* stack pages
    *  (we store the numbers so we know where we are)
@@ -557,8 +558,12 @@ actions_changed_cb (G_GNUC_UNUSED GtkWidget *widget,
   g_menu_remove_all (menu);
 
   /* Those are Actions from the selected Presentity and Heap */
-  if (model)
+  if (model) {
     g_menu_insert_section (menu, pos++, NULL, model);
+    gtk_menu_button_set_menu_model (GTK_MENU_BUTTON (self->priv->menu_button), G_MENU_MODEL (menu));
+  }
+  else
+    gtk_menu_button_set_menu_model (GTK_MENU_BUTTON (self->priv->menu_button), NULL);
 }
 
 
@@ -668,13 +673,11 @@ ekiga_main_window_init_actions_toolbar (EkigaMainWindow *mw)
   gtk_header_bar_set_custom_title (GTK_HEADER_BAR (mw->priv->actions_toolbar), switcher);
   gtk_widget_set_margin_end (GTK_WIDGET (switcher), 6);
 
-  button = gtk_menu_button_new ();
-  g_object_set (G_OBJECT (button), "use-popover", true, NULL);
+  mw->priv->menu_button = gtk_menu_button_new ();
+  g_object_set (G_OBJECT (mw->priv->menu_button), "use-popover", true, NULL);
   image = gtk_image_new_from_icon_name ("open-menu-symbolic", GTK_ICON_SIZE_MENU);
-  gtk_button_set_image (GTK_BUTTON (button), image);
-  gtk_menu_button_set_menu_model (GTK_MENU_BUTTON (button),
-                                  G_MENU_MODEL (gtk_builder_get_object (mw->priv->builder, "menubar")));
-  gtk_header_bar_pack_end (GTK_HEADER_BAR (mw->priv->actions_toolbar), button);
+  gtk_button_set_image (GTK_BUTTON (mw->priv->menu_button), image);
+  gtk_header_bar_pack_end (GTK_HEADER_BAR (mw->priv->actions_toolbar), mw->priv->menu_button);
   gtk_widget_show_all (mw->priv->actions_toolbar);
 
   gtk_header_bar_set_show_close_button (GTK_HEADER_BAR (mw->priv->actions_toolbar), TRUE);
