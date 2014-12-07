@@ -1162,14 +1162,14 @@ ekiga_call_window_update_title (EkigaCallWindow *self,
 
     case Connected:
       if (!remote_party.empty ())
-        title = g_strdup_printf (_("Connected With %s"), remote_party.c_str ());
+        title = g_strdup_printf (_("Connected with %s"), remote_party.c_str ());
       break;
 
     case Ringing:
       break;
     case Called:
       if (!remote_party.empty ())
-        title = g_strdup_printf (_("Call From %s"), remote_party.c_str ());
+        title = g_strdup_printf (_("Call from %s"), remote_party.c_str ());
       break;
 
     case Standby:
