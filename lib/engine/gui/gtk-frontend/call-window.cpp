@@ -309,7 +309,8 @@ static void ekiga_call_window_clear_signal_levels (EkigaCallWindow *self);
 static void ekiga_call_window_clear_stats (EkigaCallWindow *self);
 
 static void ekiga_call_window_update_title (EkigaCallWindow *self,
-                                            unsigned calling_state);
+                                            unsigned calling_state,
+                                            const std::string & remote_party = std::string ());
 
 static void ekiga_call_window_update_stats (EkigaCallWindow *self,
                                             float lost,
@@ -767,9 +768,7 @@ on_ringing_call_cb (G_GNUC_UNUSED boost::shared_ptr<Ekiga::CallManager> manager,
 
   g_return_if_fail (self);
 
-  self->priv->calling_state = Ringing;
-
-  ekiga_call_window_update_calling_state (self, self->priv->calling_state);
+  ekiga_call_window_update_calling_state (self, Ringing);
 }
 
 
@@ -788,15 +787,16 @@ on_setup_call_cb (boost::shared_ptr<Ekiga::CallManager> manager,
       return; // No call setup needed if already in a call
 
     self->priv->current_call = call;
-    self->priv->calling_state = Called;
+    ekiga_call_window_update_calling_state (self, Called);
+    ekiga_call_window_update_title (self, Called, call->get_remote_party_name ());
   }
   else {
 
     self->priv->current_call = call;
-    self->priv->calling_state = Calling;
+    ekiga_call_window_update_calling_state (self, Calling);
+    ekiga_call_window_update_title (self, Calling, call->get_remote_uri ());
   }
 
-  ekiga_call_window_update_calling_state (self, self->priv->calling_state);
 
   conn = call->questions.connect (boost::bind (&on_handle_questions, _1, (gpointer) self));
   self->priv->connections.add (conn);
@@ -810,9 +810,8 @@ on_established_call_cb (boost::shared_ptr<Ekiga::CallManager>  /*manager*/,
 {
   EkigaCallWindow *self = EKIGA_CALL_WINDOW (data);
 
-  gtk_window_set_title (GTK_WINDOW (self), call->get_remote_party_name ().c_str ());
-
   ekiga_call_window_update_calling_state (self, Connected);
+  ekiga_call_window_update_title (self, Connected, call->get_remote_party_name ());
 
   self->priv->current_call = call;
 
@@ -832,6 +831,7 @@ on_cleared_call_cb (G_GNUC_UNUSED boost::shared_ptr<Ekiga::CallManager> manager,
   }
 
   ekiga_call_window_update_calling_state (self, Standby);
+  ekiga_call_window_update_title (self, Standby);
   ekiga_call_window_set_bandwidth (self, 0.0, 0.0, 0.0, 0.0);
   ekiga_call_window_clear_stats (self);
 
@@ -859,8 +859,8 @@ static void on_missed_call_cb (boost::shared_ptr<Ekiga::CallManager>  /*manager*
   }
   self->priv->menu.reset ();
 
-  gtk_window_set_title (GTK_WINDOW (self), _("Call Window"));
   ekiga_call_window_update_calling_state (self, Standby);
+  ekiga_call_window_update_title (self, Standby);
 }
 
 static void
@@ -958,8 +958,6 @@ on_stats_refresh_cb (gpointer data)
 
   if (self->priv->calling_state == Connected && self->priv->current_call) {
 
-    gtk_header_bar_set_title (GTK_HEADER_BAR (self->priv->call_panel_toolbar),
-                              self->priv->current_call->get_remote_party_name ().c_str ());
     gtk_header_bar_set_subtitle (GTK_HEADER_BAR (self->priv->call_panel_toolbar),
                                   self->priv->current_call->get_duration ().c_str ());
     ekiga_call_window_set_bandwidth (self,
@@ -1098,7 +1096,6 @@ ekiga_call_window_update_calling_state (EkigaCallWindow *self,
       break;
     }
 
-  ekiga_call_window_update_title (self, calling_state);
   self->priv->calling_state = calling_state;
 }
 
@@ -1121,43 +1118,42 @@ ekiga_call_window_clear_stats (EkigaCallWindow *self)
 
 static void
 ekiga_call_window_update_title (EkigaCallWindow *self,
-                                unsigned calling_state)
+                                unsigned calling_state,
+                                const std::string & remote_party)
 {
   g_return_if_fail (self != NULL);
   gchar *title = NULL;
 
   switch (calling_state)
     {
-    case Standby:
-      title = g_strdup (_("Call Window"));
-      break;
-
     case Calling:
-      if (self->priv->current_call)
-        title = g_strdup_printf (_("Calling %s"),
-                                 self->priv->current_call->get_remote_uri ().c_str ());
-
-
+      if (!remote_party.empty ())
+        title = g_strdup_printf (_("Calling %s"), remote_party.c_str ());
       break;
 
     case Connected:
-      if (self->priv->current_call)
-        title = g_strdup_printf (_("Connected with %s"),
-                                 self->priv->current_call->get_remote_party_name ().c_str ());
+      if (!remote_party.empty ())
+        title = g_strdup_printf (_("Connected With %s"), remote_party.c_str ());
       break;
 
     case Ringing:
+      break;
     case Called:
+      if (!remote_party.empty ())
+        title = g_strdup_printf (_("Call From %s"), remote_party.c_str ());
       break;
 
+    case Standby:
     default:
+      title = g_strdup (_("Call Window"));
       break;
     }
 
-  if (title) {
-    gtk_header_bar_set_title (GTK_HEADER_BAR (self->priv->call_panel_toolbar), title);
-    g_free (title);
-  }
+  if (!title)
+      title = g_strdup (_("Call Window"));
+
+  gtk_header_bar_set_title (GTK_HEADER_BAR (self->priv->call_panel_toolbar), title);
+  g_free (title);
 }
 
 static void
@@ -1486,8 +1482,6 @@ ekiga_call_window_init_gui (EkigaCallWindow *self)
   gtk_header_bar_set_show_close_button (GTK_HEADER_BAR (self->priv->call_panel_toolbar), TRUE);
   gtk_window_set_titlebar (GTK_WINDOW (self), self->priv->call_panel_toolbar);
   gtk_window_set_icon_name (GTK_WINDOW (self), GM_ICON_LOGO);
-  gtk_header_bar_set_title (GTK_HEADER_BAR (self->priv->call_panel_toolbar),
-                            _("Call Window"));
   gtk_widget_show (self->priv->call_panel_toolbar);
 
   /* The info bar */
@@ -1675,10 +1669,10 @@ call_window_new (GmApplication *app)
   g_return_val_if_fail (GM_IS_APPLICATION (app), NULL);
 
   self = EKIGA_CALL_WINDOW (g_object_new (EKIGA_TYPE_CALL_WINDOW,
-                                        "application", GTK_APPLICATION (app),
-                                        "key", USER_INTERFACE ".call-window",
-                                        "hide_on_delete", false,
-                                        "hide_on_esc", false, NULL));
+                                          "application", GTK_APPLICATION (app),
+                                          "key", USER_INTERFACE ".call-window",
+                                          "hide_on_delete", false,
+                                          "hide_on_esc", false, NULL));
   Ekiga::ServiceCorePtr core = gm_application_get_core (app);
 
   self->priv->libnotify = core->get ("libnotify");

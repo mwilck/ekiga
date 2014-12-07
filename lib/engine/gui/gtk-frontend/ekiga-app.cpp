@@ -113,7 +113,22 @@ struct _GmApplicationPrivate
 
 G_DEFINE_TYPE (GmApplication, gm_application, GTK_TYPE_APPLICATION);
 
+GtkWidget *gm_application_show_call_window (GmApplication *self);
+
+
 /* Private helpers */
+static void
+on_created_call_cb (G_GNUC_UNUSED boost::shared_ptr<Ekiga::CallManager> manager,
+                    G_GNUC_UNUSED boost::shared_ptr<Ekiga::Call> call,
+                    gpointer data)
+{
+  g_return_if_fail (GM_IS_APPLICATION (data));
+
+  GmApplication *self = GM_APPLICATION (data);
+
+  gm_application_show_call_window (self);
+}
+
 static void
 call_window_destroyed_cb (G_GNUC_UNUSED GtkWidget *widget,
                           gpointer data)
@@ -282,6 +297,10 @@ ekiga_main (int argc,
     gm_application_show_assistant_window (app);
     general_settings->set_int ("version", schema_version);
   }
+  boost::shared_ptr<Ekiga::CallCore> call_core =
+    app->priv->core->get<Ekiga::CallCore> ("call-core");
+  if (call_core)
+    call_core->created_call.connect (boost::bind (&on_created_call_cb, _1, _2, (gpointer) app));
 
   core->close ();
   g_application_run (G_APPLICATION (app), argc, argv);

@@ -41,6 +41,7 @@
 
 #include "gmwindow.h"
 #include "ekiga-app.h"
+#include "call-core.h"
 
 G_BEGIN_DECLS
 

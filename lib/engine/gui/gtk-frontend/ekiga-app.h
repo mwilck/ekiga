@@ -85,8 +85,6 @@ gboolean gm_application_show_help (GmApplication *app,
 
 void gm_application_show_about (GmApplication *app);
 
-GtkWidget *gm_application_show_call_window (GmApplication *app);
-
 void gm_application_show_chat_window (GmApplication *app);
 
 GtkWidget *gm_application_get_chat_window (GmApplication *app);

@@ -375,8 +375,6 @@ static void on_created_call_cb (boost::shared_ptr<Ekiga::CallManager> manager,
   }
   else {
 
-    gm_application_show_call_window (mw->priv->app);
-
     mw->priv->current_call = call;
     mw->priv->calling_state = Calling;
   }
@@ -411,8 +409,6 @@ static void on_established_call_cb (boost::shared_ptr<Ekiga::CallManager> /*mana
   /* Manage sound events */
   mw->priv->audiooutput_core->stop_play_event("incoming_call_sound");
   mw->priv->audiooutput_core->stop_play_event("ring_tone_sound");
-
-  gm_application_show_call_window (mw->priv->app);
 }
 
 
