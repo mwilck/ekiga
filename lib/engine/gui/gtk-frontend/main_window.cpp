@@ -210,17 +210,6 @@ static void dialpad_button_clicked_cb (EkigaDialpad  *dialpad,
 				       EkigaMainWindow *main_window);
 
 
-/* DESCRIPTION  :  This callback is called when the user tries to close
- *                 the application using the window manager.
- * BEHAVIOR     :  Calls the real callback if the notification icon is
- *                 not shown else hide GM.
- * PRE          :  A valid pointer to the main window GMObject.
- */
-static void close_activated (G_GNUC_UNUSED GSimpleAction *action,
-                             G_GNUC_UNUSED GVariant *parameter,
-                             gpointer data);
-
-
 /* DESCRIPTION  :  This callback is called when a contact is selected
  *                 in the roster or call history views.
  * BEHAVIOR     :  Updates the window menu with new actions.
@@ -525,21 +514,6 @@ key_press_event_cb (EkigaMainWindow *mw,
   }
 
   return false;
-}
-
-
-static void
-close_activated (G_GNUC_UNUSED GSimpleAction *action,
-                 G_GNUC_UNUSED GVariant *parameter,
-                 gpointer data)
-{
-  // If we have persistent notifications:
-  //  - we can hide the window
-  //  - clicking on a notification should show the window back
-  //  - launching the application again should show the window back
-  // If we do not have persistent notifications:
-  //  - the status icon allows showing the window back
-  gtk_widget_hide (GTK_WIDGET (data));
 }
 
 
