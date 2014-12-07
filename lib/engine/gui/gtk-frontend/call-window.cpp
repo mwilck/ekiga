@@ -1515,7 +1515,7 @@ ekiga_call_window_init_gui (EkigaCallWindow *self)
 
   /* The info bar */
   self->priv->info_bar = gm_info_bar_new ();
-  gtk_box_pack_start (GTK_BOX (vbox), GTK_WIDGET (self->priv->info_bar), TRUE, TRUE, 0);
+  gtk_box_pack_start (GTK_BOX (vbox), GTK_WIDGET (self->priv->info_bar), FALSE, FALSE, 0);
 
   /* The frame that contains the video */
   self->priv->event_box = gtk_event_box_new ();
