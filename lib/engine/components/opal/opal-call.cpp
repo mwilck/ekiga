@@ -117,11 +117,19 @@ Opal::Call::Call (Opal::CallManager& _manager,
 
   add_action (Ekiga::ActionPtr (new Ekiga::Action ("hangup", _("Hangup"),
                                                    boost::bind (&Call::hang_up, this))));
+  if (!is_outgoing () && !IsEstablished ()) {
+    add_action (Ekiga::ActionPtr (new Ekiga::Action ("answer", _("Answer"),
+                                                     boost::bind (&Call::answer, this))));
+    add_action (Ekiga::ActionPtr (new Ekiga::Action ("reject", _("Reject"),
+                                                     boost::bind (&Call::hang_up, this))));
+  }
 }
 
 Opal::Call::~Call ()
 {
   remove_action ("hangup");
+  remove_action ("reject");
+  remove_action ("answer");
   remove_action ("transfer");
   remove_action ("hold");
   remove_action ("transmit-video");
@@ -152,6 +160,8 @@ Opal::Call::answer ()
     PSafePtr<OpalPCSSConnection> connection = GetConnectionAs<OpalPCSSConnection>();
     if (connection != NULL) {
       connection->AcceptIncoming ();
+      remove_action ("reject");
+      remove_action ("answer");
     }
   }
 }
@@ -419,6 +429,8 @@ Opal::Call::OnEstablished (OpalConnection & connection)
                                                      boost::bind (&Call::toggle_hold, this))));
     add_action (Ekiga::ActionPtr (new Ekiga::Action ("transfer", _("Transfer"),
                                                      boost::bind (&Call::transfer, this))));
+    remove_action ("answer");
+    remove_action ("reject");
 
     parse_info (connection);
     Ekiga::Runtime::run_in_main (boost::bind (&Opal::Call::emit_established_in_main, this));
@@ -740,7 +752,6 @@ Opal::Call::OnNoAnswerTimeout (PTimer &,
 void
 Opal::Call::emit_established_in_main ()
 {
-  std::cout << "Call Established " << this << std::endl << std::flush;
   established ();
 }
 
