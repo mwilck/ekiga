@@ -119,7 +119,12 @@ Ekiga::GActorMenu::get_model (const Ekiga::GActorMenuStore & store,
 GtkWidget *
 Ekiga::GActorMenu::get_menu (const Ekiga::GActorMenuStore & store)
 {
-  GtkWidget *menu = gtk_menu_new_from_model (get_model (store, false));
+  GMenuModel *model = get_model (store, false);
+
+  if (!model)
+    return NULL;
+
+  GtkWidget *menu = gtk_menu_new_from_model (model);
   gtk_widget_insert_action_group (menu, "win", G_ACTION_GROUP (g_application_get_default ()));
   g_object_ref (menu);
 
