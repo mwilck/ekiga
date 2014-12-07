@@ -107,7 +107,6 @@ enum {
 
 struct _EkigaCallWindowPrivate
 {
-  Ekiga::ServicePtr libnotify;
   boost::shared_ptr<Ekiga::VideoInputCore> videoinput_core;
   boost::shared_ptr<Ekiga::VideoOutputCore> videooutput_core;
   boost::shared_ptr<Ekiga::AudioInputCore> audioinput_core;
@@ -157,8 +156,6 @@ enum {
   CHANNEL_LAST
 };
 
-
-static bool notify_has_actions (EkigaCallWindow* self);
 
 static void show_extended_video_window_cb (G_GNUC_UNUSED GSimpleAction *action,
                                            G_GNUC_UNUSED GVariant *parameter,
@@ -304,6 +301,9 @@ static void ekiga_call_window_remove_action_entries (GActionMap *map,
 static void ekiga_call_window_update_calling_state (EkigaCallWindow *self,
                                                     unsigned calling_state);
 
+static void ekiga_call_window_update_header_bar_actions (EkigaCallWindow *self,
+                                                         unsigned calling_state);
+
 static void ekiga_call_window_clear_signal_levels (EkigaCallWindow *self);
 
 static void ekiga_call_window_clear_stats (EkigaCallWindow *self);
@@ -379,23 +379,6 @@ static GActionEntry video_settings_entries[] =
 };
 
 /**/
-
-
-static bool
-notify_has_actions (EkigaCallWindow *self)
-{
-  bool result = false;
-
-  if (self->priv->libnotify) {
-
-    boost::optional<bool> val = self->priv->libnotify->get_bool_property ("actions");
-    if (val) {
-
-      result = *val;
-    }
-  }
-  return result;
-}
 
 static void
 show_extended_video_window_cb (G_GNUC_UNUSED GSimpleAction *action,
@@ -769,6 +752,7 @@ on_ringing_call_cb (G_GNUC_UNUSED boost::shared_ptr<Ekiga::CallManager> manager,
   g_return_if_fail (self);
 
   ekiga_call_window_update_calling_state (self, Ringing);
+  ekiga_call_window_update_header_bar_actions (self, Ringing);
 }
 
 
@@ -789,12 +773,14 @@ on_setup_call_cb (boost::shared_ptr<Ekiga::CallManager> manager,
     self->priv->current_call = call;
     ekiga_call_window_update_calling_state (self, Called);
     ekiga_call_window_update_title (self, Called, call->get_remote_party_name ());
+    ekiga_call_window_update_header_bar_actions (self, Called);
   }
   else {
 
     self->priv->current_call = call;
     ekiga_call_window_update_calling_state (self, Calling);
     ekiga_call_window_update_title (self, Calling, call->get_remote_uri ());
+    ekiga_call_window_update_header_bar_actions (self, Calling);
   }
 
 
@@ -812,6 +798,7 @@ on_established_call_cb (boost::shared_ptr<Ekiga::CallManager>  /*manager*/,
 
   ekiga_call_window_update_calling_state (self, Connected);
   ekiga_call_window_update_title (self, Connected, call->get_remote_party_name ());
+  ekiga_call_window_update_header_bar_actions (self, Connected);
 
   self->priv->current_call = call;
 
@@ -832,6 +819,7 @@ on_cleared_call_cb (G_GNUC_UNUSED boost::shared_ptr<Ekiga::CallManager> manager,
 
   ekiga_call_window_update_calling_state (self, Standby);
   ekiga_call_window_update_title (self, Standby);
+  ekiga_call_window_update_header_bar_actions (self, Standby);
   ekiga_call_window_set_bandwidth (self, 0.0, 0.0, 0.0, 0.0);
   ekiga_call_window_clear_stats (self);
 
@@ -861,6 +849,7 @@ static void on_missed_call_cb (boost::shared_ptr<Ekiga::CallManager>  /*manager*
 
   ekiga_call_window_update_calling_state (self, Standby);
   ekiga_call_window_update_title (self, Standby);
+  ekiga_call_window_update_header_bar_actions (self, Standby);
 }
 
 static void
@@ -1084,19 +1073,59 @@ ekiga_call_window_update_calling_state (EkigaCallWindow *self,
 
 
     case Called:
-
-      /* Show/hide call frame and call window (if no notifications */
-      if (!notify_has_actions (self)) {
-        gtk_window_present (GTK_WINDOW (self));
-        gtk_widget_show (GTK_WIDGET (self));
-      }
-      break;
-
     default:
       break;
     }
 
   self->priv->calling_state = calling_state;
+}
+
+static void
+ekiga_call_window_update_header_bar_actions (EkigaCallWindow *self,
+                                             unsigned calling_state)
+{
+  GList *it = NULL;
+  g_return_if_fail (self != NULL);
+
+  it = gtk_container_get_children (GTK_CONTAINER (self->priv->call_panel_toolbar));
+
+
+  switch (calling_state) {
+
+  case Called:
+    while (it != NULL) {
+      if (it->data && GTK_IS_ACTIONABLE (it->data)) {
+        const char* action_name = gtk_actionable_get_action_name (GTK_ACTIONABLE (it->data));
+        if (!g_strcmp0 (action_name, "win.reject") || !g_strcmp0 (action_name, "win.answer"))
+          gtk_widget_show (GTK_WIDGET (it->data));
+        else
+          gtk_widget_hide (GTK_WIDGET (it->data));
+      }
+      it = g_list_next (it);
+    }
+    gtk_header_bar_set_show_close_button (GTK_HEADER_BAR (self->priv->call_panel_toolbar), FALSE);
+    break;
+
+  case Standby:
+  case Calling:
+  case Ringing:
+  case Connected:
+  default:
+    while (it != NULL) {
+      if (it->data && GTK_IS_ACTIONABLE (it->data)) {
+        const char* action_name = gtk_actionable_get_action_name (GTK_ACTIONABLE (it->data));
+        if (!g_strcmp0 (action_name, "win.reject") || !g_strcmp0 (action_name, "win.answer"))
+          gtk_widget_hide (GTK_WIDGET (it->data));
+        else
+          gtk_widget_show (GTK_WIDGET (it->data));
+      }
+      it = g_list_next (it);
+    }
+    gtk_header_bar_set_show_close_button (GTK_HEADER_BAR (self->priv->call_panel_toolbar), TRUE);
+    break;
+  }
+
+  g_list_free (it);
 }
 
 static void
@@ -1502,6 +1531,19 @@ ekiga_call_window_init_gui (EkigaCallWindow *self)
    * However, it is unneeded right now as we only support one call at a time.
    */
 
+  /* Reject */
+  button = gtk_button_new_with_mnemonic (_("_Reject"));
+  icon = g_themed_icon_new ("call-stop");
+  image = gtk_image_new_from_gicon (icon, GTK_ICON_SIZE_BUTTON);
+  g_object_unref (icon);
+  gtk_button_set_image (GTK_BUTTON (button), image);
+  gtk_button_set_always_show_image (GTK_BUTTON (button), TRUE);
+  gtk_actionable_set_detailed_action_name (GTK_ACTIONABLE (button), "win.reject");
+  gtk_header_bar_pack_start (GTK_HEADER_BAR (self->priv->call_panel_toolbar), button);
+  gtk_widget_set_tooltip_text (GTK_WIDGET (button),
+                               _("Reject the incoming call"));
+  gtk_widget_show (button);
+
   /* Hang up */
   button = gtk_button_new ();
   icon = g_themed_icon_new ("call-end-symbolic");
@@ -1551,6 +1593,19 @@ ekiga_call_window_init_gui (EkigaCallWindow *self)
   gtk_widget_set_tooltip_text (GTK_WIDGET (self->priv->settings_button),
                                _("Change audio and video settings"));
   gtk_widget_show (self->priv->settings_button);
+
+  /* Call Accept */
+  button = gtk_button_new_with_mnemonic (_("_Answer"));
+  icon = g_themed_icon_new ("call-start");
+  image = gtk_image_new_from_gicon (icon, GTK_ICON_SIZE_BUTTON);
+  g_object_unref (icon);
+  gtk_button_set_image (GTK_BUTTON (button), image);
+  gtk_button_set_always_show_image (GTK_BUTTON (button), TRUE);
+  gtk_actionable_set_detailed_action_name (GTK_ACTIONABLE (button), "win.answer");
+  gtk_header_bar_pack_end (GTK_HEADER_BAR (self->priv->call_panel_toolbar), button);
+  gtk_widget_set_tooltip_text (GTK_WIDGET (button),
+                               _("Answer the incoming call"));
+  gtk_widget_show (button);
 
   /* Spinner */
   self->priv->spinner = gtk_spinner_new ();
@@ -1675,7 +1730,6 @@ call_window_new (GmApplication *app)
                                           "hide_on_esc", false, NULL));
   Ekiga::ServiceCorePtr core = gm_application_get_core (app);
 
-  self->priv->libnotify = core->get ("libnotify");
   self->priv->videoinput_core = core->get<Ekiga::VideoInputCore> ("videoinput-core");
   self->priv->videooutput_core = core->get<Ekiga::VideoOutputCore> ("videooutput-core");
   self->priv->audioinput_core = core->get<Ekiga::AudioInputCore> ("audioinput-core");
