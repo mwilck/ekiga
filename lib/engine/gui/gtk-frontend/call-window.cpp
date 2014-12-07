@@ -1533,7 +1533,7 @@ ekiga_call_window_init_gui (EkigaCallWindow *self)
 
   /* Reject */
   button = gtk_button_new_with_mnemonic (_("_Reject"));
-  icon = g_themed_icon_new ("call-stop");
+  icon = g_themed_icon_new ("phone-hang-up");
   image = gtk_image_new_from_gicon (icon, GTK_ICON_SIZE_BUTTON);
   g_object_unref (icon);
   gtk_button_set_image (GTK_BUTTON (button), image);
@@ -1596,7 +1596,7 @@ ekiga_call_window_init_gui (EkigaCallWindow *self)
 
   /* Call Accept */
   button = gtk_button_new_with_mnemonic (_("_Answer"));
-  icon = g_themed_icon_new ("call-start");
+  icon = g_themed_icon_new ("phone-pick-up");
   image = gtk_image_new_from_gicon (icon, GTK_ICON_SIZE_BUTTON);
   g_object_unref (icon);
   gtk_button_set_image (GTK_BUTTON (button), image);
