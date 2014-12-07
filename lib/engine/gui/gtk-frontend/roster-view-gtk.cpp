@@ -782,7 +782,7 @@ on_view_event_after (GtkWidget *tree_view,
     case TYPE_HEAP:
       if (event->type == GDK_BUTTON_PRESS && event->button == 1 && name)
         on_clicked_fold (self, path, name);
-      else if (event->type == GDK_BUTTON_PRESS && event->button == 3)
+      else if (event->type == GDK_BUTTON_PRESS && event->button == 3 && self->priv->heap_menu->get_menu ())
         gtk_menu_popup (GTK_MENU (self->priv->heap_menu->get_menu ()),
                         NULL, NULL, NULL, NULL, event->button, event->time);
       break;
@@ -791,7 +791,7 @@ on_view_event_after (GtkWidget *tree_view,
         on_clicked_fold (self, path, group_name);
       break;
     case TYPE_PRESENTITY:
-      if (event->type == GDK_BUTTON_PRESS && event->button == 3)
+      if (event->type == GDK_BUTTON_PRESS && event->button == 3 && self->priv->presentity_menu->get_menu ())
         gtk_menu_popup (GTK_MENU (self->priv->presentity_menu->get_menu ()),
                         NULL, NULL, NULL, NULL, event->button, event->time);
       else if (event->type == GDK_2BUTTON_PRESS || event->type == GDK_KEY_PRESS)
