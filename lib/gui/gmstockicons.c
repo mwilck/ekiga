@@ -69,10 +69,6 @@ gnomemeeting_stock_icons_init (void)
 	        { GM_ICON_LOGO, 32, gm_logo_32_stock_data },
 	        { GM_ICON_LOGO, 48, gm_logo_48_stock_data },
 	        { GM_ICON_LOGO, 72, gm_logo_72_stock_data },
-		{ "phone-hang-up", 16, gm_phone_hang_up_16 },
-		{ "phone-pick-up", 16, gm_phone_pick_up_16 },
-		{ "phone-hang-up", 24, gm_phone_hang_up_24 },
-		{ "phone-pick-up", 24, gm_phone_pick_up_24 },
 		{ "user-inacall", 16, gm_user_inacall_16 },
 
 	};

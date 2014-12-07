@@ -6,7 +6,11 @@ pixmap_DATA = @PACKAGE_NAME@-logo.png 256x256/@PACKAGE_NAME@-full-icon.png
 theme_icons = \
 	gnome_actions_scalable_call-hold-symbolic.svg \
 	gnome_actions_scalable_call-transfer-symbolic.svg \
-	gnome_actions_scalable_call-transfer-symbolic-rtl.svg
+	gnome_actions_scalable_call-transfer-symbolic-rtl.svg \
+        gnome_actions_16x16_phone-hang-up.png \
+        gnome_actions_16x16_phone-pick-up.png \
+        gnome_actions_24x24_phone-hang-up.png \
+        gnome_actions_24x24_phone-pick-up.png
 
 nobase_dist_icon_DATA = \
 	16x16/apps/@PACKAGE_NAME@.png \
@@ -18,6 +22,15 @@ nobase_dist_icon_DATA = \
 	72x72/apps/@PACKAGE_NAME@.png \
 	128x128/apps/@PACKAGE_NAME@.png
 
+
+DIST_IMAGES_FILES= \
+	scalable/call-hold-symbolic.svg \
+	scalable/call-transfer-symbolic.svg \
+	scalable/call-transfer-symbolic-rtl.svg \
+	16x16/phone-hang-up.png \
+	16x16/phone-pick-up.png \
+	24x24/phone-hang-up.png \
+	24x24/phone-pick-up.png
 
 IMAGES_FILES= \
 	48x48/multimedia-headset.png \
@@ -38,14 +51,10 @@ IMAGES_FILES= \
 	16x16/contrast.png \
 	16x16/im-message.png \
 	16x16/im-message-new.png \
-	16x16/phone-hang-up.png \
-	16x16/phone-pick-up.png \
 	16x16/user-inacall.png \
 	16x16/video-settings.png \
 	16x16/whiteness.png \
 	ekiga-logo.png \
-	24x24/phone-hang-up.png \
-	24x24/phone-pick-up.png \
 	scalable/call-hold-symbolic.svg \
 	scalable/call-transfer-symbolic.svg \
 	gm_powermeter_default_00.xpm \
@@ -71,18 +80,14 @@ IMAGES= \
 	gm_logo_32_stock_data $(srcdir)/32x32/apps/@PACKAGE_NAME@.png \
 	gm_logo_48_stock_data $(srcdir)/48x48/apps/@PACKAGE_NAME@.png \
 	gm_logo_72_stock_data $(srcdir)/72x72/apps/@PACKAGE_NAME@.png \
-	gm_user_inacall_16 $(srcdir)/16x16/user-inacall.png \
-	gm_phone_hang_up_24 $(srcdir)/24x24/phone-hang-up.png \
-	gm_phone_pick_up_24 $(srcdir)/24x24/phone-pick-up.png \
-	gm_phone_hang_up_16 $(srcdir)/16x16/phone-hang-up.png \
-	gm_phone_pick_up_16 $(srcdir)/16x16/phone-pick-up.png
+	gm_user_inacall_16 $(srcdir)/16x16/user-inacall.png
 
 
 noinst_DATA = inlines.h
 
 DISTCLEANFILES = inlines.h
 
-EXTRA_DIST= $(IMAGES_FILES) $(theme_icons)
+EXTRA_DIST= $(DIST_IMAGES_FILES) $(IMAGES_FILES) $(theme_icons)
 
 inlines.h: $(IMAGE_FILES) $(nobase_dist_icon_DATA) Makefile.am
 	gdk-pixbuf-csource --raw --build-list $(IMAGES) > inlines.h
