@@ -1639,6 +1639,7 @@ ekiga_call_window_init_gui (EkigaCallWindow *self)
 
   /* Init */
   ekiga_call_window_set_bandwidth (self, 0.0, 0.0, 0.0, 0.0);
+  ekiga_call_window_update_header_bar_actions (self, Standby);
 }
 
 static void
