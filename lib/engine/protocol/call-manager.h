@@ -47,6 +47,7 @@
 
 #include "call-protocol-manager.h"
 #include "codec-description.h"
+#include "contact-core.h" // FIXME: required for 'message'. Should disappear.
 
 namespace Ekiga
 {
