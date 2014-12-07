@@ -41,7 +41,6 @@
 #include "statusicon.h"
 
 #include "gmstockicons.h"
-#include "gmmenuaddon.h"
 
 #include "services.h"
 #include "ekiga-app.h"
@@ -61,7 +60,6 @@ struct _StatusIconPrivate
 {
   GmApplication *app;
 
-  GtkWidget *popup_menu;
   gboolean has_message;
 
   Ekiga::scoped_connections connections;
@@ -115,9 +113,6 @@ statusicon_blink_cb (gpointer data);
 /*
  * Declaration of local functions
  */
-static GtkWidget *
-statusicon_build_menu ();
-
 static void
 statusicon_start_blinking (StatusIcon *icon,
                            const char *stock_id);
@@ -154,12 +149,6 @@ statusicon_dispose (GObject *obj)
   StatusIcon *icon = NULL;
 
   icon = STATUSICON (obj);
-
-  if (icon->priv->popup_menu) {
-
-    g_object_unref (icon->priv->popup_menu);
-    icon->priv->popup_menu = NULL;
-  }
 
   if (icon->priv->blink_image) {
 
@@ -400,40 +389,6 @@ cleared_call_cb (boost::shared_ptr<Ekiga::CallManager>  /*manager*/,
 /*
  * Local functions
  */
-static GtkWidget *
-statusicon_build_menu ()
-{
-  std::cout << "FIXME" << std::endl << std::flush;
-
-  /*
-  static MenuEntry menu [] =
-    {
-      GTK_MENU_ENTRY("help", NULL,
-                     _("Get help by reading the Ekiga manual"),
-                     GTK_STOCK_HELP, GDK_KEY_F1,
-                     G_CALLBACK (help_callback), NULL, TRUE),
-
-      GTK_MENU_ENTRY("about", NULL,
-		     _("View information about Ekiga"),
-		     GTK_STOCK_ABOUT, 0,
-		     G_CALLBACK (about_callback), NULL,
-		     TRUE),
-
-      GTK_MENU_SEPARATOR,
-
-      GTK_MENU_ENTRY("quit", NULL, _("Quit"),
-		     GTK_STOCK_QUIT, 'Q',
-		     G_CALLBACK (quit_callback), NULL,
-		     TRUE),
-
-      GTK_MENU_END
-    };
-  return GTK_WIDGET (gtk_build_popup_menu (NULL, menu, NULL));
-*/
-  return NULL;
-}
-
-
 static void
 statusicon_start_blinking (StatusIcon *icon,
                            const char *icon_name)
@@ -591,8 +546,6 @@ status_icon_new (GmApplication *app)
   self = STATUSICON (g_object_new (STATUSICON_TYPE, NULL));
   self->priv = new StatusIconPrivate;
 
-  self->priv->popup_menu = statusicon_build_menu ();
-  g_object_ref_sink (self->priv->popup_menu);
   self->priv->has_message = FALSE;
   self->priv->blink_id = -1;
   self->priv->blinking = false;
@@ -624,17 +577,6 @@ status_icon_new (GmApplication *app)
   conn = call_core->cleared_call.connect (boost::bind (&cleared_call_cb,
                                                        _1, _2, _3, (gpointer) self));
   self->priv->connections.add (conn);
-
-  g_signal_connect (self, "popup-menu",
-                    G_CALLBACK (show_popup_menu_cb),
-                    self->priv->popup_menu);
-
-#ifdef WIN32
-  // hide the popup menu when right-click on the icon
-  // this should have been done in GTK code in my opinion...
-  g_signal_connect (self, "button_press_event",
-                    G_CALLBACK (hide_popup_menu_cb), self->priv->popup_menu);
-#endif
 
   g_signal_connect (self, "activate",
                     G_CALLBACK (statusicon_activated_cb), self);

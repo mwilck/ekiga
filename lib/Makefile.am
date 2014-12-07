@@ -127,8 +127,6 @@ libekiga_la_SOURCES += \
 	gui/gm-info-bar.c \
 	gui/gmwindow.c \
 	gui/gmwindow.h \
-	gui/gmmenuaddon.c \
-	gui/gmmenuaddon.h \
 	gui/gmstockicons.c \
 	gui/gmstockicons.h \
 	gui/gmpowermeter.c \

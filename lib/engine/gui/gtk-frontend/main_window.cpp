@@ -46,7 +46,6 @@
 #include "gm-entry.h"
 
 #include "gmstockicons.h"
-#include "gmmenuaddon.h"
 #include "menu-builder-tools.h"
 #include "menu-builder-gtk.h"
 #include "gm-info-bar.h"

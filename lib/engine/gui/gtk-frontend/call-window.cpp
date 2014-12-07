@@ -52,7 +52,6 @@
 #include "gmstockicons.h"
 #include "gm-info-bar.h"
 #include "gactor-menu.h"
-#include "gmmenuaddon.h"
 #include "gmpowermeter.h"
 #include "trigger.h"
 #include "scoped-connections.h"
