@@ -213,6 +213,19 @@ on_selection_changed (G_GNUC_UNUSED GtkTreeSelection* selection,
     g_signal_emit (self, signals[ACTIONS_CHANGED_SIGNAL], 0, NULL);
 }
 
+static void
+on_map_cb (G_GNUC_UNUSED GtkWidget *widget,
+           gpointer data)
+{
+  GtkTreeSelection *selection = NULL;
+
+  g_return_if_fail (IS_CALL_HISTORY_VIEW_GTK (data));
+  CallHistoryViewGtk *self = CALL_HISTORY_VIEW_GTK (data);
+
+  selection = gtk_tree_view_get_selection (self->priv->tree);
+  on_selection_changed (selection, self);
+}
+
 
 /* GObject stuff */
 static void
@@ -320,6 +333,8 @@ call_history_view_gtk_new (boost::shared_ptr<History::Book> book,
 		    G_CALLBACK (on_selection_changed), self);
   g_signal_connect (self->priv->tree, "event-after",
 		    G_CALLBACK (on_clicked), self);
+  g_signal_connect (GTK_WIDGET (self), "map",
+                    G_CALLBACK (on_map_cb), self);
 
   /* connect to the signal */
   self->priv->connection = book->updated.connect (boost::bind (&on_book_updated, self));

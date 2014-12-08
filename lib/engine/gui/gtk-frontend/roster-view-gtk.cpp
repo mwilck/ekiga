@@ -193,6 +193,13 @@ static gint on_view_event_after (GtkWidget *tree_view,
 			         GdkEventButton *event,
 			         gpointer data);
 
+/* DESCRIPTION  : Called when the RosterViewGtk widget becomes visible.
+ * BEHAVIOR     : Calls on_selection_changed to update actions.
+ * PRE          : /
+ */
+static void on_map_cb (G_GNUC_UNUSED GtkWidget *widget,
+                       gpointer data);
+
 /* DESCRIPTION : Helpers for the next function
  */
 
@@ -740,7 +747,6 @@ on_view_event_after (GtkWidget *tree_view,
   GtkTreePath *path = NULL;
   GtkTreeIter iter;
 
-
   // take into account only clicks and Enter keys
   if (event->type != GDK_BUTTON_PRESS && event->type != GDK_2BUTTON_PRESS && event->type != GDK_KEY_PRESS)
     return FALSE;
@@ -809,6 +815,21 @@ on_view_event_after (GtkWidget *tree_view,
 
   return TRUE;
 }
+
+
+static void
+on_map_cb (G_GNUC_UNUSED GtkWidget *widget,
+           gpointer data)
+{
+  GtkTreeSelection *selection = NULL;
+
+  g_return_if_fail (IS_ROSTER_VIEW_GTK (data));
+  RosterViewGtk *self = ROSTER_VIEW_GTK (data);
+
+  selection = gtk_tree_view_get_selection (self->priv->tree_view);
+  on_selection_changed (selection, self);
+}
+
 
 static gboolean
 presentity_hide_show_offline (RosterViewGtk* self,
@@ -1669,6 +1690,8 @@ roster_view_gtk_init (RosterViewGtk* self)
 		    G_CALLBACK (on_selection_changed), self);
   g_signal_connect (self->priv->tree_view, "event-after",
 		    G_CALLBACK (on_view_event_after), self);
+  g_signal_connect (GTK_WIDGET (self), "map",
+                    G_CALLBACK (on_map_cb), self);
 
   /* Other signals */
   g_signal_connect (self->priv->settings->get_g_settings (), "changed::show-offline-contacts",
