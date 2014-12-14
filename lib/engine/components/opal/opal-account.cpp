@@ -641,30 +641,28 @@ Opal::Account::edit ()
   request->title (title);
   g_free (title);
 
-  request->text ("name", _("Name"), get_name (),
-                 _("Ekiga.Net Account"));
-  if (get_protocol_name () == "SIP")
-    request->text ("host", _("Registrar"), get_host (),
-                   _("ekiga.net"));
+  request->text ("name", _("Name"), get_name (), _("Ekiga.Net Account"),
+                 Ekiga::FormVisitor::STANDARD, false, false);
+  if (get_protocol_name () != "H323")
+    request->text ("host", _("Registrar"), get_host (), _("ekiga.net"),
+                   Ekiga::FormVisitor::STANDARD, false, false);
   else
-    request->text ("host", _("Gatekeeper"), get_host (),
-                   _("ekiga.net"));
-  request->text ("user", _("User"), get_username (),
-                 _("jon"));
+    request->text ("host", _("Gatekeeper"), get_host (), _("ekiga.net"),
+                   Ekiga::FormVisitor::STANDARD, false, false);
+  request->text ("user", _("User"), get_username (), _("jon"),
+                 Ekiga::FormVisitor::STANDARD, false, false);
   if (get_protocol_name () == "SIP")
     /* Translators:
      * SIP knows two usernames: The name for the client ("User") and the name
      * for the authentication procedure ("Authentication user"), aka Login
      * to make it understandable
      */
-    request->text ("authentication_user", _("Login"), get_authentication_username (),
-                   _("jon.doe"));
-  request->text ("password",
-                 _("Password"),
-                 get_password (),
-                 _("1234"),
-                 Ekiga::FormVisitor::PASSWORD);
-  request->text ("timeout", _("Timeout"), str.str (), _("3600"));
+    request->text ("authentication_user", _("Login"), get_authentication_username (), _("jon.doe"),
+                   Ekiga::FormVisitor::STANDARD, false, false);
+  request->text ("password", _("Password"), get_password (), _("1234"),
+                 Ekiga::FormVisitor::PASSWORD, false, false);
+  request->text ("timeout", _("Timeout"), "3600", "3600",
+                 Ekiga::FormVisitor::NUMBER, false, false);
   request->boolean ("enabled", _("Enable Account"), is_enabled ());
 
   Ekiga::Account::questions (request);
@@ -1299,6 +1297,7 @@ bool
 Opal::Account::populate_menu_for_group (const std::string name,
 					Ekiga::MenuBuilder& builder)
 {
+  return false;
 }
 
 
