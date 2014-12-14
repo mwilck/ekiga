@@ -50,7 +50,6 @@
 #include "contact-core.h"
 #include "presence-core.h"
 #include "addressbook-window.h"
-#include "accounts-window.h"
 #include "assistant-window.h"
 #include "preferences-window.h"
 #include "call-window.h"
@@ -254,9 +253,6 @@ window_activated (GSimpleAction *action,
   else if (!g_strcmp0 (g_action_get_name (G_ACTION (action)), "addressbook"))
     gm_application_show_addressbook_window (self);
 
-  else if (!g_strcmp0 (g_action_get_name (G_ACTION (action)), "accounts"))
-    gm_application_show_accounts_window (self);
-
   else if (!g_strcmp0 (g_action_get_name (G_ACTION (action)), "assistant"))
     gm_application_show_assistant_window (self);
 }
@@ -287,7 +283,6 @@ static GActionEntry app_entries[] =
     { "preferences", window_activated, NULL, NULL, NULL, 0 },
     { "assistant", window_activated, NULL, NULL, NULL, 0 },
     { "addressbook", window_activated, NULL, NULL, NULL, 0 },
-    { "accounts", window_activated, NULL, NULL, NULL, 0 },
     { "help", help_activated, NULL, NULL, NULL, 0 },
     { "about", about_activated, NULL, NULL, NULL, 0 },
     { "quit", quit_activated, NULL, NULL, NULL, 0 }
@@ -429,10 +424,6 @@ gm_application_startup (GApplication *app)
                                "      <item>"
                                "        <attribute name=\"label\" translatable=\"yes\">Address _Book</attribute>"
                                "        <attribute name=\"action\">app.addressbook</attribute>"
-                               "      </item>"
-                               "      <item>"
-                               "        <attribute name=\"label\" translatable=\"yes\">_Accounts</attribute>"
-                               "        <attribute name=\"action\">app.accounts</attribute>"
                                "      </item>"
                                "    </section>"
                                "    <section>"
@@ -962,16 +953,6 @@ gm_application_show_addressbook_window (GmApplication *self)
 
 
   gtk_window_present (GTK_WINDOW (addressbook_window_new (self)));
-}
-
-
-void
-gm_application_show_accounts_window (GmApplication *self)
-{
-  g_return_if_fail (GM_IS_APPLICATION (self));
-
-
-  gtk_window_present (GTK_WINDOW (accounts_window_new (self)));
 }
 
 
