@@ -90,8 +90,6 @@ namespace Opal
 
     bool has_uri (const std::string uri) const;
 
-    bool populate_menu (Ekiga::MenuBuilder &);
-
     /* setter methods specific for this class of presentity, where we
      * expect to get presence from elsewhere:
      */

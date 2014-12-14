@@ -160,8 +160,6 @@ static void on_clicked_fold (RosterViewGtk* self,
 			     GtkTreePath* path,
 			     const gchar* name);
 
-static void on_clicked_trigger_presentity (Ekiga::Presentity* presentity);
-
 /* DESCRIPTION : Called whenever a (online/total) count has to be updated
  * BEHAVIOUR   : Updates things...
  * PRE         : Both arguments have to be correct
@@ -545,14 +543,6 @@ on_clicked_fold (RosterViewGtk* self,
 }
 
 static void
-on_clicked_trigger_presentity (Ekiga::Presentity* presentity)
-{
-  Ekiga::TriggerMenuBuilder builder;
-
-  presentity->populate_menu (builder);
-}
-
-static void
 update_offline_count (RosterViewGtk* self,
 		      GtkTreeIter* iter)
 {
@@ -800,8 +790,6 @@ on_view_event_after (GtkWidget *tree_view,
       if (event->type == GDK_BUTTON_PRESS && event->button == 3 && self->priv->presentity_menu->get_menu ())
         gtk_menu_popup (GTK_MENU (self->priv->presentity_menu->get_menu ()),
                         NULL, NULL, NULL, NULL, event->button, event->time);
-      else if (event->type == GDK_2BUTTON_PRESS || event->type == GDK_KEY_PRESS)
-        on_clicked_trigger_presentity (presentity);
       break;
     default:
 

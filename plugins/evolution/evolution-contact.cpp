@@ -213,46 +213,6 @@ Evolution::Contact::remove ()
   e_book_remove_contact (book, get_id().c_str (), NULL);
 }
 
-bool
-Evolution::Contact::populate_menu (Ekiga::MenuBuilder &builder)
-{
-  boost::shared_ptr<Ekiga::ContactCore> core = services.get<Ekiga::ContactCore> ("contact-core");
-  bool populated = false;
-  std::map<std::string, std::string> uris;
-
-  if (core) {
-
-    Ekiga::TemporaryMenuBuilder tmp_builder;
-
-    for (unsigned int attr_type = 0; attr_type < ATTR_NUMBER; attr_type++) {
-
-      std::string attr_value = get_attribute_value (attr_type);
-      if ( !attr_value.empty ()) {
-
-	if (core->populate_contact_menu (ContactPtr(this, null_deleter ()),
-					 attr_value, tmp_builder)) {
-
-	  builder.add_ghost ("", get_attribute_name_from_type (attr_type));
-	  tmp_builder.populate_menu (builder);
-	  populated = true;
-	}
-      }
-    }
-  }
-
-  if (populated)
-    builder.add_separator ();
-
-  builder.add_action ("edit", _("_Edit"),
-		      boost::bind (&Evolution::Contact::edit_action, this));
-  builder.add_action ("remove", _("_Remove"),
-		      boost::bind (&Evolution::Contact::remove_action, this));
-  populated = true;
-
-  return populated;
-}
-
-
 std::string
 Evolution::Contact::get_attribute_name_from_type (unsigned int attribute_type) const
 {

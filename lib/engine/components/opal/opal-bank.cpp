@@ -138,37 +138,6 @@ Opal::Bank::~Bank ()
 }
 
 
-bool
-Opal::Bank::populate_menu (Ekiga::MenuBuilder & builder)
-{
-
-
-  return true;
-}
-
-
-bool
-Opal::Bank::populate_menu (Ekiga::PresentityPtr presentity,
-			   const std::string uri,
-			   Ekiga::MenuBuilder& builder)
-{
-  return populate_menu_helper (presentity->get_name (), uri, builder);
-}
-
-
-bool
-Opal::Bank::populate_menu_helper (const std::string fullname,
-				  const std::string& uri,
-				  Ekiga::MenuBuilder& builder)
-{
-  bool result = false;
-
-  std::cout << "should be fixed" << std::endl << std::flush;
-
-  return result;
-}
-
-
 void
 Opal::Bank::new_account (Account::Type acc_type,
 			 std::string username,

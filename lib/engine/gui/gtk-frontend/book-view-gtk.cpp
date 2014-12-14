@@ -716,35 +716,3 @@ book_view_gtk_handle_event (BookViewGtk *self,
 
   return FALSE;
 }
-
-
-void
-book_view_gtk_populate_menu (BookViewGtk *self,
-			     GtkWidget *menu)
-{
-  g_return_if_fail (IS_BOOK_VIEW_GTK (self));
-  g_return_if_fail (GTK_IS_MENU (menu));
-
-  GtkTreeSelection *selection = NULL;
-  GtkTreeModel *model = NULL;
-  GtkTreeIter iter;
-  Ekiga::Contact *contact = NULL;
-  GtkWidget *item = NULL;
-  MenuBuilderGtk builder (menu);
-
-  self->priv->book->populate_menu (builder);
-
-  selection = gtk_tree_view_get_selection (self->priv->tree_view);
-
-  if (gtk_tree_selection_get_selected (selection, &model, &iter)) {
-
-    gtk_tree_model_get (model, &iter, COLUMN_CONTACT_POINTER, &contact, -1);
-
-    if (contact) {
-
-      item = gtk_separator_menu_item_new ();
-      gtk_menu_shell_append (GTK_MENU_SHELL (menu), item);
-      contact->populate_menu (builder);
-    }
-  }
-}

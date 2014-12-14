@@ -61,8 +61,6 @@ GtkWidget *book_view_gtk_new (Ekiga::BookPtr book);
 gboolean book_view_gtk_handle_event (BookViewGtk *self,
                                      GdkEvent *event);
 
-void book_view_gtk_populate_menu (BookViewGtk *, GtkWidget *);
-
 /* GObject thingies */
 
 struct _BookViewGtk

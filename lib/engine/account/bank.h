@@ -66,14 +66,6 @@ namespace Ekiga
     virtual void visit_accounts (boost::function1<bool, AccountPtr> visitor) const = 0;
 
 
-    /** Create the menu for that Bank and its actions.
-     * This function is purely virtual and should be implemented by
-     * the descendant of the Ekiga::Bank.
-     * @param A MenuBuilder object to populate.
-     */
-    virtual bool populate_menu (MenuBuilder &) = 0;
-
-
     /** This signal is emitted when a account has been added.
      */
     boost::signals2::signal<void(AccountPtr)> account_added;

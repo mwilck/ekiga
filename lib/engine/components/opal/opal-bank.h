@@ -57,7 +57,6 @@ namespace Opal
       public Ekiga::Cluster,
       public Ekiga::PresencePublisher,
       public Ekiga::PresenceFetcher,
-      public Ekiga::PresentityDecorator,
       public Ekiga::Service
   {
 public:
@@ -65,8 +64,6 @@ public:
     Bank (Ekiga::ServiceCore &_core);
 
     ~Bank ();
-
-    bool populate_menu (Ekiga::MenuBuilder & builder);
 
     const std::string get_name () const
     { return "opal-account-store"; }
@@ -91,12 +88,6 @@ public:
     void fetch (const std::string) {}
     void unfetch (const std::string) {}
 
-    /*
-     * this object is an Ekiga::ContactDecorator and an Ekiga::PresentityDecorator
-     */
-    bool populate_menu (Ekiga::PresentityPtr presentity,
-			const std::string uri,
-			Ekiga::MenuBuilder& builder);
 
     /** Find the account with the given address of record in the Bank
      * @param aor is the address of record of the Account or the host to look
@@ -130,10 +121,6 @@ private:
 
     boost::shared_ptr<xmlDoc> doc;
     xmlNodePtr node;
-
-    bool populate_menu_helper (const std::string fullname,
-			       const std::string& uri,
-			       Ekiga::MenuBuilder& builder);
 
     bool on_new_account_form_submitted (bool submitted,
                                         Ekiga::Form& form,

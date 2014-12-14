@@ -46,22 +46,6 @@ Ekiga::AccountCore::~AccountCore ()
 }
 
 
-bool
-Ekiga::AccountCore::populate_menu (MenuBuilder & builder)
-{
-  bool populated = false;
-
-  for (bank_const_iterator iter = banks.begin ();
-       iter != banks.end ();
-       iter++) {
-
-    populated = (*iter)->populate_menu (builder);
-  }
-
-  return populated;
-}
-
-
 void
 Ekiga::AccountCore::add_bank (BankPtr bank)
 {

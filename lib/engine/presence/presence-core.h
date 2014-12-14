@@ -52,26 +52,6 @@ namespace Ekiga
  * @defgroup presence Presence
  * @{
  */
-
-
-  class PresentityDecorator
-  {
-  public:
-
-    /** The destructor.
-     */
-    virtual ~PresentityDecorator () {}
-
-    /** Completes the menu for actions available on an uri
-     * @param The presentity for which the action could be made available.
-     * @param The uri for which actions could be made available.
-     * @param A MenuBuilder object to populate.
-     */
-    virtual bool populate_menu (PresentityPtr /*presentity*/,
-				const std::string /*uri*/,
-				MenuBuilder &/*builder*/) = 0;
-  };
-
   class PresenceFetcher
   {
   public:
@@ -117,9 +97,7 @@ namespace Ekiga
    *    data, but still be able to gain presence information and actions on
    *    them.
    *
-   * This is achieved by using three types of helpers:
-   *  - the abstract class PresentityDecorator, which allows to enable actions
-   *    on presentities based on uris;
+   * This is achieved by using two types of helpers:
    * - the abstract class PresenceFetcher, through which it is possible to gain
    *   presence information: they allow the PresenceCore to declare some
    *   presence information is needed about an uri, or now unneeded;
@@ -207,26 +185,6 @@ namespace Ekiga
     void on_presentity_removed (HeapPtr heap,
 				PresentityPtr presentity,
 				ClusterPtr cluster);
-
-    /*** API to act on presentities ***/
-  public:
-
-    /** Adds a decorator to the pool of presentity decorators.
-     * @param The presentity decorator.
-     */
-    void add_presentity_decorator (boost::shared_ptr<PresentityDecorator> decorator);
-
-    /** Populates a menu with the actions available on a given uri.
-     * @param The uri for which the decoration is needed.
-     * @param The builder to populate.
-     */
-    bool populate_presentity_menu (PresentityPtr presentity,
-				   const std::string uri,
-				   MenuBuilder &builder);
-
-  private:
-
-    std::list<boost::shared_ptr<PresentityDecorator> > presentity_decorators;
 
     /*** API to help presentities get presence ***/
   public:

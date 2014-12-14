@@ -70,14 +70,6 @@ namespace Ekiga
      */
     virtual void visit_presentities (boost::function1<bool, PresentityPtr >) const = 0;
 
-    /** Populates a menu with the actions possible on the given group
-     * of the Heap.
-     * @param The name of the group on which to act.
-     * @param The builder to populate.
-     */
-    virtual bool populate_menu_for_group (const std::string name,
-					  MenuBuilder&) = 0;
-
     /**
      * Signals on that object
      */

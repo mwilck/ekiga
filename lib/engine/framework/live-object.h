@@ -50,11 +50,6 @@ namespace Ekiga
 
     virtual ~LiveObject () { }
 
-    /** Populate a menu with the action available on that object
-     * @param A MenuBuilder object to populate.
-     */
-    virtual bool populate_menu (MenuBuilder &) { return false; };
-
 
     /**
      * Signals on that object

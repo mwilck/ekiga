@@ -73,7 +73,7 @@ is_supported_address (const std::string uri)
 }
 
 /* FIXME: add here an Ekiga::Service which will add&remove publishers,
- * decorators and fetchers
+ * and fetchers
  */
 
 using namespace Opal;
@@ -122,7 +122,6 @@ struct OPALSpark: public Ekiga::Spark
       account_core->add_bank (bank);
       presence_core->add_cluster (bank);
       core.add (bank);
-      presence_core->add_presentity_decorator (bank);
       call_manager->ready.connect (boost::bind (&Opal::Bank::call_manager_ready, &*bank));
       call_manager->setup ();
       presence_core->add_presence_publisher (bank);

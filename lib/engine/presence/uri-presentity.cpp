@@ -99,17 +99,6 @@ Ekiga::URIPresentity::has_uri (const std::string uri_) const
   return uri == uri_;
 }
 
-bool
-Ekiga::URIPresentity::populate_menu (Ekiga::MenuBuilder &builder)
-{
-  boost::shared_ptr<Ekiga::PresenceCore> pcore = presence_core.lock ();
-  if (pcore)
-    return pcore->populate_presentity_menu (PresentityPtr(this, null_deleter ()),
-					    uri, builder);
-  else
-    return false;
-}
-
 void
 Ekiga::URIPresentity::on_presence_received (std::string uri_,
 					    std::string presence_)

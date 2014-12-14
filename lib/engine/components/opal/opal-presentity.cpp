@@ -242,13 +242,6 @@ Opal::Presentity::set_status (const std::string status_)
 }
 
 
-bool
-Opal::Presentity::populate_menu (Ekiga::MenuBuilder &builder)
-{
-  return true;
-}
-
-
 void
 Opal::Presentity::edit_presentity ()
 {

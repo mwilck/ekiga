@@ -192,17 +192,6 @@ History::Contact::get_groups () const
   return groups;
 }
 
-bool
-History::Contact::populate_menu (Ekiga::MenuBuilder &builder)
-{
-  boost::shared_ptr<Ekiga::ContactCore> ccore = contact_core.lock ();
-  if (ccore)
-    return ccore->populate_contact_menu (ContactPtr (this, null_deleter ()),
-					 uri, builder);
-  else
-    return false;
-}
-
 xmlNodePtr
 History::Contact::get_node ()
 {

@@ -50,18 +50,6 @@ namespace Ekiga
  * @{
  */
 
-  class ContactDecorator
-  {
-  public:
-
-    virtual ~ContactDecorator ()
-    {}
-
-    virtual bool populate_menu (ContactPtr /*contact*/,
-				const std::string /*uri*/,
-				MenuBuilder& /*builder*/) = 0;
-  };
-
 
   /** Core object for address book support.
    *
@@ -95,10 +83,6 @@ namespace Ekiga
      */
     const std::string get_description () const
     { return "\tContact managing object"; }
-
-
-    /*** LiveObject implementation ***/
-    bool populate_menu (MenuBuilder& builder);
 
 
     /*** Public API ***/
@@ -155,27 +139,6 @@ namespace Ekiga
   private:
 
     std::list<SourcePtr > sources;
-
-    /*** Contact Helpers ***/
-
-  public:
-
-    void add_contact_decorator (boost::shared_ptr<ContactDecorator> decorator);
-
-    /** Create the menu for a given Contact and its actions.
-     * @param The Ekiga::Contact for which the actions could be made available.
-     * @param The uri for which actions could be made available.
-     * @param A MenuBuilder object to populate.
-     */
-    bool populate_contact_menu (ContactPtr contact,
-				const std::string uri,
-                                MenuBuilder &builder);
-
-  private:
-
-    std::list<boost::shared_ptr<ContactDecorator> > contact_decorators;
-
-    /*** Misc stuff ***/
     Ekiga::scoped_connections conns;
   };
 

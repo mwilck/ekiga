@@ -575,57 +575,6 @@ Opal::Account::remove ()
 }
 
 
-bool
-Opal::Account::populate_menu (Ekiga::MenuBuilder &builder)
-{
-  if (is_enabled ())
-    builder.add_action ("user-offline", _("_Disable"),
-                        boost::bind (&Opal::Account::disable, this));
-  else
-    builder.add_action ("user-available", _("_Enable"),
-                        boost::bind (&Opal::Account::enable, this));
-
-  builder.add_separator ();
-
-  builder.add_action ("add", _("A_dd Contact"),
-		      boost::bind (&Opal::Account::add_contact, this));
-  
-  builder.add_separator ();
-
-  builder.add_action ("edit", _("_Edit"),
-		      boost::bind (&Opal::Account::edit, this));
-  builder.add_action ("remove", _("_Remove"),
-		      boost::bind (&Opal::Account::remove, this));
-
-  if (type == DiamondCard) {
-
-    std::stringstream str;
-    std::stringstream url;
-    str << "https://www.diamondcard.us/exec/voip-login?accId=" << get_username () << "&pinCode=" << get_password () << "&spo=ekiga";
-
-    builder.add_separator ();
-
-    url.str ("");
-    url << str.str () << "&act=rch";
-    builder.add_action ("recharge",
-			_("Recharge the account"),
-                        boost::bind (&Opal::Account::on_consult, this, url.str ()));
-    url.str ("");
-    url << str.str () << "&act=bh";
-    builder.add_action ("balance",
-                        _("Consult the balance history"),
-                        boost::bind (&Opal::Account::on_consult, this, url.str ()));
-    url.str ("");
-    url << str.str () << "&act=ch";
-    builder.add_action ("history",
-                        _("Consult the call history"),
-                        boost::bind (&Opal::Account::on_consult, this, url.str ()));
-  }
-
-  return true;
-}
-
-
 void
 Opal::Account::edit ()
 {
@@ -1290,14 +1239,6 @@ void
 Opal::Account::visit_presentities (boost::function1<bool, Ekiga::PresentityPtr > visitor) const
 {
   visit_objects (visitor);
-}
-
-
-bool
-Opal::Account::populate_menu_for_group (const std::string name,
-					Ekiga::MenuBuilder& builder)
-{
-  return false;
 }
 
 

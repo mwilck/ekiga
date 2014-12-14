@@ -45,26 +45,6 @@ on_search ()
 }
 */
 
-bool
-Ekiga::ContactCore::populate_menu (MenuBuilder &builder)
-{
-  bool populated = false;
-
-  //builder.add_action ("search", _("_Find"), &on_search);
-  //populated = true;
-
-  for (std::list<SourcePtr >::const_iterator iter = sources.begin ();
-       iter != sources.end ();
-       ++iter) {
-
-    if (populated)
-      builder.add_separator ();
-    populated = (*iter)->populate_menu (builder);
-  }
-
-  return populated;
-}
-
 
 void
 Ekiga::ContactCore::add_source (SourcePtr source)
@@ -92,28 +72,4 @@ Ekiga::ContactCore::visit_sources (boost::function1<bool, SourcePtr > visitor) c
        iter != sources.end () && go_on;
        ++iter)
     go_on = visitor (*iter);
-}
-
-void
-Ekiga::ContactCore::add_contact_decorator (boost::shared_ptr<ContactDecorator> decorator)
-{
-  contact_decorators.push_back (decorator);
-}
-
-bool
-Ekiga::ContactCore::populate_contact_menu (ContactPtr _contact,
-					   const std::string _uri,
-					   MenuBuilder &builder)
-{
-  bool populated = false;
-
-  for (std::list<boost::shared_ptr<ContactDecorator> >::const_iterator iter
-	 = contact_decorators.begin ();
-       iter != contact_decorators.end ();
-       ++iter) {
-
-    populated = (*iter)->populate_menu (_contact, _uri, builder) || populated;
-  }
-
-  return populated;
 }
