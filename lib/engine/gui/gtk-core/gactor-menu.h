@@ -74,7 +74,8 @@ namespace Ekiga {
 
     GActorMenu (Actor & obj);
     GActorMenu (Actor & obj,
-                const std::string & name);
+                const std::string & name,
+                const std::string & context = "win");
     virtual ~GActorMenu ();
 
 
@@ -139,6 +140,7 @@ namespace Ekiga {
     unsigned n;
     GtkBuilder *builder;
     std::string name;
+    std::string context;
   };
 }
 #endif

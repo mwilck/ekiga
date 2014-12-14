@@ -58,10 +58,13 @@ action_activated (GSimpleAction *a,
 Ekiga::GActorMenu::GActorMenu (Ekiga::Actor & _obj) : obj (_obj)
 {
   ctor_init ();
+  context = "win";
 }
 
 
-Ekiga::GActorMenu::GActorMenu (Ekiga::Actor & _obj, const std::string & _name) : obj (_obj), name (_name)
+Ekiga::GActorMenu::GActorMenu (Ekiga::Actor & _obj,
+                               const std::string & _name,
+                               const std::string & _context) : obj (_obj), name (_name), context (_context)
 {
   ctor_init ();
 }
@@ -125,7 +128,7 @@ Ekiga::GActorMenu::get_menu (const Ekiga::GActorMenuStore & store)
     return NULL;
 
   GtkWidget *menu = gtk_menu_new_from_model (model);
-  gtk_widget_insert_action_group (menu, "win", G_ACTION_GROUP (g_application_get_default ()));
+  gtk_widget_insert_action_group (menu, context.c_str (), G_ACTION_GROUP (g_application_get_default ()));
   g_object_ref (menu);
 
   return menu;
@@ -223,7 +226,7 @@ Ekiga::GActorMenu::as_xml (const std::string & id,
       xml_content +=
         "      <item>"
         "        <attribute name=\"label\" translatable=\"yes\">"+(*it)->get_description ()+"</attribute>"
-        "        <attribute name=\"action\">win."+(*it)->get_name ()+"</attribute>"
+        "        <attribute name=\"action\">" + context + "."+(*it)->get_name ()+"</attribute>"
         "      </item>";
       n++;
     }
