@@ -90,13 +90,7 @@ namespace Ekiga
 
     const std::string get_uri () const;
 
-    /** Populates the given Ekiga::MenuBuilder with the actions.
-     * @param: A MenuBuilder.
-     */
-    bool populate_menu (Ekiga::MenuBuilder& builder);
-
   private:
-
     boost::weak_ptr<Ekiga::PresenceCore> presence_core;
 
     std::string name;

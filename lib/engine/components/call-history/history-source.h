@@ -58,8 +58,6 @@ namespace History
 
     ~Source ();
 
-    bool populate_menu (Ekiga::MenuBuilder &);
-
     bool is_supported_uri (const std::string uri) const;
 
     const std::string get_name () const

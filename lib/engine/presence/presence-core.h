@@ -263,13 +263,7 @@ namespace Ekiga
 
   public:
 
-    /** Create the menu of the actions available in the PresenceCore.
-     * @param A MenuBuilder object to populate.
-     */
-    bool populate_menu (MenuBuilder &builder);
-
     /*** Misc ***/
-
   private:
 
     boost::shared_ptr<PersonalDetails> details;

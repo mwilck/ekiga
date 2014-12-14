@@ -55,12 +55,6 @@ typedef struct _RosterViewGtkClass RosterViewGtkClass;
 GtkWidget *roster_view_gtk_new (boost::shared_ptr<Ekiga::PresenceCore> pcore);
 
 
-/* This method populates the given builder with the actions possible on the
- * selected item, whatever that is (heap, group, presentity)
- */
-bool roster_view_gtk_populate_menu_for_selected (RosterViewGtk* self,
-						 Ekiga::MenuBuilder& builder);
-
 /* Signals emitted by that widget :
  *
  * - "actions-changed", comes with nothing, and notifies when new
