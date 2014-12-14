@@ -107,6 +107,22 @@ Opal::Bank::Bank (Ekiga::ServiceCore& core):
   account_updated.connect (boost::bind (&Opal::Bank::update_sip_endpoint_aor_map, this));
   account_removed.connect (boost::bind (&Opal::Bank::update_sip_endpoint_aor_map, this));
   update_sip_endpoint_aor_map ();
+
+  /* Actor stuff */
+  add_action (Ekiga::ActionPtr (new Ekiga::Action ("add-account-ekiga", _("_Add an Ekiga.net Account"),
+                                                   boost::bind (&Opal::Bank::new_account, this,
+                                                                Opal::Account::Ekiga, "", ""))));
+  add_action (Ekiga::ActionPtr (new Ekiga::Action ("add-account-diamondcard", _("_Add an Ekiga Call Out Account"),
+                                                   boost::bind (&Opal::Bank::new_account, this,
+                                                                Opal::Account::DiamondCard, "", ""))));
+  add_action (Ekiga::ActionPtr (new Ekiga::Action ("add-account-sip", _("_Add a SIP Account"),
+                                                   boost::bind (&Opal::Bank::new_account, this,
+                                                                Opal::Account::SIP, "", ""))));
+#ifdef HAVE_H323
+  add_action (Ekiga::ActionPtr (new Ekiga::Action ("add-account-h323", _("_Add an H.323 Account"),
+                                                   boost::bind (&Opal::Bank::new_account, this,
+                                                                Opal::Account::H323, "", ""))));
+#endif
 }
 
 
@@ -125,16 +141,7 @@ Opal::Bank::~Bank ()
 bool
 Opal::Bank::populate_menu (Ekiga::MenuBuilder & builder)
 {
-  builder.add_action ("add", _("_Add an Ekiga.net Account"),
-                      boost::bind (&Opal::Bank::new_account, this, Opal::Account::Ekiga, "", ""));
-  builder.add_action ("add", _("_Add an Ekiga Call Out Account"),
-		      boost::bind (&Opal::Bank::new_account, this, Opal::Account::DiamondCard, "", ""));
-  builder.add_action ("add", _("_Add a SIP Account"),
-		      boost::bind (&Opal::Bank::new_account, this, Opal::Account::SIP, "", ""));
-#ifdef HAVE_H323
-  builder.add_action ("add", _("_Add an H.323 Account"),
-		      boost::bind (&Opal::Bank::new_account, this, Opal::Account::H323, "", ""));
-#endif
+
 
   return true;
 }
@@ -169,8 +176,7 @@ Opal::Bank::new_account (Account::Type acc_type,
 {
   boost::shared_ptr<Ekiga::FormRequestSimple> request = boost::shared_ptr<Ekiga::FormRequestSimple> (new Ekiga::FormRequestSimple (boost::bind (&Opal::Bank::on_new_account_form_submitted, this, _1, _2, _3, acc_type)));
 
-  request->title (_("Edit account"));
-  request->instructions (_("Please update the following fields:"));
+  request->title (_("Add Account"));
 
   switch (acc_type) {
 
@@ -178,9 +184,11 @@ Opal::Bank::new_account (Account::Type acc_type,
     request->link (_("Get an Ekiga.net SIP account"), "http://www.ekiga.net");
     request->hidden ("name", "Ekiga.net");
     request->hidden ("host", "ekiga.net");
-    request->text ("user", _("_User:"), username, _("The user name, e.g. jim"));
+    request->text ("user", _("_User"), username, _("jon"),
+                   Ekiga::FormVisitor::STANDARD, false, false);
     request->hidden ("authentication_user", username);
-    request->text ("password", _("_Password:"), password, _("Password associated to the user"), Ekiga::FormVisitor::PASSWORD);
+    request->text ("password", _("_Password"), password, _("1234"),
+                   Ekiga::FormVisitor::PASSWORD, false, false);
     request->hidden ("timeout", "3600");
     break;
 
@@ -189,29 +197,42 @@ Opal::Bank::new_account (Account::Type acc_type,
 		   "https://www.diamondcard.us/exec/voip-login?act=sgn&spo=ekiga");
     request->hidden ("name", "Ekiga Call Out");
     request->hidden ("host", "sip.diamondcard.us");
-    request->text ("user", _("_Account ID:"), username, _("The user name, e.g. jim"));
+    request->text ("user", _("_Username"), username, _("jon"),
+                   Ekiga::FormVisitor::STANDARD, false, false);
     request->hidden ("authentication_user", username);
-    request->text ("password", _("_PIN code:"), password, _("Password associated to the user"), Ekiga::FormVisitor::PASSWORD);
+    request->text ("password", _("_Password"), password, _("1234"),
+                   Ekiga::FormVisitor::PASSWORD, false, false);
     request->hidden ("timeout", "3600");
     break;
 
   case Opal::Account::H323:
-    request->text ("name", _("_Name:"), std::string (), _("Account name, e.g. MyAccount"));
-    request->text ("host", _("_Gatekeeper:"), std::string (), _("The gatekeeper, e.g. ekiga.net"));
-    request->text ("user", _("_User:"), username, _("The user name, e.g. jim"));
+    request->text ("name", _("_Name"), std::string (), _("My H.323 Account"),
+                   Ekiga::FormVisitor::STANDARD, false, false);
+    request->text ("host", _("_Gatekeeper"), std::string (), _("h323.ekiga.net"),
+                   Ekiga::FormVisitor::STANDARD, false, false);
+    request->text ("user", _("_User"), username, _("jon"),
+                   Ekiga::FormVisitor::STANDARD, false, false);
     request->hidden ("authentication_user", username);
-    request->text ("password", _("_Password:"), password, _("Password associated to the user"), Ekiga::FormVisitor::PASSWORD);
-    request->text ("timeout", _("_Timeout:"), "3600", _("Time in seconds after which the account registration is automatically retried"));
+    request->text ("password", _("_Password"), password, _("1234"),
+                   Ekiga::FormVisitor::PASSWORD, false, false);
+    request->text ("timeout", _("_Timeout"), "3600", "3600",
+                   Ekiga::FormVisitor::NUMBER, false, false);
     break;
 
   case Opal::Account::SIP:
   default:
-    request->text ("name", _("_Name:"), std::string (), _("Account name, e.g. MyAccount"));
-    request->text ("host", _("_Registrar:"), std::string (), _("The registrar, e.g. ekiga.net"));
-    request->text ("user", _("_User:"), username, _("The user name, e.g. jim"));
-    request->text ("authentication_user", _("_Authentication user:"), std::string (), _("The user name used during authentication, if different than the user name; leave empty if you do not have one"));
-    request->text ("password", _("_Password:"), password, _("Password associated to the user"), Ekiga::FormVisitor::PASSWORD);
-    request->text ("timeout", _("_Timeout:"), "3600", _("Time in seconds after which the account registration is automatically retried"));
+    request->text ("name", _("_Name"), std::string (), _("My SIP Account"),
+                   Ekiga::FormVisitor::STANDARD, false, false);
+    request->text ("host", _("_Registrar"), std::string (), _("ekiga.net"),
+                   Ekiga::FormVisitor::STANDARD, false, false);
+    request->text ("user", _("_User"), username, _("jon"),
+                   Ekiga::FormVisitor::STANDARD, false, false);
+    request->text ("authentication_user", _("_Login"), std::string (), _("jon.doe"),
+                   Ekiga::FormVisitor::STANDARD, false, false);
+    request->text ("password", _("_Password"), password, _("1234"),
+                   Ekiga::FormVisitor::PASSWORD, false, false);
+    request->text ("timeout", _("_Timeout"), "3600", "3600",
+                   Ekiga::FormVisitor::NUMBER, false, false);
     break;
   }
   request->boolean ("enabled", _("Enable account"), true);
