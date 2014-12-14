@@ -371,8 +371,6 @@ libekiga_la_SOURCES += \
 	engine/gui/gtk-core/form-dialog-gtk.cpp \
 	engine/gui/gtk-core/gactor-menu.h \
 	engine/gui/gtk-core/gactor-menu.cpp \
-	engine/gui/gtk-core/optional-buttons-gtk.h \
-	engine/gui/gtk-core/optional-buttons-gtk.cpp \
 	engine/gui/gtk-core/codecsbox.cpp \
 	engine/gui/gtk-core/codecsbox.h \
 	engine/gui/gtk-core/gtk-core.h \
