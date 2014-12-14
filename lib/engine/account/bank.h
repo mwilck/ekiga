@@ -38,6 +38,7 @@
 #define __BANK_H__
 
 #include "account.h"
+#include "actor.h"
 
 namespace Ekiga
 {
@@ -49,6 +50,7 @@ namespace Ekiga
    */
 
   class Bank:
+    public Actor,
     public virtual LiveObject
   {
   public:
