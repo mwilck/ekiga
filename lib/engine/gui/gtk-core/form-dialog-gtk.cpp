@@ -991,6 +991,10 @@ FormDialog::text (const std::string name,
       entry = gm_entry_new (PHONE_NUMBER_REGEX);
       gtk_entry_set_input_purpose (GTK_ENTRY (entry), GTK_INPUT_PURPOSE_PHONE);
       break;
+    case NUMBER:
+      entry = gm_entry_new (NUMBER_REGEX);
+      gtk_entry_set_input_purpose (GTK_ENTRY (entry), GTK_INPUT_PURPOSE_NUMBER);
+      break;
     case URI:
       entry = gm_entry_new (BASIC_URI_REGEX);
       gtk_entry_set_input_purpose (GTK_ENTRY (entry), GTK_INPUT_PURPOSE_URL);
