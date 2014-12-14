@@ -42,6 +42,7 @@
 #include <glib/gi18n.h>
 #include <boost/tuple/tuple.hpp>
 
+#include "gmstockicons.h"
 #include "ekiga-settings.h"
 
 #include "preferences-window.h"
@@ -1748,6 +1749,7 @@ preferences_window_new (GmApplication *app)
   gtk_header_bar_set_title (GTK_HEADER_BAR (headerbar), _("Preferences"));
   gtk_header_bar_set_subtitle (GTK_HEADER_BAR (headerbar), _("Edit your settings"));
   gtk_window_set_titlebar (GTK_WINDOW (self), headerbar);
+  gtk_window_set_icon_name (GTK_WINDOW (self), GM_ICON_LOGO);
   gtk_widget_show (headerbar);
 
   box = gtk_box_new (GTK_ORIENTATION_HORIZONTAL, 0);
