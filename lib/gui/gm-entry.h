@@ -50,6 +50,7 @@ G_BEGIN_DECLS
 #define BASIC_URI_PART "[A-Za-z0-9_\\-\\.]+"
 #define BASIC_URI_REGEX "^" URI_SCHEME BASIC_URI_PART "@" BASIC_URI_PART "$"
 #define PHONE_NUMBER_REGEX "\\+?[0-9]+"
+#define NUMBER_REGEX "\\[0-9]+"
 
 typedef struct _GmEntry GmEntry;
 typedef struct _GmEntryPrivate GmEntryPrivate;
