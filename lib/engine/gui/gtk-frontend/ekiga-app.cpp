@@ -42,6 +42,7 @@
 #include "revision.h"
 
 #include "trigger.h"
+#include "form-dialog-gtk.h"
 #include "ekiga-app.h"
 #include "gmstockicons.h"
 #include "account-core.h"
@@ -70,6 +71,7 @@
 #include "engine.h"
 #include "runtime.h"
 #include "platform/platform.h"
+#include "gactor-menu.h"
 
 #include "gmwindow.h"
 
@@ -100,8 +102,11 @@
  */
 struct _GmApplicationPrivate
 {
+  _GmApplicationPrivate () {}
+
   Ekiga::ServiceCorePtr core;
 
+  GtkBuilder *builder;
   GtkWidget *main_window;
   GtkWidget *chat_window;
   GtkWidget *call_window;
@@ -109,6 +114,8 @@ struct _GmApplicationPrivate
   boost::shared_ptr<Ekiga::Settings> video_devices_settings;
 
   EkigaDBusComponent *dbus_component;
+
+  Ekiga::GActorMenuStore banks_menu;
 };
 
 G_DEFINE_TYPE (GmApplication, gm_application, GTK_TYPE_APPLICATION);
@@ -128,6 +135,35 @@ on_created_call_cb (G_GNUC_UNUSED boost::shared_ptr<Ekiga::CallManager> manager,
 
   gm_application_show_call_window (self);
 }
+
+
+static bool
+on_visit_banks_cb (Ekiga::BankPtr bank,
+                   gpointer data)
+{
+  g_return_val_if_fail (GM_IS_APPLICATION (data), false);
+
+  GmApplication *self = GM_APPLICATION (data);
+
+  self->priv->banks_menu.push_back (Ekiga::GActorMenuPtr (new Ekiga::GActorMenu (*bank, "", "app")));
+
+  return true;
+}
+
+
+static bool
+on_handle_questions_cb (Ekiga::FormRequestPtr request,
+                        GmApplication *application)
+{
+  GtkWidget *window =
+    GTK_WIDGET (gtk_application_get_active_window (GTK_APPLICATION (application)));
+  FormDialog dialog (request, window);
+
+  dialog.run ();
+
+  return true;
+}
+
 
 static void
 call_window_destroyed_cb (G_GNUC_UNUSED GtkWidget *widget,
@@ -203,8 +239,6 @@ window_activated (GSimpleAction *action,
 
   g_return_if_fail (self && self->priv->core);
 
-  self->priv = G_TYPE_INSTANCE_GET_PRIVATE (self, GM_TYPE_APPLICATION, GmApplicationPrivate);
-
   boost::shared_ptr<Ekiga::AudioInputCore> audio_input_core =
     self->priv->core->get<Ekiga::AudioInputCore> ("audioinput-core");
   boost::shared_ptr<Ekiga::AudioOutputCore> audio_output_core =
@@ -265,6 +299,8 @@ void
 ekiga_main (int argc,
             char **argv)
 {
+  GMenu *app_menu = NULL;
+
   GmApplication *app = gm_application_new ();
   g_application_set_inactivity_timeout (G_APPLICATION (app), 10000);
 
@@ -297,10 +333,23 @@ ekiga_main (int argc,
     gm_application_show_assistant_window (app);
     general_settings->set_int ("version", schema_version);
   }
-  boost::shared_ptr<Ekiga::CallCore> call_core =
-    app->priv->core->get<Ekiga::CallCore> ("call-core");
+
+  boost::shared_ptr<Ekiga::CallCore> call_core = app->priv->core->get<Ekiga::CallCore> ("call-core");
   if (call_core)
     call_core->created_call.connect (boost::bind (&on_created_call_cb, _1, _2, (gpointer) app));
+
+  boost::shared_ptr<Ekiga::AccountCore> account_core = app->priv->core->get<Ekiga::AccountCore> ("account-core");
+  if (account_core) {
+    account_core->visit_banks (boost::bind (&on_visit_banks_cb, _1, (gpointer) app));
+    account_core->questions.connect (boost::bind (&on_handle_questions_cb, _1, app));
+  }
+
+  app_menu = G_MENU (gtk_builder_get_object (app->priv->builder, "appmenu"));
+  for (std::list<Ekiga::GActorMenuPtr>::iterator it = app->priv->banks_menu.begin ();
+       it != app->priv->banks_menu.end ();
+       it++) {
+    g_menu_insert_section (G_MENU (app_menu), 0, NULL, (*it)->get_model ());
+  }
 
   core->close ();
   g_application_run (G_APPLICATION (app), argc, argv);
@@ -324,7 +373,6 @@ gm_application_startup (GApplication *app)
   GmApplication *self = GM_APPLICATION (app);
 
   gchar *path = NULL;
-  GtkBuilder *builder = NULL;
 
   GMenuModel *app_menu = NULL;
 
@@ -363,15 +411,20 @@ gm_application_startup (GApplication *app)
   setenv ("PA_PROP_MEDIA_ROLE", "phone", true);
 #endif
 
+  /* Priv building */
+  self->priv = new _GmApplicationPrivate ();
+  self->priv->builder = gtk_builder_new ();
+
   /* Menu */
   g_action_map_add_action_entries (G_ACTION_MAP (self),
                                    app_entries, G_N_ELEMENTS (app_entries),
                                    self);
-  builder = gtk_builder_new ();
-  gtk_builder_add_from_string (builder,
+  gtk_builder_add_from_string (self->priv->builder,
                                "<?xml version=\"1.0\"?>"
                                "<interface>"
                                "  <menu id=\"appmenu\">"
+                               "    <section id=\"banks\">"
+                               "    </section>"
                                "    <section>"
                                "      <item>"
                                "        <attribute name=\"label\" translatable=\"yes\">Address _Book</attribute>"
@@ -413,9 +466,8 @@ gm_application_startup (GApplication *app)
                                "  </menu>"
                                "</interface>", -1, NULL);
 
-  app_menu = G_MENU_MODEL (gtk_builder_get_object (builder, "appmenu"));
+  app_menu = G_MENU_MODEL (gtk_builder_get_object (self->priv->builder, "appmenu"));
   gtk_application_set_app_menu (GTK_APPLICATION (self), app_menu);
-  g_object_unref (builder);
 
   self->priv->video_devices_settings =
     boost::shared_ptr<Ekiga::Settings> (new Ekiga::Settings (VIDEO_DEVICES_SCHEMA));
@@ -436,7 +488,9 @@ gm_application_dispose (GObject *obj)
 #ifdef HAVE_DBUS
   g_object_unref (self->priv->dbus_component);
 #endif
+  g_object_unref (self->priv->builder);
 
+  delete self->priv;
 
   G_OBJECT_CLASS (gm_application_parent_class)->dispose (obj);
 }
@@ -449,7 +503,6 @@ gm_application_shutdown (GApplication *app)
 
   g_return_if_fail (self);
 
-  self->priv = G_TYPE_INSTANCE_GET_PRIVATE (self, GM_TYPE_APPLICATION, GmApplicationPrivate);
   PThread::Current()->Sleep (2000); // FIXME, This allows all threads to start and quit. Sucks.
 
   gtk_widget_hide (GTK_WIDGET (self->priv->main_window));
@@ -513,11 +566,6 @@ gm_application_command_line (GApplication *app,
           NULL
         }
     };
-
-  self->priv =
-    G_TYPE_INSTANCE_GET_PRIVATE (self,
-                                 GM_TYPE_APPLICATION,
-                                 GmApplicationPrivate);
 
   context = g_option_context_new (NULL);
   g_option_context_add_main_entries (context, options, PACKAGE_NAME);
@@ -626,9 +674,8 @@ gm_application_class_init (GmApplicationClass *klass)
 
 
 static void
-gm_application_init (GmApplication *self)
+gm_application_init (G_GNUC_UNUSED GmApplication *self)
 {
-  self->priv = G_TYPE_INSTANCE_GET_PRIVATE (self, GM_TYPE_APPLICATION, GmApplicationPrivate);
 }
 
 
@@ -651,8 +698,6 @@ gm_application_set_core (GmApplication *self,
                          Ekiga::ServiceCorePtr core)
 {
   g_return_if_fail (GM_IS_APPLICATION (self));
-  self->priv = G_TYPE_INSTANCE_GET_PRIVATE (self, GM_TYPE_APPLICATION, GmApplicationPrivate);
-
   self->priv->core = core;
 }
 
@@ -661,7 +706,6 @@ Ekiga::ServiceCorePtr
 gm_application_get_core (GmApplication *self)
 {
   g_return_val_if_fail (GM_IS_APPLICATION (self), boost::shared_ptr<Ekiga::ServiceCore> ());
-  self->priv = G_TYPE_INSTANCE_GET_PRIVATE (self, GM_TYPE_APPLICATION, GmApplicationPrivate);
 
   return self->priv->core;
 }
@@ -671,7 +715,6 @@ void
 gm_application_show_main_window (GmApplication *self)
 {
   g_return_if_fail (GM_IS_APPLICATION (self));
-  self->priv = G_TYPE_INSTANCE_GET_PRIVATE (self, GM_TYPE_APPLICATION, GmApplicationPrivate);
 
   gtk_window_present (GTK_WINDOW (self->priv->main_window));
 }
@@ -681,7 +724,6 @@ void
 gm_application_hide_main_window (GmApplication *self)
 {
   g_return_if_fail (GM_IS_APPLICATION (self));
-  self->priv = G_TYPE_INSTANCE_GET_PRIVATE (self, GM_TYPE_APPLICATION, GmApplicationPrivate);
 
   gtk_widget_hide (self->priv->main_window);
 }
@@ -691,7 +733,6 @@ GtkWidget *
 gm_application_get_main_window (GmApplication *self)
 {
   g_return_val_if_fail (GM_IS_APPLICATION (self), NULL);
-  self->priv = G_TYPE_INSTANCE_GET_PRIVATE (self, GM_TYPE_APPLICATION, GmApplicationPrivate);
 
   return self->priv->main_window;
 }
@@ -866,8 +907,6 @@ gm_application_show_call_window (GmApplication *self)
 {
   g_return_val_if_fail (GM_IS_APPLICATION (self), NULL);
 
-  self->priv = G_TYPE_INSTANCE_GET_PRIVATE (self, GM_TYPE_APPLICATION, GmApplicationPrivate);
-
   if (!self->priv->call_window)
     self->priv->call_window = call_window_new (self);
 
@@ -884,8 +923,6 @@ void
 gm_application_show_chat_window (GmApplication *self)
 {
   g_return_if_fail (GM_IS_APPLICATION (self));
-
-  self->priv = G_TYPE_INSTANCE_GET_PRIVATE (self, GM_TYPE_APPLICATION, GmApplicationPrivate);
 
   // FIXME: We should move the chat window to a build & destroy scheme
   // but unread-alert prevents this
@@ -910,7 +947,6 @@ gm_application_show_preferences_window (GmApplication *self)
 
   g_return_if_fail (GM_IS_APPLICATION (self));
 
-  self->priv = G_TYPE_INSTANCE_GET_PRIVATE (self, GM_TYPE_APPLICATION, GmApplicationPrivate);
   parent = gtk_application_get_active_window (GTK_APPLICATION (self));
 
   window = GTK_WINDOW (preferences_window_new (self));
@@ -924,7 +960,6 @@ gm_application_show_addressbook_window (GmApplication *self)
 {
   g_return_if_fail (GM_IS_APPLICATION (self));
 
-  self->priv = G_TYPE_INSTANCE_GET_PRIVATE (self, GM_TYPE_APPLICATION, GmApplicationPrivate);
 
   gtk_window_present (GTK_WINDOW (addressbook_window_new (self)));
 }
@@ -935,7 +970,6 @@ gm_application_show_accounts_window (GmApplication *self)
 {
   g_return_if_fail (GM_IS_APPLICATION (self));
 
-  self->priv = G_TYPE_INSTANCE_GET_PRIVATE (self, GM_TYPE_APPLICATION, GmApplicationPrivate);
 
   gtk_window_present (GTK_WINDOW (accounts_window_new (self)));
 }
@@ -949,7 +983,6 @@ gm_application_show_assistant_window (GmApplication *self)
 
   g_return_if_fail (GM_IS_APPLICATION (self));
 
-  self->priv = G_TYPE_INSTANCE_GET_PRIVATE (self, GM_TYPE_APPLICATION, GmApplicationPrivate);
   parent = gtk_application_get_active_window (GTK_APPLICATION (self));
 
   window = GTK_WINDOW (assistant_window_new (self));
