@@ -291,8 +291,6 @@ libekiga_la_SOURCES += \
 	engine/presence/cluster.h \
 	engine/presence/cluster-impl.h \
 	engine/presence/uri-presentity.h \
-	engine/presence/proxy-presentity.cpp \
-	engine/presence/proxy-presentity.h \
 	engine/presence/uri-presentity.cpp \
 	engine/presence/presence-core.h \
 	engine/presence/presence-core.cpp
@@ -405,8 +403,6 @@ libekiga_la_SOURCES += \
 	engine/gui/gtk-frontend/default_devices.h \
 	engine/gui/gtk-frontend/presentity-view.h \
 	engine/gui/gtk-frontend/presentity-view.cpp \
-	engine/gui/gtk-frontend/heap-view.h \
-	engine/gui/gtk-frontend/heap-view.cpp \
 	engine/gui/gtk-frontend/chat-area.h \
 	engine/gui/gtk-frontend/chat-area.cpp \
 	engine/gui/gtk-frontend/simple-chat-page.h \
