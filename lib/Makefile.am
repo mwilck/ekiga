@@ -129,8 +129,6 @@ libekiga_la_SOURCES += \
 	gui/gmwindow.h \
 	gui/gmstockicons.c \
 	gui/gmstockicons.h \
-	gui/gmpowermeter.c \
-	gui/gmpowermeter.h \
 	gui/gm-cell-renderer-expander.c \
 	gui/gm-cell-renderer-expander.h \
 	gui/gm-cell-renderer-bitext.c \
