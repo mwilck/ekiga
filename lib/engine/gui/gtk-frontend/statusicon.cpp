@@ -40,8 +40,6 @@
 
 #include "statusicon.h"
 
-#include "gmstockicons.h"
-
 #include "services.h"
 #include "ekiga-app.h"
 #include "call-core.h"

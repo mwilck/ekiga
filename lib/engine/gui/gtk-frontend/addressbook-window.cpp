@@ -36,7 +36,6 @@
 #include <ptlib.h>
 
 #include "ekiga-settings.h"
-#include "gmstockicons.h"
 
 #include "addressbook-window.h"
 #include "book-view-gtk.h"

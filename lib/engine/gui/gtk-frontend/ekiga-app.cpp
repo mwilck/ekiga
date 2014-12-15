@@ -44,7 +44,6 @@
 #include "trigger.h"
 #include "form-dialog-gtk.h"
 #include "ekiga-app.h"
-#include "gmstockicons.h"
 #include "account-core.h"
 #include "chat-core.h"
 #include "contact-core.h"

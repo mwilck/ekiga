@@ -49,7 +49,6 @@
 #include "dialpad.h"
 
 #include "gmvideowidget.h"
-#include "gmstockicons.h"
 #include "gm-info-bar.h"
 #include "gactor-menu.h"
 #include "trigger.h"

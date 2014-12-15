@@ -42,7 +42,6 @@
 #include <glib/gi18n.h>
 #include <boost/tuple/tuple.hpp>
 
-#include "gmstockicons.h"
 #include "ekiga-settings.h"
 
 #include "preferences-window.h"
