@@ -63,13 +63,7 @@ gnomemeeting_stock_icons_init (void)
 		{ "im-message", 16, gm_im_message_16},
 		{ "im-message-new", 16, gm_im_message_new_16},
 		{ "whiteness", 16, gm_whiteness_16},
-	        { "video-settings", 16, gm_video_settings_16 },
-	        { GM_ICON_LOGO, 16, gm_logo_16_stock_data },
-	        { GM_ICON_LOGO, 22, gm_logo_22_stock_data },
-	        { GM_ICON_LOGO, 32, gm_logo_32_stock_data },
-	        { GM_ICON_LOGO, 48, gm_logo_48_stock_data },
-	        { GM_ICON_LOGO, 72, gm_logo_72_stock_data },
-		{ "user-inacall", 16, gm_user_inacall_16 },
+	        { "video-settings", 16, gm_video_settings_16 }
 
 	};
 

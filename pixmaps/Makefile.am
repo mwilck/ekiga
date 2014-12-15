@@ -4,24 +4,21 @@ pixmapdir = $(datadir)/pixmaps/@PACKAGE_NAME@
 pixmap_DATA = @PACKAGE_NAME@-logo.png 256x256/@PACKAGE_NAME@-full-icon.png
 
 theme_icons = \
-	gnome_actions_scalable_call-hold-symbolic.svg \
-	gnome_actions_scalable_call-transfer-symbolic.svg \
-	gnome_actions_scalable_call-transfer-symbolic-rtl.svg \
-        gnome_actions_16x16_phone-hang-up.png \
-        gnome_actions_16x16_phone-pick-up.png \
-        gnome_actions_24x24_phone-hang-up.png \
-        gnome_actions_24x24_phone-pick-up.png
-
-nobase_dist_icon_DATA = \
-	16x16/apps/@PACKAGE_NAME@.png \
-	22x22/apps/@PACKAGE_NAME@.png \
-	24x24/apps/@PACKAGE_NAME@.png \
-	32x32/apps/@PACKAGE_NAME@.png \
-	48x48/apps/@PACKAGE_NAME@.png \
-	64x64/apps/@PACKAGE_NAME@.png \
-	72x72/apps/@PACKAGE_NAME@.png \
-	128x128/apps/@PACKAGE_NAME@.png
-
+	gnome_actions_scalable_call-hold-symbolic.svg           \
+	gnome_actions_scalable_call-transfer-symbolic.svg       \
+	gnome_actions_scalable_call-transfer-symbolic-rtl.svg   \
+        gnome_actions_16x16_phone-hang-up.png                   \
+        gnome_actions_16x16_phone-pick-up.png                   \
+        gnome_actions_24x24_phone-hang-up.png                   \
+        gnome_actions_24x24_phone-pick-up.png                   \
+        hicolor_apps_16x16_ekiga.png                            \
+        hicolor_apps_22x22_ekiga.png                            \
+        hicolor_apps_24x24_ekiga.png                            \
+        hicolor_apps_32x32_ekiga.png                            \
+        hicolor_apps_48x48_ekiga.png                            \
+        hicolor_apps_64x64_ekiga.png                            \
+        hicolor_apps_72x72_ekiga.png                            \
+        hicolor_apps_128x128_ekiga.png
 
 DIST_IMAGES_FILES= \
 	scalable/call-hold-symbolic.svg \
@@ -89,7 +86,7 @@ DISTCLEANFILES = inlines.h
 
 EXTRA_DIST= $(DIST_IMAGES_FILES) $(IMAGES_FILES) $(theme_icons)
 
-inlines.h: $(IMAGE_FILES) $(nobase_dist_icon_DATA) Makefile.am
+inlines.h: $(IMAGE_FILES) Makefile.am
 	gdk-pixbuf-csource --raw --build-list $(IMAGES) > inlines.h
 
 install-data-hook: install-icons update-icon-cache

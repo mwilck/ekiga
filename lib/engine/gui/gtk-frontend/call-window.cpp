@@ -1509,7 +1509,7 @@ ekiga_call_window_init_gui (EkigaCallWindow *self)
   self->priv->call_panel_toolbar = gtk_header_bar_new ();
   gtk_header_bar_set_show_close_button (GTK_HEADER_BAR (self->priv->call_panel_toolbar), TRUE);
   gtk_window_set_titlebar (GTK_WINDOW (self), self->priv->call_panel_toolbar);
-  gtk_window_set_icon_name (GTK_WINDOW (self), GM_ICON_LOGO);
+  gtk_window_set_icon_name (GTK_WINDOW (self), PACKAGE_NAME);
   gtk_widget_show (self->priv->call_panel_toolbar);
 
   /* The info bar */

@@ -40,8 +40,6 @@
 G_BEGIN_DECLS
 
 /* Icon theme builtins */
-#define GM_ICON_LOGO                       PACKAGE_NAME
-
 void gnomemeeting_stock_icons_init (void);
 
 G_END_DECLS

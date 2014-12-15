@@ -760,7 +760,7 @@ addressbook_window_new (GmApplication *app)
   gtk_builder_add_from_string (self->priv->builder, win_menu, -1, NULL);
 
   gtk_window_set_position (GTK_WINDOW (self), GTK_WIN_POS_CENTER);
-  gtk_window_set_icon_name (GTK_WINDOW (self), GM_ICON_LOGO);
+  gtk_window_set_icon_name (GTK_WINDOW (self), PACKAGE_NAME);
 
   /* Accels */
   self->priv->accel = gtk_accel_group_new ();

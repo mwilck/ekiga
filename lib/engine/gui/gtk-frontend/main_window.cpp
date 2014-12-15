@@ -773,7 +773,7 @@ ekiga_main_window_init_gui (EkigaMainWindow *mw)
   GtkWidget *window_vbox;
   // FIXME ??? ekiga-settings.h
   gtk_window_set_title (GTK_WINDOW (mw), _("Ekiga Softphone"));
-  gtk_window_set_icon_name (GTK_WINDOW (mw), GM_ICON_LOGO);
+  gtk_window_set_icon_name (GTK_WINDOW (mw), PACKAGE_NAME);
 
   window_vbox = gtk_box_new (GTK_ORIENTATION_VERTICAL, 0);
   gtk_container_add (GTK_CONTAINER (mw), window_vbox);
