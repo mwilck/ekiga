@@ -7,11 +7,12 @@ theme_icons = \
 	gnome_actions_scalable_call-hold-symbolic.svg           \
 	gnome_actions_scalable_call-transfer-symbolic.svg       \
 	gnome_actions_scalable_call-transfer-symbolic-rtl.svg   \
+        gnome_actions_scalable_mute-video-symbolic.svg          \
         gnome_actions_16x16_phone-hang-up.png                   \
         gnome_actions_16x16_phone-pick-up.png                   \
         gnome_actions_24x24_phone-hang-up.png                   \
         gnome_actions_24x24_phone-pick-up.png                   \
-        gnome_status_16x16-im-message.png                       \
+        gnome_status_16x16_im-message.png                       \
         gnome_status_16x16_user-inacall.png                     \
         hicolor_apps_16x16_ekiga.png                            \
         hicolor_apps_22x22_ekiga.png                            \

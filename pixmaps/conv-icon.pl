@@ -36,12 +36,12 @@
 #*
 
 
-system "convert -background lightgrey -flatten 72x72/apps/ekiga.png icon.yuv";
+system "convert -background black -flatten gnome_actions_scalable_mute-video-symbolic.svg icon.yuv";
 
-open INFILE, "icon.yuv" or die $!; 
-open OUTFILE, ">icon.h" or die $!; 
-binmode INFILE; 
-my ($buf, $data, $n); 
+open INFILE, "icon.yuv" or die $!;
+open OUTFILE, ">icon.h" or die $!;
+binmode INFILE;
+my ($buf, $data, $n);
 my $filesize = -s "icon.yuv";
 my $line=0;
 
@@ -59,7 +59,7 @@ static const guint8 gm_icon_yuv[$filesize] __attribute__ ((__aligned__ (4))) = {
 static const guint8 gm_icon_yuv[$filesize] = {
 #endif
 ";
-while (($n = read INFILE, $data, 16) != 0) { 
+while (($n = read INFILE, $data, 16) != 0) {
   print OUTFILE "  ";
   for (my $i = 0; $i < $n; $i++) {
     $ASCII = unpack("H*", substr ($data, $i, 1));
@@ -69,6 +69,6 @@ while (($n = read INFILE, $data, 16) != 0) {
   }
   print OUTFILE "\n";
   $line++;
-} 
+}
 print OUTFILE "};\n";
 close(INFILE);
