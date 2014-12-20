@@ -122,6 +122,7 @@ struct _EkigaCallWindowPrivate
 
   GtkWidget *video_widget;
   bool fullscreen;
+  bool dead;
 
   GtkWidget *call_panel_toolbar;
   GtkWidget *settings_button;
@@ -987,6 +988,10 @@ ekiga_call_window_delete_event_cb (GtkWidget *widget,
 
   self = EKIGA_CALL_WINDOW (widget);
   g_return_val_if_fail (EKIGA_IS_CALL_WINDOW (self), false);
+  if (self->priv->dead)
+    return true;
+
+  self->priv->dead = true;
 
   /* Hang up or disable preview */
   if (self->priv->fullscreen) {
@@ -1659,6 +1664,7 @@ ekiga_call_window_init (EkigaCallWindow *self)
   self->priv->timeout_id = -1;
   self->priv->calling_state = Standby;
   self->priv->fullscreen = false;
+  self->priv->dead = false;
   self->priv->video_display_settings =
     boost::shared_ptr<Ekiga::Settings> (new Ekiga::Settings (VIDEO_DISPLAY_SCHEMA));
 
