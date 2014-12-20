@@ -36,7 +36,7 @@
 #*
 
 
-system "convert -background black -flatten gnome_actions_scalable_mute-video-symbolic.svg icon.yuv";
+system "convert -background black -flatten gnome_actions_128x128_mute-video-symbolic.png icon.yuv";
 
 open INFILE, "icon.yuv" or die $!;
 open OUTFILE, ">icon.h" or die $!;
