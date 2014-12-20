@@ -360,7 +360,6 @@ codecs_box_init (CodecsBox *self)
   GtkWidget *button = NULL;
 
   GtkWidget *buttons_vbox = NULL;
-  GtkWidget *alignment = NULL;
 
   GtkListStore *list_store = NULL;
   GtkCellRenderer *renderer = NULL;
@@ -386,7 +385,6 @@ codecs_box_init (CodecsBox *self)
                                    G_TYPE_BOOLEAN,
                                    G_TYPE_BOOLEAN);
 
-  gtk_tree_view_set_rules_hint (GTK_TREE_VIEW (self->priv->codecs_list), TRUE);
   gtk_tree_view_set_reorderable (GTK_TREE_VIEW (self->priv->codecs_list), TRUE);
   gtk_tree_view_set_search_column (GTK_TREE_VIEW (self->priv->codecs_list),0);
   gtk_tree_view_set_model (GTK_TREE_VIEW (self->priv->codecs_list), 
@@ -445,33 +443,34 @@ codecs_box_init (CodecsBox *self)
 
 
   /* The buttons */
-  alignment = gtk_alignment_new (1, 0.5, 0, 0);
   buttons_vbox = gtk_box_new (GTK_ORIENTATION_VERTICAL, 6);
+  gtk_widget_set_vexpand (GTK_WIDGET (buttons_vbox), TRUE);
 
-  gtk_container_add (GTK_CONTAINER (alignment), buttons_vbox);
-
-  image = gtk_image_new_from_icon_name ("go-up", GTK_ICON_SIZE_MENU);
+  image = gtk_image_new_from_icon_name ("go-up-symbolic", GTK_ICON_SIZE_MENU);
   button = gtk_button_new ();
   gtk_container_add (GTK_CONTAINER (button), image);
   gtk_widget_set_tooltip_text (button, _("Move selected codec priority upwards"));
   gtk_box_pack_start (GTK_BOX (buttons_vbox), button, FALSE, FALSE, 0);
   g_object_set_data (G_OBJECT (button), "operation", (gpointer) "up");
+  gtk_widget_set_valign (GTK_WIDGET (button), GTK_ALIGN_START);
   g_signal_connect (button, "clicked",
                     G_CALLBACK (codec_moved_cb), 
                     (gpointer) self);
 
-  image = gtk_image_new_from_icon_name ("go-down", GTK_ICON_SIZE_MENU);
+  image = gtk_image_new_from_icon_name ("go-down-symbolic", GTK_ICON_SIZE_MENU);
   button = gtk_button_new ();
   gtk_container_add (GTK_CONTAINER (button), image);
   gtk_widget_set_tooltip_text (button, _("Move selected codec priority downwards"));
   gtk_box_pack_start (GTK_BOX (buttons_vbox), button, FALSE, FALSE, 0);
   g_object_set_data (G_OBJECT (button), "operation", (gpointer) "down");
+  gtk_widget_set_valign (GTK_WIDGET (button), GTK_ALIGN_END);
   g_signal_connect (button, "clicked",
                     G_CALLBACK (codec_moved_cb), 
                     (gpointer) self);
 
-  gtk_box_pack_start (GTK_BOX (self), alignment, FALSE, FALSE, 0);
+  gtk_box_pack_start (GTK_BOX (self), buttons_vbox, FALSE, FALSE, 0);
 
+  gtk_widget_set_vexpand (GTK_WIDGET (self), TRUE);
   gtk_widget_set_hexpand (GTK_WIDGET (self), TRUE);
   gtk_widget_show_all (GTK_WIDGET (self));
 }
