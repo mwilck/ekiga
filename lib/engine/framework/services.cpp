@@ -34,10 +34,9 @@
  */
 
 
-/* set DEBUG to 1 and the service core will tell whenever something is added or
+/* enable DEBUG through configure and the service core will tell whenever something is added or
  * asked to it...
  */
-#define DEBUG 0
 
 #if DEBUG
 #include <iostream>
