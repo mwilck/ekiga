@@ -42,6 +42,7 @@
 
 #include <glib/gi18n.h>
 
+#include "platform.h"
 #include "menu-builder.h"
 #include "form-request-simple.h"
 
@@ -109,20 +110,7 @@ Opal::Bank::Bank (Ekiga::ServiceCore& core):
   update_sip_endpoint_aor_map ();
 
   /* Actor stuff */
-  add_action (Ekiga::ActionPtr (new Ekiga::Action ("add-account-ekiga", _("_Add an Ekiga.net Account"),
-                                                   boost::bind (&Opal::Bank::new_account, this,
-                                                                Opal::Account::Ekiga, "", ""))));
-  add_action (Ekiga::ActionPtr (new Ekiga::Action ("add-account-diamondcard", _("_Add an Ekiga Call Out Account"),
-                                                   boost::bind (&Opal::Bank::new_account, this,
-                                                                Opal::Account::DiamondCard, "", ""))));
-  add_action (Ekiga::ActionPtr (new Ekiga::Action ("add-account-sip", _("_Add a SIP Account"),
-                                                   boost::bind (&Opal::Bank::new_account, this,
-                                                                Opal::Account::SIP, "", ""))));
-#ifdef HAVE_H323
-  add_action (Ekiga::ActionPtr (new Ekiga::Action ("add-account-h323", _("_Add an H.323 Account"),
-                                                   boost::bind (&Opal::Bank::new_account, this,
-                                                                Opal::Account::H323, "", ""))));
-#endif
+  add_actions ();
 }
 
 
@@ -512,7 +500,61 @@ Opal::Bank::migrate_from_gconf (const std::list<std::string> old)
 
   xmlDocDumpMemory (doc, &buffer, &doc_size);
   settings->set_string ("accounts", (const char*)buffer);
-  
+
   delete settings;
   xmlFreeDoc (doc);
+}
+
+
+void
+Opal::Bank::on_consult (const std::string url)
+{
+  gm_platform_open_uri (url.c_str ());
+}
+
+
+void
+Opal::Bank::add_actions ()
+{
+  Opal::AccountPtr account = find_account ("ekiga.net");
+  if (!account)
+    add_action (Ekiga::ActionPtr (new Ekiga::Action ("add-account-ekiga",
+                                                     _("_Add an Ekiga.net Account"),
+                                                     boost::bind (&Opal::Bank::new_account, this,
+                                                                  Opal::Account::Ekiga, "", ""))));
+  account = find_account ("sip.diamondcard.us");
+  if (account) {
+    std::stringstream str;
+    std::stringstream url;
+    str << "https://www.diamondcard.us/exec/voip-login?accId=" << account->get_username () << "&pinCode=" << account->get_password () << "&spo=ekiga";
+
+    url.str ("");
+    url << str.str () << "&act=rch";
+    add_action (Ekiga::ActionPtr (new Ekiga::Action ("recharge-account-diamondcard",
+                                                     _("Recharge the Ekiga Call Out account"),
+                                                     boost::bind (&Opal::Bank::on_consult, this, url.str ()))));
+    url.str ("");
+    url << str.str () << "&act=bh";
+    add_action (Ekiga::ActionPtr (new Ekiga::Action ("balance-account-diamondcard",
+                                                     _("Consult the Ekiga Call Out balance history"),
+                                                     boost::bind (&Opal::Bank::on_consult, this, url.str ()))));
+    url.str ("");
+    url << str.str () << "&act=ch";
+    add_action (Ekiga::ActionPtr (new Ekiga::Action ("history-account-diamondcard",
+                                                     _("Consult the Ekiga Call Out call history"),
+                                                     boost::bind (&Opal::Bank::on_consult, this, url.str ()))));
+  }
+  else
+    add_action (Ekiga::ActionPtr (new Ekiga::Action ("add-account-diamondcard",
+                                                     _("_Add an Ekiga Call Out Account"),
+                                                     boost::bind (&Opal::Bank::new_account, this,
+                                                                  Opal::Account::DiamondCard, "", ""))));
+  add_action (Ekiga::ActionPtr (new Ekiga::Action ("add-account-sip", _("_Add a SIP Account"),
+                                                   boost::bind (&Opal::Bank::new_account, this,
+                                                                Opal::Account::SIP, "", ""))));
+#ifdef HAVE_H323
+  add_action (Ekiga::ActionPtr (new Ekiga::Action ("add-account-h323", _("_Add an H.323 Account"),
+                                                   boost::bind (&Opal::Bank::new_account, this,
+                                                                Opal::Account::H323, "", ""))));
+#endif
 }

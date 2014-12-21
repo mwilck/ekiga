@@ -147,6 +147,10 @@ private:
 
     void update_sip_endpoint_aor_map ();
 
+    void on_consult (const std::string url);
+
+    void add_actions ();
+
     Ekiga::Settings *protocols_settings;
   };
 
