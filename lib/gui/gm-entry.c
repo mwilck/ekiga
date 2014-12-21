@@ -408,19 +408,20 @@ gm_entry_text_is_valid (GmEntry *self)
   gchar *value = NULL;
 
   g_return_val_if_fail (GM_IS_ENTRY (self), success);
-  if (!self->priv->regex)
-    return TRUE;
 
   const char *content = gtk_entry_get_text (GTK_ENTRY (self));
-  if (self->priv->allow_empty) {
-    value = g_strdup (content);
-    value = g_strstrip (value);
-    if (!g_strcmp0 (value, "")) {
-      g_free (value);
-      return TRUE;
-    }
+  value = g_strdup (content);
+  value = g_strstrip (value);
+  // First check if value is empty or not
+  if (!g_strcmp0 (value, "")) {
     g_free (value);
+    return self->priv->allow_empty;
   }
+  g_free (value);
+
+  // Here, value is not empty, we check the regex
+  if (!self->priv->regex)
+    return TRUE;
 
   g_regex_match (self->priv->regex, content, 0, &match_info);
 
