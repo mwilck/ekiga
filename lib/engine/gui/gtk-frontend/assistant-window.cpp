@@ -641,9 +641,6 @@ assistant_window_init (AssistantWindow *assistant)
   create_ekiga_net_page (assistant);
   create_ekiga_out_page (assistant);
   create_summary_page (assistant);
-
-  /* FIXME: what the hell is it needed for? */
-  g_object_set_data (G_OBJECT (assistant), "window_name", (gpointer) "assistant");
 }
 
 
