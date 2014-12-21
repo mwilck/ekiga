@@ -52,8 +52,8 @@ G_BEGIN_DECLS
 #define EKIGA_URI_PART "(ekiga.net|ekiga.im)"
 #define BASIC_URI_REGEX "^" URI_SCHEME BASIC_URI_PART "@" BASIC_URI_PART "$"
 #define EKIGA_URI_REGEX "^" SIP_URI_SCHEME BASIC_URI_PART "@" EKIGA_URI_PART "$"
-#define PHONE_NUMBER_REGEX "\\+?[0-9]+"
-#define NUMBER_REGEX "\\[0-9]+"
+#define PHONE_NUMBER_REGEX "^\\+?[0-9]+$"
+#define NUMBER_REGEX "^[0-9]+$"
 
 typedef struct _GmEntry GmEntry;
 typedef struct _GmEntryPrivate GmEntryPrivate;
