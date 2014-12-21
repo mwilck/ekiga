@@ -153,8 +153,8 @@ Opal::Bank::new_account (Account::Type acc_type,
     request->link (_("Get an Ekiga.net SIP account"), "http://www.ekiga.net");
     request->hidden ("name", "Ekiga.net");
     request->hidden ("host", "ekiga.net");
-    request->text ("user", _("_User"), username, _("jon"),
-                   Ekiga::FormVisitor::STANDARD, false, false);
+    request->text ("user", _("Ekiga.im _SIP address"), username, _("sip:jon@ekiga.im"),
+                   Ekiga::FormVisitor::EKIGA_URI, false, false);
     request->hidden ("authentication_user", username);
     request->text ("password", _("_Password"), password, _("1234"),
                    Ekiga::FormVisitor::PASSWORD, false, false);
@@ -166,11 +166,11 @@ Opal::Bank::new_account (Account::Type acc_type,
 		   "https://www.diamondcard.us/exec/voip-login?act=sgn&spo=ekiga");
     request->hidden ("name", "Ekiga Call Out");
     request->hidden ("host", "sip.diamondcard.us");
-    request->text ("user", _("_Username"), username, _("jon"),
-                   Ekiga::FormVisitor::STANDARD, false, false);
+    request->text ("user", _("_Account ID"), username, _("1234567890"),
+                   Ekiga::FormVisitor::NUMBER, false, false);
     request->hidden ("authentication_user", username);
-    request->text ("password", _("_Password"), password, _("1234"),
-                   Ekiga::FormVisitor::PASSWORD, false, false);
+    request->text ("password", _("_PIN Code"), password, _("1234"),
+                   Ekiga::FormVisitor::NUMBER, false, false);
     request->hidden ("timeout", "3600");
     break;
 
@@ -213,7 +213,7 @@ Opal::Bank::new_account (Account::Type acc_type,
 bool
 Opal::Bank::on_new_account_form_submitted (bool submitted,
 					   Ekiga::Form& result,
-                                           std::string& error,
+                                           G_GNUC_UNUSED std::string& error,
 					   Account::Type acc_type)
 {
   if (!submitted)
@@ -233,22 +233,14 @@ Opal::Bank::on_new_account_form_submitted (bool submitted,
 				|| acc_type == Opal::Account::H323) ?
 			       result.text ("timeout").c_str () : result.hidden ("timeout").c_str ());
 
+  // This should only happen with Ekiga.net accounts
+  std::size_t pos = new_user.find_first_of ("@");
+  if (pos != std::string::npos)
+    new_user = new_user.substr (0, pos);
   result.visit (*request);
 
-  if (new_name.empty ())
-    error = _("You did not supply a name for that account.");
-  else if (new_host.empty ())
-    error = _("You did not supply a host to register to.");
-  else if (new_user.empty ())
-    error = _("You did not supply a user name for that account.");
-  else if (new_timeout < 10)
-    error = _("The timeout should be at least 10 seconds.");
-
-  if (!error.empty ())
-   return false;
-  else
-    add (acc_type, new_name, new_host, new_user, new_authentication_user,
-	 new_password, new_enabled, new_timeout);
+  add (acc_type, new_name, new_host, new_user, new_authentication_user,
+       new_password, new_enabled, new_timeout);
 
   return true;
 }
