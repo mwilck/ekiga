@@ -1244,7 +1244,7 @@ ekiga_call_window_update_stats (EkigaCallWindow *self,
   gtk_widget_set_tooltip_text (GTK_WIDGET (self->priv->event_box), stats_msg);
   g_free (stats_msg);
 
-  if (jitter > 150 || lost > 0.02 || late > 0.02 || out_of_order > 0.02)
+  if (jitter > 250 || lost > 0.02 || late > 0.02 || out_of_order > 0.02)
     gm_info_bar_push_message (GM_INFO_BAR (self->priv->info_bar),
                               GTK_MESSAGE_WARNING,
                               _("The call quality is rather bad. Please check your Internet connection."));
