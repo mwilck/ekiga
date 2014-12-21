@@ -47,8 +47,11 @@
 G_BEGIN_DECLS
 
 #define URI_SCHEME "([A-Za-z]+:)?"
+#define SIP_URI_SCHEME "([(sip|sips)]+:)?"
 #define BASIC_URI_PART "[A-Za-z0-9_\\-\\.]+"
+#define EKIGA_URI_PART "[(ekiga.net|ekiga.im)]"
 #define BASIC_URI_REGEX "^" URI_SCHEME BASIC_URI_PART "@" BASIC_URI_PART "$"
+#define EKIGA_URI_REGEX "^" SIP_URI_SCHEME BASIC_URI_PART "@" EKIGA_URI_PART "$"
 #define PHONE_NUMBER_REGEX "\\+?[0-9]+"
 #define NUMBER_REGEX "\\[0-9]+"
 
