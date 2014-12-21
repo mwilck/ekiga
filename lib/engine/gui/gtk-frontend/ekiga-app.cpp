@@ -251,9 +251,6 @@ window_activated (GSimpleAction *action,
 
   else if (!g_strcmp0 (g_action_get_name (G_ACTION (action)), "addressbook"))
     gm_application_show_addressbook_window (self);
-
-  else if (!g_strcmp0 (g_action_get_name (G_ACTION (action)), "assistant"))
-    gm_application_show_assistant_window (self);
 }
 
 
@@ -280,7 +277,6 @@ video_preview_changed (GSettings *settings,
 static GActionEntry app_entries[] =
 {
     { "preferences", window_activated, NULL, NULL, NULL, 0 },
-    { "assistant", window_activated, NULL, NULL, NULL, 0 },
     { "addressbook", window_activated, NULL, NULL, NULL, 0 },
     { "help", help_activated, NULL, NULL, NULL, 0 },
     { "about", about_activated, NULL, NULL, NULL, 0 },
@@ -429,10 +425,6 @@ gm_application_startup (GApplication *app)
                                "      <item>"
                                "        <attribute name=\"label\" translatable=\"yes\">_Preferences</attribute>"
                                "        <attribute name=\"action\">app.preferences</attribute>"
-                               "      </item>"
-                               "      <item>"
-                               "        <attribute name=\"label\" translatable=\"yes\">Configuration _Assistant</attribute>"
-                               "        <attribute name=\"action\">app.assistant</attribute>"
                                "      </item>"
                                "    </section>"
                                "    <section>"
