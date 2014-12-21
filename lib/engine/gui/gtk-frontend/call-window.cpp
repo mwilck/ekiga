@@ -123,6 +123,7 @@ struct _EkigaCallWindowPrivate
   GtkWidget *video_widget;
   bool fullscreen;
   bool dead;
+  bool bad_connection;
 
   GtkWidget *call_panel_toolbar;
   GtkWidget *settings_button;
@@ -1244,10 +1245,13 @@ ekiga_call_window_update_stats (EkigaCallWindow *self,
   gtk_widget_set_tooltip_text (GTK_WIDGET (self->priv->event_box), stats_msg);
   g_free (stats_msg);
 
-  if (jitter > 250 || lost > 0.02 || late > 0.02 || out_of_order > 0.02)
+  if (!self->priv->bad_connection
+      && (jitter > 250 || lost > 0.02 || late > 0.02 || out_of_order > 0.02)) {
     gm_info_bar_push_message (GM_INFO_BAR (self->priv->info_bar),
                               GTK_MESSAGE_WARNING,
                               _("The call quality is rather bad. Please check your Internet connection."));
+    self->priv->bad_connection = true;
+  }
 }
 
 
@@ -1665,6 +1669,7 @@ ekiga_call_window_init (EkigaCallWindow *self)
   self->priv->calling_state = Standby;
   self->priv->fullscreen = false;
   self->priv->dead = false;
+  self->priv->bad_connection = false;
   self->priv->video_display_settings =
     boost::shared_ptr<Ekiga::Settings> (new Ekiga::Settings (VIDEO_DISPLAY_SCHEMA));
 
