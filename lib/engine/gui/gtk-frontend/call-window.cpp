@@ -826,6 +826,7 @@ on_cleared_call_cb (G_GNUC_UNUSED boost::shared_ptr<Ekiga::CallManager> manager,
     self->priv->current_call = boost::shared_ptr<Ekiga::Call>();
     g_source_remove (self->priv->timeout_id);
     self->priv->timeout_id = -1;
+    self->priv->bad_connection = false;
     self->priv->menu.reset ();
   }
 
@@ -844,6 +845,7 @@ static void on_missed_call_cb (boost::shared_ptr<Ekiga::CallManager>  /*manager*
   if (self->priv->current_call && call && self->priv->current_call->get_id () != call->get_id ()) {
     return; // Trying to clear another call than the current active one
   }
+  self->priv->bad_connection = false;
   self->priv->menu.reset ();
 
   ekiga_call_window_update_calling_state (self, Standby);
