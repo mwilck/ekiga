@@ -112,6 +112,9 @@ Opal::Account::build_node(Opal::Account::Type typus,
     xmlSetProp (node, BAD_CAST "timeout", BAD_CAST sstream.str ().c_str ());
   }
 
+  // FIXME: One improvement could be to use inheritance here and have
+  //        specific objects for specific accounts types.
+  //        Would it be considered cleaner or overkill?
   switch (typus) {
 
   case Ekiga:
@@ -138,7 +141,8 @@ Opal::Account::build_node(Opal::Account::Type typus,
 }
 
 
-Opal::Account::Account (boost::shared_ptr<Opal::Sip::EndPoint> _sip_endpoint,
+Opal::Account::Account (Opal::Bank & _bank,
+                        boost::shared_ptr<Opal::Sip::EndPoint> _sip_endpoint,
 			boost::weak_ptr<Ekiga::PresenceCore> _presence_core,
 			boost::shared_ptr<Ekiga::NotificationCore> _notification_core,
 			boost::shared_ptr<Ekiga::PersonalDetails> _personal_details,
@@ -148,6 +152,7 @@ Opal::Account::Account (boost::shared_ptr<Opal::Sip::EndPoint> _sip_endpoint,
 			xmlNodePtr _node):
   existing_groups(_existing_groups),
   node(_node),
+  bank(_bank),
   sip_endpoint(_sip_endpoint),
   presence_core(_presence_core),
   notification_core(_notification_core),
@@ -216,17 +221,34 @@ Opal::Account::Account (boost::shared_ptr<Opal::Sip::EndPoint> _sip_endpoint,
 
     url.str ("");
     url << str.str () << "&act=rch";
-    add_action (Ekiga::ActionPtr (new Ekiga::Action ("recharge-account", _("Recharge the account"),
+    bank.add_action (Ekiga::ActionPtr (new Ekiga::Action ("recharge-account", _("Recharge the Ekiga Call Out account"),
+                                                          boost::bind (&Opal::Account::on_consult, this, url.str ()))));
+    add_action (Ekiga::ActionPtr (new Ekiga::Action ("recharge-account", _("Recharge the Ekiga Call Out account"),
                                                      boost::bind (&Opal::Account::on_consult, this, url.str ()))));
     url.str ("");
     url << str.str () << "&act=bh";
-    add_action (Ekiga::ActionPtr (new Ekiga::Action ("balance-account", _("Consult the balance history"),
+    bank.add_action (Ekiga::ActionPtr (new Ekiga::Action ("balance-account", _("Consult the Ekiga Call Out balance history"),
+                                                          boost::bind (&Opal::Account::on_consult, this, url.str ()))));
+    add_action (Ekiga::ActionPtr (new Ekiga::Action ("balance-account", _("Consult the Ekiga Call Out balance history"),
                                                      boost::bind (&Opal::Account::on_consult, this, url.str ()))));
     url.str ("");
     url << str.str () << "&act=ch";
-    add_action (Ekiga::ActionPtr (new Ekiga::Action ("history-account", _("Consult the call history"),
+    bank.add_action (Ekiga::ActionPtr (new Ekiga::Action ("history-account", _("Consult the Ekiga Call Out call history"),
+                                                          boost::bind (&Opal::Account::on_consult, this, url.str ()))));
+    add_action (Ekiga::ActionPtr (new Ekiga::Action ("history-account", _("Consult the Ekiga Call Out call history"),
                                                      boost::bind (&Opal::Account::on_consult, this, url.str ()))));
+
+    bank.disable_action ("add-account-diamondcard");
   }
+  else if (type == Ekiga) {
+
+    bank.disable_action ("add-account-ekiga");
+  }
+}
+
+
+Opal::Account::~Account ()
+{
 }
 
 
@@ -567,11 +589,23 @@ Opal::Account::remove ()
     return;
   }
 
+  if (type == DiamondCard) {
+
+    bank.remove_action ("recharge-account");
+    bank.remove_action ("balance-account");
+    bank.remove_action ("history-account");
+    bank.enable_action ("add-account-diamondcard");
+  }
+  else if (type == Ekiga) {
+    bank.enable_action ("add-account-ekiga");
+  }
+
   xmlUnlinkNode (node);
   xmlFreeNode (node);
 
   trigger_saving ();
-  removed ();
+  Ekiga::Heap::removed ();
+  Ekiga::Account::removed ();
 }
 
 

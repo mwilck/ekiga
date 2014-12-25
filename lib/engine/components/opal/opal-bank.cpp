@@ -42,7 +42,6 @@
 
 #include <glib/gi18n.h>
 
-#include "platform.h"
 #include "menu-builder.h"
 #include "form-request-simple.h"
 
@@ -64,6 +63,10 @@ Opal::Bank::Bank (Ekiga::ServiceCore& core):
 
   const std::string raw = protocols_settings->get_string ("accounts");
 
+  /* Actor stuff */
+  add_actions ();
+
+  /* Populate Accounts */
   doc = boost::shared_ptr<xmlDoc> (xmlRecoverMemory (raw.c_str (), raw.length ()), xmlFreeDoc);
   if (!doc)
     doc = boost::shared_ptr<xmlDoc> (xmlNewDoc (BAD_CAST "1.0"), xmlFreeDoc);
@@ -81,9 +84,15 @@ Opal::Bank::Bank (Ekiga::ServiceCore& core):
         && child->name != NULL
         && xmlStrEqual(BAD_CAST "account", child->name)) {
 
-      boost::shared_ptr<Account> account(new Account (sip_endpoint, presence_core, notification_core,
-                                                      personal_details, audiooutput_core, opal_component,
-                                                      boost::bind(&Opal::Bank::existing_groups, this), child));
+      boost::shared_ptr<Account> account(new Account (*this,
+                                                      sip_endpoint,
+                                                      presence_core,
+                                                      notification_core,
+                                                      personal_details,
+                                                      audiooutput_core,
+                                                      opal_component,
+                                                      boost::bind(&Opal::Bank::existing_groups, this),
+                                                      child));
 
       add_account (account);
       Ekiga::BankImpl<Account>::add_connection (account, account->presentity_added.connect (boost::bind (boost::ref(presentity_added), account, _1)));
@@ -108,9 +117,6 @@ Opal::Bank::Bank (Ekiga::ServiceCore& core):
   account_updated.connect (boost::bind (&Opal::Bank::update_sip_endpoint_aor_map, this));
   account_removed.connect (boost::bind (&Opal::Bank::update_sip_endpoint_aor_map, this));
   update_sip_endpoint_aor_map ();
-
-  /* Actor stuff */
-  add_actions ();
 }
 
 
@@ -251,7 +257,8 @@ Opal::Bank::add (Account::Type acc_type,
   save ();
 
   AccountPtr account
-    = AccountPtr(new Opal::Account (sip_endpoint,
+    = AccountPtr(new Opal::Account (*this,
+                                    sip_endpoint,
 				    presence_core,
 				    notification_core,
 				    personal_details,
@@ -507,48 +514,21 @@ Opal::Bank::migrate_from_gconf (const std::list<std::string> old)
 
 
 void
-Opal::Bank::on_consult (const std::string url)
-{
-  gm_platform_open_uri (url.c_str ());
-}
-
-
-void
 Opal::Bank::add_actions ()
 {
-  Opal::AccountPtr account = find_account ("ekiga.net");
-  if (!account)
-    add_action (Ekiga::ActionPtr (new Ekiga::Action ("add-account-ekiga",
-                                                     _("_Add an Ekiga.net Account"),
-                                                     boost::bind (&Opal::Bank::new_account, this,
-                                                                  Opal::Account::Ekiga, "", ""))));
-  account = find_account ("sip.diamondcard.us");
-  if (account) {
-    std::stringstream str;
-    std::stringstream url;
-    str << "https://www.diamondcard.us/exec/voip-login?accId=" << account->get_username () << "&pinCode=" << account->get_password () << "&spo=ekiga";
+  // Will be disabled when an Ekiga.net account is added
+  // and enabled back when an Ekiga.net account is removed
+  add_action (Ekiga::ActionPtr (new Ekiga::Action ("add-account-ekiga",
+                                                   _("_Add an Ekiga.net Account"),
+                                                   boost::bind (&Opal::Bank::new_account, this,
+                                                                Opal::Account::Ekiga, "", ""))));
 
-    url.str ("");
-    url << str.str () << "&act=rch";
-    add_action (Ekiga::ActionPtr (new Ekiga::Action ("recharge-account-diamondcard",
-                                                     _("Recharge the Ekiga Call Out account"),
-                                                     boost::bind (&Opal::Bank::on_consult, this, url.str ()))));
-    url.str ("");
-    url << str.str () << "&act=bh";
-    add_action (Ekiga::ActionPtr (new Ekiga::Action ("balance-account-diamondcard",
-                                                     _("Consult the Ekiga Call Out balance history"),
-                                                     boost::bind (&Opal::Bank::on_consult, this, url.str ()))));
-    url.str ("");
-    url << str.str () << "&act=ch";
-    add_action (Ekiga::ActionPtr (new Ekiga::Action ("history-account-diamondcard",
-                                                     _("Consult the Ekiga Call Out call history"),
-                                                     boost::bind (&Opal::Bank::on_consult, this, url.str ()))));
-  }
-  else
-    add_action (Ekiga::ActionPtr (new Ekiga::Action ("add-account-diamondcard",
-                                                     _("_Add an Ekiga Call Out Account"),
-                                                     boost::bind (&Opal::Bank::new_account, this,
-                                                                  Opal::Account::DiamondCard, "", ""))));
+  // Will be disabled when a DiamondCard account is added
+  // and enabled back when an DiamondCard account is removed
+  add_action (Ekiga::ActionPtr (new Ekiga::Action ("add-account-diamondcard",
+                                                 _("_Add an Ekiga Call Out Account"),
+                                                 boost::bind (&Opal::Bank::new_account, this,
+                                                              Opal::Account::DiamondCard, "", ""))));
   add_action (Ekiga::ActionPtr (new Ekiga::Action ("add-account-sip", _("_Add a SIP Account"),
                                                    boost::bind (&Opal::Bank::new_account, this,
                                                                 Opal::Account::SIP, "", ""))));

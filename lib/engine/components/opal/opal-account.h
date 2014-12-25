@@ -55,6 +55,7 @@
 namespace Opal
 {
   // forward declarations:
+  class Bank;
   class CallManager;
   class Presentity;
   namespace Sip { class EndPoint; };
@@ -84,7 +85,8 @@ public:
 				  bool enabled,
 				  unsigned timeout);
 
-    Account (boost::shared_ptr<Opal::Sip::EndPoint> _sip_endpoint,
+    Account (Opal::Bank & bank,
+             boost::shared_ptr<Opal::Sip::EndPoint> _sip_endpoint,
 	     boost::weak_ptr<Ekiga::PresenceCore> _presence_core,
 	     boost::shared_ptr<Ekiga::NotificationCore> _notification_core,
 	     boost::shared_ptr<Ekiga::PersonalDetails> _personal_details,
@@ -93,7 +95,7 @@ public:
 	     boost::function0<std::list<std::string> > _existing_groups,
 	     xmlNodePtr node_);
 
-    ~Account () {}
+    ~Account ();
 
     const std::string get_name () const;
 
@@ -242,6 +244,8 @@ private:
 				  std::string status) const;
     void when_presentity_removed (boost::shared_ptr<Opal::Presentity> pres);
     void when_presentity_updated (boost::shared_ptr<Opal::Presentity> pres);
+
+    Opal::Bank & bank;
 
     boost::shared_ptr<Opal::Sip::EndPoint> sip_endpoint;
     boost::weak_ptr<Ekiga::PresenceCore> presence_core;
