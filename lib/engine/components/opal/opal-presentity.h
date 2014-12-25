@@ -42,11 +42,15 @@
 #include <boost/smart_ptr.hpp>
 
 #include "form.h"
+
 #include "presence-core.h"
+
 #include "presentity.h"
+
 
 namespace Opal
 {
+  class Account;
   class Cluster;
 
   /* This class implements and Ekiga::Presentity, stored as a node
@@ -54,7 +58,8 @@ namespace Opal
    * probably be abstracted, should the need arise!
    */
 
-  class Presentity: public Ekiga::Presentity
+  class Presentity:
+      public Ekiga::Presentity
   {
   public:
 
@@ -62,10 +67,11 @@ namespace Opal
      * will then use to create a valid instance using the ctor */
     static xmlNodePtr build_node (const std::string name_,
 				  const std::string uri_,
-				  const std::set<std::string> groups_);
+				  const std::list<std::string> groups_);
 
-    Presentity (boost::weak_ptr<Ekiga::PresenceCore> presence_core_,
-		boost::function0<std::set<std::string> > existing_groups_,
+    Presentity (const Account & account,
+                boost::weak_ptr<Ekiga::PresenceCore> presence_core_,
+		boost::function0<std::list<std::string> > existing_groups_,
 		xmlNodePtr node_);
 
     ~Presentity ();
@@ -78,13 +84,11 @@ namespace Opal
 
     const std::string get_status () const;
 
-    const std::set<std::string> get_groups () const;
+    const std::list<std::string> get_groups () const;
 
     const std::string get_uri () const;
 
     bool has_uri (const std::string uri) const;
-
-    bool populate_menu (Ekiga::MenuBuilder &);
 
     /* setter methods specific for this class of presentity, where we
      * expect to get presence from elsewhere:
@@ -109,7 +113,7 @@ namespace Opal
      * changes get written in the XML source document, and finally
      * emit 'removed' so the views (and the heap) forget about it as a
      * presentity.
-     * 
+     *
      */
     boost::signals2::signal<void(void)> trigger_saving;
     void remove ();
@@ -120,11 +124,13 @@ namespace Opal
      * a nice form
      */
     void edit_presentity ();
-    void edit_presentity_form_submitted (bool submitted,
-					 Ekiga::Form& result);
+    bool edit_presentity_form_submitted (bool submitted,
+					 Ekiga::Form& result,
+                                         std::string& error);
 
+    const Account & account;
     boost::weak_ptr<Ekiga::PresenceCore> presence_core;
-    boost::function0<std::set<std::string> > existing_groups;
+    boost::function0<std::list<std::string> > existing_groups;
     xmlNodePtr node;
 
     std::string presence;

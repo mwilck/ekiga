@@ -52,6 +52,12 @@ Ekiga::FormDumper::title (const std::string _title)
 }
 
 void
+Ekiga::FormDumper::action (const std::string _action)
+{
+  out << "Action: " << _action << std::endl;
+}
+
+void
 Ekiga::FormDumper::instructions (const std::string _instructions)
 {
   out << "Instructions: " << std::endl << _instructions << std::endl;
@@ -98,25 +104,16 @@ void
 Ekiga::FormDumper::text (const std::string name,
 			 const std::string description,
 			 const std::string value,
-			 bool advanced)
+                         const FormVisitor::FormTextType type,
+			 bool advanced,
+                         bool allow_empty)
 {
   out << "Text field " << name
       << " (default value: " << value << "): " << std::endl
       << description
+      << " (Type: " << type << "): " << std::endl
       << (advanced?"[advanced]":"")
-      << std::endl;
-}
-
-void
-Ekiga::FormDumper::private_text (const std::string name,
-				 const std::string description,
-				 const std::string value,
-				 bool advanced)
-{
-  out << "Private text field " << name
-      << " (default value: " << value << "): " << std::endl
-      << description
-      << (advanced?"[advanced]":"")
+      << (allow_empty?"[allow_empty]":"")
       << std::endl;
 }
 
@@ -178,22 +175,24 @@ Ekiga::FormDumper::multiple_choice (const std::string name,
 }
 
 void
-Ekiga::FormDumper::editable_set (const std::string name,
-				 const std::string description,
-				 const std::set<std::string> values,
-				 const std::set<std::string> proposed_values,
-				 bool advanced)
+Ekiga::FormDumper::editable_list (const std::string name,
+                                  const std::string description,
+                                  const std::list<std::string> values,
+                                  const std::list<std::string> proposed_values,
+                                  bool advanced,
+                                  bool rename_only)
 {
   out << "Editable list " << name << ":" << std::endl
       << description
       << (advanced?"[advanced]":"")
+      << (rename_only?"[rename_only]":"")
       << "where current set is :" << std::endl;
-  for (std::set<std::string>::const_iterator iter = values.begin ();
+  for (std::list<std::string>::const_iterator iter = values.begin ();
        iter != values.end ();
        iter++)
     out << *iter << std::endl;
   out << "with proposed set of :" << std::endl;
-  for (std::set<std::string>::const_iterator iter = proposed_values.begin ();
+  for (std::list<std::string>::const_iterator iter = proposed_values.begin ();
        iter != proposed_values.end ();
        iter++)
     out << *iter << std::endl;

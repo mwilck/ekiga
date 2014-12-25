@@ -74,8 +74,6 @@ namespace Evolution
 
     bool has_uri (const std::string uri) const;
 
-    bool populate_menu (Ekiga::MenuBuilder &builder);
-
     void update_econtact (EContact *econtact);
 
     void remove ();
@@ -107,13 +105,15 @@ namespace Evolution
 
     void edit_action ();
 
-    void on_edit_form_submitted (bool submitted,
-				 Ekiga::Form &result);
+    bool on_edit_form_submitted (bool submitted,
+				 Ekiga::Form &result,
+                                 std::string &error);
 
     void remove_action ();
 
-    void on_remove_form_submitted (bool submitted,
-				   Ekiga::Form &result);
+    bool on_remove_form_submitted (bool submitted,
+				   Ekiga::Form &result,
+                                   std::string &error);
   };
 
   typedef boost::shared_ptr<Contact> ContactPtr;

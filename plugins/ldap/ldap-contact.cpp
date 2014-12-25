@@ -82,28 +82,3 @@ OPENLDAP::Contact::has_uri (const std::string uri) const
 
   return result;
 }
-
-bool
-OPENLDAP::Contact::populate_menu (Ekiga::MenuBuilder &builder)
-{
-  boost::shared_ptr<Ekiga::ContactCore> contact_core = core.get<Ekiga::ContactCore> ("contact-core");
-  /* FIXME: add here the specific actions we want to allow
-   * (before or after the uri-specific actions)
-   */
-
-  Ekiga::TemporaryMenuBuilder tmp_builder;
-
-  bool result = false;
-  for (std::map<std::string, std::string>::const_iterator iter
-	 = uris.begin ();
-       iter != uris.end ();
-       iter++) {
-    if (contact_core->populate_contact_menu (ContactPtr(this, null_deleter ()),
-					     iter->second, tmp_builder)) {
-      builder.add_ghost ("", iter->second);
-      tmp_builder.populate_menu (builder);
-      result = true;
-    }
-  }
-  return result;
-}

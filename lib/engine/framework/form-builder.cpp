@@ -46,13 +46,13 @@ Ekiga::FormBuilder::visit (Ekiga::FormVisitor &visitor) const
   std::list<struct HiddenField>::const_iterator iter_hidden = hiddens.begin ();
   std::list<struct BooleanField>::const_iterator iter_bool = booleans.begin ();
   std::list<struct TextField>::const_iterator iter_text = texts.begin ();
-  std::list<struct TextField>::const_iterator iter_private_text = private_texts.begin ();
   std::list<struct MultiTextField>::const_iterator iter_multi_text = multi_texts.begin ();
   std::list<struct SingleChoiceField>::const_iterator iter_single_choice = single_choices.begin ();
   std::list<struct MultipleChoiceField>::const_iterator iter_multiple_choice = multiple_choices.begin ();
-  std::list<struct EditableSetField>::const_iterator iter_editable_set = editable_sets.begin ();
+  std::list<struct EditableListField>::const_iterator iter_editable_list = editable_lists.begin ();
 
   visitor.title (my_title);
+  visitor.action (my_action);
   visitor.instructions (my_instructions);
   if (!my_link.first.empty () && !my_link.second.empty ())
     visitor.link (my_link.first, my_link.second); 
@@ -75,25 +75,17 @@ Ekiga::FormBuilder::visit (Ekiga::FormVisitor &visitor) const
       visitor.boolean (iter_bool->name,
 		       iter_bool->description,
 		       iter_bool->value,
-		       iter_bool->advanced);
+		       iter_bool->advanced,
+                       iter_bool->in_header_bar);
       iter_bool++;
       break;
 
     case TEXT:
 
       visitor.text (iter_text->name, iter_text->description,
-               iter_text->value, iter_text->tooltip, iter_text->advanced);
+                    iter_text->value, iter_text->tooltip,
+                    iter_text->type, iter_text->advanced, iter_text->allow_empty);
       iter_text++;
-      break;
-
-    case PRIVATE_TEXT:
-
-      visitor.private_text (iter_private_text->name,
-			    iter_private_text->description,
-			    iter_private_text->value,
-			    iter_private_text->tooltip,
-			    iter_private_text->advanced);
-      iter_private_text++;
       break;
 
     case MULTI_TEXT:
@@ -127,12 +119,13 @@ Ekiga::FormBuilder::visit (Ekiga::FormVisitor &visitor) const
 
     case EDITABLE_SET:
 
-      visitor.editable_set (iter_editable_set->name,
-			    iter_editable_set->description,
-			    iter_editable_set->values,
-			    iter_editable_set->proposed_values,
-			    iter_editable_set->advanced);
-      iter_editable_set++;
+      visitor.editable_list (iter_editable_list->name,
+			    iter_editable_list->description,
+			    iter_editable_list->values,
+			    iter_editable_list->proposed_values,
+                            iter_editable_list->advanced,
+                            iter_editable_list->rename_only);
+      iter_editable_list++;
       break;
 
     default:
@@ -163,18 +156,6 @@ Ekiga::FormBuilder::boolean (const std::string name) const
       return iter->value;
 
   return false; // shouldn't happen
-}
-
-const std::string
-Ekiga::FormBuilder::private_text (const std::string name) const
-{
-  for (std::list<struct TextField>::const_iterator iter = private_texts.begin ();
-       iter != private_texts.end ();
-       iter++)
-    if (iter->name == name)
-      return iter->value;
-
-  return ""; // shouldn't happen
 }
 
 const std::string
@@ -225,16 +206,16 @@ Ekiga::FormBuilder::multiple_choice (const std::string name) const
   return std::set<std::string>(); // shouldn't happen
 }
 
-const std::set<std::string>
-Ekiga::FormBuilder::editable_set (const std::string name) const
+const std::list<std::string>
+Ekiga::FormBuilder::editable_list (const std::string name) const
 {
-  for (std::list<struct EditableSetField>::const_iterator iter = editable_sets.begin ();
-       iter != editable_sets.end ();
+  for (std::list<struct EditableListField>::const_iterator iter = editable_lists.begin ();
+       iter != editable_lists.end ();
        iter++)
     if (iter->name == name)
       return iter->values;
 
-  return std::set<std::string>(); // shouldn't happen
+  return std::list<std::string>(); // shouldn't happen
 }
 
 void
@@ -242,6 +223,13 @@ Ekiga::FormBuilder::title (const std::string _title)
 {
   my_title = _title;
 }
+
+void
+Ekiga::FormBuilder::action (const std::string _action)
+{
+  my_action = _action;
+}
+
 
 void
 Ekiga::FormBuilder::instructions (const std::string _instructions)
@@ -274,9 +262,10 @@ void
 Ekiga::FormBuilder::boolean (const std::string name,
 			     const std::string description,
 			     bool value,
-			     bool advanced)
+			     bool advanced,
+                             bool in_header_bar)
 {
-  booleans.push_back (BooleanField (name, description, value, advanced));
+  booleans.push_back (BooleanField (name, description, value, advanced, in_header_bar));
   ordering.push_back (BOOLEAN);
 }
 
@@ -285,21 +274,12 @@ Ekiga::FormBuilder::text (const std::string name,
 			  const std::string description,
 			  const std::string value,
 			  const std::string tooltip,
-			  bool advanced)
+                          const FormVisitor::FormTextType type,
+			  bool advanced,
+                          bool allow_empty)
 {
-  texts.push_back (TextField (name, description, value, tooltip, advanced));
+  texts.push_back (TextField (name, description, value, tooltip, type, advanced, allow_empty));
   ordering.push_back (TEXT);
-}
-
-void
-Ekiga::FormBuilder::private_text (const std::string name,
-				  const std::string description,
-				  const std::string value,
-				  const std::string tooltip,
-				  bool advanced)
-{
-  private_texts.push_back (TextField (name, description, value, tooltip, advanced));
-  ordering.push_back (PRIVATE_TEXT);
 }
 
 void
@@ -337,13 +317,15 @@ Ekiga::FormBuilder::multiple_choice (const std::string name,
 }
 
 void
-Ekiga::FormBuilder::editable_set (const std::string name,
-				  const std::string description,
-				  const std::set<std::string> values,
-				  const std::set<std::string> proposed_values,
-				  bool advanced)
+Ekiga::FormBuilder::editable_list (const std::string name,
+                                   const std::string description,
+                                   const std::list<std::string> values,
+                                   const std::list<std::string> proposed_values,
+                                   bool advanced,
+                                   bool rename_only)
 {
-  editable_sets.push_back (EditableSetField (name, description, values,
-					     proposed_values, advanced));
+  editable_lists.push_back (EditableListField (name, description, values,
+                                               proposed_values, advanced,
+                                               rename_only));
   ordering.push_back (EDITABLE_SET);
 }

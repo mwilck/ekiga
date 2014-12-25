@@ -41,10 +41,11 @@
 #include "services.h"
 #include "account.h"
 
+#include "gm-entry.h"
 #include "platform.h"
 #include "assistant-window.h"
 #include "default_devices.h"
-#include "gtk-frontend.h"
+#include "ekiga-app.h"
 #include "opal-bank.h"
 
 #include "ekiga-settings.h"
@@ -56,7 +57,6 @@ G_DEFINE_TYPE (AssistantWindow, assistant_window, GTK_TYPE_ASSISTANT);
 struct _AssistantWindowPrivate
 {
   boost::shared_ptr<Opal::Bank> bank;
-  boost::weak_ptr<GtkFrontend> frontend;
   GdkPixbuf *icon;
 
   GtkWidget *welcome_page;
@@ -147,7 +147,8 @@ static void
 name_changed_cb (GtkEntry     *entry,
                  GtkAssistant *assistant)
 {
-  set_current_page_complete (assistant, (gtk_entry_get_text (entry))[0] != '\0');
+  set_current_page_complete (assistant,
+                             gm_entry_text_is_valid (GM_ENTRY (entry)));
 }
 
 
@@ -162,10 +163,10 @@ create_personal_data_page (AssistantWindow *assistant)
 
   /* The user fields */
   label = gtk_label_new (_("Please enter your first name and your surname:"));
-  gtk_misc_set_alignment (GTK_MISC (label), 0.0, 0.5);
   gtk_box_pack_start (GTK_BOX (vbox), label, FALSE, FALSE, 0);
 
-  assistant->priv->name = gtk_entry_new ();
+  assistant->priv->name = gm_entry_new (NULL);
+  gm_entry_set_allow_empty (GM_ENTRY (assistant->priv->name), FALSE);
   gtk_entry_set_activates_default (GTK_ENTRY (assistant->priv->name), TRUE);
   gtk_box_pack_start (GTK_BOX (vbox), assistant->priv->name, FALSE, FALSE, 0);
 
@@ -176,7 +177,6 @@ create_personal_data_page (AssistantWindow *assistant)
   gtk_label_set_markup (GTK_LABEL (label), text);
   g_free (text);
   gtk_label_set_line_wrap (GTK_LABEL (label), TRUE);
-  gtk_misc_set_alignment (GTK_MISC (label), 0.0, 0.5);
   gtk_box_pack_start (GTK_BOX (vbox), label, FALSE, TRUE, 0);
 
   g_signal_connect (assistant->priv->name, "changed",
@@ -216,17 +216,13 @@ create_info_page (AssistantWindow *assistant)
 {
   GtkWidget *label;
 
-  label = gtk_label_new (_("If you do not have a SIP or H323 account, ekiga "
-                           "can only be used on your local internal network "
-                           "(inside your company, for example).  You will "
-                           "require an account if you want to be accessible "
-                           "to people on the Internet.  Many web sites allow "
-                           "you to create an account.  We suggest that you use "
-                           "a free ekiga.net account, which allows you to be "
-                           "joined by any person with a SIP account.  If you "
-                           "want to call regular phone lines too, we suggest "
+  label = gtk_label_new (_("You usually need a SIP or H323 account in order to use Ekiga.\n"
+                           "Many services allow you creating such accounts.\n\n"
+                           "We suggest that you use a free ekiga.im account, "
+                           "which allows you to be called by any person with a SIP account.\n\n"
+                           "If you want to call regular phone lines too, we suggest "
                            "that you purchase an inexpensive call out account."
-                           "\n\nThe following two pages allow you to create "
+                           "\n\nThe following two pages allow you creating "
                            "such accounts."));
   gtk_label_set_line_wrap (GTK_LABEL (label), TRUE);
   gtk_widget_show (label);
@@ -243,7 +239,7 @@ static void
 ekiga_net_button_clicked_cb (G_GNUC_UNUSED GtkWidget *button,
                              G_GNUC_UNUSED gpointer data)
 {
-  gm_platform_open_uri ("http://www.ekiga.net");
+  gm_platform_open_uri ("http://www.ekiga.im");
 }
 
 
@@ -269,93 +265,16 @@ ekiga_out_new_clicked_cb (G_GNUC_UNUSED GtkWidget *widget,
 
 
 static void
-ekiga_out_recharge_clicked_cb (G_GNUC_UNUSED GtkWidget *widget,
-                               gpointer data)
-{
-  AssistantWindow *assistant = NULL;
-
-  const char *account = NULL;
-  const char *password = NULL;
-
-  gchar *url = NULL;
-
-  assistant = ASSISTANT_WINDOW (data);
-
-  account = gtk_entry_get_text (GTK_ENTRY (assistant->priv->dusername));
-  password = gtk_entry_get_text (GTK_ENTRY (assistant->priv->dpassword));
-
-  if (account == NULL || password == NULL)
-    return; /* no account configured yet */
-
-  url = g_strdup_printf ("https://www.diamondcard.us/exec/voip-login?accId=%s&pinCode=%s&act=rch&spo=ekiga", account, password);
-  gm_platform_open_uri (url);
-  g_free (url);
-}
-
-
-static void
-ekiga_out_history_balance_clicked_cb (G_GNUC_UNUSED GtkWidget *widget,
-                                      gpointer data)
-{
-  AssistantWindow *assistant = NULL;
-
-  const char *account = NULL;
-  const char *password = NULL;
-
-  gchar *url = NULL;
-
-  assistant = ASSISTANT_WINDOW (data);
-
-  account = gtk_entry_get_text (GTK_ENTRY (assistant->priv->dusername));
-  password = gtk_entry_get_text (GTK_ENTRY (assistant->priv->dpassword));
-
-  if (account == NULL || password == NULL)
-    return; /* no account configured yet */
-
-  url = g_strdup_printf ("https://www.diamondcard.us/exec/voip-login?accId=%s&pinCode=%s&act=bh&spo=ekiga", account, password);
-  gm_platform_open_uri (url);
-  g_free (url);
-}
-
-
-static void
-ekiga_out_history_calls_clicked_cb (G_GNUC_UNUSED GtkWidget *widget,
-                                    gpointer data)
-{
-  AssistantWindow *assistant = NULL;
-
-  const char *account = NULL;
-  const char *password = NULL;
-
-  gchar *url = NULL;
-
-  assistant = ASSISTANT_WINDOW (data);
-
-  account = gtk_entry_get_text (GTK_ENTRY (assistant->priv->dusername));
-  password = gtk_entry_get_text (GTK_ENTRY (assistant->priv->dpassword));
-
-  if (account == NULL || password == NULL)
-    return; /* no account configured yet */
-
-  url = g_strdup_printf ("https://www.diamondcard.us/exec/voip-login?accId=%s&pinCode=%s&act=ch&spo=ekiga", account, password);
-  gm_platform_open_uri (url);
-  g_free (url);
-}
-
-
-static void
 ekiga_net_info_changed_cb (G_GNUC_UNUSED GtkWidget *w,
                            AssistantWindow *assistant)
 {
-  gboolean complete;
+  gboolean complete = FALSE;
 
   if (gtk_toggle_button_get_active (GTK_TOGGLE_BUTTON (assistant->priv->skip_ekiga_net)))
     complete = TRUE;
-  else {
-    const char *username = gtk_entry_get_text (GTK_ENTRY (assistant->priv->username));
-    const char *password = gtk_entry_get_text (GTK_ENTRY (assistant->priv->password));
-    complete = g_strcmp0(username, "") != 0 && g_strcmp0(password, "") != 0;
-  }
+  else
+    complete = gm_entry_text_is_valid (GM_ENTRY (assistant->priv->username))
+      && gm_entry_text_is_valid (GM_ENTRY (assistant->priv->password));
 
   set_current_page_complete (GTK_ASSISTANT (assistant), complete);
 }
@@ -365,15 +284,14 @@ static void
 ekiga_out_info_changed_cb (G_GNUC_UNUSED GtkWidget *w,
                            AssistantWindow *assistant)
 {
-  gboolean complete;
+  gboolean complete = FALSE;
 
   if (gtk_toggle_button_get_active (GTK_TOGGLE_BUTTON (assistant->priv->skip_ekiga_out)))
     complete = TRUE;
-  else {
-    const char *username = gtk_entry_get_text (GTK_ENTRY (assistant->priv->dusername));
-    const char *password = gtk_entry_get_text (GTK_ENTRY (assistant->priv->dpassword));
-    complete = g_strcmp0(username, "") != 0 && g_strcmp0(password, "") != 0;
-  }
+  else
+    complete = gm_entry_text_is_valid (GM_ENTRY (assistant->priv->dusername))
+      && gm_entry_text_is_valid (GM_ENTRY (assistant->priv->dpassword));
+  std::cout << gm_entry_text_is_valid (GM_ENTRY (assistant->priv->dusername)) << std::endl << std::flush;
 
   set_current_page_complete (GTK_ASSISTANT (assistant), complete);
 }
@@ -386,31 +304,32 @@ create_ekiga_net_page (AssistantWindow *assistant)
   GtkWidget *label;
   gchar *text;
   GtkWidget *button;
-  GtkWidget *align;
 
-  vbox = create_page (assistant, _("Ekiga.net Account"), GTK_ASSISTANT_PAGE_CONTENT);
+  vbox = create_page (assistant, _("Ekiga.im Account"), GTK_ASSISTANT_PAGE_CONTENT);
 
-  label = gtk_label_new (_("Please enter your username:"));
-  gtk_misc_set_alignment (GTK_MISC (label), 0.0, 0.5);
+  label = gtk_label_new (_("Please enter your ekiga.im SIP address:"));
+  gtk_widget_set_halign (label, GTK_ALIGN_START);
   gtk_box_pack_start (GTK_BOX (vbox), label, FALSE, FALSE, 0);
 
-  assistant->priv->username = gtk_entry_new ();
+  assistant->priv->username = gm_entry_new (EKIGA_URI_REGEX);
+  gm_entry_set_allow_empty (GM_ENTRY (assistant->priv->username), FALSE);
   gtk_entry_set_activates_default (GTK_ENTRY (assistant->priv->username), TRUE);
   gtk_box_pack_start (GTK_BOX (vbox), assistant->priv->username, FALSE, FALSE, 0);
 
   label = gtk_label_new (_("Please enter your password:"));
-  gtk_misc_set_alignment (GTK_MISC (label), 0.0, 0.5);
+  gtk_widget_set_halign (label, GTK_ALIGN_START);
   gtk_box_pack_start (GTK_BOX (vbox), label, FALSE, FALSE, 0);
 
-  assistant->priv->password = gtk_entry_new ();
+  assistant->priv->password = gm_entry_new (NULL);
+  gm_entry_set_allow_empty (GM_ENTRY (assistant->priv->password), FALSE);
   gtk_entry_set_activates_default (GTK_ENTRY (assistant->priv->password), TRUE);
   gtk_entry_set_visibility (GTK_ENTRY (assistant->priv->password), FALSE);
   gtk_box_pack_start (GTK_BOX (vbox), assistant->priv->password, FALSE, FALSE, 0);
 
   label = gtk_label_new (NULL);
-  text = g_strdup_printf ("<i>%s</i>", _("The username and password are used "
-					 "to login to your existing account at the ekiga.net "
-					 "free SIP service. If you do not have an ekiga.net "
+  text = g_strdup_printf ("<i>%s</i>", _("The ekiga.im SIP address and password are used "
+					 "to login to your existing account at the ekiga.im "
+					 "free SIP service. If you do not have an ekiga.im "
 					 "SIP address yet, you may first create an account "
 					 "below. This will provide a SIP address that allows "
 					 "people to call you.\n\nYou may skip this step if "
@@ -419,13 +338,12 @@ create_ekiga_net_page (AssistantWindow *assistant)
   gtk_label_set_markup (GTK_LABEL (label), text);
   g_free (text);
   gtk_label_set_line_wrap (GTK_LABEL (label), TRUE);
-  gtk_misc_set_alignment (GTK_MISC (label), 0.0, 0.5);
   gtk_box_pack_start (GTK_BOX (vbox), label, FALSE, TRUE, 0);
 
   button = gtk_button_new ();
   label = gtk_label_new (NULL);
   text = g_strdup_printf ("<span foreground=\"blue\"><u>%s</u></span>",
-                          _("Get an Ekiga.net SIP account"));
+                          _("Get an Ekiga.im SIP account"));
   gtk_label_set_markup (GTK_LABEL (label), text);
   g_free (text);
   gtk_button_set_relief (GTK_BUTTON (button), GTK_RELIEF_NONE);
@@ -434,10 +352,8 @@ create_ekiga_net_page (AssistantWindow *assistant)
   g_signal_connect (button, "clicked",
                     G_CALLBACK (ekiga_net_button_clicked_cb), NULL);
 
-  assistant->priv->skip_ekiga_net = gtk_check_button_new_with_label (_("I do not want to sign up for the ekiga.net free service"));
-  align = gtk_alignment_new (0, 1.0, 0, 0);
-  gtk_container_add (GTK_CONTAINER (align), assistant->priv->skip_ekiga_net);
-  gtk_box_pack_start (GTK_BOX (vbox), align, TRUE, TRUE, 0);
+  assistant->priv->skip_ekiga_net = gtk_check_button_new_with_label (_("I do not want to sign up for the ekiga.im free service"));
+  gtk_box_pack_start (GTK_BOX (vbox), assistant->priv->skip_ekiga_net, TRUE, TRUE, 0);
 
   g_signal_connect (assistant->priv->username, "changed",
                     G_CALLBACK (ekiga_net_info_changed_cb), assistant);
@@ -455,15 +371,20 @@ static void
 prepare_ekiga_net_page (AssistantWindow *assistant)
 {
   Opal::AccountPtr account = assistant->priv->bank->find_account ("ekiga.net");
+  gboolean complete = FALSE;
 
   if (account && !account->get_username ().empty ())
-    gtk_entry_set_text (GTK_ENTRY (assistant->priv->username), account->get_username ().c_str ());
+    gtk_entry_set_text (GTK_ENTRY (assistant->priv->username), (account->get_username () + "@ekiga.net").c_str ());
   if (account && !account->get_password ().empty ())
     gtk_entry_set_text (GTK_ENTRY (assistant->priv->password), account->get_password ().c_str ());
 
-  set_current_page_complete (GTK_ASSISTANT (assistant),
-                             gtk_toggle_button_get_active (GTK_TOGGLE_BUTTON (assistant->priv->skip_ekiga_net))
-                             || (account && !account->get_username ().empty () && !account->get_password ().empty ()));
+  if (gtk_toggle_button_get_active (GTK_TOGGLE_BUTTON (assistant->priv->skip_ekiga_net)))
+    complete = TRUE;
+  else
+    complete = gm_entry_text_is_valid (GM_ENTRY (assistant->priv->username))
+      && gm_entry_text_is_valid (GM_ENTRY (assistant->priv->password));
+
+  set_current_page_complete (GTK_ASSISTANT (assistant), complete);
 }
 
 
@@ -472,16 +393,24 @@ apply_ekiga_net_page (AssistantWindow *assistant)
 {
   Opal::AccountPtr account = assistant->priv->bank->find_account ("ekiga.net");
   bool new_account = !account;
+  const char *address = gtk_entry_get_text (GTK_ENTRY (assistant->priv->username));
+  gchar **split = g_strsplit (address, "@", 1);
+  if (!split || !split[0]) {
+    g_strfreev (split);
+    return;
+  }
 
   if (!gtk_toggle_button_get_active (GTK_TOGGLE_BUTTON (assistant->priv->skip_ekiga_net))) {
     if (new_account)
       assistant->priv->bank->new_account (Opal::Account::Ekiga,
-					  gtk_entry_get_text (GTK_ENTRY (assistant->priv->username)),
+					  split[0],
 					  gtk_entry_get_text (GTK_ENTRY (assistant->priv->password)));
     else
-      account->set_authentication_settings (gtk_entry_get_text (GTK_ENTRY (assistant->priv->username)),
+      account->set_authentication_settings (split[0],
 					    gtk_entry_get_text (GTK_ENTRY (assistant->priv->password)));
   }
+
+  g_strfreev (split);
 }
 
 
@@ -492,23 +421,24 @@ create_ekiga_out_page (AssistantWindow *assistant)
   GtkWidget *label;
   gchar *text;
   GtkWidget *button;
-  GtkWidget *align;
 
   vbox = create_page (assistant, _("Ekiga Call Out Account"), GTK_ASSISTANT_PAGE_CONTENT);
 
   label = gtk_label_new (_("Please enter your account ID:"));
-  gtk_misc_set_alignment (GTK_MISC (label), 0.0, 0.5);
+  gtk_widget_set_halign (label, GTK_ALIGN_START);
   gtk_box_pack_start (GTK_BOX (vbox), label, FALSE, FALSE, 0);
 
-  assistant->priv->dusername = gtk_entry_new ();
+  assistant->priv->dusername = gm_entry_new (NUMBER_REGEX);
+  gm_entry_set_allow_empty (GM_ENTRY (assistant->priv->dusername), FALSE);
   gtk_entry_set_activates_default (GTK_ENTRY (assistant->priv->dusername), TRUE);
   gtk_box_pack_start (GTK_BOX (vbox), assistant->priv->dusername, FALSE, FALSE, 0);
 
   label = gtk_label_new (_("Please enter your PIN code:"));
-  gtk_misc_set_alignment (GTK_MISC (label), 0.0, 0.5);
+  gtk_widget_set_halign (label, GTK_ALIGN_START);
   gtk_box_pack_start (GTK_BOX (vbox), label, FALSE, FALSE, 0);
 
-  assistant->priv->dpassword = gtk_entry_new ();
+  assistant->priv->dpassword = gm_entry_new (NUMBER_REGEX);
+  gm_entry_set_allow_empty (GM_ENTRY (assistant->priv->dusername), FALSE);
   gtk_entry_set_activates_default (GTK_ENTRY (assistant->priv->dpassword), TRUE);
   gtk_entry_set_visibility (GTK_ENTRY (assistant->priv->dpassword), FALSE);
   gtk_box_pack_start (GTK_BOX (vbox), assistant->priv->dpassword, FALSE, FALSE, 0);
@@ -523,7 +453,6 @@ create_ekiga_out_page (AssistantWindow *assistant)
   gtk_label_set_markup (GTK_LABEL (label), text);
   g_free (text);
   gtk_label_set_line_wrap (GTK_LABEL (label), TRUE);
-  gtk_misc_set_alignment (GTK_MISC (label), 0.0, 0.5);
   gtk_box_pack_start (GTK_BOX (vbox), label, FALSE, TRUE, 0);
 
   button = gtk_button_new ();
@@ -538,46 +467,8 @@ create_ekiga_out_page (AssistantWindow *assistant)
   g_signal_connect (button, "clicked",
                     G_CALLBACK (ekiga_out_new_clicked_cb), assistant);
 
-  button = gtk_button_new ();
-  label = gtk_label_new (NULL);
-  text = g_strdup_printf ("<span foreground=\"blue\"><u>%s</u></span>",
-			  _("Recharge the account"));
-  gtk_label_set_markup (GTK_LABEL (label), text);
-  g_free (text);
-  gtk_button_set_relief (GTK_BUTTON (button), GTK_RELIEF_NONE);
-  gtk_container_add (GTK_CONTAINER (button), label);
-  gtk_box_pack_start (GTK_BOX (vbox), GTK_WIDGET (button), FALSE, FALSE, 0);
-  g_signal_connect (button, "clicked",
-                    G_CALLBACK (ekiga_out_recharge_clicked_cb), assistant);
-
-  button = gtk_button_new ();
-  label = gtk_label_new (NULL);
-  text = g_strdup_printf ("<span foreground=\"blue\"><u>%s</u></span>",
-			  _("Consult the balance history"));
-  gtk_label_set_markup (GTK_LABEL (label), text);
-  g_free (text);
-  gtk_button_set_relief (GTK_BUTTON (button), GTK_RELIEF_NONE);
-  gtk_container_add (GTK_CONTAINER (button), label);
-  gtk_box_pack_start (GTK_BOX (vbox), GTK_WIDGET (button), FALSE, FALSE, 0);
-  g_signal_connect (button, "clicked",
-                    G_CALLBACK (ekiga_out_history_balance_clicked_cb), assistant);
-
-  button = gtk_button_new ();
-  label = gtk_label_new (NULL);
-  text = g_strdup_printf ("<span foreground=\"blue\"><u>%s</u></span>",
-			  _("Consult the call history"));
-  gtk_label_set_markup (GTK_LABEL (label), text);
-  g_free (text);
-  gtk_button_set_relief (GTK_BUTTON (button), GTK_RELIEF_NONE);
-  gtk_container_add (GTK_CONTAINER (button), label);
-  gtk_box_pack_start (GTK_BOX (vbox), GTK_WIDGET (button), FALSE, FALSE, 0);
-  g_signal_connect (button, "clicked",
-                    G_CALLBACK (ekiga_out_history_calls_clicked_cb), assistant);
-
   assistant->priv->skip_ekiga_out = gtk_check_button_new_with_label (_("I do not want to sign up for the Ekiga Call Out service"));
-  align = gtk_alignment_new (0, 1.0, 0, 0);
-  gtk_container_add (GTK_CONTAINER (align), assistant->priv->skip_ekiga_out);
-  gtk_box_pack_start (GTK_BOX (vbox), align, TRUE, TRUE, 0);
+  gtk_box_pack_start (GTK_BOX (vbox), assistant->priv->skip_ekiga_out, TRUE, TRUE, 0);
 
   g_signal_connect (assistant->priv->dusername, "changed",
                     G_CALLBACK (ekiga_out_info_changed_cb), assistant);
@@ -595,15 +486,20 @@ static void
 prepare_ekiga_out_page (AssistantWindow *assistant)
 {
   Opal::AccountPtr account = assistant->priv->bank->find_account ("sip.diamondcard.us");
+  gboolean complete = FALSE;
 
   if (account && !account->get_username ().empty ())
     gtk_entry_set_text (GTK_ENTRY (assistant->priv->dusername), account->get_username ().c_str ());
   if (account && !account->get_password ().empty ())
     gtk_entry_set_text (GTK_ENTRY (assistant->priv->dpassword), account->get_password ().c_str ());
 
-  set_current_page_complete (GTK_ASSISTANT (assistant),
-                             gtk_toggle_button_get_active (GTK_TOGGLE_BUTTON (assistant->priv->skip_ekiga_out))
-                             || (account && !account->get_username ().empty () && !account->get_password ().empty ()));
+  if (gtk_toggle_button_get_active (GTK_TOGGLE_BUTTON (assistant->priv->skip_ekiga_out)))
+    complete = TRUE;
+  else
+    complete = gm_entry_text_is_valid (GM_ENTRY (assistant->priv->dusername))
+      && gm_entry_text_is_valid (GM_ENTRY (assistant->priv->dpassword));
+
+  set_current_page_complete (GTK_ASSISTANT (assistant), complete);
 }
 
 
@@ -641,21 +537,17 @@ create_summary_page (AssistantWindow *assistant)
   label = gtk_label_new (_("You have now finished the Ekiga configuration. All "
 			   "the settings can be changed in the Ekiga preferences. "
 			   "Enjoy!"));
-  gtk_misc_set_alignment (GTK_MISC (label), 0.0, 0.5);
   gtk_label_set_line_wrap (GTK_LABEL (label), TRUE);
   gtk_box_pack_start (GTK_BOX (vbox), label, FALSE, FALSE, 0);
 
   label = gtk_label_new (_("Configuration summary:"));
-  gtk_misc_set_alignment (GTK_MISC (label), 0.0, 0.5);
   gtk_box_pack_start (GTK_BOX (vbox), label, FALSE, FALSE, 0);
 
-  GtkWidget *align = gtk_alignment_new (0.5, 0.0, 0.0, 1.0);
-  gtk_box_pack_start (GTK_BOX (vbox), align, TRUE, TRUE, 0);
 
   sw = gtk_scrolled_window_new (NULL, NULL);
   gtk_scrolled_window_set_policy (GTK_SCROLLED_WINDOW (sw), GTK_POLICY_NEVER, GTK_POLICY_AUTOMATIC);
   gtk_scrolled_window_set_shadow_type (GTK_SCROLLED_WINDOW (sw), GTK_SHADOW_IN);
-  gtk_container_add (GTK_CONTAINER (align), sw);
+  gtk_box_pack_start (GTK_BOX (vbox), sw, TRUE, TRUE, 0);
 
   assistant->priv->summary_model = gtk_list_store_new (2, G_TYPE_STRING, G_TYPE_STRING);
 
@@ -748,9 +640,6 @@ assistant_window_init (AssistantWindow *assistant)
   create_ekiga_net_page (assistant);
   create_ekiga_out_page (assistant);
   create_summary_page (assistant);
-
-  /* FIXME: what the hell is it needed for? */
-  g_object_set_data (G_OBJECT (assistant), "window_name", (gpointer) "assistant");
 }
 
 
@@ -812,13 +701,7 @@ assistant_window_apply (GtkAssistant *gtkassistant)
 static void
 assistant_window_close (GtkAssistant *gtkassistant)
 {
-  AssistantWindow *assistant = ASSISTANT_WINDOW (gtkassistant);
-
   gtk_widget_destroy (GTK_WIDGET (gtkassistant));
-  boost::shared_ptr<GtkFrontend> gtk_frontend
-    = assistant->priv->frontend.lock ();
-  g_return_if_fail (gtk_frontend);
-  gtk_widget_show (GTK_WIDGET (gtk_frontend->get_main_window ()));
 }
 
 
@@ -864,20 +747,19 @@ assistant_window_key_press_cb (GtkWidget *widget,
 
 
 GtkWidget *
-assistant_window_new (Ekiga::ServiceCore& service_core)
+assistant_window_new (GmApplication *app)
 {
   AssistantWindow *assistant;
 
   assistant = ASSISTANT_WINDOW (g_object_new (ASSISTANT_WINDOW_TYPE, NULL));
-
-  assistant->priv->frontend = service_core.get<GtkFrontend> ("gtk-frontend");
+  Ekiga::ServiceCorePtr core = gm_application_get_core (app);
 
   /* FIXME: move this into the caller */
   g_signal_connect (assistant, "key-press-event",
                     G_CALLBACK (assistant_window_key_press_cb), NULL);
 
   boost::signals2::connection conn;
-  assistant->priv->bank = service_core.get<Opal::Bank> ("opal-account-store");
+  assistant->priv->bank = core->get<Opal::Bank> ("opal-account-store");
 
   return GTK_WIDGET (assistant);
 }

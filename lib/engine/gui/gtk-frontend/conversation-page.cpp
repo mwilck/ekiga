@@ -37,7 +37,6 @@
 
 #include "conversation-page.h"
 #include "chat-area.h"
-#include "heap-view.h"
 
 #include "scoped-connections.h"
 
@@ -46,7 +45,6 @@ struct _ConversationPagePrivate {
   Ekiga::ConversationPtr conversation;
   Ekiga::scoped_connections connections;
   GtkWidget* area;
-  GtkWidget* heapview;
   GtkWidget* header;
   gchar* title;
 };
@@ -140,7 +138,6 @@ conversation_page_new (Ekiga::ConversationPtr conversation)
   GtkWidget* header = NULL;
   GtkWidget* box = NULL;
   GtkWidget* area = NULL;
-  GtkWidget* heapview = NULL;
 
   result = (ConversationPage*)g_object_new (TYPE_CONVERSATION_PAGE,
 					    "orientation", GTK_ORIENTATION_VERTICAL,
@@ -167,13 +164,6 @@ conversation_page_new (Ekiga::ConversationPtr conversation)
   gtk_box_pack_start (GTK_BOX (box), area,
 		      TRUE, TRUE, 2);
   gtk_widget_show (area);
-
-  heapview = heap_view_new (conversation->get_heap());
-
-  result->priv->heapview = heapview;
-  gtk_box_pack_start (GTK_BOX (box), heapview,
-		      TRUE, TRUE, 2);
-  gtk_widget_show (heapview);
 
   conversation_page_update_title_and_status (result);
 

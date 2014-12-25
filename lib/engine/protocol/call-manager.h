@@ -47,6 +47,7 @@
 
 #include "call-protocol-manager.h"
 #include "codec-description.h"
+#include "contact-core.h" // FIXME: required for 'message'. Should disappear.
 
 namespace Ekiga
 {
@@ -56,7 +57,7 @@ namespace Ekiga
  * @{
  */
 
-  class CallManager 
+  class CallManager
   {
 
     public:
@@ -102,15 +103,47 @@ namespace Ekiga
     boost::signals2::signal<void(boost::shared_ptr<CallProtocolManager>)> manager_added;
 
 
-    /*                 
-     * CALL MANAGEMENT 
-     */              
+    /*
+     * CALL MANAGEMENT
+     */
 
     /** Create a call based on the remote uri given as parameter
      * @param: An uri
      * @return: true if a Ekiga::Call could be created
      */
-    virtual bool dial (const std::string & uri) = 0; 
+    virtual bool dial (const std::string & uri) = 0;
+
+    /** Hang up all active calls (if any).
+     */
+    virtual void hang_up () = 0;
+
+    /** Transfer the call to the specified uri
+     * @param the destination uri
+     * @param true if we should do an attended transfer, false if
+     *        a blind transfer is required.
+     * @return true if the Ekiga::Call transfer could be attempted,
+     *         false otherwise. Returning true does not mean the
+     *         transfer succeeded, it simply means it could be handled.
+     */
+    virtual bool transfer (const std::string & uri,
+                           bool attended) = 0;
+
+    /** Sends an instant message to the given contact
+     * @param the destination contact
+     * @param the destination uri
+     * @return true if the message transmission could be attempted,
+     *         false otherwise. Returning true does not mean the
+     *         message was sent, it simply means it could be handled.
+     */
+    virtual bool message (const ContactPtr & contact,
+                          const std::string & uri) = 0;
+
+    /* Return true if URI can be handled by the CallCore,
+     * false otherwise.
+     * @param the URI to test
+     * @return true of the URI can be handled, false otherwise
+     */
+    virtual bool is_supported_uri (const std::string & uri) = 0;
 
 
     /*

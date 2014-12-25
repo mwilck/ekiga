@@ -56,7 +56,6 @@ Evolution::Book::on_view_contacts_added (GList *econtacts)
 {
   EContact *econtact = NULL;
   int nbr = 0;
-  gchar* c_status = NULL;
 
   for (; econtacts != NULL; econtacts = g_list_next (econtacts)) {
 
@@ -71,11 +70,6 @@ Evolution::Book::on_view_contacts_added (GList *econtacts)
       nbr++;
     }
   }
-
-  c_status = g_strdup_printf (ngettext ("%d user found", "%d users found", nbr),
-			      nbr);
-  status = c_status;
-  g_free (c_status);
 
   updated ();
 }
@@ -264,6 +258,10 @@ Evolution::Book::Book (Ekiga::ServiceCore &_services,
   g_object_ref (book);
 
   refresh ();
+
+  /* Actor stuff */
+  add_action (Ekiga::ActionPtr (new Ekiga::Action ("add-contact", _("A_dd Contact"),
+                                                   boost::bind (&Evolution::Book::new_contact_action, this))));
 }
 
 Evolution::Book::~Book ()
@@ -338,18 +336,23 @@ Evolution::Book::refresh ()
 void
 Evolution::Book::new_contact_action ()
 {
-  boost::shared_ptr<Ekiga::FormRequestSimple> request = boost::shared_ptr<Ekiga::FormRequestSimple> (new Ekiga::FormRequestSimple (boost::bind (&Evolution::Book::on_new_contact_form_submitted, this, _1, _2)));
+  boost::shared_ptr<Ekiga::FormRequestSimple> request = boost::shared_ptr<Ekiga::FormRequestSimple> (new Ekiga::FormRequestSimple (boost::bind (&Evolution::Book::on_new_contact_form_submitted, this, _1, _2, _3)));
 
   request->title (_("Add Contact"));
 
-  request->instructions (_("Please update the following fields:"));
+  request->text ("name", _("_Name"), std::string (),
+                 _("John Doe"));
 
-  request->text ("name", _("_Name:"), "", std::string ());
-  request->text ("video", _("VoIP _URI:"), "", std::string ());
-  request->text ("home", _("_Home phone:"), "", std::string ());
-  request->text ("work", _("_Office phone:"), "", std::string ());
-  request->text ("cell", _("_Cell phone:"), "", std::string ());
-  request->text ("pager", _("_Pager:"), "", std::string ());
+  request->text ("video", _("_URI"), std::string (),
+                 _("sip:john.doe@ekiga.net"), Ekiga::FormVisitor::URI);
+  request->text ("home", _("_Home Phone"), std::string (),
+                 _("+3268123456"), Ekiga::FormVisitor::PHONE_NUMBER);
+  request->text ("work", _("_Office Phone"), std::string (),
+                 _("+3268123456"), Ekiga::FormVisitor::PHONE_NUMBER);
+  request->text ("cell", _("_Cell Phone"), std::string (),
+                 _("+3268123456"), Ekiga::FormVisitor::PHONE_NUMBER);
+  request->text ("pager", _("_Pager"), std::string (),
+                 _("+3268123456"), Ekiga::FormVisitor::PHONE_NUMBER);
 
   questions (request);
 }
@@ -370,12 +373,13 @@ Evolution::Book::set_econtact_attribute_value (EContact *econtact,
   e_vcard_add_attribute (E_VCARD (econtact), attribute);
 }
 
-void
+bool
 Evolution::Book::on_new_contact_form_submitted (bool submitted,
-						Ekiga::Form &result)
+						Ekiga::Form &result,
+                                                std::string& /*error*/)
 {
-  if ( !submitted)
-    return;
+  if (!submitted)
+    return false;
 
   EContact *econtact = NULL;
 
@@ -403,4 +407,6 @@ Evolution::Book::on_new_contact_form_submitted (bool submitted,
 
   e_book_add_contact (book, econtact, NULL);
   g_object_unref (econtact);
+
+  return true;
 }

@@ -64,6 +64,24 @@ Evolution::Contact::Contact (Ekiga::ServiceCore &_services,
 
   if (E_IS_CONTACT (_econtact))
     update_econtact (_econtact);
+
+  /* Actor stuff */
+  add_action (Ekiga::ActionPtr (new Ekiga::Action ("edit-contact", _("_Edit"),
+                                                   boost::bind (&Evolution::Contact::edit_action, this))));
+  add_action (Ekiga::ActionPtr (new Ekiga::Action ("remove-contact", _("_Remove"),
+                                                   boost::bind (&Evolution::Contact::remove_action, this))));
+
+  /* Pull actions */
+  boost::shared_ptr<Ekiga::ContactCore> core = services.get<Ekiga::ContactCore> ("contact-core");
+  if (core) {
+    for (unsigned int attr_type = 0; attr_type < ATTR_NUMBER; attr_type++) {
+
+      std::string attr_value = get_attribute_value (attr_type);
+      if (!attr_value.empty ()) {
+        core->pull_actions (actions, get_name (), attr_value);
+      }
+    }
+  }
 }
 
 Evolution::Contact::~Contact ()
@@ -195,46 +213,6 @@ Evolution::Contact::remove ()
   e_book_remove_contact (book, get_id().c_str (), NULL);
 }
 
-bool
-Evolution::Contact::populate_menu (Ekiga::MenuBuilder &builder)
-{
-  boost::shared_ptr<Ekiga::ContactCore> core = services.get<Ekiga::ContactCore> ("contact-core");
-  bool populated = false;
-  std::map<std::string, std::string> uris;
-
-  if (core) {
-
-    Ekiga::TemporaryMenuBuilder tmp_builder;
-
-    for (unsigned int attr_type = 0; attr_type < ATTR_NUMBER; attr_type++) {
-
-      std::string attr_value = get_attribute_value (attr_type);
-      if ( !attr_value.empty ()) {
-
-	if (core->populate_contact_menu (ContactPtr(this, null_deleter ()),
-					 attr_value, tmp_builder)) {
-
-	  builder.add_ghost ("", get_attribute_name_from_type (attr_type));
-	  tmp_builder.populate_menu (builder);
-	  populated = true;
-	}
-      }
-    }
-  }
-
-  if (populated)
-    builder.add_separator ();
-
-  builder.add_action ("edit", _("_Edit"),
-		      boost::bind (&Evolution::Contact::edit_action, this));
-  builder.add_action ("remove", _("_Remove"),
-		      boost::bind (&Evolution::Contact::remove_action, this));
-  populated = true;
-
-  return populated;
-}
-
-
 std::string
 Evolution::Contact::get_attribute_name_from_type (unsigned int attribute_type) const
 {
@@ -315,13 +293,15 @@ Evolution::Contact::set_attribute_value (unsigned int attr_type,
 void
 Evolution::Contact::edit_action ()
 {
-  boost::shared_ptr<Ekiga::FormRequestSimple> request = boost::shared_ptr<Ekiga::FormRequestSimple> (new Ekiga::FormRequestSimple (boost::bind (&Evolution::Contact::on_edit_form_submitted, this, _1, _2)));;
+  boost::shared_ptr<Ekiga::FormRequestSimple> request = boost::shared_ptr<Ekiga::FormRequestSimple> (new Ekiga::FormRequestSimple (boost::bind (&Evolution::Contact::on_edit_form_submitted, this, _1, _2, _3)));;
 
-  request->title (_("Edit contact"));
-
-  request->instructions (_("Please update the following fields:"));
-
-  request->text ("name", _("Name:"), get_name (), std::string ());
+  /* Translators: This is Edit name of the contact
+   * e.g. Editing Damien SANDRAS details
+   */
+  char *title = g_strdup_printf (_("Editing %s details"), get_name ().c_str ());
+  request->title (title);
+  g_free (title);
+  request->text ("name", _("_Name"), get_name (), _("John Doe"));
 
   {
     std::string home_uri = get_attribute_value (ATTR_HOME);
@@ -330,22 +310,28 @@ Evolution::Contact::edit_action ()
     std::string pager_uri = get_attribute_value (ATTR_PAGER);
     std::string video_uri = get_attribute_value (ATTR_VIDEO);
 
-    request->text ("video", _("VoIP _URI:"), video_uri, std::string ());
-    request->text ("home", _("_Home phone:"), home_uri, std::string ());
-    request->text ("work", _("_Office phone:"), work_uri, std::string ());
-    request->text ("cell", _("_Cell phone:"), cell_phone_uri, std::string ());
-    request->text ("pager", _("_Pager:"), pager_uri, std::string ());
+    request->text ("video", _("_URI"), video_uri,
+                   _("sip:john.doe@ekiga.net"), Ekiga::FormVisitor::URI);
+    request->text ("home", _("_Home Phone"), home_uri,
+                   _("+3268123456"), Ekiga::FormVisitor::PHONE_NUMBER);
+    request->text ("work", _("_Office Phone"), work_uri,
+                   _("+3268123456"), Ekiga::FormVisitor::PHONE_NUMBER);
+    request->text ("cell", _("_Cell Phone"), cell_phone_uri,
+                   _("+3268123456"), Ekiga::FormVisitor::PHONE_NUMBER);
+    request->text ("pager", _("_Pager"), pager_uri,
+                   _("+3268123456"), Ekiga::FormVisitor::PHONE_NUMBER);
   }
 
   questions (request);
 }
 
-void
+bool
 Evolution::Contact::on_edit_form_submitted (bool submitted,
-					    Ekiga::Form &result)
+					    Ekiga::Form &result,
+                                            std::string &/*error*/)
 {
   if (!submitted)
-    return;
+    return false;
 
   std::string name = result.text ("name");
   std::string home = result.text ("home");
@@ -363,12 +349,14 @@ Evolution::Contact::on_edit_form_submitted (bool submitted,
   e_contact_set (econtact, E_CONTACT_FULL_NAME, (gpointer)name.c_str ());
 
   e_book_commit_contact (book, econtact, NULL);
+
+  return true;
 }
 
 void
 Evolution::Contact::remove_action ()
 {
-  boost::shared_ptr<Ekiga::FormRequestSimple> request = boost::shared_ptr<Ekiga::FormRequestSimple>(new Ekiga::FormRequestSimple (boost::bind (&Evolution::Contact::on_remove_form_submitted, this, _1, _2)));
+  boost::shared_ptr<Ekiga::FormRequestSimple> request = boost::shared_ptr<Ekiga::FormRequestSimple>(new Ekiga::FormRequestSimple (boost::bind (&Evolution::Contact::on_remove_form_submitted, this, _1, _2, _3)));
   gchar* instructions = NULL;
 
   request->title (_("Remove contact"));
@@ -380,10 +368,13 @@ Evolution::Contact::remove_action ()
   questions (request);
 }
 
-void
+bool
 Evolution::Contact::on_remove_form_submitted (bool submitted,
-					      Ekiga::Form& /*result*/)
+					      Ekiga::Form& /*result*/,
+                                              std::string& /*error*/)
 {
-  if (submitted)
-    remove ();
+  if (!submitted)
+    return false;
+
+  return true;
 }

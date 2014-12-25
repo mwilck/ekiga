@@ -86,10 +86,8 @@ namespace History
 
     const std::set<std::string> get_groups () const;
 
-    bool populate_menu (Ekiga::MenuBuilder &builder);
 
     /*** more specific api ***/
-
     xmlNodePtr get_node ();
 
     call_type get_type () const;
@@ -97,6 +95,8 @@ namespace History
     time_t get_call_start () const;
 
     const std::string get_call_duration () const;
+
+    const std::string get_uri () const;
 
   private:
 

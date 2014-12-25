@@ -50,9 +50,12 @@
 
 #include "bank-impl.h"
 
+#include "opal-presentity.h"
+
 namespace Opal
 {
   // forward declarations:
+  class Bank;
   class CallManager;
   class Presentity;
   namespace Sip { class EndPoint; };
@@ -68,11 +71,10 @@ namespace Opal
     protected Ekiga::RefLister<Presentity>,
     public Ekiga::PresencePublisher
   {
+    friend class Opal::Presentity;
 public:
 
     typedef enum { SIP, Ekiga, DiamondCard, H323 } Type;
-
-    typedef enum { Processing, Registered, Unregistered, RegistrationFailed, UnregistrationFailed } RegistrationState;
 
     static xmlNodePtr build_node (Opal::Account::Type typus,
 				  std::string name,
@@ -83,26 +85,29 @@ public:
 				  bool enabled,
 				  unsigned timeout);
 
-    Account (boost::shared_ptr<Opal::Sip::EndPoint> _sip_endpoint,
+    Account (Opal::Bank & bank,
+             boost::shared_ptr<Opal::Sip::EndPoint> _sip_endpoint,
 	     boost::weak_ptr<Ekiga::PresenceCore> _presence_core,
 	     boost::shared_ptr<Ekiga::NotificationCore> _notification_core,
 	     boost::shared_ptr<Ekiga::PersonalDetails> _personal_details,
 	     boost::shared_ptr<Ekiga::AudioOutputCore> _audiooutput_core,
 	     boost::shared_ptr<CallManager> _call_manager,
-	     boost::function0<std::set<std::string> > _existing_groups,
+	     boost::function0<std::list<std::string> > _existing_groups,
 	     xmlNodePtr node_);
 
-    ~Account () {}
+    ~Account ();
 
     const std::string get_name () const;
 
     const std::string get_status () const;
 
+    Ekiga::Account::RegistrationState get_state () const;
+
     const std::string get_aor () const;
 
     Type get_type () const;
 
-    std::set<std::string> get_groups () const;
+    std::list<std::string> get_groups () const;
 
     /** Returns the protocol name of the Opal::Account.
      * This function is purely virtual and should be implemented by the
@@ -158,13 +163,6 @@ public:
 
     void edit ();
 
-    bool populate_menu (Ekiga::MenuBuilder &builder);
-
-    // used by the bank to add actions on contacts/presentities
-    bool populate_menu (const std::string fullname,
-			const std::string uri,
-			Ekiga::MenuBuilder& builder);
-
     boost::signals2::signal<void(void)> trigger_saving;
 
     /*
@@ -187,15 +185,15 @@ public:
 
     /* This part of the api is the implementation of Ekiga::Heap */
     void visit_presentities (boost::function1<bool, Ekiga::PresentityPtr > visitor) const;
-    bool populate_menu_for_group (const std::string name,
-				  Ekiga::MenuBuilder& builder);
-
 
     /* This object is not an Ekiga::PresenceFetcher, but Opal::Bank is,
      * this is where the information comes from
      */
     boost::signals2::signal<void(std::string, std::string)> presence_received;
     boost::signals2::signal<void(std::string, std::string)> status_received;
+
+protected:
+    void on_rename_group (Opal::PresentityPtr pres);
 
 private:
     void fetch (const std::string uri) const;
@@ -204,18 +202,20 @@ private:
     void decide_type ();
 
     void add_contact ();
-    void on_add_contact_form_submitted (bool submitted,
-					Ekiga::Form& result);
+    bool on_add_contact_form_submitted (bool submitted,
+					Ekiga::Form& result,
+                                        std::string& error);
 
-    void on_edit_form_submitted (bool submitted,
-				 Ekiga::Form &result);
+    bool on_edit_form_submitted (bool submitted,
+				 Ekiga::Form &result,
+                                 std::string& error);
     void on_consult (const std::string url);
     bool is_myself (const std::string uri) const;
 
-    void on_rename_group (const std::string name);
-    void rename_group_form_submitted (std::string old_name,
-				      bool submitted,
-				      Ekiga::Form& result);
+    bool on_rename_group_form_submitted (bool submitted,
+                                         Ekiga::Form& result,
+                                         std::string& error,
+                                         const std::list<std::string> & groups);
 
     Type type;
     mutable RegistrationState state;
@@ -234,7 +234,7 @@ private:
 
     PDECLARE_PresenceChangeNotifier (Account, OnPresenceChange);
 
-    boost::function0<std::set<std::string> > existing_groups;
+    boost::function0<std::list<std::string> > existing_groups;
     xmlNodePtr node;
     xmlNodePtr roster_node;
     OpalPresenceInfo::State personal_state;
@@ -244,6 +244,8 @@ private:
 				  std::string status) const;
     void when_presentity_removed (boost::shared_ptr<Opal::Presentity> pres);
     void when_presentity_updated (boost::shared_ptr<Opal::Presentity> pres);
+
+    Opal::Bank & bank;
 
     boost::shared_ptr<Opal::Sip::EndPoint> sip_endpoint;
     boost::weak_ptr<Ekiga::PresenceCore> presence_core;

@@ -46,9 +46,10 @@
 #define DEVICE_SOURCE "Moving Logo"
 #define DEVICE_NAME   "Moving Logo"
 
-GMVideoInputManager_mlogo::GMVideoInputManager_mlogo ()
+GMVideoInputManager_mlogo::GMVideoInputManager_mlogo (bool _moving)
 {
-  current_state.opened  = false;
+  current_state.opened = false;
+  moving = _moving;
 }
 
 GMVideoInputManager_mlogo::~GMVideoInputManager_mlogo ()
@@ -90,19 +91,19 @@ bool GMVideoInputManager_mlogo::open (unsigned width, unsigned height, unsigned 
   increment = 1;
 
   background_frame = (char*) malloc ((current_state.width * current_state.height * 3) >> 1);
-  memset (background_frame, 0xd3, current_state.width*current_state.height); //ff
-  memset (background_frame + (current_state.width * current_state.height), 
-          0x7f, 
+  memset (background_frame, 0, current_state.width*current_state.height); //ff
+  memset (background_frame + (current_state.width * current_state.height),
+          0x7f,
           (current_state.width*current_state.height) >> 2);
-  memset (background_frame + (current_state.width * current_state.height) + 
-                            ((current_state.width * current_state.height) >> 2), 
+  memset (background_frame + (current_state.width * current_state.height) +
+                            ((current_state.width * current_state.height) >> 2),
           0x7f,
           (current_state.width*current_state.height) >> 2);
 
-  adaptive_delay.Restart();
-  adaptive_delay.SetMaximumSlip((unsigned )( 500.0 / fps));
+  adaptive_delay.Restart ();
+  adaptive_delay.SetMaximumSlip ((unsigned)(500.0 / fps));
 
-  current_state.opened  = true;
+  current_state.opened = true;
 
   Ekiga::VideoInputSettings settings;
   settings.whiteness = 127;
@@ -111,7 +112,7 @@ bool GMVideoInputManager_mlogo::open (unsigned width, unsigned height, unsigned 
   settings.contrast = 127;
   settings.modifyable = false;
   Ekiga::Runtime::run_in_main (boost::bind (&GMVideoInputManager_mlogo::device_opened_in_main, this, current_state.device, settings));
-  
+
   return true;
 }
 
@@ -129,35 +130,35 @@ bool GMVideoInputManager_mlogo::get_frame_data (char *data)
     PTRACE(1, "GMVideoInputManager_mlogo\tTrying to get frame from closed device");
     return true;
   }
-  
+
   adaptive_delay.Delay (1000 / current_state.fps);
 
   memcpy (data, background_frame, (current_state.width * current_state.height * 3) >> 1);
 
-  CopyYUVArea  ((char*)&gm_icon_yuv, 
-                gm_icon_width, gm_icon_height, 
-                data, 
-                (current_state.width - gm_icon_width) >> 1, 
-                pos, 
+  CopyYUVArea  ((char*)&gm_icon_yuv,
+                gm_icon_width, gm_icon_height,
+                data,
+                (current_state.width - gm_icon_width) >> 1,
+                moving ? pos : (int) (current_state.height - gm_icon_height) / 2,
                 current_state.width, current_state.height);
   pos = pos + increment;
 
-  if ( pos > current_state.height - gm_icon_height - 10) 
+  if (pos > current_state.height - gm_icon_height - 10)
     increment = -1;
-  if (pos < 10) 
+  if (pos < 10)
     increment = +1;
 
   return true;
 }
 
 void GMVideoInputManager_mlogo::CopyYUVArea (const char* srcFrame,
-					 unsigned srcWidth,
-					 unsigned srcHeight,
-					 char* dstFrame,
-					 unsigned dstX,
-					 unsigned dstY,
-					 unsigned dstWidth,
-					 unsigned dstHeight)
+                                             unsigned srcWidth,
+                                             unsigned srcHeight,
+                                             char* dstFrame,
+                                             unsigned dstX,
+                                             unsigned dstY,
+                                             unsigned dstWidth,
+                                             unsigned dstHeight)
 {
   unsigned line = 0;
 //Y
@@ -197,7 +198,10 @@ void GMVideoInputManager_mlogo::CopyYUVArea (const char* srcFrame,
   }
 }
 
-bool GMVideoInputManager_mlogo::has_device     (const std::string & /*source*/, const std::string & /*device_name*/, unsigned /*capabilities*/, Ekiga::VideoInputDevice & /*device*/)
+bool GMVideoInputManager_mlogo::has_device (const std::string & /*source*/,
+                                            const std::string & /*device_name*/,
+                                            unsigned /*capabilities*/,
+                                            Ekiga::VideoInputDevice & /*device*/)
 {
   return false;
 }

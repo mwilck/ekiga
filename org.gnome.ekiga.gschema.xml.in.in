@@ -197,6 +197,7 @@
     <child name="audio-settings-window" schema="org.gnome.@PACKAGE_NAME@.general.user-interface.audio-settings-window"/>
     <child name="video-settings-window" schema="org.gnome.@PACKAGE_NAME@.general.user-interface.video-settings-window"/>
     <child name="accounts-window" schema="org.gnome.@PACKAGE_NAME@.general.user-interface.accounts-window"/>
+    <child name="preferences-window" schema="org.gnome.@PACKAGE_NAME@.general.user-interface.preferences-window"/>
     <child name="video-display" schema="org.gnome.@PACKAGE_NAME@.general.user-interface.video-display"/>
   </schema>
   <schema gettext-domain="@GETTEXT_PACKAGE@" id="org.gnome.@PACKAGE_NAME@.general.user-interface.call-window" path="/org/gnome/@PACKAGE_NAME@/general/user-interface/call-window/">
@@ -298,6 +299,18 @@
       <default>'470,250'</default>
       <_summary>Size of the accounts window</_summary>
       <_description>Size of the accounts window</_description>
+    </key>
+  </schema>
+  <schema gettext-domain="@GETTEXT_PACKAGE@" id="org.gnome.@PACKAGE_NAME@.general.user-interface.preferences-window" path="/org/gnome/@PACKAGE_NAME@/general/user-interface/preferences-window/">
+    <key name="position" type="s">
+      <default>'0,0'</default>
+      <_summary>Position on the screen of the preferences window</_summary>
+      <_description>Position on the screen of the preferences window</_description>
+    </key>
+    <key name="size" type="s">
+      <default>'470,250'</default>
+      <_summary>Size of the preferences window</_summary>
+      <_description>Size of the preferences window</_description>
     </key>
   </schema>
   <schema gettext-domain="@GETTEXT_PACKAGE@" id="org.gnome.@PACKAGE_NAME@.general.user-interface.video-display" path="/org/gnome/@PACKAGE_NAME@/general/user-interface/video-display/">

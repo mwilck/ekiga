@@ -121,7 +121,7 @@ namespace LM
     LmHandlerResult message_handler_roster (LmMessage* message);
     LmHandlerResult message_handler_muc (LmMessage* message);
 
-    const std::set<std::string> existing_groups () const;
+    const std::list<std::string> existing_groups () const;
 
     /* when adding an item, we first ask to add it to the roster,
      * then get notified that it was really added,

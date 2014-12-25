@@ -39,8 +39,8 @@
 #ifndef __MAIN_WINDOW_H__
 #define __MAIN_WINDOW_H__
 
-#include "services.h"
 #include "gmwindow.h"
+#include "ekiga-app.h"
 
 G_BEGIN_DECLS
 
@@ -67,7 +67,7 @@ G_END_DECLS
 
 /* DESCRIPTION  :  /
  * BEHAVIOR     :  Builds the main window and adds the popup to the image.
- * PRE          :  Accels.
+ * PRE          :  /
  */
-GtkWidget *gm_main_window_new (Ekiga::ServiceCore & core);
+GtkWidget *gm_main_window_new (GmApplication *app);
 #endif

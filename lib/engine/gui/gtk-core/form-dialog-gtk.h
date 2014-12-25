@@ -40,6 +40,7 @@
 
 #include "form-builder.h"
 #include "form-request.h"
+#include "form-visitor.h"
 
 /* abstract helper class common to all field types */
 class Submitter
@@ -48,8 +49,11 @@ public:
 
   virtual ~Submitter () {}
 
+  virtual bool can_submit () { return true; }
+
   virtual void submit (Ekiga::FormBuilder &builder) = 0;
 };
+
 
 class FormDialog: public Ekiga::FormVisitor
 {
@@ -63,8 +67,9 @@ public:
   void run ();
 
   /* FormVisitor api */
-
   void title (const std::string title);
+
+  void action (const std::string action);
 
   void instructions (const std::string instructions);
 
@@ -79,19 +84,16 @@ public:
   void boolean (const std::string name,
 		const std::string description,
 		bool value,
-		bool advanced);
+		bool advanced,
+                bool in_header_bar = true);
 
   void text (const std::string name,
 	     const std::string description,
 	     const std::string value,
-	     const std::string tooltip,
-	     bool advanced);
-
-  void private_text (const std::string name,
-		     const std::string description,
-		     const std::string value,
-             const std::string tooltip,
-		     bool advanced);
+	     const std::string placeholder_text,
+             const FormVisitor::FormTextType type,
+	     bool advanced,
+             bool allow_empty);
 
   void multi_text (const std::string name,
 		   const std::string description,
@@ -110,17 +112,21 @@ public:
 			const std::map<std::string, std::string> choices,
 			bool advanced);
 
-  void editable_set (const std::string name,
-		     const std::string description,
-		     const std::set<std::string> values,
-		     const std::set<std::string> proposed_values,
-		     bool advanced);
+  void editable_list (const std::string name,
+                      const std::string description,
+                      const std::list<std::string> values,
+                      const std::list<std::string> proposed_values,
+                      bool advanced,
+                      bool rename_only);
 
   /* those are public only to be called from C code */
-
   void cancel ();
 
-  void submit ();
+  bool can_submit ();
+
+  bool submit ();
+
+  GtkWidget *get_dialog ();
 
 private:
 
@@ -132,10 +138,9 @@ private:
   GtkWidget *fields;
   GtkWidget* expander;
   GtkWidget* advanced_fields;
-  GtkSizeGroup *labels_group;
-  GtkSizeGroup *options_group;
   unsigned int rows;
   unsigned int advanced_rows;
+  bool has_preamble;
   std::list<Submitter *> submitters;
 };
 

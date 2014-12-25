@@ -61,10 +61,6 @@ static void on_presentity_updated (PresentityView* self);
 
 static void on_presentity_removed (PresentityView* self);
 
-static gboolean on_event_after (GtkWidget* widget,
-				GdkEventButton* event,
-				gpointer data);
-
 /* declaration of internal api */
 
 static void presentity_view_set_presentity (PresentityView* self,
@@ -100,33 +96,6 @@ on_presentity_removed (PresentityView* self)
   presentity_view_unset_presentity (self);
 }
 
-static gboolean
-on_event_after (G_GNUC_UNUSED GtkWidget* widget,
-		GdkEventButton* event,
-		gpointer data)
-{
-  gboolean result = FALSE;
-  PresentityView* self = (PresentityView*)data;
-
-  if (self->priv->presentity && event->type == GDK_BUTTON_PRESS && event->button == 3) {
-
-    MenuBuilderGtk builder;
-    self->priv->presentity->populate_menu (builder);
-    if (!builder.empty ()) {
-
-      gtk_widget_show_all (builder.menu);
-      gtk_menu_popup (GTK_MENU (builder.menu), NULL, NULL,
-		      NULL, NULL, event->button, event->time);
-      g_signal_connect (builder.menu, "hide",
-			G_CALLBACK (g_object_unref),
-			(gpointer) builder.menu);
-      result = TRUE;
-    }
-    g_object_ref_sink (G_OBJECT (builder.menu));
-  }
-
-  return result;
-}
 
 /* implementation of internal api */
 
@@ -233,8 +202,6 @@ presentity_view_init (PresentityView* self)
   gtk_box_pack_start (GTK_BOX (box), self->priv->name_status,
 		      FALSE, FALSE, 2);
   gtk_widget_show (self->priv->name_status);
-
-  g_signal_connect (self, "event-after", G_CALLBACK (on_event_after), self);
 }
 
 /* public api */

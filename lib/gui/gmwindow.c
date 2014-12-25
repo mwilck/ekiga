@@ -31,8 +31,8 @@
  *                         -------------------------
  *   begin                : 16 August 2007
  *   copyright            : (c) 2007 by Damien Sandras
- *   description          : Implementation of a GtkWindow able to restore
- *                          its position and size in a GSettings key.
+ *   description          : Implementation of a GtkApplicationWindow able
+ *                          to restore its position and size in a GmConf key.
  *
  */
 
@@ -47,6 +47,7 @@
 struct _GmWindowPrivate
 {
   GtkAccelGroup *accel;
+  GtkApplication *application;
   GSettings *settings;
   gboolean hide_on_esc;
   gboolean hide_on_delete;
@@ -63,10 +64,11 @@ enum {
   GM_WINDOW_KEY = 1,
   GM_HIDE_ON_ESC = 2,
   GM_HIDE_ON_DELETE = 3,
-  GM_STAY_ON_TOP = 4
+  GM_STAY_ON_TOP = 4,
+  GM_APPLICATION = 5
 };
 
-G_DEFINE_TYPE (GmWindow, gm_window, GTK_TYPE_WINDOW);
+G_DEFINE_TYPE (GmWindow, gm_window, GTK_TYPE_APPLICATION_WINDOW);
 
 static gboolean
 gm_window_delete_event_cb (GtkWidget *w,
@@ -138,6 +140,10 @@ gm_window_get_property (GObject *obj,
     g_value_set_boolean (value, self->priv->stay_on_top);
     break;
 
+  case GM_APPLICATION:
+    g_value_set_pointer (value, self->priv->application);
+    break;
+
   default:
     G_OBJECT_WARN_INVALID_PROPERTY_ID (obj, prop_id, spec);
     break;
@@ -171,8 +177,10 @@ gm_window_set_property (GObject *obj,
 
   case GM_HIDE_ON_ESC:
     self->priv->hide_on_esc = g_value_get_boolean (value);
+    gtk_accel_group_disconnect_key (self->priv->accel, GDK_KEY_Escape, (GdkModifierType) 0);
     if (!self->priv->hide_on_esc)
-      gtk_accel_group_disconnect_key (self->priv->accel, GDK_KEY_Escape, (GdkModifierType) 0);
+      gtk_accel_group_connect (self->priv->accel, GDK_KEY_Escape, (GdkModifierType) 0, GTK_ACCEL_LOCKED,
+                               g_cclosure_new_swap (G_CALLBACK (gtk_widget_destroy), (gpointer) self, NULL));
     else
       gtk_accel_group_connect (self->priv->accel, GDK_KEY_Escape, (GdkModifierType) 0, GTK_ACCEL_LOCKED,
                                g_cclosure_new_swap (G_CALLBACK (gtk_widget_hide), (gpointer) self, NULL));
@@ -185,6 +193,13 @@ gm_window_set_property (GObject *obj,
   case GM_STAY_ON_TOP:
     self->priv->stay_on_top = g_value_get_boolean (value);
     gtk_window_set_keep_above (GTK_WINDOW (self), self->priv->stay_on_top);
+    break;
+
+  case GM_APPLICATION:
+    self->priv->application = g_value_get_pointer (value);
+    if (self->priv->application)
+      gtk_application_add_window (GTK_APPLICATION (self->priv->application),
+                                  GTK_WINDOW (self));
     break;
 
   default:
@@ -223,6 +238,11 @@ gm_window_class_init (GmWindowClass* klass)
                                "Indicates if the window should stay on top of other windows",
                                FALSE, (GParamFlags) G_PARAM_READWRITE);
   g_object_class_install_property (gobject_class, GM_STAY_ON_TOP, spec);
+
+  spec = g_param_spec_pointer ("application", "GtkApplication",
+                               "GtkApplication to which the GtkApplicationWindow is associated",
+                               (GParamFlags) G_PARAM_READWRITE);
+  g_object_class_install_property (gobject_class, GM_APPLICATION, spec);
 }
 
 
@@ -230,6 +250,7 @@ static void
 gm_window_init (GmWindow* self)
 {
   self->priv = G_TYPE_INSTANCE_GET_PRIVATE (self, GM_TYPE_WINDOW, GmWindowPrivate);
+  self->priv->application = NULL;
   self->priv->settings = NULL;
   self->priv->key = g_strdup ("");
   self->priv->hide_on_esc = TRUE;
@@ -509,6 +530,25 @@ gm_window_get_stay_on_top (GmWindow *window)
   g_return_val_if_fail (GM_IS_WINDOW (window), FALSE);
 
   return window->priv->stay_on_top;
+}
+
+
+void
+gm_window_set_application (GmWindow *window,
+                           GtkApplication *application)
+{
+  g_return_if_fail (GM_IS_WINDOW (window));
+
+  g_object_set (window, "application", application, NULL);
+}
+
+
+GtkApplication *
+gm_window_get_application (GmWindow *window)
+{
+  g_return_val_if_fail (GM_IS_WINDOW (window), NULL);
+
+  return window->priv->application;
 }
 
 gboolean

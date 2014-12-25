@@ -69,14 +69,13 @@ namespace History
 
     const std::string get_name () const;
 
-    bool populate_menu (Ekiga::MenuBuilder &);
-
-    const std::set<std::string> existing_groups () const;
+    const std::list<std::string> existing_groups () const;
 
     const std::string get_status () const;
 
     const std::string get_icon () const
-    { return "document-open-recent"; }
+    { return "document-open-recent-symbolic"; }
+
 
     /* more specific api */
 

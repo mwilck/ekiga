@@ -38,6 +38,7 @@
 #include "config.h"
 
 #include "opal-main.h"
+#include "opal-process.h"
 
 #include "account-core.h"
 #include "chat-core.h"
@@ -73,7 +74,7 @@ is_supported_address (const std::string uri)
 }
 
 /* FIXME: add here an Ekiga::Service which will add&remove publishers,
- * decorators and fetchers
+ * and fetchers
  */
 
 using namespace Opal;
@@ -122,8 +123,6 @@ struct OPALSpark: public Ekiga::Spark
       account_core->add_bank (bank);
       presence_core->add_cluster (bank);
       core.add (bank);
-      contact_core->add_contact_decorator (bank);
-      presence_core->add_presentity_decorator (bank);
       call_manager->ready.connect (boost::bind (&Opal::Bank::call_manager_ready, &*bank));
       call_manager->setup ();
       presence_core->add_presence_publisher (bank);
@@ -149,9 +148,15 @@ struct OPALSpark: public Ekiga::Spark
 };
 
 void
+opal_init_pprocess ()
+{
+  /* Ekiga PTLIB Process initialisation */
+  static GnomeMeeting instance;
+}
+
+void
 opal_init (Ekiga::KickStart& kickstart)
 {
   boost::shared_ptr<Ekiga::Spark> spark(new OPALSpark);
   kickstart.add_spark (spark);
 }
-

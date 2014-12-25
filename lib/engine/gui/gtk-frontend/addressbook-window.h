@@ -42,6 +42,7 @@
 #include "contact-core.h"
 
 #include "gmwindow.h"
+#include "ekiga-app.h"
 
 
 typedef struct _AddressBookWindow AddressBookWindow;
@@ -78,6 +79,5 @@ GType addressbook_window_get_type ();
 
 
 /* public api */
-GtkWidget* addressbook_window_new (boost::shared_ptr<Ekiga::ContactCore> core,
-				   const char* key);
+GtkWidget* addressbook_window_new (GmApplication *app);
 #endif

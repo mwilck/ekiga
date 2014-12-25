@@ -408,7 +408,7 @@ RL::Heap::push_status (const std::string uri_,
 void
 RL::Heap::edit ()
 {
-  boost::shared_ptr<Ekiga::FormRequestSimple> request = boost::shared_ptr<Ekiga::FormRequestSimple> (new Ekiga::FormRequestSimple (boost::bind (&RL::Heap::on_edit_form_submitted, this, _1, _2)));
+  boost::shared_ptr<Ekiga::FormRequestSimple> request = boost::shared_ptr<Ekiga::FormRequestSimple> (new Ekiga::FormRequestSimple (boost::bind (&RL::Heap::on_edit_form_submitted, this, _1, _2, _3)));
 
   std::string name_str;
   std::string root_str;
@@ -470,23 +470,24 @@ RL::Heap::edit ()
   request->text ("user", _("Identifier:"), user_str, std::string ());
   request->boolean ("writable", _("Writable:"), writable);
   request->text ("username", _("Server username:"), username_str, std::string ());
-  request->private_text ("password", _("Server password:"), password_str, std::string ());
+  request->text ("password", _("Server password:"), password_str, std::string (), Ekiga::FormVisitor::PASSWORD);
 
   questions (request);
 }
 
-void
+bool
 RL::Heap::on_edit_form_submitted (bool submitted,
-				  Ekiga::Form& result)
+				  Ekiga::Form& result,
+                                  std::string &/*error*/)
 {
   if (!submitted)
-    return;
+    return false;
 
   std::string name_str = result.text ("name");
   std::string root_str = result.text ("root");
   std::string user_str = result.text ("user");
   std::string username_str = result.text ("username");
-  std::string password_str = result.private_text ("password");
+  std::string password_str = result.text ("password");
   bool writable = result.boolean ("writable");
 
   if (writable)
@@ -502,12 +503,14 @@ RL::Heap::on_edit_form_submitted (bool submitted,
   trigger_saving ();
   updated ();
   refresh ();
+
+  return true;
 }
 
 void
 RL::Heap::new_entry ()
 {
-  boost::shared_ptr<Ekiga::FormRequestSimple> request = boost::shared_ptr<Ekiga::FormRequestSimple> (new Ekiga::FormRequestSimple (boost::bind (&RL::Heap::on_new_entry_form_submitted, this, _1, _2)));
+  boost::shared_ptr<Ekiga::FormRequestSimple> request = boost::shared_ptr<Ekiga::FormRequestSimple> (new Ekiga::FormRequestSimple (boost::bind (&RL::Heap::on_new_entry_form_submitted, this, _1, _2, _3)));
 
   request->title (_("Add a remote contact"));
   request->instructions (_("Please fill in this form to create a new "
@@ -531,12 +534,13 @@ RL::Heap::new_entry ()
   questions (request);
 }
 
-void
+bool
 RL::Heap::on_new_entry_form_submitted (bool submitted,
-				       Ekiga::Form& result)
+				       Ekiga::Form& result,
+                                       std::string &/*error*/)
 {
   if (!submitted)
-    return;
+    return false;
 
   std::string entry_name = result.text ("name");
   std::string entry_uri = result.text ("uri");
@@ -605,6 +609,8 @@ RL::Heap::on_new_entry_form_submitted (bool submitted,
 		 boost::bind (&RL::Heap::new_entry_result, this, _1));
   }
   xmlBufferFree (buffer);
+
+  return true;
 }
 
 void

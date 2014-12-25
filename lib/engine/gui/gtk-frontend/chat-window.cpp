@@ -43,7 +43,9 @@
 #include "menu-builder-gtk.h"
 
 #include "chat-core.h"
+#include "audiooutput-core.h"
 #include "notification-core.h"
+#include "ekiga-settings.h"
 
 #include "form-dialog-gtk.h"
 #include "scoped-connections.h"
@@ -55,6 +57,7 @@
 struct _ChatWindowPrivate
 {
   boost::shared_ptr<Ekiga::NotificationCore> notification_core;
+  boost::shared_ptr<Ekiga::AudioOutputCore> audiooutput_core;
   Ekiga::scoped_connections connections;
   boost::signals2::connection visible_conversation_connection;
 
@@ -93,13 +96,8 @@ static void on_some_conversation_user_requested (ChatWindow* self,
 
 static void show_chat_window_cb (ChatWindow *self);
 
-/* internal api (declaration) */
-
-static void chat_window_update_menu (ChatWindow* self,
-				     Ekiga::ConversationPtr conversation);
 
 /* helpers (implementation) */
-
 static void
 on_unread_count_updated (ConversationPage* page,
 			 gpointer data)
@@ -147,7 +145,6 @@ on_visible_conversation_updated (ChatWindow* self)
     Ekiga::ConversationPtr conversation = conversation_page_get_conversation (CONVERSATION_PAGE (page));
 
     self->priv->visible_conversation_connection = conversation->updated.connect (boost::bind (&on_visible_conversation_updated, self));
-    chat_window_update_menu (self, conversation);
   }
 }
 
@@ -223,7 +220,6 @@ show_chat_window_cb (ChatWindow *self)
 
 
 /* GObject code */
-
 static void
 chat_window_finalize (GObject* obj)
 {
@@ -269,43 +265,29 @@ chat_window_init (ChatWindow* self)
 {
   /* we can't do much here since we get the Chat as reference... */
   gtk_window_set_title (GTK_WINDOW (self), _("Chat Window"));
+
+  self->priv = new ChatWindowPrivate;
 }
 
-/* internal api (implementation) */
 
-static void chat_window_update_menu (ChatWindow* self,
-				     Ekiga::ConversationPtr conversation)
-{
-  MenuBuilderGtk builder;
-
-  conversation->populate_menu (builder);
-
-  if (!builder.empty ()) {
-
-    gtk_widget_show_all (builder.menu);
-    gtk_menu_button_set_popup (GTK_MENU_BUTTON (self->priv->gear),
-			       builder.menu);
-  }
-  g_object_ref_sink (builder.menu);
-}
-
-/* public api */
-
+/* Public API */
 GtkWidget*
-chat_window_new (Ekiga::ServiceCore& core,
-		 const char* key)
+chat_window_new (GmApplication *app)
 {
   ChatWindow* self = NULL;
 
+  g_return_val_if_fail (GM_IS_APPLICATION (app), NULL);
+
+  Ekiga::ServiceCorePtr core = gm_application_get_core (app);
+
   self = (ChatWindow*)g_object_new (CHAT_WINDOW_TYPE,
-				    "key", key,
-                                    "hide_on_esc", FALSE,
+                                    "application", GTK_APPLICATION (app),
+                                    "key", USER_INTERFACE ".chat-window",
 				    NULL);
-
-  self->priv = new ChatWindowPrivate;
-
   self->priv->notification_core =
-    core.get<Ekiga::NotificationCore>("notification-core");
+    core->get<Ekiga::NotificationCore>("notification-core");
+  self->priv->audiooutput_core =
+    core->get<Ekiga::AudioOutputCore>("audiooutput-core");
 
   GtkWidget* vbox = gtk_box_new (GTK_ORIENTATION_VERTICAL, 2);
   gtk_container_add (GTK_CONTAINER (self), vbox);
@@ -334,7 +316,7 @@ chat_window_new (Ekiga::ServiceCore& core,
 		    G_CALLBACK (on_visible_conversation_changed), self);
 
   boost::shared_ptr<Ekiga::ChatCore> chat_core =
-    core.get<Ekiga::ChatCore> ("chat-core");
+    core->get<Ekiga::ChatCore> ("chat-core");
   self->priv->connections.add (chat_core->dialect_added.connect (boost::bind (&on_dialect_added, self, _1)));
   self->priv->connections.add (chat_core->questions.connect (boost::bind (&on_handle_questions, self, _1)));
   chat_core->visit_dialects (boost::bind (&on_dialect_added, self, _1));

@@ -75,8 +75,7 @@ namespace OPENLDAP
   };
 
   void BookForm (boost::shared_ptr<Ekiga::FormRequestSimple> req,
-		 struct BookInfo &info,
-		 std::string title );
+		 struct BookInfo &info);
 
   int BookFormInfo (Ekiga::Form &result, struct BookInfo &info,
 		    std::string &errmsg);
@@ -116,7 +115,7 @@ namespace OPENLDAP
     const std::string get_status () const;
 
     const std::string get_icon () const
-    { return "network-server"; }
+    { return "network-server-symbolic"; }
 
     void refresh ();
 
@@ -129,7 +128,7 @@ namespace OPENLDAP
     bool is_ekiga_net_book () const;
 
     /* public for access from C */
-    void on_sasl_form_submitted (bool, Ekiga::Form &);
+    bool on_sasl_form_submitted (bool, Ekiga::Form &, std::string &);
     Ekiga::FormBuilder *saslform;
 
   private:
@@ -143,8 +142,9 @@ namespace OPENLDAP
     void parse_uri();
 
     void edit ();
-    void on_edit_form_submitted (bool submitted,
-				 Ekiga::Form &form);
+    bool on_edit_form_submitted (bool submitted,
+				 Ekiga::Form &form,
+                                 std::string &error);
 
     Ekiga::ServiceCore &core;
     boost::shared_ptr<xmlDoc> doc;

@@ -339,6 +339,14 @@ OPENLDAP::Book::Book (Ekiga::ServiceCore &_core,
     I_am_an_ekiga_net_book = true;
   else
     I_am_an_ekiga_net_book = false;
+
+  /* Actor stuff */
+  add_action (Ekiga::ActionPtr (new Ekiga::Action ("edit-book", _("_Edit"),
+                                                   boost::bind (&OPENLDAP::Book::edit, this))));
+  add_action (Ekiga::ActionPtr (new Ekiga::Action ("remove-book", _("_Remove"),
+                                                   boost::bind (&OPENLDAP::Book::remove, this))));
+  add_action (Ekiga::ActionPtr (new Ekiga::Action ("refresh-book", _("_Refresh"),
+                                                   boost::bind (&OPENLDAP::Book::refresh, this))));
 }
 
 OPENLDAP::Book::Book (Ekiga::ServiceCore &_core,
@@ -481,14 +489,17 @@ OPENLDAP::Book::get_node ()
   return node;
 }
 
-void
+bool
 OPENLDAP::Book::on_sasl_form_submitted (bool submitted,
-					Ekiga::Form &result)
+					Ekiga::Form &result,
+                                        std::string &/*error*/)
 {
   if (!submitted)
-    return;
+    return false;
 
   result.visit (*saslform);
+
+  return true;
 }
 
 extern "C" {
@@ -554,7 +565,7 @@ extern "C" {
 
     /* If there are missing items, try to get them all in one dialog */
     if (nprompts) {
-      boost::shared_ptr<Ekiga::FormRequestSimple> request = boost::shared_ptr<Ekiga::FormRequestSimple> (new Ekiga::FormRequestSimple (boost::bind (&OPENLDAP::Book::on_sasl_form_submitted, ctx->book, _1, _2)));
+      boost::shared_ptr<Ekiga::FormRequestSimple> request = boost::shared_ptr<Ekiga::FormRequestSimple> (new Ekiga::FormRequestSimple (boost::bind (&OPENLDAP::Book::on_sasl_form_submitted, ctx->book, _1, _2, _3)));
       Ekiga::FormBuilder result;
       std::string prompt;
       std::string ctxt = "";
@@ -614,7 +625,7 @@ extern "C" {
 
 	  /* private text or not? */
 	  if (noecho) {
-	    request->private_text (std::string (resbuf), prompt, "", std::string ());
+	    request->text (std::string (resbuf), prompt, "", std::string (), Ekiga::FormVisitor::PASSWORD);
 	  } else {
 	    std::string dflt;
 	    if (in->defresult)
@@ -653,7 +664,7 @@ extern "C" {
 	      break;
 	    }
 	  if (noecho)
-	    prompt = result.private_text (std::string (resbuf));
+	    prompt = result.text (std::string (resbuf));
 	  else
 	    prompt = result.text (std::string (resbuf));
 
@@ -932,27 +943,35 @@ OPENLDAP::Book::refresh_result ()
 
 void
 OPENLDAP::BookForm (boost::shared_ptr<Ekiga::FormRequestSimple> request,
-		    struct BookInfo &info,
-		    std::string title)
+		    struct BookInfo &info)
 {
   std::string callAttr = "";
+  char *title = NULL;
+
+  /* Translators: This is Edit name of the LDAP Account
+   * e.g. Editing Ekiga.net Account.
+   */
+  if (!info.name.empty ())
+    title = g_strdup_printf (_("Editing %s Account"), info.name.c_str ());
+  else
+    title = g_strdup (_("Add Account"));
 
   request->title (title);
+  g_free (title);
 
-  request->instructions (_("Please edit the following fields"));
-
-  request->text ("name", _("Book _name:"), info.name, _("Book name, as shown in your dialog box"));
-  request->text ("uri", _("Server _URI:"), info.uri_host, _("Name of LDAP server, prefixed by ldap://"));
-  request->text ("base", _("_Base DN:"), info.urld->lud_dn, std::string ());
+  request->text ("name", _("_Name"), info.name, _("Ekiga.net LDAP Server"),
+                 Ekiga::FormVisitor::STANDARD, false, false);
+  request->text ("uri", _("_URI"), info.uri_host, "ldap://ekiga.net", Ekiga::FormVisitor::URI);
+  request->text ("base", _("_Base DN:"), info.urld->lud_dn, "dc=ekiga,dc=net");
 
   {
     std::map<std::string, std::string> choices;
     std::string scopes[]= {"base","one","sub"};
 
     choices["sub"] = _("Subtree");
-    choices["onelevel"] = _("Single level");
-    request->single_choice ("scope", _("_Search scope"),
-			    scopes[info.urld->lud_scope], choices);
+    choices["onelevel"] = _("Single Level");
+    request->single_choice ("scope", _("_Search Scope"),
+			    scopes[info.urld->lud_scope], choices, true);
   }
 
   /* attrs[0] is the name attribute */
@@ -966,12 +985,16 @@ OPENLDAP::BookForm (boost::shared_ptr<Ekiga::FormRequestSimple> request,
    * "DisplayName" (i.e., "the name that will be displayed") but on
    * most LDAP servers it's "CommonName".
    */
-  request->text ("nameAttr", _("_DisplayName attribute:"), info.urld->lud_attrs[0], std::string ());
-  request->text ("callAttr", _("Call _attributes:"), callAttr, _("The field you are searching for"));
+  request->text ("nameAttr", _("_DisplayName Attribute"), info.urld->lud_attrs[0],
+                 "givenName", Ekiga::FormVisitor::STANDARD, true);
+  request->text ("callAttr", _("Call _Attributes"), callAttr,
+                 "telephoneNumber", Ekiga::FormVisitor::STANDARD, true);
   if (info.urld->lud_filter != NULL)
-    request->text ("filter", _("_Filter template:"), info.urld->lud_filter, _("Here, a \"$\" is replaced by the search string"));
+    request->text ("filter", _("_Filter"), info.urld->lud_filter,
+                   "(cn=$)", Ekiga::FormVisitor::STANDARD, true);
   else
-    request->text ("filter", _("_Filter template:"), "", _("Here, a \"$\" is replaced by the search string"));
+    request->text ("filter", _("_Filter"), std::string (),
+                   "(cn=$)", Ekiga::FormVisitor::STANDARD, true);
 
   /* Translators: Bind ID - In LDAP, the operation that begins an LDAP
    * session and authenticates the user to the directory is called a
@@ -982,10 +1005,14 @@ OPENLDAP::BookForm (boost::shared_ptr<Ekiga::FormRequestSimple> request,
    * course, the Bind ID can be left blank, in which case the session
    * is anonymous / unauthenticated.)
    */
-  request->text ("authcID", _("Bind _ID:"), info.authcID, _("User ID; leave blank for anonymous / nonauthenticated"));
-  request->private_text ("password", _("_Password:"), info.password, _("The password for the user ID above, if any"));
-  request->boolean ("startTLS", _("Use _TLS"), info.starttls);
-  request->boolean ("sasl", _("Use SAS_L"), info.sasl);
+  request->text ("authcID", _("Bind _ID"), info.authcID,
+                 std::string (), Ekiga::FormVisitor::STANDARD, true);
+  request->text ("password", _("_Password"), info.password,
+                 std::string (), Ekiga::FormVisitor::PASSWORD, true);
+  request->boolean ("startTLS", _("Use _TLS"),
+                    info.starttls, true, false);
+  request->boolean ("sasl", _("Use SAS_L"),
+                    info.sasl, true, false);
   {
     std::map<std::string, std::string> mechs;
     const char **mechlist;
@@ -999,17 +1026,17 @@ OPENLDAP::BookForm (boost::shared_ptr<Ekiga::FormRequestSimple> request,
         mechs[mech] = mech;
       }
     }
-    request->single_choice ("saslMech", _("SASL _mechanism"),
-			    info.saslMech, mechs);
+    request->single_choice ("saslMech", _("SASL _Mechanism"),
+			    info.saslMech, mechs, true);
   }
 }
 
 void
 OPENLDAP::Book::edit ()
 {
-  boost::shared_ptr<Ekiga::FormRequestSimple> request = boost::shared_ptr<Ekiga::FormRequestSimple> (new Ekiga::FormRequestSimple (boost::bind (&OPENLDAP::Book::on_edit_form_submitted, this, _1, _2)));
+  boost::shared_ptr<Ekiga::FormRequestSimple> request = boost::shared_ptr<Ekiga::FormRequestSimple> (new Ekiga::FormRequestSimple (boost::bind (&OPENLDAP::Book::on_edit_form_submitted, this, _1, _2, _3)));
 
-  OPENLDAP::BookForm (request, bookinfo, std::string(_("Edit LDAP directory")));
+  OPENLDAP::BookForm (request, bookinfo);
 
   questions (request);
 }
@@ -1060,7 +1087,7 @@ OPENLDAP::BookFormInfo (Ekiga::Form &result,
     result.single_choice ("scope") + "?" +
     result.text ("filter");
   bookinfo.authcID = result.text ("authcID");
-  bookinfo.password = result.private_text ("password");
+  bookinfo.password = result.text ("password");
   bookinfo.starttls = result.boolean ("startTLS");
   bookinfo.sasl = result.boolean ("sasl");
   bookinfo.saslMech = result.single_choice ("saslMech");
@@ -1113,22 +1140,16 @@ OPENLDAP::BookFormInfo (Ekiga::Form &result,
   return 0;
 }
 
-void
+bool
 OPENLDAP::Book::on_edit_form_submitted (bool submitted,
-					Ekiga::Form &result)
+					Ekiga::Form &result,
+                                        std::string &error)
 {
   if (!submitted)
-    return;
+    return false;
 
-  std::string errmsg;
-  if (OPENLDAP::BookFormInfo (result, bookinfo, errmsg)) {
-    boost::shared_ptr<Ekiga::FormRequestSimple> request = boost::shared_ptr<Ekiga::FormRequestSimple> (new Ekiga::FormRequestSimple (boost::bind (&OPENLDAP::Book::on_edit_form_submitted, this, _1, _2)));
-
-    result.visit (*request);
-    request->error (errmsg);
-
-    questions (request);
-    return;
+  if (OPENLDAP::BookFormInfo (result, bookinfo, error)) {
+    return false;
   }
 
   robust_xmlNodeSetContent (node, &name_node, "name", bookinfo.name);
@@ -1146,4 +1167,6 @@ OPENLDAP::Book::on_edit_form_submitted (bool submitted,
 
   updated ();
   trigger_saving ();
+
+  return true;
 }

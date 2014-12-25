@@ -57,7 +57,9 @@ namespace Ekiga
 
     void dump (const Form &form);
 
-    void title (const std::string );
+    void title (const std::string);
+
+    void action (const std::string);
 
     void instructions (const std::string );
 
@@ -77,12 +79,9 @@ namespace Ekiga
     void text (const std::string name,
 	       const std::string description,
 	       const std::string value,
-	       bool advanced);
-
-    void private_text (const std::string name,
-		       const std::string description,
-		       const std::string value,
-		       bool advanced);
+               const FormVisitor::FormTextType type,
+	       bool advanced,
+               bool allow_empty);
 
     void multi_text (const std::string name,
 		     const std::string description,
@@ -101,11 +100,12 @@ namespace Ekiga
 			  const std::map<std::string, std::string> choices,
 			  bool advanced);
 
-    void editable_set (const std::string name,
-		       const std::string description,
-		       const std::set<std::string> values,
-		       const std::set<std::string> proposed_values,
-		       bool advanced);
+    void editable_list (const std::string name,
+                        const std::string description,
+                        const std::list<std::string> values,
+                        const std::list<std::string> proposed_values,
+                        bool advanced,
+                        bool rename_only);
 
   private:
 

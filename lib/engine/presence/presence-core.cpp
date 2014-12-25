@@ -71,20 +71,6 @@ Ekiga::PresenceCore::visit_clusters (boost::function1<bool, ClusterPtr > visitor
     go_on = visitor (*iter);
 }
 
-bool
-Ekiga::PresenceCore::populate_menu (MenuBuilder &builder)
-{
-  bool populated = false;
-
-  for (std::set<ClusterPtr >::iterator iter = clusters.begin ();
-       iter != clusters.end ();
-       ++iter)
-    if ((*iter)->populate_menu (builder))
-      populated = true;
-
-  return populated;
-}
-
 void Ekiga::PresenceCore::on_heap_added (HeapPtr heap,
 					 ClusterPtr cluster)
 {
@@ -126,30 +112,6 @@ Ekiga::PresenceCore::on_presentity_removed (HeapPtr heap,
 					    ClusterPtr cluster)
 {
   presentity_removed (cluster, heap, presentity);
-}
-
-void
-Ekiga::PresenceCore::add_presentity_decorator (boost::shared_ptr<PresentityDecorator> decorator)
-{
-  presentity_decorators.push_back (decorator);
-}
-
-bool
-Ekiga::PresenceCore::populate_presentity_menu (PresentityPtr presentity,
-					       const std::string uri,
-					       MenuBuilder &builder)
-{
-  bool populated = false;
-
-  for (std::list<boost::shared_ptr<PresentityDecorator> >::const_iterator iter
-	 = presentity_decorators.begin ();
-       iter != presentity_decorators.end ();
-       ++iter) {
-
-    populated = (*iter)->populate_menu (presentity, uri, builder) || populated;
-  }
-
-  return populated;
 }
 
 void

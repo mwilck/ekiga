@@ -64,19 +64,18 @@ namespace Ekiga
 
     const std::string text (const std::string name) const;
 
-    const std::string private_text (const std::string name) const;
-
     const std::string multi_text (const std::string name) const;
 
     const std::string single_choice (const std::string name) const;
 
     const std::set<std::string> multiple_choice (const std::string name) const;
 
-    const std::set<std::string> editable_set (const std::string name) const;
+    const std::list<std::string> editable_list (const std::string name) const;
 
     /* builder part */
-
     void title (const std::string title);
+
+    void action (const std::string action);
 
     void instructions (const std::string instructions);
 
@@ -91,19 +90,16 @@ namespace Ekiga
     void boolean (const std::string name,
 		  const std::string description,
 		  bool value,
-		  bool advanced = false);
+		  bool advanced = false,
+                  bool in_header_bar = true);
 
     void text (const std::string text,
 	       const std::string description,
 	       const std::string value,
 	       const std::string tooltip,
-	       bool advanced = false);
-
-    void private_text (const std::string text,
-		       const std::string description,
-		       const std::string value,
-		       const std::string tooltip,
-		       bool advanced = false);
+               const FormTextType type = STANDARD,
+	       bool advanced = false,
+               bool allow_empty = true);
 
     void multi_text (const std::string text,
 		     const std::string description,
@@ -122,11 +118,13 @@ namespace Ekiga
 			  const std::map<std::string, std::string> choices,
 			  bool advanced = false);
 
-    void editable_set (const std::string name,
-		       const std::string description,
-		       const std::set<std::string> values,
-		       const std::set<std::string> proposed_values,
-		       bool advanced = false);
+    void editable_list (const std::string name,
+                        const std::string description,
+                        const std::list<std::string> values,
+                        const std::list<std::string> proposed_values,
+                        bool advanced = false,
+                        bool rename_only = false);
+
   private:
 
     struct HiddenField
@@ -145,14 +143,17 @@ namespace Ekiga
       BooleanField (const std::string _name,
 		    const std::string _description,
 		    bool _value,
-		    bool _advanced): name(_name), description(_description),
-				     value(_value), advanced(_advanced)
+		    bool _advanced,
+                    bool _in_header_bar): name(_name), description(_description),
+                                          value(_value), advanced(_advanced),
+                                          in_header_bar(_in_header_bar)
       {}
 
       const std::string name;
       const std::string description;
       bool value;
       bool advanced;
+      bool in_header_bar;
     };
 
     struct TextField
@@ -161,16 +162,24 @@ namespace Ekiga
 		 const std::string _description,
 		 const std::string _value,
 		 const std::string _tooltip,
-		 bool _advanced): name(_name),
-				  description(_description),
-                  value(_value), tooltip (_tooltip), advanced(_advanced)
+                 const FormTextType _type,
+		 bool _advanced,
+                 bool _allow_empty): name(_name),
+                                     description(_description),
+                                     value(_value),
+                                     tooltip (_tooltip),
+                                     type(_type),
+                                     advanced(_advanced),
+                                     allow_empty(_allow_empty)
       {}
 
       const std::string name;
       const std::string description;
       const std::string value;
       const std::string tooltip;
+      const FormTextType type;
       bool advanced;
+      bool allow_empty;
     };
 
     struct MultiTextField
@@ -226,22 +235,28 @@ namespace Ekiga
       bool advanced;
     };
 
-    struct EditableSetField
+    struct EditableListField
     {
-      EditableSetField (const std::string _name,
-			const std::string _description,
-			const std::set<std::string> _values,
-			const std::set<std::string> _proposed_values,
-			bool _advanced):
-	name(_name), description(_description),
-	values(_values), proposed_values(_proposed_values), advanced(_advanced)
+      EditableListField (const std::string _name,
+                         const std::string _description,
+                         const std::list<std::string> _values,
+                         const std::list<std::string> _proposed_values,
+                         bool _advanced,
+                         bool _rename_only):
+	name(_name),
+        description(_description),
+	values(_values),
+        proposed_values(_proposed_values),
+        advanced(_advanced),
+        rename_only(_rename_only)
       {}
 
       const std::string name;
       const std::string description;
-      const std::set<std::string> values;
-      const std::set<std::string> proposed_values;
+      const std::list<std::string> values;
+      const std::list<std::string> proposed_values;
       bool advanced;
+      bool rename_only;
     };
 
     typedef enum {
@@ -249,7 +264,6 @@ namespace Ekiga
       HIDDEN,
       BOOLEAN,
       TEXT,
-      PRIVATE_TEXT,
       MULTI_TEXT,
       SINGLE_CHOICE,
       MULTIPLE_CHOICE,
@@ -257,6 +271,7 @@ namespace Ekiga
     } FieldType;
 
     std::string my_title;
+    std::string my_action;
     std::string my_instructions;
     std::pair<std::string, std::string> my_link;
     std::string my_error;
@@ -264,11 +279,10 @@ namespace Ekiga
     std::list<struct HiddenField> hiddens;
     std::list<struct BooleanField> booleans;
     std::list<struct TextField> texts;
-    std::list<struct TextField> private_texts;
     std::list<struct MultiTextField> multi_texts;
     std::list<struct SingleChoiceField> single_choices;
     std::list<struct MultipleChoiceField> multiple_choices;
-    std::list<struct EditableSetField> editable_sets;
+    std::list<struct EditableListField> editable_lists;
   };
 
 /**

@@ -58,8 +58,6 @@ namespace History
 
     ~Source ();
 
-    bool populate_menu (Ekiga::MenuBuilder &);
-
     bool is_supported_uri (const std::string uri) const;
 
     const std::string get_name () const
@@ -68,7 +66,7 @@ namespace History
     const std::string get_description () const
     { return "\tStores the call history"; }
 
-    const std::set<std::string> existing_groups () const;
+    const std::list<std::string> existing_groups () const;
 
     BookPtr get_book () const;
 

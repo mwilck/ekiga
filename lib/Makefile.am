@@ -17,6 +17,7 @@ AM_CPPFLAGS = \
 	-I$(top_srcdir)/lib/settings \
 	-I$(top_srcdir)/lib/engine \
 	-I$(top_srcdir)/lib/engine/account \
+	-I$(top_srcdir)/lib/engine/action \
 	-I$(top_srcdir)/lib/engine/addressbook \
 	-I$(top_srcdir)/lib/engine/audioinput \
 	-I$(top_srcdir)/lib/engine/audiooutput \
@@ -38,7 +39,6 @@ AM_CPPFLAGS = \
 	-I$(top_srcdir)/lib/engine/components/gmconf-personal-details \
 	-I$(top_srcdir)/lib/engine/components/hal-dbus \
 	-I$(top_srcdir)/lib/engine/components/hal-gudev \
-	-I$(top_srcdir)/lib/engine/components/local-roster \
 	-I$(top_srcdir)/lib/engine/components/mlogo-videoinput \
 	-I$(top_srcdir)/lib/engine/components/null-audioinput \
 	-I$(top_srcdir)/lib/engine/components/null-audiooutput \
@@ -96,22 +96,14 @@ libekiga_la_SOURCES += \
 	gui/dialpad.c \
 	gui/gm-smileys.h \
 	gui/gm-smileys.c \
+	gui/gm-entry.h \
+	gui/gm-entry.c \
+	gui/gm-info-bar.h \
+	gui/gm-info-bar.c \
 	gui/gmwindow.c \
 	gui/gmwindow.h \
-	gui/gmcallbacks.c \
-	gui/gmcallbacks.h \
-	gui/gmentrydialog.c \
-	gui/gmentrydialog.h \
-	gui/gmmenuaddon.c \
-	gui/gmmenuaddon.h \
-	gui/gmstatusbar.c \
-	gui/gmstatusbar.h \
-	gui/gmstockicons.c \
-	gui/gmstockicons.h \
-	gui/gmpowermeter.c \
-	gui/gmpowermeter.h \
-	gui/gmcellrendererexpander.c \
-	gui/gmcellrendererexpander.h \
+	gui/gm-cell-renderer-expander.c \
+	gui/gm-cell-renderer-expander.h \
 	gui/gm-cell-renderer-bitext.c \
 	gui/gm-cell-renderer-bitext.h \
 	gui/gm-text-buffer-enhancer-helper-interface.c \
@@ -126,6 +118,12 @@ libekiga_la_SOURCES += \
 	gui/gm-text-buffer-enhancer.h \
 	gui/gm-smiley-chooser-button.c \
 	gui/gm-smiley-chooser-button.h
+
+if !HAVE_SIDEBAR
+libekiga_la_SOURCES += \
+	gui/gm-sidebar.h \
+	gui/gm-sidebar.c
+endif
 
 ##
 # Sources of the main engine code
@@ -142,6 +140,7 @@ libekiga_la_SOURCES += \
 libekiga_la_SOURCES += \
 	engine/framework/boost-exceptions.cpp \
 	engine/framework/services.h \
+	engine/framework/null-deleter.h \
 	engine/framework/map-key-iterator.h \
 	engine/framework/map-key-const-iterator.h \
 	engine/framework/reflister.h \
@@ -199,6 +198,18 @@ libekiga_la_SOURCES += \
 	engine/account/account-core.cpp
 
 ##
+# Actions
+##
+
+libekiga_la_SOURCES += \
+	engine/action/action.h \
+	engine/action/action.cpp \
+	engine/action/action-provider.h \
+	engine/action/action-provider.cpp \
+	engine/action/actor.h \
+	engine/action/actor.cpp
+
+##
 #  Sources of the addressbook stack
 ##
 
@@ -249,8 +260,6 @@ libekiga_la_SOURCES += \
 	engine/presence/cluster.h \
 	engine/presence/cluster-impl.h \
 	engine/presence/uri-presentity.h \
-	engine/presence/proxy-presentity.cpp \
-	engine/presence/proxy-presentity.h \
 	engine/presence/uri-presentity.cpp \
 	engine/presence/presence-core.h \
 	engine/presence/presence-core.cpp
@@ -329,8 +338,8 @@ libekiga_la_SOURCES += \
 	engine/gui/gtk-core/menu-builder-gtk.cpp \
 	engine/gui/gtk-core/form-dialog-gtk.h \
 	engine/gui/gtk-core/form-dialog-gtk.cpp \
-	engine/gui/gtk-core/optional-buttons-gtk.h \
-	engine/gui/gtk-core/optional-buttons-gtk.cpp \
+	engine/gui/gtk-core/gactor-menu.h \
+	engine/gui/gtk-core/gactor-menu.cpp \
 	engine/gui/gtk-core/codecsbox.cpp \
 	engine/gui/gtk-core/codecsbox.h \
 	engine/gui/gtk-core/gtk-core.h \
@@ -345,8 +354,6 @@ libekiga_la_SOURCES += \
 libekiga_la_SOURCES += \
 	engine/gui/gtk-frontend/addressbook-window.h \
 	engine/gui/gtk-frontend/addressbook-window.cpp \
-	engine/gui/gtk-frontend/accounts-window.h \
-	engine/gui/gtk-frontend/accounts-window.cpp \
 	engine/gui/gtk-frontend/assistant-window.h \
 	engine/gui/gtk-frontend/assistant-window.cpp \
 	engine/gui/gtk-frontend/main_window.h \
@@ -363,8 +370,6 @@ libekiga_la_SOURCES += \
 	engine/gui/gtk-frontend/default_devices.h \
 	engine/gui/gtk-frontend/presentity-view.h \
 	engine/gui/gtk-frontend/presentity-view.cpp \
-	engine/gui/gtk-frontend/heap-view.h \
-	engine/gui/gtk-frontend/heap-view.cpp \
 	engine/gui/gtk-frontend/chat-area.h \
 	engine/gui/gtk-frontend/chat-area.cpp \
 	engine/gui/gtk-frontend/conversation-page.h \
@@ -377,8 +382,8 @@ libekiga_la_SOURCES += \
 	engine/gui/gtk-frontend/statusmenu.cpp \
 	engine/gui/gtk-frontend/chat-window.h \
 	engine/gui/gtk-frontend/chat-window.cpp \
-	engine/gui/gtk-frontend/gtk-frontend.h \
-	engine/gui/gtk-frontend/gtk-frontend.cpp
+	engine/gui/gtk-frontend/ekiga-app.h \
+	engine/gui/gtk-frontend/ekiga-app.cpp
 
 ##
 # Sources of the ptlib component
@@ -430,7 +435,9 @@ libekiga_la_SOURCES += \
 	engine/components/opal/opal-plugins-hook.h \
 	engine/components/opal/opal-plugins-hook.cpp \
 	engine/components/opal/opal-presentity.h \
-	engine/components/opal/opal-presentity.cpp
+	engine/components/opal/opal-presentity.cpp \
+	engine/components/opal/opal-process.h \
+	engine/components/opal/opal-process.cpp
 
 if HAVE_H323
 libekiga_la_SOURCES += \
@@ -472,21 +479,6 @@ libekiga_la_SOURCES += \
 	engine/components/gmconf-personal-details/gmconf-personal-details.cpp \
 	engine/components/gmconf-personal-details/gmconf-personal-details.h
 
-##
-# Sources of the local roster component
-##
-
-libekiga_la_SOURCES += \
-	engine/components/local-roster/local-presentity.h \
-	engine/components/local-roster/local-presentity.cpp \
-	engine/components/local-roster/local-heap.h \
-	engine/components/local-roster/local-heap.cpp \
-	engine/components/local-roster/local-cluster.h \
-	engine/components/local-roster/local-cluster.cpp \
-	engine/components/local-roster/local-roster-main.h \
-	engine/components/local-roster/local-roster-main.cpp \
-	engine/components/local-roster/local-roster-bridge.h \
-	engine/components/local-roster/local-roster-bridge.cpp
 
 ##
 # Sources of the moving logo component

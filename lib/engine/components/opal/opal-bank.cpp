@@ -64,6 +64,10 @@ Opal::Bank::Bank (Ekiga::ServiceCore& core):
 
   const std::string raw = protocols_settings->get_string ("accounts");
 
+  /* Actor stuff */
+  add_actions ();
+
+  /* Populate Accounts */
   doc = boost::shared_ptr<xmlDoc> (xmlRecoverMemory (raw.c_str (), raw.length ()), xmlFreeDoc);
   if (!doc)
     doc = boost::shared_ptr<xmlDoc> (xmlNewDoc (BAD_CAST "1.0"), xmlFreeDoc);
@@ -78,16 +82,28 @@ Opal::Bank::Bank (Ekiga::ServiceCore& core):
   for (xmlNodePtr child = node->children; child != NULL; child = child->next) {
 
     if (child->type == XML_ELEMENT_NODE
-	&& child->name != NULL
-	&& xmlStrEqual(BAD_CAST "account", child->name)) {
+        && child->name != NULL
+        && xmlStrEqual(BAD_CAST "account", child->name)) {
 
-      boost::shared_ptr<Account> account(new Account (sip_endpoint, presence_core, notification_core,
-						      personal_details, audiooutput_core, opal_component,
-						      boost::bind(&Opal::Bank::existing_groups, this), child));
+      boost::shared_ptr<Account> account(new Account (*this,
+                                                      sip_endpoint,
+                                                      presence_core,
+                                                      notification_core,
+                                                      personal_details,
+                                                      audiooutput_core,
+                                                      opal_component,
+                                                      boost::bind(&Opal::Bank::existing_groups, this),
+                                                      child));
 
       Ekiga::BankImpl<Account>::add_connection (account, account->presentity_added.connect (boost::bind (boost::ref(presentity_added), account, _1)));
       Ekiga::BankImpl<Account>::add_connection (account, account->presentity_updated.connect (boost::bind (boost::ref(presentity_updated), account, _1)));
       Ekiga::BankImpl<Account>::add_connection (account, account->presentity_removed.connect (boost::bind (boost::ref(presentity_removed), account, _1)));
+
+      // We have several questions to relay following we are a Cluster or a Bank.
+      // Clusters will relay questions from Heaps. Banks will relay questions from Accounts.
+      Ekiga::BankImpl<Account>::add_connection (account, account->Heap::questions.connect (boost::ref(Ekiga::Cluster::questions)));
+      Ekiga::BankImpl<Account>::add_connection (account, account->Account::questions.connect (boost::ref(Ekiga::Bank::questions)));
+
       Ekiga::BankImpl<Account>::add_connection (account, account->trigger_saving.connect (boost::bind (&Opal::Bank::save, this)));
       Ekiga::BankImpl<Account>::add_connection (account, account->presence_received.connect (boost::ref (presence_received)));
       Ekiga::BankImpl<Account>::add_connection (account, account->status_received.connect (boost::ref (status_received)));
@@ -119,76 +135,14 @@ Opal::Bank::~Bank ()
 }
 
 
-bool
-Opal::Bank::populate_menu (Ekiga::MenuBuilder & builder)
-{
-  builder.add_action ("add", _("_Add an Ekiga.net Account"),
-		      boost::bind (&Opal::Bank::new_account, this, Opal::Account::Ekiga, "", ""));
-  builder.add_action ("add", _("_Add an Ekiga Call Out Account"),
-		      boost::bind (&Opal::Bank::new_account, this, Opal::Account::DiamondCard, "", ""));
-  builder.add_action ("add", _("_Add a SIP Account"),
-		      boost::bind (&Opal::Bank::new_account, this, Opal::Account::SIP, "", ""));
-#ifdef HAVE_H323
-  builder.add_action ("add", _("_Add an H.323 Account"),
-		      boost::bind (&Opal::Bank::new_account, this, Opal::Account::H323, "", ""));
-#endif
-
-  return true;
-}
-
-
-bool
-Opal::Bank::populate_menu (Ekiga::ContactPtr contact,
-			   const std::string uri,
-			   Ekiga::MenuBuilder& builder)
-{
-  return populate_menu_helper (contact->get_name (), uri, builder);
-}
-
-
-bool
-Opal::Bank::populate_menu (Ekiga::PresentityPtr presentity,
-			   const std::string uri,
-			   Ekiga::MenuBuilder& builder)
-{
-  return populate_menu_helper (presentity->get_name (), uri, builder);
-}
-
-
-bool
-Opal::Bank::populate_menu_helper (const std::string fullname,
-				  const std::string& uri,
-				  Ekiga::MenuBuilder& builder)
-{
-  bool result = false;
-
-  if (uri.find ("@") == string::npos) {
-
-    // no domain: try to save the situation by trying all accounts
-
-    for (iterator iter = begin ();
-	 iter != end ();
-	 ++iter)
-      result = (*iter)->populate_menu (fullname, uri, builder) || result;
-  } else {
-
-    // there is a domain: just add the actions
-    result = opal_component->populate_menu (fullname, uri, builder);
-  }
-
-  return result;
-}
-
-
 void
 Opal::Bank::new_account (Account::Type acc_type,
 			 std::string username,
 			 std::string password)
 {
-  boost::shared_ptr<Ekiga::FormRequestSimple> request = boost::shared_ptr<Ekiga::FormRequestSimple> (new Ekiga::FormRequestSimple (boost::bind (&Opal::Bank::on_new_account_form_submitted, this, _1, _2, acc_type)));
+  boost::shared_ptr<Ekiga::FormRequestSimple> request = boost::shared_ptr<Ekiga::FormRequestSimple> (new Ekiga::FormRequestSimple (boost::bind (&Opal::Bank::on_new_account_form_submitted, this, _1, _2, _3, acc_type)));
 
-  request->title (_("Edit account"));
-  request->instructions (_("Please update the following fields:"));
+  request->title (_("Add Account"));
 
   switch (acc_type) {
 
@@ -196,9 +150,11 @@ Opal::Bank::new_account (Account::Type acc_type,
     request->link (_("Get an Ekiga.net SIP account"), "http://www.ekiga.net");
     request->hidden ("name", "Ekiga.net");
     request->hidden ("host", "ekiga.net");
-    request->text ("user", _("_User:"), username, _("The user name, e.g. jim"));
+    request->text ("user", _("Ekiga.im _SIP address"), username, _("sip:jon@ekiga.im"),
+                   Ekiga::FormVisitor::EKIGA_URI, false, false);
     request->hidden ("authentication_user", username);
-    request->private_text ("password", _("_Password:"), password, _("Password associated to the user"));
+    request->text ("password", _("_Password"), password, _("1234"),
+                   Ekiga::FormVisitor::PASSWORD, false, false);
     request->hidden ("timeout", "3600");
     break;
 
@@ -207,84 +163,83 @@ Opal::Bank::new_account (Account::Type acc_type,
 		   "https://www.diamondcard.us/exec/voip-login?act=sgn&spo=ekiga");
     request->hidden ("name", "Ekiga Call Out");
     request->hidden ("host", "sip.diamondcard.us");
-    request->text ("user", _("_Account ID:"), username, _("The user name, e.g. jim"));
+    request->text ("user", _("_Account ID"), username, _("1234567890"),
+                   Ekiga::FormVisitor::NUMBER, false, false);
     request->hidden ("authentication_user", username);
-    request->private_text ("password", _("_PIN code:"), password, _("Password associated to the user"));
+    request->text ("password", _("_PIN Code"), password, _("1234"),
+                   Ekiga::FormVisitor::NUMBER, false, false);
     request->hidden ("timeout", "3600");
     break;
 
   case Opal::Account::H323:
-    request->text ("name", _("_Name:"), std::string (), _("Account name, e.g. MyAccount"));
-    request->text ("host", _("_Gatekeeper:"), std::string (), _("The gatekeeper, e.g. ekiga.net"));
-    request->text ("user", _("_User:"), username, _("The user name, e.g. jim"));
+    request->text ("name", _("_Name"), std::string (), _("My H.323 Account"),
+                   Ekiga::FormVisitor::STANDARD, false, false);
+    request->text ("host", _("_Gatekeeper"), std::string (), _("h323.ekiga.net"),
+                   Ekiga::FormVisitor::STANDARD, false, false);
+    request->text ("user", _("_User"), username, _("jon"),
+                   Ekiga::FormVisitor::STANDARD, false, false);
     request->hidden ("authentication_user", username);
-    request->private_text ("password", _("_Password:"), password, _("Password associated to the user"));
-    request->text ("timeout", _("_Timeout:"), "3600", _("Time in seconds after which the account registration is automatically retried"));
+    request->text ("password", _("_Password"), password, _("1234"),
+                   Ekiga::FormVisitor::PASSWORD, false, false);
+    request->text ("timeout", _("_Timeout"), "3600", "3600",
+                   Ekiga::FormVisitor::NUMBER, false, false);
     break;
 
   case Opal::Account::SIP:
   default:
-    request->text ("name", _("_Name:"), std::string (), _("Account name, e.g. MyAccount"));
-    request->text ("host", _("_Registrar:"), std::string (), _("The registrar, e.g. ekiga.net"));
-    request->text ("user", _("_User:"), username, _("The user name, e.g. jim"));
-    request->text ("authentication_user", _("_Authentication user:"), std::string (), _("The user name used during authentication, if different than the user name; leave empty if you do not have one"));
-    request->private_text ("password", _("_Password:"), password, _("Password associated to the user"));
-    request->text ("timeout", _("_Timeout:"), "3600", _("Time in seconds after which the account registration is automatically retried"));
+    request->text ("name", _("_Name"), std::string (), _("My SIP Account"),
+                   Ekiga::FormVisitor::STANDARD, false, false);
+    request->text ("host", _("_Registrar"), std::string (), _("ekiga.net"),
+                   Ekiga::FormVisitor::STANDARD, false, false);
+    request->text ("user", _("_User"), username, _("jon"),
+                   Ekiga::FormVisitor::STANDARD, false, false);
+    request->text ("authentication_user", _("_Login"), std::string (), _("jon.doe"),
+                   Ekiga::FormVisitor::STANDARD, false, false);
+    request->text ("password", _("_Password"), password, _("1234"),
+                   Ekiga::FormVisitor::PASSWORD, false, false);
+    request->text ("timeout", _("_Timeout"), "3600", "3600",
+                   Ekiga::FormVisitor::NUMBER, false, false);
     break;
   }
   request->boolean ("enabled", _("Enable account"), true);
 
-  if (!username.empty () && !password.empty ())
-    request->submit (*request);
-  else
-    questions (request);
+  questions (request);
 }
 
 
-void
+bool
 Opal::Bank::on_new_account_form_submitted (bool submitted,
 					   Ekiga::Form& result,
+                                           G_GNUC_UNUSED std::string& error,
 					   Account::Type acc_type)
 {
   if (!submitted)
-    return;
+    return false;
 
-  boost::shared_ptr<Ekiga::FormRequestSimple> request = boost::shared_ptr<Ekiga::FormRequestSimple> (new Ekiga::FormRequestSimple (boost::bind (&Opal::Bank::on_new_account_form_submitted, this, _1, _2, acc_type)));
+  boost::shared_ptr<Ekiga::FormRequestSimple> request = boost::shared_ptr<Ekiga::FormRequestSimple> (new Ekiga::FormRequestSimple (boost::bind (&Opal::Bank::on_new_account_form_submitted, this, _1, _2, _3, acc_type)));
 
-  std::string error;
   std::string new_name = (acc_type == Opal::Account::SIP
 			  || acc_type == Opal::Account::H323) ? result.text ("name") : result.hidden ("name");
   std::string new_host = (acc_type == Opal::Account::SIP
 			  || acc_type == Opal::Account::H323) ? result.text ("host") : result.hidden ("host");
   std::string new_user = result.text ("user");
   std::string new_authentication_user = (acc_type == Opal::Account::SIP) ? result.text ("authentication_user") : new_user;
-  std::string new_password = result.private_text ("password");
+  std::string new_password = result.text ("password");
   bool new_enabled = result.boolean ("enabled");
   unsigned new_timeout = atoi ((acc_type == Opal::Account::SIP
 				|| acc_type == Opal::Account::H323) ?
 			       result.text ("timeout").c_str () : result.hidden ("timeout").c_str ());
 
+  // This should only happen with Ekiga.net accounts
+  std::size_t pos = new_user.find_first_of ("@");
+  if (pos != std::string::npos)
+    new_user = new_user.substr (0, pos);
   result.visit (*request);
 
-  if (new_name.empty ())
-    error = _("You did not supply a name for that account.");
-  else if (new_host.empty ())
-    error = _("You did not supply a host to register to.");
-  else if (new_user.empty ())
-    error = _("You did not supply a user name for that account.");
-  else if (new_timeout < 10)
-    error = _("The timeout should be at least 10 seconds.");
+  add (acc_type, new_name, new_host, new_user, new_authentication_user,
+       new_password, new_enabled, new_timeout);
 
-  if (!error.empty ()) {
-    request->error (error);
-
-    questions (request);
-  }
-  else {
-
-    add (acc_type, new_name, new_host, new_user, new_authentication_user,
-	 new_password, new_enabled, new_timeout);
-  }
+  return true;
 }
 
 
@@ -305,7 +260,8 @@ Opal::Bank::add (Account::Type acc_type,
   save ();
 
   AccountPtr account
-    = AccountPtr(new Opal::Account (sip_endpoint,
+    = AccountPtr(new Opal::Account (*this,
+                                    sip_endpoint,
 				    presence_core,
 				    notification_core,
 				    personal_details,
@@ -434,40 +390,43 @@ Opal::Bank::visit_heaps (boost::function1<bool, Ekiga::HeapPtr> visitor) const
 }
 
 
-const std::set<std::string>
+const std::list<std::string>
 Opal::Bank::existing_groups () const
 {
-  std::set<std::string> result;
+  std::list<std::string> result;
 
   for (const_iterator iter = begin ();
        iter != end ();
        ++iter) {
 
-    std::set<std::string> groups = (*iter)->get_groups ();
-    result.insert (groups.begin (), groups.end ());
+    std::list<std::string> groups = (*iter)->get_groups ();
+    result.merge (groups);
   }
 
-  result.insert (_("Family"));
-  result.insert (_("Friend"));
+  result.push_back (_("Family"));
+  result.push_back (_("Friend"));
   /* Translator: http://www.ietf.org/rfc/rfc4480.txt proposes several
      relationships between you and your contact; associate means
      someone who is at the same "level" than you.
   */
-  result.insert (_("Associate"));
+  result.push_back (_("Associate"));
   /* Translator: http://www.ietf.org/rfc/rfc4480.txt proposes several
      relationships between you and your contact; assistant means
      someone who is at a lower "level" than you.
   */
-  result.insert (_("Assistant"));
+  result.push_back (_("Assistant"));
   /* Translator: http://www.ietf.org/rfc/rfc4480.txt proposes several
      relationships between you and your contact; supervisor means
      someone who is at a higher "level" than you.
   */
-  result.insert (_("Supervisor"));
+  result.push_back (_("Supervisor"));
   /* Translator: http://www.ietf.org/rfc/rfc4480.txt proposes several
      relationships between you and your contact; self means yourself.
   */
-  result.insert (_("Self"));
+  result.push_back (_("Self"));
+
+  result.sort ();
+  result.unique ();
 
   return result;
 }
@@ -597,8 +556,34 @@ Opal::Bank::migrate_from_gconf (const std::list<std::string> old)
 
   xmlDocDumpMemory (doc, &buffer, &doc_size);
   settings->set_string ("accounts", (const char*)buffer);
-  
+
   delete settings;
   xmlFreeDoc (doc);
 }
 
+
+void
+Opal::Bank::add_actions ()
+{
+  // Will be disabled when an Ekiga.net account is added
+  // and enabled back when an Ekiga.net account is removed
+  add_action (Ekiga::ActionPtr (new Ekiga::Action ("add-account-ekiga",
+                                                   _("_Add an Ekiga.net Account"),
+                                                   boost::bind (&Opal::Bank::new_account, this,
+                                                                Opal::Account::Ekiga, "", ""))));
+
+  // Will be disabled when a DiamondCard account is added
+  // and enabled back when an DiamondCard account is removed
+  add_action (Ekiga::ActionPtr (new Ekiga::Action ("add-account-diamondcard",
+                                                 _("_Add an Ekiga Call Out Account"),
+                                                 boost::bind (&Opal::Bank::new_account, this,
+                                                              Opal::Account::DiamondCard, "", ""))));
+  add_action (Ekiga::ActionPtr (new Ekiga::Action ("add-account-sip", _("_Add a SIP Account"),
+                                                   boost::bind (&Opal::Bank::new_account, this,
+                                                                Opal::Account::SIP, "", ""))));
+#ifdef HAVE_H323
+  add_action (Ekiga::ActionPtr (new Ekiga::Action ("add-account-h323", _("_Add an H.323 Account"),
+                                                   boost::bind (&Opal::Bank::new_account, this,
+                                                                Opal::Account::H323, "", ""))));
+#endif
+}

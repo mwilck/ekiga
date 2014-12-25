@@ -121,7 +121,7 @@ LM::Bank::new_account ()
   request->text ("user", _("User:"), "", _("The user name, e.g. jim"));
   request->text ("server", _("Server:"), "", _("The server, e.g. jabber.org"));
   request->text ("resource", _("Resource:"), "", _("The resource, such as home or work, allowing to distinguish among several terminals registered to the same account; leave empty if you do not know what it is"));
-  request->private_text ("password", _("Password:"), "", _("Password associated to the user"));
+  request->text ("password", _("Password:"), "", _("Password associated to the user"), Ekiga::FormVisitor::PASSWORD);
   request->boolean ("enabled", _("Enable account"), true);
 
   questions (request);
@@ -138,7 +138,7 @@ LM::Bank::on_new_account_form_submitted (bool submitted,
   std::string user = result.text ("user");
   std::string server = result.text ("server");
   std::string resource = result.text ("resource");
-  std::string password = result.private_text ("password");
+  std::string password = result.text ("password");
   bool enable_on_startup = result.boolean ("enabled");
 
   boost::shared_ptr<Account> account (new Account (details, dialect, cluster,

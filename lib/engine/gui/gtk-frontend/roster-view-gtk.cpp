@@ -1,6 +1,6 @@
 
 /* Ekiga -- A VoIP and Video-Conferencing application
- * Copyright (C) 2000-2009 Damien Sandras <dsandras@seconix.com>
+ * Copyright (C) 2000-2014 Damien Sandras <dsandras@seconix.com>
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -31,6 +31,7 @@
  *                         ------------------------------------------
  *   begin                : written in 2006 by Julien Puydt
  *   copyright            : (c) 2007 by Julien Puydt
+ *                          (c) 2014 by Damien Sandras
  *   description          : implementation of the roster view
  *
  */
@@ -38,16 +39,23 @@
 #include <ctime>
 #include <glib/gi18n.h>
 #include <gdk/gdkkeysyms.h>
+#include <boost/assign/ptr_list_of.hpp>
 
 #include "ekiga-settings.h"
 
+#include "account.h"
+
 #include "gm-cell-renderer-bitext.h"
-#include "gmcellrendererexpander.h"
+#include "gm-cell-renderer-expander.h"
 #include "menu-builder-tools.h"
 #include "roster-view-gtk.h"
 #include "menu-builder-gtk.h"
 #include "form-dialog-gtk.h"
 #include "scoped-connections.h"
+#include "gactor-menu.h"
+
+#define SPINNER_PULSE_INTERVAL (750 / 12)
+
 
 /*
  * The Roster
@@ -60,6 +68,12 @@ struct _RosterViewGtkPrivate
   GtkTreeView *tree_view;
   GSList *folded_groups;
   gboolean show_offline_contacts;
+
+  int pulse_timeout_id;
+  unsigned int pulse_value;
+
+  Ekiga::GActorMenuPtr presentity_menu;
+  Ekiga::GActorMenuPtr heap_menu;
 };
 
 typedef struct _StatusIconInfo {
@@ -79,7 +93,7 @@ enum {
 };
 
 enum {
-  SELECTION_CHANGED_SIGNAL,
+  ACTIONS_CHANGED_SIGNAL,
   LAST_SIGNAL
 };
 
@@ -109,7 +123,12 @@ enum {
   COLUMN_NAME,
   COLUMN_STATUS,
   COLUMN_PRESENCE_ICON,
-  COLUMN_ACTIVE,
+  COLUMN_AVATAR_PIXBUF,
+  COLUMN_ACCOUNT_STATUS_ICON,
+  COLUMN_ACCOUNT_STATUS_ICON_VISIBLE,
+  COLUMN_ACCOUNT_SPINNER_PULSE,
+  COLUMN_ACCOUNT_SPINNER_VISIBLE,
+  COLUMN_FOREGROUND_COLOR,
   COLUMN_GROUP_NAME,
   COLUMN_PRESENCE,
   COLUMN_OFFLINE,
@@ -134,23 +153,12 @@ static void status_icon_info_delete (gpointer info);
  * Helpers
  */
 
-/* DESCRIPTION : Set of functions called when the user clicks in a view
- * BEHAVIOUR   : Folds/unfolds, shows a menu or triggers default action
+/* DESCRIPTION : Called when the user clicks in a view.
+ * BEHAVIOUR   : Folds/unfolds.
  */
-static void on_clicked_show_heap_menu (Ekiga::Heap* heap,
-				       GdkEventButton* event);
-static void on_clicked_show_heap_group_menu (Ekiga::Heap* heap,
-					     const std::string name,
-					     GdkEventButton* event);
-static void on_clicked_show_presentity_menu (Ekiga::Heap* heap,
-					     Ekiga::Presentity* presentity,
-					     GdkEventButton* event);
-
 static void on_clicked_fold (RosterViewGtk* self,
 			     GtkTreePath* path,
 			     const gchar* name);
-
-static void on_clicked_trigger_presentity (Ekiga::Presentity* presentity);
 
 /* DESCRIPTION : Called whenever a (online/total) count has to be updated
  * BEHAVIOUR   : Updates things...
@@ -167,12 +175,12 @@ static void show_offline_contacts_changed_cb (GSettings *settings,
 					      gchar *key,
 					      gpointer data);
 
-/* DESCRIPTION  : Called when the user selects a presentity
- * BEHAVIOR     : Emit the presentity-selected signal
+/* DESCRIPTION  : Called when the user selects a presentity.
+ * BEHAVIOR     : Rebuilds menus and emit the actions_changed signal.
  * PRE          : The gpointer must point to the RosterViewGtk GObject.
  */
-static void on_selection_changed (GtkTreeSelection* selection,
-				  gpointer data);
+static void on_selection_changed (GtkTreeSelection* actions,
+                                  gpointer data);
 
 /* DESCRIPTION  : Called when the user clicks or presses Enter
  *                on a heap, group or presentity.
@@ -182,6 +190,13 @@ static void on_selection_changed (GtkTreeSelection* selection,
 static gint on_view_event_after (GtkWidget *tree_view,
 			         GdkEventButton *event,
 			         gpointer data);
+
+/* DESCRIPTION  : Called when the RosterViewGtk widget becomes visible.
+ * BEHAVIOR     : Calls on_selection_changed to update actions.
+ * PRE          : /
+ */
+static void on_map_cb (G_GNUC_UNUSED GtkWidget *widget,
+                       gpointer data);
 
 /* DESCRIPTION : Helpers for the next function
  */
@@ -460,7 +475,7 @@ roster_view_gtk_icon_blink_cb (gpointer data)
   gtk_tree_model_get (GTK_TREE_MODEL (info->model), info->iter,
                       COLUMN_PRESENCE, &presence, -1);
 
-  std::string icon = "avatar-default";
+  std::string icon = "user-offline";
   if (info->cpt == 0) {
     gtk_tree_store_set (GTK_TREE_STORE (info->model), info->iter,
                         COLUMN_PRESENCE_ICON, "exit",
@@ -490,70 +505,6 @@ static void status_icon_info_delete (gpointer data)
 }
 
 /* Implementation of the helpers */
-static void
-on_clicked_show_heap_menu (Ekiga::Heap* heap,
-			   GdkEventButton* event)
-{
-  MenuBuilderGtk builder;
-  heap->populate_menu (builder);
-  if (!builder.empty ()) {
-    gtk_widget_show_all (builder.menu);
-    gtk_menu_popup (GTK_MENU (builder.menu), NULL, NULL,
-                    NULL, NULL, event->button, event->time);
-    g_signal_connect (builder.menu, "hide",
-                      G_CALLBACK (g_object_unref),
-                      (gpointer) builder.menu);
-  }
-  g_object_ref_sink (G_OBJECT (builder.menu));
-}
-
-static void
-on_clicked_show_heap_group_menu (Ekiga::Heap* heap,
-				 const std::string name,
-				 GdkEventButton* event)
-{
-  MenuBuilderGtk builder;
-  heap->populate_menu_for_group (name, builder);
-  if (!builder.empty ()) {
-
-    gtk_widget_show_all (builder.menu);
-    gtk_menu_popup (GTK_MENU (builder.menu), NULL, NULL,
-                    NULL, NULL, event->button, event->time);
-    g_signal_connect (builder.menu, "hide",
-                      G_CALLBACK (g_object_unref),
-                      (gpointer) builder.menu);
-  }
-  g_object_ref_sink (G_OBJECT (builder.menu));
-}
-
-static void
-on_clicked_show_presentity_menu (Ekiga::Heap* heap,
-				 Ekiga::Presentity* presentity,
-				 GdkEventButton* event)
-{
-  Ekiga::TemporaryMenuBuilder temp;
-  MenuBuilderGtk builder;
-
-  heap->populate_menu (temp);
-  presentity->populate_menu (builder);
-
-  if (!temp.empty ()) {
-
-    builder.add_separator ();
-    temp.populate_menu (builder);
-  }
-
-  if (!builder.empty ()) {
-    gtk_widget_show_all (builder.menu);
-    gtk_menu_popup (GTK_MENU (builder.menu), NULL, NULL,
-                    NULL, NULL, event->button, event->time);
-    g_signal_connect (builder.menu, "hide",
-                      G_CALLBACK (g_object_unref),
-                      (gpointer) builder.menu);
-  }
-  g_object_ref_sink (G_OBJECT (builder.menu));
-}
-
 static void
 on_clicked_fold (RosterViewGtk* self,
 		 GtkTreePath* path,
@@ -589,14 +540,6 @@ on_clicked_fold (RosterViewGtk* self,
 
   /* Update gsettings */
   self->priv->settings->set_slist ("roster-folded-groups", self->priv->folded_groups);
-}
-
-static void
-on_clicked_trigger_presentity (Ekiga::Presentity* presentity)
-{
-  Ekiga::TriggerMenuBuilder builder;
-
-  presentity->populate_menu (builder);
 }
 
 static void
@@ -636,6 +579,53 @@ update_offline_count (RosterViewGtk* self,
                       COLUMN_NAME, name_with_count, -1);
   g_free (name);
   g_free (name_with_count);
+}
+
+static gboolean
+spinner_pulse_timeout_cb (gpointer data)
+{
+  GtkTreeModel *model;
+  GtkTreeIter loop_iter;
+  gint column_type;
+  gboolean active = FALSE;
+  gboolean keep_pulsing = FALSE;
+  unsigned int pulse = 0;
+
+  RosterViewGtk *self = ROSTER_VIEW_GTK (data);
+
+  model = GTK_TREE_MODEL (self->priv->store);
+
+  if (gtk_tree_model_get_iter_first (model, &loop_iter)) {
+
+    do {
+
+      gtk_tree_model_get (model, &loop_iter,
+                          COLUMN_TYPE, &column_type,
+                          COLUMN_ACCOUNT_SPINNER_PULSE, &pulse,
+                          COLUMN_ACCOUNT_SPINNER_VISIBLE, &active,
+                          -1);
+
+      if (column_type == TYPE_HEAP) {
+        if (active) {
+
+          pulse++;
+          if (pulse == G_MAXUINT)
+            pulse = 0;
+
+          gtk_tree_store_set (GTK_TREE_STORE (model), &loop_iter,
+                              COLUMN_ACCOUNT_SPINNER_PULSE, pulse, -1);
+
+          keep_pulsing = TRUE;
+        }
+      }
+
+    } while (gtk_tree_model_iter_next (model, &loop_iter));
+  }
+
+  if (!keep_pulsing)
+    self->priv->pulse_timeout_id = -1;
+
+  return keep_pulsing;
 }
 
 static void
@@ -678,15 +668,64 @@ show_offline_contacts_changed_cb (GSettings *settings,
 
 
 static void
-on_selection_changed (G_GNUC_UNUSED GtkTreeSelection* selection,
+on_selection_changed (GtkTreeSelection* selection,
 		      gpointer data)
 {
   RosterViewGtk* self = NULL;
+  GtkTreeModel *model = NULL;
+  GtkTreeIter iter;
+
+  gint column_type;
+  Ekiga::Heap *heap = NULL;
+  Ekiga::Presentity *presentity = NULL;
+  Ekiga::MenuBuilder builder;
+
+  gchar *name = NULL;
+  gchar *group_name = NULL;
 
   self = ROSTER_VIEW_GTK (data);
+  model = gtk_tree_view_get_model (self->priv->tree_view);
 
-  g_signal_emit (self, signals[SELECTION_CHANGED_SIGNAL], 0);
+  if (gtk_tree_selection_get_selected (selection, &model, &iter)) {
+
+    gtk_tree_model_get (model, &iter,
+                        COLUMN_NAME, &name,
+                        COLUMN_GROUP_NAME, &group_name,
+                        COLUMN_TYPE, &column_type,
+                        COLUMN_HEAP, &heap,
+                        COLUMN_PRESENTITY, &presentity,
+                        -1);
+
+    /* Reset old data. This also ensures GIO actions are
+     * properly removed before adding new ones.
+     */
+    self->priv->presentity_menu.reset ();
+    self->priv->heap_menu.reset ();
+
+    if (heap != NULL)
+      self->priv->heap_menu = Ekiga::GActorMenuPtr (new Ekiga::GActorMenu (*heap, heap->get_name ()));
+    if (presentity != NULL)
+      self->priv->presentity_menu = Ekiga::GActorMenuPtr (new Ekiga::GActorMenu (*presentity, presentity->get_name ()));
+
+    if (heap && presentity)
+      g_signal_emit (self, signals[ACTIONS_CHANGED_SIGNAL], 0,
+                     self->priv->presentity_menu->get_model (boost::assign::list_of (self->priv->heap_menu)));
+    else if (heap)
+      g_signal_emit (self, signals[ACTIONS_CHANGED_SIGNAL], 0,
+                     self->priv->heap_menu->get_model ());
+    else if (presentity)
+      g_signal_emit (self, signals[ACTIONS_CHANGED_SIGNAL], 0,
+                     self->priv->presentity_menu->get_model ());
+    else
+      g_signal_emit (self, signals[ACTIONS_CHANGED_SIGNAL], 0, NULL);
+
+    g_free (group_name);
+    g_free (name);
+  }
+  else
+    g_signal_emit (self, signals[ACTIONS_CHANGED_SIGNAL], 0, NULL);
 }
+
 
 static gint
 on_view_event_after (GtkWidget *tree_view,
@@ -737,25 +776,20 @@ on_view_event_after (GtkWidget *tree_view,
     switch (column_type) {
 
     case TYPE_HEAP:
-
       if (event->type == GDK_BUTTON_PRESS && event->button == 1 && name)
         on_clicked_fold (self, path, name);
-      if (event->type == GDK_BUTTON_PRESS && event->button == 3)
-        on_clicked_show_heap_menu (heap, event);
+      else if (event->type == GDK_BUTTON_PRESS && event->button == 3 && self->priv->heap_menu->get_menu ())
+        gtk_menu_popup (GTK_MENU (self->priv->heap_menu->get_menu ()),
+                        NULL, NULL, NULL, NULL, event->button, event->time);
       break;
     case TYPE_GROUP:
-
       if (event->type == GDK_BUTTON_PRESS && event->button == 1 && group_name)
         on_clicked_fold (self, path, group_name);
-      if (event->type == GDK_BUTTON_PRESS && event->button == 3)
-        on_clicked_show_heap_group_menu (heap, group_name, event);
       break;
     case TYPE_PRESENTITY:
-
-      if (event->type == GDK_BUTTON_PRESS && event->button == 3)
-        on_clicked_show_presentity_menu (heap, presentity, event);
-      if (event->type == GDK_2BUTTON_PRESS || event->type == GDK_KEY_PRESS)
-        on_clicked_trigger_presentity (presentity);
+      if (event->type == GDK_BUTTON_PRESS && event->button == 3 && self->priv->presentity_menu->get_menu ())
+        gtk_menu_popup (GTK_MENU (self->priv->presentity_menu->get_menu ()),
+                        NULL, NULL, NULL, NULL, event->button, event->time);
       break;
     default:
 
@@ -763,11 +797,27 @@ on_view_event_after (GtkWidget *tree_view,
       break; // shouldn't happen
     }
     g_free (name);
+    g_free (group_name);
   }
   gtk_tree_path_free (path);
 
   return TRUE;
 }
+
+
+static void
+on_map_cb (G_GNUC_UNUSED GtkWidget *widget,
+           gpointer data)
+{
+  GtkTreeSelection *selection = NULL;
+
+  g_return_if_fail (IS_ROSTER_VIEW_GTK (data));
+  RosterViewGtk *self = ROSTER_VIEW_GTK (data);
+
+  selection = gtk_tree_view_get_selection (self->priv->tree_view);
+  on_selection_changed (selection, self);
+}
+
 
 static gboolean
 presentity_hide_show_offline (RosterViewGtk* self,
@@ -862,7 +912,6 @@ show_cell_data_func (GtkTreeViewColumn * /*column*/,
     g_object_set (renderer, "visible", TRUE, NULL);
   else
     g_object_set (renderer, "visible", FALSE, NULL);
-
 }
 
 
@@ -889,7 +938,7 @@ expand_cell_data_func (GtkTreeViewColumn *column,
     g_object_set (renderer, "visible", TRUE, NULL);
 
   g_object_set (renderer,
-                "expander-style", row_expanded ? GTK_EXPANDER_EXPANDED : GTK_EXPANDER_COLLAPSED,
+                "is-expanded", row_expanded,
                 NULL);
 }
 
@@ -913,10 +962,61 @@ visit_heaps (RosterViewGtk* self,
 	     Ekiga::ClusterPtr cluster,
 	     Ekiga::HeapPtr heap)
 {
-  on_heap_updated (self, cluster, heap);
-  heap->visit_presentities (boost::bind (&visit_presentities, self, cluster, heap, _1));
+  on_heap_added (self, cluster, heap);
 
   return true;
+}
+
+static void
+on_account_updated (Ekiga::AccountPtr account,
+                    Ekiga::HeapPtr heap,
+                    RosterViewGtk* self)
+{
+  GtkTreeIter iter;
+  gchar *icon_name = NULL;
+  GdkPixbuf *pixbuf = NULL;
+
+  roster_view_gtk_find_iter_for_heap (self, heap, &iter);
+
+  switch (account->get_state ()) {
+  case Ekiga::Account::Processing:
+    gtk_tree_store_set (self->priv->store, &iter,
+                        COLUMN_HEAP, heap.get (),
+                        COLUMN_ACCOUNT_STATUS_ICON_VISIBLE, FALSE,
+                        COLUMN_ACCOUNT_SPINNER_VISIBLE, TRUE, -1);
+
+    if (self->priv->pulse_timeout_id == -1)
+      self->priv->pulse_timeout_id =
+        g_timeout_add (SPINNER_PULSE_INTERVAL,
+                       spinner_pulse_timeout_cb,
+                       self);
+    break;
+  case Ekiga::Account::Registered:
+    icon_name = g_strdup ("network-idle-symbolic");
+    break;
+  case Ekiga::Account::Unregistered:
+    icon_name = g_strdup ("network-offline-symbolic");
+    break;
+  case Ekiga::Account::RegistrationFailed:
+  case Ekiga::Account::UnregistrationFailed:
+  default:
+    icon_name = g_strdup ("network-error-symbolic");
+  }
+
+  if (icon_name) {
+    pixbuf = gtk_icon_theme_load_icon (gtk_icon_theme_get_default (),
+                                       icon_name,
+                                       16,
+                                       GTK_ICON_LOOKUP_GENERIC_FALLBACK,
+                                       NULL);
+    gtk_tree_store_set (self->priv->store, &iter,
+                        COLUMN_HEAP, heap.get (),
+                        COLUMN_ACCOUNT_STATUS_ICON, pixbuf,
+                        COLUMN_ACCOUNT_STATUS_ICON_VISIBLE, TRUE,
+                        COLUMN_ACCOUNT_SPINNER_VISIBLE, FALSE, -1);
+    g_object_unref (pixbuf);
+    g_free (icon_name);
+  }
 }
 
 static void
@@ -924,6 +1024,25 @@ on_heap_added (RosterViewGtk* self,
 	       Ekiga::ClusterPtr cluster,
 	       Ekiga::HeapPtr heap)
 {
+  boost::signals2::connection conn;
+
+  Ekiga::AccountPtr account = boost::dynamic_pointer_cast <Ekiga::Account> (heap);
+
+  /* Some accounts bring a heap, but not all of them.
+   * we can have Heaps that are also Accounts,
+   * we can have Accounts that are also Heaps,
+   * but not all of them are of both types.
+   *
+   * The Roster will display all Heaps that are Accounts (OPAL SIP & H.323),
+   * and all Heaps that are not Accounts (Avahi).
+   */
+  if (account) {
+    on_account_updated (account, heap, self);
+
+    conn = account->updated.connect (boost::bind (&on_account_updated, account, heap, self));
+    self->priv->connections.add (conn);
+  }
+
   on_heap_updated (self, cluster, heap);
   heap->visit_presentities (boost::bind (&visit_presentities, self, cluster, heap, _1));
 }
@@ -933,29 +1052,21 @@ on_heap_updated (RosterViewGtk* self,
 		 G_GNUC_UNUSED Ekiga::ClusterPtr cluster,
 		 Ekiga::HeapPtr heap)
 {
+  gchar *heap_name = NULL;
   GtkTreeIter iter;
-  GtkTreeIter filtered_iter;
-  GtkTreeSelection* selection = NULL;
-  gboolean should_emit = FALSE;
 
   roster_view_gtk_find_iter_for_heap (self, heap, &iter);
+  heap_name = g_strdup_printf ("<span weight=\"bold\" size=\"larger\" variant=\"smallcaps\">%s</span>",
+                               heap->get_name ().c_str ());
 
-  selection = gtk_tree_view_get_selection (self->priv->tree_view);
-  GtkTreeModelFilter* model = GTK_TREE_MODEL_FILTER (gtk_tree_view_get_model (self->priv->tree_view));
-
-  if (gtk_tree_model_filter_convert_child_iter_to_iter (model, &filtered_iter, &iter))
-    if (gtk_tree_selection_iter_is_selected (selection, &filtered_iter))
-      should_emit = TRUE;
 
   gtk_tree_store_set (self->priv->store, &iter,
 		      COLUMN_TYPE, TYPE_HEAP,
 		      COLUMN_HEAP, heap.get (),
-		      COLUMN_NAME, heap->get_name ().c_str (), -1);
+		      COLUMN_NAME, heap_name, -1);
 
-  if (should_emit)
-    g_signal_emit (self, signals[SELECTION_CHANGED_SIGNAL], 0);
+  g_free (heap_name);
 }
-
 
 static void
 on_heap_removed (RosterViewGtk* self,
@@ -1007,8 +1118,10 @@ on_presentity_added (RosterViewGtk* self,
 		     Ekiga::HeapPtr heap,
 		     Ekiga::PresentityPtr presentity)
 {
+  GdkRGBA color;
+  GdkPixbuf *pixbuf = NULL;
   GtkTreeIter heap_iter;
-  std::set<std::string> groups = presentity->get_groups ();
+  std::list<std::string> groups = presentity->get_groups ();
   GtkTreeSelection* selection = gtk_tree_view_get_selection (self->priv->tree_view);
   GtkTreeModelFilter* filtered_model = GTK_TREE_MODEL_FILTER (gtk_tree_view_get_model (self->priv->tree_view));
   GtkTreeIter group_iter;
@@ -1026,9 +1139,9 @@ on_presentity_added (RosterViewGtk* self,
   away = presentity->get_presence () == "away";
 
   if (groups.empty ())
-    groups.insert (_("Unsorted"));
+    groups.push_back (_("Unsorted"));
 
-  for (std::set<std::string>::const_iterator group = groups.begin ();
+  for (std::list<std::string>::const_iterator group = groups.begin ();
        group != groups.end ();
        group++) {
 
@@ -1062,7 +1175,7 @@ on_presentity_added (RosterViewGtk* self,
     }
     else {
 
-      std::string icon = "avatar-default";
+      std::string icon = "user-offline";
       if (!old_presence) {
         gtk_tree_store_set (self->priv->store, &iter,
                             COLUMN_PRESENCE_ICON, icon.c_str (),
@@ -1076,6 +1189,17 @@ on_presentity_added (RosterViewGtk* self,
                             -1);
       }
     }
+
+    gtk_style_context_get_color (gtk_widget_get_style_context (GTK_WIDGET (self->priv->tree_view)),
+                                 (!active||away)?GTK_STATE_FLAG_INSENSITIVE:GTK_STATE_FLAG_NORMAL,
+                                 &color);
+
+    pixbuf = gtk_icon_theme_load_icon (gtk_icon_theme_get_default (),
+                                       "avatar-default-symbolic",
+                                       48,
+                                       GTK_ICON_LOOKUP_GENERIC_FALLBACK,
+                                       NULL);
+
     gtk_tree_store_set (self->priv->store, &iter,
                         COLUMN_TYPE, TYPE_PRESENTITY,
                         COLUMN_OFFLINE, active,
@@ -1084,12 +1208,14 @@ on_presentity_added (RosterViewGtk* self,
                         COLUMN_NAME, presentity->get_name ().c_str (),
                         COLUMN_STATUS, presentity->get_status ().c_str (),
                         COLUMN_PRESENCE, presentity->get_presence ().c_str (),
-                        COLUMN_ACTIVE, (!active || away) ? "gray" : "black", -1);
+                        COLUMN_AVATAR_PIXBUF, pixbuf,
+                        COLUMN_FOREGROUND_COLOR, &color, -1);
     gtk_tree_model_get (GTK_TREE_MODEL (self->priv->store), &iter,
                         COLUMN_TIMEOUT, &timeout,
                         -1);
 
     g_free (old_presence);
+    g_object_unref (pixbuf);
   }
 
   GtkTreeModel* model = gtk_tree_view_get_model (self->priv->tree_view);
@@ -1098,7 +1224,7 @@ on_presentity_added (RosterViewGtk* self,
   roster_view_gtk_update_groups (self, &heap_iter);
 
   if (should_emit)
-    g_signal_emit (self, signals[SELECTION_CHANGED_SIGNAL], 0);
+    g_signal_emit (self, signals[ACTIONS_CHANGED_SIGNAL], 0, NULL);
 }
 
 
@@ -1114,12 +1240,12 @@ on_presentity_updated (RosterViewGtk* self,
   GtkTreeIter iter;
   gchar *group_name = NULL;
   int timeout = 0;
-  std::set<std::string> groups = presentity->get_groups ();
+  std::list<std::string> groups = presentity->get_groups ();
 
   model = GTK_TREE_MODEL (self->priv->store);
 
   if (groups.empty ())
-    groups.insert (_("Unsorted"));
+    groups.push_back (_("Unsorted"));
 
   // This makes sure we are in all groups where we should
   on_presentity_added (self, cluster, heap, presentity);
@@ -1136,7 +1262,7 @@ on_presentity_updated (RosterViewGtk* self,
                           -1);
       if (group_name != NULL) {
 
-        if (groups.find (group_name) == groups.end ()) {
+        if (std::find (groups.begin (), groups.end (), group_name) == groups.end ()) {
 
           roster_view_gtk_find_iter_for_presentity (self, &group_iter, presentity, &iter);
           gtk_tree_model_get (GTK_TREE_MODEL (self->priv->store), &iter,
@@ -1372,7 +1498,6 @@ roster_view_gtk_update_groups (RosterViewGtk *view,
 /*
  * GObject stuff
  */
-
 static void
 roster_view_gtk_finalize (GObject *obj)
 {
@@ -1405,6 +1530,8 @@ roster_view_gtk_init (RosterViewGtk* self)
   self->priv->settings = new Ekiga::Settings (CONTACTS_SCHEMA);
   self->priv->folded_groups = self->priv->settings->get_slist ("roster-folded-groups");
   self->priv->show_offline_contacts = self->priv->settings->get_bool ("show-offline-contacts");
+  self->priv->pulse_timeout_id = -1;
+
   vbox = gtk_box_new (GTK_ORIENTATION_VERTICAL, 0);
   scrolled_window = gtk_scrolled_window_new (NULL, NULL);
   gtk_container_set_border_width (GTK_CONTAINER (vbox), 0);
@@ -1420,7 +1547,12 @@ roster_view_gtk_init (RosterViewGtk* self)
                                           G_TYPE_STRING,      // name
                                           G_TYPE_STRING,      // status
                                           G_TYPE_STRING,      // presence
-                                          G_TYPE_STRING,      // color if active
+                                          GDK_TYPE_PIXBUF,    // Avatar
+                                          GDK_TYPE_PIXBUF,    // Account status icon
+                                          G_TYPE_BOOLEAN,     // Account status icon visible
+                                          G_TYPE_UINT,        // Account spinner pulse
+                                          G_TYPE_BOOLEAN,     // Account spinner visible
+                                          GDK_TYPE_RGBA,      // cell foreground color
                                           G_TYPE_STRING,      // group name (invisible)
                                           G_TYPE_STRING,      // presence
 					  G_TYPE_BOOLEAN,     // offline
@@ -1439,6 +1571,7 @@ roster_view_gtk_init (RosterViewGtk* self)
 					  self, NULL);
 
   gtk_tree_view_set_headers_visible (self->priv->tree_view, FALSE);
+  gtk_tree_view_set_grid_lines (self->priv->tree_view, GTK_TREE_VIEW_GRID_LINES_HORIZONTAL);
 
   gtk_container_add (GTK_CONTAINER (self), GTK_WIDGET (vbox));
   gtk_box_pack_start (GTK_BOX (vbox),
@@ -1449,9 +1582,6 @@ roster_view_gtk_init (RosterViewGtk* self)
   /* Build the GtkTreeView */
   // We hide the normal GTK+ expanders and use our own
   col = gtk_tree_view_column_new ();
-  renderer = gtk_cell_renderer_pixbuf_new ();
-  gtk_tree_view_column_set_spacing (col, 0);
-  gtk_tree_view_column_pack_start (col, renderer, TRUE);
   g_object_set (col, "visible", FALSE, NULL);
   gtk_tree_view_append_column (self->priv->tree_view, col);
   gtk_tree_view_set_expander_column (self->priv->tree_view, col);
@@ -1464,7 +1594,8 @@ roster_view_gtk_init (RosterViewGtk* self)
                 "xpad", 0,
                 "ypad", 0,
                 "visible", TRUE,
-                "expander-style", GTK_EXPANDER_COLLAPSED,
+                "is-expander", TRUE,
+                "is-expanded", FALSE,
                 NULL);
   gtk_tree_view_column_set_cell_data_func (col, renderer, expand_cell_data_func, NULL, NULL);
   gtk_tree_view_append_column (self->priv->tree_view, col);
@@ -1472,10 +1603,10 @@ roster_view_gtk_init (RosterViewGtk* self)
   renderer = gtk_cell_renderer_text_new ();
   gtk_tree_view_column_set_spacing (col, 0);
   gtk_tree_view_column_pack_start (col, renderer, TRUE);
-  gtk_tree_view_column_add_attribute (col, renderer, "text", COLUMN_NAME);
+  gtk_tree_view_column_add_attribute (col, renderer, "markup", COLUMN_NAME);
+  gtk_tree_view_column_add_attribute (col, renderer, "foreground-rgba", COLUMN_FOREGROUND_COLOR);
   gtk_tree_view_column_set_alignment (col, 0.0);
-  g_object_set (renderer, "xalign", 0.5, "ypad", 0, NULL);
-  g_object_set (renderer, "weight", PANGO_WEIGHT_BOLD, NULL);
+  g_object_set (renderer, "xalign", 0.0, NULL);
   gtk_tree_view_column_set_cell_data_func (col, renderer,
                                            show_cell_data_func, GINT_TO_POINTER (TYPE_HEAP), NULL);
 
@@ -1483,12 +1614,13 @@ roster_view_gtk_init (RosterViewGtk* self)
   gtk_tree_view_column_pack_start (col, renderer, TRUE);
   gtk_tree_view_column_add_attribute (col, renderer,
 				      "text", COLUMN_NAME);
+  gtk_tree_view_column_add_attribute (col, renderer, "foreground-rgba", COLUMN_FOREGROUND_COLOR);
   g_object_set (renderer, "weight", PANGO_WEIGHT_BOLD, NULL);
   gtk_tree_view_column_set_cell_data_func (col, renderer,
                                            show_cell_data_func, GINT_TO_POINTER (TYPE_GROUP), NULL);
 
   renderer = gtk_cell_renderer_pixbuf_new ();
-  g_object_set (renderer, "yalign", 0.5, "xpad", 5, NULL);
+  g_object_set (renderer, "xalign", 0.5, "xpad", 6, "stock-size", 1, NULL);
   gtk_tree_view_column_pack_start (col, renderer, FALSE);
   gtk_tree_view_column_add_attribute (col, renderer,
 				      "icon-name",
@@ -1498,12 +1630,46 @@ roster_view_gtk_init (RosterViewGtk* self)
 
   renderer = gm_cell_renderer_bitext_new ();
   g_object_set (renderer, "ellipsize", PANGO_ELLIPSIZE_END, "width-chars", 30, NULL);
-  gtk_tree_view_column_pack_start (col, renderer, FALSE);
+  gtk_tree_view_column_pack_start (col, renderer, TRUE);
   gtk_tree_view_column_add_attribute (col, renderer, "primary-text", COLUMN_NAME);
   gtk_tree_view_column_add_attribute (col, renderer, "secondary-text", COLUMN_STATUS);
-  gtk_tree_view_column_add_attribute (col, renderer, "foreground", COLUMN_ACTIVE);
+  gtk_tree_view_column_add_attribute (col, renderer, "foreground-rgba", COLUMN_FOREGROUND_COLOR);
   gtk_tree_view_column_set_cell_data_func (col, renderer,
                                            show_cell_data_func, GINT_TO_POINTER (TYPE_PRESENTITY), NULL);
+
+  renderer = gtk_cell_renderer_pixbuf_new ();
+  g_object_set (renderer, "xalign", 1.0, "xpad", 0, NULL);
+  gtk_tree_view_column_pack_start (col, renderer, FALSE);
+  gtk_tree_view_column_add_attribute (col, renderer,
+				      "pixbuf",
+				      COLUMN_AVATAR_PIXBUF);
+  gtk_tree_view_column_set_cell_data_func (col, renderer,
+                                           show_cell_data_func, GINT_TO_POINTER (TYPE_PRESENTITY), NULL);
+
+  renderer = gtk_cell_renderer_pixbuf_new ();
+  g_object_set (renderer, "xalign", 1.0, "xpad", 6, NULL);
+  gtk_tree_view_column_pack_end (col, renderer, FALSE);
+  gtk_tree_view_column_add_attribute (col, renderer,
+				      "pixbuf",
+				      COLUMN_ACCOUNT_STATUS_ICON);
+  gtk_tree_view_column_add_attribute (col, renderer,
+				      "visible",
+				      COLUMN_ACCOUNT_STATUS_ICON_VISIBLE);
+
+  renderer = gtk_cell_renderer_spinner_new ();
+  g_object_set (renderer, "xalign", 1.0,
+                "size", GTK_ICON_SIZE_LARGE_TOOLBAR,
+                "xpad", 6, NULL);
+  gtk_tree_view_column_pack_end (col, renderer, FALSE);
+  gtk_tree_view_column_add_attribute (col, renderer,
+				      "pulse",
+				      COLUMN_ACCOUNT_SPINNER_PULSE);
+  gtk_tree_view_column_add_attribute (col, renderer,
+				      "active",
+				      COLUMN_ACCOUNT_SPINNER_VISIBLE);
+  gtk_tree_view_column_add_attribute (col, renderer,
+				      "visible",
+				      COLUMN_ACCOUNT_SPINNER_VISIBLE);
 
   /* Callback when the selection has been changed */
   selection = gtk_tree_view_get_selection (self->priv->tree_view);
@@ -1512,7 +1678,10 @@ roster_view_gtk_init (RosterViewGtk* self)
 		    G_CALLBACK (on_selection_changed), self);
   g_signal_connect (self->priv->tree_view, "event-after",
 		    G_CALLBACK (on_view_event_after), self);
+  g_signal_connect (GTK_WIDGET (self), "map",
+                    G_CALLBACK (on_map_cb), self);
 
+  /* Other signals */
   g_signal_connect (self->priv->settings->get_g_settings (), "changed::show-offline-contacts",
 		    G_CALLBACK (&show_offline_contacts_changed_cb), self);
 }
@@ -1524,94 +1693,46 @@ roster_view_gtk_class_init (RosterViewGtkClass* klass)
 
   gobject_class->finalize = roster_view_gtk_finalize;
 
-  signals[SELECTION_CHANGED_SIGNAL] =
-    g_signal_new ("selection-changed",
+  signals[ACTIONS_CHANGED_SIGNAL] =
+    g_signal_new ("actions-changed",
 		  G_OBJECT_CLASS_TYPE (gobject_class),
 		  G_SIGNAL_RUN_LAST,
 		  G_STRUCT_OFFSET (RosterViewGtkClass, selection_changed),
 		  NULL, NULL,
-		  g_cclosure_marshal_VOID__VOID,
-		  G_TYPE_NONE, 0);
+		  g_cclosure_marshal_VOID__OBJECT,
+		  G_TYPE_NONE, 1, G_TYPE_MENU_MODEL);
 }
 
 /*
  * Public API
  */
 GtkWidget *
-roster_view_gtk_new (boost::shared_ptr<Ekiga::PresenceCore> core)
+roster_view_gtk_new (boost::shared_ptr<Ekiga::PresenceCore> pcore)
 {
   RosterViewGtk* self = NULL;
   boost::signals2::connection conn;
 
   self = (RosterViewGtk *) g_object_new (ROSTER_VIEW_GTK_TYPE, NULL);
 
-  conn = core->cluster_added.connect (boost::bind (&on_cluster_added, self, _1));
+  /* Presence */
+  conn = pcore->cluster_added.connect (boost::bind (&on_cluster_added, self, _1));
   self->priv->connections.add (conn);
-  conn = core->heap_added.connect (boost::bind (&on_heap_added, self, _1, _2));
+  conn = pcore->heap_added.connect (boost::bind (&on_heap_added, self, _1, _2));
   self->priv->connections.add (conn);
-  conn = core->heap_updated.connect (boost::bind (&on_heap_updated, self, _1, _2));
+  conn = pcore->heap_updated.connect (boost::bind (&on_heap_updated, self, _1, _2));
   self->priv->connections.add (conn);
-  conn = core->heap_removed.connect (boost::bind (&on_heap_removed, self, _1, _2));
+  conn = pcore->heap_removed.connect (boost::bind (&on_heap_removed, self, _1, _2));
   self->priv->connections.add (conn);
-  conn = core->presentity_added.connect (boost::bind (&on_presentity_added, self, _1, _2, _3));
+  conn = pcore->presentity_added.connect (boost::bind (&on_presentity_added, self, _1, _2, _3));
   self->priv->connections.add (conn);
-  conn = core->presentity_updated.connect (boost::bind (&on_presentity_updated, self, _1, _2, _3));
+  conn = pcore->presentity_updated.connect (boost::bind (&on_presentity_updated, self, _1, _2, _3));
   self->priv->connections.add (conn);
-  conn = core->presentity_removed.connect (boost::bind (&on_presentity_removed, self, _1, _2, _3));
+  conn = pcore->presentity_removed.connect (boost::bind (&on_presentity_removed, self, _1, _2, _3));
   self->priv->connections.add (conn);
-  conn = core->questions.connect (boost::bind (&on_handle_questions, self, _1));
+  conn = pcore->questions.connect (boost::bind (&on_handle_questions, self, _1));
   self->priv->connections.add (conn);
 
-  core->visit_clusters (boost::bind (&on_visit_clusters, self, _1));
+  pcore->visit_clusters (boost::bind (&on_visit_clusters, self, _1));
 
   return (GtkWidget *) self;
-}
-
-bool
-roster_view_gtk_populate_menu_for_selected (RosterViewGtk* self,
-					    Ekiga::MenuBuilder& builder)
-{
-  bool result = false;
-  GtkTreeSelection* selection = NULL;
-  GtkTreeModel* model = NULL;
-  GtkTreeIter iter;
-
-  g_return_val_if_fail (IS_ROSTER_VIEW_GTK (self), false);
-
-  selection = gtk_tree_view_get_selection (self->priv->tree_view);
-  if (gtk_tree_selection_get_selected (selection, &model, &iter)) {
-
-    gint column_type;
-    gchar* name = NULL;
-    Ekiga::Heap* heap = NULL;
-    Ekiga::Presentity *presentity = NULL;
-    gtk_tree_model_get (model, &iter,
-			COLUMN_GROUP_NAME, &name,
-			COLUMN_TYPE, &column_type,
-			COLUMN_HEAP, &heap,
-			COLUMN_PRESENTITY, &presentity,
-			-1);
-    switch (column_type) {
-
-    case TYPE_PRESENTITY:
-
-      result = presentity->populate_menu (builder);
-      break;
-    case TYPE_HEAP:
-
-      result = heap->populate_menu (builder);
-      break;
-
-    case TYPE_GROUP:
-
-      result = heap->populate_menu_for_group (name, builder);
-      break;
-
-    default:
-      break;
-    }
-
-    g_free (name);
-  }
-  return result;
 }

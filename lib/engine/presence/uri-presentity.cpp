@@ -48,7 +48,7 @@ struct null_deleter
 Ekiga::URIPresentity::URIPresentity (boost::shared_ptr<Ekiga::PresenceCore> pcore,
 				     std::string name_,
 				     std::string uri_,
-				     std::set<std::string> groups_):
+				     std::list<std::string> groups_):
   presence_core(pcore), name(name_), uri(uri_), presence("unknown"), groups(groups_)
 {
   boost::signals2::connection conn;
@@ -87,7 +87,7 @@ Ekiga::URIPresentity::get_status () const
   return status;
 }
 
-const std::set<std::string>
+const std::list<std::string>
 Ekiga::URIPresentity::get_groups () const
 {
   return groups;
@@ -103,17 +103,6 @@ bool
 Ekiga::URIPresentity::has_uri (const std::string uri_) const
 {
   return uri == uri_;
-}
-
-bool
-Ekiga::URIPresentity::populate_menu (Ekiga::MenuBuilder &builder)
-{
-  boost::shared_ptr<Ekiga::PresenceCore> pcore = presence_core.lock ();
-  if (pcore)
-    return pcore->populate_presentity_menu (PresentityPtr(this, null_deleter ()),
-					    uri, builder);
-  else
-    return false;
 }
 
 void

@@ -48,6 +48,10 @@
 #include "audiooutput-core.h"
 #include "videoinput-core.h"
 
+#include "gmwindow.h"
+
+#include "ekiga-app.h"
+
 typedef struct _PreferencesWindow PreferencesWindow;
 typedef struct _PreferencesWindowPrivate PreferencesWindowPrivate;
 typedef struct _PreferencesWindowClass PreferencesWindowClass;
@@ -55,14 +59,14 @@ typedef struct _PreferencesWindowClass PreferencesWindowClass;
 /* GObject thingies */
 struct _PreferencesWindow
 {
-  GtkDialog parent;
+  GmWindow parent;
 
   PreferencesWindowPrivate *priv;
 };
 
 struct _PreferencesWindowClass
 {
-  GtkDialogClass parent;
+  GmWindowClass parent;
 };
 
 
@@ -87,8 +91,6 @@ GType preferences_window_get_type ();
  * BEHAVIOR     :  It builds the preferences window.
  * PRE          :  /
  */
-GtkWidget *preferences_window_new (boost::shared_ptr<Ekiga::AudioInputCore> audio_input_core,
-                                   boost::shared_ptr<Ekiga::AudioOutputCore> audio_output_core,
-                                   boost::shared_ptr<Ekiga::VideoInputCore> video_input_core);
+GtkWidget *preferences_window_new (GmApplication *app);
 
 #endif

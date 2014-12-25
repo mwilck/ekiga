@@ -138,12 +138,6 @@ namespace Ekiga
 
   public:
 
-    /** Create the menu for the AccountCore and its actions.
-     * @param A MenuBuilder object to populate.
-     */
-    bool populate_menu (MenuBuilder &builder);
-
-
     /** This signal is emitted when the AccountCore Service has been
      * updated.
      */

@@ -68,12 +68,6 @@ Ekiga::EmptyForm::text (const std::string /*name*/) const
 }
 
 const std::string
-Ekiga::EmptyForm::private_text (const std::string /*name*/) const
-{
-  return "";
-}
-
-const std::string
 Ekiga::EmptyForm::multi_text (const std::string /*name*/) const
 {
   return "";
@@ -91,8 +85,8 @@ Ekiga::EmptyForm::multiple_choice (const std::string /*name*/) const
   return std::set<std::string>();
 }
 
-const std::set<std::string>
-Ekiga::EmptyForm::editable_set (const std::string /*name*/) const
+const std::list<std::string>
+Ekiga::EmptyForm::editable_list (const std::string /*name*/) const
 {
-  return std::set<std::string>();
+  return std::list<std::string>();
 }

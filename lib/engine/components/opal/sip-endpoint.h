@@ -47,7 +47,6 @@
 #include "opal-bank.h"
 #include "sip-dialect.h"
 #include "call-core.h"
-#include "contact-core.h"
 #include "services.h"
 
 #include "opal-call-manager.h"
@@ -76,18 +75,13 @@ namespace Opal {
 
       /* Set up endpoint: all options or a specific setting */
       void setup (std::string setting = "");
-      
+
       /* Service */
       const std::string get_name () const
       { return "opal-sip-endpoint"; }
 
       const std::string get_description () const
       { return "\tObject managing SIP objects with the Opal library"; }
-
-      // helper for Opal::Bank's contact/presentity decorator code
-      bool populate_menu (const std::string& fullname,
-			  const std::string& uri,
-			  Ekiga::MenuBuilder& builder);
 
 
       /* Chat subsystem */
@@ -97,6 +91,12 @@ namespace Opal {
 
       /* CallProtocolManager */
       bool dial (const std::string & uri);
+      bool transfer (const std::string & uri,
+                     bool attended);
+      bool message (const Ekiga::ContactPtr & contact,
+                    const std::string & uri);
+      bool is_supported_uri (const std::string & uri);
+
 
       const std::string & get_protocol_name () const;
 
@@ -168,11 +168,6 @@ namespace Opal {
 
       /* Callbacks */
     private:
-      void on_dial (std::string uri);
-      void on_message (std::string uri,
-		       std::string name);
-      void on_transfer (std::string uri);
-
       void push_message_in_main (const std::string uri,
 				 const Ekiga::Message msg);
 

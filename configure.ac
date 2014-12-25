@@ -3,7 +3,7 @@ AC_INIT([ekiga],[4.1.0],[http://bugzilla.gnome.org/enter_bug.cgi?product=ekiga])
 AC_CANONICAL_TARGET
 AC_PREREQ([2.53])
 AC_CONFIG_MACRO_DIR([m4])
-AC_CONFIG_SRCDIR(src/ekiga.cpp)
+AC_CONFIG_SRCDIR(src/main.cpp)
 AM_INIT_AUTOMAKE([1.11 no-dist-gzip dist-xz tar-ustar subdir-objects])
 
 AM_MAINTAINER_MODE([enable])
@@ -134,11 +134,18 @@ dnl   Mandatory GTK+ support
 dnl ###############################
 # on Windows the icons are manually copied in the installer
 if test "x${gm_platform}" = "xmingw" ; then
-   PKG_CHECK_MODULES([GTK], [gtk+-3.0 >= 3.10.0])
+   PKG_CHECK_MODULES([GTK], [gtk+-3.0 >= 3.12.0])
 else
-   PKG_CHECK_MODULES([GTK], [gtk+-3.0 >= 3.10.0 gnome-icon-theme >= 3.0.0])
+   PKG_CHECK_MODULES([GTK], [gtk+-3.0 >= 3.12.0 gnome-icon-theme >= 3.0.0])
 fi
 PKG_CHECK_MODULES([GLIB], [glib-2.0 >= 2.24.0 gmodule-2.0 gobject-2.0 gthread-2.0 gio-2.0])
+
+PKG_CHECK_MODULES([GTK_NO_SIDEBAR], [gtk+-3.0 <  3.16.0], [found_sidebar="no"])
+if test "x${found_sidebar}" != "xno" ; then
+     AC_DEFINE(HAVE_SIDEBAR,1,[GtkSideBar support])
+fi
+AM_CONDITIONAL(HAVE_SIDEBAR, test "x$found_sidebar" != "xno")
+
 AC_ARG_ENABLE([gtk-debug],
               [AS_HELP_STRING([--enable-gtk-debug],[enable GTK+ debug flags (default is disabled)])],
               [if test "x$enableval" = "xyes"; then
@@ -375,10 +382,10 @@ dnl ###############################
 AVAHI="disabled"
 
 if test "x${gm_platform}" != "xmingw" ; then
-  AC_ARG_ENABLE(avahi, AS_HELP_STRING([--enable-avahi],[enable mDNS support (default is disabled)]),
+  AC_ARG_ENABLE(avahi, AS_HELP_STRING([--enable-avahi],[enable mDNS support (default is enabled)]),
 [if test "x$enableval" = "xyes"; then
   enable_avahi=yes
-fi],)
+fi],enable_avahi=yes)
 
   if test "x$enable_avahi" = "xyes"; then
     PKG_CHECK_MODULES([AVAHI], [avahi-client >= 0.6 avahi-glib >= 0.6], [found_avahi=yes])

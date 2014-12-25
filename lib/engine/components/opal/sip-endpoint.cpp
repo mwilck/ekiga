@@ -178,34 +178,18 @@ Opal::Sip::EndPoint::setup (std::string setting)
 
 
 bool
-Opal::Sip::EndPoint::populate_menu (const std::string& fullname,
-				    const std::string& uri,
-				    Ekiga::MenuBuilder& builder)
-{
-  if (0 == GetConnectionCount ())
-    builder.add_action ("phone-pick-up", _("Call"),
-			boost::bind (&Opal::Sip::EndPoint::on_dial, this, uri));
-  else
-    builder.add_action ("mail-forward", _("Transfer"),
-			boost::bind (&Opal::Sip::EndPoint::on_transfer, this, uri));
-  builder.add_action ("im-message-new", _("Message"),
-		      boost::bind (&Opal::Sip::EndPoint::on_message, this, uri, fullname));
-
-  return true;
-}
-
-
-bool
 Opal::Sip::EndPoint::send_message (const std::string & _uri,
 				   const Ekiga::Message::payload_type payload)
 {
   // FIXME: here we should check which kind of payload we have
   Ekiga::Message::payload_type::const_iterator iter = payload.find("text/plain");
   if (!_uri.empty () && (_uri.find ("sip:") == 0 || _uri.find (':') == string::npos) && iter != payload.end ()) {
+
     OpalIM im;
     im.m_to = PURL (_uri);
     im.m_bodies.SetAt (PMIMEInfo::TextPlain(), iter->second);
     Message (im);
+
     return true;
   }
 
@@ -218,20 +202,64 @@ Opal::Sip::EndPoint::dial (const std::string & uri)
 {
   std::stringstream ustr;
 
-  if (uri.find ("sip:") == 0 || uri.find (":") == string::npos) {
+  if (!is_supported_uri (uri))
+    return false;
 
-    if (uri.find (":") == string::npos)
-      ustr << "sip:" << uri;
-    else
-      ustr << uri;
+  if (uri.find (":") == string::npos)
+    ustr << "sip:" << uri;
+  else
+    ustr << uri;
 
-    PString token;
-    manager.SetUpCall("pc:*", ustr.str(), token, (void*) ustr.str().c_str());
+  PString token;
+  manager.SetUpCall("pc:*", ustr.str(), token, (void*) ustr.str().c_str());
 
-    return true;
+  return true;
+}
+
+
+bool
+Opal::Sip::EndPoint::transfer (const std::string & uri,
+                               bool attended)
+{
+  /* This is not handled yet */
+  if (attended)
+    return false;
+
+  if (GetConnectionCount () == 0 || !is_supported_uri (uri))
+      return false; /* No active SIP connection to transfer, or
+                     * transfer request to unsupported uri
+                     */
+
+  /* We don't handle several calls here */
+  for (PSafePtr<OpalConnection> connection(connectionsActive, PSafeReference);
+       connection != NULL;
+       ++connection) {
+    if (!PIsDescendant(&(*connection), OpalPCSSConnection)) {
+      connection->TransferConnection (uri);
+      return true; /* We could handle the transfer */
+    }
   }
 
   return false;
+}
+
+
+bool
+Opal::Sip::EndPoint::message (const Ekiga::ContactPtr & contact,
+                              const std::string & uri)
+{
+  if (!is_supported_uri (uri))
+    return false;
+
+  dialect->start_chat_with (uri, contact->get_name ());
+  return true;
+}
+
+
+bool
+Opal::Sip::EndPoint::is_supported_uri (const std::string & uri)
+{
+  return (!uri.empty () && (uri.find ("sip:") == 0 || uri.find (':') == string::npos));
 }
 
 
@@ -926,27 +954,6 @@ Opal::Sip::EndPoint::OnDialogInfoReceived (const SIPDialogNotification & info)
   }
 }
 
-
-void Opal::Sip::EndPoint::on_dial (std::string uri)
-{
-  manager.dial (uri);
-}
-
-
-void Opal::Sip::EndPoint::on_message (std::string uri,
-                                      std::string name)
-{
-  dialect->start_chat_with (uri, name);
-}
-
-
-void Opal::Sip::EndPoint::on_transfer (std::string uri)
-{
-  /* FIXME : we don't handle several calls here */
-  for (PSafePtr<OpalConnection> connection(connectionsActive, PSafeReference); connection != NULL; ++connection)
-    if (!PIsDescendant(&(*connection), OpalPCSSConnection))
-      connection->TransferConnection (uri);
-}
 
 void
 Opal::Sip::EndPoint::push_message_in_main (const std::string uri,

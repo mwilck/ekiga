@@ -44,7 +44,6 @@ namespace Ekiga
 
   class FoeList:
     public Service,
-    public ContactDecorator,
     public FriendOrFoe::Helper
   {
   public:

@@ -38,16 +38,17 @@
 
 #include <map>
 #include <set>
+#include <list>
 #include <string>
+
+#include "form.h"
 
 namespace Ekiga
 {
-
 /**
  * @addtogroup forms
  * @{
  */
-
   class FormVisitor
   {
   public:
@@ -56,8 +57,10 @@ namespace Ekiga
 
     virtual void title (const std::string title) = 0;
 
+    virtual void action (const std::string action) = 0;
+
     virtual void instructions (const std::string instructions) = 0;
-    
+
     virtual void link (const std::string link,
                        const std::string uri) = 0;
 
@@ -69,19 +72,17 @@ namespace Ekiga
     virtual void boolean (const std::string name,
 			  const std::string description,
 			  bool value,
-			  bool advanced) = 0;
+			  bool advanced,
+                          bool in_header_bar) = 0;
 
+    typedef enum { STANDARD, PHONE_NUMBER, URI, EKIGA_URI, PASSWORD, NUMBER } FormTextType;
     virtual void text (const std::string name,
 		       const std::string description,
 		       const std::string value,
 		       const std::string tooltip,
-		       bool advanced) = 0;
-
-    virtual void private_text (const std::string name,
-			       const std::string description,
-			       const std::string tooltip,
-			       const std::string value,
-			       bool advanced) = 0;
+                       const FormTextType type,
+		       bool advanced,
+                       bool allow_empty) = 0;
 
     virtual void multi_text (const std::string name,
 			     const std::string description,
@@ -106,11 +107,12 @@ namespace Ekiga
 				  const std::map<std::string,std::string> choices,
 				  bool advanced) = 0;
 
-    virtual void editable_set (const std::string name,
-			       const std::string description,
-			       const std::set<std::string> values,
-			       const std::set<std::string> proposed_values,
-			       bool advanced) = 0;
+    virtual void editable_list (const std::string name,
+                                const std::string description,
+                                const std::list<std::string> values,
+                                const std::list<std::string> proposed_values,
+                                bool advanced,
+                                bool rename_only) = 0;
   };
 
 /**

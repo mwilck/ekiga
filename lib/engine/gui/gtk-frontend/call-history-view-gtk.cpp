@@ -37,12 +37,22 @@
 
 #include <sstream>
 #include <glib/gi18n.h>
+#include <boost/assign/ptr_list_of.hpp>
 
 #include "call-history-view-gtk.h"
 
 #include "menu-builder-tools.h"
 #include "menu-builder-gtk.h"
 #include "gm-cell-renderer-bitext.h"
+#include "gactor-menu.h"
+
+
+struct null_deleter
+{
+  void operator()(void const *) const
+  {
+  }
+};
 
 
 struct _CallHistoryViewGtkPrivate
@@ -52,7 +62,10 @@ struct _CallHistoryViewGtkPrivate
   {}
 
   boost::shared_ptr<History::Book> book;
-  GtkListStore* store;
+
+  Ekiga::GActorMenuPtr menu;
+  Ekiga::GActorMenuPtr contact_menu;
+
   GtkTreeView* tree;
   boost::signals2::scoped_connection connection;
 };
@@ -60,6 +73,7 @@ struct _CallHistoryViewGtkPrivate
 /* this is what we put in the view */
 enum {
   COLUMN_CONTACT,
+  COLUMN_ERROR_PIXBUF,
   COLUMN_PIXBUF,
   COLUMN_NAME,
   COLUMN_INFO,
@@ -68,13 +82,14 @@ enum {
 
 /* and this is the list of signals supported */
 enum {
-  SELECTION_CHANGED_SIGNAL,
+  ACTIONS_CHANGED_SIGNAL,
   LAST_SIGNAL
 };
 
 static guint signals[LAST_SIGNAL] = { 0 };
 
 G_DEFINE_TYPE (CallHistoryViewGtk, call_history_view_gtk, GTK_TYPE_SCROLLED_WINDOW);
+
 
 /* react to a new call being inserted in history */
 static void
@@ -85,7 +100,7 @@ on_contact_added (Ekiga::ContactPtr contact,
   struct tm *timeinfo = NULL;
   char buffer [80];
   std::stringstream info;
-  const gchar *id = NULL;
+  std::string id;
 
   boost::shared_ptr<History::Contact> hcontact = boost::dynamic_pointer_cast<History::Contact> (contact);
   GtkTreeIter iter;
@@ -95,18 +110,15 @@ on_contact_added (Ekiga::ContactPtr contact,
     switch (hcontact->get_type ()) {
 
     case History::RECEIVED:
-
-      id = "back";
+      id = "go-previous-symbolic";
       break;
 
     case History::PLACED:
-
-      id = "forward";
+      id = "go-next-symbolic";
       break;
 
     case History::MISSED:
-
-      id = "gtk-close";
+      id = "call-missed-symbolic";
       break;
 
     default:
@@ -114,6 +126,7 @@ on_contact_added (Ekiga::ContactPtr contact,
     }
   }
 
+  gtk_list_store_prepend (store, &iter);
   t = hcontact->get_call_start ();
   timeinfo = localtime (&t);
   if (timeinfo != NULL) {
@@ -121,14 +134,17 @@ on_contact_added (Ekiga::ContactPtr contact,
     info << buffer;
     if (!hcontact->get_call_duration ().empty ())
       info << " (" << hcontact->get_call_duration () << ")";
+    else
+      gtk_list_store_set (store, &iter,
+                          COLUMN_ERROR_PIXBUF, "error",
+                          -1);
   }
   else
     info << hcontact->get_call_duration ();
 
-  gtk_list_store_prepend (store, &iter);
   gtk_list_store_set (store, &iter,
 		      COLUMN_CONTACT, contact.get (),
-		      COLUMN_PIXBUF, id,
+		      COLUMN_PIXBUF, id.c_str (),
 		      COLUMN_NAME, contact->get_name ().c_str (),
 		      COLUMN_INFO, info.str ().c_str (),
 		      -1);
@@ -145,63 +161,27 @@ on_visit_contacts (Ekiga::ContactPtr contact,
 static void
 on_book_updated (CallHistoryViewGtk* self)
 {
-  gtk_list_store_clear (self->priv->store);
-  self->priv->book->visit_contacts (boost::bind (&on_visit_contacts, _1, self->priv->store));
+  GtkTreeModel* store = gtk_tree_view_get_model (self->priv->tree);
+
+  gtk_list_store_clear (GTK_LIST_STORE (store));
+  self->priv->book->visit_contacts (boost::bind (&on_visit_contacts, _1, GTK_LIST_STORE (store)));
 }
 
 /* react to user clicks */
 static gint
-on_clicked (GtkWidget *tree,
+on_clicked (G_GNUC_UNUSED GtkWidget *tree,
 	    GdkEventButton *event,
 	    gpointer data)
 {
-  History::Book *book = NULL;
-  GtkTreeModel *model = NULL;
-  GtkTreePath *path = NULL;
-  GtkTreeIter iter;
-  Ekiga::Contact *contact = NULL;
+  CallHistoryViewGtk *self = CALL_HISTORY_VIEW_GTK (data);
 
-  book = (History::Book*)data;
-  model = gtk_tree_view_get_model (GTK_TREE_VIEW (tree));
+  /* Ignore no click events */
+  if (event->type != GDK_BUTTON_PRESS && event->type != GDK_2BUTTON_PRESS)
+    return TRUE;
 
-
-  if (gtk_tree_view_get_path_at_pos (GTK_TREE_VIEW (tree),
-				     (gint) event->x, (gint) event->y,
-				     &path, NULL, NULL, NULL)) {
-
-    if (gtk_tree_model_get_iter (model, &iter, path)) {
-
-      gtk_tree_model_get (model, &iter,
-			  COLUMN_CONTACT, &contact,
-			  -1);
-
-
-      if (event->type == GDK_BUTTON_PRESS && event->button == 3) {
-
-	MenuBuilderGtk builder;
-	if (contact != NULL)
-	  contact->populate_menu (builder);
-	if (!builder.empty())
-	  builder.add_separator ();
-	builder.add_action ("gtk-clear", _("Clear List"),
-			    boost::bind (&History::Book::clear, book));
-	gtk_widget_show_all (builder.menu);
-	gtk_menu_popup (GTK_MENU (builder.menu), NULL, NULL,
-			NULL, NULL, event->button, event->time);
-	g_object_ref_sink (builder.menu);
-      }
-      if (event->type == GDK_2BUTTON_PRESS) {
-
-	if (contact != NULL) {
-
-	  Ekiga::TriggerMenuBuilder builder;
-
-	  contact->populate_menu (builder);
-	}
-      }
-
-    }
-    gtk_tree_path_free (path);
+  if (event->type == GDK_BUTTON_PRESS && event->button == 3 && self->priv->contact_menu) {
+    gtk_menu_popup (GTK_MENU (self->priv->contact_menu->get_menu (boost::assign::list_of (self->priv->menu))),
+                    NULL, NULL, NULL, NULL, event->button, event->time);
   }
 
   return TRUE;
@@ -212,11 +192,40 @@ on_selection_changed (G_GNUC_UNUSED GtkTreeSelection* selection,
 		      gpointer data)
 {
   CallHistoryViewGtk* self = NULL;
+  History::Contact *contact = NULL;
 
   self = CALL_HISTORY_VIEW_GTK (data);
 
-  g_signal_emit (self, signals[SELECTION_CHANGED_SIGNAL], 0);
+  /* Reset old data. This also ensures GIO actions are
+   * properly removed before adding new ones.
+   */
+  self->priv->contact_menu.reset ();
+
+  /* Set or reset ContactActor data */
+  call_history_view_gtk_get_selected (self, &contact);
+
+  if (contact != NULL) {
+    self->priv->contact_menu = Ekiga::GActorMenuPtr (new Ekiga::GActorMenu (*contact));
+    g_signal_emit (self, signals[ACTIONS_CHANGED_SIGNAL], 0,
+                   self->priv->contact_menu->get_model (boost::assign::list_of (self->priv->menu)));
+  }
+  else
+    g_signal_emit (self, signals[ACTIONS_CHANGED_SIGNAL], 0, NULL);
 }
+
+static void
+on_map_cb (G_GNUC_UNUSED GtkWidget *widget,
+           gpointer data)
+{
+  GtkTreeSelection *selection = NULL;
+
+  g_return_if_fail (IS_CALL_HISTORY_VIEW_GTK (data));
+  CallHistoryViewGtk *self = CALL_HISTORY_VIEW_GTK (data);
+
+  selection = gtk_tree_view_get_selection (self->priv->tree);
+  on_selection_changed (selection, self);
+}
+
 
 /* GObject stuff */
 static void
@@ -226,50 +235,11 @@ call_history_view_gtk_dispose (GObject* obj)
 
   view = CALL_HISTORY_VIEW_GTK (obj);
 
-  if (view->priv->store) {
-
-    g_object_unref (view->priv->store);
-    view->priv->store = NULL;
-  }
-
-  if (view->priv->tree) {
-
-    GtkTreeSelection* selection = NULL;
-
-    selection = gtk_tree_view_get_selection (view->priv->tree);
-
-    g_signal_handlers_disconnect_matched (selection,
-					  (GSignalMatchType) G_SIGNAL_MATCH_DATA,
-					  0, /* signal_id */
-					  (GQuark) 0, /* detail */
-					  NULL,	/* closure */
-					  NULL,	/* func */
-					  view /* data */);
-
-    g_signal_handlers_disconnect_matched (view->priv->tree,
-					  (GSignalMatchType) G_SIGNAL_MATCH_DATA,
-					  0, /* signal_id */
-					  (GQuark)0, /* detail */
-					  NULL, /* closure */
-					  NULL, /* func */
-					  &(*(view->priv->book)) /* data */);
-    view->priv->tree = NULL;
-  }
+  delete view->priv;
 
   G_OBJECT_CLASS (call_history_view_gtk_parent_class)->dispose (obj);
 }
 
-static void
-call_history_view_gtk_finalize (GObject* obj)
-{
-  CallHistoryViewGtk* view = NULL;
-
-  view = CALL_HISTORY_VIEW_GTK (obj);
-
-  delete view->priv;
-
-  G_OBJECT_CLASS (call_history_view_gtk_parent_class)->finalize (obj);
-}
 
 static void
 call_history_view_gtk_init (G_GNUC_UNUSED CallHistoryViewGtk* self)
@@ -282,25 +252,27 @@ call_history_view_gtk_class_init (CallHistoryViewGtkClass* klass)
 {
   GObjectClass* gobject_class = G_OBJECT_CLASS (klass);
   gobject_class->dispose = call_history_view_gtk_dispose;
-  gobject_class->finalize = call_history_view_gtk_finalize;
 
-  signals[SELECTION_CHANGED_SIGNAL] =
-    g_signal_new ("selection-changed",
+  signals[ACTIONS_CHANGED_SIGNAL] =
+    g_signal_new ("actions-changed",
 		  G_OBJECT_CLASS_TYPE (gobject_class),
 		  G_SIGNAL_RUN_LAST,
 		  G_STRUCT_OFFSET (CallHistoryViewGtkClass, selection_changed),
 		  NULL, NULL,
-		  g_cclosure_marshal_VOID__VOID,
-		  G_TYPE_NONE, 0);
+		  g_cclosure_marshal_VOID__OBJECT,
+		  G_TYPE_NONE, 1, G_TYPE_MENU_MODEL);
 }
 
 /* public api */
 
 GtkWidget *
-call_history_view_gtk_new (boost::shared_ptr<History::Book> book)
+call_history_view_gtk_new (boost::shared_ptr<History::Book> book,
+                           G_GNUC_UNUSED boost::shared_ptr<Ekiga::CallCore> call_core,
+                           G_GNUC_UNUSED boost::shared_ptr<Ekiga::ContactCore> contact_core)
 {
   CallHistoryViewGtk* self = NULL;
 
+  GtkListStore *store = NULL;
   GtkTreeViewColumn *column = NULL;
   GtkCellRenderer *renderer = NULL;
   GtkTreeSelection *selection = NULL;
@@ -315,15 +287,18 @@ call_history_view_gtk_new (boost::shared_ptr<History::Book> book)
 				  GTK_POLICY_AUTOMATIC, GTK_POLICY_AUTOMATIC);
 
   /* build the store then the tree */
-  self->priv->store = gtk_list_store_new (COLUMN_NUMBER,
-					  G_TYPE_POINTER,
-					  G_TYPE_STRING,
-					  G_TYPE_STRING,
-					  G_TYPE_STRING);
+  store = gtk_list_store_new (COLUMN_NUMBER,
+                              G_TYPE_POINTER,
+                              G_TYPE_STRING,
+                              G_TYPE_STRING,
+                              G_TYPE_STRING,
+                              G_TYPE_STRING);
 
-  self->priv->tree = (GtkTreeView*)gtk_tree_view_new_with_model (GTK_TREE_MODEL (self->priv->store));
+  self->priv->tree = (GtkTreeView*)gtk_tree_view_new_with_model (GTK_TREE_MODEL (store));
   gtk_tree_view_set_headers_visible (GTK_TREE_VIEW (self->priv->tree), FALSE);
+  gtk_tree_view_set_grid_lines (self->priv->tree, GTK_TREE_VIEW_GRID_LINES_HORIZONTAL);
   gtk_container_add (GTK_CONTAINER (self), GTK_WIDGET (self->priv->tree));
+  g_object_unref (store);
 
   /* one column should be enough for everyone */
   column = gtk_tree_view_column_new ();
@@ -332,7 +307,8 @@ call_history_view_gtk_new (boost::shared_ptr<History::Book> book)
   renderer = gtk_cell_renderer_pixbuf_new ();
   gtk_tree_view_column_pack_start (column, renderer, FALSE);
   gtk_tree_view_column_add_attribute (column, renderer,
-				      "icon-name", COLUMN_PIXBUF);
+				      "icon-name", COLUMN_ERROR_PIXBUF);
+  g_object_set (renderer, "xalign", 0.0, "yalign", 0.5, "xpad", 6, "stock-size", 1, NULL);
 
   /* show name and text */
   renderer = gm_cell_renderer_bitext_new ();
@@ -343,13 +319,22 @@ call_history_view_gtk_new (boost::shared_ptr<History::Book> book)
 				      "secondary-text", COLUMN_INFO);
   gtk_tree_view_append_column (self->priv->tree, column);
 
+  /* show icon */
+  renderer = gtk_cell_renderer_pixbuf_new ();
+  gtk_tree_view_column_pack_end (column, renderer, FALSE);
+  gtk_tree_view_column_add_attribute (column, renderer,
+				      "icon-name", COLUMN_PIXBUF);
+  g_object_set (renderer, "xalign", 1.0, "yalign", 0.5, "xpad", 6, "stock-size", 2, NULL);
+
   /* react to user clicks */
   selection = gtk_tree_view_get_selection (GTK_TREE_VIEW (self->priv->tree));
   gtk_tree_selection_set_mode (selection, GTK_SELECTION_SINGLE);
   g_signal_connect (selection, "changed",
 		    G_CALLBACK (on_selection_changed), self);
   g_signal_connect (self->priv->tree, "event-after",
-		    G_CALLBACK (on_clicked), &(*book));
+		    G_CALLBACK (on_clicked), self);
+  g_signal_connect (GTK_WIDGET (self), "map",
+                    G_CALLBACK (on_map_cb), self);
 
   /* connect to the signal */
   self->priv->connection = book->updated.connect (boost::bind (&on_book_updated, self));
@@ -357,7 +342,10 @@ call_history_view_gtk_new (boost::shared_ptr<History::Book> book)
   /* initial populate */
   on_book_updated(self);
 
-  return (GtkWidget*)self;
+  /* register book actions */
+  self->priv->menu = Ekiga::GActorMenuPtr (new Ekiga::GActorMenu (*book));
+
+  return GTK_WIDGET (self);
 }
 
 void
@@ -379,30 +367,4 @@ call_history_view_gtk_get_selected (CallHistoryViewGtk* self,
 			-1);
   } else
     *contact = NULL;
-}
-
-bool
-call_history_view_gtk_populate_menu_for_selected (CallHistoryViewGtk* self,
-						  Ekiga::MenuBuilder &builder)
-{
-  g_return_val_if_fail (IS_CALL_HISTORY_VIEW_GTK (self), false);
-
-  bool result = false;
-  GtkTreeSelection* selection = NULL;
-  GtkTreeModel* model = NULL;
-  GtkTreeIter iter;
-
-  selection = gtk_tree_view_get_selection (self->priv->tree);
-
-  if (gtk_tree_selection_get_selected (selection, &model, &iter)) {
-
-    Ekiga::Contact *contact = NULL;
-    gtk_tree_model_get (model, &iter,
-			COLUMN_CONTACT, &contact,
-			-1);
-    if (contact)
-      result = contact->populate_menu (builder);
-  }
-
-  return result;
 }

@@ -46,6 +46,7 @@
 #include "call.h"
 #include "call-manager.h"
 #include "call-protocol-manager.h"
+#include "contact-core.h"
 
 #include <boost/smart_ptr.hpp>
 #include <boost/signals2.hpp>
@@ -116,7 +117,7 @@ namespace Ekiga
       const_iterator begin () const;
 
       /** Return iterator to end
-       * @return iterator to end 
+       * @return iterator to end
        */
       iterator end ();
       const_iterator end () const;
@@ -127,22 +128,56 @@ namespace Ekiga
       boost::signals2::signal<void(boost::shared_ptr<CallManager>)> manager_added;
 
 
-      /*** Call Management ***/                 
+      /*** Call Management ***/
 
       /** Create a call based on the remote uri given as parameter
-       * @param: an uri to call
-       * @return: true if a Ekiga::Call could be created
+       * @param an uri to call
+       * @return true if a Ekiga::Call could be created
        */
-      bool dial (const std::string uri); 
+      bool dial (const std::string & uri);
+
+      /** Transfer the call to the specified uri
+       * @param the destination uri
+       * @param true if we should do an attended transfer, false if
+       *        a blind transfer is required.
+       * @return true if the Ekiga::Call transfer could be attempted,
+       *         false otherwise. Returning true does not mean the
+       *         transfer succeeded, it simply means it could be handled.
+       */
+      bool transfer (const std::string & uri,
+                     bool attended);
+
+      /** Sends an instant message to the given contact
+       * @param the destination contact
+       * @param the destination uri
+       * @return true if the message transmission could be attempted,
+       *         false otherwise. Returning true does not mean the
+       *         message was sent, it simply means it could be handled.
+       */
+      bool message (const ContactPtr & contact,
+                    const std::string & uri);
+
+      /** Hang up all active calls (if any).
+       */
+      void hang_up ();
+
+      /* Return true if URI can be handled by the CallCore,
+       * false otherwise.
+       * @param the URI to test
+       * @return true of the URI can be handled, false otherwise
+       */
+      bool is_supported_uri (const std::string & uri);
+
 
       /*** Call Related Signals ***/
-      
+
       /** See call.h for the API
        */
       boost::signals2::signal<void(boost::shared_ptr<CallManager>, boost::shared_ptr<Call>)> ringing_call;
       boost::signals2::signal<void(boost::shared_ptr<CallManager>, boost::shared_ptr<Call>)> setup_call;
       boost::signals2::signal<void(boost::shared_ptr<CallManager>, boost::shared_ptr<Call>)> missed_call;
       boost::signals2::signal<void(boost::shared_ptr<CallManager>, boost::shared_ptr<Call>, std::string)> cleared_call;
+      boost::signals2::signal<void(boost::shared_ptr<CallManager>, boost::shared_ptr<Call>)> created_call;
       boost::signals2::signal<void(boost::shared_ptr<CallManager>, boost::shared_ptr<Call>)> established_call;
       boost::signals2::signal<void(boost::shared_ptr<CallManager>, boost::shared_ptr<Call>)> held_call;
       boost::signals2::signal<void(boost::shared_ptr<CallManager>, boost::shared_ptr<Call>)> retrieved_call;

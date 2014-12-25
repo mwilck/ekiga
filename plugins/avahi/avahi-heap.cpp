@@ -373,9 +373,9 @@ Avahi::Heap::ResolverCallback (AvahiServiceResolver *resolver,
       boost::shared_ptr<Ekiga::PresenceCore> pcore = presence_core.lock ();
       if (broken != NULL && broken[0] != NULL && broken[1] != NULL && pcore) {
 
-	std::set<std::string> groups;
+	std::list<std::string> groups;
 
-	groups.insert (_("Neighbours"));
+	groups.push_back (_("Neighbours"));
 	url = g_strdup_printf ("%s:neighbour@%s:%d", broken[1], host_name, port);
 	boost::shared_ptr<Ekiga::URIPresentity> presentity (new Ekiga::URIPresentity (pcore, name, url, groups));
 	status_received (url, status);

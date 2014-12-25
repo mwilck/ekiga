@@ -114,6 +114,25 @@ Opal::Call::Call (Opal::CallManager& _manager,
   re_a_bw = tr_a_bw = re_v_bw = tr_v_bw = 0.0;
 
   NoAnswerTimer.SetNotifier (PCREATE_NOTIFIER (OnNoAnswerTimeout));
+
+  add_action (Ekiga::ActionPtr (new Ekiga::Action ("hangup", _("Hangup"),
+                                                   boost::bind (&Call::hang_up, this))));
+  if (!is_outgoing () && !IsEstablished ()) {
+    add_action (Ekiga::ActionPtr (new Ekiga::Action ("answer", _("Answer"),
+                                                     boost::bind (&Call::answer, this))));
+    add_action (Ekiga::ActionPtr (new Ekiga::Action ("reject", _("Reject"),
+                                                     boost::bind (&Call::hang_up, this))));
+  }
+}
+
+Opal::Call::~Call ()
+{
+  remove_action ("hangup");
+  remove_action ("reject");
+  remove_action ("answer");
+  remove_action ("transfer");
+  remove_action ("hold");
+  remove_action ("transmit-video");
 }
 
 void
@@ -141,8 +160,28 @@ Opal::Call::answer ()
     PSafePtr<OpalPCSSConnection> connection = GetConnectionAs<OpalPCSSConnection>();
     if (connection != NULL) {
       connection->AcceptIncoming ();
+      remove_action ("reject");
+      remove_action ("answer");
     }
   }
+}
+
+
+void
+Opal::Call::transfer ()
+{
+  boost::shared_ptr<Ekiga::FormRequestSimple> request =
+    boost::shared_ptr<Ekiga::FormRequestSimple> (new Ekiga::FormRequestSimple (boost::bind (&Opal::Call::on_transfer_form_submitted, this, _1, _2, _3)));
+
+  request->title (_("Transfer Call"));
+  request->action (_("Transfer"));
+  request->text ("uri", _("Remote URI"),
+                 "",
+                 _("sip:username@ekiga.net"),
+                 Ekiga::FormVisitor::STANDARD,
+                 false, false);
+
+  Ekiga::Call::questions (request);
 }
 
 
@@ -152,6 +191,36 @@ Opal::Call::transfer (std::string uri)
   PSafePtr<OpalConnection> connection = get_remote_connection ();
   if (connection != NULL)
     connection->TransferConnection (uri);
+}
+
+
+bool
+Opal::Call::on_transfer_form_submitted (bool submitted,
+                                        Ekiga::Form& result,
+                                        std::string& error)
+{
+  std::string::size_type idx;
+
+  if (!submitted)
+    return false;
+
+  std::string uri = result.text ("uri");
+
+  /* If the user did not provide a full URI,
+   * use the same "domain" than the call local address
+   */
+  idx = uri.find_first_of ("@");
+  if (idx == std::string::npos)
+    uri = uri + "@" + (const char *) PURL (remote_uri).GetHostName ();
+  if (manager.is_supported_uri (uri)) {
+
+    transfer (uri);
+    return true;
+  }
+  else
+    error = _("You supplied an unsupported address");
+
+  return false;
 }
 
 
@@ -353,6 +422,13 @@ Opal::Call::OnEstablished (OpalConnection & connection)
 
   if (!PIsDescendant(&connection, OpalPCSSConnection)) {
 
+    add_action (Ekiga::ActionPtr (new Ekiga::Action ("hold", _("Hold"),
+                                                     boost::bind (&Call::toggle_hold, this))));
+    add_action (Ekiga::ActionPtr (new Ekiga::Action ("transfer", _("Transfer"),
+                                                     boost::bind (&Call::transfer, this))));
+    remove_action ("answer");
+    remove_action ("reject");
+
     parse_info (connection);
     Ekiga::Runtime::run_in_main (boost::bind (&Opal::Call::emit_established_in_main, this));
   }
@@ -528,8 +604,8 @@ Opal::Call::OnSetUp (OpalConnection & connection)
   outgoing = !IsNetworkOriginated ();
   parse_info (connection);
 
-  Ekiga::Runtime::run_in_main (boost::bind (&Opal::Call::emit_setup_in_main, this));
   call_setup = true;
+  Ekiga::Runtime::run_in_main (boost::bind (&Opal::Call::emit_setup_in_main, this));
 
   new CallSetup (*this, connection);
 
@@ -571,6 +647,10 @@ Opal::Call::OnOpenMediaStream (OpalMediaStream & stream)
   is_transmitting = !stream.IsSource ();
 
   Ekiga::Runtime::run_in_main (boost::bind (boost::ref (stream_opened), stream_name, type, is_transmitting));
+
+  if (type == Ekiga::Call::Video)
+    add_action (Ekiga::ActionPtr (new Ekiga::Action ("transmit-video", _("Transmit Video"),
+                                                     boost::bind (&Call::toggle_stream_pause, this, Ekiga::Call::Video))));
 }
 
 

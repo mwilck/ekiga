@@ -73,16 +73,3 @@ Ekiga::ChatCore::get_unread_messages_count () const
 
   return result;
 }
-
-bool
-Ekiga::ChatCore::populate_menu (MenuBuilder &builder)
-{
-  bool result = false;
-
-  for (iterator iter = begin ();
-       iter != end ();
-       ++iter)
-    result = (*iter)->populate_menu (builder) || result;
-
-  return result;
-}

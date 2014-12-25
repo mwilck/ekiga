@@ -39,8 +39,6 @@
 
 #include <gmodule.h>
 
-#define DEBUG 0
-
 #if DEBUG
 #include <iostream>
 #endif

@@ -33,11 +33,8 @@
  *
  */
 
-#include "gmstockicons.h"
-
 #include "gtk-core.h"
 
 Gtk::Core::Core ()
 {
-  gnomemeeting_stock_icons_init ();
 }

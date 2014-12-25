@@ -60,15 +60,13 @@ namespace Ekiga
 
     virtual const std::string text (const std::string name) const = 0;
 
-    virtual const std::string private_text (const std::string name) const = 0;
-
     virtual const std::string multi_text (const std::string name) const = 0;
 
     virtual const std::string single_choice (const std::string name) const = 0;
 
     virtual const std::set<std::string> multiple_choice (const std::string name) const = 0;
 
-    virtual const std::set<std::string> editable_set (const std::string name) const = 0;
+    virtual const std::list<std::string> editable_list (const std::string name) const = 0;
   };
 
 /**
@@ -91,15 +89,13 @@ namespace Ekiga
 
     const std::string text (const std::string name) const;
 
-    const std::string private_text (const std::string name) const;
-
     const std::string multi_text (const std::string name) const;
 
     const std::string single_choice (const std::string name) const;
 
     const std::set<std::string> multiple_choice (const std::string name) const;
 
-    const std::set<std::string> editable_set (const std::string name) const;
+    const std::list<std::string> editable_list (const std::string name) const;
   };
 
 };

@@ -71,9 +71,24 @@ EXTRA_DIST = \
 Applicationsdir = $(datadir)/applications
 Applications_DATA = $(DESKTOP_FILE)
 
+BUILT_SOURCES = revision.h
+
+GIT_REVISION=\"$$(git describe)\"
+CACHED_REVISION=$$(cat revision.h 2>/dev/null | cut -c24-)
+
+revision.h:
+	@if test -d ".git" -a -n "$$(which git)"; then \
+          if test "x$(GIT_REVISION)" != "x$(CACHED_REVISION)"; then \
+            echo "#define EKIGA_REVISION $(GIT_REVISION)" > revision.h; \
+          fi \
+        else \
+          if !(test -e "./revision.h"); then\
+            echo "#define EKIGA_REVISION \"unknown\"" > revision.h; \
+          fi \
+        fi
 
 ### Dist Clear
-DISTCLEANFILES=gnome-doc-utils.make ekiga.desktop org.gnome.ekiga.gschema
+DISTCLEANFILES=gnome-doc-utils.make ekiga.desktop org.gnome.ekiga.gschema revision.h
 
 MAINTAINERCLEANFILES= \
 	Makefile.in aclocal.m4 compile config.guess config.sub \

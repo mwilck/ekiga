@@ -70,7 +70,7 @@ namespace Ekiga
     URIPresentity (boost::shared_ptr<Ekiga::PresenceCore> _presence_core,
 		   std::string name_,
 		   std::string uri_,
-		   std::set<std::string> groups_);
+		   std::list<std::string> groups_);
 
     ~URIPresentity ();
 
@@ -84,26 +84,20 @@ namespace Ekiga
 
     const std::string get_status () const;
 
-    const std::set<std::string> get_groups () const;
+    const std::list<std::string> get_groups () const;
 
     bool has_uri (const std::string uri_) const;
 
     const std::string get_uri () const;
 
-    /** Populates the given Ekiga::MenuBuilder with the actions.
-     * @param: A MenuBuilder.
-     */
-    bool populate_menu (Ekiga::MenuBuilder& builder);
-
   private:
-
     boost::weak_ptr<Ekiga::PresenceCore> presence_core;
     Ekiga::scoped_connections connections;
 
     std::string name;
     std::string uri;
     std::string presence;
-    std::set<std::string> groups;
+    std::list<std::string> groups;
     std::string status;
 
     void on_presence_received (std::string uri_,

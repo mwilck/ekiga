@@ -53,7 +53,7 @@
     {
   public:
 
-      GMVideoInputManager_mlogo ();
+      GMVideoInputManager_mlogo (bool moving = false);
 
       ~GMVideoInputManager_mlogo ();
 
@@ -97,7 +97,7 @@
       void device_opened_in_main (Ekiga::VideoInputDevice device,
 				  Ekiga::VideoInputSettings settings);
       void device_closed_in_main (Ekiga::VideoInputDevice device);
-
+      bool moving;
   };
 /**
  * @}

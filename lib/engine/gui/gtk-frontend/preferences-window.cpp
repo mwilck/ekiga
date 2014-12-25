@@ -51,8 +51,12 @@
 #include "form-request-simple.h"
 #include "form-dialog-gtk.h"
 
-#include "gmcallbacks.h"
 #include "codecsbox.h"
+#include "gm-entry.h"
+
+#ifndef HAVE_SIDEBAR
+#include "gm-sidebar.h"
+#endif
 
 #ifdef WIN32
 #include "platform/winpaths.h"
@@ -73,7 +77,9 @@ struct _PreferencesWindowPrivate
   GtkWidget *video_device;
   GtkWidget *iface;
   GtkWidget *fsbutton;
-  GtkWidget *notebook;
+  GtkWidget *stack;
+
+  GmApplication *app;
 
   boost::shared_ptr<Ekiga::VideoInputCore> videoinput_core;
   boost::shared_ptr<Ekiga::AudioInputCore> audioinput_core;
@@ -91,6 +97,7 @@ struct _PreferencesWindowPrivate
   boost::shared_ptr<Ekiga::Settings> video_devices_settings;
   boost::shared_ptr<Ekiga::Settings> video_codecs_settings;
   boost::shared_ptr<Ekiga::Settings> video_display_settings;
+  boost::shared_ptr<Ekiga::Settings> contacts_settings;
   Ekiga::scoped_connections connections;
 };
 
@@ -123,9 +130,11 @@ _PreferencesWindowPrivate::_PreferencesWindowPrivate ()
     boost::shared_ptr<Ekiga::Settings> (new Ekiga::Settings (CALL_FORWARDING_SCHEMA));
   call_options_settings =
     boost::shared_ptr<Ekiga::Settings> (new Ekiga::Settings (CALL_OPTIONS_SCHEMA));
+  contacts_settings =
+    boost::shared_ptr<Ekiga::Settings> (new Ekiga::Settings (CONTACTS_SCHEMA));
 }
 
-G_DEFINE_TYPE (PreferencesWindow, preferences_window, GTK_TYPE_DIALOG);
+G_DEFINE_TYPE (PreferencesWindow, preferences_window, GM_TYPE_WINDOW);
 
 enum {
   COLUMN_STRING_RAW = 0,
@@ -156,13 +165,12 @@ static void gm_prefs_window_sound_events_list_build (PreferencesWindow *prefs_wi
  * 		  the given GtkBox.
  * PRE          : A valid pointer to the container widget where to attach
  *                the button, followed by a label, the callback, a
- *                tooltip and the alignment.
+ *                tooltip.
  */
 static void gm_pw_add_update_button (GtkWidget *box,
                                      const char *label,
                                      GCallback func,
                                      const gchar *tooltip,
-                                     gfloat valign,
                                      gpointer data);
 
 
@@ -371,16 +379,6 @@ static void  gm_prefs_window_update_devices_list (PreferencesWindow *self);
 /* Callbacks */
 
 /* DESCRIPTION  :  This callback is called when the user clicks
- *                 on the Close or Help buttons.
- * BEHAVIOR     :  Show help or destroy the window.
- * PRE          :  /
- */
-static void dialog_response_cb (GtkDialog *dialog,
-                                gint response_id,
-                                G_GNUC_UNUSED gpointer data);
-
-
-/* DESCRIPTION  :  This callback is called when the user clicks
  *                 on the refresh devices list button in the prefs.
  * BEHAVIOR     :  Redetects the devices and refreshes the menu.
  * PRE          :  /
@@ -459,12 +457,16 @@ static void sound_event_setting_changed (GSettings *,
 static void edit_blacklist_cb (GtkWidget* widget,
 			       gpointer data);
 
-/* DESCRIPTION : This callback is triggered when the user submits the blacklist-editing form
+
+/* DESCRIPTION : This callback is triggered when the user submits the
+ *               blacklist-editing form
  * BEHAVIOR    : /
  * PRE         : A pointer to the preferences window
  */
-static void on_edit_blacklist_form_submitted (bool submitted,
-					      Ekiga::Form& result);
+static bool on_edit_blacklist_form_submitted (bool submitted,
+					      Ekiga::Form& result,
+                                              std::string& error);
+
 
 /* Implementation */
 static void
@@ -536,10 +538,8 @@ gm_pw_add_update_button (GtkWidget *container,
                          const char *label,
                          GCallback func,
                          const gchar *tooltip,
-                         gfloat valign,
                          gpointer data)
 {
-  GtkWidget* alignment = NULL;
   GtkWidget* button = NULL;
 
   int pos = 0;
@@ -547,13 +547,12 @@ gm_pw_add_update_button (GtkWidget *container,
   /* Update Button */
   button = gtk_button_new_with_mnemonic (label);
   gtk_widget_set_tooltip_text (button, tooltip);
-
-  alignment = gtk_alignment_new (1, valign, 0, 0);
-  gtk_container_add (GTK_CONTAINER (alignment), button);
+  gtk_widget_set_halign (button, GTK_ALIGN_END);
+  gtk_widget_set_valign (button, GTK_ALIGN_END);
   gtk_container_set_border_width (GTK_CONTAINER (button), 0);
 
   GTK_GRID_LAST_ROW (container, pos);
-  gtk_grid_attach (GTK_GRID (container), alignment, 0, pos-1, 2, 1);
+  gtk_grid_attach (GTK_GRID (container), button, 0, pos-1, 3, 1);
 
   g_signal_connect (button, "clicked",
                     G_CALLBACK (func),
@@ -567,26 +566,30 @@ gm_pw_init_general_page (PreferencesWindow *self,
 {
   GtkWidget *entry = NULL;
 
-  /* Personal Information */
-  entry = gm_pw_entry_new (container, _("_Full name:"),
-                           self->priv->personal_data_settings, "full-name",
-                           _("Enter your full name"), false);
-  gtk_widget_set_size_request (GTK_WIDGET (entry), 250, -1);
-  gtk_entry_set_max_length (GTK_ENTRY (entry), 65);
+  /* Display */
+  gm_pw_toggle_new (container, _("Show o_ffline contacts"),
+                    self->priv->contacts_settings, "show-offline-contacts",
+                    _("Show offline contacts in the roster"), false);
 
-  /* Video Display */
-  gm_pw_subsection_new (container, _("Display"));
   gm_pw_toggle_new (container, _("Place windows displaying video _above other windows"),
                     self->priv->video_display_settings, "stay-on-top",
-                    _("Place windows displaying video above other windows during calls"));
+                    _("Place windows displaying video above other windows during calls"), false);
 
-  gm_pw_toggle_new (container, _("Enable _Picture-In-Picture Mode"),
+  gm_pw_toggle_new (container, _("Enable _Picture-In-Picture mode"),
                     self->priv->video_display_settings, "enable-pip",
-                    _("This allows the local video stream to be displayed incrusted in the remote video stream. This is only effective when sending and receiving video"));
+                    _("This allows the local video stream to be displayed incrusted in the remote video stream. This is only effective when sending and receiving video"), false);
+
+  /* Personal Information */
+  gm_pw_subsection_new (container, _("Personal Information"));
+  entry = gm_pw_entry_new (container, _("_Full Name"),
+                           self->priv->personal_data_settings, "full-name",
+                           _("Enter your full name"), true);
+  g_object_set (entry, "allow-empty", FALSE, NULL);
+  gtk_entry_set_max_length (GTK_ENTRY (entry), 65);
 
   /* Network Settings */
   gm_pw_subsection_new (container, _("Network Settings"));
-  gm_pw_spin_new (container, _("Type of Service (TOS):"), NULL,
+  gm_pw_spin_new (container, _("Type of Service (TOS)"), NULL,
                   self->priv->protocols_settings, "rtp-tos-field",
                   _("The Type of Service (TOS) byte on outgoing RTP IP packets. This byte is used by the network to provide some level of Quality of Service (QoS). Default value 184 (0xB8) corresponds to Expedited Forwarding (EF) PHB as defined in RFC 3246."),
                   0.0, 255.0, 1.0);
@@ -681,7 +684,6 @@ gm_pw_init_sound_events_page (PreferencesWindow *self,
 
   self->priv->sound_events_list =
     gtk_tree_view_new_with_model (GTK_TREE_MODEL (list_store));
-  gtk_tree_view_set_rules_hint (GTK_TREE_VIEW (self->priv->sound_events_list), TRUE);
   gtk_tree_view_set_headers_visible (GTK_TREE_VIEW (self->priv->sound_events_list), FALSE);
 
   selection =
@@ -702,7 +704,6 @@ gm_pw_init_sound_events_page (PreferencesWindow *self,
                                                      "active",
                                                      0,
                                                      NULL);
-  gtk_tree_view_column_set_fixed_width (GTK_TREE_VIEW_COLUMN (column), 25);
   gtk_tree_view_append_column (GTK_TREE_VIEW (self->priv->sound_events_list), column);
   g_signal_connect (renderer, "toggled",
                     G_CALLBACK (sound_event_toggled_cb), (gpointer) self);
@@ -714,7 +715,6 @@ gm_pw_init_sound_events_page (PreferencesWindow *self,
                                                      1,
                                                      NULL);
   gtk_tree_view_append_column (GTK_TREE_VIEW (self->priv->sound_events_list), column);
-  gtk_tree_view_column_set_fixed_width (GTK_TREE_VIEW_COLUMN (column), 325);
 
   hbox = gtk_box_new (GTK_ORIENTATION_HORIZONTAL, 0);
   gtk_box_pack_start (GTK_BOX (vbox), hbox, FALSE, FALSE, 2);
@@ -794,10 +794,11 @@ gm_pw_init_h323_page (PreferencesWindow *self,
 
   /* Add Misc Settings */
   entry =
-    gm_pw_entry_new (container, _("Forward _URI:"),
+    gm_pw_entry_new (container, _("Forward _URI"),
                      self->priv->h323_settings, "forward-host",
                      _("The host where calls should be forwarded if call forwarding is enabled"),
                      false);
+  g_object_set (entry, "regex", BASIC_URI_REGEX, NULL);
   if (!g_strcmp0 (gtk_entry_get_text (GTK_ENTRY (entry)), ""))
     gtk_entry_set_text (GTK_ENTRY (entry), "h323:");
 
@@ -827,7 +828,7 @@ gm_pw_init_h323_page (PreferencesWindow *self,
   /* Packing widget */
   gm_pw_subsection_new (container, _("DTMF Mode"));
 
-  gm_pw_string_option_menu_new (container, _("_Send DTMF as:"),
+  gm_pw_string_option_menu_new (container, _("_Send DTMF as"),
                                 capabilities_choices,
                                 self->priv->h323_settings, "dtmf-mode",
                                 _("Select the mode for DTMFs sending"));
@@ -852,23 +853,23 @@ gm_pw_init_sip_page (PreferencesWindow *self,
     capabilities_choices.push_back (boost::make_tuple (capabilities[i][0], capabilities[i][1]));
 
   /* Add Misc Settings */
-  gm_pw_entry_new (container, _("_Outbound proxy:"),
+  gm_pw_entry_new (container, _("_Outbound proxy"),
                    self->priv->sip_settings, "outbound-proxy-host",
                    _("The SIP Outbound Proxy to use for outgoing calls"), false);
 
   entry =
-    gm_pw_entry_new (container, _("Forward _URI:"),
+    gm_pw_entry_new (container, _("Forward _URI"),
                      self->priv->sip_settings, "forward-host",
                      _("The host where calls should be forwarded if call forwarding is enabled"),
                      false);
-
+  g_object_set (entry, "regex", BASIC_URI_REGEX, NULL);
   if (!g_strcmp0 (gtk_entry_get_text (GTK_ENTRY (entry)), ""))
     gtk_entry_set_text (GTK_ENTRY (entry), "sip:");
 
   /* Packing widget */
   gm_pw_subsection_new (container, _("DTMF Mode"));
 
-  gm_pw_string_option_menu_new (container, _("_Send DTMF as:"),
+  gm_pw_string_option_menu_new (container, _("_Send DTMF as"),
                                 capabilities_choices,
                                 self->priv->sip_settings, "dtmf-mode",
                                 _("Select the mode for DTMFs sending"));
@@ -887,8 +888,7 @@ gm_pw_init_audio_page (PreferencesWindow *self,
   /* Packing widgets */
   GTK_GRID_LAST_ROW (container, pos);
   codecs_list = codecs_box_new_with_type (Ekiga::Call::Audio);
-  gtk_container_set_border_width (GTK_CONTAINER (codecs_list), 6);
-  gtk_grid_attach (GTK_GRID (container), codecs_list, 0, pos-1, 2, 1);
+  gtk_grid_attach (GTK_GRID (container), codecs_list, 0, pos-1, 3, 1);
 
   /* Here we add the audio codecs options */
   gm_pw_subsection_new (container, _("Settings"));
@@ -904,7 +904,7 @@ gm_pw_init_audio_page (PreferencesWindow *self,
                     _("If enabled, use echo cancellation"));
 
   /* Translators: the full sentence is Maximum jitter buffer of x ms. */
-  gm_pw_spin_new (container, _("Maximum _jitter buffer of"), _("ms"),
+  gm_pw_spin_new (container, _("Use a maximum _jitter buffer of"), _("ms"),
                   self->priv->audio_codecs_settings, "maximum-jitter-buffer",
                   _("The maximum jitter buffer size for audio reception (in ms)"),
                   20.0, 2000.0, 50.0);
@@ -916,14 +916,14 @@ gm_pw_init_audio_page (PreferencesWindow *self,
   self->priv->audiooutput_core->get_devices (devices);
   self->priv->sound_events_output =
     gm_pw_string_option_menu_new (container,
-                                  _("Ringing device:"),
+                                  _("Ringing Device"),
                                   gm_pw_get_device_choices (devices),
                                   self->priv->sound_events_settings,
                                   "output-device",
                                   _("Select the ringing audio device to use"));
   self->priv->audio_player =
     gm_pw_string_option_menu_new (container,
-                                  _("Output device:"),
+                                  _("Output Device"),
                                   gm_pw_get_device_choices (devices),
                                   self->priv->audio_devices_settings,
                                   "output-device",
@@ -933,7 +933,7 @@ gm_pw_init_audio_page (PreferencesWindow *self,
   self->priv->audioinput_core->get_devices (devices);
   self->priv->audio_recorder =
     gm_pw_string_option_menu_new (container,
-                                  _("Input device:"),
+                                  _("Input Device"),
                                   gm_pw_get_device_choices (devices),
                                   self->priv->audio_devices_settings,
                                   "input-device",
@@ -942,7 +942,7 @@ gm_pw_init_audio_page (PreferencesWindow *self,
   /* That button will refresh the device list */
   gm_pw_add_update_button (container, _("_Detect devices"),
                            G_CALLBACK (refresh_devices_list_cb),
-                           _("Click here to refresh the device list"), 1,
+                           _("Click here to refresh the device list"),
                            self);
 }
 
@@ -997,20 +997,19 @@ gm_pw_init_video_page (PreferencesWindow *self,
   /* Packing widgets */
   GTK_GRID_LAST_ROW (container, pos);
   codecs_list = codecs_box_new_with_type (Ekiga::Call::Video);
-  gtk_container_set_border_width (GTK_CONTAINER (codecs_list), 6);
-  gtk_grid_attach (GTK_GRID (container), codecs_list, 0, pos-1, 2, 1);
+  gtk_grid_attach (GTK_GRID (container), codecs_list, 0, pos-1, 3, 1);
 
   /* Here we add the video codecs options */
   gm_pw_subsection_new (container, _("Settings"));
 
   /* Translators: the full sentence is Keep a minimum video quality of X % */
-  gm_pw_scale_new (container, _("Picture quality"), _("Frame rate"),
+  gm_pw_scale_new (container, _("Picture Quality"), _("Frame Rate"),
                    self->priv->video_codecs_settings, "temporal-spatial-tradeoff",
                    _("Choose if you want to guarantee a minimum image quality (possibly leading to dropped frames in order not to surpass the bitrate limit) or if you prefer to keep the frame rate"),
                    0.0, 32.0, 1.0);
 
   /* Translators: the full sentence is Maximum video bitrate of x kbits/s. */
-  gm_pw_spin_new (container, _("Maximum video _bitrate of"), _("kbits/s"),
+  gm_pw_spin_new (container, _("Use a maximum video _bitrate of"), _("kbits/s"),
                   self->priv->video_codecs_settings, "maximum-video-tx-bitrate",
                   _("The maximum video bitrate in kbits/s. The video quality and the effective frame rate will be dynamically adjusted to keep the bitrate at the given value."),
                   16.0, 10240.0, 1.0);
@@ -1022,28 +1021,30 @@ gm_pw_init_video_page (PreferencesWindow *self,
   /* The video device */
   self->priv->videoinput_core->get_devices (devices);
   self->priv->video_device =
-    gm_pw_string_option_menu_new (container, _("Input device:"),
+    gm_pw_string_option_menu_new (container, _("Input Device"),
                                   gm_pw_get_device_choices (devices),
                                   self->priv->video_devices_settings, "input-device", _("Select the video input device to use. If an error occurs when using this device a test picture will be transmitted."));
 
-  gm_pw_string_option_menu_new (container, _("Size:"),
+  gm_pw_string_option_menu_new (container, _("Size"),
                                 video_size_options,
                                 self->priv->video_devices_settings,
                                 "size",
                                 _("Select the transmitted video size"));
 
-  gm_pw_string_option_menu_new (container, _("Format:"),
+  gm_pw_string_option_menu_new (container, _("Format"),
                                 video_input_formats,
                                 self->priv->video_devices_settings,
                                 "format",
                                 _("Select the format for video cameras (does not apply to most USB cameras)"));
 
-  gm_pw_spin_new (container, _("Channel:"), NULL,
+  gm_pw_spin_new (container, _("Channel"), NULL,
                   self->priv->video_devices_settings, "channel",
                   _("The video channel number to use (to select camera, tv or other sources)"), 0.0, 10.0, 1.0);
 
   /* That button will refresh the device list */
-  gm_pw_add_update_button (container, _("_Detect devices"), G_CALLBACK (refresh_devices_list_cb), _("Click here to refresh the device list"), 1, self);
+  gm_pw_add_update_button (container, _("_Detect Devices"),
+                           G_CALLBACK (refresh_devices_list_cb),
+                           _("Click here to refresh the device list"), self);
 }
 
 
@@ -1063,13 +1064,13 @@ gm_pw_entry_new (GtkWidget *subsection,
   GTK_GRID_LAST_ROW (subsection, pos);
 
   label = gtk_label_new_with_mnemonic (label_txt);
-  gtk_misc_set_alignment (GTK_MISC (label), 0.0, 0.5);
-  gtk_label_set_justify (GTK_LABEL (label), GTK_JUSTIFY_LEFT);
-  if (indent)
-    g_object_set (G_OBJECT (label), "margin-left", 12, NULL);
+  g_object_set (G_OBJECT (label),
+                "margin-left", indent ? 12 : 0,
+                "halign", GTK_ALIGN_END,
+                NULL);
   gtk_grid_attach (GTK_GRID (subsection), label, 0, pos-1, 1, 1);
 
-  entry = gtk_entry_new ();
+  entry = gm_entry_new (NULL);
   gtk_label_set_mnemonic_widget (GTK_LABEL(label), entry);
   gtk_grid_attach_next_to (GTK_GRID (subsection), entry, label, GTK_POS_RIGHT, 1, 1);
 
@@ -1102,15 +1103,15 @@ gm_pw_string_option_menu_new (GtkWidget *subsection,
   GTK_GRID_LAST_ROW (subsection, pos);
 
   label = gtk_label_new_with_mnemonic (label_txt);
-  gtk_misc_set_alignment (GTK_MISC (label), 0.0, 0.5);
-  gtk_label_set_justify (GTK_LABEL (label), GTK_JUSTIFY_LEFT);
-  if (indent)
-    g_object_set (G_OBJECT (label), "margin-left", 12, NULL);
+  g_object_set (G_OBJECT (label),
+                "margin-left", indent ? 12 : 0,
+                "halign", GTK_ALIGN_END,
+                NULL);
   gtk_grid_attach (GTK_GRID (subsection), label, 0, pos-1, 1, 1);
 
   option_menu = gtk_combo_box_text_new ();
   cells = gtk_cell_layout_get_cells (GTK_CELL_LAYOUT (option_menu));
-  g_object_set (G_OBJECT (cells->data), "ellipsize", PANGO_ELLIPSIZE_END, "width-chars", 30, NULL);
+  g_object_set (G_OBJECT (cells->data), "ellipsize", PANGO_ELLIPSIZE_END, "width-chars", 20, NULL);
   g_list_free (cells);
 
   gtk_label_set_mnemonic_widget (GTK_LABEL (label), option_menu);
@@ -1120,7 +1121,6 @@ gm_pw_string_option_menu_new (GtkWidget *subsection,
     gtk_combo_box_text_append (GTK_COMBO_BOX_TEXT (option_menu),
                                boost::get<0>(*iter).c_str (),
                                boost::get<1>(*iter).c_str ());
-
   gtk_grid_attach_next_to (GTK_GRID (subsection), option_menu, label, GTK_POS_RIGHT, 1, 1);
 
   g_settings_bind (settings->get_g_settings (),
@@ -1226,7 +1226,7 @@ gm_pw_scale_new (GtkWidget* subsection,
                  double min,
                  double max,
                  double step,
-                 G_GNUC_UNUSED bool indent)
+                 bool indent)
 {
   GtkWidget *hbox = NULL;
   GtkAdjustment *adj = NULL;
@@ -1240,10 +1240,10 @@ gm_pw_scale_new (GtkWidget* subsection,
   hbox = gtk_box_new (GTK_ORIENTATION_HORIZONTAL, 0);
 
   label = gtk_label_new_with_mnemonic (down_label_txt);
-  gtk_misc_set_alignment (GTK_MISC (label), 0.0, 0.5);
-  gtk_label_set_justify (GTK_LABEL (label), GTK_JUSTIFY_LEFT);
-  if (indent)
-    g_object_set (G_OBJECT (label), "margin-left", 12, NULL);
+  g_object_set (G_OBJECT (label),
+                "margin-left", indent ? 12 : 0,
+                "halign", GTK_ALIGN_END,
+                NULL);
   gtk_box_pack_start (GTK_BOX (hbox), label, FALSE, FALSE, 2);
 
   adj = (GtkAdjustment *)
@@ -1282,7 +1282,7 @@ gm_pw_spin_new (GtkWidget* subsection,
                 double min,
                 double max,
                 double step,
-                G_GNUC_UNUSED bool indent)
+                bool indent)
 {
   GtkAdjustment *adj = NULL;
   GtkWidget *label = NULL;
@@ -1294,10 +1294,10 @@ gm_pw_spin_new (GtkWidget* subsection,
   GTK_GRID_LAST_ROW (subsection, pos);
 
   label = gtk_label_new_with_mnemonic (label_txt);
-  gtk_misc_set_alignment (GTK_MISC (label), 0.0, 0.5);
-  gtk_label_set_justify (GTK_LABEL (label), GTK_JUSTIFY_LEFT);
-  if (indent)
-    g_object_set (G_OBJECT (label), "margin-left", 12, NULL);
+  g_object_set (G_OBJECT (label),
+                "margin-left", indent ? 12 : 0,
+                "halign", GTK_ALIGN_END,
+                NULL);
 
   adj = (GtkAdjustment *)
     gtk_adjustment_new (settings->get_int (key),
@@ -1367,7 +1367,6 @@ gm_pw_window_subsection_new (PreferencesWindow *self,
                              const gchar *section_name)
 {
   GtkWidget *container = NULL;
-  GtkWidget *label = NULL;
 
   if (!self)
     return NULL;
@@ -1376,15 +1375,15 @@ gm_pw_window_subsection_new (PreferencesWindow *self,
     return NULL;
 
   container = gtk_grid_new ();
-  gtk_container_set_border_width (GTK_CONTAINER (container), 12);
-  gtk_grid_set_column_spacing (GTK_GRID (container), 6);
+  gtk_grid_set_column_spacing (GTK_GRID (container), 12);
   gtk_grid_set_row_spacing (GTK_GRID (container), 6);
+  gtk_container_set_border_width (GTK_CONTAINER (container), 18);
+
   gtk_grid_set_column_homogeneous (GTK_GRID (container), FALSE);
   gtk_grid_set_row_homogeneous (GTK_GRID (container), FALSE);
 
-  label = gtk_label_new (section_name);
-  gtk_notebook_append_page (GTK_NOTEBOOK (self->priv->notebook),
-                            container, label);
+  gtk_stack_add_titled (GTK_STACK (self->priv->stack),
+                        container, section_name, section_name);
 
   gtk_widget_show_all (container);
 
@@ -1404,10 +1403,12 @@ gm_pw_subsection_new (GtkWidget *container,
   label = gtk_label_new (NULL);
   label_txt = g_strdup_printf ("<b>%s</b>", name);
   gtk_label_set_markup (GTK_LABEL (label), label_txt);
-  gtk_misc_set_alignment (GTK_MISC (label), 0.0, 0.5);
-  gtk_label_set_justify (GTK_LABEL (label), GTK_JUSTIFY_LEFT);
+  g_object_set (G_OBJECT (label),
+                "margin-top", 12, // We have 6 pixels between each row
+                                  // and the HIG asks for 18 pixels between
+                                  // subsections
+                "halign", GTK_ALIGN_START, NULL);
   gtk_grid_attach (GTK_GRID (container), label, 0, pos-1, 2, 1);
-  g_object_set (G_OBJECT (label), "margin-top", 9, NULL);
   g_free (label_txt);
 }
 
@@ -1462,22 +1463,6 @@ gm_prefs_window_update_devices_list (PreferencesWindow *self)
 
 
 /* Callbacks */
-static void
-dialog_response_cb (GtkDialog *dialog,
-                    gint response_id,
-                    G_GNUC_UNUSED gpointer data)
-{
-  switch (response_id) {
-  case GTK_RESPONSE_HELP:
-    help_callback (NULL, NULL);
-    g_signal_stop_emission_by_name (dialog, "response");
-    break;
-  default:
-    gtk_widget_destroy (GTK_WIDGET (dialog));
-  }
-}
-
-
 static void
 refresh_devices_list_cb (G_GNUC_UNUSED GtkWidget *widget,
                          gpointer data)
@@ -1674,34 +1659,35 @@ edit_blacklist_cb (GtkWidget* /*widget*/,
 {
   g_return_if_fail (data != NULL);
 
-  boost::shared_ptr<Ekiga::FormRequestSimple> request(new Ekiga::FormRequestSimple (&on_edit_blacklist_form_submitted));
+  boost::shared_ptr<Ekiga::FormRequestSimple> request (new Ekiga::FormRequestSimple (&on_edit_blacklist_form_submitted));
 
-  request->title (_("Blacklist edition"));
-  request->instructions (_("This form lets you add and remove tokens from the blacklist"));
+  request->title (_("Edit the Blacklist"));
 
   boost::scoped_ptr<Ekiga::Settings> settings(new Ekiga::Settings (CONTACTS_SCHEMA));
   std::list<std::string> foes(settings->get_string_list ("foe-list"));
 
-  request->editable_set ("foes", _("Current list of undesirables"),
-			 std::set<std::string> (foes.begin (), foes.end ()),
-			 std::set<std::string>());
+  request->editable_list ("foes", _("Current list of undesirables"),
+			 std::list<std::string> (foes.begin (), foes.end ()),
+			 std::list<std::string>());
 
   FormDialog dialog(request, GTK_WIDGET (data));
 
   dialog.run ();
 }
 
-static void
+static bool
 on_edit_blacklist_form_submitted (bool submitted,
-				  Ekiga::Form& result)
+				  Ekiga::Form& result,
+                                  G_GNUC_UNUSED std::string& error)
 {
   if (!submitted)
-    return;
+    return false;
 
-  std::set<std::string> foes = result.editable_set ("foes");
+  std::list<std::string> foes = result.editable_list ("foes");
   boost::scoped_ptr<Ekiga::Settings> settings(new Ekiga::Settings (CONTACTS_SCHEMA));
-  settings->set_string_list ("foe-list",
-			     std::list<std::string> (foes.begin (), foes.end ()));
+  settings->set_string_list ("foe-list", foes);
+
+  return true;
 }
 
 
@@ -1801,44 +1787,53 @@ preferences_window_class_init (PreferencesWindowClass *klass)
 
 /* Public functions */
 GtkWidget *
-preferences_window_new (boost::shared_ptr<Ekiga::AudioInputCore> audio_input_core,
-                        boost::shared_ptr<Ekiga::AudioOutputCore> audio_output_core,
-                        boost::shared_ptr<Ekiga::VideoInputCore> video_input_core)
+preferences_window_new (GmApplication *app)
 {
   PreferencesWindow *self = NULL;
 
-  GdkPixbuf *pixbuf = NULL;
+  g_return_val_if_fail (GM_IS_APPLICATION (app), NULL);
+
   GtkWidget *container = NULL;
+  GtkWidget *box = NULL;
+  GtkWidget *sidebar = NULL;
+  GtkWidget *headerbar = NULL;
+
   boost::signals2::connection conn;
 
+  Ekiga::ServiceCorePtr core = gm_application_get_core (app);
+
   /* The window */
-  self = (PreferencesWindow *) g_object_new (PREFERENCES_WINDOW_TYPE, NULL);
+  self = (PreferencesWindow *) g_object_new (PREFERENCES_WINDOW_TYPE,
+                                             "application", GTK_APPLICATION (app),
+                                             "key", USER_INTERFACE ".preferences-window",
+                                             "hide_on_delete", false,
+                                             "hide_on_esc", false, NULL);
+
   self->priv = new PreferencesWindowPrivate ();
-  self->priv->audioinput_core = audio_input_core;
-  self->priv->audiooutput_core = audio_output_core;
-  self->priv->videoinput_core = video_input_core;
+  self->priv->audioinput_core = core->get<Ekiga::AudioInputCore> ("audioinput-core");
+  self->priv->audiooutput_core = core->get<Ekiga::AudioOutputCore> ("audiooutput-core");
+  self->priv->videoinput_core = core->get<Ekiga::VideoInputCore> ("videoinput-core");
+  self->priv->app = app;
 
-  gtk_dialog_add_button (GTK_DIALOG (self), GTK_STOCK_CLOSE, GTK_RESPONSE_CANCEL);
-  gtk_dialog_add_button (GTK_DIALOG (self), GTK_STOCK_HELP, GTK_RESPONSE_HELP);
+  headerbar = gtk_header_bar_new ();
+  gtk_header_bar_set_show_close_button (GTK_HEADER_BAR (headerbar), TRUE);
+  gtk_header_bar_set_title (GTK_HEADER_BAR (headerbar), _("Preferences"));
+  gtk_header_bar_set_subtitle (GTK_HEADER_BAR (headerbar), _("Edit your settings"));
+  gtk_window_set_titlebar (GTK_WINDOW (self), headerbar);
+  gtk_window_set_icon_name (GTK_WINDOW (self), PACKAGE_NAME);
+  gtk_widget_show (headerbar);
 
-  self->priv->notebook = gtk_notebook_new ();
-  gtk_notebook_set_show_tabs (GTK_NOTEBOOK (self->priv->notebook), TRUE);
-  gtk_notebook_set_show_border (GTK_NOTEBOOK (self->priv->notebook), FALSE);
+  box = gtk_box_new (GTK_ORIENTATION_HORIZONTAL, 0);
+  gtk_container_add (GTK_CONTAINER (self), box);
 
-  container = gtk_dialog_get_content_area (GTK_DIALOG (self));
-  gtk_box_pack_start (GTK_BOX (container), self->priv->notebook, TRUE, TRUE, 0);
-  gtk_widget_show_all (GTK_WIDGET (container));
+  sidebar = gtk_sidebar_new ();
+  gtk_box_pack_start (GTK_BOX (box), sidebar, TRUE, TRUE, 0);
 
-  g_signal_connect (G_OBJECT (self), "response",
-                    G_CALLBACK (dialog_response_cb), NULL);
+  self->priv->stack = gtk_stack_new ();
+  gtk_sidebar_set_stack (GTK_SIDEBAR (sidebar), GTK_STACK (self->priv->stack));
+  gtk_box_pack_start (GTK_BOX (box), self->priv->stack, TRUE, TRUE, 0);
 
-  gtk_window_set_title (GTK_WINDOW (self), _("Ekiga Preferences"));
-  pixbuf = gtk_widget_render_icon_pixbuf (GTK_WIDGET (self),
-                                          GTK_STOCK_PREFERENCES,
-                                          GTK_ICON_SIZE_MENU);
-  gtk_window_set_icon (GTK_WINDOW (self), pixbuf);
-  g_object_unref (pixbuf);
-  gtk_widget_realize (GTK_WIDGET (self));
+  gtk_widget_show_all (GTK_WIDGET (box));
 
   /* Stuff */
   container = gm_pw_window_subsection_new (self,
@@ -1846,7 +1841,7 @@ preferences_window_new (boost::shared_ptr<Ekiga::AudioInputCore> audio_input_cor
   gm_pw_init_general_page (self, container);
   gtk_widget_show_all (GTK_WIDGET (container));
 
-  container = gm_pw_window_subsection_new (self, _("Forwarding"));
+  container = gm_pw_window_subsection_new (self, _("Call Forwarding"));
   gm_pw_init_call_options_page (self, container);
   gtk_widget_show_all (GTK_WIDGET (container));
 

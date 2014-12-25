@@ -44,8 +44,11 @@ SIP::Conversation::Conversation (boost::shared_ptr<Ekiga::PresenceCore> _core,
 {
   // FIXME: this api isn't good: we obviously don't handle correctly Conversation with several people!
   boost::shared_ptr<Ekiga::URIPresentity> presentity =
-    boost::shared_ptr<Ekiga::URIPresentity> (new Ekiga::URIPresentity (_core, title, uri,
-								       std::set<std::string> ()));
+    boost::shared_ptr<Ekiga::URIPresentity> (new Ekiga::URIPresentity (_core,
+                                                                       title,
+                                                                       uri,
+                                                                       std::list<std::string>
+                                                                       ()));
   heap  = boost::shared_ptr<Heap> (new Heap);
   heap->add_presentity (boost::dynamic_pointer_cast<Ekiga::Presentity> (presentity));
 }

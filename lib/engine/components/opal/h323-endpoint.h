@@ -65,14 +65,15 @@ namespace Opal {
 
       ~EndPoint ();
 
-      // helper for Opal::Bank's contact/presentity decorator code
-      bool populate_menu (const std::string& fullname,
-			  const std::string& uri,
-			  Ekiga::MenuBuilder& builder);
-
 
       /* CallProtocolManager */
-      bool dial (const std::string & uri); 
+      bool dial (const std::string & uri);
+      bool transfer (const std::string & uri,
+                     bool attended);
+      bool message (const Ekiga::ContactPtr & contact,
+                    const std::string & uri);
+      bool is_supported_uri (const std::string & uri);
+
 
       const std::string & get_protocol_name () const;
 
@@ -110,10 +111,6 @@ namespace Opal {
       bool OnIncomingConnection (OpalConnection &connection,
                                  unsigned options,
                                  OpalConnection::StringOptions *str_options);
-
-      void on_dial (std::string uri);
-
-      void on_transfer (std::string uri);
 
       void registration_event_in_main (const Opal::Account& account,
 				       Account::RegistrationState state,

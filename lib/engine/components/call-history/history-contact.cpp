@@ -38,6 +38,8 @@
 #include <glib.h>
 #include <glib/gi18n.h>
 
+#include "call-core.h"
+
 #include "robust-xml.h"
 
 /* at one point we will return a smart pointer on this... and if we don't use
@@ -104,6 +106,11 @@ History::Contact::Contact (boost::shared_ptr<Ekiga::ContactCore> _contact_core,
       }
     }
   }
+
+  /* Pull actions */
+  boost::shared_ptr<Ekiga::ContactCore> ccore = contact_core.lock ();
+  if (ccore)
+    ccore->pull_actions (actions, name, uri);
 }
 
 
@@ -139,6 +146,11 @@ History::Contact::Contact (boost::shared_ptr<Ekiga::ContactCore> _contact_core,
   tmp = g_strdup_printf ("%d", m_type);
   xmlSetProp (node, BAD_CAST "type", BAD_CAST tmp);
   g_free (tmp);
+
+  /* Pull actions */
+  boost::shared_ptr<Ekiga::ContactCore> ccore = contact_core.lock ();
+  if (ccore)
+    ccore->pull_actions (actions, name, uri);
 }
 
 History::Contact::~Contact ()
@@ -180,18 +192,6 @@ History::Contact::get_groups () const
   return groups;
 }
 
-bool
-History::Contact::populate_menu (Ekiga::MenuBuilder &builder)
-{
-  
-  boost::shared_ptr<Ekiga::ContactCore> ccore = contact_core.lock ();
-  if (ccore)
-    return ccore->populate_contact_menu (ContactPtr (this, null_deleter ()),
-					 uri, builder);
-  else
-    return false;
-}
-
 xmlNodePtr
 History::Contact::get_node ()
 {
@@ -210,8 +210,14 @@ History::Contact::get_call_start () const
   return call_start;
 }
 
-const std::string 
+const std::string
 History::Contact::get_call_duration () const
 {
   return call_duration;
+}
+
+const std::string
+History::Contact::get_uri () const
+{
+  return uri;
 }

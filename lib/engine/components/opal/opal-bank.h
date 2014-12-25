@@ -57,8 +57,6 @@ namespace Opal
       public Ekiga::Cluster,
       public Ekiga::PresencePublisher,
       public Ekiga::PresenceFetcher,
-      public Ekiga::ContactDecorator,
-      public Ekiga::PresentityDecorator,
       public Ekiga::Service
   {
 public:
@@ -66,8 +64,6 @@ public:
     Bank (Ekiga::ServiceCore &_core);
 
     ~Bank ();
-
-    bool populate_menu (Ekiga::MenuBuilder & builder);
 
     const std::string get_name () const
     { return "opal-account-store"; }
@@ -92,16 +88,6 @@ public:
     void fetch (const std::string) {}
     void unfetch (const std::string) {}
 
-    /*
-     * this object is an Ekiga::ContactDecorator and an Ekiga::PresentityDecorator
-     */
-    bool populate_menu (Ekiga::ContactPtr contact,
-			const std::string uri,
-			Ekiga::MenuBuilder& builder);
-
-    bool populate_menu (Ekiga::PresentityPtr presentity,
-			const std::string uri,
-			Ekiga::MenuBuilder& builder);
 
     /** Find the account with the given address of record in the Bank
      * @param aor is the address of record of the Account or the host to look
@@ -116,7 +102,7 @@ public:
     /* this object is an Ekiga::Cluster */
     void visit_heaps (boost::function1<bool, Ekiga::HeapPtr> visitor) const;
 
-    const std::set<std::string> existing_groups () const;
+    const std::list<std::string> existing_groups () const;
 
     /* this is useful when we want to do something with some uri and
        would like to avoid creating a brand-new presentity on it */
@@ -138,13 +124,10 @@ private:
     boost::shared_ptr<xmlDoc> doc;
     xmlNodePtr node;
 
-    bool populate_menu_helper (const std::string fullname,
-			       const std::string& uri,
-			       Ekiga::MenuBuilder& builder);
-
-    void on_new_account_form_submitted (bool submitted,
-					Ekiga::Form& form,
-					Account::Type acc_type);
+    bool on_new_account_form_submitted (bool submitted,
+                                        Ekiga::Form& form,
+                                        std::string& error,
+                                        Account::Type acc_type);
 
     void add (Account::Type acc_type,
               std::string name,
@@ -167,6 +150,8 @@ private:
 		       std::string info);
 
     void update_sip_endpoint_aor_map ();
+
+    void add_actions ();
 
     Ekiga::Settings *protocols_settings;
   };

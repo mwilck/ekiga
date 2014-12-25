@@ -44,6 +44,9 @@
 
 #include <boost/smart_ptr.hpp>
 
+#include "actor.h"
+#include "live-object.h"
+
 namespace Ekiga
 {
 
@@ -56,7 +59,9 @@ namespace Ekiga
    * Everything is handled asynchronously and signaled through the
    * Ekiga::CallManager
    */
-  class Call 
+  class Call
+    : public Actor,
+      public virtual LiveObject
     {
 
   public:
@@ -218,13 +223,13 @@ namespace Ekiga
        */
       boost::signals2::signal<void(void)> held;
 
-      /* Signal emitted when the call is retrieved
-       */
-      boost::signals2::signal<void(void)> retrieved;
-
       /* Signal emitted when the call is being setup
        */
       boost::signals2::signal<void(void)> setup;
+
+      /* Signal emitted when the call is retrieved
+       */
+      boost::signals2::signal<void(void)> retrieved;
 
       /* Signal emitted when the remote party is ringing
        */

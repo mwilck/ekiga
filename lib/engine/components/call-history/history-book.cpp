@@ -82,6 +82,12 @@ History::Book::Book (Ekiga::ServiceCore& core):
   connections.add (call_core->cleared_call.connect (boost::bind (&History::Book::on_cleared_call, this, _1, _2, _3)));
 
   enforce_size_limit ();
+
+  /* Actor actions should be added */
+  add_action (Ekiga::ActionPtr (new Ekiga::Action ("history_book_clear",
+                                                   _("Clear History"),
+                                                   boost::bind (&History::Book::clear,
+                                                                this))));
 }
 
 History::Book::~Book ()
@@ -136,19 +142,11 @@ History::Book::add (const std::string & name,
   }
 }
 
-bool
-History::Book::populate_menu (Ekiga::MenuBuilder &builder)
-{
-  builder.add_action ("clear",
-		      _("Clear List"), boost::bind (&History::Book::clear, this));
-  return true;
-}
-
-const std::set<std::string>
+const std::list<std::string>
 History::Book::existing_groups () const
 {
   // here it's more logical to lie
-  return std::set<std::string> ();
+  return std::list<std::string> ();
 }
 
 const std::string

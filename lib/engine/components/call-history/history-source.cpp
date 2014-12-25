@@ -46,19 +46,10 @@ History::Source::~Source ()
 {
 }
 
-const std::set<std::string>
+const std::list<std::string>
 History::Source::existing_groups () const
 {
   return book->existing_groups ();
-}
-
-bool
-History::Source::populate_menu (Ekiga::MenuBuilder &)
-{
-  /* nothing
-   * unless we want the "clear history" action in the addressbook window menu
-   */
-  return false;
 }
 
 History::BookPtr

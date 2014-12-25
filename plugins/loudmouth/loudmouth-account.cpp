@@ -359,7 +359,7 @@ LM::Account::edit ()
   xmlFree (xml_str);
 
   xml_str = xmlGetProp (node, BAD_CAST "password");
-  request->private_text ("password", _("Password:"), (const char*)xml_str, _("Password associated to the user"));
+  request->text ("password", _("Password:"), (const char*)xml_str, _("Password associated to the user"), Ekiga::FormVisitor::PASSWORD);
   xmlFree (xml_str);
 
   xml_str = xmlGetProp (node, BAD_CAST "startup");
@@ -392,7 +392,7 @@ LM::Account::on_edit_form_submitted (bool submitted,
   std::string server = result.text ("server");
   std::string port = result.text ("port");
   std::string resource = result.text ("resource");
-  std::string password = result.private_text ("password");
+  std::string password = result.text ("password");
   bool enable_on_startup = result.boolean ("enabled");
 
   xmlSetProp (node, BAD_CAST "name", BAD_CAST name.c_str ());

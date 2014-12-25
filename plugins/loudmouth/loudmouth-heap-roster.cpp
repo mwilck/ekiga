@@ -341,7 +341,7 @@ LM::HeapRoster::add_item ()
   request->text ("name", _("Name:"), "", _("Name of the contact, as shown in your roster"));
   request->editable_set ("groups",
 			 _("Put contact in groups:"),
-			 std::set<std::string>(), existing_groups ());
+                         std::list<std::string>(), existing_groups ());
 
   questions (request);
 }
@@ -355,7 +355,7 @@ LM::HeapRoster::add_item_form_submitted (bool submitted,
 
   const std::string jid = result.text ("jid");
   const std::string contact_name = result.text ("name");
-  const std::set<std::string> groups = result.editable_set ("groups");
+  const std::list<std::string> groups = result.editable_set ("groups");
 
   if ( !jid.empty ()) {
 
@@ -374,7 +374,7 @@ LM::HeapRoster::add_item_form_submitted (bool submitted,
 				      NULL);
     }
 
-    for (std::set<std::string>::const_iterator iter = groups.begin (); iter != groups.end (); ++iter) {
+    for (std::list<std::string>::const_iterator iter = groups.begin (); iter != groups.end (); ++iter) {
 
       gchar* escaped = g_markup_escape_text (iter->c_str (), -1);
       lm_message_node_add_child (node, "group", escaped);
@@ -462,50 +462,50 @@ LM::HeapRoster::on_chat_requested (PresentityPtr presentity)
 
 struct lm_existing_groups_helper
 {
-  std::set<std::string> groups;
+  std::list<std::string> groups;
 
   bool operator() (Ekiga::PresentityPtr presentity)
   {
-    const std::set<std::string> presentity_groups = presentity->get_groups ();
+    const std::list<std::string> presentity_groups = presentity->get_groups ();
 
-    groups.insert (presentity_groups.begin (),
+    groups.push_back (presentity_groups.begin (),
 		   presentity_groups.end ());
 
     return true;
   }
 };
 
-const std::set<std::string>
+const std::list<std::string>
 LM::HeapRoster::existing_groups () const
 {
-  std::set<std::string> result;
+  std::list<std::string> result;
 
   {
     lm_existing_groups_helper helper;
     visit_presentities (boost::ref (helper));
     result = helper.groups;
   }
-  result.insert (_("Family"));
-  result.insert (_("Friend"));
+  result.push_back (_("Family"));
+  result.push_back (_("Friend"));
   /* Translator: http://www.ietf.org/rfc/rfc4480.txt proposes several
      relationships between you and your contact; associate means
      someone who is at the same "level" than you.
   */
-  result.insert (_("Associate"));
+  result.push_back (_("Associate"));
   /* Translator: http://www.ietf.org/rfc/rfc4480.txt proposes several
      relationships between you and your contact; assistant means
      someone who is at a lower "level" than you.
   */
-  result.insert (_("Assistant"));
+  result.push_back (_("Assistant"));
   /* Translator: http://www.ietf.org/rfc/rfc4480.txt proposes several
      relationships between you and your contact; supervisor means
      someone who is at a higher "level" than you.
   */
-  result.insert (_("Supervisor"));
+  result.push_back (_("Supervisor"));
   /* Translator: http://www.ietf.org/rfc/rfc4480.txt proposes several
      relationships between you and your contact; self means yourself.
   */
-  result.insert (_("Self"));
+  result.push_back (_("Self"));
 
   return result;
 }

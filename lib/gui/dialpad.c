@@ -1,3 +1,4 @@
+
 /* Ekiga -- A VoIP and Video-Conferencing application
  * Copyright (C) 2000-2009 Damien Sandras <dsandras@seconix.com>
  *
@@ -25,10 +26,10 @@
  */
 
 /*
- *                         dialpad.cpp  -  description
+ *                         dialpad.c  -  description
  *                         ---------------------------
  *   begin                : Thu Jan 3 2008
- *   copyright            : (C) 2008 by Steve Frécinaux
+ *   authors              : (C) 2008 by Steve Frécinaux
  *   description          : Dial pad widget.
  */
 
@@ -49,7 +50,7 @@ struct const_key_info
  * keys.
  */
 static const struct const_key_info keys_info[] = {
-  { "1", "", GDK_KEY_KP_1 },
+  { "1", "  ", GDK_KEY_KP_1 }, /* whitespaces for a better alignment */
   { "2", N_("abc"), GDK_KEY_KP_2 },
   { "3", N_("def"), GDK_KEY_KP_3 },
   { "4", N_("ghi"), GDK_KEY_KP_4 },
@@ -142,57 +143,61 @@ on_dialpad_button_clicked (GtkButton    *button,
 static void
 ekiga_dialpad_init (EkigaDialpad *dialpad)
 {
+  GtkWidget *label     = NULL;
+  GtkWidget *button    = NULL;
+  GtkWidget *box       = NULL;
+
+  gchar *text          = NULL;
+
   unsigned i;
 
   dialpad->priv = G_TYPE_INSTANCE_GET_PRIVATE (dialpad,
                                                EKIGA_TYPE_DIALPAD,
                                                EkigaDialpadPrivate);
 
-  gtk_grid_set_column_spacing (GTK_GRID (dialpad), 2);
-  gtk_grid_set_row_spacing (GTK_GRID (dialpad), 2);
+  gtk_container_set_border_width (GTK_CONTAINER (dialpad), 0);
   gtk_grid_set_column_homogeneous (GTK_GRID (dialpad), TRUE);
   gtk_grid_set_row_homogeneous (GTK_GRID (dialpad), TRUE);
+  gtk_grid_set_row_spacing (GTK_GRID (dialpad), 6);
+  gtk_grid_set_column_spacing (GTK_GRID (dialpad), 6);
 
   // the dialpad is LTR even for RTL languages
   gtk_widget_set_direction (GTK_WIDGET (dialpad), GTK_TEXT_DIR_LTR);
 
   /* Create the buttons */
   for (i = 0; i < G_N_ELEMENTS (keys_info); i++) {
-    GtkWidget *box;
-    GtkWidget *label;
-    GtkWidget *button;
-    gchar *text;
-    GtkWidget *alignment;
 
-    box = gtk_box_new (GTK_ORIENTATION_HORIZONTAL, 2);
-
-    label = gtk_label_new (keys_info[i].number);
-    gtk_misc_set_alignment (GTK_MISC (label), 1.0, 1.0);
-    gtk_box_pack_start (GTK_BOX (box), label, TRUE, TRUE, 0);
+    box = gtk_box_new (GTK_ORIENTATION_VERTICAL, 3);
+    gtk_container_set_border_width (GTK_CONTAINER (box), 6);
 
     label = gtk_label_new (NULL);
-    gtk_misc_set_alignment (GTK_MISC (label), 0.0, 1.0);
+    text = g_strdup_printf ("<b>%s</b>",
+                            _(keys_info [i].number));
+    gtk_label_set_markup (GTK_LABEL (label), text);
+    gtk_box_pack_start (GTK_BOX (box), label, TRUE, FALSE, 0);
+    gtk_widget_set_halign (label, GTK_ALIGN_CENTER);
+    gtk_widget_set_valign (label, GTK_ALIGN_CENTER);
 
     if (strlen (keys_info [i].letters) > 0) {
-      text = g_strdup_printf ("<sub><span size=\"small\">%s</span></sub>",
+      label = gtk_label_new (NULL);
+      text = g_strdup_printf ("<span size=\"smaller\">%s</span>",
                               _(keys_info [i].letters));
       gtk_label_set_markup (GTK_LABEL (label), text);
       g_free (text);
+      gtk_box_pack_start (GTK_BOX (box), label, FALSE, FALSE, 0);
+      gtk_widget_set_halign (label, GTK_ALIGN_CENTER);
+      gtk_widget_set_valign (label, GTK_ALIGN_END);
     }
-    gtk_box_pack_start (GTK_BOX (box), label, FALSE, TRUE, 0);
-
-    alignment = gtk_alignment_new (0.5, 0.5, 0.0, 0.0);
-    gtk_container_add (GTK_CONTAINER (alignment), box);
 
     button = gtk_button_new ();
     gtk_container_set_border_width (GTK_CONTAINER (button), 0);
-    gtk_container_add (GTK_CONTAINER (button), alignment);
+    gtk_container_add (GTK_CONTAINER (button), box);
 
     dialpad->priv->buttons[i] = button;
 
     gtk_grid_attach (GTK_GRID (dialpad),  button,
-		     i % 3, i / 3,
-		     1, 1 );
+                     i % 3, i / 3,
+                     1, 1);
 
     g_signal_connect (button, "clicked",
                       G_CALLBACK (on_dialpad_button_clicked), dialpad);

@@ -41,17 +41,10 @@
 #define __ASSISTANT_WINDOW_H__
 
 #include <gtk/gtk.h>
+#include "ekiga-app.h"
 
 G_BEGIN_DECLS
 
-enum {
-  NET_PSTN,
-  NET_ISDN,
-  NET_DSL128,
-  NET_DSL512,
-  NET_LAN,
-  NET_CUSTOM
-};
 
 #define ASSISTANT_WINDOW_TYPE (assistant_window_get_type ())
 #define ASSISTANT_WINDOW(obj)               (G_TYPE_CHECK_INSTANCE_CAST ((obj), ASSISTANT_WINDOW_TYPE, AssistantWindow))
@@ -63,14 +56,14 @@ typedef struct _AssistantWindowPrivate AssistantWindowPrivate;
 typedef struct _AssistantWindow AssistantWindow;
 
 struct _AssistantWindow {
-  GtkAssistant           parent;
+  GtkAssistant            parent;
   AssistantWindowPrivate* priv;
 };
 
 typedef GtkAssistantClass AssistantWindowClass;
 
 GType assistant_window_get_type   ();
-GtkWidget* assistant_window_new (Ekiga::ServiceCore& core);
+GtkWidget* assistant_window_new (GmApplication *app);
 
 G_END_DECLS
 

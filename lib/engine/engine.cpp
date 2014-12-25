@@ -57,10 +57,7 @@
 #include "audiooutput-core.h"
 #include "hal-core.h"
 #include "history-main.h"
-#include "local-roster-main.h"
-#include "local-roster-bridge.h"
 #include "gtk-core-main.h"
-#include "gtk-frontend.h"
 #include "gmconf-personal-details.h"
 
 #include "videooutput-main-clutter-gst.h"
@@ -94,6 +91,10 @@ engine_init (Ekiga::ServiceCorePtr service_core,
 	     int argc,
              char *argv [])
 {
+  // AT THE VERY FIRST, create the PProcess
+
+  opal_init_pprocess ();
+
   // FIRST we add a few things by hand
   // (for speed and because that's less code)
 
@@ -160,10 +161,6 @@ engine_init (Ekiga::ServiceCorePtr service_core,
 
   history_init (kickstart);
 
-  local_roster_init (kickstart);
-
-  local_roster_bridge_init (kickstart);
-
   plugin_init (kickstart);
 
   // FIXME: Some parts in the kickstart need the gui.  The gui needs
@@ -176,13 +173,7 @@ engine_init (Ekiga::ServiceCorePtr service_core,
 
   kickstart.kick (*service_core, &argc, &argv);
 
-  // FIXME: can't we have a single function for the whole gui?
   gtk_core_init (*service_core, &argc, &argv);
-
-  if (!gtk_frontend_init (*service_core, &argc, &argv)) {
-
-    return;
-  }
 
   kickstart.kick (*service_core, &argc, &argv);
 
@@ -204,10 +195,8 @@ engine_init (Ekiga::ServiceCorePtr service_core,
   hal_core->audioinput_device_added.connect (boost::bind (&Ekiga::AudioInputCore::add_device, boost::ref (*audioinput_core), _1, _2, _3));
   hal_core->audioinput_device_removed.connect (boost::bind (&Ekiga::AudioInputCore::remove_device, boost::ref (*audioinput_core), _1, _2, _3));
 
-
   /* FIXME: does it really belong here? */
   friend_or_foe->add_helper (foe_list);
-  contact_core->add_contact_decorator (foe_list);
 
 #if DEBUG_STARTUP
   std::cout << "Here is what ekiga is made of for this run :" << std::endl;

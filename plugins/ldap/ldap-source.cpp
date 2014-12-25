@@ -76,7 +76,7 @@ OPENLDAP::Source::Source (Ekiga::ServiceCore &_core):
 	  && xmlStrEqual (BAD_CAST "server", child->name))
 	add (child);
 
-  } 
+  }
   else {
 
     doc = boost::shared_ptr<xmlDoc> (xmlNewDoc (BAD_CAST "1.0"), xmlFreeDoc);
@@ -88,6 +88,13 @@ OPENLDAP::Source::Source (Ekiga::ServiceCore &_core):
 
   if (should_add_ekiga_net_book)
     new_ekiga_net_book ();
+
+  add_action (Ekiga::ActionPtr (new Ekiga::Action ("add-ldap-book", _("Add an LDAP Address Book"),
+                                                   boost::bind (&OPENLDAP::Source::new_book, this))));
+  if (!has_ekiga_net_book ()) {
+    add_action (Ekiga::ActionPtr (new Ekiga::Action ("add-ekiga-book", _("Add the Ekiga.net Directory"),
+                                                     boost::bind (&OPENLDAP::Source::new_ekiga_net_book, this))));
+  }
 }
 
 OPENLDAP::Source::~Source ()
@@ -137,7 +144,7 @@ OPENLDAP::Source::populate_menu (Ekiga::MenuBuilder &builder)
 void
 OPENLDAP::Source::new_book ()
 {
-  boost::shared_ptr<Ekiga::FormRequestSimple> request = boost::shared_ptr<Ekiga::FormRequestSimple> (new Ekiga::FormRequestSimple (boost::bind (&OPENLDAP::Source::on_new_book_form_submitted, this, _1, _2)));
+  boost::shared_ptr<Ekiga::FormRequestSimple> request = boost::shared_ptr<Ekiga::FormRequestSimple> (new Ekiga::FormRequestSimple (boost::bind (&OPENLDAP::Source::on_new_book_form_submitted, this, _1, _2, _3)));
   struct BookInfo bookinfo;
 
   bookinfo.name = "";
@@ -151,7 +158,7 @@ OPENLDAP::Source::new_book ()
   bookinfo.starttls = false;
 
   OPENLDAP::BookInfoParse (bookinfo);
-  OPENLDAP::BookForm (request, bookinfo, _("Create LDAP directory"));
+  OPENLDAP::BookForm (request, bookinfo);
 
   questions (request);
 }
@@ -174,27 +181,22 @@ OPENLDAP::Source::new_ekiga_net_book ()
   add (bookinfo);
 }
 
-void
+bool
 OPENLDAP::Source::on_new_book_form_submitted (bool submitted,
-					      Ekiga::Form &result)
+					      Ekiga::Form &result,
+                                              std::string &error)
 {
   if (!submitted)
-    return;
+    return false;
 
-  std::string errmsg;
   struct BookInfo bookinfo;
 
-  if (OPENLDAP::BookFormInfo (result, bookinfo, errmsg)) {
-    boost::shared_ptr<Ekiga::FormRequestSimple> request = boost::shared_ptr<Ekiga::FormRequestSimple> (new Ekiga::FormRequestSimple (boost::bind (&OPENLDAP::Source::on_new_book_form_submitted, this, _1, _2)));
-
-    result.visit (*request);
-    request->error (errmsg);
-
-    questions (request);
-    return;
-  }
+  if (OPENLDAP::BookFormInfo (result, bookinfo, error))
+    return false;
 
   add (bookinfo);
+
+  return true;
 }
 
 void

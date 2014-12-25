@@ -40,12 +40,8 @@
 
 #include "statusicon.h"
 
-#include "gmstockicons.h"
-#include "gmmenuaddon.h"
-#include "gmcallbacks.h"
-
 #include "services.h"
-#include "gtk-frontend.h"
+#include "ekiga-app.h"
 #include "call-core.h"
 #include "notification-core.h"
 #include "personal-details.h"
@@ -60,7 +56,8 @@
  */
 struct _StatusIconPrivate
 {
-  GtkWidget *popup_menu;
+  GmApplication *app;
+
   gboolean has_message;
 
   Ekiga::scoped_connections connections;
@@ -99,6 +96,10 @@ statusicon_activated_cb (GtkStatusIcon *icon,
                          gpointer data);
 
 static void
+status_icon_clicked_cb (G_GNUC_UNUSED GtkWidget* widget,
+                        gpointer data);
+
+static void
 unread_count_cb (GtkWidget *widget,
 		 guint messages,
 		 gpointer data);
@@ -110,9 +111,6 @@ statusicon_blink_cb (gpointer data);
 /*
  * Declaration of local functions
  */
-static GtkWidget *
-statusicon_build_menu ();
-
 static void
 statusicon_start_blinking (StatusIcon *icon,
                            const char *stock_id);
@@ -149,12 +147,6 @@ statusicon_dispose (GObject *obj)
   StatusIcon *icon = NULL;
 
   icon = STATUSICON (obj);
-
-  if (icon->priv->popup_menu) {
-
-    g_object_unref (icon->priv->popup_menu);
-    icon->priv->popup_menu = NULL;
-  }
 
   if (icon->priv->blink_image) {
 
@@ -297,6 +289,26 @@ statusicon_activated_cb (G_GNUC_UNUSED GtkStatusIcon *icon,
   gtk_status_icon_set_tooltip_text (GTK_STATUS_ICON (self), NULL);
 }
 
+static void
+status_icon_clicked_cb (G_GNUC_UNUSED GtkWidget* widget,
+                        gpointer data)
+{
+  StatusIcon *self = STATUSICON (data);
+  GtkWidget *window = gm_application_get_main_window (GM_APPLICATION (self->priv->app));
+
+  if (!gtk_widget_get_visible (window)
+      || (gdk_window_get_state (GDK_WINDOW (gtk_widget_get_window (window)))
+          & GDK_WINDOW_STATE_ICONIFIED)) {
+    gtk_widget_show (window);
+  }
+  else {
+
+    if (gtk_window_has_toplevel_focus (GTK_WINDOW (window)))
+      gtk_widget_hide (window);
+    else
+      gtk_window_present (GTK_WINDOW (window));
+  }
+}
 
 static void
 unread_count_cb (G_GNUC_UNUSED GtkWidget *widget,
@@ -375,36 +387,6 @@ cleared_call_cb (boost::shared_ptr<Ekiga::CallManager>  /*manager*/,
 /*
  * Local functions
  */
-static GtkWidget *
-statusicon_build_menu ()
-{
-  static MenuEntry menu [] =
-    {
-      GTK_MENU_ENTRY("help", NULL,
-                     _("Get help by reading the Ekiga manual"),
-                     GTK_STOCK_HELP, GDK_KEY_F1,
-                     G_CALLBACK (help_callback), NULL, TRUE),
-
-      GTK_MENU_ENTRY("about", NULL,
-		     _("View information about Ekiga"),
-		     GTK_STOCK_ABOUT, 0,
-		     G_CALLBACK (about_callback), NULL,
-		     TRUE),
-
-      GTK_MENU_SEPARATOR,
-
-      GTK_MENU_ENTRY("quit", NULL, _("Quit"),
-		     GTK_STOCK_QUIT, 'Q',
-		     G_CALLBACK (quit_callback), NULL,
-		     TRUE),
-
-      GTK_MENU_END
-    };
-
-  return GTK_WIDGET (gtk_build_popup_menu (NULL, menu, NULL));
-}
-
-
 static void
 statusicon_start_blinking (StatusIcon *icon,
                            const char *icon_name)
@@ -546,61 +528,62 @@ statusicon_should_run (void)
  * Public API
  */
 StatusIcon *
-status_icon_new (Ekiga::ServiceCore & core)
+status_icon_new (GmApplication *app)
 {
   StatusIcon *self = NULL;
 
+  g_return_val_if_fail (GM_IS_APPLICATION (app), NULL);
+
   if (!statusicon_should_run ())
     return self;
+
+  Ekiga::ServiceCorePtr core = gm_application_get_core (app);
 
   boost::signals2::connection conn;
 
   self = STATUSICON (g_object_new (STATUSICON_TYPE, NULL));
   self->priv = new StatusIconPrivate;
 
-  self->priv->popup_menu = statusicon_build_menu ();
-  g_object_ref_sink (self->priv->popup_menu);
   self->priv->has_message = FALSE;
   self->priv->blink_id = -1;
   self->priv->blinking = false;
   self->priv->blink_image = NULL;
   self->priv->unread_messages = false;
+  self->priv->app = app;
 
-  boost::shared_ptr<Ekiga::PersonalDetails> details = core.get<Ekiga::PersonalDetails> ("personal-details");
-  boost::shared_ptr<Ekiga::CallCore> call_core = core.get<Ekiga::CallCore> ("call-core");
-  boost::shared_ptr<Ekiga::NotificationCore> notification_core = core.get<Ekiga::NotificationCore> ("notification-core");
-  boost::shared_ptr<GtkFrontend> frontend = core.get<GtkFrontend> ("gtk-frontend");
+  boost::shared_ptr<Ekiga::PersonalDetails> details =
+    core->get<Ekiga::PersonalDetails> ("personal-details");
+  boost::shared_ptr<Ekiga::CallCore> call_core =
+    core->get<Ekiga::CallCore> ("call-core");
+  boost::shared_ptr<Ekiga::NotificationCore> notification_core =
+    core->get<Ekiga::NotificationCore> ("notification-core");
 
-
-  self->priv->chat_window = GTK_WIDGET (frontend->get_chat_window ());
+  self->priv->chat_window = gm_application_get_chat_window (app);
 
   statusicon_set_status (self, details->get_presence ());
-  notification_core->notification_added.connect (boost::bind (statusicon_on_notification_added, _1, (gpointer) self));
+  notification_core->notification_added.connect (boost::bind (statusicon_on_notification_added,
+                                                              _1, (gpointer) self));
 
-  conn = details->updated.connect (boost::bind (&personal_details_updated_cb, self, details));
+  conn = details->updated.connect (boost::bind (&personal_details_updated_cb,
+                                                self, details));
   self->priv->connections.add (conn);
 
-  conn = call_core->established_call.connect (boost::bind (&established_call_cb, _1, _2, (gpointer) self));
+  conn = call_core->established_call.connect (boost::bind (&established_call_cb,
+                                                           _1, _2, (gpointer) self));
   self->priv->connections.add (conn);
 
-  conn = call_core->cleared_call.connect (boost::bind (&cleared_call_cb, _1, _2, _3, (gpointer) self));
+  conn = call_core->cleared_call.connect (boost::bind (&cleared_call_cb,
+                                                       _1, _2, _3, (gpointer) self));
   self->priv->connections.add (conn);
-
-  g_signal_connect (self, "popup-menu",
-                    G_CALLBACK (show_popup_menu_cb), self->priv->popup_menu);
-
-#ifdef WIN32
-  // hide the popup menu when right-click on the icon
-  // this should have been done in GTK code in my opinion...
-  g_signal_connect (self, "button_press_event",
-                    G_CALLBACK (hide_popup_menu_cb), self->priv->popup_menu);
-#endif
 
   g_signal_connect (self, "activate",
                     G_CALLBACK (statusicon_activated_cb), self);
 
   g_signal_connect (self->priv->chat_window, "unread-count",
                     G_CALLBACK (unread_count_cb), self);
+
+  g_signal_connect (self, "clicked",
+                    G_CALLBACK (status_icon_clicked_cb), self);
 
   return self;
 }

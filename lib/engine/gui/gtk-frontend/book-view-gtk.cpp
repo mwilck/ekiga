@@ -36,11 +36,15 @@
  */
 
 #include <glib/gi18n.h>
+#include <boost/assign/ptr_list_of.hpp>
 
 #include "book-view-gtk.h"
 
+#include "gm-info-bar.h"
+
 #include "filterable.h"
 
+#include "gactor-menu.h"
 #include "menu-builder-tools.h"
 #include "menu-builder-gtk.h"
 #include "scoped-connections.h"
@@ -55,8 +59,13 @@ struct _BookViewGtkPrivate
   GtkTreeView *tree_view;
   GtkWidget *vbox;
   GtkWidget *entry;
-  GtkWidget *statusbar;
+  GtkWidget *search_button;
+  GtkWidget *searchbar;
+  GtkWidget *info_bar;
   GtkWidget *scrolled_window;
+
+  Ekiga::GActorMenuPtr book_menu;
+  Ekiga::GActorMenuPtr contact_menu;
 
   Ekiga::BookPtr book;
   Ekiga::scoped_connections connections;
@@ -70,6 +79,16 @@ enum {
   COLUMN_NAME,
   COLUMN_NUMBER
 };
+
+
+enum {
+  ACTIONS_CHANGED_SIGNAL,
+  LAST_SIGNAL
+};
+
+
+static guint signals[LAST_SIGNAL] = { 0 };
+
 
 G_DEFINE_TYPE (BookViewGtk, book_view_gtk, GTK_TYPE_FRAME);
 
@@ -115,12 +134,11 @@ static void on_contact_removed (Ekiga::ContactPtr contact,
 				gpointer data);
 
 
-/* DESCRIPTION  : Called when the a contact selection has been changed.
- * BEHAVIOR     : Emits the "updated" signal on the GObject passed as
- *                second parameter..
- * PRE          : The gpointer must point to a BookViewGtk GObject.
+/* DESCRIPTION  : Called when the user selects a contact.
+ * BEHAVIOR     : Rebuilds menus and emit the actions_changed signal.
+ * PRE          : The gpointer must point to the BookViewGtk GObject.
  */
-static void on_selection_changed (GtkTreeSelection * /*selection*/,
+static void on_selection_changed (GtkTreeSelection *selection,
                                   gpointer data);
 
 
@@ -129,17 +147,8 @@ static void on_selection_changed (GtkTreeSelection * /*selection*/,
  *                a refresh.
  * PRE          : A valid pointer to the BookViewGtk.
  */
-static void on_entry_activated_cb (GtkWidget *entry,
-                                   gpointer data);
-
-
-/* DESCRIPTION  : Called when the user clicks on the Find button.
- * BEHAVIOR     : Activates the GtkEntry.
- * PRE          : A valid pointer to the BookViewGtk containing
- *                the GtkEntry to activate.
- */
-static void on_button_clicked_cb (GtkWidget *button,
-                                  gpointer data);
+static void on_search_entry_activated_cb (GtkWidget *entry,
+                                          gpointer data);
 
 
 /* DESCRIPTION  : Called when the a contact is clicked.
@@ -149,6 +158,33 @@ static void on_button_clicked_cb (GtkWidget *button,
 static gint on_contact_clicked (GtkWidget *tree_view,
                                 GdkEventButton *event,
                                 gpointer data);
+
+
+/* DESCRIPTION  : Called when the BookViewGtk widget becomes visible.
+ * BEHAVIOR     : Add its own search action (if it is filterable).
+ *                Calls on_selection_changed to update actions.
+ * PRE          : /
+ */
+static void on_map_cb (G_GNUC_UNUSED GtkWidget *widget,
+                       gpointer data);
+
+
+/* DESCRIPTION  : Called when the BookViewGtk widget becomes invisible.
+ * BEHAVIOR     : Remove Actions. They will be mapped again when we
+ *                are mapped again.
+ * PRE          : /
+ */
+static void on_unmap_cb (G_GNUC_UNUSED GtkWidget *widget,
+                         gpointer data);
+
+
+/* DESCRIPTION  : Called when the user triggers the search action.
+ * BEHAVIOR     : Toggle the search bar.
+ * PRE          : /
+ */
+static void on_search_cb (G_GNUC_UNUSED GSimpleAction *action,
+                          G_GNUC_UNUSED GVariant *parameter,
+                          gpointer data);
 
 
 /* Static functions */
@@ -182,6 +218,14 @@ book_view_gtk_remove_contact (BookViewGtk *self,
 
 
 /* DESCRIPTION  : /
+ * BEHAVIOR     : Create and return the window GtkSearchBar.
+ * PRE          : /
+ */
+static GtkWidget *
+book_view_build_searchbar (BookViewGtk *self);
+
+
+/* DESCRIPTION  : /
  * BEHAVIOR     : Return TRUE and update the GtkTreeIter if we found
  *                the iter corresponding to the Contact in the BookViewGtk.
  * PRE          : /
@@ -190,6 +234,12 @@ static gboolean
 book_view_gtk_find_iter_for_contact (BookViewGtk *view,
                                      Ekiga::ContactPtr contact,
                                      GtkTreeIter *iter);
+
+
+static GActionEntry win_entries[] =
+{
+    { "search", on_search_cb, NULL, NULL, NULL, 0 }
+};
 
 
 
@@ -235,12 +285,12 @@ on_updated (gpointer data)
 
   std::string status = view->priv->book->get_status ();
 
-  gtk_statusbar_pop (GTK_STATUSBAR (view->priv->statusbar), 0);
-  gtk_statusbar_push (GTK_STATUSBAR (view->priv->statusbar), 0, status.c_str ());
+  gm_info_bar_push_message (GM_INFO_BAR (view->priv->info_bar),
+                            GTK_MESSAGE_INFO,
+                            status.c_str ());
 
   boost::shared_ptr<Ekiga::Filterable> filtered = boost::dynamic_pointer_cast<Ekiga::Filterable>(view->priv->book);
   if (filtered) {
-
     gtk_entry_set_text (GTK_ENTRY (view->priv->entry),
 			filtered->get_search_filter ().c_str ());
   }
@@ -260,96 +310,124 @@ on_contact_removed (Ekiga::ContactPtr contact,
 
 
 static void
-on_selection_changed (GtkTreeSelection * /*selection*/,
+on_selection_changed (GtkTreeSelection *selection,
 		      gpointer data)
 {
-  g_signal_emit_by_name (data, "updated", NULL);
+  BookViewGtk* self = NULL;
+  GtkTreeModel *model = NULL;
+  GtkTreeIter iter;
+
+  Ekiga::Contact *contact = NULL;
+
+  self = BOOK_VIEW_GTK (data);
+  model = gtk_tree_view_get_model (self->priv->tree_view);
+
+  /* Reset old data. This also ensures GIO actions are
+   * properly removed before adding new ones.
+   */
+  if (self->priv->contact_menu)
+    self->priv->contact_menu.reset ();
+
+  if (gtk_tree_selection_get_selected (selection, &model, &iter)) {
+
+    gtk_tree_model_get (model, &iter,
+                        COLUMN_CONTACT_POINTER, &contact,
+                        -1);
+
+    if (contact != NULL) {
+      self->priv->contact_menu = Ekiga::GActorMenuPtr (new Ekiga::GActorMenu (*contact,
+                                                                              contact->get_name ()));
+      g_signal_emit (self, signals[ACTIONS_CHANGED_SIGNAL], 0,
+                     self->priv->contact_menu->get_model (boost::assign::list_of (self->priv->book_menu)));
+    }
+  }
+  else
+    g_signal_emit (self, signals[ACTIONS_CHANGED_SIGNAL], 0,
+                   self->priv->book_menu->get_model ());
 }
 
 
 static void
-on_entry_activated_cb (GtkWidget *entry,
-                       gpointer data)
+on_search_entry_activated_cb (G_GNUC_UNUSED GtkWidget *entry,
+                              gpointer data)
 {
-  const char *entry_text = gtk_entry_get_text (GTK_ENTRY (entry));
+  g_return_if_fail (IS_BOOK_VIEW_GTK (data));
+  BookViewGtk *self = BOOK_VIEW_GTK (data);
 
+  const char *entry_text = gtk_entry_get_text (GTK_ENTRY (self->priv->entry));
   boost::shared_ptr<Ekiga::Filterable> filtered = boost::dynamic_pointer_cast<Ekiga::Filterable>(BOOK_VIEW_GTK (data)->priv->book);
-
   filtered->set_search_filter (entry_text);
 }
 
 
-static void
-on_button_clicked_cb (G_GNUC_UNUSED GtkWidget *button,
-                      gpointer data)
-{
-  g_return_if_fail (data != NULL);
-
-  gtk_widget_activate (GTK_WIDGET (BOOK_VIEW_GTK (data)->priv->entry));
-}
-
-
 static gint
-on_contact_clicked (GtkWidget *tree_view,
+on_contact_clicked (G_GNUC_UNUSED GtkWidget *tree_view,
 		    GdkEventButton *event,
 		    gpointer data)
 {
-  GtkTreePath *path = NULL;
-  GtkTreeIter iter;
-  GtkTreeModel *model = NULL;
+  g_return_val_if_fail (IS_BOOK_VIEW_GTK (data), FALSE);
+  BookViewGtk *self = BOOK_VIEW_GTK (data);
 
-  if (gtk_tree_view_get_path_at_pos (GTK_TREE_VIEW (tree_view),
-				     (gint) event->x, (gint) event->y,
-				     &path, NULL, NULL, NULL)) {
-
-    model
-      = gtk_tree_view_get_model (BOOK_VIEW_GTK (data)->priv->tree_view);
-
-    if (gtk_tree_model_get_iter (model, &iter, path)) {
-
-      Ekiga::Contact *contact = NULL;
-      gtk_tree_model_get (model, &iter,
-			  COLUMN_CONTACT_POINTER, &contact,
-			  -1);
-
-      if (contact != NULL) {
-
-	if (event->type == GDK_BUTTON_PRESS && event->button == 3) {
-
-	  Ekiga::TemporaryMenuBuilder temp;
-	  MenuBuilderGtk builder;
-
-	  BOOK_VIEW_GTK (data)->priv->book->populate_menu (temp);
-	  contact->populate_menu (builder);
-
-	  if (!temp.empty ()) {
-
-	    builder.add_separator ();
-	    temp.populate_menu (builder);
-	  }
-
-	  if (!builder.empty ()) {
-
-	    gtk_widget_show_all (builder.menu);
-	    gtk_menu_popup (GTK_MENU (builder.menu), NULL, NULL,
-			    NULL, NULL, event->button, event->time);
-	    g_signal_connect (builder.menu, "hide",
-			      G_CALLBACK (g_object_unref),
-			      (gpointer) builder.menu);
-	  }
-	  g_object_ref_sink (G_OBJECT (builder.menu));
-	} else if (event->type == GDK_2BUTTON_PRESS) {
-
-	  Ekiga::TriggerMenuBuilder builder;
-
-	  contact->populate_menu (builder);
-	}
-      }
-    }
-    gtk_tree_path_free (path);
+  if (event->type == GDK_BUTTON_PRESS && event->button == 3) {
+    gtk_menu_popup (GTK_MENU (self->priv->contact_menu->get_menu ()),
+                    NULL, NULL, NULL, NULL, event->button, event->time);
   }
 
   return TRUE;
+}
+
+
+static void
+on_map_cb (G_GNUC_UNUSED GtkWidget *widget,
+           gpointer data)
+{
+  GtkTreeSelection *selection = NULL;
+
+  g_return_if_fail (IS_BOOK_VIEW_GTK (data));
+  BookViewGtk *self = BOOK_VIEW_GTK (data);
+
+  g_action_map_remove_action (G_ACTION_MAP (g_application_get_default ()),
+                              "search");
+  if (self->priv->searchbar)
+    g_action_map_add_action_entries (G_ACTION_MAP (g_application_get_default ()),
+                                     win_entries, G_N_ELEMENTS (win_entries),
+                                     self);
+  selection = gtk_tree_view_get_selection (self->priv->tree_view);
+  on_selection_changed (selection, self);
+}
+
+
+static void
+on_unmap_cb (G_GNUC_UNUSED GtkWidget *widget,
+             gpointer data)
+{
+  g_return_if_fail (IS_BOOK_VIEW_GTK (data));
+  BookViewGtk *self = BOOK_VIEW_GTK (data);
+
+  g_action_map_remove_action (G_ACTION_MAP (g_application_get_default ()),
+                              "search");
+
+  /* Reset old data. This also ensures GIO actions are
+   * properly removed when we are going out of scope.
+   */
+  if (self->priv->contact_menu)
+    self->priv->contact_menu.reset ();
+}
+
+
+
+static void
+on_search_cb (G_GNUC_UNUSED GSimpleAction *action,
+              G_GNUC_UNUSED GVariant *parameter,
+              gpointer data)
+{
+  g_return_if_fail (IS_BOOK_VIEW_GTK (data));
+  BookViewGtk *self = BOOK_VIEW_GTK (data);
+
+  gboolean toggle = gtk_search_bar_get_search_mode (GTK_SEARCH_BAR (self->priv->searchbar));
+
+  gtk_search_bar_set_search_mode (GTK_SEARCH_BAR (self->priv->searchbar),
+                                  !toggle);
 }
 
 
@@ -408,6 +486,47 @@ book_view_gtk_remove_contact (BookViewGtk *self,
 }
 
 
+static GtkWidget *
+book_view_build_searchbar (BookViewGtk *self)
+{
+  GtkWidget *box = NULL;
+  GtkWidget *label = NULL;
+  GtkWidget *image = NULL;
+  GtkWidget *searchbar = NULL;
+
+  searchbar = gtk_search_bar_new ();
+  gtk_search_bar_set_show_close_button (GTK_SEARCH_BAR (searchbar), TRUE);
+
+  box = gtk_box_new (GTK_ORIENTATION_HORIZONTAL, 6);
+  gtk_container_add (GTK_CONTAINER (searchbar), box);
+  gtk_widget_show (box);
+
+  label = gtk_label_new_with_mnemonic (_("_Search Filter:"));
+  gtk_box_pack_start (GTK_BOX (box), label, TRUE, TRUE, 0);
+  gtk_widget_show (label);
+
+  self->priv->entry = gtk_search_entry_new ();
+  gtk_box_pack_start (GTK_BOX (box), self->priv->entry, TRUE, TRUE, 0);
+  gtk_widget_show (self->priv->entry);
+
+  self->priv->search_button = gtk_button_new ();
+  image = gtk_image_new_from_icon_name ("view-refresh-symbolic", GTK_ICON_SIZE_BUTTON);
+  gtk_button_set_image (GTK_BUTTON (self->priv->search_button), image);
+  gtk_box_pack_start (GTK_BOX (box), self->priv->search_button, TRUE, TRUE, 0);
+  gtk_widget_show (self->priv->search_button);
+
+  g_signal_connect (self->priv->entry, "activate",
+                    G_CALLBACK (on_search_entry_activated_cb), self);
+  g_signal_connect (self->priv->search_button, "clicked",
+                    G_CALLBACK (on_search_entry_activated_cb), self);
+
+  gtk_search_bar_connect_entry (GTK_SEARCH_BAR (searchbar), GTK_ENTRY (self->priv->entry));
+
+  return searchbar;
+}
+
+
+
 static gboolean
 book_view_gtk_find_iter_for_contact (BookViewGtk *view,
                                      Ekiga::ContactPtr contact,
@@ -440,22 +559,13 @@ book_view_gtk_find_iter_for_contact (BookViewGtk *view,
 static void
 book_view_gtk_dispose (GObject *obj)
 {
-  BookViewGtk *view = NULL;
+  BookViewGtk *self = NULL;
 
-  view = BOOK_VIEW_GTK (obj);
+  self = BOOK_VIEW_GTK (obj);
 
-  if (view->priv->tree_view) {
-
-    g_signal_handlers_disconnect_matched (gtk_tree_view_get_selection (view->priv->tree_view),
-					  (GSignalMatchType) G_SIGNAL_MATCH_DATA,
-					  0, /* signal_id */
-					  (GQuark) 0, /* detail */
-					  NULL,	/* closure */
-					  NULL,	/* func */
-					  view); /* data */
-    gtk_list_store_clear (GTK_LIST_STORE (gtk_tree_view_get_model (view->priv->tree_view)));
-
-    view->priv->tree_view = NULL;
+  if (self->priv) {
+    delete self->priv;
+    self->priv = NULL;
   }
 
   G_OBJECT_CLASS (book_view_gtk_parent_class)->dispose (obj);
@@ -463,35 +573,26 @@ book_view_gtk_dispose (GObject *obj)
 
 
 static void
-book_view_gtk_finalize (GObject *obj)
-{
-  BookViewGtk *view = NULL;
-
-  view = BOOK_VIEW_GTK (obj);
-
-  delete view->priv;
-
-  G_OBJECT_CLASS (book_view_gtk_parent_class)->finalize (obj);
-}
-
-static void
 book_view_gtk_init (G_GNUC_UNUSED BookViewGtk* self)
 {
   /* can't do anything here... waiting for a core :-/ */
 }
+
 
 static void
 book_view_gtk_class_init (BookViewGtkClass* klass)
 {
   GObjectClass *gobject_class = G_OBJECT_CLASS (klass);
   gobject_class->dispose = book_view_gtk_dispose;
-  gobject_class->finalize = book_view_gtk_finalize;
 
-  g_signal_new ("updated",
-                G_OBJECT_CLASS_TYPE (klass),
-                G_SIGNAL_RUN_FIRST,
-                0, NULL, NULL,
-                g_cclosure_marshal_VOID__VOID, G_TYPE_NONE, 0, NULL);
+  signals[ACTIONS_CHANGED_SIGNAL] =
+    g_signal_new ("actions-changed",
+		  G_OBJECT_CLASS_TYPE (gobject_class),
+		  G_SIGNAL_RUN_LAST,
+		  G_STRUCT_OFFSET (BookViewGtkClass, selection_changed),
+		  NULL, NULL,
+		  g_cclosure_marshal_VOID__OBJECT,
+		  G_TYPE_NONE, 1, G_TYPE_MENU_MODEL);
 }
 
 
@@ -499,76 +600,73 @@ book_view_gtk_class_init (BookViewGtkClass* klass)
 GtkWidget *
 book_view_gtk_new (Ekiga::BookPtr book)
 {
-  BookViewGtk *result = NULL;
-
-  GtkWidget *label = NULL;
-  GtkWidget *hbox = NULL;
-  GtkWidget *button = NULL;
+  BookViewGtk *self = NULL;
 
   GtkTreeSelection *selection = NULL;
   GtkListStore *store = NULL;
   GtkTreeViewColumn *column = NULL;
   GtkCellRenderer *renderer = NULL;
 
-  result = (BookViewGtk *) g_object_new (BOOK_VIEW_GTK_TYPE, NULL);
+  self = (BookViewGtk *) g_object_new (BOOK_VIEW_GTK_TYPE, NULL);
 
-  result->priv = new _BookViewGtkPrivate (book);
-  result->priv->vbox = gtk_box_new (GTK_ORIENTATION_VERTICAL, 0);
-  gtk_frame_set_shadow_type (GTK_FRAME (result), GTK_SHADOW_NONE);
+  self->priv = new _BookViewGtkPrivate (book);
+  self->priv->vbox = gtk_box_new (GTK_ORIENTATION_VERTICAL, 0);
+  gtk_frame_set_shadow_type (GTK_FRAME (self), GTK_SHADOW_NONE);
+  gtk_widget_show (self->priv->vbox);
+
+  /* populate book actions */
+  self->priv->book_menu = Ekiga::GActorMenuPtr (new Ekiga::GActorMenu (*book,
+                                                                       book->get_name ()));
 
   /* The Search Box */
   boost::shared_ptr<Ekiga::Filterable> filtered = boost::dynamic_pointer_cast<Ekiga::Filterable> (book);
-
+  self->priv->entry = NULL;
+  self->priv->search_button = NULL;
+  self->priv->searchbar = NULL;
   if (filtered) {
-
-    hbox = gtk_box_new (GTK_ORIENTATION_HORIZONTAL, 0);
-    result->priv->entry = gtk_entry_new ();
-    button = gtk_button_new_from_stock (GTK_STOCK_FIND);
-    label = gtk_label_new_with_mnemonic (_("_Search Filter:"));
-    gtk_box_pack_start (GTK_BOX (hbox), label, FALSE, FALSE, 2);
-    gtk_box_pack_start (GTK_BOX (hbox), result->priv->entry, TRUE, TRUE, 2);
-    gtk_box_pack_start (GTK_BOX (hbox), button, FALSE, FALSE, 2);
-    gtk_box_pack_start (GTK_BOX (result->priv->vbox), hbox, FALSE, FALSE, 0);
-    g_signal_connect (result->priv->entry, "activate",
-		      G_CALLBACK (on_entry_activated_cb), result);
-    g_signal_connect (button, "clicked",
-		      G_CALLBACK (on_button_clicked_cb), result);
-  } else {
-
-    result->priv->entry = NULL;
+    /* Search bar */
+    self->priv->searchbar = book_view_build_searchbar (self);
+    gtk_box_pack_start (GTK_BOX (self->priv->vbox),
+                        self->priv->searchbar, FALSE, FALSE, 0);
+    gtk_widget_show (self->priv->searchbar);
   }
 
+  /* The info bar */
+  self->priv->info_bar = gm_info_bar_new ();
+  gtk_box_pack_start (GTK_BOX (self->priv->vbox),
+                      self->priv->info_bar, FALSE, FALSE, 0);
+
   /* The List Store */
-  result->priv->scrolled_window = gtk_scrolled_window_new (NULL, NULL);
+  self->priv->scrolled_window = gtk_scrolled_window_new (NULL, NULL);
   gtk_scrolled_window_set_policy (GTK_SCROLLED_WINDOW
-				  (result->priv->scrolled_window),
+				  (self->priv->scrolled_window),
 				  GTK_POLICY_NEVER, GTK_POLICY_AUTOMATIC);
 
-  result->priv->tree_view = GTK_TREE_VIEW (gtk_tree_view_new ());
-  gtk_tree_view_set_headers_visible (result->priv->tree_view, FALSE);
-  gtk_container_add (GTK_CONTAINER (result), GTK_WIDGET (result->priv->vbox));
-  gtk_box_pack_start (GTK_BOX (result->priv->vbox),
-		     GTK_WIDGET (result->priv->scrolled_window), TRUE, TRUE, 0);
-  gtk_container_add (GTK_CONTAINER (result->priv->scrolled_window),
-		     GTK_WIDGET (result->priv->tree_view));
+  self->priv->tree_view = GTK_TREE_VIEW (gtk_tree_view_new ());
+  gtk_tree_view_set_headers_visible (self->priv->tree_view, FALSE);
+  gtk_tree_view_set_enable_search (GTK_TREE_VIEW (self->priv->tree_view), FALSE);
+  gtk_container_add (GTK_CONTAINER (self), GTK_WIDGET (self->priv->vbox));
+  gtk_box_pack_start (GTK_BOX (self->priv->vbox),
+		     GTK_WIDGET (self->priv->scrolled_window), TRUE, TRUE, 0);
+  gtk_container_add (GTK_CONTAINER (self->priv->scrolled_window),
+		     GTK_WIDGET (self->priv->tree_view));
 
-  selection = gtk_tree_view_get_selection (result->priv->tree_view);
+  selection = gtk_tree_view_get_selection (self->priv->tree_view);
   gtk_tree_selection_set_mode (selection, GTK_SELECTION_SINGLE);
   g_signal_connect (selection, "changed",
-		    G_CALLBACK (on_selection_changed), result);
+                    G_CALLBACK (on_selection_changed), self);
 
-  g_signal_connect (result->priv->tree_view, "event-after",
-		    G_CALLBACK (on_contact_clicked), result);
+  g_signal_connect (self->priv->tree_view, "event-after",
+                    G_CALLBACK (on_contact_clicked), self);
 
   store = gtk_list_store_new (COLUMN_NUMBER,
 			      G_TYPE_POINTER,
                               GDK_TYPE_PIXBUF,
                               G_TYPE_STRING);
 
-  gtk_tree_view_set_model (result->priv->tree_view, GTK_TREE_MODEL (store));
+  gtk_tree_view_set_model (self->priv->tree_view, GTK_TREE_MODEL (store));
   g_object_unref (store);
 
-  /* Name */
   column = gtk_tree_view_column_new ();
   renderer = gtk_cell_renderer_pixbuf_new ();
   gtk_tree_view_column_pack_start (column, renderer, FALSE);
@@ -586,53 +684,35 @@ book_view_gtk_new (Ekiga::BookPtr book)
   gtk_tree_view_column_set_sizing (GTK_TREE_VIEW_COLUMN (column),
                                    GTK_TREE_VIEW_COLUMN_AUTOSIZE);
   gtk_tree_view_column_set_resizable (column, true);
-  gtk_tree_view_append_column (GTK_TREE_VIEW (result->priv->tree_view), column);
+  gtk_tree_view_append_column (GTK_TREE_VIEW (self->priv->tree_view), column);
 
-  /* The status bar */
-  result->priv->statusbar = gtk_statusbar_new ();
-  gtk_box_pack_start (GTK_BOX (result->priv->vbox), result->priv->statusbar, FALSE, TRUE, 0);
+  gtk_widget_show_all (self->priv->scrolled_window);
 
   /* connect to the signals */
-  result->priv->connections.add (book->contact_added.connect (boost::bind (&on_contact_added, _1, (gpointer)result)));
-  result->priv->connections.add (book->contact_updated.connect (boost::bind (&on_contact_updated, _1, (gpointer)result)));
-  result->priv->connections.add (book->contact_removed.connect (boost::bind (&on_contact_removed, _1, (gpointer)result)));
-  result->priv->connections.add (book->updated.connect (boost::bind (&on_updated, (gpointer)result)));
-
+  self->priv->connections.add (book->contact_added.connect (boost::bind (&on_contact_added, _1, (gpointer)self)));
+  self->priv->connections.add (book->contact_updated.connect (boost::bind (&on_contact_updated, _1, (gpointer)self)));
+  self->priv->connections.add (book->contact_removed.connect (boost::bind (&on_contact_removed, _1, (gpointer)self)));
+  self->priv->connections.add (book->updated.connect (boost::bind (&on_updated, (gpointer)self)));
 
   /* populate */
-  book->visit_contacts (boost::bind (&on_visit_contacts, _1, (gpointer)result));
+  book->visit_contacts (boost::bind (&on_visit_contacts, _1, (gpointer)self));
 
-  return (GtkWidget *) result;
+  g_signal_connect (GTK_WIDGET (self), "map",
+                    G_CALLBACK (on_map_cb), self);
+  g_signal_connect (GTK_WIDGET (self), "unmap",
+                    G_CALLBACK (on_unmap_cb), self);
+
+  return GTK_WIDGET (self);
 }
 
 
-void
-book_view_gtk_populate_menu (BookViewGtk *self,
-			     GtkWidget *menu)
+gboolean
+book_view_gtk_handle_event (BookViewGtk *self,
+                            GdkEvent *event)
 {
-  g_return_if_fail (IS_BOOK_VIEW_GTK (self));
-  g_return_if_fail (GTK_IS_MENU (menu));
+  if (self->priv->searchbar)
+    return gtk_search_bar_handle_event (GTK_SEARCH_BAR (self->priv->searchbar),
+                                        event);
 
-  GtkTreeSelection *selection = NULL;
-  GtkTreeModel *model = NULL;
-  GtkTreeIter iter;
-  Ekiga::Contact *contact = NULL;
-  GtkWidget *item = NULL;
-  MenuBuilderGtk builder (menu);
-
-  self->priv->book->populate_menu (builder);
-
-  selection = gtk_tree_view_get_selection (self->priv->tree_view);
-
-  if (gtk_tree_selection_get_selected (selection, &model, &iter)) {
-
-    gtk_tree_model_get (model, &iter, COLUMN_CONTACT_POINTER, &contact, -1);
-
-    if (contact) {
-
-      item = gtk_separator_menu_item_new ();
-      gtk_menu_shell_append (GTK_MENU_SHELL (menu), item);
-      contact->populate_menu (builder);
-    }
-  }
+  return FALSE;
 }

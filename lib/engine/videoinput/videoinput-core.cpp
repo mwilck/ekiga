@@ -227,16 +227,6 @@ void VideoInputCore::setup (std::string setting)
                         VideoSizes[size].height,
                         max_frame_rate);
   }
-
-  /* Previenw */
-  if (setting == "any" || setting == "enable-preview") {
-    if (g_settings_get_boolean (settings, "enable-preview")) {
-      start_preview ();
-    }
-    else {
-      stop_preview ();
-    }
-  }
 }
 
 

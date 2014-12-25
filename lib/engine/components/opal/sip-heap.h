@@ -48,13 +48,10 @@ namespace SIP
     using Ekiga::HeapImpl<Ekiga::Presentity>::remove_presentity;
     using Ekiga::HeapImpl<Ekiga::Presentity>::add_connection;
 
-    bool populate_menu (Ekiga::MenuBuilder& builder);
     // this is the heap's name
     const std::string get_name () const;
     // try to find a nice name to display from the uri of a presentity
     const std::string get_name (const std::string uri) const;
-    bool populate_menu_for_group (const std::string name,
-				  Ekiga::MenuBuilder& builder);
   };
 };
 

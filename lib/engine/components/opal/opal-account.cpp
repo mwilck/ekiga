@@ -112,6 +112,9 @@ Opal::Account::build_node(Opal::Account::Type typus,
     xmlSetProp (node, BAD_CAST "timeout", BAD_CAST sstream.str ().c_str ());
   }
 
+  // FIXME: One improvement could be to use inheritance here and have
+  //        specific objects for specific accounts types.
+  //        Would it be considered cleaner or overkill?
   switch (typus) {
 
   case Ekiga:
@@ -138,16 +141,18 @@ Opal::Account::build_node(Opal::Account::Type typus,
 }
 
 
-Opal::Account::Account (boost::shared_ptr<Opal::Sip::EndPoint> _sip_endpoint,
+Opal::Account::Account (Opal::Bank & _bank,
+                        boost::shared_ptr<Opal::Sip::EndPoint> _sip_endpoint,
 			boost::weak_ptr<Ekiga::PresenceCore> _presence_core,
 			boost::shared_ptr<Ekiga::NotificationCore> _notification_core,
 			boost::shared_ptr<Ekiga::PersonalDetails> _personal_details,
 			boost::shared_ptr<Ekiga::AudioOutputCore> _audiooutput_core,
 			boost::shared_ptr<CallManager> _call_manager,
-			boost::function0<std::set<std::string> > _existing_groups,
+			boost::function0<std::list<std::string> > _existing_groups,
 			xmlNodePtr _node):
   existing_groups(_existing_groups),
   node(_node),
+  bank(_bank),
   sip_endpoint(_sip_endpoint),
   presence_core(_presence_core),
   notification_core(_notification_core),
@@ -179,32 +184,85 @@ Opal::Account::Account (boost::shared_ptr<Opal::Sip::EndPoint> _sip_endpoint,
       roster_node = child;
       for (xmlNodePtr presnode = roster_node->children; presnode != NULL; presnode = presnode->next) {
 
-	Opal::PresentityPtr pres(new Presentity (presence_core,
+	Opal::PresentityPtr pres(new Presentity (*this,
+                                                 presence_core,
 						 existing_groups,
 						 presnode));
 
 	pres->trigger_saving.connect (boost::ref (trigger_saving));
 	pres->removed.connect (boost::bind (&Opal::Account::when_presentity_removed, this, pres));
 	pres->updated.connect (boost::bind (&Opal::Account::when_presentity_updated, this, pres));
-	pres->questions.connect (boost::ref (questions));
+	pres->questions.connect (boost::ref (Ekiga::Heap::questions));
 	add_object (pres);
 	presentity_added (pres);
       }
     }
   }
+
   setup_presentity ();
+
+  /* Actor stuff */
+  add_action (Ekiga::ActionPtr (new Ekiga::Action ("add-contact", _("A_dd Contact"),
+                                                   boost::bind (&Opal::Account::add_contact, this))));
+  add_action (Ekiga::ActionPtr (new Ekiga::Action ("edit-account", _("_Edit"),
+                                                   boost::bind (&Opal::Account::edit, this))));
+  add_action (Ekiga::ActionPtr (new Ekiga::Action ("remove-account", _("_Remove"),
+                                                   boost::bind (&Opal::Account::remove, this))));
+  add_action (Ekiga::ActionPtr (new Ekiga::Action ("enable-account", _("_Enable"),
+                                                   boost::bind (&Opal::Account::enable, this), !is_enabled ())));
+  add_action (Ekiga::ActionPtr (new Ekiga::Action ("disable-account", _("_Disable"),
+                                                   boost::bind (&Opal::Account::disable, this), is_enabled ())));
+
+  if (type == DiamondCard) {
+
+    std::stringstream str;
+    std::stringstream url;
+    str << "https://www.diamondcard.us/exec/voip-login?accId=" << get_username () << "&pinCode=" << get_password () << "&spo=ekiga";
+
+    url.str ("");
+    url << str.str () << "&act=rch";
+    bank.add_action (Ekiga::ActionPtr (new Ekiga::Action ("recharge-account", _("Recharge the Ekiga Call Out account"),
+                                                          boost::bind (&Opal::Account::on_consult, this, url.str ()))));
+    add_action (Ekiga::ActionPtr (new Ekiga::Action ("recharge-account", _("Recharge the Ekiga Call Out account"),
+                                                     boost::bind (&Opal::Account::on_consult, this, url.str ()))));
+    url.str ("");
+    url << str.str () << "&act=bh";
+    bank.add_action (Ekiga::ActionPtr (new Ekiga::Action ("balance-account", _("Consult the Ekiga Call Out balance history"),
+                                                          boost::bind (&Opal::Account::on_consult, this, url.str ()))));
+    add_action (Ekiga::ActionPtr (new Ekiga::Action ("balance-account", _("Consult the Ekiga Call Out balance history"),
+                                                     boost::bind (&Opal::Account::on_consult, this, url.str ()))));
+    url.str ("");
+    url << str.str () << "&act=ch";
+    bank.add_action (Ekiga::ActionPtr (new Ekiga::Action ("history-account", _("Consult the Ekiga Call Out call history"),
+                                                          boost::bind (&Opal::Account::on_consult, this, url.str ()))));
+    add_action (Ekiga::ActionPtr (new Ekiga::Action ("history-account", _("Consult the Ekiga Call Out call history"),
+                                                     boost::bind (&Opal::Account::on_consult, this, url.str ()))));
+
+    bank.disable_action ("add-account-diamondcard");
+  }
+  else if (type == Ekiga) {
+
+    bank.disable_action ("add-account-ekiga");
+  }
 }
 
 
-std::set<std::string>
+Opal::Account::~Account ()
+{
+}
+
+
+std::list<std::string>
 Opal::Account::get_groups () const
 {
-  std::set<std::string> result;
+  std::list<std::string> result;
 
-  for (const_iterator iter = begin (); iter != end (); ++iter) {
+  for (Ekiga::RefLister< Presentity >::const_iterator iter = Ekiga::RefLister< Presentity >::begin (); iter != Ekiga::RefLister< Presentity >::end (); ++iter) {
 
-    std::set<std::string> groups = (*iter)->get_groups ();
-    result.insert (groups.begin (), groups.end ());
+    std::list<std::string> groups = (*iter)->get_groups ();
+    result.merge (groups);
+    result.sort ();
+    result.unique ();
   }
 
   return result;
@@ -257,6 +315,12 @@ Opal::Account::get_status () const
   }
 
   return result;
+}
+
+Ekiga::Account::RegistrationState
+Opal::Account::get_state () const
+{
+  return state;
 }
 
 const std::string
@@ -436,6 +500,9 @@ Opal::Account::enable ()
 
   updated ();
   trigger_saving ();
+
+  disable_action ("enable-account");
+  enable_action ("disable-account");
 }
 
 
@@ -446,8 +513,8 @@ Opal::Account::disable ()
 
   if (presentity) {
 
-    for (iterator iter = begin ();
-	 iter != end ();
+    for (Ekiga::RefLister< Presentity >::iterator iter = Ekiga::RefLister< Presentity >::begin ();
+	 iter != Ekiga::RefLister< Presentity >::end ();
 	 ++iter) {
 
       (*iter)->set_presence ("unknown");
@@ -466,9 +533,13 @@ Opal::Account::disable ()
   // Translators: this is a state, not an action, i.e. it should be read as
   // "(you are) unregistered", and not as "(you have been) unregistered"
   status = _("Unregistered");
+  state = Unregistered;
 
   updated ();
   trigger_saving ();
+
+  enable_action ("enable-account");
+  disable_action ("disable-account");
 }
 
 
@@ -520,155 +591,76 @@ Opal::Account::remove ()
     return;
   }
 
+  if (type == DiamondCard) {
+
+    bank.remove_action ("recharge-account");
+    bank.remove_action ("balance-account");
+    bank.remove_action ("history-account");
+    bank.enable_action ("add-account-diamondcard");
+  }
+  else if (type == Ekiga) {
+    bank.enable_action ("add-account-ekiga");
+  }
+
   xmlUnlinkNode (node);
   xmlFreeNode (node);
 
   trigger_saving ();
-  removed ();
+  Ekiga::Heap::removed ();
+  Ekiga::Account::removed ();
 }
 
-
-bool
-Opal::Account::populate_menu (Ekiga::MenuBuilder &builder)
-{
-  if (is_enabled ())
-    builder.add_action ("user-offline", _("_Disable"),
-                        boost::bind (&Opal::Account::disable, this));
-  else
-    builder.add_action ("user-available", _("_Enable"),
-                        boost::bind (&Opal::Account::enable, this));
-
-  builder.add_separator ();
-
-  builder.add_action ("add", _("A_dd Contact"),
-		      boost::bind (&Opal::Account::add_contact, this));
-
-  builder.add_separator ();
-
-  builder.add_action ("edit", _("_Edit"),
-		      boost::bind (&Opal::Account::edit, this));
-  builder.add_action ("remove", _("_Remove"),
-		      boost::bind (&Opal::Account::remove, this));
-
-  if (type == DiamondCard) {
-
-    std::stringstream str;
-    std::stringstream url;
-    str << "https://www.diamondcard.us/exec/voip-login?accId=" << get_username () << "&pinCode=" << get_password () << "&spo=ekiga";
-
-    builder.add_separator ();
-
-    url.str ("");
-    url << str.str () << "&act=rch";
-    builder.add_action ("recharge",
-			_("Recharge the account"),
-                        boost::bind (&Opal::Account::on_consult, this, url.str ()));
-    url.str ("");
-    url << str.str () << "&act=bh";
-    builder.add_action ("balance",
-                        _("Consult the balance history"),
-                        boost::bind (&Opal::Account::on_consult, this, url.str ()));
-    url.str ("");
-    url << str.str () << "&act=ch";
-    builder.add_action ("history",
-                        _("Consult the call history"),
-                        boost::bind (&Opal::Account::on_consult, this, url.str ()));
-  }
-
-  return true;
-}
-
-bool
-Opal::Account::populate_menu (const std::string fullname,
-			      const std::string uri,
-			      Ekiga::MenuBuilder& builder)
-{
-  bool result = false;
-  Ekiga::TemporaryMenuBuilder tmp_builder;
-  std::string protocol;
-  std::string complete_uri;
-
-  if (!is_enabled ())
-    return false;
-
-  // if there is no protocol, add what we are
-  if (uri.find (":") == string::npos) {
-
-    if (type == H323)
-      protocol = "h323:";
-    else
-      protocol = "sip:";
-    complete_uri = protocol + uri;
-  } else
-    complete_uri = uri;
-
-  // whatever the protocol was previously, check if it fits
-  if (not(
-      (type == H323 && complete_uri.find ("h323:" != 0))
-      ||
-      (type != H323 && complete_uri.find ("sip:" != 0))
-	  ))
-    return false;
-
-  // from now on, we're sure we have an uri corresponding to the account
-
-  // but does it have a domain?
-  //
-  // (it is supposed not to, but let's still test so the function
-  // can be called from several places without problem)
-  if (complete_uri.find ("@") == string::npos && type != H323)
-    complete_uri = complete_uri + "@" + get_host ();
-
-  call_manager->populate_menu (fullname, complete_uri, tmp_builder);
-
-  if ( !tmp_builder.empty ()) {
-
-    builder.add_ghost ("", get_name ());
-    tmp_builder.populate_menu (builder);
-    result = true;
-  }
-
-  return result;
-
-}
 
 void
 Opal::Account::edit ()
 {
-  boost::shared_ptr<Ekiga::FormRequestSimple> request = boost::shared_ptr<Ekiga::FormRequestSimple> (new Ekiga::FormRequestSimple (boost::bind (&Opal::Account::on_edit_form_submitted, this, _1, _2)));
+  boost::shared_ptr<Ekiga::FormRequestSimple> request = boost::shared_ptr<Ekiga::FormRequestSimple> (new Ekiga::FormRequestSimple (boost::bind (&Opal::Account::on_edit_form_submitted, this, _1, _2, _3)));
   std::stringstream str;
 
   str << get_timeout ();
 
-  request->title (_("Edit account"));
+  /* Translators: This is Edit name of the Account
+   * e.g. Editing Ekiga.net Account.
+   */
+  char *title = g_strdup_printf (_("Editing %s Account"), get_name ().c_str ());
+  request->title (title);
+  g_free (title);
 
-  request->instructions (_("Please update the following fields:"));
-
-  request->text ("name", _("Name:"), get_name (), _("Account name, e.g. MyAccount"));
-  if (get_protocol_name () == "SIP")
-    request->text ("host", _("Registrar:"), get_host (), _("The registrar, e.g. ekiga.net"));
+  request->text ("name", _("Name"), get_name (), _("Ekiga.Net Account"),
+                 Ekiga::FormVisitor::STANDARD, false, false);
+  if (get_protocol_name () != "H323")
+    request->text ("host", _("Registrar"), get_host (), _("ekiga.net"),
+                   Ekiga::FormVisitor::STANDARD, false, false);
   else
-    request->text ("host", _("Gatekeeper:"), get_host (), _("The gatekeeper, e.g. ekiga.net"));
-  request->text ("user", _("User:"), get_username (), _("The user name, e.g. jim"));
+    request->text ("host", _("Gatekeeper"), get_host (), _("ekiga.net"),
+                   Ekiga::FormVisitor::STANDARD, false, false);
+  request->text ("user", _("User"), get_username (), _("jon"),
+                 Ekiga::FormVisitor::STANDARD, false, false);
   if (get_protocol_name () == "SIP")
     /* Translators:
      * SIP knows two usernames: The name for the client ("User") and the name
-     * for the authentication procedure ("Authentication user") */
-    request->text ("authentication_user", _("Authentication user:"), get_authentication_username (), _("The user name used during authentication, if different than the user name; leave empty if you do not have one"));
-  request->private_text ("password", _("Password:"), get_password (), _("Password associated to the user"));
-  request->text ("timeout", _("Timeout:"), str.str (), _("Time in seconds after which the account registration is automatically retried"));
-  request->boolean ("enabled", _("Enable account"), is_enabled ());
+     * for the authentication procedure ("Authentication user"), aka Login
+     * to make it understandable
+     */
+    request->text ("authentication_user", _("Login"), get_authentication_username (), _("jon.doe"),
+                   Ekiga::FormVisitor::STANDARD, false, false);
+  request->text ("password", _("Password"), get_password (), _("1234"),
+                 Ekiga::FormVisitor::PASSWORD, false, false);
+  request->text ("timeout", _("Timeout"), "3600", "3600",
+                 Ekiga::FormVisitor::NUMBER, false, false);
+  request->boolean ("enabled", _("Enable Account"), is_enabled ());
 
-  questions (request);
+  Ekiga::Account::questions (request);
 }
 
 
-void
+bool
 Opal::Account::on_edit_form_submitted (bool submitted,
-				       Ekiga::Form &result)
+				       Ekiga::Form &result,
+                                       std::string &error)
 {
   if (!submitted)
-    return;
+    return false;
 
   std::string new_name = result.text ("name");
   std::string new_host = result.text ("host");
@@ -678,12 +670,11 @@ Opal::Account::on_edit_form_submitted (bool submitted,
     new_authentication_user = result.text ("authentication_user");
   if (new_authentication_user.empty ())
     new_authentication_user = new_user;
-  std::string new_password = result.private_text ("password");
+  std::string new_password = result.text ("password");
   bool new_enabled = result.boolean ("enabled");
   bool should_enable = false;
   bool should_disable = false;
   unsigned new_timeout = atoi (result.text ("timeout").c_str ());
-  std::string error;
 
   if (new_name.empty ())
     error = _("You did not supply a name for that account.");
@@ -696,11 +687,7 @@ Opal::Account::on_edit_form_submitted (bool submitted,
 
   if (!error.empty ()) {
 
-    boost::shared_ptr<Ekiga::FormRequestSimple> request = boost::shared_ptr<Ekiga::FormRequestSimple> (new Ekiga::FormRequestSimple (boost::bind (&Opal::Account::on_edit_form_submitted, this, _1, _2)));
-    result.visit (*request);
-    request->error (error);
-
-    questions (request);
+    return false;
   }
   else {
 
@@ -763,6 +750,8 @@ Opal::Account::on_edit_form_submitted (bool submitted,
     updated ();
     trigger_saving ();
   }
+
+  return true;
 }
 
 void
@@ -772,37 +761,39 @@ Opal::Account::add_contact ()
   if (!pcore)
     return;
 
-  boost::shared_ptr<Ekiga::FormRequestSimple> request = boost::shared_ptr<Ekiga::FormRequestSimple> (new Ekiga::FormRequestSimple (boost::bind (&Opal::Account::on_add_contact_form_submitted, this, _1, _2)));
-  std::set<std::string> groups = existing_groups ();
+  boost::shared_ptr<Ekiga::FormRequestSimple> request =
+    boost::shared_ptr<Ekiga::FormRequestSimple> (new Ekiga::FormRequestSimple (boost::bind (&Opal::Account::on_add_contact_form_submitted, this, _1, _2, _3)));
+  std::list<std::string> groups = existing_groups ();
 
-  request->title (_("Add to account roster"));
-  request->instructions (_("Please fill in this form to add a new contact "
-			   "to this account's roster"));
-  request->text ("name", _("Name:"), "", _("Name of the contact, as shown in your roster"));
+  request->title (_("Add Contact"));
+  request->text ("name", _("_Name"), std::string (), _("John Doe"),
+                 Ekiga::FormVisitor::STANDARD, false, false);
 
-  request->text ("uri", _("Address:"), "sip:", _("Address, e.g. sip:xyz@ekiga.net; if you do not specify the host part, e.g. sip:xyz, then you can choose it by right-clicking on the contact in roster")); // let's put a default
+  request->text ("uri", _("_URI"), "sip:", "sip:john.doe@ekiga.net",
+                 Ekiga::FormVisitor::URI, false, false);
 
-  request->editable_set ("groups",
-			 _("Put contact in groups:"),
-			 std::set<std::string>(), groups);
+  request->editable_list ("groups",
+			 _("Groups"),
+                         std::list<std::string>(), groups);
 
-  questions (request);
+  Ekiga::Heap::questions (request);
 }
 
-void
+bool
 Opal::Account::on_add_contact_form_submitted (bool submitted,
-					      Ekiga::Form& result)
+					      Ekiga::Form& result,
+                                              std::string& error)
 {
   if (!submitted)
-    return;
+    return false;
 
   boost::shared_ptr<Ekiga::PresenceCore> pcore = presence_core.lock ();
   if (!pcore)
-    return;
+    return false;
 
   const std::string name = result.text ("name");
   std::string uri;
-  const std::set<std::string> groups = result.editable_set ("groups");
+  const std::list<std::string> groups = result.editable_list ("groups");
 
   uri = result.text ("uri");
   uri = canonize_uri (uri);
@@ -813,7 +804,7 @@ Opal::Account::on_add_contact_form_submitted (bool submitted,
     xmlAddChild (roster_node, presnode);
     trigger_saving ();
 
-    Opal::PresentityPtr pres(new Presentity (presence_core, existing_groups, presnode));
+    Opal::PresentityPtr pres(new Presentity (*this, presence_core, existing_groups, presnode));
     pres->trigger_saving.connect (boost::ref (trigger_saving));
     pres->removed.connect (boost::bind (boost::ref (presentity_removed), pres));
     pres->updated.connect (boost::bind (boost::ref (presentity_updated), pres));
@@ -821,18 +812,18 @@ Opal::Account::on_add_contact_form_submitted (bool submitted,
     presentity_added (pres);
     fetch (pres->get_uri ());
 
-  } else {
+    return true;
 
-    boost::shared_ptr<Ekiga::FormRequestSimple> request = boost::shared_ptr<Ekiga::FormRequestSimple>(new Ekiga::FormRequestSimple (boost::bind (&Opal::Account::on_add_contact_form_submitted, this, _1, _2)));
-
-    result.visit (*request);
-    if (!pcore->is_supported_uri (uri))
-      request->error (_("You supplied an unsupported address"));
-    else
-      request->error (_("You already have a contact with this address!"));
-
-    questions (request);
   }
+  else {
+
+    if (!pcore->is_supported_uri (uri))
+      error = _("You supplied an unsupported address");
+    else
+      error = _("You already have a contact with this address!");
+  }
+
+  return false;
 }
 
 void
@@ -866,7 +857,7 @@ Opal::Account::publish (const Ekiga::PersonalDetails& details)
   presence_status = details.get_status ();
 
   if (presentity) {
-    OpalPresenceInfo opi = OpalPresenceInfo (OpalPresenceInfo::Available);
+    OpalPresenceInfo opi = OpalPresenceInfo (personal_state);
     opi.m_activities = PString (presence);
     opi.m_note = presence_status;
     presentity->SetLocalPresence (opi);
@@ -905,7 +896,7 @@ Opal::Account::unfetch (const std::string uri) const
 
 
 void
-Opal::Account::handle_registration_event (RegistrationState state_,
+Opal::Account::handle_registration_event (Ekiga::Account::RegistrationState state_,
 					  const std::string info) const
 {
   switch (state_) {
@@ -921,8 +912,8 @@ Opal::Account::handle_registration_event (RegistrationState state_,
       failed_registration_already_notified = false;
       if (presentity) {
 
-        for (const_iterator iter = begin ();
-             iter != end ();
+        for (Ekiga::RefLister<Presentity>::const_iterator iter = Ekiga::RefLister<Presentity>::begin ();
+             iter != Ekiga::RefLister<Presentity>::end ();
              ++iter)
           fetch ((*iter)->get_uri());
 
@@ -1012,11 +1003,11 @@ Opal::Account::handle_registration_event (RegistrationState state_,
           std::stringstream msg;
           msg << _("Could not register to ") << get_name ();
           boost::shared_ptr<Ekiga::Notification> notif (new Ekiga::Notification (Ekiga::Notification::Warning, msg.str (), info, _("Edit"), boost::bind (&Opal::Account::edit, (Opal::Account*) this)));
-	boost::shared_ptr<Ekiga::NotificationCore> ncore = notification_core.lock ();
-	if (ncore)
-          ncore->push_notification (notif);
+          boost::shared_ptr<Ekiga::NotificationCore> ncore = notification_core.lock ();
+          if (ncore)
+            ncore->push_notification (notif);
+          updated ();
         }
-        updated ();
         failed_registration_already_notified = true;
         break;
       case SIPRegister::EndCompatibilityModes:
@@ -1247,8 +1238,8 @@ Opal::Account::presence_status_in_main (std::string uri,
 					std::string uri_presence,
 					std::string uri_status) const
 {
-  for (const_iterator iter = begin ();
-       iter != end ();
+  for (Ekiga::RefLister< Presentity >::const_iterator iter = Ekiga::RefLister< Presentity >::begin ();
+       iter != Ekiga::RefLister< Presentity >::end ();
        ++iter) {
 
     if ((*iter)->has_uri (uri)) {
@@ -1284,26 +1275,19 @@ Opal::Account::visit_presentities (boost::function1<bool, Ekiga::PresentityPtr >
 }
 
 
-bool
-Opal::Account::populate_menu_for_group (const std::string name,
-					Ekiga::MenuBuilder& builder)
-{
-  builder.add_action ("edit", _("Rename"),
-		      boost::bind (&Opal::Account::on_rename_group, this, name));
-  return true;
-}
-
-
 void
-Opal::Account::on_rename_group (std::string name)
+Opal::Account::on_rename_group (Opal::PresentityPtr pres)
 {
-  boost::shared_ptr<Ekiga::FormRequestSimple> request = boost::shared_ptr<Ekiga::FormRequestSimple> (new Ekiga::FormRequestSimple (boost::bind (&Opal::Account::rename_group_form_submitted, this, name, _1, _2)));
+  boost::shared_ptr<Ekiga::FormRequestSimple> request =
+    boost::shared_ptr<Ekiga::FormRequestSimple> (new Ekiga::FormRequestSimple (boost::bind (&Opal::Account::on_rename_group_form_submitted,
+                                                                                            this, _1, _2, _3, pres->get_groups ())));
 
-  request->title (_("Rename group"));
-  request->instructions (_("Please edit this group name"));
-  request->text ("name", _("Name:"), name, std::string ());
+  request->title (_("Renaming Groups"));
+  request->editable_list ("groups", "",
+			 pres->get_groups (), std::list<std::string>(),
+                         false, true);
 
-  questions (request);
+  Ekiga::Heap::questions (request);
 }
 
 
@@ -1328,21 +1312,32 @@ struct rename_group_form_submitted_helper
 };
 
 
-void
-Opal::Account::rename_group_form_submitted (std::string old_name,
-					    bool submitted,
-					    Ekiga::Form& result)
+bool
+Opal::Account::on_rename_group_form_submitted (bool submitted,
+                                               Ekiga::Form& result,
+                                               std::string& error,
+                                               const std::list<std::string> & groups)
 {
   if (!submitted)
-    return;
+    return false;
 
-  const std::string new_name = result.text ("name");
+  std::list <std::string> new_groups = result.editable_list ("groups");
 
-  if ( !new_name.empty () && new_name != old_name) {
+  std::list <std::string>::const_iterator nit = new_groups.begin ();
+  std::list <std::string>::const_iterator it = groups.begin ();
 
-    rename_group_form_submitted_helper helper (old_name, new_name);
-    visit_presentities (boost::ref (helper));
+  for (std::pair <std::list<std::string>::const_iterator, std::list<std::string>::const_iterator> i(it, nit);
+       i.first != groups.end ();
+       ++i.first, ++i.second) {
+
+    if (*i.first != *i.second) {
+
+      rename_group_form_submitted_helper helper (*i.first, *i.second);
+      visit_presentities (boost::ref (helper));
+    }
   }
+
+  return true;
 }
 
 void

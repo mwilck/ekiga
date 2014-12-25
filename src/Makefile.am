@@ -9,6 +9,7 @@ AM_CPPFLAGS = \
 	-I$(top_srcdir)/lib/engine/gui/gtk-frontend	\
 	-I$(top_srcdir)/lib/engine/components/call-history \
 	-I$(top_srcdir)/lib/engine/account		\
+	-I$(top_srcdir)/lib/engine/action		\
 	-I$(top_srcdir)/lib/engine/addressbook	\
 	-I$(top_srcdir)/lib/engine/chat		\
 	-I$(top_srcdir)/lib/engine/notification	\
@@ -27,8 +28,6 @@ AM_CPPFLAGS = \
 	-I$(top_srcdir)/src/dbus-helper/		\
 	-I$(top_builddir)/src/dbus-helper/
 
-BUILT_SOURCES = src/revision.h
-
 bin_PROGRAMS = ekiga
 
 EXTRA_PROGRAMS =
@@ -40,9 +39,7 @@ nodist_ekiga_SOURCES =
 
 # Endpoints
 ekiga_SOURCES +=			\
-	main.cpp			\
-	ekiga.h			        \
-	ekiga.cpp
+	main.cpp
 
 # resources
 if WIN32
@@ -72,7 +69,7 @@ nodist_ekiga_helper_SOURCES = 	\
 
 ekiga_helper_LDADD = $(DBUS_LIBS)
 
-BUILT_SOURCES += dbus-helper/dbus-helper-stub.h dbus-helper/dbus-stub.h
+BUILT_SOURCES = dbus-helper/dbus-helper-stub.h dbus-helper/dbus-stub.h
 
 dbus-helper/dbus-helper-stub.h: dbus-helper/dbus-helper-stub.xml build-subdir-stamp
 	$(LIBTOOL) --mode=execute dbus-binding-tool --prefix=helper --mode=glib-server --output=$@ $<
@@ -130,5 +127,3 @@ CLEANFILES = \
 	$(service_DATA)		\
 	build-subdir-stamp	\
 	$(BUILT_SOURCES)
-
-DISTCLEANFILES = revision.h
