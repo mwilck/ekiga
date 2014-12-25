@@ -114,14 +114,113 @@ struct _GmApplicationPrivate
   EkigaDBusComponent *dbus_component;
 
   Ekiga::GActorMenuStore banks_menu;
+  unsigned int banks_actions_count;
 };
 
 G_DEFINE_TYPE (GmApplication, gm_application, GTK_TYPE_APPLICATION);
 
-GtkWidget *gm_application_show_call_window (GmApplication *self);
+static void gm_application_populate_application_menu (GmApplication *app);
+
+static GtkWidget *gm_application_show_call_window (GmApplication *self);
+
+static void on_created_call_cb (boost::shared_ptr<Ekiga::CallManager> manager,
+                                boost::shared_ptr<Ekiga::Call> call,
+                                gpointer data);
+
+static bool on_visit_banks_cb (Ekiga::BankPtr bank,
+                               gpointer data);
+
+static bool on_handle_questions_cb (Ekiga::FormRequestPtr request,
+                                    GmApplication *application);
+
+static void on_account_modified_cb (Ekiga::BankPtr bank,
+                                    Ekiga::AccountPtr account,
+                                    GmApplication *app);
+
+static void call_window_destroyed_cb (GtkWidget *widget,
+                                      gpointer data);
+
+static gboolean option_context_parse (GOptionContext *context,
+                                      gchar **arguments,
+                                      GError **error);
+
+static void quit_activated (GSimpleAction *action,
+                            GVariant *parameter,
+                            gpointer app);
+
+static void about_activated (GSimpleAction *action,
+                             GVariant *parameter,
+                             gpointer app);
+
+static void help_activated (GSimpleAction *action,
+                            GVariant *parameter,
+                            gpointer app);
+
+static void window_activated (GSimpleAction *action,
+                              GVariant *parameter,
+                              gpointer app);
+
+static void video_preview_changed (GSettings *settings,
+                                   const gchar *key,
+                                   gpointer data);
+
+static GActionEntry app_entries[] =
+{
+    { "preferences", window_activated, NULL, NULL, NULL, 0 },
+    { "addressbook", window_activated, NULL, NULL, NULL, 0 },
+    { "help", help_activated, NULL, NULL, NULL, 0 },
+    { "about", about_activated, NULL, NULL, NULL, 0 },
+    { "quit", quit_activated, NULL, NULL, NULL, 0 }
+};
 
 
 /* Private helpers */
+static void
+gm_application_populate_application_menu (GmApplication *app)
+{
+  g_return_if_fail (GM_IS_APPLICATION (app));
+  GMenuModel *app_menu = G_MENU_MODEL (gtk_builder_get_object (app->priv->builder, "appmenu"));
+
+  boost::shared_ptr<Ekiga::AccountCore> account_core
+    = app->priv->core->get<Ekiga::AccountCore> ("account-core");
+  g_return_if_fail (account_core);
+
+  for (int i = app->priv->banks_menu.size () ;
+       i > 0 ;
+       i--)
+    g_menu_remove (G_MENU (app_menu), 0);
+
+  app->priv->banks_menu.clear ();
+  app->priv->banks_actions_count = 0;
+  account_core->visit_banks (boost::bind (&on_visit_banks_cb, _1, (gpointer) app));
+
+  for (std::list<Ekiga::GActorMenuPtr>::iterator it = app->priv->banks_menu.begin ();
+       it != app->priv->banks_menu.end ();
+       it++) {
+    g_menu_insert_section (G_MENU (app_menu), 0, NULL, (*it)->get_model ());
+    app->priv->banks_actions_count += (*it)->size ();
+  }
+}
+
+
+static GtkWidget *
+gm_application_show_call_window (GmApplication *self)
+{
+  g_return_val_if_fail (GM_IS_APPLICATION (self), NULL);
+
+  if (!self->priv->call_window)
+    self->priv->call_window = call_window_new (self);
+
+  gtk_window_present (GTK_WINDOW (self->priv->call_window));
+
+  g_signal_connect (G_OBJECT (self->priv->call_window), "destroy",
+                    G_CALLBACK (call_window_destroyed_cb), self);
+
+  return self->priv->call_window;
+}
+
+
+/* Private callbacks */
 static void
 on_created_call_cb (G_GNUC_UNUSED boost::shared_ptr<Ekiga::CallManager> manager,
                     G_GNUC_UNUSED boost::shared_ptr<Ekiga::Call> call,
@@ -160,6 +259,17 @@ on_handle_questions_cb (Ekiga::FormRequestPtr request,
   dialog.run ();
 
   return true;
+}
+
+
+static void
+on_account_modified_cb (G_GNUC_UNUSED Ekiga::BankPtr bank,
+                        G_GNUC_UNUSED Ekiga::AccountPtr account,
+                        GmApplication *app)
+{
+  g_return_if_fail (GM_IS_APPLICATION (app));
+
+  gm_application_populate_application_menu (app);
 }
 
 
@@ -274,23 +384,11 @@ video_preview_changed (GSettings *settings,
 }
 
 
-static GActionEntry app_entries[] =
-{
-    { "preferences", window_activated, NULL, NULL, NULL, 0 },
-    { "addressbook", window_activated, NULL, NULL, NULL, 0 },
-    { "help", help_activated, NULL, NULL, NULL, 0 },
-    { "about", about_activated, NULL, NULL, NULL, 0 },
-    { "quit", quit_activated, NULL, NULL, NULL, 0 }
-};
-
-
 /* Public api */
 void
 ekiga_main (int argc,
             char **argv)
 {
-  GMenu *app_menu = NULL;
-
   GmApplication *app = gm_application_new ();
   g_application_set_inactivity_timeout (G_APPLICATION (app), 10000);
 
@@ -325,21 +423,16 @@ ekiga_main (int argc,
   }
 
   boost::shared_ptr<Ekiga::CallCore> call_core = app->priv->core->get<Ekiga::CallCore> ("call-core");
-  if (call_core)
-    call_core->created_call.connect (boost::bind (&on_created_call_cb, _1, _2, (gpointer) app));
+  g_return_if_fail (call_core);
+  call_core->created_call.connect (boost::bind (&on_created_call_cb, _1, _2, (gpointer) app));
 
   boost::shared_ptr<Ekiga::AccountCore> account_core = app->priv->core->get<Ekiga::AccountCore> ("account-core");
-  if (account_core) {
-    account_core->visit_banks (boost::bind (&on_visit_banks_cb, _1, (gpointer) app));
-    account_core->questions.connect (boost::bind (&on_handle_questions_cb, _1, app));
-  }
+  g_return_if_fail (account_core);
+  account_core->questions.connect (boost::bind (&on_handle_questions_cb, _1, app));
+  account_core->account_added.connect (boost::bind (&on_account_modified_cb, _1, _2, app));
+  account_core->account_removed.connect (boost::bind (&on_account_modified_cb, _1, _2, app));
 
-  app_menu = G_MENU (gtk_builder_get_object (app->priv->builder, "appmenu"));
-  for (std::list<Ekiga::GActorMenuPtr>::iterator it = app->priv->banks_menu.begin ();
-       it != app->priv->banks_menu.end ();
-       it++) {
-    g_menu_insert_section (G_MENU (app_menu), 0, NULL, (*it)->get_model ());
-  }
+  gm_application_populate_application_menu (app);
 
   core->close ();
   g_application_run (G_APPLICATION (app), argc, argv);
@@ -361,10 +454,8 @@ static void
 gm_application_startup (GApplication *app)
 {
   GmApplication *self = GM_APPLICATION (app);
-
-  gchar *path = NULL;
-
   GMenuModel *app_menu = NULL;
+  gchar *path = NULL;
 
   G_APPLICATION_CLASS (gm_application_parent_class)->startup (app);
 
@@ -650,14 +741,14 @@ gm_application_class_init (GmApplicationClass *klass)
   app_class->activate = gm_application_activate;
   app_class->command_line = gm_application_command_line;
   app_class->shutdown = gm_application_shutdown;
-
-  g_type_class_add_private (object_class, sizeof (GmApplicationPrivate));
 }
 
 
 static void
 gm_application_init (G_GNUC_UNUSED GmApplication *self)
 {
+  self->priv = new GmApplicationPrivate ();
+  self->priv->banks_actions_count = 0;
 }
 
 
@@ -881,23 +972,6 @@ GNU GPL for all the rest of the software thus combined.")
 
   g_free (license_trans);
   g_free (filename);
-}
-
-
-GtkWidget *
-gm_application_show_call_window (GmApplication *self)
-{
-  g_return_val_if_fail (GM_IS_APPLICATION (self), NULL);
-
-  if (!self->priv->call_window)
-    self->priv->call_window = call_window_new (self);
-
-  gtk_window_present (GTK_WINDOW (self->priv->call_window));
-
-  g_signal_connect (G_OBJECT (self->priv->call_window), "destroy",
-                    G_CALLBACK (call_window_destroyed_cb), self);
-
-  return self->priv->call_window;
 }
 
 
