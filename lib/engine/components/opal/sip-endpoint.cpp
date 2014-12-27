@@ -324,8 +324,8 @@ Opal::Sip::EndPoint::set_listen_port (unsigned port)
     if (!StartListeners (PStringArray (str.str ()))) {
 
       port = udp_min;
-      str << "udp$*:" << port;
       while (port <= udp_max) {
+        str << "udp$*:" << port;
 
         if (StartListeners (PStringArray (str.str ()))) {
 
