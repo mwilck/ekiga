@@ -686,6 +686,12 @@ on_selection_changed (GtkTreeSelection* selection,
   self = ROSTER_VIEW_GTK (data);
   model = gtk_tree_view_get_model (self->priv->tree_view);
 
+  /* Reset old data. This also ensures GIO actions are
+   * properly removed before adding new ones.
+   */
+  self->priv->presentity_menu.reset ();
+  self->priv->heap_menu.reset ();
+
   if (gtk_tree_selection_get_selected (selection, &model, &iter)) {
 
     gtk_tree_model_get (model, &iter,
@@ -695,12 +701,6 @@ on_selection_changed (GtkTreeSelection* selection,
                         COLUMN_HEAP, &heap,
                         COLUMN_PRESENTITY, &presentity,
                         -1);
-
-    /* Reset old data. This also ensures GIO actions are
-     * properly removed before adding new ones.
-     */
-    self->priv->presentity_menu.reset ();
-    self->priv->heap_menu.reset ();
 
     if (heap != NULL)
       self->priv->heap_menu = Ekiga::GActorMenuPtr (new Ekiga::GActorMenu (*heap, heap->get_name ()));
