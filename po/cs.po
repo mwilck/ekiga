@@ -17,10 +17,10 @@ msgstr ""
 "Project-Id-Version: ekiga\n"
 "Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?"
 "product=ekiga&keywords=I18N+L10N&component=general\n"
-"POT-Creation-Date: 2014-08-15 19:35+0000\n"
-"PO-Revision-Date: 2014-08-16 13:04+0200\n"
+"POT-Creation-Date: 2014-12-27 04:17+0000\n"
+"PO-Revision-Date: 2014-12-27 10:19+0100\n"
 "Last-Translator: Marek Černocký <marek@manet.cz>\n"
-"Language-Team: čeština <gnome-cs-list@gnome.org>\n"
+"Language-Team: Czech <gnome-cs-list@gnome.org>\n"
 "Language: cs\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -29,7 +29,10 @@ msgstr ""
 "X-Generator: Gtranslator 2.91.6\n"
 
 #. Application name
-#: ../ekiga.desktop.in.in.h:1 ../src/main.cpp:118 ../src/main.cpp:120
+#. FIXME ??? ekiga-settings.h
+#: ../ekiga.desktop.in.in.h:1 ../lib/engine/gui/gtk-frontend/ekiga-app.cpp:488
+#: ../lib/engine/gui/gtk-frontend/ekiga-app.cpp:490
+#: ../lib/engine/gui/gtk-frontend/main_window.cpp:776
 msgid "Ekiga Softphone"
 msgstr "Telefon Ekiga"
 
@@ -43,36 +46,35 @@ msgstr "Setkávat se a hovořit s lidmi přes Internet"
 
 #: ../lib/engine/audioinput/audioinput-core.cpp:267
 #: ../lib/engine/audiooutput/audiooutput-core.cpp:441
-#: ../lib/engine/videoinput/videoinput-core.cpp:357
+#: ../lib/engine/videoinput/videoinput-core.cpp:347
 msgid "New device detected"
 msgstr "Zjištěno nové zařízení"
 
 #: ../lib/engine/audioinput/audioinput-core.cpp:268
 #: ../lib/engine/audiooutput/audiooutput-core.cpp:443
-#: ../lib/engine/videoinput/videoinput-core.cpp:357
+#: ../lib/engine/videoinput/videoinput-core.cpp:347
 msgid "Use it"
 msgstr "Použít jej"
 
 #: ../lib/engine/audioinput/audioinput-core.cpp:301
 #: ../lib/engine/audiooutput/audiooutput-core.cpp:476
-#: ../lib/engine/videoinput/videoinput-core.cpp:384
+#: ../lib/engine/videoinput/videoinput-core.cpp:374
 msgid "Device removed"
 msgstr "Zařízení odebráno"
 
-#: ../lib/engine/components/call-history/history-book.cpp:143
-#: ../lib/engine/gui/gtk-frontend/call-history-view-gtk.cpp:186
-msgid "Clear List"
-msgstr "Vyčistit seznam"
+#: ../lib/engine/components/call-history/history-book.cpp:88
+msgid "Clear History"
+msgstr "Vymazat historii"
 
-#: ../lib/engine/components/call-history/history-contact.cpp:167
+#: ../lib/engine/components/call-history/history-contact.cpp:179
 msgid "Received"
 msgstr "Přijato"
 
-#: ../lib/engine/components/call-history/history-contact.cpp:170
+#: ../lib/engine/components/call-history/history-contact.cpp:182
 msgid "Placed"
 msgstr "Vytočeno"
 
-#: ../lib/engine/components/call-history/history-contact.cpp:173
+#: ../lib/engine/components/call-history/history-contact.cpp:185
 msgid "Missed"
 msgstr "Zmeškáno"
 
@@ -80,183 +82,89 @@ msgstr "Zmeškáno"
 msgid "Add to blacklist"
 msgstr "Přidat na černou listinu"
 
-#: ../lib/engine/components/local-roster/local-cluster.cpp:75
-#: ../lib/engine/components/local-roster/local-heap.cpp:115
-#: ../lib/engine/components/opal/opal-account.cpp:543
-#: ../lib/engine/gui/gtk-frontend/main_window.cpp:1157
-#: ../plugins/evolution/evolution-book.cpp:301
+#. Translators : The alias we are registering already exists : failure
+#: ../lib/engine/components/opal/h323-endpoint.cpp:329
+msgid "Duplicate alias"
+msgstr "Duplicitní přezdívka"
+
+#: ../lib/engine/components/opal/h323-endpoint.cpp:332
+msgid "Bad username/password"
+msgstr "Špatné jméno/heslo"
+
+#: ../lib/engine/components/opal/h323-endpoint.cpp:335
+#: ../lib/engine/components/opal/sip-endpoint.cpp:544
+msgid "Transport error"
+msgstr "Chyba přenosu"
+
+#: ../lib/engine/components/opal/h323-endpoint.cpp:349
+#: ../lib/engine/components/opal/h323-endpoint.cpp:354
+#: ../lib/engine/components/opal/sip-endpoint.cpp:766
+msgid "Failed"
+msgstr "Selhalo"
+
+#. Translators: this is a state, not an action, i.e. it should be read as
+#. "(you are) unregistered", and not as "(you have been) unregistered"
+#: ../lib/engine/components/opal/opal-account.cpp:164
+#: ../lib/engine/components/opal/opal-account.cpp:535
+#: ../lib/engine/components/opal/opal-account.cpp:937
+msgid "Unregistered"
+msgstr "Odregistrován"
+
+#. Actor stuff
+#: ../lib/engine/components/opal/opal-account.cpp:205
+#: ../plugins/evolution/evolution-book.cpp:263
+#: ../plugins/evolution/evolution-book.cpp:299
 #: ../plugins/loudmouth/loudmouth-heap-roster.cpp:72
 msgid "A_dd Contact"
 msgstr "Při_dat kontakt"
 
-#: ../lib/engine/components/local-roster/local-heap.cpp:91
-msgid "Services"
-msgstr "Služby"
+#. Actor stuff
+#: ../lib/engine/components/opal/opal-account.cpp:207
+#: ../lib/engine/components/opal/opal-presentity.cpp:115
+#: ../plugins/evolution/evolution-contact.cpp:69
+#: ../plugins/ldap/ldap-book.cpp:344
+#: ../plugins/loudmouth/loudmouth-presentity.cpp:174
+#: ../plugins/resource-list/rl-presentity.cpp:212
+msgid "_Edit"
+msgstr "_Upravit"
 
-#: ../lib/engine/components/local-roster/local-heap.cpp:92
-msgid "Echo test"
-msgstr "Echo test"
+#: ../lib/engine/components/opal/opal-account.cpp:209
+#: ../lib/engine/components/opal/opal-presentity.cpp:117
+#: ../plugins/evolution/evolution-contact.cpp:71
+#: ../plugins/ldap/ldap-book.cpp:346
+#: ../plugins/loudmouth/loudmouth-account.cpp:445
+#: ../plugins/loudmouth/loudmouth-presentity.cpp:199
+#: ../plugins/resource-list/rl-presentity.cpp:214
+msgid "_Remove"
+msgstr "_Odstranit"
 
-#: ../lib/engine/components/local-roster/local-heap.cpp:93
-msgid "Conference room"
-msgstr "Konferenční místnost"
+#: ../lib/engine/components/opal/opal-account.cpp:211
+#: ../plugins/loudmouth/loudmouth-account.cpp:437
+msgid "_Enable"
+msgstr "_Povolit"
 
-#: ../lib/engine/components/local-roster/local-heap.cpp:94
-msgid "Call back test"
-msgstr "Test zpětného volání"
+#: ../lib/engine/components/opal/opal-account.cpp:213
+#: ../plugins/loudmouth/loudmouth-account.cpp:433
+msgid "_Disable"
+msgstr "_Zakázat"
 
-#: ../lib/engine/components/local-roster/local-heap.cpp:108
-#: ../lib/engine/gui/gtk-frontend/main_window.cpp:1295
-msgid "Contacts"
-msgstr "Kontakty"
+#: ../lib/engine/components/opal/opal-account.cpp:224
+#: ../lib/engine/components/opal/opal-account.cpp:226
+msgid "Recharge the Ekiga Call Out account"
+msgstr "Dobít účet Ekiga pro odchozí volání"
 
-#: ../lib/engine/components/local-roster/local-heap.cpp:125
-#: ../lib/engine/components/opal/opal-account.cpp:1291
-msgid "Rename"
-msgstr "Přejmenovat"
-
-#: ../lib/engine/components/local-roster/local-heap.cpp:194
-#: ../lib/engine/components/opal/opal-bank.cpp:450
-#: ../plugins/loudmouth/loudmouth-heap-roster.cpp:488
-msgid "Family"
-msgstr "Rodina"
-
-#: ../lib/engine/components/local-roster/local-heap.cpp:195
-#: ../lib/engine/components/opal/opal-bank.cpp:451
-#: ../plugins/loudmouth/loudmouth-heap-roster.cpp:489
-msgid "Friend"
-msgstr "Kamarád"
-
-#. Translator: http://www.ietf.org/rfc/rfc4480.txt proposes several
-#. relationships between you and your contact; associate means
-#. someone who is at the same "level" than you.
-#.
-#: ../lib/engine/components/local-roster/local-heap.cpp:200
-#: ../lib/engine/components/opal/opal-bank.cpp:456
-#: ../plugins/loudmouth/loudmouth-heap-roster.cpp:494
-msgid "Associate"
-msgstr "Připojit"
-
-#. Translator: http://www.ietf.org/rfc/rfc4480.txt proposes several
-#. relationships between you and your contact; assistant means
-#. someone who is at a lower "level" than you.
-#.
-#: ../lib/engine/components/local-roster/local-heap.cpp:205
-#: ../lib/engine/components/opal/opal-bank.cpp:461
-#: ../plugins/loudmouth/loudmouth-heap-roster.cpp:499
-msgid "Assistant"
-msgstr "Průvodce"
-
-#. Translator: http://www.ietf.org/rfc/rfc4480.txt proposes several
-#. relationships between you and your contact; supervisor means
-#. someone who is at a higher "level" than you.
-#.
-#: ../lib/engine/components/local-roster/local-heap.cpp:210
-#: ../lib/engine/components/opal/opal-bank.cpp:466
-#: ../plugins/loudmouth/loudmouth-heap-roster.cpp:504
-msgid "Supervisor"
-msgstr "Dozorce"
-
-#. Translator: http://www.ietf.org/rfc/rfc4480.txt proposes several
-#. relationships between you and your contact; self means yourself.
-#.
-#: ../lib/engine/components/local-roster/local-heap.cpp:214
-#: ../lib/engine/components/opal/opal-bank.cpp:470
-#: ../plugins/loudmouth/loudmouth-heap-roster.cpp:508
-msgid "Self"
-msgstr "Vlastní"
-
-#: ../lib/engine/components/local-roster/local-heap.cpp:233
-#: ../lib/engine/components/local-roster/local-roster-bridge.cpp:93
-msgid "Add to local roster"
-msgstr "Přidat do místního seznamu"
-
-#: ../lib/engine/components/local-roster/local-heap.cpp:234
-msgid ""
-"Please fill in this form to add a new contact to ekiga's internal roster"
-msgstr ""
-"Vyplňte prosím tento formulář pro přidání nového kontaktu do interního "
-"seznamu Ekiga"
-
-#: ../lib/engine/components/local-roster/local-heap.cpp:236
-#: ../lib/engine/components/local-roster/local-heap.cpp:433
-#: ../lib/engine/components/local-roster/local-presentity.cpp:279
-#: ../lib/engine/components/opal/opal-account.cpp:647
-#: ../lib/engine/components/opal/opal-account.cpp:781
-#: ../lib/engine/components/opal/opal-account.cpp:1304
-#: ../lib/engine/components/opal/opal-presentity.cpp:267
-#: ../plugins/evolution/evolution-contact.cpp:324
-#: ../plugins/loudmouth/loudmouth-account.cpp:342
-#: ../plugins/loudmouth/loudmouth-bank.cpp:120
-#: ../plugins/loudmouth/loudmouth-heap-roster.cpp:341
-#: ../plugins/loudmouth/loudmouth-presentity.cpp:288
-#: ../plugins/resource-list/rl-cluster.cpp:164
-#: ../plugins/resource-list/rl-heap.cpp:526
-#: ../plugins/resource-list/rl-presentity.cpp:233
-msgid "Name:"
-msgstr "Jméno:"
-
-#: ../lib/engine/components/local-roster/local-heap.cpp:236
-#: ../lib/engine/components/local-roster/local-presentity.cpp:279
-#: ../lib/engine/components/opal/opal-account.cpp:781
-#: ../lib/engine/components/opal/opal-presentity.cpp:267
-#: ../plugins/loudmouth/loudmouth-heap-roster.cpp:341
-msgid "Name of the contact, as shown in your roster"
-msgstr "Jméno kontaktu, jak je zobrazeno ve vašem seznamu"
-
-#: ../lib/engine/components/local-roster/local-heap.cpp:245
-#: ../lib/engine/components/local-roster/local-heap.cpp:247
-#: ../lib/engine/components/local-roster/local-presentity.cpp:280
-#: ../lib/engine/components/opal/opal-account.cpp:783
-#: ../lib/engine/components/opal/opal-presentity.cpp:268
-#: ../plugins/resource-list/rl-cluster.cpp:165
-#: ../plugins/resource-list/rl-heap.cpp:527
-#: ../plugins/resource-list/rl-presentity.cpp:234
-msgid "Address:"
-msgstr "Adresa:"
-
-#: ../lib/engine/components/local-roster/local-heap.cpp:245
-#: ../lib/engine/components/local-roster/local-heap.cpp:247
-#: ../lib/engine/components/local-roster/local-presentity.cpp:280
-#: ../lib/engine/components/opal/opal-account.cpp:783
-#: ../lib/engine/components/opal/opal-presentity.cpp:268
-msgid ""
-"Address, e.g. sip:xyz@ekiga.net; if you do not specify the host part, e.g. "
-"sip:xyz, then you can choose it by right-clicking on the contact in roster"
-msgstr ""
-"Adresa, např. sip:xyz@ekiga.net; pokud nezadáte část s názvem počítače, "
-"např. sip:xyz, můžete ji pak zvolit kliknutím pravým tlačítkem na kontaktu v "
-"seznamu."
-
-#: ../lib/engine/components/local-roster/local-heap.cpp:251
-#: ../lib/engine/components/opal/opal-account.cpp:786
-#: ../plugins/loudmouth/loudmouth-heap-roster.cpp:343
-msgid "Put contact in groups:"
-msgstr "Vložit kontakt do skupin:"
-
-#: ../lib/engine/components/local-roster/local-heap.cpp:418
-#: ../lib/engine/components/opal/opal-account.cpp:830
-msgid "You supplied an unsupported address"
-msgstr "Byla vyplněna nepodporovaná adresa"
-
-#: ../lib/engine/components/local-roster/local-heap.cpp:420
-#: ../lib/engine/components/opal/opal-account.cpp:832
-msgid "You already have a contact with this address!"
-msgstr "S touto adresou již kontakt máte!"
-
-#: ../lib/engine/components/local-roster/local-heap.cpp:431
-#: ../lib/engine/components/opal/opal-account.cpp:1302
-msgid "Rename group"
-msgstr "Přejmenovat skupinu"
-
-#: ../lib/engine/components/local-roster/local-heap.cpp:432
-#: ../lib/engine/components/opal/opal-account.cpp:1303
-msgid "Please edit this group name"
-msgstr "Upravte prosím název této skupiny"
-
-#: ../lib/engine/components/local-roster/local-presentity.cpp:140
 #: ../lib/engine/components/opal/opal-account.cpp:230
-#: ../lib/engine/components/opal/opal-presentity.cpp:137
+#: ../lib/engine/components/opal/opal-account.cpp:232
+msgid "Consult the Ekiga Call Out balance history"
+msgstr "Zobrazit historii zůstatku na účtu Ekiga pro odchozí volání"
+
+#: ../lib/engine/components/opal/opal-account.cpp:236
+#: ../lib/engine/components/opal/opal-account.cpp:238
+msgid "Consult the Ekiga Call Out call history"
+msgstr "Zobrazit historii hovorů na čtu Ekiga pro odchozí volání"
+
+#: ../lib/engine/components/opal/opal-account.cpp:288
+#: ../lib/engine/components/opal/opal-presentity.cpp:153
 #: ../plugins/resource-list/rl-entry.cpp:141
 #: ../plugins/resource-list/rl-heap.cpp:102
 #: ../plugins/resource-list/rl-heap.cpp:144
@@ -265,98 +173,10 @@ msgstr "Upravte prosím název této skupiny"
 msgid "Unnamed"
 msgstr "Nepojmenovaný"
 
-#: ../lib/engine/components/local-roster/local-presentity.cpp:245
-#: ../lib/engine/components/opal/opal-account.cpp:548
-#: ../lib/engine/components/opal/opal-presentity.cpp:245
-#: ../lib/engine/gui/gtk-frontend/main_window.cpp:1181
-#: ../plugins/evolution/evolution-contact.cpp:228
-#: ../plugins/loudmouth/loudmouth-presentity.cpp:174
-#: ../plugins/resource-list/rl-presentity.cpp:212
-msgid "_Edit"
-msgstr "_Upravit"
-
-#: ../lib/engine/components/local-roster/local-presentity.cpp:247
-#: ../lib/engine/components/opal/opal-account.cpp:550
-#: ../lib/engine/components/opal/opal-presentity.cpp:247
-#: ../lib/engine/gui/gtk-frontend/accounts-window.cpp:680
-#: ../plugins/evolution/evolution-contact.cpp:230
-#: ../plugins/loudmouth/loudmouth-account.cpp:445
-#: ../plugins/loudmouth/loudmouth-presentity.cpp:199
-#: ../plugins/resource-list/rl-presentity.cpp:214
-msgid "_Remove"
-msgstr "_Odstranit"
-
-#: ../lib/engine/components/local-roster/local-presentity.cpp:276
-#: ../lib/engine/components/opal/opal-presentity.cpp:264
-#: ../plugins/loudmouth/loudmouth-presentity.cpp:285
-msgid "Edit roster element"
-msgstr "Změnit prvek seznamu"
-
-#: ../lib/engine/components/local-roster/local-presentity.cpp:277
-#: ../lib/engine/components/opal/opal-presentity.cpp:265
-msgid ""
-"Please fill in this form to change an existing element of ekiga's internal "
-"roster"
-msgstr ""
-"Vyplňte prosím tento formulář pro změnu existujícího prvku interního seznamu "
-"Ekiga"
-
-#: ../lib/engine/components/local-roster/local-presentity.cpp:281
-msgid "Is a preferred contact"
-msgstr "Je upřednostňovaný kontakt"
-
-#: ../lib/engine/components/local-roster/local-presentity.cpp:283
-#: ../lib/engine/components/opal/opal-presentity.cpp:270
-#: ../plugins/loudmouth/loudmouth-presentity.cpp:290
-#: ../plugins/resource-list/rl-heap.cpp:528
-#: ../plugins/resource-list/rl-presentity.cpp:236
-msgid "Choose groups:"
-msgstr "Vybrat skupiny:"
-
-#: ../lib/engine/components/opal/h323-endpoint.cpp:119
-#: ../lib/engine/components/opal/opal-call.cpp:694
-#: ../lib/engine/components/opal/sip-endpoint.cpp:186
-msgid "Call"
-msgstr "Hovor"
-
-#: ../lib/engine/components/opal/h323-endpoint.cpp:122
-#: ../lib/engine/components/opal/sip-endpoint.cpp:189
-#: ../lib/engine/gui/gtk-frontend/call-window.cpp:1980
-msgid "Transfer"
-msgstr "Přesměrovat"
-
-#. Translators : The alias we are registering already exists : failure
-#: ../lib/engine/components/opal/h323-endpoint.cpp:303
-msgid "Duplicate alias"
-msgstr "Duplicitní přezdívka"
-
-#: ../lib/engine/components/opal/h323-endpoint.cpp:306
-msgid "Bad username/password"
-msgstr "Špatné jméno/heslo"
-
-#: ../lib/engine/components/opal/h323-endpoint.cpp:309
-#: ../lib/engine/components/opal/sip-endpoint.cpp:516
-msgid "Transport error"
-msgstr "Chyba přenosu"
-
-#: ../lib/engine/components/opal/h323-endpoint.cpp:323
-#: ../lib/engine/components/opal/h323-endpoint.cpp:328
-#: ../lib/engine/components/opal/sip-endpoint.cpp:738
-msgid "Failed"
-msgstr "Selhalo"
-
-#. Translators: this is a state, not an action, i.e. it should be read as
-#. "(you are) unregistered", and not as "(you have been) unregistered"
-#: ../lib/engine/components/opal/opal-account.cpp:159
-#: ../lib/engine/components/opal/opal-account.cpp:468
-#: ../lib/engine/components/opal/opal-account.cpp:946
-msgid "Unregistered"
-msgstr "Odregistrován"
-
 #. translators : the result will look like :
 #. * "registered (with 2 voice mail messages)"
 #.
-#: ../lib/engine/components/opal/opal-account.cpp:248
+#: ../lib/engine/components/opal/opal-account.cpp:306
 #, c-format
 msgid "%s (with %d voice mail message)"
 msgid_plural "%s (with %d voice mail messages)"
@@ -364,378 +184,468 @@ msgstr[0] "%s (s %d hlasovou zprávou)"
 msgstr[1] "%s (se %d hlasovými zprávami)"
 msgstr[2] "%s (s %d hlasovými zprávami)"
 
-#: ../lib/engine/components/opal/opal-account.cpp:434
-#: ../lib/engine/components/opal/opal-account.cpp:1037
+#: ../lib/engine/components/opal/opal-account.cpp:498
+#: ../lib/engine/components/opal/opal-account.cpp:1028
 msgid "Processing..."
 msgstr "Zpracovává se…"
 
-#: ../lib/engine/components/opal/opal-account.cpp:535
-#: ../lib/engine/gui/gtk-frontend/accounts-window.cpp:674
-#: ../plugins/loudmouth/loudmouth-account.cpp:433
-msgid "_Disable"
-msgstr "_Zakázat"
+#. Translators: This is Edit name of the Account
+#. * e.g. Editing Ekiga.net Account.
+#.
+#: ../lib/engine/components/opal/opal-account.cpp:625
+#: ../plugins/ldap/ldap-book.cpp:955
+#, c-format
+msgid "Editing %s Account"
+msgstr "Úprava účtu %s"
 
-#: ../lib/engine/components/opal/opal-account.cpp:538
-#: ../lib/engine/gui/gtk-frontend/accounts-window.cpp:671
-#: ../plugins/loudmouth/loudmouth-account.cpp:437
-msgid "_Enable"
-msgstr "_Povolit"
+#: ../lib/engine/components/opal/opal-account.cpp:629
+#: ../lib/engine/components/opal/opal-presentity.cpp:259
+msgid "Name"
+msgstr "Jméno"
 
-#: ../lib/engine/components/opal/opal-account.cpp:564
-#: ../lib/engine/gui/gtk-frontend/assistant-window.cpp:544
-msgid "Recharge the account"
-msgstr "Dobít účet"
+#: ../lib/engine/components/opal/opal-account.cpp:629
+msgid "Ekiga.Net Account"
+msgstr "Účet ekiga.net"
 
-#: ../lib/engine/components/opal/opal-account.cpp:569
-#: ../lib/engine/gui/gtk-frontend/assistant-window.cpp:556
-msgid "Consult the balance history"
-msgstr "Zobrazit historii zůstatku"
+#: ../lib/engine/components/opal/opal-account.cpp:632
+msgid "Registrar"
+msgstr "Registrátor"
 
-#: ../lib/engine/components/opal/opal-account.cpp:574
-#: ../lib/engine/gui/gtk-frontend/assistant-window.cpp:568
-msgid "Consult the call history"
-msgstr "Zobrazit historii hovorů"
+#: ../lib/engine/components/opal/opal-account.cpp:632
+#: ../lib/engine/components/opal/opal-account.cpp:635
+#: ../lib/engine/components/opal/opal-bank.cpp:192
+msgid "ekiga.net"
+msgstr "ekiga.net"
 
-#: ../lib/engine/components/opal/opal-account.cpp:643
-#: ../lib/engine/components/opal/opal-bank.cpp:190
-#: ../plugins/loudmouth/loudmouth-account.cpp:337
-#: ../plugins/loudmouth/loudmouth-bank.cpp:116
-msgid "Edit account"
-msgstr "Upravit účty"
+#: ../lib/engine/components/opal/opal-account.cpp:635
+msgid "Gatekeeper"
+msgstr "Brána"
 
-#: ../lib/engine/components/opal/opal-account.cpp:645
-#: ../lib/engine/components/opal/opal-bank.cpp:191
-#: ../plugins/evolution/evolution-book.cpp:345
-#: ../plugins/evolution/evolution-contact.cpp:322
-#: ../plugins/loudmouth/loudmouth-account.cpp:339
-msgid "Please update the following fields:"
-msgstr "Změňte prosím následující pole:"
+#: ../lib/engine/components/opal/opal-account.cpp:637
+msgid "User"
+msgstr "Uživatel"
 
-#: ../lib/engine/components/opal/opal-account.cpp:647
-#: ../lib/engine/components/opal/opal-bank.cpp:217
-#: ../lib/engine/components/opal/opal-bank.cpp:227
-#: ../plugins/loudmouth/loudmouth-account.cpp:342
-#: ../plugins/loudmouth/loudmouth-bank.cpp:120
-msgid "Account name, e.g. MyAccount"
-msgstr "Název účtu, např. MujUcet"
-
-#: ../lib/engine/components/opal/opal-account.cpp:649
-msgid "Registrar:"
-msgstr "Registrátor:"
-
-#: ../lib/engine/components/opal/opal-account.cpp:649
-#: ../lib/engine/components/opal/opal-bank.cpp:228
-msgid "The registrar, e.g. ekiga.net"
-msgstr "Registrátor, např. ekiga.net"
-
-#: ../lib/engine/components/opal/opal-account.cpp:651
-msgid "Gatekeeper:"
-msgstr "Brána:"
-
-#: ../lib/engine/components/opal/opal-account.cpp:651
-#: ../lib/engine/components/opal/opal-bank.cpp:218
-msgid "The gatekeeper, e.g. ekiga.net"
-msgstr "Brána (gatekeeper), např. ekiga.net"
-
-#: ../lib/engine/components/opal/opal-account.cpp:652
-#: ../plugins/loudmouth/loudmouth-account.cpp:346
-#: ../plugins/loudmouth/loudmouth-bank.cpp:121
-#: ../plugins/resource-list/rl-cluster.cpp:169
-msgid "User:"
-msgstr "Uživatel:"
-
-#: ../lib/engine/components/opal/opal-account.cpp:652
-#: ../lib/engine/components/opal/opal-bank.cpp:199
-#: ../lib/engine/components/opal/opal-bank.cpp:210
-#: ../lib/engine/components/opal/opal-bank.cpp:219
-#: ../lib/engine/components/opal/opal-bank.cpp:229
-#: ../plugins/loudmouth/loudmouth-account.cpp:346
-#: ../plugins/loudmouth/loudmouth-bank.cpp:121
-msgid "The user name, e.g. jim"
-msgstr "Jméno uživatele, např. Kuba"
+#: ../lib/engine/components/opal/opal-account.cpp:637
+#: ../lib/engine/components/opal/opal-bank.cpp:179
+#: ../lib/engine/components/opal/opal-bank.cpp:194
+msgid "jon"
+msgstr "honza"
 
 #. Translators:
 #. * SIP knows two usernames: The name for the client ("User") and the name
-#. * for the authentication procedure ("Authentication user")
-#: ../lib/engine/components/opal/opal-account.cpp:657
-msgid "Authentication user:"
-msgstr "Ověřený uživatel:"
+#. * for the authentication procedure ("Authentication user"), aka Login
+#. * to make it understandable
+#.
+#: ../lib/engine/components/opal/opal-account.cpp:645
+msgid "Login"
+msgstr "Přihlášení"
 
-#: ../lib/engine/components/opal/opal-account.cpp:657
-#: ../lib/engine/components/opal/opal-bank.cpp:230
-msgid ""
-"The user name used during authentication, if different than the user name; "
-"leave empty if you do not have one"
-msgstr ""
-"Uživatelské jméno použité během ověřování identity v případě, že je jiné než "
-"uživatelovo jméno. Pokud jej nemáte, ponechte prázdné."
+#: ../lib/engine/components/opal/opal-account.cpp:645
+#: ../lib/engine/components/opal/opal-bank.cpp:196
+msgid "jon.doe"
+msgstr "honza.jelinek"
 
-#: ../lib/engine/components/opal/opal-account.cpp:658
-#: ../plugins/loudmouth/loudmouth-account.cpp:362
-#: ../plugins/loudmouth/loudmouth-bank.cpp:124
-#: ../plugins/resource-list/rl-cluster.cpp:168
-msgid "Password:"
-msgstr "Heslo:"
+#: ../lib/engine/components/opal/opal-account.cpp:647
+msgid "Password"
+msgstr "Heslo"
 
-#: ../lib/engine/components/opal/opal-account.cpp:658
-#: ../lib/engine/components/opal/opal-bank.cpp:201
-#: ../lib/engine/components/opal/opal-bank.cpp:212
-#: ../lib/engine/components/opal/opal-bank.cpp:221
-#: ../lib/engine/components/opal/opal-bank.cpp:231
-#: ../plugins/loudmouth/loudmouth-account.cpp:362
-#: ../plugins/loudmouth/loudmouth-bank.cpp:124
-msgid "Password associated to the user"
-msgstr "Heslo patřící uživateli"
+#: ../lib/engine/components/opal/opal-account.cpp:647
+#: ../lib/engine/components/opal/opal-bank.cpp:156
+#: ../lib/engine/components/opal/opal-bank.cpp:169
+#: ../lib/engine/components/opal/opal-bank.cpp:182
+#: ../lib/engine/components/opal/opal-bank.cpp:198
+msgid "1234"
+msgstr "1234"
 
-#: ../lib/engine/components/opal/opal-account.cpp:659
-msgid "Timeout:"
-msgstr "Časové omezení:"
+#: ../lib/engine/components/opal/opal-account.cpp:649
+#: ../lib/engine/components/opal/sip-endpoint.cpp:622
+msgid "Timeout"
+msgstr "Čas vypršel"
 
-#: ../lib/engine/components/opal/opal-account.cpp:659
-#: ../lib/engine/components/opal/opal-bank.cpp:222
-#: ../lib/engine/components/opal/opal-bank.cpp:232
-msgid ""
-"Time in seconds after which the account registration is automatically retried"
-msgstr "Čas v sekundách, po kterém je registrace účtu automaticky zopakována"
+#: ../lib/engine/components/opal/opal-account.cpp:651
+msgid "Enable Account"
+msgstr "Povolit účet"
 
-#: ../lib/engine/components/opal/opal-account.cpp:660
-#: ../lib/engine/components/opal/opal-bank.cpp:235
+#: ../lib/engine/components/opal/opal-account.cpp:680
+msgid "You did not supply a name for that account."
+msgstr "Nevyplnili jste název pro tento účet."
+
+#: ../lib/engine/components/opal/opal-account.cpp:682
+msgid "You did not supply a host to register to."
+msgstr "Nevyplnili jste poskytovatele, u kterého se má registrovat."
+
+#: ../lib/engine/components/opal/opal-account.cpp:684
+msgid "You did not supply a user name for that account."
+msgstr "Nevyplnili jste uživatelské jméno pro tento účet."
+
+#: ../lib/engine/components/opal/opal-account.cpp:686
+msgid "The timeout should be at least 10 seconds."
+msgstr "Časové omezení by mělo být nejméně 10 sekund."
+
+#: ../lib/engine/components/opal/opal-account.cpp:768
+#: ../plugins/evolution/evolution-book.cpp:341
+msgid "Add Contact"
+msgstr "Přidání kontaktu"
+
+#: ../lib/engine/components/opal/opal-account.cpp:769
+#: ../lib/engine/components/opal/opal-bank.cpp:175
+#: ../lib/engine/components/opal/opal-bank.cpp:190
+#: ../plugins/evolution/evolution-book.cpp:343
+#: ../plugins/evolution/evolution-contact.cpp:304
+#: ../plugins/ldap/ldap-book.cpp:962
+msgid "_Name"
+msgstr "_Jméno"
+
+#: ../lib/engine/components/opal/opal-account.cpp:769
+#: ../lib/engine/components/opal/opal-presentity.cpp:261
+#: ../plugins/evolution/evolution-book.cpp:344
+#: ../plugins/evolution/evolution-contact.cpp:304
+msgid "John Doe"
+msgstr "Honza Jelínek"
+
+#: ../lib/engine/components/opal/opal-account.cpp:772
+#: ../plugins/evolution/evolution-book.cpp:346
+#: ../plugins/evolution/evolution-contact.cpp:313
+#: ../plugins/ldap/ldap-book.cpp:964
+msgid "_URI"
+msgstr "Adresa _URI"
+
+#: ../lib/engine/components/opal/opal-account.cpp:776
+#: ../lib/engine/components/opal/opal-presentity.cpp:270
+msgid "Groups"
+msgstr "Skupiny"
+
+#: ../lib/engine/components/opal/opal-account.cpp:821
+#: ../lib/engine/components/opal/opal-call.cpp:221
+msgid "You supplied an unsupported address"
+msgstr "Byla vyplněna nepodporovaná adresa"
+
+#: ../lib/engine/components/opal/opal-account.cpp:823
+msgid "You already have a contact with this address!"
+msgstr "S touto adresou již kontakt máte!"
+
+#. Translators: this is a state, not an action, i.e. it should be read as
+#. "(you are) registered", and not as "(you have been) registered"
+#: ../lib/engine/components/opal/opal-account.cpp:910
+msgid "Registered"
+msgstr "Registrován"
+
+#: ../lib/engine/components/opal/opal-account.cpp:951
+msgid "Could not unregister"
+msgstr "Nelze se odregistrovat"
+
+#: ../lib/engine/components/opal/opal-account.cpp:963
+#: ../lib/engine/components/opal/opal-account.cpp:1004
+msgid "Could not register to "
+msgstr "Nelze se zaregistrovat k "
+
+#: ../lib/engine/components/opal/opal-account.cpp:964
+#: ../lib/engine/components/opal/opal-account.cpp:1005
+#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:603
+#: ../plugins/loudmouth/loudmouth-account.cpp:443
+msgid "Edit"
+msgstr "Upravit"
+
+#: ../lib/engine/components/opal/opal-account.cpp:999
+msgid "Could not register"
+msgstr "Nelze se zaregistrovat"
+
+#: ../lib/engine/components/opal/opal-account.cpp:1285
+msgid "Renaming Groups"
+msgstr "Přejmenování skupin"
+
+#: ../lib/engine/components/opal/opal-bank.cpp:145
+#: ../plugins/ldap/ldap-book.cpp:957
+msgid "Add Account"
+msgstr "Přidání účtu"
+
+#: ../lib/engine/components/opal/opal-bank.cpp:150
+msgid "Get an Ekiga.net SIP account"
+msgstr "Získat účet SIP na Ekiga.net"
+
+#: ../lib/engine/components/opal/opal-bank.cpp:153
+msgid "Ekiga.im _SIP address"
+msgstr "Adresa _SIP na ekiga.im"
+
+#: ../lib/engine/components/opal/opal-bank.cpp:153
+msgid "sip:jon@ekiga.im"
+msgstr "sip:honza@ekiga.im"
+
+#: ../lib/engine/components/opal/opal-bank.cpp:156
+#: ../lib/engine/components/opal/opal-bank.cpp:182
+#: ../lib/engine/components/opal/opal-bank.cpp:198
+#: ../plugins/ldap/ldap-book.cpp:1010
+msgid "_Password"
+msgstr "_Heslo"
+
+#: ../lib/engine/components/opal/opal-bank.cpp:162
+#: ../lib/engine/gui/gtk-frontend/assistant-window.cpp:461
+msgid "Get an Ekiga Call Out account"
+msgstr "Získat účet Ekiga pro odchozí volání"
+
+#: ../lib/engine/components/opal/opal-bank.cpp:166
+msgid "_Account ID"
+msgstr "_ID účtu"
+
+#: ../lib/engine/components/opal/opal-bank.cpp:166
+msgid "1234567890"
+msgstr "1234567890"
+
+#: ../lib/engine/components/opal/opal-bank.cpp:169
+msgid "_PIN Code"
+msgstr "Kód _PIN"
+
+#: ../lib/engine/components/opal/opal-bank.cpp:175
+msgid "My H.323 Account"
+msgstr "Můj účet H.323"
+
+#: ../lib/engine/components/opal/opal-bank.cpp:177
+msgid "_Gatekeeper"
+msgstr "_Brána"
+
+#: ../lib/engine/components/opal/opal-bank.cpp:177
+msgid "h323.ekiga.net"
+msgstr "h323.ekiga.net"
+
+#: ../lib/engine/components/opal/opal-bank.cpp:179
+#: ../lib/engine/components/opal/opal-bank.cpp:194
+msgid "_User"
+msgstr "_Uživatel"
+
+#: ../lib/engine/components/opal/opal-bank.cpp:184
+#: ../lib/engine/components/opal/opal-bank.cpp:200
+msgid "_Timeout"
+msgstr "Časové o_mezení"
+
+#: ../lib/engine/components/opal/opal-bank.cpp:190
+msgid "My SIP Account"
+msgstr "Můj účet SIP"
+
+#: ../lib/engine/components/opal/opal-bank.cpp:192
+msgid "_Registrar"
+msgstr "_Registrátor"
+
+#: ../lib/engine/components/opal/opal-bank.cpp:196
+msgid "_Login"
+msgstr "_Přihlášení"
+
+#: ../lib/engine/components/opal/opal-bank.cpp:204
 #: ../plugins/loudmouth/loudmouth-account.cpp:376
 #: ../plugins/loudmouth/loudmouth-bank.cpp:125
 msgid "Enable account"
 msgstr "Povolit účet"
 
-#: ../lib/engine/components/opal/opal-account.cpp:689
-#: ../lib/engine/components/opal/opal-bank.cpp:270
-msgid "You did not supply a name for that account."
-msgstr "Nevyplnili jste název pro tento účet."
+#: ../lib/engine/components/opal/opal-bank.cpp:406
+#: ../plugins/loudmouth/loudmouth-heap-roster.cpp:488
+msgid "Family"
+msgstr "Rodina"
 
-#: ../lib/engine/components/opal/opal-account.cpp:691
-#: ../lib/engine/components/opal/opal-bank.cpp:272
-msgid "You did not supply a host to register to."
-msgstr "Nevyplnili jste poskytovatele, u kterého se má registrovat."
+#: ../lib/engine/components/opal/opal-bank.cpp:407
+#: ../plugins/loudmouth/loudmouth-heap-roster.cpp:489
+msgid "Friend"
+msgstr "Kamarád"
 
-#: ../lib/engine/components/opal/opal-account.cpp:693
-#: ../lib/engine/components/opal/opal-bank.cpp:274
-msgid "You did not supply a user name for that account."
-msgstr "Nevyplnili jste uživatelské jméno pro tento účet."
+#. Translator: http://www.ietf.org/rfc/rfc4480.txt proposes several
+#. relationships between you and your contact; associate means
+#. someone who is at the same "level" than you.
+#.
+#: ../lib/engine/components/opal/opal-bank.cpp:412
+#: ../plugins/loudmouth/loudmouth-heap-roster.cpp:494
+msgid "Associate"
+msgstr "Připojit"
 
-#: ../lib/engine/components/opal/opal-account.cpp:695
-#: ../lib/engine/components/opal/opal-bank.cpp:276
-msgid "The timeout should be at least 10 seconds."
-msgstr "Časové omezení by mělo být nejméně 10 sekund."
+#. Translator: http://www.ietf.org/rfc/rfc4480.txt proposes several
+#. relationships between you and your contact; assistant means
+#. someone who is at a lower "level" than you.
+#.
+#: ../lib/engine/components/opal/opal-bank.cpp:417
+#: ../plugins/loudmouth/loudmouth-heap-roster.cpp:499
+msgid "Assistant"
+msgstr "Průvodce"
 
-#: ../lib/engine/components/opal/opal-account.cpp:778
-msgid "Add to account roster"
-msgstr "Přidat do seznamu účtu"
+#. Translator: http://www.ietf.org/rfc/rfc4480.txt proposes several
+#. relationships between you and your contact; supervisor means
+#. someone who is at a higher "level" than you.
+#.
+#: ../lib/engine/components/opal/opal-bank.cpp:422
+#: ../plugins/loudmouth/loudmouth-heap-roster.cpp:504
+msgid "Supervisor"
+msgstr "Dozorce"
 
-#: ../lib/engine/components/opal/opal-account.cpp:779
-msgid "Please fill in this form to add a new contact to this account's roster"
-msgstr ""
-"Vyplňte prosím tento formulář pro přidání nového kontaktu do seznamu "
-"patřícího k tomuto účtu"
+#. Translator: http://www.ietf.org/rfc/rfc4480.txt proposes several
+#. relationships between you and your contact; self means yourself.
+#.
+#: ../lib/engine/components/opal/opal-bank.cpp:426
+#: ../plugins/loudmouth/loudmouth-heap-roster.cpp:508
+msgid "Self"
+msgstr "Vlastní"
 
-#. Translators: this is a state, not an action, i.e. it should be read as
-#. "(you are) registered", and not as "(you have been) registered"
-#: ../lib/engine/components/opal/opal-account.cpp:919
-msgid "Registered"
-msgstr "Registrován"
-
-#: ../lib/engine/components/opal/opal-account.cpp:960
-msgid "Could not unregister"
-msgstr "Nelze se odregistrovat"
-
-#: ../lib/engine/components/opal/opal-account.cpp:972
-#: ../lib/engine/components/opal/opal-account.cpp:1013
-msgid "Could not register to "
-msgstr "Nelze se zaregistrovat k "
-
-#: ../lib/engine/components/opal/opal-account.cpp:973
-#: ../lib/engine/components/opal/opal-account.cpp:1014
-#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:600
-#: ../plugins/loudmouth/loudmouth-account.cpp:443
-msgid "Edit"
-msgstr "Upravit"
-
-#: ../lib/engine/components/opal/opal-account.cpp:1008
-msgid "Could not register"
-msgstr "Nelze se zaregistrovat"
-
-#: ../lib/engine/components/opal/opal-bank.cpp:125
+#: ../lib/engine/components/opal/opal-bank.cpp:571
 msgid "_Add an Ekiga.net Account"
 msgstr "_Přidat účet Ekiga.net"
 
-#: ../lib/engine/components/opal/opal-bank.cpp:127
+#: ../lib/engine/components/opal/opal-bank.cpp:578
 msgid "_Add an Ekiga Call Out Account"
 msgstr "Při_dat účet Ekiga pro odchozí volání"
 
-#: ../lib/engine/components/opal/opal-bank.cpp:129
+#: ../lib/engine/components/opal/opal-bank.cpp:581
 msgid "_Add a SIP Account"
 msgstr "Přida_t účet SIP"
 
-#: ../lib/engine/components/opal/opal-bank.cpp:132
+#: ../lib/engine/components/opal/opal-bank.cpp:585
 msgid "_Add an H.323 Account"
 msgstr "Př_idat účet H.323"
 
-#: ../lib/engine/components/opal/opal-bank.cpp:196
-#: ../lib/engine/gui/gtk-frontend/assistant-window.cpp:428
-msgid "Get an Ekiga.net SIP account"
-msgstr "Získat účet SIP na Ekiga.net"
+#: ../lib/engine/components/opal/opal-call.cpp:118
+msgid "Hangup"
+msgstr "Zavěsit"
 
-#: ../lib/engine/components/opal/opal-bank.cpp:199
-#: ../lib/engine/components/opal/opal-bank.cpp:219
-#: ../lib/engine/components/opal/opal-bank.cpp:229
-msgid "_User:"
-msgstr "_Uživatel:"
+#: ../lib/engine/components/opal/opal-call.cpp:121
+msgid "Answer"
+msgstr "Zvednout"
 
-#: ../lib/engine/components/opal/opal-bank.cpp:201
-#: ../lib/engine/components/opal/opal-bank.cpp:221
-#: ../lib/engine/components/opal/opal-bank.cpp:231
-#: ../plugins/ldap/ldap-book.cpp:986
-msgid "_Password:"
-msgstr "_Heslo:"
+#: ../lib/engine/components/opal/opal-call.cpp:123
+#: ../plugins/libnotify/libnotify-main.cpp:287
+msgid "Reject"
+msgstr "Odmítnout"
 
-#: ../lib/engine/components/opal/opal-bank.cpp:206
-#: ../lib/engine/gui/gtk-frontend/assistant-window.cpp:532
-msgid "Get an Ekiga Call Out account"
-msgstr "Získat účet Ekiga pro odchozí volání"
+#: ../lib/engine/components/opal/opal-call.cpp:176
+msgid "Transfer Call"
+msgstr "Přesměrování hovoru"
 
-#: ../lib/engine/components/opal/opal-bank.cpp:210
-msgid "_Account ID:"
-msgstr "_ID účtu:"
+#: ../lib/engine/components/opal/opal-call.cpp:177
+#: ../lib/engine/components/opal/opal-call.cpp:427
+#: ../lib/engine/components/opal/opal-call-manager.cpp:244
+msgid "Transfer"
+msgstr "Přesměrovat"
 
-#: ../lib/engine/components/opal/opal-bank.cpp:212
-msgid "_PIN code:"
-msgstr "Kód _PIN:"
+#: ../lib/engine/components/opal/opal-call.cpp:178
+msgid "Remote URI"
+msgstr "Vzdálená adresa URI"
 
-#: ../lib/engine/components/opal/opal-bank.cpp:217
-#: ../lib/engine/components/opal/opal-bank.cpp:227
-#: ../plugins/evolution/evolution-book.cpp:347
-msgid "_Name:"
-msgstr "_Jméno:"
+#: ../lib/engine/components/opal/opal-call.cpp:180
+#: ../lib/engine/components/opal/opal-presentity.cpp:266
+msgid "sip:username@ekiga.net"
+msgstr "sip:uzivatelskejmeno@ekiga.net"
 
-#: ../lib/engine/components/opal/opal-bank.cpp:218
-msgid "_Gatekeeper:"
-msgstr "_Brána:"
+#: ../lib/engine/components/opal/opal-call.cpp:425
+msgid "Hold"
+msgstr "Přidržet"
 
-#: ../lib/engine/components/opal/opal-bank.cpp:222
-#: ../lib/engine/components/opal/opal-bank.cpp:232
-msgid "_Timeout:"
-msgstr "Časové o_mezení:"
-
-#: ../lib/engine/components/opal/opal-bank.cpp:228
-msgid "_Registrar:"
-msgstr "_Registrátor:"
-
-#: ../lib/engine/components/opal/opal-bank.cpp:230
-msgid "_Authentication user:"
-msgstr "Uživ_atel k ověření:"
-
-#: ../lib/engine/components/opal/opal-call.cpp:416
+#: ../lib/engine/components/opal/opal-call.cpp:492
 msgid "Local user cleared the call"
 msgstr "Místní uživatel ukončil hovor"
 
-#: ../lib/engine/components/opal/opal-call.cpp:419
-#: ../lib/engine/components/opal/opal-call.cpp:422
+#: ../lib/engine/components/opal/opal-call.cpp:495
+#: ../lib/engine/components/opal/opal-call.cpp:498
 msgid "Local user rejected the call"
 msgstr "Místní uživatel odmítl hovor"
 
-#: ../lib/engine/components/opal/opal-call.cpp:425
+#: ../lib/engine/components/opal/opal-call.cpp:501
 msgid "Remote user cleared the call"
 msgstr "Vzdálený uživatel ukončil hovor"
 
-#: ../lib/engine/components/opal/opal-call.cpp:428
+#: ../lib/engine/components/opal/opal-call.cpp:504
 msgid "Remote user rejected the call"
 msgstr "Vzdálený uživatel odmítl hovor"
 
-#: ../lib/engine/components/opal/opal-call.cpp:431
+#: ../lib/engine/components/opal/opal-call.cpp:507
 msgid "Remote user has stopped calling"
 msgstr "Vzdálený uživatel zastavil hovor"
 
-#: ../lib/engine/components/opal/opal-call.cpp:434
+#: ../lib/engine/components/opal/opal-call.cpp:510
 msgid "Abnormal call termination"
 msgstr "Neočekávané přerušení hovoru"
 
-#: ../lib/engine/components/opal/opal-call.cpp:437
-#: ../lib/engine/gui/gtk-frontend/main_window.cpp:420
+#: ../lib/engine/components/opal/opal-call.cpp:513
+#: ../lib/engine/gui/gtk-frontend/main_window.cpp:294
 msgid "Could not connect to remote host"
 msgstr "Nelze se připojit ke vzdálenému počítači"
 
-#: ../lib/engine/components/opal/opal-call.cpp:441
+#: ../lib/engine/components/opal/opal-call.cpp:517
 msgid "The Gatekeeper cleared the call"
 msgstr "Brána ukončila hovor"
 
-#: ../lib/engine/components/opal/opal-call.cpp:444
+#: ../lib/engine/components/opal/opal-call.cpp:520
 msgid "User not found"
 msgstr "Uživatel nenalezen"
 
-#: ../lib/engine/components/opal/opal-call.cpp:447
+#: ../lib/engine/components/opal/opal-call.cpp:523
 msgid "Insufficient bandwidth"
 msgstr "Nedostatečná šířka pásma"
 
-#: ../lib/engine/components/opal/opal-call.cpp:450
+#: ../lib/engine/components/opal/opal-call.cpp:526
 msgid "No common codec"
 msgstr "Žádný společný kodek"
 
-#: ../lib/engine/components/opal/opal-call.cpp:453
+#: ../lib/engine/components/opal/opal-call.cpp:529
 msgid "Call forwarded"
 msgstr "Hovor předán"
 
-#: ../lib/engine/components/opal/opal-call.cpp:456
+#: ../lib/engine/components/opal/opal-call.cpp:532
 msgid "Security check failed"
 msgstr "Kontrola zabezpečení selhala"
 
-#: ../lib/engine/components/opal/opal-call.cpp:459
+#: ../lib/engine/components/opal/opal-call.cpp:535
 msgid "Local user is busy"
 msgstr "Místní uživatel je zaneprázdněn"
 
-#: ../lib/engine/components/opal/opal-call.cpp:462
-#: ../lib/engine/components/opal/opal-call.cpp:468
+#: ../lib/engine/components/opal/opal-call.cpp:538
+#: ../lib/engine/components/opal/opal-call.cpp:544
 msgid "Congested link to remote party"
 msgstr "Ucpaná linka ke vzdálené straně"
 
-#: ../lib/engine/components/opal/opal-call.cpp:465
+#: ../lib/engine/components/opal/opal-call.cpp:541
 msgid "Remote user is busy"
 msgstr "Vzdálený uživatel je zaneprázdněn"
 
-#: ../lib/engine/components/opal/opal-call.cpp:471
+#: ../lib/engine/components/opal/opal-call.cpp:547
 msgid "Remote host is offline"
 msgstr "Vzdáleny počítač není připojen"
 
-#: ../lib/engine/components/opal/opal-call.cpp:474
+#: ../lib/engine/components/opal/opal-call.cpp:550
 msgid "User is offline"
 msgstr "uživatel je odpojen"
 
-#: ../lib/engine/components/opal/opal-call.cpp:477
+#: ../lib/engine/components/opal/opal-call.cpp:553
 msgid "Remote host not found"
 msgstr "Vzdáleny počítač nebyl nalezen"
 
-#: ../lib/engine/components/opal/opal-call.cpp:481
+#: ../lib/engine/components/opal/opal-call.cpp:557
 msgid "User is not available"
 msgstr "Uživatel není dostupný"
 
-#: ../lib/engine/components/opal/opal-call.cpp:484
-#: ../lib/engine/components/opal/sip-endpoint.cpp:694
+#: ../lib/engine/components/opal/opal-call.cpp:560
+#: ../lib/engine/components/opal/sip-endpoint.cpp:722
 msgid "Service unavailable"
 msgstr "Služba nedostupná"
 
-#: ../lib/engine/components/opal/opal-call.cpp:487
+#: ../lib/engine/components/opal/opal-call.cpp:563
 msgid "Remote certificate not authenticated"
 msgstr "Vzdálený certifikát nebyl ověřen"
 
-#: ../lib/engine/components/opal/opal-call.cpp:500
+#: ../lib/engine/components/opal/opal-call.cpp:576
 msgid "Call completed"
 msgstr "Hovor dokončen"
 
-#: ../lib/engine/components/opal/opal-call.cpp:691
+#: ../lib/engine/components/opal/opal-call.cpp:652
+msgid "Transmit Video"
+msgstr "Přenášet obraz"
+
+#: ../lib/engine/components/opal/opal-call.cpp:771
 msgid "Missed call from"
 msgstr "Zmeškaný hovor od"
 
-#: ../lib/engine/components/opal/opal-call.cpp:693
+#: ../lib/engine/components/opal/opal-call.cpp:773
 msgid "Missed call"
 msgstr "Zmeškaný hovor"
 
-#: ../lib/engine/components/opal/opal-call-manager.cpp:937
+#: ../lib/engine/components/opal/opal-call.cpp:774
+#: ../lib/engine/components/opal/opal-call-manager.cpp:243
+msgid "Call"
+msgstr "Hovor"
+
+#: ../lib/engine/components/opal/opal-call-manager.cpp:984
 msgid ""
 "Ekiga did not manage to configure your network settings automatically. You "
 "can still use it, but you need to configure your network settings manually.\n"
@@ -749,104 +659,125 @@ msgstr ""
 "Instrukce najdete na http://wiki.ekiga.org/index.php/"
 "Enable_port_forwarding_manually (informace jsou v angličtině)"
 
-#: ../lib/engine/components/opal/sip-endpoint.cpp:191
-msgid "Message"
-msgstr "Zpráva"
+#: ../lib/engine/components/opal/opal-presentity.cpp:119
+msgid "Rename _Groups"
+msgstr "Přejmenovat s_kupiny"
 
-#: ../lib/engine/components/opal/sip-endpoint.cpp:512
+#. Translators: This is Edit name of the contact
+#. * e.g. Editing Contact Claire Fleury.
+#.
+#: ../lib/engine/components/opal/opal-presentity.cpp:254
+#, c-format
+msgid "Editing Contact %s"
+msgstr "Úprava kontaktu %s"
+
+#: ../lib/engine/components/opal/opal-presentity.cpp:258
+#: ../lib/engine/gui/gtk-core/form-dialog-gtk.cpp:823
+msgid "Done"
+msgstr "Hotovo"
+
+#: ../lib/engine/components/opal/opal-presentity.cpp:264
+msgid "URI"
+msgstr "Adresa URI"
+
+#: ../lib/engine/components/opal/opal-presentity.cpp:293
+msgid "You did not provide a valid name"
+msgstr "Nazadali jste platné jméno"
+
+#: ../lib/engine/components/opal/opal-presentity.cpp:297
+msgid "You did not provide a valid address"
+msgstr "Nezadali jste platnou adresu"
+
+#: ../lib/engine/components/opal/sip-endpoint.cpp:540
 msgid "Illegal status code"
 msgstr "Nepovolený stavový kód"
 
-#: ../lib/engine/components/opal/sip-endpoint.cpp:520
+#: ../lib/engine/components/opal/sip-endpoint.cpp:548
 msgid "Invalid address"
 msgstr "Neplatná adresa"
 
 #. Translators: Host of the remote party is offline, this should
 #. * appear when the remote host does not reply in an acceptable time
-#: ../lib/engine/components/opal/sip-endpoint.cpp:526
+#: ../lib/engine/components/opal/sip-endpoint.cpp:554
 msgid "Remote party host is offline"
 msgstr "Počítač vzdálené strany je odpojený"
 
 #. Translators: the following strings are answers from the SIP server
 #. * when the packet it receives has an error, see
 #. * http://www.ietf.org/rfc/rfc3261.txt, chapter 21 for more information
-#: ../lib/engine/components/opal/sip-endpoint.cpp:542
+#: ../lib/engine/components/opal/sip-endpoint.cpp:570
 msgid "Multiple choices"
 msgstr "Více možností"
 
-#: ../lib/engine/components/opal/sip-endpoint.cpp:546
+#: ../lib/engine/components/opal/sip-endpoint.cpp:574
 msgid "Moved permanently"
 msgstr "Trvale přesunuto"
 
-#: ../lib/engine/components/opal/sip-endpoint.cpp:550
+#: ../lib/engine/components/opal/sip-endpoint.cpp:578
 msgid "Moved temporarily"
 msgstr "Dočasně přesunuto"
 
-#: ../lib/engine/components/opal/sip-endpoint.cpp:554
+#: ../lib/engine/components/opal/sip-endpoint.cpp:582
 msgid "Use proxy"
 msgstr "Použít proxy"
 
-#: ../lib/engine/components/opal/sip-endpoint.cpp:558
+#: ../lib/engine/components/opal/sip-endpoint.cpp:586
 msgid "Alternative service"
 msgstr "Alternativní služba"
 
-#: ../lib/engine/components/opal/sip-endpoint.cpp:562
+#: ../lib/engine/components/opal/sip-endpoint.cpp:590
 msgid "Bad request"
 msgstr "Špatný požadavek"
 
-#: ../lib/engine/components/opal/sip-endpoint.cpp:566
+#: ../lib/engine/components/opal/sip-endpoint.cpp:594
 msgid "Unauthorized"
 msgstr "Neautorizovaný"
 
-#: ../lib/engine/components/opal/sip-endpoint.cpp:570
+#: ../lib/engine/components/opal/sip-endpoint.cpp:598
 msgid "Payment required"
 msgstr "Vyžadována platba"
 
-#: ../lib/engine/components/opal/sip-endpoint.cpp:574
+#: ../lib/engine/components/opal/sip-endpoint.cpp:602
 msgid "Forbidden, please check that username and password are correct"
 msgstr "Nepovoleno, zkontrolujte prosím správnost uživatelského jména a hesla"
 
-#: ../lib/engine/components/opal/sip-endpoint.cpp:578
+#: ../lib/engine/components/opal/sip-endpoint.cpp:606
 msgid "Not found"
 msgstr "Nenalezeno"
 
-#: ../lib/engine/components/opal/sip-endpoint.cpp:582
+#: ../lib/engine/components/opal/sip-endpoint.cpp:610
 msgid "Method not allowed"
 msgstr "Činnost nepovolena"
 
-#: ../lib/engine/components/opal/sip-endpoint.cpp:586
+#: ../lib/engine/components/opal/sip-endpoint.cpp:614
 msgid "Not acceptable"
 msgstr "Nepřijatelný"
 
-#: ../lib/engine/components/opal/sip-endpoint.cpp:590
+#: ../lib/engine/components/opal/sip-endpoint.cpp:618
 msgid "Proxy authentication required"
 msgstr "Proxy vyžaduje ověření"
 
-#: ../lib/engine/components/opal/sip-endpoint.cpp:594
-msgid "Timeout"
-msgstr "Čas vypršel"
-
-#: ../lib/engine/components/opal/sip-endpoint.cpp:598
+#: ../lib/engine/components/opal/sip-endpoint.cpp:626
 msgid "Conflict"
 msgstr "Konflikt"
 
-#: ../lib/engine/components/opal/sip-endpoint.cpp:602
+#: ../lib/engine/components/opal/sip-endpoint.cpp:630
 msgid "Length required"
 msgstr "Požadovaná délka"
 
-#: ../lib/engine/components/opal/sip-endpoint.cpp:606
+#: ../lib/engine/components/opal/sip-endpoint.cpp:634
 msgid "Request entity too big"
 msgstr "Požadovaná entita příliš velká"
 
-#: ../lib/engine/components/opal/sip-endpoint.cpp:610
+#: ../lib/engine/components/opal/sip-endpoint.cpp:638
 msgid "Request URI too long"
 msgstr "Požadovaná adresa URI příliš dlouhá"
 
-#: ../lib/engine/components/opal/sip-endpoint.cpp:614
+#: ../lib/engine/components/opal/sip-endpoint.cpp:642
 msgid "Unsupported media type"
 msgstr "Nepodporovaný typ média"
 
-#: ../lib/engine/components/opal/sip-endpoint.cpp:618
+#: ../lib/engine/components/opal/sip-endpoint.cpp:646
 msgid "Unsupported URI scheme"
 msgstr "Nepodporované schéma URI"
 
@@ -854,196 +785,172 @@ msgstr "Nepodporované schéma URI"
 #. * Here extension is a specific "phone number", see
 #. * http://en.wikipedia.org/wiki/Extension_(telephone)
 #. * for more information
-#: ../lib/engine/components/opal/sip-endpoint.cpp:626
+#: ../lib/engine/components/opal/sip-endpoint.cpp:654
 msgid "Bad extension"
 msgstr "Špatné rozšíření"
 
-#: ../lib/engine/components/opal/sip-endpoint.cpp:630
+#: ../lib/engine/components/opal/sip-endpoint.cpp:658
 msgid "Extension required"
 msgstr "Požadované rozšíření"
 
-#: ../lib/engine/components/opal/sip-endpoint.cpp:634
+#: ../lib/engine/components/opal/sip-endpoint.cpp:662
 msgid "Interval too brief"
 msgstr "Interval příliš krátký"
 
-#: ../lib/engine/components/opal/sip-endpoint.cpp:638
+#: ../lib/engine/components/opal/sip-endpoint.cpp:666
 msgid "Temporarily unavailable"
 msgstr "Dočasně není k dispozici"
 
-#: ../lib/engine/components/opal/sip-endpoint.cpp:642
+#: ../lib/engine/components/opal/sip-endpoint.cpp:670
 msgid "Loop detected"
 msgstr "Detekována smyčka"
 
-#: ../lib/engine/components/opal/sip-endpoint.cpp:646
+#: ../lib/engine/components/opal/sip-endpoint.cpp:674
 msgid "Too many hops"
 msgstr "Příliš mnoho skoků"
 
-#: ../lib/engine/components/opal/sip-endpoint.cpp:650
+#: ../lib/engine/components/opal/sip-endpoint.cpp:678
 msgid "Address incomplete"
 msgstr "Nekompletní adresa"
 
-#: ../lib/engine/components/opal/sip-endpoint.cpp:654
+#: ../lib/engine/components/opal/sip-endpoint.cpp:682
 msgid "Ambiguous"
 msgstr "Nejednoznačný"
 
-#: ../lib/engine/components/opal/sip-endpoint.cpp:658
+#: ../lib/engine/components/opal/sip-endpoint.cpp:686
 msgid "Busy Here"
 msgstr "Zaneprázdněn"
 
-#: ../lib/engine/components/opal/sip-endpoint.cpp:662
+#: ../lib/engine/components/opal/sip-endpoint.cpp:690
 msgid "Request terminated"
 msgstr "Požadavek ukončen"
 
-#: ../lib/engine/components/opal/sip-endpoint.cpp:666
+#: ../lib/engine/components/opal/sip-endpoint.cpp:694
 msgid "Not acceptable here"
 msgstr "Není zde přijatelné"
 
-#: ../lib/engine/components/opal/sip-endpoint.cpp:670
+#: ../lib/engine/components/opal/sip-endpoint.cpp:698
 msgid "Bad event"
 msgstr "Chybná událost"
 
-#: ../lib/engine/components/opal/sip-endpoint.cpp:674
+#: ../lib/engine/components/opal/sip-endpoint.cpp:702
 msgid "Request pending"
 msgstr "Požadavek očekáván"
 
-#: ../lib/engine/components/opal/sip-endpoint.cpp:678
+#: ../lib/engine/components/opal/sip-endpoint.cpp:706
 msgid "Undecipherable"
 msgstr "Nerozluštitelný"
 
-#: ../lib/engine/components/opal/sip-endpoint.cpp:682
+#: ../lib/engine/components/opal/sip-endpoint.cpp:710
 msgid "Internal server error"
 msgstr "Interní chyba serveru"
 
-#: ../lib/engine/components/opal/sip-endpoint.cpp:686
+#: ../lib/engine/components/opal/sip-endpoint.cpp:714
 msgid "Not implemented"
 msgstr "Nezavedený"
 
-#: ../lib/engine/components/opal/sip-endpoint.cpp:690
+#: ../lib/engine/components/opal/sip-endpoint.cpp:718
 msgid "Bad gateway"
 msgstr "Špatná brána"
 
-#: ../lib/engine/components/opal/sip-endpoint.cpp:698
+#: ../lib/engine/components/opal/sip-endpoint.cpp:726
 msgid "Server timeout"
 msgstr "Časový limit serveru"
 
-#: ../lib/engine/components/opal/sip-endpoint.cpp:702
+#: ../lib/engine/components/opal/sip-endpoint.cpp:730
 msgid "SIP version not supported"
 msgstr "Verze SIP není podporována"
 
-#: ../lib/engine/components/opal/sip-endpoint.cpp:706
+#: ../lib/engine/components/opal/sip-endpoint.cpp:734
 msgid "Message too large"
 msgstr "Zpráva příliš dlouhá"
 
-#: ../lib/engine/components/opal/sip-endpoint.cpp:710
+#: ../lib/engine/components/opal/sip-endpoint.cpp:738
 msgid "Busy everywhere"
 msgstr "Zaneprázdněn všude"
 
-#: ../lib/engine/components/opal/sip-endpoint.cpp:714
+#: ../lib/engine/components/opal/sip-endpoint.cpp:742
 msgid "Decline"
 msgstr "Pokles"
 
-#: ../lib/engine/components/opal/sip-endpoint.cpp:718
+#: ../lib/engine/components/opal/sip-endpoint.cpp:746
 msgid "Does not exist anymore"
 msgstr "Už neexistuje"
 
-#: ../lib/engine/components/opal/sip-endpoint.cpp:722
+#: ../lib/engine/components/opal/sip-endpoint.cpp:750
 msgid "Globally not acceptable"
 msgstr "Obecně nepřijatelné"
 
-#: ../lib/engine/components/opal/sip-endpoint.cpp:726
+#: ../lib/engine/components/opal/sip-endpoint.cpp:754
 msgid "Invalid certificates"
 msgstr "Neplatné certifikáty"
 
-#: ../lib/engine/components/opal/sip-endpoint.cpp:857
+#: ../lib/engine/components/opal/sip-endpoint.cpp:885
 msgid "Could not send message: "
 msgstr "Nelze odeslat zprávu: "
 
-#: ../lib/engine/components/opal/sip-endpoint.cpp:859
+#: ../lib/engine/components/opal/sip-endpoint.cpp:887
 msgid "user offline"
 msgstr "uživatel je odpojen"
 
 #. Ignore
-#: ../lib/engine/components/opal/sip-endpoint.cpp:906
+#: ../lib/engine/components/opal/sip-endpoint.cpp:934
 #: ../plugins/libnotify/libnotify-main.cpp:273
 #, c-format
 msgid "Incoming call from %s"
 msgstr "Příchozí hovor od %s"
 
-#: ../lib/engine/components/opal/sip-endpoint.cpp:908
+#: ../lib/engine/components/opal/sip-endpoint.cpp:936
 #, c-format
 msgid "Incoming call"
 msgstr "Příchozí hovor"
 
-#: ../lib/engine/components/opal/sip-endpoint.cpp:914
+#: ../lib/engine/components/opal/sip-endpoint.cpp:942
 #, c-format
 msgid "In a call with %s"
 msgstr "Voláte s %s"
 
-#: ../lib/engine/components/opal/sip-endpoint.cpp:916
+#: ../lib/engine/components/opal/sip-endpoint.cpp:944
 #, c-format
 msgid "In a call"
 msgstr "Voláte"
 
-#: ../lib/engine/gui/gtk-core/codecsbox.cpp:457
+#: ../lib/engine/gui/gtk-core/codecsbox.cpp:452
 msgid "Move selected codec priority upwards"
 msgstr "Přesunout vybranou prioritu kodeku nahoru"
 
-#: ../lib/engine/gui/gtk-core/codecsbox.cpp:467
+#: ../lib/engine/gui/gtk-core/codecsbox.cpp:463
 msgid "Move selected codec priority downwards"
 msgstr "Přesunout vybranou prioritu kodeku dolů"
 
-#: ../lib/engine/gui/gtk-core/form-dialog-gtk.cpp:661
+#: ../lib/engine/gui/gtk-core/form-dialog-gtk.cpp:736
+msgid "Cancel"
+msgstr "Zrušit"
+
+#: ../lib/engine/gui/gtk-core/form-dialog-gtk.cpp:756
 msgid "Advanced"
 msgstr "Pokročilé"
 
-#: ../lib/engine/gui/gtk-core/form-dialog-gtk.cpp:1278
-msgid "Add Group"
-msgstr "Přidat skupinu"
+#: ../lib/engine/gui/gtk-core/form-dialog-gtk.cpp:1394
+msgid "Add"
+msgstr "Přidat"
 
-#: ../lib/engine/gui/gtk-frontend/accounts-window.cpp:560
-msgid "Account Name"
-msgstr "Název účtu"
+#: ../lib/engine/gui/gtk-frontend/addressbook-window.cpp:451
+msgid "Contact Sources"
+msgstr "Zdroje kontaktů"
 
-#: ../lib/engine/gui/gtk-frontend/accounts-window.cpp:561
-msgid "Status"
-msgstr "Stav"
-
-#: ../lib/engine/gui/gtk-frontend/accounts-window.cpp:572
-#: ../lib/engine/gui/gtk-frontend/accounts-window.cpp:610
-msgid "Accounts"
-msgstr "Účty"
-
-#: ../lib/engine/gui/gtk-frontend/accounts-window.cpp:581
-#: ../lib/engine/gui/gtk-frontend/main_window.cpp:1191
-msgid "_Accounts"
-msgstr "Úč_ty"
-
-#: ../lib/engine/gui/gtk-frontend/accounts-window.cpp:585
-#: ../lib/engine/gui/gtk-frontend/main_window.cpp:1239
-msgid "_Help"
-msgstr "_Nápověda"
-
-#: ../lib/engine/gui/gtk-frontend/accounts-window.cpp:677
-msgid "Edi_t"
-msgstr "Upravi_t"
-
-#: ../lib/engine/gui/gtk-frontend/addressbook-window.cpp:622
+#: ../lib/engine/gui/gtk-frontend/addressbook-window.cpp:468
 msgid "Address Book"
 msgstr "Adresář"
 
-#: ../lib/engine/gui/gtk-frontend/addressbook-window.cpp:638
-#: ../lib/engine/gui/gtk-frontend/main_window.cpp:1162
-msgid "Address _Book"
-msgstr "_Adresář"
+#: ../lib/engine/gui/gtk-frontend/addressbook-window.cpp:476
+#: ../lib/engine/gui/gtk-frontend/main_window.cpp:632
+msgid "Call the selected contact"
+msgstr "Volat vybraný kontakt"
 
-#. This will add static and dynamic actions
-#: ../lib/engine/gui/gtk-frontend/addressbook-window.cpp:647
-msgid "_Action"
-msgstr "Č_innost"
-
-#: ../lib/engine/gui/gtk-frontend/addressbook-window.cpp:693
-msgid "Category"
-msgstr "Kategorie"
+#: ../lib/engine/gui/gtk-frontend/addressbook-window.cpp:492
+msgid "Search for contacts"
+msgstr "Vyhledat kontakty"
 
 #: ../lib/engine/gui/gtk-frontend/assistant-window.cpp:130
 msgid ""
@@ -1063,16 +970,18 @@ msgstr ""
 msgid "Welcome to Ekiga"
 msgstr "Vítejte v programu Ekiga"
 
-#: ../lib/engine/gui/gtk-frontend/assistant-window.cpp:161
+#. Personal Information
+#: ../lib/engine/gui/gtk-frontend/assistant-window.cpp:162
+#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:583
 msgid "Personal Information"
 msgstr "Osobní údaje"
 
 #. The user fields
-#: ../lib/engine/gui/gtk-frontend/assistant-window.cpp:164
+#: ../lib/engine/gui/gtk-frontend/assistant-window.cpp:165
 msgid "Please enter your first name and your surname:"
 msgstr "Zadejte prosím své křestní jméno a příjmení:"
 
-#: ../lib/engine/gui/gtk-frontend/assistant-window.cpp:173
+#: ../lib/engine/gui/gtk-frontend/assistant-window.cpp:174
 msgid ""
 "Your first name and surname will be used when connecting to other VoIP and "
 "videoconferencing software."
@@ -1082,77 +991,82 @@ msgstr ""
 
 #: ../lib/engine/gui/gtk-frontend/assistant-window.cpp:219
 msgid ""
-"If you do not have a SIP or H323 account, ekiga can only be used on your "
-"local internal network (inside your company, for example).  You will require "
-"an account if you want to be accessible to people on the Internet.  Many web "
-"sites allow you to create an account.  We suggest that you use a free ekiga."
-"net account, which allows you to be joined by any person with a SIP "
-"account.  If you want to call regular phone lines too, we suggest that you "
-"purchase an inexpensive call out account.\n"
+"You usually need a SIP or H323 account in order to use Ekiga.\n"
+"Many services allow you creating such accounts.\n"
 "\n"
-"The following two pages allow you to create such accounts."
+"We suggest that you use a free ekiga.im account, which allows you to be "
+"called by any person with a SIP account.\n"
+"\n"
+"If you want to call regular phone lines too, we suggest that you purchase an "
+"inexpensive call out account.\n"
+"\n"
+"The following two pages allow you creating such accounts."
 msgstr ""
-"Pokud nemáte účet SIP nebo H323, můžete aplikaci ekiga používat pouze v "
-"místní síti (např. v rámci své firmy). Pokud chcete být dostupní pro ostatní "
-"uživatele Internetu, potřebujete mít zřízený účet. Ten nabízí řada webových "
-"stránek. Doporučujeme ekiga.net, který je zdarma a můžete se přes něj spojit "
-"s libovolnou osobou mající účet SIP. Jestli budete chtít volat i na klasické "
-"telefonní linky, doporučujeme, abyste si přiobjednali levný účet pro vnější "
-"volání.\n"
+"Abyste mohli aplikaci Ekiga používat, budete většinou potřebovat účet SIP "
+"nebo H323.\n"
+"Ten nabízí řada různých služeb.\n"
+"Doporučujeme účet na ekiga.im, který je zdarma a můžete se přes něj spojit s "
+"libovolnou osobou mající účet SIP.\n"
+"Jestli budete chtít volat i na klasické telefonní linky, doporučujeme, "
+"abyste si přiobjednali levný účet pro vnější volání.\n"
 "\n"
-"Následující stránky vám umožní si vytvořit takovéto účty."
+"Na následujících stránky si můžete takovéto účty zřídit."
 
-#: ../lib/engine/gui/gtk-frontend/assistant-window.cpp:234
+#: ../lib/engine/gui/gtk-frontend/assistant-window.cpp:230
 msgid "Introduction to Accounts"
 msgstr "Úvod do účtů"
 
-#: ../lib/engine/gui/gtk-frontend/assistant-window.cpp:391
-msgid "Ekiga.net Account"
-msgstr "Účet ekiga.net"
+#: ../lib/engine/gui/gtk-frontend/assistant-window.cpp:308
+msgid "Ekiga.im Account"
+msgstr "Účet ekiga.im"
 
-#: ../lib/engine/gui/gtk-frontend/assistant-window.cpp:393
-msgid "Please enter your username:"
-msgstr "Zadejte prosím své uživatelské jméno:"
+#: ../lib/engine/gui/gtk-frontend/assistant-window.cpp:310
+msgid "Please enter your ekiga.im SIP address:"
+msgstr "Zadejte prosím svoji adresu SIP na ekiga.im:"
 
-#: ../lib/engine/gui/gtk-frontend/assistant-window.cpp:401
+#: ../lib/engine/gui/gtk-frontend/assistant-window.cpp:319
 msgid "Please enter your password:"
 msgstr "Zadejte prosím své heslo:"
 
-#: ../lib/engine/gui/gtk-frontend/assistant-window.cpp:411
+#: ../lib/engine/gui/gtk-frontend/assistant-window.cpp:330
 msgid ""
-"The username and password are used to login to your existing account at the "
-"ekiga.net free SIP service. If you do not have an ekiga.net SIP address yet, "
-"you may first create an account below. This will provide a SIP address that "
-"allows people to call you.\n"
+"The ekiga.im SIP address and password are used to login to your existing "
+"account at the ekiga.im free SIP service. If you do not have an ekiga.im SIP "
+"address yet, you may first create an account below. This will provide a SIP "
+"address that allows people to call you.\n"
 "\n"
 "You may skip this step if you use an alternative SIP service, or if you "
 "would prefer to specify the login details later."
 msgstr ""
-"Vaše uživatelské jméno a heslo se používá pro registraci k vašemu "
-"existujícímu účtu služby SIP na ekiga.net. Pokud ještě nemáte adresu SIP na "
-"ekiga.net, můžete nejdříve níže vytvořit účet. To vám poskytne adresu SIP, "
-"která umožňuje lidem volat vám.\n"
+"Adresa SIP na ekiga.im a heslo se používají k příhlášení k vašemu "
+"stávajícímu účtu na službě SIP, která je na na ekiga.im zdarma. Pokud ještě "
+"na ekiga.im adresu SIP nemáte, můžete si níže účet nejdříve vytvořit. To vám "
+"poskytne adresu SIP, díky které vám budou lidé moci volat.\n"
 "\n"
 "Můžete tento krok přeskočit, pokud používáte alternativní službu SIP, nebo "
 "pokud byste radši zadali informace o přihlašování později."
 
-#: ../lib/engine/gui/gtk-frontend/assistant-window.cpp:437
-msgid "I do not want to sign up for the ekiga.net free service"
-msgstr "Nechci se zdarma zaregistrovat u služby ekiga.net"
+#: ../lib/engine/gui/gtk-frontend/assistant-window.cpp:346
+msgid "Get an Ekiga.im SIP account"
+msgstr "Získat účet SIP na Ekiga.im"
 
-#: ../lib/engine/gui/gtk-frontend/assistant-window.cpp:497
+#: ../lib/engine/gui/gtk-frontend/assistant-window.cpp:355
+msgid "I do not want to sign up for the ekiga.im free service"
+msgstr "Nechci se zdarma zaregistrovat u služby ekiga.im"
+
+#: ../lib/engine/gui/gtk-frontend/assistant-window.cpp:425
 msgid "Ekiga Call Out Account"
 msgstr "Účet Ekiga pro odchozí volání"
 
-#: ../lib/engine/gui/gtk-frontend/assistant-window.cpp:499
+#: ../lib/engine/gui/gtk-frontend/assistant-window.cpp:427
 msgid "Please enter your account ID:"
 msgstr "Zadejte prosím své ID účtu:"
 
-#: ../lib/engine/gui/gtk-frontend/assistant-window.cpp:507
+#: ../lib/engine/gui/gtk-frontend/assistant-window.cpp:436
 msgid "Please enter your PIN code:"
 msgstr "Vložte prosím svůj PIN:"
 
-#: ../lib/engine/gui/gtk-frontend/assistant-window.cpp:518
+#: ../lib/engine/gui/gtk-frontend/assistant-window.cpp:448
 msgid ""
 "You can make calls to regular phones and cell numbers worldwide using Ekiga. "
 "To enable this, you need to do two things:\n"
@@ -1168,15 +1082,15 @@ msgstr ""
 "Služba bude fungovat jen pokud je váš účet vytvořen pomocí adresy URL v "
 "tomto dialogovém okně.\n"
 
-#: ../lib/engine/gui/gtk-frontend/assistant-window.cpp:577
+#: ../lib/engine/gui/gtk-frontend/assistant-window.cpp:470
 msgid "I do not want to sign up for the Ekiga Call Out service"
 msgstr "Nechci se zaregistrovat u služby odchozích volání Ekiga Call Out"
 
-#: ../lib/engine/gui/gtk-frontend/assistant-window.cpp:639
+#: ../lib/engine/gui/gtk-frontend/assistant-window.cpp:535
 msgid "Configuration Complete"
 msgstr "Nastavení dokončeno"
 
-#: ../lib/engine/gui/gtk-frontend/assistant-window.cpp:641
+#: ../lib/engine/gui/gtk-frontend/assistant-window.cpp:537
 msgid ""
 "You have now finished the Ekiga configuration. All the settings can be "
 "changed in the Ekiga preferences. Enjoy!"
@@ -1184,41 +1098,33 @@ msgstr ""
 "Dokončili jste nastavení aplikace Ekiga. Všechna nastavení mohou být změněna "
 "v předvolbách Ekiga. Užijte si to!"
 
-#: ../lib/engine/gui/gtk-frontend/assistant-window.cpp:648
+#: ../lib/engine/gui/gtk-frontend/assistant-window.cpp:543
 msgid "Configuration summary:"
 msgstr "Souhrn nastavení:"
 
-#: ../lib/engine/gui/gtk-frontend/assistant-window.cpp:695
-#: ../lib/engine/gui/gtk-frontend/book-view-gtk.cpp:584
+#: ../lib/engine/gui/gtk-frontend/assistant-window.cpp:587
+#: ../lib/engine/gui/gtk-frontend/book-view-gtk.cpp:682
 msgid "Full Name"
 msgstr "Celé jméno"
 
-#: ../lib/engine/gui/gtk-frontend/assistant-window.cpp:709
+#: ../lib/engine/gui/gtk-frontend/assistant-window.cpp:601
 msgid "SIP URI"
 msgstr "Adresa URI pro SIP"
 
-#: ../lib/engine/gui/gtk-frontend/assistant-window.cpp:724
+#: ../lib/engine/gui/gtk-frontend/assistant-window.cpp:616
 msgid "Ekiga Call Out"
 msgstr "Odchozí volání Ekiga"
 
-#: ../lib/engine/gui/gtk-frontend/assistant-window.cpp:765
+#: ../lib/engine/gui/gtk-frontend/assistant-window.cpp:654
 #, c-format
 msgid "Ekiga Configuration Assistant (%d of %d)"
 msgstr "Ekiga - průvodce nastavením (%d z %d)"
 
-#: ../lib/engine/gui/gtk-frontend/book-view-gtk.cpp:527
+#: ../lib/engine/gui/gtk-frontend/book-view-gtk.cpp:504
 msgid "_Search Filter:"
 msgstr "_Filtr hledání:"
 
-#: ../lib/engine/gui/gtk-frontend/call-window.cpp:665
-msgid "Error while initializing video output"
-msgstr "Chyba při inicializaci výstupu videa"
-
-#: ../lib/engine/gui/gtk-frontend/call-window.cpp:666
-msgid "No video will be displayed on your machine during this call"
-msgstr "Na vašem počítači nebude během tohoto volání zobrazováno žádné video"
-
-#: ../lib/engine/gui/gtk-frontend/call-window.cpp:667
+#: ../lib/engine/gui/gtk-frontend/call-window.cpp:576
 msgid ""
 "There was an error opening or initializing the video output. Please verify "
 "that no other application is using the accelerated video output."
@@ -1226,194 +1132,208 @@ msgstr ""
 "Nastala chyba při otevírání nebo inicializaci video výstupu. Zkontrolujte "
 "prosím, zda žádná jiná aplikace nepoužívá akcelerovaný video výstup."
 
-#: ../lib/engine/gui/gtk-frontend/call-window.cpp:736
+#: ../lib/engine/gui/gtk-frontend/call-window.cpp:645
 #, c-format
-msgid "Error while accessing video device %s"
-msgstr "Chyba při přístupu k zařízení videa %s"
-
-#: ../lib/engine/gui/gtk-frontend/call-window.cpp:739
-msgid "A moving logo will be transmitted during calls."
-msgstr "Během volání bude vysíláno pohybující se logo."
-
-#: ../lib/engine/gui/gtk-frontend/call-window.cpp:743
 msgid ""
-"There was an error while opening the device. In case it is a pluggable "
-"device it may be sufficient to reconnect it. If not, or if it still is not "
-"accessible, please check your permissions and make sure that the appropriate "
-"driver is loaded."
+"There was an error while opening %s.\n"
+"\n"
+"In case it is a pluggable device, it may be sufficient to reconnect it. If "
+"not, or if it still does not work, please check your permissions and make "
+"sure that the appropriate driver is loaded."
 msgstr ""
-"Při otevírání zařízení došlo k chybě. Pokud je to odpojitelné zařízení, může "
-"být postačující jej znovu připojit. Pokud ne nebo je zařízení stále "
-"nedostupné, zkontrolujte prosím svá oprávnění a přesvědčte se, že je načten "
-"správný ovladač."
+"Při otevírání %s došlo k chybě.\n"
+"\n"
+"Pokud se jedná o odpojitelné zařízení, může být postačující jej odpojit a "
+"znovu připojit. Pokud ne nebo stále nefunguje, zkontrolujte prosím svá "
+"oprávnění a přesvědčte se, že je načten správný ovladač."
 
-#: ../lib/engine/gui/gtk-frontend/call-window.cpp:747
-msgid "Your video driver doesn't support the requested video format."
-msgstr "Váš ovladač videa nepodporuje požadovaný formát videa."
-
-#: ../lib/engine/gui/gtk-frontend/call-window.cpp:751
-msgid "Could not open the chosen channel."
-msgstr "Nelze otevřít vybraný kanál."
-
-#: ../lib/engine/gui/gtk-frontend/call-window.cpp:755
+#: ../lib/engine/gui/gtk-frontend/call-window.cpp:649
+#, c-format
 msgid ""
+"There was an error while opening %s.\n"
+"\n"
+"Your video driver doesn't support the requested video format."
+msgstr ""
+"Při otevírání %s došlo k chybě.\n"
+"\n"
+"Váš ovladač videa nepodporuje požadovaný formát videa."
+
+#: ../lib/engine/gui/gtk-frontend/call-window.cpp:653
+#, c-format
+msgid ""
+"There was an error while opening %s.\n"
+"\n"
+"Could not open the chosen channel."
+msgstr ""
+"Při otevírání %s došlo k chybě.\n"
+"\n"
+"Nelze otevřít vybraný kanál."
+
+#: ../lib/engine/gui/gtk-frontend/call-window.cpp:657
+#, c-format
+msgid ""
+"There was an error while opening %s.\n"
+"\n"
 "Your driver doesn't seem to support any of the color formats supported by "
 "Ekiga.\n"
 " Please check your kernel driver documentation in order to determine which "
 "Palette is supported."
 msgstr ""
+"Při otevírání %s došlo k chybě.\n"
+"\n"
 "Váš ovladač zřejmě nepodporuje žádný formát barev podporovaný aplikací "
 "Ekiga.\n"
 "Zkontrolujte prosím dokumentaci svého modulu jádra, abyste zjistili, která "
 "paleta je podporována."
 
-#: ../lib/engine/gui/gtk-frontend/call-window.cpp:759
-msgid "Error while setting the frame rate."
-msgstr "Chyba při nastavování rychlosti snímků."
+#: ../lib/engine/gui/gtk-frontend/call-window.cpp:661
+#, c-format
+msgid ""
+"There was an error while opening %s.\n"
+"\n"
+"Error while setting the frame rate."
+msgstr ""
+"Při otevírání %s došlo k chybě.\n"
+"\n"
+"Chyba při nastavování rychlosti snímků."
 
-#: ../lib/engine/gui/gtk-frontend/call-window.cpp:763
-msgid "Error while setting the frame size."
-msgstr "Chyba při nastavování velikosti snímků."
+#: ../lib/engine/gui/gtk-frontend/call-window.cpp:665
+#, c-format
+msgid ""
+"There was an error while opening %s.\n"
+"\n"
+"Error while setting the frame size."
+msgstr ""
+"Při otevírání %s došlo k chybě.\n"
+"\n"
+"Chyba při nastavování velikosti snímků."
 
-#: ../lib/engine/gui/gtk-frontend/call-window.cpp:768
-#: ../lib/engine/gui/gtk-frontend/call-window.cpp:843
-#: ../lib/engine/gui/gtk-frontend/call-window.cpp:929
-msgid "Unknown error."
-msgstr "Neznámá chyba."
+#: ../lib/engine/gui/gtk-frontend/call-window.cpp:670
+#, c-format
+msgid "There was an error while opening %s."
+msgstr "Při otevírání %s nastala chyba."
 
-#: ../lib/engine/gui/gtk-frontend/call-window.cpp:825
+#: ../lib/engine/gui/gtk-frontend/call-window.cpp:717
+#, c-format
+msgid ""
+"Unable to open %s for recording.\n"
+"\n"
+"In case it is a pluggable device, it may be sufficient to reconnect it. If "
+"not, or if it still does not work, please check your audio setup, the "
+"permissions and that the device is not busy."
+msgstr ""
+"Nelze otevřít %s pro záznam.\n"
+"\n"
+"Pokud se jedná o odpojitelné zařízení, může být postačující jej odpojit a "
+"znovu připojit. Pokud ne nebo je stále nefunguje, zkontrolujte prosím své "
+"nastavení zvuku, oprávnění a že se zařízení zrovna nepoužívá."
+
+#: ../lib/engine/gui/gtk-frontend/call-window.cpp:721
+#, c-format
+msgid ""
+"%s was successfully opened but it is impossible to read data from this "
+"device.\n"
+"\n"
+"In case it is a pluggable device it may be sufficient to reconnect it. If "
+"not, or if it still does not work, please check your audio setup."
+msgstr ""
+"Zařízení %s bylo úspěšně otevřeno, ale není možné z něj číst data.\n"
+"\n"
+"Pokud se jedná o odpojitelné zařízení, může být postačující jej odpojit a "
+"znovu připojit. Pokud ne nebo je stále nefunguje, zkontrolujte prosím své "
+"nastavení zvuku, oprávnění a že se zařízení zrovna nepoužívá."
+
+#: ../lib/engine/gui/gtk-frontend/call-window.cpp:726
 #, c-format
 msgid "Error while opening audio input device %s"
 msgstr "Chyba při otevírání zařízení vstupu zvuku %s"
 
-#. Translators: This happens when there is an error with audio input:
-#. * Nothing ("silence") will be transmitted
-#: ../lib/engine/gui/gtk-frontend/call-window.cpp:830
-msgid "Only silence will be transmitted."
-msgstr "Bude přeneseno pouze ticho."
-
-#: ../lib/engine/gui/gtk-frontend/call-window.cpp:834
+#: ../lib/engine/gui/gtk-frontend/call-window.cpp:784
+#, c-format
 msgid ""
-"Unable to open the selected audio device for recording. In case it is a "
-"pluggable device it may be sufficient to reconnect it. If not, or if it "
-"still is not accessible, please check your audio setup, the permissions and "
-"that the device is not busy."
+"Unable to open %s for playing.\n"
+"\n"
+"In case it is a pluggable device it may be sufficient to reconnect it. If "
+"not, or if it still does not work, please check your audio setup, the "
+"permissions and that the device is not busy."
 msgstr ""
-"Není možné otevřít vybrané zvukové zařízení pro záznam. Pokud je to "
-"odpojitelné zařízení, může být postačující jej znovu připojit. Pokud ne nebo "
-"je stále nedostupné, zkontrolujte prosím své nastavení zvuku, oprávnění a že "
-"se zařízení nepoužívá."
+"Nelze otevřít %s pro přehrávání.\n"
+"\n"
+"Pokud se jedná o odpojitelné zařízení, může být postačující jej odpojit a "
+"znovu připojit. Pokud ne nebo je stále nefunguje, zkontrolujte prosím své "
+"nastavení zvuku, oprávnění a že se zařízení zrovna nepoužívá."
 
-#: ../lib/engine/gui/gtk-frontend/call-window.cpp:838
+#: ../lib/engine/gui/gtk-frontend/call-window.cpp:788
+#, c-format
 msgid ""
-"The selected audio device was successfully opened but it is impossible to "
-"read data from this device. In case it is a pluggable device it may be "
-"sufficient to reconnect it. If not, or if it still is not accessible, please "
-"check your audio setup."
+"%s was successfully opened but it is impossible to write data to this "
+"device.\n"
+"\n"
+"In case it is a pluggable device it may be sufficient to reconnect it. If "
+"not, or if it still does not work, please check your audio setup."
 msgstr ""
-"Vybrané zvukové zařízení bylo úspěšně otevřeno, ale není možné z tohoto "
-"zařízení číst data. Pokud je to odpojitelné zařízení, může být postačující "
-"jej znovu připojit. Pokud ne, zkontrolujte prosím své nastavení zvuku."
+"Zařízení %s bylo úspěšně otevřeno, ale není možné do něj zapisovat data.\n"
+"\n"
+"Pokud se jedná o odpojitelné zařízení, může být postačující jej odpojit a "
+"znovu připojit. Pokud ne nebo je stále nefunguje, zkontrolujte prosím své "
+"nastavení zvuku, oprávnění a že se zařízení zrovna nepoužívá."
 
-#: ../lib/engine/gui/gtk-frontend/call-window.cpp:913
+#: ../lib/engine/gui/gtk-frontend/call-window.cpp:793
 #, c-format
 msgid "Error while opening audio output device %s"
 msgstr "Chyba při otevírání zařízení výstupu videa %s"
 
-#: ../lib/engine/gui/gtk-frontend/call-window.cpp:916
-msgid "No incoming sound will be played."
-msgstr "Nebude přehráván žádný vyzváněcí tón."
+#: ../lib/engine/gui/gtk-frontend/call-window.cpp:933
+msgid "Call on hold"
+msgstr "Hovor přidržen"
 
-#: ../lib/engine/gui/gtk-frontend/call-window.cpp:920
-msgid ""
-"Unable to open the selected audio device for playing. In case it is a "
-"pluggable device it may be sufficient to reconnect it. If not, or if it "
-"still is not accessible, please check your audio setup, the permissions and "
-"that the device is not busy."
-msgstr ""
-"Není možné otevřít vybrané zvukové zařízení pro přehrávání. Pokud je to "
-"odpojitelné zařízení, může být postačující jej znovu připojit. Pokud ne nebo "
-"je stále nedostupné, zkontrolujte prosím své nastavení zvuku, oprávnění a že "
-"se zařízení nepoužívá."
+#: ../lib/engine/gui/gtk-frontend/call-window.cpp:945
+msgid "Call retrieved"
+msgstr "Hovor přijat"
 
-#: ../lib/engine/gui/gtk-frontend/call-window.cpp:924
-msgid ""
-"The selected audio device was successfully opened but it is impossible to "
-"write data to this device. In case it is a pluggable device it may be "
-"sufficient to reconnect it. If not, or if it still is not accessible, please "
-"check your audio setup."
-msgstr ""
-"Vybrané zvukové zařízení bylo úspěšně otevřeno, ale není možné na toto "
-"zařízení zapisovat data. Pokud je to odpojitelné zařízení, může být "
-"postačující jej znovu připojit. Pokud ne nebo je stále nedostupné, "
-"zkontrolujte prosím své zvukové nastavení."
-
-#: ../lib/engine/gui/gtk-frontend/call-window.cpp:977
+#: ../lib/engine/gui/gtk-frontend/call-window.cpp:1234
 #, c-format
-msgid "Calling %s..."
-msgstr "Volá se %s…"
+msgid "Calling %s"
+msgstr "Volá se %s"
 
-#. %s is the SIP/H.323 address of the remote user, this text is shown
-#. below video during a call
-#: ../lib/engine/gui/gtk-frontend/call-window.cpp:1005
-#: ../lib/engine/gui/gtk-frontend/main_window.cpp:595
+#: ../lib/engine/gui/gtk-frontend/call-window.cpp:1239
 #, c-format
 msgid "Connected with %s"
 msgstr "Spojeno s %s"
 
-#. Init
-#: ../lib/engine/gui/gtk-frontend/call-window.cpp:1026
-#: ../lib/engine/gui/gtk-frontend/call-window.cpp:1053
-#: ../lib/engine/gui/gtk-frontend/call-window.cpp:2330
-msgid "Standby"
-msgstr "Pohotovost"
+#: ../lib/engine/gui/gtk-frontend/call-window.cpp:1246
+#, c-format
+msgid "Call from %s"
+msgstr "Hovor od %s"
 
-#: ../lib/engine/gui/gtk-frontend/call-window.cpp:1038
-#: ../lib/engine/gui/gtk-frontend/call-window.cpp:1051
-#: ../lib/engine/gui/gtk-frontend/call-window.cpp:2448
+#: ../lib/engine/gui/gtk-frontend/call-window.cpp:1251
+#: ../lib/engine/gui/gtk-frontend/call-window.cpp:1256
 msgid "Call Window"
 msgstr "Okno volání"
 
-#: ../lib/engine/gui/gtk-frontend/call-window.cpp:1064
-msgid "Call on hold"
-msgstr "Hovor přidržen"
-
-#: ../lib/engine/gui/gtk-frontend/call-window.cpp:1075
-msgid "Call retrieved"
-msgstr "Hovor přijat"
-
-#: ../lib/engine/gui/gtk-frontend/call-window.cpp:1163
-#, c-format
-msgid ""
-"Connected with %s\n"
-"%s"
-msgstr ""
-"Spojeno s %s\n"
-"%s"
-
 #. Translators: TX is a common abbreviation for "transmit".  As it
 #. * is shown in a tooltip, there is no space constraint
-#: ../lib/engine/gui/gtk-frontend/call-window.cpp:1390
+#: ../lib/engine/gui/gtk-frontend/call-window.cpp:1285
 #, c-format
 msgid "TX: %dx%d"
 msgstr "TX: %d×%d "
 
-#: ../lib/engine/gui/gtk-frontend/call-window.cpp:1392
+#: ../lib/engine/gui/gtk-frontend/call-window.cpp:1287
 msgid "TX: / "
 msgstr "TX: / "
 
 #. Translators: RX is a common abbreviation for "receive".  As it
 #. * is shown in a tooltip, there is no space constraint
-#: ../lib/engine/gui/gtk-frontend/call-window.cpp:1397
+#: ../lib/engine/gui/gtk-frontend/call-window.cpp:1292
 #, c-format
 msgid "RX: %dx%d"
 msgstr "RX: %d×%d "
 
-#: ../lib/engine/gui/gtk-frontend/call-window.cpp:1399
+#: ../lib/engine/gui/gtk-frontend/call-window.cpp:1294
 msgid "RX: / "
 msgstr "RX: / "
 
-#: ../lib/engine/gui/gtk-frontend/call-window.cpp:1408
+#: ../lib/engine/gui/gtk-frontend/call-window.cpp:1303
 #, c-format
 msgid ""
 "Lost packets: %.1f %%\n"
@@ -1430,160 +1350,61 @@ msgstr ""
 "Kodeky: %s\n"
 "Rozlišení: %s %s"
 
+#: ../lib/engine/gui/gtk-frontend/call-window.cpp:1323
+msgid "The call quality is rather bad. Please check your Internet connection."
+msgstr ""
+"Kvalita spojení je dosti ubohá. Zkontrolujte prosím své připojení k "
+"Internetu."
+
 #. Translators: A = Audio, V = Video
-#: ../lib/engine/gui/gtk-frontend/call-window.cpp:1506
+#: ../lib/engine/gui/gtk-frontend/call-window.cpp:1342
 #, c-format
 msgid "A:%.1f/%.1f V:%.1f/%.1f"
 msgstr "A:%.1f/%.1f V:%.1f/%.1f"
 
-#: ../lib/engine/gui/gtk-frontend/call-window.cpp:1530
-msgid "_Retrieve Call"
-msgstr "_Přijmout hovor"
+#. FIXME:
+#. * All those actions should be call specific.
+#. * We should generate the header bar actions like we generate a menu.
+#. * Probably introducing a GActorHeaderBar would be nice.
+#. * However, it is unneeded right now as we only support one call at a time.
+#.
+#. Reject
+#: ../lib/engine/gui/gtk-frontend/call-window.cpp:1611
+msgid "_Reject"
+msgstr "_Odmítnout"
 
-#: ../lib/engine/gui/gtk-frontend/call-window.cpp:1543
-#: ../lib/engine/gui/gtk-frontend/call-window.cpp:1834
-msgid "H_old Call"
-msgstr "Přidržet h_ovor"
+#: ../lib/engine/gui/gtk-frontend/call-window.cpp:1620
+msgid "Reject the incoming call"
+msgstr "Odmítnout příchozí hovor"
 
-#: ../lib/engine/gui/gtk-frontend/call-window.cpp:1574
-#: ../lib/engine/gui/gtk-frontend/call-window.cpp:1846
-msgid "Suspend _Audio"
-msgstr "Pozastavit zv_uk"
-
-#: ../lib/engine/gui/gtk-frontend/call-window.cpp:1576
-#: ../lib/engine/gui/gtk-frontend/call-window.cpp:1851
-msgid "Suspend _Video"
-msgstr "Pozastavit vi_deo"
-
-#: ../lib/engine/gui/gtk-frontend/call-window.cpp:1578
-msgid "Resume _Audio"
-msgstr "Obnovit _zvuk"
-
-#: ../lib/engine/gui/gtk-frontend/call-window.cpp:1580
-msgid "Resume _Video"
-msgstr "Obnovit _video"
-
-#: ../lib/engine/gui/gtk-frontend/call-window.cpp:1607
-msgid "Video Settings"
-msgstr "Nastavení videa"
-
-#: ../lib/engine/gui/gtk-frontend/call-window.cpp:1633
-msgid "Adjust brightness"
-msgstr "Nastavení jasu"
-
-#: ../lib/engine/gui/gtk-frontend/call-window.cpp:1653
-msgid "Adjust whiteness"
-msgstr "Nastavení světlosti"
-
-#: ../lib/engine/gui/gtk-frontend/call-window.cpp:1673
-msgid "Adjust color"
-msgstr "Nastavení barev"
-
-#: ../lib/engine/gui/gtk-frontend/call-window.cpp:1693
-msgid "Adjust contrast"
-msgstr "Nastavení kontrastu"
-
-#: ../lib/engine/gui/gtk-frontend/call-window.cpp:1723
-msgid "Audio Settings"
-msgstr "Nastavení zvuku"
-
-#: ../lib/engine/gui/gtk-frontend/call-window.cpp:1822
-msgid "_Call"
-msgstr "_Volat"
-
-#: ../lib/engine/gui/gtk-frontend/call-window.cpp:1824
-msgid "_Pick up"
-msgstr "Zve_dnout"
-
-#: ../lib/engine/gui/gtk-frontend/call-window.cpp:1824
-#: ../lib/engine/gui/gtk-frontend/call-window.cpp:2199
-msgid "Pick up the current call"
-msgstr "Zvednout současný hovor"
-
-#: ../lib/engine/gui/gtk-frontend/call-window.cpp:1828
-msgid "_Hang up"
-msgstr "Zavěsi_t"
-
-#: ../lib/engine/gui/gtk-frontend/call-window.cpp:1828
-#: ../lib/engine/gui/gtk-frontend/call-window.cpp:2215
+#: ../lib/engine/gui/gtk-frontend/call-window.cpp:1632
 msgid "Hang up the current call"
 msgstr "Zavěsit současný hovor"
 
-#: ../lib/engine/gui/gtk-frontend/call-window.cpp:1834
-#: ../lib/engine/gui/gtk-frontend/call-window.cpp:2281
-msgid "Hold the current call"
-msgstr "Přidržet současný hovor"
+#: ../lib/engine/gui/gtk-frontend/call-window.cpp:1644
+msgid "Hold or retrieve the current call"
+msgstr "Přidržet nebo obnovit současný hovor"
 
-#: ../lib/engine/gui/gtk-frontend/call-window.cpp:1838
-msgid "_Transfer Call"
-msgstr "Předa_t hovor"
-
-#: ../lib/engine/gui/gtk-frontend/call-window.cpp:1839
+#: ../lib/engine/gui/gtk-frontend/call-window.cpp:1656
 msgid "Transfer the current call"
 msgstr "Předat současný hovor"
 
-#: ../lib/engine/gui/gtk-frontend/call-window.cpp:1847
-msgid "Suspend or resume the audio transmission"
-msgstr "Pozastavit nebo obnovit přenos zvuku"
+#: ../lib/engine/gui/gtk-frontend/call-window.cpp:1670
+msgid "Change audio and video settings"
+msgstr "Změnit nastavení zvuku a obrazu"
 
-#: ../lib/engine/gui/gtk-frontend/call-window.cpp:1852
-msgid "Suspend or resume the video transmission"
-msgstr "Pozastavit nebo obnovit přenos obrazu"
+#. Call Accept
+#: ../lib/engine/gui/gtk-frontend/call-window.cpp:1674
+msgid "_Answer"
+msgstr "Zv_ednout"
 
-#: ../lib/engine/gui/gtk-frontend/call-window.cpp:1859
-msgid "Close the Ekiga Window"
-msgstr "Zavřít okno aplikace Ekiga"
+#: ../lib/engine/gui/gtk-frontend/call-window.cpp:1683
+msgid "Answer the incoming call"
+msgstr "Zvednout příchozí hovor"
 
-#: ../lib/engine/gui/gtk-frontend/call-window.cpp:1864
-#: ../lib/engine/gui/gtk-frontend/main_window.cpp:1203
-msgid "_View"
-msgstr "_Zobrazit"
-
-#: ../lib/engine/gui/gtk-frontend/call-window.cpp:1866
-#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:583
-msgid "Enable _Picture-In-Picture Mode"
-msgstr "_Povolit režim „obraz v obraze“"
-
-#: ../lib/engine/gui/gtk-frontend/call-window.cpp:1867
-#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:585
-msgid ""
-"This allows the local video stream to be displayed incrusted in the remote "
-"video stream. This is only effective when sending and receiving video"
-msgstr ""
-"Tímto se umožní zobrazit vysílání místního videa jako vloženého do vysílání "
-"vzdáleného videa. Projeví se jen v případě, kdy se vysílá a přijímá video"
-
-#: ../lib/engine/gui/gtk-frontend/call-window.cpp:1872
-msgid "_Extended Video"
-msgstr "Rozšiřující vid_eo"
-
-#: ../lib/engine/gui/gtk-frontend/call-window.cpp:1872
-msgid "Display the extended video stream window"
-msgstr "Zobrazit okno s vysíláním rozšiřujícího videa"
-
-#: ../lib/engine/gui/gtk-frontend/call-window.cpp:1879
-msgid "_Fullscreen"
-msgstr "_Celá obrazovka"
-
-#: ../lib/engine/gui/gtk-frontend/call-window.cpp:1879
+#: ../lib/engine/gui/gtk-frontend/call-window.cpp:1712
 msgid "Switch to fullscreen"
 msgstr "Přepnout do režimu celé obrazovky"
-
-#: ../lib/engine/gui/gtk-frontend/call-window.cpp:1979
-msgid "Transfer call to:"
-msgstr "Předat hovor na:"
-
-#: ../lib/engine/gui/gtk-frontend/call-window.cpp:2242
-msgid "Change the volume of your soundcard"
-msgstr "Změnit hlasitost vaší zvukové karty"
-
-#: ../lib/engine/gui/gtk-frontend/call-window.cpp:2262
-msgid "Change the color settings of your video device"
-msgstr "Změnit nastavení barev vašeho obrazového zařízení"
-
-#: ../lib/engine/gui/gtk-frontend/call-window.cpp:2304
-msgid "Add caller/callee to the blacklist"
-msgstr "Přidat volajícího/volaného na černou listinu"
 
 #: ../lib/engine/gui/gtk-frontend/chat-area.cpp:217
 msgid "says:"
@@ -1597,12 +1418,12 @@ msgstr "Otevřít odkaz v prohlížeči"
 msgid "Copy link"
 msgstr "Zkopírovat odkaz"
 
-#: ../lib/engine/gui/gtk-frontend/chat-area.cpp:824
+#: ../lib/engine/gui/gtk-frontend/chat-area.cpp:825
 msgid "_Smile..."
 msgstr "_Smajlík…"
 
 # see the comment for 2838 line
-#: ../lib/engine/gui/gtk-frontend/chat-window.cpp:127
+#: ../lib/engine/gui/gtk-frontend/chat-window.cpp:125
 #, c-format
 msgid "You have %d unread text message"
 msgid_plural "You have %d unread text messages"
@@ -1610,244 +1431,214 @@ msgstr[0] "Máte %d nepřečtenou textovou zprávu"
 msgstr[1] "Máte %d nepřečtené textové zprávy"
 msgstr[2] "Máte %d nepřečtených textových zpráv"
 
-#: ../lib/engine/gui/gtk-frontend/chat-window.cpp:130
+#: ../lib/engine/gui/gtk-frontend/chat-window.cpp:128
 msgid "Read"
 msgstr "Přečíst"
 
 #. we can't do much here since we get the Chat as reference...
-#: ../lib/engine/gui/gtk-frontend/chat-window.cpp:271
+#: ../lib/engine/gui/gtk-frontend/chat-window.cpp:267
 msgid "Chat Window"
 msgstr "Okno diskuze"
 
-#: ../lib/engine/gui/gtk-frontend/heap-view.cpp:284
-#: ../lib/engine/gui/gtk-frontend/heap-view.cpp:339
-#: ../lib/engine/gui/gtk-frontend/roster-view-gtk.cpp:1029
-#: ../lib/engine/gui/gtk-frontend/roster-view-gtk.cpp:1122
-msgid "Unsorted"
-msgstr "Neseřazený"
+#: ../lib/engine/gui/gtk-frontend/ekiga-app.cpp:612
+msgid "Show the application's help"
+msgstr "Zobrazit nápovědu k aplikaci"
 
-#: ../lib/engine/gui/gtk-frontend/heap-view.cpp:302
-#: ../lib/engine/gui/gtk-frontend/statusmenu.cpp:91
-msgid "Away"
-msgstr "Nepřítomen"
+#: ../lib/engine/gui/gtk-frontend/ekiga-app.cpp:618
+msgid "Show the application's version"
+msgstr "Zobrazit verzi aplikace"
 
-#: ../lib/engine/gui/gtk-frontend/heap-view.cpp:304
-#: ../lib/engine/gui/gtk-frontend/statusmenu.cpp:90
-msgid "Available"
-msgstr "Přítomen"
+#: ../lib/engine/gui/gtk-frontend/ekiga-app.cpp:622
+msgid "Prints debug messages in the console (level between 1 and 8)"
+msgstr "Vypíše ladicí zprávy na konzole (úroveň 1 až 8)"
 
-#: ../lib/engine/gui/gtk-frontend/heap-view.cpp:306
-msgid "Offline"
-msgstr "Odpojen"
+#: ../lib/engine/gui/gtk-frontend/ekiga-app.cpp:627
+msgid "Makes Ekiga call the given URI"
+msgstr "Nechá aplikaci Ekiga zavolat na zadanou adresu URI"
 
-#: ../lib/engine/gui/gtk-frontend/heap-view.cpp:308
-#: ../lib/engine/gui/gtk-frontend/statusmenu.cpp:92
-msgid "Busy"
-msgstr "Zaneprázdněn"
+#: ../lib/engine/gui/gtk-frontend/ekiga-app.cpp:632
+msgid "Hangup the current call (if any)"
+msgstr "Zavěsit současný hovor (pokud je)"
 
-#: ../lib/engine/gui/gtk-frontend/main_window.cpp:343
-msgid "Presence"
-msgstr "Přítomnost"
+#: ../lib/engine/gui/gtk-frontend/ekiga-app.cpp:655
+#, c-format
+msgid ""
+"%s\n"
+"Run '%s --help' to see a full list of available command line options.\n"
+msgstr ""
+"%s\n"
+"Spuštěním „%s --help“ si zobrazíte úplný seznam dostupných přepínačů "
+"příkazové řádky."
 
-#: ../lib/engine/gui/gtk-frontend/main_window.cpp:349
-msgid "Addressbook"
-msgstr "Adresář"
+#: ../lib/engine/gui/gtk-frontend/ekiga-app.cpp:867
+msgid "Unable to open help file."
+msgstr "Nelze otevřít soubor nápovědy."
 
-#: ../lib/engine/gui/gtk-frontend/main_window.cpp:654
+#: ../lib/engine/gui/gtk-frontend/ekiga-app.cpp:893
+msgid "Contributors:"
+msgstr "Spoluautoři:"
+
+#: ../lib/engine/gui/gtk-frontend/ekiga-app.cpp:898
+msgid "Artwork:"
+msgstr "Grafika:"
+
+#: ../lib/engine/gui/gtk-frontend/ekiga-app.cpp:905
+msgid "See AUTHORS file for full credits"
+msgstr "Úplné zásluhy viz soubor AUTHORS"
+
+#: ../lib/engine/gui/gtk-frontend/ekiga-app.cpp:921
+msgid ""
+"This program is free software; you can redistribute it and/or modify it "
+"under the terms of the GNU General Public License as published by the Free "
+"Software Foundation; either version 2 of the License, or (at your option) "
+"any later version. "
+msgstr ""
+"Tento program je svobodný software; můžete ho šířit a/nebo upravovat dle "
+"podmínek licence GNU General Public Licence, kterou vydala Free Software "
+"Foundation; buď verze 2 této licence nebo (dle vaší volby) jakákoli novější "
+"verze."
+
+#: ../lib/engine/gui/gtk-frontend/ekiga-app.cpp:925
+msgid ""
+"This program is distributed in the hope that it will be useful, but WITHOUT "
+"ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or "
+"FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for "
+"more details. You should have received a copy of the GNU General Public "
+"License along with this program; if not, write to the Free Software "
+"Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301, USA."
+msgstr ""
+"Tento program je distribuován v naději, že bude užitečný, ale BEZ JAKÉKOLI "
+"ZÁRUKY; dokonce bez záruky OBCHODOVATELNOSTI nebo PŘIZPŮSOBENÍ K URČITÉMU "
+"ÚČELU. Další detaily viz GNU General Public License, která je přiložena k "
+"tomuto programu; pokud přiložena není, napište na Free Software Foundation, "
+"Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301, USA."
+
+#: ../lib/engine/gui/gtk-frontend/ekiga-app.cpp:932
+msgid ""
+"Ekiga is licensed under the GPL license and as a special exception, you have "
+"permission to link or otherwise combine this program with the programs OPAL, "
+"OpenH323 and PWLIB, and distribute the combination, without applying the "
+"requirements of the GNU GPL to the OPAL, OpenH323 and PWLIB programs, as "
+"long as you do follow the requirements of the GNU GPL for all the rest of "
+"the software thus combined."
+msgstr ""
+"Ekiga je licencovaná pod licencí GPL a speciální výjimkou je, že máte "
+"povolení sloučit nebo jakkoli kombinovat tento program s programy OPAL, "
+"OpenH323 a PWLIB a distribuovat tuto kombinaci bez plnění podmínek GNU GPL "
+"OPALu, OpenH323 a PWLIB programů, pokud však plníte podmínky GNU GPL zbytku "
+"software takto kombinovaného."
+
+#. Translators: Please write translator credits here, and
+#. * separate names with \n
+#: ../lib/engine/gui/gtk-frontend/ekiga-app.cpp:944
+msgid "translator-credits"
+msgstr ""
+"Petr Vokáč <vokac@linux.fjfi.cvut.cz>, 2001\n"
+"Michal Bukovjan <bukm@centrum.cz>, 2003\n"
+"Miloslav Trmač <mitr@volny.cz>, 2003, 2004, 2006\n"
+"Petr Tomeš <ptomes@gmail.com>, 2006\n"
+"Jakub Friedl <jfriedl@suse.cz>, 2006, 2007\n"
+"Michal Pěnka <michal@penka.name>, 2008, 2009\n"
+"Petr Kovář <pknbe@volny.cz>, 2008, 2009\n"
+"Marek Černocký <marek@manet.cz>, 2010, 2011, 2012"
+
+#: ../lib/engine/gui/gtk-frontend/ekiga-app.cpp:949
+msgid ""
+"Ekiga is full-featured SIP and H.323 compatible VoIP, IP-Telephony and "
+"Videoconferencing application that allows you to make audio and video calls "
+"to remote users with SIP and H.323 hardware or software."
+msgstr ""
+"Ekiga je plnohodnotná aplikace pro VoIP, IP telefonii a videokonference "
+"kompatibilní se SIP a H.323, která vám umožňuje provádět zvukové a video "
+"hovory se vzdálenými uživateli s hardwarem nebo softwarem SIP a H.323."
+
+#: ../lib/engine/gui/gtk-frontend/main_window.cpp:439
 #, c-format
 msgid "Missed call from %s"
 msgstr "Zmeškaný hovor od %s"
 
-#: ../lib/engine/gui/gtk-frontend/main_window.cpp:689
+#: ../lib/engine/gui/gtk-frontend/main_window.cpp:475
 msgid "Error"
 msgstr "Chyba"
 
-#: ../lib/engine/gui/gtk-frontend/main_window.cpp:1035
-msgid ""
-"Enter a URI on the left, and click this button to place a call or to hang up"
-msgstr ""
-"Vlevo zadejte adresu URI a stiskněte toto tlačítko k vytočení hovoru nebo "
-"jeho položení"
-
-#: ../lib/engine/gui/gtk-frontend/main_window.cpp:1064
-#: ../lib/engine/gui/gtk-frontend/main_window.cpp:1206
+#: ../lib/engine/gui/gtk-frontend/main_window.cpp:640
 #: ../org.gnome.ekiga.gschema.xml.in.in.h:14
 msgid "Display images from your camera device"
 msgstr "Zobrazovat obraz z vaší kamery"
 
-#: ../lib/engine/gui/gtk-frontend/main_window.cpp:1085
-#: ../lib/engine/gui/gtk-frontend/main_window.cpp:1214
-msgid "View the contacts list"
-msgstr "Zobrazit seznam kontaktů"
-
-#: ../lib/engine/gui/gtk-frontend/main_window.cpp:1102
-#: ../lib/engine/gui/gtk-frontend/main_window.cpp:1219
-msgid "View the dialpad"
-msgstr "Zobrazit číselník"
-
-#: ../lib/engine/gui/gtk-frontend/main_window.cpp:1119
-#: ../lib/engine/gui/gtk-frontend/main_window.cpp:1224
-msgid "View the call history"
-msgstr "Zobrazit historii volání"
-
-#: ../lib/engine/gui/gtk-frontend/main_window.cpp:1144
-msgid "_Chat"
-msgstr "_Diskuze"
-
-#: ../lib/engine/gui/gtk-frontend/main_window.cpp:1146
-msgid "Co_ntact"
-msgstr "Ko_ntakt"
-
-#: ../lib/engine/gui/gtk-frontend/main_window.cpp:1147
-msgid "Act on selected contact"
-msgstr "Učinit na vybraný kontakt"
-
-#: ../lib/engine/gui/gtk-frontend/main_window.cpp:1151
-msgid "Ca_ll a Number"
-msgstr "Vo_lat číslo"
-
-#: ../lib/engine/gui/gtk-frontend/main_window.cpp:1151
-msgid "Place a new call"
-msgstr "Vytvořit nový hovor"
-
-#: ../lib/engine/gui/gtk-frontend/main_window.cpp:1157
-msgid "Add a contact to the roster"
-msgstr "Přidat kontakt do seznamu"
-
-#: ../lib/engine/gui/gtk-frontend/main_window.cpp:1163
-msgid "Find contacts"
-msgstr "Najít kontakty"
-
-#: ../lib/engine/gui/gtk-frontend/main_window.cpp:1170
-msgid "Close the Ekiga window"
-msgstr "Zavřít okno aplikace Ekiga"
-
-#: ../lib/engine/gui/gtk-frontend/main_window.cpp:1177
-#: ../lib/engine/gui/gtk-frontend/statusicon.cpp:396
-msgid "Quit"
-msgstr "Ukončit"
-
-#: ../lib/engine/gui/gtk-frontend/main_window.cpp:1183
-msgid "_Configuration Assistant"
-msgstr "Průvod_ce nastavením"
-
-#: ../lib/engine/gui/gtk-frontend/main_window.cpp:1184
-msgid "Run the configuration assistant"
-msgstr "Spustit průvodce nastavením"
-
-#: ../lib/engine/gui/gtk-frontend/main_window.cpp:1192
-msgid "Edit your accounts"
-msgstr "Upravit své účty"
-
-#: ../lib/engine/gui/gtk-frontend/main_window.cpp:1198
-msgid "Change your preferences"
-msgstr "Změnit své předvolby"
-
-#: ../lib/engine/gui/gtk-frontend/main_window.cpp:1205
-msgid "_Video Preview"
-msgstr "Náhled _videa"
-
-#: ../lib/engine/gui/gtk-frontend/main_window.cpp:1214
-msgid "Con_tacts"
-msgstr "Kon_takty"
-
-#: ../lib/engine/gui/gtk-frontend/main_window.cpp:1219
-msgid "_Dialpad"
-msgstr "Čí_selník"
-
-#: ../lib/engine/gui/gtk-frontend/main_window.cpp:1224
-msgid "_Call History"
-msgstr "_Historie hovorů"
-
-#: ../lib/engine/gui/gtk-frontend/main_window.cpp:1232
-msgid "Show Offline _Contacts"
-msgstr "Zobrazovat odpojené _kontakty"
-
-#: ../lib/engine/gui/gtk-frontend/main_window.cpp:1233
-#: ../org.gnome.ekiga.gschema.xml.in.in.h:125
-msgid "Show offline contacts"
-msgstr "Zobrazovat odpojené kontakty"
-
-#: ../lib/engine/gui/gtk-frontend/main_window.cpp:1242
-#: ../lib/engine/gui/gtk-frontend/statusicon.cpp:384
-msgid "Get help by reading the Ekiga manual"
-msgstr "Získat nápovědu čtením příručky aplikace Ekiga"
-
-#: ../lib/engine/gui/gtk-frontend/main_window.cpp:1247
-#: ../lib/engine/gui/gtk-frontend/statusicon.cpp:389
-msgid "View information about Ekiga"
-msgstr "Zobrazit informace o aplikaci Ekiga"
-
-#: ../lib/engine/gui/gtk-frontend/main_window.cpp:1324
-msgid "Dialpad"
-msgstr "Číselník"
-
-#: ../lib/engine/gui/gtk-frontend/main_window.cpp:1342
-msgid "Call history"
-msgstr "Historie volání"
-
-#: ../lib/engine/gui/gtk-frontend/main_window.cpp:1356
-msgid "Ekiga"
-msgstr "Ekiga"
-
-#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:486
+#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:488
 #: ../org.gnome.ekiga.gschema.xml.in.in.h:25
 msgid "Play sound on incoming calls"
 msgstr "Přehrávat zvuk při příchozích hovorech"
 
-#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:496
+#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:498
 #: ../org.gnome.ekiga.gschema.xml.in.in.h:35
 msgid "Play ring tone"
 msgstr "Přehrávat zvuk zvonění"
 
-#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:506
+#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:508
 #: ../org.gnome.ekiga.gschema.xml.in.in.h:39
 msgid "Play busy tone"
 msgstr "Přehrávat obsazovací tón"
 
-#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:516
+#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:518
 msgid "Play sound for new voice mails"
 msgstr "Přehrávat zvuk při nové zvukové poště"
 
-#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:526
+#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:528
 msgid "Play sound for new instant messages"
 msgstr "Přehrávat zvuk při nové rychlé zprávě"
 
-#. Personal Information
-#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:571
-msgid "_Full name:"
-msgstr "_Celé jméno:"
+#. Display
+#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:570
+msgid "Show o_ffline contacts"
+msgstr "Zobrazovat od_pojené kontakty"
 
-#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:573
+#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:572
+msgid "Show offline contacts in the roster"
+msgstr "Zobrazovat v seznamu odpojené kontakty"
+
+#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:574
+msgid "Place windows displaying video _above other windows"
+msgstr "Umísťovat okna zobrazující video _nad jiná okna"
+
+#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:576
+#: ../org.gnome.ekiga.gschema.xml.in.in.h:66
+msgid "Place windows displaying video above other windows during calls"
+msgstr "Během hovorů umísťovat okna zobrazující video nad jiná okna"
+
+#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:578
+msgid "Enable _Picture-In-Picture mode"
+msgstr "_Povolit režim „obraz v obraze“"
+
+#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:580
+msgid ""
+"This allows the local video stream to be displayed incrusted in the remote "
+"video stream. This is only effective when sending and receiving video"
+msgstr ""
+"Tímto se umožní zobrazit vysílání místního videa jako vloženého do vysílání "
+"vzdáleného videa. Projeví se jen v případě, kdy se vysílá a přijímá video"
+
+#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:584
+msgid "_Full Name"
+msgstr "_Celé jméno"
+
+#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:586
 #: ../org.gnome.ekiga.gschema.xml.in.in.h:16
 msgid "Enter your full name"
 msgstr "Zadejte své celé jméno"
 
-#. Video Display
-#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:578
-msgid "Display"
-msgstr "Zobrazení"
-
-#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:579
-msgid "Place windows displaying video _above other windows"
-msgstr "Umísťovat okna zobrazující video _nad jiná okna"
-
-#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:581
-#: ../org.gnome.ekiga.gschema.xml.in.in.h:64
-msgid "Place windows displaying video above other windows during calls"
-msgstr "Během hovorů umísťovat okna zobrazující video nad jiná okna"
-
 #. Network Settings
-#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:588
+#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:591
 msgid "Network Settings"
 msgstr "Nastavení sítě"
 
-#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:589
-msgid "Type of Service (TOS):"
-msgstr "Typ služby (TOS):"
+#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:592
+msgid "Type of Service (TOS)"
+msgstr "Typ služby (TOS)"
 
-#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:591
-#: ../org.gnome.ekiga.gschema.xml.in.in.h:91
+#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:594
+#: ../org.gnome.ekiga.gschema.xml.in.in.h:93
 msgid ""
 "The Type of Service (TOS) byte on outgoing RTP IP packets. This byte is used "
 "by the network to provide some level of Quality of Service (QoS). Default "
@@ -1859,25 +1650,25 @@ msgstr ""
 "Service). Výchozí hodnota 184 (0xB8) odpovídá Expedited Forwarding (EF – "
 "přednostnímu předávání) PHB, jak je definováno RFC 3246."
 
-#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:594
+#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:597
 msgid "Enable network _detection"
 msgstr "Povolit _detekci sítě"
 
-#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:596
+#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:599
 #: ../org.gnome.ekiga.gschema.xml.in.in.h:46
 msgid "Enable the automatic network setup resulting from the STUN test"
 msgstr "Povolit automatické nastavení sítě podle výsledků testu STUN"
 
 #. Blacklist Settings
-#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:599
+#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:602
 msgid "Blacklist"
 msgstr "Černá listina"
 
-#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:616
+#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:619
 msgid "_Always forward calls to the given host"
 msgstr "_Vždy přesměrovat hovory na daný počítač"
 
-#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:618
+#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:621
 msgid ""
 "If enabled, all incoming calls will be forwarded to the host that is "
 "specified in the protocol settings"
@@ -1885,11 +1676,11 @@ msgstr ""
 "Je-li povoleno, všechny příchozí hovory budou předány na počítač uvedený v "
 "nastavení protokolu"
 
-#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:620
+#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:623
 msgid "Forward calls to the given host if _no answer"
 msgstr "Přesměrovat hovory na daný počítač, když není žád_ná odpověď"
 
-#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:622
+#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:625
 msgid ""
 "If enabled, all incoming calls will be forwarded to the host that is "
 "specified in the protocol settings if you do not answer the call"
@@ -1897,11 +1688,11 @@ msgstr ""
 "Je-li povoleno, všechny příchozí hovory budou předávány na počítač uvedený v "
 "nastavení protokolu v případě, že na ně neodpovíte"
 
-#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:624
+#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:627
 msgid "Forward calls to the given host if _busy"
 msgstr "Přesměrovat hovory na daný počítač, když jste zane_prázdněni"
 
-#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:626
+#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:629
 msgid ""
 "If enabled, all incoming calls will be forwarded to the host that is "
 "specified in the protocol settings if you already are in a call or if you "
@@ -1911,21 +1702,21 @@ msgstr ""
 "hovoříte nebo jste v režimu Nerušit, předávány na počítač uvedený v "
 "nastavení protokolu"
 
-#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:629
+#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:632
 msgid "Call Options"
 msgstr "Možnosti hovoru"
 
 #. Translators: the full sentence is Forward calls after x seconds.
-#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:632
+#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:635
 msgid "Forward calls after"
 msgstr "Přesměrovat hovory po"
 
-#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:632
+#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:635
 msgid "seconds"
 msgstr "s"
 
-#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:634
-#: ../org.gnome.ekiga.gschema.xml.in.in.h:68
+#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:637
+#: ../org.gnome.ekiga.gschema.xml.in.in.h:70
 msgid ""
 "Automatically reject or forward incoming calls if no answer is given after "
 "the specified amount of time (in seconds)"
@@ -1933,20 +1724,20 @@ msgstr ""
 "Automaticky odmítat nebo přesměrovat příchozí hovory, pokud nejsou "
 "zodpovězeny v určené době (v sekundách)"
 
-#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:635
+#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:638
 msgid "_Automatically answer incoming calls"
 msgstr "_Automaticky odpovídat na příchozí volání"
 
-#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:637
-#: ../org.gnome.ekiga.gschema.xml.in.in.h:70
+#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:640
+#: ../org.gnome.ekiga.gschema.xml.in.in.h:72
 msgid "If enabled, automatically answer incoming calls"
 msgstr "Pokud je povoleno, bude se automaticky odpovídat na příchozí volání"
 
-#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:700
+#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:702
 msgid "A"
 msgstr "A"
 
-#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:711
+#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:712
 msgid "Event"
 msgstr "Událost"
 
@@ -1972,7 +1763,7 @@ msgid "Tone"
 msgstr "Tón"
 
 #: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:776
-#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:847
+#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:848
 msgid "RFC2833"
 msgstr "RFC2833"
 
@@ -1997,29 +1788,29 @@ msgid "Force H.239 Live Role"
 msgstr "Vynuceně úloha živého videa H.239"
 
 #: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:797
-#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:860
-msgid "Forward _URI:"
-msgstr "Adresa _URI pro přesměrování:"
+#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:861
+msgid "Forward _URI"
+msgstr "Adresa _URI pro přesměrování"
 
 #: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:799
-#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:862
-#: ../org.gnome.ekiga.gschema.xml.in.in.h:97
+#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:863
+#: ../org.gnome.ekiga.gschema.xml.in.in.h:99
 msgid "The host where calls should be forwarded if call forwarding is enabled"
 msgstr ""
 "Počítač, na který mají být předávany hovory, je-li povoleno předávání hovorů"
 
 #. Packing widget
-#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:805
+#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:806
 msgid "Advanced Settings"
 msgstr "Pokročilá nastavení"
 
 #. The toggles
-#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:808
+#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:809
 msgid "Enable H.245 _tunneling"
 msgstr "Povolit _tunelování H.245"
 
-#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:810
-#: ../org.gnome.ekiga.gschema.xml.in.in.h:104
+#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:811
+#: ../org.gnome.ekiga.gschema.xml.in.in.h:106
 msgid ""
 "This enables H.245 Tunneling mode. In H.245 Tunneling mode H.245 messages "
 "are encapsulated into the H.225 channel (port 1720). This saves one TCP "
@@ -2029,20 +1820,20 @@ msgstr ""
 "zapouzdřeny do kanálu H.225 (port 1720). To ušetří během hovoru jedno TCP "
 "spojení. Tunelování H.245 bylo zavedeno v H.323v2."
 
-#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:812
+#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:813
 msgid "Enable _early H.245"
 msgstr "Povolit _brzké H.245"
 
-#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:814
-#: ../org.gnome.ekiga.gschema.xml.in.in.h:106
+#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:815
+#: ../org.gnome.ekiga.gschema.xml.in.in.h:108
 msgid "This enables H.245 early in the setup"
 msgstr "Povoluje brzké H.245 v nastavení"
 
-#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:816
+#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:817
 msgid "Enable fast _connect procedure"
 msgstr "Povolit pro_ceduru rychlého připojení"
 
-#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:817
+#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:818
 msgid ""
 "Connection will be established in Fast Connect (Fast Start) mode. Fast "
 "Connect is a way to start calls faster that was introduced in H.323v2."
@@ -2050,52 +1841,52 @@ msgstr ""
 "Spojení bude navázáno v režimu rychlého připojení (rychlého startu). Rychlé "
 "připojení je nový způsob rychlejšího navazování spojení zavedený v H.323v2."
 
-#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:819
+#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:820
 msgid "Enable H.239 control"
 msgstr "Povolit řízení H.239"
 
-#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:820
+#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:821
 msgid "This enables H.239 capability for additional video roles."
 msgstr "Povoluje podporu H.239 pro dodatečné úlohy videa."
 
-#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:825
+#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:826
 msgid "Select the H.239 Video Role"
 msgstr "Vyberte úlohu videa H.239"
 
 #. Packing widget
-#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:828
-#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:869
+#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:829
+#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:870
 msgid "DTMF Mode"
 msgstr "Režim DTMF"
 
-#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:830
-#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:871
-msgid "_Send DTMF as:"
-msgstr "_Odeslat DTMF jako:"
+#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:831
+#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:872
+msgid "_Send DTMF as"
+msgstr "_Odesílat DTMF jako"
 
-#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:833
-#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:874
+#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:834
+#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:875
 msgid "Select the mode for DTMFs sending"
 msgstr "Výběr režimu pro odesílání DTMF"
 
-#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:848
+#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:849
 msgid "INFO"
 msgstr "INFO"
 
 #. Add Misc Settings
-#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:855
-msgid "_Outbound proxy:"
-msgstr "_Odchozí proxy:"
+#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:856
+msgid "_Outbound proxy"
+msgstr "_Odchozí proxy"
 
-#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:857
-#: ../org.gnome.ekiga.gschema.xml.in.in.h:95
+#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:858
+#: ../org.gnome.ekiga.gschema.xml.in.in.h:97
 msgid "The SIP Outbound Proxy to use for outgoing calls"
 msgstr "Odchozí proxy SIP, která se má používat pro odchozí hovory"
 
 #. Here we add the audio codecs options
 #. Here we add the video codecs options
 #: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:894
-#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:1004
+#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:1003
 msgid "Settings"
 msgstr "Nastavení"
 
@@ -2106,7 +1897,7 @@ msgid "Enable silence _detection"
 msgstr "Povolit _detekci ticha"
 
 #: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:900
-#: ../org.gnome.ekiga.gschema.xml.in.in.h:74
+#: ../org.gnome.ekiga.gschema.xml.in.in.h:76
 msgid "If enabled, use silence detection with the codecs supporting it"
 msgstr ""
 "Je-li povoleno, bude se používat detekce ticha u kodeků, které ji podporují"
@@ -2116,21 +1907,21 @@ msgid "Enable echo can_celation"
 msgstr "Povolit _potlačení ozvěny"
 
 #: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:904
-#: ../org.gnome.ekiga.gschema.xml.in.in.h:76
+#: ../org.gnome.ekiga.gschema.xml.in.in.h:78
 msgid "If enabled, use echo cancellation"
 msgstr "Je-li povoleno, bude se používat potlačení ozvěny"
 
 #. Translators: the full sentence is Maximum jitter buffer of x ms.
 #: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:907
-msgid "Maximum _jitter buffer of"
-msgstr "Maximální vyrovnávací paměť výpadků na"
+msgid "Use a maximum _jitter buffer of"
+msgstr "Používat vyrovnávací paměť výpadků ma_ximálně na"
 
 #: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:907
 msgid "ms"
 msgstr "ms"
 
 #: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:909
-#: ../org.gnome.ekiga.gschema.xml.in.in.h:78
+#: ../org.gnome.ekiga.gschema.xml.in.in.h:80
 msgid "The maximum jitter buffer size for audio reception (in ms)"
 msgstr ""
 "Maximální velikost vyrovnávací paměti výpadků (jitter buffer) pro příjem "
@@ -2139,21 +1930,21 @@ msgstr ""
 #. Audio Devices
 #. The video devices related options
 #: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:913
-#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:1020
+#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:1019
 msgid "Devices"
 msgstr "Zařízení"
 
 #: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:919
-msgid "Ringing device:"
-msgstr "Vyzváněcí zařízení:"
+msgid "Ringing Device"
+msgstr "Vyzváněcí zařízení"
 
 #: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:923
 msgid "Select the ringing audio device to use"
 msgstr "Vyberte vyzváněcí zařízení, které chcete používat"
 
 #: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:926
-msgid "Output device:"
-msgstr "Výstupní zařízení:"
+msgid "Output Device"
+msgstr "Výstupní zařízení"
 
 #: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:930
 #: ../org.gnome.ekiga.gschema.xml.in.in.h:2
@@ -2161,9 +1952,9 @@ msgid "Select the audio output device to use"
 msgstr "Vyberte zařízení výstupu zvuku, které se má používat"
 
 #: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:936
-#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:1025
-msgid "Input device:"
-msgstr "Vstupní zařízení:"
+#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:1024
+msgid "Input Device"
+msgstr "Vstupní zařízení"
 
 #: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:940
 #: ../org.gnome.ekiga.gschema.xml.in.in.h:4
@@ -2172,12 +1963,11 @@ msgstr "Vyberte zařízení vstupu zvuku, které se má používat"
 
 #. That button will refresh the device list
 #: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:943
-#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:1046
 msgid "_Detect devices"
 msgstr "_Detekovat zařízení"
 
 #: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:945
-#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:1046
+#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:1047
 msgid "Click here to refresh the device list"
 msgstr "Klikněte sem pro obnovení seznamu zařízení"
 
@@ -2215,15 +2005,16 @@ msgid "Auto"
 msgstr "Automaticky"
 
 #. Translators: the full sentence is Keep a minimum video quality of X %
-#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:1007
-msgid "Picture quality"
+#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:1006
+msgid "Picture Quality"
 msgstr "Kvalita obrázku"
 
-#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:1007
-msgid "Frame rate"
+#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:1006
+#: ../org.gnome.ekiga.gschema.xml.in.in.h:88
+msgid "Frame Rate"
 msgstr "Snímková rychlost"
 
-#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:1009
+#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:1008
 msgid ""
 "Choose if you want to guarantee a minimum image quality (possibly leading to "
 "dropped frames in order not to surpass the bitrate limit) or if you prefer "
@@ -2234,15 +2025,15 @@ msgstr ""
 "chcete udržovat rychlost snímků."
 
 #. Translators: the full sentence is Maximum video bitrate of x kbits/s.
-#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:1013
-msgid "Maximum video _bitrate of"
-msgstr "Maximální datový tok odesílaného videa"
+#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:1012
+msgid "Use a maximum video _bitrate of"
+msgstr "Používat datový tok odesílaného videa maximálně"
 
-#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:1013
+#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:1012
 msgid "kbits/s"
 msgstr "kb/s"
 
-#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:1015
+#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:1014
 msgid ""
 "The maximum video bitrate in kbits/s. The video quality and the effective "
 "frame rate will be dynamically adjusted to keep the bitrate at the given "
@@ -2252,7 +2043,7 @@ msgstr ""
 "snímků za sekundu budou dynamicky upravovány tak, aby se udržel datový tok "
 "na zadané hodnotě."
 
-#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:1027
+#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:1026
 #: ../org.gnome.ekiga.gschema.xml.in.in.h:6
 msgid ""
 "Select the video input device to use. If an error occurs when using this "
@@ -2261,93 +2052,114 @@ msgstr ""
 "Vyberte zařízení vstupu videa, které se má používat. Pokud při používání "
 "tohoto zařízení dojde k chybě, bude přenášen testovací obrázek."
 
-#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:1029
-msgid "Size:"
-msgstr "Velikost:"
+#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:1028
+msgid "Size"
+msgstr "Velikost"
 
-#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:1033
+#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:1032
 #: ../org.gnome.ekiga.gschema.xml.in.in.h:8
 msgid "Select the transmitted video size"
 msgstr "Vyberte přenášenou velikost videa"
 
-#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:1035
-msgid "Format:"
-msgstr "Formát:"
+#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:1034
+msgid "Format"
+msgstr "Formát"
 
-#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:1039
+#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:1038
 #: ../org.gnome.ekiga.gschema.xml.in.in.h:12
 msgid ""
 "Select the format for video cameras (does not apply to most USB cameras)"
 msgstr "Vyberte formát pro videokamery (netýká se většiny kamer USB)"
 
-#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:1041
-msgid "Channel:"
-msgstr "Kanál:"
+#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:1040
+msgid "Channel"
+msgstr "Kanál"
 
-#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:1043
+#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:1042
 #: ../org.gnome.ekiga.gschema.xml.in.in.h:10
 msgid "The video channel number to use (to select camera, tv or other sources)"
 msgstr ""
 "Číslo video kanálu, který se má používat (pro výběr kamery, tv nebo jiné "
 "zdroje)"
 
-#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:1420
+#. That button will refresh the device list
+#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:1045
+msgid "_Detect Devices"
+msgstr "Vyhle_dat zařízení"
+
+#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:1421
 msgid "No device found"
 msgstr "Žádné zařízení nenalezeno"
 
-#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:1679
-msgid "Blacklist edition"
-msgstr "Vydání černé listiny"
+#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:1664
+msgid "Edit the Blacklist"
+msgstr "Úprava černé listiny"
 
-#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:1680
-msgid "This form lets you add and remove tokens from the blacklist"
-msgstr ""
-"Pomocí tohoto formuláře můžete přidávat a odebírat položky černé listiny"
-
-#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:1685
+#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:1669
 msgid "Current list of undesirables"
 msgstr "Aktuální seznam nežádoucích"
 
-#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:1835
-msgid "Ekiga Preferences"
-msgstr "Předvolby Ekiga"
+#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:1820
+msgid "Preferences"
+msgstr "Předvolby"
 
-#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:1845
+#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:1821
+msgid "Edit your settings"
+msgstr "Úprava vašich nastavení"
+
+#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:1840
 msgid "General"
 msgstr "Obecné"
 
-#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:1849
-msgid "Forwarding"
-msgstr "Předávání"
+#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:1844
+msgid "Call Forwarding"
+msgstr "Předávání volání"
 
-#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:1854
+#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:1849
 msgid "Sound Events"
 msgstr "Zvukové události"
 
-#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:1859
+#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:1854
 msgid "SIP"
 msgstr "SIP"
 
-#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:1864
+#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:1859
 msgid "H.323"
 msgstr "H.323"
 
-#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:1868
+#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:1863
 msgid "Audio"
 msgstr "Zvuk"
 
-#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:1872
+#: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:1867
 msgid "Video"
 msgstr "Video"
 
+#: ../lib/engine/gui/gtk-frontend/roster-view-gtk.cpp:1142
+#: ../lib/engine/gui/gtk-frontend/roster-view-gtk.cpp:1248
+msgid "Unsorted"
+msgstr "Neseřazený"
+
 # see the comment for 2838 line
-#: ../lib/engine/gui/gtk-frontend/statusicon.cpp:317
+#: ../lib/engine/gui/gtk-frontend/statusicon.cpp:329
 #, c-format
 msgid "You have %d message"
 msgid_plural "You have %d messages"
 msgstr[0] "Máte %d zprávu"
 msgstr[1] "Máte %d zprávy"
 msgstr[2] "Máte %d zpráv"
+
+#: ../lib/engine/gui/gtk-frontend/statusmenu.cpp:90
+msgid "Available"
+msgstr "Přítomen"
+
+#: ../lib/engine/gui/gtk-frontend/statusmenu.cpp:91
+msgid "Away"
+msgstr "Nepřítomen"
+
+#: ../lib/engine/gui/gtk-frontend/statusmenu.cpp:92
+msgid "Busy"
+msgstr "Zaneprázdněn"
 
 #: ../lib/engine/gui/gtk-frontend/statusmenu.cpp:389
 msgid "Custom message..."
@@ -2371,119 +2183,38 @@ msgstr "Smazat vlastní zprávy:"
 msgid "Define a custom message:"
 msgstr "Definovat vlastní zprávy:"
 
-#: ../lib/gui/dialpad.c:53
+#. whitespaces for a better alignment
+#: ../lib/gui/dialpad.c:54
 msgid "abc"
 msgstr "abc"
 
-#: ../lib/gui/dialpad.c:54
+#: ../lib/gui/dialpad.c:55
 msgid "def"
 msgstr "def"
 
-#: ../lib/gui/dialpad.c:55
+#: ../lib/gui/dialpad.c:56
 msgid "ghi"
 msgstr "ghi"
 
-#: ../lib/gui/dialpad.c:56
+#: ../lib/gui/dialpad.c:57
 msgid "jkl"
 msgstr "jkl"
 
-#: ../lib/gui/dialpad.c:57
+#: ../lib/gui/dialpad.c:58
 msgid "mno"
 msgstr "mno"
 
-#: ../lib/gui/dialpad.c:58
+#: ../lib/gui/dialpad.c:59
 msgid "pqrs"
 msgstr "pqrs"
 
-#: ../lib/gui/dialpad.c:59
+#: ../lib/gui/dialpad.c:60
 msgid "tuv"
 msgstr "tuv"
 
-#: ../lib/gui/dialpad.c:60
+#: ../lib/gui/dialpad.c:61
 msgid "wxyz"
 msgstr "wxyz"
-
-#: ../lib/gui/gmcallbacks.c:69
-msgid "Contributors:"
-msgstr "Spoluautoři:"
-
-#: ../lib/gui/gmcallbacks.c:74
-msgid "Artwork:"
-msgstr "Grafika:"
-
-#: ../lib/gui/gmcallbacks.c:81
-msgid "See AUTHORS file for full credits"
-msgstr "Úplné zásluhy viz soubor AUTHORS"
-
-#: ../lib/gui/gmcallbacks.c:97
-msgid ""
-"This program is free software; you can redistribute it and/or modify it "
-"under the terms of the GNU General Public License as published by the Free "
-"Software Foundation; either version 2 of the License, or (at your option) "
-"any later version. "
-msgstr ""
-"Tento program je svobodný software; můžete ho šířit a/nebo upravovat dle "
-"podmínek licence GNU General Public Licence, kterou vydala Free Software "
-"Foundation; buď verze 2 této licence nebo (dle vaší volby) jakákoli novější "
-"verze."
-
-#: ../lib/gui/gmcallbacks.c:101
-msgid ""
-"This program is distributed in the hope that it will be useful, but WITHOUT "
-"ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or "
-"FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for "
-"more details. You should have received a copy of the GNU General Public "
-"License along with this program; if not, write to the Free Software "
-"Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301, USA."
-msgstr ""
-"Tento program je distribuován v naději, že bude užitečný, ale BEZ JAKÉKOLI "
-"ZÁRUKY; dokonce bez záruky OBCHODOVATELNOSTI nebo PŘIZPŮSOBENÍ K URČITÉMU "
-"ÚČELU. Další detaily viz GNU General Public License, která je přiložena k "
-"tomuto programu; pokud přiložena není, napište na Free Software Foundation, "
-"Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301, USA."
-
-#: ../lib/gui/gmcallbacks.c:108
-msgid ""
-"Ekiga is licensed under the GPL license and as a special exception, you have "
-"permission to link or otherwise combine this program with the programs OPAL, "
-"OpenH323 and PWLIB, and distribute the combination, without applying the "
-"requirements of the GNU GPL to the OPAL, OpenH323 and PWLIB programs, as "
-"long as you do follow the requirements of the GNU GPL for all the rest of "
-"the software thus combined."
-msgstr ""
-"Ekiga je licencovaná pod licencí GPL a speciální výjimkou je, že máte "
-"povolení sloučit nebo jakkoli kombinovat tento program s programy OPAL, "
-"OpenH323 a PWLIB a distribuovat tuto kombinaci bez plnění podmínek GNU GPL "
-"OPALu, OpenH323 a PWLIB programů, pokud však plníte podmínky GNU GPL zbytku "
-"software takto kombinovaného."
-
-#. Translators: Please write translator credits here, and
-#. * separate names with \n
-#: ../lib/gui/gmcallbacks.c:120
-msgid "translator-credits"
-msgstr ""
-"Petr Vokáč <vokac@linux.fjfi.cvut.cz>, 2001\n"
-"Michal Bukovjan <bukm@centrum.cz>, 2003\n"
-"Miloslav Trmač <mitr@volny.cz>, 2003, 2004, 2006\n"
-"Petr Tomeš <ptomes@gmail.com>, 2006\n"
-"Jakub Friedl <jfriedl@suse.cz>, 2006, 2007\n"
-"Michal Pěnka <michal@penka.name>, 2008, 2009\n"
-"Petr Kovář <pknbe@volny.cz>, 2008, 2009\n"
-"Marek Černocký <marek@manet.cz>, 2010, 2011, 2012"
-
-#: ../lib/gui/gmcallbacks.c:125
-msgid ""
-"Ekiga is full-featured SIP and H.323 compatible VoIP, IP-Telephony and "
-"Videoconferencing application that allows you to make audio and video calls "
-"to remote users with SIP and H.323 hardware or software."
-msgstr ""
-"Ekiga je plnohodnotná aplikace pro VoIP, IP telefonii a videokonference "
-"kompatibilní se SIP a H.323, která vám umožňuje provádět zvukové a video "
-"hovory se vzdálenými uživateli s hardwarem nebo softwarem SIP a H.323."
-
-#: ../lib/gui/gmcallbacks.c:203
-msgid "Unable to open help file."
-msgstr "Nelze otevřít soubor nápovědy."
 
 #: ../lib/gui/gmdialog.c:323
 msgid "Do not show this dialog again"
@@ -2719,11 +2450,19 @@ msgstr "Umístění okna s účty na obrazovce"
 msgid "Size of the accounts window"
 msgstr "Velikost okna s účty"
 
+#: ../org.gnome.ekiga.gschema.xml.in.in.h:64
+msgid "Position on the screen of the preferences window"
+msgstr "Umístění okna s předvolbami na obrazovce"
+
 #: ../org.gnome.ekiga.gschema.xml.in.in.h:65
+msgid "Size of the preferences window"
+msgstr "Velikost okna s předvolbami"
+
+#: ../org.gnome.ekiga.gschema.xml.in.in.h:67
 msgid "Enable Picture-In-Picture mode"
 msgstr "Povolit režim „obraz v obraze“"
 
-#: ../org.gnome.ekiga.gschema.xml.in.in.h:66
+#: ../org.gnome.ekiga.gschema.xml.in.in.h:68
 msgid ""
 "This allows the local video stream to be displayed incrusted in the remote "
 "video stream. This is only effective when sending and receiving video."
@@ -2731,44 +2470,44 @@ msgstr ""
 "Tímto se umožní zobrazit vysílání místního videa jako vloženého do vysílání "
 "vzdáleného videa. Projeví se jen v případě, kdy se vysílá a přijímá video."
 
-#: ../org.gnome.ekiga.gschema.xml.in.in.h:67
+#: ../org.gnome.ekiga.gschema.xml.in.in.h:69
 msgid "No answer timeout"
 msgstr "Časový limit pro žádnou odpověď"
 
-#: ../org.gnome.ekiga.gschema.xml.in.in.h:69
+#: ../org.gnome.ekiga.gschema.xml.in.in.h:71
 msgid "Automatic answer"
 msgstr "Automatická odpověď"
 
-#: ../org.gnome.ekiga.gschema.xml.in.in.h:71
+#: ../org.gnome.ekiga.gschema.xml.in.in.h:73
 msgid "The Audio Codecs List"
 msgstr "Seznam zvukových kodeků"
 
 # mistake in original: "lodecs"
-#: ../org.gnome.ekiga.gschema.xml.in.in.h:72
+#: ../org.gnome.ekiga.gschema.xml.in.in.h:74
 msgid "The audio codecs list"
 msgstr "Seznam zvukových kodeků"
 
-#: ../org.gnome.ekiga.gschema.xml.in.in.h:73
+#: ../org.gnome.ekiga.gschema.xml.in.in.h:75
 msgid "Enable silence detection"
 msgstr "Povolit detekci ticha"
 
-#: ../org.gnome.ekiga.gschema.xml.in.in.h:75
+#: ../org.gnome.ekiga.gschema.xml.in.in.h:77
 msgid "Enable echo cancellation"
 msgstr "Povolit potlačení ozvěny"
 
-#: ../org.gnome.ekiga.gschema.xml.in.in.h:77
+#: ../org.gnome.ekiga.gschema.xml.in.in.h:79
 msgid "Maximum jitter buffer"
 msgstr "Maximální vyrovnávací paměť výpadků (jitter buffer)"
 
-#: ../org.gnome.ekiga.gschema.xml.in.in.h:79
+#: ../org.gnome.ekiga.gschema.xml.in.in.h:81
 msgid "The video codecs list"
 msgstr "Seznam video kodeků"
 
-#: ../org.gnome.ekiga.gschema.xml.in.in.h:80
+#: ../org.gnome.ekiga.gschema.xml.in.in.h:82
 msgid "Maximum TX video bitrate"
 msgstr "Maximální datový tok odesílaného videa"
 
-#: ../org.gnome.ekiga.gschema.xml.in.in.h:81
+#: ../org.gnome.ekiga.gschema.xml.in.in.h:83
 msgid ""
 "The maximum TX video bitrate in kbit/s. The video quality and the number of "
 "transmitted frames per second (depends on selected codec) will be "
@@ -2780,11 +2519,11 @@ msgstr ""
 "upraveny nad svou minimální hodnotu během hovorů tak, aby se snížil datový "
 "tok na zadanou hodnotu"
 
-#: ../org.gnome.ekiga.gschema.xml.in.in.h:82
+#: ../org.gnome.ekiga.gschema.xml.in.in.h:84
 msgid "Maximum RX video bitrate"
 msgstr "Maximální datový tok přijímaného videa"
 
-#: ../org.gnome.ekiga.gschema.xml.in.in.h:83
+#: ../org.gnome.ekiga.gschema.xml.in.in.h:85
 msgid ""
 "The maximum RX video bitrate in kbit/s. This value will be signaled to the "
 "peer endpoint that can adjust (if it supports it) its TX bitrate if it is "
@@ -2795,11 +2534,11 @@ msgstr ""
 "pásma vysílaného videa, pokud přesahuje tuto vyslanou hodnotu."
 
 # I don't understand the meaning :(
-#: ../org.gnome.ekiga.gschema.xml.in.in.h:84
+#: ../org.gnome.ekiga.gschema.xml.in.in.h:86
 msgid "Temporal Spatial Trade Off"
 msgstr "Dočasná prostorová výměna (TSTO)"
 
-#: ../org.gnome.ekiga.gschema.xml.in.in.h:85
+#: ../org.gnome.ekiga.gschema.xml.in.in.h:87
 msgid ""
 "Whether to prefer to sustain the max. frame rate or lower it possibly in "
 "order to keep a minimum level of (spatial) quality for all frames. 0: "
@@ -2809,11 +2548,7 @@ msgstr ""
 "snížení, aby se udržela minimální míra kvality pro všechny snímky. 0: "
 "nejvyšší minimální kvalita, 31: nejnižší minimální kvalita"
 
-#: ../org.gnome.ekiga.gschema.xml.in.in.h:86
-msgid "Frame Rate"
-msgstr "Snímková rychlost"
-
-#: ../org.gnome.ekiga.gschema.xml.in.in.h:87
+#: ../org.gnome.ekiga.gschema.xml.in.in.h:89
 msgid ""
 "The maximum transmitted frame rate in frames/s. This rate may not be reached "
 "in case a minimum quality was configure via a TSTO value smaller than 31 and "
@@ -2824,23 +2559,23 @@ msgstr ""
 "hodnotu TSTO menší než 31 a zvolený datový tok nepostačuje k podpoře této "
 "minimální kvality"
 
-#: ../org.gnome.ekiga.gschema.xml.in.in.h:88
+#: ../org.gnome.ekiga.gschema.xml.in.in.h:90
 msgid "The accounts list"
 msgstr "Seznam účtů"
 
-#: ../org.gnome.ekiga.gschema.xml.in.in.h:89
+#: ../org.gnome.ekiga.gschema.xml.in.in.h:91
 msgid "The list of accounts to which Ekiga should register"
 msgstr "Seznam účtů, ke kterým se má Ekiga registrovat"
 
-#: ../org.gnome.ekiga.gschema.xml.in.in.h:90
+#: ../org.gnome.ekiga.gschema.xml.in.in.h:92
 msgid "Type of Service (TOS) byte on outgoing RTP IP packets"
 msgstr "Bajt TOS (Type Of Service – typ služby) v odchozím paketu RTP IP"
 
-#: ../org.gnome.ekiga.gschema.xml.in.in.h:92
+#: ../org.gnome.ekiga.gschema.xml.in.in.h:94
 msgid "Listen port"
 msgstr "Přijímací port"
 
-#: ../org.gnome.ekiga.gschema.xml.in.in.h:93
+#: ../org.gnome.ekiga.gschema.xml.in.in.h:95
 msgid ""
 "The port to listen to for incoming connections. Ekiga needs to be restarted "
 "for the new value to take effect"
@@ -2848,19 +2583,19 @@ msgstr ""
 "Port, na němž se má čekat na příchozí spojení. Aby měla nová hodnota vliv, "
 "je potřeba aplikaci Ekiga restartovat"
 
-#: ../org.gnome.ekiga.gschema.xml.in.in.h:94
+#: ../org.gnome.ekiga.gschema.xml.in.in.h:96
 msgid "Outbound Proxy"
 msgstr "Odchozí proxy"
 
-#: ../org.gnome.ekiga.gschema.xml.in.in.h:96
+#: ../org.gnome.ekiga.gschema.xml.in.in.h:98
 msgid "Forward calls to host"
 msgstr "Přesměrovat hovory na počítač"
 
-#: ../org.gnome.ekiga.gschema.xml.in.in.h:98
+#: ../org.gnome.ekiga.gschema.xml.in.in.h:100
 msgid "DTMF transmission"
 msgstr "Přenos DTMF"
 
-#: ../org.gnome.ekiga.gschema.xml.in.in.h:99
+#: ../org.gnome.ekiga.gschema.xml.in.in.h:101
 msgid ""
 "Select the mode for DTMFs transmission. The values can be 'rfc2833' (for "
 "\"RFC2833\") and 'info' (for \"SIP INFO\")"
@@ -2868,11 +2603,11 @@ msgstr ""
 "Výběr režimu přenosu DTMF. Hodnoty mohou být 0 (pro „RFC2833“) a 1 (pro „SIP "
 "INFO“)"
 
-#: ../org.gnome.ekiga.gschema.xml.in.in.h:100
+#: ../org.gnome.ekiga.gschema.xml.in.in.h:102
 msgid "NAT Binding Timeout"
 msgstr "Časový omezení vazby NAT"
 
-#: ../org.gnome.ekiga.gschema.xml.in.in.h:101
+#: ../org.gnome.ekiga.gschema.xml.in.in.h:103
 msgid ""
 "Enter the number of seconds after which Ekiga should try refreshing the NAT "
 "binding when STUN is being used"
@@ -2880,7 +2615,7 @@ msgstr ""
 "Zadejte počet sekund, po kterých má Ekiga zkusit obnovit vazbu NAT, když se "
 "používá STUN"
 
-#: ../org.gnome.ekiga.gschema.xml.in.in.h:102
+#: ../org.gnome.ekiga.gschema.xml.in.in.h:104
 msgid ""
 "The port to listen to for incoming connections. Ekiga needs to be restarted "
 "for the new value to take effect."
@@ -2888,19 +2623,19 @@ msgstr ""
 "Port, na němž se má čekat na příchozí spojení. Aby měla nová hodnota vliv, "
 "je potřeba aplikaci Ekiga restartovat."
 
-#: ../org.gnome.ekiga.gschema.xml.in.in.h:103
+#: ../org.gnome.ekiga.gschema.xml.in.in.h:105
 msgid "Enable H.245 tunneling"
 msgstr "Povolit tunelování H.245"
 
-#: ../org.gnome.ekiga.gschema.xml.in.in.h:105
+#: ../org.gnome.ekiga.gschema.xml.in.in.h:107
 msgid "Enable early H.245"
 msgstr "Povolit brzké H.245"
 
-#: ../org.gnome.ekiga.gschema.xml.in.in.h:107
+#: ../org.gnome.ekiga.gschema.xml.in.in.h:109
 msgid "Enable 'Fast Connect'"
 msgstr "Povolit „Rychlé připojení“"
 
-#: ../org.gnome.ekiga.gschema.xml.in.in.h:108
+#: ../org.gnome.ekiga.gschema.xml.in.in.h:110
 msgid ""
 "Connection will be established in Fast Connect mode. Fast Connect (Fast "
 "Start) is a new way to start calls faster that was introduced in H.323v2."
@@ -2908,19 +2643,19 @@ msgstr ""
 "Spojení bude navázáno v režimu rychlého připojení. Rychlé připojení (rychlý "
 "start) je nový způsob rychlejšího navazování spojení zavedený v H.323v2."
 
-#: ../org.gnome.ekiga.gschema.xml.in.in.h:109
+#: ../org.gnome.ekiga.gschema.xml.in.in.h:111
 msgid "Enable H.239"
 msgstr "Povolit H.239"
 
-#: ../org.gnome.ekiga.gschema.xml.in.in.h:110
+#: ../org.gnome.ekiga.gschema.xml.in.in.h:112
 msgid "This enables H.239 capability for additional video roles"
 msgstr "Povoluje podporu H.239 pro dodatečné úlohy videa"
 
-#: ../org.gnome.ekiga.gschema.xml.in.in.h:111
+#: ../org.gnome.ekiga.gschema.xml.in.in.h:113
 msgid "Extended Video Roles"
 msgstr "Úlohy rozšiřujícího videa"
 
-#: ../org.gnome.ekiga.gschema.xml.in.in.h:112
+#: ../org.gnome.ekiga.gschema.xml.in.in.h:114
 msgid ""
 "Select the H.239 Video Role. The values can be \"None\" (for \"disable "
 "extended video\"), \"Content\" (for \"allow per content role mask\"), "
@@ -2932,15 +2667,15 @@ msgstr ""
 "„Presentation“ (pro „vynuceně prezentace“) nebo „Live“ (pro „vynuceně živé "
 "video“)"
 
-#: ../org.gnome.ekiga.gschema.xml.in.in.h:113
+#: ../org.gnome.ekiga.gschema.xml.in.in.h:115
 msgid "Select the mode for DTMFs transmission"
 msgstr "Výběr režimu pro přenos DTMF"
 
-#: ../org.gnome.ekiga.gschema.xml.in.in.h:114
+#: ../org.gnome.ekiga.gschema.xml.in.in.h:116
 msgid "TCP port range"
 msgstr "Rozsah portů TCP"
 
-#: ../org.gnome.ekiga.gschema.xml.in.in.h:115
+#: ../org.gnome.ekiga.gschema.xml.in.in.h:117
 msgid ""
 "The range of TCP ports that Ekiga will use for the H.323 H.245 channel. This "
 "port range has no effect if both participants to the conference are using "
@@ -2950,11 +2685,11 @@ msgstr ""
 "rozsah portů nemá vliv, pokud oba účastníci konference používají tunelování "
 "H.245."
 
-#: ../org.gnome.ekiga.gschema.xml.in.in.h:116
+#: ../org.gnome.ekiga.gschema.xml.in.in.h:118
 msgid "UDP port range"
 msgstr "Rozsah portů UDP"
 
-#: ../org.gnome.ekiga.gschema.xml.in.in.h:117
+#: ../org.gnome.ekiga.gschema.xml.in.in.h:119
 msgid ""
 "The range of UDP ports that Ekiga will use for SIP signalling or when "
 "registering to H.323 gatekeepers. It is also used for RTP (audio and video "
@@ -2964,11 +2699,11 @@ msgstr ""
 "registraci bran H.323. Použije se také pro RTP (kanály zvukové a obrazové "
 "komunikace)."
 
-#: ../org.gnome.ekiga.gschema.xml.in.in.h:118
+#: ../org.gnome.ekiga.gschema.xml.in.in.h:120
 msgid "Always forward calls to the given host"
 msgstr "Vždy přesměrovat hovory na daný počítač"
 
-#: ../org.gnome.ekiga.gschema.xml.in.in.h:119
+#: ../org.gnome.ekiga.gschema.xml.in.in.h:121
 msgid ""
 "If enabled, all incoming calls will be forwarded to the host that is "
 "specified in the field below"
@@ -2976,11 +2711,11 @@ msgstr ""
 "Je-li povoleno, všechny příchozí hovory budou předány na počítač uvedený v "
 "následující položce"
 
-#: ../org.gnome.ekiga.gschema.xml.in.in.h:120
+#: ../org.gnome.ekiga.gschema.xml.in.in.h:122
 msgid "Forward calls to the given host if busy"
 msgstr "Přesměrovat hovory na daný počítač v případě, že jste zaneprázdněni"
 
-#: ../org.gnome.ekiga.gschema.xml.in.in.h:121
+#: ../org.gnome.ekiga.gschema.xml.in.in.h:123
 msgid ""
 "If enabled, all incoming calls will be forwarded to the host that is "
 "specified in the field below if you already are in a call or if you are in "
@@ -2990,11 +2725,11 @@ msgstr ""
 "hovoříte nebo jste v režimu Nerušit, předány na počítač uvedený v "
 "následující položce"
 
-#: ../org.gnome.ekiga.gschema.xml.in.in.h:122
+#: ../org.gnome.ekiga.gschema.xml.in.in.h:124
 msgid "Forward calls to the given host if no answer"
 msgstr "Přesměrovat hovory na daný počítač v případě, že není žádná odpověď"
 
-#: ../org.gnome.ekiga.gschema.xml.in.in.h:123
+#: ../org.gnome.ekiga.gschema.xml.in.in.h:125
 msgid ""
 "If enabled, all incoming calls will be forwarded to the host that is "
 "specified in the field below if you do not answer the call"
@@ -3002,43 +2737,47 @@ msgstr ""
 "Je-li povoleno, všechny příchozí hovory budou v případě, že na ně "
 "neodpovíte, předány na počítač uvedený v následující položce"
 
-#: ../org.gnome.ekiga.gschema.xml.in.in.h:124
+#: ../org.gnome.ekiga.gschema.xml.in.in.h:126
 msgid "List of folded groups in the roster"
 msgstr "Přehled složených skupin v seznamu"
 
-#: ../org.gnome.ekiga.gschema.xml.in.in.h:126
+#: ../org.gnome.ekiga.gschema.xml.in.in.h:127
+msgid "Show offline contacts"
+msgstr "Zobrazovat odpojené kontakty"
+
+#: ../org.gnome.ekiga.gschema.xml.in.in.h:128
 msgid "If enabled, offline contacts will be shown in the roster"
 msgstr "Je-li povoleno, budou se odpojené kontakty zobrazovat v seznamu"
 
-#: ../org.gnome.ekiga.gschema.xml.in.in.h:127
+#: ../org.gnome.ekiga.gschema.xml.in.in.h:129
 msgid "LDAP servers"
 msgstr "Servery LDAP"
 
-#: ../org.gnome.ekiga.gschema.xml.in.in.h:128
+#: ../org.gnome.ekiga.gschema.xml.in.in.h:130
 msgid "List of configured LDAP servers"
 msgstr "Seznam nastavených serverů LDAP"
 
-#: ../org.gnome.ekiga.gschema.xml.in.in.h:129
+#: ../org.gnome.ekiga.gschema.xml.in.in.h:131
 msgid "Resource lists"
 msgstr "Seznamy zdrojů"
 
-#: ../org.gnome.ekiga.gschema.xml.in.in.h:130
+#: ../org.gnome.ekiga.gschema.xml.in.in.h:132
 msgid "List of configured resource lists"
 msgstr "Seznam nastavených seznamů zdrojů"
 
-#: ../org.gnome.ekiga.gschema.xml.in.in.h:131
+#: ../org.gnome.ekiga.gschema.xml.in.in.h:133
 msgid "Calls history"
 msgstr "Historie hovorů"
 
-#: ../org.gnome.ekiga.gschema.xml.in.in.h:132
+#: ../org.gnome.ekiga.gschema.xml.in.in.h:134
 msgid "The history of the 100 last calls"
 msgstr "Historie posledních 100 hovorů"
 
-#: ../org.gnome.ekiga.gschema.xml.in.in.h:133
+#: ../org.gnome.ekiga.gschema.xml.in.in.h:135
 msgid "List of foes"
 msgstr "Seznam nepřátel"
 
-#: ../org.gnome.ekiga.gschema.xml.in.in.h:134
+#: ../org.gnome.ekiga.gschema.xml.in.in.h:136
 msgid "List of persons the user does not want to hear about"
 msgstr "Seznam lidí, o kterých si uživatel nepřeje slyšet"
 
@@ -3046,53 +2785,55 @@ msgstr "Seznam lidí, o kterých si uživatel nepřeje slyšet"
 msgid "Neighbours"
 msgstr "Sousedé"
 
-#: ../plugins/evolution/evolution-book.cpp:75
-#: ../plugins/ldap/ldap-book.cpp:920
-#, c-format
-msgid "%d user found"
-msgid_plural "%d users found"
-msgstr[0] "%d uživatel nalezen"
-msgstr[1] "%d uživatelé nenalezeni"
-msgstr[2] "%d uživatelů nenalezeno"
-
-#: ../plugins/evolution/evolution-book.cpp:343
-msgid "Add Contact"
-msgstr "Přidání kontaktu"
+#: ../plugins/evolution/evolution-book.cpp:347
+#: ../plugins/evolution/evolution-contact.cpp:314
+msgid "sip:john.doe@ekiga.net"
+msgstr "sip:honza.jelinek@ekiga.net"
 
 #: ../plugins/evolution/evolution-book.cpp:348
-#: ../plugins/evolution/evolution-contact.cpp:333
-msgid "VoIP _URI:"
-msgstr "Adresa _URI pro VoIP:"
+#: ../plugins/evolution/evolution-contact.cpp:315
+msgid "_Home Phone"
+msgstr "_Domácí telefon"
 
 #: ../plugins/evolution/evolution-book.cpp:349
-#: ../plugins/evolution/evolution-contact.cpp:334
-msgid "_Home phone:"
-msgstr "_Domácí telefon:"
+#: ../plugins/evolution/evolution-book.cpp:351
+#: ../plugins/evolution/evolution-book.cpp:353
+#: ../plugins/evolution/evolution-book.cpp:355
+#: ../plugins/evolution/evolution-contact.cpp:316
+#: ../plugins/evolution/evolution-contact.cpp:318
+#: ../plugins/evolution/evolution-contact.cpp:320
+#: ../plugins/evolution/evolution-contact.cpp:322
+msgid "+3268123456"
+msgstr "+420123456789"
 
 #: ../plugins/evolution/evolution-book.cpp:350
-#: ../plugins/evolution/evolution-contact.cpp:335
-msgid "_Office phone:"
-msgstr "_Pracovní telefon:"
-
-#: ../plugins/evolution/evolution-book.cpp:351
-#: ../plugins/evolution/evolution-contact.cpp:336
-msgid "_Cell phone:"
-msgstr "_Mobilní telefon:"
+#: ../plugins/evolution/evolution-contact.cpp:317
+msgid "_Office Phone"
+msgstr "_Pracovní telefon"
 
 #: ../plugins/evolution/evolution-book.cpp:352
-#: ../plugins/evolution/evolution-contact.cpp:337
-msgid "_Pager:"
-msgstr "Pa_ger:"
+#: ../plugins/evolution/evolution-contact.cpp:319
+msgid "_Cell Phone"
+msgstr "_Mobilní telefon"
 
-#: ../plugins/evolution/evolution-contact.cpp:320
-msgid "Edit contact"
-msgstr "Upravit kontakt"
+#: ../plugins/evolution/evolution-book.cpp:354
+#: ../plugins/evolution/evolution-contact.cpp:321
+msgid "_Pager"
+msgstr "Pa_ger"
 
-#: ../plugins/evolution/evolution-contact.cpp:374
+#. Translators: This is Edit name of the contact
+#. * e.g. Editing Damien SANDRAS details
+#.
+#: ../plugins/evolution/evolution-contact.cpp:301
+#, c-format
+msgid "Editing %s details"
+msgstr "Úprava údajů kontaktu %s"
+
+#: ../plugins/evolution/evolution-contact.cpp:362
 msgid "Remove contact"
 msgstr "Odstranit kontakt"
 
-#: ../plugins/evolution/evolution-contact.cpp:376
+#: ../plugins/evolution/evolution-contact.cpp:364
 #, c-format
 msgid "Are you sure you want to remove %s from the addressbook?"
 msgstr "Jste si jisti, že chcete odstranit %s ze seznamu kontaktů?"
@@ -3119,20 +2860,21 @@ msgstr "Zblázněný"
 msgid "Screencast"
 msgstr "Obrazovkové vysílání"
 
-#: ../plugins/ldap/ldap-book.cpp:427 ../plugins/resource-list/rl-entry.cpp:160
+#: ../plugins/ldap/ldap-book.cpp:348 ../plugins/ldap/ldap-book.cpp:435
+#: ../plugins/resource-list/rl-entry.cpp:160
 #: ../plugins/resource-list/rl-entry-ref.cpp:138
 msgid "_Refresh"
 msgstr "Zn_ovu načíst"
 
-#: ../plugins/ldap/ldap-book.cpp:430
+#: ../plugins/ldap/ldap-book.cpp:438
 msgid "_Remove addressbook"
 msgstr "Odst_ranit seznam kontaktů"
 
-#: ../plugins/ldap/ldap-book.cpp:432
+#: ../plugins/ldap/ldap-book.cpp:440
 msgid "Addressbook _properties"
 msgstr "_Vlastnosti seznamu kontaktů"
 
-#: ../plugins/ldap/ldap-book.cpp:563
+#: ../plugins/ldap/ldap-book.cpp:574
 msgid "LDAP SASL Interaction"
 msgstr "Interakce LDAP SASL"
 
@@ -3145,78 +2887,70 @@ msgstr "Interakce LDAP SASL"
 #. * say about it. You might google for "challenge response
 #. * authentication" if you'd like more background context.
 #.
-#: ../plugins/ldap/ldap-book.cpp:605
+#: ../plugins/ldap/ldap-book.cpp:616
 msgid "Challenge: "
 msgstr "Výzva: "
 
-#: ../plugins/ldap/ldap-book.cpp:613
+#: ../plugins/ldap/ldap-book.cpp:624
 msgid "Interact"
 msgstr "Interakce"
 
-#: ../plugins/ldap/ldap-book.cpp:680
+#: ../plugins/ldap/ldap-book.cpp:691
 msgid "Refreshing"
 msgstr "Znovu se načítá"
 
-#: ../plugins/ldap/ldap-book.cpp:686
+#: ../plugins/ldap/ldap-book.cpp:697
 msgid "Could not initialize server"
 msgstr "Nelze inicializovat server"
 
-#: ../plugins/ldap/ldap-book.cpp:700 ../plugins/ldap/ldap-book.cpp:745
+#: ../plugins/ldap/ldap-book.cpp:711 ../plugins/ldap/ldap-book.cpp:756
 msgid "LDAP Error: "
 msgstr "Chyba LDAP: "
 
-#: ../plugins/ldap/ldap-book.cpp:754
+#: ../plugins/ldap/ldap-book.cpp:765
 msgid "Contacted server"
 msgstr "Kontaktovaný server"
 
 #. patience == 0
-#: ../plugins/ldap/ldap-book.cpp:793
+#: ../plugins/ldap/ldap-book.cpp:804
 msgid "Could not connect to server"
 msgstr "Nelze se připojit k serveru"
 
 #. patience == 0
-#: ../plugins/ldap/ldap-book.cpp:841 ../plugins/ldap/ldap-book.cpp:890
+#: ../plugins/ldap/ldap-book.cpp:852 ../plugins/ldap/ldap-book.cpp:901
 msgid "Could not search"
 msgstr "Nelze vyhledávat"
 
-#: ../plugins/ldap/ldap-book.cpp:849
+#: ../plugins/ldap/ldap-book.cpp:860
 msgid "Waiting for search results"
 msgstr "Čeká se na výsledky hledání"
 
-#: ../plugins/ldap/ldap-book.cpp:942
-msgid "Please edit the following fields"
-msgstr "Upravte prosím následující pole"
+#: ../plugins/ldap/ldap-book.cpp:931
+#, c-format
+msgid "%d user found"
+msgid_plural "%d users found"
+msgstr[0] "%d uživatel nalezen"
+msgstr[1] "%d uživatelé nenalezeni"
+msgstr[2] "%d uživatelů nenalezeno"
 
-#: ../plugins/ldap/ldap-book.cpp:944
-msgid "Book _name:"
-msgstr "_Název knihy:"
+#: ../plugins/ldap/ldap-book.cpp:962
+msgid "Ekiga.net LDAP Server"
+msgstr "Adresář LDAP na ekiga.net"
 
-#: ../plugins/ldap/ldap-book.cpp:944
-msgid "Book name, as shown in your dialog box"
-msgstr "Název knihy, jak je zobrazen ve vašem dialogovém okně"
-
-#: ../plugins/ldap/ldap-book.cpp:945
-msgid "Server _URI:"
-msgstr "Adresa _URI serveru:"
-
-#: ../plugins/ldap/ldap-book.cpp:945
-msgid "Name of LDAP server, prefixed by ldap://"
-msgstr "Název serveru LDAP s „ldap://“ na začátku"
-
-#: ../plugins/ldap/ldap-book.cpp:946
+#: ../plugins/ldap/ldap-book.cpp:965
 msgid "_Base DN:"
 msgstr "_Základní DN:"
 
-#: ../plugins/ldap/ldap-book.cpp:952
+#: ../plugins/ldap/ldap-book.cpp:971
 msgid "Subtree"
 msgstr "Podstrom"
 
-#: ../plugins/ldap/ldap-book.cpp:953
-msgid "Single level"
+#: ../plugins/ldap/ldap-book.cpp:972
+msgid "Single Level"
 msgstr "Jedna úroveň"
 
-#: ../plugins/ldap/ldap-book.cpp:954
-msgid "_Search scope"
+#: ../plugins/ldap/ldap-book.cpp:973
+msgid "_Search Scope"
 msgstr "Roz_sah hledání"
 
 #. Translators: DisplayName Attribute is the name of the LDAP
@@ -3225,25 +2959,17 @@ msgstr "Roz_sah hledání"
 #. * "DisplayName" (i.e., "the name that will be displayed") but on
 #. * most LDAP servers it's "CommonName".
 #.
-#: ../plugins/ldap/ldap-book.cpp:969
-msgid "_DisplayName attribute:"
-msgstr "Atribut _DisplayName (zobrazené jméno):"
+#: ../plugins/ldap/ldap-book.cpp:988
+msgid "_DisplayName Attribute"
+msgstr "Atribut _DisplayName (zobrazené jméno)"
 
-#: ../plugins/ldap/ldap-book.cpp:970
-msgid "Call _attributes:"
-msgstr "_Atributy volání:"
+#: ../plugins/ldap/ldap-book.cpp:990
+msgid "Call _Attributes"
+msgstr "_Atributy volání"
 
-#: ../plugins/ldap/ldap-book.cpp:970
-msgid "The field you are searching for"
-msgstr "Pole, které hledáte"
-
-#: ../plugins/ldap/ldap-book.cpp:972 ../plugins/ldap/ldap-book.cpp:974
-msgid "_Filter template:"
-msgstr "Šablona _filtru:"
-
-#: ../plugins/ldap/ldap-book.cpp:972 ../plugins/ldap/ldap-book.cpp:974
-msgid "Here, a \"$\" is replaced by the search string"
-msgstr "Zde je „$“ nahrazen řetězcem, který hledáte"
+#: ../plugins/ldap/ldap-book.cpp:993 ../plugins/ldap/ldap-book.cpp:996
+msgid "_Filter"
+msgstr "_Filtr"
 
 #. Translators: Bind ID - In LDAP, the operation that begins an LDAP
 #. * session and authenticates the user to the directory is called a
@@ -3254,78 +2980,57 @@ msgstr "Zde je „$“ nahrazen řetězcem, který hledáte"
 #. * course, the Bind ID can be left blank, in which case the session
 #. * is anonymous / unauthenticated.)
 #.
-#: ../plugins/ldap/ldap-book.cpp:985
-msgid "Bind _ID:"
-msgstr "Vazební _ID:"
+#: ../plugins/ldap/ldap-book.cpp:1008
+msgid "Bind _ID"
+msgstr "Vazební _ID"
 
-#: ../plugins/ldap/ldap-book.cpp:985
-msgid "User ID; leave blank for anonymous / nonauthenticated"
-msgstr ""
-"Uživatelovo ID, pro anonymní přístup / přístup bez ověřování ponechte prázdné"
-
-#: ../plugins/ldap/ldap-book.cpp:986
-msgid "The password for the user ID above, if any"
-msgstr "Heslo pro předchozí ID uživatele, pokud existuje"
-
-#: ../plugins/ldap/ldap-book.cpp:987
+#: ../plugins/ldap/ldap-book.cpp:1012
 msgid "Use _TLS"
 msgstr "Použít _TLS"
 
-#: ../plugins/ldap/ldap-book.cpp:988
+#: ../plugins/ldap/ldap-book.cpp:1014
 msgid "Use SAS_L"
 msgstr "Použít SAS_L"
 
-#: ../plugins/ldap/ldap-book.cpp:1002
-msgid "SASL _mechanism"
+#: ../plugins/ldap/ldap-book.cpp:1029
+msgid "SASL _Mechanism"
 msgstr "_Mechanismus SASL"
 
-#: ../plugins/ldap/ldap-book.cpp:1012
-msgid "Edit LDAP directory"
-msgstr "Upravit adresář LDAP"
-
-#: ../plugins/ldap/ldap-book.cpp:1034
+#: ../plugins/ldap/ldap-book.cpp:1061
 msgid "Please provide a Book Name for this directory\n"
 msgstr "Zadejte prosím název knihy pro tento adresář\n"
 
-#: ../plugins/ldap/ldap-book.cpp:1037
+#: ../plugins/ldap/ldap-book.cpp:1064
 msgid "Please provide a Server URI\n"
 msgstr "Zadejte prosím adresu URI serveru\n"
 
-#: ../plugins/ldap/ldap-book.cpp:1040
+#: ../plugins/ldap/ldap-book.cpp:1067
 msgid "Please provide a DisplayName attribute\n"
 msgstr "Zadejte prosím atribut DisplayName (zobrazené jméno)\n"
 
-#: ../plugins/ldap/ldap-book.cpp:1043
+#: ../plugins/ldap/ldap-book.cpp:1070
 msgid "Please provide a Call attribute\n"
 msgstr "Zadejte prosím atribut volání\n"
 
-#: ../plugins/ldap/ldap-book.cpp:1046 ../plugins/ldap/ldap-book.cpp:1082
+#: ../plugins/ldap/ldap-book.cpp:1073 ../plugins/ldap/ldap-book.cpp:1109
 msgid "Invalid Server URI\n"
 msgstr "Neplatná adresa URI serveru\n"
 
-#: ../plugins/ldap/ldap-source.cpp:127
+#: ../plugins/ldap/ldap-source.cpp:92 ../plugins/ldap/ldap-source.cpp:134
 msgid "Add an LDAP Address Book"
 msgstr "Přidat adresář LDAP"
 
-#: ../plugins/ldap/ldap-source.cpp:131
+#: ../plugins/ldap/ldap-source.cpp:95 ../plugins/ldap/ldap-source.cpp:138
 msgid "Add the Ekiga.net Directory"
 msgstr "Přidat adresář Ekiga.net"
 
-#: ../plugins/ldap/ldap-source.cpp:154
-msgid "Create LDAP directory"
-msgstr "Vytvořit adresář LDAP"
-
-#: ../plugins/ldap/ldap-source.cpp:163
+#: ../plugins/ldap/ldap-source.cpp:170
 msgid "Ekiga.net Directory"
 msgstr "Adresář Ekiga.net"
 
 #: ../plugins/libnotify/libnotify-main.cpp:274
 msgid "Remote URI:"
 msgstr "Vzdálená adresa URI:"
-
-#: ../plugins/libnotify/libnotify-main.cpp:287
-msgid "Reject"
-msgstr "Odmítnout"
 
 #: ../plugins/libnotify/libnotify-main.cpp:289
 msgid "Accept"
@@ -3367,6 +3072,41 @@ msgstr "Spojeno"
 msgid "Could not authenticate"
 msgstr "Nelze ověřit"
 
+#: ../plugins/loudmouth/loudmouth-account.cpp:337
+#: ../plugins/loudmouth/loudmouth-bank.cpp:116
+msgid "Edit account"
+msgstr "Upravit účty"
+
+#: ../plugins/loudmouth/loudmouth-account.cpp:339
+msgid "Please update the following fields:"
+msgstr "Změňte prosím následující pole:"
+
+#: ../plugins/loudmouth/loudmouth-account.cpp:342
+#: ../plugins/loudmouth/loudmouth-bank.cpp:120
+#: ../plugins/loudmouth/loudmouth-heap-roster.cpp:341
+#: ../plugins/loudmouth/loudmouth-presentity.cpp:288
+#: ../plugins/resource-list/rl-cluster.cpp:164
+#: ../plugins/resource-list/rl-heap.cpp:529
+#: ../plugins/resource-list/rl-presentity.cpp:233
+msgid "Name:"
+msgstr "Jméno:"
+
+#: ../plugins/loudmouth/loudmouth-account.cpp:342
+#: ../plugins/loudmouth/loudmouth-bank.cpp:120
+msgid "Account name, e.g. MyAccount"
+msgstr "Název účtu, např. MujUcet"
+
+#: ../plugins/loudmouth/loudmouth-account.cpp:346
+#: ../plugins/loudmouth/loudmouth-bank.cpp:121
+#: ../plugins/resource-list/rl-cluster.cpp:169
+msgid "User:"
+msgstr "Uživatel:"
+
+#: ../plugins/loudmouth/loudmouth-account.cpp:346
+#: ../plugins/loudmouth/loudmouth-bank.cpp:121
+msgid "The user name, e.g. jim"
+msgstr "Jméno uživatele, např. Kuba"
+
 #: ../plugins/loudmouth/loudmouth-account.cpp:350
 #: ../plugins/loudmouth/loudmouth-bank.cpp:122
 msgid "Server:"
@@ -3400,6 +3140,17 @@ msgstr ""
 "Zdroj, např. domácí nebo pracovní, umožňující rozlišit mezi několika "
 "terminály registrovanými pod stejným účtem; pokud nevíte, o co se jedná, "
 "ponechte prázdné"
+
+#: ../plugins/loudmouth/loudmouth-account.cpp:362
+#: ../plugins/loudmouth/loudmouth-bank.cpp:124
+#: ../plugins/resource-list/rl-cluster.cpp:168
+msgid "Password:"
+msgstr "Heslo:"
+
+#: ../plugins/loudmouth/loudmouth-account.cpp:362
+#: ../plugins/loudmouth/loudmouth-bank.cpp:124
+msgid "Password associated to the user"
+msgstr "Heslo patřící uživateli"
 
 #: ../plugins/loudmouth/loudmouth-bank.cpp:106
 msgid "_Add a Jabber/XMPP Account"
@@ -3487,6 +3238,14 @@ msgstr "Identifikátor:"
 msgid "identifier@server"
 msgstr "identifikator@server"
 
+#: ../plugins/loudmouth/loudmouth-heap-roster.cpp:341
+msgid "Name of the contact, as shown in your roster"
+msgstr "Jméno kontaktu, jak je zobrazeno ve vašem seznamu"
+
+#: ../plugins/loudmouth/loudmouth-heap-roster.cpp:343
+msgid "Put contact in groups:"
+msgstr "Vložit kontakt do skupin:"
+
 #: ../plugins/loudmouth/loudmouth-presentity.cpp:167
 msgid "Start chat"
 msgstr "Začít diskuzi"
@@ -3514,11 +3273,21 @@ msgstr "Dotázat se jej/ji na možnost zobrazovat jeho/její stav (projednává 
 msgid "Stop getting his/her status"
 msgstr "Zastavit získávání jeho/jejího stavu"
 
+#: ../plugins/loudmouth/loudmouth-presentity.cpp:285
+msgid "Edit roster element"
+msgstr "Změnit prvek seznamu"
+
 #: ../plugins/loudmouth/loudmouth-presentity.cpp:286
 msgid ""
 "Please fill in this form to change an existing element of the remote roster"
 msgstr ""
 "Vyplňte prosím tento formulář pro změnu existujícího prvku vzdáleného seznamu"
+
+#: ../plugins/loudmouth/loudmouth-presentity.cpp:290
+#: ../plugins/resource-list/rl-heap.cpp:531
+#: ../plugins/resource-list/rl-presentity.cpp:236
+msgid "Choose groups:"
+msgstr "Vybrat skupiny:"
 
 #: ../plugins/resource-list/rl-cluster.cpp:97
 msgid "Add resource list"
@@ -3534,6 +3303,12 @@ msgid ""
 msgstr ""
 "Vyplňte prosím tento formulář pro přidání nového kontaktu do vzdáleného "
 "seznamu Ekiga"
+
+#: ../plugins/resource-list/rl-cluster.cpp:165
+#: ../plugins/resource-list/rl-heap.cpp:530
+#: ../plugins/resource-list/rl-presentity.cpp:234
+msgid "Address:"
+msgstr "Adresa:"
 
 #: ../plugins/resource-list/rl-cluster.cpp:166
 #: ../plugins/resource-list/rl-heap.cpp:471
@@ -3594,11 +3369,11 @@ msgstr "Uživatelské jméno pro server:"
 msgid "Server password:"
 msgstr "Heslo pro server:"
 
-#: ../plugins/resource-list/rl-heap.cpp:512
+#: ../plugins/resource-list/rl-heap.cpp:515
 msgid "Add a remote contact"
 msgstr "Přidat vzdálený kontakt"
 
-#: ../plugins/resource-list/rl-heap.cpp:513
+#: ../plugins/resource-list/rl-heap.cpp:516
 msgid "Please fill in this form to create a new contact on a remote server"
 msgstr ""
 "Vyplňte prosím tento formulář pro vytvoření nového kontaktu na vzdáleném "
@@ -3626,11 +3401,3 @@ msgid ""
 msgstr ""
 "Vyplňte prosím tento formulář pro změnu existujícího kontaktu na vzdáleném "
 "serveru"
-
-#: ../src/main.cpp:128
-msgid "Prints debug messages in the console (level between 1 and 8)"
-msgstr "Vypíše ladicí zprávy na konzole (úroveň 1 až 8)"
-
-#: ../src/main.cpp:133
-msgid "Makes Ekiga call the given URI"
-msgstr "Nechá aplikaci Ekiga zavolat na zadanou adresu URI"
