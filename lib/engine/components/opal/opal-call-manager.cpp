@@ -705,13 +705,13 @@ void CallManager::set_video_options (const CallManager::VideoOptions & options)
       media_format.SetOptionInteger (OpalVideoFormat::TargetBitRateOption (),
                                      maximum_transmitted_bitrate * 1000);
       media_format.SetOptionInteger (OpalVideoFormat::MinRxFrameWidthOption(),
-                                     160);
+                                     GM_QSIF_WIDTH);
       media_format.SetOptionInteger (OpalVideoFormat::MinRxFrameHeightOption(),
-                                     120);
+                                     GM_QSIF_HEIGHT);
       media_format.SetOptionInteger (OpalVideoFormat::MaxRxFrameWidthOption(),
-                                     1920);
+                                     GM_1080P_WIDTH);
       media_format.SetOptionInteger (OpalVideoFormat::MaxRxFrameHeightOption(),
-                                     1088);
+                                     GM_1080P_HEIGHT);
       media_format.AddOption(new OpalMediaOptionUnsigned (OpalVideoFormat::TemporalSpatialTradeOffOption (),
                                                           true, OpalMediaOption::NoMerge,
                                                           temporal_spatial_tradeoff));
