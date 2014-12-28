@@ -696,7 +696,7 @@ void CallManager::set_video_options (const CallManager::VideoOptions & options)
 
       media_format.SetOptionInteger (OpalVideoFormat::FrameWidthOption (), Ekiga::VideoSizes [options.size].width);
       media_format.SetOptionInteger (OpalVideoFormat::FrameHeightOption (), Ekiga::VideoSizes [options.size].height);
-      media_format.SetOptionInteger (OpalVideoFormat::FrameTimeOption (), (int) (90000 / maximum_frame_rate));
+      media_format.SetOptionInteger (OpalVideoFormat::FrameTimeOption (), (int) (media_format.GetClockRate () / maximum_frame_rate));
       media_format.SetOptionInteger (OpalVideoFormat::MaxBitRateOption (), maximum_bitrate * 1000);
       media_format.SetOptionInteger (OpalVideoFormat::TargetBitRateOption (), maximum_transmitted_bitrate * 1000);
       media_format.SetOptionInteger (OpalVideoFormat::MinRxFrameWidthOption(), GM_QSIF_WIDTH);
