@@ -790,14 +790,10 @@ void CallManager::get_video_options (CallManager::VideoOptions & options) const
         g_error ("Cannot find video size");
       options.size = j;
 
-      options.maximum_frame_rate =
-        (int) (90000 / media_format.GetOptionInteger (OpalVideoFormat::FrameTimeOption ()));
-      options.maximum_bitrate =
-        (int) (media_format.GetOptionInteger (OpalVideoFormat::MaxBitRateOption ()) / 1000);
-      options.maximum_transmitted_bitrate =
-        (int) (media_format.GetOptionInteger (OpalVideoFormat::TargetBitRateOption ()) / 1000);
-      options.temporal_spatial_tradeoff =
-        media_format.GetOptionInteger (OpalVideoFormat::TemporalSpatialTradeOffOption ());
+      options.maximum_frame_rate = (int) (media_format.GetClockRate () / media_format.GetFrameTime ());
+      options.maximum_bitrate = (int) (media_format.GetOptionInteger (OpalVideoFormat::MaxBitRateOption ()) / 1000);
+      options.maximum_transmitted_bitrate = (int) (media_format.GetOptionInteger (OpalVideoFormat::TargetBitRateOption ()) / 1000);
+      options.temporal_spatial_tradeoff = media_format.GetOptionInteger (OpalVideoFormat::TemporalSpatialTradeOffOption ());
 
       int evr = media_format.GetOptionInteger (OpalVideoFormat::OpalVideoFormat::ContentRoleMaskOption ());
       switch (evr) {
