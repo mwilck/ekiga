@@ -39,23 +39,27 @@
 
 #include "device-def.h"
 
-#define GM_4CIF_WIDTH  704
-#define GM_4CIF_HEIGHT 576
-#define GM_CIF_WIDTH   352
-#define GM_CIF_HEIGHT  288
-#define GM_QCIF_WIDTH  176
-#define GM_QCIF_HEIGHT 144
-#define GM_4SIF_WIDTH  640
-#define GM_4SIF_HEIGHT 480
-#define GM_SIF_WIDTH   320
-#define GM_SIF_HEIGHT  240
-#define GM_QSIF_WIDTH  160
-#define GM_QSIF_HEIGHT 120
+#define GM_1080P_WIDTH  1920
+#define GM_1080P_HEIGHT 1080
+#define GM_720P_WIDTH   1280
+#define GM_720P_HEIGHT  720
+#define GM_4CIF_WIDTH   704
+#define GM_4CIF_HEIGHT  576
+#define GM_CIF_WIDTH    352
+#define GM_CIF_HEIGHT   288
+#define GM_QCIF_WIDTH   176
+#define GM_QCIF_HEIGHT  144
+#define GM_4SIF_WIDTH   640
+#define GM_4SIF_HEIGHT  480
+#define GM_SIF_WIDTH    320
+#define GM_SIF_HEIGHT   240
+#define GM_QSIF_WIDTH   160
+#define GM_QSIF_HEIGHT  120
 
 namespace Ekiga
 {
-#define NB_VIDEO_SIZES 5
-#define MAX_VIDEO_SIZE (GM_4CIF_WIDTH*GM_4CIF_HEIGHT)
+#define NB_VIDEO_SIZES 7
+#define MAX_VIDEO_SIZE (GM_1080P_WIDTH*GM_1080P_HEIGHT)
   static const struct {
     int width;
     int height;
@@ -65,6 +69,8 @@ namespace Ekiga
     {  GM_CIF_WIDTH,   GM_CIF_HEIGHT  },
     {  GM_4SIF_WIDTH,  GM_4SIF_HEIGHT },
     {  GM_4CIF_WIDTH,  GM_4CIF_HEIGHT },
+    {  GM_720P_WIDTH,  GM_720P_HEIGHT },
+    {  GM_1080P_WIDTH,  GM_1080P_HEIGHT },
   };
 
   class VideoInputDevice : public Device {};
