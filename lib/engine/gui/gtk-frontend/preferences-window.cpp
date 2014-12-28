@@ -964,11 +964,13 @@ gm_pw_init_video_page (PreferencesWindow *self,
 
   // FIXME: Probably should come from the core itself
   static const char* VideoSizesDescription[NB_VIDEO_SIZES][2] = {
-      { "qcif", N_("Small")       },
-      { "sif",  N_("Medium")      },
-      { "cif",  N_("Medium")      },
-      { "4sif", N_("480p 4:3 HD") },
-      { "4cif", N_("DVD")         }
+      { "qcif",  N_("Small")         },
+      { "sif",   N_("Medium")        },
+      { "cif",   N_("Medium")        },
+      { "4sif",  N_("480p 4:3 HD")   },
+      { "4cif",  N_("DVD")           },
+      { "720p",  N_("720p HD")       },
+      { "1080p", N_("1080p Full HD") }
   };
 
   // FIXME: Probably should come from the core itself
