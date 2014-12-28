@@ -378,10 +378,10 @@
       <_summary>Maximum TX video bitrate</_summary>
       <_description>The maximum TX video bitrate in kbit/s. The video quality and the number of transmitted frames per second (depends on selected codec) will be dynamically adjusted above their minimum during calls to try to minimize the bandwidth to the given value</_description>
     </key>
-    <key name="maximum-video-rx-bitrate" type="i">
-      <default>4096</default>
-      <_summary>Maximum RX video bitrate</_summary>
-      <_description>The maximum RX video bitrate in kbit/s. This value will be signaled to the peer endpoint that can adjust (if it supports it) its TX bitrate if it is above the signaled value</_description>
+    <key name="maximum-video-bitrate" type="i">
+      <default>16384</default>
+      <_summary>Maximum video bitrate</_summary>
+      <_description>The maximum video bitrate in kbit/s. This value will be signaled to the peer endpoint that can adjust (if it supports it) its TX bitrate if it is above the signaled value</_description>
     </key>
     <key name="temporal-spatial-tradeoff" type="i">
       <range min="0" max="31"/>

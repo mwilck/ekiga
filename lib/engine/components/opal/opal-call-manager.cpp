@@ -685,50 +685,31 @@ void CallManager::set_video_options (const CallManager::VideoOptions & options)
   OpalMediaFormat::GetAllRegisteredMediaFormats (media_formats_list);
 
   int maximum_frame_rate = std::min (std::max ((signed) options.maximum_frame_rate, 1), 30);
-  int maximum_received_bitrate = (options.maximum_received_bitrate > 0 ? options.maximum_received_bitrate : 4096);
-  int maximum_transmitted_bitrate = (options.maximum_transmitted_bitrate > 0 ? options.maximum_transmitted_bitrate : 48);
-  int temporal_spatial_tradeoff = (options.temporal_spatial_tradeoff > 0 ? options.temporal_spatial_tradeoff : 31);
+  int maximum_bitrate = (options.maximum_bitrate > 0 ? options.maximum_bitrate : 16384);
+  int maximum_transmitted_bitrate = (options.maximum_transmitted_bitrate > 0 ? options.maximum_transmitted_bitrate : 256);
+  int temporal_spatial_tradeoff = (options.temporal_spatial_tradeoff > 0 ? options.temporal_spatial_tradeoff : 12);
   // Configure all mediaOptions of all Video MediaFormats
   for (int i = 0 ; i < media_formats_list.GetSize () ; i++) {
 
     OpalMediaFormat media_format = media_formats_list [i];
     if (media_format.GetMediaType() == OpalMediaType::Video ()) {
 
-      media_format.SetOptionInteger (OpalVideoFormat::FrameWidthOption (),
-                                     Ekiga::VideoSizes [options.size].width);
-      media_format.SetOptionInteger (OpalVideoFormat::FrameHeightOption (),
-                                     Ekiga::VideoSizes [options.size].height);
-      media_format.SetOptionInteger (OpalVideoFormat::FrameTimeOption (),
-                                     (int) (90000 / maximum_frame_rate));
-      media_format.SetOptionInteger (OpalVideoFormat::MaxBitRateOption (),
-                                     maximum_received_bitrate * 1000);
-      media_format.SetOptionInteger (OpalVideoFormat::TargetBitRateOption (),
-                                     maximum_transmitted_bitrate * 1000);
-      media_format.SetOptionInteger (OpalVideoFormat::MinRxFrameWidthOption(),
-                                     GM_QSIF_WIDTH);
-      media_format.SetOptionInteger (OpalVideoFormat::MinRxFrameHeightOption(),
-                                     GM_QSIF_HEIGHT);
-      media_format.SetOptionInteger (OpalVideoFormat::MaxRxFrameWidthOption(),
-                                     GM_1080P_WIDTH);
-      media_format.SetOptionInteger (OpalVideoFormat::MaxRxFrameHeightOption(),
-                                     GM_1080P_HEIGHT);
-      media_format.AddOption(new OpalMediaOptionUnsigned (OpalVideoFormat::TemporalSpatialTradeOffOption (),
-                                                          true, OpalMediaOption::NoMerge,
-                                                          temporal_spatial_tradeoff));
-      media_format.SetOptionInteger (OpalVideoFormat::TemporalSpatialTradeOffOption(),
-                                     temporal_spatial_tradeoff);
-      media_format.AddOption(new OpalMediaOptionUnsigned (OpalVideoFormat::MaxFrameSizeOption (),
-                                                          true, OpalMediaOption::NoMerge, 1400));
-      media_format.SetOptionInteger (OpalVideoFormat::MaxFrameSizeOption (),
-                                     1400);
+      media_format.SetOptionInteger (OpalVideoFormat::FrameWidthOption (), Ekiga::VideoSizes [options.size].width);
+      media_format.SetOptionInteger (OpalVideoFormat::FrameHeightOption (), Ekiga::VideoSizes [options.size].height);
+      media_format.SetOptionInteger (OpalVideoFormat::FrameTimeOption (), (int) (90000 / maximum_frame_rate));
+      media_format.SetOptionInteger (OpalVideoFormat::MaxBitRateOption (), maximum_bitrate * 1000);
+      media_format.SetOptionInteger (OpalVideoFormat::TargetBitRateOption (), maximum_transmitted_bitrate * 1000);
+      media_format.SetOptionInteger (OpalVideoFormat::MinRxFrameWidthOption(), GM_QSIF_WIDTH);
+      media_format.SetOptionInteger (OpalVideoFormat::MinRxFrameHeightOption(), GM_QSIF_HEIGHT);
+      media_format.SetOptionInteger (OpalVideoFormat::MaxRxFrameWidthOption(), GM_1080P_WIDTH);
+      media_format.SetOptionInteger (OpalVideoFormat::MaxRxFrameHeightOption(), GM_1080P_HEIGHT);
+      media_format.AddOption(new OpalMediaOptionUnsigned (OpalVideoFormat::TemporalSpatialTradeOffOption (), true, OpalMediaOption::NoMerge, temporal_spatial_tradeoff));
+      media_format.SetOptionInteger (OpalVideoFormat::TemporalSpatialTradeOffOption(), temporal_spatial_tradeoff);
 
-      if ( media_format.GetName() != "YUV420P" &&
-           media_format.GetName() != "RGB32" &&
-           media_format.GetName() != "RGB24") {
-
-        media_format.SetOptionInteger (OpalVideoFormat::RateControlPeriodOption(),
-                                       300);
-      }
+      if (media_format.GetName() != "YUV420P" &&
+          media_format.GetName() != "RGB32" &&
+          media_format.GetName() != "RGB24")
+        media_format.SetOptionInteger (OpalVideoFormat::RateControlPeriodOption(), 300);
 
       switch (options.extended_video_roles) {
       case 0 :
@@ -780,8 +761,8 @@ void CallManager::set_video_options (const CallManager::VideoOptions & options)
     }
   }
 
+  PTRACE (4, "Opal::CallManager\tVideo Max Bitrate: " << maximum_bitrate);
   PTRACE (4, "Opal::CallManager\tVideo Max Tx Bitrate: " << maximum_transmitted_bitrate);
-  PTRACE (4, "Opal::CallManager\tVideo Max Rx Bitrate: " << maximum_received_bitrate);
   PTRACE (4, "Opal::CallManager\tVideo Temporal Spatial Tradeoff: " << temporal_spatial_tradeoff);
   PTRACE (4, "Opal::CallManager\tVideo Size: " << options.size);
   PTRACE (4, "Opal::CallManager\tVideo Max Frame Rate: " << maximum_frame_rate);
@@ -811,7 +792,7 @@ void CallManager::get_video_options (CallManager::VideoOptions & options) const
 
       options.maximum_frame_rate =
         (int) (90000 / media_format.GetOptionInteger (OpalVideoFormat::FrameTimeOption ()));
-      options.maximum_received_bitrate =
+      options.maximum_bitrate =
         (int) (media_format.GetOptionInteger (OpalVideoFormat::MaxBitRateOption ()) / 1000);
       options.maximum_transmitted_bitrate =
         (int) (media_format.GetOptionInteger (OpalVideoFormat::TargetBitRateOption ()) / 1000);
@@ -1154,11 +1135,11 @@ CallManager::setup (const std::string & setting)
     options.maximum_frame_rate = video_codecs_settings->get_int ("max-frame-rate");
     set_video_options (options);
   }
-  if (setting.empty () || setting == "maximum-video-rx-bitrate") {
+  if (setting.empty () || setting == "maximum-video-bitrate") {
 
     CallManager::VideoOptions options;
     get_video_options (options);
-    options.maximum_received_bitrate = video_codecs_settings->get_int ("maximum-video-rx-bitrate");
+    options.maximum_bitrate = video_codecs_settings->get_int ("maximum-video-bitrate");
     set_video_options (options);
   }
   if (setting.empty () || setting == "media-list") {
