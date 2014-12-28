@@ -507,15 +507,6 @@ void CallManager::set_codecs (Ekiga::CodecList & _codecs)
       }
     }
   }
-  
-
-  // Add the PCSS codecs
-  all_media_formats = pcssEP->GetMediaFormats ();
-  for (int j = 0 ;
-       j < all_media_formats.GetSize () ;
-       j++)
-    order = order + all_media_formats [j];
-
 
   // Build the mask
   all_media_formats = OpalTranscoder::GetPossibleFormats (pcssEP->GetMediaFormats ());
@@ -525,15 +516,6 @@ void CallManager::set_codecs (Ekiga::CodecList & _codecs)
        i < all_media_formats.GetSize () ;
        i++)
     mask = mask + all_media_formats [i];
-
-  // Blacklist IM protocols for now
-  mask += "T.140";
-  mask += "MSRP";
-  mask += "SIP-IM";
-
-  // Blacklist NSE, since it is unused in ekiga and might create
-  // problems with some registrars (such as Eutelia)
-  mask += "NamedSignalEvent";
 
   // Update the OpalManager
   SetMediaFormatMask (mask);
@@ -922,6 +904,7 @@ CallManager::OnOpenMediaStream (OpalConnection & connection,
 void CallManager::GetAllowedFormats (OpalMediaFormatList & full_list)
 {
   OpalMediaFormatList list = OpalTranscoder::GetPossibleFormats (pcssEP->GetMediaFormats ());
+  list.RemoveNonTransportable ();
   std::list<std::string> black_list;
 
   black_list.push_back ("GSM-AMR");
@@ -937,6 +920,17 @@ void CallManager::GetAllowedFormats (OpalMediaFormatList & full_list)
   black_list.push_back ("RFC4175_YCbCr-4:2:0");
   black_list.push_back ("RFC4175_RGB");
 
+  // Disable T.140 chat for now
+  black_list.push_back ("T.140");
+
+  // Disable CISCO NSE
+  black_list.push_back ("NamedSignalEvent");
+
+  // Disable Far-End Camera Control for now.
+  black_list.push_back ("FECC-RTP");
+  black_list.push_back ("FECC-HDLC");
+
+
   // Purge blacklisted codecs
   for (PINDEX i = 0 ; i < list.GetSize () ; i++) {
 
@@ -946,6 +940,8 @@ void CallManager::GetAllowedFormats (OpalMediaFormatList & full_list)
         full_list += list [i];
     }
   }
+
+  PTRACE(4, "Ekiga\tAll available formats: " << setfill (',') << full_list);
 }
 
 void
