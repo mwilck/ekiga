@@ -64,11 +64,6 @@ struct null_deleter
     { }
 };
 
-static  bool same_codec_desc (Ekiga::CodecDescription a, Ekiga::CodecDescription b)
-{
-  return (a.name == b.name && a.rate == b.rate);
-}
-
 
 class StunDetector : public PThread
 {
@@ -432,95 +427,29 @@ const Ekiga::CodecList & CallManager::get_codecs () const
 
 void CallManager::set_codecs (Ekiga::CodecList & _codecs)
 {
-  PStringArray initial_order;
-  PStringArray initial_mask;
+  PStringArray mask, order;
+  OpalMediaFormatList formats;
+  OpalMediaFormat::GetAllRegisteredMediaFormats (formats);
 
-  OpalMediaFormatList all_media_formats;
-  OpalMediaFormatList media_formats;
-
-  PStringArray order;
-  PStringArray mask;
-
-  // What do we support
-  GetAllowedFormats (all_media_formats);
-  Ekiga::CodecList all_codecs = Opal::CodecList (all_media_formats);
-
-  //
-  // Clean the CodecList given as paramenter : remove unsupported codecs and
-  // add missing codecs at the end of the list
-  //
-
-  // Build the Ekiga::CodecList taken into account by the CallManager
-  // It contains codecs given as argument to set_codecs, and other codecs
-  // supported by the manager
-  for (Ekiga::CodecList::iterator it = all_codecs.begin ();
-       it != all_codecs.end ();
-       it++) {
-
-    Ekiga::CodecList::iterator i  =
-      search_n (_codecs.begin (), _codecs.end (), 1, *it, same_codec_desc);
-    if (i == _codecs.end ()) {
-      _codecs.append (*it);
-    }
-  }
-
-  // Remove unsupported codecs
-  for (Ekiga::CodecList::iterator it = _codecs.begin ();
-       it != _codecs.end ();
-       it++) {
-
-    Ekiga::CodecList::iterator i  =
-      search_n (all_codecs.begin (), all_codecs.end (), 1, *it, same_codec_desc);
-    if (i == all_codecs.end ()) {
-      _codecs.remove (it);
-      it = _codecs.begin ();
-    }
-  }
   codecs = _codecs;
 
+  for (Ekiga::CodecList::const_iterator iter = codecs.begin ();
+       iter != codecs.end ();
+       iter++)
+    if ((*iter).active)
+      order += (*iter).name;
 
-  //
-  // Update OPAL
-  //
-  Ekiga::CodecList::iterator codecs_it;
-  for (codecs_it = codecs.begin () ;
-       codecs_it != codecs.end () ;
-       codecs_it++) {
+  formats.Remove (order);
 
-    bool active = (*codecs_it).active;
-    std::string name = (*codecs_it).name;
-    unsigned rate = (*codecs_it).rate;
-    int j = 0;
+  for (int i = 0 ; i < formats.GetSize () ; i++)
+    mask += (const char *) formats[i];
 
-    // Find the OpalMediaFormat corresponding to the Ekiga::CodecDescription
-    if (active) {
-      for (j = 0 ;
-           j < all_media_formats.GetSize () ;
-           j++) {
-
-        if (name == (const char *) all_media_formats [j].GetEncodingName ()
-            && (rate == all_media_formats [j].GetClockRate () || name == "G722")) {
-
-          // Found something
-          order = order + all_media_formats [j];
-        }
-      }
-    }
-  }
-
-  // Build the mask
-  all_media_formats = OpalTranscoder::GetPossibleFormats (pcssEP->GetMediaFormats ());
-  all_media_formats.Remove (order);
-
-  for (int i = 0 ;
-       i < all_media_formats.GetSize () ;
-       i++)
-    mask = mask + all_media_formats [i];
-
-  // Update the OpalManager
-  SetMediaFormatMask (mask);
   SetMediaFormatOrder (order);
+  SetMediaFormatMask (mask);
+  PTRACE (4, "Ekiga\tSet codecs: " << setfill(';') << GetMediaFormatOrder ());
+  PTRACE (4, "Ekiga\tDisabled codecs: " << setfill(';') << GetMediaFormatMask ());
 }
+
 
 void CallManager::set_forward_on_no_answer (bool enabled)
 {
@@ -1140,25 +1069,17 @@ CallManager::setup (const std::string & setting)
   }
   if (setting.empty () || setting == "media-list") {
 
-    std::list<std::string> audio_codecs = audio_codecs_settings->get_string_list ("media-list");
+    std::list<std::string> config_codecs = audio_codecs_settings->get_string_list ("media-list");
     std::list<std::string> video_codecs = video_codecs_settings->get_string_list ("media-list");
 
-    Ekiga::CodecList fcodecs;
-    Ekiga::CodecList a_codecs (audio_codecs);
-    Ekiga::CodecList v_codecs (video_codecs);
+    config_codecs.insert (config_codecs.end(), video_codecs.begin(), video_codecs.end());
+    // This will add all supported codecs that are not present in the configuration
+    // at the end of the list.
+    Opal::CodecList all_codecs;
+    all_codecs.load (config_codecs);
 
     // Update the manager codecs
-    fcodecs = a_codecs;
-    fcodecs.append (v_codecs);
-    set_codecs (fcodecs);
-
-    // Update the GmConf keys, in case we would have missed some codecs or
-    // used codecs we do not really support
-    if (a_codecs != fcodecs.get_audio_list ())
-      audio_codecs_settings->set_string_list ("media-list", fcodecs.get_audio_list ().slist ());
-
-    if (v_codecs != fcodecs.get_video_list ())
-      video_codecs_settings->set_string_list ("media-list", fcodecs.get_video_list ().slist ());
+    set_codecs (all_codecs);
   }
   if (setting.empty () || setting == "udp-port-range" || setting == "tcp-port-range") {
 

@@ -56,6 +56,7 @@
 #include "ekiga-settings.h"
 
 #include "actor.h"
+#include "opal-codec-description.h"
 
 #include <boost/enable_shared_from_this.hpp>
 
@@ -129,7 +130,7 @@ public:
     void set_auto_answer (bool enabled);
     bool get_auto_answer () const;
 
-    void set_codecs (Ekiga::CodecList & codecs); 
+    void set_codecs (Ekiga::CodecList & codecs);
     const Ekiga::CodecList & get_codecs () const;
 
     /* presence subscription management */
@@ -223,7 +224,7 @@ private:
        variables */
     PMutex manager_access_mutex;
 
-    Ekiga::CodecList codecs; 
+    Ekiga::CodecList codecs;
 
     /* used to get the STUNDetector results */
     GAsyncQueue* queue;
