@@ -605,9 +605,9 @@ Opal::Call::OnSetUp (OpalConnection & connection)
   parse_info (connection);
 
   call_setup = true;
-  Ekiga::Runtime::run_in_main (boost::bind (&Opal::Call::emit_setup_in_main, this));
-
   new CallSetup (*this, connection);
+
+  Ekiga::Runtime::run_in_main (boost::bind (&Opal::Call::emit_setup_in_main, this));
 
   return true;
 }
