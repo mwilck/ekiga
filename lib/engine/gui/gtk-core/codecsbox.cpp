@@ -41,6 +41,7 @@
 
 #include <glib/gi18n.h>
 
+#include "call-core.h"
 #include "codec-description.h"
 #include "ekiga-settings.h"
 
@@ -49,11 +50,9 @@ enum {
 
   COLUMN_CODEC_ACTIVE,
   COLUMN_CODEC_NAME,
-  COLUMN_CODEC_CLOCKRATE,
-  COLUMN_CODEC_PROTOCOLS,
-  COLUMN_CODEC_CONFIG_NAME,
+  COLUMN_CODEC_DISPLAY_NAME,
+  COLUMN_CODEC_INFO,
   COLUMN_CODEC_SELECTABLE,
-  COLUMN_CODEC_AUDIO,
   COLUMN_CODEC_NUMBER
 };
 
@@ -63,7 +62,8 @@ struct _CodecsBoxPrivate
   GtkWidget *codecs_list;
   boost::shared_ptr<Ekiga::Settings> audio_settings;
   boost::shared_ptr<Ekiga::Settings> video_settings;
-  gulong handler;
+  boost::shared_ptr<Ekiga::CallCore> call_core;
+  GmApplication *app;
 };
 
 enum { TYPE = 1 };
@@ -72,14 +72,10 @@ G_DEFINE_TYPE (CodecsBox, codecs_box, GTK_TYPE_BOX);
 
 /* Static functions */
 static void codecs_box_set_codecs (CodecsBox *self,
-                                   const std::list<std::string> list);
+                                   const Ekiga::CodecList & list);
 
 
 /* GTK+ Callbacks */
-static void settings_changed (G_GNUC_UNUSED GSettings *settings,
-			      G_GNUC_UNUSED gchar *key,
-			      gpointer data);
-
 static void codec_toggled_cb (GtkCellRendererToggle *cell,
                               gchar *path_str,
                               gpointer data);
@@ -88,6 +84,8 @@ static void codec_moved_cb (GtkWidget *widget,
                             gpointer data);
 
 static std::list<std::string> codecs_box_to_list (CodecsBox *self);
+
+static void codecs_box_build (CodecsBox *self);
 
 static void codecs_box_class_init (CodecsBoxClass* klass);
 
@@ -107,7 +105,7 @@ static void codecs_box_set_property (GObject *obj,
 
 static void
 codecs_box_set_codecs (CodecsBox *self,
-		       const std::list<std::string> list)
+                       const Ekiga::CodecList & list)
 {
   GtkTreeSelection *selection = NULL;
   GtkTreeModel *model = NULL;
@@ -123,43 +121,26 @@ codecs_box_set_codecs (CodecsBox *self,
   if (gtk_tree_selection_get_selected (selection, &model, &iter))
     gtk_tree_model_get (GTK_TREE_MODEL (model), &iter,
                         COLUMN_CODEC_NAME, &selected_codec,
-                        COLUMN_CODEC_CLOCKRATE, &select_rate, -1);
+                        COLUMN_CODEC_INFO, &select_rate, -1);
   gtk_list_store_clear (GTK_LIST_STORE (model));
 
-  for (std::list<std::string>::const_iterator itr = list.begin ();
+  for (Ekiga::CodecList::const_iterator itr = list.begin ();
        itr != list.end ();
        itr++) {
 
-    Ekiga::CodecDescription desc = Ekiga::CodecDescription (*itr);
-
-    if ((self->priv->type == Ekiga::Call::Audio && desc.audio)
-        || (self->priv->type == Ekiga::Call::Video && !desc.audio)) {
-      std::stringstream rate;
-      std::stringstream protocols;
-
-      for (std::list<std::string>::iterator it = desc.protocols.begin ();
-           it != desc.protocols.end ();
-           it++) {
-        if (it != desc.protocols.begin ())
-          protocols << ", ";
-
-        protocols << *it;
-      }
-      rate << desc.rate / 1000 << " kHz";
+    if ((self->priv->type == Ekiga::Call::Audio && (*itr).audio)
+        || (self->priv->type == Ekiga::Call::Video && !(*itr).audio)) {
 
       gtk_list_store_append (GTK_LIST_STORE (model), &iter);
       gtk_list_store_set (GTK_LIST_STORE (model), &iter,
-                          COLUMN_CODEC_ACTIVE, desc.active,
-                          COLUMN_CODEC_NAME, desc.name.c_str (),
-                          COLUMN_CODEC_CLOCKRATE, rate.str ().c_str (),
-                          COLUMN_CODEC_PROTOCOLS, protocols.str ().c_str (),
-                          COLUMN_CODEC_CONFIG_NAME, desc.str ().c_str (),
-                          COLUMN_CODEC_AUDIO, desc.audio,
+                          COLUMN_CODEC_ACTIVE, (*itr).active,
+                          COLUMN_CODEC_NAME, (*itr).name.c_str (),
+                          COLUMN_CODEC_DISPLAY_NAME, (*itr).display_name.c_str (),
+                          COLUMN_CODEC_INFO, (*itr).display_info.c_str (),
                           COLUMN_CODEC_SELECTABLE, "true",
                           -1);
 
-      if (selected_codec && desc.name == selected_codec
-          && select_rate && desc.rate == select_rate) {
+      if (selected_codec && (*itr).name == selected_codec) {
 
         selected = true;
         gtk_tree_selection_select_iter (selection, &iter);
@@ -171,31 +152,6 @@ codecs_box_set_codecs (CodecsBox *self,
     gtk_tree_selection_select_iter (selection, &iter);
 
   g_free (selected_codec);
-}
-
-
-static void
-settings_changed (G_GNUC_UNUSED GSettings *settings,
-		  G_GNUC_UNUSED gchar *key,
-		  gpointer data)
-{
-  std::list<std::string> list;
-  CodecsBox *self = CODECS_BOX (data);
-
-  g_return_if_fail (self);
-
-  std::list<std::string> current_list = codecs_box_to_list (CODECS_BOX (self));
-
-  if (self->priv->type == Ekiga::Call::Audio)
-    list = self->priv->audio_settings->get_string_list ("media-list");
-  else if (self->priv->type == Ekiga::Call::Video)
-    list = self->priv->video_settings->get_string_list ("media-list");
-
-  Ekiga::CodecList clist (list);
-  Ekiga::CodecList curlist (current_list);
-
-  if (clist != curlist)
-    codecs_box_set_codecs (self, list);
 }
 
 
@@ -236,9 +192,9 @@ codec_toggled_cb (G_GNUC_UNUSED GtkCellRendererToggle *cell,
 
 
 static void
-codec_moved_cb (GtkWidget *widget, 
+codec_moved_cb (GtkWidget *widget,
                 gpointer data)
-{ 	
+{
   CodecsBox *self = NULL;
 
   GtkTreeIter iter;
@@ -255,17 +211,15 @@ codec_moved_cb (GtkWidget *widget,
 
   model = gtk_tree_view_get_model (GTK_TREE_VIEW (self->priv->codecs_list));
   selection = gtk_tree_view_get_selection (GTK_TREE_VIEW (self->priv->codecs_list));
-  if (!gtk_tree_selection_get_selected (GTK_TREE_SELECTION (selection), 
+  if (!gtk_tree_selection_get_selected (GTK_TREE_SELECTION (selection),
                                         NULL, &iter))
     return;
 
   /* Update the tree view */
   iter2 = gtk_tree_iter_copy (&iter);
-  path_str = gtk_tree_model_get_string_from_iter (GTK_TREE_MODEL (model), 
-                                                  &iter);
+  path_str = gtk_tree_model_get_string_from_iter (GTK_TREE_MODEL (model), &iter);
   tree_path = gtk_tree_path_new_from_string (path_str);
-  if (!g_strcmp0 ((gchar *) g_object_get_data (G_OBJECT (widget), "operation"), 
-               "up"))
+  if (!g_strcmp0 ((gchar *) g_object_get_data (G_OBJECT (widget), "operation"), "up"))
     gtk_tree_path_prev (tree_path);
   else
     gtk_tree_path_next (tree_path);
@@ -276,7 +230,7 @@ codec_moved_cb (GtkWidget *widget,
     gtk_list_store_swap (GTK_LIST_STORE (model), &iter, iter2);
 
   /* Scroll to the new position */
-  gtk_tree_view_scroll_to_cell (GTK_TREE_VIEW (self->priv->codecs_list), 
+  gtk_tree_view_scroll_to_cell (GTK_TREE_VIEW (self->priv->codecs_list),
                                 tree_path, NULL, FALSE, 0, 0);
 
   gtk_tree_path_free (tree_path);
@@ -292,17 +246,14 @@ codec_moved_cb (GtkWidget *widget,
 }
 
 
-static std::list<std::string> 
+static std::list<std::string>
 codecs_box_to_list (CodecsBox *self)
 {
   GtkTreeModel *model = NULL;
   GtkTreeIter iter;
 
   gchar *name = NULL;
-  gchar *rate = NULL;
-  gchar *protocols = NULL;
   gboolean active = false;
-  gboolean audio = false;
 
   std::list<std::string> list;
 
@@ -310,22 +261,16 @@ codecs_box_to_list (CodecsBox *self)
   if (gtk_tree_model_get_iter_first (GTK_TREE_MODEL (model), &iter)) {
 
     do {
+      std::stringstream val;
 
-      gtk_tree_model_get (model, &iter, 
+      gtk_tree_model_get (model, &iter,
                           COLUMN_CODEC_ACTIVE, &active,
                           COLUMN_CODEC_NAME, &name,
-                          COLUMN_CODEC_CLOCKRATE, &rate,
-                          COLUMN_CODEC_PROTOCOLS, &protocols,
-                          COLUMN_CODEC_AUDIO, &audio,
                           -1);
 
-      Ekiga::CodecDescription desc;
-      desc = Ekiga::CodecDescription (name, atoi (rate) * 1000, audio, protocols, active);
-      list.push_back (desc.str ());
-
+      val << name << ":" << (active ? "1" : "0");
+      list.push_back (val.str ());
       g_free (name);
-      g_free (protocols);
-      g_free (rate);
 
     } while (gtk_tree_model_iter_next (GTK_TREE_MODEL (model), &iter));
   }
@@ -335,25 +280,7 @@ codecs_box_to_list (CodecsBox *self)
 
 
 static void
-codecs_box_class_init (CodecsBoxClass* klass)
-{
-  GObjectClass *gobject_class = G_OBJECT_CLASS (klass);
-  GParamSpec *spec = NULL;
-
-  gobject_class->dispose = codecs_box_dispose;
-  gobject_class->get_property = codecs_box_get_property;
-  gobject_class->set_property = codecs_box_set_property;
-
-  spec = g_param_spec_int ("type", "Type", "Type",
-                           0, 1, 0, (GParamFlags) G_PARAM_READWRITE);
-  g_object_class_install_property (gobject_class, TYPE, spec);
-
-  g_type_class_add_private (klass, sizeof (CodecsBoxPrivate));
-}
-
-
-static void
-codecs_box_init (CodecsBox *self)
+codecs_box_build (CodecsBox *self)
 {
   GtkWidget *image = NULL;
   GtkWidget *scroll_window = NULL;
@@ -365,14 +292,6 @@ codecs_box_init (CodecsBox *self)
   GtkCellRenderer *renderer = NULL;
   GtkTreeViewColumn *column = NULL;
 
-  self->priv = G_TYPE_INSTANCE_GET_PRIVATE (self, CODECS_BOX_TYPE, CodecsBoxPrivate);
-  self->priv->type = Ekiga::Call::Audio;
-  self->priv->audio_settings =
-    boost::shared_ptr<Ekiga::Settings> (new Ekiga::Settings (AUDIO_CODECS_SCHEMA));
-  self->priv->video_settings =
-    boost::shared_ptr<Ekiga::Settings> (new Ekiga::Settings (VIDEO_CODECS_SCHEMA));
-  self->priv->codecs_list = gtk_tree_view_new ();
-
   gtk_box_set_spacing (GTK_BOX (self), 6);
   gtk_box_set_homogeneous (GTK_BOX (self), FALSE);
 
@@ -381,13 +300,12 @@ codecs_box_init (CodecsBox *self)
                                    G_TYPE_STRING,
                                    G_TYPE_STRING,
                                    G_TYPE_STRING,
-                                   G_TYPE_STRING,
                                    G_TYPE_BOOLEAN,
                                    G_TYPE_BOOLEAN);
 
   gtk_tree_view_set_reorderable (GTK_TREE_VIEW (self->priv->codecs_list), TRUE);
   gtk_tree_view_set_search_column (GTK_TREE_VIEW (self->priv->codecs_list),0);
-  gtk_tree_view_set_model (GTK_TREE_VIEW (self->priv->codecs_list), 
+  gtk_tree_view_set_model (GTK_TREE_VIEW (self->priv->codecs_list),
                            GTK_TREE_MODEL (list_store));
   gtk_tree_view_set_headers_visible (GTK_TREE_VIEW (self->priv->codecs_list), FALSE);
 
@@ -395,49 +313,38 @@ codecs_box_init (CodecsBox *self)
   renderer = gtk_cell_renderer_toggle_new ();
   column = gtk_tree_view_column_new_with_attributes (NULL,
                                                      renderer,
-                                                     "active", 
+                                                     "active",
                                                      COLUMN_CODEC_ACTIVE,
                                                      NULL);
-  gtk_tree_view_column_add_attribute (column, renderer, 
+  gtk_tree_view_column_add_attribute (column, renderer,
                                       "activatable", COLUMN_CODEC_SELECTABLE);
+  g_object_set (renderer, "xalign", 0.0, "xpad", 6, NULL);
   gtk_tree_view_append_column (GTK_TREE_VIEW (self->priv->codecs_list), column);
-  g_signal_connect (renderer, "toggled",
-                    G_CALLBACK (codec_toggled_cb),
-                    (gpointer) self);
+  g_signal_connect (renderer, "toggled", G_CALLBACK (codec_toggled_cb), (gpointer) self);
 
   renderer = gtk_cell_renderer_text_new ();
-  column = gtk_tree_view_column_new_with_attributes (NULL,
-                                                     renderer,
-                                                     "text", 
-                                                     COLUMN_CODEC_NAME,
-                                                     NULL);
+  column = gtk_tree_view_column_new ();
   gtk_tree_view_append_column (GTK_TREE_VIEW (self->priv->codecs_list), column);
-  g_object_set (G_OBJECT (renderer), "weight", PANGO_WEIGHT_BOLD, NULL);
+  gtk_tree_view_column_pack_start (column, renderer, TRUE);
+  gtk_tree_view_column_add_attribute (column, renderer, "text", COLUMN_CODEC_DISPLAY_NAME);
+  g_object_set (G_OBJECT (renderer), "weight", PANGO_WEIGHT_BOLD,
+                "xalign", 0.0, NULL);
 
   renderer = gtk_cell_renderer_text_new ();
-  column = gtk_tree_view_column_new_with_attributes (NULL,
-                                                     renderer,
-                                                     "text", 
-                                                     COLUMN_CODEC_CLOCKRATE,
-                                                     NULL);
-  gtk_tree_view_append_column (GTK_TREE_VIEW (self->priv->codecs_list), column);
-
-  renderer = gtk_cell_renderer_text_new ();
-  column = gtk_tree_view_column_new_with_attributes (NULL,
-                                                     renderer,
-                                                     "text", 
-                                                     COLUMN_CODEC_PROTOCOLS,
-                                                     NULL);
-  gtk_tree_view_append_column (GTK_TREE_VIEW (self->priv->codecs_list), column);
+  gtk_tree_view_column_pack_start (column, renderer, TRUE);
+  gtk_tree_view_column_add_attribute (column, renderer, "text", COLUMN_CODEC_INFO);
+  g_object_set (G_OBJECT (renderer), "style", PANGO_STYLE_ITALIC,
+                "ellipsize", PANGO_ELLIPSIZE_END, "width-chars", 30,
+                "scale", 0.85, "xalign", 0, "xpad", 6, NULL);
 
   scroll_window = gtk_scrolled_window_new (FALSE, FALSE);
-  gtk_scrolled_window_set_policy (GTK_SCROLLED_WINDOW (scroll_window), 
-                                  GTK_POLICY_NEVER, 
+  gtk_scrolled_window_set_policy (GTK_SCROLLED_WINDOW (scroll_window),
+                                  GTK_POLICY_NEVER,
                                   GTK_POLICY_AUTOMATIC);
   gtk_scrolled_window_set_shadow_type (GTK_SCROLLED_WINDOW (scroll_window),
                                        GTK_SHADOW_IN);
   gtk_widget_set_size_request (scroll_window, -1, 130);
-  gtk_container_add (GTK_CONTAINER (scroll_window), 
+  gtk_container_add (GTK_CONTAINER (scroll_window),
                      GTK_WIDGET (self->priv->codecs_list));
   gtk_box_pack_start (GTK_BOX (self), scroll_window, TRUE, TRUE, 0);
 
@@ -454,7 +361,7 @@ codecs_box_init (CodecsBox *self)
   g_object_set_data (G_OBJECT (button), "operation", (gpointer) "up");
   gtk_widget_set_valign (GTK_WIDGET (button), GTK_ALIGN_START);
   g_signal_connect (button, "clicked",
-                    G_CALLBACK (codec_moved_cb), 
+                    G_CALLBACK (codec_moved_cb),
                     (gpointer) self);
 
   image = gtk_image_new_from_icon_name ("go-down-symbolic", GTK_ICON_SIZE_MENU);
@@ -465,7 +372,7 @@ codecs_box_init (CodecsBox *self)
   g_object_set_data (G_OBJECT (button), "operation", (gpointer) "down");
   gtk_widget_set_valign (GTK_WIDGET (button), GTK_ALIGN_END);
   g_signal_connect (button, "clicked",
-                    G_CALLBACK (codec_moved_cb), 
+                    G_CALLBACK (codec_moved_cb),
                     (gpointer) self);
 
   gtk_box_pack_start (GTK_BOX (self), buttons_vbox, FALSE, FALSE, 0);
@@ -476,6 +383,30 @@ codecs_box_init (CodecsBox *self)
 }
 
 
+
+static void
+codecs_box_class_init (CodecsBoxClass* klass)
+{
+  GObjectClass *gobject_class = G_OBJECT_CLASS (klass);
+  GParamSpec *spec = NULL;
+
+  gobject_class->dispose = codecs_box_dispose;
+  gobject_class->get_property = codecs_box_get_property;
+  gobject_class->set_property = codecs_box_set_property;
+
+  spec = g_param_spec_int ("type", "Type", "Type",
+                           0, 1, 0, (GParamFlags) G_PARAM_READWRITE);
+  g_object_class_install_property (gobject_class, TYPE, spec);
+}
+
+
+static void
+codecs_box_init (G_GNUC_UNUSED CodecsBox *self)
+{
+  /* Nothing to do here, unfortunately */
+}
+
+
 static void
 codecs_box_dispose (GObject *obj)
 {
@@ -483,13 +414,6 @@ codecs_box_dispose (GObject *obj)
 
   self = CODECS_BOX (obj);
 
-  if (self->priv->handler > 0) {
-    if (self->priv->type == Ekiga::Call::Audio)
-      g_signal_handler_disconnect (self->priv->audio_settings->get_g_settings (), self->priv->handler);
-    else if (self->priv->type == Ekiga::Call::Video)
-      g_signal_handler_disconnect (self->priv->video_settings->get_g_settings (), self->priv->handler);
-  }
-  self->priv->handler = 0;
   self->priv->codecs_list = NULL;
 
   G_OBJECT_CLASS (codecs_box_parent_class)->dispose (obj);
@@ -528,7 +452,7 @@ codecs_box_set_property (GObject *obj,
   switch (prop_id) {
 
   case TYPE:
-    self->priv->type = (Ekiga::Call::StreamType) g_value_get_int (value); 
+    self->priv->type = (Ekiga::Call::StreamType) g_value_get_int (value);
     break;
 
   default:
@@ -540,31 +464,30 @@ codecs_box_set_property (GObject *obj,
     list = self->priv->audio_settings->get_string_list ("media-list");
   else if (self->priv->type == Ekiga::Call::Video)
     list = self->priv->video_settings->get_string_list ("media-list");
-
-  codecs_box_set_codecs (self, list);
-
-  if (self->priv->type == Ekiga::Call::Audio)
-    self->priv->handler =
-      g_signal_connect (self->priv->audio_settings->get_g_settings (), "changed",
-			G_CALLBACK (settings_changed), self);
-  else
-    self->priv->handler =
-      g_signal_connect (self->priv->video_settings->get_g_settings (), "changed",
-			G_CALLBACK (settings_changed), self);
 }
 
 
 /* public api */
 
 GtkWidget *
-codecs_box_new ()
+codecs_box_new_with_type (GmApplication *app,
+                          Ekiga::Call::StreamType type)
 {
-  return GTK_WIDGET (g_object_new (CODECS_BOX_TYPE, NULL));
-}
+  CodecsBox *self = CODECS_BOX (g_object_new (CODECS_BOX_TYPE, NULL));
 
+  Ekiga::ServiceCorePtr core = gm_application_get_core (app);
 
-GtkWidget *
-codecs_box_new_with_type (Ekiga::Call::StreamType type)
-{
-  return GTK_WIDGET (g_object_new (CODECS_BOX_TYPE, "type", type, NULL));
+  self->priv = new _CodecsBoxPrivate ();
+  self->priv->app = app;
+  self->priv->call_core = core->get<Ekiga::CallCore> ("call-core");
+  self->priv->type = type;
+  self->priv->audio_settings = boost::shared_ptr<Ekiga::Settings> (new Ekiga::Settings (AUDIO_CODECS_SCHEMA));
+  self->priv->video_settings = boost::shared_ptr<Ekiga::Settings> (new Ekiga::Settings (VIDEO_CODECS_SCHEMA));
+  self->priv->codecs_list = gtk_tree_view_new ();
+
+  codecs_box_build (self);
+
+  codecs_box_set_codecs (self, self->priv->call_core->get_codecs ());
+
+  return GTK_WIDGET (self);
 }

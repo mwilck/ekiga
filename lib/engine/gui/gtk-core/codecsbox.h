@@ -30,7 +30,7 @@
  *                         codecsbox.h  -  description
  *                         -------------------------------
  *   begin                : Sat Sep 02 2006
- *   copyright            : (C) 2000-2006 by Damien Sandras 
+ *   copyright            : (C) 2000-2006 by Damien Sandras
  *   description          : Contains a codecs box
  *
  */
@@ -43,10 +43,12 @@
 #include <glib-object.h>
 #include <gtk/gtk.h>
 
+#include "ekiga-app.h"
+
 #include "call.h"
 
 /** This implements a CodecsBox for the Ekiga Engine.
- * The codecs list is loaded from the GmConf configuration engine, 
+ * The codecs list is loaded from the GmConf configuration engine,
  * using the /apps/ekiga/codecs/audio/list or /apps/ekiga/codecs/video/list
  * following the type of codecs. The key is supposed to contain
  * all codecs supported by the Engine. The key value is formated so that it
@@ -73,15 +75,11 @@ struct _CodecsBoxClass
 };
 
 
-/** Create a new CodecsBox for Ekiga::Call::Audio codecs.
- */
-GtkWidget *codecs_box_new ();
-
-
 /** Create a new CodecsBox.
  * @param type is a valid Ekiga::Call::StreamType (Audio or Video supported).
  */
-GtkWidget *codecs_box_new_with_type (Ekiga::Call::StreamType type);
+GtkWidget *codecs_box_new_with_type (GmApplication *app,
+                                     Ekiga::Call::StreamType type);
 
 
 /* GObject boilerplate */
