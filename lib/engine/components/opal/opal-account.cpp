@@ -1108,6 +1108,8 @@ Opal::Account::OnPresenceChange (OpalPresentity& /*presentity*/,
     break;
   case OpalPresenceInfo::Available:
     new_presence = "available";
+    // First we rely on the note content
+    // for older PABX system having custom implementations
     if (note.Find ("dnd") != P_MAX_INDEX
         || note.Find ("meeting") != P_MAX_INDEX
         || note.Find ("do not disturb") != P_MAX_INDEX
@@ -1125,108 +1127,119 @@ Opal::Account::OnPresenceChange (OpalPresentity& /*presentity*/,
              || note.Find ("ringing") != P_MAX_INDEX
              || note.Find ("call") != P_MAX_INDEX)
       new_presence = "inacall";
+    // Then we rely on the activities as defined in RFC 4480
+    // they are order by importance as a user could have several
+    // activities running on simultaneously, but we do not want
+    // to handle that.
+    else if (info->m_activities.Contains ("appointment")) {
+      new_presence = "away";
+      new_status = _("Appointment");
+    }
+    else if (info->m_activities.Contains ("breakfast")) {
+      new_presence = "away";
+      new_status = _("Breakfast");
+    }
+    else if (info->m_activities.Contains ("dinner")) {
+      new_presence = "away";
+      new_status = _("Dinner");
+    }
+    else if (info->m_activities.Contains ("vacation")
+             || info->m_activities.Contains ("holiday")) {
+      new_presence = "away";
+      new_status = _("Holiday");
+    }
+    else if (info->m_activities.Contains ("in-transit")) {
+      new_presence = "away";
+      new_status = _("In transit");
+    }
+    else if (info->m_activities.Contains ("looking-for-work")) {
+      new_presence = "away";
+      new_status = _("Looking for work");
+    }
+    else if (info->m_activities.Contains ("lunch")) {
+      new_presence = "away";
+      new_status = _("Lunch");
+    }
+    else if (info->m_activities.Contains ("meal")) {
+      new_presence = "away";
+      new_status = _("Meal");
+    }
+    else if (info->m_activities.Contains ("meeting")) {
+      new_presence = "away";
+      new_status = _("Meeting");
+    }
+    else if (info->m_activities.Contains ("on-the-phone")) {
+      new_presence = "inacall";
+      new_status = _("On the phone");
+    }
+    else if (info->m_activities.Contains ("playing")) {
+      new_presence = "away";
+      new_status = _("Playing");
+    }
+    else if (info->m_activities.Contains ("shopping")) {
+      new_presence = "away";
+      new_status = _("Shopping");
+    }
+    else if (info->m_activities.Contains ("sleeping")) {
+      new_presence = "away";
+      new_status = _("Sleeping");
+    }
+    else if (info->m_activities.Contains ("working")) {
+      new_presence = "busy";
+      new_status = _("Working");
+    }
+    else if (info->m_activities.Contains ("other")) {
+      new_presence = "away";
+      new_status = "";
+    }
+    else if (info->m_activities.Contains ("performance")) {
+      new_presence = "away";
+      new_status = _("Performance");
+    }
+    else if (info->m_activities.Contains ("permanent-absence")) {
+      new_presence = "away";
+      new_status = _("Permantent Absence");
+    }
+    else if (info->m_activities.Contains ("presentation")) {
+      new_presence = "away";
+      new_status = _("Presentation");
+    }
+    else if (info->m_activities.Contains ("spectator")) {
+      new_presence = "away";
+      new_status = _("Spectator");
+    }
+    else if (info->m_activities.Contains ("steering")) {
+      new_presence = "away";
+      new_status = _("Steering");
+    }
+    else if (info->m_activities.Contains ("travel")) {
+      new_presence = "away";
+      new_status = _("Business or personal trip");
+    }
+    else if (info->m_activities.Contains ("tv")) {
+      new_presence = "away";
+      new_status = _("Watching TV");
+    }
+    else if (info->m_activities.Contains ("worship")) {
+      new_presence = "away";
+      new_status = _("Worship");
+    }
     break;
   case OpalPresenceInfo::NoPresence:
     new_presence = "offline";
     break;
-  case OpalPresenceInfo::InternalError:
-  case OpalPresenceInfo::Forbidden:
-  case OpalPresenceInfo::Unavailable:
-  case OpalPresenceInfo::UnknownUser:
-    return;
-    break;
-  /* for reference purposes:
-  case OpalPresenceInfo::Appointment:
-    new_presence = "away";
-    // Translators: see RFC 4480 for more information about activities
-    if (new_status.empty ())
-      new_status = _("Appointment");
-    break;
-  case OpalPresenceInfo::Breakfast:
-    new_presence = "away";
-    if (new_status.empty ())
-      new_status = _("Breakfast");
-    break;
-  case OpalPresenceInfo::Dinner:
-    new_presence = "away";
-    if (new_status.empty ())
-      new_status = _("Dinner");
-    break;
-  case OpalPresenceInfo::Vacation:
-  case OpalPresenceInfo::Holiday:
-    new_presence = "away";
-    if (new_status.empty ())
-      new_status = _("Holiday");
-    break;
-  case OpalPresenceInfo::InTransit:
-    new_presence = "away";
-    if (new_status.empty ())
-      new_status = _("In transit");
-    break;
-  case OpalPresenceInfo::LookingForWork:
-    new_presence = "away";
-    if (new_status.empty ())
-      new_status = _("Looking for work");
-    break;
-  case OpalPresenceInfo::Lunch:
-    new_presence = "away";
-    if (new_status.empty ())
-      new_status = _("Lunch");
-    break;
-  case OpalPresenceInfo::Meal:
-    new_presence = "away";
-    if (new_status.empty ())
-      new_status = _("Meal");
-    break;
-  case OpalPresenceInfo::Meeting:
-    new_presence = "away";
-    if (new_status.empty ())
-      new_status = _("Meeting");
-    break;
-  case OpalPresenceInfo::OnThePhone:
-    new_presence = "inacall";
-    if (new_status.empty ())
-      new_status = _("On the phone");
-    break;
-  case OpalPresenceInfo::Playing:
-    new_presence = "away";
-    if (new_status.empty ())
-      new_status = _("Playing");
-    break;
-  case OpalPresenceInfo::Shopping:
-    new_presence = "away";
-    if (new_status.empty ())
-      new_status = _("Shopping");
-    break;
-  case OpalPresenceInfo::Sleeping:
-    new_presence = "away";
-    if (new_status.empty ())
-      new_status = _("Sleeping");
-    break;
-  case OpalPresenceInfo::Working:
-    new_presence = "busy";
-    if (new_status.empty ())
-      new_status = _("Working");
-    break;
-  case OpalPresenceInfo::Other:
-  case OpalPresenceInfo::Performance:
-  case OpalPresenceInfo::PermanentAbsence:
-  case OpalPresenceInfo::Presentation:
-  case OpalPresenceInfo::Spectator:
-  case OpalPresenceInfo::Steering:
-  case OpalPresenceInfo::Travel:
-  case OpalPresenceInfo::TV:
-  case OpalPresenceInfo::Worship:
-    new_presence = "away";
-    break;
-  */
   case OpalPresenceInfo::EndState:
   case OpalPresenceInfo::StateCount:
     // the above two items are bookkeeping code, so do not consider them
     // shut up the compiler which checks all cases in switch
-    return;
-    break;
+  case OpalPresenceInfo::InternalError:
+  case OpalPresenceInfo::Forbidden:
+  case OpalPresenceInfo::Unavailable:
+  case OpalPresenceInfo::UnknownUser:
+    // the 4 above states could lead to a visual indication
+    // in Ekiga, but we do not handle it yet
   default:
+    return;
     break;
   }
 
