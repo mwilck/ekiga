@@ -147,6 +147,31 @@ bool CallCore::is_supported_uri (const std::string & uri)
 }
 
 
+Ekiga::CodecList
+CallCore::get_codecs () const
+{
+  Ekiga::CodecList codecs;
+  for (std::set<boost::shared_ptr<CallManager> >::iterator iter = managers.begin ();
+       iter != managers.end ();
+       iter++) {
+    codecs.append ((*iter)->get_codecs ());
+  }
+
+  return codecs;
+}
+
+
+void
+CallCore::set_codecs (Ekiga::CodecList & codecs)
+{
+  for (std::set<boost::shared_ptr<CallManager> >::iterator iter = managers.begin ();
+       iter != managers.end ();
+       iter++) {
+    (*iter)->set_codecs (codecs);
+  }
+}
+
+
 void CallCore::add_call (boost::shared_ptr<Call> call, boost::shared_ptr<CallManager> manager)
 {
   Ekiga::FriendOrFoe::Identification id = iff->decide ("call", call->get_remote_uri ());

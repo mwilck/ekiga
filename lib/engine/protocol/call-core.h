@@ -169,6 +169,11 @@ namespace Ekiga
       bool is_supported_uri (const std::string & uri);
 
 
+      /*** Codecs Management ***/
+      void set_codecs (Ekiga::CodecList & codecs);
+      Ekiga::CodecList get_codecs () const;
+
+
       /*** Call Related Signals ***/
 
       /** See call.h for the API
