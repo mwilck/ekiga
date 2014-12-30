@@ -1090,8 +1090,11 @@ on_heap_removed (RosterViewGtk* self,
           gtk_tree_model_get (GTK_TREE_MODEL (self->priv->store), &iter,
                               COLUMN_TIMEOUT, &timeout,
                               -1);
-          if (timeout > 0)
+          if (timeout > 0) {
             g_source_remove (timeout);
+            gtk_tree_store_set (GTK_TREE_STORE (self->priv->store), &iter,
+                                COLUMN_TIMEOUT, 0, -1);
+          }
         } while (gtk_tree_model_iter_next (GTK_TREE_MODEL (self->priv->store), &iter));
       }
     } while (gtk_tree_model_iter_next (GTK_TREE_MODEL (self->priv->store), &group_iter));
@@ -1131,12 +1134,26 @@ on_presentity_added (RosterViewGtk* self,
   bool away = false;
   guint timeout = 0;
   gchar *old_presence = NULL;
+  std::string presence;
   gboolean should_emit = FALSE;
+
+  // This should not happen
+  g_return_if_fail (!presentity->get_presence ().empty ());
 
   roster_view_gtk_find_iter_for_heap (self, heap, &heap_iter);
 
-  active = presentity->get_presence () != "offline";
-  away = presentity->get_presence () == "away";
+  // Refer to what we know
+  if (presentity->get_presence () == "available"
+      || presentity->get_presence () == "busy"
+      || presentity->get_presence () == "away"
+      || presentity->get_presence () == "inacall"
+      || presentity->get_presence () == "offline")
+    presence = presentity->get_presence ();
+  else
+    presence = "unknown";
+
+  active = (presence != "offline");
+  away = (presence == "away");
 
   if (groups.empty ())
     groups.push_back (_("Unsorted"));
@@ -1145,8 +1162,7 @@ on_presentity_added (RosterViewGtk* self,
        group != groups.end ();
        group++) {
 
-    roster_view_gtk_find_iter_for_group (self, heap, &heap_iter,
-					 *group, &group_iter);
+    roster_view_gtk_find_iter_for_group (self, heap, &heap_iter, *group, &group_iter);
     roster_view_gtk_find_iter_for_presentity (self, &group_iter, presentity, &iter);
 
     if (gtk_tree_store_iter_is_valid (self->priv->store, &iter)
@@ -1157,11 +1173,19 @@ on_presentity_added (RosterViewGtk* self,
 
     // Find out what our presence was
     gtk_tree_model_get (GTK_TREE_MODEL (self->priv->store), &iter,
+                        COLUMN_TIMEOUT, &timeout,
                         COLUMN_PRESENCE, &old_presence, -1);
 
-    if (old_presence && presentity->get_presence () != old_presence
-        && presentity->get_presence () != "unknown" && presentity->get_presence () != "offline"
+    // If presence was already set, and we are moving
+    // from "offline" or "unknown" to something else,
+    // trigger an animation
+    if (old_presence
+        && presence != old_presence
+        && presence != "unknown" && presence != "offline"
         && (!g_strcmp0 (old_presence, "unknown") || !g_strcmp0 (old_presence, "offline"))) {
+
+      if (timeout > 0)
+        g_source_remove (timeout);
 
       StatusIconInfo *info = new StatusIconInfo ();
       info->model = GTK_TREE_MODEL (self->priv->store);
@@ -1170,24 +1194,15 @@ on_presentity_added (RosterViewGtk* self,
 
       timeout = g_timeout_add_seconds_full (G_PRIORITY_DEFAULT, 1, roster_view_gtk_icon_blink_cb,
                                             (gpointer) info, (GDestroyNotify) status_icon_info_delete);
-      gtk_tree_store_set (self->priv->store, &iter,
-                          COLUMN_TIMEOUT, timeout, -1);
     }
-    else {
 
+    if (timeout == 0) {
       std::string icon = "user-offline";
-      if (!old_presence) {
-        gtk_tree_store_set (self->priv->store, &iter,
-                            COLUMN_PRESENCE_ICON, icon.c_str (),
-                            -1);
-      }
-      else if (old_presence != presentity->get_presence ()) {
-        if (presentity->get_presence () != "unknown")
-          icon = "user-" + presentity->get_presence ();
-        gtk_tree_store_set (self->priv->store, &iter,
-                            COLUMN_PRESENCE_ICON, icon.c_str (),
-                            -1);
-      }
+      if (presence != "unknown")
+        icon = "user-" + std::string(presence);
+      gtk_tree_store_set (self->priv->store, &iter,
+                          COLUMN_PRESENCE_ICON, icon.c_str (),
+                          COLUMN_PRESENCE, presence.c_str (), -1);
     }
 
     gtk_style_context_get_color (gtk_widget_get_style_context (GTK_WIDGET (self->priv->tree_view)),
@@ -1209,10 +1224,9 @@ on_presentity_added (RosterViewGtk* self,
                         COLUMN_STATUS, presentity->get_status ().c_str (),
                         COLUMN_PRESENCE, presentity->get_presence ().c_str (),
                         COLUMN_AVATAR_PIXBUF, pixbuf,
+                        COLUMN_TIMEOUT, timeout,
                         COLUMN_FOREGROUND_COLOR, &color, -1);
-    gtk_tree_model_get (GTK_TREE_MODEL (self->priv->store), &iter,
-                        COLUMN_TIMEOUT, &timeout,
-                        -1);
+
 
     g_free (old_presence);
     g_object_unref (pixbuf);
@@ -1268,8 +1282,11 @@ on_presentity_updated (RosterViewGtk* self,
           gtk_tree_model_get (GTK_TREE_MODEL (self->priv->store), &iter,
                               COLUMN_TIMEOUT, &timeout,
                               -1);
-          if (timeout > 0)
+          if (timeout > 0) {
             g_source_remove (timeout);
+            gtk_tree_store_set (GTK_TREE_STORE (self->priv->store), &iter,
+                                COLUMN_TIMEOUT, 0, -1);
+          }
           gtk_tree_store_remove (self->priv->store, &iter);
         }
         g_free (group_name);
