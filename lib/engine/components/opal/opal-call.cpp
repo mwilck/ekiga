@@ -562,6 +562,7 @@ Opal::Call::OnCleared ()
     case OpalConnection::EndedByCertificateAuthority:
       reason = _("Remote certificate not authenticated");
       break;
+    case OpalConnection::EndedByCustomCode:
     case OpalConnection::EndedByQ931Cause:
     case OpalConnection::EndedByDurationLimit:
     case OpalConnection::EndedByInvalidConferenceID:
