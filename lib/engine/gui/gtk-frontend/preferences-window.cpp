@@ -887,7 +887,7 @@ gm_pw_init_audio_page (PreferencesWindow *self,
 
   /* Packing widgets */
   GTK_GRID_LAST_ROW (container, pos);
-  codecs_list = codecs_box_new_with_type (Ekiga::Call::Audio);
+  codecs_list = codecs_box_new_with_type (self->priv->app, Ekiga::Call::Audio);
   gtk_grid_attach (GTK_GRID (container), codecs_list, 0, pos-1, 3, 1);
 
   /* Here we add the audio codecs options */
@@ -998,7 +998,7 @@ gm_pw_init_video_page (PreferencesWindow *self,
 
   /* Packing widgets */
   GTK_GRID_LAST_ROW (container, pos);
-  codecs_list = codecs_box_new_with_type (Ekiga::Call::Video);
+  codecs_list = codecs_box_new_with_type (self->priv->app, Ekiga::Call::Video);
   gtk_grid_attach (GTK_GRID (container), codecs_list, 0, pos-1, 3, 1);
 
   /* Here we add the video codecs options */
