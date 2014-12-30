@@ -40,7 +40,8 @@
 
 #include "kickstart.h"
 
-void opal_init_pprocess ();
+void opal_init_pprocess (int argc,
+                         char *argv[]);
 
 // Must be called after opal_init_pprocess.
 void opal_init (Ekiga::KickStart& kickstart);

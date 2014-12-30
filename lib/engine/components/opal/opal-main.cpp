@@ -148,10 +148,52 @@ struct OPALSpark: public Ekiga::Spark
 };
 
 void
-opal_init_pprocess ()
+opal_init_pprocess (int argc,
+                    char *argv [])
 {
   /* Ekiga PTLIB Process initialisation */
   static GnomeMeeting instance;
+  instance.GetArguments ().SetArgs (argc, argv);
+  PArgList & args = instance.GetArguments ();
+  args.Parse ("d-debug:", false);
+
+  if (args.IsParsed ()) {
+    int debug_level = args.GetOptionAs ('d', 0);
+    if (debug_level == 0)
+      return;
+#ifndef WIN32
+    char* text_label =  g_strdup_printf ("%d", debug_level);
+    setenv ("PTLIB_TRACE_CODECS", text_label, TRUE);
+    g_free (text_label);
+#else
+    char* text_label =  g_strdup_printf ("PTLIB_TRACE_CODECS=%d", debug_level);
+    _putenv (text_label);
+    g_free (text_label);
+    if (debug_level != 0) {
+      std::string desk_path = g_get_user_special_dir (G_USER_DIRECTORY_DESKTOP);
+      if (!desk_path.empty ())
+        std::freopen((desk_path + "\\ekiga-stderr.txt").c_str (), "w", stderr);
+    }
+#endif
+
+#if PTRACING
+    PTrace::Initialise (PMAX (PMIN (8, debug_level), 0), NULL,
+                        PTrace::Timestamp | PTrace::Thread
+                        | PTrace::Blocks | PTrace::DateAndTime);
+    PTRACE (1, "Ekiga version "
+            << MAJOR_VERSION << "." << MINOR_VERSION << "." << BUILD_NUMBER);
+#ifdef EKIGA_REVISION
+    PTRACE (1, "Ekiga git revision: " << EKIGA_REVISION);
+#endif
+    PTRACE (1, "PTLIB version " << PTLIB_VERSION);
+    PTRACE (1, "OPAL version " << OPAL_VERSION);
+#ifdef HAVE_DBUS
+    PTRACE (1, "DBUS support enabled");
+#else
+    PTRACE (1, "DBUS support disabled");
+#endif
+#endif
+  }
 }
 
 void
