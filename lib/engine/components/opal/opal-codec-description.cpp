@@ -33,65 +33,123 @@
  *
  */
 
+#include <glib/gi18n.h>
 #include <algorithm>
+#include <boost/algorithm/string.hpp>
 
 #include "opal-codec-description.h"
+#include "known-codecs.h"
 
 
 using namespace Opal;
 
 
-static bool
-same_codec_desc (Ekiga::CodecDescription a, Ekiga::CodecDescription b)
+CodecDescription::CodecDescription (const OpalMediaFormat & _format,
+                                    bool _active)
 {
-  return (a.name == b.name && a.rate == b.rate);
-}
-
-
-CodecDescription::CodecDescription (OpalMediaFormat & format)
-  : Ekiga::CodecDescription ()
-{
-  name = (const char *) format.GetEncodingName ();
-  // if a codec does not have a IANA encoding name, use its name instead
-  // (it is the case for MS-IMA-ADPCM for ex.)
-  if (name.empty())
-    name = (const char *) format.GetName ();
-  if (name.empty()) {
-    PTRACE (1, "OpalCodecDescription\tError: found unnamed codec, it will not be used");
-  }
+  name = (const char *) _format;
   if (name == "G722")  // G722 has the wrong rate in RFC
     rate = 16000;
   else
-    rate = format.GetClockRate ();
-  audio = (format.GetMediaType () == OpalMediaType::Audio ());
-  if (format.IsValidForProtocol ("SIP"))
+    rate = _format.GetClockRate ();
+  audio = (_format.GetMediaType () == OpalMediaType::Audio ());
+  video = (_format.GetMediaType () == OpalMediaType::Video ());
+  if (_format.IsValidForProtocol ("SIP"))
     protocols.push_back ("SIP");
-  if (format.IsValidForProtocol ("H.323"))
+  if (_format.IsValidForProtocol ("H.323"))
     protocols.push_back ("H.323");
   protocols.sort ();
+  for (PINDEX i = 0 ; KnownCodecs[i][0] ; i++) {
+    if (name == KnownCodecs[i][0]) {
+      display_name = gettext (KnownCodecs[i][1]);
+      display_info = gettext (KnownCodecs[i][2]);
+      break;
+    }
+  }
+  if (display_name.empty ())
+    display_name = name;
+
+  format = _format;
+  active = _active;
 }
 
 
-CodecList::CodecList (OpalMediaFormatList & list)
+void
+CodecList::load (const std::list<std::string> & codecs_config)
 {
-  for (PINDEX i = 0 ; i < list.GetSize () ; i++) {
+  OpalMediaFormatList formats;
+  GetAllowedFormats (formats);
 
-    if (list [i].IsTransportable ()) {
+  clear ();
 
-      Ekiga::CodecDescription desc = Opal::CodecDescription (list [i]);
+  // FIXME: This is not very efficient.
+  // We add each codec of the string list to our own internal list
+  for (std::list<std::string>::const_iterator iter = codecs_config.begin ();
+       iter != codecs_config.end ();
+       iter++) {
 
-      if (desc.name.empty ())
-        continue;
+    std::vector<std::string> strs;
+    boost::split (strs, *iter, boost::is_any_of (":"));
 
-      Ekiga::CodecList::iterator it =
-        search_n (begin (), end (), 1, desc, same_codec_desc);
-      if (it == end ())
-        append (desc);
-      else {
-        it->protocols.sort ();
-        it->protocols.merge (desc.protocols);
-        it->protocols.unique ();
+    for (int i = 0 ; i < formats.GetSize () ; i++) {
+      // Found our codec in the formats, add it to our
+      // internal lists
+      if (strs[0] == (const char *) formats[i]) {
+        CodecDescription d (formats[i], (strs[1] == "1"));
+        append (d);
+        formats -= formats[i];
+        break;
       }
     }
   }
+
+  // We will now add codecs which were not part of the codecs_config
+  // list but that we support (ie all codecs from "list").
+  for (int i = 0 ; i < formats.GetSize () ; i++) {
+    CodecDescription d (formats[i], false);
+    append (d);
+  }
+}
+
+
+void
+CodecList::GetAllowedFormats (OpalMediaFormatList & formats)
+{
+  OpalMediaFormat::GetAllRegisteredMediaFormats (formats);
+  formats.RemoveNonTransportable ();
+
+  OpalMediaFormatList black_list;
+
+  black_list += "Linear-16-Stereo-48kHz";
+  black_list += "LPC-10";
+  black_list += "Speex*";
+  black_list += "FECC*";
+  black_list += "RFC4175*";
+
+  // Blacklist NSE, since it is unused in ekiga and might create
+  // problems with some registrars (such as Eutelia)
+  black_list += "NamedSignalEvent";
+
+  // Only keep OPUS in mono mode (for VoIP chat)
+  // and with the maximum sample rate
+  black_list += "Opus-8*";
+  black_list += "Opus-12*";
+  black_list += "Opus-16*";
+  black_list += "Opus-24*";
+  black_list += "Opus-48S";
+
+  // Only include the VP8 RFC version of the capability
+  black_list += "VP8-OM";
+
+  // Purge blacklisted codecs
+  formats -= black_list;
+
+  // Only keep audio and video codecs
+  for (int i = 0 ; i < formats.GetSize () ; i++) {
+    if (formats[i].GetMediaType () != OpalMediaType::Audio ()
+        && formats[i].GetMediaType () != OpalMediaType::Video ())
+      formats -= formats[i];
+  }
+
+  PTRACE(4, "Ekiga\tAll available audio & video media formats: " << setfill (',') << formats);
 }

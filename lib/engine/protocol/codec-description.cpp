@@ -41,13 +41,19 @@
 
 using namespace Ekiga;
 
+bool same_codec_description (CodecDescription a, CodecDescription b)
+{
+  return (a == b);
+}
+
+
 CodecDescription::CodecDescription ()
   : rate (0), active (true), audio (false)
 {
 }
 
 
-CodecDescription::CodecDescription (std::string _name,
+CodecDescription::CodecDescription (const std::string & _name,
                                     unsigned _rate,
                                     bool _audio,
                                     std::string _protocols,
@@ -75,58 +81,12 @@ CodecDescription::CodecDescription (std::string _name,
 }
 
 
-CodecDescription::CodecDescription (std::string codec)
-{
-  int i = 0;
-  gchar** vect = NULL;
-  std::string tmp [5];
-
-  vect = g_strsplit (codec.c_str (), "*", -1);
-
-  for (gchar** ptr = vect; *ptr != NULL; ptr++) {
-
-    tmp[i] = *ptr;
-    i++;
-  }
-
-  g_strfreev (vect);
-
-  if (i < 4)
-    return;
-
-  vect = g_strsplit (tmp[3].c_str (), " ", -1);
-  for (gchar** ptr = vect; *ptr != NULL; ptr++) {
-
-    protocols.push_back (*ptr);
-  }
-
-  g_strfreev (vect);
-
-  name = tmp [0];
-  rate = atoi (tmp [1].c_str ());
-  audio = atoi (tmp [2].c_str ());
-  active = atoi (tmp [4].c_str ());
-}
-
-
 std::string
 CodecDescription::str ()
 {
   std::stringstream val;
-  std::stringstream proto;
 
-  val << name << "*" << rate << "*" << audio << "*";
-  protocols.sort ();
-  for (std::list<std::string>::iterator iter = protocols.begin ();
-       iter != protocols.end ();
-       iter++) {
-
-    if (iter != protocols.begin ())
-      proto << " ";
-
-    proto << *iter;
-  }
-  val << proto.str () << "*" << (active ? "1" : "0");
+  val << name << ":" << (active ? "1" : "0");
 
   return val.str ();
 }
@@ -138,7 +98,7 @@ CodecDescription::operator== (const CodecDescription & c) const
   CodecDescription d = c;
   CodecDescription e = (*this);
 
-  return (e.str () == d.str ());
+  return (e.name == d.name);
 }
 
 
@@ -149,59 +109,27 @@ CodecDescription::operator!= (const CodecDescription & c) const
 }
 
 
-CodecList::CodecList (const std::list<std::string> & codecs_config)
+void
+CodecList::append (const CodecList& other)
 {
-  for (std::list<std::string>::const_iterator iter = codecs_config.begin ();
-       iter != codecs_config.end ();
-       iter++) {
-
-    Ekiga::CodecDescription d = Ekiga::CodecDescription (*iter);
-    if (!d.name.empty ())
-      codecs.push_back (d);
-  }
+  insert (end (), other.begin (), other.end ());
+  unique (same_codec_description);
 }
 
-
-CodecList::iterator
-CodecList::begin ()
-{
-  return codecs.begin ();
-}
-
-CodecList::const_iterator CodecList::begin () const
-{
-  return codecs.begin ();
-}
-
-CodecList::iterator
-CodecList::end ()
-{
-  return codecs.end ();
-}
-
-CodecList::const_iterator
-CodecList::end () const
-{
-  return codecs.end ();
-}
 
 void
-CodecList::append (CodecList& other)
+CodecList::append (const CodecDescription& descr)
 {
-  codecs.insert (end (), other.begin (), other.end ());
+  push_back (descr);
 }
 
-void
-CodecList::append (CodecDescription& descr)
-{
-  codecs.push_back (descr);
-}
 
 void
 CodecList::remove (iterator it)
 {
-  codecs.erase (it);
+  erase (it);
 }
+
 
 CodecList
 CodecList::get_audio_list ()
@@ -213,7 +141,7 @@ CodecList::get_audio_list ()
        it++) {
 
     if ((*it).audio)
-      result.codecs.push_back (*it);
+      result.push_back (*it);
   }
 
   return result;
@@ -229,8 +157,8 @@ CodecList::get_video_list ()
        it != end ();
        it++) {
 
-    if (!(*it).audio)
-      result.codecs.push_back (*it);
+    if ((*it).video)
+      result.push_back (*it);
   }
 
   return result;
@@ -258,7 +186,7 @@ CodecList::operator== (const CodecList & c) const
 {
   CodecList::const_iterator it2 = c.begin ();
 
-  if (codecs.size () != c.codecs.size ())
+  if (size () != c.size ())
     return false;
 
   for (const_iterator it = begin ();

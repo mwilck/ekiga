@@ -27,9 +27,9 @@
 /*
  *                         opal-codec-description.h  -  description
  *                         ------------------------------------------
- *   begin                : written in January 2008 by Damien Sandras 
+ *   begin                : written in January 2008 by Damien Sandras
  *   copyright            : (c) 2008 by Damien Sandras
- *   description          : declaration of the interface of an Opal codec 
+ *   description          : declaration of the interface of an Opal codec
  *                          description.
  *
  */
@@ -45,18 +45,19 @@
 namespace Opal {
 
   /*** Codec description ***/
-  class CodecDescription 
+  class CodecDescription
     : public Ekiga::CodecDescription
     {
   public:
-      /** Create a codec description from the given OpalMediaFormat
-       * @param format is a valid OpalMediaFormat
-       */
-      CodecDescription (OpalMediaFormat & format);
+      CodecDescription (const OpalMediaFormat & format,
+                        bool active);
+
+  private:
+      OpalMediaFormat format;
     };
 
 
-  class CodecList 
+  class CodecList
     : public Ekiga::CodecList
     {
   public :
@@ -66,10 +67,14 @@ namespace Opal {
       CodecList () {};
 
 
-      /** Constructor that creates a CodecList from an OpalMediaFormatList
-       * @param list is an OpalMediaFormatList
+      /** Load a CodecList from a list of format names
+       * @param list of codec names under the form : format_name|active
        */
-      CodecList (OpalMediaFormatList & list);
+      void load (const std::list<std::string> & codecs_config);
+
+
+  private:
+      void GetAllowedFormats (OpalMediaFormatList & list);
     };
 }
 #endif

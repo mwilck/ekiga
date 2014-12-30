@@ -27,7 +27,7 @@
 /*
  *                         codec-description.h  -  description
  *                         ------------------------------------------
- *   begin                : written in January 2008 by Damien Sandras 
+ *   begin                : written in January 2008 by Damien Sandras
  *   copyright            : (c) 2008 by Damien Sandras
  *   description          : declaration of the interface of a codec description.
  *
@@ -49,11 +49,11 @@ namespace Ekiga
  * @{
  */
 
-  /** This class holds the representation of a codec. 
+  /** This class holds the representation of a codec.
    * That representation is different from the codec itself, but can be used
    * at several places in the engine.
    */
-  class CodecDescription 
+  class CodecDescription
     {
   public:
 
@@ -62,39 +62,40 @@ namespace Ekiga
       CodecDescription ();
 
       /** Create a codec description based on the parameters
-       * @param name is the codec name as defined in the RFC
-       * @param rate is the clock rate 
+       * @param name is the codec name uniquely representing it
+       * @param rate is the clock rate
        * @param audio is true if it reprensents an audio codec
-       * @param protocols is a comma separated list of protocols supported 
+       * @param protocols is a comma separated list of protocols supported
        *        by the codec
        * @param active is true if the codec is active
        */
-      CodecDescription (std::string name,
+      CodecDescription (const std::string & name,
                         unsigned rate,
                         bool audio,
                         std::string protocols,
                         bool active);
-
-      /** Create a codec description from a string
-       * @param codec is a string representing the codec description.
-       *        All fields are separated by a *
-       */
-      CodecDescription (std::string codec);
 
       virtual ~CodecDescription ()
       {}
 
       /** Return the codec description under the form of a string.
        * @return the std::string representing the string description.
+       *         (ie name:active, e.g. G.711:1)
        */
       std::string str ();
 
 
-      /** name is the codec name as defined in the RFC
+      /** name is the codec name
       */
       std::string name;
 
-      /** rate is the clock rate 
+      /* nice display name
+       * and information for "known" codecs
+       */
+      std::string display_name;
+      std::string display_info;
+
+      /** rate is the clock rate
       */
       unsigned rate;
 
@@ -105,6 +106,10 @@ namespace Ekiga
       /** audio is true if it reprensents an audio codec
       */
       bool audio;
+
+      /** video is true if it reprensents an video codec
+      */
+      bool video;
 
       /** protocols is a list of protocols supported by the codec
       */
@@ -124,55 +129,47 @@ namespace Ekiga
 
 
   class CodecList
+      : public std::list<CodecDescription>
     {
   public :
-
-      typedef std::list<CodecDescription> container_type;
-      typedef container_type::iterator iterator;
-      typedef container_type::const_iterator const_iterator;
 
       /** Constructor that creates an empty CodecList
        */
       CodecList () {};
 
-      /** Constructor that creates a CodecList from a GSList whose elements
-       * are CodecDescription objects formatted as a string.
-       */
-      CodecList (const std::list<std::string> &);
-
       virtual ~CodecList ()
       {}
 
-      /** Iterators to loop on the list
-       *
+      /** Load a CodecList from a list of format names
+       *  The CodecList will contain all codecs from the config list
+       *  and all supported codecs if they were not present in the
+       *  configuration.
+       * @param list of codec names under the form : format_name|active
        */
-      iterator begin ();
-      const_iterator begin () const;
-      iterator end ();
-      const_iterator end () const;
+      virtual void load (G_GNUC_UNUSED const std::list<std::string> & codecs_config) {};
 
       /** Append the given CodecList at the end of the current CodecList.
        * @param other is the CodecList to append to the current one
        */
-      void append (CodecList& other);
+      void append (const CodecList& other);
 
       /** Append the given codec description to the current CodecList.
        * @param descr is the CodecDescription to append to the current list
        */
-      void append (CodecDescription& descr);
+      void append (const CodecDescription& descr);
 
       /** Remove the codec description pointed to by the iterator
        * @param iter is the iterator
        */
       void remove (iterator it);
 
-      /** Return the list of audio codecs descriptions in the current CodecList 
+      /** Return the list of audio codecs descriptions in the current CodecList
        * @return the list of audio CodecDescription
        */
       CodecList get_audio_list ();
 
 
-      /** Return the list of video codecs descriptions in the current CodecList 
+      /** Return the list of video codecs descriptions in the current CodecList
        * @return the list of video CodecDescription
        */
       CodecList get_video_list ();
@@ -194,9 +191,6 @@ namespace Ekiga
        * @return true if both CodecList are different, false otherwise
        */
       bool operator!= (const CodecList & c) const;
-
-    private:
-      container_type codecs;
     };
 
 /**
