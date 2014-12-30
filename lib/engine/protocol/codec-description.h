@@ -163,6 +163,12 @@ namespace Ekiga
        */
       void remove (iterator it);
 
+      /* Return true if there is a codec with the given display name
+       * @param display_name is the nice name like in known-codecs.h
+       * @return true or false
+       */
+      bool find (const std::string & display_name);
+
       /** Return the list of audio codecs descriptions in the current CodecList
        * @return the list of audio CodecDescription
        */

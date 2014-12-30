@@ -124,6 +124,20 @@ CodecList::append (const CodecDescription& descr)
 }
 
 
+bool
+CodecList::find (const std::string & display_name)
+{
+  for (iterator it = begin ();
+       it != end ();
+       it++) {
+
+    if ((*it).display_name == display_name)
+      return true;
+  }
+
+  return false;
+}
+
 void
 CodecList::remove (iterator it)
 {
