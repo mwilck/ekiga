@@ -346,7 +346,7 @@
   </schema>
   <schema gettext-domain="@GETTEXT_PACKAGE@" id="org.gnome.@PACKAGE_NAME@.codecs.audio" path="/org/gnome/@PACKAGE_NAME@/codecs/audio/">
     <key name="media-list" type="as">
-      <default>[ 'Speex*16000*1*H.323 SIP*1', 'PCMU*8000*1*H.323 SIP*1', 'PCMA*8000*1*H.323 SIP*1', 'CELT*48000*1*SIP*0', 'CELT*32000*1*SIP*0', 'iLBC*8000*1*H.323 SIP*0', 'gsm*8000*1*H.323 SIP*0', 'G722*16000*1*H.323 SIP*0', 'G7221*16000*1*H.323 SIP*0', 'AMR-WB*16000*1*H.323 SIP*0', 'Speex*8000*1*H.323 SIP*0', 'G726-16*8000*1*H.323 SIP*0', 'G726-24*8000*1*H.323 SIP*0', 'G726-32*8000*1*H.323 SIP*0', 'G726-40*8000*1*H.323 SIP*0', 'ms-gsm*8000*1*H.323*0', 'SILK*16000*1*H.323 SIP*0', 'SILK*8000*1*H.323 SIP*0', 'MS-IMA-ADPCM*8000*1*H.323*0' ]</default>
+      <default>['Opus-48:1', 'G.722-64k:1', 'G.711-uLaw-64k:1', 'G.711-ALaw-64k:1', 'G.722.2:0', 'GSM-AMR:0', 'iSAC-16kHz:0', 'iSAC-32kHz:0', 'MS-IMA-ADPCM:0', 'G.726-40k:0', 'G.726-32k:0', 'G.726-24k:0', 'G.726-16k:0', 'G.722.1-24K:0', 'G.722.1-32K:0', 'G.722.1C-24K:0', 'G.722.1C-32K:0', 'G.722.1C-48K:0', 'SILK-8:0', 'SILK-16:0']</default>
       <_summary>The Audio Codecs List</_summary>
       <_description>The audio codecs list</_description>
     </key>
@@ -369,7 +369,7 @@
   </schema>
   <schema gettext-domain="@GETTEXT_PACKAGE@" id="org.gnome.@PACKAGE_NAME@.codecs.video" path="/org/gnome/@PACKAGE_NAME@/codecs/video/">
     <key name="media-list" type="as">
-      <default>[ 'h264*90000*0*SIP*1', 'theora*90000*0*SIP*1', 'h261*90000*0*H.323 SIP*1' ]</default>
+      <default>['VP8-WebM:1', 'H.264-High:1', 'H.261:1', 'H.264-0:0', 'H.264-1:0', 'MPEG4:0', 'H.263:0', 'H.263plus:0']</default>
       <_summary>The video codecs list</_summary>
       <_description>The video codecs list</_description>
     </key>
