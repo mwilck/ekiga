@@ -1104,6 +1104,7 @@ Opal::Account::OnPresenceChange (OpalPresentity& /*presentity*/,
 
   case OpalPresenceInfo::Unchanged:
     // do not change presence
+    return;
     break;
   case OpalPresenceInfo::Available:
     new_presence = "available";
@@ -1132,8 +1133,7 @@ Opal::Account::OnPresenceChange (OpalPresentity& /*presentity*/,
   case OpalPresenceInfo::Forbidden:
   case OpalPresenceInfo::Unavailable:
   case OpalPresenceInfo::UnknownUser:
-  //case OpalPresenceInfo::UnknownExtended:
-    new_presence = "unknown";
+    return;
     break;
   /* for reference purposes:
   case OpalPresenceInfo::Appointment:
@@ -1224,6 +1224,7 @@ Opal::Account::OnPresenceChange (OpalPresentity& /*presentity*/,
   case OpalPresenceInfo::StateCount:
     // the above two items are bookkeeping code, so do not consider them
     // shut up the compiler which checks all cases in switch
+    return;
     break;
   default:
     break;
