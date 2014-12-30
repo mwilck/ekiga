@@ -422,6 +422,10 @@ ekiga_main (int argc,
 
   boost::shared_ptr<Ekiga::CallCore> call_core = app->priv->core->get<Ekiga::CallCore> ("call-core");
   g_return_if_fail (call_core);
+  Ekiga::CodecList all_codecs = call_core->get_codecs ();
+  g_return_if_fail (all_codecs.find ("VP8"));
+  g_return_if_fail (all_codecs.find ("H.264"));
+  g_return_if_fail (all_codecs.find ("Opus"));
   call_core->created_call.connect (boost::bind (&on_created_call_cb, _1, _2, (gpointer) app));
 
   boost::shared_ptr<Ekiga::AccountCore> account_core = app->priv->core->get<Ekiga::AccountCore> ("account-core");
