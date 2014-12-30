@@ -595,6 +595,14 @@ if test "x$PTLIB_VIDEO" != "xyes"; then
   AC_MSG_ERROR([You need ptlib video support to compile ekiga])
 fi
 
+# AEC is mandatory for good quality
+AC_MSG_CHECKING(for OPAL support for AEC)
+OPAL_AEC=`$PKG_CONFIG opal --variable=OPAL_AEC`
+AC_MSG_RESULT($OPAL_AEC)
+if test "x$OPAL_AEC" != "xyes"; then
+  AC_MSG_ERROR([You need opal aec support to compile ekiga])
+fi
+
 # Make sure ptlib and opal don't force no-exceptions,
 # as we need them for boost's signals2
 PTLIB_CFLAGS="$PTLIB_CFLAGS -fexceptions"
