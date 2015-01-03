@@ -78,6 +78,7 @@
 #include "audiooutput-core.h"
 #include "videooutput-manager.h"
 #include "foe-list.h"
+#include "rtcp-statistics.h"
 
 #define STAGE_WIDTH 640
 #define STAGE_HEIGHT 480
@@ -353,22 +354,7 @@ static void ekiga_call_window_update_title (EkigaCallWindow *self,
                                             const std::string & remote_party = std::string ());
 
 static void ekiga_call_window_update_stats (EkigaCallWindow *self,
-                                            float lost,
-                                            float late,
-                                            float out_of_order,
-                                            int jitter,
-                                            unsigned int re_width,
-                                            unsigned int re_height,
-                                            unsigned int tr_width,
-                                            unsigned int tr_height,
-                                            const char *tr_audio_codec,
-                                            const char *tr_video_codec);
-
-static void ekiga_call_window_set_bandwidth (EkigaCallWindow *self,
-                                             float ta,
-                                             float ra,
-                                             float tv,
-                                             float rv);
+                                            const RTCPStatistics & statistics);
 
 static void ekiga_call_window_init_menu (EkigaCallWindow *self);
 
@@ -888,7 +874,6 @@ on_cleared_call_cb (G_GNUC_UNUSED boost::shared_ptr<Ekiga::CallManager> manager,
   ekiga_call_window_update_calling_state (self, Standby);
   ekiga_call_window_update_title (self, Standby);
   ekiga_call_window_update_header_bar_actions (self, Standby);
-  ekiga_call_window_set_bandwidth (self, 0.0, 0.0, 0.0, 0.0);
   ekiga_call_window_clear_stats (self);
 
   if (self->priv->current_call) {
@@ -1010,34 +995,12 @@ static gboolean
 on_stats_refresh_cb (gpointer data)
 {
   EkigaCallWindow *self = EKIGA_CALL_WINDOW (data);
-  unsigned local_width = 0;
-  unsigned local_height = 0;
-  unsigned remote_width = 0;
-  unsigned remote_height = 0;
 
   if (self->priv->calling_state == Connected && self->priv->current_call) {
-
     gtk_header_bar_set_subtitle (GTK_HEADER_BAR (self->priv->call_panel_toolbar),
                                   self->priv->current_call->get_duration ().c_str ());
-    ekiga_call_window_set_bandwidth (self,
-                                     self->priv->current_call->get_transmitted_audio_bandwidth (),
-                                     self->priv->current_call->get_received_audio_bandwidth (),
-                                     self->priv->current_call->get_transmitted_video_bandwidth (),
-                                     self->priv->current_call->get_received_video_bandwidth ());
 
-    unsigned int jitter = self->priv->current_call->get_jitter_size ();
-    double lost = self->priv->current_call->get_lost_packets ();
-    double late = self->priv->current_call->get_late_packets ();
-    double out_of_order = self->priv->current_call->get_out_of_order_packets ();
-    gm_video_widget_get_stream_natural_size (GM_VIDEO_WIDGET (self->priv->video_widget),
-                                             PRIMARY_STREAM, &remote_width, &remote_height);
-    gm_video_widget_get_stream_natural_size (GM_VIDEO_WIDGET (self->priv->video_widget),
-                                             SECONDARY_STREAM, &local_width, &local_height);
-
-    ekiga_call_window_update_stats (self, lost, late, out_of_order, jitter,
-                                    local_width, local_height, remote_width, remote_height,
-                                    self->priv->transmitted_audio_codec.c_str (),
-                                    self->priv->transmitted_video_codec.c_str ());
+    ekiga_call_window_update_stats (self, self->priv->current_call->get_statistics ());
   }
 
   return true;
@@ -1214,9 +1177,10 @@ ekiga_call_window_clear_signal_levels (EkigaCallWindow *self)
 static void
 ekiga_call_window_clear_stats (EkigaCallWindow *self)
 {
+  RTCPStatistics stats;
   g_return_if_fail (EKIGA_IS_CALL_WINDOW (self));
 
-  ekiga_call_window_update_stats (self, 0, 0, 0, 0, 0, 0, 0, 0, NULL, NULL);
+  ekiga_call_window_update_stats (self, stats);
 }
 
 static void
@@ -1261,89 +1225,50 @@ ekiga_call_window_update_title (EkigaCallWindow *self,
 
 static void
 ekiga_call_window_update_stats (EkigaCallWindow *self,
-                                float lost,
-                                float late,
-                                float out_of_order,
-                                int jitter,
-                                unsigned int re_width,
-                                unsigned int re_height,
-                                unsigned int tr_width,
-                                unsigned int tr_height,
-                                const char *tr_audio_codec,
-                                const char *tr_video_codec)
+                                const RTCPStatistics & stats)
 {
   gchar *stats_msg = NULL;
-  gchar *stats_msg_tr = NULL;
-  gchar *stats_msg_re = NULL;
-  gchar *stats_msg_codecs = NULL;
+  gchar *re_video_msg = NULL;
+  gchar *tr_video_msg = NULL;
+  unsigned received_width, received_height, transmitted_width, transmitted_height = 0;
 
   g_return_if_fail (EKIGA_IS_CALL_WINDOW (self));
 
-  if ((tr_width > 0) && (tr_height > 0))
-    /* Translators: TX is a common abbreviation for "transmit".  As it
-     * is shown in a tooltip, there is no space constraint */
-    stats_msg_tr = g_strdup_printf (_("TX: %dx%d"), tr_width, tr_height);
+  gm_video_widget_get_stream_natural_size (GM_VIDEO_WIDGET (self->priv->video_widget),
+                                           PRIMARY_STREAM, &received_width, &received_height);
+  gm_video_widget_get_stream_natural_size (GM_VIDEO_WIDGET (self->priv->video_widget),
+                                           SECONDARY_STREAM, &transmitted_width, &transmitted_height);
+  if (received_width != 0 && received_height != 0)
+    re_video_msg = g_strdup_printf (" - %s (%dx%d)",
+                                    stats.received_video_codec.c_str (), received_width, received_height);
   else
-    stats_msg_tr = g_strdup (_("TX: / "));
+    re_video_msg = g_strdup ("");
 
-  if ((re_width > 0) && (re_height > 0))
-    /* Translators: RX is a common abbreviation for "receive".  As it
-     * is shown in a tooltip, there is no space constraint */
-    stats_msg_re = g_strdup_printf (_("RX: %dx%d"), re_width, re_height);
+  if (transmitted_width != 0 && transmitted_height != 0)
+    tr_video_msg = g_strdup_printf (" - %s (%dx%d)",
+                                    stats.transmitted_video_codec.c_str (), transmitted_width, transmitted_height);
   else
-    stats_msg_re = g_strdup (_("RX: / "));
+    tr_video_msg = g_strdup ("");
 
-  if (!tr_audio_codec && !tr_video_codec)
-    stats_msg_codecs = g_strdup (" ");
-  else
-    stats_msg_codecs = g_strdup_printf ("%s - %s",
-                                        tr_audio_codec?tr_audio_codec:"",
-                                        tr_video_codec?tr_video_codec:"");
-
-  stats_msg = g_strdup_printf (_("Lost packets: %.1f %%\nLate packets: %.1f %%\nOut of order packets: %.1f %%\nJitter buffer: %d ms\nCodecs: %s\nResolution: %s %s"),
-                               lost,
-                               late,
-                               out_of_order,
-                               jitter,
-                               stats_msg_codecs,
-                               stats_msg_tr,
-                               stats_msg_re);
-
-  g_free(stats_msg_tr);
-  g_free(stats_msg_re);
-  g_free(stats_msg_codecs);
-
+  stats_msg =
+    g_strdup_printf (_("Reception: %s %s\nLost Packets: %d %%\nJitter: %d ms\nFramerate: %d fps\nBandwidth: %d kbits/s\n\n"
+                       "Transmission: %s %s\nRemote Lost Packets: %d %%\nRemote Jitter: %d ms\nFramerate: %d fps\nBandwidth: %d kbits/s\n\n"),
+                       stats.received_audio_codec.c_str (), re_video_msg, stats.lost_packets, stats.jitter,
+                       stats.received_fps, stats.received_audio_bandwidth + stats.received_video_bandwidth,
+                       stats.transmitted_audio_codec.c_str (), tr_video_msg, stats.remote_lost_packets, stats.remote_jitter,
+                       stats.transmitted_fps, stats.transmitted_audio_bandwidth + stats.transmitted_video_bandwidth);
   gtk_widget_set_tooltip_text (GTK_WIDGET (self->priv->event_box), stats_msg);
-  g_free (stats_msg);
 
-  if (!self->priv->bad_connection
-      && (jitter > 250 || lost > 0.02 || late > 0.02 || out_of_order > 0.02)) {
+  if (!self->priv->bad_connection && (stats.jitter > 250 || stats.lost_packets > 2)) {
     gm_info_bar_push_message (GM_INFO_BAR (self->priv->info_bar),
                               GTK_MESSAGE_WARNING,
-                              _("The call quality is rather bad. Please check your Internet connection."));
+                              _("The call quality is rather bad. Please check your Internet connection or your audio driver."));
     self->priv->bad_connection = true;
   }
-}
 
-
-static void
-ekiga_call_window_set_bandwidth (EkigaCallWindow *self,
-                                 float ta,
-                                 float ra,
-                                 float tv,
-                                 float rv)
-{
-  gchar *msg = NULL;
-
-  g_return_if_fail (EKIGA_IS_CALL_WINDOW (self));
-
-  if (ta > 0.0 || ra > 0.0 || tv > 0.0 || rv > 0.0)
-    /* Translators: A = Audio, V = Video */
-    msg = g_strdup_printf (_("A:%.1f/%.1f V:%.1f/%.1f"),
-                           ta, ra, tv, rv);
-
-  // FIXME: Do we keep this or not ?
-  g_free (msg);
+  g_free (stats_msg);
+  g_free (re_video_msg);
+  g_free (tr_video_msg);
 }
 
 
@@ -1715,7 +1640,6 @@ ekiga_call_window_init_gui (EkigaCallWindow *self)
   gtk_window_set_resizable (GTK_WINDOW (self), true);
 
   /* Init */
-  ekiga_call_window_set_bandwidth (self, 0.0, 0.0, 0.0, 0.0);
   ekiga_call_window_update_header_bar_actions (self, Standby);
 }
 
