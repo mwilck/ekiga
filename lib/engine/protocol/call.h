@@ -46,6 +46,7 @@
 
 #include "actor.h"
 #include "live-object.h"
+#include "rtcp-statistics.h"
 
 namespace Ekiga
 {
@@ -155,47 +156,10 @@ namespace Ekiga
        */
       virtual bool is_outgoing () const = 0;
 
-      /** Return the received audio bandwidth
-       * @return the received audio bandwidth in kbytes/s
+      /** Return call statistics
+       * @return RTCPStatistcs
        */
-      virtual double get_received_audio_bandwidth () const = 0;
-
-      /** Return the transmitted audio bandwidth
-       * @return the transmitted audio bandwidth in kbytes/s
-       */
-      virtual double get_transmitted_audio_bandwidth () const = 0;
-
-      /** Return the received video bandwidth
-       * @return the received video bandwidth in kbytes/s
-       */
-      virtual double get_received_video_bandwidth () const = 0;
-
-      /** Return the transmitted video bandwidth
-       * @return the transmitted video bandwidth in kbytes/s
-       */
-      virtual double get_transmitted_video_bandwidth () const = 0;
-
-      /** Return the jitter size
-       * @return the jitter size in ms
-       */
-      virtual unsigned get_jitter_size () const = 0;
-
-      /** Return the lost packets information
-       * @return the lost packets percentage
-       */
-      virtual double get_lost_packets () const = 0;
-
-      /** Return the late packets information
-       * @return the late packets percentage
-       */
-      virtual double get_late_packets () const = 0;
-
-      /** Return the out of order packets information
-       * @return the out of order packets percentage
-       */
-      virtual double get_out_of_order_packets () const = 0;
-
-
+      virtual const RTCPStatistics & get_statistics () = 0;
 
       /*
        * Signals
@@ -266,7 +230,6 @@ namespace Ekiga
       /** This signal is emitted when the Call is removed.
        */
       boost::signals2::signal<void(void)> removed;
-     
     };
 
 /**

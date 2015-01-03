@@ -49,6 +49,7 @@
 #include "notification-core.h"
 #include "call-core.h"
 #include "runtime.h"
+#include "known-codecs.h"
 
 using namespace Opal;
 
@@ -98,21 +99,8 @@ private:
 Opal::Call::Call (Opal::CallManager& _manager,
 		  const std::string& uri)
   : OpalCall (_manager), Ekiga::Call (), manager(_manager), remote_uri (uri),
-    call_setup(false), jitter(0), outgoing(false)
+    call_setup(false), outgoing(false)
 {
-  re_a_bytes = tr_a_bytes = re_v_bytes = tr_v_bytes = 0.0;
-  last_v_tick = last_a_tick = PTime ();
-  total_a =
-    total_v =
-    lost_a =
-    too_late_a =
-    out_of_order_a =
-    lost_v =
-    too_late_v =
-    out_of_order_v = 0;
-  lost_packets = late_packets = out_of_order_packets = 0.0;
-  re_a_bw = tr_a_bw = re_v_bw = tr_v_bw = 0.0;
-
   NoAnswerTimer.SetNotifier (PCREATE_NOTIFIER (OnNoAnswerTimeout));
 
   add_action (Ekiga::ActionPtr (new Ekiga::Action ("hangup", _("Hangup"),
@@ -350,6 +338,85 @@ Opal::Call::get_start_time () const
 }
 
 
+const RTCPStatistics &
+Opal::Call::get_statistics ()
+{
+  PSafePtr<OpalConnection> connection = get_remote_connection ();
+  if (connection == NULL)
+    return statistics;
+
+  OpalMediaStatistics re_a_statistics;
+  OpalMediaStatistics tr_a_statistics;
+  OpalMediaStatistics re_v_statistics;
+  OpalMediaStatistics tr_v_statistics;
+
+  OpalMediaStreamPtr stream = connection->GetMediaStream (OpalMediaType::Audio (), false); // Transmission
+  if (stream)
+    stream->GetStatistics (tr_a_statistics);
+  stream = connection->GetMediaStream (OpalMediaType::Audio (), true); // Reception
+  if (stream)
+    stream->GetStatistics (re_a_statistics);
+  stream = connection->GetMediaStream (OpalMediaType::Video (), false); // Transmission
+  if (stream)
+    stream->GetStatistics (tr_v_statistics);
+  stream = connection->GetMediaStream (OpalMediaType::Video (), true); // Reception
+  if (stream)
+    stream->GetStatistics (re_v_statistics);
+
+  for (PINDEX i = 0 ; KnownCodecs[i][0] ; i++) {
+    if (tr_a_statistics.m_mediaFormat == KnownCodecs[i][0])
+      statistics.transmitted_audio_codec = gettext (KnownCodecs[i][1]);
+    if (re_a_statistics.m_mediaFormat == KnownCodecs[i][0])
+      statistics.received_audio_codec = gettext (KnownCodecs[i][1]);
+    if (tr_v_statistics.m_mediaFormat == KnownCodecs[i][0])
+      statistics.transmitted_video_codec = gettext (KnownCodecs[i][1]);
+    if (re_v_statistics.m_mediaFormat == KnownCodecs[i][0])
+      statistics.received_video_codec = gettext (KnownCodecs[i][1]);
+  }
+
+  if (tr_a_statistics.m_startTime.IsValid ()) {
+    PTimeInterval t = (PTime () - tr_a_statistics.m_startTime);
+    if (t.GetSeconds () > 0)
+      statistics.transmitted_audio_bandwidth  = tr_a_statistics.m_totalBytes / t.GetSeconds () * 8 / 1024;
+    statistics.jitter = tr_a_statistics.m_averageJitter;
+  }
+
+  if (re_a_statistics.m_startTime.IsValid ()) {
+    PTimeInterval t = (PTime () - re_a_statistics.m_startTime);
+    if (t.GetSeconds () > 0)
+      statistics.received_audio_bandwidth  = re_a_statistics.m_totalBytes / t.GetSeconds () * 8 / 1024;
+    statistics.remote_jitter = re_a_statistics.m_averageJitter;
+  }
+
+  if (tr_v_statistics.m_startTime.IsValid ()) {
+    PTimeInterval t = (PTime () - tr_v_statistics.m_startTime);
+    if (t.GetSeconds () > 0) {
+      statistics.transmitted_video_bandwidth  = tr_v_statistics.m_totalBytes / t.GetSeconds () * 8 / 1024;
+      statistics.transmitted_fps = tr_v_statistics.m_totalFrames / t.GetSeconds ();
+    }
+  }
+
+  if (re_v_statistics.m_startTime.IsValid ()) {
+    PTimeInterval t = (PTime () - re_v_statistics.m_startTime);
+    if (t.GetSeconds () > 0) {
+      statistics.received_video_bandwidth  = re_v_statistics.m_totalBytes / t.GetSeconds () * 8 / 1024;
+      statistics.received_fps = re_v_statistics.m_totalFrames / t.GetSeconds ();
+    }
+  }
+
+  unsigned tr_total_packets = tr_a_statistics.m_totalPackets + tr_v_statistics.m_totalPackets;
+  unsigned tr_lost_packets = tr_a_statistics.m_packetsLost + tr_v_statistics.m_packetsLost;
+  unsigned re_total_packets = re_a_statistics.m_totalPackets + re_v_statistics.m_totalPackets;
+  unsigned re_lost_packets = re_a_statistics.m_packetsLost + re_v_statistics.m_packetsLost;
+
+  if (tr_total_packets > 0 && tr_total_packets > tr_lost_packets)
+    statistics.lost_packets = (unsigned) (100 * tr_lost_packets / tr_total_packets);
+  if (re_total_packets > 0 && re_total_packets > re_lost_packets)
+    statistics.lost_packets = (unsigned) (100 * re_lost_packets / re_total_packets);
+  return statistics;
+}
+
+
 bool
 Opal::Call::is_outgoing () const
 {
@@ -440,10 +507,7 @@ Opal::Call::OnEstablished (OpalConnection & connection)
 
       session = (OpalRTPSession*)PDownCast (OpalRTPConnection, &connection)->GetMediaSession (stream->GetSessionID ());
       if (session) {
-
         session->SetIgnorePayloadTypeChanges (TRUE);
-        session->SetRxStatisticsInterval(50);
-        session->SetTxStatisticsInterval(50);
       }
     }
 
@@ -452,10 +516,7 @@ Opal::Call::OnEstablished (OpalConnection & connection)
 
       session = (OpalRTPSession*)PDownCast (OpalRTPConnection, &connection)->GetMediaSession (stream->GetSessionID ());
       if (session) {
-
         session->SetIgnorePayloadTypeChanges (TRUE);
-        session->SetRxStatisticsInterval(50);
-        session->SetTxStatisticsInterval(50);
       }
     }
   }
@@ -667,65 +728,6 @@ Opal::Call::OnClosedMediaStream (OpalMediaStream & stream)
   is_transmitting = !stream.IsSource ();
 
   Ekiga::Runtime::run_in_main (boost::bind (boost::ref (stream_closed), stream_name, type, is_transmitting));
-}
-
-
-void
-Opal::Call::OnRTPStatistics2 (const OpalConnection & /* connection */,
-			     const OpalRTPSession & session)
-{
-  PWaitAndSignal m(stats_mutex); // The stats are computed from two different threads
-
-  if (session.IsAudio ()) {
-
-    PTimeInterval t = PTime () - last_a_tick;
-    if (t.GetMilliSeconds () < 500)
-      return;
-
-    unsigned elapsed_seconds = max ((unsigned long) t.GetMilliSeconds (), (unsigned long) 1);
-    double octets_received = session.GetOctetsReceived ();
-    double octets_sent = session.GetOctetsSent ();
-
-    re_a_bw = max ((octets_received - re_a_bytes) / elapsed_seconds, 0.0);
-    tr_a_bw = max ((octets_sent - tr_a_bytes) / elapsed_seconds, 0.0);
-
-    re_a_bytes = octets_received;
-    tr_a_bytes = octets_sent;
-    last_a_tick = PTime ();
-
-    total_a = session.GetPacketsReceived ();
-    lost_a = session.GetPacketsLost ();
-    too_late_a = session.GetPacketsTooLate ();
-    out_of_order_a = session.GetPacketsOutOfOrder ();
-
-    jitter = session.GetJitterBufferSize () / max ((unsigned) session.GetJitterTimeUnits (), (unsigned) 8);
-  }
-  else {
-
-    PTimeInterval t = PTime () - last_v_tick;
-    if (t.GetMilliSeconds () < 500)
-      return;
-
-    unsigned elapsed_seconds = max ((unsigned long) t.GetMilliSeconds (), (unsigned long) 1);
-    double octets_received = session.GetOctetsReceived ();
-    double octets_sent = session.GetOctetsSent ();
-
-    re_v_bw = max ((octets_received - re_v_bytes) / elapsed_seconds, 0.0);
-    tr_v_bw = max ((octets_sent - tr_v_bytes) / elapsed_seconds, 0.0);
-
-    re_v_bytes = octets_received;
-    tr_v_bytes = octets_sent;
-    last_v_tick = PTime ();
-
-    total_v = session.GetPacketsReceived ();
-    lost_v = session.GetPacketsLost ();
-    too_late_v = session.GetPacketsTooLate ();
-    out_of_order_v = session.GetPacketsOutOfOrder ();
-  }
-
-  lost_packets = (lost_a + lost_v) / max ((unsigned long)(total_a + total_v), (unsigned long) 1);
-  late_packets = (too_late_a + too_late_v) / max ((unsigned long)(total_a + total_v), (unsigned long) 1);
-  out_of_order_packets = (out_of_order_a + out_of_order_v) / max ((unsigned long)(total_a + total_v), (unsigned long) 1);
 }
 
 

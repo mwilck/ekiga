@@ -35,6 +35,9 @@
  */
 
 
+#ifndef __OPAL_CALL_H__
+#define __OPAL_CALL_H__
+
 #include <opal/opal.h>
 #include <opal/call.h>
 #include <ep/pcss.h>
@@ -44,8 +47,6 @@
 #include "notification-core.h"
 #include "form-request-simple.h"
 
-#ifndef __OPAL_CALL_H__
-#define __OPAL_CALL_H__
 
 namespace Ekiga {
   class CallCore;
@@ -164,16 +165,9 @@ public:
 
     /* Implementation of inherited methods
     */
-
     bool is_outgoing () const;
-    double get_received_audio_bandwidth () const { return re_a_bw; }
-    double get_transmitted_audio_bandwidth () const { return tr_a_bw; }
-    double get_received_video_bandwidth () const { return re_v_bw; }
-    double get_transmitted_video_bandwidth () const { return tr_v_bw; }
-    unsigned get_jitter_size () const { return jitter; }
-    double get_lost_packets () const { return lost_packets; }
-    double get_late_packets () const { return late_packets; }
-    double get_out_of_order_packets () const { return out_of_order_packets; }
+
+    const RTCPStatistics & get_statistics ();
 
 
     /*
@@ -184,8 +178,6 @@ public:
     void OnOpenMediaStream (OpalMediaStream & stream);
 
     void OnClosedMediaStream (OpalMediaStream & stream);
-
-    void OnRTPStatistics2 (const OpalConnection & connection, const OpalRTPSession & session);
 
     void DoSetUp (OpalConnection & connection);
 
@@ -249,42 +241,6 @@ private:
 
     std::string forward_uri;
 
-    double re_a_bw;
-    double tr_a_bw;
-    double re_v_bw;
-    double tr_v_bw;
-    unsigned re_v_fps;
-    unsigned tr_v_fps;
-    unsigned tr_width;
-    unsigned tr_height;
-    unsigned re_width;
-    unsigned re_height;
-
-    unsigned jitter;
-
-    double lost_packets;
-    double late_packets;
-    double out_of_order_packets;
-
-    PMutex stats_mutex;
-    double re_a_bytes;
-    double tr_a_bytes;
-    double re_v_bytes;
-    double tr_v_bytes;
-
-    PTime last_a_tick;
-    PTime last_v_tick;
-    PTime start_time;
-
-    unsigned lost_a;
-    unsigned too_late_a;
-    unsigned out_of_order_a;
-    unsigned total_a;
-    unsigned lost_v;
-    unsigned too_late_v;
-    unsigned out_of_order_v;
-    unsigned total_v;
-
     bool outgoing;
 
 private:
@@ -296,6 +252,9 @@ private:
     void emit_ringing_in_main ();
     void emit_held_in_main ();
     void emit_retrieved_in_main ();
+
+    PTime start_time;
+    RTCPStatistics statistics;
   };
 };
 
