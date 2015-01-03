@@ -1251,13 +1251,13 @@ ekiga_call_window_update_stats (EkigaCallWindow *self,
     tr_video_msg = g_strdup ("");
 
   stats_msg =
-    g_strdup_printf (_("Reception: %s %s\nLost Packets: %d %%\nJitter: %d ms\nFramerate: %d fps\nBandwidth: %d kbits/s\n\n"
-                       "Transmission: %s %s\nRemote Lost Packets: %d %%\nRemote Jitter: %d ms\nFramerate: %d fps\nBandwidth: %d kbits/s\n\n"),
+    g_strdup_printf (_("<b><u>Reception:</u></b> %s %s\nLost Packets: %d %%\nJitter: %d ms\nFramerate: %d fps\nBandwidth: %d kbits/s\n\n"
+                       "<b><u>Transmission:</u></b> %s %s\nRemote Lost Packets: %d %%\nRemote Jitter: %d ms\nFramerate: %d fps\nBandwidth: %d kbits/s\n\n"),
                        stats.received_audio_codec.c_str (), re_video_msg, stats.lost_packets, stats.jitter,
                        stats.received_fps, stats.received_audio_bandwidth + stats.received_video_bandwidth,
                        stats.transmitted_audio_codec.c_str (), tr_video_msg, stats.remote_lost_packets, stats.remote_jitter,
                        stats.transmitted_fps, stats.transmitted_audio_bandwidth + stats.transmitted_video_bandwidth);
-  gtk_widget_set_tooltip_text (GTK_WIDGET (self->priv->event_box), stats_msg);
+  gtk_widget_set_tooltip_markup (GTK_WIDGET (self->priv->event_box), stats_msg);
 
   if (!self->priv->bad_connection && (stats.jitter > 250 || stats.lost_packets > 2)) {
     gm_info_bar_push_message (GM_INFO_BAR (self->priv->info_bar),
