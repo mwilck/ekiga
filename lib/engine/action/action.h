@@ -128,6 +128,14 @@ namespace Ekiga {
     void activate ();
 
 
+    /** Return the Action state.
+     * @return true if the Action is enabled, false otherwise.
+     */
+    bool is_enabled () const;
+
+
+  protected:
+
     /** Enable the Action.
      * This will enable the action. Only enabled actions are usable
      * and appear in menus.
@@ -142,13 +150,6 @@ namespace Ekiga {
     void disable ();
 
 
-    /** Return the Action state.
-     * @return true if the Action is enabled, false otherwise.
-     */
-    bool is_enabled () const;
-
-
-  protected:
 
     std::string name;
     std::string description;
@@ -163,12 +164,6 @@ namespace Ekiga {
 
   private:
 
-    /** Internal callback executed when the Action activated signal is emitted.
-     * It basically calls the callback.
-     */
-    virtual void on_activated ();
-
-
     /** This signal is emitted when the Action is activated. This triggers
      * the signal execution.
      */
@@ -178,7 +173,6 @@ namespace Ekiga {
   };
 
   typedef boost::shared_ptr< Action > ActionPtr;
-  typedef std::list< ActionPtr > ActionStore;
 
   /**
    * @}

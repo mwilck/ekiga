@@ -45,7 +45,8 @@ Action::Action (const std::string & _name,
                 boost::function0<void> _callback,
                 bool _enabled) : name (_name), description (_description), callback (_callback), action_enabled (_enabled)
 {
-  conns.add (activated.connect (boost::bind (&Action::on_activated, this)));
+  if (!callback.empty ())
+    conns.add (activated.connect (boost::cref (callback)));
 }
 
 
@@ -96,12 +97,4 @@ bool
 Action::is_enabled () const
 {
   return action_enabled;
-}
-
-
-void
-Action::on_activated ()
-{
-  if (!callback.empty ())
-    callback ();
 }
