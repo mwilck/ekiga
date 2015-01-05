@@ -45,20 +45,12 @@ Actor::add_action (ActionPtr action)
 {
   remove_action (action->get_name ()); // Remove any other action with the same name.
 
-  actions.push_back (action);
+  push_back (action);
 
   conns.add (action->enabled.connect (boost::bind (boost::ref (action_enabled), action->get_name ())));
   conns.add (action->disabled.connect (boost::bind (boost::ref (action_disabled), action->get_name ())));
 
   action_added (action->get_name ());
-}
-
-
-void
-Actor::add_action (const ActionStore & _actions)
-{
-  for (ActionStore::const_iterator it = _actions.begin (); it != _actions.end () ; ++it)
-    add_action (*it);
 }
 
 
@@ -70,7 +62,7 @@ Actor::remove_action (const std::string & name)
     return false;
 
   action_removed (name);
-  actions.remove (a);
+  remove (a);
 
   return true;
 }
@@ -105,7 +97,7 @@ Actor::disable_action (const std::string & name)
 ActionPtr
 Actor::get_action (const std::string & name)
 {
-  for (ActionStore::iterator it = actions.begin (); it != actions.end () ; ++it) {
+  for (iterator it = begin (); it != end () ; ++it) {
     if ((*it)->get_name () == name) {
       return (*it);
     }
@@ -118,36 +110,8 @@ Actor::get_action (const std::string & name)
 void
 Actor::remove_actions ()
 {
-  for (ActionStore::iterator it = actions.begin (); it != actions.end () ; ++it) {
+  for (iterator it = begin (); it != end () ; ++it) {
     action_removed ((*it)->get_name ());
   }
-  actions.clear ();
-}
-
-
-Actor::const_iterator
-Actor::begin () const
-{
-  return actions.begin ();
-}
-
-
-Actor::const_iterator
-Actor::end () const
-{
-  return actions.end ();
-}
-
-
-Actor::iterator
-Actor::begin ()
-{
-  return actions.begin ();
-}
-
-
-Actor::iterator
-Actor::end ()
-{
-  return actions.end ();
+  clear ();
 }

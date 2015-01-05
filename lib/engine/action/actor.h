@@ -58,13 +58,13 @@ namespace Ekiga {
    * It can remove them using the remove_action and remove_actions methods.
    *
    */
-  class Actor
+  class Actor : public std::list< ActionPtr >
   {
-    friend class GActorMenu;
-    typedef ActionStore::const_iterator const_iterator;
-    typedef ActionStore::iterator iterator;
+    friend class Action;
 
   public:
+    typedef std::list < ActionPtr >::const_iterator const_iterator;
+    typedef std::list < ActionPtr >::iterator iterator;
 
     /** Add an action to the given Actor.
      *
@@ -74,16 +74,6 @@ namespace Ekiga {
      * @param An Action.
      */
     virtual void add_action (ActionPtr action);
-
-
-    /** Add actions from an ActionStore to the given Actor.
-     *
-     * Actions that are not "added" using this method will not be usable
-     * from menus.
-     *
-     * @param An ActionStore.
-     */
-    virtual void add_action (const ActionStore & actions);
 
 
     /** Remove an action from the given Actor.
@@ -125,14 +115,6 @@ namespace Ekiga {
     virtual ActionPtr get_action (const std::string & name);
 
 
-    /** Iterators (able to iterate through actions)
-     */
-    const_iterator begin () const;
-    const_iterator end () const;
-    iterator begin ();
-    iterator end ();
-
-
     /**
      * Those signals are emitted when an Action is enabled/disabled
      * in the ActionMap.
@@ -149,13 +131,12 @@ namespace Ekiga {
     boost::signals2::signal<void(const std::string &)> action_removed;
 
 
-  protected:
+  private:
 
     /**
      * This is the Actor ActionStore.
      * It contains all actions supported by the current Actor.
      */
-    ActionStore actions;
     Ekiga::scoped_connections conns;
   };
   typedef boost::shared_ptr< Actor > ActorPtr;
