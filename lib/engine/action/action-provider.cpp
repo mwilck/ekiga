@@ -40,13 +40,11 @@
 using namespace Ekiga;
 
 void
-URIActionProviderStore::pull_actions (ActionStore & store,
+URIActionProviderStore::pull_actions (Actor & actor,
                                       const std::string & name,
                                       const std::string & uri)
 {
-  ActionStore provider_store;
   for (URIActionProviderStore::iterator it = begin (); it != end (); it++) {
-    (*it)->pull_actions (provider_store, name, uri);
-    store.merge (provider_store);
+    (*it)->pull_actions (actor, name, uri);
   }
 }

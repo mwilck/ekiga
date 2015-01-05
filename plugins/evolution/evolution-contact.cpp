@@ -78,7 +78,7 @@ Evolution::Contact::Contact (Ekiga::ServiceCore &_services,
 
       std::string attr_value = get_attribute_value (attr_type);
       if (!attr_value.empty ()) {
-        core->pull_actions (actions, get_name (), attr_value);
+        core->pull_actions (*this, get_name (), attr_value);
       }
     }
   }

@@ -86,7 +86,7 @@ public:
     ~CallManager ();
 
     /* URIActionProvider stuff */
-    void pull_actions (Ekiga::ActionStore & store,
+    void pull_actions (Ekiga::Actor & actor,
                        const std::string & name,
                        const std::string & uri);
 

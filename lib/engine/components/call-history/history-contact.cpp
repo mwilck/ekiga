@@ -110,7 +110,7 @@ History::Contact::Contact (boost::shared_ptr<Ekiga::ContactCore> _contact_core,
   /* Pull actions */
   boost::shared_ptr<Ekiga::ContactCore> ccore = contact_core.lock ();
   if (ccore)
-    ccore->pull_actions (actions, name, uri);
+    ccore->pull_actions (*this, name, uri);
 }
 
 
@@ -150,7 +150,7 @@ History::Contact::Contact (boost::shared_ptr<Ekiga::ContactCore> _contact_core,
   /* Pull actions */
   boost::shared_ptr<Ekiga::ContactCore> ccore = contact_core.lock ();
   if (ccore)
-    ccore->pull_actions (actions, name, uri);
+    ccore->pull_actions (*this, name, uri);
 }
 
 History::Contact::~Contact ()

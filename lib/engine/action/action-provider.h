@@ -42,7 +42,7 @@
 
 #include "scoped-connections.h"
 
-#include "action.h"
+#include "actor.h"
 
 namespace Ekiga {
 
@@ -57,14 +57,14 @@ namespace Ekiga {
   class ActionProvider
   {
   public:
-    virtual void pull_actions (ActionStore & /*store*/) {};
+    virtual void pull_actions (Actor & /*actor*/) {};
   };
   typedef boost::shared_ptr< ActionProvider > ActionProviderPtr;
 
   class URIActionProvider : public ActionProvider
   {
   public:
-    virtual void pull_actions (ActionStore & /*store*/,
+    virtual void pull_actions (Actor & /*actor*/,
                                const std::string & /*display_name*/,
                                const std::string & /*uri*/) = 0;
   };
@@ -73,7 +73,7 @@ namespace Ekiga {
   class URIActionProviderStore : public std::list< URIActionProviderPtr >
   {
   public:
-    virtual void pull_actions (ActionStore & /*store*/,
+    virtual void pull_actions (Actor & /*actor*/,
                                const std::string & /*display_name*/,
                                const std::string & /*uri*/);
   };

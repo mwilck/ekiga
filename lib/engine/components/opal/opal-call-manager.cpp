@@ -229,21 +229,13 @@ CallManager::~CallManager ()
 }
 
 
-void CallManager::pull_actions (Ekiga::ActionStore & store,
+void CallManager::pull_actions (Ekiga::Actor & actor,
                                 const std::string & name,
                                 const std::string & uri)
 {
   if (is_supported_uri (uri)) {
 
-    Ekiga::ActionPtr c (new Ekiga::Action ("call", _("Call"), boost::bind (&CallManager::dial, this, uri)));
-    Ekiga::ActionPtr t (new Ekiga::Action ("transfer", _("Transfer"), boost::bind (&CallManager::transfer, this, uri, false)));
-    t->disable ();
-
-    store.push_back (c);
-    store.push_back (t);
-
-//    store.push_back (Ekiga::ActionPtr (new Ekiga::Action ("message", _("Message"),
-  //                                                        boost::bind (&CallManager::message, this, name, uri))));
+    actor.add_action (Ekiga::ActionPtr (new Ekiga::Action ("call", _("Call"), boost::bind (&CallManager::dial, this, uri))));
   }
 }
 
