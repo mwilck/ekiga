@@ -30,3 +30,5 @@ See our wiki: http://wiki.ekiga.org/index.php/ToDo
 - Send user input capabilities
 - Check we do not need to add more capabilities for VP8 / VP8-OM like wiht H.264 High Profile
 - Add back "Add to roster" Actions
+- SetKeepAlive => H.323 & SIP and remove the "NAT" mention because of RFC5626
+- Review RefLister : no object uses its signals, they are all implementing new signals. add_object should be virtual so that all children use the same API, otherwhise we have add_object and add_account. Iterators should not be reimplemented. Actor could be ported to use RefLister.
