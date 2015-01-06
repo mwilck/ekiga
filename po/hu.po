@@ -4,7 +4,7 @@
 #
 # Andras Timar <timar at gnome dot hu>, 2002, 2003.
 # Laszlo Dvornik <dvornik at gnome dot hu>, 2004.
-# Gabor Kelemen <kelemeng at gnome dot hu>, 2004, 2005, 2006, 2007, 2008, 2009, 2010, 2011, 2012, 2013, 2014.
+# Gabor Kelemen <kelemeng at gnome dot hu>, 2004, 2005, 2006, 2007, 2008, 2009, 2010, 2011, 2012, 2013, 2014, 2015.
 # Lukács Bence <lukacs.bence1 at gmail dot com>, 2012.
 # Balázs Úr <urbalazs at gmail dot com>, 2013, 2014.
 msgid ""
@@ -12,16 +12,16 @@ msgstr ""
 "Project-Id-Version: ekiga master\n"
 "Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?"
 "product=ekiga&keywords=I18N+L10N&component=general\n"
-"POT-Creation-Date: 2014-12-30 17:07+0000\n"
-"PO-Revision-Date: 2014-12-31 11:16+0100\n"
-"Last-Translator: Balázs Úr <urbalazs@gmail.com>\n"
+"POT-Creation-Date: 2015-01-04 16:16+0000\n"
+"PO-Revision-Date: 2015-01-06 20:35+0100\n"
+"Last-Translator: Gabor Kelemen <kelemeng at ubuntu dot com>\n"
 "Language-Team: Hungarian <openscope at googlegroups dot com>\n"
 "Language: hu\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms:  nplurals=2; plural=(n != 1);\n"
-"X-Generator: Lokalize 1.2\n"
+"X-Generator: Lokalize 1.5\n"
 
 #. Application name
 #. FIXME ??? ekiga-settings.h
@@ -58,7 +58,6 @@ msgid "Device removed"
 msgstr "Eszköz eltávolítva"
 
 #: ../lib/engine/components/call-history/history-book.cpp:88
-#| msgid "Clear List"
 msgid "Clear History"
 msgstr "Előzmények törlése"
 
@@ -146,19 +145,16 @@ msgstr "_Tiltás"
 
 #: ../lib/engine/components/opal/opal-account.cpp:224
 #: ../lib/engine/components/opal/opal-account.cpp:226
-#| msgid "Get an Ekiga Call Out account"
 msgid "Recharge the Ekiga Call Out account"
 msgstr "Ekiga PC→telefon fiók újratöltése"
 
 #: ../lib/engine/components/opal/opal-account.cpp:230
 #: ../lib/engine/components/opal/opal-account.cpp:232
-#| msgid "Consult the balance history"
 msgid "Consult the Ekiga Call Out balance history"
 msgstr "Ekiga PC→telefon egyenlegnapló megtekintése"
 
 #: ../lib/engine/components/opal/opal-account.cpp:236
 #: ../lib/engine/components/opal/opal-account.cpp:238
-#| msgid "Consult the call history"
 msgid "Consult the Ekiga Call Out call history"
 msgstr "Ekiga PC→telefon hívásnapló megtekintése"
 
@@ -193,40 +189,33 @@ msgstr "Feldolgozás…"
 #: ../lib/engine/components/opal/opal-account.cpp:625
 #: ../plugins/ldap/ldap-book.cpp:955
 #, c-format
-#| msgid "Edit account"
 msgid "Editing %s Account"
 msgstr "%s fiók szerkesztése"
 
 #: ../lib/engine/components/opal/opal-account.cpp:629
 #: ../lib/engine/components/opal/opal-presentity.cpp:259
-#| msgid "Name:"
 msgid "Name"
 msgstr "Név"
 
 #: ../lib/engine/components/opal/opal-account.cpp:629
-#| msgid "Ekiga.net Account"
 msgid "Ekiga.Net Account"
 msgstr "Ekiga.Net felhasználói fiók"
 
 #: ../lib/engine/components/opal/opal-account.cpp:632
-#| msgid "Registrar:"
 msgid "Registrar"
 msgstr "Regisztrátor"
 
 #: ../lib/engine/components/opal/opal-account.cpp:632
 #: ../lib/engine/components/opal/opal-account.cpp:635
 #: ../lib/engine/components/opal/opal-bank.cpp:192
-#| msgid "Ekiga.net Account"
 msgid "ekiga.net"
 msgstr "ekiga.net"
 
 #: ../lib/engine/components/opal/opal-account.cpp:635
-#| msgid "Gatekeeper:"
 msgid "Gatekeeper"
 msgstr "Forgalomirányító"
 
 #: ../lib/engine/components/opal/opal-account.cpp:637
-#| msgid "User:"
 msgid "User"
 msgstr "Felhasználó"
 
@@ -251,7 +240,6 @@ msgid "jon.doe"
 msgstr "gipsz.jakab"
 
 #: ../lib/engine/components/opal/opal-account.cpp:647
-#| msgid "Password:"
 msgid "Password"
 msgstr "Jelszó"
 
@@ -269,7 +257,6 @@ msgid "Timeout"
 msgstr "Időtúllépés"
 
 #: ../lib/engine/components/opal/opal-account.cpp:651
-#| msgid "Enable account"
 msgid "Enable Account"
 msgstr "Fiók engedélyezése"
 
@@ -300,7 +287,6 @@ msgstr "Partner hozzáadása"
 #: ../plugins/evolution/evolution-book.cpp:343
 #: ../plugins/evolution/evolution-contact.cpp:304
 #: ../plugins/ldap/ldap-book.cpp:962
-#| msgid "_Name:"
 msgid "_Name"
 msgstr "_Név"
 
@@ -320,12 +306,11 @@ msgstr "_URI"
 
 #: ../lib/engine/components/opal/opal-account.cpp:776
 #: ../lib/engine/components/opal/opal-presentity.cpp:270
-#| msgid "Add Group"
 msgid "Groups"
 msgstr "Csoportok"
 
 #: ../lib/engine/components/opal/opal-account.cpp:821
-#: ../lib/engine/components/opal/opal-call.cpp:221
+#: ../lib/engine/components/opal/opal-call.cpp:209
 msgid "You supplied an unsupported address"
 msgstr "Nem támogatott címet adott meg"
 
@@ -420,12 +405,10 @@ msgid "Performance"
 msgstr "Teljesítmény"
 
 #: ../lib/engine/components/opal/opal-account.cpp:1201
-#| msgid "Presence"
 msgid "Permantent Absence"
 msgstr "Tartós távollét"
 
 #: ../lib/engine/components/opal/opal-account.cpp:1205
-#| msgid "Presence"
 msgid "Presentation"
 msgstr "Bemutató"
 
@@ -434,7 +417,6 @@ msgid "Spectator"
 msgstr "Megfigyelő"
 
 #: ../lib/engine/components/opal/opal-account.cpp:1213
-#| msgid "String"
 msgid "Steering"
 msgstr "Kormányzás"
 
@@ -451,13 +433,11 @@ msgid "Worship"
 msgstr "Istentisztelet"
 
 #: ../lib/engine/components/opal/opal-account.cpp:1299
-#| msgid "Rename group"
 msgid "Renaming Groups"
 msgstr "Csoportok átnevezése"
 
 #: ../lib/engine/components/opal/opal-bank.cpp:145
 #: ../plugins/ldap/ldap-book.cpp:957
-#| msgid "_Add a SIP Account"
 msgid "Add Account"
 msgstr "Fiók hozzáadása"
 
@@ -477,7 +457,6 @@ msgstr "sip:jakab@ekiga.im"
 #: ../lib/engine/components/opal/opal-bank.cpp:182
 #: ../lib/engine/components/opal/opal-bank.cpp:198
 #: ../plugins/ldap/ldap-book.cpp:1010
-#| msgid "_Password:"
 msgid "_Password"
 msgstr "_Jelszó"
 
@@ -487,7 +466,6 @@ msgid "Get an Ekiga Call Out account"
 msgstr "Ekiga PC→telefon felhasználói fiók létrehozása"
 
 #: ../lib/engine/components/opal/opal-bank.cpp:166
-#| msgid "_Account ID:"
 msgid "_Account ID"
 msgstr "_Fiókazonosító"
 
@@ -496,17 +474,14 @@ msgid "1234567890"
 msgstr "1234567890"
 
 #: ../lib/engine/components/opal/opal-bank.cpp:169
-#| msgid "_PIN code:"
 msgid "_PIN Code"
 msgstr "_PIN kód"
 
 #: ../lib/engine/components/opal/opal-bank.cpp:175
-#| msgid "_Add an H.323 Account"
 msgid "My H.323 Account"
 msgstr "Saját H.323 fiók"
 
 #: ../lib/engine/components/opal/opal-bank.cpp:177
-#| msgid "_Gatekeeper:"
 msgid "_Gatekeeper"
 msgstr "F_orgalomirányító"
 
@@ -516,23 +491,19 @@ msgstr "h323.ekiga.net"
 
 #: ../lib/engine/components/opal/opal-bank.cpp:179
 #: ../lib/engine/components/opal/opal-bank.cpp:194
-#| msgid "_User:"
 msgid "_User"
 msgstr "_Felhasználó"
 
 #: ../lib/engine/components/opal/opal-bank.cpp:184
 #: ../lib/engine/components/opal/opal-bank.cpp:200
-#| msgid "_Timeout:"
 msgid "_Timeout"
 msgstr "I_dőtúllépés"
 
 #: ../lib/engine/components/opal/opal-bank.cpp:190
-#| msgid "_Add a SIP Account"
 msgid "My SIP Account"
 msgstr "Saját SIP fiók"
 
 #: ../lib/engine/components/opal/opal-bank.cpp:192
-#| msgid "_Registrar:"
 msgid "_Registrar"
 msgstr "_Regisztrátor"
 
@@ -607,155 +578,151 @@ msgstr "_SIP fiók hozzáadása"
 msgid "_Add an H.323 Account"
 msgstr "_H.323 fiók hozzáadása"
 
-#: ../lib/engine/components/opal/opal-call.cpp:118
-#| msgid "_Hang up"
+#: ../lib/engine/components/opal/opal-call.cpp:106
 msgid "Hangup"
 msgstr "Felfüggesztés"
 
-#: ../lib/engine/components/opal/opal-call.cpp:121
+#: ../lib/engine/components/opal/opal-call.cpp:109
 msgid "Answer"
 msgstr "Válasz"
 
-#: ../lib/engine/components/opal/opal-call.cpp:123
+#: ../lib/engine/components/opal/opal-call.cpp:111
 #: ../plugins/libnotify/libnotify-main.cpp:287
 msgid "Reject"
 msgstr "Visszautasítás"
 
-#: ../lib/engine/components/opal/opal-call.cpp:176
-#| msgid "_Transfer Call"
+#: ../lib/engine/components/opal/opal-call.cpp:164
 msgid "Transfer Call"
 msgstr "Hívás átadása"
 
-#: ../lib/engine/components/opal/opal-call.cpp:177
-#: ../lib/engine/components/opal/opal-call.cpp:427
+#: ../lib/engine/components/opal/opal-call.cpp:165
+#: ../lib/engine/components/opal/opal-call.cpp:494
 #: ../lib/engine/components/opal/opal-call-manager.cpp:239
 msgid "Transfer"
 msgstr "Hívásátadás"
 
-#: ../lib/engine/components/opal/opal-call.cpp:178
-#| msgid "Remote URI:"
+#: ../lib/engine/components/opal/opal-call.cpp:166
 msgid "Remote URI"
 msgstr "Távoli URI"
 
-#: ../lib/engine/components/opal/opal-call.cpp:180
+#: ../lib/engine/components/opal/opal-call.cpp:168
 #: ../lib/engine/components/opal/opal-presentity.cpp:266
 msgid "sip:username@ekiga.net"
 msgstr "sip:felhasznalonev@ekiga.net"
 
-#: ../lib/engine/components/opal/opal-call.cpp:425
+#: ../lib/engine/components/opal/opal-call.cpp:492
 msgid "Hold"
 msgstr "Tartás"
 
-#: ../lib/engine/components/opal/opal-call.cpp:492
+#: ../lib/engine/components/opal/opal-call.cpp:553
 msgid "Local user cleared the call"
 msgstr "A helyi felhasználó törölte a hívást"
 
-#: ../lib/engine/components/opal/opal-call.cpp:495
-#: ../lib/engine/components/opal/opal-call.cpp:498
+#: ../lib/engine/components/opal/opal-call.cpp:556
+#: ../lib/engine/components/opal/opal-call.cpp:559
 msgid "Local user rejected the call"
 msgstr "A helyi felhasználó visszautasította a hívást"
 
-#: ../lib/engine/components/opal/opal-call.cpp:501
+#: ../lib/engine/components/opal/opal-call.cpp:562
 msgid "Remote user cleared the call"
 msgstr "A távoli felhasználó törölte a hívást"
 
-#: ../lib/engine/components/opal/opal-call.cpp:504
+#: ../lib/engine/components/opal/opal-call.cpp:565
 msgid "Remote user rejected the call"
 msgstr "A távoli felhasználó visszautasította a hívást"
 
-#: ../lib/engine/components/opal/opal-call.cpp:507
+#: ../lib/engine/components/opal/opal-call.cpp:568
 msgid "Remote user has stopped calling"
 msgstr "A távoli felhasználó abbahagyta a hívást"
 
-#: ../lib/engine/components/opal/opal-call.cpp:510
+#: ../lib/engine/components/opal/opal-call.cpp:571
 msgid "Abnormal call termination"
 msgstr "A hívás abnormálisan ért véget "
 
-#: ../lib/engine/components/opal/opal-call.cpp:513
+#: ../lib/engine/components/opal/opal-call.cpp:574
 #: ../lib/engine/gui/gtk-frontend/main_window.cpp:294
 msgid "Could not connect to remote host"
 msgstr "Nem lehet kapcsolódni a távoli géphez"
 
-#: ../lib/engine/components/opal/opal-call.cpp:517
+#: ../lib/engine/components/opal/opal-call.cpp:578
 msgid "The Gatekeeper cleared the call"
 msgstr "A forgalomirányító törölte a hívást"
 
-#: ../lib/engine/components/opal/opal-call.cpp:520
+#: ../lib/engine/components/opal/opal-call.cpp:581
 msgid "User not found"
 msgstr "Nem található a felhasználó"
 
-#: ../lib/engine/components/opal/opal-call.cpp:523
+#: ../lib/engine/components/opal/opal-call.cpp:584
 msgid "Insufficient bandwidth"
 msgstr "Elégtelen sávszélesség"
 
-#: ../lib/engine/components/opal/opal-call.cpp:526
+#: ../lib/engine/components/opal/opal-call.cpp:587
 msgid "No common codec"
 msgstr "Nincs közös kodek"
 
-#: ../lib/engine/components/opal/opal-call.cpp:529
+#: ../lib/engine/components/opal/opal-call.cpp:590
 msgid "Call forwarded"
 msgstr "Hívás továbbítva"
 
-#: ../lib/engine/components/opal/opal-call.cpp:532
+#: ../lib/engine/components/opal/opal-call.cpp:593
 msgid "Security check failed"
 msgstr "Biztonsági ellenőrzés sikertelen"
 
-#: ../lib/engine/components/opal/opal-call.cpp:535
+#: ../lib/engine/components/opal/opal-call.cpp:596
 msgid "Local user is busy"
 msgstr "A helyi felhasználó foglalt"
 
-#: ../lib/engine/components/opal/opal-call.cpp:538
-#: ../lib/engine/components/opal/opal-call.cpp:544
+#: ../lib/engine/components/opal/opal-call.cpp:599
+#: ../lib/engine/components/opal/opal-call.cpp:605
 msgid "Congested link to remote party"
 msgstr "A távoli félhez vezető út túlzsúfolt"
 
-#: ../lib/engine/components/opal/opal-call.cpp:541
+#: ../lib/engine/components/opal/opal-call.cpp:602
 msgid "Remote user is busy"
 msgstr "A távoli fél foglalt"
 
-#: ../lib/engine/components/opal/opal-call.cpp:547
+#: ../lib/engine/components/opal/opal-call.cpp:608
 msgid "Remote host is offline"
 msgstr "A távoli gép nem érhető el"
 
-#: ../lib/engine/components/opal/opal-call.cpp:550
+#: ../lib/engine/components/opal/opal-call.cpp:611
 msgid "User is offline"
 msgstr "A felhasználó nem érhető el"
 
-#: ../lib/engine/components/opal/opal-call.cpp:553
+#: ../lib/engine/components/opal/opal-call.cpp:614
 msgid "Remote host not found"
 msgstr "A távoli gép nem található"
 
-#: ../lib/engine/components/opal/opal-call.cpp:557
+#: ../lib/engine/components/opal/opal-call.cpp:618
 msgid "User is not available"
 msgstr "A felhasználó nem érhető el"
 
-#: ../lib/engine/components/opal/opal-call.cpp:560
+#: ../lib/engine/components/opal/opal-call.cpp:621
 #: ../lib/engine/components/opal/sip-endpoint.cpp:722
 msgid "Service unavailable"
 msgstr "A szolgáltatás nem érhető el"
 
-#: ../lib/engine/components/opal/opal-call.cpp:563
+#: ../lib/engine/components/opal/opal-call.cpp:624
 msgid "Remote certificate not authenticated"
 msgstr "A távoli tanúsítvány nincs hitelesítve"
 
-#: ../lib/engine/components/opal/opal-call.cpp:577
+#: ../lib/engine/components/opal/opal-call.cpp:638
 msgid "Call completed"
 msgstr "Hívás befejezve"
 
-#: ../lib/engine/components/opal/opal-call.cpp:653
-#| msgid "Transport error"
+#: ../lib/engine/components/opal/opal-call.cpp:714
 msgid "Transmit Video"
 msgstr "Videó átvitele"
 
-#: ../lib/engine/components/opal/opal-call.cpp:772
+#: ../lib/engine/components/opal/opal-call.cpp:774
 msgid "Missed call from"
 msgstr "Nem fogadott hívás ettől:"
 
-#: ../lib/engine/components/opal/opal-call.cpp:774
+#: ../lib/engine/components/opal/opal-call.cpp:776
 msgid "Missed call"
 msgstr "Nem fogadott hívás"
 
-#: ../lib/engine/components/opal/opal-call.cpp:775
+#: ../lib/engine/components/opal/opal-call.cpp:777
 #: ../lib/engine/components/opal/opal-call-manager.cpp:238
 msgid "Call"
 msgstr "Hívás"
@@ -775,7 +742,6 @@ msgstr ""
 "Enable_port_forwarding_manually"
 
 #: ../lib/engine/components/opal/opal-presentity.cpp:119
-#| msgid "Rename group"
 msgid "Rename _Groups"
 msgstr "_Csoport átnevezése"
 
@@ -784,7 +750,6 @@ msgstr "_Csoport átnevezése"
 #.
 #: ../lib/engine/components/opal/opal-presentity.cpp:254
 #, c-format
-#| msgid "Edit contact"
 msgid "Editing Contact %s"
 msgstr "%s partner szerkesztése"
 
@@ -794,7 +759,6 @@ msgid "Done"
 msgstr "Kész"
 
 #: ../lib/engine/components/opal/opal-presentity.cpp:264
-#| msgid "SIP URI"
 msgid "URI"
 msgstr "URI"
 
@@ -803,7 +767,6 @@ msgid "You did not provide a valid name"
 msgstr "Nem érvényes nevet adott meg"
 
 #: ../lib/engine/components/opal/opal-presentity.cpp:297
-#| msgid "You supplied an unsupported address"
 msgid "You did not provide a valid address"
 msgstr "Nem érvényes címet adott meg"
 
@@ -1055,7 +1018,6 @@ msgid "Add"
 msgstr "Hozzáadás"
 
 #: ../lib/engine/gui/gtk-frontend/addressbook-window.cpp:451
-#| msgid "Contacts"
 msgid "Contact Sources"
 msgstr "Partnerforrások"
 
@@ -1065,12 +1027,10 @@ msgstr "Címjegyzék"
 
 #: ../lib/engine/gui/gtk-frontend/addressbook-window.cpp:476
 #: ../lib/engine/gui/gtk-frontend/main_window.cpp:632
-#| msgid "Act on selected contact"
 msgid "Call the selected contact"
 msgstr "A kiválasztott partner hívása"
 
 #: ../lib/engine/gui/gtk-frontend/addressbook-window.cpp:492
-#| msgid "Show offline contacts"
 msgid "Search for contacts"
 msgstr "Partnerek keresése"
 
@@ -1112,16 +1072,6 @@ msgstr ""
 "felhasználva."
 
 #: ../lib/engine/gui/gtk-frontend/assistant-window.cpp:219
-#| msgid ""
-#| "If you do not have a SIP or H323 account, ekiga can only be used on your "
-#| "local internal network (inside your company, for example).  You will "
-#| "require an account if you want to be accessible to people on the "
-#| "Internet.  Many web sites allow you to create an account.  We suggest "
-#| "that you use a free ekiga.net account, which allows you to be joined by "
-#| "any person with a SIP account.  If you want to call regular phone lines "
-#| "too, we suggest that you purchase an inexpensive call out account.\n"
-#| "\n"
-#| "The following two pages allow you to create such accounts."
 msgid ""
 "You usually need a SIP or H323 account in order to use Ekiga.\n"
 "Many services allow you creating such accounts.\n"
@@ -1150,12 +1100,10 @@ msgid "Introduction to Accounts"
 msgstr "Fiókok bemutatása"
 
 #: ../lib/engine/gui/gtk-frontend/assistant-window.cpp:308
-#| msgid "Ekiga.net Account"
 msgid "Ekiga.im Account"
 msgstr "Ekiga.im fiók"
 
 #: ../lib/engine/gui/gtk-frontend/assistant-window.cpp:310
-#| msgid "Please enter your username:"
 msgid "Please enter your ekiga.im SIP address:"
 msgstr "Adja meg az ekiga.im SIP címét:"
 
@@ -1164,14 +1112,6 @@ msgid "Please enter your password:"
 msgstr "Adja meg jelszavát:"
 
 #: ../lib/engine/gui/gtk-frontend/assistant-window.cpp:330
-#| msgid ""
-#| "The username and password are used to login to your existing account at "
-#| "the ekiga.net free SIP service. If you do not have an ekiga.net SIP "
-#| "address yet, you may first create an account below. This will provide a "
-#| "SIP address that allows people to call you.\n"
-#| "\n"
-#| "You may skip this step if you use an alternative SIP service, or if you "
-#| "would prefer to specify the login details later."
 msgid ""
 "The ekiga.im SIP address and password are used to login to your existing "
 "account at the ekiga.im free SIP service. If you do not have an ekiga.im SIP "
@@ -1181,21 +1121,19 @@ msgid ""
 "You may skip this step if you use an alternative SIP service, or if you "
 "would prefer to specify the login details later."
 msgstr ""
-"Az ekiga.im SIP cím és jelszó az ekiga.im ingyenes SIP szolgáltatásnál létező "
-"felhasználói fiókjára bejelentkezéshez lesz használva. Ha még nincs ekiga.im "
-"SIP címe, akkor létrehozhat egyet alább. Ez egy SIP címet biztosít, amely "
-"lehetővé teszi, hogy felhívják.\n"
+"Az ekiga.im SIP cím és jelszó az ekiga.im ingyenes SIP szolgáltatásnál "
+"létező felhasználói fiókjára bejelentkezéshez lesz használva. Ha még nincs "
+"ekiga.im SIP címe, akkor létrehozhat egyet alább. Ez egy SIP címet biztosít, "
+"amely lehetővé teszi, hogy felhívják.\n"
 "\n"
 "Átlépheti ezt a lépést, ha egy alternatív SIP szolgáltatást használ, vagy ha "
 "később szeretné megadni a bejelentkezés részleteit."
 
 #: ../lib/engine/gui/gtk-frontend/assistant-window.cpp:346
-#| msgid "Get an Ekiga.net SIP account"
 msgid "Get an Ekiga.im SIP account"
 msgstr "Ekiga.im SIP felhasználói fiók létrehozása"
 
 #: ../lib/engine/gui/gtk-frontend/assistant-window.cpp:355
-#| msgid "I do not want to sign up for the ekiga.net free service"
 msgid "I do not want to sign up for the ekiga.im free service"
 msgstr "Nem akarok feliratkozni az ekiga.im ingyenes szolgáltatására"
 
@@ -1269,7 +1207,7 @@ msgstr "Ekiga beállítóvarázsló (%d./%d oldal)"
 msgid "_Search Filter:"
 msgstr "_Keresési szűrő:"
 
-#: ../lib/engine/gui/gtk-frontend/call-window.cpp:576
+#: ../lib/engine/gui/gtk-frontend/call-window.cpp:562
 msgid ""
 "There was an error opening or initializing the video output. Please verify "
 "that no other application is using the accelerated video output."
@@ -1277,13 +1215,8 @@ msgstr ""
 "Hiba történt a videokimenet megnyitása vagy előkészítése során. Ellenőrizze, "
 "hogy nem használja más eszköz a gyorsított videokimenetet."
 
-#: ../lib/engine/gui/gtk-frontend/call-window.cpp:645
+#: ../lib/engine/gui/gtk-frontend/call-window.cpp:631
 #, c-format
-#| msgid ""
-#| "There was an error while opening the device. In case it is a pluggable "
-#| "device it may be sufficient to reconnect it. If not, or if it still is "
-#| "not accessible, please check your permissions and make sure that the "
-#| "appropriate driver is loaded."
 msgid ""
 "There was an error while opening %s.\n"
 "\n"
@@ -1293,13 +1226,12 @@ msgid ""
 msgstr ""
 "Hiba történt a következő megnyitása közben: %s.\n"
 "\n"
-"Ha ez egy eltávolítható eszköz, elegendő lehet az újracsatlakoztatása. Ha nem "
-"az, vagy még mindig nem működik, akkor ellenőrizze a jogosultságait és "
+"Ha ez egy eltávolítható eszköz, elegendő lehet az újracsatlakoztatása. Ha "
+"nem az, vagy még mindig nem működik, akkor ellenőrizze a jogosultságait és "
 "győződjön meg arról, hogy a megfelelő illesztőprogram be van-e töltve."
 
-#: ../lib/engine/gui/gtk-frontend/call-window.cpp:649
+#: ../lib/engine/gui/gtk-frontend/call-window.cpp:635
 #, c-format
-#| msgid "Your video driver doesn't support the requested video format."
 msgid ""
 "There was an error while opening %s.\n"
 "\n"
@@ -1309,9 +1241,8 @@ msgstr ""
 "\n"
 "A videomeghajtója nem támogatja a kért videoformátumot."
 
-#: ../lib/engine/gui/gtk-frontend/call-window.cpp:653
+#: ../lib/engine/gui/gtk-frontend/call-window.cpp:639
 #, c-format
-#| msgid "Could not open the chosen channel."
 msgid ""
 "There was an error while opening %s.\n"
 "\n"
@@ -1321,13 +1252,8 @@ msgstr ""
 "\n"
 "Nem lehet megnyitni a kiválasztott csatornát."
 
-#: ../lib/engine/gui/gtk-frontend/call-window.cpp:657
+#: ../lib/engine/gui/gtk-frontend/call-window.cpp:643
 #, c-format
-#| msgid ""
-#| "Your driver doesn't seem to support any of the color formats supported by "
-#| "Ekiga.\n"
-#| " Please check your kernel driver documentation in order to determine "
-#| "which Palette is supported."
 msgid ""
 "There was an error while opening %s.\n"
 "\n"
@@ -1343,9 +1269,8 @@ msgstr ""
 "Ellenőrizze a rendszermag-illesztőprogram dokumentációját a támogatott "
 "paletták meghatározása érdekében."
 
-#: ../lib/engine/gui/gtk-frontend/call-window.cpp:661
+#: ../lib/engine/gui/gtk-frontend/call-window.cpp:647
 #, c-format
-#| msgid "Error while setting the frame rate."
 msgid ""
 "There was an error while opening %s.\n"
 "\n"
@@ -1355,9 +1280,8 @@ msgstr ""
 "\n"
 "Hiba a képkockasebesség beállítása közben."
 
-#: ../lib/engine/gui/gtk-frontend/call-window.cpp:665
+#: ../lib/engine/gui/gtk-frontend/call-window.cpp:651
 #, c-format
-#| msgid "Error while setting the frame size."
 msgid ""
 "There was an error while opening %s.\n"
 "\n"
@@ -1367,18 +1291,13 @@ msgstr ""
 "\n"
 "Hiba a képkockaméret beállítása közben."
 
-#: ../lib/engine/gui/gtk-frontend/call-window.cpp:670
+#: ../lib/engine/gui/gtk-frontend/call-window.cpp:656
 #, c-format
 msgid "There was an error while opening %s."
 msgstr "Hiba történt a következő megnyitásakor: %s."
 
-#: ../lib/engine/gui/gtk-frontend/call-window.cpp:717
+#: ../lib/engine/gui/gtk-frontend/call-window.cpp:703
 #, c-format
-#| msgid ""
-#| "Unable to open the selected audio device for recording. In case it is a "
-#| "pluggable device it may be sufficient to reconnect it. If not, or if it "
-#| "still is not accessible, please check your audio setup, the permissions "
-#| "and that the device is not busy."
 msgid ""
 "Unable to open %s for recording.\n"
 "\n"
@@ -1388,17 +1307,12 @@ msgid ""
 msgstr ""
 "Nem lehet megnyitni felvételhez a következőt: %s.\n"
 "\n"
-"Ha ez egy eltávolítható eszköz, elegendő lehet az újracsatlakoztatása. Ha nem "
-"az, vagy még mindig nem működik, akkor ellenőrizze a hangbeállításokat, a "
-"jogosultságokat és hogy az eszköz nem foglalt-e."
+"Ha ez egy eltávolítható eszköz, elegendő lehet az újracsatlakoztatása. Ha "
+"nem az, vagy még mindig nem működik, akkor ellenőrizze a hangbeállításokat, "
+"a jogosultságokat és hogy az eszköz nem foglalt-e."
 
-#: ../lib/engine/gui/gtk-frontend/call-window.cpp:721
+#: ../lib/engine/gui/gtk-frontend/call-window.cpp:707
 #, c-format
-#| msgid ""
-#| "The selected audio device was successfully opened but it is impossible to "
-#| "read data from this device. In case it is a pluggable device it may be "
-#| "sufficient to reconnect it. If not, or if it still is not accessible, "
-#| "please check your audio setup."
 msgid ""
 "%s was successfully opened but it is impossible to read data from this "
 "device.\n"
@@ -1408,21 +1322,16 @@ msgid ""
 msgstr ""
 "A(z) %s megnyitása sikerült, de lehetetlen adatot olvasni az eszközből.\n"
 "\n"
-"Ha ez egy eltávolítható eszköz, elegendő lehet az újracsatlakoztatása. Ha nem "
-"az, vagy még mindig nem működik, akkor ellenőrizze a hangbeállításokat."
+"Ha ez egy eltávolítható eszköz, elegendő lehet az újracsatlakoztatása. Ha "
+"nem az, vagy még mindig nem működik, akkor ellenőrizze a hangbeállításokat."
 
-#: ../lib/engine/gui/gtk-frontend/call-window.cpp:726
+#: ../lib/engine/gui/gtk-frontend/call-window.cpp:712
 #, c-format
 msgid "Error while opening audio input device %s"
 msgstr "Hiba a hangbemeneti eszköz (%s) megnyitása közben"
 
-#: ../lib/engine/gui/gtk-frontend/call-window.cpp:784
+#: ../lib/engine/gui/gtk-frontend/call-window.cpp:770
 #, c-format
-#| msgid ""
-#| "Unable to open the selected audio device for playing. In case it is a "
-#| "pluggable device it may be sufficient to reconnect it. If not, or if it "
-#| "still is not accessible, please check your audio setup, the permissions "
-#| "and that the device is not busy."
 msgid ""
 "Unable to open %s for playing.\n"
 "\n"
@@ -1432,17 +1341,12 @@ msgid ""
 msgstr ""
 "Nem lehet megnyitni lejátszáshoz a következőt: %s\n"
 "\n"
-"Ha ez egy eltávolítható eszköz, elegendő lehet az újracsatlakoztatása. Ha nem "
-"az, vagy még mindig nem működik, akkor ellenőrizze a hangbeállításokat, a "
-"jogosultságokat és hogy az eszköz nem foglalt-e."
+"Ha ez egy eltávolítható eszköz, elegendő lehet az újracsatlakoztatása. Ha "
+"nem az, vagy még mindig nem működik, akkor ellenőrizze a hangbeállításokat, "
+"a jogosultságokat és hogy az eszköz nem foglalt-e."
 
-#: ../lib/engine/gui/gtk-frontend/call-window.cpp:788
+#: ../lib/engine/gui/gtk-frontend/call-window.cpp:774
 #, c-format
-#| msgid ""
-#| "The selected audio device was successfully opened but it is impossible to "
-#| "write data to this device. In case it is a pluggable device it may be "
-#| "sufficient to reconnect it. If not, or if it still is not accessible, "
-#| "please check your audio setup."
 msgid ""
 "%s was successfully opened but it is impossible to write data to this "
 "device.\n"
@@ -1452,93 +1356,80 @@ msgid ""
 msgstr ""
 "A(z) %s megnyitása sikerült, de lehetetlen adatot írni az eszközre.\n"
 "\n"
-"Ha ez egy eltávolítható eszköz, elegendő lehet az újracsatlakoztatása. Ha nem "
-"az, vagy még mindig nem működik, akkor ellenőrizze a hangbeállításokat."
+"Ha ez egy eltávolítható eszköz, elegendő lehet az újracsatlakoztatása. Ha "
+"nem az, vagy még mindig nem működik, akkor ellenőrizze a hangbeállításokat."
 
-#: ../lib/engine/gui/gtk-frontend/call-window.cpp:793
+#: ../lib/engine/gui/gtk-frontend/call-window.cpp:779
 #, c-format
 msgid "Error while opening audio output device %s"
 msgstr "Hiba a hangkimeneti eszköz (%s) megnyitása közben"
 
-#: ../lib/engine/gui/gtk-frontend/call-window.cpp:933
+#: ../lib/engine/gui/gtk-frontend/call-window.cpp:918
 msgid "Call on hold"
 msgstr "Hívástartás"
 
-#: ../lib/engine/gui/gtk-frontend/call-window.cpp:945
+#: ../lib/engine/gui/gtk-frontend/call-window.cpp:930
 msgid "Call retrieved"
 msgstr "Hívás lekérve"
 
-#: ../lib/engine/gui/gtk-frontend/call-window.cpp:1234
+#: ../lib/engine/gui/gtk-frontend/call-window.cpp:1198
 #, c-format
-#| msgid "Calling %s..."
 msgid "Calling %s"
 msgstr "%s hívása"
 
-#: ../lib/engine/gui/gtk-frontend/call-window.cpp:1239
+#: ../lib/engine/gui/gtk-frontend/call-window.cpp:1203
 #, c-format
 msgid "Connected with %s"
 msgstr "Csatlakozva ehhez: %s"
 
-#: ../lib/engine/gui/gtk-frontend/call-window.cpp:1246
+#: ../lib/engine/gui/gtk-frontend/call-window.cpp:1210
 #, c-format
-#| msgid "Missed call from %s"
 msgid "Call from %s"
 msgstr "Hívás tőle: %s"
 
-#: ../lib/engine/gui/gtk-frontend/call-window.cpp:1251
-#: ../lib/engine/gui/gtk-frontend/call-window.cpp:1256
+#: ../lib/engine/gui/gtk-frontend/call-window.cpp:1215
+#: ../lib/engine/gui/gtk-frontend/call-window.cpp:1220
 msgid "Call Window"
 msgstr "Hívásablak"
 
-#. Translators: TX is a common abbreviation for "transmit".  As it
-#. * is shown in a tooltip, there is no space constraint
-#: ../lib/engine/gui/gtk-frontend/call-window.cpp:1285
-#, c-format
-msgid "TX: %dx%d"
-msgstr "Küldés: %dx%d"
-
-#: ../lib/engine/gui/gtk-frontend/call-window.cpp:1287
-msgid "TX: / "
-msgstr "Küldés: / "
-
-#. Translators: RX is a common abbreviation for "receive".  As it
-#. * is shown in a tooltip, there is no space constraint
-#: ../lib/engine/gui/gtk-frontend/call-window.cpp:1292
-#, c-format
-msgid "RX: %dx%d"
-msgstr "Fogadás: %dx%d"
-
-#: ../lib/engine/gui/gtk-frontend/call-window.cpp:1294
-msgid "RX: / "
-msgstr "Fogadás: / "
-
-#: ../lib/engine/gui/gtk-frontend/call-window.cpp:1303
+#: ../lib/engine/gui/gtk-frontend/call-window.cpp:1254
 #, c-format
 msgid ""
-"Lost packets: %.1f %%\n"
-"Late packets: %.1f %%\n"
-"Out of order packets: %.1f %%\n"
-"Jitter buffer: %d ms\n"
-"Codecs: %s\n"
-"Resolution: %s %s"
+"<b><u>Reception:</u></b> %s %s\n"
+"Lost Packets: %d %%\n"
+"Jitter: %d ms\n"
+"Framerate: %d fps\n"
+"Bandwidth: %d kbits/s\n"
+"\n"
+"<b><u>Transmission:</u></b> %s %s\n"
+"Remote Lost Packets: %d %%\n"
+"Remote Jitter: %d ms\n"
+"Framerate: %d fps\n"
+"Bandwidth: %d kbits/s\n"
+"\n"
 msgstr ""
-"Elveszett csomagok: %.1f %%\n"
-"Elkésett csomagok: %.1f %%\n"
-"Hibás csomagok: %.1f %%\n"
-"Jitter puffer: %d ms\n"
-"Kodekek: %s\n"
-"Felbontás: %s %s"
+"<b><u>Fogadás:</u></b> %s %s\n"
+"Elveszett csomagok: %d %%\n"
+"Csúszás: %d ms\n"
+"Képkockasebesség: %d fps\n"
+"Sávszélesség: %d kbits/s\n"
+"\n"
+"<b><u>Átvitel:</u></b> %s %s\n"
+"Távoli elveszett csomagok: %d %%\n"
+"Távoli csúszás: %d ms\n"
+"Képkockasebesség: %d fps\n"
+"Sávszélesség: %d kbits/s\n"
+"\n"
 
-#: ../lib/engine/gui/gtk-frontend/call-window.cpp:1323
-msgid "The call quality is rather bad. Please check your Internet connection."
+#: ../lib/engine/gui/gtk-frontend/call-window.cpp:1265
+#| msgid ""
+#| "The call quality is rather bad. Please check your Internet connection."
+msgid ""
+"The call quality is rather bad. Please check your Internet connection or "
+"your audio driver."
 msgstr ""
-"A hívás minősége meglehetősen rossz. Ellenőrizze az internet kapcsolatát."
-
-#. Translators: A = Audio, V = Video
-#: ../lib/engine/gui/gtk-frontend/call-window.cpp:1342
-#, c-format
-msgid "A:%.1f/%.1f V:%.1f/%.1f"
-msgstr "H:%.1f/%.1f V:%.1f/%.1f"
+"A hívás minősége meglehetősen rossz. Ellenőrizze az internetkapcsolatát vagy "
+"a hangillesztőprogramot."
 
 #. FIXME:
 #. * All those actions should be call specific.
@@ -1547,44 +1438,40 @@ msgstr "H:%.1f/%.1f V:%.1f/%.1f"
 #. * However, it is unneeded right now as we only support one call at a time.
 #.
 #. Reject
-#: ../lib/engine/gui/gtk-frontend/call-window.cpp:1611
-#| msgid "Reject"
+#: ../lib/engine/gui/gtk-frontend/call-window.cpp:1536
 msgid "_Reject"
 msgstr "_Elutasítás"
 
-#: ../lib/engine/gui/gtk-frontend/call-window.cpp:1620
-#| msgid "The incoming call sound"
+#: ../lib/engine/gui/gtk-frontend/call-window.cpp:1545
 msgid "Reject the incoming call"
 msgstr "A bejövő hívás elutasítása"
 
-#: ../lib/engine/gui/gtk-frontend/call-window.cpp:1632
+#: ../lib/engine/gui/gtk-frontend/call-window.cpp:1557
 msgid "Hang up the current call"
 msgstr "Jelenlegi hívás befejezése"
 
-#: ../lib/engine/gui/gtk-frontend/call-window.cpp:1644
-#| msgid "Hold the current call"
+#: ../lib/engine/gui/gtk-frontend/call-window.cpp:1569
 msgid "Hold or retrieve the current call"
 msgstr "Jelenlegi hívás tartása vagy lekérése"
 
-#: ../lib/engine/gui/gtk-frontend/call-window.cpp:1656
+#: ../lib/engine/gui/gtk-frontend/call-window.cpp:1581
 msgid "Transfer the current call"
 msgstr "Jelenlegi hívás átadása"
 
-#: ../lib/engine/gui/gtk-frontend/call-window.cpp:1670
+#: ../lib/engine/gui/gtk-frontend/call-window.cpp:1595
 msgid "Change audio and video settings"
 msgstr "Hang- és videobeállítások módosítása"
 
 #. Call Accept
-#: ../lib/engine/gui/gtk-frontend/call-window.cpp:1674
+#: ../lib/engine/gui/gtk-frontend/call-window.cpp:1599
 msgid "_Answer"
 msgstr "_Válasz"
 
-#: ../lib/engine/gui/gtk-frontend/call-window.cpp:1683
-#| msgid "The incoming call sound"
+#: ../lib/engine/gui/gtk-frontend/call-window.cpp:1608
 msgid "Answer the incoming call"
 msgstr "A bejövő hívás fogadása"
 
-#: ../lib/engine/gui/gtk-frontend/call-window.cpp:1712
+#: ../lib/engine/gui/gtk-frontend/call-window.cpp:1637
 msgid "Switch to fullscreen"
 msgstr "Átkapcsolás teljes képernyőre"
 
@@ -1637,7 +1524,6 @@ msgid "Makes Ekiga call the given URI"
 msgstr "Az Ekiga felhívja a megadott URI címet"
 
 #: ../lib/engine/gui/gtk-frontend/ekiga-app.cpp:635
-#| msgid "Hang up the current call"
 msgid "Hangup the current call (if any)"
 msgstr "Jelenlegi hívás befejezése (ha van)"
 
@@ -1770,12 +1656,10 @@ msgstr "Hang lejátszása új azonnali üzeneteknél"
 
 #. Display
 #: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:570
-#| msgid "Show offline contacts"
 msgid "Show o_ffline contacts"
 msgstr "Ki_lépett partnerek megjelenítése"
 
 #: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:572
-#| msgid "Show offline contacts"
 msgid "Show offline contacts in the roster"
 msgstr "Kilépett partnerek megjelenítése a partnerlistán"
 
@@ -1789,7 +1673,6 @@ msgid "Place windows displaying video above other windows during calls"
 msgstr "A videót megjelenítő ablak legfelülre helyezése hívás közben"
 
 #: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:578
-#| msgid "Enable Picture-In-Picture mode"
 msgid "Enable _Picture-In-Picture mode"
 msgstr "_Kép a képben mód bekapcsolása"
 
@@ -1802,7 +1685,6 @@ msgstr ""
 "ágyazva. Ez csak videó egyidejű küldésekor és fogadásakor hatékony"
 
 #: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:584
-#| msgid "Full Name"
 msgid "_Full Name"
 msgstr "_Teljes név"
 
@@ -1817,7 +1699,6 @@ msgid "Network Settings"
 msgstr "Hálózati beállítások"
 
 #: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:592
-#| msgid "Type of Service (TOS):"
 msgid "Type of Service (TOS)"
 msgstr "Szolgáltatástípus (TOS)"
 
@@ -1975,7 +1856,6 @@ msgstr "H.239 élő szerep kényszerítése"
 
 #: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:797
 #: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:861
-#| msgid "Forward _URI:"
 msgid "Forward _URI"
 msgstr "_Továbbítási URI"
 
@@ -2050,7 +1930,6 @@ msgstr "DTMF mód"
 
 #: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:831
 #: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:872
-#| msgid "_Send DTMF as:"
 msgid "_Send DTMF as"
 msgstr "DMTF _küldése mint"
 
@@ -2065,7 +1944,6 @@ msgstr "INFORMÁCIÓK"
 
 #. Add Misc Settings
 #: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:856
-#| msgid "_Outbound proxy:"
 msgid "_Outbound proxy"
 msgstr "_Kimenő proxy"
 
@@ -2107,9 +1985,8 @@ msgstr ""
 
 #. Translators: the full sentence is Maximum jitter buffer of x ms.
 #: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:907
-#| msgid "Maximum _jitter buffer of"
 msgid "Use a maximum _jitter buffer of"
-msgstr "_Maximális jitter puffer használata:"
+msgstr "_Maximálisan használandó csúszási puffer:"
 
 #: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:907
 msgid "ms"
@@ -2118,7 +1995,7 @@ msgstr "ms"
 #: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:909
 #: ../org.gnome.ekiga.gschema.xml.in.in.h:80
 msgid "The maximum jitter buffer size for audio reception (in ms)"
-msgstr "Maximális jitter puffer a hangfogadáshoz (ezredmásodpercben)"
+msgstr "Maximális csúszási puffer a hangfogadáshoz (ezredmásodpercben)"
 
 #. Audio Devices
 #. The video devices related options
@@ -2128,7 +2005,6 @@ msgid "Devices"
 msgstr "Eszközök"
 
 #: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:919
-#| msgid "Ringing device:"
 msgid "Ringing Device"
 msgstr "Csengési eszköz"
 
@@ -2137,7 +2013,6 @@ msgid "Select the ringing audio device to use"
 msgstr "Válassza ki a használni kívánt csengési hangeszközt"
 
 #: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:926
-#| msgid "Output device:"
 msgid "Output Device"
 msgstr "Kimeneti eszköz"
 
@@ -2148,7 +2023,6 @@ msgstr "Válassza ki a használni kívánt hangkimeneti eszközt"
 
 #: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:936
 #: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:1026
-#| msgid "Input device:"
 msgid "Input Device"
 msgstr "Bemeneti eszköz"
 
@@ -2210,7 +2084,6 @@ msgstr "Auto"
 
 #. Translators: the full sentence is Keep a minimum video quality of X %
 #: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:1008
-#| msgid "Picture quality"
 msgid "Picture Quality"
 msgstr "Képminőség"
 
@@ -2231,7 +2104,6 @@ msgstr ""
 
 #. Translators: the full sentence is Maximum video bitrate of x kbits/s.
 #: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:1014
-#| msgid "Maximum video _bitrate of"
 msgid "Use a maximum video _bitrate of"
 msgstr "Maximális videó _bitsebesség használata"
 
@@ -2259,7 +2131,6 @@ msgstr ""
 "eszköz használata közben, egy tesztkép kerül átvitelre."
 
 #: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:1030
-#| msgid "Size:"
 msgid "Size"
 msgstr "Méret"
 
@@ -2269,7 +2140,6 @@ msgid "Select the transmitted video size"
 msgstr "Válassza ki az átvinni kívánt videó méretét"
 
 #: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:1036
-#| msgid "Format:"
 msgid "Format"
 msgstr "Formátum"
 
@@ -2282,7 +2152,6 @@ msgstr ""
 "kamerára)"
 
 #: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:1042
-#| msgid "Channel:"
 msgid "Channel"
 msgstr "Csatorna"
 
@@ -2295,7 +2164,6 @@ msgstr ""
 
 #. That button will refresh the device list
 #: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:1047
-#| msgid "_Detect devices"
 msgid "_Detect Devices"
 msgstr "Eszközök _detektálása"
 
@@ -2304,7 +2172,6 @@ msgid "No device found"
 msgstr "Eszköz nem található"
 
 #: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:1666
-#| msgid "Add to blacklist"
 msgid "Edit the Blacklist"
 msgstr "A feketelista szerkesztése"
 
@@ -2313,12 +2180,10 @@ msgid "Current list of undesirables"
 msgstr "Nemkívánatosak aktuális listája"
 
 #: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:1822
-#| msgid "Ekiga Preferences"
 msgid "Preferences"
 msgstr "Beállítások"
 
 #: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:1823
-#| msgid "Audio Settings"
 msgid "Edit your settings"
 msgstr "Beállítások szerkesztése"
 
@@ -2327,7 +2192,6 @@ msgid "General"
 msgstr "Általános"
 
 #: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:1846
-#| msgid "Forwarding"
 msgid "Call Forwarding"
 msgstr "Hívástovábbítás"
 
@@ -2396,6 +2260,185 @@ msgstr "Egyéni üzenetek törlése:"
 #: ../lib/engine/gui/gtk-frontend/statusmenu.cpp:687
 msgid "Define a custom message:"
 msgstr "Adja meg az egyéni üzenetet:"
+
+#: ../lib/engine/protocol/known-codecs.h:40
+#: ../lib/engine/protocol/known-codecs.h:41
+#: ../lib/engine/protocol/known-codecs.h:42
+msgid "G.722.1C"
+msgstr "G.722.1C"
+
+#: ../lib/engine/protocol/known-codecs.h:40
+msgid "Annex C, 14 kHz mode at 24 kbit/s"
+msgstr "Annex C, 14 kHz mód, 24 kbit/s"
+
+#: ../lib/engine/protocol/known-codecs.h:41
+msgid "Annex C, 14 kHz mode at 32 kbit/s"
+msgstr "Annex C, 14 kHz mód, 32 kbit/s"
+
+#: ../lib/engine/protocol/known-codecs.h:42
+msgid "Annex C, 14 kHz mode at 48 kbit/s"
+msgstr "Annex C, 14 kHz mód, 48 kbit/s"
+
+#: ../lib/engine/protocol/known-codecs.h:43
+msgid "Opus"
+msgstr "Opus"
+
+#: ../lib/engine/protocol/known-codecs.h:43
+msgid "Opus codec, 48 kHz mode"
+msgstr "Opus kodek, 48 kHz mód"
+
+#: ../lib/engine/protocol/known-codecs.h:44
+#: ../lib/engine/protocol/known-codecs.h:45
+msgid "iSAC"
+msgstr "iSAC"
+
+#: ../lib/engine/protocol/known-codecs.h:44
+msgid "internet Speech Audio Codec, 16 kHz mode"
+msgstr "internet Speech Audio Codec, 16 kHz mód"
+
+#: ../lib/engine/protocol/known-codecs.h:45
+msgid "internet Speech Audio Codec, 32 kHz mode"
+msgstr "internet Speech Audio Codec, 32 kHz mód"
+
+#: ../lib/engine/protocol/known-codecs.h:46
+msgid "G.722"
+msgstr "G.722"
+
+#: ../lib/engine/protocol/known-codecs.h:46
+msgid "Basic G.722"
+msgstr "Alap G.722"
+
+#: ../lib/engine/protocol/known-codecs.h:47
+#: ../lib/engine/protocol/known-codecs.h:48
+msgid "G.722.1"
+msgstr "G.722.1"
+
+#: ../lib/engine/protocol/known-codecs.h:47
+msgid "7 kHz mode at 24 kbits/s"
+msgstr "7 kHz mód, 24 kbits/s"
+
+#: ../lib/engine/protocol/known-codecs.h:48
+msgid "7 kHz mode at 32 kbits/s"
+msgstr "7 kHz mód, 32 kbits/s"
+
+#: ../lib/engine/protocol/known-codecs.h:49
+msgid "G.722.2"
+msgstr "G.722.2"
+
+#: ../lib/engine/protocol/known-codecs.h:49
+msgid "AMR Wideband"
+msgstr "AMR széles sáv"
+
+#: ../lib/engine/protocol/known-codecs.h:50
+msgid "AMR-NB"
+msgstr "AMR-NB"
+
+#: ../lib/engine/protocol/known-codecs.h:50
+msgid "AMR Narrowband"
+msgstr "AMR keskeny sáv"
+
+#: ../lib/engine/protocol/known-codecs.h:51
+#: ../lib/engine/protocol/known-codecs.h:52
+msgid "SILK"
+msgstr "SILK"
+
+#: ../lib/engine/protocol/known-codecs.h:51
+msgid "Skype SILK 8 kbits/s"
+msgstr "Skype SILK 8 kbits/s"
+
+#: ../lib/engine/protocol/known-codecs.h:52
+msgid "Skype SILK 16 kbits/s"
+msgstr "Skype SILK 16 kbits/s"
+
+#: ../lib/engine/protocol/known-codecs.h:53
+msgid "G.711 A-Law"
+msgstr "G.711 A-Law"
+
+#: ../lib/engine/protocol/known-codecs.h:53
+#: ../lib/engine/protocol/known-codecs.h:54
+msgid "Standard G.711"
+msgstr "Szabványos G.711"
+
+#: ../lib/engine/protocol/known-codecs.h:54
+msgid "G.711 µ-Law"
+msgstr "G.711 µ-Law"
+
+#: ../lib/engine/protocol/known-codecs.h:55
+#: ../lib/engine/protocol/known-codecs.h:56
+#: ../lib/engine/protocol/known-codecs.h:57
+#: ../lib/engine/protocol/known-codecs.h:58
+msgid "G.726"
+msgstr "G.726"
+
+#: ../lib/engine/protocol/known-codecs.h:55
+msgid "G.726 at 16 kbits/s"
+msgstr "G.726, 16 kbits/s"
+
+#: ../lib/engine/protocol/known-codecs.h:56
+msgid "G.726 at 24 kbits/s"
+msgstr "G.726, 24 kbits/s"
+
+#: ../lib/engine/protocol/known-codecs.h:57
+msgid "G.726 at 32 kbits/s"
+msgstr "G.726, 32 kbits/s"
+
+#: ../lib/engine/protocol/known-codecs.h:58
+msgid "G.726 at 40 kbits/s"
+msgstr "G.726, 40 kbits/s"
+
+#: ../lib/engine/protocol/known-codecs.h:59
+msgid "IMA ADPCM"
+msgstr "IMA ADPCM"
+
+#: ../lib/engine/protocol/known-codecs.h:59
+msgid "Microsoft IMA ADPCM"
+msgstr "Microsoft IMA ADPCM"
+
+#: ../lib/engine/protocol/known-codecs.h:60
+msgid "H.261"
+msgstr "H.261"
+
+#: ../lib/engine/protocol/known-codecs.h:60
+msgid "Basic H.261"
+msgstr "Alap H.261"
+
+#: ../lib/engine/protocol/known-codecs.h:61
+msgid "H.263"
+msgstr "H.263"
+
+#: ../lib/engine/protocol/known-codecs.h:62
+msgid "H.263+"
+msgstr "H.263+"
+
+#: ../lib/engine/protocol/known-codecs.h:62
+msgid "H.263 Version 1998"
+msgstr "H.263 1998-as verzió"
+
+#: ../lib/engine/protocol/known-codecs.h:63
+#: ../lib/engine/protocol/known-codecs.h:64
+#: ../lib/engine/protocol/known-codecs.h:65
+msgid "H.264"
+msgstr "H.264"
+
+#: ../lib/engine/protocol/known-codecs.h:63
+msgid "H.264 Single NAL mode"
+msgstr "H.264 egyszeres NAL mód"
+
+#: ../lib/engine/protocol/known-codecs.h:64
+msgid "H.264 Interleaved mode"
+msgstr "H.264 összefésülési mód"
+
+#: ../lib/engine/protocol/known-codecs.h:65
+msgid "H.264 Interleaved mode, High-Profile"
+msgstr "H.264 összefésülési mód, jó minőség"
+
+#: ../lib/engine/protocol/known-codecs.h:66
+msgid "MPEG-4"
+msgstr "MPEG-4"
+
+#: ../lib/engine/protocol/known-codecs.h:67
+msgid "VP8"
+msgstr "VP8"
 
 #. whitespaces for a better alignment
 #: ../lib/gui/dialpad.c:54
@@ -2713,7 +2756,7 @@ msgstr "Visszhang-csillapítás támogatása"
 
 #: ../org.gnome.ekiga.gschema.xml.in.in.h:79
 msgid "Maximum jitter buffer"
-msgstr "Maximális jitter puffer"
+msgstr "Maximális csúszási puffer"
 
 #: ../org.gnome.ekiga.gschema.xml.in.in.h:81
 msgid "The video codecs list"
@@ -2736,22 +2779,17 @@ msgstr ""
 "sávszélességet a megadott értékre csökkenteni"
 
 #: ../org.gnome.ekiga.gschema.xml.in.in.h:84
-#| msgid "Maximum TX video bitrate"
 msgid "Maximum video bitrate"
 msgstr "Videó maximális bitsebessége"
 
 #: ../org.gnome.ekiga.gschema.xml.in.in.h:85
-#| msgid ""
-#| "The maximum RX video bitrate in kbit/s. This value will be signaled to "
-#| "the peer endpoint that can adjust (if it supports it) its TX bitrate if "
-#| "it is above the signaled value"
 msgid ""
 "The maximum video bitrate in kbit/s. This value will be signaled to the peer "
 "endpoint that can adjust (if it supports it) its TX bitrate if it is above "
 "the signaled value"
 msgstr ""
-"A videó maximális bitsebessége kbit/mp-ben. Ez az érték elküldésre "
-"kerül a távoli partnernek, amely (ha támogatja) beállíthatja a küldési "
+"A videó maximális bitsebessége kbit/mp-ben. Ez az érték elküldésre kerül a "
+"távoli partnernek, amely (ha támogatja) beállíthatja a küldési "
 "bitsebességét, ha az efölött az érték fölött van."
 
 #: ../org.gnome.ekiga.gschema.xml.in.in.h:86
@@ -3012,7 +3050,6 @@ msgstr "sip:gipsz.jakab@ekiga.net"
 
 #: ../plugins/evolution/evolution-book.cpp:348
 #: ../plugins/evolution/evolution-contact.cpp:315
-#| msgid "_Home phone:"
 msgid "_Home Phone"
 msgstr "_Otthoni telefon"
 
@@ -3029,19 +3066,16 @@ msgstr "+3268123456"
 
 #: ../plugins/evolution/evolution-book.cpp:350
 #: ../plugins/evolution/evolution-contact.cpp:317
-#| msgid "_Office phone:"
 msgid "_Office Phone"
 msgstr "M_unkahelyi telefon"
 
 #: ../plugins/evolution/evolution-book.cpp:352
 #: ../plugins/evolution/evolution-contact.cpp:319
-#| msgid "_Cell phone:"
 msgid "_Cell Phone"
 msgstr "M_obiltelefon"
 
 #: ../plugins/evolution/evolution-book.cpp:354
 #: ../plugins/evolution/evolution-contact.cpp:321
-#| msgid "_Pager:"
 msgid "_Pager"
 msgstr "S_zemélyhívó"
 
@@ -3158,7 +3192,6 @@ msgstr[0] "%d felhasználó található"
 msgstr[1] "%d felhasználó található"
 
 #: ../plugins/ldap/ldap-book.cpp:962
-#| msgid "Ekiga.net Directory"
 msgid "Ekiga.net LDAP Server"
 msgstr "Ekiga.net LDAP kiszolgáló"
 
@@ -3171,12 +3204,10 @@ msgid "Subtree"
 msgstr "Részfa"
 
 #: ../plugins/ldap/ldap-book.cpp:972
-#| msgid "Single level"
 msgid "Single Level"
 msgstr "Egy szint"
 
 #: ../plugins/ldap/ldap-book.cpp:973
-#| msgid "_Search scope"
 msgid "_Search Scope"
 msgstr "_Keresés hatóköre"
 
@@ -3187,17 +3218,14 @@ msgstr "_Keresés hatóköre"
 #. * most LDAP servers it's "CommonName".
 #.
 #: ../plugins/ldap/ldap-book.cpp:988
-#| msgid "_DisplayName attribute:"
 msgid "_DisplayName Attribute"
 msgstr "_DisplayName tulajdonság"
 
 #: ../plugins/ldap/ldap-book.cpp:990
-#| msgid "Call _attributes:"
 msgid "Call _Attributes"
 msgstr "_Hívás tulajdonságai"
 
 #: ../plugins/ldap/ldap-book.cpp:993 ../plugins/ldap/ldap-book.cpp:996
-#| msgid "_Search Filter:"
 msgid "_Filter"
 msgstr "_Szűrő"
 
@@ -3211,7 +3239,6 @@ msgstr "_Szűrő"
 #. * is anonymous / unauthenticated.)
 #.
 #: ../plugins/ldap/ldap-book.cpp:1008
-#| msgid "Bind _ID:"
 msgid "Bind _ID"
 msgstr "Kapcsolódási _azonosító"
 
@@ -3224,7 +3251,6 @@ msgid "Use SAS_L"
 msgstr "SAS_L használata"
 
 #: ../plugins/ldap/ldap-book.cpp:1029
-#| msgid "SASL _mechanism"
 msgid "SASL _Mechanism"
 msgstr "SASL _mechanizmus"
 
@@ -3631,6 +3657,36 @@ msgid ""
 msgstr ""
 "Töltse ki ezt az űrlapot egy meglévő partner módosításához a távoli "
 "kiszolgálón"
+
+#~ msgid "TX: %dx%d"
+#~ msgstr "Küldés: %dx%d"
+
+#~ msgid "TX: / "
+#~ msgstr "Küldés: / "
+
+#~ msgid "RX: %dx%d"
+#~ msgstr "Fogadás: %dx%d"
+
+#~ msgid "RX: / "
+#~ msgstr "Fogadás: / "
+
+#~ msgid ""
+#~ "Lost packets: %.1f %%\n"
+#~ "Late packets: %.1f %%\n"
+#~ "Out of order packets: %.1f %%\n"
+#~ "Jitter buffer: %d ms\n"
+#~ "Codecs: %s\n"
+#~ "Resolution: %s %s"
+#~ msgstr ""
+#~ "Elveszett csomagok: %.1f %%\n"
+#~ "Elkésett csomagok: %.1f %%\n"
+#~ "Hibás csomagok: %.1f %%\n"
+#~ "Jitter puffer: %d ms\n"
+#~ "Kodekek: %s\n"
+#~ "Felbontás: %s %s"
+
+#~ msgid "A:%.1f/%.1f V:%.1f/%.1f"
+#~ msgstr "H:%.1f/%.1f V:%.1f/%.1f"
 
 #~ msgid "Services"
 #~ msgstr "Szolgáltatások"
