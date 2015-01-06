@@ -110,7 +110,7 @@ Opal::Presentity::Presentity (const Opal::Account & account_,
   /* Pull actions */
   boost::shared_ptr<Ekiga::PresenceCore> pcore = presence_core.lock ();
   if (pcore)
-    pcore->pull_actions (actions, get_name (), get_uri ());
+    pcore->pull_actions (*this, get_name (), get_uri ());
 
   add_action (Ekiga::ActionPtr (new Ekiga::Action ("edit", _("_Edit"),
                                                    boost::bind (&Opal::Presentity::edit_presentity, this))));
