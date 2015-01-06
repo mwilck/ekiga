@@ -158,11 +158,11 @@ Ekiga::ServiceCore::close ()
 }
 
 Ekiga::ServicePtr
-Ekiga::ServiceCore::get (const std::string name)
+Ekiga::ServiceCore::get (const std::string name) const
 {
   ServicePtr result;
 
-  for (services_type::iterator iter = services.begin ();
+  for (services_type::const_iterator iter = services.begin ();
        iter != services.end () && !result;
        iter++)
     if (name == (*iter)->get_name ()) {

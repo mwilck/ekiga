@@ -95,10 +95,10 @@ namespace Ekiga
 
     bool add (ServicePtr service);
 
-    ServicePtr get (const std::string name);
+    ServicePtr get (const std::string name) const;
 
     template<typename T>
-    boost::shared_ptr<T> get (const std::string name)
+    boost::shared_ptr<T> get (const std::string name) const
     { return boost::dynamic_pointer_cast<T> (get (name)); }
 
     void close ();
