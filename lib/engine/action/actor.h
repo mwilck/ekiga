@@ -60,12 +60,29 @@ namespace Ekiga {
    */
   class Actor : public std::list< ActionPtr >
   {
-    friend class Action;
+    friend class ActionProvider;
 
   public:
     typedef std::list < ActionPtr >::const_iterator const_iterator;
     typedef std::list < ActionPtr >::iterator iterator;
 
+    /**
+     * Those signals are emitted when an Action is enabled/disabled
+     * in the ActionMap.
+     */
+    boost::signals2::signal<void(const std::string &)> action_enabled;
+    boost::signals2::signal<void(const std::string &)> action_disabled;
+
+
+    /**
+     * Those signals are emitted when an Action is added/removed
+     * to/from the ActionMap.
+     */
+    boost::signals2::signal<void(const std::string &)> action_added;
+    boost::signals2::signal<void(const std::string &)> action_removed;
+
+
+  protected:
     /** Add an action to the given Actor.
      *
      * Actions that are not "added" using this method will not be usable
@@ -113,23 +130,6 @@ namespace Ekiga {
      *         otherwise.
      */
     virtual ActionPtr get_action (const std::string & name);
-
-
-    /**
-     * Those signals are emitted when an Action is enabled/disabled
-     * in the ActionMap.
-     */
-    boost::signals2::signal<void(const std::string &)> action_enabled;
-    boost::signals2::signal<void(const std::string &)> action_disabled;
-
-
-    /**
-     * Those signals are emitted when an Action is added/removed
-     * to/from the ActionMap.
-     */
-    boost::signals2::signal<void(const std::string &)> action_added;
-    boost::signals2::signal<void(const std::string &)> action_removed;
-
 
   private:
 

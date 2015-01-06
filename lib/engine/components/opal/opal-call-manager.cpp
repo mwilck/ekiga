@@ -235,7 +235,8 @@ void CallManager::pull_actions (Ekiga::Actor & actor,
 {
   if (is_supported_uri (uri)) {
 
-    actor.add_action (Ekiga::ActionPtr (new Ekiga::Action ("call", _("Call"), boost::bind (&CallManager::dial, this, uri))));
+    add_action (actor,
+                Ekiga::ActionPtr (new Ekiga::Action ("call", _("Call"), boost::bind (&CallManager::dial, this, uri))));
   }
 }
 

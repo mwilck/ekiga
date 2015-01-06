@@ -58,6 +58,9 @@ namespace Ekiga {
   {
   public:
     virtual void pull_actions (Actor & /*actor*/) {};
+  protected:
+    virtual void add_action (Actor & actor,
+                             ActionPtr action);
   };
   typedef boost::shared_ptr< ActionProvider > ActionProviderPtr;
 

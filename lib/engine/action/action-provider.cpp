@@ -40,6 +40,13 @@
 using namespace Ekiga;
 
 void
+ActionProvider::add_action (Actor & actor,
+                            ActionPtr action)
+{
+  actor.add_action (action);
+}
+
+void
 URIActionProviderStore::pull_actions (Actor & actor,
                                       const std::string & name,
                                       const std::string & uri)

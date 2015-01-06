@@ -134,7 +134,7 @@ namespace Ekiga {
     bool is_enabled () const;
 
 
-  protected:
+  private:
 
     /** Enable the Action.
      * This will enable the action. Only enabled actions are usable
@@ -150,24 +150,21 @@ namespace Ekiga {
     void disable ();
 
 
-
-    std::string name;
-    std::string description;
-    boost::function0<void> callback;
-    bool action_enabled;
-
     /** Those signals are emitted when the Action is enabled/disabled.
      */
     boost::signals2::signal<void(void)> enabled;
     boost::signals2::signal<void(void)> disabled;
 
 
-  private:
-
     /** This signal is emitted when the Action is activated. This triggers
      * the signal execution.
      */
     boost::signals2::signal<void(void)> activated;
+
+    std::string name;
+    std::string description;
+    boost::function0<void> callback;
+    bool action_enabled;
 
     Ekiga::scoped_connections conns;
   };
