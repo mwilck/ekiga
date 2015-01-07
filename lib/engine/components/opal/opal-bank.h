@@ -59,6 +59,7 @@ namespace Opal
       public Ekiga::PresenceFetcher,
       public Ekiga::Service
   {
+    friend class Account;
 public:
 
     Bank (Ekiga::ServiceCore &_core);
