@@ -110,7 +110,9 @@ struct _GmApplicationPrivate
 
   boost::shared_ptr<Ekiga::Settings> video_devices_settings;
 
+#ifdef HAVE_DBUS
   EkigaDBusComponent *dbus_component;
+#endif
 
   Ekiga::GActorMenuStore banks_menu;
   unsigned int banks_actions_count;
