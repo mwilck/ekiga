@@ -14,14 +14,14 @@ theme_icons = \
         gnome_actions_24x24_phone-pick-up.png                   \
         gnome_status_16x16_im-message.png                       \
         gnome_status_16x16_user-inacall.png                     \
-        hicolor_apps_16x16_ekiga.png                            \
-        hicolor_apps_22x22_ekiga.png                            \
-        hicolor_apps_24x24_ekiga.png                            \
-        hicolor_apps_32x32_ekiga.png                            \
-        hicolor_apps_48x48_ekiga.png                            \
-        hicolor_apps_64x64_ekiga.png                            \
-        hicolor_apps_72x72_ekiga.png                            \
-        hicolor_apps_128x128_ekiga.png
+        hicolor_apps_16x16_@PACKAGE_NAME@.png                   \
+        hicolor_apps_22x22_@PACKAGE_NAME@.png                   \
+        hicolor_apps_24x24_@PACKAGE_NAME@.png                   \
+        hicolor_apps_32x32_@PACKAGE_NAME@.png                   \
+        hicolor_apps_48x48_@PACKAGE_NAME@.png                   \
+        hicolor_apps_64x64_@PACKAGE_NAME@.png                   \
+        hicolor_apps_72x72_@PACKAGE_NAME@.png                   \
+        hicolor_apps_128x128_@PACKAGE_NAME@.png
 
 EXTRA_DIST= $(more_icons) $(theme_icons)
 
