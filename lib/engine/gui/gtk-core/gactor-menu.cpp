@@ -222,14 +222,12 @@ Ekiga::GActorMenu::as_xml (const std::string & id,
 
   for (it = obj.begin(); it != obj.end(); ++it) {
 
-    if ((*it)->is_enabled ()) {
-      xml_content +=
-        "      <item>"
-        "        <attribute name=\"label\" translatable=\"yes\">"+(*it)->get_description ()+"</attribute>"
-        "        <attribute name=\"action\">" + context + "."+(*it)->get_name ()+"</attribute>"
-        "      </item>";
-      n++;
-    }
+    xml_content +=
+      "      <item>"
+      "        <attribute name=\"label\" translatable=\"yes\">"+(*it)->get_description ()+"</attribute>"
+      "        <attribute name=\"action\">" + context + "."+(*it)->get_name ()+"</attribute>"
+      "      </item>";
+    n++;
   }
 
   xml_content +=
