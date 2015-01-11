@@ -1176,16 +1176,22 @@ on_presentity_added (RosterViewGtk* self,
                         COLUMN_TIMEOUT, &timeout,
                         COLUMN_PRESENCE, &old_presence, -1);
 
+    // We already know the presence status
+    if (old_presence && presence == old_presence) {
+      g_free (old_presence);
+      return;
+    }
+
+    if (timeout > 0)
+      g_source_remove (timeout);
+    timeout = 0;
+
     // If presence was already set, and we are moving
     // from "offline" or "unknown" to something else,
     // trigger an animation
     if (old_presence
-        && presence != old_presence
         && presence != "unknown" && presence != "offline"
         && (!g_strcmp0 (old_presence, "unknown") || !g_strcmp0 (old_presence, "offline"))) {
-
-      if (timeout > 0)
-        g_source_remove (timeout);
 
       StatusIconInfo *info = new StatusIconInfo ();
       info->model = GTK_TREE_MODEL (self->priv->store);
@@ -1195,8 +1201,8 @@ on_presentity_added (RosterViewGtk* self,
       timeout = g_timeout_add_seconds_full (G_PRIORITY_DEFAULT, 1, roster_view_gtk_icon_blink_cb,
                                             (gpointer) info, (GDestroyNotify) status_icon_info_delete);
     }
+    else {
 
-    if (timeout == 0) {
       std::string icon = "user-offline";
       if (presence != "unknown")
         icon = "user-" + std::string(presence);
@@ -1221,7 +1227,7 @@ on_presentity_added (RosterViewGtk* self,
                         COLUMN_HEAP, heap.get (),
                         COLUMN_PRESENTITY, presentity.get (),
                         COLUMN_NAME, presentity->get_name ().c_str (),
-                        COLUMN_STATUS, presentity->get_status ().c_str (),
+                        COLUMN_STATUS, (presence == "unknown" || presence == "offline")? "":presentity->get_status ().c_str (),
                         COLUMN_PRESENCE, presentity->get_presence ().c_str (),
                         COLUMN_AVATAR_PIXBUF, pixbuf,
                         COLUMN_TIMEOUT, timeout,
@@ -1506,6 +1512,8 @@ roster_view_gtk_update_groups (RosterViewGtk *view,
         gtk_tree_model_get (GTK_TREE_MODEL (view->priv->store), &iter,
                             COLUMN_TIMEOUT, &timeout,
                             -1);
+        if (timeout > 0)
+          g_source_remove (timeout);
         go_on = gtk_tree_store_remove (view->priv->store, &iter);
       }
     } while (go_on);
