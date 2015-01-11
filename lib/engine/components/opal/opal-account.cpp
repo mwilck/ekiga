@@ -516,17 +516,6 @@ Opal::Account::disable ()
 {
   xmlSetProp (node, BAD_CAST "enabled", BAD_CAST "false");
 
-  if (presentity) {
-
-    for (Ekiga::RefLister< Presentity >::iterator iter = Ekiga::RefLister< Presentity >::begin ();
-	 iter != Ekiga::RefLister< Presentity >::end ();
-	 ++iter) {
-
-      (*iter)->set_presence ("unknown");
-      (*iter)->set_status ("");
-    }
-  }
-
   /* Actual unregistration code */
   switch (type) {
   case Account::H323:
@@ -536,6 +525,20 @@ Opal::Account::disable ()
   case Account::DiamondCard:
   case Account::Ekiga:
   default:
+    if (presentity) {
+
+      for (Ekiga::RefLister< Presentity >::iterator iter = Ekiga::RefLister< Presentity >::begin ();
+           iter != Ekiga::RefLister< Presentity >::end ();
+           ++iter) {
+
+        (*iter)->set_presence ("unknown");
+        (*iter)->set_status ("");
+      }
+
+      if (type != Account::H323) {
+        sip_endpoint->Unsubscribe (SIPSubscribe::MessageSummary, get_transaction_aor (get_aor ()));
+      }
+    }
     // Register the given aor to the given registrar
     sip_endpoint->disable_account (*this);
     break;
@@ -957,9 +960,6 @@ Opal::Account::handle_registration_event (Ekiga::Account::RegistrationState stat
 
     if (presentity)
       presentity->Close ();
-    if (type != Account::H323) {
-      sip_endpoint->Unsubscribe (SIPSubscribe::MessageSummary, get_transaction_aor (get_aor ()));
-    }
 
     Ekiga::Runtime::run_in_main (boost::ref (updated));
     /* delay destruction of this account until the
