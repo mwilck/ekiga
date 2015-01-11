@@ -1134,6 +1134,7 @@ on_presentity_added (RosterViewGtk* self,
   bool active = false;
   bool away = false;
   guint timeout = 0;
+  gchar *old_status = NULL;
   gchar *old_presence = NULL;
   std::string presence;
   gboolean should_emit = FALSE;
@@ -1175,13 +1176,19 @@ on_presentity_added (RosterViewGtk* self,
     // Find out what our presence was
     gtk_tree_model_get (GTK_TREE_MODEL (self->priv->store), &iter,
                         COLUMN_TIMEOUT, &timeout,
+                        COLUMN_STATUS, &old_status,
                         COLUMN_PRESENCE, &old_presence, -1);
 
     // We already know the presence status
     if (old_presence && presence == old_presence) {
       g_free (old_presence);
+      if (old_status && presentity->get_status () != old_status)
+        gtk_tree_store_set (self->priv->store, &iter,
+                            COLUMN_STATUS, presentity->get_status ().c_str (), -1);
+      g_free (old_status);
       return;
     }
+    g_free (old_status);
 
     if (timeout > 0)
       g_source_remove (timeout);
