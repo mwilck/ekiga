@@ -485,6 +485,7 @@ roster_view_gtk_icon_blink_cb (gpointer data)
     if (presence && strcmp (presence, "unknown"))
       icon = "user-" + std::string(presence);
     gtk_tree_store_set (GTK_TREE_STORE (info->model), info->iter,
+                        COLUMN_TIMEOUT, 0,
                         COLUMN_PRESENCE_ICON, icon.c_str (),
                         -1);
     return FALSE;
