@@ -59,6 +59,7 @@ namespace Opal
   class CallManager;
   class Presentity;
   namespace Sip { class EndPoint; };
+  namespace H323 { class EndPoint; };
 
   /**
    * @addtogroup accounts
@@ -87,6 +88,7 @@ public:
 
     Account (Opal::Bank & bank,
              boost::shared_ptr<Opal::Sip::EndPoint> _sip_endpoint,
+             boost::shared_ptr<Opal::H323::EndPoint> _h323_endpoint,
 	     boost::weak_ptr<Ekiga::PresenceCore> _presence_core,
 	     boost::shared_ptr<Ekiga::NotificationCore> _notification_core,
 	     boost::shared_ptr<Ekiga::PersonalDetails> _personal_details,
@@ -157,8 +159,6 @@ public:
 
     bool is_active () const;
 
-    SIPRegister::CompatibilityModes get_compat_mode () const;
-
     void remove ();
 
     void edit ();
@@ -176,7 +176,7 @@ public:
      * want its Register method to take a const account...
      */
     void handle_registration_event (RegistrationState state_,
-				    const std::string info) const;
+				    const std::string info);
 
     /* This method is public to be called by an opal endpoint, which will push
      * this Opal::Account's message waiting information
@@ -201,6 +201,8 @@ private:
 
     void decide_type ();
 
+    const std::string get_transaction_aor (const std::string & aor) const;
+
     void add_contact ();
     bool on_add_contact_form_submitted (bool submitted,
 					Ekiga::Form& result,
@@ -221,16 +223,13 @@ private:
     mutable RegistrationState state;
     bool dead;
     bool failed;
-    mutable SIPRegister::CompatibilityModes compat_mode;
     std::string aid;
-    mutable std::string status;  // the state, as a string
+    std::string status;  // the state, as a string
     int message_waiting_number;
     std::string protocol_name;
 
-    mutable bool failed_registration_already_notified;
-
+    bool failed_registration_already_notified;
     PSafePtr<OpalPresentity> presentity;
-    void setup_presentity ();
 
     PDECLARE_PresenceChangeNotifier (Account, OnPresenceChange);
 
@@ -248,6 +247,7 @@ private:
     Opal::Bank & bank;
 
     boost::shared_ptr<Opal::Sip::EndPoint> sip_endpoint;
+    boost::shared_ptr<Opal::H323::EndPoint> h323_endpoint;
     boost::weak_ptr<Ekiga::PresenceCore> presence_core;
     boost::weak_ptr<Ekiga::NotificationCore> notification_core;
     boost::weak_ptr<Ekiga::PersonalDetails> personal_details;

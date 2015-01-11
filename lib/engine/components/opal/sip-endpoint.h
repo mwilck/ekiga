@@ -69,7 +69,7 @@ namespace Opal {
       typedef std::list<std::string>::iterator domain_list_iterator;
 
       EndPoint (CallManager& ep,
-		Ekiga::ServiceCore& core);
+		const Ekiga::ServiceCore& core);
 
       ~EndPoint ();
 
@@ -104,7 +104,8 @@ namespace Opal {
       unsigned get_dtmf_mode () const;
 
       bool set_listen_port (unsigned port);
-      const Ekiga::CallProtocolManager::Interface& get_listen_interface () const;
+
+      const Ekiga::CallProtocolManager::InterfaceList & get_interfaces () const;
 
 
       /* SIP EndPoint */
@@ -126,25 +127,19 @@ namespace Opal {
       // the parameters are the aor and the info
       boost::signals2::signal<void(std::string, std::string)> mwi_event;
 
-      /* AccountSubscriber */
-      bool subscribe (const Opal::Account & account, const PSafePtr<OpalPresentity> & presentity);
-      bool unsubscribe (const Opal::Account & account, const PSafePtr<OpalPresentity> & presentity);
-
-
       /* Helpers */
       static std::string get_aor_domain (const std::string & aor);
 
       void update_aor_map (std::map<std::string, std::string> _accounts);
 
-      /* OPAL Methods */
-      void Register (const std::string username,
-		     const std::string host,
-		     const std::string auth_username,
-		     const std::string password,
-		     bool is_enabled,
-		     SIPRegister::CompatibilityModes compat_mode,
-		     unsigned timeout);
+      /* Enable / Disable accounts. The account given as argument
+       * will be updated to reflect the current account state once
+       * the operation has been successful.
+       */
+      void enable_account (Account & account);
+      void disable_account (Account & account);
 
+      /* OPAL Methods */
       void OnRegistrationStatus (const RegistrationStatus & status);
 
       void OnMWIReceived (const PString & party,
@@ -162,6 +157,7 @@ namespace Opal {
       void OnMESSAGECompleted (const SIPMessage::Params & params,
                                SIP_PDU::StatusCodes reason);
 
+      // FIXME: unneeded
       SIPURL GetRegisteredPartyName (const SIPURL & host,
 				     const OpalTransport & transport);
 
@@ -190,6 +186,8 @@ namespace Opal {
       boost::shared_ptr<SIP::Dialect> dialect;
 
       boost::shared_ptr<Ekiga::Settings> settings;
+      const Ekiga::ServiceCore & core;
+      Ekiga::CallProtocolManager::InterfaceList interfaces;
     };
   };
 };

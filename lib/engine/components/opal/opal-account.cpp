@@ -57,6 +57,7 @@
 
 #include "opal-presentity.h"
 #include "sip-endpoint.h"
+#include "h323-endpoint.h"
 
 // remove leading and trailing spaces and tabs (useful for copy/paste)
 // also, if no protocol specified, add leading "sip:"
@@ -143,6 +144,7 @@ Opal::Account::build_node(Opal::Account::Type typus,
 
 Opal::Account::Account (Opal::Bank & _bank,
                         boost::shared_ptr<Opal::Sip::EndPoint> _sip_endpoint,
+                        boost::shared_ptr<Opal::H323::EndPoint> _h323_endpoint,
 			boost::weak_ptr<Ekiga::PresenceCore> _presence_core,
 			boost::shared_ptr<Ekiga::NotificationCore> _notification_core,
 			boost::shared_ptr<Ekiga::PersonalDetails> _personal_details,
@@ -154,6 +156,7 @@ Opal::Account::Account (Opal::Bank & _bank,
   node(_node),
   bank(_bank),
   sip_endpoint(_sip_endpoint),
+  h323_endpoint(_h323_endpoint),
   presence_core(_presence_core),
   notification_core(_notification_core),
   personal_details(_personal_details),
@@ -167,15 +170,6 @@ Opal::Account::Account (Opal::Bank & _bank,
   dead = false;
 
   decide_type ();
-
-  if (type != Account::H323) {
-
-    const std::string name = get_name ();
-    if (name.find ("%limit") != std::string::npos)
-      compat_mode = SIPRegister::e_CannotRegisterMultipleContacts;  // start registration in this compat mode
-    else
-      compat_mode = SIPRegister::e_FullyCompliant;
-  }
 
   for (xmlNodePtr child = node->children; child != NULL; child = child->next) {
 
@@ -198,8 +192,6 @@ Opal::Account::Account (Opal::Bank & _bank,
       }
     }
   }
-
-  setup_presentity ();
 
   /* Actor stuff */
   add_action (Ekiga::ActionPtr (new Ekiga::Action ("add-contact", _("A_dd Contact"),
@@ -492,12 +484,25 @@ Opal::Account::set_authentication_settings (const std::string& username,
 void
 Opal::Account::enable ()
 {
+  PString _aor;
   xmlSetProp (node, BAD_CAST "enabled", BAD_CAST "true");
 
   state = Processing;
   status = _("Processing...");
-  call_manager->subscribe (*this, presentity);
 
+  /* Actual registration code */
+  switch (type) {
+  case Account::H323:
+    h323_endpoint->enable_account (*this);
+    break;
+  case Account::SIP:
+  case Account::DiamondCard:
+  case Account::Ekiga:
+  default:
+    // Register the given aor to the given registrar
+    sip_endpoint->enable_account (*this);
+    break;
+  }
   updated ();
   trigger_saving ();
 
@@ -522,13 +527,20 @@ Opal::Account::disable ()
     }
   }
 
-  if (type == Account::H323)
-    call_manager->unsubscribe (*this, presentity);
-  else {
-
-      call_manager->unsubscribe (*this, presentity);
-      sip_endpoint->Unsubscribe (SIPSubscribe::MessageSummary, get_aor ());
-    }
+  /* Actual unregistration code */
+  switch (type) {
+  case Account::H323:
+    h323_endpoint->disable_account (*this);
+    break;
+  case Account::SIP:
+  case Account::DiamondCard:
+  case Account::Ekiga:
+  default:
+    // Register the given aor to the given registrar
+    sip_endpoint->disable_account (*this);
+    sip_endpoint->Unsubscribe (SIPSubscribe::MessageSummary, get_aor ());
+    break;
+  }
 
   // Translators: this is a state, not an action, i.e. it should be read as
   // "(you are) unregistered", and not as "(you have been) unregistered"
@@ -572,13 +584,6 @@ Opal::Account::is_active () const
     return false;
 
   return (state == Registered);
-}
-
-
-SIPRegister::CompatibilityModes
-Opal::Account::get_compat_mode () const
-{
-  return compat_mode;
 }
 
 
@@ -880,7 +885,7 @@ Opal::Account::fetch (const std::string uri) const
   // Subscribe now
   if (state == Registered) {
     PTRACE(4, "Ekiga\tSubscribeToPresence for " << uri.c_str () << " (fetch)");
-    presentity->SubscribeToPresence (PString (uri));
+    presentity->SubscribeToPresence (get_transaction_aor (uri).c_str ());
   }
 }
 
@@ -889,7 +894,7 @@ void
 Opal::Account::unfetch (const std::string uri) const
 {
   if (is_myself (uri) && presentity) {
-    presentity->UnsubscribeFromPresence (PString (uri));
+    presentity->UnsubscribeFromPresence (get_transaction_aor (uri).c_str ());
     Ekiga::Runtime::run_in_main (boost::bind (&Opal::Account::presence_status_in_main, this, uri, "unknown", ""));
   }
 }
@@ -897,7 +902,7 @@ Opal::Account::unfetch (const std::string uri) const
 
 void
 Opal::Account::handle_registration_event (Ekiga::Account::RegistrationState state_,
-					  const std::string info) const
+					  const std::string info)
 {
   switch (state_) {
 
@@ -910,9 +915,22 @@ Opal::Account::handle_registration_event (Ekiga::Account::RegistrationState stat
       status = _("Registered");
       state = state_;
       failed_registration_already_notified = false;
+
+      PURL url = PString (get_transaction_aor (get_aor ()));
+      presentity = call_manager->AddPresentity (url);
       if (presentity) {
 
-        for (Ekiga::RefLister<Presentity>::const_iterator iter = Ekiga::RefLister<Presentity>::begin ();
+        presentity->SetPresenceChangeNotifier (PCREATE_PresenceChangeNotifier (OnPresenceChange));
+        presentity->GetAttributes().Set(OpalPresentity::AuthNameKey, get_authentication_username ());
+        presentity->GetAttributes().Set(OpalPresentity::AuthPasswordKey, get_password ());
+        if (type != H323) {
+          presentity->GetAttributes().Set(SIP_Presentity::SubProtocolKey, "Agent");
+        }
+        PTRACE (4, "Created presentity for " << get_aor());
+
+        presentity->Open ();
+
+        for (Ekiga::RefLister<Presentity>::iterator iter = Ekiga::RefLister<Presentity>::begin ();
              iter != Ekiga::RefLister<Presentity>::end ();
              ++iter)
           fetch ((*iter)->get_uri());
@@ -926,7 +944,7 @@ Opal::Account::handle_registration_event (Ekiga::Account::RegistrationState stat
       if (details)
         const_cast<Account*>(this)->publish (*details);
 
-      updated ();
+      Ekiga::Runtime::run_in_main (boost::ref (updated));
     }
     break;
 
@@ -938,11 +956,14 @@ Opal::Account::handle_registration_event (Ekiga::Account::RegistrationState stat
     failed_registration_already_notified = false;
     state = state_;
 
-    updated ();
+    if (presentity)
+      presentity->Close ();
+
+    Ekiga::Runtime::run_in_main (boost::ref (updated));
     /* delay destruction of this account until the
        unsubscriber thread has called back */
     if (dead)
-      removed ();
+      Ekiga::Runtime::run_in_main (boost::ref (removed));
     break;
 
   case UnregistrationFailed:
@@ -952,7 +973,7 @@ Opal::Account::handle_registration_event (Ekiga::Account::RegistrationState stat
     failed_registration_already_notified = false;
     if (!info.empty ())
       status = status + " (" + info + ")";
-    updated ();
+    Ekiga::Runtime::run_in_main (boost::ref (updated));
     break;
 
   case RegistrationFailed:
@@ -967,58 +988,22 @@ Opal::Account::handle_registration_event (Ekiga::Account::RegistrationState stat
 	  ncore->push_notification (notif);
     }
     else {
-      switch (compat_mode) {
-      case SIPRegister::e_FullyCompliant:
-        // FullyCompliant did not work, try next compat mode
-        compat_mode = SIPRegister::e_CannotRegisterMultipleContacts;
-        PTRACE (4, "Register failed in FullyCompliant mode, retrying in CannotRegisterMultipleContacts mode");
-        call_manager->subscribe (*this, presentity);
-        break;
-      case SIPRegister::e_CannotRegisterMultipleContacts:
-        // CannotRegMC did not work, try next compat mode
-        compat_mode = SIPRegister::e_CannotRegisterPrivateContacts;
-        PTRACE (4, "Register failed in CannotRegisterMultipleContacts mode, retrying in CannotRegisterPrivateContacts mode");
-        call_manager->subscribe (*this, presentity);
-        break;
-      case SIPRegister::e_CannotRegisterPrivateContacts:
-        // CannotRegPC did not work, try next compat mode
-        compat_mode = SIPRegister::e_HasApplicationLayerGateway;
-        PTRACE (4, "Register failed in CannotRegisterPrivateContacts mode, retrying in HasApplicationLayerGateway mode");
-        call_manager->subscribe (*this, presentity);
-        break;
-      case SIPRegister::e_HasApplicationLayerGateway:
-        // HasAppLG did not work, try next compat mode
-        compat_mode = SIPRegister::e_RFC5626;
-        PTRACE (4, "Register failed in HasApplicationLayerGateway mode, retrying in RFC5626 mode");
-        call_manager->subscribe (*this, presentity);
-        break;
-      case SIPRegister::e_RFC5626:
-        // RFC5626 did not work, stop registration with error
-        compat_mode = SIPRegister::e_FullyCompliant;
-        PTRACE (4, "Register failed in RFC5626 mode, aborting registration");
-        status = _("Could not register");
-        if (!info.empty ())
-          status = status + " (" + info + ")";
-        if (!failed_registration_already_notified) {
-          std::stringstream msg;
-          msg << _("Could not register to ") << get_name ();
-          boost::shared_ptr<Ekiga::Notification> notif (new Ekiga::Notification (Ekiga::Notification::Warning, msg.str (), info, _("Edit"), boost::bind (&Opal::Account::edit, (Opal::Account*) this)));
-          boost::shared_ptr<Ekiga::NotificationCore> ncore = notification_core.lock ();
-          if (ncore)
-            ncore->push_notification (notif);
-          updated ();
-        }
-        failed_registration_already_notified = true;
-        break;
-      case SIPRegister::EndCompatibilityModes:
-        // bookkeeping code, to remove a compile warning
-        break;
-      default:
 
-        state = state_;
-        updated();
-        break;
+      // RFC5626 did not work, stop registration with error
+      PTRACE (4, "Register failed in RFC5626 mode, aborting registration");
+      status = _("Could not register");
+      if (!info.empty ())
+        status = status + " (" + info + ")";
+      if (!failed_registration_already_notified) {
+        std::stringstream msg;
+        msg << _("Could not register to ") << get_name ();
+        boost::shared_ptr<Ekiga::Notification> notif (new Ekiga::Notification (Ekiga::Notification::Warning, msg.str (), info, _("Edit"), boost::bind (&Opal::Account::edit, (Opal::Account*) this)));
+        boost::shared_ptr<Ekiga::NotificationCore> ncore = notification_core.lock ();
+        if (ncore)
+          ncore->push_notification (notif);
+        Ekiga::Runtime::run_in_main (boost::ref (updated));
       }
+      failed_registration_already_notified = true;
     }
     break;
 
@@ -1026,11 +1011,11 @@ Opal::Account::handle_registration_event (Ekiga::Account::RegistrationState stat
 
     state = state_;
     status = _("Processing...");
-    updated ();
+    Ekiga::Runtime::run_in_main (boost::ref (updated));
   default:
 
     state = state_;
-    updated();
+    Ekiga::Runtime::run_in_main (boost::ref (updated));
     break;
   }
 }
@@ -1060,25 +1045,6 @@ Opal::Account::Type
 Opal::Account::get_type () const
 {
   return type;
-}
-
-void
-Opal::Account::setup_presentity ()
-{
-  PURL url = PString (get_aor ());
-  presentity = call_manager->AddPresentity (url);
-
-  if (presentity) {
-
-    presentity->SetPresenceChangeNotifier (PCREATE_PresenceChangeNotifier (OnPresenceChange));
-    presentity->GetAttributes().Set(OpalPresentity::AuthNameKey, get_authentication_username ());
-    presentity->GetAttributes().Set(OpalPresentity::AuthPasswordKey, get_password ());
-    if (type != H323) {
-      presentity->GetAttributes().Set(SIP_Presentity::SubProtocolKey, "Agent");
-    }
-    PTRACE (4, "Created presentity for " << get_aor());
-  } else
-    PTRACE (4, "Error: cannot create presentity for " << get_aor());
 }
 
 
@@ -1354,6 +1320,8 @@ Opal::Account::on_rename_group_form_submitted (bool submitted,
   return true;
 }
 
+
+// FIXME: This is awful
 void
 Opal::Account::decide_type ()
 {
@@ -1367,4 +1335,14 @@ Opal::Account::decide_type ()
     type = Account::SIP;
   else
     type = Account::H323;
+}
+
+
+const std::string
+Opal::Account::get_transaction_aor (const std::string & aor) const
+{
+  if (sip_endpoint->IsRegistered (get_aor () + ";transport=tcp"))
+    return aor + ";transport=tcp";
+  else
+    return aor;
 }

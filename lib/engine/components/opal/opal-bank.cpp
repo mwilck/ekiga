@@ -48,11 +48,13 @@
 #include "opal-bank.h"
 #include "opal-presentity.h"
 #include "sip-endpoint.h"
+#include "h323-endpoint.h"
 
 
 Opal::Bank::Bank (Ekiga::ServiceCore& core):
   is_call_manager_ready(false),
   sip_endpoint(core.get<Opal::Sip::EndPoint> ("opal-sip-endpoint")),
+  h323_endpoint(core.get<Opal::H323::EndPoint> ("opal-h323-endpoint")),
   presence_core(core.get<Ekiga::PresenceCore> ("presence-core")),
   notification_core(core.get<Ekiga::NotificationCore> ("notification-core")),
   personal_details(core.get<Ekiga::PersonalDetails> ("personal-details")),
@@ -87,6 +89,7 @@ Opal::Bank::Bank (Ekiga::ServiceCore& core):
 
       boost::shared_ptr<Account> account(new Account (*this,
                                                       sip_endpoint,
+                                                      h323_endpoint,
                                                       presence_core,
                                                       notification_core,
                                                       personal_details,
@@ -262,6 +265,7 @@ Opal::Bank::add (Account::Type acc_type,
   AccountPtr account
     = AccountPtr(new Opal::Account (*this,
                                     sip_endpoint,
+                                    h323_endpoint,
 				    presence_core,
 				    notification_core,
 				    personal_details,
@@ -299,9 +303,14 @@ Opal::Bank::call_manager_ready ()
 
 
 Opal::AccountPtr
-Opal::Bank::find_account (const std::string& aor)
+Opal::Bank::find_account (const std::string& _aor)
 {
   AccountPtr result;
+  std::string aor = _aor;
+  std::string::size_type t = aor.find_first_of (";");
+
+  if (t != std::string::npos)
+    aor = aor.substr (0, t);
 
   for (iterator iter = begin ();
        iter != end ();

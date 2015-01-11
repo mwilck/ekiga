@@ -41,81 +41,12 @@
 #include "sip-endpoint.h"
 #include "chat-core.h"
 
-namespace Opal {
-
-  namespace Sip {
-
-    class subscriber : public PThread
-    {
-      PCLASSINFO(subscriber, PThread);
-
-    public:
-      subscriber (std::string _username,
-		  std::string _host,
-		  std::string _authentication_username,
-		  std::string _password,
-		  bool _is_enabled,
-		  SIPRegister::CompatibilityModes _compat_mode,
-		  unsigned _timeout,
-		  std::string _aor,
-                  Opal::Sip::EndPoint & _manager,
-		  bool _registering,
-                  const PSafePtr<OpalPresentity> & _presentity)
-        : PThread (1000, AutoDeleteThread),
-	  username(_username),
-	  host(_host),
-	  authentication_username(_authentication_username),
-	  password(_password),
-	  is_enabled(_is_enabled),
-	  compat_mode(_compat_mode),
-	  timeout(_timeout),
-	  aor(_aor),
-	  manager (_manager),
-	  registering (_registering),
-	  presentity (_presentity)
-      {
-        this->Resume ();
-      };
-
-      void Main ()
-      {
-	if (registering) {
-
-          if (presentity && !presentity->IsOpen ())
-            presentity->Open ();
-	  manager.Register (username, host, authentication_username, password, is_enabled, compat_mode, timeout);
-	}
-        else {
-	  manager.Unregister (aor);
-
-          if (presentity && presentity->IsOpen ())
-            presentity->Close ();
-	}
-      };
-
-    private:
-      std::string username;
-      std::string host;
-      std::string authentication_username;
-      std::string password;
-      bool is_enabled;
-      SIPRegister::CompatibilityModes compat_mode;
-      unsigned timeout;
-      std::string aor;
-      Opal::Sip::EndPoint & manager;
-      bool registering;
-      const PSafePtr<OpalPresentity> & presentity;
-    };
-  };
-};
-
-
 
 /* The class */
 Opal::Sip::EndPoint::EndPoint (Opal::CallManager & _manager,
-                               Ekiga::ServiceCore& core):
-  SIPEndPoint (_manager),
-  manager (_manager)
+                               const Ekiga::ServiceCore& _core): SIPEndPoint (_manager),
+                                                                 manager (_manager),
+                                                                 core (_core)
 {
   boost::shared_ptr<Ekiga::ChatCore> chat_core = core.get<Ekiga::ChatCore> ("chat-core");
   boost::shared_ptr<Ekiga::PresenceCore> presence_core = core.get<Ekiga::PresenceCore> ("presence-core");
@@ -308,39 +239,47 @@ bool
 Opal::Sip::EndPoint::set_listen_port (unsigned port)
 {
   unsigned udp_min, udp_max;
-
-  listen_iface.protocol = "udp";
-  listen_iface.voip_protocol = "sip";
-  listen_iface.id = "*";
+  unsigned tcp_min, tcp_max;
 
   manager.get_udp_ports (udp_min, udp_max);
+  manager.get_tcp_ports (tcp_min, tcp_max);
+
+  const std::string protocols[] = { "udp", "tcp", "" };
+  const unsigned ports[][2] = { { udp_min, udp_max }, { tcp_min, tcp_max } };
 
   if (port > 0) {
 
-    std::stringstream str;
+    interfaces.clear ();
     RemoveListener (NULL);
+    for (int i = 0 ; !protocols[i].empty () ; i++) {
 
-    str << "udp$*:" << port;
-    if (!StartListeners (PStringArray (str.str ()))) {
+      std::stringstream str;
+      str << protocols[i] << "$*:" << port;
+      listen_iface.protocol = protocols[i];
+      listen_iface.voip_protocol = "sip";
+      listen_iface.id = "*";
+      if (!StartListeners (PStringArray (str.str ()))) {
 
-      port = udp_min;
-      while (port <= udp_max) {
-        str << "udp$*:" << port;
+        port = ports[i][0];
+        while (port <= ports[i][1]) {
+          str << protocols[i] << "$*:" << port;
 
-        if (StartListeners (PStringArray (str.str ()))) {
+          if (StartListeners (PStringArray (str.str ()))) {
 
-          listen_iface.port = port;
-	  PTRACE (4, "Opal::Sip::EndPoint\tSet listen port to " << port);
-          return true;
+            PTRACE (4, "Opal::Sip::EndPoint\tSet listen port to " << port << " (" << protocols[i] << ")");
+            listen_iface.port = port;
+            interfaces.push_back (listen_iface);
+            break;
+          }
+
+          port++;
         }
-
-        port++;
       }
-    }
-    else {
-      listen_iface.port = port;
-      PTRACE (4, "Opal::Sip::EndPoint\tSet listen port to " << port);
-      return true;
+      else {
+        listen_iface.port = port;
+        interfaces.push_back (listen_iface);
+        PTRACE (4, "Opal::Sip::EndPoint\tSet listen port to " << port << " (" << protocols[i] << ")");
+      }
     }
   }
 
@@ -348,12 +287,11 @@ Opal::Sip::EndPoint::set_listen_port (unsigned port)
 }
 
 
-const Ekiga::CallProtocolManager::Interface&
-Opal::Sip::EndPoint::get_listen_interface () const
+const Ekiga::CallProtocolManager::InterfaceList &
+Opal::Sip::EndPoint::get_interfaces () const
 {
-  return listen_iface;
+  return interfaces;
 }
-
 
 
 void
@@ -427,112 +365,81 @@ Opal::Sip::EndPoint::get_aor_domain (const std::string & aor)
 }
 
 
-bool
-Opal::Sip::EndPoint::subscribe (const Opal::Account & account,
-                                const PSafePtr<OpalPresentity> & presentity)
-{
-  if (account.get_protocol_name () != "SIP")
-    return false;
-
-  new subscriber (account.get_username (),
-		  account.get_host (),
-		  account.get_authentication_username (),
-		  account.get_password (),
-		  account.is_enabled (),
-		  account.get_compat_mode (),
-		  account.get_timeout (),
-		  account.get_aor (),
-		  *this,
-                  true,
-                  presentity);
-  return true;
-}
-
-
-bool
-Opal::Sip::EndPoint::unsubscribe (const Opal::Account & account,
-                                  const PSafePtr<OpalPresentity> & presentity)
-{
-  if (account.get_protocol_name () != "SIP")
-    return false;
-
-  new subscriber (account.get_username (),
-		  account.get_host (),
-		  account.get_authentication_username (),
-		  account.get_password (),
-		  account.is_enabled (),
-		  account.get_compat_mode (),
-		  account.get_timeout (),
-		  account.get_aor (),
-		  *this,
-                  false,
-                  presentity);
-  return true;
-}
-
-
 void
-Opal::Sip::EndPoint::Register (const std::string username,
-			       const std::string host_,
-			       const std::string auth_username,
-			       const std::string password,
-			       bool is_enabled,
-			       SIPRegister::CompatibilityModes compat_mode,
-			       unsigned timeout)
+Opal::Sip::EndPoint::enable_account (Account & account)
 {
   PString _aor;
-  std::string host(host_);
-  std::string::size_type loc = host.find (":", 0);
-  if (loc != std::string::npos)
-    host = host.substr (0, loc);
 
   SIPRegister::Params params;
-  params.m_addressOfRecord = PString (username);
-  params.m_registrarAddress = PString (host_);
-  params.m_compatibility = compat_mode;
-  params.m_authID = auth_username;
-  params.m_password = password;
-  params.m_expire = is_enabled ? timeout : 0;
+  params.m_addressOfRecord = "sip:" + account.get_username () + "@" + account.get_host () + ";transport=tcp";
+  params.m_compatibility = SIPRegister::e_RFC5626;
+  params.m_authID = account.get_authentication_username ();
+  params.m_password = account.get_password ();
+  params.m_expire = account.is_enabled () ? account.get_timeout () : 0;
   params.m_minRetryTime = PMaxTimeInterval;  // use default value
   params.m_maxRetryTime = PMaxTimeInterval;  // use default value
 
   // Register the given aor to the given registrar
   if (!SIPEndPoint::Register (params, _aor)) {
-    SIPEndPoint::RegistrationStatus status;
-    status.m_wasRegistering = true;
-    status.m_reRegistering = false;
-    status.m_userData = NULL;
-    status.m_reason = SIP_PDU::Local_TransportError;
-    status.m_addressofRecord = PString (username);
-
-    OnRegistrationStatus (status);
+    params.m_addressOfRecord = "sip:" + account.get_username () + "@" + account.get_host ();
+    if (!SIPEndPoint::Register (params, _aor))
+      account.handle_registration_event (Account::RegistrationFailed,
+                                         _("Transport error"));
   }
 }
+
+
+void
+Opal::Sip::EndPoint::disable_account (Account & account)
+{
+  PString aor = "sip:" + account.get_username () + "@" + account.get_host ();
+  if (!IsRegistered (aor))
+    aor += ";transport=tcp";
+
+  if (!IsRegistered (aor))
+    return;
+
+  Unregister (aor);
+}
+
 
 void
 Opal::Sip::EndPoint::OnRegistrationStatus (const RegistrationStatus & status)
 {
-  std::string aor = (const char *) status.m_addressofRecord;
   std::string info;
-  std::stringstream strm;
+
+  boost::shared_ptr<Opal::Bank> bank = core.get<Opal::Bank> ("opal-account-store");
+  Opal::AccountPtr account = bank->find_account (status.m_addressofRecord);
+  if (!account)
+    return;
 
   if (status.m_reason == SIP_PDU::Information_Trying)
     return;
-
-  if (aor.find (uri_prefix) == std::string::npos)
-    strm << uri_prefix << aor;
-  else
-    strm << aor;
 
   SIPEndPoint::OnRegistrationStatus (status);
 
   /* Successful registration or unregistration */
   if (status.m_reason == SIP_PDU::Successful_OK) {
-
-    Ekiga::Runtime::run_in_main (boost::bind (boost::ref(registration_event), strm.str(), status.m_wasRegistering ? Account::Registered : Account::Unregistered, std::string ()));
+    account->handle_registration_event (status.m_wasRegistering?Account::Registered:Account::Unregistered,
+                                        std::string ());
   }
   /* Registration or unregistration failure */
   else {
+    SIPURL m_addressOfRecord = SIPURL (status.m_addressofRecord);
+    if (m_addressOfRecord.GetTransportProto () == "TCP") {
+      SIPRegister::Params params;
+      PString _aor;
+      m_addressOfRecord.SetParamVar ("transport", "udp");
+      params.m_addressOfRecord = m_addressOfRecord;
+      params.m_compatibility = SIPRegister::e_RFC5626;
+      params.m_authID = status.m_handler->GetAuthID ();
+      params.m_password = status.m_handler->GetPassword ();
+      params.m_expire = status.m_handler->GetExpire ();
+      params.m_minRetryTime = PMaxTimeInterval;  // use default value
+      params.m_maxRetryTime = PMaxTimeInterval;  // use default value
+      SIPEndPoint::Register (params, _aor);
+      return;
+    }
 
     /* all these codes are defined in opal, file include/sip/sippdu.h */
     switch (status.m_reason) {
@@ -769,9 +676,9 @@ Opal::Sip::EndPoint::OnRegistrationStatus (const RegistrationStatus & status)
     /* Opal adds a RequestTerminated, and this should not be shown to user,
      * as a sip code has already been scheduled to be shown
      */
-    if (status.m_reason != SIP_PDU::Failure_RequestTerminated) {
-      Ekiga::Runtime::run_in_main (boost::bind (boost::ref (registration_event), strm.str (), status.m_wasRegistering ? Account::RegistrationFailed : Account::UnregistrationFailed, info));
-    }
+    if (status.m_reason != SIP_PDU::Failure_RequestTerminated)
+      account->handle_registration_event (status.m_wasRegistering?Account::RegistrationFailed:Account::UnregistrationFailed,
+                                          info);
   }
 }
 
