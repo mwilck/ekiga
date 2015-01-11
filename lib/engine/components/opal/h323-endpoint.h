@@ -56,14 +56,23 @@ namespace Opal {
   namespace H323 {
 
     class EndPoint : public H323EndPoint,
+		     public Ekiga::Service,
 		     public Ekiga::CallProtocolManager
     {
       PCLASSINFO(EndPoint, H323EndPoint);
 
   public:
-      EndPoint (CallManager &_manager);
+      EndPoint (CallManager & ep,
+		const Ekiga::ServiceCore& core);
 
       ~EndPoint ();
+
+      /* Service */
+      const std::string get_name () const
+      { return "opal-h323-endpoint"; }
+
+      const std::string get_description () const
+      { return "\tObject managing H.323 objects with the Opal library"; }
 
 
       /* CallProtocolManager */
@@ -81,7 +90,8 @@ namespace Opal {
       unsigned get_dtmf_mode () const;
 
       bool set_listen_port (unsigned port);
-      const Ekiga::CallProtocolManager::Interface & get_listen_interface () const;
+
+      const Ekiga::CallProtocolManager::InterfaceList & get_interfaces () const;
 
       void set_initial_bandwidth (unsigned max_tx_video_bitrate);
 
@@ -90,16 +100,13 @@ namespace Opal {
       const std::string & get_forward_uri () const;
 
 
-      /* AccountSubscriber */
-      bool subscribe (const Opal::Account & account, const PSafePtr<OpalPresentity> & presentity);
-      bool unsubscribe (const Opal::Account & account, const PSafePtr<OpalPresentity> & presentity);
+      /* Enable / Disable accounts. The account given as argument
+       * will be updated to reflect the current account state once
+       * the operation has been successful.
+       */
+      void enable_account (Account & account);
+      void disable_account (Account & account);
 
-
-      /* OPAL methods */
-      void Register (const Opal::Account & account);
-      void Unregister (const Opal::Account & account);
-
-  private:
       bool UseGatekeeper (const PString & address = PString::Empty (),
                           const PString & domain = PString::Empty (),
                           const PString & iface = PString::Empty ());
@@ -108,15 +115,12 @@ namespace Opal {
 
       bool IsRegisteredWithGatekeeper (const PString & address);
 
+      void setup (const std::string key = "");
+
+  private:
       bool OnIncomingConnection (OpalConnection &connection,
                                  unsigned options,
                                  OpalConnection::StringOptions *str_options);
-
-      void registration_event_in_main (const Opal::Account& account,
-				       Account::RegistrationState state,
-				       const std::string msg);
-
-      void setup (const std::string key = "");
 
       // this object is really managed by opal,
       // so the way it is handled here is correct
@@ -133,6 +137,9 @@ namespace Opal {
 
       boost::shared_ptr<Ekiga::Settings> settings;
       boost::shared_ptr<Ekiga::Settings> video_codecs_settings;
+      Ekiga::CallProtocolManager::InterfaceList interfaces;
+
+      const Ekiga::ServiceCore & core;
     };
   };
 };

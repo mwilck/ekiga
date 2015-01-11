@@ -51,6 +51,9 @@
 #include "opal-plugins-hook.h"
 
 #include "sip-endpoint.h"
+#ifdef HAVE_H323
+#include "h323-endpoint.h"
+#endif
 
 // opal manages its endpoints itself, so we must be wary
 struct null_deleter
@@ -114,10 +117,17 @@ struct OPALSpark: public Ekiga::Spark
       core.add (call_manager);
 
       boost::shared_ptr<Sip::EndPoint> sip_manager (new Sip::EndPoint (*call_manager, core), null_deleter ());
-      std::cout << "FIXME: where is H323" << std::endl << std::flush;
       sip_manager->setup ();
       call_manager->set_sip_endpoint (sip_manager);
       core.add (sip_manager);
+
+#ifdef HAVE_H323
+      boost::shared_ptr<H323::EndPoint> h323_manager (new H323::EndPoint (*call_manager, core), null_deleter ());
+      h323_manager->setup ();
+      call_manager->set_h323_endpoint (h323_manager);
+      core.add (h323_manager);
+#endif
+
 
       boost::shared_ptr<Bank> bank (new Bank (core));
       account_core->add_bank (bank);

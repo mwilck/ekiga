@@ -44,54 +44,105 @@ namespace Opal {
 
   namespace H323 {
 
-    class subscriber : public PThread
+    class gatekeeper_handler : public PThread
     {
-      PCLASSINFO(subscriber, PThread);
+      PCLASSINFO (gatekeeper_handler, PThread);
 
   public:
 
-      subscriber (const Opal::Account & _account,
-                  Opal::H323::EndPoint& _manager,
-                  bool _registering,
-                  const PSafePtr<OpalPresentity> & _presentity)
+      gatekeeper_handler (Opal::Account & _account,
+                          Opal::H323::EndPoint& _ep,
+                          bool _registering)
         : PThread (1000, AutoDeleteThread),
         account (_account),
-        manager (_manager),
-        registering (_registering),
-        presentity (_presentity)
+        ep (_ep),
+        registering (_registering)
       {
         this->Resume ();
-      };
+      }
 
       void Main ()
-        {
-          if (registering) {
-            if (presentity && !presentity->IsOpen ())
-              presentity->Open ();
-            manager.Register (account);
-          } else {
-            manager.Unregister (account);
+      {
+        std::string info;
 
-            if (presentity && presentity->IsOpen ())
-              presentity->Close ();
+        if (!registering && ep.IsRegisteredWithGatekeeper (account.get_host ())) {
+          ep.RemoveGatekeeper (account.get_host ());
+          account.handle_registration_event (Account::Unregistered, std::string ());
+          return;
+        }
+        else if (registering && !ep.IsRegisteredWithGatekeeper (account.get_host ())) {
 
+          ep.RemoveGatekeeper (0);
+
+          if (!account.get_username ().empty ())
+            ep.SetLocalUserName (account.get_username ());
+
+          ep.SetGatekeeperPassword (account.get_password (), account.get_username ());
+          ep.SetGatekeeperTimeToLive (account.get_timeout () * 1000);
+          bool result = ep.UseGatekeeper (account.get_host ());
+
+          // There was an error (missing parameter or registration failed)
+          // or the user chose to not register
+          if (!result) {
+
+            // Registering failed
+            if (ep.GetGatekeeper () != NULL) {
+
+              switch (ep.GetGatekeeper()->GetRegistrationFailReason ()) {
+
+              case H323Gatekeeper::DuplicateAlias :
+                // Translators : The alias we are registering already exists : failure
+                info = _("Duplicate alias");
+                break;
+              case H323Gatekeeper::SecurityDenied :
+                info = _("Bad username/password");
+                break;
+              case H323Gatekeeper::TransportError :
+                info = _("Transport error");
+                break;
+              case H323Gatekeeper::RegistrationSuccessful:
+                break;
+              case H323Gatekeeper::UnregisteredLocally:
+              case H323Gatekeeper::UnregisteredByGatekeeper:
+              case H323Gatekeeper::GatekeeperLostRegistration:
+              case H323Gatekeeper::InvalidListener:
+              case H323Gatekeeper::TryingAlternate:
+              case H323Gatekeeper::NumRegistrationFailReasons:
+              case H323Gatekeeper::GatekeeperRejectReasonMask:
+              case H323Gatekeeper::RegistrationRejectReasonMask:
+              case H323Gatekeeper::UnregistrationRejectReasonMask:
+              default:
+                info = _("Failed");
+                break;
+              }
+            }
+            else
+              info = _("Failed");
+
+            // Signal
+            account.handle_registration_event (Account::RegistrationFailed, info);
           }
-        };
+          else {
+
+            account.handle_registration_event (Account::Registered, std::string ());
+          }
+        }
+      }
 
   private:
-      const Opal::Account & account;
-      Opal::H323::EndPoint& manager;
+      Opal::Account & account;
+      Opal::H323::EndPoint& ep;
       bool registering;
-      const PSafePtr<OpalPresentity> & presentity;
     };
   };
 };
 
 
 /* The class */
-Opal::H323::EndPoint::EndPoint (Opal::CallManager & _manager):
-    H323EndPoint (_manager),
-    manager (_manager)
+Opal::H323::EndPoint::EndPoint (Opal::CallManager & _manager,
+                               const Ekiga::ServiceCore& _core): H323EndPoint (_manager),
+                                                                 manager (_manager),
+                                                                 core (_core)
 {
   protocol_name = "h323";
   uri_prefix = "h323:";
@@ -227,12 +278,14 @@ Opal::H323::EndPoint::set_listen_port (unsigned port)
   port = (port > 0 ? port : 1720);
 
   std::stringstream str;
+  interfaces.clear ();
   RemoveListener (NULL);
 
   str << "tcp$*:" << port;
   if (StartListeners (PStringArray (str.str ()))) {
 
     listen_iface.port = port;
+    interfaces.push_back (listen_iface);
     PTRACE (4, "Opal::H323::EndPoint\tSet listen port to " << port);
     return true;
   }
@@ -240,18 +293,19 @@ Opal::H323::EndPoint::set_listen_port (unsigned port)
   return false;
 }
 
+
+const Ekiga::CallProtocolManager::InterfaceList &
+Opal::H323::EndPoint::get_interfaces () const
+{
+  return interfaces;
+}
+
+
 void
 Opal::H323::EndPoint::set_initial_bandwidth (unsigned bitrate)
 {
   SetInitialBandwidth (OpalBandwidth::Tx, bitrate > 0 ? bitrate : 100000);
   PTRACE (4, "Opal::H323::EndPoint\tSet maximum/initial tx bandwidth to " << bitrate);
-}
-
-
-const Ekiga::CallProtocolManager::Interface&
-Opal::H323::EndPoint::get_listen_interface () const
-{
-  return listen_iface;
 }
 
 
@@ -271,103 +325,17 @@ Opal::H323::EndPoint::get_forward_uri () const
 }
 
 
-bool
-Opal::H323::EndPoint::subscribe (const Opal::Account & account,
-                                 const PSafePtr<OpalPresentity> & presentity)
+void
+Opal::H323::EndPoint::enable_account (Account& account)
 {
-  if (account.get_protocol_name () != "H323")
-    return false;
-
-  new subscriber (account, *this, true, presentity);
-
-  return true;
-}
-
-
-bool
-Opal::H323::EndPoint::unsubscribe (const Opal::Account & account,
-                                   const PSafePtr<OpalPresentity> & presentity)
-{
-  if (account.get_protocol_name () != "H323")
-    return false;
-
-  new subscriber (account, *this, false, presentity);
-
-  return true;
+  new gatekeeper_handler (account, *this, true);
 }
 
 
 void
-Opal::H323::EndPoint::Register (const Opal::Account& account)
+Opal::H323::EndPoint::disable_account (Account& account)
 {
-  std::string info;
-
-  if (account.is_enabled () && !IsRegisteredWithGatekeeper (account.get_host ())) {
-
-    H323EndPoint::RemoveGatekeeper (0);
-
-    if (!account.get_username ().empty ()) {
-      SetLocalUserName (account.get_username ());
-      AddAliasName (manager.GetDefaultDisplayName ());
-    }
-
-    SetGatekeeperPassword (account.get_password (), account.get_username ());
-    SetGatekeeperTimeToLive (account.get_timeout () * 1000);
-    bool result = UseGatekeeper (account.get_host ());
-
-    // There was an error (missing parameter or registration failed)
-    // or the user chose to not register
-    if (!result) {
-
-      // Registering failed
-      if (GetGatekeeper () != NULL) {
-
-        switch (GetGatekeeper()->GetRegistrationFailReason ()) {
-
-        case H323Gatekeeper::DuplicateAlias :
-          // Translators : The alias we are registering already exists : failure
-          info = _("Duplicate alias");
-          break;
-        case H323Gatekeeper::SecurityDenied :
-          info = _("Bad username/password");
-          break;
-        case H323Gatekeeper::TransportError :
-          info = _("Transport error");
-          break;
-        case H323Gatekeeper::RegistrationSuccessful:
-          break;
-        case H323Gatekeeper::UnregisteredLocally:
-        case H323Gatekeeper::UnregisteredByGatekeeper:
-        case H323Gatekeeper::GatekeeperLostRegistration:
-        case H323Gatekeeper::InvalidListener:
-        case H323Gatekeeper::TryingAlternate:
-        case H323Gatekeeper::NumRegistrationFailReasons:
-        case H323Gatekeeper::GatekeeperRejectReasonMask:
-        case H323Gatekeeper::RegistrationRejectReasonMask:
-        case H323Gatekeeper::UnregistrationRejectReasonMask:
-        default:
-          info = _("Failed");
-          break;
-        }
-      }
-      else
-        info = _("Failed");
-
-      // Signal
-      Ekiga::Runtime::run_in_main (boost::bind (&Opal::H323::EndPoint::registration_event_in_main, this, boost::cref (account), Account::RegistrationFailed, info));
-    }
-    else {
-
-      Ekiga::Runtime::run_in_main (boost::bind (&Opal::H323::EndPoint::registration_event_in_main, this, boost::cref (account), Account::Registered, std::string ()));
-    }
-  }
-}
-
-
-void
-Opal::H323::EndPoint::Unregister (const Opal::Account& account)
-{
-  RemoveGatekeeper (account.get_host ());
+  new gatekeeper_handler (account, *this, false);
 }
 
 
@@ -452,15 +420,6 @@ Opal::H323::EndPoint::OnIncomingConnection (OpalConnection & connection,
   }
 
   return false;
-}
-
-
-void
-Opal::H323::EndPoint::registration_event_in_main (const Opal::Account& account,
-						  Opal::Account::RegistrationState state,
-						  const std::string msg)
-{
-  account.handle_registration_event (state, msg);
 }
 
 
