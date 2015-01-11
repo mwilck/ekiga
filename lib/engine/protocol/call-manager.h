@@ -62,7 +62,6 @@ namespace Ekiga
 
     public:
 
-    typedef std::list<CallProtocolManager::Interface> InterfaceList;
     typedef std::set<boost::shared_ptr<CallProtocolManager> >::iterator iterator;
     typedef std::set<boost::shared_ptr<CallProtocolManager> >::const_iterator const_iterator;
 
@@ -92,7 +91,7 @@ namespace Ekiga
     const_iterator begin () const;
 
     /** Return iterator to end
-     * @return iterator to end 
+     * @return iterator to end
      */
     iterator end ();
     const_iterator end () const;
@@ -159,7 +158,7 @@ namespace Ekiga
      * @return the interface on which we are accepting calls. Generally,
      * under the form protocol:IP:port.
      */
-    const CallManager::InterfaceList get_interfaces () const;
+    const CallProtocolManager::InterfaceList get_interfaces () const;
 
 
     /*
@@ -169,10 +168,10 @@ namespace Ekiga
     /** Enable the given codecs
      * @param codecs is a set of the codecs and their descriptions
      *        when the function returns, the list also contains disabled
-     *        codecs supported by the CallManager. Unsupported codecs 
+     *        codecs supported by the CallManager. Unsupported codecs
      *        have been removed.
      */
-    virtual void set_codecs (CodecList & codecs) = 0; 
+    virtual void set_codecs (CodecList & codecs) = 0;
 
     /** Return the list of available codecs
      * @return a set of the codecs and their descriptions

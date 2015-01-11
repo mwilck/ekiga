@@ -52,7 +52,6 @@ namespace Ekiga
  * @addtogroup calls
  * @{:
  */
-
   class CallProtocolManager
   {
 
@@ -66,6 +65,7 @@ namespace Ekiga
         bool publish;
         unsigned port;
     };
+    typedef std::list<Interface> InterfaceList;
 
 
     /* The constructor
@@ -130,12 +130,6 @@ namespace Ekiga
      * MISC
      */
 
-    /** Return the listen interface
-     * @return the interface on which we are accepting calls. Generally,
-     * under the form protocol:IP:port.
-     */
-    virtual const Interface & get_listen_interface () const = 0;
-
     /** Set the DTMF mode to use to send DTMFs
      * @param mode is the desired DTMF mode
      */
@@ -150,6 +144,12 @@ namespace Ekiga
      * @param port is the port on which we should bind
      */
     virtual bool set_listen_port (unsigned port) = 0;
+
+    /**
+     * @return the interface on which we are accepting calls. Generally,
+     * under the form protocol:IP:port.
+     */
+    virtual const InterfaceList & get_interfaces () const = 0;
   };
 
 /**

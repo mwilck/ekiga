@@ -27,7 +27,7 @@
 /*
  *                         call-manager.cpp  -  description
  *                         ------------------------------------------
- *   begin                : written in 2008 by Damien Sandras 
+ *   begin                : written in 2008 by Damien Sandras
  *   copyright            : (c) 2008 by Damien Sandras
  *   description          : Implementation of the interface of a call manager
  *                          implementation backend. A call manager handles calls,
@@ -76,13 +76,13 @@ CallManager::const_iterator CallManager::begin () const
 
 CallManager::iterator CallManager::end ()
 {
-  return managers.end (); 
+  return managers.end ();
 }
 
 
 CallManager::const_iterator CallManager::end () const
 {
-  return managers.end (); 
+  return managers.end ();
 }
 
 
@@ -99,14 +99,16 @@ const std::list<std::string> CallManager::get_protocol_names () const
 }
 
 
-const CallManager::InterfaceList CallManager::get_interfaces () const
+const CallProtocolManager::InterfaceList CallManager::get_interfaces () const
 {
-  InterfaceList list;
+  CallProtocolManager::InterfaceList list;
 
   for (CallManager::iterator iter = begin ();
        iter != end ();
        iter++)
-    list.push_back ((*iter)->get_listen_interface ());
+    list.insert (list.begin (),
+                 (*iter)->get_interfaces ().begin (),
+                 (*iter)->get_interfaces ().end ());
 
   return list;
 }
