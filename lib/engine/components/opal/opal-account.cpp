@@ -538,6 +538,8 @@ Opal::Account::disable ()
       if (type != Account::H323) {
         sip_endpoint->Unsubscribe (SIPSubscribe::MessageSummary, get_transaction_aor (get_aor ()));
       }
+
+      presentity->Close ();
     }
     // Register the given aor to the given registrar
     sip_endpoint->disable_account (*this);
@@ -957,9 +959,6 @@ Opal::Account::handle_registration_event (Ekiga::Account::RegistrationState stat
     status = _("Unregistered");
     failed_registration_already_notified = false;
     state = state_;
-
-    if (presentity)
-      presentity->Close ();
 
     Ekiga::Runtime::run_in_main (boost::ref (updated));
     /* delay destruction of this account until the
