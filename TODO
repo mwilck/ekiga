@@ -33,3 +33,4 @@ See our wiki: http://wiki.ekiga.org/index.php/ToDo
 - SetKeepAlive => H.323 & SIP and remove the "NAT" mention because of RFC5626
 - Review RefLister : no object uses its signals, they are all implementing new signals. add_object should be virtual so that all children use the same API, otherwhise we have add_object and add_account. Iterators should not be reimplemented. Actor could be ported to use RefLister.
 - Add -Wl,-z,defs -Wl,--as-needed as link flags and fix subsequent link error with ekiga_dbus_component_new not found
+- Check video-bitrate vs video-tx-bitrate usage.
