@@ -859,9 +859,15 @@ CallManager::HandleSTUNResult ()
     }
     else {
 
+      if (sip_endpoint)
+        sip_endpoint->setup ("listen-port");
+      if (h323_endpoint)
+        h323_endpoint->setup ("listen-port");
+
       ready ();
     }
-  } else if (patience == 0) {
+  }
+  else if (patience == 0) {
 
     error = true;
   }
@@ -873,11 +879,11 @@ CallManager::HandleSTUNResult ()
 		       "Please see http://wiki.ekiga.org/index.php/Enable_port_forwarding_manually for"
 		       " instructions"));
     ready ();
-  } else if (!got_answer) {
+  }
+  else if (!got_answer) {
 
     patience--;
     Ekiga::Runtime::run_in_main (boost::bind (&CallManager::HandleSTUNResult, this), 1);
-
   }
 }
 
