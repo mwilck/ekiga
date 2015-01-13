@@ -116,7 +116,6 @@ Opal::Bank::Bank (Ekiga::ServiceCore& core):
     }
   }
 
-  sip_endpoint->registration_event.connect (boost::bind(&Opal::Bank::on_registration_event, this, _1, _2, _3));
   sip_endpoint->mwi_event.connect (boost::bind(&Opal::Bank::on_mwi_event, this, _1, _2));
 
   account_added.connect (boost::bind (&Opal::Bank::update_sip_endpoint_aor_map, this));
@@ -352,18 +351,6 @@ Opal::Bank::publish (const Ekiga::PersonalDetails& details)
        iter != end ();
        iter++)
     (*iter)->publish (details);
-}
-
-
-void
-Opal::Bank::on_registration_event (std::string aor,
-				   Opal::Account::RegistrationState state,
-				   std::string msg)
-{
-  AccountPtr account = find_account (aor);
-
-  if (account)
-    account->handle_registration_event (state, msg);
 }
 
 

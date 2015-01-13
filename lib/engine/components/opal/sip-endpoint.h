@@ -118,11 +118,6 @@ namespace Opal {
       void set_forward_uri (const std::string & uri);
       const std::string & get_forward_uri () const;
 
-
-      // a registration event occurred
-      // the parameters are the aor, the state and the message
-      boost::signals2::signal<void(std::string, Opal::Account::RegistrationState, std::string)> registration_event;
-
       // a message waiting information was received
       // the parameters are the aor and the info
       boost::signals2::signal<void(std::string, std::string)> mwi_event;

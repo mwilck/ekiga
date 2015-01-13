@@ -144,10 +144,6 @@ private:
 
     void on_account_removed (boost::shared_ptr<Account> account);
 
-    void on_registration_event (std::string aor,
-				Opal::Account::RegistrationState state,
-				std::string msg);
-
     void on_mwi_event (std::string aor,
 		       std::string info);
 
