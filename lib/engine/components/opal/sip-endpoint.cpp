@@ -149,34 +149,6 @@ Opal::Sip::EndPoint::dial (const std::string & uri)
 
 
 bool
-Opal::Sip::EndPoint::transfer (const std::string & uri,
-                               bool attended)
-{
-  /* This is not handled yet */
-  if (attended)
-    return false;
-
-  if (GetConnectionCount () == 0 || !is_supported_uri (uri))
-      return false; /* No active SIP connection to transfer, or
-                     * transfer request to unsupported uri
-                     */
-
-  /* We don't handle several calls here */
-  for (PSafePtr<OpalConnection> connection(connectionsActive, PSafeReference);
-       connection != NULL;
-       ++connection) {
-    if (!PIsDescendant(&(*connection), OpalPCSSConnection)) {
-      connection->TransferConnection (uri);
-      return true; /* We could handle the transfer */
-    }
-  }
-
-  return false;
-}
-
-
-
-bool
 Opal::Sip::EndPoint::is_supported_uri (const std::string & uri)
 {
   return (!uri.empty () && (uri.find ("sip:") == 0 || uri.find (':') == string::npos));

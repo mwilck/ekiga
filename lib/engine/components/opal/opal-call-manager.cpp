@@ -558,19 +558,6 @@ void CallManager::hang_up ()
 }
 
 
-bool CallManager::transfer (const std::string & uri,
-                            bool attended)
-{
-  for (Ekiga::CallManager::iterator iter = Ekiga::CallManager::begin ();
-       iter != Ekiga::CallManager::end ();
-       iter++)
-    if ((*iter)->transfer (uri, attended))
-      return true;
-
-  return false;
-}
-
-
 bool CallManager::is_supported_uri (const std::string & uri)
 {
   for (Ekiga::CallManager::iterator iter = Ekiga::CallManager::begin ();

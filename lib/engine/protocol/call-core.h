@@ -136,17 +136,6 @@ namespace Ekiga
        */
       bool dial (const std::string & uri);
 
-      /** Transfer the call to the specified uri
-       * @param the destination uri
-       * @param true if we should do an attended transfer, false if
-       *        a blind transfer is required.
-       * @return true if the Ekiga::Call transfer could be attempted,
-       *         false otherwise. Returning true does not mean the
-       *         transfer succeeded, it simply means it could be handled.
-       */
-      bool transfer (const std::string & uri,
-                     bool attended);
-
       /** Hang up all active calls (if any).
        */
       void hang_up ();

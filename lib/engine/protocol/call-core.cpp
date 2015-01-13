@@ -106,20 +106,6 @@ void CallCore::hang_up ()
 }
 
 
-bool CallCore::transfer (const std::string & uri,
-                         bool attended)
-{
-  for (std::set<boost::shared_ptr<CallManager> >::iterator iter = managers.begin ();
-       iter != managers.end ();
-       iter++) {
-    if ((*iter)->transfer (uri, attended))
-      return true;
-  }
-
-  return false;
-}
-
-
 bool CallCore::is_supported_uri (const std::string & uri)
 {
   for (std::set<boost::shared_ptr<CallManager> >::iterator iter = managers.begin ();

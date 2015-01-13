@@ -106,8 +106,6 @@ public:
     /** Call Manager **/
     bool dial (const std::string & uri);
     void hang_up ();
-    bool transfer (const std::string & uri,
-                   bool attended);
     bool is_supported_uri (const std::string & uri);
 
     void set_display_name (const std::string & name);

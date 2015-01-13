@@ -87,16 +87,6 @@ namespace Ekiga
      */
     virtual bool dial (const std::string & uri) = 0;
 
-    /** Transfer the call to the specified uri
-     * @param the destination uri
-     * @param true if we should do an attended transfer, false if
-     *        a blind transfer is required.
-     * @return true if the Ekiga::Call transfer could be attempted,
-     *         false otherwise. Returning true does not mean the
-     *         transfer succeeded, it simply means it could be handled.
-     */
-    virtual bool transfer (const std::string & uri,
-                           bool attended) = 0;
 
     /* Return true if URI can be handled by the CallCore,
      * false otherwise.
