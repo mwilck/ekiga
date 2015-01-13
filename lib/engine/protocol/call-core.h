@@ -147,16 +147,6 @@ namespace Ekiga
       bool transfer (const std::string & uri,
                      bool attended);
 
-      /** Sends an instant message to the given contact
-       * @param the destination contact
-       * @param the destination uri
-       * @return true if the message transmission could be attempted,
-       *         false otherwise. Returning true does not mean the
-       *         message was sent, it simply means it could be handled.
-       */
-      bool message (const ContactPtr & contact,
-                    const std::string & uri);
-
       /** Hang up all active calls (if any).
        */
       void hang_up ();

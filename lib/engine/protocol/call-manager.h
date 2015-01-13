@@ -47,7 +47,6 @@
 
 #include "call-protocol-manager.h"
 #include "codec-description.h"
-#include "contact-core.h" // FIXME: required for 'message'. Should disappear.
 
 namespace Ekiga
 {
@@ -127,15 +126,6 @@ namespace Ekiga
     virtual bool transfer (const std::string & uri,
                            bool attended) = 0;
 
-    /** Sends an instant message to the given contact
-     * @param the destination contact
-     * @param the destination uri
-     * @return true if the message transmission could be attempted,
-     *         false otherwise. Returning true does not mean the
-     *         message was sent, it simply means it could be handled.
-     */
-    virtual bool message (const ContactPtr & contact,
-                          const std::string & uri) = 0;
 
     /* Return true if URI can be handled by the CallCore,
      * false otherwise.
@@ -209,17 +199,17 @@ namespace Ekiga
      */
     virtual bool get_silence_detection () const = 0;
 
-    /** Set maximum jitter 
+    /** Set maximum jitter
      * @param max_val is the maximum jitter for calls in seconds.
      */
     virtual void set_maximum_jitter (unsigned max_val) = 0;
 
-    /** Get maximum jitter 
+    /** Get maximum jitter
      * @return the maximum jitter for calls in seconds.
      */
     virtual unsigned get_maximum_jitter () const = 0;
 
-    /** Set delay before dropping an incoming call 
+    /** Set delay before dropping an incoming call
      * @param delay is the delay after which the call should be rejected
      * (or forwarded if supported by the CallManager).
      */

@@ -120,20 +120,6 @@ bool CallCore::transfer (const std::string & uri,
 }
 
 
-bool CallCore::message (const ContactPtr & contact,
-                        const std::string & uri)
-{
-  for (std::set<boost::shared_ptr<CallManager> >::iterator iter = managers.begin ();
-       iter != managers.end ();
-       iter++) {
-    if ((*iter)->message (contact, uri))
-      return true;
-  }
-
-  return false;
-}
-
-
 bool CallCore::is_supported_uri (const std::string & uri)
 {
   for (std::set<boost::shared_ptr<CallManager> >::iterator iter = managers.begin ();

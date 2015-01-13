@@ -93,8 +93,6 @@ namespace Opal {
       bool dial (const std::string & uri);
       bool transfer (const std::string & uri,
                      bool attended);
-      bool message (const Ekiga::ContactPtr & contact,
-                    const std::string & uri);
       bool is_supported_uri (const std::string & uri);
 
 

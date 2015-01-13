@@ -571,19 +571,6 @@ bool CallManager::transfer (const std::string & uri,
 }
 
 
-bool CallManager::message (const Ekiga::ContactPtr & contact,
-                           const std::string & uri)
-{
-  for (Ekiga::CallManager::iterator iter = Ekiga::CallManager::begin ();
-       iter != Ekiga::CallManager::end ();
-       iter++)
-    if ((*iter)->message (contact, uri))
-      return true;
-
-  return false;
-}
-
-
 bool CallManager::is_supported_uri (const std::string & uri)
 {
   for (Ekiga::CallManager::iterator iter = Ekiga::CallManager::begin ();

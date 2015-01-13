@@ -27,7 +27,7 @@
 /*
  *                         call-protocol-manager.h  -  description
  *                         ------------------------------------------
- *   begin                : written in 2008 by Damien Sandras 
+ *   begin                : written in 2008 by Damien Sandras
  *   copyright            : (c) 2008 by Damien Sandras
  *   description          : Declaration of the interface of a call protocol manager
  *                          implementation backend. A call manager handles calls
@@ -97,16 +97,6 @@ namespace Ekiga
      */
     virtual bool transfer (const std::string & uri,
                            bool attended) = 0;
-
-    /** Sends an instant message to the given contact
-     * @param the destination contact
-     * @param the destination uri
-     * @return true if the message transmission could be attempted,
-     *         false otherwise. Returning true does not mean the
-     *         message was sent, it simply means it could be handled.
-     */
-    virtual bool message (const ContactPtr & contact,
-                          const std::string & uri) = 0;
 
     /* Return true if URI can be handled by the CallCore,
      * false otherwise.

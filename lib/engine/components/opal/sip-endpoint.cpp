@@ -175,17 +175,6 @@ Opal::Sip::EndPoint::transfer (const std::string & uri,
 }
 
 
-bool
-Opal::Sip::EndPoint::message (const Ekiga::ContactPtr & contact,
-                              const std::string & uri)
-{
-  if (!is_supported_uri (uri))
-    return false;
-
-  dialect->start_chat_with (uri, contact->get_name ());
-  return true;
-}
-
 
 bool
 Opal::Sip::EndPoint::is_supported_uri (const std::string & uri)

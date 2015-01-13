@@ -108,8 +108,6 @@ public:
     void hang_up ();
     bool transfer (const std::string & uri,
                    bool attended);
-    bool message (const Ekiga::ContactPtr & contact,
-                  const std::string & uri);
     bool is_supported_uri (const std::string & uri);
 
     void set_display_name (const std::string & name);
