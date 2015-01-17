@@ -229,16 +229,6 @@ private:
     boost::shared_ptr<Ekiga::Settings> call_options_settings;
     boost::shared_ptr<Ekiga::Settings> call_forwarding_settings;
     boost::shared_ptr<Ekiga::Settings> personal_data_settings;
-
-    /* FIXME: this piece of the api is because the code is getting turned around,
-     * this should disappear at some point! */
-  public:
-    void set_sip_endpoint (boost::shared_ptr<Opal::Sip::EndPoint> _sip_endpoint);
-    boost::shared_ptr<Opal::Sip::EndPoint> sip_endpoint;
-#ifdef HAVE_H323
-    void set_h323_endpoint (boost::shared_ptr<Opal::H323::EndPoint> _h323_endpoint);
-    boost::shared_ptr<Opal::H323::EndPoint> h323_endpoint;
-#endif
   };
 };
 #endif

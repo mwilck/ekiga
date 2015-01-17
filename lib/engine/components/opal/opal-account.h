@@ -87,8 +87,6 @@ public:
 				  unsigned timeout);
 
     Account (Opal::Bank & bank,
-             Opal::Sip::EndPoint& _sip_endpoint,
-             Opal::H323::EndPoint& _h323_endpoint,
 	     boost::weak_ptr<Ekiga::PresenceCore> _presence_core,
 	     boost::shared_ptr<Ekiga::NotificationCore> _notification_core,
 	     boost::shared_ptr<Ekiga::PersonalDetails> _personal_details,
@@ -229,6 +227,7 @@ private:
     std::string protocol_name;
 
     bool failed_registration_already_notified;
+
     PSafePtr<OpalPresentity> presentity;
 
     PDECLARE_PresenceChangeNotifier (Account, OnPresenceChange);
@@ -246,8 +245,8 @@ private:
 
     Opal::Bank & bank;
 
-    Opal::Sip::EndPoint& sip_endpoint;
-    Opal::H323::EndPoint& h323_endpoint;
+    Opal::Sip::EndPoint* sip_endpoint;
+    Opal::H323::EndPoint* h323_endpoint;
 
     boost::weak_ptr<Ekiga::PresenceCore> presence_core;
     boost::weak_ptr<Ekiga::NotificationCore> notification_core;

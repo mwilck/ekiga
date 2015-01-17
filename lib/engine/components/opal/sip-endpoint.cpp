@@ -80,6 +80,8 @@ Opal::Sip::EndPoint::EndPoint (Opal::CallManager & _manager,
 
   settings = boost::shared_ptr<Ekiga::Settings> (new Ekiga::Settings (SIP_SCHEMA));
   settings->changed.connect (boost::bind (&EndPoint::setup, this, _1));
+
+  manager.ready.connect (boost::bind (&EndPoint::setup, this, ""));
 }
 
 

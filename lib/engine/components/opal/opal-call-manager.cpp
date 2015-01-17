@@ -153,11 +153,6 @@ CallManager::CallManager (Ekiga::ServiceCore& core)
   video.deviceName = "EKIGA";
   SetVideoInputDevice (video);
 
-  // Create endpoints
-  pcssEP = new GMPCSSEndpoint (*this, core);
-  pcssEP->SetSoundChannelPlayDevice("EKIGA");
-  pcssEP->SetSoundChannelRecordDevice("EKIGA");
-
   // Media formats
   SetMediaFormatOrder (PStringArray ());
   SetMediaFormatMask (PStringArray ());
@@ -210,6 +205,21 @@ CallManager::CallManager (Ekiga::ServiceCore& core)
 
   boost::shared_ptr<Ekiga::PresenceCore> presence_core = core.get< Ekiga::PresenceCore > ("presence-core");
   presence_core->push_back (Ekiga::URIActionProviderPtr (this));
+
+  // Create endpoints / CallProtocolManagers
+  pcssEP = new GMPCSSEndpoint (*this, core);
+  pcssEP->SetSoundChannelPlayDevice("EKIGA");
+  pcssEP->SetSoundChannelRecordDevice("EKIGA");
+
+  boost::shared_ptr<Sip::EndPoint> sip_endpoint (new Sip::EndPoint (*this, core),
+                                                 null_deleter ());
+  add_protocol_manager (sip_endpoint);
+
+#ifdef HAVE_H323
+  boost::shared_ptr<H323::EndPoint> h323_endpoint (new H323::EndPoint (*this, core),
+                                                   null_deleter ());
+  add_protocol_manager (h323_endpoint);
+#endif
 }
 
 
@@ -834,11 +844,6 @@ CallManager::HandleSTUNResult ()
     }
     else {
 
-      if (sip_endpoint)
-        sip_endpoint->setup ("listen-port");
-      if (h323_endpoint)
-        h323_endpoint->setup ("listen-port");
-
       ready ();
     }
   }
@@ -908,23 +913,6 @@ CallManager::CreateVideoOutputDevice(const OpalConnection & connection,
   return device != NULL;
 }
 
-
-void
-CallManager::set_sip_endpoint (boost::shared_ptr<Opal::Sip::EndPoint> _sip_endpoint)
-{
-  sip_endpoint = _sip_endpoint;
-  add_protocol_manager (sip_endpoint);
-}
-
-
-#ifdef HAVE_H323
-void
-CallManager::set_h323_endpoint (boost::shared_ptr<Opal::H323::EndPoint> _h323_endpoint)
-{
-  h323_endpoint = _h323_endpoint;
-  add_protocol_manager (h323_endpoint);
-}
-#endif
 
 void
 CallManager::setup (const std::string & setting)

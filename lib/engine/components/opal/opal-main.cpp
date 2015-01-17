@@ -114,17 +114,7 @@ struct OPALSpark: public Ekiga::Spark
 
       boost::shared_ptr<CallManager> call_manager (new CallManager (core));
 
-      boost::shared_ptr<Sip::EndPoint> sip_manager (new Sip::EndPoint (*call_manager, core), null_deleter ());
-      sip_manager->setup ();
-      call_manager->set_sip_endpoint (sip_manager);
-
-#ifdef HAVE_H323
-      boost::shared_ptr<H323::EndPoint> h323_manager (new H323::EndPoint (*call_manager, core), null_deleter ());
-      h323_manager->setup ();
-      call_manager->set_h323_endpoint (h323_manager);
-#endif
-
-      boost::shared_ptr<Bank> bank (new Bank (core, *call_manager.get (), *sip_manager.get (), *h323_manager.get ()));
+      boost::shared_ptr<Bank> bank (new Bank (core, *call_manager.get ()));
       account_core->add_bank (bank);
       presence_core->add_cluster (bank);
       core.add (bank);
