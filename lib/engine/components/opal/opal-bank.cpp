@@ -52,6 +52,7 @@
 
 
 Opal::Bank::Bank (Ekiga::ServiceCore& core,
+                  Opal::CallManager& _call_manager,
                   Opal::Sip::EndPoint& _sip_endpoint,
                   Opal::H323::EndPoint& _h323_endpoint):
   is_call_manager_ready(false),
@@ -61,7 +62,7 @@ Opal::Bank::Bank (Ekiga::ServiceCore& core,
   notification_core(core.get<Ekiga::NotificationCore> ("notification-core")),
   personal_details(core.get<Ekiga::PersonalDetails> ("personal-details")),
   audiooutput_core(core.get<Ekiga::AudioOutputCore> ("audiooutput-core")),
-  opal_component(core.get<CallManager> ("opal-component"))
+  call_manager(_call_manager)
 {
   std::list<std::string> accounts;
   protocols_settings = new Ekiga::Settings (PROTOCOLS_SCHEMA);
@@ -96,7 +97,7 @@ Opal::Bank::Bank (Ekiga::ServiceCore& core,
                                                       notification_core,
                                                       personal_details,
                                                       audiooutput_core,
-                                                      opal_component,
+                                                      call_manager,
                                                       boost::bind(&Opal::Bank::existing_groups, this),
                                                       child));
 
@@ -271,7 +272,7 @@ Opal::Bank::add (Account::Type acc_type,
 				    notification_core,
 				    personal_details,
 				    audiooutput_core,
-				    opal_component,
+                                    call_manager,
 				    boost::bind(&Opal::Bank::existing_groups, this),
 				    child));
   Ekiga::BankImpl<Account>::add_connection (account, account->presentity_added.connect (boost::bind (boost::ref(presentity_added), account, _1)));

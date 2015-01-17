@@ -63,6 +63,7 @@ namespace Opal
 public:
 
     Bank (Ekiga::ServiceCore& _core,
+          Opal::CallManager& _call_manager,
           Opal::Sip::EndPoint& _sip_endpoint,
           Opal::H323::EndPoint& _h323_endpoint);
 
@@ -117,13 +118,14 @@ public:
 private:
     bool is_call_manager_ready;
 
+    CallManager& call_manager;
     Sip::EndPoint& sip_endpoint;
     H323::EndPoint& h323_endpoint;
+
     boost::weak_ptr<Ekiga::PresenceCore> presence_core;
     boost::shared_ptr<Ekiga::NotificationCore> notification_core;
     boost::shared_ptr<Ekiga::PersonalDetails> personal_details;
     boost::shared_ptr<Ekiga::AudioOutputCore> audiooutput_core;
-    boost::shared_ptr<CallManager> opal_component;
 
     boost::shared_ptr<xmlDoc> doc;
     xmlNodePtr node;

@@ -149,7 +149,7 @@ Opal::Account::Account (Opal::Bank & _bank,
 			boost::shared_ptr<Ekiga::NotificationCore> _notification_core,
 			boost::shared_ptr<Ekiga::PersonalDetails> _personal_details,
 			boost::shared_ptr<Ekiga::AudioOutputCore> _audiooutput_core,
-			boost::shared_ptr<CallManager> _call_manager,
+			CallManager& _call_manager,
 			boost::function0<std::list<std::string> > _existing_groups,
 			xmlNodePtr _node):
   existing_groups(_existing_groups),
@@ -921,7 +921,7 @@ Opal::Account::handle_registration_event (Ekiga::Account::RegistrationState stat
       failed_registration_already_notified = false;
 
       PURL url = PString (get_transaction_aor (get_aor ()));
-      presentity = call_manager->AddPresentity (url);
+      presentity = call_manager.AddPresentity (url);
       if (presentity) {
 
         presentity->SetPresenceChangeNotifier (PCREATE_PresenceChangeNotifier (OnPresenceChange));

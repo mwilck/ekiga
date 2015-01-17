@@ -72,7 +72,6 @@ namespace Opal {
 
   class CallManager :
     public boost::enable_shared_from_this<CallManager>,
-    public Ekiga::Service,
     public Ekiga::CallManager,
     public Ekiga::URIActionProvider,
     public OpalManager
@@ -89,14 +88,6 @@ public:
     void pull_actions (Ekiga::Actor & actor,
                        const std::string & name,
                        const std::string & uri);
-
-
-    /* Ekiga::Service implementation */
-    const std::string get_name () const
-      { return "opal-component"; }
-
-    const std::string get_description () const
-      { return "\tObject bringing in Opal support (calls, text messaging, sip, h323, ...)"; }
 
 
     /* Set up endpoint: all options or a specific setting */
