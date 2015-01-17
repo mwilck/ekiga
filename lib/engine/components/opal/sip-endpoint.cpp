@@ -141,8 +141,19 @@ Opal::Sip::EndPoint::dial (const std::string & uri)
   else
     ustr << uri;
 
+  PStringList registrations = GetRegistrations ();
+  SIPURL remote_uri = ustr.str ().c_str ();
+  for (int i = 0 ; i < registrations.GetSize () ; i++) {
+    SIPURL registered_uri = registrations [i];
+    if (registered_uri.GetHostPort () == remote_uri.GetHostPort ()) {
+      PString transport = registered_uri.GetParamVars ()("transport");
+      if (!transport.IsEmpty ())
+        ustr << ";transport=" << (const char *) transport;
+    }
+  }
+
   PString token;
-  manager.SetUpCall("pc:*", ustr.str(), token, (void*) ustr.str().c_str());
+  manager.SetUpCall ("pc:*", ustr.str(), token, (void*) ustr.str().c_str());
 
   return true;
 }
