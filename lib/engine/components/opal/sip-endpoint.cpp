@@ -838,10 +838,3 @@ Opal::Sip::EndPoint::push_message_in_main (const std::string uri,
 {
   dialect->push_message (uri, msg);
 }
-
-void
-Opal::Sip::EndPoint::update_aor_map (std::map<std::string, std::string> _accounts)
-{
-  PWaitAndSignal m(aorMutex);
-  accounts = _accounts;
-}

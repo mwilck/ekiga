@@ -115,11 +115,6 @@ Opal::Bank::Bank (Ekiga::ServiceCore& core,
 
   std::cout << "FIXME" << std::endl << std::flush;
   //sip_endpoint.mwi_event.connect (boost::bind(&Opal::Bank::on_mwi_event, this, _1, _2));
-
-  account_added.connect (boost::bind (&Opal::Bank::update_sip_endpoint_aor_map, this));
-  account_updated.connect (boost::bind (&Opal::Bank::update_sip_endpoint_aor_map, this));
-  account_removed.connect (boost::bind (&Opal::Bank::update_sip_endpoint_aor_map, this));
-  update_sip_endpoint_aor_map ();
 }
 
 
@@ -358,23 +353,6 @@ Opal::Bank::on_mwi_event (std::string aor,
 
   if (account)
     account->handle_message_waiting_information (info);
-}
-
-
-void
-Opal::Bank::update_sip_endpoint_aor_map ()
-{
-  /*
-  std::map<std::string, std::string> result;
-
-  for (iterator iter = begin ();
-       iter != end ();
-       ++iter)
-    result[(*iter)->get_host ()] = (*iter)->get_aor ();
-
-  sip_endpoint.update_aor_map (result);
-  */
-  std::cout << "FIXME" << std::endl << std::flush;
 }
 
 
