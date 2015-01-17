@@ -947,8 +947,6 @@ Opal::Account::handle_registration_event (Ekiga::Account::RegistrationState stat
       boost::shared_ptr<Ekiga::PersonalDetails> details = personal_details.lock ();
       if (details)
         const_cast<Account*>(this)->publish (*details);
-
-      Ekiga::Runtime::run_in_main (boost::ref (updated));
     }
     break;
 
@@ -960,7 +958,6 @@ Opal::Account::handle_registration_event (Ekiga::Account::RegistrationState stat
     failed_registration_already_notified = false;
     state = state_;
 
-    Ekiga::Runtime::run_in_main (boost::ref (updated));
     /* delay destruction of this account until the
        unsubscriber thread has called back */
     if (dead)
@@ -974,7 +971,6 @@ Opal::Account::handle_registration_event (Ekiga::Account::RegistrationState stat
     failed_registration_already_notified = false;
     if (!info.empty ())
       status = status + " (" + info + ")";
-    Ekiga::Runtime::run_in_main (boost::ref (updated));
     break;
 
   case RegistrationFailed:
@@ -1002,7 +998,6 @@ Opal::Account::handle_registration_event (Ekiga::Account::RegistrationState stat
         boost::shared_ptr<Ekiga::NotificationCore> ncore = notification_core.lock ();
         if (ncore)
           ncore->push_notification (notif);
-        Ekiga::Runtime::run_in_main (boost::ref (updated));
       }
       failed_registration_already_notified = true;
     }
@@ -1012,13 +1007,13 @@ Opal::Account::handle_registration_event (Ekiga::Account::RegistrationState stat
 
     state = state_;
     status = _("Processing...");
-    Ekiga::Runtime::run_in_main (boost::ref (updated));
   default:
 
     state = state_;
-    Ekiga::Runtime::run_in_main (boost::ref (updated));
     break;
   }
+
+  Ekiga::Runtime::run_in_main (boost::ref (updated));
 }
 
 
