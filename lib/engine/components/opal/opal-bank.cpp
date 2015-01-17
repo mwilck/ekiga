@@ -51,10 +51,12 @@
 #include "h323-endpoint.h"
 
 
-Opal::Bank::Bank (Ekiga::ServiceCore& core):
+Opal::Bank::Bank (Ekiga::ServiceCore& core,
+                  Opal::Sip::EndPoint& _sip_endpoint,
+                  Opal::H323::EndPoint& _h323_endpoint):
   is_call_manager_ready(false),
-  sip_endpoint(core.get<Opal::Sip::EndPoint> ("opal-sip-endpoint")),
-  h323_endpoint(core.get<Opal::H323::EndPoint> ("opal-h323-endpoint")),
+  sip_endpoint(_sip_endpoint),
+  h323_endpoint(_h323_endpoint),
   presence_core(core.get<Ekiga::PresenceCore> ("presence-core")),
   notification_core(core.get<Ekiga::NotificationCore> ("notification-core")),
   personal_details(core.get<Ekiga::PersonalDetails> ("personal-details")),
@@ -116,7 +118,7 @@ Opal::Bank::Bank (Ekiga::ServiceCore& core):
     }
   }
 
-  sip_endpoint->mwi_event.connect (boost::bind(&Opal::Bank::on_mwi_event, this, _1, _2));
+  sip_endpoint.mwi_event.connect (boost::bind(&Opal::Bank::on_mwi_event, this, _1, _2));
 
   account_added.connect (boost::bind (&Opal::Bank::update_sip_endpoint_aor_map, this));
   account_updated.connect (boost::bind (&Opal::Bank::update_sip_endpoint_aor_map, this));
@@ -375,7 +377,7 @@ Opal::Bank::update_sip_endpoint_aor_map ()
        ++iter)
     result[(*iter)->get_host ()] = (*iter)->get_aor ();
 
-  sip_endpoint->update_aor_map (result);
+  sip_endpoint.update_aor_map (result);
 }
 
 

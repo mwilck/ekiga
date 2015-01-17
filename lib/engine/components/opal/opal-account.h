@@ -87,8 +87,8 @@ public:
 				  unsigned timeout);
 
     Account (Opal::Bank & bank,
-             boost::shared_ptr<Opal::Sip::EndPoint> _sip_endpoint,
-             boost::shared_ptr<Opal::H323::EndPoint> _h323_endpoint,
+             Opal::Sip::EndPoint& _sip_endpoint,
+             Opal::H323::EndPoint& _h323_endpoint,
 	     boost::weak_ptr<Ekiga::PresenceCore> _presence_core,
 	     boost::shared_ptr<Ekiga::NotificationCore> _notification_core,
 	     boost::shared_ptr<Ekiga::PersonalDetails> _personal_details,
@@ -246,8 +246,8 @@ private:
 
     Opal::Bank & bank;
 
-    boost::shared_ptr<Opal::Sip::EndPoint> sip_endpoint;
-    boost::shared_ptr<Opal::H323::EndPoint> h323_endpoint;
+    Opal::Sip::EndPoint& sip_endpoint;
+    Opal::H323::EndPoint& h323_endpoint;
     boost::weak_ptr<Ekiga::PresenceCore> presence_core;
     boost::weak_ptr<Ekiga::NotificationCore> notification_core;
     boost::weak_ptr<Ekiga::PersonalDetails> personal_details;

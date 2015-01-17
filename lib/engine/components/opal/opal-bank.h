@@ -62,7 +62,9 @@ namespace Opal
     friend class Account;
 public:
 
-    Bank (Ekiga::ServiceCore &_core);
+    Bank (Ekiga::ServiceCore& _core,
+          Opal::Sip::EndPoint& _sip_endpoint,
+          Opal::H323::EndPoint& _h323_endpoint);
 
     ~Bank ();
 
@@ -115,8 +117,8 @@ public:
 private:
     bool is_call_manager_ready;
 
-    boost::shared_ptr<Opal::Sip::EndPoint> sip_endpoint;
-    boost::shared_ptr<Opal::H323::EndPoint> h323_endpoint;
+    Sip::EndPoint& sip_endpoint;
+    H323::EndPoint& h323_endpoint;
     boost::weak_ptr<Ekiga::PresenceCore> presence_core;
     boost::shared_ptr<Ekiga::NotificationCore> notification_core;
     boost::shared_ptr<Ekiga::PersonalDetails> personal_details;

@@ -102,12 +102,11 @@ struct OPALSpark: public Ekiga::Spark
     boost::shared_ptr<Ekiga::VideoOutputCore> videooutput_core = core.get<Ekiga::VideoOutputCore> ("videooutput-core");
     boost::shared_ptr<Ekiga::PersonalDetails> personal_details = core.get<Ekiga::PersonalDetails> ("personal-details");
     boost::shared_ptr<Bank> account_store = core.get<Bank> ("opal-account-store");
-    Ekiga::ServicePtr sip_endpoint = core.get ("opal-sip-endpoint");
 
     if (contact_core && presence_core && call_core && chat_core
 	&& account_core && audioinput_core && videoinput_core
 	&& audiooutput_core && videooutput_core && personal_details
-	&& !account_store && !sip_endpoint) {
+	&& !account_store) {
 
       PIPSocket::SetSuppressCanonicalName (true);  // avoid long delays
 
@@ -119,17 +118,14 @@ struct OPALSpark: public Ekiga::Spark
       boost::shared_ptr<Sip::EndPoint> sip_manager (new Sip::EndPoint (*call_manager, core), null_deleter ());
       sip_manager->setup ();
       call_manager->set_sip_endpoint (sip_manager);
-      core.add (sip_manager);
 
 #ifdef HAVE_H323
       boost::shared_ptr<H323::EndPoint> h323_manager (new H323::EndPoint (*call_manager, core), null_deleter ());
       h323_manager->setup ();
       call_manager->set_h323_endpoint (h323_manager);
-      core.add (h323_manager);
 #endif
 
-
-      boost::shared_ptr<Bank> bank (new Bank (core));
+      boost::shared_ptr<Bank> bank (new Bank (core, *sip_manager.get (), *h323_manager.get ()));
       account_core->add_bank (bank);
       presence_core->add_cluster (bank);
       core.add (bank);

@@ -58,7 +58,6 @@ namespace Opal {
   namespace Sip {
 
     class EndPoint : public SIPEndPoint,
-		     public Ekiga::Service,
 		     public Ekiga::CallProtocolManager
     {
       PCLASSINFO(EndPoint, SIPEndPoint);
@@ -75,13 +74,6 @@ namespace Opal {
 
       /* Set up endpoint: all options or a specific setting */
       void setup (std::string setting = "");
-
-      /* Service */
-      const std::string get_name () const
-      { return "opal-sip-endpoint"; }
-
-      const std::string get_description () const
-      { return "\tObject managing SIP objects with the Opal library"; }
 
 
       /* Chat subsystem */

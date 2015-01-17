@@ -143,8 +143,8 @@ Opal::Account::build_node(Opal::Account::Type typus,
 
 
 Opal::Account::Account (Opal::Bank & _bank,
-                        boost::shared_ptr<Opal::Sip::EndPoint> _sip_endpoint,
-                        boost::shared_ptr<Opal::H323::EndPoint> _h323_endpoint,
+                        Opal::Sip::EndPoint& _sip_endpoint,
+                        Opal::H323::EndPoint& _h323_endpoint,
 			boost::weak_ptr<Ekiga::PresenceCore> _presence_core,
 			boost::shared_ptr<Ekiga::NotificationCore> _notification_core,
 			boost::shared_ptr<Ekiga::PersonalDetails> _personal_details,
@@ -493,14 +493,14 @@ Opal::Account::enable ()
   /* Actual registration code */
   switch (type) {
   case Account::H323:
-    h323_endpoint->enable_account (*this);
+    h323_endpoint.enable_account (*this);
     break;
   case Account::SIP:
   case Account::DiamondCard:
   case Account::Ekiga:
   default:
     // Register the given aor to the given registrar
-    sip_endpoint->enable_account (*this);
+    sip_endpoint.enable_account (*this);
     break;
   }
   updated ();
@@ -519,7 +519,7 @@ Opal::Account::disable ()
   /* Actual unregistration code */
   switch (type) {
   case Account::H323:
-    h323_endpoint->disable_account (*this);
+    h323_endpoint.disable_account (*this);
     break;
   case Account::SIP:
   case Account::DiamondCard:
@@ -536,13 +536,13 @@ Opal::Account::disable ()
       }
 
       if (type != Account::H323) {
-        sip_endpoint->Unsubscribe (SIPSubscribe::MessageSummary, get_transaction_aor (get_aor ()));
+        sip_endpoint.Unsubscribe (SIPSubscribe::MessageSummary, get_transaction_aor (get_aor ()));
       }
 
       presentity->Close ();
     }
     // Register the given aor to the given registrar
-    sip_endpoint->disable_account (*this);
+    sip_endpoint.disable_account (*this);
     break;
   }
 
@@ -941,7 +941,7 @@ Opal::Account::handle_registration_event (Ekiga::Account::RegistrationState stat
 
         presentity->SetLocalPresence (personal_state, presence_status);
         if (type != Account::H323) {
-          sip_endpoint->Subscribe (SIPSubscribe::MessageSummary, 3600, get_transaction_aor (get_aor ()));
+          sip_endpoint.Subscribe (SIPSubscribe::MessageSummary, 3600, get_transaction_aor (get_aor ()));
         }
       }
       boost::shared_ptr<Ekiga::PersonalDetails> details = personal_details.lock ();
@@ -1337,7 +1337,7 @@ Opal::Account::decide_type ()
 const std::string
 Opal::Account::get_transaction_aor (const std::string & aor) const
 {
-  if (sip_endpoint->IsRegistered (get_aor () + ";transport=tcp"))
+  if (sip_endpoint.IsRegistered (get_aor () + ";transport=tcp"))
     return aor + ";transport=tcp";
   else
     return aor;
