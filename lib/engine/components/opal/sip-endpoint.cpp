@@ -354,11 +354,9 @@ Opal::Sip::EndPoint::enable_account (Account & account)
   // Register the given aor to the given registrar
   if (!SIPEndPoint::Register (params, _aor)) {
     params.m_addressOfRecord = "sip:" + account.get_username () + "@" + account.get_host ();
-    std::cout << "Failed " << std::endl << std::flush;
     if (!SIPEndPoint::Register (params, _aor)) {
       account.handle_registration_event (Account::RegistrationFailed,
                                          _("Transport error"));
-      std::cout << "Failed 2" << std::endl << std::flush;
     }
   }
 }
