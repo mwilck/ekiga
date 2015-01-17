@@ -149,10 +149,6 @@ namespace Opal {
       void OnMESSAGECompleted (const SIPMessage::Params & params,
                                SIP_PDU::StatusCodes reason);
 
-      // FIXME: unneeded
-      SIPURL GetRegisteredPartyName (const SIPURL & host,
-				     const OpalTransport & transport);
-
 
       /* Callbacks */
     private:

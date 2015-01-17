@@ -790,21 +790,6 @@ Opal::Sip::EndPoint::OnMESSAGECompleted (const SIPMessage::Params & params,
 }
 
 
-SIPURL
-Opal::Sip::EndPoint::GetRegisteredPartyName (const SIPURL & aor,
-					     const OpalTransport & transport)
-{
-  PWaitAndSignal m(aorMutex);
-  std::string local_aor = accounts[(const char*) aor.GetHostName ()];
-
-  if (!local_aor.empty ())
-    return local_aor.c_str ();
-
-  // as a last resort, use the local address
-  return GetDefaultLocalURL (transport);
-}
-
-
 void
 Opal::Sip::EndPoint::OnDialogInfoReceived (const SIPDialogNotification & info)
 {
