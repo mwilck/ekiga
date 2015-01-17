@@ -343,9 +343,12 @@ Opal::Sip::EndPoint::enable_account (Account & account)
   // Register the given aor to the given registrar
   if (!SIPEndPoint::Register (params, _aor)) {
     params.m_addressOfRecord = "sip:" + account.get_username () + "@" + account.get_host ();
-    if (!SIPEndPoint::Register (params, _aor))
+    std::cout << "Failed " << std::endl << std::flush;
+    if (!SIPEndPoint::Register (params, _aor)) {
       account.handle_registration_event (Account::RegistrationFailed,
                                          _("Transport error"));
+      std::cout << "Failed 2" << std::endl << std::flush;
+    }
   }
 }
 
@@ -378,6 +381,15 @@ Opal::Sip::EndPoint::OnRegistrationStatus (const RegistrationStatus & status)
     return;
 
   SIPEndPoint::OnRegistrationStatus (status);
+  /* Only handle registration state transitions we are interested in.
+   *
+   * For example, if we were registering, we are interested in knowing if
+   * the registration was successful or not. If the registration was not
+   * successful and OPAL cleanly unregisters the account (as a consequence),
+   * we are not interested in knowing the unregistration worked.
+   */
+  if (status.m_wasRegistering != account->is_enabled ())
+    return;
 
   /* Successful registration or unregistration */
   if (status.m_reason == SIP_PDU::Successful_OK) {
@@ -637,9 +649,10 @@ Opal::Sip::EndPoint::OnRegistrationStatus (const RegistrationStatus & status)
     /* Opal adds a RequestTerminated, and this should not be shown to user,
      * as a sip code has already been scheduled to be shown
      */
-    if (status.m_reason != SIP_PDU::Failure_RequestTerminated)
+    if (status.m_reason != SIP_PDU::Failure_RequestTerminated) {
       account->handle_registration_event (status.m_wasRegistering?Account::RegistrationFailed:Account::UnregistrationFailed,
                                           info);
+    }
   }
 }
 
