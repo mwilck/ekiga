@@ -126,6 +126,7 @@ CallManager::CallManager (Ekiga::ServiceCore& core)
 #else
   PIPSocket::SetDefaultIpAddressFamilyV4();
 #endif
+  PIPSocket::SetSuppressCanonicalName (true);  // avoid long delays
   SetAutoStartTransmitVideo (true);
   SetAutoStartReceiveVideo (true);
   SetUDPPorts (5000, 5100);

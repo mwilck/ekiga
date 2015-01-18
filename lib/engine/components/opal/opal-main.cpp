@@ -108,8 +108,6 @@ struct OPALSpark: public Ekiga::Spark
 	&& audiooutput_core && videooutput_core && personal_details
 	&& !account_store) {
 
-      PIPSocket::SetSuppressCanonicalName (true);  // avoid long delays
-
       hook_ekiga_plugins_to_opal (core);
 
       boost::shared_ptr<CallManager> call_manager (new CallManager (core));
