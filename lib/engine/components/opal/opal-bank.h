@@ -99,8 +99,6 @@ public:
      */
     AccountPtr find_account (const std::string& aor);
 
-    void call_manager_ready ();
-
     /* this object is an Ekiga::Cluster */
     void visit_heaps (boost::function1<bool, Ekiga::HeapPtr> visitor) const;
 
@@ -114,7 +112,8 @@ public:
     static void migrate_from_gconf (const std::list<std::string> old);
 
 private:
-    bool is_call_manager_ready;
+    void set_ready ();
+    bool is_ready;
 
     CallManager& call_manager;
 

@@ -53,13 +53,14 @@
 
 Opal::Bank::Bank (Ekiga::ServiceCore& core,
                   Opal::CallManager& _call_manager):
-  is_call_manager_ready(false),
+  call_manager(_call_manager),
   presence_core(core.get<Ekiga::PresenceCore> ("presence-core")),
   notification_core(core.get<Ekiga::NotificationCore> ("notification-core")),
   personal_details(core.get<Ekiga::PersonalDetails> ("personal-details")),
-  audiooutput_core(core.get<Ekiga::AudioOutputCore> ("audiooutput-core")),
-  call_manager(_call_manager)
+  audiooutput_core(core.get<Ekiga::AudioOutputCore> ("audiooutput-core"))
 {
+  is_ready = false;
+
   std::list<std::string> accounts;
   protocols_settings = new Ekiga::Settings (PROTOCOLS_SCHEMA);
 
@@ -115,6 +116,9 @@ Opal::Bank::Bank (Ekiga::ServiceCore& core,
 
   std::cout << "FIXME" << std::endl << std::flush;
   //sip_endpoint.mwi_event.connect (boost::bind(&Opal::Bank::on_mwi_event, this, _1, _2));
+
+  // Enable accounts when the manager is ready
+  call_manager.ready.connect (boost::bind (&Opal::Bank::set_ready, this));
 }
 
 
@@ -273,15 +277,15 @@ Opal::Bank::add (Account::Type acc_type,
   add_account (account);
   heap_added (account);
 
-  if (is_call_manager_ready && enabled)
+  if (is_ready && enabled)
     account->enable ();
 }
 
 
 void
-Opal::Bank::call_manager_ready ()
+Opal::Bank::set_ready ()
 {
-  is_call_manager_ready = true;
+  is_ready = true;
   for (iterator iter = begin ();
        iter != end ();
        ++iter) {
