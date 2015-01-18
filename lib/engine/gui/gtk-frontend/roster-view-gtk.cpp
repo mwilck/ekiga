@@ -1078,8 +1078,11 @@ on_heap_removed (RosterViewGtk* self,
   GtkTreeIter heap_iter;
   GtkTreeIter group_iter;
   guint timeout = 0;
+  GtkTreeSelection* selection = gtk_tree_view_get_selection (self->priv->tree_view);
 
   roster_view_gtk_find_iter_for_heap (self, heap, &heap_iter);
+
+  gtk_tree_selection_unselect_all (selection);
 
   // Remove all timeout-based effects for the heap presentities
   if (gtk_tree_model_iter_nth_child (GTK_TREE_MODEL (self->priv->store),
@@ -1489,8 +1492,10 @@ roster_view_gtk_update_groups (RosterViewGtk *view,
                                                   (GCompareFunc) g_ascii_strcasecmp);
 
           path = gtk_tree_model_get_path (model, heap_iter);
-          gtk_tree_view_expand_row (view->priv->tree_view, path, FALSE);
-          gtk_tree_path_free (path);
+          if (path) {
+            gtk_tree_view_expand_row (view->priv->tree_view, path, FALSE);
+            gtk_tree_path_free (path);
+          }
 
           path = gtk_tree_model_get_path (model, &iter);
           if (path) {
