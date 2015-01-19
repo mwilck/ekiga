@@ -56,7 +56,6 @@ namespace Opal
       public Ekiga::BankImpl<Account>,
       public Ekiga::Cluster,
       public Ekiga::PresencePublisher,
-      public Ekiga::PresenceFetcher,
       public Ekiga::Service
   {
     friend class Account;
@@ -81,14 +80,6 @@ public:
     void new_account (Account::Type acc_type,
                       std::string username = "",
                       std::string password = "");
-
-    /*
-     * this object is an Ekiga::PresenceFetcher
-     * (but it doesn't take orders : it just makes available to all of
-     * ekiga what it knows -- it is useful to have presence&status in chats)
-     */
-    void fetch (const std::string) {}
-    void unfetch (const std::string) {}
 
 
     /** Find the account with the given address of record in the Bank

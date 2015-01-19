@@ -769,10 +769,6 @@ Opal::Account::on_edit_form_submitted (bool submitted,
 void
 Opal::Account::add_contact ()
 {
-  boost::shared_ptr<Ekiga::PresenceCore> pcore = presence_core.lock ();
-  if (!pcore)
-    return;
-
   boost::shared_ptr<Ekiga::FormRequestSimple> request =
     boost::shared_ptr<Ekiga::FormRequestSimple> (new Ekiga::FormRequestSimple (boost::bind (&Opal::Account::on_add_contact_form_submitted, this, _1, _2, _3)));
   std::list<std::string> groups = existing_groups ();
@@ -799,10 +795,6 @@ Opal::Account::on_add_contact_form_submitted (bool submitted,
   if (!submitted)
     return false;
 
-  boost::shared_ptr<Ekiga::PresenceCore> pcore = presence_core.lock ();
-  if (!pcore)
-    return false;
-
   const std::string name = result.text ("name");
   std::string uri;
   const std::list<std::string> groups = result.editable_list ("groups");
@@ -810,7 +802,7 @@ Opal::Account::on_add_contact_form_submitted (bool submitted,
   uri = result.text ("uri");
   uri = canonize_uri (uri);
 
-  if (pcore->is_supported_uri (uri)) {
+  if (is_supported_uri (uri)) {
 
     xmlNodePtr presnode = Opal::Presentity::build_node (name, uri, groups);
     xmlAddChild (roster_node, presnode);
@@ -829,7 +821,7 @@ Opal::Account::on_add_contact_form_submitted (bool submitted,
   }
   else {
 
-    if (!pcore->is_supported_uri (uri))
+    if (is_supported_uri (uri))
       error = _("You supplied an unsupported address");
     else
       error = _("You already have a contact with this address!");
@@ -843,22 +835,6 @@ Opal::Account::on_consult (const std::string url)
 {
   gm_platform_open_uri (url.c_str ());
 }
-
-
-bool
-Opal::Account::is_myself (const std::string uri) const
-{
-  size_t pos = uri.find ("@");
-  if (pos == string::npos)
-    return false;
-
-  std::string uri_host = uri.substr (++pos);
-  if (uri_host != get_host ())
-    return false;
-
-  return true;
-}
-
 
 void
 Opal::Account::publish (const Ekiga::PersonalDetails& details)
@@ -879,10 +855,10 @@ Opal::Account::publish (const Ekiga::PersonalDetails& details)
 
 
 void
-Opal::Account::fetch (const std::string uri) const
+Opal::Account::fetch (const std::string uri)
 {
   // Check if this is a presentity we watch
-  if (!is_myself (uri))
+  if (!is_supported_uri (uri))
     return;
 
   // Account is disabled, bye
@@ -898,12 +874,27 @@ Opal::Account::fetch (const std::string uri) const
 
 
 void
-Opal::Account::unfetch (const std::string uri) const
+Opal::Account::unfetch (const std::string uri)
 {
-  if (is_myself (uri) && presentity) {
+  if (is_supported_uri (uri) && presentity) {
     presentity->UnsubscribeFromPresence (get_transaction_aor (uri).c_str ());
     Ekiga::Runtime::run_in_main (boost::bind (&Opal::Account::presence_status_in_main, this, uri, "unknown", ""));
   }
+}
+
+
+bool
+Opal::Account::is_supported_uri (const std::string & uri)
+{
+  size_t pos = uri.find ("@");
+  if (pos == string::npos)
+    return false;
+
+  std::string uri_host = uri.substr (++pos);
+  if (uri_host != get_host ())
+    return false;
+
+  return true;
 }
 
 

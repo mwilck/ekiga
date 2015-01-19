@@ -62,24 +62,10 @@ struct null_deleter
     { }
 };
 
-static bool
-is_supported_address (const std::string uri)
-{
-#ifdef HAVE_H323
-  if (uri.find ("h323:") == 0)
-    return true;
-#endif
-
-  if (uri.find ("sip:") == 0)
-    return true;
-
-  return false;
-}
 
 /* FIXME: add here an Ekiga::Service which will add&remove publishers,
  * and fetchers
  */
-
 using namespace Opal;
 
 struct OPALSpark: public Ekiga::Spark
@@ -118,11 +104,8 @@ struct OPALSpark: public Ekiga::Spark
       core.add (bank);
       call_manager->setup ();
       presence_core->add_presence_publisher (bank);
-      presence_core->add_presence_fetcher (bank);
 
       call_core->add_manager (call_manager);
-
-      presence_core->add_supported_uri (&is_supported_address); //FIXME
 
       result = true;
     }

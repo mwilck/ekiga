@@ -128,6 +128,12 @@ Ekiga::PresenceCore::add_presence_fetcher (boost::shared_ptr<PresenceFetcher> fe
 }
 
 void
+Ekiga::PresenceCore::remove_presence_fetcher (boost::shared_ptr<PresenceFetcher> fetcher)
+{
+  presence_fetchers.remove (fetcher);
+}
+
+void
 Ekiga::PresenceCore::fetch_presence (const std::string uri)
 {
   uri_infos[uri].count++;
@@ -161,6 +167,18 @@ void Ekiga::PresenceCore::unfetch_presence (const std::string uri)
   }
 }
 
+bool Ekiga::PresenceCore::is_supported_uri (const std::string & uri)
+{
+  for (std::list<boost::shared_ptr<PresenceFetcher> >::iterator iter
+       = presence_fetchers.begin ();
+       iter != presence_fetchers.end ();
+       ++iter)
+    if ((*iter)->is_supported_uri (uri))
+      return true;
+
+  return false;
+}
+
 void
 Ekiga::PresenceCore::on_presence_received (const std::string uri,
 					   const std::string presence)
@@ -191,24 +209,4 @@ Ekiga::PresenceCore::publish ()
        iter != presence_publishers.end ();
        ++iter)
     (*iter)->publish (*details);
-}
-
-bool
-Ekiga::PresenceCore::is_supported_uri (const std::string uri) const
-{
-  bool result = false;
-
-  for (std::list<boost::function1<bool, std::string> >::const_iterator iter
-	 = uri_testers.begin ();
-       iter != uri_testers.end () && result == false;
-       iter++)
-    result = (*iter) (uri);
-
-  return result;
-}
-
-void
-Ekiga::PresenceCore::add_supported_uri (boost::function1<bool,std::string> tester)
-{
-  uri_testers.push_back (tester);
 }

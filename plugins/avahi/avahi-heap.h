@@ -77,6 +77,7 @@ namespace Avahi
     /* the PresenceFetcher interface : we don't do what we're told ;-) */
     void fetch (std::string) {}
     void unfetch (std::string) {}
+    bool is_supported_uri (const std::string &) { return true; }
 
     /* these should be private but are called from C code */
 

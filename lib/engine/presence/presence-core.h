@@ -70,6 +70,13 @@ namespace Ekiga
      */
     virtual void unfetch (const std::string /*uri*/) = 0;
 
+    /* Return true if URI can be handled by the PresenceFetcher,
+     * false otherwise.
+     * @param the URI to test
+     * @return true of the URI can be handled, false otherwise
+     */
+    virtual bool is_supported_uri (const std::string & /*uri*/) = 0;
+
     /** Those signals are emitted whenever this presence fetcher gets
      * presence information about an uri it was required to handle.
      * The information is given as a pair of strings (uri, data).
@@ -193,6 +200,11 @@ namespace Ekiga
      */
     void add_presence_fetcher (boost::shared_ptr<PresenceFetcher> fetcher);
 
+    /** Removes a fetcher from the pool of presentce fetchers.
+     * @param The presence fetcher.
+     */
+    void remove_presence_fetcher (boost::shared_ptr<PresenceFetcher> fetcher);
+
     /** Tells the PresenceCore that someone is interested in presence
      * information for the given uri.
      * @param: The uri for which presence is requested.
@@ -204,6 +216,13 @@ namespace Ekiga
      * @param: The uri for which presence isn't requested anymore.
      */
     void unfetch_presence (const std::string uri);
+
+    /* Return true if URI can be handled by the PresenceCore,
+     * false otherwise.
+     * @param the URI to test
+     * @return true of the URI can be handled, false otherwise
+     */
+    bool is_supported_uri (const std::string & uri);
 
     /** Those signals are emitted whenever information has been received
      * about an uri ; the information is a pair of strings (uri, information).
@@ -239,24 +258,6 @@ namespace Ekiga
 
     std::list<boost::shared_ptr<PresencePublisher> > presence_publishers;
     void publish ();
-
-    /*** API to control which uri are supported by runtime ***/
-  public:
-
-    /** Decides whether an uri is supported by the PresenceCore
-     * @param The uri to test for support
-     * @return True if the uri is supported
-     */
-    bool is_supported_uri (const std::string uri) const;
-
-    /** Adds an uri tester to the PresenceCore
-     * @param The tester
-     */
-    void add_supported_uri (boost::function1<bool,std::string> tester);
-
-  private:
-
-    std::list<boost::function1<bool, std::string> > uri_testers;
 
     /*** LiveObject implementation ***/
 

@@ -106,11 +106,13 @@ Opal::Bank::Bank (Ekiga::ServiceCore& core,
       Ekiga::BankImpl<Account>::add_connection (account, account->Account::questions.connect (boost::ref(Ekiga::Bank::questions)));
 
       Ekiga::BankImpl<Account>::add_connection (account, account->trigger_saving.connect (boost::bind (&Opal::Bank::save, this)));
-      Ekiga::BankImpl<Account>::add_connection (account, account->presence_received.connect (boost::ref (presence_received)));
-      Ekiga::BankImpl<Account>::add_connection (account, account->status_received.connect (boost::ref (status_received)));
       Ekiga::BankImpl<Account>::add_connection (account, account->removed.connect (boost::bind (&Opal::Bank::on_account_removed, this, account)));
       add_account (account);
       heap_added (account);
+
+      boost::shared_ptr<Ekiga::PresenceCore> pcore = presence_core.lock ();
+      if (pcore)
+        pcore->add_presence_fetcher (account);
     }
   }
 
@@ -271,11 +273,13 @@ Opal::Bank::add (Account::Type acc_type,
   Ekiga::BankImpl<Account>::add_connection (account, account->presentity_updated.connect (boost::bind (boost::ref(presentity_updated), account, _1)));
   Ekiga::BankImpl<Account>::add_connection (account, account->presentity_removed.connect (boost::bind (boost::ref(presentity_removed), account, _1)));
   Ekiga::BankImpl<Account>::add_connection (account, account->trigger_saving.connect (boost::bind (&Opal::Bank::save, this)));
-  Ekiga::BankImpl<Account>::add_connection (account, account->presence_received.connect (boost::ref (presence_received)));
-  Ekiga::BankImpl<Account>::add_connection (account, account->status_received.connect (boost::ref (status_received)));
   Ekiga::BankImpl<Account>::add_connection (account, account->removed.connect (boost::bind (&Opal::Bank::on_account_removed, this, account)));
   add_account (account);
   heap_added (account);
+
+  boost::shared_ptr<Ekiga::PresenceCore> pcore = presence_core.lock ();
+  if (pcore)
+    pcore->add_presence_fetcher (account);
 
   if (is_ready && enabled)
     account->enable ();
@@ -334,6 +338,10 @@ Opal::Bank::save () const
 void
 Opal::Bank::on_account_removed (boost::shared_ptr<Account> account)
 {
+  boost::shared_ptr<Ekiga::PresenceCore> pcore = presence_core.lock ();
+  if (pcore)
+    pcore->remove_presence_fetcher (account);
+
   heap_removed (account);
   remove_account (account);
 }

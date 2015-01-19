@@ -70,7 +70,8 @@ namespace Opal
     public Ekiga::Account,
     public Ekiga::Heap,
     protected Ekiga::RefLister<Presentity>,
-    public Ekiga::PresencePublisher
+    public Ekiga::PresencePublisher,
+    public Ekiga::PresenceFetcher
   {
     friend class Opal::Presentity;
 public:
@@ -184,18 +185,13 @@ public:
     /* This part of the api is the implementation of Ekiga::Heap */
     void visit_presentities (boost::function1<bool, Ekiga::PresentityPtr > visitor) const;
 
-    /* This object is not an Ekiga::PresenceFetcher, but Opal::Bank is,
-     * this is where the information comes from
-     */
-    boost::signals2::signal<void(std::string, std::string)> presence_received;
-    boost::signals2::signal<void(std::string, std::string)> status_received;
-
 protected:
     void on_rename_group (Opal::PresentityPtr pres);
 
 private:
-    void fetch (const std::string uri) const;
-    void unfetch (const std::string uri) const;
+    void fetch (const std::string uri);
+    void unfetch (const std::string uri);
+    bool is_supported_uri (const std::string & uri);
 
     void decide_type ();
 
@@ -210,7 +206,6 @@ private:
 				 Ekiga::Form &result,
                                  std::string& error);
     void on_consult (const std::string url);
-    bool is_myself (const std::string uri) const;
 
     bool on_rename_group_form_submitted (bool submitted,
                                          Ekiga::Form& result,
