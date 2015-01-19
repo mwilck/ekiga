@@ -92,6 +92,7 @@ enum {
 };
 
 static void gm_video_widget_actor_scale (ClutterActor *actor,
+                                         const unsigned available_width,
                                          const unsigned available_height,
                                          const unsigned width,
                                          const unsigned height);
@@ -374,6 +375,7 @@ gm_video_widget_init (GmVideoWidget* self)
  */
 static void
 gm_video_widget_actor_scale (ClutterActor *actor,
+                             const unsigned available_width,
                              const unsigned available_height,
                              const unsigned width,
                              const unsigned height)
@@ -381,6 +383,8 @@ gm_video_widget_actor_scale (ClutterActor *actor,
   gfloat zoom = 0;
 
   zoom = (gfloat) available_height / height;
+  if (zoom > (gfloat) available_width / width)
+    zoom = (gfloat) available_width / width;
   clutter_actor_set_size (actor, width * zoom, height * zoom);
 }
 
@@ -409,6 +413,7 @@ gm_video_widget_stream_resize (GmVideoWidget *self,
     clutter_actor_set_easing_duration (self->priv->stream[type],
                                        self->priv->animation_duration);
     gm_video_widget_actor_scale (self->priv->stream[type],
+                                 self->priv->available_width * ratio,
                                  self->priv->available_height * ratio,
                                  self->priv->natural_width[type],
                                  self->priv->natural_height[type]);
@@ -480,6 +485,7 @@ gm_video_widget_update_emblem (GmVideoWidget *self)
     clutter_actor_set_margin_top (self->priv->emblem, self->priv->logo_margin);
     clutter_actor_set_margin_right (self->priv->emblem, self->priv->logo_margin);
     gm_video_widget_actor_scale (self->priv->emblem,
+                                 self->priv->available_width * self->priv->logo_scale,
                                  self->priv->available_height * self->priv->logo_scale,
                                  self->priv->logo_width,
                                  self->priv->logo_height);
