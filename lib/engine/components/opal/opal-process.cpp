@@ -43,8 +43,9 @@
 
 #include "runtime.h"
 
-#define new PNEW
-
+#include "call-core.h"
+#include "account-core.h"
+#include "presence-core.h"
 
 GnomeMeeting *GnomeMeeting::GM = 0;
 
@@ -56,6 +57,9 @@ GnomeMeeting::GnomeMeeting ()
   GM = this;
 }
 
+GnomeMeeting::~GnomeMeeting ()
+{
+}
 
 GnomeMeeting *
 GnomeMeeting::Process ()
@@ -66,4 +70,22 @@ GnomeMeeting::Process ()
 
 void GnomeMeeting::Main ()
 {
+}
+
+
+void GnomeMeeting::Start (Ekiga::ServiceCore& core)
+{
+  boost::shared_ptr<Ekiga::CallCore> call_core = core.get<Ekiga::CallCore> ("call-core");
+  boost::shared_ptr<Ekiga::PresenceCore> presence_core = core.get<Ekiga::PresenceCore> ("presence-core");
+  boost::shared_ptr<Ekiga::AccountCore> account_core = core.get<Ekiga::AccountCore> ("account-core");
+
+  call_manager = boost::shared_ptr<Opal::CallManager> (new Opal::CallManager (core));
+  bank = boost::shared_ptr<Opal::Bank> (new Opal::Bank (core, call_manager));
+  account_core->add_bank (bank);
+  presence_core->add_cluster (bank);
+  core.add (bank);
+  call_manager->setup ();
+  presence_core->add_presence_publisher (bank);
+
+  call_core->add_manager (call_manager);
 }

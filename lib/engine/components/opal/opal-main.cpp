@@ -94,18 +94,8 @@ struct OPALSpark: public Ekiga::Spark
 	&& audiooutput_core && videooutput_core && personal_details
 	&& !account_store) {
 
+      GnomeMeeting::Process ()->Start (core);
       hook_ekiga_plugins_to_opal (core);
-
-      boost::shared_ptr<CallManager> call_manager (new CallManager (core));
-
-      boost::shared_ptr<Bank> bank (new Bank (core, *call_manager.get ()));
-      account_core->add_bank (bank);
-      presence_core->add_cluster (bank);
-      core.add (bank);
-      call_manager->setup ();
-      presence_core->add_presence_publisher (bank);
-
-      call_core->add_manager (call_manager);
 
       result = true;
     }

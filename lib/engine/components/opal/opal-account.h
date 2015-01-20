@@ -92,7 +92,7 @@ public:
 	     boost::shared_ptr<Ekiga::NotificationCore> _notification_core,
 	     boost::shared_ptr<Ekiga::PersonalDetails> _personal_details,
 	     boost::shared_ptr<Ekiga::AudioOutputCore> _audiooutput_core,
-	     CallManager& _call_manager,
+	     boost::shared_ptr<Opal::CallManager> _call_manager,
 	     boost::function0<std::list<std::string> > _existing_groups,
 	     xmlNodePtr node_);
 
@@ -248,7 +248,7 @@ private:
     boost::weak_ptr<Ekiga::PersonalDetails> personal_details;
     boost::weak_ptr<Ekiga::AudioOutputCore> audiooutput_core;
 
-    CallManager& call_manager;
+    boost::shared_ptr<Opal::CallManager> call_manager;
   };
 
   typedef boost::shared_ptr<Account> AccountPtr;

@@ -43,6 +43,10 @@
 #include <ptlib.h>
 #include <ptlib/pprocess.h>
 
+#include "services.h"
+#include "opal-call-manager.h"
+#include "opal-bank.h"
+
 /**
  * COMMON NOTICE: The Application must be initialized with Init after its
  * creation.
@@ -50,6 +54,9 @@
 class GnomeMeeting : public PProcess
 {
   PCLASSINFO(GnomeMeeting, PProcess);
+  class CallManager;
+  class Bank;
+
 
  public:
 
@@ -59,15 +66,19 @@ class GnomeMeeting : public PProcess
    * PRE          :  /
    */
   GnomeMeeting ();
+  ~GnomeMeeting ();
 
-  /* Needed for PProcess */
   void Main();
+
+  void Start (Ekiga::ServiceCore& core);
 
   static GnomeMeeting *Process ();
 
  private:
 
   static GnomeMeeting *GM;
+  boost::shared_ptr<Opal::CallManager> call_manager;
+  boost::shared_ptr<Opal::Bank> bank;
 };
 
 #endif

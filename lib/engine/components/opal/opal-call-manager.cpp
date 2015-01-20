@@ -226,7 +226,6 @@ CallManager::CallManager (Ekiga::ServiceCore& core)
 
 CallManager::~CallManager ()
 {
-  std::cout << "CallManager exit " << std::endl << std::flush;
   if (stun_thread)
     stun_thread->WaitForTermination ();
   ClearAllCalls (OpalConnection::EndedByLocalUser, true);

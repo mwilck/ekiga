@@ -52,7 +52,7 @@
 
 
 Opal::Bank::Bank (Ekiga::ServiceCore& core,
-                  Opal::CallManager& _call_manager):
+                  boost::shared_ptr<Opal::CallManager> _call_manager):
   call_manager(_call_manager),
   presence_core(core.get<Ekiga::PresenceCore> ("presence-core")),
   notification_core(core.get<Ekiga::NotificationCore> ("notification-core")),
@@ -120,7 +120,7 @@ Opal::Bank::Bank (Ekiga::ServiceCore& core,
   //sip_endpoint.mwi_event.connect (boost::bind(&Opal::Bank::on_mwi_event, this, _1, _2));
 
   // Enable accounts when the manager is ready
-  call_manager.ready.connect (boost::bind (&Opal::Bank::set_ready, this));
+  call_manager->ready.connect (boost::bind (&Opal::Bank::set_ready, this));
 }
 
 

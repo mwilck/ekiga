@@ -62,7 +62,7 @@ namespace Opal
 public:
 
     Bank (Ekiga::ServiceCore& _core,
-          Opal::CallManager& _call_manager);
+          boost::shared_ptr<Opal::CallManager> _call_manager);
 
     ~Bank ();
 
@@ -106,7 +106,7 @@ private:
     void set_ready ();
     bool is_ready;
 
-    CallManager& call_manager;
+    boost::shared_ptr<Opal::CallManager> call_manager;
 
     boost::weak_ptr<Ekiga::PresenceCore> presence_core;
     boost::shared_ptr<Ekiga::NotificationCore> notification_core;
