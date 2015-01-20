@@ -41,6 +41,70 @@
 #include "sip-endpoint.h"
 #include "chat-core.h"
 
+namespace Opal {
+
+  namespace Sip {
+
+    class registrar_handler : public PThread
+    {
+      PCLASSINFO (registrar_handler, PThread);
+
+  public:
+
+      registrar_handler (Opal::Account & _account,
+                         Opal::Sip::EndPoint& _ep,
+                         bool _registering)
+        : PThread (1000, AutoDeleteThread),
+        account (_account),
+        ep (_ep),
+        registering (_registering)
+      {
+        this->Resume ();
+      }
+
+      void Main ()
+      {
+        if (registering) {
+          PString _aor;
+
+          SIPRegister::Params params;
+          params.m_addressOfRecord = "sip:" + account.get_username () + "@" + account.get_host () + ";transport=tcp";
+          params.m_compatibility = SIPRegister::e_RFC5626;
+          params.m_authID = account.get_authentication_username ();
+          params.m_password = account.get_password ();
+          params.m_expire = account.is_enabled () ? account.get_timeout () : 0;
+          params.m_minRetryTime = PMaxTimeInterval;  // use default value
+          params.m_maxRetryTime = PMaxTimeInterval;  // use default value
+
+          // Register the given aor to the given registrar
+          if (!ep.Register (params, _aor)) {
+            params.m_addressOfRecord = "sip:" + account.get_username () + "@" + account.get_host ();
+            if (!ep.Register (params, _aor)) {
+              account.handle_registration_event (Account::RegistrationFailed,
+                                                 _("Transport error"));
+            }
+          }
+        }
+        else {
+          PString aor = "sip:" + account.get_username () + "@" + account.get_host ();
+          if (!ep.IsRegistered (aor))
+            aor += ";transport=tcp";
+
+          if (!ep.IsRegistered (aor))
+            return;
+
+          ep.Unregister (aor);
+        }
+      }
+
+  private:
+      Opal::Account & account;
+      Opal::Sip::EndPoint& ep;
+      bool registering;
+    };
+  };
+};
+
 
 /* The class */
 Opal::Sip::EndPoint::EndPoint (Opal::CallManager & _manager,
@@ -342,39 +406,14 @@ Opal::Sip::EndPoint::get_aor_domain (const std::string & aor)
 void
 Opal::Sip::EndPoint::enable_account (Account & account)
 {
-  PString _aor;
-
-  SIPRegister::Params params;
-  params.m_addressOfRecord = "sip:" + account.get_username () + "@" + account.get_host () + ";transport=tcp";
-  params.m_compatibility = SIPRegister::e_RFC5626;
-  params.m_authID = account.get_authentication_username ();
-  params.m_password = account.get_password ();
-  params.m_expire = account.is_enabled () ? account.get_timeout () : 0;
-  params.m_minRetryTime = PMaxTimeInterval;  // use default value
-  params.m_maxRetryTime = PMaxTimeInterval;  // use default value
-
-  // Register the given aor to the given registrar
-  if (!SIPEndPoint::Register (params, _aor)) {
-    params.m_addressOfRecord = "sip:" + account.get_username () + "@" + account.get_host ();
-    if (!SIPEndPoint::Register (params, _aor)) {
-      account.handle_registration_event (Account::RegistrationFailed,
-                                         _("Transport error"));
-    }
-  }
+  new registrar_handler (account, *this, true);
 }
 
 
 void
 Opal::Sip::EndPoint::disable_account (Account & account)
 {
-  PString aor = "sip:" + account.get_username () + "@" + account.get_host ();
-  if (!IsRegistered (aor))
-    aor += ";transport=tcp";
-
-  if (!IsRegistered (aor))
-    return;
-
-  Unregister (aor);
+  new registrar_handler (account, *this, false);
 }
 
 
