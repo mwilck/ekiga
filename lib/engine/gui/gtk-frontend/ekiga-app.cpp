@@ -439,6 +439,7 @@ ekiga_main (int argc,
   gm_application_populate_application_menu (app);
 
   core->close ();
+
   g_application_run (G_APPLICATION (app), argc, argv);
 
   g_object_unref (app);
@@ -548,6 +549,10 @@ gm_application_startup (GApplication *app)
 
   self->priv->video_devices_settings =
     boost::shared_ptr<Ekiga::Settings> (new Ekiga::Settings (VIDEO_DEVICES_SCHEMA));
+
+  // Not sure if we should do this or not.
+  self->priv->video_devices_settings->set_bool ("enable-preview", false);
+
   g_signal_connect (self->priv->video_devices_settings->get_g_settings (),
                     "changed::enable-preview",
                     G_CALLBACK (video_preview_changed), self);
@@ -580,14 +585,15 @@ gm_application_shutdown (GApplication *app)
 
   g_return_if_fail (self);
 
-  PThread::Current()->Sleep (2000); // FIXME, This allows all threads to start and quit. Sucks.
-
   gtk_widget_hide (GTK_WIDGET (self->priv->main_window));
 
+  self->priv->banks_menu.clear ();
   self->priv->core.reset ();
   Ekiga::Runtime::quit ();
 
   gm_platform_shutdown ();
+
+  PThread::Current()->Sleep (5000); // FIXME, This allows all threads to start and quit. Sucks.
 
   G_APPLICATION_CLASS (gm_application_parent_class)->shutdown (app);
 }
