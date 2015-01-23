@@ -380,8 +380,11 @@ video_preview_changed (GSettings *settings,
     gm_application_show_call_window (self);
     video_input_core->start_preview ();
   }
-  else
+  else {
     video_input_core->stop_preview ();
+    g_return_if_fail (self->priv->call_window);
+    gtk_window_close (GTK_WINDOW (self->priv->call_window));
+  }
 }
 
 
