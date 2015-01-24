@@ -238,8 +238,11 @@ Opal::Account::Account (Opal::Bank & _bank,
   }
 
   /* We will directly use the OPAL SIP and H.323 EndPoints */
-  sip_endpoint = (Opal::Sip::EndPoint*) call_manager->FindEndPoint ("sip");
-  h323_endpoint = (Opal::H323::EndPoint*) call_manager->FindEndPoint ("h323");
+  boost::shared_ptr<Opal::CallManager> cmanager = call_manager.lock ();
+  if (cmanager) {
+    sip_endpoint = (Opal::Sip::EndPoint*) cmanager->FindEndPoint ("sip");
+    h323_endpoint = (Opal::H323::EndPoint*) cmanager->FindEndPoint ("h323");
+  }
 }
 
 
@@ -548,8 +551,10 @@ Opal::Account::disable ()
 
       presentity->Close ();
     }
-    // Register the given aor to the given registrar
-    sip_endpoint->disable_account (*this);
+    if (sip_endpoint) {
+      // Register the given aor to the given registrar
+      sip_endpoint->disable_account (*this);
+    }
     break;
   }
 
@@ -921,8 +926,11 @@ Opal::Account::handle_registration_event (Ekiga::Account::RegistrationState stat
       state = state_;
       failed_registration_already_notified = false;
 
-      PURL url = PString (get_transaction_aor (get_aor ()));
-      presentity = call_manager->AddPresentity (url);
+      boost::shared_ptr<Opal::CallManager> cmanager = call_manager.lock ();
+      if (cmanager) {
+        PURL url = PString (get_transaction_aor (get_aor ()));
+        presentity = cmanager->AddPresentity (url);
+      }
       if (presentity) {
 
         presentity->SetPresenceChangeNotifier (PCREATE_PresenceChangeNotifier (OnPresenceChange));

@@ -106,7 +106,7 @@ private:
     void set_ready ();
     bool is_ready;
 
-    boost::shared_ptr<Opal::CallManager> call_manager;
+    boost::weak_ptr<Opal::CallManager> call_manager;
 
     boost::weak_ptr<Ekiga::PresenceCore> presence_core;
     boost::shared_ptr<Ekiga::NotificationCore> notification_core;

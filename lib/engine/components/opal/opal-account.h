@@ -248,7 +248,7 @@ private:
     boost::weak_ptr<Ekiga::PersonalDetails> personal_details;
     boost::weak_ptr<Ekiga::AudioOutputCore> audiooutput_core;
 
-    boost::shared_ptr<Opal::CallManager> call_manager;
+    boost::weak_ptr<Opal::CallManager> call_manager;
   };
 
   typedef boost::shared_ptr<Account> AccountPtr;

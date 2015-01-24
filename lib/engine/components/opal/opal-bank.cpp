@@ -59,6 +59,10 @@ Opal::Bank::Bank (Ekiga::ServiceCore& core,
   personal_details(core.get<Ekiga::PersonalDetails> ("personal-details")),
   audiooutput_core(core.get<Ekiga::AudioOutputCore> ("audiooutput-core"))
 {
+  boost::shared_ptr<Opal::CallManager> cmanager = call_manager.lock ();
+  if (!cmanager)
+    return;
+
   is_ready = false;
 
   std::list<std::string> accounts;
@@ -92,7 +96,7 @@ Opal::Bank::Bank (Ekiga::ServiceCore& core,
                                                       notification_core,
                                                       personal_details,
                                                       audiooutput_core,
-                                                      call_manager,
+                                                      cmanager,
                                                       boost::bind(&Opal::Bank::existing_groups, this),
                                                       child));
 
@@ -120,7 +124,7 @@ Opal::Bank::Bank (Ekiga::ServiceCore& core,
   //sip_endpoint.mwi_event.connect (boost::bind(&Opal::Bank::on_mwi_event, this, _1, _2));
 
   // Enable accounts when the manager is ready
-  call_manager->ready.connect (boost::bind (&Opal::Bank::set_ready, this));
+  cmanager->ready.connect (boost::bind (&Opal::Bank::set_ready, this));
 }
 
 
@@ -254,11 +258,16 @@ Opal::Bank::add (Account::Type acc_type,
 		 bool enabled,
 		 unsigned timeout)
 {
+  boost::shared_ptr<Opal::CallManager> cmanager = call_manager.lock ();
+  if (!cmanager)
+    return;
+
   xmlNodePtr child = Opal::Account::build_node (acc_type, name, host, user, auth_user, password, enabled, timeout);
 
   xmlAddChild (node, child);
 
   save ();
+
 
   AccountPtr account
     = AccountPtr(new Opal::Account (*this,
@@ -266,7 +275,7 @@ Opal::Bank::add (Account::Type acc_type,
 				    notification_core,
 				    personal_details,
 				    audiooutput_core,
-                                    call_manager,
+                                    cmanager,
 				    boost::bind(&Opal::Bank::existing_groups, this),
 				    child));
   Ekiga::BankImpl<Account>::add_connection (account, account->presentity_added.connect (boost::bind (boost::ref(presentity_added), account, _1)));
