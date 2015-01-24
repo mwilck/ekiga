@@ -174,22 +174,28 @@ Opal::Account::Account (Opal::Bank & _bank,
       roster_node = child;
       for (xmlNodePtr presnode = roster_node->children; presnode != NULL; presnode = presnode->next) {
 
-	Opal::PresentityPtr pres(new Presentity (*this,
+        Opal::PresentityPtr pres(new Presentity (*this,
                                                  presence_core,
-						 existing_groups,
-						 presnode));
+                                                 existing_groups,
+                                                 presnode));
 
-	pres->trigger_saving.connect (boost::ref (trigger_saving));
-	pres->removed.connect (boost::bind (&Opal::Account::when_presentity_removed, this, pres));
-	pres->updated.connect (boost::bind (&Opal::Account::when_presentity_updated, this, pres));
-	pres->questions.connect (boost::ref (Ekiga::Heap::questions));
-	add_object (pres);
-	presentity_added (pres);
+        pres->trigger_saving.connect (boost::ref (trigger_saving));
+        pres->removed.connect (boost::bind (&Opal::Account::when_presentity_removed, this, pres));
+        pres->updated.connect (boost::bind (&Opal::Account::when_presentity_updated, this, pres));
+        pres->questions.connect (boost::ref (Ekiga::Heap::questions));
+        add_object (pres);
+        presentity_added (pres);
       }
     }
   }
 
   /* Actor stuff */
+
+  /* Translators: Example: Add ekiga.net Contact */
+  char *text = g_strdup_printf (_("A_dd %s Contact"), get_host ().c_str ());
+  add_action (Ekiga::ActionPtr (new Ekiga::Action ("add-contact", text,
+                                                   boost::bind (&Opal::Account::add_contact, this))));
+  g_free (text);
   add_action (Ekiga::ActionPtr (new Ekiga::Action ("add-contact", _("A_dd Contact"),
                                                    boost::bind (&Opal::Account::add_contact, this))));
   add_action (Ekiga::ActionPtr (new Ekiga::Action ("edit-account", _("_Edit"),
@@ -274,10 +280,10 @@ Opal::Account::get_name () const
       xml_str = xmlNodeGetContent (child);
       if (xml_str != NULL) {
 
-	result = (const char*)xml_str;
-	xmlFree (xml_str);
+        result = (const char*)xml_str;
+        xmlFree (xml_str);
       } else {
-	result = _("Unnamed");
+        result = _("Unnamed");
       }
     }
   }
@@ -359,8 +365,8 @@ Opal::Account::get_host () const
       xml_str = xmlNodeGetContent (child);
       if (xml_str != NULL) {
 
-	result = (const char*)xml_str;
-	xmlFree (xml_str);
+        result = (const char*)xml_str;
+        xmlFree (xml_str);
       }
     }
   }
@@ -382,8 +388,8 @@ Opal::Account::get_username () const
       xml_str = xmlNodeGetContent (child);
       if (xml_str != NULL) {
 
-	result = (const char*)xml_str;
-	xmlFree (xml_str);
+        result = (const char*)xml_str;
+        xmlFree (xml_str);
       }
     }
   }
@@ -405,8 +411,8 @@ Opal::Account::get_authentication_username () const
       xml_str = xmlNodeGetContent (child);
       if (xml_str != NULL) {
 
-	result = (const char*)xml_str;
-	xmlFree (xml_str);
+        result = (const char*)xml_str;
+        xmlFree (xml_str);
       }
     }
   }
@@ -428,8 +434,8 @@ Opal::Account::get_password () const
       xml_str = xmlNodeGetContent (child);
       if (xml_str != NULL) {
 
-	result = (const char*)xml_str;
-	xmlFree (xml_str);
+        result = (const char*)xml_str;
+        xmlFree (xml_str);
       }
     }
   }
@@ -464,15 +470,15 @@ Opal::Account::set_authentication_settings (const std::string& username,
 
       if (xmlStrEqual (BAD_CAST "user", child->name)) {
 
-	robust_xmlNodeSetContent (node, &child, "user", username);
+        robust_xmlNodeSetContent (node, &child, "user", username);
       }
       if (xmlStrEqual (BAD_CAST "auth_user", child->name)) {
 
-	robust_xmlNodeSetContent (node, &child, "auth_user", username);
+        robust_xmlNodeSetContent (node, &child, "auth_user", username);
       }
       if (xmlStrEqual (BAD_CAST "password", child->name)) {
 
-	robust_xmlNodeSetContent (node, &child, "password", password);
+        robust_xmlNodeSetContent (node, &child, "password", password);
       }
     }
   }
