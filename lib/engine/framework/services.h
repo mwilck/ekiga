@@ -95,6 +95,8 @@ namespace Ekiga
 
     bool add (ServicePtr service);
 
+    bool remove (ServicePtr service);
+
     ServicePtr get (const std::string name) const;
 
     template<typename T>
@@ -106,6 +108,7 @@ namespace Ekiga
     void dump (std::ostream &stream) const;
 
     boost::signals2::signal<void(ServicePtr)> service_added;
+    boost::signals2::signal<void(ServicePtr)> service_removed;
 
   private:
 

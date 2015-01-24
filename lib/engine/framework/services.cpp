@@ -136,6 +136,13 @@ Ekiga::ServiceCore::add (ServicePtr service)
 }
 
 void
+Ekiga::ServiceCore::remove (ServicePtr service)
+{
+  service_removed (service);
+  services.remove (service);
+}
+
+void
 Ekiga::ServiceCore::close ()
 {
   closed = true;
