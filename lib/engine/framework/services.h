@@ -95,7 +95,7 @@ namespace Ekiga
 
     bool add (ServicePtr service);
 
-    bool remove (ServicePtr service);
+    void remove (ServicePtr service);
 
     ServicePtr get (const std::string name) const;
 
