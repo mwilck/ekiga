@@ -95,7 +95,7 @@ struct OPALSpark: public Ekiga::Spark
 	&& !account_store) {
 
       hook_ekiga_plugins_to_opal (core);
-      GnomeMeeting::Process ()->Start (core);
+      GnomeMeeting::Process ()->Start ();
 
       result = true;
     }
@@ -113,11 +113,12 @@ struct OPALSpark: public Ekiga::Spark
 };
 
 void
-opal_init_pprocess (int argc,
+opal_init_pprocess (Ekiga::ServiceCore& core,
+                    int argc,
                     char *argv [])
 {
   /* Ekiga PTLIB Process initialisation */
-  static GnomeMeeting instance;
+  static GnomeMeeting instance (core);
   instance.GetArguments ().SetArgs (argc, argv);
   PArgList & args = instance.GetArguments ();
   args.Parse ("d-debug:", false);

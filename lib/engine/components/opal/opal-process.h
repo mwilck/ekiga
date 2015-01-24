@@ -63,17 +63,13 @@ class GnomeMeeting : public PProcess
 
  public:
 
+  GnomeMeeting (Ekiga::ServiceCore& core);
 
-  /* DESCRIPTION  :  Constructor.
-   * BEHAVIOR     :  Init variables.
-   * PRE          :  /
-   */
-  GnomeMeeting ();
   ~GnomeMeeting ();
 
   void Main();
 
-  void Start (Ekiga::ServiceCore& core);
+  void Start ();
 
   static GnomeMeeting *Process ();
 
@@ -86,6 +82,8 @@ class GnomeMeeting : public PProcess
   boost::weak_ptr<Ekiga::CallCore> call_core;
   boost::weak_ptr<Ekiga::PresenceCore> presence_core;
   boost::weak_ptr<Ekiga::AccountCore> account_core;
+
+  Ekiga::ServiceCore& core;
 };
 
 #endif

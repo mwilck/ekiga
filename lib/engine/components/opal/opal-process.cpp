@@ -48,9 +48,9 @@
 GnomeMeeting *GnomeMeeting::GM = 0;
 
 /* The main GnomeMeeting Class  */
-GnomeMeeting::GnomeMeeting ()
-  : PProcess("", "", MAJOR_VERSION, MINOR_VERSION, BUILD_TYPE, BUILD_NUMBER)
-
+GnomeMeeting::GnomeMeeting (Ekiga::ServiceCore& _core)
+  : PProcess("", "", MAJOR_VERSION, MINOR_VERSION, BUILD_TYPE, BUILD_NUMBER),
+    core(_core)
 {
   GM = this;
 }
@@ -59,9 +59,12 @@ GnomeMeeting::~GnomeMeeting ()
 {
   boost::shared_ptr<Ekiga::AccountCore> acore = account_core.lock ();
   boost::shared_ptr<Ekiga::PresenceCore> pcore = presence_core.lock ();
+
   acore->remove_bank (bank);
   pcore->remove_presence_publisher (bank);
   pcore->remove_cluster (bank);
+
+  core.remove (bank);
 }
 
 GnomeMeeting *
@@ -76,7 +79,7 @@ void GnomeMeeting::Main ()
 }
 
 
-void GnomeMeeting::Start (Ekiga::ServiceCore& core)
+void GnomeMeeting::Start ()
 {
   call_core = boost::weak_ptr<Ekiga::CallCore> (core.get<Ekiga::CallCore> ("call-core"));
   presence_core = boost::weak_ptr<Ekiga::PresenceCore> (core.get<Ekiga::PresenceCore> ("presence-core"));
@@ -88,6 +91,7 @@ void GnomeMeeting::Start (Ekiga::ServiceCore& core)
 
   call_manager = boost::shared_ptr<Opal::CallManager> (new Opal::CallManager (core));
   bank = boost::shared_ptr<Opal::Bank> (new Opal::Bank (core, call_manager));
+
   acore->add_bank (bank);
   pcore->add_cluster (bank);
   core.add (bank);

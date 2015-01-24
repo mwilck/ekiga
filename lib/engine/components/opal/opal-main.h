@@ -39,8 +39,10 @@
 #define __OPAL_MAIN_H__
 
 #include "kickstart.h"
+#include "services.h"
 
-void opal_init_pprocess (int argc,
+void opal_init_pprocess (Ekiga::ServiceCore& core,
+                         int argc,
                          char *argv[]);
 
 // Must be called after opal_init_pprocess.
