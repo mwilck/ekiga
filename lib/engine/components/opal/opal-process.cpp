@@ -58,9 +58,9 @@ GnomeMeeting::GnomeMeeting (Ekiga::ServiceCore& _core)
 GnomeMeeting::~GnomeMeeting ()
 {
   boost::shared_ptr<Ekiga::AccountCore> acore = account_core.lock ();
-  boost::shared_ptr<Ekiga::PresenceCore> pcore = presence_core.lock ();
-
   acore->remove_bank (bank);
+
+  boost::shared_ptr<Ekiga::PresenceCore> pcore = presence_core.lock ();
   pcore->remove_presence_publisher (bank);
   pcore->remove_cluster (bank);
 
