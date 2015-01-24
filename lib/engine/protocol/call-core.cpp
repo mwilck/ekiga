@@ -60,6 +60,13 @@ void CallCore::add_manager (boost::shared_ptr<CallManager> manager)
 }
 
 
+void CallCore::remove_manager (boost::shared_ptr<CallManager> manager)
+{
+  manager_removed (manager);
+  managers.erase (manager);
+}
+
+
 CallCore::iterator CallCore::begin ()
 {
   return managers.begin ();

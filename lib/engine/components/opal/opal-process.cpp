@@ -65,6 +65,9 @@ GnomeMeeting::~GnomeMeeting ()
   pcore->remove_cluster (bank);
 
   core.remove (bank);
+
+  boost::shared_ptr<Ekiga::CallCore> ccore = call_core.lock ();
+  ccore->remove_manager (call_manager);
 }
 
 GnomeMeeting *

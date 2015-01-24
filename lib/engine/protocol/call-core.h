@@ -110,6 +110,11 @@ namespace Ekiga
        */
       void add_manager (boost::shared_ptr<CallManager> manager);
 
+      /** Removes the CallManager from the CallCore service.
+       * @param The manager to be removed.
+       */
+      void remove_manager (boost::shared_ptr<CallManager> manager);
+
       /** Return iterator to beginning
        * @return iterator to beginning
        */
@@ -126,6 +131,11 @@ namespace Ekiga
        * added to the CallCore Service.
        */
       boost::signals2::signal<void(boost::shared_ptr<CallManager>)> manager_added;
+
+      /** This signal is emitted when a Ekiga::CallManager has been
+       * removed to the CallCore Service.
+       */
+      boost::signals2::signal<void(boost::shared_ptr<CallManager>)> manager_removed;
 
 
       /*** Call Management ***/
