@@ -77,6 +77,11 @@ namespace Ekiga
      */
     void add_protocol_manager (boost::shared_ptr<CallProtocolManager> manager);
 
+    /** Remove a CallProtocolManager from the CallManager.
+     * @param The manager to be removed.
+     */
+    void remove_protocol_manager (boost::shared_ptr<CallProtocolManager> manager);
+
     /** Return a pointer to a CallProtocolManager of the CallManager.
      * @param protocol is the protcol name.
      * @return a pointer to the CallProtocolManager or NULL if none.
@@ -99,6 +104,11 @@ namespace Ekiga
      * added to the CallManager.
      */
     boost::signals2::signal<void(boost::shared_ptr<CallProtocolManager>)> manager_added;
+
+    /** This signal is emitted when a Ekiga::CallProtocolManager has been
+     * removed from the CallManager.
+     */
+    boost::signals2::signal<void(boost::shared_ptr<CallProtocolManager>)> manager_removed;
 
 
     /*

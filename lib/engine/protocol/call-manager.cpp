@@ -50,6 +50,13 @@ void CallManager::add_protocol_manager (boost::shared_ptr<CallProtocolManager> m
 }
 
 
+void CallManager::remove_protocol_manager (boost::shared_ptr<CallProtocolManager> manager)
+{
+  manager_removed (manager);
+  managers.erase (manager);
+}
+
+
 boost::shared_ptr<CallProtocolManager> CallManager::get_protocol_manager (const std::string &protocol) const
 {
   for (CallManager::iterator iter = begin ();

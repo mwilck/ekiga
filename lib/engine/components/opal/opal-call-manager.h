@@ -229,6 +229,10 @@ private:
     boost::shared_ptr<Ekiga::Settings> call_options_settings;
     boost::shared_ptr<Ekiga::Settings> call_forwarding_settings;
     boost::shared_ptr<Ekiga::Settings> personal_data_settings;
+    boost::shared_ptr<Sip::EndPoint> sip_endpoint;
+#ifdef HAVE_H323
+    boost::shared_ptr<H323::EndPoint> h323_endpoint;
+#endif
   };
 };
 #endif

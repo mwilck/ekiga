@@ -212,13 +212,11 @@ CallManager::CallManager (Ekiga::ServiceCore& core)
   pcssEP->SetSoundChannelPlayDevice("EKIGA");
   pcssEP->SetSoundChannelRecordDevice("EKIGA");
 
-  boost::shared_ptr<Sip::EndPoint> sip_endpoint (new Sip::EndPoint (*this, core),
-                                                 null_deleter ());
+  sip_endpoint = boost::shared_ptr<Sip::EndPoint> (new Sip::EndPoint (*this, core), null_deleter ());
   add_protocol_manager (sip_endpoint);
 
 #ifdef HAVE_H323
-  boost::shared_ptr<H323::EndPoint> h323_endpoint (new H323::EndPoint (*this, core),
-                                                   null_deleter ());
+  h323_endpoint= boost::shared_ptr<H323::EndPoint>(new H323::EndPoint (*this, core), null_deleter ());
   add_protocol_manager (h323_endpoint);
 #endif
 }
@@ -226,10 +224,13 @@ CallManager::CallManager (Ekiga::ServiceCore& core)
 
 CallManager::~CallManager ()
 {
+  remove_protocol_manager (sip_endpoint);
+#ifdef HAVE_H323
+  remove_protocol_manager (h323_endpoint);
+#endif
   if (stun_thread)
     stun_thread->WaitForTermination ();
   ClearAllCalls (OpalConnection::EndedByLocalUser, true);
-  ShutDownEndpoints ();
 
   g_async_queue_unref (queue);
 }
