@@ -94,8 +94,8 @@ struct OPALSpark: public Ekiga::Spark
 	&& audiooutput_core && videooutput_core && personal_details
 	&& !account_store) {
 
-      GnomeMeeting::Process ()->Start (core);
       hook_ekiga_plugins_to_opal (core);
+      GnomeMeeting::Process ()->Start (core);
 
       result = true;
     }
