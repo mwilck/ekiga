@@ -34,6 +34,7 @@
  *   description          : High level tray api implementation
  */
 
+#include "config.h"
 
 #include <glib/gi18n.h>
 #include <gdk/gdkkeysyms.h>
@@ -579,8 +580,9 @@ status_icon_new (GmApplication *app)
   g_signal_connect (self, "activate",
                     G_CALLBACK (statusicon_activated_cb), self);
 
-  g_signal_connect (self->priv->chat_window, "unread-count",
-                    G_CALLBACK (unread_count_cb), self);
+  if (self->priv->chat_window)
+    g_signal_connect (self->priv->chat_window, "unread-count",
+                      G_CALLBACK (unread_count_cb), self);
 
   g_signal_connect (self, "clicked",
                     G_CALLBACK (status_icon_clicked_cb), self);
