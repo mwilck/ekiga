@@ -196,8 +196,6 @@ Opal::Account::Account (Opal::Bank & _bank,
   add_action (Ekiga::ActionPtr (new Ekiga::Action ("add-contact", text,
                                                    boost::bind (&Opal::Account::add_contact, this))));
   g_free (text);
-  add_action (Ekiga::ActionPtr (new Ekiga::Action ("add-contact", _("A_dd Contact"),
-                                                   boost::bind (&Opal::Account::add_contact, this))));
   add_action (Ekiga::ActionPtr (new Ekiga::Action ("edit-account", _("_Edit"),
                                                    boost::bind (&Opal::Account::edit, this))));
   add_action (Ekiga::ActionPtr (new Ekiga::Action ("remove-account", _("_Remove"),
