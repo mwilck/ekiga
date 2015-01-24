@@ -93,12 +93,6 @@ struct deviceStruct {
 
 G_DEFINE_TYPE (EkigaMainWindow, ekiga_main_window, GM_TYPE_WINDOW);
 
-struct null_deleter
-{
-  void operator()(void const *) const
-  {
-  }
-};
 
 struct _EkigaMainWindowPrivate
 {
@@ -110,7 +104,7 @@ struct _EkigaMainWindowPrivate
   boost::shared_ptr<Ekiga::CallCore> call_core;
   boost::shared_ptr<Ekiga::ContactCore> contact_core;
   boost::shared_ptr<Ekiga::PresenceCore> presence_core;
-  boost::shared_ptr<Opal::Bank> bank;
+  boost::weak_ptr<Opal::Bank> bank;
   boost::shared_ptr<History::Source> history_source;
 
   GtkWidget *call_window;
@@ -305,9 +299,10 @@ url_changed_cb (GtkEditable *e,
   tip_text = gtk_entry_get_text (GTK_ENTRY (e));
 
   if (g_strrstr (tip_text, "@") == NULL) {
-    if (mw->priv->bank) {
+    boost::shared_ptr<Opal::Bank> b = mw->priv->bank.lock ();
+    if (b) {
       gtk_list_store_clear (mw->priv->completion);
-      mw->priv->bank->visit_accounts (boost::bind (&account_completion_helper_cb, _1, tip_text, mw));
+      b->visit_accounts (boost::bind (&account_completion_helper_cb, _1, tip_text, mw));
     }
   }
 
@@ -966,8 +961,7 @@ gm_main_window_new (GmApplication *app)
     = core->get<Ekiga::ContactCore> ("contact-core");
   mw->priv->presence_core
     = core->get<Ekiga::PresenceCore> ("presence-core");
-  mw->priv->bank
-    = core->get<Opal::Bank> ("opal-account-store");
+  mw->priv->bank = boost::weak_ptr<Opal::Bank> (core->get<Opal::Bank> ("opal-account-store"));
   mw->priv->history_source
     = core->get<History::Source> ("call-history-store");
 
