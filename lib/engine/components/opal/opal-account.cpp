@@ -902,6 +902,9 @@ void
 Opal::Account::handle_registration_event (Ekiga::Account::RegistrationState state_,
 					  const std::string info)
 {
+  if (state == state_)
+    return; // The state did not change...
+
   switch (state_) {
 
   case Registered:
