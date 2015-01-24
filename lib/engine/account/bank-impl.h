@@ -54,9 +54,6 @@ namespace Ekiga
    * bank: it will take care of implementing the external api, you
    * just have to decide when to add and remove accounts.
    *
-   * Any deleted BankImpl is automatically removed from the AccountCore.
-   * The implementor should not have to take care about that.
-   *
    * You can remove a Account from an Ekiga::BankImpl in two ways:
    *  - either by calling the remove_account method,
    *  - or by emission of the account's removed signal.
