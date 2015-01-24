@@ -62,6 +62,15 @@ Ekiga::PresenceCore::add_cluster (ClusterPtr cluster)
 }
 
 void
+Ekiga::PresenceCore::remove_cluster (ClusterPtr cluster)
+{
+  cluster_removed (cluster);
+  clusters.erase (cluster);
+
+  updated ();
+}
+
+void
 Ekiga::PresenceCore::visit_clusters (boost::function1<bool, ClusterPtr > visitor) const
 {
   bool go_on = true;
@@ -199,6 +208,12 @@ void
 Ekiga::PresenceCore::add_presence_publisher (boost::shared_ptr<PresencePublisher> publisher)
 {
   presence_publishers.push_back (publisher);
+}
+
+void
+Ekiga::PresenceCore::remove_presence_publisher (boost::shared_ptr<PresencePublisher> publisher)
+{
+  presence_publishers.remove (publisher);
 }
 
 void

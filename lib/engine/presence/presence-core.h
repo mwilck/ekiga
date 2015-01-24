@@ -149,6 +149,11 @@ namespace Ekiga
      */
     void add_cluster (ClusterPtr cluster);
 
+    /** Removes a cluster from the PresenceCore service.
+     * @param The cluster to be removed.
+     */
+    void remove_cluster (ClusterPtr cluster);
+
     /** Triggers a callback for all Ekiga::Cluster clusters of the
      * PresenceCore service.
      * @param The callback (the return value means "go on" and allows
@@ -160,6 +165,11 @@ namespace Ekiga
      * to the PresenceCore Service.
      */
     boost::signals2::signal<void(ClusterPtr)> cluster_added;
+
+    /** This signal is emitted when an Ekiga::Cluster has been removed
+     * to the PresenceCore Service.
+     */
+    boost::signals2::signal<void(ClusterPtr)> cluster_removed;
 
     /** Those signals are forwarding the heap_added, heap_updated
      * and heap_removed from the given Cluster.
@@ -253,6 +263,7 @@ namespace Ekiga
   public:
 
     void add_presence_publisher (boost::shared_ptr<PresencePublisher> publisher);
+    void remove_presence_publisher (boost::shared_ptr<PresencePublisher> publisher);
 
   private:
 

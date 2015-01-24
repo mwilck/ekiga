@@ -62,6 +62,15 @@ Ekiga::AccountCore::add_bank (BankPtr bank)
 
 
 void
+Ekiga::AccountCore::remove_bank (BankPtr bank)
+{
+  bank_removed (bank);
+
+  banks.remove (bank);
+}
+
+
+void
 Ekiga::AccountCore::visit_banks (boost::function1<bool, BankPtr> visitor) const
 {
   bool go_on = true;

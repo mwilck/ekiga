@@ -96,6 +96,12 @@ namespace Ekiga
     void add_bank (BankPtr bank);
 
 
+    /** Removes a bank from the AccountCore service.
+     * @param The bank to be removed.
+     */
+    void remove_bank (BankPtr bank);
+
+
     /** Triggers a callback for all Ekiga::Bank banks of the
      * AccountCore service.
      * @param The callback (the return value means "go on" and allows

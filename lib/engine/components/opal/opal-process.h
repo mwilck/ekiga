@@ -47,6 +47,9 @@
 #include "opal-call-manager.h"
 #include "opal-bank.h"
 
+#include "presence-core.h"
+#include "account-core.h"
+
 /**
  * COMMON NOTICE: The Application must be initialized with Init after its
  * creation.
@@ -79,6 +82,10 @@ class GnomeMeeting : public PProcess
   static GnomeMeeting *GM;
   boost::shared_ptr<Opal::CallManager> call_manager;
   boost::shared_ptr<Opal::Bank> bank;
+
+  boost::weak_ptr<Ekiga::CallCore> call_core;
+  boost::weak_ptr<Ekiga::PresenceCore> presence_core;
+  boost::weak_ptr<Ekiga::AccountCore> account_core;
 };
 
 #endif
