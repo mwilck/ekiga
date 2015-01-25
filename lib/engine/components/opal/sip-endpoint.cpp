@@ -444,7 +444,8 @@ Opal::Sip::EndPoint::OnRegistrationStatus (const RegistrationStatus & status)
   /* Successful registration or unregistration */
   if (status.m_reason == SIP_PDU::Successful_OK) {
     account->handle_registration_event (status.m_wasRegistering?Account::Registered:Account::Unregistered,
-                                        std::string ());
+                                        std::string (),
+                                        manager.AddPresentity (PURL (status.m_addressofRecord)));
   }
   /* Registration or unregistration failure */
   else {

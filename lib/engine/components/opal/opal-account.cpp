@@ -909,10 +909,14 @@ Opal::Account::is_supported_uri (const std::string & uri)
 
 void
 Opal::Account::handle_registration_event (Ekiga::Account::RegistrationState state_,
-					  const std::string info)
+					  const std::string info,
+                                          PSafePtr<OpalPresentity> _opal_presentity)
 {
   if (state == state_)
     return; // The state did not change...
+
+  if (_opal_presentity)
+    opal_presentity = _opal_presentity;
 
   switch (state_) {
 
@@ -926,11 +930,6 @@ Opal::Account::handle_registration_event (Ekiga::Account::RegistrationState stat
       state = state_;
       failed_registration_already_notified = false;
 
-      boost::shared_ptr<Opal::CallManager> cmanager = call_manager.lock ();
-      if (cmanager) {
-        PURL url = PString (get_transaction_aor (get_aor ()));
-        opal_presentity = cmanager->AddPresentity (url);
-      }
       if (opal_presentity) {
 
         opal_presentity->SetPresenceChangeNotifier (PCREATE_PresenceChangeNotifier (OnPresenceChange));

@@ -175,7 +175,8 @@ public:
      * want its Register method to take a const account...
      */
     void handle_registration_event (RegistrationState state_,
-				    const std::string info);
+				    const std::string info,
+                                    PSafePtr<OpalPresentity> _opal_presentity = NULL);
 
     /* This method is public to be called by an opal endpoint, which will push
      * this Opal::Account's message waiting information
