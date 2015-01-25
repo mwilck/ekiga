@@ -56,7 +56,8 @@ namespace Ekiga
  * @{
  */
 
-  class CallManager
+  class CallManager :
+    public Ekiga::LiveObject
   {
 
     public:

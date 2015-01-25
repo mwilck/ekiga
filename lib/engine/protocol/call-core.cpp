@@ -47,54 +47,52 @@ using namespace Ekiga;
 
 CallCore::CallCore (boost::shared_ptr<Ekiga::FriendOrFoe> iff_): iff(iff_)
 {
-  nr_ready = 0;
 }
 
 
 void CallCore::add_manager (boost::shared_ptr<CallManager> manager)
 {
-  managers.insert (manager);
   manager_added (manager);
 
-  manager->ready.connect (boost::bind (&CallCore::on_manager_ready, this, manager));
+  add_object (manager);
 }
 
 
 void CallCore::remove_manager (boost::shared_ptr<CallManager> manager)
 {
   manager_removed (manager);
-  managers.erase (manager);
+  remove_object (manager);
 }
 
 
 CallCore::iterator CallCore::begin ()
 {
-  return managers.begin ();
+  return RefLister<CallManager>::begin ();
 }
 
 
 CallCore::const_iterator CallCore::begin () const
 {
-  return managers.begin ();
+  return RefLister<CallManager>::begin ();
 }
 
 
 CallCore::iterator CallCore::end ()
 {
-  return managers.end ();
+  return RefLister<CallManager>::end ();
 }
 
 
 CallCore::const_iterator CallCore::end () const
 {
-  return managers.end ();
+  return RefLister<CallManager>::end ();
 }
 
 
 bool CallCore::dial (const std::string & uri)
 {
-  for (std::set<boost::shared_ptr<CallManager> >::iterator iter = managers.begin ();
-       iter != managers.end ();
+  for (CallCore::iterator iter = begin ();
+       iter != end ();
        iter++) {
     if ((*iter)->dial (uri))
       return true;
@@ -106,8 +104,8 @@ bool CallCore::dial (const std::string & uri)
 
 void CallCore::hang_up ()
 {
-  for (std::set<boost::shared_ptr<CallManager> >::iterator iter = managers.begin ();
-       iter != managers.end ();
+  for (CallCore::iterator iter = begin ();
+       iter != end ();
        iter++)
     (*iter)->hang_up ();
 }
@@ -115,8 +113,8 @@ void CallCore::hang_up ()
 
 bool CallCore::is_supported_uri (const std::string & uri)
 {
-  for (std::set<boost::shared_ptr<CallManager> >::iterator iter = managers.begin ();
-       iter != managers.end ();
+  for (CallCore::iterator iter = begin ();
+       iter != end ();
        iter++) {
     if ((*iter)->is_supported_uri (uri))
       return true;
@@ -130,8 +128,8 @@ Ekiga::CodecList
 CallCore::get_codecs () const
 {
   Ekiga::CodecList codecs;
-  for (std::set<boost::shared_ptr<CallManager> >::iterator iter = managers.begin ();
-       iter != managers.end ();
+  for (CallCore::const_iterator iter = begin ();
+       iter != end ();
        iter++) {
     codecs.append ((*iter)->get_codecs ());
   }
@@ -143,8 +141,8 @@ CallCore::get_codecs () const
 void
 CallCore::set_codecs (Ekiga::CodecList & codecs)
 {
-  for (std::set<boost::shared_ptr<CallManager> >::iterator iter = managers.begin ();
-       iter != managers.end ();
+  for (CallCore::iterator iter = begin ();
+       iter != end ();
        iter++) {
     (*iter)->set_codecs (codecs);
   }
@@ -185,17 +183,6 @@ void CallCore::add_call (boost::shared_ptr<Call> call)
 void CallCore::remove_call (boost::shared_ptr<Call> call)
 {
   call_connections.erase (call->get_id ());
-}
-
-
-void CallCore::on_manager_ready (boost::shared_ptr<CallManager> manager)
-{
-  manager_ready (manager);
-  nr_ready++;
-
-  if (nr_ready >= managers.size ()) {
-    ready ();
-  }
 }
 
 

@@ -41,6 +41,7 @@
 #include "chain-of-responsibility.h"
 #include "services.h"
 #include "scoped-connections.h"
+#include "reflister.h"
 
 #include "friend-or-foe/friend-or-foe.h"
 #include "call.h"
@@ -66,12 +67,13 @@ namespace Ekiga
   class CallManager;
 
   class CallCore:
-    public Service
+    public Service,
+    protected RefLister<CallManager>
     {
 
   public:
-      typedef std::set<boost::shared_ptr<CallManager> >::iterator iterator;
-      typedef std::set<boost::shared_ptr<CallManager> >::const_iterator const_iterator;
+      typedef RefLister<CallManager>::iterator iterator;
+      typedef RefLister<CallManager>::const_iterator const_iterator;
 
       /** The constructor
        */
@@ -179,24 +181,16 @@ namespace Ekiga
       boost::signals2::signal<void(boost::shared_ptr<Call>, std::string, Call::StreamType)> stream_paused;
       boost::signals2::signal<void(boost::shared_ptr<Call>, std::string, Call::StreamType)> stream_resumed;
 
-      /*** Misc ***/
-      boost::signals2::signal<void(boost::shared_ptr<CallManager>)> manager_ready;
-      boost::signals2::signal<void(void)> ready;
-
       /** This chain allows the CallCore to report errors to the user
        */
       ChainOfResponsibility<std::string> errors;
 
   private:
 
-      void on_manager_ready (boost::shared_ptr<CallManager> manager);
-
       void on_call_removed (boost::shared_ptr<Call> call);
 
       boost::shared_ptr<Ekiga::FriendOrFoe> iff;
-      std::set<boost::shared_ptr<CallManager> > managers;
       std::map<std::string, boost::shared_ptr<Ekiga::scoped_connections> > call_connections;
-      unsigned nr_ready;
     };
 
 /**

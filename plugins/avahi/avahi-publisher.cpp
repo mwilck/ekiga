@@ -96,7 +96,7 @@ Avahi::PresencePublisher::publish (G_GNUC_UNUSED const Ekiga::PersonalDetails& d
     AvahiStringList* txt_record = NULL;
 
     txt_record = prepare_txt_record ();
-    for (Ekiga::CallCore::const_iterator iter = call_core.begin ();
+    for (Ekiga::CallCore::iterator iter = call_core.begin ();
 	 iter != call_core.end ();
 	 ++iter) {
 
@@ -240,7 +240,7 @@ Avahi::PresencePublisher::add_services ()
   Ekiga::CallProtocolManager::InterfaceList interfaces;
   AvahiStringList* txt_record = NULL;
 
-  for (Ekiga::CallCore::const_iterator iter = call_core.begin ();
+  for (Ekiga::CallCore::iterator iter = call_core.begin ();
        iter != call_core.end ();
        ++iter) {
 

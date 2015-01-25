@@ -55,7 +55,6 @@ Opal::Bank::Bank (Ekiga::ServiceCore& core,
 #endif
                   Opal::Sip::EndPoint* _sip_endpoint):
   presence_core(core.get<Ekiga::PresenceCore> ("presence-core")),
-  call_core(core.get<Ekiga::CallCore> ("call-core")),
   notification_core(core.get<Ekiga::NotificationCore> ("notification-core")),
   personal_details(core.get<Ekiga::PersonalDetails> ("personal-details")),
   audiooutput_core(core.get<Ekiga::AudioOutputCore> ("audiooutput-core")),
@@ -64,8 +63,6 @@ Opal::Bank::Bank (Ekiga::ServiceCore& core,
 #endif
   sip_endpoint(_sip_endpoint)
 {
-  is_ready = false;
-
   std::list<std::string> accounts;
   protocols_settings = new Ekiga::Settings (PROTOCOLS_SCHEMA);
 
@@ -121,16 +118,13 @@ Opal::Bank::Bank (Ekiga::ServiceCore& core,
       boost::shared_ptr<Ekiga::PresenceCore> pcore = presence_core.lock ();
       if (pcore)
         pcore->add_presence_fetcher (account);
+      if (account->is_enabled ())
+        account->enable ();
     }
   }
 
   // FIXME
   sip_endpoint->mwi_event.connect (boost::bind(&Opal::Bank::on_mwi_event, this, _1, _2));
-
-  // Enable accounts when the manager is ready
-  boost::shared_ptr<Ekiga::CallCore> ccore = call_core.lock ();
-  if (ccore)
-    ccore->ready.connect (boost::bind (&Opal::Bank::set_ready, this));
 }
 
 
@@ -291,22 +285,8 @@ Opal::Bank::add (Account::Type acc_type,
   if (pcore)
     pcore->add_presence_fetcher (account);
 
-  if (is_ready && enabled)
+  if (enabled)
     account->enable ();
-}
-
-
-void
-Opal::Bank::set_ready ()
-{
-  is_ready = true;
-  for (iterator iter = begin ();
-       iter != end ();
-       ++iter) {
-
-    if ((*iter)->is_enabled ())
-      (*iter)->enable ();
-  }
 }
 
 
