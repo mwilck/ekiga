@@ -189,11 +189,6 @@ namespace Ekiga
 
   private:
 
-      void on_im_failed (std::string, std::string, boost::shared_ptr<CallManager> manager);
-      void on_im_sent (std::string, std::string, boost::shared_ptr<CallManager> manager);
-      void on_im_received (std::string, std::string, std::string, boost::shared_ptr<CallManager> manager);
-      void on_new_chat (std::string, std::string, boost::shared_ptr<CallManager> manager);
-
       void on_manager_ready (boost::shared_ptr<CallManager> manager);
 
       void on_call_removed (boost::shared_ptr<Call> call);
