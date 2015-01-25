@@ -93,6 +93,8 @@
 #include <glib/gi18n.h>
 #include <ptlib.h>
 
+#include "scoped-connections.h"
+
 
 /*
  * The GmApplication
@@ -114,6 +116,8 @@ struct _GmApplicationPrivate
 
   Ekiga::GActorMenuStore banks_menu;
   unsigned int banks_actions_count;
+
+  Ekiga::scoped_connections conns;
 };
 
 G_DEFINE_TYPE (GmApplication, gm_application, GTK_TYPE_APPLICATION);
@@ -430,9 +434,9 @@ ekiga_main (int argc,
 
   boost::shared_ptr<Ekiga::AccountCore> account_core = app->priv->core->get<Ekiga::AccountCore> ("account-core");
   g_return_if_fail (account_core);
-  account_core->questions.connect (boost::bind (&on_handle_questions_cb, _1, app));
-  account_core->account_added.connect (boost::bind (&on_account_modified_cb, _1, _2, app));
-  account_core->account_removed.connect (boost::bind (&on_account_modified_cb, _1, _2, app));
+  app->priv->conns.add (account_core->questions.connect (boost::bind (&on_handle_questions_cb, _1, app)));
+  app->priv->conns.add (account_core->account_added.connect (boost::bind (&on_account_modified_cb, _1, _2, app)));
+  app->priv->conns.add (account_core->account_removed.connect (boost::bind (&on_account_modified_cb, _1, _2, app)));
 
   gm_application_populate_application_menu (app);
 
@@ -577,6 +581,7 @@ gm_application_shutdown (GApplication *app)
   g_object_unref (self->priv->builder);
 
   delete self->priv;
+  self->priv = NULL;
 
   G_APPLICATION_CLASS (gm_application_parent_class)->shutdown (app);
 }
