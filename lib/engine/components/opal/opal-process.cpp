@@ -57,6 +57,10 @@ GnomeMeeting::GnomeMeeting (Ekiga::ServiceCore& _core)
 
 GnomeMeeting::~GnomeMeeting ()
 {
+  std::cout << "PPROCESS END Start" << std::endl << std::flush;
+  std::cout << "bank use count" << bank.use_count () << std::endl << std::flush;
+  std::cout << "call manager use count" << call_manager.use_count () << std::endl << std::flush;
+
   boost::shared_ptr<Ekiga::AccountCore> acore = account_core.lock ();
   // First remove all Opal::Accounts from our Bank.
   //
@@ -75,6 +79,11 @@ GnomeMeeting::~GnomeMeeting ()
 
   boost::shared_ptr<Ekiga::CallCore> ccore = call_core.lock ();
   ccore->remove_manager (call_manager);
+
+  std::cout << "bank use count" << bank.use_count () << std::endl << std::flush;
+  std::cout << "call manager use count" << call_manager.use_count () << std::endl << std::flush;
+
+  std::cout << "PPROCESS END END" << std::endl << std::flush;
 }
 
 GnomeMeeting *
@@ -92,21 +101,40 @@ void GnomeMeeting::Main ()
 void GnomeMeeting::Start ()
 {
   call_core = boost::weak_ptr<Ekiga::CallCore> (core.get<Ekiga::CallCore> ("call-core"));
+
+  boost::shared_ptr<Ekiga::CallCore> ccore = call_core.lock ();
+  call_manager = boost::shared_ptr<Opal::CallManager> (new Opal::CallManager (core));
+  ccore->add_manager (call_manager);
+
+  call_manager->ready.connect (boost::bind (&GnomeMeeting::on_ready, this,
+#ifdef HAVE_H323
+                                            (Opal::H323::EndPoint*) call_manager->FindEndPoint ("h323"),
+#endif
+                                            (Opal::Sip::EndPoint*) call_manager->FindEndPoint ("sip")));
+
+  call_manager->setup ();
+}
+
+
+void GnomeMeeting::on_ready (
+#ifdef HAVE_H323
+                             Opal::H323::EndPoint* h323_endpoint,
+#endif
+                             Opal::Sip::EndPoint* sip_endpoint)
+{
   presence_core = boost::weak_ptr<Ekiga::PresenceCore> (core.get<Ekiga::PresenceCore> ("presence-core"));
   account_core = boost::weak_ptr<Ekiga::AccountCore> (core.get<Ekiga::AccountCore> ("account-core"));
 
+  bank = boost::shared_ptr<Opal::Bank> (new Opal::Bank (core,
+#ifdef HAVE_H323
+                                                        h323_endpoint,
+#endif
+                                                        sip_endpoint));
+
   boost::shared_ptr<Ekiga::AccountCore> acore = account_core.lock ();
   boost::shared_ptr<Ekiga::PresenceCore> pcore = presence_core.lock ();
-  boost::shared_ptr<Ekiga::CallCore> ccore = call_core.lock ();
-
-  call_manager = boost::shared_ptr<Opal::CallManager> (new Opal::CallManager (core));
-  bank = boost::shared_ptr<Opal::Bank> (new Opal::Bank (core,
-                                                        (Opal::H323::EndPoint*) call_manager->FindEndPoint ("h323"),
-                                                        (Opal::Sip::EndPoint*) call_manager->FindEndPoint ("sip")));
   acore->add_bank (bank);
   pcore->add_cluster (bank);
   core.add (bank);
-  ccore->add_manager (call_manager);
-  call_manager->setup ();
   pcore->add_presence_publisher (bank);
 }

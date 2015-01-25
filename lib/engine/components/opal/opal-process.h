@@ -40,6 +40,8 @@
 #ifndef __EKIGA_H__
 #define __EKIGA_H__
 
+#include "config.h"
+
 #include <ptlib.h>
 #include <ptlib/pprocess.h>
 
@@ -74,6 +76,12 @@ class GnomeMeeting : public PProcess
   static GnomeMeeting *Process ();
 
  private:
+
+  void on_ready (
+#ifdef HAVE_H323
+                 Opal::H323::EndPoint* h323_endpoint,
+#endif
+                 Opal::Sip::EndPoint* sip_endpoint);
 
   static GnomeMeeting *GM;
   boost::shared_ptr<Opal::CallManager> call_manager;
