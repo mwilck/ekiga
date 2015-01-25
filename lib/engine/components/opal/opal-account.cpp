@@ -535,7 +535,7 @@ Opal::Account::disable ()
   case Account::DiamondCard:
   case Account::Ekiga:
   default:
-    if (presentity) {
+    if (opal_presentity) {
 
       for (Ekiga::RefLister< Presentity >::iterator iter = Ekiga::RefLister< Presentity >::begin ();
            iter != Ekiga::RefLister< Presentity >::end ();
@@ -549,7 +549,7 @@ Opal::Account::disable ()
         sip_endpoint->Unsubscribe (SIPSubscribe::MessageSummary, get_transaction_aor (get_aor ()));
       }
 
-      presentity->Close ();
+      opal_presentity->Close ();
     }
     if (sip_endpoint) {
       // Register the given aor to the given registrar
@@ -853,11 +853,11 @@ Opal::Account::publish (const Ekiga::PersonalDetails& details)
   personal_state = OpalPresenceInfo::Available;
   presence_status = details.get_status ();
 
-  if (presentity) {
+  if (opal_presentity) {
     OpalPresenceInfo opi = OpalPresenceInfo (personal_state);
     opi.m_activities = PString (presence);
     opi.m_note = presence_status;
-    presentity->SetLocalPresence (opi);
+    opal_presentity->SetLocalPresence (opi);
     PTRACE (4, "Ekiga\tSent its own presence (publish) for " << get_aor() << ": " << presence << ", note " << presence_status);
   }
 }
@@ -877,7 +877,7 @@ Opal::Account::fetch (const std::string uri)
   // Subscribe now
   if (state == Registered) {
     PTRACE(4, "Ekiga\tSubscribeToPresence for " << uri.c_str () << " (fetch)");
-    presentity->SubscribeToPresence (get_transaction_aor (uri).c_str ());
+    opal_presentity->SubscribeToPresence (get_transaction_aor (uri).c_str ());
   }
 }
 
@@ -885,8 +885,8 @@ Opal::Account::fetch (const std::string uri)
 void
 Opal::Account::unfetch (const std::string uri)
 {
-  if (is_supported_uri (uri) && presentity) {
-    presentity->UnsubscribeFromPresence (get_transaction_aor (uri).c_str ());
+  if (is_supported_uri (uri) && opal_presentity) {
+    opal_presentity->UnsubscribeFromPresence (get_transaction_aor (uri).c_str ());
     Ekiga::Runtime::run_in_main (boost::bind (&Opal::Account::presence_status_in_main, this, uri, "unknown", ""));
   }
 }
@@ -929,26 +929,26 @@ Opal::Account::handle_registration_event (Ekiga::Account::RegistrationState stat
       boost::shared_ptr<Opal::CallManager> cmanager = call_manager.lock ();
       if (cmanager) {
         PURL url = PString (get_transaction_aor (get_aor ()));
-        presentity = cmanager->AddPresentity (url);
+        opal_presentity = cmanager->AddPresentity (url);
       }
-      if (presentity) {
+      if (opal_presentity) {
 
-        presentity->SetPresenceChangeNotifier (PCREATE_PresenceChangeNotifier (OnPresenceChange));
-        presentity->GetAttributes().Set(OpalPresentity::AuthNameKey, get_authentication_username ());
-        presentity->GetAttributes().Set(OpalPresentity::AuthPasswordKey, get_password ());
+        opal_presentity->SetPresenceChangeNotifier (PCREATE_PresenceChangeNotifier (OnPresenceChange));
+        opal_presentity->GetAttributes().Set(OpalPresentity::AuthNameKey, get_authentication_username ());
+        opal_presentity->GetAttributes().Set(OpalPresentity::AuthPasswordKey, get_password ());
         if (type != H323) {
-          presentity->GetAttributes().Set(SIP_Presentity::SubProtocolKey, "Agent");
+          opal_presentity->GetAttributes().Set(SIP_Presentity::SubProtocolKey, "Agent");
         }
         PTRACE (4, "Created presentity for " << get_aor());
 
-        presentity->Open ();
+        opal_presentity->Open ();
 
         for (Ekiga::RefLister<Presentity>::iterator iter = Ekiga::RefLister<Presentity>::begin ();
              iter != Ekiga::RefLister<Presentity>::end ();
              ++iter)
           fetch ((*iter)->get_uri());
 
-        presentity->SetLocalPresence (personal_state, presence_status);
+        opal_presentity->SetLocalPresence (personal_state, presence_status);
         if (type != Account::H323 && sip_endpoint) {
           sip_endpoint->Subscribe (SIPSubscribe::MessageSummary, 3600, get_transaction_aor (get_aor ()));
         }

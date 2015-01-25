@@ -223,7 +223,7 @@ private:
 
     bool failed_registration_already_notified;
 
-    PSafePtr<OpalPresentity> presentity;
+    PSafePtr<OpalPresentity> opal_presentity;
 
     PDECLARE_PresenceChangeNotifier (Account, OnPresenceChange);
 
