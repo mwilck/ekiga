@@ -78,8 +78,8 @@ History::Book::Book (Ekiga::ServiceCore& core):
 
   boost::shared_ptr<Ekiga::CallCore> call_core = core.get<Ekiga::CallCore> ("call-core");
 
-  connections.add (call_core->missed_call.connect (boost::bind (&History::Book::on_missed_call, this, _1, _2)));
-  connections.add (call_core->cleared_call.connect (boost::bind (&History::Book::on_cleared_call, this, _1, _2, _3)));
+  connections.add (call_core->missed_call.connect (boost::bind (&History::Book::on_missed_call, this, _1)));
+  connections.add (call_core->cleared_call.connect (boost::bind (&History::Book::on_cleared_call, this, _1, _2)));
 
   enforce_size_limit ();
 
@@ -192,8 +192,7 @@ History::Book::clear ()
 }
 
 void
-History::Book::on_missed_call (boost::shared_ptr<Ekiga::CallManager> /*manager*/,
-			       boost::shared_ptr<Ekiga::Call> call)
+History::Book::on_missed_call (boost::shared_ptr<Ekiga::Call> call)
 {
   add (call->get_remote_party_name (),
        call->get_remote_uri (),
@@ -203,8 +202,7 @@ History::Book::on_missed_call (boost::shared_ptr<Ekiga::CallManager> /*manager*/
 }
 
 void
-History::Book::on_cleared_call (boost::shared_ptr<Ekiga::CallManager> /*manager*/,
-				boost::shared_ptr<Ekiga::Call> call,
+History::Book::on_cleared_call (boost::shared_ptr<Ekiga::Call> call,
 				std::string /*message*/)
 {
   add (call->get_remote_party_name (),

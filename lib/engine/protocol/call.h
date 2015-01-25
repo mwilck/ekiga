@@ -89,8 +89,9 @@ namespace Ekiga
 
       /** Transfer the call to the specified uri
        * @param uri is the uri where to transfer the call
+       * @return false if the transfer could not be tried
        */
-      virtual void transfer (std::string uri) = 0;
+      virtual bool transfer (std::string uri) = 0;
 
       /** Put the call on hold or retrieve it
       */

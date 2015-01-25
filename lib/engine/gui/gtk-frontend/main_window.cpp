@@ -342,13 +342,12 @@ on_account_updated (Ekiga::BankPtr /*bank*/,
 }
 
 
-static void on_setup_call_cb (boost::shared_ptr<Ekiga::CallManager> manager,
-                              boost::shared_ptr<Ekiga::Call>  call,
+static void on_setup_call_cb (boost::shared_ptr<Ekiga::Call>  call,
                               gpointer self)
 {
   EkigaMainWindow *mw = EKIGA_MAIN_WINDOW (self);
 
-  if (!call->is_outgoing () && !manager->get_auto_answer ()) {
+  if (!call->is_outgoing ()) {
     if (mw->priv->current_call)
       return; // No call setup needed if already in a call
 
@@ -369,8 +368,7 @@ static void on_setup_call_cb (boost::shared_ptr<Ekiga::CallManager> manager,
 }
 
 
-static void on_ringing_call_cb (boost::shared_ptr<Ekiga::CallManager>  /*manager*/,
-                                boost::shared_ptr<Ekiga::Call>  call,
+static void on_ringing_call_cb (boost::shared_ptr<Ekiga::Call>  call,
                                 gpointer self)
 {
   EkigaMainWindow *mw = EKIGA_MAIN_WINDOW (self);
@@ -381,8 +379,7 @@ static void on_ringing_call_cb (boost::shared_ptr<Ekiga::CallManager>  /*manager
 }
 
 
-static void on_established_call_cb (boost::shared_ptr<Ekiga::CallManager> /*manager*/,
-                                    boost::shared_ptr<Ekiga::Call> /*call*/,
+static void on_established_call_cb (boost::shared_ptr<Ekiga::Call> /*call*/,
                                     gpointer self)
 {
   EkigaMainWindow *mw = EKIGA_MAIN_WINDOW (self);
@@ -396,8 +393,7 @@ static void on_established_call_cb (boost::shared_ptr<Ekiga::CallManager> /*mana
 }
 
 
-static void on_cleared_call_cb (boost::shared_ptr<Ekiga::CallManager>  /*manager*/,
-                                boost::shared_ptr<Ekiga::Call> call,
+static void on_cleared_call_cb (boost::shared_ptr<Ekiga::Call> call,
                                 std::string /*reason*/,
                                 gpointer self)
 {
@@ -423,8 +419,7 @@ static void on_cleared_call_cb (boost::shared_ptr<Ekiga::CallManager>  /*manager
 }
 
 
-static void on_missed_call_cb (boost::shared_ptr<Ekiga::CallManager>  /*manager*/,
-                               boost::shared_ptr<Ekiga::Call>  call,
+static void on_missed_call_cb (boost::shared_ptr<Ekiga::Call>  call,
                                gpointer self)
 {
   EkigaMainWindow *mw = EKIGA_MAIN_WINDOW (self);
@@ -914,19 +909,19 @@ ekiga_main_window_connect_engine_signals (EkigaMainWindow *mw)
   conn = mw->priv->account_core->account_updated.connect (boost::bind (&on_account_updated, _1, _2, (gpointer) mw));
   mw->priv->connections.add (conn);
 
-  conn = mw->priv->call_core->setup_call.connect (boost::bind (&on_setup_call_cb, _1, _2, (gpointer) mw));
+  conn = mw->priv->call_core->setup_call.connect (boost::bind (&on_setup_call_cb, _1, (gpointer) mw));
   mw->priv->connections.add (conn);
 
-  conn = mw->priv->call_core->ringing_call.connect (boost::bind (&on_ringing_call_cb, _1, _2, (gpointer) mw));
+  conn = mw->priv->call_core->ringing_call.connect (boost::bind (&on_ringing_call_cb, _1, (gpointer) mw));
   mw->priv->connections.add (conn);
 
-  conn = mw->priv->call_core->established_call.connect (boost::bind (&on_established_call_cb, _1, _2, (gpointer) mw));
+  conn = mw->priv->call_core->established_call.connect (boost::bind (&on_established_call_cb, _1, (gpointer) mw));
   mw->priv->connections.add (conn);
 
-  conn = mw->priv->call_core->cleared_call.connect (boost::bind (&on_cleared_call_cb, _1, _2, _3, (gpointer) mw));
+  conn = mw->priv->call_core->cleared_call.connect (boost::bind (&on_cleared_call_cb, _1, _2, (gpointer) mw));
   mw->priv->connections.add (conn);
 
-  conn = mw->priv->call_core->missed_call.connect (boost::bind (&on_missed_call_cb, _1, _2, (gpointer) mw));
+  conn = mw->priv->call_core->missed_call.connect (boost::bind (&on_missed_call_cb, _1, (gpointer) mw));
   mw->priv->connections.add (conn);
 
   conn = mw->priv->call_core->errors.connect (boost::bind (&on_handle_errors, _1, (gpointer) mw));

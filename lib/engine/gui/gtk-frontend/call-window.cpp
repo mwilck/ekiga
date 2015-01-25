@@ -279,44 +279,35 @@ static void on_audiooutput_device_error_cb (Ekiga::AudioOutputManager & /*manage
                                             Ekiga::AudioOutputErrorCodes error_code,
                                             gpointer self);
 
-static void on_ringing_call_cb (boost::shared_ptr<Ekiga::CallManager> manager,
-                                boost::shared_ptr<Ekiga::Call> call,
+static void on_ringing_call_cb (boost::shared_ptr<Ekiga::Call> call,
                                 gpointer self);
 
-static void on_established_call_cb (boost::shared_ptr<Ekiga::CallManager>  /*manager*/,
-                                    boost::shared_ptr<Ekiga::Call>  call,
+static void on_established_call_cb (boost::shared_ptr<Ekiga::Call> call,
                                     gpointer self);
 
-static void on_cleared_call_cb (boost::shared_ptr<Ekiga::CallManager>  /*manager*/,
-                                boost::shared_ptr<Ekiga::Call>  call,
+static void on_cleared_call_cb (boost::shared_ptr<Ekiga::Call> call,
                                 std::string reason,
                                 gpointer self);
 
-static void on_missed_call_cb (boost::shared_ptr<Ekiga::CallManager>  /*manager*/,
-                               boost::shared_ptr<Ekiga::Call> /*call*/,
+static void on_missed_call_cb (boost::shared_ptr<Ekiga::Call> /*call*/,
                                gpointer self);
 
-static void on_held_call_cb (boost::shared_ptr<Ekiga::CallManager>  /*manager*/,
-                             boost::shared_ptr<Ekiga::Call>  /*call*/,
+static void on_held_call_cb (boost::shared_ptr<Ekiga::Call> /*call*/,
                              gpointer self);
 
-static void on_setup_call_cb (boost::shared_ptr<Ekiga::CallManager> manager,
-                              boost::shared_ptr<Ekiga::Call> call,
+static void on_setup_call_cb (boost::shared_ptr<Ekiga::Call> call,
                               gpointer self);
 
-static void on_retrieved_call_cb (boost::shared_ptr<Ekiga::CallManager>  /*manager*/,
-                                  boost::shared_ptr<Ekiga::Call>  /*call*/,
+static void on_retrieved_call_cb (boost::shared_ptr<Ekiga::Call> /*call*/,
                                   gpointer self);
 
-static void on_stream_opened_cb (boost::shared_ptr<Ekiga::CallManager>  /*manager*/,
-                                 boost::shared_ptr<Ekiga::Call>  /* call */,
+static void on_stream_opened_cb (boost::shared_ptr<Ekiga::Call> /* call */,
                                  std::string name,
                                  Ekiga::Call::StreamType type,
                                  bool is_transmitting,
                                  gpointer self);
 
-static void on_stream_closed_cb (boost::shared_ptr<Ekiga::CallManager>  /*manager*/,
-                                 boost::shared_ptr<Ekiga::Call>  /* call */,
+static void on_stream_closed_cb (boost::shared_ptr<Ekiga::Call> /* call */,
                                  G_GNUC_UNUSED std::string name,
                                  Ekiga::Call::StreamType type,
                                  bool is_transmitting,
@@ -789,8 +780,7 @@ on_audiooutput_device_error_cb (Ekiga::AudioOutputManager & /*manager */,
 
 
 static void
-on_ringing_call_cb (G_GNUC_UNUSED boost::shared_ptr<Ekiga::CallManager> manager,
-                    G_GNUC_UNUSED boost::shared_ptr<Ekiga::Call>  call,
+on_ringing_call_cb (G_GNUC_UNUSED boost::shared_ptr<Ekiga::Call>  call,
                     gpointer data)
 {
   EkigaCallWindow *self = EKIGA_CALL_WINDOW (data);
@@ -803,8 +793,7 @@ on_ringing_call_cb (G_GNUC_UNUSED boost::shared_ptr<Ekiga::CallManager> manager,
 
 
 static void
-on_setup_call_cb (boost::shared_ptr<Ekiga::CallManager> manager,
-                  boost::shared_ptr<Ekiga::Call>  call,
+on_setup_call_cb (boost::shared_ptr<Ekiga::Call> call,
                   gpointer data)
 {
   EkigaCallWindow *self = EKIGA_CALL_WINDOW (data);
@@ -812,7 +801,7 @@ on_setup_call_cb (boost::shared_ptr<Ekiga::CallManager> manager,
 
   self->priv->menu = Ekiga::GActorMenuPtr (new Ekiga::GActorMenu (*call));
 
-  if (!call->is_outgoing () && !manager->get_auto_answer ()) {
+  if (!call->is_outgoing ()) {
     if (self->priv->current_call)
       return; // No call setup needed if already in a call
 
@@ -844,8 +833,7 @@ on_setup_call_cb (boost::shared_ptr<Ekiga::CallManager> manager,
 
 
 static void
-on_established_call_cb (boost::shared_ptr<Ekiga::CallManager>  /*manager*/,
-                        boost::shared_ptr<Ekiga::Call>  call,
+on_established_call_cb (boost::shared_ptr<Ekiga::Call> call,
                         gpointer data)
 {
   EkigaCallWindow *self = EKIGA_CALL_WINDOW (data);
@@ -860,8 +848,7 @@ on_established_call_cb (boost::shared_ptr<Ekiga::CallManager>  /*manager*/,
 }
 
 static void
-on_cleared_call_cb (G_GNUC_UNUSED boost::shared_ptr<Ekiga::CallManager> manager,
-                    boost::shared_ptr<Ekiga::Call>  call,
+on_cleared_call_cb (boost::shared_ptr<Ekiga::Call> call,
                     G_GNUC_UNUSED std::string reason,
                     gpointer data)
 {
@@ -890,8 +877,7 @@ on_cleared_call_cb (G_GNUC_UNUSED boost::shared_ptr<Ekiga::CallManager> manager,
                             GTK_MESSAGE_INFO, reason.c_str ());
 }
 
-static void on_missed_call_cb (boost::shared_ptr<Ekiga::CallManager>  /*manager*/,
-                               boost::shared_ptr<Ekiga::Call> call,
+static void on_missed_call_cb (boost::shared_ptr<Ekiga::Call> call,
                                gpointer data)
 {
   EkigaCallWindow *self = EKIGA_CALL_WINDOW (data);
@@ -908,8 +894,7 @@ static void on_missed_call_cb (boost::shared_ptr<Ekiga::CallManager>  /*manager*
 }
 
 static void
-on_held_call_cb (boost::shared_ptr<Ekiga::CallManager>  /*manager*/,
-                 boost::shared_ptr<Ekiga::Call>  /*call*/,
+on_held_call_cb (boost::shared_ptr<Ekiga::Call>  /*call*/,
                  gpointer data)
 {
   EkigaCallWindow *self = EKIGA_CALL_WINDOW (data);
@@ -920,8 +905,7 @@ on_held_call_cb (boost::shared_ptr<Ekiga::CallManager>  /*manager*/,
 
 
 static void
-on_retrieved_call_cb (boost::shared_ptr<Ekiga::CallManager>  /*manager*/,
-                      boost::shared_ptr<Ekiga::Call>  /*call*/,
+on_retrieved_call_cb (boost::shared_ptr<Ekiga::Call>  /*call*/,
                       gpointer data)
 {
   EkigaCallWindow *self = EKIGA_CALL_WINDOW (data);
@@ -951,8 +935,7 @@ set_codec (EkigaCallWindowPrivate *priv,
 }
 
 static void
-on_stream_opened_cb (boost::shared_ptr<Ekiga::CallManager>  /*manager*/,
-                     boost::shared_ptr<Ekiga::Call>  /* call */,
+on_stream_opened_cb (boost::shared_ptr<Ekiga::Call>  /* call */,
                      std::string name,
                      Ekiga::Call::StreamType type,
                      bool is_transmitting,
@@ -966,8 +949,7 @@ on_stream_opened_cb (boost::shared_ptr<Ekiga::CallManager>  /*manager*/,
 
 
 static void
-on_stream_closed_cb (boost::shared_ptr<Ekiga::CallManager>  /*manager*/,
-                     boost::shared_ptr<Ekiga::Call>  /* call */,
+on_stream_closed_cb (boost::shared_ptr<Ekiga::Call>  /* call */,
                      G_GNUC_UNUSED std::string name,
                      Ekiga::Call::StreamType type,
                      bool is_transmitting,
@@ -1450,31 +1432,31 @@ ekiga_call_window_connect_engine_signals (EkigaCallWindow *self)
   self->priv->connections.add (conn);
 
   /* New Call Engine signals */
-  conn = self->priv->call_core->setup_call.connect (boost::bind (&on_setup_call_cb, _1, _2, (gpointer) self));
+  conn = self->priv->call_core->setup_call.connect (boost::bind (&on_setup_call_cb, _1, (gpointer) self));
   self->priv->connections.add (conn);
 
-  conn = self->priv->call_core->ringing_call.connect (boost::bind (&on_ringing_call_cb, _1, _2, (gpointer) self));
+  conn = self->priv->call_core->ringing_call.connect (boost::bind (&on_ringing_call_cb, _1, (gpointer) self));
   self->priv->connections.add (conn);
 
-  conn = self->priv->call_core->established_call.connect (boost::bind (&on_established_call_cb, _1, _2, (gpointer) self));
+  conn = self->priv->call_core->established_call.connect (boost::bind (&on_established_call_cb, _1, (gpointer) self));
   self->priv->connections.add (conn);
 
-  conn = self->priv->call_core->cleared_call.connect (boost::bind (&on_cleared_call_cb, _1, _2, _3, (gpointer) self));
+  conn = self->priv->call_core->cleared_call.connect (boost::bind (&on_cleared_call_cb, _1, _2, (gpointer) self));
   self->priv->connections.add (conn);
 
-  conn = self->priv->call_core->missed_call.connect (boost::bind (&on_missed_call_cb, _1, _2, (gpointer) self));
+  conn = self->priv->call_core->missed_call.connect (boost::bind (&on_missed_call_cb, _1, (gpointer) self));
   self->priv->connections.add (conn);
 
-  conn = self->priv->call_core->held_call.connect (boost::bind (&on_held_call_cb, _1, _2, (gpointer) self));
+  conn = self->priv->call_core->held_call.connect (boost::bind (&on_held_call_cb, _1, (gpointer) self));
   self->priv->connections.add (conn);
 
-  conn = self->priv->call_core->retrieved_call.connect (boost::bind (&on_retrieved_call_cb, _1, _2, (gpointer) self));
+  conn = self->priv->call_core->retrieved_call.connect (boost::bind (&on_retrieved_call_cb, _1, (gpointer) self));
   self->priv->connections.add (conn);
 
-  conn = self->priv->call_core->stream_opened.connect (boost::bind (&on_stream_opened_cb, _1, _2, _3, _4, _5, (gpointer) self));
+  conn = self->priv->call_core->stream_opened.connect (boost::bind (&on_stream_opened_cb, _1, _2, _3, _4, (gpointer) self));
   self->priv->connections.add (conn);
 
-  conn = self->priv->call_core->stream_closed.connect (boost::bind (&on_stream_closed_cb, _1, _2, _3, _4, _5, (gpointer) self));
+  conn = self->priv->call_core->stream_closed.connect (boost::bind (&on_stream_closed_cb, _1, _2, _3, _4, (gpointer) self));
   self->priv->connections.add (conn);
 }
 

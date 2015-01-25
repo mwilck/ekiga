@@ -96,9 +96,8 @@ namespace Ekiga
 
       /** Adds a call handled by the CallCore serice.
        * @param call is the call to be added.
-       * @param manager is the CallManager handling it.
        */
-      void add_call (boost::shared_ptr<Call> call, boost::shared_ptr<CallManager> manager);
+      void add_call (boost::shared_ptr<Call> call);
 
       /** Remove a call handled by the CallCore serice.
        * @param call is the call to be removed.
@@ -167,18 +166,18 @@ namespace Ekiga
 
       /** See call.h for the API
        */
-      boost::signals2::signal<void(boost::shared_ptr<CallManager>, boost::shared_ptr<Call>)> ringing_call;
-      boost::signals2::signal<void(boost::shared_ptr<CallManager>, boost::shared_ptr<Call>)> setup_call;
-      boost::signals2::signal<void(boost::shared_ptr<CallManager>, boost::shared_ptr<Call>)> missed_call;
-      boost::signals2::signal<void(boost::shared_ptr<CallManager>, boost::shared_ptr<Call>, std::string)> cleared_call;
-      boost::signals2::signal<void(boost::shared_ptr<CallManager>, boost::shared_ptr<Call>)> created_call;
-      boost::signals2::signal<void(boost::shared_ptr<CallManager>, boost::shared_ptr<Call>)> established_call;
-      boost::signals2::signal<void(boost::shared_ptr<CallManager>, boost::shared_ptr<Call>)> held_call;
-      boost::signals2::signal<void(boost::shared_ptr<CallManager>, boost::shared_ptr<Call>)> retrieved_call;
-      boost::signals2::signal<void(boost::shared_ptr<CallManager>, boost::shared_ptr<Call>, std::string, Call::StreamType, bool)> stream_opened;
-      boost::signals2::signal<void(boost::shared_ptr<CallManager>, boost::shared_ptr<Call>, std::string, Call::StreamType, bool)> stream_closed;
-      boost::signals2::signal<void(boost::shared_ptr<CallManager>, boost::shared_ptr<Call>, std::string, Call::StreamType)> stream_paused;
-      boost::signals2::signal<void(boost::shared_ptr<CallManager>, boost::shared_ptr<Call>, std::string, Call::StreamType)> stream_resumed;
+      boost::signals2::signal<void(boost::shared_ptr<Call>)> ringing_call;
+      boost::signals2::signal<void(boost::shared_ptr<Call>)> setup_call;
+      boost::signals2::signal<void(boost::shared_ptr<Call>)> missed_call;
+      boost::signals2::signal<void(boost::shared_ptr<Call>, std::string)> cleared_call;
+      boost::signals2::signal<void(boost::shared_ptr<Call>)> created_call;
+      boost::signals2::signal<void(boost::shared_ptr<Call>)> established_call;
+      boost::signals2::signal<void(boost::shared_ptr<Call>)> held_call;
+      boost::signals2::signal<void(boost::shared_ptr<Call>)> retrieved_call;
+      boost::signals2::signal<void(boost::shared_ptr<Call>, std::string, Call::StreamType, bool)> stream_opened;
+      boost::signals2::signal<void(boost::shared_ptr<Call>, std::string, Call::StreamType, bool)> stream_closed;
+      boost::signals2::signal<void(boost::shared_ptr<Call>, std::string, Call::StreamType)> stream_paused;
+      boost::signals2::signal<void(boost::shared_ptr<Call>, std::string, Call::StreamType)> stream_resumed;
 
       /*** Misc ***/
       boost::signals2::signal<void(boost::shared_ptr<CallManager>)> manager_ready;
@@ -189,18 +188,6 @@ namespace Ekiga
       ChainOfResponsibility<std::string> errors;
 
   private:
-      void on_new_call (boost::shared_ptr<Call> call, boost::shared_ptr<CallManager> manager);
-      void on_ringing_call (boost::shared_ptr<Call> call, boost::shared_ptr<CallManager> manager);
-      void on_setup_call (boost::shared_ptr<Call> call, boost::shared_ptr<CallManager> manager);
-      void on_missed_call (boost::shared_ptr<Call> call, boost::shared_ptr<CallManager> manager);
-      void on_cleared_call (std::string, boost::shared_ptr<Call> call, boost::shared_ptr<CallManager> manager);
-      void on_established_call (boost::shared_ptr<Call> call, boost::shared_ptr<CallManager> manager);
-      void on_held_call (boost::shared_ptr<Call> call, boost::shared_ptr<CallManager> manager);
-      void on_retrieved_call (boost::shared_ptr<Call> call, boost::shared_ptr<CallManager> manager);
-      void on_stream_opened (std::string name, Call::StreamType type, bool is_transmitting, boost::shared_ptr<Call> call, boost::shared_ptr<CallManager> manager);
-      void on_stream_closed (std::string name, Call::StreamType type, bool is_transmitting, boost::shared_ptr<Call> call, boost::shared_ptr<CallManager> manager);
-      void on_stream_paused (std::string name, Call::StreamType type, boost::shared_ptr<Call> call, boost::shared_ptr<CallManager> manager);
-      void on_stream_resumed (std::string name, Call::StreamType type, boost::shared_ptr<Call> call, boost::shared_ptr<CallManager> manager);
 
       void on_im_failed (std::string, std::string, boost::shared_ptr<CallManager> manager);
       void on_im_sent (std::string, std::string, boost::shared_ptr<CallManager> manager);

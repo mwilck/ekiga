@@ -64,7 +64,7 @@ namespace Opal {
 
 public:
 
-    Call (CallManager &_manager,
+    Call (Opal::CallManager& _manager,
           const std::string & uri);
     ~Call ();
 
@@ -88,7 +88,7 @@ public:
     /** Transfer the call to the specified uri
      * @param: uri: where to transfer the call
      */
-    void transfer (std::string uri);
+    bool transfer (std::string uri);
 
     /** Put the call on hold or retrieve it
     */
@@ -227,8 +227,6 @@ private:
     /*
      * Variables
      */
-
-    CallManager & manager;
     boost::shared_ptr<Ekiga::NotificationCore> notification_core;
     boost::weak_ptr<Ekiga::CallCore> call_core;
 
@@ -255,6 +253,7 @@ private:
 
     PTime start_time;
     RTCPStatistics statistics;
+    bool auto_answer;
   };
 };
 

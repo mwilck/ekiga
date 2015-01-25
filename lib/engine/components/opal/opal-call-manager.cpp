@@ -731,7 +731,7 @@ CallManager::create_call_in_main (Opal::Call* _call)
 
   call->set_engine_services (notification_core, ccore);
 
-  ccore->add_call (call, boost::dynamic_pointer_cast<CallManager>(shared_from_this ()));
+  ccore->add_call (call);
 }
 
 OpalCall *CallManager::CreateCall (void *uri)

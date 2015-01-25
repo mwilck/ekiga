@@ -98,8 +98,8 @@ private:
 
 Opal::Call::Call (Opal::CallManager& _manager,
 		  const std::string& uri)
-  : OpalCall (_manager), Ekiga::Call (), manager(_manager), remote_uri (uri),
-    call_setup(false), outgoing(false)
+  : OpalCall (_manager), Ekiga::Call (), remote_uri (uri),
+    call_setup(false), outgoing(false), auto_answer (_manager.get_auto_answer ())
 {
   NoAnswerTimer.SetNotifier (PCREATE_NOTIFIER (OnNoAnswerTimeout));
 
@@ -173,12 +173,14 @@ Opal::Call::transfer ()
 }
 
 
-void
+bool
 Opal::Call::transfer (std::string uri)
 {
   PSafePtr<OpalConnection> connection = get_remote_connection ();
   if (connection != NULL)
-    connection->TransferConnection (uri);
+    return connection->TransferConnection (uri);
+
+  return false;
 }
 
 
@@ -200,11 +202,8 @@ Opal::Call::on_transfer_form_submitted (bool submitted,
   idx = uri.find_first_of ("@");
   if (idx == std::string::npos)
     uri = uri + "@" + (const char *) PURL (remote_uri).GetHostName ();
-  if (manager.is_supported_uri (uri)) {
-
-    transfer (uri);
+  if (transfer (uri))
     return true;
-  }
   else
     error = _("You supplied an unsupported address");
 
@@ -653,7 +652,7 @@ Opal::Call::OnAnswerCall (OpalConnection & connection,
 
   parse_info (connection);
 
-  if (manager.get_auto_answer ())
+  if (auto_answer)
     return OpalConnection::AnswerCallNow;
 
   return OpalCall::OnAnswerCall (connection, caller);

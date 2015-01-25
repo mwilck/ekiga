@@ -99,8 +99,6 @@
  */
 struct _GmApplicationPrivate
 {
-  _GmApplicationPrivate () {}
-
   Ekiga::ServiceCorePtr core;
 
   GtkBuilder *builder;
@@ -124,8 +122,7 @@ static void gm_application_populate_application_menu (GmApplication *app);
 
 static GtkWidget *gm_application_show_call_window (GmApplication *self);
 
-static void on_created_call_cb (boost::shared_ptr<Ekiga::CallManager> manager,
-                                boost::shared_ptr<Ekiga::Call> call,
+static void on_created_call_cb (boost::shared_ptr<Ekiga::Call> call,
                                 gpointer data);
 
 static bool on_visit_banks_cb (Ekiga::BankPtr bank,
@@ -223,8 +220,7 @@ gm_application_show_call_window (GmApplication *self)
 
 /* Private callbacks */
 static void
-on_created_call_cb (G_GNUC_UNUSED boost::shared_ptr<Ekiga::CallManager> manager,
-                    G_GNUC_UNUSED boost::shared_ptr<Ekiga::Call> call,
+on_created_call_cb (G_GNUC_UNUSED boost::shared_ptr<Ekiga::Call> call,
                     gpointer data)
 {
   g_return_if_fail (GM_IS_APPLICATION (data));
@@ -411,7 +407,6 @@ ekiga_main (int argc,
   app->priv->main_window = gm_main_window_new (app);
   gm_application_show_main_window (app);
 
-  app->priv->chat_window = chat_window_new (app);
   status_icon_new (app);
 
 #ifdef HAVE_DBUS
@@ -431,7 +426,7 @@ ekiga_main (int argc,
   g_return_if_fail (all_codecs.find ("VP8"));
   g_return_if_fail (all_codecs.find ("H.264"));
   g_return_if_fail (all_codecs.find ("Opus"));
-  call_core->created_call.connect (boost::bind (&on_created_call_cb, _1, _2, (gpointer) app));
+  call_core->created_call.connect (boost::bind (&on_created_call_cb, _1, (gpointer) app));
 
   boost::shared_ptr<Ekiga::AccountCore> account_core = app->priv->core->get<Ekiga::AccountCore> ("account-core");
   g_return_if_fail (account_core);
@@ -479,6 +474,7 @@ gm_application_startup (GApplication *app)
   signal (SIGPIPE, SIG_IGN);
 #endif
 
+
   /* initialize platform-specific code */
   gm_platform_init ();
 #ifdef WIN32
@@ -501,7 +497,6 @@ gm_application_startup (GApplication *app)
 #endif
 
   /* Priv building */
-  self->priv = new _GmApplicationPrivate ();
   self->priv->builder = gtk_builder_new ();
 
   /* Menu */
@@ -564,11 +559,17 @@ gm_application_startup (GApplication *app)
 
 
 static void
-gm_application_dispose (GObject *obj)
+gm_application_shutdown (GApplication *app)
 {
-  GmApplication *self = NULL;
+  GmApplication *self = GM_APPLICATION (app);
 
-  self = GM_APPLICATION (obj);
+  g_return_if_fail (self);
+
+  self->priv->banks_menu.clear ();
+  self->priv->core.reset ();
+  Ekiga::Runtime::quit ();
+
+  gm_platform_shutdown ();
 
 #ifdef HAVE_DBUS
   g_object_unref (self->priv->dbus_component);
@@ -577,29 +578,9 @@ gm_application_dispose (GObject *obj)
 
   delete self->priv;
 
-  G_OBJECT_CLASS (gm_application_parent_class)->dispose (obj);
-}
-
-
-static void
-gm_application_shutdown (GApplication *app)
-{
-  GmApplication *self = GM_APPLICATION (app);
-
-  g_return_if_fail (self);
-
-  gtk_widget_hide (GTK_WIDGET (self->priv->main_window));
-
-  self->priv->banks_menu.clear ();
-  self->priv->core.reset ();
-  Ekiga::Runtime::quit ();
-
-  gm_platform_shutdown ();
-
-  PThread::Current()->Sleep (5000); // FIXME, This allows all threads to start and quit. Sucks.
-
   G_APPLICATION_CLASS (gm_application_parent_class)->shutdown (app);
 }
+
 
 static gint
 gm_application_command_line (GApplication *app,
@@ -713,8 +694,6 @@ gm_application_class_init (GmApplicationClass *klass)
 {
   GObjectClass *object_class = G_OBJECT_CLASS (klass);
   GApplicationClass *app_class = G_APPLICATION_CLASS (klass);
-
-  object_class->dispose = gm_application_dispose;
 
   app_class->startup = gm_application_startup;
   app_class->activate = gm_application_activate;

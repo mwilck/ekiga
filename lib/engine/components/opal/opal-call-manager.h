@@ -58,10 +58,6 @@
 #include "actor.h"
 #include "opal-codec-description.h"
 
-#include <boost/enable_shared_from_this.hpp>
-
-
-class GMLid;
 class GMPCSSEndpoint;
 
 namespace Opal {
@@ -71,7 +67,6 @@ namespace Opal {
   namespace H323 { class EndPoint; };
 
   class CallManager :
-    public boost::enable_shared_from_this<CallManager>,
     public Ekiga::CallManager,
     public Ekiga::URIActionProvider,
     public OpalManager

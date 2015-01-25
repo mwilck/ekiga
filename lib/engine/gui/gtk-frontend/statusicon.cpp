@@ -128,13 +128,11 @@ statusicon_set_inacall (StatusIcon *widget,
                         bool inacall);
 
 static void
-established_call_cb (boost::shared_ptr<Ekiga::CallManager>  manager,
-                     boost::shared_ptr<Ekiga::Call>  call,
+established_call_cb (boost::shared_ptr<Ekiga::Call> call,
                      gpointer self);
 
 static void
-cleared_call_cb (boost::shared_ptr<Ekiga::CallManager>  manager,
-                 boost::shared_ptr<Ekiga::Call>  call,
+cleared_call_cb (boost::shared_ptr<Ekiga::Call> call,
                  std::string reason,
                  gpointer self);
 
@@ -367,8 +365,7 @@ personal_details_updated_cb (StatusIcon* self,
 
 
 static void
-established_call_cb (boost::shared_ptr<Ekiga::CallManager>  /*manager*/,
-                     boost::shared_ptr<Ekiga::Call>  /*call*/,
+established_call_cb (boost::shared_ptr<Ekiga::Call> /*call*/,
                      gpointer self)
 {
   statusicon_set_inacall (STATUSICON (self), true);
@@ -376,8 +373,7 @@ established_call_cb (boost::shared_ptr<Ekiga::CallManager>  /*manager*/,
 
 
 static void
-cleared_call_cb (boost::shared_ptr<Ekiga::CallManager>  /*manager*/,
-                 boost::shared_ptr<Ekiga::Call>  /*call*/,
+cleared_call_cb (boost::shared_ptr<Ekiga::Call> /*call*/,
                  std::string /*reason*/,
                  gpointer self)
 {
@@ -570,11 +566,11 @@ status_icon_new (GmApplication *app)
   self->priv->connections.add (conn);
 
   conn = call_core->established_call.connect (boost::bind (&established_call_cb,
-                                                           _1, _2, (gpointer) self));
+                                                           _1, (gpointer) self));
   self->priv->connections.add (conn);
 
   conn = call_core->cleared_call.connect (boost::bind (&cleared_call_cb,
-                                                       _1, _2, _3, (gpointer) self));
+                                                       _1, _2, (gpointer) self));
   self->priv->connections.add (conn);
 
   g_signal_connect (self, "activate",

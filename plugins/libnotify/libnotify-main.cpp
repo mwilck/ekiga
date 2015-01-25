@@ -74,8 +74,7 @@ private:
 
   void on_notification_added (boost::shared_ptr<Ekiga::Notification> notif);
   void on_notification_removed (boost::shared_ptr<Ekiga::Notification> notif);
-  void on_call_notification (boost::shared_ptr<Ekiga::CallManager> manager,
-                             boost::shared_ptr<Ekiga::Call>  call);
+  void on_call_notification (boost::shared_ptr<Ekiga::Call> call);
   void on_call_notification_closed (gpointer self);
 
   typedef std::map<boost::shared_ptr<Ekiga::Notification>, std::pair<boost::signals2::connection, boost::shared_ptr<NotifyNotification> > > container_type;
@@ -183,7 +182,7 @@ LibNotify::LibNotify (Ekiga::ServiceCore& core)
   connections.add (notification_core->notification_added.connect (boost::bind (&LibNotify::on_notification_added, this, _1)));
 
   /* Specific notifications */
-  connections.add (call_core->setup_call.connect (boost::bind (&LibNotify::on_call_notification, this, _1, _2)));
+  connections.add (call_core->setup_call.connect (boost::bind (&LibNotify::on_call_notification, this, _1)));
 }
 
 LibNotify::~LibNotify ()
@@ -261,13 +260,12 @@ LibNotify::on_call_notification_closed (gpointer self)
 }
 
 void
-LibNotify::on_call_notification (boost::shared_ptr<Ekiga::CallManager> manager,
-                                 boost::shared_ptr<Ekiga::Call> call)
+LibNotify::on_call_notification (boost::shared_ptr<Ekiga::Call> call)
 {
   NotifyNotification *notify = NULL;
   call_reference* ref = NULL;
 
-  if (call->is_outgoing () || manager->get_auto_answer ())
+  if (call->is_outgoing ())
     return; // Ignore
 
   gchar *title = g_strdup_printf (_("Incoming call from %s"), call->get_remote_party_name ().c_str ());
