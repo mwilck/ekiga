@@ -39,11 +39,16 @@
 #ifndef __OPAL_BANK_H__
 #define __OPAL_BANK_H__
 
+#include "config.h"
+
 #include "contact-core.h"
 #include "presence-core.h"
 
 #include "opal-account.h"
 #include "ekiga-settings.h"
+
+#include "sip-endpoint.h"
+#include "h323-endpoint.h"
 
 namespace Opal
 {
@@ -61,8 +66,28 @@ namespace Opal
     friend class Account;
 public:
 
+    /* The Opal::Bank is implemented using the H.323 and SIP
+     * EndPoints from OPAL.
+     *
+     * We pass them as arguments instead of using the Opal::CallManager
+     * to prevent useless references to the CallManager. We are using
+     * shared_ptr's, they control the destruction order of objects, which
+     * is not what Opal was designed for.
+     *
+     * We can safely rely on the H.323 & SIP EndPoints as long as:
+     *   1) The Opal::Bank and its Opal::Accounts are destroyed
+     *      before the Opal EndPoints.
+     *   2) They are destroyed before the Opal::CallManager.
+     *
+     * However, the SIP & H.323 EndPoints have a null_deleter. That means
+     * that Opal is taking care of deleting them. They are not deleted when
+     * the last object having a reference to them is deleted.
+     */
     Bank (Ekiga::ServiceCore& _core,
-          boost::shared_ptr<Opal::CallManager> _call_manager);
+#ifdef HAVE_H323
+          Opal::H323::EndPoint* _h323_endpoint,
+#endif
+          Opal::Sip::EndPoint* _sip_endpoint);
 
     ~Bank ();
 
@@ -90,6 +115,10 @@ public:
      */
     AccountPtr find_account (const std::string& aor);
 
+    /** Clear all Accounts
+     */
+    void clear ();
+
     /* this object is an Ekiga::Cluster */
     void visit_heaps (boost::function1<bool, Ekiga::HeapPtr> visitor) const;
 
@@ -106,9 +135,8 @@ private:
     void set_ready ();
     bool is_ready;
 
-    boost::weak_ptr<Opal::CallManager> call_manager;
-
     boost::weak_ptr<Ekiga::PresenceCore> presence_core;
+    boost::weak_ptr<Ekiga::CallCore> call_core;
     boost::shared_ptr<Ekiga::NotificationCore> notification_core;
     boost::shared_ptr<Ekiga::PersonalDetails> personal_details;
     boost::shared_ptr<Ekiga::AudioOutputCore> audiooutput_core;
@@ -142,6 +170,11 @@ private:
     void add_actions ();
 
     Ekiga::Settings *protocols_settings;
+
+#ifdef HAVE_H323
+    Opal::H323::EndPoint* h323_endpoint;
+#endif
+    Opal::Sip::EndPoint* sip_endpoint;
   };
 
   /**

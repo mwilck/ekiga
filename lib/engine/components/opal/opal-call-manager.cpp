@@ -545,8 +545,10 @@ void CallManager::set_stun_enabled (bool enabled)
     stun_thread = new StunDetector (stun_server, *this, queue);
     patience = 20;
     Ekiga::Runtime::run_in_main (boost::bind (&CallManager::HandleSTUNResult, this), 1);
-  } else
+  }
+  else {
     ready ();
+  }
 
   PTRACE (4, "Opal::CallManager\tSTUN Detection: " << enabled);
 }

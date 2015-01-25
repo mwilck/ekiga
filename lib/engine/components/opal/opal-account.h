@@ -87,12 +87,32 @@ public:
 				  bool enabled,
 				  unsigned timeout);
 
+    /* The Opal::Account is implemented using the H.323 and SIP
+     * EndPoints from OPAL.
+     *
+     * We pass them as arguments instead of using the Opal::CallManager
+     * to prevent useless references to the CallManager. We are using
+     * shared_ptr's, they control the destruction order of objects, which
+     * is not what Opal was designed for.
+     *
+     * We can safely rely on the H.323 & SIP EndPoints as long as:
+     *   1) The Opal::Bank and its Opal::Accounts are destroyed
+     *      before the Opal EndPoints.
+     *   2) They are destroyed before the Opal::CallManager.
+     *
+     * However, the SIP & H.323 EndPoints have a null_deleter. That means
+     * that Opal is taking care of deleting them. They are not deleted when
+     * the last object having a reference to them is deleted.
+     */
     Account (Opal::Bank & bank,
 	     boost::weak_ptr<Ekiga::PresenceCore> _presence_core,
 	     boost::shared_ptr<Ekiga::NotificationCore> _notification_core,
 	     boost::shared_ptr<Ekiga::PersonalDetails> _personal_details,
 	     boost::shared_ptr<Ekiga::AudioOutputCore> _audiooutput_core,
-	     boost::shared_ptr<Opal::CallManager> _call_manager,
+#ifdef HAVE_H323
+             Opal::H323::EndPoint* _h323_endpoint,
+#endif
+             Opal::Sip::EndPoint* _sip_endpoint,
 	     boost::function0<std::list<std::string> > _existing_groups,
 	     xmlNodePtr node_);
 
@@ -241,15 +261,13 @@ private:
 
     Opal::Bank & bank;
 
-    Opal::Sip::EndPoint* sip_endpoint;
-    Opal::H323::EndPoint* h323_endpoint;
-
     boost::weak_ptr<Ekiga::PresenceCore> presence_core;
     boost::weak_ptr<Ekiga::NotificationCore> notification_core;
     boost::weak_ptr<Ekiga::PersonalDetails> personal_details;
     boost::weak_ptr<Ekiga::AudioOutputCore> audiooutput_core;
 
-    boost::weak_ptr<Opal::CallManager> call_manager;
+    Opal::H323::EndPoint* h323_endpoint;
+    Opal::Sip::EndPoint* sip_endpoint;
   };
 
   typedef boost::shared_ptr<Account> AccountPtr;

@@ -193,8 +193,9 @@ void CallCore::on_manager_ready (boost::shared_ptr<CallManager> manager)
   manager_ready (manager);
   nr_ready++;
 
-  if (nr_ready >= managers.size ())
+  if (nr_ready >= managers.size ()) {
     ready ();
+  }
 }
 
 

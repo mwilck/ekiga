@@ -58,6 +58,13 @@ GnomeMeeting::GnomeMeeting (Ekiga::ServiceCore& _core)
 GnomeMeeting::~GnomeMeeting ()
 {
   boost::shared_ptr<Ekiga::AccountCore> acore = account_core.lock ();
+  // First remove all Opal::Accounts from our Bank.
+  //
+  // Do it forcibly so we're sure the accounts are freed before our
+  // reference to the endpoints. Indeed they try to unregister from
+  // presence when killed, and that gives a crash if the call manager
+  // is already gone!
+  bank->clear ();
   acore->remove_bank (bank);
 
   boost::shared_ptr<Ekiga::PresenceCore> pcore = presence_core.lock ();
@@ -93,13 +100,13 @@ void GnomeMeeting::Start ()
   boost::shared_ptr<Ekiga::CallCore> ccore = call_core.lock ();
 
   call_manager = boost::shared_ptr<Opal::CallManager> (new Opal::CallManager (core));
-  bank = boost::shared_ptr<Opal::Bank> (new Opal::Bank (core, call_manager));
-
+  bank = boost::shared_ptr<Opal::Bank> (new Opal::Bank (core,
+                                                        (Opal::H323::EndPoint*) call_manager->FindEndPoint ("h323"),
+                                                        (Opal::Sip::EndPoint*) call_manager->FindEndPoint ("sip")));
   acore->add_bank (bank);
   pcore->add_cluster (bank);
   core.add (bank);
+  ccore->add_manager (call_manager);
   call_manager->setup ();
   pcore->add_presence_publisher (bank);
-
-  ccore->add_manager (call_manager);
 }

@@ -48,6 +48,8 @@
 #include <opal/opal.h>
 #include <sip/sippres.h>
 
+#include "config.h"
+
 #include "opal-account.h"
 
 #include "robust-xml.h"
@@ -147,7 +149,10 @@ Opal::Account::Account (Opal::Bank & _bank,
 			boost::shared_ptr<Ekiga::NotificationCore> _notification_core,
 			boost::shared_ptr<Ekiga::PersonalDetails> _personal_details,
 			boost::shared_ptr<Ekiga::AudioOutputCore> _audiooutput_core,
-			boost::shared_ptr<Opal::CallManager> _call_manager,
+#ifdef HAVE_H323
+                        Opal::H323::EndPoint* _h323_endpoint,
+#endif
+                        Opal::Sip::EndPoint* _sip_endpoint,
 			boost::function0<std::list<std::string> > _existing_groups,
 			xmlNodePtr _node):
   existing_groups(_existing_groups),
@@ -157,7 +162,10 @@ Opal::Account::Account (Opal::Bank & _bank,
   notification_core(_notification_core),
   personal_details(_personal_details),
   audiooutput_core(_audiooutput_core),
-  call_manager(_call_manager)
+#ifdef HAVE_H323
+  h323_endpoint(_h323_endpoint),
+#endif
+  sip_endpoint(_sip_endpoint)
 {
   state = Unregistered;
   status = _("Unregistered");
@@ -235,13 +243,6 @@ Opal::Account::Account (Opal::Bank & _bank,
   else if (type == Ekiga) {
 
     bank.disable_action ("add-account-ekiga");
-  }
-
-  /* We will directly use the OPAL SIP and H.323 EndPoints */
-  boost::shared_ptr<Opal::CallManager> cmanager = call_manager.lock ();
-  if (cmanager) {
-    sip_endpoint = (Opal::Sip::EndPoint*) cmanager->FindEndPoint ("sip");
-    h323_endpoint = (Opal::H323::EndPoint*) cmanager->FindEndPoint ("h323");
   }
 }
 

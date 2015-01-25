@@ -47,22 +47,23 @@
 
 #include "opal-bank.h"
 #include "opal-presentity.h"
-#include "sip-endpoint.h"
-#include "h323-endpoint.h"
 
 
 Opal::Bank::Bank (Ekiga::ServiceCore& core,
-                  boost::shared_ptr<Opal::CallManager> _call_manager):
-  call_manager(_call_manager),
+#ifdef HAVE_H323
+                  Opal::H323::EndPoint* _h323_endpoint,
+#endif
+                  Opal::Sip::EndPoint* _sip_endpoint):
   presence_core(core.get<Ekiga::PresenceCore> ("presence-core")),
+  call_core(core.get<Ekiga::CallCore> ("call-core")),
   notification_core(core.get<Ekiga::NotificationCore> ("notification-core")),
   personal_details(core.get<Ekiga::PersonalDetails> ("personal-details")),
-  audiooutput_core(core.get<Ekiga::AudioOutputCore> ("audiooutput-core"))
+  audiooutput_core(core.get<Ekiga::AudioOutputCore> ("audiooutput-core")),
+#ifdef HAVE_H323
+  h323_endpoint(_h323_endpoint),
+#endif
+  sip_endpoint(_sip_endpoint)
 {
-  boost::shared_ptr<Opal::CallManager> cmanager = call_manager.lock ();
-  if (!cmanager)
-    return;
-
   is_ready = false;
 
   std::list<std::string> accounts;
@@ -96,7 +97,10 @@ Opal::Bank::Bank (Ekiga::ServiceCore& core,
                                                       notification_core,
                                                       personal_details,
                                                       audiooutput_core,
-                                                      cmanager,
+#ifdef HAVE_H323
+                                                      _h323_endpoint,
+#endif
+                                                      _sip_endpoint,
                                                       boost::bind(&Opal::Bank::existing_groups, this),
                                                       child));
 
@@ -120,21 +124,19 @@ Opal::Bank::Bank (Ekiga::ServiceCore& core,
     }
   }
 
-  std::cout << "FIXME" << std::endl << std::flush;
-  //sip_endpoint.mwi_event.connect (boost::bind(&Opal::Bank::on_mwi_event, this, _1, _2));
+  // FIXME
+  sip_endpoint->mwi_event.connect (boost::bind(&Opal::Bank::on_mwi_event, this, _1, _2));
 
   // Enable accounts when the manager is ready
-  cmanager->ready.connect (boost::bind (&Opal::Bank::set_ready, this));
+  boost::shared_ptr<Ekiga::CallCore> ccore = call_core.lock ();
+  if (ccore)
+    ccore->ready.connect (boost::bind (&Opal::Bank::set_ready, this));
 }
 
 
 Opal::Bank::~Bank ()
 {
-  // do it forcibly so we're sure the accounts are freed before our
-  // reference to the call manager. Indeed they try to unregister from
-  // presence when killed, and that gives a crash if the call manager
-  // is already gone!
-  Ekiga::RefLister<Opal::Account>::remove_all_objects ();
+  std::cout << "BANK DESTROY" << std::endl << std::flush;
 
   delete protocols_settings;
 }
@@ -258,10 +260,6 @@ Opal::Bank::add (Account::Type acc_type,
 		 bool enabled,
 		 unsigned timeout)
 {
-  boost::shared_ptr<Opal::CallManager> cmanager = call_manager.lock ();
-  if (!cmanager)
-    return;
-
   xmlNodePtr child = Opal::Account::build_node (acc_type, name, host, user, auth_user, password, enabled, timeout);
 
   xmlAddChild (node, child);
@@ -275,7 +273,10 @@ Opal::Bank::add (Account::Type acc_type,
 				    notification_core,
 				    personal_details,
 				    audiooutput_core,
-                                    cmanager,
+#ifdef HAVE_H323
+                                    h323_endpoint,
+#endif
+                                    sip_endpoint,
 				    boost::bind(&Opal::Bank::existing_groups, this),
 				    child));
   Ekiga::BankImpl<Account>::add_connection (account, account->presentity_added.connect (boost::bind (boost::ref(presentity_added), account, _1)));
@@ -328,6 +329,13 @@ Opal::Bank::find_account (const std::string& _aor)
       return *iter;
   }
   return result;
+}
+
+
+void
+Opal::Bank::clear ()
+{
+  Ekiga::RefLister<Opal::Account>::remove_all_objects ();
 }
 
 
