@@ -117,13 +117,20 @@ AM_LIBS = $(GTK_LIBS) $(GLIB_LIBS) $(DBUS_LIBS) $(OPAL_LIBS) $(PTLIB_LIBS) $(BOO
 ekiga_LDADD = \
 	$(top_builddir)/lib/libekiga.la $(AM_LIBS)
 
+appdatadir = $(datadir)/appdata
+appdata_DATA = $(appdata_in_files:.xml.in=.xml)
+appdata_in_files = ekiga.appdata.xml.in
+@INTLTOOL_XML_RULE@
+
 EXTRA_DIST = \
+	$(appdata_in_files)		\
 	$(service_in_files)		\
 	dbus-helper/dbus-stub.xml	\
 	dbus-helper/dbus-helper-stub.xml \
 	ekiga-debug-analyser
 
 CLEANFILES = \
+	$(appdata_DATA)			\
 	$(service_DATA)		\
 	build-subdir-stamp	\
 	$(BUILT_SOURCES)
