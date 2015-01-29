@@ -138,8 +138,8 @@ Opal::Bank::~Bank ()
 
 void
 Opal::Bank::new_account (Account::Type acc_type,
-			 std::string username,
-			 std::string password)
+                         std::string username,
+                         std::string password)
 {
   boost::shared_ptr<Ekiga::FormRequestSimple> request = boost::shared_ptr<Ekiga::FormRequestSimple> (new Ekiga::FormRequestSimple (boost::bind (&Opal::Bank::on_new_account_form_submitted, this, _1, _2, _3, acc_type)));
 
@@ -210,9 +210,9 @@ Opal::Bank::new_account (Account::Type acc_type,
 
 bool
 Opal::Bank::on_new_account_form_submitted (bool submitted,
-					   Ekiga::Form& result,
+                                           Ekiga::Form& result,
                                            G_GNUC_UNUSED std::string& error,
-					   Account::Type acc_type)
+                                           Account::Type acc_type)
 {
   if (!submitted)
     return false;
@@ -228,13 +228,29 @@ Opal::Bank::on_new_account_form_submitted (bool submitted,
   std::string new_password = result.text ("password");
   bool new_enabled = result.boolean ("enabled");
   unsigned new_timeout = atoi ((acc_type == Opal::Account::SIP
-				|| acc_type == Opal::Account::H323) ?
-			       result.text ("timeout").c_str () : result.hidden ("timeout").c_str ());
+                                || acc_type == Opal::Account::H323) ?
+                               result.text ("timeout").c_str () : result.hidden ("timeout").c_str ());
 
   // This should only happen with Ekiga.net accounts
+  if (!new_user.compare (0, 4, "sip:")) {
+    g_warn_if_fail (acc_type == Opal::Account::Ekiga);
+    new_user = new_user.substr (4, string::npos);  // remove leading sip:
+  }
   std::size_t pos = new_user.find_first_of ("@");
-  if (pos != std::string::npos)
-    new_user = new_user.substr (0, pos);
+  if (pos != std::string::npos) {
+    g_warn_if_fail (acc_type == Opal::Account::Ekiga);
+    new_user = new_user.substr (0, pos);  // remove trailing @ekiga.net
+  }
+  if (!new_authentication_user.compare (0, 4, "sip:")) {
+    g_warn_if_fail (acc_type == Opal::Account::Ekiga);
+    new_authentication_user = new_authentication_user.substr (4, string::npos);  // remove leading sip:
+  }
+  pos = new_authentication_user.find_first_of ("@");
+  if (pos != std::string::npos) {
+    g_warn_if_fail (acc_type == Opal::Account::Ekiga);
+    new_authentication_user = new_authentication_user.substr (0, pos);  // remove trailing @ekiga.net
+  }
+
   result.visit (*request);
 
   add (acc_type, new_name, new_host, new_user, new_authentication_user,
@@ -246,13 +262,13 @@ Opal::Bank::on_new_account_form_submitted (bool submitted,
 
 void
 Opal::Bank::add (Account::Type acc_type,
-		 std::string name,
-		 std::string host,
-		 std::string user,
-		 std::string auth_user,
-		 std::string password,
-		 bool enabled,
-		 unsigned timeout)
+                 std::string name,
+                 std::string host,
+                 std::string user,
+                 std::string auth_user,
+                 std::string password,
+                 bool enabled,
+                 unsigned timeout)
 {
   xmlNodePtr child = Opal::Account::build_node (acc_type, name, host, user, auth_user, password, enabled, timeout);
 
@@ -356,7 +372,7 @@ Opal::Bank::publish (const Ekiga::PersonalDetails& details)
 
 void
 Opal::Bank::on_mwi_event (std::string aor,
-			  std::string info)
+                          std::string info)
 {
   AccountPtr account = find_account (aor);
 
