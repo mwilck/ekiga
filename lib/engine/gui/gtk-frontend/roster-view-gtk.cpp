@@ -1176,6 +1176,17 @@ on_presentity_added (RosterViewGtk* self,
       if (gtk_tree_selection_iter_is_selected (selection, &filtered_iter))
 	should_emit = TRUE;
 
+    // update presentity name if needed
+    gchar *old_name;
+    gtk_tree_model_get (GTK_TREE_MODEL (self->priv->store), &iter,
+                        COLUMN_NAME, &old_name, -1);
+    if (old_name) {
+      if (presentity->get_name () != old_name)
+        gtk_tree_store_set (self->priv->store, &iter,
+                            COLUMN_NAME, presentity->get_name ().c_str (), -1);
+      g_free (old_name);
+    }
+
     // Find out what our presence was
     gtk_tree_model_get (GTK_TREE_MODEL (self->priv->store), &iter,
                         COLUMN_TIMEOUT, &timeout,
