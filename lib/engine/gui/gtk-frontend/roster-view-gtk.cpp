@@ -1200,7 +1200,7 @@ on_presentity_added (RosterViewGtk* self,
         gtk_tree_store_set (self->priv->store, &iter,
                             COLUMN_STATUS, presentity->get_status ().c_str (), -1);
       g_free (old_status);
-      return;
+      continue;
     }
     g_free (old_status);
 
