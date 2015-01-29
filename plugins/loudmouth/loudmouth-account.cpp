@@ -373,7 +373,7 @@ LM::Account::edit ()
 
   }
   xmlFree (xml_str);
-  request->boolean ("enabled", _("Enable account"), enable_on_startup);
+  request->boolean ("enabled", _("_Enable account"), enable_on_startup);
 
   questions (request);
 }

@@ -648,29 +648,60 @@ Opal::Account::edit ()
   request->title (title);
   g_free (title);
 
-  request->text ("name", _("Name"), get_name (), _("Ekiga.Net Account"),
-                 Ekiga::FormVisitor::STANDARD, false, false);
-  if (get_protocol_name () != "H323")
-    request->text ("host", _("Registrar"), get_host (), _("ekiga.net"),
+  switch (type) {
+  case Opal::Account::Ekiga:
+    request->hidden ("name", get_name ());
+    request->hidden ("host", get_host ());
+    request->text ("user", _("_User"), get_aor (), _("jon"),
+                   Ekiga::FormVisitor::EKIGA_URI, false, false);
+    request->hidden ("authentication_user", get_authentication_username ());
+    request->text ("password", _("_Password"), get_password (), _("1234"),
+                   Ekiga::FormVisitor::PASSWORD, false, false);
+    request->hidden ("timeout", "3600");
+    break;
+  case Opal::Account::DiamondCard:
+    request->hidden ("name", get_name ());
+    request->hidden ("host", get_host ());
+    request->text ("user", _("_Account ID"), get_username (), _("jon"),
+                   Ekiga::FormVisitor::NUMBER, false, false);
+    request->hidden ("authentication_user", get_authentication_username ());
+    request->text ("password", _("_PIN Code"), get_password (), _("1234"),
+                   Ekiga::FormVisitor::NUMBER, false, false);
+    request->hidden ("timeout", "3600");
+    break;
+  case Opal::Account::H323:
+    request->text ("name", _("_Name"), get_name (), _("Ekiga.Net Account"),
                    Ekiga::FormVisitor::STANDARD, false, false);
-  else
-    request->text ("host", _("Gatekeeper"), get_host (), _("ekiga.net"),
+    request->text ("host", _("_Gatekeeper"), get_host (), _("ekiga.net"),
                    Ekiga::FormVisitor::STANDARD, false, false);
-  request->text ("user", _("User"), get_username (), _("jon"),
-                 Ekiga::FormVisitor::STANDARD, false, false);
-  if (get_protocol_name () == "SIP")
+    request->text ("user", _("_User"), get_username (), _("jon"),
+                   Ekiga::FormVisitor::STANDARD, false, false);
+    request->text ("password", _("_Password"), get_password (), _("1234"),
+                   Ekiga::FormVisitor::PASSWORD, false, false);
+    request->text ("timeout", _("_Timeout"), "3600", "3600",
+                   Ekiga::FormVisitor::NUMBER, false, false);
+    break;
+  case Opal::Account::SIP:
+  default:
+    request->text ("name", _("_Name"), get_name (), _("Ekiga.Net Account"),
+                   Ekiga::FormVisitor::STANDARD, false, false);
+    request->text ("host", _("_Registrar"), get_host (), _("ekiga.net"),
+                   Ekiga::FormVisitor::STANDARD, false, false);
+    request->text ("user", _("_User"), get_username (), _("jon"),
+                   Ekiga::FormVisitor::STANDARD, false, false);
     /* Translators:
      * SIP knows two usernames: The name for the client ("User") and the name
      * for the authentication procedure ("Authentication user"), aka Login
      * to make it understandable
      */
-    request->text ("authentication_user", _("Login"), get_authentication_username (), _("jon.doe"),
+    request->text ("authentication_user", _("_Login"), get_authentication_username (), _("jon.doe"),
                    Ekiga::FormVisitor::STANDARD, false, false);
-  request->text ("password", _("Password"), get_password (), _("1234"),
-                 Ekiga::FormVisitor::PASSWORD, false, false);
-  request->text ("timeout", _("Timeout"), "3600", "3600",
-                 Ekiga::FormVisitor::NUMBER, false, false);
-  request->boolean ("enabled", _("Enable Account"), is_enabled ());
+    request->text ("password", _("_Password"), get_password (), _("1234"),
+                   Ekiga::FormVisitor::PASSWORD, false, false);
+    request->text ("timeout", _("_Timeout"), "3600", "3600",
+                   Ekiga::FormVisitor::NUMBER, false, false);
+  }
+  request->boolean ("enabled", _("_Enable Account"), is_enabled ());
 
   Ekiga::Account::questions (request);
 }
@@ -688,7 +719,9 @@ Opal::Account::on_edit_form_submitted (bool submitted,
   std::string new_host = result.text ("host");
   std::string new_user = result.text ("user");
   std::string new_authentication_user;
-  if (get_protocol_name () == "SIP")
+  if (type == Account::Ekiga || type == Account::DiamondCard)
+    new_authentication_user = new_user;
+  else if (get_protocol_name () == "SIP")
     new_authentication_user = result.text ("authentication_user");
   if (new_authentication_user.empty ())
     new_authentication_user = new_user;
@@ -723,7 +756,7 @@ Opal::Account::on_edit_form_submitted (bool submitted,
     else if (new_enabled) {
       // Some critical setting just changed
       if (get_host () != new_host
-	  || get_username () != new_user
+          || get_username () != new_user
           || get_authentication_username () != new_authentication_user
           || get_password () != new_password
           || get_timeout () != new_timeout

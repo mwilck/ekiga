@@ -202,7 +202,7 @@ Opal::Bank::new_account (Account::Type acc_type,
                    Ekiga::FormVisitor::NUMBER, false, false);
     break;
   }
-  request->boolean ("enabled", _("Enable account"), true);
+  request->boolean ("enabled", _("_Enable account"), true);
 
   questions (request);
 }

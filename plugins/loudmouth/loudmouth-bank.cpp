@@ -117,12 +117,12 @@ LM::Bank::new_account ()
 
   request->instructions (_("Please fill in the following fields:"));
 
-  request->text ("name", _("Name:"), "", _("Account name, e.g. MyAccount"));
-  request->text ("user", _("User:"), "", _("The user name, e.g. jim"));
+  request->text ("name", _("_Name:"), "", _("Account name, e.g. MyAccount"));
+  request->text ("user", _("_User:"), "", _("The user name, e.g. jim"));
   request->text ("server", _("Server:"), "", _("The server, e.g. jabber.org"));
   request->text ("resource", _("Resource:"), "", _("The resource, such as home or work, allowing to distinguish among several terminals registered to the same account; leave empty if you do not know what it is"));
-  request->text ("password", _("Password:"), "", _("Password associated to the user"), Ekiga::FormVisitor::PASSWORD);
-  request->boolean ("enabled", _("Enable account"), true);
+  request->text ("password", _("_Password:"), "", _("Password associated to the user"), Ekiga::FormVisitor::PASSWORD);
+  request->boolean ("enabled", _("_Enable account"), true);
 
   questions (request);
 }
