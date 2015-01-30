@@ -8,7 +8,7 @@ SUBDIRS += help
 endif
 
 
-### Intltool on the desktop and on the schemas files
+### Intltool on the desktop, schemas and appdata files
 @INTLTOOL_DESKTOP_RULE@
 @INTLTOOL_SCHEMAS_RULE@
 
@@ -22,6 +22,11 @@ convertdir = $(datadir)/GConf/gsettings
 convert_DATA = @PACKAGE_NAME@.convert
 
 @GSETTINGS_RULES@
+
+appdatadir = $(datadir)/appdata
+appdata_DATA = $(appdata_in_files:.xml.in=.xml)
+appdata_in_files = ekiga.appdata.xml.in
+@INTLTOOL_XML_RULE@
 
 
 ### Win32 files
@@ -57,15 +62,14 @@ WIN32_DIST = \
 
 ### Extra dist
 EXTRA_DIST = \
-	$(DESKTOP_FILE)					        \
-        doc/using_dbus.html                                     \
-	gnome-doc-utils.make					\
-	FAQ							\
-	README							\
-        LICENSE                                                 \
-        MAINTAINERS                                             \
-	$(gsettings_SCHEMAS) 					\
-	$(SCHEMAS_FILE) 					\
+	$(appdata_in_files)		\
+	$(DESKTOP_FILE)			\
+	doc/using_dbus.html		\
+	gnome-doc-utils.make	\
+	README					\
+	LICENSE         	    \
+	$(gsettings_SCHEMAS) 	\
+	$(SCHEMAS_FILE) 		\
 	$(WIN32_DIST)
 
 Applicationsdir = $(datadir)/applications
@@ -88,7 +92,7 @@ revision.h:
         fi
 
 ### Dist Clear
-DISTCLEANFILES=gnome-doc-utils.make ekiga.desktop org.gnome.ekiga.gschema revision.h
+DISTCLEANFILES=gnome-doc-utils.make ekiga.desktop org.gnome.ekiga.gschema revision.h $(appdata_DATA)
 
 MAINTAINERCLEANFILES= \
 	Makefile.in aclocal.m4 compile config.guess config.sub \
