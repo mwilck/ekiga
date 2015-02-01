@@ -13,8 +13,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: ekiga\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2015-01-25 17:18+0100\n"
-"PO-Revision-Date: 2015-01-25 17:19+0100\n"
+"POT-Creation-Date: 2015-02-01 14:39+0100\n"
+"PO-Revision-Date: 2015-02-01 14:40+0100\n"
 "Last-Translator: Piotr Drąg <piotrdrag@gmail.com>\n"
 "Language-Team: Polish <gnomepl@aviary.pl>\n"
 "Language: pl\n"
@@ -26,10 +26,25 @@ msgstr ""
 "X-Poedit-Language: Polish\n"
 "X-Poedit-Country: Poland\n"
 
+#: ../ekiga.appdata.xml.in.h:1
+msgid ""
+"Ekiga is a VoIP, IP Telephony, and Video Conferencing application that "
+"allows you to make audio and video calls to remote users with SIP or H.323 "
+"compatible hardware and software. It supports many audio and video codecs "
+"and all modern VoIP features for both SIP and H.323. Ekiga is the first Open "
+"Source application to support both H.323 and SIP, as well as audio and video."
+msgstr ""
+"Ekiga jest programem VoIP (telefon IP) obsługującym wideokonferencje, "
+"umożliwiającym rozmowy audio i wideo ze zdalnymi użytkownikami za pomocą "
+"sprzętu i oprogramowania zgodnego z protokołami SIP lub H.323. Obsługuje on "
+"wiele kodeków audio i wideo oraz wszystkie nowoczesne funkcje VoIP. Ekiga "
+"jest pierwszym programem open source obsługującym jednocześnie protokoły "
+"H.323 i SIP, a także zarówno rozmowy audio, jak i wideo."
+
 #. Application name
 #. FIXME ??? ekiga-settings.h
-#: ../ekiga.desktop.in.in.h:1 ../lib/engine/gui/gtk-frontend/ekiga-app.cpp:493
-#: ../lib/engine/gui/gtk-frontend/ekiga-app.cpp:495
+#: ../ekiga.desktop.in.in.h:1 ../lib/engine/gui/gtk-frontend/ekiga-app.cpp:497
+#: ../lib/engine/gui/gtk-frontend/ekiga-app.cpp:499
 #: ../lib/engine/gui/gtk-frontend/main_window.cpp:766
 msgid "Ekiga Softphone"
 msgstr "Telefon Ekiga"
@@ -91,33 +106,33 @@ msgstr "Nieprawidłowa nazwa użytkownika lub hasło"
 
 #: ../lib/engine/components/opal/h323-endpoint.cpp:101
 #: ../lib/engine/components/opal/sip-endpoint.cpp:84
-#: ../lib/engine/components/opal/sip-endpoint.cpp:474
+#: ../lib/engine/components/opal/sip-endpoint.cpp:475
 msgid "Transport error"
 msgstr "Błąd transportu"
 
 #: ../lib/engine/components/opal/h323-endpoint.cpp:115
 #: ../lib/engine/components/opal/h323-endpoint.cpp:120
-#: ../lib/engine/components/opal/sip-endpoint.cpp:696
+#: ../lib/engine/components/opal/sip-endpoint.cpp:697
 msgid "Failed"
 msgstr "Nieudane"
 
 #. Translators: this is a state, not an action, i.e. it should be read as
 #. "(you are) unregistered", and not as "(you have been) unregistered"
-#: ../lib/engine/components/opal/opal-account.cpp:163
-#: ../lib/engine/components/opal/opal-account.cpp:563
-#: ../lib/engine/components/opal/opal-account.cpp:966
+#: ../lib/engine/components/opal/opal-account.cpp:171
+#: ../lib/engine/components/opal/opal-account.cpp:564
+#: ../lib/engine/components/opal/opal-account.cpp:999
 msgid "Unregistered"
 msgstr "Nie zarejestrowano"
 
 #. Actor stuff
 #. Translators: Example: Add ekiga.net Contact
-#: ../lib/engine/components/opal/opal-account.cpp:195
+#: ../lib/engine/components/opal/opal-account.cpp:203
 #, c-format
 msgid "A_dd %s Contact"
 msgstr "_Dodaj kontakt: %s"
 
 #. Actor stuff
-#: ../lib/engine/components/opal/opal-account.cpp:199
+#: ../lib/engine/components/opal/opal-account.cpp:207
 #: ../lib/engine/components/opal/opal-presentity.cpp:115
 #: ../plugins/evolution/evolution-contact.cpp:69
 #: ../plugins/ldap/ldap-book.cpp:344
@@ -126,7 +141,7 @@ msgstr "_Dodaj kontakt: %s"
 msgid "_Edit"
 msgstr "_Edycja"
 
-#: ../lib/engine/components/opal/opal-account.cpp:201
+#: ../lib/engine/components/opal/opal-account.cpp:209
 #: ../lib/engine/components/opal/opal-presentity.cpp:117
 #: ../plugins/evolution/evolution-contact.cpp:71
 #: ../plugins/ldap/ldap-book.cpp:346
@@ -136,32 +151,32 @@ msgstr "_Edycja"
 msgid "_Remove"
 msgstr "_Usuń"
 
-#: ../lib/engine/components/opal/opal-account.cpp:203
+#: ../lib/engine/components/opal/opal-account.cpp:211
 #: ../plugins/loudmouth/loudmouth-account.cpp:437
 msgid "_Enable"
 msgstr "Włą_cz"
 
-#: ../lib/engine/components/opal/opal-account.cpp:205
+#: ../lib/engine/components/opal/opal-account.cpp:213
 #: ../plugins/loudmouth/loudmouth-account.cpp:433
 msgid "_Disable"
 msgstr "_Wyłącz"
 
-#: ../lib/engine/components/opal/opal-account.cpp:216
-#: ../lib/engine/components/opal/opal-account.cpp:218
+#: ../lib/engine/components/opal/opal-account.cpp:224
+#: ../lib/engine/components/opal/opal-account.cpp:226
 msgid "Recharge the Ekiga Call Out account"
 msgstr "Doładuj konto Ekiga Call Out"
 
-#: ../lib/engine/components/opal/opal-account.cpp:222
-#: ../lib/engine/components/opal/opal-account.cpp:224
+#: ../lib/engine/components/opal/opal-account.cpp:230
+#: ../lib/engine/components/opal/opal-account.cpp:232
 msgid "Consult the Ekiga Call Out balance history"
 msgstr "Sprawdź historię stanu konta Ekiga Call Out"
 
-#: ../lib/engine/components/opal/opal-account.cpp:228
-#: ../lib/engine/components/opal/opal-account.cpp:230
+#: ../lib/engine/components/opal/opal-account.cpp:236
+#: ../lib/engine/components/opal/opal-account.cpp:238
 msgid "Consult the Ekiga Call Out call history"
 msgstr "Sprawdź historię połączeń Ekiga Call Out"
 
-#: ../lib/engine/components/opal/opal-account.cpp:287
+#: ../lib/engine/components/opal/opal-account.cpp:288
 #: ../lib/engine/components/opal/opal-presentity.cpp:153
 #: ../plugins/resource-list/rl-entry.cpp:141
 #: ../plugins/resource-list/rl-heap.cpp:102
@@ -174,7 +189,7 @@ msgstr "Bez nazwy"
 #. translators : the result will look like :
 #. * "registered (with 2 voice mail messages)"
 #.
-#: ../lib/engine/components/opal/opal-account.cpp:305
+#: ../lib/engine/components/opal/opal-account.cpp:306
 #, c-format
 msgid "%s (with %d voice mail message)"
 msgid_plural "%s (with %d voice mail messages)"
@@ -182,351 +197,343 @@ msgstr[0] "%s (%d wiadomość w poczcie głosowej)"
 msgstr[1] "%s (%d wiadomości w poczcie głosowej)"
 msgstr[2] "%s (%d wiadomości w poczcie głosowej)"
 
-#: ../lib/engine/components/opal/opal-account.cpp:498
-#: ../lib/engine/components/opal/opal-account.cpp:1018
+#: ../lib/engine/components/opal/opal-account.cpp:499
+#: ../lib/engine/components/opal/opal-account.cpp:1051
 msgid "Processing..."
 msgstr "Przetwarzanie..."
 
 #. Translators: This is Edit name of the Account
 #. * e.g. Editing Ekiga.net Account.
 #.
-#: ../lib/engine/components/opal/opal-account.cpp:646
+#: ../lib/engine/components/opal/opal-account.cpp:647
 #: ../plugins/ldap/ldap-book.cpp:955
 #, c-format
 msgid "Editing %s Account"
 msgstr "Modyfikowanie konta: %s"
 
-#: ../lib/engine/components/opal/opal-account.cpp:650
-#: ../lib/engine/components/opal/opal-presentity.cpp:259
-msgid "Name"
-msgstr "Nazwa"
+#: ../lib/engine/components/opal/opal-account.cpp:655
+#: ../lib/engine/components/opal/opal-account.cpp:677
+#: ../lib/engine/components/opal/opal-account.cpp:690
+#: ../lib/engine/components/opal/opal-bank.cpp:180
+#: ../lib/engine/components/opal/opal-bank.cpp:195
+msgid "_User"
+msgstr "_Użytkownik"
 
-#: ../lib/engine/components/opal/opal-account.cpp:650
-msgid "Ekiga.Net Account"
-msgstr "Konto Ekiga.net"
-
-#: ../lib/engine/components/opal/opal-account.cpp:653
-msgid "Registrar"
-msgstr "Rejestrator"
-
-#: ../lib/engine/components/opal/opal-account.cpp:653
-#: ../lib/engine/components/opal/opal-account.cpp:656
-#: ../lib/engine/components/opal/opal-bank.cpp:197
-msgid "ekiga.net"
-msgstr "ekiga.net"
-
-#: ../lib/engine/components/opal/opal-account.cpp:656
-msgid "Gatekeeper"
-msgstr "Bramka"
-
-#: ../lib/engine/components/opal/opal-account.cpp:658
-msgid "User"
-msgstr "Użytkownik"
-
-#: ../lib/engine/components/opal/opal-account.cpp:658
-#: ../lib/engine/components/opal/opal-bank.cpp:184
-#: ../lib/engine/components/opal/opal-bank.cpp:199
+#: ../lib/engine/components/opal/opal-account.cpp:655
+#: ../lib/engine/components/opal/opal-account.cpp:665
+#: ../lib/engine/components/opal/opal-account.cpp:677
+#: ../lib/engine/components/opal/opal-account.cpp:690
+#: ../lib/engine/components/opal/opal-bank.cpp:180
+#: ../lib/engine/components/opal/opal-bank.cpp:195
 msgid "jon"
 msgstr "jan"
 
-#. Translators:
-#. * SIP knows two usernames: The name for the client ("User") and the name
-#. * for the authentication procedure ("Authentication user"), aka Login
-#. * to make it understandable
-#.
-#: ../lib/engine/components/opal/opal-account.cpp:666
-msgid "Login"
-msgstr "Login"
+#: ../lib/engine/components/opal/opal-account.cpp:658
+#: ../lib/engine/components/opal/opal-account.cpp:679
+#: ../lib/engine/components/opal/opal-account.cpp:699
+#: ../lib/engine/components/opal/opal-bank.cpp:157
+#: ../lib/engine/components/opal/opal-bank.cpp:183
+#: ../lib/engine/components/opal/opal-bank.cpp:199
+#: ../plugins/ldap/ldap-book.cpp:1010
+msgid "_Password"
+msgstr "_Hasło"
 
-#: ../lib/engine/components/opal/opal-account.cpp:666
-#: ../lib/engine/components/opal/opal-bank.cpp:201
-msgid "jon.doe"
-msgstr "jan.kowalski"
-
+#: ../lib/engine/components/opal/opal-account.cpp:658
 #: ../lib/engine/components/opal/opal-account.cpp:668
-msgid "Password"
-msgstr "Hasło"
-
-#: ../lib/engine/components/opal/opal-account.cpp:668
-#: ../lib/engine/components/opal/opal-bank.cpp:161
-#: ../lib/engine/components/opal/opal-bank.cpp:174
-#: ../lib/engine/components/opal/opal-bank.cpp:187
-#: ../lib/engine/components/opal/opal-bank.cpp:203
+#: ../lib/engine/components/opal/opal-account.cpp:679
+#: ../lib/engine/components/opal/opal-account.cpp:699
+#: ../lib/engine/components/opal/opal-bank.cpp:157
+#: ../lib/engine/components/opal/opal-bank.cpp:170
+#: ../lib/engine/components/opal/opal-bank.cpp:183
+#: ../lib/engine/components/opal/opal-bank.cpp:199
 msgid "1234"
 msgstr "1234"
 
-#: ../lib/engine/components/opal/opal-account.cpp:670
-#: ../lib/engine/components/opal/sip-endpoint.cpp:552
-msgid "Timeout"
-msgstr "Przekroczony czas"
+#: ../lib/engine/components/opal/opal-account.cpp:665
+#: ../lib/engine/components/opal/opal-bank.cpp:167
+msgid "_Account ID"
+msgstr "Identyfik_ator konta"
 
-#: ../lib/engine/components/opal/opal-account.cpp:672
-msgid "Enable Account"
-msgstr "Włącz konto"
+#: ../lib/engine/components/opal/opal-account.cpp:668
+#: ../lib/engine/components/opal/opal-bank.cpp:170
+msgid "_PIN Code"
+msgstr "Kod _PIN"
 
-#: ../lib/engine/components/opal/opal-account.cpp:701
-msgid "You did not supply a name for that account."
-msgstr "Nie podano nazwy dla konta."
-
-#: ../lib/engine/components/opal/opal-account.cpp:703
-msgid "You did not supply a host to register to."
-msgstr "Nie podano komputera do rejestracji."
-
-#: ../lib/engine/components/opal/opal-account.cpp:705
-msgid "You did not supply a user name for that account."
-msgstr "Nie podano nazwy użytkownika dla tego konta."
-
-#: ../lib/engine/components/opal/opal-account.cpp:707
-msgid "The timeout should be at least 10 seconds."
-msgstr "Ograniczenie czasu powinno wynosić co najmniej 10 sekund."
-
-#: ../lib/engine/components/opal/opal-account.cpp:785
-#: ../plugins/evolution/evolution-book.cpp:341
-msgid "Add Contact"
-msgstr "Dodaj kontakt"
-
-#: ../lib/engine/components/opal/opal-account.cpp:786
-#: ../lib/engine/components/opal/opal-bank.cpp:180
-#: ../lib/engine/components/opal/opal-bank.cpp:195
+#: ../lib/engine/components/opal/opal-account.cpp:673
+#: ../lib/engine/components/opal/opal-account.cpp:686
+#: ../lib/engine/components/opal/opal-account.cpp:820
+#: ../lib/engine/components/opal/opal-bank.cpp:176
+#: ../lib/engine/components/opal/opal-bank.cpp:191
 #: ../plugins/evolution/evolution-book.cpp:343
 #: ../plugins/evolution/evolution-contact.cpp:304
 #: ../plugins/ldap/ldap-book.cpp:962
 msgid "_Name"
 msgstr "_Nazwa"
 
-#: ../lib/engine/components/opal/opal-account.cpp:786
+#: ../lib/engine/components/opal/opal-account.cpp:673
+#: ../lib/engine/components/opal/opal-account.cpp:686
+msgid "Ekiga.Net Account"
+msgstr "Konto Ekiga.net"
+
+#: ../lib/engine/components/opal/opal-account.cpp:675
+#: ../lib/engine/components/opal/opal-bank.cpp:178
+msgid "_Gatekeeper"
+msgstr "_Bramka"
+
+#: ../lib/engine/components/opal/opal-account.cpp:675
+#: ../lib/engine/components/opal/opal-account.cpp:688
+#: ../lib/engine/components/opal/opal-bank.cpp:193
+msgid "ekiga.net"
+msgstr "ekiga.net"
+
+#: ../lib/engine/components/opal/opal-account.cpp:681
+#: ../lib/engine/components/opal/opal-account.cpp:701
+#: ../lib/engine/components/opal/opal-bank.cpp:185
+#: ../lib/engine/components/opal/opal-bank.cpp:201
+msgid "_Timeout"
+msgstr "_Ograniczenie czasu"
+
+#: ../lib/engine/components/opal/opal-account.cpp:688
+#: ../lib/engine/components/opal/opal-bank.cpp:193
+msgid "_Registrar"
+msgstr "_Rejestrator"
+
+#. Translators:
+#. * SIP knows two usernames: The name for the client ("User") and the name
+#. * for the authentication procedure ("Authentication user"), aka Login
+#. * to make it understandable
+#.
+#: ../lib/engine/components/opal/opal-account.cpp:697
+#: ../lib/engine/components/opal/opal-bank.cpp:197
+msgid "_Login"
+msgstr "_Login"
+
+#: ../lib/engine/components/opal/opal-account.cpp:697
+#: ../lib/engine/components/opal/opal-bank.cpp:197
+msgid "jon.doe"
+msgstr "jan.kowalski"
+
+#: ../lib/engine/components/opal/opal-account.cpp:704
+msgid "_Enable Account"
+msgstr "_Włącz konto"
+
+#: ../lib/engine/components/opal/opal-account.cpp:735
+msgid "You did not supply a name for that account."
+msgstr "Nie podano nazwy dla konta."
+
+#: ../lib/engine/components/opal/opal-account.cpp:737
+msgid "You did not supply a host to register to."
+msgstr "Nie podano komputera do rejestracji."
+
+#: ../lib/engine/components/opal/opal-account.cpp:739
+msgid "You did not supply a user name for that account."
+msgstr "Nie podano nazwy użytkownika dla tego konta."
+
+#: ../lib/engine/components/opal/opal-account.cpp:741
+msgid "The timeout should be at least 10 seconds."
+msgstr "Ograniczenie czasu powinno wynosić co najmniej 10 sekund."
+
+#: ../lib/engine/components/opal/opal-account.cpp:819
+#: ../plugins/evolution/evolution-book.cpp:341
+msgid "Add Contact"
+msgstr "Dodaj kontakt"
+
+#: ../lib/engine/components/opal/opal-account.cpp:820
 #: ../lib/engine/components/opal/opal-presentity.cpp:261
 #: ../plugins/evolution/evolution-book.cpp:344
 #: ../plugins/evolution/evolution-contact.cpp:304
 msgid "John Doe"
 msgstr "Jan Kowalski"
 
-#: ../lib/engine/components/opal/opal-account.cpp:789
+#: ../lib/engine/components/opal/opal-account.cpp:823
 #: ../plugins/evolution/evolution-book.cpp:346
 #: ../plugins/evolution/evolution-contact.cpp:313
 #: ../plugins/ldap/ldap-book.cpp:964
 msgid "_URI"
 msgstr "Adres _URI"
 
-#: ../lib/engine/components/opal/opal-account.cpp:793
+#: ../lib/engine/components/opal/opal-account.cpp:827
 #: ../lib/engine/components/opal/opal-presentity.cpp:270
 msgid "Groups"
 msgstr "Grupy"
 
-#: ../lib/engine/components/opal/opal-account.cpp:834
+#: ../lib/engine/components/opal/opal-account.cpp:868
 #: ../lib/engine/components/opal/opal-call.cpp:208
 msgid "You supplied an unsupported address"
 msgstr "Podano nieobsługiwany adres"
 
-#: ../lib/engine/components/opal/opal-account.cpp:836
+#: ../lib/engine/components/opal/opal-account.cpp:870
 msgid "You already have a contact with this address!"
 msgstr "Na liście już znajduje się kontakt o takim adresie!"
 
 #. Translators: this is a state, not an action, i.e. it should be read as
 #. "(you are) registered", and not as "(you have been) registered"
-#: ../lib/engine/components/opal/opal-account.cpp:925
+#: ../lib/engine/components/opal/opal-account.cpp:963
 msgid "Registered"
 msgstr "Zarejestrowano"
 
-#: ../lib/engine/components/opal/opal-account.cpp:979
+#: ../lib/engine/components/opal/opal-account.cpp:1012
 msgid "Could not unregister"
 msgstr "Nie można się wyrejestrować"
 
-#: ../lib/engine/components/opal/opal-account.cpp:990
-#: ../lib/engine/components/opal/opal-account.cpp:1005
+#: ../lib/engine/components/opal/opal-account.cpp:1023
+#: ../lib/engine/components/opal/opal-account.cpp:1038
 msgid "Could not register to "
 msgstr "Nie można zarejestrować w "
 
-#: ../lib/engine/components/opal/opal-account.cpp:991
-#: ../lib/engine/components/opal/opal-account.cpp:1006
+#: ../lib/engine/components/opal/opal-account.cpp:1024
+#: ../lib/engine/components/opal/opal-account.cpp:1039
 #: ../lib/engine/gui/gtk-frontend/preferences-window.cpp:603
 #: ../plugins/loudmouth/loudmouth-account.cpp:443
 msgid "Edit"
 msgstr "Edycja"
 
-#: ../lib/engine/components/opal/opal-account.cpp:1000
+#: ../lib/engine/components/opal/opal-account.cpp:1033
 msgid "Could not register"
 msgstr "Nie można się zarejestrować"
 
-#: ../lib/engine/components/opal/opal-account.cpp:1107
+#: ../lib/engine/components/opal/opal-account.cpp:1140
 msgid "Appointment"
 msgstr "Termin"
 
-#: ../lib/engine/components/opal/opal-account.cpp:1111
+#: ../lib/engine/components/opal/opal-account.cpp:1144
 msgid "Breakfast"
 msgstr "Śniadanie"
 
-#: ../lib/engine/components/opal/opal-account.cpp:1115
+#: ../lib/engine/components/opal/opal-account.cpp:1148
 msgid "Dinner"
 msgstr "Obiad"
 
-#: ../lib/engine/components/opal/opal-account.cpp:1120
+#: ../lib/engine/components/opal/opal-account.cpp:1153
 msgid "Holiday"
 msgstr "Wakacje"
 
-#: ../lib/engine/components/opal/opal-account.cpp:1124
+#: ../lib/engine/components/opal/opal-account.cpp:1157
 msgid "In transit"
 msgstr "W trasie"
 
-#: ../lib/engine/components/opal/opal-account.cpp:1128
+#: ../lib/engine/components/opal/opal-account.cpp:1161
 msgid "Looking for work"
 msgstr "Szuka pracy"
 
-#: ../lib/engine/components/opal/opal-account.cpp:1132
+#: ../lib/engine/components/opal/opal-account.cpp:1165
 msgid "Lunch"
 msgstr "Lunch"
 
-#: ../lib/engine/components/opal/opal-account.cpp:1136
+#: ../lib/engine/components/opal/opal-account.cpp:1169
 msgid "Meal"
 msgstr "Posiłek"
 
-#: ../lib/engine/components/opal/opal-account.cpp:1140
+#: ../lib/engine/components/opal/opal-account.cpp:1173
 msgid "Meeting"
 msgstr "Spotkanie"
 
-#: ../lib/engine/components/opal/opal-account.cpp:1144
+#: ../lib/engine/components/opal/opal-account.cpp:1177
 msgid "On the phone"
 msgstr "Przy telefonie"
 
-#: ../lib/engine/components/opal/opal-account.cpp:1148
+#: ../lib/engine/components/opal/opal-account.cpp:1181
 msgid "Playing"
 msgstr "Bawi się"
 
-#: ../lib/engine/components/opal/opal-account.cpp:1152
+#: ../lib/engine/components/opal/opal-account.cpp:1185
 msgid "Shopping"
 msgstr "Na zakupach"
 
-#: ../lib/engine/components/opal/opal-account.cpp:1156
+#: ../lib/engine/components/opal/opal-account.cpp:1189
 msgid "Sleeping"
 msgstr "Śpi"
 
-#: ../lib/engine/components/opal/opal-account.cpp:1160
+#: ../lib/engine/components/opal/opal-account.cpp:1193
 msgid "Working"
 msgstr "Pracuje"
 
-#: ../lib/engine/components/opal/opal-account.cpp:1168
+#: ../lib/engine/components/opal/opal-account.cpp:1201
 msgid "Performance"
 msgstr "Wydajność"
 
-#: ../lib/engine/components/opal/opal-account.cpp:1172
+#: ../lib/engine/components/opal/opal-account.cpp:1205
 msgid "Permantent Absence"
 msgstr "Trwała nieobecność"
 
-#: ../lib/engine/components/opal/opal-account.cpp:1176
+#: ../lib/engine/components/opal/opal-account.cpp:1209
 msgid "Presentation"
 msgstr "Prezentacja"
 
-#: ../lib/engine/components/opal/opal-account.cpp:1180
+#: ../lib/engine/components/opal/opal-account.cpp:1213
 msgid "Spectator"
 msgstr "Widz"
 
-#: ../lib/engine/components/opal/opal-account.cpp:1184
+#: ../lib/engine/components/opal/opal-account.cpp:1217
 msgid "Steering"
 msgstr "Za kierownicą"
 
-#: ../lib/engine/components/opal/opal-account.cpp:1188
+#: ../lib/engine/components/opal/opal-account.cpp:1221
 msgid "Business or personal trip"
 msgstr "Wycieczka biznesowa lub osobista"
 
-#: ../lib/engine/components/opal/opal-account.cpp:1192
+#: ../lib/engine/components/opal/opal-account.cpp:1225
 msgid "Watching TV"
 msgstr "Ogląda telewizję"
 
-#: ../lib/engine/components/opal/opal-account.cpp:1196
+#: ../lib/engine/components/opal/opal-account.cpp:1229
 msgid "Worship"
 msgstr "Czci"
 
-#: ../lib/engine/components/opal/opal-account.cpp:1270
+#: ../lib/engine/components/opal/opal-account.cpp:1303
 msgid "Renaming Groups"
 msgstr "Zmienianie nazw grup"
 
-#: ../lib/engine/components/opal/opal-bank.cpp:150
+#: ../lib/engine/components/opal/opal-bank.cpp:146
 #: ../plugins/ldap/ldap-book.cpp:957
 msgid "Add Account"
 msgstr "Dodaj konto"
 
-#: ../lib/engine/components/opal/opal-bank.cpp:155
+#: ../lib/engine/components/opal/opal-bank.cpp:151
 msgid "Get an Ekiga.net SIP account"
 msgstr "Załóż konto SIP w Ekiga.net"
 
-#: ../lib/engine/components/opal/opal-bank.cpp:158
+#: ../lib/engine/components/opal/opal-bank.cpp:154
 msgid "Ekiga.im _SIP address"
 msgstr "Adres _SIP Ekiga.im"
 
-#: ../lib/engine/components/opal/opal-bank.cpp:158
+#: ../lib/engine/components/opal/opal-bank.cpp:154
 msgid "sip:jon@ekiga.im"
 msgstr "sip:jan@ekiga.im"
 
-#: ../lib/engine/components/opal/opal-bank.cpp:161
-#: ../lib/engine/components/opal/opal-bank.cpp:187
-#: ../lib/engine/components/opal/opal-bank.cpp:203
-#: ../plugins/ldap/ldap-book.cpp:1010
-msgid "_Password"
-msgstr "_Hasło"
-
-#: ../lib/engine/components/opal/opal-bank.cpp:167
+#: ../lib/engine/components/opal/opal-bank.cpp:163
 #: ../lib/engine/gui/gtk-frontend/assistant-window.cpp:461
 msgid "Get an Ekiga Call Out account"
 msgstr "Załóż konto Ekiga Call Out"
 
-#: ../lib/engine/components/opal/opal-bank.cpp:171
-msgid "_Account ID"
-msgstr "Identyfik_ator konta"
-
-#: ../lib/engine/components/opal/opal-bank.cpp:171
+#: ../lib/engine/components/opal/opal-bank.cpp:167
 msgid "1234567890"
 msgstr "1234567890"
 
-#: ../lib/engine/components/opal/opal-bank.cpp:174
-msgid "_PIN Code"
-msgstr "Kod _PIN"
-
-#: ../lib/engine/components/opal/opal-bank.cpp:180
+#: ../lib/engine/components/opal/opal-bank.cpp:176
 msgid "My H.323 Account"
 msgstr "Moje konto H.323"
 
-#: ../lib/engine/components/opal/opal-bank.cpp:182
-msgid "_Gatekeeper"
-msgstr "_Bramka"
-
-#: ../lib/engine/components/opal/opal-bank.cpp:182
+#: ../lib/engine/components/opal/opal-bank.cpp:178
 msgid "h323.ekiga.net"
 msgstr "h323.ekiga.net"
 
-#: ../lib/engine/components/opal/opal-bank.cpp:184
-#: ../lib/engine/components/opal/opal-bank.cpp:199
-msgid "_User"
-msgstr "_Użytkownik"
-
-#: ../lib/engine/components/opal/opal-bank.cpp:189
-#: ../lib/engine/components/opal/opal-bank.cpp:205
-msgid "_Timeout"
-msgstr "_Ograniczenie czasu"
-
-#: ../lib/engine/components/opal/opal-bank.cpp:195
+#: ../lib/engine/components/opal/opal-bank.cpp:191
 msgid "My SIP Account"
 msgstr "Moje konto SIP"
 
-#: ../lib/engine/components/opal/opal-bank.cpp:197
-msgid "_Registrar"
-msgstr "_Rejestrator"
-
-#: ../lib/engine/components/opal/opal-bank.cpp:201
-msgid "_Login"
-msgstr "_Login"
-
-#: ../lib/engine/components/opal/opal-bank.cpp:209
+#: ../lib/engine/components/opal/opal-bank.cpp:205
 #: ../plugins/loudmouth/loudmouth-account.cpp:376
 #: ../plugins/loudmouth/loudmouth-bank.cpp:125
-msgid "Enable account"
-msgstr "Włączenie konta"
+msgid "_Enable account"
+msgstr "_Włącz konto"
 
-#: ../lib/engine/components/opal/opal-bank.cpp:400
+#: ../lib/engine/components/opal/opal-bank.cpp:404
 #: ../plugins/loudmouth/loudmouth-heap-roster.cpp:488
 msgid "Family"
 msgstr "Rodzina"
 
-#: ../lib/engine/components/opal/opal-bank.cpp:401
+#: ../lib/engine/components/opal/opal-bank.cpp:405
 #: ../plugins/loudmouth/loudmouth-heap-roster.cpp:489
 msgid "Friend"
 msgstr "Przyjaciel"
@@ -535,7 +542,7 @@ msgstr "Przyjaciel"
 #. relationships between you and your contact; associate means
 #. someone who is at the same "level" than you.
 #.
-#: ../lib/engine/components/opal/opal-bank.cpp:406
+#: ../lib/engine/components/opal/opal-bank.cpp:410
 #: ../plugins/loudmouth/loudmouth-heap-roster.cpp:494
 msgid "Associate"
 msgstr "Współpracownik"
@@ -544,7 +551,7 @@ msgstr "Współpracownik"
 #. relationships between you and your contact; assistant means
 #. someone who is at a lower "level" than you.
 #.
-#: ../lib/engine/components/opal/opal-bank.cpp:411
+#: ../lib/engine/components/opal/opal-bank.cpp:415
 #: ../plugins/loudmouth/loudmouth-heap-roster.cpp:499
 msgid "Assistant"
 msgstr "Asystent"
@@ -553,7 +560,7 @@ msgstr "Asystent"
 #. relationships between you and your contact; supervisor means
 #. someone who is at a higher "level" than you.
 #.
-#: ../lib/engine/components/opal/opal-bank.cpp:416
+#: ../lib/engine/components/opal/opal-bank.cpp:420
 #: ../plugins/loudmouth/loudmouth-heap-roster.cpp:504
 msgid "Supervisor"
 msgstr "Przełożony"
@@ -561,24 +568,24 @@ msgstr "Przełożony"
 #. Translator: http://www.ietf.org/rfc/rfc4480.txt proposes several
 #. relationships between you and your contact; self means yourself.
 #.
-#: ../lib/engine/components/opal/opal-bank.cpp:420
+#: ../lib/engine/components/opal/opal-bank.cpp:424
 #: ../plugins/loudmouth/loudmouth-heap-roster.cpp:508
 msgid "Self"
 msgstr "Użytkownik"
 
-#: ../lib/engine/components/opal/opal-bank.cpp:565
+#: ../lib/engine/components/opal/opal-bank.cpp:569
 msgid "_Add an Ekiga.net Account"
 msgstr "_Dodaj konto Ekiga.net"
 
-#: ../lib/engine/components/opal/opal-bank.cpp:572
+#: ../lib/engine/components/opal/opal-bank.cpp:576
 msgid "_Add an Ekiga Call Out Account"
 msgstr "D_odaj konto Ekiga Call Out"
 
-#: ../lib/engine/components/opal/opal-bank.cpp:575
+#: ../lib/engine/components/opal/opal-bank.cpp:579
 msgid "_Add a SIP Account"
 msgstr "Dodaj _konto SIP"
 
-#: ../lib/engine/components/opal/opal-bank.cpp:579
+#: ../lib/engine/components/opal/opal-bank.cpp:583
 msgid "_Add an H.323 Account"
 msgstr "Dodaj konto _H.323"
 
@@ -701,7 +708,7 @@ msgid "User is not available"
 msgstr "Użytkownik jest niedostępny"
 
 #: ../lib/engine/components/opal/opal-call.cpp:620
-#: ../lib/engine/components/opal/sip-endpoint.cpp:652
+#: ../lib/engine/components/opal/sip-endpoint.cpp:653
 msgid "Service unavailable"
 msgstr "Usługa jest niedostępna"
 
@@ -730,7 +737,7 @@ msgstr "Nieodebrane połączenie"
 msgid "Call"
 msgstr "Połącz"
 
-#: ../lib/engine/components/opal/opal-call-manager.cpp:858
+#: ../lib/engine/components/opal/opal-call-manager.cpp:860
 msgid ""
 "Ekiga did not manage to configure your network settings automatically. You "
 "can still use it, but you need to configure your network settings manually.\n"
@@ -762,6 +769,10 @@ msgstr "Modyfikowanie kontaktu: %s"
 msgid "Done"
 msgstr "Gotowe"
 
+#: ../lib/engine/components/opal/opal-presentity.cpp:259
+msgid "Name"
+msgstr "Nazwa"
+
 #: ../lib/engine/components/opal/opal-presentity.cpp:264
 msgid "URI"
 msgstr "Adres URI"
@@ -774,97 +785,101 @@ msgstr "Nie podano prawidłowej nazwy"
 msgid "You did not provide a valid address"
 msgstr "Nie podano prawidłowego adresu"
 
-#: ../lib/engine/components/opal/sip-endpoint.cpp:470
+#: ../lib/engine/components/opal/sip-endpoint.cpp:471
 msgid "Illegal status code"
 msgstr "Nieprawidłowy kod stanu"
 
-#: ../lib/engine/components/opal/sip-endpoint.cpp:478
+#: ../lib/engine/components/opal/sip-endpoint.cpp:479
 msgid "Invalid address"
 msgstr "Nieprawidłowy adres"
 
 #. Translators: Host of the remote party is offline, this should
 #. * appear when the remote host does not reply in an acceptable time
-#: ../lib/engine/components/opal/sip-endpoint.cpp:484
+#: ../lib/engine/components/opal/sip-endpoint.cpp:485
 msgid "Remote party host is offline"
 msgstr "Zdalny komputer jest w trybie offline"
 
 #. Translators: the following strings are answers from the SIP server
 #. * when the packet it receives has an error, see
 #. * http://www.ietf.org/rfc/rfc3261.txt, chapter 21 for more information
-#: ../lib/engine/components/opal/sip-endpoint.cpp:500
+#: ../lib/engine/components/opal/sip-endpoint.cpp:501
 msgid "Multiple choices"
 msgstr "Wybór wielokrotny"
 
-#: ../lib/engine/components/opal/sip-endpoint.cpp:504
+#: ../lib/engine/components/opal/sip-endpoint.cpp:505
 msgid "Moved permanently"
 msgstr "Przesunięcie stałe"
 
-#: ../lib/engine/components/opal/sip-endpoint.cpp:508
+#: ../lib/engine/components/opal/sip-endpoint.cpp:509
 msgid "Moved temporarily"
 msgstr "Przesunięcie tymczasowe"
 
-#: ../lib/engine/components/opal/sip-endpoint.cpp:512
+#: ../lib/engine/components/opal/sip-endpoint.cpp:513
 msgid "Use proxy"
 msgstr "Użycie pośrednika sieciowego"
 
-#: ../lib/engine/components/opal/sip-endpoint.cpp:516
+#: ../lib/engine/components/opal/sip-endpoint.cpp:517
 msgid "Alternative service"
 msgstr "Usługa alternatywna"
 
-#: ../lib/engine/components/opal/sip-endpoint.cpp:520
+#: ../lib/engine/components/opal/sip-endpoint.cpp:521
 msgid "Bad request"
 msgstr "Błędne żądanie"
 
-#: ../lib/engine/components/opal/sip-endpoint.cpp:524
+#: ../lib/engine/components/opal/sip-endpoint.cpp:525
 msgid "Unauthorized"
 msgstr "Nieupoważniony"
 
-#: ../lib/engine/components/opal/sip-endpoint.cpp:528
+#: ../lib/engine/components/opal/sip-endpoint.cpp:529
 msgid "Payment required"
 msgstr "Wymagana jest opłata"
 
-#: ../lib/engine/components/opal/sip-endpoint.cpp:532
+#: ../lib/engine/components/opal/sip-endpoint.cpp:533
 msgid "Forbidden, please check that username and password are correct"
 msgstr ""
 "Zabronione, proszę sprawdzić, czy nazwa użytkownika i hasło są poprawne"
 
-#: ../lib/engine/components/opal/sip-endpoint.cpp:536
+#: ../lib/engine/components/opal/sip-endpoint.cpp:537
 msgid "Not found"
 msgstr "Nie odnaleziono"
 
-#: ../lib/engine/components/opal/sip-endpoint.cpp:540
+#: ../lib/engine/components/opal/sip-endpoint.cpp:541
 msgid "Method not allowed"
 msgstr "Metoda nie jest dozwolona"
 
-#: ../lib/engine/components/opal/sip-endpoint.cpp:544
+#: ../lib/engine/components/opal/sip-endpoint.cpp:545
 msgid "Not acceptable"
 msgstr "Nieakceptowalne"
 
-#: ../lib/engine/components/opal/sip-endpoint.cpp:548
+#: ../lib/engine/components/opal/sip-endpoint.cpp:549
 msgid "Proxy authentication required"
 msgstr "Wymagane uwierzytelnienie pośrednika sieciowego"
 
-#: ../lib/engine/components/opal/sip-endpoint.cpp:556
+#: ../lib/engine/components/opal/sip-endpoint.cpp:553
+msgid "Timeout"
+msgstr "Przekroczony czas"
+
+#: ../lib/engine/components/opal/sip-endpoint.cpp:557
 msgid "Conflict"
 msgstr "Konflikt"
 
-#: ../lib/engine/components/opal/sip-endpoint.cpp:560
+#: ../lib/engine/components/opal/sip-endpoint.cpp:561
 msgid "Length required"
 msgstr "Wymagana jest długość"
 
-#: ../lib/engine/components/opal/sip-endpoint.cpp:564
+#: ../lib/engine/components/opal/sip-endpoint.cpp:565
 msgid "Request entity too big"
 msgstr "Jednostka żądania jest za duża"
 
-#: ../lib/engine/components/opal/sip-endpoint.cpp:568
+#: ../lib/engine/components/opal/sip-endpoint.cpp:569
 msgid "Request URI too long"
 msgstr "Adresu URI żądania jest za długi"
 
-#: ../lib/engine/components/opal/sip-endpoint.cpp:572
+#: ../lib/engine/components/opal/sip-endpoint.cpp:573
 msgid "Unsupported media type"
 msgstr "Nieobsługiwany typ multimediów"
 
-#: ../lib/engine/components/opal/sip-endpoint.cpp:576
+#: ../lib/engine/components/opal/sip-endpoint.cpp:577
 msgid "Unsupported URI scheme"
 msgstr "Nieobsługiwany schemat adresu URI"
 
@@ -872,132 +887,132 @@ msgstr "Nieobsługiwany schemat adresu URI"
 #. * Here extension is a specific "phone number", see
 #. * http://en.wikipedia.org/wiki/Extension_(telephone)
 #. * for more information
-#: ../lib/engine/components/opal/sip-endpoint.cpp:584
+#: ../lib/engine/components/opal/sip-endpoint.cpp:585
 msgid "Bad extension"
 msgstr "Błędne rozszerzenie"
 
-#: ../lib/engine/components/opal/sip-endpoint.cpp:588
+#: ../lib/engine/components/opal/sip-endpoint.cpp:589
 msgid "Extension required"
 msgstr "Wymagane jest rozszerzenie"
 
-#: ../lib/engine/components/opal/sip-endpoint.cpp:592
+#: ../lib/engine/components/opal/sip-endpoint.cpp:593
 msgid "Interval too brief"
 msgstr "Przerwa jest za krótka"
 
-#: ../lib/engine/components/opal/sip-endpoint.cpp:596
+#: ../lib/engine/components/opal/sip-endpoint.cpp:597
 msgid "Temporarily unavailable"
 msgstr "Tymczasowo niedostępny"
 
-#: ../lib/engine/components/opal/sip-endpoint.cpp:600
+#: ../lib/engine/components/opal/sip-endpoint.cpp:601
 msgid "Loop detected"
 msgstr "Wykryto pętlę"
 
-#: ../lib/engine/components/opal/sip-endpoint.cpp:604
+#: ../lib/engine/components/opal/sip-endpoint.cpp:605
 msgid "Too many hops"
 msgstr "Zbyt wiele przeskoków"
 
-#: ../lib/engine/components/opal/sip-endpoint.cpp:608
+#: ../lib/engine/components/opal/sip-endpoint.cpp:609
 msgid "Address incomplete"
 msgstr "Adres jest niepełny"
 
-#: ../lib/engine/components/opal/sip-endpoint.cpp:612
+#: ../lib/engine/components/opal/sip-endpoint.cpp:613
 msgid "Ambiguous"
 msgstr "Niejednoznaczne"
 
-#: ../lib/engine/components/opal/sip-endpoint.cpp:616
+#: ../lib/engine/components/opal/sip-endpoint.cpp:617
 msgid "Busy Here"
 msgstr "Zajęty"
 
-#: ../lib/engine/components/opal/sip-endpoint.cpp:620
+#: ../lib/engine/components/opal/sip-endpoint.cpp:621
 msgid "Request terminated"
 msgstr "Anulowano żądanie"
 
-#: ../lib/engine/components/opal/sip-endpoint.cpp:624
+#: ../lib/engine/components/opal/sip-endpoint.cpp:625
 msgid "Not acceptable here"
 msgstr "Nieakceptowalne w tym miejscu"
 
-#: ../lib/engine/components/opal/sip-endpoint.cpp:628
+#: ../lib/engine/components/opal/sip-endpoint.cpp:629
 msgid "Bad event"
 msgstr "Błędne zdarzenie"
 
-#: ../lib/engine/components/opal/sip-endpoint.cpp:632
+#: ../lib/engine/components/opal/sip-endpoint.cpp:633
 msgid "Request pending"
 msgstr "Żądanie oczekujące"
 
-#: ../lib/engine/components/opal/sip-endpoint.cpp:636
+#: ../lib/engine/components/opal/sip-endpoint.cpp:637
 msgid "Undecipherable"
 msgstr "Nieodszyfrowalne"
 
-#: ../lib/engine/components/opal/sip-endpoint.cpp:640
+#: ../lib/engine/components/opal/sip-endpoint.cpp:641
 msgid "Internal server error"
 msgstr "Wewnętrzny błąd serwera"
 
-#: ../lib/engine/components/opal/sip-endpoint.cpp:644
+#: ../lib/engine/components/opal/sip-endpoint.cpp:645
 msgid "Not implemented"
 msgstr "Niezaimplementowane"
 
-#: ../lib/engine/components/opal/sip-endpoint.cpp:648
+#: ../lib/engine/components/opal/sip-endpoint.cpp:649
 msgid "Bad gateway"
 msgstr "Błędna bramka"
 
-#: ../lib/engine/components/opal/sip-endpoint.cpp:656
+#: ../lib/engine/components/opal/sip-endpoint.cpp:657
 msgid "Server timeout"
 msgstr "Przekroczono ograniczenie czasu oczekiwania na serwer"
 
-#: ../lib/engine/components/opal/sip-endpoint.cpp:660
+#: ../lib/engine/components/opal/sip-endpoint.cpp:661
 msgid "SIP version not supported"
 msgstr "Wersja protokołu SIP jest nieobsługiwana"
 
-#: ../lib/engine/components/opal/sip-endpoint.cpp:664
+#: ../lib/engine/components/opal/sip-endpoint.cpp:665
 msgid "Message too large"
 msgstr "Wiadomość jest za długa"
 
-#: ../lib/engine/components/opal/sip-endpoint.cpp:668
+#: ../lib/engine/components/opal/sip-endpoint.cpp:669
 msgid "Busy everywhere"
 msgstr "Wszystkie linie są zajęte"
 
-#: ../lib/engine/components/opal/sip-endpoint.cpp:672
+#: ../lib/engine/components/opal/sip-endpoint.cpp:673
 msgid "Decline"
 msgstr "Odmów"
 
-#: ../lib/engine/components/opal/sip-endpoint.cpp:676
+#: ../lib/engine/components/opal/sip-endpoint.cpp:677
 msgid "Does not exist anymore"
 msgstr "Już nie istnieje"
 
-#: ../lib/engine/components/opal/sip-endpoint.cpp:680
+#: ../lib/engine/components/opal/sip-endpoint.cpp:681
 msgid "Globally not acceptable"
 msgstr "Nieakceptowalne globalnie"
 
-#: ../lib/engine/components/opal/sip-endpoint.cpp:684
+#: ../lib/engine/components/opal/sip-endpoint.cpp:685
 msgid "Invalid certificates"
 msgstr "Nieprawidłowe certyfikaty"
 
-#: ../lib/engine/components/opal/sip-endpoint.cpp:816
+#: ../lib/engine/components/opal/sip-endpoint.cpp:817
 msgid "Could not send message: "
 msgstr "Nie można wysłać wiadomości: "
 
-#: ../lib/engine/components/opal/sip-endpoint.cpp:818
+#: ../lib/engine/components/opal/sip-endpoint.cpp:819
 msgid "user offline"
 msgstr "użytkownik jest w trybie offline"
 
 #. Ignore
-#: ../lib/engine/components/opal/sip-endpoint.cpp:850
+#: ../lib/engine/components/opal/sip-endpoint.cpp:851
 #: ../plugins/libnotify/libnotify-main.cpp:271
 #, c-format
 msgid "Incoming call from %s"
 msgstr "Połączenie przychodzące od %s"
 
-#: ../lib/engine/components/opal/sip-endpoint.cpp:852
+#: ../lib/engine/components/opal/sip-endpoint.cpp:853
 #, c-format
 msgid "Incoming call"
 msgstr "Połączenie przychodzące"
 
-#: ../lib/engine/components/opal/sip-endpoint.cpp:858
+#: ../lib/engine/components/opal/sip-endpoint.cpp:859
 #, c-format
 msgid "In a call with %s"
 msgstr "W trakcie połączenia z %s"
 
-#: ../lib/engine/components/opal/sip-endpoint.cpp:860
+#: ../lib/engine/components/opal/sip-endpoint.cpp:861
 #, c-format
 msgid "In a call"
 msgstr "W trakcie połączenia"
@@ -1521,28 +1536,28 @@ msgstr "Przeczytaj"
 msgid "Chat Window"
 msgstr "Okno rozmowy tekstowej"
 
-#: ../lib/engine/gui/gtk-frontend/ekiga-app.cpp:607
+#: ../lib/engine/gui/gtk-frontend/ekiga-app.cpp:612
 msgid "Show the application's help"
 msgstr "Wyświetla pomoc programu"
 
-#: ../lib/engine/gui/gtk-frontend/ekiga-app.cpp:613
+#: ../lib/engine/gui/gtk-frontend/ekiga-app.cpp:618
 msgid "Show the application's version"
 msgstr "Wyświetla wersję programu"
 
-#: ../lib/engine/gui/gtk-frontend/ekiga-app.cpp:617
+#: ../lib/engine/gui/gtk-frontend/ekiga-app.cpp:622
 msgid "Prints debug messages in the console (level between 1 and 8)"
 msgstr "Wypisuje komunikaty diagnostyczne w konsoli (poziom od 1 do 8)"
 
-#: ../lib/engine/gui/gtk-frontend/ekiga-app.cpp:622
+#: ../lib/engine/gui/gtk-frontend/ekiga-app.cpp:627
 msgid "Makes Ekiga call the given URI"
 msgstr ""
 "Powoduje wykonanie połączenia przez program Ekiga z podanym adresem URI"
 
-#: ../lib/engine/gui/gtk-frontend/ekiga-app.cpp:627
+#: ../lib/engine/gui/gtk-frontend/ekiga-app.cpp:632
 msgid "Hangup the current call (if any)"
 msgstr "Rozłącza bieżącą rozmowę (jeśli jakaś trwa)"
 
-#: ../lib/engine/gui/gtk-frontend/ekiga-app.cpp:650
+#: ../lib/engine/gui/gtk-frontend/ekiga-app.cpp:655
 #, c-format
 msgid ""
 "%s\n"
@@ -1552,23 +1567,23 @@ msgstr ""
 "Wykonanie polecenia \"%s --help\" wyświetli pełną listę dostępnych opcji "
 "wiersza poleceń.\n"
 
-#: ../lib/engine/gui/gtk-frontend/ekiga-app.cpp:826
+#: ../lib/engine/gui/gtk-frontend/ekiga-app.cpp:831
 msgid "Unable to open help file."
 msgstr "Nie można otworzyć pliku pomocy."
 
-#: ../lib/engine/gui/gtk-frontend/ekiga-app.cpp:852
+#: ../lib/engine/gui/gtk-frontend/ekiga-app.cpp:857
 msgid "Contributors:"
 msgstr "Współtwórcy:"
 
-#: ../lib/engine/gui/gtk-frontend/ekiga-app.cpp:857
+#: ../lib/engine/gui/gtk-frontend/ekiga-app.cpp:862
 msgid "Artwork:"
 msgstr "Wygląd:"
 
-#: ../lib/engine/gui/gtk-frontend/ekiga-app.cpp:864
+#: ../lib/engine/gui/gtk-frontend/ekiga-app.cpp:869
 msgid "See AUTHORS file for full credits"
 msgstr "Pełna lista współtwórców znajduje się w pliku AUTHORS"
 
-#: ../lib/engine/gui/gtk-frontend/ekiga-app.cpp:880
+#: ../lib/engine/gui/gtk-frontend/ekiga-app.cpp:885
 msgid ""
 "This program is free software; you can redistribute it and/or modify it "
 "under the terms of the GNU General Public License as published by the Free "
@@ -1580,7 +1595,7 @@ msgstr ""
 "przez Fundację Wolnego Oprogramowania - według wersji drugiej tej Licencji "
 "lub którejś z późniejszych wersji. "
 
-#: ../lib/engine/gui/gtk-frontend/ekiga-app.cpp:884
+#: ../lib/engine/gui/gtk-frontend/ekiga-app.cpp:889
 msgid ""
 "This program is distributed in the hope that it will be useful, but WITHOUT "
 "ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or "
@@ -1598,7 +1613,7 @@ msgstr ""
 "- proszę napisać do Free Software Foundation, Inc., 51 Franklin Street, "
 "Fifth Floor, Boston, MA 02110-130159 USA."
 
-#: ../lib/engine/gui/gtk-frontend/ekiga-app.cpp:891
+#: ../lib/engine/gui/gtk-frontend/ekiga-app.cpp:896
 msgid ""
 "Ekiga is licensed under the GPL license and as a special exception, you have "
 "permission to link or otherwise combine this program with the programs OPAL, "
@@ -1616,7 +1631,7 @@ msgstr ""
 
 #. Translators: Please write translator credits here, and
 #. * separate names with \n
-#: ../lib/engine/gui/gtk-frontend/ekiga-app.cpp:903
+#: ../lib/engine/gui/gtk-frontend/ekiga-app.cpp:908
 msgid "translator-credits"
 msgstr ""
 "Zbigniew Chyla <chyla@alice.ci.pwr.wroc.pl>, 2002-2003\n"
@@ -1625,7 +1640,7 @@ msgstr ""
 "Piotr Drąg <piotrdrag@gmail.com>, 2010-2015\n"
 "Aviary.pl <gnomepl@aviary.pl>, 2007-2015"
 
-#: ../lib/engine/gui/gtk-frontend/ekiga-app.cpp:908
+#: ../lib/engine/gui/gtk-frontend/ekiga-app.cpp:913
 msgid ""
 "Ekiga is full-featured SIP and H.323 compatible VoIP, IP-Telephony and "
 "Videoconferencing application that allows you to make audio and video calls "
@@ -2232,7 +2247,7 @@ msgid "Video"
 msgstr "Wideo"
 
 #: ../lib/engine/gui/gtk-frontend/roster-view-gtk.cpp:1164
-#: ../lib/engine/gui/gtk-frontend/roster-view-gtk.cpp:1279
+#: ../lib/engine/gui/gtk-frontend/roster-view-gtk.cpp:1290
 msgid "Unsorted"
 msgstr "Bez sortowania"
 
@@ -3362,7 +3377,6 @@ msgid "Please update the following fields:"
 msgstr "Proszę zaktualizować następujące pola:"
 
 #: ../plugins/loudmouth/loudmouth-account.cpp:342
-#: ../plugins/loudmouth/loudmouth-bank.cpp:120
 #: ../plugins/loudmouth/loudmouth-heap-roster.cpp:341
 #: ../plugins/loudmouth/loudmouth-presentity.cpp:288
 #: ../plugins/resource-list/rl-cluster.cpp:164
@@ -3377,7 +3391,6 @@ msgid "Account name, e.g. MyAccount"
 msgstr "Nazwa konta, np. MojeKonto"
 
 #: ../plugins/loudmouth/loudmouth-account.cpp:346
-#: ../plugins/loudmouth/loudmouth-bank.cpp:121
 #: ../plugins/resource-list/rl-cluster.cpp:169
 msgid "User:"
 msgstr "Użytkownik:"
@@ -3422,7 +3435,6 @@ msgstr ""
 "jeśli użytkownik nie wie, co to jest"
 
 #: ../plugins/loudmouth/loudmouth-account.cpp:362
-#: ../plugins/loudmouth/loudmouth-bank.cpp:124
 #: ../plugins/resource-list/rl-cluster.cpp:168
 msgid "Password:"
 msgstr "Hasło:"
@@ -3439,6 +3451,18 @@ msgstr "_Dodaj konto sieci Jabber/XMPP"
 #: ../plugins/loudmouth/loudmouth-bank.cpp:118
 msgid "Please fill in the following fields:"
 msgstr "Proszę wypełnić poniższe pola:"
+
+#: ../plugins/loudmouth/loudmouth-bank.cpp:120
+msgid "_Name:"
+msgstr "_Nazwa:"
+
+#: ../plugins/loudmouth/loudmouth-bank.cpp:121
+msgid "_User:"
+msgstr "_Użytkownik:"
+
+#: ../plugins/loudmouth/loudmouth-bank.cpp:124
+msgid "_Password:"
+msgstr "_Hasło:"
 
 #. FIXME: this is here until the feature is ready
 #: ../plugins/loudmouth/loudmouth-dialect.cpp:116
