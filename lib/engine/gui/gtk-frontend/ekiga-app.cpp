@@ -345,16 +345,7 @@ window_activated (GSimpleAction *action,
 {
   GmApplication *self = GM_APPLICATION (app);
 
-  g_return_if_fail (self && self->priv->core);
-
-  boost::shared_ptr<Ekiga::AudioInputCore> audio_input_core =
-    self->priv->core->get<Ekiga::AudioInputCore> ("audioinput-core");
-  boost::shared_ptr<Ekiga::AudioOutputCore> audio_output_core =
-    self->priv->core->get<Ekiga::AudioOutputCore> ("audiooutput-core");
-  boost::shared_ptr<Ekiga::VideoInputCore> video_input_core =
-    self->priv->core->get<Ekiga::VideoInputCore> ("videoinput-core");
-  boost::shared_ptr<Ekiga::ContactCore> contact_core =
-    self->priv->core->get<Ekiga::ContactCore> ("contact-core");
+  g_return_if_fail (self);
 
   if (!g_strcmp0 (g_action_get_name (G_ACTION (action)), "preferences"))
     gm_application_show_preferences_window (self);
