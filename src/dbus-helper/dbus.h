@@ -73,4 +73,3 @@ void                 ekiga_dbus_client_connect (const gchar *uri);
 G_END_DECLS
 
 #endif /* __DBUS_COMPONENT_H */
-/* ex:set ts=2 sw=2 et: */

@@ -72,5 +72,3 @@ guint      ekiga_dialpad_get_button_code  (EkigaDialpad *dialpad,
 G_END_DECLS
 
 #endif  /* __EKIGA_DIALPAD_H__ */
-
-/* ex:set ts=2 sw=2 et: */

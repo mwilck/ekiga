@@ -300,5 +300,3 @@ GtkWidget *ekiga_dialpad_new (GtkAccelGroup *accel_group)
 
   return GTK_WIDGET (obj);
 }
-
-/* ex:set ts=2 sw=2 et: */
