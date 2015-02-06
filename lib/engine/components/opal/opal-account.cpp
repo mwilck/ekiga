@@ -81,13 +81,13 @@ canonize_uri (std::string uri)
 
 xmlNodePtr
 Opal::Account::build_node(Opal::Account::Type typus,
-			  std::string name,
-			  std::string host,
-			  std::string user,
-			  std::string auth_user,
-			  std::string password,
-			  bool enabled,
-			  unsigned timeout)
+                          std::string name,
+                          std::string host,
+                          std::string user,
+                          std::string auth_user,
+                          std::string password,
+                          bool enabled,
+                          unsigned timeout)
 {
   xmlNodePtr node = xmlNewNode (NULL, BAD_CAST "account");
 
@@ -144,16 +144,16 @@ Opal::Account::build_node(Opal::Account::Type typus,
 
 
 Opal::Account::Account (Opal::Bank & _bank,
-			boost::weak_ptr<Ekiga::PresenceCore> _presence_core,
-			boost::shared_ptr<Ekiga::NotificationCore> _notification_core,
-			boost::shared_ptr<Ekiga::PersonalDetails> _personal_details,
-			boost::shared_ptr<Ekiga::AudioOutputCore> _audiooutput_core,
+                        boost::weak_ptr<Ekiga::PresenceCore> _presence_core,
+                        boost::shared_ptr<Ekiga::NotificationCore> _notification_core,
+                        boost::shared_ptr<Ekiga::PersonalDetails> _personal_details,
+                        boost::shared_ptr<Ekiga::AudioOutputCore> _audiooutput_core,
 #ifdef HAVE_H323
                         Opal::H323::EndPoint* _h323_endpoint,
 #endif
                         Opal::Sip::EndPoint* _sip_endpoint,
-			boost::function0<std::list<std::string> > _existing_groups,
-			xmlNodePtr _node):
+                        boost::function0<std::list<std::string> > _existing_groups,
+                        xmlNodePtr _node):
   existing_groups(_existing_groups),
   node(_node),
   bank(_bank),
@@ -463,7 +463,7 @@ Opal::Account::get_timeout () const
 
 void
 Opal::Account::set_authentication_settings (const std::string& username,
-					    const std::string& password)
+                                            const std::string& password)
 {
   for (xmlNodePtr child = node->children; child != NULL; child = child->next) {
 
@@ -708,7 +708,7 @@ Opal::Account::edit ()
 
 bool
 Opal::Account::on_edit_form_submitted (bool submitted,
-				       Ekiga::Form &result,
+                                       Ekiga::Form &result,
                                        std::string &error)
 {
   if (!submitted)
@@ -823,15 +823,15 @@ Opal::Account::add_contact ()
                  Ekiga::FormVisitor::URI, false, false);
 
   request->editable_list ("groups",
-			 _("Groups"),
-                         std::list<std::string>(), groups);
+                          _("Groups"),
+                          std::list<std::string>(), groups);
 
   Ekiga::Heap::questions (request);
 }
 
 bool
 Opal::Account::on_add_contact_form_submitted (bool submitted,
-					      Ekiga::Form& result,
+                                              Ekiga::Form& result,
                                               std::string& error)
 {
   if (!submitted)
@@ -845,7 +845,6 @@ Opal::Account::on_add_contact_form_submitted (bool submitted,
   uri = canonize_uri (uri);
 
   if (is_supported_uri (uri)) {
-
     xmlNodePtr presnode = Opal::Presentity::build_node (name, uri, groups);
     xmlAddChild (roster_node, presnode);
     trigger_saving ();
@@ -854,15 +853,14 @@ Opal::Account::on_add_contact_form_submitted (bool submitted,
     pres->trigger_saving.connect (boost::ref (trigger_saving));
     pres->removed.connect (boost::bind (boost::ref (presentity_removed), pres));
     pres->updated.connect (boost::bind (boost::ref (presentity_updated), pres));
+    pres->questions.connect (boost::ref (Ekiga::Heap::questions));
     add_object (pres);
     presentity_added (pres);
     fetch (pres->get_uri ());
 
     return true;
-
   }
   else {
-
     if (is_supported_uri (uri))
       error = _("You supplied an unsupported address");
     else
@@ -942,7 +940,7 @@ Opal::Account::is_supported_uri (const std::string & uri)
 
 void
 Opal::Account::handle_registration_event (Ekiga::Account::RegistrationState state_,
-					  const std::string info,
+                                          const std::string info,
                                           PSafePtr<OpalPresentity> _opal_presentity)
 {
   if (state == state_)
