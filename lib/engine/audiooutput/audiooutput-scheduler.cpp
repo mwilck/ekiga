@@ -43,14 +43,19 @@
 using namespace Ekiga;
 
 AudioEventScheduler::AudioEventScheduler (AudioOutputCore& _audio_output_core)
-: PThread (1000, AutoDeleteThread, HighestPriority, "AudioEventScheduler"),
+: PThread (1000, NoAutoDeleteThread, HighestPriority, "AudioEventScheduler"),
   audio_output_core (_audio_output_core)
 {
   end_thread = false;
-  // Since windows does not like to restart a thread that 
+  // Since windows does not like to restart a thread that
   // was never started, we do so here
   this->Resume ();
   thread_created.Wait ();
+}
+
+AudioEventScheduler::~AudioEventScheduler ()
+{
+  quit ();
 }
 
 void AudioEventScheduler::quit ()
@@ -243,6 +248,12 @@ void AudioEventScheduler::load_wav(const std::string & event_name, bool is_file_
   }
 
   delete wav;
+}
+
+
+void AudioEventScheduler::Terminate ()
+{
+  quit ();
 }
 
 
