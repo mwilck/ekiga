@@ -260,7 +260,7 @@ on_map_cb (G_GNUC_UNUSED GtkWidget *widget,
 
 /* GObject stuff */
 static void
-call_history_view_gtk_dispose (GObject* obj)
+call_history_view_gtk_finalize (GObject* obj)
 {
   CallHistoryViewGtk* view = NULL;
 
@@ -268,9 +268,8 @@ call_history_view_gtk_dispose (GObject* obj)
 
   delete view->priv;
 
-  G_OBJECT_CLASS (call_history_view_gtk_parent_class)->dispose (obj);
+  G_OBJECT_CLASS (call_history_view_gtk_parent_class)->finalize (obj);
 }
-
 
 static void
 call_history_view_gtk_init (G_GNUC_UNUSED CallHistoryViewGtk* self)
@@ -282,7 +281,7 @@ static void
 call_history_view_gtk_class_init (CallHistoryViewGtkClass* klass)
 {
   GObjectClass* gobject_class = G_OBJECT_CLASS (klass);
-  gobject_class->dispose = call_history_view_gtk_dispose;
+  gobject_class->finalize = call_history_view_gtk_finalize;
 
   signals[ACTIONS_CHANGED_SIGNAL] =
     g_signal_new ("actions-changed",
