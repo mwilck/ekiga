@@ -32,6 +32,7 @@
  *
  */
 
+#include "config.h"
 #include "history-book.h"
 
 #include <glib/gi18n.h>
@@ -91,6 +92,9 @@ History::Book::Book (Ekiga::ServiceCore& core):
 
 History::Book::~Book ()
 {
+#if DEBUG
+  std::cout << "History::Book: Destructor invoked" << std::endl << std::flush;
+#endif
 }
 
 const std::string
