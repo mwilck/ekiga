@@ -49,12 +49,12 @@ Ekiga::PresenceCore::add_cluster (ClusterPtr cluster)
   clusters.insert (cluster);
   cluster_added (cluster);
   conns.add (cluster->updated.connect (boost::ref (updated)));
-  conns.add (cluster->heap_added.connect (boost::bind (&Ekiga::PresenceCore::on_heap_added, this, _1, cluster)));
-  conns.add (cluster->heap_updated.connect (boost::bind (&Ekiga::PresenceCore::on_heap_updated, this, _1, cluster)));
-  conns.add (cluster->heap_removed.connect (boost::bind (&Ekiga::PresenceCore::on_heap_removed, this, _1, cluster)));
-  conns.add (cluster->presentity_added.connect (boost::bind (&Ekiga::PresenceCore::on_presentity_added, this, _1, _2, cluster)));
-  conns.add (cluster->presentity_updated.connect (boost::bind (&Ekiga::PresenceCore::on_presentity_updated, this, _1, _2, cluster)));
-  conns.add (cluster->presentity_removed.connect (boost::bind (&Ekiga::PresenceCore::on_presentity_removed, this, _1, _2, cluster)));
+  conns.add (cluster->heap_added.connect (boost::bind (boost::ref (heap_added), _1)));
+  conns.add (cluster->heap_updated.connect (boost::bind (boost::ref (heap_updated), _1)));
+  conns.add (cluster->heap_removed.connect (boost::bind (boost::ref (heap_removed), _1)));
+  conns.add (cluster->presentity_added.connect (boost::bind (boost::ref (presentity_added), _1, _2)));
+  conns.add (cluster->presentity_updated.connect (boost::bind (boost::ref (presentity_updated), _1, _2)));
+  conns.add (cluster->presentity_removed.connect (boost::bind (boost::ref (presentity_removed), _1, _2)));
   cluster->questions.connect (boost::ref (questions));
 
   updated ();
@@ -77,49 +77,6 @@ Ekiga::PresenceCore::visit_clusters (boost::function1<bool, ClusterPtr > visitor
        iter != clusters.end () && go_on;
        iter++)
     go_on = visitor (*iter);
-}
-
-void Ekiga::PresenceCore::on_heap_added (HeapPtr heap,
-					 ClusterPtr cluster)
-{
-  heap_added (cluster, heap);
-}
-
-void
-Ekiga::PresenceCore::on_heap_updated (HeapPtr heap,
-				      ClusterPtr cluster)
-{
-  heap_updated (cluster, heap);
-}
-
-void
-Ekiga::PresenceCore::on_heap_removed (HeapPtr heap, ClusterPtr cluster)
-{
-  heap_removed (cluster, heap);
-}
-
-void
-Ekiga::PresenceCore::on_presentity_added (HeapPtr heap,
-					  PresentityPtr presentity,
-					  ClusterPtr cluster)
-{
-  presentity_added (cluster, heap, presentity);
-}
-
-void
-Ekiga::PresenceCore::on_presentity_updated (HeapPtr heap,
-					    PresentityPtr presentity,
-					    ClusterPtr cluster)
-{
-  presentity_updated (cluster, heap, presentity);
-}
-
-void
-Ekiga::PresenceCore::on_presentity_removed (HeapPtr heap,
-					    PresentityPtr presentity,
-					    ClusterPtr cluster)
-{
-  presentity_removed (cluster, heap, presentity);
 }
 
 void

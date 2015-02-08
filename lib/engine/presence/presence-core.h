@@ -174,32 +174,19 @@ namespace Ekiga
      * and heap_removed from the given Cluster.
      *
      */
-    boost::signals2::signal<void(ClusterPtr , HeapPtr )> heap_added;
-    boost::signals2::signal<void(ClusterPtr , HeapPtr )> heap_updated;
-    boost::signals2::signal<void(ClusterPtr , HeapPtr )> heap_removed;
+    boost::signals2::signal<void(HeapPtr)> heap_added;
+    boost::signals2::signal<void(HeapPtr)> heap_updated;
+    boost::signals2::signal<void(HeapPtr)> heap_removed;
 
     /** Those signals are forwarding the presentity_added, presentity_updated
      * and presentity_removed from the given Heap of the given Cluster.
      */
-    boost::signals2::signal<void(ClusterPtr , HeapPtr , PresentityPtr )> presentity_added;
-    boost::signals2::signal<void(ClusterPtr , HeapPtr , PresentityPtr )> presentity_updated;
-    boost::signals2::signal<void(ClusterPtr , HeapPtr , PresentityPtr )> presentity_removed;
+    boost::signals2::signal<void(HeapPtr, PresentityPtr)> presentity_added;
+    boost::signals2::signal<void(HeapPtr, PresentityPtr)> presentity_updated;
+    boost::signals2::signal<void(HeapPtr, PresentityPtr)> presentity_removed;
 
   private:
-
     std::set<ClusterPtr > clusters;
-    void on_heap_added (HeapPtr heap, ClusterPtr cluster);
-    void on_heap_updated (HeapPtr heap, ClusterPtr cluster);
-    void on_heap_removed (HeapPtr heap, ClusterPtr cluster);
-    void on_presentity_added (HeapPtr heap,
-			      PresentityPtr presentity,
-			      ClusterPtr cluster);
-    void on_presentity_updated (HeapPtr heap,
-				PresentityPtr presentity,
-				ClusterPtr cluster);
-    void on_presentity_removed (HeapPtr heap,
-				PresentityPtr presentity,
-				ClusterPtr cluster);
 
     /*** API to help presentities get presence ***/
   public:
