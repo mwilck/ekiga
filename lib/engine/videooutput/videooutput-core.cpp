@@ -33,6 +33,8 @@
  *
  */
 
+#include "config.h"
+
 #include "videooutput-core.h"
 #include "videooutput-manager.h"
 
@@ -57,6 +59,10 @@ VideoOutputCore::~VideoOutputCore ()
     (*iter)->quit ();
 
   managers.clear();
+
+#if DEBUG
+  std::cout << "Ekiga::VideoOutputCore: Destructor invoked" << std::endl << std::flush;
+#endif
 }
 
 
