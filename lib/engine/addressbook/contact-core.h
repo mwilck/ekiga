@@ -67,6 +67,7 @@ namespace Ekiga
     ContactCore ()
     {}
 
+    ~ContactCore ();
 
     /*** Service Implementation ***/
 
@@ -108,32 +109,32 @@ namespace Ekiga
     /** This signal is emitted when a book has been added to one of
      * the sources
      */
-    boost::signals2::signal<void(SourcePtr, BookPtr )> book_added;
+    boost::signals2::signal<void(BookPtr)> book_added;
 
     /** This signal is emitted when a book has been removed from one of
      * the sources
      */
-    boost::signals2::signal<void(SourcePtr, BookPtr )> book_removed;
+    boost::signals2::signal<void(BookPtr )> book_removed;
 
     /** This signal is emitted when a book has been updated in one of
      * the sources
      */
-    boost::signals2::signal<void(SourcePtr, BookPtr )> book_updated;
+    boost::signals2::signal<void(BookPtr )> book_updated;
 
     /** This signal is emitted when a contact has been added to one of
      * the book of one of the sources
      */
-    boost::signals2::signal<void(SourcePtr, BookPtr, ContactPtr )> contact_added;
+    boost::signals2::signal<void(BookPtr, ContactPtr )> contact_added;
 
     /** This signal is emitted when a contact has been removed from one of
      * the book of one of the sources
      */
-    boost::signals2::signal<void(SourcePtr, BookPtr, ContactPtr )> contact_removed;
+    boost::signals2::signal<void(BookPtr, ContactPtr )> contact_removed;
 
     /** This signal is emitted when a contact has been updated in one of
      * the book of one of the sources
      */
-    boost::signals2::signal<void(SourcePtr, BookPtr, ContactPtr )> contact_updated;
+    boost::signals2::signal<void(BookPtr, ContactPtr )> contact_updated;
 
   private:
 

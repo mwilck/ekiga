@@ -114,8 +114,7 @@ static bool visit_books (Ekiga::BookPtr book,
  * BEHAVIOR     : Add a view of the Book in the AddressBookWindow.
  * PRE          : The given GtkWidget pointer must be an SearchBook GObject.
  */
-static void on_book_added (Ekiga::SourcePtr source,
-			   Ekiga::BookPtr book,
+static void on_book_added (Ekiga::BookPtr book,
                            gpointer data);
 
 
@@ -124,8 +123,7 @@ static void on_book_added (Ekiga::SourcePtr source,
  * BEHAVIOR     : Remove the view of the Book from the AddressBookWindow.
  * PRE          : The given GtkWidget pointer must be an SearchBook GObject.
  */
-static void on_book_removed (Ekiga::SourcePtr source,
-			     Ekiga::BookPtr book,
+static void on_book_removed (Ekiga::BookPtr book,
                              gpointer data);
 
 
@@ -134,8 +132,7 @@ static void on_book_removed (Ekiga::SourcePtr source,
  * BEHAVIOR     : Update the Book in the AddressBookWindow.
  * PRE          : The given GtkWidget pointer must be an SearchBook GObject.
  */
-static void on_book_updated (Ekiga::SourcePtr source,
-			     Ekiga::BookPtr book,
+static void on_book_updated (Ekiga::BookPtr book,
                              gpointer data);
 
 /* DESCRIPTION  : Called when the ContactCore has a form request
@@ -286,18 +283,17 @@ on_source_added (Ekiga::SourcePtr source,
 
 
 static bool visit_books (Ekiga::BookPtr book,
-			 Ekiga::SourcePtr source,
+                         G_GNUC_UNUSED Ekiga::SourcePtr source,
 			 gpointer data)
 {
-  on_book_added (source, book, data);
+  on_book_added (book, data);
 
   return true;
 }
 
 
 static void
-on_book_added (Ekiga::SourcePtr /*source*/,
-	       Ekiga::BookPtr book,
+on_book_added (Ekiga::BookPtr book,
                gpointer data)
 {
   addressbook_window_add_book (ADDRESSBOOK_WINDOW (data), book);
@@ -305,8 +301,7 @@ on_book_added (Ekiga::SourcePtr /*source*/,
 
 
 static void
-on_book_removed (Ekiga::SourcePtr /*source*/,
-		 Ekiga::BookPtr book,
+on_book_removed (Ekiga::BookPtr book,
                  gpointer data)
 {
   addressbook_window_remove_book (ADDRESSBOOK_WINDOW (data), book);
@@ -314,8 +309,7 @@ on_book_removed (Ekiga::SourcePtr /*source*/,
 
 
 static void
-on_book_updated (Ekiga::SourcePtr /*source*/,
-		 Ekiga::BookPtr book,
+on_book_updated (Ekiga::BookPtr book,
                  gpointer data)
 {
   addressbook_window_update_book (ADDRESSBOOK_WINDOW (data), book);
@@ -783,20 +777,16 @@ addressbook_window_new (GmApplication *app)
   gtk_widget_show_all (GTK_WIDGET (hpaned));
 
   /* Signals */
-  conn = contact_core->source_added.connect (boost::bind (&on_source_added,
-                                                          _1, (gpointer) self));
+  conn = contact_core->source_added.connect (boost::bind (&on_source_added, _1, (gpointer) self));
   self->priv->connections.add (conn);
 
-  conn = contact_core->book_updated.connect (boost::bind (&on_book_updated,
-                                                          _1, _2, (gpointer) self));
+  conn = contact_core->book_updated.connect (boost::bind (&on_book_updated, _1, (gpointer) self));
   self->priv->connections.add (conn);
 
-  conn = contact_core->book_added.connect (boost::bind (&on_book_added,
-                                                        _1, _2, (gpointer) self));
+  conn = contact_core->book_added.connect (boost::bind (&on_book_added, _1, (gpointer) self));
   self->priv->connections.add (conn);
 
-  conn = contact_core->book_removed.connect (boost::bind (&on_book_removed,
-                                                          _1, _2, (gpointer) self));
+  conn = contact_core->book_removed.connect (boost::bind (&on_book_removed, _1, (gpointer) self));
   self->priv->connections.add (conn);
 
   conn = contact_core->questions.connect (boost::bind (&on_handle_questions, _1, (gpointer) self));

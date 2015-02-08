@@ -34,6 +34,8 @@
 
 #include <glib/gi18n.h>
 
+#include "config.h"
+
 #include "contact-core.h"
 
 /*
@@ -44,6 +46,12 @@ on_search ()
 }
 */
 
+Ekiga::ContactCore::~ContactCore ()
+{
+#if DEBUG
+  std::cout << "Ekiga::ConcactCore: Destructor invoked" << std::endl << std::flush;
+#endif
+}
 
 void
 Ekiga::ContactCore::add_source (SourcePtr source)
@@ -51,12 +59,12 @@ Ekiga::ContactCore::add_source (SourcePtr source)
   sources.push_back (source);
   source_added (source);
   conns.add (source->updated.connect (boost::ref (updated)));
-  conns.add (source->book_added.connect (boost::bind (boost::ref (book_added), source, _1)));
-  conns.add (source->book_removed.connect (boost::bind (boost::ref (book_removed), source, _1)));
-  conns.add (source->book_updated.connect (boost::bind (boost::ref (book_updated), source, _1)));
-  conns.add (source->contact_added.connect (boost::bind (boost::ref (contact_added), source, _1, _2)));
-  conns.add (source->contact_removed.connect (boost::bind (boost::ref (contact_removed), source, _1, _2)));
-  conns.add (source->contact_updated.connect (boost::bind (boost::ref (contact_updated), source, _1, _2)));
+  conns.add (source->book_added.connect (boost::bind (boost::ref (book_added), _1)));
+  conns.add (source->book_removed.connect (boost::bind (boost::ref (book_removed), _1)));
+  conns.add (source->book_updated.connect (boost::bind (boost::ref (book_updated), _1)));
+  conns.add (source->contact_added.connect (boost::bind (boost::ref (contact_added), _1, _2)));
+  conns.add (source->contact_removed.connect (boost::bind (boost::ref (contact_removed), _1, _2)));
+  conns.add (source->contact_updated.connect (boost::bind (boost::ref (contact_updated), _1, _2)));
   source->questions.connect (boost::ref (questions));
 
   updated ();
