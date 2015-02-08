@@ -34,6 +34,8 @@
  *
  */
 
+#include "config.h"
+
 #include <string>
 #include <glib/gi18n.h>
 
@@ -267,6 +269,9 @@ Evolution::Book::~Book ()
 {
   if (book != NULL)
     g_object_unref (book);
+#if DEBUG
+  std::cout << "Evolution::Book: Destructor invoked" << std::endl;
+#endif
 }
 
 const std::string

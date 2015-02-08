@@ -36,6 +36,8 @@
 
 #include <iostream>
 
+#include "config.h"
+
 #include "evolution-source.h"
 
 #if EDS_CHECK_VERSION(3,5,3)
@@ -267,6 +269,9 @@ Evolution::Source::~Source ()
   g_object_unref (registry);
 #else
   g_object_unref (source_list);
+#endif
+#if DEBUG
+  std::cout << "Evolution::Source: Destructor invoked" << std::endl;
 #endif
 }
 
