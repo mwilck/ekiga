@@ -37,6 +37,8 @@
 
 #include <glib/gi18n.h>
 
+#include "config.h"
+
 #include "videoinput-core.h"
 #include "videooutput-manager.h"
 #include "videoinput-manager.h"
@@ -45,7 +47,7 @@ using namespace Ekiga;
 
 
 VideoInputCore::VideoPreviewManager::VideoPreviewManager (VideoInputCore& _videoinput_core, boost::shared_ptr<VideoOutputCore> _videooutput_core)
-: PThread (1000, AutoDeleteThread, HighestPriority, "VideoPreviewManager"),
+: PThread (1000, NoAutoDeleteThread, HighestPriority, "VideoPreviewManager"),
     videoinput_core (_videoinput_core),
   videooutput_core (_videooutput_core)
 {
@@ -57,6 +59,11 @@ VideoInputCore::VideoPreviewManager::VideoPreviewManager (VideoInputCore& _video
   // Since windows does not like to restart a thread that
   // was never started, we do so here
   this->Resume ();
+}
+
+VideoInputCore::VideoPreviewManager::~VideoPreviewManager ()
+{
+  quit ();
 }
 
 void VideoInputCore::VideoPreviewManager::quit ()
@@ -139,6 +146,12 @@ void VideoInputCore::VideoPreviewManager::Main ()
   }
 }
 
+void VideoInputCore::VideoPreviewManager::Terminate ()
+{
+  quit ();
+}
+
+
 VideoInputCore::VideoInputCore (Ekiga::ServiceCore & _core,
                                 boost::shared_ptr<VideoOutputCore> _videooutput_core)
   : core(_core)
@@ -147,7 +160,6 @@ VideoInputCore::VideoInputCore (Ekiga::ServiceCore & _core,
   PWaitAndSignal m_set(settings_mutex);
 
   preview_manager = new VideoPreviewManager (*this, _videooutput_core);
-
 
   preview_config.active = false;
   preview_config.width = 176;
@@ -181,7 +193,7 @@ VideoInputCore::VideoInputCore (Ekiga::ServiceCore & _core,
 
 VideoInputCore::~VideoInputCore ()
 {
-  preview_manager->quit ();
+  delete preview_manager;
 
   PWaitAndSignal m(core_mutex);
 
@@ -194,6 +206,10 @@ VideoInputCore::~VideoInputCore ()
 
   delete device_settings;
   delete video_codecs_settings;
+
+#if DEBUG
+  std::cout << "Ekiga::VideoInputCore: Destructor invoked" << std::endl << std::flush;
+#endif
 }
 
 

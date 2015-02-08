@@ -332,6 +332,8 @@ private:
         */
         VideoPreviewManager(VideoInputCore & _videoinput_core, boost::shared_ptr<VideoOutputCore> _videooutput_core);
 
+        ~VideoPreviewManager ();
+
         void quit();
 
         /** Start the preview thread.
@@ -350,6 +352,7 @@ private:
 
       protected:
         void Main ();
+        void Terminate ();
         char* frame;
 
         bool end_thread;
