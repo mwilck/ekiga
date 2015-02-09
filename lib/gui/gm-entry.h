@@ -51,8 +51,8 @@ G_BEGIN_DECLS
 #define BASIC_URI_PART "[A-Za-z0-9_\\-\\.]+"
 #define EKIGA_URI_PART "(ekiga.net|ekiga.im)"
 #define BASIC_SIP_URI_REGEX "^" SIP_URI_SCHEME BASIC_URI_PART "@" BASIC_URI_PART "$"
-// h323 allows to call with user or user@host
-#define BASIC_H323_URI_REGEX "^" H323_URI_SCHEME BASIC_URI_PART "(@" BASIC_URI_PART ")?$"
+// h323 uri has several forms: with or without user, with or without host depending if registered etc., so let's do it simple
+#define BASIC_H323_URI_REGEX "^" H323_URI_SCHEME BASIC_URI_PART
 #define BASIC_URI_REGEX BASIC_SIP_URI_REGEX "|" BASIC_H323_URI_REGEX
 #define EKIGA_URI_REGEX "^" SIP_URI_SCHEME BASIC_URI_PART "@" EKIGA_URI_PART "$"
 #define PHONE_NUMBER_REGEX "^\\+?[0-9]+$"
