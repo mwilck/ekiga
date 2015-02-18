@@ -1014,6 +1014,7 @@ Opal::Account::handle_registration_event (Ekiga::Account::RegistrationState stat
 
   case RegistrationFailed:
 
+    state = state_;
     PTRACE (4, "Register failed, aborting registration");
     status = _("Could not register");
     if (!info.empty ())
