@@ -1014,30 +1014,17 @@ Opal::Account::handle_registration_event (Ekiga::Account::RegistrationState stat
 
   case RegistrationFailed:
 
-    state = state_;
-    if (type == Account::H323) {
-        std::stringstream msg;
-        msg << _("Could not register to ") << get_name ();
-        boost::shared_ptr<Ekiga::Notification> notif (new Ekiga::Notification (Ekiga::Notification::Warning, msg.str (), info, _("Edit"), boost::bind (&Opal::Account::edit, (Opal::Account*) this)));
-	boost::shared_ptr<Ekiga::NotificationCore> ncore = notification_core.lock ();
-	if (ncore)
-	  ncore->push_notification (notif);
-    }
-    else {
-
-      // RFC5626 did not work, stop registration with error
-      PTRACE (4, "Register failed in RFC5626 mode, aborting registration");
-      status = _("Could not register");
-      if (!info.empty ())
-        status = status + " (" + info + ")";
-      if (!failed_registration_already_notified) {
-        std::stringstream msg;
-        msg << _("Could not register to ") << get_name ();
-        boost::shared_ptr<Ekiga::Notification> notif (new Ekiga::Notification (Ekiga::Notification::Warning, msg.str (), info, _("Edit"), boost::bind (&Opal::Account::edit, (Opal::Account*) this)));
-        boost::shared_ptr<Ekiga::NotificationCore> ncore = notification_core.lock ();
-        if (ncore)
-          ncore->push_notification (notif);
-      }
+    PTRACE (4, "Register failed, aborting registration");
+    status = _("Could not register");
+    if (!info.empty ())
+      status = status + " (" + info + ")";
+    if (!failed_registration_already_notified) {
+      std::stringstream msg;
+      msg << _("Could not register to ") << get_name ();
+      boost::shared_ptr<Ekiga::Notification> notif (new Ekiga::Notification (Ekiga::Notification::Warning, msg.str (), info, _("Edit"), boost::bind (&Opal::Account::edit, (Opal::Account*) this)));
+      boost::shared_ptr<Ekiga::NotificationCore> ncore = notification_core.lock ();
+      if (ncore)
+        ncore->push_notification (notif);
       failed_registration_already_notified = true;
     }
     break;
@@ -1069,7 +1056,7 @@ Opal::Account::handle_message_waiting_information (const std::string info)
     if (message_waiting_number > 0) {
       boost::shared_ptr<Ekiga::AudioOutputCore> audiooutput = audiooutput_core.lock ();
       if (audiooutput)
-	audiooutput->play_event ("new-voicemail-sound");
+        audiooutput->play_event ("new-voicemail-sound");
     }
     updated ();
   }
@@ -1250,8 +1237,8 @@ Opal::Account::OnPresenceChange (OpalPresentity& /*presentity*/,
 
 void
 Opal::Account::presence_status_in_main (std::string uri,
-					std::string uri_presence,
-					std::string uri_status) const
+                                        std::string uri_presence,
+                                        std::string uri_status) const
 {
   for (Ekiga::RefLister< Presentity >::const_iterator iter = Ekiga::RefLister< Presentity >::begin ();
        iter != Ekiga::RefLister< Presentity >::end ();
@@ -1299,8 +1286,8 @@ Opal::Account::on_rename_group (Opal::PresentityPtr pres)
 
   request->title (_("Renaming Groups"));
   request->editable_list ("groups", "",
-			 pres->get_groups (), std::list<std::string>(),
-                         false, true);
+                          pres->get_groups (), std::list<std::string>(),
+                          false, true);
 
   Ekiga::Heap::questions (request);
 }
@@ -1309,7 +1296,7 @@ Opal::Account::on_rename_group (Opal::PresentityPtr pres)
 struct rename_group_form_submitted_helper
 {
   rename_group_form_submitted_helper (const std::string old_name_,
-				      const std::string new_name_):
+                                      const std::string new_name_):
     old_name(old_name_),
     new_name(new_name_)
   {}
