@@ -112,6 +112,9 @@ AudioOutputCore::AudioOutputCore (Ekiga::ServiceCore& core)
 
 AudioOutputCore::~AudioOutputCore ()
 {
+#if DEBUG
+  std::cout << "AudioOutputCore: Destructor invoked" << std::endl;
+#endif
   PWaitAndSignal m_pri(core_mutex[primary]);
   PWaitAndSignal m_sec(core_mutex[secondary]);
 
