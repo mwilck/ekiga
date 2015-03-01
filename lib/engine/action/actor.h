@@ -57,7 +57,7 @@ namespace Ekiga {
    * It can remove them using the remove_action and remove_actions methods.
    *
    */
-  class Actor : public std::list< ActionPtr >
+  class Actor
   {
     friend class ActionProvider;
 
@@ -79,6 +79,23 @@ namespace Ekiga {
      */
     boost::signals2::signal<void(const std::string &)> action_added;
     boost::signals2::signal<void(const std::string &)> action_removed;
+
+
+    /** Returns an iterator to the first Action of the collection
+     */
+    iterator begin ();
+
+    /** Returns an iterator to the last Action of the collection
+     */
+    iterator end ();
+
+    /** Returns a const iterator to the first Action of the collection
+     */
+    const_iterator begin () const;
+
+    /** Returns a const iterator to the last Action of the collection
+     */
+    const_iterator end () const;
 
 
   protected:
@@ -130,6 +147,7 @@ namespace Ekiga {
      */
     virtual ActionPtr get_action (const std::string & name);
 
+
   private:
 
     /**
@@ -137,6 +155,7 @@ namespace Ekiga {
      * It contains all actions supported by the current Actor.
      */
     Ekiga::scoped_connections conns;
+    std::list< ActionPtr > actions; // FIXME: Use a RefLister here.
   };
   typedef boost::shared_ptr< Actor > ActorPtr;
 
