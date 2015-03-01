@@ -63,7 +63,6 @@
 #include "audioinput-core.h"
 #include "audiooutput-core.h"
 #include "videoinput-core.h"
-#include "videooutput-core.h"
 #include "call-core.h"
 #include "engine.h"
 #include "runtime.h"
@@ -100,7 +99,7 @@
  */
 struct _GmApplicationPrivate
 {
-  Ekiga::ServiceCorePtr core;
+  Ekiga::ServiceCore core;
 
   GtkBuilder *builder;
   GtkWidget *main_window;
@@ -183,7 +182,7 @@ gm_application_populate_application_menu (GmApplication *app)
   GMenuModel *app_menu = G_MENU_MODEL (gtk_builder_get_object (app->priv->builder, "appmenu"));
 
   boost::shared_ptr<Ekiga::AccountCore> account_core
-    = app->priv->core->get<Ekiga::AccountCore> ("account-core");
+    = app->priv->core.get<Ekiga::AccountCore> ("account-core");
   g_return_if_fail (account_core);
 
   for (int i = app->priv->banks_menu.size () ;
@@ -364,7 +363,7 @@ video_preview_changed (GSettings *settings,
 
   GmApplication *self = GM_APPLICATION (data);
   boost::shared_ptr<Ekiga::VideoInputCore> video_input_core =
-    self->priv->core->get<Ekiga::VideoInputCore> ("videoinput-core");
+    self->priv->core.get<Ekiga::VideoInputCore> ("videoinput-core");
 
   if (g_settings_get_boolean (settings, key)) {
     gm_application_show_call_window (self);
@@ -384,6 +383,7 @@ ekiga_main (int argc,
             char **argv)
 {
   GmApplication *app = gm_application_new ();
+
   g_application_set_inactivity_timeout (G_APPLICATION (app), 10000);
 
   if (g_application_get_is_remote (G_APPLICATION (app))) {
@@ -391,11 +391,19 @@ ekiga_main (int argc,
     return;
   }
 
-  Ekiga::ServiceCorePtr core(new Ekiga::ServiceCore);
-  gm_application_set_core (app, core);
-
   Ekiga::Runtime::init ();
-  engine_init (core, argc, argv);
+  engine_init (app->priv->core, argc, argv);
+
+  // Connect signals
+  {
+    boost::shared_ptr<Ekiga::CallCore> call_core = app->priv->core.get<Ekiga::CallCore> ("call-core");
+    call_core->created_call.connect (boost::bind (&on_created_call_cb, _1, (gpointer) app));
+
+    boost::shared_ptr<Ekiga::AccountCore> account_core = app->priv->core.get<Ekiga::AccountCore> ("account-core");
+    app->priv->conns.add (account_core->questions.connect (boost::bind (&on_handle_questions_cb, _1, app)));
+    app->priv->conns.add (account_core->account_added.connect (boost::bind (&on_account_modified_cb, _1, _2, app)));
+    app->priv->conns.add (account_core->account_removed.connect (boost::bind (&on_account_modified_cb, _1, _2, app)));
+  }
 
   /* Create the main application window */
   app->priv->main_window = gm_main_window_new (app);
@@ -414,23 +422,7 @@ ekiga_main (int argc,
     general_settings->set_int ("version", schema_version);
   }
 
-  boost::shared_ptr<Ekiga::CallCore> call_core = app->priv->core->get<Ekiga::CallCore> ("call-core");
-  g_return_if_fail (call_core);
-  Ekiga::CodecList all_codecs = call_core->get_codecs ();
-  g_return_if_fail (all_codecs.find ("VP8"));
-  g_return_if_fail (all_codecs.find ("H.264"));
-  g_return_if_fail (all_codecs.find ("Opus"));
-  call_core->created_call.connect (boost::bind (&on_created_call_cb, _1, (gpointer) app));
-
-  boost::shared_ptr<Ekiga::AccountCore> account_core = app->priv->core->get<Ekiga::AccountCore> ("account-core");
-  g_return_if_fail (account_core);
-  app->priv->conns.add (account_core->questions.connect (boost::bind (&on_handle_questions_cb, _1, app)));
-  app->priv->conns.add (account_core->account_added.connect (boost::bind (&on_account_modified_cb, _1, _2, app)));
-  app->priv->conns.add (account_core->account_removed.connect (boost::bind (&on_account_modified_cb, _1, _2, app)));
-
   gm_application_populate_application_menu (app);
-
-  core->close ();
 
   g_application_run (G_APPLICATION (app), argc, argv);
 
@@ -560,7 +552,6 @@ gm_application_shutdown (GApplication *app)
   g_return_if_fail (self);
 
   self->priv->banks_menu.clear ();
-  self->priv->core.reset ();
   Ekiga::Runtime::quit ();
 
   gm_platform_shutdown ();
@@ -569,6 +560,16 @@ gm_application_shutdown (GApplication *app)
   g_object_unref (self->priv->dbus_component);
 #endif
   g_object_unref (self->priv->builder);
+
+  /* Destroy all windows to make sure the UI is gone
+   * and we do not block the ServiceCore from
+   * destruction.
+   */
+  while (GList *windows = gtk_application_get_windows (GTK_APPLICATION (self))) {
+    GList *windows_it = g_list_first (windows);
+    if (windows_it->data && GTK_IS_WIDGET (windows_it->data))
+      gtk_widget_destroy (GTK_WIDGET (windows_it->data));
+  }
 
   delete self->priv;
   self->priv = NULL;
@@ -587,7 +588,7 @@ gm_application_command_line (GApplication *app,
 
   GmApplication *self = GM_APPLICATION (app);
 
-  g_return_val_if_fail (self && self->priv->core, -1);
+  g_return_val_if_fail (self, -1);
 
   static gchar *url = NULL;
   static int debug_level = 0;
@@ -651,12 +652,12 @@ gm_application_command_line (GApplication *app,
   }
   else if (url) {
     boost::shared_ptr<Ekiga::CallCore> call_core =
-      self->priv->core->get<Ekiga::CallCore> ("call-core");
+      self->priv->core.get<Ekiga::CallCore> ("call-core");
     call_core->dial (url);
   }
   else if (hangup) {
     boost::shared_ptr<Ekiga::CallCore> call_core =
-      self->priv->core->get<Ekiga::CallCore> ("call-core");
+      self->priv->core.get<Ekiga::CallCore> ("call-core");
     call_core->hang_up ();
   }
   else if (version) {
@@ -713,26 +714,16 @@ gm_application_new ()
                                   "application-id", "org.gnome.Ekiga",
                                   "flags", G_APPLICATION_HANDLES_COMMAND_LINE,
                                   NULL));
+
   g_application_register (G_APPLICATION (self), NULL, NULL);
 
   return self;
 }
 
 
-void
-gm_application_set_core (GmApplication *self,
-                         Ekiga::ServiceCorePtr core)
-{
-  g_return_if_fail (GM_IS_APPLICATION (self));
-  self->priv->core = core;
-}
-
-
-Ekiga::ServiceCorePtr
+Ekiga::ServiceCore&
 gm_application_get_core (GmApplication *self)
 {
-  g_return_val_if_fail (GM_IS_APPLICATION (self), boost::shared_ptr<Ekiga::ServiceCore> ());
-
   return self->priv->core;
 }
 

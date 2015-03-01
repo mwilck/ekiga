@@ -1802,7 +1802,7 @@ preferences_window_new (GmApplication *app)
 
   boost::signals2::connection conn;
 
-  Ekiga::ServiceCorePtr core = gm_application_get_core (app);
+  Ekiga::ServiceCore& core = gm_application_get_core (app);
 
   /* The window */
   self = (PreferencesWindow *) g_object_new (PREFERENCES_WINDOW_TYPE,
@@ -1812,9 +1812,9 @@ preferences_window_new (GmApplication *app)
                                              "hide_on_esc", false, NULL);
 
   self->priv = new PreferencesWindowPrivate ();
-  self->priv->audioinput_core = core->get<Ekiga::AudioInputCore> ("audioinput-core");
-  self->priv->audiooutput_core = core->get<Ekiga::AudioOutputCore> ("audiooutput-core");
-  self->priv->videoinput_core = core->get<Ekiga::VideoInputCore> ("videoinput-core");
+  self->priv->audioinput_core = core.get<Ekiga::AudioInputCore> ("audioinput-core");
+  self->priv->audiooutput_core = core.get<Ekiga::AudioOutputCore> ("audiooutput-core");
+  self->priv->videoinput_core = core.get<Ekiga::VideoInputCore> ("videoinput-core");
   self->priv->app = app;
 
   headerbar = gtk_header_bar_new ();

@@ -736,7 +736,7 @@ addressbook_window_new (GmApplication *app)
   GtkWidget *headerbar = NULL;
   GtkWidget *hpaned = NULL;
 
-  Ekiga::ServiceCorePtr core = gm_application_get_core (app);
+  Ekiga::ServiceCore& core = gm_application_get_core (app);
 
   self = (AddressBookWindow *) g_object_new (ADDRESSBOOK_WINDOW_TYPE,
                                              "application", GTK_APPLICATION (app),
@@ -745,7 +745,7 @@ addressbook_window_new (GmApplication *app)
                                              "hide_on_esc", FALSE,
                                              NULL);
   boost::shared_ptr<Ekiga::ContactCore> contact_core =
-    core->get<Ekiga::ContactCore> ("contact-core");
+    core.get<Ekiga::ContactCore> ("contact-core");
   self->priv = new AddressBookWindowPrivate (contact_core);
 
   self->priv->builder = gtk_builder_new ();

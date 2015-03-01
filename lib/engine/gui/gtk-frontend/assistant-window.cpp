@@ -751,14 +751,14 @@ assistant_window_new (GmApplication *app)
   AssistantWindow *assistant;
 
   assistant = ASSISTANT_WINDOW (g_object_new (ASSISTANT_WINDOW_TYPE, NULL));
-  Ekiga::ServiceCorePtr core = gm_application_get_core (app);
+  Ekiga::ServiceCore& core = gm_application_get_core (app);
 
   /* FIXME: move this into the caller */
   g_signal_connect (assistant, "key-press-event",
                     G_CALLBACK (assistant_window_key_press_cb), NULL);
 
   boost::signals2::connection conn;
-  assistant->priv->bank = core->get<Opal::Bank> ("opal-account-store");
+  assistant->priv->bank = core.get<Opal::Bank> ("opal-account-store");
 
   return GTK_WIDGET (assistant);
 }

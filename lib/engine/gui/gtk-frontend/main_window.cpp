@@ -96,7 +96,6 @@ G_DEFINE_TYPE (EkigaMainWindow, ekiga_main_window, GM_TYPE_WINDOW);
 struct _EkigaMainWindowPrivate
 {
   GmApplication *app;
-  Ekiga::ServiceCorePtr core;
 
   boost::shared_ptr<Ekiga::AccountCore> account_core;
   boost::shared_ptr<Ekiga::AudioOutputCore> audiooutput_core;
@@ -104,7 +103,7 @@ struct _EkigaMainWindowPrivate
   boost::shared_ptr<Ekiga::ContactCore> contact_core;
   boost::shared_ptr<Ekiga::PresenceCore> presence_core;
   boost::weak_ptr<Opal::Bank> bank;
-  boost::shared_ptr<History::Source> history_source;
+  boost::weak_ptr<History::Source> history_source;
 
   GtkWidget *call_window;
 
@@ -674,7 +673,7 @@ ekiga_main_window_init_status_toolbar (EkigaMainWindow *mw)
 
   /* The main horizontal toolbar */
   mw->priv->status_toolbar = gtk_box_new (GTK_ORIENTATION_HORIZONTAL, 0);
-  mw->priv->status_option_menu = status_menu_new (*mw->priv->core);
+  mw->priv->status_option_menu = status_menu_new (gm_application_get_core (mw->priv->app));
   status_menu_set_parent_window (STATUS_MENU (mw->priv->status_option_menu),
                                  GTK_WINDOW (mw));
   gtk_box_pack_start (GTK_BOX (mw->priv->status_toolbar),
@@ -742,19 +741,21 @@ ekiga_main_window_init_dialpad (EkigaMainWindow *mw)
 static void
 ekiga_main_window_init_history (EkigaMainWindow *mw)
 {
-  boost::shared_ptr<History::Book> history_book
-    = mw->priv->history_source->get_book ();
+  boost::shared_ptr<History::Source> history_source = mw->priv->history_source.lock ();
+  if (history_source) {
+    boost::shared_ptr<History::Book> history_book = history_source->get_book ();
 
-  mw->priv->call_history_view = call_history_view_gtk_new (history_book,
-                                                           mw->priv->call_core,
-                                                           mw->priv->contact_core);
-  gtk_stack_add_named (GTK_STACK (mw->priv->main_stack), mw->priv->call_history_view, "call-history");
-  gtk_container_child_set (GTK_CONTAINER (mw->priv->main_stack),
-                           mw->priv->call_history_view,
-                           "icon-name", "document-open-recent-symbolic", NULL);
+    mw->priv->call_history_view = call_history_view_gtk_new (history_book,
+                                                             mw->priv->call_core,
+                                                             mw->priv->contact_core);
+    gtk_stack_add_named (GTK_STACK (mw->priv->main_stack), mw->priv->call_history_view, "call-history");
+    gtk_container_child_set (GTK_CONTAINER (mw->priv->main_stack),
+                             mw->priv->call_history_view,
+                             "icon-name", "document-open-recent-symbolic", NULL);
 
-  g_signal_connect (mw->priv->call_history_view, "actions-changed",
-                    G_CALLBACK (actions_changed_cb), mw);
+    g_signal_connect (mw->priv->call_history_view, "actions-changed",
+                      G_CALLBACK (actions_changed_cb), mw);
+  }
 }
 
 
@@ -857,8 +858,10 @@ ekiga_main_window_dispose (GObject* gobject)
     g_object_unref (mw->priv->roster_view);
     mw->priv->roster_view = NULL;
   }
-  g_object_unref (mw->priv->builder);
-  mw->priv->builder = NULL;
+  if (mw->priv->builder) {
+    g_object_unref (mw->priv->builder);
+    mw->priv->builder = NULL;
+  }
 
   G_OBJECT_CLASS (ekiga_main_window_parent_class)->dispose (gobject);
 }
@@ -940,25 +943,24 @@ gm_main_window_new (GmApplication *app)
                                         "application", GTK_APPLICATION (app),
 					"key", USER_INTERFACE ".main-window",
 					NULL));
-  Ekiga::ServiceCorePtr core = gm_application_get_core (app);
+  Ekiga::ServiceCore& core = gm_application_get_core (app);
 
   /* fetching needed engine objects */
-  mw->priv->core = core;
   mw->priv->app = app;
 
   mw->priv->account_core
-    = core->get<Ekiga::AccountCore> ("account-core");
+    = core.get<Ekiga::AccountCore> ("account-core");
   mw->priv->audiooutput_core
-    = core->get<Ekiga::AudioOutputCore>("audiooutput-core");
+    = core.get<Ekiga::AudioOutputCore>("audiooutput-core");
   mw->priv->call_core
-    = core->get<Ekiga::CallCore> ("call-core");
+    = core.get<Ekiga::CallCore> ("call-core");
   mw->priv->contact_core
-    = core->get<Ekiga::ContactCore> ("contact-core");
+    = core.get<Ekiga::ContactCore> ("contact-core");
   mw->priv->presence_core
-    = core->get<Ekiga::PresenceCore> ("presence-core");
-  mw->priv->bank = boost::weak_ptr<Opal::Bank> (core->get<Opal::Bank> ("opal-account-store"));
+    = core.get<Ekiga::PresenceCore> ("presence-core");
+  mw->priv->bank = boost::weak_ptr<Opal::Bank> (core.get<Opal::Bank> ("opal-account-store"));
   mw->priv->history_source
-    = core->get<History::Source> ("call-history-store");
+    = core.get<History::Source> ("call-history-store");
 
   ekiga_main_window_connect_engine_signals (mw);
 

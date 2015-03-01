@@ -207,7 +207,7 @@ ekiga_dbus_component_new (GmApplication *app)
   GError *error = NULL;
   EkigaDBusComponent *obj;
 
-  Ekiga::ServiceCorePtr core = gm_application_get_core (app);
+  Ekiga::ServiceCore& core = gm_application_get_core (app);
 
   bus = dbus_g_bus_get (DBUS_BUS_SESSION, &error);
   if (!bus) {
@@ -217,7 +217,7 @@ ekiga_dbus_component_new (GmApplication *app)
   }
 
   obj = EKIGA_DBUS_COMPONENT (g_object_new (EKIGA_TYPE_DBUS_COMPONENT, NULL));
-  obj->priv->call_core = core->get<Ekiga::CallCore> ("call-core");
+  obj->priv->call_core = core.get<Ekiga::CallCore> ("call-core");
   obj->priv->personal_data_settings =
     boost::shared_ptr<Ekiga::Settings> (new Ekiga::Settings (PERSONAL_DATA_SCHEMA));
   obj->priv->app = app;

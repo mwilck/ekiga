@@ -1712,15 +1712,15 @@ call_window_new (GmApplication *app)
                                           "key", USER_INTERFACE ".call-window",
                                           "hide_on_delete", false,
                                           "hide_on_esc", false, NULL));
-  Ekiga::ServiceCorePtr core = gm_application_get_core (app);
+  Ekiga::ServiceCore& core = gm_application_get_core (app);
 
-  self->priv->videoinput_core = core->get<Ekiga::VideoInputCore> ("videoinput-core");
-  self->priv->videooutput_core = core->get<Ekiga::VideoOutputCore> ("videooutput-core");
-  self->priv->audioinput_core = core->get<Ekiga::AudioInputCore> ("audioinput-core");
-  self->priv->audiooutput_core = core->get<Ekiga::AudioOutputCore> ("audiooutput-core");
-  self->priv->call_core = core->get<Ekiga::CallCore> ("call-core");
-  self->priv->friend_or_foe = core->get<Ekiga::FriendOrFoe> ("friend-or-foe");
-  self->priv->foe_list = core->get<Ekiga::FoeList> ("foe-list");
+  self->priv->videoinput_core = core.get<Ekiga::VideoInputCore> ("videoinput-core");
+  self->priv->videooutput_core = core.get<Ekiga::VideoOutputCore> ("videooutput-core");
+  self->priv->audioinput_core = core.get<Ekiga::AudioInputCore> ("audioinput-core");
+  self->priv->audiooutput_core = core.get<Ekiga::AudioOutputCore> ("audiooutput-core");
+  self->priv->call_core = core.get<Ekiga::CallCore> ("call-core");
+  self->priv->friend_or_foe = core.get<Ekiga::FriendOrFoe> ("friend-or-foe");
+  self->priv->foe_list = core.get<Ekiga::FoeList> ("foe-list");
 
   ekiga_call_window_init_gui (self);
 

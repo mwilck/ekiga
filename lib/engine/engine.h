@@ -44,9 +44,9 @@
  * @{
  */
 
-void engine_init (Ekiga::ServiceCorePtr service_core,
-		  int argc,
-		  char *argv[]);
+void engine_init (Ekiga::ServiceCore& core,
+                  int argc,
+                  char *argv[]);
 
 /**
  * @}

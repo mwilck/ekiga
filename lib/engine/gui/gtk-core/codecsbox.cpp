@@ -474,11 +474,11 @@ codecs_box_new_with_type (GmApplication *app,
 {
   CodecsBox *self = CODECS_BOX (g_object_new (CODECS_BOX_TYPE, NULL));
 
-  Ekiga::ServiceCorePtr core = gm_application_get_core (app);
+  Ekiga::ServiceCore& core = gm_application_get_core (app);
 
   self->priv = new _CodecsBoxPrivate ();
   self->priv->app = app;
-  self->priv->call_core = core->get<Ekiga::CallCore> ("call-core");
+  self->priv->call_core = core.get<Ekiga::CallCore> ("call-core");
   self->priv->type = type;
   self->priv->audio_settings = boost::shared_ptr<Ekiga::Settings> (new Ekiga::Settings (AUDIO_CODECS_SCHEMA));
   self->priv->video_settings = boost::shared_ptr<Ekiga::Settings> (new Ekiga::Settings (VIDEO_CODECS_SCHEMA));

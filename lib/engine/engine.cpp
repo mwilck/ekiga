@@ -77,6 +77,7 @@
 #include "hal-main-dbus.h"
 #endif
 
+#include "opal-process.h"
 #include "opal-main.h"
 
 #define DEBUG_STARTUP 0
@@ -86,18 +87,19 @@
 #endif
 
 void
-engine_init (Ekiga::ServiceCorePtr service_core,
-	     int argc,
+engine_init (Ekiga::ServiceCore& core,
+             int argc,
              char *argv [])
 {
   // AT THE VERY FIRST, create the PProcess
-  opal_init_pprocess (*service_core, argc, argv);
+  GnomeMeeting & instance = opal_init_pprocess (argc, argv);
+  instance.Start (core);
 
   // FIRST we add a few things by hand
   // (for speed and because that's less code)
 
   Ekiga::ServicePtr notification_core(new Ekiga::NotificationCore);
-  service_core->add (notification_core);
+  core.add (notification_core);
 
   boost::shared_ptr<Ekiga::FriendOrFoe> friend_or_foe (new Ekiga::FriendOrFoe);
   boost::shared_ptr<Ekiga::FoeList> foe_list (new Ekiga::FoeList (friend_or_foe));
@@ -106,32 +108,32 @@ engine_init (Ekiga::ServiceCorePtr service_core,
   boost::shared_ptr<Ekiga::CallCore> call_core (new Ekiga::CallCore (friend_or_foe));
   boost::shared_ptr<Ekiga::ChatCore> chat_core (new Ekiga::ChatCore);
   boost::shared_ptr<Ekiga::VideoOutputCore> videooutput_core (new Ekiga::VideoOutputCore);
-  boost::shared_ptr<Ekiga::VideoInputCore> videoinput_core (new Ekiga::VideoInputCore (*service_core, videooutput_core));
-  boost::shared_ptr<Ekiga::AudioOutputCore> audiooutput_core (new Ekiga::AudioOutputCore (*service_core));
-  boost::shared_ptr<Ekiga::AudioInputCore> audioinput_core (new Ekiga::AudioInputCore(*service_core));
+  boost::shared_ptr<Ekiga::VideoInputCore> videoinput_core (new Ekiga::VideoInputCore (core, videooutput_core));
+  boost::shared_ptr<Ekiga::AudioOutputCore> audiooutput_core (new Ekiga::AudioOutputCore (core));
+  boost::shared_ptr<Ekiga::AudioInputCore> audioinput_core (new Ekiga::AudioInputCore(core));
   boost::shared_ptr<Ekiga::HalCore> hal_core (new Ekiga::HalCore);
   boost::shared_ptr<Gmconf::PersonalDetails> details(new Gmconf::PersonalDetails);
   boost::shared_ptr<Ekiga::PresenceCore> presence_core(new Ekiga::PresenceCore (details));
 
-  service_core->add (contact_core);
-  service_core->add (chat_core);
-  service_core->add (friend_or_foe);
-  service_core->add (foe_list);
-  service_core->add (videoinput_core);
-  service_core->add (videooutput_core);
-  service_core->add (audioinput_core);
-  service_core->add (audiooutput_core);
-  service_core->add (hal_core);
-  service_core->add (call_core);
-  service_core->add (account_core);
-  service_core->add (details);
-  service_core->add (presence_core);
+  core.add (contact_core);
+  core.add (chat_core);
+  core.add (friend_or_foe);
+  core.add (foe_list);
+  core.add (videoinput_core);
+  core.add (videooutput_core);
+  core.add (audioinput_core);
+  core.add (audiooutput_core);
+  core.add (hal_core);
+  core.add (call_core);
+  core.add (account_core);
+  core.add (details);
+  core.add (presence_core);
 
-  if (!videoinput_mlogo_init (*service_core, &argc, &argv)) {
+  if (!videoinput_mlogo_init (core, &argc, &argv)) {
     return;
   }
 
-  if (!videooutput_clutter_gst_init (*service_core, &argc, &argv)) {
+  if (!videooutput_clutter_gst_init (core, &argc, &argv)) {
     return;
   }
 
@@ -169,11 +171,11 @@ engine_init (Ekiga::ServiceCorePtr service_core,
   //  push the parts needed by the gui in the hand-crafted part of
   //  this initialization, or put the gui in the kickstart too.
 
-  kickstart.kick (*service_core, &argc, &argv);
+  kickstart.kick (core, &argc, &argv);
 
-  gtk_core_init (*service_core, &argc, &argv);
+  gtk_core_init (core, &argc, &argv);
 
-  kickstart.kick (*service_core, &argc, &argv);
+  kickstart.kick (core, &argc, &argv);
 
   /* FIXME: everything that follows except the debug output shouldn't
      be there, as that means we're doing the work of initializing
@@ -198,6 +200,6 @@ engine_init (Ekiga::ServiceCorePtr service_core,
 
 #if DEBUG_STARTUP
   std::cout << "Here is what ekiga is made of for this run :" << std::endl;
-  service_core->dump (std::cout);
+  core.dump (std::cout);
 #endif
 }

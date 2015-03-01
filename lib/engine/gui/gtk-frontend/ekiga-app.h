@@ -68,10 +68,7 @@ void ekiga_main (int argc,
 
 GmApplication *gm_application_new ();
 
-void gm_application_set_core (GmApplication *app,
-                              Ekiga::ServiceCorePtr core);
-
-Ekiga::ServiceCorePtr gm_application_get_core (GmApplication *app);
+Ekiga::ServiceCore& gm_application_get_core (GmApplication *app);
 
 void gm_application_show_main_window (GmApplication *app);
 

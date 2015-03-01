@@ -533,7 +533,7 @@ status_icon_new (GmApplication *app)
   if (!statusicon_should_run ())
     return self;
 
-  Ekiga::ServiceCorePtr core = gm_application_get_core (app);
+  Ekiga::ServiceCore& core = gm_application_get_core (app);
 
   boost::signals2::connection conn;
 
@@ -548,11 +548,11 @@ status_icon_new (GmApplication *app)
   self->priv->app = app;
 
   boost::shared_ptr<Ekiga::PersonalDetails> details =
-    core->get<Ekiga::PersonalDetails> ("personal-details");
+    core.get<Ekiga::PersonalDetails> ("personal-details");
   boost::shared_ptr<Ekiga::CallCore> call_core =
-    core->get<Ekiga::CallCore> ("call-core");
+    core.get<Ekiga::CallCore> ("call-core");
   boost::shared_ptr<Ekiga::NotificationCore> notification_core =
-    core->get<Ekiga::NotificationCore> ("notification-core");
+    core.get<Ekiga::NotificationCore> ("notification-core");
 
   self->priv->chat_window = gm_application_get_chat_window (app);
 

@@ -277,16 +277,16 @@ chat_window_new (GmApplication *app)
 
   g_return_val_if_fail (GM_IS_APPLICATION (app), NULL);
 
-  Ekiga::ServiceCorePtr core = gm_application_get_core (app);
+  Ekiga::ServiceCore& core = gm_application_get_core (app);
 
   self = (ChatWindow*)g_object_new (CHAT_WINDOW_TYPE,
                                     "application", GTK_APPLICATION (app),
                                     "key", USER_INTERFACE ".chat-window",
 				    NULL);
   self->priv->notification_core =
-    core->get<Ekiga::NotificationCore>("notification-core");
+    core.get<Ekiga::NotificationCore>("notification-core");
   self->priv->audiooutput_core =
-    core->get<Ekiga::AudioOutputCore>("audiooutput-core");
+    core.get<Ekiga::AudioOutputCore>("audiooutput-core");
 
   GtkWidget* vbox = gtk_box_new (GTK_ORIENTATION_VERTICAL, 2);
   gtk_container_add (GTK_CONTAINER (self), vbox);
@@ -315,7 +315,7 @@ chat_window_new (GmApplication *app)
 		    G_CALLBACK (on_visible_conversation_changed), self);
 
   boost::shared_ptr<Ekiga::ChatCore> chat_core =
-    core->get<Ekiga::ChatCore> ("chat-core");
+    core.get<Ekiga::ChatCore> ("chat-core");
   self->priv->connections.add (chat_core->dialect_added.connect (boost::bind (&on_dialect_added, self, _1)));
   self->priv->connections.add (chat_core->questions.connect (boost::bind (&on_handle_questions, self, _1)));
   chat_core->visit_dialects (boost::bind (&on_dialect_added, self, _1));
