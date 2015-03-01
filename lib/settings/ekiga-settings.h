@@ -93,9 +93,9 @@ namespace Ekiga {
 
 public:
 
-    Settings (const std::string & _schema)
+    Settings (const std::string & schema)
     {
-      gsettings = g_settings_new (_schema.c_str ());
+      gsettings = g_settings_new (schema.c_str ());
       handler = g_signal_connect (gsettings, "changed", G_CALLBACK (&f_callback), this);
     }
 
