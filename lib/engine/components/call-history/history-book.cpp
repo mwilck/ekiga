@@ -93,7 +93,7 @@ History::Book::Book (Ekiga::ServiceCore& core):
 History::Book::~Book ()
 {
 #if DEBUG
-  std::cout << "History::Book: Destructor invoked" << std::endl << std::flush;
+  std::cout << "History::Book: Destructor invoked" << std::endl;
 #endif
 }
 

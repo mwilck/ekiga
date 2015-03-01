@@ -46,7 +46,7 @@ History::Source::Source (Ekiga::ServiceCore &_core): core(_core)
 History::Source::~Source ()
 {
 #if DEBUG
-  std::cout << "History::Source: Destructor invoked" << std::endl << std::flush;
+  std::cout << "History::Source: Destructor invoked" << std::endl;
 #endif
 }
 
