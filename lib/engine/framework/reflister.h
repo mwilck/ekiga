@@ -53,11 +53,13 @@ namespace Ekiga
   class RefLister:
     public virtual LiveObject
   {
-  protected:
+  public:
 
     typedef std::map<boost::shared_ptr<ObjectType>, boost::shared_ptr<scoped_connections> > container_type;
     typedef Ekiga::map_key_iterator<container_type> iterator;
     typedef Ekiga::map_key_const_iterator<container_type> const_iterator;
+
+    ~RefLister ();
 
     void visit_objects (boost::function1<bool, boost::shared_ptr<ObjectType> > visitor) const;
 
@@ -87,6 +89,13 @@ namespace Ekiga
   };
 
 };
+
+
+template<typename ObjectType>
+Ekiga::RefLister<ObjectType>::~RefLister ()
+{
+  remove_all_objects ();
+}
 
 
 template<typename ObjectType>
