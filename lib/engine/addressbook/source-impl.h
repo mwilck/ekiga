@@ -77,14 +77,10 @@ namespace Ekiga
    */
   template<typename BookType = Book>
   class SourceImpl:
-    public Source,
-    protected RefLister<BookType>
+    public Source
   {
 
   public:
-
-    typedef typename RefLister<BookType>::iterator iterator;
-    typedef typename RefLister<BookType>::const_iterator const_iterator;
 
     /** The constructor
      */
@@ -92,7 +88,7 @@ namespace Ekiga
 
     /** The destructor.
      */
-    ~SourceImpl ();
+    virtual ~SourceImpl ();
 
 
     /** Visit all books of the source and trigger the given callback.
@@ -120,8 +116,6 @@ namespace Ekiga
      * Ekiga::Book has been removed.
      */
     void remove_book (boost::shared_ptr<BookType> book);
-
-    using RefLister<BookType>::add_connection;
 
   protected:
 
@@ -166,7 +160,10 @@ namespace Ekiga
      * @param: The removed book.
      */
     void on_book_removed (boost::shared_ptr<BookType> book);
+
+    RefLister<BookType> books;
   };
+
 
   /**
    * @}
@@ -182,14 +179,15 @@ template<typename BookType>
 Ekiga::SourceImpl<BookType>::SourceImpl ()
 {
   /* signal forwarding */
-  RefLister<BookType>::object_added.connect (boost::ref (book_added));
-  RefLister<BookType>::object_removed.connect (boost::ref (book_removed));
-  RefLister<BookType>::object_updated.connect (boost::ref (book_updated));
+  books.object_added.connect (boost::ref (book_added));
+  books.object_removed.connect (boost::ref (book_removed));
+  books.object_updated.connect (boost::ref (book_updated));
 }
 
 template<typename BookType>
 Ekiga::SourceImpl<BookType>::~SourceImpl ()
 {
+  books.remove_all_objects ();
 }
 
 
@@ -197,7 +195,7 @@ template<typename BookType>
 void
 Ekiga::SourceImpl<BookType>::visit_books (boost::function1<bool, BookPtr > visitor) const
 {
-  RefLister<BookType>::visit_objects (visitor);
+  books.visit_objects (visitor);
 }
 
 
@@ -205,15 +203,12 @@ template<typename BookType>
 void
 Ekiga::SourceImpl<BookType>::add_book (boost::shared_ptr<BookType> book)
 {
-  this->add_object (book);
+  books.add_object (book);
 
-  add_connection (book, book->contact_added.connect (boost::bind (boost::ref (contact_added), book, _1)));
-
-  add_connection (book, book->contact_removed.connect (boost::bind (boost::ref (contact_removed), book, _1)));
-
-  add_connection (book, book->contact_updated.connect (boost::bind (boost::ref (contact_updated), book, _1)));
-
-  add_connection (book, book->questions.connect (boost::ref (questions)));
+  books.add_connection (book, book->contact_added.connect (boost::bind (boost::ref (contact_added), book, _1)));
+  books.add_connection (book, book->contact_removed.connect (boost::bind (boost::ref (contact_removed), book, _1)));
+  books.add_connection (book, book->contact_updated.connect (boost::bind (boost::ref (contact_updated), book, _1)));
+  books.add_connection (book, book->questions.connect (boost::ref (questions)));
 }
 
 
@@ -221,14 +216,14 @@ template<typename BookType>
 void
 Ekiga::SourceImpl<BookType>::remove_book (boost::shared_ptr<BookType> book)
 {
-  remove_object (book);
+  books.remove_object (book);
 }
 
 template<typename BookType>
 typename Ekiga::SourceImpl<BookType>::iterator
 Ekiga::SourceImpl<BookType>::begin ()
 {
-  return RefLister<BookType>::begin ();
+  return books.begin ();
 }
 
 
@@ -236,7 +231,7 @@ template<typename BookType>
 typename Ekiga::SourceImpl<BookType>::iterator
 Ekiga::SourceImpl<BookType>::end ()
 {
-  return RefLister<BookType>::end ();
+  return books.end ();
 }
 
 
@@ -244,7 +239,7 @@ template<typename BookType>
 typename Ekiga::SourceImpl<BookType>::const_iterator
 Ekiga::SourceImpl<BookType>::begin () const
 {
-  return RefLister<BookType>::begin ();
+  return books.begin ();
 }
 
 
@@ -252,7 +247,7 @@ template<typename BookType>
 typename Ekiga::SourceImpl<BookType>::const_iterator
 Ekiga::SourceImpl<BookType>::end () const
 {
-  return RefLister<BookType>::end ();
+  return books.end ();
 }
 
 #endif
