@@ -95,8 +95,14 @@ public:
 
     Settings (const std::string & schema)
     {
-      gsettings = g_settings_new (schema.c_str ());
-      handler = g_signal_connect (gsettings, "changed", G_CALLBACK (&f_callback), this);
+      init (schema);
+    }
+
+    Settings (const std::string & schema,
+              boost::function1<void, const std::string &> & f)
+    {
+      init (schema);
+      changed.connect (f);
     }
 
     ~Settings ()
@@ -208,9 +214,17 @@ public:
     boost::signals2::signal<void(std::string)> changed;
 
 private:
+    void init (const std::string & schema)
+    {
+      gsettings = g_settings_new (schema.c_str ());
+      handler = g_signal_connect (gsettings, "changed", G_CALLBACK (&f_callback), this);
+    }
+
     gulong handler;
     GSettings *gsettings;
   };
+
+  typedef boost::shared_ptr<Settings> SettingsPtr;
 }
 
 #endif /* EKIGA_SETTINGS_H */
