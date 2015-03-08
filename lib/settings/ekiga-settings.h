@@ -225,6 +225,7 @@ private:
   };
 
   typedef boost::shared_ptr<Settings> SettingsPtr;
+  typedef boost::function1<void, const std::string &> SettingsCallback;
 }
 
 #endif /* EKIGA_SETTINGS_H */
