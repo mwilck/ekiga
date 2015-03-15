@@ -117,7 +117,9 @@ namespace Ekiga
      */
     void remove_book (boost::shared_ptr<BookType> book);
 
-  protected:
+  public:
+    typedef typename RefLister<BookType>::const_iterator const_iterator;
+    typedef typename RefLister<BookType>::iterator iterator;
 
     /** Returns an iterator to the first Book of the collection
      */
