@@ -215,10 +215,10 @@ bool
 OPENLDAP::Source::has_ekiga_net_book () const
 {
   bool result = false;
-  for (const_iterator iter = begin ();
-       iter != end () && !result;
-       ++iter)
-    result = (*iter)->is_ekiga_net_book ();
+  for (Ekiga::SourceImpl< OPENLDAP::Book >::const_iterator it = Ekiga::SourceImpl< OPENLDAP::Book >::begin ();
+       it != Ekiga::SourceImpl< OPENLDAP::Book >::end () && !result;
+       ++it)
+    result = (*it)->is_ekiga_net_book ();
 
   return result;
 }
