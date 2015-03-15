@@ -43,6 +43,7 @@ AM_CPPFLAGS = \
 	-I$(top_srcdir)/lib/engine/components/null-audioinput \
 	-I$(top_srcdir)/lib/engine/components/null-audiooutput \
 	-I$(top_srcdir)/lib/engine/components/opal \
+	-I$(top_srcdir)/lib/engine/components/opal/process \
 	-I$(top_srcdir)/lib/engine/components/ptlib
 
 AM_CFLAGS = \
@@ -271,10 +272,8 @@ libekiga_la_SOURCES += \
 libekiga_la_SOURCES += \
 	engine/protocol/call-core.h \
 	engine/protocol/call-manager.h \
-	engine/protocol/call-manager.cpp \
 	engine/protocol/call.h \
 	engine/protocol/call-core.cpp \
-	engine/protocol/call-protocol-manager.h \
 	engine/protocol/codec-description.h \
 	engine/protocol/codec-description.cpp
 
@@ -412,8 +411,8 @@ libekiga_la_LDFLAGS += $(PTLIB_LIBS)
 libekiga_la_SOURCES += \
 	engine/components/opal/opal-call-manager.h \
 	engine/components/opal/opal-call-manager.cpp \
-	engine/components/opal/pcss-endpoint.h \
-	engine/components/opal/pcss-endpoint.cpp \
+	engine/components/opal/sip-call-manager.h \
+	engine/components/opal/sip-call-manager.cpp \
 	engine/components/opal/opal-account.h \
 	engine/components/opal/opal-account.cpp \
 	engine/components/opal/opal-bank.h \
@@ -433,14 +432,24 @@ libekiga_la_SOURCES += \
 	engine/components/opal/opal-plugins-hook.h \
 	engine/components/opal/opal-plugins-hook.cpp \
 	engine/components/opal/opal-presentity.h \
-	engine/components/opal/opal-presentity.cpp \
-	engine/components/opal/opal-process.h \
-	engine/components/opal/opal-process.cpp
+        engine/components/opal/opal-presentity.cpp
+
+libekiga_la_SOURCES += \
+	engine/components/opal/process/pcss-endpoint.h \
+	engine/components/opal/process/pcss-endpoint.cpp \
+	engine/components/opal/process/opal-process.h \
+	engine/components/opal/process/opal-process.cpp \
+	engine/components/opal/process/opal-endpoint.h \
+	engine/components/opal/process/opal-endpoint.cpp \
+	engine/components/opal/process/sip-endpoint.h \
+	engine/components/opal/process/sip-endpoint.cpp
 
 if HAVE_H323
 libekiga_la_SOURCES += \
-	engine/components/opal/h323-endpoint.h \
-	engine/components/opal/h323-endpoint.cpp
+	engine/components/opal/h323-call-manager.h \
+	engine/components/opal/h323-call-manager.cpp \
+	engine/components/opal/process/h323-endpoint.h \
+	engine/components/opal/process/h323-endpoint.cpp
 endif
 
 libekiga_la_SOURCES += \
@@ -449,9 +458,7 @@ libekiga_la_SOURCES += \
 	engine/components/opal/sip-conversation.h \
 	engine/components/opal/sip-conversation.cpp \
 	engine/components/opal/sip-dialect.h \
-	engine/components/opal/sip-dialect.cpp \
-	engine/components/opal/sip-endpoint.h \
-	engine/components/opal/sip-endpoint.cpp
+	engine/components/opal/sip-dialect.cpp
 
 libekiga_la_LDFLAGS += $(OPAL_LIBS)
 

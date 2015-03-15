@@ -91,7 +91,7 @@ Avahi::PresencePublisher::publish (G_GNUC_UNUSED const Ekiga::PersonalDetails& d
 {
   if (group != NULL) {
 
-    Ekiga::CallProtocolManager::InterfaceList interfaces;
+    Ekiga::CallManager::InterfaceList interfaces;
     AvahiStringList* txt_record = NULL;
 
     txt_record = prepare_txt_record ();
@@ -99,12 +99,12 @@ Avahi::PresencePublisher::publish (G_GNUC_UNUSED const Ekiga::PersonalDetails& d
 	 iter != call_core.end ();
 	 ++iter) {
 
-      Ekiga::CallProtocolManager::InterfaceList ints = (*iter)->get_interfaces ();
+      Ekiga::CallManager::InterfaceList ints = (*iter)->get_interfaces ();
       interfaces.insert (interfaces.begin (), ints.begin (), ints.end ());
 
     }
 
-    for (Ekiga::CallProtocolManager::InterfaceList::const_iterator iter = interfaces.begin ();
+    for (Ekiga::CallManager::InterfaceList::const_iterator iter = interfaces.begin ();
 	 iter != interfaces.end ();
 	 ++iter) {
 
@@ -236,21 +236,21 @@ Avahi::PresencePublisher::entry_group_callback (AvahiEntryGroup* group_,
 void
 Avahi::PresencePublisher::add_services ()
 {
-  Ekiga::CallProtocolManager::InterfaceList interfaces;
+  Ekiga::CallManager::InterfaceList interfaces;
   AvahiStringList* txt_record = NULL;
 
   for (Ekiga::CallCore::iterator iter = call_core.begin ();
        iter != call_core.end ();
        ++iter) {
 
-    Ekiga::CallProtocolManager::InterfaceList ints = (*iter)->get_interfaces ();
+    Ekiga::CallManager::InterfaceList ints = (*iter)->get_interfaces ();
     interfaces.insert (interfaces.begin (), ints.begin (), ints.end ());
 
   }
 
   txt_record = prepare_txt_record ();
 
-  for (Ekiga::CallProtocolManager::InterfaceList::const_iterator iter = interfaces.begin ();
+  for (Ekiga::CallManager::InterfaceList::const_iterator iter = interfaces.begin ();
        iter != interfaces.end ();
        ++iter) {
 

@@ -26,7 +26,7 @@
 /*
  *                         call-core.h  -  description
  *                         ------------------------------------------
- *   begin                : written in 2007 by Damien Sandras 
+ *   begin                : written in 2007 by Damien Sandras
  *   copyright            : (c) 2007 by Damien Sandras
  *   description          : declaration of the interface of a call core.
  *                          A call core manages CallManagers.
@@ -45,7 +45,6 @@
 #include "friend-or-foe/friend-or-foe.h"
 #include "call.h"
 #include "call-manager.h"
-#include "call-protocol-manager.h"
 #include "contact-core.h"
 
 #include <boost/smart_ptr.hpp>
@@ -65,6 +64,14 @@ namespace Ekiga
 
   class CallManager;
 
+  /* The CallCore is handling Calls from the various CallManagers it supports.
+   *
+   * This is the only objective of the CallCore.
+   *
+   * Settings must be handled by the CallManagers, not by the CallCore.
+   * This is true even in the case of settings which are common to several
+   * CallManagers.
+   */
   class CallCore:
     public Service,
     protected RefLister<CallManager>
@@ -77,6 +84,7 @@ namespace Ekiga
       /** The constructor
        */
       CallCore (boost::shared_ptr<Ekiga::FriendOrFoe> iff);
+      ~CallCore ();
 
 
       /*** Service Implementation ***/

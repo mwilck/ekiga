@@ -211,6 +211,20 @@ public:
       g_array_free (array, TRUE);
     }
 
+    void get_int_tuple (const std::string & key, int & a, int & b)
+    {
+      std::string  s = get_string (key);
+      gchar **couple = NULL;
+      if (!s.empty ())
+        couple = g_strsplit (s.c_str (), ":", 2);
+      if (couple && couple [0])
+        a = atoi (couple [0]);
+      if (couple && couple [1])
+        b = atoi (couple [1]);
+
+      g_strfreev (couple);
+    }
+
     boost::signals2::signal<void(std::string)> changed;
 
 private:

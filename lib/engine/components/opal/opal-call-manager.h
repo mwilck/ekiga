@@ -1,5 +1,5 @@
 /* Ekiga -- A VoIP and Video-Conferencing application
- * Copyright (C) 2000-2009 Damien Sandras <dsandras@seconix.com>
+ * Copyright (C) 2000-2015 Damien Sandras <dsandras@seconix.com>
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -26,207 +26,82 @@
 
 
 /*
- *                         endpoint.h  -  description
- *                         --------------------------
+ *                         opal-call-manager.h  -  description
+ *                         -----------------------------------
  *   begin                : Sat Dec 23 2000
- *   copyright            : (C) 2000-2006 by Damien Sandras
- *   description          : This file contains the Endpoint class.
+ *   authors              : Damien Sandras
+ *   description          : This file contains the engine CallManager.
  *
  */
 
 
-#ifndef _ENDPOINT_H_
-#define _ENDPOINT_H_
-
-#include "config.h"
-
-#include <ptlib.h>
-
-#include <h323/h323.h>
-#include <sip/sip.h>
-
-#include "menu-builder.h"
-
-#include "opal-call.h"
+#ifndef __OPAL_CALL_MANAGER_H_
+#define __OPAL_CALL_MANAGER_H_
 
 #include "call-manager.h"
-#include "contact-core.h"
+#include "opal-endpoint.h"
 
 #include "ekiga-settings.h"
 
-#include "actor.h"
-#include "opal-codec-description.h"
-
-class GMPCSSEndpoint;
-
 namespace Opal {
 
-  class Account;
-  namespace Sip { class EndPoint; };
-  namespace H323 { class EndPoint; };
-
-  class CallManager :
-    public Ekiga::CallManager,
-    public Ekiga::URIActionProvider,
-    public OpalManager
+  /* This is the engine CallManager implementation.
+   * It uses the Opal::Manager object to implement the engine
+   * CallManager interface.
+   */
+  class CallManager : public Ekiga::CallManager
   {
-    PCLASSINFO(CallManager, OpalManager);
-
 public:
-
-    CallManager (Ekiga::ServiceCore & _core);
-
+    CallManager (Ekiga::ServiceCore& _core,
+                 Opal::EndPoint& _manager);
     ~CallManager ();
 
-    /* URIActionProvider stuff */
-    void pull_actions (Ekiga::Actor & actor,
-                       const std::string & name,
-                       const std::string & uri);
-
-
-    /* Set up endpoint: all options or a specific setting */
-    void setup (const std::string & setting = "");
-
-
-    /** Call Manager **/
+    /* CallManager Methods */
     bool dial (const std::string & uri);
     void hang_up ();
     bool is_supported_uri (const std::string & uri);
-
+    void set_codecs (Ekiga::CodecList & codecs);
+    const Ekiga::CodecList & get_codecs () const;
     void set_display_name (const std::string & name);
     const std::string & get_display_name () const;
 
     void set_echo_cancellation (bool enabled);
     bool get_echo_cancellation () const;
-
-    void set_maximum_jitter (unsigned max_val);
-    unsigned get_maximum_jitter () const;
-
     void set_silence_detection (bool enabled);
     bool get_silence_detection () const;
-
+    void set_maximum_jitter (unsigned max_val);
+    unsigned get_maximum_jitter () const;
     void set_reject_delay (unsigned delay);
     unsigned get_reject_delay () const;
-
     void set_auto_answer (bool enabled);
     bool get_auto_answer () const;
 
-    void set_codecs (Ekiga::CodecList & codecs);
-    const Ekiga::CodecList & get_codecs () const;
-
-
-    /* Extended stuff, OPAL CallManager specific */
-
-    void set_forward_on_busy (bool enabled);
-    bool get_forward_on_busy ();
-
-    void set_forward_on_no_answer (bool enabled);
-    bool get_forward_on_no_answer ();
-
-    void set_unconditional_forward (bool enabled);
-    bool get_unconditional_forward ();
-
-    void set_udp_ports (unsigned min_port, 
-                        unsigned max_port);
-
-    void get_udp_ports (unsigned & min_port, 
-                        unsigned & max_port) const;
-
-    void set_tcp_ports (unsigned min_port, 
-                        unsigned max_port);
-
-    void get_tcp_ports (unsigned & min_port, 
-                        unsigned & max_port) const;
-
-    void get_rtp_tos (unsigned &tos) const;
-    void set_rtp_tos (unsigned tos);
-
-    void set_stun_server (const std::string & server);
-    void set_stun_enabled (bool);
-
-    /**/
-    struct VideoOptions
-      {
-        VideoOptions ()
-          : size (0),
-          maximum_frame_rate (0),
-          temporal_spatial_tradeoff (0),
-          maximum_bitrate (0),
-          maximum_transmitted_bitrate (0),
-          extended_video_roles (0) {};
-
-        unsigned size;
-        unsigned maximum_frame_rate;
-        unsigned temporal_spatial_tradeoff;
-        unsigned maximum_bitrate;
-        unsigned maximum_transmitted_bitrate;
-        unsigned extended_video_roles;
-      };
-
-    void set_video_options (const VideoOptions & options);
-    void get_video_options (VideoOptions & options) const;
+    /* Set up endpoint: all options or a specific setting */
+    virtual void setup (const std::string & setting = "");
 
 private:
-    boost::weak_ptr<Ekiga::CallCore> call_core;
-    boost::shared_ptr<Ekiga::NotificationCore> notification_core;
+    /* We use a callback instead of directly connecting the signal
+     * to the add_call method of the CallCore to prevent boost to
+     * keep a reference to the CallCore until the ECallManager is
+     * destroyed, which would be a crossed reference.
+     */
+    void on_created_call (Opal::Call *call);
 
-    void create_call_in_main (Opal::Call* call);
-    OpalCall *CreateCall (void *uri);
-    virtual void DestroyCall (OpalCall *);
-
-    virtual bool OnOpenMediaStream (OpalConnection &,
-                                    OpalMediaStream &);
-
-    virtual void OnClosedMediaStream (const OpalMediaStream &);
-
-    void GetAllowedFormats (OpalMediaFormatList & full_list);
-
-    PThread* stun_thread;
-    void HandleSTUNResult ();
-
-    void ReportSTUNError (const std::string error);
-
-    virtual PBoolean CreateVideoOutputDevice(const OpalConnection & connection,
-                                             const OpalMediaFormat & media_fmt,
-                                             PBoolean preview,
-                                             PVideoOutputDevice * & device,
-                                             PBoolean & auto_delete);
-
-    /* The various related endpoints */
-    GMPCSSEndpoint *pcssEP;
-
-    /* Various mutexes to ensure thread safeness around internal
-       variables */
-    PMutex manager_access_mutex;
-
-    Ekiga::CodecList codecs;
-
-    /* used to get the STUNDetector results */
-    GAsyncQueue* queue;
-    unsigned int patience;
+    Ekiga::SettingsPtr nat_settings;
+    Ekiga::SettingsPtr audio_codecs_settings;
+    Ekiga::SettingsPtr video_codecs_settings;
+    Ekiga::SettingsPtr video_devices_settings;
+    Ekiga::SettingsPtr protocols_settings;
+    Ekiga::SettingsPtr ports_settings;
+    Ekiga::SettingsPtr call_options_settings;
+    Ekiga::SettingsPtr call_forwarding_settings;
+    Ekiga::SettingsPtr personal_data_settings;
 
     std::string display_name;
-    std::string stun_server;
-    unsigned reject_delay;
-    bool forward_on_busy;
-    bool unconditional_forward;
-    bool forward_on_no_answer;
-    bool stun_enabled;
-    bool auto_answer;
 
-    boost::shared_ptr<Ekiga::Settings> nat_settings;
-    boost::shared_ptr<Ekiga::Settings> audio_codecs_settings;
-    boost::shared_ptr<Ekiga::Settings> video_codecs_settings;
-    boost::shared_ptr<Ekiga::Settings> video_devices_settings;
-    boost::shared_ptr<Ekiga::Settings> protocols_settings;
-    boost::shared_ptr<Ekiga::Settings> ports_settings;
-    boost::shared_ptr<Ekiga::Settings> call_options_settings;
-    boost::shared_ptr<Ekiga::Settings> call_forwarding_settings;
-    boost::shared_ptr<Ekiga::Settings> personal_data_settings;
-    boost::shared_ptr<Sip::EndPoint> sip_endpoint;
-#ifdef HAVE_H323
-    boost::shared_ptr<H323::EndPoint> h323_endpoint;
-#endif
+protected:
+    Ekiga::ServiceCore& core;
+    EndPoint& endpoint;
   };
 };
 #endif

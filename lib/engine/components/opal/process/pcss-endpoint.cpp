@@ -26,40 +26,38 @@
 
 
 /*
- *                         pcssendpoint.h  -  description
- *                         ------------------------------
+ *                         pcssendpoint.cpp  -  description
+ *                         --------------------------------
  *   begin                : Sun Oct 24 2004
  *   copyright            : (C) 2000-2006 by Damien Sandras
  *   description          : This file contains the PCSS Endpoint class.
  *
  */
 
+#include "pcss-endpoint.h"
+#include "opal-endpoint.h"
 
-#ifndef _PCSS_ENDPOINT_H_
-#define _PCSS_ENDPOINT_H_
 
-#include "services.h"
-
-#include <opal/opal.h>
-#include <ep/pcss.h>
-
-namespace Opal {
-  class CallManager;
+GMPCSSEndpoint::GMPCSSEndpoint (Opal::EndPoint & ep,
+                                Ekiga::ServiceCore & _core)
+:   OpalPCSSEndPoint(ep),
+    core(_core)
+{
+#ifdef WIN32
+  SetSoundChannelBufferDepth (20);
+#else
+  SetSoundChannelBufferDepth (5);
+#endif
 }
 
-class GMPCSSEndpoint : public OpalPCSSEndPoint
+
+bool GMPCSSEndpoint::OnShowIncoming (const OpalPCSSConnection & /*connection*/)
 {
-  PCLASSINFO (GMPCSSEndpoint, OpalPCSSEndPoint);
+  return true;
+}
 
-public:
-  GMPCSSEndpoint (Opal::CallManager &manager, Ekiga::ServiceCore & _core);
 
-  bool OnShowIncoming (const OpalPCSSConnection &connection);
-
-  bool OnShowOutgoing (const OpalPCSSConnection &connection);  
-
-private:
-  Ekiga::ServiceCore & core;
-};
-
-#endif
+bool GMPCSSEndpoint::OnShowOutgoing (const OpalPCSSConnection & /*connection*/)
+{
+  return true;
+}

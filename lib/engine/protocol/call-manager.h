@@ -44,7 +44,7 @@
 
 #include <boost/smart_ptr.hpp>
 
-#include "call-protocol-manager.h"
+#include "live-object.h"
 #include "codec-description.h"
 
 namespace Ekiga
@@ -55,14 +55,20 @@ namespace Ekiga
  * @{
  */
 
-  class CallManager :
-    public Ekiga::LiveObject
+  class CallManager : public Ekiga::LiveObject
   {
-
     public:
+    class Interface
+    {
+        public:
+        std::string voip_protocol;
+        std::string protocol;
+        std::string id;
+        bool publish;
+        unsigned port;
+    };
+    typedef std::list<Interface> InterfaceList;
 
-    typedef std::set<boost::shared_ptr<CallProtocolManager> >::iterator iterator;
-    typedef std::set<boost::shared_ptr<CallProtocolManager> >::const_iterator const_iterator;
 
     /* The constructor
      */
@@ -71,44 +77,6 @@ namespace Ekiga
     /* The destructor
      */
     virtual ~CallManager () {}
-
-    /** Add a CallProtocolManager to the CallManager.
-     * @param The manager to be added.
-     */
-    void add_protocol_manager (boost::shared_ptr<CallProtocolManager> manager);
-
-    /** Remove a CallProtocolManager from the CallManager.
-     * @param The manager to be removed.
-     */
-    void remove_protocol_manager (boost::shared_ptr<CallProtocolManager> manager);
-
-    /** Return a pointer to a CallProtocolManager of the CallManager.
-     * @param protocol is the protcol name.
-     * @return a pointer to the CallProtocolManager or NULL if none.
-     */
-    boost::shared_ptr<CallProtocolManager> get_protocol_manager (const std::string &protocol) const;
-
-    /** Return iterator to beginning
-     * @return iterator to beginning
-     */
-    iterator begin ();
-    const_iterator begin () const;
-
-    /** Return iterator to end
-     * @return iterator to end
-     */
-    iterator end ();
-    const_iterator end () const;
-
-    /** This signal is emitted when a Ekiga::CallProtocolManager has been
-     * added to the CallManager.
-     */
-    boost::signals2::signal<void(boost::shared_ptr<CallProtocolManager>)> manager_added;
-
-    /** This signal is emitted when a Ekiga::CallProtocolManager has been
-     * removed from the CallManager.
-     */
-    boost::signals2::signal<void(boost::shared_ptr<CallProtocolManager>)> manager_removed;
 
 
     /*
@@ -137,16 +105,16 @@ namespace Ekiga
      * PROTOCOL INFORMATION
      */
 
-    /**
+    /** Return the protocol name
      * @return the protocol name
      */
-    const std::list<std::string> get_protocol_names () const;
+    virtual const std::string & get_protocol_name () const = 0;
 
     /**
-     * @return the interface on which we are accepting calls. Generally,
+     * @return the interfaces on which we are accepting calls. Generally,
      * under the form protocol:IP:port.
      */
-    const CallProtocolManager::InterfaceList get_interfaces () const;
+    virtual const InterfaceList get_interfaces () const = 0;
 
 
     /*
@@ -234,9 +202,6 @@ namespace Ekiga
      * MISC
      */
     boost::signals2::signal<void(void)> ready;
-
-    private:
-    std::set<boost::shared_ptr<CallProtocolManager> > managers;
   };
 
   /**

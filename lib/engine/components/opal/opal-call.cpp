@@ -44,7 +44,7 @@
 
 #include "call.h"
 #include "opal-call.h"
-#include "opal-call-manager.h"
+#include "opal-endpoint.h"
 #include "notification-core.h"
 #include "call-core.h"
 #include "runtime.h"
@@ -95,10 +95,10 @@ private:
 };
 
 
-Opal::Call::Call (Opal::CallManager& _manager,
+Opal::Call::Call (Opal::EndPoint& _manager,
 		  const std::string& uri)
   : OpalCall (_manager), Ekiga::Call (), remote_uri (uri),
-    call_setup(false), outgoing(false), auto_answer (_manager.get_auto_answer ())
+    call_setup(false), outgoing(false)
 {
   NoAnswerTimer.SetNotifier (PCREATE_NOTIFIER (OnNoAnswerTimeout));
 
@@ -651,8 +651,11 @@ Opal::Call::OnAnswerCall (OpalConnection & connection,
 
   parse_info (connection);
 
+  /*
   if (auto_answer)
     return OpalConnection::AnswerCallNow;
+*/
+  std::cout << "FIXME" << std::endl << std::flush;
 
   return OpalCall::OnAnswerCall (connection, caller);
 }

@@ -138,24 +138,19 @@ namespace Opal {
 
 
 /* The class */
-Opal::H323::EndPoint::EndPoint (Opal::CallManager & _manager,
-                               const Ekiga::ServiceCore& _core): H323EndPoint (_manager),
-                                                                 manager (_manager),
-                                                                 core (_core)
+Opal::H323::EndPoint::EndPoint (Opal::EndPoint & _endpoint,
+                                const Ekiga::ServiceCore& _core): H323EndPoint (_endpoint),
+    endpoint (_endpoint),
+    core (_core)
 {
   protocol_name = "h323";
   uri_prefix = "h323:";
   /* Ready to take calls */
-  manager.AddRouteEntry("h323:.* = pc:*");
-  manager.AddRouteEntry("pc:.* = h323:<da>");
+  endpoint.AddRouteEntry("h323:.* = pc:*");
+  endpoint.AddRouteEntry("pc:.* = h323:<da>");
 
-  settings = boost::shared_ptr<Ekiga::Settings> (new Ekiga::Settings (H323_SCHEMA));
-  settings->changed.connect (boost::bind (&EndPoint::setup, this, _1));
-
-  video_codecs_settings = boost::shared_ptr<Ekiga::Settings> (new Ekiga::Settings (VIDEO_CODECS_SCHEMA));
-  video_codecs_settings->changed.connect (boost::bind (&EndPoint::setup, this, _1));
-
-  manager.ready.connect (boost::bind (&EndPoint::setup, this, ""));
+  std::cout << "FIXME" << std::endl;
+//  manager.ready.connect (boost::bind (&EndPoint::setup, this, ""));
 }
 
 Opal::H323::EndPoint::~EndPoint ()
@@ -170,7 +165,7 @@ Opal::H323::EndPoint::dial (const std::string&  uri)
     return false;
 
   PString token;
-  manager.SetUpCall("pc:*", uri, token, (void*) uri.c_str());
+  endpoint.SetUpCall("pc:*", uri, token, (void*) uri.c_str());
 
   return true;
 }
@@ -295,7 +290,7 @@ Opal::H323::EndPoint::set_listen_port (unsigned port)
 }
 
 
-const Ekiga::CallProtocolManager::InterfaceList &
+const Ekiga::CallManager::InterfaceList &
 Opal::H323::EndPoint::get_interfaces () const
 {
   return interfaces;
@@ -396,6 +391,9 @@ Opal::H323::EndPoint::OnIncomingConnection (OpalConnection & connection,
       busy = true;
   }
 
+  std::cout << "FIXME" << std::endl;
+
+  /*
   if (!forward_uri.empty () && manager.get_unconditional_forward ())
     connection.ForwardCall (forward_uri);
   else if (busy) {
@@ -419,58 +417,7 @@ Opal::H323::EndPoint::OnIncomingConnection (OpalConnection & connection,
 
     return H323EndPoint::OnIncomingConnection (connection, options, stroptions);
   }
+  */
 
   return false;
-}
-
-
-void
-Opal::H323::EndPoint::setup (const std::string setting)
-{
-  if (setting.empty () || setting == "listen-port") {
-
-    set_listen_port (settings->get_int ("listen-port"));
-  }
-  if (setting.empty () || setting == "maximum-video-tx-bitrate") {
-
-    int maximum_video_tx_bitrate = video_codecs_settings->get_int ("maximum-video-tx-bitrate");
-    // maximum_video_tx_bitrate is the max video bitrate specified by the user
-    // add to it 10% (approx.) accounting for audio,
-    // and multiply it by 10 as needed by SetInitialBandwidth
-    set_initial_bandwidth (maximum_video_tx_bitrate * 11);
-  }
-  if (setting.empty () || setting == "enable-h245-tunneling") {
-
-    DisableH245Tunneling (!settings->get_bool ("enable-h245-tunneling"));
-    PTRACE (4, "Opal::H323::EndPoint\tH.245 Tunneling: " << settings->get_bool ("enable-h245-tunneling"));
-  }
-  if (setting.empty () || setting == "enable-early-h245") {
-
-    DisableH245inSetup (!settings->get_bool ("enable-early-h245"));
-    PTRACE (4, "Opal::H323::EndPoint\tEarly H.245: " << settings->get_bool ("enable-early-h245"));
-  }
-  if (setting.empty () || setting == "enable-fast-connect") {
-
-    DisableFastStart (!settings->get_bool ("enable-fast-connect"));
-    PTRACE (4, "Opal::H323::EndPoint\tFast Connect: " << settings->get_bool ("enable-fast-connect"));
-  }
-  if (setting.empty () || setting == "dtmf-mode") {
-
-    set_dtmf_mode (settings->get_enum ("dtmf-mode"));
-  }
-  if (setting.empty () || setting == "forward-host") {
-
-    set_forward_uri (settings->get_string ("forward-host"));
-  }
-  if (setting.empty () || setting == "video-role") {
-
-    CallManager::VideoOptions options;
-    manager.get_video_options (options);
-    options.extended_video_roles = settings->get_enum ("video-role");
-    manager.set_video_options (options);
-  }
-  if (setting.empty () || setting == "enable-h239") {
-    SetDefaultH239Control(settings->get_bool ("enable-h239"));
-    PTRACE (4, "Opal::H323::EndPoint\tH.239 Control: " << settings->get_bool ("enable-h239"));
-  }
 }

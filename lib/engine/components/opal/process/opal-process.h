@@ -1,3 +1,4 @@
+
 /* Ekiga -- A VoIP and Video-Conferencing application
  * Copyright (C) 2000-2009 Damien Sandras <dsandras@seconix.com>
  *
@@ -26,38 +27,70 @@
 
 
 /*
- *                         pcssendpoint.cpp  -  description
- *                         --------------------------------
- *   begin                : Sun Oct 24 2004
+ *                         gnomemeeting.h  -  description
+ *                         ------------------------------
+ *   begin                : Sat Dec 23 2000
  *   copyright            : (C) 2000-2006 by Damien Sandras
- *   description          : This file contains the PCSS Endpoint class.
+ *   description          : This file contains the main class
  *
  */
 
-#include "pcss-endpoint.h"
+
+#ifndef __EKIGA_H__
+#define __EKIGA_H__
+
+#include "config.h"
+
+#include <ptlib.h>
+#include <ptlib/pprocess.h>
+
+#include "services.h"
 #include "opal-call-manager.h"
+#include "opal-bank.h"
 
+#include "presence-core.h"
+#include "account-core.h"
 
-GMPCSSEndpoint::GMPCSSEndpoint (Opal::CallManager & ep,
-                                Ekiga::ServiceCore & _core) 
-:   OpalPCSSEndPoint (ep),
-    core (_core)
+/**
+ * COMMON NOTICE: The Application must be initialized with Init after its
+ * creation.
+ */
+class GnomeMeeting : public PProcess
 {
-#ifdef WIN32
-  SetSoundChannelBufferDepth (20);
-#else
-  SetSoundChannelBufferDepth (5);
+  PCLASSINFO(GnomeMeeting, PProcess);
+  class CallManager;
+  class Bank;
+
+
+ public:
+
+  GnomeMeeting ();
+
+  ~GnomeMeeting ();
+
+  void Main();
+
+  void Start (Ekiga::ServiceCore& core);
+
+  static GnomeMeeting *Process ();
+
+  Opal::EndPoint& get_endpoint ();
+
+ private:
+
+  void on_ready (
+#ifdef HAVE_H323
+                 Opal::H323::EndPoint* h323_endpoint,
 #endif
-}
+                 Opal::Sip::EndPoint* sip_endpoint);
 
+  static GnomeMeeting *GM;
+  Opal::EndPoint *endpoint;
+  boost::shared_ptr<Opal::Bank> bank;
 
-bool GMPCSSEndpoint::OnShowIncoming (const OpalPCSSConnection & /*connection*/)
-{
-  return true;
-}
+  boost::weak_ptr<Ekiga::CallCore> call_core;
+  boost::weak_ptr<Ekiga::PresenceCore> presence_core;
+  boost::weak_ptr<Ekiga::AccountCore> account_core;
+};
 
-
-bool GMPCSSEndpoint::OnShowOutgoing (const OpalPCSSConnection & /*connection*/)
-{
-  return true;
-}
+#endif

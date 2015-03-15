@@ -49,11 +49,18 @@ CallCore::CallCore (boost::shared_ptr<Ekiga::FriendOrFoe> iff_): iff(iff_)
 }
 
 
+CallCore::~CallCore ()
+{
+#if DEBUG
+  std::cout << "Ekiga::CallCore: Destructor invoked" << std::endl << std::flush;
+#endif
+}
+
+
 void CallCore::add_manager (boost::shared_ptr<CallManager> manager)
 {
-  manager_added (manager);
-
   add_object (manager);
+  manager_added (manager);
 }
 
 

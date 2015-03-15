@@ -106,19 +106,18 @@ namespace Opal {
 
 
 /* The class */
-Opal::Sip::EndPoint::EndPoint (Opal::CallManager & _manager,
-                               const Ekiga::ServiceCore& _core): SIPEndPoint (_manager),
-                                                                 manager (_manager),
+Opal::Sip::EndPoint::EndPoint (Opal::EndPoint & _endpoint,
+                               const Ekiga::ServiceCore& _core): SIPEndPoint (_endpoint),
+                                                                 endpoint (_endpoint),
                                                                  core (_core)
 {
   boost::shared_ptr<Ekiga::ChatCore> chat_core = core.get<Ekiga::ChatCore> ("chat-core");
   boost::shared_ptr<Ekiga::PresenceCore> presence_core = core.get<Ekiga::PresenceCore> ("presence-core");
 
-  protocol_name = "sip";
   uri_prefix = "sip:";
 
-  dialect = boost::shared_ptr<SIP::Dialect>(new SIP::Dialect (presence_core, boost::bind (&Opal::Sip::EndPoint::send_message, this, _1, _2)));
-  chat_core->add_dialect (dialect);
+ // dialect = boost::shared_ptr<SIP::Dialect>(new SIP::Dialect (presence_core, boost::bind (&Opal::Sip::EndPoint::send_message, this, _1, _2)));
+//  chat_core->add_dialect (dialect);
 
   /* Timeouts */
   SetAckTimeout (PTimeInterval (0, 32));
@@ -132,8 +131,8 @@ Opal::Sip::EndPoint::EndPoint (Opal::CallManager & _manager,
   SetUserAgent ("Ekiga/" PACKAGE_VERSION);
 
   /* Ready to take calls */
-  manager.AddRouteEntry("sip:.* = pc:*");
-  manager.AddRouteEntry("pc:.* = sip:<da>");
+  endpoint.AddRouteEntry("sip:.* = pc:*");
+  endpoint.AddRouteEntry("pc:.* = sip:<da>");
 
   /* NAT Binding */
   PTimeInterval timeout;
@@ -141,35 +140,13 @@ Opal::Sip::EndPoint::EndPoint (Opal::CallManager & _manager,
   GetKeepAlive (timeout, type);
   SetKeepAlive(timeout, KeepAliveByOPTION);
 
-  settings = boost::shared_ptr<Ekiga::Settings> (new Ekiga::Settings (SIP_SCHEMA));
-  settings->changed.connect (boost::bind (&EndPoint::setup, this, _1));
-
-  manager.ready.connect (boost::bind (&EndPoint::setup, this, ""));
+  std::cout << "FIXME" << std::endl;
+  //manager.ready.connect (boost::bind (&EndPoint::setup, this, ""));
 }
 
 
 Opal::Sip::EndPoint::~EndPoint ()
 {
-}
-
-void
-Opal::Sip::EndPoint::setup (std::string setting)
-{
-  if (setting.empty () || setting == "listen-port")  {
-    set_listen_port (settings->get_int ("listen-port"));
-  }
-  if (setting.empty () || setting == "binding-timeout")  {
-    set_nat_binding_delay (settings->get_int ("binding-timeout"));
-  }
-  if (setting.empty () || setting == "outbound-proxy-host")  {
-    set_outbound_proxy (settings->get_string ("outbound-proxy-host"));
-  }
-  if (setting.empty () || setting == "dtmf-mode")  {
-    set_dtmf_mode (settings->get_enum ("dtmf-mode"));
-  }
-  if (setting.empty () || setting == "forward-host")  {
-    set_forward_uri (settings->get_string ("forward-host"));
-  }
 }
 
 
@@ -218,7 +195,7 @@ Opal::Sip::EndPoint::dial (const std::string & uri)
   }
 
   PString token;
-  manager.SetUpCall ("pc:*", ustr.str(), token, (void*) ustr.str().c_str());
+  endpoint.SetUpCall ("pc:*", ustr.str(), token, (void*) ustr.str().c_str());
 
   return true;
 }
@@ -228,13 +205,6 @@ bool
 Opal::Sip::EndPoint::is_supported_uri (const std::string & uri)
 {
   return (!uri.empty () && (uri.find ("sip:") == 0 || uri.find (':') == string::npos));
-}
-
-
-const std::string&
-Opal::Sip::EndPoint::get_protocol_name () const
-{
-  return protocol_name;
 }
 
 
@@ -275,18 +245,16 @@ Opal::Sip::EndPoint::get_dtmf_mode () const
 bool
 Opal::Sip::EndPoint::set_listen_port (unsigned port)
 {
-  unsigned udp_min, udp_max;
-  unsigned tcp_min, tcp_max;
-
-  manager.get_udp_ports (udp_min, udp_max);
-  manager.get_tcp_ports (tcp_min, tcp_max);
+  unsigned udp_min = endpoint.GetUDPPortBase ();
+  unsigned udp_max = endpoint.GetUDPPortMax ();
+  unsigned tcp_min = endpoint.GetTCPPortBase ();
+  unsigned tcp_max = endpoint.GetTCPPortMax ();
 
   const std::string protocols[] = { "udp", "tcp", "" };
   const unsigned ports[][2] = { { udp_min, udp_max }, { tcp_min, tcp_max } };
 
   if (port > 0) {
 
-    interfaces.clear ();
     RemoveListener (NULL);
     for (int i = 0 ; !protocols[i].empty () ; i++) {
 
@@ -304,8 +272,6 @@ Opal::Sip::EndPoint::set_listen_port (unsigned port)
           if (StartListeners (PStringArray (str.str ()))) {
 
             PTRACE (4, "Opal::Sip::EndPoint\tSet listen port to " << port << " (" << protocols[i] << ")");
-            listen_iface.port = port;
-            interfaces.push_back (listen_iface);
             break;
           }
 
@@ -313,21 +279,12 @@ Opal::Sip::EndPoint::set_listen_port (unsigned port)
         }
       }
       else {
-        listen_iface.port = port;
-        interfaces.push_back (listen_iface);
         PTRACE (4, "Opal::Sip::EndPoint\tSet listen port to " << port << " (" << protocols[i] << ")");
       }
     }
   }
 
   return false;
-}
-
-
-const Ekiga::CallProtocolManager::InterfaceList &
-Opal::Sip::EndPoint::get_interfaces () const
-{
-  return interfaces;
 }
 
 
@@ -444,7 +401,7 @@ Opal::Sip::EndPoint::OnRegistrationStatus (const RegistrationStatus & status)
   if (status.m_reason == SIP_PDU::Successful_OK) {
     account->handle_registration_event (status.m_wasRegistering?Account::Registered:Account::Unregistered,
                                         std::string (),
-                                        manager.AddPresentity (PURL (status.m_addressofRecord)));
+                                        endpoint.AddPresentity (PURL (status.m_addressofRecord)));
   }
   /* Registration or unregistration failure */
   else {
@@ -737,6 +694,8 @@ Opal::Sip::EndPoint::OnIncomingConnection (OpalConnection &connection,
     if (conn->GetCall().GetToken() != connection.GetCall().GetToken() && !conn->IsReleased ())
       busy = true;
   }
+  std::cout << "FIXME" << std::endl << std::flush;
+  /*
 
   if (!forward_uri.empty () && manager.get_unconditional_forward ())
     connection.ForwardCall (forward_uri);
@@ -759,7 +718,7 @@ Opal::Sip::EndPoint::OnIncomingConnection (OpalConnection &connection,
         call->set_reject_delay (manager.get_reject_delay ());
     }
   }
-
+*/
   return true;
 }
 

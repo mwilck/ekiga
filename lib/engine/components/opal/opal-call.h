@@ -55,7 +55,7 @@ class GMManager;
 
 namespace Opal {
 
-  class CallManager;
+  class EndPoint;
   class Call
     : public OpalCall,
       public Ekiga::Call
@@ -63,7 +63,7 @@ namespace Opal {
 
 public:
 
-    Call (Opal::CallManager& _manager,
+    Call (EndPoint& _manager,
           const std::string & uri);
     ~Call ();
 

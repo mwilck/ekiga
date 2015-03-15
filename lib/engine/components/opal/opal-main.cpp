@@ -37,7 +37,6 @@
 #include "config.h"
 
 #include "opal-main.h"
-#include "opal-process.h"
 
 #include "account-core.h"
 #include "chat-core.h"
@@ -49,17 +48,11 @@
 
 #include "opal-plugins-hook.h"
 
-#include "sip-endpoint.h"
-#ifdef HAVE_H323
-#include "h323-endpoint.h"
-#endif
+#include "sip-call-manager.h"
 
-// opal manages its endpoints itself, so we must be wary
-struct null_deleter
-{
-    void operator()(void const *) const
-    { }
-};
+#ifdef HAVE_H323
+#include "h323-call-manager.h"
+#endif
 
 
 /* FIXME: add here an Ekiga::Service which will add&remove publishers,
@@ -94,7 +87,19 @@ struct OPALSpark: public Ekiga::Spark
 	&& !account_store) {
 
       hook_ekiga_plugins_to_opal (core);
-      GnomeMeeting::Process ()->Start ();
+
+      // We create our various CallManagers: SIP, H.323
+      boost::shared_ptr<Opal::Sip::CallManager> sip_call_manager (new Opal::Sip::CallManager (core, GnomeMeeting::Process ()->get_endpoint ()));
+      contact_core->push_back (Ekiga::URIActionProviderPtr (sip_call_manager));
+      presence_core->push_back (Ekiga::URIActionProviderPtr (sip_call_manager));
+      call_core->add_manager (sip_call_manager);
+
+#ifdef HAVE_H323
+      boost::shared_ptr<Opal::H323::CallManager> h323_call_manager (new Opal::H323::CallManager (core, GnomeMeeting::Process ()->get_endpoint ()));
+      contact_core->push_back (Ekiga::URIActionProviderPtr (h323_call_manager));
+      presence_core->push_back (Ekiga::URIActionProviderPtr (h323_call_manager));
+      call_core->add_manager (h323_call_manager);
+#endif
 
       result = true;
     }
@@ -111,13 +116,12 @@ struct OPALSpark: public Ekiga::Spark
   bool result;
 };
 
-void
-opal_init_pprocess (Ekiga::ServiceCore& core,
-                    int argc,
+GnomeMeeting &
+opal_init_pprocess (int argc,
                     char *argv [])
 {
   /* Ekiga PTLIB Process initialisation */
-  static GnomeMeeting instance (core);
+  static GnomeMeeting instance;
   instance.GetArguments ().SetArgs (argc, argv);
   PArgList & args = instance.GetArguments ();
   args.Parse ("d-debug:", false);
@@ -125,7 +129,7 @@ opal_init_pprocess (Ekiga::ServiceCore& core,
   if (args.IsParsed ()) {
     int debug_level = args.GetOptionAs ('d', 0);
     if (debug_level == 0)
-      return;
+      return instance;
 #ifndef WIN32
     char* text_label =  g_strdup_printf ("%d", debug_level);
     setenv ("PTLIB_TRACE_CODECS", text_label, TRUE);
@@ -159,6 +163,7 @@ opal_init_pprocess (Ekiga::ServiceCore& core,
 #endif
 #endif
   }
+  return instance;
 }
 
 void

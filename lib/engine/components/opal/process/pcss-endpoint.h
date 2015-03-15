@@ -1,4 +1,3 @@
-
 /* Ekiga -- A VoIP and Video-Conferencing application
  * Copyright (C) 2000-2009 Damien Sandras <dsandras@seconix.com>
  *
@@ -27,70 +26,40 @@
 
 
 /*
- *                         gnomemeeting.h  -  description
+ *                         pcssendpoint.h  -  description
  *                         ------------------------------
- *   begin                : Sat Dec 23 2000
+ *   begin                : Sun Oct 24 2004
  *   copyright            : (C) 2000-2006 by Damien Sandras
- *   description          : This file contains the main class
+ *   description          : This file contains the PCSS Endpoint class.
  *
  */
 
 
-#ifndef __EKIGA_H__
-#define __EKIGA_H__
-
-#include "config.h"
-
-#include <ptlib.h>
-#include <ptlib/pprocess.h>
+#ifndef _PCSS_ENDPOINT_H_
+#define _PCSS_ENDPOINT_H_
 
 #include "services.h"
-#include "opal-call-manager.h"
-#include "opal-bank.h"
 
-#include "presence-core.h"
-#include "account-core.h"
+#include <opal/opal.h>
+#include <ep/pcss.h>
 
-/**
- * COMMON NOTICE: The Application must be initialized with Init after its
- * creation.
- */
-class GnomeMeeting : public PProcess
+namespace Opal {
+  class EndPoint;
+}
+
+class GMPCSSEndpoint : public OpalPCSSEndPoint
 {
-  PCLASSINFO(GnomeMeeting, PProcess);
-  class CallManager;
-  class Bank;
+  PCLASSINFO (GMPCSSEndpoint, OpalPCSSEndPoint);
 
+public:
+  GMPCSSEndpoint (Opal::EndPoint &endpoint, Ekiga::ServiceCore & _core);
 
- public:
+  bool OnShowIncoming (const OpalPCSSConnection &connection);
 
-  GnomeMeeting (Ekiga::ServiceCore& core);
+  bool OnShowOutgoing (const OpalPCSSConnection &connection);
 
-  ~GnomeMeeting ();
-
-  void Main();
-
-  void Start ();
-
-  static GnomeMeeting *Process ();
-
- private:
-
-  void on_ready (
-#ifdef HAVE_H323
-                 Opal::H323::EndPoint* h323_endpoint,
-#endif
-                 Opal::Sip::EndPoint* sip_endpoint);
-
-  static GnomeMeeting *GM;
-  boost::shared_ptr<Opal::CallManager> call_manager;
-  boost::shared_ptr<Opal::Bank> bank;
-
-  boost::weak_ptr<Ekiga::CallCore> call_core;
-  boost::weak_ptr<Ekiga::PresenceCore> presence_core;
-  boost::weak_ptr<Ekiga::AccountCore> account_core;
-
-  Ekiga::ServiceCore& core;
+private:
+  Ekiga::ServiceCore & core;
 };
 
 #endif
