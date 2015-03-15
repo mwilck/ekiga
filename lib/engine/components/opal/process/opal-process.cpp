@@ -99,14 +99,6 @@ void GnomeMeeting::Main ()
 void GnomeMeeting::Start (Ekiga::ServiceCore& core)
 {
   endpoint = new Opal::EndPoint (core);
-
-  //call_manager->ready.connect (boost::bind (&GnomeMeeting::on_ready, this,
-#ifdef HAVE_H323
-    //                                        (Opal::H323::EndPoint*) call_manager->FindEndPoint ("h323"),
-#endif
-      //                                      (Opal::Sip::EndPoint*) call_manager->FindEndPoint ("sip")));
-
-  //call_manager->setup ();
 }
 
 
