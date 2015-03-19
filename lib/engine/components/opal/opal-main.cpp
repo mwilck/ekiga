@@ -101,6 +101,17 @@ struct OPALSpark: public Ekiga::Spark
       call_core->add_manager (h323_call_manager);
 #endif
 
+      boost::shared_ptr<Opal::Bank> bank = boost::shared_ptr<Opal::Bank> (new Opal::Bank (core,
+#ifdef HAVE_H323
+                                                                                          GnomeMeeting::Process ()->get_endpoint ().get_h323_endpoint ().get (),
+#endif
+                                                                                          GnomeMeeting::Process ()->get_endpoint ().get_sip_endpoint ().get ()));
+
+      account_core->add_bank (bank);
+      presence_core->add_cluster (bank);
+      core.add (bank);
+      presence_core->add_presence_publisher (bank);
+
       result = true;
     }
 
