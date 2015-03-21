@@ -193,14 +193,6 @@ Opal::H323::EndPoint::StartListener (unsigned port)
 
 
 void
-Opal::H323::EndPoint::set_initial_bandwidth (unsigned bitrate)
-{
-  SetInitialBandwidth (OpalBandwidth::Tx, bitrate > 0 ? bitrate : 100000);
-  PTRACE (4, "Opal::H323::EndPoint\tSet maximum/initial tx bandwidth to " << bitrate);
-}
-
-
-void
 Opal::H323::EndPoint::EnableAccount (Account& account)
 {
   new GatekeeperHandler (account, *this, true);

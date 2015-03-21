@@ -184,11 +184,12 @@ void Opal::H323::CallManager::setup (const std::string & setting)
   }
   if (setting.empty () || setting == "maximum-video-tx-bitrate") {
 
-    int maximum_video_tx_bitrate = video_codecs_settings->get_int ("maximum-video-tx-bitrate");
     // maximum_video_tx_bitrate is the max video bitrate specified by the user
     // add to it 10% (approx.) accounting for audio,
     // and multiply it by 10 as needed by SetInitialBandwidth
-    h323_endpoint.set_initial_bandwidth (maximum_video_tx_bitrate * 11);
+    int maximum_video_tx_bitrate = video_codecs_settings->get_int ("maximum-video-tx-bitrate");
+    h323_endpoint.SetInitialBandwidth (OpalBandwidth::Tx, maximum_video_tx_bitrate > 0 ? maximum_video_tx_bitrate * 11 : 100000);
+    PTRACE (4, "Opal::H323::EndPoint\tSet maximum/initial tx bandwidth to " << maximum_video_tx_bitrate * 11);
   }
   if (setting.empty () || setting == "enable-h245-tunneling") {
 

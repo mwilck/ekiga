@@ -74,14 +74,12 @@ namespace Opal {
 
       bool StartListener (unsigned port);
 
-      void set_initial_bandwidth (unsigned max_tx_video_bitrate);
-
-
       /* Enable / Disable accounts. The account given as argument
        * will be updated to reflect the current account state once
        * the operation has been successful.
        */
       void EnableAccount (Account & account);
+
       void DisableAccount (Account & account);
 
       bool UseGatekeeper (const PString & address = PString::Empty (),
