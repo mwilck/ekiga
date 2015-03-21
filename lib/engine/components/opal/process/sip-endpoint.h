@@ -83,9 +83,6 @@ namespace Opal {
       // the parameters are the aor and the info
       boost::signals2::signal<void(std::string, std::string)> mwi_event;
 
-      /* Helpers */
-      static std::string get_aor_domain (const std::string & aor);
-
       /* Enable / Disable accounts. The account given as argument
        * will be updated to reflect the current account state once
        * the operation has been successful.

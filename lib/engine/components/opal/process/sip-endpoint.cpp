@@ -250,19 +250,6 @@ Opal::Sip::EndPoint::get_outbound_proxy () const
 }
 
 
-std::string
-Opal::Sip::EndPoint::get_aor_domain (const std::string & aor)
-{
-  std::string domain;
-  std::string::size_type loc = aor.find ("@", 0);
-
-  if (loc != string::npos)
-    domain = aor.substr (loc+1);
-
-  return domain;
-}
-
-
 void
 Opal::Sip::EndPoint::enable_account (Account & account)
 {
