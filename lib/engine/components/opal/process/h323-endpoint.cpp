@@ -43,13 +43,13 @@ namespace Opal {
 
   namespace H323 {
 
-    class gatekeeper_handler : public PThread
+    class GatekeeperHandler : public PThread
     {
-      PCLASSINFO (gatekeeper_handler, PThread);
+      PCLASSINFO (GatekeeperHandler, PThread);
 
   public:
 
-      gatekeeper_handler (Opal::Account & _account,
+      GatekeeperHandler (Opal::Account & _account,
                           Opal::H323::EndPoint& _ep,
                           bool _registering)
         : PThread (1000, AutoDeleteThread),
@@ -166,31 +166,6 @@ Opal::H323::EndPoint::SetUpCall (const std::string&  uri)
 
 
 bool
-Opal::H323::EndPoint::transfer (const std::string & uri,
-                                bool attended)
-{
-  /* This is not handled yet */
-  if (attended)
-    return false;
-
-  if (GetConnectionCount () == 0)
-      return false;
-
-  /* We don't handle several calls here */
-  for (PSafePtr<OpalConnection> connection(connectionsActive, PSafeReference);
-       connection != NULL;
-       ++connection) {
-    if (!PIsDescendant(&(*connection), OpalPCSSConnection)) {
-      connection->TransferConnection (uri);
-      return true; /* We could handle the transfer */
-    }
-  }
-
-  return false;
-}
-
-
-bool
 Opal::H323::EndPoint::message (G_GNUC_UNUSED const Ekiga::ContactPtr & contact,
                                G_GNUC_UNUSED const std::string & uri)
 {
@@ -226,16 +201,16 @@ Opal::H323::EndPoint::set_initial_bandwidth (unsigned bitrate)
 
 
 void
-Opal::H323::EndPoint::enable_account (Account& account)
+Opal::H323::EndPoint::EnableAccount (Account& account)
 {
-  new gatekeeper_handler (account, *this, true);
+  new GatekeeperHandler (account, *this, true);
 }
 
 
 void
-Opal::H323::EndPoint::disable_account (Account& account)
+Opal::H323::EndPoint::DisableAccount (Account& account)
 {
-  new gatekeeper_handler (account, *this, false);
+  new GatekeeperHandler (account, *this, false);
 }
 
 

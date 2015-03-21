@@ -76,9 +76,7 @@ namespace Opal {
 
       bool StartListener (unsigned port);
 
-      void set_outbound_proxy (const std::string & uri);
-      const std::string & get_outbound_proxy () const;
-
+      //
       // a message waiting information was received
       // the parameters are the aor and the info
       boost::signals2::signal<void(std::string, std::string)> mwi_event;
@@ -87,9 +85,11 @@ namespace Opal {
        * will be updated to reflect the current account state once
        * the operation has been successful.
        */
-      void enable_account (Account & account);
-      void disable_account (Account & account);
+      void EnableAccount (Account & account);
 
+      void DisableAccount (Account & account);
+
+    private:
       /* OPAL Methods */
       void OnRegistrationStatus (const RegistrationStatus & status);
 
@@ -107,11 +107,6 @@ namespace Opal {
 
       void OnMESSAGECompleted (const SIPMessage::Params & params,
                                SIP_PDU::StatusCodes reason);
-
-
-      /* Callbacks */
-    private:
-      std::string outbound_proxy;
 
       const Ekiga::ServiceCore & core;
     };

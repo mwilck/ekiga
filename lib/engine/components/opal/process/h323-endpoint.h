@@ -68,8 +68,7 @@ namespace Opal {
       ~EndPoint ();
 
       bool SetUpCall (const std::string & uri);
-      bool transfer (const std::string & uri,
-                     bool attended);
+
       bool message (const Ekiga::ContactPtr & contact,
                     const std::string & uri);
 
@@ -82,8 +81,8 @@ namespace Opal {
        * will be updated to reflect the current account state once
        * the operation has been successful.
        */
-      void enable_account (Account & account);
-      void disable_account (Account & account);
+      void EnableAccount (Account & account);
+      void DisableAccount (Account & account);
 
       bool UseGatekeeper (const PString & address = PString::Empty (),
                           const PString & domain = PString::Empty (),

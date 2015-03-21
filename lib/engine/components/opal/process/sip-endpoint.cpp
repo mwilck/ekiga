@@ -44,15 +44,15 @@ namespace Opal {
 
   namespace Sip {
 
-    class registrar_handler : public PThread
+    class RegistrarHandler : public PThread
     {
-      PCLASSINFO (registrar_handler, PThread);
+      PCLASSINFO (RegistrarHandler, PThread);
 
   public:
 
-      registrar_handler (Opal::Account & _account,
-                         Opal::Sip::EndPoint& _ep,
-                         bool _registering)
+      RegistrarHandler (Opal::Account & _account,
+                        Opal::Sip::EndPoint& _ep,
+                        bool _registering)
         : PThread (1000, AutoDeleteThread),
         account (_account),
         ep (_ep),
@@ -110,9 +110,6 @@ Opal::Sip::EndPoint::EndPoint (Opal::EndPoint & _endpoint,
                                const Ekiga::ServiceCore& _core): SIPEndPoint (_endpoint),
                                                                  core (_core)
 {
-  boost::shared_ptr<Ekiga::ChatCore> chat_core = core.get<Ekiga::ChatCore> ("chat-core");
-  boost::shared_ptr<Ekiga::PresenceCore> presence_core = core.get<Ekiga::PresenceCore> ("presence-core");
-
   /* Timeouts */
   SetAckTimeout (PTimeInterval (0, 32));
   SetPduCleanUpTimeout (PTimeInterval (0, 1));
@@ -233,16 +230,16 @@ Opal::Sip::EndPoint::StartListener (unsigned port)
 
 
 void
-Opal::Sip::EndPoint::enable_account (Account & account)
+Opal::Sip::EndPoint::EnableAccount (Account & account)
 {
-  new registrar_handler (account, *this, true);
+  new RegistrarHandler (account, *this, true);
 }
 
 
 void
-Opal::Sip::EndPoint::disable_account (Account & account)
+Opal::Sip::EndPoint::DisableAccount (Account & account)
 {
-  new registrar_handler (account, *this, false);
+  new RegistrarHandler (account, *this, false);
 }
 
 

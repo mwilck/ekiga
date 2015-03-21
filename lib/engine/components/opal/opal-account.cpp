@@ -501,7 +501,7 @@ Opal::Account::enable ()
   switch (type) {
   case Account::H323:
     if (h323_endpoint)
-      h323_endpoint->enable_account (*this);
+      h323_endpoint->EnableAccount (*this);
     break;
   case Account::SIP:
   case Account::DiamondCard:
@@ -509,7 +509,7 @@ Opal::Account::enable ()
   default:
     // Register the given aor to the given registrar
     if (sip_endpoint)
-      sip_endpoint->enable_account (*this);
+      sip_endpoint->EnableAccount (*this);
     break;
   }
   updated ();
@@ -529,7 +529,7 @@ Opal::Account::disable ()
   switch (type) {
   case Account::H323:
     if (h323_endpoint)
-      h323_endpoint->disable_account (*this);
+      h323_endpoint->DisableAccount (*this);
     break;
   case Account::SIP:
   case Account::DiamondCard:
@@ -553,7 +553,7 @@ Opal::Account::disable ()
     }
     if (sip_endpoint) {
       // Register the given aor to the given registrar
-      sip_endpoint->disable_account (*this);
+      sip_endpoint->DisableAccount (*this);
     }
     break;
   }
