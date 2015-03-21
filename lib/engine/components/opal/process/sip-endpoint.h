@@ -76,10 +76,6 @@ namespace Opal {
 
       bool StartListener (unsigned port);
 
-      /* SIP EndPoint */
-      void set_nat_binding_delay (unsigned delay);
-      unsigned get_nat_binding_delay ();
-
       void set_outbound_proxy (const std::string & uri);
       const std::string & get_outbound_proxy () const;
 

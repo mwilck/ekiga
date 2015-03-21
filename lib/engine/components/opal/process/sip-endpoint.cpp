@@ -132,7 +132,7 @@ Opal::Sip::EndPoint::EndPoint (Opal::EndPoint & _endpoint,
   PTimeInterval timeout;
   KeepAliveType type;
   GetKeepAlive (timeout, type);
-  SetKeepAlive(timeout, KeepAliveByOPTION);
+  SetKeepAlive (timeout, KeepAliveByOPTION);
 
   std::cout << "FIXME" << std::endl;
   //manager.ready.connect (boost::bind (&EndPoint::setup, this, ""));
@@ -247,29 +247,6 @@ const std::string&
 Opal::Sip::EndPoint::get_outbound_proxy () const
 {
   return outbound_proxy;
-}
-
-
-void
-Opal::Sip::EndPoint::set_nat_binding_delay (unsigned delay)
-{
-  if (delay > 0) {
-    PTRACE (4, "Opal::Sip::EndPoint\tNat binding delay set to " << delay);
-    PTimeInterval timeout;
-    KeepAliveType type;
-    GetKeepAlive (timeout, type);
-    SetKeepAlive (PTimeInterval (0, delay), type);
-  }
-}
-
-
-unsigned
-Opal::Sip::EndPoint::get_nat_binding_delay ()
-{
-  PTimeInterval timeout;
-  KeepAliveType type;
-  GetKeepAlive (timeout, type);
-  return timeout.GetSeconds ();
 }
 
 
