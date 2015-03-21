@@ -142,7 +142,6 @@ Opal::H323::EndPoint::EndPoint (Opal::EndPoint & _endpoint,
                                 const Ekiga::ServiceCore& _core): H323EndPoint (_endpoint),
                                                                   core (_core)
 {
-  uri_prefix = "h323:";
   /* Ready to take calls */
   GetManager ().AddRouteEntry("h323:.* = pc:*");
   GetManager ().AddRouteEntry("pc:.* = h323:<da>");
@@ -223,22 +222,6 @@ Opal::H323::EndPoint::set_initial_bandwidth (unsigned bitrate)
 {
   SetInitialBandwidth (OpalBandwidth::Tx, bitrate > 0 ? bitrate : 100000);
   PTRACE (4, "Opal::H323::EndPoint\tSet maximum/initial tx bandwidth to " << bitrate);
-}
-
-
-void
-Opal::H323::EndPoint::set_forward_uri (const std::string& uri)
-{
-  if (!uri.empty ())
-    forward_uri = uri;
-  PTRACE (4, "Opal::H323::EndPoint\tSet Forward URI to " << uri);
-}
-
-
-const std::string&
-Opal::H323::EndPoint::get_forward_uri () const
-{
-  return forward_uri;
 }
 
 

@@ -77,9 +77,6 @@ namespace Opal {
 
       void set_initial_bandwidth (unsigned max_tx_video_bitrate);
 
-      /* H.323 CallProtocolManager */
-      void set_forward_uri (const std::string & uri);
-      const std::string & get_forward_uri () const;
 
       /* Enable / Disable accounts. The account given as argument
        * will be updated to reflect the current account state once
@@ -103,9 +100,6 @@ namespace Opal {
 
       PMutex gk_name_mutex;
       PString gk_name;
-
-      std::string uri_prefix;
-      std::string forward_uri;
 
       const Ekiga::ServiceCore & core;
     };

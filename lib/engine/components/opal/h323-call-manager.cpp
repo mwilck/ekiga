@@ -211,7 +211,8 @@ void Opal::H323::CallManager::setup (const std::string & setting)
   }
   if (setting.empty () || setting == "forward-host") {
 
-    h323_endpoint.set_forward_uri (h323_settings->get_string ("forward-host"));
+    std::cout << "FIXME" << std::endl;
+    //h323_endpoint.set_forward_uri (h323_settings->get_string ("forward-host"));
   }
   if (setting.empty () || setting == "video-role") {
 

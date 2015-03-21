@@ -63,9 +63,6 @@ namespace Opal {
 
     public:
 
-      typedef std::list<std::string> domain_list;
-      typedef std::list<std::string>::iterator domain_list_iterator;
-
       EndPoint (Opal::EndPoint& ep,
 		const Ekiga::ServiceCore& core);
 
@@ -85,9 +82,6 @@ namespace Opal {
 
       void set_outbound_proxy (const std::string & uri);
       const std::string & get_outbound_proxy () const;
-
-      void set_forward_uri (const std::string & uri);
-      const std::string & get_forward_uri () const;
 
       // a message waiting information was received
       // the parameters are the aor and the info
@@ -124,10 +118,6 @@ namespace Opal {
 
       /* Callbacks */
     private:
-      std::map<std::string, PString> publications;
-
-      std::string uri_prefix;
-      std::string forward_uri;
       std::string outbound_proxy;
 
       const Ekiga::ServiceCore & core;

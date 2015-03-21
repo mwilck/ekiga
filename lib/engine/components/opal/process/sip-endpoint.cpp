@@ -113,8 +113,6 @@ Opal::Sip::EndPoint::EndPoint (Opal::EndPoint & _endpoint,
   boost::shared_ptr<Ekiga::ChatCore> chat_core = core.get<Ekiga::ChatCore> ("chat-core");
   boost::shared_ptr<Ekiga::PresenceCore> presence_core = core.get<Ekiga::PresenceCore> ("presence-core");
 
-  uri_prefix = "sip:";
-
   /* Timeouts */
   SetAckTimeout (PTimeInterval (0, 32));
   SetPduCleanUpTimeout (PTimeInterval (0, 1));
@@ -231,23 +229,6 @@ Opal::Sip::EndPoint::StartListener (unsigned port)
   }
 
   return false;
-}
-
-
-void
-Opal::Sip::EndPoint::set_forward_uri (const std::string & uri)
-{
-  if (!uri.empty ()) {
-    forward_uri = uri;
-    PTRACE (4, "Opal::Sip::EndPoint\tSet Forward URI to " << uri);
-  }
-}
-
-
-const std::string&
-Opal::Sip::EndPoint::get_forward_uri () const
-{
-  return forward_uri;
 }
 
 

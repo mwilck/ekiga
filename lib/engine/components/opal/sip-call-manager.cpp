@@ -181,7 +181,8 @@ void Opal::Sip::CallManager::setup (const std::string & setting)
   }
 
   if (setting.empty () || setting == "forward-host")  {
-    sip_endpoint.set_forward_uri (sip_settings->get_string ("forward-host"));
+    std::cout << "FIXME" << std::endl;
+    //sip_endpoint.set_forward_uri (sip_settings->get_string ("forward-host"));
   }
 
   Opal::CallManager::setup (setting);
