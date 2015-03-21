@@ -73,8 +73,6 @@ namespace Opal {
 
       bool StartListener (unsigned port);
 
-      const Ekiga::CallManager::InterfaceList & get_interfaces () const;
-
       void set_initial_bandwidth (unsigned max_tx_video_bitrate);
 
       /* H.323 CallProtocolManager */
@@ -111,8 +109,6 @@ namespace Opal {
 
       std::string uri_prefix;
       std::string forward_uri;
-
-      Ekiga::CallManager::InterfaceList interfaces;
 
       const Ekiga::ServiceCore & core;
     };

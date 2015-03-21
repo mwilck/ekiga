@@ -79,9 +79,6 @@ namespace Opal {
 
       bool StartListener (unsigned port);
 
-      const Ekiga::CallManager::InterfaceList & get_interfaces () const;
-
-
       /* SIP EndPoint */
       void set_nat_binding_delay (unsigned delay);
       unsigned get_nat_binding_delay ();

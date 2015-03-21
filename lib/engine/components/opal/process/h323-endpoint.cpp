@@ -219,13 +219,6 @@ Opal::H323::EndPoint::StartListener (unsigned port)
 }
 
 
-const Ekiga::CallManager::InterfaceList &
-Opal::H323::EndPoint::get_interfaces () const
-{
-  return interfaces;
-}
-
-
 void
 Opal::H323::EndPoint::set_initial_bandwidth (unsigned bitrate)
 {
