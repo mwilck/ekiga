@@ -55,9 +55,6 @@ GnomeMeeting::GnomeMeeting () : PProcess("", "", MAJOR_VERSION, MINOR_VERSION, B
 GnomeMeeting::~GnomeMeeting ()
 {
   std::cout << "PPROCESS END Start" << std::endl << std::flush;
-  std::cout << "bank use count" << bank.use_count () << std::endl << std::flush;
-
-  boost::shared_ptr<Ekiga::AccountCore> acore = account_core.lock ();
   // First remove all Opal::Accounts from our Bank.
   //
   // Do it forcibly so we're sure the accounts are freed before our
@@ -102,30 +99,4 @@ Opal::EndPoint&
 GnomeMeeting::GetEndPoint ()
 {
   return *endpoint;
-}
-
-
-void GnomeMeeting::on_ready (
-#ifdef HAVE_H323
-                             Opal::H323::EndPoint* /*h323_endpoint*/,
-#endif
-                             Opal::Sip::EndPoint* /*sip_endpoint*/)
-{
-  /*
-  presence_core = boost::weak_ptr<Ekiga::PresenceCore> (core.get<Ekiga::PresenceCore> ("presence-core"));
-  account_core = boost::weak_ptr<Ekiga::AccountCore> (core.get<Ekiga::AccountCore> ("account-core"));
-
-  bank = boost::shared_ptr<Opal::Bank> (new Opal::Bank (core,
-#ifdef HAVE_H323
-                                                        h323_endpoint,
-#endif
-                                                        sip_endpoint));
-
-  boost::shared_ptr<Ekiga::AccountCore> acore = account_core.lock ();
-  boost::shared_ptr<Ekiga::PresenceCore> pcore = presence_core.lock ();
-  acore->add_bank (bank);
-  pcore->add_cluster (bank);
-  core.add (bank);
-  pcore->add_presence_publisher (bank);
-  */
 }

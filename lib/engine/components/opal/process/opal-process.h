@@ -78,19 +78,8 @@ class GnomeMeeting : public PProcess
 
  private:
 
-  void on_ready (
-#ifdef HAVE_H323
-                 Opal::H323::EndPoint* h323_endpoint,
-#endif
-                 Opal::Sip::EndPoint* sip_endpoint);
-
   static GnomeMeeting *GM;
   Opal::EndPoint* endpoint;
-  boost::shared_ptr<Opal::Bank> bank;
-
-  boost::weak_ptr<Ekiga::CallCore> call_core;
-  boost::weak_ptr<Ekiga::PresenceCore> presence_core;
-  boost::weak_ptr<Ekiga::AccountCore> account_core;
 };
 
 #endif
