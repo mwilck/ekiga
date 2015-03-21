@@ -74,7 +74,7 @@ class GnomeMeeting : public PProcess
 
   static GnomeMeeting *Process ();
 
-  Opal::EndPoint& get_endpoint ();
+  Opal::EndPoint& GetEndPoint ();
 
  private:
 
@@ -85,7 +85,7 @@ class GnomeMeeting : public PProcess
                  Opal::Sip::EndPoint* sip_endpoint);
 
   static GnomeMeeting *GM;
-  Opal::EndPoint *endpoint;
+  Opal::EndPoint* endpoint;
   boost::shared_ptr<Opal::Bank> bank;
 
   boost::weak_ptr<Ekiga::CallCore> call_core;

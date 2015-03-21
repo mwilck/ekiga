@@ -46,7 +46,10 @@
 
 /* The engine class */
 Opal::H323::CallManager::CallManager (Ekiga::ServiceCore& _core,
-                                      Opal::EndPoint& _endpoint) : Opal::CallManager (_core, _endpoint), protocol_name ("h323")
+                                     Opal::EndPoint& _endpoint,
+                                     Opal::H323::EndPoint& _h323_endpoint)
+        : Opal::CallManager (_core, _endpoint),
+          h323_endpoint (_h323_endpoint), protocol_name ("h323")
 {
   /* Setup things */
   Ekiga::SettingsCallback setup_cb = boost::bind (&Opal::H323::CallManager::setup, this, _1);
@@ -81,11 +84,7 @@ bool Opal::H323::CallManager::dial (const std::string & uri)
   if (!is_supported_uri (uri))
     return false;
 
-  boost::shared_ptr<Opal::H323::EndPoint> h323_endpoint = endpoint.get_h323_endpoint ();
-  if (h323_endpoint)
-    return h323_endpoint->SetUpCall (uri);
-
-  return false;
+  return h323_endpoint.SetUpCall (uri);
 }
 
 
@@ -106,11 +105,7 @@ const Ekiga::CallManager::InterfaceList Opal::H323::CallManager::get_interfaces 
 {
   Ekiga::CallManager::InterfaceList ilist;
 
-  boost::shared_ptr<Opal::H323::EndPoint> h323_endpoint = endpoint.get_h323_endpoint ();
-  if (!h323_endpoint)
-    return ilist;
-
-  OpalListenerList listeners = h323_endpoint->GetListeners ();
+  OpalListenerList listeners = h323_endpoint.GetListeners ();
   for (int i = 0 ; i < listeners.GetSize () ; i++) {
     Ekiga::CallManager::Interface iface;
     PIPSocket::Address address;
@@ -133,59 +128,49 @@ const Ekiga::CallManager::InterfaceList Opal::H323::CallManager::get_interfaces 
 bool
 Opal::H323::CallManager::set_listen_port (unsigned port)
 {
-  boost::shared_ptr<Opal::H323::EndPoint> h323_endpoint = endpoint.get_h323_endpoint ();
-  if (h323_endpoint)
-    return h323_endpoint->StartListener (port);
-
-  return false;
+  return h323_endpoint.StartListener (port);
 }
 
 
 void
 Opal::H323::CallManager::set_dtmf_mode (unsigned mode)
 {
-  boost::shared_ptr<Opal::H323::EndPoint> h323_endpoint = endpoint.get_h323_endpoint ();
-  if (h323_endpoint) {
-    switch (mode)
-      {
-      case 0:
-        h323_endpoint->SetSendUserInputMode (OpalConnection::SendUserInputAsString);
-        PTRACE (4, "Opal::H323::CallManager\tSet DTMF Mode to String");
-        break;
-      case 1:
-        h323_endpoint->SetSendUserInputMode (OpalConnection::SendUserInputAsTone);
-        PTRACE (4, "Opal::H323::CallManager\tSet DTMF Mode to Tone");
-        break;
-      case 3:
-        h323_endpoint->SetSendUserInputMode (OpalConnection::SendUserInputAsQ931);
-        PTRACE (4, "Opal::H323::CallManager\tSet DTMF Mode to Q931");
-        break;
-      default:
-        h323_endpoint->SetSendUserInputMode (OpalConnection::SendUserInputAsInlineRFC2833);
-        PTRACE (4, "Opal::H323::CallManager\tSet DTMF Mode to RFC2833");
-        break;
-      }
-  }
+  switch (mode)
+    {
+    case 0:
+      h323_endpoint.SetSendUserInputMode (OpalConnection::SendUserInputAsString);
+      PTRACE (4, "Opal::H323::CallManager\tSet DTMF Mode to String");
+      break;
+    case 1:
+      h323_endpoint.SetSendUserInputMode (OpalConnection::SendUserInputAsTone);
+      PTRACE (4, "Opal::H323::CallManager\tSet DTMF Mode to Tone");
+      break;
+    case 3:
+      h323_endpoint.SetSendUserInputMode (OpalConnection::SendUserInputAsQ931);
+      PTRACE (4, "Opal::H323::CallManager\tSet DTMF Mode to Q931");
+      break;
+    default:
+      h323_endpoint.SetSendUserInputMode (OpalConnection::SendUserInputAsInlineRFC2833);
+      PTRACE (4, "Opal::H323::CallManager\tSet DTMF Mode to RFC2833");
+      break;
+    }
 }
 
 
 unsigned
 Opal::H323::CallManager::get_dtmf_mode () const
 {
-  boost::shared_ptr<Opal::H323::EndPoint> h323_endpoint = endpoint.get_h323_endpoint ();
-  if (h323_endpoint) {
-    if (h323_endpoint->GetSendUserInputMode () == OpalConnection::SendUserInputAsString)
-      return 0;
+  if (h323_endpoint.GetSendUserInputMode () == OpalConnection::SendUserInputAsString)
+    return 0;
 
-    if (h323_endpoint->GetSendUserInputMode () == OpalConnection::SendUserInputAsTone)
-      return 1;
+  if (h323_endpoint.GetSendUserInputMode () == OpalConnection::SendUserInputAsTone)
+    return 1;
 
-    if (h323_endpoint->GetSendUserInputMode () == OpalConnection::SendUserInputAsInlineRFC2833)
-      return 2;
+  if (h323_endpoint.GetSendUserInputMode () == OpalConnection::SendUserInputAsInlineRFC2833)
+    return 2;
 
-    if (h323_endpoint->GetSendUserInputMode () == OpalConnection::SendUserInputAsQ931)
-      return 2;
-  }
+  if (h323_endpoint.GetSendUserInputMode () == OpalConnection::SendUserInputAsQ931)
+    return 2;
 
   g_return_val_if_reached (1);
 }
@@ -193,61 +178,55 @@ Opal::H323::CallManager::get_dtmf_mode () const
 
 void Opal::H323::CallManager::setup (const std::string & setting)
 {
-  std::cout << "In Opal::H323::EndPoint::setup " << std::endl;
-  boost::shared_ptr<Opal::H323::EndPoint> h323_endpoint = endpoint.get_h323_endpoint ();
-  if (h323_endpoint) {
+  if (setting.empty () || setting == "listen-port") {
 
-    if (setting.empty () || setting == "listen-port") {
+    set_listen_port (h323_settings->get_int ("listen-port"));
+  }
+  if (setting.empty () || setting == "maximum-video-tx-bitrate") {
 
-      set_listen_port (h323_settings->get_int ("listen-port"));
-    }
-    if (setting.empty () || setting == "maximum-video-tx-bitrate") {
+    int maximum_video_tx_bitrate = video_codecs_settings->get_int ("maximum-video-tx-bitrate");
+    // maximum_video_tx_bitrate is the max video bitrate specified by the user
+    // add to it 10% (approx.) accounting for audio,
+    // and multiply it by 10 as needed by SetInitialBandwidth
+    h323_endpoint.set_initial_bandwidth (maximum_video_tx_bitrate * 11);
+  }
+  if (setting.empty () || setting == "enable-h245-tunneling") {
 
-      int maximum_video_tx_bitrate = video_codecs_settings->get_int ("maximum-video-tx-bitrate");
-      // maximum_video_tx_bitrate is the max video bitrate specified by the user
-      // add to it 10% (approx.) accounting for audio,
-      // and multiply it by 10 as needed by SetInitialBandwidth
-      h323_endpoint->set_initial_bandwidth (maximum_video_tx_bitrate * 11);
-    }
-    if (setting.empty () || setting == "enable-h245-tunneling") {
+    h323_endpoint.DisableH245Tunneling (!h323_settings->get_bool ("enable-h245-tunneling"));
+    PTRACE (4, "Opal::H323::EndPoint\tH.245 Tunneling: " << h323_settings->get_bool ("enable-h245-tunneling"));
+  }
+  if (setting.empty () || setting == "enable-early-h245") {
 
-      h323_endpoint->DisableH245Tunneling (!h323_settings->get_bool ("enable-h245-tunneling"));
-      PTRACE (4, "Opal::H323::EndPoint\tH.245 Tunneling: " << h323_settings->get_bool ("enable-h245-tunneling"));
-    }
-    if (setting.empty () || setting == "enable-early-h245") {
+    h323_endpoint.DisableH245inSetup (!h323_settings->get_bool ("enable-early-h245"));
+    PTRACE (4, "Opal::H323::EndPoint\tEarly H.245: " << h323_settings->get_bool ("enable-early-h245"));
+  }
+  if (setting.empty () || setting == "enable-fast-connect") {
 
-      h323_endpoint->DisableH245inSetup (!h323_settings->get_bool ("enable-early-h245"));
-      PTRACE (4, "Opal::H323::EndPoint\tEarly H.245: " << h323_settings->get_bool ("enable-early-h245"));
-    }
-    if (setting.empty () || setting == "enable-fast-connect") {
+    h323_endpoint.DisableFastStart (!h323_settings->get_bool ("enable-fast-connect"));
+    PTRACE (4, "Opal::H323::EndPoint\tFast Connect: " << h323_settings->get_bool ("enable-fast-connect"));
+  }
+  if (setting.empty () || setting == "dtmf-mode") {
 
-      h323_endpoint->DisableFastStart (!h323_settings->get_bool ("enable-fast-connect"));
-      PTRACE (4, "Opal::H323::EndPoint\tFast Connect: " << h323_settings->get_bool ("enable-fast-connect"));
-    }
-    if (setting.empty () || setting == "dtmf-mode") {
+    set_dtmf_mode (h323_settings->get_enum ("dtmf-mode"));
+  }
+  if (setting.empty () || setting == "forward-host") {
 
-      set_dtmf_mode (h323_settings->get_enum ("dtmf-mode"));
-    }
-    if (setting.empty () || setting == "forward-host") {
+    h323_endpoint.set_forward_uri (h323_settings->get_string ("forward-host"));
+  }
+  if (setting.empty () || setting == "video-role") {
 
-      h323_endpoint->set_forward_uri (h323_settings->get_string ("forward-host"));
-    }
-    if (setting.empty () || setting == "video-role") {
+    /*
+       CallManager::VideoOptions options;
+       endpoint.get_video_options (options);
+       options.extended_video_roles = h323_settings->get_enum ("video-role");
+       endpoint.set_video_options (options);
+     */
+    std::cout << "FIXME" << std::endl;
+  }
+  if (setting.empty () || setting == "enable-h239") {
 
-      /*
-      CallManager::VideoOptions options;
-      endpoint.get_video_options (options);
-      options.extended_video_roles = h323_settings->get_enum ("video-role");
-      endpoint.set_video_options (options);
-      */
-      std::cout << "FIXME" << std::endl;
-    }
-    if (setting.empty () || setting == "enable-h239") {
-
-      h323_endpoint->SetDefaultH239Control(h323_settings->get_bool ("enable-h239"));
-      PTRACE (4, "Opal::H323::EndPoint\tH.239 Control: " << h323_settings->get_bool ("enable-h239"));
-    }
-
+    h323_endpoint.SetDefaultH239Control(h323_settings->get_bool ("enable-h239"));
+    PTRACE (4, "Opal::H323::EndPoint\tH.239 Control: " << h323_settings->get_bool ("enable-h239"));
   }
 
   // We do not call the parent setup () method as it is also handled

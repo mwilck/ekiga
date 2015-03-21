@@ -140,13 +140,12 @@ namespace Opal {
 /* The class */
 Opal::H323::EndPoint::EndPoint (Opal::EndPoint & _endpoint,
                                 const Ekiga::ServiceCore& _core): H323EndPoint (_endpoint),
-    endpoint (_endpoint),
-    core (_core)
+                                                                  core (_core)
 {
   uri_prefix = "h323:";
   /* Ready to take calls */
-  endpoint.AddRouteEntry("h323:.* = pc:*");
-  endpoint.AddRouteEntry("pc:.* = h323:<da>");
+  GetManager ().AddRouteEntry("h323:.* = pc:*");
+  GetManager ().AddRouteEntry("pc:.* = h323:<da>");
 
   std::cout << "FIXME" << std::endl;
 //  manager.ready.connect (boost::bind (&EndPoint::setup, this, ""));
@@ -161,7 +160,7 @@ bool
 Opal::H323::EndPoint::SetUpCall (const std::string&  uri)
 {
   PString token;
-  endpoint.SetUpCall("pc:*", uri, token, (void*) uri.c_str());
+  GetManager ().SetUpCall("pc:*", uri, token, (void*) uri.c_str());
 
   return true;
 }

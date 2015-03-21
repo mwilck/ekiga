@@ -53,6 +53,8 @@
 
 namespace Opal {
 
+  class EndPoint;
+
   namespace H323 {
 
     class EndPoint : public H323EndPoint
@@ -79,7 +81,6 @@ namespace Opal {
       void set_forward_uri (const std::string & uri);
       const std::string & get_forward_uri () const;
 
-
       /* Enable / Disable accounts. The account given as argument
        * will be updated to reflect the current account state once
        * the operation has been successful.
@@ -99,10 +100,6 @@ namespace Opal {
       bool OnIncomingConnection (OpalConnection &connection,
                                  unsigned options,
                                  OpalConnection::StringOptions *str_options);
-
-      // this object is really managed by opal,
-      // so the way it is handled here is correct
-      Opal::EndPoint &endpoint;
 
       PMutex gk_name_mutex;
       PString gk_name;

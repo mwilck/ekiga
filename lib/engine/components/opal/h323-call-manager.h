@@ -41,6 +41,7 @@
 
 #include "opal-call-manager.h"
 #include "opal-endpoint.h"
+#include "h323-endpoint.h"
 
 #include "ekiga-settings.h"
 
@@ -58,7 +59,8 @@ namespace Opal {
     {
   public:
       CallManager (Ekiga::ServiceCore& core,
-                   Opal::EndPoint& endpoint);
+                   Opal::EndPoint& endpoint,
+                   Opal::H323::EndPoint& h323_endpoint);
       ~CallManager ();
 
       /* URIActionProvider Methods */
@@ -86,6 +88,8 @@ namespace Opal {
 
       Ekiga::SettingsPtr h323_settings;
       Ekiga::SettingsPtr video_codecs_settings;
+
+      Opal::H323::EndPoint& h323_endpoint;
 
       std::string protocol_name;
     };

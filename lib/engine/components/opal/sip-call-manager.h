@@ -41,6 +41,7 @@
 
 #include "opal-call-manager.h"
 #include "opal-endpoint.h"
+#include "sip-endpoint.h"
 
 #include "ekiga-settings.h"
 
@@ -58,7 +59,8 @@ namespace Opal {
     {
   public:
       CallManager (Ekiga::ServiceCore& core,
-                   Opal::EndPoint& endpoint);
+                   Opal::EndPoint& endpoint,
+                   Opal::Sip::EndPoint& sip_endpoint);
       ~CallManager ();
 
       /* URIActionProvider Methods */
@@ -85,6 +87,7 @@ namespace Opal {
       void setup (const std::string & setting = "");
 
       Ekiga::SettingsPtr sip_settings;
+      Opal::Sip::EndPoint& sip_endpoint;
       std::string protocol_name;
     };
   };

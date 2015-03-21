@@ -47,11 +47,9 @@
 GnomeMeeting *GnomeMeeting::GM = 0;
 
 /* The main GnomeMeeting Class  */
-GnomeMeeting::GnomeMeeting ()
-        : PProcess("", "", MAJOR_VERSION, MINOR_VERSION, BUILD_TYPE, BUILD_NUMBER)
+GnomeMeeting::GnomeMeeting () : PProcess("", "", MAJOR_VERSION, MINOR_VERSION, BUILD_TYPE, BUILD_NUMBER)
 {
   GM = this;
-  endpoint = NULL;
 }
 
 GnomeMeeting::~GnomeMeeting ()
@@ -78,8 +76,6 @@ GnomeMeeting::~GnomeMeeting ()
 
      std::cout << "bank use count" << bank.use_count () << std::endl << std::flush;
    */
-  if (endpoint)
-    delete endpoint;
 
   std::cout << "PPROCESS END END" << std::endl << std::flush;
 }
@@ -103,7 +99,7 @@ void GnomeMeeting::Start (Ekiga::ServiceCore& core)
 
 
 Opal::EndPoint&
-GnomeMeeting::get_endpoint ()
+GnomeMeeting::GetEndPoint ()
 {
   return *endpoint;
 }
@@ -111,9 +107,9 @@ GnomeMeeting::get_endpoint ()
 
 void GnomeMeeting::on_ready (
 #ifdef HAVE_H323
-                             Opal::H323::EndPoint* h323_endpoint,
+                             Opal::H323::EndPoint* /*h323_endpoint*/,
 #endif
-                             Opal::Sip::EndPoint* sip_endpoint)
+                             Opal::Sip::EndPoint* /*sip_endpoint*/)
 {
   /*
   presence_core = boost::weak_ptr<Ekiga::PresenceCore> (core.get<Ekiga::PresenceCore> ("presence-core"));

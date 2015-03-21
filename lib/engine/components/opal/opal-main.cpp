@@ -89,13 +89,16 @@ struct OPALSpark: public Ekiga::Spark
       hook_ekiga_plugins_to_opal (core);
 
       // We create our various CallManagers: SIP, H.323
-      boost::shared_ptr<Opal::Sip::CallManager> sip_call_manager (new Opal::Sip::CallManager (core, GnomeMeeting::Process ()->get_endpoint ()));
+      Opal::EndPoint& endpoint = GnomeMeeting::Process ()->GetEndPoint ();
+      Opal::Sip::EndPoint& sip_endpoint = endpoint.GetSipEndPoint ();
+      boost::shared_ptr<Opal::Sip::CallManager> sip_call_manager (new Opal::Sip::CallManager (core, endpoint, sip_endpoint));
       contact_core->push_back (Ekiga::URIActionProviderPtr (sip_call_manager));
       presence_core->push_back (Ekiga::URIActionProviderPtr (sip_call_manager));
       call_core->add_manager (sip_call_manager);
 
 #ifdef HAVE_H323
-      boost::shared_ptr<Opal::H323::CallManager> h323_call_manager (new Opal::H323::CallManager (core, GnomeMeeting::Process ()->get_endpoint ()));
+      Opal::H323::EndPoint& h323_endpoint = endpoint.GetH323EndPoint ();
+      boost::shared_ptr<Opal::H323::CallManager> h323_call_manager (new Opal::H323::CallManager (core, endpoint, h323_endpoint));
       contact_core->push_back (Ekiga::URIActionProviderPtr (h323_call_manager));
       presence_core->push_back (Ekiga::URIActionProviderPtr (h323_call_manager));
       call_core->add_manager (h323_call_manager);
@@ -104,9 +107,9 @@ struct OPALSpark: public Ekiga::Spark
       std::cout << "FIXME HERE" << std::endl;
       boost::shared_ptr<Opal::Bank> bank = boost::shared_ptr<Opal::Bank> (new Opal::Bank (core,
 #ifdef HAVE_H323
-                                                                                          GnomeMeeting::Process ()->get_endpoint ().get_h323_endpoint ().get (),
+                                                                                          &h323_endpoint,
 #endif
-                                                                                          GnomeMeeting::Process ()->get_endpoint ().get_sip_endpoint ().get ()));
+                                                                                          &sip_endpoint));
 
       account_core->add_bank (bank);
       presence_core->add_cluster (bank);

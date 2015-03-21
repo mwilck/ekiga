@@ -46,7 +46,10 @@
 
 /* The engine class */
 Opal::Sip::CallManager::CallManager (Ekiga::ServiceCore& _core,
-                                     Opal::EndPoint& _endpoint) : Opal::CallManager (_core, _endpoint), protocol_name ("sip")
+                                     Opal::EndPoint& _endpoint,
+                                     Opal::Sip::EndPoint& _sip_endpoint)
+        : Opal::CallManager (_core, _endpoint),
+          sip_endpoint (_sip_endpoint), protocol_name ("sip")
 {
   /* Setup things */
   Ekiga::SettingsCallback setup_cb = boost::bind (&Opal::Sip::CallManager::setup, this, _1);
@@ -80,11 +83,7 @@ bool Opal::Sip::CallManager::dial (const std::string & uri)
   if (!is_supported_uri (uri))
     return false;
 
-  boost::shared_ptr<Opal::Sip::EndPoint> sip_endpoint = endpoint.get_sip_endpoint ();
-  if (sip_endpoint)
-    return sip_endpoint->SetUpCall (uri);
-
-  return false;
+  return sip_endpoint.SetUpCall (uri);
 }
 
 
@@ -105,11 +104,7 @@ const Ekiga::CallManager::InterfaceList Opal::Sip::CallManager::get_interfaces (
 {
   Ekiga::CallManager::InterfaceList ilist;
 
-  boost::shared_ptr<Opal::Sip::EndPoint> sip_endpoint = endpoint.get_sip_endpoint ();
-  if (!sip_endpoint)
-    return ilist;
-
-  OpalListenerList listeners = sip_endpoint->GetListeners ();
+  OpalListenerList listeners = sip_endpoint.GetListeners ();
   for (int i = 0 ; i < listeners.GetSize () ; i++) {
     Ekiga::CallManager::Interface iface;
     PIPSocket::Address address;
@@ -132,31 +127,24 @@ const Ekiga::CallManager::InterfaceList Opal::Sip::CallManager::get_interfaces (
 bool
 Opal::Sip::CallManager::set_listen_port (unsigned port)
 {
-  boost::shared_ptr<Opal::Sip::EndPoint> sip_endpoint = endpoint.get_sip_endpoint ();
-  if (sip_endpoint)
-    return sip_endpoint->StartListener (port);
-
-  return false;
+  return sip_endpoint.StartListener (port);
 }
 
 
 void
 Opal::Sip::CallManager::set_dtmf_mode (unsigned mode)
 {
-  boost::shared_ptr<Opal::Sip::EndPoint> sip_endpoint = endpoint.get_sip_endpoint ();
-  if (sip_endpoint) {
-    switch (mode) {
+  switch (mode) {
 
-    case 0:  // RFC2833
-      PTRACE (4, "Opal::Sip::CallManager\tSet DTMF Mode to RFC2833");
-      sip_endpoint->SetSendUserInputMode (OpalConnection::SendUserInputAsInlineRFC2833);
-      break;
-    case 1:  // SIP Info
-    default:
-      PTRACE (4, "Opal::Sip::CallManager\tSet DTMF Mode to SIP INFO");
-      sip_endpoint->SetSendUserInputMode (OpalConnection::SendUserInputAsTone);
-      break;
-    }
+  case 0:  // RFC2833
+    PTRACE (4, "Opal::Sip::CallManager\tSet DTMF Mode to RFC2833");
+    sip_endpoint.SetSendUserInputMode (OpalConnection::SendUserInputAsInlineRFC2833);
+    break;
+  case 1:  // SIP Info
+  default:
+    PTRACE (4, "Opal::Sip::CallManager\tSet DTMF Mode to SIP INFO");
+    sip_endpoint.SetSendUserInputMode (OpalConnection::SendUserInputAsTone);
+    break;
   }
 }
 
@@ -164,16 +152,13 @@ Opal::Sip::CallManager::set_dtmf_mode (unsigned mode)
 unsigned
 Opal::Sip::CallManager::get_dtmf_mode () const
 {
-  boost::shared_ptr<Opal::Sip::EndPoint> sip_endpoint = endpoint.get_sip_endpoint ();
-  if (sip_endpoint) {
-    // RFC2833
-    if (sip_endpoint->GetSendUserInputMode () == OpalConnection::SendUserInputAsInlineRFC2833)
-      return 0;
+  // RFC2833
+  if (sip_endpoint.GetSendUserInputMode () == OpalConnection::SendUserInputAsInlineRFC2833)
+    return 0;
 
-    // SIP Info
-    if (sip_endpoint->GetSendUserInputMode () == OpalConnection::SendUserInputAsTone)
-      return 1;
-  }
+  // SIP Info
+  if (sip_endpoint.GetSendUserInputMode () == OpalConnection::SendUserInputAsTone)
+    return 1;
 
   g_return_val_if_reached (1);
 }
@@ -181,25 +166,22 @@ Opal::Sip::CallManager::get_dtmf_mode () const
 
 void Opal::Sip::CallManager::setup (const std::string & setting)
 {
-  boost::shared_ptr<Opal::Sip::EndPoint> sip_endpoint = endpoint.get_sip_endpoint ();
-  if (sip_endpoint) {
-    if (setting.empty () || setting == "listen-port")  {
-      set_listen_port (sip_settings->get_int ("listen-port"));
-    }
-    if (setting.empty () || setting == "binding-timeout")  {
-      sip_endpoint->set_nat_binding_delay (sip_settings->get_int ("binding-timeout"));
-    }
-    if (setting.empty () || setting == "outbound-proxy-host")  {
-      sip_endpoint->set_outbound_proxy (sip_settings->get_string ("outbound-proxy-host"));
-    }
+  if (setting.empty () || setting == "listen-port")  {
+    set_listen_port (sip_settings->get_int ("listen-port"));
+  }
+  if (setting.empty () || setting == "binding-timeout")  {
+    sip_endpoint.set_nat_binding_delay (sip_settings->get_int ("binding-timeout"));
+  }
+  if (setting.empty () || setting == "outbound-proxy-host")  {
+    sip_endpoint.set_outbound_proxy (sip_settings->get_string ("outbound-proxy-host"));
+  }
 
-    if (setting.empty () || setting == "dtmf-mode")  {
-      set_dtmf_mode (sip_settings->get_enum ("dtmf-mode"));
-    }
+  if (setting.empty () || setting == "dtmf-mode")  {
+    set_dtmf_mode (sip_settings->get_enum ("dtmf-mode"));
+  }
 
-    if (setting.empty () || setting == "forward-host")  {
-      sip_endpoint->set_forward_uri (sip_settings->get_string ("forward-host"));
-    }
+  if (setting.empty () || setting == "forward-host")  {
+    sip_endpoint.set_forward_uri (sip_settings->get_string ("forward-host"));
   }
 
   Opal::CallManager::setup (setting);

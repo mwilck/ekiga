@@ -161,15 +161,15 @@ Opal::EndPoint::EndPoint (Ekiga::ServiceCore& core)
 
   PInterfaceMonitor::GetInstance().SetRefreshInterval (15000);
 
-  // Create endpoints / CallProtocolManagers
+  // Create endpoints
+  // Their destruction is controlled by Opal
   pcssEP = new GMPCSSEndpoint (*this, core);
   pcssEP->SetSoundChannelPlayDevice("EKIGA");
   pcssEP->SetSoundChannelRecordDevice("EKIGA");
 
-  sip_endpoint = boost::shared_ptr<Sip::EndPoint> (new Sip::EndPoint (*this, core), null_deleter ());
-
+  sip_endpoint = new Sip::EndPoint (*this, core);
 #ifdef HAVE_H323
-  h323_endpoint= boost::shared_ptr<H323::EndPoint>(new H323::EndPoint (*this, core), null_deleter ());
+  h323_endpoint= new H323::EndPoint (*this, core);
 #endif
 }
 
@@ -433,16 +433,16 @@ void Opal::EndPoint::set_stun_enabled (bool enabled)
 }
 
 
-boost::shared_ptr<Opal::Sip::EndPoint> Opal::EndPoint::get_sip_endpoint ()
+Opal::Sip::EndPoint& Opal::EndPoint::GetSipEndPoint ()
 {
-  return sip_endpoint;
+  return *sip_endpoint;
 }
 
 
 #ifdef HAVE_H323
-boost::shared_ptr<Opal::H323::EndPoint> Opal::EndPoint::get_h323_endpoint ()
+Opal::H323::EndPoint& Opal::EndPoint::GetH323EndPoint ()
 {
-  return h323_endpoint;
+  return *h323_endpoint;
 }
 #endif
 

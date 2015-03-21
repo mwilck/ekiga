@@ -40,6 +40,7 @@
 
 #include "call-manager.h"
 #include "opal-endpoint.h"
+#include "opal-call.h"
 
 #include "ekiga-settings.h"
 

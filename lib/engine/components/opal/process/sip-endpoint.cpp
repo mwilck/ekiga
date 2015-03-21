@@ -108,16 +108,12 @@ namespace Opal {
 /* The class */
 Opal::Sip::EndPoint::EndPoint (Opal::EndPoint & _endpoint,
                                const Ekiga::ServiceCore& _core): SIPEndPoint (_endpoint),
-                                                                 endpoint (_endpoint),
                                                                  core (_core)
 {
   boost::shared_ptr<Ekiga::ChatCore> chat_core = core.get<Ekiga::ChatCore> ("chat-core");
   boost::shared_ptr<Ekiga::PresenceCore> presence_core = core.get<Ekiga::PresenceCore> ("presence-core");
 
   uri_prefix = "sip:";
-
- // dialect = boost::shared_ptr<SIP::Dialect>(new SIP::Dialect (presence_core, boost::bind (&Opal::Sip::EndPoint::send_message, this, _1, _2)));
-//  chat_core->add_dialect (dialect);
 
   /* Timeouts */
   SetAckTimeout (PTimeInterval (0, 32));
@@ -131,8 +127,8 @@ Opal::Sip::EndPoint::EndPoint (Opal::EndPoint & _endpoint,
   SetUserAgent ("Ekiga/" PACKAGE_VERSION);
 
   /* Ready to take calls */
-  endpoint.AddRouteEntry("sip:.* = pc:*");
-  endpoint.AddRouteEntry("pc:.* = sip:<da>");
+  GetManager ().AddRouteEntry("sip:.* = pc:*");
+  GetManager ().AddRouteEntry("pc:.* = sip:<da>");
 
   /* NAT Binding */
   PTimeInterval timeout;
@@ -192,7 +188,7 @@ Opal::Sip::EndPoint::SetUpCall (const std::string & uri)
   }
 
   PString token;
-  endpoint.SetUpCall ("pc:*", ustr.str(), token, (void*) ustr.str().c_str());
+  GetManager ().SetUpCall ("pc:*", ustr.str(), token, (void*) ustr.str().c_str());
 
   return true;
 }
@@ -201,10 +197,10 @@ Opal::Sip::EndPoint::SetUpCall (const std::string & uri)
 bool
 Opal::Sip::EndPoint::StartListener (unsigned port)
 {
-  unsigned udp_min = endpoint.GetUDPPortBase ();
-  unsigned udp_max = endpoint.GetUDPPortMax ();
-  unsigned tcp_min = endpoint.GetTCPPortBase ();
-  unsigned tcp_max = endpoint.GetTCPPortMax ();
+  unsigned udp_min = GetManager ().GetUDPPortBase ();
+  unsigned udp_max = GetManager ().GetUDPPortMax ();
+  unsigned tcp_min = GetManager ().GetTCPPortBase ();
+  unsigned tcp_max = GetManager ().GetTCPPortMax ();
 
   const std::string protocols[] = { "udp", "tcp", "" };
   const unsigned ports[][2] = { { udp_min, udp_max }, { tcp_min, tcp_max } };
@@ -329,6 +325,9 @@ Opal::Sip::EndPoint::OnRegistrationStatus (const RegistrationStatus & status)
   std::string info;
 
   boost::shared_ptr<Opal::Bank> bank = core.get<Opal::Bank> ("opal-account-store");
+  if (!bank)
+    return;
+
   Opal::AccountPtr account = bank->find_account (status.m_addressofRecord);
   if (!account)
     return;
@@ -351,7 +350,7 @@ Opal::Sip::EndPoint::OnRegistrationStatus (const RegistrationStatus & status)
   if (status.m_reason == SIP_PDU::Successful_OK) {
     account->handle_registration_event (status.m_wasRegistering?Account::Registered:Account::Unregistered,
                                         std::string (),
-                                        endpoint.AddPresentity (PURL (status.m_addressofRecord)));
+                                        GetManager ().AddPresentity (PURL (status.m_addressofRecord)));
   }
   /* Registration or unregistration failure */
   else {
@@ -701,8 +700,6 @@ Opal::Sip::EndPoint::OnReceivedMESSAGE (SIP_PDU & pdu)
   Ekiga::Message msg = {time, display_name, payload };
   g_free (time);
 
-  Ekiga::Runtime::run_in_main (boost::bind (&Opal::Sip::EndPoint::push_message_in_main, this, message_uri, msg));
-
   return SIPEndPoint::OnReceivedMESSAGE (pdu);
 }
 
@@ -735,8 +732,6 @@ Opal::Sip::EndPoint::OnMESSAGECompleted (const SIPMessage::Params & params,
   gchar* time = g_time_val_to_iso8601 (&current);
   Ekiga::Message msg = {time, "" /* it's a notice */, payload };
   g_free (time);
-
-  Ekiga::Runtime::run_in_main (boost::bind (&Opal::Sip::EndPoint::push_message_in_main, this, uri, msg));
 }
 
 
@@ -777,12 +772,4 @@ Opal::Sip::EndPoint::OnDialogInfoReceived (const SIPDialogNotification & info)
   default:
     break;
   }
-}
-
-
-void
-Opal::Sip::EndPoint::push_message_in_main (const std::string uri,
-					   const Ekiga::Message msg)
-{
-  dialect->push_message (uri, msg);
 }

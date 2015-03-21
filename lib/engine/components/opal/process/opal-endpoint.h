@@ -43,10 +43,12 @@
 
 #include <ptlib.h>
 
+#ifdef HAVE_H323
 #include <h323/h323.h>
-#include <sip/sip.h>
+#include "h323-endpoint.h"
+#endif
 
-#include "menu-builder.h"
+#include <sip/sip.h>
 
 #include "opal-call.h"
 
@@ -62,8 +64,14 @@ namespace Opal {
 
   class Account;
   class CallManager;
-  namespace Sip { class EndPoint; };
-  namespace H323 { class EndPoint; };
+  namespace SIP {
+    class EndPoint;
+  }
+#ifdef HAVE_H323
+  namespace H323 {
+    class EndPoint;
+  }
+#endif
 
   /* This is the OPAL endpoint. We do not want it to directly
    * use the CallCore, CallManager's and other engine implementations.
@@ -116,9 +124,9 @@ public:
     void set_stun_server (const std::string & server);
     void set_stun_enabled (bool);
 
-    boost::shared_ptr<Sip::EndPoint> get_sip_endpoint ();
+    Sip::EndPoint& GetSipEndPoint ();
 #ifdef HAVE_H323
-    boost::shared_ptr<H323::EndPoint> get_h323_endpoint ();
+    H323::EndPoint& GetH323EndPoint ();
 #endif
 
 
@@ -192,9 +200,9 @@ private:
     bool stun_enabled;
     bool auto_answer;
 
-    boost::shared_ptr<Sip::EndPoint> sip_endpoint;
+    Sip::EndPoint *sip_endpoint;
 #ifdef HAVE_H323
-    boost::shared_ptr<H323::EndPoint> h323_endpoint;
+    H323::EndPoint *h323_endpoint;
 #endif
   };
 };

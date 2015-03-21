@@ -51,7 +51,7 @@
 #include "services.h"
 
 #include "opal-call-manager.h"
-
+#include "opal-endpoint.h"
 
 namespace Opal {
 
@@ -124,20 +124,11 @@ namespace Opal {
 
       /* Callbacks */
     private:
-      void push_message_in_main (const std::string uri,
-				 const Ekiga::Message msg);
-
-      // this object is really managed by opal,
-      // so the way it is handled here is correct
-      Opal::EndPoint & endpoint;
-
       std::map<std::string, PString> publications;
 
       std::string uri_prefix;
       std::string forward_uri;
       std::string outbound_proxy;
-
-      boost::shared_ptr<SIP::Dialect> dialect;
 
       const Ekiga::ServiceCore & core;
     };
