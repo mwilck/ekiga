@@ -171,12 +171,9 @@ Opal::Sip::EndPoint::send_message (const std::string & _uri,
 
 
 bool
-Opal::Sip::EndPoint::dial (const std::string & uri)
+Opal::Sip::EndPoint::SetUpCall (const std::string & uri)
 {
   std::stringstream ustr;
-
-  if (!is_supported_uri (uri))
-    return false;
 
   if (uri.find (":") == string::npos)
     ustr << "sip:" << uri;
@@ -202,48 +199,7 @@ Opal::Sip::EndPoint::dial (const std::string & uri)
 
 
 bool
-Opal::Sip::EndPoint::is_supported_uri (const std::string & uri)
-{
-  return (!uri.empty () && (uri.find ("sip:") == 0 || uri.find (':') == string::npos));
-}
-
-
-void
-Opal::Sip::EndPoint::set_dtmf_mode (unsigned mode)
-{
-  switch (mode) {
-
-  case 0:  // RFC2833
-    PTRACE (4, "Opal::Sip::EndPoint\tSet DTMF Mode to RFC2833");
-    SetSendUserInputMode (OpalConnection::SendUserInputAsInlineRFC2833);
-    break;
-  case 1:  // SIP Info
-  default:
-    PTRACE (4, "Opal::Sip::EndPoint\tSet DTMF Mode to SIP INFO");
-    SetSendUserInputMode (OpalConnection::SendUserInputAsTone);
-    break;
-  }
-}
-
-
-unsigned
-Opal::Sip::EndPoint::get_dtmf_mode () const
-{
-  // RFC2833
-  if (GetSendUserInputMode () == OpalConnection::SendUserInputAsInlineRFC2833)
-    return 0;
-
-  // SIP Info
-  if (GetSendUserInputMode () == OpalConnection::SendUserInputAsTone)
-    return 1;
-
-  g_return_val_if_reached (1);
-  return 1;
-}
-
-
-bool
-Opal::Sip::EndPoint::set_listen_port (unsigned port)
+Opal::Sip::EndPoint::StartListener (unsigned port)
 {
   unsigned udp_min = endpoint.GetUDPPortBase ();
   unsigned udp_max = endpoint.GetUDPPortMax ();
@@ -260,17 +216,12 @@ Opal::Sip::EndPoint::set_listen_port (unsigned port)
 
       std::stringstream str;
       str << protocols[i] << "$*:" << port;
-      listen_iface.protocol = protocols[i];
-      listen_iface.voip_protocol = "sip";
-      listen_iface.id = "*";
       if (!StartListeners (PStringArray (str.str ()))) {
 
         port = ports[i][0];
         while (port <= ports[i][1]) {
           str << protocols[i] << "$*:" << port;
-
           if (StartListeners (PStringArray (str.str ()))) {
-
             PTRACE (4, "Opal::Sip::EndPoint\tSet listen port to " << port << " (" << protocols[i] << ")");
             break;
           }
@@ -278,9 +229,8 @@ Opal::Sip::EndPoint::set_listen_port (unsigned port)
           port++;
         }
       }
-      else {
+      else
         PTRACE (4, "Opal::Sip::EndPoint\tSet listen port to " << port << " (" << protocols[i] << ")");
-      }
     }
   }
 

@@ -143,7 +143,6 @@ Opal::H323::EndPoint::EndPoint (Opal::EndPoint & _endpoint,
     endpoint (_endpoint),
     core (_core)
 {
-  protocol_name = "h323";
   uri_prefix = "h323:";
   /* Ready to take calls */
   endpoint.AddRouteEntry("h323:.* = pc:*");
@@ -159,11 +158,8 @@ Opal::H323::EndPoint::~EndPoint ()
 
 
 bool
-Opal::H323::EndPoint::dial (const std::string&  uri)
+Opal::H323::EndPoint::SetUpCall (const std::string&  uri)
 {
-  if (!is_supported_uri (uri))
-    return false;
-
   PString token;
   endpoint.SetUpCall("pc:*", uri, token, (void*) uri.c_str());
 
@@ -179,10 +175,8 @@ Opal::H323::EndPoint::transfer (const std::string & uri,
   if (attended)
     return false;
 
-  if (GetConnectionCount () == 0 || !is_supported_uri (uri))
-      return false; /* No active SIP connection to transfer, or
-                     * transfer request to unsupported uri
-                     */
+  if (GetConnectionCount () == 0)
+      return false;
 
   /* We don't handle several calls here */
   for (PSafePtr<OpalConnection> connection(connectionsActive, PSafeReference);
@@ -207,83 +201,18 @@ Opal::H323::EndPoint::message (G_GNUC_UNUSED const Ekiga::ContactPtr & contact,
 
 
 bool
-Opal::H323::EndPoint::is_supported_uri (const std::string & uri)
+Opal::H323::EndPoint::StartListener (unsigned port)
 {
-  return (!uri.empty () && uri.find ("h323:") == 0);
-}
+  if (port > 0) {
 
+    RemoveListener (NULL);
 
-const std::string&
-Opal::H323::EndPoint::get_protocol_name () const
-{
-  return protocol_name;
-}
-
-
-void
-Opal::H323::EndPoint::set_dtmf_mode (unsigned mode)
-{
-  switch (mode)
-    {
-    case 0:
-      SetSendUserInputMode (OpalConnection::SendUserInputAsString);
-      PTRACE (4, "Opal::H323::EndPoint\tSet DTMF Mode to String");
-      break;
-    case 1:
-      SetSendUserInputMode (OpalConnection::SendUserInputAsTone);
-      PTRACE (4, "Opal::H323::EndPoint\tSet DTMF Mode to Tone");
-      break;
-    case 3:
-      SetSendUserInputMode (OpalConnection::SendUserInputAsQ931);
-      PTRACE (4, "Opal::H323::EndPoint\tSet DTMF Mode to Q931");
-      break;
-    default:
-      SetSendUserInputMode (OpalConnection::SendUserInputAsInlineRFC2833);
-      PTRACE (4, "Opal::H323::EndPoint\tSet DTMF Mode to RFC2833");
-      break;
+    std::stringstream str;
+    str << "tcp$*:" << port;
+    if (StartListeners (PStringArray (str.str ()))) {
+      PTRACE (4, "Opal::H323::EndPoint\tSet listen port to " << port);
+      return true;
     }
-}
-
-
-unsigned
-Opal::H323::EndPoint::get_dtmf_mode () const
-{
-  if (GetSendUserInputMode () == OpalConnection::SendUserInputAsString)
-    return 0;
-
-  if (GetSendUserInputMode () == OpalConnection::SendUserInputAsTone)
-    return 1;
-
-  if (GetSendUserInputMode () == OpalConnection::SendUserInputAsInlineRFC2833)
-    return 2;
-
-  if (GetSendUserInputMode () == OpalConnection::SendUserInputAsQ931)
-    return 2;
-
-  return 1;
-}
-
-
-bool
-Opal::H323::EndPoint::set_listen_port (unsigned port)
-{
-  listen_iface.protocol = "tcp";
-  listen_iface.voip_protocol = "h323";
-  listen_iface.id = "*";
-
-  port = (port > 0 ? port : 1720);
-
-  std::stringstream str;
-  interfaces.clear ();
-  RemoveListener (NULL);
-
-  str << "tcp$*:" << port;
-  if (StartListeners (PStringArray (str.str ()))) {
-
-    listen_iface.port = port;
-    interfaces.push_back (listen_iface);
-    PTRACE (4, "Opal::H323::EndPoint\tSet listen port to " << port);
-    return true;
   }
 
   return false;

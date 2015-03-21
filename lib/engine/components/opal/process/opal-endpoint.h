@@ -81,9 +81,7 @@ public:
     ~EndPoint ();
 
     /** Call Manager **/
-    bool dial (const std::string & uri);
     void hang_up ();
-    bool is_supported_uri (const std::string & uri);
 
     void SetEchoCancellation (bool enabled);
     bool GetEchoCancellation () const;

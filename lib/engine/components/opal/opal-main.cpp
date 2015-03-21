@@ -101,6 +101,7 @@ struct OPALSpark: public Ekiga::Spark
       call_core->add_manager (h323_call_manager);
 #endif
 
+      std::cout << "FIXME HERE" << std::endl;
       boost::shared_ptr<Opal::Bank> bank = boost::shared_ptr<Opal::Bank> (new Opal::Bank (core,
 #ifdef HAVE_H323
                                                                                           GnomeMeeting::Process ()->get_endpoint ().get_h323_endpoint ().get (),

@@ -46,31 +46,52 @@
 
 /* The engine class */
 Opal::Sip::CallManager::CallManager (Ekiga::ServiceCore& _core,
-                               Opal::EndPoint& _endpoint) : Opal::CallManager (_core, _endpoint), protocol_name ("sip")
+                                     Opal::EndPoint& _endpoint) : Opal::CallManager (_core, _endpoint), protocol_name ("sip")
 {
   /* Setup things */
   Ekiga::SettingsCallback setup_cb = boost::bind (&Opal::Sip::CallManager::setup, this, _1);
   sip_settings = Ekiga::SettingsPtr (new Ekiga::Settings (SIP_SCHEMA, setup_cb));
 
   setup ();
-  std::cout << "hey: Created Opal::Sip::CallManager" << std::endl;
 }
 
 
 Opal::Sip::CallManager::~CallManager ()
 {
-  std::cout << "hey: Destroyed Opal::Sip::CallManager" << std::endl;
+#if DEBUG
+  std::cout << "Opal::Sip::CallManager: Destructor invoked" << std::endl;
+#endif
 }
 
 
 /* URIActionProvider Methods */
 void Opal::Sip::CallManager::pull_actions (Ekiga::Actor & actor,
-                                     G_GNUC_UNUSED const std::string & name,
-                                     const std::string & uri)
+                                           G_GNUC_UNUSED const std::string & name,
+                                           const std::string & uri)
 {
   if (is_supported_uri (uri)) {
-    add_action (actor, Ekiga::ActionPtr (new Ekiga::Action ("call", _("Call"), boost::bind (&Opal::Sip::CallManager::dial, this, uri))));
+    add_action (actor, Ekiga::ActionPtr (new Ekiga::Action ("call", _("Call"), boost::bind (&Opal::CallManager::dial, this, uri))));
   }
+}
+
+
+bool Opal::Sip::CallManager::dial (const std::string & uri)
+{
+  if (!is_supported_uri (uri))
+    return false;
+
+  boost::shared_ptr<Opal::Sip::EndPoint> sip_endpoint = endpoint.get_sip_endpoint ();
+  if (sip_endpoint)
+    return sip_endpoint->SetUpCall (uri);
+
+  return false;
+}
+
+
+bool
+Opal::Sip::CallManager::is_supported_uri (const std::string & uri)
+{
+  return (!uri.empty () && (uri.find ("sip:") == 0 || uri.find (':') == string::npos));
 }
 
 
@@ -108,13 +129,62 @@ const Ekiga::CallManager::InterfaceList Opal::Sip::CallManager::get_interfaces (
 }
 
 
+bool
+Opal::Sip::CallManager::set_listen_port (unsigned port)
+{
+  boost::shared_ptr<Opal::Sip::EndPoint> sip_endpoint = endpoint.get_sip_endpoint ();
+  if (sip_endpoint)
+    return sip_endpoint->StartListener (port);
+
+  return false;
+}
+
+
+void
+Opal::Sip::CallManager::set_dtmf_mode (unsigned mode)
+{
+  boost::shared_ptr<Opal::Sip::EndPoint> sip_endpoint = endpoint.get_sip_endpoint ();
+  if (sip_endpoint) {
+    switch (mode) {
+
+    case 0:  // RFC2833
+      PTRACE (4, "Opal::Sip::CallManager\tSet DTMF Mode to RFC2833");
+      sip_endpoint->SetSendUserInputMode (OpalConnection::SendUserInputAsInlineRFC2833);
+      break;
+    case 1:  // SIP Info
+    default:
+      PTRACE (4, "Opal::Sip::CallManager\tSet DTMF Mode to SIP INFO");
+      sip_endpoint->SetSendUserInputMode (OpalConnection::SendUserInputAsTone);
+      break;
+    }
+  }
+}
+
+
+unsigned
+Opal::Sip::CallManager::get_dtmf_mode () const
+{
+  boost::shared_ptr<Opal::Sip::EndPoint> sip_endpoint = endpoint.get_sip_endpoint ();
+  if (sip_endpoint) {
+    // RFC2833
+    if (sip_endpoint->GetSendUserInputMode () == OpalConnection::SendUserInputAsInlineRFC2833)
+      return 0;
+
+    // SIP Info
+    if (sip_endpoint->GetSendUserInputMode () == OpalConnection::SendUserInputAsTone)
+      return 1;
+  }
+
+  g_return_val_if_reached (1);
+}
+
+
 void Opal::Sip::CallManager::setup (const std::string & setting)
 {
-  std::cout << "In Opal::Sip::CallManager::setup " << std::endl;
   boost::shared_ptr<Opal::Sip::EndPoint> sip_endpoint = endpoint.get_sip_endpoint ();
   if (sip_endpoint) {
     if (setting.empty () || setting == "listen-port")  {
-      sip_endpoint->set_listen_port (sip_settings->get_int ("listen-port"));
+      set_listen_port (sip_settings->get_int ("listen-port"));
     }
     if (setting.empty () || setting == "binding-timeout")  {
       sip_endpoint->set_nat_binding_delay (sip_settings->get_int ("binding-timeout"));
@@ -124,7 +194,7 @@ void Opal::Sip::CallManager::setup (const std::string & setting)
     }
 
     if (setting.empty () || setting == "dtmf-mode")  {
-      sip_endpoint->set_dtmf_mode (sip_settings->get_enum ("dtmf-mode"));
+      set_dtmf_mode (sip_settings->get_enum ("dtmf-mode"));
     }
 
     if (setting.empty () || setting == "forward-host")  {

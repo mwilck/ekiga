@@ -71,19 +71,13 @@ namespace Opal {
 
       ~EndPoint ();
 
+      bool SetUpCall (const std::string & uri);
+
       /* Chat subsystem */
       bool send_message (const std::string & uri,
                          const Ekiga::Message::payload_type payload);
 
-      /* CallProtocolManager */
-      bool dial (const std::string & uri);
-
-      bool is_supported_uri (const std::string & uri);
-
-      void set_dtmf_mode (unsigned mode);
-      unsigned get_dtmf_mode () const;
-
-      bool set_listen_port (unsigned port);
+      bool StartListener (unsigned port);
 
       const Ekiga::CallManager::InterfaceList & get_interfaces () const;
 
@@ -141,8 +135,6 @@ namespace Opal {
       Opal::EndPoint & endpoint;
 
       std::map<std::string, PString> publications;
-
-      Ekiga::CallManager::Interface listen_iface;
 
       std::string uri_prefix;
       std::string forward_uri;

@@ -48,9 +48,9 @@ namespace Opal {
 
   namespace H323 {
 
-    /* This is the engine CallManager implementation.
-     * It uses the Opal::Manager object to implement the engine
-     * CallManager interface.
+    /* This is one engine H.323 CallManager implementation.
+     * It uses the Opal::CallManager class to implement a
+     * more specialized H.323 engine CallManager.
      */
     class CallManager :
         public Opal::CallManager,
@@ -67,21 +67,23 @@ namespace Opal {
                          const std::string & uri);
 
       /* CallManager methods we implement */
+      bool dial (const std::string & uri);
+
+      bool is_supported_uri (const std::string & uri);
+
       const std::string & get_protocol_name () const;
+
+      bool set_listen_port (unsigned port);
 
       const Ekiga::CallManager::InterfaceList get_interfaces () const;
 
-      /*
-         void set_dtmf_mode (unsigned mode);
-         unsigned get_dtmf_mode ();
-         bool set_listen_port (unsigned port);
-         const InterfaceList & get_interfaces () const;
-       */
+      void set_dtmf_mode (unsigned mode);
 
-      /* Set up endpoint: all options or a specific setting */
-      void setup (const std::string & setting = "");
+      unsigned get_dtmf_mode () const;
 
   private:
+      void setup (const std::string & setting = "");
+
       Ekiga::SettingsPtr h323_settings;
       Ekiga::SettingsPtr video_codecs_settings;
 

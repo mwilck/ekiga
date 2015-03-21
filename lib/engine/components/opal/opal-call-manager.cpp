@@ -70,34 +70,33 @@ Opal::CallManager::~CallManager ()
 }
 
 
-/* CallManager Methods */
-bool Opal::CallManager::dial (const std::string & uri)
-{
-  return endpoint.dial (uri);
-}
-
-
 void Opal::CallManager::hang_up ()
 {
   endpoint.ClearAllCalls (OpalConnection::EndedByLocalUser, FALSE);
 }
 
 
-bool Opal::CallManager::is_supported_uri (const std::string & uri)
+void Opal::CallManager::set_reject_delay (unsigned delay)
 {
-  return endpoint.is_supported_uri (uri);
+  endpoint.set_reject_delay (delay);
 }
 
 
-void Opal::CallManager::set_codecs (Ekiga::CodecList & codecs)
+unsigned Opal::CallManager::get_reject_delay () const
 {
-  endpoint.set_codecs (codecs);
+  return endpoint.get_reject_delay ();
 }
 
 
-const Ekiga::CodecList& Opal::CallManager::get_codecs () const
+void Opal::CallManager::set_auto_answer (bool enabled)
 {
-  return endpoint.get_codecs ();
+  endpoint.set_auto_answer (enabled);
+}
+
+
+bool Opal::CallManager::get_auto_answer () const
+{
+  return endpoint.get_auto_answer ();
 }
 
 
@@ -111,6 +110,18 @@ void Opal::CallManager::set_display_name (const std::string & name)
 const std::string & Opal::CallManager::get_display_name () const
 {
   return display_name;
+}
+
+
+void Opal::CallManager::set_codecs (Ekiga::CodecList & codecs)
+{
+  endpoint.set_codecs (codecs);
+}
+
+
+const Ekiga::CodecList& Opal::CallManager::get_codecs () const
+{
+  return endpoint.get_codecs ();
 }
 
 
@@ -147,30 +158,6 @@ void Opal::CallManager::set_maximum_jitter (unsigned max_val)
 unsigned Opal::CallManager::get_maximum_jitter () const
 {
   return endpoint.GetMaximumJitter ();
-}
-
-
-void Opal::CallManager::set_reject_delay (unsigned delay)
-{
-  endpoint.set_reject_delay (delay);
-}
-
-
-unsigned Opal::CallManager::get_reject_delay () const
-{
-  return endpoint.get_reject_delay ();
-}
-
-
-void Opal::CallManager::set_auto_answer (bool enabled)
-{
-  endpoint.set_auto_answer (enabled);
-}
-
-
-bool Opal::CallManager::get_auto_answer () const
-{
-  return endpoint.get_auto_answer ();
 }
 
 

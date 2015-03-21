@@ -54,13 +54,14 @@ Opal::H323::CallManager::CallManager (Ekiga::ServiceCore& _core,
   video_codecs_settings = Ekiga::SettingsPtr (new Ekiga::Settings (VIDEO_CODECS_SCHEMA));
 
   setup ();
-  std::cout << "hey: Created Opal::H323::CallManager" << std::endl;
 }
 
 
 Opal::H323::CallManager::~CallManager ()
 {
-  std::cout << "hey: Destroyed Opal::H323::CallManager" << std::endl;
+#if DEBUG
+  std::cout << "Opal::H323::CallManager: Destructor invoked" << std::endl;
+#endif
 }
 
 
@@ -72,6 +73,26 @@ void Opal::H323::CallManager::pull_actions (Ekiga::Actor & actor,
   if (is_supported_uri (uri)) {
     add_action (actor, Ekiga::ActionPtr (new Ekiga::Action ("call", _("Call"), boost::bind (&Opal::H323::CallManager::dial, this, uri))));
   }
+}
+
+
+bool Opal::H323::CallManager::dial (const std::string & uri)
+{
+  if (!is_supported_uri (uri))
+    return false;
+
+  boost::shared_ptr<Opal::H323::EndPoint> h323_endpoint = endpoint.get_h323_endpoint ();
+  if (h323_endpoint)
+    return h323_endpoint->SetUpCall (uri);
+
+  return false;
+}
+
+
+bool
+Opal::H323::CallManager::is_supported_uri (const std::string & uri)
+{
+  return (!uri.empty () && uri.find ("h323:") == 0);
 }
 
 
@@ -109,6 +130,67 @@ const Ekiga::CallManager::InterfaceList Opal::H323::CallManager::get_interfaces 
 }
 
 
+bool
+Opal::H323::CallManager::set_listen_port (unsigned port)
+{
+  boost::shared_ptr<Opal::H323::EndPoint> h323_endpoint = endpoint.get_h323_endpoint ();
+  if (h323_endpoint)
+    return h323_endpoint->StartListener (port);
+
+  return false;
+}
+
+
+void
+Opal::H323::CallManager::set_dtmf_mode (unsigned mode)
+{
+  boost::shared_ptr<Opal::H323::EndPoint> h323_endpoint = endpoint.get_h323_endpoint ();
+  if (h323_endpoint) {
+    switch (mode)
+      {
+      case 0:
+        h323_endpoint->SetSendUserInputMode (OpalConnection::SendUserInputAsString);
+        PTRACE (4, "Opal::H323::CallManager\tSet DTMF Mode to String");
+        break;
+      case 1:
+        h323_endpoint->SetSendUserInputMode (OpalConnection::SendUserInputAsTone);
+        PTRACE (4, "Opal::H323::CallManager\tSet DTMF Mode to Tone");
+        break;
+      case 3:
+        h323_endpoint->SetSendUserInputMode (OpalConnection::SendUserInputAsQ931);
+        PTRACE (4, "Opal::H323::CallManager\tSet DTMF Mode to Q931");
+        break;
+      default:
+        h323_endpoint->SetSendUserInputMode (OpalConnection::SendUserInputAsInlineRFC2833);
+        PTRACE (4, "Opal::H323::CallManager\tSet DTMF Mode to RFC2833");
+        break;
+      }
+  }
+}
+
+
+unsigned
+Opal::H323::CallManager::get_dtmf_mode () const
+{
+  boost::shared_ptr<Opal::H323::EndPoint> h323_endpoint = endpoint.get_h323_endpoint ();
+  if (h323_endpoint) {
+    if (h323_endpoint->GetSendUserInputMode () == OpalConnection::SendUserInputAsString)
+      return 0;
+
+    if (h323_endpoint->GetSendUserInputMode () == OpalConnection::SendUserInputAsTone)
+      return 1;
+
+    if (h323_endpoint->GetSendUserInputMode () == OpalConnection::SendUserInputAsInlineRFC2833)
+      return 2;
+
+    if (h323_endpoint->GetSendUserInputMode () == OpalConnection::SendUserInputAsQ931)
+      return 2;
+  }
+
+  g_return_val_if_reached (1);
+}
+
+
 void Opal::H323::CallManager::setup (const std::string & setting)
 {
   std::cout << "In Opal::H323::EndPoint::setup " << std::endl;
@@ -117,7 +199,7 @@ void Opal::H323::CallManager::setup (const std::string & setting)
 
     if (setting.empty () || setting == "listen-port") {
 
-      h323_endpoint->set_listen_port (h323_settings->get_int ("listen-port"));
+      set_listen_port (h323_settings->get_int ("listen-port"));
     }
     if (setting.empty () || setting == "maximum-video-tx-bitrate") {
 
@@ -144,7 +226,7 @@ void Opal::H323::CallManager::setup (const std::string & setting)
     }
     if (setting.empty () || setting == "dtmf-mode") {
 
-      h323_endpoint->set_dtmf_mode (h323_settings->get_enum ("dtmf-mode"));
+      set_dtmf_mode (h323_settings->get_enum ("dtmf-mode"));
     }
     if (setting.empty () || setting == "forward-host") {
 
@@ -153,15 +235,15 @@ void Opal::H323::CallManager::setup (const std::string & setting)
     if (setting.empty () || setting == "video-role") {
 
       /*
-         CallManager::VideoOptions options;
-         endpoint.get_video_options (options);
-         options.extended_video_roles = h323_settings->get_enum ("video-role");
-         endpoint.set_video_options (options);
-       */
-
+      CallManager::VideoOptions options;
+      endpoint.get_video_options (options);
+      options.extended_video_roles = h323_settings->get_enum ("video-role");
+      endpoint.set_video_options (options);
+      */
       std::cout << "FIXME" << std::endl;
     }
     if (setting.empty () || setting == "enable-h239") {
+
       h323_endpoint->SetDefaultH239Control(h323_settings->get_bool ("enable-h239"));
       PTRACE (4, "Opal::H323::EndPoint\tH.239 Control: " << h323_settings->get_bool ("enable-h239"));
     }

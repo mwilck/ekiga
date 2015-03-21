@@ -45,9 +45,14 @@
 
 namespace Opal {
 
-  /* This is the engine CallManager implementation.
+  /* This is the base class for the engine CallManager implementation.
+   *
    * It uses the Opal::Manager object to implement the engine
    * CallManager interface.
+   *
+   * It can not be directly added to the CallCore, some methods need
+   * a more specific implementation in a protocol dependant derived
+   * class.
    */
   class CallManager : public Ekiga::CallManager
   {
@@ -56,30 +61,76 @@ public:
                  Opal::EndPoint& _manager);
     ~CallManager ();
 
-    /* CallManager Methods */
-    bool dial (const std::string & uri);
+    /* CallManager Methods
+     *
+     * Pure virtual methods have a protocol specific implementation.
+     * They are thus implemented by the derived class.
+     */
+    virtual bool dial (const std::string & uri) = 0;
+
     void hang_up ();
-    bool is_supported_uri (const std::string & uri);
-    void set_codecs (Ekiga::CodecList & codecs);
-    const Ekiga::CodecList & get_codecs () const;
+
+    void set_reject_delay (unsigned delay);
+
+    unsigned get_reject_delay () const;
+
+    void set_auto_answer (bool enabled);
+
+    bool get_auto_answer () const;
+
+    virtual bool is_supported_uri (const std::string & uri) = 0;
+
+
+    /*
+     */
+    virtual const std::string & get_protocol_name () const = 0;
+
+    virtual const InterfaceList get_interfaces () const = 0;
+
+    virtual bool set_listen_port (unsigned port) = 0;
+
+    virtual void set_dtmf_mode (unsigned mode) = 0;
+
+    virtual unsigned get_dtmf_mode () const = 0;
+
+
+    /*
+     */
     void set_display_name (const std::string & name);
+
     const std::string & get_display_name () const;
 
+
+    /*
+     */
+    void set_codecs (Ekiga::CodecList & codecs);
+
+    const Ekiga::CodecList & get_codecs () const;
+
     void set_echo_cancellation (bool enabled);
+
     bool get_echo_cancellation () const;
+
     void set_silence_detection (bool enabled);
+
     bool get_silence_detection () const;
+
     void set_maximum_jitter (unsigned max_val);
+
     unsigned get_maximum_jitter () const;
-    void set_reject_delay (unsigned delay);
-    unsigned get_reject_delay () const;
-    void set_auto_answer (bool enabled);
-    bool get_auto_answer () const;
+
+
+protected:
 
     /* Set up endpoint: all options or a specific setting */
     virtual void setup (const std::string & setting = "");
 
+    Ekiga::ServiceCore& core;
+    EndPoint& endpoint;
+
+
 private:
+
     /* We use a callback instead of directly connecting the signal
      * to the add_call method of the CallCore to prevent boost to
      * keep a reference to the CallCore until the ECallManager is
@@ -98,10 +149,6 @@ private:
     Ekiga::SettingsPtr personal_data_settings;
 
     std::string display_name;
-
-protected:
-    Ekiga::ServiceCore& core;
-    EndPoint& endpoint;
   };
 };
 #endif

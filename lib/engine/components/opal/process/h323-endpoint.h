@@ -65,21 +65,13 @@ namespace Opal {
 
       ~EndPoint ();
 
-      /* CallProtocolManager */
-      bool dial (const std::string & uri);
+      bool SetUpCall (const std::string & uri);
       bool transfer (const std::string & uri,
                      bool attended);
       bool message (const Ekiga::ContactPtr & contact,
                     const std::string & uri);
-      bool is_supported_uri (const std::string & uri);
 
-
-      const std::string & get_protocol_name () const;
-
-      void set_dtmf_mode (unsigned mode);
-      unsigned get_dtmf_mode () const;
-
-      bool set_listen_port (unsigned port);
+      bool StartListener (unsigned port);
 
       const Ekiga::CallManager::InterfaceList & get_interfaces () const;
 
@@ -117,9 +109,6 @@ namespace Opal {
       PMutex gk_name_mutex;
       PString gk_name;
 
-      Ekiga::CallManager::Interface listen_iface;
-
-      std::string protocol_name;
       std::string uri_prefix;
       std::string forward_uri;
 

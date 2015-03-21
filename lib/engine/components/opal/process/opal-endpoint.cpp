@@ -184,34 +184,6 @@ Opal::EndPoint::~EndPoint ()
 }
 
 
-bool Opal::EndPoint::dial (const std::string & uri)
-{
-  if (sip_endpoint && sip_endpoint->is_supported_uri (uri))
-    return sip_endpoint->dial (uri);
-
-#ifdef HAVE_H323
-  if (h323_endpoint && h323_endpoint->is_supported_uri (uri))
-    return h323_endpoint->dial (uri);
-#endif
-
-  return false;
-}
-
-
-bool Opal::EndPoint::is_supported_uri (const std::string & uri)
-{
-  if (sip_endpoint && sip_endpoint->is_supported_uri (uri))
-    return true;
-
-#ifdef HAVE_H323
-  if (h323_endpoint && h323_endpoint->is_supported_uri (uri))
-    return true;
-#endif
-
-  return false;
-}
-
-
 void Opal::EndPoint::SetEchoCancellation (bool enabled)
 {
   OpalEchoCanceler::Params ec;
