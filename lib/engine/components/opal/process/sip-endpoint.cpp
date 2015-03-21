@@ -233,24 +233,6 @@ Opal::Sip::EndPoint::StartListener (unsigned port)
 
 
 void
-Opal::Sip::EndPoint::set_outbound_proxy (const std::string & uri)
-{
-  if (!uri.empty ()) {
-    outbound_proxy = uri;
-    PTRACE (4, "Opal::Sip::EndPoint\tSet outbound proxy to " << uri);
-    SetProxy (SIPURL (outbound_proxy));
-  }
-}
-
-
-const std::string&
-Opal::Sip::EndPoint::get_outbound_proxy () const
-{
-  return outbound_proxy;
-}
-
-
-void
 Opal::Sip::EndPoint::enable_account (Account & account)
 {
   new registrar_handler (account, *this, true);
