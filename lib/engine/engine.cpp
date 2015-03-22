@@ -93,7 +93,6 @@ engine_init (Ekiga::ServiceCore& core,
 {
   // AT THE VERY FIRST, create the PProcess
   GnomeMeeting & instance = opal_init_pprocess (argc, argv);
-  instance.Start (core);
 
   // FIRST we add a few things by hand
   // (for speed and because that's less code)
@@ -136,6 +135,9 @@ engine_init (Ekiga::ServiceCore& core,
   if (!videooutput_clutter_gst_init (core, &argc, &argv)) {
     return;
   }
+
+  //
+  instance.Start (core);
 
   // THEN we use the kickstart scheme
 

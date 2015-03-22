@@ -46,8 +46,6 @@
 #include "videoinput-core.h"
 #include "videooutput-core.h"
 
-#include "opal-plugins-hook.h"
-
 #include "sip-call-manager.h"
 
 #ifdef HAVE_H323
@@ -108,8 +106,6 @@ public:
 	&& account_core && audioinput_core && videoinput_core
 	&& audiooutput_core && videooutput_core && personal_details
 	&& !account_store) {
-
-      hook_ekiga_plugins_to_opal (core);
 
       Opal::EndPoint& endpoint = GnomeMeeting::Process ()->GetEndPoint ();
       Opal::Sip::EndPoint& sip_endpoint = endpoint.GetSipEndPoint ();

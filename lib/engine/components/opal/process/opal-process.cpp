@@ -40,9 +40,9 @@
 
 #include <gtk/gtk.h>
 
-#include "runtime.h"
-
 #include "call-core.h"
+
+#include "opal-plugins-hook.h"
 
 GnomeMeeting *GnomeMeeting::GM = 0;
 
@@ -73,6 +73,7 @@ void GnomeMeeting::Main ()
 
 void GnomeMeeting::Start (Ekiga::ServiceCore& core)
 {
+  hook_ekiga_plugins_to_opal (core);
   endpoint = new Opal::EndPoint (core);
 }
 
