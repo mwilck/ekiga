@@ -41,6 +41,7 @@
 #include "call-manager.h"
 #include "opal-endpoint.h"
 #include "opal-call.h"
+#include "opal-codec-description.h"
 
 #include "ekiga-settings.h"
 
@@ -150,6 +151,7 @@ private:
     Ekiga::SettingsPtr personal_data_settings;
 
     std::string display_name;
+    Ekiga::CodecList codecs;
   };
 };
 #endif

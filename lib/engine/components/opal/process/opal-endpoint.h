@@ -56,7 +56,6 @@
 #include "contact-core.h"
 
 #include "actor.h"
-#include "opal-codec-description.h"
 
 class GMPCSSEndpoint;
 
@@ -103,12 +102,7 @@ public:
     void set_auto_answer (bool enabled);
     bool get_auto_answer () const;
 
-    void set_codecs (Ekiga::CodecList & codecs);
-    const Ekiga::CodecList & get_codecs () const;
-
-
     /* Extended stuff, OPAL EndPoint specific */
-
     void set_forward_on_busy (bool enabled);
     bool get_forward_on_busy ();
 
@@ -154,39 +148,22 @@ public:
 
 private:
     boost::weak_ptr<Ekiga::CallCore> call_core;
-    boost::shared_ptr<Ekiga::NotificationCore> notification_core;
 
     OpalCall *CreateCall (void *uri);
     virtual void DestroyCall (OpalCall *);
 
-    virtual bool OnOpenMediaStream (OpalConnection &,
-                                    OpalMediaStream &);
-
-    virtual void OnClosedMediaStream (const OpalMediaStream &);
-
-    void GetAllowedFormats (OpalMediaFormatList & full_list);
-
-    PThread* stun_thread;
     void HandleSTUNResult ();
 
     void ReportSTUNError (const std::string error);
 
-    virtual PBoolean CreateVideoOutputDevice(const OpalConnection & connection,
-                                             const OpalMediaFormat & media_fmt,
-                                             PBoolean preview,
-                                             PVideoOutputDevice * & device,
-                                             PBoolean & auto_delete);
-
-    /* The various related endpoints */
-    GMPCSSEndpoint *pcssEP;
-
-    /* Various mutexes to ensure thread safeness around internal
-       variables */
-    PMutex manager_access_mutex;
-
-    Ekiga::CodecList codecs;
+    virtual PBoolean CreateVideoOutputDevice (const OpalConnection & connection,
+                                              const OpalMediaFormat & media_fmt,
+                                              PBoolean preview,
+                                              PVideoOutputDevice * & device,
+                                              PBoolean & auto_delete);
 
     /* used to get the STUNDetector results */
+    PThread* stun_thread;
     GAsyncQueue* queue;
     unsigned int patience;
 
@@ -198,6 +175,8 @@ private:
     bool stun_enabled;
     bool auto_answer;
 
+    /* The various related endpoints */
+    GMPCSSEndpoint *pcssEP;
     Sip::EndPoint *sip_endpoint;
 #ifdef HAVE_H323
     H323::EndPoint *h323_endpoint;

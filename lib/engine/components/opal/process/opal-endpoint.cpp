@@ -109,7 +109,6 @@ private:
 Opal::EndPoint::EndPoint (Ekiga::ServiceCore& core)
 {
   call_core = core.get<Ekiga::CallCore> ("call-core");
-  notification_core = core.get<Ekiga::NotificationCore> ("notification-core");
 
   stun_thread = 0;
 
@@ -337,38 +336,6 @@ void Opal::EndPoint::set_auto_answer (bool enabled)
 bool Opal::EndPoint::get_auto_answer (void) const
 {
   return auto_answer;
-}
-
-
-const Ekiga::CodecList & Opal::EndPoint::get_codecs () const
-{
-  return codecs;
-}
-
-
-void Opal::EndPoint::set_codecs (Ekiga::CodecList & _codecs)
-{
-  PStringArray mask, order;
-  OpalMediaFormatList formats;
-  OpalMediaFormat::GetAllRegisteredMediaFormats (formats);
-
-  codecs = _codecs;
-
-  for (Ekiga::CodecList::const_iterator iter = codecs.begin ();
-       iter != codecs.end ();
-       iter++)
-    if ((*iter).active)
-      order += (*iter).name;
-
-  formats.Remove (order);
-
-  for (int i = 0 ; i < formats.GetSize () ; i++)
-    mask += (const char *) formats[i];
-
-  SetMediaFormatOrder (order);
-  SetMediaFormatMask (mask);
-  PTRACE (4, "Ekiga\tSet codecs: " << setfill(';') << GetMediaFormatOrder ());
-  PTRACE (4, "Ekiga\tDisabled codecs: " << setfill(';') << GetMediaFormatMask ());
 }
 
 
@@ -604,75 +571,6 @@ Opal::EndPoint::DestroyCall (OpalCall* call)
   delete call;
 }
 
-
-void
-Opal::EndPoint::OnClosedMediaStream (const OpalMediaStream & stream)
-{
-  OpalMediaFormatList list = pcssEP->GetMediaFormats ();
-  OpalManager::OnClosedMediaStream (stream);
-
-  if (list.FindFormat(stream.GetMediaFormat()) != list.end ())
-    dynamic_cast <Opal::Call &> (stream.GetConnection ().GetCall ()).OnClosedMediaStream ((OpalMediaStream &) stream);
-}
-
-
-bool
-Opal::EndPoint::OnOpenMediaStream (OpalConnection & connection,
-				OpalMediaStream & stream)
-{
-  OpalMediaFormatList list = pcssEP->GetMediaFormats ();
-  if (!OpalManager::OnOpenMediaStream (connection, stream))
-    return FALSE;
-
-  if (list.FindFormat(stream.GetMediaFormat()) == list.end ())
-    dynamic_cast <Opal::Call &> (connection.GetCall ()).OnOpenMediaStream (stream);
-
-  return TRUE;
-}
-
-
-void Opal::EndPoint::GetAllowedFormats (OpalMediaFormatList & full_list)
-{
-  OpalMediaFormatList list = OpalTranscoder::GetPossibleFormats (pcssEP->GetMediaFormats ());
-  list.RemoveNonTransportable ();
-  std::list<std::string> black_list;
-
-  black_list.push_back ("GSM-AMR");
-  black_list.push_back ("Linear-16-Stereo-48kHz");
-  black_list.push_back ("LPC-10");
-  black_list.push_back ("SpeexIETFNarrow-11k");
-  black_list.push_back ("SpeexIETFNarrow-15k");
-  black_list.push_back ("SpeexIETFNarrow-18.2k");
-  black_list.push_back ("SpeexIETFNarrow-24.6k");
-  black_list.push_back ("SpeexIETFNarrow-5.95k");
-  black_list.push_back ("iLBC-13k3");
-  black_list.push_back ("iLBC-15k2");
-  black_list.push_back ("RFC4175_YCbCr-4:2:0");
-  black_list.push_back ("RFC4175_RGB");
-
-  // Disable T.140 chat for now
-  black_list.push_back ("T.140");
-
-  // Disable CISCO NSE
-  black_list.push_back ("NamedSignalEvent");
-
-  // Disable Far-End Camera Control for now.
-  black_list.push_back ("FECC-RTP");
-  black_list.push_back ("FECC-HDLC");
-
-
-  // Purge blacklisted codecs
-  for (PINDEX i = 0 ; i < list.GetSize () ; i++) {
-
-    std::list<std::string>::iterator it = find (black_list.begin (), black_list.end (), (const char *) list [i]);
-    if (it == black_list.end ()) {
-      if (list [i].GetMediaType () == OpalMediaType::Audio () || list [i].GetMediaType () == OpalMediaType::Video ())
-        full_list += list [i];
-    }
-  }
-
-  PTRACE(4, "Ekiga\tAll available formats: " << setfill (',') << full_list);
-}
 
 void
 Opal::EndPoint::HandleSTUNResult ()

@@ -113,15 +113,35 @@ const std::string & Opal::CallManager::get_display_name () const
 }
 
 
-void Opal::CallManager::set_codecs (Ekiga::CodecList & codecs)
+void Opal::CallManager::set_codecs (Ekiga::CodecList & _codecs)
 {
-  endpoint.set_codecs (codecs);
+  PStringArray mask, order;
+  OpalMediaFormatList formats;
+  OpalMediaFormat::GetAllRegisteredMediaFormats (formats);
+
+  codecs = _codecs;
+
+  for (Ekiga::CodecList::const_iterator iter = codecs.begin ();
+       iter != codecs.end ();
+       iter++)
+    if ((*iter).active)
+      order += (*iter).name;
+
+  formats.Remove (order);
+
+  for (int i = 0 ; i < formats.GetSize () ; i++)
+    mask += (const char *) formats[i];
+
+  endpoint.SetMediaFormatOrder (order);
+  endpoint.SetMediaFormatMask (mask);
+  PTRACE (4, "Opal::CallManager\tSet codecs: " << setfill(';') << endpoint.GetMediaFormatOrder ());
+  PTRACE (4, "Opal::CallManager\tDisabled codecs: " << setfill(';') << endpoint.GetMediaFormatMask ());
 }
 
 
 const Ekiga::CodecList& Opal::CallManager::get_codecs () const
 {
-  return endpoint.get_codecs ();
+  return codecs;
 }
 
 
