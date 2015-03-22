@@ -218,12 +218,6 @@ namespace Ekiga
      * @return the maximum jitter for calls in seconds.
      */
     virtual unsigned get_maximum_jitter () const = 0;
-
-
-    /*
-     * MISC
-     */
-    boost::signals2::signal<void(void)> ready;
   };
 
   /**

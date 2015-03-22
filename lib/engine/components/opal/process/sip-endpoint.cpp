@@ -130,9 +130,6 @@ Opal::Sip::EndPoint::EndPoint (Opal::EndPoint & _endpoint,
   KeepAliveType type;
   GetKeepAlive (timeout, type);
   SetKeepAlive (timeout, KeepAliveByOPTION);
-
-  std::cout << "FIXME" << std::endl;
-  //manager.ready.connect (boost::bind (&EndPoint::setup, this, ""));
 }
 
 

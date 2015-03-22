@@ -60,10 +60,33 @@
  */
 using namespace Opal;
 
-struct OPALSpark: public Ekiga::Spark
+class OPALSpark: public Ekiga::Spark
 {
+public:
   OPALSpark (): result(false)
   {}
+
+
+  void on_ready (Ekiga::ServiceCore& core,
+#ifdef HAVE_H323
+                 Opal::H323::EndPoint& h323_endpoint,
+#endif
+                 Opal::Sip::EndPoint& sip_endpoint)
+  {
+      boost::shared_ptr<Ekiga::PresenceCore> presence_core = core.get<Ekiga::PresenceCore> ("presence-core");
+      boost::shared_ptr<Ekiga::AccountCore> account_core = core.get<Ekiga::AccountCore> ("account-core");
+      boost::shared_ptr<Opal::Bank> bank = boost::shared_ptr<Opal::Bank> (new Opal::Bank (core,
+#ifdef HAVE_H323
+                                                                                          &h323_endpoint,
+#endif
+                                                                                          &sip_endpoint));
+
+      account_core->add_bank (bank);
+      presence_core->add_cluster (bank);
+      core.add (bank);
+      presence_core->add_presence_publisher (bank);
+  }
+
 
   bool try_initialize_more (Ekiga::ServiceCore& core,
 			    int* /*argc*/,
@@ -104,17 +127,13 @@ struct OPALSpark: public Ekiga::Spark
       call_core->add_manager (h323_call_manager);
 #endif
 
-      std::cout << "FIXME HERE" << std::endl;
-      boost::shared_ptr<Opal::Bank> bank = boost::shared_ptr<Opal::Bank> (new Opal::Bank (core,
+      // We create the Bank
+      endpoint.ready.connect (boost::bind (&OPALSpark::on_ready, this,
+                                           boost::ref (core),
 #ifdef HAVE_H323
-                                                                                          &h323_endpoint,
+                                           boost::ref (h323_endpoint),
 #endif
-                                                                                          &sip_endpoint));
-
-      account_core->add_bank (bank);
-      presence_core->add_cluster (bank);
-      core.add (bank);
-      presence_core->add_presence_publisher (bank);
+                                           boost::ref (sip_endpoint)));
 
       result = true;
     }
@@ -130,6 +149,7 @@ struct OPALSpark: public Ekiga::Spark
 
   bool result;
 };
+
 
 GnomeMeeting &
 opal_init_pprocess (int argc,
@@ -181,9 +201,10 @@ opal_init_pprocess (int argc,
   return instance;
 }
 
+
 void
 opal_init (Ekiga::KickStart& kickstart)
 {
-  boost::shared_ptr<Ekiga::Spark> spark(new OPALSpark);
+  boost::shared_ptr<Ekiga::Spark> spark (new OPALSpark);
   kickstart.add_spark (spark);
 }

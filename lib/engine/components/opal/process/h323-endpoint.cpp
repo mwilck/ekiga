@@ -145,10 +145,8 @@ Opal::H323::EndPoint::EndPoint (Opal::EndPoint & _endpoint,
   /* Ready to take calls */
   GetManager ().AddRouteEntry("h323:.* = pc:*");
   GetManager ().AddRouteEntry("pc:.* = h323:<da>");
-
-  std::cout << "FIXME" << std::endl;
-//  manager.ready.connect (boost::bind (&EndPoint::setup, this, ""));
 }
+
 
 Opal::H323::EndPoint::~EndPoint ()
 {

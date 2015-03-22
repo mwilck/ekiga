@@ -426,7 +426,7 @@ void Opal::EndPoint::set_stun_enabled (bool enabled)
     Ekiga::Runtime::run_in_main (boost::bind (&Opal::EndPoint::HandleSTUNResult, this), 1);
   }
   else {
-    //ready ();
+    ready ();
   }
 
   PTRACE (4, "Opal::EndPoint\tSTUN Detection: " << enabled);
@@ -696,7 +696,7 @@ Opal::EndPoint::HandleSTUNResult ()
     }
     else {
 
-      //ready ();
+      ready ();
     }
   }
   else if (patience == 0) {
@@ -710,7 +710,7 @@ Opal::EndPoint::HandleSTUNResult ()
 		       " still use it, but you need to configure your network settings manually.\n\n"
 		       "Please see http://wiki.ekiga.org/index.php/Enable_port_forwarding_manually for"
 		       " instructions"));
-    //ready ();
+    ready ();
   }
   else if (!got_answer) {
 

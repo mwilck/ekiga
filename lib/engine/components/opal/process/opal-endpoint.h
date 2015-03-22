@@ -153,6 +153,7 @@ public:
     void GetVideoOptions (VideoOptions & options) const;
 
     boost::signals2::signal<void(Opal::Call *)> created_call;
+    boost::signals2::signal<void(void)> ready;
 
 private:
     boost::weak_ptr<Ekiga::CallCore> call_core;
