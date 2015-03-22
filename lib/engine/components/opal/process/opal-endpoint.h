@@ -88,9 +88,6 @@ public:
 
     ~EndPoint ();
 
-    /** Call Manager **/
-    void hang_up ();
-
     void SetEchoCancellation (bool enabled);
     bool GetEchoCancellation () const;
 
