@@ -156,11 +156,11 @@ private:
 
     void ReportSTUNError (const std::string error);
 
-    virtual PBoolean CreateVideoOutputDevice (const OpalConnection & connection,
-                                              const OpalMediaFormat & media_fmt,
-                                              PBoolean preview,
-                                              PVideoOutputDevice * & device,
-                                              PBoolean & auto_delete);
+    PBoolean CreateVideoOutputDevice (const OpalConnection & connection,
+                                      const OpalMediaFormat & media_fmt,
+                                      PBoolean preview,
+                                      PVideoOutputDevice * & device,
+                                      PBoolean & auto_delete);
 
     /* used to get the STUNDetector results */
     PThread* stun_thread;
@@ -176,7 +176,6 @@ private:
     bool auto_answer;
 
     /* The various related endpoints */
-    GMPCSSEndpoint *pcssEP;
     Sip::EndPoint *sip_endpoint;
 #ifdef HAVE_H323
     H323::EndPoint *h323_endpoint;

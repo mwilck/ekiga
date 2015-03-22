@@ -130,8 +130,6 @@ Opal::EndPoint::EndPoint (Ekiga::ServiceCore& core)
   SetTCPPorts (30000, 30100);
   SetRtpIpPorts (5000, 5100);
 
-  pcssEP = NULL;
-
   forward_on_no_answer = false;
   forward_on_busy = false;
   unconditional_forward = false;
@@ -162,10 +160,9 @@ Opal::EndPoint::EndPoint (Ekiga::ServiceCore& core)
 
   // Create endpoints
   // Their destruction is controlled by Opal
-  pcssEP = new GMPCSSEndpoint (*this, core);
-  pcssEP->SetSoundChannelPlayDevice("EKIGA");
-  pcssEP->SetSoundChannelRecordDevice("EKIGA");
-
+  GMPCSSEndpoint *pcss_endpoint = new GMPCSSEndpoint (*this, core);
+  pcss_endpoint->SetSoundChannelPlayDevice("EKIGA");
+  pcss_endpoint->SetSoundChannelRecordDevice("EKIGA");
   sip_endpoint = new Sip::EndPoint (*this, core);
 #ifdef HAVE_H323
   h323_endpoint= new H323::EndPoint (*this, core);
@@ -616,6 +613,7 @@ Opal::EndPoint::HandleSTUNResult ()
   }
 }
 
+
 void
 Opal::EndPoint::ReportSTUNError (const std::string error)
 {
@@ -631,12 +629,13 @@ Opal::EndPoint::ReportSTUNError (const std::string error)
   }
 }
 
+
 PBoolean
-Opal::EndPoint::CreateVideoOutputDevice(const OpalConnection & connection,
-                                     const OpalMediaFormat & media_fmt,
-                                     PBoolean preview,
-                                     PVideoOutputDevice * & device,
-                                     PBoolean & auto_delete)
+Opal::EndPoint::CreateVideoOutputDevice (const OpalConnection & connection,
+                                         const OpalMediaFormat & media_fmt,
+                                         PBoolean preview,
+                                         PVideoOutputDevice * & device,
+                                         PBoolean & auto_delete)
 {
   PVideoDevice::OpenArgs videoArgs;
   PString title;
@@ -658,6 +657,8 @@ Opal::EndPoint::CreateVideoOutputDevice(const OpalConnection & connection,
   media_fmt.AdjustVideoArgs(videoArgs);
 
   auto_delete = true;
-  device = PVideoOutputDevice::CreateOpenedDevice(videoArgs, false);
+  device = PVideoOutputDevice::CreateOpenedDevice (videoArgs, false);
+
   return device != NULL;
 }
+
