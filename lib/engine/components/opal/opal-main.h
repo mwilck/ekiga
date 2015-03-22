@@ -48,4 +48,5 @@ GnomeMeeting &opal_init_pprocess (int argc,
 // Must be called after opal_init_pprocess.
 void opal_init (Ekiga::KickStart& kickstart);
 
+void opal_close (Ekiga::ServiceCore& core);
 #endif

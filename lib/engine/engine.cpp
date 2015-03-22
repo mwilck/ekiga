@@ -203,3 +203,9 @@ engine_init (Ekiga::ServiceCore& core,
   core.dump (std::cout);
 #endif
 }
+
+
+void engine_close (Ekiga::ServiceCore& core)
+{
+  opal_close (core);
+}

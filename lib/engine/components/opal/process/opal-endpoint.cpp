@@ -178,7 +178,6 @@ Opal::EndPoint::~EndPoint ()
 {
   if (stun_thread)
     stun_thread->WaitForTermination ();
-  ClearAllCalls (OpalConnection::EndedByLocalUser, true);
 
   g_async_queue_unref (queue);
 }

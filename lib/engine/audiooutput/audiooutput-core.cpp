@@ -118,7 +118,7 @@ AudioOutputCore::~AudioOutputCore ()
   PWaitAndSignal m_pri(core_mutex[primary]);
   PWaitAndSignal m_sec(core_mutex[secondary]);
 
-  audio_event_scheduler->quit ();
+  delete audio_event_scheduler;
 
   for (std::set<AudioOutputManager*>::iterator iter = managers.begin ();
        iter != managers.end ();

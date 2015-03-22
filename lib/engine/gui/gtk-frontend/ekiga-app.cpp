@@ -571,6 +571,8 @@ gm_application_shutdown (GApplication *app)
       gtk_widget_destroy (GTK_WIDGET (windows_it->data));
   }
 
+  engine_close (self->priv->core);
+
   delete self->priv;
   self->priv = NULL;
 

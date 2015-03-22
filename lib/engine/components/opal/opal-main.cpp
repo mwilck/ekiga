@@ -211,3 +211,27 @@ opal_init (Ekiga::KickStart& kickstart)
   boost::shared_ptr<Ekiga::Spark> spark (new OPALSpark);
   kickstart.add_spark (spark);
 }
+
+
+void
+opal_close (Ekiga::ServiceCore& core)
+{
+  // First remove all Opal::Accounts from our Bank.
+  //
+  // Do it forcibly so we're sure the accounts are freed before our
+  // reference to the endpoints. Indeed they try to unregister from
+  // presence when killed, and that gives a crash if the call manager
+  // is already gone!
+  boost::shared_ptr<Bank> bank = core.get<Bank> ("opal-account-store");
+  boost::shared_ptr<Ekiga::PresenceCore> presence_core = core.get<Ekiga::PresenceCore> ("presence-core");
+  boost::shared_ptr<Ekiga::AccountCore> account_core = core.get<Ekiga::AccountCore> ("account-core");
+
+  bank->clear ();
+  account_core->remove_bank (bank);
+  presence_core->remove_presence_publisher (bank);
+  presence_core->remove_cluster (bank);
+  core.remove (bank);
+
+  // Then execute precleanup routines
+  GnomeMeeting::Process ()->Exit ();
+}

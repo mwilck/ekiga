@@ -72,6 +72,8 @@ class GnomeMeeting : public PProcess
 
   void Start (Ekiga::ServiceCore& core);
 
+  void Exit ();
+
   static GnomeMeeting *Process ();
 
   Opal::EndPoint& GetEndPoint ();

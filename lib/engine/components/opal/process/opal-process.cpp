@@ -52,30 +52,12 @@ GnomeMeeting::GnomeMeeting () : PProcess("", "", MAJOR_VERSION, MINOR_VERSION, B
   GM = this;
 }
 
+
 GnomeMeeting::~GnomeMeeting ()
 {
-  std::cout << "PPROCESS END Start" << std::endl << std::flush;
-  // First remove all Opal::Accounts from our Bank.
-  //
-  // Do it forcibly so we're sure the accounts are freed before our
-  // reference to the endpoints. Indeed they try to unregister from
-  // presence when killed, and that gives a crash if the call manager
-  // is already gone!
-  /*
-     bank->clear ();
-     acore->remove_bank (bank);
-
-     boost::shared_ptr<Ekiga::PresenceCore> pcore = presence_core.lock ();
-     pcore->remove_presence_publisher (bank);
-     pcore->remove_cluster (bank);
-
-     core.remove (bank);
-
-     std::cout << "bank use count" << bank.use_count () << std::endl << std::flush;
-   */
-
-  std::cout << "PPROCESS END END" << std::endl << std::flush;
+  delete endpoint;
 }
+
 
 GnomeMeeting *
 GnomeMeeting::Process ()
@@ -92,6 +74,26 @@ void GnomeMeeting::Main ()
 void GnomeMeeting::Start (Ekiga::ServiceCore& core)
 {
   endpoint = new Opal::EndPoint (core);
+}
+
+
+void GnomeMeeting::Exit ()
+{
+  // Shutting down endpoints and cleaning up factories
+  // are executed by Opal when the process is being
+  // destroyed. However, it triggers segfaults when
+  // using static PMutex instances in OpalGloballyUniqueID
+  // for example.
+  //
+  // That is why we clean things up preventively.
+
+  // Shutdown all endpoints
+  endpoint->ShutDownEndpoints ();
+
+  // Clean up factories
+  PProcessStartupFactory::KeyList_T list = PProcessStartupFactory::GetKeyList();
+  for (PProcessStartupFactory::KeyList_T::const_iterator it = list.begin(); it != list.end(); ++it)
+    PProcessStartupFactory::CreateInstance(*it)->OnShutdown();
 }
 
 
