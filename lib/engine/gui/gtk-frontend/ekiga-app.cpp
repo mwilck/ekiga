@@ -556,11 +556,6 @@ gm_application_shutdown (GApplication *app)
 
   gm_platform_shutdown ();
 
-#ifdef HAVE_DBUS
-  g_object_unref (self->priv->dbus_component);
-#endif
-  g_object_unref (self->priv->builder);
-
   /* Destroy all windows to make sure the UI is gone
    * and we do not block the ServiceCore from
    * destruction.
@@ -569,9 +564,16 @@ gm_application_shutdown (GApplication *app)
     GList *windows_it = g_list_first (windows);
     if (windows_it->data && GTK_IS_WIDGET (windows_it->data))
       gtk_widget_destroy (GTK_WIDGET (windows_it->data));
+    while (gtk_events_pending ())
+      gtk_main_iteration ();
   }
 
   engine_close (self->priv->core);
+
+#ifdef HAVE_DBUS
+  g_object_unref (self->priv->dbus_component);
+#endif
+  g_object_unref (self->priv->builder);
 
   delete self->priv;
   self->priv = NULL;
