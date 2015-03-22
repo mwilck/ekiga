@@ -73,18 +73,18 @@ public:
 #endif
                  Opal::Sip::EndPoint& sip_endpoint)
   {
-      boost::shared_ptr<Ekiga::PresenceCore> presence_core = core.get<Ekiga::PresenceCore> ("presence-core");
-      boost::shared_ptr<Ekiga::AccountCore> account_core = core.get<Ekiga::AccountCore> ("account-core");
-      boost::shared_ptr<Opal::Bank> bank = boost::shared_ptr<Opal::Bank> (new Opal::Bank (core,
+    boost::shared_ptr<Ekiga::PresenceCore> presence_core = core.get<Ekiga::PresenceCore> ("presence-core");
+    boost::shared_ptr<Ekiga::AccountCore> account_core = core.get<Ekiga::AccountCore> ("account-core");
+    boost::shared_ptr<Opal::Bank> bank = boost::shared_ptr<Opal::Bank> (new Opal::Bank (core,
 #ifdef HAVE_H323
-                                                                                          &h323_endpoint,
+                                                                                        &h323_endpoint,
 #endif
-                                                                                          &sip_endpoint));
+                                                                                        &sip_endpoint));
 
-      account_core->add_bank (bank);
-      presence_core->add_cluster (bank);
-      core.add (bank);
-      presence_core->add_presence_publisher (bank);
+    account_core->add_bank (bank);
+    presence_core->add_cluster (bank);
+    core.add (bank);
+    presence_core->add_presence_publisher (bank);
   }
 
 
@@ -111,29 +111,32 @@ public:
 
       hook_ekiga_plugins_to_opal (core);
 
-      // We create our various CallManagers: SIP, H.323
       Opal::EndPoint& endpoint = GnomeMeeting::Process ()->GetEndPoint ();
       Opal::Sip::EndPoint& sip_endpoint = endpoint.GetSipEndPoint ();
-      boost::shared_ptr<Opal::Sip::CallManager> sip_call_manager (new Opal::Sip::CallManager (core, endpoint, sip_endpoint));
-      contact_core->push_back (Ekiga::URIActionProviderPtr (sip_call_manager));
-      presence_core->push_back (Ekiga::URIActionProviderPtr (sip_call_manager));
-      call_core->add_manager (sip_call_manager);
-
 #ifdef HAVE_H323
       Opal::H323::EndPoint& h323_endpoint = endpoint.GetH323EndPoint ();
-      boost::shared_ptr<Opal::H323::CallManager> h323_call_manager (new Opal::H323::CallManager (core, endpoint, h323_endpoint));
-      contact_core->push_back (Ekiga::URIActionProviderPtr (h323_call_manager));
-      presence_core->push_back (Ekiga::URIActionProviderPtr (h323_call_manager));
-      call_core->add_manager (h323_call_manager);
 #endif
 
-      // We create the Bank
+      // We will create the Bank when ready
       endpoint.ready.connect (boost::bind (&OPALSpark::on_ready, this,
                                            boost::ref (core),
 #ifdef HAVE_H323
                                            boost::ref (h323_endpoint),
 #endif
                                            boost::ref (sip_endpoint)));
+
+      // We create our various CallManagers: SIP, H.323
+      boost::shared_ptr<Opal::Sip::CallManager> sip_call_manager (new Opal::Sip::CallManager (core, endpoint, sip_endpoint));
+      contact_core->push_back (Ekiga::URIActionProviderPtr (sip_call_manager));
+      presence_core->push_back (Ekiga::URIActionProviderPtr (sip_call_manager));
+      call_core->add_manager (sip_call_manager);
+
+#ifdef HAVE_H323
+      boost::shared_ptr<Opal::H323::CallManager> h323_call_manager (new Opal::H323::CallManager (core, endpoint, h323_endpoint));
+      contact_core->push_back (Ekiga::URIActionProviderPtr (h323_call_manager));
+      presence_core->push_back (Ekiga::URIActionProviderPtr (h323_call_manager));
+      call_core->add_manager (h323_call_manager);
+#endif
 
       result = true;
     }
