@@ -55,7 +55,6 @@ GnomeMeeting::GnomeMeeting () : PProcess("", "", MAJOR_VERSION, MINOR_VERSION, B
 
 GnomeMeeting::~GnomeMeeting ()
 {
-  delete endpoint;
 }
 
 
@@ -88,8 +87,8 @@ void GnomeMeeting::Exit ()
   //
   // That is why we clean things up preventively.
 
-  // Shutdown all endpoints
-  endpoint->ShutDownEndpoints ();
+  // Destroy the manager & shutdown all endpoints
+  delete endpoint;
 
   // Clean up factories
   PProcessStartupFactory::KeyList_T list = PProcessStartupFactory::GetKeyList();
