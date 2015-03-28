@@ -114,21 +114,9 @@ Opal::Call::Call (Opal::EndPoint& _manager,
 
 Opal::Call::~Call ()
 {
-  remove_action ("hangup");
-  remove_action ("reject");
-  remove_action ("answer");
-  remove_action ("transfer");
-  remove_action ("hold");
-  remove_action ("transmit-video");
+  Ekiga::Runtime::run_in_main (boost::ref (removed));
 }
 
-void
-Opal::Call::set_engine_services (boost::shared_ptr<Ekiga::NotificationCore> _notification_core,
-				 boost::shared_ptr<Ekiga::CallCore> _call_core)
-{
-  notification_core = _notification_core;
-  call_core = _call_core;
-}
 
 void
 Opal::Call::hang_up ()
@@ -495,7 +483,7 @@ Opal::Call::OnEstablished (OpalConnection & connection)
     remove_action ("reject");
 
     parse_info (connection);
-    Ekiga::Runtime::run_in_main (boost::bind (&Opal::Call::emit_established_in_main, this));
+    Ekiga::Runtime::run_in_main (boost::ref (established));
   }
 
   if (PIsDescendant(&connection, OpalRTPConnection)) {
@@ -637,9 +625,9 @@ Opal::Call::OnCleared ()
     }
 
     if (IsEstablished () || is_outgoing ())
-      Ekiga::Runtime::run_in_main (boost::bind (&Opal::Call::emit_cleared_in_main, this, reason));
+      Ekiga::Runtime::run_in_main (boost::bind (boost::ref (cleared), reason));
     else
-      Ekiga::Runtime::run_in_main (boost::bind (&Opal::Call::emit_missed_in_main, this));
+      Ekiga::Runtime::run_in_main (boost::ref (missed));
 }
 
 
@@ -670,7 +658,7 @@ Opal::Call::OnSetUp (OpalConnection & connection)
   call_setup = true;
   new CallSetup (*this, connection);
 
-  Ekiga::Runtime::run_in_main (boost::bind (&Opal::Call::emit_setup_in_main, this));
+  Ekiga::Runtime::run_in_main (boost::ref (setup));
 
   return true;
 }
@@ -680,7 +668,7 @@ PBoolean
 Opal::Call::OnAlerting (OpalConnection & connection)
 {
   if (!PIsDescendant(&connection, OpalPCSSConnection))
-    Ekiga::Runtime::run_in_main (boost::bind (&Opal::Call::emit_ringing_in_main, this));
+    Ekiga::Runtime::run_in_main (boost::ref (ringing));
 
   return OpalCall::OnAlerting (connection);
 }
@@ -692,9 +680,9 @@ Opal::Call::OnHold (OpalConnection & /*connection*/,
                     bool on_hold)
 {
   if (on_hold)
-    Ekiga::Runtime::run_in_main (boost::bind (&Opal::Call::emit_held_in_main, this));
+    Ekiga::Runtime::run_in_main (boost::ref (held));
   else
-    Ekiga::Runtime::run_in_main (boost::bind (&Opal::Call::emit_retrieved_in_main, this));
+    Ekiga::Runtime::run_in_main (boost::ref (retrieved));
 }
 
 
@@ -754,60 +742,4 @@ Opal::Call::OnNoAnswerTimeout (PTimer &,
     else
       Clear (OpalConnection::EndedByNoAnswer);
   }
-}
-
-void
-Opal::Call::emit_established_in_main ()
-{
-  established ();
-}
-
-void
-Opal::Call::emit_missed_in_main ()
-{
-  boost::shared_ptr<Ekiga::CallCore> ccore = call_core.lock ();
-  if (!ccore)
-    return;
-
-  std::stringstream msg;
-
-  missed ();
-  msg << _("Missed call from") << " " << get_remote_party_name ();
-  boost::shared_ptr<Ekiga::Notification> notif (new Ekiga::Notification (Ekiga::Notification::Warning,
-                                                                         _("Missed call"), msg.str (),
-                                                                         _("Call"),
-                                                                         boost::bind (&Ekiga::CallCore::dial, ccore,
-                                                                                      get_remote_uri ())));
-  notification_core->push_notification (notif);
-}
-
-void
-Opal::Call::emit_cleared_in_main (const std::string reason)
-{
-  cleared (reason);
-  removed ();
-}
-
-void
-Opal::Call::emit_setup_in_main ()
-{
-  setup ();
-}
-
-void
-Opal::Call::emit_ringing_in_main ()
-{
-  ringing ();
-}
-
-void
-Opal::Call::emit_held_in_main ()
-{
-  held ();
-}
-
-void
-Opal::Call::emit_retrieved_in_main ()
-{
-  retrieved ();
 }

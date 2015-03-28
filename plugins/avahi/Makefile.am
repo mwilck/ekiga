@@ -8,6 +8,7 @@ AM_CXXFLAGS = \
 	-I$(top_srcdir)/lib/engine/account \
 	-I$(top_srcdir)/lib/engine/presence \
 	-I$(top_srcdir)/lib/engine/addressbook \
+	-I$(top_srcdir)/lib/engine/notification \
 	-I$(top_srcdir)/lib/engine/protocol
 
 libgmavahi_la_SOURCES = \

@@ -97,14 +97,14 @@ engine_init (Ekiga::ServiceCore& core,
   // FIRST we add a few things by hand
   // (for speed and because that's less code)
 
-  Ekiga::ServicePtr notification_core(new Ekiga::NotificationCore);
+  boost::shared_ptr<Ekiga::NotificationCore> notification_core(new Ekiga::NotificationCore);
   core.add (notification_core);
 
   boost::shared_ptr<Ekiga::FriendOrFoe> friend_or_foe (new Ekiga::FriendOrFoe);
   boost::shared_ptr<Ekiga::FoeList> foe_list (new Ekiga::FoeList (friend_or_foe));
   boost::shared_ptr<Ekiga::AccountCore> account_core (new Ekiga::AccountCore);
   boost::shared_ptr<Ekiga::ContactCore> contact_core (new Ekiga::ContactCore);
-  boost::shared_ptr<Ekiga::CallCore> call_core (new Ekiga::CallCore (friend_or_foe));
+  boost::shared_ptr<Ekiga::CallCore> call_core (new Ekiga::CallCore (friend_or_foe, notification_core));
   boost::shared_ptr<Ekiga::ChatCore> chat_core (new Ekiga::ChatCore);
   boost::shared_ptr<Ekiga::VideoOutputCore> videooutput_core (new Ekiga::VideoOutputCore);
   boost::shared_ptr<Ekiga::VideoInputCore> videoinput_core (new Ekiga::VideoInputCore (core, videooutput_core));

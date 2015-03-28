@@ -36,6 +36,7 @@
 #include "config.h"
 
 #include <glib/gi18n.h>
+#include <sstream>
 
 #include "call-core.h"
 
@@ -44,7 +45,8 @@
 
 using namespace Ekiga;
 
-CallCore::CallCore (boost::shared_ptr<Ekiga::FriendOrFoe> iff_): iff(iff_)
+CallCore::CallCore (boost::shared_ptr<Ekiga::FriendOrFoe> _iff,
+                    boost::shared_ptr<Ekiga::NotificationCore> _notification_core) : iff(_iff), notification_core(_notification_core)
 {
 }
 
@@ -171,7 +173,7 @@ void CallCore::add_call (boost::shared_ptr<Call> call)
 
   conns->add (call->ringing.connect (boost::bind (boost::ref (ringing_call), call)));
   conns->add (call->setup.connect (boost::bind (boost::ref (setup_call), call)));
-  conns->add (call->missed.connect (boost::bind (boost::ref (missed_call), call)));
+  conns->add (call->missed.connect (boost::bind (&CallCore::on_missed_call, this, call)));
   conns->add (call->cleared.connect (boost::bind (boost::ref (cleared_call), call, _1)));
   conns->add (call->established.connect (boost::bind (boost::ref (established_call), call)));
   conns->add (call->held.connect (boost::bind (boost::ref (held_call), call)));
@@ -180,7 +182,7 @@ void CallCore::add_call (boost::shared_ptr<Call> call)
   conns->add (call->stream_closed.connect (boost::bind (boost::ref (stream_closed), call, _1, _2, _3)));
   conns->add (call->stream_paused.connect (boost::bind (boost::ref (stream_paused), call, _1, _2)));
   conns->add (call->stream_resumed.connect (boost::bind (boost::ref (stream_resumed), call, _1, _2)));
-  conns->add (call->removed.connect (boost::bind (&CallCore::on_call_removed, this, call)));
+  conns->add (call->removed.connect (boost::bind (&CallCore::remove_call, this, call)));
 
   call_connections [call->get_id ()] = conns;
 }
@@ -192,7 +194,16 @@ void CallCore::remove_call (boost::shared_ptr<Call> call)
 }
 
 
-void CallCore::on_call_removed (boost::shared_ptr<Call> call)
+void CallCore::on_missed_call (boost::shared_ptr<Call> call)
 {
-  remove_call (call);
+  boost::shared_ptr<Ekiga::NotificationCore> _notification_core = notification_core.lock ();
+  if (_notification_core) {
+    std::stringstream msg;
+    msg << _("Missed call from") << " " << call->get_remote_party_name ();
+    boost::shared_ptr<Ekiga::Notification> notif (new Ekiga::Notification (Ekiga::Notification::Warning,
+                                                                           _("Missed call"), msg.str (),
+                                                                           _("Call"),
+                                                                           boost::bind (&Ekiga::CallCore::dial, this, call->get_remote_uri ())));
+    _notification_core->push_notification (notif);
+  }
 }

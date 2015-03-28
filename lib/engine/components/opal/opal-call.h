@@ -157,8 +157,6 @@ public:
      */
     time_t get_start_time () const;
 
-    void set_engine_services (boost::shared_ptr<Ekiga::NotificationCore> _notification_core,
-			      boost::shared_ptr<Ekiga::CallCore> _call_core);
 
 public:
 
@@ -226,9 +224,6 @@ private:
     /*
      * Variables
      */
-    boost::shared_ptr<Ekiga::NotificationCore> notification_core;
-    boost::weak_ptr<Ekiga::CallCore> call_core;
-
     std::string local_party_name;
     std::string remote_party_name;
     std::string remote_uri;
@@ -241,14 +236,6 @@ private:
     bool outgoing;
 
 private:
-
-    void emit_established_in_main ();
-    void emit_missed_in_main ();
-    void emit_cleared_in_main (const std::string reason);
-    void emit_setup_in_main ();
-    void emit_ringing_in_main ();
-    void emit_held_in_main ();
-    void emit_retrieved_in_main ();
 
     PTime start_time;
     RTCPStatistics statistics;

@@ -46,6 +46,7 @@
 #include "call.h"
 #include "call-manager.h"
 #include "contact-core.h"
+#include "notification-core.h"
 
 #include <boost/smart_ptr.hpp>
 #include <boost/signals2.hpp>
@@ -83,7 +84,8 @@ namespace Ekiga
 
       /** The constructor
        */
-      CallCore (boost::shared_ptr<Ekiga::FriendOrFoe> iff);
+      CallCore (boost::shared_ptr<Ekiga::FriendOrFoe> iff,
+                boost::shared_ptr<Ekiga::NotificationCore> notification_core);
       ~CallCore ();
 
 
@@ -194,9 +196,11 @@ namespace Ekiga
 
   private:
 
-      void on_call_removed (boost::shared_ptr<Call> call);
+      void on_missed_call (boost::shared_ptr<Call> call);
 
       boost::shared_ptr<Ekiga::FriendOrFoe> iff;
+      boost::weak_ptr<Ekiga::NotificationCore> notification_core;
+
       std::map<std::string, boost::shared_ptr<Ekiga::scoped_connections> > call_connections;
     };
 
