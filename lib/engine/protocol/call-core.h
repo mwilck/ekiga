@@ -39,7 +39,6 @@
 #include "form-request.h"
 #include "chain-of-responsibility.h"
 #include "services.h"
-#include "scoped-connections.h"
 #include "reflister.h"
 
 #include "friend-or-foe/friend-or-foe.h"
@@ -201,7 +200,7 @@ namespace Ekiga
       boost::shared_ptr<Ekiga::FriendOrFoe> iff;
       boost::weak_ptr<Ekiga::NotificationCore> notification_core;
 
-      std::map<std::string, boost::shared_ptr<Ekiga::scoped_connections> > call_connections;
+      RefLister<Ekiga::Call> calls;
     };
 
 /**

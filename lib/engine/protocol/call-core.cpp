@@ -169,28 +169,24 @@ void CallCore::add_call (boost::shared_ptr<Call> call)
 
   created_call (call);
 
-  boost::shared_ptr<Ekiga::scoped_connections> conns(new Ekiga::scoped_connections);
-
-  conns->add (call->ringing.connect (boost::bind (boost::ref (ringing_call), call)));
-  conns->add (call->setup.connect (boost::bind (boost::ref (setup_call), call)));
-  conns->add (call->missed.connect (boost::bind (&CallCore::on_missed_call, this, call)));
-  conns->add (call->cleared.connect (boost::bind (boost::ref (cleared_call), call, _1)));
-  conns->add (call->established.connect (boost::bind (boost::ref (established_call), call)));
-  conns->add (call->held.connect (boost::bind (boost::ref (held_call), call)));
-  conns->add (call->retrieved.connect (boost::bind (boost::ref (retrieved_call), call)));
-  conns->add (call->stream_opened.connect (boost::bind (boost::ref (stream_opened), call, _1, _2, _3)));
-  conns->add (call->stream_closed.connect (boost::bind (boost::ref (stream_closed), call, _1, _2, _3)));
-  conns->add (call->stream_paused.connect (boost::bind (boost::ref (stream_paused), call, _1, _2)));
-  conns->add (call->stream_resumed.connect (boost::bind (boost::ref (stream_resumed), call, _1, _2)));
-  conns->add (call->removed.connect (boost::bind (&CallCore::remove_call, this, call)));
-
-  call_connections [call->get_id ()] = conns;
+  calls.add_object (call);
+  calls.add_connection (call, call->ringing.connect (boost::bind (boost::ref (ringing_call), call)));
+  calls.add_connection (call, call->setup.connect (boost::bind (boost::ref (setup_call), call)));
+  calls.add_connection (call, call->missed.connect (boost::bind (&CallCore::on_missed_call, this, call)));
+  calls.add_connection (call, call->cleared.connect (boost::bind (boost::ref (cleared_call), call, _1)));
+  calls.add_connection (call, call->established.connect (boost::bind (boost::ref (established_call), call)));
+  calls.add_connection (call, call->held.connect (boost::bind (boost::ref (held_call), call)));
+  calls.add_connection (call, call->retrieved.connect (boost::bind (boost::ref (retrieved_call), call)));
+  calls.add_connection (call, call->stream_opened.connect (boost::bind (boost::ref (stream_opened), call, _1, _2, _3)));
+  calls.add_connection (call, call->stream_closed.connect (boost::bind (boost::ref (stream_closed), call, _1, _2, _3)));
+  calls.add_connection (call, call->stream_paused.connect (boost::bind (boost::ref (stream_paused), call, _1, _2)));
+  calls.add_connection (call, call->stream_resumed.connect (boost::bind (boost::ref (stream_resumed), call, _1, _2)));
 }
 
 
 void CallCore::remove_call (boost::shared_ptr<Call> call)
 {
-  call_connections.erase (call->get_id ());
+  calls.remove_object (call);
 }
 
 
