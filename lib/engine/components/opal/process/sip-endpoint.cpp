@@ -116,7 +116,7 @@ Opal::Sip::EndPoint::EndPoint (Opal::EndPoint & _endpoint,
   SetInviteTimeout (PTimeInterval (0, 60));
   SetNonInviteTimeout (PTimeInterval (0, 6));
   SetRetryTimeouts (500, 4000);
-  SetMaxRetries (8);
+  SetMaxRetries (20);
 
   /* Update the User Agent */
   SetUserAgent ("Ekiga/" PACKAGE_VERSION);
