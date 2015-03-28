@@ -150,7 +150,6 @@ private:
     boost::weak_ptr<Ekiga::CallCore> call_core;
 
     OpalCall *CreateCall (void *uri);
-    virtual void DestroyCall (OpalCall *);
 
     void HandleSTUNResult ();
 

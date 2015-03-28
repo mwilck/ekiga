@@ -562,12 +562,6 @@ OpalCall *Opal::EndPoint::CreateCall (void *uri)
   return call;
 }
 
-void
-Opal::EndPoint::DestroyCall (OpalCall* call)
-{
-  delete call;
-}
-
 
 void
 Opal::EndPoint::HandleSTUNResult ()
