@@ -172,7 +172,7 @@ void Opal::Sip::CallManager::setup (const std::string & setting)
   if (setting.empty () || setting == "binding-timeout")  {
     int delay = sip_settings->get_int ("binding-timeout");
     PTRACE (4, "Opal::Sip::CallManager\tNat binding delay set to " << delay);
-    sip_endpoint.SetKeepAlive (PTimeInterval (0, delay), SIPEndPoint::KeepAliveByOPTION);
+    sip_endpoint.SetKeepAlive (PTimeInterval (0, delay), SIPEndPoint::KeepAliveByCRLF);
   }
   if (setting.empty () || setting == "outbound-proxy-host")  {
     std::string uri = sip_settings->get_string ("outbound-proxy-host");
