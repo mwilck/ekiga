@@ -206,4 +206,6 @@ void CallCore::on_missed_call (boost::shared_ptr<Call> call)
                                                                            boost::bind (&Ekiga::CallCore::dial, this, call->get_remote_uri ())));
     _notification_core->push_notification (notif);
   }
+
+  missed_call (call);
 }
