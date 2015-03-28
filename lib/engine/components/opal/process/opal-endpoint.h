@@ -83,7 +83,7 @@ namespace Opal {
 
 public:
 
-    EndPoint (Ekiga::ServiceCore & _core);
+    EndPoint (Ekiga::ServiceCore& _core);
 
     ~EndPoint ();
 
@@ -147,9 +147,11 @@ public:
     boost::signals2::signal<void(void)> ready;
 
 private:
-    boost::weak_ptr<Ekiga::CallCore> call_core;
-
     OpalCall *CreateCall (void *uri);
+
+    void DestroyCall (OpalCall * call);
+
+    void OnCreatedCall (Call *call);
 
     void HandleSTUNResult ();
 
@@ -179,6 +181,7 @@ private:
 #ifdef HAVE_H323
     H323::EndPoint *h323_endpoint;
 #endif
+    Ekiga::ServiceCore& core;
   };
 };
 #endif

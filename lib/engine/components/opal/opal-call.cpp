@@ -101,6 +101,7 @@ Opal::Call::Call (Opal::EndPoint& _manager,
     call_setup(false), outgoing(false)
 {
   NoAnswerTimer.SetNotifier (PCREATE_NOTIFIER (OnNoAnswerTimeout));
+  NoAnswerTimer.SetInterval (0, 5);
 
   add_action (Ekiga::ActionPtr (new Ekiga::Action ("hangup", _("Hangup"),
                                                    boost::bind (&Call::hang_up, this))));
@@ -112,9 +113,9 @@ Opal::Call::Call (Opal::EndPoint& _manager,
   }
 }
 
+
 Opal::Call::~Call ()
 {
-  Ekiga::Runtime::run_in_main (boost::ref (removed));
 }
 
 
@@ -628,6 +629,8 @@ Opal::Call::OnCleared ()
       Ekiga::Runtime::run_in_main (boost::bind (boost::ref (cleared), reason));
     else
       Ekiga::Runtime::run_in_main (boost::ref (missed));
+
+    Ekiga::Runtime::run_in_main (boost::ref (removed));
 }
 
 

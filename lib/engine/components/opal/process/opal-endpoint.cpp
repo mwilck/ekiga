@@ -106,10 +106,8 @@ private:
 
 
 /* The class */
-Opal::EndPoint::EndPoint (Ekiga::ServiceCore& core)
+Opal::EndPoint::EndPoint (Ekiga::ServiceCore& _core) : core(_core)
 {
-  call_core = core.get<Ekiga::CallCore> ("call-core");
-
   stun_thread = 0;
 
   /* Initialise the endpoint parameters */
@@ -369,7 +367,6 @@ bool Opal::EndPoint::get_unconditional_forward ()
 
 void Opal::EndPoint::set_stun_server (const std::string & server)
 {
-  std::cout << "Set STUN SERVER TO " << server << std::endl << std::flush;
   if (server.empty ())
     stun_server = "stun.ekiga.net";
 
@@ -557,9 +554,24 @@ OpalCall *Opal::EndPoint::CreateCall (void *uri)
   else
     call = new Opal::Call (*this, "");
 
-  Ekiga::Runtime::run_in_main (boost::bind (boost::ref (created_call), call));
+  Ekiga::Runtime::run_in_main (boost::bind (&Opal::EndPoint::OnCreatedCall, this, call));
 
   return call;
+}
+
+
+void
+Opal::EndPoint::DestroyCall (G_GNUC_UNUSED OpalCall *call)
+{
+}
+
+
+void
+Opal::EndPoint::OnCreatedCall (Opal::Call *_call)
+{
+  boost::shared_ptr<Ekiga::CallCore> call_core = core.get<Ekiga::CallCore> ("call-core");
+  boost::shared_ptr<Opal::Call> call(_call);
+  call_core->add_call (call);
 }
 
 
@@ -611,16 +623,11 @@ Opal::EndPoint::HandleSTUNResult ()
 void
 Opal::EndPoint::ReportSTUNError (const std::string error)
 {
-  boost::shared_ptr<Ekiga::CallCore> ccore = call_core.lock ();
-  if (!ccore)
-    return;
+  boost::shared_ptr<Ekiga::CallCore> call_core = core.get<Ekiga::CallCore> ("call-core");
 
   // notice we're in for an infinite loop if nobody ever reports to the user!
-  if ( !ccore->errors (error)) {
-
-    Ekiga::Runtime::run_in_main (boost::bind (&Opal::EndPoint::ReportSTUNError, this, error),
-				 10);
-  }
+  if (!call_core->errors (error))
+    Ekiga::Runtime::run_in_main (boost::bind (&Opal::EndPoint::ReportSTUNError, this, error), 10);
 }
 
 

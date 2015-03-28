@@ -48,8 +48,6 @@
 Opal::CallManager::CallManager (Ekiga::ServiceCore& _core,
                                 Opal::EndPoint& _endpoint) : core(_core), endpoint(_endpoint)
 {
-  endpoint.created_call.connect (boost::bind (&Opal::CallManager::on_created_call, this, _1));
-
   /* Setup things */
   Ekiga::SettingsCallback setup_cb = boost::bind (&Opal::CallManager::setup, this, _1);
   nat_settings = Ekiga::SettingsPtr (new Ekiga::Settings (NAT_SCHEMA, setup_cb));
@@ -293,15 +291,4 @@ void Opal::CallManager::setup (const std::string & setting)
       endpoint.SetTCPPorts (min_port, max_port);
     }
   }
-}
-
-
-void Opal::CallManager::on_created_call (Opal::Call *_call)
-{
-  boost::shared_ptr<Ekiga::CallCore> call_core = core.get<Ekiga::CallCore> ("call-core");
-  // beware that opal puts calls in PSafePtr objects,
-  // and hence we must not delete them ourselves
-
-  boost::shared_ptr<Opal::Call> call(_call, null_deleter2 ());
-  call_core->add_call (call);
 }

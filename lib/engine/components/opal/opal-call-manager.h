@@ -133,13 +133,6 @@ protected:
 
 private:
 
-    /* We use a callback instead of directly connecting the signal
-     * to the add_call method of the CallCore to prevent boost to
-     * keep a reference to the CallCore until the ECallManager is
-     * destroyed, which would be a crossed reference.
-     */
-    void on_created_call (Opal::Call *call);
-
     Ekiga::SettingsPtr nat_settings;
     Ekiga::SettingsPtr audio_codecs_settings;
     Ekiga::SettingsPtr video_codecs_settings;
