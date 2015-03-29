@@ -72,15 +72,10 @@ namespace Ekiga
    * This is true even in the case of settings which are common to several
    * CallManagers.
    */
-  class CallCore:
-    public Service,
-    protected RefLister<CallManager>
+  class CallCore: public Service
     {
 
   public:
-      typedef RefLister<CallManager>::iterator iterator;
-      typedef RefLister<CallManager>::const_iterator const_iterator;
-
       /** The constructor
        */
       CallCore (boost::shared_ptr<Ekiga::FriendOrFoe> iff,
@@ -124,16 +119,23 @@ namespace Ekiga
        */
       void remove_manager (boost::shared_ptr<CallManager> manager);
 
-      /** Return iterator to beginning
-       * @return iterator to beginning
+      typedef typename RefLister<CallManager>::const_iterator const_iterator;
+      typedef typename RefLister<CallManager>::iterator iterator;
+
+      /** Returns an iterator to the first Book of the collection
        */
       iterator begin ();
-      const_iterator begin () const;
 
-      /** Return iterator to end
-       * @return iterator to end
+      /** Returns an iterator to the last Book of the collection
        */
       iterator end ();
+
+      /** Returns a const iterator to the first Book of the collection
+       */
+      const_iterator begin () const;
+
+      /** Returns a const iterator to the last Book of the collection
+       */
       const_iterator end () const;
 
       /** This signal is emitted when a Ekiga::CallManager has been
@@ -201,6 +203,7 @@ namespace Ekiga
       boost::weak_ptr<Ekiga::NotificationCore> notification_core;
 
       RefLister<Ekiga::Call> calls;
+      RefLister<Ekiga::CallManager> managers;
     };
 
 /**

@@ -61,7 +61,7 @@ CallCore::~CallCore ()
 
 void CallCore::add_manager (boost::shared_ptr<CallManager> manager)
 {
-  add_object (manager);
+  managers.add_object (manager);
   manager_added (manager);
 }
 
@@ -69,31 +69,31 @@ void CallCore::add_manager (boost::shared_ptr<CallManager> manager)
 void CallCore::remove_manager (boost::shared_ptr<CallManager> manager)
 {
   manager_removed (manager);
-  remove_object (manager);
+  managers.remove_object (manager);
 }
 
 
 CallCore::iterator CallCore::begin ()
 {
-  return RefLister<CallManager>::begin ();
+  return managers.begin ();
 }
 
 
 CallCore::const_iterator CallCore::begin () const
 {
-  return RefLister<CallManager>::begin ();
+  return managers.begin ();
 }
 
 
 CallCore::iterator CallCore::end ()
 {
-  return RefLister<CallManager>::end ();
+  return managers.end ();
 }
 
 
 CallCore::const_iterator CallCore::end () const
 {
-  return RefLister<CallManager>::end ();
+  return managers.end ();
 }
 
 
