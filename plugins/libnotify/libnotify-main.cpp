@@ -48,6 +48,22 @@
 #include "call-core.h"
 #include "scoped-connections.h"
 
+
+struct call_reference
+{
+  call_reference(boost::shared_ptr<Ekiga::Call> _call): call(_call)
+  {}
+
+  boost::shared_ptr<Ekiga::Call> call;
+};
+
+static void
+delete_call_reference (gpointer data)
+{
+  delete (call_reference *)data;
+}
+
+
 class LibNotify:
   public Ekiga::Service
 {
@@ -74,25 +90,12 @@ private:
   void on_notification_added (boost::shared_ptr<Ekiga::Notification> notif);
   void on_notification_removed (boost::shared_ptr<Ekiga::Notification> notif);
   void on_call_notification (boost::shared_ptr<Ekiga::Call> call);
-  void on_call_notification_closed (gpointer self);
+  void on_call_notification_closed (gpointer self, call_reference *ref);
 
   typedef std::map<boost::shared_ptr<Ekiga::Notification>, std::pair<boost::signals2::connection, boost::shared_ptr<NotifyNotification> > > container_type;
   container_type live;
 };
 
-struct call_reference
-{
-  call_reference(boost::shared_ptr<Ekiga::Call> _call): call(_call)
-  {}
-
-  boost::shared_ptr<Ekiga::Call> call;
-};
-
-static void
-delete_call_reference (gpointer data)
-{
-  delete (call_reference *)data;
-}
 
 static void
 call_notification_action_cb (NotifyNotification *notification,
@@ -253,9 +256,10 @@ LibNotify::on_notification_removed (boost::shared_ptr<Ekiga::Notification> notif
 }
 
 void
-LibNotify::on_call_notification_closed (gpointer self)
+LibNotify::on_call_notification_closed (gpointer self, call_reference *ref)
 {
   notify_notification_close (NOTIFY_NOTIFICATION (self), NULL);
+  delete ref;
 }
 
 void
@@ -282,14 +286,13 @@ LibNotify::on_call_notification (boost::shared_ptr<Ekiga::Call> call)
                                     );
   ref = new call_reference (call);
   notify_notification_add_action (notify, "reject", _("Reject"), call_notification_action_cb, ref, delete_call_reference);
-  ref = new call_reference (call);
   notify_notification_add_action (notify, "accept", _("Accept"), call_notification_action_cb, ref, delete_call_reference);
   notify_notification_set_timeout (notify, NOTIFY_EXPIRES_NEVER);
   notify_notification_set_urgency (notify, NOTIFY_URGENCY_CRITICAL);
 
-  connections.add (call->established.connect (boost::bind (&LibNotify::on_call_notification_closed, this, (gpointer) notify)));
-  connections.add (call->missed.connect (boost::bind (&LibNotify::on_call_notification_closed, this, (gpointer) notify)));
-  connections.add (call->cleared.connect (boost::bind (&LibNotify::on_call_notification_closed, this, (gpointer) notify)));
+  connections.add (call->established.connect (boost::bind (&LibNotify::on_call_notification_closed, this, (gpointer) notify, ref)));
+  connections.add (call->missed.connect (boost::bind (&LibNotify::on_call_notification_closed, this, (gpointer) notify, ref)));
+  connections.add (call->cleared.connect (boost::bind (&LibNotify::on_call_notification_closed, this, (gpointer) notify, ref)));
 
   notify_notification_show (notify, NULL);
 
