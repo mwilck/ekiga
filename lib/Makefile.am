@@ -145,6 +145,7 @@ libekiga_la_SOURCES += \
 	engine/framework/map-key-iterator.h \
 	engine/framework/map-key-const-iterator.h \
 	engine/framework/reflister.h \
+	engine/framework/dynamic-object-store.h \
 	engine/framework/chain-of-responsibility.h \
 	engine/framework/device-def.h \
 	engine/framework/form-builder.h \
@@ -176,6 +177,7 @@ libekiga_la_SOURCES += \
 	engine/framework/ptr_array_iterator.h \
 	engine/framework/ptr_array_const_iterator.h \
 	engine/framework/live-object.h \
+	engine/framework/dynamic-object.h \
 	engine/framework/filterable.h \
 	engine/framework/scoped-connections.h
 
