@@ -37,15 +37,14 @@
 #ifndef __CALL_H__
 #define __CALL_H__
 
+#include <boost/smart_ptr.hpp>
 #include <boost/signals2.hpp>
 #include <boost/bind.hpp>
 #include <string>
 
-#include <boost/smart_ptr.hpp>
-
 #include "actor.h"
-#include "live-object.h"
 #include "rtcp-statistics.h"
+#include "dynamic-object.h"
 
 namespace Ekiga
 {
@@ -61,8 +60,8 @@ namespace Ekiga
    */
   class Call
     : public Actor,
-      public virtual LiveObject
-    {
+      public DynamicObject<Call>
+  {
 
   public:
 
@@ -167,69 +166,65 @@ namespace Ekiga
 
       /* Signal emitted when the call is established
        */
-      boost::signals2::signal<void(void)> established;
+      boost::signals2::signal<void(boost::shared_ptr<Ekiga::Call>)> established;
 
       /* Signal emitted when an established call is cleared
        * @param: a string describing why the call was cleared
        */
-      boost::signals2::signal<void(std::string)> cleared;
+      boost::signals2::signal<void(boost::shared_ptr<Ekiga::Call>, std::string)> cleared;
 
       /* Signal emitted when the call is missed, ie cleared
        * without having been established
        */
-      boost::signals2::signal<void(void)> missed;
+      boost::signals2::signal<void(boost::shared_ptr<Ekiga::Call>)> missed;
 
       /* Signal emitted when the call is forwarded
        */
-      boost::signals2::signal<void(void)> forwarded;
+      boost::signals2::signal<void(boost::shared_ptr<Ekiga::Call>)> forwarded;
 
       /* Signal emitted when the call is held
        */
-      boost::signals2::signal<void(void)> held;
+      boost::signals2::signal<void(boost::shared_ptr<Ekiga::Call>)> held;
 
       /* Signal emitted when the call is being setup
        */
-      boost::signals2::signal<void(void)> setup;
+      boost::signals2::signal<void(boost::shared_ptr<Ekiga::Call>)> setup;
 
       /* Signal emitted when the call is retrieved
        */
-      boost::signals2::signal<void(void)> retrieved;
+      boost::signals2::signal<void(boost::shared_ptr<Ekiga::Call>)> retrieved;
 
       /* Signal emitted when the remote party is ringing
        */
-      boost::signals2::signal<void(void)> ringing;
+      boost::signals2::signal<void(boost::shared_ptr<Ekiga::Call>)> ringing;
 
       /* Signal emitted when a stream is opened
        * @param the stream name
        * @param the stream type
        * @param transmission or reception
        */
-      boost::signals2::signal<void(std::string, StreamType, bool)> stream_opened;
+      boost::signals2::signal<void(boost::shared_ptr<Ekiga::Call>, std::string, StreamType, bool)> stream_opened;
 
       /* Signal emitted when a stream is closed
        * @param the stream name
        * @param the stream type
        * @param transmission or reception
        */
-      boost::signals2::signal<void(std::string, StreamType, bool)> stream_closed;
+      boost::signals2::signal<void(boost::shared_ptr<Ekiga::Call>, std::string, StreamType, bool)> stream_closed;
 
       /* Signal emitted when a transmitted stream is paused
        * @param the stream name
        * @param the stream type
        * @param transmission or reception
        */
-      boost::signals2::signal<void(std::string, StreamType)> stream_paused;
+      boost::signals2::signal<void(boost::shared_ptr<Ekiga::Call>, std::string, StreamType)> stream_paused;
 
       /* Signal emitted when a transmitted stream is resumed
        * @param the stream name
        * @param the stream type
        * @param transmission or reception
        */
-      boost::signals2::signal<void(std::string, StreamType)> stream_resumed;
-
-      /** This signal is emitted when the Call is removed.
-       */
-      boost::signals2::signal<void(void)> removed;
+      boost::signals2::signal<void(boost::shared_ptr<Ekiga::Call>, std::string, StreamType)> stream_resumed;
     };
 
 /**

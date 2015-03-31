@@ -547,31 +547,51 @@ void Opal::EndPoint::GetVideoOptions (Opal::EndPoint::VideoOptions & options) co
 
 OpalCall *Opal::EndPoint::CreateCall (void *uri)
 {
-  Opal::Call* call = 0;
+  boost::shared_ptr<Ekiga::CallCore> call_core = core.get<Ekiga::CallCore> ("call-core");
+  Opal::Call* _call = 0;
 
   if (uri != 0)
-    call = new Opal::Call (*this, (const char *) uri);
+    _call = new Opal::Call (*this, (const char *) uri);
   else
-    call = new Opal::Call (*this, "");
+    _call = new Opal::Call (*this, "");
 
-  Ekiga::Runtime::run_in_main (boost::bind (&Opal::EndPoint::OnCreatedCall, this, call));
-
-  return call;
-}
-
-
-void
-Opal::EndPoint::DestroyCall (G_GNUC_UNUSED OpalCall *call)
-{
-}
-
-
-void
-Opal::EndPoint::OnCreatedCall (Opal::Call *_call)
-{
-  boost::shared_ptr<Ekiga::CallCore> call_core = core.get<Ekiga::CallCore> ("call-core");
+  /* We want to hold a shared_ptr to the call object
+   * before the call object has a chance to emit any
+   * signal, otherwise shared_from_this might fail.
+   */
   boost::shared_ptr<Opal::Call> call(_call);
-  call_core->add_call (call);
+
+  /* We could pass a const reference to the shared_ptr, but then
+   * we would not be sure that the shared_ptr still exist when
+   * Opal returns the _call instance to its internal system.
+   */
+  Ekiga::Runtime::run_in_main (boost::bind (&Ekiga::CallCore::add_call, call_core, call));
+
+  return _call;
+}
+
+
+void
+Opal::EndPoint::DestroyCall (OpalCall *__call)
+{
+  /* This is suboptimal, but we have no other way.
+   *
+   * We remove the object from the collection when Opal decides to do it.
+   *
+   * Once it has been done, if there are no more references, the object can
+   * be destroyed by boost.
+   */
+  Opal::Call *_call = dynamic_cast<Opal::Call *>(__call);
+  boost::shared_ptr<Ekiga::CallCore> call_core = core.get<Ekiga::CallCore> ("call-core");
+  if (_call)
+    Ekiga::Runtime::run_in_main (boost::bind (static_cast<void (Opal::EndPoint::*)(boost::shared_ptr<Ekiga::Call>)>(&Opal::EndPoint::DestroyCall), this, _call->get_shared_ptr ()));
+}
+
+
+void
+Opal::EndPoint::DestroyCall (boost::shared_ptr<Ekiga::Call> call)
+{
+  call->removed (call);
 }
 
 

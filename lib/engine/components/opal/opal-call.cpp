@@ -101,7 +101,6 @@ Opal::Call::Call (Opal::EndPoint& _manager,
     call_setup(false), outgoing(false)
 {
   NoAnswerTimer.SetNotifier (PCREATE_NOTIFIER (OnNoAnswerTimeout));
-  NoAnswerTimer.SetInterval (0, 5);
 
   add_action (Ekiga::ActionPtr (new Ekiga::Action ("hangup", _("Hangup"),
                                                    boost::bind (&Call::hang_up, this))));
@@ -116,6 +115,9 @@ Opal::Call::Call (Opal::EndPoint& _manager,
 
 Opal::Call::~Call ()
 {
+#if DEBUG
+  std::cout << "Opal::Call: Destructor invoked" << std::endl << std::flush;
+#endif
 }
 
 
@@ -233,9 +235,9 @@ Opal::Call::toggle_stream_pause (StreamType type)
       stream->SetPaused (!paused);
 
       if (paused)
-	Ekiga::Runtime::run_in_main (boost::bind (boost::ref (stream_resumed), stream_name, type));
+	Ekiga::Runtime::run_in_main (boost::bind (boost::ref (stream_resumed), get_shared_ptr (), stream_name, type));
       else
-	Ekiga::Runtime::run_in_main (boost::bind (boost::ref (stream_paused), stream_name, type));
+	Ekiga::Runtime::run_in_main (boost::bind (boost::ref (stream_paused), get_shared_ptr (), stream_name, type));
     }
   }
 }
@@ -484,7 +486,7 @@ Opal::Call::OnEstablished (OpalConnection & connection)
     remove_action ("reject");
 
     parse_info (connection);
-    Ekiga::Runtime::run_in_main (boost::ref (established));
+    Ekiga::Runtime::run_in_main (boost::bind (boost::ref (established), get_shared_ptr ()));
   }
 
   if (PIsDescendant(&connection, OpalRTPConnection)) {
@@ -626,11 +628,9 @@ Opal::Call::OnCleared ()
     }
 
     if (IsEstablished () || is_outgoing ())
-      Ekiga::Runtime::run_in_main (boost::bind (boost::ref (cleared), reason));
+      Ekiga::Runtime::run_in_main (boost::bind (boost::ref (cleared), get_shared_ptr (), reason));
     else
-      Ekiga::Runtime::run_in_main (boost::ref (missed));
-
-    Ekiga::Runtime::run_in_main (boost::ref (removed));
+      Ekiga::Runtime::run_in_main (boost::bind (boost::ref (missed), get_shared_ptr ()));
 }
 
 
@@ -661,7 +661,8 @@ Opal::Call::OnSetUp (OpalConnection & connection)
   call_setup = true;
   new CallSetup (*this, connection);
 
-  Ekiga::Runtime::run_in_main (boost::ref (setup));
+  std::cout << "Call SETUP" << std::endl;
+  Ekiga::Runtime::run_in_main (boost::bind (boost::ref (setup), get_shared_ptr ()));
 
   return true;
 }
@@ -671,7 +672,7 @@ PBoolean
 Opal::Call::OnAlerting (OpalConnection & connection)
 {
   if (!PIsDescendant(&connection, OpalPCSSConnection))
-    Ekiga::Runtime::run_in_main (boost::ref (ringing));
+    Ekiga::Runtime::run_in_main (boost::bind (boost::ref (ringing), get_shared_ptr ()));
 
   return OpalCall::OnAlerting (connection);
 }
@@ -683,9 +684,9 @@ Opal::Call::OnHold (OpalConnection & /*connection*/,
                     bool on_hold)
 {
   if (on_hold)
-    Ekiga::Runtime::run_in_main (boost::ref (held));
+    Ekiga::Runtime::run_in_main (boost::bind (boost::ref (held), get_shared_ptr ()));
   else
-    Ekiga::Runtime::run_in_main (boost::ref (retrieved));
+    Ekiga::Runtime::run_in_main (boost::bind (boost::ref (retrieved), get_shared_ptr ()));
 }
 
 
@@ -700,7 +701,7 @@ Opal::Call::OnOpenMediaStream (OpalMediaStream & stream)
   std::transform (stream_name.begin (), stream_name.end (), stream_name.begin (), (int (*) (int)) toupper);
   is_transmitting = !stream.IsSource ();
 
-  Ekiga::Runtime::run_in_main (boost::bind (boost::ref (stream_opened), stream_name, type, is_transmitting));
+  Ekiga::Runtime::run_in_main (boost::bind (boost::ref (stream_opened), get_shared_ptr (), stream_name, type, is_transmitting));
 
   if (type == Ekiga::Call::Video)
     add_action (Ekiga::ActionPtr (new Ekiga::Action ("transmit-video", _("Transmit Video"),
@@ -719,7 +720,7 @@ Opal::Call::OnClosedMediaStream (OpalMediaStream & stream)
   std::transform (stream_name.begin (), stream_name.end (), stream_name.begin (), (int (*) (int)) toupper);
   is_transmitting = !stream.IsSource ();
 
-  Ekiga::Runtime::run_in_main (boost::bind (boost::ref (stream_closed), stream_name, type, is_transmitting));
+  Ekiga::Runtime::run_in_main (boost::bind (boost::ref (stream_closed), get_shared_ptr (), stream_name, type, is_transmitting));
 }
 
 

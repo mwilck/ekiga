@@ -40,7 +40,7 @@
 #include "chain-of-responsibility.h"
 #include "services.h"
 #include "reflister.h"
-
+#include "dynamic-object-store.h"
 #include "friend-or-foe/friend-or-foe.h"
 #include "call.h"
 #include "call-manager.h"
@@ -102,12 +102,12 @@ namespace Ekiga
       /** Adds a call handled by the CallCore serice.
        * @param call is the call to be added.
        */
-      void add_call (boost::shared_ptr<Call> call);
+      void add_call (const boost::shared_ptr<Call> & call);
 
       /** Remove a call handled by the CallCore serice.
        * @param call is the call to be removed.
        */
-      void remove_call (boost::shared_ptr<Call> call);
+      void remove_call (const boost::shared_ptr<Call> & call);
 
       /** Adds a CallManager to the CallCore service.
        * @param The manager to be added.
@@ -197,12 +197,12 @@ namespace Ekiga
 
   private:
 
-      void on_missed_call (boost::shared_ptr<Call> call);
+      void on_missed_call (const boost::shared_ptr<Call> & call);
 
       boost::shared_ptr<Ekiga::FriendOrFoe> iff;
       boost::weak_ptr<Ekiga::NotificationCore> notification_core;
 
-      RefLister<Ekiga::Call> calls;
+      DynamicObjectStore<Ekiga::Call> calls;
       RefLister<Ekiga::CallManager> managers;
     };
 

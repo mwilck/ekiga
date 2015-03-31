@@ -143,7 +143,6 @@ public:
     void SetVideoOptions (const VideoOptions & options);
     void GetVideoOptions (VideoOptions & options) const;
 
-    boost::signals2::signal<void(Opal::Call *)> created_call;
     boost::signals2::signal<void(void)> ready;
 
 private:
@@ -151,7 +150,7 @@ private:
 
     void DestroyCall (OpalCall * call);
 
-    void OnCreatedCall (Call *call);
+    void DestroyCall (boost::shared_ptr<Ekiga::Call> call);
 
     void HandleSTUNResult ();
 
