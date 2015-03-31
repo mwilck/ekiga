@@ -167,7 +167,6 @@ void CallCore::add_call (const boost::shared_ptr<Call> & call)
     return;
   }
 
-  created_call (call);
   calls.add_object (call);
 
   // Relay signals
@@ -183,13 +182,15 @@ void CallCore::add_call (const boost::shared_ptr<Call> & call)
   calls.add_connection (call, call->stream_paused.connect (boost::bind (boost::ref (stream_paused), _1, _2, _3)));
   calls.add_connection (call, call->stream_resumed.connect (boost::bind (boost::ref (stream_resumed), _1, _2, _3)));
   calls.add_connection (call, call->removed.connect (boost::bind (&CallCore::remove_call, this, _1)));
+
+  created_call (call);
 }
 
 
 void CallCore::remove_call (const boost::shared_ptr<Call> & call)
 {
   calls.remove_object (call);
-  call_removed (call);
+  removed_call (call);
 }
 
 

@@ -183,6 +183,7 @@ namespace Ekiga
       boost::signals2::signal<void(boost::shared_ptr<Call>)> missed_call;
       boost::signals2::signal<void(boost::shared_ptr<Call>, std::string)> cleared_call;
       boost::signals2::signal<void(boost::shared_ptr<Call>)> created_call;
+      boost::signals2::signal<void(boost::shared_ptr<Call>)> removed_call;
       boost::signals2::signal<void(boost::shared_ptr<Call>)> established_call;
       boost::signals2::signal<void(boost::shared_ptr<Call>)> held_call;
       boost::signals2::signal<void(boost::shared_ptr<Call>)> retrieved_call;
