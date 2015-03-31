@@ -126,12 +126,14 @@ public:
       contact_core->push_back (Ekiga::URIActionProviderPtr (sip_call_manager));
       presence_core->push_back (Ekiga::URIActionProviderPtr (sip_call_manager));
       call_core->add_manager (sip_call_manager);
+      sip_call_manager->setup ();
 
 #ifdef HAVE_H323
       boost::shared_ptr<Opal::H323::CallManager> h323_call_manager (new Opal::H323::CallManager (core, endpoint, h323_endpoint));
       contact_core->push_back (Ekiga::URIActionProviderPtr (h323_call_manager));
       presence_core->push_back (Ekiga::URIActionProviderPtr (h323_call_manager));
       call_core->add_manager (h323_call_manager);
+      h323_call_manager->setup ();
 #endif
 
       result = true;

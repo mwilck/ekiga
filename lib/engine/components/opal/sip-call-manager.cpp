@@ -54,8 +54,6 @@ Opal::Sip::CallManager::CallManager (Ekiga::ServiceCore& _core,
   /* Setup things */
   Ekiga::SettingsCallback setup_cb = boost::bind (&Opal::Sip::CallManager::setup, this, _1);
   sip_settings = Ekiga::SettingsPtr (new Ekiga::Settings (SIP_SCHEMA, setup_cb));
-
-  setup ();
 }
 
 
@@ -72,6 +70,7 @@ void Opal::Sip::CallManager::pull_actions (Ekiga::Actor & actor,
                                            G_GNUC_UNUSED const std::string & name,
                                            const std::string & uri)
 {
+  std::cout << "ici " << is_supported_uri (uri) << "  " << uri << std::endl;
   if (is_supported_uri (uri)) {
     add_action (actor, Ekiga::ActionPtr (new Ekiga::Action ("call", _("Call"), boost::bind (&Opal::CallManager::dial, this, uri))));
   }

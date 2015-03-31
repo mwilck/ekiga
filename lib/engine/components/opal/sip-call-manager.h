@@ -83,8 +83,9 @@ namespace Opal {
 
       unsigned get_dtmf_mode () const;
 
-  private:
+      /* Setup */
       void setup (const std::string & setting = "");
+  private:
 
       Ekiga::SettingsPtr sip_settings;
       Opal::Sip::EndPoint& sip_endpoint;

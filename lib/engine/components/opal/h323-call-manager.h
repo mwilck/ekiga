@@ -83,8 +83,9 @@ namespace Opal {
 
       unsigned get_dtmf_mode () const;
 
-  private:
+      /* Setup */
       void setup (const std::string & setting = "");
+  private:
 
       Ekiga::SettingsPtr h323_settings;
       Ekiga::SettingsPtr video_codecs_settings;

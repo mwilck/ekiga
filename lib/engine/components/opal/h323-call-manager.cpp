@@ -55,8 +55,6 @@ Opal::H323::CallManager::CallManager (Ekiga::ServiceCore& _core,
   Ekiga::SettingsCallback setup_cb = boost::bind (&Opal::H323::CallManager::setup, this, _1);
   h323_settings = Ekiga::SettingsPtr (new Ekiga::Settings (H323_SCHEMA, setup_cb));
   video_codecs_settings = Ekiga::SettingsPtr (new Ekiga::Settings (VIDEO_CODECS_SCHEMA));
-
-  setup ();
 }
 
 
