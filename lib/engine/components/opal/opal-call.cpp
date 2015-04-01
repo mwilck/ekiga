@@ -70,30 +70,6 @@ strip_special_chars (std::string& str, char* special_chars, bool start)
   }
 }
 
-class CallSetup : public PThread
-{
-  PCLASSINFO(CallSetup, PThread);
-
-public:
-  CallSetup (Opal::Call & _call,
-             OpalConnection & _connection)
-    : PThread (1000, AutoDeleteThread),
-      call (_call),
-      connection (_connection)
-  {
-    this->Resume ();
-  }
-
-  void Main ()
-  {
-    call.DoSetUp (connection);
-  }
-
-private:
-  Opal::Call & call;
-  OpalConnection & connection;
-};
-
 
 Opal::Call::Call (Opal::EndPoint& _manager,
 		  const std::string& uri)
@@ -659,10 +635,10 @@ Opal::Call::OnSetUp (OpalConnection & connection)
   parse_info (connection);
 
   call_setup = true;
-  new CallSetup (*this, connection);
 
-  std::cout << "Call SETUP" << std::endl;
-  Ekiga::Runtime::run_in_main (boost::bind (boost::ref (setup), get_shared_ptr ()));
+  OpalCall::OnSetUp (connection);
+  Ekiga::Runtime::run_in_main (boost::bind (boost::ref (setup),
+                                            get_shared_ptr ()));
 
   return true;
 }
