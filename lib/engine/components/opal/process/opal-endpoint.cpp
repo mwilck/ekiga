@@ -133,7 +133,7 @@ Opal::EndPoint::EndPoint (Ekiga::ServiceCore& _core) : core(_core)
   forward_on_busy = false;
   unconditional_forward = false;
   stun_enabled = false;
-  auto_answer = false;
+  autoAnswer = false;
 
   // Create video devices
   PVideoDevice::OpenArgs video = GetVideoOutputDevice();
@@ -323,15 +323,15 @@ unsigned Opal::EndPoint::GetNoAnswerDelay () const
 }
 
 
-void Opal::EndPoint::set_auto_answer (bool enabled)
+void Opal::EndPoint::SetAutoAnswer (bool enabled)
 {
-  auto_answer = enabled;
+  autoAnswer = enabled;
 }
 
 
-bool Opal::EndPoint::get_auto_answer (void) const
+bool Opal::EndPoint::GetAutoAnswer (void) const
 {
-  return auto_answer;
+  return autoAnswer;
 }
 
 
@@ -667,5 +667,16 @@ Opal::EndPoint::CreateVideoOutputDevice (const OpalConnection & connection,
   device = PVideoOutputDevice::CreateOpenedDevice (videoArgs, false);
 
   return device != NULL;
+}
+
+
+OpalConnection::AnswerCallResponse
+Opal::EndPoint::OnAnswerCall (G_GNUC_UNUSED OpalConnection & connection,
+                              G_GNUC_UNUSED const PString & caller)
+{
+  if (autoAnswer)
+    return OpalConnection::AnswerCallNow;
+
+  return OpalConnection::AnswerCallPending;
 }
 

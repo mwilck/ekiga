@@ -88,13 +88,13 @@ unsigned Opal::CallManager::get_reject_delay () const
 
 void Opal::CallManager::set_auto_answer (bool enabled)
 {
-  endpoint.set_auto_answer (enabled);
+  endpoint.SetAutoAnswer (enabled);
 }
 
 
 bool Opal::CallManager::get_auto_answer () const
 {
-  return endpoint.get_auto_answer ();
+  return endpoint.GetAutoAnswer ();
 }
 
 
@@ -204,7 +204,7 @@ void Opal::CallManager::setup (const std::string & setting)
     set_reject_delay (call_options_settings->get_int ("no-answer-timeout"));
 
   if (setting.empty () || setting == "auto-answer")
-    endpoint.set_auto_answer (call_options_settings->get_bool ("auto-answer"));
+    set_auto_answer (call_options_settings->get_bool ("auto-answer"));
 
   if (setting.empty () || setting == "full-name")
     set_display_name (personal_data_settings->get_string ("full-name"));

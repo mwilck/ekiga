@@ -99,8 +99,8 @@ public:
     void SetNoAnswerDelay (unsigned delay);
     unsigned GetNoAnswerDelay () const;
 
-    void set_auto_answer (bool enabled);
-    bool get_auto_answer () const;
+    void SetAutoAnswer (bool enabled);
+    bool GetAutoAnswer () const;
 
     /* Extended stuff, OPAL EndPoint specific */
     void set_forward_on_busy (bool enabled);
@@ -162,6 +162,10 @@ private:
                                       PVideoOutputDevice * & device,
                                       PBoolean & auto_delete);
 
+    OpalConnection::AnswerCallResponse OnAnswerCall (OpalConnection & connection,
+                                                     const PString & caller);
+
+
     /* used to get the STUNDetector results */
     PThread* stun_thread;
     GAsyncQueue* queue;
@@ -169,11 +173,11 @@ private:
 
     std::string stun_server;
     unsigned noAnswerDelay;
+    bool autoAnswer;
     bool forward_on_busy;
     bool unconditional_forward;
     bool forward_on_no_answer;
     bool stun_enabled;
-    bool auto_answer;
 
     /* The various related endpoints */
     Sip::EndPoint *sip_endpoint;
