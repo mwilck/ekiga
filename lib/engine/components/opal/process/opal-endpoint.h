@@ -102,16 +102,6 @@ public:
     void SetAutoAnswer (bool enabled);
     bool GetAutoAnswer () const;
 
-    /* Extended stuff, OPAL EndPoint specific */
-    void set_forward_on_busy (bool enabled);
-    bool get_forward_on_busy ();
-
-    void set_forward_on_no_answer (bool enabled);
-    bool get_forward_on_no_answer ();
-
-    void set_unconditional_forward (bool enabled);
-    bool get_unconditional_forward ();
-
     void set_stun_server (const std::string & server);
     void set_stun_enabled (bool);
 
@@ -174,9 +164,6 @@ private:
     std::string stun_server;
     unsigned noAnswerDelay;
     bool autoAnswer;
-    bool forward_on_busy;
-    bool unconditional_forward;
-    bool forward_on_no_answer;
     bool stun_enabled;
 
     /* The various related endpoints */

@@ -129,9 +129,6 @@ Opal::EndPoint::EndPoint (Ekiga::ServiceCore& _core) : core(_core)
   SetRtpIpPorts (5000, 5100);
   SetSignalingTimeout (1500);  // Useless to wait 10 seconds for a connection
 
-  forward_on_no_answer = false;
-  forward_on_busy = false;
-  unconditional_forward = false;
   stun_enabled = false;
   autoAnswer = false;
 
@@ -332,37 +329,6 @@ void Opal::EndPoint::SetAutoAnswer (bool enabled)
 bool Opal::EndPoint::GetAutoAnswer (void) const
 {
   return autoAnswer;
-}
-
-
-void Opal::EndPoint::set_forward_on_no_answer (bool enabled)
-{
-  forward_on_no_answer = enabled;
-}
-
-bool Opal::EndPoint::get_forward_on_no_answer ()
-{
-  return forward_on_no_answer;
-}
-
-void Opal::EndPoint::set_forward_on_busy (bool enabled)
-{
-  forward_on_busy = enabled;
-}
-
-bool Opal::EndPoint::get_forward_on_busy ()
-{
-  return forward_on_busy;
-}
-
-void Opal::EndPoint::set_unconditional_forward (bool enabled)
-{
-  unconditional_forward = enabled;
-}
-
-bool Opal::EndPoint::get_unconditional_forward ()
-{
-  return unconditional_forward;
 }
 
 
