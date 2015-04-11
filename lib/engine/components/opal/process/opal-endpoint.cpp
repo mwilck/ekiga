@@ -127,6 +127,7 @@ Opal::EndPoint::EndPoint (Ekiga::ServiceCore& _core) : core(_core)
   SetUDPPorts (5000, 5100);
   SetTCPPorts (30000, 30100);
   SetRtpIpPorts (5000, 5100);
+  SetSignalingTimeout (1500);  // Useless to wait 10 seconds for a connection
 
   forward_on_no_answer = false;
   forward_on_busy = false;
@@ -548,26 +549,11 @@ void Opal::EndPoint::GetVideoOptions (Opal::EndPoint::VideoOptions & options) co
 OpalCall *Opal::EndPoint::CreateCall (void *uri)
 {
   boost::shared_ptr<Ekiga::CallCore> call_core = core.get<Ekiga::CallCore> ("call-core");
-  Opal::Call* _call = 0;
+  boost::shared_ptr<Opal::Call> call = Opal::Call::create (*this, uri ? (const char*) uri : std::string ());
 
-  if (uri != 0)
-    _call = new Opal::Call (*this, (const char *) uri);
-  else
-    _call = new Opal::Call (*this, "");
-
-  /* We want to hold a shared_ptr to the call object
-   * before the call object has a chance to emit any
-   * signal, otherwise shared_from_this might fail.
-   */
-  boost::shared_ptr<Opal::Call> call(_call);
-
-  /* We could pass a const reference to the shared_ptr, but then
-   * we would not be sure that the shared_ptr still exist when
-   * Opal returns the _call instance to its internal system.
-   */
   Ekiga::Runtime::run_in_main (boost::bind (&Ekiga::CallCore::add_call, call_core, call));
 
-  return _call;
+  return call.get ();
 }
 
 
@@ -584,7 +570,7 @@ Opal::EndPoint::DestroyCall (OpalCall *__call)
   Opal::Call *_call = dynamic_cast<Opal::Call *>(__call);
   boost::shared_ptr<Ekiga::CallCore> call_core = core.get<Ekiga::CallCore> ("call-core");
   if (_call)
-    Ekiga::Runtime::run_in_main (boost::bind (static_cast<void (Opal::EndPoint::*)(boost::shared_ptr<Ekiga::Call>)>(&Opal::EndPoint::DestroyCall), this, _call->get_shared_ptr ()));
+    Ekiga::Runtime::run_in_main (boost::bind (static_cast<void (Opal::EndPoint::*)(boost::shared_ptr<Ekiga::Call>)>(&Opal::EndPoint::DestroyCall), this, _call->shared_from_this ()));
 }
 
 

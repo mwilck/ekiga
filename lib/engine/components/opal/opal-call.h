@@ -61,22 +61,33 @@ namespace Opal {
       public Ekiga::Call
   {
 
-public:
-
+private:
     Call (EndPoint& _manager,
           const std::string & uri);
+
+public:
     ~Call ();
+
+    /*
+     * This method will create and return an shared_ptr to the object.
+     *
+     * Classical constructors should not be used as we need to have
+     * a shared_ptr to the object as soon as possible to be able to
+     * use shared_from_this from the beginning.
+     */
+    static boost::shared_ptr<Call> create (EndPoint& _manager,
+                                           const std::string & uri);
 
     /*
      * Call Management
      */
 
     /** Hang up the call
-    */
+     */
     void hang_up ();
 
     /** Answer an incoming call
-    */
+     */
     void answer ();
 
     /** Transfer the call.
@@ -90,7 +101,7 @@ public:
     bool transfer (std::string uri);
 
     /** Put the call on hold or retrieve it
-    */
+     */
     void toggle_hold ();
 
     /** Toggle stream transmission (if any)
@@ -161,7 +172,7 @@ public:
 public:
 
     /* Implementation of inherited methods
-    */
+     */
     bool is_outgoing () const;
 
     const RTCPStatistics & get_statistics ();
@@ -202,18 +213,18 @@ private:
     void parse_info (OpalConnection & connection);
 
     PSafePtr<OpalConnection> get_remote_connection ()
-    {
-      PSafePtr<OpalConnection> connection;
-      for (PSafePtr<OpalConnection> iterConn (connectionsActive, PSafeReference); iterConn != NULL; ++iterConn) {
-        if (PSafePtrCast<OpalConnection, OpalPCSSConnection> (iterConn) == NULL) {
-          connection = iterConn;
-          if (!connection.SetSafetyMode(PSafeReadWrite))
-            connection.SetNULL();
-          break;
+      {
+        PSafePtr<OpalConnection> connection;
+        for (PSafePtr<OpalConnection> iterConn (connectionsActive, PSafeReference); iterConn != NULL; ++iterConn) {
+          if (PSafePtrCast<OpalConnection, OpalPCSSConnection> (iterConn) == NULL) {
+            connection = iterConn;
+            if (!connection.SetSafetyMode(PSafeReadWrite))
+              connection.SetNULL();
+            break;
+          }
         }
+        return connection;
       }
-      return connection;
-    }
 
     /*
      *
@@ -236,7 +247,6 @@ private:
     bool outgoing;
 
 private:
-
     PTime start_time;
     RTCPStatistics statistics;
     bool auto_answer;

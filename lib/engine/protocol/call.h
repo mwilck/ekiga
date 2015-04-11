@@ -65,12 +65,6 @@ namespace Ekiga
 
   public:
 
-      Call ()
-        {
-        }
-
-      virtual ~Call () { };
-
       enum StreamType { Audio, Video };
 
       /*

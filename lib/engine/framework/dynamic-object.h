@@ -47,29 +47,37 @@ namespace Ekiga
 
   template<typename ObjectType>
   class DynamicObject : public virtual boost::enable_shared_from_this<ObjectType>
-  {
+    {
   public:
 
-    virtual ~DynamicObject () { }
+      /*
+       * Classical constructors should not be used as we need to have
+       * a shared_ptr to the object as soon as possible to be able to
+       * use shared_from_this from the beginning.
+       *
+       * The following method should be implemeted in the child class
+       * in order to create the object:
+       *
+       * static boost::shared_ptr<ChildObject> create ();
+       *
+       */
 
-    boost::shared_ptr<ObjectType> get_shared_ptr () { return this->shared_from_this (); };
+      /**
+       * Signals on that object
+       */
 
-    /**
-     * Signals on that object
-     */
-
-    /** This signal is emitted when the object has been updated.
-     */
-    boost::signals2::signal<void(boost::shared_ptr<ObjectType>)> updated;
+      /** This signal is emitted when the object has been updated.
+       */
+      boost::signals2::signal<void(boost::shared_ptr<ObjectType>)> updated;
 
 
-    /** This signal is emitted when the object has been removed.
-     */
-    boost::signals2::signal<void(boost::shared_ptr<ObjectType>)> removed;
+      /** This signal is emitted when the object has been removed.
+       */
+      boost::signals2::signal<void(boost::shared_ptr<ObjectType>)> removed;
 
-    /** This chain allows the object to present forms to the user
-     */
-    ChainOfResponsibility<FormRequestPtr> questions;
-  };
+      /** This chain allows the object to present forms to the user
+       */
+      ChainOfResponsibility<FormRequestPtr> questions;
+    };
 };
 #endif
