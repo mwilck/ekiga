@@ -111,10 +111,6 @@ Opal::Sip::EndPoint::EndPoint (Opal::EndPoint & _endpoint,
                                                                  core (_core)
 {
   /* Timeouts */
-  SetAckTimeout (PTimeInterval (0, 32));
-  SetPduCleanUpTimeout (PTimeInterval (0, 1));
-  SetInviteTimeout (PTimeInterval (0, 60));
-  SetNonInviteTimeout (PTimeInterval (0, 6));
   SetRetryTimeouts (500, 4000);
   SetMaxRetries (20);
 
