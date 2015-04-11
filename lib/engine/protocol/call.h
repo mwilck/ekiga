@@ -99,11 +99,6 @@ namespace Ekiga
        */
       virtual void send_dtmf (const char dtmf) = 0;
 
-      /** Reject an incoming call after the given delay
-       * @param delay the delay after which reject the call
-       */
-      virtual void set_reject_delay (unsigned delay) = 0;
-
 
       /*
        * Call Information

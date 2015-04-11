@@ -54,6 +54,7 @@ Opal::H323::CallManager::CallManager (Ekiga::ServiceCore& _core,
   /* Setup things */
   Ekiga::SettingsCallback setup_cb = boost::bind (&Opal::H323::CallManager::setup, this, _1);
   h323_settings = Ekiga::SettingsPtr (new Ekiga::Settings (H323_SCHEMA, setup_cb));
+  call_forwarding_settings = Ekiga::SettingsPtr (new Ekiga::Settings (CALL_FORWARDING_SCHEMA, setup_cb));
   video_codecs_settings = Ekiga::SettingsPtr (new Ekiga::Settings (VIDEO_CODECS_SCHEMA));
 }
 
@@ -176,10 +177,11 @@ Opal::H323::CallManager::get_dtmf_mode () const
 
 void Opal::H323::CallManager::setup (const std::string & setting)
 {
-  if (setting.empty () || setting == "listen-port") {
+  std::string forward_uri;
 
+  if (setting.empty () || setting == "listen-port")
     set_listen_port (h323_settings->get_int ("listen-port"));
-  }
+
   if (setting.empty () || setting == "maximum-video-tx-bitrate") {
 
     // maximum_video_tx_bitrate is the max video bitrate specified by the user
@@ -189,30 +191,45 @@ void Opal::H323::CallManager::setup (const std::string & setting)
     h323_endpoint.SetInitialBandwidth (OpalBandwidth::Tx, maximum_video_tx_bitrate > 0 ? maximum_video_tx_bitrate * 11 : 100000);
     PTRACE (4, "Opal::H323::EndPoint\tSet maximum/initial tx bandwidth to " << maximum_video_tx_bitrate * 11);
   }
+
   if (setting.empty () || setting == "enable-h245-tunneling") {
 
     h323_endpoint.DisableH245Tunneling (!h323_settings->get_bool ("enable-h245-tunneling"));
     PTRACE (4, "Opal::H323::EndPoint\tH.245 Tunneling: " << h323_settings->get_bool ("enable-h245-tunneling"));
   }
+
   if (setting.empty () || setting == "enable-early-h245") {
 
     h323_endpoint.DisableH245inSetup (!h323_settings->get_bool ("enable-early-h245"));
     PTRACE (4, "Opal::H323::EndPoint\tEarly H.245: " << h323_settings->get_bool ("enable-early-h245"));
   }
+
   if (setting.empty () || setting == "enable-fast-connect") {
 
     h323_endpoint.DisableFastStart (!h323_settings->get_bool ("enable-fast-connect"));
     PTRACE (4, "Opal::H323::EndPoint\tFast Connect: " << h323_settings->get_bool ("enable-fast-connect"));
   }
+
   if (setting.empty () || setting == "dtmf-mode") {
 
     set_dtmf_mode (h323_settings->get_enum ("dtmf-mode"));
   }
-  if (setting.empty () || setting == "forward-host") {
 
-    std::cout << "FIXME" << std::endl;
-    //h323_endpoint.set_forward_uri (h323_settings->get_string ("forward-host"));
-  }
+  if (setting.empty () || setting == "forward-host")
+    forward_uri = h323_settings->get_string ("forward-host");
+
+  /* Setup the various forwarding targets.
+   * The no answer delay is defined in the opal-call-manager (our parent).
+   */
+  if (setting.empty () || setting == "forward-on-no-anwer")
+    h323_endpoint.SetNoAnswerForwardTarget (call_forwarding_settings->get_bool ("forward-on-no-answer") ? forward_uri : "");
+
+  if (setting.empty () || setting == "forward-on-busy")
+    h323_endpoint.SetBusyForwardTarget (call_forwarding_settings->get_bool ("forward-on-busy") ? forward_uri : "");
+
+  if (setting.empty () || setting == "always-forward")
+    h323_endpoint.SetUnconditionalForwardTarget (call_forwarding_settings->get_bool ("always-forward") ? forward_uri : "");
+
   if (setting.empty () || setting == "video-role") {
 
     /*
@@ -223,6 +240,7 @@ void Opal::H323::CallManager::setup (const std::string & setting)
      */
     std::cout << "FIXME" << std::endl;
   }
+
   if (setting.empty () || setting == "enable-h239") {
 
     h323_endpoint.SetDefaultH239Control(h323_settings->get_bool ("enable-h239"));

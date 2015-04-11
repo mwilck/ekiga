@@ -73,19 +73,22 @@ strip_special_chars (std::string& str, char* special_chars, bool start)
 
 boost::shared_ptr<Opal::Call>
 Opal::Call::create (EndPoint& _manager,
-                    const std::string & uri)
+                    const std::string & uri,
+                    const unsigned no_answer_delay)
 {
-  return boost::shared_ptr<Opal::Call> (new Opal::Call (_manager, uri));
+  return boost::shared_ptr<Opal::Call> (new Opal::Call (_manager, uri, no_answer_delay));
 }
 
 
 Opal::Call::Call (Opal::EndPoint& _manager,
-		  const std::string& uri)
-  : OpalCall (_manager), Ekiga::Call (), remote_uri (uri),
-    call_setup(false), outgoing(false)
+                  const std::string& _uri,
+                  const unsigned _no_answer_delay)
+  : OpalCall (_manager),
+    Ekiga::Call (),
+    remote_uri (_uri),
+    call_setup (false),
+    outgoing (false)
 {
-  NoAnswerTimer.SetNotifier (PCREATE_NOTIFIER (OnNoAnswerTimeout));
-
   add_action (Ekiga::ActionPtr (new Ekiga::Action ("hangup", _("Hangup"),
                                                    boost::bind (&Call::hang_up, this))));
   if (!is_outgoing () && !IsEstablished ()) {
@@ -93,6 +96,10 @@ Opal::Call::Call (Opal::EndPoint& _manager,
                                                      boost::bind (&Call::answer, this))));
     add_action (Ekiga::ActionPtr (new Ekiga::Action ("reject", _("Reject"),
                                                      boost::bind (&Call::hang_up, this))));
+
+    noAnswerTimer.SetNotifier (PCREATE_NOTIFIER (OnNoAnswerTimeout));
+    if (_no_answer_delay > 0)
+      noAnswerTimer.SetInterval (0, _no_answer_delay);
   }
 }
 
@@ -150,7 +157,7 @@ Opal::Call::transfer ()
 bool
 Opal::Call::transfer (std::string uri)
 {
-  PSafePtr<OpalConnection> connection = get_remote_connection ();
+  PSafePtr<OpalConnection> connection = GetConnection ();
   if (connection != NULL)
     return connection->TransferConnection (uri);
 
@@ -189,7 +196,7 @@ void
 Opal::Call::toggle_hold ()
 {
   bool on_hold = false;
-  PSafePtr<OpalConnection> connection = get_remote_connection ();
+  PSafePtr<OpalConnection> connection = GetConnection ();
   if (connection != NULL) {
 
     on_hold = connection->IsOnHold (false);
@@ -207,7 +214,7 @@ Opal::Call::toggle_stream_pause (StreamType type)
 
   bool paused = false;
 
-  PSafePtr<OpalConnection> connection = get_remote_connection ();
+  PSafePtr<OpalConnection> connection = GetConnection ();
   if (connection != NULL) {
 
     stream = connection->GetMediaStream ((type == Audio) ? OpalMediaType::Audio () : OpalMediaType::Video (), false);
@@ -230,24 +237,17 @@ Opal::Call::toggle_stream_pause (StreamType type)
 void
 Opal::Call::send_dtmf (const char dtmf)
 {
-  PSafePtr<OpalConnection> connection = get_remote_connection ();
+  PSafePtr<OpalConnection> connection = GetConnection ();
   if (connection != NULL) {
     connection->SendUserInputTone (dtmf, 180);
   }
 }
 
 
-void Opal::Call::set_no_answer_forward (unsigned delay, const std::string & uri)
+void
+Opal::Call::set_forward_target (const std::string & _forward_uri)
 {
-  forward_uri = uri;
-
-  NoAnswerTimer.SetInterval (0, std::min (delay, (unsigned) 299));
-}
-
-
-void Opal::Call::set_reject_delay (unsigned delay)
-{
-  NoAnswerTimer.SetInterval (0, std::min (delay, (unsigned) 299));
+  forward_uri = _forward_uri;
 }
 
 
@@ -314,7 +314,7 @@ Opal::Call::get_start_time () const
 const RTCPStatistics &
 Opal::Call::get_statistics ()
 {
-  PSafePtr<OpalConnection> connection = get_remote_connection ();
+  PSafePtr<OpalConnection> connection = GetConnection ();
   if (connection == NULL)
     return statistics;
 
@@ -452,13 +452,31 @@ Opal::Call::parse_info (OpalConnection & connection)
 }
 
 
+PSafePtr<OpalConnection>
+Opal::Call::GetConnection ()
+{
+  PSafePtr<OpalConnection> connection;
+  for (PSafePtr<OpalConnection> iter (connectionsActive, PSafeReference); iter != NULL; ++iter) {
+
+    if (PSafePtrCast<OpalConnection, OpalPCSSConnection> (iter) == NULL) {
+      connection = iter;
+      if (!connection.SetSafetyMode (PSafeReadWrite))
+        connection.SetNULL();
+      break;
+    }
+  }
+
+  return connection;
+}
+
+
 PBoolean
 Opal::Call::OnEstablished (OpalConnection & connection)
 {
   OpalRTPSession *session = NULL;
   OpalMediaStreamPtr stream;
 
-  NoAnswerTimer.Stop (false);
+  noAnswerTimer.Stop (false);
 
   if (!PIsDescendant(&connection, OpalPCSSConnection)) {
 
@@ -512,11 +530,7 @@ Opal::Call::OnCleared ()
 {
   std::string reason;
 
-  NoAnswerTimer.Stop (false);
-
-  // TODO find a better way than that
-  while (!call_setup)
-    PThread::Current ()->Sleep (100);
+  noAnswerTimer.Stop (false);
 
   OpalCall::OnCleared ();
 
@@ -719,15 +733,12 @@ void
 Opal::Call::OnNoAnswerTimeout (PTimer &,
                                INT)
 {
-  if (!is_outgoing ()) {
+  if (!forward_uri.empty ()) {
 
-    if (!forward_uri.empty ()) {
-
-      PSafePtr<OpalConnection> connection = get_remote_connection ();
-      if (connection != NULL)
-        connection->ForwardCall (forward_uri);
-    }
-    else
-      Clear (OpalConnection::EndedByNoAnswer);
+    PSafePtr<OpalConnection> connection = GetConnection ();
+    if (connection != NULL)
+      connection->ForwardCall (forward_uri);
   }
+  else
+    Clear (OpalConnection::EndedByNoAnswer);
 }

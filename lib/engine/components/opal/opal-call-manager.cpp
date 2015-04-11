@@ -76,13 +76,13 @@ void Opal::CallManager::hang_up ()
 
 void Opal::CallManager::set_reject_delay (unsigned delay)
 {
-  endpoint.set_reject_delay (delay);
+  endpoint.SetNoAnswerDelay (delay);
 }
 
 
 unsigned Opal::CallManager::get_reject_delay () const
 {
-  return endpoint.get_reject_delay ();
+  return endpoint.GetNoAnswerDelay ();
 }
 
 
@@ -201,19 +201,10 @@ void Opal::CallManager::setup (const std::string & setting)
     endpoint.SetMediaTypeOfService (protocols_settings->get_int ("rtp-tos-field"));
 
   if (setting.empty () || setting == "no-answer-timeout")
-    endpoint.set_reject_delay (call_options_settings->get_int ("no-answer-timeout"));
+    set_reject_delay (call_options_settings->get_int ("no-answer-timeout"));
 
   if (setting.empty () || setting == "auto-answer")
     endpoint.set_auto_answer (call_options_settings->get_bool ("auto-answer"));
-
-  if (setting.empty () || setting == "forward-on-no-anwer")
-    endpoint.set_forward_on_no_answer (call_forwarding_settings->get_bool ("forward-on-no-answer"));
-
-  if (setting.empty () || setting == "forward-on-busy")
-    endpoint.set_forward_on_busy (call_forwarding_settings->get_bool ("forward-on-busy"));
-
-  if (setting.empty () || setting == "always-forward")
-    endpoint.set_unconditional_forward (call_forwarding_settings->get_bool ("always-forward"));
 
   if (setting.empty () || setting == "full-name")
     set_display_name (personal_data_settings->get_string ("full-name"));

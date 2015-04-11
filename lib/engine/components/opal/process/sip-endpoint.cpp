@@ -121,7 +121,7 @@ Opal::Sip::EndPoint::EndPoint (Opal::EndPoint & _endpoint,
   GetManager ().AddRouteEntry("sip:.* = pc:*");
   GetManager ().AddRouteEntry("pc:.* = sip:<da>");
 
-  /* NAT Binding */
+  /* Keepalive */
   PTimeInterval timeout;
   KeepAliveType type;
   GetKeepAlive (timeout, type);
@@ -233,6 +233,27 @@ void
 Opal::Sip::EndPoint::DisableAccount (Account & account)
 {
   new RegistrarHandler (account, *this, false);
+}
+
+
+void
+Opal::Sip::EndPoint::SetNoAnswerForwardTarget (const PString & _party)
+{
+  noAnswerForwardParty = _party;
+}
+
+
+void
+Opal::Sip::EndPoint::SetUnconditionalForwardTarget (const PString & _party)
+{
+  unconditionalForwardParty = _party;
+}
+
+
+void
+Opal::Sip::EndPoint::SetBusyForwardTarget (const PString & _party)
+{
+  busyForwardParty = _party;
 }
 
 
@@ -548,43 +569,40 @@ Opal::Sip::EndPoint::OnMWIReceived (const PString & party,
 bool
 Opal::Sip::EndPoint::OnIncomingConnection (OpalConnection &connection,
 					   unsigned options,
-					   OpalConnection::StringOptions * stroptions)
+					   OpalConnection::StringOptions *stroptions)
 {
-  bool busy = false;
   PTRACE (3, "Opal::Sip::EndPoint\tIncoming connection");
 
   if (!SIPEndPoint::OnIncomingConnection (connection, options, stroptions))
     return false;
 
+  /* Unconditional call forward? */
+  if (!unconditionalForwardParty.IsEmpty ()) {
+    PTRACE (3, "Opal::Sip::EndPoint\tIncoming connection forwarded to " << busyForwardParty << " (Unconditional)");
+    connection.ForwardCall (unconditionalForwardParty);
+    return false;
+  }
+
+  /* Busy call forward? */
   for (PSafePtr<OpalConnection> conn(connectionsActive, PSafeReference); conn != NULL; ++conn) {
-    if (conn->GetCall().GetToken() != connection.GetCall().GetToken() && !conn->IsReleased ())
-      busy = true;
-  }
-  std::cout << "FIXME" << std::endl << std::flush;
-  /*
-
-  if (!forward_uri.empty () && manager.get_unconditional_forward ())
-    connection.ForwardCall (forward_uri);
-  else if (busy) {
-
-    if (!forward_uri.empty () && manager.get_forward_on_busy ())
-      connection.ForwardCall (forward_uri);
-    else {
-      connection.ClearCall (OpalConnection::EndedByLocalBusy);
+    if (conn->GetCall().GetToken() != connection.GetCall().GetToken() && !conn->IsReleased ()) {
+      if (!busyForwardParty.IsEmpty ()) {
+        PTRACE (3, "Opal::Sip::EndPoint\tIncoming connection forwarded to " << busyForwardParty << " (busy)");
+        connection.ForwardCall (busyForwardParty);
+      }
+      else {
+        PTRACE (3, "Opal::Sip::EndPoint\tIncoming connection rejected (busy)");
+        connection.ClearCall (OpalConnection::EndedByLocalBusy);
+      }
+      return false;
     }
   }
-  else {
 
-    Opal::Call *call = dynamic_cast<Opal::Call *> (&connection.GetCall ());
-    if (call) {
+  /* No Answer Call Forward or Reject */
+  Opal::Call *call = dynamic_cast<Opal::Call *> (&connection.GetCall ());
+  if (call)
+    call->set_forward_target (noAnswerForwardParty);
 
-      if (!forward_uri.empty () && manager.get_forward_on_no_answer ())
-        call->set_no_answer_forward (manager.get_reject_delay (), forward_uri);
-      else // Pending
-        call->set_reject_delay (manager.get_reject_delay ());
-    }
-  }
-*/
   return true;
 }
 

@@ -88,10 +88,9 @@ namespace Opal {
   private:
 
       Ekiga::SettingsPtr h323_settings;
+      Ekiga::SettingsPtr call_forwarding_settings;
       Ekiga::SettingsPtr video_codecs_settings;
-
       Opal::H323::EndPoint& h323_endpoint;
-
       std::string protocol_name;
     };
   };

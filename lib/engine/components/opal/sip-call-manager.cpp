@@ -54,6 +54,7 @@ Opal::Sip::CallManager::CallManager (Ekiga::ServiceCore& _core,
   /* Setup things */
   Ekiga::SettingsCallback setup_cb = boost::bind (&Opal::Sip::CallManager::setup, this, _1);
   sip_settings = Ekiga::SettingsPtr (new Ekiga::Settings (SIP_SCHEMA, setup_cb));
+  call_forwarding_settings = Ekiga::SettingsPtr (new Ekiga::Settings (CALL_FORWARDING_SCHEMA, setup_cb));
 }
 
 
@@ -164,28 +165,41 @@ Opal::Sip::CallManager::get_dtmf_mode () const
 
 void Opal::Sip::CallManager::setup (const std::string & setting)
 {
+  std::string forward_uri;
+
   if (setting.empty () || setting == "listen-port")  {
     set_listen_port (sip_settings->get_int ("listen-port"));
   }
+
   if (setting.empty () || setting == "keepalive-interval")  {
     int delay = sip_settings->get_int ("keepalive-interval");
     PTRACE (4, "Opal::Sip::CallManager\tKeepalive interval set to " << delay);
     sip_endpoint.SetKeepAlive (PTimeInterval (0, delay), SIPEndPoint::KeepAliveByOPTION);
   }
+
   if (setting.empty () || setting == "outbound-proxy-host")  {
     std::string uri = sip_settings->get_string ("outbound-proxy-host");
     PTRACE (4, "Opal::Sip::CallManager\tSet outbound proxy to " << uri);
     sip_endpoint.SetProxy (SIPURL (uri));
   }
 
-  if (setting.empty () || setting == "dtmf-mode")  {
+  if (setting.empty () || setting == "dtmf-mode")
     set_dtmf_mode (sip_settings->get_enum ("dtmf-mode"));
-  }
 
-  if (setting.empty () || setting == "forward-host")  {
-    std::cout << "FIXME" << std::endl;
-    //sip_endpoint.set_forward_uri (sip_settings->get_string ("forward-host"));
-  }
+  if (setting.empty () || setting == "forward-host")
+    forward_uri = sip_settings->get_string ("forward-host");
+
+  /* Setup the various forwarding targets.
+   * The no answer delay is defined in the opal-call-manager (our parent).
+   */
+  if (setting.empty () || setting == "forward-on-no-anwer")
+    sip_endpoint.SetNoAnswerForwardTarget (call_forwarding_settings->get_bool ("forward-on-no-answer") ? forward_uri : "");
+
+  if (setting.empty () || setting == "forward-on-busy")
+    sip_endpoint.SetBusyForwardTarget (call_forwarding_settings->get_bool ("forward-on-busy") ? forward_uri : "");
+
+  if (setting.empty () || setting == "always-forward")
+    sip_endpoint.SetUnconditionalForwardTarget (call_forwarding_settings->get_bool ("always-forward") ? forward_uri : "");
 
   Opal::CallManager::setup (setting);
 }

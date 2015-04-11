@@ -88,6 +88,7 @@ namespace Opal {
   private:
 
       Ekiga::SettingsPtr sip_settings;
+      Ekiga::SettingsPtr call_forwarding_settings;
       Opal::Sip::EndPoint& sip_endpoint;
       std::string protocol_name;
     };

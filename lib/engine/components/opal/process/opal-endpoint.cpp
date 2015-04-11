@@ -311,15 +311,15 @@ bool Opal::EndPoint::GetSilenceDetection () const
 }
 
 
-void Opal::EndPoint::set_reject_delay (unsigned delay)
+void Opal::EndPoint::SetNoAnswerDelay (unsigned delay)
 {
-  reject_delay = std::max ((unsigned) 5, delay);
+  noAnswerDelay = std::max ((unsigned int) 0, delay);
 }
 
 
-unsigned Opal::EndPoint::get_reject_delay () const
+unsigned Opal::EndPoint::GetNoAnswerDelay () const
 {
-  return reject_delay;
+  return noAnswerDelay;
 }
 
 
@@ -549,7 +549,7 @@ void Opal::EndPoint::GetVideoOptions (Opal::EndPoint::VideoOptions & options) co
 OpalCall *Opal::EndPoint::CreateCall (void *uri)
 {
   boost::shared_ptr<Ekiga::CallCore> call_core = core.get<Ekiga::CallCore> ("call-core");
-  boost::shared_ptr<Opal::Call> call = Opal::Call::create (*this, uri ? (const char*) uri : std::string ());
+  boost::shared_ptr<Opal::Call> call = Opal::Call::create (*this, uri ? (const char*) uri : std::string (), noAnswerDelay);
 
   Ekiga::Runtime::run_in_main (boost::bind (&Ekiga::CallCore::add_call, call_core, call));
 

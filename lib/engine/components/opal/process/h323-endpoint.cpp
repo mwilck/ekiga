@@ -204,6 +204,27 @@ Opal::H323::EndPoint::DisableAccount (Account& account)
 }
 
 
+void
+Opal::H323::EndPoint::SetNoAnswerForwardTarget (const PString & _party)
+{
+  noAnswerForwardParty = _party;
+}
+
+
+void
+Opal::H323::EndPoint::SetUnconditionalForwardTarget (const PString & _party)
+{
+  unconditionalForwardParty = _party;
+}
+
+
+void
+Opal::H323::EndPoint::SetBusyForwardTarget (const PString & _party)
+{
+  busyForwardParty = _party;
+}
+
+
 bool
 Opal::H323::EndPoint::UseGatekeeper (const PString & address,
                                      const PString & domain,
@@ -248,45 +269,37 @@ Opal::H323::EndPoint::OnIncomingConnection (OpalConnection & connection,
 					    G_GNUC_UNUSED unsigned options,
 					    G_GNUC_UNUSED OpalConnection::StringOptions *stroptions)
 {
-  bool busy = false;
-
   PTRACE (3, "Opal::H323::EndPoint\tIncoming connection");
 
   if (!H323EndPoint::OnIncomingConnection (connection, options, stroptions))
     return false;
 
+  /* Unconditional call forward? */
+  if (!unconditionalForwardParty.IsEmpty ()) {
+    PTRACE (3, "Opal::H323::EndPoint\tIncoming connection forwarded to " << busyForwardParty << " (Unconditional)");
+    connection.ForwardCall (unconditionalForwardParty);
+    return false;
+  }
+
+  /* Busy call forward? */
   for (PSafePtr<OpalConnection> conn(connectionsActive, PSafeReference); conn != NULL; ++conn) {
-    if (conn->GetCall().GetToken() != connection.GetCall().GetToken() && !conn->IsReleased ())
-      busy = true;
-  }
-
-  std::cout << "FIXME" << std::endl;
-
-  /*
-  if (!forward_uri.empty () && manager.get_unconditional_forward ())
-    connection.ForwardCall (forward_uri);
-  else if (busy) {
-
-    if (!forward_uri.empty () && manager.get_forward_on_busy ())
-      connection.ForwardCall (forward_uri);
-    else {
-      connection.ClearCall (OpalConnection::EndedByLocalBusy);
+    if (conn->GetCall().GetToken() != connection.GetCall().GetToken() && !conn->IsReleased ()) {
+      if (!busyForwardParty.IsEmpty ()) {
+        PTRACE (3, "Opal::H323::EndPoint\tIncoming connection forwarded to " << busyForwardParty << " (busy)");
+        connection.ForwardCall (busyForwardParty);
+      }
+      else {
+        PTRACE (3, "Opal::H323::EndPoint\tIncoming connection rejected (busy)");
+        connection.ClearCall (OpalConnection::EndedByLocalBusy);
+      }
+      return false;
     }
   }
-  else {
 
-    Opal::Call *call = dynamic_cast<Opal::Call *> (&connection.GetCall ());
-    if (call) {
+  /* No Answer Call Forward or Reject */
+  Opal::Call *call = dynamic_cast<Opal::Call *> (&connection.GetCall ());
+  if (call)
+    call->set_forward_target (noAnswerForwardParty);
 
-      if (!forward_uri.empty () && manager.get_forward_on_no_answer ())
-        call->set_no_answer_forward (manager.get_reject_delay (), forward_uri);
-      else
-        call->set_reject_delay (manager.get_reject_delay ());
-    }
-
-    return H323EndPoint::OnIncomingConnection (connection, options, stroptions);
-  }
-  */
-
-  return false;
+  return true;
 }

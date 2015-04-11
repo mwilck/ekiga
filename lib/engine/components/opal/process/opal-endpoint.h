@@ -96,8 +96,8 @@ public:
     void SetSilenceDetection (bool enabled);
     bool GetSilenceDetection () const;
 
-    void set_reject_delay (unsigned delay);
-    unsigned get_reject_delay () const;
+    void SetNoAnswerDelay (unsigned delay);
+    unsigned GetNoAnswerDelay () const;
 
     void set_auto_answer (bool enabled);
     bool get_auto_answer () const;
@@ -168,7 +168,7 @@ private:
     unsigned int patience;
 
     std::string stun_server;
-    unsigned reject_delay;
+    unsigned noAnswerDelay;
     bool forward_on_busy;
     bool unconditional_forward;
     bool forward_on_no_answer;

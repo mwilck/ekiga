@@ -62,8 +62,13 @@ namespace Opal {
   {
 
 private:
+    /* This constructor is private and should not be called
+     * directly because of DynamicObject.
+     */
     Call (EndPoint& _manager,
-          const std::string & uri);
+          const std::string & uri,
+          const unsigned no_answer_delay);
+
 
 public:
     ~Call ();
@@ -71,12 +76,20 @@ public:
     /*
      * This method will create and return an shared_ptr to the object.
      *
-     * Classical constructors should not be used as we need to have
-     * a shared_ptr to the object as soon as possible to be able to
-     * use shared_from_this from the beginning.
+     * Classical constructors should not be used as we need to have a
+     * shared_ptr to the object as soon as possible to be able to use
+     * shared_from_this from the beginning.
+     *
+     * @param The Opal::EndPoint
+     * @param The remote URI (if any)
+     * @param The delay after which the call should be rejected
+     *        or forwarded if a forward URI has been setup with
+     *        set_forward_target.
      */
     static boost::shared_ptr<Call> create (EndPoint& _manager,
-                                           const std::string & uri);
+                                           const std::string & uri,
+                                           const unsigned no_answer_delay);
+
 
     /*
      * Call Management
@@ -100,6 +113,7 @@ public:
      */
     bool transfer (std::string uri);
 
+
     /** Put the call on hold or retrieve it
      */
     void toggle_hold ();
@@ -114,16 +128,12 @@ public:
      */
     void send_dtmf (const char dtmf);
 
-    /** Forward an incoming call after the given delay
-     * @param delay the delay after which we forward
-     * @param uri is the uri to forward to
-     */
-    void set_no_answer_forward (unsigned delay, const std::string & uri);
 
-    /** Reject an incoming call after the given delay
-     * @param delay the delay after which reject the call
+    /** Set forward target (if applicable)
+     * @param The forward target to which the call should be forwarded
+     *        after no_answer_delay.
      */
-    void set_reject_delay (unsigned delay);
+    void set_forward_target (const std::string & forward_uri);
 
 
     /*
@@ -189,6 +199,7 @@ public:
 
     void DoSetUp (OpalConnection & connection);
 
+
 private:
 
     PBoolean OnEstablished (OpalConnection & connection);
@@ -212,25 +223,8 @@ private:
 
     void parse_info (OpalConnection & connection);
 
-    PSafePtr<OpalConnection> get_remote_connection ()
-      {
-        PSafePtr<OpalConnection> connection;
-        for (PSafePtr<OpalConnection> iterConn (connectionsActive, PSafeReference); iterConn != NULL; ++iterConn) {
-          if (PSafePtrCast<OpalConnection, OpalPCSSConnection> (iterConn) == NULL) {
-            connection = iterConn;
-            if (!connection.SetSafetyMode(PSafeReadWrite))
-              connection.SetNULL();
-            break;
-          }
-        }
-        return connection;
-      }
+    PSafePtr<OpalConnection> GetConnection ();
 
-    /*
-     *
-     */
-    PDECLARE_NOTIFIER(PTimer, Opal::Call, OnNoAnswerTimeout);
-    PTimer NoAnswerTimer;
 
     /*
      * Variables
@@ -250,6 +244,9 @@ private:
     PTime start_time;
     RTCPStatistics statistics;
     bool auto_answer;
+
+    PDECLARE_NOTIFIER(PTimer, Opal::Call, OnNoAnswerTimeout);
+    PTimer noAnswerTimer;
   };
 };
 

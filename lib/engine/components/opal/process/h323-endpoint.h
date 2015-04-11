@@ -82,6 +82,12 @@ namespace Opal {
 
       void DisableAccount (Account & account);
 
+      void SetNoAnswerForwardTarget (const PString & party);
+
+      void SetUnconditionalForwardTarget (const PString & party);
+
+      void SetBusyForwardTarget (const PString & party);
+
       bool UseGatekeeper (const PString & address = PString::Empty (),
                           const PString & domain = PString::Empty (),
                           const PString & iface = PString::Empty ());
@@ -99,6 +105,10 @@ namespace Opal {
       PString gk_name;
 
       const Ekiga::ServiceCore & core;
+
+      PString noAnswerForwardParty;
+      PString unconditionalForwardParty;
+      PString busyForwardParty;
     };
   };
 };

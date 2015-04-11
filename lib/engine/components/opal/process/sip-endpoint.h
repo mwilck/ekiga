@@ -70,6 +70,7 @@ namespace Opal {
 
       bool SetUpCall (const std::string & uri);
 
+
       /* Chat subsystem */
       bool send_message (const std::string & uri,
                          const Ekiga::Message::payload_type payload);
@@ -81,6 +82,7 @@ namespace Opal {
       // the parameters are the aor and the info
       boost::signals2::signal<void(std::string, std::string)> mwi_event;
 
+
       /* Enable / Disable accounts. The account given as argument
        * will be updated to reflect the current account state once
        * the operation has been successful.
@@ -88,6 +90,13 @@ namespace Opal {
       void EnableAccount (Account & account);
 
       void DisableAccount (Account & account);
+
+      void SetNoAnswerForwardTarget (const PString & party);
+
+      void SetUnconditionalForwardTarget (const PString & party);
+
+      void SetBusyForwardTarget (const PString & party);
+
 
     private:
       /* OPAL Methods */
@@ -109,6 +118,10 @@ namespace Opal {
                                SIP_PDU::StatusCodes reason);
 
       const Ekiga::ServiceCore & core;
+
+      PString noAnswerForwardParty;
+      PString unconditionalForwardParty;
+      PString busyForwardParty;
     };
   };
 };
