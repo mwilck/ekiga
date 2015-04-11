@@ -177,8 +177,6 @@ Opal::H323::CallManager::get_dtmf_mode () const
 
 void Opal::H323::CallManager::setup (const std::string & setting)
 {
-  std::string forward_uri;
-
   if (setting.empty () || setting == "listen-port")
     set_listen_port (h323_settings->get_int ("listen-port"));
 
@@ -215,20 +213,18 @@ void Opal::H323::CallManager::setup (const std::string & setting)
     set_dtmf_mode (h323_settings->get_enum ("dtmf-mode"));
   }
 
-  if (setting.empty () || setting == "forward-host")
-    forward_uri = h323_settings->get_string ("forward-host");
 
   /* Setup the various forwarding targets.
    * The no answer delay is defined in the opal-call-manager (our parent).
    */
-  if (setting.empty () || setting == "forward-on-no-anwer")
-    h323_endpoint.SetNoAnswerForwardTarget (call_forwarding_settings->get_bool ("forward-on-no-answer") ? forward_uri : "");
+  if (setting.empty () || setting == "forward-on-no-anwer" || setting == "forward-host")
+    h323_endpoint.SetNoAnswerForwardTarget (call_forwarding_settings->get_bool ("forward-on-no-answer") ? h323_settings->get_string ("forward-host") : "");
 
-  if (setting.empty () || setting == "forward-on-busy")
-    h323_endpoint.SetBusyForwardTarget (call_forwarding_settings->get_bool ("forward-on-busy") ? forward_uri : "");
+  if (setting.empty () || setting == "forward-on-busy" || setting == "forward-host")
+    h323_endpoint.SetBusyForwardTarget (call_forwarding_settings->get_bool ("forward-on-busy") ? h323_settings->get_string ("forward-host") : "");
 
-  if (setting.empty () || setting == "always-forward")
-    h323_endpoint.SetUnconditionalForwardTarget (call_forwarding_settings->get_bool ("always-forward") ? forward_uri : "");
+  if (setting.empty () || setting == "always-forward" || setting == "forward-host")
+    h323_endpoint.SetUnconditionalForwardTarget (call_forwarding_settings->get_bool ("always-forward") ? h323_settings->get_string ("forward-host") : "");
 
   if (setting.empty () || setting == "video-role") {
 

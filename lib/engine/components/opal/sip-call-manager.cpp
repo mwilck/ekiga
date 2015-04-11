@@ -165,11 +165,8 @@ Opal::Sip::CallManager::get_dtmf_mode () const
 
 void Opal::Sip::CallManager::setup (const std::string & setting)
 {
-  std::string forward_uri;
-
-  if (setting.empty () || setting == "listen-port")  {
+  if (setting.empty () || setting == "listen-port")
     set_listen_port (sip_settings->get_int ("listen-port"));
-  }
 
   if (setting.empty () || setting == "keepalive-interval")  {
     int delay = sip_settings->get_int ("keepalive-interval");
@@ -186,20 +183,17 @@ void Opal::Sip::CallManager::setup (const std::string & setting)
   if (setting.empty () || setting == "dtmf-mode")
     set_dtmf_mode (sip_settings->get_enum ("dtmf-mode"));
 
-  if (setting.empty () || setting == "forward-host")
-    forward_uri = sip_settings->get_string ("forward-host");
-
   /* Setup the various forwarding targets.
    * The no answer delay is defined in the opal-call-manager (our parent).
    */
-  if (setting.empty () || setting == "forward-on-no-anwer")
-    sip_endpoint.SetNoAnswerForwardTarget (call_forwarding_settings->get_bool ("forward-on-no-answer") ? forward_uri : "");
+  if (setting.empty () || setting == "forward-on-no-anwer" || setting == "forward-host")
+    sip_endpoint.SetNoAnswerForwardTarget (call_forwarding_settings->get_bool ("forward-on-no-answer") ? sip_settings->get_string ("forward-host") : "");
 
-  if (setting.empty () || setting == "forward-on-busy")
-    sip_endpoint.SetBusyForwardTarget (call_forwarding_settings->get_bool ("forward-on-busy") ? forward_uri : "");
+  if (setting.empty () || setting == "forward-on-busy" || setting == "forward-host")
+    sip_endpoint.SetBusyForwardTarget (call_forwarding_settings->get_bool ("forward-on-busy") ? sip_settings->get_string ("forward-host") : "");
 
-  if (setting.empty () || setting == "always-forward")
-    sip_endpoint.SetUnconditionalForwardTarget (call_forwarding_settings->get_bool ("always-forward") ? forward_uri : "");
+  if (setting.empty () || setting == "always-forward" || setting == "forward-host")
+    sip_endpoint.SetUnconditionalForwardTarget (call_forwarding_settings->get_bool ("always-forward") ? sip_settings->get_string ("forward-host") : "");
 
   Opal::CallManager::setup (setting);
 }
