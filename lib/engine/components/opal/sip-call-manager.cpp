@@ -167,10 +167,10 @@ void Opal::Sip::CallManager::setup (const std::string & setting)
   if (setting.empty () || setting == "listen-port")  {
     set_listen_port (sip_settings->get_int ("listen-port"));
   }
-  if (setting.empty () || setting == "binding-timeout")  {
-    int delay = sip_settings->get_int ("binding-timeout");
-    PTRACE (4, "Opal::Sip::CallManager\tNat binding delay set to " << delay);
-    sip_endpoint.SetKeepAlive (PTimeInterval (0, delay), SIPEndPoint::KeepAliveByCRLF);
+  if (setting.empty () || setting == "keepalive-interval")  {
+    int delay = sip_settings->get_int ("keepalive-interval");
+    PTRACE (4, "Opal::Sip::CallManager\tKeepalive interval set to " << delay);
+    sip_endpoint.SetKeepAlive (PTimeInterval (0, delay), SIPEndPoint::KeepAliveByOPTION);
   }
   if (setting.empty () || setting == "outbound-proxy-host")  {
     std::string uri = sip_settings->get_string ("outbound-proxy-host");

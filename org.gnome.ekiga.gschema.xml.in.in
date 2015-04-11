@@ -433,11 +433,11 @@
       <_summary>DTMF transmission</_summary>
       <_description>Select the mode for DTMFs transmission. The values can be 'rfc2833' (for "RFC2833") and 'info' (for "SIP INFO")</_description>
     </key>
-    <key name="binding-timeout" type="i">
+    <key name="keepalive-interval" type="i">
       <range min="5" max="600"/>
-      <default>10</default>
-      <_summary>NAT Binding Timeout</_summary>
-      <_description>Enter the number of seconds after which Ekiga should try refreshing the NAT binding when STUN is being used</_description>
+      <default>30</default>
+      <_summary>Connection keepalive interval</_summary>
+      <_description>Enter the number of seconds between keepalive messages sent by Ekiga to maintain the connection</_description>
     </key>
   </schema>
   <schema gettext-domain="@GETTEXT_PACKAGE@" id="org.gnome.@PACKAGE_NAME@.protocols.h323" path="/org/gnome/@PACKAGE_NAME@/protocols/h323/">
