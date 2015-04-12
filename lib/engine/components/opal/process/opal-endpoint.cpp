@@ -570,7 +570,7 @@ Opal::EndPoint::HandleSTUNResult ()
   if (error) {
 
     ReportSTUNError (_("Ekiga did not manage to configure your network settings automatically. We suggest"
-		       " you disable STUN support and relay on a SIP provider that supports NAT environments.\n\n");
+		       " you disable STUN support and relay on a SIP provider that supports NAT environments.\n\n"));
     ready ();
   }
   else if (!got_answer) {
