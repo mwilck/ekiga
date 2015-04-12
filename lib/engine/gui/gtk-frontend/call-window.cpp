@@ -109,7 +109,6 @@ struct _EkigaCallWindowPrivate
   boost::shared_ptr<Ekiga::VideoOutputCore> videooutput_core;
   boost::shared_ptr<Ekiga::AudioInputCore> audioinput_core;
   boost::shared_ptr<Ekiga::AudioOutputCore> audiooutput_core;
-  boost::shared_ptr<Ekiga::CallCore> call_core;
   boost::shared_ptr<Ekiga::FriendOrFoe> friend_or_foe;
   boost::shared_ptr<Ekiga::FoeList> foe_list;
 
@@ -294,9 +293,6 @@ static void on_missed_call_cb (boost::shared_ptr<Ekiga::Call> /*call*/,
 static void on_held_call_cb (boost::shared_ptr<Ekiga::Call> /*call*/,
                              gpointer self);
 
-static void on_setup_call_cb (boost::shared_ptr<Ekiga::Call> call,
-                              gpointer self);
-
 static void on_retrieved_call_cb (boost::shared_ptr<Ekiga::Call> /*call*/,
                                   gpointer self);
 
@@ -354,8 +350,6 @@ static GtkWidget *gm_call_window_build_settings_popover (EkigaCallWindow *call_w
                                                          GtkWidget *relative);
 
 static void ekiga_call_window_toggle_fullscreen (EkigaCallWindow *self);
-
-static void ekiga_call_window_connect_engine_signals (EkigaCallWindow *self);
 
 static void ekiga_call_window_init_gui (EkigaCallWindow *self);
 
@@ -792,46 +786,6 @@ on_ringing_call_cb (G_GNUC_UNUSED boost::shared_ptr<Ekiga::Call>  call,
 
 
 static void
-on_setup_call_cb (boost::shared_ptr<Ekiga::Call> call,
-                  gpointer data)
-{
-  EkigaCallWindow *self = EKIGA_CALL_WINDOW (data);
-  boost::signals2::connection conn;
-
-  self->priv->menu = Ekiga::GActorMenuPtr (new Ekiga::GActorMenu (*call));
-
-  if (!call->is_outgoing ()) {
-    if (self->priv->current_call)
-      return; // No call setup needed if already in a call
-
-    self->priv->current_call = call;
-    ekiga_call_window_update_calling_state (self, Called);
-    ekiga_call_window_update_title (self, Called, call->get_remote_party_name ());
-    ekiga_call_window_update_header_bar_actions (self, Called);
-  }
-  else {
-
-    self->priv->current_call = call;
-    ekiga_call_window_update_calling_state (self, Calling);
-    ekiga_call_window_update_title (self, Calling, call->get_remote_uri ());
-    ekiga_call_window_update_header_bar_actions (self, Calling);
-  }
-
-  { // do we know about this contact already?
-    const std::string uri = self->priv->current_call->get_remote_uri ();
-    Ekiga::FriendOrFoe::Identification id = self->priv->friend_or_foe->decide ("call", uri);
-    if (id == Ekiga::FriendOrFoe::Unknown)
-      gtk_widget_set_sensitive (GTK_WIDGET (self->priv->blacklist_button), true);
-    else
-      gtk_widget_set_sensitive (GTK_WIDGET (self->priv->blacklist_button), false);
-  }
-
-  conn = call->questions.connect (boost::bind (&on_handle_questions, _1, (gpointer) self));
-  self->priv->connections.add (conn);
-}
-
-
-static void
 on_established_call_cb (boost::shared_ptr<Ekiga::Call> call,
                         gpointer data)
 {
@@ -845,6 +799,7 @@ on_established_call_cb (boost::shared_ptr<Ekiga::Call> call,
 
   self->priv->timeout_id = g_timeout_add_seconds (1, on_stats_refresh_cb, self);
 }
+
 
 static void
 on_cleared_call_cb (boost::shared_ptr<Ekiga::Call> call,
@@ -1380,86 +1335,6 @@ ekiga_call_window_toggle_fullscreen (EkigaCallWindow *self)
 
 
 static void
-ekiga_call_window_connect_engine_signals (EkigaCallWindow *self)
-{
-  boost::signals2::connection conn;
-
-  g_return_if_fail (EKIGA_IS_CALL_WINDOW (self));
-
-  /* New Display Engine signals */
-  conn = self->priv->videooutput_core->device_opened.connect (boost::bind (&on_videooutput_device_opened_cb, _1, _2, _3, _4, _5, _6, (gpointer) self));
-  self->priv->connections.add (conn);
-
-  conn = self->priv->videooutput_core->device_closed.connect (boost::bind (&on_videooutput_device_closed_cb, _1, (gpointer) self));
-  self->priv->connections.add (conn);
-
-  conn = self->priv->videooutput_core->device_error.connect (boost::bind (&on_videooutput_device_error_cb, _1, (gpointer) self));
-  self->priv->connections.add (conn);
-
-  conn = self->priv->videooutput_core->size_changed.connect (boost::bind (&on_size_changed_cb, _1, _2, _3, _4, (gpointer) self));
-  self->priv->connections.add (conn);
-
-
-  /* New VideoInput Engine signals */
-  conn = self->priv->videoinput_core->device_opened.connect (boost::bind (&on_videoinput_device_opened_cb, _1, _2, _3, (gpointer) self));
-  self->priv->connections.add (conn);
-
-  conn = self->priv->videoinput_core->device_closed.connect (boost::bind (&on_videoinput_device_closed_cb, _1, _2, (gpointer) self));
-  self->priv->connections.add (conn);
-
-  conn = self->priv->videoinput_core->device_error.connect (boost::bind (&on_videoinput_device_error_cb, _1, _2, _3, (gpointer) self));
-  self->priv->connections.add (conn);
-
-  /* New AudioInput Engine signals */
-  conn = self->priv->audioinput_core->device_opened.connect (boost::bind (&on_audioinput_device_opened_cb, _1, _2, _3, (gpointer) self));
-  self->priv->connections.add (conn);
-
-  conn = self->priv->audioinput_core->device_closed.connect (boost::bind (&on_audioinput_device_closed_cb, _1, _2, (gpointer) self));
-  self->priv->connections.add (conn);
-
-  conn = self->priv->audioinput_core->device_error.connect (boost::bind (&on_audioinput_device_error_cb, _1, _2, _3, (gpointer) self));
-  self->priv->connections.add (conn);
-
-  /* New AudioOutput Engine signals */
-  conn = self->priv->audiooutput_core->device_opened.connect (boost::bind (&on_audiooutput_device_opened_cb, _1, _2, _3, _4, (gpointer) self));
-  self->priv->connections.add (conn);
-
-  conn = self->priv->audiooutput_core->device_closed.connect (boost::bind (&on_audiooutput_device_closed_cb, _1, _2, _3, (gpointer) self));
-  self->priv->connections.add (conn);
-
-  conn = self->priv->audiooutput_core->device_error.connect (boost::bind (&on_audiooutput_device_error_cb, _1, _2, _3, _4, (gpointer) self));
-  self->priv->connections.add (conn);
-
-  /* New Call Engine signals */
-  conn = self->priv->call_core->setup_call.connect (boost::bind (&on_setup_call_cb, _1, (gpointer) self));
-  self->priv->connections.add (conn);
-
-  conn = self->priv->call_core->ringing_call.connect (boost::bind (&on_ringing_call_cb, _1, (gpointer) self));
-  self->priv->connections.add (conn);
-
-  conn = self->priv->call_core->established_call.connect (boost::bind (&on_established_call_cb, _1, (gpointer) self));
-  self->priv->connections.add (conn);
-
-  conn = self->priv->call_core->cleared_call.connect (boost::bind (&on_cleared_call_cb, _1, _2, (gpointer) self));
-  self->priv->connections.add (conn);
-
-  conn = self->priv->call_core->missed_call.connect (boost::bind (&on_missed_call_cb, _1, (gpointer) self));
-  self->priv->connections.add (conn);
-
-  conn = self->priv->call_core->held_call.connect (boost::bind (&on_held_call_cb, _1, (gpointer) self));
-  self->priv->connections.add (conn);
-
-  conn = self->priv->call_core->retrieved_call.connect (boost::bind (&on_retrieved_call_cb, _1, (gpointer) self));
-  self->priv->connections.add (conn);
-
-  conn = self->priv->call_core->stream_opened.connect (boost::bind (&on_stream_opened_cb, _1, _2, _3, _4, (gpointer) self));
-  self->priv->connections.add (conn);
-
-  conn = self->priv->call_core->stream_closed.connect (boost::bind (&on_stream_closed_cb, _1, _2, _3, _4, (gpointer) self));
-  self->priv->connections.add (conn);
-}
-
-static void
 ekiga_call_window_init_gui (EkigaCallWindow *self)
 {
   GtkWidget *event_box = NULL;
@@ -1619,8 +1494,6 @@ ekiga_call_window_init_gui (EkigaCallWindow *self)
   gtk_widget_show (button);
 
   gtk_window_set_resizable (GTK_WINDOW (self), true);
-
-  /* Init */
   ekiga_call_window_update_header_bar_actions (self, Standby);
 }
 
@@ -1700,6 +1573,7 @@ ekiga_call_window_class_init (EkigaCallWindowClass *klass)
   widget_class->focus_in_event = ekiga_call_window_focus_in_event;
 }
 
+
 GtkWidget *
 call_window_new (GmApplication *app)
 {
@@ -1718,7 +1592,6 @@ call_window_new (GmApplication *app)
   self->priv->videooutput_core = core.get<Ekiga::VideoOutputCore> ("videooutput-core");
   self->priv->audioinput_core = core.get<Ekiga::AudioInputCore> ("audioinput-core");
   self->priv->audiooutput_core = core.get<Ekiga::AudioOutputCore> ("audiooutput-core");
-  self->priv->call_core = core.get<Ekiga::CallCore> ("call-core");
   self->priv->friend_or_foe = core.get<Ekiga::FriendOrFoe> ("friend-or-foe");
   self->priv->foe_list = core.get<Ekiga::FoeList> ("foe-list");
 
@@ -1735,7 +1608,111 @@ call_window_new (GmApplication *app)
                    "secondary_stream_display",
                    G_SETTINGS_BIND_DEFAULT);
 
-  ekiga_call_window_connect_engine_signals (self);
+  /* Display Engine signals */
+  boost::signals2::connection conn;
+  conn = self->priv->videooutput_core->device_opened.connect (boost::bind (&on_videooutput_device_opened_cb, _1, _2, _3, _4, _5, _6, (gpointer) self));
+  self->priv->connections.add (conn);
+
+  conn = self->priv->videooutput_core->device_closed.connect (boost::bind (&on_videooutput_device_closed_cb, _1, (gpointer) self));
+  self->priv->connections.add (conn);
+
+  conn = self->priv->videooutput_core->device_error.connect (boost::bind (&on_videooutput_device_error_cb, _1, (gpointer) self));
+  self->priv->connections.add (conn);
+
+  conn = self->priv->videooutput_core->size_changed.connect (boost::bind (&on_size_changed_cb, _1, _2, _3, _4, (gpointer) self));
+  self->priv->connections.add (conn);
+
+
+  /* VideoInput Engine signals */
+  conn = self->priv->videoinput_core->device_opened.connect (boost::bind (&on_videoinput_device_opened_cb, _1, _2, _3, (gpointer) self));
+  self->priv->connections.add (conn);
+
+  conn = self->priv->videoinput_core->device_closed.connect (boost::bind (&on_videoinput_device_closed_cb, _1, _2, (gpointer) self));
+  self->priv->connections.add (conn);
+
+  conn = self->priv->videoinput_core->device_error.connect (boost::bind (&on_videoinput_device_error_cb, _1, _2, _3, (gpointer) self));
+  self->priv->connections.add (conn);
+
+  /* AudioInput Engine signals */
+  conn = self->priv->audioinput_core->device_opened.connect (boost::bind (&on_audioinput_device_opened_cb, _1, _2, _3, (gpointer) self));
+  self->priv->connections.add (conn);
+
+  conn = self->priv->audioinput_core->device_closed.connect (boost::bind (&on_audioinput_device_closed_cb, _1, _2, (gpointer) self));
+  self->priv->connections.add (conn);
+
+  conn = self->priv->audioinput_core->device_error.connect (boost::bind (&on_audioinput_device_error_cb, _1, _2, _3, (gpointer) self));
+  self->priv->connections.add (conn);
+
+  /* AudioOutput Engine signals */
+  conn = self->priv->audiooutput_core->device_opened.connect (boost::bind (&on_audiooutput_device_opened_cb, _1, _2, _3, _4, (gpointer) self));
+  self->priv->connections.add (conn);
+
+  conn = self->priv->audiooutput_core->device_closed.connect (boost::bind (&on_audiooutput_device_closed_cb, _1, _2, _3, (gpointer) self));
+  self->priv->connections.add (conn);
+
+  conn = self->priv->audiooutput_core->device_error.connect (boost::bind (&on_audiooutput_device_error_cb, _1, _2, _3, _4, (gpointer) self));
+  self->priv->connections.add (conn);
 
   return GTK_WIDGET (self);
+}
+
+
+void
+call_window_add_call (GtkWidget *call_window,
+                      boost::shared_ptr<Ekiga::Call> call)
+{
+  g_return_if_fail (EKIGA_IS_CALL_WINDOW (call_window));
+
+  EkigaCallWindow *self = EKIGA_CALL_WINDOW (call_window);
+  if (self->priv->current_call)
+    return;
+
+  self->priv->current_call = call;
+
+  /* Update menu */
+  self->priv->menu = Ekiga::GActorMenuPtr (new Ekiga::GActorMenu (*call));
+
+  /* Update UI elements */
+  CallingState s = call->is_outgoing () ? Calling : Called;
+  ekiga_call_window_update_calling_state (self, s);
+  ekiga_call_window_update_title (self, s, call->is_outgoing () ? call->get_remote_uri () : call->get_remote_party_name ());
+  ekiga_call_window_update_header_bar_actions (self, s);
+
+  { // do we know about this contact already?
+    const std::string uri = self->priv->current_call->get_remote_uri ();
+    Ekiga::FriendOrFoe::Identification id = self->priv->friend_or_foe->decide ("call", uri);
+    if (id == Ekiga::FriendOrFoe::Unknown)
+      gtk_widget_set_sensitive (GTK_WIDGET (self->priv->blacklist_button), true);
+    else
+      gtk_widget_set_sensitive (GTK_WIDGET (self->priv->blacklist_button), false);
+  }
+
+  /* Connect new signals */
+  boost::signals2::connection conn;
+  conn = call->ringing.connect (boost::bind (&on_ringing_call_cb, _1, (gpointer) self));
+  self->priv->connections.add (conn);
+
+  conn = call->established.connect (boost::bind (&on_established_call_cb, _1, (gpointer) self));
+  self->priv->connections.add (conn);
+
+  conn = call->cleared.connect (boost::bind (&on_cleared_call_cb, _1, _2, (gpointer) self));
+  self->priv->connections.add (conn);
+
+  conn = call->missed.connect (boost::bind (&on_missed_call_cb, _1, (gpointer) self));
+  self->priv->connections.add (conn);
+
+  conn = call->held.connect (boost::bind (&on_held_call_cb, _1, (gpointer) self));
+  self->priv->connections.add (conn);
+
+  conn = call->retrieved.connect (boost::bind (&on_retrieved_call_cb, _1, (gpointer) self));
+  self->priv->connections.add (conn);
+
+  conn = call->stream_opened.connect (boost::bind (&on_stream_opened_cb, _1, _2, _3, _4, (gpointer) self));
+  self->priv->connections.add (conn);
+
+  conn = call->stream_closed.connect (boost::bind (&on_stream_closed_cb, _1, _2, _3, _4, (gpointer) self));
+  self->priv->connections.add (conn);
+
+  conn = call->questions.connect (boost::bind (&on_handle_questions, _1, (gpointer) self));
+  self->priv->connections.add (conn);
 }

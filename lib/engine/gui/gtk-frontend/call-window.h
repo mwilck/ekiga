@@ -65,5 +65,13 @@ GType        ekiga_call_window_get_type   ();
 
 GtkWidget *call_window_new (GmApplication *app);
 
+// Add a call to handle to the CallWindow.
+// The call is supposed to be in "setup" mode. The reason
+// is that the CallWindow should not handle calls that do
+// not reach the "setup" phase because they are rejected,
+// or forwarded.
+void call_window_add_call (GtkWidget *call_window,
+                           boost::shared_ptr<Ekiga::Call> call);
+
 G_END_DECLS
 #endif

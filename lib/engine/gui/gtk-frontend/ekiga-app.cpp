@@ -124,8 +124,8 @@ static void gm_application_populate_application_menu (GmApplication *app);
 
 static GtkWidget *gm_application_show_call_window (GmApplication *self);
 
-static void on_created_call_cb (boost::shared_ptr<Ekiga::Call> call,
-                                gpointer data);
+static void on_setup_call_cb (boost::shared_ptr<Ekiga::Call> call,
+                              gpointer data);
 
 static bool on_visit_banks_cb (Ekiga::BankPtr bank,
                                gpointer data);
@@ -222,14 +222,15 @@ gm_application_show_call_window (GmApplication *self)
 
 /* Private callbacks */
 static void
-on_created_call_cb (G_GNUC_UNUSED boost::shared_ptr<Ekiga::Call> call,
-                    gpointer data)
+on_setup_call_cb (boost::shared_ptr<Ekiga::Call> call,
+                  gpointer data)
 {
   g_return_if_fail (GM_IS_APPLICATION (data));
 
   GmApplication *self = GM_APPLICATION (data);
 
-  gm_application_show_call_window (self);
+  GtkWidget *call_window = gm_application_show_call_window (self);
+  call_window_add_call (call_window, call);
 }
 
 
@@ -397,7 +398,7 @@ ekiga_main (int argc,
   // Connect signals
   {
     boost::shared_ptr<Ekiga::CallCore> call_core = app->priv->core.get<Ekiga::CallCore> ("call-core");
-    call_core->created_call.connect (boost::bind (&on_created_call_cb, _1, (gpointer) app));
+    call_core->setup_call.connect (boost::bind (&on_setup_call_cb, _1, (gpointer) app));
 
     boost::shared_ptr<Ekiga::AccountCore> account_core = app->priv->core.get<Ekiga::AccountCore> ("account-core");
     app->priv->conns.add (account_core->questions.connect (boost::bind (&on_handle_questions_cb, _1, app)));
