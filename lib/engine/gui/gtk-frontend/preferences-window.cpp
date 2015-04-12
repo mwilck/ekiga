@@ -594,10 +594,6 @@ gm_pw_init_general_page (PreferencesWindow *self,
                   _("The Type of Service (TOS) byte on outgoing RTP IP packets. This byte is used by the network to provide some level of Quality of Service (QoS). Default value 184 (0xB8) corresponds to Expedited Forwarding (EF) PHB as defined in RFC 3246."),
                   0.0, 255.0, 1.0);
 
-  gm_pw_toggle_new (container, _("Enable network _detection"),
-                    self->priv->nat_settings, "enable-stun",
-                    _("Enable the automatic network setup resulting from the STUN test"));
-
   /* Blacklist Settings */
   gm_pw_subsection_new (container, _("Blacklist"));
   GtkWidget* edit_blacklist_button = gtk_button_new_with_label(_("Edit"));

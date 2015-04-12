@@ -569,10 +569,8 @@ Opal::EndPoint::HandleSTUNResult ()
 
   if (error) {
 
-    ReportSTUNError (_("Ekiga did not manage to configure your network settings automatically. You can"
-		       " still use it, but you need to configure your network settings manually.\n\n"
-		       "Please see http://wiki.ekiga.org/index.php/Enable_port_forwarding_manually for"
-		       " instructions"));
+    ReportSTUNError (_("Ekiga did not manage to configure your network settings automatically. We suggest"
+		       " you disable STUN support and relay on a SIP provider that supports NAT environments.\n\n");
     ready ();
   }
   else if (!got_answer) {
