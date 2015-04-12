@@ -182,11 +182,9 @@ unsigned Opal::CallManager::get_maximum_jitter () const
 void Opal::CallManager::setup (const std::string & setting)
 {
   std::cout << "IN Opal::CallManager::setup" << std::endl;
-  if (setting.empty () || setting == "stun-server")
-    endpoint.set_stun_server (nat_settings->get_string ("stun-server"));
 
-  if (setting.empty () || setting == "enable-stun")
-    endpoint.set_stun_enabled (nat_settings->get_bool ("enable-stun"));
+  if (setting.empty () || setting == "enable-stun" || setting == "stun-server")
+    endpoint.SetStunServer (nat_settings->get_bool ("enable-stun") ? nat_settings->get_string ("stun-server") : "");
 
   if (setting.empty () || setting == "maximum-jitter-buffer")
     set_maximum_jitter (audio_codecs_settings->get_int ("maximum-jitter-buffer"));

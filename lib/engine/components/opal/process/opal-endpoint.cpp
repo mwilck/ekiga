@@ -332,20 +332,9 @@ bool Opal::EndPoint::GetAutoAnswer (void) const
 }
 
 
-void Opal::EndPoint::set_stun_server (const std::string & server)
+void Opal::EndPoint::SetStunServer (const std::string & server)
 {
-  if (server.empty ())
-    stun_server = "stun.ekiga.net";
-
-  stun_server = server;
-  PTRACE (4, "Opal::EndPoint\tSet STUN Server to " << stun_server);
-}
-
-
-void Opal::EndPoint::set_stun_enabled (bool enabled)
-{
-  stun_enabled = enabled;
-  if (stun_enabled && !stun_thread) {
+  if (!server.empty () && !stun_thread) {
 
     // Ready
     stun_thread = new StunDetector (stun_server, *this, queue);
@@ -353,10 +342,12 @@ void Opal::EndPoint::set_stun_enabled (bool enabled)
     Ekiga::Runtime::run_in_main (boost::bind (&Opal::EndPoint::HandleSTUNResult, this), 1);
   }
   else {
+
+    SetSTUNServer (PString ());
     ready ();
   }
 
-  PTRACE (4, "Opal::EndPoint\tSTUN Detection: " << enabled);
+  PTRACE (4, "Opal::EndPoint\tSTUN Detection: " << server);
 }
 
 

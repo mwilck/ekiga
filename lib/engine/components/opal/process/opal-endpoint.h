@@ -102,8 +102,7 @@ public:
     void SetAutoAnswer (bool enabled);
     bool GetAutoAnswer () const;
 
-    void set_stun_server (const std::string & server);
-    void set_stun_enabled (bool);
+    void SetStunServer (const std::string & server);
 
     Sip::EndPoint& GetSipEndPoint ();
 #ifdef HAVE_H323
