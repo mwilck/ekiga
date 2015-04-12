@@ -1,41 +1,33 @@
 See our wiki: http://wiki.ekiga.org/index.php/ToDo
 - clean up signal relay. No need to have a class method for each signal "relay".
-- Check what happens when we hide the window. Can we get it back when we want ? DONE
 - Update DOC with 5.0 screenshots
-- Make sure that automatic reREGISTER and presence reSUBSCRIBE/PUBLISH still works when a registrar is down then comes online.
 - Make sure refresh also works as expected.
-- Simplify Call Core code by using signal relay (boost::ref)
 - Turn LiveObject into an Actor ?
 - add_heap does not seem to be used anymore
-- questions from Account Edition relayed to PresenceCore ? Well why not.
 - GSettings migration ? To check.
 - Roster migration : to implement + implement adding Echo test and such to the roster when it is not empty.
 - trackable object (in .h ?)
 - Is Heap-Impl still used in the OPAL component ?
 - This existing_group function passed to the Opal::Account ctor is so weiiiiiird....
 - Proof check all dialogs. e.g. can we delete the SIP URI of a roster contact and save it ?
-- Forms error checking should be simplified. Perhaps with "allow_empty" properties ? and URI handling ? DONE
-- Check Forms for mnemonics.
+- Check Forms for mnemonics & regexes.
 - Check Accels
 - Prefs should perhaps use GtkInfoBar to prevent entering wrong forward uris.
-- Use GtkInfoBar instead of GmStatusBar. DONE
-- Clean icons & pixmaps.
 - Call Window : add / remove entries -> concert to add + disable actions
 - Contact phone numbers: open a popup with all possibilities instead of right-click popup => 1 action. Urgent.
 - Cleanup Ekiga App. Not sure everything is initialized at the right place.
 - Cleanup files (e.g. codecsbox which is frontend, not core)
 - Roster should be refreshed when accounts are added/removed
+- Main menu should be refreshed when account is disabled/enabled
 - Global actions should be updated if an Ekiga.net/DiamondCard is added/removed.
 - Call Window: on_setup_call, check if it is the right place for blacklist handling + status change ("calling", isn't it called on incoming calls too ?)
 - Send user input capabilities
 - Check we do not need to add more capabilities for VP8 / VP8-OM like wiht H.264 High Profile
 - Add back "Add to roster" Actions
-- SetKeepAlive => H.323 & SIP and remove the "NAT" mention because of RFC5626
-- Review RefLister : no object uses its signals, they are all implementing new signals. add_object should be virtual so that all children use the same API, otherwhise we have add_object and add_account. Iterators should not be reimplemented. Actor could be ported to use RefLister.
 - Add -Wl,-z,defs -Wl,--as-needed as link flags and fix subsequent link error with ekiga_dbus_component_new not found
 - Check video-bitrate vs video-tx-bitrate usage.
-- remove_manager => What about signals/scoped_connections ? 
 - warn if required codecs are not present.
 - Use STL/RefLister instead of inheriting from them.
-OPAL should retry SUBSCRIBE on Not retrying SUBSCRIBE due to error response 481 Call Leg/Transaction Does Not Exist
-Improve messages cleared the call and so on
+- OPAL should retry SUBSCRIBE on Not retrying SUBSCRIBE due to error response 481 Call Leg/Transaction Does Not Exist
+- OPAL should do automatic reREGISTER and presence reSUBSCRIBE/PUBLISH still works when a registrar is down then comes online.
+- Probably it would be wise to use inheritance for Accounts
