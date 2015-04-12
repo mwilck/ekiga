@@ -849,10 +849,6 @@ gm_pw_init_sip_page (PreferencesWindow *self,
     capabilities_choices.push_back (boost::make_tuple (capabilities[i][0], capabilities[i][1]));
 
   /* Add Misc Settings */
-  gm_pw_entry_new (container, _("_Outbound proxy"),
-                   self->priv->sip_settings, "outbound-proxy-host",
-                   _("The SIP Outbound Proxy to use for outgoing calls"), false);
-
   entry =
     gm_pw_entry_new (container, _("Forward _URI"),
                      self->priv->sip_settings, "forward-host",

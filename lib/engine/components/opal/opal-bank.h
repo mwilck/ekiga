@@ -150,6 +150,7 @@ private:
     void add (Account::Type acc_type,
               std::string name,
               std::string host,
+              std::string outbound_proxy,
               std::string user,
               std::string auth_user,
               std::string password,

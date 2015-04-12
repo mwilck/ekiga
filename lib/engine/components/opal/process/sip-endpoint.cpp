@@ -75,6 +75,9 @@ namespace Opal {
           params.m_minRetryTime = PMaxTimeInterval;  // use default value
           params.m_maxRetryTime = PMaxTimeInterval;  // use default value
 
+          if (!account.get_outbound_proxy ().empty ())
+            params.m_addressOfRecord = params.m_addressOfRecord + ";OPAL-proxy=" + account.get_outbound_proxy ();
+
           // Register the given aor to the given registrar
           if (!ep.Register (params, _aor)) {
             params.m_addressOfRecord = "sip:" + account.get_username () + "@" + account.get_host ();

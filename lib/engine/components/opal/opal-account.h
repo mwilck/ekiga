@@ -80,6 +80,7 @@ public:
     static xmlNodePtr build_node (Opal::Account::Type typus,
 				  std::string name,
 				  std::string host,
+				  std::string outbound_proxy,
 				  std::string user,
 				  std::string auth_user,
 				  std::string password,
@@ -137,6 +138,8 @@ public:
     const std::string get_protocol_name () const;
 
     const std::string get_host () const;
+
+    const std::string get_outbound_proxy () const;
 
     /** Returns the user name for the Opal::Account.
      * This function is purely virtual and should be implemented by the

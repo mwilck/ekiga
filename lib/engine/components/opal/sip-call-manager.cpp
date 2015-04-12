@@ -174,12 +174,6 @@ void Opal::Sip::CallManager::setup (const std::string & setting)
     sip_endpoint.SetKeepAlive (PTimeInterval (0, delay), SIPEndPoint::KeepAliveByOPTION);
   }
 
-  if (setting.empty () || setting == "outbound-proxy-host")  {
-    std::string uri = sip_settings->get_string ("outbound-proxy-host");
-    PTRACE (4, "Opal::Sip::CallManager\tSet outbound proxy to " << uri);
-    sip_endpoint.SetProxy (SIPURL (uri));
-  }
-
   if (setting.empty () || setting == "dtmf-mode")
     set_dtmf_mode (sip_settings->get_enum ("dtmf-mode"));
 

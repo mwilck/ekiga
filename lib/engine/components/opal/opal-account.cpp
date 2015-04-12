@@ -83,6 +83,7 @@ xmlNodePtr
 Opal::Account::build_node(Opal::Account::Type typus,
                           std::string name,
                           std::string host,
+                          std::string outbound_proxy,
                           std::string user,
                           std::string auth_user,
                           std::string password,
@@ -136,6 +137,9 @@ Opal::Account::build_node(Opal::Account::Type typus,
     xmlSetProp (node, BAD_CAST "type", BAD_CAST "SIP");
     break;
   }
+  if (typus != H323)
+    xmlNewChild (node, NULL, BAD_CAST "outbound_proxy",
+                 BAD_CAST robust_xmlEscape (node->doc, outbound_proxy).c_str ());
 
   xmlNewChild(node, NULL, BAD_CAST "roster", NULL);
 
@@ -362,6 +366,29 @@ Opal::Account::get_host () const
   for (xmlNodePtr child = node->children; child != NULL; child = child->next) {
 
     if (child->type == XML_ELEMENT_NODE && child->name != NULL && xmlStrEqual (BAD_CAST "host", child->name)) {
+
+      xml_str = xmlNodeGetContent (child);
+      if (xml_str != NULL) {
+
+        result = (const char*)xml_str;
+        xmlFree (xml_str);
+      }
+    }
+  }
+
+  return result;
+}
+
+
+const std::string
+Opal::Account::get_outbound_proxy () const
+{
+  std::string result;
+  xmlChar* xml_str = NULL;
+
+  for (xmlNodePtr child = node->children; child != NULL; child = child->next) {
+
+    if (child->type == XML_ELEMENT_NODE && child->name != NULL && xmlStrEqual (BAD_CAST "outbound_proxy", child->name)) {
 
       xml_str = xmlNodeGetContent (child);
       if (xml_str != NULL) {
@@ -656,6 +683,8 @@ Opal::Account::edit ()
     request->hidden ("authentication_user", get_authentication_username ());
     request->text ("password", _("_Password"), get_password (), _("1234"),
                    Ekiga::FormVisitor::PASSWORD, false, false);
+    request->text ("outbound_proxy", _("Outbound _Proxy"), get_outbound_proxy (), _("proxy.company.com"),
+                   Ekiga::FormVisitor::STANDARD, true, true);
     request->hidden ("timeout", "3600");
     break;
   case Opal::Account::DiamondCard:
@@ -666,6 +695,8 @@ Opal::Account::edit ()
     request->hidden ("authentication_user", get_authentication_username ());
     request->text ("password", _("_PIN Code"), get_password (), _("1234"),
                    Ekiga::FormVisitor::NUMBER, false, false);
+    request->text ("outbound_proxy", _("Outbound _Proxy"), get_outbound_proxy (), _("proxy.company.com"),
+                   Ekiga::FormVisitor::STANDARD, true, true);
     request->hidden ("timeout", "3600");
     break;
   case Opal::Account::H323:
@@ -697,6 +728,8 @@ Opal::Account::edit ()
                    Ekiga::FormVisitor::STANDARD, false, false);
     request->text ("password", _("_Password"), get_password (), _("1234"),
                    Ekiga::FormVisitor::PASSWORD, false, false);
+    request->text ("outbound_proxy", _("Outbound _Proxy"), get_outbound_proxy (), _("proxy.company.com"),
+                   Ekiga::FormVisitor::STANDARD, true, true);
     request->text ("timeout", _("_Timeout"), "3600", "3600",
                    Ekiga::FormVisitor::NUMBER, false, false);
   }
@@ -716,6 +749,7 @@ Opal::Account::on_edit_form_submitted (bool submitted,
 
   std::string new_name = result.text ("name");
   std::string new_host = result.text ("host");
+  std::string new_outbound_proxy = result.text ("outbound_proxy");
   std::string new_user = result.text ("user");
   std::string new_authentication_user;
   if (type == Account::Ekiga || type == Account::DiamondCard)
@@ -755,6 +789,7 @@ Opal::Account::on_edit_form_submitted (bool submitted,
     else if (new_enabled) {
       // Some critical setting just changed
       if (get_host () != new_host
+          || get_outbound_proxy () != new_outbound_proxy
           || get_username () != new_user
           || get_authentication_username () != new_authentication_user
           || get_password () != new_password
@@ -785,6 +820,8 @@ Opal::Account::on_edit_form_submitted (bool submitted,
 	  robust_xmlNodeSetContent (node, &child, "name", new_name);
 	if (xmlStrEqual (BAD_CAST "host", child->name))
 	  robust_xmlNodeSetContent (node, &child, "host", new_host);
+	if (xmlStrEqual (BAD_CAST "outbound_proxy", child->name))
+	  robust_xmlNodeSetContent (node, &child, "outbound_proxy", new_outbound_proxy);
 	if (xmlStrEqual (BAD_CAST "user", child->name))
 	  robust_xmlNodeSetContent (node, &child, "user", new_user);
 	if (xmlStrEqual (BAD_CAST "auth_user", child->name))

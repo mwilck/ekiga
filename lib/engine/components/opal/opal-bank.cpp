@@ -155,6 +155,8 @@ Opal::Bank::new_account (Account::Type acc_type,
     request->hidden ("authentication_user", username);
     request->text ("password", _("_Password"), password, _("1234"),
                    Ekiga::FormVisitor::PASSWORD, false, false);
+    request->text ("outbound_proxy", _("Outbound _Proxy"), "", _("proxy.company.com"),
+                   Ekiga::FormVisitor::STANDARD, true, true);
     request->hidden ("timeout", "3600");
     break;
 
@@ -168,6 +170,8 @@ Opal::Bank::new_account (Account::Type acc_type,
     request->hidden ("authentication_user", username);
     request->text ("password", _("_PIN Code"), password, _("1234"),
                    Ekiga::FormVisitor::NUMBER, false, false);
+    request->text ("outbound_proxy", _("Outbound _Proxy"), "", _("proxy.company.com"),
+                   Ekiga::FormVisitor::STANDARD, true, true);
     request->hidden ("timeout", "3600");
     break;
 
@@ -197,6 +201,8 @@ Opal::Bank::new_account (Account::Type acc_type,
                    Ekiga::FormVisitor::STANDARD, false, false);
     request->text ("password", _("_Password"), password, _("1234"),
                    Ekiga::FormVisitor::PASSWORD, false, false);
+    request->text ("outbound_proxy", _("Outbound _Proxy"), "", _("proxy.company.com"),
+                   Ekiga::FormVisitor::STANDARD, true, true);
     request->text ("timeout", _("_Timeout"), "3600", "3600",
                    Ekiga::FormVisitor::NUMBER, false, false);
     break;
@@ -225,6 +231,7 @@ Opal::Bank::on_new_account_form_submitted (bool submitted,
   std::string new_user = result.text ("user");
   std::string new_authentication_user = (acc_type == Opal::Account::SIP) ? result.text ("authentication_user") : new_user;
   std::string new_password = result.text ("password");
+  std::string new_outbound_proxy = result.text ("outbound_proxy");
   bool new_enabled = result.boolean ("enabled");
   unsigned new_timeout = atoi ((acc_type == Opal::Account::SIP
                                 || acc_type == Opal::Account::H323) ?
@@ -252,7 +259,7 @@ Opal::Bank::on_new_account_form_submitted (bool submitted,
 
   result.visit (*request);
 
-  add (acc_type, new_name, new_host, new_user, new_authentication_user,
+  add (acc_type, new_name, new_host, new_outbound_proxy, new_user, new_authentication_user,
        new_password, new_enabled, new_timeout);
 
   return true;
@@ -263,13 +270,14 @@ void
 Opal::Bank::add (Account::Type acc_type,
                  std::string name,
                  std::string host,
+                 std::string outbound_proxy,
                  std::string user,
                  std::string auth_user,
                  std::string password,
                  bool enabled,
                  unsigned timeout)
 {
-  xmlNodePtr child = Opal::Account::build_node (acc_type, name, host, user, auth_user, password, enabled, timeout);
+  xmlNodePtr child = Opal::Account::build_node (acc_type, name, host, outbound_proxy, user, auth_user, password, enabled, timeout);
 
   xmlAddChild (node, child);
 
@@ -542,7 +550,7 @@ Opal::Bank::migrate_from_gconf (const std::list<std::string> old)
     else
       acc_type = Account::H323;
 
-    xmlNodePtr child = Opal::Account::build_node (acc_type, name, host, user, auth_user, password, enabled, timeout);
+    xmlNodePtr child = Opal::Account::build_node (acc_type, name, host, "", user, auth_user, password, enabled, timeout);
 
     xmlAddChild (node, child);
   }
