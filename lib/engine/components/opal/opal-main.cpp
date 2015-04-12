@@ -61,7 +61,7 @@ using namespace Opal;
 class OPALSpark: public Ekiga::Spark
 {
 public:
-  OPALSpark (): result(false)
+  OPALSpark (): result(false), bank_created(false)
   {}
 
 
@@ -71,18 +71,21 @@ public:
 #endif
                  Opal::Sip::EndPoint& sip_endpoint)
   {
-    boost::shared_ptr<Ekiga::PresenceCore> presence_core = core.get<Ekiga::PresenceCore> ("presence-core");
-    boost::shared_ptr<Ekiga::AccountCore> account_core = core.get<Ekiga::AccountCore> ("account-core");
-    boost::shared_ptr<Opal::Bank> bank = boost::shared_ptr<Opal::Bank> (new Opal::Bank (core,
+    if (!bank_created) {
+      boost::shared_ptr<Ekiga::PresenceCore> presence_core = core.get<Ekiga::PresenceCore> ("presence-core");
+      boost::shared_ptr<Ekiga::AccountCore> account_core = core.get<Ekiga::AccountCore> ("account-core");
+      boost::shared_ptr<Opal::Bank> bank = boost::shared_ptr<Opal::Bank> (new Opal::Bank (core,
 #ifdef HAVE_H323
-                                                                                        &h323_endpoint,
+                                                                                          &h323_endpoint,
 #endif
-                                                                                        &sip_endpoint));
+                                                                                          &sip_endpoint));
 
-    account_core->add_bank (bank);
-    presence_core->add_cluster (bank);
-    core.add (bank);
-    presence_core->add_presence_publisher (bank);
+      account_core->add_bank (bank);
+      presence_core->add_cluster (bank);
+      core.add (bank);
+      presence_core->add_presence_publisher (bank);
+      bank_created = true;
+    }
   }
 
 
@@ -149,6 +152,7 @@ public:
   { return "OPAL"; }
 
   bool result;
+  bool bank_created;
 };
 
 
