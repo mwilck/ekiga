@@ -1843,7 +1843,7 @@ preferences_window_new (GmApplication *app)
   gm_pw_init_general_page (self, container);
   gtk_widget_show_all (GTK_WIDGET (container));
 
-  container = gm_pw_window_subsection_new (self, _("Call Forwarding"));
+  container = gm_pw_window_subsection_new (self, _("Call Handling"));
   gm_pw_init_call_options_page (self, container);
   gtk_widget_show_all (GTK_WIDGET (container));
 
