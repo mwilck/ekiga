@@ -84,12 +84,6 @@
 
 enum CallingState {Standby, Calling, Ringing, Connected, Called};
 
-enum DeviceType {AudioInput, AudioOutput, Ringer, VideoInput};
-struct deviceStruct {
-  char name[256];
-  DeviceType deviceType;
-};
-
 G_DEFINE_TYPE (EkigaCallWindow, ekiga_call_window, GM_TYPE_WINDOW);
 
 enum {
@@ -115,7 +109,7 @@ struct _EkigaCallWindowPrivate
   GtkAccelGroup *accel;
 
   boost::shared_ptr<Ekiga::Call> current_call;
-  unsigned calling_state;
+  CallingState calling_state;
 
   GtkWidget *ext_video_win;
   GtkWidget *event_box;
@@ -130,18 +124,8 @@ struct _EkigaCallWindowPrivate
   GtkWidget *call_panel_toolbar;
   GtkWidget *blacklist_button;
 
-  GtkWidget *audio_settings_window;
-  GtkWidget *audio_input_volume_frame;
-  GtkWidget *audio_output_volume_frame;
   GtkWidget *input_signal;
   GtkWidget *output_signal;
-#if GTK_CHECK_VERSION (3, 0, 0)
-  GtkAdjustment *adj_input_volume;
-  GtkAdjustment *adj_output_volume;
-#else
-  GtkObject *adj_input_volume;
-  GtkObject *adj_output_volume;
-#endif
 #ifndef WIN32
   GC gc;
 #endif
@@ -326,10 +310,10 @@ static void ekiga_call_window_remove_action_entries (GActionMap *map,
                                                       const GActionEntry *entries);
 
 static void ekiga_call_window_update_calling_state (EkigaCallWindow *self,
-                                                    unsigned calling_state);
+                                                    CallingState calling_state);
 
 static void ekiga_call_window_update_header_bar_actions (EkigaCallWindow *self,
-                                                         unsigned calling_state);
+                                                         CallingState calling_state);
 
 static void ekiga_call_window_clear_signal_levels (EkigaCallWindow *self);
 
@@ -1009,7 +993,7 @@ ekiga_call_window_remove_action_entries (GActionMap *map,
 
 static void
 ekiga_call_window_update_calling_state (EkigaCallWindow *self,
-                                        unsigned calling_state)
+                                        CallingState calling_state)
 {
   g_return_if_fail (self != NULL);
 
@@ -1044,7 +1028,6 @@ ekiga_call_window_update_calling_state (EkigaCallWindow *self,
       gtk_spinner_start (GTK_SPINNER (self->priv->spinner));
       break;
 
-
     case Called:
     default:
       break;
@@ -1055,7 +1038,7 @@ ekiga_call_window_update_calling_state (EkigaCallWindow *self,
 
 static void
 ekiga_call_window_update_header_bar_actions (EkigaCallWindow *self,
-                                             unsigned calling_state)
+                                             CallingState calling_state)
 {
   GList *it = NULL;
   g_return_if_fail (self != NULL);

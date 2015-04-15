@@ -67,28 +67,7 @@
 
 #include "opal-bank.h"
 
-#include <algorithm>
-
 enum CallingState {Standby, Calling, Connected, Called};
-
-typedef enum {
-  CONTACTS,
-  DIALPAD,
-  CALL,
-  NUM_SECTIONS
-} PanelSection;
-
-enum DeviceType {AudioInput, AudioOutput, Ringer, VideoInput};
-
-typedef enum {
-  CONTACT,
-  NUM_MENU_SECTIONS
-} MenuSection;
-
-struct deviceStruct {
-  char name[256];
-  DeviceType deviceType;
-};
 
 G_DEFINE_TYPE (EkigaMainWindow, ekiga_main_window, GM_TYPE_WINDOW);
 
@@ -121,12 +100,6 @@ struct _EkigaMainWindowPrivate
   GtkWidget *preview_button;
   GtkWidget *menu_button;
 
-  /* stack pages
-   *  (we store the numbers so we know where we are)
-   */
-  gint roster_view_page_number;
-  gint dialpad_page_number;
-  gint call_history_page_number;
   GtkWidget* roster_view;
   GtkWidget* call_history_view;
 
@@ -138,7 +111,7 @@ struct _EkigaMainWindowPrivate
 
   /* Calls */
   boost::shared_ptr<Ekiga::Call> current_call;
-  unsigned calling_state;
+  CallingState calling_state;
 
   Ekiga::scoped_connections connections;
 
@@ -512,7 +485,6 @@ actions_changed_cb (G_GNUC_UNUSED GtkWidget *widget,
                     gpointer data)
 {
   GMenu *menu = NULL;
-  int pos = 0;
 
   g_return_if_fail (EKIGA_IS_MAIN_WINDOW (data));
   EkigaMainWindow *self = EKIGA_MAIN_WINDOW (data);
@@ -522,7 +494,7 @@ actions_changed_cb (G_GNUC_UNUSED GtkWidget *widget,
 
   /* Those are Actions from the selected Presentity and Heap */
   if (model) {
-    g_menu_insert_section (menu, pos++, NULL, model);
+    g_menu_insert_section (menu, 0, NULL, model);
     gtk_menu_button_set_menu_model (GTK_MENU_BUTTON (self->priv->menu_button), G_MENU_MODEL (menu));
   }
   else
@@ -941,8 +913,8 @@ gm_main_window_new (GmApplication *app)
   /* basic gtk+ setup  */
   mw = EKIGA_MAIN_WINDOW (g_object_new (EKIGA_TYPE_MAIN_WINDOW,
                                         "application", GTK_APPLICATION (app),
-					"key", USER_INTERFACE ".main-window",
-					NULL));
+                                        "key", USER_INTERFACE ".main-window",
+                                        NULL));
   Ekiga::ServiceCore& core = gm_application_get_core (app);
 
   /* fetching needed engine objects */
