@@ -95,6 +95,7 @@ Opal::Bank::Bank (Ekiga::ServiceCore& core,
                                                       notification_core,
                                                       personal_details,
                                                       audiooutput_core,
+                                                      endpoint,
 #ifdef HAVE_H323
                                                       _h323_endpoint,
 #endif
@@ -286,6 +287,7 @@ Opal::Bank::add (Account::Type acc_type,
 				    notification_core,
 				    personal_details,
 				    audiooutput_core,
+                                    endpoint,
 #ifdef HAVE_H323
                                     h323_endpoint,
 #endif

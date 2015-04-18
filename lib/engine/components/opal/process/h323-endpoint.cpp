@@ -66,7 +66,8 @@ namespace Opal {
 
         if (!registering && ep.IsRegisteredWithGatekeeper (account.get_host ())) {
           ep.RemoveGatekeeper (account.get_host ());
-          account.handle_registration_event (Account::Unregistered, std::string ());
+          Ekiga::Runtime::run_in_main (boost::bind (&Opal::Account::handle_registration_event, &account,
+                                                    Account::Unregistered, std::string (), std::string ()));
           return;
         }
         else if (registering && !ep.IsRegisteredWithGatekeeper (account.get_host ())) {
@@ -119,12 +120,12 @@ namespace Opal {
               info = _("Failed");
 
             // Signal
-            account.handle_registration_event (Account::RegistrationFailed, info);
+            Ekiga::Runtime::run_in_main (boost::bind (&Opal::Account::handle_registration_event, &account,
+                                                      Account::RegistrationFailed, info, std::string ()));
           }
-          else {
-
-            account.handle_registration_event (Account::Registered, std::string ());
-          }
+          else
+            Ekiga::Runtime::run_in_main (boost::bind (&Opal::Account::handle_registration_event, &account,
+                                                      Account::Registered, std::string (), std::string ()));
         }
       }
 

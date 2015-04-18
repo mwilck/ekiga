@@ -152,6 +152,7 @@ Opal::Account::Account (Opal::Bank & _bank,
                         boost::shared_ptr<Ekiga::NotificationCore> _notification_core,
                         boost::shared_ptr<Ekiga::PersonalDetails> _personal_details,
                         boost::shared_ptr<Ekiga::AudioOutputCore> _audiooutput_core,
+                        Opal::EndPoint& _endpoint,
 #ifdef HAVE_H323
                         Opal::H323::EndPoint* _h323_endpoint,
 #endif
@@ -165,6 +166,7 @@ Opal::Account::Account (Opal::Bank & _bank,
   notification_core(_notification_core),
   personal_details(_personal_details),
   audiooutput_core(_audiooutput_core),
+  endpoint(_endpoint),
 #ifdef HAVE_H323
   h323_endpoint(_h323_endpoint),
 #endif
@@ -578,7 +580,7 @@ Opal::Account::disable ()
       }
 
       if (type != Account::H323 && sip_endpoint) {
-        sip_endpoint->Unsubscribe (SIPSubscribe::MessageSummary, get_transaction_aor (get_aor ()));
+        sip_endpoint->Unsubscribe (SIPSubscribe::MessageSummary, get_full_uri (get_aor ()));
       }
 
       opal_presentity->Close ();
@@ -949,7 +951,7 @@ Opal::Account::fetch (const std::string uri)
   // Subscribe now
   if (state == Registered) {
     PTRACE(4, "Ekiga\tSubscribeToPresence for " << uri.c_str () << " (fetch)");
-    opal_presentity->SubscribeToPresence (get_transaction_aor (uri).c_str ());
+    opal_presentity->SubscribeToPresence (get_full_uri (uri));
   }
 }
 
@@ -958,7 +960,7 @@ void
 Opal::Account::unfetch (const std::string uri)
 {
   if (is_supported_uri (uri) && opal_presentity) {
-    opal_presentity->UnsubscribeFromPresence (get_transaction_aor (uri).c_str ());
+    opal_presentity->UnsubscribeFromPresence (get_full_uri (uri));
     Ekiga::Runtime::run_in_main (boost::bind (&Opal::Account::presence_status_in_main, this, uri, "unknown", ""));
   }
 }
@@ -982,19 +984,18 @@ Opal::Account::is_supported_uri (const std::string & uri)
 void
 Opal::Account::handle_registration_event (Ekiga::Account::RegistrationState state_,
                                           const std::string info,
-                                          PSafePtr<OpalPresentity> _opal_presentity)
+                                          const std::string & aor)
 {
   if (state == state_)
     return; // The state did not change...
-
-  if (_opal_presentity)
-    opal_presentity = _opal_presentity;
 
   switch (state_) {
 
   case Registered:
 
     if (state != Registered) {
+      if (!aor.empty () && !opal_presentity)
+        opal_presentity = endpoint.AddPresentity (aor);
 
       // Translators: this is a state, not an action, i.e. it should be read as
       // "(you are) registered", and not as "(you have been) registered"
@@ -1021,7 +1022,7 @@ Opal::Account::handle_registration_event (Ekiga::Account::RegistrationState stat
 
         opal_presentity->SetLocalPresence (personal_state, presence_status);
         if (type != Account::H323 && sip_endpoint) {
-          sip_endpoint->Subscribe (SIPSubscribe::MessageSummary, 3600, get_transaction_aor (get_aor ()));
+          sip_endpoint->Subscribe (SIPSubscribe::MessageSummary, 3600, get_full_uri (get_aor ()));
         }
       }
       boost::shared_ptr<Ekiga::PersonalDetails> details = personal_details.lock ();
@@ -1041,7 +1042,7 @@ Opal::Account::handle_registration_event (Ekiga::Account::RegistrationState stat
     /* delay destruction of this account until the
        unsubscriber thread has called back */
     if (dead)
-      Ekiga::Runtime::run_in_main (boost::ref (removed));
+      removed ();
     break;
 
   case UnregistrationFailed:
@@ -1081,7 +1082,7 @@ Opal::Account::handle_registration_event (Ekiga::Account::RegistrationState stat
     break;
   }
 
-  Ekiga::Runtime::run_in_main (boost::ref (updated));
+  updated ();
 }
 
 
@@ -1402,11 +1403,13 @@ Opal::Account::decide_type ()
 }
 
 
-const std::string
-Opal::Account::get_transaction_aor (const std::string & aor) const
+const PString
+Opal::Account::get_full_uri (const PString & uri) const
 {
-  if (sip_endpoint && sip_endpoint->IsRegistered (get_aor () + ";transport=tcp"))
-    return aor + ";transport=tcp";
-  else
-    return aor;
+  PString parameters;
+  PINDEX j;
+  if (opal_presentity && (j = opal_presentity->GetAOR ().AsString ().Find (";")) != P_MAX_INDEX)
+    parameters = opal_presentity->GetAOR ().AsString ().Mid (j);
+
+  return uri + parameters;
 }

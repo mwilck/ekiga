@@ -76,16 +76,10 @@ namespace Opal {
           params.m_maxRetryTime = PMaxTimeInterval;  // use default value
 
           if (!account.get_outbound_proxy ().empty ())
-            params.m_addressOfRecord = params.m_addressOfRecord + ";OPAL-proxy=" + account.get_outbound_proxy ();
+            params.m_addressOfRecord = params.m_addressOfRecord + ";OPAL-proxy=" + account.get_outbound_proxy () + "%3Btransport=tcp";
 
           // Register the given aor to the given registrar
-          if (!ep.Register (params, _aor)) {
-            params.m_addressOfRecord = "sip:" + account.get_username () + "@" + account.get_host ();
-            if (!ep.Register (params, _aor)) {
-              account.handle_registration_event (Account::RegistrationFailed,
-                                                 _("Transport error"));
-            }
-          }
+          ep.Register (params, _aor);
         }
         else {
           PString aor = "sip:" + account.get_username () + "@" + account.get_host ();
@@ -160,28 +154,15 @@ Opal::Sip::EndPoint::send_message (const std::string & _uri,
 bool
 Opal::Sip::EndPoint::SetUpCall (const std::string & uri)
 {
-  std::stringstream ustr;
-
-  if (uri.find (":") == string::npos)
-    ustr << "sip:" << uri;
-  else
-    ustr << uri;
-
-  PStringList registrations = GetRegistrations ();
-  SIPURL remote_uri = ustr.str ().c_str ();
-  for (int i = 0 ; i < registrations.GetSize () ; i++) {
-    SIPURL registered_uri = registrations [i];
-    if (registered_uri.GetHostPort () == remote_uri.GetHostPort ()) {
-      PString transport = registered_uri.GetParamVars ()("transport");
-      if (!transport.IsEmpty ())
-        ustr << ";transport=" << (const char *) transport;
-    }
+  PString token;
+  boost::shared_ptr<Opal::Bank> bank = core.get<Opal::Bank> ("opal-account-store");
+  if (bank) {
+    Opal::AccountPtr account = bank->find_account (SIPURL (uri).GetHostPort ());
+    if (account)
+      return GetManager ().SetUpCall ("pc:*", account->get_full_uri (uri), token, (void*) uri.c_str ());
   }
 
-  PString token;
-  GetManager ().SetUpCall ("pc:*", ustr.str(), token, (void*) ustr.str().c_str());
-
-  return true;
+  return GetManager ().SetUpCall ("pc:*", uri, token, (void*) uri.c_str ());
 }
 
 
@@ -289,17 +270,26 @@ Opal::Sip::EndPoint::OnRegistrationStatus (const RegistrationStatus & status)
 
   /* Successful registration or unregistration */
   if (status.m_reason == SIP_PDU::Successful_OK) {
-    account->handle_registration_event (status.m_wasRegistering?Account::Registered:Account::Unregistered,
-                                        std::string (),
-                                        GetManager ().AddPresentity (PURL (status.m_addressofRecord)));
+    Ekiga::Runtime::run_in_main (boost::bind (&Opal::Account::handle_registration_event, account,
+                                              status.m_wasRegistering?Account::Registered:Account::Unregistered,
+                                              std::string (),
+                                              status.m_addressofRecord));
   }
   /* Registration or unregistration failure */
   else {
     SIPURL m_addressOfRecord = SIPURL (status.m_addressofRecord);
+    /* Try again in UDP mode */
     if (m_addressOfRecord.GetTransportProto () == "TCP") {
       SIPRegister::Params params;
       PString _aor;
       m_addressOfRecord.SetParamVar ("transport", "udp");
+      if (m_addressOfRecord.GetParamVars ().Contains ("OPAL-proxy")) {
+        PString proxy = m_addressOfRecord.GetParamVars().Get ("OPAL-proxy");
+        PINDEX p = proxy.Find (";");
+        if (p != P_MAX_INDEX)
+          proxy = proxy.Left (p);
+        m_addressOfRecord.SetParamVar ("OPAL-proxy", proxy);
+      }
       params.m_addressOfRecord = m_addressOfRecord;
       params.m_compatibility = SIPRegister::e_RFC5626;
       params.m_authID = status.m_handler->GetAuthID ();
@@ -547,8 +537,9 @@ Opal::Sip::EndPoint::OnRegistrationStatus (const RegistrationStatus & status)
      * as a sip code has already been scheduled to be shown
      */
     if (status.m_reason != SIP_PDU::Failure_RequestTerminated) {
-      account->handle_registration_event (status.m_wasRegistering?Account::RegistrationFailed:Account::UnregistrationFailed,
-                                          info);
+      Ekiga::Runtime::run_in_main (boost::bind (&Opal::Account::handle_registration_event, account,
+                                                status.m_wasRegistering?Account::RegistrationFailed:Account::UnregistrationFailed,
+                                                info, std::string ()));
     }
   }
 }

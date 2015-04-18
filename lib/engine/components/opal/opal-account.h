@@ -57,6 +57,7 @@ namespace Opal
   class Bank;
   class CallManager;
   class Presentity;
+  class EndPoint;
   namespace Sip { class EndPoint; };
   namespace H323 { class EndPoint; };
 
@@ -72,12 +73,12 @@ namespace Opal
     public Ekiga::PresencePublisher,
     public Ekiga::PresenceFetcher
   {
-    friend class Opal::Presentity;
+    friend class Presentity;
 public:
 
     typedef enum { SIP, Ekiga, DiamondCard, H323 } Type;
 
-    static xmlNodePtr build_node (Opal::Account::Type typus,
+    static xmlNodePtr build_node (Account::Type typus,
 				  std::string name,
 				  std::string host,
 				  std::string outbound_proxy,
@@ -104,15 +105,16 @@ public:
      * that Opal is taking care of deleting them. They are not deleted when
      * the last object having a reference to them is deleted.
      */
-    Account (Opal::Bank & bank,
+    Account (Bank & bank,
 	     boost::weak_ptr<Ekiga::PresenceCore> _presence_core,
 	     boost::shared_ptr<Ekiga::NotificationCore> _notification_core,
 	     boost::shared_ptr<Ekiga::PersonalDetails> _personal_details,
 	     boost::shared_ptr<Ekiga::AudioOutputCore> _audiooutput_core,
+             EndPoint& _endpoint,
 #ifdef HAVE_H323
-             Opal::H323::EndPoint* _h323_endpoint,
+             H323::EndPoint* _h323_endpoint,
 #endif
-             Opal::Sip::EndPoint* _sip_endpoint,
+             Sip::EndPoint* _sip_endpoint,
 	     boost::function0<std::list<std::string> > _existing_groups,
 	     xmlNodePtr node_);
 
@@ -198,7 +200,7 @@ public:
      */
     void handle_registration_event (RegistrationState state_,
 				    const std::string info,
-                                    PSafePtr<OpalPresentity> _opal_presentity = NULL);
+                                    const std::string & aor);
 
     /* This method is public to be called by an opal endpoint, which will push
      * this Opal::Account's message waiting information
@@ -207,6 +209,8 @@ public:
 
     /* This part of the api is the implementation of Ekiga::Heap */
     void visit_presentities (boost::function1<bool, Ekiga::PresentityPtr > visitor) const;
+
+    const PString get_full_uri (const PString & uri) const;
 
 protected:
     void on_rename_group (Opal::PresentityPtr pres);
@@ -218,9 +222,8 @@ private:
 
     void decide_type ();
 
-    const std::string get_transaction_aor (const std::string & aor) const;
-
     void add_contact ();
+
     bool on_add_contact_form_submitted (bool submitted,
 					Ekiga::Form& result,
                                         std::string& error);
@@ -258,18 +261,19 @@ private:
     void presence_status_in_main (std::string uri,
 				  std::string presence,
 				  std::string status) const;
-    void when_presentity_removed (boost::shared_ptr<Opal::Presentity> pres);
-    void when_presentity_updated (boost::shared_ptr<Opal::Presentity> pres);
+    void when_presentity_removed (boost::shared_ptr<Presentity> pres);
+    void when_presentity_updated (boost::shared_ptr<Presentity> pres);
 
-    Opal::Bank & bank;
+    Bank & bank;
 
     boost::weak_ptr<Ekiga::PresenceCore> presence_core;
     boost::weak_ptr<Ekiga::NotificationCore> notification_core;
     boost::weak_ptr<Ekiga::PersonalDetails> personal_details;
     boost::weak_ptr<Ekiga::AudioOutputCore> audiooutput_core;
 
-    Opal::H323::EndPoint* h323_endpoint;
-    Opal::Sip::EndPoint* sip_endpoint;
+    EndPoint& endpoint;
+    H323::EndPoint* h323_endpoint;
+    Sip::EndPoint* sip_endpoint;
   };
 
   typedef boost::shared_ptr<Account> AccountPtr;
