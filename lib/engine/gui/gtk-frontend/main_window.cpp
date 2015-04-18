@@ -830,6 +830,15 @@ ekiga_main_window_dispose (GObject* gobject)
     g_object_unref (mw->priv->roster_view);
     mw->priv->roster_view = NULL;
   }
+
+  // Workaround bug #724506
+  // Unbind exactly once, then reset the variable. GTK+ will
+  // destroy the widget when things get finalized.
+  if (mw->priv->main_stack) {
+    g_settings_unbind (mw->priv->main_stack, "visible-child-name");
+    mw->priv->main_stack = NULL;
+  }
+
   if (mw->priv->builder) {
     g_object_unref (mw->priv->builder);
     mw->priv->builder = NULL;
