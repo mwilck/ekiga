@@ -109,6 +109,8 @@ public:
     H323::EndPoint& GetH323EndPoint ();
 #endif
 
+    bool IsReady ();
+
 
     /**/
     struct VideoOptions
@@ -164,6 +166,7 @@ private:
     unsigned noAnswerDelay;
     bool autoAnswer;
     bool stun_enabled;
+    bool isReady;
 
     /* The various related endpoints */
     Sip::EndPoint *sip_endpoint;

@@ -56,6 +56,8 @@ Opal::H323::CallManager::CallManager (Ekiga::ServiceCore& _core,
   h323_settings = Ekiga::SettingsPtr (new Ekiga::Settings (H323_SCHEMA, setup_cb));
   call_forwarding_settings = Ekiga::SettingsPtr (new Ekiga::Settings (CALL_FORWARDING_SCHEMA, setup_cb));
   video_codecs_settings = Ekiga::SettingsPtr (new Ekiga::Settings (VIDEO_CODECS_SCHEMA));
+
+  setup ("");
 }
 
 
@@ -177,6 +179,11 @@ Opal::H323::CallManager::get_dtmf_mode () const
 
 void Opal::H323::CallManager::setup (const std::string & setting)
 {
+  if (!endpoint.IsReady ()) {
+    endpoint.ready.connect (boost::bind (&Opal::H323::CallManager::setup, this, ""));
+    return;
+  }
+
   if (setting.empty () || setting == "listen-port")
     set_listen_port (h323_settings->get_int ("listen-port"));
 

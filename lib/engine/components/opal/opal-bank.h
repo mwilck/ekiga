@@ -83,6 +83,7 @@ public:
      * the last object having a reference to them is deleted.
      */
     Bank (Ekiga::ServiceCore& _core,
+          Opal::EndPoint& _endpoint,
 #ifdef HAVE_H323
           Opal::H323::EndPoint* _h323_endpoint,
 #endif
@@ -168,8 +169,11 @@ private:
 
     void add_actions ();
 
+    void start ();
+
     Ekiga::Settings *protocols_settings;
 
+    Opal::EndPoint& endpoint;
 #ifdef HAVE_H323
     Opal::H323::EndPoint* h323_endpoint;
 #endif

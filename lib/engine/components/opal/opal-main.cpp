@@ -58,35 +58,12 @@
  */
 using namespace Opal;
 
+
 class OPALSpark: public Ekiga::Spark
 {
 public:
-  OPALSpark (): result(false), bank_created(false)
+  OPALSpark (): result(false)
   {}
-
-
-  void on_ready (Ekiga::ServiceCore& core,
-#ifdef HAVE_H323
-                 Opal::H323::EndPoint& h323_endpoint,
-#endif
-                 Opal::Sip::EndPoint& sip_endpoint)
-  {
-    if (!bank_created) {
-      boost::shared_ptr<Ekiga::PresenceCore> presence_core = core.get<Ekiga::PresenceCore> ("presence-core");
-      boost::shared_ptr<Ekiga::AccountCore> account_core = core.get<Ekiga::AccountCore> ("account-core");
-      boost::shared_ptr<Opal::Bank> bank = boost::shared_ptr<Opal::Bank> (new Opal::Bank (core,
-#ifdef HAVE_H323
-                                                                                          &h323_endpoint,
-#endif
-                                                                                          &sip_endpoint));
-
-      account_core->add_bank (bank);
-      presence_core->add_cluster (bank);
-      core.add (bank);
-      presence_core->add_presence_publisher (bank);
-      bank_created = true;
-    }
-  }
 
 
   bool try_initialize_more (Ekiga::ServiceCore& core,
@@ -116,27 +93,30 @@ public:
       Opal::H323::EndPoint& h323_endpoint = endpoint.GetH323EndPoint ();
 #endif
 
-      // We will create the Bank when ready
-      endpoint.ready.connect (boost::bind (&OPALSpark::on_ready, this,
-                                           boost::ref (core),
+      // We create the Bank
+      boost::shared_ptr<Opal::Bank> bank = boost::shared_ptr<Opal::Bank> (new Opal::Bank (core,
+                                                                                          endpoint,
 #ifdef HAVE_H323
-                                           boost::ref (h323_endpoint),
+                                                                                          &h323_endpoint,
 #endif
-                                           boost::ref (sip_endpoint)));
+                                                                                          &sip_endpoint));
+
+      account_core->add_bank (bank);
+      presence_core->add_cluster (bank);
+      core.add (bank);
+      presence_core->add_presence_publisher (bank);
 
       // We create our various CallManagers: SIP, H.323
       boost::shared_ptr<Opal::Sip::CallManager> sip_call_manager (new Opal::Sip::CallManager (core, endpoint, sip_endpoint));
       contact_core->push_back (Ekiga::URIActionProviderPtr (sip_call_manager));
       presence_core->push_back (Ekiga::URIActionProviderPtr (sip_call_manager));
       call_core->add_manager (sip_call_manager);
-      sip_call_manager->setup ();
 
 #ifdef HAVE_H323
       boost::shared_ptr<Opal::H323::CallManager> h323_call_manager (new Opal::H323::CallManager (core, endpoint, h323_endpoint));
       contact_core->push_back (Ekiga::URIActionProviderPtr (h323_call_manager));
       presence_core->push_back (Ekiga::URIActionProviderPtr (h323_call_manager));
       call_core->add_manager (h323_call_manager);
-      h323_call_manager->setup ();
 #endif
 
       result = true;

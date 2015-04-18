@@ -55,6 +55,8 @@ Opal::Sip::CallManager::CallManager (Ekiga::ServiceCore& _core,
   Ekiga::SettingsCallback setup_cb = boost::bind (&Opal::Sip::CallManager::setup, this, _1);
   sip_settings = Ekiga::SettingsPtr (new Ekiga::Settings (SIP_SCHEMA, setup_cb));
   call_forwarding_settings = Ekiga::SettingsPtr (new Ekiga::Settings (CALL_FORWARDING_SCHEMA, setup_cb));
+
+  setup ("");
 }
 
 
@@ -165,6 +167,11 @@ Opal::Sip::CallManager::get_dtmf_mode () const
 
 void Opal::Sip::CallManager::setup (const std::string & setting)
 {
+  if (!endpoint.IsReady ()) {
+    endpoint.ready.connect (boost::bind (&Opal::Sip::CallManager::setup, this, ""));
+    return;
+  }
+
   if (setting.empty () || setting == "listen-port")
     set_listen_port (sip_settings->get_int ("listen-port"));
 

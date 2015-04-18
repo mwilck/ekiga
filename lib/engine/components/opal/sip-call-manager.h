@@ -83,9 +83,8 @@ namespace Opal {
 
       unsigned get_dtmf_mode () const;
 
-      /* Setup */
-      void setup (const std::string & setting = "");
   private:
+      void setup (const std::string & setting = "");
 
       Ekiga::SettingsPtr sip_settings;
       Ekiga::SettingsPtr call_forwarding_settings;

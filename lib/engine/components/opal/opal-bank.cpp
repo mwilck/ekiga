@@ -49,6 +49,7 @@
 
 
 Opal::Bank::Bank (Ekiga::ServiceCore& core,
+                  Opal::EndPoint& _endpoint,
 #ifdef HAVE_H323
                   Opal::H323::EndPoint* _h323_endpoint,
 #endif
@@ -57,6 +58,7 @@ Opal::Bank::Bank (Ekiga::ServiceCore& core,
   notification_core(core.get<Ekiga::NotificationCore> ("notification-core")),
   personal_details(core.get<Ekiga::PersonalDetails> ("personal-details")),
   audiooutput_core(core.get<Ekiga::AudioOutputCore> ("audiooutput-core")),
+  endpoint (_endpoint),
 #ifdef HAVE_H323
   h323_endpoint(_h323_endpoint),
 #endif
@@ -114,11 +116,7 @@ Opal::Bank::Bank (Ekiga::ServiceCore& core,
       add_account (account);
       heap_added (account);
 
-      boost::shared_ptr<Ekiga::PresenceCore> pcore = presence_core.lock ();
-      if (pcore)
-        pcore->add_presence_fetcher (account);
-      if (account->is_enabled ())
-        account->enable ();
+      start ();
     }
   }
 
@@ -129,8 +127,6 @@ Opal::Bank::Bank (Ekiga::ServiceCore& core,
 
 Opal::Bank::~Bank ()
 {
-  std::cout << "BANK DESTROY" << std::endl << std::flush;
-
   delete protocols_settings;
 }
 
@@ -591,4 +587,24 @@ Opal::Bank::add_actions ()
                                                    boost::bind (&Opal::Bank::new_account, this,
                                                                 Opal::Account::H323, "", ""))));
 #endif
+}
+
+
+void
+Opal::Bank::start ()
+{
+  if (!endpoint.IsReady ()) {
+    endpoint.ready.connect (boost::bind (&Opal::Bank::start, this));
+    return;
+  }
+
+  boost::shared_ptr<Ekiga::PresenceCore> pcore = presence_core.lock ();
+  for (iterator iter = begin ();
+       iter != end ();
+       ++iter) {
+    if (pcore)
+      pcore->add_presence_fetcher (*iter);
+    if ((*iter)->is_enabled ())
+      (*iter)->enable ();
+  }
 }

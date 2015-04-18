@@ -59,12 +59,20 @@ Opal::CallManager::CallManager (Ekiga::ServiceCore& _core,
   call_options_settings = Ekiga::SettingsPtr (new Ekiga::Settings (CALL_OPTIONS_SCHEMA, setup_cb));
   call_forwarding_settings = Ekiga::SettingsPtr (new Ekiga::Settings (CALL_FORWARDING_SCHEMA, setup_cb));
   personal_data_settings = Ekiga::SettingsPtr (new Ekiga::Settings (PERSONAL_DATA_SCHEMA, setup_cb));
+
+  /* STUN must be enabled at the very beginning */
+  if (nat_settings->get_bool ("enable-stun") && !nat_settings->get_string ("stun-server").empty ())
+    endpoint.SetStunServer (nat_settings->get_string ("stun-server"));
+  else
+    endpoint.SetStunServer (PString::Empty ());
 }
 
 
 Opal::CallManager::~CallManager ()
 {
-  std::cout << "hey" << std::endl;
+#if DEBUG
+  std::cout << "Opal::CallManager: Destructor invoked" << std::endl;
+#endif
 }
 
 
@@ -182,9 +190,6 @@ unsigned Opal::CallManager::get_maximum_jitter () const
 void Opal::CallManager::setup (const std::string & setting)
 {
   std::cout << "IN Opal::CallManager::setup" << std::endl;
-
-  if (setting.empty () || setting == "enable-stun" || setting == "stun-server")
-    endpoint.SetStunServer (nat_settings->get_bool ("enable-stun") ? nat_settings->get_string ("stun-server") : "");
 
   if (setting.empty () || setting == "maximum-jitter-buffer")
     set_maximum_jitter (audio_codecs_settings->get_int ("maximum-jitter-buffer"));

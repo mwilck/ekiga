@@ -94,7 +94,6 @@ public:
   void Main ()
     {
       PSTUNClient::NatTypes result = manager.SetSTUNServer (server);
-
       g_async_queue_push (queue, GUINT_TO_POINTER ((guint)result + 1));
     };
 
@@ -130,6 +129,7 @@ Opal::EndPoint::EndPoint (Ekiga::ServiceCore& _core) : core(_core)
   SetSignalingTimeout (1500);  // Useless to wait 10 seconds for a connection
 
   stun_enabled = false;
+  isReady = false;
   autoAnswer = false;
 
   // Create video devices
@@ -334,16 +334,26 @@ bool Opal::EndPoint::GetAutoAnswer (void) const
 
 void Opal::EndPoint::SetStunServer (const std::string & server)
 {
+  if (server == (const char*) GetNATServer ("STUN")) {
+    if (!isReady && !stun_thread) {
+      isReady = true;
+      ready ();
+    }
+
+    return;
+  }
+
   if (!server.empty () && !stun_thread) {
 
     // Ready
-    stun_thread = new StunDetector (stun_server, *this, queue);
+    stun_thread = new StunDetector (server, *this, queue);
     patience = 20;
     Ekiga::Runtime::run_in_main (boost::bind (&Opal::EndPoint::HandleSTUNResult, this), 1);
   }
   else {
 
     SetSTUNServer (PString ());
+    isReady = true;
     ready ();
   }
 
@@ -363,6 +373,12 @@ Opal::H323::EndPoint& Opal::EndPoint::GetH323EndPoint ()
   return *h323_endpoint;
 }
 #endif
+
+
+bool Opal::EndPoint::IsReady ()
+{
+  return isReady;
+}
 
 
 void Opal::EndPoint::SetVideoOptions (const Opal::EndPoint::VideoOptions & options)
@@ -559,6 +575,7 @@ Opal::EndPoint::HandleSTUNResult ()
     }
     else {
 
+      isReady = true;
       ready ();
     }
   }
@@ -571,6 +588,7 @@ Opal::EndPoint::HandleSTUNResult ()
 
     ReportSTUNError (_("Ekiga did not manage to configure your network settings automatically. We suggest"
 		       " you disable STUN support and relay on a SIP provider that supports NAT environments.\n\n"));
+    isReady = true;
     ready ();
   }
   else if (!got_answer) {
