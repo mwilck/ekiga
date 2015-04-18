@@ -26,8 +26,8 @@
 
 
 /*
- *                         main_window.h  -  description
- *                         -----------------------------
+ *                         ekiga-window.h  -  description
+ *                         ------------------------------
  *   begin                : Mon Mar 26 2001
  *   copyright            : (C) 2000-2006 by Damien Sandras
  *   description          : This file contains all the functions needed to
@@ -35,32 +35,32 @@
  */
 
 
-#ifndef __MAIN_WINDOW_H__
-#define __MAIN_WINDOW_H__
+#ifndef __EKIGA_WINDOW_H__
+#define __EKIGA_WINDOW_H__
 
 #include "gmwindow.h"
 #include "ekiga-app.h"
 
 G_BEGIN_DECLS
 
-#define EKIGA_TYPE_MAIN_WINDOW               (ekiga_main_window_get_type ())
-#define EKIGA_MAIN_WINDOW(obj)               (G_TYPE_CHECK_INSTANCE_CAST ((obj), EKIGA_TYPE_MAIN_WINDOW, EkigaMainWindow))
-#define EKIGA_MAIN_WINDOW_CLASS(klass)       (G_TYPE_CHECK_CLASS_CAST ((klass), EKIGA_TYPE_MAIN_WINDOW, EkigaMainWindowClass))
-#define EKIGA_IS_MAIN_WINDOW(obj)            (G_TYPE_CHECK_INSTANCE_TYPE ((obj), EKIGA_TYPE_MAIN_WINDOW))
-#define EKIGA_IS_MAIN_WINDOW_CLASS(klass)    (G_TYPE_CHECK_CLASS_TYPE ((klass), EKIGA_TYPE_MAIN_WINDOW))
+#define EKIGA_TYPE_WINDOW               (ekiga_window_get_type ())
+#define EKIGA_WINDOW(obj)               (G_TYPE_CHECK_INSTANCE_CAST ((obj), EKIGA_TYPE_WINDOW, EkigaWindow))
+#define EKIGA_WINDOW_CLASS(klass)       (G_TYPE_CHECK_CLASS_CAST ((klass), EKIGA_TYPE_WINDOW, EkigaWindowClass))
+#define EKIGA_IS_WINDOW(obj)            (G_TYPE_CHECK_INSTANCE_TYPE ((obj), EKIGA_TYPE_WINDOW))
+#define EKIGA_IS_WINDOW_CLASS(klass)    (G_TYPE_CHECK_CLASS_TYPE ((klass), EKIGA_TYPE_WINDOW))
 
-typedef struct _EkigaMainWindowPrivate       EkigaMainWindowPrivate;
-typedef struct _EkigaMainWindow              EkigaMainWindow;
+typedef struct _EkigaWindowPrivate       EkigaWindowPrivate;
+typedef struct _EkigaWindow              EkigaWindow;
 
-struct _EkigaMainWindow {
-  GmWindow                parent;
-  EkigaMainWindowPrivate *priv;
+struct _EkigaWindow {
+  GmWindow            parent;
+  EkigaWindowPrivate *priv;
 };
 
-typedef GmWindowClass EkigaMainWindowClass;
+typedef GmWindowClass EkigaWindowClass;
 
-GType        ekiga_main_window_get_type   ();
-GtkWidget   *ekiga_main_window_new        (Ekiga::ServiceCore *core);
+GType        ekiga_window_get_type   ();
+GtkWidget   *ekiga_window_new        (Ekiga::ServiceCore *core);
 
 G_END_DECLS
 
@@ -68,5 +68,5 @@ G_END_DECLS
  * BEHAVIOR     :  Builds the main window and adds the popup to the image.
  * PRE          :  /
  */
-GtkWidget *gm_main_window_new (GmApplication *app);
+GtkWidget *gm_ekiga_window_new (GmApplication *app);
 #endif

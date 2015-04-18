@@ -357,8 +357,6 @@ libekiga_la_SOURCES += \
 	engine/gui/gtk-frontend/addressbook-window.cpp \
 	engine/gui/gtk-frontend/assistant-window.h \
 	engine/gui/gtk-frontend/assistant-window.cpp \
-	engine/gui/gtk-frontend/main_window.h \
-	engine/gui/gtk-frontend/main_window.cpp \
 	engine/gui/gtk-frontend/book-view-gtk.h \
 	engine/gui/gtk-frontend/book-view-gtk.cpp \
 	engine/gui/gtk-frontend/call-window.h \
@@ -381,6 +379,8 @@ libekiga_la_SOURCES += \
 	engine/gui/gtk-frontend/statusmenu.cpp \
 	engine/gui/gtk-frontend/chat-window.h \
 	engine/gui/gtk-frontend/chat-window.cpp \
+	engine/gui/gtk-frontend/ekiga-window.h \
+	engine/gui/gtk-frontend/ekiga-window.cpp \
 	engine/gui/gtk-frontend/ekiga-app.h \
 	engine/gui/gtk-frontend/ekiga-app.cpp
 

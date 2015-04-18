@@ -104,7 +104,7 @@ ekiga_dbus_component_show (EkigaDBusComponent *self,
   PTRACE (1, "DBus\tShow");
 
   g_return_val_if_fail (self, FALSE);
-  gm_application_show_main_window (self->priv->app);
+  gm_application_show_ekiga_window (self->priv->app);
 
   return TRUE;
 }

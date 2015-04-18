@@ -26,8 +26,8 @@
 
 
 /*
- *                         main_window.cpp  -  description
- *                         -------------------------------
+ *                         ekiga_window.cpp  -  description
+ *                         --------------------------------
  *   begin                : Mon Mar 26 2001
  *   copyright            : (C) 2000-2006 by Damien Sandras
  *   description          : This file contains all the functions needed to
@@ -38,7 +38,7 @@
 
 #include "settings-mappings.h"
 
-#include "main_window.h"
+#include "ekiga-window.h"
 
 #include "dialpad.h"
 #include "statusmenu.h"
@@ -69,10 +69,10 @@
 
 enum CallingState {Standby, Calling, Connected, Called};
 
-G_DEFINE_TYPE (EkigaMainWindow, ekiga_main_window, GM_TYPE_WINDOW);
+G_DEFINE_TYPE (EkigaWindow, ekiga_window, GM_TYPE_WINDOW);
 
 
-struct _EkigaMainWindowPrivate
+struct _EkigaWindowPrivate
 {
   GmApplication *app;
 
@@ -131,17 +131,17 @@ enum {
 };
 
 static const char* win_menu =
-  "<?xml version='1.0'?>"
-  "<interface>"
-  "  <menu id='menubar'>"
-  "  </menu>"
-  "</interface>";
+"<?xml version='1.0'?>"
+"<interface>"
+"  <menu id='menubar'>"
+"  </menu>"
+"</interface>";
 
 
 /* GUI Functions */
 static bool account_completion_helper_cb (Ekiga::AccountPtr acc,
                                           const gchar* text,
-                                          EkigaMainWindow* mw);
+                                          EkigaWindow* mw);
 
 static void place_call_cb (GtkWidget * /*widget*/,
                            gpointer data);
@@ -149,10 +149,10 @@ static void place_call_cb (GtkWidget * /*widget*/,
 static void url_changed_cb (GtkEditable *e,
                             gpointer data);
 
-static void ekiga_main_window_append_call_url (EkigaMainWindow *mw,
-                                               const char *url);
+static void ekiga_window_append_call_url (EkigaWindow *mw,
+                                                const char *url);
 
-static const std::string ekiga_main_window_get_call_url (EkigaMainWindow *mw);
+static const std::string ekiga_window_get_call_url (EkigaWindow *mw);
 
 
 
@@ -161,7 +161,7 @@ static const std::string ekiga_main_window_get_call_url (EkigaMainWindow *mw);
  * BEHAVIOR     :  Sends a DTMF if we are in a call.
  * PRE          :  A valid pointer to the main window GMObject.
  */
-static gboolean key_press_event_cb (EkigaMainWindow *mw,
+static gboolean key_press_event_cb (EkigaWindow *mw,
                                     GdkEventKey *key);
 
 
@@ -171,8 +171,8 @@ static gboolean key_press_event_cb (EkigaMainWindow *mw,
  * PRE          :  A valid pointer to the main window GMObject.
  */
 static void dialpad_button_clicked_cb (EkigaDialpad  *dialpad,
-				       const gchar *button_text,
-				       EkigaMainWindow *main_window);
+                                       const gchar *button_text,
+                                       EkigaWindow *ekiga_window);
 
 
 /* DESCRIPTION  :  This callback is called when a contact is selected
@@ -189,14 +189,14 @@ static void actions_changed_cb (G_GNUC_UNUSED GtkWidget *widget,
  * BEHAVIOR     :  Creates the uri toolbar in the dialpad panel.
  * PRE          :  The main window GMObject.
  */
-static GtkWidget *ekiga_main_window_uri_entry_new (EkigaMainWindow *mw);
+static GtkWidget *ekiga_window_uri_entry_new (EkigaWindow *mw);
 
 
 /* DESCRIPTION  :  /
  * BEHAVIOR     :  Creates the actions toolbar in the main window.
  * PRE          :  The main window GMObject.
  */
-static void ekiga_main_window_init_actions_toolbar (EkigaMainWindow *mw);
+static void ekiga_window_init_actions_toolbar (EkigaWindow *mw);
 
 
 
@@ -206,7 +206,7 @@ static void ekiga_main_window_init_actions_toolbar (EkigaMainWindow *mw);
 static bool
 account_completion_helper_cb (Ekiga::AccountPtr acc,
                               const gchar* text,
-                              EkigaMainWindow* mw)
+                              EkigaWindow* mw)
 {
   Opal::AccountPtr account = boost::dynamic_pointer_cast<Opal::Account>(acc);
   // propose autocompletion for registered accounts
@@ -231,18 +231,18 @@ place_call_cb (GtkWidget * /*widget*/,
                gpointer data)
 {
   std::string uri;
-  EkigaMainWindow *mw = NULL;
+  EkigaWindow *mw = NULL;
 
-  g_return_if_fail (EKIGA_IS_MAIN_WINDOW (data));
+  g_return_if_fail (EKIGA_IS_WINDOW (data));
 
-  mw = EKIGA_MAIN_WINDOW (data);
+  mw = EKIGA_WINDOW (data);
 
   if (mw->priv->calling_state == Standby) {
 
     size_t pos;
 
     // Check for empty uri
-    uri = ekiga_main_window_get_call_url (mw);
+    uri = ekiga_window_get_call_url (mw);
     pos = uri.find (":");
     if (pos != std::string::npos)
       if (uri.substr (++pos).empty ())
@@ -263,9 +263,9 @@ place_call_cb (GtkWidget * /*widget*/,
 
 static void
 url_changed_cb (GtkEditable *e,
-		gpointer data)
+                gpointer data)
 {
-  EkigaMainWindow *mw = EKIGA_MAIN_WINDOW (data);
+  EkigaWindow *mw = EKIGA_WINDOW (data);
   const char *tip_text = NULL;
 
   tip_text = gtk_entry_get_text (GTK_ENTRY (e));
@@ -284,20 +284,20 @@ url_changed_cb (GtkEditable *e,
 
 static void
 on_account_updated (Ekiga::BankPtr /*bank*/,
-		    Ekiga::AccountPtr account,
-		    gpointer data)
+                    Ekiga::AccountPtr account,
+                    gpointer data)
 {
-  g_return_if_fail (EKIGA_IS_MAIN_WINDOW (data));
+  g_return_if_fail (EKIGA_IS_WINDOW (data));
 
-  EkigaMainWindow *self = EKIGA_MAIN_WINDOW (data);
+  EkigaWindow *self = EKIGA_WINDOW (data);
   gchar *msg = NULL;
 
   switch (account->get_state ()) {
   case Ekiga::Account::RegistrationFailed:
   case Ekiga::Account::UnregistrationFailed:
     msg = g_strdup_printf ("%s: %s",
-			   account->get_name ().c_str (),
-			   account->get_status ().c_str ());
+                           account->get_name ().c_str (),
+                           account->get_status ().c_str ());
 
     gm_info_bar_push_message (GM_INFO_BAR (self->priv->info_bar),
                               GTK_MESSAGE_ERROR, msg);
@@ -317,7 +317,7 @@ on_account_updated (Ekiga::BankPtr /*bank*/,
 static void on_setup_call_cb (boost::shared_ptr<Ekiga::Call>  call,
                               gpointer self)
 {
-  EkigaMainWindow *mw = EKIGA_MAIN_WINDOW (self);
+  EkigaWindow *mw = EKIGA_WINDOW (self);
 
   if (!call->is_outgoing ()) {
     if (mw->priv->current_call)
@@ -343,7 +343,7 @@ static void on_setup_call_cb (boost::shared_ptr<Ekiga::Call>  call,
 static void on_ringing_call_cb (boost::shared_ptr<Ekiga::Call>  call,
                                 gpointer self)
 {
-  EkigaMainWindow *mw = EKIGA_MAIN_WINDOW (self);
+  EkigaWindow *mw = EKIGA_WINDOW (self);
 
   if (call->is_outgoing ()) {
     mw->priv->audiooutput_core->start_play_event("ring-tone-sound", 3000, 256);
@@ -354,7 +354,7 @@ static void on_ringing_call_cb (boost::shared_ptr<Ekiga::Call>  call,
 static void on_established_call_cb (boost::shared_ptr<Ekiga::Call> /*call*/,
                                     gpointer self)
 {
-  EkigaMainWindow *mw = EKIGA_MAIN_WINDOW (self);
+  EkigaWindow *mw = EKIGA_WINDOW (self);
 
   /* Update calling state */
   mw->priv->calling_state = Connected;
@@ -369,7 +369,7 @@ static void on_cleared_call_cb (boost::shared_ptr<Ekiga::Call> call,
                                 std::string /*reason*/,
                                 gpointer self)
 {
-  EkigaMainWindow *mw = EKIGA_MAIN_WINDOW (self);
+  EkigaWindow *mw = EKIGA_WINDOW (self);
 
   if (mw->priv->current_call && mw->priv->current_call->get_id () != call->get_id ()) {
     return; // Trying to clear another call than the current active one
@@ -394,7 +394,7 @@ static void on_cleared_call_cb (boost::shared_ptr<Ekiga::Call> call,
 static void on_missed_call_cb (boost::shared_ptr<Ekiga::Call>  call,
                                gpointer self)
 {
-  EkigaMainWindow *mw = EKIGA_MAIN_WINDOW (self);
+  EkigaWindow *mw = EKIGA_WINDOW (self);
 
   /* Display info first */
   gchar* info = NULL;
@@ -448,18 +448,18 @@ static bool on_handle_errors (std::string error,
 /* GTK callbacks */
 static void
 dialpad_button_clicked_cb (EkigaDialpad  * /* dialpad */,
-			   const gchar *button_text,
-			   EkigaMainWindow *mw)
+                           const gchar *button_text,
+                           EkigaWindow *mw)
 {
   if (mw->priv->current_call && mw->priv->calling_state == Connected)
     mw->priv->current_call->send_dtmf (button_text[0]);
   else
-    ekiga_main_window_append_call_url (mw, button_text);
+    ekiga_window_append_call_url (mw, button_text);
 }
 
 
 static gboolean
-key_press_event_cb (EkigaMainWindow *mw,
+key_press_event_cb (EkigaWindow *mw,
                     GdkEventKey *key)
 {
   const char valid_dtmfs[] = "1234567890#*";
@@ -486,8 +486,8 @@ actions_changed_cb (G_GNUC_UNUSED GtkWidget *widget,
 {
   GMenu *menu = NULL;
 
-  g_return_if_fail (EKIGA_IS_MAIN_WINDOW (data));
-  EkigaMainWindow *self = EKIGA_MAIN_WINDOW (data);
+  g_return_if_fail (EKIGA_IS_WINDOW (data));
+  EkigaWindow *self = EKIGA_WINDOW (data);
 
   menu = G_MENU (gtk_builder_get_object (self->priv->builder, "menubar"));
   g_menu_remove_all (menu);
@@ -503,13 +503,13 @@ actions_changed_cb (G_GNUC_UNUSED GtkWidget *widget,
 
 
 static void
-ekiga_main_window_append_call_url (EkigaMainWindow *mw,
-				   const char *url)
+ekiga_window_append_call_url (EkigaWindow *mw,
+                                    const char *url)
 {
   int pos = -1;
   GtkEditable *entry;
 
-  g_return_if_fail (EKIGA_IS_MAIN_WINDOW (mw));
+  g_return_if_fail (EKIGA_IS_WINDOW (mw));
   g_return_if_fail (url != NULL);
 
   entry = GTK_EDITABLE (mw->priv->entry);
@@ -525,9 +525,9 @@ ekiga_main_window_append_call_url (EkigaMainWindow *mw,
 
 
 static const std::string
-ekiga_main_window_get_call_url (EkigaMainWindow *mw)
+ekiga_window_get_call_url (EkigaWindow *mw)
 {
-  g_return_val_if_fail (EKIGA_IS_MAIN_WINDOW (mw), NULL);
+  g_return_val_if_fail (EKIGA_IS_WINDOW (mw), NULL);
 
   const gchar* entry_text = gtk_entry_get_text (GTK_ENTRY (mw->priv->entry));
 
@@ -539,12 +539,12 @@ ekiga_main_window_get_call_url (EkigaMainWindow *mw)
 
 
 static GtkWidget *
-ekiga_main_window_uri_entry_new (EkigaMainWindow *mw)
+ekiga_window_uri_entry_new (EkigaWindow *mw)
 {
   GtkWidget *entry = NULL;
   GtkEntryCompletion *completion = NULL;
 
-  g_return_val_if_fail (EKIGA_IS_MAIN_WINDOW (mw), NULL);
+  g_return_val_if_fail (EKIGA_IS_WINDOW (mw), NULL);
 
   /* URI Entry */
   entry = gm_entry_new (BASIC_URI_REGEX);
@@ -560,27 +560,27 @@ ekiga_main_window_uri_entry_new (EkigaMainWindow *mw)
   gtk_entry_completion_set_popup_completion (GTK_ENTRY_COMPLETION (completion), true);
 
   gtk_widget_add_accelerator (entry, "grab-focus",
-			      mw->priv->accel, GDK_KEY_L,
-			      (GdkModifierType) GDK_CONTROL_MASK,
-			      (GtkAccelFlags) 0);
+                              mw->priv->accel, GDK_KEY_L,
+                              (GdkModifierType) GDK_CONTROL_MASK,
+                              (GtkAccelFlags) 0);
   gtk_editable_set_position (GTK_EDITABLE (entry), -1);
 
   g_signal_connect (entry, "changed",
-		    G_CALLBACK (url_changed_cb), mw);
+                    G_CALLBACK (url_changed_cb), mw);
   g_signal_connect (entry, "activated",
-		    G_CALLBACK (place_call_cb), mw);
+                    G_CALLBACK (place_call_cb), mw);
 
   return entry;
 }
 
 static void
-ekiga_main_window_init_actions_toolbar (EkigaMainWindow *mw)
+ekiga_window_init_actions_toolbar (EkigaWindow *mw)
 {
   GtkWidget *image = NULL;
   GtkWidget *button = NULL;
   GtkWidget *switcher = NULL;
 
-  g_return_if_fail (EKIGA_IS_MAIN_WINDOW (mw));
+  g_return_if_fail (EKIGA_IS_WINDOW (mw));
 
   mw->priv->actions_toolbar = gtk_header_bar_new ();
   gtk_window_set_titlebar (GTK_WINDOW (mw), mw->priv->actions_toolbar);
@@ -621,7 +621,7 @@ ekiga_main_window_init_actions_toolbar (EkigaMainWindow *mw)
 
 
 static void
-ekiga_main_window_init_menu (EkigaMainWindow *mw)
+ekiga_window_init_menu (EkigaWindow *mw)
 {
   mw->priv->builder = gtk_builder_new ();
   gtk_builder_add_from_string (mw->priv->builder, win_menu, -1, NULL);
@@ -639,9 +639,9 @@ ekiga_main_window_init_menu (EkigaMainWindow *mw)
 
 
 static void
-ekiga_main_window_init_status_toolbar (EkigaMainWindow *mw)
+ekiga_window_init_status_toolbar (EkigaWindow *mw)
 {
-  g_return_if_fail (EKIGA_IS_MAIN_WINDOW (mw));
+  g_return_if_fail (EKIGA_IS_WINDOW (mw));
 
   /* The main horizontal toolbar */
   mw->priv->status_toolbar = gtk_box_new (GTK_ORIENTATION_HORIZONTAL, 0);
@@ -658,7 +658,7 @@ ekiga_main_window_init_status_toolbar (EkigaMainWindow *mw)
 
 
 static void
-ekiga_main_window_init_contact_list (EkigaMainWindow *mw)
+ekiga_window_init_contact_list (EkigaWindow *mw)
 {
   mw->priv->roster_view = roster_view_gtk_new (mw->priv->presence_core);
   gtk_stack_add_named (GTK_STACK (mw->priv->main_stack), mw->priv->roster_view, "contacts");
@@ -674,7 +674,7 @@ ekiga_main_window_init_contact_list (EkigaMainWindow *mw)
 
 
 static void
-ekiga_main_window_init_dialpad (EkigaMainWindow *mw)
+ekiga_window_init_dialpad (EkigaWindow *mw)
 {
   GtkWidget *dialpad = NULL;
   GtkWidget *grid = NULL;
@@ -692,7 +692,7 @@ ekiga_main_window_init_dialpad (EkigaMainWindow *mw)
   g_signal_connect (dialpad, "button-clicked",
                     G_CALLBACK (dialpad_button_clicked_cb), mw);
 
-  mw->priv->entry = ekiga_main_window_uri_entry_new (mw);
+  mw->priv->entry = ekiga_window_uri_entry_new (mw);
   gtk_widget_set_hexpand (dialpad, TRUE);
   gtk_widget_set_vexpand (dialpad, TRUE);
   gtk_widget_set_halign (mw->priv->entry, GTK_ALIGN_FILL);
@@ -711,7 +711,7 @@ ekiga_main_window_init_dialpad (EkigaMainWindow *mw)
 
 
 static void
-ekiga_main_window_init_history (EkigaMainWindow *mw)
+ekiga_window_init_history (EkigaWindow *mw)
 {
   boost::shared_ptr<History::Source> history_source = mw->priv->history_source.lock ();
   if (history_source) {
@@ -732,7 +732,7 @@ ekiga_main_window_init_history (EkigaMainWindow *mw)
 
 
 static void
-ekiga_main_window_init_gui (EkigaMainWindow *mw)
+ekiga_window_init_gui (EkigaWindow *mw)
 {
   GtkWidget *window_vbox;
   // FIXME ??? ekiga-settings.h
@@ -754,21 +754,21 @@ ekiga_main_window_init_gui (EkigaMainWindow *mw)
                                  GTK_STACK_TRANSITION_TYPE_OVER_LEFT_RIGHT);
 
   /* The main menu */
-  ekiga_main_window_init_menu (mw);
+  ekiga_window_init_menu (mw);
 
   /* The actions toolbar */
-  ekiga_main_window_init_actions_toolbar (mw);
+  ekiga_window_init_actions_toolbar (mw);
 
   /* The status toolbar */
-  ekiga_main_window_init_status_toolbar (mw);
+  ekiga_window_init_status_toolbar (mw);
   gtk_widget_show_all (mw->priv->status_toolbar);
   gtk_box_pack_start (GTK_BOX (window_vbox), mw->priv->status_toolbar,
                       false, false, 0);
 
   /* The stack pages */
-  ekiga_main_window_init_contact_list (mw);
-  ekiga_main_window_init_dialpad (mw);
-  ekiga_main_window_init_history (mw);
+  ekiga_window_init_contact_list (mw);
+  ekiga_window_init_dialpad (mw);
+  ekiga_window_init_history (mw);
   gtk_widget_show_all (mw->priv->main_stack);
   gtk_box_pack_start (GTK_BOX (window_vbox), mw->priv->main_stack,
                       true, true, 0);
@@ -784,9 +784,9 @@ ekiga_main_window_init_gui (EkigaMainWindow *mw)
 
 
 static void
-ekiga_main_window_init (EkigaMainWindow *mw)
+ekiga_window_init (EkigaWindow *mw)
 {
-  mw->priv = new EkigaMainWindowPrivate;
+  mw->priv = new EkigaWindowPrivate;
 
   /* Accelerators */
   mw->priv->accel = gtk_accel_group_new ();
@@ -809,22 +809,22 @@ ekiga_main_window_init (EkigaMainWindow *mw)
 
 
 static GObject *
-ekiga_main_window_constructor (GType the_type,
-                               guint n_construct_properties,
-                               GObjectConstructParam *construct_params)
+ekiga_window_constructor (GType the_type,
+                                guint n_construct_properties,
+                                GObjectConstructParam *construct_params)
 {
   GObject *object;
 
-  object = G_OBJECT_CLASS (ekiga_main_window_parent_class)->constructor
-                          (the_type, n_construct_properties, construct_params);
+  object = G_OBJECT_CLASS (ekiga_window_parent_class)->constructor
+    (the_type, n_construct_properties, construct_params);
 
   return object;
 }
 
 static void
-ekiga_main_window_dispose (GObject* gobject)
+ekiga_window_dispose (GObject* gobject)
 {
-  EkigaMainWindow *mw = EKIGA_MAIN_WINDOW (gobject);
+  EkigaWindow *mw = EKIGA_WINDOW (gobject);
 
   // Workaround bug #724506
   // Unbind exactly once, then reset the variable. GTK+ will
@@ -839,50 +839,50 @@ ekiga_main_window_dispose (GObject* gobject)
     mw->priv->builder = NULL;
   }
 
-  G_OBJECT_CLASS (ekiga_main_window_parent_class)->dispose (gobject);
+  G_OBJECT_CLASS (ekiga_window_parent_class)->dispose (gobject);
 }
 
 static void
-ekiga_main_window_finalize (GObject *gobject)
+ekiga_window_finalize (GObject *gobject)
 {
-  EkigaMainWindow *mw = EKIGA_MAIN_WINDOW (gobject);
+  EkigaWindow *mw = EKIGA_WINDOW (gobject);
 
   delete mw->priv;
 
-  G_OBJECT_CLASS (ekiga_main_window_parent_class)->finalize (gobject);
+  G_OBJECT_CLASS (ekiga_window_parent_class)->finalize (gobject);
 }
 
 static gboolean
-ekiga_main_window_focus_in_event (GtkWidget     *widget,
-                                  GdkEventFocus *event)
+ekiga_window_focus_in_event (GtkWidget     *widget,
+                                   GdkEventFocus *event)
 {
   if (gtk_window_get_urgency_hint (GTK_WINDOW (widget)))
     gtk_window_set_urgency_hint (GTK_WINDOW (widget), FALSE);
 
-  return GTK_WIDGET_CLASS (ekiga_main_window_parent_class)->focus_in_event (widget, event);
+  return GTK_WIDGET_CLASS (ekiga_window_parent_class)->focus_in_event (widget, event);
 }
 
 
 static void
-ekiga_main_window_class_init (EkigaMainWindowClass *klass)
+ekiga_window_class_init (EkigaWindowClass *klass)
 {
   GtkWidgetClass *widget_class = GTK_WIDGET_CLASS (klass);
   GObjectClass *object_class = G_OBJECT_CLASS (klass);
 
-  object_class->constructor = ekiga_main_window_constructor;
-  object_class->dispose = ekiga_main_window_dispose;
-  object_class->finalize = ekiga_main_window_finalize;
+  object_class->constructor = ekiga_window_constructor;
+  object_class->dispose = ekiga_window_dispose;
+  object_class->finalize = ekiga_window_finalize;
 
-  widget_class->focus_in_event = ekiga_main_window_focus_in_event;
+  widget_class->focus_in_event = ekiga_window_focus_in_event;
 }
 
 
 static void
-ekiga_main_window_connect_engine_signals (EkigaMainWindow *mw)
+ekiga_window_connect_engine_signals (EkigaWindow *mw)
 {
   boost::signals2::connection conn;
 
-  g_return_if_fail (EKIGA_IS_MAIN_WINDOW (mw));
+  g_return_if_fail (EKIGA_IS_WINDOW (mw));
 
   /* Engine Signals callbacks */
   conn = mw->priv->account_core->account_updated.connect (boost::bind (&on_account_updated, _1, _2, (gpointer) mw));
@@ -908,17 +908,17 @@ ekiga_main_window_connect_engine_signals (EkigaMainWindow *mw)
 }
 
 GtkWidget *
-gm_main_window_new (GmApplication *app)
+gm_ekiga_window_new (GmApplication *app)
 {
-  EkigaMainWindow *mw;
+  EkigaWindow *mw;
 
   g_return_val_if_fail (GM_IS_APPLICATION (app), NULL);
 
   /* basic gtk+ setup  */
-  mw = EKIGA_MAIN_WINDOW (g_object_new (EKIGA_TYPE_MAIN_WINDOW,
-                                        "application", GTK_APPLICATION (app),
-                                        "key", USER_INTERFACE ".main-window",
-                                        NULL));
+  mw = EKIGA_WINDOW (g_object_new (EKIGA_TYPE_WINDOW,
+                                   "application", GTK_APPLICATION (app),
+                                   "key", USER_INTERFACE ".main-window",
+                                   NULL));
   Ekiga::ServiceCore& core = gm_application_get_core (app);
 
   /* fetching needed engine objects */
@@ -938,9 +938,9 @@ gm_main_window_new (GmApplication *app)
   mw->priv->history_source
     = core.get<History::Source> ("call-history-store");
 
-  ekiga_main_window_connect_engine_signals (mw);
+  ekiga_window_connect_engine_signals (mw);
 
-  ekiga_main_window_init_gui (mw);
+  ekiga_window_init_gui (mw);
 
   return GTK_WIDGET(mw);
 }

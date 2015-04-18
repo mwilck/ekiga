@@ -292,7 +292,7 @@ status_icon_clicked_cb (G_GNUC_UNUSED GtkWidget* widget,
                         gpointer data)
 {
   StatusIcon *self = STATUSICON (data);
-  GtkWidget *window = gm_application_get_main_window (GM_APPLICATION (self->priv->app));
+  GtkWidget *window = gm_application_get_ekiga_window (GM_APPLICATION (self->priv->app));
 
   if (!gtk_widget_get_visible (window)
       || (gdk_window_get_state (GDK_WINDOW (gtk_widget_get_window (window)))

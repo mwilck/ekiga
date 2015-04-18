@@ -52,7 +52,7 @@
 #include "preferences-window.h"
 #include "call-window.h"
 #include "chat-window.h"
-#include "main_window.h"
+#include "ekiga-window.h"
 #include "statusicon.h"
 #include "roster-view-gtk.h"
 #include "history-source.h"
@@ -102,7 +102,7 @@ struct _GmApplicationPrivate
   Ekiga::ServiceCore core;
 
   GtkBuilder *builder;
-  GtkWidget *main_window;
+  GtkWidget *ekiga_window;
   GtkWidget *chat_window;
   GtkWidget *call_window;
 
@@ -407,8 +407,8 @@ ekiga_main (int argc,
   }
 
   /* Create the main application window */
-  app->priv->main_window = gm_main_window_new (app);
-  gm_application_show_main_window (app);
+  app->priv->ekiga_window = gm_ekiga_window_new (app);
+  gm_application_show_ekiga_window (app);
 
   status_icon_new (app);
 
@@ -437,7 +437,7 @@ gm_application_activate (GApplication *self)
 {
   GmApplication *app = GM_APPLICATION (self);
 
-  gm_application_show_main_window (app);
+  gm_application_show_ekiga_window (app);
 }
 
 static void
@@ -734,29 +734,29 @@ gm_application_get_core (GmApplication *self)
 
 
 void
-gm_application_show_main_window (GmApplication *self)
+gm_application_show_ekiga_window (GmApplication *self)
 {
   g_return_if_fail (GM_IS_APPLICATION (self));
 
-  gtk_window_present (GTK_WINDOW (self->priv->main_window));
+  gtk_window_present (GTK_WINDOW (self->priv->ekiga_window));
 }
 
 
 void
-gm_application_hide_main_window (GmApplication *self)
+gm_application_hide_ekiga_window (GmApplication *self)
 {
   g_return_if_fail (GM_IS_APPLICATION (self));
 
-  gtk_widget_hide (self->priv->main_window);
+  gtk_widget_hide (self->priv->ekiga_window);
 }
 
 
 GtkWidget *
-gm_application_get_main_window (GmApplication *self)
+gm_application_get_ekiga_window (GmApplication *self)
 {
   g_return_val_if_fail (GM_IS_APPLICATION (self), NULL);
 
-  return self->priv->main_window;
+  return self->priv->ekiga_window;
 }
 
 

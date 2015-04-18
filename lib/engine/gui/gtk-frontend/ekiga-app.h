@@ -70,11 +70,11 @@ GmApplication *gm_application_new ();
 
 Ekiga::ServiceCore& gm_application_get_core (GmApplication *app);
 
-void gm_application_show_main_window (GmApplication *app);
+void gm_application_show_ekiga_window (GmApplication *app);
 
-void gm_application_hide_main_window (GmApplication *app);
+void gm_application_hide_ekiga_window (GmApplication *app);
 
-GtkWidget *gm_application_get_main_window (GmApplication *app);
+GtkWidget *gm_application_get_ekiga_window (GmApplication *app);
 
 gboolean gm_application_show_help (GmApplication *app,
                                    const gchar *link_id);
