@@ -554,7 +554,7 @@ Opal::Account::enable ()
 void
 Opal::Account::disable ()
 {
-  if (!is_enabled ()) {
+  if (is_enabled ()) {
     xmlSetProp (node, BAD_CAST "enabled", BAD_CAST "false");
     trigger_saving ();
   }
