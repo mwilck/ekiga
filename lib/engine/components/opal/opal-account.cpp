@@ -519,7 +519,10 @@ void
 Opal::Account::enable ()
 {
   PString _aor;
-  xmlSetProp (node, BAD_CAST "enabled", BAD_CAST "true");
+  if (!is_enabled ()) {
+    xmlSetProp (node, BAD_CAST "enabled", BAD_CAST "true");
+    trigger_saving ();
+  }
 
   state = Processing;
   status = _("Processing...");
@@ -540,7 +543,6 @@ Opal::Account::enable ()
     break;
   }
   updated ();
-  trigger_saving ();
 
   disable_action ("enable-account");
   enable_action ("disable-account");
@@ -550,7 +552,10 @@ Opal::Account::enable ()
 void
 Opal::Account::disable ()
 {
-  xmlSetProp (node, BAD_CAST "enabled", BAD_CAST "false");
+  if (!is_enabled ()) {
+    xmlSetProp (node, BAD_CAST "enabled", BAD_CAST "false");
+    trigger_saving ();
+  }
 
   /* Actual unregistration code */
   switch (type) {
@@ -591,7 +596,6 @@ Opal::Account::disable ()
   state = Unregistered;
 
   updated ();
-  trigger_saving ();
 
   enable_action ("enable-account");
   disable_action ("disable-account");
