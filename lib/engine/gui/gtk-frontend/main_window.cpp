@@ -826,11 +826,6 @@ ekiga_main_window_dispose (GObject* gobject)
 {
   EkigaMainWindow *mw = EKIGA_MAIN_WINDOW (gobject);
 
-  if (mw->priv->roster_view) {
-    g_object_unref (mw->priv->roster_view);
-    mw->priv->roster_view = NULL;
-  }
-
   // Workaround bug #724506
   // Unbind exactly once, then reset the variable. GTK+ will
   // destroy the widget when things get finalized.
