@@ -81,16 +81,8 @@ namespace Opal {
           // Register the given aor to the given registrar
           ep.Register (params, _aor);
         }
-        else {
-          PString aor = "sip:" + account.get_username () + "@" + account.get_host ();
-          if (!ep.IsRegistered (aor))
-            aor += ";transport=tcp";
-
-          if (!ep.IsRegistered (aor))
-            return;
-
-          ep.Unregister (aor);
-        }
+        else
+          ep.Unregister (account.get_full_uri (""));
       }
 
   private:
@@ -297,6 +289,9 @@ Opal::Sip::EndPoint::OnRegistrationStatus (const RegistrationStatus & status)
       params.m_expire = status.m_handler->GetExpire ();
       params.m_minRetryTime = PMaxTimeInterval;  // use default value
       params.m_maxRetryTime = PMaxTimeInterval;  // use default value
+      if (status.m_handler->ShutDown ())
+        activeSIPHandlers.Remove (status.m_handler); // Make sure the TCP handler is deleted
+                                                     // or it will be retried indefinitely.
       SIPEndPoint::Register (params, _aor);
       return;
     }
