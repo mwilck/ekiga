@@ -1411,5 +1411,8 @@ Opal::Account::get_full_uri (const PString & uri) const
   if (opal_presentity && (j = opal_presentity->GetAOR ().AsString ().Find (";")) != P_MAX_INDEX)
     parameters = opal_presentity->GetAOR ().AsString ().Mid (j);
 
+  if (uri.IsEmpty () && opal_presentity)
+    return opal_presentity->GetAOR ().AsString ();
+
   return uri + parameters;
 }
