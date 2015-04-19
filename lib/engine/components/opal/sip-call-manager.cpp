@@ -56,7 +56,15 @@ Opal::Sip::CallManager::CallManager (Ekiga::ServiceCore& _core,
   sip_settings = Ekiga::SettingsPtr (new Ekiga::Settings (SIP_SCHEMA, setup_cb));
   call_forwarding_settings = Ekiga::SettingsPtr (new Ekiga::Settings (CALL_FORWARDING_SCHEMA, setup_cb));
 
+  /* Initial setup */
   setup ("");
+
+  /* Generate a RFC 5626 compatible instance id if needed */
+  std::string instance_id = sip_settings->get_string ("instance-id");
+  if (instance_id.empty ()) {
+    instance_id = (const char*) PGloballyUniqueID ().AsString ();
+    sip_settings->set_string ("instance-id", instance_id);
+  }
 }
 
 
@@ -170,6 +178,12 @@ void Opal::Sip::CallManager::setup (const std::string & setting)
   if (!endpoint.IsReady ()) {
     endpoint.ready.connect (boost::bind (&Opal::Sip::CallManager::setup, this, ""));
     return;
+  }
+
+  if (setting.empty () || setting == "instance-id") {
+    std::string instance_id = sip_settings->get_string ("instance-id");
+    if (!instance_id.empty ())
+      sip_endpoint.SetInstanceID (instance_id);
   }
 
   if (setting.empty () || setting == "listen-port")

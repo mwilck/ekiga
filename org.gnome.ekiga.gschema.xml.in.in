@@ -434,6 +434,11 @@
       <_summary>Connection keepalive interval</_summary>
       <_description>Enter the number of seconds between keepalive messages sent by Ekiga to maintain the connection</_description>
     </key>
+    <key name="instance-id" type="s">
+      <default>''</default>
+      <_summary>Instance ID</_summary>
+      <_description>This is a Uniform Resource Name (URN) that uniquely identifies this specific UA instance. It will be generated on the first run.</_description>
+    </key>
   </schema>
   <schema gettext-domain="@GETTEXT_PACKAGE@" id="org.gnome.@PACKAGE_NAME@.protocols.h323" path="/org/gnome/@PACKAGE_NAME@/protocols/h323/">
     <key name="listen-port" type="i">

@@ -97,6 +97,9 @@ namespace Opal {
 
       void SetBusyForwardTarget (const PString & party);
 
+      void SetInstanceID (const PString & id);
+
+      PGloballyUniqueID & GetInstanceID ();
 
     private:
       /* OPAL Methods */
@@ -122,6 +125,7 @@ namespace Opal {
       PString noAnswerForwardParty;
       PString unconditionalForwardParty;
       PString busyForwardParty;
+      PGloballyUniqueID instanceID;
     };
   };
 };

@@ -68,6 +68,7 @@ namespace Opal {
 
           SIPRegister::Params params;
           params.m_addressOfRecord = "sip:" + account.get_username () + "@" + account.get_host () + ";transport=tcp";
+          params.m_instanceId = ep.GetInstanceID ();
           params.m_compatibility = SIPRegister::e_RFC5626;
           params.m_authID = account.get_authentication_username ();
           params.m_password = account.get_password ();
@@ -234,6 +235,21 @@ Opal::Sip::EndPoint::SetBusyForwardTarget (const PString & _party)
 
 
 void
+Opal::Sip::EndPoint::SetInstanceID (const PString & id)
+{
+  if (!id.empty ())
+    instanceID = PGloballyUniqueID (id);
+}
+
+
+PGloballyUniqueID &
+Opal::Sip::EndPoint::GetInstanceID ()
+{
+  return instanceID;
+}
+
+
+void
 Opal::Sip::EndPoint::OnRegistrationStatus (const RegistrationStatus & status)
 {
   std::string info;
@@ -283,6 +299,7 @@ Opal::Sip::EndPoint::OnRegistrationStatus (const RegistrationStatus & status)
         m_addressOfRecord.SetParamVar ("OPAL-proxy", proxy);
       }
       params.m_addressOfRecord = m_addressOfRecord;
+      params.m_instanceId = GetInstanceID ();
       params.m_compatibility = SIPRegister::e_RFC5626;
       params.m_authID = status.m_handler->GetAuthID ();
       params.m_password = status.m_handler->GetPassword ();
