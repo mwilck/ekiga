@@ -169,7 +169,7 @@ private:
 
     void add_actions ();
 
-    void start ();
+    void activate (boost::shared_ptr<Account> account);
 
     Ekiga::Settings *protocols_settings;
 

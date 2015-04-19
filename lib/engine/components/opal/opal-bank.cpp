@@ -117,7 +117,7 @@ Opal::Bank::Bank (Ekiga::ServiceCore& core,
       add_account (account);
       heap_added (account);
 
-      start ();
+      activate (account);
     }
   }
 
@@ -593,20 +593,16 @@ Opal::Bank::add_actions ()
 
 
 void
-Opal::Bank::start ()
+Opal::Bank::activate (boost::shared_ptr<Opal::Account> account)
 {
   if (!endpoint.IsReady ()) {
-    endpoint.ready.connect (boost::bind (&Opal::Bank::start, this));
+    endpoint.ready.connect (boost::bind (&Opal::Bank::activate, this, account));
     return;
   }
 
   boost::shared_ptr<Ekiga::PresenceCore> pcore = presence_core.lock ();
-  for (iterator iter = begin ();
-       iter != end ();
-       ++iter) {
-    if (pcore)
-      pcore->add_presence_fetcher (*iter);
-    if ((*iter)->is_enabled ())
-      (*iter)->enable ();
-  }
+  if (pcore)
+    pcore->add_presence_fetcher (account);
+  if (account->is_enabled ())
+    account->enable ();
 }
