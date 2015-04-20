@@ -684,8 +684,8 @@ Opal::Account::edit ()
   case Opal::Account::Ekiga:
     request->hidden ("name", get_name ());
     request->hidden ("host", get_host ());
-    request->text ("user", _("_User"), get_aor (), _("jon"),
-                   Ekiga::FormVisitor::EKIGA_URI, false, false);
+    request->text ("user", _("_User"), get_username (), _("jon"),
+                   Ekiga::FormVisitor::STANDARD, false, false);
     request->hidden ("authentication_user", get_authentication_username ());
     request->text ("password", _("_Password"), get_password (), _("1234"),
                    Ekiga::FormVisitor::PASSWORD, false, false);
@@ -696,7 +696,7 @@ Opal::Account::edit ()
   case Opal::Account::DiamondCard:
     request->hidden ("name", get_name ());
     request->hidden ("host", get_host ());
-    request->text ("user", _("_Account ID"), get_username (), _("jon"),
+    request->text ("user", _("_Account ID"), get_username (), _("1234567890"),
                    Ekiga::FormVisitor::NUMBER, false, false);
     request->hidden ("authentication_user", get_authentication_username ());
     request->text ("password", _("_PIN Code"), get_password (), _("1234"),
@@ -753,8 +753,14 @@ Opal::Account::on_edit_form_submitted (bool submitted,
   if (!submitted)
     return false;
 
-  std::string new_name = result.text ("name");
-  std::string new_host = result.text ("host");
+  std::string new_name, new_host;
+  if (type == Opal::Account::Ekiga || type == Opal::Account::DiamondCard) {
+    new_name = result.hidden ("name");
+    new_host = result.hidden ("host");
+  } else {
+    new_name = result.text ("name");
+    new_host = result.text ("host");
+  }
   std::string new_outbound_proxy = result.text ("outbound_proxy");
   std::string new_user = result.text ("user");
   std::string new_authentication_user;
@@ -768,7 +774,11 @@ Opal::Account::on_edit_form_submitted (bool submitted,
   bool new_enabled = result.boolean ("enabled");
   bool should_enable = false;
   bool should_disable = false;
-  unsigned new_timeout = atoi (result.text ("timeout").c_str ());
+  unsigned new_timeout;
+  if (type == Opal::Account::Ekiga || type == Opal::Account::DiamondCard)
+    new_timeout = atoi (result.hidden ("timeout").c_str ());
+  else
+    new_timeout = atoi (result.text ("timeout").c_str ());
 
   if (new_name.empty ())
     error = _("You did not supply a name for that account.");
@@ -1360,7 +1370,7 @@ struct rename_group_form_submitted_helper
 bool
 Opal::Account::on_rename_group_form_submitted (bool submitted,
                                                Ekiga::Form& result,
-                                               std::string& error,
+                                               std::string& /*error*/,
                                                const std::list<std::string> & groups)
 {
   if (!submitted)
