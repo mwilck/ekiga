@@ -50,7 +50,6 @@ Opal::CallManager::CallManager (Ekiga::ServiceCore& _core,
 {
   /* Setup things */
   Ekiga::SettingsCallback setup_cb = boost::bind (&Opal::CallManager::setup, this, _1);
-  nat_settings = Ekiga::SettingsPtr (new Ekiga::Settings (NAT_SCHEMA, setup_cb));
   audio_codecs_settings = Ekiga::SettingsPtr (new Ekiga::Settings (AUDIO_CODECS_SCHEMA, setup_cb));
   video_codecs_settings = Ekiga::SettingsPtr (new Ekiga::Settings (VIDEO_CODECS_SCHEMA, setup_cb));
   video_devices_settings = Ekiga::SettingsPtr (new Ekiga::Settings (VIDEO_DEVICES_SCHEMA, setup_cb));
@@ -59,12 +58,6 @@ Opal::CallManager::CallManager (Ekiga::ServiceCore& _core,
   call_options_settings = Ekiga::SettingsPtr (new Ekiga::Settings (CALL_OPTIONS_SCHEMA, setup_cb));
   call_forwarding_settings = Ekiga::SettingsPtr (new Ekiga::Settings (CALL_FORWARDING_SCHEMA, setup_cb));
   personal_data_settings = Ekiga::SettingsPtr (new Ekiga::Settings (PERSONAL_DATA_SCHEMA, setup_cb));
-
-  /* STUN must be enabled at the very beginning */
-  if (nat_settings->get_bool ("enable-stun") && !nat_settings->get_string ("stun-server").empty ())
-    endpoint.SetStunServer (nat_settings->get_string ("stun-server"));
-  else
-    endpoint.SetStunServer (PString::Empty ());
 }
 
 

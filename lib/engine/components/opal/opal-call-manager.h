@@ -133,7 +133,6 @@ protected:
 
 private:
 
-    Ekiga::SettingsPtr nat_settings;
     Ekiga::SettingsPtr audio_codecs_settings;
     Ekiga::SettingsPtr video_codecs_settings;
     Ekiga::SettingsPtr video_devices_settings;

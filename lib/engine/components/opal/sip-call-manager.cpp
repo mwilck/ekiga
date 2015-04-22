@@ -65,6 +65,13 @@ Opal::Sip::CallManager::CallManager (Ekiga::ServiceCore& _core,
     instance_id = (const char*) PGloballyUniqueID ().AsString ();
     sip_settings->set_string ("instance-id", instance_id);
   }
+
+  /* STUN must be enabled at the very beginning */
+  Ekiga::SettingsPtr nat_settings = Ekiga::SettingsPtr (new Ekiga::Settings (NAT_SCHEMA, setup_cb));
+  if (nat_settings->get_bool ("enable-stun") && !nat_settings->get_string ("stun-server").empty ())
+    _endpoint.SetStunServer (nat_settings->get_string ("stun-server"));
+  else
+    _endpoint.SetStunServer (PString::Empty ());
 }
 
 
