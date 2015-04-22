@@ -563,10 +563,14 @@ Opal::Call::OnCleared ()
     case OpalConnection::EndedBySecurityDenial:
     case OpalConnection::EndedByGatekeeper:
     case OpalConnection::EndedByGkAdmissionFailed:
-    case OpalConnection::EndedByCertificateAuthority:
       reason = _("Call forbidden");
       break;
+    case OpalConnection::EndedByCertificateAuthority:
+      reason = _("Remote certificate not authenticated");
+      break;
     case OpalConnection::EndedByNoUser:
+      reason = _("Wrong number or address");
+      break;
     case OpalConnection::EndedByIllegalAddress:
       reason = _("Invalid number or address");
       break;
