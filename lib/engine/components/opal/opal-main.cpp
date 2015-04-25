@@ -93,19 +93,6 @@ public:
       Opal::H323::EndPoint& h323_endpoint = endpoint.GetH323EndPoint ();
 #endif
 
-      // We create the Bank
-      boost::shared_ptr<Opal::Bank> bank = boost::shared_ptr<Opal::Bank> (new Opal::Bank (core,
-                                                                                          endpoint,
-#ifdef HAVE_H323
-                                                                                          &h323_endpoint,
-#endif
-                                                                                          &sip_endpoint));
-
-      account_core->add_bank (bank);
-      presence_core->add_cluster (bank);
-      core.add (bank);
-      presence_core->add_presence_publisher (bank);
-
       // We create our various CallManagers: SIP, H.323
       boost::shared_ptr<Opal::Sip::CallManager> sip_call_manager (new Opal::Sip::CallManager (core, endpoint, sip_endpoint));
       contact_core->push_back (Ekiga::URIActionProviderPtr (sip_call_manager));
@@ -118,6 +105,23 @@ public:
       presence_core->push_back (Ekiga::URIActionProviderPtr (h323_call_manager));
       call_core->add_manager (h323_call_manager);
 #endif
+
+      // We create the Bank
+      // It must be created last. That way, it will handle the Opal::EndPoint
+      // "ready" signal after the SIP and H.323 EndPoints. Otherwise, accounts
+      // registration could not work when STUN is used.
+      boost::shared_ptr<Opal::Bank> bank = boost::shared_ptr<Opal::Bank> (new Opal::Bank (core,
+                                                                                          endpoint,
+#ifdef HAVE_H323
+                                                                                          &h323_endpoint,
+#endif
+                                                                                          &sip_endpoint));
+
+      account_core->add_bank (bank);
+      presence_core->add_cluster (bank);
+      core.add (bank);
+      presence_core->add_presence_publisher (bank);
+
 
       result = true;
     }
