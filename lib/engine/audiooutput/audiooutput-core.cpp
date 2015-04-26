@@ -182,11 +182,11 @@ AudioOutputCore::setup_audio_device (AudioOutputPS device_idx)
         found = true;
         break;
       }
-      else if ((*it).GetString () == device_preferred1.GetString ()) {
+      else if (*it == device_preferred1) {
 
         found_preferred1 = true;
       }
-      else if ((*it).GetString () == device_preferred2.GetString ()) {
+      else if (*it == device_preferred2) {
 
         found_preferred2 = true;
       }
@@ -196,13 +196,13 @@ AudioOutputCore::setup_audio_device (AudioOutputPS device_idx)
   if (found)
     device.SetFromString (audio_device);
   else if (found_preferred1)
-    device.SetFromString (device_preferred1.GetString ());
+    device = device_preferred1;
   else if (found_preferred2)
-    device.SetFromString (device_preferred2.GetString ());
+    device = device_preferred2;
   else if (!devices.empty ())
-    device.SetFromString (devices.begin ()->GetString ());
+    device = *devices.begin ();
   else
-    device.SetFromString (device_fallback.GetString ());
+    device = device_fallback;
 
   if (!found)
     g_settings_set_string ((device_idx == primary)?audio_device_settings:sound_events_settings,
@@ -304,7 +304,7 @@ AudioOutputCore::visit_managers (boost::function1<bool, AudioOutputManager&> vis
   PWaitAndSignal m_pri(core_mutex[primary]);
   PWaitAndSignal m_sec(core_mutex[secondary]);
   bool go_on = true;
-  
+
   for (std::set<AudioOutputManager *>::const_iterator iter = managers.begin ();
        iter != managers.end () && go_on;
        ++iter)
@@ -379,7 +379,7 @@ AudioOutputCore::get_devices (std::vector <AudioOutputDevice>& devices)
   for (std::vector<AudioOutputDevice>::const_iterator iter = devices.begin ();
        iter != devices.end ();
        ++iter) {
-    PTRACE(4, "AudioOutputCore\tDetected Device: " << *iter);
+    PTRACE(4, "AudioOutputCore\tDetected device: " << *iter);
   }
 #endif
 
@@ -426,7 +426,7 @@ AudioOutputCore::add_device (const std::string& sink,
 			     const std::string& device_name,
 			     HalManager* /*manager*/)
 {
-  PTRACE(4, "AudioOutputCore\tAdding Device " << device_name);
+  PTRACE(4, "AudioOutputCore\tAdding device " << device_name);
   yield = true;
   PWaitAndSignal m_pri(core_mutex[primary]);
 
@@ -454,7 +454,7 @@ AudioOutputCore::remove_device (const std::string& sink,
 				const std::string& device_name,
 				HalManager* /*manager*/)
 {
-  PTRACE(4, "AudioOutputCore\tRemoving Device " << device_name);
+  PTRACE(4, "AudioOutputCore\tRemoving device " << device_name);
   yield = true;
   PWaitAndSignal m_pri(core_mutex[primary]);
 
@@ -565,7 +565,7 @@ AudioOutputCore::set_frame_data (const char* data,
     }
   }
 
-  if (calculate_average) 
+  if (calculate_average)
     calculate_average_level((const short*) data, bytes_written);
 }
 
@@ -612,7 +612,7 @@ AudioOutputCore::play_buffer(AudioOutputPS ps,
 
     case secondary:
         core_mutex[secondary].Wait();
- 
+
         if (current_manager[secondary]) {
 
 	  internal_play(secondary, buffer, len, channels, sample_rate, bps);
@@ -781,7 +781,7 @@ AudioOutputCore::calculate_average_level (const short*buffer,
 {
   int sum = 0;
   unsigned csize = 0;
-  
+
   while (csize < (size>>1) ) {
 
     if (*buffer < 0)
@@ -791,6 +791,6 @@ AudioOutputCore::calculate_average_level (const short*buffer,
 
     csize++;
   }
-	  
+
   average_level = log10 (9.0*sum/size/32767+1)*1.0;
 }

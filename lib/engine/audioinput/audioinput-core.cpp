@@ -216,11 +216,11 @@ AudioInputCore::set_device (const std::string& device_string)
       found = true;
       break;
     }
-    else if ((*it).GetString () == device_preferred1.GetString ()) {
+    else if (*it == device_preferred1) {
 
       found_preferred1 = true;
     }
-    else if ((*it).GetString () == device_preferred2.GetString ()) {
+    else if (*it == device_preferred2) {
 
       found_preferred2 = true;
     }
@@ -229,13 +229,13 @@ AudioInputCore::set_device (const std::string& device_string)
   if (found)
     device.SetFromString (device_string);
   else if (found_preferred1)
-    device.SetFromString (device_preferred1.GetString ());
+    device = device_preferred1);
   else if (found_preferred2)
-    device.SetFromString (device_preferred2.GetString ());
+    device = device_preferred2);
   else if (!devices.empty ())
-    device.SetFromString (devices.begin ()->GetString ());
+    device = *devices.begin ();
   else
-    device.SetFromString (device_fallback.GetString ());
+    device = device_fallback;
 
   if (!found)
     g_settings_set_string (audio_device_settings, "input-device", device.GetString ().c_str ());
@@ -250,7 +250,7 @@ AudioInputCore::add_device (const std::string& source,
 			    const std::string& device_name,
 			    HalManager* /*manager*/)
 {
-  PTRACE(4, "AudioInputCore\tAdding Device " << device_name);
+  PTRACE(4, "AudioInputCore\tAdding device " << device_name);
   yield = true;
   PWaitAndSignal m(core_mutex);
 
@@ -277,7 +277,7 @@ AudioInputCore::remove_device (const std::string& source,
 			       const std::string& device_name,
 			       HalManager* /*manager*/)
 {
-  PTRACE(4, "AudioInputCore\tRemoving Device " << device_name);
+  PTRACE(4, "AudioInputCore\tRemoving device " << device_name);
   yield = true;
   PWaitAndSignal m(core_mutex);
 

@@ -52,6 +52,19 @@
 
 #include "ekiga-settings.h"
 
+#ifdef WIN32
+#define VIDEO_INPUT_PREFERRED_DEVICE_TYPE1   "PTLIB"
+#define VIDEO_INPUT_PREFERRED_DEVICE_SOURCE1 "DirectShow"
+#define VIDEO_INPUT_PREFERRED_DEVICE_TYPE2   "PTLIB"
+#define VIDEO_INPUT_PREFERRED_DEVICE_SOURCE2 "DirectShow"
+#else
+#define VIDEO_INPUT_PREFERRED_DEVICE_TYPE1   "PTLIB"
+#define VIDEO_INPUT_PREFERRED_DEVICE_SOURCE1 "V4L2"
+#define VIDEO_INPUT_PREFERRED_DEVICE_TYPE2   "PTLIB"
+// V4L is still used in FreeBSD
+#define VIDEO_INPUT_PREFERRED_DEVICE_SOURCE2 "V4L"
+#endif
+
 #define VIDEO_INPUT_FALLBACK_DEVICE_TYPE   "Moving Logo"
 #define VIDEO_INPUT_FALLBACK_DEVICE_SOURCE "Moving Logo"
 #define VIDEO_INPUT_FALLBACK_DEVICE_NAME   "Moving Logo"
@@ -66,27 +79,27 @@ namespace Ekiga
   /** Core object for the video input support
    * The video input core abstracts all functionality related to video input
    * in a thread safe manner. Typically, most of the functions except start_stream(),
-   * stop_stream(), and get_frame_data() will be called from 
+   * stop_stream(), and get_frame_data() will be called from
    * a UI thread, while the three mentioned funtions will be used by a video
    * streaming thread.
-   * 
-   * The video output core abstracts different video input managers, which can 
-   * represent different backends like PTLIB, from the application and can 
+   *
+   * The video output core abstracts different video input managers, which can
+   * represent different backends like PTLIB, from the application and can
    * switch the output device transparently for the video streaming thread,
    * even while capturing is in progress.
    *
    * If the removal of an video input device is detected by a failed
-   * read or by a message from the HalCore, the video input core will 
+   * read or by a message from the HalCore, the video input core will
    * determine the responsible video input manager and send a signal to the UI,
-   * which can be used to update device lists. Also, if the removed device was the 
+   * which can be used to update device lists. Also, if the removed device was the
    * currently used one, the core falls back to the backup device.
-   * 
-   * A similar procedure is performed on the addition of a device. In case we fell 
+   *
+   * A similar procedure is performed on the addition of a device. In case we fell
    * back due to a removed device, and the respective device is re-added to the system,
    * it will be automatically activated.
    *
    * The video input core can also be used in a preview mode, where it starts a separate
-   * thread (represented by the VideoPreviewManager), which grabs frames from the video 
+   * thread (represented by the VideoPreviewManager), which grabs frames from the video
    * input core and passes them to the video output core. This can be used for displaying
    * the local camera signal while not being in a call. If the preview is active and them
    * and the stream is started, the core will automatically determined if the device needs
@@ -159,7 +172,7 @@ namespace Ekiga
       /** Set a specific device
        * This function sets the current video input device. This function can
        * also be used while in a stream or in preview mode. In that case the old
-       * device is closed and the new device opened automatically. 
+       * device is closed and the new device opened automatically.
        * @param device the new device to be used.
        * @param channel the new channel to be used.
        * @param format the new format to be used.
@@ -168,9 +181,9 @@ namespace Ekiga
 
       /** Inform the core of an added videoinput device
        * This function is called by the HalCore when a video device is added.
-       * It determines responsible managers for that specific device and informs the 
-       * GUI about the device that was added (via device_added signal). 
-       * In case the added device was the desired device and we fell back, 
+       * It determines responsible managers for that specific device and informs the
+       * GUI about the device that was added (via device_added signal).
+       * In case the added device was the desired device and we fell back,
        * we will reactivate it. MUST be called from main thread.
        * @param source the device source (e.g. video4linux).
        * @param device_name the name of the added device.
@@ -181,8 +194,8 @@ namespace Ekiga
 
       /** Inform the core of a removed videoinput device
        * This function is called by the HalCore when a video device is removed.
-       * It determines responsible managers for that specific device and informs the 
-       * GUI about the device that was removed (via device_removed signal). 
+       * It determines responsible managers for that specific device and informs the
+       * GUI about the device that was removed (via device_removed signal).
        * In case the removed device was the current device we fall back to the
        * fallback device. MUST be called from main thread.
        * @param source the device source (e.g. video4linux).
@@ -193,8 +206,8 @@ namespace Ekiga
       void remove_device (const std::string & source, const std::string & device_name, unsigned capabilities, HalManager* manager);
 
       /** Set still image data
-       * In case there is a manager that allows trasmitting a still image, 
-       * this function can be used to set the actual image data. All other 
+       * In case there is a manager that allows trasmitting a still image,
+       * this function can be used to set the actual image data. All other
        * managers can safely ignore this function.
        * @param width the width of the image in pixels.
        * @param height the height of the image in pixels.
@@ -207,8 +220,8 @@ namespace Ekiga
 
       /** Set the preview configuration
        * This function sets the resolution and framerate for the preview mode. In case
-       * preview is not active (due to active stream or because it is simply off), it will 
-       * be applied the next time it is (re)started. In case preview is active, 
+       * preview is not active (due to active stream or because it is simply off), it will
+       * be applied the next time it is (re)started. In case preview is active,
        * the new configuration will be applied immediately by closing and reopening the device.
        * @param width the frame width.
        * @param height the frame height.
@@ -217,7 +230,7 @@ namespace Ekiga
       void set_preview_config (unsigned width, unsigned height, unsigned fps);
 
       /** Start the preview mode
-       * Start the preview thread implemented in the PreviewManager. 
+       * Start the preview thread implemented in the PreviewManager.
        * In case a stream is active, this will not have an effect until the stream is stopped.
        */
       void start_preview ();
@@ -228,9 +241,9 @@ namespace Ekiga
 
 
       /** Set the stream configuration
-       * This function sets the resolution and framerate for the stream mode, which 
-       * can be different from the preview configuration due to negotiated capabilities. 
-       * The configuration will be applied on the next call of start_stream(), in order 
+       * This function sets the resolution and framerate for the stream mode, which
+       * can be different from the preview configuration due to negotiated capabilities.
+       * The configuration will be applied on the next call of start_stream(), in order
        * not to confuse simple endpoints that do not support switching of the resolution in
        * mid-stream.
        * @param width the frame width.
@@ -254,7 +267,7 @@ namespace Ekiga
 
       /** Get one video frame buffer from the current manager.
        * This function will block until the buffer is completely filled.
-       * Requires the stream or the preview (when being called from the 
+       * Requires the stream or the preview (when being called from the
        * VideoPreviewManager) to be started.
        * In case the device returns an error reading the frame, get_frame_data()
        * falls back to the fallback device and reads the frame from there. Thus
@@ -297,8 +310,8 @@ namespace Ekiga
 
   private:
       void on_set_device (const VideoInputDevice & device);
-      void on_device_opened (VideoInputDevice device,  
-                             VideoInputSettings settings, 
+      void on_device_opened (VideoInputDevice device,
+                             VideoInputSettings settings,
                              VideoInputManager *manager);
       void on_device_closed (VideoInputDevice device, VideoInputManager *manager);
       void on_device_error  (VideoInputDevice device, VideoInputErrorCodes error_code, VideoInputManager *manager);
@@ -315,9 +328,9 @@ namespace Ekiga
 private:
       /** VideoPreviewManager thread.
         *
-        * VideoPreviewManager represents a thread that gets frames from the 
-        * video input core and passes them to the video output core. This is 
-        * used for displaying the preview video. This thread will run only 
+        * VideoPreviewManager represents a thread that gets frames from the
+        * video input core and passes them to the video output core. This is
+        * used for displaying the preview video. This thread will run only
         * while preview is active. It is called from the VideoInputCore, which
         * has the interface to the application for enabling and disabling the preview.
         */
@@ -373,7 +386,7 @@ private:
         *
         * This class is used for storing the device configuration when
         * streaming video or when in preview mode. The device configuration
-        * consists of width, height and framerate. This class can be used to 
+        * consists of width, height and framerate. This class can be used to
         * check whether stream and preview configuration is different and
         * thus if a device needs to be reopened when switching between stream
         * and preview mode.
@@ -408,7 +421,7 @@ private:
 
         bool operator==( const VideoDeviceConfig & rhs ) const
         {
-          if ( (width  == rhs.width)   && 
+          if ( (width  == rhs.width)   &&
                (height == rhs.height)  &&
                (fps    == rhs.fps)     )
           return true;

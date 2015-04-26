@@ -45,7 +45,6 @@
 #include "ekiga-settings.h"
 
 #include "preferences-window.h"
-#include "default_devices.h"
 
 #include "scoped-connections.h"
 #include "form-request-simple.h"

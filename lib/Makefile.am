@@ -365,8 +365,6 @@ libekiga_la_SOURCES += \
 	engine/gui/gtk-frontend/roster-view-gtk.cpp \
 	engine/gui/gtk-frontend/call-history-view-gtk.h \
 	engine/gui/gtk-frontend/call-history-view-gtk.cpp \
-	engine/gui/gtk-frontend/default_devices.cpp \
-	engine/gui/gtk-frontend/default_devices.h \
 	engine/gui/gtk-frontend/chat-area.h \
 	engine/gui/gtk-frontend/chat-area.cpp \
 	engine/gui/gtk-frontend/conversation-page.h \

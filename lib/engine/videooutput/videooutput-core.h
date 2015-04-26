@@ -57,7 +57,7 @@ namespace Ekiga
 
   /** Core object for the video display support
    *
-   * The VideoOutputCore will control the different VideoOutputManagers and pass pointers to 
+   * The VideoOutputCore will control the different VideoOutputManagers and pass pointers to
    * the frames to all of them.
    * Before passing the first frame, start() has to be called. In order to close the video,
    * stop() has to be called. The video output core interacts with the GUI when switching to fullscreen,

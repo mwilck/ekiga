@@ -304,39 +304,50 @@ void VideoInputCore::set_device(const VideoInputDevice & _device, int channel, V
 {
   PWaitAndSignal m(core_mutex);
   GSettings* settings = device_settings->get_g_settings ();
-  VideoInputDevice device;
+  VideoInputDevice device, device1, device2;
 
   /* Check if device exists */
   std::vector <VideoInputDevice> devices;
   bool found = false;
+  bool found_preferred1 = false;
+  bool found_preferred2 = false;
+
   get_devices (devices);
   for (std::vector<VideoInputDevice>::iterator it = devices.begin ();
        it < devices.end ();
        it++) {
-    if ((*it).GetString () == _device.GetString ()) {
+    if (*it == _device) {
       found = true;
       break;
+    } else if (it->GetString ().find (VIDEO_INPUT_PREFERRED_DEVICE_TYPE1) != string::npos
+               && it->GetString ().find (VIDEO_INPUT_PREFERRED_DEVICE_SOURCE1) != string::npos) {
+      found_preferred1 = true;
+      device1 = *it;  // do not break, we still hope to find _device
+    } else if (it->GetString ().find (VIDEO_INPUT_PREFERRED_DEVICE_TYPE2) != string::npos
+               && it->GetString ().find (VIDEO_INPUT_PREFERRED_DEVICE_SOURCE2) != string::npos) {
+      found_preferred2 = true;
+      device2 = *it;  // do not break, we still hope to find _device or preferred1
     }
   }
-  PTRACE(4, "VidInputCoreConf\tUpdating device");
 
   if (found)
     device = _device;
-  else
-    device.SetFromString (devices.begin ()->GetString ());
-
-  if ( (device.type == "" )   ||
-       (device.source == "")  ||
-       (device.name == "" ) ) {
-    PTRACE(1, "VidinputCore\tTried to set malformed device");
+  else if (found_preferred1)
+    device = device1;
+  else if (found_preferred2)
+    device = device2;
+  else if (!devices.empty ())
+    device = *devices.begin();
+  else {
     device.type = VIDEO_INPUT_FALLBACK_DEVICE_TYPE;
     device.source = VIDEO_INPUT_FALLBACK_DEVICE_SOURCE;
     device.name = VIDEO_INPUT_FALLBACK_DEVICE_NAME;
-    found = false;
   }
 
+  PTRACE(4, "VidInputCoreConf\tSet video input device to " << device);
+
   if (format >= VI_FORMAT_MAX) {
-    PTRACE(1, "VidInputCoreConf\tformat out of range, ajusting to 3");
+    PTRACE(1, "VidInputCoreConf\tformat out of range, adjusting to 3");
     format = (VideoInputFormat) 3;
   }
 
@@ -348,7 +359,7 @@ void VideoInputCore::set_device(const VideoInputDevice & _device, int channel, V
 
 void VideoInputCore::add_device (const std::string & source, const std::string & device_name, unsigned capabilities, HalManager* /*manager*/)
 {
-  PTRACE(4, "VidInputCore\tAdding Device " << device_name);
+  PTRACE(4, "VidInputCore\tAdding device " << device_name);
   PWaitAndSignal m(core_mutex);
 
   VideoInputDevice device;
@@ -367,7 +378,7 @@ void VideoInputCore::add_device (const std::string & source, const std::string &
 
 void VideoInputCore::remove_device (const std::string & source, const std::string & device_name, unsigned capabilities, HalManager* /*manager*/)
 {
-  PTRACE(4, "VidInputCore\tRemoving Device " << device_name);
+  PTRACE(4, "VidInputCore\tRemoving device " << device_name);
   PWaitAndSignal m(core_mutex);
 
   VideoInputDevice device;
@@ -455,7 +466,7 @@ void VideoInputCore::set_stream_config (unsigned width, unsigned height, unsigne
 
   // We do not support switching of framerate or resolution within a stream
   // since many endpoints will probably have problems with that. Also, it would add
-  // a lot of complexity due to the capabilities exchange. Thus these values will 
+  // a lot of complexity due to the capabilities exchange. Thus these values will
   // not be used until the next start_stream.
 
   if (!stream_config.active)
@@ -469,7 +480,7 @@ void VideoInputCore::start_stream ()
   PTRACE(4, "VidInputCore\tStarting stream " << stream_config);
   if (preview_config.active && !stream_config.active) {
     preview_manager->stop();
-    if ( preview_config != stream_config ) 
+    if ( preview_config != stream_config )
     {
       internal_close();
       internal_open(stream_config.width, stream_config.height, stream_config.fps);
@@ -489,7 +500,7 @@ void VideoInputCore::stop_stream ()
 
   PTRACE(4, "VidInputCore\tStopping Stream");
   if (preview_config.active && stream_config.active) {
-    if ( preview_config != stream_config ) 
+    if ( preview_config != stream_config )
     {
       internal_close();
       internal_open(preview_config.width, preview_config.height, preview_config.fps);

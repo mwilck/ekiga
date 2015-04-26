@@ -43,7 +43,6 @@
 #include "gm-entry.h"
 #include "platform.h"
 #include "assistant-window.h"
-#include "default_devices.h"
 #include "ekiga-app.h"
 #include "opal-bank.h"
 
