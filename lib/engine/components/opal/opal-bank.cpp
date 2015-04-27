@@ -195,7 +195,7 @@ Opal::Bank::new_account (Account::Type acc_type,
     request->text ("user", _("_User"), username, _("jon"),
                    Ekiga::FormVisitor::STANDARD, false, false);
     request->text ("authentication_user", _("_Login"), std::string (), _("jon.doe"),
-                   Ekiga::FormVisitor::STANDARD, false, false);
+                   Ekiga::FormVisitor::STANDARD, true, true);
     request->text ("password", _("_Password"), password, _("1234"),
                    Ekiga::FormVisitor::PASSWORD, false, false);
     request->text ("outbound_proxy", _("Outbound _Proxy"), "", _("proxy.company.com"),
@@ -226,7 +226,7 @@ Opal::Bank::on_new_account_form_submitted (bool submitted,
   std::string new_host = (acc_type == Opal::Account::SIP
 			  || acc_type == Opal::Account::H323) ? result.text ("host") : result.hidden ("host");
   std::string new_user = result.text ("user");
-  std::string new_authentication_user = (acc_type == Opal::Account::SIP) ? result.text ("authentication_user") : new_user;
+  std::string new_authentication_user = (acc_type == Opal::Account::SIP && ! result.text ("authentication_user").empty ()) ? result.text ("authentication_user") : new_user;
   std::string new_password = result.text ("password");
   std::string new_outbound_proxy = result.text ("outbound_proxy");
   bool new_enabled = result.boolean ("enabled");

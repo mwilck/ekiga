@@ -698,7 +698,7 @@ Opal::Account::edit ()
     request->hidden ("host", get_host ());
     request->text ("user", _("_Account ID"), get_username (), _("1234567890"),
                    Ekiga::FormVisitor::NUMBER, false, false);
-    request->hidden ("authentication_user", get_authentication_username ());
+    request->hidden ("authentication_user", "");  // will be copied from user
     request->text ("password", _("_PIN Code"), get_password (), _("1234"),
                    Ekiga::FormVisitor::NUMBER, false, false);
     request->text ("outbound_proxy", _("Outbound _Proxy"), get_outbound_proxy (), _("proxy.company.com"),
@@ -730,8 +730,8 @@ Opal::Account::edit ()
      * for the authentication procedure ("Authentication user"), aka Login
      * to make it understandable
      */
-    request->text ("authentication_user", _("_Login"), get_authentication_username (), _("jon.doe"),
-                   Ekiga::FormVisitor::STANDARD, false, false);
+    request->text ("authentication_user", _("_Login"), get_authentication_username () != get_username () ? get_authentication_username () : "", _("jon.doe"),
+                   Ekiga::FormVisitor::STANDARD, true, true);
     request->text ("password", _("_Password"), get_password (), _("1234"),
                    Ekiga::FormVisitor::PASSWORD, false, false);
     request->text ("outbound_proxy", _("Outbound _Proxy"), get_outbound_proxy (), _("proxy.company.com"),
