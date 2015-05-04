@@ -229,9 +229,9 @@ AudioInputCore::set_device (const std::string& device_string)
   if (found)
     device.SetFromString (device_string);
   else if (found_preferred1)
-    device = device_preferred1);
+    device = device_preferred1;
   else if (found_preferred2)
-    device = device_preferred2);
+    device = device_preferred2;
   else if (!devices.empty ())
     device = *devices.begin ();
   else
