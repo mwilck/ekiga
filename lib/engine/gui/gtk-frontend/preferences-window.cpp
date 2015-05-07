@@ -600,11 +600,9 @@ gm_pw_init_general_page (PreferencesWindow *self,
 		    G_CALLBACK (edit_blacklist_cb), (gpointer)self);
   int pos = 0;
   GTK_GRID_LAST_ROW (container, pos);
-  GtkWidget* alignment = gtk_alignment_new (0, 0, 0, 0);
-  gtk_container_add (GTK_CONTAINER (alignment), edit_blacklist_button);
+  gtk_widget_set_halign (edit_blacklist_button, GTK_ALIGN_START);
   gtk_container_set_border_width (GTK_CONTAINER (edit_blacklist_button), 0);
-
-  gtk_grid_attach (GTK_GRID (container), alignment, 0, pos-1, 2, 1);
+  gtk_grid_attach (GTK_GRID (container), edit_blacklist_button, 0, pos-1, 2, 1);
 }
 
 static void
