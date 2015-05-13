@@ -183,7 +183,7 @@ Opal::Bank::new_account (Account::Type acc_type,
     request->text ("password", _("_Password"), password, _("1234"),
                    Ekiga::FormVisitor::PASSWORD, false, false);
     request->text ("timeout", _("_Timeout"), "3600", "3600",
-                   Ekiga::FormVisitor::NUMBER, false, false);
+                   Ekiga::FormVisitor::NUMBER, true, false);
     break;
 
   case Opal::Account::SIP:
@@ -201,7 +201,7 @@ Opal::Bank::new_account (Account::Type acc_type,
     request->text ("outbound_proxy", _("Outbound _Proxy"), "", _("proxy.company.com"),
                    Ekiga::FormVisitor::STANDARD, true, true);
     request->text ("timeout", _("_Timeout"), "3600", "3600",
-                   Ekiga::FormVisitor::NUMBER, false, false);
+                   Ekiga::FormVisitor::NUMBER, true, false);
     break;
   }
   request->boolean ("enabled", _("_Enable account"), true);

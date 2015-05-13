@@ -715,7 +715,7 @@ Opal::Account::edit ()
     request->text ("password", _("_Password"), get_password (), _("1234"),
                    Ekiga::FormVisitor::PASSWORD, false, false);
     request->text ("timeout", _("_Timeout"), "3600", "3600",
-                   Ekiga::FormVisitor::NUMBER, false, false);
+                   Ekiga::FormVisitor::NUMBER, true, false);
     break;
   case Opal::Account::SIP:
   default:
@@ -737,7 +737,7 @@ Opal::Account::edit ()
     request->text ("outbound_proxy", _("Outbound _Proxy"), get_outbound_proxy (), _("proxy.company.com"),
                    Ekiga::FormVisitor::STANDARD, true, true);
     request->text ("timeout", _("_Timeout"), "3600", "3600",
-                   Ekiga::FormVisitor::NUMBER, false, false);
+                   Ekiga::FormVisitor::NUMBER, true, false);
   }
   request->boolean ("enabled", _("_Enable Account"), is_enabled ());
 
