@@ -49,6 +49,7 @@
 #include "book-impl.h"
 
 #include "evolution-contact.h"
+#include "dynamic-object.h"
 
 namespace Evolution
 {
@@ -61,12 +62,13 @@ namespace Evolution
 
   class Book:
     public virtual Ekiga::Filterable,
-    public Ekiga::BookImpl<Contact>
+    public Ekiga::BookImpl<Contact>,
+    public Ekiga::DynamicObject<Book>
   {
   public:
 
-    Book (Ekiga::ServiceCore &_services,
-	  EBook *_book);
+    static boost::shared_ptr<Book> create (Ekiga::ServiceCore &_services,
+                                           EBook *_book);
 
     ~Book ();
 
@@ -96,6 +98,8 @@ namespace Evolution
     void on_view_contacts_changed (GList *econtacts);
 
   private:
+    Book (Ekiga::ServiceCore &_services,
+	  EBook *_book);
 
     void new_contact_action ();
     void set_econtact_attribute_value (EContact *contact,

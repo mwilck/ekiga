@@ -48,6 +48,7 @@
 #include "source-impl.h"
 
 #include "evolution-book.h"
+#include "dynamic-object.h"
 
 namespace Evolution
 {
@@ -60,11 +61,12 @@ namespace Evolution
 
   class Source:
     public Ekiga::Service,
-    public Ekiga::SourceImpl<Book>
+    public Ekiga::SourceImpl<Book>,
+    public Ekiga::DynamicObject<Source>
   {
   public:
 
-    Source (Ekiga::ServiceCore &_services);
+    static boost::shared_ptr<Source> create (Ekiga::ServiceCore &_services);
 
     ~Source ();
 
@@ -88,6 +90,8 @@ namespace Evolution
 #endif
 
   private:
+    void load ();
+    Source (Ekiga::ServiceCore &_services);
 
     Ekiga::ServiceCore &services;
 #if EDS_CHECK_VERSION(3,5,3)

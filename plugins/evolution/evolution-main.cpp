@@ -38,6 +38,7 @@
 #include "contact-core.h"
 
 #include "evolution-main.h"
+
 #include "evolution-source.h"
 
 struct EVOSpark: public Ekiga::Spark
@@ -46,15 +47,15 @@ struct EVOSpark: public Ekiga::Spark
   {}
 
   bool try_initialize_more (Ekiga::ServiceCore &services,
-			    int */*argc*/,
-			    char **/*argv*/[])
+			    G_GNUC_UNUSED int *argc,
+			    G_GNUC_UNUSED char **argv[])
   {
     boost::shared_ptr<Ekiga::ContactCore> core = services.get<Ekiga::ContactCore> ("contact-core");
     Ekiga::ServicePtr service = services.get ("evolution-source");
 
     if (core && !service) {
 
-      boost::shared_ptr<Evolution::Source> source (new Evolution::Source (services));
+      boost::shared_ptr<Evolution::Source> source = Evolution::Source::create (services);
       services.add (source);
       core->add_source (source);
       result = true;

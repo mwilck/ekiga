@@ -47,6 +47,7 @@
 #endif
 #include "contact-core.h"
 #include "form.h"
+#include "dynamic-object.h"
 
 namespace Evolution
 {
@@ -57,13 +58,15 @@ namespace Evolution
  * @{
  */
 
-  class Contact: public Ekiga::Contact
+  class Contact:
+      public Ekiga::Contact,
+      public Ekiga::DynamicObject<Contact>
   {
   public:
 
-    Contact (Ekiga::ServiceCore &_services,
-	     EBook *ebook = NULL,
-	     EContact *econtact = NULL);
+    static boost::shared_ptr<Contact> create (Ekiga::ServiceCore &_services,
+                                              EBook *ebook = NULL,
+                                              EContact *econtact = NULL);
 
     ~Contact ();
 
@@ -78,6 +81,8 @@ namespace Evolution
     void remove ();
 
   private:
+    Contact (Ekiga::ServiceCore &_services,
+	     EBook *ebook = NULL);
 
     // attributes of interest to that code :
     enum {

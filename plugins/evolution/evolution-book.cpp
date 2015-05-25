@@ -64,15 +64,13 @@ Evolution::Book::on_view_contacts_added (GList *econtacts)
 
     if (e_contact_get_const (econtact, E_CONTACT_FULL_NAME) != NULL) {
 
-      ContactPtr contact(new Evolution::Contact (services, book,
-						 econtact));
-
+      ContactPtr contact = Evolution::Contact::create (services, book, econtact);
       add_contact (contact);
       nbr++;
     }
   }
 
-  updated ();
+  updated (this->shared_from_this ());
 }
 
 static void
@@ -96,7 +94,7 @@ public:
 	 iter != dead_contacts.end ();
 	 ++iter) {
 
-      (*iter)->removed ();
+      (*iter)->removed (*iter);
     }
   }
 
@@ -213,8 +211,9 @@ Evolution::Book::on_book_view_obtained (EBookStatus _status,
 		      G_CALLBACK (on_view_contacts_changed_c), this);
 
     e_book_view_start (view);
-  } else
-    removed ();
+  }
+  else
+    removed (this->shared_from_this ());
 }
 
 static void
@@ -248,17 +247,26 @@ Evolution::Book::on_book_opened (EBookStatus _status)
   else {
 
     book = NULL;
-    removed ();
+    removed (this->shared_from_this ());
   }
 }
+
+boost::shared_ptr<Evolution::Book>
+Evolution::Book::create (Ekiga::ServiceCore &_services,
+                         EBook *_book)
+{
+  boost::shared_ptr<Evolution::Book> book = boost::shared_ptr<Evolution::Book> (new Evolution::Book (_services, _book));
+  book->refresh ();
+
+  return book;
+}
+
 
 Evolution::Book::Book (Ekiga::ServiceCore &_services,
 		       EBook *_book)
   : services(_services), book(_book), view(NULL)
 {
   g_object_ref (book);
-
-  refresh ();
 
   /* Actor stuff */
   add_action (Ekiga::ActionPtr (new Ekiga::Action ("add-contact", _("A_dd Contact"),
@@ -269,6 +277,7 @@ Evolution::Book::~Book ()
 {
   if (book != NULL)
     g_object_unref (book);
+
 #if DEBUG
   std::cout << "Evolution::Book: Destructor invoked" << std::endl;
 #endif
@@ -327,7 +336,7 @@ Evolution::Book::get_status () const
 void
 Evolution::Book::refresh ()
 {
-  remove_all_objects ();
+  contacts.remove_all_objects ();
 
   /* we go */
   if (e_book_is_opened (book))

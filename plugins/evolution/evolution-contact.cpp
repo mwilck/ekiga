@@ -40,6 +40,8 @@
 #include "form-request-simple.h"
 #include "menu-builder-tools.h"
 
+#define DEBUG 1
+
 /* at one point we will return a smart pointer on this... and if we don't use
  * a false smart pointer, we will crash : the reference count isn't embedded!
  */
@@ -50,43 +52,46 @@ struct null_deleter
     }
 };
 
+
+boost::shared_ptr<Evolution::Contact>
+Evolution::Contact::create (Ekiga::ServiceCore &_services,
+                            EBook *ebook,
+                            EContact *econtact)
+{
+  boost::shared_ptr<Evolution::Contact> contact = boost::shared_ptr<Evolution::Contact> (new Evolution::Contact (_services, ebook));
+
+  if (E_IS_CONTACT (econtact))
+    contact->update_econtact (econtact);
+
+  return contact;
+}
+
 Evolution::Contact::Contact (Ekiga::ServiceCore &_services,
-			     EBook *ebook,
-			     EContact *_econtact) : services(_services),
-						    book(ebook),
-						    econtact(NULL)
+			     EBook *ebook) : services(_services),
+                                             book(ebook),
+                                             econtact(NULL)
 {
   for (unsigned int ii = 0;
        ii < ATTR_NUMBER;
        ii++)
     attributes[ii] = NULL;
 
-  if (E_IS_CONTACT (_econtact))
-    update_econtact (_econtact);
 
   /* Actor stuff */
   add_action (Ekiga::ActionPtr (new Ekiga::Action ("edit-contact", _("_Edit"),
                                                    boost::bind (&Evolution::Contact::edit_action, this))));
   add_action (Ekiga::ActionPtr (new Ekiga::Action ("remove-contact", _("_Remove"),
                                                    boost::bind (&Evolution::Contact::remove_action, this))));
-
-  /* Pull actions */
-  boost::shared_ptr<Ekiga::ContactCore> core = services.get<Ekiga::ContactCore> ("contact-core");
-  if (core) {
-    for (unsigned int attr_type = 0; attr_type < ATTR_NUMBER; attr_type++) {
-
-      std::string attr_value = get_attribute_value (attr_type);
-      if (!attr_value.empty ()) {
-        core->pull_actions (*this, get_name (), attr_value);
-      }
-    }
-  }
 }
 
 Evolution::Contact::~Contact ()
 {
   if (E_IS_CONTACT (econtact))
     g_object_unref (econtact);
+
+#if DEBUG
+  std::cout << __FUNCTION__ << " invoked in " << __FILE__ << std::endl << std::flush;
+#endif
 }
 
 const std::string
@@ -124,6 +129,7 @@ void
 Evolution::Contact::update_econtact (EContact *_econtact)
 {
   GList *attrs = NULL;
+  unsigned int attr_type = 0;
 
   if (E_IS_CONTACT (econtact))
     g_object_unref (econtact);
@@ -137,6 +143,8 @@ Evolution::Contact::update_econtact (EContact *_econtact)
     attributes[ii] = NULL;
 
   attrs = e_vcard_get_attributes (E_VCARD (econtact));
+
+  boost::shared_ptr<Ekiga::ContactCore> core = services.get<Ekiga::ContactCore> ("contact-core");
 
   for (GList *attribute_ptr = attrs ;
        attribute_ptr != NULL;
@@ -180,30 +188,37 @@ Evolution::Contact::update_econtact (EContact *_econtact)
 	    if (type_name == "HOME") {
 
 	      attributes[ATTR_HOME] = attribute;
-	      break;
-	    } else if (type_name == "CELL") {
+              attr_type = ATTR_HOME;
+	    }
+            else if (type_name == "CELL") {
 
 	      attributes[ATTR_CELL] = attribute;
-	      break;
-	    } else if (type_name == "WORK") {
+              attr_type = ATTR_CELL;
+	    }
+            else if (type_name == "WORK") {
 
 	      attributes[ATTR_WORK] = attribute;
-	      break;
-	    } else if (type_name == "PAGER") {
+              attr_type = ATTR_WORK;
+	    }
+            else if (type_name == "PAGER") {
 
 	      attributes[ATTR_PAGER] = attribute;
-	      break;
-	    } else if (type_name == "VIDEO") {
+              attr_type = ATTR_PAGER;
+	    }
+            else if (type_name == "VIDEO") {
 
 	      attributes[ATTR_VIDEO] = attribute;
-	      break;
+              attr_type = ATTR_VIDEO;
 	    }
+            if (core)
+              core->pull_actions (*this, get_name (), get_attribute_value (attr_type));
 	  }
 	}
       }
     }
   }
-  updated ();
+
+  updated (this->shared_from_this ());
 }
 
 void
@@ -375,5 +390,6 @@ Evolution::Contact::on_remove_form_submitted (bool submitted,
   if (!submitted)
     return false;
 
+  remove ();
   return true;
 }

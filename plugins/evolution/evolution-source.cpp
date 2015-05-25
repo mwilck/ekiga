@@ -78,7 +78,7 @@ Evolution::Source::add_source (ESource *source)
 {
   EBook *ebook = NULL;
   ebook = e_book_new (source, NULL);
-  BookPtr book (new Evolution::Book (services, ebook));
+  BookPtr book = Evolution::Book::create (services, ebook);
   g_object_unref (ebook);
   add_book (book);
 }
@@ -171,7 +171,7 @@ public :
 
       if (book_group == group) {
 #endif
-        book->removed ();
+        book->removed (book);
         found = true;
       }
     }
@@ -210,8 +210,41 @@ Evolution::Source::remove_group (ESourceGroup *group)
   } while (helper.has_found ());
 }
 
+boost::shared_ptr<Evolution::Source>
+Evolution::Source::create (Ekiga::ServiceCore &_services)
+{
+  boost::shared_ptr<Evolution::Source> source = boost::shared_ptr<Evolution::Source> (new Evolution::Source (_services));
+  source->load ();
+
+  return source;
+}
+
 Evolution::Source::Source (Ekiga::ServiceCore &_services)
   : services(_services)
+{
+}
+
+Evolution::Source::~Source ()
+{
+#if EDS_CHECK_VERSION(3,5,3)
+  g_object_unref (registry);
+#else
+  g_object_unref (source_list);
+#endif
+#if DEBUG
+  std::cout << "Evolution::Source: Destructor invoked" << std::endl;
+#endif
+}
+
+bool
+Evolution::Source::populate_menu (Ekiga::MenuBuilder &/*builder*/)
+{
+  /* FIXME: add back creating a new addressbook later */
+  return false;
+}
+
+void
+Evolution::Source::load ()
 {
 #if EDS_CHECK_VERSION(3,5,3)
   GList *list, *link;
@@ -261,23 +294,4 @@ Evolution::Source::Source (Ekiga::ServiceCore &_services)
   g_signal_connect (source_list, "group-removed",
 		    G_CALLBACK (on_source_list_group_removed_c), this);
 #endif
-}
-
-Evolution::Source::~Source ()
-{
-#if EDS_CHECK_VERSION(3,5,3)
-  g_object_unref (registry);
-#else
-  g_object_unref (source_list);
-#endif
-#if DEBUG
-  std::cout << "Evolution::Source: Destructor invoked" << std::endl;
-#endif
-}
-
-bool
-Evolution::Source::populate_menu (Ekiga::MenuBuilder &/*builder*/)
-{
-  /* FIXME: add back creating a new addressbook later */
-  return false;
 }
