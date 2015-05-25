@@ -40,6 +40,8 @@
 
 #include "action.h"
 #include "scoped-connections.h"
+#include "chain-of-responsibility.h"
+#include "form-request.h"
 
 #include <string>
 
@@ -97,6 +99,9 @@ namespace Ekiga {
      */
     const_iterator end () const;
 
+    /** This chain allows the object to present forms to the user
+     */
+    ChainOfResponsibility<FormRequestPtr> questions;
 
   protected:
     /** Add an action to the given Actor.

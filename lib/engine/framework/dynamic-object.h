@@ -38,13 +38,10 @@
 #include <boost/smart_ptr.hpp>
 #include <boost/enable_shared_from_this.hpp>
 
-#include "chain-of-responsibility.h"
-#include "form-request.h"
 #include "menu-builder.h"
 
 namespace Ekiga
 {
-
   template<typename ObjectType>
   class DynamicObject : public virtual boost::enable_shared_from_this<ObjectType>
     {
@@ -60,6 +57,10 @@ namespace Ekiga
        *
        * static boost::shared_ptr<ChildObject> create ();
        *
+       * The engine presents an explicit separation between:
+       *  - The high-level API (e.g. Ekiga::Book)
+       *  - The low-level implementation API (e.g. Ekiga::BookImpl<ContactType>)
+       *
        */
 
       /**
@@ -74,10 +75,6 @@ namespace Ekiga
       /** This signal is emitted when the object has been removed.
        */
       boost::signals2::signal<void(boost::shared_ptr<ObjectType>)> removed;
-
-      /** This chain allows the object to present forms to the user
-       */
-      ChainOfResponsibility<FormRequestPtr> questions;
     };
 };
 #endif
