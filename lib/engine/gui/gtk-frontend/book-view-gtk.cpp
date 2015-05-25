@@ -118,13 +118,6 @@ static void on_contact_updated (Ekiga::ContactPtr contact,
 				gpointer data);
 
 
-/* DESCRIPTION  : Called when the Book status has been updated.
- * BEHAVIOR     : Update the BookView.
- * PRE          : The gpointer must point to the BookViewGtk GObject.
- */
-static void on_updated (gpointer data);
-
-
 /* DESCRIPTION  : Called when the a contact has been removed from a Book.
  * BEHAVIOR     : Update the BookView.
  * PRE          : The gpointer must point to the BookViewGtk GObject.
@@ -276,30 +269,8 @@ on_contact_updated (Ekiga::ContactPtr contact,
 
 
 static void
-on_updated (gpointer data)
-{
-  BookViewGtk *view = NULL;
-
-  view = BOOK_VIEW_GTK (data);
-
-  std::string status = view->priv->book->get_status ();
-
-  gm_info_bar_push_message (GM_INFO_BAR (view->priv->info_bar),
-                            GTK_MESSAGE_INFO,
-                            status.c_str ());
-
-  boost::shared_ptr<Ekiga::Filterable> filtered = boost::dynamic_pointer_cast<Ekiga::Filterable>(view->priv->book);
-  if (filtered) {
-    gtk_entry_set_text (GTK_ENTRY (view->priv->entry),
-			filtered->get_search_filter ().c_str ());
-  }
-}
-
-
-
-static void
 on_contact_removed (Ekiga::ContactPtr contact,
-		    gpointer data)
+                    gpointer data)
 {
   BookViewGtk *view = NULL;
 
@@ -691,7 +662,6 @@ book_view_gtk_new (Ekiga::BookPtr book)
   self->priv->connections.add (book->contact_added.connect (boost::bind (&on_contact_added, _1, (gpointer)self)));
   self->priv->connections.add (book->contact_updated.connect (boost::bind (&on_contact_updated, _1, (gpointer)self)));
   self->priv->connections.add (book->contact_removed.connect (boost::bind (&on_contact_removed, _1, (gpointer)self)));
-  self->priv->connections.add (book->updated.connect (boost::bind (&on_updated, (gpointer)self)));
 
   /* populate */
   book->visit_contacts (boost::bind (&on_visit_contacts, _1, (gpointer)self));

@@ -105,7 +105,6 @@ static void on_source_added (Ekiga::SourcePtr source,
  * PRE          : The given GtkWidget pointer must be an SearchBook GObject.
  */
 static bool visit_books (Ekiga::BookPtr book,
-			 Ekiga::SourcePtr source,
 			 gpointer data);
 
 
@@ -278,12 +277,26 @@ static void
 on_source_added (Ekiga::SourcePtr source,
 		 gpointer data)
 {
-  source->visit_books (boost::bind (&visit_books, _1, source, data));
+  AddressBookWindow *self = NULL;
+  boost::signals2::connection conn;
+
+  g_return_if_fail (IS_ADDRESSBOOK_WINDOW (data));
+  self = ADDRESSBOOK_WINDOW (data);
+
+  source->visit_books (boost::bind (&visit_books, _1, data));
+
+  conn = source->book_updated.connect (boost::bind (&on_book_updated, _1, (gpointer) self));
+  self->priv->connections.add (conn);
+
+  conn = source->book_added.connect (boost::bind (&on_book_added, _1, (gpointer) self));
+  self->priv->connections.add (conn);
+
+  conn = source->book_removed.connect (boost::bind (&on_book_removed, _1, (gpointer) self));
+  self->priv->connections.add (conn);
 }
 
 
 static bool visit_books (Ekiga::BookPtr book,
-                         G_GNUC_UNUSED Ekiga::SourcePtr source,
 			 gpointer data)
 {
   on_book_added (book, data);
@@ -314,6 +327,7 @@ on_book_updated (Ekiga::BookPtr book,
 {
   addressbook_window_update_book (ADDRESSBOOK_WINDOW (data), book);
 }
+
 
 static bool
 on_handle_questions (Ekiga::FormRequestPtr request,
@@ -420,6 +434,7 @@ actions_changed_cb (G_GNUC_UNUSED GtkWidget *widget,
                     gpointer data)
 {
   Ekiga::GActorMenuStore tmp;
+  GMenuModel *store_model = NULL;
   GMenu *menu = NULL;
   int pos = 0;
 
@@ -441,8 +456,9 @@ actions_changed_cb (G_GNUC_UNUSED GtkWidget *widget,
         tmp.push_back (*it);
     }
 
-    g_menu_insert_section (menu, pos, _("Contact Sources"),
-                           (*self->priv->sources_menu.begin ())->get_model (tmp));
+    store_model = (*self->priv->sources_menu.begin ())->get_model (tmp);
+    if (store_model)
+      g_menu_insert_section (menu, pos, _("Contact Sources"), store_model);
   }
 }
 
@@ -778,15 +794,6 @@ addressbook_window_new (GmApplication *app)
 
   /* Signals */
   conn = contact_core->source_added.connect (boost::bind (&on_source_added, _1, (gpointer) self));
-  self->priv->connections.add (conn);
-
-  conn = contact_core->book_updated.connect (boost::bind (&on_book_updated, _1, (gpointer) self));
-  self->priv->connections.add (conn);
-
-  conn = contact_core->book_added.connect (boost::bind (&on_book_added, _1, (gpointer) self));
-  self->priv->connections.add (conn);
-
-  conn = contact_core->book_removed.connect (boost::bind (&on_book_removed, _1, (gpointer) self));
   self->priv->connections.add (conn);
 
   conn = contact_core->questions.connect (boost::bind (&on_handle_questions, _1, (gpointer) self));
