@@ -93,7 +93,6 @@ namespace Ekiga
 template<typename ObjectType>
 Ekiga::DynamicObjectStore<ObjectType>::~DynamicObjectStore ()
 {
-  remove_all_objects ();
 }
 
 
@@ -116,13 +115,16 @@ Ekiga::DynamicObjectStore<ObjectType>::add_object (boost::shared_ptr<ObjectType>
   if (iter == objects.end ()) {
     objects[obj] = boost::shared_ptr<scoped_connections> (new scoped_connections);
     object_added (obj);
+
+    objects[obj]->add (obj->updated.connect (boost::bind (boost::ref (object_updated), _1)));
+    objects[obj]->add (obj->removed.connect (boost::bind (&Ekiga::DynamicObjectStore<ObjectType>::remove_object, this, _1)));
   }
 }
 
 template<typename ObjectType>
 void
 Ekiga::DynamicObjectStore<ObjectType>::add_connection (boost::shared_ptr<ObjectType> obj,
-					      boost::signals2::connection connection)
+                                                       boost::signals2::connection connection)
 {
   typename container_type::iterator iter = objects.find (obj);
   if (iter == objects.end ())
