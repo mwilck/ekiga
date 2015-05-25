@@ -37,6 +37,7 @@
 
 #include "source-impl.h"
 #include "history-book.h"
+#include "dynamic-object.h"
 
 namespace History
 {
@@ -49,11 +50,12 @@ namespace History
 
   class Source :
     public Ekiga::SourceImpl<Book>,
+    public Ekiga::DynamicObject<Source>,
     public Ekiga::Service
   {
   public:
 
-    Source (Ekiga::ServiceCore &_core);
+    static boost::shared_ptr<Source> create (Ekiga::ServiceCore &_core);
 
     ~Source ();
 
@@ -70,6 +72,9 @@ namespace History
     BookPtr get_book () const;
 
   private:
+    Source (Ekiga::ServiceCore &_core);
+
+    void load ();
 
     Ekiga::ServiceCore &core;
     BookPtr book;

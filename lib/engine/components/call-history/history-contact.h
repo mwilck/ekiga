@@ -41,6 +41,7 @@
 
 #include "services.h"
 #include "contact-core.h"
+#include "dynamic-object.h"
 
 namespace History
 {
@@ -59,21 +60,22 @@ namespace History
   } call_type;
 
   class Contact:
-    public Ekiga::Contact
+      public Ekiga::Contact,
+      public Ekiga::DynamicObject<Contact>
   {
   public:
 
-    Contact (boost::shared_ptr<Ekiga::ContactCore> _contact_core,
-	     boost::shared_ptr<xmlDoc> _doc,
-	     xmlNodePtr _node);
+    static boost::shared_ptr<Contact> create (boost::shared_ptr<Ekiga::ContactCore> _contact_core,
+                                              boost::shared_ptr<xmlDoc> _doc,
+                                              xmlNodePtr _node);
 
-    Contact (boost::shared_ptr<Ekiga::ContactCore> _contact_core,
-	     boost::shared_ptr<xmlDoc> _doc,
-	     const std::string _name,
-	     const std::string _uri,
-             time_t call_start,
-             const std::string call_duration,
-	     call_type c_t);
+    static boost::shared_ptr<Contact> create (boost::shared_ptr<Ekiga::ContactCore> _contact_core,
+                                              boost::shared_ptr<xmlDoc> _doc,
+                                              const std::string _name,
+                                              const std::string _uri,
+                                              time_t call_start,
+                                              const std::string call_duration,
+                                              call_type c_t);
 
     ~Contact ();
 
@@ -98,6 +100,18 @@ namespace History
     const std::string get_uri () const;
 
   private:
+    Contact (boost::shared_ptr<Ekiga::ContactCore> _contact_core,
+	     boost::shared_ptr<xmlDoc> _doc,
+	     xmlNodePtr _node);
+
+    Contact (boost::shared_ptr<Ekiga::ContactCore> _contact_core,
+	     boost::shared_ptr<xmlDoc> _doc,
+	     const std::string _name,
+	     const std::string _uri,
+             time_t call_start,
+             const std::string call_duration,
+	     call_type c_t);
+
 
     boost::weak_ptr<Ekiga::ContactCore> contact_core;
 

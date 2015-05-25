@@ -52,6 +52,28 @@ struct null_deleter
 };
 
 
+boost::shared_ptr<History::Contact>
+History::Contact::create (boost::shared_ptr<Ekiga::ContactCore> _contact_core,
+                          boost::shared_ptr<xmlDoc> _doc,
+                          xmlNodePtr _node)
+{
+  return boost::shared_ptr<History::Contact> (new History::Contact (_contact_core, _doc, _node));
+}
+
+
+boost::shared_ptr<History::Contact>
+History::Contact::create (boost::shared_ptr<Ekiga::ContactCore> _contact_core,
+                          boost::shared_ptr<xmlDoc> _doc,
+                          const std::string _name,
+                          const std::string _uri,
+                          time_t _call_start,
+                          const std::string _call_duration,
+                          call_type c_t)
+{
+  return boost::shared_ptr<History::Contact> (new History::Contact (_contact_core, _doc, _name, _uri, _call_start, _call_duration, c_t));
+}
+
+
 History::Contact::Contact (boost::shared_ptr<Ekiga::ContactCore> _contact_core,
 			   boost::shared_ptr<xmlDoc> _doc,
 			   xmlNodePtr _node):
@@ -154,6 +176,9 @@ History::Contact::Contact (boost::shared_ptr<Ekiga::ContactCore> _contact_core,
 
 History::Contact::~Contact ()
 {
+#if DEBUG
+  std::cout << __FUNCTION__ << " invoked in " << __FILE__ << std::endl << std::flush;
+#endif
 }
 
 const std::string

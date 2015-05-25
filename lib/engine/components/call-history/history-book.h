@@ -38,11 +38,12 @@
 #include "call-core.h"
 #include "call-manager.h"
 
-#include "book-impl.h"
 #include "history-contact.h"
 
 #include "ekiga-settings.h"
 #include "scoped-connections.h"
+#include "book-impl.h"
+#include "dynamic-object.h"
 
 namespace History
 {
@@ -53,14 +54,14 @@ namespace History
  * @{
  */
 
-  class Book:
-    public Ekiga::Book
+  class Book :
+      public Ekiga::BookImpl<Contact>,
+      public Ekiga::DynamicObject<Book>
   {
   public:
 
     /* generic api */
-
-    Book (Ekiga::ServiceCore &_core);
+    static boost::shared_ptr<Book> create (Ekiga::ServiceCore &_core);
 
     ~Book ();
 
@@ -73,7 +74,7 @@ namespace History
     const std::string get_status () const;
 
     const std::string get_icon () const
-    { return "document-open-recent-symbolic"; }
+      { return "document-open-recent-symbolic"; }
 
 
     /* more specific api */
@@ -89,10 +90,9 @@ namespace History
     boost::signals2::signal<void(void)> cleared;
 
   private:
+    Book (Ekiga::ServiceCore &_core);
 
-    Ekiga::scoped_connections connections;
-
-    void parse_entry (xmlNodePtr entry);
+    void load ();
 
     void save () const;
 
@@ -107,6 +107,7 @@ namespace History
 
     void enforce_size_limit();
 
+    Ekiga::scoped_connections connections;
     boost::weak_ptr<Ekiga::ContactCore> contact_core;
     boost::shared_ptr<xmlDoc> doc;
     std::list<ContactPtr> ordered_contacts;

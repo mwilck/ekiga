@@ -36,17 +36,24 @@
 
 #include "history-source.h"
 
+boost::shared_ptr<History::Source>
+History::Source::create (Ekiga::ServiceCore &_core)
+{
+  boost::shared_ptr<History::Source> source = boost::shared_ptr<History::Source> (new History::Source (_core));
+  source->load ();
+
+  return source;
+}
+
+
 History::Source::Source (Ekiga::ServiceCore &_core): core(_core)
 {
-  book = boost::shared_ptr<Book>(new Book (core));
-
-  add_book (book);
 }
 
 History::Source::~Source ()
 {
 #if DEBUG
-  std::cout << "History::Source: Destructor invoked" << std::endl;
+  std::cout << __FUNCTION__ << " invoked in " << __FILE__ << std::endl << std::flush;
 #endif
 }
 
@@ -61,3 +68,12 @@ History::Source::get_book () const
 {
   return book;
 }
+
+void
+History::Source::load ()
+{
+  book = History::Book::create (core);
+
+  add_book (book);
+}
+

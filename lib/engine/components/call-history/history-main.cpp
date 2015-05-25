@@ -53,7 +53,7 @@ struct HISTORYSpark: public Ekiga::Spark
 
     if (contact_core && call_core) {
 
-      boost::shared_ptr<History::Source> source (new History::Source (core));
+      boost::shared_ptr<History::Source> source = History::Source::create (core);
       if (core.add (source)) {
 
 	contact_core->add_source (source);

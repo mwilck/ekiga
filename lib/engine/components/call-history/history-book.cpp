@@ -39,8 +39,102 @@
 
 #define CALL_HISTORY_KEY "call-history"
 
+
+boost::shared_ptr<History::Book>
+History::Book::create (Ekiga::ServiceCore & core)
+{
+  boost::shared_ptr<History::Book> book = boost::shared_ptr<History::Book> (new History::Book (core));
+  book->load ();
+
+  return book;
+}
+
+
 History::Book::Book (Ekiga::ServiceCore& core):
   contact_core(core.get<Ekiga::ContactCore>("contact-core")), doc()
+{
+  boost::shared_ptr<Ekiga::CallCore> call_core = core.get<Ekiga::CallCore> ("call-core");
+
+  connections.add (call_core->missed_call.connect (boost::bind (&History::Book::on_missed_call, this, _1)));
+  connections.add (call_core->cleared_call.connect (boost::bind (&History::Book::on_cleared_call, this, _1, _2)));
+
+  add_action (Ekiga::ActionPtr (new Ekiga::Action ("history_book_clear",
+                                                   _("Clear History"),
+                                                   boost::bind (&History::Book::clear,
+                                                                this))));
+}
+
+
+History::Book::~Book ()
+{
+#if DEBUG
+  std::cout << __FUNCTION__ << " invoked in " << __FILE__ << std::endl << std::flush;
+#endif
+}
+
+const std::string
+History::Book::get_name () const
+{
+  return "Call history";
+}
+
+void
+History::Book::visit_contacts (boost::function1<bool, Ekiga::ContactPtr> visitor) const
+{
+  for (std::list<ContactPtr>::const_iterator iter = ordered_contacts.begin ();
+       iter != ordered_contacts.end();
+       ++iter)
+    visitor (*iter);
+}
+
+void
+History::Book::add (xmlNodePtr node)
+{
+  boost::shared_ptr<Ekiga::ContactCore> ccore = contact_core.lock ();
+  common_add (History::Contact::create (ccore, doc, node));
+}
+
+void
+History::Book::add (const std::string & name,
+		    const std::string & uri,
+                    const time_t & call_start,
+                    const std::string & call_duration,
+		    const call_type c_t)
+{
+  boost::shared_ptr<Ekiga::ContactCore> ccore = contact_core.lock ();
+
+  if ( !uri.empty ()) {
+
+    xmlNodePtr root = xmlDocGetRootElement (doc.get ());
+
+    boost::shared_ptr<History::Contact> contact =
+      History::Contact::create (ccore, doc, name, uri, call_start, call_duration, c_t);
+
+    xmlAddChild (root, contact->get_node ());
+
+    save ();
+
+    common_add (contact);
+
+    enforce_size_limit ();
+  }
+}
+
+const std::list<std::string>
+History::Book::existing_groups () const
+{
+  // here it's more logical to lie
+  return std::list<std::string> ();
+}
+
+const std::string
+History::Book::get_status () const
+{
+  return ""; // nothing special here
+}
+
+void
+History::Book::load ()
 {
   xmlNodePtr root = NULL;
 
@@ -76,86 +170,7 @@ History::Book::Book (Ekiga::ServiceCore& core):
     xmlDocSetRootElement (doc.get (), root);
   }
 
-  boost::shared_ptr<Ekiga::CallCore> call_core = core.get<Ekiga::CallCore> ("call-core");
-
-  connections.add (call_core->missed_call.connect (boost::bind (&History::Book::on_missed_call, this, _1)));
-  connections.add (call_core->cleared_call.connect (boost::bind (&History::Book::on_cleared_call, this, _1, _2)));
-
   enforce_size_limit ();
-
-  /* Actor actions should be added */
-  add_action (Ekiga::ActionPtr (new Ekiga::Action ("history_book_clear",
-                                                   _("Clear History"),
-                                                   boost::bind (&History::Book::clear,
-                                                                this))));
-}
-
-History::Book::~Book ()
-{
-#if DEBUG
-  std::cout << "History::Book: Destructor invoked" << std::endl;
-#endif
-}
-
-const std::string
-History::Book::get_name () const
-{
-  return "Call history";
-}
-
-void
-History::Book::visit_contacts (boost::function1<bool, Ekiga::ContactPtr> visitor) const
-{
-  for (std::list<ContactPtr>::const_iterator iter = ordered_contacts.begin ();
-       iter != ordered_contacts.end();
-       ++iter)
-    visitor (*iter);
-}
-
-void
-History::Book::add (xmlNodePtr node)
-{
-  boost::shared_ptr<Ekiga::ContactCore> ccore = contact_core.lock ();
-  common_add (ContactPtr (new Contact (ccore, doc, node)));
-}
-
-void
-History::Book::add (const std::string & name,
-		    const std::string & uri,
-                    const time_t & call_start,
-                    const std::string & call_duration,
-		    const call_type c_t)
-{
-  boost::shared_ptr<Ekiga::ContactCore> ccore = contact_core.lock ();
-
-  if ( !uri.empty ()) {
-
-    xmlNodePtr root = xmlDocGetRootElement (doc.get ());
-
-    ContactPtr contact(new Contact (ccore, doc, name, uri,
-				    call_start, call_duration, c_t));
-
-    xmlAddChild (root, contact->get_node ());
-
-    save ();
-
-    common_add (contact);
-
-    enforce_size_limit();
-  }
-}
-
-const std::list<std::string>
-History::Book::existing_groups () const
-{
-  // here it's more logical to lie
-  return std::list<std::string> ();
-}
-
-const std::string
-History::Book::get_status () const
-{
-  return ""; // nothing special here
 }
 
 void
@@ -180,7 +195,7 @@ History::Book::clear ()
   ordered_contacts.clear ();
 
   cleared ();
-  updated ();
+  updated (this->shared_from_this ());
 
   for (std::list<ContactPtr>::iterator iter = old_contacts.begin ();
        iter != old_contacts.end();
@@ -225,7 +240,7 @@ History::Book::common_add (ContactPtr contact)
 
   ordered_contacts.push_back (contact);
   contact_added (contact);
-  updated ();
+  updated (this->shared_from_this ());
 }
 
 void
@@ -238,7 +253,7 @@ History::Book::enforce_size_limit()
     ContactPtr contact = ordered_contacts.front ();
     ordered_contacts.pop_front();
     xmlNodePtr node = contact->get_node ();
-    contact->removed();
+    contact->removed (contact);
     xmlUnlinkNode(node);
     xmlFreeNode(node);
     flag = true;
@@ -246,7 +261,7 @@ History::Book::enforce_size_limit()
 
   if (flag) {
 
-    save();
-    updated();
+    save ();
+    updated (this->shared_from_this ());
   }
 }
