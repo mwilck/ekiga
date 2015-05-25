@@ -39,6 +39,7 @@
 #define __LDAP_CONTACT_H__
 
 #include "contact-core.h"
+#include "dynamic-object.h"
 
 namespace OPENLDAP
 {
@@ -49,13 +50,15 @@ namespace OPENLDAP
  * @{
  */
 
-  class Contact: public Ekiga::Contact
+  class Contact:
+      public Ekiga::Contact,
+      public Ekiga::DynamicObject<Contact>
   {
   public:
 
-    Contact (Ekiga::ServiceCore &_core,
-	     const std::string _name,
-    	     const std::map<std::string, std::string> _uris);
+    static boost::shared_ptr<Contact> create (Ekiga::ServiceCore &_core,
+                                              const std::string _name,
+                                              const std::map<std::string, std::string> _uris);
 
     ~Contact ();
 
@@ -64,6 +67,9 @@ namespace OPENLDAP
     bool has_uri (const std::string uri) const;
 
   private:
+    Contact (Ekiga::ServiceCore &_core,
+	     const std::string _name,
+    	     const std::map<std::string, std::string> _uris);
 
     Ekiga::ServiceCore &core;
 

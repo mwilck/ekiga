@@ -48,6 +48,7 @@
 #include "book-impl.h"
 #include "form.h"
 #include "form-request-simple.h"
+#include "dynamic-object.h"
 
 #include "ldap-contact.h"
 
@@ -89,17 +90,18 @@ namespace OPENLDAP
 
   class Book:
     public virtual Ekiga::Filterable,
-    public Ekiga::BookImpl<Contact>
+    public Ekiga::BookImpl<Contact>,
+    public Ekiga::DynamicObject<Book>
   {
   public:
 
-    Book (Ekiga::ServiceCore &_core,
-	  boost::shared_ptr<xmlDoc> _doc,
-	  xmlNodePtr node);
+    static boost::shared_ptr<Book> create (Ekiga::ServiceCore &_core,
+                                           boost::shared_ptr<xmlDoc> _doc,
+                                           xmlNodePtr node);
 
-    Book (Ekiga::ServiceCore &_core,
-	  boost::shared_ptr<xmlDoc> _doc,
-    	  OPENLDAP::BookInfo _bookinfo);
+    static boost::shared_ptr<Book> create (Ekiga::ServiceCore &_core,
+                                           boost::shared_ptr<xmlDoc> _doc,
+                                           OPENLDAP::BookInfo _bookinfo);
 
     ~Book ();
 
@@ -131,6 +133,13 @@ namespace OPENLDAP
     Ekiga::FormBuilder *saslform;
 
   private:
+    Book (Ekiga::ServiceCore &_core,
+	  boost::shared_ptr<xmlDoc> _doc,
+	  xmlNodePtr node);
+
+    Book (Ekiga::ServiceCore &_core,
+	  boost::shared_ptr<xmlDoc> _doc,
+    	  OPENLDAP::BookInfo _bookinfo);
 
     void refresh_start ();
     void refresh_bound ();

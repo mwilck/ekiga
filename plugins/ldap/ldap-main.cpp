@@ -55,7 +55,7 @@ struct LDAPSpark: public Ekiga::Spark
 
     if (contact_core) {
 
-      boost::shared_ptr<OPENLDAP::Source> service (new OPENLDAP::Source (core));
+      boost::shared_ptr<OPENLDAP::Source> service (OPENLDAP::Source::create (core));
       core.add (service);
       contact_core->add_source (service);
       sasl_client_init (NULL); // FIXME: shouldn't it be done by the source!?

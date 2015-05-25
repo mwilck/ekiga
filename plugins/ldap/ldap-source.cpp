@@ -44,50 +44,18 @@
 
 #define LDAP_KEY "ldap-servers"
 
+boost::shared_ptr<OPENLDAP::Source>
+OPENLDAP::Source::create (Ekiga::ServiceCore &_core)
+{
+  boost::shared_ptr<OPENLDAP::Source> source = boost::shared_ptr<OPENLDAP::Source> (new OPENLDAP::Source (_core));
+  source->load ();
+
+  return source;
+}
+
 OPENLDAP::Source::Source (Ekiga::ServiceCore &_core):
   core(_core), doc(), should_add_ekiga_net_book(false)
 {
-  xmlNodePtr root;
-  contacts_settings = boost::shared_ptr<Ekiga::Settings> (new Ekiga::Settings (CONTACTS_SCHEMA));
-  std::string raw = contacts_settings->get_string (LDAP_KEY);
-
-  if (!raw.empty ()) {
-
-    doc = boost::shared_ptr<xmlDoc> (xmlRecoverMemory (raw.c_str (), raw.length ()), xmlFreeDoc);
-    if ( !doc)
-      doc = boost::shared_ptr<xmlDoc> (xmlNewDoc (BAD_CAST "1.0"), xmlFreeDoc);
-
-    root = xmlDocGetRootElement (doc.get ());
-
-    if (root == NULL) {
-
-      root = xmlNewDocNode (doc.get (), NULL, BAD_CAST "list", NULL);
-      xmlDocSetRootElement (doc.get (), root);
-    }
-
-    migrate_from_3_0_0 ();
-
-    for (xmlNodePtr child = root->children ;
-	 child != NULL ;
-	 child = child->next)
-      if (child->type == XML_ELEMENT_NODE
-	  && child->name != NULL
-	  && xmlStrEqual (BAD_CAST "server", child->name))
-	add (child);
-
-  }
-  else {
-
-    doc = boost::shared_ptr<xmlDoc> (xmlNewDoc (BAD_CAST "1.0"), xmlFreeDoc);
-    root = xmlNewDocNode (doc.get (), NULL, BAD_CAST "list", NULL);
-    xmlDocSetRootElement (doc.get (), root);
-
-    should_add_ekiga_net_book = true;
-  }
-
-  if (should_add_ekiga_net_book)
-    new_ekiga_net_book ();
-
   add_action (Ekiga::ActionPtr (new Ekiga::Action ("add-ldap-book", _("Add an LDAP Address Book"),
                                                    boost::bind (&OPENLDAP::Source::new_book, this))));
   if (!has_ekiga_net_book ()) {
@@ -98,12 +66,15 @@ OPENLDAP::Source::Source (Ekiga::ServiceCore &_core):
 
 OPENLDAP::Source::~Source ()
 {
+#if DEBUG
+  std::cout << __FUNCTION__ << " invoked in " << __FILE__ << std::endl << std::flush;
+#endif
 }
 
 void
 OPENLDAP::Source::add (xmlNodePtr node)
 {
-  common_add (BookPtr(new Book (core, doc, node)));
+  common_add (OPENLDAP::Book::create (core, doc, node));
 }
 
 void
@@ -112,7 +83,7 @@ OPENLDAP::Source::add (struct BookInfo bookinfo)
   xmlNodePtr root;
 
   root = xmlDocGetRootElement (doc.get ());
-  BookPtr book (new Book (core, doc, bookinfo));
+  BookPtr book = OPENLDAP::Book::create (core, doc, bookinfo);
 
   xmlAddChild (root, book->get_node ());
 
@@ -196,6 +167,58 @@ OPENLDAP::Source::on_new_book_form_submitted (bool submitted,
   add (bookinfo);
 
   return true;
+}
+
+void
+OPENLDAP::Source::load ()
+{
+  xmlNodePtr root;
+  contacts_settings = boost::shared_ptr<Ekiga::Settings> (new Ekiga::Settings (CONTACTS_SCHEMA));
+  std::string raw = contacts_settings->get_string (LDAP_KEY);
+
+  if (!raw.empty ()) {
+
+    doc = boost::shared_ptr<xmlDoc> (xmlRecoverMemory (raw.c_str (), raw.length ()), xmlFreeDoc);
+    if ( !doc)
+      doc = boost::shared_ptr<xmlDoc> (xmlNewDoc (BAD_CAST "1.0"), xmlFreeDoc);
+
+    root = xmlDocGetRootElement (doc.get ());
+
+    if (root == NULL) {
+
+      root = xmlNewDocNode (doc.get (), NULL, BAD_CAST "list", NULL);
+      xmlDocSetRootElement (doc.get (), root);
+    }
+
+    migrate_from_3_0_0 ();
+
+    for (xmlNodePtr child = root->children ;
+	 child != NULL ;
+	 child = child->next)
+      if (child->type == XML_ELEMENT_NODE
+	  && child->name != NULL
+	  && xmlStrEqual (BAD_CAST "server", child->name))
+	add (child);
+
+  }
+  else {
+
+    doc = boost::shared_ptr<xmlDoc> (xmlNewDoc (BAD_CAST "1.0"), xmlFreeDoc);
+    root = xmlNewDocNode (doc.get (), NULL, BAD_CAST "list", NULL);
+    xmlDocSetRootElement (doc.get (), root);
+
+    should_add_ekiga_net_book = true;
+  }
+
+  if (should_add_ekiga_net_book)
+    new_ekiga_net_book ();
+
+  add_action (Ekiga::ActionPtr (new Ekiga::Action ("add-ldap-book", _("Add an LDAP Address Book"),
+                                                   boost::bind (&OPENLDAP::Source::new_book, this))));
+  if (!has_ekiga_net_book ()) {
+    add_action (Ekiga::ActionPtr (new Ekiga::Action ("add-ekiga-book", _("Add the Ekiga.net Directory"),
+                                                     boost::bind (&OPENLDAP::Source::new_ekiga_net_book, this))));
+  }
 }
 
 void

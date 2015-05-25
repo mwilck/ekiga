@@ -113,7 +113,7 @@ OPENLDAP::Book::parse_result (LDAPMessage* message)
 
   if (!username.empty () && !call_addresses.empty()) {
 
-    result = ContactPtr(new Contact (core, fix_to_utf8 (username), call_addresses));
+    result = OPENLDAP::Contact::create (core, fix_to_utf8 (username), call_addresses);
   }
 
   return result;
@@ -167,6 +167,21 @@ struct RefreshData
 #endif
 
 /* actual implementation */
+boost::shared_ptr<OPENLDAP::Book> OPENLDAP::Book::create (Ekiga::ServiceCore &_core,
+                                                          boost::shared_ptr<xmlDoc> _doc,
+                                                          xmlNodePtr node)
+{
+  boost::shared_ptr<OPENLDAP::Book> book = boost::shared_ptr<OPENLDAP::Book> (new OPENLDAP::Book (_core, _doc, node));
+  return book;
+}
+
+boost::shared_ptr<OPENLDAP::Book> OPENLDAP::Book::create (Ekiga::ServiceCore &_core,
+                                                          boost::shared_ptr<xmlDoc> _doc,
+                                                          OPENLDAP::BookInfo _bookinfo)
+{
+  boost::shared_ptr<OPENLDAP::Book> book = boost::shared_ptr<OPENLDAP::Book> (new OPENLDAP::Book (_core, _doc, _bookinfo));
+  return book;
+}
 
 OPENLDAP::Book::Book (Ekiga::ServiceCore &_core,
 		      boost::shared_ptr<xmlDoc> _doc,
@@ -387,6 +402,9 @@ OPENLDAP::Book::Book (Ekiga::ServiceCore &_core,
 
 OPENLDAP::Book::~Book ()
 {
+#if DEBUG
+  std::cout << __FUNCTION__ << " invoked in " << __FILE__ << std::endl << std::flush;
+#endif
 }
 
 bool
@@ -466,7 +484,7 @@ void
 OPENLDAP::Book::refresh ()
 {
   /* we flush */
-  remove_all_objects ();
+  contacts.remove_all_objects ();
 
   if (ldap_context == NULL)
     refresh_start ();
@@ -479,7 +497,7 @@ OPENLDAP::Book::remove ()
   xmlFreeNode (node);
 
   trigger_saving ();
-  removed ();
+  removed (this->shared_from_this ());
 }
 
 xmlNodePtr
@@ -688,13 +706,13 @@ OPENLDAP::Book::refresh_start ()
   int ldap_version = LDAP_VERSION3;
 
   status = std::string (_("Refreshing"));
-  updated ();
+  updated (this->shared_from_this ());
 
   result = ldap_initialize (&ldap_context, bookinfo.uri_host.c_str());
   if (result != LDAP_SUCCESS) {
 
     status = std::string (_("Could not initialize server"));
-    updated ();
+    updated (this->shared_from_this ());
     return;
   }
 
@@ -709,7 +727,7 @@ OPENLDAP::Book::refresh_start ()
     if (result != LDAP_SUCCESS) {
       status = std::string (_("LDAP Error: ")) +
         std::string (ldap_err2string (result));
-      updated ();
+      updated (this->shared_from_this ());
       ldap_unbind_ext (ldap_context, NULL, NULL);
       ldap_context = NULL;
       return;
@@ -754,7 +772,7 @@ OPENLDAP::Book::refresh_start ()
 
     status = std::string (_("LDAP Error: ")) +
       std::string (ldap_err2string (result));
-    updated ();
+    updated (this->shared_from_this ());
 
     ldap_unbind_ext (ldap_context, NULL, NULL);
     ldap_context = NULL;
@@ -762,7 +780,7 @@ OPENLDAP::Book::refresh_start ()
   }
 
   status = std::string (_("Contacted server"));
-  updated ();
+  updated (this->shared_from_this ());
 
   patience = 3;
   refresh_bound ();
@@ -801,7 +819,7 @@ OPENLDAP::Book::refresh_bound ()
     } else { // patience == 0
 
       status = std::string (_("Could not connect to server"));
-      updated ();
+      updated (this->shared_from_this ());
 
       ldap_unbind_ext (ldap_context, NULL, NULL);
       ldap_context = NULL;
@@ -849,7 +867,7 @@ OPENLDAP::Book::refresh_bound ()
   if (msgid == -1) {
 
     status = std::string (_("Could not search"));
-    updated ();
+    updated (this->shared_from_this ());
 
     ldap_unbind_ext (ldap_context, NULL, NULL);
     ldap_context = NULL;
@@ -857,7 +875,7 @@ OPENLDAP::Book::refresh_bound ()
   } else {
 
     status = std::string (_("Waiting for search results"));
-    updated ();
+    updated (this->shared_from_this ());
   }
 
   patience = 3;
@@ -898,7 +916,7 @@ OPENLDAP::Book::refresh_result ()
     } else { // patience == 0
 
       status = std::string (_("Could not search"));
-      updated ();
+      updated (this->shared_from_this ());
 
       ldap_unbind_ext (ldap_context, NULL, NULL);
       ldap_context = NULL;
@@ -932,7 +950,7 @@ OPENLDAP::Book::refresh_result ()
   status = c_status;
   g_free (c_status);
 
-  updated ();
+  updated (this->shared_from_this ());
 
   (void)ldap_msgfree (msg_entry);
 
@@ -1164,7 +1182,7 @@ OPENLDAP::Book::on_edit_form_submitted (bool submitted,
   else
     I_am_an_ekiga_net_book = false;
 
-  updated ();
+  updated (this->shared_from_this ());
   trigger_saving ();
 
   return true;

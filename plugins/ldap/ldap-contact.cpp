@@ -48,6 +48,15 @@ struct null_deleter
     }
 };
 
+boost::shared_ptr<OPENLDAP::Contact>
+OPENLDAP::Contact::create (Ekiga::ServiceCore &_core,
+                           const std::string _name,
+                           const std::map<std::string, std::string> _uris)
+{
+  boost::shared_ptr<OPENLDAP::Contact> contact = boost::shared_ptr<OPENLDAP::Contact> (new OPENLDAP::Contact (_core, _name, _uris));
+
+  return contact;
+}
 
 OPENLDAP::Contact::Contact (Ekiga::ServiceCore &_core,
 			    const std::string _name,
@@ -59,6 +68,9 @@ OPENLDAP::Contact::Contact (Ekiga::ServiceCore &_core,
 
 OPENLDAP::Contact::~Contact ()
 {
+#if DEBUG
+  std::cout << __FUNCTION__ << " invoked in " << __FILE__ << std::endl << std::flush;
+#endif
 }
 
 const std::string

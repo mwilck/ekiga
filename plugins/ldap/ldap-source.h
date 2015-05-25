@@ -44,6 +44,7 @@
 #include "form.h"
 #include "contact-core.h"
 #include "source-impl.h"
+#include "dynamic-object.h"
 
 #include "ldap-book.h"
 
@@ -58,11 +59,11 @@ namespace OPENLDAP
 
   class Source:
     public Ekiga::SourceImpl<Book>,
+    public Ekiga::DynamicObject<Source>,
     public Ekiga::Service
   {
   public:
-
-    Source (Ekiga::ServiceCore &_core);
+    static boost::shared_ptr<Source> create (Ekiga::ServiceCore &_core);
 
     ~Source ();
 
@@ -75,15 +76,15 @@ namespace OPENLDAP
     { return "\tComponent bringing in LDAP addressbooks"; }
 
   private:
-
-    Ekiga::ServiceCore &core;
-    boost::shared_ptr<xmlDoc> doc;
+    Source (Ekiga::ServiceCore &_core);
 
     void add (xmlNodePtr node);
 
     void add (struct BookInfo bookinfo);
 
     void common_add (BookPtr book);
+
+    void load ();
 
     void save ();
 
@@ -97,8 +98,11 @@ namespace OPENLDAP
 
 
     bool has_ekiga_net_book () const;
-    gboolean should_add_ekiga_net_book;
     void migrate_from_3_0_0 ();
+
+    Ekiga::ServiceCore &core;
+    boost::shared_ptr<xmlDoc> doc;
+    gboolean should_add_ekiga_net_book;
 
     boost::shared_ptr<Ekiga::Settings> contacts_settings;
   };
