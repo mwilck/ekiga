@@ -36,7 +36,7 @@
 #ifndef __BOOK_IMPL_H__
 #define __BOOK_IMPL_H__
 
-#include "reflister.h"
+#include "dynamic-object-store.h"
 #include "book.h"
 
 
@@ -70,15 +70,13 @@ namespace Ekiga
    *    backend.
    */
   template<typename ContactType = Contact>
-  class BookImpl:
-    public Book,
-    protected RefLister<ContactType>
-  {
+  class BookImpl: public Book
+{
 
   public:
 
-    typedef typename RefLister<ContactType>::iterator iterator;
-    typedef typename RefLister<ContactType>::const_iterator const_iterator;
+    typedef typename DynamicObjectStore<ContactType>::iterator iterator;
+    typedef typename DynamicObjectStore<ContactType>::const_iterator const_iterator;
 
     /** The constructor
      */
@@ -130,7 +128,8 @@ namespace Ekiga
      */
     void remove_contact (boost::shared_ptr<ContactType> contact);
 
-    using RefLister<ContactType>::add_connection;
+  protected:
+    DynamicObjectStore<ContactType> contacts;
   };
 
 /**
@@ -146,9 +145,9 @@ template<typename ContactType>
 Ekiga::BookImpl<ContactType>::BookImpl ()
 {
   /* this is signal forwarding */
-  RefLister<ContactType>::object_added.connect (contact_added);
-  RefLister<ContactType>::object_removed.connect (contact_removed);
-  RefLister<ContactType>::object_updated.connect (contact_updated);
+  contacts.object_added.connect (boost::bind (boost::ref (contact_added), _1));
+  contacts.object_updated.connect (boost::bind (boost::ref (contact_updated), _1));
+  contacts.object_removed.connect (boost::bind (boost::ref (contact_removed), _1));
 }
 
 
@@ -162,7 +161,7 @@ template<typename ContactType>
 void
 Ekiga::BookImpl<ContactType>::visit_contacts (boost::function1<bool, ContactPtr > visitor) const
 {
-  RefLister<ContactType>::visit_objects (visitor);
+  contacts.visit_objects (visitor);
 }
 
 
@@ -170,7 +169,7 @@ template<typename ContactType>
 typename Ekiga::BookImpl<ContactType>::iterator
 Ekiga::BookImpl<ContactType>::begin ()
 {
-  return RefLister<ContactType>::begin ();
+  return contacts.begin ();
 }
 
 
@@ -178,7 +177,7 @@ template<typename ContactType>
 typename Ekiga::BookImpl<ContactType>::iterator
 Ekiga::BookImpl<ContactType>::end ()
 {
-  return RefLister<ContactType>::end ();
+  return contacts.end ();
 }
 
 
@@ -186,7 +185,7 @@ template<typename ContactType>
 typename Ekiga::BookImpl<ContactType>::const_iterator
 Ekiga::BookImpl<ContactType>::begin () const
 {
-  return RefLister<ContactType>::begin ();
+  return contacts.begin ();
 }
 
 
@@ -194,7 +193,7 @@ template<typename ContactType>
 typename Ekiga::BookImpl<ContactType>::const_iterator
 Ekiga::BookImpl<ContactType>::end () const
 {
-  return RefLister<ContactType>::end ();
+  return contacts.end ();
 }
 
 
@@ -203,7 +202,7 @@ void
 Ekiga::BookImpl<ContactType>::add_contact (boost::shared_ptr<ContactType> contact)
 {
   contact->questions.connect (boost::ref (questions));
-  this->add_object (contact);
+  contacts.add_object (contact);
 }
 
 
@@ -211,7 +210,7 @@ template<typename ContactType>
 void
 Ekiga::BookImpl<ContactType>::remove_contact (boost::shared_ptr<ContactType> contact)
 {
-  this->remove_object (contact);
+  contacts.remove_object (contact);
 }
 
 #endif

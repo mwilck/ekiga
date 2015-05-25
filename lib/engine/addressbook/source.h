@@ -41,9 +41,11 @@
 
 namespace Ekiga {
 
+  class Source;
+  typedef boost::shared_ptr<Source> SourcePtr;
+
   class Source:
-    public Actor,
-    public virtual LiveObject
+      public Actor
   {
   public:
 
@@ -65,34 +67,17 @@ namespace Ekiga {
     /** This signal is emitted when a Book has been added to the Source.
      */
     boost::signals2::signal<void(BookPtr)> book_added;
-    
-    
+
+
     /** This signal is emitted when a Book has been updated in the Source.
      */
     boost::signals2::signal<void(BookPtr)> book_updated;
-    
-    
+
+
     /** This signal is emitted when a Book has been removed in the Source.
      */
     boost::signals2::signal<void(BookPtr)> book_removed;
-
-    /** This signal is emitted when a Contact has been added to a book in
-     *  this source.
-     */
-    boost::signals2::signal<void(BookPtr, ContactPtr )> contact_added;
-
-    /** This signal is emitted when a Contact has been removed from a book in
-     *  this source.
-     */
-    boost::signals2::signal<void(BookPtr, ContactPtr )> contact_removed;
-
-    /** This signal is emitted when a Contact has been updated in a book in
-     *  this source
-     */
-    boost::signals2::signal<void(BookPtr, ContactPtr )> contact_updated;
   };
-
-  typedef boost::shared_ptr<Source> SourcePtr;
 };
 
 #endif

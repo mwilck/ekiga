@@ -37,7 +37,7 @@
 #ifndef __SOURCE_IMPL_H__
 #define __SOURCE_IMPL_H__
 
-#include "reflister.h"
+#include "dynamic-object-store.h"
 #include "source.h"
 
 
@@ -76,8 +76,7 @@ namespace Ekiga
    *    the appropriate api function to delete the Book in your backend.
    */
   template<typename BookType = Book>
-  class SourceImpl:
-    public Source
+  class SourceImpl: public Source
   {
 
   public:
@@ -118,8 +117,8 @@ namespace Ekiga
     void remove_book (boost::shared_ptr<BookType> book);
 
   public:
-    typedef typename RefLister<BookType>::const_iterator const_iterator;
-    typedef typename RefLister<BookType>::iterator iterator;
+    typedef typename DynamicObjectStore<BookType>::const_iterator const_iterator;
+    typedef typename DynamicObjectStore<BookType>::iterator iterator;
 
     /** Returns an iterator to the first Book of the collection
      */
@@ -137,33 +136,8 @@ namespace Ekiga
      */
     const_iterator end () const;
 
-
-  private:
-
-    /** Disconnects the signals for the Ekiga::Book, emits the 'book_removed'
-     * signal on the Ekiga::Source and takes care of the release of that
-     * Ekiga::Book.
-     * @param: The Book to remove.
-     */
-    void common_removal_steps (boost::shared_ptr<BookType> book);
-
-
-    /** This callback is triggered when the 'updated' signal is emitted on an
-     * Ekiga::Book. Emits the Ekiga::Source 'book_updated' signal for that
-     * Ekiga::Book.
-     * @param: The updated book.
-     */
-    void on_book_updated (boost::shared_ptr<BookType> book);
-
-
-    /** This callback is triggered when the 'removed' signal is emitted on an
-     * Ekiga::Book. Emits the Ekiga::Source 'book_removed' signal for that book
-     * and takes care of the deletion of the book.
-     * @param: The removed book.
-     */
-    void on_book_removed (boost::shared_ptr<BookType> book);
-
-    RefLister<BookType> books;
+  protected:
+    DynamicObjectStore<BookType> books;
   };
 
 
@@ -180,16 +154,16 @@ namespace Ekiga
 template<typename BookType>
 Ekiga::SourceImpl<BookType>::SourceImpl ()
 {
-  /* signal forwarding */
-  books.object_added.connect (boost::ref (book_added));
-  books.object_removed.connect (boost::ref (book_removed));
-  books.object_updated.connect (boost::ref (book_updated));
+  /* this is signal forwarding */
+  books.object_added.connect (boost::bind (boost::ref (book_added), _1));
+  books.object_updated.connect (boost::bind (boost::ref (book_updated), _1));
+  books.object_removed.connect (boost::bind (boost::ref (book_removed), _1));
 }
+
 
 template<typename BookType>
 Ekiga::SourceImpl<BookType>::~SourceImpl ()
 {
-  books.remove_all_objects ();
 }
 
 
@@ -206,10 +180,6 @@ void
 Ekiga::SourceImpl<BookType>::add_book (boost::shared_ptr<BookType> book)
 {
   books.add_object (book);
-
-  books.add_connection (book, book->contact_added.connect (boost::bind (boost::ref (contact_added), book, _1)));
-  books.add_connection (book, book->contact_removed.connect (boost::bind (boost::ref (contact_removed), book, _1)));
-  books.add_connection (book, book->contact_updated.connect (boost::bind (boost::ref (contact_updated), book, _1)));
   books.add_connection (book, book->questions.connect (boost::ref (questions)));
 }
 

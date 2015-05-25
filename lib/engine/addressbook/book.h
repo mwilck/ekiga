@@ -40,9 +40,10 @@
 
 namespace Ekiga {
 
-  class Book:
-    public Actor,
-    public virtual LiveObject
+  class Book;
+  typedef boost::shared_ptr<Book> BookPtr;
+
+  class Book: public Actor
   {
 
   public:
@@ -106,7 +107,6 @@ namespace Ekiga {
     boost::signals2::signal<void(ContactPtr)> contact_updated;
   };
 
-  typedef boost::shared_ptr<Book> BookPtr;
 };
 
 #endif

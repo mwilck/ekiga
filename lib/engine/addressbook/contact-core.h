@@ -39,6 +39,8 @@
 #include "source.h"
 #include "scoped-connections.h"
 #include "action-provider.h"
+#include "chain-of-responsibility.h"
+#include "form-request.h"
 
 /* declaration of a few helper classes */
 namespace Ekiga
@@ -56,7 +58,6 @@ namespace Ekiga
    * be freed here : it's up to you to free them somehow.
    */
   class ContactCore:
-    public virtual LiveObject,
     public URIActionProviderStore,
     public Service
   {
@@ -106,35 +107,10 @@ namespace Ekiga
      */
     boost::signals2::signal<void(SourcePtr)> source_added;
 
-    /** This signal is emitted when a book has been added to one of
-     * the sources
-     */
-    boost::signals2::signal<void(BookPtr)> book_added;
 
-    /** This signal is emitted when a book has been removed from one of
-     * the sources
+    /** This chain allows the core to present forms to the user
      */
-    boost::signals2::signal<void(BookPtr )> book_removed;
-
-    /** This signal is emitted when a book has been updated in one of
-     * the sources
-     */
-    boost::signals2::signal<void(BookPtr )> book_updated;
-
-    /** This signal is emitted when a contact has been added to one of
-     * the book of one of the sources
-     */
-    boost::signals2::signal<void(BookPtr, ContactPtr )> contact_added;
-
-    /** This signal is emitted when a contact has been removed from one of
-     * the book of one of the sources
-     */
-    boost::signals2::signal<void(BookPtr, ContactPtr )> contact_removed;
-
-    /** This signal is emitted when a contact has been updated in one of
-     * the book of one of the sources
-     */
-    boost::signals2::signal<void(BookPtr, ContactPtr )> contact_updated;
+    ChainOfResponsibility<FormRequestPtr> questions;
 
   private:
 

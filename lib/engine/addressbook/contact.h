@@ -42,7 +42,6 @@
 
 #include <boost/smart_ptr.hpp>
 
-#include "live-object.h"
 #include "actor.h"
 
 namespace Ekiga
@@ -53,9 +52,7 @@ namespace Ekiga
  * @{
  */
 
-  class Contact:
-    public virtual LiveObject,
-    public Ekiga::Actor
+  class Contact: public Actor
   {
   public:
 
