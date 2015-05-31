@@ -952,7 +952,7 @@ on_cluster_added (RosterViewGtk* self,
 
 static bool
 visit_heaps (RosterViewGtk* self,
-	     Ekiga::ClusterPtr cluster,
+	     G_GNUC_UNUSED Ekiga::ClusterPtr cluster,
 	     Ekiga::HeapPtr heap)
 {
   on_heap_added (self, heap);
