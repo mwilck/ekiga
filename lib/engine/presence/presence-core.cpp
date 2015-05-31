@@ -48,7 +48,6 @@ Ekiga::PresenceCore::add_cluster (ClusterPtr cluster)
 {
   clusters.insert (cluster);
   cluster_added (cluster);
-  conns.add (cluster->updated.connect (boost::ref (updated)));
   conns.add (cluster->heap_added.connect (boost::bind (boost::ref (heap_added), _1)));
   conns.add (cluster->heap_updated.connect (boost::bind (boost::ref (heap_updated), _1)));
   conns.add (cluster->heap_removed.connect (boost::bind (boost::ref (heap_removed), _1)));
@@ -56,8 +55,6 @@ Ekiga::PresenceCore::add_cluster (ClusterPtr cluster)
   conns.add (cluster->presentity_updated.connect (boost::bind (boost::ref (presentity_updated), _1, _2)));
   conns.add (cluster->presentity_removed.connect (boost::bind (boost::ref (presentity_removed), _1, _2)));
   cluster->questions.connect (boost::ref (questions));
-
-  updated ();
 }
 
 void
@@ -65,8 +62,6 @@ Ekiga::PresenceCore::remove_cluster (ClusterPtr cluster)
 {
   cluster_removed (cluster);
   clusters.erase (cluster);
-
-  updated ();
 }
 
 void

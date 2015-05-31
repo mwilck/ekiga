@@ -111,7 +111,8 @@ Ekiga::URIPresentity::on_presence_received (std::string uri_,
   if (uri == uri_) {
 
     presence = presence_;
-    updated ();
+    //updated ();
+    std::cout << "FIXME: Updated" << std::endl;
   }
 }
 
@@ -122,6 +123,7 @@ Ekiga::URIPresentity::on_status_received (std::string uri_,
   if (uri == uri_) {
 
     status = status_;
-    updated ();
+    //updated ();
+    std::cout << "FIXME: Updated" << std::endl;
   }
 }

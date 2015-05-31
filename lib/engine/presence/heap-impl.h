@@ -36,7 +36,7 @@
 #ifndef __HEAP_IMPL_H__
 #define __HEAP_IMPL_H__
 
-#include "reflister.h"
+#include "dynamic-object-store.h"
 #include "heap.h"
 
 namespace Ekiga
@@ -63,15 +63,13 @@ namespace Ekiga
    *    backend.
    */
   template<typename PresentityType = Presentity>
-  class HeapImpl:
-    public Heap,
-    protected RefLister<PresentityType>
+  class HeapImpl: public Heap
   {
 
   public:
 
-    typedef typename RefLister<PresentityType>::iterator iterator;
-    typedef typename RefLister<PresentityType>::const_iterator const_iterator;
+    typedef typename DynamicObjectStore<PresentityType>::iterator iterator;
+    typedef typename DynamicObjectStore<PresentityType>::const_iterator const_iterator;
 
     HeapImpl ();
 
@@ -87,9 +85,9 @@ namespace Ekiga
 
     iterator end ();
 
-  protected:
+    DynamicObjectStore<PresentityType> presentities;
 
-    using RefLister<PresentityType>::add_connection;
+  protected:
 
     void add_presentity (boost::shared_ptr<PresentityType> presentity);
 
@@ -107,9 +105,9 @@ template<typename PresentityType>
 Ekiga::HeapImpl<PresentityType>::HeapImpl ()
 {
   /* this is signal forwarding */
-  RefLister<PresentityType>::object_added.connect (boost::ref (presentity_added));
-  RefLister<PresentityType>::object_removed.connect (boost::ref (presentity_removed));
-  RefLister<PresentityType>::object_updated.connect (boost::ref (presentity_updated));
+  presentities.object_added.connect (boost::ref (presentity_added));
+  presentities.object_removed.connect (boost::ref (presentity_removed));
+  presentities.object_updated.connect (boost::ref (presentity_updated));
 }
 
 
@@ -122,51 +120,50 @@ template<typename PresentityType>
 void
 Ekiga::HeapImpl<PresentityType>::visit_presentities (boost::function1<bool, PresentityPtr > visitor) const
 {
-  RefLister<PresentityType>::visit_objects (visitor);
+  presentities.visit_objects (visitor);
 }
 
 template<typename PresentityType>
 typename Ekiga::HeapImpl<PresentityType>::iterator
 Ekiga::HeapImpl<PresentityType>::begin ()
 {
-  return RefLister<PresentityType>::begin ();
+  return presentities.begin ();
 }
 
 template<typename PresentityType>
 typename Ekiga::HeapImpl<PresentityType>::iterator
 Ekiga::HeapImpl<PresentityType>::end ()
 {
-  return RefLister<PresentityType>::end ();
+  return presentities.end ();
 }
 
 template<typename PresentityType>
 typename Ekiga::HeapImpl<PresentityType>::const_iterator
 Ekiga::HeapImpl<PresentityType>::begin () const
 {
-  return RefLister<PresentityType>::begin ();
+  return presentities.begin ();
 }
 
 template<typename PresentityType>
 typename Ekiga::HeapImpl<PresentityType>::const_iterator
 Ekiga::HeapImpl<PresentityType>::end () const
 {
-  return RefLister<PresentityType>::end ();
+  return presentities.end ();
 }
 
 template<typename PresentityType>
 void
 Ekiga::HeapImpl<PresentityType>::add_presentity (boost::shared_ptr<PresentityType> presentity)
 {
-  presentity->questions.connect (boost::ref (questions));
-
-  this->add_object (presentity);
+  presentity->questions.connect (boost::ref (Ekiga::Actor::questions));
+  presentities.add_object (presentity);
 }
 
 template<typename PresentityType>
 void
 Ekiga::HeapImpl<PresentityType>::remove_presentity (boost::shared_ptr<PresentityType> presentity)
 {
-  this->remove_object (presentity);
+  presentities.remove_object (presentity);
 }
 
 #endif

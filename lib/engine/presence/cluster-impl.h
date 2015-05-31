@@ -37,7 +37,7 @@
 
 #include <vector>
 
-#include "reflister.h"
+#include "dynamic-object-store.h"
 #include "cluster.h"
 
 namespace Ekiga
@@ -65,15 +65,13 @@ namespace Ekiga
 
 
   template<typename HeapType = Heap>
-  class ClusterImpl:
-    public Cluster,
-    protected RefLister<HeapType>
+  class ClusterImpl: public Cluster
   {
 
   public:
 
-    typedef typename RefLister<HeapType>::iterator iterator;
-    typedef typename RefLister<HeapType>::const_iterator const_iterator;
+    typedef typename DynamicObjectStore<HeapType>::iterator iterator;
+    typedef typename DynamicObjectStore<HeapType>::const_iterator const_iterator;
 
     ClusterImpl ();
 
@@ -87,12 +85,12 @@ namespace Ekiga
 
     void remove_heap (boost::shared_ptr<HeapType> heap);
 
-    using RefLister<HeapType>::add_connection;
-
     iterator begin ();
     iterator end ();
     const_iterator begin () const;
     const_iterator end () const;
+
+    DynamicObjectStore<HeapType> heaps;
 
   private:
 
@@ -117,9 +115,9 @@ template<typename HeapType>
 Ekiga::ClusterImpl<HeapType>::ClusterImpl ()
 {
   /* signal forwarding */
-  RefLister<HeapType>::object_added.connect (boost::ref (heap_added));
-  RefLister<HeapType>::object_removed.connect (boost::ref (heap_removed));
-  RefLister<HeapType>::object_updated.connect (boost::ref (heap_updated));
+  heaps.object_added.connect (boost::ref (heap_added));
+  heaps.object_removed.connect (boost::ref (heap_removed));
+  heaps.object_updated.connect (boost::ref (heap_updated));
 }
 
 template<typename HeapType>
@@ -131,22 +129,19 @@ template<typename HeapType>
 void
 Ekiga::ClusterImpl<HeapType>::visit_heaps (boost::function1<bool, HeapPtr > visitor) const
 {
-  RefLister<HeapType>::visit_objects (visitor);
+  heaps.visit_objects (visitor);
 }
 
 template<typename HeapType>
 void
 Ekiga::ClusterImpl<HeapType>::add_heap (boost::shared_ptr<HeapType> heap)
 {
-  add_connection (heap, heap->presentity_added.connect (boost::bind (&ClusterImpl::on_presentity_added, this, _1, heap)));
+  heaps.add_connection (heap, heap->presentity_added.connect (boost::bind (&ClusterImpl::on_presentity_added, this, _1, heap)));
+  heaps.add_connection (heap, heap->presentity_updated.connect (boost::bind (&ClusterImpl::on_presentity_updated, this, _1, heap)));
+  heaps.add_connection (heap, heap->presentity_removed.connect (boost::bind (&ClusterImpl::on_presentity_removed, this, _1, heap)));
+  heaps.add_connection (heap, heap->questions.connect (boost::ref (questions)));
 
-  add_connection (heap, heap->presentity_updated.connect (boost::bind (&ClusterImpl::on_presentity_updated, this, _1, heap)));
-
-  add_connection (heap, heap->presentity_removed.connect (boost::bind (&ClusterImpl::on_presentity_removed, this, _1, heap)));
-
-  add_connection (heap, heap->questions.connect (boost::ref (questions)));
-
-  this->add_object (heap);
+  heaps.add_object (heap);
 }
 
 template<typename HeapType>
@@ -181,28 +176,28 @@ template<typename HeapType>
 typename Ekiga::ClusterImpl<HeapType>::iterator
 Ekiga::ClusterImpl<HeapType>::begin ()
 {
-  return RefLister<HeapType>::begin ();
+  return heaps.begin ();
 }
 
 template<typename HeapType>
 typename Ekiga::ClusterImpl<HeapType>::const_iterator
 Ekiga::ClusterImpl<HeapType>::begin () const
 {
-  return RefLister<HeapType>::begin ();
+  return heaps.begin ();
 }
 
 template<typename HeapType>
 typename Ekiga::ClusterImpl<HeapType>::iterator
 Ekiga::ClusterImpl<HeapType>::end ()
 {
-  return RefLister<HeapType>::end ();
+  return heaps.end ();
 }
 
 template<typename HeapType>
 typename Ekiga::ClusterImpl<HeapType>::const_iterator
 Ekiga::ClusterImpl<HeapType>::end () const
 {
-  return RefLister<HeapType>::end ();
+  return heaps.end ();
 }
 
 #endif

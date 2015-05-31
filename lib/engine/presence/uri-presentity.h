@@ -58,8 +58,7 @@ namespace Ekiga
   /**
    * This class implements an Ekiga::Presentity.
    */
-  class URIPresentity:
-    public Ekiga::Presentity
+  class URIPresentity: public Ekiga::Presentity
   {
   public:
 

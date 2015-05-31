@@ -47,9 +47,7 @@ namespace Ekiga
  * @{
  */
 
-  class Heap:
-    public virtual LiveObject,
-    public Actor
+  class Heap: public virtual Actor
   {
 
   public:

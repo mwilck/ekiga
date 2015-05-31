@@ -38,7 +38,6 @@
 #include <set>
 #include <string>
 
-#include "live-object.h"
 #include "actor.h"
 
 namespace Ekiga
@@ -51,9 +50,7 @@ namespace Ekiga
 
   /** A presentity is a piece of presence information for a single URI.
    */
-  class Presentity:
-    public Actor,
-    public virtual LiveObject
+  class Presentity: public virtual Actor
   {
   public:
 

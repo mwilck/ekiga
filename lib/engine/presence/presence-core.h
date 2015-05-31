@@ -116,7 +116,6 @@ namespace Ekiga
    *         special registering magic?
    */
   class PresenceCore:
-    public virtual LiveObject,
     public URIActionProviderStore,
     public Service
   {
@@ -226,6 +225,10 @@ namespace Ekiga
     boost::signals2::signal<void(std::string, std::string)> presence_received;
     boost::signals2::signal<void(std::string, std::string)> status_received;
 
+    /** This chain allows the core to present forms to the user
+     */
+    ChainOfResponsibility<FormRequestPtr> questions;
+
   private:
 
     std::list<boost::shared_ptr<PresenceFetcher> > presence_fetchers;
@@ -255,8 +258,6 @@ namespace Ekiga
 
     std::list<boost::shared_ptr<PresencePublisher> > presence_publishers;
     void publish ();
-
-    /*** LiveObject implementation ***/
 
   public:
 

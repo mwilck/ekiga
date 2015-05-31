@@ -37,6 +37,7 @@
 #define __CLUSTER_H__
 
 #include "heap.h"
+#include "actor.h"
 
 namespace Ekiga
 {
@@ -46,8 +47,7 @@ namespace Ekiga
  * @{
  */
 
-  class Cluster:
-    public virtual LiveObject
+  class Cluster: public virtual Actor
   {
 
   public:
