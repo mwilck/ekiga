@@ -52,7 +52,7 @@ namespace Ekiga
  * @{
  */
 
-  class Contact: public Actor
+  class Contact: public virtual Actor
   {
   public:
 

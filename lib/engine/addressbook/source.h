@@ -44,8 +44,7 @@ namespace Ekiga {
   class Source;
   typedef boost::shared_ptr<Source> SourcePtr;
 
-  class Source:
-      public Actor
+  class Source: public virtual Actor
   {
   public:
 

@@ -43,7 +43,7 @@ namespace Ekiga {
   class Book;
   typedef boost::shared_ptr<Book> BookPtr;
 
-  class Book: public Actor
+  class Book: public virtual Actor
   {
 
   public:
