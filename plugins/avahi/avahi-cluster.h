@@ -39,6 +39,7 @@
 
 #include "cluster-impl.h"
 #include "avahi-heap.h"
+#include "dynamic-object.h"
 
 namespace Avahi
 {
@@ -51,11 +52,12 @@ namespace Avahi
 
   class Cluster:
     public Ekiga::Service,
-    public Ekiga::ClusterImpl<Heap>
+    public Ekiga::ClusterImpl<Heap>,
+    public Ekiga::DynamicObject<Cluster>
   {
   public:
 
-    Cluster (Ekiga::ServiceCore &_core);
+    static boost::shared_ptr<Cluster> create (Ekiga::ServiceCore &_core);
 
     ~Cluster ();
 
@@ -70,6 +72,9 @@ namespace Avahi
 
 
   private:
+
+    void load ();
+    Cluster (Ekiga::ServiceCore &_core);
 
     Ekiga::ServiceCore &core;
     HeapPtr heap;

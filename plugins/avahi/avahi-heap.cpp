@@ -38,6 +38,7 @@
 #include <iostream>
 #include <glib/gi18n.h>
 
+#include "avahi-presentity.h"
 #include "avahi-heap.h"
 
 #define DEBUG 0
@@ -88,12 +89,23 @@ avahi_resolver_callback (AvahiServiceResolver *resolver,
 }
 
 
-Avahi::Heap::Heap (Ekiga::ServiceCore& core)
+boost::shared_ptr<Avahi::Heap>
+Avahi::Heap::create (Ekiga::ServiceCore & core)
+{
+  boost::shared_ptr<Avahi::Heap> heap =
+    boost::shared_ptr<Avahi::Heap> (new Avahi::Heap (core));
+
+  heap->load ();
+
+  return heap;
+}
+
+
+void
+Avahi::Heap::load ()
 {
   const AvahiPoll *poll_api = NULL;
   int error;
-
-  presence_core = core.get<Ekiga::PresenceCore> ("presence-core");
 
   /* let's make sure those are sanely initialized */
   poll = NULL;
@@ -114,6 +126,12 @@ Avahi::Heap::Heap (Ekiga::ServiceCore& core)
     std::cout << __PRETTY_FUNCTION__ << " client is NULL!" << std::endl;
 #endif
 }
+
+
+Avahi::Heap::Heap (Ekiga::ServiceCore & _core) : core(_core)
+{
+}
+
 
 Avahi::Heap::~Heap ()
 {
@@ -235,7 +253,7 @@ Avahi::Heap::BrowserCallback (AvahiServiceBrowser *browser,
          iter != end ();
          ++iter)
       if ((*iter)->get_name () == name) {
-        (*iter)->removed ();
+        (*iter)->removed (*iter);
         break;
       }
     break;
@@ -276,7 +294,7 @@ public:
 
   bool operator() (Ekiga::PresentityPtr pres_)
   {
-    boost::shared_ptr<Ekiga::URIPresentity> presentity_ = boost::dynamic_pointer_cast<Ekiga::URIPresentity> (pres_);
+    boost::shared_ptr<Avahi::Presentity> presentity_ = boost::dynamic_pointer_cast<Avahi::Presentity> (pres_);
     bool result = true;
 
     if (presentity_ && presentity_->get_name () == name) {
@@ -287,11 +305,11 @@ public:
     return result;
   }
 
-  boost::shared_ptr<Ekiga::URIPresentity> found_presentity () const
+  boost::shared_ptr<Avahi::Presentity> found_presentity () const
   { return presentity; }
 
 private:
-  boost::shared_ptr<Ekiga::URIPresentity> presentity;
+  boost::shared_ptr<Avahi::Presentity> presentity;
   const std::string name;
 };
 
@@ -370,14 +388,14 @@ Avahi::Heap::ResolverCallback (AvahiServiceResolver *resolver,
       /* ok, this is a new contact */
       gchar** broken = NULL;
       broken = g_strsplit_set (typ, "._", 0);
-      boost::shared_ptr<Ekiga::PresenceCore> pcore = presence_core.lock ();
-      if (broken != NULL && broken[0] != NULL && broken[1] != NULL && pcore) {
+      boost::shared_ptr<Ekiga::PresenceCore> presence_core = core.get<Ekiga::PresenceCore> ("presence-core");
+      if (broken != NULL && broken[0] != NULL && broken[1] != NULL) {
 
 	std::list<std::string> groups;
 
 	groups.push_back (_("Neighbours"));
 	url = g_strdup_printf ("%s:neighbour@%s:%d", broken[1], host_name, port);
-	boost::shared_ptr<Ekiga::URIPresentity> presentity (new Ekiga::URIPresentity (pcore, name, url, groups));
+	boost::shared_ptr<Avahi::Presentity> presentity = Avahi::Presentity::create (presence_core, name, url, groups);
 	status_received (url, status);
 	presence_received (url, presence);
 	add_presentity (presentity);

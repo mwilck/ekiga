@@ -18,7 +18,9 @@ libgmavahi_la_SOURCES = \
 	avahi-heap.h \
 	avahi-heap.cpp \
 	avahi-cluster.h \
-	avahi-cluster.cpp
+	avahi-cluster.cpp \
+	avahi-presentity.h \
+	avahi-presentity.cpp
 
 libgmavahi_la_LDFLAGS = $(PLUGINS_LIBTOOL_FLAGS)
 libgmavahi_la_LIBADD = \

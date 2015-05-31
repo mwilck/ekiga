@@ -26,53 +26,35 @@
 
 
 /*
- *                         avahi-cluster.cpp  -  description
- *                         ------------------------------------------
- *   begin                : written in 2007 by Julien Puydt
- *   copyright            : (c) 2007 by Julien Puydt
- *   description          : implementation of the avahi cluster
+ *                         avahi-presentity.cpp  -  description
+ *                         ------------------------------------
+ *   begin                : written in 2015 by Damien Sandras
+ *   copyright            : (c) 2015 Damien Sandras
+ *   description          : implementation of the avahi presentity
  *
  */
 
-#include "avahi-cluster.h"
+#include "avahi-presentity.h"
 
-boost::shared_ptr<Avahi::Cluster>
-Avahi::Cluster::create (Ekiga::ServiceCore & core)
+
+boost::shared_ptr<Avahi::Presentity>
+Avahi::Presentity::create (boost::shared_ptr<Ekiga::PresenceCore> _presence_core,
+                           std::string _name,
+                           std::string _uri,
+                           std::list<std::string> _groups)
 {
-  boost::shared_ptr<Avahi::Cluster> cluster =
-    boost::shared_ptr<Avahi::Cluster> (new Avahi::Cluster (core));
-
-  cluster->load ();
-
-  return cluster;
+  return boost::shared_ptr<Avahi::Presentity> (new Avahi::Presentity (_presence_core, _name, _uri, _groups));
 }
 
 
-void
-Avahi::Cluster::load ()
-{
-  heap = Avahi::Heap::create (core);
-
-  add_heap (heap);
-
-  boost::shared_ptr<Ekiga::PresenceCore> presence_core = core.get<Ekiga::PresenceCore> ("presence-core");
-  presence_core->add_presence_fetcher (heap);
-}
-
-
-Avahi::Cluster::Cluster (Ekiga::ServiceCore &_core): core(_core)
+Avahi::Presentity::Presentity (boost::shared_ptr<Ekiga::PresenceCore> _presence_core,
+                               std::string _name,
+                               std::string _uri,
+                               std::list<std::string> _groups) : URIPresentity (_presence_core, _name, _uri, _groups)
 {
 }
 
 
-Avahi::Cluster::~Cluster ()
+Avahi::Presentity::~Presentity ()
 {
-}
-
-
-bool
-Avahi::Cluster::populate_menu (Ekiga::MenuBuilder &/*builder*/)
-{
-  /* nothing */
-  return false;
 }

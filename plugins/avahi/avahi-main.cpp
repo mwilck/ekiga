@@ -60,9 +60,8 @@ struct AVAHISpark: public Ekiga::Spark
 	result = true;
       }
 
-      boost::shared_ptr<Avahi::Cluster> cluster (new Avahi::Cluster (core));
+      boost::shared_ptr<Avahi::Cluster> cluster = Avahi::Cluster::create (core);
       if (core.add (cluster)) {
-
 	presence_core->add_cluster (cluster);
 	result = true;
       }

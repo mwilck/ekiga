@@ -37,15 +37,18 @@
 #ifndef __AVAHI_HEAP_H__
 #define __AVAHI_HEAP_H__
 
-#include "presence-core.h"
-#include "heap-impl.h"
-#include "uri-presentity.h"
-
 #include <avahi-client/client.h>
 #include <avahi-client/lookup.h>
 #include <avahi-common/error.h>
 #include <avahi-glib/glib-watch.h>
 #include <avahi-glib/glib-malloc.h>
+
+
+#include "heap-impl.h"
+#include "dynamic-object.h"
+
+#include "presence-core.h"
+#include "avahi-presentity.h"
 
 namespace Avahi
 {
@@ -58,11 +61,12 @@ namespace Avahi
 
   class Heap:
     public Ekiga::PresenceFetcher,
-    public Ekiga::HeapImpl<Ekiga::URIPresentity>
+    public Ekiga::HeapImpl<Presentity>,
+    public Ekiga::DynamicObject<Heap>
   {
   public:
 
-    Heap (Ekiga::ServiceCore &_core);
+    static boost::shared_ptr<Heap> create (Ekiga::ServiceCore &_core);
 
     ~Heap ();
 
@@ -73,13 +77,14 @@ namespace Avahi
     bool populate_menu_for_group (const std::string name,
 				  Ekiga::MenuBuilder& builder);
 
-    /* the PresenceFetcher interface : we don't do what we're told ;-) */
+
+    /* The PresenceFetcher interface: we don't do what we're told ;-) */
     void fetch (std::string) {}
     void unfetch (std::string) {}
     bool is_supported_uri (const std::string &) { return true; }
 
-    /* these should be private but are called from C code */
 
+    /* These should be private but are called from C code */
     void ClientCallback (AvahiClient *client,
 			 AvahiClientState state);
 
@@ -106,10 +111,13 @@ namespace Avahi
 			   AvahiLookupResultFlags flags);
 
   private:
+    void load ();
+    Heap (Ekiga::ServiceCore &_core);
 
-    boost::weak_ptr<Ekiga::PresenceCore> presence_core;
     AvahiGLibPoll *poll;
     AvahiClient *client;
+
+    Ekiga::ServiceCore &core;
 
     bool remover (Ekiga::PresentityPtr presentity,
 		  const std::string name);
