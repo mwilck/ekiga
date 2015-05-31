@@ -48,9 +48,7 @@ namespace Ekiga
    * @{
    */
 
-  class Bank:
-    public Actor,
-    public virtual LiveObject
+  class Bank: public virtual Actor
   {
   public:
 

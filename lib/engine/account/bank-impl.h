@@ -36,7 +36,7 @@
 #ifndef __BANK_IMPL_H__
 #define __BANK_IMPL_H__
 
-#include "reflister.h"
+#include "dynamic-object-store.h"
 #include "bank.h"
 
 
@@ -68,15 +68,13 @@ namespace Ekiga
    *    backend.
    */
   template<class AccountType = Account>
-  class BankImpl:
-    public Bank,
-    protected RefLister<AccountType>
+  class BankImpl: public Bank
   {
 
   public:
 
-    typedef typename RefLister<AccountType>::iterator iterator;
-    typedef typename RefLister<AccountType>::const_iterator const_iterator;
+    typedef typename DynamicObjectStore<AccountType>::iterator iterator;
+    typedef typename DynamicObjectStore<AccountType>::const_iterator const_iterator;
 
     /** The constructor
      */
@@ -126,7 +124,7 @@ namespace Ekiga
      */
     void remove_account (boost::shared_ptr<AccountType> account);
 
-    using RefLister<AccountType>::add_connection;
+    DynamicObjectStore<AccountType> accounts;
   };
 
 /**
@@ -142,9 +140,9 @@ template<typename AccountType>
 Ekiga::BankImpl<AccountType>::BankImpl ()
 {
   /* this is signal forwarding */
-  RefLister<AccountType>::object_added.connect (boost::ref (account_added));
-  RefLister<AccountType>::object_removed.connect (boost::ref (account_removed));
-  RefLister<AccountType>::object_updated.connect (boost::ref (account_updated));
+  accounts.object_added.connect (boost::ref (account_added));
+  accounts.object_removed.connect (boost::ref (account_removed));
+  accounts.object_updated.connect (boost::ref (account_updated));
 }
 
 
@@ -158,7 +156,7 @@ template<typename AccountType>
 void
 Ekiga::BankImpl<AccountType>::visit_accounts (boost::function1<bool, AccountPtr> visitor) const
 {
-  RefLister<AccountType>::visit_objects (visitor);
+  accounts.visit_objects (visitor);
 }
 
 
@@ -166,7 +164,7 @@ template<typename AccountType>
 typename Ekiga::BankImpl<AccountType>::iterator
 Ekiga::BankImpl<AccountType>::begin ()
 {
-  return RefLister<AccountType>::begin ();
+  return accounts.begin ();
 }
 
 
@@ -174,7 +172,7 @@ template<typename AccountType>
 typename Ekiga::BankImpl<AccountType>::iterator
 Ekiga::BankImpl<AccountType>::end ()
 {
-  return RefLister<AccountType>::end ();
+  return accounts.end ();
 }
 
 
@@ -182,7 +180,7 @@ template<typename AccountType>
 typename Ekiga::BankImpl<AccountType>::const_iterator
 Ekiga::BankImpl<AccountType>::begin () const
 {
-  return RefLister<AccountType>::begin ();
+  return accounts.begin ();
 }
 
 
@@ -190,7 +188,7 @@ template<typename AccountType>
 typename Ekiga::BankImpl<AccountType>::const_iterator
 Ekiga::BankImpl<AccountType>::end () const
 {
-  return RefLister<AccountType>::end ();
+  return accounts.end ();
 }
 
 
