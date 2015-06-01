@@ -1239,7 +1239,7 @@ Opal::Account::OnPresenceChange (OpalPresentity& /*presentity*/,
     }
     else if (info->m_activities.Contains ("permanent-absence")) {
       new_presence = "away";
-      new_status = _("Permantent Absence");
+      new_status = _("Permanent Absence");
     }
     else if (info->m_activities.Contains ("presentation")) {
       new_presence = "away";
