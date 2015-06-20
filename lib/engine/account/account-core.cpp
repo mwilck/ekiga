@@ -49,13 +49,7 @@ void
 Ekiga::AccountCore::add_bank (BankPtr bank)
 {
   banks.push_back (bank);
-
-  bank->account_added.connect (boost::bind (boost::ref (account_added), bank, _1));
-  bank->account_removed.connect (boost::bind (boost::ref (account_removed), bank, _1));
-  bank->account_updated.connect (boost::bind (boost::ref (account_updated), bank, _1));
-
   bank_added (bank);
-
   bank->questions.connect (boost::ref (questions));
 }
 
@@ -64,7 +58,6 @@ void
 Ekiga::AccountCore::remove_bank (BankPtr bank)
 {
   bank_removed (bank);
-
   banks.remove (bank);
 }
 

@@ -140,9 +140,9 @@ template<typename AccountType>
 Ekiga::BankImpl<AccountType>::BankImpl ()
 {
   /* this is signal forwarding */
-  accounts.object_added.connect (boost::ref (account_added));
-  accounts.object_removed.connect (boost::ref (account_removed));
-  accounts.object_updated.connect (boost::ref (account_updated));
+  accounts.object_added.connect (boost::ref (account_added), _1);
+  accounts.object_removed.connect (boost::ref (account_removed), _1);
+  accounts.object_updated.connect (boost::ref (account_updated), _1);
 }
 
 
@@ -196,9 +196,8 @@ template<typename AccountType>
 void
 Ekiga::BankImpl<AccountType>::add_account (boost::shared_ptr<AccountType> account)
 {
-  this->add_object (account);
-
   account->questions.connect (boost::ref (questions));
+  accounts.add_object (account);
 }
 
 
@@ -206,7 +205,7 @@ template<typename AccountType>
 void
 Ekiga::BankImpl<AccountType>::remove_account (boost::shared_ptr<AccountType> account)
 {
-  this->remove_object (account);
+  accounts.remove_object (account);
 }
 
 #endif

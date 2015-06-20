@@ -117,42 +117,13 @@ namespace Ekiga
      */
     boost::signals2::signal<void(BankPtr)> bank_removed;
 
-    /** This signal is emitted when a account has been added to one of
-     * the banks
-     */
-    boost::signals2::signal<void(BankPtr, AccountPtr)> account_added;
-
-    /** This signal is emitted when a account has been removed from one of
-     * the banks
-     */
-    boost::signals2::signal<void(BankPtr, AccountPtr)> account_removed;
-
-    /** This signal is emitted when a account has been updated in one of
-     * the banks
-     */
-    boost::signals2::signal<void(BankPtr, AccountPtr)> account_updated;
-
-  private:
-
-    std::list<BankPtr> banks;
-    typedef std::list<BankPtr>::iterator bank_iterator;
-    typedef std::list<BankPtr>::const_iterator bank_const_iterator;
-
-
-    /*** Misc ***/
-
-  public:
-
-    /** This signal is emitted when the AccountCore Service has been
-     * updated.
-     */
-    boost::signals2::signal<void(void)> updated;
-
 
     /** This chain allows the AccountCore to present forms to the user
      */
     ChainOfResponsibility<FormRequestPtr> questions;
 
+  private:
+    std::list<BankPtr> banks;
   };
   /**
    * @}

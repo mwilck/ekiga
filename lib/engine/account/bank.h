@@ -48,6 +48,7 @@ namespace Ekiga
    * @{
    */
 
+  typedef boost::shared_ptr<Bank> BankPtr;
   class Bank: public virtual Actor
   {
   public:
@@ -74,13 +75,7 @@ namespace Ekiga
     /** This signal is emitted when a account has been updated.
      */
     boost::signals2::signal<void(AccountPtr)> account_updated;
-
-    /** This chain allows the BankImpl to present forms to the user
-     */
-    ChainOfResponsibility<FormRequestPtr> questions;
   };
-
-  typedef boost::shared_ptr<Bank> BankPtr;
 
   /**
    * @}
