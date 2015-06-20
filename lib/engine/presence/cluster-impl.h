@@ -105,9 +105,9 @@ template<typename HeapType>
 Ekiga::ClusterImpl<HeapType>::ClusterImpl ()
 {
   /* signal forwarding */
-  heaps.object_added.connect (boost::ref (heap_added), _1);
-  heaps.object_removed.connect (boost::ref (heap_removed), _1);
-  heaps.object_updated.connect (boost::ref (heap_updated), _1);
+  heaps.object_added.connect (boost::bind (boost::ref (heap_added), _1));
+  heaps.object_removed.connect (boost::bind (boost::ref (heap_removed), _1));
+  heaps.object_updated.connect (boost::bind (boost::ref (heap_updated), _1));
 }
 
 template<typename HeapType>

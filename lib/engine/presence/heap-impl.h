@@ -105,9 +105,9 @@ template<typename PresentityType>
 Ekiga::HeapImpl<PresentityType>::HeapImpl ()
 {
   /* this is signal forwarding */
-  presentities.object_added.connect (boost::ref (presentity_added), _1);
-  presentities.object_removed.connect (boost::ref (presentity_removed), _1);
-  presentities.object_updated.connect (boost::ref (presentity_updated), _1);
+  presentities.object_added.connect (boost::bind (boost::ref (presentity_added), _1));
+  presentities.object_removed.connect (boost::bind (boost::ref (presentity_removed), _1));
+  presentities.object_updated.connect (boost::bind (boost::ref (presentity_updated), _1));
 }
 
 
