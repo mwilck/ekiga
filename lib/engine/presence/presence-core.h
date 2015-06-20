@@ -169,21 +169,6 @@ namespace Ekiga
      */
     boost::signals2::signal<void(ClusterPtr)> cluster_removed;
 
-    /** Those signals are forwarding the heap_added, heap_updated
-     * and heap_removed from the given Cluster.
-     *
-     */
-    boost::signals2::signal<void(HeapPtr)> heap_added;
-    boost::signals2::signal<void(HeapPtr)> heap_updated;
-    boost::signals2::signal<void(HeapPtr)> heap_removed;
-
-    /** Those signals are forwarding the presentity_added, presentity_updated
-     * and presentity_removed from the given Heap of the given Cluster.
-     */
-    boost::signals2::signal<void(HeapPtr, PresentityPtr)> presentity_added;
-    boost::signals2::signal<void(HeapPtr, PresentityPtr)> presentity_updated;
-    boost::signals2::signal<void(HeapPtr, PresentityPtr)> presentity_removed;
-
   private:
     std::set<ClusterPtr > clusters;
 

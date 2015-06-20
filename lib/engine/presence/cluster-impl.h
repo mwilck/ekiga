@@ -91,16 +91,6 @@ namespace Ekiga
     const_iterator end () const;
 
     DynamicObjectStore<HeapType> heaps;
-
-  private:
-
-    void common_removal_steps (boost::shared_ptr<HeapType> heap);
-
-    void on_presentity_added (PresentityPtr presentity, boost::shared_ptr<HeapType> heap);
-
-    void on_presentity_updated (PresentityPtr presentity, boost::shared_ptr<HeapType> heap);
-
-    void on_presentity_removed (PresentityPtr presentity, boost::shared_ptr<HeapType> heap);
   };
 
 /**
@@ -115,9 +105,9 @@ template<typename HeapType>
 Ekiga::ClusterImpl<HeapType>::ClusterImpl ()
 {
   /* signal forwarding */
-  heaps.object_added.connect (boost::ref (heap_added));
-  heaps.object_removed.connect (boost::ref (heap_removed));
-  heaps.object_updated.connect (boost::ref (heap_updated));
+  heaps.object_added.connect (boost::ref (heap_added), _1);
+  heaps.object_removed.connect (boost::ref (heap_removed), _1);
+  heaps.object_updated.connect (boost::ref (heap_updated), _1);
 }
 
 template<typename HeapType>
@@ -136,11 +126,7 @@ template<typename HeapType>
 void
 Ekiga::ClusterImpl<HeapType>::add_heap (boost::shared_ptr<HeapType> heap)
 {
-  heaps.add_connection (heap, heap->presentity_added.connect (boost::bind (&ClusterImpl::on_presentity_added, this, _1, heap)));
-  heaps.add_connection (heap, heap->presentity_updated.connect (boost::bind (&ClusterImpl::on_presentity_updated, this, _1, heap)));
-  heaps.add_connection (heap, heap->presentity_removed.connect (boost::bind (&ClusterImpl::on_presentity_removed, this, _1, heap)));
   heaps.add_connection (heap, heap->questions.connect (boost::ref (questions)));
-
   heaps.add_object (heap);
 }
 
@@ -149,27 +135,6 @@ void
 Ekiga::ClusterImpl<HeapType>::remove_heap (boost::shared_ptr<HeapType> heap)
 {
   remove_object (heap);
-}
-
-template<typename HeapType>
-void
-Ekiga::ClusterImpl<HeapType>::on_presentity_added (PresentityPtr presentity, boost::shared_ptr<HeapType> heap)
-{
-  presentity_added (heap, presentity);
-}
-
-template<typename HeapType>
-void
-Ekiga::ClusterImpl<HeapType>::on_presentity_updated (PresentityPtr presentity, boost::shared_ptr<HeapType> heap)
-{
-  presentity_updated (heap, presentity);
-}
-
-template<typename HeapType>
-void
-Ekiga::ClusterImpl<HeapType>::on_presentity_removed (PresentityPtr presentity, boost::shared_ptr<HeapType> heap)
-{
-  presentity_removed (heap, presentity);
 }
 
 template<typename HeapType>

@@ -61,20 +61,20 @@ namespace Ekiga
      */
     virtual void visit_heaps (boost::function1<bool, HeapPtr >) const = 0;
 
-    /** Those signals are emitted whenever a new Heap is added or removed
-     * from the Cluster.
-     * @param The Heap in question.
+
+    /** This signal is emitted when a Heap has been added to the Source.
      */
     boost::signals2::signal<void(HeapPtr)> heap_added;
-    boost::signals2::signal<void(HeapPtr)> heap_removed;
 
-    /** Those signals are forwarded from the given Heap
-     * @param The Heap in question.
+
+    /** This signal is emitted when a Heap has been updated in the Source.
      */
     boost::signals2::signal<void(HeapPtr)> heap_updated;
-    boost::signals2::signal<void(HeapPtr , PresentityPtr )> presentity_added;
-    boost::signals2::signal<void(HeapPtr , PresentityPtr )> presentity_updated;
-    boost::signals2::signal<void(HeapPtr , PresentityPtr )> presentity_removed;
+
+
+    /** This signal is emitted when a Heap has been removed in the Source.
+     */
+    boost::signals2::signal<void(HeapPtr)> heap_removed;
   };
 
   typedef boost::shared_ptr<Cluster> ClusterPtr;
