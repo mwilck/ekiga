@@ -197,7 +197,7 @@ void
 Ekiga::BankImpl<AccountType>::add_account (boost::shared_ptr<AccountType> account)
 {
   accounts.add_object (account);
-  accounts.add_connection (accounts, account->questions.connect (boost::ref (questions)));
+  accounts.add_connection (account, account->questions.connect (boost::ref (questions)));
 }
 
 
