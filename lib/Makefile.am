@@ -225,16 +225,6 @@ libekiga_la_SOURCES += \
 	engine/addressbook/contact-core.h \
 	engine/addressbook/contact-core.cpp
 
-##
-# Sources of the chat stack
-##
-
-libekiga_la_SOURCES += \
-	engine/chat/chat-core.h \
-	engine/chat/chat-core.cpp \
-	engine/chat/dialect.h \
-	engine/chat/dialect-impl.h \
-	engine/chat/conversation.h
 
 ##
 # Sources of the friend-or-foe stack
@@ -349,40 +339,6 @@ libekiga_la_SOURCES += \
 	engine/gui/gtk-core/gtk-core-main.cpp
 
 ##
-# Sources of the gtk+ frontend
-##
-
-libekiga_la_SOURCES += \
-	engine/gui/gtk-frontend/addressbook-window.h \
-	engine/gui/gtk-frontend/addressbook-window.cpp \
-	engine/gui/gtk-frontend/assistant-window.h \
-	engine/gui/gtk-frontend/assistant-window.cpp \
-	engine/gui/gtk-frontend/book-view-gtk.h \
-	engine/gui/gtk-frontend/book-view-gtk.cpp \
-	engine/gui/gtk-frontend/call-window.h \
-	engine/gui/gtk-frontend/call-window.cpp \
-	engine/gui/gtk-frontend/roster-view-gtk.h \
-	engine/gui/gtk-frontend/roster-view-gtk.cpp \
-	engine/gui/gtk-frontend/call-history-view-gtk.h \
-	engine/gui/gtk-frontend/call-history-view-gtk.cpp \
-	engine/gui/gtk-frontend/chat-area.h \
-	engine/gui/gtk-frontend/chat-area.cpp \
-	engine/gui/gtk-frontend/conversation-page.h \
-	engine/gui/gtk-frontend/conversation-page.cpp \
-	engine/gui/gtk-frontend/preferences-window.cpp \
-	engine/gui/gtk-frontend/preferences-window.h \
-	engine/gui/gtk-frontend/statusicon.cpp \
-	engine/gui/gtk-frontend/statusicon.h \
-	engine/gui/gtk-frontend/statusmenu.h \
-	engine/gui/gtk-frontend/statusmenu.cpp \
-	engine/gui/gtk-frontend/chat-window.h \
-	engine/gui/gtk-frontend/chat-window.cpp \
-	engine/gui/gtk-frontend/ekiga-window.h \
-	engine/gui/gtk-frontend/ekiga-window.cpp \
-	engine/gui/gtk-frontend/ekiga-app.h \
-	engine/gui/gtk-frontend/ekiga-app.cpp
-
-##
 # Sources of the ptlib component
 ##
 
@@ -452,13 +408,6 @@ libekiga_la_SOURCES += \
 	engine/components/opal/process/h323-endpoint.cpp
 endif
 
-libekiga_la_SOURCES += \
-	engine/components/opal/sip-heap.h \
-	engine/components/opal/sip-heap.cpp \
-	engine/components/opal/sip-conversation.h \
-	engine/components/opal/sip-conversation.cpp \
-	engine/components/opal/sip-dialect.h \
-	engine/components/opal/sip-dialect.cpp
 
 libekiga_la_LDFLAGS += $(OPAL_LIBS)
 
@@ -580,3 +529,32 @@ libekiga_la_LDFLAGS += $(CLUTTER_LIBS) $(CLUTTER_GTK_LIBS) $(CLUTTER_GST_LIBS)
 libekiga_la_SOURCES += \
 	engine/components/foe-list/foe-list.h \
 	engine/components/foe-list/foe-list.cpp
+
+
+##
+# Sources of the gtk+ frontend
+##
+
+libekiga_la_SOURCES += \
+	engine/gui/gtk-frontend/addressbook-window.h \
+	engine/gui/gtk-frontend/addressbook-window.cpp \
+	engine/gui/gtk-frontend/assistant-window.h \
+	engine/gui/gtk-frontend/assistant-window.cpp \
+	engine/gui/gtk-frontend/book-view-gtk.h \
+	engine/gui/gtk-frontend/book-view-gtk.cpp \
+	engine/gui/gtk-frontend/call-window.h \
+	engine/gui/gtk-frontend/call-window.cpp \
+	engine/gui/gtk-frontend/roster-view-gtk.h \
+	engine/gui/gtk-frontend/roster-view-gtk.cpp \
+	engine/gui/gtk-frontend/call-history-view-gtk.h \
+	engine/gui/gtk-frontend/call-history-view-gtk.cpp \
+	engine/gui/gtk-frontend/preferences-window.cpp \
+	engine/gui/gtk-frontend/preferences-window.h \
+	engine/gui/gtk-frontend/statusicon.cpp \
+	engine/gui/gtk-frontend/statusicon.h \
+	engine/gui/gtk-frontend/statusmenu.h \
+	engine/gui/gtk-frontend/statusmenu.cpp \
+	engine/gui/gtk-frontend/ekiga-window.h \
+	engine/gui/gtk-frontend/ekiga-window.cpp \
+	engine/gui/gtk-frontend/ekiga-app.h \
+	engine/gui/gtk-frontend/ekiga-app.cpp
