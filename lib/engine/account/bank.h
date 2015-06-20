@@ -48,7 +48,9 @@ namespace Ekiga
    * @{
    */
 
+  class Bank;
   typedef boost::shared_ptr<Bank> BankPtr;
+
   class Bank: public virtual Actor
   {
   public:
