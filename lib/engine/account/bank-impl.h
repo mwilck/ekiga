@@ -140,9 +140,9 @@ template<typename AccountType>
 Ekiga::BankImpl<AccountType>::BankImpl ()
 {
   /* this is signal forwarding */
-  accounts.object_added.connect (boost::ref (account_added), _1);
-  accounts.object_removed.connect (boost::ref (account_removed), _1);
-  accounts.object_updated.connect (boost::ref (account_updated), _1);
+  accounts.object_added.connect (boost::bind (boost::ref (account_added), _1));
+  accounts.object_removed.connect (boost::bind (boost::ref (account_removed), _1));
+  accounts.object_updated.connect (boost::bind (boost::ref (account_updated), _1));
 }
 
 
