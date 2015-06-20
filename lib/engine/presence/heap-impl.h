@@ -155,8 +155,8 @@ template<typename PresentityType>
 void
 Ekiga::HeapImpl<PresentityType>::add_presentity (boost::shared_ptr<PresentityType> presentity)
 {
-  presentity->questions.connect (boost::ref (Ekiga::Actor::questions));
   presentities.add_object (presentity);
+  presentities.add_connection (presentity, presentity->questions.connect (boost::ref (Ekiga::Actor::questions)));
 }
 
 template<typename PresentityType>

@@ -201,8 +201,8 @@ template<typename ContactType>
 void
 Ekiga::BookImpl<ContactType>::add_contact (boost::shared_ptr<ContactType> contact)
 {
-  contact->questions.connect (boost::ref (questions));
   contacts.add_object (contact);
+  contacts.add_connection (contacts, contact->questions.connect (boost::ref (questions)));
 }
 
 

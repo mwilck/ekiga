@@ -126,8 +126,8 @@ template<typename HeapType>
 void
 Ekiga::ClusterImpl<HeapType>::add_heap (boost::shared_ptr<HeapType> heap)
 {
-  heaps.add_connection (heap, heap->questions.connect (boost::ref (questions)));
   heaps.add_object (heap);
+  heaps.add_connection (heap, heap->questions.connect (boost::ref (questions)));
 }
 
 template<typename HeapType>
