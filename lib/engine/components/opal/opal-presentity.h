@@ -45,6 +45,7 @@
 #include "presence-core.h"
 
 #include "presentity.h"
+#include "dynamic-object.h"
 
 
 namespace Opal
@@ -58,7 +59,8 @@ namespace Opal
    */
 
   class Presentity:
-      public Ekiga::Presentity
+      public Ekiga::Presentity,
+      public Ekiga::DynamicObject<Presentity>
   {
   public:
 
@@ -68,10 +70,10 @@ namespace Opal
 				  const std::string uri_,
 				  const std::list<std::string> groups_);
 
-    Presentity (const Account & account,
-                boost::weak_ptr<Ekiga::PresenceCore> presence_core_,
-		boost::function0<std::list<std::string> > existing_groups_,
-		xmlNodePtr node_);
+    static boost::shared_ptr<Presentity> create (const Account & _account,
+                                                 boost::weak_ptr<Ekiga::PresenceCore> _presence_core,
+                                                 boost::function0<std::list<std::string> > _existing_groups,
+                                                 xmlNodePtr _node);
 
     ~Presentity ();
 
@@ -118,6 +120,10 @@ namespace Opal
     void remove ();
 
   private:
+    Presentity (const Account & account,
+                boost::weak_ptr<Ekiga::PresenceCore> presence_core_,
+                boost::function0<std::list<std::string> > existing_groups_,
+                xmlNodePtr node_);
 
     /* this pair of method is to let the user edit the presentity with
      * a nice form

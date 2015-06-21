@@ -96,6 +96,22 @@ Opal::Presentity::build_node (const std::string name,
 }
 
 
+boost::shared_ptr<Opal::Presentity>
+Opal::Presentity::create (const Account & _account,
+                          boost::weak_ptr<Ekiga::PresenceCore> _presence_core,
+                          boost::function0<std::list<std::string> > _existing_groups,
+                          xmlNodePtr _node)
+{
+  boost::shared_ptr<Opal::Presentity> presentity =
+    boost::shared_ptr<Opal::Presentity> (new Opal::Presentity (_account,
+                                                               _presence_core,
+                                                               _existing_groups,
+                                                               _node));
+
+  return presentity;
+}
+
+
 Opal::Presentity::Presentity (const Opal::Account & account_,
                               boost::weak_ptr<Ekiga::PresenceCore> presence_core_,
 			      boost::function0<std::list<std::string> > existing_groups_,
@@ -229,7 +245,7 @@ void
 Opal::Presentity::set_presence (const std::string presence_)
 {
   presence = presence_;
-  updated ();
+  updated (this->shared_from_this ());
 }
 
 
@@ -237,7 +253,7 @@ void
 Opal::Presentity::set_status (const std::string status_)
 {
   status = status_;
-  updated ();
+  updated (this->shared_from_this ());
 }
 
 
@@ -364,7 +380,7 @@ Opal::Presentity::edit_presentity_form_submitted (bool submitted,
     }
   }
 
-  updated ();
+  updated (this->shared_from_this ());
   trigger_saving ();
 
   return true;
@@ -428,7 +444,7 @@ Opal::Presentity::rename_group (const std::string old_name,
 
   }
 
-  updated ();
+  updated (this->shared_from_this ());
   trigger_saving ();
 }
 
@@ -440,5 +456,5 @@ Opal::Presentity::remove ()
   xmlFreeNode (node);
 
   trigger_saving ();
-  removed ();
+  removed (this->shared_from_this ());
 }
